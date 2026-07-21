@@ -36,12 +36,16 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, host-verified 0-axiom): Packaged the endomorphism centralizer=K[T] result as a canonical SUBALGEBRA equality end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for cyclic T, combining the two proven inclusions into one reusable statement. The core lift to Module.End (commuting_end_is_polynomial + Frobenius dimension equality) is complete. The deep converse (dim C(T)=n ⟹ cyclic vector exists, needing rational canonical form) remains open and is not session-sized.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1-4, Docker+host verified 0-axiom): Upgraded the Frobenius dimension EQUALITY dim C(T)=dim V to a canonical K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V, A ↦ A·v (injective rigidity + equal finrank). This is the module-theoretic content of a cyclic vector (V free rank-1 over K[T]=C(T)) and re-derives the dimension equality as a corollary. The core lift to Module.End (centralizer=K[T], commutativity, Frobenius equality, and now the evaluation iso) is complete. The deep converse (dim C(T)=n ⟹ cyclic, needing rational canonical form) remains BLOCKED (RCF infra absent from Mathlib v4.31).",
     "builtItems": [
       "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
       "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original.",
       "commuting_end_eq_of_apply_eq, finrank_centralizer_le_of_cyclic, finrank_centralizer_eq_of_cyclic in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius.lean (0 axioms, 0 sorries; #print axioms = [propext, Classical.choice, Quot.sound])",
-      "end_centralizer_eq_adjoin in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean — Subalgebra.centralizer K {T} = Algebra.adjoin K {T} for cyclic T, 0-axiom host-verified"
+      "end_centralizer_eq_adjoin in CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean — Subalgebra.centralizer K {T} = Algebra.adjoin K {T} for cyclic T, 0-axiom host-verified",
+      "centralizerEval (LinearMap A ↦ A·v on the centralizer submodule) in ...OQ02OQ03Frobenius.lean",
+      "centralizerEval_injective (evaluation at a cyclic vector is injective on C(T))",
+      "centralizerEvalEquiv : C(T) ≃ₗ[K] V via LinearMap.linearEquivOfInjective + finrank_centralizer_eq_of_cyclic",
+      "centralizerEvalEquiv_apply @[simp]: e A = (A:End) v"
     ],
     "insights": [
       "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
@@ -50,7 +54,8 @@
       "Frobenius bound is EQUALITY in the cyclic case: for T:Module.End K V with a cyclic vector, dim_K C(T) = dim_K V. The clean ≤ half is that evaluation A↦A·v is injective on the centralizer (operators commuting with T agreeing on a cyclic vector agree on the whole Krylov basis); ≥ is the general endK_centralizer_bound. This is the minimal-centralizer/nonderogatory edge of the triangle.",
       "Centralizer=K[T] now packaged as a subalgebra equality: end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for a cyclic endomorphism, combining commuting_end_is_polynomial (⊆) and aeval_end_commute (⊇).",
       "Recipe: Algebra.adjoin_singleton_eq_range_aeval rewrites adjoin K {T} to (aeval T).range; Subalgebra.mem_centralizer_iff unfolds centralizer membership to ∀ g∈s, g*a=a*g; range membership discharged by the anonymous ⟨p, _⟩ constructor.",
-      "Gotcha: subst hg with hg : g = T eliminates T (not g), breaking later references to T; use rw [hg] to rewrite g→T instead."
+      "Gotcha: subst hg with hg : g = T eliminates T (not g), breaking later references to T; use rw [hg] to rewrite g→T instead.",
+      "Evaluation isomorphism: for a cyclic vector v, the map A ↦ A·v is a K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V (injective by rigidity + equal finrank ⟹ bijective). Strengthens the Frobenius dimension EQUALITY to a canonical equivalence — the K-linear shadow of V being a free rank-1 K[T]-module."
     ],
     "nextSteps": [
       "The hard converse: dim C(T)=n (or centralizer=K[T]) IMPLIES T has a cyclic vector — completes nonderogatory⟺cyclic⟺C(T)=K[T]. Requires rational canonical form / structure theory; not session-sized.",
