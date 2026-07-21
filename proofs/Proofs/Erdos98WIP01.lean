@@ -1244,4 +1244,127 @@ theorem h_four_le_two : h 4 ≤ 2 :=
   le_trans (h_le_of_inGeneralPosition inGeneralPosition_centeredTriangleConfig)
     numDistinctDistances_centeredTriangleConfig_le
 
+/-! ## The matching lower bound `h 4 ≥ 2`: four equidistant points are impossible in ℝ²
+
+The upper bound leaves `1 ≤ h 4 ≤ 2`.  To pin `h 4 = 2` we rule out a general-position
+4-configuration with a *single* distinct distance — i.e. four points all at a common
+pairwise distance `r`.  Such a **regular simplex** cannot embed in the plane: the three
+difference vectors `vₖ = pₖ₊₁ − p₀` would be pairwise at inner product `r²/2` and each of
+squared norm `r²`, so their Gram matrix `r²·(½·(I + J))` is nonsingular — the three
+vectors are linearly independent.  But `EuclideanSpace ℝ (Fin 2)` has dimension `2`, and
+three independent vectors cannot fit (`LinearIndependent.fintype_card_le_finrank`:
+`3 ≤ 2`), a contradiction.  This is the first result in the file to use the *dimension*
+of the ambient plane (all earlier bounds are metric/combinatorial). -/
+
+open scoped InnerProductSpace in
+/-- **No four points in the plane are pairwise equidistant.** For an injective
+`p : Fin 4 → ℝ²` with all pairwise distances equal to `r`, the three difference vectors
+`p₁−p₀, p₂−p₀, p₃−p₀` are linearly independent (their Gram matrix `r²·½(I+J)` has full
+rank), so three independent vectors would live in the 2-dimensional plane — impossible. -/
+theorem not_four_equidistant {p : Fin 4 → EuclideanSpace ℝ (Fin 2)}
+    (hinj : Function.Injective p) (r : ℝ)
+    (hd : ∀ i j : Fin 4, i ≠ j → dist (p i) (p j) = r) : False := by
+  have hr : 0 < r := by
+    rw [← hd 0 1 (by decide)]
+    exact dist_pos.mpr (hinj.ne (by decide))
+  -- difference vectors from the base point `p 0`
+  set v : Fin 3 → EuclideanSpace ℝ (Fin 2) := fun k => p k.succ - p 0 with hv
+  have hnorm : ∀ k : Fin 3, ‖v k‖ = r := by
+    intro k
+    simp only [hv]
+    rw [← dist_eq_norm]
+    exact hd _ _ (Fin.succ_ne_zero k)
+  have hself : ∀ k : Fin 3, inner ℝ (v k) (v k) = r ^ 2 := by
+    intro k
+    rw [real_inner_self_eq_norm_sq, hnorm k]
+  have hcross : ∀ i j : Fin 3, i ≠ j → inner ℝ (v i) (v j) = r ^ 2 / 2 := by
+    intro i j hij
+    have hnij : ‖v i - v j‖ = r := by
+      simp only [hv]
+      rw [show p i.succ - p 0 - (p j.succ - p 0) = p i.succ - p j.succ from by abel,
+        ← dist_eq_norm]
+      exact hd _ _ ((Fin.succ_injective _).ne hij)
+    have hns := norm_sub_sq_real (v i) (v j)
+    rw [hnij, hnorm i, hnorm j] at hns
+    linarith
+  have hli : LinearIndependent ℝ v := by
+    rw [Fintype.linearIndependent_iff]
+    intro g hg
+    have hip : ∀ j : Fin 3, ∑ k : Fin 3, g k * inner ℝ (v k) (v j) = 0 := by
+      intro j
+      have h0 : inner ℝ (∑ k : Fin 3, g k • v k) (v j) = 0 := by
+        rw [hg]; exact inner_zero_left _
+      rw [sum_inner] at h0
+      simp_rw [real_inner_smul_left] at h0
+      exact h0
+    have e0 := hip 0; have e1 := hip 1; have e2 := hip 2
+    simp only [Fin.sum_univ_three] at e0 e1 e2
+    rw [hself 0, hcross 1 0 (by decide), hcross 2 0 (by decide)] at e0
+    rw [hcross 0 1 (by decide), hself 1, hcross 2 1 (by decide)] at e1
+    rw [hcross 0 2 (by decide), hcross 1 2 (by decide), hself 2] at e2
+    have hr2 : r ^ 2 ≠ 0 := (pow_pos hr 2).ne'
+    have f0 : g 0 + g 1 / 2 + g 2 / 2 = 0 := by
+      have h : r ^ 2 * (g 0 + g 1 / 2 + g 2 / 2) = 0 := by linear_combination e0
+      rcases mul_eq_zero.mp h with h' | h'
+      · exact absurd h' hr2
+      · exact h'
+    have f1 : g 0 / 2 + g 1 + g 2 / 2 = 0 := by
+      have h : r ^ 2 * (g 0 / 2 + g 1 + g 2 / 2) = 0 := by linear_combination e1
+      rcases mul_eq_zero.mp h with h' | h'
+      · exact absurd h' hr2
+      · exact h'
+    have f2 : g 0 / 2 + g 1 / 2 + g 2 = 0 := by
+      have h : r ^ 2 * (g 0 / 2 + g 1 / 2 + g 2) = 0 := by linear_combination e2
+      rcases mul_eq_zero.mp h with h' | h'
+      · exact absurd h' hr2
+      · exact h'
+    have hg0 : g 0 = 0 := by linarith [f0, f1, f2]
+    have hg1 : g 1 = 0 := by linarith [f0, f1, f2]
+    have hg2 : g 2 = 0 := by linarith [f0, f1, f2]
+    intro i
+    fin_cases i <;> assumption
+  have hcard := hli.fintype_card_le_finrank
+  simp only [Fintype.card_fin, finrank_euclideanSpace_fin] at hcard
+  omega
+
+/-- **Two or more distinct distances for four distinct points.** A four-point injective
+configuration has `numDistinctDistances ≥ 2`: it has `≥ 1` (two points determine a
+positive distance), and a count of exactly `1` would force all six pairwise distances
+equal — four equidistant points, ruled out by `not_four_equidistant`. -/
+theorem two_le_numDistinctDistances_four {P : PointConfig 4}
+    (hinj : Function.Injective P) : 2 ≤ numDistinctDistances P := by
+  by_contra hlt
+  push_neg at hlt
+  have h1 : 1 ≤ numDistinctDistances P :=
+    one_le_numDistinctDistances_of_injective P hinj (by norm_num)
+  have heq : numDistinctDistances P = 1 := by omega
+  unfold numDistinctDistances at heq
+  obtain ⟨r, hr_eq⟩ := Finset.card_eq_one.mp heq
+  have hall : ∀ i j : Fin 4, i ≠ j → dist (P i) (P j) = r := by
+    intro i j hij
+    have hpos : (0 : ℝ) < dist (P i) (P j) := dist_pos.mpr (hinj.ne hij)
+    have hmem : dist (P i) (P j) ∈
+        ((univ.product univ).image
+          (fun q : Fin 4 × Fin 4 => dist (P q.1) (P q.2))).filter (· > 0) := by
+      rw [mem_filter]
+      exact ⟨mem_image.mpr ⟨(i, j), by simp, rfl⟩, hpos⟩
+    rw [hr_eq, mem_singleton] at hmem
+    exact hmem
+  exact not_four_equidistant hinj r hall
+
+/-- **`h 4 ≥ 2`.** The attained minimiser (`h_attained 4`) is injective, so it has at
+least two distinct distances; hence the minimum is `≥ 2`. -/
+theorem h_four_ge_two : 2 ≤ h 4 := by
+  obtain ⟨P, hgp, hval⟩ := h_attained 4
+  rw [← hval]
+  exact two_le_numDistinctDistances_four hgp.1
+
+/-- **`h 4 = 2`, pinned exactly.** The centred-triangle witness gives `h 4 ≤ 2`
+(`h_four_le_two`) and the impossibility of four equidistant points gives `h 4 ≥ 2`
+(`h_four_ge_two`).  This is the first value of `h` strictly greater than `1`, and the
+first to use both nondegeneracy hypotheses non-vacuously together with the planar
+dimension bound. -/
+theorem h_four : h 4 = 2 :=
+  le_antisymm h_four_le_two h_four_ge_two
+
 end Erdos98WIP01
