@@ -93,68 +93,116 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and References (L1–42)",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring stating Erdős Problem #131 — how large can a non-dividing set $A \\subseteq [N]$ be, where no element divides the sum of any subset of the others — with the history (Erdős–Sárközy, Pham–Zakharov 2024, connection to non-averaging sets #186), imports, and `namespace Erdos131` (L39).",
+      "mathContext": "A set $A$ is *non-dividing* if for every $a \\in A$ and every $S \\subseteq A \\setminus \\{a\\}$ with $|S| \\geq 2$, $a \\nmid \\sum_{s \\in S} s$. Problem #131 asks for the growth of the extremal size $F(N) = \\max\\{|A| : A \\subseteq [N] \\text{ non-dividing}\\}$."
+    },
+    {
       "id": "definitions",
-      "title": "Non-Dividing and Non-Averaging Definitions",
+      "title": "Basic Definitions (L43–91)",
       "startLine": 43,
       "endLine": 91,
-      "summary": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$). Theorem `nondividingAlt_implies_nondividing` proves the easy direction, while `nondividing_not_iff_alt` shows the two formulations are inequivalent (Alt is strictly stronger).",
-      "mathContext": "Defines `IsNonDividing` ($a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$), the alternative `IsNonDividingAlt`, and `IsNonAveraging` ($\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$)."
+      "summary": "`IsNonDividing` (L47): $a \\nmid \\sum S$ for $S \\subseteq A \\setminus \\{a\\}$, $|S| \\geq 2$. `IsNonDividingAlt` (L52): an alternative formulation; `nondividingAlt_implies_nondividing` (L62) proves the easy direction and `nondividing_not_iff_alt` (L71) shows the two are inequivalent (Alt is strictly stronger). `IsNonAveraging` (L88): $\\frac{\\sum S}{|S|} \\neq a$ in $\\mathbb{Q}$.",
+      "mathContext": "The two formulations differ on singleton/pair edge cases: `IsNonDividingAlt` bans divisibility for all sub-sums including $|S|<2$, so `nondividing_not_iff_alt` exhibits a set satisfying the weaker but not the stronger predicate, pinning down which definition Problem #131 intends."
     },
     {
       "id": "relationship",
-      "title": "Non-dividing Implies Non-averaging",
+      "title": "Non-dividing Implies Non-averaging (L92–105)",
       "startLine": 92,
       "endLine": 105,
-      "summary": "Fully proves the key implication: if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$, via `exact_mod_cast`. No sorry remains; the $\\mathbb{N}$-divisibility is extracted directly from the $\\mathbb{Q}$-equation.",
-      "mathContext": "Fully proves the key implication: if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$, via `exact_mod_cast`. No sorry remains; the $\\mathbb{N}$-divisibility is extracted directly from the $\\mathbb{Q}$-equation."
+      "summary": "`nondividing_implies_nonaveraging` (L95): if $a = \\text{avg}(S)$ in $\\mathbb{Q}$ then $a \\mid \\sum S$ in $\\mathbb{N}$ (via `exact_mod_cast`), so a non-dividing set is automatically non-averaging — the inclusion that lets Pham–Zakharov's non-averaging upper bound transfer to $F(N)$.",
+      "mathContext": "If $a\\cdot|S| = \\sum S$ over $\\mathbb{Q}$ then $a \\mid \\sum S$ over $\\mathbb{N}$; contrapositively non-dividing $\\Rightarrow$ non-averaging. This one-way implication (proved here) is the bridge to Problem #186, exploited in the Connection section."
     },
     {
       "id": "f-function",
-      "title": "The Extremal Function F(N)",
+      "title": "The Extremal Function F(N) (L106–124)",
       "startLine": 106,
       "endLine": 124,
-      "summary": "Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$.",
-      "mathContext": "Formal definition: Defines $F(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. States monotonicity $N \\leq M \\implies F(N) \\leq F(M)$."
+      "summary": "`F` (L109): $F(N) = \\max\\{|A| : A \\subseteq [N],\\; \\text{IsNonDividing}(A)\\}$ via `Finset.powerset` enumeration. `F_monotonic` (L114): $N \\leq M \\implies F(N) \\leq F(M)$.",
+      "mathContext": "Defining $F$ by explicit powerset enumeration over $[N]$ makes it computable and gives monotonicity for free (a non-dividing subset of $[N]$ is one of $[M]$ when $N \\leq M$), the baseline for all bound comparisons below."
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds",
+      "title": "Upper Bounds (L125–166)",
       "startLine": 125,
       "endLine": 166,
-      "summary": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$.",
-      "mathContext": "Three upper bound results: ELRSS (1999) $F(N) < 3\\sqrt{N} + 1$, Pham-Zakharov (2024) $F(N) \\leq N^{1/4+o(1)}$ (via non-averaging connection), and the resolution `original_question_answered_no`: $F(N) \\not> N^{1/2-o(1)}$."
+      "summary": "Records the ELRSS (1999) bound $F(N) < 3\\sqrt{N}+1$ and the Pham–Zakharov (2024) bound $F(N) \\leq N^{1/4+o(1)}$ (via the non-averaging connection). `original_question_answered_no` (L137): formalizes that the original strong form ($F(N) > N^{1/2-o(1)}$) is answered in the negative.",
+      "mathContext": "The Pham–Zakharov exponent $1/4$ dramatically improved the classical $1/2$ (square-root) bound, so $F(N) = N^{1/4+o(1)}$ from above; `original_question_answered_no` encodes that the previously-conjectured $N^{1/2}$ growth is ruled out."
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bounds",
+      "title": "Lower Bounds (L167–212)",
       "startLine": 167,
       "endLine": 212,
-      "summary": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant.",
-      "mathContext": "Two lower bound constructions: Csaba's polynomial $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2} + o(1))\\sqrt{\\log N})$, with numerical bounds $1.6 < \\sqrt{2/\\log 2} < 1.8$ on Straus's constant."
+      "summary": "Csaba's polynomial construction $F(N) \\gg N^{1/5}$ and Straus's subexponential $F(N) > \\exp((\\sqrt{2/\\log 2}+o(1))\\sqrt{\\log N})$. Helper privates `exp_three_fourths_gt_two` (L176), `log_two_lt` (L184), `exp_two_thirds_lt_two` (L188), `log_two_gt` (L196) bound $\\log 2$, feeding `straus_constant_value` (L200): $1.6 < \\sqrt{2/\\log 2} < 1.8$.",
+      "mathContext": "Straus's constant $\\sqrt{2/\\log 2} \\approx 1.699$ is pinned to $(1.6, 1.8)$ via the enclosure $2/3 < \\log 2 < 3/4$, itself proved from $e^{2/3} < 2 < e^{3/4}$ — a self-contained numerical certificate avoiding any external value of $\\log 2$."
     },
     {
       "id": "open-question",
-      "title": "The Open Gap",
+      "title": "The Open Question and Erdős's Original Conjecture (L213–296)",
       "startLine": 213,
       "endLine": 296,
-      "summary": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false.",
-      "mathContext": "Formalizes the remaining open problem: the gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$. Also proves Erdős's original conjecture $F(N) < (\\log N)^{O(1)}$ was false."
+      "summary": "`erdos_131_open_question` (L222): the remaining gap $\\exp(c\\sqrt{\\log N}) \\leq F(N) \\leq N^{1/4+o(1)}$ between Straus's subexponential lower bound and Pham–Zakharov's polynomial upper bound. `erdos_original_conjecture_false` (L234): Erdős's original polylogarithmic conjecture $F(N) < (\\log N)^{O(1)}$ is false.",
+      "mathContext": "The surviving open gap is between $\\exp(c\\sqrt{\\log N})$ (subexponential) and $N^{1/4+o(1)}$ (polynomial) — an exponential-scale separation. Straus's construction already refutes Erdős's polylogarithmic guess, formalized as `erdos_original_conjecture_false`."
     },
     {
-      "id": "examples",
-      "title": "Small Examples",
+      "id": "small-examples",
+      "title": "Small Examples (L297–339)",
       "startLine": 297,
+      "endLine": 339,
+      "summary": "`singleton_nondividing` (L300): singletons are trivially non-dividing. `two_three_nondividing` (L311): $\\{2,3\\}$ is non-dividing. Counterexample `primes_not_nondividing` (L326): $\\{2,3,5\\}$ is **not** non-dividing (since $2 \\mid 3+5$... shows the prime set fails).",
+      "mathContext": "Concrete witnesses confirm the predicate is non-vacuous and discriminating: small non-dividing sets exist, but natural candidates like the first primes fail, illustrating why non-dividing sets are sparse."
+    },
+    {
+      "id": "structural-results",
+      "title": "Structural Results (L340–378)",
+      "startLine": 340,
       "endLine": 378,
-      "summary": "Verified: `singleton_nondividing` (trivial), `two_three_nondividing` (direct), `two_four_five_nondividing` (direct), `three_five_eleven_eighteen_nondividing` (computation). Counterexample: `primes_not_nondividing` proves $\\{2,3,5\\}$ is **not** non-dividing. Also `nondividing_hard_to_find` shows $\\{3,5,7\\}$ is not non-dividing.",
-      "mathContext": "Verified: `singleton_nondividing`, `two_three_nondividing`, `two_four_five_nondividing`, `three_five_eleven_eighteen_nondividing`. Counterexamples: `primes_not_nondividing` ($\\{2,3,5\\}$ is **not** non-dividing); `nondividing_hard_to_find` ($\\{3,5,7\\}$ is not non-dividing)."
+      "summary": "`one_not_in_large_nondividing` (L345): $1$ cannot belong to a non-dividing set of size $\\geq 3$ (since $1$ divides everything). Helper `finset_eq_of_subset_of_card_two` (L353). `two_four_five_nondividing` (L359): $\\{2,4,5\\}$ is non-dividing.",
+      "mathContext": "The exclusion of $1$ is the first structural obstruction: any $a=1$ divides every sub-sum, so large non-dividing sets avoid $1$ — the seed of the parity/small-element constraints developed later."
     },
     {
       "id": "connection",
-      "title": "Connection to Non-Averaging (Problem #186)",
+      "title": "Connection to Non-Averaging Sets (L379–411)",
       "startLine": 379,
+      "endLine": 411,
+      "summary": "`g` (L382): the non-averaging extremal function (Problem #186). `F_le_g` (L387): $F(N) \\leq g(N)$, formalizing the inclusion non-dividing $\\subseteq$ non-averaging. `pham_zakharov_chain` (L405): chains $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$.",
+      "mathContext": "The inequality $F(N) \\leq g(N)$ is the payload of the non-dividing $\\Rightarrow$ non-averaging implication: any upper bound on non-averaging sets (Pham–Zakharov's $N^{1/4+o(1)}$ for #186) is inherited by non-dividing sets (#131)."
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive Difficulty of Non-Dividing Sets (L412–427)",
+      "startLine": 412,
+      "endLine": 427,
+      "summary": "`nondividing_hard_to_find` (L417): a formal statement capturing that explicit non-dividing sets are hard to construct — small natural families (e.g. $\\{3,5,7\\}$) fail the condition, so the near-optimal constructions are necessarily non-obvious.",
+      "mathContext": "Unlike Sidon or sum-free sets, non-dividing sets resist simple arithmetic-progression constructions; the constant-factor examples here document the combinatorial fragility that forces Straus's subexponential construction rather than an elementary one."
+    },
+    {
+      "id": "parity",
+      "title": "Parity Constraint for Sets Containing 2 (L428–519)",
+      "startLine": 428,
+      "endLine": 519,
+      "summary": "`two_in_nondividing_bound` (L434): if $2 \\in A$ and $A$ is non-dividing, the odd/even structure of $A$ is constrained ($2 \\nmid \\sum S$ forces sub-sums to be odd). Helper `nondividing_three_subset` (L470). `three_five_eleven_eighteen_nondividing` (L498): $\\{3,5,11,18\\}$ is a verified 4-element non-dividing set.",
+      "mathContext": "Membership of $2$ imposes a parity screen: $2 \\nmid \\sum S$ requires every qualifying sub-sum to be odd, sharply limiting how many even elements can coexist with $2$ — a concrete instance of the local arithmetic obstructions that make $F(N)$ small."
+    },
+    {
+      "id": "exponent-comparison",
+      "title": "Bound Exponent Comparison (L520–530)",
+      "startLine": 520,
+      "endLine": 530,
+      "summary": "Numerical exponent lemmas ordering the polynomial bounds: `quarter_lt_half` (L523) $\\tfrac14 < \\tfrac12$, `fifth_lt_quarter` (L526) $\\tfrac15 < \\tfrac14$, `polynomial_exponent_gap` (L529) $\\tfrac14 - \\tfrac15 = \\tfrac1{20}$.",
+      "mathContext": "These `norm_num` facts locate the state of knowledge on the exponent line: the lower bound $N^{1/5}$ and upper bound $N^{1/4}$ leave a polynomial gap of width $1/20$ in the exponent, the quantitative form of the open question."
+    },
+    {
+      "id": "summary",
+      "title": "Summary (L531–556)",
+      "startLine": 531,
       "endLine": 556,
-      "summary": "Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$.",
-      "mathContext": "Formal definition: Defines $g(N)$ (non-averaging extremal function), proves $F(N) \\leq g(N)$ via `F_le_g`, and chains Pham-Zakharov's bound: $g(N) \\leq N^{1/4+\\varepsilon} \\implies F(N) \\leq N^{1/4+\\varepsilon}$."
+      "summary": "Closing docstring recapping the formalized landscape — definitions, the extremal function $F(N)$, upper/lower bounds, the non-averaging bridge, and the surviving $\\exp(c\\sqrt{\\log N})$–$N^{1/4+o(1)}$ gap — and the `end Erdos131` namespace close (L556).",
+      "mathContext": "The formalization brackets $F(N)$ between subexponential and polynomial growth and records the exact remaining uncertainty, matching the current published state after Pham–Zakharov (2024)."
     }
   ],
   "conclusion": {
