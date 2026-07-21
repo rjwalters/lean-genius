@@ -132,8 +132,8 @@
       "id": "quantitative-removal",
       "title": "Quantitative Triangle Removal via Regularity",
       "startLine": 537,
-      "endLine": 1196,
-      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. **Fully proved.** Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs (h_irreg and h_sparse budget lemmas proved), then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound.",
+      "endLine": 1230,
+      "summary": "The main quantitative result: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. **Fully proved.** Applies `regularity_with_finpartition` to get a Finpartition, removes edges from irregular and sparse pairs (h_irreg and h_sparse budget lemmas proved), then uses `counting_lemma` to show any remaining triangle yields many triangles — contradicting the $\\gamma n^3$ bound. The closing calc block makes the contradiction explicit: a surviving regular, dense triangle triple forces at least $(1-2\\varepsilon)\\varepsilon^3(n/2M)^3 = 2\\gamma n^3 > \\gamma n^3$ triangles, so `linarith` closes the goal.",
       "mathContext": "$\\forall \\delta > 0, \\exists \\gamma = \\gamma(\\delta, M(\\varepsilon))$: $T(G) \\leq \\gamma n^3$ implies $G$ can be made triangle-free by removing $\\leq \\delta n^2$ edges. The proof is constructive: $\\gamma$ depends on the regularity bound $M(\\varepsilon)$ and $\\varepsilon = \\delta/6$."
     }
   ],
