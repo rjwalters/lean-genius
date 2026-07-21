@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Erdős #105 Statement and Status",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating Erdős Problem #105 (the Erdős–Purdy rich-lines question): given n non-collinear points and few obstacle points, must there be a line rich in the point set that avoids all obstacles? Records the resolution — the n−3 form was DISPROVED by Xichuan (2024) via three counterexamples — and the historical timeline.",
+      "mathContext": "Erdős #105 asks whether every non-collinear $n$-point set $A$ admits a \"rich, unblocked\" line (≥2 points of $A$, 0 obstacle points of $B$) whenever $|B|$ is small relative to $|A|$. The $n-3$ obstacle version is false (Xichuan 2024); the sharp threshold $f(n)$ is open."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "$p \\in \\mathbb{R}^2$, $\\ell = \\{p_0 + td : d \\neq 0\\}$, `Line.contains` ($p \\in \\ell \\iff \\exists t,\\, p = p_0 + td$), `isRich` ($|\\ell \\cap A| \\geq 2$), `unblocked` ($\\ell \\cap B = \\emptyset$)",
@@ -112,14 +120,14 @@
       "title": "Related Results",
       "summary": "`hickerson_n_minus_2`: $\\exists A, B$ with $|B| = n-2$ blocking all rich lines; `beck_szemeredi_trotter_positive`: $\\exists c > 0,\\, |B| \\leq cn \\implies \\exists$ rich unblocked $\\ell$",
       "startLine": 118,
-      "endLine": 141,
+      "endLine": 132,
       "mathContext": "Mathematical content: `hickerson_n_minus_2`: $\\exists A, B$ with $|B| = n-2$ blocking all rich lines; `beck_szemeredi_trotter_positive`: $\\exists c > 0,\\, |B| \\leq cn \\implies \\exists$ rich unblocked $\\ell$"
     },
     {
       "id": "szemeredi-trotter",
       "title": "Szemerédi-Trotter Theorem",
       "summary": "`incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line",
-      "startLine": 142,
+      "startLine": 133,
       "endLine": 165,
       "mathContext": "Mathematical content: `incidenceCount` via `Finset.filter`; `szemeredi_trotter`: $I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; `many_rich_lines_exist`: non-collinear sets determine $\\geq 1$ rich line"
     },
@@ -128,24 +136,32 @@
       "title": "Threshold Function",
       "summary": "$f(n) = \\max\\{k : |B| \\leq k \\implies \\exists$ rich unblocked $\\ell\\}$; bounds $cn \\leq f(n) \\leq n - 4$",
       "startLine": 166,
-      "endLine": 180,
+      "endLine": 188,
       "mathContext": "Bound: $f(n) = \\max\\{k : |B| \\leq k \\implies \\exists$ rich unblocked $\\ell\\}$; bounds $cn \\leq f(n) \\leq n - 4$"
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
       "summary": "`openProblem_n_minus_4`: does the conjecture hold at $|B| = n - 4$?; `openProblem_exact_threshold`: $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$?",
-      "startLine": 181,
-      "endLine": 198,
+      "startLine": 189,
+      "endLine": 206,
       "mathContext": "Mathematical content: `openProblem_n_minus_4`: does the conjecture hold at $|B| = n - 4$?; `openProblem_exact_threshold`: $\\exists c_1, c_2 > 0 : c_1 n \\leq f(n) \\leq c_2 n$?"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "`erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`; historical timeline 1983–2024",
-      "startLine": 199,
-      "endLine": 248,
+      "startLine": 207,
+      "endLine": 254,
       "mathContext": "Mathematical content: `erdos_105_summary`: $\\neg\\text{ErdosPurdyConj} \\land \\text{beck\\_szemeredi\\_trotter\\_positive}$ via `exact ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`; historical timeline 1983–2024"
+    },
+    {
+      "id": "higher-dim",
+      "title": "Part IX: OQ-05 — Higher-Dimensional Generalizations",
+      "startLine": 255,
+      "endLine": 305,
+      "summary": "Formalizes the OQ-05 higher-dimensional analogue: PointD d = EuclideanSpace ℝ (Fin d), the KFlat structure (affine subspace + dimension), KFlat.isRich / KFlat.unblocked, NonDegenerate position, and higherDimAnalogue d — does a rich 2-flat (through ≥3 points of A) avoiding all obstacles B always exist in ℝ^d for d ≥ 3? threeSpaceCase specializes to ℝ³.",
+      "mathContext": "The natural lift of Erdős #105 to $\\mathbb{R}^d$ ($d\\ge 3$): replace \"line through 2 points\" by \"$2$-flat through $3$ points\". $\\texttt{higherDimAnalogue}\\,d$ asserts $\\exists c>0$ such that for non-degenerate $A$ and obstacles $B$ with $|B| \\le c|A|$, some rich $2$-flat avoids $B$; $\\texttt{threeSpaceCase}$ is the $\\mathbb{R}^3$ instance. These are Prop-level statements (no proof claimed)."
     }
   ],
   "conclusion": {
