@@ -78,42 +78,50 @@
     {
       "id": "variable-bounded-def",
       "title": "Variable-Bounded Diophantine Equations",
-      "startLine": 52,
-      "endLine": 71,
-      "summary": "Defines DiophantineN n (equations in exactly n integer variables), hasSolutionN, H10_n_decidable, H10_n_undecidable.",
-      "mathContext": "For each n, DiophantineN n = (Fin n → Int) → Int models n-variable polynomials. The decision problem H10_n asks for an algorithm that correctly decides solvability for all P : DiophantineN n."
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Module docstring (open question, known bounds, axiom inventory) and Part I definitions: DiophantineN n (equations in exactly n integer variables), hasSolutionN, H10_n_decidable, H10_n_undecidable.",
+      "mathContext": "For each n, DiophantineN n = (Fin n → Int) → Int models n-variable polynomials. The decision problem H10_n asks for an algorithm that correctly decides solvability for all P : DiophantineN n; H10_n_undecidable n is its negation."
     },
     {
       "id": "linear-forms",
       "title": "Linear Forms (Degree 1)",
-      "startLine": 73,
-      "endLine": 86,
-      "summary": "LinearForm n structure (coefficients + constant), LinearForm.eval, hasLinearSolution.",
-      "mathContext": "A linear form a₁x₁ + ... + aₙxₙ + c = 0 is the degree-1 case. The decidability of all such equations is Bézout's theorem (axiomatized as linear_bezout_n)."
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Part II: the LinearForm n structure (coefficients + constant term), LinearForm.eval, and hasLinearSolution.",
+      "mathContext": "A linear form $a_1 x_1 + \\cdots + a_n x_n + c = 0$ is the degree-1 case. The decidability of all such equations is the n-variable Bézout / gcd criterion, proved below as `linear_bezout_n`."
     },
     {
       "id": "decidable-cases",
       "title": "Proved Decidable Cases",
-      "startLine": 88,
-      "endLine": 142,
-      "summary": "Proves 0-variable decidability, 1-variable linear decidability (ax=b ↔ a|b), special cases, and H10_undecidable_monotone.",
-      "mathContext": "zero_var_decidable: 0-variable H10 checks a constant = 0. linear_one_var: ax = b has a solution iff a divides b (classical Bézout in 1 variable). H10_undecidable_monotone: an embedding Fin n → Fin (n+1) via castSucc shows undecidability propagates upward."
+      "startLine": 93,
+      "endLine": 161,
+      "summary": "Part III: zero_var_decidable, linear_one_var (ax=b ↔ a|b), the coefficient special cases (zero_coeff_linear, unit_coeff_linear, neg_unit_coeff_linear), and H10_undecidable_monotone (undecidability propagates from n to n+1 variables).",
+      "mathContext": "zero_var_decidable: 0-variable H10 checks a constant $= 0$. linear_one_var: $ax = b$ has a solution iff $a \\mid b$ (classical Bézout in 1 variable). H10_undecidable_monotone: padding an $n$-variable equation with an unused variable embeds it into $n+1$ variables, so undecidability propagates upward."
     },
     {
       "id": "axioms",
-      "title": "Axioms from Literature",
-      "startLine": 144,
-      "endLine": 200,
-      "summary": "mrdp_finite_var, jones_matiyasevich_bound, nine_var_h10_undecidable, linear_bezout_n, jones_universal_poly.",
-      "mathContext": "These axioms represent classical results: MRDP (1970), Jones-Matiyasevich 9-variable bound (1982), and the corresponding undecidability. linear_bezout_n is the general Bézout theorem for n-variable linear equations."
+      "title": "Axioms from the Literature (Part IV)",
+      "startLine": 162,
+      "endLine": 204,
+      "summary": "The three classical axioms: mrdp_finite_var (every r.e. set is Diophantine in finitely many variables), jones_matiyasevich_bound (9 variables suffice for any r.e. set), and nine_var_h10_undecidable (9-variable H10 is undecidable, Jones 1982).",
+      "mathContext": "These encode results whose proofs are beyond the file's scope: MRDP (Davis–Putnam–Robinson–Matiyasevich, 1970) and the Jones–Matiyasevich 9-variable bound (1982). They are the only genuine assumptions feeding the undecidability consequences."
+    },
+    {
+      "id": "bezout-and-universal-poly",
+      "title": "n-Variable Bézout and the Universal Polynomial",
+      "startLine": 205,
+      "endLine": 266,
+      "summary": "The discharged-axiom theorem `linear_bezout_n`: an n-variable linear equation $\\sum a_i x_i = b$ is solvable iff the coefficients admit a gcd $d \\geq 0$ dividing b. Proved (0 sorries) via the principal coefficient ideal `Ideal.span (Set.range a)` over ℤ, whose generator is a gcd — this corrects the original axiom's strict $0 < d$ to $0 \\leq d$ for the all-zero degenerate case. Followed by the `jones_universal_poly` axiom (explicit degree-4, 9-unknown universal polynomial).",
+      "mathContext": "Solvability of $\\sum_i a_i x_i = b$ is exactly $b \\in \\operatorname{span}\\{a_i\\}$. Over the PID ℤ this ideal is principal with generator $g$; taking $d = |g|$ gives a nonnegative gcd, so the universal property ($e \\mid a_i\\ \\forall i \\Rightarrow e \\mid d$) follows from ideal containment. The Jones universal polynomial makes the finite-variable undecidability explicit and quantitative."
     },
     {
       "id": "consequences",
-      "title": "Consequences and Summary",
-      "startLine": 202,
-      "endLine": 250,
-      "summary": "ten_var_h10_undecidable (monotonicity), eleven_var_h10_undecidable, complexity_gap_summary, and open questions documentation.",
-      "mathContext": "By H10_undecidable_monotone applied to nine_var_h10_undecidable, both 10- and 11-variable H10 are undecidable. The complexity_gap_summary assembles the main boundary result."
+      "title": "Consequences and Open Questions (Part V)",
+      "startLine": 267,
+      "endLine": 315,
+      "summary": "ten_var_h10_undecidable and eleven_var_h10_undecidable (from H10_undecidable_monotone applied to the 9-variable axiom), degree_1_decidable_1var (the decidable degree-1 side), and the capstone complexity_gap_summary bracketing undecidability between degree 1 (decidable) and degree 4 / 9 variables. Closes with the OQ-04a/b/c open-question inventory (minimum variables, minimum degree, joint minimality).",
+      "mathContext": "By H10_undecidable_monotone applied to nine_var_h10_undecidable, both 10- and 11-variable H10 are undecidable. complexity_gap_summary conjoins the decidable degree-1 case with the undecidable 9-variable case, exhibiting the known complexity boundary: variables in [3, 9], degree in [2, 4], both open in the interior as of 2026."
     }
   ],
   "openQuestions": [
@@ -132,8 +140,8 @@
     {
       "id": "oq-03",
       "question": "Can the Bézout axiom (linear_bezout_n) be proved in Lean 4 using Mathlib?",
-      "status": "feasible",
-      "notes": "Mathlib has Int.gcd and the extended Euclidean algorithm. A formal proof of the n-variable Bézout identity using Mathlib.Data.Int.GCD is feasible (~100 lines)."
+      "status": "resolved",
+      "notes": "Resolved: linear_bezout_n is now a proved theorem (0 sorries), derived from the principal coefficient ideal Ideal.span (Set.range a) over ℤ and its generator rather than from Int.gcd directly. The proof also corrected the original axiom's strict 0 < d to 0 ≤ d, covering the all-zero degenerate case. This reduced the file's axiom count from 5 to 4."
     }
   ],
   "crossReferences": [
@@ -159,12 +167,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The file maps the complexity boundary of Hilbert's tenth problem with a four-part survey: (1) constructive decidability proofs for the trivial cases (0 variables, 1-variable linear); (2) a `LinearForm n` data structure for systematic study of degree-1 equations in any number of variables; (3) a clean monotonicity proof showing undecidability is upward-closed in variable count, via a `Fin.castSucc` reduction; and (4) five axioms from the literature (MRDP, Jones-Matiyasevich, 9-variable undecidability, n-variable Bézout, Jones universal polynomial). The `complexity_gap_summary` theorem packages the boundary into a single statement: degree-1 single-variable equations are decidable, 9-variable general equations are not — the open question lies strictly between.",
+    "summary": "The file maps the complexity boundary of Hilbert's tenth problem with a four-part survey: (1) constructive decidability proofs for the trivial cases (0 variables, 1-variable linear); (2) a `LinearForm n` data structure for systematic study of degree-1 equations in any number of variables; (3) a clean monotonicity proof showing undecidability is upward-closed in variable count, via a `Fin.castSucc` reduction; and (4) four axioms from the literature (MRDP, Jones-Matiyasevich, 9-variable undecidability, Jones universal polynomial) — the n-variable Bézout criterion, formerly a fifth axiom, is now the proved theorem `linear_bezout_n`. The `complexity_gap_summary` theorem packages the boundary into a single statement: degree-1 single-variable equations are decidable, 9-variable general equations are not — the open question lies strictly between.",
     "implications": "Hilbert's tenth problem sits at the intersection of three foundational areas: number theory (Diophantine equations), computability (r.e. sets and reducibility), and proof theory (the MRDP encoding shows that elementary number theory is at least as expressive as recursion theory). The minimum-complexity question matters in several places. (i) **Lower bounds for proof complexity**: a small-variable, low-degree undecidable equation gives a minimal 'arithmetical encoding' of computation, useful in arithmetical hierarchy lower bounds and in the proof of Gödel's incompleteness via Diophantine encodings. (ii) **Number theory**: the simplest Diophantine equation whose solvability cannot be settled by any algorithm is presumably one whose solvability cannot be settled by any standard number-theoretic technique; sharper bounds would clarify which Diophantine techniques can in principle handle which complexity classes. (iii) **Computer algebra**: better lower bounds on undecidability would justify when computer-algebra systems are wasting effort on solvability questions, while better upper bounds (smaller universal polynomials) immediately give universal Turing machines of correspondingly small description. (iv) **Cryptography and post-quantum**: lattice-based and isogeny-based cryptosystems rest on hardness assumptions about specific Diophantine problems; understanding the boundary informs which families can support hardness assumptions.",
     "openQuestions": [
       "**Variable-count gap (3 ≤ ? ≤ 9)**: Determine the minimum $n$ such that $\\text{H10}_n$ is undecidable. The lower bound $n \\ge 3$ is from algorithmic results for $\\text{H10}_2$ (Pell-equation-style methods give decidability for many 2-variable cases, and conjecturally for all). The upper bound $n \\le 9$ is Jones (1982). No progress in 40+ years.",
       "**Degree gap (2 ≤ ? ≤ 4)**: Determine the minimum degree for an undecidable Diophantine family. Degree 1 is decidable (Bézout); degree 4 is undecidable (Jones). Whether degree 2 (quadratic Diophantine systems) or degree 3 (cubic) suffices is unresolved.",
-      "**Eliminate `linear_bezout_n` axiom**: Prove the n-variable Bézout characterization in Lean using Mathlib's `Int.gcd` and the extended Euclidean algorithm. Estimated ~100 lines; this would reduce the file's axiom count from 5 to 4 (oq-03 in the openQuestions list).",
+      "**Constructive small universal polynomials**: The n-variable Bézout axiom has already been discharged (`linear_bezout_n` is now a proved theorem via the principal coefficient ideal over ℤ, cutting the axiom count from 5 to 4). The remaining reduction target is to shrink the *undecidable* side: find explicit undecidable families with fewer than 9 variables or degree below 4, narrowing the [3, 9] variable and [2, 4] degree gaps.",
       "**Constructive Jones polynomial**: Replace `jones_universal_poly` with an explicit 9-variable degree-4 polynomial whose universality is mechanically verified. Jones (1982) gives an explicit construction; transcribing it into Lean would make the axiom into a definition + theorem (likely a multi-thousand-line undertaking but tractable)."
     ]
   },
