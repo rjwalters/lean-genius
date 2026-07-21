@@ -92,7 +92,7 @@
       "id": "sec-iga5-polynomial",
       "title": "Parts I–IV: The Polynomial q and Its Properties",
       "startLine": 53,
-      "endLine": 215,
+      "endLine": 206,
       "summary": "Defines q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5. Proves irreducibility via Eisenstein at p=5, natDegree=5, monic, separable. Computes |rootSet| = 5.",
       "mathContext": "$q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein: non-leading coefficients divisible by 5; constant $-5$ not divisible by 25. Hence $q$ is irreducible over $\\mathbb{Q}$."
     },
@@ -100,7 +100,7 @@
       "id": "sec-iga5-order-bounds",
       "title": "Parts V–VII: Galois Group Order Bounds",
       "startLine": 207,
-      "endLine": 330,
+      "endLine": 328,
       "summary": "Proves: 5 | |Gal| (Cauchy from irreducibility); |Gal| | 120 (Gal embeds into S₅). Establishes perm_fin5_order5_order3_not_commute and perm_fin5_no_order_15 as structural lemmas about S₅.",
       "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})|$ divides $5! = 120$ and is divisible by 5. Together with the discriminant argument, this forces $|\\text{Gal}| \\in \\{60\\}$."
     },
@@ -124,8 +124,8 @@
       "id": "sec-iga5-isomorphism",
       "title": "Parts XVI–XVII: Galois Isomorphism and Non-Solvability",
       "startLine": 1960,
-      "endLine": 2067,
-      "summary": "Proves q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ via index-2 subgroup characterization. Main theorem a5_realizable_iso: A₅ is realizable as a Galois group over ℚ. gal_not_solvable: transfers non-solvability from A₅ through the isomorphism.",
+      "endLine": 2118,
+      "summary": "Proves q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ via the index-2 subgroup characterization. Main theorem a5_realizable_iso: A₅ is realizable as a Galois group over ℚ. gal_not_solvable transfers non-solvability from A₅ through the isomorphism — the first non-solvable realization in the library. Closes with an axiom-status summary recording the single remaining axiom (three_dvd_gal_card) and the elimination of four earlier ones.",
       "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})| = 60$ and the image in $S_5$ has index 2, so it equals $A_5$ (unique index-2 subgroup of $S_5$)."
     }
   ],
