@@ -127,14 +127,23 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
   loopless := by constructor; intro i h; cases h with | inl h => omega | inr h => omega
 
-/-- Cycle graph C_n on n ≥ 3 vertices: modular adjacency closing the path into a cycle. -/
+/-- Cycle graph C_n on n ≥ 3 vertices: modular adjacency closing the path into a cycle.
+    Taking `% n` on the *incremented* endpoint creates the wrap-around edge
+    `(n-1) ↔ 0`, so this is a genuine `C_n` (not the path `P_n`). -/
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
-  Adj i j := (i.val + 1 = j.val % n) ∨ (j.val + 1 = i.val % n)
+  Adj i j := ((i.val + 1) % n = j.val) ∨ ((j.val + 1) % n = i.val)
   symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
   loopless := by
     constructor; intro i h
-    have hmod : i.val % n = i.val := Nat.mod_eq_of_lt i.isLt
-    rcases h with h | h <;> omega
+    have hlt : i.val < n := i.isLt
+    rcases h with h | h <;>
+      rcases Nat.lt_or_ge (i.val + 1) n with hc | hc
+    · rw [Nat.mod_eq_of_lt hc] at h; omega
+    · have he : i.val + 1 = n := by omega
+      rw [he, Nat.mod_self] at h; omega
+    · rw [Nat.mod_eq_of_lt hc] at h; omega
+    · have he : i.val + 1 = n := by omega
+      rw [he, Nat.mod_self] at h; omega
 
 /-- Complete bipartite graph K_{a,b}: left part Fin a, right part Fin b,
     all cross-edges present. -/
