@@ -125,8 +125,12 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     (−√3⁄2,−½), (½,√3⁄2), (½,−(2+√3)⁄2)` are in general position (no three collinear, no
     four concyclic — the five circumscribed-circle determinants are all nonzero) and realize
     *exactly three* distinct distances `1, √(2+√3), 1+√3`, giving `numDistinctDistances ≤ 3`.
-    The regular pentagon (the only planar 2-distance 5-set) is concyclic, so `h 5 = 3` is
-    expected; the matching lower bound `h 5 ≥ 3` needs that classification and is left open.
+    The matching lower bound `h 5 ≥ 3` (`three_le_h_five`) is now proved, pinning `h 5 = 3`
+    exactly (`h_five_eq_three`).  It is *not* the one-line "regular pentagon is concyclic"
+    argument (the pentagon is not the only planar 2-distance 5-set): the short-distance graph
+    of a general-position 2-distance 5-set is 2-regular, whence a constant row-sum of squared
+    distances and a centroid identity force all five points cospherical, contradicting
+    `NoFourConcyclic`.
 
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
@@ -1396,10 +1400,12 @@ theorem h_four : h 4 = 2 :=
 For five points the pinning of `h` runs into genuine difficulty: the linear lower bound
 `three_mul_h_ge 5` gives only `h 5 ≥ 2`, and monotonicity (`h_four`, `h_mono`) gives the
 same `h 5 ≥ 2`, while the natural 2-distance candidate — the **regular pentagon** — is
-*disqualified* (its five vertices are concyclic).  Indeed the only planar 2-distance set
-of five points is the regular pentagon, so no general-position 5-set has two distances and
-in fact `h 5 = 3`; the matching lower bound `h 5 ≥ 3` requires that classification and is
-left open here.
+*disqualified* (its five vertices are concyclic).  The matching lower bound `h 5 ≥ 3`
+(`three_le_h_five`, below) is now proved — not via a full planar 2-distance-set
+classification, but by showing the short-distance graph of any general-position
+2-distance 5-set is 2-regular and then forcing the five points cospherical (centroid
+concyclicity), contradicting `NoFourConcyclic`.  Together with the upper bound this pins
+`h 5 = 3` exactly (`h_five_eq_three`).
 
 What *is* elementary is the **upper bound** `h 5 ≤ 3`.  The five points
 
