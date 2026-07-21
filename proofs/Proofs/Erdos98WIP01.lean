@@ -356,7 +356,7 @@ theorem exists_inGeneralPosition_of_le_two (hn : n ≤ 2) :
     intro i j hij
     have h0 : (i : ℝ) = (j : ℝ) := by
       have := congrArg (fun f : EuclideanSpace ℝ (Fin 2) => f 0) hij
-      simpa [EuclideanSpace.single_apply] using this
+      simpa [PiLp.single_apply] using this
     exact Fin.ext (by exact_mod_cast h0)
   · exact noThreeCollinear_of_le_two _ hn
   · exact noFourConcyclic_of_le_three _ (by omega)
