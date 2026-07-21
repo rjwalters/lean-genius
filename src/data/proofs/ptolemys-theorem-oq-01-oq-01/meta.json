@@ -145,6 +145,15 @@
       "endLine": 250,
       "summary": "Proves the complete biconditional: Ptolemy equality iff CCW or CW order.",
       "description": "Proves the complete ↔ via ptolemy_equality_iff_ccw_or_cw. The CW direction requires relabeling (z₁,z₄,z₃,z₂) and converting via norm symmetry and product commutativity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 251,
+      "endLine": 287,
+      "significance": "context",
+      "summary": "Closing summary docstring recapping the Ptolemy converse and the full biconditional (four points are concyclic or collinear iff the Ptolemy equality holds), and the single axiom the characterization rests on.",
+      "mathContext": "Recaps $|AC|\\cdot|BD| = |AB|\\cdot|CD| + |AD|\\cdot|BC|$ holding with equality iff $A,B,C,D$ are concyclic or collinear (in cyclic order)."
     }
   ],
   "conclusion": {

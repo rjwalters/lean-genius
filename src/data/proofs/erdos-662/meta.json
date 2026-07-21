@@ -114,6 +114,15 @@
       "endLine": 375,
       "summary": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open.",
       "mathContext": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open."
+    },
+    {
+      "id": "lattice-axiom-unit-case",
+      "title": "Lattice-Optimality Axiom and Unit-Case Theorems",
+      "startLine": 376,
+      "endLine": 412,
+      "significance": "key",
+      "summary": "axiom erdos_662_lattice_optimal (optimality of the lattice arrangement for the contact/separation problem), and the proved theorems erdos_662_unit_case and erdos_662_unit_case_threshold specializing the bound to unit-separated point sets.",
+      "mathContext": "The open conjecture is encoded as the single axiom erdos_662_lattice_optimal; the unit-case theorems are proved consequences for separated Finset Point2D configurations."
     }
   ],
   "overview": {
