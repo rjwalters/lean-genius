@@ -182,9 +182,17 @@
       "id": "explicit-sqrt-upper-bound",
       "title": "An Explicit O(√n) Upper Bound: f(n) ≤ √n + 2 (axiom-free)",
       "startLine": 722,
-      "endLine": 778,
+      "endLine": 777,
       "summary": "Unfolding the implicit counting bound into a clean closed form of the correct order. Two arithmetic helpers (m·(m−1) is always even, and 2·C(m,2) = m·(m−1) — the halving in Nat.choose 2 is exact) let choose_two_lt_of_le_mul_pred turn the hypothesis n ≤ k(k−1) into the choose inequality C(n,2) < n·C(k,2) needed by the counting bound; minDegreeForC4_le_of_le_mul_pred repackages this as: n ≤ k(k−1) forces f(n) ≤ k. minDegreeForC4_le_sqrt then takes k = ⌊√n⌋ + 2, checks n ≤ k(k−1), and concludes the quotable bound f(n) ≤ √n + 2 for every n ≥ 1. This matches the true order — f(n) = (1+o(1))√n, so the leading constant 1 is sharp and only an additive O(1) is lost relative to the exact KST constant (1+√(4n−3))/2 — and dwarfs the elementary linear bound f(n) ≤ n−2. Depends only on propext/Classical.choice/Quot.sound.",
       "mathContext": "Taking $k = \\lfloor\\sqrt n\\rfloor + 2$ gives $k(k-1) \\ge n$, so the counting bound yields $f(n) \\le \\lfloor\\sqrt n\\rfloor + 2 \\le \\sqrt n + 2$ for all $n \\ge 1$. The true asymptotics are $f(n) = (1+o(1))\\sqrt n$ with sharp Kővári–Sós–Turán constant $\\tfrac{1+\\sqrt{4n-3}}{2}$; the closed form here recovers the correct leading term, losing only an additive $O(1)$."
+    },
+    {
+      "id": "sharpened-sqrt-lower-beatty-half",
+      "title": "Sharpening the Additive Constant: f(n) ≤ √n + 1 on the Lower Beatty Half and f(m²) ≤ m + 1 (axiom-free)",
+      "startLine": 778,
+      "endLine": 818,
+      "summary": "The +2 additive constant of minDegreeForC4_le_sqrt is one worse than the sharp Kővári–Sós–Turán value k₀(n) = least k with k(k−1) ≥ n. Writing s = ⌊√n⌋, the counting bound minDegreeForC4_le_of_le_mul_pred already fires with k = s+1 exactly when k(k−1) = s(s+1) ≥ n, i.e. on the lower half s² ≤ n ≤ s²+s of each gap [s², (s+1)²). minDegreeForC4_le_sqrt_add_one packages this: whenever n ≤ √n·(√n+1) it yields the sharp f(n) ≤ √n + 1, improving the general bound by one on the lower Beatty half (on the upper half s²+s < n < (s+1)² the choice k = s+1 fails and √n + 2 is the best this argument gives). minDegreeForC4_le_sq specializes to perfect squares: since √(m²) = m and m² ≤ m(m+1), every square satisfies f(m²) ≤ m + 1 — the cleanest quotable correct-order upper bound, one better than √n + 2 and within a single additive unit of the true f(n) = (1+o(1))√n. Depends only on propext/Classical.choice/Quot.sound.",
+      "mathContext": "With $s = \\lfloor\\sqrt n\\rfloor$, choosing $k = s+1$ in the counting bound requires $k(k-1) = s(s+1) \\ge n$, which holds on the lower half $s^2 \\le n \\le s^2 + s$ of each interval $[s^2, (s+1)^2)$; there $f(n) \\le \\sqrt n + 1$, matching the sharp constant. Every perfect square $n = m^2$ lies on this lower half since $m^2 \\le m(m+1)$, so $f(m^2) \\le m + 1$ — one better than the general $\\sqrt n + 2$ and within a single additive unit of the true $f(n) = (1+o(1))\\sqrt n$."
     }
   ],
   "conclusion": {
