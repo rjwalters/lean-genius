@@ -103,71 +103,85 @@
       "id": "header",
       "title": "Background: mediant insertion and the open bound",
       "startLine": 3,
-      "endLine": 39,
+      "endLine": 50,
       "summary": "Module docstring framing the file as the verified arithmetic of mediant insertion — the operation refining F_n into F_{n+1}. States plainly that the open constant 1/12 for runs of similarly ordered fractions is NOT resolved here; what is established is the gap-splitting calculus and the minimal-denominator optimality of the mediant."
     },
     {
       "id": "unimodular",
       "title": "§1 Unimodular (adjacent Farey) pairs",
-      "startLine": 44,
-      "endLine": 60,
+      "startLine": 51,
+      "endLine": 68,
       "summary": "The predicate Unimodular a b c d := b·c = a·d + 1, the algebraic signature of Farey adjacency, and unimodular_lt: a unimodular pair is strictly increasing, a/b < c/d."
     },
     {
       "id": "gap",
       "title": "§2 The gap formula c/d − a/b = 1/(bd)",
-      "startLine": 62,
-      "endLine": 75,
+      "startLine": 69,
+      "endLine": 82,
       "summary": "gap_eq: the size of a unimodular gap is exactly 1/(bd), obtained by clearing denominators and collapsing against bc = ad + 1 with linear_combination."
     },
     {
       "id": "splitting",
       "title": "§3 Mediant insertion splits the gap",
-      "startLine": 76,
-      "endLine": 151,
+      "startLine": 83,
+      "endLine": 158,
       "summary": "The gap-splitting calculus: unimodular_left / unimodular_right (each split half is again unimodular); mediant_gap_left / mediant_gap_right (sub-gaps 1/(b(b+d)) and 1/(d(b+d))); subgaps_sum (they recombine to 1/(bd)); subgap_ratio (split in ratio d:b); mediant_gap_left_lt (each sub-gap strictly smaller than the whole)."
     },
     {
       "id": "min-denominator",
       "title": "§4 The mediant minimises the denominator (headline)",
-      "startLine": 152,
-      "endLine": 254,
+      "startLine": 159,
+      "endLine": 262,
       "summary": "denom_identity (the ℤ kernel q = b·(cq−pd) + d·(pb−aq)); denom_ge_of_between (any in-gap fraction has q ≥ b+d); eq_mediant_of_denom_eq (equality forces p = a+c, the mediant); mediant_is_min_denominator (packaged: the mediant lies in the gap and minimises the denominator)."
     },
     {
       "id": "denominator-growth",
       "title": "§5 Strict denominator growth and depth-two refinement (toward counting)",
-      "startLine": 255,
-      "endLine": 316,
+      "startLine": 263,
+      "endLine": 324,
       "summary": "mediant_denom_gt_left/_right (b < b+d, d < b+d); interior_denom_gt_max (every in-gap fraction has q > max b d, so refinement strictly raises the smallest denominator); denom_ge_left_subgap/denom_ge_right_subgap (the two sub-gaps are themselves unimodular, giving depth-two bounds q ≥ 2b+d and q ≥ b+2d); denom_ge_of_between_ne_mediant (every in-gap fraction other than the mediant has q ≥ (b+d)+min b d — the mediant is the unique denominator-(b+d) point, and the next admissible denominator jumps by at least min b d)."
     },
     {
       "id": "iterated-insertion",
       "title": "§6 Iterated one-sided insertion — exact linear denominator growth",
-      "startLine": 317,
-      "endLine": 388,
+      "startLine": 325,
+      "endLine": 396,
       "summary": "Generalises §5 to arbitrary depth and corrects a false heuristic. unimodular_iterate_left/_right: iterating mediant insertion into one sub-gap k times keeps the pair unimodular, a/b < (k·a+c)/(k·b+d). denom_ge_iterate_left/_right: every interior fraction of the k-fold one-sided sub-gap has q ≥ (k+1)·b+d — LINEAR in depth k. iterate_left_denom_linear records the exact denominator (k+1)·b+d. Consequence: a one-sided chain (e.g. 0/1, 1/2, 1/3, …, 1/n) fits Θ(n) refinement levels under the order-n cap, NOT O(log n); exponential φ^k growth and the O(log n) depth bound are special to balanced/alternating chains. Any run-length count toward the 1/12 constant must distinguish these two extremes."
     },
     {
       "id": "balanced-insertion",
       "title": "§7 Balanced (alternating) insertion — exponential denominator growth",
-      "startLine": 390,
-      "endLine": 515,
-      "summary": "Establishes the OTHER extreme of the §6 dichotomy: the balanced Stern–Brocot path (alternating left/right) grows denominators EXPONENTIALLY, not linearly. fib_cassini proves Cassini's identity F_{n+1}² − F_n·F_{n+2} = (−1)ⁿ over ℤ by one-step induction. unimodular_fib_even reads it at even index to certify the consecutive Fibonacci fractions F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2} as genuine unimodular (adjacent Farey) pairs, so the minimal-denominator machinery of §4 applies. fib_two_step_double: 2·F_k ≤ F_{k+2} (two levels at least double the denominator). fib_pow_lower: 2ʲ ≤ F_{2j+1} (exponential lower bound). balanced_mediant_denom: the balanced mediant has denominator F_{2k+1}+F_{2k+2} = F_{2k+3}, the Fibonacci recurrence. denom_ge_balanced specialises denom_ge_of_between to the Fibonacci pair. balanced_depth_log: if F_{2j+1} ≤ n then 2ʲ ≤ n, so only O(log n) balanced levels fit under the order cap — an EXPONENTIAL separation from the Θ(n) one-sided levels of §6. Any run-length count toward the 1/12 constant must distinguish the two descent regimes."
+      "startLine": 397,
+      "endLine": 517,
+      "summary": "Establishes the exponential extreme of the §6 dichotomy: alternating (balanced) left/right mediant insertion drives the denominator up like Fibonacci/Pell rather than linearly. Where §6 iterated one-sided insertion for exact linear growth, alternating the side at each step forces the fastest denominator inflation, the mechanism that makes long similarly-ordered runs metrically expensive."
     },
     {
       "id": "similar-ordering-bridge",
       "title": "§8 Mediant chains are similarly ordered — the bridge to f(n)",
-      "startLine": 517,
+      "startLine": 518,
       "endLine": 638,
-      "summary": "The first link in the file between the metric mediant calculus (§1–7) and the ORDERING relation that defines f(n). SimOrd a b c d is the raw-integer form of the parent's similarlyOrdered (numerator and denominator differences share a weak sign); simOrd_iff_prod proves it equivalent to (a−c)(b−d) ≥ 0, with simOrd_symm/simOrd_refl. simOrd_mediant_left/_right: the mediant is similarly ordered with BOTH parents — insertion never breaks similar ordering. simOrd_iterate_left_chain/_right_chain (headline): the entire one-sided §6 chain eₖ = (k·a+c)/(k·b+d) is PAIRWISE similarly ordered, so the Θ(n)-long one-sided chain is a similarly ordered family — the order-side engine of the linear lower bound on f(n). simOrd_chain_admissible packages this with the §6 cap: under k·b+d ≤ n the depth-≤k terms are pairwise similarly ordered and all of order ≤ n. Honest boundary: chain members are NOT yet consecutive in F_n (e.g. 1/2, 1/3 separated in F_5); supplying consecutiveness is exactly where the open 1/12–1/4 optimization lives."
+      "summary": "Introduces the similar-ordering predicate `SimOrd` (`simOrd_iff_prod`: the pair of coordinate differences has nonnegative product) and its calculus — symmetry, reflexivity, and closure under mediant insertion (`simOrd_mediant_left/_right`). The first link between the metric mediant calculus (§1–§7) and the run-length question: mediant chains are pairwise similarly ordered (`simOrd_iterate_left/right_chain`), bridging to the f(n) run problem."
     },
     {
       "id": "three-term-farey-successor",
       "title": "§9 The three-term Farey neighbour recurrence — the consecutiveness bridge",
-      "startLine": 640,
+      "startLine": 639,
       "endLine": 745,
-      "summary": "Replaces §8's NON-consecutive mediant chains with the genuine Farey successor: if a/b<c/d are consecutive in F_n, the next fraction e/f is e=k·c−a, f=k·d−b with k=⌊(n+b)/d⌋ (Hardy–Wright Thm 28–30), carried in addition form e+a=k·c, f+b=k·d to avoid ℕ subtraction. farey_succ_unimodular: the recurrence preserves unimodularity, so c/d,e/f are again consecutive (iterating walks along genuinely adjacent fractions). farey_succ_lt: c·f<d·e (successor lies to the right). farey_three_term: the symmetric law d·(a+e)=c·(b+f) — the middle term is the exact k-section, the Farey form of bₖ₋₁+bₖ₊₁=k·bₖ. farey_succ_denom_le_iff: order-n cap f≤n ↔ k·d≤n+b, selecting k=⌊(n+b)/d⌋ as the largest admissible step. Headline simOrd_succ_controlling: a CONSECUTIVE step c/d→e/f is similarly ordered IFF (a+c−k·c)·(b+d−k·d)≥0 — the controlling quantity is now an explicit arithmetic condition on the successive quotient k. Corollary simOrd_succ_k_eq_one: the k=1 step is ALWAYS similarly ordered (product collapses to a·b≥0), so runs can only break at quotients k≥2 — isolating exactly where the 1/12–1/4 optimization lives. All 0-axiom (propext/Classical.choice/Quot.sound only)."
+      "summary": "Replaces §8's mediant chains with the genuine Farey neighbour recurrence: given adjacent `a/b < c/d`, the next Farey fraction is `e/f` with `e = k·c − a`, `f = k·d − b` for the largest admissible `k` (`farey_three_term`, `farey_succ_unimodular` preserves `b·c = a·d + 1`). The consecutiveness bridge underlying every later continuant-walk section, with the controlling product `(a+c−kc)(b+d−kd)` whose sign governs run-breaking."
+    },
+    {
+      "id": "adjacent-pairs-similarly-ordered",
+      "title": "§10: Every Farey-adjacent pair is similarly ordered — runs break only across non-adjacent pairs",
+      "startLine": 746,
+      "endLine": 856,
+      "summary": "Settles the §9 controlling-product sign in full generality: `unimodular_simOrd` shows every Farey-adjacent pair is similarly ordered, so a single step of any quotient never breaks a run (`succ_controlling_nonneg` ≥ 0); the two cross failures are excluded by `b·c = a·d + 1`. Hence the entire `1/12`–`1/4` obstruction lives in the NON-adjacent pairs of a window (`simOrd_triple`)."
+    },
+    {
+      "id": "length-3-nonadjacent-obstruction",
+      "title": "§11: The first non-adjacent obstruction — length-3 runs and the outer window",
+      "startLine": 857,
+      "endLine": 921,
+      "summary": "The shortest run that can fail similar ordering: a length-3 block driven by one quotient `k`. Its two adjacent pairs are free (§10), so it is similarly ordered iff its single outer pair is, which factors as `(2a − k·c)·(2b − k·d) ≥ 0` — the first rung of the continuant ladder generalised in §14."
     },
     {
       "id": "length-4-two-quotient-runs",
@@ -177,57 +191,144 @@
       "summary": "The first run driven by TWO successor quotients. A length-4 block a/b,c/d,e/f,g/h applies the §9 recurrence twice: e=k₁·c−a, f=k₁·d−b then g=k₂·e−c, h=k₂·f−d. Of its six pairs the three adjacent ones are free (§10); the three non-adjacent obstructions are the two §11 length-3 windows (one per consecutive triple) PLUS a genuinely new long-range pair a/b,g/h spanning the whole block. simOrd_long_iff: substituting the recurrences collapses the fourth term to g=(k₁·k₂−1)·c−k₂·a, h=(k₁·k₂−1)·d−k₂·b, so a/b,g/h is similarly ordered iff ((k₂+1)a−(k₁k₂−1)c)((k₂+1)b−(k₁k₂−1)d)≥0 — controlled by the Stern–Brocot product k₁·k₂−1, the combined depth of the two steps. simOrd_quad (headline): the length-4 run is pairwise similarly ordered iff all three windows are ≥0, so the two quotients interact only through these explicit inequalities and the first non-single-step break is governed by k₁·k₂−1. All 0-axiom (propext/Classical.choice/Quot.sound only)."
     },
     {
+      "id": "length-5-three-quotient-continuant",
+      "title": "§13: Length-5 runs — three quotients and the continuant K₃",
+      "startLine": 1018,
+      "endLine": 1146,
+      "summary": "A length-5 block is the first run driven by three quotients. `simOrd_long3_iff` assembles its criterion as the three length-3 §11 windows, the two length-4 §12 long windows, and one new length-5 window governed by `K(k₁,k₂,k₃) = k₁k₂k₃ − k₁ − k₃` — the depth-3 rung of the same polynomial ladder."
+    },
+    {
+      "id": "continuant-run-length-criterion",
+      "title": "§14: The continuant — the run-length criterion for every length",
+      "startLine": 1147,
+      "endLine": 1316,
+      "summary": "Replaces the per-length §11–§13 lemmas with one uniform statement. Defines the continuants `Continuant`/`secondCont` (`K() = 1`, `K(k) = k`, `K(k₁,k₂) = k₁k₂−1`, …) via `continuant_cons` — the order-side shadow of the §9 recurrence `xₘ₊₁ = kₘxₘ − xₘ₋₁` — with closed form `endpoint_window` and the run criterion `simOrd_run_iff` valid for every length."
+    },
+    {
+      "id": "depth-m-unimodularity-walk",
+      "title": "§15: Depth-m unimodularity of the iterated Farey walk",
+      "startLine": 1317,
+      "endLine": 1390,
+      "summary": "Lifts §9's consecutiveness bridge to arbitrary depth: `stepPair` returns the consecutive Farey pair after walking a whole quotient list, and `stepPair_cross_unimodular` certifies that iterating the §14 recurrence from a Farey-adjacent pair lands on a Farey-adjacent pair at every depth (`b·c − a·d = 1` preserved)."
+    },
+    {
+      "id": "continuant-matrix-cassini",
+      "title": "§16: The continuant matrix — Cassini and reversal symmetry",
+      "startLine": 1391,
+      "endLine": 1581,
+      "summary": "Makes explicit the 2×2 step matrix `M(k) = [[k,−1],[1,0]]` (det 1) whose ordered product `P(ks)` has entries `Continuant ks`/`secondCont ks`. Reads off the continuant Cassini determinant identity (`det P = 1` at every depth — the correct replacement for the false blanket \"continuant positivity\") and reversal symmetry `K(ks.reverse) = K(ks)`, plus Euler's composition law `continuant_append`."
+    },
+    {
       "id": "continuant-positivity-large-quotient",
       "title": "§17 Continuant positivity and growth in the large-quotient regime",
-      "startLine": 1391,
-      "endLine": 1509,
-      "summary": "Controls the sign and size of the §14 run-criterion continuant on the LARGE-quotient regime — quotient lists with every entry ≥ 2 — the density-side handle for the open 1/12–1/4 problem. secondCont_lt_continuant (core invariant): 0 ≤ secondCont ks < Continuant ks, proved by induction on the pair map (s,K)↦(K,k·K−s), which preserves 0≤s<K for k≥2. From it: continuant_pos (0 < Continuant ks — windows never degenerate through a vanishing continuant), continuant_strict_mono (Continuant ks < Continuant (k::ks)), and continuant_ge_length (|ks|+1 ≤ Continuant ks — linear growth, so by the §14 closed form long large-quotient runs are metrically expensive under the order-n cap). continuant_ones_two / continuant_ones_three (axiom-FREE, by decide) exhibit the contrasting balanced extreme: K([1,1])=0 and K([1,1,1])=−1 sit on the period-6 orbit 1,1,0,−1,−1,0,…, refuting Iteration-14's blanket positivity K(ks)≥1 and showing positivity is a phenomenon of large quotients. Logically independent of the parallel §16 continuant-matrix/Cassini work — depends only on the §14 Continuant/secondCont recurrences. All 0-axiom (propext/Classical.choice/Quot.sound; the two decide lemmas axiom-free)."
+      "startLine": 1582,
+      "endLine": 1699,
+      "summary": "Establishes the two-regime sign structure of the continuant. In the large-quotient regime (every entry `≥ 2`) it is strictly positive and grows at least linearly: `secondCont_lt_continuant` (`0 ≤ secondCont ks < Continuant ks`), `continuant_pos`, `continuant_strict_mono`, and `continuant_ge_length` (`K ≥ |ks| + 1`). The engine behind the §20–§26 growth and boundary results; the balanced (all-1) extreme is deferred to §21."
+    },
+    {
+      "id": "bottom-right-entry-classical-cassini",
+      "title": "§18: The bottom-right entry and the pure-continuant Cassini",
+      "startLine": 1700,
+      "endLine": 1807,
+      "summary": "Identifies the fourth step-matrix entry in closed form: `(P(k::ks)).d = −secondCont ks.reverse`, making every entry a signed continuant of a sublist (`contMat_cons_eq`). This turns the §16 determinant Cassini into the classical three-term continuant Cassini `K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1` (`continuant_cassini_classical`)."
+    },
+    {
+      "id": "consecutive-continuant-coprimality",
+      "title": "§19: Coprimality of consecutive continuants (reduced Farey fractions)",
+      "startLine": 1808,
+      "endLine": 1848,
+      "summary": "Reads §16's Cassini `det P = 1` as a Bézout identity: `IsCoprime (Continuant ks) (secondCont ks)`. Since consecutive continuants are the numerators/denominators along a Farey path, the mediants are automatically in lowest terms — unimodularity ⇒ coprimality ⇒ reduced fractions (`continuant_isCoprime`, reversal-symmetric)."
+    },
+    {
+      "id": "all-two-linear-minimum",
+      "title": "§20: Sharpness of the §17 linear growth bound — the all-2 minimum",
+      "startLine": 1849,
+      "endLine": 1913,
+      "summary": "Shows §17's bound `K ≥ m + 1` is attained: the constant list `[2,…,2]` gives `Continuant = m + 1` exactly (the Pell ladder, each step adding one) with `secondCont = m`, and raising any quotient only increases it (`continuant_head_mono`). The all-`2` ladder is the metric minimiser of the large-quotient regime — the binding constraint for the order-`n` ceiling."
+    },
+    {
+      "id": "all-ones-period-six",
+      "title": "§21: The balanced extreme — all-ones continuant is period-6 and bounded",
+      "startLine": 1914,
+      "endLine": 2034,
+      "summary": "The opposite extreme to §20. With every quotient `= 1` the §14 recurrence becomes `aₙ₊₁ = aₙ − aₙ₋₁`, whose companion is the order-6 rotation; the continuant is 6-periodic, takes only `−1, 0, 1` on the orbit `1,1,0,−1,−1,0`, and never grows (`continuant_replicate_one_period`, `continuant_replicate_one_abs_le_one`) — the quantitative form of the §15/§17 dichotomy."
+    },
+    {
+      "id": "positive-cone-boundary-leading-ones",
+      "title": "§22: The boundary of the positive cone — leading 1s in a large-quotient run",
+      "startLine": 2035,
+      "endLine": 2111,
+      "summary": "How many leading quotients may drop to 1 before an all-`≥ 2` tail loses positivity? Exactly one. The closed forms `K(1::ks) = K(ks) − secondCont ks` and `K(1::1::ks) = −secondCont ks`, with §17's `0 ≤ secondCont ks < K(ks)`, show one leading 1 keeps `K > 0` but a second flips it to `≤ 0` — the crossing from §17's positive cone into the §21 period-6 orbit."
+    },
+    {
+      "id": "leading-ones-period-six-rotation",
+      "title": "§23: Leading 1s on an arbitrary tail — the period-6 rotation in full",
+      "startLine": 2112,
+      "endLine": 2330,
+      "summary": "Unifies §21 and §22: prepending `j` leading 1s to an arbitrary tail acts as the order-6 rotation on `(K(1ʲ++ks), secondCont(1ʲ++ks))`, seeded at `(K(ks), secondCont ks)` instead of `(1,0)`. The continuant is 6-periodic in `j`, running through the orbit `K(ks), K(ks)−secondCont ks, −secondCont ks, −K(ks), secondCont ks−K(ks), secondCont ks`."
+    },
+    {
+      "id": "trailing-ones-reversal",
+      "title": "§24: Trailing 1s — the period-6 law transfers to suffixes via reversal",
+      "startLine": 2331,
+      "endLine": 2390,
+      "summary": "The §16 reversal bridge upgrades §23 to trailing-1 runs for free: `(ks ++ 1ʲ).reverse = 1ʲ ++ ks.reverse`, so appending `j` trailing 1s equals prepending them to the reversed tail. The §23 orbit carries over with `ks ↦ ks.reverse`, and the period-6 positivity law `j ≡ 0,1,5 (mod 6)` holds with identical residues."
+    },
+    {
+      "id": "interior-ones-junction",
+      "title": "§25: Interior 1-runs — the period-6 law at a Stern–Brocot junction",
+      "startLine": 2391,
+      "endLine": 2548,
+      "summary": "The configuration the density count actually sums over: a 1-run of length `j` between two arbitrary blocks, `as ++ 1ʲ ++ bs`. Via Euler's composition law (§16) its continuant is a `j`-constant linear combination of the period-6 quantities `K(1ʲ++bs)`, `secondCont(1ʲ++bs)` (§23), hence period-6 in `j` unconditionally — for every pair of blocks, no large-quotient hypothesis (`continuant_interior_replicate_one_period`)."
+    },
+    {
+      "id": "quotient-weighted-growth",
+      "title": "§26: Quotient-weighted growth — large quotients force short runs (toward O(n/d))",
+      "startLine": 2549,
+      "endLine": 2620,
+      "summary": "The metric half of the density trade-off: with every entry `≥ d` (`d ≥ 2`) the continuant grows with slope `d − 1`, `K(ks) ≥ (d−1)·|ks| + 1` (`continuant_ge_length_weighted`), sharpening §17 (the `d = 2` case). With the order-`n` ceiling this bounds run length by `O(n/d)` (`continuant_run_length_le`) — larger quotients inflate denominators faster, so a large-step run must be short."
     },
     {
       "id": "interior-one-blowdown",
       "title": "§27 The interior 1-blow-down — a single interior 1 decrements its neighbours",
-      "startLine": 2620,
-      "endLine": 2713,
-      "summary": "The single-1 companion to §25's 1-run period-6 law. Where §25 records how the sign/magnitude cycle as a 1-run lengthens, §27 records what ONE interior 1 is: a neighbour-decrementing contraction, not a fresh degree of freedom. stepMat_one_blowdown (the engine): the classical Hirzebruch–Jung / minus-continued-fraction identity M(a)·M(1)·M(b)=M(a−1)·M(b−1) for the §9 step matrix M(k)=[[k,−1],[1,0]], a pure 2×2 identity closed entry-by-entry by ring (top-left ab−a−b=(a−1)(b−1)−1). contMat_one_blowdown lifts it to the step-matrix product P[a,1,b]=P[a−1,b−1]; reading the top-left (continuant_interior_one_blowdown) and bottom-left (secondCont_interior_one_blowdown) entries through Euler's composition contMat_append (§16) gives K(xs++[a,1,b]++ys)=K(xs++[a−1,b−1]++ys) for ANY surrounding blocks, unconditionally. continuant_cons_one_blowdown is the leading (xs=[]) case. continuant_two_one_two derives the elementary zero K[2,1,2]=K[1,1]=0 (the a=b=2 blow-down) purely from the reduction. continuant_interior_one_eq_blowdown bridges to §25: the v₁ magnitude of the period-6 orbit IS the blow-down of the surrounding junction. Word-shortening corollary: iterating the blow-down eliminates every interior 1 flanked by ≥2 entries, driving any word toward the §17 all-≥2 normal form on which K>0. All 0-axiom (propext/Classical.choice/Quot.sound), no native_decide."
+      "startLine": 2621,
+      "endLine": 2715,
+      "summary": "The single-1 companion to §25's 1-run period-6 law: inserting one interior `1` between blocks `as` and `bs` decrements the continuant of its neighbours in a controlled way. Where §25 handles a full interior 1-run via the period-6 rotation, this isolates the length-1 case as an exact blow-down identity, the atomic step of the interior-junction calculus."
     },
     {
       "id": "product-bounds",
       "title": "§28 Two-sided product bounds — the multiplicative refinement of §26",
-      "startLine": 2719,
+      "startLine": 2716,
       "endLine": 2814,
-      "summary": "§26 gave the additive slope-(d−1) lower bound (d−1)·|ks|+1 ≤ K(ks), the linear shadow of denominator inflation. The sharp statement is MULTIPLICATIVE: on the large-quotient regime (every entry ≥2) the continuant is squeezed between two products of the quotients, ∏(kᵢ−1) ≤ K(ks) ≤ ∏kᵢ (continuant_prod_bounds). Both halves run the §17/§26 single-step recurrence K(k::rest)=k·K(rest)−secondCont(rest) against the §17 core invariant 0 ≤ secondCont(rest) < K(rest). Upper (continuant_le_prod): drop the nonnegative secondCont, K(k::rest) ≤ k·K(rest), then scale the IH K(rest) ≤ rest.prod by k≥0. Lower (prod_sub_one_le_continuant): replace secondCont(rest) by its ceiling K(rest)−1, giving K(k::rest) ≥ (k−1)·K(rest)+1, then scale the IH ∏(rest−1) ≤ K(rest) by k−1≥0. prod_sub_one_one_le shows the lower factor is itself ≥1, re-proving continuant_pos multiplicatively. Honest boundary: the lower product is geometric — on an all-≥d run it is ≥(d−1)^|ks|, so with any order-n continuant ceiling K≤n it forces |ks| ≤ log_{d−1} n, a LOGARITHMIC run-length cap on the large-quotient (d≥3) tail, far sharper than §26's O(n/d) shadow; but at d=2 the lower factor ∏(2−1)=1 is trivial (matching K[2,…,2]=m+1, the slowest growth), so the open 1/12–1/4 constant — decided by the small-quotient regime — is untouched. Concrete sandwich continuant_prod_bounds_example: 4 ≤ K[3,3]=8 ≤ 9. All 0-axiom (propext/Classical.choice/Quot.sound), no native_decide."
+      "summary": "Sharpens §26's additive slope to a MULTIPLICATIVE squeeze: on the large-quotient regime (every entry ≥ 2) the continuant sits between two products of the quotients, ∏(kᵢ−1) ≤ K(ks) ≤ ∏kᵢ (`continuant_prod_bounds`), both halves running the §17 single-step recurrence against `0 ≤ secondCont < K`. Honest boundary: the lower product is geometric, so on an all-`≥ d` run with `d ≥ 3` it forces a logarithmic run-length cap `|ks| ≤ log_{d−1} n`, far sharper than §26's O(n/d); but at `d = 2` the lower factor is trivial, so the open 1/12–1/4 constant (small-quotient regime) is untouched. 0-axiom."
     },
     {
       "id": "product-ceiling-equality-locus",
       "title": "§29 The equality locus of the product ceiling — strictness beyond length 1",
       "startLine": 2815,
       "endLine": 2894,
-      "summary": "Pins exactly when §28's upper bound K(ks) ≤ ∏kᵢ is tight: only at the two trivial depths K([])=1=∏[] and K([k])=k=∏[k]. As soon as |ks|≥2 the minus-continuant recurrence K(k::rest)=k·K(rest)−secondCont(rest) subtracts a strictly positive trailing continuant (secondCont(j::rest')=K(rest')≥1 by §17/§22), so continuant_lt_prod gives K(ks) < ∏kᵢ strictly. The engine is the quantitative continuant_prod_deficit: secondCont(rest) ≤ (k::rest).prod − K(k::rest), since the deficit unfolds to secondCont(rest)+k·(∏rest−K rest) with the residual k·(∏rest−K rest) ≥ 0 by §28 continuant_le_prod. continuant_eq_prod_iff packages the dichotomy (equality ⟺ |ks| ≤ 1); continuant_lt_prod_example instantiates it. Sharp-boundary companion to §20's floor sharpness — real strictness, but living in the large-quotient tail that carries negligible mass toward the open 1/12–1/4 constant.",
-      "mathContext": "$K(ks) = \\prod k_i \\iff |ks|\\le 1$; for $|ks|\\ge 2$, $K(ks) < \\prod k_i$, with deficit $\\ge$ the trailing continuant."
+      "summary": "Pins when §28's upper bound `K(ks) ≤ ∏kᵢ` is tight: only at the trivial depths `|ks| ≤ 1`. Once `|ks| ≥ 2` the minus-continuant recurrence subtracts a strictly positive trailing continuant, so `continuant_lt_prod` gives strict inequality, quantified by `continuant_prod_deficit`; `continuant_eq_prod_iff` packages the dichotomy. A sharp-boundary companion to §20's floor sharpness — real strictness, but in the large-quotient tail that carries negligible mass toward the open constant."
     },
     {
       "id": "geometric-growth-log-cap",
       "title": "§30 Geometric growth and the logarithmic run-length cap",
       "startLine": 2895,
       "endLine": 2990,
-      "summary": "Formalizes the logarithmic run-length cap that §26/§28 only advertised informally. pow_sub_one_le_prod_sub_one: on an all-≥d run each decremented factor kᵢ−1 ≥ d−1, so (d−1)^|ks| ≤ ∏(kᵢ−1); chaining through §28's prod_sub_one_le_continuant gives the geometric floor continuant_ge_pow: (d−1)^|ks| ≤ K(ks) — the continuant grows at least geometrically with ratio d−1. continuant_pow_run_length_le and continuant_run_length_le_log then convert a continuant ceiling N (for d≥3, so ratio d−1 ≥ 2 is a genuine base) into the logarithmic cap |ks| ≤ Nat.log (d−1) N — the exponential sharpening of §26's additive (N−1)/(d−1). Honest boundary: at d=2 the base collapses to 1, (d−1)^|ks|=1 is vacuous, and the run grows only linearly (K[2,…,2]=m+1); the geometric cap bites only on the d≥3 tail.",
-      "mathContext": "$(d-1)^{|ks|} \\le K(ks)$ on all-$\\ge d$ runs, so $K \\le N \\Rightarrow |ks| \\le \\log_{d-1} N$ for $d \\ge 3$."
+      "summary": "Formalizes the logarithmic run-length cap that §26/§28 only advertised informally. pow_sub_one_le_prod_sub_one: on an all-≥d run each decremented factor kᵢ−1 ≥ d−1, so (d−1)^|ks| ≤ ∏(kᵢ−1); chaining through §28's prod_sub_one_le_continuant gives the geometric floor continuant_ge_pow: (d−1)^|ks| ≤ K(ks) — the continuant grows at least geometrically with ratio d−1. continuant_pow_run_length_le and continuant_run_length_le_log then convert a continuant ceiling N (for d≥3, so ratio d−1 ≥ 2 is a genuine base) into the logarithmic cap |ks| ≤ Nat.log (d−1) N — the exponential sharpening of §26's additive (N−1)/(d−1). Honest boundary: at d=2 the base collapses to 1, (d−1)^|ks|=1 is vacuous, and the run grows only linearly (K[2,…,2]=m+1); the geometric cap bites only on the d≥3 tail."
     },
     {
       "id": "two-sided-log-sandwich",
       "title": "§31 The geometric ceiling and the two-sided logarithmic sandwich",
       "startLine": 2991,
       "endLine": 3112,
-      "summary": "The matching upper direction to §30's geometric floor. From §28's K(ks) ≤ ∏kᵢ, if every quotient is also ≤ D then prod_le_pow gives ∏kᵢ ≤ D^|ks|, hence continuant_le_pow: K(ks) ≤ D^|ks|; a continuant floor N ≤ K(ks) then forces the run long, continuant_pow_run_length_ge / continuant_run_length_ge_log: log_D N ≤ |ks|. Together (continuant_run_length_log_sandwich) the two directions pin a bounded-quotient run (d ≤ kᵢ ≤ D, 3 ≤ d) to the logarithmic band log_D K ≤ |ks| ≤ log_{d−1} K — the continuant grows exactly geometrically and the run length is Θ(log K), equivalently Θ(log n) under the order-n Farey cap K ≤ n. Supporting one_le_prod (all-≥2 product ≥ 1). This certifies that any run long enough to matter for f(n) must be built from small quotients: a floor d≥3 collapses admissible lengths to O(log n), the honest opposite extreme to the small-quotient regime where the open 1/12–1/4 constant lives.",
-      "mathContext": "$\\log_D K \\le |ks| \\le \\log_{d-1} K$ for bounded runs $d\\le k_i\\le D$, $d\\ge 3$: run length $\\Theta(\\log K)=\\Theta(\\log n)$."
+      "summary": "The matching upper direction to §30's geometric floor: from §28's `K ≤ ∏kᵢ`, a quotient ceiling `kᵢ ≤ D` gives `K(ks) ≤ D^|ks|` (`continuant_le_pow`), so a continuant floor forces the run long, `log_D N ≤ |ks|`. Together (`continuant_run_length_log_sandwich`) a bounded-quotient run `d ≤ kᵢ ≤ D` (`d ≥ 3`) is pinned to the band `log_D K ≤ |ks| ≤ log_{d−1} K` — length Θ(log K), i.e. Θ(log n) under the order-`n` cap. Certifies that any run long enough to matter for f(n) must be built from small quotients."
     },
     {
       "id": "append-strict-mono",
       "title": "§32 Strict growth from the right end — the append dual of §17 monotonicity",
       "startLine": 3113,
-      "endLine": 3169,
-      "summary": "Lifts §17's prepend monotonicity (K(ks) < K(k::ks) for k≥2) to the trailing end via the §16 reversal bridge continuant_reverse. continuant_append_strict_mono: appending k≥2 on the right is, after reversal, prepending it to ks.reverse (again a nonempty all-≥2 run, membership being reversal-invariant), so K(ks) < K(ks ++ [k]) by continuant_strict_mono on the reversed run. continuant_lt_cons_append combines both ends (a run wrapped by quotients on both sides grows strictly), with continuant_lt_cons_append_example instantiating it — the two-sided metric statement behind 'long large-quotient runs are expensive'.",
-      "mathContext": "$K(ks) < K(ks \\mathbin{+\\!+} [k])$ for $k\\ge 2$ via reversal, dualizing §17; wrapping both ends is strictly increasing."
+      "endLine": 3173,
+      "summary": "Lifts §17's prepend monotonicity (K(ks) < K(k::ks) for k≥2) to the trailing end via the §16 reversal bridge continuant_reverse. continuant_append_strict_mono: appending k≥2 on the right is, after reversal, prepending it to ks.reverse (again a nonempty all-≥2 run, membership being reversal-invariant), so K(ks) < K(ks ++ [k]) by continuant_strict_mono on the reversed run. continuant_lt_cons_append combines both ends (a run wrapped by quotients on both sides grows strictly), with continuant_lt_cons_append_example instantiating it — the two-sided metric statement behind 'long large-quotient runs are expensive'."
     }
   ],
   "crossReferences": [
