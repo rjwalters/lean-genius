@@ -67,8 +67,8 @@
       "id": "formula",
       "title": "§ 2. Closed-Form Formula",
       "startLine": 64,
-      "endLine": 88,
-      "summary": "Defines digitalRootFormula = 1 + ((n-1) % 9) for n > 0. Proves range (0-9), zero case, single digit identity, and mod 9 equivalence.",
+      "endLine": 96,
+      "summary": "Defines digitalRootFormula = 1 + ((n-1) % 9) for n > 0. Proves range (0-9) via digitalRootFormula_range, the zero case digitalRoot_zero (dr(0) = 0, by rfl), and the single-digit identity digitalRoot_single (dr(n) = n for 1 ≤ n ≤ 9) — the two boundary corollaries that fix the closed form on its base cases before the mod-9 congruence is established.",
       "mathContext": "The formula $1 + ((n-1) \\bmod 9)$ handles the 0/9 boundary: for $n = 9k$ ($k > 0$), $(n-1) = 9k-1 \\equiv 8 \\pmod{9}$, so result is $1 + 8 = 9$. For $n = 9k + r$ ($0 < r < 9$), $(n-1) \\equiv r-1 \\pmod{9}$, so result is $r$. The `omega` tactic closes all the arithmetic cases."
     },
     {
