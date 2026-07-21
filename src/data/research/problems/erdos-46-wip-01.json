@@ -20,7 +20,7 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Session 2: splitting identity (Fibonacci–Sylvester 1/n=1/(n+1)+1/(n(n+1))), telescoping form, concrete witness {2,3,6}, existence, and the term-replacement lengthening step (isUnitFractionRepr_replace). 5 axiom-free theorems, theoremCount 16→21, host-verified.",
     "blockers": [],
     "nextAction": "Croot's theorem (existence of monochromatic representation) is deep/unformalized — needs density/covering machinery from the 2003 paper. Elementary splitting/lengthening toolkit now in place; a full lengthening-to-infinity chain would need denominator-freshness bookkeeping.",
@@ -31,24 +31,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-20, VERIFIED 0/0 host): realized the chain-to-∞ direction — exists_isUnitFractionRepr_card_ge (unit-fraction reprs of 1 with arbitrarily large cardinality, by splitting the largest denominator via isUnitFractionRepr_replace) and infinite_isUnitFractionRepr (the set of such reprs is Set.Infinite). The colouring-free lower bound behind Erdős 46; the deep monochromatic Croot 2003 result stays unformalized. 28 axiom-free theorems.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-20, VERIFIED host lake env lean exit 0, #print axioms=[propext,Classical.choice,Quot.sound] on both new thms): added the multiplicative scaling engine isRatFractionRepr_smul (repr of q ↦ repr of q/t with all denoms ≥2t) and exists_isRatFractionRepr_inv_min_ge ({2t,3t,6t} reps 1/t). Complements the additive union lemma. Remaining obstruction toward pairwise-disjoint reprs of 1 with min>N is collision-free assembly (documented), not arithmetic. Deep Croot 2003 monochromatic result stays unformalized.",
     "builtItems": [
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
       "two_le_card_of_isUnitFractionRepr — a UFR of 1 has >= 2 elements (Erdos46Problem.lean)",
       "isRatFractionRepr_union — reciprocal-sum representations add over disjoint unions (Erdos46Problem.lean)",
       "erdosProblem46_of_infinitely_many — base Croot statement reduces to the infinitely-many version (Erdos46Problem.lean)",
       "term_le_half / sum_inv_nonneg / isRatFractionRepr_pos / isRatFractionRepr_unique / pos_of_mem / forall_two_le_of_subset / isMonochromatic_empty / isMonochromatic_singleton / isRatFractionRepr_one_iff",
-      "exists_isUnitFractionRepr_card_ge, infinite_isUnitFractionRepr in Erdos46Problem.lean — arbitrarily-long + infinitely-many unit-fraction reprs of 1, 0-axiom host-verified"
+      "exists_isUnitFractionRepr_card_ge, infinite_isUnitFractionRepr in Erdos46Problem.lean — arbitrarily-long + infinitely-many unit-fraction reprs of 1, 0-axiom host-verified",
+      "isRatFractionRepr_smul — scaling all denominators by t≥1 (n↦t·n, injective) sends a repr of q to a repr of q/t, all denoms ≥2t (Erdos46Problem.lean); multiplicative counterpart of isRatFractionRepr_union",
+      "exists_isRatFractionRepr_inv_min_ge — {2t,3t,6t} represents 1/t with min denom ≥2t (scale {2,3,6}); large-denominator regime reachable for arbitrary reciprocals"
     ],
     "insights": [
       "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide).",
       "Infinitely many distinct unit-fraction representations of 1 exist (infinite_isUnitFractionRepr): via reprs of arbitrarily large cardinality (exists_isUnitFractionRepr_card_ge), obtained by iterating isUnitFractionRepr_replace on the LARGEST denominator m — both split denominators m+1, m(m+1) exceed m so ∉S, legal replacement raising |S| by exactly one.",
-      "Set.Infinite from unbounded card: by_contra, (hfin.image Finset.card).bddAbove gives M, then exists_...card_ge (M+1) overflows it. Finset.card_insert_of_not_mem renamed → card_insert_of_notMem in v4.31."
+      "Set.Infinite from unbounded card: by_contra, (hfin.image Finset.card).bddAbove gives M, then exists_...card_ge (M+1) overflows it. Finset.card_insert_of_not_mem renamed → card_insert_of_notMem in v4.31.",
+      "Multiplicative scaling engine added: image under (t·) divides represented rational by t (Finset.sum_image with pairwise-injectivity from Nat.eq_of_mul_eq_mul_left; 1/(t·n)=(1/t)(1/n) via mul_inv then ring). Complements the additive union lemma; the two engines (additive-union + multiplicative-scale) are the assembly toolkit for disjoint-support reprs.",
+      "Disjoint-chaining obstruction is collision-freeness, not the arithmetic: splitting the LARGEST denom leaves small heads {2,3} fixed (reprs share them); scaling a whole repr by different factors produces cross-copy denominator collisions; multiplicative/additive assembly of a min>N repr of 1 needs exact collision bookkeeping (open)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Disjoint-support chaining: produce infinitely many PAIRWISE-DISJOINT unit-fraction reprs (needed for the monochromatic pigeonhole toward ErdosProblem46_infinitely_many) — splitting the largest denom keeps introducing fresh large denominators, so consecutive reprs can be made disjoint on their tails.",
-      "The deep monochromatic statement (Croot 2003) itself remains unformalized."
+      "Collision-free assembly of a unit-fraction repr of 1 with all denominators > N: candidate route is combining the additive union lemma with scaled sub-reprs of a fixed decomposition 1=∑ 1/mᵢ, choosing scale factors that guarantee pairwise-disjoint denominator sets (needs a coprimality/valuation argument to rule out cross-copy collisions).",
+      "Given exists_...min_gt N, infinitely many PAIRWISE-DISJOINT reprs of 1 follow immediately by chaining Nᵢ₊₁ = max Sᵢ.",
+      "Deep monochromatic statement (Croot 2003) remains unformalized — needs density/covering machinery."
     ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
