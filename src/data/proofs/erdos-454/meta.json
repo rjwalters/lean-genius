@@ -2,7 +2,7 @@
   "id": "erdos-454",
   "title": "Erdős #454: Prime Sum Deviations",
   "slug": "erdos-454",
-  "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
+  "description": "Let f(n) = min_{0<i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
   "meta": {
     "author": "Carl Pomerance (1979 partial result)",
     "sourceUrl": "https://erdosproblems.com/454",
@@ -55,7 +55,7 @@
     "originalContributions": [
       "Definition of nthPrime via Nat.nth Prime with proved values at 0, 1, 2",
       "Symmetric prime sum function symmetricPrimeSum(n, i) = p_{n+i} + p_{n-i}",
-      "f(n) = iInf over Fin n of symmetric sums, with alternative Finset.inf' definition",
+      "f(n) = iInf over 0 < i < n of symmetric sums (excluding i = 0, whose term 2p_n would otherwise cap the minimum), with alternative Finset.inf' definition",
       "Deviation function deviation(n) = f(n) - 2p_n over ℤ and deviationENat over ℕ∞",
       "Pomerance's lower bound axiom: 2 ≤ limsup deviationENat atTop",
       "Erdos454Conjecture definition: limsup = ⊤",
@@ -105,7 +105,7 @@
     "axiomCount": 3,
     "lineCount": 329,
     "assumptions": "3 axiom(s) and 3 sorry(s). See the Lean source for details.",
-    "theoremCount": 16,
+    "theoremCount": 15,
     "definitionCount": 14,
     "additionalFiles": [
       "Proofs/Erdos454Aristotle.lean",
@@ -167,8 +167,8 @@
       "title": "Part IV — Understanding Symmetric Prime Sums",
       "startLine": 113,
       "endLine": 139,
-      "summary": "Proved structural facts: at i=0 the symmetric sum equals 2p_n (`symmetric_sum_at_zero`); hence f(n) ≤ 2p_n (`f_le_twice_nthPrime`, the minimum is attained at i=0); and for i>0 strict monotonicity gives p_{n+i} > p_n and p_{n−i} < p_n (`asymmetric_behavior`).",
-      "mathContext": "Theorems establishing the i=0 baseline, the upper bound f(n) ≤ 2p_n, and the asymmetry for i>0 via `nthPrime_strictMono`."
+      "summary": "Proved structural facts: the excluded i=0 term equals 2p_n (`symmetric_sum_at_zero`) — precisely why i=0 is omitted from the minimum defining f, since keeping it would cap f(n) at 2p_n and force every deviation ≤ 0; and for i>0 strict monotonicity gives p_{n+i} > p_n and p_{n−i} < p_n (`asymmetric_behavior`).",
+      "mathContext": "Theorems establishing the i=0 baseline (2p_n, deliberately excluded from f) and the asymmetry for i>0 via `nthPrime_strictMono`."
     },
     {
       "id": "pomerance",
@@ -261,7 +261,7 @@
     "namespace": "Erdos454",
     "lineCount": 329,
     "axiomCount": 3,
-    "theoremCount": 16,
+    "theoremCount": 15,
     "definitionCount": 14,
     "path": "Proofs/Erdos454Problem.lean",
     "sorries": 3,
