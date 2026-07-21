@@ -92,74 +92,138 @@
   },
   "sections": [
     {
+      "id": "module-header-and-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring for Erdős #185 (cap sets in $\\{0,1,2\\}^n$): is $f_3(n) = o(3^n)$, where $f_3(n)$ is the largest line-free subset? Answer YES via the density Hales–Jewett theorem (Furstenberg–Katznelson 1991). Mathlib imports and the `Erdos185` namespace.",
+      "mathContext": "Three points $x,y,z$ are collinear iff $x + z = 2y$ (componentwise mod 3); $f_3(n)$ = max cap-set size in $\\{0,1,2\\}^n$."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "TernaryHypercube, hypercube_card",
-      "startLine": 35,
-      "endLine": 52,
+      "startLine": 39,
+      "endLine": 56,
       "mathContext": "Mathematical content: TernaryHypercube, hypercube_card"
     },
     {
       "id": "lines",
       "title": "Lines in {0,1,2}^n",
       "summary": "OnLine, CombinatorialLine definitions",
-      "startLine": 53,
-      "endLine": 82,
+      "startLine": 57,
+      "endLine": 100,
       "mathContext": "Formal definition: OnLine, CombinatorialLine definitions"
     },
     {
       "id": "cap-sets",
       "title": "Cap Sets",
       "summary": "IsCapSet, IsCapSetCombinatorial, f3(n)",
-      "startLine": 83,
-      "endLine": 108,
+      "startLine": 101,
+      "endLine": 236,
       "mathContext": "Mathematical content: IsCapSet, IsCapSetCombinatorial, f3(n)"
     },
     {
       "id": "ap-connection",
       "title": "Connection to APs",
       "summary": "R3(N), f3 ≥ R3 lower bound",
-      "startLine": 109,
-      "endLine": 129,
+      "startLine": 237,
+      "endLine": 255,
       "mathContext": "R3(N), f3 $\\geq$ R3 lower bound"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "summary": "Moser's lower bound, Moser's construction",
-      "startLine": 130,
-      "endLine": 151,
+      "startLine": 256,
+      "endLine": 304,
       "mathContext": "Bound: Moser's lower bound, Moser's construction"
     },
     {
       "id": "hales-jewett",
       "title": "Density Hales-Jewett",
       "summary": "Main theorem and corollary f₃(n) = o(3^n)",
-      "startLine": 152,
-      "endLine": 179,
+      "startLine": 305,
+      "endLine": 420,
       "mathContext": "Main theorem and corollary f₃(n) = o($3^{n}$)"
     },
     {
       "id": "recent-progress",
       "title": "Recent Progress",
       "summary": "Meshulam (1995), Ellenberg-Gijswijt (2016)",
-      "startLine": 180,
-      "endLine": 206,
+      "startLine": 421,
+      "endLine": 444,
       "mathContext": "Mathematical content: Meshulam (1995), Ellenberg-Gijswijt (2016)"
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20",
-      "startLine": 207,
-      "endLine": 235,
-      "mathContext": "Mathematical content: f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20"
+      "summary": "Introduces the small-case computations, establishing `f3_1 : f3 1 = 2`. The larger explicit values f₃(2)=4, f₃(3)=9, f₃(4)=20 are proved in Parts VIII-A, VIII-B, and VIII-B2 below.",
+      "startLine": 445,
+      "endLine": 534,
+      "mathContext": "$f_3(1) = 2$ — base case for the explicit-value computations."
+    },
+    {
+      "id": "part-viii-a-f3-2",
+      "title": "Part VIII-A: f₃(2) = 4 — Explicit Computation",
+      "startLine": 535,
+      "endLine": 659,
+      "summary": "Proves `f3_2 : f3 2 = 4` — an explicit optimal 4-element cap set in $\\{0,1,2\\}^2$ together with an exhaustive upper bound.",
+      "mathContext": "$f_3(2) = 4$."
+    },
+    {
+      "id": "part-viii-b-f3-3",
+      "title": "Part VIII-B: f₃(3) = 9 — Hybrid Computation",
+      "startLine": 660,
+      "endLine": 740,
+      "summary": "Proves `f3_3 : f3 3 = 9` via `le_antisymm f3_3_le_9 f3_3_ge_9`, combining an explicit construction with an upper bound.",
+      "mathContext": "$f_3(3) = 9$."
+    },
+    {
+      "id": "part-viii-b2-f3-4",
+      "title": "Part VIII-B2: f₃(4) = 20 — Explicit Construction + Meshulam",
+      "startLine": 741,
+      "endLine": 789,
+      "summary": "Proves `f3_4 : f3 4 = 20` via `le_antisymm f3_4_le_20 f3_4_ge_20`, pairing an explicit 20-element cap set with a Meshulam-type upper bound.",
+      "mathContext": "$f_3(4) = 20$."
+    },
+    {
+      "id": "part-viii-c-generalized-binary-cube",
+      "title": "Part VIII-C: Generalized Binary Cube (f₃(n) ≥ 2ⁿ)",
+      "startLine": 790,
+      "endLine": 853,
+      "summary": "Embeds $\\{0,1\\}^n$ into $\\{0,1,2\\}^n$ (`boolEmbed`, injective); the image `binaryCubeImg` has $2^n$ points and is a cap set (`binaryCubeImg_isCapSet`), giving the exponential lower bound `f3_ge_two_pow : f3 n ≥ 2^n`.",
+      "mathContext": "$f_3(n) \\ge 2^n$ — the binary sub-cube has no three collinear points over $\\{0,1\\}$."
+    },
+    {
+      "id": "part-viii-d-product-structure",
+      "title": "Part VIII-D: Product Structure (Supermultiplicativity)",
+      "startLine": 854,
+      "endLine": 983,
+      "summary": "Vector concatenation (`vecConcat`, injective) and `finsetProduct` show a product of cap sets is a cap set (`isCapSet_product`), yielding `f3_supermultiplicative : f3 (m+n) ≥ f3 m * f3 n`, plus monotonicity (`f3_monotone`) and doubling (`f3_doubling`).",
+      "mathContext": "$f_3(m+n) \\ge f_3(m)\\,f_3(n)$; hence $f_3(n+1) \\ge 2\\,f_3(n)$."
+    },
+    {
+      "id": "part-viii-e-derived-bounds",
+      "title": "Part VIII-E: Derived Bounds from Product Structure",
+      "startLine": 984,
+      "endLine": 1023,
+      "summary": "Concrete lower bounds derived from supermultiplicativity and doubling: `f3_5_ge_40`, `f3_6_ge_81`/`f3_6_ge_80`, `f3_7_ge_180`, `f3_8_ge_400`.",
+      "mathContext": "$f_3(5) \\ge 40,\\; f_3(6) \\ge 81,\\; f_3(7) \\ge 180,\\; f_3(8) \\ge 400$."
+    },
+    {
+      "id": "part-viii-f-general-power-lower-bound",
+      "title": "Part VIII-F: General Power Lower Bound",
+      "startLine": 1024,
+      "endLine": 1051,
+      "summary": "Iterated supermultiplicativity gives `f3_power_lower_bound : f3 (k*n) ≥ f3 n ^ k`, and `f3_exponential_gap` quantifies the exponential separation of $f_3$ from $3^n$.",
+      "mathContext": "$f_3(kn) \\ge f_3(n)^k$, so $f_3(n) \\ge c^n$ with $c = f_3(n_0)^{1/n_0}$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_185, erdos_185_density, erdos_185_answer theorems",
-      "startLine": 236,
+      "startLine": 1052,
       "endLine": 1104,
       "mathContext": "Verified: erdos_185, erdos_185_density, erdos_185_answer theorems"
     }
