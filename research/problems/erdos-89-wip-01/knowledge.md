@@ -136,3 +136,41 @@ below** the collinear-AP upper bound `g(3) ≤ 2`, so the arithmetic progression
   impossible in ℝ²).
 - `√n × √n` grid upper bound toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic). Guth–Katz
   `Ω(n/log n)` lower bound stays imported.
+
+## Session 2026-07-21 (researcher-1) — exact value g(4) = 2
+
+**Mode**: build on g(3)=1 and the linear upper bound g(n) ≤ n−1. **Outcome**: progress —
+the **second exact value** of Erdős's distinct-distance function, host-verified v4.31
+(`lake env lean` exit 0; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; no
+sorry/native_decide).
+
+`minDistinctDistances_four : minDistinctDistances 4 = 2`.
+- **Upper bound g(4) ≤ 2**: the unit square `{(0,0),(1,0),(0,1),(1,1)}` (`unitSquare`) has
+  its six pairwise distances in `{1, √2}` (`dist_sq01/02/13/23 = 1`, `dist_sq03/12 = √2`),
+  so `numDistinctDistances unitSquare ≤ 2` and `unitSquare_card = 4` (via `card_eq_four`).
+- **Lower bound g(4) ≥ 2** (`two_le_minDistinctDistances_four`): the attained minimizer `S`
+  (card 4) can't have `numDistinctDistances = 1`, else all six pairwise distances equal a
+  single `r > 0`, i.e. four mutually-equidistant points — ruled out by `no_four_equidistant`.
+
+**`no_four_equidistant`** (the geometric heart): four points at common distance `r` give
+difference vectors `u=b−a, v=c−a, w=d−a`, each `‖·‖ = r`, with pairwise inner product `r²/2`
+(from `norm_sub_sq_real`: `‖u−v‖² = 2r² − 2⟨u,v⟩ = r²`). The Gram matrix
+`(r²/2)·[[2,1,1],[1,2,1],[1,1,2]]` is positive definite, so `u,v,w` are linearly independent
+— forcing `finrank ≥ 3`, contradicting `finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2`
+(`finrank_euclideanSpace_fin`). Linear independence extracted via `Fintype.linearIndependent_iff`:
+take `⟨·, u⟩/⟨·, v⟩/⟨·, w⟩` of `Σ gᵢ vᵢ = 0`, then solve the Gram system with `linear_combination`
+(the row-sum gives `g₀+g₁+g₂=0`; each row then gives `(r²/2)·gᵢ = 0`).
+
+**Idioms**: `Finset.card_eq_four` (needs the ambient `DecidableEq` — the same one the `{…}`
+Finset literals already use); `real_inner_self_eq_norm_sq`, `real_inner_comm`,
+`norm_sub_sq_real`, `real_inner_smul_left`, `inner_add_left`, `inner_zero_left`;
+`LinearIndependent.fintype_card_le_finrank`. `linear_combination` is robust to `simp`'s
+arithmetic re-ordering where `linarith` would need exact atom matches.
+
+### Next
+- **g(5)**: lower bound requires ruling out a general 5-point set with ≤ 1 distinct distance
+  (immediate from `no_four_equidistant` since a 5-set contains a 4-subset) — so g(5) ≥ 2 is
+  now within reach; g(5) = 2 would need a 5-point 2-distance witness (e.g. the regular
+  pentagon realizes exactly 2 distances → g(5) ≤ 2). This is the natural next exact value.
+- `√n × √n` grid upper bound toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic);
+  Guth–Katz `Ω(n/log n)` lower bound stays imported.

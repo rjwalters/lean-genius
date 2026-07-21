@@ -455,4 +455,224 @@ theorem minDistinctDistances_three : minDistinctDistances 3 = 1 := by
     rw [← hSeq]
     exact one_le_numDistinctDistances_of_two_le_card S (by omega)
 
+/-! ## Exact value `g(4) = 2`
+
+The second exact value of Erdős's distinct-distance function.  The **upper bound**
+`g(4) ≤ 2` comes from the unit square `{(0,0), (1,0), (0,1), (1,1)}`, whose six pairwise
+distances take only the two values `1` (the four unit sides) and `√2` (the two diagonals).
+The **lower bound**
+`g(4) ≥ 2` is the geometric heart: no four points of the plane are mutually equidistant —
+a regular tetrahedron needs three dimensions — so no `4`-point set realizes a single
+distance; hence every `4`-point set determines at least two distinct distances.  Together
+they pin `g(4) = 2`, strictly improving the collinear-AP upper bound `g(4) ≤ 3`. -/
+
+/-- Vertex `(0,0)` of the unit square. -/
+noncomputable def sqp0 : EuclideanSpace ℝ (Fin 2) := !₂[0, 0]
+/-- Vertex `(1,0)` of the unit square. -/
+noncomputable def sqp1 : EuclideanSpace ℝ (Fin 2) := !₂[1, 0]
+/-- Vertex `(0,1)` of the unit square. -/
+noncomputable def sqp2 : EuclideanSpace ℝ (Fin 2) := !₂[0, 1]
+/-- Vertex `(1,1)` of the unit square. -/
+noncomputable def sqp3 : EuclideanSpace ℝ (Fin 2) := !₂[1, 1]
+
+/-- The four unit-square vertices, as a `Finset`. -/
+noncomputable def unitSquare : Finset (EuclideanSpace ℝ (Fin 2)) := {sqp0, sqp1, sqp2, sqp3}
+
+theorem sqp0_ne_sqp1 : sqp0 ≠ sqp1 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [sqp0, sqp1, Matrix.cons_val_zero] at h0; norm_num at h0
+theorem sqp0_ne_sqp2 : sqp0 ≠ sqp2 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [sqp0, sqp2, Matrix.cons_val_one, Matrix.head_cons] at h1; norm_num at h1
+theorem sqp0_ne_sqp3 : sqp0 ≠ sqp3 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [sqp0, sqp3, Matrix.cons_val_zero] at h0; norm_num at h0
+theorem sqp1_ne_sqp2 : sqp1 ≠ sqp2 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [sqp1, sqp2, Matrix.cons_val_zero] at h0; norm_num at h0
+theorem sqp1_ne_sqp3 : sqp1 ≠ sqp3 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [sqp1, sqp3, Matrix.cons_val_one, Matrix.head_cons] at h1; norm_num at h1
+theorem sqp2_ne_sqp3 : sqp2 ≠ sqp3 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [sqp2, sqp3, Matrix.cons_val_zero] at h0; norm_num at h0
+
+/-- The unit square has four distinct vertices. -/
+theorem unitSquare_card : unitSquare.card = 4 :=
+  Finset.card_eq_four.mpr
+    ⟨sqp0, sqp1, sqp2, sqp3, sqp0_ne_sqp1, sqp0_ne_sqp2, sqp0_ne_sqp3,
+      sqp1_ne_sqp2, sqp1_ne_sqp3, sqp2_ne_sqp3, rfl⟩
+
+theorem dist_sq01 : Erdos89.dist sqp0 sqp1 = 1 := by
+  rw [sqp0, sqp1, dist_eqPts,
+    show ((0 : ℝ) - 1) ^ 2 + ((0 : ℝ) - 0) ^ 2 = 1 by ring, Real.sqrt_one]
+theorem dist_sq02 : Erdos89.dist sqp0 sqp2 = 1 := by
+  rw [sqp0, sqp2, dist_eqPts,
+    show ((0 : ℝ) - 0) ^ 2 + ((0 : ℝ) - 1) ^ 2 = 1 by ring, Real.sqrt_one]
+theorem dist_sq13 : Erdos89.dist sqp1 sqp3 = 1 := by
+  rw [sqp1, sqp3, dist_eqPts,
+    show ((1 : ℝ) - 1) ^ 2 + ((0 : ℝ) - 1) ^ 2 = 1 by ring, Real.sqrt_one]
+theorem dist_sq23 : Erdos89.dist sqp2 sqp3 = 1 := by
+  rw [sqp2, sqp3, dist_eqPts,
+    show ((0 : ℝ) - 1) ^ 2 + ((1 : ℝ) - 1) ^ 2 = 1 by ring, Real.sqrt_one]
+theorem dist_sq03 : Erdos89.dist sqp0 sqp3 = Real.sqrt 2 := by
+  rw [sqp0, sqp3, dist_eqPts, show ((0 : ℝ) - 1) ^ 2 + ((0 : ℝ) - 1) ^ 2 = 2 by ring]
+theorem dist_sq12 : Erdos89.dist sqp1 sqp2 = Real.sqrt 2 := by
+  rw [sqp1, sqp2, dist_eqPts, show ((1 : ℝ) - 0) ^ 2 + ((0 : ℝ) - 1) ^ 2 = 2 by ring]
+
+/-- **The unit square determines at most two distances.**  Every pairwise distance is
+`1` (the four sides) or `√2` (the two diagonals), so `numDistinctDistances ≤ 2`. -/
+theorem numDistinctDistances_unitSquare_le_two :
+    numDistinctDistances unitSquare ≤ 2 := by
+  have hsub : distinctDistances unitSquare ⊆ ({1, Real.sqrt 2} : Finset ℝ) := by
+    rw [distinctDistances_eq_image]
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨p, q⟩, hpq, rfl⟩ := hd
+    rw [Finset.mem_offDiag] at hpq
+    obtain ⟨hp, hq, hne⟩ := hpq
+    simp only [unitSquare, Finset.mem_insert, Finset.mem_singleton] at hp hq
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rcases hp with rfl | rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hne
+        | (left; exact dist_sq01)
+        | (left; exact dist_sq02)
+        | (left; exact dist_sq13)
+        | (left; exact dist_sq23)
+        | (left; rw [dist_comm']; exact dist_sq01)
+        | (left; rw [dist_comm']; exact dist_sq02)
+        | (left; rw [dist_comm']; exact dist_sq13)
+        | (left; rw [dist_comm']; exact dist_sq23)
+        | (right; exact dist_sq03)
+        | (right; exact dist_sq12)
+        | (right; rw [dist_comm']; exact dist_sq03)
+        | (right; rw [dist_comm']; exact dist_sq12)
+  calc numDistinctDistances unitSquare
+      ≤ ({1, Real.sqrt 2} : Finset ℝ).card := Finset.card_le_card hsub
+    _ ≤ 2 := by
+        have h := Finset.card_insert_le (1 : ℝ) ({Real.sqrt 2} : Finset ℝ)
+        simp only [Finset.card_singleton] at h; omega
+
+/-- **Upper bound `g(4) ≤ 2`.** The unit square is a `4`-point witness with at most two
+distinct distances. -/
+theorem minDistinctDistances_four_le_two : minDistinctDistances 4 ≤ 2 :=
+  le_trans (minDistinctDistances_le_of_card_eq unitSquare_card)
+    numDistinctDistances_unitSquare_le_two
+
+/-- **No four mutually-equidistant points in the plane.**  Four points at a common
+positive pairwise distance `r` would give three difference vectors `b−a, c−a, d−a`, each of
+norm `r` and with pairwise inner product `r²/2` — a positive-definite Gram matrix, hence
+three linearly independent vectors.  That is impossible in the `2`-dimensional plane
+(`finrank = 2 < 3`).  (Equivalently: a regular tetrahedron does not embed in ℝ².) -/
+theorem no_four_equidistant {a b c d : EuclideanSpace ℝ (Fin 2)} {r : ℝ}
+    (hab : a ≠ b)
+    (dab : Erdos89.dist a b = r) (dac : Erdos89.dist a c = r) (dad : Erdos89.dist a d = r)
+    (dbc : Erdos89.dist b c = r) (dbd : Erdos89.dist b d = r) (dcd : Erdos89.dist c d = r) :
+    False := by
+  simp only [Erdos89.dist] at dab dac dad dbc dbd dcd
+  have hr : 0 < r := by rw [← dab]; exact norm_pos_iff.mpr (sub_ne_zero.mpr hab)
+  set u := b - a with hu
+  set v := c - a with hv
+  set w := d - a with hw
+  have nu : ‖u‖ = r := by rw [hu, norm_sub_rev]; exact dab
+  have nv : ‖v‖ = r := by rw [hv, norm_sub_rev]; exact dac
+  have nw : ‖w‖ = r := by rw [hw, norm_sub_rev]; exact dad
+  have huu : inner ℝ u u = (r ^ 2 : ℝ) := by rw [real_inner_self_eq_norm_sq, nu]
+  have hvv : inner ℝ v v = (r ^ 2 : ℝ) := by rw [real_inner_self_eq_norm_sq, nv]
+  have hww : inner ℝ w w = (r ^ 2 : ℝ) := by rw [real_inner_self_eq_norm_sq, nw]
+  have huv : inner ℝ u v = (r ^ 2 / 2 : ℝ) := by
+    have hs : u - v = b - c := by rw [hu, hv]; abel
+    have h := norm_sub_sq_real u v
+    rw [hs, nu, nv, dbc] at h; linarith
+  have huw : inner ℝ u w = (r ^ 2 / 2 : ℝ) := by
+    have hs : u - w = b - d := by rw [hu, hw]; abel
+    have h := norm_sub_sq_real u w
+    rw [hs, nu, nw, dbd] at h; linarith
+  have hvw : inner ℝ v w = (r ^ 2 / 2 : ℝ) := by
+    have hs : v - w = c - d := by rw [hv, hw]; abel
+    have h := norm_sub_sq_real v w
+    rw [hs, nv, nw, dcd] at h; linarith
+  have hvu : inner ℝ v u = (r ^ 2 / 2 : ℝ) := by rw [real_inner_comm]; exact huv
+  have hwu : inner ℝ w u = (r ^ 2 / 2 : ℝ) := by rw [real_inner_comm]; exact huw
+  have hwv : inner ℝ w v = (r ^ 2 / 2 : ℝ) := by rw [real_inner_comm]; exact hvw
+  have hli : LinearIndependent ℝ ![u, v, w] := by
+    rw [Fintype.linearIndependent_iff]
+    intro g hg
+    rw [Fin.sum_univ_three] at hg
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.tail_cons] at hg
+    have h_u : g 0 * r ^ 2 + g 1 * (r ^ 2 / 2) + g 2 * (r ^ 2 / 2) = 0 := by
+      have h := congrArg (fun z => (inner ℝ z u : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left, huu, hvu, hwu] at h
+      linear_combination h
+    have h_v : g 0 * (r ^ 2 / 2) + g 1 * r ^ 2 + g 2 * (r ^ 2 / 2) = 0 := by
+      have h := congrArg (fun z => (inner ℝ z v : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left, huv, hvv, hwv] at h
+      linear_combination h
+    have h_w : g 0 * (r ^ 2 / 2) + g 1 * (r ^ 2 / 2) + g 2 * r ^ 2 = 0 := by
+      have h := congrArg (fun z => (inner ℝ z w : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left, huw, hvw, hww] at h
+      linear_combination h
+    have hr2 : (0 : ℝ) < r ^ 2 := pow_pos hr 2
+    have h2r : (0 : ℝ) < 2 * r ^ 2 := by linarith
+    have hSraw : (2 * r ^ 2) * (g 0 + g 1 + g 2) = 0 := by
+      linear_combination h_u + h_v + h_w
+    have hSsum : g 0 + g 1 + g 2 = 0 := (mul_eq_zero.mp hSraw).resolve_left (ne_of_gt h2r)
+    have hrhalf : (0 : ℝ) < r ^ 2 / 2 := by linarith
+    have hg0 : (r ^ 2 / 2) * g 0 = 0 := by linear_combination h_u - (r ^ 2 / 2) * hSsum
+    have hg1 : (r ^ 2 / 2) * g 1 = 0 := by linear_combination h_v - (r ^ 2 / 2) * hSsum
+    have hg2 : (r ^ 2 / 2) * g 2 = 0 := by linear_combination h_w - (r ^ 2 / 2) * hSsum
+    have e0 : g 0 = 0 := (mul_eq_zero.mp hg0).resolve_left (ne_of_gt hrhalf)
+    have e1 : g 1 = 0 := (mul_eq_zero.mp hg1).resolve_left (ne_of_gt hrhalf)
+    have e2 : g 2 = 0 := (mul_eq_zero.mp hg2).resolve_left (ne_of_gt hrhalf)
+    intro i
+    fin_cases i <;> assumption
+  have hcard := hli.fintype_card_le_finrank
+  rw [finrank_euclideanSpace_fin] at hcard
+  simp only [Fintype.card_fin] at hcard
+  omega
+
+/-- **Lower bound `g(4) ≥ 2`.**  A `4`-point set with only one distinct distance would be
+four mutually-equidistant points (`no_four_equidistant`), impossible in the plane; so every
+`4`-point set determines at least two distances. -/
+theorem two_le_minDistinctDistances_four : 2 ≤ minDistinctDistances 4 := by
+  have hne : {numDistinctDistances S |
+      (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = 4)}.Nonempty :=
+    ⟨numDistinctDistances unitSquare, unitSquare, unitSquare_card, rfl⟩
+  obtain ⟨S, hScard, hSeq⟩ := Nat.sInf_mem hne
+  show 2 ≤ minDistinctDistances 4
+  unfold minDistinctDistances
+  rw [← hSeq]
+  by_contra hlt
+  have hlt2 : numDistinctDistances S < 2 := not_le.mp hlt
+  have hge1 := one_le_numDistinctDistances_of_two_le_card S (by omega)
+  have heq1 : numDistinctDistances S = 1 := by omega
+  have hcard1 : (distinctDistances S).card = 1 := heq1
+  obtain ⟨r, hr⟩ := Finset.card_eq_one.mp hcard1
+  have hall : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → Erdos89.dist p q = r := by
+    intro p hp q hq hpq
+    have hmem : Erdos89.dist p q ∈ distinctDistances S := by
+      rw [distinctDistances_eq_image, Finset.mem_image]
+      exact ⟨(p, q), Finset.mem_offDiag.mpr ⟨hp, hq, hpq⟩, rfl⟩
+    rw [hr, Finset.mem_singleton] at hmem
+    exact hmem
+  rw [Finset.card_eq_four] at hScard
+  obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, hSset⟩ := hScard
+  have ha : a ∈ S := by rw [hSset]; simp
+  have hb : b ∈ S := by rw [hSset]; simp
+  have hc : c ∈ S := by rw [hSset]; simp
+  have hd : d ∈ S := by rw [hSset]; simp
+  exact no_four_equidistant hab
+    (hall a ha b hb hab) (hall a ha c hc hac) (hall a ha d hd had)
+    (hall b hb c hc hbc) (hall b hb d hd hbd) (hall c hc d hd hcd)
+
+/-- **Exact value `g(4) = 2`.**  The unit square gives `g(4) ≤ 2`
+(`minDistinctDistances_four_le_two`); no four points are mutually equidistant in the plane,
+giving `g(4) ≥ 2` (`two_le_minDistinctDistances_four`).  The second exact value of Erdős's
+distinct-distance function, strictly below the collinear-AP bound `g(4) ≤ 3` — so the
+arithmetic progression is again not extremal. -/
+theorem minDistinctDistances_four : minDistinctDistances 4 = 2 :=
+  le_antisymm minDistinctDistances_four_le_two two_le_minDistinctDistances_four
+
 end Erdos89
