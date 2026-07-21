@@ -116,9 +116,11 @@ noncomputable def f_alt (u : ℕ) : ℕ :=
 ## Part III: Trivial Bounds
 -/
 
-/-- Lower bound: f(u) ≥ u + 2 for u ≥ 1.
-    Reason: u + 1 has a prime factor not dividing u (namely, a prime factor of u + 1). -/
-axiom f_lower_bound (u : ℕ) (hu : u ≥ 1) : f u ≥ u + 2
+/-- Lower bound: f(u) ≥ u + 2 for u ≥ 2.
+    Reason: u + 1 has a prime factor not dividing u (namely, a prime factor of u + 1).
+    (Requires `u ≥ 2`: `f` uses a junk value at `u = 1`, where `f 1 = 1 < 3`, so the
+    bound is only mathematically meaningful — and consistent — for `u ≥ 2`.) -/
+axiom f_lower_bound (u : ℕ) (hu : u ≥ 2) : f u ≥ u + 2
 
 /-- Upper bound: f(u) ≤ u² for u ≥ 2.
     Reason: u² has the same prime factors as u. -/
@@ -126,7 +128,7 @@ axiom f_upper_bound (u : ℕ) (hu : u ≥ 2) : f u ≤ u * u
 
 /-- The trivial bounds: u + 2 ≤ f(u) ≤ u² for u ≥ 2. -/
 theorem trivial_bounds (u : ℕ) (hu : u ≥ 2) : u + 2 ≤ f u ∧ f u ≤ u * u :=
-  ⟨f_lower_bound u (le_trans (by norm_num) hu), f_upper_bound u hu⟩
+  ⟨f_lower_bound u hu, f_upper_bound u hu⟩
 
 /-
 ## Part IV: Special Cases (Cambie)
