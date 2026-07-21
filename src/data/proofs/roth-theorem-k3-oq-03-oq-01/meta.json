@@ -83,7 +83,9 @@
       "**Normalized averages, certified:** kAPCount_const with c = 1 gives Λ_k(1,…,1) = 1 — the (N⁻¹)²·N² = 1 normalization that makes Λ_k a genuine expectation E_{x,d} rather than an unnormalized sum.",
       "**Zero base cases open the argument:** the constant and single-zero-slot identities are exactly the base points of the multilinear expansion 1_A = δ·1 + (1_A − δ) that starts the generalized von Neumann / density-increment proof.",
       "**A single zero factor annihilates:** both the Gowers norm of 0 and a count with one zero slot vanish through the same Finset.prod_eq_zero move — the multiplicative structure of the operators.",
-      "**Self-contained and drift-robust:** re-declaring the operators with the current Mathlib ‖·‖ norm insulates this file from the parent's Complex.abs and from merge order."
+      "**Self-contained and drift-robust:** re-declaring the operators with the current Mathlib ‖·‖ norm insulates this file from the parent's Complex.abs and from merge order.",
+      "**The full affine symmetry group acts:** translation (x ↦ x+t), reflection (x ↦ −x), and dilation by a unit (x ↦ c·x) each preserve every k-AP count, and `kAPCount_count_affine` assembles them into invariance under the whole affine group x ↦ c·x + t of ℤ/N — the structural symmetries that let one normalize an extremal set before counting.",
+      "**Sharp bounds and a cardinality dichotomy:** the count is squeezed |A| ≤ #{k-APs} ≤ min(|A|·N, N²) with exact values at ∅, singletons, and the whole group; the ℓ^∞ product bound ‖Λ_k(f)‖ ≤ ∏ᵢ‖fᵢ‖_∞ controls the analytic functional, and the reversal involution kAPReflect forces |A| ≥ 2 whenever a nondegenerate progression exists."
     ],
     "prerequisites": [
       "The parent construction: the Gowers norm and k-AP counting operator (Proofs.RothTheoremOQ03)",
@@ -150,70 +152,126 @@
       "mathContext": "$\\Lambda_k(1_A) = N^{-2}\\,\\#\\{k\\text{-APs in }A\\}$; count $=$ diagonal $+$ nondegenerate."
     },
     {
-      "id": "structural-bounds",
-      "title": "Every Progression Starts in A; Basic Upper Bounds",
-      "summary": "kAPCount_count_start_subset: a counted pair (x,d) has its progression starting in A; kAPCount_count_le / kAPCount_nondeg_le bound the total and nondegenerate counts by |A|·N (each start point in A pairs with at most N differences).",
+      "id": "count-split-diagonal",
+      "title": "Splitting the Count and the Diagonal Term",
+      "summary": "kAPCount_count_split rewrites the raw pair-count of k-APs as a sum over (start, difference) pairs; kAPCount_indicator_eq_diag_add_nondeg splits the analytic count Λ_k(1_A,…,1_A) into its diagonal (common-difference-zero) contribution |A| and a nondegenerate remainder; kAPCount_indicator_univ evaluates the count when A is the whole group.",
       "startLine": 525,
-      "endLine": 587,
-      "mathContext": "$\\#\\{k\\text{-APs}\\} \\le |A|\\cdot N$; nondegenerate count $\\le |A|\\cdot N$."
+      "endLine": 619,
+      "mathContext": "$\\Lambda_k(\\mathbf 1_A,\\dots,\\mathbf 1_A)=\\underbrace{|A|}_{d=0}+\\Lambda_k^{\\mathrm{nd}}(\\mathbf 1_A)$, the diagonal/nondegenerate decomposition."
     },
     {
-      "id": "monotonicity",
-      "title": "Monotonicity in the Set and the Two-Sided Bracket",
-      "summary": "kAPCount_count_mono / kAPCount_nondeg_mono: enlarging A only adds progressions; kAPCount_count_ge: the diagonal contributes exactly |A|; kAPCount_count_bracket packages the two-sided bound |A| ≤ count ≤ |A|·N.",
-      "startLine": 588,
-      "endLine": 643,
-      "mathContext": "$A \\subseteq B \\Rightarrow \\text{count}(A) \\le \\text{count}(B)$; $|A| \\le \\text{count}(A) \\le |A|\\cdot N$."
+      "id": "starts-in-A-upper",
+      "title": "Every Progression Starts in A; Basic Upper Bounds",
+      "summary": "kAPCount_count_start_subset: a counted progression (x,d) always has its start point x∈A. kAPCount_count_le and kAPCount_nondeg_le bound the total and nondegenerate counts by |A|·N — each of the ≤|A| admissible starts pairs with at most N common differences.",
+      "startLine": 620,
+      "endLine": 682,
+      "mathContext": "$\\#\\{k\\text{-APs in }A\\}\\le |A|\\cdot N$; nondegenerate count $\\le |A|\\cdot N$."
     },
     {
-      "id": "positivity",
-      "title": "Positivity and Vanishing Characterizations",
-      "summary": "kAPCount_count_pos: a nonempty A has positive count (the diagonal alone); kAPCount_count_pos_iff and kAPCount_count_eq_zero_iff characterize positivity/vanishing of the count by nonemptiness/emptiness of A.",
-      "startLine": 644,
-      "endLine": 681,
-      "mathContext": "$\\text{count}(A) > 0 \\iff A \\ne \\emptyset$; $\\text{count}(A) = 0 \\iff A = \\emptyset$."
+      "id": "monotonicity-set",
+      "title": "Monotonicity in the Set",
+      "summary": "kAPCount_count_mono and kAPCount_nondeg_mono: enlarging A can only increase the count of k-APs, for both the total and nondegenerate counts — the count functionals are monotone under set inclusion A ⊆ B.",
+      "startLine": 683,
+      "endLine": 715,
+      "mathContext": "$A\\subseteq B \\Rightarrow \\#\\{k\\text{-APs in }A\\}\\le \\#\\{k\\text{-APs in }B\\}$."
     },
     {
-      "id": "extreme-sets",
+      "id": "bracket-positivity",
+      "title": "Two-Sided Bracket, Positivity, and Vanishing",
+      "summary": "kAPCount_count_ge and kAPCount_count_bracket give the lower bound |A| ≤ count and the two-sided bracket |A| ≤ count ≤ |A|·N (the trivial degenerate APs x,x,…,x). kAPCount_count_pos, kAPCount_count_pos_iff, and kAPCount_count_eq_zero_iff characterize when the count is positive versus zero in terms of A being nonempty.",
+      "startLine": 716,
+      "endLine": 776,
+      "mathContext": "$|A|\\le \\#\\{k\\text{-APs}\\}\\le |A|\\cdot N$; count $>0 \\iff A\\neq\\varnothing$."
+    },
+    {
+      "id": "extreme-sets-univ-empty",
       "title": "Extreme Sets: the Whole Group and the Empty Set",
-      "summary": "kAPCount_count_univ: every pair (x,d) is counted, so count(univ) = N²; kAPCount_count_empty / kAPCount_indicator_empty / kAPCount_nondeg_empty give the vanishing at ∅; kAPCount_nondeg_univ counts the nondegenerate progressions of the whole group.",
-      "startLine": 682,
-      "endLine": 775,
-      "mathContext": "$\\text{count}(\\text{univ}) = N^2$, $\\text{count}(\\emptyset) = 0$, $\\Lambda_k(1_\\emptyset) = 0$."
-    },
-    {
-      "id": "singletons",
-      "title": "Singletons",
-      "summary": "kAPCount_nondeg_singleton: a singleton carries no nondegenerate progression (k ≥ 2); kAPCount_count_singleton: its total count is exactly 1 (the constant progression); kAPCount_indicator_singleton: Λ_k(1_{a}) = (N⁻¹)².",
-      "startLine": 776,
-      "endLine": 820,
-      "mathContext": "$\\text{count}(\\{a\\}) = 1$ (diagonal only); $\\Lambda_k(1_{\\{a\\}}) = N^{-2}$."
-    },
-    {
-      "id": "quadratic-bounds",
-      "title": "Global Quadratic Upper Bounds",
-      "summary": "kAPCount_count_le_sq / kAPCount_nondeg_le_sq: every set embeds in univ, so the total and nondegenerate counts are bounded by N² — the crude global ceiling used in density arguments.",
-      "startLine": 821,
+      "summary": "Exact evaluations at the two extreme sets: kAPCount_count_univ gives N² progressions when A is all of ℤ/N; kAPCount_count_empty and kAPCount_indicator_empty give 0 when A=∅. kAPCount_nondeg_empty records the nondegenerate count also vanishes on the empty set.",
+      "startLine": 777,
       "endLine": 852,
-      "mathContext": "$\\text{count}(A) \\le N^2$; nondegenerate count $\\le N^2$."
+      "mathContext": "$A=\\mathbb Z/N \\Rightarrow \\#=N^2$; $A=\\varnothing \\Rightarrow \\#=0$."
+    },
+    {
+      "id": "nondeg-extremes-singletons",
+      "title": "Nondegenerate Extremes and Singletons",
+      "summary": "kAPCount_nondeg_univ evaluates the nondegenerate count on the whole group; kAPCount_nondeg_singleton, kAPCount_count_singleton, and kAPCount_indicator_singleton evaluate all three count variants on a singleton {a} — only the constant progression survives, so the nondegenerate count is 0 while the total count is 1.",
+      "startLine": 853,
+      "endLine": 915,
+      "mathContext": "$A=\\{a\\}$: total count $=1$ (the constant AP), nondegenerate count $=0$."
+    },
+    {
+      "id": "quadratic-upper-bound",
+      "title": "Global Quadratic Upper Bound |A|²·… → N²",
+      "summary": "kAPCount_count_le_sq and kAPCount_nondeg_le_sq bound both count variants by N² uniformly in A — there are only N² pairs (x,d) in ℤ/N × ℤ/N to begin with, so no configuration can exceed the ambient square.",
+      "startLine": 916,
+      "endLine": 948,
+      "mathContext": "$\\#\\{k\\text{-APs}\\}\\le |{\\mathbb Z/N}\\times{\\mathbb Z/N}| = N^2$."
+    },
+    {
+      "id": "length-antitone",
+      "title": "Antitonicity in the Progression Length k",
+      "summary": "kAPCount_count_length_antitone and kAPCount_nondeg_length_antitone: for k ≤ k′ the count of k′-term progressions is ≤ the count of k-term progressions — demanding more consecutive terms lie in A is a stronger constraint, so longer progressions are rarer.",
+      "startLine": 949,
+      "endLine": 981,
+      "mathContext": "$k\\le k' \\Rightarrow \\#\\{k'\\text{-APs}\\}\\le \\#\\{k\\text{-APs}\\}$."
     },
     {
       "id": "translation-invariance",
-      "title": "Translation Invariance",
-      "summary": "kAPCount_count_translate / kAPCount_nondeg_translate / kAPCount_indicator_translate: translating A by any t ∈ ZMod N leaves the total count, the nondegenerate count, and the analytic operator Λ_k(1_A) unchanged — the affine symmetry underlying the density-increment method.",
-      "startLine": 853,
-      "endLine": 929,
-      "mathContext": "$\\text{count}(A + t) = \\text{count}(A)$ and $\\Lambda_k(1_{A+t}) = \\Lambda_k(1_A)$ for all $t$."
+      "title": "Translation Invariance x ↦ x + t",
+      "summary": "kAPCount_count_translate, kAPCount_nondeg_translate, and kAPCount_indicator_translate: translating A by any t∈ℤ/N leaves all three counts unchanged. The additive shift x↦x+t maps k-APs bijectively to k-APs, the first of the affine symmetries of the count.",
+      "startLine": 982,
+      "endLine": 1062,
+      "mathContext": "$\\#\\{k\\text{-APs in }A+t\\}=\\#\\{k\\text{-APs in }A\\}$ for every $t\\in\\mathbb Z/N$."
+    },
+    {
+      "id": "reflection-neg",
+      "title": "Reflection x ↦ −x",
+      "summary": "kAPCount_count_neg, kAPCount_nondeg_neg, and kAPCount_indicator_neg: negating the set (A ↦ −A) preserves every count. The reflection x↦−x is an automorphism of ℤ/N carrying k-APs to k-APs, the second affine symmetry.",
+      "startLine": 1063,
+      "endLine": 1143,
+      "mathContext": "$\\#\\{k\\text{-APs in }-A\\}=\\#\\{k\\text{-APs in }A\\}$."
+    },
+    {
+      "id": "dilation-unit",
+      "title": "Dilation x ↦ c·x by a Unit",
+      "summary": "kAPCount_count_dilate, kAPCount_nondeg_dilate, and kAPCount_indicator_dilate: scaling A by any unit c∈(ℤ/N)ˣ preserves all counts. Multiplication by an invertible c is a bijection of ℤ/N sending the AP (x, d) to (cx, cd), completing the multiplicative symmetries.",
+      "startLine": 1144,
+      "endLine": 1267,
+      "mathContext": "$c\\in(\\mathbb Z/N)^{\\times}\\Rightarrow \\#\\{k\\text{-APs in }c\\cdot A\\}=\\#\\{k\\text{-APs in }A\\}$."
+    },
+    {
+      "id": "affine-invariance",
+      "title": "Affine Invariance: the Full x ↦ c·x + t Symmetry",
+      "summary": "affine_image_eq identifies the image of A under x↦c·x+t, and kAPCount_count_affine / kAPCount_nondeg_affine / kAPCount_indicator_affine assemble translation and dilation into the full affine symmetry group: every invertible affine map of ℤ/N preserves the k-AP counts.",
+      "startLine": 1268,
+      "endLine": 1343,
+      "mathContext": "For $c\\in(\\mathbb Z/N)^{\\times}$, $t\\in\\mathbb Z/N$: $\\#\\{k\\text{-APs in }c\\cdot A+t\\}=\\#\\{k\\text{-APs in }A\\}$."
+    },
+    {
+      "id": "analytic-norm-bounds",
+      "title": "Analytic Norm Bounds on the Count Functional",
+      "summary": "The multilinear count Λ_k is controlled in norm: kAPCount_norm_le gives the ℓ^∞ product bound ‖Λ_k(f)‖ ≤ ∏ᵢ Mᵢ when ‖fᵢ‖≤Mᵢ; indicatorZMod_norm_le_one and kAPCount_indicator_norm_le_one specialize to indicator inputs (all bounds ≤1); prod_ite_le_self and kAPCount_diag_sub_major_norm_le supply the error estimate ‖diagonal − major term‖ used in the density-increment analysis.",
+      "startLine": 1344,
+      "endLine": 1491,
+      "mathContext": "$\\|\\Lambda_k(f_0,\\dots,f_{k-1})\\|\\le \\prod_{i}\\|f_i\\|_\\infty$; for indicators each factor $\\le 1$."
+    },
+    {
+      "id": "reflect-swap-card",
+      "title": "The Coordinate Swap kAPReflect and Cardinality Lower Bounds",
+      "summary": "kAPReflect is the involution (x,d)↦(x+(k−1)d, −d) that reverses a progression; kAPReflect_involutive, the reflect_mem/reflect_image lemmas show it acts on the counted set. kAPCount_nondeg_card_le_one and kAPCount_nondeg_pos_imp_two_le_card then deduce the sharp cardinality dichotomy: a nonzero nondegenerate count forces |A|≥2.",
+      "startLine": 1492,
+      "endLine": 1628,
+      "mathContext": "$\\rho(x,d)=(x+(k-1)d,\\,-d)$ is an involution; nondegenerate count $>0 \\Rightarrow |A|\\ge 2$."
     }
   ],
   "conclusion": {
-    "summary": "This entry equips the parent file's Gowers U^s norm and k-AP counting operator Λ_k with the foundational degenerate/normalization identities that every later additive-combinatorics argument relies on: the conjugation factor fixes 0, ‖0‖_{U^s} = 0, Λ_k(c,…,c) = cᵏ, Λ_k(1,…,1) = 1, and a single zero slot annihilates Λ_k. The constant identity certifies the (N⁻¹)²·N² = 1 normalization that makes Λ_k a genuine expectation, and the constant/zero base cases open the multilinear expansion 1_A = δ·1 + (1_A − δ). All 0-axiom and machine-checked, with the operators re-declared self-containedly using the current Mathlib ‖·‖ norm.",
+    "summary": "This entry equips the parent file's Gowers U^s norm and k-AP counting operator Λ_k with the foundational degenerate/normalization identities that every later additive-combinatorics argument relies on: the conjugation factor fixes 0, ‖0‖_{U^s} = 0, Λ_k(c,…,c) = cᵏ, Λ_k(1,…,1) = 1, and a single zero slot annihilates Λ_k. The constant identity certifies the (N⁻¹)²·N² = 1 normalization that makes Λ_k a genuine expectation, and the constant/zero base cases open the multilinear expansion 1_A = δ·1 + (1_A − δ). All 0-axiom and machine-checked, with the operators re-declared self-containedly using the current Mathlib ‖·‖ norm. Beyond the base cases, the file develops the full symmetry and boundedness theory of the counting operator: monotonicity, the two-sided bracket |A| ≤ #{k-APs} ≤ |A|·N, exact values on extreme sets, invariance under the affine group x ↦ c·x + t, ℓ^∞ product norm bounds, and the |A| ≥ 2 cardinality dichotomy — the structural toolkit the density-increment argument draws on.",
     "implications": "These identities are the base cases invoked whenever one expands Λ_k(1_A,…,1_A) along a decomposition 1_A = δ·1 + g in the density-increment / generalized von Neumann proof of Roth's and Szemerédi's theorems: Λ_k(1,…,1) = 1 supplies the main term δᵏ, and the annihilation/constant lemmas control the boundary of the expansion. With them verified, the multilinearity layer (child entry) and eventually the generalized von Neumann inequality can cite them directly.",
     "openQuestions": [
       "Multilinearity of Λ_k: additivity and homogeneity in each slot (established in the child entry)",
       "Generalized von Neumann inequality: bound a Λ_k term with a non-trivial slot by a Gowers norm ‖g‖_{U^{k-1}}",
       "Conjugate-symmetry and the s-fold-average positivity ‖f‖_{U^s} ≥ 0 of the Gowers norm",
-      "Translation-invariance of Λ_k and the k = 3 (Roth) specialization Λ_3"
+      "The k = 3 (Roth) specialization Λ_3 and the quantitative density-increment step that turns these exact counts and symmetries into a bound on r_3(N) — the invariance and boundedness lemmas here (translation, reflection, dilation, affine, and ‖·‖_∞ bounds) are all discharged, supplying the structural inputs that step consumes."
     ]
   },
   "leanFile": {
