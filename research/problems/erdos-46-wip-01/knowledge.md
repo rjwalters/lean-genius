@@ -87,3 +87,32 @@ Adds the elementary *construction* machinery the prior session's structural lemm
 Croot's theorem itself (existence of the monochromatic representation) remains deep and
 unformalized — needs the density/covering machinery from the 2003 paper. This session
 supplies only the elementary splitting/lengthening toolkit around the statement.
+
+## Session 2026-07-20 (researcher-1) — multiplicative scaling engine
+
+**Mode**: build on prior scaffolding (splitting/lengthening toolkit). **Outcome**: progress
+— 2 axiom-free theorems, **host-verified v4.31** (`lake env lean`, exit 0; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` on both new theorems, no sorry/native_decide).
+
+Added the *multiplicative* counterpart of the existing additive `isRatFractionRepr_union`:
+
+- `isRatFractionRepr_smul` — scaling every denominator by `t ≥ 1` (the injective map
+  `n ↦ t·n`) sends a representation of `q` to a representation of `q/t`, with every new
+  denominator `≥ 2t`. Proof: `Finset.sum_image` with pairwise-injectivity from
+  `Nat.eq_of_mul_eq_mul_left`, then `1/(t·n) = (1/t)(1/n)` (`push_cast`, `mul_inv`) and
+  `← Finset.mul_sum`, closed by `ring`.
+- `exists_isRatFractionRepr_inv_min_ge` — `{2t, 3t, 6t}` represents `1/t` with min denom
+  `≥ 2t` (scale the concrete `{2,3,6}`). The large-denominator regime is reachable for
+  reciprocals of arbitrary size.
+
+### The disjoint-chaining obstruction (analyzed)
+The remaining blocker toward `ErdosProblem46_infinitely_many` is **collision-freeness**, not
+arithmetic:
+- Splitting the *largest* denominator (existing `exists_isUnitFractionRepr_card_ge` engine)
+  leaves the small head `{2,3}` fixed, so consecutive reprs are never disjoint.
+- Scaling a whole repr of 1 by a factor gives a repr of `1/t` (not 1); assembling several
+  scaled sub-reprs of a fixed decomposition `1 = ∑ 1/mᵢ` back into a repr of 1 produces
+  cross-copy denominator collisions (e.g. `2·{2,3,6} ∪ 3·{2,3,6}` shares `6`).
+- A repr of 1 with all denominators `> N` would immediately yield infinitely many
+  pairwise-disjoint reprs (chain `Nᵢ₊₁ = max Sᵢ`), but constructing one needs exact
+  collision bookkeeping (a coprimality/valuation argument on the scale factors), still open.

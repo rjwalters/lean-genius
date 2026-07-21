@@ -307,3 +307,53 @@ theorem infinite_isUnitFractionRepr :
   obtain ⟨S, hS, hcard⟩ := exists_isUnitFractionRepr_card_ge (M + 1)
   have hle : S.card ≤ M := hM ⟨S, hS, rfl⟩
   omega
+
+/-! ## Multiplicative scaling of representations
+
+`isRatFractionRepr_union` above assembles representations *additively* (over disjoint
+unions of denominator sets). The complementary *multiplicative* engine scales every
+denominator by a common factor `t`: this divides the represented rational by `t` and
+pushes every denominator up to at least `2t`. It is the natural tool for producing
+representations whose denominators are all large — a prerequisite for the pairwise-disjoint
+chaining behind `ErdosProblem46_infinitely_many` (reprs with `min > N` are automatically
+disjoint from any repr supported below `N`). -/
+
+/-- **Scaling lemma.** If `S` represents the rational `q`, then scaling every denominator by
+`t ≥ 1` (the map `n ↦ t · n`, injective since `t > 0`) yields a representation of `q / t`.
+The multiplicative counterpart of `isRatFractionRepr_union`. -/
+theorem isRatFractionRepr_smul {S : Finset ℕ} {q : ℚ}
+    (hS : IsRatFractionRepr S q) {t : ℕ} (ht : 1 ≤ t) :
+    IsRatFractionRepr (S.image (fun n => t * n)) (q / t) := by
+  obtain ⟨hge, hsum⟩ := hS
+  have htpos : 0 < t := ht
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, t * a = t * b → a = b :=
+    fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left htpos hab
+  refine ⟨?_, ?_⟩
+  · intro m hm
+    rw [Finset.mem_image] at hm
+    obtain ⟨n, hn, rfl⟩ := hm
+    have hn2 : 2 ≤ n := hge n hn
+    have hle : n ≤ t * n := Nat.le_mul_of_pos_left n htpos
+    omega
+  · rw [Finset.sum_image hinj]
+    have hterm : ∀ n ∈ S, (1 : ℚ) / (↑(t * n)) = (1 / t) * (1 / n) := by
+      intro n _
+      push_cast
+      rw [one_div, one_div, one_div, mul_inv]
+    rw [Finset.sum_congr rfl hterm, ← Finset.mul_sum, hsum]
+    ring
+
+/-- **Arbitrarily large denominators for `1/t`.** For every `t ≥ 1`, the reciprocal `1/t`
+has a rational representation `{2t, 3t, 6t}` (the concrete representation `{2,3,6}` of `1`
+scaled by `t`) whose denominators are all `≥ 2t`. Witnesses that the large-denominator
+regime is reachable for reciprocals of arbitrary size. -/
+theorem exists_isRatFractionRepr_inv_min_ge (t : ℕ) (ht : 1 ≤ t) :
+    ∃ S : Finset ℕ, IsRatFractionRepr S (1 / t) ∧ ∀ n ∈ S, 2 * t ≤ n := by
+  refine ⟨({2, 3, 6} : Finset ℕ).image (fun n => t * n), ?_, ?_⟩
+  · have h236 : IsRatFractionRepr ({2, 3, 6} : Finset ℕ) 1 :=
+      (isRatFractionRepr_one_iff _).mpr isUnitFractionRepr_two_three_six
+    exact isRatFractionRepr_smul h236 ht
+  · intro m hm
+    rw [Finset.mem_image] at hm
+    obtain ⟨n, hn, rfl⟩ := hm
+    fin_cases hn <;> omega
