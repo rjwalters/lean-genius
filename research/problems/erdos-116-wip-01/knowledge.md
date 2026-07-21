@@ -4,6 +4,59 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-20 (researcher-1, iter 1 ACT) — sublevel set open / measurable / bounded
+
+**Mode**: first real ACT on a fresh wip-01 node (parent `Erdos116Problem.lean`
+had 5 axiom-free structural lemmas; no `Erdos116WIP01.lean` existed).
+**Outcome**: progress — new file `proofs/Proofs/Erdos116WIP01.lean` with 6
+declarations (5 public results + `sublevelSet_eq_preimage`), 0 sorry / 0 axiom /
+no native_decide, VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`).
+Host-verified without Docker (parent imports `Mathlib` only): fresh-built
+`Erdos116Problem.olean` via `lake env lean`, compiled the child clean (exit 0, no
+warnings), `#print axioms` on all five public results.
+
+This discharges **Key lemma 1** of `problem.md`: the lemniscate
+`Sₚ = {z : |p(z)| < 1}` is open (hence measurable) and bounded.
+
+### What I added (namespace `UnitDiskPoly`)
+- `continuous_eval : Continuous P.eval` — `z ↦ ∏ᵢ (z - zᵢ)` is a finite product of
+  continuous factors (`continuous_finsetProd`, each factor `continuous_id.sub
+  continuous_const`).
+- `sublevelSet_eq_preimage` — `Sₚ = (fun z => ‖p(z)‖) ⁻¹' Set.Iio 1` (`rfl` after
+  unfolding, since `Complex.abs = ‖·‖`).
+- `isOpen_sublevelSet` — continuous preimage of the open ray `[0,1)`
+  (`isOpen_Iio.preimage (continuous_norm.comp continuous_eval)`).
+- `measurableSet_sublevelSet` — `IsOpen.measurableSet`.
+- `sublevelSet_subset_closedBall : Sₚ ⊆ closedBall 0 2` — if `‖z‖ > 2` then each
+  factor `‖z - zᵢ‖ ≥ ‖z‖ - ‖zᵢ‖ ≥ ‖z‖ - 1 > 1`, so `‖p(z)‖ = ∏‖z-zᵢ‖ ≥ 1`.
+- `isBounded_sublevelSet` — `Bornology.IsBounded` via subset of `closedBall`.
+
+### Key findings / reusable Lean recipe
+- **`Finset.one_le_prod'` does NOT apply to ℝ** — it needs `MulLeftMono ℝ`, which
+  fails because ℝ's multiplication is not `≤`-monotone (negatives flip it). For
+  "product of nonneg reals each `≥ 1` is `≥ 1`", use `Finset.prod_le_prod`
+  against the constant-`1` product: `(1 : ℝ) = ∏ _i, 1 ≤ ∏ i, f i` via
+  `Finset.prod_const_one` + `Finset.prod_le_prod (0 ≤ 1) (1 ≤ f i)`.
+- **`norm_prod`** rewrites `‖∏ i, f i‖ = ∏ i, ‖f i‖` for ℂ (normed field).
+- **`norm_sub_norm_le z w : ‖z‖ - ‖w‖ ≤ ‖z - w‖`** is the reverse-triangle form
+  needed for the per-factor lower bound.
+- `Complex.abs` here is the parent's local compat def `= ‖·‖`, so
+  `P.roots_in_disk i : Complex.abs (roots i) ≤ 1` is defeq to `‖roots i‖ ≤ 1` and
+  `hz : z ∈ sublevelSet` is defeq to `‖p(z)‖ < 1` (no rewrite needed).
+
+### Next steps
+- **Finiteness of `sublevelMeasure`**: `Sₚ` is a bounded measurable set, so its 2D
+  Lebesgue measure is finite. The parent's `sublevelMeasure` is defined on the
+  `ℝ×ℝ` copy `{p | Complex.abs (P.eval ⟨p.1,p.2⟩) < 1}`; connect it to `Sₚ ⊆ ℂ`
+  via the `Complex.equivRealProdCLM`/`measurableEquivRealProd` measure iso, then
+  `measure_lt_top` from boundedness. (Session-sized but fiddly — the ℂ≅ℝ² measure
+  bridge is the main friction.)
+- **Pólya's `π` upper bound** and the deep KLR `c/log n` lower bound remain out of
+  scope (potential theory, not in Mathlib) — isolate KLR as a single named
+  assumption when the gallery entry is upgraded.
+
+---
+
 ## Problem Understanding
 
 [Initial observations about the problem will be recorded here]
