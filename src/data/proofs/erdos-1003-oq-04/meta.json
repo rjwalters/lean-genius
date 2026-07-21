@@ -112,9 +112,9 @@
     {
       "id": "record",
       "title": "§3 The Concrete Record — a run of length three (native_decide)",
-      "summary": "totient_5186/5187/5188 = 2592 and totient_5189 = 5188 (run breaks); mem_cet_5186/5187 (the record consecutive pair in A001274); mem_cke_two_5186 and cke_two_nonempty (three consecutive equal totients exist); not_mem_fcet_5186 (the record is not a four-run). All discharged by native_decide (Lean.ofReduceBool).",
+      "summary": "totient_5186/5187/5188 = 2592 and totient_5189 = 5188 (run breaks); mem_cet_5186/5187 (the record consecutive pair in A001274); mem_cke_two_5186 and cke_two_nonempty (three consecutive equal totients exist); not_mem_fcet_5186 (the record is not a four-run, via fcet_eq_cke_three). All discharged by native_decide (Lean.ofReduceBool), and closes namespace Erdos1003.OQ04.",
       "startLine": 179,
-      "endLine": 227,
+      "endLine": 259,
       "mathContext": "$\\varphi(5186)=\\varphi(5187)=\\varphi(5188)=2592$, $\\varphi(5189)=5188$: a length-3 run, not a four-run."
     }
   ],
