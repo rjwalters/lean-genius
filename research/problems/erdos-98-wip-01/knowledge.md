@@ -1,53 +1,382 @@
 # Knowledge Base: erdos-98-wip-01
 
-## Session 2026-07-21 (researcher-1) — intersecting-circles rigidity: two common a-neighbours are equal or a√3 apart
+## Session 2026-07-21 (researcher-1) — h 5 = 3 CLOSED (centroid concyclicity bypasses C₅ endgame)
 
-**Mode**: REVISIT (continue, RICH). **Outcome**: progress — a new axiom-free planar-rigidity
-lemma that discharges the intersecting-circle distance equations of the `h 5 ≥ 3` degree-`3`
-sub-cases. **docker-built** `Proofs.Erdos98WIP01` OK ("Build completed successfully (8577
-jobs)"; 0 sorry / 0 axiom / no `native_decide`; new proof uses only standard Mathlib inner-
-product + finrank machinery, so foundational axioms only).
+**Mode**: REVISIT (continue, RICH). **Outcome**: **COMPLETED** the `h 5 = 3` sub-goal. Two new
+axiom-free theorems + a capstone, **docker-verified** `Proofs.Erdos98WIP01`
+(`docker-build.sh`: "Build succeeded", 0 `error:`). `grep -c '^axiom '` = 0, `grep -c sorry`
+= 0, no `native_decide` (only kernel `decide` on `Fin 5` inequalities/card, axiom-free).
 
-The prior session left two concrete geometric residuals for `h 5 ≥ 3`. This session closes
-the **first-named next step**: *"two circles of radius `a` at centre-distance `a` meet at
-points `a√3` apart"*, as reusable `EuclideanSpace ℝ (Fin 2)` algebra.
+### THE KEY REALIZATION — the "C₅ endgame" is unnecessary
+Prior sessions framed the last mile as: 2-regular ⟹ single 5-cycle ⟹ regular pentagon ⟹
+concyclic. This needs a hard graph-connectivity fact AND hard pentagon geometry. **Both are
+avoided.** The only property of a 2-regular two-distance 5-set that matters is that each
+vertex has a *constant row sum of squared distances* `Rᵢ = ∑ₖ dist(Pᵢ,Pₖ)² = 2a²+2b²`
+(2 neighbours at `a`, 2 at `b`, self at 0). For the centroid `O = ⅕∑ₖ Pₖ`:
+`5(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)`, so polarising `⟪Pᵢ−Pₖ,Pᵢ−Pₗ⟫ = ½(dᵢₖ²+dᵢₗ²−dₖₗ²)`,
+`25‖Pᵢ−O‖² = ∑ₖ∑ₗ ½(dᵢₖ²+dᵢₗ²−dₖₗ²) = 5Rᵢ − ½∑ₖRₖ = 5a²+5b²` — **independent of `i`**.
+Hence `‖Pᵢ−O‖² = (a²+b²)/5` for all `i`: all five points lie on the circle centred at the
+centroid, radius `√((a²+b²)/5)`. Feeding four of them to `NoFourConcyclic` closes it. No
+cyclic order, no pentagon rigidity, no "2-regular ⟹ single cycle" graph fact. This is the
+"regular two-distance set is cospherical" phenomenon, and its derivation is dimension- and
+`n`-agnostic.
 
-**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean:1782`):
+### Lean results added (`proofs/Proofs/Erdos98WIP01.lean`, +2 theorems +1 capstone)
+- **`two_distance_row_sq_sum`** (axiom-free): `∑ₖ dist(Pₘ,Pₖ)² = 2a²+2b²` for every vertex
+  `m`, from `two_distance_two_regular` (A=a-neighbours card 2, B=b-neighbours card 2, disjoint
+  cover of `univ.erase m`; split the sum, self-term `dist_self=0`). `Finset.sum_const` +
+  `nsmul_eq_mul` + `norm_num` to turn `card • x` into `2*x`.
+- **`three_le_h_five`** (axiom-free, `maxHeartbeats 1600000`): `3 ≤ h 5`. `by_contra` →
+  `numDistinctDistances P ≤ 2` on the `h_attained` minimiser → `exists_two_distances…` gives
+  `a,b>0` cover. `by_cases a=b`: **`a=b`** ⟹ all pairs equidistant ⟹ `no_four_equidistant_indices`
+  on `0,1,2,3`; **`a≠b`** ⟹ centroid argument above, contradict `hgp.2.2` (`NoFourConcyclic`)
+  on `{0,1,2,3}`.
+- **`h_five_eq_three`**: `h 5 = 3` via `le_antisymm h_five_le_three three_le_h_five`.
 
-- **`two_common_neighbours_dist`** (axiom-free): if `dist p q = a` and both `x` and `y` are
-  at distance `a` from `p` and from `q` (with `a > 0`), then `x = y ∨ dist x y = a·√3`. Two
-  circles of radius `a` with centres `a` apart meet in ≤ 2 points, at distance `a√3`.
+### Key Lean idioms (this session)
+- `∑ k in s` is a **parse error** in this toolchain — must write `∑ k ∈ s`.
+- `InGeneralPosition` unfolds to a bare `And`, so `hgp.injective` fails (`And.injective`
+  missing) — use `hgp.1`; `NoFourConcyclic` is `hgp.2.2`.
+- `hscaled : (5:ℝ)•(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)` closed by `simp only [Fin.sum_univ_five]; module`
+  (the `module` tactic handles the `5⁻¹` field-scalar linear identity cleanly).
+- Norm→distance polarisation via `norm_sub_sq_real (Pᵢ−Pₖ) (Pᵢ−Pₗ)` with
+  `(Pᵢ−Pₖ)−(Pᵢ−Pₗ) = Pₗ−Pₖ` (`abel`), then `dist_eq_norm`/`dist_comm`.
+- The double-sum identity closes by `simp only [inner_add_left, inner_add_right]; simp_rw [pol];
+  linarith [hrow i, hrow 0..4]` — the row-sum facts are the exact linear certificate
+  (`5·rowᵢ − ½∑rowₖ`); no distance-symmetry lemmas needed because both sides carry matching
+  `dist(Pₖ,Pₗ)²` atoms.
 
-**Mechanism (rigorous).** Write `u = x−p`, `v = y−p`, `w = q−p`; all have norm `a`, and
-`⟨u,w⟩ = ⟨v,w⟩ = a²/2` (from `‖u−w‖ = ‖x−q‖ = a`, `norm_sub_sq_real`). The vector
-`e = u+v−w` is orthogonal to both `w` and `d = u−v` (direct inner-product expansion). If
-`x ≠ y` then `d ≠ 0`; were `e ≠ 0`, then `e, w, d` would be three **pairwise-orthogonal
-nonzero** vectors, hence linearly independent — impossible in the `2`-dimensional plane
-(`LinearIndependent.fintype_card_le_finrank`: `3 ≤ 2`). So `e = 0`, i.e. `u+v = w`; taking
-norms of `u+v` gives `⟨u,v⟩ = −a²/2`, whence `‖x−y‖² = ‖u−v‖² = 3a²`. Same
-regular-simplex-needs-dimension argument as `no_four_mutually_equidistant`, run one dimension
-lower.
+### Files Modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+~130 lines, 3 theorems; commits on `research/erdos98-wip01-h5-lb`)
 
-**Reusable Lean notes.** (i) `simp only [inner_sub_left, inner_add_left, …]` canonicalizes
-`⟪u,v⟫` to a fixed argument order (`⟪v,u⟫`), so a follow-up `rw [real_inner_comm .., htval]`
-with LHS `⟪u,v⟫` won't fire — finish with `linarith [htval, hc]` (`hc : ⟪v,u⟫=⟪u,v⟫`).
-(ii) `real_inner_comm`'s explicit args are the *reverse* orientation; use `real_inner_comm _ _`
-driven by the expected type. (iii) explicit `rw [inner_sub_right]` over a `set`-bound
-`u := x−p` unfolds the local def (`⟪u,u⟫ ↦ ⟪u,x⟫−⟪u,p⟫`); prefer `simp only` for the
-expansion, then a linear closer.
+### Next Steps
+`h 5` is done. Candidate follow-ups: (1) `h 6 = 3`? (needs a fresh 2-distance-impossibility
+for 6 points — the row-sum method only kills *regular* patterns; irregular 2-distance 6-sets
+need more). (2) Extract "equal row sums ⟹ cospherical" as a standalone reusable lemma. The
+asymptotic Erdős #98 statements remain genuinely open (not attackable elementarily).
 
-**Honest delta.** Did **not** prove `h 5 ≥ 3` (still open). +1 axiom-free reusable geometric
-lemma that *unlocks* the degree-`3` sub-cases (the last-remaining named gap for those cases
-was exactly this circle-intersection algebra). The all-degree-2 (`C₅`) case —
-"equilateral + equidiagonal convex pentagon ⇒ concyclic" — is still open. Axiom count
-unchanged (0). Bounds remain `2 ≤ h 5 ≤ 3`. Phase `ACT`.
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: ASSEMBLE degree-3 exclusion + 2-REGULARITY
 
-**Files modified**: `proofs/Proofs/Erdos98WIP01.lean`,
-`src/data/research/problems/erdos-98-wip-01.json`, this file.
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the four degree-3 sub-case
+lemmas are now assembled into a single vertex-level obstruction, and combined with the
+handshake/degree bounds to prove the short-distance graph is **2-regular**. Two new
+axiom-free theorems, **docker-verified** `Proofs.Erdos98WIP01` (8577 jobs, "Build
+succeeded", 0 `error:`). `grep -c '^axiom '` = 0, `grep -c sorry` = 0.
 
-**Next**: use `two_common_neighbours_dist` to finish the degree-`3` sub-case contradictions;
-then the `C₅` concyclicity fact closes `h 5 ≥ 3`.
+⚠️ **Janitor stash incident**: a background cleanup `git stash`ed my uncommitted worktree
+mid-session (also ran a rebase start/abort per reflog); `git commit` reported "nothing to
+commit" and the file reverted to 2445 lines. Recovered from `stash@{0}` (header named MY
+branch + parent `666043e1dd`), then committed AND pushed immediately (commit `64c4c4ee45`).
 
+### What I did
+Assembled the k=0,1,2,3 sub-case lemmas (proved in prior sessions) into "no vertex has
+short-degree 3", then derived full 2-regularity.
+
+**Lean results added** (`proofs/Proofs/Erdos98WIP01.lean`, +2 theorems):
+
+- **`no_short_degree_three`** (axiom-free): for a general-position two-distance
+  `PointConfig 5`, no vertex `i` has exactly three `a`-neighbours. Proof: extract the three
+  neighbours `p,q,r` via `Finset.card_eq_three`; identify the fifth point `w` (unique element
+  of `univ \ {i,p,q,r}`, via `Finset.sdiff_nonempty`) and show `dist (P i) (P w) = b` (else
+  `w` is a fourth `a`-neighbour). Then an 8-way `rcases` on the colours of the three
+  neighbour pairs `{pq,pr,qr}` dispatches each to one of the four sub-case lemmas
+  (`no_four_equidistant_indices` for k=3, `degree_three_rhombus_impossible` k=2,
+  `degree_three_isosceles_impossible` k=1, `degree_three_equilateral_impossible` k=0), with
+  the neighbour roles permuted per case and `dist_comm` fixing orientation in the 4 permuted
+  branches. **Note: `hgp` and `hab` are UNUSED** — the degree-3 obstruction is purely
+  *metric*; general-position / `a≠b` enter only through the sub-case lemmas' own geometry.
+
+- **`two_distance_two_regular`** (axiom-free): every vertex has exactly two `a`-neighbours.
+  `two_distance_near_degree_bounds` confines each `a`-degree to `{1,2,3}`;
+  `no_short_degree_three` kills 3; its `a↔b` mirror (`no_short_degree_three` with `a,b`
+  swapped, `hcov' = (hcov · ·).symm`) kills `b`-degree 3, and since `A.card + B.card = 4`
+  (disjoint neighbour circles partition the 4 other points) that kills `a`-degree 1. `omega`
+  closes `a`-degree `= 2`.
+
+### Key findings
+- The whole degree-3 exclusion is **metric, not general-position-dependent** — a cleaner
+  statement than expected (`hgp`/`hab` unused in the assembly).
+- `Finset.card_sdiff` in this Mathlib (v4.31) is the **unconditional** form
+  `#(s\t) = #s − #(t∩s)` (no subset-hypothesis arg) — use `Finset.sdiff_nonempty.mpr` +
+  `Finset.card_le_card` for "complement of a small subset is nonempty" instead.
+
+### Files Modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+137 lines, 2 theorems; commit `64c4c4ee45`)
+
+### Next Steps — C₅ ENDGAME (the last mile for `h 5 ≥ 3`)
+2-regular short-graph on 5 vertices ⟹ a single 5-cycle ⟹ metric realization forces a
+**regular pentagon** ⟹ its 5 vertices are **concyclic** ⟹ contradicts `NoFourConcyclic`.
+Concrete sub-tasks:
+1. From 2-regularity, extract the cyclic order: a permutation `σ` of `Fin 5` with
+   `dist (P i) (P (σ i)) = a` and `dist (P i) (P (σ² i)) = b` for all `i` (each vertex's two
+   `a`-neighbours are `σ i`, `σ⁻¹ i`; the two `b`-neighbours are `σ² i`, `σ⁻² i`). Hardest
+   Lean step: proving connectivity (a 2-regular graph on 5 vertices is a single 5-cycle, not
+   e.g. a triangle+edge — ruled out because 5 is odd / K₃ is a mono-triangle killed by
+   `no_four_equidistant_indices`? no — need the pure graph fact). Consider `SimpleGraph`
+   `IsCycle`/`connected` API or a direct `Fin 5` case analysis.
+2. All five `a`-edges equal + all five `b`-edges equal (2-distance) + cyclic ⟹ regular
+   pentagon; then the 5 points lie on a common circle. Likely via the circumcircle of any 3
+   consecutive vertices and showing the other 2 lie on it (law of cosines with the fixed
+   pentagon angles), or an explicit rotation `ρ` of order 5.
+3. Feed 4 of the concyclic points to `NoFourConcyclic` (`noFourConcyclic` of `InGeneralPosition`).
+
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=1 sub-case (isosceles) — SUB-CASES COMPLETE
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 1` (final) geometric
+sub-case of the degree-3 exclusion proved, axiom-free. With it, **all four sub-cases k=0,1,2,3
+are now proved.** **Docker-verified** `Proofs.Erdos98WIP01` via `./proofs/scripts/docker-build.sh`
+(8577 jobs, "Build succeeded", 0 `error:`, only pre-existing deprecation / unused-simp-arg
+warnings). `grep -c '^axiom '` = 0, `grep -c sorry` = 0, no `native_decide` (the single
+`native_decide` grep hit is docstring text). Tactics (`set`/`rw`/`simp only`/`linarith`/
+`nlinarith`/`positivity`/`linear_combination`/`fin_cases`/`omega`/`abel`, plus
+`real_inner_smul_left`/`_right`) are all axiom-clean, matching the k=0/k=2 footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+### What I did
+Proved the `k = 1` sub-case (exactly ONE of the three neighbour pairs at the SHORT distance
+`a`): `dist x y = a`, `dist x z = dist y z = b`. Geometry: `{v,x,y}` equilateral of side `a`,
+`z` sits off it.
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean:2297`, +1 theorem):
+
+- **`degree_three_isosceles_impossible`** (axiom-free, `set_option maxHeartbeats 1600000`):
+  5 points `v,x,y,z,w` with `dist v {x,y,z}=a`, `dist x y = a`, `dist x z = dist y z = b`,
+  `dist v w = b`, `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (the k=1 twist vs k=0/k=2):
+1. Edge vectors `uⱼ=j−v`. `⟪uₓ,u_y⟫=a²/2` (dist `a`), `⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2` (dist `b`).
+2. Three vectors in ℝ² dependent ⟹ singular Gram. Solving the Gram system (independence ⟹
+   `g₀=g₁`, then eliminate `g₂`: `linear_combination (-2a²)e1 + (2a²−b²)e3` gives
+   `g₀·(a⁴−4a²b²+b⁴)=0`) forces **`a⁴−4a²b²+b⁴=0`** — the CLEAN polynomial form of
+   `(a²−b²/2)²=¾a⁴`, roots `b²=(2±√3)a²`. NO clean `b²=3a²` substitution (quadratic irrational,
+   both √3 branches metrically realizable).
+3. That relation makes `‖(2a²−b²)(uₓ+u_y) − 3a²·u_z‖² = −3a²(a⁴−4a²b²+b⁴) = 0`, giving the
+   linear dependence **`(2a²−b²)(uₓ+u_y) = 3a²·u_z`** (coefficients are quadratic irrationals).
+4. `⟪u_w, (2a²−b²)(uₓ+u_y) − 3a²u_z⟫ = 0`; each `⟪u_w,uⱼ⟫=(b²+a²−dist(w,j)²)/2` with
+   `dist(w,j)²∈{a²,b²}`. 8-way `rcases`: each assignment gives a homogeneous degree-4 relation
+   `H_case` which together with `key` has no common root for `a>0`; closed uniformly by
+   `nlinarith` with a degree-6 Positivstellensatz certificate (products `a²·H, b²·H, a²·key,
+   b²·key` sum to a positive multiple of `a⁶`; hints `pow_pos ha 6` + `a⁴b², a²b⁴` positivity).
+
+Also bumped `degree_three_rhombus_impossible` (k=2) `maxHeartbeats` 800000→1600000 — it tipped
+over 800000 at `whnf` this build (heartbeat variance; it had passed at 800000 before).
+
+### Degree-3 exclusion status — ALL SUB-CASES DONE
+- `k=3` `no_four_equidistant_indices`, `k=0` `degree_three_equilateral_impossible`,
+  `k=2` `degree_three_rhombus_impossible`, **`k=1` `degree_three_isosceles_impossible` (this
+  session)**. The four sub-case lemmas are complete and axiom-free.
+
+### Exact remaining gap (for next iteration, cold) — HONEST SCOPE
+The four sub-cases are proved as STANDALONE lemmas; they are **not yet assembled** into the
+theorem "no short-degree-3 vertex", and the `h 5 ≥ 3` lower bound is NOT yet closed. Remaining:
+1. **Assemble**: prove `¬(∃ vertex of a-degree 3)` by dispatching on `k=#{a-edges among the 3
+   neighbour pairs}∈{0,1,2,3}` (exhaustive), permuting `x,y,z` so the odd-one-out pair matches
+   each lemma, and feeding the 5th point `w` (the non-neighbour of `v`, at `dist b`). Care:
+   identify `w` and confirm `dist w {x,y,z}∈{a,b}` from the two-distance hypothesis.
+2. **`a↔b` symmetry**: b-degree=4−a-degree; the swapped lemmas exclude b-degree-3 ⟹ a-degree-1
+   also excluded ⟹ all a-degrees=2 ⟹ short-graph 2-regular.
+3. **C₅ endgame**: 2-regular on 5 vertices ⟹ 5-cycle ⟹ regular pentagon ⟹ 5 concyclic ⟹
+   `¬NoFourConcyclic`. Closes `h 5 ≥ 3`. Bounds remain `2 ≤ h 5 ≤ 3` until this lands.
+
+### Reusable idiom (k=1 specific)
+When the singular-Gram relation is a quadratic irrational (`b²=(2±√3)a²`, no linear
+substitution): (i) express `key` as the CLEAN quartic `a⁴−4a²b²+b⁴=0` (det Gram cleared of
+`/2`s) for `nlinarith`/`linear_combination`; (ii) get the vector dependence via
+`‖(coeff-with-irrational)·combo‖² = const·key = 0` rather than a scalar substitution; (iii) the
+final many-way distance split needs a degree-6 (not degree-2) Positivstellensatz certificate —
+feed `nlinarith` the `a⁶,b⁶,a⁴b²,a²b⁴` positivity facts so it can form `a²·H,b²·H,a²·key,b²·key`.
+
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=2 sub-case (60°-rhombus)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 2` geometric sub-case of
+the degree-3 exclusion proved, axiom-free. **Docker-verified** `Proofs.Erdos98WIP01` via
+`./proofs/scripts/docker-build.sh` (8577 jobs, "Build succeeded", 0 `error:`, only pre-existing
+deprecation / unused-simp-arg warnings). `grep -c '^axiom '` = 0, `grep -c sorry` = 0, no
+`native_decide` (the single `native_decide` grep hit is the docstring text "no `native_decide`").
+Tactics used (`set`/`rw`/`simp only`/`linarith`/`nlinarith`/`positivity`/`linear_combination`/
+`fin_cases`/`omega`/`abel`) are all axiom-clean, so the axiom footprint matches the k=0 twin
+`[propext, Classical.choice, Quot.sound]`.
+
+### What I did
+Attacked the `k = 2` sub-case (exactly two of the three neighbour pairs at the SHORT distance
+`a`, one at `b`) of "rule out short-degree 3". `{v, y, x, z}` is a 60°-rhombus (two equilateral
+triangles of side `a` glued on diagonal `v x`).
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean`, +1 theorem, before `end`):
+
+- **`degree_three_rhombus_impossible`** (axiom-free, coordinate-free, `set_option
+  maxHeartbeats 800000`): 5 points `v,x,y,z,w` with `dist v {x,y,z}=a`, `dist x y = dist x z = a`,
+  `dist y z = b`, `dist v w = b`, and `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (mirrors the k=0 twin, but different algebra):
+1. Edge vectors `uⱼ=j−v`. Inner products: `⟪uₓ,u_y⟫=⟪uₓ,u_z⟫=a²/2` (dist `a`),
+   `⟪u_y,u_z⟫=a²−b²/2` (dist `b`).
+2. Three vectors in ℝ² are dependent; solving the Gram system (independence ⟹ `g₁=g₂`,
+   `g₀=−g₁`, then `(3a²−b²)g₁=0`) forces **`b²=3a²`** (`LinearIndependent.fintype_card_le_finrank`
+   + `omega`).
+3. With `b²=3a²`: `‖uₓ−u_y−u_z‖²=3a²−b²=0`, so **`uₓ=u_y+u_z`** (rhombus diagonal relation).
+4. `⟪u_w, uₓ−u_y−u_z⟫=0` gives `dist(w,y)²+dist(w,z)²=4a²+dist(w,x)²`; each squared distance
+   `∈{a²,3a²}`, so LHS`∈{2a²,4a²,6a²}`, RHS`∈{5a²,7a²}` — disjoint (8-way `rcases` + `nlinarith`).
+
+Numerically pre-verified (sympy/numpy): rhombus relation holds and NO fifth point `w` at
+`dist b` from `v` has all three distances to `x,y,z` in `{a,b}`.
+
+### Degree-3 exclusion status
+- `k=3` DONE (`no_four_equidistant_indices`), `k=0` DONE (`degree_three_equilateral_impossible`),
+  **`k=2` DONE this session** (`degree_three_rhombus_impossible`). **Only `k=1` remains.**
+
+### Exact remaining gap (for next iteration, cold)
+`k=1`: exactly one `a`-edge among neighbour pairs (`dist x y = a`, `dist x z = dist y z = b`).
+Gram is DIFFERENT: `⟪uₓ,u_y⟫=a²/2`, `⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2`, `det Gram = 0` ⟹
+`(a²−b²/2)²=¾a⁴` ⟹ **`b²=(2±√3)a²`** (verified numerically — both branches realizable), NOT
+`b²=3a²`. So k=1 is a genuine two-branch case with a quadratic-irrational `b²`; likely needs
+`nlinarith` on the `(a²−b²/2)²=¾a⁴` relation rather than a clean `b²=3a²` substitution.
+
+### Infra gotcha (recurred this session)
+A background rebase/janitor **reset my local branch to `origin/…` mid-session** (HEAD@{2}
+`reset: moving to origin/research/erdos98-wip01-h5-lb`), wiping my just-made commit AND the
+working file (docker build had already succeeded on the edited tree). Recovered via
+`git reset --hard <lost-sha>` from reflog, then **pushed immediately**. Lesson (again): commit
+AND push right after each research edit; do not leave a local-only commit across a build cycle.
+
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=0 sub-case (equilateral neighbour triangle)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — one geometric sub-case of the
+degree-3 exclusion proved, axiom-free. **Host-verified** `Proofs.Erdos98WIP01` via
+`lake env lean` (fresh v4.31 parent olean), exit 0, 0 `error:`, 26 pre-existing deprecation
+warnings. `#print axioms degree_three_equilateral_impossible` = `[propext, Classical.choice,
+Quot.sound]` (no `sorryAx`, no `ofReduceBool`). `grep -c '^axiom '` = 0, `grep sorry` = 0,
+no `native_decide`.
+
+### What I did
+Attacked the *exact remaining gap #1* from the prior session (rule out short-degree 3).
+That gap splits by `k` = number of the three neighbour-pairs `{xy,xz,yz}` at the SHORT
+distance `a`. Proved the `k = 0` sub-case (all three neighbour pairs at the OTHER distance).
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean`, +1 theorem):
+
+- **`degree_three_equilateral_impossible`** (axiom-free, coordinate-free, `set_option
+  maxHeartbeats 800000`): given 5 points `v,x,y,z,w` with `dist v {x,y,z} = a`, `x,y,z`
+  mutually at `dist = b` (equilateral triangle, `v` its circumcentre), `dist v w = b`, and
+  `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (the elegant part — NO coordinates):
+1. Edge vectors `uₓ=x−v, u_y=y−v, u_z=z−v` have norm `a`, pairwise inner product `a²−b²/2`
+   (from `norm_sub_sq_real` + the mutual distance `b`). Three vectors in
+   `EuclideanSpace ℝ (Fin 2)` (finrank 2) can't be linearly independent, and solving the
+   resulting Gram system (subtract the three inner-with-`u_j` equations: `(b²/2)(gᵢ−gⱼ)=0`
+   ⟹ all `gᵢ` equal, then `(3a²−b²)g₀=0`) forces **`b² = 3a²`** (else independent ⟹
+   `3 ≤ finrank = 2`, contradiction — same `LinearIndependent.fintype_card_le_finrank`
+   trick as `no_four_mutually_equidistant`).
+2. With `b²=3a²`: `‖uₓ+u_y+u_z‖² = 9a²−3b² = 0`, so **`uₓ+u_y+u_z = 0`** (circumcentre =
+   centroid). Proved via `real_inner_self_eq_norm_sq` + `pow_eq_zero_iff` + `norm_eq_zero`.
+3. Then `⟪u_w, uₓ+u_y+u_z⟫ = ⟪u_w,0⟫ = 0`, but each `⟪u_w,u_j⟫ = (b²+a²−dist(w,j)²)/2`
+   with `dist(w,j)∈{a,b}` equals `b²/2` or `a²/2` — **strictly positive**. Sum of three
+   positives = 0 is absurd (`linarith`).
+
+### Why this is progress (honest scope)
+`degree_three_equilateral_impossible` is genuinely a **five-point / global** obstruction:
+`{v,x,y,z}` alone is realizable (a triangle + its circumcentre is not concyclic — `v` is the
+centre, not on the circumcircle), confirming the prior session's claim that pure local /
+graph-theory arguments cannot force `C₅`. The contradiction only appears once the fifth
+point `w` is added. This is ONE of the (up to) three mixed sub-cases of "no short-degree-3
+vertex"; it does **not** yet close degree-3 exclusion.
+
+### Exact remaining gap (for next iteration, cold)
+Degree-3 vertex `v` with neighbours `x,y,z` at distance `a`, fifth point `w` at `dist b`,
+`dist(w,·)∈{a,b}`. Sub-cases by `k = #{a-edges among xy,xz,yz}`:
+- `k=3` (all three `a`): DONE — `no_four_equidistant_indices` (regular tetrahedron in ℝ²).
+- `k=0` (all three `b`): **DONE this session** — `degree_three_equilateral_impossible`.
+- `k=2` (say `xy=xz=a, yz=b`): OPEN. Geometry: `{v,x,y,z}` is a 60°-rhombus (`v,y,x,z`
+  two equilateral triangles glued), forcing `b=a√3`; then the fifth point `w` at `dist b`
+  from `v` has no consistent position (hand-checked: the two candidate `x`-abscissae both
+  fail). **Same inner-product method should work**: express `u_w` in the basis `{uₓ,u_y}`
+  and use the Gram relations; `uₓ,u_y,u_z` satisfy a rank-2 relation (one pair inner `a²/2`,
+  one `a²−b²/2`). Needs the analogous linear-dependence extraction, then contradiction on
+  the four forced inner products of `u_w`.
+- `k=1` (say `xy=a, xz=yz=b`): OPEN. Analogous, `{v,x,y}` equilateral side `a`, `z` off it.
+After ALL sub-cases: short-degree ∈ {1,2}; by the `a↔b` symmetry (b-degree = 4 − a-degree,
+same `card_fiber_dist_le_three` bound) the SAME lemma family excludes b-degree-3, hence
+a-degree-1 ⟺ b-degree-3 is excluded ⟹ **all a-degrees = 2** (2-regular ⟹ `C₅`). Then the
+endgame: `C₅` metric realization ⟹ regular pentagon ⟹ 5 concyclic ⟹ `¬NoFourConcyclic`.
+
+### Reusable idiom
+The Gram-system linear-dependence trick generalizes `no_four_mutually_equidistant`: to force
+a metric relation among ≤ `d+1` vectors in `ℝ^d`, assume `LinearIndependent`, use
+`.fintype_card_le_finrank` + `finrank_euclideanSpace_fin` for the `card > d` contradiction;
+extract coefficient equations by `congrArg (inner ℝ · u_j)` + `simp [inner_add_left,
+real_inner_smul_left, inner_zero_left]`; solve with `linear_combination`/`mul_eq_zero`.
+Then `‖∑ uᵢ‖² = ⟪∑,∑⟫` expanded by `simp [inner_add_left, inner_add_right, <values>]; ring`,
+and `pow_eq_zero_iff (two_ne_zero) ▸ norm_eq_zero` to get the vector identity `∑ uᵢ = 0`.
+**Gotcha**: the whole lemma exceeds the default 200k heartbeat budget → `set_option
+maxHeartbeats 800000 in` **before** the docstring (a `set_option … in` between docstring and
+`theorem` is a parse error: "unexpected token 'set_option'; expected 'lemma'").
+
+### Files modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+`degree_three_equilateral_impossible`)
+- `src/data/research/problems/erdos-98-wip-01.json`, this file, `state.md`
+
+### Infra note
+Background rebase-onto-origin/main orphaned my first local commit (janitor `reset: moving
+to origin/<branch>` then `rebase (abort)`). Recovered via reflog + `git reset --hard <sha>`;
+now **push immediately after each commit** so the origin branch carries the work and the
+reset is a no-op. (Matches `gotcha-janitor-reaps-fresh-worktree-before-first-commit`.)
+
+---
+
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: handshake parity obstruction (some vertex has exactly 2 short neighbours)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — one new structural step on the
+critical path to `h 5 ≥ 3`, axiom-free. **Host-verified** `Proofs.Erdos98WIP01` via
+`lake env lean` (fresh v4.31 parent olean), exit 0, no `error:` (only pre-existing
+`EuclideanSpace.single_apply` deprecation warnings at line 451); file now 1964 lines,
+`grep -c '^axiom '` = 0, `grep -c 'sorry'` = 0, no `native_decide`.
+
+### What I did
+Advanced the residual reduction (`h 5 ≥ 3` ⟺ no general-position `PointConfig 5` is a
+2-distance set) by proving a **parity obstruction** that begins forcing 2-regularity of the
+short-distance graph.
+
+**Lean results added** (`proofs/Proofs/Erdos98WIP01.lean`):
+
+- **`even_sum_symm_degree`** (axiom-free, general): for any symmetric, irreflexive
+  `DecidableRel r` on a `Fintype`, `Even (∑ i, #{j ≠ i : r i j})`. This is the handshaking
+  lemma, routed through Mathlib's `SimpleGraph.sum_degrees_eq_twice_card_edges` (RHS
+  `2 · #edges`, manifestly even). Key formalization notes: build the `SimpleGraph` literal
+  with `symm := ⟨hsymm⟩ : Std.Symm r`, `loopless := ⟨hirr⟩ : Std.Irrefl r`; set
+  `DecidableRel G.Adj := fun a b => inferInstance` (NOT `Classical.decRel`, which forks the
+  filter's `DecidablePred` instance and breaks the final `rw`/`convert`); close the pointwise
+  `degree = filter-card` goal by `convert h2 using 2 with i` then inline
+  `neighborFinset_eq_filter` (uses the goal's own instance, avoiding the mismatch).
+- **`two_distance_exists_degree_two`** (axiom-free): a general-position 2-distance
+  `PointConfig 5` has **some vertex with exactly 2 short-distance (`a`) neighbours**.
+  Mechanism: `two_distance_near_degree_bounds` gives each short-degree `d_a(i) ∈ {1,2,3}`;
+  `even_sum_symm_degree` (with `r i j := dist (P i) (P j) = a`, symmetric via `dist_comm`,
+  irreflexive since `a > 0` — realised from vertex 0) makes `∑_i d_a(i)` even; a sum of five
+  odd numbers is odd, so not all `d_a(i)` are odd ⇒ some equals 2. Closed by
+  `Fin.sum_univ_five` + `omega` on per-vertex `% 2 = 1` facts.
+
+### Why this is progress (honest scope)
+This is the FIRST pin of a specific degree value. It does **not** yet give 2-regularity: it
+guarantees *one* degree-2 vertex, not all five. A sum of five values in `{1,2,3}` that is even
+can still be e.g. `(1,1,3,3,2)` — so degrees 1 and 3 are not yet excluded.
+
+### Exact remaining gap (for the next iteration to pick up cold)
+1. **Rule out short-degree 3** (equivalently long-degree 1, by the `a ↔ b` symmetry of the
+   two-distance hypothesis). This is the genuinely *geometric* step: if a vertex `v` has three
+   short-neighbours `x,y,z` on the radius-`a` circle about `v`, the two-distance constraint on
+   `{x,y,z}` together with no-3-collinear / no-4-concyclic must be shown contradictory. Pure
+   graph theory (degrees in `{1,2,3}`, both `G` and `Gᶜ` `K₄`-free) does **not** force `C₅`.
+   Precise lemma to prove: `∀ i, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card = 2`.
+2. After full 2-regularity: `2-regular on Fin 5 ⟹ single 5-cycle C₅` (finite/decidable);
+   then `C₅` two-distance realisation ⟹ regular pentagon ⟹ 5 concyclic ⟹ contradicts
+   `NoFourConcyclic` ⟹ `h 5 ≥ 3`.
+
+### Files modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+2 theorems, `even_sum_symm_degree`, `two_distance_exists_degree_two`)
+- `src/data/research/problems/erdos-98-wip-01.json` (knowledge accumulation)
+
+---
 
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3 reduced to pentagon rigidity: 2-distance reduction + degree structure
 

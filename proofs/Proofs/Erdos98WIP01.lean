@@ -125,8 +125,12 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     (−√3⁄2,−½), (½,√3⁄2), (½,−(2+√3)⁄2)` are in general position (no three collinear, no
     four concyclic — the five circumscribed-circle determinants are all nonzero) and realize
     *exactly three* distinct distances `1, √(2+√3), 1+√3`, giving `numDistinctDistances ≤ 3`.
-    The regular pentagon (the only planar 2-distance 5-set) is concyclic, so `h 5 = 3` is
-    expected; the matching lower bound `h 5 ≥ 3` needs that classification and is left open.
+    The matching lower bound `h 5 ≥ 3` (`three_le_h_five`) is now proved, pinning `h 5 = 3`
+    exactly (`h_five_eq_three`).  It is *not* the one-line "regular pentagon is concyclic"
+    argument (the pentagon is not the only planar 2-distance 5-set): the short-distance graph
+    of a general-position 2-distance 5-set is 2-regular, whence a constant row-sum of squared
+    distances and a centroid identity force all five points cospherical, contradicting
+    `NoFourConcyclic`.
 
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
@@ -1396,10 +1400,12 @@ theorem h_four : h 4 = 2 :=
 For five points the pinning of `h` runs into genuine difficulty: the linear lower bound
 `three_mul_h_ge 5` gives only `h 5 ≥ 2`, and monotonicity (`h_four`, `h_mono`) gives the
 same `h 5 ≥ 2`, while the natural 2-distance candidate — the **regular pentagon** — is
-*disqualified* (its five vertices are concyclic).  Indeed the only planar 2-distance set
-of five points is the regular pentagon, so no general-position 5-set has two distances and
-in fact `h 5 = 3`; the matching lower bound `h 5 ≥ 3` requires that classification and is
-left open here.
+*disqualified* (its five vertices are concyclic).  The matching lower bound `h 5 ≥ 3`
+(`three_le_h_five`, below) is now proved — not via a full planar 2-distance-set
+classification, but by showing the short-distance graph of any general-position
+2-distance 5-set is 2-regular and then forcing the five points cospherical (centroid
+concyclicity), contradicting `NoFourConcyclic`.  Together with the upper bound this pins
+`h 5 = 3` exactly (`h_five_eq_three`).
 
 What *is* elementary is the **upper bound** `h 5 ≤ 3`.  The five points
 
@@ -2028,5 +2034,817 @@ theorem two_distance_near_degree_bounds
   have hsum : A.card + B.card = 4 := by
     rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
   exact ⟨by omega, hcardA⟩
+
+/-- **Handshaking lemma for a symmetric, irreflexive relation.**  The sum over all
+vertices of the neighbour-count of a symmetric, loopless relation is even: each
+unordered related pair `{i, j}` is counted once from `i` and once from `j`.  We
+route this through Mathlib's `SimpleGraph.sum_degrees_eq_twice_card_edges`, whose
+right-hand side `2 · #edges` is manifestly even. -/
+theorem even_sum_symm_degree {α : Type*} [Fintype α] [DecidableEq α]
+    (r : α → α → Prop) [DecidableRel r]
+    (hsymm : ∀ i j, r i j → r j i) (hirr : ∀ i, ¬ r i i) :
+    Even (∑ i, ((univ.erase i).filter (fun j => r i j)).card) := by
+  let G : SimpleGraph α := { Adj := r, symm := ⟨hsymm⟩, loopless := ⟨hirr⟩ }
+  haveI : DecidableRel G.Adj := fun a b => (inferInstance : Decidable (r a b))
+  have h2 : Even (∑ v, G.degree v) :=
+    ⟨#G.edgeFinset, by rw [G.sum_degrees_eq_twice_card_edges, two_mul]⟩
+  convert h2 using 2 with i
+  -- pointwise: `#((univ.erase i).filter (r i ·)) = G.degree i`, using the goal's own instance
+  rw [SimpleGraph.degree, SimpleGraph.neighborFinset_eq_filter]
+  congr 1
+  ext j
+  simp only [mem_filter, mem_erase, mem_univ, and_true, true_and]
+  exact ⟨fun h => h.2, fun hrj => ⟨fun h => hirr i (h ▸ hrj), hrj⟩⟩
+
+/-- **Some vertex of a general-position two-distance 5-set has exactly two
+short-distance neighbours (parity obstruction toward `C₅`).**  Suppose `P` is a
+general-position `5`-point configuration whose pairwise distances take only the
+two values `a ≠ b`.  By `two_distance_near_degree_bounds` each short-distance
+degree `dₐ(i)` lies in `{1, 2, 3}`; by `even_sum_symm_degree` the sum
+`∑ᵢ dₐ(i)` is even (handshake).  A sum of five odd numbers is odd, so the degrees
+cannot all be odd — at least one equals `2`.  This is the parity step that begins
+forcing the short-distance graph of a putative two-distance 5-set to be the
+`2`-regular pentagon `C₅` (whose unique realisation is the regular pentagon, all
+five points concyclic — contradicting `NoFourConcyclic`, the eventual route to
+`h 5 ≥ 3`). -/
+theorem two_distance_exists_degree_two
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ} (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b) :
+    ∃ i : Fin 5, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card = 2 := by
+  -- `a` is a genuine (positive) distance: it is realised from vertex `0`.
+  obtain ⟨hlow0, _⟩ := two_distance_near_degree_bounds hgp hab hcov 0
+  have hapos : 0 < a := by
+    obtain ⟨j, hj⟩ := Finset.card_pos.mp
+      (by omega : 0 < ((univ.erase 0).filter (fun j => dist (P 0) (P j) = a)).card)
+    rw [mem_filter, mem_erase] at hj
+    obtain ⟨⟨hj0, _⟩, hdj⟩ := hj
+    have hPne : P 0 ≠ P j := fun h => hj0 (hgp.1 h).symm
+    rw [← hdj]; exact dist_pos.mpr hPne
+  -- Handshake parity on the short-distance relation.
+  have heven : Even (∑ i, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card) :=
+    even_sum_symm_degree (fun i j => dist (P i) (P j) = a)
+      (fun i j h => by rw [dist_comm]; exact h)
+      (fun i => by simp only [dist_self]; exact ne_of_lt hapos)
+  -- Degrees in `{1,2,3}` cannot all be odd (a sum of five odd numbers is odd).
+  by_contra h
+  push_neg at h
+  have hpar : ∀ i, ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card % 2 = 1 := by
+    intro i
+    obtain ⟨hlo, hhi⟩ := two_distance_near_degree_bounds hgp hab hcov i
+    have := h i
+    omega
+  obtain ⟨k, hk⟩ := heven
+  rw [Fin.sum_univ_five] at hk
+  have h0 := hpar 0; have h1 := hpar 1; have h2 := hpar 2
+  have h3 := hpar 3; have h4 := hpar 4
+  omega
+
+set_option maxHeartbeats 800000 in
+/-- **A short-degree-`3` vertex with an equilateral neighbour triangle is impossible
+(`k = 0` sub-case of the degree-`3` exclusion).**  Suppose `v` has three neighbours
+`x, y, z` all at distance `a`, that `x, y, z` are *mutually* at the other distance `b`
+(so `{x, y, z}` is equilateral of side `b` and `v` is its circumcentre), and there is a
+fifth point `w` at distance `b` from `v` with each of `dist w x`, `dist w y`, `dist w z`
+in `{a, b}`.  Then `False`.
+
+This is a genuinely five-point (global) obstruction: the four points `{v, x, y, z}` alone
+are consistent (they are not concyclic — `v` is the centre, not on the circumcircle of
+`x, y, z`), so the contradiction *requires* the fifth point `w`.
+
+**Proof (coordinate-free).**  Put `uₓ = x − v`, `u_y = y − v`, `u_z = z − v`, `u_w = w − v`.
+The three vectors `uₓ, u_y, u_z` live in the `2`-dimensional `EuclideanSpace ℝ (Fin 2)`, so
+they are linearly dependent; solving the resulting Gram system forces `b² = 3a²`.  With
+`b² = 3a²` the Gram identity gives `‖uₓ + u_y + u_z‖² = 9a² − 3b² = 0`, i.e.
+`uₓ + u_y + u_z = 0` (the circumcentre is the centroid).  But then
+`⟪u_w, uₓ + u_y + u_z⟫ = 0`, while each `⟪u_w, u_j⟫ = (b² + a² − dist w j ²)/2` is
+*strictly positive* (as `dist w j ∈ {a, b}` and both `a², b² < b² + a²`), so their sum is
+positive — contradiction.  This is the `k = 0` case of ruling out short-degree `3`; the
+mixed sub-cases (`k = 1, 2`, some neighbour pair at the short distance) remain. -/
+theorem degree_three_equilateral_impossible
+    {v x y z w : EuclideanSpace ℝ (Fin 2)} {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (hvx : dist v x = a) (hvy : dist v y = a) (hvz : dist v z = a)
+    (hxy : dist x y = b) (hxz : dist x z = b) (hyz : dist y z = b)
+    (hvw : dist v w = b)
+    (hwx : dist w x = a ∨ dist w x = b)
+    (hwy : dist w y = a ∨ dist w y = b)
+    (hwz : dist w z = a ∨ dist w z = b) : False := by
+  set ux : EuclideanSpace ℝ (Fin 2) := x - v with hux
+  set uy : EuclideanSpace ℝ (Fin 2) := y - v with huy
+  set uz : EuclideanSpace ℝ (Fin 2) := z - v with huz
+  set uw : EuclideanSpace ℝ (Fin 2) := w - v with huw
+  -- Edge-vector norms.
+  have nux : ‖ux‖ = a := by rw [hux, ← dist_eq_norm, dist_comm]; exact hvx
+  have nuy : ‖uy‖ = a := by rw [huy, ← dist_eq_norm, dist_comm]; exact hvy
+  have nuz : ‖uz‖ = a := by rw [huz, ← dist_eq_norm, dist_comm]; exact hvz
+  have nuw : ‖uw‖ = b := by rw [huw, ← dist_eq_norm, dist_comm]; exact hvw
+  -- Self inner products.
+  have iuu : inner ℝ ux ux = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nux]
+  have ivv : inner ℝ uy uy = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuy]
+  have iww : inner ℝ uz uz = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuz]
+  -- Cross inner products among `x, y, z`: all `a² − b²/2` (mutual distance `b`).
+  have ixy : inner ℝ ux uy = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖ux - uy‖ = b := by
+      have : ux - uy = x - y := by rw [hux, huy]; abel
+      rw [this, ← dist_eq_norm]; exact hxy
+    have h := norm_sub_sq_real ux uy
+    rw [hn, nux, nuy] at h; linarith
+  have ixz : inner ℝ ux uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖ux - uz‖ = b := by
+      have : ux - uz = x - z := by rw [hux, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hxz
+    have h := norm_sub_sq_real ux uz
+    rw [hn, nux, nuz] at h; linarith
+  have iyz : inner ℝ uy uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖uy - uz‖ = b := by
+      have : uy - uz = y - z := by rw [huy, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hyz
+    have h := norm_sub_sq_real uy uz
+    rw [hn, nuy, nuz] at h; linarith
+  -- Symmetric copies.
+  have iyx : inner ℝ uy ux = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact ixy
+  have izx : inner ℝ uz ux = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact ixz
+  have izy : inner ℝ uz uy = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact iyz
+  -- Three vectors in a `2`-dimensional space cannot be independent; the Gram system
+  -- they satisfy forces `b² = 3a²`.
+  have key : b ^ 2 = 3 * a ^ 2 := by
+    by_contra hne
+    have hli : LinearIndependent ℝ ![ux, uy, uz] := by
+      rw [Fintype.linearIndependent_iff]
+      intro g hg
+      rw [Fin.sum_univ_three] at hg
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.tail_cons] at hg
+      have e1 : g 0 * a ^ 2 + g 1 * (a ^ 2 - b ^ 2 / 2) + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t ux : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [iuu, iyx, izx] at h; linarith
+      have e2 : g 0 * (a ^ 2 - b ^ 2 / 2) + g 1 * a ^ 2 + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uy : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixy, ivv, izy] at h; linarith
+      have e3 : g 0 * (a ^ 2 - b ^ 2 / 2) + g 1 * (a ^ 2 - b ^ 2 / 2) + g 2 * a ^ 2 = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uz : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixz, iyz, iww] at h; linarith
+      have hbne : (b ^ 2 / 2 : ℝ) ≠ 0 := by positivity
+      have h3ab : (3 * a ^ 2 - b ^ 2) ≠ 0 := fun h => hne (by linarith)
+      have hg01 : g 1 = g 0 := by
+        have h := (mul_eq_zero.mp
+          (show (b ^ 2 / 2) * (g 1 - g 0) = 0 by linear_combination e2 - e1)).resolve_left hbne
+        linarith
+      have hg12 : g 2 = g 0 := by
+        have h := (mul_eq_zero.mp
+          (show (b ^ 2 / 2) * (g 2 - g 0) = 0 by linear_combination e3 - e1)).resolve_left hbne
+        linarith
+      have hg0 : g 0 = 0 := by
+        have hkey : (3 * a ^ 2 - b ^ 2) * g 0 = 0 := by
+          have h := e1; rw [hg01, hg12] at h; linear_combination h
+        exact (mul_eq_zero.mp hkey).resolve_left h3ab
+      intro i
+      fin_cases i
+      · show g 0 = 0; exact hg0
+      · show g 1 = 0; rw [hg01]; exact hg0
+      · show g 2 = 0; rw [hg12]; exact hg0
+    have hcard := hli.fintype_card_le_finrank
+    rw [finrank_euclideanSpace_fin] at hcard
+    simp only [Fintype.card_fin] at hcard
+    omega
+  -- `‖uₓ + u_y + u_z‖² = 9a² − 3b² = 0`, so the edge vectors sum to zero.
+  have hSsq : inner ℝ (ux + uy + uz) (ux + uy + uz) = 9 * a ^ 2 - 3 * b ^ 2 := by
+    simp only [inner_add_left, inner_add_right, iuu, ivv, iww, ixy, ixz, iyz, iyx, izx, izy]
+    ring
+  have hnorm0 : ‖ux + uy + uz‖ ^ 2 = 0 := by
+    rw [← real_inner_self_eq_norm_sq, hSsq]; linarith [key]
+  have hS : ux + uy + uz = 0 := by
+    have hz : ‖ux + uy + uz‖ = 0 := by
+      have h2 := hnorm0
+      rwa [pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)] at h2
+    exact norm_eq_zero.mp hz
+  -- Each `⟪u_w, u_j⟫` is strictly positive, but their sum is `⟪u_w, uₓ+u_y+u_z⟫ = 0`.
+  have iwx : inner ℝ uw ux = (b ^ 2 + a ^ 2 - (dist w x) ^ 2) / 2 := by
+    have hn : ‖uw - ux‖ = dist w x := by
+      have : uw - ux = w - x := by rw [huw, hux]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw ux
+    rw [hn, nuw, nux] at h; linarith
+  have iwy : inner ℝ uw uy = (b ^ 2 + a ^ 2 - (dist w y) ^ 2) / 2 := by
+    have hn : ‖uw - uy‖ = dist w y := by
+      have : uw - uy = w - y := by rw [huw, huy]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uy
+    rw [hn, nuw, nuy] at h; linarith
+  have iwz : inner ℝ uw uz = (b ^ 2 + a ^ 2 - (dist w z) ^ 2) / 2 := by
+    have hn : ‖uw - uz‖ = dist w z := by
+      have : uw - uz = w - z := by rw [huw, huz]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uz
+    rw [hn, nuw, nuz] at h; linarith
+  have pwx : 0 < inner ℝ uw ux := by
+    rw [iwx]; rcases hwx with h | h <;> rw [h] <;> nlinarith [pow_pos ha 2, pow_pos hb 2]
+  have pwy : 0 < inner ℝ uw uy := by
+    rw [iwy]; rcases hwy with h | h <;> rw [h] <;> nlinarith [pow_pos ha 2, pow_pos hb 2]
+  have pwz : 0 < inner ℝ uw uz := by
+    rw [iwz]; rcases hwz with h | h <;> rw [h] <;> nlinarith [pow_pos ha 2, pow_pos hb 2]
+  have hsum : inner ℝ uw (ux + uy + uz) = 0 := by rw [hS, inner_zero_right]
+  rw [inner_add_right, inner_add_right] at hsum
+  linarith [pwx, pwy, pwz]
+
+set_option maxHeartbeats 1600000 in
+/-- **A short-degree-`3` vertex with exactly two of its three neighbour pairs at the short
+distance is impossible (`k = 2` sub-case of the degree-`3` exclusion).**  Suppose `v` has
+three neighbours `x, y, z` all at distance `a`, that among the three neighbour pairs exactly
+two are at distance `a` (`dist x y = dist x z = a`) and one at the other distance `b`
+(`dist y z = b`) — so `{v, y, x, z}` is a 60°-rhombus, two equilateral triangles of side `a`
+glued along the diagonal `v x` — and there is a fifth point `w` at distance `b` from `v` with
+each of `dist w x, dist w y, dist w z` in `{a, b}`.  Then `False`.
+
+**Proof (coordinate-free).**  Put `uⱼ = j − v`.  The three vectors `uₓ, u_y, u_z` live in the
+`2`-dimensional plane, so they are linearly dependent; solving the resulting Gram system
+(`⟪uₓ,u_y⟫ = ⟪uₓ,u_z⟫ = a²/2`, `⟪u_y,u_z⟫ = a² − b²/2`) forces `b² = 3a²`.  With `b² = 3a²`
+the Gram identity gives `‖uₓ − u_y − u_z‖² = 3a² − b² = 0`, i.e. `uₓ = u_y + u_z` (the rhombus
+diagonal relation `x − v = (y − v) + (z − v)`).  Taking the inner product of that relation
+with `u_w` and writing each `⟪u_w, uⱼ⟫ = (b² + a² − dist w j ²)/2` (with `b² + a² = 4a²`)
+yields `dist w y ² + dist w z ² = 4a² + dist w x ²`; but each `dist w j ² ∈ {a², 3a²}`, so the
+left side is in `{2a², 4a², 6a²}` and the right side in `{5a², 7a²}` — disjoint, contradiction.
+This is the `k = 2` case of ruling out short-degree `3`; the `k = 1` case (one neighbour pair
+at the short distance) remains. -/
+theorem degree_three_rhombus_impossible
+    {v x y z w : EuclideanSpace ℝ (Fin 2)} {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (hvx : dist v x = a) (hvy : dist v y = a) (hvz : dist v z = a)
+    (hxy : dist x y = a) (hxz : dist x z = a) (hyz : dist y z = b)
+    (hvw : dist v w = b)
+    (hwx : dist w x = a ∨ dist w x = b)
+    (hwy : dist w y = a ∨ dist w y = b)
+    (hwz : dist w z = a ∨ dist w z = b) : False := by
+  set ux : EuclideanSpace ℝ (Fin 2) := x - v with hux
+  set uy : EuclideanSpace ℝ (Fin 2) := y - v with huy
+  set uz : EuclideanSpace ℝ (Fin 2) := z - v with huz
+  set uw : EuclideanSpace ℝ (Fin 2) := w - v with huw
+  -- Edge-vector norms.
+  have nux : ‖ux‖ = a := by rw [hux, ← dist_eq_norm, dist_comm]; exact hvx
+  have nuy : ‖uy‖ = a := by rw [huy, ← dist_eq_norm, dist_comm]; exact hvy
+  have nuz : ‖uz‖ = a := by rw [huz, ← dist_eq_norm, dist_comm]; exact hvz
+  have nuw : ‖uw‖ = b := by rw [huw, ← dist_eq_norm, dist_comm]; exact hvw
+  -- Self inner products.
+  have iuu : inner ℝ ux ux = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nux]
+  have ivv : inner ℝ uy uy = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuy]
+  have iww : inner ℝ uz uz = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuz]
+  -- Two neighbour pairs at the short distance `a` (inner `a²/2`), one at `b` (inner `a²−b²/2`).
+  have ixy : inner ℝ ux uy = a ^ 2 / 2 := by
+    have hn : ‖ux - uy‖ = a := by
+      have : ux - uy = x - y := by rw [hux, huy]; abel
+      rw [this, ← dist_eq_norm]; exact hxy
+    have h := norm_sub_sq_real ux uy
+    rw [hn, nux, nuy] at h; linarith
+  have ixz : inner ℝ ux uz = a ^ 2 / 2 := by
+    have hn : ‖ux - uz‖ = a := by
+      have : ux - uz = x - z := by rw [hux, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hxz
+    have h := norm_sub_sq_real ux uz
+    rw [hn, nux, nuz] at h; linarith
+  have iyz : inner ℝ uy uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖uy - uz‖ = b := by
+      have : uy - uz = y - z := by rw [huy, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hyz
+    have h := norm_sub_sq_real uy uz
+    rw [hn, nuy, nuz] at h; linarith
+  -- Symmetric copies.
+  have iyx : inner ℝ uy ux = a ^ 2 / 2 := by rw [real_inner_comm]; exact ixy
+  have izx : inner ℝ uz ux = a ^ 2 / 2 := by rw [real_inner_comm]; exact ixz
+  have izy : inner ℝ uz uy = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact iyz
+  -- Three vectors in a `2`-dimensional space cannot be independent; the Gram system forces
+  -- `b² = 3a²`.
+  have key : b ^ 2 = 3 * a ^ 2 := by
+    by_contra hne
+    have hli : LinearIndependent ℝ ![ux, uy, uz] := by
+      rw [Fintype.linearIndependent_iff]
+      intro g hg
+      rw [Fin.sum_univ_three] at hg
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.tail_cons] at hg
+      have e1 : g 0 * a ^ 2 + g 1 * (a ^ 2 / 2) + g 2 * (a ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t ux : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [iuu, iyx, izx] at h; linarith
+      have e2 : g 0 * (a ^ 2 / 2) + g 1 * a ^ 2 + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uy : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixy, ivv, izy] at h; linarith
+      have e3 : g 0 * (a ^ 2 / 2) + g 1 * (a ^ 2 - b ^ 2 / 2) + g 2 * a ^ 2 = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uz : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixz, iyz, iww] at h; linarith
+      have hbne : (b ^ 2 / 2 : ℝ) ≠ 0 := by positivity
+      have hane : (a ^ 2 : ℝ) ≠ 0 := by positivity
+      have h3ab : (3 * a ^ 2 - b ^ 2) ≠ 0 := fun h => hne (by linarith)
+      -- `e2 − e3`: `(b²/2)(g 1 − g 2) = 0`, so `g 1 = g 2`.
+      have hg12 : g 1 = g 2 := by
+        have h := (mul_eq_zero.mp
+          (show (b ^ 2 / 2) * (g 1 - g 2) = 0 by linear_combination e2 - e3)).resolve_left hbne
+        linarith
+      -- `e1` with `g 1 = g 2`: `a²(g 0 + g 1) = 0`, so `g 0 = −g 1`.
+      have hg0 : g 0 = -g 1 := by
+        rw [← hg12] at e1
+        have h := (mul_eq_zero.mp
+          (show a ^ 2 * (g 0 + g 1) = 0 by linear_combination e1)).resolve_left hane
+        linarith
+      -- `e2` with the substitutions: `(3a² − b²) g 1 = 0`, so `g 1 = 0`.
+      have hg1 : g 1 = 0 := by
+        have hkey : (3 * a ^ 2 - b ^ 2) * g 1 = 0 := by
+          rw [← hg12, hg0] at e2; linear_combination 2 * e2
+        exact (mul_eq_zero.mp hkey).resolve_left h3ab
+      intro i
+      fin_cases i
+      · show g 0 = 0; rw [hg0, hg1, neg_zero]
+      · show g 1 = 0; exact hg1
+      · show g 2 = 0; rw [← hg12]; exact hg1
+    have hcard := hli.fintype_card_le_finrank
+    rw [finrank_euclideanSpace_fin] at hcard
+    simp only [Fintype.card_fin] at hcard
+    omega
+  -- `‖uₓ − u_y − u_z‖² = 3a² − b² = 0`, so `uₓ = u_y + u_z` (rhombus diagonal relation).
+  have hSsq : inner ℝ (ux - uy - uz) (ux - uy - uz) = 3 * a ^ 2 - b ^ 2 := by
+    simp only [inner_sub_left, inner_sub_right, iuu, ivv, iww, ixy, ixz, iyz, iyx, izx, izy]
+    ring
+  have hnorm0 : ‖ux - uy - uz‖ ^ 2 = 0 := by
+    rw [← real_inner_self_eq_norm_sq, hSsq]; linarith [key]
+  have hS : ux - uy - uz = 0 := by
+    have hz : ‖ux - uy - uz‖ = 0 := by
+      have h2 := hnorm0
+      rwa [pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)] at h2
+    exact norm_eq_zero.mp hz
+  -- Inner products of `u_w` with the neighbour edge vectors.
+  have iwx : inner ℝ uw ux = (b ^ 2 + a ^ 2 - (dist w x) ^ 2) / 2 := by
+    have hn : ‖uw - ux‖ = dist w x := by
+      have : uw - ux = w - x := by rw [huw, hux]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw ux
+    rw [hn, nuw, nux] at h; linarith
+  have iwy : inner ℝ uw uy = (b ^ 2 + a ^ 2 - (dist w y) ^ 2) / 2 := by
+    have hn : ‖uw - uy‖ = dist w y := by
+      have : uw - uy = w - y := by rw [huw, huy]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uy
+    rw [hn, nuw, nuy] at h; linarith
+  have iwz : inner ℝ uw uz = (b ^ 2 + a ^ 2 - (dist w z) ^ 2) / 2 := by
+    have hn : ‖uw - uz‖ = dist w z := by
+      have : uw - uz = w - z := by rw [huw, huz]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uz
+    rw [hn, nuw, nuz] at h; linarith
+  -- `⟪u_w, uₓ − u_y − u_z⟫ = 0` gives `dist w y² + dist w z² = 4a² + dist w x²`.
+  have hrel : inner ℝ uw (ux - uy - uz) = 0 := by rw [hS, inner_zero_right]
+  rw [inner_sub_right, inner_sub_right, iwx, iwy, iwz] at hrel
+  -- Each squared distance from `w` is `a²` or `b²`; with `b² = 3a²` no assignment works.
+  have hdx : (dist w x) ^ 2 = a ^ 2 ∨ (dist w x) ^ 2 = b ^ 2 := by
+    rcases hwx with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdy : (dist w y) ^ 2 = a ^ 2 ∨ (dist w y) ^ 2 = b ^ 2 := by
+    rcases hwy with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdz : (dist w z) ^ 2 = a ^ 2 ∨ (dist w z) ^ 2 = b ^ 2 := by
+    rcases hwz with h | h
+    · left; rw [h]
+    · right; rw [h]
+  rcases hdx with hx | hx <;> rcases hdy with hy | hy <;> rcases hdz with hz | hz <;>
+    rw [hx, hy, hz] at hrel <;> nlinarith [key, pow_pos ha 2, hrel]
+
+set_option maxHeartbeats 1600000 in
+/-- **A short-degree-`3` vertex whose neighbour triangle is isosceles with exactly one edge
+at the short distance is impossible (`k = 1` sub-case of the degree-`3` exclusion).**  Suppose
+`v` has three neighbours `x, y, z` all at distance `a`, that among the three neighbour pairs
+exactly one is at distance `a` (`dist x y = a`) and two at the other distance `b`
+(`dist x z = dist y z = b`) — so `{v, x, y}` is equilateral of side `a` and `z` sits off it —
+and there is a fifth point `w` at distance `b` from `v` with each of `dist w x, dist w y,
+dist w z` in `{a, b}`.  Then `False`.
+
+**Proof (coordinate-free).**  Put `uⱼ = j − v`.  The three vectors `uₓ, u_y, u_z` live in the
+`2`-dimensional plane, so they are linearly dependent; solving the resulting Gram system
+(`⟪uₓ,u_y⟫ = a²/2`, `⟪uₓ,u_z⟫ = ⟪u_y,u_z⟫ = a² − b²/2`) forces the *singular-Gram* relation
+`a⁴ − 4a²b² + b⁴ = 0` (i.e. `b² = (2 ± √3)a²`; unlike `k = 0, 2` this is a quadratic irrational,
+so there is no clean `b² = 3a²` substitution — both √3 branches are metrically realizable).
+That relation makes `‖(2a² − b²)(uₓ + u_y) − 3a²·u_z‖² = −3a²(a⁴ − 4a²b² + b⁴) = 0`, i.e. the
+linear dependence `(2a² − b²)(uₓ + u_y) = 3a²·u_z`.  Taking the inner product of that relation
+with `u_w` and writing each `⟪u_w, uⱼ⟫ = (b² + a² − dist w j ²)/2` (with `dist w j ² ∈ {a², b²}`)
+gives, in each of the eight assignments, a homogeneous degree-`4` relation which together with
+`a⁴ − 4a²b² + b⁴ = 0` forces `a = 0` — contradiction (a degree-`6` Positivstellensatz
+certificate, discharged by `nlinarith`).  This is the `k = 1` case; with `k = 0, 2, 3` already
+excluded, no short-degree-`3` vertex exists, so the short-distance graph is `2`-regular. -/
+theorem degree_three_isosceles_impossible
+    {v x y z w : EuclideanSpace ℝ (Fin 2)} {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (hvx : dist v x = a) (hvy : dist v y = a) (hvz : dist v z = a)
+    (hxy : dist x y = a) (hxz : dist x z = b) (hyz : dist y z = b)
+    (hvw : dist v w = b)
+    (hwx : dist w x = a ∨ dist w x = b)
+    (hwy : dist w y = a ∨ dist w y = b)
+    (hwz : dist w z = a ∨ dist w z = b) : False := by
+  set ux : EuclideanSpace ℝ (Fin 2) := x - v with hux
+  set uy : EuclideanSpace ℝ (Fin 2) := y - v with huy
+  set uz : EuclideanSpace ℝ (Fin 2) := z - v with huz
+  set uw : EuclideanSpace ℝ (Fin 2) := w - v with huw
+  -- Edge-vector norms.
+  have nux : ‖ux‖ = a := by rw [hux, ← dist_eq_norm, dist_comm]; exact hvx
+  have nuy : ‖uy‖ = a := by rw [huy, ← dist_eq_norm, dist_comm]; exact hvy
+  have nuz : ‖uz‖ = a := by rw [huz, ← dist_eq_norm, dist_comm]; exact hvz
+  have nuw : ‖uw‖ = b := by rw [huw, ← dist_eq_norm, dist_comm]; exact hvw
+  -- Self inner products.
+  have iuu : inner ℝ ux ux = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nux]
+  have ivv : inner ℝ uy uy = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuy]
+  have iww : inner ℝ uz uz = a ^ 2 := by rw [real_inner_self_eq_norm_sq, nuz]
+  -- One neighbour pair at the short distance `a` (inner `a²/2`), two at `b` (inner `a²−b²/2`).
+  have ixy : inner ℝ ux uy = a ^ 2 / 2 := by
+    have hn : ‖ux - uy‖ = a := by
+      have : ux - uy = x - y := by rw [hux, huy]; abel
+      rw [this, ← dist_eq_norm]; exact hxy
+    have h := norm_sub_sq_real ux uy
+    rw [hn, nux, nuy] at h; linarith
+  have ixz : inner ℝ ux uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖ux - uz‖ = b := by
+      have : ux - uz = x - z := by rw [hux, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hxz
+    have h := norm_sub_sq_real ux uz
+    rw [hn, nux, nuz] at h; linarith
+  have iyz : inner ℝ uy uz = a ^ 2 - b ^ 2 / 2 := by
+    have hn : ‖uy - uz‖ = b := by
+      have : uy - uz = y - z := by rw [huy, huz]; abel
+      rw [this, ← dist_eq_norm]; exact hyz
+    have h := norm_sub_sq_real uy uz
+    rw [hn, nuy, nuz] at h; linarith
+  -- Symmetric copies.
+  have iyx : inner ℝ uy ux = a ^ 2 / 2 := by rw [real_inner_comm]; exact ixy
+  have izx : inner ℝ uz ux = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact ixz
+  have izy : inner ℝ uz uy = a ^ 2 - b ^ 2 / 2 := by rw [real_inner_comm]; exact iyz
+  -- Three vectors in a `2`-dimensional space cannot be independent; the singular Gram
+  -- determinant forces `a⁴ − 4a²b² + b⁴ = 0`.
+  have key : a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4 = 0 := by
+    by_contra hne
+    have hli : LinearIndependent ℝ ![ux, uy, uz] := by
+      rw [Fintype.linearIndependent_iff]
+      intro g hg
+      rw [Fin.sum_univ_three] at hg
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.tail_cons] at hg
+      have e1 : g 0 * a ^ 2 + g 1 * (a ^ 2 / 2) + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t ux : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [iuu, iyx, izx] at h; linarith
+      have e2 : g 0 * (a ^ 2 / 2) + g 1 * a ^ 2 + g 2 * (a ^ 2 - b ^ 2 / 2) = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uy : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixy, ivv, izy] at h; linarith
+      have e3 : g 0 * (a ^ 2 - b ^ 2 / 2) + g 1 * (a ^ 2 - b ^ 2 / 2) + g 2 * a ^ 2 = 0 := by
+        have h := congrArg (fun t => (inner ℝ t uz : ℝ)) hg
+        simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+        rw [ixz, iyz, iww] at h; linarith
+      have hane2 : (a ^ 2 / 2 : ℝ) ≠ 0 := by positivity
+      have hane : (a ^ 2 : ℝ) ≠ 0 := by positivity
+      -- `e1 − e2`: `(a²/2)(g 0 − g 1) = 0`, so `g 0 = g 1`.
+      have hg01 : g 0 = g 1 := by
+        have h := (mul_eq_zero.mp
+          (show (a ^ 2 / 2) * (g 0 - g 1) = 0 by linear_combination e1 - e2)).resolve_left hane2
+        linarith
+      -- Substitute `g 1 = g 0` into `e1, e3` and eliminate `g 2`: `g 0 · (a⁴−4a²b²+b⁴) = 0`.
+      rw [← hg01] at e1 e3
+      have hkey0 : g 0 * (a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4) = 0 := by
+        linear_combination (-2 * a ^ 2) * e1 + (2 * a ^ 2 - b ^ 2) * e3
+      have hg0 : g 0 = 0 := (mul_eq_zero.mp hkey0).resolve_right hne
+      -- `e3` with `g 0 = g 1 = 0` gives `g 2 · a² = 0`, so `g 2 = 0`.
+      have hg2 : g 2 = 0 := by
+        have h2 : g 2 * a ^ 2 = 0 := by
+          linear_combination e3 - (2 * a ^ 2 - b ^ 2) * hg0
+        exact (mul_eq_zero.mp h2).resolve_right hane
+      intro i
+      fin_cases i
+      · show g 0 = 0; exact hg0
+      · show g 1 = 0; rw [← hg01]; exact hg0
+      · show g 2 = 0; exact hg2
+    have hcard := hli.fintype_card_le_finrank
+    rw [finrank_euclideanSpace_fin] at hcard
+    simp only [Fintype.card_fin] at hcard
+    omega
+  -- The singular-Gram relation makes the length of `(2a²−b²)(uₓ+u_y) − 3a²·u_z` vanish.
+  have hSsq : inner ℝ ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz)
+                      ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz)
+             = -3 * a ^ 2 * (a ^ 4 - 4 * a ^ 2 * b ^ 2 + b ^ 4) := by
+    simp only [inner_sub_left, inner_sub_right, inner_add_left, inner_add_right,
+      real_inner_smul_left, real_inner_smul_right, iuu, ivv, iww, ixy, ixz, iyz, iyx, izx, izy]
+    ring
+  have hnorm0 : ‖(2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz‖ ^ 2 = 0 := by
+    rw [← real_inner_self_eq_norm_sq, hSsq, key]; ring
+  have hS : (2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz = 0 := by
+    have hz : ‖(2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz‖ = 0 := by
+      have h2 := hnorm0
+      rwa [pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)] at h2
+    exact norm_eq_zero.mp hz
+  -- Inner products of `u_w` with the neighbour edge vectors.
+  have iwx : inner ℝ uw ux = (b ^ 2 + a ^ 2 - (dist w x) ^ 2) / 2 := by
+    have hn : ‖uw - ux‖ = dist w x := by
+      have : uw - ux = w - x := by rw [huw, hux]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw ux
+    rw [hn, nuw, nux] at h; linarith
+  have iwy : inner ℝ uw uy = (b ^ 2 + a ^ 2 - (dist w y) ^ 2) / 2 := by
+    have hn : ‖uw - uy‖ = dist w y := by
+      have : uw - uy = w - y := by rw [huw, huy]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uy
+    rw [hn, nuw, nuy] at h; linarith
+  have iwz : inner ℝ uw uz = (b ^ 2 + a ^ 2 - (dist w z) ^ 2) / 2 := by
+    have hn : ‖uw - uz‖ = dist w z := by
+      have : uw - uz = w - z := by rw [huw, huz]; abel
+      rw [this, ← dist_eq_norm]
+    have h := norm_sub_sq_real uw uz
+    rw [hn, nuw, nuz] at h; linarith
+  -- `⟪u_w, (2a²−b²)(uₓ+u_y) − 3a²·u_z⟫ = 0` in terms of the squared distances from `w`.
+  have hrel : inner ℝ uw ((2 * a ^ 2 - b ^ 2) • (ux + uy) - (3 * a ^ 2) • uz) = 0 := by
+    rw [hS, inner_zero_right]
+  simp only [inner_sub_right, inner_add_right, real_inner_smul_right, iwx, iwy, iwz] at hrel
+  -- Each squared distance from `w` is `a²` or `b²`; with `a⁴−4a²b²+b⁴ = 0` no assignment works.
+  have hdx : (dist w x) ^ 2 = a ^ 2 ∨ (dist w x) ^ 2 = b ^ 2 := by
+    rcases hwx with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdy : (dist w y) ^ 2 = a ^ 2 ∨ (dist w y) ^ 2 = b ^ 2 := by
+    rcases hwy with h | h
+    · left; rw [h]
+    · right; rw [h]
+  have hdz : (dist w z) ^ 2 = a ^ 2 ∨ (dist w z) ^ 2 = b ^ 2 := by
+    rcases hwz with h | h
+    · left; rw [h]
+    · right; rw [h]
+  rcases hdx with hx | hx <;> rcases hdy with hy | hy <;> rcases hdz with hz | hz <;>
+    rw [hx, hy, hz] at hrel <;>
+    nlinarith [key, hrel, pow_pos ha 2, pow_pos hb 2, pow_pos ha 6, pow_pos hb 6,
+      mul_pos (pow_pos ha 2) (pow_pos hb 2), mul_pos (pow_pos ha 4) (pow_pos hb 2),
+      mul_pos (pow_pos ha 2) (pow_pos hb 4), mul_pos (pow_pos ha 4) (pow_pos ha 2)]
+
+/-- **No vertex of the short-distance graph has degree `3`.**  Assembles the four
+degree-`3` exclusion sub-cases into a single obstruction.  Suppose `P : PointConfig 5`
+is in general position and two-distance (`{a, b}`, `a ≠ b`), and some vertex `i` has
+exactly three `a`-neighbours `p, q, r`.  The fifth point `w` (the unique non-neighbour of
+`i`) is then at distance `b` from `P i` — otherwise it would be a fourth `a`-neighbour.
+The three neighbour pairs `{pq, pr, qr}` each realise `a` or `b`; the number `k` of
+`a`-pairs is `0, 1, 2, 3`, matching (after a permutation of `p, q, r`) exactly one of
+`degree_three_equilateral_impossible` (`k = 0`, equilateral neighbour triangle),
+`degree_three_isosceles_impossible` (`k = 1`), `degree_three_rhombus_impossible`
+(`k = 2`), and `no_four_equidistant_indices` (`k = 3`, the monochromatic `K₄`).  Every
+one of the eight sign patterns is contradictory, so the short (`a`) degree is never `3`. -/
+theorem no_short_degree_three
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (i : Fin 5) :
+    ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card ≠ 3 := by
+  intro hdeg
+  set A := (univ.erase i).filter (fun j => dist (P i) (P j) = a) with hA
+  obtain ⟨p, q, r, hpq, hpr, hqr, hApqr⟩ := Finset.card_eq_three.mp hdeg
+  -- The three neighbours belong to `A`: each is at distance `a` from `P i`.
+  have hpA : p ∈ A := by rw [hApqr]; simp
+  have hqA : q ∈ A := by rw [hApqr]; simp
+  have hrA : r ∈ A := by rw [hApqr]; simp
+  have hip : dist (P i) (P p) = a := by
+    have h := hpA; rw [hA, mem_filter] at h; exact h.2
+  have hiq : dist (P i) (P q) = a := by
+    have h := hqA; rw [hA, mem_filter] at h; exact h.2
+  have hir : dist (P i) (P r) = a := by
+    have h := hrA; rw [hA, mem_filter] at h; exact h.2
+  -- The fifth index `w`, distinct from `i, p, q, r`.
+  have h3card : ({p, q, r} : Finset (Fin 5)).card = 3 := by rw [← hApqr]; exact hdeg
+  have hcardle : ({i, p, q, r} : Finset (Fin 5)).card ≤ 4 := by
+    have hins := Finset.card_insert_le i ({p, q, r} : Finset (Fin 5))
+    omega
+  have hwex : (univ \ ({i, p, q, r} : Finset (Fin 5))).Nonempty := by
+    apply Finset.sdiff_nonempty.mpr
+    intro hsub
+    have hle := Finset.card_le_card hsub
+    rw [Finset.card_univ, Fintype.card_fin] at hle
+    omega
+  obtain ⟨w, hw⟩ := hwex
+  rw [Finset.mem_sdiff] at hw
+  have hwnotin := hw.2
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hwnotin
+  obtain ⟨hw_i, hw_p, hw_q, hw_r⟩ := hwnotin
+  -- `P i` to `P w` is the remaining `b`-distance (else `w` would be a fourth `a`-neighbour).
+  have hiw : dist (P i) (P w) = b := by
+    rcases hcov i w (Ne.symm hw_i) with h | h
+    · exfalso
+      have hwA : w ∈ A := by
+        rw [hA, mem_filter]; exact ⟨Finset.mem_erase.mpr ⟨hw_i, mem_univ _⟩, h⟩
+      rw [hApqr] at hwA
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hwA
+      rcases hwA with h' | h' | h'
+      · exact hw_p h'
+      · exact hw_q h'
+      · exact hw_r h'
+    · exact h
+  -- Neighbour-pair and `w`-neighbour distances (each `a` or `b`).
+  have h1 := hcov p q hpq
+  have h2 := hcov p r hpr
+  have h3 := hcov q r hqr
+  have hWp := hcov w p hw_p
+  have hWq := hcov w q hw_q
+  have hWr := hcov w r hw_r
+  -- Eight-way case split on the neighbour-pair colours; each dispatches to a sub-case lemma.
+  rcases h1 with h1 | h1
+  · rcases h2 with h2 | h2
+    · rcases h3 with h3 | h3
+      · -- k = 3: monochromatic K₄ on {i, p, q, r}.
+        exact no_four_equidistant_indices ha hip hiq hir h1 h2 h3
+      · -- k = 2: b-pair qr, x = p, y = q, z = r.
+        exact degree_three_rhombus_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+    · rcases h3 with h3 | h3
+      · -- k = 2: b-pair pr, x = q, y = p, z = r.
+        exact degree_three_rhombus_impossible ha hb hiq hip hir
+          (by rw [dist_comm]; exact h1) h3 h2 hiw hWq hWp hWr
+      · -- k = 1: a-pair pq, x = p, y = q, z = r.
+        exact degree_three_isosceles_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+  · rcases h2 with h2 | h2
+    · rcases h3 with h3 | h3
+      · -- k = 2: b-pair pq, x = r, y = p, z = q.
+        exact degree_three_rhombus_impossible ha hb hir hip hiq
+          (by rw [dist_comm]; exact h2) (by rw [dist_comm]; exact h3) h1 hiw hWr hWp hWq
+      · -- k = 1: a-pair pr, x = p, y = r, z = q.
+        exact degree_three_isosceles_impossible ha hb hip hir hiq h2 h1
+          (by rw [dist_comm]; exact h3) hiw hWp hWr hWq
+    · rcases h3 with h3 | h3
+      · -- k = 1: a-pair qr, x = q, y = r, z = p.
+        exact degree_three_isosceles_impossible ha hb hiq hir hip h3
+          (by rw [dist_comm]; exact h1) (by rw [dist_comm]; exact h2) hiw hWq hWr hWp
+      · -- k = 0: equilateral neighbour triangle, x = p, y = q, z = r.
+        exact degree_three_equilateral_impossible ha hb hip hiq hir h1 h2 h3 hiw hWp hWq hWr
+
+/-- **The short-distance graph of a general-position two-distance `5`-set is `2`-regular.**
+Every vertex has exactly two short (`a`) neighbours.  `two_distance_near_degree_bounds`
+confines each `a`-degree to `{1, 2, 3}`; `no_short_degree_three` rules out `3`; and its
+`a ↔ b` mirror rules out `1`, because the `b`-degree equals `4 − (a`-degree`)` (the two
+neighbour circles partition the four other points) and a `b`-degree of `3` is likewise
+impossible.  Hence every `a`-degree is `2`.  This is the last combinatorial step before the
+`C₅` endgame (`2`-regular on `5` vertices ⟹ a single `5`-cycle ⟹ regular pentagon ⟹
+concyclic ⟹ contradiction with `NoFourConcyclic`), which closes `h 5 ≥ 3`. -/
+theorem two_distance_two_regular
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (i : Fin 5) :
+    ((univ.erase i).filter (fun j => dist (P i) (P j) = a)).card = 2 := by
+  obtain ⟨hlo, hhi⟩ := two_distance_near_degree_bounds hgp hab hcov i
+  have hne3 := no_short_degree_three hgp ha hb hab hcov i
+  have hcov' : ∀ j k : Fin 5, j ≠ k → dist (P j) (P k) = b ∨ dist (P j) (P k) = a :=
+    fun j k hjk => (hcov j k hjk).symm
+  have hbne3 := no_short_degree_three hgp hb ha hab.symm hcov' i
+  set A := (univ.erase i).filter (fun j => dist (P i) (P j) = a) with hAdef
+  set B := (univ.erase i).filter (fun j => dist (P i) (P j) = b) with hBdef
+  -- `A.card + B.card = 4`: the two neighbour circles partition the four other vertices.
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro j hjA hjB
+    rw [hAdef, mem_filter] at hjA
+    rw [hBdef, mem_filter] at hjB
+    exact hab (hjA.2.symm.trans hjB.2)
+  have hcover : univ.erase i = A ∪ B := by
+    apply Finset.Subset.antisymm
+    · intro j hj
+      have hji : j ≠ i := (Finset.mem_erase.mp hj).1
+      rcases hcov i j (Ne.symm hji) with hda | hdb
+      · exact Finset.mem_union_left _ (by rw [hAdef, mem_filter]; exact ⟨hj, hda⟩)
+      · exact Finset.mem_union_right _ (by rw [hBdef, mem_filter]; exact ⟨hj, hdb⟩)
+    · exact Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have herase : (univ.erase i).card = 4 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  have hsum : A.card + B.card = 4 := by
+    rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
+  omega
+
+/-- **Row sum of squared distances.**  In a general-position two-distance `PointConfig 5`
+with distances `a ≠ b`, the sum of the squared distances from any fixed vertex `m` to all
+five vertices (including itself, contributing `0`) is `2a² + 2b²`: by `two_distance_two_regular`
+each vertex has exactly two `a`-neighbours and (dually) two `b`-neighbours among the four
+others, so the row is `{0, a, a, b, b}` in squared form. -/
+theorem two_distance_row_sq_sum
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (m : Fin 5) :
+    ∑ k, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 + 2 * b ^ 2 := by
+  have hAcard : ((univ.erase m).filter (fun j => dist (P m) (P j) = a)).card = 2 :=
+    two_distance_two_regular hgp ha hb hab hcov m
+  set A := (univ.erase m).filter (fun j => dist (P m) (P j) = a) with hAdef
+  set B := (univ.erase m).filter (fun j => dist (P m) (P j) = b) with hBdef
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro j hjA hjB
+    rw [hAdef, mem_filter] at hjA
+    rw [hBdef, mem_filter] at hjB
+    exact hab (hjA.2.symm.trans hjB.2)
+  have hcover : univ.erase m = A ∪ B := by
+    apply Finset.Subset.antisymm
+    · intro j hj
+      have hji : j ≠ m := (Finset.mem_erase.mp hj).1
+      rcases hcov m j (Ne.symm hji) with hda | hdb
+      · exact Finset.mem_union_left _ (by rw [hAdef, mem_filter]; exact ⟨hj, hda⟩)
+      · exact Finset.mem_union_right _ (by rw [hBdef, mem_filter]; exact ⟨hj, hdb⟩)
+    · exact Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have herase : (univ.erase m).card = 4 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  have hBcard : B.card = 2 := by
+    have hsum : A.card + B.card = 4 := by
+      rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
+    omega
+  have hsplit : ∑ k, (dist (P m) (P k)) ^ 2
+      = ∑ k ∈ univ.erase m, (dist (P m) (P k)) ^ 2 := by
+    rw [← Finset.add_sum_erase univ (fun k => (dist (P m) (P k)) ^ 2) (mem_univ m)]
+    simp
+  rw [hsplit, hcover, Finset.sum_union hdisj]
+  have hAsum : ∑ k ∈ A, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 := by
+    have hval : ∀ k ∈ A, (dist (P m) (P k)) ^ 2 = a ^ 2 := by
+      intro k hk; rw [hAdef, mem_filter] at hk; rw [hk.2]
+    rw [Finset.sum_congr rfl hval, Finset.sum_const, hAcard, nsmul_eq_mul]; norm_num
+  have hBsum : ∑ k ∈ B, (dist (P m) (P k)) ^ 2 = 2 * b ^ 2 := by
+    have hval : ∀ k ∈ B, (dist (P m) (P k)) ^ 2 = b ^ 2 := by
+      intro k hk; rw [hBdef, mem_filter] at hk; rw [hk.2]
+    rw [Finset.sum_congr rfl hval, Finset.sum_const, hBcard, nsmul_eq_mul]; norm_num
+  rw [hAsum, hBsum]
+
+set_option maxHeartbeats 1600000 in
+/-- **`h 5 ≥ 3`.**  No general-position `PointConfig 5` realizes only two distinct
+distances, so `numDistinctDistances ≥ 3` for every such configuration, whence `3 ≤ h 5`.
+
+**Proof — concyclicity of a regular two-distance set (no cyclic-order extraction needed).**
+Suppose for contradiction `h 5 ≤ 2`.  A minimiser `P` (in general position, from `h_attained`)
+then has `numDistinctDistances P ≤ 2`, so `exists_two_distances_of_numDistinct_le_two` gives
+two positive reals `a, b` covering every pairwise distance.  If `a = b` all five points are
+mutually equidistant, contradicting `no_four_equidistant_indices`; so `a ≠ b`.
+
+By `two_distance_two_regular` every vertex has exactly two `a`-neighbours and two
+`b`-neighbours, hence a constant **row sum of squared distances** `∑ₖ dist(Pᵢ,Pₖ)² = 2a²+2b²`
+(`two_distance_row_sq_sum`).  Let `O = ⅕ ∑ₖ Pₖ` be the centroid.  Then `5(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)`,
+so, polarising each `⟪Pᵢ−Pₖ, Pᵢ−Pₗ⟫ = ½(dᵢₖ²+dᵢₗ²−dₖₗ²)`,
+`25‖Pᵢ−O‖² = ∑ₖ∑ₗ ½(dᵢₖ²+dᵢₗ²−dₖₗ²) = 5·(rowᵢ) − ½·(∑ₖ rowₖ) = 5a²+5b²`,
+**independent of `i`**.  Thus all five points are equidistant (distance `√((a²+b²)/5)`) from `O`
+— they are concyclic — and feeding four of them to `NoFourConcyclic` (part of general position)
+gives the contradiction.  The regular pentagon `C₅` never needs to be singled out: equal
+row sums alone force concyclicity. -/
+theorem three_le_h_five : 3 ≤ h 5 := by
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨P, hgp, hval⟩ := h_attained 5
+  have hnum : numDistinctDistances P ≤ 2 := by omega
+  obtain ⟨a, b, ha, hb, hcov⟩ :=
+    exists_two_distances_of_numDistinct_le_two hgp.1 (by norm_num) hnum
+  by_cases hab : a = b
+  · -- One distance only: five mutually equidistant points, ruled out by `no_four_equidistant`.
+    have hall : ∀ x y : Fin 5, x ≠ y → dist (P x) (P y) = a := by
+      intro x y hxy
+      rcases hcov x y hxy with h | h
+      · exact h
+      · rw [h]; exact hab.symm
+    exact no_four_equidistant_indices ha (hall 0 1 (by decide)) (hall 0 2 (by decide))
+      (hall 0 3 (by decide)) (hall 1 2 (by decide)) (hall 1 3 (by decide)) (hall 2 3 (by decide))
+  · -- Genuine two-distance set: centroid concyclicity.
+    have hrow : ∀ m : Fin 5,
+        (dist (P m) (P 0)) ^ 2 + (dist (P m) (P 1)) ^ 2 + (dist (P m) (P 2)) ^ 2
+          + (dist (P m) (P 3)) ^ 2 + (dist (P m) (P 4)) ^ 2 = 2 * a ^ 2 + 2 * b ^ 2 := by
+      intro m
+      have := two_distance_row_sq_sum hgp ha hb hab hcov m
+      rwa [Fin.sum_univ_five] at this
+    set O : EuclideanSpace ℝ (Fin 2) := (5 : ℝ)⁻¹ • ∑ k, P k with hOdef
+    have hnorm : ∀ i : Fin 5, ‖P i - O‖ ^ 2 = (a ^ 2 + b ^ 2) / 5 := by
+      intro i
+      have pol : ∀ k l : Fin 5, (inner ℝ (P i - P k) (P i - P l) : ℝ)
+          = ((dist (P i) (P k)) ^ 2 + (dist (P i) (P l)) ^ 2 - (dist (P k) (P l)) ^ 2) / 2 := by
+        intro k l
+        have h := norm_sub_sq_real (P i - P k) (P i - P l)
+        have esub : (P i - P k) - (P i - P l) = P l - P k := by abel
+        rw [esub] at h
+        rw [show ‖P i - P k‖ = dist (P i) (P k) from (dist_eq_norm _ _).symm,
+            show ‖P i - P l‖ = dist (P i) (P l) from (dist_eq_norm _ _).symm,
+            show ‖P l - P k‖ = dist (P k) (P l) from by rw [← dist_eq_norm, dist_comm]] at h
+        linarith
+      have hscaled : (5 : ℝ) • (P i - O) = ∑ k, (P i - P k) := by
+        rw [hOdef]; simp only [Fin.sum_univ_five]; module
+      have h25 : ‖∑ k, (P i - P k)‖ ^ 2 = 25 * ‖P i - O‖ ^ 2 := by
+        rw [← hscaled, norm_smul, show ‖(5 : ℝ)‖ = 5 from by rw [Real.norm_eq_abs]; norm_num]
+        ring
+      have hexp : ‖∑ k, (P i - P k)‖ ^ 2 = 5 * a ^ 2 + 5 * b ^ 2 := by
+        rw [Fin.sum_univ_five, ← real_inner_self_eq_norm_sq]
+        simp only [inner_add_left, inner_add_right]
+        simp_rw [pol]
+        linarith [hrow i, hrow 0, hrow 1, hrow 2, hrow 3, hrow 4]
+      linarith [h25, hexp]
+    have hdist : ∀ i : Fin 5, dist O (P i) = Real.sqrt ((a ^ 2 + b ^ 2) / 5) := by
+      intro i
+      rw [dist_eq_norm, norm_sub_rev, ← Real.sqrt_sq (norm_nonneg (P i - O)), hnorm i]
+    have hcard4 : ({(0 : Fin 5), 1, 2, 3} : Finset (Fin 5)).card = 4 := by decide
+    exact hgp.2.2 0 1 2 3 hcard4
+      ⟨O, Real.sqrt ((a ^ 2 + b ^ 2) / 5), hdist 0, hdist 1, hdist 2, hdist 3⟩
+
+/-- **`h 5 = 3`, pinned exactly.**  The three-distance witness `h5Config` gives `h 5 ≤ 3`
+(`h_five_le_three`) and the concyclicity of every general-position two-distance 5-set gives
+`h 5 ≥ 3` (`three_le_h_five`).  This is the first value of `h` requiring the *no-four-concyclic*
+hypothesis in an essential, non-counting way. -/
+theorem h_five_eq_three : h 5 = 3 :=
+  le_antisymm h_five_le_three three_le_h_five
 
 end Erdos98WIP01
