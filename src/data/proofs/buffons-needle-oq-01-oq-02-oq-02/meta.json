@@ -66,7 +66,7 @@
   "overview": {
     "historicalContext": "Buffon's needle problem (1733) computes the probability that a randomly dropped needle crosses one of a family of equally spaced parallel lines. Its higher-dimensional generalization — a convex body dropped on a stationary arrangement of parallel hyperplanes in ℝⁿ — relates the expected number of crossings to the body's mean width through a dimension-dependent constant c_n built from Gamma functions (Cauchy 1850; Bonnesen–Fenchel 1934). The parent gallery proof buffons-needle-oq-01-oq-02 derives c_n in closed Gamma-function form and computes the small-dimension values c₂=2/π, c₃=1/2, c₄=4/(3π). This file resolves the parent's stated open question: the large-dimension decay rate of c_n.",
     "problemStatement": "$$c_n = \\frac{2\\,\\Gamma(n/2)}{(n-1)\\,\\sqrt{\\pi}\\,\\Gamma((n-1)/2)} \\sim \\sqrt{\\frac{2}{\\pi n}}\\qquad(n\\to\\infty),\\quad\\text{equivalently}\\quad \\sqrt{n}\\,c_n \\to \\sqrt{\\tfrac{2}{\\pi}}.$$",
-    "text": "A 354-line, Stirling-free formalization. Setting s n = Γ(n/2)/Γ((n-1)/2), the Gamma recurrence gives the product law s_n·s_{n+1} = (n-1)/2, and log-convexity of Γ makes n ↦ s_n increasing; combining the two squeezes (n-2)/2 ≤ (s_n)² ≤ (n-1)/2, so (s_n)²/n → 1/2. The algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n-1)² then sends the squared sequence to 2/π, and √-continuity yields √n·c_n → √(2/π). 0 axioms, 0 sorries.",
+    "text": "A 410-line, Stirling-free formalization. Setting s n = Γ(n/2)/Γ((n-1)/2), the Gamma recurrence gives the product law s_n·s_{n+1} = (n-1)/2, and log-convexity of Γ makes n ↦ s_n increasing; combining the two squeezes (n-2)/2 ≤ (s_n)² ≤ (n-1)/2, so (s_n)²/n → 1/2. The algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n-1)² then sends the squared sequence to 2/π, and √-continuity yields √n·c_n → √(2/π). 0 axioms, 0 sorries.",
     "proofStrategy": "Define c_n (buffonConstant) and s n. (s_mul_s_succ) s_n·s_{n+1}=(n-1)/2 from Real.Gamma_add_one. (s_le_s_succ) monotonicity from Real.convexOn_log_Gamma via ConvexOn.slope_mono_adjacent at the three points (n-1)/2 < n/2 < (n+1)/2. (s_sq_bounds) (n-2)/2 = s_{n-1}·s_n ≤ (s_n)² ≤ s_n·s_{n+1} = (n-1)/2. (s_sq_div_tendsto) (s_n)²/n → 1/2 by squeezing. (sq_target_eq) (√n·c_n)² = (4/π)·n(s_n)²/(n-1)². (sqrt_mul_buffonConstant_tendsto) assemble: squared sequence → (4/π)(1/2)(1) = 2/π, then Real.sqrt_sq + Real.continuous_sqrt.",
     "keyInsights": [
       "The Gamma-ratio asymptotic Γ(n/2)/Γ((n-1)/2) ~ √(n/2) is proved without Stirling: the product recurrence s_n·s_{n+1}=(n-1)/2 plus monotonicity of s_n traps (s_n)² between two consecutive products, both ~ n/2",
@@ -81,47 +81,55 @@
       "id": "statement-and-strategy",
       "title": "The Constant, the Result, and the Stirling-Free Strategy",
       "startLine": 1,
-      "endLine": 61,
+      "endLine": 77,
       "summary": "Module docstring and setup. Records the parent's Buffon crossing constant c_n = 2Γ(n/2)/((n−1)√π·Γ((n−1)/2)) (correcting the seeder's mis-quoted normalization), states the target √n·c_n → √(2/π), and lays out the Stirling-free plan: set s_n = Γ(n/2)/Γ((n−1)/2), derive the product recurrence (REC), get monotonicity from log-convexity, squeeze (SQ), then package the limit. Notes the Docker build is green (7743 jobs) and registered.",
       "mathContext": "$c_n = \\dfrac{2\\,\\Gamma(n/2)}{(n-1)\\sqrt{\\pi}\\,\\Gamma((n-1)/2)} \\sim \\sqrt{\\dfrac{2}{\\pi n}}$."
     },
     {
       "id": "definitions-and-positivity",
       "title": "Definitions and Positivity",
-      "startLine": 63,
-      "endLine": 96,
+      "startLine": 78,
+      "endLine": 113,
       "summary": "Defines buffonConstant n (with the n ≤ 1 guard returning 0) and the Gamma ratio s n = Γ(n/2)/Γ((n−1)/2). Establishes the positivity scaffolding for n ≥ 2: half_pos and half_pred_pos (arguments positive), gamma_half_pos / gamma_half_pred_pos (via Real.Gamma_pos_of_pos), and s_pos (a quotient of positives).",
       "mathContext": "$s(n) = \\Gamma(n/2)/\\Gamma((n-1)/2) > 0$ for $n \\ge 2$, since both arguments exceed $0$."
     },
     {
       "id": "recurrence-and-monotonicity",
       "title": "Product Recurrence and Monotonicity",
-      "startLine": 98,
-      "endLine": 159,
+      "startLine": 114,
+      "endLine": 176,
       "summary": "s_mul_s_succ proves the product recurrence s_n·s_(n+1) = (n−1)/2 from Γ(z+1)=z·Γ(z) (Real.Gamma_add_one) at z=(n−1)/2, with push_cast to align the (n+1) arguments. s_le_s_succ proves n ↦ s_n is increasing by applying ConvexOn.slope_mono_adjacent to log∘Γ (Real.convexOn_log_Gamma) at the three equally spaced points (n−1)/2 < n/2 < (n+1)/2; the equal 1/2 gaps cancel, and log-monotonicity (Real.log_le_log_iff) transfers the inequality from logs back to s.",
       "mathContext": "$s_n\\,s_{n+1} = \\tfrac{n-1}{2}$ (REC); $\\;s_n \\le s_{n+1}$ from convexity of $\\log\\Gamma$."
     },
     {
       "id": "squeeze-and-eq",
       "title": "The Squared Squeeze and the Constant Identity",
-      "startLine": 161,
-      "endLine": 205,
+      "startLine": 177,
+      "endLine": 222,
       "summary": "s_sq_bounds traps (s_n)² between two consecutive products: (n−2)/2 = s_(n−1)·s_n ≤ (s_n)² ≤ s_n·s_(n+1) = (n−1)/2, using monotonicity, positivity, and the recurrence at n−1 and n (the n−1 reindex handled via Nat.sub_add_cancel and a cast lemma). buffonConstant_eq rewrites c_n = 2·s_n/((n−1)√π), cancelling the shared Γ((n−1)/2).",
       "mathContext": "$\\tfrac{n-2}{2} \\le (s_n)^2 \\le \\tfrac{n-1}{2}$ (SQ); $\\;c_n = \\dfrac{2 s_n}{(n-1)\\sqrt{\\pi}}$."
     },
     {
-      "id": "real-analysis-packaging",
-      "title": "Real-Analysis Packaging",
-      "startLine": 207,
-      "endLine": 292,
-      "summary": "sq_target_eq gives the algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n−1)². s_sq_div_tendsto shows (s_n)²/n → 1/2 by squeezing (SQ)/n between (1/2 − 1/n) and (1/2 − 1/(2n)), both → 1/2 (tendsto_of_tendsto_of_tendsto_of_le_of_le' with gcongr). ratio_tendsto_one and ratio_sq_tendsto_one give n/(n−1) → 1 and its square → 1.",
-      "mathContext": "$(\\sqrt{n}\\,c_n)^2 = \\dfrac{4}{\\pi}\\cdot\\dfrac{n\\,(s_n)^2}{(n-1)^2}$; $\\;(s_n)^2/n \\to \\tfrac12$, $\\;(n/(n-1))^2 \\to 1$."
+      "id": "identity-and-effective-bound",
+      "title": "The Constant Identity and the Effective Two-Sided Bound",
+      "startLine": 223,
+      "endLine": 280,
+      "summary": "sq_target_eq gives the algebraic identity (√n·c_n)² = (4/π)·n(s_n)²/(n−1)² (field_simp + ring). sqrt_mul_buffonConstant_sq_bounds then plugs the Gamma-ratio squeeze s_sq_bounds into that identity to obtain the effective (non-asymptotic) two-sided bound (2/π)·n(n−2)/(n−1)² ≤ (√n·c_n)² ≤ (2/π)·n/(n−1) valid for every n ≥ 3: the common positive factor (4/π)·n/(n−1)² is pulled out so each side is a single mul_le_mul_of_nonneg_left. Both envelopes tend to 2/π (lower from below, upper from above), quantifying the convergence rate at every finite n.",
+      "mathContext": "$(\\sqrt{n}\\,c_n)^2 = \\dfrac{4}{\\pi}\\cdot\\dfrac{n\\,(s_n)^2}{(n-1)^2}$; $\\;\\dfrac{2}{\\pi}\\cdot\\dfrac{n(n-2)}{(n-1)^2} \\le (\\sqrt{n}\\,c_n)^2 \\le \\dfrac{2}{\\pi}\\cdot\\dfrac{n}{n-1}$ for $n \\ge 3$."
+    },
+    {
+      "id": "tendsto-packaging",
+      "title": "Limits of the Building Blocks",
+      "startLine": 281,
+      "endLine": 349,
+      "summary": "s_sq_div_tendsto shows (s_n)²/n → 1/2 by squeezing (SQ)/n between ((n−2)/2)/n = 1/2 − 1/n and ((n−1)/2)/n = 1/2 − 1/(2n), both → 1/2 (tendsto_of_tendsto_of_tendsto_of_le_of_le' with gcongr, via tendsto_const_div_atTop_nhds_zero_nat). ratio_tendsto_one and ratio_sq_tendsto_one give n/(n−1) → 1 and its square → 1.",
+      "mathContext": "$(s_n)^2/n \\to \\tfrac12$, $\\;n/(n-1) \\to 1$, $\\;(n/(n-1))^2 \\to 1$."
     },
     {
       "id": "main-asymptotic",
       "title": "Assembling the Main Asymptotic",
-      "startLine": 294,
-      "endLine": 354,
+      "startLine": 350,
+      "endLine": 410,
       "summary": "sqrt_mul_buffonConstant_tendsto assembles the result: the squared sequence → (4/π)(1/2)(1) = 2/π (combining s_sq_div_tendsto, ratio_sq_tendsto_one, and sq_target_eq via congr'), and since √n·c_n ≥ 0 it equals √ of its square, so Real.continuous_sqrt yields √n·c_n → √(2/π).",
       "mathContext": "$(\\sqrt{n}\\,c_n)^2 \\to \\tfrac{2}{\\pi}$ and $\\sqrt{n}\\,c_n \\ge 0$ $\\Rightarrow$ $\\sqrt{n}\\,c_n \\to \\sqrt{2/\\pi}$."
     }
