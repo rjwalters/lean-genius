@@ -75,6 +75,14 @@
       "mathContext": "Defines the LevyTriplet structure (γ, σ², ν_total) with nonnegativity constraints and the InfDivisible structure encoding a characteristic exponent with continuity, normalization, and associated triplet."
     },
     {
+      "id": "khintchine-exponents",
+      "title": "Lévy–Khintchine Exponent Definitions",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "Defines the three canonical characteristic exponents entering the Lévy–Khintchine formula: gaussianExponent ψ(t) = iμt − σ²t²/2, poissonExponent ψ(t) = λ(e^{it} − 1), and compoundPoissonExponent ψ(t) = λ(E[e^{itX}] − 1) for a jump characteristic function. These are the building blocks assembled into full triplets in the sections that follow.",
+      "mathContext": "$\\psi_{\\text{Gauss}}(t) = i\\mu t - \\sigma^2 t^2/2$; $\\psi_{\\text{Poisson}}(t) = \\lambda(e^{it}-1)$; $\\psi_{\\text{cPoisson}}(t) = \\lambda(\\mathbb{E}[e^{itX}]-1)$, all valued in $\\mathbb{C}$."
+    },
+    {
       "id": "gaussian-triplet",
       "title": "Gaussian Triplet Properties",
       "startLine": 73,
