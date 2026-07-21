@@ -89,25 +89,25 @@
       "mathContext": "Uses Finset.card_biUnion_le and Finset.card_erase_of_mem; the uniform bound feeds the symmetric threshold."
     },
     {
-      "id": "sec-degree-sharp",
-      "title": "Sharpness of the Degree Bound",
-      "startLine": 205,
-      "endLine": 223,
-      "summary": "tightVars (k=2 variables per event, D=3 events per variable, 5 events) and sharedDep_maxDegree_tight: the central event has degree exactly k·(D-1)=4, so sharedDep_maxDegree is tight. Proved by kernel decide (no native_decide)."
-    },
-    {
       "id": "sec-capstones",
       "title": "Part IV: Capstones — The Variable LLL",
       "startLine": 176,
-      "endLine": 204,
+      "endLine": 203,
       "summary": "variable_lll repackages the consequences along sharedDep; variable_lll_symmetric plugs the degree bound into the parent's symmetric_lll_complete to obtain the symmetric variable LLL at threshold T(k·(D−1)).",
       "mathContext": "Connects the variable model to the symmetric threshold theory of the parent file."
     },
     {
+      "id": "sec-degree-sharp",
+      "title": "Part V′: Sharpness of the Degree Bound",
+      "startLine": 204,
+      "endLine": 223,
+      "summary": "tightVars (k=2 variables per event, D=3 events per variable, 5 events) and sharedDep_maxDegree_tight: the central event has degree exactly k·(D-1)=4, so sharedDep_maxDegree is tight. Proved by kernel decide (no native_decide)."
+    },
+    {
       "id": "sec-union-bound",
       "title": "Part V: The Asymmetric LLL Beats the Union Bound",
-      "startLine": 205,
-      "endLine": 238,
+      "startLine": 224,
+      "endLine": 259,
       "summary": "asymLLL_beats_union_bound: for n > 2 an instance with ∑ P[A_i] > 1 yet positive avoidance product. asymLLL_asymmetric_weights: a concrete mutually-dependent two-event instance with distinct tight weights.",
       "mathContext": "Demonstrates the qualitative gain of the local lemma over the union bound and the genuine need for asymmetric weights."
     }
