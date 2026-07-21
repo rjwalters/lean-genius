@@ -370,4 +370,12 @@ theorem heilbronn_antitone {m n : ℕ} (hm : 3 ≤ m) (hmn : m ≤ n) :
   | succ k hk ih =>
     exact le_trans (heilbronn_succ_le k (le_trans hm hk)) ih
 
+/-- **Heilbronn's function is bounded into `[0, 3]`.**  Combining `heilbronn_nonneg`
+and `heilbronn_le_three`, for `n ≥ 3` the value `heilbronn n` lies in the unit-disk
+area envelope `0 ≤ heilbronn n ≤ 3`.  (The true order of magnitude is
+`n^{−β+o(1)}` with `7/6 ≤ β ≤ 2`, far below `3`, but that is the open deep content;
+this records the elementary two-sided bound the foundational lemmas already give.) -/
+theorem heilbronn_mem_Icc (n : ℕ) (hn : 3 ≤ n) : heilbronn n ∈ Set.Icc (0 : ℝ) 3 :=
+  ⟨heilbronn_nonneg n hn, heilbronn_le_three n hn⟩
+
 end Erdos507WIP01
