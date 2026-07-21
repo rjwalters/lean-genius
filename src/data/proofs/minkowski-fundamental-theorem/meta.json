@@ -82,16 +82,40 @@
       "mathContext": "The header collects the geometry-of-numbers Mathlib imports (`MeasureTheory.Group.GeometryOfNumbers`, `Algebra.Module.ZLattice.Basic`, `NumberTheory.SumTwoSquares`) and a module docstring explaining the theorem statement, the classical pigeonhole argument, and downstream applications (Fermat's two squares, Dirichlet approximation, Lagrange four squares). It opens the `MinkowskiFundamentalTheorem` namespace and introduces the dimension parameter `variable (n : ℕ) [NeZero n]` shared by all subsequent definitions and theorems."
     },
     {
-      "id": "custom-api",
-      "title": "Part 1–4: Custom API (EuclideanN, Lattice, ConvexBody, HasVolume)",
-      "summary": "Defines EuclideanN, CentrallySymmetric, Lattice (basis matrix + invertibility), covolume, latticePoints, ConvexBody structure, and HasVolume typeclass bridging abstract volume to ENNReal Lebesgue measure.",
+      "id": "euclidean-symmetry",
+      "title": "Euclidean Space and Central Symmetry",
+      "summary": "Defines the ambient space EuclideanN n = Fin n → ℝ, the CentrallySymmetric predicate (S = -S), and origin_mem_of_symmetric_nonempty — a nonempty convex centrally symmetric set contains the origin.",
       "startLine": 110,
+      "endLine": 155,
+      "mathContext": "`EuclideanN n = Fin n → ℝ` is the ambient space; using a plain function type (rather than `EuclideanSpace ℝ (Fin n)`) is a deliberate choice that ensures direct compatibility with Mathlib's `ZSpan` and `Module.Basis` APIs, avoiding coercion friction later in the bridge section. `CentrallySymmetric S` asserts $S = -S$, i.e. $x \\in S \\iff -x \\in S$ — the hypothesis that lets the pigeonhole difference $\\tfrac{1}{2}(p_1 - p_2)$ stay inside the body. The lemma `origin_mem_of_symmetric_nonempty` proves that any nonempty convex centrally symmetric set contains the origin: pick $x \\in S$, then $-x \\in S$ by symmetry, and $0 = \\tfrac{1}{2}x + \\tfrac{1}{2}(-x) \\in S$ by convexity. This is the first place the interplay of the two defining hypotheses (symmetry + convexity) is exercised, foreshadowing the main argument."
+    },
+    {
+      "id": "lattices",
+      "title": "Lattices: Covolume and Lattice Points",
+      "summary": "Defines Lattice n (basis matrix + nonzero-determinant witness), covolume = |det(basis)| with covolume_pos, isLatticeVector / latticePoints (the ℤ-module of integer combinations), and the standardLattice ℤⁿ with covolume 1.",
+      "startLine": 156,
+      "endLine": 198,
+      "mathContext": "`Lattice n` wraps an $n \\times n$ real `basis` matrix together with a nonzero-determinant witness `basis_invertible : basis.det ≠ 0`, making it the Lean encoding of an element of $GL_n(\\mathbb{R})$ acting on $\\mathbb{Z}^n$. The `covolume` of lattice $L$ is $|\\det(\\mathrm{basis})|$ — the volume of the fundamental domain $[0,1)^n$ pushed through the basis matrix; `Lattice.covolume_pos` shows it is strictly positive (a nonzero determinant has positive absolute value). `isLatticeVector L x` asserts $x = \\sum_i c_i b_i$ for integers $c_i$ and basis rows $b_i$, and `latticePoints L` collects all such points into the $\\mathbb{Z}$-module they form; `zero_mem_latticePoints` records that the origin is always a lattice point. `standardLattice n` is $\\mathbb{Z}^n$ (identity basis matrix), and `standardLattice_covolume` computes its covolume as $1$, the normalization used by the classical textbook statement."
+    },
+    {
+      "id": "convex-bodies",
+      "title": "Convex Bodies",
+      "summary": "Defines ConvexBody n, bundling a set with proofs of CentrallySymmetric, Convex, and Set.Nonempty, and ConvexBody.zero_mem deriving 0 ∈ S from those three fields.",
+      "startLine": 199,
+      "endLine": 228,
+      "mathContext": "`ConvexBody n` bundles a set `carrier : Set (EuclideanN n)` with three proof fields — `symmetric : CentrallySymmetric carrier`, `convex : Convex ℝ carrier`, and `nonempty : carrier.Nonempty` — packaging exactly the hypotheses Minkowski's theorem requires of the body. `ConvexBody.zero_mem` then delivers $0 \\in S$ for free by invoking `origin_mem_of_symmetric_nonempty` on the bundled fields. Structuring the body as a typeclass-friendly `structure` (rather than a bare set with side hypotheses) means downstream theorems take a single `S : ConvexBody n` argument and never re-thread the convexity/symmetry conditions, keeping statements readable."
+    },
+    {
+      "id": "volume-threshold",
+      "title": "Volume and the Critical Threshold 2ⁿ·covolume",
+      "summary": "Defines the HasVolume typeclass (bridging a real vol to the ENNReal Lebesgue measure of the body) and criticalVolume L = 2ⁿ·covolume(L) with criticalVolume_pos — the threshold the body's volume must exceed.",
+      "startLine": 229,
       "endLine": 244,
-      "mathContext": "The custom API models geometry-of-numbers at a high level of abstraction. `EuclideanN n = Fin n → ℝ` is the ambient space; using a function type (rather than `EuclideanSpace ℝ (Fin n)`) ensures direct compatibility with Mathlib's `ZSpan` API. `Lattice n` wraps an $n \\times n$ real `basis` matrix with a nonzero-determinant witness `basis_invertible : basis.det ≠ 0`, making it the Lean encoding of $GL_n(\\mathbb{R})$. The `covolume` of lattice $L$ is $|\\det(\\mathrm{basis})|$, the volume of its fundamental domain $[0,1)^n$ mapped through the basis matrix; `Lattice.covolume_pos` shows it is strictly positive. `isLatticeVector L x` asserts $x = \\sum_i c_i b_i$ for integers $c_i$ and basis rows $b_i$; `latticePoints L` is the $\\mathbb{Z}$-module of all such points. `ConvexBody n` bundles a set with proofs of `CentrallySymmetric`, `Convex`, and `Set.Nonempty`; central symmetry implies $0 \\in S$ by convexity (proved in `origin_mem_of_symmetric_nonempty`). `HasVolume n S` is a typeclass supplying `vol : ℝ` and `hv_eq : ENNReal.ofReal vol = MeasureTheory.volume ↑S`, bridging the real-valued volume condition to Mathlib's `ENNReal`-valued Lebesgue measure. `criticalVolume L = 2^n \\cdot \\mathrm{covolume}(L)$ is the threshold: any convex body with volume strictly exceeding this must contain a nonzero lattice point."
+      "mathContext": "`HasVolume n S` is a typeclass supplying a real number `vol : ℝ` together with `hv_eq : ENNReal.ofReal vol = MeasureTheory.volume ↑S`, bridging the informal real-valued volume condition to Mathlib's `ENNReal`-valued Lebesgue measure `MeasureTheory.volume`. Carrying the volume as typeclass data lets theorem statements write the clean hypothesis `hv.vol > criticalVolume L` while the `hv_eq` field silently reconciles it with the measure-theoretic reality. `criticalVolume L = 2^n \\cdot \\mathrm{covolume}(L)$ is the sharp threshold of Minkowski's theorem: any convex body whose volume *strictly* exceeds $2^n \\det(L)$ must contain a nonzero lattice point (equality alone does not suffice — the open cube $(-1,1)^n$ has volume exactly $2^n$ yet no nonzero integer point). `criticalVolume_pos` records positivity, needed for the `ENNReal` arithmetic in the main proof."
     },
     {
       "id": "bridge",
-      "title": "Part 4.5: Bridge to Mathlib (toModuleBasis, latticePoints_eq_span)",
+      "title": "Bridge to Mathlib: toModuleBasis and latticePoints_eq_span",
       "summary": "Lattice.toLinearEquiv, toModuleBasis, toModuleBasis_matrix_eq, basisVec_eq_toModuleBasis, and latticePoints_eq_span connect the custom Lattice type to Mathlib's Module.Basis and Submodule.span ℤ.",
       "startLine": 245,
       "endLine": 327,
@@ -99,7 +123,7 @@
     },
     {
       "id": "main-theorem",
-      "title": "Part 5: Minkowski's Fundamental Theorem",
+      "title": "Minkowski's Fundamental Theorem",
       "summary": "minkowski_fundamental and minkowski_fundamental': proved via Mathlib's exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure with ENNReal arithmetic bridge and latticePoints_eq_span.",
       "startLine": 328,
       "endLine": 402,
@@ -107,7 +131,7 @@
     },
     {
       "id": "special-cases",
-      "title": "Part 6–7: Integer Lattice and Fermat's Two Squares",
+      "title": "Integer Lattice ℤⁿ and Applications: Fermat, Dirichlet, Lagrange",
       "summary": "minkowski_integer_lattice (vol > 2^n for ℤⁿ), fermat_from_minkowski (every prime p ≡ 1 mod 4 is a sum of two squares, delegated to Nat.Prime.sq_add_sq), and application docstrings for Dirichlet and Lagrange.",
       "startLine": 403,
       "endLine": 489,
@@ -115,7 +139,7 @@
     },
     {
       "id": "variants",
-      "title": "Part 8–9: Blichfeldt Generalization and Significance",
+      "title": "Blichfeldt Generalization and Significance",
       "summary": "blichfeldt_statement (Prop-valued def for k+1 lattice points), discussion of Minkowski's second theorem (successive minima), and applications to algebraic number theory, cryptography, and coding theory.",
       "startLine": 490,
       "endLine": 564,
@@ -123,7 +147,7 @@
     },
     {
       "id": "proved-namespace",
-      "title": "Part 10: MinkowskiProved — Direct Mathlib Proofs",
+      "title": "MinkowskiProved — Direct Mathlib Proofs",
       "summary": "stdBasis, stdLattice, stdFundDomain, stdLattice_covolume (= 1), minkowski_integer_lattice_proved (integer lattice, ENNReal hypothesis), and minkowski_general_lattice_proved (arbitrary Module.Basis). Both are thin wrappers over Mathlib in 1–2 rewrites.",
       "startLine": 565,
       "endLine": 686,
