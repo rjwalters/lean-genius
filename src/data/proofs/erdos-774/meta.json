@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Preamble",
+      "summary": "Module docstring: Erdős #774 (OPEN) — is every proportionately dissociated set a finite union of dissociated sets? Background from Pisier (1983), Alon-Erdős (1985), and Nešetřil-Rödl-Sales (2024). Includes the v4.31 migration-compat shim `Complex.abs z := ‖z‖` (Complex.abs was removed from Mathlib in favour of the norm).",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "$A \\subset \\mathbb{N}$ is dissociated if distinct finite subsets have different sums; proportionately dissociated if every finite $B \\subseteq A$ contains a dissociated subset of size $\\gg |B|$. Pisier: proportionately dissociated $\\equiv$ Sidon."
+    },
+    {
       "id": "dissociated-sets",
       "title": "Dissociated Sets",
       "summary": "IsDissociated, IsDissociatedSet, HasUniqueSubsetSums, equivalence theorem",
@@ -142,6 +150,14 @@
       "startLine": 186,
       "endLine": 215,
       "mathContext": "NRS (2024): $\\exists$ proportionately Sidon set that is NOT a finite union of Sidon sets. Strong evidence #774 also has answer NO."
+    },
+    {
+      "id": "summary",
+      "title": "Part XI: Summary",
+      "summary": "erdos_774_summary bundles the two established results: (1) a finite union of dissociated sets is proportionately dissociated (the converse direction), and (2) the Sidon analogue is FALSE (Nešetřil-Rödl-Sales 2024), the evidence pointing toward a negative answer for #774.",
+      "startLine": 216,
+      "endLine": 222,
+      "mathContext": "$(\\forall A,\\ \\mathrm{IsFiniteUnionDissociated}\\,A \\Rightarrow \\mathrm{IsProportionatelyDissociated}\\,A) \\land \\neg\\,\\mathrm{SidonAnalogue}$."
     }
   ],
   "conclusion": {
