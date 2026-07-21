@@ -48,51 +48,59 @@
   "sections": [
     {
       "id": "defs",
-      "title": "Definitions: Edge Count and Planar Bound",
-      "startLine": 41,
-      "endLine": 46,
-      "summary": "`completeEdges n = n.choose 2` (edges of Kₙ) and `planarBound n = 3 * n - 6` (Euler's planar bound).",
+      "title": "Overview and Definitions: Edge Count and Planar Bound",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Header docstring framing the sharp-threshold question `C(n,2) > 3n − 6`, then the two definitions: `completeEdges n = n.choose 2` (edges of Kₙ) and `planarBound n = 3 * n - 6` (Euler's planar bound).",
       "mathContext": "$\\mathrm{completeEdges}(n) = \\binom{n}{2}$, $\\mathrm{planarBound}(n) = 3n - 6$."
     },
     {
       "id": "pascal",
       "title": "Pascal Step",
-      "startLine": 48,
-      "endLine": 54,
+      "startLine": 58,
+      "endLine": 64,
       "summary": "`completeEdges_succ`: $\\binom{n+1}{2} = \\binom{n}{2} + n$, via `Nat.choose_succ_succ` and `Nat.choose_one_right`, the engine of the induction.",
       "mathContext": "$\\binom{n+1}{2} = \\binom{n}{2} + \\binom{n}{1} = \\binom{n}{2} + n$."
     },
     {
       "id": "exceeds",
       "title": "Counting Obstruction for n ≥ 5",
-      "startLine": 56,
-      "endLine": 68,
+      "startLine": 66,
+      "endLine": 78,
       "summary": "`Kn_exceeds_planar_bound`: for all $n \\geq 5$, $3n - 6 < \\binom{n}{2}$. `Nat.le_induction` from base $n = 5$ ($9 < 10$); each step rewrites by the Pascal lemma and closes with `omega`.",
       "mathContext": "$n \\geq 5 \\Rightarrow 3n - 6 < \\binom{n}{2}$."
     },
     {
       "id": "within",
       "title": "Sharpness for 3 ≤ n ≤ 4",
-      "startLine": 70,
-      "endLine": 74,
+      "startLine": 80,
+      "endLine": 84,
       "summary": "`Kn_within_planar_bound`: for $3 \\leq n \\leq 4$, $\\binom{n}{2} \\leq 3n - 6$ (equality in both cases). `interval_cases n <;> decide`.",
       "mathContext": "$K_3: 3 = 3$, $K_4: 6 = 6$."
     },
     {
       "id": "threshold",
       "title": "The Sharp Threshold",
-      "startLine": 76,
-      "endLine": 88,
+      "startLine": 86,
+      "endLine": 98,
       "summary": "`planar_obstruction_threshold`: for $n \\geq 3$, $3n - 6 < \\binom{n}{2} \\iff n \\geq 5$. Forward direction by contradiction against the within-bound lemma; backward by the exceeds lemma.",
       "mathContext": "$n \\geq 3 \\Rightarrow (\\binom{n}{2} > 3n - 6 \\iff n \\geq 5)$."
     },
     {
       "id": "witnesses",
       "title": "Boundary Witnesses",
-      "startLine": 90,
-      "endLine": 100,
+      "startLine": 100,
+      "endLine": 110,
       "summary": "`K3_meets_bound` ($3 = 3$), `K4_meets_bound` ($6 = 6$), `K5_exceeds_bound` ($9 < 10$): the three small cases pinning the threshold, each by `decide`.",
       "mathContext": "$\\binom{3}{2} = 3$, $\\binom{4}{2} = 6$, $\\binom{5}{2} = 10$ against bounds $3, 6, 9$."
+    },
+    {
+      "id": "excess",
+      "title": "Exact Excess over Euler's Bound and Superlinearity",
+      "startLine": 112,
+      "endLine": 169,
+      "summary": "Quantifies *by how much* Kₙ overshoots the planar bound and shows the overshoot beats *any* linear bound. `two_mul_completeEdges`: $2\\binom{n}{2} = n(n-1)$, the division-free closed form (induction via the Pascal lemma). `excess_eq`: for $n \\geq 3$, $\\binom{n}{2} = (3n-6) + \\binom{n-3}{2}$ — the overshoot is itself a smaller complete-graph edge count $\\binom{n-3}{2} = (n-3)(n-4)/2$, sharpening the threshold inequality to an exact identity ($n \\in \\{3,4\\} \\Rightarrow$ excess $0$; $n \\geq 5 \\Rightarrow$ excess grows quadratically). `completeEdges_superlinear`: for every constant $C$ there is $N = 2C+2$ with $\\binom{n}{2} > C \\cdot n$ for $n \\geq N$, so the obstruction is robust to the exact linear coefficient — the discrete companion of the parent's real-analytic `dense_graph_not_planar`.",
+      "mathContext": "$2\\binom{n}{2} = n(n-1)$; for $n \\geq 3$, $\\binom{n}{2} = (3n-6) + \\binom{n-3}{2}$; $\\forall C\\,\\exists N\\,\\forall n \\geq N,\\ \\binom{n}{2} > Cn$ (take $N = 2C+2$)."
     }
   ],
   "conclusion": {
