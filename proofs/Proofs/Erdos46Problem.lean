@@ -186,3 +186,75 @@ theorem erdosProblem46_of_infinitely_many
   intro r hr c
   obtain ⟨S, hrepr, hmono, _⟩ := h r hr c 0
   exact ⟨S, hrepr, hmono⟩
+
+/-! ## Unit-fraction splitting and a concrete representation
+
+The Fibonacci–Sylvester *splitting identity* `1/n = 1/(n+1) + 1/(n(n+1))` is the
+elementary engine behind unit-fraction constructions: it replaces one reciprocal by
+two strictly larger ones with the same total. Together with a concrete base
+representation it witnesses that `IsUnitFractionRepr` is inhabited. -/
+
+/-- **Telescoping identity.** `1/(n(n+1)) = 1/n - 1/(n+1)` for `n ≥ 1` (as rationals). -/
+theorem inv_mul_succ (n : ℕ) (hn : 1 ≤ n) :
+    (1 : ℚ) / (n * (n + 1)) = 1 / n - 1 / (n + 1) := by
+  have hn0 : (n : ℚ) ≠ 0 := by positivity
+  have hn1 : (n : ℚ) + 1 ≠ 0 := by positivity
+  field_simp
+  ring
+
+/-- **Splitting identity.** `1/n = 1/(n+1) + 1/(n(n+1))` for `n ≥ 1`: a single unit
+fraction splits into two strictly larger ones with the same sum. The Fibonacci–Sylvester
+step used to lengthen unit-fraction representations. -/
+theorem split_unit_fraction (n : ℕ) (hn : 1 ≤ n) :
+    (1 : ℚ) / n = 1 / (n + 1) + 1 / (n * (n + 1)) := by
+  rw [inv_mul_succ n hn]; ring
+
+/-- **A concrete unit-fraction representation of `1`:** `{2, 3, 6}`, since
+`1/2 + 1/3 + 1/6 = 1`. Witnesses that `IsUnitFractionRepr` is inhabited. -/
+theorem isUnitFractionRepr_two_three_six :
+    IsUnitFractionRepr ({2, 3, 6} : Finset ℕ) := by
+  refine ⟨?_, ?_⟩
+  · decide
+  · norm_num [Finset.sum_insert, Finset.mem_insert, Finset.mem_singleton]
+
+/-- Unit-fraction representations of `1` exist. -/
+theorem exists_isUnitFractionRepr : ∃ S : Finset ℕ, IsUnitFractionRepr S :=
+  ⟨{2, 3, 6}, isUnitFractionRepr_two_three_six⟩
+
+/-- **Term-replacement / lengthening step.** Given a unit-fraction representation `S`
+containing `m`, if the two split denominators `m+1` and `m(m+1)` are not already in `S`,
+then replacing `m` by `{m+1, m(m+1)}` (via the splitting identity) yields another
+unit-fraction representation of `1`. This is the elementary induction step behind
+producing arbitrarily long — and, with disjoint choices, infinitely many — monochromatic
+representations. -/
+theorem isUnitFractionRepr_replace
+    {S : Finset ℕ} (hS : IsUnitFractionRepr S) {m : ℕ} (hm : m ∈ S)
+    (h1 : m + 1 ∉ S) (h2 : m * (m + 1) ∉ S) :
+    IsUnitFractionRepr (insert (m + 1) (insert (m * (m + 1)) (S.erase m))) := by
+  obtain ⟨hge, hsum⟩ := hS
+  have hm2 : 2 ≤ m := hge m hm
+  have hm1 : 1 ≤ m := le_trans (by norm_num) hm2
+  have h2erase : m * (m + 1) ∉ S.erase m := fun h => h2 (Finset.mem_of_mem_erase h)
+  have hne : m + 1 ≠ m * (m + 1) := by nlinarith
+  have h1insert : m + 1 ∉ insert (m * (m + 1)) (S.erase m) := by
+    simp only [Finset.mem_insert]
+    push_neg
+    exact ⟨hne, fun h => h1 (Finset.mem_of_mem_erase h)⟩
+  refine ⟨?_, ?_⟩
+  · intro n hn
+    simp only [Finset.mem_insert] at hn
+    rcases hn with rfl | rfl | hn
+    · omega
+    · nlinarith
+    · exact hge n (Finset.mem_of_mem_erase hn)
+  · rw [Finset.sum_insert h1insert, Finset.sum_insert h2erase]
+    have herase : (S.erase m).sum (fun n => (1 : ℚ) / n) = 1 - 1 / m := by
+      have hadd := Finset.add_sum_erase S (fun n => (1 : ℚ) / n) hm
+      rw [hsum] at hadd
+      linarith [hadd]
+    have hcast1 : ((m + 1 : ℕ) : ℚ) = (m : ℚ) + 1 := by push_cast; ring
+    have hcast2 : ((m * (m + 1) : ℕ) : ℚ) = (m : ℚ) * ((m : ℚ) + 1) := by push_cast; ring
+    have hsplit := split_unit_fraction m hm1
+    rw [herase]
+    simp only [hcast1, hcast2]
+    linarith [hsplit]
