@@ -84,6 +84,13 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup and Compatibility Shims",
+      "summary": "Module docstring stating the problem, and the v4.31 compatibility shims Complex.abs (:= ‖·‖) and Complex.norm_eq_abs restoring the API removed from Mathlib.",
+      "startLine": 1,
+      "endLine": 39
+    },
+    {
       "id": "bounded-disc-cover",
       "title": "Bounded Disc Cover",
       "summary": "Structure and definition for disc covers with bounded total radius",
@@ -128,9 +135,9 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Summary theorem combining Cartan and Pommerenke bounds",
+      "summary": "Summary theorem erdos_509_summary combining the Cartan and Pommerenke bounds",
       "startLine": 173,
-      "endLine": 199
+      "endLine": 203
     }
   ],
   "conclusion": {
