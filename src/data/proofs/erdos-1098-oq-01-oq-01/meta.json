@@ -85,9 +85,9 @@
     {
       "id": "main-results",
       "title": "Axioms and Main Theorems",
-      "summary": "three_clique_index_ge_four (axiom), S3_omega_three (axiom), three_clique_necessary_conditions (proved)",
+      "summary": "three_clique_index_ge_four (axiom), S3_omega_three (axiom), three_clique_necessary_conditions (proved: a 3-clique yields a nonCommuting pair, elements outside the center, and index ≥ 4). Closes with the capstone corollary erdos_1098_oq01_oq01 combining existence (S₃ achieves ω=3 with no 4-clique) and necessity (any 3-clique forces (Subgroup.center G).index ≥ 4).",
       "startLine": 126,
-      "endLine": 170,
+      "endLine": 206,
       "mathContext": "Combines coset separation, center exclusion, and Neumann-style index bound"
     }
   ],
