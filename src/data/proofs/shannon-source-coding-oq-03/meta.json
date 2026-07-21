@@ -89,63 +89,63 @@
             "id": "distributions",
             "title": "Probability Distributions",
             "startLine": 55,
-            "endLine": 90,
+            "endLine": 81,
             "summary": "DiscreteDist structure, shannonH definition, shannonH_nonneg.",
             "mathContext": "A discrete probability distribution on Fin k with normalization constraint."
         },
         {
             "id": "joint",
             "title": "Joint Distribution and Empirical Entropy",
-            "startLine": 95,
-            "endLine": 135,
+            "startLine": 82,
+            "endLine": 120,
             "summary": "jointProb (product measure), empEnt (empirical entropy), jointProb_sum_one.",
             "mathContext": "The i.i.d. joint distribution P(x) = ∏ p(xᵢ) and the empirical entropy -(1/n) log P(x)."
         },
         {
             "id": "expval",
             "title": "Expected Value and Marginal Factorization",
-            "startLine": 140,
-            "endLine": 205,
+            "startLine": 121,
+            "endLine": 203,
             "summary": "expVal definition, expVal_marginal (Fintype.prod_sum factorization), expVal_empEnt = H(p).",
             "mathContext": "The key lemma: ∑_x P(x)*g(x_j) = ∑_a p(a)*g(a) via sum-product exchange."
         },
         {
             "id": "chebyshev",
             "title": "Chebyshev's Inequality",
-            "startLine": 210,
-            "endLine": 240,
+            "startLine": 204,
+            "endLine": 228,
             "summary": "chebyshev_finite: P(|f-μ| > ε) ≤ E[(f-μ)²]/ε² for finite distributions.",
             "mathContext": "Elementary proof via pointwise bound ε² ≤ (f(x)-μ)² when |f(x)-μ| > ε."
         },
         {
             "id": "aep",
             "title": "AEP Concentration: Variance and Chebyshev Bound",
-            "startLine": 244,
-            "endLine": 380,
+            "startLine": 229,
+            "endLine": 435,
             "summary": "logVar, expVal_marginal_product (2D bilinear), empEnt_variance = logVar/n (fully proved via diagonal/off-diagonal split), aep_concentration: P(|empEnt - H| > ε) ≤ logVar/(n·ε²).",
             "mathContext": "The variance computation is the deepest result: $\\text{Var}[\\text{empEnt}] = \\text{logVar}/n$. Diagonal terms $E[(Z_j - H)^2] = \\text{logVar}$ use $\\texttt{expVal\\_marginal}$; off-diagonal cross terms $E[(Z_{j_1}-H)(Z_{j_2}-H)] = 0$ use $\\texttt{expVal\\_marginal\\_product}$ (independence) + mean-centering. Chebyshev then gives the explicit bound."
         },
         {
             "id": "typical-set",
             "title": "Typical Set: Definition and Size Upper Bound",
-            "startLine": 382,
-            "endLine": 421,
+            "startLine": 436,
+            "endLine": 484,
             "summary": "typicalSet definition, typical_set_size_upper: |T_ε^(n)| ≤ exp(n·(H+ε)).",
             "mathContext": "The typical set $T_\\varepsilon^{(n)} = \\{x : |\\text{empEnt}(x) - H(p)| \\leq \\varepsilon\\}$. Each $x \\in T_\\varepsilon^{(n)}$ satisfies $P(x) = e^{-n \\cdot \\text{empEnt}(x)} \\geq e^{-n(H+\\varepsilon)}$, so $|T_\\varepsilon^{(n)}| \\cdot e^{-n(H+\\varepsilon)} \\leq \\sum_{x \\in T} P(x) \\leq 1$, giving $|T_\\varepsilon^{(n)}| \\leq e^{n(H+\\varepsilon)}$. This is the achievability half of Shannon's source coding theorem."
         },
         {
             "id": "concrete",
-            "title": "Concrete Verification: Fair Coin Sanity Check",
-            "startLine": 426,
-            "endLine": 445,
-            "summary": "uniformBin (fair Bernoulli), uniformBin_entropy: H(uniformBin) = log 2. Concrete instance confirming abstract definitions.",
-            "mathContext": "The fair coin distribution $p(0) = p(1) = 1/2$ on $\\text{Fin}\\,2$ satisfies $H = -2 \\cdot (1/2) \\log(1/2) = \\log 2 \\approx 0.693$. The $\\texttt{native\\_decide}$ verification confirms the discrete probability axioms and gives a sanity check that the abstract AEP applies to the simplest non-trivial example."
+            "title": "Concrete Verification: Fair Coin Sanity Checks",
+            "startLine": 485,
+            "endLine": 515,
+            "summary": "uniformBin (fair Bernoulli on Fin 2), uniformBin_entropy: H(uniformBin) = log 2, and an empEnt example confirming that a constant fair-coin sequence has empirical entropy log 2. Concrete instances confirming the abstract definitions on the simplest non-trivial source.",
+            "mathContext": "The fair coin distribution $p(0)=p(1)=1/2$ on $\\text{Fin}\\,2$ satisfies $H = -2\\cdot(1/2)\\log(1/2) = \\log 2 \\approx 0.693$. Both $\\texttt{uniformBin\\_entropy}$ (proved by $\\texttt{simp}$ + $\\texttt{Real.log\\_inv}$) and the $\\texttt{empEnt}$ example are elementary sanity checks that the abstract AEP machinery specializes correctly to the simplest non-trivial example."
         },
         {
             "id": "aep-summary",
             "title": "Section VIII: AEP Summary and Bug Fix Record",
-            "startLine": 446,
-            "endLine": 476,
+            "startLine": 516,
+            "endLine": 545,
             "summary": "Closing summary enumerates all 7 proved theorems. Records key bug fix: aep_concentration originally used rw [expVal_empEnt] (wrong — rewrites E[empEnt]=H) but required rw [empEnt_variance] (correct — rewrites E[(empEnt-H)²]=logVar/n).",
             "mathContext": "Bug: `rw [expVal_empEnt]` rewrites $\\mathbb{E}[\\mathrm{empEnt}] = H$ (the mean). Fix: `rw [empEnt_variance]` rewrites $\\mathbb{E}[(\\mathrm{empEnt}-H)^2] = \\mathrm{logVar}/n$ (the variance). Chebyshev's inequality requires the variance, not the mean."
         }
