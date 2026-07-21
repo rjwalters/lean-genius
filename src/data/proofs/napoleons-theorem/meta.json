@@ -52,57 +52,65 @@
   },
   "sections": [
     {
+      "title": "Setup and Compatibility Shims",
+      "startLine": 1,
+      "endLine": 79,
+      "description": "Module docstring (what the file proves, historical context, approach) and the v4.31 compatibility shims Complex.abs, Complex.abs_def, Complex.abs_mul restoring the API removed from Mathlib.",
+      "summary": "Setup and Compatibility Shims",
+      "id": "setup"
+    },
+    {
       "title": "Napoleon Centroid Construction",
-      "startLine": 60,
-      "endLine": 85,
+      "startLine": 80,
+      "endLine": 101,
       "description": "Define the centroid of the outer equilateral triangle on each side using the displacement formula G = midpoint + i√3(c-b)/6.",
       "summary": "Napoleon Centroid Construction",
       "id": "napoleon-centroid-construction"
     },
     {
       "title": "Algebraic Lemma: √3² = 3",
-      "startLine": 90,
-      "endLine": 105,
+      "startLine": 102,
+      "endLine": 115,
       "description": "The key algebraic fact √3² = 3 lifted to ℂ, used in the rotation identity proof.",
       "summary": "Algebraic Lemma: √3² = 3",
       "id": "algebraic-lemma-√3²-=-3"
     },
     {
       "title": "Rotation Identity",
-      "startLine": 110,
-      "endLine": 175,
+      "startLine": 116,
+      "endLine": 170,
       "description": "The algebraic heart: G₃ - G₁ = (G₂ - G₁) · e^{-iπ/3}. Both sides expand to (z₁-z₃)/2 + i√3(2z₂-z₁-z₃)/6.",
       "summary": "Rotation Identity",
       "id": "rotation-identity"
     },
     {
       "title": "Napoleon's Theorem — Equilateral Property",
-      "startLine": 180,
-      "endLine": 230,
+      "startLine": 171,
+      "endLine": 224,
       "description": "All three sides of the outer Napoleon triangle are equal, derived from the rotation identity and |e^{-iπ/3}| = 1.",
       "summary": "Napoleon's Theorem — Equilateral Property",
       "id": "napoleon's-theorem-—-equilater"
     },
     {
       "title": "Side Length Formula",
-      "startLine": 235,
-      "endLine": 265,
+      "startLine": 225,
+      "endLine": 253,
       "description": "The squared side length expressed in terms of the original triangle's vertex coordinates.",
       "summary": "Side Length Formula",
       "id": "side-length-formula"
     },
     {
       "title": "Inner Napoleon Triangle",
-      "startLine": 270,
-      "endLine": 340,
+      "startLine": 254,
+      "endLine": 327,
       "description": "The inner Napoleon triangle (equilateral triangles constructed inward) is also equilateral, with conjugate rotation.",
       "summary": "Inner Napoleon Triangle",
       "id": "inner-napoleon-triangle"
     },
     {
       "title": "Centroid Preservation",
-      "startLine": 345,
-      "endLine": 355,
+      "startLine": 328,
+      "endLine": 358,
       "description": "Both inner and outer Napoleon triangle centroids coincide with the original triangle's centroid.",
       "summary": "Centroid Preservation",
       "id": "centroid-preservation"
