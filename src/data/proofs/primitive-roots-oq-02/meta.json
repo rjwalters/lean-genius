@@ -119,8 +119,16 @@
       "title": "Existence and Decidability",
       "startLine": 167,
       "endLine": 185,
-      "summary": "exists_generator, Decidable instance, concrete examples",
-      "mathContext": "Existence follows from (ZMod p)ˣ being cyclic. Decidability follows from DecidableEq ℕ applied to orderOf g = p-1."
+      "summary": "exists_generator (a generator exists because (ZMod p)ˣ is cyclic, with orderOf = Nat.card = φ(p) = p-1 for prime p), a Decidable IsGenerator instance, and the first two concrete verification examples (p = 3, p = 5).",
+      "mathContext": "Existence: `IsCyclic.exists_generator` on `(ZMod p)ˣ` gives g with `orderOf g = Nat.card = p-1` after `ZMod.card_units_eq_totient` and `Nat.totient_prime`. Decidability is registered as a `noncomputable instance := Classical.dec _`; in principle `IsGenerator g` is decidable by computing `orderOf g` and comparing to `p-1`, but the file uses the classical instance so the predicate is usable in statements without a constructive decision procedure."
+    },
+    {
+      "id": "verification-algorithm-summary",
+      "title": "Concrete Verification (Larger Primes), Algorithm, and Summary",
+      "startLine": 186,
+      "endLine": 224,
+      "summary": "Further native_decide examples computing Nat.primeFactors of p-1 for p = 7, 11, 13, 23 and the efficiency showcase p = 1000003 (p-1 = 2·3·166667 ⇒ only 3 tests). An informal description of the search algorithm (factor p-1; for each candidate g test g^{(p-1)/qᵢ} ≠ 1 over the distinct primes qᵢ; correctness from isGenerator_iff_prime_factor_test, termination from exists_generator, O(log log p) expected candidates). Closes with a Summary #check block over the four main results and `end PrimitiveRootsOQ02`.",
+      "mathContext": "These are illustrative `example`-block sanity checks (`native_decide` here does not enter any theorem/lemma/def, so the entry stays 0-axiom / verified — `Lean.ofReduceBool` is not incurred by any presented result). Efficiency point: the number of modular-exponentiation tests per candidate is the number of distinct prime factors ω(p-1), which is O(log log p) on average (Hardy–Ramanujan / Mertens), so the criterion is cheap regardless of the size of p."
     }
   ],
   "conclusion": {
