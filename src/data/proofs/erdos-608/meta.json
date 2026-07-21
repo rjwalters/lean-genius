@@ -89,18 +89,18 @@
     {
       "id": "conjecture",
       "title": "Original Conjecture (FALSE)",
-      "summary": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved.",
+      "summary": "States Erdős's conjecture: $|E(G)| > n^2/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)n^2$. States `original_conjecture_false : \\neg\\text{OriginalConjecture}$ (proof deferred, `sorry`) — the intended disproof direction.",
       "startLine": 51,
       "endLine": 63,
-      "mathContext": "States Erdős's conjecture: $|E(G)| > $n^{2}$/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)$n^{2}$$. Proves `original_conjecture_false : \\neg\\text{OriginalConjecture}$ — the conjecture is disproved."
+      "mathContext": "States Erdős's conjecture: $|E(G)| > $n^{2}$/4 \\Rightarrow \\text{edgesInC5}(G) \\geq (2/9)$n^{2}$$. States `original_conjecture_false : \\neg\\text{OriginalConjecture}$ (proof deferred, `sorry`) — the intended disproof direction."
     },
     {
       "id": "constant",
       "title": "The Correct Constant $c = (2 + \\sqrt{2})/16$",
-      "summary": "Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure).",
+      "summary": "Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. States $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (proofs deferred, `sorry`; the latter explains the conjecture's failure).",
       "startLine": 64,
       "endLine": 76,
-      "mathContext": "Formal definition: Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. Proves $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (explaining the conjecture's failure)."
+      "mathContext": "Formal definition: Defines $c = (2 + \\sqrt{2})/16 \\approx 0.2134$ as a noncomputable real. States $0.213 < c < 0.214$ (approximation) and $c < 2/9$ (proofs deferred, `sorry`; the latter explains the conjecture's failure)."
     },
     {
       "id": "furedi-maleki",
@@ -113,7 +113,7 @@
     {
       "id": "grzesik-hu-volec",
       "title": "Grzesik-Hu-Volec Lower Bound",
-      "summary": "States `GrzesikHuVolecBound`: $\\forall \\varepsilon > 0$, eventually $\\forall G$ with $|E| > n^2/4$, $\\text{edgesInC5}(G) \\geq (c - \\varepsilon)n^2$. Proved via flag algebras. Combined in `exact_answer`.",
+      "summary": "States `GrzesikHuVolecBound`: $\\forall \\varepsilon > 0$, eventually $\\forall G$ with $|E| > n^2/4$, $\\text{edgesInC5}(G) \\geq (c - \\varepsilon)n^2$. Proof deferred (`sorry`); the flag-algebra argument is not formalized. Combined in `exact_answer` (which therefore also depends on the `sorry`).",
       "startLine": 92,
       "endLine": 111,
       "mathContext": "States `GrzesikHuVolecBound`: $\\forall \\varepsilon > 0$, eventually $\\forall G$ with $|E| > n^2/4$, $\\text{edgesInC5}(G) \\geq (c - \\varepsilon)n^2$."
@@ -121,10 +121,10 @@
     {
       "id": "odd-cycles",
       "title": "General Odd Cycles $C_{2k+1}$",
-      "summary": "Defines `IsOddCycle` for general $(2k+1)$-cycles using `Fin`-indexed injective paths with modular adjacency. Proves for $k \\geq 3$: $\\text{edgesInOddCycle}(G, k) \\geq (2/9 - o(1))n^2$, showing $C_5$ is the unique exception.",
+      "summary": "Defines `IsOddCycle` for general $(2k+1)$-cycles using `Fin`-indexed injective paths with modular adjacency. States for $k \\geq 3$ (proof deferred, `sorry`): $\\text{edgesInOddCycle}(G, k) \\geq (2/9 - o(1))n^2$, intended to show $C_5$ is the unique exception.",
       "startLine": 112,
       "endLine": 136,
-      "mathContext": "Defines `IsOddCycle` for general $(2k+1)$-cycles using `Fin`-indexed injective paths with modular adjacency. Proves for $k \\geq 3$: $\\text{edgesInOddCycle}(G, k) \\geq (2/9 - o(1))n^2$, showing $C_5$ is the unique exception."
+      "mathContext": "Defines `IsOddCycle` for general $(2k+1)$-cycles using `Fin`-indexed injective paths with modular adjacency. States for $k \\geq 3$ (proof deferred, `sorry`): $\\text{edgesInOddCycle}(G, k) \\geq (2/9 - o(1))n^2$, intended to show $C_5$ is the unique exception."
     },
     {
       "id": "triangles",
@@ -137,26 +137,26 @@
     {
       "id": "turan",
       "title": "Turán Threshold Sharpness",
-      "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $n^2/4$ is **sharp**.",
+      "summary": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. States (proof deferred, `sorry`) that the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, intended to show the threshold $n^2/4$ is **sharp**.",
       "startLine": 151,
       "endLine": 173,
-      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. Proves the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, showing the threshold $$n^{2}$/4$ is **sharp**."
+      "mathContext": "Defines `turanEdges(n) = \\lfloor n/2 \\rfloor \\cdot \\lceil n/2 \\rceil$. States (proof deferred, `sorry`) that the Turán graph $T(n, 2)$ is bipartite with $\\text{edgesInC5} = 0$, intended to show the threshold $$n^{2}$/4$ is **sharp**."
     },
     {
       "id": "small",
       "title": "Small Cases ($n = 5, 6$)",
-      "summary": "Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale.",
+      "summary": "Small-case statements (proofs deferred, `sorry`): $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Intended to illustrate supersaturation at small scale.",
       "startLine": 174,
       "endLine": 187,
-      "mathContext": "Mathematical content: Concrete verification: $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Illustrates supersaturation at small scale."
+      "mathContext": "Mathematical content: Small-case statements (proofs deferred, `sorry`): $C_5$ itself has 5/5 edges in $C_5$; for $n = 6$ with $> 9$ edges, $\\text{edgesInC5} \\geq 5$. Intended to illustrate supersaturation at small scale."
     },
     {
       "id": "construction",
       "title": "Füredi-Maleki Construction Details",
-      "summary": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$.",
+      "summary": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. States `construction_optimal` (proof deferred, `sorry`): for $n \\geq 100$, a graph achieves $|E| >n^2/4$ with $\\text{edgesInC5} \\leq cn^2 + n$.",
       "startLine": 188,
       "endLine": 218,
-      "mathContext": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. Proves `construction_optimal`: for $n \\geq 100$, achieves $|E| > $n^{2}$/4$ with $\\text{edgesInC5} \\leq cn^2 + n$."
+      "mathContext": "Defines `FurediMalekiGraph` as an algebraic blow-up construction. States `construction_optimal` (proof deferred, `sorry`): for $n \\geq 100$, a graph achieves $|E| >$n^{2}$/4$ with $\\text{edgesInC5} \\leq cn^2 + n$."
     },
     {
       "id": "counts",
