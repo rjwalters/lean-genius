@@ -185,6 +185,14 @@
       "startLine": 224,
       "endLine": 234,
       "mathContext": "Defines sequence discrepancy as sup over intervals of |empirical - expected| proportion, then axiomatizes the Erdős-Turán inequality: D_n ≤ 1/K + Σ|Sₙ(k)|/(kn), the quantitative bridge between exponential sums and equidistribution."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: erdos_987",
+      "summary": "The capstone `erdos_987` theorem packages the three headline facts as a conjunction: Aₖ grows unboundedly for every unit-interval sequence (`erdos_987_unbounded`), Aₖ ≥ C√k infinitely often (`clunie_sqrt_bound`), and some sequence achieves Aₖ ≤ k (`clunie_upper_construction`). Assembled by ⟨·,·,·⟩ from the three supporting results.",
+      "startLine": 235,
+      "endLine": 245,
+      "mathContext": "The capstone `erdos_987` theorem packages the three headline facts as a conjunction: Aₖ grows unboundedly for every unit-interval sequence (`erdos_987_unbounded`), Aₖ ≥ C√k infinitely often (`clunie_sqrt_bound`), and some sequence achieves Aₖ ≤ k (`clunie_upper_construction`). Assembled by ⟨·,·,·⟩ from the three supporting results."
     }
   ],
   "conclusion": {
