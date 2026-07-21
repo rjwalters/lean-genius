@@ -106,17 +106,25 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview — The Furstenberg Correspondence",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring and imports: the correspondence between combinatorial density in ℕ and shift dynamics on Cantor space, the infrastructure built in this file, the program for eliminating the correspondence axiom, and references.",
+      "mathContext": "The Furstenberg correspondence principle translates statements about the upper density of $A \\subseteq \\mathbb{N}$ into statements about a $T$-invariant measure on the shift system (Cantor space, $T$). Positive-density combinatorial patterns (arithmetic progressions, Szemerédi's theorem) become recurrence statements for the measure, bringing ergodic theory to bear on additive combinatorics."
+    },
+    {
       "id": "shift-map",
       "title": "Part I — Cantor Space and Shift Map",
-      "startLine": 39,
-      "endLine": 74,
+      "startLine": 40,
+      "endLine": 75,
       "summary": "Defines Cantor space (ℕ → Bool), the left shift map, and proves it is continuous and measurable with an explicit iteration formula.",
       "mathContext": "The shift T(x)(n) = x(n+1) is continuous because each coordinate of T(x) is a continuous function of x (product topology). The iteration formula shift^[n](x)(k) = x(k+n) follows by induction."
     },
     {
       "id": "cylinder-sets",
       "title": "Part II — Cylinder Sets",
-      "startLine": 75,
+      "startLine": 76,
       "endLine": 123,
       "summary": "Defines cylinder sets, proves they are clopen and measurable, and computes their preimages under the shift.",
       "mathContext": "Cylinder sets {x : x(i) = b} are the basic generators of the product σ-algebra. They are clopen because Bool has the discrete topology and coordinate projections are continuous."
@@ -141,87 +149,87 @@
       "id": "orbit-density",
       "title": "Part V — Orbit and Cesàro Averages",
       "startLine": 192,
-      "endLine": 225,
+      "endLine": 227,
       "summary": "Defines the orbit of a point under the shift and proves that orbit hits on B₀ count membership in A.",
       "mathContext": "The Cesàro averages μ_N = (1/N) Σ_{n<N} δ_{T^n(1_A)} approximate the density of A. The orbit hit count is the numerator of this fraction."
     },
     {
       "id": "compactness",
       "title": "Part VI — Compactness of Cantor Space",
-      "startLine": 226,
-      "endLine": 248,
+      "startLine": 228,
+      "endLine": 250,
       "summary": "Establishes that Cantor space is compact (Tychonoff) and metrizable, the topological prerequisites for weak-* compactness arguments.",
       "mathContext": "Tychonoff's theorem guarantees ℕ → Bool is compact. Combined with metrizability (countable product of discrete spaces), this gives sequential compactness for probability measures."
     },
     {
       "id": "what-remains",
       "title": "Part VII — What Remains",
-      "startLine": 249,
-      "endLine": 277,
+      "startLine": 251,
+      "endLine": 279,
       "summary": "Gap analysis identifying the one missing Mathlib ingredient for the full correspondence: weak-* sequential compactness of probability measures on compact metrizable spaces.",
       "mathContext": "With the dynamics, cylinder sets, and combinatorial bridge proved, the only obstruction to constructing the T-invariant measure is extracting a weak-* convergent subsequence of the Cesàro measures — Prokhorov/Banach-Alaoglu, not yet assembled in this exact form in Mathlib."
     },
     {
       "id": "cesaro-construction",
       "title": "Part VIII — Cesàro Probability Measures: The Furstenberg Construction",
-      "startLine": 278,
-      "endLine": 446,
+      "startLine": 280,
+      "endLine": 445,
       "summary": "Defines the Cesàro measures μ_{a,N}, proves the finset-Dirac evaluation lemma, the upper-density predicate, the orbit-density connection, and the density lower bound μ_{a,N}(B₀) ≥ δ.",
       "mathContext": "The Furstenberg construction averages point masses δ_{T^n(1_A)} over a window [a, a+N). The elementary half of the correspondence — that this averaged measure assigns mass at least the density δ to the base cylinder B₀ — is proved directly here (density_lower_bound)."
     },
     {
       "id": "t-invariance-telescoping",
       "title": "Part VIII-b — Approximate T-Invariance of Cesàro Measures",
-      "startLine": 447,
-      "endLine": 565,
+      "startLine": 446,
+      "endLine": 579,
       "summary": "Proves that the Cesàro measure is approximately shift-invariant via a telescoping bound: the difference between μ_N and its pushforward under T is O(1/N) on measurable sets.",
       "mathContext": "Telescoping the orbit sum Σ_{n<N} δ_{T^n x} against its T-shift collapses to the two endpoint terms, so |μ_N(S) − μ_N(T⁻¹S)| ≤ 2/N. This approximate invariance becomes exact in the weak-* limit."
     },
     {
       "id": "minimal-axiom",
       "title": "Part IX — The Minimal Remaining Axiom (Prokhorov)",
-      "startLine": 566,
-      "endLine": 637,
+      "startLine": 580,
+      "endLine": 651,
       "summary": "Isolates the single local axiom (sequential compactness of probability measures on Cantor space) and documents the Mathlib ingredients that would discharge it, with a progress summary.",
       "mathContext": "The correspondence reduces to seqCompact_probabilityMeasure_cantor. Mathlib has the pieces — IsTightMeasureSet.of_compactSpace, LevyProkhorov.eq_convergenceInDistribution, WeakDual.isSeqCompact_closedBall — but they are not yet assembled into this exact statement (~150–200 lines)."
     },
     {
       "id": "density-preservation",
       "title": "Part X — Density Preservation at Weak-* Limits",
-      "startLine": 638,
-      "endLine": 687,
+      "startLine": 652,
+      "endLine": 701,
       "summary": "Proves the Portmanteau property for clopen sets on Cantor space: weak-* convergence preserves the measure of clopen sets, so density lower bounds survive the limit.",
       "mathContext": "On a compact metrizable space, clopen sets have boundary of measure zero, so the Portmanteau theorem gives μ_n(S) → μ(S) for clopen S. This transfers the density lower bound from the Cesàro measures to their limit."
     },
     {
       "id": "cesaro-probability",
       "title": "Part XI — Cesàro Measures as Probability Measures",
-      "startLine": 688,
-      "endLine": 714,
+      "startLine": 702,
+      "endLine": 728,
       "summary": "Wraps the Cesàro measures as bona fide ProbabilityMeasure objects and relates the wrapped measure back to the underlying Measure.",
       "mathContext": "To apply weak-* compactness one needs ProbabilityMeasure-valued sequences; cesaroProbabilityMeasure packages μ_N with the total-mass-one proof and cesaroProbabilityMeasure_toMeasure recovers the underlying measure."
     },
     {
       "id": "shift-invariance-limit",
       "title": "Part XII — Shift-Invariance of Limit Measures",
-      "startLine": 715,
-      "endLine": 782,
+      "startLine": 729,
+      "endLine": 796,
       "summary": "Upgrades approximate T-invariance to exact shift-invariance of the limit measure on clopen sets, yielding MeasurePreserving shift μ μ (contains the file's single remaining sorry).",
       "mathContext": "The telescoping bounds of Part VIII-b vanish in the limit, giving μ(S) = μ(T⁻¹S) on clopen sets. The remaining sorry (limit_shift_invariant_on_cylinder) is the ENNReal Portmanteau limit-algebra assembly making this exact."
     },
     {
       "id": "positive-measure-ap",
       "title": "Part XIII — Positive Measure Implies Arithmetic Progressions",
-      "startLine": 783,
-      "endLine": 861,
+      "startLine": 797,
+      "endLine": 877,
       "summary": "Proves that positive limit-measure of the k-fold return set forces an arithmetic progression in A: kfold_intersection_isClopen, cesaro_positive_implies_orbit_member, and positive_measure_gives_ap.",
       "mathContext": "If the limit measure assigns positive mass to ⋂_{i<k} T^{-id}(B₀), some orbit point lies in the intersection, which by the return property of Part IV means {a, a+d, …, a+(k−1)d} ⊆ A — an arithmetic progression."
     },
     {
       "id": "full-correspondence",
       "title": "Part XIV — The Full Furstenberg Correspondence (Assembly)",
-      "startLine": 862,
-      "endLine": 929,
+      "startLine": 878,
+      "endLine": 945,
       "summary": "Assembles the components into the correspondence system constructor and summarizes the net result: the parent furstenberg_correspondence axiom reduces to one Prokhorov axiom plus one limit-algebra sorry.",
       "mathContext": "correspondenceSystem packages the shift, the invariant limit measure, and the density-positivity bridge. The combinatorial-dynamical core (Parts III–V, XIII) is fully proved; only standard-analysis weak-* compactness and one ENNReal limit step remain."
     }
