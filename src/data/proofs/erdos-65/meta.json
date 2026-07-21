@@ -15,14 +15,14 @@
       "extremal-combinatorics",
       "cycles"
     ],
-    "badge": "mathlib",
+    "badge": "infrastructure",
     "sorries": 0,
     "erdosNumber": 65,
     "erdosUrl": "https://erdosproblems.com/65",
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 0,
     "lineCount": 217,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "None (0 axioms, 0 sorries). Infrastructure formalization only: definitions for cycle-length sets, edge density, and the open minimization question (Erdos65Question), plus one trivial positivity lemma (odd_cycle_positive_contribution: 1/k > 0). The core GKS logarithmic lower bound is background context, not formalized.",
     "mathlib_version": "4.31.0",
     "theoremCount": 1,
     "definitionCount": 9
