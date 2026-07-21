@@ -89,95 +89,95 @@
       "title": "Problem Header and Imports",
       "summary": "Documentation of Erdős Problem #634 with known results, references, and Mathlib import for access to multisets, big operators, and primality.",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 48,
       "mathContext": "Mathematical content: Documentation of Erdős Problem #634 with known results, references, and Mathlib import for access to multisets, big operators, and primality."
     },
     {
       "id": "triangles",
       "title": "Triangles and Congruence",
       "summary": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive.",
-      "startLine": 36,
-      "endLine": 67,
+      "startLine": 49,
+      "endLine": 80,
       "mathContext": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive."
     },
     {
       "id": "similar",
       "title": "Similar Triangles",
       "summary": "Defines `Similar` as proportionality of side lengths ($\\exists k > 0$, $T_2 = k \\cdot T_1$) and states that congruent triangles are similar (with scaling factor $k = 1$).",
-      "startLine": 68,
-      "endLine": 82,
+      "startLine": 81,
+      "endLine": 131,
       "mathContext": "Formal definition: Defines `Similar` as proportionality of side lengths ($\\exists k > 0$, $T_2 = k \\cdot T_1$) and states that congruent triangles are similar (with scaling factor $k = 1$)."
     },
     {
       "id": "dissection",
       "title": "Triangle Dissection",
-      "summary": "Triangle area via Heron's formula (`Triangle.semiperimeter`, `Triangle.area` using `Real.sqrt`). `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with proper area-partition requirement: $\\sum_i \\text{area}(\\text{pieces}_i) = \\text{area}(T)$. `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` asserting existence.",
-      "startLine": 83,
-      "endLine": 113,
-      "mathContext": "Triangle area via Heron's formula and Dissection structure with genuine area partition requirement."
+      "summary": "Triangle area via Heron's formula (`Triangle.semiperimeter`, `Triangle.area` using `Real.sqrt`). `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ carrying the area-partition requirement $\\sum_i \\text{area}(\\text{pieces}_i) = \\text{area}(T)$; `IsCongruentDissection` requiring all pieces mutually congruent. Crucially, `IsDissectable n` is *not* area-balance alone: it also requires the abstract `Tiles T n pieces` witness (declared as an `axiom`, since Mathlib has no polygonal-tiling API) asserting genuine covering with disjoint interiors. This `Tiles` conjunct is what keeps the file consistent — the companion `Erdos634AreaCollapse.lean` shows the area-only predicate holds for every $n \\geq 1$, which would contradict Beeson's $\\neg\\text{IsDissectable}\\,7,11$; requiring `Tiles` blocks that trivial equal-area construction.",
+      "startLine": 132,
+      "endLine": 209,
+      "mathContext": "Triangle area via Heron's formula; `Dissection` (area partition) + `IsCongruentDissection` (mutual congruence) + the abstract `Tiles` covering/disjointness axiom together define `IsDissectable`, the extra `Tiles` conjunct restoring consistency with the Beeson negative axioms."
     },
     {
       "id": "positive",
       "title": "Known Positive Results",
       "summary": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all `sorry` pending explicit constructions satisfying the Heron-formula area partition.",
-      "startLine": 115,
-      "endLine": 165,
+      "startLine": 210,
+      "endLine": 283,
       "mathContext": "Theorems asserting dissectability for known parametric families, all with sorry pending explicit dissection constructions."
     },
     {
       "id": "beeson",
       "title": "Beeson's Negative Results",
       "summary": "Axiomatizes Beeson's 2012 results: $\\neg\\text{IsDissectable}\\, 7$ and $\\neg\\text{IsDissectable}\\, 11$, plus the proven observation that both 7 and 11 are primes of the form $4k + 3$.",
-      "startLine": 168,
-      "endLine": 190,
+      "startLine": 284,
+      "endLine": 355,
       "mathContext": "Axiomatized: Axiomatizes Beeson's 2012 results: $\\neg\\text{IsDissectable}\\, 7$ and $\\neg\\text{IsDissectable}\\, 11$, plus the proven observation that both 7 and 11 are primes of the form $4k + 3$."
     },
     {
       "id": "conjecture",
       "title": "The 4k+3 Conjecture",
       "summary": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable via `three_squares_dissectable`.",
-      "startLine": 192,
-      "endLine": 211,
+      "startLine": 356,
+      "endLine": 384,
       "mathContext": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `three_squares_dissectable`."
     },
     {
       "id": "open",
       "title": "Open Cases",
       "summary": "Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$.",
-      "startLine": 212,
-      "endLine": 244,
+      "startLine": 385,
+      "endLine": 404,
       "mathContext": "Verified: Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$."
     },
     {
       "id": "soifer",
       "title": "Similar Triangles (Soifer's Result)",
       "summary": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized.",
-      "startLine": 245,
-      "endLine": 265,
+      "startLine": 405,
+      "endLine": 423,
       "mathContext": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized."
     },
     {
       "id": "self-similar",
       "title": "Self-Similar Dissections (Snover–Waiveris–Williams)",
       "summary": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{k^2\\} \\cup \\{k^2 + m^2\\} \\cup \\{3k^2\\}$.",
-      "startLine": 266,
-      "endLine": 281,
+      "startLine": 424,
+      "endLine": 439,
       "mathContext": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{$k^{2}$\\} \\cup \\{$k^{2}$ + m^2\\} \\cup \\{3k^2\\}$."
     },
     {
       "id": "recent",
       "title": "Recent Progress (Zhang 2025)",
       "summary": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families.",
-      "startLine": 282,
-      "endLine": 296,
+      "startLine": 440,
+      "endLine": 455,
       "mathContext": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families."
     },
     {
       "id": "main-result",
       "title": "Main Results — Erdős Problem #634",
       "summary": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms.",
-      "startLine": 297,
-      "endLine": 344,
+      "startLine": 456,
+      "endLine": 503,
       "mathContext": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms."
     }
   ],
