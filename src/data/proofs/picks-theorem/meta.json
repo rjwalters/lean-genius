@@ -153,8 +153,8 @@
       "id": "applications",
       "title": "Applications and Lattice Width",
       "startLine": 422,
-      "endLine": 484,
-      "summary": "$O(1)$ area computation via `compute_area`. Lattice width bounds: $A \\leq w_x \\cdot w_y$. Export of main results.",
+      "endLine": 504,
+      "summary": "$O(1)$ area computation via `compute_area`. Lattice width in the $x$-direction (`lattice_width_x`) and the bound $A \\leq w_x \\cdot w_y$. A prior `area_bounded_by_box_axiom` was removed as inconsistent (it asserted $A \\leq w_x \\cdot w_y$ for all widths without a containment hypothesis, false at $w_x = w_y = 0$); a correct version requires $P$ to lie in the bounding box. Closes with the export of the main results ($\\texttt{\\#check}$).",
       "mathContext": "Area in $O(1)$ time: $A = i + \\tfrac{b}{2} - 1$ requires only two integer counts. Lattice width bound: $A \\leq w_x \\cdot w_y$ where $w_x = \\max x - \\min x$ and $w_y = \\max y - \\min y$ are the axis-aligned widths of $P$."
     }
   ],
