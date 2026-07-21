@@ -49,63 +49,71 @@
       "id": "header-imports",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic.",
       "mathContext": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic."
     },
     {
       "id": "smooth-numbers",
       "title": "Smooth Numbers",
-      "startLine": 22,
-      "endLine": 29,
+      "startLine": 23,
+      "endLine": 44,
       "summary": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout.",
       "mathContext": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout."
     },
     {
       "id": "deficiency",
       "title": "Deficiency Definition",
-      "startLine": 30,
-      "endLine": 42,
+      "startLine": 45,
+      "endLine": 57,
       "summary": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`).",
       "mathContext": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`)."
     },
     {
       "id": "conjectures",
       "title": "The Two Conjectures",
-      "startLine": 43,
-      "endLine": 64,
+      "startLine": 58,
+      "endLine": 79,
       "summary": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`.",
       "mathContext": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`."
     },
     {
       "id": "examples",
       "title": "Known Examples",
-      "startLine": 65,
-      "endLine": 78,
+      "startLine": 80,
+      "endLine": 92,
       "summary": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record).",
       "mathContext": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record)."
     },
     {
       "id": "upper-bound",
       "title": "ELS Upper Bound and Census",
-      "startLine": 79,
-      "endLine": 94,
-      "summary": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$.",
-      "mathContext": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$."
+      "startLine": 93,
+      "endLine": 119,
+      "summary": "The `els_upper_bound` axiom (ELS 1993): positive deficiency forces $n \\leq C \\cdot 2^k \\sqrt{k}$. Followed by a native_decide census of deficiency-1 examples spanning $k = 4..19$ (deficiency_14_4 through deficiency_2099_19).",
+      "mathContext": "els_upper_bound axiomatizes the ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency; the section then machine-checks (native_decide) a run of deficiency-1 witnesses across $k = 4..19$, e.g. $d(14,4)=d(23,5)=\\dots=d(2099,19)=1$."
+    },
+    {
+      "id": "verified-deficiency-gt1",
+      "title": "Verified Deficiency > 1 Examples",
+      "startLine": 120,
+      "endLine": 149,
+      "summary": "A native_decide catalogue of the higher-deficiency records: $d(44,8)=d(74,10)=d(174,12)=d(239,14)=2$, $d(46,10)=d(47,10)=d(241,16)=d(1119,27)=d(2105,25)=d(6459,33)=3$, and $d(47,11)=4$ (the highest known deficiency for small parameters).",
+      "mathContext": "Machine-checked (native_decide) deficiency values exceeding 1: deficiency-2 pairs (44,8),(74,10),(174,12),(239,14); deficiency-3 pairs (46,10),(47,10),(241,16),(1119,27),(2105,25),(6459,33); and the deficiency-4 record (47,11)."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 95,
-      "endLine": 107,
-      "summary": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic.",
-      "mathContext": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic."
+      "startLine": 150,
+      "endLine": 224,
+      "summary": "The verified smoothness toolkit (0 axioms): large_factor_no_contribution, deficiency_le (d ≤ k), isKSmooth_one/not_isKSmooth_zero, isKSmooth_mono, isKSmooth_prime_iff (p k-smooth ↔ p ≤ k), isKSmooth_mul/pow/of_dvd, isKSmooth_iff_primeFactors, and deficiency_pos_of_smooth.",
+      "mathContext": "Fully proved structural lemmas: a term with a prime factor > k is not k-smooth (large_factor_no_contribution); deficiency ≤ k; smoothness is closed under products, powers, and divisors, is monotone in k, holds for 1 (vacuously) and fails for 0; a prime is k-smooth iff it is ≤ k; and one k-smooth term in the window forces positive deficiency."
     },
     {
       "id": "remaining-examples",
       "title": "Remaining Known Deficiency-2 Examples",
       "startLine": 225,
-      "endLine": 241,
+      "endLine": 242,
       "summary": "Completes the catalogue: $d(95,10)=1$; $d(5179,27)=d(8413,28)=d(8414,28)=d(96622,42)=2$. All verified by `native_decide`. Together with Section VI these cover all known deficiency $\\geq 2$ pairs from ELS (1988).",
       "mathContext": "Completes the catalogue: $d(95,10)=1$; $d(5179,27)=d(8413,28)=d(8414,28)=d(96622,42)=2$. All verified by `native_decide`. Together with Section VI these cover all known deficiency $\\geq 2$ pairs from ELS (1988)."
     },
@@ -113,9 +121,17 @@
       "id": "els-corollary",
       "title": "ELS Corollary: Finiteness for Fixed k",
       "startLine": 243,
-      "endLine": 257,
+      "endLine": 259,
       "summary": "Theorem `finitely_many_for_fixed_k`: for fixed $k$, $\\{n : 2k \\leq n \\wedge \\text{NoSmallPrimeFactors}(n,k) \\wedge d(n,k) \\geq 1\\}$ is finite. Proof: apply `Set.Finite.subset (Set.finite_Iic \\lceil C \\cdot 2^k \\sqrt{k} \\rceil_+)` using `Nat.le_ceil` and `Nat.cast_le`.",
       "mathContext": "Theorem `finitely_many_for_fixed_k`: for fixed $k$, $\\{n : 2k \\leq n \\wedge \\text{NoSmallPrimeFactors}(n,k) \\wedge d(n,k) \\geq 1\\}$ is finite. Proof: apply `Set.Finite.subset (Set.finite_Iic \\lceil C \\cdot 2^k \\sqrt{k} \\rceil_+)` using `Nat.le_ceil` and `Nat.cast_le`."
+    },
+    {
+      "id": "structural-pigeonhole",
+      "title": "Structural Pigeonhole (the ELS mechanism)",
+      "startLine": 260,
+      "endLine": 337,
+      "summary": "The verified counting heart of ELS: not_isKSmooth_iff_exists_large_prime (non-smooth ⟺ a prime factor > k), the complement identity deficiency_add_nonsmooth_eq (smooth + non-smooth terms = k), deficiency_eq_one_iff_nonsmooth_eq, and the pigeonhole facts at_most_one_multiple_of_large_prime and no_shared_large_prime — a prime p > k divides at most one of the k consecutive window terms.",
+      "mathContext": "Fully proved (0 axioms) structural pigeonhole underpinning the ELS bound: a window term fails k-smoothness exactly when it carries a prime > k; smooth and non-smooth terms partition the k-element window (deficiency + #non-smooth = k); and since consecutive multiples of a prime p > k are more than k apart, each large prime divides at most one window term and no two terms share one — charging non-smooth terms to distinct large primes, the mechanism behind $n \\ll 2^k\\sqrt{k}$."
     }
   ],
   "conclusion": {
