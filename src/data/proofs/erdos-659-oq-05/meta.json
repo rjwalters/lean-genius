@@ -65,49 +65,85 @@
       "id": "header",
       "title": "Problem statement and scope",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Docstring framing oq-05: the Moree–Osburn lattice, the form Q=x²+2y² as the norm of ℤ[√−2], and the explicit note that the analytic Landau density theorem remains open while this file supplies the axiom-free algebraic layer."
     },
     {
       "id": "form-definition",
       "title": "The form Q and the represented-integer predicate",
       "startLine": 39,
-      "endLine": 43,
+      "endLine": 47,
       "summary": "Defines Q(x,y)=x²+2y² and IsRepresented n := ∃ x y, n = Q x y, the predicate whose extension is the lattice's squared-distance spectrum."
     },
     {
       "id": "composition-law",
       "title": "Brahmagupta composition law",
-      "startLine": 45,
-      "endLine": 50,
+      "startLine": 48,
+      "endLine": 54,
       "summary": "Q_mul: (a²+2b²)(c²+2d²) = (ac−2bd)²+2(ad+bc)², the D=2 Brahmagupta identity, proved by a single `ring` call — the multiplicativity at the heart of the entry."
     },
     {
       "id": "norm-identification",
       "title": "Q as the ℤ[√−2] norm",
-      "startLine": 52,
-      "endLine": 56,
+      "startLine": 55,
+      "endLine": 60,
       "summary": "Q_eq_zsqrtd_norm: Zsqrtd.norm ⟨x,y⟩ = x²+2y² for ℤ√(−2), bridging the elementary form to Mathlib's Zsqrtd theory where multiplicativity is Zsqrtd.norm_mul."
     },
     {
       "id": "base-representations",
       "title": "Base representations and nonnegativity",
-      "startLine": 58,
-      "endLine": 70,
+      "startLine": 61,
+      "endLine": 74,
       "summary": "Q represents 0, 1 and 2 (the generators 1=Q(1,0), 2=Q(0,1)) and every represented integer is nonnegative (isRepresented_nonneg via positivity) — valid as a squared distance."
+    },
+    {
+      "id": "anisotropy",
+      "title": "Anisotropy (Positive-Definiteness)",
+      "startLine": 75,
+      "endLine": 91,
+      "summary": "The form Q(x,y)=x²+2y² is anisotropic: `Q_eq_zero_iff` shows Q x y = 0 ⟺ x=0 ∧ y=0, i.e. the only zero of the definite form is the origin — the algebraic backbone of nonnegativity and strict positivity off the origin.",
+      "mathContext": "Positive-definiteness: $x^2+2y^2=0\\iff x=y=0$ over $\\mathbb{Z}$ (indeed over $\\mathbb{R}$), since both summands are nonnegative.",
+      "significance": "technical",
+      "relatedConcepts": [
+        "quadratic forms",
+        "positive-definite",
+        "anisotropy"
+      ],
+      "prerequisites": [
+        "binary quadratic forms"
+      ]
+    },
+    {
+      "id": "small-value-characterization",
+      "title": "Small-Value Characterization: Units and the Ramified Prime",
+      "startLine": 92,
+      "endLine": 138,
+      "summary": "Characterizes which lattice vectors hit the smallest norms: `Q_eq_one_iff` (norm-1 vectors are the units (±1,0)), `Q_eq_two_iff` (norm-2 vectors are (0,±1), the ramified prime 2), and `Q_pos_of_ne` (strict positivity of Q off the origin).",
+      "mathContext": "$Q(x,y)=1\\iff (x,y)=(\\pm1,0)$ (units of $\\mathbb{Z}[\\sqrt{-2}]$); $Q(x,y)=2\\iff (x,y)=(0,\\pm1)$ (the ramified prime); $Q(x,y)>0$ for $(x,y)\\ne(0,0)$.",
+      "significance": "supporting",
+      "relatedConcepts": [
+        "units",
+        "ramified primes",
+        "norm form",
+        "ℤ[√-2]"
+      ],
+      "prerequisites": [
+        "algebraic number theory",
+        "quadratic forms"
+      ]
     },
     {
       "id": "multiplicative-closure",
       "title": "Multiplicative closure and the submonoid",
-      "startLine": 72,
-      "endLine": 95,
+      "startLine": 139,
+      "endLine": 196,
       "summary": "isRepresented_mul reads the witnesses off Q_mul; representedSubmonoid packages one_mem/mul_mem into a Submonoid ℤ; isRepresented_prod extends closure to arbitrary finite products via Finset.prod_induction."
     },
     {
       "id": "geometric-link",
       "title": "Lattice points and the squared-distance identity",
-      "startLine": 97,
-      "endLine": 125,
+      "startLine": 197,
+      "endLine": 225,
       "summary": "latticePoint x y = (x, y√2) and dist_sq_lattice: the squared Euclidean distance between two lattice points equals Q of the coordinate differences, using (√2)²=2, tying the number theory to the actual Moree–Osburn geometry."
     }
   ],
