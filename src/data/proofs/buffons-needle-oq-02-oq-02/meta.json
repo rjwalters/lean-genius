@@ -150,6 +150,14 @@
       "endLine": 346,
       "summary": "Helix and great circle examples. A helix of arc length 2π√(r²+h²) has expected crossings π√(r²+h²)/d.",
       "mathContext": "Helix: $L = 2\\pi\\sqrt{r^2+h^2}$, $E = \\pi\\sqrt{r^2+h^2}/d$. Great circle: $L = 2\\pi R$, $E = \\pi R/d$."
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion: Scope of the Axiomatization",
+      "startLine": 347,
+      "endLine": 377,
+      "summary": "Closing docstring: the 3D smooth Buffon noodle formula E = L/(2d) is formalized with 2 axioms (smooth3DExpectedCrossings, smooth3D_buffon_eq) and 0 sorries, with verified consequences (shape independence, monotonicity, nonnegativity, approximation convergence, dimension comparison, Lipschitz stability). Explains why a full formalization is axiomatized: it would require the Grassmannian Gr(2,3), the invariant Haar measure on Gr(2,3) ≅ S², a crossing-count function, and the Cauchy–Crofton identity — beyond current Mathlib. The crossing factor α₃ = 1/2 (sphere average of |cos φ|) determines the 3D formula just as α₂ = 2/π governs the 2D case.",
+      "mathContext": "Axiomatized because Gr(2,3), its Haar measure, and Cauchy–Crofton are not yet in Mathlib. Crossing factor $\\alpha_3 = \\mathbb{E}_{S^2}[|\\cos\\varphi|] = \\tfrac12$ gives $E = L/(2d)$, mirroring $\\alpha_2 = 2/\\pi$ in the 2D case; the smooth extension follows by approximation and continuity."
     }
   ],
   "conclusion": {

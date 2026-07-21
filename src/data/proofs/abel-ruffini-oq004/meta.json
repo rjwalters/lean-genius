@@ -137,6 +137,14 @@
       "endLine": 202,
       "summary": "derived_length_gap (A₄'s series reaches ⊥, A₅'s never does), a4_exact_derived_length (length of A₄ is exactly 2), and derived_length_sequence (the derived-length profile 1,2,∞ for A₃,A₄,A₅, with A₃ abelian by a decide computation).",
       "mathContext": "The gap theorem juxtaposes a finite-length witness for A₄ with the universal non-reachability for A₅. The sequence theorem records the discontinuity: derived lengths 0,0,0 (A₀,A₁,A₂ trivial), 1 (A₃ ≅ ℤ/3 abelian), 2 (A₄), then ∞ from A₅ onward — the precise location of the Abel–Ruffini threshold."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Theorem Ledger and Axiom Status",
+      "startLine": 203,
+      "endLine": 232,
+      "summary": "Closing docstring tabulating all 11 proved theorems (A₄ non-abelian; its derived series reaching ⊥ at length exactly 2; A₅ perfect with derived series never leaving ⊤, hence infinite derived length; and the derived-length profile 0,0,0,1,2,∞ across A₀–A₅) and confirming 0 sorries, 0 axioms. Notes that `a4_derived2_eq_bot` reuses the parent's identification of ⁅A₄,A₄⁆ with the Klein four-group V₄ via kernel `decide` (no `native_decide`), so the whole chain is genuinely axiom-free.",
+      "mathContext": "11 theorems, 0 sorries, 0 axioms. $\\langle A_4, A_4 \\rangle = V_4$ (Klein four-group) is abelian, so $D^2(A_4) = \\bot$ by kernel `decide`; $A_5$ is perfect ($\\langle A_5, A_5 \\rangle = \\top$), so its derived series is constant at $\\top$ and never reaches $\\bot$."
     }
   ],
   "conclusion": {
