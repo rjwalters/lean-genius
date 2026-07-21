@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact table pinned through n=5 (axiom-free): g(0)=g(1)=0, g(2)=g(3)=1, g(4)=2, g(5)=2. g(5)=2 closed this session via the regular pentagon (minDistinctDistances_five): circumradius-4 vertices (±(√5∓1), ±√(10±2√5)) give exactly 2 squared distances 40∓8√5 (5 sides / 5 diagonals) ⇒ g(5) ≤ 2, matching the general floor g(5) ≥ 2 (two_le_minDistinctDistances_five). Linear upper bound g(n) ≤ n−1 (AP); deep Guth–Katz Ω(n/log n) imported. Next: g(6) (needs a 6-point construction; no 2-distance 6-set exists in the plane so g(6) ≥ 3, upper bound is a real construction) and the √n×√n grid toward Θ(n/√(log n)).",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1): g(6) ≤ 3 shipped axiom-free via the regular pentagon plus its circumcentre (minDistinctDistances_six_le_three; Docker-verified). The 5 centre-to-vertex spokes all equal the circumradius 4, and the 10 intra-pentagon distances reuse the g(5)=2 side/diagonal values, so the 6-point config realizes exactly the 3 distances {4, √(40−8√5), √(40+8√5)}. Combined with monotonicity g(6) ≥ g(5) = 2 this sandwiches g(6) ∈ [2,3] (minDistinctDistances_six_mem_Icc). Exact table still pinned through n=5: g(0)=g(1)=0, g(2)=g(3)=1, g(4)=g(5)=2. Pinning g(6)=3 needs the sharp two-distance-set ≤ 5-points bound (deep, beyond LRS rank ≤ 6).",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -63,7 +63,12 @@
       "pentP0..pentP4, pentagon (regular-pentagon config, circumradius 4) in Erdos89WIP01.lean",
       "dist_pent01/12/23/34/40 (=√(40−8√5) sides) and dist_pent02/03/13/14/24 (=√(40+8√5) diagonals) in Erdos89WIP01.lean",
       "pentagon_card = 5 (10 pairwise pentP_i ≠ pentP_j lemmas) in Erdos89WIP01.lean",
-      "numDistinctDistances_pentagon_le_two, minDistinctDistances_five_le_two, minDistinctDistances_five : minDistinctDistances 5 = 2 in Erdos89WIP01.lean"
+      "numDistinctDistances_pentagon_le_two, minDistinctDistances_five_le_two, minDistinctDistances_five : minDistinctDistances 5 = 2 in Erdos89WIP01.lean",
+      "pentCenter + dist_centerP0..4: each pentagon vertex is at distance 4 (circumradius) from the centre O=(0,0), via dist_eqPts + linear_combination pent_s_sq/pent_t1_sq/pent_t2_sq (Erdos89WIP01.lean)",
+      "pentagonPlusCenter (6-point config) + pentagonPlusCenter_card = 6",
+      "numDistinctDistances_pentagonPlusCenter_le_three: the 15 pairwise distances lie in {4, √(40−8√5), √(40+8√5)} ⇒ ≤ 3 (Erdos89WIP01.lean)",
+      "minDistinctDistances_six_le_three: g(6) ≤ 3 (axiom-free)",
+      "minDistinctDistances_six_mem_Icc: sandwich g(6) ∈ [2,3] (floor via monotonicity g(6) ≥ g(5) = 2)"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -78,13 +83,15 @@
       "no_four_equidistant: four points at a common positive pairwise distance r give three difference vectors (b−a,c−a,d−a) of norm r with pairwise inner product r²/2 (from ‖x−y‖²=2r²−2⟨x,y⟩=r²), a positive-definite Gram matrix ⟹ linearly independent ⟹ finrank ≥ 3, contradicting finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2. Linear independence extracted by taking inner products of Σgᵢ·vᵢ=0 against u,v,w and solving the Gram system via linear_combination (sum ⟹ Σg=0; each ⟹ (r²/2)gᵢ=0).",
       "General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances): the no_four_equidistant obstruction from the g(4) proof survives adding points, since any ≥4-point set contains a 4-point subset. Subsumes g(4)≥2 and pins g(5)≥2. Axiom-free.",
       "g(5) = 2 CLOSED (axiom-free): the regular pentagon is the planar 2-distance witness for the g(5) ≤ 2 upper bound, matching the general floor g(5) ≥ 2.",
-      "Nested-radical distance computation is tractable via congr 1 + linear_combination: for pentagon of circumradius 4 the squared distances are 40∓8√5, and the only nonlinear identity needed is t1·t2 = 4√5 (t1=√(10+2√5), t2=√(10−2√5)), from (10+2√5)(10−2√5)=80=(4√5)²."
+      "Nested-radical distance computation is tractable via congr 1 + linear_combination: for pentagon of circumradius 4 the squared distances are 40∓8√5, and the only nonlinear identity needed is t1·t2 = 4√5 (t1=√(10+2√5), t2=√(10−2√5)), from (10+2√5)(10−2√5)=80=(4√5)².",
+      "g(6) ≤ 3 realized by regular pentagon + circumcentre: 10 intra-pentagon distances reuse the g(5) side/diagonal values; 5 centre-to-vertex spokes all equal the circumradius 4 ⇒ exactly 3 distinct distances.",
+      "The matching lower bound g(6) ≥ 3 is equivalent to the SHARP planar two-distance statement (a 2-distance set in ℝ² has ≤ 5 points, Kelly/Erdős), which is strictly beyond the elementary Larman–Rogers–Seidel rank ceiling ≤ (d+1)(d+2)/2 = 6 — so g(6) = 3 stays the open lower-bound direction."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Exact g(4): the unit square (0,0),(1,0),(0,1),(1,1) has distances {1, sqrt2} -> 2 distinct; g(4)>=2 needs ruling out a 4-point set with 1 distance (a regular simplex, impossible in R^2). Prove g(4)=2.",
-      "sqrt(n) x sqrt(n) grid upper bound toward g(n)=Theta(n/sqrt(log n)) - deep, needs the number-theoretic count of distinct distances in a square grid.",
-      "Guth-Katz Omega(n/log n) lower bound stays an imported assumption."
+      "g(6) ≥ 3: prove no 6-point two-distance set exists in ℝ² (sharp two-distance bound ≤ 5 pts) — deep, beyond the LRS rank ≤ 6 ceiling.",
+      "g(6) upper: alternatively a 3-distance 6-set (e.g. regular hexagon, or 5-pt 2-distance + 1) — pentagon+centre already gives ≤ 3.",
+      "√n×√n integer grid toward the conjectured Θ(n/√(log n)) rate."
     ],
     "markdown": "# Knowledge Base: erdos-89-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
