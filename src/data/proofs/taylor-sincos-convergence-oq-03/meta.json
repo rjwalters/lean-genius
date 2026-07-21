@@ -99,33 +99,41 @@
       "id": "sec-ase-abstract",
       "title": "Part I: Alternating Series Estimation (Abstract)",
       "startLine": 36,
-      "endLine": 91,
+      "endLine": 129,
       "summary": "Proves pair_nonneg (building block) and alternating_partial_sum_even_bounds by induction on paired terms. Proves alternating_tail_bound connecting partial sums to the infinite tail.",
       "mathContext": "$0 \\leq \\sum_{k=0}^{2m} (-1)^k a_k \\leq a_0$ for antitone $a_k \\geq 0$. Induction: $S_{2(n+1)} = S_{2n} - a_{2n+1} + a_{2n+2}$, with $a_{2n+1} \\geq a_{2n+2}$ maintaining both bounds."
     },
     {
       "id": "sec-term-decreasing",
       "title": "Part II: sin/cos Terms Are Decreasing",
-      "startLine": 93,
-      "endLine": 153,
+      "startLine": 130,
+      "endLine": 187,
       "summary": "Defines sinTermAbs and cosTermAbs. Proves both are antitone for |x| ≤ 1 and tend to 0. Uses pow_le_pow_of_le_one and subsequence convergence from summable_pow_div_factorial.",
       "mathContext": "$a_k = |x|^{2k+1}/(2k+1)!$ is antitone: $a_{k+1}/a_k = |x|^2 / (2k+2)(2k+3) \\leq 1$ for $|x| \\leq 1$. Tends to 0 as a subsequence of $|x|^n/n! \\to 0$."
     },
     {
       "id": "sec-remainders",
       "title": "Part III: sin/cos Alternating Remainder Bounds",
-      "startLine": 155,
-      "endLine": 181,
+      "startLine": 188,
+      "endLine": 215,
       "summary": "States sin_alternating_remainder and cos_alternating_remainder (both sorry) bounding Taylor remainder by sinTermAbs/cosTermAbs via the alternating tail bound.",
       "mathContext": "$|\\sin x - \\sum_{k=0}^{n-1} \\frac{(-1)^k x^{2k+1}}{(2k+1)!}| \\leq \\frac{|x|^{2n+1}}{(2n+1)!}$. Sorry: requires connecting Mathlib's Real.sin to its Taylor series."
     },
     {
       "id": "sec-comparison",
       "title": "Part IV: Comparison with Lagrange Bound",
-      "startLine": 183,
-      "endLine": 224,
+      "startLine": 216,
+      "endLine": 242,
       "summary": "Proves alternating_tighter_than_lagrange_sin (alternating ≤ Lagrange), verifies concrete x=1,n=3 example, and proves sin_lagrange_from_alternating (chain: remainder ≤ alternating ≤ Lagrange).",
       "mathContext": "$\\frac{|x|^{2n+1}}{(2n+1)!} \\leq \\frac{|x|^{2n+1}}{(2n)!}$ since $(2n)! \\leq (2n+1)!$. Ratio $= 1/(2n+1)$."
+    },
+    {
+      "id": "sec-recover-lagrange",
+      "title": "Part V: Recovering the Lagrange Bound",
+      "startLine": 243,
+      "endLine": 262,
+      "summary": "`sin_lagrange_from_alternating` derives the standard Lagrange remainder bound |x|^{2n+1}/(2n)! for sin from the alternating-series structure — recovering a weaker form of the axiom in `TaylorSinCosConvergence.lean` — by chaining `sin_alternating_remainder` with `alternating_tighter_than_lagrange_sin`.",
+      "mathContext": "$\\bigl\\|\\sin x-\\sum_{k<n}\\tfrac{(-1)^k x^{2k+1}}{(2k+1)!}\\bigr\\|\\le \\tfrac{|x|^{2n+1}}{(2n)!}$."
     }
   ],
   "conclusion": {

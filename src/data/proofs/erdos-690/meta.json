@@ -41,55 +41,47 @@
       "id": "imports",
       "title": "Library Imports",
       "startLine": 21,
-      "endLine": 22,
+      "endLine": 24,
       "summary": "Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists.",
       "mathContext": "Mathematical content: Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 28,
-      "endLine": 47,
+      "startLine": 25,
+      "endLine": 49,
       "summary": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$).",
       "mathContext": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$)."
     },
     {
-      "id": "cambie-unimodal",
-      "title": "Cambie's Unimodality Results (k ≤ 3)",
-      "startLine": 53,
-      "endLine": 64,
-      "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis.",
-      "mathContext": "Mathematical content: Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
+      "id": "axiomatized-results",
+      "title": "Axiomatized Results: Densities and Cambie (2025)",
+      "startLine": 50,
+      "endLine": 82,
+      "summary": "The classical density values d₁(2)=1/2, d₁(3)=1/6, d₁(5)=1/15 and the strict-decrease law for d₁, together with Cambie (2025): d_k is unimodal for k=2,3 and NOT unimodal for 4≤k≤20. Stated as axioms (`d1_at_2/3/5`, `d1_strictly_decreasing`, `cambie_unimodal_k2/k3`, `cambie_not_unimodal`).",
+      "mathContext": "$d_1(p)=\\tfrac1p\\prod_{q<p}(1-\\tfrac1q)$; Cambie: $d_k$ unimodal $\\iff k\\le 3$."
     },
     {
-      "id": "cambie-non-unimodal",
-      "title": "Cambie's Non-Unimodality (k ≥ 4) and Answer",
-      "startLine": 65,
-      "endLine": 75,
-      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample.",
-      "mathContext": "Mathematical content: Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
+      "id": "proved-k1-answer",
+      "title": "Proved Theorems: k = 1 Unimodality and the Answer",
+      "startLine": 83,
+      "endLine": 116,
+      "summary": "`d1_unimodal` proves d₁ is unimodal with peak at p=2, derived from strict decrease so no separate k=1 axiom is needed; `erdos_690_answer_no` resolves Erdős’s question in the negative (unimodality fails for k≥4, via Cambie k=4); `d1_2_gt_d1_3` compares the first two density values.",
+      "mathContext": "$d_1$ peaks at $p=2$; unimodality fails for $k\\ge4$."
     },
     {
-      "id": "erdos-observations",
-      "title": "Erdős's Observations",
-      "startLine": 81,
-      "endLine": 99,
-      "summary": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evidence.",
-      "mathContext": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential)."
-    },
-    {
-      "id": "special-k1",
-      "title": "Special Case: k = 1",
-      "startLine": 105,
-      "endLine": 120,
-      "summary": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$.",
-      "mathContext": "Mathematical content: Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$."
+      "id": "density-values-nonunimodal",
+      "title": "Density Values and Non-Unimodality Witnesses",
+      "startLine": 117,
+      "endLine": 162,
+      "summary": "Exact density sums d₁(2)+d₁(3)=2/3 and d₁(2)+d₁(3)+d₁(5)=11/15, the peak-at-2 theorem `d1_peak_at_2`, and the explicit non-unimodality witnesses `not_unimodal_k4/k10/k20` obtained from `cambie_not_unimodal`.",
+      "mathContext": "$d_1(2)+d_1(3)=\\tfrac23$, $+\\,d_1(5)=\\tfrac{11}{15}$."
     },
     {
       "id": "summary-theorem",
       "title": "Complete Summary",
-      "startLine": 121,
-      "endLine": 134,
+      "startLine": 163,
+      "endLine": 173,
       "summary": "Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities.",
       "mathContext": "Mathematical content: Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities."
     },
