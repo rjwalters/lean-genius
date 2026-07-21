@@ -31,6 +31,7 @@ Tags: number-theory, primes, binomial-coefficients, prime-divisors
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.PrimeFin
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
@@ -46,8 +47,8 @@ P(n) is the largest prime dividing n, or 1 if n ≤ 1.
 -/
 noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    Nat.find (Nat.exists_prime_and_dvd (by omega : n ≠ 1))
-    -- In reality this is sup of prime divisors; we axiomatize the key properties
+    -- The genuine largest prime divisor: the maximum of the prime-factors finset.
+    n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h)
   else 1
 
 /--
@@ -62,7 +63,7 @@ P(n) is prime when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).1
+  exact Nat.prime_of_mem_primeFactors (Finset.max'_mem _ _)
 
 /--
 **Divisibility Property:**
@@ -70,12 +71,17 @@ P(n) divides n when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).2
+  exact Nat.dvd_of_mem_primeFactors (Finset.max'_mem _ _)
 
-/- 
+/--
 **Maximality Property:**
-P(n) is the largest prime divisor.
+`largestPrimeDivisor n` is genuinely the largest prime divisor: every prime
+dividing `n` is `≤ largestPrimeDivisor n`. Proved from `Finset.le_max'`.
 -/
+theorem P_maximal {n p : ℕ} (hn : n > 1) (hp : p.Prime) (hdvd : p ∣ n) :
+    p ≤ largestPrimeDivisor n := by
+  unfold largestPrimeDivisor; rw [dif_pos hn]
+  exact Finset.le_max' _ p (Nat.mem_primeFactors.mpr ⟨hp, hdvd, by omega⟩)
 
 /- ## Part II: Sylvester-Schur Theorem -/
 
