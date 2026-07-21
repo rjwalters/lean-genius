@@ -69,7 +69,7 @@
       "id": "header",
       "title": "Module Documentation and Imports",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Module docstring explaining the 7-part structure, imports `Proofs.Erdos1Problem` (for `hasDistinctSubsetSums`) and `Mathlib`. References Erdős 1955, Dubroff-Fox-Xu 2021, Conway-Guy 1968, and OEIS A005318.",
       "mathContext": "The `hasDistinctSubsetSums` predicate is defined in `Erdos1Problem`: $\\forall S, T \\subseteq A, \\text{sum}(S) = \\text{sum}(T) \\Rightarrow S = T$. All results in this file build on this definition."
     },
@@ -77,7 +77,7 @@
       "id": "superincreasing-lemma",
       "title": "Part I: Superincreasing Extension Lemma",
       "startLine": 39,
-      "endLine": 117,
+      "endLine": 118,
       "summary": "`dss_superincreasing_extend`: If A has DSS and b > sum(A) with b ∉ A, then insert b A has DSS. 4-case proof: both contain b (cancel b), b in S only (sum contradiction), b in T only (symmetric), neither (apply A's DSS).",
       "mathContext": "The superincreasing condition $b > \\text{sum}(A)$ creates a 'sum gap': any subset containing $b$ has sum $> \\text{sum}(A)$, while any subset not containing $b$ has sum $\\leq \\text{sum}(A)$. This partitions subsets by their sum range, making equality-of-sums force equality of sets."
     },
@@ -85,7 +85,7 @@
       "id": "geometric-sum",
       "title": "Part II: Geometric Sum Bound",
       "startLine": 119,
-      "endLine": 138,
+      "endLine": 139,
       "summary": "Helper lemmas: `sum_two_pow_range_add_one` (∑_{i<n} 2^i + 1 = 2^n, by induction) and `sum_two_pow_lt` (∑_{i<n} 2^i < 2^n). Private lemma supporting Part III.",
       "mathContext": "The geometric sum identity $\\sum_{i=0}^{n-1} 2^i = 2^n - 1$ is proved in the form $\\sum + 1 = 2^n$ to avoid natural number subtraction. This verifies the superincreasing property of powers of 2: $2^n > \\sum_{i<n} 2^i$."
     },
@@ -93,7 +93,7 @@
       "id": "powers-of-two",
       "title": "Part III: Powers of 2 Have DSS",
       "startLine": 140,
-      "endLine": 175,
+      "endLine": 176,
       "summary": "`powers_of_two_has_dss`: {2^0,...,2^(n-1)} has DSS. Induction: base (empty set), step applies `dss_superincreasing_extend` with b=2^n using `sum_two_pow_lt` and injectivity of i↦2^i.",
       "mathContext": "The set is represented as `(Finset.range n).image (2^·)`. The injectivity of `i ↦ 2^i` (via `Nat.pow_right_injective`) ensures `2^n ∉ (range n).image (2^·)` and `card = n`."
     },
@@ -101,7 +101,7 @@
       "id": "dss-existence",
       "title": "Part IV: DSS Existence for Any n",
       "startLine": 177,
-      "endLine": 225,
+      "endLine": 226,
       "summary": "`dss_exists`: ∃ n-element DSS set with elements ≤ n*2^n. `dss_positive_exists`: ∃ n-element DSS set of positive integers with max ≤ 2^n. Both use powers-of-2 as witness. Fills OQ03's sorry.",
       "mathContext": "The bound n*2^n in `dss_exists` is loose but sufficient for `Nat.find`. The tighter bound 2^n in `dss_positive_exists` matches the true max element 2^(n-1) < 2^n of the powers-of-2 witness."
     },
@@ -109,23 +109,23 @@
       "id": "structural-properties",
       "title": "Part V: Structural Properties of DSS Sets",
       "startLine": 227,
-      "endLine": 259,
+      "endLine": 262,
       "summary": "Four elementary constraints: `not_dss_of_mem_zero` (0 ∈ A blocks DSS), `dss_elements_pos` (all elements positive), `dss_subset` (hereditary: B ⊆ A has DSS), `dss_singleton` (any positive singleton {a}, a > 0, has DSS).",
       "mathContext": "DSS sets form a downward-closed family (hereditary/independence system): $\\mathcal{F}_{DSS} = \\{A : \\text{hasDistinctSubsetSums}(A)\\}$ satisfies $A \\in \\mathcal{F}_{DSS}, B \\subseteq A \\Rightarrow B \\in \\mathcal{F}_{DSS}$."
     },
     {
       "id": "sum-lower-bound",
       "title": "Part VI: Sum Lower Bound via Pigeonhole",
-      "startLine": 261,
-      "endLine": 301,
+      "startLine": 263,
+      "endLine": 305,
       "summary": "`dss_sum_lower_bound`: 2^n ≤ sum(A) + 1 (pigeonhole: 2^n distinct sums in {0,...,sum(A)}). `dss_sum_ge_pow_sub_one`: sum(A) ≥ 2^n − 1. Powers of 2 achieve equality.",
       "mathContext": "The proof uses `Finset.card_image_of_injOn`, `Finset.card_powerset` (image has 2^n elements), then `Finset.card_le_card` against `Finset.range(sum+1)` (size sum+1). Combined with sum ≤ n*max gives counting bound max(A) ≥ (2^n-1)/n."
     },
     {
       "id": "minDSS-witness",
       "title": "Part VII: OQ03 Fix — Existence Witness for minDSSBound",
-      "startLine": 303,
-      "endLine": 319,
+      "startLine": 306,
+      "endLine": 322,
       "summary": "`minDSS_witness`: ∃ N, ∃ n-element DSS set bounded by N. One-line proof: ⟨n*2^n, dss_exists n⟩. Fills the sorry in OQ03's minDSSBound definition that Nat.find requires.",
       "mathContext": "OQ03's `minDSSBound n = Nat.find (minDSS_exists n)` requires proof that `∃ N, ∃ A : Finset ℕ, A.card = n ∧ (∀ a ∈ A, a ≤ N) ∧ hasDistinctSubsetSums A`. This was previously a sorry; `minDSS_witness` closes it."
     }
