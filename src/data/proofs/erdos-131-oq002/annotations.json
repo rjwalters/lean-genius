@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-erdos131-rank2-overview",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "proofId": "erdos-131-oq002",
     "range": { "startLine": 1, "endLine": 46 },
     "type": "concept",
     "title": "Rank 2: Where the Davenport Constant Becomes Non-Trivial",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-erdos131-rank2-defs",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "proofId": "erdos-131-oq002",
     "range": { "startLine": 54, "endLine": 63 },
     "type": "definition",
     "title": "Group-Agnostic HasZeroSumSubseq and DavenportSet",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-erdos131-rank2-mono",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "proofId": "erdos-131-oq002",
     "range": { "startLine": 65, "endLine": 77 },
     "type": "tactic",
     "title": "davenport_set_mono: Upward Closure Turns One Witness Into a Bound on All Shorter Lengths",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-erdos131-rank2-witness",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "proofId": "erdos-131-oq002",
     "range": { "startLine": 79, "endLine": 153 },
     "type": "theorem",
     "title": "The Extremal Witness Is Zero-Sum-Free",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-erdos131-rank2-lower",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "proofId": "erdos-131-oq002",
     "range": { "startLine": 155, "endLine": 180 },
     "type": "theorem",
     "title": "davenport_rank2_lower: D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1",

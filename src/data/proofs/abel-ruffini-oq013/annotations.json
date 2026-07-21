@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-imports",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 1, "endLine": 5 },
     "type": "concept",
     "title": "Mathlib group-theory imports",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-header",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 7, "endLine": 62 },
     "type": "concept",
     "title": "The target theorem and what is (and is not) proved",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-base-pgroup",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 70, "endLine": 82 },
     "type": "tactic",
     "title": "Base case: prime-power order ⟹ solvable",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-extension",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 84, "endLine": 95 },
     "type": "tactic",
     "title": "Inductive engine: extensions of solvable groups are solvable",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-ordertwoprimes",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 97, "endLine": 106 },
     "type": "definition",
     "title": "OrderTwoPrimes: the pᵃqᵇ hypothesis as a divisibility predicate",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-reduction-induction",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 108, "endLine": 138 },
     "type": "insight",
     "title": "The verified reduction: strong induction on |G|, non-simplicity as hypothesis",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-strict-drops",
-    "proofId": "abel-ruffini-oq-04-oq-02-oq-03-oq-01",
+    "proofId": "abel-ruffini-oq013",
     "range": { "startLine": 139, "endLine": 164 },
     "type": "tactic",
     "title": "Strict order drops and reassembly via index arithmetic",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-header",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 1, "endLine": 41 },
     "type": "concept",
     "title": "From catenary length to catenoid area",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-affine-deriv",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 43, "endLine": 49 },
     "type": "tactic",
     "title": "The affine integrand is constant",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-line-arclength",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 51, "endLine": 56 },
     "type": "insight",
     "title": "Affine arc length = (b − a)·√(1 + m²)",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-sqrt-sinh",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 58, "endLine": 65 },
     "type": "insight",
     "title": "The Pythagorean collapse √(1 + sinh²x) = cosh x",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-coshsq-antideriv",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 66, "endLine": 89 },
     "type": "insight",
     "title": "The hand-built antiderivative of cosh²",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-integral-coshsq",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 90, "endLine": 99 },
     "type": "insight",
     "title": "FTC: ∫₀ᵇ cosh²x dx = ½(b + sinh b·cosh b)",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-catenoid",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 100, "endLine": 119 },
     "type": "theorem",
     "title": "Catenoid surface area π(b + sinh b·cosh b)",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-concrete",
-    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq001",
     "range": { "startLine": 120, "endLine": 126 },
     "type": "concept",
     "title": "Concrete value over [0, 1]",

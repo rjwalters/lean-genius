@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-hanson-header",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 7, "endLine": 65 },
     "type": "concept",
     "title": "Hanson's lcm Bound and Why It Matters for Apéry",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-hanson-def",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 67, "endLine": 81 },
     "type": "definition",
     "title": "lcmRange n: lcm(1,...,n) via Finset.lcm",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-hanson-basic-props",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 83, "endLine": 107 },
     "type": "insight",
     "title": "Basic Properties: Positivity and Divisibility",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-hanson-pow-dvd",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 109, "endLine": 116 },
     "type": "insight",
     "title": "Generic Power Divisibility: bᵏ ≤ n ⇒ bᵏ | lcm(1..n)",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-hanson-prime-pow",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 118, "endLine": 132 },
     "type": "insight",
     "title": "Prime-Power Half of Chebyshev's Decomposition",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-hanson-coprime-prime-powers",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 134, "endLine": 157 },
     "type": "insight",
     "title": "Coprimality of Distinct Prime Powers",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-hanson-prod-coprime-helper",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 159, "endLine": 186 },
     "type": "insight",
     "title": "Finset-Induction Packaging: Pairwise-Coprime ⇒ Product Divides",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-hanson-chebyshev-easy",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 188, "endLine": 218 },
     "type": "insight",
     "title": "Easy Direction of Chebyshev's Decomposition",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-hanson-chebyshev-reverse",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 221, "endLine": 282 },
     "type": "insight",
     "title": "Hard Direction of Chebyshev's Decomposition (Iter 8) — via Nat.factorization",
@@ -109,7 +109,7 @@
   },
   {
     "id": "ann-hanson-prime-counting-chain",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 287, "endLine": 528 },
     "type": "insight",
     "title": "Prime-counting chain (Iter 11/13/14): lcmRange n ≤ n^π(n) ≤ n^(n-1)",
@@ -121,7 +121,7 @@
   },
   {
     "id": "ann-hanson-recursion",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 531, "endLine": 580 },
     "type": "insight",
     "title": "Recursion and Monotonicity Structure",
@@ -133,7 +133,7 @@
   },
   {
     "id": "ann-hanson-elementary",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 583, "endLine": 601 },
     "type": "insight",
     "title": "The Trivial Bound Chain: lcm | n! ≤ nⁿ",
@@ -145,7 +145,7 @@
   },
   {
     "id": "ann-hanson-numerical",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 604, "endLine": 625 },
     "type": "insight",
     "title": "Numerical Verification: n = 1..10, 12, 15, 20",
@@ -157,7 +157,7 @@
   },
   {
     "id": "ann-hanson-axiom",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 627, "endLine": 646 },
     "type": "concept",
     "title": "Axiom: Hanson's General Bound (Open Lean Target)",
@@ -169,7 +169,7 @@
   },
   {
     "id": "ann-hanson-strictness",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 648, "endLine": 655 },
     "type": "concept",
     "title": "Why 3 Is Not Trivially Derivable: 3ⁿ < nⁿ for n ≥ 4",
@@ -181,7 +181,7 @@
   },
   {
     "id": "ann-iter17-small-prime-focus",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 637, "endLine": 673 },
     "type": "theorem",
     "title": "Iter 17: Small-prime focus — large primes contribute trivially",
@@ -193,7 +193,7 @@
   },
   {
     "id": "ann-iter18-per-prime-bounds",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 675, "endLine": 792 },
     "type": "theorem",
     "title": "Iter 18: Per-prime correction-factor bounds (3 forms)",
@@ -205,7 +205,7 @@
   },
   {
     "id": "ann-iter19-structural-decomposition",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 794, "endLine": 831 },
     "type": "theorem",
     "title": "Iter 19: Structural decomposition lcmRange ≤ primorial · ∏(n/p)",
@@ -217,7 +217,7 @@
   },
   {
     "id": "ann-iter20-22-small-prime-bounds",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 833, "endLine": 1217 },
     "type": "theorem",
     "title": "Iter 20–22: Small-prime cardinality bound and √n-sized product",
@@ -229,7 +229,7 @@
   },
   {
     "id": "ann-iter25-26-4pow-sqrt-envelope",
-    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "basel-problem-oq003",
     "range": { "startLine": 1220, "endLine": 1321 },
     "type": "theorem",
     "title": "Iter 25–26: The 4ⁿ·(n/2)^√n envelope and Hanson sharpness obstruction",

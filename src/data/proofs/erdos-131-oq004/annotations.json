@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-haszerosum-davenportset",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 57, "endLine": 66 },
     "type": "definition",
     "title": "Zero-sum subsequences and the Davenport set",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-davenport-set-mono",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 68, "endLine": 75 },
     "type": "lemma",
     "title": "Upward closure of the Davenport set",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-davenport-helpers",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 77, "endLine": 90 },
     "type": "lemma",
     "title": "Length 0 is never forcing; the constant is positive",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-powerseq",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 92, "endLine": 99 },
     "type": "definition",
     "title": "The power sequence: the explicit extremal construction",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-engine-reindex",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 110, "endLine": 119 },
     "type": "insight",
     "title": "Reindexing a candidate zero-sum set into the product",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-engine-slices",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 120, "endLine": 148 },
     "type": "insight",
     "title": "Coordinatewise slicing forces every slice empty",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-engine-conclude",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 149, "endLine": 158 },
     "type": "tactic",
     "title": "Empty slices collapse the whole set",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-davenport-pow-lower",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 160, "endLine": 184 },
     "type": "theorem",
     "title": "The headline bound D(Gⁿ) ≥ n·(D(G) − 1) + 1",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-corollaries",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-03-oq-01",
+    "proofId": "erdos-131-oq004",
     "range": { "startLine": 186, "endLine": 208 },
     "type": "theorem",
     "title": "Specializations: elementary abelian p-groups and the diagonal n = 2",

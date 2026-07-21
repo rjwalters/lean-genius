@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-erdos131-davconst-overview",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 1, "endLine": 41 },
     "type": "concept",
     "title": "The Davenport Constant and Why Mathlib Lacks It",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-erdos131-davconst-def",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 49, "endLine": 53 },
     "type": "definition",
     "title": "HasZeroSumSubseq: Nonempty Zero-Sum Subsequence",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-erdos131-davconst-upper",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 55, "endLine": 106 },
     "type": "theorem",
     "title": "davenport_upper: The Prefix-Sum Pigeonhole",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-erdos131-davconst-lower",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 108, "endLine": 123 },
     "type": "theorem",
     "title": "davenport_no_zerosum_const_one: The Sharpness Witness",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-erdos131-davconst-isleast",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 125, "endLine": 153 },
     "type": "theorem",
     "title": "davenport_constant_cyclic: D(ℤ/nℤ) = n as IsLeast",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-erdos131-davconst-strengthen",
-    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+    "proofId": "erdos-131-oq001",
     "range": { "startLine": 155, "endLine": 170 },
     "type": "insight",
     "title": "exists_index_subset_sum_dvd: Strengthening the Companion Bound",

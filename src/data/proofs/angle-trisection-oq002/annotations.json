@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-namespace-and-imports",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 56, "endLine": 65 },
     "type": "concept",
     "title": "Mathlib Import + Parent File Re-Use + `Polynomial` Namespace",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-base-field-construction",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 67, "endLine": 78 },
     "type": "definition",
     "title": "Building $\\mathbb{F}_2(a)$ from `FractionRing` and `Polynomial.X`",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-counterexample-setup",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 80, "endLine": 90 },
     "type": "insight",
     "title": "Two Structural Lemmas: $f = g(X^2)$ and $f' = 0$",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-g-factor-scaffolding",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 113, "endLine": 132 },
     "type": "insight",
     "title": "g_factor Structural Scaffolding (Capelli-Style Inputs)",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-coefficient-lemmas",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 134, "endLine": 157 },
     "type": "insight",
     "title": "f_target Coefficient Lemmas — Quadratic Factorisation Inputs",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-frobenius-key-lemma",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 163, "endLine": 170 },
     "type": "insight",
     "title": "Char-p Frobenius: (σ(x)−x)^(p^n) = 0",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-main-theorem",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 172, "endLine": 203 },
     "type": "insight",
     "title": "Purely Inseparable Extension → Trivial Galois Group",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-gal-card-corollary",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 205, "endLine": 215 },
     "type": "insight",
     "title": "Corollary: |Gal(f)| = 1 for Purely Inseparable Splitting Field",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-structural-scaffolding",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 92, "endLine": 111 },
     "type": "insight",
     "title": "Structural Scaffolding: natDegree, degree, ne_zero, Monic",
@@ -109,7 +109,7 @@
   },
   {
     "id": "ann-sep-degree-bound-view",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 208, "endLine": 215 },
     "type": "insight",
     "title": "Separable-Degree-Bound View: Why This Theorem Is the Boundary Case",
@@ -121,7 +121,7 @@
   },
   {
     "id": "ann-formal-refutation",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 221, "endLine": 242 },
     "type": "insight",
     "title": "Formal Refutation: ∃ f, ¬Separable ∧ |Gal| ≠ 1",
@@ -133,7 +133,7 @@
   },
   {
     "id": "ann-summary-table",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 244, "endLine": 285 },
     "type": "concept",
     "title": "Part IV — Self-Documenting Status Table",
@@ -145,7 +145,7 @@
   },
   {
     "id": "ann-insep-vs-purely-insep",
-    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "angle-trisection-oq002",
     "range": { "startLine": 1, "endLine": 53 },
     "type": "insight",
     "title": "Inseparable ≠ Purely Inseparable Splitting Field",

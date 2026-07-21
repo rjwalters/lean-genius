@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-familygcd-def",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 61, "endLine": 83 },
     "type": "definition",
     "title": "familyGcd: the gcd as a principal-ideal generator",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-bezout-coeffs",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 91, "endLine": 102 },
     "type": "insight",
     "title": "Extracting the Bézout coefficient vector",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-familygcd-dvd",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 108, "endLine": 115 },
     "type": "technique",
     "title": "The generator divides every member",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-dvd-familygcd",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 117, "endLine": 125 },
     "type": "insight",
     "title": "Universal property: every common divisor divides the gcd",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-main-theorem",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 134, "endLine": 160 },
     "type": "insight",
     "title": "The assembled multivariate Bézout theorem",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-specialization",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 170, "endLine": 188 },
     "type": "technique",
     "title": "One-line specialization to F[X] and ℤ",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-computational",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 198, "endLine": 207 },
     "type": "context",
     "title": "Concrete three-element identities",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-boundary",
-    "proofId": "bezout-identity-oq-02-oq-02-oq-01-oq-02",
+    "proofId": "bezout-identity-oq018",
     "range": { "startLine": 222, "endLine": 258 },
     "type": "insight",
     "title": "The sharp boundary: F[x,y] is not Bézout",

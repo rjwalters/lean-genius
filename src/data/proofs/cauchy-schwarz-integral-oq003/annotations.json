@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-imports",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 1, "endLine": 8 },
     "type": "concept",
     "title": "Import Strategy: Strict Jensen + Strict Convex rpow",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-nonempty-lemma",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 56, "endLine": 64 },
     "type": "insight",
     "title": "Nonemptiness from Sum-One Constraint",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-power-sum-pos",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 66, "endLine": 71 },
     "type": "insight",
     "title": "Positivity of Weighted Power Sum",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-htr-gt1",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 98, "endLine": 103 },
     "type": "insight",
     "title": "The Critical Inequality t/r > 1",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-h-pow-simp",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 107, "endLine": 114 },
     "type": "insight",
     "title": "Bridging A^(t/r) and B via Power Rule",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-step1-reduction",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 118, "endLine": 128 },
     "type": "insight",
     "title": "Step 1: M_r = M_t Reduces to A^(t/r) = B",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-strict-jensen-application",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 129, "endLine": 145 },
     "type": "insight",
     "title": "Strict Jensen Forces Contradiction",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-rpow-injectivity",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 146, "endLine": 149 },
     "type": "insight",
     "title": "Final Step: rpow Injectivity",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-converse",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 150, "endLine": 173 },
     "type": "concept",
     "title": "Converse: All Equal ⟹ M_r = M_t",
@@ -109,7 +109,7 @@
   },
   {
     "id": "ann-am-eq-qm",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 179, "endLine": 187 },
     "type": "concept",
     "title": "Corollary: AM = QM iff All Equal",
@@ -121,7 +121,7 @@
   },
   {
     "id": "ann-strict-am-qm",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cauchy-schwarz-integral-oq003",
     "range": { "startLine": 189, "endLine": 203 },
     "type": "concept",
     "title": "Corollary: Strict AM < QM under Variation",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-vincent-header",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 1, "endLine": 64 },
     "type": "context",
     "title": "Framing: from existential termination to an effective O(log(w/δ)) certificate",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-mingap-def",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 74, "endLine": 80 },
     "type": "definition",
     "title": "Minimum root gap δ = minGap S",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-mingap-pos",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 82, "endLine": 95 },
     "type": "technique",
     "title": "Positivity of the minimum gap",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-mingap-le",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 97, "endLine": 106 },
     "type": "technique",
     "title": "δ lower-bounds every distinct-pair distance",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-subsingleton",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 108, "endLine": 121 },
     "type": "concept",
     "title": "Sub-gap width ⇒ at most one root (isolation)",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-threshold-engine",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 128, "endLine": 154 },
     "type": "insight",
     "title": "Threshold engine: any level above the ceiling-log forces width < δ",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-explicit-bound",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 156, "endLine": 162 },
     "type": "insight",
     "title": "The explicit witness k₀ = clog + 1 and the necessity of +1",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-isolates-explicit",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 164, "endLine": 172 },
     "type": "concept",
     "title": "Effective eventual isolation at the explicit level",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-isolates-each",
-    "proofId": "descartes-rule-of-signs-oq-02-oq-01-oq-03-oq-02",
+    "proofId": "descartes-rule-of-signs-oq001",
     "range": { "startLine": 174, "endLine": 184 },
     "type": "concept",
     "title": "Per-subinterval isolation over a concrete [a, b]",

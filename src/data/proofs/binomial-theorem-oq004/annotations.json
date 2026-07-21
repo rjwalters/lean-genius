@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-overview",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 1, "endLine": 140 },
     "type": "concept",
     "title": "Overview: Multinomial Marginal CLT and Honest Reporting",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-binomialcdf-def",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 148, "endLine": 154 },
     "type": "definition",
     "title": "Concrete CDF of Binomial(n, p)",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-multinomialmarginalcdf-def",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 155, "endLine": 162 },
     "type": "definition",
     "title": "Marginal CDF of Multinomial Coordinate i₀",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-stdnormalcdf-opaque",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 163, "endLine": 364 },
     "type": "definition",
     "title": "Standard Normal CDF (Concrete Gaussian Integral)",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-binomial-clt-axiom",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 365, "endLine": 385 },
     "type": "insight",
     "title": "Axiom: de Moivre-Laplace Theorem",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-reduction-lemma",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 386, "endLine": 467 },
     "type": "insight",
     "title": "Reduction Lemma: Marginal CDF = Binomial CDF (proved)",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-binomialcdf-structural",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 468, "endLine": 680 },
     "type": "insight",
     "title": "Structural Properties of binomialCDF (Phase-4 Prep)",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-main-clt-derived",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "proofId": "binomial-theorem-oq004",
     "range": { "startLine": 681, "endLine": 712 },
     "type": "insight",
     "title": "Main Theorem: Multinomial Marginal CLT (Derived, No New Axiom)",

@@ -1,7 +1,7 @@
 [
   {
     "id": "row-sum-succ",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "geometric-series-oq003",
     "range": { "startLine": 49, "endLine": 59 },
     "type": "tactic",
     "title": "Row Sum via Evaluating the Coefficient Identity at X = 1",
@@ -13,7 +13,7 @@
   },
   {
     "id": "worpitzky-row-sum",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "geometric-series-oq003",
     "range": { "startLine": 61, "endLine": 70 },
     "type": "theorem",
     "title": "Worpitzky's Row Identity ∑ⱼ ⟨n,j⟩ = n!",
@@ -25,7 +25,7 @@
   },
   {
     "id": "borders",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "geometric-series-oq003",
     "range": { "startLine": 72, "endLine": 85 },
     "type": "theorem",
     "title": "The Two Borders: ⟨n,0⟩ = 1 and ⟨n+1,n⟩ = 1",
@@ -37,7 +37,7 @@
   },
   {
     "id": "second-column",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "geometric-series-oq003",
     "range": { "startLine": 87, "endLine": 99 },
     "type": "theorem",
     "title": "Second Column: ⟨n,1⟩ = 2ⁿ − n − 1 (OEIS A000295)",
@@ -49,7 +49,7 @@
   },
   {
     "id": "third-column",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "geometric-series-oq003",
     "range": { "startLine": 101, "endLine": 125 },
     "type": "theorem",
     "title": "Third Column: 2·⟨n,2⟩ = 2·3ⁿ − (n+1)·2ⁿ⁺¹ + n·(n+1) (OEIS A000460)",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-minor-ij",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 78, "endLine": 82 },
     "type": "definition",
     "title": "The complementary n×n submatrix (uniform-in-n)",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-qdetf-definition",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 88, "endLine": 97 },
     "type": "definition",
     "title": "qdetF — the uniform-in-n commutative quasideterminant",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-qdetf-field-quotient",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 99, "endLine": 107 },
     "type": "theorem",
     "title": "The multiplicative defining identity",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-qdetf-ne-zero",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 109, "endLine": 116 },
     "type": "theorem",
     "title": "Non-vanishing of qdetF",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-qdetf-eq-qdet3",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 122, "endLine": 127 },
     "type": "theorem",
     "title": "n=3 specialization by rfl",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-minor-22-det-lemmas",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 133, "endLine": 151 },
     "type": "insight",
     "title": "Pinning the 2×2 minor determinants",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-qdetf-eq-qdet00",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 153, "endLine": 168 },
     "type": "lemma",
     "title": "n=2 (0,0)-specialization via mul_right_cancel₀",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-qdetf-eq-qdet11",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 170, "endLine": 183 },
     "type": "theorem",
     "title": "n=2 (1,1)-specialization (symmetric to (0,0))",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-qdetf-summary",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 189, "endLine": 199 },
     "type": "theorem",
     "title": "Route-A summary: multiplicative identity + definitional quotient",
@@ -109,7 +109,7 @@
   },
   {
     "id": "ann-qdetn-step",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 209, "endLine": 233 },
     "type": "definition",
     "title": "qdetN_step — the non-recursive one-step Schur formula (Route B, S3 SCAFFOLD)",
@@ -121,7 +121,7 @@
   },
   {
     "id": "ann-qdetn-step-zero-minv",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 235, "endLine": 242 },
     "type": "theorem",
     "title": "Degenerate base case: qdetN_step A i j 0 = A i j",
@@ -133,7 +133,7 @@
   },
   {
     "id": "ann-aux-insert-row-sign",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 251, "endLine": 321 },
     "type": "tactic",
     "title": "The combinatorial sign lemma aux_insert_row_sign",
@@ -145,7 +145,7 @@
   },
   {
     "id": "ann-qdetn-step-eq-qdetf-aux",
-    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "cramers-rule-oq001",
     "range": { "startLine": 323, "endLine": 419 },
     "type": "concept",
     "title": "The division-free bordered-determinant crux qdetN_step_eq_qdetF_aux",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-cgb-overview",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 4, "endLine": 35 },
     "type": "concept",
     "title": "Statement and Strategy — Reflection at Arbitrary Depth −k",
@@ -22,7 +22,7 @@
   },
   {
     "id": "ann-cgb-predicates",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 46, "endLine": 60 },
     "type": "definition",
     "title": "hitsAtK / ReachesK — Depth-k Descent Predicates",
@@ -41,7 +41,7 @@
   },
   {
     "id": "ann-cgb-ivt",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 64, "endLine": 91 },
     "type": "tactic",
     "title": "reachesK_of_card_add_le — Discrete Intermediate-Value Theorem at Depth k",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-cgb-cut",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 93, "endLine": 148 },
     "type": "tactic",
     "title": "The Cut Point cutK and the Collapsed Cardinality Identity",
@@ -82,7 +82,7 @@
   },
   {
     "id": "ann-cgb-defs",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 150, "endLine": 166 },
     "type": "definition",
     "title": "BadPathsK / LowPathsK / GoodPathsK — The Three Finsets to Count",
@@ -101,7 +101,7 @@
   },
   {
     "id": "ann-cgb-bijection",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 168, "endLine": 197 },
     "type": "theorem",
     "title": "card_badPathsK — The Generalized Reflection Bijection",
@@ -121,7 +121,7 @@
   },
   {
     "id": "ann-cgb-count",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 199, "endLine": 227 },
     "type": "theorem",
     "title": "The Ballot Count C(2n,n) − C(2n,n+k)",
@@ -141,7 +141,7 @@
   },
   {
     "id": "ann-cgb-recovery",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 229, "endLine": 246 },
     "type": "insight",
     "title": "k = 1 is Definitionally the Parent's Catalan Form",
@@ -159,7 +159,7 @@
   },
   {
     "id": "ann-cgb-instance",
-    "proofId": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+    "proofId": "catalan-numbers-oq001",
     "range": { "startLine": 248, "endLine": 257 },
     "type": "concept",
     "title": "Concrete Instance — n = 3, k = 2 Gives 14",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-entropy-definition",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 55, "endLine": 71 },
     "type": "definition",
     "title": "Shannon Entropy of the Multinomial Distribution",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-entropy-term-nonneg",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 76, "endLine": 86 },
     "type": "insight",
     "title": "Per-Term Non-negativity: -t·log(t) ≥ 0 for t ∈ [0,1]",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-multinomial-entropy-nonneg",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 87, "endLine": 111 },
     "type": "insight",
     "title": "Core Theorem: Multinomial Entropy is Non-Negative",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-multinomial-zero-lemma",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 116, "endLine": 123 },
     "type": "insight",
     "title": "Zero Multinomial Coefficient Helper",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-zero-trials-entropy",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 124, "endLine": 135 },
     "type": "insight",
     "title": "Zero-Trial Entropy = 0: Complete Certainty",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-n1-indicator-helper",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 140, "endLine": 171 },
     "type": "insight",
     "title": "Indicator Probability Helper: P(δ_j) = p_j at n=1",
@@ -73,7 +73,7 @@
   },
   {
     "id": "ann-source-entropy-recovery",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 172, "endLine": 244 },
     "type": "insight",
     "title": "Source Entropy Recovery: H(Multinomial(1,p)) = -∑ p_i·log p_i",
@@ -85,7 +85,7 @@
   },
   {
     "id": "ann-gibbs-upper-bound",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 249, "endLine": 338 },
     "type": "insight",
     "title": "Entropy Upper Bound via Gibbs Inequality",
@@ -97,7 +97,7 @@
   },
   {
     "id": "ann-binomial-special-case",
-    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "proofId": "binomial-theorem-oq002",
     "range": { "startLine": 343, "endLine": 356 },
     "type": "concept",
     "title": "Binomial Entropy as 2-Category Special Case",
