@@ -83,44 +83,76 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Docstring stating the problem: a set $A \\subseteq \\mathbb{N}$ is Ramsey 2-complete if every 2-colouring of $A$ represents all large integers as monochromatic sums of distinct elements. Records the two bounds (Burr–Erdős 1985 lower, Conlon–Fox–Pham 2021 upper, closing the gap up to constants). Imports the `Nat`/`Finset`/`Set` basics and `Mathlib.Tactic`, then `open scoped Classical` (needed for the `· ∈ A` decidable filter in `countingFn`).",
+      "mathContext": "The problem sits in additive combinatorics / Ramsey theory: it asks for the sparsest set that stays 'complete' under adversarial 2-colouring. The answer is $\\Theta((\\log N)^2)$ for the counting function $|A \\cap [1,N]|$. `open scoped Classical` supplies decidability of set membership so `Finset.filter (· ∈ A)` typechecks without a `DecidablePred` instance."
+    },
+    {
       "id": "monochromatic-sums",
       "title": "Monochromatic Subset Sums",
-      "startLine": 24,
-      "endLine": 34,
-      "summary": "**Colouring2** and **monoSubsetSums**: $\\{\\sum_{s \\in S} s : S \\subseteq A,\\, \\forall s \\in S,\\, c(s) = k\\}$ — sums from one colour class of a 2-colouring.",
-      "mathContext": "$\\text{monoSubsetSums}(A, c, k) = \\{\\sum_{s \\in S} s : S \\subseteq A,\\, \\forall s \\in S,\\, c(s) = k\\}$. Sums representable from one colour class of a 2-colouring."
+      "startLine": 27,
+      "endLine": 36,
+      "summary": "`Colouring2 A := {n // n ∈ A} → Bool` (a 2-colouring of the subtype of elements of A) and `monoSubsetSums A c colour`: the set of sums $\\sum_{s \\in S} s$ over finite subsets $S$ all of whose elements lie in $A$ and receive the given colour.",
+      "mathContext": "$\\text{monoSubsetSums}(A, c, k) = \\{\\sum_{s \\in S} s : S \\subseteq A \\text{ finite},\\, \\forall s \\in S,\\, c(s) = k\\}$ — the sums representable from one colour class. Colours are `Bool`-valued and the colouring is a function on the membership subtype `{n // n ∈ A}`, so only elements of $A$ are coloured."
     },
     {
       "id": "ramsey-2-complete",
       "title": "Ramsey 2-Completeness",
-      "startLine": 35,
-      "endLine": 42,
-      "summary": "**IsRamsey2Complete $A$**: $\\forall c,\\, \\exists k,\\, \\exists m,\\, \\forall n \\ge m: n \\in \\text{monoSubsetSums}(A, c, k)$ — every 2-colouring yields a complete colour class.",
-      "mathContext": "$\\text{IsRamsey2Complete}(A) \\iff \\forall c : A \\to \\{0,1\\},\\, \\exists k,\\, \\exists N_0,\\, \\forall n \\ge N_0: n \\in \\text{monoSubsetSums}(A, c, k)$. Every 2-colouring yields a complete colour class."
+      "startLine": 38,
+      "endLine": 46,
+      "summary": "`IsRamsey2Complete A`: for every 2-colouring `c` there is a colour and a threshold `m` such that every `n ≥ m` is a monochromatic subset sum of that colour — i.e. some colour class is eventually-complete.",
+      "mathContext": "$\\text{IsRamsey2Complete}(A) \\iff \\forall c,\\, \\exists k,\\, \\exists m,\\, \\forall n \\ge m: n \\in \\text{monoSubsetSums}(A, c, k)$. The existential over the colour is essential: the adversary picks the colouring, but only one of the two classes needs to be complete."
+    },
+    {
+      "id": "counting-function",
+      "title": "Counting Function",
+      "startLine": 48,
+      "endLine": 52,
+      "summary": "`countingFn A N := ((Finset.Icc 1 N).filter (· ∈ A)).card`, the counting function $|A \\cap [1,N]|$ whose growth rate the bounds constrain. Marked `noncomputable` because membership in an arbitrary `Set ℕ` is filtered classically.",
+      "mathContext": "$\\text{countingFn}(A, N) = |A \\cap \\{1, \\dots, N\\}|$. This is the quantity Erdős's problem is about: how slowly can it grow while $A$ stays Ramsey 2-complete? The answer is $\\Theta((\\log N)^2)$."
     },
     {
       "id": "lower-bound",
-      "title": "Burr–Erdős Lower Bound",
-      "startLine": 50,
-      "endLine": 57,
-      "summary": "**burr_erdos_lower**: $\\exists c > 0$ such that $|A \\cap [1,N]| \\ge c(\\log_2 N)^2$ for Ramsey 2-complete $A$ and infinitely many $N$.",
-      "mathContext": "$\\exists c > 0: \\text{IsRamsey2Complete}(A) \\implies |A \\cap [1,N]| \\ge c (\\log N)^2$ for all large $N$ (Burr-Erdős, 1985)."
+      "title": "Burr–Erdős Lower Bound (prose)",
+      "startLine": 54,
+      "endLine": 58,
+      "summary": "Prose comment (not formalized) recording the Burr–Erdős (1985) lower bound: there is $c > 0$ such that no Ramsey 2-complete $A$ satisfies $|A \\cap [1,N]| \\le c(\\log N)^2$ for all large $N$.",
+      "mathContext": "$\\exists c > 0: \\text{IsRamsey2Complete}(A) \\implies |A \\cap [1,N]| > c (\\log N)^2$ for infinitely many $N$ (Burr–Erdős, 1985). Documented in the header prose only — the deep quantitative bound is not formalized in this file."
     },
     {
       "id": "upper-bound",
-      "title": "Conlon–Fox–Pham Upper Bound",
-      "startLine": 58,
-      "endLine": 66,
-      "summary": "**conlon_fox_pham**: $\\exists A$ Ramsey 2-complete with $|A \\cap [1,N]| \\le C(\\log_2 N)^2$ for large $N$. Matches the lower bound.",
-      "mathContext": "$\\exists A \\subseteq \\mathbb{N}: \\text{IsRamsey2Complete}(A) \\wedge |A \\cap [1,N]| \\ll (\\log N)^2$ (Conlon-Fox-Pham, 2021). Matches the lower bound."
+      "title": "Conlon–Fox–Pham Upper Bound (prose)",
+      "startLine": 59,
+      "endLine": 62,
+      "summary": "Prose comment (not formalized) recording the Conlon–Fox–Pham (2021) construction: there exists a Ramsey 2-complete $A$ with $|A \\cap [1,N]| \\ll (\\log N)^2$, matching the lower bound up to constants.",
+      "mathContext": "$\\exists A \\subseteq \\mathbb{N}: \\text{IsRamsey2Complete}(A) \\wedge |A \\cap [1,N]| \\ll (\\log N)^2$ (Conlon–Fox–Pham, 2021). This optimal construction is the harder direction and is documented in prose only."
     },
     {
       "id": "main-problem",
-      "title": "Main Problem (Solved)",
-      "startLine": 67,
-      "endLine": 78,
-      "summary": "**ErdosProblem54**: conjunction of both bounds, capturing $\\Theta((\\log N)^2)$ as the minimum growth rate. Solved by Conlon–Fox–Pham (2021).",
-      "mathContext": "$\\Theta((\\log N)^2)$: $\\exists c_1, c_2 > 0$ such that the minimum counting function of a Ramsey 2-complete set satisfies $c_1 (\\log N)^2 \\le f(N) \\le c_2 (\\log N)^2$."
+      "title": "Main Problem Statement (ErdosProblem54)",
+      "startLine": 63,
+      "endLine": 75,
+      "summary": "`def ErdosProblem54 : Prop` packages both bounds as a conjunction: a lower-bound clause ($\\exists c>0$ with $c(\\log_2 N)^2 \\le \\text{countingFn}\\,A\\,N$ for arbitrarily large $N$, for every Ramsey 2-complete $A$) and an upper-bound clause ($\\exists$ Ramsey 2-complete $A$ and $C>0$ with $\\text{countingFn}\\,A\\,N \\le C(\\log_2 N)^2$ eventually). Stated as a `Prop`; it is not proved here (hence the `wip` badge).",
+      "mathContext": "The two clauses together assert $\\Theta((\\log N)^2)$ as the minimal growth rate. The statement uses `Nat.log 2 N` (integer base-2 log) cast to $\\mathbb{Q}$ with rational constants $c, C$; it is a definition of the theorem to be proved, not a proved theorem — the file formalizes the statement and the supporting definitions, not the resolution."
+    },
+    {
+      "id": "earlier-bound-and-preamble",
+      "title": "Earlier Bound and Foundational-Lemmas Preamble",
+      "startLine": 77,
+      "endLine": 87,
+      "summary": "A prose note on Burr–Erdős's earlier weaker upper bound ($|A \\cap [1,N]| < (2\\log_2 N)^3$, later improved by Conlon–Fox–Pham), and a preamble clarifying honest scope: the two deep quantitative bounds are prose-only, and what follows are machine-checkable structural facts proved with no axioms and no `sorry`.",
+      "mathContext": "This preamble is the file's honesty statement: it separates the un-formalized analytic core (the two bounds) from the four elementary lemmas below, which establish basic properties of the definitions and are genuinely axiom-free."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (axiom-free)",
+      "startLine": 89,
+      "endLine": 119,
+      "summary": "Four machine-checked theorems on the definitions: `zero_mem_monoSubsetSums` (0 is a monochromatic subset sum via the empty subset); `mem_monoSubsetSums_of_mem` (a coloured element is its own singleton monochromatic sum); `countingFn_le` ($|A \\cap [1,N]| \\le N$, via `Finset.card_filter_le` and `Nat.card_Icc`); and `countingFn_mono` (the counting function is monotone in the window, via `Finset.filter_subset_filter` on `Finset.Icc_subset_Icc_right`).",
+      "mathContext": "These are the structural facts underwriting the 0-axiom / 0-sorry claim. `zero_mem_monoSubsetSums`: $\\emptyset$ is vacuously monochromatic and $\\sum_\\emptyset = 0$. `mem_monoSubsetSums_of_mem`: the singleton $\\{n\\}$ witnesses $n \\in \\text{monoSubsetSums}$. `countingFn_le` and `countingFn_mono` bound and order the counting function — the elementary half of the growth-rate analysis, complementing the (unformalized) $\\Theta((\\log N)^2)$ bounds."
     }
   ],
   "conclusion": {
