@@ -96,40 +96,128 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 56,
-      "summary": "Module docstring stating the even/odd contrast, why the result is axiomatized (transcendence of π, hermite_lindemann), and the three-step approach; imports of ZetaValues, the Irrational library, and Proofs.PiTranscendental; open Real and the namespace.",
+      "endLine": 52,
+      "summary": "Module docstring stating the even/odd contrast, why the result is axiomatized (transcendence of π, hermite_lindemann), and the three-step approach; imports of ZetaValues, the Irrational library, and Proofs.PiTranscendental; open Real and the namespace declaration.",
       "mathContext": "The even values ζ(2n) are rational multiples of π^{2n}; the odd values ζ(2n+1) are arithmetically intractable past ζ(3)."
+    },
+    {
+      "id": "euler-structure-theorem",
+      "title": "Euler's Structure Theorem (Axiom-Free Skeleton)",
+      "startLine": 53,
+      "endLine": 74,
+      "summary": "zeta_even_eq_rat_mul_pi_pow: for n ≥ 1 there is qₙ ∈ ℚ∖{0} with ∑' k, 1/k^(2n) = qₙ·π^(2n). Uses only Mathlib's Bernoulli closed form (hasSum_zeta_nat) plus strict positivity (Summable.tsum_pos forces qₙ ≠ 0) — NO hermite_lindemann. This is the unconditional backbone under every result below.",
+      "mathContext": "The 'rational multiple of π^(2n)' structure is unconditional; only the final step 'rational multiple ⟹ irrational/transcendental' needs transcendence of π. This lemma marks that sharp boundary."
     },
     {
       "id": "pi-pow-irrational",
       "title": "Powers of π are Irrational",
-      "startLine": 58,
-      "endLine": 70,
-      "summary": "pi_pow_irrational: Irrational (π^m) for every m ≥ 1, from Transcendental ℚ π (hermite_lindemann) via Transcendental.pow and Transcendental.irrational.",
+      "startLine": 76,
+      "endLine": 88,
+      "summary": "pi_pow_irrational: Irrational (π^m) for every m ≥ 1, from Transcendental ℚ π (via pi_transcendental_over_rationals / hermite_lindemann) through Transcendental.pow and Transcendental.irrational.",
       "mathContext": "Irrational(π^m) for all m ≥ 1 — absent from Mathlib, since irrationality is not closed under powers and this genuinely needs transcendence of π."
     },
     {
       "id": "zeta-even-irrational",
       "title": "Every Even Zeta Value is Irrational",
-      "startLine": 72,
-      "endLine": 100,
-      "summary": "zeta_even_irrational: for n ≥ 1, ζ(2n) = ∑' k, 1/k^(2n) is irrational. Euler's hasSum_zeta_nat exhibits ζ(2n) = ↑qₙ·π^(2n) (qₙ ∈ ℚ); Summable.tsum_pos gives ζ(2n) > 0 forcing qₙ ≠ 0; Irrational.ratCast_mul finishes.",
+      "startLine": 89,
+      "endLine": 104,
+      "summary": "zeta_even_irrational: for n ≥ 1, ζ(2n) = ∑' k, 1/k^(2n) is irrational. Combines the axiom-free structure zeta_even_eq_rat_mul_pi_pow with pi_pow_irrational and Irrational.ratCast_mul.",
       "mathContext": "ζ(2n) = qₙ·π^{2n} with qₙ ∈ ℚ∖{0}; irrational because π^{2n} is."
     },
     {
       "id": "corollaries",
       "title": "The Concrete Values ζ(2), ζ(4), ζ(6)",
-      "startLine": 102,
-      "endLine": 111,
+      "startLine": 106,
+      "endLine": 119,
       "summary": "zeta_two_irrational, zeta_four_irrational, zeta_six_irrational specialise the main theorem to n = 1, 2, 3, giving irrationality of π²/6, π⁴/90, π⁶/945.",
       "mathContext": "The classical Basel value ζ(2) = π²/6 and its successors ζ(4) = π⁴/90, ζ(6) = π⁶/945 are all irrational."
     },
     {
+      "id": "even-zeta-transcendental",
+      "title": "Transcendence of Every Even Zeta Value",
+      "startLine": 121,
+      "endLine": 154,
+      "summary": "zeta_even_transcendental strengthens the headline from irrational to transcendental over ℚ: scaling the transcendental π^(2n) by the nonzero rational qₙ preserves transcendence (an algebraic qₙ·π^(2n) would force π^(2n) = qₙ⁻¹·(qₙ·π^(2n)) algebraic). zeta_two_transcendental is the concrete Basel value.",
+      "mathContext": "Transcendence over ℚ implies irrationality (Transcendental.irrational), so this refines zeta_even_irrational; ζ(2) = π²/6 is transcendental."
+    },
+    {
+      "id": "scaling-engine-and-ratios",
+      "title": "Scaling Engine and Ratios of Distinct Values",
+      "startLine": 156,
+      "endLine": 224,
+      "summary": "transcendental_ratCast_mul: the reusable engine that q·x stays transcendental for q ∈ ℚ∖{0}. zeta_even_ratio_eq_rat_mul_pi_pow (axiom-free) shows ζ(2n)/ζ(2m) = (qₙ/qₘ)·π^(2(n−m)) for m<n; zeta_even_ratio_transcendental and the concrete ζ(4)/ζ(2)=π²/15 follow.",
+      "mathContext": "The even zeta values are multiplicatively π-power-incommensurable over ℚ: their quotient always carries a leftover nonzero even power of π, so it is never a mere rational."
+    },
+    {
+      "id": "products-and-cross-power",
+      "title": "Products and Cross-Power Dependence",
+      "startLine": 226,
+      "endLine": 307,
+      "summary": "zeta_even_product_eq_rat_mul_pi_pow / zeta_even_product_transcendental: ζ(2n)·ζ(2m) = (qₙqₘ)·π^(2n+2m). zeta_even_cross_pow_ratio_rational and zeta_even_cross_pow_proportional: ζ(2n)^m/ζ(2m)^n ∈ ℚ (crossing exponents cancels π exactly), the concrete witness of algebraic dependence. zeta_even_div_pi_pow_rational: dividing by the matching π^(2n) returns to ℚ.",
+      "mathContext": "The even zeta values live in the transcendence-degree-1 field ℚ(π): products add π-powers, and crossed exponents make any two rationally proportional — all inside ℚ∖{0}·π^(even)."
+    },
+    {
+      "id": "powers-of-values",
+      "title": "Powers of Even Zeta Values",
+      "startLine": 309,
+      "endLine": 356,
+      "summary": "zeta_even_pow_eq_rat_mul_pi_pow / zeta_even_pow_transcendental: ζ(2n)^j = qₙ^j·π^(2nj), so every positive power is transcendental (ζ(2)² = π⁴/36, ζ(2)³ = π⁶/216). zeta_two_sq_transcendental is the concrete case; transcendental_div_ratCast is the division companion of the scaling engine.",
+      "mathContext": "The class ℚ∖{0}·π^(even>0) housing the even zeta values is closed under taking positive integer powers, not merely pairwise products."
+    },
+    {
+      "id": "rational-scaling-closure",
+      "title": "ℚ*-Scaling Closure",
+      "startLine": 358,
+      "endLine": 379,
+      "summary": "zeta_even_ratCast_mul_eq_rat_mul_pi_pow (axiom-free) and zeta_even_ratCast_mul_transcendental: multiplying ζ(2n) by any c ∈ ℚ∖{0} gives (c·qₙ)·π^(2n), again a nonzero-rational multiple of the same π-power, hence transcendental.",
+      "mathContext": "Together with products and powers this completes the multiplicative picture: the even zeta values sit in a set closed under ℚ*-scaling, products, and powers."
+    },
+    {
+      "id": "finite-and-weighted-products",
+      "title": "Finite and Weighted Products (Finset Generalizations)",
+      "startLine": 381,
+      "endLine": 472,
+      "summary": "zeta_even_finset_prod_eq_rat_mul_pi_pow / _transcendental: ∏_{i∈s} ζ(2 f i) = (∏ q_{f i})·π^(2 ∑ f i), so no finite product of even zeta values is algebraic. zeta_even_weighted_prod_eq_rat_mul_pi_pow / _transcendental generalise further to arbitrary monomials ∏ ζ(2 f i)^(g i). Both proved by Finset.induction_on.",
+      "mathContext": "The class ℚ∖{0}·π^(even) is closed under every monomial in the even zeta values — arbitrary finite products of arbitrary powers — the Finset closure of the pairwise and power identities."
+    },
+    {
+      "id": "master-engine-and-sums",
+      "title": "Master Polynomial Engine and Additive Frontier (Sums)",
+      "startLine": 474,
+      "endLine": 541,
+      "summary": "transcendental_aeval_pi: every nonconstant f ∈ ℚ[X] has f(π) transcendental (via Transcendental.aeval). zeta_even_add_transcendental: ζ(2n)+ζ(2m) (m<n) is a two-term polynomial in π of distinct even degrees, hence transcendental — the additive frontier escaping the single-π-power class. zeta_two_add_zeta_four_transcendental is concrete.",
+      "mathContext": "A sum of two distinct even zeta values is no longer a monomial q·π^m, so it leaves ℚ∖{0}·π^(even) and genuinely needs the full polynomial engine rather than a lone Transcendental.pow."
+    },
+    {
+      "id": "rational-shifts-and-single-value-polynomials",
+      "title": "Rational Shifts and Single-Value Polynomials",
+      "startLine": 542,
+      "endLine": 601,
+      "summary": "transcendental_add_ratCast / zeta_even_add_ratCast_transcendental: adding any rational preserves transcendence, so ζ(2n)+q is transcendental. zeta_even_aeval_transcendental: every nonconstant ℚ-polynomial of a single even zeta value is transcendental, unifying the power/scaling/shift closures and reaching mixed polynomials like X²+X (concrete: ζ(2)²+ζ(2)).",
+      "mathContext": "The single-value analogue of transcendental_aeval_pi: f(ζ(2n)) is transcendental for every nonconstant f ∈ ℚ[X], subsuming the shape-specific closures and covering mixed expressions."
+    },
+    {
+      "id": "differences",
+      "title": "Differences of Distinct Values",
+      "startLine": 603,
+      "endLine": 649,
+      "summary": "zeta_even_sub_transcendental: the subtractive companion of the sum result — ζ(2n)−ζ(2m) = qₙ·π^(2n) + (−qₘ)·π^(2m) is a nonconstant two-term polynomial in π, hence transcendental. zeta_four_sub_zeta_two_transcendental is concrete.",
+      "mathContext": "Both the sum and the difference of two distinct even zeta values escape the single-π-power class and require the polynomial engine, closing the two-value ± frontier."
+    },
+    {
+      "id": "subtraction-shifts-and-reciprocals",
+      "title": "Rational Subtraction Shifts and Reciprocals",
+      "startLine": 651,
+      "endLine": 695,
+      "summary": "transcendental_sub_ratCast / zeta_even_sub_ratCast_transcendental: ζ(2n)−q is transcendental. transcendental_inv / zeta_even_inv_transcendental: 1/ζ(2n) = qₙ⁻¹·π^(−2n) is transcendental (via IsAlgebraic.inv_iff), with concrete 1/ζ(2)=6/π². Together these close the field operations (+, −, ×, ⁻¹) on the even zeta values.",
+      "mathContext": "Every field operation applied to the even zeta values keeps the result transcendental over ℚ — the full field-operation closure."
+    },
+    {
       "id": "open-odd",
-      "title": "The Open Odd Case",
-      "startLine": 113,
-      "endLine": 119,
-      "summary": "Documentation-only section: no irrationality theorem is stated for ζ(2n+1), because that is the parent open question and is beyond current mathematics for every individual value past ζ(3).",
+      "title": "The Open Odd Case (Documentation Only)",
+      "startLine": 697,
+      "endLine": 706,
+      "summary": "Documentation-only section: no irrationality theorem is stated for ζ(2n+1), because that is the parent open question and is beyond current mathematics for every individual value past ζ(3); closes the namespace.",
       "mathContext": "Irrationality of ζ(7) and of every individual ζ(2n+1) with n ≥ 2 is an open problem."
     }
   ],
