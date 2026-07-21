@@ -200,6 +200,52 @@ theorem centralizerEvalEquiv_apply [FiniteDimensional K V]
     (A : ↥(Subalgebra.toSubmodule (Subalgebra.centralizer K ({T} : Set (Module.End K V))))) :
     centralizerEvalEquiv T v hcyc A = (A : Module.End K V) v := rfl
 
+-- ============================================================
+-- SECTION V: nonderogatory degree — deg(minpoly) = dim V for a cyclic T
+-- ============================================================
+
+/-- **Nonderogatory degree (forward direction).**  If `T : Module.End K V` (over a
+    finite-dimensional `V`) has a cyclic vector `v`, then the minimal polynomial of
+    `T` has degree exactly `dim_K V`:
+
+        (minpoly K T).natDegree = finrank K V.
+
+    This is the *nonderogatory* edge of the triple equivalence
+    `nonderogatory ⟺ cyclic ⟺ C(T) = K[T]`, expressed through the minimal
+    polynomial rather than the centralizer dimension
+    (`finrank_centralizer_eq_of_cyclic`).  Both inequalities are elementary:
+
+    * `≥` : the minimal polynomial is a *nonzero* annihilator of `T`, hence
+      `(minpoly K T) v = 0`; were its degree `< dim V`, cyclicity
+      (`IsEndCyclicVector`) would force `minpoly K T = 0`, impossible for an
+      integral element (`minpoly.ne_zero`, `LinearMap.isIntegral`).
+    * `≤` : Cayley–Hamilton (`LinearMap.aeval_self_charpoly`) makes `minpoly K T`
+      divide the characteristic polynomial, whose degree is `dim V`
+      (`LinearMap.charpoly_natDegree`).
+
+    Together with `minpoly` dividing `charpoly` this also gives `minpoly = charpoly`
+    in the cyclic case, but only the degree equality is recorded here. -/
+theorem minpoly_natDegree_eq_finrank_of_cyclic [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (hcyc : IsEndCyclicVector T v) :
+    (minpoly K T).natDegree = Module.finrank K V := by
+  have hint : IsIntegral K T := T.isIntegral
+  have hne : minpoly K T ≠ 0 := minpoly.ne_zero hint
+  have haeval : (aeval T) (minpoly K T) = 0 := minpoly.aeval K T
+  -- lower bound: a nonzero annihilator of degree `< n` contradicts cyclicity
+  have hge : Module.finrank K V ≤ (minpoly K T).natDegree := by
+    by_contra h
+    push_neg at h
+    have hv0 : (aeval T (minpoly K T)) v = 0 := by rw [haeval]; simp
+    exact hne (hcyc (minpoly K T) h hv0)
+  -- upper bound: minpoly divides the characteristic polynomial (Cayley–Hamilton)
+  have hle : (minpoly K T).natDegree ≤ Module.finrank K V := by
+    have hdvd : minpoly K T ∣ T.charpoly := minpoly.dvd (LinearMap.aeval_self_charpoly T)
+    have hcp_ne : T.charpoly ≠ 0 := T.charpoly_monic.ne_zero
+    have hdeg : (minpoly K T).natDegree ≤ T.charpoly.natDegree :=
+      Polynomial.natDegree_le_of_dvd hdvd hcp_ne
+    rwa [LinearMap.charpoly_natDegree] at hdeg
+  omega
+
 end EndCyclicCommutant
 
 end
