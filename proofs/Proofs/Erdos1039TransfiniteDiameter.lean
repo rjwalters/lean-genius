@@ -609,4 +609,123 @@ theorem transfiniteDiameter_le_two_via_d2 :
   have := transfiniteDiameter_le 0
   rwa [transfiniteDiameterN_two] at this
 
+/-! ### The second term is sandwiched: `√3 ≤ d₃ ≤ 2`
+
+The `3`-point diameter is the geometric mean of the three pairwise gaps,
+`d₃(z) = (‖z₀-z₁‖·‖z₀-z₂‖·‖z₁-z₂‖)^{1/3}` (the normalising exponent
+`2/(n(n-1))` equals `1/3` at `n = 3`).  The equilateral triangle of cube roots of
+unity `{1, ω, ω²}` with `ω = -1/2 + (√3/2)i` lies on the unit circle and has all
+three gaps equal to `√3`, so its diameter is `((√3)³)^{1/3} = √3`.  This yields
+the sharp **lower bound** `d₃ ≥ √3`; combined with Fekete monotonicity
+`d₃ ≤ d₂ = 2` (`transfiniteDiameterN_succ_le`, `transfiniteDiameterN_two`) it
+sandwiches the second term of the sequence in `[√3, 2]`.
+
+The matching **upper bound** `d₃ = √3` — that no `3`-point configuration in the
+closed unit disc beats the inscribed equilateral triangle — is a genuine extremal
+optimisation (the `n = 3` case of the Fekete–Szegő theorem) and is *not*
+established here; only the elementary lower bound is. -/
+
+/-- The Euclidean norm of a complex number written in Cartesian form:
+`‖x + yi‖ = √(x² + y²)`. -/
+private theorem norm_mk_eq_sqrt (x y : ℝ) :
+    ‖(⟨x, y⟩ : ℂ)‖ = Real.sqrt (x ^ 2 + y ^ 2) := by
+  rw [← Real.sqrt_sq (norm_nonneg (⟨x, y⟩ : ℂ)), ← Complex.normSq_eq_norm_sq,
+    Complex.normSq_mk]
+  congr 1
+  ring
+
+/-- The spread product of a `3`-point configuration is the product of its three
+pairwise gaps `‖z₀-z₁‖·‖z₀-z₂‖·‖z₁-z₂‖` (the three pairs `i < j` in `Fin 3`). -/
+theorem spreadProduct_three (z : Fin 3 → ℂ) :
+    spreadProduct z = ‖z 0 - z 1‖ * ‖z 0 - z 2‖ * ‖z 1 - z 2‖ := by
+  unfold spreadProduct
+  rw [Fin.prod_univ_three]
+  have h0 : Finset.Ioi (0 : Fin 3) = {1, 2} := by decide
+  have h1 : Finset.Ioi (1 : Fin 3) = {2} := by decide
+  have h2 : Finset.Ioi (2 : Fin 3) = (∅ : Finset (Fin 3)) := by decide
+  rw [h0, h1, h2, Finset.prod_pair (by decide : (1 : Fin 3) ≠ 2),
+    Finset.prod_singleton, Finset.prod_empty, mul_one]
+
+/-- The `3`-point diameter is the geometric mean of the three pairwise gaps:
+the normalising exponent `2/(n(n-1))` equals `1/3` at `n = 3`. -/
+theorem discreteDiameter_three (z : Fin 3 → ℂ) :
+    discreteDiameter z
+      = (‖z 0 - z 1‖ * ‖z 0 - z 2‖ * ‖z 1 - z 2‖) ^ ((1 : ℝ) / 3) := by
+  rw [discreteDiameter, spreadProduct_three]
+  norm_num
+
+/-- **`d₃ ≥ √3`.**  The `3`-point transfinite diameter of the closed unit disc is
+at least `√3`, attained by the equilateral triangle of cube roots of unity
+`{1, ω, ω²}` with `ω = -1/2 + (√3/2)i`: all three pairwise gaps equal `√3`, so its
+`3`-point diameter is `((√3)³)^{1/3} = √3`.  Together with `d₃ ≤ d₂ = 2` this pins
+the second term of the sequence into `[√3, 2]`. -/
+theorem transfiniteDiameterN_three_ge : Real.sqrt 3 ≤ transfiniteDiameterN 3 := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  -- the equilateral triangle of cube roots of unity
+  set z : Fin 3 → ℂ := ![1, ⟨-1/2, Real.sqrt 3/2⟩, ⟨-1/2, -(Real.sqrt 3/2)⟩]
+    with hz_def
+  have e0 : z 0 = 1 := by simp [hz_def]
+  have e1 : z 1 = (⟨-1/2, Real.sqrt 3/2⟩ : ℂ) := by simp [hz_def]
+  have e2 : z 2 = (⟨-1/2, -(Real.sqrt 3/2)⟩ : ℂ) := by simp [hz_def]
+  -- the three pairwise gaps are all √3
+  have g01 : ‖z 0 - z 1‖ = Real.sqrt 3 := by
+    have hd : z 0 - z 1 = (⟨3/2, -(Real.sqrt 3/2)⟩ : ℂ) := by
+      rw [e0, e1, Complex.ext_iff]
+      norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt,
+      show ((3:ℝ)/2) ^ 2 + (-(Real.sqrt 3/2)) ^ 2 = (9 + Real.sqrt 3 ^ 2) / 4 by ring,
+      hs2]
+    norm_num
+  have g02 : ‖z 0 - z 2‖ = Real.sqrt 3 := by
+    have hd : z 0 - z 2 = (⟨3/2, Real.sqrt 3/2⟩ : ℂ) := by
+      rw [e0, e2, Complex.ext_iff]
+      norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt,
+      show ((3:ℝ)/2) ^ 2 + (Real.sqrt 3/2) ^ 2 = (9 + Real.sqrt 3 ^ 2) / 4 by ring,
+      hs2]
+    norm_num
+  have g12 : ‖z 1 - z 2‖ = Real.sqrt 3 := by
+    have hd : z 1 - z 2 = (⟨0, Real.sqrt 3⟩ : ℂ) := by
+      rw [e1, e2, Complex.ext_iff]
+      norm_num [Complex.sub_re, Complex.sub_im]
+    rw [hd, norm_mk_eq_sqrt,
+      show (0:ℝ) ^ 2 + Real.sqrt 3 ^ 2 = Real.sqrt 3 ^ 2 by ring, hs2]
+  -- the diameter of this configuration is exactly √3
+  have hdiam : discreteDiameter z = Real.sqrt 3 := by
+    rw [discreteDiameter_three, g01, g02, g12,
+      show Real.sqrt 3 * Real.sqrt 3 * Real.sqrt 3 = Real.sqrt 3 ^ (3 : ℕ) by ring,
+      ← Real.rpow_natCast (Real.sqrt 3) 3,
+      ← Real.rpow_mul (Real.sqrt_nonneg 3)]
+    norm_num
+  -- every vertex lies in the closed unit disc
+  have n0 : ‖z 0‖ ≤ 1 := by rw [e0]; simp
+  have n1 : ‖z 1‖ ≤ 1 := by
+    rw [e1, norm_mk_eq_sqrt,
+      show (-1/2:ℝ) ^ 2 + (Real.sqrt 3/2) ^ 2 = (1 + Real.sqrt 3 ^ 2) / 4 by ring, hs2,
+      show ((1:ℝ) + 3) / 4 = 1 by norm_num, Real.sqrt_one]
+  have n2 : ‖z 2‖ ≤ 1 := by
+    rw [e2, norm_mk_eq_sqrt,
+      show (-1/2:ℝ) ^ 2 + (-(Real.sqrt 3/2)) ^ 2 = (1 + Real.sqrt 3 ^ 2) / 4 by ring, hs2,
+      show ((1:ℝ) + 3) / 4 = 1 by norm_num, Real.sqrt_one]
+  have hmem : ∀ i, ‖z i‖ ≤ 1 := by
+    intro i; fin_cases i
+    · exact n0
+    · exact n1
+    · exact n2
+  -- √3 is realised as the diameter of a disc configuration, hence ≤ the sSup
+  have hin : Real.sqrt 3 ∈ unitDiscDiameters 3 := ⟨z, hmem, hdiam⟩
+  exact le_csSup (unitDiscDiameters_bddAbove (by norm_num)) hin
+
+/-- **The second term is sandwiched: `d₃ ∈ [√3, 2]`.**  The lower bound is
+`transfiniteDiameterN_three_ge` (cube roots of unity); the upper bound is Fekete
+monotonicity `d₃ ≤ d₂` (`transfiniteDiameterN_succ_le`) composed with the exact
+first term `d₂ = 2` (`transfiniteDiameterN_two`).  The exact value `d₃ = √3` needs
+the extremal upper bound and is not established here. -/
+theorem transfiniteDiameterN_three_mem_Icc :
+    transfiniteDiameterN 3 ∈ Set.Icc (Real.sqrt 3) 2 := by
+  refine ⟨transfiniteDiameterN_three_ge, ?_⟩
+  have h32 : transfiniteDiameterN 3 ≤ transfiniteDiameterN 2 :=
+    transfiniteDiameterN_succ_le (le_refl 2)
+  rwa [transfiniteDiameterN_two] at h32
+
 end Erdos1039TransfiniteDiameter
