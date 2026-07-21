@@ -47,7 +47,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 544,
-    "assumptions": "No axioms. 2 sorries remain: the genuinely-open positive direction `barber_theorem` (Barber's SAT-verified n ≥ 18 result) and its dependent `erdos895_sat_verified`. The previously-listed third sorry, `counterexample_17` over Fin 17, was FALSE under the file's loose additive-triple predicate (Z3 exhaustive UNSAT) and has been replaced by the machine-verified, 0-axiom distinct-vertex counterexample `counterexample_fin18` over Fin 18 (re-exported from the companion `Erdos895CounterexampleFin18.lean`, proven by kernel `decide`).",
+    "assumptions": "No `axiom` declarations. 2 sorries remain: the genuinely-open positive direction `barber_theorem` (Barber's SAT-verified n ≥ 18 result) and its dependent `erdos895_sat_verified`. The previously-listed third sorry, `counterexample_17` over Fin 17, was FALSE under the file's loose additive-triple predicate (Z3 exhaustive UNSAT) and has been replaced by the machine-verified, 0-axiom distinct-vertex counterexample `counterexample_fin18` over Fin 18 (re-exported from the companion `Erdos895CounterexampleFin18.lean`, proven by kernel `decide`). Note on the machine-checked auxiliary results: `ramsey_3_3` (R(3,3)=6) and the Schur lemmas `schur_4_colorable`/`schur_5_forced` behind `schur_2` (S(2)=4) are discharged by `native_decide`, so those results depend on `Lean.ofReduceBool` (the compiler-reduction axiom), not on the kernel alone — `#print axioms schur_2` lists it. This does not affect `leanFile.axiomCount` (which counts only literal `axiom` declarations = 0).",
     "mathlib_version": "4.31.0",
     "theoremCount": 18,
     "definitionCount": 16,
@@ -77,92 +77,108 @@
   },
   "sections": [
     {
+      "id": "module-overview",
+      "title": "Module Overview & Setup",
+      "summary": "Module docstring stating Erdős Problem #895 (independent additive triples in triangle-free graphs on {1,…,n}), the Mathlib imports (SimpleGraph, Finset, Fin), and the `open Finset SimpleGraph` declarations shared by every result below.",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "Sets up the ambient theory: triangle-free graphs on an interval and the additive triple $(a, b, a+b)$."
+    },
+    {
       "id": "graph-defs",
-      "title": "Graph Definitions",
-      "summary": "Basic definitions for graphs on intervals",
-      "startLine": 36,
-      "endLine": 51,
-      "mathContext": "Formal definition: Basic definitions for graphs on intervals"
+      "title": "Basic Graph Definitions",
+      "summary": "Core graph vocabulary: `completeGraphOn`, `GraphOnInterval n := SimpleGraph (Fin n)`, `IsIndependentTriple` (no edges among a, b, c) and `IsTriangleFree`.",
+      "startLine": 37,
+      "endLine": 52,
+      "mathContext": "$G$ is triangle-free iff no three mutually adjacent vertices; an independent triple has no edge among $a$, $b$, $c$."
     },
     {
       "id": "additive-triples",
       "title": "Additive Triples",
-      "summary": "Definitions for additive triples and independent additive triples",
-      "startLine": 52,
-      "endLine": 61,
-      "mathContext": "Formal definition: Definitions for additive triples and independent additive triples"
+      "summary": "The additive-triple predicates: the loose `IsAdditiveTriple` / `HasIndependentAdditiveTriple` (a + b = c, a and b possibly equal) and the strict, Barber-faithful `IsDistinctAdditiveTriple` / `HasDistinctIndependentAdditiveTriple` requiring a ≠ b.",
+      "startLine": 53,
+      "endLine": 75,
+      "mathContext": "An additive triple is $(a, b, a+b)$; the distinct variant additionally requires $a \\neq b$ (matching Barber's three-distinct-vertex statement)."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "Statement of Erdős Problem #895",
-      "startLine": 62,
-      "endLine": 72,
-      "mathContext": "Mathematical content: Statement of Erdős Problem #895"
+      "summary": "`erdos895Conjecture`: for sufficiently large n every triangle-free `GraphOnInterval n` has an independent additive triple; and the threshold constant `erdos895Threshold = 18`.",
+      "startLine": 76,
+      "endLine": 86,
+      "mathContext": "$\\exists N,\\ \\forall n \\geq N$, every triangle-free graph on $\\{1,\\dots,n\\}$ has an independent additive triple; the sharp threshold is $N = 18$."
+    },
+    {
+      "id": "correctness-note",
+      "title": "Formalization Correctness Note",
+      "summary": "A long comment (researcher-1/-2/-9) documenting two independent defects in the original statements and their resolution: (BUG 1) the loose `IsAdditiveTriple` omitted a ≠ b, admitting degenerate (a, a, 2a) triples and shifting the true threshold; (BUG 2) an off-by-one in the Fin n ↔ {1,…,n−1} indexing. It records that the previously-`sorry`'d `counterexample_17` over Fin 17 was FALSE (Z3 exhaustive UNSAT) and has been replaced by the machine-verified distinct-vertex `counterexample_fin18`, plus the v4.26→v4.31 build-repair history.",
+      "startLine": 87,
+      "endLine": 140,
+      "mathContext": "Under the loose predicate every triangle-free graph on $\\mathrm{Fin}\\,17$ already has an independent additive triple, so a Fin-17 counterexample is impossible; the sharp witness lives on $\\mathrm{Fin}\\,18$ with distinct vertices."
     },
     {
       "id": "barber",
-      "title": "Barber's Theorem",
-      "summary": "The main result with threshold 18",
-      "startLine": 73,
-      "endLine": 84,
-      "mathContext": "Mathematical content: The main result with threshold 18"
+      "title": "Barber's Theorem (2015)",
+      "summary": "`barber_theorem` — the genuinely-open positive direction (∀ n ≥ 18, every triangle-free graph on {1,…,n} has an independent additive triple), stated as a `sorry` since it is Barber's SAT-verified result — and `erdos_895` deriving `erdos895Conjecture` from it with N = 18.",
+      "startLine": 141,
+      "endLine": 152,
+      "mathContext": "Barber (2015): the answer is YES for all $n \\geq 18$; the SAT UNSAT-certificate is the proof object, not yet formalized (open `sorry`)."
     },
     {
       "id": "small-cases",
-      "title": "Small Cases",
-      "summary": "Counterexample for n=17 showing sharpness",
-      "startLine": 85,
-      "endLine": 97,
-      "mathContext": "Mathematical content: Counterexample for n=17 showing sharpness"
+      "title": "Small Cases & Sharpness",
+      "summary": "`counterexample_fin18`: the corrected, machine-verified sharpness witness — an explicit 42-edge triangle-free graph on Fin 18 (= {1,…,17}, vertex 0 isolated) with no independent additive triple among three DISTINCT vertices, re-exported from the 0-axiom `decide` companion `Erdos895CounterexampleFin18.lean`. `threshold_sharp` pairs it with `barber_theorem`. (Replaces the false-as-stated Fin-17 `counterexample_17`.)",
+      "startLine": 153,
+      "endLine": 181,
+      "mathContext": "Sharpness: a distinct-vertex counterexample exists on $\\mathrm{Fin}\\,18$, so the threshold $n \\geq 18$ cannot be lowered."
     },
     {
       "id": "ramsey",
       "title": "Connection to Ramsey Theory",
-      "summary": "Ramsey-theoretic infrastructure: triangle-free graphs, R(3,3) = 6 (ramsey_3_3), and the independence bound that triangle-free graphs have independence number ≥ √n (triangleFree_independence_bound). Provides the combinatorial backbone for the additive-triple analysis.",
-      "startLine": 98,
-      "endLine": 257,
+      "summary": "Ramsey-theoretic infrastructure: the K₆-edge encoding `pairOf6`, `ramsey_3_3` (R(3,3) = 6, proved by native_decide over all 2^15 colorings), and `triangleFree_independence_bound` giving that triangle-free graphs have independence number ≥ √n. Provides the combinatorial backbone for the additive-triple analysis.",
+      "startLine": 182,
+      "endLine": 339,
       "mathContext": "$R(3,3) = 6$; triangle-free graphs on $n$ vertices have independence number $\\geq \\sqrt{n}$."
     },
     {
       "id": "schur",
       "title": "Connection to Schur Numbers",
-      "summary": "Sum-free sets, the Schur number S(k), S(2) = 4 (schur_2), and erdos895_implies_schur_variant linking the Erdős #895 graph result to a Schur-like statement about colorings. Relates additive triples a + b = c to monochromatic Schur triples.",
-      "startLine": 258,
-      "endLine": 337,
+      "summary": "Sum-free sets, the Schur number `schurNumber k`, the `native_decide`-verified colorability lemmas `schur_4_colorable`/`schur_5_forced`, `schur_2` (S(2) = 4), and `erdos895_implies_schur_variant` linking the Erdős #895 graph result to a Schur-like coloring statement. Relates additive triples a + b = c to monochromatic Schur triples.",
+      "startLine": 340,
+      "endLine": 419,
       "mathContext": "$S(2) = 4$: $\\{1,2,3,4\\}$ is 2-colorable with no monochromatic Schur triple, but $\\{1,\\dots,5\\}$ is not."
     },
     {
       "id": "hajnal",
       "title": "Hajnal's Generalization (OPEN)",
-      "summary": "Hajnal's conjecture (hajnalConjecture): triangle-free graphs have independent Hindman sets. Stated as an open problem; hajnal_conjecture_open records that it remains unresolved.",
-      "startLine": 338,
-      "endLine": 354,
-      "mathContext": "Hajnal's conjecture (open): every triangle-free graph admits an independent Hindman set."
+      "summary": "`hindmanSet`, `hajnalConjecture` (triangle-free graphs admit an independent Hindman set — all finite sums of a base set), and `hajnal_conjecture_open` recording that this generalization remains unresolved.",
+      "startLine": 420,
+      "endLine": 436,
+      "mathContext": "Hajnal's conjecture (open): every large triangle-free graph admits an independent Hindman set."
     },
     {
       "id": "density",
       "title": "Density Considerations",
-      "summary": "Mantel's theorem (mantel_theorem): a triangle-free graph on n vertices has at most n²/4 edges, and dense_triangleFree_independence deriving independence-number consequences for dense triangle-free graphs.",
-      "startLine": 355,
-      "endLine": 440,
+      "summary": "`mantel_theorem` (a triangle-free graph on n vertices has at most n²/4 edges) and `dense_triangleFree_independence` deriving independence-number consequences for dense triangle-free graphs.",
+      "startLine": 437,
+      "endLine": 522,
       "mathContext": "Mantel: a triangle-free graph on $n$ vertices has $\\leq n^2/4$ edges."
     },
     {
       "id": "computational-verification",
       "title": "Computational Verification",
-      "summary": "erdos895_sat_verified records the SAT/computational verification of the n ≥ 18 threshold (the Barber result), stated with a sorry standing in for the external solver certificate.",
-      "startLine": 441,
-      "endLine": 448,
-      "mathContext": "The threshold-18 result was verified by exhaustive SAT search over graphs on $\\{1,\\dots,n\\}$."
+      "summary": "`erdos895_sat_verified` records the SAT/computational verification of the n ≥ 18 threshold (the Barber result over Fin 100), stated with a `sorry` standing in for the external solver certificate — it depends on the hard positive direction.",
+      "startLine": 523,
+      "endLine": 530,
+      "mathContext": "The threshold-18 result was verified by exhaustive SAT search over triangle-free graphs on $\\{1,\\dots,n\\}$."
     },
     {
       "id": "main-results-summary",
       "title": "Main Results Summary",
-      "summary": "erdos_895_summary bundles the main results — Barber's threshold theorem, the n=17 sharpness counterexample, and the Ramsey/Schur connections — into a single summary statement, followed by #check commands.",
-      "startLine": 449,
-      "endLine": 462,
-      "mathContext": "Summary: Erdős #895 holds for $n \\geq 18$ (Barber), sharp at $n = 17$."
+      "summary": "`erdos_895_summary` bundles the main claims — Barber's threshold direction and `erdos895Threshold = 18` — into a single statement, followed by `#check` commands for `erdos_895`, `barber_theorem`, and `hajnal_conjecture_open`.",
+      "startLine": 531,
+      "endLine": 544,
+      "mathContext": "Summary: Erdős #895 holds for $n \\geq 18$ (Barber), sharp at the $\\mathrm{Fin}\\,18$ distinct-vertex counterexample."
     }
   ],
   "conclusion": {
