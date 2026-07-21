@@ -109,29 +109,29 @@
       "id": "header",
       "title": "Overview",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 44,
       "summary": "Module docstring: scope (1D Sperner lemma as the base case toward 2D Brouwer), honest framing, and the discrete-IVT interpretation."
     },
     {
       "id": "edges",
       "title": "Bichromatic Edges and the Count Recurrence",
-      "startLine": 50,
-      "endLine": 79,
+      "startLine": 45,
+      "endLine": 71,
       "summary": "spernerEdges / colorChanges definitions and colorChanges_succ: extending the path adds a bichromatic edge iff the new vertex changes color.",
       "mathContext": "Finset.filter_insert and card_insert_of_notMem give the one-step recurrence."
     },
     {
       "id": "parity",
       "title": "The Parity Identity",
-      "startLine": 81,
-      "endLine": 113,
+      "startLine": 72,
+      "endLine": 100,
       "summary": "even_colorChanges_iff: the count is even iff the endpoints share a color; oddColorChanges_of_ne for differing endpoints.",
       "mathContext": "Induction with Nat.even_add_one; the flip case is a Boolean tautology."
     },
     {
       "id": "sperner",
       "title": "The 1D Sperner Lemma",
-      "startLine": 115,
+      "startLine": 101,
       "endLine": 136,
       "summary": "exists_sperner_edge: a false→true path has a bichromatic edge; colorChanges_pos_of_ne: positivity of the count.",
       "mathContext": "Odd ⟹ positive ⟹ the edge set is nonempty (Finset.card_pos)."
