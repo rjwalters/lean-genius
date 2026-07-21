@@ -110,6 +110,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview & Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring framing the parent open question (elementary-quadratic-reciprocity-oq-03: can the Jacobi-symbol reciprocity proof be completed via the right Mathlib API?) and answering YES, then enumerating the seven formalized result families (full multiplicativity, periodicity, power laws, coprimality, special reciprocity, Euclidean reduction, native_decide verifications). Imports Mathlib's jacobiSym and QuadraticReciprocity APIs and opens the JacobiMultiplicativity namespace.",
+      "mathContext": "The Jacobi symbol $J(a,n) = \\prod_i \\left(\\tfrac{a}{p_i}\\right)^{e_i}$ (product of Legendre symbols over the prime factorization $n = \\prod p_i^{e_i}$, for odd $n$) extends the Legendre symbol multiplicatively; the file shows Mathlib's `jacobiSym` API already supplies the full multiplicative structure needed to reduce any evaluation to supplements and base cases."
+    },
+    {
       "id": "multiplicativity",
       "title": "Part I: Full Multiplicativity",
       "startLine": 31,
@@ -177,8 +185,8 @@
       "id": "character-summary",
       "title": "Part IX: The Complete Multiplicative Character",
       "startLine": 234,
-      "endLine": 252,
-      "summary": "Summarizes J(·,n) as a completely multiplicative character Z -> {-1,0,1} with multiplicativity preserving 1 and products.",
+      "endLine": 311,
+      "summary": "Summarizes J(·,n) as a completely multiplicative character Z -> {-1,0,1}: jacobiSym_char_one (J(1,n)=1), jacobiSym_char_mul (multiplicativity in the top argument, a homomorphism (Z,·)->({-1,0,1},·)), and jacobiSym_char_mul_bottom (multiplicativity on odd moduli). Closes with the result catalog (22 named theorems grouped by family) and the explicit answer to OQ-03-OQ-01: YES — the complete multiplicative structure reduces any J(a,n) computation to the supplements J(-1,·)=χ₄, J(2,·)=χ₈ and base cases, all supplied by Mathlib's API.",
       "mathContext": "The Jacobi symbol $J(\\cdot, n) : \\mathbb{Z} \\to \\{-1, 0, 1\\}$ is a completely multiplicative function factoring through $\\mathbb{Z}/n\\mathbb{Z}$."
     }
   ],
