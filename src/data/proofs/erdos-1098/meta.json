@@ -161,43 +161,43 @@
     },
     {
       "id": "neumann-theorem",
-      "title": "Neumann's Theorem",
+      "title": "Part IV: Neumann's Theorem",
       "startLine": 138,
-      "endLine": 171,
-      "summary": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`.",
-      "mathContext": "Axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` and `neumann_bound` (clique size ≤ index). Proves `finite_index_implies_finite_clique` (sorry) and `erdos_question_answered` by rewriting with `neumann_theorem`."
+      "endLine": 160,
+      "summary": "Defines `centerHasFiniteIndex` and `centerIndex`, then axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` — B. H. Neumann's (1976) equivalence that the non-commuting graph Γ(G) has no infinite clique iff the centre Z(G) has finite index.",
+      "mathContext": "`centerHasFiniteIndex G :⇔ [G : Z(G)] < ∞`; the axiomatized equivalence is $\\text{noInfiniteClique}(G) \\iff [G:Z(G)] < \\infty$."
     },
     {
-      "id": "coset-structure",
-      "title": "Coset Structure",
-      "startLine": 172,
-      "endLine": 200,
-      "summary": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets.",
-      "mathContext": "States `same_coset_commute` (sorry), `clique_different_cosets` (sorry using quotient.mk), and `clique_size_bound` (sorry). These form the heart of the coset argument: clique members lie in distinct Z(G)-cosets."
+      "id": "why-this-works",
+      "title": "Part V: Why This Works — The Coset Argument",
+      "startLine": 161,
+      "endLine": 253,
+      "summary": "The full coset argument, all fully proved: `same_coset_commute` and `clique_different_cosets` (clique members lie in distinct Z(G)-cosets), `clique_size_bound` (a clique's size is at most the number of cosets), `neumann_bound` (clique size ≤ [G : Z(G)]), and `finite_index_implies_finite_clique` / `erdos_question_answered`, which assemble these into the finite-clique-number conclusion via `neumann_theorem`.",
+      "mathContext": "If $[G:Z(G)] = n$ then two clique vertices in the same coset would commute, so a clique meets each coset at most once, giving $|\\text{clique}| \\le n$; hence finite index ⇒ bounded clique sizes."
     },
     {
       "id": "infinite-groups",
-      "title": "Infinite Groups and Examples",
-      "startLine": 201,
-      "endLine": 250,
-      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). documents in source comments `infinite_clique_example` (no Lean declaration exists), `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry).",
-      "mathContext": "Proves `abelian_no_edges` (Z(G) = ⊤ implies no non-commuting pairs). documents in source comments `infinite_clique_example` (no Lean declaration exists), `symmetric_group_clique_bound` (≤ n!), `dihedral_group_center_index`. States `finite_group_finite_index` (sorry)."
+      "title": "Parts VI–VII: Infinite Groups and Examples",
+      "startLine": 254,
+      "endLine": 294,
+      "summary": "Proves `abelian_no_edges` (Z(G) = ⊤ implies Γ(G) has no edges, so no non-commuting pairs) and `finite_group_finite_index` (every finite group trivially has a finite-index centre, so Γ(G) has bounded cliques). Source comments discuss further examples (symmetric and dihedral groups).",
+      "mathContext": "Abelian groups give an empty non-commuting graph; every finite group has $[G:Z(G)] < \\infty$, so the interesting case is infinite groups with finite-index centre."
     },
     {
       "id": "generalizations",
-      "title": "Generalizations",
-      "startLine": 251,
-      "endLine": 280,
-      "summary": "Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and documents in source comments `bfc_center_connection` (no Lean declaration exists).",
-      "mathContext": "Formal definition: Axiomatizes `commutingProbability` and `prob_clique_relation` for finite groups. Defines `isBFCGroup` (bounded finite conjugacy classes) and documents in source comments `bfc_center_connection` (no Lean declaration exists)."
+      "title": "Part VIII: Generalizations",
+      "startLine": 295,
+      "endLine": 329,
+      "summary": "Defines the `commutingProbability` of a finite group (the density of commuting pairs Pr[xy = yx]) and proves `prob_clique_relation` connecting it to the clique/centre structure, then defines `isBFCGroup` (bounded finite conjugacy classes) as the related boundedness notion. Source comments note the BFC–centre connection.",
+      "mathContext": "$\\Pr[xy=yx] = \\frac{k(G)}{|G|}$ (with $k(G)$ the number of conjugacy classes); BFC groups bound $|\\text{conjugatesOf}(g)|$ uniformly."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 281,
-      "endLine": 319,
-      "summary": "Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`.",
-      "mathContext": "Verified: Proves `erdos_1098 := erdos_question_answered`, `erdos_1098_summary` (Neumann equivalence ∧ finite clique implication), and `erdos_1098_status := neumann_theorem`."
+      "title": "Part IX: Summary",
+      "startLine": 330,
+      "endLine": 369,
+      "summary": "The top-level statements: `erdos_1098 := erdos_question_answered` (noInfiniteClique G → hasFiniteCliqueNumber G), `erdos_1098_summary` (the Neumann equivalence together with finite-index ⇒ finite clique number), and `erdos_1098_status := neumann_theorem` (the clean iff form). Together they record that Erdős #1098 is SOLVED (Neumann 1976).",
+      "mathContext": "Erdős #1098 answer: Γ(G) has no infinite clique iff Z(G) has finite index, in which case every clique has size ≤ [G : Z(G)]."
     }
   ],
   "conclusion": {
