@@ -40,7 +40,7 @@
     "historicalContext": "Erdős Problem #140 traces a 70-year arc in additive combinatorics. Klaus Friedrich Roth (1953) introduced Fourier-analytic methods (the Hardy–Littlewood circle method adapted to finite settings) to prove $r_3(N) = o(N)$, earning him part of the 1958 Fields Medal. Progress stalled for decades until Jean Bourgain (2008) refined the density-increment strategy to reach $O(N/\\sqrt{\\log\\log N})$. Tom Sanders (2011) achieved the first bound with $\\log N$ in the denominator — $O(N(\\log\\log N)^5/\\log N)$ — by introducing quasi-polynomial Bohr set methods. Thomas Bloom and Olof Sisask (2020) broke through $O(N/(\\log N)^{1+c})$ using entropy-increment arguments. Finally, Zander Kelley and Raghu Meka (2023) proved $r_3(N) = O(N/(\\log N)^C)$ for all $C > 0$, resolving Erdős's $500 conjecture. Their proof introduced a novel spectral approach using large-deviation estimates for convolutions on $\\mathbb{F}_3^n$, bypassing traditional density-increment iteration. The result was hailed as one of the major breakthroughs in combinatorics of the 2020s. The gap with Behrend's 1946 lower bound $\\Omega(N/\\exp(c\\sqrt{\\log N}))$ remains a central open problem.",
     "problemStatement": "Define r₃(N) = max{ |A| : A ⊆ {1,...,N}, A contains no non-trivial 3-term arithmetic progression }. Erdős conjectured that r₃(N) ≪ N/(log N)^C for every C > 0. Kelley and Meka (2023) proved this is true.",
     "text": "Let r₃(N) be the size of the largest subset of {1,...,N} with no 3-term arithmetic progression. Prove r₃(N) ≪ N/(log N)^C for every C > 0. SOLVED by Kelley-Meka (2023).",
-    "proofStrategy": "The formalization takes an axiomatic approach befitting a recently-solved problem: it defines the core combinatorial objects ($\\text{IsAP3}$, $\\text{Finset3APFree}$, $r_3(N)$), then proves $r_3$ is well-defined and attained via a finite bounded supremum argument. The four milestone upper bounds (Roth, Bourgain, Sanders, Bloom–Sisask) are recorded as axioms documenting the historical progression. The Kelley–Meka theorem is axiomatized as the main result: $\\forall C > 0, \\exists K > 0, \\forall N \\geq 3,\\; r_3(N) \\leq KN/(\\log N)^C$. Two corollaries — superlogarithmic decay and density vanishing — are derived (with sorry for the analytic tail). The formalization also generalizes to $k$-term APs via $r_k(N)$, proves equivalence $r_3 = r_k(3)$, and derives the $k{=}3$ case of the generalized Erdős conjecture from Kelley–Meka. Behrend's lower bound is recorded to frame the remaining gap.",
+    "proofStrategy": "The formalization takes an axiomatic approach befitting a recently-solved problem: it defines the core combinatorial objects ($\\text{IsAP3}$, $\\text{Finset3APFree}$, $r_3(N)$), then proves $r_3$ is well-defined and attained via a finite bounded supremum argument. The four milestone upper bounds documenting the historical progression are recorded without proof (Roth as the Prop definition RothBound; Bourgain, Sanders, and Bloom–Sisask as documentation comments), not asserted as axioms. The single axiom is the Kelley–Meka theorem, stated as the main result: $\\forall C > 0, \\exists K > 0, \\forall N \\geq 3,\\; r_3(N) \\leq KN/(\\log N)^C$. Two corollaries — superlogarithmic decay and density vanishing — are derived (with sorry for the analytic tail). The formalization also generalizes to $k$-term APs via $r_k(N)$, proves equivalence $r_3 = r_k(3)$, and derives the $k{=}3$ case of the generalized Erdős conjecture from Kelley–Meka. Behrend's lower bound is recorded to frame the remaining gap.",
     "keyInsights": [
       "r₃(N) is well-defined and achieved (verified theorem)",
       "Historical progression: o(N) → O(N/√log log N) → O(N log log N⁵/log N) → O(N/(log N)^{1+c})",
@@ -86,65 +86,65 @@
       "id": "historical-bounds",
       "title": "Historical Upper Bounds",
       "startLine": 79,
-      "endLine": 111,
-      "summary": "Axiomatizes the four milestone upper bounds: Roth ($o(N)$, 1953), Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020).",
-      "mathContext": "Axiomatizes the four milestone upper bounds: Roth ($o(N)$, 1953), Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020)."
+      "endLine": 99,
+      "summary": "States Roth's 1953 bound as the Prop definition RothBound ($r_3(N) = o(N)$) and records, as commentary, the three subsequent milestone improvements: Bourgain ($O(N/\\sqrt{\\log\\log N})$, 2008), Sanders ($O(N(\\log\\log N)^5/\\log N)$, 2011), and Bloom-Sisask ($O(N/(\\log N)^{1+c})$, 2020). These are stated/documented, not asserted as axioms.",
+      "mathContext": "Roth's bound is the Prop definition RothBound: $\\forall \\varepsilon > 0,\\ \\exists N_0,\\ \\forall N \\geq N_0,\\ r_3(N) < \\varepsilon N$. The Bourgain, Sanders, and Bloom-Sisask improvements appear as documentation comments, tracing the descent from $o(N)$ toward the eventual $O(N/(\\log N)^C)$."
     },
     {
       "id": "kelley-meka",
       "title": "The Kelley-Meka Theorem (2023)",
-      "startLine": 112,
-      "endLine": 128,
+      "startLine": 100,
+      "endLine": 116,
       "summary": "Axiomatizes the main result: for all $C > 0$ there exists $K > 0$ such that $r_3(N) \\leq KN/(\\log N)^C$ for $N \\geq 3$. Proves erdos_140_solved as a direct application.",
       "mathContext": "Verified: Axiomatizes the main result: for all $C > 0$ there exists $K > 0$ such that $r_3(N) \\leq KN/(\\log N)^C$ for $N \\geq 3$. Proves erdos_140_solved as a direct application."
     },
     {
       "id": "corollaries",
       "title": "Consequences and Corollaries",
-      "startLine": 129,
-      "endLine": 150,
+      "startLine": 117,
+      "endLine": 178,
       "summary": "Derives r3_superlogarithmic (density decays faster than any inverse log power) and r3_density_vanishes ($r_3(N)(\\log N)^C/N \\to 0$) from the Kelley-Meka theorem.",
       "mathContext": "Verified: Derives r3_superlogarithmic (density decays faster than any inverse log power) and r3_density_vanishes ($r_3(N)(\\log N)^C/N \\to 0$) from the Kelley-Meka theorem."
     },
     {
       "id": "lower-bounds",
       "title": "Behrend Lower Bound",
-      "startLine": 151,
-      "endLine": 162,
-      "summary": "Axiomatizes Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$. The gap between this and Kelley-Meka's upper bound remains a major open problem.",
-      "mathContext": "Axiomatized: Axiomatizes Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$. The gap between this and Kelley-Meka's upper bound remains a major open problem."
+      "startLine": 179,
+      "endLine": 187,
+      "summary": "Documents (as commentary, not as an axiom) Behrend's 1946 lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ and highlights the still-open gap between it and Kelley-Meka's upper bound: $\\Omega(N/\\exp(c\\sqrt{\\log N}))$ versus $O(N/(\\log N)^C)$.",
+      "mathContext": "Behrend's lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ is recorded in comments. The exponential-versus-polylogarithmic gap between this and the Kelley-Meka upper bound means the true order of $r_3(N)$ remains unknown."
     },
     {
       "id": "examples",
       "title": "Verified 3-AP-Free Examples",
-      "startLine": 163,
-      "endLine": 183,
+      "startLine": 188,
+      "endLine": 208,
       "summary": "Machine-verifies that $\\{0\\}$ and $\\{1,2,4,5,10,11,13,14\\}$ are 3-AP-free using omega tactic and case analysis. The latter set is the first 8 elements of the greedy sequence (OEIS A003278).",
       "mathContext": "Mathematical content: Machine-verifies that $\\{0\\}$ and $\\{1,2,4,5,10,11,13,14\\}$ are 3-AP-free using omega tactic and case analysis. The latter set is the first 8 elements of the greedy sequence (OEIS A003278)."
     },
     {
       "id": "greedy-sequence",
       "title": "The Greedy 3-AP-Free Sequence",
-      "startLine": 184,
-      "endLine": 196,
-      "summary": "Defines the greedy construction that adds the smallest integer avoiding 3-APs. Axiomatizes that the greedy sequence is 3-AP-free. Growth rate is approximately $n^{\\log 2/\\log 3}$.",
-      "mathContext": "Formal definition: Defines the greedy construction that adds the smallest integer avoiding 3-APs. Axiomatizes that the greedy sequence is 3-AP-free. Growth rate is approximately $n^{\\log 2/\\log 3}$."
+      "startLine": 209,
+      "endLine": 226,
+      "summary": "Defines the greedy 3-AP-free sequence A003278 via toBase3Binary/greedyAP3Free (numbers whose base-3 representation uses only digits {0,1}, i.e. the Stanley sequence). Its 3-AP-freeness is stated as a comment rather than asserted. Growth rate is approximately $n^{\\log 2/\\log 3}$.",
+      "mathContext": "greedyAP3Free interprets the binary digits of $n$ in base 3 (the Stanley sequence A005836, shifted by 1), the greedy construction that always adds the smallest integer avoiding a 3-AP. Its density $\\sim n^{\\log 2/\\log 3} = n^{0.6309\\ldots}$ far exceeds Behrend's, but the greedy sequence is not extremal."
     },
     {
       "id": "k-term-generalization",
       "title": "k-Term AP Generalization",
-      "startLine": 197,
-      "endLine": 240,
+      "startLine": 227,
+      "endLine": 292,
       "summary": "Generalizes to $k$-term APs: defines IsAPk, FinsetkAPFree, $r_k(N)$, and states the conjecture that $r_k(N) = O(N/(\\log N)^C)$ for all $k \\geq 3$. Proves the $k = 3$ case from Kelley-Meka. The $k \\geq 4$ cases remain open.",
       "mathContext": "Generalizes to $k$-term APs: defines IsAPk, FinsetkAPFree, $r_k(N)$, and states the conjecture that $r_k(N) = O(N/(\\log N)^C)$ for all $k \\geq 3$. Proves the $k = 3$ case from Kelley-Meka. The $k \\geq 4$ cases remain open."
     },
     {
       "id": "summary",
       "title": "Summary and Problem Status",
-      "startLine": 241,
-      "endLine": 267,
-      "summary": "Summarizes the formalization: 4 verified theorems, 9 axioms encoding historical results, and the Kelley-Meka resolution. Lists open questions including the Behrend gap and $k \\geq 4$ generalization.",
-      "mathContext": "Verified: Summarizes the formalization: 4 verified theorems, 9 axioms encoding historical results, and the Kelley-Meka resolution. Lists open questions including the Behrend gap and $k \\geq 4$ generalization."
+      "startLine": 293,
+      "endLine": 319,
+      "summary": "Closing docstring recording Problem #140 as SOLVED by Kelley-Meka (2023), the historical progression Roth → Bourgain → Sanders → Bloom-Sisask → Kelley-Meka, and the single axiom (kelley_meka) on which the resolution rests. Lists open questions including the true order of $r_3(N)$, the Behrend gap, and the $k \\geq 4$ generalization.",
+      "mathContext": "Status ledger: the resolution is machine-checked modulo the one axiom kelley_meka encoding the Kelley-Meka theorem; the earlier milestone bounds and Behrend's lower bound are documented as commentary. Open: the exact order of $r_3(N)$ (is it $\\Theta(N/\\exp(c\\sqrt{\\log N}))$?) and whether $r_k(N) = O(N/(\\log N)^C)$ holds for $k \\geq 4$."
     }
   ],
   "crossReferences": [
