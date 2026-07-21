@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 0 sorry/0 axiom/no native_decide): proved an ELEMENTARY LINEAR LOWER BOUND n-1 ≤ 3·h n (three_mul_h_ge) from the no-4-concyclic hypothesis — each circle centred at a fixed point holds ≤3 others (card_fiber_dist_le_three), pigeonhole over the n-1 distances from a base point (numDistinctDistances_lower). Corollary tendsto_h_atTop: h(n)→∞ UNCONDITIONALLY and elementarily, sharpening the Guth–Katz-conditional guthKatz_imp_tendsto. First lower bound that grows with n. Parent Erdős #98 (h(n)/n→∞) remains OPEN.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 8577 jobs, 0 sorry/0 axiom/no native_decide): proved MONOTONICITY of h (h_mono: Monotone h) via a reusable sub-configuration lemma (inGeneralPosition_comp + numDistinctDistances_comp_le along an injective index map, instantiated at Fin.castSucc) — the first structural comparison across cardinalities. Also pinned the first exact value h 2 = 1 (h_two) by squeezing the linear lower bound 1 ≤ 3·h 2 against the sharp envelope h 2 ≤ (2 choose 2)=1. Builds on prior three_mul_h_ge / h_le_choose_two / tendsto_h_atTop. Parent Erdős #98 (h(n)/n→∞) remains OPEN; the RATE is the sole open piece.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -58,7 +58,12 @@
       "numDistinctDistances_lower (hgp)(0<n): n-1 ≤ 3·numDistinctDistances P — pigeonhole Finset.card_le_mul_card_image over distances from a base point (Erdos98WIP01.lean)",
       "three_mul_h_ge (n): n-1 ≤ 3·h n for ALL n (apply numDistinctDistances_lower to h_attained minimiser) — first n-growing lower bound (Erdos98WIP01.lean)",
       "tendsto_h_atTop: Tendsto h atTop atTop UNCONDITIONALLY (from three_mul_h_ge, no Guth–Katz) — sharpens guthKatz_imp_tendsto and weak_imp_tendsto (Erdos98WIP01.lean)",
-      "card_quad_of_pairwise_ne helper (converse of card_quad_pairwise_ne, via Finset.card_eq_four.mpr)"
+      "card_quad_of_pairwise_ne helper (converse of card_quad_pairwise_ne, via Finset.card_eq_four.mpr)",
+      "inGeneralPosition_comp (Erdos98WIP01.lean:915): sub-configuration P∘e along injective e:Fin m→Fin n inherits general position (injectivity composes; collinear/concyclic degeneracy transports via card_triple_image/card_quad_image preserving card=3/4)",
+      "numDistinctDistances_comp_le (Erdos98WIP01.lean:931): numDistinctDistances (P∘e) ≤ numDistinctDistances P — every positive distance of a sub-config is realized by the image pair",
+      "h_mono (Erdos98WIP01.lean:947): Monotone h — h n ≤ h (n+1) via deleting the last point (Fin.castSucc) of the h_attained minimizer; first comparison ACROSS cardinalities",
+      "h_two (Erdos98WIP01.lean:962): h 2 = 1 pinned EXACTLY by squeezing 1 ≤ 3·h 2 (three_mul_h_ge) against h 2 ≤ (2 choose 2)=1 (h_le_choose_two); no explicit distance computation",
+      "card_triple_image / card_quad_image (Erdos98WIP01.lean): injective-image cardinality helpers (card {e i,e j,e k}=card{i,j,k}) via Finset.card_image_of_injective"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -76,12 +81,15 @@
       "Coordinate technique: build points with EuclideanSpace.single for uniform single_apply coordinate access; ![...] index reduction needs Matrix.cons_val_zero/one/two + head_cons/tail_cons; full simp (not simp only) closes false coordinate equalities in injectivity.",
       "RESOLVED the general-n GP existence obstruction: four parabola points (t,t²) are concyclic IFF abscissae sum to 0 (Vieta, x³-coeff of the circle-cut quartic is 0). Choosing POSITIVE abscissae 1..n makes every 4-subset sum ≥4>0, so no four concyclic; strict convexity gives no three collinear. Earlier sessions wrongly deemed the parabola construction dead — the fix (positive x) is elementary, no genericity/perturbation argument needed.",
       "ELEMENTARY LINEAR LOWER BOUND from no-4-concyclic: fix a base point P b; any circle centred at P b holds ≤3 of the other points (a 4th ⟹ 4 concyclic pts with centre P b, forbidden). So the n-1 distances dist(P b)(P i) take ≥(n-1)/3 distinct values ⟹ n-1 ≤ 3·numDistinctDistances P for every GP config ⟹ n-1 ≤ 3·h n. Lean: Finset.card_le_mul_card_image (fibre ≤3) + Finset.three_lt_card to extract the 4 concyclic indices.",
-      "h(n)→∞ is provable UNCONDITIONALLY and ELEMENTARILY (tendsto_h_atTop) — from the /3 linear bound n-1 ≤ 3·h n, needing NO imported deep theorem. This is strictly better than guthKatz_imp_tendsto (assumed the imported Ω(n/log n) baseline) and weak_imp_tendsto (assumed the open weak conjecture). The conjectured RATE h(n)/n→∞ (Erdős #98) is untouched; even the linear order here is /3 of the conjectured n."
+      "h(n)→∞ is provable UNCONDITIONALLY and ELEMENTARILY (tendsto_h_atTop) — from the /3 linear bound n-1 ≤ 3·h n, needing NO imported deep theorem. This is strictly better than guthKatz_imp_tendsto (assumed the imported Ω(n/log n) baseline) and weak_imp_tendsto (assumed the open weak conjecture). The conjectured RATE h(n)/n→∞ (Erdős #98) is untouched; even the linear order here is /3 of the conjectured n.",
+      "Monotonicity of h is structural, not analytic: sub-configurations of general-position sets are themselves in general position and drop distinct distances, so h n ≤ h(n+1) with a one-injective-map argument (Fin.castSucc) — independent of any deep upper/lower bound",
+      "The two bounds three_mul_h_ge and h_le_choose_two SQUEEZE at n=2: ⌈(2-1)/3⌉=1 ≤ h 2 ≤ C(2,2)=1 forces h 2 = 1. At n=3 the squeeze gives only 1 ≤ h 3 ≤ 3 (equilateral triangle would pin h 3=1 but needs an explicit distance computation)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Lower bound is now linear (n-1 ≤ 3·h n). Tractable next increments: (a) monotonicity h n ≤ h(n+1) via restricting a GP config on Fin(n+1) to Fin n (a subconfiguration of GP is GP — Injective/NoThreeCollinear/NoFourConcyclic all inherit); (b) sharpen the /3 constant, e.g. an argument giving n-1 ≤ 2·(something) or a per-pair-of-basepoints refinement.",
-      "Parent Erdős #98 quantitative content — h(n)/n→∞ (strong) and even h(n)≥n (weak) — remains OPEN in mathematics; the /3 linear bound does not reach the conjectured n."
+      "Pin h 3 = 1 with an explicit equilateral-triangle witness (numDistinctDistances = 1, general position); combine with h_mono to get h 2 = h 3 = 1",
+      "Strengthen the lower-bound constant: replace the /3 (no-4-concyclic ⇒ ≤3 per circle) — e.g. combine no-3-collinear + no-4-concyclic, or count from two base points, aiming toward h n ≥ (n-1)/2 or the conjectured ≥ n",
+      "Attack the conjectured RATE h n / n → ∞ (Erdős #98 itself) — the sole remaining open piece; the divergence h n → ∞ is now elementary (tendsto_h_atTop)"
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

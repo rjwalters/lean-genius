@@ -87,6 +87,16 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     divergence of `h` is elementary. Only the conjectured *rate* `h n / n → ∞` (Erdős #98)
     remains open.
 
+13. `inGeneralPosition_comp` / `numDistinctDistances_comp_le` / `h_mono` — **`h` is monotone
+    non-decreasing.** A sub-configuration `P ∘ e` selected by an injective index map inherits
+    general position and has no more distinct distances; applied along `Fin.castSucc` this gives
+    `h n ≤ h (n+1)`, hence `Monotone h`. The first structural comparison *across cardinalities*
+    (all earlier bounds are pointwise in `n`).
+
+14. `h_two` — **`h 2 = 1`, pinned exactly.** Squeezing the linear lower bound
+    (`1 ≤ 3·h 2`) against the sharp envelope (`h 2 ≤ (2 choose 2) = 1`) determines the first
+    nontrivial value with no explicit distance computation.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -860,6 +870,99 @@ theorem tendsto_h_atTop : Filter.Tendsto h Filter.atTop Filter.atTop := by
   refine Filter.tendsto_atTop.mpr (fun M => ?_)
   filter_upwards [Filter.eventually_ge_atTop (3 * M + 1)] with n hn
   have hb := three_mul_h_ge n
+  omega
+
+/-! ## Monotonicity of `h`, and the pinned value `h 2 = 1`
+
+Deleting a point from a general-position `(n+1)`-configuration leaves a
+general-position `n`-configuration with **no more** distinct distances (its
+distances are a sub-multiset of the larger configuration's), so the minimum `h`
+cannot increase as `n` shrinks: `h` is monotone non-decreasing. This is a
+*structural comparison across cardinalities* — none of the pointwise bounds above
+(`three_mul_h_ge`, `h_le_choose_two`) relates `h n` to `h (n+1)`.
+
+The engine is a single reusable fact: any sub-configuration `P ∘ e` selected by an
+**injective** index map `e : Fin m ↪ Fin n` inherits general position from `P`
+(`inGeneralPosition_comp`) and has at most as many distinct distances
+(`numDistinctDistances_comp_le`). Monotonicity is the `e = Fin.castSucc` instance.
+
+Squeezing the linear lower bound against the sharp envelope at `n = 2` pins the
+first nontrivial value exactly: `1 ≤ 3·h 2` and `h 2 ≤ (2 choose 2) = 1` force
+`h 2 = 1` (`h_two`). -/
+
+/-- The image of a triple under an injective map has the same cardinality. -/
+private theorem card_triple_image {α β : Type*} [DecidableEq α] [DecidableEq β]
+    {e : α → β} (he : Function.Injective e) (i j k : α) :
+    ({e i, e j, e k} : Finset β).card = ({i, j, k} : Finset α).card := by
+  have himg : ({e i, e j, e k} : Finset β) = ({i, j, k} : Finset α).image e := by
+    simp only [Finset.image_insert, Finset.image_singleton]
+  rw [himg, Finset.card_image_of_injective _ he]
+
+/-- The image of a quadruple under an injective map has the same cardinality. -/
+private theorem card_quad_image {α β : Type*} [DecidableEq α] [DecidableEq β]
+    {e : α → β} (he : Function.Injective e) (a b c d : α) :
+    ({e a, e b, e c, e d} : Finset β).card = ({a, b, c, d} : Finset α).card := by
+  have himg : ({e a, e b, e c, e d} : Finset β) = ({a, b, c, d} : Finset α).image e := by
+    simp only [Finset.image_insert, Finset.image_singleton]
+  rw [himg, Finset.card_image_of_injective _ he]
+
+/-- **Sub-configurations inherit general position.** If `P : PointConfig n` is in
+general position and `e : Fin m → Fin n` is injective, then the selected
+sub-configuration `P ∘ e` is in general position: injectivity composes, and any
+collinear/concyclic degeneracy among `P ∘ e` transports (via the injective `e`,
+which preserves the `card = 3` / `card = 4` distinctness conditions) to the same
+degeneracy among `P`, contradicting its general position. -/
+theorem inGeneralPosition_comp {m n : ℕ} {e : Fin m → Fin n} (he : Function.Injective e)
+    {P : PointConfig n} (hP : InGeneralPosition P) : InGeneralPosition (P ∘ e) := by
+  obtain ⟨hinj, hcol, hcyc⟩ := hP
+  refine ⟨hinj.comp he, ?_, ?_⟩
+  · intro i j k hcard
+    rintro ⟨a, b, c, hne, hi, hj, hk⟩
+    refine hcol (e i) (e j) (e k) ?_ ⟨a, b, c, hne, hi, hj, hk⟩
+    rw [card_triple_image he]; exact hcard
+  · intro a b c d hcard
+    rintro ⟨center, r, ha, hb, hc, hd⟩
+    refine hcyc (e a) (e b) (e c) (e d) ?_ ⟨center, r, ha, hb, hc, hd⟩
+    rw [card_quad_image he]; exact hcard
+
+/-- **Sub-configurations have no more distinct distances.** Every positive distance
+of `P ∘ e` is a positive distance of `P` (realized by the image pair `(e p.1, e p.2)`),
+so `numDistinctDistances (P ∘ e) ≤ numDistinctDistances P`. -/
+theorem numDistinctDistances_comp_le {m n : ℕ} (e : Fin m → Fin n) (P : PointConfig n) :
+    numDistinctDistances (P ∘ e) ≤ numDistinctDistances P := by
+  unfold numDistinctDistances
+  apply Finset.card_le_card
+  intro d hd
+  rw [Finset.mem_filter] at hd ⊢
+  obtain ⟨hd1, hpos⟩ := hd
+  refine ⟨?_, hpos⟩
+  rw [Finset.mem_image] at hd1 ⊢
+  obtain ⟨p, -, hpd⟩ := hd1
+  exact ⟨(e p.1, e p.2), by simp, hpd⟩
+
+/-- **`h` is monotone non-decreasing.** Deleting the last point from a minimizing
+general-position `(n+1)`-configuration (`h_attained`) gives, via
+`inGeneralPosition_comp` and `numDistinctDistances_comp_le` along `Fin.castSucc`, a
+general-position `n`-configuration with `h n ≤ numDistinctDistances ≤ h (n+1)`. -/
+theorem h_mono : Monotone h := by
+  apply monotone_nat_of_le_succ
+  intro n
+  obtain ⟨P, hgp, hval⟩ := h_attained (n + 1)
+  have hgpQ : InGeneralPosition (P ∘ Fin.castSucc) :=
+    inGeneralPosition_comp (Fin.castSucc_injective n) hgp
+  calc h n ≤ numDistinctDistances (P ∘ Fin.castSucc) := h_le_of_inGeneralPosition hgpQ
+    _ ≤ numDistinctDistances P := numDistinctDistances_comp_le _ _
+    _ = h (n + 1) := hval
+
+/-- **`h 2 = 1`, pinned exactly.** Two general-position points determine exactly one
+positive distance. The linear lower bound gives `1 ≤ 3·h 2` (so `h 2 ≥ 1`) and the
+sharp unordered-pair envelope gives `h 2 ≤ (2 choose 2) = 1`; the two squeeze `h 2`
+to `1`. This is the first exactly-determined value of `h`, obtained with no explicit
+distance computation — purely from the two bounds. -/
+theorem h_two : h 2 = 1 := by
+  have hlo := three_mul_h_ge 2
+  have hhi := h_le_choose_two 2
+  have hchoose : Nat.choose 2 2 = 1 := by decide
   omega
 
 end Erdos98WIP01
