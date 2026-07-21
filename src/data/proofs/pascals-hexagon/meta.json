@@ -76,183 +76,183 @@
       "id": "preamble",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "Module docstring (what is proved, historical context, approach, status checklist, Mathlib dependencies) and imports.",
       "mathContext": "Pascal's theorem (1639): if a hexagon is inscribed in a conic, the three intersection points of opposite sides are collinear (the *Pascal line*). The file models the real projective plane ℝP² by nonzero vectors in ℝ³."
     },
     {
       "id": "proj-setup",
       "title": "PART 1: Projective Geometry Setup",
-      "startLine": 56,
-      "endLine": 74,
+      "startLine": 57,
+      "endLine": 75,
       "summary": "`ProjPoint`/`ProjLine` as elements of `Fin 3 → ℝ` with validity predicates `ProjPoint.valid`/`ProjLine.valid` (nonzero).",
       "mathContext": "Points and lines of ℝP² are homogeneous coordinates in ℝ³ ∖ {0}; the point–line duality is the symmetry of this representation."
     },
     {
       "id": "fundamental-ops",
       "title": "PART 2: Fundamental Operations",
-      "startLine": 75,
-      "endLine": 88,
+      "startLine": 76,
+      "endLine": 89,
       "summary": "`lineThrough p q` and `lineIntersection l m` via the cross product, and incidence `pointOnLine p l = (p ⬝ l = 0)`.",
       "mathContext": "In homogeneous coordinates the join of two points and the meet of two lines are both the cross product; incidence is the vanishing dot product $p \\cdot l = 0$."
     },
     {
       "id": "collinearity",
       "title": "PART 3: Collinearity and Concurrency",
-      "startLine": 89,
-      "endLine": 109,
+      "startLine": 90,
+      "endLine": 110,
       "summary": "`threeVectorMatrix`, `collinear p q r` (determinant of the coordinate matrix is 0), and the dual `concurrent l m n`.",
       "mathContext": "Three points are collinear iff the determinant of their coordinate matrix vanishes; dually three lines are concurrent under the same determinant condition."
     },
     {
       "id": "conics",
       "title": "PART 4: Conic Sections",
-      "startLine": 110,
-      "endLine": 134,
+      "startLine": 111,
+      "endLine": 182,
       "summary": "`Conic` as a 3×3 matrix, `conicQuadraticForm`, membership `pointOnConic p C = (pᵀ C p = 0)`, and `Conic.nondegenerate`/`Conic.symmetric`.",
       "mathContext": "A conic is the zero locus of a quadratic form $p^\\top C p = 0$ for a symmetric 3×3 matrix $C$; non-degeneracy is $\\det C \\neq 0$."
     },
     {
       "id": "inscribed-hexagon",
       "title": "PART 5: Hexagon Inscribed in Conic",
-      "startLine": 135,
-      "endLine": 173,
+      "startLine": 183,
+      "endLine": 221,
       "summary": "`InscribedHexagon C` (six points on the conic) and the three Pascal intersection points `pascalP`/`pascalQ`/`pascalR` of opposite sides.",
       "mathContext": "A hexagon $ABCDEF$ on $C$ has three pairs of opposite sides; their meets $P = AB \\cap DE$, $Q = BC \\cap EF$, $R = CD \\cap FA$ are the points Pascal's theorem asserts are collinear."
     },
     {
       "id": "pascal-constraint",
       "title": "PART 6: Pascal's Constraint",
-      "startLine": 174,
-      "endLine": 188,
+      "startLine": 222,
+      "endLine": 236,
       "summary": "`pascalConstraint A B C D E F`: the collinearity condition on the three opposite-side intersection points expressed directly in the six vertices.",
       "mathContext": "The Pascal constraint is the determinant equation $\\det[P, Q, R] = 0$ relating the six vertices — the algebraic content of the theorem."
     },
     {
       "id": "main-theorem",
       "title": "PART 7: Main Theorem",
-      "startLine": 189,
-      "endLine": 232,
+      "startLine": 237,
+      "endLine": 280,
       "summary": "`axiom conic_implies_pascal_constraint` (the synthetic projective fact) and `pascal_hexagon_theorem`, which derives collinearity of the Pascal points for any inscribed hexagon from it.",
       "mathContext": "Pascal's theorem: points on a non-degenerate conic satisfy the Pascal constraint. The hard projective content is isolated as one axiom, partially eliminated in PARTs 11–20a."
     },
     {
       "id": "special-cases",
       "title": "PART 8: Special Cases (Pappus)",
-      "startLine": 233,
-      "endLine": 249,
+      "startLine": 281,
+      "endLine": 297,
       "summary": "Pappus's theorem as the degenerate-conic case, with `collinearOnLine` capturing collinearity of three points on a fixed line.",
       "mathContext": "When the conic degenerates to two lines, Pascal's theorem specializes to Pappus's hexagon theorem, with the inscribed points split between the two components."
     },
     {
       "id": "brianchon-dual",
       "title": "PART 9: Dual Theorem (Brianchon's Theorem)",
-      "startLine": 250,
-      "endLine": 275,
+      "startLine": 298,
+      "endLine": 323,
       "summary": "Brianchon's theorem (the projective dual) via `hexagonDiagonal1/2/3`: for a hexagon circumscribed about a conic the three main diagonals are concurrent.",
       "mathContext": "By projective duality (points↔lines, collinear↔concurrent), Pascal's theorem for inscribed hexagons becomes Brianchon's theorem for circumscribed hexagons."
     },
     {
       "id": "historical-notes",
       "title": "PART 10: Historical Notes",
-      "startLine": 276,
-      "endLine": 309,
+      "startLine": 324,
+      "endLine": 357,
       "summary": "Docstring historical notes on Pascal (1639), Brianchon, and the theorem's role in projective geometry. No declarations.",
       "mathContext": "Pascal proved the theorem at sixteen; it generalizes Pappus (the conic-degenerate case) and is foundational in synthetic projective geometry."
     },
     {
       "id": "std-conic-axiom-elim",
       "title": "PART 11: Proof for Standard Conic (Axiom Elimination)",
-      "startLine": 310,
-      "endLine": 373,
+      "startLine": 358,
+      "endLine": 422,
       "summary": "Begins eliminating the axiom for the standard conic: `stdConicPoint`/`stdConic`, membership `stdConicPoint_on_conic`, and `pascal_std_conic_parametrized` proving the Pascal constraint for six parametrized points.",
       "mathContext": "For the standard conic, points are $(t, t^2, 1)$; the Pascal constraint becomes a polynomial identity in the six parameters, provable by direct computation (`ring`/`field_simp`)."
     },
     {
       "id": "scalar-triple-product",
       "title": "PART 11b: Scalar Triple Product Formula",
-      "startLine": 374,
-      "endLine": 404,
+      "startLine": 423,
+      "endLine": 453,
       "summary": "`stdConic_det_factored`: a factored form of the 3×3 determinant arising in the parametric computation.",
       "mathContext": "The determinant in the parametric Pascal constraint factors as a product of vertex-parameter differences (a Vandermonde-type expression), making the collinearity identity transparent."
     },
     {
       "id": "projective-invariance",
       "title": "PART 12: Projective Invariance (Toward General Conics)",
-      "startLine": 405,
-      "endLine": 514,
+      "startLine": 454,
+      "endLine": 564,
       "summary": "`projTransform` (action of an invertible matrix on points) plus invariance lemmas `threeVectorMatrix_projTransform`, `collinear_projTransform`, `crossProduct_projTransform`, `pascalConstraint_projTransform`.",
       "mathContext": "Projective transformations are invertible 3×3 matrices on homogeneous coordinates. Collinearity and the Pascal constraint are projective invariants, so a standard-conic result transports to any projectively-equivalent conic."
     },
     {
       "id": "parametric-coverage",
       "title": "PART 13: Parametric Coverage of Standard Conic",
-      "startLine": 515,
-      "endLine": 591,
+      "startLine": 565,
+      "endLine": 651,
       "summary": "`stdConicInfinity` (the conic's point at infinity), `stdConicInfinity_on_conic`, `stdConic_infinity_char`, and `stdConicPoint_covers` (every conic point is parametrized or the infinity point).",
       "mathContext": "The affine parametrization $(t, t^2, 1)$ misses exactly the infinity point $[0:1:0]$; together they cover the whole projective conic, needed for the all-cases assembly."
     },
     {
       "id": "crossproduct-bilinear",
       "title": "PART 14: Bilinearity of Cross Product (Scaling)",
-      "startLine": 592,
-      "endLine": 610,
+      "startLine": 652,
+      "endLine": 666,
       "summary": "`crossProduct_smul_left`/`crossProduct_smul_right`: the cross product scales linearly in each argument.",
       "mathContext": "Homogeneous coordinates are defined up to scaling, so the cross-product join/meet operations must respect scalar multiplication; these lemmas certify well-definedness on projective classes."
     },
     {
       "id": "infinity-cases",
       "title": "PART 15: Pascal's Theorem — Point at Infinity Cases",
-      "startLine": 611,
-      "endLine": 684,
+      "startLine": 667,
+      "endLine": 746,
       "summary": "Six lemmas `pascal_std_conic_infinity_{F,A,B,C,D,E}` proving the Pascal constraint when one vertex is the conic's point at infinity.",
       "mathContext": "When one hexagon vertex is the infinity point $[0:1:0]$ the parametric identity degenerates; each case is handled so the standard-conic result holds for every vertex configuration."
     },
     {
       "id": "scale-invariance",
       "title": "PART 16: Scale Invariance of Pascal Constraint",
-      "startLine": 685,
-      "endLine": 754,
+      "startLine": 747,
+      "endLine": 812,
       "summary": "`det_threeVectorMatrix_smul` and `pascalConstraint_smul`: the Pascal constraint is invariant under independent rescaling of the six homogeneous representatives.",
       "mathContext": "Since each vertex is a projective point (up to scale), the constraint must be unchanged when representatives are rescaled; the determinant scales by the product of factors, preserving vanishing."
     },
     {
       "id": "assembly-finite",
       "title": "PART 17: Assembly — Pascal's Theorem for Standard Conic",
-      "startLine": 755,
-      "endLine": 807,
+      "startLine": 813,
+      "endLine": 873,
       "summary": "`stdConic_point_classification` and `pascal_stdConic_allFinite`, assembling the parametrized cases into Pascal's theorem for the standard conic when all six vertices are finite.",
       "mathContext": "Combining the parametric identity (PART 11) with scale invariance (PART 16) yields the all-finite case; the infinity cases (PART 15) complete the standard conic."
     },
     {
       "id": "coincident-vertices",
       "title": "PART 18: Coincident Vertex Lemmas",
-      "startLine": 808,
-      "endLine": 948,
+      "startLine": 874,
+      "endLine": 1029,
       "summary": "Fifteen `pascalConstraint_*_eq_*` private theorems covering every degenerate hexagon where two vertices coincide (adjacent, opposite, and skew pairs).",
       "mathContext": "Pascal's theorem must also hold for degenerate hexagons with repeated vertices (limiting tangent-line configurations); each of the 15 coincidence patterns is discharged so the all-cases theorem has no gaps."
     },
     {
       "id": "std-conic-all-cases",
       "title": "PART 19: Pascal's Theorem for Standard Conic (All Cases)",
-      "startLine": 949,
-      "endLine": 1073,
+      "startLine": 1030,
+      "endLine": 1154,
       "summary": "`pascal_std_conic`: the fully general statement for the standard conic, combining the finite, infinity, and coincident-vertex cases into one axiom-free theorem.",
       "mathContext": "Case analysis on which vertices are finite/infinite/coincident reduces every configuration to a previously-proved lemma, eliminating the axiom for the standard conic entirely."
     },
     {
       "id": "toward-axiom-elim",
       "title": "PART 20: Toward Eliminating the Axiom",
-      "startLine": 1074,
-      "endLine": 1104,
+      "startLine": 1155,
+      "endLine": 1185,
       "summary": "Roadmap docstring for removing `conic_implies_pascal_constraint` in general via Sylvester's law of inertia and Mathlib's spectral theorem. No declarations.",
       "mathContext": "Any non-degenerate symmetric conic is projectively equivalent to the standard one (diagonalize via Sylvester's law / `Matrix.IsHermitian.spectral_theorem`); with projective invariance (PART 12) this upgrades the standard-conic theorem to all conics."
     },
     {
       "id": "quadraticform-bridge",
       "title": "PART 20a: Mathlib QuadraticForm Bridge (for Sylvester's Law)",
-      "startLine": 1105,
-      "endLine": 1278,
+      "startLine": 1186,
+      "endLine": 1712,
       "summary": "Bridge lemmas linking `conicQuadraticForm` to Mathlib's `Matrix.toQuadraticMap'` (`conicQF_eq_dotProduct`, `mathlibQF_eq_dotProduct`, `conicQF_eq_mathlibQF`, `mathlibQF_separatingLeft`, `projTransform_valid_of_det_ne_zero`) and `proof_sketch_conic_implies_pascal`, which is now fully proved (0 sorries): the matrix-extraction step of the diagonalization is supplied by `sylvester_stdConic_of_isotropic`.",
       "mathContext": "Connects the ad-hoc quadratic form to Mathlib's `QuadraticForm` API so Sylvester's law applies; the diagonalizing transformation is extracted from an `IsometryEquiv` using the inscribed hexagon's isotropic witness, completing the standard-conic reduction."
     }
