@@ -104,32 +104,32 @@
     {
       "id": "irreducibility-input",
       "title": "The Arithmetic Input: Irreducibility over ℚ",
-      "startLine": 61,
-      "endLine": 65,
+      "startLine": 73,
+      "endLine": 88,
       "summary": "cyclotomic_irreducible_rat packages Polynomial.cyclotomic.irreducible_rat: the n-th cyclotomic polynomial is irreducible over ℚ. This is the single hypothesis that promotes the embedding Gal(ℚ(ζ_n)/ℚ) ↪ (ℤ/n)ˣ to an isomorphism.",
       "mathContext": "$\\Phi_n(X) \\text{ is irreducible over } \\mathbb{Q}.$"
     },
     {
       "id": "reciprocity-isomorphism",
       "title": "The Reciprocity Isomorphism and its Explicit Action",
-      "startLine": 67,
-      "endLine": 84,
+      "startLine": 89,
+      "endLine": 103,
       "summary": "galEquivUnits builds the isomorphism Gal(ℚ(ζ_n)/ℚ) ≃* (ℤ/n)ˣ from IsCyclotomicExtension.autEquivPow. galEquivUnits_apply_spec records the pointwise action ζ^(galEquivUnits σ).val = σ ζ via IsPrimitiveRoot.autToPow_spec.",
       "mathContext": "$\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times, \\quad \\sigma(\\zeta) = \\zeta^{t}.$"
     },
     {
       "id": "group-structure",
       "title": "Homomorphism Properties and Abelianness",
-      "startLine": 86,
-      "endLine": 104,
+      "startLine": 104,
+      "endLine": 124,
       "summary": "galEquivUnits_one and galEquivUnits_mul record that the reciprocity map carries the identity to 1 and composition to multiplication of residues. gal_mul_comm deduces that the Galois group is abelian from the commutativity of (ℤ/n)ˣ.",
       "mathContext": "$\\sigma\\tau = \\tau\\sigma \\text{ for all } \\sigma,\\tau \\in \\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}).$"
     },
     {
       "id": "degree-and-instances",
       "title": "Degree Formula and Concrete Instances",
-      "startLine": 106,
-      "endLine": 136,
+      "startLine": 125,
+      "endLine": 161,
       "summary": "card_gal_eq_totient transports cardinality along galEquivUnits and applies ZMod.card_units_eq_totient to get |Gal(ℚ(ζ_n)/ℚ)| = φ(n). card_gal_five, card_gal_seven, card_gal_eight compute φ(5)=4, φ(7)=6, φ(8)=4, the last the first non-cyclic cyclotomic Galois group over ℚ.",
       "mathContext": "$|\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})| = \\varphi(n).$"
     }
