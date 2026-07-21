@@ -150,11 +150,19 @@
     },
     {
       "id": "verification",
-      "title": "Conjecture Hierarchy and Export",
+      "title": "Conjecture Hierarchy (Corrected)",
       "startLine": 198,
-      "endLine": 218,
-      "summary": "States the corrected weak conjecture against hCong and derives it from the corrected main conjecture. #check statements verify the six headline results.",
-      "mathContext": "Corrected weak conjecture: $\\exists N, \\forall n \\geq N, h_{\\mathrm{Cong}}(n) \\geq 2$ — the genuinely open statement."
+      "endLine": 221,
+      "summary": "States the corrected weak conjecture `WeakConjectureCorrect` against `hCong`, and proves `correct_main_implies_weak`: the corrected main conjecture ($\\forall C, \\exists N, \\forall n \\ge N,\\ h_{\\mathrm{Cong}}(n) > C$) implies the corrected weak conjecture.",
+      "mathContext": "Corrected weak conjecture: $\\exists N, \\forall n \\ge N,\\ h_{\\mathrm{Cong}}(n) \\ge 2$ — the genuinely open statement. It follows from the corrected main conjecture by instantiating $C = 1$."
+    },
+    {
+      "id": "non-degeneracy",
+      "title": "Non-Degeneracy of the Corrected Count",
+      "startLine": 222,
+      "endLine": 265,
+      "summary": "Part 7 shows the correction repairs the degeneracy: `optimalQuotient_nonempty_of_exists` (the quotient is nonempty whenever an optimal configuration exists), `hCong_pos_of_finite` ($h_{\\mathrm{Cong}}(n) \\ge 1$ given finitely many classes), and `hCong_strictly_exceeds_raw` ($h(n) = 0 < 1 \\le h_{\\mathrm{Cong}}(n)$). A closing `#check` block exports the eight headline results.",
+      "mathContext": "The contrast with `h_eq_zero` is exact: only an *infinite* quotient can drag $\\mathrm{Nat.card}(\\text{Quotient})$ to $0$, never emptiness, so under the finiteness hypothesis the congruence count is well-behaved — which is precisely why $h_{\\mathrm{Cong}}$, not the raw cardinality, is the right object for the open Erdős question."
     }
   ],
   "conclusion": {
