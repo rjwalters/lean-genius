@@ -101,9 +101,17 @@
       "id": "classical-limit",
       "title": "Classical limit and an example",
       "startLine": 128,
-      "endLine": 144,
+      "endLine": 142,
       "summary": "qBinom_at_one: [n choose k]_1 = C(n,k), the counting interpretation; plus the illustrative expansion [4 choose 2]_q = 1 + q + 2q^2 + q^3 + q^4.",
       "mathContext": "At q = 1 the Gaussian binomial degenerates to the ordinary binomial coefficient counting k-subsets."
+    },
+    {
+      "id": "q-binomial-theorem",
+      "title": "The q-binomial theorem (Gauss / Rothe)",
+      "startLine": 143,
+      "endLine": 211,
+      "summary": "The capstone of the file: Rothe's q-binomial theorem ∏_{i<n}(1 + qⁱ·x) = ∑_{k≤n} q^{C(k,2)}·[n choose k]_q·xᵏ. Builds up via choose_two_succ ((k+1).choose 2 = k.choose 2 + k, the exponent recurrence), the weighted sum qbinomSum q x n (the RHS of the identity), and the functional recurrence qbinomSum_succ: S_{n+1}(x) = (1+x)·S_n(q·x), proved using only q-Pascal I (qBinom_succ_succ) and vanishing above the diagonal. The main theorem qBinomial_theorem then follows by induction on n (generalizing x): peel the first product factor with Finset.prod_range_succ', rewrite q^{i+1}·x = qⁱ·(q·x) to invoke the induction hypothesis at q·x, and close with qbinomSum_succ. Closes the namespace GaussianBinomial.",
+      "mathContext": "Rothe's formula $\\prod_{i<n}(1 + q^i x) = \\sum_{k=0}^{n} q^{\\binom{k}{2}}\\binom{n}{k}_q x^k$ is the q-analog of the binomial theorem; the Gaussian coefficient $q^{\\binom{k}{2}}$-weighted sum is the generating function that degenerates to $(1+x)^n$ at $q=1$. Proved from q-Pascal alone, with 0 axioms."
     }
   ],
   "conclusion": {
