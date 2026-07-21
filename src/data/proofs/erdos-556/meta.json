@@ -87,65 +87,81 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 33,
-      "endLine": 65,
+      "endLine": 83,
       "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition.",
       "mathContext": "$R(C_n; 3) = \\min\\{m : \\forall$ 3-colorings of $K_m$, $\\exists$ monochromatic $C_n\\}$. Edge colorings use `Fin 3` for 3 colors."
     },
     {
       "id": "bondy-erdos",
       "title": "The Bondy-Erdős Conjecture",
-      "startLine": 66,
-      "endLine": 79,
+      "startLine": 84,
+      "endLine": 93,
       "summary": "The original conjecture R(C_n;3) ≤ 4n - 3.",
       "mathContext": "Bondy-Erdős conjecture: $R(C_n; 3) \\leq 4n - 3$ for all $n \\geq 3$."
     },
     {
       "id": "luczak-1999",
       "title": "Łuczak's Result (1999)",
-      "startLine": 80,
-      "endLine": 94,
+      "startLine": 94,
+      "endLine": 100,
       "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n.",
       "mathContext": "Łuczak (1999): $R(C_n; 3) \\leq (4 + o(1))n$; for even $n$: $R(C_n; 3) \\leq (3 + o(1))n$."
     },
     {
       "id": "kss-2005",
       "title": "Exact Bound for Odd Cycles (KSS 2005)",
-      "startLine": 95,
-      "endLine": 119,
+      "startLine": 101,
+      "endLine": 125,
       "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n.",
       "mathContext": "KSS (2005): for large odd $n$, $R(C_n; 3) = 4n - 3$. Both upper and lower bounds are tight."
     },
     {
       "id": "benevides-skokan",
       "title": "Exact Bound for Even Cycles (2009)",
-      "startLine": 120,
-      "endLine": 135,
+      "startLine": 126,
+      "endLine": 138,
       "summary": "R(C_n;3) = 2n for sufficiently large even n.",
       "mathContext": "Benevides-Skokan (2009): for large even $n$, $R(C_n; 3) = 2n$. Dramatically smaller than the odd case ($4n - 3$)."
     },
     {
       "id": "dichotomy",
       "title": "Why the Dichotomy?",
-      "startLine": 136,
-      "endLine": 153,
+      "startLine": 139,
+      "endLine": 148,
       "summary": "Structural reasons why odd and even cycles behave differently.",
       "mathContext": "Odd $C_n$ is not bipartite ($\\chi = 3$); even $C_n$ is bipartite ($\\chi = 2$). In 3-colorings, bipartite graphs embed more easily, explaining the $2n$ vs $4n-3$ gap."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "startLine": 154,
-      "endLine": 172,
+      "startLine": 149,
+      "endLine": 158,
       "summary": "R(C_3;3) = 17, R(C_4;3) = 8, R(C_5;3) = 17.",
       "mathContext": "$R(C_3; 3) = R(K_3; 3) = 17$ (Schur number + 1). $R(C_4; 3) = 8 = 2 \\cdot 4$. $R(C_5; 3) = 17 = 4 \\cdot 5 - 3$."
     },
     {
       "id": "regularity-method",
       "title": "The Regularity Method",
-      "startLine": 173,
-      "endLine": 189,
+      "startLine": 159,
+      "endLine": 171,
       "summary": "Szemerédi Regularity Lemma and Blow-up Lemma in proofs.",
       "mathContext": "Szemerédi Regularity Lemma partitions $V(K_m)$ into $\\varepsilon$-regular pairs. Blow-up Lemma embeds $C_n$ into the regular cluster graph. Both are key tools in modern Ramsey theory."
+    },
+    {
+      "id": "ramsey-2color",
+      "title": "Connection to 2-Color Ramsey Numbers",
+      "startLine": 172,
+      "endLine": 179,
+      "summary": "Comparison with the 2-color cycle Ramsey numbers R(C_n, C_n) = 2n-1 (odd n ≥ 5) and 3n/2 - 1 (even n ≥ 6), showing the 3-color values are roughly twice as large for odd cycles.",
+      "mathContext": "2-color: $R(C_n, C_n) = 2n - 1$ for odd $n \\geq 5$, $= 3n/2 - 1$ for even $n \\geq 6$. Against the 3-color $4n-3$ (odd) / $2n$ (even), the extra color roughly doubles the odd-cycle threshold."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results Summary",
+      "startLine": 180,
+      "endLine": 207,
+      "summary": "Proves erdos_556 (the complete resolution: R(C_n;3) ≤ 4n-3, exact 4n-3 for large odd n, exact 2n for large even n) and the bundled erdos_556_summary theorem, discharged from the four axioms.",
+      "mathContext": "$\\big(\\forall n \\geq 3,\\ R(C_n;3) \\leq 4n-3\\big) \\wedge \\big(\\exists N,\\forall n \\geq N\\ \\text{odd},\\ R(C_n;3) = 4n-3\\big) \\wedge \\big(\\exists N,\\forall n \\geq N\\ \\text{even},\\ R(C_n;3) = 2n\\big)$."
     }
   ],
   "conclusion": {

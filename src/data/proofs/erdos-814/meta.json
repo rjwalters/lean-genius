@@ -128,9 +128,10 @@
     {
       "id": "main-results",
       "title": "Main Results Summary",
-      "summary": "erdos_814_summary, erdos_814_answer theorems",
+      "summary": "The capstone wrappers: erdos_814 restates Sauermann's theorem (edge count above edgeThreshold k n yields an induced set S with |S| ≤ (1-c)n, |S| ≥ k, and every vertex of S having ≥ k neighbours inside S), and erdos_814_answer records the affirmative answer — for every k ≥ 2 a positive constant cₖ exists.",
       "startLine": 249,
-      "endLine": 292
+      "endLine": 310,
+      "mathContext": "$\\forall k \\geq 2,\\ \\exists c_k > 0$ such that $e(G) \\geq \\text{edgeThreshold}(k,n) \\Rightarrow \\exists S,\\ |S| \\leq (1-c_k)n,\\ |S| \\geq k,\\ \\forall v \\in S,\\ |N(v)\\cap S| \\geq k$."
     }
   ],
   "conclusion": {

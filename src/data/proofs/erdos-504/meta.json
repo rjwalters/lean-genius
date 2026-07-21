@@ -200,7 +200,7 @@
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 183,
-      "endLine": 217,
+      "endLine": 235,
       "content": "Proves `erdos_504_summary`, bundling the two Sendov range formulas and the falsity of the Erdős–Szekeres conjecture into a single conjunction, discharged from the stated axioms.",
       "proofMethod": "Anonymous constructor combining `sendov_upper`, `sendov_lower`, and `erdos_szekeres_conjecture_false`.",
       "mathContext": "$\\big(\\forall n,N,\\dots\\,\\alpha_N=\\pi(1-1/n)\\big) \\wedge \\big(\\forall n,N,\\dots\\,\\alpha_N=\\pi(1-1/(2n-1))\\big) \\wedge \\big(\\exists n,N,\\dots\\,\\alpha_N \\ne \\pi(1-1/n)\\big)$.",
