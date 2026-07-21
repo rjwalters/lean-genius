@@ -23,6 +23,7 @@ aristotle-results/llm-mapping-cache.json
 # logs/signals/worktrees/daemon files; the paths here fill its gaps.)
 # .loom/config.json is HOST-LOCAL (worktree.root=/Volumes/Stripe, guards.forceScope)
 # and must never be committed.
+.loom/accounts.env
 .loom/config.json
 .loom/locks/
 .loom/state/

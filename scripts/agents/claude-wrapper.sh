@@ -48,51 +48,98 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _tokens_dir="$_repo_root/.loom/tokens"
 
     # Bootstrap: if .loom/tokens is missing/empty/broken-symlink, materialize
-    # the account pool from two layered sources, in precedence order:
-    #   1. ~/.claude/accounts.env  — the UNIVERSAL home-directory pool, shared
-    #      across every repo on this host (base layer).
-    #   2. $_repo_root/.env        — this repo's local accounts, which OVERRIDE
-    #      a home account at the same index N and ADD new indices (top layer).
-    # Layering is by positional index N: each source's ACCOUNT_KEY_N writes
-    # agent-N.token, and because the repo .env is applied SECOND it overwrites
-    # any home account sharing that N. Absent either file, the other still works;
-    # absent both, we fall through to the single-token path below.
+    # the account pool from a home master + a repo-local source, merged by
+    # EMAIL, matching loom PR #3696 / issue #3695.
     #
-    # NOTE (see issue #38967): tokens are written POSITIONALLY as
-    # "agent-N.token" using the index N from ACCOUNT_KEY_N. Selection/rotation
-    # below globs "*.token", so the .token files are the source of truth. The
-    # ACCOUNT_TOKEN_FILE_N column is a human-facing label only and is NOT
-    # read here; to stay accurate it must equal "agent-N.token". Verify with
-    # scripts/agents/check-token-registry.sh; regenerate with
-    # scripts/agents/sync-token-registry.sh. Do NOT switch this to
-    # ACCOUNT_TOKEN_FILE_N naming without migrating the live pool first.
-    _home_accts="${LOOM_ACCOUNTS_FILE:-$HOME/.claude/accounts.env}"
-    # Materialize every ACCOUNT_KEY_N= line from a file into agent-N.token.
-    _materialize_accounts() {
-        local _src="$1"
-        [[ -f "$_src" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_src" 2>/dev/null || return 1
-        local key val _n
-        while IFS='=' read -r key val; do
-            _n="${key#ACCOUNT_KEY_}"
-            [[ "$_n" =~ ^[0-9]+$ ]] || continue
-            printf '%s' "$val" | tr -d "'\"\n" > "$_tokens_dir/agent-$_n.token"
-            chmod 600 "$_tokens_dir/agent-$_n.token" 2>/dev/null || true
-        done < <(grep '^ACCOUNT_KEY_[0-9]\+=' "$_src")
-        return 0
+    # Sources & precedence:
+    #   1. Home master — ~/.loom/accounts.env (override path with the
+    #      LOOM_ACCOUNTS_ENV env var; set LOOM_ACCOUNTS_ENV="" to disable it).
+    #   2. Repo-local  — <repo>/.loom/accounts.env if present, else legacy
+    #      <repo>/.env (backward-compatible fallback).
+    # The two sets are merged **by account email** (ACCOUNT_EMAIL, case-
+    # insensitive): a repo-local account whose email is also in the master
+    # OVERRIDES it (rotate key / repoint file); a repo-local account with a new
+    # email is ADDED. The merge only adds/overrides, never subtracts — use the
+    # .allowlist pin (pin-account.sh) to exclude accounts. Ordering: master
+    # accounts first (in index order), then repo-only additions.
+    #
+    # Each merged account is written to its declared ACCOUNT_TOKEN_FILE_N (the
+    # real on-disk filename, validated: no path separators, [A-Za-z0-9._-]).
+    # ACCOUNT_KEY/EMAIL/TOKEN_FILE with the same index N form one account within
+    # a source; the positional index is NOT the merge key. Selection/rotation
+    # below globs "*.token", so the .token files remain the source of truth.
+    #
+    # Resolve the home master path (default + LOOM_ACCOUNTS_ENV; "" disables).
+    if [[ -n "${LOOM_ACCOUNTS_ENV+x}" ]]; then
+        _home_accts="$LOOM_ACCOUNTS_ENV"
+    else
+        _home_accts="$HOME/.loom/accounts.env"
+    fi
+    # Resolve the repo-local source: dedicated file, else legacy .env.
+    if [[ -f "$_repo_root/.loom/accounts.env" ]]; then
+        _repo_accts="$_repo_root/.loom/accounts.env"
+    else
+        _repo_accts="$_repo_root/.env"
+    fi
+    # Emit validated account triples from one source as TSV lines:
+    #   email_lower <TAB> email <TAB> key <TAB> token_file
+    _emit_accounts() {
+        local _src="$1" _tag="$2" _idxs _n _email _key _file
+        [[ -n "$_src" && -f "$_src" ]] || return 0
+        _idxs=$(grep -oE '^ACCOUNT_(EMAIL|KEY|TOKEN_FILE)_[0-9]+=' "$_src" 2>/dev/null \
+                | sed -E 's/^ACCOUNT_(EMAIL|KEY|TOKEN_FILE)_([0-9]+)=/\2/' | sort -un)
+        for _n in $_idxs; do
+            _email=$(grep -E "^ACCOUNT_EMAIL_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
+            _key=$(grep -E "^ACCOUNT_KEY_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
+            _file=$(grep -E "^ACCOUNT_TOKEN_FILE_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
+            if [[ -z "$_email" || -z "$_key" || -z "$_file" ]]; then
+                echo "[wrapper] skip [${_tag}] ACCOUNT_*_${_n}: incomplete triple" >&2; continue
+            fi
+            if [[ "$_file" == */* || "$_file" == *\\* || ! "$_file" =~ ^[A-Za-z0-9._-]+$ ]]; then
+                echo "[wrapper] skip [${_tag}] ACCOUNT_TOKEN_FILE_${_n}='${_file}': unsafe filename" >&2; continue
+            fi
+            printf '%s\t%s\t%s\t%s\n' "$(printf '%s' "$_email" | tr '[:upper:]' '[:lower:]')" "$_email" "$_key" "$_file"
+        done
     }
     if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null 2>&1; then
-        _env_file="$_repo_root/.env"
-        # Only rebuild the dir if at least one source has accounts.
-        if { [[ -f "$_home_accts" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_home_accts" 2>/dev/null; } \
-           || { [[ -f "$_env_file" ]] && grep -q '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null; }; then
+        _home_tsv=$(_emit_accounts "$_home_accts" home)
+        _repo_tsv=$(_emit_accounts "$_repo_accts" repo)
+        if [[ -n "$_home_tsv" || -n "$_repo_tsv" ]]; then
             # Replace whatever is at $_tokens_dir (broken symlink, etc) with a real dir.
             rm -f "$_tokens_dir" 2>/dev/null || true
             mkdir -p "$_tokens_dir" 2>/dev/null || true
-            _home_n=0; _repo_n=0
-            _materialize_accounts "$_home_accts" && _home_n=$(grep -c '^ACCOUNT_KEY_[0-9]\+=' "$_home_accts" 2>/dev/null)
-            # Repo .env applied SECOND so its indices override the home layer.
-            _materialize_accounts "$_env_file" && _repo_n=$(grep -c '^ACCOUNT_KEY_[0-9]\+=' "$_env_file" 2>/dev/null)
-            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth tokens (home:$_home_n + repo:$_repo_n, repo overrides by index)" >&2
+            # bash 3.2 has no associative arrays: parallel arrays + linear email
+            # match (account counts are tiny). Home first, then repo overrides/adds.
+            _m_emails=(); _m_keys=(); _m_files=(); _m_src=()
+            _merge_acct() {  # $1 email_lower  $2 email  $3 key  $4 file  $5 home|repo
+                local i _found=-1
+                for i in "${!_m_emails[@]}"; do
+                    [[ "${_m_emails[$i]}" == "$1" ]] && { _found=$i; break; }
+                done
+                if [[ $_found -ge 0 ]]; then
+                    _m_keys[$_found]="$3"; _m_files[$_found]="$4"
+                    [[ "$5" == repo ]] && _m_src[$_found]="repo-override"
+                else
+                    _m_emails+=("$1"); _m_keys+=("$3"); _m_files+=("$4"); _m_src+=("$5")
+                fi
+            }
+            while IFS=$'\t' read -r _el _em _ky _fl; do
+                [[ -n "$_el" ]] && _merge_acct "$_el" "$_em" "$_ky" "$_fl" home
+            done <<< "$_home_tsv"
+            while IFS=$'\t' read -r _el _em _ky _fl; do
+                [[ -n "$_el" ]] && _merge_acct "$_el" "$_em" "$_ky" "$_fl" repo
+            done <<< "$_repo_tsv"
+            _hc=0; _rc=0; _oc=0
+            for _i in "${!_m_emails[@]}"; do
+                printf '%s' "${_m_keys[$_i]}" > "$_tokens_dir/${_m_files[$_i]}"
+                chmod 600 "$_tokens_dir/${_m_files[$_i]}" 2>/dev/null || true
+                case "${_m_src[$_i]}" in
+                    home) _hc=$((_hc+1)) ;;
+                    repo) _rc=$((_rc+1)) ;;
+                    repo-override) _oc=$((_oc+1)) ;;
+                esac
+            done
+            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth accounts (home:${_hc} repo-add:${_rc} repo-override:${_oc}; sources: ${_home_accts/#$HOME/\~} + ${_repo_accts#$_repo_root/})" >&2
         fi
     fi
 
