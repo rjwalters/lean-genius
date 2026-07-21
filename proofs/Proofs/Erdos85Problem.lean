@@ -775,4 +775,44 @@ theorem minDegreeForC4_le_sqrt {n : ℕ} (hn : 1 ≤ n) :
   rw [hsub]
   nlinarith [hlt]
 
+/-!
+## Sharpening the additive constant: `f(n) ≤ √n + 1` on the lower Beatty half
+
+The bound `f(n) ≤ √n + 2` loses `1` in the additive constant relative to the sharp
+Kővári–Sós–Turán value `k₀(n) = ⌈(1 + √(4n−3))/2⌉ = least k with k(k−1) ≥ n`.  Writing
+`s = √n`, the counting bound `minDegreeForC4_le_of_le_mul_pred` uses `k = s + 1` exactly
+when `k(k−1) = s(s+1) ≥ n`, i.e. `n ≤ s(s+1)`.  This holds on the **lower half** of each
+gap `[s², (s+1)²)`, namely `s² ≤ n ≤ s² + s`; for those `n` we get the sharp
+`f(n) ≤ s + 1`.  (On the upper half `s² + s < n < (s+1)²` the choice `k = s + 1` fails and
+`√n + 2` is the best this counting argument gives.)  In particular every **perfect square**
+`n = m²` satisfies `m² ≤ m(m+1)`, so `f(m²) ≤ m + 1` — the additive constant is pinned to
+`+1` there, matching the true `f(n) = (1 + o(1))√n` up to the last additive unit.
+-/
+
+/-- **Sharpened `O(√n)` bound on the lower Beatty half: `f(n) ≤ √n + 1`** whenever
+`n ≤ √n · (√n + 1)`.  This is the sharp Kővári–Sós–Turán constant on the lower half of each
+interval `[s², (s+1)²)` with `s = √n`, improving `minDegreeForC4_le_sqrt` by one there.
+Take `k = √n + 1`; then `k(k−1) = (√n + 1)·√n ≥ n` is exactly the hypothesis. -/
+theorem minDegreeForC4_le_sqrt_add_one {n : ℕ} (hn : 1 ≤ n)
+    (hlow : n ≤ Nat.sqrt n * (Nat.sqrt n + 1)) :
+    minDegreeForC4 n ≤ Nat.sqrt n + 1 := by
+  apply minDegreeForC4_le_of_le_mul_pred hn
+  have hsub : Nat.sqrt n + 1 - 1 = Nat.sqrt n := by omega
+  rw [hsub]
+  -- goal `n ≤ (√n + 1) * √n`, hypothesis `n ≤ √n * (√n + 1)`
+  rw [Nat.mul_comm]
+  exact hlow
+
+/-- **The additive constant is `+1` on every perfect square: `f(m²) ≤ m + 1`** for `m ≥ 1.**
+Since `√(m²) = m` and `m² ≤ m(m + 1)`, the lower-half sharpening
+`minDegreeForC4_le_sqrt_add_one` applies with `s = m`.  This is the cleanest quotable form of
+the correct-order upper bound: on the squares the bound is `√n + 1`, one better than the
+general `√n + 2` and within a single additive unit of the true `(1 + o(1))√n`. -/
+theorem minDegreeForC4_le_sq {m : ℕ} (hm : 1 ≤ m) :
+    minDegreeForC4 (m * m) ≤ m + 1 := by
+  have hsqrt : Nat.sqrt (m * m) = m := Nat.sqrt_eq m
+  have hn : 1 ≤ m * m := Nat.one_le_iff_ne_zero.2 (by positivity)
+  have h := minDegreeForC4_le_sqrt_add_one hn (by rw [hsqrt]; nlinarith)
+  rwa [hsqrt] at h
+
 end Erdos85
