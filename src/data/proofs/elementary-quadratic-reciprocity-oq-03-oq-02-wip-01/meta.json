@@ -40,10 +40,10 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 20,
     "defCount": 0,
     "definitionCount": 0,
-    "lineCount": 281,
+    "lineCount": 339,
     "dateAdded": "2026-07-11",
     "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed. Section E adds three further machine-verified results with no new assumptions: the anti-periodicity kronecker2_add_four ((a+4/2) = -(a/2), the sharp form of 'period 8 does not descend to 4'), the translation-invariant orthogonality kronecker2_sum_shifted_period (the mean of (·/2) over ANY full period vanishes, generalizing the parent-window kronecker2_sum_period), and the self-orthogonality kronecker2_sq_sum_period (∑ (a/2)² = φ(8) = 4 over a period) — all derived from the anti-periodicity and decidable residue arithmetic (propext, Classical.choice, Quot.sound only).",
     "mathlibDependencies": [
