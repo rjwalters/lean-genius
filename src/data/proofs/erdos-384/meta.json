@@ -30,7 +30,7 @@
       "Bertrand's postulate",
       "Basic Lean 4 tactics (native_decide, norm_num, interval_cases)"
     ],
-    "lineCount": 230,
+    "lineCount": 231,
     "assumptions": "1 axiom: ecklund_1969 (Ecklund 1969 — C(n,k) has a small prime divisor except for (7,3)). 0 sorries.",
     "theoremCount": 12,
     "definitionCount": 8
@@ -57,76 +57,108 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header, Problem Statement, and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "File header for Erdős problem #384 — whether every binomial coefficient $\\binom{n}{k}$ with $1 < k < n-1$ has a prime factor $\\le n/2$, with the sole exception $\\binom{7}{3}=35$ — plus references and the `import Mathlib` / `namespace Erdos384` preamble.",
+      "mathContext": "Erdős #384 (Ecklund 1969): for $1 < k < n-1$, $\\binom{n}{k}$ has a prime factor $p \\le n/2$, except $\\binom{7}{3}=35=5\\cdot 7$."
+    },
+    {
       "id": "definitions",
       "title": "Prime Divisor Predicates",
-      "startLine": 30,
-      "endLine": 58,
+      "startLine": 26,
+      "endLine": 54,
       "summary": "Defines primeDiv(p, n), minPrimeDivisor via Nat.minFac (with proved primality and divisibility), and hasSmallPrimeDivisor(n, bound).",
       "mathContext": "$\\text{hasSmallPrimeDivisor}(n, B) \\equiv \\exists p \\text{ prime}: p \\mid n \\wedge p < B$"
     },
     {
       "id": "exception",
       "title": "The Unique Exception: $\\binom{7}{3} = 35$",
-      "startLine": 59,
-      "endLine": 90,
+      "startLine": 55,
+      "endLine": 86,
       "summary": "Formally verifies C(7,3) = 35 by native_decide, its factorization 5 × 7 by norm_num, and that no prime < 4 divides 35 by interval_cases. Defines isException predicate.",
       "mathContext": "$\\binom{7}{3} = 35 = 5 \\times 7$; both primes $\\geq \\lceil 7/2 \\rceil = 4$, so $\\neg\\text{hasSmallPrimeDivisor}(35, 4)$"
     },
     {
       "id": "main-theorem",
       "title": "Ecklund's Theorem (1969)",
-      "startLine": 91,
-      "endLine": 110,
+      "startLine": 87,
+      "endLine": 106,
       "summary": "Axiom ecklund_1969: for 1 < k < n−1, either C(n,k) has a prime < n/2+1 or (n,k) ∈ {(7,3),(7,4)}. Proves ecklund_no_exception by case analysis.",
       "mathContext": "$1 < k < n-1 \\Rightarrow \\text{hasSmallPrimeDivisor}(\\binom{n}{k}, \\lfloor n/2 \\rfloor + 1) \\vee \\text{isException}(n,k)$"
     },
     {
       "id": "stronger-conjectures",
       "title": "Stronger Conjectures (Partially Open)",
-      "startLine": 111,
-      "endLine": 134,
+      "startLine": 107,
+      "endLine": 124,
       "summary": "Ecklund's strong conjecture: C(n,k) has prime < n/k when n > k². Selfridge's conjecture: threshold 17.125k. Axiom partial_bound_known for intermediate results.",
       "mathContext": "$n > k^2 \\Rightarrow \\exists p \\text{ prime}: p \\mid \\binom{n}{k} \\wedge p < n/k$; Selfridge: $n > 17.125k$ suffices"
     },
     {
       "id": "kummer",
       "title": "Kummer's Theorem and Large Primes",
-      "startLine": 135,
-      "endLine": 152,
+      "startLine": 125,
+      "endLine": 130,
       "summary": "States Kummer's theorem (p-adic valuation = carries in base-p addition). Axiom large_prime_not_divisor: p > n implies p ∤ C(n,k).",
       "mathContext": "$v_p\\binom{n}{k} = \\#\\{\\text{carries when adding } k \\text{ and } n-k \\text{ in base } p\\}$; $p > n \\Rightarrow p \\nmid \\binom{n}{k}$"
     },
     {
       "id": "edge-cases",
       "title": "Edge Cases: $k = 1$ and $k = n-1$",
-      "startLine": 153,
-      "endLine": 176,
+      "startLine": 131,
+      "endLine": 153,
       "summary": "Proves C(n,1) = n by simp, that it has a prime divisor (via minFac), and C(n,n−1) = n by choose_symm_diff.",
       "mathContext": "$\\binom{n}{1} = n$ (proved); $\\binom{n}{n-1} = n$ (proved by symmetry $\\binom{n}{k} = \\binom{n}{n-k}$)"
     },
     {
       "id": "small-cases",
       "title": "Small Cases Verification",
-      "startLine": 177,
-      "endLine": 214,
+      "startLine": 154,
+      "endLine": 186,
       "summary": "Concrete verification: C(5,2)=10 has prime 2 < 3, C(6,2)=15 has prime 3 < 4, C(6,3)=20 has prime 2 < 4. All proved by native_decide + norm_num.",
       "mathContext": "$\\binom{5}{2} = 10 = 2 \\times 5$; $\\binom{6}{2} = 15 = 3 \\times 5$; $\\binom{6}{3} = 20 = 2^2 \\times 5$"
     },
     {
       "id": "primorial",
       "title": "Primorial and Bertrand's Postulate",
-      "startLine": 215,
-      "endLine": 227,
+      "startLine": 187,
+      "endLine": 195,
       "summary": "Defines primorial'(n). Axiom central_binomial_primes: C(2n,n) always has a prime in (n, 2n], a consequence of Bertrand's postulate.",
       "mathContext": "$\\exists p \\text{ prime}: p \\mid \\binom{2n}{n} \\wedge n < p \\leq 2n$ (Bertrand's postulate)"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Behavior",
-      "startLine": 228,
-      "endLine": 235,
+      "startLine": 196,
+      "endLine": 201,
       "summary": "Axiomatizes that the smallest prime divisor of C(n,k) is O(n/k) for large n, and intersection properties of prime factorizations of overlapping binomial coefficients.",
       "mathContext": "$\\min\\{p \\text{ prime}: p \\mid \\binom{n}{k}\\} = O(n/k)$ as $n \\to \\infty$"
+    },
+    {
+      "id": "related-problems",
+      "title": "Part 10: Related Problems",
+      "startLine": 202,
+      "endLine": 207,
+      "summary": "Prose banner noting connections to other Erdős problems on prime factors of binomial coefficients and factorials.",
+      "mathContext": "Ties Erdős #384 to the broader circle of questions on the prime factorisation of $\\binom{n}{k}$."
+    },
+    {
+      "id": "applications",
+      "title": "Part 11: Applications",
+      "startLine": 208,
+      "endLine": 213,
+      "summary": "Prose banner indicating where the small-prime-divisor result on binomial coefficients is applied.",
+      "mathContext": "Applications of the guaranteed small prime factor of $\\binom{n}{k}$."
+    },
+    {
+      "id": "summary",
+      "title": "Part 12: Summary",
+      "startLine": 214,
+      "endLine": 231,
+      "summary": "Closing summary (Erdős #384 status: SOLVED by Ecklund 1969) together with the headline results `erdos_384_main` — Ecklund's theorem with the explicit $\\binom{7}{3}$ exception — and the `erdos_384_solved` statement; closes namespace Erdos384.",
+      "mathContext": "erdos_384_main: $\\forall n,k$ with $1<k<n-1$, hasSmallPrimeDivisor $\\binom{n}{k}$ $(n/2+1)$ or isException $n\\,k$."
     }
   ],
   "conclusion": {
@@ -178,7 +210,7 @@
       "Nat"
     ],
     "namespace": "Erdos384",
-    "lineCount": 230,
+    "lineCount": 231,
     "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 8,
