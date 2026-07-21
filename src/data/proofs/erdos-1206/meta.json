@@ -72,7 +72,7 @@
       "id": "main-result",
       "title": "Part II: Deriving the Solution to Erdős #1206",
       "startLine": 79,
-      "endLine": 102,
+      "endLine": 112,
       "summary": "PROVES `sidon_in_cubes` and `erdos_1206` (0 sorries) from the axiom: the cube set $\\{1^3,\\dots,N^3\\}$ (`cubeSet N`) contains Sidon subsets of size $\\geq c\\sqrt N$ for all large $N$. The derivation extracts the window from `gabdullin_konyagin_2024`, embeds it via `nearTopCubes ⊆ cubeSet`, and bounds its cardinality with `Finset.card_image_le`; the small-$N$ case uses the empty set.",
       "mathContext": "$\\exists c>0:\\ \\forall^\\infty N,\\ \\exists S\\subseteq\\text{cubeSet}(N),\\ \\text{IsSidon}(S)\\wedge |S|\\geq c\\sqrt N$. `erdos_1206` is definitionally `sidon_in_cubes`, restating it as the resolution of the problem."
     }
