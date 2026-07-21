@@ -89,15 +89,15 @@
       "id": "mul-form-and-bridge",
       "title": "The (p·m)! Form and the padicValNat Bridge",
       "startLine": 101,
-      "endLine": 113,
+      "endLine": 118,
       "summary": "factorization_factorial_mul: v_p((p·m)!) = m + v_p(m!), the exact recursion named in the parent's open question, obtained from the core recursion by Nat.mul_div_cancel_left. padicValNat_factorial_rec: the same recursion in padicValNat form, via Nat.factorization_def (which identifies Nat.factorization p with padicValNat p on primes).",
       "mathContext": "$v_p((p\\cdot m)!) = m + v_p(m!)$, and the recursion transported to `padicValNat`."
     },
     {
       "id": "legendre-from-recursion",
       "title": "Legendre's Formula from the Recursion",
-      "startLine": 116,
-      "endLine": 152,
+      "startLine": 119,
+      "endLine": 158,
       "summary": "factorization_factorial_legendre: v_p(n!) = ∑_{i<b} ⌊n/p^{i+1}⌋ for any b > log_p n, by induction on the unfolding depth b. The recursion peels off ⌊n/p⌋ = n/p^1 (Finset.sum_range_succ'), and the tail v_p((n/p)!) = ∑_{i<b'} ⌊(n/p)/p^{i+1}⌋ comes from the induction hypothesis applied to n/p (log bound via Nat.log_div_base / Nat.log_pos), after rewriting ⌊n/p^{i+2}⌋ = ⌊(n/p)/p^{i+1}⌋ (Nat.div_div_eq_div_mul). padicValNat_factorial_legendre gives the same formula in padicValNat form.",
       "mathContext": "$v_p(n!) = \\sum_{i=0}^{b-1} \\lfloor n/p^{i+1}\\rfloor$, derived from the recursion — Legendre's formula, no longer cited."
     }
