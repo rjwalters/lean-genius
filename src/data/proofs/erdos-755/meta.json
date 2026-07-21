@@ -83,68 +83,84 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Equilateral Triangles in ℝ⁶",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module header for Erdős Problem #755: how many unit equilateral triangles can $n$ points in $\\mathbb{R}^6$ span? The answer is $(1/27 + o(1))n^3$, proved by Clemen–Dumitrescu–Liu (2025), matching the Lenz/Erdős–Purdy lower-bound construction and extending to triangles of any size and to all even $d \\ge 6$.",
+      "mathContext": "The extremal density $1/27 = 1/3^3$ comes from splitting $n$ points evenly across three mutually orthogonal circles. References: Clemen–Dumitrescu–Liu, arXiv:2507.19841 (2025); Erdős–Purdy, \"Some extremal problems in geometry III\" (1975)."
+    },
+    {
       "id": "euclidean",
       "title": "Euclidean Space Setup",
       "summary": "Distance definition and equilateral triangle conditions",
-      "startLine": 37,
-      "endLine": 63,
+      "startLine": 25,
+      "endLine": 67,
       "mathContext": "Formal definition: Distance definition and equilateral triangle conditions"
     },
     {
       "id": "counting",
       "title": "Counting Functions",
       "summary": "T₆ᵘ(n), T₆(n), T_d(n) definitions",
-      "startLine": 64,
-      "endLine": 100,
+      "startLine": 68,
+      "endLine": 107,
       "mathContext": "Formal definition: T₆ᵘ(n), T₆(n), T_d(n) definitions"
     },
     {
       "id": "lenz",
       "title": "The Lenz Construction",
       "summary": "Lower bound T₆ᵘ(n) ≥ n³/27 - O(n²)",
-      "startLine": 101,
-      "endLine": 114,
+      "startLine": 108,
+      "endLine": 120,
       "mathContext": "Lower bound T₆ᵘ(n) $\\geq$ n³/27 - $O(n²)$"
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture",
       "summary": "T₆ᵘ(n) ≤ (1/27 + o(1))n³ and stronger any-size version",
-      "startLine": 115,
-      "endLine": 136,
+      "startLine": 121,
+      "endLine": 142,
       "mathContext": "T₆ᵘ(n) $\\leq$ (1/27 + o(1))n³ and stronger any-size version"
     },
     {
       "id": "cdl",
       "title": "Clemen-Dumitrescu-Liu Solution",
       "summary": "T₆(n) = (1/27 + o(1))n³ proved in 2025",
-      "startLine": 137,
-      "endLine": 188,
+      "startLine": 143,
+      "endLine": 239,
       "mathContext": "Mathematical content: T₆(n) = (1/27 + o(1))n³ proved in 2025"
     },
     {
       "id": "general",
       "title": "Higher Dimensions",
       "summary": "Exact formulas for T_d(n) for even d ≥ 6",
-      "startLine": 189,
-      "endLine": 201,
+      "startLine": 240,
+      "endLine": 251,
       "mathContext": "Exact formulas for T_d(n) for even d $\\geq$ 6"
     },
     {
       "id": "explanation",
       "title": "Why 1/27?",
       "summary": "The constant explained via optimal partitioning",
-      "startLine": 202,
-      "endLine": 238,
+      "startLine": 252,
+      "endLine": 270,
       "mathContext": "Mathematical content: The constant explained via optimal partitioning"
     },
     {
+      "id": "related",
+      "title": "Part VIII: Related Results",
+      "startLine": 271,
+      "endLine": 288,
+      "summary": "Dimension-dependent growth of the triangle-count $T_d(n)$: $T_2(n) \\le n$ (linear), $T_3(n) = \\Theta(n^2)$ (quadratic), and $T_d(n) = \\Theta(n^3)$ for even $d \\ge 6$. The jump to cubic growth first occurs at $d = 6$.",
+      "mathContext": "The growth exponent is governed by how many orthogonal circles the ambient dimension admits; three orthogonal 2-planes fit for the first time at $d = 6$, producing the cubic $(n/3)^3$ leading term."
+    },
+    {
       "id": "summary",
-      "title": "Summary",
-      "summary": "Complete answer: YES, with exact asymptotic",
-      "startLine": 239,
-      "endLine": 272,
-      "mathContext": "Mathematical content: Complete answer: YES, with exact asymptotic"
+      "title": "Part IX: Summary",
+      "startLine": 289,
+      "endLine": 322,
+      "summary": "Capstone theorem `erdos_755_summary` bundling the resolution: `erdos_conjecture_unit`, `erdos_conjecture_any_size`, and $\\forall \\varepsilon>0,\\ \\exists N,\\ \\forall n \\ge N,\\ T_6(n) \\le (1/27+\\varepsilon)n^3$. All three arms are discharged from `erdos_conjecture_any_size_true`, which in turn rests on the `cdl_2025_main` axiom.",
+      "mathContext": "The answer is YES: $T_6^u(n) \\le (1/27+o(1))n^3$, and in fact $T_6(n) = (1/27+o(1))n^3$ for triangles of arbitrary size. The formalization records the Clemen–Dumitrescu–Liu asymptotic as the single stated assumption `cdl_2025_main`."
     }
   ],
   "conclusion": {
