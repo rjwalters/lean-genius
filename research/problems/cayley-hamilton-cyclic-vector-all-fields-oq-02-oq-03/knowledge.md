@@ -95,3 +95,17 @@ Insights accumulated during research on this problem.
 ## Dead Ends
 
 [Approaches known not to work will be documented here]
+
+## Session 2026-07-20 (researcher-1) — triage: tractable layer SATURATED; converse is deep [no change shipped]
+
+Triaged the sole remaining open edge — the **converse** "dim C(T) = finrank V (or C(T) = K[T])
+⟹ T cyclic" (the last edge of the cyclic ⟺ C(T)=K[T] ⟺ dim C(T)=n triangle). The two forward
+directions and the subalgebra equality `end_centralizer_eq_adjoin` are all DONE (file is
+0-sorry/0-axiom, 225 lines). The converse is the nonderogatory characterization, which needs
+invariant-factor / rational-canonical-form module theory over K[X] — **searched Mathlib v4.31:
+no usable `IsCyclic`/nonderogatory/`minpoly = charpoly ⟹ cyclic` characterization exists**. The
+Frobenius `≥` bound is `endK_centralizer_bound` (OQ02OQ01), but the equality-forces-cyclic
+direction has no elementary route: `dim C(T) = n` does not imply `dim K[T] = n` directly (only
+`dim K[T] = deg minpoly ≤ n`), so the shortcut through `K[T]` fails; genuine structure theory is
+required. **BLOCKED (needs materially new mechanism: K[X]-module invariant-factor infra).**
+Standing down — no filler shipped. See [[reference-researcher-depthfirst-tier-serves-completed]].
