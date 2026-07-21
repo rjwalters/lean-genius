@@ -19,7 +19,7 @@
     ],
     "badge": "axiom",
     "sorries": 2,
-    "axioms": 11,
+    "axioms": 1,
     "erdosNumber": 370,
     "erdosUrl": "https://erdosproblems.com/370",
     "erdosProblemStatus": "solved",
@@ -52,7 +52,7 @@
       }
     ],
     "originalContributions": [
-      "gpf axiomatization: 6 axioms capturing greatest prime factor behavior",
+      "gpf: greatest-prime-factor function with 7 supporting properties proved directly from Mathlib (formerly 6 axioms; only the analytic dickman_density remains axiomatized)",
       "IsSmooth/IsSqrtSmooth/ConsecutiveSqrtSmooth: smooth number predicates",
       "SteinerbergerConstruction: n = m^2 - 1 with difference-of-squares factorization",
       "steinerberger_succ: verified identity n+1 = m^2 (proved by Aristotle)",
@@ -64,14 +64,14 @@
       "erdos_370: injective-function encoding of infinitude (sorry'd)"
     ],
     "axiomCount": 1,
-    "lineCount": 284,
+    "lineCount": 311,
     "assumptions": "1 axiom (dickman_density — Dickman-de Bruijn smooth-number density, deep analytic result) and 2 sorries (the two main Steinerberger existence theorems). gpf function and 9 properties now proved from Mathlib, including gpf_mul_le (greatest prime factor of a product ≤ max of the factors' gpfs), previously an axiom.",
     "theoremCount": 18,
     "definitionCount": 7
   },
   "leanFile": {
     "path": "Proofs/Erdos370Problem.lean",
-    "lineCount": 284,
+    "lineCount": 311,
     "namespace": "Erdos370",
     "imports": [
       "Mathlib"
@@ -160,38 +160,66 @@
     },
     {
       "id": "gpf-definition",
-      "title": "Greatest Prime Factor Axiomatization",
+      "title": "Greatest Prime Factor (proved)",
       "startLine": 50,
-      "endLine": 74,
-      "summary": "Six axioms for $\\operatorname{gpf}$: value at $n \\leq 1$, divisibility, primality, $\\operatorname{gpf}(p) = p$, $\\operatorname{gpf}(p^k) = p$, and product bound $\\operatorname{gpf}(mn) \\leq \\max(\\operatorname{gpf}(m), \\operatorname{gpf}(n))$."
+      "endLine": 127,
+      "summary": "Defines $\\operatorname{gpf}(n) = $ last element of `n.primeFactorsList` and proves its core properties directly from Mathlib (no longer axiomatized): `gpf_le_one` ($\\operatorname{gpf} n = 0$ for $n \\leq 1$), `gpf_dvd` ($\\operatorname{gpf} n \\mid n$), `gpf_prime_of_gt_one` (primality of $\\operatorname{gpf} n$), `gpf_prime` ($\\operatorname{gpf}(p) = p$), `gpf_prime_pow` ($\\operatorname{gpf}(p^k) = p$), `le_gpf_of_prime_dvd`, and `gpf_mul_le` (the product bound $\\operatorname{gpf}(mn) \\leq \\max(\\operatorname{gpf} m, \\operatorname{gpf} n)$, previously an axiom)."
     },
     {
       "id": "smooth-numbers",
       "title": "Smooth Number Definitions",
-      "startLine": 75,
-      "endLine": 91,
-      "summary": "Defines `IsSmooth` ($B$-smooth: $\\operatorname{gpf}(n) \\leq B$), `IsSqrtSmooth` ($\\operatorname{gpf}(n) < \\sqrt{n}$ via real casting), `ConsecutiveSqrtSmooth` (both $n$ and $n+1$ sqrt-smooth)."
+      "startLine": 128,
+      "endLine": 135,
+      "summary": "Defines `IsSmooth B n` ($B$-smooth: $\\operatorname{gpf}(n) \\leq B$) and `IsSqrtSmooth n` (sqrt-smooth: $(\\operatorname{gpf} n : \\mathbb{R}) < \\sqrt{n}$ via real casting)."
     },
     {
-      "id": "steinerberger",
-      "title": "Steinerberger Construction and Examples",
-      "startLine": 92,
-      "endLine": 157,
-      "summary": "`SteinerbergerConstruction(m) = m^2 - 1` with factorization axiom and verified successor identity $n + 1 = m^2$. Examples: $n=63$ ($m=8$) fully verified by Aristotle, $n=224$ ($m=15$) stated."
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 136,
+      "endLine": 144,
+      "summary": "Defines `ConsecutiveSqrtSmooth n`, the target predicate asserting that both $n$ and $n+1$ are sqrt-smooth — the property Erdős #370 asks holds for infinitely many $n$."
+    },
+    {
+      "id": "solution",
+      "title": "The Solution: n = m² − 1",
+      "startLine": 145,
+      "endLine": 166,
+      "summary": "`SteinerbergerConstruction(m) = m^2 - 1$, with `steinerberger_factorization` giving the difference-of-squares identity $m^2 - 1 = (m-1)(m+1)$ and `steinerberger_succ` (proved by Aristotle) verifying the successor identity $n + 1 = m^2$, so $\\operatorname{gpf}(n+1) = \\operatorname{gpf}(m)$."
+    },
+    {
+      "id": "example-63",
+      "title": "Worked Example: n = 63",
+      "startLine": 167,
+      "endLine": 201,
+      "summary": "The concrete witness $m = 8$, $n = 63 = 7 \\cdot 9$. `gpf_63` ($=7$) and `gpf_64` ($=2$) via `native_decide`, then `n63_sqrt_smooth` and `n64_sqrt_smooth` show $7 < \\sqrt{63}$ and $2 < \\sqrt{64}$, combined by `example_63 : ConsecutiveSqrtSmooth 63` (all Aristotle-proved)."
+    },
+    {
+      "id": "more-examples",
+      "title": "More Examples",
+      "startLine": 202,
+      "endLine": 213,
+      "summary": "A second witness $m = 15$, $n = 224 = 2^5 \\cdot 7$ (verified by `native_decide`), and `ValidSteinerbergerM`, a predicate isolating the parameters $m$ (composite $m\\pm 1$ with small prime factors) for which the construction yields a sqrt-smooth consecutive pair."
     },
     {
       "id": "main-theorem",
-      "title": "Main Infinitude Theorem",
-      "startLine": 158,
-      "endLine": 202,
-      "summary": "Two sorry'd statements: `erdos_370_infinitely_many` ($\\text{Set.Infinite}$) and `erdos_370` (injective function). Requires proving infinitely many valid $m$ exist."
+      "title": "Main Theorem (open)",
+      "startLine": 214,
+      "endLine": 258,
+      "summary": "The two headline infinitude statements, currently `sorry`'d: `erdos_370_infinitely_many` ($\\text{Set.Infinite}\\,\\{n \\mid \\text{ConsecutiveSqrtSmooth}\\,n\\}$) and `erdos_370` (an injective $f : \\mathbb{N} \\to \\mathbb{N}$ hitting only such $n$). Closing them requires exhibiting infinitely many valid $m$."
     },
     {
       "id": "pomerance",
-      "title": "Pomerance's Density Perspective",
-      "startLine": 203,
-      "endLine": 256,
-      "summary": "Defines `PomeranceExponent` $= 1/\\sqrt{e} \\approx 0.6065$ and axiomatizes a weak Dickman density result. Explains why exponent $1/2$ requires constructive methods while $1/\\sqrt{e}$ follows from density."
+      "title": "Density Perspective (Pomerance)",
+      "startLine": 259,
+      "endLine": 279,
+      "summary": "Defines `PomeranceExponent` $= 1/\\sqrt{e} \\approx 0.6065$ and states the sole axiom `dickman_density`, a weak form of the Dickman–de Bruijn smooth-number density. Explains why exponent $1/2$ (below the $1/\\sqrt{e}$ threshold) requires a constructive family while $1/\\sqrt{e}$ would follow from density alone."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 280,
+      "endLine": 311,
+      "summary": "Closing docstring: problem status (SOLVED by Steinerberger), the proof sketch via $n = m^2 - 1$, the worked cases $n = 63$ and $n = 224$, and references (Erdős–Graham 1980, Steinerberger, Pomerance)."
     }
   ],
   "conclusion": {
