@@ -61,23 +61,30 @@
   },
   "sections": [
     {
+      "id": "sec-erdos83oq01-definitions",
+      "title": "Problem Statement and Core Definitions",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring stating Erdős #83 and the Ahlswede–Khachatrian bound erdos83Bound n = ½(C(4n,2n) − C(2n,n)²), plus the four definitions the file works with: IsTIntersecting F t (every pair of members meets in ≥ t points), IsKUniform F k (every member has exactly k elements), IsValidErdos83Family n F (2n-uniform and 2-intersecting), and erdos83Bound n. Only the LOWER bound (sharpness) is proved here; the deep upper bound is axiomatized in the parent entry erdos-83."
+    },
+    {
       "id": "sec-erdos83oq01-pigeonhole",
       "title": "Part I: Core Pigeonhole (2-Intersecting)",
-      "startLine": 62,
+      "startLine": 56,
       "endLine": 78,
       "summary": "two_mul_le_card_inter_add_core: if A and B each meet C in ≥ s points then 2s ≤ |A ∩ B| + |C|. Proof is inclusion–exclusion inside C — (A∩C) and (B∩C) are subsets of C, so their union has ≤ |C| elements, and their intersection (A∩B∩C) is contained in A∩B. Specializing s = n+1, |C| = 2n gives |A ∩ B| ≥ 2, the reason the majority family is 2-intersecting."
     },
     {
       "id": "sec-erdos83oq01-splitcount",
       "title": "Part II: Split Count by Core Intersection",
-      "startLine": 86,
-      "endLine": 158,
+      "startLine": 79,
+      "endLine": 159,
       "summary": "card_filter_inter_card_eq: among the k-subsets of a ground set G, exactly C(|C|,j)·C(|G∖C|,k−j) meet a fixed C ⊆ G in j points. Proved with Finset.card_nbij' via the bijection S ↦ (S ∩ C, S ∖ C) (inverse (A,B) ↦ A ∪ B), checking it lands in the product of powersetCard's and that the two maps are mutually inverse."
     },
     {
       "id": "sec-erdos83oq01-main",
       "title": "Part III: The Bound Is Sharp",
-      "startLine": 167,
+      "startLine": 160,
       "endLine": 261,
       "summary": "erdos83_lower_bound: fixing a 2n-core C, the majority family F = {S ∈ powersetCard 2n : |S ∩ C| ≥ n+1} is valid (2n-uniform + 2-intersecting) and has |F| = erdos83Bound n. The count partitions powersetCard 2n into F (majority), M (balanced, |M| = C(2n,n)² by the split count) and L (minority); the complement involution S ↦ Sᶜ gives |F| = |L|, so |F| = (C(4n,2n) − C(2n,n)²)/2."
     }
