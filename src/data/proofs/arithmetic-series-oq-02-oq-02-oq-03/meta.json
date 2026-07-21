@@ -84,46 +84,54 @@
       "title": "Simplicial Numbers",
       "summary": "Restated definitions and the hockey stick identity from the parent file",
       "startLine": 24,
-      "endLine": 55,
+      "endLine": 54,
       "mathContext": "Simplicial numbers $S_k(n) = \\binom{n+k}{k}$ with Pascal recurrence and the hockey stick: $\\sum_{i=0}^n S_k(i) = S_{k+1}(n)$."
     },
     {
       "id": "power-series-framework",
       "title": "Formal Power Series Framework",
       "summary": "Defines the geometric series and negative binomial generating function",
-      "startLine": 60,
-      "endLine": 75,
+      "startLine": 55,
+      "endLine": 70,
       "mathContext": "Define $g = \\sum x^n \\in \\mathbb{N}[[x]]$ and $\\text{negBin}(k) = g^{k+1} = (1-x)^{-(k+1)}$."
     },
     {
       "id": "coefficient-extraction",
       "title": "Coefficient Extraction",
       "summary": "The n-th coefficient of negBin(k) is C(n+k, k)",
-      "startLine": 80,
-      "endLine": 108,
+      "startLine": 71,
+      "endLine": 104,
       "mathContext": "Prove $[x^n] g^{k+1} = \\binom{n+k}{k}$ by induction on $k$. The inductive step uses the Cauchy product ($[x^n](fg) = \\sum_{i+j=n} [x^i]f \\cdot [x^j]g$) and the hockey stick identity."
     },
     {
       "id": "product-formula",
       "title": "The Algebraic Product Formula",
       "summary": "negBin(a) · negBin(b) = negBin(a+b+1) by exponent addition",
-      "startLine": 113,
-      "endLine": 124,
+      "startLine": 105,
+      "endLine": 123,
       "mathContext": "The core algebraic identity: $g^{a+1} \\cdot g^{b+1} = g^{(a+1)+(b+1)} = g^{a+b+2}$. This is just `pow_add` in the power series monoid — the entire combinatorial content of the Vandermonde identity reduced to one line of algebra."
     },
     {
       "id": "vandermonde-derivation",
       "title": "Deriving the Vandermonde Identity",
       "summary": "Extract coefficients from both sides of negBin_mul",
-      "startLine": 129,
-      "endLine": 160,
+      "startLine": 124,
+      "endLine": 157,
       "mathContext": "Extracting $[x^n]$ from both sides of `negBin_mul`: LHS gives $\\sum_{i+j=n} \\binom{i+a}{a}\\binom{j+b}{b}$ (Cauchy product), RHS gives $\\binom{n+a+b+1}{a+b+1}$ (coeff_negBin). QED."
+    },
+    {
+      "id": "range-sum-form",
+      "title": "Range-Sum Form (Matching Parent)",
+      "summary": "parallel_vandermonde_range: recasts the antidiagonal identity into the familiar range-sum form ∑_{i=0}^{n} S_a(i)·S_b(n-i) = S_{a+b+1}(n) that matches the parent file's statement, via Finset.Nat.sum_antidiagonal_eq_sum_range_succ.",
+      "startLine": 158,
+      "endLine": 169,
+      "mathContext": "$\\sum_{i=0}^{n} \\binom{i+a}{a}\\binom{(n-i)+b}{b} = \\binom{n+a+b+1}{a+b+1}$ — the range-indexed form, obtained from the antidiagonal sum by `sum_antidiagonal_eq_sum_range_succ`."
     },
     {
       "id": "verification",
       "title": "Concrete Verification",
       "summary": "Numerical checks via native_decide: `simplicial 3 3 = 20` and the antidiagonal convolution `∑ simplicial 1 p.1 · simplicial 1 p.2 = 20` over `antidiagonal 3`.",
-      "startLine": 167,
+      "startLine": 170,
       "endLine": 182,
       "mathContext": "Verification: $a=b=1, n=3$ gives $(1 \\cdot 4) + (2 \\cdot 3) + (3 \\cdot 2) + (4 \\cdot 1) = 20 = \\binom{6}{3}$."
     },

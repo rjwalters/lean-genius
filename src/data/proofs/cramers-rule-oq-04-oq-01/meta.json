@@ -137,14 +137,14 @@
       "id": "adjugate-identity",
       "title": "Section I: The Adjugate-Reflexive Identity",
       "startLine": 37,
-      "endLine": 45,
+      "endLine": 42,
       "summary": "adjugate_charmatrix_mul: adj(xI − A)·(xI − A) = χ_A(x)·I over R[X], the OQ's explicit target — adjugate_mul applied to the characteristic matrix.",
       "mathContext": "The algebraic heart of Cayley–Hamilton, an instance of the universal adjugate identity adj(B)·B = (det B)·I."
     },
     {
       "id": "cayley-hamilton",
       "title": "Section II: Cayley–Hamilton and Its Consequence",
-      "startLine": 47,
+      "startLine": 43,
       "endLine": 58,
       "summary": "cayley_hamilton (χ_A(A) = 0, from aeval_self_charpoly) and minpoly_dvd_charpoly (minpoly ∣ charpoly over a field).",
       "mathContext": "The matrix satisfies its characteristic polynomial; the minimal polynomial divides it."

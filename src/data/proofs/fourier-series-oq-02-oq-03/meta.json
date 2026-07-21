@@ -81,7 +81,7 @@
       "id": "sec-sharpness",
       "title": "Section 3: Sharpness of the Constant 1/2",
       "startLine": 98,
-      "endLine": 131,
+      "endLine": 136,
       "summary": "Prose-only description of sharpness (no formalized axioms). Proved: small_alpha_bound (α=0 gives constant O(1) bound) and lipschitz_gives_linear_decay (α=1 gives O(1/n) decay). Sharpness via extremal sawtooth functions is stated in comments but not machine-verified.",
       "mathContext": "Boundary cases: $\\alpha=0$: $\\text{decayBound}(C,0,n) = C/2$ (no $n$-dependence, since $x^0=1$). $\\alpha=1$: $\\text{decayBound}(C,1,n) = CT/(4|n|)$ ($O(1/|n|)$ Lipschitz decay). Sharpness: $\\forall \\varepsilon > 0,\\,\\exists f \\in \\text{Hölder}_\\alpha(C):\\;|\\hat{c}_n(f)| \\ge (1/2-\\varepsilon)\\cdot C \\cdot \\left(\\tfrac{T}{2|n|}\\right)^\\alpha$. Extremal construction: sawtooth $f_\\alpha(x) = |x|^\\alpha \\operatorname{sgn}(x)$ on $[-T/2,\\,T/2]$, extended periodically, saturates the Hölder bound."
     }

@@ -56,6 +56,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Honest Scope",
+      "summary": "Imports Mathlib and frames the result: the general squarefree-order classification answering the parent entry's second open question. The decisive Mathlib inputs are IsZGroup.of_squarefree (squarefree order ⇒ every Sylow subgroup cyclic) and isZGroup_iff_exists_mulEquiv (a finite Z-group is a semidirect product of two coprime-order cyclic subgroups); the 'honest scope' note credits the hard Z-group/Schur–Zassenhaus theory to Mathlib and flags the isomorphism-class count as still open.",
+      "startLine": 1,
+      "endLine": 41
+    },
+    {
       "id": "reduction",
       "title": "Squarefree order ⇒ Z-group",
       "summary": "isZGroup_of_squarefree_order and sylow_isCyclic: every Sylow subgroup is cyclic.",
@@ -66,28 +73,28 @@
       "id": "consequences",
       "title": "Structural consequences",
       "summary": "Solvable, cyclic commutator, cyclic abelianization, exponent = order.",
-      "startLine": 62,
-      "endLine": 90
+      "startLine": 61,
+      "endLine": 85
     },
     {
       "id": "metacyclic",
       "title": "Metacyclic structure",
       "summary": "metacyclic_of_squarefree_order: cyclic normal commutator subgroup with cyclic quotient.",
-      "startLine": 92,
-      "endLine": 100
+      "startLine": 86,
+      "endLine": 95
     },
     {
       "id": "classification",
       "title": "Semidirect product of cyclic groups",
       "summary": "semidirectProduct_of_squarefree_order: G ≃* N ⋊ H with N, H cyclic of coprime order.",
-      "startLine": 102,
-      "endLine": 113
+      "startLine": 96,
+      "endLine": 112
     },
     {
       "id": "pq-case",
       "title": "Specialization to order pq",
       "summary": "squarefree_card_of_pq: the parent's two-prime case is recovered.",
-      "startLine": 114,
+      "startLine": 113,
       "endLine": 124
     }
   ],

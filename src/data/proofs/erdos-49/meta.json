@@ -57,49 +57,57 @@
       "id": "increasing-totient-sets",
       "title": "Increasing Totient Sets",
       "startLine": 20,
-      "endLine": 32,
+      "endLine": 33,
       "summary": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing totient}\\}$.",
       "mathContext": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing totient}\\}$."
     },
     {
       "id": "prime-counting",
       "title": "Prime Counting Function",
-      "startLine": 33,
-      "endLine": 38,
+      "startLine": 34,
+      "endLine": 40,
       "summary": "Defines $\\pi(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`.",
       "mathContext": "Defines $\\$\\pi$(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`."
     },
     {
       "id": "primes-optimal",
       "title": "Primes as Increasing Totient Set",
-      "startLine": 39,
-      "endLine": 49,
+      "startLine": 41,
+      "endLine": 45,
       "summary": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$.",
       "mathContext": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\$\\pi$(N)$."
     },
     {
       "id": "tao-theorem",
       "title": "Tao's Theorem (2023)",
-      "startLine": 50,
-      "endLine": 61,
+      "startLine": 46,
+      "endLine": 52,
       "summary": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\pi(N)$. Axiomatized over $\\mathbb{Q}$ for computability.",
       "mathContext": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\$\\pi$(N)$. Axiomatized over $\\mathbb{Q}$ for computability."
     },
     {
       "id": "main-statement",
       "title": "Main Statement",
-      "startLine": 62,
-      "endLine": 70,
+      "startLine": 53,
+      "endLine": 61,
       "summary": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\pi(N)$, equivalent to Tao's theorem.",
       "mathContext": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\$\\pi$(N)$, equivalent to Tao's theorem."
     },
     {
       "id": "weaker-form",
       "title": "Density Zero Corollary",
-      "startLine": 71,
-      "endLine": 73,
+      "startLine": 62,
+      "endLine": 65,
       "summary": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$).",
       "mathContext": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\$\\pi$(N) \\sim N/\\ln N = o(N)$)."
+    },
+    {
+      "id": "totient-properties",
+      "title": "Totient Properties",
+      "startLine": 66,
+      "endLine": 75,
+      "summary": "Two supporting Mathlib-backed facts used implicitly by the development: `totient_prime` ($\\varphi(p) = p-1$ for primes $p$, via `Nat.totient_prime`) and `totient_le` ($\\varphi(n) \\leq n$ for all $n$, via `Nat.totient_le`). The former underlies why primes form an increasing totient set; the latter is a basic bound on the totient.",
+      "mathContext": "$\\varphi(p) = p-1$ for prime $p$ and $\\varphi(n) \\leq n$ in general — the two elementary totient facts anchoring the primes-as-witnesses argument."
     }
   ],
   "conclusion": {

@@ -152,9 +152,9 @@
     {
       "id": "padic-idempotents",
       "title": "Part I: The idempotents of ℤ_[p] and of ℤ₁₀ = ℤ₂ × ℤ₅",
-      "startLine": 48,
+      "startLine": 42,
       "endLine": 73,
-      "summary": "padicInt_idem_eq_zero_or_one: ℤ_[p] is an integral domain, so e·e=e gives e·(e−1)=0 and e ∈ {0,1}. TenAdic.idem_iff: an idempotent of a product is a pair of idempotents (Prod.ext_iff on multiplication), so the idempotents of ℤ₂ × ℤ₅ are exactly the four pairs (0,0),(1,0),(0,1),(1,1).",
+      "summary": "Setup: the Fact instances for the primes 2 and 5 and the abbreviation TenAdic := ℤ_[2] × ℤ_[5] modelling the 10-adic integers (legitimate since 10 = 2·5). padicInt_idem_eq_zero_or_one: ℤ_[p] is an integral domain, so e·e=e gives e·(e−1)=0 and e ∈ {0,1}. TenAdic.idem_iff: an idempotent of a product is a pair of idempotents (Prod.ext_iff on multiplication), so the idempotents of ℤ₂ × ℤ₅ are exactly the four pairs (0,0),(1,0),(0,1),(1,1).",
       "mathContext": "The 10-adic integers, modelled as ℤ₂ × ℤ₅, are a product of two local integral domains, hence have 2² = 4 idempotents — the limit set of the automorphic towers."
     },
     {

@@ -95,14 +95,14 @@
       "id": "k3-isLittleO",
       "title": "k=3 Sequence IsLittleO",
       "startLine": 85,
-      "endLine": 97,
+      "endLine": 87,
       "summary": "**Proved.** `ap_free_density_isLittleO_k3`: any sequence of 3-AP-free sets has density o(N), stated as IsLittleO. Derived from szemeredi_vanishing_density via isLittleO_iff_tendsto.",
       "mathContext": "IsLittleO atTop (fun N => (A N).card : ℝ) (fun N => N). The zero case (N=0): A 0 ⊆ range 0 = ∅ so (A 0).card = 0, validating the hypothesis of isLittleO_iff_tendsto."
     },
     {
       "id": "main-theorem",
       "title": "Main Density Theorem",
-      "startLine": 99,
+      "startLine": 88,
       "endLine": 115,
       "summary": "**Proved.** `szemeredi_density_full`: alias for szemeredi_vanishing_density — the full Szemerédi density theorem for all k ≥ 1.",
       "mathContext": "Filter.Tendsto (fun N => (A N).card / N) atTop (nhds 0) for any k ≥ 1 sequence of k-AP-free sets. Single axiom: szemeredi_k_ge_4 for k ≥ 4."

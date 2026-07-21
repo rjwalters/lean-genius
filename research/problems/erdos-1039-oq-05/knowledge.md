@@ -288,3 +288,42 @@ matching lower bound `dₙ ≥ n^{1/(n-1)} → 1`. The current upper bound is th
 
 ### Files modified
 - `proofs/Proofs/Erdos1039TransfiniteDiameter.lean` (+~55 lines, limit section)
+
+## Session 2026-07-21 (researcher-1): general roots-of-unity lower bound dₙ ≥ n^{1/(n-1)}
+
+Proved the **general** lower bound the sharp-value program was building toward
+(docker-verified `Proofs.Erdos1039TransfiniteDiameter`, 0 axioms, 0 sorries):
+
+- **`transfiniteDiameterN_rootsOfUnity_ge (m) : (m+2)^{1/(m+1)} ≤ transfiniteDiameterN (m+2)`**
+  — realised by the `n = m+2` complex n-th roots of unity `ζᵏ` (ζ = exp(2πi/n)),
+  all on the unit circle. Generalises the bespoke `d₂ = 2`, `d₃ ≥ √3`, `d₄ ≥ 4^{1/3}`.
+- **`one_le_transfiniteDiameter : 1 ≤ transfiniteDiameter`** and
+  **`transfiniteDiameter_mem_Icc_one_two : transfiniteDiameter ∈ [1,2]`** —
+  each `d_{n+2} ≥ (n+2)^{1/(n+1)} ≥ 1`, so the infimum `d = infₙ dₙ ≥ 1`.
+
+### Mechanism (Vandermonde discriminant `spreadProduct = n^{n/2}`)
+- `spreadProduct_rootConfig_sq`: `(spreadProduct (rootConfig ζ (m+2)))² = n^n`.
+  - Per index `i`, `∏_{j≠i} ‖ζⁱ - ζʲ‖ = n` (`prod_erase_root`): translate `j ↦ j-i`
+    on `Fin n` (a `Finset.prod_equiv` group bijection) and pull out the unit `ζⁱ`,
+    reducing to `∏_{d≠0} ‖1 - ζᵈ‖ = |∏_{k=1}^{n-1}(1-ζᵏ)| = |n| = n` (`prod_erase_zero`
+    from `IsPrimitiveRoot.prod_one_sub_pow_eq_order`).
+  - Multiplying over the `n` indices gives the ORDERED off-diagonal product `n^n`,
+    which `= (spreadProduct)²` since lower/upper triangles `{j<i}`/`{i<j}` carry equal
+    products (`norm_sub_rev` + `Finset.prod_comm'`).
+- `discreteDiameter_rootConfig`: `dₙ = (n^{n/2})^{2/(n(n-1))} = n^{1/(n-1)}` (rpow algebra).
+
+### Gotchas (v4.31)
+- **`Fin n` has no global `NatCast`** (scoped with the CommRing instance), so
+  `((k+1 : ℕ) : Fin (m+2))` does NOT coerce — build the element explicitly as
+  `⟨(k+1) % (m+2), Nat.mod_lt _ …⟩` and reason on `.val` via `Fin.ext` / `Fin.ne_of_val_ne`.
+- `abel` failed to close `(j - i) + i = j` in `Fin (m+2)`; `by simp` (the `sub_add_cancel`
+  / `add_sub_cancel_right` simp set) closes it.
+- Annotate `Finset.prod_nbij'` lambda domains (`fun d : Fin (m+2) => …`, `fun k : ℕ => …`)
+  or `apply` mis-infers the index types.
+
+### Frontier (UNCHANGED)
+The sharp value `d = 1` (logarithmic capacity of the disc) needs the Fekete–Szegő
+extremal **upper** bound — DEEP. Parent Erdős #1039 remains OPEN.
+
+### Files modified
+- `proofs/Proofs/Erdos1039TransfiniteDiameter.lean` (+~215 lines, roots-of-unity section)

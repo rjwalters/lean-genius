@@ -82,41 +82,41 @@
       "id": "definitions",
       "title": "Ramsey Number and Bound Axioms",
       "startLine": 21,
-      "endLine": 60,
+      "endLine": 58,
       "summary": "Opaque definition of ramseyR4k(k) as the actual Ramsey number, plus three axioms: classical binomial upper bound \u2264 C(k+2,3), AKS upper bound O(k\u00b3/log\u00b2k), and Mattheus-Verstra\u00ebte lower bound \u03a9(k\u00b3/log\u2074k)."
     },
     {
       "id": "log-basics",
       "title": "Logarithmic Basics for k \u2265 4",
-      "startLine": 64,
-      "endLine": 96,
+      "startLine": 59,
+      "endLine": 88,
       "summary": "Four lemmas establishing log k > 1 (using exp_one_lt_d9), log k > 0, (log k)\u00b2 > 1, and (log k)\u2074 > 0 for k \u2265 4. These underpin all subsequent structural results."
     },
     {
       "id": "aks-vs-cubic",
       "title": "AKS Bound vs Plain Cubic",
-      "startLine": 100,
-      "endLine": 120,
+      "startLine": 89,
+      "endLine": 109,
       "summary": "aks_bound_lt_cubic: C\u00b7k\u00b3/(log k)\u00b2 < C\u00b7k\u00b3 for k \u2265 4. The AKS bound is strictly better than the plain cubic by a factor of (log k)\u00b2. Also proves positivity of the AKS bound."
     },
     {
       "id": "gap-structure",
       "title": "Polylogarithmic Gap Structure",
-      "startLine": 124,
-      "endLine": 160,
+      "startLine": 110,
+      "endLine": 139,
       "summary": "The core structural results: r4k_gap_ratio proves the exact algebraic identity (upper)/(lower) = C/c\u00b7(log k)\u00b2. The gap between AKS and MV bounds is polylogarithmic \u2014 both bounds share k\u00b3 polynomial structure."
     },
     {
       "id": "log-exp-witnesses",
       "title": "Log Exponent Witnesses",
-      "startLine": 164,
-      "endLine": 178,
+      "startLine": 140,
+      "endLine": 158,
       "summary": "Formal witnesses for the log exponent bounds: upper exponent = 2 (AKS), lower exponent = 4 (MV). The open problem is determining the exact c \u2208 [2,4]."
     },
     {
       "id": "concrete-bounds",
       "title": "Concrete Classical Upper Bounds",
-      "startLine": 182,
+      "startLine": 159,
       "endLine": 187,
       "summary": "Classical binomial values C(6,3)=20, C(12,3)=220, C(22,3)=1540, C(52,3)=22100 for k=4,10,20,50 via native_decide. Also R(4,4) \u2264 20 and R(4,10) \u2264 220 from the classical bound."
     }

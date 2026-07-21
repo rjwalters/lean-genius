@@ -94,31 +94,31 @@
       "id": "local-solvability",
       "title": "Local Solvability Axiomatization",
       "startLine": 78,
-      "endLine": 98,
+      "endLine": 105,
       "summary": "Axiomatizes `IsLocallySolvable` (since distribution theory is not yet in Mathlib) and the principal type condition (`IsPrincipalType`). An operator is locally solvable at $x_0$ if $Pu = f$ has a distribution solution near $x_0$ for every smooth $f$.",
       "mathContext": "$P$ is locally solvable at $x_0$ iff $\\forall f \\in C^\\infty$, $\\exists u \\in \\mathcal{D}'$: $Pu = f$ in a neighborhood of $x_0$. Principal type: $p_m(x, \\xi) = 0 \\Rightarrow \\nabla_\\xi p_m \\neq 0$ (non-degenerate)."
     },
     {
       "id": "condition-psi",
       "title": "Bicharacteristic Curves and Condition (Ψ)",
-      "startLine": 100,
-      "endLine": 136,
+      "startLine": 106,
+      "endLine": 149,
       "summary": "Concrete structure `BicharacteristicCurve` for curves $(x(t), \\xi(t))$ along which the principal symbol vanishes and $\\xi \\neq 0$. Defines `Im(p_m)` along curves, a bridge theorem, and formalizes condition (Ψ): the imaginary part cannot change sign from $-$ to $+$ along bicharacteristics of $\\text{Re}(p_m)$.",
       "mathContext": "$(x(t), \\xi(t))$ is bicharacteristic if $p_m(x(t), \\xi(t)) = 0$ and $\\xi(t) \\neq 0$. Condition (Ψ): $\\exists t_1 < t_2 < t_3$ with $\\text{Im}(p_m) < 0$ at $t_1$, $= 0$ at $t_2$, $> 0$ at $t_3$ is forbidden."
     },
     {
       "id": "the-nirenberg-treves-theorem",
       "title": "The Nirenberg-Treves Characterization",
-      "startLine": 138,
-      "endLine": 172,
+      "startLine": 150,
+      "endLine": 183,
       "summary": "Single biconditional axiom `nirenberg_treves` encodes the full characterization (Hörmander 1960 + Dencker 2006). The Hörmander necessity direction and Dencker sufficiency direction are derived as proved theorems from this axiom. The 43-year gap between conjecture (1963) and proof (2006) reflects the depth of Dencker's result.",
       "mathContext": "For $P$ of principal type: $P$ locally solvable $\\iff$ $p_m$ satisfies condition (Ψ). Single axiom `nirenberg_treves`; `hormander_necessity` ($\\text{locally solvable} \\Rightarrow \\Psi$) and `dencker_sufficiency` ($\\Psi \\Rightarrow \\text{locally solvable}$) are proved theorems."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: Elliptic and Real-Symbol Operators",
-      "startLine": 174,
-      "endLine": 211,
+      "startLine": 184,
+      "endLine": 221,
       "summary": "Proved theorems: `real_symbol_satisfies_psi` (operators with real principal symbol satisfy condition (Ψ) since $\\text{Im}(p_m) = 0$ always), `elliptic_satisfies_psi` (elliptic operators satisfy (Ψ) vacuously — no bicharacteristics exist), `elliptic_locally_solvable` (elliptic principal-type operators are locally solvable, combining (Ψ) with Dencker sufficiency).",
       "mathContext": "Real symbol: $p_m$ real $\\Rightarrow \\text{Im}(p_m) = 0 \\Rightarrow$ (Ψ) trivially. Elliptic: $p_m(x, \\xi) \\neq 0$ for $\\xi \\neq 0 \\Rightarrow$ no bicharacteristics $\\Rightarrow$ (Ψ) vacuously $\\Rightarrow$ locally solvable."
     }
