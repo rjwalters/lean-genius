@@ -72,47 +72,47 @@
       "title": "Erdős-Sárközy-Sós Theorem",
       "startLine": 84,
       "endLine": 119,
-      "summary": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality.",
-      "mathContext": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality."
+      "summary": "Comment-only exposition (no declarations in this range): states the Erdős-Sárközy-Sós bound of ≥ N/2 − C·N^{1−1/2^{k+1}} representable even monochromatic sums, explains why same-parity pairs make even sums dominate, and traces the error exponent 1 − 1/2^{k+1} (7/8 for k=2, 15/16 for k=3) toward its sub-linear limit. The Fourier-analytic / large-sieve machinery behind the bound is described informally, not formalized.",
+      "mathContext": "Comment-only exposition (no declarations in this range): states the Erdős-Sárközy-Sós bound of ≥ N/2 − C·N^{1−1/2^{k+1}} representable even monochromatic sums, explains why same-parity pairs make even sums dominate, and traces the error exponent 1 − 1/2^{k+1} (7/8 for k=2, 15/16 for k=3) toward its sub-linear limit. The Fourier-analytic / large-sieve machinery behind the bound is described informally, not formalized."
     },
     {
       "id": "two-coloring",
       "title": "Two-Coloring Case (k = 2)",
       "startLine": 120,
       "endLine": 158,
-      "summary": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight.",
-      "mathContext": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight."
+      "summary": "Two axioms for k=2: **ESS_two_coloring** (≥ N/2 − O(log N) even monochromatic sums) and **two_coloring_optimal** (∃ a 2-coloring under which no power of 2 ≤ 2N is a monochromatic sum, so the O(log N) error is tight). The optimal construction — color n by ν₂(n) mod 2 — is given as comment prose, not a separate declaration.",
+      "mathContext": "Two axioms for k=2: **ESS_two_coloring** (≥ N/2 − O(log N) even monochromatic sums) and **two_coloring_optimal** (∃ a 2-coloring under which no power of 2 ≤ 2N is a monochromatic sum, so the O(log N) error is tight). The optimal construction — color n by ν₂(n) mod 2 — is given as comment prose, not a separate declaration."
     },
     {
       "id": "proof-ideas",
       "title": "Key Proof Ideas",
       "startLine": 159,
       "endLine": 199,
-      "summary": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}.",
-      "mathContext": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}."
+      "summary": "Comment-only proof sketch plus the theorem **positive_density** (proved by `exact roth_conjecture_true`): pigeonhole forces a color class of size ≥ N/k whose restricted sumset has ≥ m−1 elements; a Freiman-Ruzsa density argument covers ≥ 2δN − O(√N) integers; and Fourier / large-sieve methods bound the even numbers with zero monochromatic representation at ≤ N^{1−1/2^{k+1}}. These structure and Fourier arguments are informal exposition, not formalized lemmas.",
+      "mathContext": "Comment-only proof sketch plus the theorem **positive_density** (proved by `exact roth_conjecture_true`): pigeonhole forces a color class of size ≥ N/k whose restricted sumset has ≥ m−1 elements; a Freiman-Ruzsa density argument covers ≥ 2δN − O(√N) integers; and Fourier / large-sieve methods bound the even numbers with zero monochromatic representation at ≤ N^{1−1/2^{k+1}}. These structure and Fourier arguments are informal exposition, not formalized lemmas."
     },
     {
       "id": "consequences",
       "title": "Consequences and Density",
       "startLine": 200,
       "endLine": 225,
-      "summary": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed.",
-      "mathContext": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed."
+      "summary": "**erdos_484_status**: proves the conjunction that Roth's conjecture holds and the k=2 case has O(log N) error, discharged by `roth_conjecture_true` and `ESS_two_coloring`. Comment prose notes the constant c can be pushed to 1/2 − ε for large N (the ESS error N^{1−1/2^{k+1}} is o(N)); the limiting density 1/2 is optimal since only even sums are guaranteed.",
+      "mathContext": "**erdos_484_status**: proves the conjunction that Roth's conjecture holds and the k=2 case has O(log N) error, discharged by `roth_conjecture_true` and `ESS_two_coloring`. Comment prose notes the constant c can be pushed to 1/2 − ε for large N (the ESS error N^{1−1/2^{k+1}} is o(N)); the limiting density 1/2 is optimal since only even sums are guaranteed."
     },
     {
       "id": "extensions",
       "title": "Extensions: Schur and Hindman",
       "startLine": 226,
       "endLine": 261,
-      "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484.",
-      "mathContext": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484."
+      "summary": "**power_of_two_obstruction** (∃ a 2-coloring where no power of 2 ≤ 2N is a monochromatic sum, via `two_coloring_optimal`) and the capstone **erdos_484** bundling all three results (Roth's conjecture, O(log N) two-coloring error, powers-of-2 optimality). Comment prose situates the problem between Schur's theorem (1916, monochromatic a+b=c) and Hindman's theorem (1974, infinite monochromatic IP set) in the partition-regularity hierarchy.",
+      "mathContext": "**power_of_two_obstruction** (∃ a 2-coloring where no power of 2 ≤ 2N is a monochromatic sum, via `two_coloring_optimal`) and the capstone **erdos_484** bundling all three results (Roth's conjecture, O(log N) two-coloring error, powers-of-2 optimality). Comment prose situates the problem between Schur's theorem (1916, monochromatic a+b=c) and Hindman's theorem (1974, infinite monochromatic IP set) in the partition-regularity hierarchy."
     }
   ],
   "overview": {
     "historicalContext": "Problem #484 originated as a conjecture of **Klaus Friedrich Roth** about the structure of sumsets under finite partitions. **Erdős** promoted the problem, connecting it to his broader program on partition regularity in additive combinatorics. It was solved by **Erdős, Sárközy, and Sós** in their 1989 paper 'On a conjecture of Roth and some related problems I'. Their solution was far stronger than Roth's conjecture: they showed almost all even numbers in {2,...,2N} are representable as monochromatic sums, with only O(N^{1−1/2^{k+1}}) exceptions. For k = 2, the error drops to O(log N), and this is tight — the **2-adic valuation construction** χ(n) = ν₂(n) mod 2 shows that all ⌊log₂(2N)⌋ powers of 2 can be simultaneously non-representable. A refinement appears as Problem 25 on **Ben Green's** open problems list, asking for the exact second-order term.",
     "problemStatement": "Prove that there exists an absolute constant c > 0 such that, whenever {1,...,N} is k-colored (with N large enough depending on k), there are at least cN integers representable as monochromatic sums — that is, a + b where a, b are in the same color class and a ≠ b.",
     "text": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums a+b (same color, a≠b). SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 − O(N^{1−1/2^{k+1}}) even sums; for k=2, N/2 − O(log N) is tight (2-adic valuation obstruction).",
-    "proofStrategy": "The formalization defines k-colorings as Fin N → Fin k, monochromatic sums via existential quantification, and Roth's conjecture as a nested ∃∀ statement. The ESS theorem giving the precise N/2 − O(N^{1−1/2^{k+1}}) bound is axiomatized, along with the k = 2 case (O(log N) tight), the 2-adic valuation construction, sumset structure lemmas, and the Fourier bound on unrepresented sums. Schur's and Hindman's theorems provide context. The final theorem `erdos_484` is proved (not axiomatized) by combining the three main components. 0 sorries throughout.",
+    "proofStrategy": "The formalization defines k-colorings as Fin N → Fin k, monochromatic sums via existential quantification, and Roth's conjecture as a nested ∃∀ statement. Three results are taken as axioms: `roth_conjecture_true` (a universal constant c > 0 with ≥ cN monochromatic sums), `ESS_two_coloring` (the k = 2 bound N/2 − O(log N) even sums), and `two_coloring_optimal` (a 2-coloring blocking every power of 2, making the O(log N) error tight). The precise general-k ESS bound N/2 − O(N^{1−1/2^{k+1}}), the sumset-structure and Fourier / large-sieve arguments, the 2-adic valuation construction, and Schur's and Hindman's theorems appear as comment prose for context — they are not formalized statements. The theorems `positive_density`, `erdos_484_status`, `power_of_two_obstruction`, and `erdos_484` are proved (not axiomatized) by combining the three axioms. 0 sorries throughout.",
     "keyInsights": [
       "**Almost all even numbers are representable**: the ESS bound N/2 − O(N^{1−ε}) shows monochromatic sums cover nearly half of {2,...,2N} — the maximum possible for even sums",
       "**Fourier analysis is the key tool**: exponential sums and the large sieve inequality bound the number of 'missing' sums, with the iterative exponent 1/2^{k+1} from repeated Cauchy-Schwarz",
