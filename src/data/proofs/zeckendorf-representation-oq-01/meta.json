@@ -114,38 +114,38 @@
       "id": "header",
       "title": "Zeckendorf's Theorem and the Mathlib Scaffolding",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 36,
       "summary": "States Zeckendorf's 1972 theorem: every natural number has a unique representation as a sum of non-consecutive Fibonacci numbers (index list strictly decreasing with gaps ≥ 2). Records the Mathlib machinery reused here — the greedy algorithm Nat.zeckendorf, the validity predicate List.IsZeckendorfRep, the round-trip lemmas, and the packaged equivalence Nat.zeckendorfEquiv — and frames this entry as surfacing the two consumer statements (existence, uniqueness) plus the bijection. All axiom-free, no native_decide.",
       "mathContext": "$n = \\sum_i F_{a_i}$ with $a_1 > a_2 > \\cdots$, $a_i - a_{i+1} \\ge 2$; representation unique."
     },
     {
       "id": "existence",
       "title": "zeckendorf_existence",
-      "startLine": 39,
-      "endLine": 45,
+      "startLine": 37,
+      "endLine": 43,
       "summary": "Every n is the Fibonacci-sum of some valid representation, witnessed by the canonical greedy list Nat.zeckendorf n. The proof is a triple: the greedy list, isZeckendorfRep_zeckendorf (it is valid), and sum_zeckendorf_fib (its Fibonacci-sum is n).",
       "mathContext": "$\\forall n,\\ \\exists l,\\ \\mathrm{IsZeckendorfRep}(l) \\wedge \\sum_{i} F_{l_i} = n.$"
     },
     {
       "id": "uniqueness",
       "title": "zeckendorf_uniqueness",
-      "startLine": 47,
-      "endLine": 54,
+      "startLine": 44,
+      "endLine": 52,
       "summary": "Two valid representations with the same Fibonacci-sum are identical. The key is zeckendorf_sum_fib: any valid representation equals the canonical representation of its own sum, so both lists collapse to Nat.zeckendorf of the common sum and hence to each other (rewrite chain).",
       "mathContext": "$\\mathrm{IsZeckendorfRep}(l_1),\\ \\mathrm{IsZeckendorfRep}(l_2),\\ \\sum F_{l_1} = \\sum F_{l_2} \\Rightarrow l_1 = l_2.$"
     },
     {
       "id": "unique-and-bijection",
       "title": "zeckendorf_unique and zeckendorf_bijective",
-      "startLine": 56,
-      "endLine": 69,
+      "startLine": 53,
+      "endLine": 65,
       "summary": "zeckendorf_unique bundles existence and uniqueness into a single ∃! statement — the canonical form of Zeckendorf's theorem. zeckendorf_bijective records that the representation map Nat.zeckendorfEquiv : ℕ ≃ {l // IsZeckendorfRep l} is a bijection, the structural restatement of unique representability.",
       "mathContext": "$\\forall n,\\ \\exists!\\, l,\\ \\mathrm{IsZeckendorfRep}(l) \\wedge \\sum F_{l} = n;\\quad \\mathbb{N} \\simeq \\{l : \\mathrm{IsZeckendorfRep}(l)\\}.$"
     },
     {
       "id": "example",
       "title": "A concrete representation: 100 = 89 + 8 + 3",
-      "startLine": 71,
+      "startLine": 66,
       "endLine": 79,
       "summary": "Worked example: the index list [11, 6, 4] is strictly decreasing with gaps ≥ 2, hence a valid Zeckendorf representation, and its Fibonacci-sum fib 11 + fib 6 + fib 4 = 89 + 8 + 3 = 100 (checked by `decide`). Illustrates the greedy structure concretely.",
       "mathContext": "$100 = F_{11} + F_6 + F_4 = 89 + 8 + 3.$"
