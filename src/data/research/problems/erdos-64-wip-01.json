@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Open power-of-2 cycle length remains the mission; base cycle-existence infrastructure is complete for all finite graphs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,15 +31,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (infrastructure): proved the elementary base fact — connected min-degree->=2 graphs contain a cycle (3 axiom-free lemmas). The open power-of-two-length refinement is untouched.",
+    "progressSummary": "PROGRESS (infrastructure): the elementary base fact — every nonempty finite graph (NO connectivity assumption) with min-degree >=2 contains a cycle — is now fully machine-checked and axiom-free (hasMinDegree_two_exists_cycle), completing the reduction that the connected-case lemmas left open. The open power-of-two-length refinement (the actual Erdos #64 content) is untouched.",
     "builtItems": [
       "connected_hasMinDegree_two_not_isAcyclic (Erdos64Problem.lean): nontrivial connected graph, HasMinDegree 2 => ¬IsAcyclic. Axiom-free.",
       "connected_hasMinDegree_two_exists_cycle (Erdos64Problem.lean): same hyp => ∃ v (c : Walk v v), c.IsCycle. Axiom-free.",
-      "connected_hasMinDegree_three_exists_cycle (Erdos64Problem.lean): the Problem-64 degree-3 hypothesis (connected) forces a cycle. Axiom-free."
+      "connected_hasMinDegree_three_exists_cycle (Erdos64Problem.lean): the Problem-64 degree-3 hypothesis (connected) forces a cycle. Axiom-free.",
+      "hasMinDegree_two_exists_cycle in Erdos64Problem.lean: disconnected (general finite) min-degree>=2 => contains a cycle, 0 axioms (propext/Classical.choice/Quot.sound only), host-verified v4.31.0"
     ],
     "insights": [
       "A finite nontrivial TREE has a leaf (degree-1 vertex): Mathlib SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial. Hence a connected graph with min degree >= 2 cannot be a tree, so cannot be acyclic — the elementary base fact under Erdos #64.",
-      "SimpleGraph.IsAcyclic unfolds to (forall closed walk, not IsCycle); its negation directly yields an explicit Walk.IsCycle, so ¬IsAcyclic is packaged as a concrete cycle."
+      "SimpleGraph.IsAcyclic unfolds to (forall closed walk, not IsCycle); its negation directly yields an explicit Walk.IsCycle, so ¬IsAcyclic is packaged as a concrete cycle.",
+      "Connectivity can be dropped from the base cycle-existence fact: an arbitrary nonempty finite graph with min-degree >=2 contains a cycle. Proof passes to the connected component of any vertex and uses that neighbours stay inside their own component (ConnectedComponent.mem_supp_of_adj_mem_supp), so degrees are preserved on the induced subgraph (SimpleGraph.degree_induce_of_neighborSet_subset); if acyclic the component would be a nontrivial tree with a degree-1 vertex, contradicting min-degree >=2."
     ],
     "mathlibGaps": [
       "No general (disconnected/forest) leaf lemma: Mathlib only has IsTree.minDegree_eq_one_of_nontrivial (connected). A forest edge-count bound #edges <= n-1 is also absent (only IsTree.card_edgeFinset).",
