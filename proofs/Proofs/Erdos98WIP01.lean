@@ -1153,6 +1153,7 @@ theorem centeredTriangleConfig_injective : Function.Injective centeredTriangleCo
 
 /-- **No three of the four points are collinear.** A line through any three forces
 `(a,b,c) = 0`; the two vertices sharing the abscissa `−½` need `√3 > 0` to conclude. -/
+set_option maxHeartbeats 1000000 in
 theorem noThreeCollinear_centeredTriangleConfig : NoThreeCollinear centeredTriangleConfig := by
   have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
   intro i j k hcard
@@ -1189,6 +1190,7 @@ theorem centeredTriangle_not_equidistant (center : EuclideanSpace ℝ (Fin 2)) (
 /-- **No four of the four points are concyclic.** The only 4-subset (in every ordering) is
 all four points; by `centeredTriangle_not_equidistant` no centre is equidistant from them,
 so no common circle exists. -/
+set_option maxHeartbeats 1000000 in
 theorem noFourConcyclic_centeredTriangleConfig : NoFourConcyclic centeredTriangleConfig := by
   intro a b c d hcard
   rintro ⟨center, r, ha, hb, hc, hd⟩
