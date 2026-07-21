@@ -150,50 +150,66 @@
     {
       "id": "erdos-gyarfas",
       "title": "Erdős-Gyárfás Conjecture (Disproved)",
-      "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and documents in source comments `liu_montgomery_threshold` (no Lean declaration exists) disproving it for large r.",
+      "summary": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ ≥ r avoiding all 2^k-cycles) and documents in a source comment the Liu-Montgomery theorem (2020, no Lean declaration) disproving it for large r.",
       "startLine": 81,
-      "endLine": 106,
-      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ $\\geq$ r avoiding all $2^{k}$-cycles) and documents in source comments `liu_montgomery_threshold` (no Lean declaration exists) disproving it for large r."
+      "endLine": 101,
+      "mathContext": "States `erdos_gyarfas_conjecture` (for every r, ∃ graph with δ $\\geq$ r avoiding all $2^{k}$-cycles) and documents in a source comment the Liu-Montgomery theorem (2020, no Lean declaration) disproving it for large r."
     },
     {
       "id": "partial-results",
       "title": "Partial Results: Even Cycle Ranges",
-      "summary": "Axiomatizes Liu-Montgomery's stronger result: δ(G) ≥ D implies all even cycle lengths in [4, L] for some L ≥ 16. Proves `range_contains_power_of_two`: [4, L] always contains 2^2 = 4.",
-      "startLine": 107,
-      "endLine": 132,
-      "mathContext": "Axiomatizes Liu-Montgomery's stronger result: δ(G) $\\geq$ D implies all even cycle lengths in [4, L] for some L $\\geq$ 16. Proves `range_contains_power_of_two`: [4, L] always contains $2^{2}$ = 4."
+      "summary": "Documents in a source comment Liu-Montgomery's stronger result (δ ≥ D forces every even cycle length in [(log ℓ)^8, ℓ]) and proves the machine-checked helper `range_contains_power_of_two`: for L ≥ 16 the range [4, L] always contains 2^2 = 4. No axiom is declared here — the comment is expository.",
+      "startLine": 102,
+      "endLine": 120,
+      "mathContext": "Documents in a source comment Liu-Montgomery's stronger result (δ $\\geq$ D forces every even cycle length in $[(\\log \\ell)^8, \\ell]$) and proves the machine-checked helper `range_contains_power_of_two`: for L $\\geq$ 16 the range [4, L] always contains $2^{2}$ = 4. No axiom is declared here — the comment is expository."
     },
     {
       "id": "infinite-counterexample",
       "title": "Infinite Counterexample",
-      "summary": "Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential.",
-      "startLine": 133,
-      "endLine": 161,
-      "mathContext": "Formal definition: Defines `InfGraph` (infinite simple graph without Fintype), `IsRegular`, `ContainsCycleLength`, and `IsTree`. Axiomatizes the infinite 3-regular tree showing finiteness is essential."
+      "summary": "Defines the `InfGraph` structure (a simple graph on an unrestricted vertex type, no Fintype) together with `IsRegular`, `ContainsCycleLength`, and `IsTree`, then describes in a source comment the infinite 3-regular tree — δ = 3 yet acyclic — showing that finiteness is essential to Problem 64. These are genuine Lean definitions, not axioms.",
+      "startLine": 121,
+      "endLine": 146,
+      "mathContext": "Defines the `InfGraph` structure (a simple graph on an unrestricted vertex type, no Fintype) together with `IsRegular`, `ContainsCycleLength`, and `IsTree`, then describes in a source comment the infinite 3-regular tree — δ = 3 yet acyclic — showing that finiteness is essential to Problem 64. These are genuine Lean definitions, not axioms."
     },
     {
       "id": "degree-3",
       "title": "Degree 3 Case (Open)",
-      "summary": "Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
-      "startLine": 162,
-      "endLine": 175,
-      "mathContext": "Mathematical content: Restates the conjecture as `degree_3_conjecture` with δ(G) = 3 explicitly. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous."
+      "summary": "Restates the conjecture as `degree_3_conjecture` with δ(G) ≥ 3 explicitly, and notes it is definitionally identical to `erdos_64_conjecture`. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous.",
+      "startLine": 147,
+      "endLine": 160,
+      "mathContext": "Restates the conjecture as `degree_3_conjecture` with δ(G) $\\geq$ 3 explicitly, and notes it is definitionally identical to `erdos_64_conjecture`. This is the unsolved core: Liu-Montgomery resolves large degree but the gap down to 3 is enormous."
+    },
+    {
+      "id": "cycle-existence",
+      "title": "Cycle Existence from Minimum Degree (machine-checked, axiom-free)",
+      "summary": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ ≥ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ ≥ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree ≥ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. A closing comment outlines the remaining step (component-degree preservation) to reach the arbitrary-finite-graph statement. This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length.",
+      "startLine": 161,
+      "endLine": 223,
+      "mathContext": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ $\\geq$ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ $\\geq$ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree $\\geq$ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length."
     },
     {
       "id": "known-results",
       "title": "Known Cycle Results",
-      "summary": "documents in source comments `dirac_theorem` (no Lean declaration exists) (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3.",
-      "startLine": 176,
-      "endLine": 199,
-      "mathContext": "documents in source comments `dirac_theorem` (no Lean declaration exists) (δ ≥ n/2 → Hamiltonian) and `bondy_pancyclic` (≥ n²/4 edges → pancyclic or bipartite). These classical results show high degree forces cycles but don't resolve specific lengths at δ = 3."
+      "summary": "Documents in source comments the classical Dirac theorem (1952: δ ≥ n/2 → Hamiltonian) and Bondy theorem (1971: ≥ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3.",
+      "startLine": 224,
+      "endLine": 235,
+      "mathContext": "Documents in source comments the classical Dirac theorem (1952: δ $\\geq$ n/2 → Hamiltonian) and Bondy theorem (1971: $\\geq$ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3."
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
-      "summary": "Axiomatizes that random graphs G(n, c/n) have δ ≥ 3 and contain C_{2^k} for k ≤ 10, providing probabilistic evidence that counterexamples must be highly structured.",
-      "startLine": 199,
-      "endLine": 205,
-      "mathContext": "Axiomatizes that random graphs G(n, c/n) have δ $\\geq$ 3 and contain C_{$2^{k}$} for k $\\leq$ 10, providing probabilistic evidence that counterexamples must be highly structured."
+      "summary": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ ≥ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared.",
+      "startLine": 236,
+      "endLine": 243,
+      "mathContext": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ $\\geq$ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared."
+    },
+    {
+      "id": "summary-status",
+      "title": "Summary and Problem Status",
+      "summary": "Closing source-comment digest of Problem 64's status (OPEN, $1000 prize): the main question (δ ≥ 3 forces a 2^k-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace.",
+      "startLine": 244,
+      "endLine": 268,
+      "mathContext": "Closing source-comment digest of Problem 64's status (OPEN, \\$1000 prize): the main question (δ $\\geq$ 3 forces a $2^{k}$-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace."
     }
   ],
   "conclusion": {
