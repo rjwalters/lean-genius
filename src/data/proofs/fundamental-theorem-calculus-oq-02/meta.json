@@ -132,6 +132,14 @@
       "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ via FTC + Fubini."
     },
     {
+      "id": "abstract-stokes",
+      "title": "The Abstract Generalized Stokes Theorem",
+      "startLine": 308,
+      "endLine": 342,
+      "summary": "Commentary situating the concrete 1D/2D results as special cases of the general Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$, and noting which ingredients Mathlib currently provides.",
+      "mathContext": "The general statement $\\int_M d\\omega = \\int_{\\partial M}\\omega$ holds for any compact oriented smooth $n$-manifold $M$ with boundary and any smooth $(n-1)$-form $\\omega$. It requires: manifolds with boundary (`SmoothManifoldWithCorners`), differential $k$-forms as sections of $\\Lambda^k(T^*M)$, the exterior derivative $d:\\Omega^k\\to\\Omega^{k+1}$, integration of $n$-forms on oriented manifolds, and the induced boundary orientation. Mathlib has the first two partially (via `ExteriorAlgebra`) and $d$ partially; form-integration on manifolds is still under active development, at which point this file's `stokes_1d` and `stokes_2d_rectangle` become literal instances. The classical hierarchy $n{=}1$ FTC, $n{=}2$ Green/Kelvin–Stokes, $n{=}3$ Gauss all specialize the same identity."
+    },
+    {
       "id": "hierarchy",
       "title": "Hierarchy and de Rham Cohomology",
       "startLine": 343,
