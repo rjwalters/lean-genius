@@ -96,11 +96,19 @@
     },
     {
       "id": "applications",
-      "title": "Special Cases and Pick's Formula",
+      "title": "Special Cases and Concrete Examples",
       "startLine": 187,
-      "endLine": 215,
-      "summary": "segment_coprime (2 endpoints), segment_diagonal (a+1 points), three concrete examples, pick_edge_contribution and interior_segment_count for Pick's theorem boundary formula.",
-      "mathContext": "$B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$, with each edge contributing $\\text{card} - 1 = \\gcd(a,b)$."
+      "endLine": 231,
+      "summary": "Membership characterization plus special cases: segment_coprime (2 endpoints), segment_diagonal (a+1 points), and three concrete lattice-point counts (segment_4_6 = 3, segment_3_5 = 2, segment_6_9 = 4).",
+      "mathContext": "$|\\text{segmentPoints}(a,b)| = \\gcd(a,b) + 1$; concrete evaluations verify the count."
+    },
+    {
+      "id": "pick-boundary-formula",
+      "title": "Part VIII: Pick's Boundary Formula",
+      "startLine": 232,
+      "endLine": 248,
+      "summary": "pick_edge_contribution (each edge contributes gcd(|Δx|,|Δy|) to the boundary count) and interior_segment_count (interior lattice points on a segment number gcd(a,b) − 1), assembling the boundary term B of Pick's theorem.",
+      "mathContext": "$B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$, with each edge contributing $\\text{card} - 1 = \\gcd(a,b)$ and $\\gcd(a,b) - 1$ interior points."
     }
   ],
   "references": [
