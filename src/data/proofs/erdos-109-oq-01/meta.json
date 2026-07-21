@@ -80,31 +80,31 @@
       "id": "sumset-gap-strengthening",
       "title": "Part III: Sumset Gap Strengthening",
       "startLine": 86,
-      "endLine": 254,
+      "endLine": 244,
       "summary": "Defines the conjecture predicates GapControlledSumset and SyndeticSumsetQuestion and proves sumset_density_constraint, the gap-controlled strengthening of the sumset structure statement.",
       "mathContext": "Whether $B+C$ inherits gap-control / syndeticity from density hypotheses on $B,C$."
     },
     {
       "id": "ip-sets-hindman",
       "title": "Part IV: Connection to IP Sets (Hindman's Theorem)",
-      "startLine": 255,
-      "endLine": 378,
+      "startLine": 245,
+      "endLine": 370,
       "summary": "Defines IsIPSet (finite-sums set) and IsIPStar, states Hindman's theorem as an axiom (hindman_theorem: any finite coloring of ℕ has a monochromatic IP set) plus posUpperDensity_ipStar, and proves ip_set_sumset_structure.",
       "mathContext": "Hindman: any finite coloring of ℕ admits a monochromatic IP set (set of finite sums of an infinite sequence)."
     },
     {
       "id": "further-results",
       "title": "Part V: Further Results on IP Sets and Gap Conditions",
-      "startLine": 379,
-      "endLine": 439,
+      "startLine": 371,
+      "endLine": 433,
       "summary": "Further proved consequences: ip_set_nonempty, ip_set_infinite, thick_infinite, hindman_two_color (the 2-coloring corollary), and sumset_subset_iff.",
       "mathContext": "Corollaries tying IP-sets, thickness, and sumset inclusion together."
     },
     {
       "id": "summary",
       "title": "Part V: Summary",
-      "startLine": 440,
-      "endLine": 473,
+      "startLine": 434,
+      "endLine": 468,
       "summary": "Closing summary docstring (What's Proved with 0 sorries, the list of 3 axioms — posUpperDensity_piecewiseSyndetic, hindman_theorem, posUpperDensity_ipStar — and Mathematical Status); closes namespace Erdos109OQ01.",
       "mathContext": "Status: 8 theorems proved, 0 sorries, 3 axioms (piecewise-syndetic density, Hindman, IP*-density)."
     }
