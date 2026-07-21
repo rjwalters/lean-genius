@@ -269,6 +269,69 @@ theorem hasMinDegree_two_exists_cycle
   rw [hpres] at hw
   omega
 
+/- ## Bridge to the length-indexed `ContainsCycleLength` predicate
+
+The cycle-existence lemmas above deliver a `SimpleGraph.Walk.IsCycle` witness, whereas
+`erdos_64_conjecture` is phrased with this file's own `ContainsCycleLength` predicate
+(an injective `Fin k → V` with cyclic `Fin.succMod` adjacency). The lemma below converts
+between them, so the machine-checked existence results become statements about a concrete
+cycle *length* — the quantity Problem 64 is ultimately about. -/
+
+/-- **`Walk.IsCycle` ⟹ `ContainsCycleLength`.** Any explicit cycle `c : G.Walk v v` gives a
+`ContainsCycleLength G c.length` witness: the vertices `c.getVert 0, …, c.getVert (c.length-1)`
+are pairwise distinct (`SimpleGraph.Walk.IsCycle.getVert_injOn'`) and cyclically adjacent
+(`SimpleGraph.Walk.adj_getVert_succ`), the wrap-around edge closing because
+`c.getVert c.length = v = c.getVert 0`. -/
+theorem isCycle_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    {v : W} (c : G.Walk v v) (hc : c.IsCycle) :
+    ContainsCycleLength G c.length := by
+  refine ⟨hc.three_le_length, fun i => c.getVert i.val, ?_, ?_⟩
+  · -- injectivity: `getVert` is injective on `{i | i ≤ c.length - 1}`
+    intro i j hij
+    apply Fin.ext
+    exact hc.getVert_injOn'
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega)
+      hij
+  · -- cyclic adjacency `c.getVert i` — `c.getVert ((i+1) % c.length)`
+    intro i
+    have hi : i.val < c.length := i.isLt
+    show G.Adj (c.getVert i.val) (c.getVert ((i.val + 1) % c.length))
+    by_cases hlast : i.val + 1 = c.length
+    · -- final vertex wraps to `c.getVert 0 = v = c.getVert c.length`
+      have h0 : (i.val + 1) % c.length = 0 := by rw [hlast]; exact Nat.mod_self _
+      rw [h0, c.getVert_zero]
+      have hadj := c.adj_getVert_succ hi
+      rwa [hlast, c.getVert_length] at hadj
+    · have hlt : i.val + 1 < c.length := by omega
+      rw [Nat.mod_eq_of_lt hlt]
+      exact c.adj_getVert_succ hi
+
+/-- A nonempty finite graph with minimum degree at least `2` contains a cycle of some
+**concrete length** `k ≥ 3` in the `ContainsCycleLength` encoding (obtained by measuring the
+length of the cycle from `hasMinDegree_two_exists_cycle`). This is the elementary,
+axiom-free precondition of Problem 64 restated in the predicate the conjecture uses. -/
+theorem hasMinDegree_two_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hdeg : HasMinDegree G 2) :
+    ∃ k : ℕ, k ≥ 3 ∧ ContainsCycleLength G k := by
+  obtain ⟨v, c, hc⟩ := hasMinDegree_two_exists_cycle G hdeg
+  exact ⟨c.length, hc.three_le_length, isCycle_containsCycleLength G c hc⟩
+
+/-- The Problem-64 hypothesis (minimum degree ≥ `3`) yields a cycle of some concrete length
+`k ≥ 3` (in the `ContainsCycleLength` encoding). Problem 64 asks the **open** question of
+whether `k` can be chosen to be a power of two `2^m` with `m ≥ 2`; this lemma proves the
+strict weakening "some length works" and does not resolve the conjecture. -/
+theorem hasMinDegree_three_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hdeg : HasMinDegree G 3) :
+    ∃ k : ℕ, k ≥ 3 ∧ ContainsCycleLength G k :=
+  hasMinDegree_two_containsCycleLength G (fun v => le_trans (by norm_num) (hdeg v))
+
 /- ## Known Cycle Results -/
 
 /- 
