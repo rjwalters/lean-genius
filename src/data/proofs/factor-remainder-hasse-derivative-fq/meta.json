@@ -109,33 +109,49 @@
       "id": "sec-overview",
       "title": "Overview: full failure profile of the ordinary-derivative multiplicity test over 𝔽_q",
       "startLine": 1,
-      "endLine": 67,
+      "endLine": 87,
       "summary": "The polynomial/char-p imports (HasseDeriv, Derivative, RingDivision, Taylor, Div, CharP.Basic, Prime.Factorial, Tactic) and the module docstring. Pins down exactly at which derivative order the ordinary iterated-derivative multiplicity test goes blind over a characteristic-p field (hence every 𝔽_q = p^f), and generalizes the Xᵖ/𝔽_p counterexample to the whole family X^{p^e}.",
       "mathContext": "The engine is Mathlib's factorial_smul_hasseDeriv: derivative^[k] f = k!•hasseDeriv k f, so the ordinary derivative is the Hasse derivative scaled by k!, and information loss is governed entirely by whether (k! : F) vanishes. Main results: factorial_cast_eq_zero_iff (the exact threshold (k!:F) = 0 ↔ p ≤ k, via Nat.Prime.dvd_factorial); iterate_derivative_eq_smul_hasseDeriv (scaling identity); iterate_derivative_eq_zero_of_char_le (above the threshold every ordinary derivative vanishes — blind at orders ≥ p); iterate_derivative_eq_zero_iff_hasseDeriv_of_lt (below the threshold the two agree, k! a unit) — together the ordinary test is reliable exactly up to order p−1 and useless from order p on. The concrete X^{p^e} family (rootMultiplicity_X_pow, derivative_X_pow_char, iterate_derivative_X_pow_char_eq_zero, failure_profile_X_pow) shows the Hasse test returns the true multiplicity p^e while every positive-order ordinary derivative vanishes. Part IV proves the positive complement — the Hasse-derivative multiplicity criterion sub_pow_dvd_iff_hasseDeriv_eval_eq_zero over any commutative ring."
     },
     {
       "id": "threshold",
       "title": "Part I: The Exact Factorial Threshold in Characteristic p",
-      "startLine": 68,
-      "endLine": 77,
+      "startLine": 88,
+      "endLine": 98,
       "summary": "factorial_cast_eq_zero_iff: over a characteristic-p commutative ring, (k! : F) = 0 ↔ p ≤ k, via CharP.cast_eq_zero_iff and Nat.Prime.dvd_factorial. This biconditional is the algebraic heart of the whole failure profile.",
       "mathContext": "Locates precisely when the factorial scalar relating ordinary and Hasse derivatives vanishes."
     },
     {
       "id": "scaling",
       "title": "Part II: Ordinary = Hasse Scaled by k!, and the Two Regimes",
-      "startLine": 79,
-      "endLine": 111,
+      "startLine": 99,
+      "endLine": 132,
       "summary": "iterate_derivative_eq_smul_hasseDeriv (derivative^[k] f = (k! : F) • hasseDeriv k f); iterate_derivative_eq_zero_of_char_le (p ≤ k ⇒ derivative^[k] f = 0 for all f, blind); iterate_derivative_eq_zero_iff_hasseDeriv_of_lt (k < p ⇒ ordinary vanishes iff Hasse vanishes, reliable).",
       "mathContext": "Splits the order axis at p: reliable up to p−1, identically blind from p on."
     },
     {
       "id": "family",
       "title": "Part III: The X^{p^e} Family — Hasse Correct, Ordinary Blind",
-      "startLine": 113,
-      "endLine": 148,
+      "startLine": 133,
+      "endLine": 169,
       "summary": "rootMultiplicity_X_pow (rootMultiplicity 0 (X^n) = n); derivative_X_pow_char (first ordinary derivative of X^{p^e} is 0); iterate_derivative_X_pow_char_eq_zero (all positive-order ordinary derivatives vanish); failure_profile_X_pow (true multiplicity p^e vs. every ordinary derivative zero — unbounded overcounting).",
       "mathContext": "Generalizes the Xᵖ / 𝔽_p counterexample to the whole family X^{p^e} over every 𝔽_q."
+    },
+    {
+      "id": "hasse-criterion",
+      "title": "Part IV: The Characteristic-Free Hasse Multiplicity Criterion",
+      "startLine": 170,
+      "endLine": 231,
+      "summary": "Builds the engine that repairs the ordinary test in every characteristic. Two private Taylor-shift lemmas (taylor_X_sub_C_eq, taylor_neg_X_eq) show taylor a is the automorphism X ↦ X + a carrying X − C a to X; sub_pow_dvd_iff_X_pow_dvd_taylor transports (X − C a)^n divisibility to X^n ∣ taylor a f, and X_pow_dvd_iff + taylor_coeff then give the Hasse-derivative multiplicity criterion sub_pow_dvd_iff_hasseDeriv_eval_eq_zero: (X − C a)^n ∣ f ↔ ∀ j < n, (hasseDeriv j f).eval a = 0, valid over any commutative ring. iterate_derivative_eval_eq records the evaluation form of the scaling identity, (derivative^[k] f).eval a = (k! : F)·(hasseDeriv k f).eval a.",
+      "mathContext": "$(X - a)^n \\mid f \\iff X^n \\mid \\mathrm{taylor}_a f \\iff \\forall j < n,\\ (\\mathrm{hasseDeriv}_j f)(a) = 0$. Mathlib supplies taylor, taylor_coeff, X_pow_dvd_iff but not this assembled, characteristic-free criterion — obtained by transporting X-divisibility back along the Taylor AlgEquiv $X \\mapsto X + a$."
+    },
+    {
+      "id": "reliability-range",
+      "title": "Part IV: The Sharp Reliability Range m ≤ p",
+      "startLine": 232,
+      "endLine": 280,
+      "summary": "The positive complement to the blindness results. ordinary_derivative_test_valid_range: over a characteristic-p field, for every m ≤ p the ordinary-derivative test is a correct multiplicity criterion, (X − C a)^m ∣ f ↔ ∀ j < m, (derivative^[j] f).eval a = 0 — because each (j! : F) with j < m ≤ p is a unit, so the ordinary and Hasse tests agree termwise and the Hasse criterion closes the loop. ordinary_derivative_test_sharp: the bound is best possible — at m = p + 1 the witness f = X^p over characteristic p has every order-≤p ordinary derivative vanishing at 0 (certifying multiplicity ≥ p + 1) even though X^{p+1} ∤ X^p. So m ≤ p is exactly the reliable range.",
+      "mathContext": "**Reliable exactly for $m \\leq p$:** $(X - a)^m \\mid f \\iff \\forall j < m,\\ (\\mathrm{derivative}^{[j]} f)(a) = 0$. **Sharp:** at $m = p+1$, $f = X^p$ has all order-$\\leq p$ ordinary derivatives zero at $0$ yet $X^{p+1} \\nmid X^p$."
     }
   ],
   "conclusion": {
