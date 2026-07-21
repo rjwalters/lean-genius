@@ -73,9 +73,17 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Definitions: Unit-Distance Embeddings",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Context docstring and the two core definitions: UnitDistanceEmbedding (a map V → ℝⁿ sending every edge to a pair at Euclidean distance 1) and hasUnitEmbedding (a graph admits such an embedding in ℝⁿ).",
+      "mathContext": "UnitDistanceEmbedding V adj n bundles embed : V → Fin n → ℝ with unit_edges; hasUnitEmbedding V adj n := Nonempty (UnitDistanceEmbedding V adj n)."
+    },
+    {
       "id": "index-embedding",
       "title": "The Scaled-Basis Index Embedding",
-      "startLine": 60,
+      "startLine": 59,
       "endLine": 113,
       "summary": "scaled_basis_sq_dist (distinct scaled basis vectors are unit distance apart) and hasUnitEmbedding_of_idx (the reusable embedding engine).",
       "mathContext": "Placing v at (1/√2)·e_{idx v} is a unit embedding whenever idx separates edge endpoints."
@@ -92,7 +100,7 @@
       "id": "bounds",
       "title": "The Universal and Edge-Count Bounds",
       "startLine": 164,
-      "endLine": 240,
+      "endLine": 246,
       "summary": "hasUnitEmbedding_card (dim ≤ |V|), hasUnitEmbedding_of_cover (dim ≤ |S| for an edge cover), hasUnitEmbedding_two_mul_edges (dim ≤ 2m via the handshake lemma).",
       "mathContext": "Dimension is bounded by the vertex count and, more finely, by twice the edge count."
     },
@@ -103,6 +111,14 @@
       "endLine": 289,
       "mathContext": "A proper coloring is a separating index map, so the dimension is bounded by the chromatic number χ(G) ≤ |V|.",
       "summary": "hasUnitEmbedding_of_coloring (an N-coloring embeds G in ℝᴺ), hasUnitEmbedding_of_chromaticNumber_le (dim ≤ χ when χ ≤ N), hasUnitEmbedding_chromaticNumber (finite G embeds in ℝ^{χ(G)}), hasUnitEmbedding_two_of_colorable_two (bipartite ⇒ dim ≤ 2)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 290,
+      "endLine": 314,
+      "summary": "Closing summary of the embedding toolkit and the dimension bounds established (vertex count, edge count, and chromatic number).",
+      "mathContext": "Recap of the hasUnitEmbedding bounds dim ≤ |V|, dim ≤ 2m, and dim ≤ χ(G)."
     }
   ],
   "conclusion": {
