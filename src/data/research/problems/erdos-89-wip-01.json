@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, print axioms = propext/Classical.choice/Quot.sound): exact value g(3)=minDistinctDistances 3 = 1 via an explicit equilateral triangle (all three pairwise distances = 1). First exact value beyond the trivial table g(0)=g(1)=0, g(2)=1, and strictly below the linear AP bound g(3)<=2 - the collinear AP is not extremal at n=3. Prior work: g(n)<=n-1 (collinear AP), monotonicity, sharp n.choose 2 ceiling. Guth-Katz Omega(n/log n) lower bound stays imported.",
+    "progressSummary": "Exact values pinned: g(0)=g(1)=0, g(2)=1, g(3)=1, g(4)=2 (minDistinctDistances_four, axiom-free). Linear upper bound g(n) ≤ n−1 (AP) and the deep Guth–Katz Ω(n/log n) stays imported. Next: g(5) (lower bound needs ruling out a 1- or few-distance 5-set) and the √n×√n grid toward Θ(n/√(log n)).",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -53,7 +53,9 @@
       "eqTri equilateral triangle (0,0),(1,0),(1/2, sqrt3/2) as a Finset (Erdos89WIP01.lean)",
       "dist_eqPts closed form dist(!2[a,b],!2[c,d]) = sqrt((a-c)^2+(b-d)^2); dist_comm symmetry",
       "dist_eqp01/02/12 all three pairwise distances = 1 (via Real.sq_sqrt for sqrt(3)^2=3)",
-      "numDistinctDistances_eqTri = 1; minDistinctDistances_three: exact g(3)=1"
+      "numDistinctDistances_eqTri = 1; minDistinctDistances_three: exact g(3)=1",
+      "minDistinctDistances_four (Erdos89WIP01.lean): g(4)=2, axiom-free (propext/Classical.choice/Quot.sound only), host-verified v4.31.",
+      "no_four_equidistant, two_le_minDistinctDistances_four, minDistinctDistances_four_le_two, unitSquare + 6 sqpᵢ_ne + unitSquare_card + 6 dist_sqᵢⱼ (Erdos89WIP01.lean): unit-square upper bound and Gram/dimension lower bound for g(4)."
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -63,7 +65,9 @@
       "The distinct-distances envelope is now an EQUALITY at the base: numDistinctDistances_eq_one_of_card_eq_two shows any 2-point set has exactly 1 distance (sharp ceiling 2.choose 2 = 1 meets the ≥1 floor), and minDistinctDistances_two gives the first exact value of Erdős g(n): g(2) = 1.",
       "Linear upper bound g(n) ≤ n−1 (minDistinctDistances_le_pred): the collinear arithmetic progression {(0,0),…,(n−1,0)} has distances exactly {1,…,n−1}. First non-quadratic upper bound in the file (prior best was worst-case n.choose 2).",
       "g(3)=1 EXACT via equilateral triangle, strictly below the collinear-AP upper bound g(3)<=2, so the arithmetic progression is NOT extremal at n=3. Lower bound g(3)>=1 from one_le_numDistinctDistances_of_two_le_card + Nat.sInf_mem (nonempty witness eqTri).",
-      "Distance-computation technique: dist_eqPts closed form via dist_eq_norm + EuclideanSpace.dist_eq + Fin.sum_univ_two + sq_abs; equilateral coords sqrt(3)^2=3 via Real.sq_sqrt; distinctDistances subset {1} by rcases over the 3x3 vertex pairs (diagonal killed by absurd rfl hne, off-diagonal by dist_eqpXX + dist_comm for reversed order)."
+      "Distance-computation technique: dist_eqPts closed form via dist_eq_norm + EuclideanSpace.dist_eq + Fin.sum_univ_two + sq_abs; equilateral coords sqrt(3)^2=3 via Real.sq_sqrt; distinctDistances subset {1} by rcases over the 3x3 vertex pairs (diagonal killed by absurd rfl hne, off-diagonal by dist_eqpXX + dist_comm for reversed order).",
+      "g(4) = 2 exactly (minDistinctDistances_four): second exact value of Erdős's distinct-distance function. Upper bound g(4) ≤ 2 from the unit square {(0,0),(1,0),(0,1),(1,1)} (distances {1, √2}); lower bound g(4) ≥ 2 because no 4 points in ℝ² are mutually equidistant. Strictly below the collinear-AP bound g(4) ≤ 3 — the AP is again not extremal (as at n=3).",
+      "no_four_equidistant: four points at a common positive pairwise distance r give three difference vectors (b−a,c−a,d−a) of norm r with pairwise inner product r²/2 (from ‖x−y‖²=2r²−2⟨x,y⟩=r²), a positive-definite Gram matrix ⟹ linearly independent ⟹ finrank ≥ 3, contradicting finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2. Linear independence extracted by taking inner products of Σgᵢ·vᵢ=0 against u,v,w and solving the Gram system via linear_combination (sum ⟹ Σg=0; each ⟹ (r²/2)gᵢ=0)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
