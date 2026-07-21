@@ -93,52 +93,60 @@
   "sections": [
     {
       "id": "overview",
-      "title": "Overview: the metacyclic divisibility bracket",
+      "title": "Overview & Setup: the metacyclic divisibility bracket",
       "startLine": 1,
-      "endLine": 36,
-      "summary": "Frames the open question: Gal(Xⁿ−p/ℚ) is metacyclic of order n·φ(n), sitting in the split exact sequence 1 → Cₙ → Gal → (ℤ/nℤ)ˣ → 1. This file proves the verified two-sided bracket n ∣ |Gal| ∣ n! plus the cyclotomic lower factor φ(n) ∣ |Gal|, generalizing the parent n=4 lemmas and adding the (ℤ/nℤ)ˣ-quotient witness."
+      "endLine": 65,
+      "summary": "Module docstring framing the open question: Gal(Xⁿ−p/ℚ) is metacyclic of order n·φ(n), sitting in the split exact sequence 1 → Cₙ → Gal → (ℤ/nℤ)ˣ → 1. Lays out the full two-sided bracket n ∣ |Gal| ∣ n!, the cyclotomic lower factor φ(n) ∣ |Gal|, the lcm sharpening, the coprime full-order lower bound n·φ(n) ∣ |Gal|, and the matching metacyclic upper bound |Gal| ≤ n·φ(n) that pins the order exactly (n=3→6=|S₃|, n=5→20=|F₂₀|). Imports Mathlib and the parent Proofs.InverseGaloisD4; sets synthInstance heartbeats and opens the namespace. Records the file is 0-sorry, 0-axiom, no native_decide."
     },
     {
       "id": "part-i-basic-facts",
       "title": "Part I — Basic facts about Xⁿ − p",
-      "startLine": 44,
-      "endLine": 66,
+      "startLine": 66,
+      "endLine": 89,
       "summary": "Four foundational lemmas about the polynomial Xⁿ − p over ℚ for prime p: irreducibility (Eisenstein at p, reusing the gallery lemma eisenstein_X_pow_sub_prime), degree n, monicity, and separability (irreducible in characteristic 0). These feed all three divisibility results."
     },
     {
       "id": "part-ii-lower-factor",
       "title": "Part II — The lower factor n ∣ |Gal|",
-      "startLine": 68,
-      "endLine": 84,
+      "startLine": 90,
+      "endLine": 107,
       "summary": "Proves n ∣ |Gal(Xⁿ−p/ℚ)|: card_of_separable turns |Gal| into the splitting-field degree, and the irreducible degree n = [ℚ(ⁿ√p):ℚ] divides that degree via irred_monic_degree_dvd_splitting_finrank. Generalizes the parent's four_dvd_x4_sub_2_gal_card."
     },
     {
       "id": "part-iii-upper-bound",
       "title": "Part III — The upper bound |Gal| ∣ n!",
-      "startLine": 86,
-      "endLine": 108,
+      "startLine": 108,
+      "endLine": 131,
       "summary": "Proves |Gal| ∣ n!: the Galois action on the n roots is faithful (galActionHom_injective), embedding Gal ↪ Sₙ, whose order is n!. card_rootSet_eq_natDegree supplies the exact root count n. Generalizes the parent's x4_sub_2_gal_card_dvd_24."
     },
     {
       "id": "part-iv-cyclotomic",
       "title": "Part IV — The cyclotomic factor φ(n) ∣ |Gal|",
-      "startLine": 110,
-      "endLine": 109,
+      "startLine": 132,
+      "endLine": 206,
       "summary": "The new metacyclic ingredient. A primitive n-th root of unity is built from the roots of Xⁿ−p themselves (the ratios β/α of the n roots are the n distinct n-th roots of unity), so ℚ(ζₙ) ⊆ splitting field with [ℚ(ζₙ):ℚ] = φ(n); the tower law forces φ(n) ∣ |Gal|. Witnesses the quotient Gal ↠ (ℤ/nℤ)ˣ."
     },
     {
       "id": "part-v-lcm",
       "title": "Part V — Combining the lower factors: lcm(n, φ(n)) ∣ |Gal|",
-      "startLine": 186,
-      "endLine": 240,
+      "startLine": 207,
+      "endLine": 251,
       "summary": "Since n and φ(n) both divide |Gal| simultaneously, so does their lcm (lcm_dvd_gal_card). When gcd(n,φ(n))=1 this combines to the full generic metacyclic order n·φ(n) ∣ |Gal| (mul_totient_dvd_gal_card_of_coprime), which is exact for n=3 (6=|S₃|) and n=5 (20=|F₂₀|); the base n=4 is excluded since gcd(4,2)=2."
     },
     {
       "id": "part-vi-exact-n3",
       "title": "Part VI — Exact order at n = 3: |Gal(X³−p)| = 6",
-      "startLine": 241,
-      "endLine": 268,
+      "startLine": 252,
+      "endLine": 279,
       "summary": "The factorial upper bound |Gal| ∣ 3! = 6 and the coprime metacyclic lower bound 6 = 3·φ(3) ∣ |Gal| (gcd(3,2)=1) squeeze to an equality by divisibility antisymmetry: gal_card_X3_sub_prime proves |Gal(X³−p/ℚ)| = 6 for every prime p, matching Gal(X³−p) ≅ S₃. This is the first n where the file's divisibility bracket pins the order exactly with no extra hypotheses, because n·φ(n) = n! = 6; n = 5 (20 vs 5!=120) and n = 4 (non-coprime factors) still need the genericity upper bound."
+    },
+    {
+      "id": "part-vii-upper-bound",
+      "title": "Part VII — The metacyclic upper bound |Gal| ≤ n·φ(n) and exact orders",
+      "startLine": 280,
+      "endLine": 433,
+      "summary": "The matching upper bound completing the bracket. gal_card_le_n_mul_totient: the splitting field is L = ℚ(ζₙ)(α) for a single radical α (αⁿ = p) — over F = ℚ(ζₙ) every other root β = α·(β/α) with β/α an n-th root of unity, hence a power of ζₙ ∈ F, so β ∈ F(α); thus [L:F] = deg_F(minpoly α) ≤ n and the tower law with [F:ℚ] = φ(n) gives |Gal| = [L:ℚ] ≤ n·φ(n). This is the unconditional counterpart of the kernel/quotient lower bounds. gal_card_eq_n_mul_totient_of_coprime then pins |Gal| = n·φ(n) exactly whenever gcd(n,φ(n)) = 1 (no genericity hypothesis), and gal_card_X5_sub_prime specializes it to |Gal(X⁵−p/ℚ)| = 20 = |F₂₀| for every prime p — a case the factorial bound alone (20 ∣ |Gal| ∣ 120) could not resolve.",
+      "mathContext": "$L=\\mathbb{Q}(\\zeta_n)(\\alpha)$, $[L:\\mathbb{Q}(\\zeta_n)]\\le n$, $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}]=\\varphi(n)$ ⟹ $|\\mathrm{Gal}|\\le n\\varphi(n)$; with the coprime lower bound, $|\\mathrm{Gal}(X^5-p)|=20$."
     }
   ],
   "conclusion": {
