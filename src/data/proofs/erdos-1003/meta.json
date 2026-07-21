@@ -44,9 +44,10 @@
     "originalContributions": [
       "Formal statement of the OPEN Erdős conjecture in Lean 4",
       "Definition of ConsecutiveEqualTotients set",
-      "Verification of small examples (n = 1, 3, 15, 104) using native_decide",
+      "Verification of small examples (n = 1, 3, 15, 104) using axiom-free kernel decide",
       "Stronger conjecture for k consecutive equal values",
-      "Ford-Luca-Pomerance lower bound (implying infinitude, documented in source comments)"
+      "Ford-Luca-Pomerance lower bound (implying infinitude, documented in source comments)",
+      "Axiom-free k-layer API: antitonicity, the k=1 identity with the base set, counting-function monotonicity, and strong-conjecture ⟹ base-conjecture"
     ],
     "axiomCount": 0,
     "lineCount": 314,
@@ -58,14 +59,15 @@
     "historicalContext": "This problem asks whether the equation φ(n) = φ(n+1) has infinitely many solutions, where φ is the Euler totient function. The first examples are n = 1, 3, 15, 104, 164, 194, 255, ...\n\nErdős made an even stronger conjecture: for every k ≥ 1, the equation φ(n) = φ(n+1) = ... = φ(n+k) should have infinitely many solutions. Remarkably, triples of consecutive equal totients exist—for example, φ(5186) = φ(5187) = φ(5188) = 1728.\n\nErdős, Pomerance, and Sárközy [EPS87] proved an upper bound: the number of n ≤ x with φ(n) = φ(n+1) is at most x/exp((log x)^(1/3)). This shows solutions are sparse.\n\nFord, Luca, and Pomerance [FLP07] proved a lower bound showing at least x^(1-ε) solutions up to x for any ε > 0, which would imply the set is infinite. The question remains formally open.",
     "problemStatement": "Are there infinitely many $n$ such that $\\phi(n) = \\phi(n+1)$?\n\n**Status**: OPEN\n\n**Stronger Conjecture**: For every $k \\geq 1$, there are infinitely many $n$ with $\\phi(n) = \\phi(n+1) = \\cdots = \\phi(n+k)$.\n\n**Known Results**:\n- OEIS A001274 lists first examples: 1, 3, 15, 104, 164, 194, 255, ...\n- EPS upper bound: Count ≤ x/exp((log x)^(1/3))\n- FLP lower bound: Count ≥ x^(1-ε) for any ε > 0",
     "text": "Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler totient function? Erdős conjectured yes, and made the stronger claim that φ(n) = φ(n+1) = ... = φ(n+k) has infinitely many solutions for every k ≥ 1.",
-    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining the solution set**: ConsecutiveEqualTotients = { n | φ(n) = φ(n+1) }\n\n2. **Stating the main conjecture**: ConsecutiveEqualTotients.Infinite\n\n3. **Verifying small examples**: Using native_decide to confirm n = 1, 3, 15, 104\n\n4. **Generalizing to k consecutive**: ConsecutiveKEqualTotients(k) for the stronger conjecture\n\n5. **Recording known bounds**: EPS upper bound and FLP lower bound as axioms\n\n6. **Documenting the triple 5186, 5187, 5188**: Three consecutive integers with equal totient",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining the solution set**: ConsecutiveEqualTotients = { n | φ(n) = φ(n+1) }\n\n2. **Stating the main conjecture**: ConsecutiveEqualTotients.Infinite (a `Prop` definition, not an axiom)\n\n3. **Verifying small examples**: Using kernel `decide` (axiom-free — no `native_decide`, so no dependency on `Lean.ofReduceBool`) to confirm n = 1, 3, 15, 104\n\n4. **Generalizing to k consecutive**: ConsecutiveKEqualTotients(k) for the stronger conjecture\n\n5. **Recording known bounds**: EPS upper bound and FLP lower bound documented in prose (not encoded as axioms — the file has 0 axioms)\n\n6. **Documenting the triple 5186, 5187, 5188**: Three consecutive integers with equal totient\n\n7. **Proving an axiom-free API**: nesting/antitonicity of the k-layers, `ConsecutiveKEqualTotients 1 = ConsecutiveEqualTotients`, counting-function monotonicity and its `≤ N+1` bound, and strong-conjecture ⟹ base-conjecture",
     "keyInsights": [
       "**Why consecutive coprime integers can match**: Although n and n+1 are coprime (so their prime factorizations are disjoint), the totient formula φ = Π(p-1)p^(k-1) can produce equal values from very different factorizations.",
       "**The 15/16 pattern**: φ(15) = φ(16) = 8 because 15 = 3×5 gives 2×4 = 8 while 16 = 2⁴ gives 2³ = 8. Powers of 2 matching products of small primes is a common pattern.",
       "**The 104/105 coincidence**: φ(104) = φ(105) = 48 from 104 = 2³×13 → 4×12 = 48 and 105 = 3×5×7 → 2×4×6 = 48.",
       "**Sparsity from EPS**: The bound x/exp((log x)^(1/3)) shows that among the first x integers, very few satisfy φ(n) = φ(n+1). This is much sparser than 1/√x or even 1/log x.",
       "**Connection to Carmichael's conjecture**: The related Carmichael's Totient Conjecture asks whether every value of φ is achieved at least twice. This is also open and would impact the likelihood of consecutive matches.",
-      "**OEIS A001274**: The sequence of solutions begins 1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, 5186, 5187, ..."
+      "**OEIS A001274**: The sequence of solutions begins 1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, 5186, 5187, ...",
+      "**Nested k-layers reduce the strong form to the base form**: the sets ConsecutiveKEqualTotients(k) are antitone in k (a longer equal run forces every shorter one), and ConsecutiveKEqualTotients(1) equals the base set ConsecutiveEqualTotients. This is proved axiom-free and yields strong_conjecture_imp_conjecture: infinitude of any k-layer for all k ≥ 1 implies infinitude of the base problem."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -78,72 +80,80 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 18,
-      "summary": "Problem statement, status, references, and OEIS link.",
-      "mathContext": "Mathematical content: Problem statement, status, references, and OEIS link."
+      "summary": "Problem statement (is $\\{n : \\varphi(n) = \\varphi(n+1)\\}$ infinite?), OPEN status, the Erdős–Pomerance–Sárközy sparsity bound, early solutions, and the OEIS A001274 link.",
+      "mathContext": "Header docstring framing Erdős Problem #1003: whether $\\varphi(n) = \\varphi(n+1)$ has infinitely many solutions, with the stronger $k$-consecutive form $\\varphi(n) = \\varphi(n+1) = \\cdots = \\varphi(n+k)$."
     },
     {
       "id": "background",
       "title": "Euler Totient Background",
-      "startLine": 28,
-      "endLine": 56,
-      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold.",
-      "mathContext": "Mathematical content: Properties of φ and when φ(n) = φ(n+1) can hold."
+      "startLine": 30,
+      "endLine": 57,
+      "summary": "Recalls the defining properties of $\\varphi$ — $\\varphi(1)=1$, $\\varphi(p)=p-1$, $\\varphi(p^k)=p^{k-1}(p-1)$, multiplicativity on coprimes — and explains why equal values on the coprime pair $(n, n+1)$ are a nontrivial constraint, with the small witnesses $n = 1, 3, 15, 104$.",
+      "mathContext": "Because $\\gcd(n, n+1) = 1$ the factorizations are disjoint, yet $\\varphi(n) = \\prod_p (p-1)p^{k_p - 1}$ can still coincide across the pair, e.g. $\\varphi(15) = \\varphi(16) = 8$."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 57,
-      "endLine": 74,
-      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture.",
-      "mathContext": "Formal definition: Definition of ConsecutiveEqualTotients and the open conjecture."
+      "title": "Solution Set and Main Conjecture",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "Defines `ConsecutiveEqualTotients = { n | φ n = φ (n+1) }` and states the open conjecture `erdos_1003_conjecture` as the proposition that this set is infinite.",
+      "mathContext": "Formal objects: the solution set $\\{n \\in \\mathbb{N} : \\varphi(n) = \\varphi(n+1)\\}$ and the conjecture that it is `Set.Infinite`. The conjecture is a `Prop` definition (not an axiom), so nothing is assumed."
     },
     {
       "id": "examples",
-      "title": "Verified Examples",
-      "startLine": 75,
-      "endLine": 112,
-      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104.",
-      "mathContext": "Mathematical content: Small cases verified with native_decide: n = 1, 3, 15, 104."
+      "title": "Verified Small Examples",
+      "startLine": 77,
+      "endLine": 100,
+      "summary": "Kernel-checked membership witnesses `1, 3, 15, 104 ∈ ConsecutiveEqualTotients`, each proved by `decide` after unfolding the set — axiom-free, so the file does not depend on `Lean.ofReduceBool`.",
+      "mathContext": "Each witness discharges $\\varphi(n) = \\varphi(n+1)$ by kernel evaluation: $\\varphi(1)=\\varphi(2)=1$, $\\varphi(3)=\\varphi(4)=2$, $\\varphi(15)=\\varphi(16)=8$, $\\varphi(104)=\\varphi(105)=48$."
     },
     {
       "id": "k-consecutive",
       "title": "Consecutive k Equal Values",
-      "startLine": 113,
-      "endLine": 132,
-      "summary": "The stronger conjecture about k consecutive equal totients.",
-      "mathContext": "Mathematical content: The stronger conjecture about k consecutive equal totients."
+      "startLine": 102,
+      "endLine": 120,
+      "summary": "Defines `ConsecutiveKEqualTotients k = { n | ∀ i ≤ k, φ n = φ (n+i) }` and the stronger conjecture `erdos_1003_strong_conjecture`: for every k ≥ 1 this set is infinite.",
+      "mathContext": "The $k$-layer set encodes runs $\\varphi(n) = \\varphi(n+1) = \\cdots = \\varphi(n+k)$; Erdős conjectured each layer $k \\ge 1$ has infinitely many members."
     },
     {
       "id": "eps-bound",
-      "title": "EPS Upper Bound",
-      "startLine": 133,
-      "endLine": 157,
-      "summary": "The Erdős-Pomerance-Sárközy sparsity result.",
-      "mathContext": "Mathematical content: The Erdős-Pomerance-Sárközy sparsity result."
+      "title": "EPS Upper Bound and Counting Function",
+      "startLine": 122,
+      "endLine": 136,
+      "summary": "States the Erdős–Pomerance–Sárközy sparsity result — at most $x/\\exp((\\log x)^{1/3})$ solutions up to $x$ — and defines the counting function `countConsecutiveEqual N` over `Finset.range (N+1)`.",
+      "mathContext": "The EPS bound $\\#\\{n \\le x : \\varphi(n) = \\varphi(n+1)\\} \\le x/\\exp((\\log x)^{1/3})$ shows the set, even if infinite, has density $0$; `countConsecutiveEqual` gives the Lean-side finite count."
+    },
+    {
+      "id": "related-questions",
+      "title": "OEIS Values and Related Totient Questions",
+      "startLine": 138,
+      "endLine": 178,
+      "summary": "Lists the OEIS A001274 sequence (noting 5186, 5187 are consecutive members, forcing a triple) and records related open questions — Carmichael's Totient Conjecture (defined as `carmichael_totient_conjecture`), totient valence, and the distribution of $\\varphi$.",
+      "mathContext": "Carmichael's conjecture $\\forall n \\ge 1,\\ \\exists m \\ne n,\\ \\varphi(m) = \\varphi(n)$ (every totient value has multiplicity $\\ge 2$) governs how readily consecutive values can coincide."
     },
     {
       "id": "examples-detail",
       "title": "Understanding the Examples",
-      "startLine": 197,
-      "endLine": 232,
-      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105).",
-      "mathContext": "Mathematical content: Why φ(15) = φ(16) and φ(104) = φ(105)."
+      "startLine": 180,
+      "endLine": 206,
+      "summary": "Explains the arithmetic behind the coincidences — $\\varphi(15)=\\varphi(16)$ and $\\varphi(104)=\\varphi(105)$ — via a power of 2 matching a product of small primes, backed by the kernel-checked value lemmas `totient_fifteen/sixteen/oneOhFour/oneOhFive`.",
+      "mathContext": "$\\varphi(15)=\\varphi(3)\\varphi(5)=2\\cdot4=8=2^3=\\varphi(16)$; $\\varphi(104)=4\\cdot12=48=2\\cdot4\\cdot6=\\varphi(105)$ — each a power-of-two totient matching a product of $(p-1)$ factors."
     },
     {
       "id": "triple",
-      "title": "The Consecutive Triple",
-      "startLine": 233,
-      "endLine": 255,
-      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient.",
-      "mathContext": "Mathematical content: Three consecutive integers 5186, 5187, 5188 with equal totient."
+      "title": "The Consecutive Triple and FLP Lower Bound",
+      "startLine": 208,
+      "endLine": 235,
+      "summary": "Documents the triple $\\varphi(5186)=\\varphi(5187)=\\varphi(5188)=1728$ with its factorizations, and the Ford–Luca–Pomerance lower bound of $x^{1-\\varepsilon}$ solutions up to $x$ (which would imply infinitude, though the question stays formally open).",
+      "mathContext": "The triple sits at $5186 = 2\\cdot2593$, $5187 = 3\\cdot7\\cdot13\\cdot19$, $5188 = 2^2\\cdot1297$; FLP give $\\#\\{n \\le x\\} \\ge x^{1-\\varepsilon}$, bracketing EPS from below."
     },
     {
-      "id": "flp-bound",
-      "title": "FLP Lower Bound",
-      "startLine": 256,
-      "endLine": 261,
-      "summary": "Ford-Luca-Pomerance result suggesting infinitude.",
-      "mathContext": "Mathematical content: Ford-Luca-Pomerance result suggesting infinitude."
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (axiom-free)",
+      "startLine": 237,
+      "endLine": 314,
+      "summary": "The axiom-free API proved for the definitions: membership characterisation; the degenerate layer `ConsecutiveKEqualTotients 0 = univ`; the identification `ConsecutiveKEqualTotients 1 = ConsecutiveEqualTotients`; antitonicity of the k-layers and their containment in the base set; monotonicity of `countConsecutiveEqual` and its `≤ N + 1` bound; and that the strong conjecture implies the base conjecture.",
+      "mathContext": "Fully machine-checked (`#print axioms` = propext/Classical.choice/Quot.sound only): the layers are nested $\\text{CK}(l) \\subseteq \\text{CK}(k)$ for $k \\le l$, so `strong_conjecture_imp_conjecture` extracts the base case $k=1$ from the strong form."
     }
   ],
   "conclusion": {
