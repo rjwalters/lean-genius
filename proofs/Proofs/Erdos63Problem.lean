@@ -95,6 +95,13 @@ def InfGraph.inducedSubgraph (G : InfGraph V) (S : Set V) : InfGraph S where
   symm := fun u v h => G.symm u.val v.val h
   loopless := fun v => G.loopless v.val
 
+/-- `G` contains a cycle of length `k ≥ 3` **using its own adjacency**: an
+injective tuple of `k` vertices, consecutive (cyclically) ones adjacent in `G`.
+This ties the cycle to `G`, unlike an arbitrary graph on a vertex subset. -/
+def InfGraph.ContainsCycleLength (G : InfGraph V) (k : ℕ) : Prop :=
+  ∃ (_ : k ≥ 3) (vs : Fin k → V), Function.Injective vs ∧
+    ∀ i : Fin k, G.Adj (vs i) (vs (Fin.succMod (by omega : 0 < k) i))
+
 /- 
 **de Bruijn-Erdős Theorem**:
 If an infinite graph G has infinite chromatic number, then for every k,
@@ -144,8 +151,7 @@ the graph contains a cycle of length 2^n.
 -/
 def erdos_63_statement (G : InfGraph V) : Prop :=
   G.HasInfiniteChromaticNumber →
-    ∀ N : ℕ, ∃ n ≥ N, ∃ (S : Finset V) (H : SimpleGraph S),
-      ContainsCycleLength H (2^n)
+    ∀ N : ℕ, ∃ n ≥ N, G.ContainsCycleLength (2^n)
 
 /--
 **Main Theorem**: Erdős Problem 63 is true.
@@ -167,8 +173,7 @@ arbitrarily large powers of 2.
 -/
 theorem infinitely_many_power_cycles (G : InfGraph V)
     (hχ : G.HasInfiniteChromaticNumber) :
-    ∀ N : ℕ, ∃ n ≥ N, ∃ (S : Finset V) (H : SimpleGraph S),
-      ContainsCycleLength H (2^n) :=
+    ∀ N : ℕ, ∃ n ≥ N, G.ContainsCycleLength (2^n) :=
   erdos_63_theorem G hχ
 
 /- 
@@ -184,8 +189,7 @@ such as n² or even n log n.
 -/
 def generalized_conjecture (f : ℕ → ℕ) : Prop :=
   ∀ (W : Type) (G : InfGraph W), G.HasInfiniteChromaticNumber →
-    ∀ N : ℕ, ∃ n ≥ N, ∃ (S : Finset W) (H : SimpleGraph S),
-      ContainsCycleLength H (f n)
+    ∀ N : ℕ, ∃ n ≥ N, G.ContainsCycleLength (f n)
 
 /-- Squares form a strictly increasing sequence (for reference). -/
 theorem squares_strictly_increasing (n : ℕ) : (n + 2)^2 < (n + 3)^2 := by
