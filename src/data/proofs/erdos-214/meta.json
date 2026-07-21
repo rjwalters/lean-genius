@@ -98,7 +98,7 @@
     "historicalContext": "**Unit Distance Free Sets: Geometric Ramsey Theory in the Plane**\n\nErdős posed Problem #214 in 1983, asking about the geometric consequences of avoiding a single distance. The question lies at the heart of combinatorial geometry: what structure must the complement of a 'sparse' set possess?\n\n**The Unit Distance Graph**\n\nThe unit distance graph G₁(ℝ²) has all points of ℝ² as vertices and edges connecting pairs at distance 1. A unit-distance-free set is an independent set in this graph. The chromatic number χ(ℝ²) — the minimum colors needed so each color class is unit-distance-free — is the Hadwiger-Nelson problem: 5 ≤ χ(ℝ²) ≤ 7 (de Grey 2018 for the lower bound, hexagonal tiling for the upper).\n\n**Juhász's Resolution (1979)**\n\nRóbert Juhász proved a much stronger result than Erdős asked for: if S avoids unit distances, then Sᶜ contains a congruent copy of ANY 4-point configuration — not just unit squares. The proof uses the key observation that for each p ∈ S, the entire unit circle centered at p lies in Sᶜ, providing an abundance of points to build configurations from.\n\n**The Proof Strategy**\n\nFor any 4-point configuration P = {p₁, p₂, p₃, p₄}: Choose any point in S. Its unit circle (in Sᶜ) provides a 1-parameter family of candidate locations. The configuration has 8 degrees of freedom (4 points in ℝ²) minus 3 for rigid motions = 5 intrinsic degrees. The unit circles in Sᶜ provide enough flexibility (continuous families of points) to realize any 4-point configuration.\n\n**Limitations and Open Questions**\n\nThe result breaks down for large n-point configurations: there exist unit-distance-free sets whose complements miss certain n-point patterns. The critical threshold n is unknown. The 5-point case — whether ALL 5-point configurations must appear in Sᶜ — remains open since 1979.",
     "problemStatement": "Let S ⊂ ℝ² be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?\n\n**Answer:** YES (Juhász, 1979). More generally, Sᶜ contains a congruent copy of any 4-point configuration.",
     "text": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean file (237 lines) is organized into ten labelled parts; several are prose section headers that carry no formal content in the current trimmed file.\n\n1. **Basic definitions**: Plane (EuclideanSpace ℝ (Fin 2)), dist (‖p-q‖), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement; juhasz_1979 is now a *derived theorem* (`juhasz_1979 := unit_square_from_stronger juhasz_stronger`), no longer an axiom; erdos_214_solved := juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n → Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem (axiom juhasz_stronger) for n=4, unit_square_from_stronger (FULLY PROVED: the standard unit square, encoded as PointSet 4, is transported into the complement by Juhász's isometry)\n\n4. **Limitations**: HoldsFor5Points (open question, stated as a Prop only)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED via ext/simp)\n\n6. **Proof techniques**: section header only — the geometric argument is described in prose, not formalized\n\n7. **Examples**: ScaledLattice = √2·ℤ² is defined as a candidate unit-distance-free set (the unit-free property is not formally proved)\n\n8–9. **Related problems / Geometric intuition**: section headers only\n\n10. **Summary**: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩ (reductions to the single juhasz_stronger axiom)\n\n**What is Proved vs Axiomatized**\n\n- **Proved (sorry-free)**: unit_distance_free_iff_no_edges (graph characterization), unit_square_from_stronger (derives Erdos214Statement from JuhaszStrongerTheorem via the standard unit square and Juhász's isometry), erdos_214_solved, erdos_214_status, erdos_214_summary, and juhasz_1979 — all reductions to the single juhasz_stronger axiom\n- **Axiomatized (1 axiom)**: juhasz_stronger (juhasz_1979 is now *derived* from it, not assumed)\n\nThe file is now sorry-free (0 sorries); the only assumption is the single Juhász 4-point axiom juhasz_stronger.",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file is organized into twelve labelled parts; the later parts (11–12) carry the verified metric/lattice groundwork, while a few early parts (6, 8, 9) are prose section headers with no formal content.\n\n1. **Basic definitions**: Plane (EuclideanSpace ℝ (Fin 2)), dist (‖p-q‖), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement; juhasz_1979 is now a *derived theorem* (`juhasz_1979 := unit_square_from_stronger juhasz_stronger`), no longer an axiom; erdos_214_solved := juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n → Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem (axiom juhasz_stronger) for n=4, unit_square_from_stronger (FULLY PROVED: the standard unit square, encoded as PointSet 4, is transported into the complement by Juhász's isometry)\n\n4. **Limitations**: HoldsFor5Points (open question, stated as a Prop only)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED via ext/simp)\n\n6. **Proof techniques**: section header only — the geometric argument is described in prose, not formalized\n\n7. **Examples**: ScaledLattice = √2·ℤ² (and the parametric ScaledLatticeGen c) is defined and PROVED unit-distance-free (scaledLattice_unitDistanceFree, scaledLatticeGen_unitDistanceFree for c² > 1)\n\n11. **Metric helpers**: dist_self/dist_comm and unit-square structure lemmas (isometry-invariance, distinct corners)\n\n12. **Coordinate metric & infinitude**: dist_nonneg/dist_triangle, scaledLattice_infinite, and no_maximum_unitDistanceFree_card — unit-distance-free sets of every finite size exist\n\n8–9. **Related problems / Geometric intuition**: section headers only\n\n10. **Summary**: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩ (reductions to the single juhasz_stronger axiom)\n\n**What is Proved vs Axiomatized**\n\n- **Proved (sorry-free)**: unit_distance_free_iff_no_edges (graph characterization), unit_square_from_stronger (derives Erdos214Statement from JuhaszStrongerTheorem via the standard unit square and Juhász's isometry), erdos_214_solved, erdos_214_status, erdos_214_summary, and juhasz_1979 — all reductions to the single juhasz_stronger axiom\n- **Axiomatized (1 axiom)**: juhasz_stronger (juhasz_1979 is now *derived* from it, not assumed)\n\nThe file is now sorry-free (0 sorries); the only assumption is the single Juhász 4-point axiom juhasz_stronger.",
     "keyInsights": [
       "For any p ∈ S (unit-distance-free), the entire unit circle {q : ‖p-q‖ = 1} lies in Sᶜ — this provides continuous families of complement points to build configurations from",
       "Juhász's result is much stronger than the original question: ALL 4-point configurations appear in Sᶜ, not just unit squares. The 4-point threshold is sharp — the result fails for large n",
@@ -117,30 +117,30 @@
       "title": "Problem Statement",
       "summary": "Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations.",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 36,
       "mathContext": "Mathematical content: Docstring introducing Erdős Problem #214 (1983): unit-distance-free S implies Sᶜ contains unit square? Answered YES by Juhász (1979) with the stronger result covering all 4-point configurations."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S forming a unit square).",
-      "startLine": 36,
-      "endLine": 62,
+      "startLine": 37,
+      "endLine": 63,
       "mathContext": "Defines Plane = EuclideanSpace ℝ (Fin 2), dist = ‖p-q‖, IsUnitDistanceFree (no pair at distance 1), IsUnitSquare (4 edges length 1, 2 diagonals length √2), ContainsUnitSquare (∃ four points in S forming a unit square)."
     },
     {
       "id": "main-statement",
       "title": "Main Statement and Solution",
       "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. juhasz_1979 is derived from juhasz_stronger via unit_square_from_stronger; erdos_214_solved := juhasz_1979.",
-      "startLine": 63,
-      "endLine": 78,
+      "startLine": 64,
+      "endLine": 79,
       "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare Sᶜ. juhasz_1979 is derived from juhasz_stronger via unit_square_from_stronger; erdos_214_solved := juhasz_1979."
     },
     {
       "id": "stronger-version",
       "title": "Stronger Version: Any 4-Point Set",
       "summary": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_square_from_stronger is fully proved (explicit standard unit square as PointSet 4, transported by Juhász's isometry).",
-      "startLine": 79,
+      "startLine": 80,
       "endLine": 157,
       "mathContext": "Defines PointSet n = Fin n → Plane and ContainsCongruentCopy (via distance-preserving map f with image in S). JuhaszStrongerTheorem: ∀ S unit-free, ∀ P : PointSet 4, Sᶜ contains congruent copy. unit_square_from_stronger is fully proved (explicit standard unit square as PointSet 4, transported by Juhász's isometry)."
     },
@@ -171,10 +171,34 @@
     {
       "id": "examples",
       "title": "Examples and Constructions",
-      "summary": "Defines ScaledLattice = √2·ℤ² as a candidate unit-distance-free set (distance between lattice points is √(2·integer), never 1 since 1/2 is not a sum of two integer squares); the unit-free property is stated in the comment but not formally proved. Part 10 summary: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩.",
+      "summary": "Part 7 constructs an explicit unit-distance-free set and now PROVES the property. ScaledLattice = √2·ℤ² and its parametric generalization ScaledLatticeGen c are defined, and scaledLattice_unitDistanceFree / scaledLatticeGen_unitDistanceFree (for c² > 1) establish that no two lattice points are at distance 1 — the squared distance is 2·(sum of two integer squares), which cannot equal 1. scaledLattice_eq_gen identifies the two by rfl.",
       "startLine": 195,
-      "endLine": 219,
-      "mathContext": "Defines ScaledLattice = √2·ℤ² as a candidate unit-distance-free set (distance between lattice points is √(2·integer), never 1 since 1/2 is not a sum of two integer squares); the unit-free property is stated in the comment but not formally proved. Part 10 summary: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩."
+      "endLine": 265,
+      "mathContext": "$\\sqrt2\\cdot\\mathbb{Z}^2$: for lattice points $\\|p-q\\|^2 = 2(m^2+n^2) \\in \\{0,2,4,\\dots\\}$, never $1$, so it is unit-distance-free — and its complement (almost all of $\\mathbb{R}^2$) trivially contains unit squares."
+    },
+    {
+      "id": "related-intuition-summary",
+      "title": "Related Problems, Geometric Intuition, and Status Summary",
+      "summary": "Parts 8–10. Prose on related problems (Hadwiger–Nelson, other forbidden-distance questions) and the geometric intuition behind Juhász's argument (each p ∈ S contributes its whole unit circle to Sᶜ), followed by the status theorems: erdos_214_status := juhasz_1979, erdos_214_summary bundling ⟨juhasz_1979, juhasz_stronger⟩, and the string erdos_214_status_str — all reductions to the single juhasz_stronger axiom.",
+      "startLine": 266,
+      "endLine": 309,
+      "mathContext": "Status: the problem is SOLVED (Juhász 1979), formalized as a reduction to the single 4-point axiom juhasz_stronger; erdos_214_status and erdos_214_summary certify this."
+    },
+    {
+      "id": "metric-helpers",
+      "title": "Metric Helpers and Structural Facts about Unit Squares",
+      "summary": "Part 11. Verified metric groundwork on Plane: dist_self, dist_comm, then isUnitSquare_of_isometry (a unit square maps to a unit square under any isometry), IsUnitSquare.distinct (the four corners are pairwise distinct), and complement_contains_distinct_unit_square (the complement's unit square has distinct vertices) — the structural lemmas underpinning the transport of configurations into Sᶜ.",
+      "startLine": 310,
+      "endLine": 374,
+      "mathContext": "Isometry invariance: $\\mathrm{IsUnitSquare}(p_1,p_2,p_3,p_4) \\Rightarrow \\mathrm{IsUnitSquare}(f p_1,\\dots,f p_4)$ for distance-preserving $f$; corners are pairwise distinct."
+    },
+    {
+      "id": "coordinate-metric-infinitude",
+      "title": "The Coordinate Distance is a Genuine Metric; the Scaled Lattice is Infinite",
+      "summary": "Part 12, the verified core of the sparseness theory. dist_nonneg and dist_triangle confirm the coordinate distance is a genuine metric. scaledLattice_horiz_mem and scaledLattice_infinite show √2·ℤ² is infinite. IsUnitDistanceFree.mono (subsets of unit-free sets are unit-free), IsUnitDistanceFree.image_of_isometry and .translate (unit-freeness is isometry/translation invariant), and — the punchline — exists_unitDistanceFree_finset_card and no_maximum_unitDistanceFree_card: there exist unit-distance-free sets of every finite cardinality, so there is no largest one. This is the fully machine-checked content quantifying how large a unit-distance-free set can be.",
+      "startLine": 375,
+      "endLine": 488,
+      "mathContext": "$\\sqrt2\\cdot\\mathbb{Z}^2$ is infinite and unit-distance-free; unit-freeness is closed under subsets and isometries, and unit-free sets of arbitrarily large finite size exist (no maximum)."
     }
   ],
   "conclusion": {
