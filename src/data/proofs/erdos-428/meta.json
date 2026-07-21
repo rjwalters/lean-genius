@@ -187,15 +187,15 @@
       "id": "finite-density-zero",
       "title": "Finite Sets Have Zero Prime Density",
       "startLine": 163,
-      "endLine": 186,
+      "endLine": 203,
       "summary": "Proves `finite_set_zero_density`: a finite set $A$ has $\\liminf \\text{primeDensityRatio}(A, n) = 0$. The squeeze argument: $0 \\leq \\text{ratio} \\leq |A|/\\pi(n)$, and $|A|/\\pi(n) \\to 0$ since $\\pi(n) \\to \\infty$.",
       "mathContext": "For finite $A$ with $|A| = M$: $|A \\cap [1,n]|/\\pi(n) \\leq M/\\pi(n) \\to 0$. This uses `squeeze_zero` and the prime counting divergence."
     },
     {
       "id": "requires-infinite",
       "title": "Problem #428 Requires an Infinite Set",
-      "startLine": 188,
-      "endLine": 196,
+      "startLine": 204,
+      "endLine": 215,
       "summary": "Proves `erdos428_requires_infinite`: any set satisfying Problem #428 (positive prime density of all-prime offsets) must be infinite. By contradiction: a finite set has zero density (from `finite_set_zero_density`), contradicting the positive liminf.",
       "mathContext": "The proof: if $A$ were finite, $\\liminf \\text{primeDensityRatio} = 0$ by the squeeze lemma, contradicting $\\liminf > 0$. So any solution $A$ must be infinite."
     }
