@@ -4,6 +4,51 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-21 (researcher-1) — upper bound `g(6) ≤ 3` (regular pentagon + circumcentre)
+
+**Mode**: continue RICH node (g(5)=2 was the previous milestone). **Outcome**:
+progress — added the next rung of the exact table, `g(6) ≤ 3`, Docker-verified
+(`Proofs.Erdos89WIP01`, 8577 jobs), all new decls `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` (0 sorry / 0 axiom).
+
+### What I added (`proofs/Proofs/Erdos89WIP01.lean`, +~150 lines)
+- `pentCenter := !₂[0,0]` — the circumcentre of the (circumradius-4) regular pentagon.
+- `dist_centerP0..4 : Erdos89.dist pentCenter pentPᵢ = 4` — each vertex is at the
+  circumradius from the centre. `rw [pentCenter, pentPᵢ, dist_eqPts]` then rewrite the
+  radicand to `4^2` by `linear_combination pent_s_sq (+ pent_t1_sq | + pent_t2_sq)`,
+  finish `Real.sqrt_sq`. (P0 needs no `linear_combination`, just `norm_num`.)
+- `pentCenter_ne_pentPᵢ` — centre distinct from each vertex (norm 4 ≠ 0), by a coord
+  projection + `Real.sqrt_nonneg`/`sqrt_pos`.
+- `pentagonPlusCenter` (6 points) + `pentagonPlusCenter_card = 6`.
+- `numDistinctDistances_pentagonPlusCenter_le_three` — the 15 pairwise distances lie in
+  `{√(40−8√5), √(40+8√5), 4}`, mirroring the g(5) `numDistinctDistances_pentagon_le_two`
+  proof but with a 6×6 `rcases` and the 3-element target set. **Needed
+  `set_option maxHeartbeats 1600000 in` (before the docstring)** — the 36-case ×
+  ~30-alternative `first |` combinator overruns the 200000 default (isDefEq/whnf timeout).
+- `minDistinctDistances_six_le_three : g(6) ≤ 3` (via `minDistinctDistances_le_of_card_eq`).
+- `minDistinctDistances_six_mem_Icc : g(6) ∈ [2,3]` — floor from monotonicity
+  `g(6) ≥ g(5) = 2` (`minDistinctDistances_mono`), ceiling the pentagon+centre witness.
+
+### Key findings / reusable recipe
+- **Centre-to-vertex = circumradius reuse**: the pentagon+centre config recycles ALL ten
+  g(5) side/diagonal distance lemmas; only the 5 spokes are new, and they collapse to the
+  single value `4` because each vertex has norm exactly `4` (radicand → `16 = 4²`).
+- The `first |`-combinator distance-dispatch scales O(pairs × alternatives): 5-pt pentagon
+  (25×20) fits default heartbeats, 6-pt (36×30) does NOT — bump to ~1.6M.
+
+### Why only the upper bound (the remaining gap)
+- `g(6) = 3` is conjectural; the matching **lower bound `g(6) ≥ 3`** is equivalent to the
+  SHARP planar statement "a two-distance set in `ℝ²` has ≤ 5 points" (Kelly/Erdős). The
+  elementary Larman–Rogers–Seidel rank bound only gives `≤ (d+1)(d+2)/2 = 6` for `d=2`,
+  which does NOT exclude a 6-point two-distance set — so `g(6) ≥ 3` needs the extra
+  Blokhuis-type refinement and is left open (documented in the file docstring).
+
+### Next steps
+- `g(6) ≥ 3` via the sharp two-distance ≤ 5 bound (deep).
+- `√n×√n` integer grid toward the conjectured `Θ(n/√(log n))` rate.
+
+---
+
 ## Problem Understanding
 
 [Initial observations about the problem will be recorded here]
