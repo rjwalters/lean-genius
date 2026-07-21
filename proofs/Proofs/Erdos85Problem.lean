@@ -297,4 +297,47 @@ theorem minDegreeForC4_le_sub_one {n : ℕ} (hn : 4 ≤ n) :
   rw [eq_top_of_minDegree_ge G hmin]
   exact completeGraph_containsC4 hn
 
+/-- **The star has minimum degree at least `1`.**  In `K_{1,n}` on `Fin (n+1)` the
+centre `0` is adjacent to every leaf and each leaf is adjacent to the centre, so
+no vertex is isolated: `1 ≤ minDegree`. -/
+theorem one_le_starGraph_minDegree {n : ℕ} (hn : 1 ≤ n) :
+    1 ≤ (starGraph n).minDegree := by
+  classical
+  obtain ⟨v, hv⟩ := (starGraph n).exists_minimal_degree_vertex
+  rw [hv, ← SimpleGraph.card_neighborFinset_eq_degree, Finset.one_le_card]
+  rcases eq_or_ne v 0 with hv0 | hv0
+  · -- the centre is adjacent to the leaf `1`
+    refine ⟨⟨1, by omega⟩, ?_⟩
+    rw [SimpleGraph.mem_neighborFinset]
+    subst hv0
+    exact Or.inl ⟨rfl, by simp [Fin.ext_iff]⟩
+  · -- a leaf is adjacent to the centre `0`
+    refine ⟨0, ?_⟩
+    rw [SimpleGraph.mem_neighborFinset]
+    exact Or.inr ⟨rfl, hv0⟩
+
+/-- **A matching lower bound on `f(n)`.**  For `n ≥ 3`, `2 ≤ minDegreeForC4 (n+1)`:
+the star `K_{1,n}` on `Fin (n+1)` is `C₄`-free (`starGraph_not_containsC4`) yet has
+minimum degree `≥ 1` (`one_le_starGraph_minDegree`), so no threshold `k ≤ 1` can
+force a `C₄` — witnessing that `0, 1 ∉` the defining set.  Together with the upper
+bound `minDegreeForC4 n ≤ n − 1` this brackets `2 ≤ f(n+1) ≤ n`, and in particular
+pins the base case lower half `f(4) ≥ 2` (the true value is `f(4) = 2`). -/
+theorem two_le_minDegreeForC4 {n : ℕ} (hn : 3 ≤ n) :
+    2 ≤ minDegreeForC4 (n + 1) := by
+  classical
+  have hfree : ¬ containsC4 (Fin (n + 1)) (starGraph n) := starGraph_not_containsC4 n
+  have hstar : 1 ≤ (starGraph n).minDegree := one_le_starGraph_minDegree (by omega)
+  -- The threshold set is nonempty: full min-degree forces the complete graph, hence `C₄`.
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin (n + 1))) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin (n + 1)) G}.Nonempty := by
+    refine ⟨n, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G (by simpa using hmin)]
+    exact completeGraph_containsC4 (by omega)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  -- any threshold `k` in the set is `≥ 2`: else the star (min-degree `≥ 1`) forces a `C₄`.
+  by_contra hk2
+  push_neg at hk2
+  exact hfree (hk (starGraph n) (le_trans (by omega : k ≤ 1) hstar))
+
 end Erdos85
