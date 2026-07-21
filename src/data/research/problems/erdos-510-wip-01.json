@@ -36,7 +36,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "The average-zero fact ⨍ cosineSum A = 0 for A ⊂ ℕ⁺ (∫₀^{2π} cos(nθ)dθ = 0) giving minCosineSum A ≤ 0; then work toward the deep −c√N lower bound (the open target).",
+    "nextAction": "The deep -c*sqrt(N) lower bound (Chowla conjecture regime) stays imported. Elementary sign/attainment layer now covers: attained minimum, two-sided bounds, minCosineSum{n}=-1, and minCosineSum<=0 (this session).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos510WIP01.lean now proves the Chowla cosine-sum minimum is ATTAINED (exists_eq_minCosineSum: ∃ θ₀, cosineSum A θ₀ = minCosineSum A), upgrading minCosineSum from an iInf to an attained minimum. Via 2π-periodicity (Function.Periodic.image_Icc) the range equals the image of the compact [0,2π], where continuity gives a minimizer (IsCompact.exists_isMinOn). 18 theorems, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker. The deep −c√N conjecture remains the open target.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, print axioms = propext/Classical.choice/Quot.sound): minCosineSum A <= 0 for positive-frequency sets (0 not in A), via integral over full period = 0 (integral_cosineSum_eq_zero) and constant <= pointwise. Prior work: minCosineSum attained (exists_eq_minCosineSum), two-sided bounds, minCosineSum{n}=-1. Remaining: sharp -c*sqrt(N) bound (deep: Bourgain/Ruzsa/Bedert) and the Sidon sqrt(N)-optimality example.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -53,21 +53,26 @@
       "abs_cosineSum_le_card, cosineSum_le_card, neg_card_le_cosineSum",
       "bddBelow_range_cosineSum, minCosineSum_le, neg_card_le_minCosineSum, minCosineSum_le_card, minCosineSum_empty",
       "minCosineSum_singleton (= −1 for n ≥ 1)",
-      "exists_eq_minCosineSum (Erdos510WIP01.lean): the infimum minCosineSum A is attained at a concrete angle, via periodicity + compactness of [0,2π] (2026-07-20)"
+      "exists_eq_minCosineSum (Erdos510WIP01.lean): the infimum minCosineSum A is attained at a concrete angle, via periodicity + compactness of [0,2π] (2026-07-20)",
+      "integral_cos_mul_eq_zero: integral over 0..2pi of cos(n*theta) = 0 for n>=1 (Erdos510WIP01.lean)",
+      "integral_cosineSum_eq_zero: integral over 0..2pi of cosineSum A = 0 when 0 not in A",
+      "minCosineSum_nonpos: minCosineSum A <= 0 for positive-frequency sets (0 not in A)"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
       "minCosineSum {n} = −1 exactly (attained at θ = π/n), showing single-frequency sets are the most negative possible relative to size — the difficulty is genuinely a many-frequency cancellation phenomenon.",
       "Continuity + 2π-periodicity make minCosineSum an attained minimum, not merely an infimum; formalizing attainment is the natural next structural step.",
-      "The θ=0 value N and θ=π value ∑(−1)ⁿ give cheap explicit witnesses bracketing the infimum."
+      "The θ=0 value N and θ=π value ∑(−1)ⁿ give cheap explicit witnesses bracketing the infimum.",
+      "minCosineSum A <= 0 for 0 not in A: the average of cosineSum over a full period is 0, and minCosineSum is a pointwise lower bound, so integrating the constant gives 2pi*minCosineSum <= 0. This is the elementary sign fact behind Chowla (a positive-frequency cosine sum must dip to 0 or below).",
+      "Integral technique: intervalIntegral.integral_comp_mul_left (c!=0) reduces cos(n*theta) to n-inverse-scaled integral_cos = sin(n*2pi)-sin 0 = 0 (via Real.sin_nat_mul_pi with n*2pi = (2n)*pi); intervalIntegral.integral_finsetSum swaps finite sum and integral (each term Continuous.intervalIntegrable); intervalIntegral.integral_mono_on hab hf hg h + integral_const gives (2pi)*c bound; nlinarith [Real.two_pi_pos]. NOTE: needs imports Analysis.SpecialFunctions.Integrals.Basic + MeasureTheory.Integral.IntervalIntegral.Basic (the file did NOT import Mathlib fully)."
     ],
     "mathlibGaps": [
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
     ],
     "nextSteps": [
-      "Formalize attainment: ∃ θ, cosineSum A θ = minCosineSum A via continuity on [0,2π] + periodicity.",
-      "For A ⊂ ℕ⁺, prove minCosineSum A ≤ 0 via ∫_0^{2π} cosineSum A = 0 (each ∫cos(nθ)=0 for n≥1).",
-      "Formalize the Sidon-set difference-set example showing √N optimality (harder)."
+      "minCosineSum A < 0 STRICT for nonempty positive-frequency A (the <=0 result plus ruling out the identically-zero case; needs cosineSum not constant 0, e.g. value N at theta=0).",
+      "The sharp -c*sqrt(N) bound (Chowla) stays a deep imported result (Bourgain/Ruzsa/Bedert).",
+      "Sidon-set difference-set example for sqrt(N) optimality (harder)."
     ],
     "markdown": "# Knowledge Base: erdos-510-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational cosine-sum scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos510Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos510WIP01.lean` (16 theorems) establishing the elementary structure of the Chowla cosine sum `cosineSum A θ = ∑_{n∈A} cos(nθ)` and its infimum `minCosineSum A = ⨅_θ cosineSum A θ`:\n- **Evaluation**: `cosineSum_empty`, `cosineSum_singleton`, `cosineSum_insert`, `cosineSum_zero_angle` (`= N`), `cosineSum_pi` (`= ∑(−1)ⁿ`).\n- **Symmetry / periodicity**: `cosineSum_neg` (even), `cosineSum_add_two_pi` (2π-periodic).\n- **Continuity**: `continuous_cosineSum`.\n- **Two-sided bound**: `abs_cosineSum_le_card` (`|·| ≤ N`), `cosineSum_le_card`, `neg_card_le_cosineSum`.\n- **Infimum**: `bddBelow_range_cosineSum`, `minCosineSum_le`, `neg_card_le_minCosineSum`, `minCosineSum_le_card`, `minCosineSum_empty`, and the exact value `minCosineSum_singleton` (`= −1` for `n ≥ 1`).\n\n### Key findings\n- The cosine sum lives in `[−N, N]`; the conjectured extremum `−c√N` is strictly interior, so every elementary bound is far from the truth — the mathematics is entirely in the cancellation.\n- `minCosineSum {n} = −1` exactly (attained at `θ = π/n`): single-frequency sets are maximally negative per size, so the `−c√N` difficulty is a genuine many-frequency phenomenon.\n\n### Reusable Lean recipe\n- Periodicity per term: `Real.cos_add_nat_mul_two_pi (n*θ) n` after `ring`-rewriting `n·(θ+2π) = n·θ + n·(2π)`.\n- `θ=π` collapse: `Real.cos_nat_mul_pi n : cos(n·π) = (−1)ⁿ`.\n- Infimum bounds in ℝ: `ciInf_le (bddBelow …) θ` and `le_ciInf (fun θ => …)` (index `ℝ` is `Nonempty`); bound the range below by `−N` via `neg_card_le_cosineSum`.\n- `|cos| ≤ 1` without `Analysis.Complex.Trigonometric`: `abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩`.\n- Continuity of a partially-applied `def`: `show Continuous (fun θ => …)` (not `simp only [def]`, which makes no progress under `Continuous`), then `continuous_finsetSum`.\n\n### Next steps\n- Attainment: `∃ θ, cosineSum A θ = minCosineSum A` (continuity on `[0,2π]` + periodicity).\n- `minCosineSum A ≤ 0` for `A ⊂ ℕ⁺` via `∫_0^{2π} cosineSum A = 0`.\n\n### Still open (unchanged)\nThe `−c√N` lower bound (Chowla's conjecture) — deep; Bedert (2025) reached `−cN^{1/7}`, the `N^{1/7}`↔`N^{1/2}` gap is open.\n"
   },

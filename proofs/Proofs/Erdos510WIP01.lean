@@ -30,6 +30,8 @@ Reference: <https://erdosproblems.com/510>
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Indexed
 import Proofs.Erdos510Problem
@@ -167,5 +169,50 @@ theorem exists_eq_minCosineSum (A : Finset ℕ) :
   obtain ⟨y, hy, hyeq⟩ := hmem
   rw [← hyeq]
   exact isMinOn_iff.mp hmin y hy
+
+/-! ## The minimum is nonpositive for positive-frequency sets
+
+For a set `A` of *positive* frequencies (`0 ∉ A`), each term `cos(nθ)` integrates to `0`
+over a full period, so `∫₀^{2π} cosineSum A = 0`. Since `minCosineSum A` is a pointwise
+lower bound, integrating the constant gives `2π · minCosineSum A ≤ 0`, whence
+`minCosineSum A ≤ 0`. This is the elementary sign fact behind the Chowla problem: a
+positive-frequency cosine sum must dip to `0` or below somewhere. -/
+
+/-- A single positive-frequency cosine integrates to zero over a full period. -/
+theorem integral_cos_mul_eq_zero {n : ℕ} (hn : 1 ≤ n) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((n : ℝ) * θ) = 0 := by
+  have hcn : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  rw [intervalIntegral.integral_comp_mul_left (f := fun x => Real.cos x) hcn, integral_cos]
+  have h1 : Real.sin ((n : ℝ) * (2 * π)) = 0 := by
+    rw [show (n : ℝ) * (2 * π) = ((2 * n : ℕ) : ℝ) * π by push_cast; ring]
+    exact Real.sin_nat_mul_pi (2 * n)
+  rw [mul_zero, h1, Real.sin_zero, sub_zero, smul_zero]
+
+/-- `∫₀^{2π} cosineSum A = 0` for a positive-frequency set (`0 ∉ A`). -/
+theorem integral_cosineSum_eq_zero (A : Finset ℕ) (hA : 0 ∉ A) :
+    ∫ θ in (0 : ℝ)..(2 * π), cosineSum A θ = 0 := by
+  simp only [cosineSum]
+  rw [intervalIntegral.integral_finsetSum]
+  · refine Finset.sum_eq_zero (fun n hn => ?_)
+    have hn1 : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hn))
+    exact integral_cos_mul_eq_zero hn1
+  · intro n _
+    exact (Real.continuous_cos.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _
+
+/-- **The Chowla cosine sum is nonpositive at its minimum for positive frequencies.**
+If `0 ∉ A` then `minCosineSum A ≤ 0`: since `∫₀^{2π} cosineSum A = 0` and
+`minCosineSum A ≤ cosineSum A θ` pointwise, the constant `minCosineSum A` integrates to
+`2π · minCosineSum A ≤ 0`. -/
+theorem minCosineSum_nonpos (A : Finset ℕ) (hA : 0 ∉ A) : minCosineSum A ≤ 0 := by
+  have hint : ∫ θ in (0 : ℝ)..(2 * π), cosineSum A θ = 0 := integral_cosineSum_eq_zero A hA
+  have hmono := intervalIntegral.integral_mono_on
+    (a := (0 : ℝ)) (b := 2 * π) (μ := MeasureTheory.volume)
+    (f := fun _ => minCosineSum A) (g := cosineSum A)
+    Real.two_pi_pos.le intervalIntegrable_const
+    ((continuous_cosineSum A).intervalIntegrable _ _)
+    (fun θ _ => minCosineSum_le A θ)
+  rw [intervalIntegral.integral_const, hint] at hmono
+  simp only [smul_eq_mul, sub_zero] at hmono
+  nlinarith [Real.two_pi_pos]
 
 end Erdos510WIP01
