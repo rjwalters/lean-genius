@@ -288,10 +288,9 @@ theorem exists_isUnitFractionRepr_card_ge (k : ℕ) :
     have hne' : m + 1 ≠ m * (m + 1) := by nlinarith
     have h2erase : m * (m + 1) ∉ S.erase m := fun h => h2 (Finset.mem_of_mem_erase h)
     have h1insert : m + 1 ∉ insert (m * (m + 1)) (S.erase m) := by
-      simp only [Finset.mem_insert]
-      push_neg
+      simp only [Finset.mem_insert, not_or]
       exact ⟨hne', fun h => h1 (Finset.mem_of_mem_erase h)⟩
-    rw [Finset.card_insert_of_not_mem h1insert, Finset.card_insert_of_not_mem h2erase,
+    rw [Finset.card_insert_of_notMem h1insert, Finset.card_insert_of_notMem h2erase,
       Finset.card_erase_of_mem hmS]
     omega
 
