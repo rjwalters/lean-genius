@@ -17,11 +17,18 @@ aristotle-results/llm-mapping-cache.json
 *.token
 
 # ── Loom / agent runtime state ─────────────────────────────────────────
-# .loom is runtime state EXCEPT .loom/roles/ (tracked role definitions).
-# The secrets lines above are belt-and-suspenders on top of this.
-.loom/*
-!.loom/roles/
-!.loom/hooks/
+# Track Loom-installed files (hooks, roles, scripts, defaults); ignore ONLY
+# runtime state. Loom 0.11.0 ships .loom/scripts/ and its installer refuses a
+# blanket `.loom/*` ignore, so we enumerate runtime paths instead of the old
+# ignore-then-negate. Secrets lines above (.loom/tokens, *.token) still apply.
+.loom/config.json
+.loom/logs/
+.loom/locks/
+.loom/signals/
+.loom/state/
+.loom/tmp/
+.loom/sweep-checkpoint/
+.loom/worktrees/
 .loom-managed
 research/*.pid
 research/*.log
