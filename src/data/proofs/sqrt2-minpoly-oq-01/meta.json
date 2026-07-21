@@ -93,7 +93,7 @@
     {
       "id": "degree-results",
       "title": "Part IV: Algebraic Degree and Field Extension Degree",
-      "startLine": 74,
+      "startLine": 73,
       "endLine": 88,
       "summary": "Derives natDegree(minpoly ℚ (√n)) = 2 and [ℚ(√n) : ℚ] = 2 as corollaries.",
       "mathContext": "`adjoin_nthRoot_finrank 2 n p`: the degree-2 field extension result. `{1, √n}` is a ℚ-basis of ℚ(√n)."
@@ -109,7 +109,7 @@
     {
       "id": "examples",
       "title": "Part VI: Concrete Examples",
-      "startLine": 102,
+      "startLine": 100,
       "endLine": 131,
       "summary": "Eight explicit minimal polynomial theorems: √2, √3, √5, √6, √7, √10, √12, √20. Each proved by applying the squarefree factor main theorem.",
       "mathContext": "Each proof: `minpoly_sqrt_of_sqfree_factor n p (by norm_num) ...`. Note √12 uses p=3 (not p=2 since 4|12), √20 uses p=5 (not p=2 since 4|20)."
