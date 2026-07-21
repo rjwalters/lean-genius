@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: h 2 = h 3 = 1, h 4 = 2 pinned exactly; now h 5 ≤ 3 via an explicit 3-distance general-position 5-point witness (2 ≤ h 5 ≤ 3). Pinning h 5 = 3 awaits the lower bound h 5 ≥ 3 (planar 2-distance-set classification). Parent rate h(n)/n → ∞ (Erdős #98) OPEN.",
+    "progressSummary": "PROGRESS: h 2=h 3=1, h 4=2 pinned; 2 ≤ h 5 ≤ 3. Toward h 5 ≥ 3: no_four_mutually_equidistant (axiom-free, no 4 coplanar points mutually equidistant) kills the regular-tetrahedron sub-case of the 5-point 2-distance classification; remaining cases (mixed degree-3, and C5/pentagon) are coordinate-geometry heavy and open. Unconditional thresholds h n ≥ 3 (n≥8), h n ≥ 4 (n≥11) from n-1 ≤ 3·h n.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -76,7 +76,11 @@
       "h5Config (PointConfig 5) + h5Config_dist_sq/h5Config_dist_mem: all pairwise dist ∈ {1,√(2+√3),1+√3} — Proofs/Erdos98WIP01.lean",
       "h5Config_injective, noThreeCollinear_h5Config, noFourConcyclic_h5Config (via 5 per-quadruple h5_not_equidistant_* helpers), inGeneralPosition_h5Config",
       "numDistinctDistances_h5Config_le : numDistinctDistances h5Config ≤ 3",
-      "h_five_le_three : h 5 ≤ 3 ; h_five_ge_two : 2 ≤ h 5 ; h_five_bounds : 2 ≤ h 5 ∧ h 5 ≤ 3 (all axiom-clean: [propext, Classical.choice, Quot.sound])"
+      "h_five_le_three : h 5 ≤ 3 ; h_five_ge_two : 2 ≤ h 5 ; h_five_bounds : 2 ≤ h 5 ∧ h 5 ≤ 3 (all axiom-clean: [propext, Classical.choice, Quot.sound])",
+      "no_four_mutually_equidistant (Erdos98WIP01.lean): axiom-free — no 4 points in EuclideanSpace ℝ (Fin 2) are mutually equidistant at r>0, via Gram linear independence + finrank_euclideanSpace_fin.",
+      "no_four_equidistant_indices (Erdos98WIP01.lean): config-level specialization to PointConfig indices.",
+      "three_le_h_of_eight_le (Erdos98WIP01.lean): n ≥ 8 → 3 ≤ h n, from three_mul_h_ge.",
+      "four_le_h_of_eleven_le (Erdos98WIP01.lean): n ≥ 11 → 4 ≤ h n, from three_mul_h_ge."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -105,15 +109,18 @@
       "h 5 ≤ 3: explicit general-position 5-point witness with exactly 3 distinct distances. Points (0,0),(1,0),(−√3/2,−1/2),(1/2,√3/2),(1/2,−(2+√3)/2); distances 1 (×4), √(2+√3) (×5), 1+√3 (×1). Sympy-verified: 10 triple areas ≠0 (no 3 collinear), 5 circumcircle dets ≠0 (no 4 concyclic: 1+√3/2, 2+√3, 5/2+3√3/2).",
       "Both natural lower-bound routes give only h 5 ≥ 2: three_mul_h_ge 5 (⌈4/3⌉=2) and monotonicity from h 4 = 2. So 2 ≤ h 5 ≤ 3, expected h 5 = 3.",
       "The regular pentagon (only planar 2-distance 5-set) is concyclic, so no general-position 5-set has 2 distances; proving h 5 ≥ 3 reduces to the classification of planar 2-distance sets (or the Larman–Rogers–Seidel linear-algebra bound + concyclic refinement).",
-      "Empirical: no triangular-lattice 5-cap (origin-fixed radius ≤4) has ≤3 distinct distances in general position; the 3-distance witness needs the off-lattice point E=(1/2,−(2+√3)/2). Bowtie/centered-triangle + 1 point always lands the 5th on a lattice line (3 collinear) or on the shared circle (4 concyclic)."
+      "Empirical: no triangular-lattice 5-cap (origin-fixed radius ≤4) has ≤3 distinct distances in general position; the 3-distance witness needs the off-lattice point E=(1/2,−(2+√3)/2). Bowtie/centered-triangle + 1 point always lands the 5th on a lattice line (3 collinear) or on the shared circle (4 concyclic).",
+      "h 5 ≥ 3 is NOT the one-line \"regular pentagon is concyclic\" argument: the plane has several 5-point 2-distance sets, so the lower bound needs 2-distance-set structure. The h_five_bounds docstring claiming the pentagon is the only planar 2-distance 5-set is mathematically false.",
+      "Degree structure of a general-position 5-point 2-distance set (distances a<b): by card_fiber_dist_le_three each point has a-degree and b-degree in {1,2,3}; the a-graph is either 2-regular (C5, pentagon-type) or has a degree-3 vertex.",
+      "Four mutually equidistant points cannot lie in the plane (regular tetrahedron needs dim 3): the 3 edge vectors from one vertex have Gram matrix r²·[[1,½,½],[½,1,½],[½,½,1]] (det r⁶/2 ≠ 0), hence linearly independent, contradicting finrank(EuclideanSpace ℝ (Fin 2))=2."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3."
     ],
     "nextSteps": [
-      "Prove h 5 ≥ 3: no general-position 5-set has ≤2 distinct distances. Route A: classify planar 2-distance 5-sets (regular pentagon, concyclic). Route B: Larman–Rogers–Seidel bound (a 2-distance set in ℝ² has ≤ 6 points) + refine with no-4-concyclic to ≤4.",
-      "Abstract the Gram/dimension argument into a reusable lemma: a 1-distance set in ℝ^d has ≤ d+1 points.",
-      "General lower bound sharper than (n−1)/3 using both nondegeneracy hypotheses."
+      "h 5 ≥ 3 degree-3 remaining sub-cases: formalize \"two radius-a circles at centre-distance a meet at points a√3 apart\" as reusable EuclideanSpace ℝ (Fin 2) algebra, killing the mixed a/b sub-cases around a degree-3 vertex.",
+      "h 5 ≥ 3 all-degree-2 (C5) case: prove \"equilateral + equidiagonal convex pentagon is concyclic\", excluded by no-4-concyclic.",
+      "Parent Erdős #98 open: rate h(n)/n → ∞ still requires imported incidence geometry."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
