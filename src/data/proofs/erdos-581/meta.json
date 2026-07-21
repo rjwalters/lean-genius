@@ -89,18 +89,18 @@
     {
       "id": "f-function",
       "title": "The Function f(m)",
-      "summary": "maxBipartiteEdges axiom, f axiom",
+      "summary": "f axiom (max bipartite subgraph size described in comments)",
       "startLine": 71,
       "endLine": 95,
-      "mathContext": "Axiomatized: maxBipartiteEdges axiom, f axiom"
+      "mathContext": "Axiomatized: f axiom. Bipartite-subgraph-size is described in a comment, not a separate declaration."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
-      "summary": "half_edges_bipartite: any graph has m/2 bipartite edges",
+      "summary": "Trivial m/2 bipartite bound (documented in comments, not formalized)",
       "startLine": 96,
       "endLine": 112,
-      "mathContext": "Mathematical content: half_edges_bipartite: any graph has m/2 bipartite edges"
+      "mathContext": "Comment only: the trivial m/2 bipartite lower bound is described via a proof sketch; no declaration is present."
     },
     {
       "id": "alon-upper",
@@ -129,10 +129,10 @@
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "general_graph_bound, Mantel's theorem, Kővári-Sós-Turán",
+      "summary": "Comparison to general graphs, Mantel's theorem, Kővári-Sós-Turán (documented in comments)",
       "startLine": 197,
       "endLine": 234,
-      "mathContext": "Verified: general_graph_bound, Mantel's theorem, Kővári-Sós-Turán"
+      "mathContext": "Comment only: connections to the general-graph m/2 bound, Mantel's theorem, and Kővári-Sós-Turán are described in comments; none are formalized declarations."
     },
     {
       "id": "main-results",
