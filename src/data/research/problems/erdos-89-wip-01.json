@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 3,
-    "focus": "General lower bound g(n) ≥ 2 (n ≥ 4) proved; g(5) ≥ 2 as corollary.",
+    "iteration": 4,
+    "focus": "g(5)=2 CLOSED via regular pentagon (axiom-free). Exact table complete through n=5.",
     "blockers": [],
-    "nextAction": "Upper bound g(5) ≤ 2 via regular pentagon (2 distinct distances: side and diagonal) to close exact value g(5)=2. Heavy: nested-radical coordinates cos/sin 72°.",
+    "nextAction": "g(6): lower bound g(6) ≥ 3 (max planar 2-distance set has 5 points, so a 6-set forces ≥3 distances) + a 6-point construction realizing 3 distances; and √n×√n grid toward the conjectured rate.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact values pinned: g(0)=g(1)=0, g(2)=1, g(3)=1, g(4)=2 (axiom-free). General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances), subsuming g(4)≥2 and pinning g(5)≥2. Linear upper bound g(n) ≤ n−1 (AP); deep Guth–Katz Ω(n/log n) imported. Next: g(5) UPPER bound g(5) ≤ 2 via the regular pentagon (side + diagonal = 2 distances) to close g(5)=2 — needs pentagon coordinate/nested-radical distance computation; and the √n×√n grid toward Θ(n/√(log n)).",
+    "progressSummary": "Exact table pinned through n=5 (axiom-free): g(0)=g(1)=0, g(2)=g(3)=1, g(4)=2, g(5)=2. g(5)=2 closed this session via the regular pentagon (minDistinctDistances_five): circumradius-4 vertices (±(√5∓1), ±√(10±2√5)) give exactly 2 squared distances 40∓8√5 (5 sides / 5 diagonals) ⇒ g(5) ≤ 2, matching the general floor g(5) ≥ 2 (two_le_minDistinctDistances_five). Linear upper bound g(n) ≤ n−1 (AP); deep Guth–Katz Ω(n/log n) imported. Next: g(6) (needs a 6-point construction; no 2-distance 6-set exists in the plane so g(6) ≥ 3, upper bound is a real construction) and the √n×√n grid toward Θ(n/√(log n)).",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -58,7 +58,12 @@
       "no_four_equidistant, two_le_minDistinctDistances_four, minDistinctDistances_four_le_two, unitSquare + 6 sqpᵢ_ne + unitSquare_card + 6 dist_sqᵢⱼ (Erdos89WIP01.lean): unit-square upper bound and Gram/dimension lower bound for g(4).",
       "two_le_numDistinctDistances_of_four_le_card in Erdos89WIP01.lean — |S|≥4 ⟹ numDistinctDistances S ≥ 2 (extract 4-subset via Finset.exists_subset_card_eq, then no_four_equidistant)",
       "two_le_minDistinctDistances in Erdos89WIP01.lean — g(n) ≥ 2 for n ≥ 4",
-      "two_le_minDistinctDistances_five in Erdos89WIP01.lean — g(5) ≥ 2 corollary"
+      "two_le_minDistinctDistances_five in Erdos89WIP01.lean — g(5) ≥ 2 corollary",
+      "pent_s_sq, pent_t1_sq, pent_t2_sq, pent_t1t2 (radical-arithmetic lemmas) in Erdos89WIP01.lean",
+      "pentP0..pentP4, pentagon (regular-pentagon config, circumradius 4) in Erdos89WIP01.lean",
+      "dist_pent01/12/23/34/40 (=√(40−8√5) sides) and dist_pent02/03/13/14/24 (=√(40+8√5) diagonals) in Erdos89WIP01.lean",
+      "pentagon_card = 5 (10 pairwise pentP_i ≠ pentP_j lemmas) in Erdos89WIP01.lean",
+      "numDistinctDistances_pentagon_le_two, minDistinctDistances_five_le_two, minDistinctDistances_five : minDistinctDistances 5 = 2 in Erdos89WIP01.lean"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -71,7 +76,9 @@
       "Distance-computation technique: dist_eqPts closed form via dist_eq_norm + EuclideanSpace.dist_eq + Fin.sum_univ_two + sq_abs; equilateral coords sqrt(3)^2=3 via Real.sq_sqrt; distinctDistances subset {1} by rcases over the 3x3 vertex pairs (diagonal killed by absurd rfl hne, off-diagonal by dist_eqpXX + dist_comm for reversed order).",
       "g(4) = 2 exactly (minDistinctDistances_four): second exact value of Erdős's distinct-distance function. Upper bound g(4) ≤ 2 from the unit square {(0,0),(1,0),(0,1),(1,1)} (distances {1, √2}); lower bound g(4) ≥ 2 because no 4 points in ℝ² are mutually equidistant. Strictly below the collinear-AP bound g(4) ≤ 3 — the AP is again not extremal (as at n=3).",
       "no_four_equidistant: four points at a common positive pairwise distance r give three difference vectors (b−a,c−a,d−a) of norm r with pairwise inner product r²/2 (from ‖x−y‖²=2r²−2⟨x,y⟩=r²), a positive-definite Gram matrix ⟹ linearly independent ⟹ finrank ≥ 3, contradicting finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2. Linear independence extracted by taking inner products of Σgᵢ·vᵢ=0 against u,v,w and solving the Gram system via linear_combination (sum ⟹ Σg=0; each ⟹ (r²/2)gᵢ=0).",
-      "General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances): the no_four_equidistant obstruction from the g(4) proof survives adding points, since any ≥4-point set contains a 4-point subset. Subsumes g(4)≥2 and pins g(5)≥2. Axiom-free."
+      "General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances): the no_four_equidistant obstruction from the g(4) proof survives adding points, since any ≥4-point set contains a 4-point subset. Subsumes g(4)≥2 and pins g(5)≥2. Axiom-free.",
+      "g(5) = 2 CLOSED (axiom-free): the regular pentagon is the planar 2-distance witness for the g(5) ≤ 2 upper bound, matching the general floor g(5) ≥ 2.",
+      "Nested-radical distance computation is tractable via congr 1 + linear_combination: for pentagon of circumradius 4 the squared distances are 40∓8√5, and the only nonlinear identity needed is t1·t2 = 4√5 (t1=√(10+2√5), t2=√(10−2√5)), from (10+2√5)(10−2√5)=80=(4√5)²."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -99,7 +106,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.783Z",
-  "lastUpdate": "2026-07-20T22:45:00.000Z",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6
 }

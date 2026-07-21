@@ -740,4 +740,217 @@ formalized.) -/
 theorem two_le_minDistinctDistances_five : 2 ≤ minDistinctDistances 5 :=
   two_le_minDistinctDistances (by norm_num)
 
+/-! ## Exact value `g(5) = 2`
+
+The third genuinely new exact value of Erdős's distinct-distance function.  The lower
+bound `g(5) ≥ 2` (`two_le_minDistinctDistances_five`) is already the general floor.  The
+**upper bound** `g(5) ≤ 2` is realized by the **regular pentagon**, the classical planar
+`2`-distance set: its ten pairwise distances take only two values, the side and the
+diagonal (whose ratio is the golden ratio).
+
+We use the pentagon of circumradius `4` centred at the origin, with vertices at the fifth
+roots of unity scaled by `4`.  Writing `s = √5`, `t₁ = √(10 + 2s) = 4 sin 72°` and
+`t₂ = √(10 − 2s) = 4 sin 144°`, the vertices are
+
+```
+P₀ = (4, 0),  P₁ = (s−1, t₁),  P₂ = (−(s+1), t₂),  P₃ = (−(s+1), −t₂),  P₄ = (s−1, −t₁),
+```
+
+using `4 cos 72° = s − 1` and `4 cos 144° = −(s + 1)`.  A direct computation (the key
+algebraic fact is `t₁·t₂ = 4s`, from `(10+2s)(10−2s) = 80 = (4s)²`) shows every squared
+distance is `40 − 8s` (the five sides `P₀P₁, P₁P₂, P₂P₃, P₃P₄, P₄P₀`) or `40 + 8s` (the
+five diagonals `P₀P₂, P₀P₃, P₁P₃, P₁P₄, P₂P₄`), so there are exactly two distinct
+distances `√(40 − 8s)` and `√(40 + 8s)`.  Together with the floor this pins `g(5) = 2`,
+strictly below the collinear-AP ceiling `g(5) ≤ 4`. -/
+
+/-- `(√5)² = 5`. -/
+theorem pent_s_sq : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+
+/-- `(√(10+2√5))² = 10 + 2√5` — the squared `y`-coordinate `t₁²`. -/
+theorem pent_t1_sq :
+    Real.sqrt (10 + 2 * Real.sqrt 5) ^ 2 = 10 + 2 * Real.sqrt 5 :=
+  Real.sq_sqrt (by positivity)
+
+/-- `(√(10−2√5))² = 10 − 2√5` — the squared `y`-coordinate `t₂²`.  Nonnegativity of the
+radicand uses `√5 ≤ 3` (from `(√5 − 5)² ≥ 0` and `(√5)² = 5`). -/
+theorem pent_t2_sq :
+    Real.sqrt (10 - 2 * Real.sqrt 5) ^ 2 = 10 - 2 * Real.sqrt 5 :=
+  Real.sq_sqrt (by nlinarith [pent_s_sq, sq_nonneg (Real.sqrt 5 - 5)])
+
+/-- **The golden cross term** `t₁·t₂ = 4√5`: `√(10+2√5)·√(10−2√5) = √80 = 4√5`, since
+`(10+2√5)(10−2√5) = 100 − 4·5 = 80`. -/
+theorem pent_t1t2 :
+    Real.sqrt (10 + 2 * Real.sqrt 5) * Real.sqrt (10 - 2 * Real.sqrt 5) = 4 * Real.sqrt 5 := by
+  rw [← Real.sqrt_mul (by positivity),
+    show (10 + 2 * Real.sqrt 5) * (10 - 2 * Real.sqrt 5) = 80 by linear_combination -4 * pent_s_sq,
+    show (80 : ℝ) = 4 ^ 2 * 5 by norm_num, Real.sqrt_mul (by norm_num), Real.sqrt_sq (by norm_num)]
+
+/-- Vertex `P₀ = (4, 0)` of the regular pentagon. -/
+noncomputable def pentP0 : EuclideanSpace ℝ (Fin 2) := !₂[4, 0]
+/-- Vertex `P₁ = (√5−1, √(10+2√5))` (`= 4·(cos 72°, sin 72°)`). -/
+noncomputable def pentP1 : EuclideanSpace ℝ (Fin 2) :=
+  !₂[Real.sqrt 5 - 1, Real.sqrt (10 + 2 * Real.sqrt 5)]
+/-- Vertex `P₂ = (−(√5+1), √(10−2√5))` (`= 4·(cos 144°, sin 144°)`). -/
+noncomputable def pentP2 : EuclideanSpace ℝ (Fin 2) :=
+  !₂[-(Real.sqrt 5 + 1), Real.sqrt (10 - 2 * Real.sqrt 5)]
+/-- Vertex `P₃ = (−(√5+1), −√(10−2√5))` (`= 4·(cos 216°, sin 216°)`). -/
+noncomputable def pentP3 : EuclideanSpace ℝ (Fin 2) :=
+  !₂[-(Real.sqrt 5 + 1), -Real.sqrt (10 - 2 * Real.sqrt 5)]
+/-- Vertex `P₄ = (√5−1, −√(10+2√5))` (`= 4·(cos 288°, sin 288°)`). -/
+noncomputable def pentP4 : EuclideanSpace ℝ (Fin 2) :=
+  !₂[Real.sqrt 5 - 1, -Real.sqrt (10 + 2 * Real.sqrt 5)]
+
+/-- The five regular-pentagon vertices, as a `Finset`. -/
+noncomputable def pentagon : Finset (EuclideanSpace ℝ (Fin 2)) :=
+  {pentP0, pentP1, pentP2, pentP3, pentP4}
+
+-- The ten pairwise-distance values.  Each reduces, via `dist_eqPts` and `congr 1`, to the
+-- squared-distance identity closed by `linear_combination` over `pent_s_sq/t1_sq/t2_sq/t1t2`.
+
+theorem dist_pent01 : Erdos89.dist pentP0 pentP1 = Real.sqrt (40 - 8 * Real.sqrt 5) := by
+  rw [pentP0, pentP1, dist_eqPts]; congr 1; linear_combination pent_s_sq + pent_t1_sq
+theorem dist_pent12 : Erdos89.dist pentP1 pentP2 = Real.sqrt (40 - 8 * Real.sqrt 5) := by
+  rw [pentP1, pentP2, dist_eqPts]; congr 1
+  linear_combination 4 * pent_s_sq + pent_t1_sq + pent_t2_sq - 2 * pent_t1t2
+theorem dist_pent23 : Erdos89.dist pentP2 pentP3 = Real.sqrt (40 - 8 * Real.sqrt 5) := by
+  rw [pentP2, pentP3, dist_eqPts]; congr 1; linear_combination 4 * pent_t2_sq
+theorem dist_pent34 : Erdos89.dist pentP3 pentP4 = Real.sqrt (40 - 8 * Real.sqrt 5) := by
+  rw [pentP3, pentP4, dist_eqPts]; congr 1
+  linear_combination 4 * pent_s_sq + pent_t1_sq + pent_t2_sq - 2 * pent_t1t2
+theorem dist_pent40 : Erdos89.dist pentP4 pentP0 = Real.sqrt (40 - 8 * Real.sqrt 5) := by
+  rw [pentP4, pentP0, dist_eqPts]; congr 1; linear_combination pent_s_sq + pent_t1_sq
+
+theorem dist_pent02 : Erdos89.dist pentP0 pentP2 = Real.sqrt (40 + 8 * Real.sqrt 5) := by
+  rw [pentP0, pentP2, dist_eqPts]; congr 1; linear_combination pent_s_sq + pent_t2_sq
+theorem dist_pent03 : Erdos89.dist pentP0 pentP3 = Real.sqrt (40 + 8 * Real.sqrt 5) := by
+  rw [pentP0, pentP3, dist_eqPts]; congr 1; linear_combination pent_s_sq + pent_t2_sq
+theorem dist_pent13 : Erdos89.dist pentP1 pentP3 = Real.sqrt (40 + 8 * Real.sqrt 5) := by
+  rw [pentP1, pentP3, dist_eqPts]; congr 1
+  linear_combination 4 * pent_s_sq + pent_t1_sq + pent_t2_sq + 2 * pent_t1t2
+theorem dist_pent14 : Erdos89.dist pentP1 pentP4 = Real.sqrt (40 + 8 * Real.sqrt 5) := by
+  rw [pentP1, pentP4, dist_eqPts]; congr 1; linear_combination 4 * pent_t1_sq
+theorem dist_pent24 : Erdos89.dist pentP2 pentP4 = Real.sqrt (40 + 8 * Real.sqrt 5) := by
+  rw [pentP2, pentP4, dist_eqPts]; congr 1
+  linear_combination 4 * pent_s_sq + pent_t1_sq + pent_t2_sq + 2 * pent_t1t2
+
+-- Pairwise distinctness of the five vertices.
+
+theorem pentP0_ne_pentP1 : pentP0 ≠ pentP1 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP0, pentP1, Matrix.cons_val_zero] at h0
+  have hs := pent_s_sq; have hx : Real.sqrt 5 = 5 := by linarith
+  rw [hx] at hs; norm_num at hs
+theorem pentP0_ne_pentP2 : pentP0 ≠ pentP2 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP0, pentP2, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_nonneg 5; linarith
+theorem pentP0_ne_pentP3 : pentP0 ≠ pentP3 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP0, pentP3, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_nonneg 5; linarith
+theorem pentP0_ne_pentP4 : pentP0 ≠ pentP4 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP0, pentP4, Matrix.cons_val_zero] at h0
+  have hs := pent_s_sq; have hx : Real.sqrt 5 = 5 := by linarith
+  rw [hx] at hs; norm_num at hs
+theorem pentP1_ne_pentP2 : pentP1 ≠ pentP2 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP1, pentP2, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num); linarith
+theorem pentP1_ne_pentP3 : pentP1 ≠ pentP3 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP1, pentP3, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num); linarith
+theorem pentP1_ne_pentP4 : pentP1 ≠ pentP4 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [pentP1, pentP4, Matrix.cons_val_one, Matrix.cons_val_zero] at h1
+  have hu : (0 : ℝ) < Real.sqrt (10 + 2 * Real.sqrt 5) := Real.sqrt_pos.mpr (by positivity)
+  linarith
+theorem pentP2_ne_pentP3 : pentP2 ≠ pentP3 := by
+  intro h; have h1 := congrArg (fun p => p 1) h
+  simp only [pentP2, pentP3, Matrix.cons_val_one, Matrix.cons_val_zero] at h1
+  have hv : (0 : ℝ) < Real.sqrt (10 - 2 * Real.sqrt 5) :=
+    Real.sqrt_pos.mpr (by nlinarith [pent_s_sq, sq_nonneg (Real.sqrt 5 - 5)])
+  linarith
+theorem pentP2_ne_pentP4 : pentP2 ≠ pentP4 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP2, pentP4, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num); linarith
+theorem pentP3_ne_pentP4 : pentP3 ≠ pentP4 := by
+  intro h; have h0 := congrArg (fun p => p 0) h
+  simp only [pentP3, pentP4, Matrix.cons_val_zero] at h0
+  have := Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num); linarith
+
+/-- The regular pentagon has five distinct vertices. -/
+theorem pentagon_card : pentagon.card = 5 := by
+  rw [pentagon, Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+    Finset.card_insert_of_notMem, Finset.card_insert_of_notMem, Finset.card_singleton]
+  · simp only [Finset.mem_singleton]; exact pentP3_ne_pentP4
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP2_ne_pentP3, pentP2_ne_pentP4⟩
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP1_ne_pentP2, pentP1_ne_pentP3, pentP1_ne_pentP4⟩
+  · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨pentP0_ne_pentP1, pentP0_ne_pentP2, pentP0_ne_pentP3, pentP0_ne_pentP4⟩
+
+/-- **The regular pentagon determines at most two distances.**  Every pairwise distance is
+either `√(40−8√5)` (a side) or `√(40+8√5)` (a diagonal), so `numDistinctDistances ≤ 2`. -/
+theorem numDistinctDistances_pentagon_le_two :
+    numDistinctDistances pentagon ≤ 2 := by
+  have hsub : distinctDistances pentagon ⊆
+      ({Real.sqrt (40 - 8 * Real.sqrt 5), Real.sqrt (40 + 8 * Real.sqrt 5)} : Finset ℝ) := by
+    rw [distinctDistances_eq_image]
+    intro d hd
+    rw [Finset.mem_image] at hd
+    obtain ⟨⟨p, q⟩, hpq, rfl⟩ := hd
+    rw [Finset.mem_offDiag] at hpq
+    obtain ⟨hp, hq, hne⟩ := hpq
+    simp only [pentagon, Finset.mem_insert, Finset.mem_singleton] at hp hq
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rcases hp with rfl | rfl | rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hne
+        | (left; exact dist_pent01)
+        | (left; exact dist_pent12)
+        | (left; exact dist_pent23)
+        | (left; exact dist_pent34)
+        | (left; exact dist_pent40)
+        | (left; rw [dist_comm']; exact dist_pent01)
+        | (left; rw [dist_comm']; exact dist_pent12)
+        | (left; rw [dist_comm']; exact dist_pent23)
+        | (left; rw [dist_comm']; exact dist_pent34)
+        | (left; rw [dist_comm']; exact dist_pent40)
+        | (right; exact dist_pent02)
+        | (right; exact dist_pent03)
+        | (right; exact dist_pent13)
+        | (right; exact dist_pent14)
+        | (right; exact dist_pent24)
+        | (right; rw [dist_comm']; exact dist_pent02)
+        | (right; rw [dist_comm']; exact dist_pent03)
+        | (right; rw [dist_comm']; exact dist_pent13)
+        | (right; rw [dist_comm']; exact dist_pent14)
+        | (right; rw [dist_comm']; exact dist_pent24)
+  calc numDistinctDistances pentagon
+      ≤ ({Real.sqrt (40 - 8 * Real.sqrt 5), Real.sqrt (40 + 8 * Real.sqrt 5)} :
+          Finset ℝ).card := Finset.card_le_card hsub
+    _ ≤ 2 := by
+        have h := Finset.card_insert_le (Real.sqrt (40 - 8 * Real.sqrt 5))
+          ({Real.sqrt (40 + 8 * Real.sqrt 5)} : Finset ℝ)
+        simp only [Finset.card_singleton] at h; omega
+
+/-- **Upper bound `g(5) ≤ 2`.**  The regular pentagon is a `5`-point witness with at most
+two distinct distances. -/
+theorem minDistinctDistances_five_le_two : minDistinctDistances 5 ≤ 2 :=
+  le_trans (minDistinctDistances_le_of_card_eq pentagon_card)
+    numDistinctDistances_pentagon_le_two
+
+/-- **Exact value `g(5) = 2`.**  The regular pentagon gives `g(5) ≤ 2`
+(`minDistinctDistances_five_le_two`); the general floor gives `g(5) ≥ 2`
+(`two_le_minDistinctDistances_five`).  The third genuinely new exact value of Erdős's
+distinct-distance function, again strictly below the collinear-AP bound `g(5) ≤ 4`.
+Combined with `g(0)=g(1)=0, g(2)=g(3)=1, g(4)=2`, this completes the exact table through
+`n = 5`. -/
+theorem minDistinctDistances_five : minDistinctDistances 5 = 2 :=
+  le_antisymm minDistinctDistances_five_le_two two_le_minDistinctDistances_five
+
 end Erdos89
