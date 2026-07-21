@@ -53,13 +53,16 @@
       "ErdosProblem46 (Croot's theorem) statement",
       "Infinitely-many disjoint solutions variant",
       "ErdosGraham_rational generalization",
-      "rational_from_infinite axiom bridging infinite to rational",
-      "Verified basic properties (empty, singleton, monotone, cardinality)"
+      "erdosProblem46_of_infinitely_many: axiom-free reduction of the base Croot statement to the infinitely-many-disjoint-solutions version (N = 0)",
+      "Verified basic properties (empty/singleton exclusion, monotone, |S| ≥ 2 cardinality lower bound)",
+      "Fibonacci–Sylvester splitting engine: inv_mul_succ, split_unit_fraction, isUnitFractionRepr_replace, and exists_isUnitFractionRepr_card_ge (arbitrarily long representations)",
+      "infinite_isUnitFractionRepr: axiom-free proof that infinitely many distinct unit-fraction representations of 1 exist",
+      "Multiplicative scaling engine: isRatFractionRepr_smul and exists_isRatFractionRepr_inv_min_ge (representations of 1/t with all denominators ≥ 2t)"
     ],
     "axiomCount": 0,
-    "lineCount": 260,
+    "lineCount": 359,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 21,
+    "theoremCount": 25,
     "definitionCount": 7
   },
   "overview": {
@@ -72,7 +75,9 @@
       "**Infinitely many disjoint solutions**: for any $N$, a monochromatic solution exists with all terms $> N$, giving infinitely many pairwise disjoint solutions",
       "**Rational generalization**: every positive rational $q$ admits a monochromatic Egyptian fraction representation — follows from the infinitely-many version by combining solutions",
       "**Non-constructive proof**: Croot's argument gives no explicit bounds on the size of the denominators or number of colours needed",
-      "**Minimum representation**: $|S| \\ge 2$ for any unit fraction representation (e.g., $1/2 + 1/3 + 1/6 = 1$ is minimal with 3 terms)"
+      "**Minimum representation**: $|S| \\ge 2$ for any unit fraction representation (e.g., $1/2 + 1/3 + 1/6 = 1$ is minimal with 3 terms)",
+      "**Formalized elementary core (0 axioms)**: what is machine-checked here is the *colouring-free* skeleton — representations of $1$ exist ($\\{2,3,6\\}$), have $\\ge 2$ terms, and are infinitely many — proved by iterating the Fibonacci–Sylvester splitting $1/n = 1/(n{+}1) + 1/(n(n{+}1))$ on the largest denominator. Croot's deep monochromatic theorem is stated as a `Prop`, not formalized",
+      "**Two assembly engines**: representations combine *additively* over disjoint denominator sets (`isRatFractionRepr_union`, $q + p$) and *multiplicatively* by scaling every denominator by $t$ (`isRatFractionRepr_smul`, $q \\mapsto q/t$ with all denominators $\\ge 2t$) — the multiplicative engine forces large denominators, the prerequisite for the pairwise-disjoint chaining behind the infinitely-many variant"
     ],
     "prerequisites": [
       "Unit fractions and Egyptian fractions",
@@ -111,16 +116,40 @@
       "title": "Rational Generalization",
       "startLine": 56,
       "endLine": 67,
-      "summary": "**ErdosGraham_rational**: $\\forall q > 0,\\, \\exists$ monochromatic $S$ with $\\sum 1/n = q$. Axiom **rational_from_infinite** bridges from infinite solutions.",
+      "summary": "**ErdosGraham_rational**: $\\forall q > 0,\\, \\exists$ monochromatic $S$ with $\\sum 1/n = q$, stated as a `Prop`. The file comment records that it follows from the infinitely-many-disjoint-solutions variant (no bridging axiom is asserted — the file is axiom-free).",
       "mathContext": "$\\forall q \\in \\mathbb{Q}_{>0},\\, \\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S: \\text{IsMonochromatic}(c, S) \\wedge \\sum_{n \\in S} \\frac{1}{n} = q$. Erdős-Graham generalization to arbitrary positive rationals."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 68,
-      "endLine": 84,
-      "summary": "Proved: $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, mono for $r = 1$, **mono_subset**. Axiomatized: singleton exclusion, $|S| \\ge 2$.",
-      "mathContext": "$\\neg\\text{IsUnitFractionRepr}(\\emptyset)$, $\\neg\\text{IsUnitFractionRepr}(\\{n\\})$ for $n \\ge 2$, and $\\text{IsMonochromatic}(c, S)$ for $r = 1$ colourings. Structural lemmas grounding the formalization."
+      "endLine": 83,
+      "summary": "All proved (0 axioms): $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$ (`not_unitFractionRepr_empty`), every set is monochromatic under a $1$-colouring (`mono_one_colour`), and monochromaticity is subset-closed (`mono_subset`). Singleton exclusion and the $|S| \\ge 2$ lower bound are proved just below in the Foundational Lemmas section.",
+      "mathContext": "$\\neg\\text{IsUnitFractionRepr}(\\emptyset)$ (the empty sum is $0 \\ne 1$) and $\\text{IsMonochromatic}(c, S)$ whenever $r = 1$ (a single colour). Structural lemmas grounding the formalization; all machine-checked with no assumptions."
+    },
+    {
+      "id": "foundational",
+      "title": "Foundational Lemmas",
+      "startLine": 84,
+      "endLine": 188,
+      "summary": "An axiom-free corpus turning the def-only stub into elementary facts: singleton exclusion (`not_isUnitFractionRepr_singleton`), the $|S| \\ge 2$ lower bound (`two_le_card_of_isUnitFractionRepr`), per-term bound $1/n \\le 1/2$, nonnegativity/positivity of reciprocal sums, uniqueness of the represented rational, the $q = 1$ identification $\\text{IsRatFractionRepr}\\,S\\,1 \\iff \\text{IsUnitFractionRepr}\\,S$, **additivity over disjoint unions** (`isRatFractionRepr_union`), empty/singleton monochromaticity, and the reduction `erdosProblem46_of_infinitely_many` deriving the base Croot statement from the infinitely-many variant at $N = 0$.",
+      "mathContext": "Key facts: $|S| \\ge 2$ for any unit-fraction representation of $1$ (empty sums to $0$, a singleton $\\{n\\}$ with $n \\ge 2$ sums to $1/n < 1$); each term satisfies $\\frac{1}{n} \\le \\frac{1}{2}$; and for disjoint $S, T$ with $\\sum_{S} 1/n = q$, $\\sum_{T} 1/n = p$ one has $\\sum_{S \\cup T} 1/n = q + p$ — the arithmetic backbone for assembling disjoint monochromatic solutions."
+    },
+    {
+      "id": "splitting",
+      "title": "Unit-Fraction Splitting & a Concrete Representation",
+      "startLine": 190,
+      "endLine": 309,
+      "summary": "The Fibonacci–Sylvester engine: the telescoping identity `inv_mul_succ` and the **splitting identity** `split_unit_fraction` ($1/n = 1/(n{+}1) + 1/(n(n{+}1))$), the concrete witness $\\{2,3,6\\}$ (`isUnitFractionRepr_two_three_six`), the lengthening step `isUnitFractionRepr_replace` (replace $m$ by its two split denominators), `exists_isUnitFractionRepr_card_ge` (representations of every cardinality, by splitting the largest denominator), and `infinite_isUnitFractionRepr` — there are **infinitely many** distinct unit-fraction representations of $1$.",
+      "mathContext": "Splitting identity: $\\frac{1}{n} = \\frac{1}{n+1} + \\frac{1}{n(n+1)}$ for $n \\ge 1$, replacing one reciprocal by two strictly larger ones of equal sum. Iterating from $\\{2,3,6\\}$ (splitting the largest denominator, whose successors $m{+}1, m(m{+}1)$ automatically exceed $m$ and so avoid collisions) yields representations of unbounded cardinality, hence infinitely many distinct ones — the elementary, colouring-free lower bound underlying Erdős 46. The deep monochromatic statement (Croot 2003) remains unformalized."
+    },
+    {
+      "id": "scaling",
+      "title": "Multiplicative Scaling of Representations",
+      "startLine": 311,
+      "endLine": 359,
+      "summary": "The multiplicative counterpart of disjoint-union additivity: `isRatFractionRepr_smul` scales every denominator by $t \\ge 1$ (the injective map $n \\mapsto t\\,n$), sending a representation of $q$ to one of $q/t$ with all denominators $\\ge 2t$; `exists_isRatFractionRepr_inv_min_ge` instantiates this to represent $1/t$ by $\\{2t, 3t, 6t\\}$ with minimum denominator $\\ge 2t$.",
+      "mathContext": "Scaling lemma: if $\\sum_{n \\in S} 1/n = q$ then $\\sum_{n \\in S} 1/(t n) = q/t$, and every scaled denominator satisfies $tn \\ge 2t$. Large-denominator representations are the prerequisite for pairwise-disjoint chaining: a representation supported on $\\{n > N\\}$ is automatically disjoint from any representation supported below $N$, the mechanism behind $\\text{ErdosProblem46\\_infinitely\\_many}$."
     }
   ],
   "conclusion": {
@@ -155,9 +184,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 260,
+    "lineCount": 359,
     "axiomCount": 0,
-    "theoremCount": 21,
+    "theoremCount": 25,
     "definitionCount": 7,
     "path": "Proofs/Erdos46Problem.lean",
     "sorries": 0
