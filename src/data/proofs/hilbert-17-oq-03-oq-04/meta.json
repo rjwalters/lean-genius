@@ -142,11 +142,12 @@
       "The analytic crux is purely a sign argument: a real root of a non-negative polynomial cannot have odd multiplicity, because an odd factor (x − r)^odd changes sign across r. Formalized via one-sided limits of the quotient g, with no derivatives or Sturm sequences.",
       "Two squares always suffice. Real roots are removed two at a time as (X − C r)², conjugate pairs as a single positive quadratic, and the Brahmagupta–Fibonacci identity keeps the running product a sum of exactly two squares throughout the induction.",
       "The induction never leaves ℝ[X] except to borrow the FTA over ℂ: the complex root z is immediately split into the real-root and conjugate-pair cases by testing z.im = 0, and each case produces a real polynomial factor.",
-      "This is an axiom-discharging entry: the PSD and SOS predicates are definitionally equal to the parent hilbert-17's, so proving univariate_psd_is_sos here removes the parent's univariate_psd_is_sos_aux axiom by exact reference, leaving only the genuinely deep quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound)."
+      "This is an axiom-discharging entry: the PSD and SOS predicates are definitionally equal to the parent hilbert-17's, so proving univariate_psd_is_sos here removes the parent's univariate_psd_is_sos_aux axiom by exact reference, leaving only the genuinely deep quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound).",
+      "Adjoining the trivial converse sos_is_psd (a sum of squares is non-negative, in every dimension) upgrades the one-directional Hilbert theorem to the biconditional IsPSD p ⟺ p is a sum of squares. In one variable this is a decision procedure — non-negativity is certified by an explicit two-square certificate — which is exactly the tractable corner of Hilbert's 17th: for n ≥ 2 the inclusion polynomial-SOS ⊆ PSD is strict and testing PSD-ness is NP-hard."
     ]
   },
   "conclusion": {
-    "summary": "A 208-line, 0-sorry, 0-axiom formalization of the univariate case of Hilbert's 17th problem: every non-negative real univariate polynomial is a sum of two squares of polynomials. Discharges the parent entry's axiom univariate_psd_is_sos_aux (parent axiom count 3 → 2).",
+    "summary": "A 256-line, 0-sorry, 0-axiom formalization of the univariate case of Hilbert's 17th problem: every non-negative real univariate polynomial is a sum of two squares of polynomials, packaged as the sharp biconditional IsPSD p ⟺ p is a sum of (two) squares. Discharges the parent entry's axiom univariate_psd_is_sos_aux (parent axiom count 3 → 2).",
     "implications": "This is the positive counterpart to the Motzkin and Robinson entries: in one variable, non-negativity and 'sum of squares of polynomials' coincide, so no passage to rational functions is needed. The proof is fully elementary — induction on degree, the FTA, even multiplicity of real roots via one-sided limits, and the two-square identity — with no real-closed-field, Gram-matrix, or Positivstellensatz machinery. It leaves the parent entry with just two genuinely deep axioms: quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound).",
     "openQuestions": [
       "Discharge the parent entry's two remaining deep axioms — `quadratic_psd_is_sos_aux` (Gram/Cholesky) and `pfister_bound_aux` (Pfister's $2^n$ bound) — completing the multivariate side of Hilbert's 17th in the gallery.",
@@ -218,8 +219,15 @@
       "id": "main-theorem",
       "title": "Hilbert's 17th, Univariate Case",
       "startLine": 198,
-      "endLine": 208,
+      "endLine": 207,
       "summary": "univariate_psd_is_sos: packages the two-square engine into the Hilbert-17 form ∃ m (q : Fin m → ℝ[X]), p = ∑ q i² with m = 2 and q = ![u, v]. This is definitionally the parent's univariate_psd_is_sos_aux, discharging that axiom with 0 axioms."
+    },
+    {
+      "id": "characterization",
+      "title": "The Converse and the PSD ⟺ SOS Characterization",
+      "startLine": 208,
+      "endLine": 256,
+      "summary": "Upgrades the one-directional Hilbert theorem to a genuine biconditional. sos_is_psd: a sum of squares ∑ qᵢ² is PSD in every dimension (each qᵢ(x)² ≥ 0), the trivial converse. two_sq_is_psd: the two-square shape u² + v² is PSD (by positivity). univariate_psd_iff_two_sq: the sharp characterization IsPSD p ↔ ∃ u v, p = u² + v² — two squares always suffice in one variable. univariate_psd_iff_sos: IsPSD p ↔ ∃ m (q : Fin m → ℝ[X]), p = ∑ qᵢ², the full PSD ⟺ SOS equivalence. This biconditional is exactly the statement that univariate PSD-membership is decidable by a sum-of-squares certificate — the tractable end of Hilbert's 17th, in contrast to the multivariate case where PSD ⊋ polynomial-SOS (Motzkin/Robinson siblings) and the decision problem is NP-hard."
     }
   ]
 }
