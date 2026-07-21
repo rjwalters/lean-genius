@@ -82,82 +82,89 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Header docstring for Erdős Problem #410: iterating the sum-of-divisors function $\\sigma$, the open conjecture that $\\sigma_k(n)^{1/k} \\to \\infty$ for every $n \\geq 2$, and the divisor-function background developed below."
+    },
+    {
       "id": "sigma-function",
       "title": "The Sum of Divisors Function",
-      "summary": "sigma_pos, sigma_gt_n, sigma_one, sigma_prime",
-      "startLine": 33,
-      "endLine": 56,
-      "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Key bounds: $\\sigma(n) \\geq n + 1$ for $n > 1$, $\\sigma(p) = p + 1$."
+      "summary": "sigma_pos, sigma_gt_n, sigma_one, sigma_prime; sigma_multiplicative (σ is multiplicative)",
+      "startLine": 34,
+      "endLine": 105,
+      "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. Key bounds: $\\sigma(n) \\geq n + 1$ for $n > 1$, $\\sigma(p) = p + 1$. Multiplicativity: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. $\\sigma(p^k) = \\frac{p^{k+1} - 1}{p - 1}$."
     },
     {
       "id": "iteration",
       "title": "Iterated Sum of Divisors",
       "summary": "sigmaIterate, sigma_iterate_zero, sigma_iterate_succ",
-      "startLine": 57,
-      "endLine": 82,
+      "startLine": 106,
+      "endLine": 124,
       "mathContext": "$\\sigma_k(n) = \\sigma^{[k]}(n)$. Recurrence: $\\sigma_0(n) = n$, $\\sigma_{k+1}(n) = \\sigma(\\sigma_k(n))$."
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Computations",
+      "summary": "sigma_chain_2 and growth rate observations",
+      "startLine": 125,
+      "endLine": 149
     },
     {
       "id": "growth",
       "title": "Growth of Iterates",
       "summary": "sigma_iterate_increasing, sigma_iterate_tendsto_infty",
-      "startLine": 83,
-      "endLine": 98,
+      "startLine": 150,
+      "endLine": 197,
       "mathContext": "$\\sigma_k(n) < \\sigma_{k+1}(n)$ for $n > 1$ since $\\sigma(m) > m$ for $m > 1$."
-    },
-    {
-      "id": "conjecture",
-      "title": "The Main Conjecture",
-      "summary": "growthRate, ErdosConjecture410, conjecture_equiv",
-      "startLine": 99,
-      "endLine": 117,
-      "mathContext": "Conjecture: $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$ for all $n \\geq 2$."
-    },
-    {
-      "id": "bounds",
-      "title": "Bounds on σ",
-      "summary": "sigma_lower_bound, sigma_upper_bound, average_sigma",
-      "startLine": 118,
-      "endLine": 137,
-      "mathContext": "$\\sigma(n) \\geq n + 1$ (proved). Robin's bound: $\\sigma(n) < e^\\gamma n \\ln \\ln n$ for $n > 5040$ (equivalent to RH)."
     },
     {
       "id": "special-numbers",
       "title": "Special Numbers",
       "summary": "IsPerfect, IsAbundant, IsDeficient, perfect_6, perfect_28",
-      "startLine": 138,
-      "endLine": 159,
+      "startLine": 198,
+      "endLine": 228,
       "mathContext": "Perfect: $\\sigma(n) = 2n$. Abundant: $\\sigma(n) > 2n$. Deficient: $\\sigma(n) < 2n$."
     },
     {
       "id": "aliquot",
       "title": "Aliquot Sequences",
       "summary": "aliquot, CatalanDicksonConjecture",
-      "startLine": 160,
-      "endLine": 178,
+      "startLine": 229,
+      "endLine": 245,
       "mathContext": "$s(n) = \\sigma(n) - n$ (proper divisor sum). Catalan-Dickson conjecture: all aliquot sequences $n, s(n), s^2(n), \\ldots$ are eventually periodic."
     },
     {
-      "id": "examples",
-      "title": "Explicit Computations",
-      "summary": "sigma_chain_2 and growth rate observations",
-      "startLine": 179,
-      "endLine": 198
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "growthRate, ErdosConjecture410, conjecture_equiv",
+      "startLine": 246,
+      "endLine": 311,
+      "mathContext": "Conjecture: $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$ for all $n \\geq 2$."
     },
     {
-      "id": "multiplicativity",
-      "title": "Connection to Multiplicativity",
-      "summary": "sigma_multiplicative, sigma_prime_pow",
-      "startLine": 199,
-      "endLine": 213,
-      "mathContext": "$\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. $\\sigma(p^k) = \\frac{p^{k+1} - 1}{p - 1}$."
+      "id": "bounds",
+      "title": "Bounds on σ",
+      "summary": "sigma_lower_bound, sigma_upper_bound, average_sigma",
+      "startLine": 312,
+      "endLine": 323,
+      "mathContext": "$\\sigma(n) \\geq n + 1$ (proved). Robin's bound: $\\sigma(n) < e^\\gamma n \\ln \\ln n$ for $n > 5040$ (equivalent to RH)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties of Iterates",
+      "startLine": 324,
+      "endLine": 341,
+      "summary": "sigma_iterate_strict_mono (the iterate sequence $k \\mapsto \\sigma_k(n)$ is strictly increasing for $n > 1$), sigma_sigma_gt ($\\sigma(\\sigma(n)) > n$), and sigma_iterate_perfect (behaviour of the iterates on perfect numbers).",
+      "mathContext": "For $n > 1$, $\\sigma(m) > m$ makes $k \\mapsto \\sigma_k(n)$ strictly monotone; perfect $n$ satisfy $\\sigma(n) = 2n$, so their iterates grow at least geometrically at the first step."
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_410_status, erdos_410_statement, Summary",
-      "startLine": 214,
-      "endLine": 320
+      "startLine": 342,
+      "endLine": 371
     }
   ],
   "conclusion": {
