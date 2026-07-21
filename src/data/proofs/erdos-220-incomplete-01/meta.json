@@ -67,26 +67,34 @@
   },
   "sections": [
     {
+      "id": "definitions",
+      "title": "Definitions: Reduced Residues",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module setup and the core definition reducedResidues n = the m in [1, n) coprime to n, together with the membership simp lemma mem_reducedResidues characterizing m ∈ reducedResidues n.",
+      "mathContext": "reducedResidues n := (range n).filter (fun m => 1 ≤ m ∧ Nat.Coprime m n); mem_reducedResidues: m ∈ reducedResidues n ↔ m < n ∧ 1 ≤ m ∧ Nat.Coprime m n."
+    },
+    {
       "id": "prime-block",
       "title": "Primes: a Contiguous Block",
-      "startLine": 44,
-      "endLine": 85,
+      "startLine": 43,
+      "endLine": 84,
       "summary": "reducedResidues_prime (= Icc 1 (p−1)), card_reducedResidues_prime (= p−1 = φ(p)), reducedResidues_prime_consecutive (no holes ⟹ all gaps 1).",
       "mathContext": "The prime is the tight case: equal gaps make Cauchy–Schwarz an equality."
     },
     {
       "id": "two-pow",
       "title": "Prime Powers 2^k: the Odd Numbers",
-      "startLine": 87,
-      "endLine": 95,
+      "startLine": 85,
+      "endLine": 93,
       "summary": "mem_reducedResidues_two_pow: reduced residues mod 2^k are exactly the odds in [1, 2^k), an AP of difference 2.",
       "mathContext": "The other structured family, gaps all 2."
     },
     {
       "id": "concrete",
       "title": "Concrete Gap Computations",
-      "startLine": 97,
-      "endLine": 132,
+      "startLine": 94,
+      "endLine": 133,
       "summary": "p=7 (residues {1..6}, gaps all 1, ∑gaps²=5=p−2, tight); n=8 ({1,3,5,7}, gaps all 2, ∑=12); n=12 ({1,5,7,11}, mixed gaps 4,2,4).",
       "mathContext": "Verifies the structure and contrasts the irregular composite case."
     }
