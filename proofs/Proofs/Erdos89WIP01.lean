@@ -704,7 +704,7 @@ theorem two_le_numDistinctDistances_of_four_le_card
       exact ⟨(p, q), Finset.mem_offDiag.mpr ⟨hp, hq, hpq⟩, rfl⟩
     rw [hr, Finset.mem_singleton] at hmem
     exact hmem
-  obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_smaller_set S 4 hcard
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq (s := S) (n := 4) hcard
   rw [Finset.card_eq_four] at hTcard
   obtain ⟨a, b, c, d, hab, hac, had, hbc, hbd, hcd, hTset⟩ := hTcard
   have ha : a ∈ S := hTsub (by rw [hTset]; simp)

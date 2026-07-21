@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 2,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 3,
+    "focus": "General lower bound g(n) ≥ 2 (n ≥ 4) proved; g(5) ≥ 2 as corollary.",
     "blockers": [],
-    "nextAction": "Exact g(4): the unit square gives 2 distinct distances (side + diagonal). Determine and prove g(4)=2. Or the sqrt(n)-grid upper bound (deep, number-theoretic).",
+    "nextAction": "Upper bound g(5) ≤ 2 via regular pentagon (2 distinct distances: side and diagonal) to close exact value g(5)=2. Heavy: nested-radical coordinates cos/sin 72°.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact values pinned: g(0)=g(1)=0, g(2)=1, g(3)=1, g(4)=2 (minDistinctDistances_four, axiom-free). Linear upper bound g(n) ≤ n−1 (AP) and the deep Guth–Katz Ω(n/log n) stays imported. Next: g(5) (lower bound needs ruling out a 1- or few-distance 5-set) and the √n×√n grid toward Θ(n/√(log n)).",
+    "progressSummary": "Exact values pinned: g(0)=g(1)=0, g(2)=1, g(3)=1, g(4)=2 (axiom-free). General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances), subsuming g(4)≥2 and pinning g(5)≥2. Linear upper bound g(n) ≤ n−1 (AP); deep Guth–Katz Ω(n/log n) imported. Next: g(5) UPPER bound g(5) ≤ 2 via the regular pentagon (side + diagonal = 2 distances) to close g(5)=2 — needs pentagon coordinate/nested-radical distance computation; and the √n×√n grid toward Θ(n/√(log n)).",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -55,7 +55,10 @@
       "dist_eqp01/02/12 all three pairwise distances = 1 (via Real.sq_sqrt for sqrt(3)^2=3)",
       "numDistinctDistances_eqTri = 1; minDistinctDistances_three: exact g(3)=1",
       "minDistinctDistances_four (Erdos89WIP01.lean): g(4)=2, axiom-free (propext/Classical.choice/Quot.sound only), host-verified v4.31.",
-      "no_four_equidistant, two_le_minDistinctDistances_four, minDistinctDistances_four_le_two, unitSquare + 6 sqpᵢ_ne + unitSquare_card + 6 dist_sqᵢⱼ (Erdos89WIP01.lean): unit-square upper bound and Gram/dimension lower bound for g(4)."
+      "no_four_equidistant, two_le_minDistinctDistances_four, minDistinctDistances_four_le_two, unitSquare + 6 sqpᵢ_ne + unitSquare_card + 6 dist_sqᵢⱼ (Erdos89WIP01.lean): unit-square upper bound and Gram/dimension lower bound for g(4).",
+      "two_le_numDistinctDistances_of_four_le_card in Erdos89WIP01.lean — |S|≥4 ⟹ numDistinctDistances S ≥ 2 (extract 4-subset via Finset.exists_subset_card_eq, then no_four_equidistant)",
+      "two_le_minDistinctDistances in Erdos89WIP01.lean — g(n) ≥ 2 for n ≥ 4",
+      "two_le_minDistinctDistances_five in Erdos89WIP01.lean — g(5) ≥ 2 corollary"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -67,7 +70,8 @@
       "g(3)=1 EXACT via equilateral triangle, strictly below the collinear-AP upper bound g(3)<=2, so the arithmetic progression is NOT extremal at n=3. Lower bound g(3)>=1 from one_le_numDistinctDistances_of_two_le_card + Nat.sInf_mem (nonempty witness eqTri).",
       "Distance-computation technique: dist_eqPts closed form via dist_eq_norm + EuclideanSpace.dist_eq + Fin.sum_univ_two + sq_abs; equilateral coords sqrt(3)^2=3 via Real.sq_sqrt; distinctDistances subset {1} by rcases over the 3x3 vertex pairs (diagonal killed by absurd rfl hne, off-diagonal by dist_eqpXX + dist_comm for reversed order).",
       "g(4) = 2 exactly (minDistinctDistances_four): second exact value of Erdős's distinct-distance function. Upper bound g(4) ≤ 2 from the unit square {(0,0),(1,0),(0,1),(1,1)} (distances {1, √2}); lower bound g(4) ≥ 2 because no 4 points in ℝ² are mutually equidistant. Strictly below the collinear-AP bound g(4) ≤ 3 — the AP is again not extremal (as at n=3).",
-      "no_four_equidistant: four points at a common positive pairwise distance r give three difference vectors (b−a,c−a,d−a) of norm r with pairwise inner product r²/2 (from ‖x−y‖²=2r²−2⟨x,y⟩=r²), a positive-definite Gram matrix ⟹ linearly independent ⟹ finrank ≥ 3, contradicting finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2. Linear independence extracted by taking inner products of Σgᵢ·vᵢ=0 against u,v,w and solving the Gram system via linear_combination (sum ⟹ Σg=0; each ⟹ (r²/2)gᵢ=0)."
+      "no_four_equidistant: four points at a common positive pairwise distance r give three difference vectors (b−a,c−a,d−a) of norm r with pairwise inner product r²/2 (from ‖x−y‖²=2r²−2⟨x,y⟩=r²), a positive-definite Gram matrix ⟹ linearly independent ⟹ finrank ≥ 3, contradicting finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2. Linear independence extracted by taking inner products of Σgᵢ·vᵢ=0 against u,v,w and solving the Gram system via linear_combination (sum ⟹ Σg=0; each ⟹ (r²/2)gᵢ=0).",
+      "General lower bound g(n) ≥ 2 for all n ≥ 4 (two_le_minDistinctDistances): the no_four_equidistant obstruction from the g(4) proof survives adding points, since any ≥4-point set contains a 4-point subset. Subsumes g(4)≥2 and pins g(5)≥2. Axiom-free."
     ],
     "mathlibGaps": [],
     "nextSteps": [
