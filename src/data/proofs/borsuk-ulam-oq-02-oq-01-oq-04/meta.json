@@ -87,31 +87,31 @@
       "title": "Key Properties of the FH Index",
       "summary": "Proves point computation and sphere free action computation by rfl from definitions.",
       "startLine": 106,
-      "endLine": 123,
+      "endLine": 122,
       "mathContext": "Proved: $\\text{Index}_G(\\text{pt}) = H^*(BG)$ and $\\text{Index}_{\\mathbb{Z}/p}(S^{2n-1}) = (u^n)$ by definitional unfolding."
     },
     {
       "id": "bu-connection",
       "title": "Connection to BU Dimension",
       "summary": "Proves `fh_implies_buDim_lower_bound` and `fh_recovers_yang_borsuk` from parent axioms.",
-      "startLine": 131,
-      "endLine": 167,
+      "startLine": 123,
+      "endLine": 155,
       "mathContext": "Shows FH index computations recover $\\text{buDim}(p, 2n) = 2n - 1$ via Yang-Borsuk."
     },
     {
       "id": "composite-groups",
       "title": "FH for Composite Groups",
-      "summary": "Documents restriction maps (not yet formalized), proves `fh_z4_bound` and `fh_z6_bound` from parent monotonicity.",
-      "startLine": 168,
-      "endLine": 210,
+      "summary": "Proves `fh_recovers_monotonicity` (Part V), then documents restriction maps (not yet formalized) and proves the specific composite bounds `fh_z4_bound` and `fh_z6_bound` (Part VI) from parent monotonicity.",
+      "startLine": 156,
+      "endLine": 209,
       "mathContext": "Restriction maps $\\text{res}_p : H^*(B\\mathbb{Z}/n) \\to H^*(B\\mathbb{Z}/p)$ encode monotonicity algebraically."
     },
     {
       "id": "extensions",
       "title": "What FH Could Resolve",
-      "summary": "Documents product formula, discusses open questions about computability and non-cyclic groups.",
-      "startLine": 211,
-      "endLine": 230,
+      "summary": "Documents the product formula and open questions about computability and non-cyclic groups, then proves `fh_extends_monotonicity`: the FH framework subsumes monotonicity while adding restriction-map structure.",
+      "startLine": 210,
+      "endLine": 251,
       "mathContext": "Product formula $\\text{Index}(X \\times Y) \\supseteq \\text{Index}(X) \\cdot \\text{Index}(Y)$ and extensions to non-cyclic groups."
     }
   ],
