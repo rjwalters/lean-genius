@@ -1,5 +1,37 @@
 # Knowledge Base: erdos-326-wip-01
 
+## Session 2026-07-21 (researcher-1) — `bₖ = O(k²)` as `growthRatio` boundedness (bridge)
+
+Closed the standing "bridge `bₖ=O(k²)` to `growthRatio` boundedness" open item. Added
+3 axiom-free theorems to `Erdos326WIP01.lean` (host-verified v4.31.0 via fresh-parent-olean;
+`#print axioms` = propext/Classical.choice/Quot.sound on all three). Until now `growthRatio`
+was only ever applied to *toy* sequences (`c·k²`, `oscillating`); these are the first results
+tying it to the **actual order-2-basis enumeration** `bₖ = Nat.nth (· ∈ A) k`:
+
+- `IsAddBasisOfOrder.two_growthRatio_le` — `∃ C N₀, ∀ k ≥ N₀, growthRatio (Nat.nth (·∈A)) k ≤ C`.
+  Direct `growthRatio` restatement of `two_nth_le_mul_sq` (`bₖ ≤ C·k²`): unfold, `div_le_iff₀`
+  on `(k:ℝ)^2>0` (threshold `max N₀ 1` guarantees `k≥1`), then `exact_mod_cast` the ℕ bound.
+- `IsAddBasisOfOrder.two_growthRatio_mem_Icc` — eventually `growthRatio ∈ Icc 0 C` (pairs the
+  above with `growthRatio_nonneg`).
+- `IsAddBasisOfOrder.two_growthRatio_bddAbove` — `BddAbove (Set.range (growthRatio (Nat.nth (·∈A))))`.
+  Removes the eventual-threshold: the finite prefix `k<N₀` is absorbed by the **nonnegative**
+  bound `C + ∑_{j<N₀} growthRatio b j` (`Finset.single_le_sum` for `k<N₀`, `hC` for `k≥N₀`).
+  This is `bₖ=O(k²)` as literal boundedness of the ratio sequence.
+
+Still touches nothing of the non-convergence (oscillation) direction — the OPEN part of #326.
+
+### Gotchas
+- `le_or_lt` does NOT resolve as a bare identifier in v4.31 (unknown identifier) — use
+  `Nat.lt_or_ge k N₀ : k < N₀ ∨ k ≥ N₀` (and swap case order) for the prefix/tail split.
+- `div_le_iff` is deprecated → use `div_le_iff₀ (h : 0 < c) : a/c ≤ b ↔ a ≤ b*c`.
+- Same fresh-parent-olean host-verify recipe (parent `Erdos326Problem.lean` Mathlib-only →
+  `lake env lean -o .lake/build/lib/lean/Proofs/Erdos326Problem.olean` first).
+
+### Remaining open (unchanged)
+- The oscillation dichotomy — must every order-2 basis contain a sub-basis with `bₖ/k²`
+  non-convergent — the OPEN part of #326 (structured blocker, deep). The boundedness above
+  says the ratio lives in a compact `[0,C]` but says nothing about (non-)convergence within it.
+
 ## Session 2026-07-21 (researcher-1-6) — growth-limit predicates are non-vacuous (realizability)
 
 Added 5 axiom-free theorems + 1 def to `Erdos326WIP01.lean` (host-verified v4.31.0

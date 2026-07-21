@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1-4, VERIFIED 0-axiom host v4.31.0): the standard b_k=O(k^2) growth UPPER bound for order-2 bases is now formalized (two_nth_le_quadratic / two_nth_le_mul_sq), turning the √n density (Key Observation 1) into an explicit bound on the k-th element Nat.nth(.∈A) k via Nat.nth_lt_of_lt_count. Deep sub-basis oscillation dichotomy (open part of #326) remains untouched.",
+    "progressSummary": "PROGRESS: bₖ=O(k²) fully bridged to growthRatio boundedness (3 axiom-free lemmas tying growthRatio to the actual order-2-basis enumeration Nat.nth; range is BddAbove). Only the open non-convergence/oscillation dichotomy of #326 remains.",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -60,7 +60,8 @@
       "hasGrowthLimit_quadratic — bₖ=c·k² has growth limit c (HasGrowthLimit non-vacuous; positive realizability, Cassels flavour)",
       "oscillating (def) + growthRatio_oscillating_odd/even — explicit sequence with ratio 2 on odds, 1 on evens",
       "hasNoGrowthLimit_oscillating — HasNoGrowthLimit is non-vacuous: oscillating sequence has no growth limit",
-      "IsAddBasisOfOrder.two_nth_le_quadratic + two_nth_le_mul_sq in Erdos326WIP01.lean: order-2 basis enumeration b_k=Nat.nth(.∈A) satisfies b_k ≤ N+(k+1)^2 and b_k ≤ (N+4)k^2 (k≥1). 0 axioms (propext/Classical.choice/Quot.sound), host-verified v4.31.0"
+      "IsAddBasisOfOrder.two_nth_le_quadratic + two_nth_le_mul_sq in Erdos326WIP01.lean: order-2 basis enumeration b_k=Nat.nth(.∈A) satisfies b_k ≤ N+(k+1)^2 and b_k ≤ (N+4)k^2 (k≥1). 0 axioms (propext/Classical.choice/Quot.sound), host-verified v4.31.0",
+      "IsAddBasisOfOrder.two_growthRatio_le / two_growthRatio_mem_Icc / two_growthRatio_bddAbove in Erdos326WIP01.lean (axiom-free, host-verified v4.31.0)"
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
@@ -72,7 +73,8 @@
       "The HasGrowthLimit/HasNoGrowthLimit predicates were previously only equipped with uniqueness lemmas; both are now shown non-vacuous by explicit bare-sequence witnesses (no basis constraint), 0-axiom.",
       "Non-convergence is realized elementarily by oscillating the quadratic coefficient between 1 and 2; the odd/even index maps both tend to atTop so any limit would be forced to equal both 2 and 1 (tendsto_nhds_unique twice).",
       "Idiom: ∀ᶠ equality must be typed as f =ᶠ[l] g (EventuallyEq) for .symm/.congr' dot notation to resolve; the bare ∀ᶠ (Eventually) head symbol blocks it.",
-      "The b_k = O(k^2) growth upper bound for order-2 bases is now machine-checked axiom-free (two_nth_le_quadratic: Nat.nth (.∈A) k ≤ N + (k+1)^2; two_nth_le_mul_sq: ≤ (N+4)·k^2 for k≥1). This is the standard consequence of the √n density bound (Key Observation 1): with n = N+(k+1)^2 the density (n+1-N ≤ (|S|+1)^2) forces k < |S| ≤ count(.∈A)(n+1), so Nat.nth (.∈A) k < n+1 via Nat.nth_lt_of_lt_count. No deep input; the oscillation dichotomy stays open."
+      "The b_k = O(k^2) growth upper bound for order-2 bases is now machine-checked axiom-free (two_nth_le_quadratic: Nat.nth (.∈A) k ≤ N + (k+1)^2; two_nth_le_mul_sq: ≤ (N+4)·k^2 for k≥1). This is the standard consequence of the √n density bound (Key Observation 1): with n = N+(k+1)^2 the density (n+1-N ≤ (|S|+1)^2) forces k < |S| ≤ count(.∈A)(n+1), so Nat.nth (.∈A) k < n+1 via Nat.nth_lt_of_lt_count. No deep input; the oscillation dichotomy stays open.",
+      "growthRatio bₖ/k² of an order-2 basis enumeration (Nat.nth) is bounded above: eventually ≤ C (two_growthRatio_le), eventually in [0,C] (two_growthRatio_mem_Icc), and its full range is BddAbove (two_growthRatio_bddAbove) — the growthRatio restatement of bₖ=O(k²). First results connecting growthRatio to the real basis enumeration rather than toy sequences."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."
