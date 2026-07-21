@@ -87,63 +87,63 @@
     {
       "id": "basics",
       "title": "Orbit and Stabilizer Basics",
-      "startLine": 45,
-      "endLine": 57,
+      "startLine": 43,
+      "endLine": 61,
       "summary": "Basic facts: every element is in its own orbit, stabilizer membership iff fixing the point, identity is in the stabilizer.",
       "mathContext": "$x \\in \\text{Orb}(x)$; $g \\in \\text{Stab}(x) \\iff g \\cdot x = x$; $1 \\in \\text{Stab}(x)$."
     },
     {
       "id": "bijection",
       "title": "Orbit-Stabilizer Bijection",
-      "startLine": 59,
-      "endLine": 70,
+      "startLine": 62,
+      "endLine": 75,
       "summary": "The orbit of x is in bijection with G/Stab(x) via MulAction.orbitEquivQuotientStabilizer.",
       "mathContext": "$\\text{Orb}(x) \\cong G/\\text{Stab}(x)$ as sets."
     },
     {
       "id": "cardinality",
       "title": "Orbit-Stabilizer Theorem (Cardinality)",
-      "startLine": 72,
-      "endLine": 100,
+      "startLine": 76,
+      "endLine": 102,
       "summary": "The main theorem |Orb(x)| x |Stab(x)| = |G|, plus divisibility corollaries for orbit and stabilizer sizes.",
       "mathContext": "$|\\text{Orb}(x)| \\times |\\text{Stab}(x)| = |G|$; $|\\text{Orb}(x)| \\mid |G|$; $|\\text{Stab}(x)| \\mid |G|$."
     },
     {
       "id": "lagrange",
       "title": "Lagrange as Special Case",
-      "startLine": 102,
-      "endLine": 128,
+      "startLine": 103,
+      "endLine": 135,
       "summary": "Lagrange's theorem, the index formula, element order divisibility, and g^|G| = 1 as special cases.",
       "mathContext": "$|H| \\mid |G|$; $|H| \\times [G:H] = |G|$; $\\text{ord}(g) \\mid |G|$; $g^{|G|} = 1$."
     },
     {
       "id": "orbit-index",
       "title": "Orbit Size = Stabilizer Index",
-      "startLine": 130,
-      "endLine": 139,
+      "startLine": 136,
+      "endLine": 146,
       "summary": "The orbit size equals the index of the stabilizer subgroup.",
       "mathContext": "$|\\text{Orb}(x)| = [G : \\text{Stab}(x)]$."
     },
     {
       "id": "transitive",
       "title": "Transitive Actions",
-      "startLine": 141,
-      "endLine": 149,
+      "startLine": 147,
+      "endLine": 156,
       "summary": "For transitive actions, every orbit is the full set.",
       "mathContext": "If the action is transitive, $\\text{Orb}(x) = X$ for all $x$."
     },
     {
       "id": "pgroup",
       "title": "p-Group Results",
-      "startLine": 151,
-      "endLine": 189,
+      "startLine": 157,
+      "endLine": 186,
       "summary": "p-group fixed point theorem (|Fix| ≡ |X| mod p) and nontriviality of p-group centers.",
       "mathContext": "For $p$-group $G$ acting on $X$: $|X| \\equiv |\\text{Fix}(G)| \\pmod{p}$. If $|G| > 1$, then $|Z(G)| > 1$."
     },
     {
       "id": "summary",
       "title": "Generalization Hierarchy",
-      "startLine": 191,
+      "startLine": 187,
       "endLine": 207,
       "summary": "Summary theorem showing orbit-stabilizer and Lagrange hold simultaneously, documenting the generalization hierarchy.",
       "mathContext": "Orbit-stabilizer $\\Rightarrow$ Lagrange $\\Rightarrow$ Burnside $\\Rightarrow$ class equation $\\Rightarrow$ $p$-group center nontriviality."
