@@ -91,71 +91,71 @@
       "title": "Bipartite Graphs and Bipartitions",
       "summary": "IsBipartition, bipartition_edges_between, IsBipartite definitions",
       "startLine": 47,
-      "endLine": 108,
+      "endLine": 142,
       "mathContext": "Formal definition: IsBipartition, bipartition_edges_between, IsBipartite definitions"
     },
     {
       "id": "cycles",
       "title": "Cycles in Graphs",
       "summary": "HasCycleOfLength, C4Free, C6Free, C4C6Free predicates",
-      "startLine": 110,
-      "endLine": 137,
+      "startLine": 143,
+      "endLine": 171,
       "mathContext": "Mathematical content: HasCycleOfLength, C4Free, C6Free, C4C6Free predicates"
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function f(n,m)",
       "summary": "maxC4C6FreeEdges definition (lines 152-154); lines 156-158 contain an orphaned achievability docstring with no corresponding Lean declaration",
-      "startLine": 139,
-      "endLine": 158,
+      "startLine": 172,
+      "endLine": 191,
       "mathContext": "Formal definition: maxC4C6FreeEdges (sSup-based def, lines 152-154). Lines 156-158: orphaned '/-- f(n,m) is achieved by some bipartite graph. -/' docstring — no formal axiom declaration follows."
     },
     {
       "id": "decaen-szekely",
       "title": "De Caen-Székely Bounds (1992)",
       "summary": "Upper and lower bounds, Faudree-Simonovits general bound — discussed in source comments; no formal axiom for deCaen-Székely bounds in the kernel",
-      "startLine": 159,
-      "endLine": 181,
+      "startLine": 192,
+      "endLine": 214,
       "mathContext": "Discussion only: De Caen-Székely upper/lower bounds and Faudree-Simonovits general bound referenced in docstrings at lines 165-181; no formal declaration follows"
     },
     {
       "id": "lazebnik-improvement",
       "title": "Lazebnik-Ustimenko-Woldar Improvement (1994)",
       "summary": "Axiom `luw_superlinear`: LUW superlinear construction formally axiomatized",
-      "startLine": 182,
-      "endLine": 213,
+      "startLine": 215,
+      "endLine": 247,
       "mathContext": "Axiomatized: `luw_superlinear` — the sole LUW result formally in the kernel; other LUW discussion in surrounding docstrings"
     },
     {
       "id": "disproof",
       "title": "Disproof of Erdős's Conjecture",
       "summary": "erdos_conjecture_false and erdos_1080 main theorems",
-      "startLine": 215,
-      "endLine": 267,
+      "startLine": 248,
+      "endLine": 301,
       "mathContext": "Verified: erdos_conjecture_false and erdos_1080 main theorems"
     },
     {
       "id": "c8-observation",
       "title": "The C_8 Observation",
       "summary": "Axiom `erdos_c8_observation`: Erdős's observation that C_8 is guaranteed by cn edges",
-      "startLine": 269,
-      "endLine": 284,
+      "startLine": 302,
+      "endLine": 318,
       "mathContext": "Axiomatized: `erdos_c8_observation` — C₈ is forced by linear edge count"
     },
     {
       "id": "related-results",
       "title": "Related Extremal Results",
       "summary": "C_4-free characterization (`c4_free_iff_no_K22`, 1 sorry) and Kővári-Sós-Turán commentary",
-      "startLine": 286,
-      "endLine": 306,
+      "startLine": 319,
+      "endLine": 442,
       "mathContext": "Contains `c4_free_iff_no_K22` (1 sorry) and Kővári-Sós-Turán docstrings; no formal kovari_sos_turan theorem"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_1080_summary combining main results",
-      "startLine": 308,
-      "endLine": 333,
+      "startLine": 443,
+      "endLine": 470,
       "mathContext": "Verified: erdos_1080_summary combining main results"
     }
   ],
