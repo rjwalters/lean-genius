@@ -122,17 +122,65 @@
       "id": "consistency-exports",
       "title": "Consistency Exports and OQ-02 ⟹ OQ-01",
       "startLine": 195,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "bourgain_consistent_with_isLittleO re-exports Mathlib's unconditional qualitative rothNumberNat_isLittleO_id. bourgain_consistent_with_Behrend chains Behrend's lower bound N·exp(-4√(log N)) transitively through rothNumberNat N to the Bourgain upper bound. rothNumberNat_le_min_bourgain_blasi bounds rothNumberNat N by the minimum of the Bourgain and Bloom–Sisask right-hand sides — the formal record that OQ-02 ⟹ OQ-01.",
       "mathContext": "$N\\,e^{-4\\sqrt{\\log N}} \\le \\text{rothNumberNat}\\,N \\le \\min(\\text{Bourgain RHS}, \\text{Bloom–Sisask RHS})$."
     },
     {
+      "id": "bourgain-implies-littleo",
+      "title": "Bourgain Rate ⟹ o(N), Proven from the Explicit Bound",
+      "startLine": 252,
+      "endLine": 308,
+      "summary": "bourgain_factor_tendsto_zero: the density factor (log log N/log N)^(1/2) → 0, axiom-free from Real.isLittleO_log_id_atTop composed with the continuous √. rothNumberNat_isLittleO_of_bourgain then *derives* rothNumberNat N = o(N) directly from the quantitative Bourgain bound (unlike bourgain_consistent_with_isLittleO, which merely re-exports Mathlib's independent o(N) statement), certifying the explicit rate is genuinely strong enough to yield o(N).",
+      "mathContext": "$\\log\\log N/\\log N \\to 0$ (since $\\log =o(\\mathrm{id})$), so $C\\,(\\log\\log N/\\log N)^{1/2}\\to 0$ forces $r_3(N)=o(N)$."
+    },
+    {
+      "id": "polylog-engines",
+      "title": "Log-Growth Helpers and Polylog Decay Engines",
+      "startLine": 310,
+      "endLine": 360,
+      "summary": "Reusable endpoint helpers one_lt_logN_of_three_le (log N > 1 for N ≥ 3, via exp 1 < 3) and loglog_pos_of_three_le (log log N > 0). loglog_cubed_div_log_tendsto_zero and its arbitrary-power generalisation loglog_pow_div_log_tendsto_zero: (log log N)^j/log N → 0 for every fixed j, from Real.tendsto_pow_log_div_mul_add_atTop at u = log N → ∞. Fully axiom-free — the quantitative core separating Bourgain's power-of-log saving from Roth's log log saving.",
+      "mathContext": "$(\\log u)^j/u \\to 0$ at $u=\\log N\\to\\infty$, so $(\\log\\log N)^j/\\log N \\to 0$ for every fixed $j$."
+    },
+    {
+      "id": "bourgain-dominates-roth",
+      "title": "Bourgain's Saving Strictly Dominates Roth's",
+      "startLine": 362,
+      "endLine": 436,
+      "summary": "bourgain_factor_isLittleO_roth_factor: Bourgain's (log log N/log N)^(1/2) is o of Roth's 1953 factor 1/log log N (the ratio squares to (log log N)³/log N → 0). bourgain_factor_isLittleO_loglog_inv_pow strengthens this to beat *every* fixed power 1/(log log N)^k (ratio² = (log log N)^(2k+1)/log N → 0). Both axiom-free — statements purely about the rate *shapes*.",
+      "mathContext": "$(\\log\\log N/\\log N)^{1/2} = o\\big(1/(\\log\\log N)^k\\big)$ for every $k$: Bourgain's power-of-log saving outruns arbitrarily large powers of the $\\log\\log$ scale."
+    },
+    {
+      "id": "blasi-dominates-bourgain",
+      "title": "OQ-02's Rate Strictly Dominates OQ-01's",
+      "startLine": 438,
+      "endLine": 487,
+      "summary": "blasi_factor_isLittleO_bourgain_factor: the Bloom–Sisask density factor 1/(log N)^(1+c) is o of the Bourgain factor (log log N/log N)^(1/2). This supplies the analytic domination that rothNumberNat_le_min_bourgain_blasi deliberately stops short of (there the two bounds are only combined via min, the honest constant-tracking comparison left undone) — at the level of rate shapes, after cancelling N, no constants are needed. Depends only on blasiConst_pos.",
+      "mathContext": "Ratio $= 1/\\big((\\log N)^{1/2+c}(\\log\\log N)^{1/2}\\big) \\to 0$ since $1/2+c>0$: the Bloom–Sisask saving beats the Bourgain saving outright."
+    },
+    {
+      "id": "universal-density-bounds",
+      "title": "Universal Density Bounds for Arbitrary 3-AP-Free Sets",
+      "startLine": 489,
+      "endLine": 551,
+      "summary": "threeAPFree_card_le_blasi / threeAPFree_card_le_bourgain lift the extremal bounds to *every* 3-AP-free finite set s ⊆ [0,N) via Mathlib's ThreeAPFree.le_rothNumberNat, giving the universally-quantified interface applications consume. threeAPFree_card_le_min_bourgain_blasi combines them via le_min for the sharpest per-N bound. All inherit exactly the one imported Bloom–Sisask assumption; no new axiom.",
+      "mathContext": "For every 3-AP-free $s\\subseteq[0,N)$: $\\#s \\le \\min(C\\,N(\\log\\log N/\\log N)^{1/2},\\ N/(\\log N)^{1+c})$."
+    },
+    {
+      "id": "factors-vanish",
+      "title": "Every Saving Factor Vanishes; Endpoint Chain Domination",
+      "startLine": 553,
+      "endLine": 603,
+      "summary": "roth_factor_tendsto_zero (1/log log N → 0) and blasi_factor_tendsto_zero (1/(log N)^(1+c) → 0) complete the trio with bourgain_factor_tendsto_zero, certifying every density factor in the landscape table tends to 0 (each yields r₃(N)=o(N)). blasi_factor_isLittleO_roth_factor composes the two adjacent =o comparisons by transitivity: the strongest formalized saving beats the weakest directly, separating the extremes of the Roth ⊃ Bourgain ⊃ Bloom–Sisask ordering. Axiom-free.",
+      "mathContext": "$1/(\\log N)^{1+c} = o(1/\\log\\log N)$ by transitivity of $=o$: the ends of $\\text{Roth}\\supset\\text{Bourgain}\\supset\\text{Bloom–Sisask}$ are strictly separated."
+    },
+    {
       "id": "audit",
       "title": "Axiom Audit",
-      "startLine": 251,
-      "endLine": 264,
-      "summary": "#check exports for all seven named results and a #print axioms of rothNumberNat_bourgain, confirming its only non-foundational dependency is the imported RothTheoremOQ02.rothNumberNat_bloom_sisask — there is no separate Bourgain axiom and no sorryAx / Lean.ofReduceBool.",
-      "mathContext": "Axiom audit: Bourgain is a theorem resting solely on the Bloom–Sisask assumption."
+      "startLine": 605,
+      "endLine": 650,
+      "summary": "#check exports for all twenty-one named results, then #print axioms across the file: rothNumberNat_bourgain rests solely on the imported RothTheoremOQ02.rothNumberNat_bloom_sisask (no separate Bourgain axiom, no sorryAx / Lean.ofReduceBool); the rate-shape comparisons, polylog engines, and rate-limit / chain-transitivity results are fully axiom-free; the universal 3-AP-free forms inherit exactly the one Bloom–Sisask assumption via the extremal bounds.",
+      "mathContext": "Axiom audit: Bourgain is a theorem resting solely on the Bloom–Sisask assumption; all rate-shape / polylog results are axiom-free."
     }
   ],
   "conclusion": {
