@@ -69,38 +69,38 @@
       "id": "upward-closed",
       "title": "The Dominance Region Is Upward-Closed",
       "startLine": 108,
-      "endLine": 116,
+      "endLine": 122,
       "summary": "construction2_dominant_up: once construction2 catches up to construction1 at some n, it dominates for every m ≥ n. The two regimes are separated by a single threshold.",
       "mathContext": "$\\{n : \\mathrm{construction1}\\le\\mathrm{construction2}\\,n\\}$ is an up-set in $n$."
     },
     {
       "id": "conjectured-value-monotone",
       "title": "The Conjectured Value Is Monotone in n",
-      "startLine": 118,
-      "endLine": 124,
+      "startLine": 123,
+      "endLine": 130,
       "summary": "conjecturedValue_mono: max of a constant and a nondecreasing function is nondecreasing (max_le_max).",
       "mathContext": "$\\mathrm{conjecturedValue}\\,n\\le\\mathrm{conjecturedValue}\\,m$ for $k\\le n\\le m$."
     },
     {
       "id": "regime-collapse",
       "title": "Collapse on Each Side of the Threshold",
-      "startLine": 126,
-      "endLine": 138,
+      "startLine": 131,
+      "endLine": 144,
       "summary": "conjecturedValue_large (construction2 dominant ⇒ value = construction2) and conjecturedValue_small (construction1 dominant ⇒ value = construction1): max_eq_right / max_eq_left.",
       "mathContext": "Below threshold the value is $\\binom{rk-1}{r}$; at/above it is $\\binom{n}{r}-\\binom{n-k+1}{r}$."
     },
     {
       "id": "worked-instance",
       "title": "A Worked Instance: r = 4, k = 2",
-      "startLine": 140,
-      "endLine": 163,
+      "startLine": 145,
+      "endLine": 167,
       "summary": "Kernel-decidable checks locating the crossover at n=8: construction2 7 4 2 = 20 < 35 = construction1 4 2, while construction2 8 4 2 = 35; conjecturedValue switches from construction1 to construction2 across n=7→8 and is monotone there.",
       "mathContext": "$\\binom{7}{4}-\\binom{6}{4}=20<35=\\binom{7}{4}$ but $\\binom{8}{4}-\\binom{7}{4}=35$: crossover at $n=8$."
     },
     {
       "id": "exact-step-and-threshold",
       "title": "Exact Step Difference and the Sharp Crossover Threshold",
-      "startLine": 166,
+      "startLine": 168,
       "endLine": 231,
       "summary": "construction2_step_eq gives the exact increment construction2(n+1)+C(n-k+1,r-1) = construction2 n + C(n,r-1) (the equality behind construction2_mono_step); construction2_strict_mono_step is the strict refinement; crossover_r4k2 uses monotonicity to turn the two boundary checks into the complete region {n : 8 ≤ n}, the exact crossover threshold for r=4,k=2.",
       "mathContext": "$\\mathrm{construction2}(n+1)-\\mathrm{construction2}(n)=\\binom{n}{r-1}-\\binom{n-k+1}{r-1}$; for $r=4,k=2$: $\\binom{rk-1}{r}\\le\\mathrm{construction2}(n)\\iff 8\\le n$."
