@@ -138,6 +138,13 @@
       "startLine": 234,
       "endLine": 323,
       "summary": "no_sum_form_mod8 (decide, 64-case check), inert_prime_neg2 for p ≡ 5 or 7 (mod 8), concrete examples 5 and 7. Also three_splits (3 = (1+√-2)(1-√-2)) and two_ramifies (2 = -(√-2)²)."
+    },
+    {
+      "id": "sec-concrete-examples",
+      "title": "Concrete Prime Examples in ℤ[√-2]",
+      "startLine": 324,
+      "endLine": 335,
+      "summary": "Concrete verifications of the three splitting behaviours of small rational primes in ℤ[√-2]: `seven_is_inert` shows 7 stays prime (inert), `three_splits` factors 3 = (1+√-2)·(1-√-2) since 1²+2·1²=3 (split), and `two_ramifies` gives 2 = -(√-2)² since N(√-2)=2 (ramified). Together with `five_is_inert` from Part VI these exhibit inert, split, and ramified primes explicitly, each discharged by kernel `decide`."
     }
   ],
   "sorries": 0,
