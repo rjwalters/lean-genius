@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 0 sorry/0 axiom/no native_decide): RESOLVED general-position existence for EVERY n via parabolaConfig i↦(i+1,(i+1)²) — positive abscissae avoid concyclicity (4 parabola points concyclic iff abscissae sum to 0), strict convexity avoids collinearity. exists_inGeneralPosition (all n) supersedes the n≤4 tower; h_attained makes h n a genuine attained minimum for all n. The constructive piece flagged open by every prior session is now closed. Parent Erdős #98 (h(n)/n→∞) remains OPEN.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1, docker-built Proofs.Erdos98WIP01 OK, 0 sorry/0 axiom/no native_decide): proved an ELEMENTARY LINEAR LOWER BOUND n-1 ≤ 3·h n (three_mul_h_ge) from the no-4-concyclic hypothesis — each circle centred at a fixed point holds ≤3 others (card_fiber_dist_le_three), pigeonhole over the n-1 distances from a base point (numDistinctDistances_lower). Corollary tendsto_h_atTop: h(n)→∞ UNCONDITIONALLY and elementarily, sharpening the Guth–Katz-conditional guthKatz_imp_tendsto. First lower bound that grows with n. Parent Erdős #98 (h(n)/n→∞) remains OPEN.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -53,7 +53,12 @@
       "exists_inGeneralPosition (n) : ∃P, InGeneralPosition P — for ALL n (supersedes _of_le_four)",
       "h_attained (n) : ∃P, InGeneralPosition P ∧ numDistinctDistances P = h n (via Nat.sInf_mem)",
       "Abstract real lemmas parabola_collinear_trivial + parabola_concyclic_sum_zero (difference-and-cancel, linear_combination + mul_eq_zero)",
-      "Distinctness helpers card_triple_pairwise_ne / card_quad_pairwise_ne (Finset.card_insert_of_notMem)"
+      "Distinctness helpers card_triple_pairwise_ne / card_quad_pairwise_ne (Finset.card_insert_of_notMem)",
+      "card_fiber_dist_le_three (hgp)(b)(v): fibre of i↦dist(P b)(P i) over v (i≠b) has card ≤3 — a 4th gives 4 concyclic pts (centre P b); via Finset.three_lt_card + card_quad_of_pairwise_ne + NoFourConcyclic (Erdos98WIP01.lean)",
+      "numDistinctDistances_lower (hgp)(0<n): n-1 ≤ 3·numDistinctDistances P — pigeonhole Finset.card_le_mul_card_image over distances from a base point (Erdos98WIP01.lean)",
+      "three_mul_h_ge (n): n-1 ≤ 3·h n for ALL n (apply numDistinctDistances_lower to h_attained minimiser) — first n-growing lower bound (Erdos98WIP01.lean)",
+      "tendsto_h_atTop: Tendsto h atTop atTop UNCONDITIONALLY (from three_mul_h_ge, no Guth–Katz) — sharpens guthKatz_imp_tendsto and weak_imp_tendsto (Erdos98WIP01.lean)",
+      "card_quad_of_pairwise_ne helper (converse of card_quad_pairwise_ne, via Finset.card_eq_four.mpr)"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -69,12 +74,14 @@
       "EuclideanSpace.single_apply deprecated → PiLp.single_apply (v4.31); coordinate extraction via congrArg (·0) then simpa [PiLp.single_apply].",
       "n=3 GP existence discharged with the right triangle (0,0),(1,0),(0,1): a line a·x+b·y+c=0 through all three forces c=0 (from origin), a=0 (from (1,0)), b=0 (from (0,1)). Proof by fin_cases over the 27 index triples: degenerate (repeat) triples killed by absurd hcard (by decide) on card{i,j,k}=3; the 6 permutations reduced by simp[cons_val_*, EuclideanSpace.single_apply]+norm_num then linarith.",
       "Coordinate technique: build points with EuclideanSpace.single for uniform single_apply coordinate access; ![...] index reduction needs Matrix.cons_val_zero/one/two + head_cons/tail_cons; full simp (not simp only) closes false coordinate equalities in injectivity.",
-      "RESOLVED the general-n GP existence obstruction: four parabola points (t,t²) are concyclic IFF abscissae sum to 0 (Vieta, x³-coeff of the circle-cut quartic is 0). Choosing POSITIVE abscissae 1..n makes every 4-subset sum ≥4>0, so no four concyclic; strict convexity gives no three collinear. Earlier sessions wrongly deemed the parabola construction dead — the fix (positive x) is elementary, no genericity/perturbation argument needed."
+      "RESOLVED the general-n GP existence obstruction: four parabola points (t,t²) are concyclic IFF abscissae sum to 0 (Vieta, x³-coeff of the circle-cut quartic is 0). Choosing POSITIVE abscissae 1..n makes every 4-subset sum ≥4>0, so no four concyclic; strict convexity gives no three collinear. Earlier sessions wrongly deemed the parabola construction dead — the fix (positive x) is elementary, no genericity/perturbation argument needed.",
+      "ELEMENTARY LINEAR LOWER BOUND from no-4-concyclic: fix a base point P b; any circle centred at P b holds ≤3 of the other points (a 4th ⟹ 4 concyclic pts with centre P b, forbidden). So the n-1 distances dist(P b)(P i) take ≥(n-1)/3 distinct values ⟹ n-1 ≤ 3·numDistinctDistances P for every GP config ⟹ n-1 ≤ 3·h n. Lean: Finset.card_le_mul_card_image (fibre ≤3) + Finset.three_lt_card to extract the 4 concyclic indices.",
+      "h(n)→∞ is provable UNCONDITIONALLY and ELEMENTARILY (tendsto_h_atTop) — from the /3 linear bound n-1 ≤ 3·h n, needing NO imported deep theorem. This is strictly better than guthKatz_imp_tendsto (assumed the imported Ω(n/log n) baseline) and weak_imp_tendsto (assumed the open weak conjecture). The conjectured RATE h(n)/n→∞ (Erdős #98) is untouched; even the linear order here is /3 of the conjectured n."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Constructive existence is now CLOSED for all n. Remaining tractable increment: concrete lower bound 2 ≤ h n for n≥3, or monotonicity h n ≤ h(n+1) (subconfiguration of general position is general position).",
-      "Parent Erdős #98 quantitative content — h(n)/n→∞ (strong) and h(n)≥n (weak) — remains OPEN in mathematics; not attackable by construction."
+      "Lower bound is now linear (n-1 ≤ 3·h n). Tractable next increments: (a) monotonicity h n ≤ h(n+1) via restricting a GP config on Fin(n+1) to Fin n (a subconfiguration of GP is GP — Injective/NoThreeCollinear/NoFourConcyclic all inherit); (b) sharpen the /3 constant, e.g. an argument giving n-1 ≤ 2·(something) or a per-pair-of-basepoints refinement.",
+      "Parent Erdős #98 quantitative content — h(n)/n→∞ (strong) and even h(n)≥n (weak) — remains OPEN in mathematics; the /3 linear bound does not reach the conjectured n."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
