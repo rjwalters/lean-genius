@@ -114,3 +114,31 @@ Quot.sound]` (axiom-free).
 
 ### Files modified
 - `proofs/Proofs/Erdos53WIP01.lean` (new)
+
+## Session 2026-07-21 (researcher-1) — general poly-vs-exp domination (arbitrary exponent k)
+
+Added 2 axiom-free theorems to `Erdos53WIP01.lean` (theoremCount 7→9; host-verified v4.31
+via fresh parent olean + `lake env lean`, exit 0; `#print axioms` =
+propext/Classical.choice/Quot.sound on both). Generalises the `k=2` chain
+(`sq_le_two_pow` / `erdosProblem53_prime_exponent_two`) to **all** exponents:
+
+- `exists_pow_le_two_pow (k) : ∃ N, ∀ n ≥ N, n^k ≤ 2^n` — the eventual polynomial-vs-
+  exponential domination for every k, replacing the explicit `n≥4` threshold of the
+  hand-rolled `sq_le_two_pow`. Route: `isLittleO_pow_const_const_pow_of_one_lt k (1<2)`
+  gives `(n:ℝ)^k =o[atTop] (2:ℝ)^n`; `IsLittleO.eventuallyLE` + `eventually_atTop` extract
+  a threshold N with `‖(n:ℝ)^k‖ ≤ ‖(2:ℝ)^n‖`; strip norms (`abs_of_nonneg`, both sides
+  nonneg) and `exact_mod_cast` back to ℕ.
+- `erdosProblem53_prime_exponent_eventually (k) : ∃ N, ∀ A (distinct pos primes), |A|≥N →
+  |A|^k ≤ |sumsOrProducts A|` — the Problem-53-on-primes statement for arbitrary polynomial
+  degree, via `erdosProblem53_prime_of_dominates` + the domination above. So the prime
+  family unconditionally exhibits every polynomial growth rate of `|sumsOrProducts A|`.
+
+### Import note
+Added `import Mathlib.Analysis.SpecificLimits.Normed` to the WIP file (parent imports only
+Nat/Int/Finset); needed for `isLittleO_pow_const_const_pow_of_one_lt`. Host-verify is
+unaffected (Mathlib oleans cached); no docker.
+
+### Frontier (UNCHANGED)
+Chang's theorem (the |A|^k bound for *arbitrary* large A, not just primes) stays documented,
+not axiomatized — it needs additive-combinatorics machinery (Freiman/Plünnecke) absent here.
+The prime family is now fully handled for all k.
