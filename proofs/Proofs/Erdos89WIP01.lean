@@ -1040,6 +1040,7 @@ theorem pentagonPlusCenter_card : pentagonPlusCenter.card = 6 := by
     exact ⟨pentCenter_ne_pentP0, pentCenter_ne_pentP1, pentCenter_ne_pentP2,
       pentCenter_ne_pentP3, pentCenter_ne_pentP4⟩
 
+set_option maxHeartbeats 1600000 in
 /-- **The pentagon-plus-centre determines at most three distances.**  Every pairwise
 distance is a pentagon side `√(40−8√5)`, a pentagon diagonal `√(40+8√5)`, or a
 centre-to-vertex spoke `4` (the circumradius). -/
