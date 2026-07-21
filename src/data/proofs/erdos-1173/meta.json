@@ -128,17 +128,25 @@
       "id": "gch-observations",
       "title": "Observations under GCH",
       "startLine": 126,
-      "endLine": 174,
+      "endLine": 163,
       "summary": "Two proved theorems: (1) `gch_aleph_omega_strong_limit`: GCH implies $\\aleph_\\omega$ is a strong limit ($2^{\\aleph_n} < \\aleph_\\omega$ for all $n$). (2) `overlap_bounded_by_aleph_n`: the almost-disjoint condition implies each pairwise overlap is bounded by some $\\aleph_n$, proved via `aleph_limit` (limit characterization of $\\aleph_\\omega$) and contraposition.",
       "mathContext": "(1) GCH $\\Rightarrow$ $\\aleph_\\omega$ is a strong limit: $2^{\\aleph_n} = \\aleph_{n+1} < \\aleph_\\omega$ for all $n < \\omega$. Proof: GCH gives $2^{\\aleph_n} = \\aleph_{n+1}$, and $\\aleph_{n+1} < \\aleph_\\omega$ since $n+1 < \\omega$. (2) $|f(\\alpha) \\cap f(\\beta)| < \\aleph_\\omega$ implies $|f(\\alpha) \\cap f(\\beta)| \\le \\aleph_n$ for some $n < \\omega$. Proof: By contraposition — if $\\aleph_n < c$ for all $n$, then $\\aleph_\\omega = \\sup_n \\aleph_n \\le c$, contradicting $c < \\aleph_\\omega$. Uses `aleph_limit` (Mathlib) and `ciSup_le`."
     },
     {
       "id": "related-results",
       "title": "Related Results and Weak Form",
-      "startLine": 145,
-      "endLine": 167,
-      "summary": "Axiomatizes the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",
+      "startLine": 165,
+      "endLine": 181,
+      "summary": "Documents (in a comment) the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",
       "mathContext": "The $\\aleph_1$ case (Erdős-Hajnal): $f : \\omega_1 \\to [\\omega_1]^{\\le \\aleph_0}$ with $|f(\\alpha) \\cap f(\\beta)| < \\aleph_0$ has a free set of size $\\aleph_1$. Here $\\aleph_0$ is regular, so Hajnal's theorem applies directly. `erdos_1173_weak`: replace the conclusion $|S| = \\aleph_{\\omega+1}$ with $|S| = \\aleph_\\omega$ — a weaker (but potentially more tractable) target."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties (Part 7)",
+      "startLine": 183,
+      "endLine": 218,
+      "summary": "Four axiom-free supporting theorems. `aleph_omega_lt_succ`: ℵ_ω < ℵ_{ω+1} (via `Cardinal.aleph_lt_aleph` and `Order.lt_succ`). `gch_power`: GCH ⇒ 2^{ℵ_ω} = ℵ_{ω+1} (immediate from the GCH definition at α = ω₀). `free_set_empty` and `free_set_singleton`: the empty set and any singleton are trivially free for any set mapping (no distinct pair to violate freeness). `free_set_subset`: any subset of a free set is free — the monotonicity that makes the notion of a largest free set well-posed.",
+      "mathContext": "ℵ_ω < ℵ_{ω+1}; GCH ⇒ 2^{ℵ_ω} = ℵ_{ω+1}; the empty set and any singleton are free for any f; T ⊆ S free ⇒ T free."
     }
   ],
   "conclusion": {
