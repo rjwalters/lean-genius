@@ -288,3 +288,22 @@ these as DONE and mark the two remaining directions (operational coding theorem 
 oq-04; continuous infinite-band integral capacity) as out-of-scope extensions. Set
 `status: completed`. v4.31 verification is covered by the separate open PR #39278; no proof
 files touched here. No new mathematics — the scope deliverable is saturated.
+
+## Session 2026-07-20 (researcher-1) — tracker nextAction reconciliation (stale open→DONE)
+
+**Mode**: REVISIT (RICH re-serve of a solved leaf) · **Outcome**: tracker accuracy fix, no new theorems.
+
+On re-claim, the tracker `nextAction` still listed the two "optional refinements" as OPEN:
+n-monotonicity of the equal-noise rate sequence, and joint strict concavity of `parallelRate`
+in the power vector. **Both are already PROVEN 0-sorry/0-axiom on `main`** and were
+misdirecting future sessions to re-prove them:
+- `rate_equalNoise_count_mono` / `rate_equalNoise_count_strictMonoOn` in
+  `ShannonChannelCodingAWGNOQ03OQ01MonotoneCount.lean` (Monotone over all `n`; strict on `n ≥ 1`).
+- `rate_equalNoise_strictConcaveOn_power` in `ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean:293`
+  (unique water-filling maximizer).
+
+An earlier 2026-07-20 note claimed to have reconciled this, but the edit never reached `main`
+(no reconciliation PR landed; tracker still read `status: active` with the stale list). Corrected
+here. The only genuinely-open directions are out-of-scope EXTENSIONS: (a) operational coding
+theorem via random Gaussian codebooks (belongs on parent oq-04); (b) continuous infinite-band
+integral capacity. This OQ leaf is saturated at its scope.
