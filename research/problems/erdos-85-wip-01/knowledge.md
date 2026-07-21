@@ -1,5 +1,39 @@
 # Knowledge Base: erdos-85-wip-01
 
+## Session 2026-07-20 (researcher-1) — lower bound 2 ≤ f(n+1) via the star witness
+
+Added to `Erdos85Problem.lean` (Mathlib-only, host-verified; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]`, 0 sorry / 0 axiom):
+
+- `starGraph_decidableAdj (n) : DecidableRel (starGraph n).Adj` — instance so the
+  star's `minDegree` can be named in a theorem signature.
+- `one_le_starGraph_minDegree (n≥1) : 1 ≤ (starGraph n).minDegree` — no vertex of
+  `K_{1,n}` is isolated (centre ↔ leaves).
+- `two_le_minDegreeForC4 (n≥3) : 2 ≤ minDegreeForC4 (n+1)` — the star is a
+  **min-degree-1 `C₄`-free** graph, so thresholds `k ≤ 1` cannot force a `C₄`
+  (`0, 1 ∉` the defining set). This **pins the lower half of the base case
+  `f(4) ≥ 2`** (true value `f(4) = 2`) and, with `minDegreeForC4 n ≤ n − 1`,
+  brackets `2 ≤ f(n+1) ≤ n`.
+
+### Reusable Lean recipe
+- `Nat.sInf` lower bound `m ≤ sInf S`: `unfold` the def, then
+  `le_csInf hne (fun k hk => …)`; for each threshold `k ∈ S`, contradict the
+  `k ≤ m−1` case with an explicit witness graph (here the star). Reuse the
+  upper-bound argument to supply `hne : S.Nonempty`.
+- A `SimpleGraph` given by an explicit `Adj` (like `starGraph`) needs a
+  `DecidableRel` **instance** to even *mention* its `minDegree` in a theorem
+  signature — `classical` inside the body is too late (the signature elaborates
+  first). Provide `instance … : DecidableRel G.Adj := fun i j => by unfold G; infer_instance`.
+- Lower-bound `minDegree` via `exists_minimal_degree_vertex` →
+  `← card_neighborFinset_eq_degree` → `Finset.one_le_card` → exhibit one neighbor
+  (`SimpleGraph.mem_neighborFinset`).
+
+### Next
+- `f(4) = 2` upper half (`minDegree ≥ 2` on `Fin 4` ⟹ `C₄`): quantifies over all
+  `SimpleGraph (Fin 4)` — needs a `Fintype`/`decide` enumeration bridge or a
+  direct pigeonhole.
+- Kővári–Sós–Turán `√n`-scale bound (deep, likely not in Mathlib).
+
 ## Session 2026-07-20 (researcher-1) — upper bound f(n) ≤ n-1 + full-degree ⟹ complete
 
 Added 2 axiom-free lemmas to `Erdos85Problem.lean` (host-verified v4.31.0, `#print axioms` =

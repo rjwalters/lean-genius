@@ -31,27 +31,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): added f(n) ≤ n-1 upper bound (minDegreeForC4_le_sub_one) + eq_top_of_minDegree_ge (full min-degree ⟹ complete graph). Ties the sInf definition to completeGraph_containsC4 and shows the threshold set is non-empty (f(n) a genuine minimum). 13 axiom-free theorems total; deep results (f(4)=2, KST, asymptotics, monotonicity) remain documented-only.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): lower bound 2 ≤ minDegreeForC4 (n+1) for n≥3 (two_le_minDegreeForC4) via the star K_{1,n} as a min-degree-1 C4-free witness (one_le_starGraph_minDegree) — nails the lower half of the base case f(4)≥2 and, with f(n)≤n-1, brackets 2≤f(n+1)≤n. 16 axiom-free theorems. Deep results (f(4)=2 upper half needs enumeration, KST √n-scale, monotonicity) remain documented-only.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
       "containsC4_mono (C4 copy survives adding edges) in Erdos85Problem.lean",
       "starGraph_not_containsC4 (stars are C4-free) in Erdos85Problem.lean",
       "C4_not_adj_one_three, containsC4_C4, containsC4_four_le_card, completeGraph_containsC4 in Erdos85Problem.lean (session 2, axiom-free [propext, Classical.choice, Quot.sound])",
-      "eq_top_of_minDegree_ge, minDegreeForC4_le_sub_one in Erdos85Problem.lean (0 axioms, 0 sorries; host-verified v4.31.0, #print axioms = [propext, Classical.choice, Quot.sound]). theoremCount 11→13."
+      "eq_top_of_minDegree_ge, minDegreeForC4_le_sub_one in Erdos85Problem.lean (0 axioms, 0 sorries; host-verified v4.31.0, #print axioms = [propext, Classical.choice, Quot.sound]). theoremCount 11→13.",
+      "one_le_starGraph_minDegree, two_le_minDegreeForC4, starGraph_decidableAdj in Erdos85Problem.lean — f(n+1)≥2 lower bound, 0-axiom host-verified"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
       "Stars are C4-free: a C4 has two DISJOINT edges (0-1 and 2-3); in a star every edge meets the centre 0, so both disjoint edges would put two distinct cycle-vertices at 0, contradicting injectivity of the embedding. Only the two disjoint edges are needed for the proof.",
       "SimpleGraph structure-literal Adj fields have no Decidable instance, so `decide` fails on C4.Adj 0 1; `by simp [C4]` unfolds the field and evaluates the arithmetic disjunction instead.",
       "The extremal question for C4 is bracketed by two structural facts now both formalized: complete graphs on >=4 vertices always contain a C4 (completeGraph_containsC4, dense extreme) while stars K_{1,n} never do (starGraph_not_containsC4, sparse extreme). A C4 also forces >=4 vertices (containsC4_four_le_card).",
-      "First honest UPPER bound on f(n) from the sInf definition: minDegreeForC4 n ≤ n-1 for n≥4. On Fin n, minDegree ≥ n-1 forces the complete graph (eq_top_of_minDegree_ge: neighborFinset i ⊆ univ.erase i, card n-1, so equality ⟹ i adjacent to all j≠i), which contains C4. Also proves the threshold set is non-empty, so f(n) is a genuine minimum not sInf ∅ = 0."
+      "First honest UPPER bound on f(n) from the sInf definition: minDegreeForC4 n ≤ n-1 for n≥4. On Fin n, minDegree ≥ n-1 forces the complete graph (eq_top_of_minDegree_ge: neighborFinset i ⊆ univ.erase i, card n-1, so equality ⟹ i adjacent to all j≠i), which contains C4. Also proves the threshold set is non-empty, so f(n) is a genuine minimum not sInf ∅ = 0.",
+      "Lower bound f(n+1) ≥ 2 for n≥3 (two_le_minDegreeForC4): the star K_{1,n} is a min-degree-1 C4-free witness, so 0,1 are not in the threshold set. With f(n)≤n-1 this brackets 2≤f(n+1)≤n and pins f(4)≥2 (true value 2).",
+      "Recipe for a Nat.sInf lower bound k≤sInf S: le_csInf hne (fun k hk => ...) then contradict a k≤m case with an explicit witness graph; needs S nonempty (upper-bound witness reused).",
+      "A SimpleGraph defined by an explicit Adj (starGraph) needs a DecidableRel instance to even mention its minDegree in a theorem SIGNATURE (classical in the body is too late); added starGraph_decidableAdj via unfold+infer_instance. minDegree lower bound via exists_minimal_degree_vertex + card_neighborFinset_eq_degree + Finset.one_le_card + a concrete neighbor."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Base case f(4)=2: minDegree ≥ 2 on Fin 4 forces containsC4 (finite but quantifies over all SimpleGraph (Fin 4) — needs a decidability/enumeration bridge), plus f(4) > 1 via a minDegree-1 C4-free witness (e.g. a perfect matching on Fin 4).",
-      "Kővári–Sós–Turán edge bound for C4-free graphs (deep, likely not in Mathlib) — would give the true √n-scale bound.",
-      "minDegreeForC4 monotonicity/sInf basic bounds."
+      "f(4)=2 upper half: minDegree ≥ 2 on Fin 4 forces containsC4 — quantifies over all SimpleGraph (Fin 4); needs a decidability/enumeration bridge (Fintype (SimpleGraph (Fin 4)) + decide, or a direct pigeonhole argument).",
+      "Kővári–Sós–Turán edge bound for C4-free graphs (deep, likely not in Mathlib) — the true √n-scale bound.",
+      "minDegreeForC4 monotonicity in the threshold structure / sInf bounds toward the Erdős #85 monotonicity question."
     ],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -74,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.783Z",
-  "lastUpdate": "2026-07-10T00:41:25.929Z",
+  "lastUpdate": "2026-07-20",
   "significance": 7,
   "tractability": 6
 }
