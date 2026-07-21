@@ -1635,4 +1635,135 @@ left as the next step. -/
 theorem h_five_bounds : 2 ≤ h 5 ∧ h 5 ≤ 3 :=
   ⟨h_five_ge_two, h_five_le_three⟩
 
+/-! ## Toward `h 5 ≥ 3`: no four coplanar points are mutually equidistant
+
+Pinning `h 5 = 3` requires the lower bound `h 5 ≥ 3` — that **no** general-position
+five-point set determines only two distinct distances.  This is *not* the one-line
+"regular pentagon is concyclic" argument: the pentagon is only one of several planar
+2-distance 5-sets, so the lower bound genuinely needs the structure of 2-distance sets.
+
+A concrete first step toward that structure is recorded here.  Suppose a five-set uses
+only distances `a < b`.  By `card_fiber_dist_le_three`, from any point at most three
+others share a distance, so each point has `a`-degree and `b`-degree in `{1, 2, 3}`.
+A point `p` with `a`-degree `3` sees three points `X, Y, Z` at distance `a`; if those
+three were also pairwise at distance `a`, then `p, X, Y, Z` would be **four mutually
+equidistant points** — the densest local pattern, and one that cannot occur in the
+plane.  The following lemma rules it out unconditionally, killing that sub-case of the
+`h 5 ≥ 3` classification.
+
+The reason is dimensional: four mutually equidistant points are the vertices of a
+regular tetrahedron, which needs three dimensions.  Concretely, the three edge vectors
+`u = b - a`, `v = c - a`, `w = d - a` from one vertex have norms `r` and pairwise inner
+product `r²/2` (from `‖u - v‖ = r`, etc.), so their Gram matrix is
+`r²·[[1, ½, ½], [½, 1, ½], [½, ½, 1]]`, of determinant `r⁶/2 ≠ 0`.  A nonzero Gram
+determinant forces `u, v, w` linearly independent — impossible for three vectors in the
+`2`-dimensional space `EuclideanSpace ℝ (Fin 2)`. -/
+open scoped InnerProductSpace in
+/-- **No four points in the plane are mutually equidistant.** In `EuclideanSpace ℝ (Fin 2)`
+there is no quadruple of points with all six pairwise distances equal to a common positive
+value `r`: the three edge vectors from one vertex would be linearly independent (their
+Gram matrix has determinant `r⁶/2 ≠ 0`), contradicting `finrank = 2`.  This is the planar
+case of "a regular `k`-simplex needs dimension `k`". -/
+theorem no_four_mutually_equidistant
+    {a b c d : EuclideanSpace ℝ (Fin 2)} {r : ℝ} (hr : 0 < r)
+    (hab : dist a b = r) (hac : dist a c = r) (had : dist a d = r)
+    (hbc : dist b c = r) (hbd : dist b d = r) (hcd : dist c d = r) : False := by
+  set u : EuclideanSpace ℝ (Fin 2) := b - a with hu
+  set v : EuclideanSpace ℝ (Fin 2) := c - a with hv
+  set w : EuclideanSpace ℝ (Fin 2) := d - a with hw
+  -- Edge-vector norms are all `r`.
+  have hnu : ‖u‖ = r := by rw [hu, ← dist_eq_norm, dist_comm]; exact hab
+  have hnv : ‖v‖ = r := by rw [hv, ← dist_eq_norm, dist_comm]; exact hac
+  have hnw : ‖w‖ = r := by rw [hw, ← dist_eq_norm, dist_comm]; exact had
+  -- Self inner products.
+  have euu : inner ℝ u u = r ^ 2 := by rw [real_inner_self_eq_norm_sq, hnu]
+  have evv : inner ℝ v v = r ^ 2 := by rw [real_inner_self_eq_norm_sq, hnv]
+  have eww : inner ℝ w w = r ^ 2 := by rw [real_inner_self_eq_norm_sq, hnw]
+  -- Cross inner products are `r²/2`, from the equal opposite-edge lengths.
+  have huv : inner ℝ u v = r ^ 2 / 2 := by
+    have hnorm : ‖u - v‖ = r := by
+      have : u - v = b - c := by rw [hu, hv]; abel
+      rw [this, ← dist_eq_norm]; exact hbc
+    have h := norm_sub_sq_real u v
+    rw [hnorm, hnu, hnv] at h; linarith
+  have huw : inner ℝ u w = r ^ 2 / 2 := by
+    have hnorm : ‖u - w‖ = r := by
+      have : u - w = b - d := by rw [hu, hw]; abel
+      rw [this, ← dist_eq_norm]; exact hbd
+    have h := norm_sub_sq_real u w
+    rw [hnorm, hnu, hnw] at h; linarith
+  have hvw : inner ℝ v w = r ^ 2 / 2 := by
+    have hnorm : ‖v - w‖ = r := by
+      have : v - w = c - d := by rw [hv, hw]; abel
+      rw [this, ← dist_eq_norm]; exact hcd
+    have h := norm_sub_sq_real v w
+    rw [hnorm, hnv, hnw] at h; linarith
+  -- Reversed cross products (inner product is symmetric over `ℝ`).
+  have evu : inner ℝ v u = r ^ 2 / 2 := by rw [real_inner_comm]; exact huv
+  have ewu : inner ℝ w u = r ^ 2 / 2 := by rw [real_inner_comm]; exact huw
+  have ewv : inner ℝ w v = r ^ 2 / 2 := by rw [real_inner_comm]; exact hvw
+  -- The three edge vectors are linearly independent.
+  have hli : LinearIndependent ℝ ![u, v, w] := by
+    rw [Fintype.linearIndependent_iff]
+    intro g hg
+    rw [Fin.sum_univ_three] at hg
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.tail_cons] at hg
+    -- `hg : g 0 • u + g 1 • v + g 2 • w = 0`; test against `u`, `v`, `w`.
+    have e1 : g 0 * r ^ 2 + g 1 * (r ^ 2 / 2) + g 2 * (r ^ 2 / 2) = 0 := by
+      have h := congrArg (fun x => (inner ℝ x u : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+      rw [euu, evu, ewu] at h; linarith
+    have e2 : g 0 * (r ^ 2 / 2) + g 1 * r ^ 2 + g 2 * (r ^ 2 / 2) = 0 := by
+      have h := congrArg (fun x => (inner ℝ x v : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+      rw [huv, evv, ewv] at h; linarith
+    have e3 : g 0 * (r ^ 2 / 2) + g 1 * (r ^ 2 / 2) + g 2 * r ^ 2 = 0 := by
+      have h := congrArg (fun x => (inner ℝ x w : ℝ)) hg
+      simp only [inner_add_left, real_inner_smul_left, inner_zero_left] at h
+      rw [huw, hvw, eww] at h; linarith
+    -- Divide out `r²/2 ≠ 0` to reach the integer Gram system, then solve.
+    have hne : (r ^ 2 / 2 : ℝ) ≠ 0 := by positivity
+    have c1 : 2 * g 0 + g 1 + g 2 = 0 :=
+      (mul_eq_zero.mp (by linear_combination e1 : (2 * g 0 + g 1 + g 2) * (r ^ 2 / 2) = 0)).resolve_right hne
+    have c2 : g 0 + 2 * g 1 + g 2 = 0 :=
+      (mul_eq_zero.mp (by linear_combination e2 : (g 0 + 2 * g 1 + g 2) * (r ^ 2 / 2) = 0)).resolve_right hne
+    have c3 : g 0 + g 1 + 2 * g 2 = 0 :=
+      (mul_eq_zero.mp (by linear_combination e3 : (g 0 + g 1 + 2 * g 2) * (r ^ 2 / 2) = 0)).resolve_right hne
+    intro i; fin_cases i <;> linarith
+  -- Three linearly independent vectors cannot exist in a `2`-dimensional space.
+  have hcard := hli.fintype_card_le_finrank
+  rw [finrank_euclideanSpace_fin] at hcard
+  simp only [Fintype.card_fin] at hcard
+  omega
+
+/-- **No four configuration points are mutually equidistant.** Specialization of
+`no_four_mutually_equidistant` to the points of a `PointConfig`: no four indices
+`i, j, k, l` can have all six pairwise distances equal to a common positive value. This
+excludes the "regular-tetrahedron" sub-pattern from any five-point 2-distance analysis
+of `h 5 ≥ 3` (a degree-`3` vertex whose three neighbours are mutually at the short
+distance would produce exactly such a quadruple). -/
+theorem no_four_equidistant_indices {P : PointConfig n} {i j k l : Fin n} {r : ℝ}
+    (hr : 0 < r)
+    (hij : dist (P i) (P j) = r) (hik : dist (P i) (P k) = r) (hil : dist (P i) (P l) = r)
+    (hjk : dist (P j) (P k) = r) (hjl : dist (P j) (P l) = r) (hkl : dist (P k) (P l) = r) :
+    False :=
+  no_four_mutually_equidistant hr hij hik hil hjk hjl hkl
+
+/-! ## Concrete unconditional lower-bound values of `h`
+
+The linear bound `n - 1 ≤ 3 · h n` (`three_mul_h_ge`) already pins several exact
+threshold values of `h` from below, with no imported theorem and no open conjecture. -/
+
+/-- **`h n ≥ 3` for `n ≥ 8`.** From `n - 1 ≤ 3 · h n`: at `n = 8` this reads `7 ≤ 3 · h 8`,
+forcing `h 8 ≥ 3` (since `3 · 2 = 6 < 7`); monotonicity carries it to all `n ≥ 8`.  The
+first place the elementary bound alone certifies three distinct distances. -/
+theorem three_le_h_of_eight_le (hn : 8 ≤ n) : 3 ≤ h n := by
+  have := three_mul_h_ge n; omega
+
+/-- **`h n ≥ 4` for `n ≥ 11`.** From `n - 1 ≤ 3 · h n`: at `n = 11` this reads `10 ≤ 3 · h 11`,
+forcing `h 11 ≥ 4` (since `3 · 3 = 9 < 10`); monotonicity carries it to all `n ≥ 11`. -/
+theorem four_le_h_of_eleven_le (hn : 11 ≤ n) : 4 ≤ h n := by
+  have := three_mul_h_ge n; omega
+
 end Erdos98WIP01
