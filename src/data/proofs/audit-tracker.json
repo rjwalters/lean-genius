@@ -98,12 +98,6 @@
       "result": "clean",
       "issues": []
     },
-    "abel-ruffini-obstruction-oq-06 burnside-counting-oq-06 chebyshev-bounds-oq-02-oq-01-oq-01 chinese-remainder-non-coprime-oq-02-oq-01 combinations-formula-oq-08-oq-01 descartes-rule-of-signs-oq-01-oq-03 frobenius-number-oq-02-oq-01 lucas-sum-oq-01 odd-cubes-sum-oq-01 odd-squares-sum-oq-01 stars-and-bars-weak-compositions-oq-03 twin-primes-special-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-25T21:23:26Z",
-      "result": "clean",
-      "issues": []
-    },
     "abel-ruffini-oq-03": {
       "agentId": "auditor-agent",
       "auditCount": 1,
@@ -2243,12 +2237,6 @@
     "basel-problem-oq-05-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-06-25T15:53:59Z",
-      "result": "clean",
-      "issues": []
-    },
-    "basel-problem-oq-05-oq-03 bezout-identity-oq-02-oq-02-oq-03 binomial-theorem-oq-03-oq-03 buffons-needle-oq-01-oq-01-oq-05 buffons-noodle-oq-03-oq-01 cevas-theorem-oq-04-oq-04-oq-02 collatz-cycles-oq-02 combinations-formula-oq-04 erdos-1098-oq-01-oq-03 erdos-19-oq-02 erdos-247-oq-01-oq-02 factor-remainder-theorem-oq-01-oq-01-oq-02 fourier-series-oq-04-oq-01-incomplete-01 gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01 godel-incompleteness-oq-02 intermediate-value-theorem-oq-03-oq-01 jacobi-symbol-oq-01-oq-01 law-of-cosines-oq-03-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-25T15:53:53Z",
       "result": "clean",
       "issues": []
     },
@@ -5643,12 +5631,6 @@
       "issues": [
         "stale meta counts fixed by PR #24621; counts now match source"
       ]
-    },
-    "central-limit-theorem-oq-02 issues-found": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T15:05:05Z",
-      "result": "clean",
-      "issues": []
     },
     "central-limit-theorem-oq-02-oq-03": {
       "auditCount": 1,
@@ -10054,12 +10036,6 @@
       "issues": [
         "r+1-law density argument stated only in prose docstrings was framed as Establishes/prove; 10^7 stability is external (non-Lean). Reworded in PR #24616."
       ]
-    },
-    "erdos-1107-oq-02-oq-01 clean": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T15:05:04Z",
-      "result": "clean",
-      "issues": []
     },
     "erdos-1108": {
       "agentId": "auditor-cycle-20-batch",
@@ -18305,12 +18281,6 @@
         "Carmichael dependency/status repaired by PR #24706; counts match source"
       ]
     },
-    "euler-totient-oq-01-oq-03 issues-found": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T15:05:05Z",
-      "result": "clean",
-      "issues": []
-    },
     "euler-totient-oq-02": {
       "auditCount": 3,
       "issues": [],
@@ -23242,12 +23212,6 @@
       "result": "clean",
       "issues": []
     },
-    "nth-root-irrational-oq-01-oq-01 clean": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T15:05:04Z",
-      "result": "clean",
-      "issues": []
-    },
     "nth-root-irrational-oq-02": {
       "auditCount": 2,
       "lastAudited": "2026-06-18T08:30:11Z",
@@ -25766,12 +25730,6 @@
       "issues": [
         "stray \"-/\" closing the block comment was fixed by PR #24603; file compiles cleanly"
       ]
-    },
-    "sum-of-kth-powers-oq-03 clean": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T15:05:05Z",
-      "result": "clean",
-      "issues": []
     },
     "sum-of-kth-powers-oq-04": {
       "auditCount": 4,
@@ -29976,6 +29934,60 @@
     "amgm-inequality-oq002": {
       "auditCount": 1,
       "lastAudited": "2026-07-21T05:13:54Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq003": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq004": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq006": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq007": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq008": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq009": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq010": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq011": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:02Z",
+      "result": "clean",
+      "issues": []
+    },
+    "amgm-inequality-oq012": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-21T05:23:02Z",
       "result": "clean",
       "issues": []
     }
