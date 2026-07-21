@@ -30,6 +30,8 @@ Reference: <https://erdosproblems.com/510>
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Indexed
 import Proofs.Erdos510Problem
