@@ -75,3 +75,42 @@ without the `0 < p` hypothesis. Stated with `hpos : ∀ p ∈ A, 0 < p`.
 - Chang's theorem and the Erdős–Szemerédi subexponential upper bound remain
   genuinely deep (Balog–Szemerédi–Gowers, multiplicative energy) and out of
   Mathlib scope; keep documented, not axiomatized.
+
+## Session 2026-07-20 (researcher-1) — exponential richness of prime sets (0-axiom)
+
+**Mode**: FRESH (greenfield WIP node; parent rich, no prior WIP file) · **Outcome**:
+new axiom-free file `Erdos53WIP01.lean`, host-verified under v4.31.
+
+The parent `Erdos53Problem.lean` (405 L, 0-axiom) already proves the k=1 base case,
+the trivial `2^{|A|+1}` upper bracket, distinct-prime **product** richness
+`|subsetProducts A| = 2^{|A|}-1` (`subsetProducts_card_of_prime`), and
+superincreasing subset-sum injectivity `|subsetSums A| = 2^{|A|}`.
+
+**New content.** The additive side contributes exactly one value the multiplicative
+side cannot: `0` (the empty subset sum), which is never a product of positive primes
+(`subsetProducts_pos_of_prime`: every subset product of positive primes is `> 0`).
+Adjoining it to the `2^{|A|}-1` distinct positive products gives:
+
+- `sumsOrProducts_card_ge_two_pow_of_prime`: `2^{|A|} ≤ |sumsOrProducts A|` for
+  distinct positive primes. The strongest witness on the EASY direction of Problem
+  53 — the representable count is *exponential*, dwarfing every `|A|^k`.
+- `sumsOrProducts_card_prime_pinned`: with the parent upper bracket, prime sets are
+  pinned in `[2^{|A|}, 2^{|A|+1}]`.
+- `sq_le_two_pow`: `n^2 ≤ 2^n` for `n ≥ 4` (elementary induction, no analysis).
+- `erdosProblem53_prime_of_dominates` / `erdosProblem53_prime_exponent_two`: honest
+  conditional — on prime sets `|A|^k ≤ |sumsOrProducts A|` the moment `|A|^k ≤ 2^{|A|}`;
+  instantiated for `k = 2`, `N₀ = 4` (first superlinear instance, unconditional on primes).
+
+**Honesty.** This bears only on the easy direction. Chang's theorem is the uniform
+`|A|^k` bound over ALL large `A` (not just primes); the prime family is never the
+obstruction. Chang's theorem stays documented, not axiomatized.
+
+**Verification.** Parent is Mathlib-only, so host-verified without Docker via the
+fresh-parent-olean path: `bin/lake exe cache get`, build
+`Proofs/Erdos53Problem.olean` into `.lake/build/lib/lean/Proofs/`, then
+`bin/lake env lean Proofs/Erdos53WIP01.lean` → exit 0, no errors/warnings.
+`#print axioms` on the three headline theorems = `[propext, Classical.choice,
+Quot.sound]` (axiom-free).
+
+### Files modified
+- `proofs/Proofs/Erdos53WIP01.lean` (new)
