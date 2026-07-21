@@ -112,55 +112,63 @@
       "title": "The h_2(d) Case",
       "summary": "Connection to 2K₂-free graphs and CGTT theorem",
       "startLine": 105,
-      "endLine": 128,
+      "endLine": 125,
       "mathContext": "Verified: Connection to 2K₂-free graphs and CGTT theorem"
     },
     {
       "id": "h3-case",
       "title": "The h_3(d) Case",
       "summary": "h_3(3) = 23 and conjectured formula",
-      "startLine": 129,
-      "endLine": 143,
+      "startLine": 126,
+      "endLine": 140,
       "mathContext": "Mathematical content: h_3(3) = 23 and conjectured formula"
     },
     {
       "id": "general-bounds",
       "title": "General Bounds",
       "summary": "Upper and lower bounds for arbitrary t",
-      "startLine": 144,
-      "endLine": 167,
+      "startLine": 141,
+      "endLine": 158,
       "mathContext": "Bound: Upper and lower bounds for arbitrary t"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
       "summary": "h_t(d) is non-decreasing in t and d",
-      "startLine": 168,
-      "endLine": 186,
+      "startLine": 159,
+      "endLine": 177,
       "mathContext": "Mathematical content: h_t(d) is non-decreasing in t and d"
     },
     {
       "id": "line-graphs",
       "title": "Connection to Line Graphs",
       "summary": "line_graph_diameter_bound (connection to line graph diameter, not a Lean axiom)",
-      "startLine": 187,
-      "endLine": 199,
+      "startLine": 178,
+      "endLine": 185,
       "mathContext": "Mathematical content: line_graph_diameter_bound (docstring-only, not a Lean axiom)"
     },
     {
       "id": "constructions",
       "title": "Extremal Constructions",
       "summary": "star_graph_extremal, h_2_extremal_construction, projective_plane_h3_bound",
-      "startLine": 200,
-      "endLine": 220,
+      "startLine": 186,
+      "endLine": 194,
       "mathContext": "Bound: star_graph_extremal, h_2_extremal_construction, projective_plane_h3_bound"
+    },
+    {
+      "id": "erdos-comment",
+      "title": "Erdős's Comment",
+      "summary": "erdos_nice_formulas: Erdős [1988] noted the problem is interesting only when h_t(d) has a nice closed form — clean for t=1,2, conjectural for t=3",
+      "startLine": 195,
+      "endLine": 206,
+      "mathContext": "Mathematical content: erdos_nice_formulas packages the clean formulas h_1(d)=d+1 and h_2(d)=⌊5d²/4⌋+1, reflecting Erdős's [1988] remark that the problem is only of interest where a nice expression exists"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_934 and erdos_934_summary combining all results",
-      "startLine": 234,
-      "endLine": 234,
+      "startLine": 207,
+      "endLine": 232,
       "mathContext": "Mathematical content: erdos_934 and erdos_934_summary combining all results"
     }
   ],
