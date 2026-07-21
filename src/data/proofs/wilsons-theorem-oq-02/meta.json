@@ -149,7 +149,7 @@
     {
       "id": "sec-wq02-cyclic-noncyclic",
       "title": "Cyclic and Non-Cyclic Product Formulas",
-      "startLine": 238,
+      "startLine": 231,
       "endLine": 268,
       "description": "prod_units_neg_one_of_cyclic (cyclic n≥3 → ∏ = -1 via involution + {1,-1}), prod_units_one_of_not_cyclic (non-cyclic → ∏ = 1 via WilsonsTheoremOQ02Ext).",
       "summary": "Assembles the two directions: prod_units_neg_one_of_cyclic chains involution lemma → selfInverse_units_eq_pair → ∏{1,-1} = -1. prod_units_one_of_not_cyclic delegates to WilsonsTheoremOQ02Ext (fixed-point-free involution argument for non-cyclic case).",
@@ -158,7 +158,7 @@
     {
       "id": "sec-wq02-gauss-wilson-abstract",
       "title": "Gauss-Wilson Abstract Biconditional",
-      "startLine": 276,
+      "startLine": 269,
       "endLine": 285,
       "description": "gaussWilson_abstract: for n≥3, ∏(ZMod n)ˣ = -1 iff IsCyclic (ZMod n)ˣ. The main theorem combining both directions.",
       "summary": "Proves gaussWilson_abstract: for n ≥ 3, the abstract units product ∏(ZMod n)ˣ = -1 iff (ZMod n)ˣ is cyclic. Forward direction by contradiction (non-cyclic gives product = 1 ≠ -1); backward direction by prod_units_neg_one_of_cyclic.",
@@ -167,7 +167,7 @@
     {
       "id": "sec-wq02-bridge",
       "title": "Concrete-Abstract Bridge",
-      "startLine": 296,
+      "startLine": 286,
       "endLine": 321,
       "description": "unitsProduct concrete definition, unitsProduct_cast_eq_abstract: (unitsProduct n : ZMod n) = ∏(ZMod n)ˣ via Finset.prod_nbij with bijection x ↦ ZMod.val(x).",
       "summary": "Defines unitsProduct n as the concrete Finset product over {a < n | Nat.Coprime a n} and proves unitsProduct_cast_eq_abstract: casting to ZMod n equals the abstract group product ∏(ZMod n)ˣ. Uses Finset.prod_nbij with bijection x ↦ ZMod.val(x).",
@@ -176,7 +176,7 @@
     {
       "id": "sec-wq02-computation",
       "title": "Computational Verification to n≤300",
-      "startLine": 323,
+      "startLine": 322,
       "endLine": 366,
       "description": "hasGaussWilsonForm, gaussWilsonCheck definitions. gaussWilson_verified_le_250 and gaussWilson_verified_le_300 via native_decide.",
       "summary": "Defines hasGaussWilsonForm n (decidable check: n = 1, 2, 4, or n = p^k or 2p^k for odd prime p) and gaussWilsonCheck n (unitsProduct ≡ -1 iff hasGaussWilsonForm). Proves gaussWilson_verified_le_250 and gaussWilson_verified_le_300 by native_decide exhaustive computation.",
