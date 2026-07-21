@@ -2,7 +2,7 @@
   "id": "beta-integral-recurrence-oq-01-oq-01-oq-01",
   "slug": "beta-integral-recurrence-oq-01-oq-01-oq-01",
   "title": "Wallis/Stirling Decay of the Diagonal Beta Value: B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ)",
-  "description": "The asymptotic decay of the diagonal Euler Beta value. The parent entry proved the exact form B(n+1,n+1) = 1/((2n+1)·C(2n,n)); this entry establishes its rate of decay as n → ∞. The engine is the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn), which is NOT in Mathlib and is derived here from Mathlib's Stirling equivalence n! ~ √(2πn)·(n/e)ⁿ, giving B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). The Beta value is the total mass of the symmetric Beta(n+1,n+1) density on [0,1], so the result quantifies its Wallis-rate collapse (the density concentrating to a Gaussian after rescaling). Answers open question oq-01 of the parent. 5 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "description": "The asymptotic decay of the diagonal Euler Beta value. The parent entry proved the exact form B(n+1,n+1) = 1/((2n+1)·C(2n,n)); this entry establishes its rate of decay as n → ∞. The engine is the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn), which is NOT in Mathlib and is derived here from Mathlib's Stirling equivalence n! ~ √(2πn)·(n/e)ⁿ, giving B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). The Beta value is the total mass of the symmetric Beta(n+1,n+1) density on [0,1], so the result quantifies its Wallis-rate collapse (the density concentrating to a Gaussian after rescaling). Answers open question oq-01 of the parent. The same central-binomial engine also delivers the vanishing limit B(n+1,n+1) → 0 and the classical Catalan asymptotic Cₙ ~ 4ⁿ/((n+1)·√(πn)) (≈ 4ⁿ/(√π·n^{3/2})), transferred through the exact identity Cₙ = C(2n,n)/(n+1) and likewise absent from Mathlib. 7 theorems, 1 definition, 0 sorries, 0 axioms.",
   "overview": {
     "historicalContext": "The estimate C(2n,n) ~ 4ⁿ/√(πn) is one of the oldest results of asymptotic analysis: it is equivalent to Wallis' 1656 product for π and is the prototypical application of Stirling's formula. The central binomial coefficient governs the normalization of the symmetric Beta(n+1,n+1) density — the conjugate prior of a fair-coin parameter, and the law of the median of 2n+1 i.i.d. uniforms — so its decay rate is exactly the rate at which that density's total (unnormalized) mass collapses as the distribution concentrates. After the affine rescaling that fixes the variance, Beta(n+1,n+1) converges to the standard Gaussian; the √n in the denominator here is the same √n that appears in the central limit scaling.",
     "problemStatement": "Building on the parent entry's exact value B(n+1,n+1) = 1/((2n+1)·C(2n,n)), establish the asymptotic decay B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) as n → ∞, i.e. exhibit the exponential 4⁻ⁿ decay (with the √n correction) of the symmetric Beta normalization. This answers open question oq-01 of the parent recurrence entry.",
@@ -12,11 +12,13 @@
       "Mathlib has Stirling for the factorial (n! ~ √(2πn)·(n/e)ⁿ) but NOT the central binomial asymptotic; the latter is the genuinely new content here, obtained purely by Asymptotics.IsEquivalent algebra (comp_tendsto for (2n)!, .mul for (n!)², .div for the quotient) over Mathlib's factorial equivalence.",
       "The 4ⁿ is not assumed — it is forced: in stirling_ratio_identity the only exponential surviving the cancellation of the (n/e) factors is (2n/e)^{2n}/(n/e)^{2n} = 2^{2n} = 4ⁿ. All √π and e-dependence cancels exactly, leaving the clean rational-times-√(πn) form.",
       "B(n+1,n+1) is the total mass of x^n(1−x)^n on [0,1]; its reciprocal (2n+1)·C(2n,n) is the normalizing constant of Beta(n+1,n+1), so the √(πn)·4⁻ⁿ/(2n+1) decay is the quantitative form of the concentration of the symmetric Beta density toward a Gaussian.",
-      "The asymptotic is stated as an Asymptotics.IsEquivalent (~) at Filter.atTop, the standard Mathlib formulation of 'f(n)/g(n) → 1', and betaIntegral_diag_eq ties the real analysis back to the complex Beta integral, so the result is a theorem about Complex.betaIntegral itself."
+      "The asymptotic is stated as an Asymptotics.IsEquivalent (~) at Filter.atTop, the standard Mathlib formulation of 'f(n)/g(n) → 1', and betaIntegral_diag_eq ties the real analysis back to the complex Beta integral, so the result is a theorem about Complex.betaIntegral itself.",
+      "The central binomial asymptotic is a genuinely reusable engine: through the exact identity Cₙ = C(2n,n)/(n+1) (Mathlib's succ_mul_catalan_eq_centralBinom, cast in catalan_cast) it transfers to the classical Catalan asymptotic Cₙ ~ 4ⁿ/((n+1)·√(πn)) ≈ 4ⁿ/(√π·n^{3/2}) (catalan_isEquivalent) with no new analysis — the same IsEquivalent.mul against the (n+1)⁻¹ factor that produced the Beta decay. The Catalan asymptotic is also not stated in Mathlib.",
+      "Both asymptotics are also delivered in Tendsto-to-one form (centralBinom_div_stirling_tendsto_one, catalan_div_stirling_tendsto_one) via isEquivalent_iff_tendsto_one, and the mass-collapse is made a bare limit in betaDiag_tendsto_zero (B(n+1,n+1) → 0), obtained from (2n+1)·C(2n,n) → ∞ without invoking the sharp constant."
     ]
   },
   "conclusion": {
-    "summary": "The diagonal Euler Beta value decays at the Wallis rate: B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) as n → ∞. The route is the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (centralBinom_isEquivalent), derived from Mathlib's Stirling factorial equivalence via IsEquivalent.comp_tendsto/.mul/.div plus the algebraic collapse stirling_ratio_identity; reciprocating and rescaling gives betaDiag_isEquivalent, and betaIntegral_diag_eq identifies the analysed sequence with Complex.betaIntegral on the diagonal. 146 lines, 5 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "summary": "The diagonal Euler Beta value decays at the Wallis rate: B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) as n → ∞. The route is the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (centralBinom_isEquivalent), derived from Mathlib's Stirling factorial equivalence via IsEquivalent.comp_tendsto/.mul/.div plus the algebraic collapse stirling_ratio_identity; reciprocating and rescaling gives betaDiag_isEquivalent, and betaIntegral_diag_eq identifies the analysed sequence with Complex.betaIntegral on the diagonal. The same engine also gives the vanishing limit betaDiag_tendsto_zero, the Tendsto-to-one restatements, and the classical Catalan asymptotic catalan_isEquivalent (Cₙ ~ 4ⁿ/((n+1)·√(πn))) through Cₙ = C(2n,n)/(n+1). 233 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
     "implications": "The central binomial asymptotic, absent from Mathlib, is now available as a reusable lemma (centralBinom_isEquivalent) — useful for Catalan-number, Wallis-product, and random-walk return-probability asymptotics. The Beta decay answers the parent's open question oq-01 and supplies the quantitative concentration rate of the symmetric Beta(n+1,n+1) density. The Stirling input is Mathlib's; the central binomial asymptotic, the Beta decay, and the collapse identity are assembled here, justifying the original badge.",
     "openQuestions": [
       "Upgrade the IsEquivalent (~) statement to an explicit two-sided rate B(n+1,n+1) = √(πn)/((2n+1)·4ⁿ)·(1 + O(1/n)) with effective constants, using the bounds √π ≤ stirlingSeq n already available in Mathlib.",
@@ -28,41 +30,57 @@
       "id": "docstring",
       "title": "Module Docstring: Wallis/Stirling Asymptotics of the Diagonal Beta Value",
       "startLine": 4,
-      "endLine": 43,
-      "summary": "States the target decay B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ), identifies the engine as the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (derived from Mathlib's Stirling factorial equivalence, which Mathlib does not provide for the central binomial), and frames it as the Wallis-rate concentration of the symmetric Beta density.",
+      "endLine": 47,
+      "summary": "States the target decay B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ), identifies the engine as the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (derived from Mathlib's Stirling factorial equivalence, which Mathlib does not provide for the central binomial), frames it as the Wallis-rate concentration of the symmetric Beta density, and notes that the same engine yields the Catalan asymptotic Cₙ ~ 4ⁿ/((n+1)·√(πn)) via Cₙ = C(2n,n)/(n+1).",
       "mathContext": "$B(n+1,n+1) \\sim \\dfrac{\\sqrt{\\pi n}}{(2n+1)\\,4^{n}}$."
     },
     {
       "id": "centralBinom-cast",
       "title": "Central Binomial as a Factorial Quotient",
-      "startLine": 50,
-      "endLine": 62,
-      "summary": "centralBinom_cast proves the real identity C(2n,n) = (2n)!/(n!·n!) from Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!), the bridge that lets Stirling's factorial equivalence be applied to the central binomial coefficient.",
+      "startLine": 49,
+      "endLine": 66,
+      "summary": "Opens the BetaDiagAsymptotic namespace (Filter, Asymptotics; scoped Topology Real Nat). centralBinom_cast proves the real identity C(2n,n) = (2n)!/(n!·n!) from Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!), the bridge that lets Stirling's factorial equivalence be applied to the central binomial coefficient.",
       "mathContext": "$\\binom{2n}{n} = \\dfrac{(2n)!}{(n!)^2}$."
     },
     {
       "id": "ratio-identity",
       "title": "The Wallis Ratio Collapse",
-      "startLine": 64,
-      "endLine": 88,
+      "startLine": 68,
+      "endLine": 92,
       "summary": "stirling_ratio_identity collapses the Stirling quotient S(2n)/S(n)² to 4ⁿ/√(πn): √(2·2m·π) = 2√(πm), the power ratio (2m/e)^{2k}/(m/e)^{2k} = 2^{2k} = 4ᵏ produces the 4ᵏ, and div_eq_div_iff + linear_combination over the square-root self-products finish. This is the only place the 4ᵏ arises.",
       "mathContext": "$\\dfrac{\\sqrt{2\\cdot 2m\\,\\pi}\\,(2m/e)^{2k}}{\\big(\\sqrt{2m\\pi}\\,(m/e)^k\\big)^2} = \\dfrac{4^{k}}{\\sqrt{\\pi m}}$."
     },
     {
       "id": "centralBinom-asymptotic",
       "title": "Central Binomial Asymptotic",
-      "startLine": 90,
-      "endLine": 112,
+      "startLine": 94,
+      "endLine": 116,
       "summary": "centralBinom_isEquivalent proves C(2n,n) ~ 4ⁿ/√(πn). Mathlib's Stirling.factorial_isEquivalent_stirling is composed with n ↦ 2n (IsEquivalent.comp_tendsto) for (2n)!, squared (.mul) for (n!)², divided (.div), bridged to C(2n,n) via centralBinom_cast, and reduced to stirling_ratio_identity on the eventual range n ≥ 1.",
       "mathContext": "$\\binom{2n}{n} \\sim \\dfrac{4^{n}}{\\sqrt{\\pi n}}$."
     },
     {
       "id": "beta-decay",
       "title": "Decay of the Diagonal Beta Value",
-      "startLine": 114,
-      "endLine": 146,
+      "startLine": 118,
+      "endLine": 149,
       "summary": "betaDiag packages the real value 1/((2n+1)·C(2n,n)); betaDiag_isEquivalent reciprocates centralBinom_isEquivalent (.inv) and multiplies by the eventually-equal factor (2n+1)⁻¹ to give B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). betaIntegral_diag_eq identifies betaDiag with Complex.betaIntegral on the diagonal via the parent's betaIntegral_diag_centralBinom.",
       "mathContext": "$B(n+1,n+1) \\sim \\dfrac{\\sqrt{\\pi n}}{(2n+1)\\,4^{n}}$."
+    },
+    {
+      "id": "limit-restatements",
+      "title": "Vanishing Limit and the Wallis Tendsto-to-One Restatement",
+      "startLine": 152,
+      "endLine": 183,
+      "summary": "betaDiag_tendsto_zero shows B(n+1,n+1) → 0 directly from (2n+1)·C(2n,n) → ∞ (tendsto_atTop_mono against 2n+1, then inv_tendsto_atTop), the limit form of the mass-collapse statement. centralBinom_div_stirling_tendsto_one recasts centralBinom_isEquivalent as C(2n,n)/(4ⁿ/√(πn)) → 1 via isEquivalent_iff_tendsto_one, exposing the sharp leading-order constant governing the central binomial coefficient.",
+      "mathContext": "$B(n+1,n+1)\\to 0,\\qquad \\dfrac{\\binom{2n}{n}}{4^{n}/\\sqrt{\\pi n}}\\to 1.$"
+    },
+    {
+      "id": "catalan-asymptotic",
+      "title": "Catalan Number Asymptotic",
+      "startLine": 185,
+      "endLine": 233,
+      "summary": "catalan_cast casts Mathlib's succ_mul_catalan_eq_centralBinom to the real identity Cₙ = C(2n,n)/(n+1). catalan_isEquivalent transfers the central binomial asymptotic through that exact identity to Cₙ ~ 4ⁿ/((n+1)·√(πn)) — equivalently 4ⁿ/(√π·n^{3/2}), the classical Catalan asymptotic, which Mathlib likewise does not state. catalan_div_stirling_tendsto_one gives the Tendsto-to-one restatement.",
+      "mathContext": "$C_n \\sim \\dfrac{4^{n}}{(n+1)\\sqrt{\\pi n}} \\sim \\dfrac{4^{n}}{\\sqrt{\\pi}\\,n^{3/2}}.$"
     }
   ],
   "openQuestions": [
@@ -155,7 +173,8 @@
       "stirling_ratio_identity: the algebraic collapse √(2·2m·π)·(2m/e)^{2k} / (√(2mπ)·(m/e)^k)² = 4ᵏ/√(πm) for m,e > 0. Isolates the source of the 4ᵏ ((2m/e)^{2k}/(m/e)^{2k} = 2^{2k} = 4ᵏ) and the exact cancellation of all √π and e-dependence; proved via div_eq_div_iff and linear_combination over the square-root self-products.",
       "betaDiag_isEquivalent: the diagonal Beta decay B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ), obtained by reciprocating the central binomial asymptotic and rescaling by (2n+1)⁻¹. The quantitative Wallis-rate decay of the symmetric Beta(n+1,n+1) normalization, answering the parent's open question oq-01.",
       "centralBinom_cast: the real factorial-quotient identity C(2n,n) = (2n)!/(n!·n!), the bridge letting Stirling's factorial equivalence be transported to the central binomial coefficient.",
-      "betaIntegral_diag_eq: identifies the real sequence betaDiag with the value of Complex.betaIntegral on the diagonal (via the parent's betaIntegral_diag_centralBinom), so the asymptotic is a statement about the complex Euler Beta integral itself."
+      "betaIntegral_diag_eq: identifies the real sequence betaDiag with the value of Complex.betaIntegral on the diagonal (via the parent's betaIntegral_diag_centralBinom), so the asymptotic is a statement about the complex Euler Beta integral itself.",
+      "catalan_isEquivalent: the classical Catalan asymptotic Cₙ ~ 4ⁿ/((n+1)·√(πn)) ≈ 4ⁿ/(√π·n^{3/2}), obtained from centralBinom_isEquivalent through the exact identity Cₙ = C(2n,n)/(n+1) (catalan_cast, cast from Mathlib's succ_mul_catalan_eq_centralBinom). Mathlib provides Nat.catalan and the identity but not this asymptotic; it is assembled here by the same IsEquivalent algebra as the Beta decay."
     ],
     "prerequisites": [
       "Stirling's formula as an asymptotic equivalence: Stirling.factorial_isEquivalent_stirling, n! ~ √(2πn)·(n/e)ⁿ",
