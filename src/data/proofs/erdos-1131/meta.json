@@ -132,23 +132,23 @@
       "id": "chebyshev-integral-results",
       "title": "Chebyshev Integral: Exact Value and Estimates",
       "startLine": 987,
-      "endLine": 1042,
+      "endLine": 1110,
       "summary": "Four fully proved theorems on the Chebyshev integral. `chebyshev_integral_trace`: trace formula $I = (1/n)(2n - 2\\sum 1/(4j^2-1))$, proved by combining `chebyshev_sq_expansion` with `integral_chebyshev_sq`. `chebyshev_integral_exact`: $I = 2 - 2(n-1)/(n(2n-1))$, proved by combining the trace formula with `partial_fraction_sum`. `chebyshev_integral_lt_two`: $I < 2$ since the correction term is positive. `chebyshev_integral_estimate`: $\\exists c>0$ with $|I-(2-c/n)|\\le c/n^2$, proved by taking $c = n(2-I)$.",
       "mathContext": "$I_{\\text{Cheb}}(n) = 2 - \\frac{2(n-1)}{n(2n-1)} < 2$. Asymptotically: $I_{\\text{Cheb}} = 2 - \\frac{1}{n} + O(1/n^2)$."
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Conjecture (OPEN)",
-      "startLine": 1043,
-      "endLine": 1060,
+      "startLine": 1111,
+      "endLine": 1128,
       "summary": "Defines `minLagrangeIntegral n` as $\\inf\\{I(\\mathbf{x}) : \\mathbf{x} \\in [-1,1]^n\\}$ using `sInf`. States the open conjecture as an axiom `erdos_1131_conjecture`: for every $\\varepsilon > 0$ there exists $N_0$ such that $|\\min I_n - (2 - 1/n)| \\le \\varepsilon/n$ for all $n \\ge N_0$, encoding $\\min I = 2 - (1+o(1))/n$.",
       "mathContext": "Erdős conjecture: $\\min_{x_1,\\ldots,x_n \\in [-1,1]} I(x_1,\\ldots,x_n) = 2 - \\frac{1+o(1)}{n}$ as $n \\to \\infty$."
     },
     {
       "id": "main-theorem",
       "title": "Part V: Main Theorem (Proved)",
-      "startLine": 1061,
-      "endLine": 1076,
+      "startLine": 1129,
+      "endLine": 1144,
       "summary": "The main formalized result `erdos_1131`: for any $n \\ge 1$ and any distinct nodes in $[-1,1]$, $I \\ge 2/n$. Proved by direct application of `lagrangeIntegral_lower_bound`. This establishes the universal lower bound while the tighter asymptotic behavior remains open (axiomatized conjecture).",
       "mathContext": "$I(x_1,\\ldots,x_n) \\ge \\frac{2}{n}$ for all distinct configurations in $[-1,1]$."
     }
