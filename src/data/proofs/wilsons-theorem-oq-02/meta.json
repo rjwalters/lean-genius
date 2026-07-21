@@ -176,17 +176,26 @@
     {
       "id": "sec-wq02-computation",
       "title": "Computational Verification to n≤300",
-      "startLine": 340,
+      "startLine": 323,
       "endLine": 366,
       "description": "hasGaussWilsonForm, gaussWilsonCheck definitions. gaussWilson_verified_le_250 and gaussWilson_verified_le_300 via native_decide.",
       "summary": "Defines hasGaussWilsonForm n (decidable check: n = 1, 2, 4, or n = p^k or 2p^k for odd prime p) and gaussWilsonCheck n (unitsProduct ≡ -1 iff hasGaussWilsonForm). Proves gaussWilson_verified_le_250 and gaussWilson_verified_le_300 by native_decide exhaustive computation.",
       "mathContext": "$\\texttt{hasGaussWilsonForm}(n)$: decidable predicate for $n \\in \\{1,2,4,p^k,2p^k\\}$ (odd prime $p$). $\\texttt{gaussWilsonCheck}(n)$: verifies $\\prod_{\\gcd(a,n)=1} a \\equiv -1 \\pmod{n} \\iff \\texttt{hasGaussWilsonForm}(n)$. $\\texttt{native\\_decide}$ compiles to native code for fast exhaustive verification: confirms the theorem for all $n \\leq 300$ without a single algebraic argument — a computational certificate complementing the abstract proof."
     },
     {
+      "id": "sec-wq02-connections",
+      "title": "Part 10: Wilson's Theorem Connections",
+      "startLine": 367,
+      "endLine": 380,
+      "description": "wilson_via_units: Wilson's theorem via the abstract units product.",
+      "summary": "Reconnects the abstract units-product machinery to the classical statement: wilson_via_units proves ∏_{x ∈ (ℤ/p)ˣ} x = -1 for prime p, recovering Wilson's theorem from prod_units_eq_neg_one_prime, with the n=2 boundary case as a worked example.",
+      "mathContext": "$\\prod_{x \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times} x = -1$ for prime $p$ — Wilson's theorem $((p-1)! \\equiv -1 \\pmod p)$ recast as the product over the unit group, obtained directly from the abstract prime-case product $\\texttt{prod\\_units\\_eq\\_neg\\_one\\_prime}$."
+    },
+    {
       "id": "sec-wq02-wilson-primes",
       "title": "Wilson Primes: Definitions and Verification",
-      "startLine": 390,
-      "endLine": 407,
+      "startLine": 381,
+      "endLine": 426,
       "description": "wilsonQuotient, IsWilsonPrime definitions. five_is_wilson_prime, thirteen_is_wilson_prime verified. no_wilson_primes_14_to_100 via native_decide over Fin 101.",
       "summary": "Defines wilsonQuotient p = ((p-1)! + 1) / p and IsWilsonPrime p (p² | (p-1)! + 1). Verifies five_is_wilson_prime and thirteen_is_wilson_prime by norm_num. Proves no_wilson_primes_14_to_100 via native_decide over Fin 101: no Wilson prime exists in [14, 100].",
       "mathContext": "$W_p := \\frac{(p-1)!+1}{p}$ (Wilson quotient, always a positive integer by Wilson's theorem for primes). $p$ is a Wilson prime iff $p \\mid W_p$ iff $p^2 \\mid (p-1)!+1$. Verified: $W_5 = 5$, $W_{13} = 13$ (Wilson primes). $\\texttt{native\\_decide}$: for all primes $p \\in [14,100]$, $p^2 \\nmid (p-1)!+1$. Known Wilson primes: $\\{5, 13, 563\\}$ — no fourth is known; search extended to $\\approx 2 \\times 10^{13}$."
