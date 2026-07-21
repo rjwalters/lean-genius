@@ -242,4 +242,44 @@ theorem weak_imp_tendsto (H : Erdos98WeakConjecture) :
     Filter.Tendsto h Filter.atTop Filter.atTop :=
   Filter.tendsto_atTop_mono' Filter.atTop H Filter.tendsto_id
 
+open scoped Filter Topology in
+/-- The scale `n ↦ c·n / log n` diverges for any `c > 0`: `log n = o(n)`
+(`Real.isLittleO_log_id_atTop`) makes `log n / n → 0⁺`, so its reciprocal
+`n / log n → ∞`, and multiplying by the constant `c` preserves divergence. This is
+the growth rate of the Guth–Katz lower bound. -/
+theorem tendsto_const_mul_div_log_atTop {c : ℝ} (hc : 0 < c) :
+    Filter.Tendsto (fun n : ℕ => c * (n : ℝ) / Real.log n) Filter.atTop Filter.atTop := by
+  have hlo : (fun n : ℕ => Real.log n) =o[Filter.atTop] (fun n : ℕ => (n : ℝ)) :=
+    Real.isLittleO_log_id_atTop.comp_tendsto tendsto_natCast_atTop_atTop
+  have h1 : Filter.Tendsto (fun n : ℕ => Real.log n / (n : ℝ)) Filter.atTop (𝓝 0) :=
+    hlo.tendsto_div_nhds_zero
+  have hpos : ∀ᶠ n : ℕ in Filter.atTop, 0 < Real.log n / (n : ℝ) := by
+    filter_upwards [Filter.eventually_ge_atTop 2] with n hn
+    have hn1 : (1 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    exact div_pos (Real.log_pos hn1) (by positivity)
+  have h2 : Filter.Tendsto (fun n : ℕ => Real.log n / (n : ℝ)) Filter.atTop (𝓝[>] 0) :=
+    tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ h1 hpos
+  have h3 : Filter.Tendsto (fun n : ℕ => (Real.log n / (n : ℝ))⁻¹) Filter.atTop Filter.atTop :=
+    h2.inv_tendsto_nhdsGT_zero
+  have h4 : Filter.Tendsto (fun n : ℕ => (n : ℝ) / Real.log n) Filter.atTop Filter.atTop :=
+    h3.congr (fun n => by rw [inv_div])
+  exact (h4.const_mul_atTop hc).congr (fun n => by rw [mul_div_assoc])
+
+open scoped Filter Topology in
+/-- **The unconditional Guth–Katz baseline already forces `h(n) → ∞`.**  Assuming
+the (proven, imported) `Ω(n / log n)` lower bound `GuthKatzBaseline`, the minimum
+distinct-distance count diverges — *without* invoking either open conjecture.  This
+sharpens `weak_imp_tendsto` (which derives the same conclusion from the *open* weak
+conjecture): the divergence of `h` is in fact a theorem, since `c·n/log n ≤ h(n)`
+and `c·n/log n → ∞` (`tendsto_const_mul_div_log_atTop`).  What remains open is the
+*rate* (`h(n)/n → ∞`), not the divergence itself. -/
+theorem guthKatz_imp_tendsto (H : GuthKatzBaseline) :
+    Filter.Tendsto h Filter.atTop Filter.atTop := by
+  obtain ⟨c, hc, hbound⟩ := H
+  have hreal : Filter.Tendsto (fun n : ℕ => (h n : ℝ)) Filter.atTop Filter.atTop :=
+    Filter.tendsto_atTop_mono' Filter.atTop hbound (tendsto_const_mul_div_log_atTop hc)
+  refine Filter.tendsto_atTop.mpr (fun M => ?_)
+  filter_upwards [hreal.eventually_ge_atTop (M : ℝ)] with n hn
+  exact_mod_cast hn
+
 end Erdos98WIP01
