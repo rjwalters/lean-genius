@@ -152,6 +152,14 @@
       "endLine": 219,
       "summary": "The unit circle (a₁ = β₁ = 1) realizes E = 2 and Ar = 1 — non-vacuity of the equality case.",
       "mathContext": "$x(s) = \\cos s,\\; y(s) = \\sin s$: $E = 2$, $Ar = 1$, $L^2 = 4\\pi^2 = 4\\pi A$."
+    },
+    {
+      "id": "equality-locus",
+      "title": "The Exact Equality Locus (sharp iff)",
+      "startLine": 220,
+      "endLine": 273,
+      "summary": "The capstone: `equality_iff_terms_vanish` upgrades Wirtinger to a two-sided identity — equality E = 2·Ar holds iff every per-mode Hurwitz term vanishes (via `hurwitz_deficit_identity` plus `Finset.sum_eq_zero_iff_of_nonneg`). `fundamental_mode_circle_condition` then extracts, from the n = 1 term (whose (n²−1) weight is 0), the exact circle relations a₁ = β₁ and α₁ = −b₁, so together with the higher-mode killing of `equality_implies_circle` the saturating curve is precisely a circle.",
+      "mathContext": "$E = 2\\,Ar \\iff \\forall n,\\ \\mathrm{hurwitzTerm}(n) = 0$; the mode $n=1$ term $(a_1-\\beta_1)^2 + (\\alpha_1+b_1)^2$ forces $a_1 = \\beta_1,\\ \\alpha_1 = -b_1$."
     }
   ],
   "crossReferences": [
