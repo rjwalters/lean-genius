@@ -201,14 +201,14 @@
     {
       "id": "form-and-certificate",
       "title": "The Choi–Lam Form and the Degree-2 Multiplier Certificate",
-      "startLine": 56,
-      "endLine": 85,
+      "startLine": 49,
+      "endLine": 80,
       "summary": "Defines choiLam c x y z = x⁴y² + y⁴z² + z⁴x² − c·x²y²z² and proves the centerpiece multiplier_sos_identity: (x²+y²+z²)·choiLam 3 equals an explicit sum of six squares (proved by ring), hence multiplier_mul_nonneg: the product is non-negative (positivity). This is the explicit, minimal-degree denominator certificate quantifying the gap."
     },
     {
       "id": "psd-and-threshold",
       "title": "Positive-Semidefiniteness and the Sharp Threshold",
-      "startLine": 87,
+      "startLine": 81,
       "endLine": 161,
       "summary": "choiLam_three_nonneg (CL is PSD on ℝ³, by dividing the identity by x²+y²+z² off the origin and handling the origin), choiLam_nonneg_of_le (c ≤ 3 ⟹ PSD via the deficit (3−c)·x²y²z² ≥ 0), choiLam_neg_of_gt (c > 3 ⟹ value 3 − c < 0 at (1,1,1)), the equivalence choiLam_psd_iff (PSD on ℝ³ ⟺ c ≤ 3), and three_is_sharp."
     },
