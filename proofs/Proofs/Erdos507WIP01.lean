@@ -270,4 +270,102 @@ theorem heilbronn_le_three (n : ℕ) (hn : 3 ≤ n) : heilbronn n ≤ 3 := by
     linarith
   · norm_num
 
+/-! ## Existence of unit-disk configurations of every cardinality
+
+For every `n` there is an `n`-point configuration inside the unit disk (place the
+points `(k/n, 0)`, `k = 0, …, n−1`, on a horizontal chord).  This makes the
+defining set of `heilbronn n` nonempty, which is exactly the side condition
+`csSup_le_csSup` needs for the monotonicity result below. -/
+
+/-- **Configurations of every size exist in the unit disk.**  For any `n` there
+is a `Finset` of exactly `n` points, all inside the closed unit disk (the equally
+spaced points `(k/n, 0)` on the horizontal diameter). -/
+theorem exists_unitDisk_config (n : ℕ) :
+    ∃ P : Finset (ℝ × ℝ), P.card = n ∧ IsInUnitDisk P := by
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · exact ⟨∅, by simp [hn], isInUnitDisk_empty⟩
+  · have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    have inj : Function.Injective (fun k : ℕ => (((k : ℝ) / n, (0 : ℝ)) : ℝ × ℝ)) := by
+      intro a b hab
+      simp only [Prod.mk.injEq] at hab
+      have h1 := hab.1
+      field_simp at h1
+      exact_mod_cast h1
+    refine ⟨(Finset.range n).image (fun k => ((k : ℝ) / n, (0 : ℝ))), ?_, ?_⟩
+    · rw [Finset.card_image_of_injective _ inj, Finset.card_range]
+    · intro p hp
+      simp only [Finset.mem_image, Finset.mem_range] at hp
+      obtain ⟨k, hk, rfl⟩ := hp
+      have hkn : (k : ℝ) / n < 1 := by
+        rw [div_lt_one (by exact_mod_cast hn)]
+        exact_mod_cast hk
+      have hknneg : 0 ≤ (k : ℝ) / n := by positivity
+      simp only
+      nlinarith [hkn, hknneg]
+
+/-! ## Monotonicity of `heilbronn`
+
+Adding a point to an admissible configuration can only introduce new triples, so
+it can only *decrease* the minimum triangle area.  Hence `heilbronn` is antitone
+for `n ≥ 3`: every witness configuration for `n + 1` restricts (by deleting one
+point) to a witness for `n` achieving the same bound, so the defining set for
+`n + 1` is contained in that for `n`. -/
+
+/-- The defining set of `heilbronn n` is bounded above by `3` once `n ≥ 3`: any
+admissible bound is `≤` the area of some distinct triple, and every unit-disk
+triangle has area `≤ 3`.  (This is the boundedness half of `heilbronn_le_three`,
+isolated for reuse in the monotonicity proof.) -/
+private theorem heilbronn_defining_bddAbove (n : ℕ) (hn : 3 ≤ n) :
+    BddAbove { α : ℝ | ∃ P : Finset (ℝ × ℝ), P.card = n ∧ IsInUnitDisk P ∧
+      ∀ p ∈ P, ∀ q ∈ P, ∀ r ∈ P, p ≠ q → q ≠ r → p ≠ r →
+        triangleArea p q r ≥ α } := by
+  refine ⟨3, ?_⟩
+  rintro α ⟨P, hcard, hdisk, hbound⟩
+  have hcard3 : 2 < P.card := by omega
+  obtain ⟨p, q, r, hp, hq, hr, hpq, hpr, hqr⟩ := Finset.two_lt_card_iff.mp hcard3
+  have h1 : α ≤ triangleArea p q r := hbound p hp q hq r hr hpq hqr hpr
+  have h2 : triangleArea p q r ≤ 3 := triangleArea_le_three hdisk hp hq hr
+  linarith
+
+/-- **`heilbronn n` is nonnegative for `n ≥ 3`.**  The bound `0` is admissible for
+any configuration (all areas are nonnegative) and an `n`-point unit-disk
+configuration exists, so `0` lies in the defining set of the `sSup`. -/
+theorem heilbronn_nonneg (n : ℕ) (hn : 3 ≤ n) : 0 ≤ heilbronn n := by
+  unfold heilbronn
+  obtain ⟨P, hcard, hdisk⟩ := exists_unitDisk_config n
+  refine le_csSup (heilbronn_defining_bddAbove n hn) ?_
+  exact ⟨P, hcard, hdisk, fun p _ q _ r _ _ _ _ => triangleArea_nonneg p q r⟩
+
+/-- **One-step monotonicity.**  `heilbronn (n + 1) ≤ heilbronn n` for `n ≥ 3`.
+Every witness configuration for `n + 1` restricts, by deleting one point, to an
+`n`-point witness achieving the same lower bound, so the defining set for `n + 1`
+is contained in that for `n`; both `sSup`s are over bounded, nonempty sets. -/
+theorem heilbronn_succ_le (n : ℕ) (hn : 3 ≤ n) :
+    heilbronn (n + 1) ≤ heilbronn n := by
+  unfold heilbronn
+  apply csSup_le_csSup (heilbronn_defining_bddAbove n hn)
+  · -- the defining set for `n + 1` is nonempty: the all-zero bound is admissible
+    obtain ⟨P, hcard, hdisk⟩ := exists_unitDisk_config (n + 1)
+    exact ⟨0, P, hcard, hdisk, fun p _ q _ r _ _ _ _ => triangleArea_nonneg p q r⟩
+  · -- containment: delete one point from an `(n+1)`-witness to get an `n`-witness
+    rintro α ⟨P, hcard, hdisk, hbound⟩
+    have hpos : 0 < P.card := by omega
+    obtain ⟨x, hx⟩ := Finset.card_pos.mp hpos
+    refine ⟨P.erase x, ?_, hdisk.subset (Finset.erase_subset x P), ?_⟩
+    · rw [Finset.card_erase_of_mem hx, hcard]
+    · intro p hp q hq r hr hpq hqr hpr
+      exact hbound p (Finset.mem_of_mem_erase hp) q (Finset.mem_of_mem_erase hq)
+        r (Finset.mem_of_mem_erase hr) hpq hqr hpr
+
+/-- **Monotonicity of `heilbronn`.**  For `3 ≤ m ≤ n`, `heilbronn n ≤ heilbronn m`:
+Heilbronn's function is antitone on `{n ∣ n ≥ 3}`.  (Below `3` the defining `sSup`
+is over an unbounded set and takes the junk value `0`, so monotonicity is stated
+from `3` onward.) -/
+theorem heilbronn_antitone {m n : ℕ} (hm : 3 ≤ m) (hmn : m ≤ n) :
+    heilbronn n ≤ heilbronn m := by
+  induction n, hmn using Nat.le_induction with
+  | base => exact le_rfl
+  | succ k hk ih =>
+    exact le_trans (heilbronn_succ_le k (le_trans hm hk)) ih
+
 end Erdos507WIP01
