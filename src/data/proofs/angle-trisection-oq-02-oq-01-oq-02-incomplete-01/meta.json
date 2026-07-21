@@ -99,56 +99,56 @@
       "id": "overview",
       "title": "Overview, History, and Status",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 91,
       "summary": "Module header: the explicit-parameter redesign of IsConstructible (Session 26/29), proof history, the list of remaining sorries, new lemmas added in Sessions 36–37, and the current status (0 sorries, 0 axioms — all three impossibility results proved)."
     },
     {
       "id": "part1-constructible-framework",
       "title": "Part 1: Constructible Number Framework (Fixed Definition)",
-      "startLine": 66,
-      "endLine": 108,
+      "startLine": 92,
+      "endLine": 134,
       "summary": "IsConstructible redefined with explicit β, a, b in sqrt_ext (not existential). Proves isConstructible_rat, isConstructible_zero, isConstructible_one, isConstructible_sqrt2. Key design change: removing the IsConstructible β precondition from sqrt_ext to enable induction."
     },
     {
       "id": "part2-tower-degree",
       "title": "Part 2: Key Structural Lemmas (Tower Degree Property)",
-      "startLine": 109,
-      "endLine": 489,
+      "startLine": 135,
+      "endLine": 547,
       "summary": "The core structural results: isConstructible_map (closure under ℚ-algebra maps), isConstructible_algebraic (every constructible number is algebraic over ℚ), finrank_sup_quadratic_dvd_two (a quadratic extension multiplies the degree of a compositum by a divisor of 2), and the tower-degree theorems isConstructible_sup_degree and isConstructible_algebraic_degree showing [ℚ(α):ℚ] is a power of two for constructible α."
     },
     {
       "id": "part3-eisenstein",
       "title": "Part 3: Eisenstein Criterion — X³ - 2 is Irreducible",
-      "startLine": 490,
-      "endLine": 521,
+      "startLine": 548,
+      "endLine": 579,
       "summary": "Proves X³ - 2 irreducible over ℤ via Eisenstein at p=2, then lifts to ℚ using Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast)."
     },
     {
       "id": "part4-degree-computations",
       "title": "Part 4: Degree Computations",
-      "startLine": 522,
-      "endLine": 537,
+      "startLine": 580,
+      "endLine": 593,
       "summary": "Computes natDegree = 3 for the minimal polynomials 8x³-6x-1 (cos 20°), x³-2 (doubling the cube), and the regular 7-gon polynomial."
     },
     {
       "id": "part5-degree-not-pow-two",
       "title": "Part 5: Degree Not a Power of Two",
-      "startLine": 538,
-      "endLine": 574,
+      "startLine": 594,
+      "endLine": 630,
       "summary": "Defines DegreePowerOfTwo and proves 3 ≠ 2^k (three_ne_two_pow via a Nat.pow bound + interval_cases), hence the degree-3 minimal polynomials for cos 20°, X³-2, and the regular 7-gon have degree that is not a power of two."
     },
     {
       "id": "part6-non-constructibility",
       "title": "Part 6: Non-constructibility (Degree Obstruction)",
-      "startLine": 575,
-      "endLine": 622,
+      "startLine": 631,
+      "endLine": 678,
       "summary": "Derives not_constructible_of_bad_degree from the tower-degree theorem: if the minimal polynomial of α is irreducible with degree not a power of two, then α is not constructible."
     },
     {
       "id": "part7-impossibility-proved",
       "title": "Part 7: Concrete Impossibility Results (PROVED)",
-      "startLine": 623,
-      "endLine": 639,
+      "startLine": 679,
+      "endLine": 695,
       "summary": "Three fully proved impossibility theorems — angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible — each applying not_constructible_of_bad_degree to the respective irreducible degree-3 polynomial."
     }
   ],
