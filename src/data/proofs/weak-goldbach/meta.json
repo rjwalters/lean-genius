@@ -113,40 +113,54 @@
       "id": "sec-binary-implies-ternary",
       "title": "Structural Reduction: Binary → Ternary Goldbach",
       "startLine": 221,
-      "endLine": 254,
-      "summary": "The key structural result: binary Goldbach implies ternary, proved via the parity decomposition n = 3 + (n−3) for odd n > 5. Three supporting lemmas build up the main theorem binary_implies_weak."
+      "endLine": 313,
+      "summary": "The key structural result: binary Goldbach implies ternary, proved via the parity decomposition n = 3 + (n−3) for odd n > 5. Builds `sumOfTwoPrimes_add_three`, `odd_gt_five_eq_three_plus_even`, and the main `binary_implies_weak`, then the general companions — `sumOfTwoPrimes_add_prime` (prepend any prime r to a binary decomposition), `isSumOfThreePrimes_iff_prime_add_sumOfTwoPrimes` (ternary ⟺ prime + binary), `sumOfTwoPrimes_add_two` (the +2 companion), and the even/≥6 reductions `binary_implies_ternary_even` and `binary_implies_ternary_ge_six`."
     },
     {
       "id": "sec-axiomatized-core",
-      "title": "Axiomatized Core Results",
-      "startLine": 255,
-      "endLine": 281,
-      "summary": "Two axioms capturing Vinogradov (1937) and Helfgott (2013), plus the theorem weak_goldbach applying Helfgott's axiom to yield the main result."
+      "title": "Axiomatized Core Results (Helfgott / Vinogradov)",
+      "startLine": 314,
+      "endLine": 341,
+      "summary": "The load-bearing axiom `helfgott_weak_goldbach` (Helfgott 2013: every odd n > 5 is a sum of three primes), from which `vinogradov_ternary_goldbach` (1937, take N₀ := 5) and the headline `weak_goldbach` are derived as theorems — the S8 axiom-elimination that turned Vinogradov and the explicit bound into corollaries of the single unconditional assumption."
     },
     {
       "id": "sec-circle-method",
       "title": "Part II: Vinogradov's Circle Method",
-      "startLine": 282,
-      "endLine": 366,
-      "summary": "Infrastructure for the Hardy-Littlewood-Vinogradov circle method: exponential sum over primes S(α), representation count r₃(n), singular series positivity, minor arc bounds (trivially stated), and the axiomatized asymptotic formula."
+      "startLine": 342,
+      "endLine": 442,
+      "summary": "Infrastructure for the Hardy-Littlewood-Vinogradov circle method: representation count r₃(n) (`representationCount`, `representationCount_pos_iff`), singular series positivity (`singular_series_positive`), the minor-arc bound stub (`vinogradov_minor_arc_bound`), the axiomatized asymptotic formula (`circle_method_asymptotic`), and `vinogradov_from_circle_method` deriving the sufficiency threshold from it."
     },
     {
       "id": "sec-schnirelmann",
       "title": "Part III: Schnirelmann Density and Additive Bases",
-      "startLine": 367,
-      "endLine": 521,
-      "summary": "Schnirelmann density definition, IsAdditiveBasis predicate, Schnirelmann's basis theorem (axiomatized), and the cascade of improvements: Ramaré (≤6 primes), Tao (≤5 primes), Helfgott_improves_tao (exactly 3 primes)."
+      "startLine": 443,
+      "endLine": 606,
+      "summary": "Schnirelmann density and the `IsAdditiveBasis` predicate; `schnirelmann_basis_theorem` (σ(A) > 0 ⟹ A is an additive basis) is now PROVED outright via `SchnirelmannTheorem.schnirelmann_basis` (S-r8 axiom elimination), not axiomatized; `schnirelmannDensity_primes_eq_zero` exercises the genuine Mathlib density; and the cascade of bounds `ramare_six_primes` (≤6), `tao_five_primes` (≤5), `helfgott_improves_tao` (exactly 3), all theorems derived from `helfgott_weak_goldbach`."
     },
     {
       "id": "sec-strong-goldbach",
       "title": "Part IV: Connections to Strong Goldbach and Open Problems",
-      "startLine": 522,
-      "endLine": 680,
-      "summary": "Relates the weak conjecture to the still-open strong (binary) Goldbach and known partial results. Covers `binary_stronger_than_ternary`, Chen's theorem with the `IsP2` (almost-prime) predicate, the Goldbach comet and `twinPrimeConstant`, the Hardy–Littlewood asymptotic `linnik_goldbach_representations`, Helfgott's explicit bound, and the formalization of Lévy's conjecture (`LevyConjecture`, `levy_implies_weak_goldbach`) verified for $n=7,9,11$."
+      "startLine": 607,
+      "endLine": 686,
+      "summary": "Relates the weak conjecture to the still-open strong (binary) Goldbach and known partial results: `binary_stronger_than_ternary`, Chen's theorem via the `IsP2` (almost-prime) predicate (`chen_theorem` axiom), Oliveira e Silva's computational verification (`binary_goldbach_verified` axiom to 4×10¹⁸, `binary_goldbach_verified_small`), and the trivial-input Goldbach-representation bound `linnik_goldbach_representations`."
+    },
+    {
+      "id": "sec-comet-levy",
+      "title": "Goldbach Comet, Twin-Prime Constant & Lévy's Conjecture",
+      "startLine": 687,
+      "endLine": 736,
+      "summary": "The tail's open-problem material: the Goldbach-comet heuristic G(n) ~ 2C₂ Π_{p|n,p>2}(p−1)/(p−2)·n/(log n)² and its `twinPrimeConstant` C₂ ≈ 0.6601618; Helfgott's explicit bound `helfgott_explicit_bound` (re-derived from the main axiom, threshold 8.875×10³⁰ being content, not a new assumption); and the formalization of Lévy's conjecture — `LevyConjecture` (n = p + 2q), `levy_implies_weak_goldbach` (p + 2q = p + q + q), and the small-case witnesses `levy_7` / `levy_9` / `levy_11`."
+    },
+    {
+      "id": "sec-verification-checks",
+      "title": "Verification Checks (#check Roster)",
+      "startLine": 737,
+      "endLine": 764,
+      "summary": "A closing `#check` roster grouped by part (circle method, Schnirelmann density, strong Goldbach) that pins the public names of the file's key declarations, serving as a compile-time table of contents and guarding against silent renames or removals."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the mathematical landscape around the Weak Goldbach Conjecture: its statement, an algorithmic decision procedure for any finite case, a fully proved structural reduction from binary to ternary Goldbach, the circle method infrastructure, Schnirelmann density theory, Chen's theorem, and the Lévy conjecture. The 5 remaining axioms represent Helfgott's 2013 proof and the deepest analytic/computational ingredients (circle-method asymptotic, Schnirelmann basis theorem, Chen's theorem, Oliveira e Silva's binary-Goldbach verification) — results whose proofs await future Lean formalization. The four originally-declared corollaries of Helfgott (Vinogradov 1937, Ramaré 1995 6-prime, Tao 2012 5-prime, helfgott_explicit_bound) are now theorems derived from helfgott_weak_goldbach.",
+    "summary": "This formalization captures the mathematical landscape around the Weak Goldbach Conjecture: its statement, an algorithmic decision procedure for any finite case, a fully proved structural reduction from binary to ternary Goldbach, the circle method infrastructure, Schnirelmann density theory, Chen's theorem, and the Lévy conjecture. The 4 remaining axioms represent Helfgott's 2013 proof and the deepest analytic/computational ingredients (`helfgott_weak_goldbach`, the circle-method asymptotic, Chen's theorem, and Oliveira e Silva's binary-Goldbach verification) — results whose proofs await future Lean formalization. Schnirelmann's basis theorem, once axiomatized, is now proved outright in Proofs/SchnirelmannTheorem.lean (S-r8 axiom elimination). The four originally-declared corollaries of Helfgott (Vinogradov 1937, Ramaré 1995 6-prime, Tao 2012 5-prime, helfgott_explicit_bound) are now theorems derived from helfgott_weak_goldbach.",
     "implications": "Helfgott's 2013 resolution of Weak Goldbach is a landmark achievement in analytic number theory — the culmination of 271 years since Goldbach's original conjecture. The circle method infrastructure formalized here (exponential sums over primes, singular series, major/minor arc decomposition) is the same machinery underlying the prime number theorem, Dirichlet's theorem on primes in arithmetic progressions, and Waring's problem. Formalizing these analytic tools in Lean would yield a powerful library for quantitative prime distribution theory. The cascade Schnirelmann → Ramaré → Tao → Helfgott illustrates how additive number theory progresses through increasingly sharp analytic bounds combined with computational verification.",
     "openQuestions": [
       "Binary (Strong) Goldbach Conjecture: every even n > 2 is a sum of two primes — verified to 4×10¹⁸ computationally (Oliveira e Silva 2013) but unproved in general; the deepest open problem in additive number theory.",
