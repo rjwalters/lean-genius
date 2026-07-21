@@ -308,12 +308,18 @@ end CpqProperties
 Established results on c(p,q).
 -/
 
-/-- c(p, 1) ≥ 1/(p-1) (Ramsey lower bound). -/
-axiom cpq_lower_ramsey (p : ℕ) (hp : 2 ≤ p) :
+/-- c(p, 1) ≥ 1/(p-1) (Ramsey lower bound).
+    Valid in the Ramsey regime p ≥ 3 (matching the other Ramsey/EFRS bounds).
+    At p = 2 the bound degenerates and is excluded to keep the axiom set
+    consistent (see issue #40015). -/
+axiom cpq_lower_ramsey (p : ℕ) (hp : 3 ≤ p) :
     (1 : ℝ) / ((p : ℝ) - 1) ≤ cpq p 1
 
-/-- c(p, 1) ≤ 2/(p+1) (Ramsey upper bound). -/
-axiom cpq_upper_ramsey (p : ℕ) (hp : 2 ≤ p) :
+/-- c(p, 1) ≤ 2/(p+1) (Ramsey upper bound).
+    Valid only for p ≥ 3: at p = 2 the density condition forces the complete
+    graph, so c(2,1) = 1 > 2/3, which would make the axiom set inconsistent
+    (`cpq_at_max` gives c(2,1) = 1). Hypothesis tightened per issue #40015. -/
+axiom cpq_upper_ramsey (p : ℕ) (hp : 3 ≤ p) :
     cpq p 1 ≤ (2 : ℝ) / ((p : ℝ) + 1)
 
 /-- c(p, C(p-1,2)+1) = 1: at maximum density, full clique is guaranteed. -/
@@ -348,7 +354,7 @@ theorem cpq_strict_at_top (p : ℕ) (hp : 3 ≤ p) :
 
 /-- For p ≥ 3, the Ramsey lower bound gives c(p,1) > 0. -/
 theorem cpq_pos_at_one (p : ℕ) (hp : 3 ≤ p) : (0 : ℝ) < cpq p 1 := by
-  have h := cpq_lower_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
+  have h := cpq_lower_ramsey p hp
   have : (0 : ℝ) < (1 : ℝ) / ((p : ℝ) - 1) := by
     apply div_pos
     · exact one_pos
@@ -363,8 +369,8 @@ theorem cpq_mono_q_general (p q1 q2 : ℕ) (h : q1 ≤ q2) :
   | refl => exact le_refl _
   | step _ ih => exact le_trans ih (cpq_mono_q p _)
 
-/-- The Ramsey bound interval: for p ≥ 2, c(p,1) lies in [1/(p-1), 2/(p+1)]. -/
-theorem cpq_ramsey_interval (p : ℕ) (hp : 2 ≤ p) :
+/-- The Ramsey bound interval: for p ≥ 3, c(p,1) lies in [1/(p-1), 2/(p+1)]. -/
+theorem cpq_ramsey_interval (p : ℕ) (hp : 3 ≤ p) :
     (1 : ℝ) / ((p : ℝ) - 1) ≤ cpq p 1 ∧ cpq p 1 ≤ (2 : ℝ) / ((p : ℝ) + 1) :=
   ⟨cpq_lower_ramsey p hp, cpq_upper_ramsey p hp⟩
 
@@ -460,7 +466,7 @@ theorem erdos667_weak_evidence (p : ℕ) (hp : 3 ≤ p) :
     cpq p 1 < cpq p (Nat.choose (p - 1) 2 + 1) := by
   have h := cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp)
   rw [h]
-  have := cpq_upper_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
+  have := cpq_upper_ramsey p hp
   have hp' : (p : ℝ) ≥ 3 := by exact_mod_cast hp
   have : (2 : ℝ) / ((p : ℝ) + 1) < 1 := by
     rw [div_lt_one (by linarith : (0 : ℝ) < (p : ℝ) + 1)]
@@ -479,7 +485,7 @@ theorem cpq_total_gap (p : ℕ) (hp : 3 ≤ p) :
     1 - (2 : ℝ) / ((p : ℝ) + 1) ≤
     cpq p (Nat.choose (p - 1) 2 + 1) - cpq p 1 := by
   have h1 := cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp)
-  have h2 := cpq_upper_ramsey p (le_trans (by omega : 2 ≤ 3) hp)
+  have h2 := cpq_upper_ramsey p hp
   linarith
 
 /-- The gap is positive: c(p,q_max) - c(p,1) > 0 for p ≥ 3. -/
@@ -509,7 +515,7 @@ theorem erdos667_summary (p : ℕ) (hp : 3 ≤ p) :
     (∀ q, cpq p q ≤ cpq p (q + 1)) ∧
     -- There is a gap at the top
     cpq p (Nat.choose (p - 1) 2) < cpq p (Nat.choose (p - 1) 2 + 1) := by
-  refine ⟨cpq_ramsey_interval p (le_trans (by omega : 2 ≤ 3) hp),
+  refine ⟨cpq_ramsey_interval p hp,
           cpq_at_max p (le_trans (by omega : 2 ≤ 3) hp),
           fun q => cpq_mono_q p q,
           cpq_strict_at_top p hp⟩
