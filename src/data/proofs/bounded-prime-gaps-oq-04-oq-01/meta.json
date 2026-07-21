@@ -42,6 +42,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Pólya-Vinogradov Problem Statement",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports and module docstring. States the Pólya-Vinogradov inequality (1918): |Σ_{n=M+1}^{M+N} χ(n)| ≤ √q·log q for non-principal Dirichlet χ mod q. Frames it as a prerequisite for Bombieri-Vinogradov (bounded-prime-gaps OQ04) and lists the four-part proof strategy (Gauss sum, geometric series, cotangent sum, assembly). Opens namespace PolyaVinogradov.",
+      "mathContext": "Pólya-Vinogradov: for a non-principal character $\\chi \\bmod q$, $\\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\le \\sqrt{q}\\,\\log q$. The bound is uniform in $M,N$ and underlies estimates for character sums over short intervals, feeding into results on primes in arithmetic progressions."
+    },
+    {
       "id": "gauss-sum-bound",
       "title": "Gauss Sum Norm",
       "startLine": 61,
@@ -52,35 +60,35 @@
       "id": "geometric-series",
       "title": "Geometric Series Bound",
       "startLine": 80,
-      "endLine": 99,
-      "summary": "States geom_partial_sum_bound: |Σ_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/|sin(πθ)|. Proof deferred (sorry) — uses closed form for geometric series and half-angle identity."
+      "endLine": 150,
+      "summary": "Helper lemmas (sin_pi_mul_ne_zero, norm_one_sub_pow_le_two, norm_one_sub_exp_two_pi_I) and the main geom_partial_sum_bound: |Σ_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/|sin(πθ)|. Main-theorem proof deferred (sorry); uses the closed form for a geometric series and the half-angle identity."
     },
     {
       "id": "cotangent-sum",
       "title": "Cotangent Sum Bound",
-      "startLine": 100,
-      "endLine": 113,
+      "startLine": 151,
+      "endLine": 165,
       "summary": "States cotangent_sum_bound: Σ_{a=1}^{q-1} 1/|sin(πa/q)| ≤ (2q/π)·(log q + 1). Proof deferred (sorry) — reduces to harmonic series via concavity of sin."
     },
     {
       "id": "polya-vinogradov",
       "title": "Pólya-Vinogradov Inequality",
-      "startLine": 115,
-      "endLine": 141,
+      "startLine": 166,
+      "endLine": 192,
       "summary": "States the main theorem: |Σ_{n=M+1}^{M+N} χ(n)| ≤ √q·(log q + 1). Proof deferred (sorry) — assembles the three lemmas above via triangle inequality and the Fourier expansion of χ."
     },
     {
       "id": "complete-character-sum",
       "title": "Complete Character Sum Vanishes",
-      "startLine": 142,
-      "endLine": 155,
-      "summary": "States complete_character_sum_zero: Σ_{n=0}^{q-1} χ(n) = 0 for non-principal χ. Proof deferred (sorry) — follows from character orthogonality, simpler than the main inequality."
+      "startLine": 193,
+      "endLine": 214,
+      "summary": "complete_character_sum_zero: Σ_{n=0}^{q-1} χ(n) = 0 for non-principal χ — fully proved (no sorry) via MulChar.sum_eq_zero_of_ne_one after a range→ZMod reindex (ZMod.natCast_rightInverse). This is the easy consequence, independent of the deferred Pólya-Vinogradov machinery."
     },
     {
       "id": "proof-roadmap",
       "title": "Roadmap to Full Proof",
-      "startLine": 156,
-      "endLine": 203,
+      "startLine": 215,
+      "endLine": 262,
       "summary": "Detailed four-phase proof plan (~700 lines total): Gauss sum bound (~300 lines), geometric series (~100 lines), cotangent sum (~200 lines), assembly (~100 lines). Lists Mathlib infrastructure required."
     }
   ],
