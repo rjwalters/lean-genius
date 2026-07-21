@@ -99,15 +99,15 @@
       "id": "axiom",
       "title": "Main Axiom: Threshold Result",
       "startLine": 74,
-      "endLine": 88,
+      "endLine": 99,
       "summary": "The axiom `erdos_1202_threshold` encodes the solved result: ∃ c > 0 such that for all n > 1, m > √(n log n), and prime sets S with |S| ≥ m²/(n log n), there exists T ⊆ S with |T| ≥ c · m²/(n log n) satisfying the structural property. Axiomatized due to source corruption preventing recovery of the exact property.",
       "mathContext": "`erdos_1202_threshold` (axiom): $\\exists c > 0, \\forall n > 1, m > \\sqrt{n \\log n},\\, \\forall S\\, (\\text{IsPrimeSet}),\\, |S| \\geq m^2/(n \\log n) \\Rightarrow \\exists T \\subseteq S,\\, |T| \\geq c \\cdot m^2/(n \\log n) \\land P(T)$, where $P(T)$ is the unknown structural property. Axiomatized because: (1) the source problem is corrupted so $P$ is unrecoverable; (2) the analytic proof (likely via large sieve or Selberg's $\\Lambda^2$ sieve) requires machinery not yet in Mathlib. The constant $c$ is absolute (independent of $\\varepsilon, \\eta$) based on the $\\gg_c$ notation."
     },
     {
       "id": "theorem",
       "title": "Main Theorem",
-      "startLine": 90,
-      "endLine": 97,
+      "startLine": 100,
+      "endLine": 122,
       "summary": "Theorem `erdos_1202` states the main result and follows directly from the axiom. The theorem confirms the threshold m²/(n log n) governs the existence of large structured prime subsets, matching the problem's answer on erdosproblems.com.",
       "mathContext": "`erdos_1202` is a one-line theorem wrapping `erdos_1202_threshold`: given the same hypotheses ($n > 1$, `growthCondition`, `IsPrimeSet S`, $|S| \\geq \\text{asympThreshold}$), it applies the axiom. The theorem serves as the public interface: the axiom provides the witness $c$ and subset $T$, while the theorem confirms the result matches the solved status on erdosproblems.com. Since the structural property $P(T)$ is opaque, this is a 'placeholder theorem' — correct in form but incomplete in mathematical content until the source is recovered."
     }
