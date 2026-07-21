@@ -51,8 +51,8 @@
     "axiomCount": 1,
     "lineCount": 792,
     "assumptions": "1 axiom: moreeOsburnWorks (the two deep geometric facts about the box-truncated lattice — the 4-point property and the Landau/x²+2y² distinct-distance bound m/√(log m); not available in Mathlib 4.26). The cardinality (2k+1)² is now a verified theorem (moreeOsburnLattice_card), not an assumption. 0 sorries.",
-    "theoremCount": 38,
-    "definitionCount": 9
+    "theoremCount": 44,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "This problem explores the interplay between local constraints (every 4 points determine many distances) and global behavior (few total distances). It belongs to the rich tradition of Erdős distance problems, initiated by Erdős himself in 1946 when he asked for the minimum number of distinct distances determined by $n$ points in the plane — a question that drove combinatorial geometry for decades and was finally resolved by Guth and Katz (2015) who proved the $\\Omega(n/\\log n)$ lower bound using algebraic methods.\n\nErdős believed configurations satisfying the 4-point property with few distances should exist, and that their study would illuminate the structure of extremal distance sets. The solution came from an unexpected direction: algebraic number theory. Moree and Osburn (2006) discovered that points on a 'stretched' integer lattice $\\{(a, b\\sqrt{2}) : a,b \\in \\mathbb{Z}\\}$ have the remarkable property of avoiding regular geometric configurations while having few distinct distances. The key insight is that squared distances in this lattice are integers of the form $x^2 + 2y^2$ — a positive definite binary quadratic form of discriminant $-8$.\n\nBy Landau's theorem (1908), the count of positive integers $\\leq N$ representable as $x^2 + Dy^2$ is asymptotic to $C_D \\cdot N/\\sqrt{\\log N}$, where $C_D$ depends on the class number of $\\mathbb{Q}(\\sqrt{-D})$. For $D = 2$, the class number of $\\mathbb{Q}(\\sqrt{-2})$ is 1, and $C_2 = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3,5 \\pmod{8}} (1 - p^{-2})^{-1/2}$. This controls the distinct distance count.\n\nLund and Sheffer independently found this construction. The 4-point property was verified by classifying all six configurations of 4 points with exactly 2 distances (the square, two types of rhombus, two isosceles trapezoids, and a pentagon subset) and showing the $\\sqrt{2}$-stretching eliminates each. Grayzel later completed the proof by ruling out the pentagon configuration using computer-assisted verification.",
@@ -74,46 +74,100 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Imports and Definitions",
-      "startLine": 24,
+      "id": "overview",
+      "title": "Overview & Imports",
+      "startLine": 1,
       "endLine": 43,
-      "summary": "Import Mathlib dependencies for real analysis, metric spaces, and tactics"
+      "summary": "Module docstring for Erdős #659 (are there arbitrarily large point sets in which every 4 points determine at most a bounded number of distinct distances / avoid certain distance configurations?), the Moree–Osburn lattice answer, imports, and the Erdos659 namespace.",
+      "mathContext": "The construction realizes the configurations inside the ring $\\mathbb{Z}[\\sqrt{-2}]$, whose norm form is $x^2+2y^2$; the arithmetic of that form drives the whole file."
     },
     {
-      "id": "definitions",
+      "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 44,
       "endLine": 62,
-      "summary": "Define distinct distances, the 4-point property, and the lattice quadratic form latticeDistSq"
+      "summary": "Defines distinctDistances S (number of distinct pairwise distances in a finite planar set), fourPointProperty S (the 4-point distance constraint), latticePoint a b (the embedding (a, b√2) ∈ ℝ²), and latticeDistSq (the integer squared distance a₁²−… giving the x²+2y² form).",
+      "mathContext": "For lattice points $(a,b\\sqrt2)$ the squared Euclidean distance is $(\\Delta a)^2+2(\\Delta b)^2$, an integer of the form $x^2+2y^2$."
     },
     {
-      "id": "quadratic-form",
-      "title": "Positive-Definiteness of x²+2y²",
-      "startLine": 64,
-      "endLine": 113,
-      "summary": "Verified algebraic lemmas: latticeDistSq is symmetric, non-negative, and vanishes only on the diagonal (positive-definite)"
+      "id": "posdef",
+      "title": "Positive-Definiteness of the Distance Form x²+2y²",
+      "startLine": 63,
+      "endLine": 107,
+      "summary": "Proves latticeDistSq_symm (symmetry), latticeDistSq_nonneg (the form x²+2y² is nonnegative), and latticeDistSq_eq_zero_iff (it vanishes only for coincident points) — establishing that latticeDistSq is a genuine positive-definite squared distance.",
+      "mathContext": "$x^2+2y^2\\ge 0$ with equality iff $x=y=0$: the quadratic form is positive definite, so distinct lattice points have positive distance."
     },
     {
-      "id": "axiom",
-      "title": "Main Axiom",
-      "startLine": 120,
-      "endLine": 138,
-      "summary": "State the Moree-Osburn construction works (requires deep number theory: Landau's theorem + classification); axiom moreeOsburnWorks at lines 164–168"
+      "id": "lattice-construction",
+      "title": "The Moree–Osburn Lattice Construction",
+      "startLine": 108,
+      "endLine": 163,
+      "summary": "Builds the witness family: latticeBox k (a (2k+1)×(2k+1) integer box), moreeOsburnLattice k (its image under latticePoint, a planar set of size (2k+1)²), latticePoint_injective, and moreeOsburnLattice_card computing the exact cardinality.",
+      "mathContext": "The lattice grows without bound ($(2k+1)^2$ points), giving the 'arbitrarily large' configurations Erdős asked for."
     },
     {
-      "id": "theorem",
-      "title": "Main Theorem",
-      "startLine": 140,
-      "endLine": 157,
-      "summary": "Derive the answer to Erdős #659 from the axiom; theorem erdos_659 at lines 179–191"
+      "id": "main-axiom-resolution",
+      "title": "Main Axiom (Moree–Osburn) & Erdős 659 Resolution",
+      "startLine": 164,
+      "endLine": 195,
+      "summary": "States the single axiom moreeOsburnWorks (the Moree–Osburn lattices realize the required distance property — the deep combinatorial content, left as an assumption) and derives erdos_659: there is a family A : ℕ → Finset (ℝ×ℝ) of arbitrarily large sets with the desired configuration property (answer: YES).",
+      "mathContext": "The axiom encapsulates Moree–Osburn's construction; everything downstream is the axiom-free arithmetic of the $x^2+2y^2$ form supporting it."
     },
     {
-      "id": "configurations",
-      "title": "Two-Distance Configurations",
-      "startLine": 162,
-      "endLine": 280,
-      "summary": "Enumerate the 6 two-distance configurations and prove fourPointProperty_from_avoiding_configs (verified, 0 sorries)"
+      "id": "config-and-B2",
+      "title": "Two-Distance Configurations & the Counting Function B₂",
+      "startLine": 196,
+      "endLine": 279,
+      "summary": "Defines the TwoDistanceConfig inductive enumerating the forbidden 4-point distance patterns, isConfiguration, the representability predicate representable_x2_2y2 = {n : ∃ x y, n = x² + 2y²}, and the counting function B₂(N) = #{representable integers in [1,N]}. Includes the '## Key Properties of the Moree-Osburn Lattice' notes.",
+      "mathContext": "$B_2(N)$ counts how many integers up to $N$ are represented by $x^2+2y^2$; its growth controls how many distinct squared distances the lattice can realize."
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Structure of the Norm Form x²+2y²",
+      "startLine": 280,
+      "endLine": 375,
+      "summary": "The norm is multiplicative: repr_mul_identity / repr_mul_identity' (the two Brahmagupta-type composition identities), representable_mul (closure under products), the base cases 1,2,3 representable, sq_representable, representable_pow, two_pow_representable, representable_infinite, and representable_prod (closure under finite products).",
+      "mathContext": "$(x^2+2y^2)(u^2+2v^2)=(xu\\mp2yv)^2+2(xv\\pm yu)^2$: the form is the norm of $\\mathbb{Z}[\\sqrt{-2}]$, so its image is closed under multiplication."
+    },
+    {
+      "id": "B2-basic",
+      "title": "Basic Behaviour of the Counting Function B₂",
+      "startLine": 376,
+      "endLine": 449,
+      "summary": "Elementary bounds on B₂: B2_mono (monotone in the cutoff), one_le_B2 (≥1 for N≥1), B2_le (B₂(N) ≤ N), and the growth lower bound sqrt_le_B2 (√N ≤ B₂(N), from the perfect squares 1²,…,⌊√N⌋²).",
+      "mathContext": "$\\sqrt N\\le B_2(N)\\le N$; the true asymptotic is $B_2(N)\\sim c\\,N/\\sqrt{\\log N}$ (Landau), between these elementary bounds."
+    },
+    {
+      "id": "mod8",
+      "title": "The mod-8 Obstruction (necessity side)",
+      "startLine": 450,
+      "endLine": 566,
+      "summary": "The congruence obstruction: not_representable_of_mod8 (n ≡ 5,7 mod 8 is never x²+2y²), the corollaries five/seven_not_representable, representable_mod8_ne_five_seven, the sharpness statements representable_mod8_image / mod8_blocking_residues (exactly which residues are attained/blocked), and B2_lt_of_five_le (B₂(N) < N once N ≥ 5, since 5 is skipped).",
+      "mathContext": "$x^2+2y^2 \\bmod 8 \\in \\{0,1,2,3,4,6\\}$; residues $5,7$ are unreachable, the necessity half of the representability characterization."
+    },
+    {
+      "id": "insufficiency",
+      "title": "Insufficiency of Congruence Obstructions — Bounded Search",
+      "startLine": 567,
+      "endLine": 661,
+      "summary": "Shows congruences alone don't characterize representability: representable_iff_nat (reduction to a bounded natural search), thirtyfive_not_representable (35 = 5·7 passes mod 8 yet fails), mod8_obstruction_not_sufficient (an explicit witness passing the mod-8 test but not representable), and fourPointProperty_from_avoiding_configs (linking configuration-avoidance to the 4-point property).",
+      "mathContext": "$35\\equiv 3 \\pmod 8$ satisfies the necessary congruence but $35=5\\cdot7$ is a product of two non-representable primes, so it is not representable — the local-to-global obstruction requires the full prime factorization."
+    },
+    {
+      "id": "closure-families",
+      "title": "More Closure Structure & Explicit Representable Families",
+      "startLine": 662,
+      "endLine": 708,
+      "summary": "Further closure lemmas and named families: representable_mul_sq (multiplying by a square preserves representability), two_mul_representable (doubling), two_mul_sq_representable (the 2k² family), sq_mul_two_pow_representable (k²·2ʲ), and the non-representable witnesses thirteen/twentythree_not_representable.",
+      "mathContext": "These generate infinite explicit subfamilies of representable integers while $13,23\\equiv 5,7\\pmod 8$ are excluded by the mod-8 obstruction."
+    },
+    {
+      "id": "metric",
+      "title": "The Metric Matters: Chebyshev vs Euclidean",
+      "startLine": 709,
+      "endLine": 791,
+      "summary": "A self-contained caveat that the distance results depend on the Euclidean metric: euclSq, euclSq_latticePoint, unitSquare_sides / unitSquare_diagonals, chebyshev_conflates_square_side_and_diagonal (the sup metric identifies a side with a diagonal), euclid_separates_square_side_and_diagonal, and chebyshev_ne_euclidean_distinctness (the two metrics give different distinct-distance counts). Closes the Erdos659 namespace.",
+      "mathContext": "Under the sup norm the unit square's side (length 1) and diagonal (Chebyshev length 1) coincide, whereas Euclidean gives $1$ vs $\\sqrt2$ — so the two-distance analysis is metric-dependent."
     }
   ],
   "conclusion": {
@@ -142,8 +196,8 @@
     "namespace": "Erdos659",
     "lineCount": 792,
     "axiomCount": 1,
-    "theoremCount": 38,
-    "definitionCount": 9,
+    "theoremCount": 44,
+    "definitionCount": 10,
     "path": "Proofs/Erdos659Problem.lean",
     "sorries": 0
   },
