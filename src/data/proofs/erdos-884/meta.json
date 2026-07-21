@@ -82,7 +82,8 @@
       "**Telescoping**: Every general gap d_j - d_i is a sum of consecutive gaps d_{i+1} - d_i + ··· + d_j - d_{j-1}, so general gaps are larger, making their reciprocals smaller.",
       "**Prime Case**: For primes, there is only one divisor pair {1, p}, so both sums equal 1/(p-1). The conjecture holds trivially with C = 1.",
       "**Multiplicativity**: For coprime m, n: τ(mn) = τ(m)·τ(n). Highly composite numbers have many divisors, creating many gap terms.",
-      "**Tao's Interest**: Terence Tao has indicated this problem appears tractable, suggesting potential for progress with existing techniques."
+      "**Tao's Interest**: Terence Tao has indicated this problem appears tractable, suggesting potential for progress with existing techniques.",
+      "**Unconditional Harmonic Ceiling**: Dropping the divisor structure entirely, the per-pair bound 1/(d_j−d_i) ≤ 1/(j−i) plus the exact index identity Σ_{0≤i<j<τ} 1/(j−i) = Σ_{k=1}^{τ−1}(τ−k)/k = τ·H_{τ−1} − (τ−1) gives allPairsSum(n) ≤ τ(n)·H_{τ(n)−1} − (τ(n)−1) = O(τ log τ), fully unconditional. This is the sharpest ceiling the index-sum method yields, but is weaker than Erdős 884, which asks for an absolute-constant bound in terms of the *consecutive* sum."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -190,9 +191,17 @@
       "id": "sum-level-bound",
       "title": "Sum-Level Bound",
       "startLine": 399,
-      "endLine": 498,
-      "summary": "Proves `allPairsSum_le_tau_mul_consecutive`: for n > 1, allPairsSum(n) ≤ (τ(n)-1) · consecutivePairsSum(n). Uses per-pair bound 1/(d_j-d_i) ≤ 1/g_i, card(Ioo i τ) ≤ τ-1, and that the last consecutive gap vanishes (out-of-bounds). Helper lemmas: `numDivisors_ge_two`, `list_getD_zero_of_ge`, `divisor_eq_zero_of_ge`, `consecutiveGap_last_eq_zero`.",
-      "mathContext": "$S_{\\text{all}}(n) \\leq (\\tau(n) - 1) \\cdot S_{\\text{consec}}(n)$. For each pair $(i,j)$ with $i < j$, we have $\\frac{1}{d_j - d_i} \\leq \\frac{1}{g_i}$. Summing over $j > i$ gives at most $\\tau - 1$ copies of $\\frac{1}{g_i}$. Summing over $i$ yields $(\\tau-1) \\cdot S_{\\text{consec}}$. This is weaker than Erdős 884 (which asks for an absolute constant), but is an unconditional bound."
+      "endLine": 487,
+      "summary": "Proves two unconditional sum-level bounds. `allPairsSum_le_tau_mul_consecutive`: for n > 1, allPairsSum(n) ≤ (τ(n)-1) · consecutivePairsSum(n), via the per-pair bound 1/(d_j-d_i) ≤ 1/g_i, card(Ioo i τ) ≤ τ-1, and the vanishing of the out-of-bounds last consecutive gap. `allPairsSum_le_indexSum`: allPairsSum(n) ≤ Σ_{0≤i<j<τ} 1/(j-i), a purely index-based bound independent of the divisor structure (using 1/(d_j-d_i) ≤ 1/(j-i)). Helper lemmas: `numDivisors_ge_two`, `list_getD_zero_of_ge`, `divisor_eq_zero_of_ge`, `consecutiveGap_last_eq_zero`.",
+      "mathContext": "$S_{\\text{all}}(n) \\leq (\\tau(n) - 1) \\cdot S_{\\text{consec}}(n)$: for each pair $(i,j)$ with $i < j$, $\\frac{1}{d_j - d_i} \\leq \\frac{1}{g_i}$; summing over $j > i$ gives $\\leq \\tau - 1$ copies of $\\frac{1}{g_i}$, and over $i$ yields $(\\tau-1) S_{\\text{consec}}$. The parallel index bound $S_{\\text{all}}(n) \\leq \\sum_{0\\le i<j<\\tau} \\frac{1}{j-i}$ replaces $g_i$ by the structure-free step count. Both are weaker than Erdős 884 (which demands an absolute constant) but hold unconditionally."
+    },
+    {
+      "id": "closed-form-index-sum",
+      "title": "Closed Form for the Index Sum",
+      "startLine": 488,
+      "endLine": 606,
+      "summary": "Evaluates the structure-free index bound in closed form. `inner_reindex` (private): the substitution $k = j - a$ turns $\\sum_{j\\in(a,\\tau)} 1/(j-a)$ into $\\sum_{k\\in(0,\\tau-a)} 1/k$ via `Finset.sum_nbij'`. `indexSum_eq_harmonic`: swapping summation order over the triangular region collapses the double index sum to a single harmonic-weighted sum $\\sum_{k=1}^{\\tau-1}(\\tau-k)/k$ (there are exactly $\\tau-k$ pairs at distance $k$). `allPairsSum_le_harmonic` chains this with `allPairsSum_le_indexSum`; `allPairsSum_le_tau_harmonic` relaxes $(\\tau-k)/k \\le \\tau/k$ to the explicit $O(\\tau\\log\\tau)$ ceiling $\\tau(n)\\cdot H_{\\tau(n)-1}$. `indexSum_closed_form` computes the harmonic sum exactly as $\\tau H_{\\tau-1}-(\\tau-1)$ (each term splits $(\\tau-k)/k = \\tau/k - 1$), and `allPairsSum_le_tau_harmonic_sub` feeds it back for the sharpened bound. Closes with the axiom audit `#print axioms` block confirming the supporting lemmas are foundational-only.",
+      "mathContext": "Reindexing and order-swap give the exact identity $\\sum_{0\\le i<j<\\tau}\\frac{1}{j-i} = \\sum_{k=1}^{\\tau-1}\\frac{\\tau-k}{k} = \\tau H_{\\tau-1} - (\\tau-1)$, where $H_{\\tau-1}=\\sum_{k=1}^{\\tau-1}1/k$. Hence the fully unconditional ceiling $S_{\\text{all}}(n) \\leq \\tau(n)\\,H_{\\tau(n)-1} - (\\tau(n)-1) = O(\\tau\\log\\tau)$, independent of the arithmetic of $n$. This does not settle Erdős 884 (which asks for an $O(1+S_{\\text{consec}})$ bound), but pins the extremal index-sum method to its sharpest value $\\tau\\log\\tau - \\tau + O(\\log\\tau)$."
     }
   ],
   "references": [
@@ -224,7 +233,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #884 remains open. The formalization defines both the all-pairs and consecutive-pairs divisor gap sums, states the conjecture that the former is bounded by an absolute constant times the latter (plus 1), and provides structural lemmas and examples. The prime case shows both sums are equal, and the gap lower bound explains why the conjecture is plausible.",
+    "summary": "Erdős Problem #884 remains open. The formalization defines both the all-pairs and consecutive-pairs divisor gap sums, states the conjecture that the former is bounded by an absolute constant times the latter (plus 1), and provides structural lemmas and examples. The prime case shows both sums are equal, and the gap lower bound explains why the conjecture is plausible. Two unconditional (but weaker) ceilings are proved: the sum-level bound S_all ≤ (τ−1)·S_consec, and — dropping the divisor structure altogether — the closed-form harmonic bound S_all ≤ τ·H_{τ−1} − (τ−1) = O(τ log τ), obtained by reindexing the double index sum to Σ_{k=1}^{τ−1}(τ−k)/k.",
     "implications": "Resolution would clarify the arithmetic structure of divisor sequences — specifically how local gap information (consecutive pairs) controls global gap information (all pairs). The telescoping property of gaps is the key structural ingredient.",
     "openQuestions": [
       "Does the inequality hold with some absolute constant C?",
