@@ -136,14 +136,22 @@
       "title": "Countable Ordinals as Iio(ω₁)",
       "summary": "Defines IsCountableOrdinal α ↔ α.card ≤ ℵ₀. Proves α < ω₁ ↔ IsCountableOrdinal α via Cardinal.lt_ord, and derives that the set of countable ordinals equals Set.Iio omega1.",
       "startLine": 123,
-      "endLine": 143,
+      "endLine": 148,
       "mathContext": "$\\{\\alpha \\in \\text{Ord} : \\alpha.\\text{card} \\leq \\aleph_0\\} = \\{\\alpha : \\alpha < \\omega_1\\}$ — every countable ordinal lies below $\\omega_1$, and conversely."
+    },
+    {
+      "id": "zero-countable",
+      "title": "Zero is a Countable Ordinal",
+      "summary": "Proves zero_lt_omega1: the ordinal 0 lies strictly below ω₁, since 0 is countable (its cardinality is 0 ≤ ℵ₀). A base case confirming the initial segment Iio(ω₁) is nonempty.",
+      "startLine": 149,
+      "endLine": 156,
+      "mathContext": "$0 < \\omega_1$ because $0$ is a countable ordinal ($|0| = 0 \\leq \\aleph_0$)."
     },
     {
       "id": "diagonal-argument",
       "title": "The Cantor Diagonal Argument",
       "summary": "Proves cantor_diagonal_countable_ordinals: for any f : ℕ → Ordinal with all f(n) < omega1, there exists β < omega1 exceeding all f(n). Uses sSup of range f plus ordinal successor.",
-      "startLine": 155,
+      "startLine": 157,
       "endLine": 194,
       "mathContext": "For $f : \\mathbb{N} \\to \\text{Ord}$ with $f(n) < \\omega_1$, let $\\beta = \\sup\\{f(n)\\} + 1$. Then $\\beta < \\omega_1$ (countable sup of countable ordinals is countable) and $\\beta > f(n)$ for all $n$."
     },
