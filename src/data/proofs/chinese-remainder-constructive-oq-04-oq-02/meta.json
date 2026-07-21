@@ -114,8 +114,8 @@
       "id": "canonical",
       "title": "Canonical Solution = ZMod Preimage",
       "startLine": 79,
-      "endLine": 116,
-      "summary": "Three theorems establishing that the minimal CRT solution equals the ZMod.val of the ring-theoretic preimage: val_lt, satisfies, and the canonical bridge theorem.",
+      "endLine": 138,
+      "summary": "Establishes that the minimal CRT solution equals the ZMod.val of the ring-theoretic preimage: bounding (val_lt) and congruence (satisfies) lemmas, chineseRemainder_symm_satisfies (the preimage of (a,b) under the CRT iso solves the congruence system), culminating in the canonical bridge theorem crt_min_eq_chineseRemainder_val — the unique minimal solution in [0, m·n) equals ZMod.val of the inverse-iso preimage.",
       "mathContext": "Let w = (ZMod.chineseRemainder h).symm (a, b). Then ZMod.val w < m*n (by ZMod.val_lt) and Satisfies (ZMod.val w) [(a,m),(b,n)] (by natCast_zmod_val + apply_symm_apply)."
     },
     {
