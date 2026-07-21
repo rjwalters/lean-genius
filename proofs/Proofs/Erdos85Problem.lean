@@ -128,6 +128,11 @@ def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   symm.symm := fun i j h => by cases h <;> simp_all [or_comm]
   loopless.irrefl := fun i h => by cases h <;> simp_all
 
+/-- The star adjacency is decidable (equalities/inequalities of `Fin` vertices),
+so `starGraph n` has computable degrees — needed to talk about its `minDegree`. -/
+instance starGraph_decidableAdj (n : ℕ) : DecidableRel (starGraph n).Adj :=
+  fun i j => by unfold starGraph; infer_instance
+
 /--
 **Ramsey Connection**
 
@@ -337,7 +342,7 @@ theorem two_le_minDegreeForC4 {n : ℕ} (hn : 3 ≤ n) :
   refine le_csInf hne (fun k hk => ?_)
   -- any threshold `k` in the set is `≥ 2`: else the star (min-degree `≥ 1`) forces a `C₄`.
   by_contra hk2
-  push_neg at hk2
+  rw [not_le] at hk2
   exact hfree (hk (starGraph n) (le_trans (by omega : k ≤ 1) hstar))
 
 end Erdos85
