@@ -108,8 +108,8 @@
       "id": "odd-weird",
       "title": "Open Question 1: Odd Weird Numbers",
       "startLine": 127,
-      "endLine": 401,
-      "summary": "Formal statement of the odd weird question. Systematically proves that each of the first 5 odd abundant numbers (945, 1575, 2205, 2835, 3465) is semiperfect, with no odd abundant in each gap, establishing that any odd weird > 3465. Axiomatizes Liddy-Riedl's 6-prime-divisor bound.",
+      "endLine": 425,
+      "summary": "Formal statement of the odd weird question. Systematically proves that each of the first odd abundant numbers (945, 1575, 2205, 2835, 3465, …, 5775) is semiperfect, with no odd abundant in each gap — culminating in fifty775_semiperfect, no_odd_abundant_5356_to_5775, and odd_weird_gt_5775, so any odd weird number exceeds 5775. Axiomatizes Liddy-Riedl's 6-prime-divisor bound.",
       "mathContext": "Odd abundant numbers up to 3465: $945 = 3^3 \\times 5 \\times 7$, $1575 = 3^2 \\times 5^2 \\times 7$, $2205 = 3^2 \\times 5 \\times 7^2$, $2835 = 3^4 \\times 5 \\times 7$, $3465 = 3^2 \\times 5 \\times 7 \\times 11$. All semiperfect. Any odd weird $n > 3465$."
     },
     {
