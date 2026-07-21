@@ -121,35 +121,99 @@
     },
     {
       "id": "sec-definitions",
-      "title": "Definitions: Collinearity and Four-Point Line Count (L22–48)",
+      "title": "Definitions: Collinearity and Four-Point Line Count (L22–49)",
       "startLine": 22,
-      "endLine": 48,
-      "summary": "PlanarPointSet: finite set of ℝ² points with positive card. collinear p q r: signed area determinant (q.1-p.1)*(r.2-p.2) = (r.1-p.1)*(q.2-p.2). NoFiveCollinear P: no 5 distinct collinear points. fourPointLineCount P: Finset.powerset.filter for 4-element collinear subsets.",
-      "mathContext": "Three points are collinear iff the $2 \\times 2$ determinant $\\begin{vmatrix} q_1-p_1 & r_1-p_1 \\\\ q_2-p_2 & r_2-p_2 \\end{vmatrix} = 0$. The no-five-collinear condition restricts our point sets to avoid degenerate configurations."
+      "endLine": 49,
+      "summary": "`PlanarPointSet` (L25): finite set of ℝ² points with positive card. `collinear p q r` (L30): signed-area determinant `(q.1-p.1)*(r.2-p.2) = (r.1-p.1)*(q.2-p.2)`. `NoFiveCollinear P` (L34): no 5 distinct collinear points. `fourPointLineCount P` (L44): the `Finset.powerset.filter` count of 4-element collinear subsets.",
+      "mathContext": "Three points are collinear iff the $2 \\times 2$ determinant $\\begin{vmatrix} q_1-p_1 & r_1-p_1 \\\\ q_2-p_2 & r_2-p_2 \\end{vmatrix} = 0$. The no-five-collinear condition restricts to non-degenerate configurations; `fourPointLineCount` counts 4-subsets rather than geometric lines, which the uniqueness lemmas below show is equivalent."
     },
     {
       "id": "sec-collinearity",
-      "title": "Collinearity Properties (L50–127)",
+      "title": "Properties of Collinearity (L50–127)",
       "startLine": 50,
       "endLine": 127,
-      "summary": "collinear_self, collinear_refl, collinear_self_right: trivial cases. collinear_swap23, collinear_swap12, collinear_rotate, collinear_cycle: symmetry. collinear_trans: transitivity (case split on vertical vs non-vertical lines). collinear_four, collinear_any_triple: full transitivity for ≥4 collinear points.",
-      "mathContext": "Collinearity transitivity: if $p,q,r$ are collinear and $p,q,s$ are collinear with $p \\neq q$, then $p,r,s$ are collinear. The proof splits on whether the line is vertical ($q_1 = p_1$) or not, using `nlinarith` for the algebraic verification."
+      "summary": "`collinear_self`, `collinear_refl`, `collinear_self_right` (L53–61): degenerate cases. `collinear_swap23`, `collinear_swap12`, `collinear_rotate`, `collinear_cycle` (L65–81): the six symmetries of the collinearity predicate. `collinear_trans` (L87): transitivity, case-split on vertical vs non-vertical lines. `collinear_four` (L112), `collinear_any_triple` (L119): full transitivity for ≥4 collinear points.",
+      "mathContext": "Collinearity transitivity: if $p,q,r$ are collinear and $p,q,s$ are collinear with $p \\neq q$, then $p,r,s$ are collinear. The proof splits on whether the line is vertical ($q_1 = p_1$) or not, using `nlinarith` for the algebraic verification. `collinear_any_triple` lifts this to the fact that any triple drawn from a 4+ collinear set is collinear — the invariant underpinning line-uniqueness."
     },
     {
-      "id": "sec-bounds",
-      "title": "Upper Bounds: Trivial and Improved (L130–590)",
-      "startLine": 130,
+      "id": "sec-structural",
+      "title": "Structural Properties and the Line Bound (L128–217)",
+      "startLine": 128,
+      "endLine": 217,
+      "summary": "`noFiveCollinear_small` (L131): the constraint is vacuous for ≤4 points. `fourPointLineCount_lt_four` (L153): fewer than 4 points give count 0. `noFiveCollinear_line_bound` (L167): under NoFiveCollinear every line carries at most 4 points of P (by-contradiction extraction of 5 distinct collinear points).",
+      "mathContext": "`noFiveCollinear_line_bound` is the pigeonhole gateway: it converts the hypothesis 'no 5 collinear' into the uniform per-line cap $|L \\cap P| \\leq 4$, which is what makes every 4-collinear subset correspond to a *unique* maximal line and licenses the packing counts."
+    },
+    {
+      "id": "sec-uniqueness",
+      "title": "Uniqueness of Four-Collinear Subsets (L218–282)",
+      "startLine": 218,
+      "endLine": 282,
+      "summary": "`four_collinear_unique` (L223): two 4-element collinear subsets sharing 2 points must coincide (both lie on the unique ≤4-point line). `four_collinear_overlap_small` (L250): distinct 4-element collinear subsets share at most 1 point — the structural heart of the pair-packing argument.",
+      "mathContext": "Two distinct 4-point lines meeting in $\\geq 2$ points would force $\\geq 6$ collinear points (violating no-5-collinear), so their overlap is $\\leq 1$. This disjointness of the $\\binom{4}{2}=6$ pair-sets across distinct lines is exactly what the improved bound packs into $\\binom{n}{2}$."
+    },
+    {
+      "id": "sec-main-conjecture",
+      "title": "Main Conjecture (Statement) (L283–286)",
+      "startLine": 283,
+      "endLine": 286,
+      "summary": "Docstring restating Erdős Problem #101: under NoFiveCollinear, the number of four-point lines is $o(n^2)$ — the open upper-bound target of the entry.",
+      "mathContext": "The conjecture asserts $f_4(n) = o(n^2)$. Erdős further guessed $\\Theta(n^{3/2})$, but Solymosi–Stojaković's $n^{2-O(1/\\sqrt{\\log n})}$ construction shows the truth sits just below the $n^2$ ceiling, so any proof must be subtle enough to separate $o(n^2)$ from $n^{2-o(1)}$."
+    },
+    {
+      "id": "sec-known-results",
+      "title": "Known Results and Trivial Upper Bounds (L287–502)",
+      "startLine": 287,
+      "endLine": 502,
+      "summary": "Docstrings record Grünbaum's $\\Omega(n^{3/2})$ lower bound and the Solymosi–Stojaković near-quadratic construction. `trivial_upper_bound_sq` (L295): count $\\leq n^2$. `trivial_upper_bound` (L368): the tight elementary bound $n(n-1)/2$, each 4-subset charged to a determining pair.",
+      "mathContext": "The trivial bounds bracket the problem: $f_4(n) \\leq \\binom{n}{2} = n(n-1)/2$ because each 4-point line is determined by (indeed, injects into) a pair of its points. Every subsequent theorem is an attempt to shave the constant or the exponent below this baseline."
+    },
+    {
+      "id": "sec-improved-bound",
+      "title": "Improved Upper Bound n(n-1)/12 (L503–590)",
+      "startLine": 503,
       "endLine": 590,
-      "summary": "noFiveCollinear_small: empty constraint for ≤4 points. noFiveCollinear_line_bound: ≤4 points per line. four_collinear_unique: two 4-subsets sharing 2 points are equal. four_collinear_overlap_small: distinct 4-subsets share ≤1 point. trivial_upper_bound: |F| ≤ n(n-1)/2. improved_upper_bound: |F| ≤ n(n-1)/12 (6-pair packing argument).",
-      "mathContext": "The improved bound uses a double-counting / packing argument: each 4-collinear subset has $\\binom{4}{2}=6$ pairs. By the overlap lemma, distinct 4-subsets have disjoint pair-sets. Packing into $\\binom{n}{2}$ total pairs gives $6|F| \\leq \\binom{n}{2}$, so $|F| \\leq n(n-1)/12$."
+      "summary": "`powersetCard2_disjoint` (L506): the pair-sets of overlap-≤1 subsets are disjoint. `improved_upper_bound` (L523): under NoFiveCollinear, $f_4(P) \\leq n(n-1)/12$ — a 6× improvement over the trivial bound via `Finset.card_biUnion` with the disjointness lemma.",
+      "mathContext": "Each 4-collinear subset carries $\\binom{4}{2}=6$ pairs; by `four_collinear_overlap_small` these pair-sets are pairwise disjoint across distinct lines. Packing into the $\\binom{n}{2}$ available pairs gives $6\\,f_4 \\leq \\binom{n}{2}$, hence $f_4 \\leq n(n-1)/12$."
+    },
+    {
+      "id": "sec-related-observations",
+      "title": "Related Observations (L591–598)",
+      "startLine": 591,
+      "endLine": 598,
+      "summary": "Docstrings on adjacent results: the Burr–Grünbaum–Sloane / Füredi–Palásti collinear-triple constructions (many triples, no four-point lines) and the Szemerédi–Trotter incidence bound as the natural tool for any future $o(n^2)$ improvement.",
+      "mathContext": "Szemerédi–Trotter caps incidences by $I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$; specialized to lines with $\\geq 4$ points it yields $O(n^2/k^3)$ rich-$k$-lines, the standard avenue toward beating the elementary packing constant here."
+    },
+    {
+      "id": "sec-f-family",
+      "title": "The F Family (Reusable Definitions) (L599–614)",
+      "startLine": 599,
+      "endLine": 614,
+      "summary": "`fourCollinearFamily P` (L603): the explicit Finset F of all 4-element collinear subsets. `fourPointLineCount_eq_family` (L611): `fourPointLineCount P = (fourCollinearFamily P).card`, bridging the counting definition to a reusable family object for the per-point argument.",
+      "mathContext": "Reifying the count as a concrete `Finset` of subsets lets later theorems apply `Finset.card_biUnion` and erase-based packing directly to $F$, rather than reasoning through the filter-count definition each time."
     },
     {
       "id": "sec-per-point",
-      "title": "Per-Point Bound (L590–757)",
-      "startLine": 590,
-      "endLine": 757,
-      "summary": "fourCollinearFamily: the full family F of 4-element collinear subsets. fourCollinearThrough P p: 4-subsets containing point p. fourCollinearThrough_bound: at most (n-1)/3 such subsets. fourCollinearThrough_sub_family, mem_fourCollinearThrough_of_mem_family: membership characterization.",
-      "mathContext": "Per-point bound: each 4-collinear subset through $p$ contributes 3 'other' points. By the overlap lemma, these 3-element parts are pairwise disjoint within $P \\setminus \\{p\\}$ (size $n-1$). Packing gives $3|F_p| \\leq n-1$, so $|F_p| \\leq (n-1)/3$."
+      "title": "Per-Point Bound (n-1)/3 (L615–716)",
+      "startLine": 615,
+      "endLine": 716,
+      "summary": "`fourCollinearThrough P p` (L619): the sub-family of 4-subsets containing a fixed point p. `fourCollinearThrough_bound` (L632): at most $(n-1)/3$ four-point lines pass through any single point — erase p from each subset to get disjoint 3-element parts of $P \\setminus \\{p\\}$.",
+      "mathContext": "Per-point bound: each 4-collinear subset through $p$ contributes 3 'other' points; by the overlap lemma these 3-element parts are pairwise disjoint within $P \\setminus \\{p\\}$ (size $n-1$). Packing gives $3|F_p| \\leq n-1$, so $|F_p| \\leq (n-1)/3$. Summing over all $p$ (with each line counted 4×) re-derives the $n(n-1)/12$ bound."
+    },
+    {
+      "id": "sec-structural-lemmas",
+      "title": "Structural Lemmas for fourCollinearThrough (L717–738)",
+      "startLine": 717,
+      "endLine": 738,
+      "summary": "`fourCollinearThrough_sub_family` (L721): `fourCollinearThrough P p ⊆ fourCollinearFamily P`. `mem_fourCollinearThrough_of_mem_family` (L731): a family member containing p lies in the through-p sub-family — the membership characterization that lifts per-point bounds to the global family via `Finset.biUnion`.",
+      "mathContext": "These inclusion/membership lemmas are the plumbing that connects the local (through-a-point) count to the global family count: $F = \\bigcup_p F_p$ with controlled multiplicity, the double-counting identity assembled in the next section."
+    },
+    {
+      "id": "sec-double-counting",
+      "title": "Double-Counting Connection (L739–758)",
+      "startLine": 739,
+      "endLine": 758,
+      "summary": "Closing docstring/lemmas sketching the double-counting bridge: summing the per-point bound $(n-1)/3$ over all $n$ points, with each 4-point line counted once per its 4 incident points, recovers $f_4 \\leq n \\cdot \\tfrac{n-1}{3} / 4 = n(n-1)/12$, tying the per-point and family bounds together.",
+      "mathContext": "The identity $\\sum_{p \\in P} |F_p| = 4\\,f_4(P)$ (each 4-point line has 4 incident points) turns the per-point cap into the global bound and is the standard incidence double-count $\\sum_p (\\text{lines through } p) = \\sum_L (\\text{points on } L)$ specialized to 4-rich lines."
     }
   ],
   "mainTheorems": [
