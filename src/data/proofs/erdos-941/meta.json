@@ -85,79 +85,79 @@
       "id": "erd-s-problem-941-sums-of-thre",
       "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 58,
       "summary": "Header comment documenting the problem source, statement ($p \\mid n \\Rightarrow p^2 \\mid n$), SOLVED status (Heath-Brown 1988), and connections to Problems #940 and #1107. Imports `Nat.Basic`, `Nat.Factorization.Basic`, `NumberTheory.Divisors`, and `Finset.Basic`.",
       "mathContext": "Header comment documenting the problem source, statement ($p \\mid n \\Rightarrow p^2 \\mid n$), SOLVED status (Heath-Brown 1988), and connections to Problems #940 and #1107."
     },
     {
       "id": "powerful-numbers",
       "title": "Powerful Numbers",
-      "startLine": 38,
-      "endLine": 85,
+      "startLine": 59,
+      "endLine": 139,
       "summary": "Defines `IsPowerful n` ($n > 0 \\wedge \\forall p$ prime, $p \\mid n \\Rightarrow p^2 \\mid n$) and `IsPowerfulAlt n` ($n = a^2 b^3$). Proves `powerful_iff_alt`, `one_is_powerful`, `square_is_powerful`, `cube_is_powerful`, `powerful_mul` (all proved).",
       "mathContext": "Defines `IsPowerful n` ($n > 0 \\wedge \\forall p$ prime, $p \\mid n \\Rightarrow p^2 \\mid n$) and `IsPowerfulAlt n` ($n = a^2 b^3$). Proves `one_is_powerful`."
     },
     {
       "id": "examples-of-powerful-numbers",
       "title": "Examples of Powerful Numbers",
-      "startLine": 86,
-      "endLine": 106,
+      "startLine": 140,
+      "endLine": 166,
       "summary": "Lists the first 14 powerful numbers $[1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100]$. Proves $4 = 2^2$, $8 = 2^3$ are powerful. Proves $72 = 8 \\times 9$ is powerful via `powerful_mul`.",
       "mathContext": "Lists the first 14 powerful numbers $[1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100]$. Proves $4 = $2^{2}$$, $8 = $2^{3}$$ are powerful. Proves $72 = 8 \\times 9$ is powerful via `powerful_mul`."
     },
     {
       "id": "sum-representations",
       "title": "Sum Representations",
-      "startLine": 107,
-      "endLine": 125,
+      "startLine": 167,
+      "endLine": 185,
       "summary": "Defines `IsSumOfKPowerful n k` (sum of exactly $k$ powerful numbers via `Finset`), `IsSumOf3Powerful n` ($\\exists a, b, c$ powerful with $n = a + b + c$), and `IsSumOf3PowerfulOrZero n` (allowing zero summands for the 'at most 3' formulation).",
       "mathContext": "Defines `IsSumOfKPowerful n k` (sum of exactly $k$ powerful numbers via `Finset`), `IsSumOf3Powerful n` ($\\exists a, b, c$ powerful with $n = a + b + c$), and `IsSumOf3PowerfulOrZero n` (allowing zero summands for the 'at most 3' formulation)."
     },
     {
       "id": "the-erd-s-ivi-question",
       "title": "The Erdős-Ivić Question",
-      "startLine": 126,
-      "endLine": 142,
+      "startLine": 186,
+      "endLine": 205,
       "summary": "Defines `ErdosIvicQuestion`: $\\exists N, \\forall n \\ge N$, `IsSumOf3PowerfulOrZero n`. Also `ErdosIvicQuestion'` with explicit existentials. Both capture the 'all sufficiently large integers' quantifier.",
       "mathContext": "Defines `ErdosIvicQuestion`: $\\exists N, \\forall n \\ge N$, `IsSumOf3PowerfulOrZero n`."
     },
     {
       "id": "heath-brown-s-theorem",
       "title": "Heath-Brown's Theorem",
-      "startLine": 143,
-      "endLine": 158,
+      "startLine": 206,
+      "endLine": 226,
       "summary": "Axiomatizes `heath_brown_theorem : ErdosIvicQuestion` and `heath_brown_explicit` with placeholder bound `heathBrownBound = 10000`. The axiomatization is appropriate since Heath-Brown's proof uses ternary quadratic forms and the Hasse principle, far beyond Mathlib's current scope.",
       "mathContext": "Axiomatizes `heath_brown_theorem : ErdosIvicQuestion` and `heath_brown_explicit` with placeholder bound `heathBrownBound = 10000`. The axiomatization is appropriate since Heath-Brown's proof uses ternary quadratic forms and the Hasse principle, far beyond Mathlib's current scope."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "startLine": 159,
-      "endLine": 180,
+      "startLine": 227,
+      "endLine": 257,
       "summary": "Defines `notSumOf3Powerful`. Axiomatizes `small_exceptions` (finitely many integers not representable). Proves `_2_exceptional_without_zero`: 2 is not a sum of 3 strictly positive powerful numbers.",
       "mathContext": "Defines `notSumOf3Powerful`. Axiomatizes `small_exceptions` (finitely many integers not representable). Proves `_2_exceptional_without_zero`: 2 is not a sum of 3 strictly positive powerful numbers."
     },
     {
       "id": "counting-representations",
       "title": "Counting Representations",
-      "startLine": 181,
-      "endLine": 198,
+      "startLine": 258,
+      "endLine": 281,
       "summary": "Defines `numRepresentations n` counting triples $(a, b, c)$ with $a + b + c = n$ and all powerful. Axiomatizes `powerful_density`: $|\\{n \\le N : \\text{powerful}\\}| / N^{1/2} \\to c > 0$ (the constant $c = \\zeta(3/2)/\\zeta(3) \\approx 2.173$).",
       "mathContext": "Defines `numRepresentations n` counting triples $(a, b, c)$ with $a + b + c = n$ and all powerful. Axiomatizes `powerful_density`: $|\\{n \\le N : \\text{powerful}\\}| / N^{1/2} \\to c > 0$ (the constant $c = \\zeta(3/2)/\\zeta(3) \\approx 2.173$)."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "startLine": 199,
-      "endLine": 216,
+      "startLine": 282,
+      "endLine": 299,
       "summary": "Defines `IsRPowerful r n` ($p \\mid n \\Rightarrow p^r \\mid n$). Proves `two_powerful_eq_powerful` by `simp`. Defines `generalizedQuestion r k` connecting to Problem #1107 on the minimal basis order for $r$-powerful numbers.",
       "mathContext": "Defines `IsRPowerful r n` ($p \\mid n \\Rightarrow p^r \\mid n$). Proves `two_powerful_eq_powerful` by `simp`. Defines `generalizedQuestion r k` connecting to Problem #1107 on the minimal basis order for $r$-powerful numbers."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 217,
-      "endLine": 323,
+      "startLine": 300,
+      "endLine": 324,
       "summary": "Three equivalent theorems: `erdos_941`, `erdos_941_main`, `erdos_941_solved`, all delegating to `heath_brown_theorem`. Confirms the problem is SOLVED: every sufficiently large integer is a sum of $\\le 3$ powerful numbers.",
       "mathContext": "Three equivalent theorems: `erdos_941`, `erdos_941_main`, `erdos_941_solved`, all delegating to `heath_brown_theorem`. Confirms the problem is SOLVED: every sufficiently large integer is a sum of $\\le 3$ powerful numbers."
     }
