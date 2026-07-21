@@ -50,6 +50,7 @@
       "Proof of iterations_before_contradiction: if δ + kδ²/100 ≤ 1 then k ≤ 100/δ² (density-increment iteration-count bound)",
       "Proof of rothNumber_div_tendsto_zero: the qualitative Roth asymptotic r₃(N)/N → 0, reduced to the parent RothTheorem via Mathlib's corners / triangle-removal chain",
       "Proof that r₃(4) = 2 exactly (rothNumber_four via apFree_four_card_le_two), axiom-free by decide; shows r₃ is not monotone in N since r₃(4) = r₃(3)",
+      "Proof of rothNumber_mul_coprime: supermultiplicativity r₃(M)·r₃(N) ≤ r₃(M·N) on coprime moduli via the Chinese Remainder isomorphism, entirely axiom-free (no Fourier analysis); specialized to two_mul_rothNumber_le (2·r₃(N) ≤ r₃(3N) for N coprime to 3)",
       "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
     "lineCount": 434,
@@ -71,7 +72,8 @@
       "**Behrend's Geometric Miracle**: That the lower bound $r_3(N) \\geq N \\cdot \\exp(-c\\sqrt{\\log N})$ has remained essentially optimal for 80 years is remarkable. It comes from sphere geometry in high dimensions — a completely different world from the Fourier-analytic upper bounds. The two methods speak different mathematical languages, making the gap between them hard to close.",
       "**Kelley-Meka's Polynomial Exponent**: The jump from Bloom-Sisask's $1/(\\log N)^{1+c}$ to Kelley-Meka's $\\exp(-(\\log N)^{1/12})$ represents a qualitative change — exponential improvement rather than polynomial. Their proof introduces polynomial methods and higher-order Fourier analysis into the density increment framework, inspired by the cap set problem techniques of Croot-Lev-Pach and Ellenberg-Gijswijt (2016).",
       "**ZMod N vs Integer Intervals**: Working in $\\mathbb{Z}/N\\mathbb{Z}$ (cyclic group) rather than $\\{1, \\ldots, N\\}$ (integers) simplifies the algebra at the cost of wraparound effects. All major results transfer between the two settings, but the cyclic group formulation integrates cleanly with Lean's Mathlib ZMod API and enables direct use of Fourier/spectral tools on finite abelian groups.",
-      "**Singleton Witness and Tightness**: The proof that $r_3(2) = 1$ and $r_3(3) = 2$ by exhaustive `fin_cases` illustrates that the formal definition matches the intended mathematical concept. For small $N$, the exact values can be computed; for large $N$, only asymptotic bounds are known."
+      "**Singleton Witness and Tightness**: The proof that $r_3(2) = 1$ and $r_3(3) = 2$ by exhaustive `fin_cases` illustrates that the formal definition matches the intended mathematical concept. For small $N$, the exact values can be computed; for large $N$, only asymptotic bounds are known. The exact value $r_3(4) = 2 = r_3(3)$ additionally shows $r_3$ is not strictly monotone in $N$.",
+      "**Axiom-Free Supermultiplicativity via CRT**: Part II.B proves $r_3(M)\\,r_3(N) \\leq r_3(MN)$ for coprime $M, N$ entirely elementarily — the Chinese Remainder isomorphism $\\mathbb{Z}/MN\\mathbb{Z} \\cong \\mathbb{Z}/M\\mathbb{Z}\\times\\mathbb{Z}/N\\mathbb{Z}$ carries a product of AP-free sets to an AP-free set, because a nonzero AP step must be nonzero in some coordinate and that coordinate's progression is trapped in the AP-free factor. Iterating over prime factors gives explicit growth ($2\\,r_3(N)\\leq r_3(3N)$), a self-contained lower-bound engine that needs no Fourier analysis — a sharp contrast with the axiomatized Part III bounds."
     ]
   },
   "sections": [
@@ -101,33 +103,41 @@
     },
     {
       "id": "achieved-and-small-cases",
-      "title": "Part I cont.: Maximum Achieved and Exact Values r₃(2), r₃(3)",
+      "title": "Part I cont.: Maximum Achieved and Exact Values r₃(2), r₃(3), r₃(4)",
       "startLine": 139,
-      "endLine": 167,
-      "summary": "rothNumber_achieved: maximum is attained (Finset.exists_max_image — finite extreme value theorem). rothNumber_two: r₃(2) = 1 (squeeze from bounds). rothNumber_three: r₃(3) = 2 ({0,1} is AP-free in ZMod 3, proved by decide).",
-      "mathContext": "$\\exists A: \\text{APFree}(A) \\wedge |A|=r_3(N)$ (finiteness). $r_3(2)=1$: bounds give $1\\leq r_3(2)<2$. $r_3(3)=2$: $\\{0,1\\}\\subseteq\\mathbb{Z}/3\\mathbb{Z}$ is AP-free (exhaustive `decide`)."
+      "endLine": 204,
+      "summary": "rothNumber_achieved: maximum is attained (Finset.exists_max_image — finite extreme value theorem). rothNumber_two: r₃(2) = 1 (squeeze from bounds). rothNumber_three: r₃(3) = 2 ({0,1} is AP-free in ZMod 3, proved by decide). apFree_four_card_le_two: every AP-free subset of ZMod 4 has ≤ 2 elements. rothNumber_four: r₃(4) = 2 (lower bound {0,1}; upper bound from apFree_four_card_le_two), all axiom-free. Since r₃(4) = r₃(3) = 2, this exhibits that r₃ is not strictly monotone in N.",
+      "mathContext": "$\\exists A: \\text{APFree}(A) \\wedge |A|=r_3(N)$ (finiteness). $r_3(2)=1$: bounds give $1\\leq r_3(2)<2$. $r_3(3)=2$: $\\{0,1\\}\\subseteq\\mathbb{Z}/3\\mathbb{Z}$ is AP-free (exhaustive `decide`). $r_3(4)=2$: any AP-free $A\\subseteq\\mathbb{Z}/4\\mathbb{Z}$ has $|A|\\leq 2$, and $\\{0,1\\}$ attains it — so $r_3(4)=r_3(3)$, i.e. $r_3$ is non-monotone."
     },
     {
       "id": "qualitative-asymptotic",
       "title": "Part I.B: Qualitative Roth Asymptotic r₃(N)/N → 0",
-      "startLine": 168,
-      "endLine": 218,
+      "startLine": 205,
+      "endLine": 255,
       "summary": "apFree_to_parent: the local APFree implies the parent Szemeredi.Roth.APFree (identical bodies). rothNumber_div_tendsto_zero: the qualitative content of Roth's theorem over ZMod N, r₃(N)/N → 0 as N → ∞, proved (0 sorries) by reducing to Szemeredi.Roth.roth_density_bound, which routes through Mathlib's roth_3ap_theorem_nat via the corners/triangle-removal chain.",
       "mathContext": "$r_3(N)/N \\to 0$ as $N\\to\\infty$. Given $\\varepsilon>0$, set $\\delta=\\min(\\varepsilon,1)\\in(0,1]$; roth_density_bound yields $N_0$ with $|A| < \\delta N$ for every AP-free $A$ and $N\\geq N_0$, so $r_3(N)/N < \\varepsilon$. The Part III theorems sharpen this to explicit decay rates."
     },
     {
       "id": "density-increment",
       "title": "Part II: Density Increment Iteration Bound",
-      "startLine": 219,
-      "endLine": 247,
+      "startLine": 256,
+      "endLine": 284,
       "summary": "iterations_before_contradiction: if δ > 0 and δ + kδ²/100 ≤ 1 then k ≤ 100/δ² (proved). max_iterations_bound was removed — it is false for δ > 1 (δ=2, k=0 satisfies the hypothesis but fails the conclusion). density_upper_bound_from_iteration was also removed — the claim r₃(N) ≤ 10√N is false for large N (Behrend gives r₃(N) >> √N). 0 sorries.",
       "mathContext": "If $\\delta + k\\delta^2/100 \\leq 1$ with $\\delta>0$ then $k \\leq 100/\\delta^2$. The removed bounds failed because the density increment gives $M < N$ but no lower bound on $M$; quantitative bounds need $M \\geq N^c$ (Roth uses $M\\geq N^{2/3}$)."
     },
     {
+      "id": "supermultiplicativity-crt",
+      "title": "Part II.B: Supermultiplicativity of r₃ on Coprime Moduli (CRT)",
+      "startLine": 285,
+      "endLine": 371,
+      "summary": "apFree_crt_product: for coprime M, N the image of an AP-free product A ×ˢ B under the Chinese Remainder isomorphism ZMod(M·N) ≃+* ZMod M × ZMod N is AP-free — a nonzero step forces a nonzero coordinate, and that coordinate's progression is trapped inside the AP-free factor. rothNumber_mul_coprime: hence r₃(M)·r₃(N) ≤ r₃(M·N), a fully axiom-free structural lower-bound tool (no Fourier analysis). two_mul_rothNumber_le: specializing to M = 3 with r₃(3) = 2 gives 2·r₃(N) ≤ r₃(3N) for N coprime to 3, an explicit elementary growth rate. All 0 sorries.",
+      "mathContext": "Via $\\text{CRT}: \\mathbb{Z}/MN\\mathbb{Z} \\cong \\mathbb{Z}/M\\mathbb{Z} \\times \\mathbb{Z}/N\\mathbb{Z}$ (coprime $M,N$): $r_3(M)\\,r_3(N) \\leq r_3(MN)$. Key step: for a 3-AP $a, a{+}d, a{+}2d$ with $d\\neq 0$, injectivity of the isomorphism gives a coordinate where the step is nonzero, and that projected progression must lie in the AP-free factor — contradiction. Iterating over prime factors yields elementary growth, e.g. $2\\,r_3(N) \\leq r_3(3N)$ using $r_3(3)=2$; weaker than Behrend but self-contained."
+    },
+    {
       "id": "quantitative-bounds",
       "title": "Part III: Four Quantitative Bound Statements (Axiomatized External Results)",
-      "startLine": 248,
-      "endLine": 306,
+      "startLine": 372,
+      "endLine": 434,
       "summary": "States four landmark bounds: roth_quantitative_upper_bound (1953, O(N/log log N)), behrend_lower_bound (1946, Ω(N·exp(-c√log N))), bloom_sisask_bound (2020, O(N/(log N)^{1+c})), kelley_meka_upper_bound (2023, O(N·exp(-c(log N)^{1/12}))). All 4 are recorded as disclosed axioms (previously sorries).",
       "mathContext": "Historical progression: Roth $N/\\log\\log N$ → Bourgain $N/(\\log N)^{1-\\varepsilon}$ → Sanders $N\\log\\log N/\\log N$ → Bloom-Sisask $N/(\\log N)^{1+c}$ → Kelley-Meka $N\\exp(-(\\log N)^{1/12})$. Lower bound: Behrend $N\\exp(-c\\sqrt{\\log N})$ (1946). Gap: exponent $1/12$ vs $1/2$ is open."
     }
