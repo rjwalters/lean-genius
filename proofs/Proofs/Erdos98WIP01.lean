@@ -2579,4 +2579,134 @@ theorem two_distance_two_regular
     rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
   omega
 
+/-- **Row sum of squared distances.**  In a general-position two-distance `PointConfig 5`
+with distances `a ≠ b`, the sum of the squared distances from any fixed vertex `m` to all
+five vertices (including itself, contributing `0`) is `2a² + 2b²`: by `two_distance_two_regular`
+each vertex has exactly two `a`-neighbours and (dually) two `b`-neighbours among the four
+others, so the row is `{0, a, a, b, b}` in squared form. -/
+theorem two_distance_row_sq_sum
+    {P : PointConfig 5} (hgp : InGeneralPosition P) {a b : ℝ}
+    (ha : 0 < a) (hb : 0 < b) (hab : a ≠ b)
+    (hcov : ∀ i j : Fin 5, i ≠ j → dist (P i) (P j) = a ∨ dist (P i) (P j) = b)
+    (m : Fin 5) :
+    ∑ k, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 + 2 * b ^ 2 := by
+  have hAcard : ((univ.erase m).filter (fun j => dist (P m) (P j) = a)).card = 2 :=
+    two_distance_two_regular hgp ha hb hab hcov m
+  set A := (univ.erase m).filter (fun j => dist (P m) (P j) = a) with hAdef
+  set B := (univ.erase m).filter (fun j => dist (P m) (P j) = b) with hBdef
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro j hjA hjB
+    rw [hAdef, mem_filter] at hjA
+    rw [hBdef, mem_filter] at hjB
+    exact hab (hjA.2.symm.trans hjB.2)
+  have hcover : univ.erase m = A ∪ B := by
+    apply Finset.Subset.antisymm
+    · intro j hj
+      have hji : j ≠ m := (Finset.mem_erase.mp hj).1
+      rcases hcov m j (Ne.symm hji) with hda | hdb
+      · exact Finset.mem_union_left _ (by rw [hAdef, mem_filter]; exact ⟨hj, hda⟩)
+      · exact Finset.mem_union_right _ (by rw [hBdef, mem_filter]; exact ⟨hj, hdb⟩)
+    · exact Finset.union_subset (Finset.filter_subset _ _) (Finset.filter_subset _ _)
+  have herase : (univ.erase m).card = 4 := by
+    rw [Finset.card_erase_of_mem (mem_univ _), Finset.card_univ, Fintype.card_fin]
+  have hBcard : B.card = 2 := by
+    have hsum : A.card + B.card = 4 := by
+      rw [← Finset.card_union_of_disjoint hdisj, ← hcover, herase]
+    omega
+  have hsplit : ∑ k, (dist (P m) (P k)) ^ 2
+      = ∑ k in univ.erase m, (dist (P m) (P k)) ^ 2 := by
+    rw [← Finset.add_sum_erase univ (fun k => (dist (P m) (P k)) ^ 2) (mem_univ m)]
+    simp
+  rw [hsplit, hcover, Finset.sum_union hdisj]
+  have hAsum : ∑ k in A, (dist (P m) (P k)) ^ 2 = 2 * a ^ 2 := by
+    have hval : ∀ k ∈ A, (dist (P m) (P k)) ^ 2 = a ^ 2 := by
+      intro k hk; rw [hAdef, mem_filter] at hk; rw [hk.2]
+    rw [Finset.sum_congr rfl hval, Finset.sum_const, hAcard, nsmul_eq_mul]; norm_num
+  have hBsum : ∑ k in B, (dist (P m) (P k)) ^ 2 = 2 * b ^ 2 := by
+    have hval : ∀ k ∈ B, (dist (P m) (P k)) ^ 2 = b ^ 2 := by
+      intro k hk; rw [hBdef, mem_filter] at hk; rw [hk.2]
+    rw [Finset.sum_congr rfl hval, Finset.sum_const, hBcard, nsmul_eq_mul]; norm_num
+  rw [hAsum, hBsum]
+
+set_option maxHeartbeats 1600000 in
+/-- **`h 5 ≥ 3`.**  No general-position `PointConfig 5` realizes only two distinct
+distances, so `numDistinctDistances ≥ 3` for every such configuration, whence `3 ≤ h 5`.
+
+**Proof — concyclicity of a regular two-distance set (no cyclic-order extraction needed).**
+Suppose for contradiction `h 5 ≤ 2`.  A minimiser `P` (in general position, from `h_attained`)
+then has `numDistinctDistances P ≤ 2`, so `exists_two_distances_of_numDistinct_le_two` gives
+two positive reals `a, b` covering every pairwise distance.  If `a = b` all five points are
+mutually equidistant, contradicting `no_four_equidistant_indices`; so `a ≠ b`.
+
+By `two_distance_two_regular` every vertex has exactly two `a`-neighbours and two
+`b`-neighbours, hence a constant **row sum of squared distances** `∑ₖ dist(Pᵢ,Pₖ)² = 2a²+2b²`
+(`two_distance_row_sq_sum`).  Let `O = ⅕ ∑ₖ Pₖ` be the centroid.  Then `5(Pᵢ−O) = ∑ₖ(Pᵢ−Pₖ)`,
+so, polarising each `⟪Pᵢ−Pₖ, Pᵢ−Pₗ⟫ = ½(dᵢₖ²+dᵢₗ²−dₖₗ²)`,
+`25‖Pᵢ−O‖² = ∑ₖ∑ₗ ½(dᵢₖ²+dᵢₗ²−dₖₗ²) = 5·(rowᵢ) − ½·(∑ₖ rowₖ) = 5a²+5b²`,
+**independent of `i`**.  Thus all five points are equidistant (distance `√((a²+b²)/5)`) from `O`
+— they are concyclic — and feeding four of them to `NoFourConcyclic` (part of general position)
+gives the contradiction.  The regular pentagon `C₅` never needs to be singled out: equal
+row sums alone force concyclicity. -/
+theorem three_le_h_five : 3 ≤ h 5 := by
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨P, hgp, hval⟩ := h_attained 5
+  have hnum : numDistinctDistances P ≤ 2 := by omega
+  obtain ⟨a, b, ha, hb, hcov⟩ :=
+    exists_two_distances_of_numDistinct_le_two hgp.injective (by norm_num) hnum
+  by_cases hab : a = b
+  · -- One distance only: five mutually equidistant points, ruled out by `no_four_equidistant`.
+    have hall : ∀ x y : Fin 5, x ≠ y → dist (P x) (P y) = a := by
+      intro x y hxy
+      rcases hcov x y hxy with h | h
+      · exact h
+      · rw [h]; exact hab.symm
+    exact no_four_equidistant_indices ha (hall 0 1 (by decide)) (hall 0 2 (by decide))
+      (hall 0 3 (by decide)) (hall 1 2 (by decide)) (hall 1 3 (by decide)) (hall 2 3 (by decide))
+  · -- Genuine two-distance set: centroid concyclicity.
+    have hrow : ∀ m : Fin 5,
+        (dist (P m) (P 0)) ^ 2 + (dist (P m) (P 1)) ^ 2 + (dist (P m) (P 2)) ^ 2
+          + (dist (P m) (P 3)) ^ 2 + (dist (P m) (P 4)) ^ 2 = 2 * a ^ 2 + 2 * b ^ 2 := by
+      intro m
+      have := two_distance_row_sq_sum hgp ha hb hab hcov m
+      rwa [Fin.sum_univ_five] at this
+    set O : EuclideanSpace ℝ (Fin 2) := (5 : ℝ)⁻¹ • ∑ k, P k with hOdef
+    have hnorm : ∀ i : Fin 5, ‖P i - O‖ ^ 2 = (a ^ 2 + b ^ 2) / 5 := by
+      intro i
+      have pol : ∀ k l : Fin 5, (inner ℝ (P i - P k) (P i - P l) : ℝ)
+          = ((dist (P i) (P k)) ^ 2 + (dist (P i) (P l)) ^ 2 - (dist (P k) (P l)) ^ 2) / 2 := by
+        intro k l
+        have h := norm_sub_sq_real (P i - P k) (P i - P l)
+        have esub : (P i - P k) - (P i - P l) = P l - P k := by abel
+        rw [esub] at h
+        rw [show ‖P i - P k‖ = dist (P i) (P k) from (dist_eq_norm _ _).symm,
+            show ‖P i - P l‖ = dist (P i) (P l) from (dist_eq_norm _ _).symm,
+            show ‖P l - P k‖ = dist (P k) (P l) from by rw [← dist_eq_norm, dist_comm]] at h
+        linarith
+      have hscaled : (5 : ℝ) • (P i - O) = ∑ k, (P i - P k) := by
+        rw [hOdef]; simp only [Fin.sum_univ_five]; module
+      have h25 : ‖∑ k, (P i - P k)‖ ^ 2 = 25 * ‖P i - O‖ ^ 2 := by
+        rw [← hscaled, norm_smul, show ‖(5 : ℝ)‖ = 5 from by rw [Real.norm_eq_abs]; norm_num]
+        ring
+      have hexp : ‖∑ k, (P i - P k)‖ ^ 2 = 5 * a ^ 2 + 5 * b ^ 2 := by
+        rw [Fin.sum_univ_five, ← real_inner_self_eq_norm_sq]
+        simp only [inner_add_left, inner_add_right]
+        simp_rw [pol]
+        linarith [hrow i, hrow 0, hrow 1, hrow 2, hrow 3, hrow 4]
+      linarith [h25, hexp]
+    have hdist : ∀ i : Fin 5, dist O (P i) = Real.sqrt ((a ^ 2 + b ^ 2) / 5) := by
+      intro i
+      rw [dist_eq_norm, norm_sub_rev, ← Real.sqrt_sq (norm_nonneg (P i - O)), hnorm i]
+    have hcard4 : ({(0 : Fin 5), 1, 2, 3} : Finset (Fin 5)).card = 4 := by decide
+    exact hgp.2.2 0 1 2 3 hcard4
+      ⟨O, Real.sqrt ((a ^ 2 + b ^ 2) / 5), hdist 0, hdist 1, hdist 2, hdist 3⟩
+
+/-- **`h 5 = 3`, pinned exactly.**  The three-distance witness `h5Config` gives `h 5 ≤ 3`
+(`h_five_le_three`) and the concyclicity of every general-position two-distance 5-set gives
+`h 5 ≥ 3` (`three_le_h_five`).  This is the first value of `h` requiring the *no-four-concyclic*
+hypothesis in an essential, non-counting way. -/
+theorem h_five_eq_three : h 5 = 3 :=
+  le_antisymm h_five_le_three three_le_h_five
+
 end Erdos98WIP01
