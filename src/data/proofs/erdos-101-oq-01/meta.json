@@ -127,6 +127,38 @@
       "endLine": 837,
       "summary": "four_point_line_count_not_O_rpow: for every exponent β < 2 there is no global O(nᵝ) upper bound on fourPointLineCount. Specialises solymosi_stojakovic_lower_bound to C=1; the witness exponent 2 − 1/√(log n) exceeds β once n > exp(1/(2−β)²) (threshold obtained via exists_nat_gt (Real.exp T)), and Real.rpow_lt_rpow_of_exponent_lt (base > 1) closes the contradiction. erdos_three_halves_conjecture_refuted is the β = 3/2 special case.",
       "mathContext": "Strengthens the single-exponent 3/2 refutation to all β < 2, pinning the true growth firmly in the 'just below quadratic' regime OQ-01 asks to sharpen to o(n²). Proof is sorry-free but transitively consumes the deferred Solymosi–Stojaković obligation (sorryAx), matching the existing refutation theorems."
+    },
+    {
+      "id": "s5-not-O-rpow",
+      "title": "The extremal function is not O(nᵝ) for any β < 2",
+      "startLine": 838,
+      "endLine": 886,
+      "summary": "maxCountAtSize_not_O_rpow: the size-indexed extremal function itself (not merely fourPointLineCount) fails every O(nᵝ) upper bound for β < 2, transferring the strong refutation to the extremal-function level. Like the refutations above, sorry-free but transitively resting on the deferred Solymosi–Stojaković lower bound.",
+      "mathContext": "For every $\\beta < 2$, $\\mathrm{maxCountAtSize}\\,n \\ne O(n^{\\beta})$ — the extremal four-point-line count grows faster than any sub-quadratic power."
+    },
+    {
+      "id": "s18-unconditional-infrastructure",
+      "title": "S18 ACT: unconditional lower-bound infrastructure (sorry-free)",
+      "startLine": 887,
+      "endLine": 986,
+      "summary": "The first sorry-free lower-bound content in the file. fourPointLineCount_ge_of_family: a finite family of 4-element collinear subsets of a point set is a subset of the filtered powerset defining fourPointLineCount, so its cardinality lower-bounds the count; exists_noFiveCollinear_fourPointLineCount_pos exhibits a no-five-collinear configuration carrying a genuine four-point line — positivity owing nothing to the deferred 2013 construction.",
+      "mathContext": "A family $\\mathcal{S}$ of collinear 4-subsets of $P$ satisfies $|\\mathcal{S}| \\le \\mathrm{fourPointLineCount}(P)$; there is a no-five-collinear $P$ with $\\mathrm{fourPointLineCount}(P) > 0$."
+    },
+    {
+      "id": "s19-first-positive-lower-bound",
+      "title": "S19 ACT: first unconditional positive lower bound on the extremal function",
+      "startLine": 987,
+      "endLine": 1065,
+      "summary": "one_le_maxCountAtSize_four: transfers S18's positivity to the extremal function at the smallest nontrivial size — the x-axis quadruple {(0,0),(1,0),(2,0),(3,0)} is a no-five-collinear set that is itself a single four-point line, giving 1 ≤ maxCountAtSize 4 with no appeal to the Solymosi–Stojaković sorry.",
+      "mathContext": "$1 \\le \\mathrm{maxCountAtSize}\\,4$, proved unconditionally via the explicit collinear quadruple on the $x$-axis."
+    },
+    {
+      "id": "s20-vanishes-below-four",
+      "title": "S20 ACT: the extremal function vanishes below size four",
+      "startLine": 1066,
+      "endLine": 1114,
+      "summary": "maxCountAtSize_eq_zero_of_lt_four (for n < 4 no point set hosts a four-point line, so maxCountAtSize n = 0) and maxCountAtSize_three_eq_zero_and_four_pos, which together pin the exact threshold: the extremal function is 0 at sizes 0,1,2,3 and ≥ 1 at size 4 — an unconditional, sorry-free identification of where it first becomes positive.",
+      "mathContext": "$\\mathrm{maxCountAtSize}\\,n = 0$ for $n < 4$ and $\\mathrm{maxCountAtSize}\\,4 \\ge 1$: the jump happens exactly at $4$, the least cardinality a four-point line can occupy."
     }
   ],
   "overview": {
