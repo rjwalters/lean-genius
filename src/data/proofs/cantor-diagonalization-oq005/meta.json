@@ -167,54 +167,54 @@
     {
       "id": "header",
       "title": "Header: Instantiating Lawvere in Type and Presheaves",
-      "startLine": 4,
-      "endLine": 49,
-      "summary": "Module docstring stating the open question — derive Cantor in Type and the fixed-point form in a presheaf topos as corollaries of the parent's lawvere_fixedPoint — and answering YES. Outlines the Type bridge (point-surjectivity = surjectivity) and lists the nine results. Imports Mathlib and the parent module.",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating the open question — derive Cantor in Type and the fixed-point form in a presheaf topos as corollaries of the parent's lawvere_fixedPoint — and answering YES. Outlines the Type bridge (point-surjectivity = surjectivity) and lists the nine results. Imports Mathlib and the parent module, opens the CategoryTheory / CartesianClosed / LawvereCCC namespaces.",
       "mathContext": "Point-surjective $\\varphi : A \\to (A \\Rightarrow B) \\Rightarrow$ every $t : B \\to B$ has a fixed point."
     },
     {
       "id": "type-bridge",
       "title": "The Type Bridge: ev / uncurry / name",
-      "startLine": 60,
-      "endLine": 85,
-      "summary": "ev_apply, uncurry_apply, name_apply: the three computational lemmas identifying cartesian-closed evaluation, uncurrying, and naming in Type with honest function application. ev_apply is rfl; uncurry_apply unfolds via uncurry_eq + whiskerLeft; name_apply (name f PUnit.unit = f) uses uncurry_curry and the right-unitor.",
+      "startLine": 63,
+      "endLine": 104,
+      "summary": "Opens namespace LawvereType and the TypeBridge section. The definitional bridges elemToHom / homToElem (an element of the exponential A ⇒ X is literally a morphism A ⟶ X, and back) with elemToHom_injective, then the three computational lemmas ev_apply, uncurry_apply, name_apply identifying cartesian-closed evaluation, uncurrying, and naming in Type with honest function application. ev_apply is rfl; uncurry_apply unfolds via uncurry_eq + whiskerLeft; name_apply (name f PUnit.unit = f) uses uncurry_curry and the right-unitor.",
       "mathContext": "$\\mathrm{ev}(a,h)=h\\,a$, $\\ \\mathrm{uncurry}\\,g\\,(a,y)=g\\,y\\,a$, $\\ \\mathrm{name}\\,f\\,(\\ast)=f$."
     },
     {
       "id": "point-surjective",
       "title": "Point-Surjectivity = Surjectivity",
-      "startLine": 87,
-      "endLine": 104,
+      "startLine": 105,
+      "endLine": 134,
       "summary": "`pointSurjective_iff_surjective`: for φ : A ⟶ (A ⟹ B), categorical PointSurjective φ ↔ Function.Surjective φ. Both directions hinge on name_apply (forward: a categorical witness gives a preimage; reverse: a preimage gives a constant global point). The decategorification that makes Cantor a literal corollary.",
       "mathContext": "$\\mathrm{PointSurjective}\\,\\varphi \\iff \\mathrm{Surjective}\\,\\varphi$."
     },
     {
       "id": "lawvere-diagonal",
       "title": "Lawvere's Diagonal in Type",
-      "startLine": 106,
-      "endLine": 120,
+      "startLine": 135,
+      "endLine": 156,
       "summary": "`no_surjective_of_fixedPointFree`: a fixed-point-free t : B → B forbids any surjection A → (A → B). Converts the set-level fixed-point-free hypothesis into the categorical form on global points and feeds the surjection through the parent's lawvere_cantor via pointSurjective_iff_surjective.",
       "mathContext": "$(\\forall b,\\ t\\,b \\neq b) \\Rightarrow$ no surjection $A \\to (A \\to B)$."
     },
     {
       "id": "cantor",
       "title": "Cantor's Theorem as a Corollary",
-      "startLine": 122,
-      "endLine": 136,
+      "startLine": 157,
+      "endLine": 172,
       "summary": "`cantor_no_surjective`: no surjection A → (A → Bool), from the fixed-point-free negation t = (!·) (Bool.not_ne_self). `cantor_exists_missed`: the existential restatement — some g : A → Bool is missed by every φ (the diagonal complement).",
       "mathContext": "No surjection $A \\to (A \\to \\mathrm{Bool})$; equivalently $|A| < |2^A|$."
     },
     {
       "id": "presheaf",
       "title": "The Presheaf-Topos Instance",
-      "startLine": 138,
-      "endLine": 159,
+      "startLine": 173,
+      "endLine": 194,
       "summary": "`lawvere_fixedPoint_presheaf` and `lawvere_cantor_presheaf`: the fixed-point form and its Cantor obstruction in a presheaf topos C ⥤ Type u, applying the abstract theorem verbatim through Mathlib's CartesianClosed (C ⥤ Type u) instance — no bridge needed.",
       "mathContext": "Same theorem in $C \\Rightarrow \\mathbf{Type}$: point-surjective $\\varphi \\Rightarrow$ fixed global section of $t$."
     }
   ],
   "conclusion": {
-    "summary": "The abstract Lawvere fixed-point theorem of the parent entry is instantiated in its two standard models. For C = Type u, a short computational bridge identifies the categorical data with set-theoretic data: the monoidal unit is PUnit so global points 𝟙_ ⟶ A are elements, the exponential A ⟹ B is the function type A → B, and evaluation/uncurrying are honest application (ev_apply, uncurry_apply); consequently the name of f evaluates back to f (name_apply), and categorical point-surjectivity coincides with honest surjectivity (pointSurjective_iff_surjective). Feeding a fixed-point-free t : B → B through lawvere_cantor yields no_surjective_of_fixedPointFree, of which Cantor's theorem cantor_no_surjective (no surjection A → (A → Bool), via t = negation) is the headline instance. For presheaf topoi C ⥤ Type u, Mathlib's CartesianClosed instance lets the abstract theorem apply verbatim (lawvere_fixedPoint_presheaf, lawvere_cantor_presheaf). 159 lines, 9 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "summary": "The abstract Lawvere fixed-point theorem of the parent entry is instantiated in its two standard models. For C = Type u, a short computational bridge identifies the categorical data with set-theoretic data: the monoidal unit is PUnit so global points 𝟙_ ⟶ A are elements, the exponential A ⟹ B is the function type A → B, and evaluation/uncurrying are honest application (ev_apply, uncurry_apply); consequently the name of f evaluates back to f (name_apply), and categorical point-surjectivity coincides with honest surjectivity (pointSurjective_iff_surjective). Feeding a fixed-point-free t : B → B through lawvere_cantor yields no_surjective_of_fixedPointFree, of which Cantor's theorem cantor_no_surjective (no surjection A → (A → Bool), via t = negation) is the headline instance. For presheaf topoi C ⥤ Type u, Mathlib's CartesianClosed instance lets the abstract theorem apply verbatim (lawvere_fixedPoint_presheaf, lawvere_cantor_presheaf). 194 lines, 9 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This resolves the parent's headline open question. The single non-formal modelling choice in the parent — using point-surjectivity and global points rather than Lean-level surjections and elements — is here shown to be a faithful one in Type: the categorical hypothesis decodes exactly to the classical one, so Cantor's theorem is literally a corollary of the categorical Lawvere theorem, not merely an analogue. The presheaf instances confirm the same machine applies unchanged in a genuine topos, isolating the Cantor/Russell/Gödel/Tarski/Turing diagonal as one categorical statement.",
     "openQuestions": [
       "Exhibit a concrete non-Type presheaf B with a fixed-point-free endomorphism on global sections and the explicit Cantor obstruction it produces.",
