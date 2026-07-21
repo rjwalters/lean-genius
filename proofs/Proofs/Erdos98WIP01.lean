@@ -311,5 +311,54 @@ theorem h_eq_zero_of_le_one (hn : n ≤ 1) : h n = 0 := by
   have hc : n.choose 2 = 0 := Nat.choose_eq_zero_of_lt (by omega)
   omega
 
+/-! ## General-position existence in the small-cardinality regime
+
+The interesting content of `h_le_choose_two` lives in the branch where a
+general-position configuration exists (otherwise `h n = sInf ∅ = 0` vacuously).
+Existence of general-position sets for **all** `n` is the deep constructive piece
+(the natural parabola construction `(t, t²)` already fails *no four concyclic* —
+any four parabola points whose `x`-coordinates sum to `0` are concyclic). But for
+small `n` the two nondegeneracy conditions become **vacuous** — `card {i,j,k} = 3`
+is impossible when `n ≤ 2`, and `card {a,b,c,d} = 4` is impossible when `n ≤ 3` —
+so an injective configuration already lies in general position. -/
+
+/-- **Vacuity of no-three-collinear for `n ≤ 2`.** Three *distinct* indices cannot
+exist among `n ≤ 2` points, so the condition holds for every configuration. -/
+theorem noThreeCollinear_of_le_two (P : PointConfig n) (hn : n ≤ 2) :
+    NoThreeCollinear P := by
+  intro i j k hcard
+  exfalso
+  have hle : ({i, j, k} : Finset (Fin n)).card ≤ n := by
+    have := Finset.card_le_card (Finset.subset_univ ({i, j, k} : Finset (Fin n)))
+    simpa [Finset.card_univ, Fintype.card_fin] using this
+  omega
+
+/-- **Vacuity of no-four-concyclic for `n ≤ 3`.** Four *distinct* indices cannot
+exist among `n ≤ 3` points, so the condition holds for every configuration. -/
+theorem noFourConcyclic_of_le_three (P : PointConfig n) (hn : n ≤ 3) :
+    NoFourConcyclic P := by
+  intro a b c d hcard
+  exfalso
+  have hle : ({a, b, c, d} : Finset (Fin n)).card ≤ n := by
+    have := Finset.card_le_card (Finset.subset_univ ({a, b, c, d} : Finset (Fin n)))
+    simpa [Finset.card_univ, Fintype.card_fin] using this
+  omega
+
+/-- **General-position configurations exist for `n ≤ 2`.** Both nondegeneracy
+conditions are vacuous there, so the injective embedding `i ↦ (i, 0)` (distinct
+first coordinates) is in general position. Consequently the defining set of `h n`
+is nonempty and `h n` is a genuine attained minimum (not the `sInf ∅` junk value)
+in this regime. -/
+theorem exists_inGeneralPosition_of_le_two (hn : n ≤ 2) :
+    ∃ P : PointConfig n, InGeneralPosition P := by
+  refine ⟨fun i => EuclideanSpace.single (0 : Fin 2) (i : ℝ), ?_, ?_, ?_⟩
+  · -- injective: distinct indices give distinct first coordinates
+    intro i j hij
+    have h0 : (i : ℝ) = (j : ℝ) := by
+      have := congrArg (fun f : EuclideanSpace ℝ (Fin 2) => f 0) hij
+      simpa [EuclideanSpace.single_apply] using this
+    exact Fin.ext (by exact_mod_cast h0)
+  · exact noThreeCollinear_of_le_two _ hn
+  · exact noFourConcyclic_of_le_three _ (by omega)
 
 end Erdos98WIP01
