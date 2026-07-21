@@ -82,42 +82,58 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: The Worst-Case Family (1, 2ⁿ − 1)",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "File header, imports, and the BinaryGcdOQ01 upper bound this entry sharpens. Goal: the family (1, 2ⁿ − 1) takes exactly n Binary-GCD steps, matching the general O(log b) bound up to a constant and pinning the worst case at Θ(log b).",
+      "mathContext": "The general bound $\\text{binaryGcdSteps}(a,b) \\le 2(\\log_2 a + \\log_2 b) + 2$ (from `BinaryGcdOQ01`) is shown tight: for $b = 2^n-1$ (odd, $\\log_2 b = n-1$ for $n\\ge 2$) the step count is exactly $n$, so the constant-factor slack is unavoidable. Key reductions: $2^n-1$ is odd, and $2^{n+1}-1 = 2(2^n-1)+1$."
+    },
+    {
       "id": "one-step-lemma",
       "title": "One-Step Reduction for Odd Inputs",
-      "startLine": 39,
-      "endLine": 49,
+      "startLine": 32,
+      "endLine": 51,
       "summary": "binaryGcdSteps_one_odd: binaryGcdSteps 1 (2k+1) = 1 + binaryGcdSteps 1 k. Proved by unfolding binaryGcdSteps.eq_3 and resolving three if-neg conditions plus arithmetic simplification.",
       "mathContext": "Binary GCD 'both odd' branch: $(1, 2k+1) \\xrightarrow{\\text{both odd}, 1 \\leq 2k+1} (1, (2k+1-1)/2) = (1, k)$. Three guards must be checked: $1 \\not\\equiv 0 \\pmod{2}$, $2k+1 \\not\\equiv 0 \\pmod{2}$, $1 \\not> 2k+1$. The Lean proof uses $\\texttt{if\\_neg}$ for each guard, then $\\texttt{omega}$ for the arithmetic $(2k+1-1)/2 = k$."
     },
     {
       "id": "arithmetic-setup",
       "title": "Arithmetic Identity for Powers of 2",
-      "startLine": 56,
-      "endLine": 59,
+      "startLine": 52,
+      "endLine": 61,
       "summary": "pow2_succ_sub_one: 2^(n+1) - 1 = 2·(2^n-1) + 1. Proved by ring + omega with pow_pos for positivity.",
       "mathContext": "$2^{n+1} - 1 = 2 \\cdot 2^n - 1 = 2(2^n-1) + 1$. In $\\mathbb{N}$, subtraction requires $0 < 2^n$ (from $\\texttt{pow\\_pos}$) to avoid underflow. The identity rewrites the inductive input $2^{n+1}-1$ as $2k+1$ with $k = 2^n-1$, enabling $\\texttt{binaryGcdSteps\\_one\\_odd}$."
     },
     {
       "id": "main-theorem",
       "title": "Exact Step Count",
-      "startLine": 77,
-      "endLine": 84,
+      "startLine": 62,
+      "endLine": 86,
       "summary": "binaryGcdSteps_one_pow2_sub_one: binaryGcdSteps 1 (2^n - 1) = n. Proof by induction: zero case by simp, succ case by rw + omega.",
       "mathContext": "Induction: base $\\text{binaryGcdSteps}(1, 0) = 0$; step $\\text{binaryGcdSteps}(1, 2^{n+1}-1) \\xrightarrow{\\text{decomp}} \\text{binaryGcdSteps}(1, 2(2^n-1)+1) \\xrightarrow{\\text{one-step}} 1 + \\text{binaryGcdSteps}(1, 2^n-1) \\xrightarrow{\\text{IH}} 1 + n = n+1$. Proof body: 4 lines."
     },
     {
       "id": "log-lower-bound",
       "title": "Logarithmic Lower Bound",
-      "startLine": 92,
-      "endLine": 144,
+      "startLine": 87,
+      "endLine": 141,
       "summary": "log₂(2^n-1) < n proved by contradiction via Nat.pow_log_le_self. Full bound: log₂(2^n-1) + 1 ≤ binaryGcdSteps 1 (2^n-1). For n≥2: exact equality log₂(2^n-1)+1 = n.",
       "mathContext": "Contradiction proof: assume $n \\leq \\lfloor\\log_2(2^n-1)\\rfloor$. Then $2^n \\leq 2^{\\lfloor\\log_2(2^n-1)\\rfloor} \\leq 2^n - 1$ (using $\\texttt{Nat.pow\\_log\\_le\\_self}$: $b^{\\lfloor\\log_b m\\rfloor} \\leq m$), which is impossible. For the exact equality: squeeze $n-1 \\leq \\lfloor\\log_2(2^n-1)\\rfloor < n$ via $\\texttt{Nat.log\\_mono\\_right}$ and $\\texttt{Nat.log\\_pow}$."
     },
     {
+      "id": "upper-bound-sandwich",
+      "title": "PART IV.5: Matching Upper Bound and the Two-Sided Sandwich",
+      "startLine": 142,
+      "endLine": 177,
+      "summary": "binaryGcdSteps_family_upper_bound specialises the general BinaryGcdOQ01 bound to the family (log₂ 1 = 0 collapses it to 2·log₂(2ⁿ−1)+2), and binaryGcdSteps_family_sandwich combines it with the log lower bound: L+1 ≤ binaryGcdSteps 1 (2ⁿ−1) ≤ 2L+2 with L = log₂(2ⁿ−1). This pins the count to a factor-2 window around log₂ b, proving Θ(log b).",
+      "mathContext": "With $L = \\lfloor\\log_2(2^n-1)\\rfloor$: the lower bound $L+1 \\le \\text{binaryGcdSteps}\\,1\\,(2^n-1)$ comes from the exact count $= n > L$, and the upper bound $\\le 2L+2$ is the specialised general bound (using $\\texttt{Nat.log\\_one\\_right}$: $\\log_2 1 = 0$). Together: $L+1 \\le \\text{steps} \\le 2L+2 = \\Theta(\\log_2 b)$."
+    },
+    {
       "id": "verifications",
       "title": "Computational Verification",
-      "startLine": 150,
-      "endLine": 157,
+      "startLine": 178,
+      "endLine": 194,
       "summary": "native_decide confirms binaryGcdSteps 1 (2^n-1) = n for n=1,2,3,4,6,8 and log₂(2^4-1)=3, log₂(2^8-1)=7.",
       "mathContext": "Spot checks: $\\text{binaryGcdSteps}(1, 255) = 8$ (n=8), $\\text{binaryGcdSteps}(1, 63) = 6$ (n=6), $\\lfloor\\log_2 255\\rfloor = 7 = n-1$. Proved by $\\texttt{native\\_decide}$ — Lean compiles and runs the computation natively, tracing all 8 reductions $(1,255) \\to (1,127) \\to \\cdots \\to (1,0)$."
     }

@@ -52,64 +52,64 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
-      "endLine": 50,
+      "endLine": 47,
       "summary": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$.",
       "mathContext": "Defines the covering assignment (one residue class per prime), interval coverage predicate ($[1,n] \\subseteq \\bigcup_p \\{m \\equiv a_p\\}$), prime range $(n^\\varepsilon, n]$, and the covering exponent $\\varepsilon_n = \\sup\\{\\varepsilon : \\text{coverage possible}\\}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 54,
-      "endLine": 57,
-      "summary": "States $\\varepsilon_n \\to 0$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$.",
-      "mathContext": "States $\\varepsilon_n \\to 0$: for any $\\$\\delta$ > 0$, primes in $(n^\\$\\delta$, n]$ with one class each cover $[1, n]$ for sufficiently large $n$. Formalized via $\\text{Filter.Tendsto}$."
+      "startLine": 49,
+      "endLine": 52,
+      "summary": "Comment block stating Erdős's conjecture $\\varepsilon_n = o(1)$: for any $\\delta > 0$, primes in $(n^\\delta, n]$ with one class each should cover $[1, n]$ for sufficiently large $n$. Stated in prose only — not yet formalized as a Lean statement.",
+      "mathContext": "Conjecture (prose): $\\varepsilon_n = o(1)$, i.e. $\\varepsilon_n \\to 0$ as $n \\to \\infty$. For any $\\delta > 0$, primes in $(n^\\delta, n]$ with one residue class each suffice to cover $[1, n]$ for large $n$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 61,
-      "endLine": 72,
-      "summary": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\log n)/(\\log\\log n)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$.",
-      "mathContext": "Erdős's lower bound $\\varepsilon_n \\ge c \\cdot (\\log\\log\\$\\log n$)/(\\log\\$\\log n$)$ via counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$."
+      "startLine": 53,
+      "endLine": 60,
+      "summary": "Comment block recording the best known bounds: Erdős's lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ (the exponent cannot decrease faster than this iterated-log ratio) and the trivial upper bound $\\varepsilon_n < 1$, followed by the Structural Properties banner.",
+      "mathContext": "Erdős's lower bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ via a counting/probabilistic argument, and the trivial upper bound $\\varepsilon_n < 1$ (at least the prime $n$ itself is needed)."
     },
     {
       "id": "per-prime-coverage",
       "title": "Per-Prime Coverage",
-      "startLine": 76,
-      "endLine": 80,
-      "summary": "Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering.",
-      "mathContext": "Bound: Each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering."
+      "startLine": 61,
+      "endLine": 99,
+      "summary": "The proven theorem `single_class_coverage`: each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$. Proved by injecting the covered set into $\\text{range}(n/p+1)$ via $m \\mapsto (m+1)/p$, then casting to $\\mathbb{R}$.",
+      "mathContext": "Bound: each prime $p$ with one residue class covers at most $\\lfloor n/p \\rfloor + 1 \\le n/p + 1$ integers in $[1,n]$, bounding the per-prime contribution to the covering. Proof uses `Finset.card_le_card_of_injOn` and `Nat.div_mul_le_self`."
     },
     {
       "id": "mertens-estimate",
       "title": "Mertens Coverage Estimate",
-      "startLine": 82,
-      "endLine": 88,
-      "summary": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$.",
+      "startLine": 100,
+      "endLine": 102,
+      "summary": "Comment noting that by Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$.",
       "mathContext": "By Mertens' third theorem, total capacity $\\sum_{n^\\varepsilon < p \\le n} n/p \\approx n \\cdot \\log(1/\\varepsilon)$, since $\\sum 1/p \\approx \\log\\log n - \\log(\\varepsilon \\log n) = \\log(1/\\varepsilon) + O(1)$."
     },
     {
       "id": "structural-properties",
-      "title": "Structural Properties",
-      "startLine": 90,
-      "endLine": 101,
-      "summary": "Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$.",
-      "mathContext": "Mathematical content: Monotonicity (smaller $\\varepsilon$ includes more primes), well-definedness of $\\varepsilon_n$ via supremum, and full prime covering ($\\varepsilon = 0$) by CRT and PNT for large $n$."
+      "title": "Monotonicity in the Exponent",
+      "startLine": 103,
+      "endLine": 123,
+      "summary": "The proven theorem `exponent_monotone_coverage`: if $\\varepsilon_1 \\le \\varepsilon_2$ then $\\text{primesInRange}(n, \\varepsilon_2) \\subseteq \\text{primesInRange}(n, \\varepsilon_1)$ — a smaller exponent admits more primes, so more classes are available for covering. Proved via `Real.rpow_le_rpow_of_exponent_le`.",
+      "mathContext": "Monotonicity: a smaller $\\varepsilon$ includes more primes since $(n^{\\varepsilon_1}, n] \\supseteq (n^{\\varepsilon_2}, n]$ when $\\varepsilon_1 \\le \\varepsilon_2$. The proof handles $n = 0$ via $\\text{Real.zero\\_rpow}$ and otherwise compares $n^{\\varepsilon_1} \\le n^{\\varepsilon_2}$ by `Real.rpow_le_rpow_of_exponent_le`."
     },
     {
       "id": "sieve-duality",
       "title": "Sieve Duality",
-      "startLine": 103,
-      "endLine": 110,
-      "summary": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection.",
-      "mathContext": "Axiomatized: Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). Placeholder axiomatization of this structural connection."
+      "startLine": 124,
+      "endLine": 131,
+      "summary": "A comment on full prime covering ($\\varepsilon = 0$: one class per prime covers $[1,n]$ by CRT and the prime number theorem) followed by `sieve_duality`, a placeholder definition recording that covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors).",
+      "mathContext": "Covering (include one class per prime to hit every integer) is dual to sieving (exclude one class per prime to find survivors). The connection is recorded as a placeholder definition `sieve_duality` (the identity on covering assignments), not an axiom — the file contains no axiom declarations."
     }
   ],
   "overview": {
     "historicalContext": "Erdős posed this problem in 1979 (paper Er79d) as part of his extensive study of covering systems and the interplay between prime distribution and modular arithmetic. Classical covering systems, studied by Erdős since the 1950s (with his celebrated conjecture that the minimum modulus of a covering system is bounded, resolved by Hough in 2015), use all moduli. Problem #688 restricts to prime moduli in a specific range (n^ε, n], asking how 'local' the primes can be while still covering an interval. The key analytic input is Mertens' theorem (1874): the sum of prime reciprocals up to x is log log x + M + o(1), where M ≈ 0.2615 is the Meissel-Mertens constant. This gives the total coverage capacity ∑ n/p ≈ n · log(1/ε) for primes in (n^ε, n]. Erdős proved that εₙ ≫ (log log log n)/(log log n), a bound involving triply-iterated logarithms — characteristic of number-theoretic extremal problems. The conjecture εₙ = o(1) remains open and connects to Problems #687 (covering with one class per prime up to n) and #689 (similar questions for composite moduli). The problem also has a dual relationship to sieve theory, where one excludes rather than includes residue classes.",
     "problemStatement": "Define $\\varepsilon_n$ as the supremum of $\\varepsilon \\in (0,1)$ for which there exists a choice of one residue class $a_p \\pmod{p}$ for each prime $p \\in (n^\\varepsilon, n]$ such that every integer in $[1, n]$ lies in at least one chosen class. Is $\\varepsilon_n = o(1)$?",
     "text": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
-    "proofStrategy": "The formalization defines covering assignments as dependent functions from primes to their residue classes, the interval coverage predicate, the prime range set, and the covering exponent via supremum. It axiomatizes the main conjecture (εₙ → 0 via Filter.Tendsto), Erdős's lower bound, and structural properties including Mertens' coverage estimate, monotonicity, full prime covering, and sieve duality.",
+    "proofStrategy": "The formalization defines covering assignments as dependent functions from primes to their residue classes, the interval coverage predicate, the prime range set (n^ε, n], and the covering exponent via supremum. The main conjecture (εₙ = o(1)) and Erdős's iterated-logarithm lower bound are recorded as comments, not yet stated as Lean theorems. Two supporting lemmas are fully proved with no axioms or sorries: single_class_coverage (each prime with one class covers at most ⌊n/p⌋+1 integers, via an injection into range(n/p+1)) and exponent_monotone_coverage (a smaller exponent ε admits more primes). The Mertens coverage estimate and the full-covering case (ε=0, by CRT and PNT) appear as comments, and sieve_duality is a trivial placeholder definition — the file contains no axiom declarations.",
     "keyInsights": [
       "**Mertens' theorem is the key tool**: $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log(1/\\varepsilon)$, so the total coverage capacity grows logarithmically as $\\varepsilon \\to 0$ — just barely enough to potentially cover $[1, n]$ with careful class choices",
       "**Iterated logarithm lower bound**: Erdős's bound $\\varepsilon_n \\gg (\\log\\log\\log n)/(\\log\\log n)$ shows the covering exponent decreases extremely slowly, if at all",

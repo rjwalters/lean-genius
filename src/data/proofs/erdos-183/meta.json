@@ -151,17 +151,25 @@
     {
       "title": "Growth Rate Analysis",
       "startLine": 729,
-      "endLine": 757,
-      "summary": "Summary of bounds (bounds_summary theorem) and the related problem pointer (#483)",
-      "mathContext": "Bound: Summary of bounds and the enormous gap between exponential lower and factorial upper",
+      "endLine": 758,
+      "summary": "`bounds_summary`: packages the exponential lower bound (∃ c > 1, R(3;k) ≥ cᵏ) together with the factorial upper bound (∃ C, R(3;k) ≤ C·k!), quantifying the enormous gap between the two known bounds.",
+      "mathContext": "$c^k \\le R(3;k) \\le C\\,k!$ — the lower bound is exponential in $k$ while the upper bound is factorial, an exponentially wide window.",
       "id": "growth-rate-analysis"
     },
     {
-      "title": "Formal Statement",
-      "startLine": 758,
-      "endLine": 770,
-      "summary": "erdos_183_main combining existence and bounds (R3k_ge_three + R3k_factorial_upper)",
-      "mathContext": "Verified: Main theorem combining existence and bounds",
+      "title": "Connection to Other Problems (Part 8)",
+      "startLine": 759,
+      "endLine": 768,
+      "summary": "`relatedProblem`: records that R(3;k) connects to other Ramsey-theoretic quantities, pointing to related Erdős Problem #483.",
+      "mathContext": "R(3;k) sits in a family of hypergraph Ramsey quantities; Erdős Problem #483 is one directly related question.",
+      "id": "connection-other-problems"
+    },
+    {
+      "title": "Formal Statement (Part 9)",
+      "startLine": 769,
+      "endLine": 781,
+      "summary": "`erdos_183_main`: the precise formalization of Problem #183, combining existence (R3k_ge_three: R(3;k) ≥ 3 for k ≥ 1) with the factorial upper bound (R3k_factorial_upper) into a single proved statement.",
+      "mathContext": "$\\forall k \\ge 1,\\ R(3;k) \\ge 3$ and $\\exists C > 0,\\ R(3;k) \\le C\\,k!$ — the headline theorem of the file, fully proved.",
       "id": "formal-statement"
     }
   ],

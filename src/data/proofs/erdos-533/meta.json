@@ -123,8 +123,8 @@
       "id": "open-question",
       "title": "The Open Question",
       "startLine": 356,
-      "endLine": 371,
-      "summary": "States the conjecture as a Prop erdos_533_conjecture δ (deliberately not an axiom, to avoid assuming the unknown): there exists c > 0 such that every K₅-free graph on n vertices with at least δn² edges has a triangle-free induced subgraph on ≥ c·n vertices.",
+      "endLine": 400,
+      "summary": "States the conjecture as a Prop erdos_533_conjecture δ (deliberately not an axiom, to avoid assuming the unknown): there exists c > 0 such that every K₅-free graph on n vertices with at least δn² edges has a triangle-free induced subgraph on ≥ c·n vertices. Also proves the supporting graph lemma degree_le (every vertex has degree ≤ n-1, via Finset.card_erase on the closed neighborhood) before stating the conjecture.",
       "mathContext": "$\\forall \\delta>0,\\ \\exists c>0$: every $K_5$-free $G$ with $\\ge \\delta n^2$ edges has a triangle-free induced subgraph of size $\\ge cn$."
     }
   ],

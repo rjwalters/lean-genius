@@ -81,7 +81,7 @@
     },
     "type": "insight",
     "title": "Reid-Parker (1970): The Answer is NO for n ≥ 14",
-    "content": "Reid and Parker (1970) proved that f(n) > ⌊log₂ n⌋ + 1 for n ≥ 14, answering Erdős's question in the negative. They showed f(n) ≥ ⌊log₂ n + 4 - log₂ 7⌋ for n ≥ 14. Since log₂ n + 4 - log₂ 7 = log₂(n/7) + 4 > ⌊log₂ n⌋ + 1 when n is large enough, the Stearns bound ⌊log₂ n⌋ + 1 is not tight. This was improved further by Sanchez-Flores (1994), giving f(n) ≥ ⌊log₂ n - log₂ 55⌋ + 7 for n ≥ 55. The constants reflect specific tournament constructions that beat the greedy bound.',",
+    "content": "Reid and Parker (1970) proved that f(n) > ⌊log₂ n⌋ + 1 for n ≥ 14, answering Erdős's question in the negative. They showed f(n) ≥ ⌊log₂ n + 4 - log₂ 7⌋ for n ≥ 14. Since log₂ n + 4 - log₂ 7 = log₂(n/7) + 4 > ⌊log₂ n⌋ + 1 when n is large enough, the Stearns bound ⌊log₂ n⌋ + 1 is not tight. This was improved further by Sanchez-Flores (1994), giving f(n) ≥ ⌊log₂ n - log₂ 55⌋ + 7 for n ≥ 55. The constants reflect specific tournament constructions that beat the greedy bound.",
     "mathContext": "Reid-Parker (1970): $f(n) \\geq \\lfloor \\log_2 n + 4 - \\log_2 7 \\rfloor$ for $n \\geq 14$. Since $4 - \\log_2 7 \\approx 1.193$, this exceeds $\\lfloor \\log_2 n \\rfloor + 1$ by roughly $0.193$, meaning for $n = 2^k \\cdot 7$, $f(n) \\geq k + 5 > \\lfloor \\log_2 n \\rfloor + 1 = k + 2 + 1 = k + 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -100,26 +100,27 @@
     "id": "ann-1216-lean-formalization",
     "proofId": "erdos-1216",
     "range": {
-      "startLine": 18,
-      "endLine": 23
+      "startLine": 24,
+      "endLine": 62
     },
     "type": "concept",
-    "title": "Lean Formalization: Tournament Theory in Mathlib",
-    "content": "The Stearns lower bound is the most accessible part of Problem #1216 for formalization. Mathlib has `SimpleGraph` but tournament-specific types (complete directed graphs) may need to be defined. Key components: (1) `Tournament V` as a type where for all u ≠ v, exactly one of `adj u v` or `adj v u` holds; (2) `outDegree T v = (T.neighborFinset v).card` for out-degree; (3) the greedy algorithm implemented as a recursive function picking vertices with maximum out-degree; (4) `Nat.log 2 n` for ⌊log₂ n⌋. The halving argument (out-neighborhood has size ≥ n/2) can be proved by averaging: ∑_v outDegree(v) = n(n-1)/2, so some vertex has out-degree ≥ (n-1)/2.",
-    "mathContext": "Lean sketch: `structure Tournament (V : Type*) where adj : V → V → Prop; complete : ∀ u v, u ≠ v → adj u v ∨ adj v u; antisymm : ∀ u v, ¬(adj u v ∧ adj v u)`. Then `f : ℕ → ℕ` with `f n = Nat.log 2 n + 1` (Stearns lower bound, conjectured equality). The greedy proof: `∃ v, T.outDegree v ≥ (n-1)/2` by `Finset.exists_le_of_sum_le`.",
+    "title": "Lean Formalization: Tournament Structure, Def, and Axiomatized Bound",
+    "content": "The file formalizes tournaments from scratch rather than via `SimpleGraph`. It defines `structure Tournament (V : Type*)` carrying `beats : V → V → Prop` together with the tournament law `∀ x y, x ≠ y → (beats x y ↔ ¬ beats y x)` and irreflexivity `∀ x, ¬ beats x x`; the biconditional encodes completeness and antisymmetry simultaneously (exactly one directed edge per pair). `IsTransitiveTournament T S` then requires `beats x y → beats y z → beats x z` for all x, y, z in a `Finset` subset S. The Stearns lower bound itself is introduced as `axiom stearns_lower_bound`, asserting a transitive S with `S.card ≥ Nat.log 2 n + 1`, and the headline `theorem erdos_1216` is proved by directly applying that axiom. The greedy construction underlying Stearns's bound is NOT proved here — it is assumed, which is why the entry is axiomatized (axiomCount = 1, badge \"axiom\") and asserts only the lower bound.",
+    "mathContext": "Actual Lean: `structure Tournament (V : Type*) where beats : V → V → Prop; tournament : ∀ x y, x ≠ y → (beats x y ↔ ¬ beats y x); irrefl : ∀ x, ¬ beats x x`, and `def IsTransitiveTournament (T : Tournament V) (S : Finset V) : Prop := ∀ x y z, x ∈ S → y ∈ S → z ∈ S → T.beats x y → T.beats y z → T.beats x z`. The unformalized greedy step would establish `∃ v, |N⁺(v)| ≥ (n-1)/2` via averaging ($\\sum_v \\deg^+(v) = \\binom{n}{2}$); packaging it as an `axiom` records the mathematical assumption instead of the (omitted) proof.",
     "significance": "supporting",
     "relatedConcepts": [
-      "SimpleGraph in Mathlib",
+      "structure vs SimpleGraph modelling",
+      "Prop-valued relation",
       "Finset.card",
       "Nat.log 2",
-      "greedy algorithm in Lean",
-      "averaging argument formalization"
+      "axiomatized lower bound",
+      "greedy averaging argument"
     ],
     "prerequisites": [
-      "Lean 4 Finset",
-      "SimpleGraph.neighborFinset",
+      "Lean 4 structures",
+      "Finset",
       "Nat.log",
-      "Finset.sum averaging"
+      "axiom vs theorem in Lean"
     ]
   }
 ]

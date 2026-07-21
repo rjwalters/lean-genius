@@ -105,6 +105,14 @@
       "endLine": 163,
       "summary": "`coloringOrientation_acyclic_via_rank`: restates OQ03's acyclicity result through the rank lens. `every_graph_has_robust`: restates OQ03's main theorem. Both delegate to OQ03 directly.",
       "mathContext": "Acyclicity follows from rank strictness: any directed path $v_0 \\to v_1 \\to \\cdots \\to v_n$ satisfies $\\text{col}(v_0) < \\text{col}(v_1) < \\cdots < \\text{col}(v_n)$, preventing cycles."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: The Graded-DAG Structure",
+      "startLine": 164,
+      "endLine": 193,
+      "summary": "Closing docstring indexing the file's five parts and their theorems: Part I level structure (`coloringOrientation_rank_strict`, `_has_rank`, `_rank_lt_k`), Part II sources/sinks (`color_zero_no_in_arc`, `color_max_no_out_arc`), Part III arc direction (`_arc_iff`, `_no_back_arc`, `_exactly_one_arc`), Part IV no same-level arcs (`_different_colors`), Part V consistency (`_acyclic_via_rank`, `every_graph_has_robust`). Key insight: the coloring orientation is a graded DAG — level = color value, every arc goes level-up, sources at level 0 and sinks at level k-1.",
+      "mathContext": "Graded DAG: $\\mathrm{level}(v) = \\mathrm{col}(v)$, all arcs go $\\mathrm{col}(u) < \\mathrm{col}(w)$; sources at level $0$, sinks at level $k-1$. The rank-based formulation gives a clean algebraic characterization of the orientation from the coloring."
     }
   ],
   "conclusion": {

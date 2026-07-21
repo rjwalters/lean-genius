@@ -128,9 +128,17 @@
       "id": "embeddings",
       "title": "§4: Counting embeddings of a number field",
       "startLine": 114,
-      "endLine": 133,
-      "summary": "finSepDegree_eq_finrank_rat: for finite E/ℚ, separability (automatic, ℚ perfect) forces finSepDegree ℚ E = [E : ℚ]. card_emb_eq_finrank_rat: unfolding finSepDegree = Nat.card (Field.Emb ℚ E), a number field of degree n has exactly n embeddings into its algebraic closure.",
+      "endLine": 141,
+      "summary": "finSepDegree_eq_finrank_rat: for finite E/ℚ, separability (automatic, ℚ perfect) forces finSepDegree ℚ E = [E : ℚ], via Field.finSepDegree_eq_finrank_of_isSeparable. card_emb_eq_finrank_rat: unfolding finSepDegree = Nat.card (Field.Emb ℚ E), a number field of degree n has exactly n ℚ-algebra embeddings into its algebraic closure.",
       "mathContext": "The separable degree counts embeddings into an algebraic closure. Over a perfect base it equals the full degree, giving the classical count of n embeddings for a degree-n number field."
+    },
+    {
+      "id": "examples",
+      "title": "§5: Worked examples — squarefree minimal polynomials and separability",
+      "startLine": 143,
+      "endLine": 154,
+      "summary": "Two example blocks instantiating the general theorems on concrete objects: every algebraic number z has a squarefree minimal polynomial over ℚ (minpoly_squarefree_rat via hz.isIntegral), and the field of algebraic numbers is a separable — indeed perfect — extension of ℚ (isSeparable_rat_algebraicNumbers). These sanity-check the perfectness and separability conclusions at the level of individual numbers and the whole extension.",
+      "mathContext": "Squarefreeness of $\\mathrm{minpoly}_{\\mathbb{Q}}(z)$ is the pointwise face of separability: a polynomial over a perfect field is separable iff squarefree, and $\\mathbb{Q}$ is perfect. The extension-level example $\\mathrm{Algebra.IsSeparable}\\,\\mathbb{Q}\\,\\bar{\\mathbb{Q}}$ packages the same fact uniformly across all of $\\bar{\\mathbb{Q}}$."
     }
   ],
   "conclusion": {

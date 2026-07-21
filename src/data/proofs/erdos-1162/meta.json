@@ -86,39 +86,39 @@
       "id": "subgroups-sn",
       "title": "Part I: Subgroups of S_n",
       "summary": "Sn definition, numSubgroups axiom, positivity.",
-      "startLine": 41,
-      "endLine": 52,
+      "startLine": 1,
+      "endLine": 58,
       "mathContext": "$S_n = \\text{Equiv.Perm}(\\text{Fin } n)$. $f(n) = |\\{H : H \\leq S_n\\}|$."
     },
     {
       "id": "trivial-bounds",
       "title": "Part II: Trivial Bounds",
       "summary": "f(n) ≤ 2^(n!) upper bound.",
-      "startLine": 54,
-      "endLine": 65,
+      "startLine": 59,
+      "endLine": 68,
       "mathContext": "Each subgroup is a subset of $S_n$ ($|S_n| = n!$), giving $f(n) \\leq 2^{n!}$."
     },
     {
       "id": "asymptotic-constant",
       "title": "Part III: The Asymptotic Constant 1/16 (Roney-Dougal-Tracey 2025)",
       "summary": "roney_dougal_tracey theorem, rdt_implies_pyber (PROVED).",
-      "startLine": 66,
-      "endLine": 110,
+      "startLine": 69,
+      "endLine": 113,
       "mathContext": "$\\log f(n) / n^2 \\to 1/16$ as $n \\to \\infty$ [Roney-Dougal-Tracey 2025]. Convergence implies eventual bounds (proved)."
     },
     {
       "id": "pyber",
       "title": "Part IV: Pyber's Theorem (1993)",
       "summary": "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey.",
-      "startLine": 111,
-      "endLine": 121,
+      "startLine": 114,
+      "endLine": 125,
       "mathContext": "Pyber (1993): $\\exists c_1, c_2 > 0$ such that $c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$ for large $n$. Now a corollary of RDT."
     },
     {
       "id": "elem2-groups",
       "title": "Part V: Elementary Abelian 2-Groups",
       "summary": "maxElem2Rank, numSubgroupsElem2, constant_explanation.",
-      "startLine": 123,
+      "startLine": 126,
       "endLine": 146,
       "mathContext": "$(\\mathbb{Z}/2\\mathbb{Z})^k$ has $\\sim 2^{k^2/4}$ subgroups. For $k = n/4$, this gives $\\log_2 f \\approx (n/4)^2/4 = n^2/64$."
     },
@@ -126,25 +126,33 @@
       "id": "subgroup-orders",
       "title": "Part VI: Subgroup Orders",
       "summary": "Statistical theorem on orders: most subgroups are 2-groups.",
-      "startLine": 148,
+      "startLine": 147,
       "endLine": 157,
       "mathContext": "The fraction of subgroups of $S_n$ whose order is a power of 2 approaches 1."
     },
     {
       "id": "small-cases",
       "title": "Part VII: Small Cases",
-      "summary": "f(1)=1, f(2)=2, f(3)=6, f(4)=30.",
-      "startLine": 159,
-      "endLine": 171,
+      "summary": "f(1)=1, f(2)=2, f(3)=6, f(4)=30, each discharged by native_decide over the subgroup lattice.",
+      "startLine": 158,
+      "endLine": 192,
       "mathContext": "Exact values: $f(1)=1$, $f(2)=2$, $f(3)=6$, $f(4)=30$."
     },
     {
       "id": "summary",
       "title": "Part VIII: Growth Rate Summary",
-      "summary": "erdos1162_asymptotic and erdos_1162 main theorem.",
-      "startLine": 173,
-      "endLine": 187,
+      "summary": "erdos1162_asymptotic (the Prop that log f(n)/n² → 1/16) and the main theorem erdos_1162, discharged from the roney_dougal_tracey axiom.",
+      "startLine": 193,
+      "endLine": 206,
       "mathContext": "$\\log f(n) = (1/16 + o(1))n^2$. Erdős's asymptotic formula question is answered."
+    },
+    {
+      "id": "axiom-status",
+      "title": "Part IX: Axiom Status",
+      "summary": "Ledger of the formalization's assumptions: five auxiliary axioms (numSubgroups and f(1)–f(4)) were eliminated in favour of concrete definitions and native_decide, leaving the single deep axiom roney_dougal_tracey and zero sorries.",
+      "startLine": 207,
+      "endLine": 220,
+      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. All small-case values $f(1),\\dots,f(4)$ are machine-checked via $\\texttt{native\\_decide}$ (hence rely on $\\texttt{Lean.ofReduceBool}$)."
     }
   ],
   "conclusion": {

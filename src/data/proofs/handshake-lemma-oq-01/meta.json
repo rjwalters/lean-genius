@@ -129,10 +129,26 @@
       "summary": "edge_upper_bound (the minimal edge deficiency 2|E| ≤ n·d − 1) and not_isRegularOfDegree_of_odd_mul / not_isRegularOfDegree_of_odd_odd (no d-regular graph when n·d is odd, in particular n and d both odd)."
     },
     {
+      "id": "sec-parity-even",
+      "title": "Even-Case Parity of the Deficiency",
+      "startLine": 125,
+      "endLine": 137,
+      "mathContext": "$\\mathrm{deficiency}\\,G\\,d \\equiv n\\cdot d \\pmod 2$; when $n\\cdot d$ is even the deficiency is even, the complement of the odd case.",
+      "summary": "deficiency_even_of_even: when n·d is even, the degree deficiency is even. Together with the odd-case result (deficiency_odd) this pins the parity of the deficiency to that of n·d in both cases, completing the parity dichotomy."
+    },
+    {
+      "id": "sec-strict-witness",
+      "title": "Strict Deficiency Witness and Vertex Counting",
+      "startLine": 138,
+      "endLine": 169,
+      "mathContext": "$n\\cdot d$ odd $\\Rightarrow \\exists v,\\ \\deg v < d$; and $\\#\\{v : \\deg v < d\\} \\le \\mathrm{deficiency}\\,G\\,d$, since each shortfall vertex contributes at least $1$ to the deficiency sum.",
+      "summary": "The vertex-level refinements of the lower bound: exists_degree_lt_of_odd (when n·d is odd, a concrete strictly-deficient vertex exists — the graph cannot be d-regular), and card_degree_lt_le_deficiency (the number of below-target vertices is at most the total deficiency, since each contributes ≥ 1 to the sum d·v − deg v)."
+    },
+    {
       "id": "sec-sharpness",
       "title": "Sharpness: the Floor is Attained",
-      "startLine": 125,
-      "endLine": 135,
+      "startLine": 170,
+      "endLine": 176,
       "mathContext": "Empty graph on $\\mathrm{Fin}\\,1$ with $d=1$: $n\\cdot d = 1$ odd, deficiency $=1$.",
       "summary": "deficiency_floor_attained certifies (by kernel decide) that the one-vertex empty graph with d = 1 attains deficiency exactly 1, so the lower bound cannot be improved; two examples confirm n·d = 1 is odd and all degrees are ≤ 1."
     },

@@ -107,9 +107,17 @@
       "id": "safe-primes",
       "title": "Safe Prime Structure",
       "startLine": 214,
-      "endLine": 244,
+      "endLine": 249,
       "summary": "Properties of safe primes: q ≡ 11 (mod 12) and the Sophie Germain ↔ safe prime equivalence.",
       "mathContext": "$p > 3 \\wedge \\text{IsSophieGermainPrime}(p) \\implies (2p+1) \\equiv 11 \\pmod{12}$. Equivalence: $\\text{IsSophieGermainPrime}(p) \\iff \\text{Prime}(p) \\wedge \\text{IsSafePrime}(2p+1)$."
+    },
+    {
+      "id": "conjecture-and-elementary",
+      "title": "The Conjecture (Axiom) and Elementary Consequences",
+      "startLine": 250,
+      "endLine": 281,
+      "summary": "States the open Sophie Germain conjecture as the file's `axiom sophie_germain_conjecture : SophieGermainConjecture` (there are infinitely many Sophie Germain primes), then draws immediate consequences: `exists_sophie_germain_gt` (arbitrarily large Sophie Germain primes exist, directly from the axiom) and the elementary sanity checks `one_not_sg`, `zero_not_sg`, and `sophie_germain_ge_two` (every Sophie Germain prime is ≥ 2).",
+      "mathContext": "The infinitude of Sophie Germain primes is unproven; it is recorded here as the sole axiom `sophie_germain_conjecture`. Given it, $\\forall N,\\ \\exists p > N$ with $p$ Sophie Germain. The bookkeeping bounds ($0,1 \\notin$ SG, $p \\ge 2$) follow from primality of $p$."
     },
     {
       "id": "chain",

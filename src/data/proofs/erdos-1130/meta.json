@@ -122,6 +122,14 @@
       "mathContext": "Docstring only: de Boor–Pinkus (1978) equioscillation characterization. No `axiom de_boor_pinkus` is declared in this section."
     },
     {
+      "id": "structural-properties",
+      "title": "Structural Properties: Lagrange Basis and Lebesgue Values",
+      "startLine": 78,
+      "endLine": 121,
+      "summary": "Verified structural facts about the interpolation data: `nodes_injective` (the interpolation nodes are pairwise distinct), the cardinal Lagrange-basis identities `lagrangeBasis_self` ($\\ell_k(x_k) = 1$) and `lagrangeBasis_other` ($\\ell_k(x_j) = 0$ for $j \\neq k$, since the factor $(x_j - x_j)/(x_k - x_j) = 0$), and `lebesgue_at_node` (the value of the Lebesgue function at each node). These are the pointwise properties on which the Υ-functional bounds rest.",
+      "mathContext": "The Lagrange basis $\\ell_k(x) = \\prod_{j\\neq k}\\frac{x - x_j}{x_k - x_j}$ satisfies the cardinal conditions $\\ell_k(x_j) = \\delta_{jk}$; at a node the Lebesgue function $\\Lambda(x) = \\sum_k |\\ell_k(x)|$ collapses to $1$. Distinctness of nodes ($x_j \\neq x_k$) is what makes the basis well-defined."
+    },
+    {
       "id": "main-result",
       "title": "Erdős Problem 1130 (Proved)",
       "startLine": 122,

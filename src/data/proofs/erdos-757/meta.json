@@ -141,9 +141,9 @@
       "id": "extremal",
       "title": "Extremal Combinatorics Connection",
       "startLine": 208,
-      "endLine": 226,
-      "summary": "Connection to B₂ sequences and the general Sidon set constant problem.",
-      "mathContext": "Mathematical content: Connection to B₂ sequences and the general Sidon set constant problem."
+      "endLine": 244,
+      "summary": "Proves admissible_nonempty (the set of admissible constants is nonempty, witnessed by 0 via zero_admissible), then defines IsB2Sequence as an alias for IsSidon, framing the problem within the general Sidon-set (B₂ sequence) constant question — the largest Sidon subset guaranteed in a size-n set grows like √n.",
+      "mathContext": "$\\{c \\mid \\text{IsAdmissible } c\\} \\neq \\emptyset$ (contains 0). A B₂ sequence is a Sidon set: all pairwise sums distinct. Sidon set constant: the largest Sidon subset of an $n$-set has size $\\sim \\sqrt{n}$."
     }
   ],
   "conclusion": {

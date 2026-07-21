@@ -118,6 +118,20 @@
       "startLine": 117,
       "endLine": 142,
       "mathContext": "Dividing the telescoped identities by $2\\sin(\\theta/2)\\ne 0$ yields the Dirichlet kernel and its conjugate."
+    },
+    {
+      "id": "dirichlet-bounds",
+      "title": "Part V: Dirichlet Kernel Bounds",
+      "startLine": 143,
+      "endLine": 180,
+      "significance": "key",
+      "summary": "dirichlet_kernel_bound and dirichlet_conjugate_bound: absolute-value bounds on the Dirichlet kernel ∑cos(kθ) and its conjugate ∑sin(kθ) by 1/(2|sin(θ/2)|), the standard consequence of the Lagrange closed forms used in Fourier partial-sum estimates.",
+      "mathContext": "From $\\sum_{k=1}^{n}\\cos k\\theta=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}-\\tfrac12$ one gets $\\bigl|\\sum\\cos k\\theta\\bigr|\\le \\tfrac{1}{2|\\sin(\\theta/2)|}+\\tfrac12$, and likewise for the conjugate sum — the kernel bounds underlying Dirichlet's convergence test.",
+      "relatedConcepts": [
+        "Dirichlet kernel",
+        "Fourier partial sums",
+        "Lagrange identity"
+      ]
     }
   ],
   "conclusion": {

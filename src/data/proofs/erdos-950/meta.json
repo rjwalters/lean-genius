@@ -91,9 +91,17 @@
       "id": "prime-distribution",
       "title": "Part 6: Connection to Prime Distribution",
       "startLine": 180,
-      "endLine": 211,
+      "endLine": 213,
       "summary": "maxPrimeGapBelow, dense_primes_increase_f proved (primes in [n−k,n) ⟹ f(n) ≥ 1/k).",
       "mathContext": "dense_primes_increase_f: a prime in [n−k, n) gives f(n) ≥ 1/k via Finset.single_le_sum."
+    },
+    {
+      "id": "summary",
+      "title": "Part 7: Summary",
+      "startLine": 214,
+      "endLine": 227,
+      "summary": "Proves erdos_950_summary, bundling the two de Bruijn–Erdős–Turán asymptotics: the average of f(n) over [0,x) and the average of f(n)² both tend to 1.",
+      "mathContext": "$\\frac{1}{x}\\sum_{n<x} f(n) \\to 1$ and $\\frac{1}{x}\\sum_{n<x} f(n)^2 \\to 1$ as $x \\to \\infty$ (de_bruijn_erdos_turan_sum and de_bruijn_erdos_turan_sum_sq)."
     }
   ],
   "conclusion": {

@@ -162,29 +162,29 @@
       "id": "pair-1-2",
       "title": "The (1,2) Pair",
       "startLine": 498,
-      "endLine": 514,
+      "endLine": 535,
       "summary": "Assembles `pair_1_2_valid`: Fibonacci is monotone, complete (`fib_complete`), 1-robust (axiom `fib_1_robust`), and not 2-robust (`fib_not_2_robust`), hence (1,2) ∈ validPairs.",
       "mathContext": "$(1,2) \\in \\mathrm{validPairs}$ via the Fibonacci sequence: complete, 1-robust (assumed), not 2-robust (proved)."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "startLine": 515,
-      "endLine": 543,
+      "startLine": 536,
+      "endLine": 563,
       "summary": "States `erdos_348_characterization` (valid pairs are exactly {(m,m+1)} or are cut off below some k), the decidable-but-unknown `erdos_348_case_2_3`, the `IsStronglyRobust` notion, and a reference docstring on van Doorn's theorem (no strongly complete sequence is 2-robust) and bounded-gap facts.",
       "mathContext": "Conjecture: $\\mathrm{validPairs} = \\{(m,m+1)\\}$, or $\\exists k$ beyond which no consecutive pair is valid. Van Doorn: no *strongly* complete sequence is 2-robust."
     },
     {
       "id": "main-open-question",
       "title": "The Main Open Question",
-      "startLine": 544,
-      "endLine": 570,
+      "startLine": 564,
+      "endLine": 591,
       "summary": "Final formalization `erdos_348_main_problem`: either every consecutive pair (m, m+1) is valid, or there is a cutoff k beyond which consecutive pairs fail. The precise characterization of valid pairs — including whether (2,3) is valid for the weak completeness notion — remains open.",
       "mathContext": "Open: is $(2,3)$ valid for weak completeness? The full characterization of $\\mathrm{validPairs}$ is unknown."
     }
   ],
   "conclusion": {
-    "summary": "This 256-line formalization of Erdős Problem #348 defines completeness, robustness, and the valid pairs set, then constructs witnesses for (0,1) via powers of 2 and (1,2) via Fibonacci numbers. Van Doorn's theorem constrains the strongly complete case. The representation count and gap property provide structural context. The main conjecture is formalized as a disjunction about whether all (m, m+1) pairs are valid. Seven sorries remain, mostly in the Zeckendorf-based arguments.",
+    "summary": "This 591-line formalization of Erdős Problem #348 defines completeness, robustness, and the valid pairs set, then constructs witnesses for (0,1) via powers of 2 and (1,2) via Fibonacci numbers. Van Doorn's theorem constrains the strongly complete case. The representation count and gap property provide structural context. The main conjecture is formalized as a disjunction about whether all (m, m+1) pairs are valid. The development is sorry-free; its sole assumption is the axiom `fib_1_robust` (Fibonacci's 1-robustness, hence the axiom badge).",
     "implications": "**Theoretical Significance**: Resolution would reveal whether completeness robustness has a finite or infinite hierarchy.\n\nAn infinite hierarchy (all (m, m+1) valid) would require constructing increasingly resilient sequences — possibly using number-theoretic constructions with growing redundancy. A finite cutoff would establish a phase transition where robustness becomes qualitatively different, connecting to the theory of additive bases of finite order.",
     "openQuestions": [
       "Is (2, 3) valid for weak completeness — does there exist a complete sequence surviving any 2 deletions but not some 3?",

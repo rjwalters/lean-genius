@@ -148,29 +148,29 @@
       "id": "freudenthal-cellcomplex",
       "title": "Part II.D: freudAdj, prefixSet_inj, and freudenthalCellComplex Assembly",
       "startLine": 304,
-      "endLine": 366,
+      "endLine": 401,
       "summary": "freudAdj: returns some(swapAdj l, k) when 0 < k < n, else none — the 'optional adjacency' that encodes the cube's geometric boundary. prefixSet_inj: prefix sets are injective in k by cardinality (from prefixSet_card_eq). freudenthalCellComplex: assembles the eight CellComplex fields — Simplex (FreudSimplex), decidableEq (inferInstance), fintype (freud_simplex_fintype), vertices (prefix sets), vertices_injective (prefixSet_inj), adj (freudAdj), adj_symm (swapAdj_invol), adj_vertices (swapAdj_prefixSet_eq), adj_ne (swapAdj_ne_self).",
       "mathContext": "The structure-assembly pattern: each field is a routine lemma, an instance, or `inferInstance`. Subtype.ext bridges FreudSimplex equality through the underlying list. With all helper lemmas proved, the assembly is purely mechanical wiring."
     },
     {
       "id": "freudenthal-sperner",
       "title": "Part II.E: freudenthal_sperner (Main Theorem)",
-      "startLine": 368,
-      "endLine": 373,
+      "startLine": 402,
+      "endLine": 409,
       "summary": "freudenthal_sperner: Sperner's lemma for the Freudenthal triangulation of [0,1]^n. One-line proof: apply SpernerAbstract.sperner to freudenthalCellComplex.",
       "mathContext": "**Sperner on the n-cube**: the combinatorial heart of Brouwer's fixed-point theorem (via KKM), Borsuk–Ulam (via signed Sperner / Tucker), and Su's envy-free cake-cutting algorithm."
     },
     {
       "id": "namespace-end",
       "title": "Namespace End",
-      "startLine": 375,
-      "endLine": 377,
+      "startLine": 410,
+      "endLine": 413,
       "summary": "Closes the FreudenthalInstance section and SpernerConcrete namespace.",
-      "mathContext": "14 theorems, 7 definitions, 0 axioms, 0 sorries, 377 lines — answers OQ-01 with two concrete CellComplex instances, all originally-axiomatized facts now proved."
+      "mathContext": "14 theorems, 7 definitions, 0 axioms, 0 sorries, 413 lines — answers OQ-01 with two concrete CellComplex instances, all originally-axiomatized facts now proved."
     }
   ],
   "conclusion": {
-    "summary": "Closes OQ-01 from `sperner-ndim-mathlib` with two concrete `CellComplex` instances and zero remaining axioms. **Part I (bridge)**: `toAbstractCellComplex` projects every existing `SpernerTriangulation` to a `CellComplex`, with abstract and concrete predicates `rfl`-equal, so `SpernerAbstract.sperner` applies directly. **Part II (Freudenthal)**: yields `freudenthalCellComplex n : CellComplex (Finset (Fin n)) n` with permutation-list simplices and prefix-set vertices. `freudenthal_sperner` is a one-line corollary. 14 theorems, 7 definitions, 0 axioms, 0 sorries, 377 lines — all four originally-axiomatized swapAdj facts are now proved as private theorems, three of them via a single `List.Perm` lemma (`swapAdj_perm`), and the Fintype instance via a `listToPerm`/`permList` round-trip with `Equiv.Perm (Fin n)`.",
+    "summary": "Closes OQ-01 from `sperner-ndim-mathlib` with two concrete `CellComplex` instances and zero remaining axioms. **Part I (bridge)**: `toAbstractCellComplex` projects every existing `SpernerTriangulation` to a `CellComplex`, with abstract and concrete predicates `rfl`-equal, so `SpernerAbstract.sperner` applies directly. **Part II (Freudenthal)**: yields `freudenthalCellComplex n : CellComplex (Finset (Fin n)) n` with permutation-list simplices and prefix-set vertices. `freudenthal_sperner` is a one-line corollary. 14 theorems, 7 definitions, 0 axioms, 0 sorries, 413 lines — all four originally-axiomatized swapAdj facts are now proved as private theorems, three of them via a single `List.Perm` lemma (`swapAdj_perm`), and the Fintype instance via a `listToPerm`/`permList` round-trip with `Equiv.Perm (Fin n)`.",
     "implications": "**The Freudenthal triangulation is the workhorse mesh of simplicial fixed-point algorithms** (Scarf 1967, Eaves 1972, Merrill 1972, van der Laan–Talman 1979) — the entire computational-economics literature on Walrasian-equilibrium computation, market-clearing, and KKT-system solving uses Freudenthal triangulations or close variants. Formalizing Sperner's lemma at this abstraction level is therefore the **correct prerequisite** for any verified Brouwer / Kakutani fixed-point algorithm, KKM-based existence proof for Nash equilibria, or Su-style envy-free fair-division algorithm. The bridge instance also gives a clean refactor path for the existing `SpernerNDim` infrastructure: future theorems can target the abstract `CellComplex` once and apply to every concrete triangulation. **Pedagogically**, the file demonstrates a useful **two-instance pattern** for closing 'is this abstraction non-vacuous' open questions: pair a *trivial* bridge instance (showing the abstraction subsumes existing structures) with a *substantive new* instance (showing the abstraction extends beyond them). Both are needed: the bridge proves no expressive power is lost, the new instance proves new expressive power is gained.",
     "openQuestions": [
       "**Closed.** The four `swapAdj` axioms (`swapAdj_nodup`, `swapAdj_prefixSet_eq`, `swapAdj_ne_self`, `freud_simplex_fintype`) are now proved as private theorems via `swapAdj_perm` + `Nodup.getElem_inj_iff` + a `listToPerm`/`permList` round-trip. Total cost: ~136 added lines (file 241 → 377), much less than the 400+ originally projected because the `List.Perm` factoring discharges three of the four axioms from one shared lemma.",

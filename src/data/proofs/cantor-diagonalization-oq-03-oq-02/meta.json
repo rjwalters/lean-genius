@@ -183,6 +183,12 @@
       "startLine": 145,
       "endLine": 171,
       "summary": "embed_of_two: the embedding generalized to any alphabet with two distinct values b₀ ≠ b₁ via the if-then-else characteristic function, still propext-free. succ_fixedPointFree: the successor on ℕ is fixed-point free (n + 1 ≠ n). no_surjection_to_nat: Cantor over the alphabet ℕ, an infinite-alphabet instance of the engine, demonstrating that no_surjection_of_fpf is uniform in the alphabet."
+    },
+    {
+      "title": "Part 5 — Cantor over ℕ and axiom audit",
+      "startLine": 172,
+      "endLine": 195,
+      "summary": "no_surjection_to_nat lifts the diagonal argument to the infinite alphabet ℕ via the fixed-point-free successor (succ_fixedPointFree), showing the engine no_surjection_of_fpf handles arbitrary alphabets, not just Bool. The closing #print axioms audit machine-records that every headline theorem (lawvere, no_surjection_of_fpf, no_surjection_to_bool, embed_bool_injective, predicative_cantor, embed_of_two, no_surjection_to_nat) depends on no axioms at all — not even propext / Classical.choice / Quot.sound — so the propext-free, choice-free claim is verified on every build."
     }
   ]
 }

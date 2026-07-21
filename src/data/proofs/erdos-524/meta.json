@@ -83,6 +83,22 @@
       "mathContext": "The open problem: find $f(n)$ with $c_1 f(n) \\leq M_n(t) \\leq c_2 f(n)$ for all large $n$, a.s. Known: $f(n) = \\omega(n^{1/2-\\varepsilon})$ and $f(n) = O(\\sqrt{n/\\log\\log n})$. Conjecture: $f(n) = \\sqrt{n}$."
     },
     {
+      "id": "elementary-properties",
+      "title": "Elementary Properties of the Digits and Polynomial",
+      "startLine": 59,
+      "endLine": 87,
+      "summary": "Foundational pointwise identities: `binaryDigit_values` ($\\varepsilon_k \\in \\{1,-1\\}$) and `binaryDigit_cast_abs` ($|\\varepsilon_k| = 1$ as a real); then the polynomial's evaluation lemmas `randSignPoly_eval_zero` ($P_n(t,0)=0$), `randSignPoly_eval_one` ($P_n(t,1)=\\sum_k \\varepsilon_k$, the endpoint sum driving Erdős's lower bound), and `randSignPoly_succ` (the term-by-term recurrence $P_{n+1} = P_n + \\varepsilon_{n+1} x^{n+1}$).",
+      "mathContext": "Each sign is unimodular, $|\\varepsilon_k|=1$; the polynomial vanishes at $x=0$ and collapses to the Rademacher sum $\\sum_k \\varepsilon_k$ at $x=1$. The recurrence $P_{n+1}(t,x)-P_n(t,x)=\\varepsilon_{n+1}x^{n+1}$ underlies the 1-Lipschitz behavior of $M_n$ in $n$."
+    },
+    {
+      "id": "trivial-upper-bound",
+      "title": "Trivial Upper Bound |Pₙ| ≤ n",
+      "startLine": 88,
+      "endLine": 107,
+      "summary": "Proves `randSignPoly_abs_le`: for $|x| \\le 1$, $|P_n(t,x)| \\le n$, by bounding each of the $n$ terms $|\\varepsilon_k x^k| \\le 1$ and summing. This crude triangle-inequality bound is what certifies `BddAbove` for the `sSup` defining $M_n$ in the polyMax infrastructure below.",
+      "mathContext": "$|P_n(t,x)| = |\\sum_{k=1}^n \\varepsilon_k x^k| \\le \\sum_{k=1}^n |\\varepsilon_k||x|^k \\le n$ on $[-1,1]$, since every summand is at most $1$. Though far from the conjectured $\\sqrt{n}$, this bound is exactly what makes the supremum $M_n = \\sup_{[-1,1]}|P_n|$ well-defined."
+    },
+    {
       "id": "additional-properties",
       "title": "Additional Properties",
       "startLine": 108,

@@ -56,71 +56,71 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "File documentation describing the open status and $250 prize for Erdős Problem 52, followed by Mathlib imports for `Finset`, `ℤ`, `ℝ`, and core tactics needed for the formalization.",
       "mathContext": "File documentation describing the open status and $250 prize for Erdős Problem 52, followed by Mathlib imports for `Finset`, `$\\mathbb{Z}$`, `$\\mathbb{R}$`, and core tactics needed for the formalization."
     },
     {
       "id": "sumset-productset",
       "title": "Sumset and Product Set Definitions",
-      "startLine": 22,
-      "endLine": 37,
+      "startLine": 23,
+      "endLine": 38,
       "summary": "Defines $A + A := \\{a+b : a,b \\in A\\}$ and $A \\cdot A := \\{a \\cdot b : a,b \\in A\\}$ via `Finset.image` on the Cartesian product, along with $\\text{sumProductMax}(A) := \\max(|A+A|, |A \\cdot A|)$.",
       "mathContext": "Formal definition: Defines $A + A := \\{a+b : a,b \\in A\\}$ and $A \\cdot A := \\{a \\cdot b : a,b \\in A\\}$ via `Finset.image` on the Cartesian product, along with $\\text{sumProductMax}(A) := \\max(|A+A|, |A \\cdot A|)$."
     },
     {
       "id": "conjecture",
       "title": "The Sum-Product Conjecture",
-      "startLine": 38,
-      "endLine": 53,
+      "startLine": 39,
+      "endLine": 54,
       "summary": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\ \\exists C > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$. Defined as a `Prop` since the conjecture remains open.",
       "mathContext": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\ \\exists C > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$."
     },
     {
       "id": "erdos-szemeredi",
       "title": "The Erdős–Szemerédi Theorem",
-      "startLine": 54,
-      "endLine": 65,
-      "summary": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$.",
+      "startLine": 55,
+      "endLine": 61,
+      "summary": "States, as commentary, the Erdős–Szemerédi 1983 foundational result — the first super-linear lower bound: $\\exists c>0$ with $\\max(|A+A|,|A\\cdot A|) \\ge |A|^{1+c}$ for all finite $A$ with $|A|\\ge2$. (Recorded as a doc-comment, not axiomatized.)",
       "mathContext": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$."
     },
     {
       "id": "bloom-bound",
       "title": "Bloom's 2025 Current Best Bound",
-      "startLine": 66,
-      "endLine": 78,
-      "summary": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$.",
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "States, as commentary, Bloom's 2025 state-of-the-art bound $\\max(|A+A|,|A\\cdot A|) \\ge |A|^{1270/951 - o(1)} \\approx |A|^{1.335}$. (Recorded as a doc-comment, not axiomatized.)",
       "mathContext": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$."
     },
     {
       "id": "trivial-lower-bounds",
       "title": "Trivial Lower Bounds",
-      "startLine": 79,
-      "endLine": 92,
-      "summary": "Axiomatizes $|A| \\leq |A+A|$ for nonempty $A$ and $|A| \\leq |A \\cdot A|$ when $0 \\notin A$, the elementary bounds showing sumset/product set are at least as large as the original set.",
+      "startLine": 70,
+      "endLine": 111,
+      "summary": "Proves the trivial lower bounds: `sumset_card_ge` ($|A| \\le |A+A|$ for nonempty $A$, via the injection $a \\mapsto a+a_0$) and `productset_card_ge` ($|A| \\le |A\\cdot A|$ when $0 \\notin A$ and $|A|\\ge2$, via $a \\mapsto a\\cdot a_0$).",
       "mathContext": "Axiomatized: Axiomatizes $|A| \\leq |A+A|$ for nonempty $A$ and $|A| \\leq |A \\cdot A|$ when $0 \\notin A$, the elementary bounds showing sumset/product set are at least as large as the original set."
     },
     {
       "id": "trivial-upper-bounds",
       "title": "Trivial Upper Bounds",
-      "startLine": 93,
-      "endLine": 99,
-      "summary": "Axiomatizes $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ since both are images of $A \\times A$. Together with lower bounds, this gives $|A| \\leq \\text{spMax}(A) \\leq |A|^2$.",
+      "startLine": 112,
+      "endLine": 126,
+      "summary": "Proves the trivial upper bounds: `sumset_card_le` and `productset_card_le` give $|A+A| \\le |A|^2$ and $|A\\cdot A| \\le |A|^2$, since each is the image of $A \\times A$ under a binary operation.",
       "mathContext": "Axiomatized: Axiomatizes $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ since both are images of $A \\times A$. Together with lower bounds, this gives $|A| \\leq \\text{spMax}(A) \\leq |A|^2$."
     },
     {
       "id": "generalizations",
       "title": "Higher-Fold Generalizations",
-      "startLine": 100,
-      "endLine": 123,
+      "startLine": 127,
+      "endLine": 150,
       "summary": "Defines $m$-fold sumset $mA$ and product set $A^m$ recursively, with base cases $0A = \\{0\\}$ and $A^0 = \\{1\\}$. States the generalized conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$ for $m \\geq 2$.",
       "mathContext": "Defines $m$-fold sumset $mA$ and product set $A^m$ recursively, with base cases $0A = \\{0\\}$ and $A^0 = \\{1\\}$. States the generalized conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$ for $m \\geq 2$."
     },
     {
       "id": "connection-p53",
       "title": "Connection to Erdős Problem 53",
-      "startLine": 124,
-      "endLine": 134,
+      "startLine": 151,
+      "endLine": 158,
       "summary": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$.",
       "mathContext": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$."
     }

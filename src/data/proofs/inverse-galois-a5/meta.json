@@ -90,43 +90,75 @@
   "sections": [
     {
       "id": "sec-iga5-polynomial",
-      "title": "Parts I–IV: The Polynomial q and Its Properties",
+      "title": "Parts I–III: The Polynomial q and Its Properties",
       "startLine": 53,
-      "endLine": 215,
-      "summary": "Defines q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5. Proves irreducibility via Eisenstein at p=5, natDegree=5, monic, separable. Computes |rootSet| = 5.",
-      "mathContext": "$q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein: non-leading coefficients divisible by 5; constant $-5$ not divisible by 25. Hence $q$ is irreducible over $\\mathbb{Q}$."
+      "endLine": 211,
+      "summary": "Defines q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5 (Part I). Proves irreducibility via Eisenstein at p=5 (Part II), then monic, natDegree = 5, separability, and |rootSet| = 5 (Part III).",
+      "mathContext": "$q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein at $p=5$: every non-leading coefficient is divisible by $5$ and the constant $-5$ is not divisible by $25$, so $q$ is irreducible over $\\mathbb{Q}$. Being separable of degree $5$, it has $5$ distinct roots in its splitting field."
     },
     {
       "id": "sec-iga5-order-bounds",
-      "title": "Parts V–VII: Galois Group Order Bounds",
-      "startLine": 207,
-      "endLine": 330,
-      "summary": "Proves: 5 | |Gal| (Cauchy from irreducibility); |Gal| | 120 (Gal embeds into S₅). Establishes perm_fin5_order5_order3_not_commute and perm_fin5_no_order_15 as structural lemmas about S₅.",
-      "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})|$ divides $5! = 120$ and is divisible by 5. Together with the discriminant argument, this forces $|\\text{Gal}| \\in \\{60\\}$."
+      "title": "Part IV: Galois Group Order Bounds (and the sole axiom)",
+      "startLine": 212,
+      "endLine": 328,
+      "summary": "Establishes 5 | |Gal| (Cauchy, from irreducibility of prime degree; five_dvd_gal_card) and |Gal| | 120 (Gal embeds into S₅ via its action on the roots; gal_card_dvd_120). Introduces the file's single axiom three_dvd_gal_card (line 318): 3 | |Gal|, the sole input standing in for Dedekind's theorem on Frobenius cycle types, not yet in Mathlib.",
+      "mathContext": "$|\\mathrm{Gal}(q/\\mathbb{Q})|$ divides $5! = 120$ (embedding into $S_5$) and is divisible by $5$ (Cauchy). The assumed $3 \\mid |\\mathrm{Gal}|$ combines with these to force $15 \\mid |\\mathrm{Gal}|$, so $|\\mathrm{Gal}| \\in \\{15, 30, 60\\}$ once the discriminant argument caps it at $60$."
     },
     {
       "id": "sec-iga5-no-small-subgroups",
-      "title": "Parts IX–XI: No Subgroups of Order 15 or 30 in S₅",
+      "title": "Part IV-A: No Subgroups of Order 15 or 30 in S₅",
       "startLine": 329,
-      "endLine": 566,
-      "summary": "Proves no_subgroup_order_15 and no_subgroup_order_30: S₅ = Equiv.Perm (Fin 5) has no subgroup of order 15 or 30. Consequences: gal_card_ne_15 and gal_card_ne_30.",
-      "mathContext": "Order-15 subgroups of $S_5$ would contain an element of order 15, but $S_5$ has none ($\\text{lcm}(3,5) = 15$ requires a $15$-cycle impossible in $S_5$). Similarly for order 30."
+      "endLine": 565,
+      "summary": "Structural lemmas replacing former axioms C and D: no_subgroup_order_15 and no_subgroup_order_30 show S₅ = Equiv.Perm (Fin 5) has no subgroup of order 15 or 30, yielding gal_card_ne_15 and gal_card_ne_30. Uses perm_fin5_order5_order3_not_commute and native_decide checks on element orders in S₅.",
+      "mathContext": "An order-15 subgroup of $S_5$ would be cyclic ($15 = 3 \\cdot 5$, coprime) and hence contain a $15$-cycle, impossible in $S_5$ where $\\mathrm{lcm}$ of cycle lengths is $\\le 6$. An order-30 subgroup would have a normal, hence characteristic, Sylow-5 forcing an order-15 subgroup — also impossible. Together these exclude $|\\mathrm{Gal}| \\in \\{15, 30\\}$."
     },
     {
-      "id": "sec-iga5-vandermonde",
-      "title": "Parts VIII–XV: Vandermonde Discriminant Proof",
-      "startLine": 618,
-      "endLine": 1770,
-      "summary": "Defines p(x) = x⁵ + 20x + 16, vandermondeProduct = Π_{i<j}(root_i - root_j). Proves Sophie Germain identity, disc(q) = resultant(q,q'), vandermondeProduct² = disc(q) = 32000². Hence all Galois automorphisms are even: Gal ≤ A₅.",
-      "mathContext": "$\\Delta(q) = \\prod_{i < j}(\\alpha_i - \\alpha_j)^2 = \\text{Res}(q, q')/\\text{lc}(q)^{2\\deg(q)-1}$. Since $\\Delta(q) = 32000^2$ is a perfect square, $\\sigma(\\Delta^{1/2}) = \\Delta^{1/2}$ for all $\\sigma \\in \\text{Gal}(q/\\mathbb{Q})$, so every automorphism is even."
+      "id": "sec-iga5-prerequisites",
+      "title": "Parts V, IX–XI: Prerequisites, the Original Polynomial, and Summary",
+      "startLine": 566,
+      "endLine": 726,
+      "summary": "Part V records Galois prerequisites: q_splits_fact, gal_injects_into_perm, a5_card (|A₅| = 60, native_decide) and a5_not_solvable (transferred from Perm.not_solvable). Part IX connects q to p(x) = x⁵ + 20x + 16 via the translation x ↦ x−1 (same splitting field, Disc = 32000²). Parts X–XI compare with other A₅ realizations and summarize the remaining axiom.",
+      "mathContext": "$q(x) = p(x-1)$ with $p(x) = x^5 + 20x + 16$, so $\\mathrm{Gal}(q/\\mathbb{Q}) \\cong \\mathrm{Gal}(p/\\mathbb{Q})$ and $\\mathrm{Disc}(q) = \\mathrm{Disc}(p) = 2^{16}\\cdot 5^6 = 32000^2$. $A_5$ is simple and non-solvable, the obstruction to solvability by radicals."
+    },
+    {
+      "id": "sec-iga5-vandermonde-infra",
+      "title": "Parts XII–XIII & Sections A–D: Vandermonde Sign Infrastructure",
+      "startLine": 727,
+      "endLine": 1162,
+      "summary": "Supporting infrastructure for the sign argument: the Galois sign homomorphism galSign via galPermHomAux (Section A); the structural theorem gal_range_le_alternating_of_all_even and gal_card_dvd_60_of_all_even — if every automorphism acts as an even permutation then |Gal| | 60 (Section B); the Vandermonde roadmap (Section C); and root enumeration rootEnum / galToPerm5 (Section D). Part XII also gathers the mod-7 factorization evidence (q_root_mod7_at_5/6, cubic_factor_no_roots_mod7) motivating the axiom.",
+      "mathContext": "$\\mathrm{galSign}(\\sigma) = \\mathrm{sign}(\\pi_\\sigma) \\in \\{\\pm 1\\}$ where $\\pi_\\sigma$ is the permutation $\\sigma$ induces on the five roots. If $\\mathrm{galSign} \\equiv 1$, the image of $\\mathrm{Gal}$ lies in $A_5$, so $|\\mathrm{Gal}| \\mid |A_5| = 60$."
+    },
+    {
+      "id": "sec-iga5-disc-square",
+      "title": "Part XV & Section E: Eliminating the Δ² = disc(q) Axiom",
+      "startLine": 1163,
+      "endLine": 1738,
+      "summary": "Proves the former axiom vandermondeProduct² = disc(q) = 32000² outright (vandermondeProduct_sq_eq_proved). Assembles the ordered-root-difference product as a Vandermonde determinant (ordered_root_diff_prod_eq_vandermonde_sq), evaluates q′ at each root, identifies Π q′(αᵢ) with the resultant (prod_eval_derivative_eq_resultant, resultant_eq_disc_q), and closes via a Sophie Germain identity (x⁴+4y⁴ factorization). Section E records which axioms this eliminates.",
+      "mathContext": "$\\Delta^2 = \\prod_{i<j}(\\alpha_i-\\alpha_j)^2 = (-1)^{\\binom{5}{2}}\\,\\mathrm{Res}(q,q')/\\mathrm{lc}(q) = \\mathrm{disc}(q) = 32000^2$. The Sophie Germain identity $a^4 + 4b^4 = (a^2+2b^2-2ab)(a^2+2b^2+2ab)$ handles the resultant arithmetic."
+    },
+    {
+      "id": "sec-iga5-sign-argument",
+      "title": "Part XIV: Vandermonde Permutation Argument — All Signs Even",
+      "startLine": 1739,
+      "endLine": 1947,
+      "summary": "The crux. From Δ² = 32000² in the domain, Δ = ±32000 hence Δ ∈ ℚ (vandermondeProduct_eq_pm_32000, vandermondeProduct_in_rat_range), so every σ fixes Δ (gal_fixes_vandermondeProduct). Independently σ(Δ) = galSign(σ)·Δ (gal_acts_on_vandermondeProduct, via det of a row-permuted Vandermonde). Combining with Δ ≠ 0 gives all_gal_signs_positive: galSign σ = 1 for all σ, hence gal_card_dvd_60_proved: |Gal| | 60.",
+      "mathContext": "$\\sigma(\\Delta) = \\Delta$ (as $\\Delta \\in \\mathbb{Q}$) and $\\sigma(\\Delta) = \\mathrm{sign}(\\pi_\\sigma)\\,\\Delta$ (row-permutation of the Vandermonde determinant). With $\\Delta \\ne 0$ this forces $\\mathrm{sign}(\\pi_\\sigma) = 1$ for every $\\sigma$, i.e. $\\mathrm{Gal} \\le A_5$ and $|\\mathrm{Gal}| \\mid 60$."
+    },
+    {
+      "id": "sec-iga5-cardinality",
+      "title": "Part XV: Galois Group Cardinality |Gal| = 60",
+      "startLine": 1948,
+      "endLine": 2005,
+      "summary": "Combines the bounds into q_gal_card: |Gal(q/ℚ)| = 60. From 15 | |Gal| (axiom 3 | |Gal| plus proved 5 | |Gal|) and |Gal| | 60 (gal_card_dvd_60_proved), the order lies in {15, 30, 60}; gal_card_ne_15 and gal_card_ne_30 eliminate the smaller two.",
+      "mathContext": "$15 \\mid |\\mathrm{Gal}|$ and $|\\mathrm{Gal}| \\mid 60$ give $|\\mathrm{Gal}| \\in \\{15,30,60\\}$; excluding $15$ and $30$ leaves $|\\mathrm{Gal}(q/\\mathbb{Q})| = 60 = |A_5|$."
     },
     {
       "id": "sec-iga5-isomorphism",
-      "title": "Parts XVI–XVII: Galois Isomorphism and Non-Solvability",
-      "startLine": 1960,
-      "endLine": 2067,
-      "summary": "Proves q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ via index-2 subgroup characterization. Main theorem a5_realizable_iso: A₅ is realizable as a Galois group over ℚ. gal_not_solvable: transfers non-solvability from A₅ through the isomorphism.",
-      "mathContext": "$|\\text{Gal}(q/\\mathbb{Q})| = 60$ and the image in $S_5$ has index 2, so it equals $A_5$ (unique index-2 subgroup of $S_5$)."
+      "title": "Parts XVI–XVII: Isomorphism with A₅ and Non-Solvability",
+      "startLine": 2006,
+      "endLine": 2117,
+      "summary": "Part XVI proves the image of Gal in S₅ has index 2 (gal_has_index_two) and hence equals A₅ (the unique index-2 subgroup), giving q_gal_iso_a5: Gal(q/ℚ) ≅ A₅ and the realizability theorem. Part XVII transfers non-solvability through the isomorphism (gal_not_solvable) — a Galois group over ℚ that is provably not solvable — and closes with the axiom-status summary.",
+      "mathContext": "$|\\mathrm{Gal}| = 60$ and its image in $S_5$ has index $2$, so it is the unique index-2 subgroup $A_5$. Since $A_5$ is simple non-abelian, $\\mathrm{Gal}(q/\\mathbb{Q})$ is non-solvable, so $q$ is not solvable by radicals."
     }
   ],
   "conclusion": {

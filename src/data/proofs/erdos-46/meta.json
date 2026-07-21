@@ -139,17 +139,33 @@
       "id": "splitting",
       "title": "Unit-Fraction Splitting & a Concrete Representation",
       "startLine": 190,
-      "endLine": 309,
-      "summary": "The Fibonacci–Sylvester engine: the telescoping identity `inv_mul_succ` and the **splitting identity** `split_unit_fraction` ($1/n = 1/(n{+}1) + 1/(n(n{+}1))$), the concrete witness $\\{2,3,6\\}$ (`isUnitFractionRepr_two_three_six`), the lengthening step `isUnitFractionRepr_replace` (replace $m$ by its two split denominators), `exists_isUnitFractionRepr_card_ge` (representations of every cardinality, by splitting the largest denominator), and `infinite_isUnitFractionRepr` — there are **infinitely many** distinct unit-fraction representations of $1$.",
+      "endLine": 344,
+      "summary": "The Fibonacci–Sylvester engine: the telescoping identity `inv_mul_succ` and the **splitting identity** `split_unit_fraction` ($1/n = 1/(n{+}1) + 1/(n(n{+}1))$), the concrete witness $\\{2,3,6\\}$ (`isUnitFractionRepr_two_three_six`), the lengthening step `isUnitFractionRepr_replace` (replace $m$ by its two split denominators), `exists_isUnitFractionRepr_card_ge` (some representation of every cardinality), the sharper `exists_isUnitFractionRepr_card_eq` (a representation of **exactly** each cardinality $k \\ge 3$, with $3$ the exact minimum since $|S| \\ge 2$ and the only two-term option $1/2 + 1/2$ fails distinctness), and `infinite_isUnitFractionRepr` — there are **infinitely many** distinct unit-fraction representations of $1$.",
       "mathContext": "Splitting identity: $\\frac{1}{n} = \\frac{1}{n+1} + \\frac{1}{n(n+1)}$ for $n \\ge 1$, replacing one reciprocal by two strictly larger ones of equal sum. Iterating from $\\{2,3,6\\}$ (splitting the largest denominator, whose successors $m{+}1, m(m{+}1)$ automatically exceed $m$ and so avoid collisions) yields representations of unbounded cardinality, hence infinitely many distinct ones — the elementary, colouring-free lower bound underlying Erdős 46. The deep monochromatic statement (Croot 2003) remains unformalized."
     },
     {
       "id": "scaling",
       "title": "Multiplicative Scaling of Representations",
-      "startLine": 311,
-      "endLine": 359,
+      "startLine": 345,
+      "endLine": 394,
       "summary": "The multiplicative counterpart of disjoint-union additivity: `isRatFractionRepr_smul` scales every denominator by $t \\ge 1$ (the injective map $n \\mapsto t\\,n$), sending a representation of $q$ to one of $q/t$ with all denominators $\\ge 2t$; `exists_isRatFractionRepr_inv_min_ge` instantiates this to represent $1/t$ by $\\{2t, 3t, 6t\\}$ with minimum denominator $\\ge 2t$.",
       "mathContext": "Scaling lemma: if $\\sum_{n \\in S} 1/n = q$ then $\\sum_{n \\in S} 1/(t n) = q/t$, and every scaled denominator satisfies $tn \\ge 2t$. Large-denominator representations are the prerequisite for pairwise-disjoint chaining: a representation supported on $\\{n > N\\}$ is automatically disjoint from any representation supported below $N$, the mechanism behind $\\text{ErdosProblem46\\_infinitely\\_many}$."
+    },
+    {
+      "id": "telescoping",
+      "title": "Telescoping Engine: Arbitrarily Large Denominators",
+      "startLine": 395,
+      "endLine": 473,
+      "summary": "A third engine that **builds** representations from scratch out of the pronic numbers $k(k+1)$, complementing the additive-union and multiplicative-scaling engines (which only reshape existing representations). `sum_Ico_inv_mul_succ` proves the telescoping identity $\\sum_{k=a}^{b-1} 1/(k(k+1)) = 1/a - 1/b$; `injective_mul_succ` gives injectivity of $k \\mapsto k(k+1)$ (strict monotonicity); `isRatFractionRepr_telescope` packages the pronic set $\\{k(k+1) : a \\le k < b\\}$ as a rational-fraction representation of $1/a - 1/b$ with every denominator $\\ge a(a+1)$; and `exists_isRatFractionRepr_min_gt` instantiates $[B{+}1, B{+}1{+}L)$ to realise, for any bound $B$ and length $L \\ge 1$, a representation of a **positive** rational using exactly $L$ denominators all $> B$.",
+      "mathContext": "Telescoping: $\\frac{1}{k(k+1)} = \\frac{1}{k} - \\frac{1}{k+1}$, so $\\sum_{k=a}^{b-1} \\frac{1}{k(k+1)} = \\frac{1}{a} - \\frac{1}{b}$. Starting the interval at a large $a$ forces every denominator $k(k+1) \\ge a(a+1) > B$, realising the \"min denominator $> N$\" regime that pairwise-disjoint chaining requires — but only for a *positive-rational* target $1/a - 1/b$. The open crux (target **exactly** $1$ with min $> N$, collision-free) needs assembling several such large-denominator pieces without overlap and is not closed by this engine alone."
+    },
+    {
+      "id": "divisor-sum-bridge",
+      "title": "Divisor-Sum Bridge: Pseudoperfect / Practical-Number Route",
+      "startLine": 474,
+      "endLine": 550,
+      "summary": "A structurally different attack surface that translates the open crux into multiplicative number theory. `isUnitFractionRepr_of_divisorSum`: if $T$ is a set of distinct divisors of $M$ with $\\sum_{d \\in T} d = M$ (so $M$ is *pseudoperfect via $T$*) and each $2d \\le M$, then the cofactor set $\\{M/d : d \\in T\\}$ is a unit-fraction representation of $1$, since $\\sum 1/(M/d) = (\\sum d)/M = 1$. `divisorSum_min_gt`: if additionally every chosen divisor satisfies $N \\cdot d < M$ (i.e. $d < M/N$), every cofactor denominator $M/d$ exceeds $N$. Together they reduce \"represent $1$ with min denominator $> N$\" to \"write $M$ as a sum of distinct divisors of $M$, each $< M/N$\". The reduction is an **equivalence** (from any Egyptian representation $S$ of $1$, take $M = \\operatorname{lcm} S$ and $d_s = M/s$), so under the equivalent-strength rule it earns no decomposition credit; it is recorded as infrastructure exposing the divisor / practical-number route.",
+      "mathContext": "Divisor-sum bridge: dividing a pseudoperfect decomposition $\\sum_{d \\in T} d = M$ through by $M$ turns each divisor $d$ into a reciprocal $1/(M/d) = d/M$, and the cofactor map $d \\mapsto M/d$ is injective on divisors of $M$ (left inverse $q \\mapsto M/q$). The minimum denominator is $M / \\max T$, which exceeds $N$ exactly when every $d < M/N$. This phrases the crux entirely in terms of $\\texttt{Nat.divisors}$: the genuine open content becomes a **practical-number completeness** fact — producing an $M$ with enough *small* divisors summing exactly to $M$."
     }
   ],
   "conclusion": {

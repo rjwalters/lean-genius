@@ -155,6 +155,14 @@
       "endLine": 184,
       "summary": "The uniform assignment (all masses 1) with uniform_total = n+1 and uniform_ratio = n/(n+1) — the centroid of the n-simplex, the symmetric point where every complement fraction is equal.",
       "mathContext": "Uniform masses: $\\mathrm{total} = n+1$, $\\mathrm{ratio}\\ i = \\dfrac{n}{n+1}$ (the centroid)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Next Steps",
+      "startLine": 185,
+      "endLine": 214,
+      "summary": "Closing docstring recapping the n-dimensional development: `MassPoint n` for n+1 positive vertex masses, the complement fraction `ratio i` ∈ (0,1), the Ceva sum identity ∑ ratio i = n, the uniform-mass centroid ratio n/(n+1), and the n=2 check ∑ = 2 — with 0 sorries, 0 axioms, ~10 theorems, 4 definitions. Lists next-iteration candidates: a triangle bridge to the parent `MassPointCeva.MassPoint`, constructive existence of masses from a valid ratio profile, and connecting to Mathlib's affine cevian concurrency.",
+      "mathContext": "$n$-dim mass-point summary: $\\sum_i \\mathrm{ratio}\\ i = n$ with each $\\mathrm{ratio}\\ i \\in (0,1)$; uniform masses give the centroid $\\tfrac{n}{n+1}$. Open follow-ups: bridge to the 2-dimensional parent, a constructive converse (masses from a ratio profile with $\\sum r_i = n$), and geometric cevian concurrency."
     }
   ],
   "references": [

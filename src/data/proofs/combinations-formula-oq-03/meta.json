@@ -178,7 +178,7 @@
       "id": "fano-verifications",
       "title": "Integer Verifications and Fano Plane",
       "startLine": 718,
-      "endLine": 751,
+      "endLine": 780,
       "summary": "Six concrete verifications: [5,2]_1 = 10, [6,3]_1 = 20, [10,4]_1 = 210 (specialization); [3]_2 = 7 (points of Fano plane), [4]_3 = 40 (q-numbers); [3,1]_2 = 7 (lines of Fano plane), [4,2]_2 = 35 (subspaces of F_2^4). All by `native_decide` or `simp`.",
       "mathContext": "The Fano plane is $\\text{PG}(2, \\mathbb{F}_2)$: a projective plane with 7 points and 7 lines, each line containing 3 points and each point on 3 lines. Its point count is $[3]_2 = 1 + 2 + 4 = 7$ and its line count is $\\binom{3}{1}_2 = [3]_2 = 7$. The 35 two-dimensional subspaces of $\\mathbb{F}_2^4$ are the lines and planes of $\\text{PG}(3, \\mathbb{F}_2)$."
     }

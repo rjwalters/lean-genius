@@ -104,15 +104,15 @@
       "title": "Absorbing Pair Existence and Density",
       "summary": "Proves absorbing_pair_exists (triangle existence in dense regular graphs) and erdos_faudree_absorbing_pairs_ge (≥ n absorbing pairs per vertex in EF graphs).",
       "startLine": 111,
-      "endLine": 165,
+      "endLine": 199,
       "mathContext": "For $|V| \\leq 2d - 2$: $|N(u) \\cap N(w)| \\geq 2 > 0$, giving a common neighbor $v$ forming a triangle. For EF: injecting $N(w) \\setminus \\{u_0\\}$ into absorbingPairs via $u \\mapsto (u, v(u))$ gives $\\geq n$ pairs."
     },
     {
       "id": "absorbing-lemma",
       "title": "Absorbing Lemma (Statement Only)",
       "summary": "Defines HasAbsorbingStructure: the existence of a short cycle that can absorb any small subset. This is the main DKM 2025 technical contribution.",
-      "startLine": 166,
-      "endLine": 180,
+      "startLine": 201,
+      "endLine": 222,
       "mathContext": "$\\exists$ cycle $C$ with $|C| \\leq \\lceil \\varepsilon |V| \\rceil$ such that $\\forall T \\subseteq V \\setminus V(C)$ with $|T| \\leq \\delta |V|$, $C$ can be extended to also span $T$."
     }
   ],

@@ -93,39 +93,39 @@
       "id": "kaprekar-map",
       "title": "The Kaprekar Map by Pure Arithmetic",
       "startLine": 52,
-      "endLine": 78,
+      "endLine": 89,
       "summary": "Defines sortAsc4 (a five-comparator sorting network for four naturals), kaprekarStep (extract digits by /,%; sort; recombine descending minus ascending), and NonRepdigit (digits not all equal), with a Decidable instance for NonRepdigit.",
       "mathContext": "For ascending digits w ≤ x ≤ y ≤ z, T(n) = (z·1000+y·100+x·10+w) − (w·1000+x·100+y·10+z). The network (a,b)(c,d)(a,c)(b,d)(b,c) sorts four inputs using only min/max."
     },
     {
       "id": "fixed-point",
       "title": "6174 is a Fixed Point",
-      "startLine": 80,
-      "endLine": 81,
+      "startLine": 90,
+      "endLine": 92,
       "summary": "kaprekar_fixed: T(6174) = 6174, checked by kernel `decide` (no native_decide, so this single fact is axiom-free).",
       "mathContext": "7641 − 1467 = 6174."
     },
     {
       "id": "convergence",
       "title": "Bounded Convergence to 6174",
-      "startLine": 83,
-      "endLine": 93,
+      "startLine": 93,
+      "endLine": 104,
       "summary": "kaprekar_converges_all enumerates over Finset.range 10000 (native_decide) that every non-repdigit reaches 6174 in seven steps; kaprekar_converges repackages it for an arbitrary n < 10000.",
       "mathContext": "Since 6174 is fixed, T^[7](n) = 6174 is exactly 'reaches 6174 within 7 steps'."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the Fixed Point",
-      "startLine": 95,
-      "endLine": 101,
+      "startLine": 105,
+      "endLine": 112,
       "summary": "kaprekar_unique_fixed: among non-repdigit four-digit strings, 6174 is the only fixed point of T. Derived symbolically (no native_decide) from kaprekar_converges via Function.iterate_fixed — a fixed point is unchanged by seven iterations, which equal 6174.",
       "mathContext": "∀ n < 10000, NonRepdigit n → T(n) = n → n = 6174."
     },
     {
       "id": "sharpness",
       "title": "Sharpness of the Seven-Step Bound",
-      "startLine": 103,
-      "endLine": 108,
+      "startLine": 113,
+      "endLine": 121,
       "summary": "kaprekar_bound_sharp: there exists a non-repdigit n < 10000 with T^[6](n) ≠ 6174, so six steps do not always suffice and the bound 7 is tight. Proved by exhibiting the single witness 0014 and kernel `decide` (no native_decide).",
       "mathContext": "∃ n < 10000, NonRepdigit n ∧ T^[6](n) ≠ 6174; witness n = 14 (0014), with T^[6](14) = 4176."
     }

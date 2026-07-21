@@ -82,9 +82,17 @@
       "id": "second-theorem-and-first-minimum",
       "title": "Part IV: Second Theorem Statement and the First-Minimum Bound",
       "startLine": 138,
-      "endLine": 169,
-      "summary": "secondTheorem_upper_statement (Prop scaffold for the product bound) and firstMinimum_le_one_of_volume_gt (λ₀ ≤ 1 from minkowski_fundamental).",
-      "mathContext": "The upper bound of the second theorem is stated precisely as a Prop but not proved (the open analytic core). The first-minimum bound λ₀ ≤ 1 is the i=0 shadow of the theorem and follows directly from the parent's first theorem: a nonzero lattice point in S witnesses that 1 is an admissible scaling."
+      "endLine": 173,
+      "summary": "secondTheorem_upper_statement (Prop scaffold for the product bound ∏λᵢ·vol(S) ≤ 2ⁿ·covolume(L)) and the full proof of firstMinimum_le_one_of_volume_gt: λ₀ ≤ 1 from minkowski_fundamental — obtain a nonzero x ∈ S ∩ L, show 1 is admissible for the first minimum (single nonzero vector is linearly independent via `linearIndependent_unique_iff` + the `Unique (Fin 1)` instance; `one_smul` puts x in 1·S), then close with `csInf_le`.",
+      "mathContext": "The upper bound of the second theorem is stated precisely as a Prop but not proved (the open analytic core). The first-minimum bound λ₀ ≤ 1 is the i=0 shadow of the theorem and follows directly from the parent's first theorem: a nonzero lattice point in S witnesses that 1 is an admissible scaling, so $\\lambda_0 = \\inf(\\text{admissible}) \\le 1$. The proof supplies the `Unique (Fin ((0:Fin n).val + 1))` instance explicitly so that `linearIndependent_unique_iff` reduces linear independence of the singleton family to `x ≠ 0`."
+    },
+    {
+      "id": "summary-and-checks",
+      "title": "Summary and Sanity Checks",
+      "startLine": 175,
+      "endLine": 208,
+      "summary": "Closing summary comment restating what is proved (0 sorries, 0 axioms): ConvexBody.scale, IndepLatticePoints + .mono, successiveMinimum with nonneg/mono, and firstMinimum_le_one_of_volume_gt; and the honest scope (the product bound is a scaffold, its proof the open analytic core). Six `#check` sanity checks confirm the signatures of ConvexBody.scale, IndepLatticePoints, successiveMinimum, successiveMinimum_mono, firstMinimum_le_one_of_volume_gt, and secondTheorem_upper_statement; `end MinkowskiSecondTheorem` closes the namespace.",
+      "mathContext": "The `#check` block is a lightweight regression guard: each `@`-elaboration forces Lean to re-typecheck the public API's signatures, so any drift in the parent's `Lattice`/`ConvexBody` interface or in these definitions surfaces at build time rather than silently. The summary comment fixes the honest scope in-source, mirroring the `assumptions` metadata field."
     }
   ],
   "conclusion": {

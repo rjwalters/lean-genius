@@ -44,41 +44,57 @@
       "id": "problem-header",
       "title": "Problem Header: Directed Ramsey Numbers",
       "startLine": 1,
-      "endLine": 7,
-      "summary": "Module comment header identifying Erdős Problem #1216, source URL, and status (SOLVED — Erdős's question of whether f(n) = ⌊log₂ n⌋+1 answered NO by Reid-Parker 1970).",
+      "endLine": 9,
+      "summary": "Module docstring identifying Erdős Problem #1216, source URL, and status: the Stearns (1959) lower bound is formalized, and Erdős's question of whether f(n) = ⌊log₂ n⌋+1 exactly is stated. It defines f(n) as the largest k such that every n-vertex tournament contains a transitive tournament on k vertices.",
       "mathContext": "A tournament $T$ on $n$ vertices is a complete directed graph: for every pair $\\{u,v\\}$, exactly one of $u \\to v$ or $v \\to u$ holds. The function $f(n) = \\min_{|T|=n} \\max\\{k : T \\supseteq T_k^\\mathrm{trans}\\}$ measures the guaranteed transitive subtournament size. The directed Ramsey number $R_{\\rm dir}(k) = \\min\\{n : f(n) \\ge k\\}$ is the inverse function."
     },
     {
-      "id": "problem-statement",
-      "title": "Mathematical Statement: f(n) vs ⌊log₂ n⌋+1",
-      "startLine": 8,
-      "endLine": 14,
-      "summary": "Documents the full problem: is f(n) = ⌊log₂ n⌋+1? Records Stearns's greedy lower bound (f(n) ≥ ⌊log₂ n⌋+1) and that the directed Ramsey number is the inverse of f(n). The question was answered NO for large n.",
+      "id": "answer-and-definitions",
+      "title": "Answer (NO) and Prose Definitions",
+      "startLine": 10,
+      "endLine": 20,
+      "summary": "The docstring records the resolution: Stearns (1959) proved f(n) ≥ ⌊log₂ n⌋+1 by a greedy construction, but Reid–Parker (1970) proved f(n) grows strictly faster for n ≥ 14, so Erdős's conjectured equality FAILS; the exact growth rate (between log₂ n and 2·log₂ n) is open. It then gives the prose definitions of a tournament (complete directed graph, one direction per edge) and a transitive tournament (i → j → k implies i → k).",
       "mathContext": "Stearns's greedy proof: start with any vertex $v_1$; its out-neighborhood $N^+(v_1)$ has size $\\ge \\lceil(n-1)/2\\rceil$. Pick $v_2 \\in N^+(v_1)$; the out-neighborhood of $v_2$ within $N^+(v_1)$ has size $\\ge \\lfloor(|N^+(v_1)|-1)/2\\rfloor \\ge (n-3)/4$. After $k$ steps, the remaining set has size $\\ge n/2^k - C$, giving a transitive chain $v_1 \\to v_2 \\to \\cdots \\to v_k$ of length $k = \\lfloor \\log_2 n\\rfloor + 1$."
     },
     {
       "id": "imports",
       "title": "Mathlib Import",
-      "startLine": 16,
-      "endLine": 16,
-      "summary": "Full Mathlib import providing `SimpleGraph`, `Finset`, `Nat.log`, and tournament infrastructure for the eventual formalization.",
-      "mathContext": "Key Mathlib tools for formalization: `SimpleGraph.Tournament` (tournament predicate on `SimpleGraph V`); `SimpleGraph.neighborFinset` (out-neighborhood as `Finset V`); `Finset.exists_max_image` (greedy maximum selection); `Nat.log` (for the ⌊log₂ n⌋ bound). The greedy induction would use `Finset.card_pos` to ensure the neighborhood is nonempty at each step."
-    },
-    {
-      "id": "placeholder-theorem",
-      "title": "Placeholder Theorem: erdos_1216",
-      "startLine": 18,
-      "endLine": 20,
-      "summary": "Placeholder `erdos_1216 : True := by sorry`. The Stearns lower bound would be: ∀ n : ℕ, ∀ T : SimpleGraph (Fin n), T.IsTournament → ∃ S : Finset (Fin n), S.card ≥ Nat.log 2 n + 1 ∧ T.IsTransitiveOn S.",
-      "mathContext": "The Lean formalization of 'transitive subtournament on $S$': $\\forall u \\in S, \\forall v \\in S, \\forall w \\in S$, $T.Adj u v \\to T.Adj v w \\to T.Adj u w$. The greedy step requires showing that the out-neighborhood of any vertex in a tournament has size $\\ge (n-1)/2$, formalized as `SimpleGraph.Tournament.exists_large_outNeighborhood`."
-    },
-    {
-      "id": "check-statement",
-      "title": "Type Check",
       "startLine": 22,
-      "endLine": 23,
-      "summary": "`#check erdos_1216` verifies the theorem is well-typed. The sorry marker comment documents that this is a placeholder for future formalization.",
-      "mathContext": "The current placeholder type `True` is a sentinel: any proof of `True` is trivial (`trivial`), but using `sorry` marks it for tracking. When the actual formalization is complete, the type will be replaced with the Stearns bound and the proof by the greedy algorithm."
+      "endLine": 22,
+      "summary": "Full `import Mathlib`, providing `Finset`, `Nat.log`, and the `Prop`/relation infrastructure used by the self-contained tournament definitions below.",
+      "mathContext": "The file defines tournaments directly as a structure carrying a `Prop`-valued relation rather than reusing `SimpleGraph`, so it needs only `Finset` (for the subset $S$ and its cardinality) and `Nat.log 2 n` (for the $\\lfloor \\log_2 n\\rfloor$ bound) from Mathlib."
+    },
+    {
+      "id": "tournament-structure",
+      "title": "Tournament Structure",
+      "startLine": 24,
+      "endLine": 30,
+      "summary": "Opens `namespace Erdos1216` and defines `structure Tournament (V : Type*)`: a relation `beats : V → V → Prop` with the tournament axiom `∀ x y, x ≠ y → (beats x y ↔ ¬ beats y x)` (exactly one direction on every non-loop edge) and irreflexivity `∀ x, ¬ beats x x`.",
+      "mathContext": "This encodes a complete directed graph with no self-loops. For distinct $x,y$ the biconditional $\\text{beats}\\,x\\,y \\iff \\lnot\\,\\text{beats}\\,y\\,x$ forces exactly one directed edge per pair (completeness + antisymmetry combined), and `irrefl` rules out loops. Using a bare relation instead of `SimpleGraph` keeps the statement classical and self-contained."
+    },
+    {
+      "id": "transitive-subtournament",
+      "title": "Transitive Subtournament Predicate",
+      "startLine": 32,
+      "endLine": 35,
+      "summary": "Defines `IsTransitiveTournament T S` for a `Finset V` subset S: for all x, y, z ∈ S, `beats x y → beats y z → beats x z`. A transitive subtournament is one whose induced relation is genuinely transitive — a directed chain / total order.",
+      "mathContext": "On a tournament, a transitive subset $S$ carries a strict total order: transitivity plus the tournament trichotomy makes $(S,\\to)$ isomorphic to a linear order $v_1 \\to v_2 \\to \\cdots \\to v_k$. The quantity $f(n)$ is the largest such $|S|$ guaranteed to exist in every $n$-vertex tournament."
+    },
+    {
+      "id": "stearns-axiom",
+      "title": "Stearns Lower Bound (Axiom)",
+      "startLine": 37,
+      "endLine": 47,
+      "summary": "`axiom stearns_lower_bound (n : ℕ) (hn : n ≥ 1) (T : Tournament (Fin n))`: there exists a Finset S with `S.card ≥ Nat.log 2 n + 1` that is a transitive subtournament. This is Stearns's 1959 result, taken as an assumption; the docstring stresses that no upper-bound/equality companion is asserted since Erdős's equality is false (Reid–Parker 1970).",
+      "mathContext": "The assumed greedy proof repeatedly restricts to the out-neighborhood of a chosen vertex, roughly halving the vertex count each step, and after $\\le \\lfloor \\log_2 n\\rfloor + 1$ steps yields a transitive chain. It is encoded as an `axiom` because the greedy induction itself is not formalized here — hence the entry is `axiomatized` with `axiomCount = 1`."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: erdos_1216",
+      "startLine": 49,
+      "endLine": 62,
+      "summary": "`theorem erdos_1216` restates the lower-bound direction — for all n ≥ 1 and every tournament T on `Fin n`, there is a transitive subtournament S with `S.card ≥ Nat.log 2 n + 1` — and is proved directly by `stearns_lower_bound`. `end Erdos1216` closes the namespace.",
+      "mathContext": "The theorem's statement is definitionally the axiom's, so the proof term is just `stearns_lower_bound`, packaging the assumed Stearns bound as the file's headline result. It deliberately omits any upper bound, since Erdős's conjectured equality $f(n)=\\lfloor\\log_2 n\\rfloor+1$ fails for $n\\ge 14$ (Reid–Parker 1970)."
     }
   ],
   "crossReferences": [

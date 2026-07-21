@@ -169,10 +169,10 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_174 and erdos_174_summary theorems",
+      "summary": "Bundles the current state of Erdős #174 (OPEN): erdos_174 proves the conjunction of the EGMRSS necessary condition (IsRamsey ⟹ IsSpherical) with three known sufficient families (rectangles, simplices, trapezoids are Ramsey); erdos_174_summary isolates the necessary direction ramsey_implies_spherical for an arbitrary FiniteConfig.",
       "startLine": 213,
-      "endLine": 247,
-      "mathContext": "Verified: erdos_174 and erdos_174_summary theorems"
+      "endLine": 268,
+      "mathContext": "erdos_174: $(\\text{Ramsey} \\Rightarrow \\text{Spherical}) \\wedge (\\text{Rectangle} \\Rightarrow \\text{Ramsey}) \\wedge (\\text{Simplex} \\Rightarrow \\text{Ramsey}) \\wedge (\\text{Trapezoid} \\Rightarrow \\text{Ramsey})$. erdos_174_summary: $\\text{IsRamsey}(A) \\Rightarrow \\text{IsSpherical}(A)$."
     }
   ],
   "conclusion": {

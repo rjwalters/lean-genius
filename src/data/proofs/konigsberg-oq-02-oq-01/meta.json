@@ -153,8 +153,15 @@
       "id": "sec-walk-split-hierholzer",
       "title": "Part VIII: walk_split_at and Full Hierholzer Assembly",
       "startLine": 716,
-      "endLine": 954,
+      "endLine": 951,
       "summary": "walk_closed, vertex_with_unused_arc, walk_split_at (List.take/drop), circuit splicing machinery, and directed_euler_circuit_sufficient_corrected — final Hierholzer algorithm via WF induction on arcCount"
+    },
+    {
+      "id": "sec-results-summary",
+      "title": "Results Summary and Verification",
+      "startLine": 952,
+      "endLine": 983,
+      "summary": "Closing `### Results` inventory (0 sorries): the proved lemmas (`maximal_balanced_trail_is_circuit`, `Walk.splice`/`splice_nodup`, `removeArcList_arcCount`/`_balanced`, `nodup_arcs_length_le`, `isEulerian_of_length_eq`, and the main `directed_euler_circuit_sufficient_corrected`), the formerly-sorry'd sub-lemmas now discharged (`nodup_circuit_exists_of_outDeg_pos`, `vertex_with_unused_arc`, `walk_split_at`), and a Bug-Found note recording that the parent file's `directed_euler_circuit_sufficient` axiom has a missing strong-connectivity hypothesis. Ends with a `#check` export block over the key declarations."
     }
   ],
   "crossReferences": [

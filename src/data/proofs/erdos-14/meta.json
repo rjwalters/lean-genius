@@ -108,6 +108,14 @@
       "endLine": 93,
       "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
       "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < $$2^{{3/2}$}$\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Structural Observations",
+      "startLine": 94,
+      "endLine": 109,
+      "summary": "`non_unique_monotone`: proves the non-unique sum count `nonUniqueSumCountInf A N` is monotonically non-decreasing in N (M ≤ N ⟹ count M ≤ count N), via `Set.ncard_le_ncard` on the nested difference sets. A preceding comment records the Sidon-set heuristic: a Sidon A has ≤ √N + O(N^{1/4}) elements up to N, so its sumset misses ~N integers.",
+      "mathContext": "$M \\le N \\implies \\mathrm{nonUniqueSumCount}(A,M) \\le \\mathrm{nonUniqueSumCount}(A,N)$ — the count of non-uniquely-represented sums grows with the window, proved by monotonicity of `Set.ncard` on nested `Icc` differences."
     }
   ],
   "conclusion": {

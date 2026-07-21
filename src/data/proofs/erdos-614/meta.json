@@ -162,6 +162,15 @@
       "endLine": 594,
       "summary": "def partialStar (n-2 edge star graph), private lemmas partialStar_zero_neighbors_card and partialStar_edgeCount and partialStar_hasPropertyP, theorem f_n_minus_2_upper_bound, and erdos_614_summary combining all main results.",
       "mathContext": "partialStar n is a star with n-2 edges (vertex 0 adjacent to vertices 1..n-2). Proved: it has Property P(1), so f(n,1) ≤ n-2. erdos_614_summary: f(n,1) = n-2 exactly (both bounds proved)."
+    },
+    {
+      "id": "upper-bound-summary",
+      "title": "Part 9: Upper Bound and Summary",
+      "startLine": 595,
+      "endLine": 631,
+      "significance": "key",
+      "summary": "f_n_minus_2_upper_bound (the proved upper estimate on the star-construction quantity) and erdos_614_summary, the capstone theorem collecting the partial construction and monotonicity results.",
+      "mathContext": "The summary theorem records what is proved unconditionally versus what rests on the monotonicity axiom for the f(n) growth problem."
     }
   ],
   "conclusion": {

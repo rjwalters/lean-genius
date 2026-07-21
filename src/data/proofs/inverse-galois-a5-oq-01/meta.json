@@ -120,6 +120,13 @@
       "startLine": 82,
       "endLine": 108,
       "summary": "Given an unramified prime Q over a rational prime with 3 ∣ inertiaDegIn, the arithmetic Frobenius arithFrobAt ℤ q.Gal Q has order divisible by 3 (via the bridge), hence 3 ∣ Fintype.card q.Gal."
+    },
+    {
+      "id": "bridge-instantiation",
+      "title": "Bridge Instantiation for the A₅ Quintic",
+      "startLine": 109,
+      "endLine": 135,
+      "summary": "three_dvd_gal_card_of_bridge is the instantiated capstone for the A₅ quintic: given an unramified prime Q of 𝒪_{SplittingField} over a nonzero rational prime whose inertia degree is divisible by 3, the arithmetic Frobenius arithFrobAt has order equal to that inertia degree (DedekindFrobeniusBridge.orderOf_arithFrobAt_eq_inertiaDegIn), so 3 ∣ orderOf(Frob) ∣ |Gal|. This discharges three_dvd_gal_card through the abstract Dedekind–Frobenius bridge, together with the IsInvariant instance on the ring of integers."
     }
   ],
   "conclusion": {

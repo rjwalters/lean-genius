@@ -33,7 +33,7 @@
       "id": "partial-alternating-binomial",
       "title": "The Partial Alternating Binomial Sum",
       "startLine": 82,
-      "endLine": 111,
+      "endLine": 112,
       "mathContext": "$A(f,m) := \\sum_{j=0}^{m} (-1)^j \\binom{f}{j}, \\qquad A(0,m)=1, \\qquad A(f+1,m) = (-1)^m \\binom{f}{m}$",
       "summary": "altPartial f m is the truncated binomial expansion of (1-1)^f. altPartial_zero gives A(0,m)=1 (only the j=0 term survives). altPartial_succ is the Pascal telescoping A(f+1,m) = (-1)^m C(f,m), proved by induction on m using C(f+1,m+1) = C(f,m) + C(f,m+1); its sign (-1)^m and non-negative magnitude C(f,m) are the entire source of the Bonferroni one-sidedness."
     },
@@ -41,7 +41,7 @@
       "id": "truncated-sieve-reindex",
       "title": "The Truncated Sieve and Its Per-Permutation Reindexing",
       "startLine": 113,
-      "endLine": 229,
+      "endLine": 230,
       "mathContext": "$B(n,m) = \\sum_{k=0}^{m} (-1)^k \\binom{n}{k}(n-k)! = \\sum_{\\sigma \\in \\mathrm{Perm}(\\mathrm{Fin}\\,n)} A(f_\\sigma, m)$",
       "summary": "truncSieve_eq_subset_sum rewrites each binomial term C(n,k)(n-k)! as the sum over size-k subsets t of the crux count (-1)^|t|·#{σ fixing t pointwise}, reusing the parent's card_fixesOn. truncSieve_eq_sum_altPartial is the Fubini step: expanding the crux count as Σ_σ of indicators and exchanging the order of summation (Finset.sum_comm) lands on Σ_σ A(f_σ, m), since for fixed σ the subsets t fixed pointwise are exactly the subsets of the fixed-point set, of which there are C(f_σ, k)."
     },
@@ -49,9 +49,17 @@
       "id": "bonferroni-inequalities",
       "title": "Derangements and the Bonferroni Inequalities",
       "startLine": 231,
-      "endLine": 322,
+      "endLine": 324,
       "mathContext": "$(-1)^m\\,(B(n,m) - D_n) = \\sum_{\\sigma:\\,f_\\sigma \\ge 1} \\binom{f_\\sigma - 1}{m} \\ge 0$",
       "summary": "card_deranged_filter and numDerangements_eq_indicator_sum identify the derangements as the f=0 permutations, so D_n is the indicator sum Σ_σ [f_σ=0]. truncSieve_sub_numDerangements writes B(n,m) - D_n as Σ_σ (A(f_σ,m) - [f_σ=0]); neg_one_pow_mul_term_nonneg shows each term times (-1)^m is non-negative (0 for derangements, C(f-1,m) otherwise). The core neg_one_pow_mul_truncSieve_sub_nonneg gives (-1)^m(B-D_n) ≥ 0, whence bonferroni_even (D_n ≤ B(n,m) for even m) and bonferroni_odd (B(n,m) ≤ D_n for odd m). truncSieve_self confirms B(n,n) = D_n."
+    },
+    {
+      "id": "concrete-check",
+      "title": "Part V: Concrete Check (Axiom-Free)",
+      "startLine": 325,
+      "endLine": 358,
+      "summary": "Kernel-`decide`/`norm_num` sanity checks at n = 4: the truncated sieve values truncSieve 4 0..3 = 24, 0, 12, 8, the derangement count numDerangements 4 = 9, and the two Bonferroni bounds numDerangements 4 ≤ truncSieve 4 2 and truncSieve 4 3 ≤ numDerangements 4 — instantiating the even/odd inequalities. All by `decide`, so axiom-free (no native_decide).",
+      "mathContext": "$B(4,0)=24,\\ B(4,1)=0,\\ B(4,2)=12,\\ B(4,3)=8$ and $D_4=9$, illustrating $B(4,3) \\le D_4 \\le B(4,2)$ — the odd truncation under- and the even truncation over-estimates the derangement count."
     }
   ],
   "conclusion": {

@@ -100,8 +100,8 @@
     {
       "id": "variant",
       "title": "Factor-of-2 Variant",
-      "startLine": 55,
-      "endLine": 70,
+      "startLine": 56,
+      "endLine": 69,
       "summary": "Defines `ErdosProblem327_variant` conjecturing $o(N)$ size under `SumNotDvdTwoProd`.  The unit fraction equivalence `sumDvdProd_iff_unitFraction` linking $(a+b) \\mid ab$ to $1/a + 1/b = 1/c$ over $\\mathbb{Q}$ is fully proved earlier in the file.",
       "mathContext": "$\\text{SumNotDvdTwoProd}(A) \\iff \\forall a, b \\in A,\\, a \\ne b \\implies (a+b) \\nmid (2ab)$. Conjecture: $\\forall \\varepsilon > 0,\\, |A| < \\varepsilon N$ for large $N$, i.e., $|A| = o(N)$."
     },
@@ -117,7 +117,7 @@
       "id": "structural",
       "title": "Coprime and GCD Characterizations",
       "startLine": 111,
-      "endLine": 168,
+      "endLine": 198,
       "summary": "Proves `coprime_sumNotDvdProd` (coprime pairs avoid the condition, via Euclid's lemma), `sumNotDvdProd_of_pairwise_coprime` (corollary for pairwise coprime sets), and `sumDvdProd_iff_reduced_divides_gcd` (the GCD reduction $(a'+b') \\mid d$, fully proved via coprimality argument).",
       "mathContext": "If $\\gcd(a,b) = 1$ then $\\gcd(a, a+b) = 1$, so $(a+b) \\mid ab$ implies $(a+b) \\mid b$ by Euclid's lemma, contradicting $a+b > b$.  The GCD reduction writes $a = da', b = db'$ and shows $(a+b) \\mid ab \\iff (a'+b') \\mid d$ via $\\gcd(a'+b', a'b') = 1$."
     }

@@ -158,6 +158,14 @@
       "endLine": 264,
       "summary": "expPolyCoeff_depends_only_on_minpoly (similar matrices give same p_k), matrixExp_in_span (exp(tM) ∈ span{I,...,M^{d-1}}), matrixExp_zero_eq_one (consistency check), matrixExp_atMost_n_terms (n-term bound via minpoly_dvd_charpoly).",
       "mathContext": "The span membership follows from the polynomial form. The n-term bound uses deg(minpoly) ≤ deg(charpoly) = n. The minpoly-only dependence is the basis for the spectral viewpoint: exp(tM) is determined by the spectrum of M (with multiplicities matching the minimal, not characteristic, polynomial)."
+    },
+    {
+      "id": "degree-bound",
+      "title": "Degree Bound: at most n terms",
+      "startLine": 265,
+      "endLine": 288,
+      "summary": "matrixExp_atMost_n_terms sharpens the polynomial representation to the dimension bound: exp(t·M) is a linear combination of I, M, …, M^(n-1) with n = Fintype.card n, since deg(minpoly M) ≤ deg(charpoly M) = n (minpoly_dvd_charpoly + charpoly_natDegree_eq_dim). Terms beyond the minimal polynomial degree vanish, extending the sum from d to n. matrixExp_zero_eq_one records the base case exp 0 = 1.",
+      "mathContext": "$\\exp(tM) = \\sum_{k=0}^{n-1} c_k(t)\\,M^k$ with $n = \\dim$, because $\\deg(\\operatorname{minpoly} M) \\le \\deg(\\operatorname{charpoly} M) = n$ by Cayley–Hamilton."
     }
   ],
   "sorries": 0

@@ -77,41 +77,57 @@
       "id": "bernoulli",
       "title": "Bernoulli Numbers Setup",
       "startLine": 1,
-      "endLine": 50,
+      "endLine": 57,
       "summary": "Imports Mathlib's Bernoulli numbers and defines the integer numerator extraction.",
       "mathContext": "Bernoulli numbers $B_n \\in \\mathbb{Q}$: $B_0 = 1$, $B_1 = -1/2$, $B_2 = 1/6$, $B_4 = -1/30$. For odd $n \\geq 3$: $B_n = 0$."
     },
     {
       "id": "regular-irregular",
       "title": "Regular and Irregular Primes",
-      "startLine": 51,
-      "endLine": 95,
+      "startLine": 58,
+      "endLine": 99,
       "summary": "Defines regular and irregular primes via Bernoulli number divisibility. Proves they are complementary.",
       "mathContext": "$p$ is regular if $p \\nmid \\text{num}(B_{2k})$ for all $1 \\leq k \\leq (p-3)/2$. Irregular otherwise."
     },
     {
+      "id": "fermats-last-theorem",
+      "title": "Fermat's Last Theorem (Statement)",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "Defines `FLT n` as the non-solvability of $x^n+y^n=z^n$ in positive integers -- the target settled by Kummer's regular-prime approach.",
+      "mathContext": "$\\mathrm{FLT}(n):\\ \\nexists\\,x,y,z\\in\\mathbb{Z}_{>0},\\ x^n+y^n=z^n$."
+    },
+    {
       "id": "kummer",
       "title": "Kummer's Criterion (Axiomatized)",
-      "startLine": 96,
-      "endLine": 130,
+      "startLine": 116,
+      "endLine": 136,
       "summary": "States Kummer's criterion: FLT holds for regular prime exponents. Axiomatized as it requires cyclotomic field theory.",
       "mathContext": "Kummer (1850): If $p$ is regular, then $x^p + y^p \\neq z^p$ for positive integers $x, y, z$."
     },
     {
       "id": "bernoulli-harmonic",
       "title": "Bernoulli-Harmonic-Wolstenholme Connection",
-      "startLine": 131,
-      "endLine": 180,
+      "startLine": 137,
+      "endLine": 175,
       "summary": "States the connection between harmonic sums, Bernoulli numbers, and Wolstenholme primes. Three axioms capturing the deep number-theoretic relationships.",
       "mathContext": "$H_{p-1} \\equiv -pB_{p-1} \\pmod{p^2}$ (Johnson 1975). Wolstenholme primes: $p^2 \\mid B_{p-1}$ (McIntosh 1995)."
     },
     {
       "id": "triangle",
       "title": "The Connection Triangle and FLT",
-      "startLine": 181,
-      "endLine": 220,
+      "startLine": 176,
+      "endLine": 216,
       "summary": "Proves that irregular primes block Kummer's approach, states Wiles' FLT as an axiom, and shows regular primes have FLT from two independent sources.",
       "mathContext": "Bernoulli numbers connect Wolstenholme ($B_{p-1}$) and Kummer ($B_2, \\ldots, B_{p-3}$) to FLT."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 217,
+      "endLine": 250,
+      "summary": "Recap of the regular/irregular dichotomy: Kummer's criterion settles FLT for regular prime exponents, irregular primes (detected via Bernoulli numerators) block that route, and Wiles' theorem `flt_wiles` closes the remaining cases unconditionally.",
+      "mathContext": "regular $p\\Rightarrow\\mathrm{FLT}(p)$ (Kummer); irregular $p\\Rightarrow$ Bernoulli obstruction; all $p\\ge 3\\Rightarrow\\mathrm{FLT}(p)$ (Wiles)."
     }
   ],
   "crossReferences": [

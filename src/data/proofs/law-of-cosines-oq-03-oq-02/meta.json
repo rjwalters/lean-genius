@@ -137,9 +137,17 @@
       "id": "special-cases",
       "title": "Right-Angle and Equilateral Special Cases",
       "startLine": 238,
-      "endLine": 264,
+      "endLine": 278,
       "summary": "right_angle_sines: C=π/2 gives sinA/sinha = 1/sinhc (since sin(π/2)=1). equilateral_angles: a=b=c implies A=B and B=C by two applications of isoceles_iff and sin_eq_of_lt_pi. ratio_pos: the common ratio sinA/sinha is positive.",
       "mathContext": "The right-angle case is the hyperbolic analogue of $\\sin A = a/c$ in Euclidean right triangles. The positivity of the ratio sinA/sinha follows from sin_pos_of_pos_of_lt_pi and sinh_pos_of_pos."
+    },
+    {
+      "id": "circumradius",
+      "title": "Positive Sine Ratio (Circumradius)",
+      "startLine": 279,
+      "endLine": 289,
+      "summary": "ratio_pos shows the common ratio sin A / sinh a is strictly positive for any HyperbolicSineTriangle, via sin_pos_of_pos_of_lt_pi on the angle and positivity of sinh on the positive side length. This is the sign half of the hyperbolic law of sines: the shared value sin A / sinh a = sin B / sinh b = sin C / sinh c equals 1/(2R), the reciprocal of twice the circumradius.",
+      "mathContext": "$\\dfrac{\\sin A}{\\sinh a} = \\dfrac{\\sin B}{\\sinh b} = \\dfrac{\\sin C}{\\sinh c} = \\dfrac{1}{2R} > 0$, since $0 < A < \\pi \\Rightarrow \\sin A > 0$ and $a > 0 \\Rightarrow \\sinh a > 0$."
     }
   ],
   "conclusion": {

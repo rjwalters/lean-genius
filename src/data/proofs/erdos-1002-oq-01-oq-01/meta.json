@@ -128,9 +128,9 @@
     {
       "id": "log-bound",
       "title": "Inner Sum Log Bound (axiom)",
-      "summary": "Axiomatizes |S(α,n)| ≤ C·log n for badly approximable irrational α (HasBoundedPartialQuotients). Derives the bounded log-normalized form log_normalized_bounded as a consequence.",
+      "summary": "Defines distToNearestInt and HasBoundedPartialQuotients (bounded partial quotients / badly approximable), then axiomatizes |S(α,n)| ≤ C·log n via innerSum_log_bound. Derives the bounded log-normalized form log_normalized_bounded as a consequence.",
       "startLine": 670,
-      "endLine": 705,
+      "endLine": 730,
       "mathContext": "Badly approximable numbers (also called numbers of bounded type) are those for which the continued fraction expansion has bounded partial quotients, equivalently ‖qα‖ ≥ C/q for all q ≥ 1. The log bound for S(α,n) is classical and essential for Kesten's 1960 central limit theorem for the inner sum."
     }
   ],

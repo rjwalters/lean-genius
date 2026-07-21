@@ -133,8 +133,8 @@
       "id": "amenability",
       "title": "§VI: Relationship to Amenability",
       "startLine": 964,
-      "endLine": 1517,
-      "summary": "Defines IsAmenable and develops Tarski's group-theoretic source of the paradox. Proves int_amenable (ℤ is amenable via Cesàro window-shift), the free-group word-set cover lemmas (free_group_cover_a/b and disjointness), free_group_paradoxical (F₂ is paradoxical under its own left regular action), and free_group_not_amenable. All fully proved, no sorry.",
+      "endLine": 1553,
+      "summary": "Defines IsAmenable and develops Tarski's group-theoretic source of the paradox. Proves int_amenable (ℤ is amenable via Cesàro window-shift), the free-group word-set cover lemmas (free_group_cover_a/b and disjointness), free_group_paradoxical (F₂ is paradoxical under its own left regular action), and the capstone free_group_not_amenable. The final theorem assumes a left-invariant finitely-additive probability measure μ on F₂ and derives 2 ≤ 1: the two covers F₂ = W(a) ⊔ a·W(a⁻¹) = W(b) ⊔ b·W(b⁻¹) force μ(W_a)+μ(W_ainv)=1 and μ(W_b)+μ(W_binv)=1, while the four word-start sets are pairwise disjoint subsets of F₂ so their measures sum ≤ 1 — contradiction. All fully proved, no sorry.",
       "mathContext": "A group $G$ is amenable iff $\\exists \\mu: 2^G \\to [0,\\infty]$ with $\\mu(G)=1$, finite additivity, and left-invariance $\\mu(gA) = \\mu(A)$. $\\mathbb{Z}$ is amenable via the Cesàro density $\\mu_N(A) = |A \\cap \\{-N,\\dots,N\\}|/(2N+1)$ (shift changes the count by $\\le |n|$, vanishing along an ultrafilter). $F_2$ is not amenable: $F_2 = W(a) \\sqcup aW(a^{-1}) = W(b) \\sqcup bW(b^{-1})$ gives two paradoxical coverings — exactly Tarski's equivalence between non-amenability and paradoxicality."
     }
   ],

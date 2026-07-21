@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring and imports: the OPEN Erdős #826 question — are there infinitely many n with τ(n+k) ≪ k for all k ≥ 1?",
+      "mathContext": "Setup: statement of Erdős Problem #826 (divisor function growth along shifts), imports from Mathlib.NumberTheory.ArithmeticFunction."
+    },
+    {
       "id": "divisor-function",
       "title": "The Divisor Function",
       "summary": "tau definition, examples of τ(n) values",
@@ -91,72 +99,80 @@
       "title": "Growth of the Divisor Function",
       "summary": "average_order_tau, max_order_tau — known bounds on τ",
       "startLine": 57,
-      "endLine": 86,
+      "endLine": 92,
       "mathContext": "Bound: average_order_tau, max_order_tau — known bounds on τ"
     },
     {
       "id": "linear-bound",
       "title": "The Linear Bound Condition",
       "summary": "linearBoundCondition, goodStartingPoints — core definitions",
-      "startLine": 87,
-      "endLine": 115,
+      "startLine": 93,
+      "endLine": 144,
       "mathContext": "Formal definition: linearBoundCondition, goodStartingPoints — core definitions"
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "erdos_826_conjecture, erdos_826_statement — formal problem",
-      "startLine": 116,
-      "endLine": 143,
+      "startLine": 145,
+      "endLine": 175,
       "mathContext": "Mathematical content: erdos_826_conjecture, erdos_826_statement — formal problem"
     },
     {
       "id": "relation-248",
       "title": "Relation to Problem #248",
       "summary": "erdos_248_weaker, erdos_826_implies_248 — problem hierarchy",
-      "startLine": 144,
-      "endLine": 165,
+      "startLine": 176,
+      "endLine": 203,
       "mathContext": "Mathematical content: erdos_248_weaker, erdos_826_implies_248 — problem hierarchy"
     },
     {
       "id": "observations",
       "title": "Small Examples and Observations",
       "summary": "fewDivisorsAt1, prime_satisfies_bound — analysis of constraints",
-      "startLine": 166,
-      "endLine": 192,
+      "startLine": 204,
+      "endLine": 234,
       "mathContext": "Bound: fewDivisorsAt1, prime_satisfies_bound — analysis of constraints"
     },
     {
       "id": "heuristic",
       "title": "Probabilistic Heuristic",
       "summary": "heuristicCriticalRange — why the conjecture is plausible",
-      "startLine": 193,
-      "endLine": 216,
+      "startLine": 235,
+      "endLine": 258,
       "mathContext": "Mathematical content: heuristicCriticalRange — why the conjecture is plausible"
     },
     {
       "id": "smooth-numbers",
       "title": "Connection to Smooth Numbers",
       "summary": "hasControlledDivisors — smooth number perspective",
-      "startLine": 217,
-      "endLine": 236,
+      "startLine": 259,
+      "endLine": 278,
       "mathContext": "Mathematical content: hasControlledDivisors — smooth number perspective"
     },
     {
       "id": "difficulty",
       "title": "Why Tao Considers This Difficult",
       "summary": "Analysis of structural challenges preventing resolution",
-      "startLine": 237,
-      "endLine": 265,
+      "startLine": 279,
+      "endLine": 307,
       "mathContext": "Mathematical content: Analysis of structural challenges preventing resolution"
     },
     {
       "id": "status",
       "title": "Problem Status and Main Statement",
       "summary": "erdos_826_status, erdos_826_main — summary theorem",
-      "startLine": 266,
-      "endLine": 307,
+      "startLine": 308,
+      "endLine": 330,
       "mathContext": "Verified: erdos_826_status, erdos_826_main — summary theorem"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 331,
+      "endLine": 350,
+      "summary": "Closing recap: the conjecture ↔ ∃ C>0 with infinitely many good starting points, its implication of the weaker Problem #248, and the open status.",
+      "mathContext": "Summary: restates $\\exists C>0,\\ \\{n: \\tau(n+k)\\le Ck\\ \\forall k\\}$ infinite and the reduction erdos_826_conjecture → erdos_248_weaker."
     }
   ],
   "conclusion": {

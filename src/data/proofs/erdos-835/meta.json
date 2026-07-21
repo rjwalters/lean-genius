@@ -132,6 +132,15 @@
       "endLine": 177,
       "summary": "The main theorem `erdos_835` proves $\\forall k,\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ via `interval_cases`. Also proves $k = 2$ is the unique solution in range $[2, 8]$.",
       "mathContext": "Verified: The main theorem `erdos_835` proves $\\forall k,\\, 3 \\leq k \\leq 8 \\Rightarrow \\neg\\text{ErdosRosenfeldQuestion}(k)$ via `interval_cases`. Also proves $k = 2$ is the unique solution in range $[2, 8]$."
+    },
+    {
+      "id": "uniqueness-and-answer",
+      "title": "Uniqueness (k=2) and Answer Strings",
+      "startLine": 178,
+      "endLine": 214,
+      "significance": "supporting",
+      "summary": "only_k_equals_2_works (the uniqueness companion to the main theorem) and the human-readable erdos_835_answer / erdos_835_status definitions recording the resolved status (SOLVED for 3 ≤ k ≤ 8).",
+      "mathContext": "Complements erdos_835 with the k = 2 uniqueness statement and documents the answer as string constants for the gallery."
     }
   ],
   "conclusion": {

@@ -256,7 +256,7 @@
       "id": "sec-part-xi",
       "title": "Part XI: Main Theorems — ssytSchurFin_two_row & jacobi_trudi_ssyt_eq",
       "startLine": 2483,
-      "endLine": 2557,
+      "endLine": 2611,
       "summary": "Proves ssytSchurFin_two_row (k=2 Jacobi-Trudi identity) by combining the Part X partition and weight-sum lemmas — conditional on the L1907 cycle-lemma sorry it transitively invokes — then states the general jacobi_trudi_ssyt_eq: assembled for k=0,1,2 and left open (sorry, L2555) for k≥3 pending algebraic LGV + RSK.",
       "mathContext": "ssytSchurFin_two_row: rewrites schurPolynomial via schurPolynomial_two_row into h_a h_b − h_{a+1}(if 1≤b then h_{b-1} else 0), rewrites ssytSchurFin via ssytFin_two_row_eq_sum_colstrict, then closes with eq_sub_of_add_eq on jdt_weight_sum ▸ sym_pair_sum_partition — no sorry. jacobi_trudi_ssyt_eq dispatches k=0 (empty), k=1 (one-row), k=2 (via ssytSchurFin_two_row); k≥3 is the file's second open sorry (needs algebraic LGV ~150 lines + RSK bijection ~150 lines)."
     }

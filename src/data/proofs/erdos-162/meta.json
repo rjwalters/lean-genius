@@ -88,24 +88,31 @@
     },
     {
       "id": "derived",
-      "title": "Derived Results",
+      "title": "Part VI: Derived Results",
       "startLine": 181,
-      "endLine": 185,
-      "summary": "Proves half_is_extremal: F(n,1/2) ≤ F(n,α) directly from monotonicity axiom."
+      "endLine": 193,
+      "summary": "The Θ(log n) sandwich `discrepancy_theta_log` (F(n,α) bounded above and below by constant multiples of log n) and `half_is_extremal`: F(n,1/2) ≤ F(n,α), extracted from the monotonicity axiom."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 187,
-      "endLine": 199,
-      "summary": "Defines ErdosProblem162: F(n,α)/log n → c_α via ε-δ convergence for every 0 < α ≤ 1/2."
+      "title": "Part VII: Main Conjecture",
+      "startLine": 194,
+      "endLine": 207,
+      "summary": "Defines `ErdosProblem162`: for every 0 < α ≤ 1/2 there is a constant c_α > 0 with F(n,α)/log n → c_α, stated via ε-δ convergence — strictly stronger than the Θ(log n) bounds, asserting a definite limit rather than mere boundedness."
     },
     {
       "id": "examples",
-      "title": "Computational Examples",
-      "startLine": 201,
-      "endLine": 213,
-      "summary": "Verifies C(1,2)=0, C(2,2)=1, C(4,2)=6, C(8,2)=28 via native_decide."
+      "title": "Part VIII: Computational Examples",
+      "startLine": 208,
+      "endLine": 220,
+      "summary": "Concrete edge counts K_n = C(n,2): verifies C(1,2)=0, C(2,2)=1, C(4,2)=6, C(8,2)=28 via native_decide (benign — `example` blocks, not part of the axiomatized claim)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary & Connections",
+      "startLine": 221,
+      "endLine": 244,
+      "summary": "Status recap: F(n,α) = Θ(log n) is known (probabilistic method for the lower bound, counting for the upper); the OPEN part is convergence of the ratio to a limit c_α and determining c_α. Interpolates between Ramsey numbers (α near 0) and discrepancy theory (α = 1/2); related to Erdős #617."
     }
   ],
   "conclusion": {

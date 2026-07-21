@@ -79,15 +79,15 @@
       "id": "question2",
       "title": "Question 2: Large Values of f(n)",
       "startLine": 397,
-      "endLine": 417,
+      "endLine": 434,
       "summary": "PROVES `f_prime_square`: $f(p^2) \\ge p = \\sqrt{p^2}$ from `f_lower_bound` and `minFac_prime_sq`. AXIOMATIZES `erdos_700_question2`: $\\{n \\text{ composite} : f(n) > \\lfloor\\sqrt{n}\\rfloor\\}$ is infinite. Witness: $n = 30$ satisfies $f(30) = 6 > 5 = \\lfloor\\sqrt{30}\\rfloor$.",
       "mathContext": "Proved: $f(p^2) \\ge p$, since $p(p^2) = \\text{minFac}(p^2) = p$ and $p(n) \\le f(n)$. Axiom: infinitely many composite $n$ with $\\text{Nat.sqrt}(n) < f(n)$. Example: $n = 30$, $f(30) = 6$, $\\lfloor\\sqrt{30}\\rfloor = 5$."
     },
     {
       "id": "question3",
       "title": "Question 3: Upper Bound Conjecture",
-      "startLine": 419,
-      "endLine": 427,
+      "startLine": 435,
+      "endLine": 444,
       "summary": "AXIOMATIZES `erdos_700_question3`: for every $A > 0$, $\\exists C > 0$ such that $f(n) \\le C \\cdot n / (\\log n)^A$ for all composite $n \\ge 4$. This would show $f(n)$ is much smaller than $n/P(n)$ for typical $n$, since $P(n) \\sim \\log n$ by Hardy-Ramanujan.",
       "mathContext": "Axiom: $f(n) \\ll_A n/(\\log n)^A$ for every fixed $A > 0$. Formalized via `Real.log` from `Mathlib.Analysis.SpecialFunctions.Log.Basic`. Connection: Hardy-Ramanujan gives $P(n) \\sim \\log n$ for typical $n$, so $n/P(n) \\sim n/\\log n$."
     }

@@ -113,16 +113,16 @@
       "id": "main-theorem",
       "title": "Part 3: frobenius_count (Main Theorem)",
       "startLine": 78,
-      "endLine": 131,
-      "summary": "Six-step proof: (1) g > 0 and ¬Rep(g); (2) split filter into {1,...,g-1} ∪ {g}; (3) let c = |nonRep ∩ {1,...,g-1}|; (4) bijection gives c = |Rep ∩ {1,...,g-1}|; (5) partition gives 2c = g - 1; (6) g + 1 = (a-1)(b-1) and prod_pred_even give 2q = g + 1 for q = (a-1)(b-1)/2; conclude c + 1 = q via linarith.",
+      "endLine": 154,
+      "summary": "Six-step proof running to the close of the noncomputable section: (1) g > 0 and ¬Rep(g); (2) split filter into {1,...,g-1} ∪ {g}; (3) let c = |nonRep ∩ {1,...,g-1}|; (4) bijection gives c = |Rep ∩ {1,...,g-1}|; (5) partition gives 2c = g - 1; (6) g + 1 = (a-1)(b-1) and prod_pred_even give 2q = g + 1 for q = (a-1)(b-1)/2; conclude c + 1 = q via linarith.",
       "mathContext": "$2c + 1 = g$ where $c$ is the nonRep count in $(0, g)$ and $+1$ accounts for $g$ itself. Total $= \\frac{g+1}{2} = \\frac{(a-1)(b-1)}{2}$."
     },
     {
       "id": "examples",
       "title": "Concrete Examples (3,5), (3,7), (5,8)",
-      "startLine": 137,
-      "endLine": 159,
-      "summary": "Verifies the formula on three coprime pairs: (3,5) g=7 count=4 nonRep={1,2,4,7}, (3,7) g=11 count=6, (5,8) g=27 count=14. Each Frobenius number checked by native_decide, count by norm_num, individual non-representability by direct ⟨x,y,h⟩ ↦ omega refutation.",
+      "startLine": 156,
+      "endLine": 178,
+      "summary": "Verifies the formula on three coprime pairs: (3,5) g=7 count=4 nonRep={1,2,4,7}, (3,7) g=11 count=6, (5,8) g=27 count=14. Each Frobenius number checked by native_decide, count by norm_num, individual non-representability by direct ⟨x,y,h⟩ ↦ omega refutation; a closing #check exposes frobenius_count's signature.",
       "mathContext": "**Chicken McNugget** (3, 5): boxes of size 3, 5 cannot fill orders 1, 2, 4, 7. Density of non-representable approaches 1/2 for large coprime pairs."
     }
   ],

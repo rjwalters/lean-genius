@@ -84,6 +84,20 @@
       "summary": "Proves `sidon_not_implies_sum_free`: {1,2,4} is Sidon but not sum-free (1+1=2 ∈ S). Corrects a previously unsound axiom. Full case analysis verified."
     },
     {
+      "id": "sec-949-sidon-closure",
+      "title": "Sidon Set Closure Properties",
+      "startLine": 102,
+      "endLine": 127,
+      "summary": "Structural lemmas for the Sidon property: `sidon_subset` (the Sidon property is inherited by subsets) and `sidon_two_element` (every two-element set {a,b} with a ≠ b is Sidon, via exhaustive 16-case analysis over (x,y,z,w) ∈ {a,b}⁴ reducing each collision to a = b)."
+    },
+    {
+      "id": "sec-949-structural",
+      "title": "Structural Properties: Sum-Free and Sumset Lemmas",
+      "startLine": 128,
+      "endLine": 171,
+      "summary": "Basic closure and computation lemmas: `sum_free_empty`, `sum_free_singleton` (needs x ≠ 0, since {0} fails 0+0=0), `sum_free_subset`, `realSumset_mono`, `open_interval_sum_free` ((1/3,2/3) is sum-free as a+b > 2/3), plus sumset identities `realSumset_empty`, `realSumset_singleton` ({x} ↦ {2x}), `mem_realSumset_of_mem`, and `zero_not_sum_free`."
+    },
+    {
       "id": "sec-949-sidon-solved",
       "title": "Sidon Variant (Solved)",
       "startLine": 175,

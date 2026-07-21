@@ -80,10 +80,18 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File docstring and imports. Question: for which (n, q) does every nonderogatory M ∈ Mₙ(𝔽_q) have a cyclic vector, and does it fail when q ≤ n? This file proves the answer is \"all (n, q), no failure threshold\", delegating the primary-decomposition core to the WIP04/WIP05 companion files and keeping the annihilator/similarity lemmas standalone.",
+      "mathContext": "Nonderogatory means $\\mu_M = \\chi_M$ (minimal = characteristic polynomial). A cyclic vector $v$ makes $\\{v, Mv, \\dots, M^{n-1}v\\}$ a basis. The naive union-avoidance heuristic fails over small fields, yet the theorem still holds via module theory."
+    },
+    {
       "id": "definitions",
       "title": "§ I. Definitions",
       "startLine": 45,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Defines `IsCyclicVector M v` (no nonzero polynomial of degree < n annihilates v) and `IsNonderogatory M` (minpoly K M = M.charpoly), consistent with parent files.",
       "mathContext": "A vector $v \\in K^n$ is cyclic for $M$ if $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis, equivalently if no polynomial of degree $< n$ annihilates $v$ via $M$. A matrix is nonderogatory if its minimal polynomial coincides with its characteristic polynomial (both monic of degree $n$)."
     },
@@ -91,7 +99,7 @@
       "id": "similarity",
       "title": "§ II. Similarity Preserves Cyclic Vectors",
       "startLine": 54,
-      "endLine": 110,
+      "endLine": 111,
       "summary": "Proves aeval_conj (conjugation by P is an AlgHom, commuting with polynomial evaluation) and cyclic_vector_of_similar (v is cyclic for N iff P⁻¹v is cyclic for P⁻¹NP).",
       "mathContext": "If $M = P^{-1}NP$ and $w$ is cyclic for $N$, then $v = P^{-1}w$ is cyclic for $M$. The key fact: $p(P^{-1}NP) = P^{-1}p(N)P$ for any polynomial $p$, which holds because conjugation by $P$ is a $K$-algebra endomorphism."
     },
@@ -99,7 +107,7 @@
       "id": "annihilator",
       "title": "§ III. Annihilator Characterization (GCD Bezout)",
       "startLine": 112,
-      "endLine": 197,
+      "endLine": 207,
       "summary": "Proves annihilator_dvd_minpoly (GCD annihilation via Bezout, sorry-free) and cyclic_iff_ann_eq_minpoly (cyclic ↔ annihilator ideal = (minpoly)) for nonderogatory matrices.",
       "mathContext": "The annihilator ideal of $v$ is $\\{p \\in K[X] : p(M)v = 0\\}$, a principal ideal $(a_v)$ where $a_v \\mid \\mu_M$. For nonderogatory $M$ (with $\\deg \\mu_M = n$): $v$ is cyclic iff $a_v = \\mu_M$. The Bezout identity $\\gcd(p, \\mu) = Ap + B\\mu$ gives $\\gcd(p, \\mu)(M)v = 0$ whenever $p(M)v = 0$."
     },
@@ -107,7 +115,7 @@
       "id": "main-theorem",
       "title": "§ IV. Main Theorem (All Fields)",
       "startLine": 208,
-      "endLine": 240,
+      "endLine": 241,
       "summary": "States `nonderogatory_has_cyclic_vector_any_field` (delegated to WIP05, axiom-free / sorry-free) and the corollary `nonderogatory_has_cyclic_vector_finite_any_size` for finite fields. The proof routes through WIP04 (factored case) + WIP05 (UFD wrapper).",
       "mathContext": "Over any field $K$: nonderogatory $M \\in M_n(K)$ has a cyclic vector. The proof factors $\\mu_M = \\prod p_i^{e_i}$ via UFD on $K[X]$, builds primary vectors $v_i$ with $p_i^{e_i-1}(M)v_i \\neq 0$ and $p_i^{e_i}(M)v_i = 0$, and combines them via Bezout/CRT projections $\\pi_i = b_i F_i(M)$ to produce a cyclic vector $v = \\sum v_i$. No PID structure theorem or RCF is required."
     },
@@ -115,9 +123,17 @@
       "id": "f2-counterexample",
       "title": "§ V. F₂ Counterexample to Union Avoidance",
       "startLine": 242,
-      "endLine": 253,
+      "endLine": 254,
       "summary": "Proves F2_union_covers: every nonzero vector in F₂² lies in one of the 3 proper 1-dim subspaces, showing union avoidance fails for |K| ≤ n. The main theorem still holds by module theory.",
       "mathContext": "The 3 nonzero vectors of $\\mathbb{F}_2^2$ are $(1,0)$, $(0,1)$, $(1,1)$. Each 1-dimensional subspace over $\\mathbb{F}_2$ contains exactly 1 nonzero vector. So $\\mathbb{F}_2^2 \\setminus \\{0\\}$ is covered by 3 proper subspaces. For union avoidance, one needs $|K| > n$ (here $|K| = 2 \\leq 2 = n$), so the argument fails. Yet every nonderogatory $2 \\times 2$ matrix over $\\mathbb{F}_2$ still has a cyclic vector."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 255,
+      "endLine": 288,
+      "summary": "Recaps the result (theorem holds for all (n, q), no threshold), the 0-axiom/0-sorry status, and the seven proved lemmas: annihilator_dvd_minpoly, cyclic_iff_ann_eq_minpoly, aeval_conj, cyclic_vector_of_similar, F2_union_covers, and the two main theorems (delegating to WIP04 Bezout/CRT + WIP05 UFD factorization). Notes the removed companion-matrix lemmas that depended on a Mathlib-drift-affected file.",
+      "mathContext": "The main theorem is closed by factoring $\\mu_M = \\prod_i p_i^{e_i}$ (UFD on $K[X]$), building primary vectors, and combining via Bezout/CRT — no Rational Canonical Form needed, so the previously isolated `nonderogatory_similar_companion` sorry is eliminated."
     }
   ],
   "references": [

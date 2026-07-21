@@ -96,50 +96,50 @@
   ],
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 26,
-      "endLine": 29,
-      "summary": "Imports all of `Mathlib` and opens `Nat`, `Finset`, and `scoped Classical` (the powerset filters defining f and f_m need classical decidability). Asymptotic bounds are stated over the reals via `rpow`.",
-      "mathContext": "Imports all of `Mathlib` and opens `Nat`, `Finset`, and `scoped Classical` (the powerset filters defining f and f_m need classical decidability). Asymptotic bounds are stated over the reals via `rpow`."
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring for Erdős #877 on sum-free subsets of {1,…,n} and the count of maximal sum-free sets, tracing the resolution history — Cameron–Erdős lower bound, Łuczak–Schoen (2001) upper bound, and Balogh–Liu–Sharifzadeh–Treglown sharp asymptotics (2015/2018) — followed by imports and setup.",
+      "mathContext": "Number of (maximal) sum-free subsets of $\\{1,\\dots,n\\}$."
     },
     {
       "id": "sum-free-sets",
       "title": "Sum-Free Sets",
-      "startLine": 42,
-      "endLine": 76,
+      "startLine": 34,
+      "endLine": 77,
       "summary": "Defines `isSumFree` ($\\forall a,b,c \\in A,\\ a \\neq b+c$), `sumset` ($A+A$), and `isSumFree'` ($A \\cap (A+A) = \\emptyset$). Proves odd numbers and upper half are sum-free.",
       "mathContext": "Formal definition: Defines `isSumFree` ($\\forall a,b,c \\in A,\\ a \\neq b+c$), `sumset` ($A+A$), and `isSumFree'` ($A \\cap (A+A) = \\emptyset$). Proves odd numbers and upper half are sum-free."
     },
     {
       "id": "maximal-sum-free",
       "title": "Maximal Sum-Free Sets",
-      "startLine": 86,
-      "endLine": 147,
+      "startLine": 78,
+      "endLine": 148,
       "summary": "Defines `isMaximalSumFree` (sum-free and no proper extension) and PROVES the maximality criterion: every excluded positive $x$ satisfies $x = a+b$, $a = x+b$, or $2x \\in A$ (the hypothesis $x>0$ is necessary — the criterion fails at $x=0$ via the trivial sum $0=0+0$).",
       "mathContext": "Defines `isMaximalSumFree` (sum-free and no proper extension) and PROVES the maximality criterion: every excluded positive $x$ satisfies $x = a+b$, $a = x+b$, or $2x \\in A$ (the hypothesis $x>0$ is necessary — the criterion fails at $x=0$ via the trivial sum $0=0+0$)."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions f(n) and f_m(n)",
-      "startLine": 156,
-      "endLine": 176,
+      "startLine": 149,
+      "endLine": 177,
       "summary": "Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$.",
       "mathContext": "Formal definition: Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$."
     },
     {
       "id": "cameron-erdos-bound",
       "title": "Cameron-Erdős Lower Bound",
-      "startLine": 186,
-      "endLine": 212,
+      "startLine": 178,
+      "endLine": 213,
       "summary": "$f_m(n) > 2^{n/4}$ for $n \\geq 4$ (axiomatized Cameron-Erdős bound). `odds_construction` is PROVED: the upper half $\\{n/2+1,\\dots,n\\}$ is a sum-free set of cardinality $\\geq n/2$.",
       "mathContext": "$f_m(n) > 2^{n/4}$ for $n \\geq 4$ (axiomatized Cameron-Erdős bound). `odds_construction` is PROVED: the upper half $\\{n/2+1,\\dots,n\\}$ is a sum-free set of cardinality $\\geq n/2$."
     },
     {
       "id": "luczak-schoen",
       "title": "Łuczak-Schoen (2001): Main Question Resolved",
-      "startLine": 222,
-      "endLine": 239,
+      "startLine": 214,
+      "endLine": 240,
       "summary": "$\\exists c < 1/2,\\ f_m(n) < 2^{cn}$ (over $\\mathbb{R}$, via `rpow`). Resolves the main question: $f_m(n) = o(2^{n/2})$ is **YES**.",
       "mathContext": "$\\exists c < 1/2,\\ f_m(n) < 2^{cn}$ (over $\\mathbb{R}$, via `rpow`). Resolves the main question: $f_m(n) = o(2^{n/2})$ is **YES**."
     },
@@ -147,31 +147,31 @@
       "id": "blst-sharp",
       "title": "BLST Sharp Asymptotics (2015, 2018)",
       "startLine": 241,
-      "endLine": 257,
+      "endLine": 278,
       "summary": "BLST 2015: $f_m(n) = 2^{(1/4+o(1))n}$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot 2^{n/4}$ with $C_n$ depending on $n \\bmod 4$.",
       "mathContext": "BLST 2015: $f_m(n) = $$2^{{(1/4+o(1))n}$}$$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot $$2^{{n/4}$}$$ with $C_n$ depending on $n \\bmod 4$."
     },
     {
       "id": "structure",
       "title": "Structure and the Container Method",
-      "startLine": 259,
-      "endLine": 283,
+      "startLine": 279,
+      "endLine": 304,
       "summary": "Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof.",
       "mathContext": "Verified: Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof."
     },
     {
       "id": "erdos-748",
       "title": "Comparison with Erdős #748",
-      "startLine": 285,
-      "endLine": 304,
+      "startLine": 305,
+      "endLine": 335,
       "summary": "$f(n) = \\Theta(2^{n/2})$ vs $f_m(n) = \\Theta(2^{n/4})$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta(2^{-n/4}) \\to 0$.",
       "mathContext": "$f(n) = \\Theta($$2^{{n/2}$}$)$ vs $f_m(n) = \\Theta($$2^{{n/4}$}$)$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta($$2^{{-n/4}$}$) \\to 0$."
     },
     {
       "id": "summary",
       "title": "Summary and Resolution",
-      "startLine": 306,
-      "endLine": 341,
+      "startLine": 336,
+      "endLine": 380,
       "summary": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
       "mathContext": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
     }

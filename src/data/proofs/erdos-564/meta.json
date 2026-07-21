@@ -71,7 +71,7 @@
       "id": "header",
       "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 32,
       "summary": "Introduction to the hypergraph Ramsey number problem and known bounds",
       "mathContext": "Bound: Introduction to the hypergraph Ramsey number problem and known bounds"
     },
@@ -87,57 +87,65 @@
       "id": "ramsey-function",
       "title": "The Ramsey Function R_k(n)",
       "startLine": 46,
-      "endLine": 72,
+      "endLine": 66,
       "summary": "Definition and axiomatization of hypergraph Ramsey numbers",
       "mathContext": "Formal definition: Definition and axiomatization of hypergraph Ramsey numbers"
     },
     {
       "id": "bounds",
       "title": "Known Bounds (EHR 1965)",
-      "startLine": 73,
-      "endLine": 93,
+      "startLine": 67,
+      "endLine": 87,
       "summary": "The Erdős-Hajnal-Rado upper and lower bounds",
       "mathContext": "Bound: The Erdős-Hajnal-Rado upper and lower bounds"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 94,
-      "endLine": 116,
+      "startLine": 88,
+      "endLine": 109,
       "summary": "The $500 open problem asking for doubly exponential lower bound",
       "mathContext": "Bound: The $500 open problem asking for doubly exponential lower bound"
     },
     {
       "id": "tower",
       "title": "Tower Functions",
-      "startLine": 117,
-      "endLine": 150,
+      "startLine": 110,
+      "endLine": 143,
       "summary": "Definition and properties of iterated exponentiation",
       "mathContext": "Formal definition: Definition and properties of iterated exponentiation"
     },
     {
       "id": "small-values",
       "title": "Small Values",
-      "startLine": 151,
-      "endLine": 165,
+      "startLine": 144,
+      "endLine": 154,
       "summary": "Docstring placeholders for known values R₃(3) = 4 and R₃(4) = 13; no Lean axioms or theorems declare these values",
       "mathContext": "Documentation: Known values are referenced in docstrings only; no Lean declarations in this range"
     },
     {
       "id": "comparison",
       "title": "Graph Ramsey Comparison",
-      "startLine": 166,
-      "endLine": 190,
+      "startLine": 155,
+      "endLine": 174,
       "summary": "bounds_summary theorem repackages the two hypergraph EHR bound axioms; graph Ramsey comparison appears only in a docstring with no associated Lean declaration",
       "mathContext": "Bound: bounds_summary combines erdos_hajnal_rado_upper and erdos_hajnal_rado_lower; no graph Ramsey axioms exist"
     },
     {
       "id": "four-colour",
       "title": "The 4-Colour Case",
-      "startLine": 191,
-      "endLine": 207,
+      "startLine": 175,
+      "endLine": 186,
       "summary": "bounds_gap_enormous (fully proved) states the enormous gap between known bounds; 4-colour doubly exponential result is mentioned in a docstring only, with no associated Lean declaration",
       "mathContext": "Proved: bounds_gap_enormous captures the bounds gap (no sorry); 4-colour content is docstring-only"
+    },
+    {
+      "id": "why-hard",
+      "title": "Why the Problem is Hard",
+      "startLine": 187,
+      "endLine": 248,
+      "summary": "Auxiliary growth bound (n²+400 ≤ 2ⁿ for n≥10) and the enormous upper-to-lower bound ratio that makes pinning down the exponential/doubly-exponential growth of R₃(n) intractable.",
+      "mathContext": "Explains the doubly-exponential vs exponential gap: for large $n$ the ratio of the known upper bound $2^{2^n}$ to the lower bound $2^{cn^2}$ is enormous."
     }
   ],
   "conclusion": {

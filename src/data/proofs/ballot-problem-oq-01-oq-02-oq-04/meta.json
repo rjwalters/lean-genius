@@ -63,48 +63,56 @@
       "id": "definitions",
       "title": "Definitions for Weighted Ballot",
       "startLine": 51,
-      "endLine": 73,
-      "summary": "WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
+      "endLine": 81,
+      "summary": "Part I: WeightSeq (List ℚ), partialSums (scanl), isGoodWeighted (all partial sums positive), Decidable instance."
     },
     {
       "id": "partial-sum-lemmas",
       "title": "Partial Sum Lemmas",
-      "startLine": 75,
-      "endLine": 101,
-      "summary": "partialSums_nil, partialSums_singleton, partialSums_two, singleton_good_iff, two_good_iff.",
+      "startLine": 82,
+      "endLine": 139,
+      "summary": "Part II: partialSums_nil, partialSums_singleton, partialSums_two, partialSums_three; singleton_good_iff, two_good_iff, three_good_iff (the decidable good-ordering criterion used to enumerate the counterexample).",
       "mathContext": "partialSums [w₁, w₂] = [w₁, w₁+w₂]; isGoodWeighted [w₁,w₂] ↔ 0 < w₁ ∧ 0 < w₁+w₂."
     },
     {
       "id": "counterexample",
       "title": "Counterexample: Classical Formula Fails",
-      "startLine": 103,
-      "endLine": 152,
-      "summary": "Six orderings of [2,1,-2] enumerated. Two are good. Actual P = 1/3 ≠ 1/5 = classical formula.",
+      "startLine": 140,
+      "endLine": 210,
+      "summary": "Part III: all six orderings of [2,1,-2] resolved (ordering1_good..ordering6_not_good), counterexample_good_count establishes exactly two are good (native_decide), and classical_formula_prediction/formula_fails/classical_formula_incorrect show the true P = 2/6 = 1/3 differs from the classical (3−2)/(3+2) = 1/5.",
       "mathContext": "W_A = 2+1 = 3, W_B = 2. Formula: (3-2)/(3+2) = 1/5. Actual: 2/6 = 1/3."
     },
     {
       "id": "fiber-argument",
       "title": "The Fiber Argument Breaks",
-      "startLine": 154,
-      "endLine": 182,
-      "summary": "projection_ambiguity: [2,-1] is good but [1,-2] is not, despite same ±1 pattern. fiber_argument_fails: existential witness.",
+      "startLine": 211,
+      "endLine": 247,
+      "summary": "Part IV: projection_ambiguity: [2,-1] is good but [1,-2] is not, despite same ±1 pattern. fiber_argument_fails: existential witness.",
       "mathContext": "The parent's key invariant (equal fiber sizes) fails for non-uniform weights."
     },
     {
       "id": "one-vs-one",
       "title": "1-vs-1 Case: Exact Analysis",
-      "startLine": 207,
-      "endLine": 245,
-      "summary": "Analyzes one A-vote vs one B-vote: exactly 1/2 of orderings are good regardless of weights. Shows classical formula = 1/2 iff wA = 3wB.",
+      "startLine": 248,
+      "endLine": 287,
+      "summary": "Part V: analyzes one A-vote vs one B-vote: exactly 1/2 of orderings are good regardless of weights. Shows classical formula = 1/2 iff wA = 3wB.",
       "mathContext": "For 1-vs-1: $P = 1/2$ always, but $(w_A - w_B)/(w_A + w_B) = 1/2 \\Leftrightarrow w_A = 3w_B$."
     },
     {
       "id": "scaled-case",
-      "title": "Scaled Ballot Expression and Open Directions",
-      "startLine": 247,
-      "endLine": 311,
-      "summary": "Defines scaledBallotFormula (ap-bq)/(ap+bq), proves degeneration to classical, positivity, and ≤1 bound. Notes this is NOT the actual probability for the scaled case. Concludes with open directions.",
+      "title": "Scaled Ballot Expression",
+      "startLine": 288,
+      "endLine": 329,
+      "summary": "Defines scaledBallotFormula (ap−bq)/(ap+bq) and proves its basic algebra: scaled_degenerates (recovers the classical (a−b)/(a+b) at p = q = 1), scaled_formula_pos (positive when ap > bq), and scaled_formula_le_one (bounded by 1). Emphasises that this closed form is NOT the actual probability for the weighted/scaled ballot process.",
       "mathContext": "$(ap-bq)/(ap+bq)$ degenerates to $(a-b)/(a+b)$ when $p = q = 1$. But it does not equal the actual ballot probability in general."
+    },
+    {
+      "id": "open-directions",
+      "title": "Open Directions",
+      "startLine": 330,
+      "endLine": 351,
+      "summary": "A closing discussion of what a genuine weighted ballot theorem would require — a recurrence or reflection argument for biased steps — and how the scaled formula relates to the classical Bertrand ballot problem, framing the remaining open directions.",
+      "mathContext": "The weighted analogue of $P=(a-b)/(a+b)$ for step-biases $p,q$ is not $(ap-bq)/(ap+bq)$ in general; the true probability needs a biased reflection principle."
     }
   ],
   "conclusion": {

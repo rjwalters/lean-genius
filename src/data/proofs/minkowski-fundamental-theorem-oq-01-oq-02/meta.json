@@ -84,6 +84,14 @@
       "endLine": 204,
       "summary": "prod_successiveMinimum_scale (∏ᵢ λᵢ(L, cS) = (∏ᵢ λᵢ(L, S))/cⁿ) and secondTheorem_product_scale_invariant (granting vol(cS)=cⁿ·vol(S), the quantity ∏ᵢ λᵢ·vol is unchanged under rescaling).",
       "mathContext": "The product of n minima scales by c⁻ⁿ; pairing it with the cⁿ scaling of the volume shows the Minkowski second-theorem quantity is a scaling invariant."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Scaling Homogeneity of the Successive Minima",
+      "startLine": 205,
+      "endLine": 243,
+      "summary": "Closing summary block (0 sorries, 0 axioms): the homogeneity law λᵢ(L,cS)=λᵢ(L,S)/c with its c=2 and c≥1 specialisations, the product law ∏λᵢ(L,cS)=(∏λᵢ)/cⁿ, and the scaling-invariance of the Minkowski second-theorem quantity ∏λᵢ·vol — with an honest note that the second theorem’s product bound itself remains the open analytic core. Ends with `#check` exports of the public API.",
+      "mathContext": "$\\prod_i\\lambda_i(L,cS)=c^{-n}\\prod_i\\lambda_i(L,S)$; $\\prod_i\\lambda_i\\cdot\\mathrm{vol}$ is scale-invariant."
     }
   ],
   "conclusion": {

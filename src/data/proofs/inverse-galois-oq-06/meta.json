@@ -140,71 +140,81 @@
       "id": "computational-preamble",
       "title": "Computational Preamble: S₅ Element Orders",
       "startLine": 53,
-      "endLine": 66,
-      "summary": "Two native_decide lemmas verified over all 14,400 pairs in S₅: no order-5 element commutes with any order-3 element, and no S₅ element has order 15. Used later in Sylow theory arguments."
+      "endLine": 84,
+      "summary": "Two native_decide lemmas verified over all pairs in S₅: no order-5 element commutes with any order-3 element, and no S₅ element has order 15. Consumed later by the Sylow-elimination arguments."
     },
     {
       "id": "part-i-polynomial",
       "title": "Part I: The Witness Polynomial q",
       "startLine": 85,
-      "endLine": 87,
-      "summary": "Defines q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5 over ℚ, the linear translate of x⁵ + 20x + 16 chosen for Eisenstein at p=5."
+      "endLine": 134,
+      "summary": "Defines q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5 over ℚ, the linear translate x ↦ x−1 of x⁵ + 20x + 16 chosen so Eisenstein applies at p=5."
     },
     {
       "id": "part-ii-irreducibility",
       "title": "Part II: Irreducibility via Eisenstein's Criterion",
       "startLine": 135,
-      "endLine": 173,
-      "summary": "Proves q irreducible over ℚ: first over ℤ using Eisenstein at ideal (5), then transfers to ℚ via Gauss's lemma (monic → primitive → ℤ-irreducible ⟹ ℚ-irreducible)."
+      "endLine": 206,
+      "summary": "Proves q irreducible over ℚ: first over ℤ using Eisenstein at the ideal (5), then transfers to ℚ via Gauss's lemma (monic → primitive → ℤ-irreducible ⟹ ℚ-irreducible)."
     },
     {
       "id": "part-iii-iv-galois-bounds",
       "title": "Parts III–IV: Basic Structure and Galois Group Bounds",
       "startLine": 207,
-      "endLine": 318,
-      "summary": "Establishes natDegree 5, monic, separable, 5 distinct roots. Bounds |Gal|: 5 | |Gal| (irreducible prime degree), |Gal| | 120 (embedding in S₅). Introduces axiom three_dvd_gal_card and documents eliminated axiom history."
+      "endLine": 328,
+      "summary": "Establishes natDegree 5, monic, separable, 5 distinct roots. Bounds |Gal|: 5 | |Gal| (five_dvd_gal_card, irreducible prime degree) and |Gal| | 120 (gal_card_dvd_120, embedding into S₅). Introduces the axiom three_dvd_gal_card (line 318) and documents the eliminated-axiom history."
     },
     {
       "id": "part-iva-sylow",
       "title": "Part IV-A: Sylow Elimination of Orders 15 and 30",
       "startLine": 329,
-      "endLine": 552,
-      "summary": "Proves no S₅ subgroup has order 15 (Sylow + non-commutativity) or 30 (A₅ simplicity). Combined with 15 | |Gal| | 60, forces |Gal| = 60."
+      "endLine": 565,
+      "summary": "Proves no S₅ subgroup has order 15 (Sylow counting + non-commutativity of order-3/order-5 elements) or 30 (via A₅ simplicity), giving gal_card_ne_15 and gal_card_ne_30. Combined with 15 | |Gal| | 60 this later forces |Gal| = 60."
     },
     {
-      "id": "part-v-xii-infrastructure",
-      "title": "Parts V & XII: Galois Map and Mod-7 Evidence",
-      "startLine": 883,
-      "endLine": 959,
-      "summary": "Defines galToPerm5 (Gal → S₅) and galSign. Verifies mod-7 factorization evidence and resolvent sextic — both supporting three_dvd_gal_card without formally proving Dedekind's theorem."
+      "id": "part-v-ix-xi-prerequisites",
+      "title": "Parts V, IX–XI: Galois Prerequisites and the Original Polynomial",
+      "startLine": 566,
+      "endLine": 726,
+      "summary": "Part V sets up the Galois action prerequisites: q_splits_fact, gal_injects_into_perm, a5_card (|A₅| = 60, native_decide) and a5_not_solvable. Part IX ties q to p(x) = x⁵ + 20x + 16 through the translation x ↦ x−1 (same splitting field, Disc = 32000²); Parts X–XI compare with other A₅ realizations and summarize the remaining axiom.",
+      "mathContext": "$q(x) = p(x-1)$, so $\\mathrm{Gal}(q/\\mathbb{Q}) \\cong \\mathrm{Gal}(p/\\mathbb{Q})$ and $\\mathrm{Disc}(q) = \\mathrm{Disc}(p) = 2^{16}\\cdot 5^6 = 32000^2$."
     },
     {
-      "id": "part-xiii-xv-vandermonde",
-      "title": "Parts XIII–XV: Vandermonde Framework and Discriminant",
-      "startLine": 996,
-      "endLine": 1897,
-      "summary": "Major technical section. Proves Δ² = disc(q) = 32000² via complex embedding + Sophie Germain identity. Shows all Galois automorphisms are even permutations. Concludes |Gal| | 60 axiom-free."
+      "id": "part-xii-xiii-infrastructure",
+      "title": "Parts XII–XIII & Sections A–D: Galois Map, Mod-7 Evidence, and Sign Infrastructure",
+      "startLine": 727,
+      "endLine": 1162,
+      "summary": "Supporting machinery: mod-7 factorization evidence and the resolvent sextic that motivate three_dvd_gal_card without formally proving Dedekind's theorem (Part XII); the Galois sign homomorphism galSign via galPermHomAux (Section A); the structural theorem gal_card_dvd_60_of_all_even — if every automorphism is an even permutation then |Gal| | 60 (Section B); the Vandermonde roadmap (Section C); and root enumeration rootEnum / galToPerm5 (Section D)."
+    },
+    {
+      "id": "part-xv-disc-square",
+      "title": "Part XV & Section E: Δ² = disc(q) = 32000² Proved (Axiom Eliminated)",
+      "startLine": 1163,
+      "endLine": 1738,
+      "summary": "Proves the former axiom vandermondeProduct² = disc(q) = 32000² outright: assembles the ordered-root-difference product as a Vandermonde determinant, evaluates q′ at each root, identifies Π q′(αᵢ) with the resultant (resultant_eq_disc_q), and finishes via a Sophie Germain identity. Section E records which axioms this eliminates.",
+      "mathContext": "$\\Delta^2 = \\prod_{i<j}(\\alpha_i-\\alpha_j)^2 = \\mathrm{disc}(q) = 32000^2$, using $a^4 + 4b^4 = (a^2+2b^2-2ab)(a^2+2b^2+2ab)$."
+    },
+    {
+      "id": "part-xiv-sign-argument",
+      "title": "Part XIV: Vandermonde Permutation Argument — All Signs Even",
+      "startLine": 1739,
+      "endLine": 1947,
+      "summary": "The crux. From Δ² = 32000² in the domain, Δ = ±32000 hence Δ ∈ ℚ, so every σ fixes Δ (gal_fixes_vandermondeProduct); independently σ(Δ) = galSign(σ)·Δ (via the determinant of a row-permuted Vandermonde). With Δ ≠ 0 this yields all_gal_signs_positive: galSign σ = 1 for all σ, hence gal_card_dvd_60_proved — |Gal| | 60, now axiom-free.",
+      "mathContext": "$\\sigma(\\Delta) = \\Delta$ and $\\sigma(\\Delta) = \\mathrm{sign}(\\pi_\\sigma)\\,\\Delta$ with $\\Delta \\ne 0$ force $\\mathrm{sign}(\\pi_\\sigma) = 1$, so $\\mathrm{Gal} \\le A_5$ and $|\\mathrm{Gal}| \\mid 60$."
     },
     {
       "id": "part-xv-cardinality",
       "title": "Part XV: |Gal(q/ℚ)| = 60",
-      "startLine": 1912,
-      "endLine": 1954,
-      "summary": "Pins down |Gal| = 60 from gal_card_dvd_60_proved + three_dvd_gal_card + Sylow elimination. Splitting field has ℚ-dimension 60."
+      "startLine": 1948,
+      "endLine": 2005,
+      "summary": "Pins down |Gal| = 60 (q_gal_card) from gal_card_dvd_60_proved and 15 | |Gal| (axiom 3 | |Gal| plus proved 5 | |Gal|), with the Sylow eliminations ruling out {15, 30}. The splitting field has ℚ-dimension 60."
     },
     {
-      "id": "part-xvi-isomorphism",
-      "title": "Part XVI: Gal(q/ℚ) ≅ A₅",
-      "startLine": 1976,
-      "endLine": 2025,
-      "summary": "Injects Gal into S₅, shows image has index 2, applies Mathlib uniqueness of index-2 subgroup to conclude Gal ≅ A₅."
-    },
-    {
-      "id": "part-xvii-non-solvable",
-      "title": "Part XVII: Non-Solvability — Beyond Shafarevich",
-      "startLine": 2035,
-      "endLine": 2067,
-      "summary": "Proves Gal(q) not solvable via A₅'s non-solvability and the isomorphism. First non-solvable realization in the library."
+      "id": "part-xvi-xvii-isomorphism",
+      "title": "Parts XVI–XVII: A₅ Isomorphism, Non-Solvability, and Axiom Status",
+      "startLine": 2006,
+      "endLine": 2117,
+      "summary": "Injects Gal into S₅, shows the image has index 2 (gal_has_index_two) and applies Mathlib's uniqueness of the index-2 subgroup to build q_gal_iso_a5: Gal(q/ℚ) ≅ A₅, with corollary a5_realizable_iso. Part XVII proves gal_not_solvable — Gal(q) is not solvable, transferred from A₅ — the first non-solvable Galois realization in the library, beyond Shafarevich's solvable-groups theorem. Closes with the axiom-status summary."
     }
   ],
   "sorries": 0

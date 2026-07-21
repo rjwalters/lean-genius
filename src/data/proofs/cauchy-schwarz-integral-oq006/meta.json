@@ -75,49 +75,57 @@
     {
       "id": "definitions",
       "title": "Weighted Mean Definitions",
-      "summary": "Four noncomputable defs: WHM, WGM, WAM, WQM",
+      "summary": "Part I: four noncomputable defs WHM, WGM, WAM, WQM (weighted harmonic, geometric, arithmetic, quadratic means of a, b with weights w₁, w₂)",
       "startLine": 40,
-      "endLine": 55,
+      "endLine": 58,
       "mathContext": "$\\text{WHM}(a,b) = (w_1/a + w_2/b)^{-1}$, $\\text{WGM}(a,b) = a^{w_1} b^{w_2}$, $\\text{WAM}(a,b) = w_1 a + w_2 b$, $\\text{WQM}(a,b) = \\sqrt{w_1 a^2 + w_2 b^2}$."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity Lemmas",
+      "summary": "Part II: whm_pos, wgm_pos, wam_pos (strict positivity for positive inputs and weights) and wqm_nonneg (nonnegativity), each discharged by `positivity` after unfolding. These guard the reciprocal and inversion steps that follow.",
+      "startLine": 59,
+      "endLine": 83,
+      "mathContext": "For $a,b>0$ and $w_1,w_2>0$: $\\text{WHM},\\text{WGM},\\text{WAM}>0$; and $\\text{WQM}\\ge 0$ whenever $w_1,w_2\\ge 0$. Positivity of WHM/WGM is needed to invoke $\\text{inv\\_le\\_comm}_0$ in the HM–GM step."
     },
     {
       "id": "wgm-le-wam",
       "title": "WGM ≤ WAM (Weighted AM-GM)",
-      "summary": "One-liner from Mathlib's Real.geom_mean_le_arith_mean2_weighted",
-      "startLine": 76,
-      "endLine": 84,
+      "summary": "Part III: wgm_le_wam — one-liner from Mathlib's Real.geom_mean_le_arith_mean2_weighted",
+      "startLine": 84,
+      "endLine": 95,
       "mathContext": "$a^{w_1} b^{w_2} \\le w_1 a + w_2 b$ for $a,b \\ge 0$, $w_1,w_2 \\ge 0$, $w_1+w_2=1$."
     },
     {
       "id": "wam-le-wqm",
       "title": "WAM ≤ WQM (Jensen for f(x) = x²)",
-      "summary": "Jensen identity: w₁a² + w₂b² - (w₁a + w₂b)² = w₁w₂(a-b)² ≥ 0",
-      "startLine": 87,
-      "endLine": 110,
+      "summary": "Part IV: weighted_variance_nonneg then wam_le_wqm. Jensen identity: w₁a² + w₂b² − (w₁a + w₂b)² = w₁w₂(a−b)² ≥ 0",
+      "startLine": 96,
+      "endLine": 118,
       "mathContext": "$w_1 a + w_2 b \\le \\sqrt{w_1 a^2 + w_2 b^2}$. Key: $(w_1 a + w_2 b)^2 \\le w_1 a^2 + w_2 b^2$ with gap $w_1 w_2 (a-b)^2 \\ge 0$."
     },
     {
       "id": "whm-le-wgm",
       "title": "WHM ≤ WGM (Reciprocal + Inversion)",
-      "summary": "Apply WGM ≤ WAM to (1/a, 1/b); use inv_le_comm₀ to flip",
-      "startLine": 113,
-      "endLine": 145,
+      "summary": "Part V: whm_le_wgm — apply WGM ≤ WAM to (1/a, 1/b); use inv_le_comm₀ to flip",
+      "startLine": 119,
+      "endLine": 162,
       "mathContext": "$(w_1/a + w_2/b)^{-1} \\le a^{w_1} b^{w_2}$. Apply AM-GM to $(1/a, 1/b)$: $(1/a)^{w_1}(1/b)^{w_2} \\le w_1/a + w_2/b$, i.e., $\\text{WGM}^{-1} \\le \\text{WHM}^{-1}$. Inversion reverses: $\\text{WHM} \\le \\text{WGM}$."
     },
     {
       "id": "main-chain",
       "title": "Main Chain Theorem",
-      "summary": "WHM ≤ WGM ≤ WAM ≤ WQM combined",
-      "startLine": 148,
-      "endLine": 156,
+      "summary": "Part VI: weighted_mean_chain — WHM ≤ WGM ≤ WAM ≤ WQM combined",
+      "startLine": 163,
+      "endLine": 177,
       "mathContext": "Full weighted power mean chain for $a,b > 0$ and $w_1, w_2 > 0$ with $w_1 + w_2 = 1$."
     },
     {
       "id": "specialization",
       "title": "Unweighted Chain as Special Case",
-      "summary": "w₁ = w₂ = 1/2 recovers HM ≤ GM ≤ AM ≤ QM",
-      "startLine": 159,
-      "endLine": 210,
+      "summary": "Part VII: whm_half_eq_hm, wgm_half_eq_gm, wam_half_eq_am, wqm_half_eq_qm evaluate each weighted mean at w₁ = w₂ = 1/2, and unweighted_chain_from_weighted recovers HM ≤ GM ≤ AM ≤ QM",
+      "startLine": 178,
+      "endLine": 219,
       "mathContext": "At $w_1 = w_2 = 1/2$: $\\text{WHM} = 2ab/(a+b)$, $\\text{WGM} = \\sqrt{ab}$, $\\text{WAM} = (a+b)/2$, $\\text{WQM} = \\sqrt{(a^2+b^2)/2}$."
     }
   ],

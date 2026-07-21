@@ -55,41 +55,57 @@
       "id": "definition",
       "title": "Core Definition",
       "startLine": 30,
-      "endLine": 36,
+      "endLine": 40,
       "summary": "Defines HasPropertyBK: there exists χ : α → Fin k such that no nonempty member is monochromatic.",
       "mathContext": "$B_k(F) \\iff \\exists \\chi : \\alpha \\to [k],\\; \\forall f \\in F,\\; \\exists a,b \\in f,\\; \\chi(a) \\neq \\chi(b)$."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
-      "startLine": 38,
-      "endLine": 60,
+      "startLine": 41,
+      "endLine": 74,
       "summary": "Empty family has B_k, B_k is hereditary, singleton families with ≥2-element sets have B_k.",
       "mathContext": "$B_k(\\emptyset)$, $F \\subseteq G \\land B_k(G) \\implies B_k(F)$, $|f| \\geq 2 \\land k \\geq 2 \\implies B_k(\\{f\\})$."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity in k",
-      "startLine": 62,
-      "endLine": 80,
+      "startLine": 75,
+      "endLine": 94,
       "summary": "Proves B_k → B_{k+1} via Fin.castSucc embedding, and the general version B_k → B_m for k ≤ m.",
       "mathContext": "$B_k(F) \\implies B_{k+1}(F)$ (embed $[k] \\hookrightarrow [k+1]$). More generally, $k \\leq m \\implies B_k \\implies B_m$."
     },
     {
       "id": "connection",
       "title": "Connection to Property B",
-      "startLine": 82,
-      "endLine": 120,
+      "startLine": 95,
+      "endLine": 137,
       "summary": "Proves B ↔ B_2 via the bijection between 2-colorings and subsets.",
       "mathContext": "$B(F) \\iff B_2(F)$ for families of nonempty sets."
     },
     {
+      "id": "upper-bound",
+      "title": "Trivial Upper Bound",
+      "startLine": 138,
+      "endLine": 148,
+      "summary": "hasPropertyBK_card_le_one: any family with at most one set (each of size ≥ 2) has Property B_k for k ≥ 2, via the empty and singleton base cases.",
+      "mathContext": "$|F| \\leq 1 \\land (\\forall f \\in F,\\, |f| \\geq 2) \\land k \\geq 2 \\implies B_k(F)$."
+    },
+    {
       "id": "threshold",
       "title": "Generalized First-Moment Threshold",
-      "startLine": 130,
-      "endLine": 145,
-      "summary": "States the generalized bound: |F| < k^{t-1}/(k-1) with min size ≥ t implies B_k.",
+      "startLine": 149,
+      "endLine": 162,
+      "summary": "States the generalized bound generalizedFirstMoment as an open question: |F| < k^{t-1}/(k-1) with min size ≥ t implies B_k, with a probabilistic proof sketch (uniform k-coloring, E(mono sets) < 1).",
       "mathContext": "$|F| \\cdot (k-1) < k^{t-1} \\land \\min_{f \\in F} |f| \\geq t \\implies B_k(F)$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 163,
+      "endLine": 172,
+      "summary": "propertyBK_hierarchy records the B_2 ⊆ B_3 ⊆ ⋯ hierarchy: B_k(F) implies B_m(F) for every m ≥ k.",
+      "mathContext": "$B_k(F) \\land k \\leq m \\implies B_m(F)$."
     }
   ],
   "conclusion": {

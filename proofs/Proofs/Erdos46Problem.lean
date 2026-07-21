@@ -294,6 +294,40 @@ theorem exists_isUnitFractionRepr_card_ge (k : ℕ) :
       Finset.card_erase_of_mem hmS]
     omega
 
+/-- **Unit-fraction representations of `1` of every cardinality `k ≥ 3` exist.**
+Strengthening of `exists_isUnitFractionRepr_card_ge` from `k ≤ |S|` to `|S| = k`
+exactly. The split-largest step of `isUnitFractionRepr_replace` raises the
+cardinality by *exactly one* (it removes `m` and inserts the two distinct new
+denominators `m+1`, `m(m+1)`), so starting from the length-`3` base `{2, 3, 6}`
+every cardinality `≥ 3` is realised. (Cardinalities `0, 1, 2` are impossible:
+`two_le_card_of_isUnitFractionRepr` rules out `< 2`, and a two-element
+representation `1/a + 1/b = 1` with `a, b ≥ 2` forces `a = b = 2`, not a
+`Finset` of two *distinct* elements — so `3` is the exact minimum.) -/
+theorem exists_isUnitFractionRepr_card_eq (k : ℕ) (hk : 3 ≤ k) :
+    ∃ S : Finset ℕ, IsUnitFractionRepr S ∧ S.card = k := by
+  induction k, hk using Nat.le_induction with
+  | base => exact ⟨{2, 3, 6}, isUnitFractionRepr_two_three_six, by decide⟩
+  | succ k hk ih =>
+    obtain ⟨S, hS, hcard⟩ := ih
+    have hne : S.Nonempty := by rw [← Finset.card_pos]; omega
+    -- split the largest denominator `m`; the replacement adds exactly one element
+    set m := S.max' hne with hm_def
+    have hmS : m ∈ S := S.max'_mem hne
+    have hmax : ∀ a ∈ S, a ≤ m := fun a ha => S.le_max' a ha
+    have hm2 : 2 ≤ m := hS.1 m hmS
+    have h1 : m + 1 ∉ S := fun h => by have := hmax _ h; omega
+    have h2 : m * (m + 1) ∉ S := fun h => by have := hmax _ h; nlinarith
+    have hrepl := isUnitFractionRepr_replace hS hmS h1 h2
+    refine ⟨insert (m + 1) (insert (m * (m + 1)) (S.erase m)), hrepl, ?_⟩
+    have hne' : m + 1 ≠ m * (m + 1) := by nlinarith
+    have h2erase : m * (m + 1) ∉ S.erase m := fun h => h2 (Finset.mem_of_mem_erase h)
+    have h1insert : m + 1 ∉ insert (m * (m + 1)) (S.erase m) := by
+      simp only [Finset.mem_insert, not_or]
+      exact ⟨hne', fun h => h1 (Finset.mem_of_mem_erase h)⟩
+    rw [Finset.card_insert_of_notMem h1insert, Finset.card_insert_of_notMem h2erase,
+      Finset.card_erase_of_mem hmS]
+    omega
+
 /-- **There are infinitely many distinct unit-fraction representations of `1`.**
 Consequence of `exists_isUnitFractionRepr_card_ge`: the representations have
 unbounded cardinality, so the set of them cannot be finite (a finite family of
@@ -357,3 +391,160 @@ theorem exists_isRatFractionRepr_inv_min_ge (t : ℕ) (ht : 1 ≤ t) :
     rw [Finset.mem_image] at hm
     obtain ⟨n, hn, rfl⟩ := hm
     fin_cases hn <;> omega
+
+/-! ## Telescoping engine: representations with arbitrarily large denominators
+
+The additive union lemma (`isRatFractionRepr_union`) and the multiplicative
+scaling lemma (`isRatFractionRepr_smul`) both *reshape* existing representations.
+The complementary **telescoping engine** *builds* representations from scratch out
+of the pronic numbers `k(k+1)`: since `1/(k(k+1)) = 1/k - 1/(k+1)` (`inv_mul_succ`),
+the reciprocals over any interval `[a, b)` collapse to `1/a - 1/b`. Starting the
+interval at a large `a` forces every denominator above any prescribed bound — the
+exact "min denominator > N" regime flagged as the prerequisite for pairwise-disjoint
+chaining toward `ErdosProblem46_infinitely_many`. (The remaining step, assembling a
+representation of *exactly `1`* with min > N collision-free, stays open — see the
+knowledge tracker.) -/
+
+/-- **Telescoping sum.** For `1 ≤ a ≤ b`, the reciprocals of the pronic numbers
+`k(k+1)` over `k ∈ [a, b)` telescope: `∑ 1/(k(k+1)) = 1/a - 1/b`. -/
+theorem sum_Ico_inv_mul_succ (a b : ℕ) (ha : 1 ≤ a) (hab : a ≤ b) :
+    (Finset.Ico a b).sum (fun k => (1 : ℚ) / (k * (k + 1))) = 1 / a - 1 / b := by
+  induction b, hab using Nat.le_induction with
+  | base => simp
+  | succ b hb ih =>
+    rw [Finset.sum_Ico_succ_top hb, ih, inv_mul_succ b (le_trans ha hb)]
+    push_cast
+    ring
+
+/-- The map `k ↦ k(k+1)` is injective on `ℕ` (it is strictly monotone). -/
+theorem injective_mul_succ : Function.Injective (fun k : ℕ => k * (k + 1)) :=
+  (strictMono_nat_of_lt_succ (fun n => by nlinarith)).injective
+
+/-- **Telescoping representation.** For `1 ≤ a ≤ b`, the pronic set
+`{k(k+1) : a ≤ k < b}` is a rational-fraction representation of `1/a - 1/b`, with
+every denominator at least `a(a+1)`. This is the telescoping counterpart of the
+additive-union and multiplicative-scaling engines. -/
+theorem isRatFractionRepr_telescope (a b : ℕ) (ha : 1 ≤ a) (hab : a ≤ b) :
+    IsRatFractionRepr ((Finset.Ico a b).image (fun k => k * (k + 1)))
+      (1 / a - 1 / b) := by
+  refine ⟨?_, ?_⟩
+  · intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    have hk1 : 1 ≤ k := le_trans ha (Finset.mem_Ico.mp hk).1
+    nlinarith [hk1]
+  · rw [Finset.sum_image (fun x _ y _ h => injective_mul_succ h)]
+    simp only [Nat.cast_mul, Nat.cast_add, Nat.cast_one]
+    exact sum_Ico_inv_mul_succ a b ha hab
+
+/-- **Arbitrarily large minimum denominator.** For any bound `B` and any length
+`L ≥ 1`, there is a rational-fraction representation of a *positive* rational using
+exactly `L` denominators, all strictly greater than `B`. Take the telescoping set
+on `[B+1, B+1+L)`, which represents `1/(B+1) - 1/(B+1+L) > 0`.
+
+This realises the "min denominator > N" regime for a genuine (positive-rational)
+target. The stronger requirement — target exactly `1` with min > N — remains open;
+it needs a collision-free assembly of several such large-denominator pieces. -/
+theorem exists_isRatFractionRepr_min_gt (B L : ℕ) (hL : 1 ≤ L) :
+    ∃ (S : Finset ℕ) (q : ℚ),
+      IsRatFractionRepr S q ∧ 0 < q ∧ S.card = L ∧ ∀ n ∈ S, B < n := by
+  set a := B + 1 with ha_def
+  set b := B + 1 + L with hb_def
+  have ha : 1 ≤ a := by omega
+  have hab : a ≤ b := by omega
+  have haltb : a < b := by omega
+  refine ⟨(Finset.Ico a b).image (fun k => k * (k + 1)), 1 / a - 1 / b,
+    isRatFractionRepr_telescope a b ha hab, ?_, ?_, ?_⟩
+  · -- positivity: a < b ⟹ 1/a > 1/b
+    have hapos : (0 : ℚ) < a := by exact_mod_cast (by omega : 0 < a)
+    have hlt : (1 : ℚ) / b < 1 / a :=
+      one_div_lt_one_div_of_lt hapos (by exact_mod_cast haltb)
+    linarith
+  · -- cardinality: injective image of an interval of length L
+    rw [Finset.card_image_of_injective _ injective_mul_succ, Nat.card_Ico]
+    omega
+  · -- every denominator k(k+1) ≥ k ≥ a = B+1 > B
+    intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    have hka : a ≤ k := (Finset.mem_Ico.mp hk).1
+    have hkn : k ≤ k * (k + 1) := Nat.le_mul_of_pos_right k (by omega)
+    omega
+
+/-! ## Divisor-sum bridge: the pseudoperfect / practical-number attack surface
+
+The three engines above (additive union, multiplicative scaling, telescoping) all
+reshape or build representations whose target value stays *below* `1`; the open crux
+toward `ErdosProblem46_infinitely_many` is a representation of *exactly* `1` with
+minimum denominator `> N`. This section opens a structurally different attack surface
+by translating that crux into multiplicative number theory.
+
+If `T` is a set of distinct divisors of a positive integer `M` with
+`∑_{d ∈ T} d = M` (so `M` is *pseudoperfect via `T`*), then dividing through by `M`
+turns the divisor sum into a unit-fraction representation of `1`: each `d ∈ T`
+contributes `1/(M/d)`, and `∑ 1/(M/d) = (∑ d)/M = 1`. The denominators are the
+cofactors `{M/d : d ∈ T}`, so the minimum denominator is `M / max T` — it exceeds
+`N` exactly when every chosen divisor `d` satisfies `N · d < M`, i.e. `d < M/N`.
+
+This reduces "represent `1` with min denominator `> N`" to "write `M` as a sum of
+distinct divisors of `M`, each `< M/N`", for some `M`. The reduction is an
+**equivalence** (conversely, from any Egyptian representation `S` of `1`, taking
+`M = lcm S` and `d_s = M/s` gives distinct divisors of `M` summing to `M`), so per
+the equivalent-strength rule it earns **no decomposition credit** toward the open
+crux. It is recorded here as infrastructure that exposes the divisor /
+practical-number route: with the crux phrased as divisor sums, Mathlib's
+`Nat.divisors` machinery becomes available, and the genuine open content becomes a
+practical-number completeness fact (producing an `M` with enough *small* divisors
+summing exactly to `M`). -/
+
+/-- **Divisor-sum bridge.** If every element of `T` divides `M` with `2 * d ≤ M`
+(equivalently the cofactor `M/d ≥ 2`) and `∑_{d ∈ T} d = M > 0`, then the set of
+cofactors `{M/d : d ∈ T}` is a unit-fraction representation of `1`.  The cofactor
+map `d ↦ M/d` is injective on divisors of `M`, and each term equals `1/(M/d) = d/M`,
+so the reciprocals sum to `(∑ d)/M = 1`. -/
+theorem isUnitFractionRepr_of_divisorSum {M : ℕ} (hM : 1 ≤ M) {T : Finset ℕ}
+    (hdvd : ∀ d ∈ T, d ∣ M) (hle : ∀ d ∈ T, 2 * d ≤ M)
+    (hsum : T.sum id = M) :
+    IsUnitFractionRepr (T.image (fun d => M / d)) := by
+  have hM0 : M ≠ 0 := by omega
+  have hdpos : ∀ d ∈ T, 0 < d := by
+    intro d hd
+    rcases Nat.eq_zero_or_pos d with rfl | hpos
+    · exact absurd (Nat.eq_zero_of_zero_dvd (hdvd 0 hd)) hM0
+    · exact hpos
+  -- the cofactor map is injective on divisors of `M` (left inverse `q ↦ M/q`)
+  have hinj : ∀ x ∈ T, ∀ y ∈ T, M / x = M / y → x = y := by
+    intro x hx y hy h
+    have i₁ : M / (M / x) = x := Nat.div_div_self (hdvd x hx) hM0
+    have i₂ : M / (M / y) = y := Nat.div_div_self (hdvd y hy) hM0
+    rw [← i₁, ← i₂, h]
+  refine ⟨?_, ?_⟩
+  · -- every cofactor denominator is at least `2`
+    intro n hn
+    rw [Finset.mem_image] at hn
+    obtain ⟨d, hd, rfl⟩ := hn
+    exact (Nat.le_div_iff_mul_le (hdpos d hd)).mpr (hle d hd)
+  · -- the reciprocals of the cofactors sum to `1`
+    rw [Finset.sum_image hinj]
+    have hterm : ∀ d ∈ T, (1 : ℚ) / ((M / d : ℕ) : ℚ) = (d : ℚ) / (M : ℚ) := by
+      intro d hd
+      rw [Nat.cast_div (hdvd d hd) (by exact_mod_cast (hdpos d hd).ne'), one_div_div]
+    rw [Finset.sum_congr rfl hterm, ← Finset.sum_div,
+      show (∑ d ∈ T, (d : ℚ)) = (M : ℚ) from by rw [← Nat.cast_sum]; exact_mod_cast hsum,
+      div_self (by exact_mod_cast hM0 : (M : ℚ) ≠ 0)]
+
+/-- **Minimum-denominator criterion for the divisor-sum bridge.** If every chosen
+divisor of `M` satisfies `N * d < M` (i.e. `d < M/N`), then every cofactor
+denominator `M/d` exceeds `N`.  Combined with `isUnitFractionRepr_of_divisorSum`, a
+pseudoperfect decomposition of `M` into distinct divisors all below `M/N` yields a
+representation of `1` with minimum denominator `> N` — the open crux, now phrased
+entirely in terms of divisor sums. -/
+theorem divisorSum_min_gt {M N : ℕ} {T : Finset ℕ}
+    (hdvd : ∀ d ∈ T, d ∣ M) (hlt : ∀ d ∈ T, N * d < M) :
+    ∀ n ∈ T.image (fun d => M / d), N < n := by
+  intro n hn
+  rw [Finset.mem_image] at hn
+  obtain ⟨d, hd, rfl⟩ := hn
+  have hMeq : M / d * d = M := Nat.div_mul_cancel (hdvd d hd)
+  have hcmp : N * d < M / d * d := by rw [hMeq]; exact hlt d hd
+  exact lt_of_mul_lt_mul_right hcmp (Nat.zero_le d)

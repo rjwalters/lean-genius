@@ -108,6 +108,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Norm Equations in Degree > 2",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "File docstring and imports. Pell x² − Dy² = 1 is the norm-one equation of ℚ(√D); this entry studies the degree-3 analogue over K = ℚ(∛2) = ℤ[t]/(t³−2), formalizing the concrete algebraic core (norm form, multiplicativity, the unit chain, the zero-or-infinite dichotomy, and a non-norm) while deferring the signature/Dirichlet unit-rank step Mathlib does not ship.",
+      "mathContext": "Pell $x^2 - Dy^2 = 1$ is $N_{\\mathbb{Q}(\\sqrt D)/\\mathbb{Q}}(x+y\\sqrt D)=1$, the rank-1 case of Dirichlet's unit theorem. Here $K=\\mathbb{Q}(\\sqrt[3]2)$, $N(a,b,c)=a^3+2b^3+4c^3-6abc$, and the deferred piece is the unit rank $r_1+r_2-1=1$ via signature $(r_1,r_2)=(1,1)$."
+    },
+    {
       "id": "cubic-norm-form",
       "title": "The Cubic Norm Form as a Determinant",
       "startLine": 47,
@@ -159,9 +167,17 @@
       "id": "recovering-pell",
       "title": "Recovering Classical Pell (Rank-1 Special Case)",
       "startLine": 369,
-      "endLine": 386,
+      "endLine": 385,
       "summary": "The quadratic (Pell) norm form qnorm p q = p² − 2q², its fundamental solution qnorm_fundamental (3² − 2·2² = 1), and the Brahmagupta chain qnorm_chain (17,12), (99,70), (577,408).",
       "mathContext": "The classical Pell equation is the real-quadratic (degree-2, unit-rank-1) shadow of the same multiplicative picture."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 386,
+      "endLine": 422,
+      "summary": "Recap of the seven-part formalization: the cubic norm form as a determinant, its multiplicativity, the fundamental unit u = ∛2 − 1 and the norm-1 Pell chain uᵏ, distinctness via the real embedding (infinitude of N = 1), the zero-or-infinite dichotomy for N = m (m ≠ 0), and non-surjectivity (7 is never a norm). Records the deferred signature/unit-rank step and the axiom/sorry counts (0/0).",
+      "mathContext": "The entry establishes: $N$ multiplicative, $N(u^k)=1$ with the chain injective (so $N=1$ has infinitely many solutions), the dichotomy that $N(\\xi)=m\\ne 0$ is either unsolvable or has an infinite unit-orbit of solutions, and that $7$ is a non-norm (anisotropic mod 7), giving $\\neg\\,\\text{Surjective}\\,N$. Deferred: unit rank via $\\#\\,\\text{InfinitePlace}(K)=2$."
     }
   ],
   "conclusion": {
