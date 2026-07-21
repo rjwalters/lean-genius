@@ -84,8 +84,8 @@ theorem centroid_sq_dist_identity {n : ℕ} (hn : 0 < n) (P : Fin n → E) (i : 
   -- Expand ‖∑‖² as a double inner-product sum.
   have hexpand : ‖∑ k, (P i - P k)‖ ^ 2
       = ∑ k, ∑ l, (inner ℝ (P i - P k) (P i - P l) : ℝ) := by
-    rw [← real_inner_self_eq_norm_sq]
-    simp only [sum_inner, inner_sum]
+    rw [← real_inner_self_eq_norm_sq, sum_inner]
+    simp_rw [inner_sum]
   -- Substitute polarisation.
   have hpolsum : ∑ k, ∑ l, (inner ℝ (P i - P k) (P i - P l) : ℝ)
       = ∑ k, ∑ l, ((dist (P i) (P k)) ^ 2 + (dist (P i) (P l)) ^ 2
@@ -110,7 +110,7 @@ theorem centroid_sq_dist_identity {n : ℕ} (hn : 0 < n) (P : Fin n → E) (i : 
   rw [← hnormsq, hexpand, hpolsum, Finset.sum_congr rfl (fun k _ => hinner k)]
   have hA : ∑ k, (n : ℝ) * ((dist (P i) (P k)) ^ 2 / 2)
       = (n : ℝ) * (∑ k, (dist (P i) (P k)) ^ 2) / 2 := by
-    rw [← Finset.mul_sum, ← Finset.sum_div]
+    rw [← Finset.mul_sum, ← Finset.sum_div]; ring
   have hB : ∑ _k : Fin n, (∑ l, (dist (P i) (P l)) ^ 2) / 2
       = (n : ℝ) * (∑ l, (dist (P i) (P l)) ^ 2) / 2 := by
     rw [sum_const_fin]; ring
