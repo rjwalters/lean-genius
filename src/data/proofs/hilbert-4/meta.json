@@ -78,52 +78,84 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Basic Definitions",
+      "id": "overview",
+      "title": "Overview",
       "startLine": 1,
-      "endLine": 85,
-      "summary": "Introduction to Hilbert's 4th Problem and key definitions.",
+      "endLine": 94,
+      "summary": "Module docstring: statement of Hilbert's 4th Problem, its modern reformulation as characterizing projective metrics with straight-line geodesics, and its SOLVED status. Opens the `noncomputable section`.",
       "mathContext": "A metric $d$ on $U \\subseteq \\mathbb{R}^n$ has *straight-line geodesics* if for all $x, y \\in U$, the infimum of path lengths is achieved by the line segment. Hilbert asked: characterize all such metrics retaining ordering and incidence axioms while weakening congruence."
     },
     {
-      "id": "minkowski",
-      "title": "Minkowski Geometry",
-      "startLine": 86,
-      "endLine": 130,
-      "summary": "Definition of Minkowski gauges and geometries.",
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 95,
+      "endLine": 128,
+      "summary": "The `MinkowskiGauge` structure (a sublinear, positive-definite gauge), its induced translation-invariant distance `MinkowskiGauge.dist`, and the bundled `MinkowskiGeometry`.",
       "mathContext": "A Minkowski gauge is a function $f : E \\to \\mathbb{R}$ with $f(x) \\geq 0$, $f(x)=0 \\iff x=0$, $f(rx)=rf(x)$ for $r \\geq 0$, and $f(x+y) \\leq f(x)+f(y)$. The unit ball $B = \\{x : f(x) \\leq 1\\}$ is convex. The induced metric $d(x,y) = f(y-x)$ is translation-invariant."
     },
     {
       "id": "geodesics",
-      "title": "Geodesics and Straight Lines",
-      "startLine": 131,
-      "endLine": 180,
-      "summary": "Proof that straight lines are geodesics in Minkowski spaces.",
+      "title": "Part II: Geodesics and Straight Lines",
+      "startLine": 129,
+      "endLine": 187,
+      "summary": "`IsGeodesicSegment`, `straightLineSegment`, and `straightLinePath`, together with the marquee axioms `minkowski_geodesics_are_straight` and `minkowski_straight_line_shortest` recording that in a Minkowski geometry line segments realize the distance.",
       "mathContext": "In a Minkowski space with gauge $f$, for points $x, z, y$ collinear with $z$ between $x$ and $y$: $f(z-x) + f(y-z) = f(y-x)$. This is equality in the triangle inequality, proving line segments are geodesics. Uniqueness follows from strict convexity conditions."
     },
     {
-      "id": "hilbert-geometry",
-      "title": "Hilbert Geometry",
-      "startLine": 181,
-      "endLine": 230,
-      "summary": "The Hilbert metric on convex bodies.",
+      "id": "convex-projective",
+      "title": "Part III: Convex Bodies and Projective Metrics",
+      "startLine": 188,
+      "endLine": 231,
+      "summary": "`ConvexBodyStrict` and the `HilbertGeometry` structure carrying the cross-ratio metric on the interior of a strictly convex body, with `hilbert_geodesics_are_straight` recording its straight-line geodesics.",
       "mathContext": "For a convex body $K$ and $x, y \\in \\mathrm{int}(K)$, let the line through $x, y$ meet $\\partial K$ at $p, q$ (ordered $p, x, y, q$). The Hilbert metric is $d_H(x,y) = \\frac{1}{2} \\log \\frac{|x-q|\\cdot|y-p|}{|x-p|\\cdot|y-q|}$. This is projectively invariant and has straight-line geodesics."
     },
     {
       "id": "busemann",
-      "title": "Busemann's Classification",
-      "startLine": 231,
-      "endLine": 280,
-      "summary": "Statement of Busemann's characterization theorem.",
+      "title": "Part IV: Busemann's Characterization",
+      "startLine": 232,
+      "endLine": 286,
+      "summary": "`IsGeodesicSpace`, `IsProjectiveMetric`, and the `BusemannClassification` predicate, sealed by the axiom `busemann_classification` asserting that every projective metric arises from Busemann's construction.",
       "mathContext": "Busemann's theorem (1955): Every continuous metric on an open convex $U \\subseteq \\mathbb{R}^n$ with straight-line geodesics is either a Minkowski metric (translation-invariant), a Hilbert metric (projectively invariant on a convex domain), or a Funk-type metric (asymmetric). This exhausts all possibilities."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 281,
-      "endLine": 488,
-      "summary": "Euclidean, taxicab, and Chebyshev norms as worked examples of Minkowski geometries whose geodesics are straight lines. Closes with `#check` sanity checks on the marquee results and a file-level summary comment collecting the three headline theorems: `minkowski_geodesics_are_straight`, `busemann_classification`, and `hamel_theorem_2d`.",
+      "title": "Part V: Examples and Special Cases",
+      "startLine": 287,
+      "endLine": 349,
+      "summary": "The `euclideanNorm`, `taxicabNorm`, and `chebyshevNorm` gauges as worked Minkowski geometries, with `euclidean_triangle` and `taxicab_triangle` verifying the triangle inequality in the $\\ell^2$ and $\\ell^1$ cases.",
       "mathContext": "Euclidean: $\\|x\\|_2 = \\sqrt{\\sum x_i^2}$, unit ball is a sphere. Taxicab: $\\|x\\|_1 = \\sum |x_i|$, unit ball is a cross-polytope. Chebyshev: $\\|x\\|_\\infty = \\max |x_i|$, unit ball is a hypercube. All are Minkowski geometries with convex unit balls, hence straight-line geodesics."
+    },
+    {
+      "id": "hamel",
+      "title": "Part VI: Hamel's Contribution",
+      "startLine": 350,
+      "endLine": 384,
+      "summary": "The `IsDesarguesian` predicate (projective metrics whose geodesics are straight lines) and the axiom `hamel_theorem_2d` recording Hamel's 1903 planar solution.",
+      "mathContext": "Georg Hamel (a student of Hilbert) gave the first substantial answer in 1903, treating the regular two-dimensional case via the calculus of variations: the metrics with straight-line geodesics are exactly those whose variational integrand satisfies a Desarguesian (projective-flatness) condition. A space whose geodesics are the straight lines of a projective structure is called *Desarguesian*."
+    },
+    {
+      "id": "modern-developments",
+      "title": "Part VII: Modern Developments",
+      "startLine": 385,
+      "endLine": 418,
+      "summary": "`ProjectiveFinsler` and the `AlvarezPaivaFernandesTheorem` predicate, framing the modern Finsler / integral-geometric resolution of the problem.",
+      "mathContext": "In modern terms a solution to Hilbert's 4th Problem is a projective (Desarguesian) Finsler metric. Álvarez Paiva and Fernandes recast the full classification integral-geometrically: such metrics correspond via a Crofton/symplectic construction to smooth measures on the space of lines, unifying the Minkowski, Hilbert, and Funk families under one measure-theoretic description."
+    },
+    {
+      "id": "funk",
+      "title": "Part VIII: The Funk and Reverse-Funk Metrics",
+      "startLine": 419,
+      "endLine": 442,
+      "summary": "The `FunkMetric` on an open convex domain and the axiom `funk_geodesics_straight` recording that this (asymmetric) metric also has straight-line geodesics.",
+      "mathContext": "The Funk metric on a convex domain $K$ is the asymmetric weak metric $F_K(x,y) = \\log \\frac{|x-q|}{|y-q|}$, where $q$ is where the ray from $x$ through $y$ meets $\\partial K$. It is a forward-complete projective metric; symmetrizing it recovers the Hilbert metric ($d_H = \\tfrac12(F_K + \\overline{F_K})$). Asymmetric examples show the classification must admit weak metrics."
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary and Conclusions",
+      "startLine": 443,
+      "endLine": 488,
+      "summary": "Closing `#check` sanity checks on the marquee structures and results, and a file-level summary comment collecting the three headline theorems: `minkowski_geodesics_are_straight`, `busemann_classification`, and `hamel_theorem_2d`.",
+      "mathContext": "The file certifies that each headline object type-checks: `MinkowskiGeometry`, `HilbertGeometry`, `IsProjectiveMetric`, and the axioms `minkowski_geodesics_are_straight`, `busemann_classification`, `hamel_theorem_2d` — the three pillars (Minkowski, Busemann/Hilbert, Hamel) of the resolution of Hilbert's 4th Problem."
     }
   ],
   "crossReferences": [
