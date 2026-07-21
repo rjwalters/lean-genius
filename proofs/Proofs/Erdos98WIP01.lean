@@ -361,4 +361,68 @@ theorem exists_inGeneralPosition_of_le_two (hn : n ≤ 2) :
   · exact noThreeCollinear_of_le_two _ hn
   · exact noFourConcyclic_of_le_three _ (by omega)
 
+/-! ## General-position existence for `n = 3` (the first non-vacuous case)
+
+For `n = 3` the no-four-concyclic condition is still vacuous, but no-three-collinear
+becomes a genuine constraint. An explicit right triangle `(0,0), (1,0), (0,1)` witnesses
+it: any line `a·x + b·y + c = 0` through all three forces `c = 0` (from `(0,0)`), then
+`a = 0` (from `(1,0)`) and `b = 0` (from `(0,1)`), i.e. `(a,b,c) = 0`.  This upgrades the
+attained-minimum guarantee from `n ≤ 2` to `n ≤ 3`. -/
+
+/-- An explicit right triangle `(0,0), (1,0), (0,1)` as a configuration of three points
+in `ℝ²` (each point built with `EuclideanSpace.single` for uniform coordinate access). -/
+noncomputable def triangleConfig : PointConfig 3 :=
+  ![EuclideanSpace.single 0 0, EuclideanSpace.single 0 1, EuclideanSpace.single 1 1]
+
+/-- The three triangle vertices are distinct. -/
+theorem triangleConfig_injective : Function.Injective triangleConfig := by
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    first
+    | rfl
+    | (exfalso
+       have h0 := congrArg (fun p => p 0) hij
+       have h1 := congrArg (fun p => p 1) hij
+       simp [triangleConfig, EuclideanSpace.single_apply] at h0 h1)
+
+/-- **No three of the triangle's vertices are collinear.** The single non-vacuous case:
+a line through all three vertices forces `(a,b,c) = 0`. -/
+theorem noThreeCollinear_triangleConfig : NoThreeCollinear triangleConfig := by
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | (simp only [triangleConfig, Matrix.cons_val_zero, Matrix.cons_val_one,
+         Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+         EuclideanSpace.single_apply] at hi hj hk
+       norm_num at hi hj hk
+       simp only [Prod.mk.injEq]
+       refine ⟨?_, ?_, ?_⟩ <;> linarith)
+
+/-- No four of the triangle's vertices are concyclic (vacuous: only three points). -/
+theorem noFourConcyclic_triangleConfig : NoFourConcyclic triangleConfig :=
+  noFourConcyclic_of_le_three _ (by norm_num)
+
+/-- **General-position configurations exist for `n = 3`.** The right triangle
+`(0,0), (1,0), (0,1)` is injective, has no three collinear, and (vacuously) no four
+concyclic. Hence the defining set of `h 3` is nonempty and `h 3` is a genuine attained
+minimum. -/
+theorem exists_inGeneralPosition_three :
+    ∃ P : PointConfig 3, InGeneralPosition P :=
+  ⟨triangleConfig, triangleConfig_injective, noThreeCollinear_triangleConfig,
+    noFourConcyclic_triangleConfig⟩
+
+/-- **General-position configurations exist for every `n ≤ 3`.** Combines the vacuous
+small regime (`n ≤ 2`) with the explicit triangle (`n = 3`), so `h n` is an attained
+minimum — not the `sInf ∅` junk value — throughout `n ≤ 3`. -/
+theorem exists_inGeneralPosition_of_le_three (hn : n ≤ 3) :
+    ∃ P : PointConfig n, InGeneralPosition P := by
+  interval_cases n
+  · exact exists_inGeneralPosition_of_le_two (by norm_num)
+  · exact exists_inGeneralPosition_of_le_two (by norm_num)
+  · exact exists_inGeneralPosition_of_le_two (by norm_num)
+  · exact exists_inGeneralPosition_three
+
 end Erdos98WIP01

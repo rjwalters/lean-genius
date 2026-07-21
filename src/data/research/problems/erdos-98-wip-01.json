@@ -23,7 +23,7 @@
     "iteration": 2,
     "focus": "Session 4: unconditional upper bound h(n) ≤ n.choose 2 (h_le_choose_two, sidesteps the missing general-position existence witness via the sInf-empty case) + degenerate values h(n)=0 for n≤1. 2 axiom-free theorems, theoremCount 10→12, host-verified.",
     "blockers": [],
-    "nextAction": "Genuine next target: prove general-position configurations exist for all n (Injective ∧ NoThreeCollinear ∧ NoFourConcyclic) — makes h(n) a true minimum over a nonempty set. Parent Erdős #98 (h(n)/n→∞) OPEN.",
+    "nextAction": "Full general-position existence for all n: the failure locus (3-collinear ∪ 4-concyclic) is a finite union of proper algebraic subvarieties of the configuration space (ℝ²)ⁿ, so its complement is nonempty — a dimension/genericity argument, the deep constructive piece. n≤3 now fully covered.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host): general-position existence for n≤2 (exists_inGeneralPosition_of_le_two) via two vacuity lemmas (noThreeCollinear_of_le_two, noFourConcyclic_of_le_three) — so h n is an attained minimum (not sInf∅ junk) in the small regime. Documented the parabola obstruction to full GP existence (4 concyclic when x-coords sum to 0). 18 theorems, 0 axiom.",
+    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, #print axioms=[propext,Classical.choice,Quot.sound]): n=3 general-position existence discharged via explicit right triangle (first non-vacuous no-3-collinear case) — exists_inGeneralPosition_three + exists_inGeneralPosition_of_le_three, so h n is an attained minimum for all n≤3 (was n≤2). Parent Erdős #98 (h(n)/n→∞) OPEN; full GP existence for all n (parabola fails no-4-concyclic) remains the deep constructive piece.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -43,7 +43,11 @@
       "strong_imp_weak (h(n)/n→∞ ⟹ h(n)≥n eventually) in Erdos98WIP01.lean",
       "weak_imp_tendsto (weak conj ⟹ h(n)→∞, non-vacuity check) in Erdos98WIP01.lean",
       "tendsto_const_mul_div_log_atTop (c·n/log n → ∞ via Real.isLittleO_log_id_atTop + reciprocal), guthKatz_imp_tendsto (GuthKatzBaseline ⟹ Tendsto h atTop atTop) in Erdos98WIP01.lean (0 axioms, 0 sorries; host-verified v4.31.0 fresh-parent-olean)",
-      "noThreeCollinear_of_le_two, noFourConcyclic_of_le_three, exists_inGeneralPosition_of_le_two in Erdos98WIP01.lean — GP existence for n≤2, 0-axiom host-verified"
+      "noThreeCollinear_of_le_two, noFourConcyclic_of_le_three, exists_inGeneralPosition_of_le_two in Erdos98WIP01.lean — GP existence for n≤2, 0-axiom host-verified",
+      "triangleConfig — explicit right triangle (0,0),(1,0),(0,1) via EuclideanSpace.single (Erdos98WIP01.lean)",
+      "triangleConfig_injective, noThreeCollinear_triangleConfig (first non-vacuous no-3-collinear case), noFourConcyclic_triangleConfig",
+      "exists_inGeneralPosition_three — GP configs exist for n=3",
+      "exists_inGeneralPosition_of_le_three — GP configs exist for all n≤3, so h n is an attained minimum through n=3"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -56,12 +60,15 @@
       "The DIVERGENCE h(n)→∞ is unconditionally provable (a theorem), not open: the imported Guth–Katz Ω(n/log n) baseline already forces it, since c·n/log n → ∞. Only the RATE h(n)/n→∞ (strong conjecture) and h(n)≥n (weak) remain open. This sharpens weak_imp_tendsto, which derived the same divergence from the OPEN weak conjecture.",
       "General-position existence is vacuous-then-injective for small n: card{i,j,k}=3 impossible for n≤2 (noThreeCollinear_of_le_two), card{a,b,c,d}=4 impossible for n≤3 (noFourConcyclic_of_le_three); so an injective embedding i↦(i,0) is general-position for n≤2 (exists_inGeneralPosition_of_le_two).",
       "OBSTRUCTION to full GP existence: the natural parabola construction (t,t²) gives no-3-collinear (a line meets a parabola in ≤2 pts) but FAILS no-4-concyclic — a circle meets y=x² in a quartic with zero cubic term, so any 4 parabola points whose x-coordinates SUM TO 0 are concyclic (e.g. x=-3,-1,1,3). Full GP existence needs a genericity/perturbation argument (config space minus finitely many proper algebraic subvarieties), not a single explicit curve.",
-      "EuclideanSpace.single_apply deprecated → PiLp.single_apply (v4.31); coordinate extraction via congrArg (·0) then simpa [PiLp.single_apply]."
+      "EuclideanSpace.single_apply deprecated → PiLp.single_apply (v4.31); coordinate extraction via congrArg (·0) then simpa [PiLp.single_apply].",
+      "n=3 GP existence discharged with the right triangle (0,0),(1,0),(0,1): a line a·x+b·y+c=0 through all three forces c=0 (from origin), a=0 (from (1,0)), b=0 (from (0,1)). Proof by fin_cases over the 27 index triples: degenerate (repeat) triples killed by absurd hcard (by decide) on card{i,j,k}=3; the 6 permutations reduced by simp[cons_val_*, EuclideanSpace.single_apply]+norm_num then linarith.",
+      "Coordinate technique: build points with EuclideanSpace.single for uniform single_apply coordinate access; ![...] index reduction needs Matrix.cons_val_zero/one/two + head_cons/tail_cons; full simp (not simp only) closes false coordinate equalities in injectivity."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "GP existence for n=3 (first non-vacuous no-3-collinear case): explicit triangle (0,0),(1,0),(0,1); needs the 6-permutation collinearity computation over EuclideanSpace coordinates.",
-      "Full GP existence for all n via genericity: the failure locus (3-collinear ∪ 4-concyclic) is a finite union of proper algebraic subvarieties of the configuration space, so its complement is nonempty (measure-theoretic / dimension argument) — the deep constructive piece."
+      "General-position existence for n=4 (first non-vacuous no-4-concyclic case): needs the four-points-concyclic determinant/circle computation over EuclideanSpace — the analog of the n=3 triangle step for concyclicity.",
+      "Full GP existence for all n via genericity: failure locus is a finite union of proper algebraic subvarieties of (ℝ²)ⁿ, complement nonempty (measure/dimension argument) — deep constructive piece.",
+      "Parent Erdős #98 conjecture h(n)/n→∞ remains OPEN (Erdős could not even prove h(n)≥n)."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
