@@ -133,17 +133,25 @@
     {
       "id": "quadratic-convergence",
       "title": "Quadratic (Newton-type) Convergence",
-      "startLine": 200,
-      "endLine": 246,
-      "summary": "Formalizes quadratic convergence: if $|e_{n+1}| \\leq C |e_n|^2$ and $C|e_0| \\leq 1/2$, then $C|e_n| \\leq (1/2)^{2^n}$. This double-exponential decay means the number of correct digits doubles per step, giving $O(\\log \\log(1/\\varepsilon))$ iterations for Newton-type methods.",
+      "startLine": 183,
+      "endLine": 239,
+      "summary": "Formalizes quadratic convergence: if $|e_{n+1}| \\leq C |e_n|^2$ and $C|e_0| \\leq 1/2$, then $C|e_n| \\leq (1/2)^{2^n}$ (quadratic_convergence_rate), converting to an ε-budget (quadratic_to_epsilon) and iteration count (quadratic_iteration_count). This double-exponential decay means the number of correct digits doubles per step, giving $O(\\log \\log(1/\\varepsilon))$ iterations for Newton-type methods.",
       "mathContext": "Formalizes quadratic convergence: if $|e_{n+1}| \\leq C |e_n|^2$ and $C|e_0| \\leq 1/2$, then $C|e_n| \\leq (1/2)^{2^n}$. This double-exponential decay means the number of correct digits doubles per step, giving $O(\\log \\log(1/\\varepsilon))$ iterations."
+    },
+    {
+      "id": "persistence",
+      "title": "Persistence of ε-Approximation",
+      "startLine": 240,
+      "endLine": 283,
+      "summary": "SECTION IX (OQ-02/OQ-02/OQ-01): once a contraction iterate lands within ε, every later iterate stays within ε. contraction_epsilon_persists proves the accuracy threshold, once crossed, is never re-crossed (via the L^m ≤ L^n monotonicity of the error bound). contraction_eventually_epsilon then upgrades the '∃ n' finite-iteration result to '∃ N, ∀ m ≥ N', i.e. spending more queries never loses accuracy.",
+      "mathContext": "$L^n|e_0| \\leq \\varepsilon \\Rightarrow \\forall m \\geq n,\\ |f^{[m]}(x_0) - x^*| \\leq \\varepsilon$; hence $\\exists N,\\ \\forall m \\geq N$ the iterate is $\\varepsilon$-accurate."
     },
     {
       "id": "summary",
       "title": "Query Complexity Landscape",
-      "startLine": 247,
-      "endLine": 268,
-      "summary": "Summary theorem unifying the query complexity picture: (1) binary search positivity, (2) contraction convergence $L^n \\to 0$, (3) lower bound $2^n \\geq 1$.",
+      "startLine": 285,
+      "endLine": 321,
+      "summary": "SECTION VIII summary theorem query_complexity_landscape unifying the query complexity picture: (1) binary search positivity $1/2^n > 0$, (2) contraction convergence $L^n \\to 0$, (3) lower bound $2^n \\geq 1$; followed by the #check roster of every exported result.",
       "mathContext": "Summary theorem unifying the query complexity picture: (1) binary search positivity, (2) contraction convergence $L^n \\to 0$, (3) lower bound $2^n \\geq 1$."
     }
   ],
