@@ -669,7 +669,6 @@ theorem exists_isRatFractionRepr_controlled_overshoot (N : ℕ) (hN : 1 ≤ N) :
       apply one_div_le_one_div_of_le
       · exact_mod_cast (by omega : 0 < N + 1)
       · exact_mod_cast hc
-    push_cast
     linarith
   · intro n hn
     rw [Finset.mem_Ico] at hn
