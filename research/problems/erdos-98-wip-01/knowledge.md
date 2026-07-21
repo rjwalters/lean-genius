@@ -1,5 +1,70 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: ASSEMBLE degree-3 exclusion + 2-REGULARITY
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the four degree-3 sub-case
+lemmas are now assembled into a single vertex-level obstruction, and combined with the
+handshake/degree bounds to prove the short-distance graph is **2-regular**. Two new
+axiom-free theorems, **docker-verified** `Proofs.Erdos98WIP01` (8577 jobs, "Build
+succeeded", 0 `error:`). `grep -c '^axiom '` = 0, `grep -c sorry` = 0.
+
+⚠️ **Janitor stash incident**: a background cleanup `git stash`ed my uncommitted worktree
+mid-session (also ran a rebase start/abort per reflog); `git commit` reported "nothing to
+commit" and the file reverted to 2445 lines. Recovered from `stash@{0}` (header named MY
+branch + parent `666043e1dd`), then committed AND pushed immediately (commit `64c4c4ee45`).
+
+### What I did
+Assembled the k=0,1,2,3 sub-case lemmas (proved in prior sessions) into "no vertex has
+short-degree 3", then derived full 2-regularity.
+
+**Lean results added** (`proofs/Proofs/Erdos98WIP01.lean`, +2 theorems):
+
+- **`no_short_degree_three`** (axiom-free): for a general-position two-distance
+  `PointConfig 5`, no vertex `i` has exactly three `a`-neighbours. Proof: extract the three
+  neighbours `p,q,r` via `Finset.card_eq_three`; identify the fifth point `w` (unique element
+  of `univ \ {i,p,q,r}`, via `Finset.sdiff_nonempty`) and show `dist (P i) (P w) = b` (else
+  `w` is a fourth `a`-neighbour). Then an 8-way `rcases` on the colours of the three
+  neighbour pairs `{pq,pr,qr}` dispatches each to one of the four sub-case lemmas
+  (`no_four_equidistant_indices` for k=3, `degree_three_rhombus_impossible` k=2,
+  `degree_three_isosceles_impossible` k=1, `degree_three_equilateral_impossible` k=0), with
+  the neighbour roles permuted per case and `dist_comm` fixing orientation in the 4 permuted
+  branches. **Note: `hgp` and `hab` are UNUSED** — the degree-3 obstruction is purely
+  *metric*; general-position / `a≠b` enter only through the sub-case lemmas' own geometry.
+
+- **`two_distance_two_regular`** (axiom-free): every vertex has exactly two `a`-neighbours.
+  `two_distance_near_degree_bounds` confines each `a`-degree to `{1,2,3}`;
+  `no_short_degree_three` kills 3; its `a↔b` mirror (`no_short_degree_three` with `a,b`
+  swapped, `hcov' = (hcov · ·).symm`) kills `b`-degree 3, and since `A.card + B.card = 4`
+  (disjoint neighbour circles partition the 4 other points) that kills `a`-degree 1. `omega`
+  closes `a`-degree `= 2`.
+
+### Key findings
+- The whole degree-3 exclusion is **metric, not general-position-dependent** — a cleaner
+  statement than expected (`hgp`/`hab` unused in the assembly).
+- `Finset.card_sdiff` in this Mathlib (v4.31) is the **unconditional** form
+  `#(s\t) = #s − #(t∩s)` (no subset-hypothesis arg) — use `Finset.sdiff_nonempty.mpr` +
+  `Finset.card_le_card` for "complement of a small subset is nonempty" instead.
+
+### Files Modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+137 lines, 2 theorems; commit `64c4c4ee45`)
+
+### Next Steps — C₅ ENDGAME (the last mile for `h 5 ≥ 3`)
+2-regular short-graph on 5 vertices ⟹ a single 5-cycle ⟹ metric realization forces a
+**regular pentagon** ⟹ its 5 vertices are **concyclic** ⟹ contradicts `NoFourConcyclic`.
+Concrete sub-tasks:
+1. From 2-regularity, extract the cyclic order: a permutation `σ` of `Fin 5` with
+   `dist (P i) (P (σ i)) = a` and `dist (P i) (P (σ² i)) = b` for all `i` (each vertex's two
+   `a`-neighbours are `σ i`, `σ⁻¹ i`; the two `b`-neighbours are `σ² i`, `σ⁻² i`). Hardest
+   Lean step: proving connectivity (a 2-regular graph on 5 vertices is a single 5-cycle, not
+   e.g. a triangle+edge — ruled out because 5 is odd / K₃ is a mono-triangle killed by
+   `no_four_equidistant_indices`? no — need the pure graph fact). Consider `SimpleGraph`
+   `IsCycle`/`connected` API or a direct `Fin 5` case analysis.
+2. All five `a`-edges equal + all five `b`-edges equal (2-distance) + cyclic ⟹ regular
+   pentagon; then the 5 points lie on a common circle. Likely via the circumcircle of any 3
+   consecutive vertices and showing the other 2 lie on it (law of cosines with the fixed
+   pentagon angles), or an explicit rotation `ρ` of order 5.
+3. Feed 4 of the concyclic points to `NoFourConcyclic` (`noFourConcyclic` of `InGeneralPosition`).
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=1 sub-case (isosceles) — SUB-CASES COMPLETE
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 1` (final) geometric
