@@ -1,5 +1,90 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=0 sub-case (equilateral neighbour triangle)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — one geometric sub-case of the
+degree-3 exclusion proved, axiom-free. **Host-verified** `Proofs.Erdos98WIP01` via
+`lake env lean` (fresh v4.31 parent olean), exit 0, 0 `error:`, 26 pre-existing deprecation
+warnings. `#print axioms degree_three_equilateral_impossible` = `[propext, Classical.choice,
+Quot.sound]` (no `sorryAx`, no `ofReduceBool`). `grep -c '^axiom '` = 0, `grep sorry` = 0,
+no `native_decide`.
+
+### What I did
+Attacked the *exact remaining gap #1* from the prior session (rule out short-degree 3).
+That gap splits by `k` = number of the three neighbour-pairs `{xy,xz,yz}` at the SHORT
+distance `a`. Proved the `k = 0` sub-case (all three neighbour pairs at the OTHER distance).
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean`, +1 theorem):
+
+- **`degree_three_equilateral_impossible`** (axiom-free, coordinate-free, `set_option
+  maxHeartbeats 800000`): given 5 points `v,x,y,z,w` with `dist v {x,y,z} = a`, `x,y,z`
+  mutually at `dist = b` (equilateral triangle, `v` its circumcentre), `dist v w = b`, and
+  `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (the elegant part — NO coordinates):
+1. Edge vectors `uₓ=x−v, u_y=y−v, u_z=z−v` have norm `a`, pairwise inner product `a²−b²/2`
+   (from `norm_sub_sq_real` + the mutual distance `b`). Three vectors in
+   `EuclideanSpace ℝ (Fin 2)` (finrank 2) can't be linearly independent, and solving the
+   resulting Gram system (subtract the three inner-with-`u_j` equations: `(b²/2)(gᵢ−gⱼ)=0`
+   ⟹ all `gᵢ` equal, then `(3a²−b²)g₀=0`) forces **`b² = 3a²`** (else independent ⟹
+   `3 ≤ finrank = 2`, contradiction — same `LinearIndependent.fintype_card_le_finrank`
+   trick as `no_four_mutually_equidistant`).
+2. With `b²=3a²`: `‖uₓ+u_y+u_z‖² = 9a²−3b² = 0`, so **`uₓ+u_y+u_z = 0`** (circumcentre =
+   centroid). Proved via `real_inner_self_eq_norm_sq` + `pow_eq_zero_iff` + `norm_eq_zero`.
+3. Then `⟪u_w, uₓ+u_y+u_z⟫ = ⟪u_w,0⟫ = 0`, but each `⟪u_w,u_j⟫ = (b²+a²−dist(w,j)²)/2`
+   with `dist(w,j)∈{a,b}` equals `b²/2` or `a²/2` — **strictly positive**. Sum of three
+   positives = 0 is absurd (`linarith`).
+
+### Why this is progress (honest scope)
+`degree_three_equilateral_impossible` is genuinely a **five-point / global** obstruction:
+`{v,x,y,z}` alone is realizable (a triangle + its circumcentre is not concyclic — `v` is the
+centre, not on the circumcircle), confirming the prior session's claim that pure local /
+graph-theory arguments cannot force `C₅`. The contradiction only appears once the fifth
+point `w` is added. This is ONE of the (up to) three mixed sub-cases of "no short-degree-3
+vertex"; it does **not** yet close degree-3 exclusion.
+
+### Exact remaining gap (for next iteration, cold)
+Degree-3 vertex `v` with neighbours `x,y,z` at distance `a`, fifth point `w` at `dist b`,
+`dist(w,·)∈{a,b}`. Sub-cases by `k = #{a-edges among xy,xz,yz}`:
+- `k=3` (all three `a`): DONE — `no_four_equidistant_indices` (regular tetrahedron in ℝ²).
+- `k=0` (all three `b`): **DONE this session** — `degree_three_equilateral_impossible`.
+- `k=2` (say `xy=xz=a, yz=b`): OPEN. Geometry: `{v,x,y,z}` is a 60°-rhombus (`v,y,x,z`
+  two equilateral triangles glued), forcing `b=a√3`; then the fifth point `w` at `dist b`
+  from `v` has no consistent position (hand-checked: the two candidate `x`-abscissae both
+  fail). **Same inner-product method should work**: express `u_w` in the basis `{uₓ,u_y}`
+  and use the Gram relations; `uₓ,u_y,u_z` satisfy a rank-2 relation (one pair inner `a²/2`,
+  one `a²−b²/2`). Needs the analogous linear-dependence extraction, then contradiction on
+  the four forced inner products of `u_w`.
+- `k=1` (say `xy=a, xz=yz=b`): OPEN. Analogous, `{v,x,y}` equilateral side `a`, `z` off it.
+After ALL sub-cases: short-degree ∈ {1,2}; by the `a↔b` symmetry (b-degree = 4 − a-degree,
+same `card_fiber_dist_le_three` bound) the SAME lemma family excludes b-degree-3, hence
+a-degree-1 ⟺ b-degree-3 is excluded ⟹ **all a-degrees = 2** (2-regular ⟹ `C₅`). Then the
+endgame: `C₅` metric realization ⟹ regular pentagon ⟹ 5 concyclic ⟹ `¬NoFourConcyclic`.
+
+### Reusable idiom
+The Gram-system linear-dependence trick generalizes `no_four_mutually_equidistant`: to force
+a metric relation among ≤ `d+1` vectors in `ℝ^d`, assume `LinearIndependent`, use
+`.fintype_card_le_finrank` + `finrank_euclideanSpace_fin` for the `card > d` contradiction;
+extract coefficient equations by `congrArg (inner ℝ · u_j)` + `simp [inner_add_left,
+real_inner_smul_left, inner_zero_left]`; solve with `linear_combination`/`mul_eq_zero`.
+Then `‖∑ uᵢ‖² = ⟪∑,∑⟫` expanded by `simp [inner_add_left, inner_add_right, <values>]; ring`,
+and `pow_eq_zero_iff (two_ne_zero) ▸ norm_eq_zero` to get the vector identity `∑ uᵢ = 0`.
+**Gotcha**: the whole lemma exceeds the default 200k heartbeat budget → `set_option
+maxHeartbeats 800000 in` **before** the docstring (a `set_option … in` between docstring and
+`theorem` is a parse error: "unexpected token 'set_option'; expected 'lemma'").
+
+### Files modified
+- `proofs/Proofs/Erdos98WIP01.lean` (+`degree_three_equilateral_impossible`)
+- `src/data/research/problems/erdos-98-wip-01.json`, this file, `state.md`
+
+### Infra note
+Background rebase-onto-origin/main orphaned my first local commit (janitor `reset: moving
+to origin/<branch>` then `rebase (abort)`). Recovered via reflog + `git reset --hard <sha>`;
+now **push immediately after each commit** so the origin branch carries the work and the
+reset is a no-op. (Matches `gotcha-janitor-reaps-fresh-worktree-before-first-commit`.)
+
+---
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: handshake parity obstruction (some vertex has exactly 2 short neighbours)
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — one new structural step on the
