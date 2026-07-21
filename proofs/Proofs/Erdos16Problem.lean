@@ -552,6 +552,64 @@ theorem covering_progression_mem_exceptionalSet {n : ℕ} (hodd : Odd n)
     n ∈ ExceptionalSet :=
   ⟨hodd, covering_obstruction_not_isRomanoff h3 h7 h5 h17 h13 h241 hsize⟩
 
+/-!
+## Erdős's infinite arithmetic progression: the exceptional set is infinite
+
+`covering_progression_mem_exceptionalSet` places every odd member of the CRT progression
+`n ≡ 7629217 (mod 11184810)` that also satisfies the size condition into `ExceptionalSet`.
+We now discharge the size condition for *infinitely many* members, yielding Erdős's 1950
+conclusion in full: `ExceptionalSet` is **infinite**.
+
+The number `7629217` is the unique residue mod `2M = 2·3·5·7·13·17·241 = 11184810` solving
+the six covering congruences together with oddness (verified by `omega` at each use).  The key
+observation that discharges the size condition cheaply: if `n` lies in the dyadic window
+`[2^m + 242, 2^{m+1})`, then any exponent `k` with `2^k < n` satisfies `k ≤ m`, so
+`n - 2^k ≥ n - 2^m ≥ 242 > 241` — no analysis of "the largest power of two below `n`" is
+needed.  Since each window has length `2^m - 242 ≥ 2M` for large `m`, the progression meets
+every such window, and the windows march off to infinity. -/
+
+/-- **For every bound `B` there is an exceptional integer exceeding `B`.**  Pick `m` with
+`2^m` large; the progression member in the window `[2^m + 242, 2^{m+1})` is odd, satisfies the
+six covering congruences (being `≡ 7629217 mod 11184810`), and meets the size condition
+automatically because every relevant exponent `k` has `2^k ≤ 2^m ≤ n - 242`. -/
+theorem exists_exceptional_gt (B : ℕ) : ∃ n, B < n ∧ n ∈ ExceptionalSet := by
+  set m : ℕ := B + 11184810 + 243 with hm
+  clear_value m
+  have hpm : m < 2 ^ m := Nat.lt_two_pow_self
+  have hbig : 242 + 11184810 ≤ 2 ^ m := by omega
+  have hBm : B < 2 ^ m := by omega
+  set L : ℕ := 2 ^ m + 242 with hL
+  have hLge : 7629217 ≤ L := by omega
+  -- The progression `7629217 + q · 2M` meets the window `[L, L + 2M)`.
+  obtain ⟨q, hnL, hnU⟩ :
+      ∃ q, L ≤ 7629217 + q * 11184810 ∧ 7629217 + q * 11184810 < L + 11184810 :=
+    ⟨(L - 7629217 + 11184810 - 1) / 11184810, by omega, by omega⟩
+  set n : ℕ := 7629217 + q * 11184810 with hn
+  have hpow : 2 ^ (m + 1) = 2 * 2 ^ m := by rw [pow_succ]; ring
+  have hnUB : n < 2 ^ (m + 1) := by omega
+  refine ⟨n, by omega, ?_⟩
+  refine covering_progression_mem_exceptionalSet (Nat.odd_iff.mpr (by omega))
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) ?_
+  -- Size condition: any `k` with `2^k < n` has `k ≤ m`, so `n - 2^k ≥ 242`.
+  intro k _ hkn
+  have hk2 : 2 ^ k < 2 ^ (m + 1) := by omega
+  have hkm : k ≤ m := by
+    by_contra hc
+    exact absurd hk2 (not_lt.mpr (Nat.pow_le_pow_right (by norm_num) (not_le.mp hc)))
+  have hle : 2 ^ k ≤ 2 ^ m := Nat.pow_le_pow_right (by norm_num) hkm
+  omega
+
+/-- **Erdős (1950): the exceptional set is infinite.**  The covering-congruence progression
+contributes infinitely many odd integers not of the form `2^k + p`, so
+`ExceptionalSet` is infinite.  (Chen (2023) later showed its structure is richer than a
+single progression plus a density-`0` set, but infinitude already follows from the covering
+construction alone.) -/
+theorem exceptionalSet_infinite : ExceptionalSet.Infinite := by
+  intro hfin
+  obtain ⟨B, hB⟩ := hfin.bddAbove
+  obtain ⟨n, hn, hmem⟩ := exists_exceptional_gt B
+  exact absurd (hB hmem) (by omega)
+
 /-
 ## Summary
 
