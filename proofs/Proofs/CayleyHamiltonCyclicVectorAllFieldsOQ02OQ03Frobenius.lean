@@ -234,7 +234,7 @@ theorem minpoly_natDegree_eq_finrank_of_cyclic [FiniteDimensional K V]
   -- lower bound: a nonzero annihilator of degree `< n` contradicts cyclicity
   have hge : Module.finrank K V ≤ (minpoly K T).natDegree := by
     by_contra h
-    push_neg at h
+    rw [not_le] at h
     have hv0 : (aeval T (minpoly K T)) v = 0 := by rw [haeval]; simp
     exact hne (hcyc (minpoly K T) h hv0)
   -- upper bound: minpoly divides the characteristic polynomial (Cayley–Hamilton)
