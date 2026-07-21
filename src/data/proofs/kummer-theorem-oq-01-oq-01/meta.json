@@ -78,9 +78,17 @@
       "id": "verifications",
       "title": "Part V: Concrete Verifications",
       "startLine": 167,
-      "endLine": 191,
+      "endLine": 198,
       "summary": "Verifies that multinomial([1,2,3]).factorization 2 = 2, the carries formula matches, v_3(multinomial([1,2,3])) = 1, and multinomial([1,2,3]) = 60.",
       "mathContext": "$\\binom{6}{1,2,3} = 60$. $v_2(60) = 2$ (since $60 = 4 \\cdot 15 = 2^2 \\cdot 15$). $v_3(60) = 1$ (since $60 = 3 \\cdot 20$)."
+    },
+    {
+      "id": "summary-check",
+      "title": "Summary Check",
+      "startLine": 200,
+      "endLine": 208,
+      "summary": "#check declarations pinning the file's three headline signatures: multinomial_factorization_is_sum_of_binomial_factorizations, multinomial_kummer, and multinomial_kummer_concrete.",
+      "mathContext": "Type-level `#check` assertions recording the exported API — the multinomial-to-binomial factorization decomposition and the two Kummer-carry statements — with no proof obligation."
     }
   ],
   "conclusion": {
