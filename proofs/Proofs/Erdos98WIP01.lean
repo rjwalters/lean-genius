@@ -383,9 +383,7 @@ theorem triangleConfig_injective : Function.Injective triangleConfig := by
     | (exfalso
        have h0 := congrArg (fun p => p 0) hij
        have h1 := congrArg (fun p => p 1) hij
-       simp only [triangleConfig, EuclideanSpace.single_apply, Matrix.cons_val_zero,
-         Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at h0 h1
-       norm_num at h0 h1)
+       simp [triangleConfig, EuclideanSpace.single_apply] at h0 h1)
 
 /-- **No three of the triangle's vertices are collinear.** The single non-vacuous case:
 a line through all three vertices forces `(a,b,c) = 0`. -/
@@ -396,9 +394,10 @@ theorem noThreeCollinear_triangleConfig : NoThreeCollinear triangleConfig := by
   fin_cases i <;> fin_cases j <;> fin_cases k <;>
     first
     | exact absurd hcard (by decide)
-    | (simp only [triangleConfig, EuclideanSpace.single_apply, Matrix.cons_val_zero,
-         Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
-         mul_zero, mul_one, add_zero, zero_add] at hi hj hk
+    | (simp only [triangleConfig, Matrix.cons_val_zero, Matrix.cons_val_one,
+         Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+         EuclideanSpace.single_apply] at hi hj hk
+       norm_num at hi hj hk
        simp only [Prod.mk.injEq]
        refine ⟨?_, ?_, ?_⟩ <;> linarith)
 
