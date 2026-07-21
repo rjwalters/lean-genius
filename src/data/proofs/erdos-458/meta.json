@@ -50,54 +50,49 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports, Overview, and Setup",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Module docstring introducing the conjecture with Erdős-Graham's 'almost certainly true' assessment and the two obstacles (controlling primes $q$ with $p_k < q^2 < p_{k+1}$, and small prime complications). Imports full Mathlib, opens `Nat Finset BigOperators`.",
-      "mathContext": "The conjecture: $\\text{lcm}(1, \\ldots, p_{k+1}-1) < p_k \\cdot \\text{lcm}(1, \\ldots, p_k)$. Logarithmically: $\\psi(p_{k+1}-1) - \\psi(p_k) < \\log p_k$."
+      "title": "Imports, Overview, and Setup",
+      "summary": "Module docstring introducing Erdős Problem #458 with Erdős–Graham's 'almost certainly true' assessment and the two obstacles (controlling primes $q$ with $p_k < q^2 < p_{k+1}$, and small-prime complications). Imports full Mathlib, opens `Nat Finset BigOperators`."
     },
     {
-      "id": "lcm-function",
-      "title": "The LCM Function and Properties",
       "startLine": 34,
-      "endLine": 63,
-      "summary": "Defines `lcm_upto n = (Finset.Icc 1 n).lcm id`. Proves `lcm_upto_one`, `lcm_upto_pos` (LCM is always positive via `Finset.lcm_eq_zero_iff`), five small values via `native_decide`, divisibility monotonicity `lcm_upto_dvd_mono`, and two axioms: `lcm_upto_prime_step` (LCM is constant between primes) and `lcm_upto_at_prime` ($\\text{lcm}(p) = p \\cdot \\text{lcm}(p-1)$ for prime $p$).",
-      "mathContext": "$\\text{lcm\\_upto}(n) = \\prod_{p \\leq n} p^{\\lfloor \\log_p n \\rfloor}$. Growth pattern: $\\text{lcm\\_upto}(n) = \\text{lcm\\_upto}(n-1)$ when $n$ is composite with no new prime powers, and $\\text{lcm\\_upto}(p) = p \\cdot \\text{lcm\\_upto}(p-1)$ at primes."
+      "endLine": 76,
+      "title": "The LCM Function and Basic Values",
+      "summary": "Defines `lcm_upto n = (Finset.Icc 1 n).lcm id`. Proves `lcm_upto_one = 1`, `lcm_upto_pos` (always positive, via `Finset.lcm_eq_zero_iff`), and the small concrete values `lcm_upto_two`…`lcm_upto_six` ($2,6,12,60,60$) by `native_decide`."
     },
     {
-      "id": "section-64",
-      "title": "The LCM Function and Properties (continued)",
-      "startLine": 64,
-      "endLine": 92,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "startLine": 77,
+      "endLine": 104,
+      "title": "Universal Property and Growth",
+      "summary": "The defining universal property: `mem_dvd_lcm_upto` (every $1 \\le m \\le n$ divides $\\text{lcm\\_upto}(n)$) and its converse `lcm_upto_dvd` (anything divisible by all $m \\le n$ is a multiple), together characterizing $\\text{lcm\\_upto}(n)$ as the least common multiple. `lcm_upto_dvd_mono`: $m \\le n \\Rightarrow \\text{lcm\\_upto}(m) \\mid \\text{lcm\\_upto}(n)$."
     },
     {
-      "id": "nth-prime",
-      "title": "The nth Prime",
-      "startLine": 93,
-      "endLine": 117,
-      "summary": "`nthPrime k = Nat.nth Nat.Prime k` (noncomputable). Four axioms for specific values ($p_0 = 2, \\ldots, p_3 = 7$). Two theorems: `nthPrime_prime` (every $p_k$ is prime, via `Nat.nth_mem_of_infinite`) and `nthPrime_strictMono` (strict monotonicity, via `Nat.nth_strictMono`).",
-      "mathContext": "$p_k = \\text{Nat.nth}\\;\\{n \\in \\mathbb{N} : \\text{Prime}(n)\\}\\;k$, the $(k+1)$-th prime in increasing order."
+      "startLine": 105,
+      "endLine": 162,
+      "title": "The nth Prime and Concrete Values",
+      "summary": "`nthPrime k = Nat.nth Nat.Prime k` (noncomputable). `nthPrime_prime` (every $p_k$ is prime, via `Nat.nth_mem_of_infinite Nat.infinite_setOf_prime`) and `nthPrime_strictMono`. The concrete values $p_0=2,\\,p_1=3,\\,p_2=5,\\,p_3=7,\\,p_4=11$ are now **theorems** (`nthPrime_zero`…`nthPrime_four`) proved from `Nat.nth_count` — no longer axioms."
     },
     {
-      "id": "main-conjecture",
+      "startLine": 163,
+      "endLine": 201,
       "title": "The Main Conjecture and Connection to Legendre",
-      "startLine": 118,
-      "endLine": 156,
-      "summary": "`Erdos458Conjecture`: $\\forall k \\geq 1, \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$. Then `LegendreConjecture` restated locally, and `legendre_implies_gap_bound` (axiom): Legendre implies $p_{k+1} - p_k < \\sqrt{p_k} + 1$.",
-      "mathContext": "The conditional: Legendre $\\Rightarrow$ gap $< \\sqrt{p_k} + 1$ $\\Rightarrow$ at most one prime $q$ with $q^2 \\in (p_k, p_{k+1})$ $\\Rightarrow$ controlled LCM growth $\\Rightarrow$ Erdős #458."
+      "summary": "`Erdos458Conjecture`: $\\forall k \\ge 1,\\ \\text{lcm\\_upto}(p_{k+1}-1) < p_k \\cdot \\text{lcm\\_upto}(p_k)$ — the LCM just before the next prime is strictly less than $p_k$ times the LCM at $p_k$. The 'Why This is Hard' discussion isolates the obstacle (primes $q$ with $p_k < q^2 < p_{k+1}$) and restates `LegendreConjecture` ($\\forall n \\ge 1,\\ \\exists$ prime in $(n^2,(n+1)^2)$) as the structural input that would bound the relevant prime gaps."
+    },
+    {
+      "startLine": 202,
+      "endLine": 239,
+      "title": "Verified Small Cases and Asymptotic Perspective",
+      "summary": "`erdos458_k1` ($12 < 18$) and `erdos458_k2` ($60 < 300$) verify the conjecture at $k=1,2$ by `native_decide`; `erdos458_conjecture_at_one`/`_at_two` restate these in the `nthPrime` form of the conjecture using the concrete prime-value theorems. Closes with the asymptotic frame: Chebyshev's $\\log \\text{lcm\\_upto}(n) \\sim n$, so the conjecture probes the fine structure of $\\text{lcm\\_upto}(n) \\approx e^n$ between consecutive primes."
     }
   ],
   "conclusion": {
     "summary": "This formalization defines $\\text{lcm\\_upto}(n)$ via `Finset.lcm`, defines the $k$-th prime via `Nat.nth`, and states Erdős Problem #458 as a Lean `Prop`. The conjecture remains open because proving it requires controlling prime gaps at a level close to Legendre's conjecture. Two small cases ($k = 1, 2$) are verified computationally, and the connection to Legendre's conjecture and Chebyshev's asymptotic is formalized.",
     "implications": "**Connections to Prime Distribution Theory**\n\nErdős #458 connects the fine structure of LCM growth to deep questions about prime distribution:\n\n1. **LCM and the Chebyshev $\\psi$ function**: Since $\\log \\text{lcm}(1,\\ldots,n) = \\psi(n)$, the conjecture translates to $\\psi(p_{k+1}-1) - \\psi(p_k) < \\log p_k$, bounding the local growth of $\\psi$ between consecutive primes.\n\n2. **Conditional on Legendre**: Legendre's conjecture would imply prime gaps $p_{k+1} - p_k < \\sqrt{p_k} + 1$, limiting the number of new prime powers in the gap to at most one, which would suffice for Erdős #458.\n\n3. **Unconditional progress**: Baker-Harman-Pintz (2001) proved primes in intervals of length $x^{0.525}$, but this alone may not suffice — Erdős #458 needs control over prime *powers* in the gap, not just the gap length.\n\n4. **Relationship to prime power distribution**: The conjecture is really about how prime *powers* (not just primes) are distributed between consecutive primes. A prime $q$ with $p_k < q^2 < p_{k+1}$ contributes $q$ to the LCM ratio, making the problem harder than controlling prime gaps alone.",
     "openQuestions": [
-      "Does Legendre's conjecture formally imply Erdős #458? The formalization states a conditional gap bound, but the full implication from gap control to the LCM inequality remains to be formalized.",
-      "Can the axioms `lcm_upto_prime_step` and `lcm_upto_at_prime` be proved from Mathlib's `Finset.lcm` lemmas? This would reduce the axiom count from 8 to 6.",
+      "Does Legendre's conjecture formally imply Erdős #458? The formalization states the connection, but the full implication from gap control to the LCM inequality remains to be formalized.",
       "Can the conjecture be verified computationally for larger $k$ using `native_decide` or certified computation? The current verification covers only $k = 1, 2$.",
-      "What is the sharpest version: is $\\text{lcm}(1,\\ldots,p_{k+1}-1) / \\text{lcm}(1,\\ldots,p_k) = O(p_k^{1/2})$ or even $O(\\log p_k)$?",
-      "Can the nthPrime value axioms ($p_0 = 2$, etc.) be eliminated by proving them from the `Nat.nth` definition, perhaps using a decidable instance for `Nat.Prime` with `native_decide`?"
+      "What is the sharpest version: is $\\text{lcm}(1,\\ldots,p_{k+1}-1) / \\text{lcm}(1,\\ldots,p_k) = O(p_k^{1/2})$ or even $O(\\log p_k)$?"
     ]
   },
   "leanFile": {
