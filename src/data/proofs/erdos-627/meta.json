@@ -165,14 +165,14 @@
       "title": "Explicit Constructions",
       "summary": "Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam).",
       "startLine": 185,
-      "endLine": 204,
+      "endLine": 208,
       "mathContext": "Formal definition: Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam)."
     },
     {
       "id": "main-status",
       "title": "Main Problem Status",
       "summary": "Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms.",
-      "startLine": 224,
+      "startLine": 209,
       "endLine": 236,
       "mathContext": "Axiomatized: Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms."
     }
