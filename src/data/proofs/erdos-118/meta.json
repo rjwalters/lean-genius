@@ -32,38 +32,54 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Context",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module docstring: Erdős Problem 118 (Erdős–Hajnal) asks whether an ordinal α with the partition property for k parts must have it for all j ≤ k. Answer: NO (disproved). Context and references.",
+      "mathContext": "Ordinal partition relation $\\alpha\\to(\\alpha)^1_k$: does partitionability for $k$ colours force it for fewer? Erdős–Hajnal: no."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 20,
-      "endLine": 39,
+      "startLine": 22,
+      "endLine": 48,
       "summary": "Defines the ordinal partition relation $\\alpha \\to (\\alpha, k)^2$ as a concrete Prop (strict monotone red embedding or blue Fin-clique), the `IsPartitionOrd` predicate, and the Erdős–Hajnal conjecture."
     },
     {
       "id": "counterexample",
       "title": "The Counterexample",
-      "startLine": 40,
-      "endLine": 53,
+      "startLine": 49,
+      "endLine": 62,
       "summary": "Defines the counterexample ordinal $\\omega^{\\omega^2}$ and axiomatizes the two key facts: $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ (Schipperus) and $\\omega^{\\omega^2} \\not\\to (\\omega^{\\omega^2}, 5)^2$ (Larson). Together these witness the failure of the conjecture."
     },
     {
       "id": "disproof",
       "title": "Formal Disproof",
-      "startLine": 54,
-      "endLine": 62,
+      "startLine": 63,
+      "endLine": 71,
       "summary": "Proves $\\neg$ ErdosHajnalConjecture by instantiating the conjecture at the counterexample ordinal with $n = 5$, deriving a contradiction. This is the only fully-proved theorem in the file — a clean application of modus ponens and contradiction."
     },
     {
       "id": "monotonicity",
       "title": "Partition Threshold and Monotonicity",
-      "startLine": 63,
-      "endLine": 86,
+      "startLine": 72,
+      "endLine": 113,
       "summary": "Introduces the partition threshold $\\text{thr}(\\alpha) = \\max\\{k : \\alpha \\to (\\alpha,k)^2\\}$, proves monotonicity ($j \\le k$ preserves the relation) from the ordPartition definition, and bounds $\\text{thr}(\\omega^{\\omega^2}) \\in \\{3, 4\\}$. The exact value remains open."
+    },
+    {
+      "id": "known-thresholds",
+      "title": "Known Thresholds",
+      "startLine": 114,
+      "endLine": 127,
+      "summary": "omega_omega2_threshold: records the concrete threshold behaviour of the ordinal partition relation at the counterexample ordinal (ω^ω²), pinning where partitionability breaks between k=3 and k=5.",
+      "mathContext": "The counterexample ordinal partitions for $k=3$ but not $k=5$, so the partition property is not monotone downward in the number of colours."
     },
     {
       "id": "relation-592",
       "title": "Relation to Problem #592",
-      "startLine": 87,
-      "endLine": 93,
+      "startLine": 128,
+      "endLine": 136,
       "summary": "Connects to Erdős Problem #592 on classifying partition ordinals for triangles. The disproof of #118 shows that the triangle classification does not automatically extend to all clique sizes — each $k$ requires independent analysis."
     }
   ],
