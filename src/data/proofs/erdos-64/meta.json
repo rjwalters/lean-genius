@@ -188,27 +188,35 @@
       "mathContext": "The foundational base fact underlying Problem 64, proved in full without axioms: `connected_hasMinDegree_two_not_isAcyclic` and `connected_hasMinDegree_two_exists_cycle` show a nontrivial connected graph with δ $\\geq$ 2 must contain a cycle, and `connected_hasMinDegree_three_exists_cycle` specializes to the δ $\\geq$ 3 hypothesis of Problem 64. The mechanism is 'a finite nontrivial tree has a leaf' (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`): if every vertex had degree $\\geq$ 2 the connected graph could not be a tree, hence not acyclic, so `IsAcyclic`'s negation hands back an explicit cycle. A fourth theorem `hasMinDegree_two_exists_cycle` drops connectivity, proving the arbitrary-finite-graph statement (δ $\\geq$ 2 $\\Rightarrow$ a cycle exists) by passing to a connected component where degrees are preserved (`SimpleGraph.degree_induce_of_neighborSet_subset`). This is a strict weakening of the open conjecture — it produces some cycle, not one of power-of-two length."
     },
     {
+      "id": "bridge-containslength",
+      "title": "Bridge to the Length-Indexed `ContainsCycleLength` Predicate (axiom-free)",
+      "summary": "Reconciles the two ways the file encodes 'contains a cycle': the existence results above hand back an explicit `G.Walk v v` witnessing `Walk.IsCycle`, whereas Problem 64's conjecture is phrased with the length-indexed predicate `ContainsCycleLength G k`. Three axiom-free theorems close the gap. `isCycle_containsCycleLength` takes any explicit cycle `c` and shows `ContainsCycleLength G c.length`, reindexing the walk's vertices `i ↦ c.getVert i` and discharging the wrap-around adjacency at the final vertex via `getVert_length`/`adj_getVert_succ`. `hasMinDegree_two_containsCycleLength` then measures the cycle produced by `hasMinDegree_two_exists_cycle`, yielding a concrete length `k ≥ 3` (using `IsCycle.three_le_length`) with `ContainsCycleLength G k`. `hasMinDegree_three_containsCycleLength` specializes to Problem 64's δ ≥ 3 hypothesis by monotonicity (δ ≥ 3 ⇒ δ ≥ 2). All three prove only 'some length works' — Problem 64's open content is whether `k` can be forced to a power of two `2^m`, which these lemmas do not touch.",
+      "startLine": 272,
+      "endLine": 334,
+      "mathContext": "Reconciles the two encodings of 'contains a cycle': the existence results hand back an explicit walk witnessing `Walk.IsCycle`, whereas the conjecture uses the length-indexed predicate `ContainsCycleLength G k`. `isCycle_containsCycleLength` turns an explicit cycle `c` into `ContainsCycleLength G c.length` by reindexing $i \\mapsto c.\\mathrm{getVert}\\, i$ and closing the wrap-around adjacency at the last vertex ($c.\\mathrm{getVert}\\, \\ell = v = c.\\mathrm{getVert}\\, 0$). `hasMinDegree_two_containsCycleLength` measures the cycle from `hasMinDegree_two_exists_cycle` to get a concrete $k \\geq 3$ (via `IsCycle.three_le_length`); `hasMinDegree_three_containsCycleLength` specializes to δ $\\geq$ 3 by $3 \\geq 2$. All axiom-free, and all prove only that *some* length $k \\geq 3$ occurs — not that $k = 2^{m}$, which is Problem 64's open core."
+    },
+    {
       "id": "known-results",
       "title": "Known Cycle Results",
       "summary": "Documents in source comments the classical Dirac theorem (1952: δ ≥ n/2 → Hamiltonian) and Bondy theorem (1971: ≥ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3.",
-      "startLine": 272,
-      "endLine": 283,
+      "startLine": 335,
+      "endLine": 346,
       "mathContext": "Documents in source comments the classical Dirac theorem (1952: δ $\\geq$ n/2 → Hamiltonian) and Bondy theorem (1971: $\\geq$ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3."
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
       "summary": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ ≥ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared.",
-      "startLine": 284,
-      "endLine": 291,
+      "startLine": 347,
+      "endLine": 354,
       "mathContext": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ $\\geq$ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared."
     },
     {
       "id": "summary-status",
       "title": "Summary and Problem Status",
       "summary": "Closing source-comment digest of Problem 64's status (OPEN, $1000 prize): the main question (δ ≥ 3 forces a 2^k-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace.",
-      "startLine": 292,
-      "endLine": 316,
+      "startLine": 355,
+      "endLine": 379,
       "mathContext": "Closing source-comment digest of Problem 64's status (OPEN, \\$1000 prize): the main question (δ $\\geq$ 3 forces a $2^{k}$-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace."
     }
   ],
