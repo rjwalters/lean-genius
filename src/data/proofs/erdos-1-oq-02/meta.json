@@ -87,40 +87,88 @@
       "title": "Header and Strategy",
       "startLine": 1,
       "endLine": 55,
-      "summary": "Imports Erdos1Problem and Mathlib. Module docstring describes the DFX 2021 framework: view subset sums as random variables, use variance (Berry-Esseen) anticoncentration to bound the number of distinct values, derive N ≥ √(2/π)·2ⁿ/√n.",
-      "mathContext": "The file imports `Proofs.Erdos1Problem` (which defines `HasDistinctSubsetSums`) and `Mathlib` (for `Real.sqrt`, `Finset.induction_on`, and `nlinarith`). The strategy: convert the discrete counting problem into a continuous probability argument by viewing $X = \\sum \\varepsilon_i a_i$ as a random variable approximated by $\\mathcal{N}(S/2, V)$."
+      "summary": "Imports Erdos1Problem and Mathlib. Module docstring describes the DFX 2021 framework: view subset sums as values of a random variable X = Σεᵢaᵢ, use anticoncentration (here in rigorous Chebyshev form, not Berry–Esseen) to bound the number of distinct values, and derive the largest-element lower bound N = Ω(2ⁿ/√n). Also states what the file proves, its connection to prior work (Erdos1OQ01 counting bound), and references.",
+      "mathContext": "The file imports `Proofs.Erdos1Problem` (which defines `HasDistinctSubsetSums`) and `Mathlib` (for `Real.sqrt`, `Finset.induction_on`, `nlinarith`). Strategy: recast the discrete counting problem via the random subset sum $X = \\sum \\varepsilon_i a_i$ with $\\mathbb{E}[X] = S/2$, $\\mathrm{Var}[X] = Q/4$, and apply Chebyshev anticoncentration — a fully elementary, 0-axiom route replacing the earlier (false) Berry–Esseen $\\sqrt{2/\\pi}$ formulation."
     },
     {
       "id": "part-i-variance-upper",
       "title": "Part I: Variance Upper Bounds (Σa² and Σa)",
-      "startLine": 56,
+      "startLine": 52,
       "endLine": 88,
       "summary": "Two crude upper bounds: sum_sq_le_card_mul_max_sq (Σa² ≤ n·N², term-by-term using Finset.sum_le_sum) and sum_sq_cauchy_schwarz (Σa² ≥ (Σa)²/n, Cauchy-Schwarz proved by ℤ lifting + Finset.induction_on).",
       "mathContext": "`sum_sq_le_card_mul_max_sq`: $\\sum a^2 \\leq n \\cdot N^2$ since each $a \\leq N$. `sum_sq_cauchy_schwarz`: $(\\sum a)^2 \\leq n \\cdot \\sum a^2$ — this is $\\langle \\mathbf{a}, \\mathbf{1} \\rangle^2 \\leq \\|\\mathbf{a}\\|^2 \\cdot \\|\\mathbf{1}\\|^2$. Proved by `Finset.induction_on` in $\\mathbb{Z}$ using $\\sum_{b \\in s}(a-b)^2 \\geq 0$ expanded via `ring` and closed by `nlinarith`."
     },
     {
       "id": "part-i-variance-sum",
-      "title": "Part I: Sum Bound and Part II Header",
+      "title": "Part I: Sum Bound (Σa ≤ n·max)",
       "startLine": 89,
-      "endLine": 120,
-      "summary": "sum_le_card_mul_max (Σa ≤ n·max(A)): bounds the total sum by n times the maximum element. Followed by the Part II section header documenting the anticoncentration strategy and the namespace opening for the Berry-Esseen step.",
-      "mathContext": "`sum_le_card_mul_max`: $\\sum_{a \\in A} a \\leq |A| \\cdot N$ since each $a \\leq N = \\max(A)$. This gives $S \\leq nN$, so $N \\geq S/n$. The Berry-Esseen step then provides a lower bound on $S$ in terms of $2^n$ and $\\sqrt{\\sum a^2}$, which combines with Cauchy-Schwarz to eliminate $\\sum a^2$ and give a bound purely in $n$ and $N$."
+      "endLine": 102,
+      "summary": "sum_le_card_mul_max (Σa ≤ n·max(A)): bounds the total sum by n times the maximum element, completing the Part I variance/sum infrastructure. Gives S ≤ nN, so N ≥ S/n — the bridge that turns the anticoncentration lower bound on 2ⁿ into a lower bound on the largest element N.",
+      "mathContext": "`sum_le_card_mul_max`: $\\sum_{a \\in A} a \\leq |A| \\cdot N$ since each $a \\leq N = \\max(A)$, giving $S \\leq nN$. Combined with the Chebyshev anticoncentration bound $2^n \\le 3\\sqrt Q + 2$ (Part II) and Cauchy–Schwarz $Q \\ge S^2/n$, this isolates $N = \\Omega(2^n/\\sqrt n)$."
     },
     {
-      "id": "part-ii-anticonc",
-      "title": "Part II: Anticoncentration Axiom and DFX Main Bound",
-      "startLine": 121,
-      "endLine": 160,
-      "summary": "Axiom anticoncentration_bound (Berry-Esseen step). Theorem dfx_lower_bound (1 sorry): assembles the variance bounds and anticoncentration axiom to derive N ≥ √(2/π)·2ⁿ/√n. Theorem dfx_improves_counting: the DFX bound is asymptotically better than the basic counting bound.",
-      "mathContext": "`anticoncentration_bound` axiom: $2^n \\leq \\sqrt{2/\\pi} \\cdot 2(S+1)/\\sqrt{\\sum a^2}$. This axiomatizes the normal anticoncentration: $\\mathcal{N}(S/2, V)$ has density $\\leq 1/\\sqrt{2\\pi V}$, so at most $S/\\sqrt{2\\pi V} = S\\sqrt{2/\\pi}/\\sqrt{\\sum a^2/2}$ distinct values can each receive probability mass $\\geq 1/\\sqrt{2\\pi V}$. The `sorry` in `dfx_lower_bound` is at the real-arithmetic assembly: combining $2^n \\lesssim S\\sqrt{n}/S = \\sqrt{n}$ and $S \\leq nN$ to isolate $N$."
+      "id": "part-ii-anticoncentration",
+      "title": "Part II: The DFX Anticoncentration Step (Chebyshev bound 2ⁿ ≤ 3√Q + 2)",
+      "startLine": 103,
+      "endLine": 142,
+      "summary": "States the core anticoncentration inequality — formerly an axiom, now the fully proved theorem anticoncentration_bound: for a distinct-subset-sums set with Q = Σaᵢ², 2ⁿ ≤ 3√Q + 2. This is the rigorous Chebyshev form of the Dubroff–Fox–Xu step. The docstring derives it by viewing X = Σεᵢaᵢ (εᵢ i.i.d. Bernoulli(½)) with E[X] = S/2, Var[X] = Q/4, and applying Chebyshev with k = √Q. It also flags that the earlier Berry–Esseen √(2/π) formulation was FALSE (A = {1,2} gives 4 ≤ 2.85) and replaced by this unconditionally true constant.",
+      "mathContext": "With $X = \\sum_i \\varepsilon_i a_i$, $\\varepsilon_i \\sim \\text{Bernoulli}(1/2)$: $\\mathbb{E}[X] = S/2$, $\\mathrm{Var}[X] = Q/4$. Chebyshev gives $P(|X - S/2| < k) \\ge 1 - Q/(4k^2)$; the distinct integer subset sums in an interval of length $2k$ number $\\le 2k+1$, each of probability $2^{-n}$, so $1 - Q/(4k^2) \\le (2k+1)2^{-n}$. Taking $k = \\sqrt{Q}$ yields $2^n \\le 3\\sqrt{Q} + 2$."
     },
     {
-      "id": "part-iii-concrete",
-      "title": "Part III: Concrete Cases and Improvement Factor",
-      "startLine": 161,
-      "endLine": 194,
-      "summary": "Concrete verification: f_one (DSS set with 1 element, max = 1), f_two_max (DSS set with 2 elements, max = 2). Also improvement_factor (n < n² for n ≥ 2) as a technical lemma.",
-      "mathContext": "`f_one`: $\\{1\\}$ has all $2^1 = 2$ subset sums distinct ($0$ and $1$); $\\max = 1$. `f_two_max`: $\\{1,2\\}$ has all $2^2 = 4$ subset sums distinct with $\\max = 2$ (the `hasDistinctSubsetSums` witness discharged by `fin_cases` over the four subsets + `decide`). `improvement_factor`: $n < n^2$ for $n \\geq 2$ (in $\\mathbb{N}$, proved by `omega`) — the algebraic core of the asymptotic comparison DFX $\\sim 2^n/\\sqrt{n}$ vs counting $\\sim 2^n/n$."
+      "id": "part-ii-ingredients",
+      "title": "Part II: Verified Ingredients Discharging anticoncentration_bound + the DFX Lower Bound",
+      "startLine": 143,
+      "endLine": 503,
+      "summary": "The probability-free, 0-axiom discharge of the anticoncentration estimate and its assembly into the DFX lower bound. second_moment_identity is the exact discrete-variance identity Σ_{T⊆A}(2·Σ_{i∈T}i − Σ_A)² = 2^{|A|}·Σ_A i² (induction on A via (d−a)²+(d+a)² = 2d²+2a²); card_mul_le_second_moment is the elementary discrete Chebyshev/Markov count #{i : t ≤ gᵢ}·t ≤ Σgᵢ. subsetSum_injOn_of_distinct / doubledDrop_injOn_of_distinct / card_doubledDrop_image_of_distinct and card_le_of_sameParity_interval bound how many subset sums cluster near the mean, assembling into anticoncentration_bound (line 326). dfx_lower_bound (461) and dfx_lower_bound_explicit (493) then package the Ω(2ⁿ/√n) largest-element lower bound.",
+      "mathContext": "$\\sum_{T\\subseteq A}\\big(2\\textstyle\\sum_{i\\in T} i - S\\big)^2 = 2^{|A|} Q$ (the doubled discrete variance, kept in $\\mathbb{Z}$). Combined with $\\#\\{i : t \\le g_i\\}\\cdot t \\le \\sum g_i$ applied to $g_T = (2\\sum_{i\\in T} i - S)^2$, this discharges $2^n \\le 3\\sqrt Q + 2$ with 0 axioms, giving $N = \\max A = \\Omega(2^n/\\sqrt n)$."
+    },
+    {
+      "id": "part-iii-comparison",
+      "title": "Part III: Comparison with the Basic Counting Bound (√n improvement)",
+      "startLine": 504,
+      "endLine": 522,
+      "summary": "Quantifies how much DFX beats the elementary counting bound from Erdos1OQ01: basic gives N ≥ (2ⁿ−1)/n ≈ 2ⁿ/n, DFX gives N ≥ c·2ⁿ/√n — better by a factor ~√n. dfx_improves_counting (n < n² for n ≥ 2, via nlinarith) and improvement_factor (n < n·n) are the algebraic cores of this comparison.",
+      "mathContext": "$\\dfrac{\\text{DFX bound}}{\\text{counting bound}} \\approx \\dfrac{2^n/\\sqrt n}{2^n/n} = \\sqrt n \\to \\infty$. The lemmas record $n < n^2$ for $n \\ge 2$, i.e. $\\sqrt n > 1$."
+    },
+    {
+      "id": "part-iv-small-cases",
+      "title": "Part IV: Small Cases f(0)…f(4) and the Conway–Guy Witness",
+      "startLine": 523,
+      "endLine": 683,
+      "summary": "Brute-force certification of the extremal function f(n) for n ≤ 4: f_zero, f_one, f_two_max, f_three, f_four (the Conway–Guy witness {3,5,6,7} with max 7, beating the powers-of-two witness {1,2,4,8}), the matching lower bound f_four_lower, the exact value f_four_eq (f(4) = 7), and f_four_lt_geometric (7 < 2³ — the first n where powers of two are not extremal).",
+      "mathContext": "$f(n)$ = least possible $\\max A$ over $n$-element distinct-subset-sums sets. $f(0)=0,\\ f(1)=1,\\ f(2)=2,\\ f(3)=4,\\ f(4)=7$. The Conway–Guy set $\\{3,5,6,7\\}$ realizes $f(4)=7 < 8 = 2^{4-1}$, the first departure from the greedy powers-of-two construction."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties of hasDistinctSubsetSums",
+      "startLine": 684,
+      "endLine": 774,
+      "summary": "Elementary, brute-force-free facts holding for ALL finite sets — reusable engines for building and analysing witnesses of any size (including the Conway–Guy f(5)=13, f(6)=24 sets the fin_cases route cannot reach). hasDistinctSubsetSums_iff_card characterizes the property via injectivity of the subset-sum map; hasDistinctSubsetSums_subset/_erase (closure under subsets and deletion), _empty/_singleton (base cases), _zero_not_mem/_pos_of_mem (0 excluded, elements positive), and _image_mul (scaling by a nonzero constant preserves the property).",
+      "mathContext": "$A$ has distinct subset sums $\\iff T \\mapsto \\sum_{i\\in T} i$ is injective on $\\mathcal{P}(A)$. The property is downward-closed (subsets/erasure preserve it), excludes $0$, forces positivity, and is invariant under $A \\mapsto cA$ for $c \\neq 0$."
+    },
+    {
+      "id": "part-v-intrinsic-bounds",
+      "title": "Part V: Intrinsic (Parameter-Free) Counting Bounds",
+      "startLine": 775,
+      "endLine": 830,
+      "summary": "The sharpest, most intrinsic form of the pigeonhole counting bound: two_pow_card_le_sum_succ proves 2^|A| ≤ (ΣA) + 1 for any distinct-subset-sums set — parameter-free (no ambient N), and strictly sharper than the N-relative bound since ΣA ≤ |A|·N. two_pow_card_le_card_mul_sup_succ recasts it against the largest element. This is the intrinsic origin from which the ambient-N and largest-element walls both follow.",
+      "mathContext": "The $2^{|A|}$ subset sums are distinct integers in $[0, \\sum A]$, so pigeonhole forces $2^{|A|} \\le \\sum A + 1$. Since $\\sum A \\le |A|\\cdot N$, this is strictly sharper than $2^{|A|} \\le |A|\\cdot N + 1$ and depends on $A$ alone."
+    },
+    {
+      "id": "part-vi-powers-of-two",
+      "title": "Part VI: The General Powers-of-Two Upper Bound f(n) ≤ 2ⁿ⁻¹",
+      "startLine": 831,
+      "endLine": 903,
+      "summary": "A single uniform construction subsuming the per-case witnesses in the upper-bound direction: the greedy binary set powersOfTwo n = {2⁰,…,2ⁿ⁻¹} has distinct subset sums for every n (a subset sum of distinct powers of two is the number with that binary expansion). powersOfTwo_card/_pos/_sup_le/_distinctSubsetSums establish its properties, giving f_le_two_pow: f(n) ≤ 2ⁿ⁻¹ — the classical upper bound the Conway–Guy construction improves upon, complementing the DFX lower bound f(n) = Ω(2ⁿ/√n).",
+      "mathContext": "Uniqueness of binary representation makes $\\{2^0,\\dots,2^{n-1}\\}$ a distinct-subset-sums set with $\\max = 2^{n-1}$, so $f(n) \\le 2^{n-1}$ for all $n$ — sharp for $n \\le 3$, beaten at $n = 4$ (OEIS A005318, $f(4) = 7$)."
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion",
+      "startLine": 904,
+      "endLine": 935,
+      "summary": "Summarizes the formalization: 0 axioms (the Chebyshev anticoncentration bound is now the proved theorem anticoncentration_bound), 0 sorries (dfx_lower_bound fully proved), variance/Cauchy–Schwarz infrastructure, and the small cases f(0)…f(4) with the exact f(4) = 7 = Conway–Guy value. Notes that f(5)=13 and f(6)=24 are omitted because their fin_cases / decide certifications overflow the kernel C stack for |A| ≥ 5 (SIGBUS / build exit 135), so they cannot be built axiom-free.",
+      "mathContext": "The file closes the DFX lower bound $N = \\Omega(2^n/\\sqrt n)$ against the powers-of-two upper bound $f(n) \\le 2^{n-1}$, all 0-axiom / 0-sorry. The $|A| \\ge 5$ brute-force certifications are kernel-infeasible, bounding the axiom-free small-case table at $f(4)$."
     }
   ],
   "conclusion": {
