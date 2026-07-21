@@ -70,25 +70,33 @@
       "id": "multiplicativity-bridge",
       "title": "Part IV: Connecting Multiplicativity to the Product Formula",
       "startLine": 114,
-      "endLine": 142,
+      "endLine": 152,
       "summary": "Derives φ(n) = ∏ φ(p^k) over prime powers in the factorization, making explicit that the product formula follows from multiplicativity + FTA + prime power formula.",
       "mathContext": "The derivation: (1) $n = \\prod p^{v_p(n)}$ (FTA, \\texttt{Nat.factorization\\_prod\\_pow\\_eq\\_self}); (2) $\\varphi(\\prod p^k) = \\prod \\varphi(p^k)$ (multiplicativity, via \\texttt{Finsupp.prod\\_congr}); (3) $\\varphi(p^k) = p^{k-1}(p-1)$ (prime power formula). Steps (2)+(3) give $\\varphi(n) = \\prod p^{k-1}(p-1)$."
     },
     {
       "id": "concrete-checks",
       "title": "Part V: Concrete Verifications",
-      "startLine": 144,
-      "endLine": 162,
+      "startLine": 153,
+      "endLine": 171,
       "summary": "φ(12) = 4, φ(360) = 96, and the rational formula for n=30 verified by native_decide.",
       "mathContext": "$12 = 2^2 \\cdot 3$: $\\varphi(12) = \\varphi(2^2)\\varphi(3) = 2 \\cdot 2 = 4$. $360 = 2^3 \\cdot 3^2 \\cdot 5$: $\\varphi(360) = \\varphi(8)\\varphi(9)\\varphi(5) = 4 \\cdot 6 \\cdot 4 = 96$. $\\varphi(30)/30 = (1-1/2)(1-1/3)(1-1/5) = (1/2)(2/3)(4/5) = 4/15$, so $\\varphi(30) = 8$."
     },
     {
       "id": "density",
       "title": "Part VI: Totient Density",
-      "startLine": 164,
-      "endLine": 186,
+      "startLine": 172,
+      "endLine": 195,
       "summary": "φ(n)/n = ∏_{p|n}(1-1/p) as a rational number. The density depends only on which primes divide n, not on their exponents.",
       "mathContext": "$\\varphi(n)/n = \\prod_{p \\mid n}(1 - 1/p) \\in \\mathbb{Q}$. Proof: divide the rational formula by $n$ (using $n \\neq 0$). Consequence (\\texttt{totient\\_density\\_same\\_support}): if $m$ and $n$ have the same prime support ($m.\\text{primeFactors} = n.\\text{primeFactors}$), then $\\varphi(m)/m = \\varphi(n)/n$. Example: $\\varphi(2)/2 = \\varphi(4)/4 = \\varphi(8)/8 = 1/2$; $\\varphi(6)/6 = \\varphi(12)/12 = \\varphi(18)/18 = 1/3$."
+    },
+    {
+      "id": "summary-check",
+      "title": "Part VII: Summary Check",
+      "startLine": 196,
+      "endLine": 207,
+      "summary": "#check declarations confirming the signatures of the five headline results: totient_factorization_formula, totient_rational_formula, totient_div_primes_formula, totient_density, and totient_density_same_support.",
+      "mathContext": "Type-level assertions (\\texttt{\\#check}) recording the final API surface of the file: the three equivalent product-formula forms plus the two density results. These carry no proof obligation but pin the exported signatures against accidental change."
     }
   ],
   "conclusion": {
