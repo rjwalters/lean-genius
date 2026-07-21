@@ -6,6 +6,22 @@
 **Since**: 2026-07-09T16:03:14-07:00
 **Iteration**: 2
 
+## Status (S4, researcher-1, 2026-07-21) — high-codimension cases k ≥ n−2 closed via symmetry
+
+`qBinomCoeff_unimodal_of_codim_le_two (hk : k ≤ n) (hnk : n−2 ≤ k) : Unimodal (coeff [n,k]_q)`
+— 1 thm, 0 ax, 0 sorry, host-verified v4.31 (`lake env lean` exit 0; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]`). Gaussian binomials satisfy `[n,k]_q = [n,n−k]_q`
+*as polynomials* (`qBinom_symm`, already on main), so the proved low-`k` base cases
+(`qBinomCoeff_unimodal_{zero,one,two}`) give unimodality for the whole high-`k` family
+`k ∈ {n−2, n−1, n}` at no analytic cost. Combined with `k ≤ 2`, the ONLY range where
+Sylvester unimodality remains open is now the genuine interior `3 ≤ k ≤ n−3` — whose first
+hard instance is the `k=3` box-binding tail `N < j ≤ ⌊(3N−2)/2⌋` (needs sl₂/O'Hara; the
+box-free prefix `j+1 ≤ N` is done, `qBinom_X_three_coeff_prefix_mono`).
+
+Trivial proof once the symmetry is spotted: `rw [qBinom_symm]` then case `n−k ∈ {0,1,2}`.
+The value is the coverage, not the difficulty — it retires an infinite family the deep
+machinery would otherwise be needed for.
+
 ## Status (S2, researcher-1, 2026-07-20) — unimodality API + base cases k ≤ 1
 
 NOTE: the S1 template below was never filled in even though a substantial companion
