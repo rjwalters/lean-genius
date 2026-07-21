@@ -50,7 +50,7 @@
       "erdosConjectureLowerBound definition: the conjecture",
       "erdos_572_k3, erdos_572_k5 theorems: partial solutions",
       "luwExponent, conjecturedExponent: exponent comparison",
-      "erdos_klein_c4, odd_cycle_extremal: related results"
+      "Related results (Erdős–Klein C₄ bound, odd-cycle extremal function): documented in comments, not formalized declarations"
     ],
     "axiomCount": 3,
     "lineCount": 303,
@@ -96,7 +96,7 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "bondy_simonovits_upper, benson_k3, benson_k5, lazebnik_ustimenko_woldar axioms",
+      "summary": "benson_k3, benson_k5, lazebnik_ustimenko_woldar axioms (Bondy-Simonovits upper bound documented in comments)",
       "startLine": 90,
       "endLine": 143,
       "mathContext": "c_1 n^{1+2/(3k-3+\\nu)} \\leq \\mathrm{ex}(n; C_{2k}) \\leq c_2 k n^{1+1/k},\\quad \\nu = [2 \\mid k]"
@@ -120,7 +120,7 @@
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "erdos_klein_c4 for C_4, odd_cycle_extremal for odd cycles",
+      "summary": "Erdős–Klein C₄ bound and odd-cycle extremal function (documented in comments, not formalized)",
       "startLine": 233,
       "endLine": 272,
       "mathContext": "\\mathrm{ex}(n; C_4) \\sim \\tfrac{1}{2}n^{3/2};\\quad \\mathrm{ex}(n; C_{2k+1}) = \\lfloor n^2/4 \\rfloor"
