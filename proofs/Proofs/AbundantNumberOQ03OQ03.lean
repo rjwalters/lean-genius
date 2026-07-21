@@ -254,4 +254,79 @@ theorem isPrimitiveAbundant_mul_prime' {m p : ℕ} (hp : p.Prime) (hm : 0 < m)
     (fun _ hd => deficient_of_dvd hmdef (mem_divisors.mp hd).1 (pos_of_mem_divisors hd).ne')
     hpdef
 
+-- ============================================================
+-- Fully arithmetic primitivity criterion for `m · p`
+-- ============================================================
+
+/-
+  The criteria above still carry the semantic predicates `Nat.Abundant` and
+  `Nat.Deficient`.  For a *concrete* Route-1 witness search we want the
+  primitivity of `m·p` expressed entirely in terms of divisor sums, so it can be
+  discharged by pure computation (`decide`).  The two lemmas below convert
+  deficiency into a divisor-sum inequality — the deficient dual of
+  `abundant_iff_sum_divisors` / `abundant_mul_prime_iff` — and then package the
+  whole primitivity obligation as three arithmetic inequalities.
+-/
+
+/-- **Deficiency in divisor-sum form.**  For every `n`, `n` is deficient exactly
+when `σ(n) = ∑_{d ∣ n} d` is below `2n`.  The deficient dual of Mathlib's
+`Nat.abundant_iff_sum_divisors`.  (Holds unconditionally: for `n = 0` both sides
+are `0 < 0`, i.e. false.) -/
+theorem deficient_iff_sum_divisors {n : ℕ} :
+    n.Deficient ↔ (∑ d ∈ n.divisors, d) < 2 * n := by
+  rw [Nat.Deficient, sum_divisors_eq_sum_properDivisors_add_self]
+  omega
+
+/-- **Deficiency criterion for `e · p`** (`p` prime, `p ∤ e`): the multiplicative
+dual of `abundant_mul_prime_iff`.  Since `σ(e·p) = σ(e)·(p+1)`, deficiency of
+`e·p` reduces to the single linear-in-`p` inequality `σ(e)·(p+1) < 2·(e·p)`.
+This turns the primitivity side condition "each `p·e` is deficient" into
+arithmetic. -/
+theorem deficient_mul_prime_iff {e p : ℕ} (hp : p.Prime) (hpe : ¬ p ∣ e) :
+    (e * p).Deficient ↔ (∑ d ∈ e.divisors, d) * (p + 1) < 2 * (e * p) := by
+  rw [deficient_iff_sum_divisors, sum_divisors_mul_prime hp hpe]
+
+/-- **Fully arithmetic primitivity criterion for `m · p`** (`p` prime, `0 < m`,
+`p ∤ m`).  Every hypothesis is now a divisor-sum inequality, so a concrete
+Route-1 witness `m·p` can be certified primitive abundant by pure computation:
+
+* `2·m·p < σ(m)·(p+1)`                     — `m·p` is abundant;
+* `σ(m) < 2·m`                             — the base `m` is deficient;
+* `∀ e ∈ m.properDivisors, σ(e)·(p+1) < 2·e·p` — every `p`-multiple of a proper
+  divisor of `m` is deficient.
+
+This is the endpoint of the Route-1 reduction: it eliminates the semantic
+`Abundant`/`Deficient` predicates entirely, leaving only `σ`-arithmetic. -/
+theorem isPrimitiveAbundant_mul_prime_arith {m p : ℕ} (hp : p.Prime) (hm : 0 < m)
+    (hpm : ¬ p ∣ m)
+    (hab : 2 * (m * p) < (∑ d ∈ m.divisors, d) * (p + 1))
+    (hmdef : (∑ d ∈ m.divisors, d) < 2 * m)
+    (hpdef : ∀ e ∈ m.properDivisors,
+      (∑ d ∈ e.divisors, d) * (p + 1) < 2 * (e * p)) :
+    IsPrimitiveAbundant (m * p) := by
+  refine isPrimitiveAbundant_mul_prime' hp hm ((abundant_mul_prime_iff hp hpm).mpr hab)
+    (deficient_iff_sum_divisors.mpr hmdef) (fun e he => ?_)
+  -- `e ∣ m` and `p ∤ m` force `p ∤ e`, so `deficient_mul_prime_iff` applies to `e·p`.
+  have hedvd : e ∣ m := (Nat.mem_properDivisors.mp he).1
+  have hpe : ¬ p ∣ e := fun h => hpm (h.trans hedvd)
+  rw [mul_comm p e]
+  exact (deficient_mul_prime_iff hp hpe).mpr (hpdef e he)
+
+/-- **The base witness `945` recovered through the arithmetic engine.**  Taking
+`m = 189` and the odd prime `p = 5` (so `m·p = 945`), the fully arithmetic
+criterion `isPrimitiveAbundant_mul_prime_arith` certifies `945` primitive
+abundant purely from divisor sums — an end-to-end validation of the Route-1
+machinery against the known least witness.  Here `σ(189) = 320`, so
+`2·945 = 1890 < 1920 = 320·6` (abundant), `320 < 378 = 2·189` (`189` deficient),
+and each proper divisor `e ∣ 189` has `σ(e)·6 < 10·e`. -/
+theorem primitive_945_via_engine : IsPrimitiveAbundant 945 := by
+  have h : IsPrimitiveAbundant (189 * 5) := by
+    refine isPrimitiveAbundant_mul_prime_arith (by norm_num) (by norm_num)
+      (by decide) ?_ ?_ ?_
+    · set_option maxRecDepth 4000 in decide
+    · set_option maxRecDepth 4000 in decide
+    · set_option maxRecDepth 4000 in decide
+  norm_num at h
+  exact h
+
 end AbundantNumberOQ03OQ03

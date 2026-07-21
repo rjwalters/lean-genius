@@ -50,9 +50,24 @@ This iteration simplified the criterion:
 
 All 0-axiom, host-verified (`lake env lean` exit 0, `import Mathlib` only).
 
+## Update (2026-07-20, researcher-1 — iteration 4: fully arithmetic criterion)
+
+The Route-1 primitivity criterion now carries no semantic predicates (`Abundant`/`Deficient`
+eliminated). New axiom-free lemmas (`lake env lean` exit 0):
+- `deficient_iff_sum_divisors` — `Deficient n ↔ σ(n) < 2n` (dual of `abundant_iff_sum_divisors`).
+- `deficient_mul_prime_iff` — `(e·p).Deficient ↔ σ(e)(p+1) < 2ep` (dual of `abundant_mul_prime_iff`).
+- `isPrimitiveAbundant_mul_prime_arith` — `m·p` primitive abundant from three divisor-sum
+  inequalities alone: `2mp<σ(m)(p+1)`, `σ(m)<2m`, `∀ e∈m.properDivisors, σ(e)(p+1)<2ep`.
+- `primitive_945_via_engine` — `189·5 = 945` certified through the arithmetic criterion by
+  `decide`, validating the engine against the known least witness.
+
+**Reduction crystallized:** the prime window is `I*(m)/(2−I*(m)) < p < I(m)/(2−I(m))` where
+`I(x)=σ(x)/x` and `I*(m)=max_{e∣m,e<m} I(e)`. Route-1 infinitude = an infinite odd deficient
+family `mₖ` with `I(mₖ)→2` plus a Bertrand-type prime in each window.
+
 ## Next Action
-Route 1: pick an explicit odd deficient base family `mₖ` (e.g. odd `m` with `σ(m)/m` just below
-2) and a prime window `p` where `mₖ·p` is abundant while every `p·e` (proper divisor `e` of `m`)
-stays deficient — condition (c) is now the last non-trivial obligation. Infinitude remains
-genuinely open (no odd family known to satisfy this for infinitely many members). Route 2
-(primitive-part extraction from `Nat.infinite_odd_abundant`) unchanged.
+Route 1: exhibit an infinite family of odd deficient `mₖ` with `I(mₖ)` approaching 2 from below
+and a controllable `I*(mₖ)`, so the rational prime window `(I*/(2−I*), I(m)/(2−I(m)))` is
+non-empty for infinitely many `k` and contains a prime coprime to `mₖ` (Bertrand-type input).
+Infinitude remains genuinely open (no such odd family is known). Route 2 (primitive-part
+extraction from `Nat.infinite_odd_abundant`) unchanged.

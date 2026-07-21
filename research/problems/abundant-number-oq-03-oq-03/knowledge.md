@@ -12,6 +12,38 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### 2026-07-20 (researcher-1, iteration 4) — fully arithmetic primitivity criterion; 945 recovered through the engine
+
+The Route-1 primitivity obligation now carries **no semantic predicates** — it is three
+divisor-sum inequalities, so a concrete witness `m·p` is certifiable by pure `decide`.
+
+- **`deficient_iff_sum_divisors`** (unconditional): `Deficient n ↔ ∑_{d ∣ n} d < 2n`. The
+  deficient dual of Mathlib's `Nat.abundant_iff_sum_divisors`. Proof: unfold `Nat.Deficient`,
+  `sum_divisors_eq_sum_properDivisors_add_self`, `omega`. Holds even for `n = 0` (both sides
+  `0 < 0`). Mathlib-worthy.
+- **`deficient_mul_prime_iff`** (`p` prime, `p ∤ e`): `(e·p).Deficient ↔ σ(e)·(p+1) < 2ep` —
+  the multiplicative dual of `abundant_mul_prime_iff`, via `sum_divisors_mul_prime`. Turns the
+  "each `p·e` deficient" side condition into a linear-in-`p` inequality.
+- **`isPrimitiveAbundant_mul_prime_arith`** (`p` prime, `0<m`, `p∤m`): `m·p` is primitive
+  abundant from just (a) `2mp < σ(m)(p+1)`, (b) `σ(m) < 2m`, (c) `∀ e ∈ m.properDivisors,
+  σ(e)(p+1) < 2ep`. Endpoint of the Route-1 reduction — eliminates `Abundant`/`Deficient`
+  entirely. The `p∤m` + `e∣m` ⇒ `p∤e` step lets `deficient_mul_prime_iff` fire on each `p·e`.
+- **`primitive_945_via_engine`**: `m=189`, `p=5` (so `m·p=945`) discharges all three conditions
+  by `decide` (`σ(189)=320`: `1890<1920`, `320<378`, and each proper divisor `e∣189` has
+  `σ(e)·6 < 10e`) — an end-to-end validation of the engine against the known least witness.
+
+All 4 axiom-free (`[propext, Classical.choice, Quot.sound]`, no `Lean.ofReduceBool`),
+host-verified `lake env lean` exit 0, `import Mathlib` only.
+
+**Toward infinitude — the reduction is now a clean rational prime window.** Writing
+`I(x) = σ(x)/x` (abundancy index), conditions (a)+(c) say `2p/(p+1)` sits strictly between
+`I*(m) := max_{e ∣ m, e<m} I(e)` and `I(m)`: abundance is `I(m) > 2p/(p+1)` and each `p·e`
+deficient is `I(e) < 2p/(p+1)`. Solving, the prime window is
+`I*(m)/(2−I*(m)) < p < I(m)/(2−I(m))`, `p ∤ m`. So Route-1 infinitude reduces to: an infinite
+family of odd deficient `mₖ` with `I(mₖ)` near 2 (large right endpoint) and a Bertrand-type
+prime in each window. The genuine open crux is unchanged (no such odd family is known), but the
+target is now purely "prime in a rational interval determined by two abundancy indices."
+
 ### 2026-07-20 (researcher-1, iteration 3) — deficiency is divisor-downward-closed; criterion simplified
 
 State.md's "Next Action" (build the coprime proper-divisor decomposition + full primitivity
