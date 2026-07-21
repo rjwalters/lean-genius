@@ -68,39 +68,39 @@
     {
       "id": "definitions",
       "title": "Definitions (Self-Contained Copy)",
-      "startLine": 52,
-      "endLine": 66,
+      "startLine": 50,
+      "endLine": 58,
       "summary": "AllFactorialSubtractionsComposite: for all k with k! < n, n-k! is composite (≥2, not prime)."
     },
     {
       "id": "counterexample",
       "title": "The l=3 Counterexample",
-      "startLine": 68,
-      "endLine": 91,
+      "startLine": 59,
+      "endLine": 89,
       "summary": "Six failure lemmas: p7_fails through p23_fails. Each shows a specific k where p - k! is prime.",
       "mathContext": "Primes in I(3)=(6,24]: {7,11,13,17,19,23}. Each fails at k=2 (subtract 2!) or k=3 (subtract 6)."
     },
     {
       "id": "witness",
       "title": "Qualifying Prime in I(4): p = 101",
-      "startLine": 104,
-      "endLine": 123,
+      "startLine": 90,
+      "endLine": 122,
       "summary": "p101_prime, p101_qualifying: 101 is prime and satisfies AllFactorialSubtractionsComposite. Verified by interval_cases + norm_num.",
       "mathContext": "101-0!=100=4·25, 101-2!=99=9·11, 101-6=95=5·19, 101-24=77=7·11. All composite ≥2."
     },
     {
       "id": "corrected-axiom",
       "title": "Corrected Selberg Density Axiom (l ≥ 4)",
-      "startLine": 138,
-      "endLine": 140,
+      "startLine": 123,
+      "endLine": 139,
       "summary": "selberg_density_corrected: for l≥4, I(l) contains a qualifying prime. Still needs Brun-Titchmarsh for general proof.",
       "mathContext": "Verified for l=4 (p=101). General l≥5 requires Selberg sieve (not in Mathlib)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Infinitely Many Qualifying Primes",
-      "startLine": 148,
-      "endLine": 157,
+      "startLine": 140,
+      "endLine": 155,
       "summary": "infinitely_many_qualifying_primes: for any n, find qualifying prime p > n using l = n+4.",
       "mathContext": "Uses n < n+4 ≤ (n+4)! < p via selberg_density_corrected."
     }

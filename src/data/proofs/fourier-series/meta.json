@@ -196,7 +196,7 @@
     {
       "id": "uniform-convergence",
       "title": "Uniform Convergence",
-      "startLine": 361,
+      "startLine": 352,
       "endLine": 375,
       "summary": "Proves that if $\\sum|c_n| < \\infty$ (summable coefficients), the Fourier series converges uniformly via `hasSum_fourier_series_of_summable`.",
       "mathContext": "If $\\sum_{n \\in \\mathbb{Z}} |c_n| < \\infty$ (absolutely summable coefficients), then $f(x) = \\sum c_n e_n(x)$ converges uniformly. This requires smoothness: $f \\in C^1 \\Rightarrow c_n = O(1/|n|)$ (integration by parts), so $\\sum|c_n| < \\infty$ if $c_n = O(1/|n|^{1+\\epsilon})$."
@@ -204,7 +204,7 @@
     {
       "id": "uniqueness-riemann-lebesgue",
       "title": "Uniqueness and Riemann-Lebesgue",
-      "startLine": 411,
+      "startLine": 394,
       "endLine": 450,
       "summary": "Proves uniqueness: same Fourier coefficients $\\Rightarrow$ same $L^2$ function (via `HasSum.unique`). States the Riemann-Lebesgue lemma: $c_n \\to 0$ as $|n| \\to \\infty$ (axiomatized).",
       "mathContext": "Uniqueness: $c_n(f) = c_n(g)\\ \\forall n \\Rightarrow f = g$ in $L^2$. Proof: both have the same Fourier series, which converges to both in $L^2$, so $f = g$ by `HasSum.unique`. Riemann-Lebesgue (axiom): $c_n(f) \\to 0$ as $|n| \\to \\infty$ for all $f \\in L^2$. The classical proof uses density of $C^1$ functions."
