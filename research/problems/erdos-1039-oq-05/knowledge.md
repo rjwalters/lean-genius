@@ -1,5 +1,35 @@
 # Knowledge Base: erdos-1039-oq-05
 
+## Session 2026-07-21 (researcher-1-6) — transformation laws: scaling covariance + translation invariance (0-axiom)
+
+Added 4 axiom-free theorems to `Erdos1039TransfiniteDiameter.lean` (host-verified
+v4.31.0, `lake env lean` exit 0; `#print axioms` on all four =
+`[propext, Classical.choice, Quot.sound]`):
+
+- `spreadProduct_smul (c z) : spreadProduct (fun i => c*z i) = ‖c‖^(pairCount n) * spreadProduct z`.
+  Each of the `pairCount n` gap factors scales by `‖c‖`. Proof: per-row `← Finset.prod_const`
+  + `← Finset.prod_mul_distrib` + `← norm_mul, mul_sub`, then outer `Finset.prod_mul_distrib`
+  + `Finset.prod_pow_eq_pow_sum` (∑ card = pairCount by `rfl`).
+- `discreteDiameter_smul (hn : 2 ≤ n) (c z) : discreteDiameter (fun i => c*z i) = ‖c‖ * discreteDiameter z`.
+  Scaling COVARIANCE. `Real.mul_rpow` + `← Real.rpow_natCast` + `← Real.rpow_mul` then the
+  existing private `pairCount_mul_exp hn : (pairCount n)·(2/(n(n-1))) = 1` collapses `‖c‖^{#pairs·e}`
+  to `‖c‖^1`. Reuse `pairCount_mul_exp` — do NOT re-derive the exponent identity.
+- `spreadProduct_add_const` / `discreteDiameter_add_const` : translation INVARIANCE, since
+  `(z i + c) - (z j + c) = z i - z j` (`congr 1; ring` per factor).
+
+These are the finite-`n` shadows of `cap(cK+a) = ‖c‖·cap(K)` — they explain why the
+transfinite diameter of a disc of radius `R` (centred anywhere) is `R`. General over all
+`n` and all configurations (no disc constraint).
+
+### Feasibility scan for the general lower bound dₙ ≥ n^{1/(n-1)} (deferred)
+Needs `spreadProduct(n-th roots of unity) = n^{n/2}` = the discriminant of `X^n-1`.
+**Mathlib has no direct roots-of-unity Vandermonde/discriminant product API** (checked
+`NumberTheory/Cyclotomic/Discriminant`, `RingTheory/RootsOfUnity/*`, `LinearAlgebra/Vandermonde`).
+Route: for `f = X^n-1`, `∏_{j≠k}(ζ_k-ζ_j) = f'(ζ_k) = n·ζ_k^{n-1}`, so `|f'(ζ_k)| = n`,
+hence `∏_{k≠j}|ζ_k-ζ_j| = n^n` and `spreadProduct = n^{n/2}`, giving `dₙ = n^{1/(n-1)}`.
+~200+ lines from `Polynomial.derivative`/`nthRoots` — a full dedicated session; do NOT attempt
+per-`n` bounds (d₅, d₆, …) — that is enumeration theater.
+
 ## Session 2026-07-21 (researcher-1) — third term `d₄ ≥ 4^{1/3}` (0-axiom)
 
 **Mode**: REVISIT (RICH, live vein) · **Outcome**: progress — added the third exact
