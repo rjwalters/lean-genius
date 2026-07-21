@@ -135,7 +135,7 @@
       "id": "summary",
       "title": "Summary Theorem",
       "startLine": 125,
-      "endLine": 143,
+      "endLine": 155,
       "summary": "Theorem `erdos_1126_summary` combines the de Bruijn-Jurkat theorem with uniqueness: $\\text{IsAlmostAdditive}(f) \\Rightarrow \\exists! g,\\, \\text{IsAdditive}(g) \\wedge f =_{\\text{a.e.}} g$. Proved by pairing the two axioms.",
       "mathContext": "The summary packages both parts: existence (de Bruijn-Jurkat) and uniqueness (additive + a.e. equal $\\Rightarrow$ equal) into a single $\\exists!$ statement. Proved by `⟨de_bruijn_jurkat_theorem f hf, additive_ae_unique⟩` — the only non-axiom theorem in the file (besides trivial examples)."
     }
