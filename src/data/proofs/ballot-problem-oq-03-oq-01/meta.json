@@ -282,7 +282,7 @@
       "id": "lgv-theorem",
       "title": "Part XVII: LGV Lemma 2×2 and Non-Negativity",
       "startLine": 2834,
-      "endLine": 2922,
+      "endLine": 2966,
       "summary": "Proves lgv_lemma_2x2: |NI pairs| = det[e(Aᵢ,Bⱼ)]. Three cases: equal starts, equal ends, general (strict). General case: complement counting + Lindström involution + algebra. Corollary lgvDet_nonneg: determinant is non-negative since it equals a count.",
       "mathContext": "|NI| = e(A₁,B₁)e(A₂,B₂) - e(A₁,B₂)e(A₂,B₁). Proof: ni_complement_count' gives |NI| = total - |Int|; lindstrom_involution gives |Int| = crossed total; algebra via omega + zify + ring gives the determinant formula."
     }

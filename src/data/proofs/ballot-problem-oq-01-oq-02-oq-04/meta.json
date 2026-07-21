@@ -100,11 +100,19 @@
     },
     {
       "id": "scaled-case",
-      "title": "Scaled Ballot Expression and Open Directions",
+      "title": "Scaled Ballot Expression",
       "startLine": 247,
-      "endLine": 311,
-      "summary": "Defines scaledBallotFormula (ap-bq)/(ap+bq), proves degeneration to classical, positivity, and ≤1 bound. Notes this is NOT the actual probability for the scaled case. Concludes with open directions.",
+      "endLine": 329,
+      "summary": "Defines scaledBallotFormula (ap−bq)/(ap+bq) and proves its basic algebra: scaled_degenerates (recovers the classical (a−b)/(a+b) at p = q = 1), scaled_formula_pos (positive when ap > bq), and scaled_formula_le_one (bounded by 1). Emphasises that this closed form is NOT the actual probability for the weighted/scaled ballot process.",
       "mathContext": "$(ap-bq)/(ap+bq)$ degenerates to $(a-b)/(a+b)$ when $p = q = 1$. But it does not equal the actual ballot probability in general."
+    },
+    {
+      "id": "open-directions",
+      "title": "Part VI: Open Directions",
+      "startLine": 330,
+      "endLine": 352,
+      "summary": "A closing discussion of what a genuine weighted ballot theorem would require — a recurrence or reflection argument for biased steps — and how the scaled formula relates to the classical Bertrand ballot problem, framing the remaining open directions.",
+      "mathContext": "The weighted analogue of $P=(a-b)/(a+b)$ for step-biases $p,q$ is not $(ap-bq)/(ap+bq)$ in general; the true probability needs a biased reflection principle."
     }
   ],
   "conclusion": {
