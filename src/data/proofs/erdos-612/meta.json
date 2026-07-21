@@ -2,7 +2,7 @@
   "id": "erdos-612",
   "title": "Erdős Problem #612: Diameter Bounds for Clique-Free Graphs",
   "slug": "erdos-612",
-  "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
+  "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 2; base case (triangle-free) remains valid.",
   "meta": {
     "author": "Erdős-Pach-Pollack-Tuza (1989), counterexamples by Czabarka-Singgih-Székely (2021)",
     "sourceUrl": "https://erdosproblems.com/612",
@@ -19,7 +19,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 16,
+    "sorries": 11,
     "erdosNumber": 612,
     "erdosUrl": "https://erdosproblems.com/612",
     "erdosProblemStatus": "open",
@@ -51,7 +51,7 @@
     ],
     "axiomCount": 6,
     "lineCount": 277,
-    "assumptions": "6 axiom(s) and 16 sorries. See the Lean source for details.",
+    "assumptions": "6 axiom(s) and 11 sorries. See the Lean source for details.",
     "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 13,
@@ -63,8 +63,8 @@
   "overview": {
     "historicalContext": "**Erdős Problem #612: Diameter Bounds for Clique-Free Graphs**\n\nThe diameter-degree relationship in graphs has been studied since the mid-20th century. The fundamental question is: how does forbidding dense substructures (cliques) affect the diameter?\n\n**The Basic Bound (Erdős-Pach-Pollack-Tuza, 1989):**\nIn their landmark 1989 paper 'How to make a graph connected,' Erdős, Pach, Pollack, and Tuza proved that any connected graph on $n$ vertices with minimum degree $d$ has diameter $D \\le 3n/(d+1) + O(1)$. The coefficient 3 is tight for general graphs. They then asked: can forbidding $K_r$ subgraphs improve this coefficient?\n\n**Original Conjectures (1989):**\n1. $K_{2r}$-free with $(r-1)(3r+2) \\mid d$: $D \\le \\frac{2(r-1)(3r+2)}{2r^2-1} \\cdot n/d + O(1)$\n2. $K_{2r+1}$-free with $(3r-1) \\mid d$: $D \\le \\frac{3r-1}{r} \\cdot n/d + O(1)$\n\nThese conjectures predicted specific coefficients strictly less than 3, with divisibility conditions on $d$ to handle boundary effects.\n\n**Counterexamples (Czabarka-Singgih-Székely, 2021):**\nOver 30 years later, Eva Czabarka, Inne Singgih, and László Székely disproved both conjectures for $r \\ge 2$. They constructed explicit $K_{2r}$-free graph families with diameter $D = (6r-5)n/((2r-1)d + 2r-3)$, exceeding the conjectured bounds asymptotically. Their construction uses iterated blow-ups of carefully chosen base graphs.\n\n**The Surviving Base Case:**\nRemarkably, the $r = 1$ case (triangle-free) survives: $D \\le 5n/(2d) + O(1)$ with coefficient $5/2 = 2.5 < 3$. This uses the key property that in triangle-free graphs, neighborhoods of adjacent vertices are disjoint.\n\n**Amended Conjecture (Czabarka-Singgih-Székely, 2021):**\nThey proposed a simpler conjecture: $D \\le (3 - 2/k) \\cdot n/d + O(1)$ for $K_{k+1}$-free graphs. This interpolates cleanly from $k = 2$ (coefficient 2) to $k \\to \\infty$ (coefficient 3).\n\n**Further Counterexamples (Cambie-Jooken, 2025):**\nEven the amended conjecture was shown to fail for $K_4$-free graphs without additional colorability assumptions. The verified cases ($k = 3, 4$) require $\\chi(G) \\le k$, which is strictly stronger than $\\omega(G) \\le k$ by Mycielski-type constructions.\n\n**Current Status:**\nThe exact optimal coefficient $\\alpha^*(k)$ such that $D \\le \\alpha^*(k) \\cdot n/\\delta + O(1)$ for $K_{k+1}$-free connected graphs remains unknown for $k \\ge 3$. Only the triangle-free case ($k = 2$, coefficient $5/2$) is fully resolved.",
     "problemStatement": "**Setup:** G is connected, n vertices, minimum degree d, diameter D, K_r-free.\n\n**Original Question:** Does D ≤ α(r) · n/d + O(1) for specific α(r) coefficients?\n\n**Status:**\n- **r = 1 (triangle-free):** TRUE — D ≤ 5n/(2d) + O(1)\n- **r ≥ 2:** DISPROVED — counterexamples exist with larger diameter\n\n**Amended Conjecture:** D ≤ (3 - 2/k) · n/d for K_{k+1}-free (partially verified)",
-    "text": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
-    "proofStrategy": "The formalization:\n\n1. Defines `diameter`, `minDegree`, and `IsKFree`\n2. States `OriginalConjecture1` and `OriginalConjecture2`\n3. Defines coefficient functions `alpha_2r` and `alpha_2r1`\n4. States `counterexample_exists` for r ≥ 2\n5. Proves `original_conjecture1_false` for r ≥ 2\n6. States `triangle_free_diameter` for base case\n7. Defines `AmendedConjecture` with coefficient (3 - 2/k)\n8. Shows special cases and the Moore bound connection",
+    "text": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 2; base case (triangle-free) remains valid.",
+    "proofStrategy": "The formalization:\n\n1. Defines `diameter`, `minDegree`, and `IsKFree`\n2. States `OriginalConjecture1` and `OriginalConjecture2`\n3. Defines coefficient functions `alpha_2r` and `alpha_2r1`\n4. States `counterexample_exists` for r ≥ 2\n5. States `original_conjecture1_false` for r ≥ 2 (proof deferred; sorry)\n6. States `triangle_free_diameter` for base case\n7. Defines `AmendedConjecture` with coefficient (3 - 2/k)\n8. Shows special cases and the Moore bound connection",
     "keyInsights": [
       "**The BFS expansion argument:** The basic bound $D \\le 3n/(d+1)$ works by counting: from vertex $u$, the ball $B_r(u)$ of radius $r$ contains at least $\\min(n, 1 + d + d(d-1) + \\cdots)$ vertices. With minimum degree $d$, we reach all $n$ vertices in $\\sim 3n/d$ steps. Forbidding cliques changes the expansion rate, which is why the coefficient depends on $r$.",
       "**Neighborhood disjointness in triangle-free graphs:** If $G$ is triangle-free and $u \\sim v$, then $N(u) \\cap N(v) = \\emptyset$ (any common neighbor would form a triangle). This means $|N[u] \\cup N[v]| \\ge 1 + 2d$, roughly doubling the expansion rate compared to general graphs. This is the key structural property that gives coefficient $5/2$ instead of 3.",
@@ -113,10 +113,10 @@
     {
       "id": "counterexamples",
       "title": "Counterexamples (Czabarka-Singgih-Székely 2021)",
-      "summary": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_conjecture1_false` for $r \\ge 2$.",
+      "summary": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). States `original_conjecture1_false` for $r \\ge 2$ (sorry).",
       "startLine": 104,
       "endLine": 124,
-      "mathContext": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). Proves `original_conjecture1_false` for $r \\ge 2$."
+      "mathContext": "Defines `counterexample_diameter r n d = (6r-5)n/((2r-1)d + 2r-3)`. Axiomatizes existence of $K_{2r}$-free graphs exceeding the conjectured bound for $r \\ge 2$ (via Filter.atTop). States `original_conjecture1_false` for $r \\ge 2$ (sorry)."
     },
     {
       "id": "base-case",
@@ -145,10 +145,10 @@
     {
       "id": "special-graphs",
       "title": "Special Graph Classes and Moore Bound",
-      "summary": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). Proves `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem.",
+      "summary": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). States `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem.",
       "startLine": 205,
       "endLine": 242,
-      "mathContext": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). Proves `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem."
+      "mathContext": "States diameter for paths ($n-1$), cycles ($\\lfloor n/2 \\rfloor$), complete ($1$), complete bipartite ($2$). States `degree_diameter_tradeoff`: $D \\le 3n/(d+1) + 5$ (sorry). States `moore_bound`: $n \\le 1 + d((d-1)^D - 1)/(d-2)$ connecting to the degree-diameter problem."
     },
     {
       "id": "main-status",
@@ -185,7 +185,7 @@
     "theoremCount": 12,
     "definitionCount": 13,
     "path": "Proofs/Erdos612Problem.lean",
-    "sorries": 16,
+    "sorries": 11,
     "additionalFiles": [
       "Proofs/Erdos612ProblemAristotle.lean",
       "Proofs/Stubs/Erdos612Aristotle.lean"
@@ -208,5 +208,5 @@
       "description": "Related Erdős problem sharing themes: counterexample, graph-theory"
     }
   ],
-  "sorries": 16
+  "sorries": 11
 }
