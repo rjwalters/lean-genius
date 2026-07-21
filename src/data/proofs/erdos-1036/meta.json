@@ -86,12 +86,36 @@
       "mathContext": "optimalConstant(c) := sup{c' : ∀n≫0, every c-non-Ramsey G on n vertices has i(G) ≥ 2^{c'n}}. From Shelah: optimalConstant(c) > 0. Trivially: optimalConstant(c) ≤ 1. The precise formula is open."
     },
     {
-      "id": "complement-and-summary",
-      "title": "Complement Symmetry, Random Graph Comparison, and Summary",
+      "id": "placeholder-artifact",
+      "title": "Placeholder Artifact: optimalConstant = 1",
       "startLine": 162,
-      "endLine": 201,
-      "summary": "Complement symmetry theorems (ω(Gᶜ) = α(G), non-Ramsey preserved under complement), random graph comparison conjecture, erdos_1036 summary theorem packaging all results.",
-      "mathContext": "cliqueNumber(Gᶜ) = independenceNumber(G) since cliques in Gᶜ are independent sets in G. The summary theorem erdos_1036 witnesses: ∀c > 0, non-Ramsey G has i(G) ≥ 2^{optimalConstant(c)·n} using Shelah's axiom."
+      "endLine": 195,
+      "summary": "The general cast lemma numISC_cast_gen (numInducedSubgraphClasses G = 2^|V| for every fintype V) and the theorem optimalConstant_eq_one_placeholder, which proves the placeholder subset-count collapses optimalConstant c to 1 for all c > 0.",
+      "mathContext": "Because the placeholder numInducedSubgraphClasses G = 2^{|V|} for ALL graphs, every exponent c' ≤ 1 satisfies 2^n ≥ 2^{c'n}, so the optimality set contains 1; with optimalConstant_le_one this forces optimalConstant c = 1. This collapse is an artifact of counting subsets rather than isomorphism classes — the genuine optimal-constant question (oq-01) requires the quotient-by-isomorphism construction."
+    },
+    {
+      "id": "random-graph-comparison",
+      "title": "Random Graph Comparison",
+      "startLine": 196,
+      "endLine": 210,
+      "summary": "Defines optimalConstantAtRandom (the proposition optimalConstant (2/log 2) = 1 at the random-graph threshold c = 2/log 2) and proves optimalConstantAtRandom_holds trivially under the placeholder via optimalConstant_eq_one_placeholder.",
+      "mathContext": "At c = 2/log 2 the Erdős–Rényi random graph G(n, 1/2) realises all 2^n distinct induced subgraph classes, so heuristically optimalConstant(2/log 2) = 1. Here it follows from the placeholder collapse since 2/log 2 > 0; establishing it for the true isomorphism-class count is part of oq-01."
+    },
+    {
+      "id": "complement-symmetry",
+      "title": "Complement Symmetry",
+      "startLine": 211,
+      "endLine": 230,
+      "summary": "The complement duality: cliqueNumber_compl (ω(Gᶜ) = α(G) by rfl), independenceNumber_compl (α(Gᶜ) = ω(G) via compl_compl), and complement_nonramsey (IsNonRamsey is preserved under graph complementation).",
+      "mathContext": "Cliques in Gᶜ are exactly independent sets in G, so ω(Gᶜ) = α(G) and α(Gᶜ) = ω(G); consequently max(ω, α) is complement-invariant and the non-Ramsey condition ω(G) ≤ c·log n ∧ α(G) ≤ c·log n transfers verbatim to Gᶜ. This symmetry underlies the two-sided nature of Ramsey-type bounds."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 231,
+      "endLine": 243,
+      "summary": "The packaging theorem erdos_1036: for every c > 0 there is c' > 0 such that every c-non-Ramsey graph G has at least 2^{c'·|V|} induced subgraph classes, obtained directly from Shelah's 1998 axiom.",
+      "mathContext": "erdos_1036 restates Shelah's exponential lower bound i(G) ≥ 2^{c'·n} on induced-subgraph diversity for non-Ramsey graphs, discharged by the shelah_1998 axiom. It is the top-level statement of Erdős Problem #1036; the value of the optimal c' as a function of c remains open (oq-01)."
     }
   ],
   "conclusion": {
