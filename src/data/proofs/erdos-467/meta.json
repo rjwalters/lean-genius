@@ -81,49 +81,49 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 56,
+      "endLine": 61,
       "summary": "Defines `ResidueAssignment x` as a dependent function $(p : \\mathbb{N}) \\to p.\\text{Prime} \\to p \\leq x \\to \\mathbb{N}$. `PrimePartition x` uses a Boolean classifier `inA` with existential non-emptiness witnesses for both sides. `CoveredByA`/`CoveredByB` check coverage by the respective partition half. `IsDualCovering` requires every $n < x$ to be covered by both halves."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 62,
-      "endLine": 68,
+      "endLine": 73,
       "summary": "States `erdos_467_conjecture` as an axiom: $\\exists X,\\, \\forall x \\geq X,\\, \\exists$ residue assignment and partition achieving dual coverage. The quantifier structure $\\exists X, \\forall x \\geq X$ carefully captures 'for sufficiently large $x$'."
     },
     {
       "id": "residue-basics",
       "title": "Residue Class Properties",
       "startLine": 74,
-      "endLine": 98,
+      "endLine": 109,
       "summary": "Seven fully proved properties: $n \\bmod p < p$ (`residue_lt_prime`), $n \\bmod p = 0 \\iff p \\mid n$ (`zero_class_iff_dvd`), $n \\bmod 2 \\in \\{0,1\\}$ (`even_or_odd`), residue class density (`coverage_density`), every $n \\geq 2$ has a prime factor (`has_prime_factor`), prime factors are $\\leq n$ (`prime_factor_le`), and for $n < x$ prime factors are $\\leq x$ (`prime_factor_le_x`)."
     },
     {
       "id": "zero-assignment",
       "title": "Zero Assignment Analysis",
       "startLine": 110,
-      "endLine": 138,
+      "endLine": 143,
       "summary": "Complete analysis of $a_p = 0$ for all $p$: `zero_covered_by_all` ($n = 0$ covered by every prime), `one_not_covered_by_zero` ($n = 1$ never covered), `zero_covers_ge2` (every $n \\geq 2$ covered via smallest prime factor), and `zero_assign_cover_iff` (coverage iff divisibility). All fully proved."
     },
     {
       "id": "partition-properties",
       "title": "Partition and Dual Covering Properties",
       "startLine": 144,
-      "endLine": 190,
+      "endLine": 195,
       "summary": "Six fully proved structural results: `dual_implies_A_covers`/`dual_implies_B_covers` (projections), `dual_covering_double_hit` (every $n < x$ hit by $\\geq 2$ primes from different sides), `partition_uses_two_primes` ($\\geq 2$ primes required), `partition_has_distinct_labels` ($A \\neq B$), `partition_needs_prime` ($x \\geq 2$ necessary)."
     },
     {
       "id": "periodicity",
       "title": "Residue Class Periodicity",
       "startLine": 196,
-      "endLine": 209,
+      "endLine": 214,
       "summary": "Three proved results establishing periodicity: $(n + p) \\bmod p = n \\bmod p$ (`residue_class_periodic`), $a < p \\implies a \\bmod p = a$ (`residue_class_in_range`), and $n \\bmod p < p$ (`num_residue_classes`). These show each residue class covers exactly fraction $1/p$."
     },
     {
       "id": "crt-mertens",
       "title": "CRT and Mertens Estimates",
       "startLine": 215,
-      "endLine": 241,
+      "endLine": 240,
       "summary": "Two now-proved results: `crt_for_primes` proved via `Nat.chineseRemainder` from Mathlib (CRT for distinct primes), and `mertens_product` proved trivially (the placeholder conclusion `x > 0` for large `x` is vacuous). CRT establishes independence of coverage events."
     },
     {
@@ -137,7 +137,7 @@
       "id": "problem-summary",
       "title": "Problem Summary",
       "startLine": 266,
-      "endLine": 278,
+      "endLine": 277,
       "summary": "Records the problem status and the elementary observation underlying it. `erdos_467_status = \"OPEN\"` documents that no proof or disproof of Erdős #467 is known, and `coverage_exceeds_target` proves the trivial-but-essential fact that every n ≥ 2 has a prime factor (via `has_prime_factor`), the starting point for any prime-based dual-covering argument."
     }
   ],
