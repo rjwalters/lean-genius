@@ -23,7 +23,10 @@ ratio and its limit:
   four-square theorem) — the canonical non-vacuous witness for the predicate;
 * `growthRatio` is nonnegative, `growthRatio b 0 = 0`;
 * the growth limit is unique, and existence of a limit contradicts
-  `HasNoGrowthLimit`.
+  `HasNoGrowthLimit`;
+* both growth-limit predicates are non-vacuous: an exactly-quadratic
+  enumeration `bₖ = c·k²` has growth limit `c`, while an enumeration whose
+  quadratic coefficient oscillates between `1` and `2` has **no** growth limit.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -335,5 +338,92 @@ theorem IsAddBasisOfOrder.two_quadratic_density' {A : Set ℕ}
   obtain ⟨S, hS, hSn, hcard⟩ := hN n hn
   rw [Nat.card_Icc] at hcard
   exact ⟨S, hS, hSn, hcard⟩
+
+/-! ## The growth-limit predicates are non-vacuous (realizability)
+
+The lemmas above about `HasGrowthLimit`/`HasNoGrowthLimit` (uniqueness of the
+limit, and that having a limit excludes `HasNoGrowthLimit`) say nothing about
+whether *either* predicate is ever satisfiable.  Here we exhibit explicit
+enumerations realizing each side, so the predicates are not vacuous:
+
+* an exactly-quadratic enumeration `bₖ = c·k²` has growth limit `c`
+  (`hasGrowthLimit_quadratic`);
+* an enumeration whose quadratic coefficient oscillates between `1` and `2`
+  has **no** growth limit (`hasNoGrowthLimit_oscillating`).
+
+The oscillating example is exactly the `bₖ/k²`-non-convergence phenomenon that
+Erdős #326 conjectures must be attainable on a *sub-basis* of every order-2
+basis; here it is realized by a bare sequence (with no basis constraint), which
+is elementary.  All results remain `0`-axiom / `0`-sorry. -/
+
+/-- The growth ratio of an exactly-quadratic enumeration `bₖ = c·k²` at any
+`k ≠ 0` equals the coefficient `c`. -/
+theorem growthRatio_eq (b : ℕ → ℕ) (c k : ℕ) (hk : k ≠ 0)
+    (hval : b k = c * k ^ 2) : growthRatio b k = (c : ℝ) := by
+  unfold growthRatio
+  rw [hval]
+  have hkR : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hk
+  rw [div_eq_iff (pow_ne_zero 2 hkR)]
+  push_cast
+  ring
+
+/-- **A quadratic enumeration has a growth limit.**  If `bₖ = c·k²` exactly then
+`bₖ/k² → c`, so `HasGrowthLimit` is non-vacuous (for every coefficient `c`, in
+particular the positive ones, matching the flavour of Cassels' `aₖ/k² → x`
+construction — though here `b` is a bare sequence, not a genuine basis). -/
+theorem hasGrowthLimit_quadratic (c : ℕ) :
+    HasGrowthLimit (fun k => c * k ^ 2) (c : ℝ) := by
+  have hev : (fun k => growthRatio (fun k => c * k ^ 2) k) =ᶠ[atTop] fun _ => (c : ℝ) := by
+    filter_upwards [eventually_gt_atTop 0] with k hk
+    exact growthRatio_eq _ c k (by omega) rfl
+  exact tendsto_const_nhds.congr' hev.symm
+
+/-- An explicit enumeration whose quadratic coefficient alternates: `bₖ = k²` for
+even `k` and `bₖ = 2k²` for odd `k`.  Its growth ratio therefore oscillates
+between `1` and `2`. -/
+def oscillating (k : ℕ) : ℕ := (k % 2 + 1) * k ^ 2
+
+/-- On odd indices the oscillating growth ratio is `2`. -/
+theorem growthRatio_oscillating_odd (m : ℕ) :
+    growthRatio oscillating (2 * m + 1) = 2 := by
+  have hval : oscillating (2 * m + 1) = 2 * (2 * m + 1) ^ 2 := by
+    unfold oscillating; rw [show (2 * m + 1) % 2 = 1 from by omega]
+  have h := growthRatio_eq oscillating 2 (2 * m + 1) (by omega) hval
+  simpa using h
+
+/-- On even indices the oscillating growth ratio is `1`. -/
+theorem growthRatio_oscillating_even (m : ℕ) :
+    growthRatio oscillating (2 * m + 2) = 1 := by
+  have hval : oscillating (2 * m + 2) = 1 * (2 * m + 2) ^ 2 := by
+    unfold oscillating; rw [show (2 * m + 2) % 2 = 0 from by omega]
+  have h := growthRatio_eq oscillating 1 (2 * m + 2) (by omega) hval
+  simpa using h
+
+/-- **`HasNoGrowthLimit` is non-vacuous.**  The oscillating enumeration has no
+growth limit: its ratio equals `2` on the (unboundedly many) odd indices and `1`
+on the even ones, so any candidate limit would have to be both `2` and `1`.  This
+realizes the `bₖ/k²`-non-convergence phenomenon central to Erdős #326 (here for a
+plain sequence, with the deep sub-basis existence question untouched). -/
+theorem hasNoGrowthLimit_oscillating : HasNoGrowthLimit oscillating := by
+  intro x hx
+  -- the odd and even index maps both tend to `atTop`
+  have godd : Tendsto (fun m : ℕ => 2 * m + 1) atTop atTop :=
+    tendsto_atTop_atTop.mpr fun b => ⟨b, fun a ha => by omega⟩
+  have geven : Tendsto (fun m : ℕ => 2 * m + 2) atTop atTop :=
+    tendsto_atTop_atTop.mpr fun b => ⟨b, fun a ha => by omega⟩
+  -- along odd indices the ratio is the constant `2`, so `x = 2`
+  have hodd : Tendsto (fun m : ℕ => growthRatio oscillating (2 * m + 1)) atTop (𝓝 x) :=
+    hx.comp godd
+  have hodd2 : Tendsto (fun m : ℕ => growthRatio oscillating (2 * m + 1)) atTop (𝓝 2) := by
+    simp only [growthRatio_oscillating_odd]; exact tendsto_const_nhds
+  have hx2 : x = 2 := tendsto_nhds_unique hodd hodd2
+  -- along even indices the ratio is the constant `1`, so `x = 1`
+  have heven : Tendsto (fun m : ℕ => growthRatio oscillating (2 * m + 2)) atTop (𝓝 x) :=
+    hx.comp geven
+  have heven1 : Tendsto (fun m : ℕ => growthRatio oscillating (2 * m + 2)) atTop (𝓝 1) := by
+    simp only [growthRatio_oscillating_even]; exact tendsto_const_nhds
+  have hx1 : x = 1 := tendsto_nhds_unique heven heven1
+  rw [hx2] at hx1
+  norm_num at hx1
 
 end Erdos326
