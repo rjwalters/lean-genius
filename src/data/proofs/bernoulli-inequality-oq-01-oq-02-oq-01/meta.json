@@ -128,7 +128,7 @@
       "id": "specializations",
       "title": "First- and Second-Order Specializations",
       "startLine": 135,
-      "endLine": 146,
+      "endLine": 154,
       "summary": "bernoulli_first_order (k = 1): 1 + n·a ≤ (1+a)ⁿ; bernoulli_second_order (k = 2): 1 + n·a + C(n,2)·a² ≤ (1+a)ⁿ — both one-line instances via Finset.sum_range_succ.",
       "mathContext": "$k=1$: $1 + na \\le (1+a)^n$; $k=2$: $1 + na + \\binom{n}{2}a^2 \\le (1+a)^n$."
     }

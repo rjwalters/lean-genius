@@ -87,7 +87,7 @@
       "title": "innerSum_periodic_rational: Assembling the Periodicity Proof",
       "summary": "Main public theorem: for rational α=p/q with q≥1, the inner sum satisfies S(p/q, n+q) = S(p/q, n) + S(p/q, q). Proof: unfold innerSum, apply Finset.sum_range_add (splitting Σ_{k<n+q} = Σ_{k<n} + Σ_{k<q} shifted by n), then cyclic_sum_periodic to show the shifted q-sum equals the unshifted q-sum.",
       "startLine": 129,
-      "endLine": 138,
+      "endLine": 148,
       "mathContext": "`Finset.sum_range_add` gives: Σ_{k<n+q} f(k) = Σ_{k<n} f(k) + Σ_{k<q} f(n+k). The remaining goal is Σ_{k<q} f(n+k) = Σ_{k<q} f(k) where f(k) = deviation(p/q·(k+1)). `cyclic_sum_periodic` closes this using deviation_rational_periodic. Note: gcd(p,q)=1 is not actually used — the proof works for any integers p and naturals q≥1. The coprimality assumption is inherited from the parent axiom but is mathematically redundant here."
     }
   ],
