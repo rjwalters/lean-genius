@@ -76,35 +76,49 @@
       "id": "header-imports",
       "title": "Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 58,
+      "endLine": 52,
       "summary": "Documents the geometry-of-numbers ⟹ ideal-norm bound connection and the Docker-verified build status. Imports Mathlib and opens the nonZeroDivisors, Real, NumberField, Module, InfinitePlace, Ideal, and Nat namespaces to match Mathlib's ClassNumber.lean conventions."
     },
     {
       "id": "bound-def",
       "title": "The Minkowski Bound as a Reusable Definition",
-      "startLine": 60,
-      "endLine": 72,
+      "startLine": 53,
+      "endLine": 67,
       "summary": "Defines `minkowskiIdealBound K = (4/π)^{nrComplexPlaces K} · ((finrank ℚ K)! / (finrank ℚ K)^(finrank ℚ K) · √|discr K|)`, identical to Mathlib's local notation `M K`. Proves `minkowskiIdealBound_nonneg` (≥ 0) by `positivity`."
     },
     {
       "id": "ideal-norm-bound",
       "title": "Minkowski's Ideal-Norm Bound (Restated)",
-      "startLine": 74,
-      "endLine": 83,
+      "startLine": 68,
+      "endLine": 78,
       "summary": "`exists_ideal_in_class_absNorm_le`: every ideal class contains an integral ideal of absolute norm ≤ minkowskiIdealBound K. Proved by `unfold minkowskiIdealBound; exact NumberField.exists_ideal_in_class_of_norm_le C`, since the definition is definitionally Mathlib's bound."
     },
     {
       "id": "class-number-estimate",
       "title": "Class-Number Estimate via the Geometry of Numbers",
-      "startLine": 85,
+      "startLine": 79,
       "endLine": 106,
       "summary": "`classNumber_le_card_absNorm_le`: the class number is at most the number of integral ideals of norm ≤ ⌊M_K⌋. The index set is finite (finite_setOf_absNorm_le₀); the class-representative map is surjective (Nat.le_floor turns the real bound into the floor bound); Nat.card_le_card_of_surjective plus Nat.card_eq_fintype_card finish."
     },
     {
+      "id": "pid-criterion",
+      "title": "PID Criterion from the Head-Count",
+      "startLine": 107,
+      "endLine": 151,
+      "summary": "`classNumber_eq_one_of_minkowskiIdealBound_lt_two`: if `minkowskiIdealBound K < 2` then `classNumber K = 1`. From `0 ≤ M_K < 2` one gets `⌊M_K⌋₊ ≤ 1`, so every ideal in the head-count has norm ≤ 1; since a nonzero ideal has norm ≥ 1 with equality iff it is `⊤` (`Ideal.absNorm_eq_one_iff`), the index set is a subsingleton and `Nat.card ≤ 1`. Combined with `classNumber_pos`, `omega` forces the class number to 1. Recovers the classical 'no class survives the Minkowski bound' PID test directly from counting, bypassing the discriminant route of `isPrincipalIdealRing_of_abs_discr_lt`."
+    },
+    {
+      "id": "principal-ideal-ring",
+      "title": "Principal-Ideal-Ring Criterion",
+      "startLine": 152,
+      "endLine": 159,
+      "summary": "`isPrincipalIdealRing_of_minkowskiIdealBound_lt_two`: packages the previous theorem as the statement that a number field whose Minkowski bound is below 2 has a principal ideal ring of integers, via `NumberField.classNumber_eq_one_iff`."
+    },
+    {
       "id": "finiteness-corollary",
       "title": "Finiteness of the Class Group as a Corollary",
-      "startLine": 108,
-      "endLine": 113,
+      "startLine": 160,
+      "endLine": 165,
       "summary": "Closes the file with `example : Finite (ClassGroup (𝓞 K)) := inferInstance`, recording that the classical finiteness theorem is now the qualitative shadow of the explicit head-count: a class group bounded in cardinality by a finite set of ideals is automatically finite. The numeric content of the Minkowski bound strictly refines the bare finiteness already available in Mathlib via `instFintypeClassGroup`."
     }
   ],
