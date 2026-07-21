@@ -209,4 +209,49 @@ theorem erdos_70_conjecture_imp_omega_tower_two (h : erdos_70_conjecture) (n : �
   h (Ordinal.omega0 ^ (Ordinal.omega0 ^ Ordinal.omega0)) n
     omega0_opow_omega0_opow_omega0_countable hn
 
+/-! ## Capstone: `ε₀` is a countable ordinal
+
+The tower witnesses above (`ω`, `ω^ω`, `ω^(ω^ω)`) each handle a *fixed finite* level.
+The `ω`-tower `T 0 = ω`, `T (n+1) = ω ^ T n` runs through all of them, and its supremum
+`⨆ₙ T n` is `ε₀`, the least fixed point of `ξ ↦ ω^ξ` (the least epsilon number).  Since
+every level `T n` is countable (`isCountableOrdinal_opow`, by induction) and the index set
+`ℕ` is countable, the supremum stays below `ω₁` (regularity of `ℵ₁`,
+`Ordinal.iSup_lt_omega_one`).  So `ε₀` — the top of the whole exponential hierarchy over
+`ω`, and the exact boundary the file's narrative points at — is itself a *countable*
+ordinal, and the parent conjecture's hypothesis `IsCountableOrdinal β` holds all the way up
+to and including it. -/
+
+/-- The `ω`-tower `T 0 = ω`, `T (n+1) = ω ^ (T n)`: the sequence `ω, ω^ω, ω^(ω^ω), …`
+whose supremum is `ε₀`. -/
+def omegaTower : ℕ → Ordinal
+  | 0 => Ordinal.omega0
+  | (n + 1) => Ordinal.omega0 ^ (omegaTower n)
+
+/-- Every level of the `ω`-tower is a countable ordinal (induction on `n`, using the
+general exponentiation closure `isCountableOrdinal_opow`). -/
+theorem omegaTower_countable : ∀ n, IsCountableOrdinal (omegaTower n)
+  | 0 => omega0_countable
+  | (n + 1) => isCountableOrdinal_opow omega0_countable (omegaTower_countable n)
+
+/-- **`ε₀` is a countable ordinal.**  `ε₀ = ⨆ₙ (ω`-tower `n)` is a countable (`ℕ`-indexed)
+supremum of the countable ordinals `omegaTower_countable`, hence `< ω₁`
+(`Ordinal.iSup_lt_omega_one`).  This is the capstone of the tower-closure development: the
+supremum of the entire exponential hierarchy `ω, ω^ω, ω^(ω^ω), …` — the least epsilon
+number — remains countable. -/
+theorem iSup_omegaTower_countable :
+    IsCountableOrdinal (⨆ n : ℕ, omegaTower n) := by
+  rw [isCountableOrdinal_iff_lt_omega_one]
+  apply Ordinal.iSup_lt_omega_one
+  intro n
+  exact isCountableOrdinal_iff_lt_omega_one.mp (omegaTower_countable n)
+
+/-- The open conjecture specializes all the way to `ε₀`: `𝔠 → (ε₀, n)₂³`, using the
+countability witness `iSup_omegaTower_countable`.  Every ordinal in the naturally-described
+exponential hierarchy over `ω`, up to and including its `ε₀` limit, is a valid instance of
+the parent conjecture. -/
+theorem erdos_70_conjecture_imp_epsilon0 (h : erdos_70_conjecture) (n : ℕ)
+    (hn : 2 ≤ n) :
+    PartitionArrow continuum_card (⨆ k : ℕ, omegaTower k) n :=
+  h (⨆ k : ℕ, omegaTower k) n iSup_omegaTower_countable hn
+
 end Erdos70
