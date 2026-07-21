@@ -347,7 +347,9 @@ theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
       rw [intervalIntegral.integral_const, smul_eq_mul]; ring
     · rw [if_neg hnm,
         show ((n : ℝ) - (m : ℝ)) = (((n : ℤ) - (m : ℤ)) : ℝ) by push_cast; ring]
-      exact integral_cos_int_mul_eq_zero _ (sub_ne_zero.mpr (by exact_mod_cast hnm))
+      refine integral_cos_int_mul_eq_zero ((n : ℤ) - (m : ℤ)) ?_
+      rw [sub_ne_zero]
+      exact_mod_cast hnm
   rw [hfun, intervalIntegral.integral_add hI1 hI2,
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, hsum, hdiff]
   by_cases hnm : n = m
