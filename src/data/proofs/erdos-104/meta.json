@@ -112,8 +112,16 @@
       "title": "Known Values",
       "summary": "maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13",
       "startLine": 288,
-      "endLine": 317,
+      "endLine": 323,
       "mathContext": "Mathematical content: maxUnitCircles extremal function (OEIS A003829) and exact values: f(3) = 1, f(4) = 4, f(5) = 8, f(6) = 13"
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "`erdos104OpenProblem := erdos104Conjecture`: the main open question packaged as a `Prop`. The exact growth rate of the maximum number of unit circles through ≥3 points of an n-point set remains unknown — the conjectured O(n^{3/2}) bound is not proved.",
+      "startLine": 325,
+      "endLine": 332,
+      "mathContext": "The definition `erdos104OpenProblem : Prop := erdos104Conjecture` exposes the headline conjecture as a named target. It is a definitional alias, carrying no proof obligation, that pins the file's central unresolved statement."
     }
   ],
   "conclusion": {
