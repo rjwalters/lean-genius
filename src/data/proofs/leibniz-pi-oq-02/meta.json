@@ -68,76 +68,100 @@
   },
   "sections": [
     {
-      "id": "alternating-harmonic",
-      "title": "The Alternating Harmonic Series (ln 2)",
+      "id": "overview-family",
+      "title": "Overview: The Leibniz-Type Formula Family (β and η)",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring, imports, and namespace/opens. Frames the open question — how the Leibniz series π/4 = Σ(-1)ⁿ/(2n+1) extends to other constants — via the Dirichlet beta function β(s) = Σ(-1)ⁿ/(2n+1)ˢ (odd-denominator, π-related: β(1)=π/4, β(2)=G Catalan, β(3)=π³/32) and the Dirichlet eta function η(s) = Σ(-1)ⁿ⁻¹/nˢ = (1−2¹⁻ˢ)ζ(s) (all-denominator, ζ-related: η(1)=ln2, η(2)=π²/12).",
+      "mathContext": "The two families are $\\beta(s) = \\sum_{n\\ge0}(-1)^n/(2n+1)^s$ (a Dirichlet $L$-function for $\\chi_4$) and $\\eta(s) = \\sum_{n\\ge1}(-1)^{n-1}/n^s = (1-2^{1-s})\\zeta(s)$."
+    },
+    {
+      "id": "part1-alternating-harmonic",
+      "title": "PART 1 — The Alternating Harmonic Series (ln 2)",
       "startLine": 49,
       "endLine": 71,
-      "summary": "Defines the alternating harmonic partial sum and states convergence to $\\ln 2$.",
-      "mathContext": "$\\eta(1) = \\ln 2$ from the Taylor series of $\\ln(1+x)$ at $x = 1$."
+      "summary": "Defines altHarmonicPartialSum n = Σ_{k<n} (-1)ᵏ/(k+1) and states alternating_harmonic_series : the partial sums converge to ln 2. The convergence proof is a `sorry` (line 69) — it needs an Abel/boundary argument on the ln(1+x) Taylor series at x=1, which Mathlib's Real.hasSum_pow_div_log_of_abs_lt only covers for |x|<1.",
+      "mathContext": "$\\eta(1) = \\ln 2 = 1 - \\tfrac12 + \\tfrac13 - \\cdots$; the $x=1$ boundary of the $\\ln(1+x)$ series needs Abel summation (open sorry)."
     },
     {
-      "id": "beta-function",
-      "title": "The Dirichlet Beta Function",
+      "id": "part2-beta-function",
+      "title": "PART 2 — The Dirichlet Beta Function (β(1) = π/4)",
       "startLine": 72,
-      "endLine": 91,
-      "summary": "Defines the beta partial sum $\\beta_n(s) = \\sum_{k<n} (-1)^k/(2k+1)^s$ and restates $\\beta(1) = \\pi/4$.",
-      "mathContext": "$\\beta(s) = \\sum_{n=0}^{\\infty} (-1)^n/(2n+1)^s$, generalizing the Leibniz formula."
+      "endLine": 98,
+      "summary": "Defines dirichletBetaPartialSum s n = Σ_{k<n} (-1)ᵏ/(2k+1)ˢ and proves (no sorry) dirichlet_beta_one : the s=1 partial sums converge to π/4 — after Real.rpow_one collapses (2k+1)^(1:ℝ), the sum is literally Mathlib's Leibniz partial sum, closed by tendsto_sum_pi_div_four.",
+      "mathContext": "$\\beta(1) = \\pi/4$ (the original Leibniz series), proved by rewriting to Mathlib's `tendsto_sum_pi_div_four`."
     },
     {
-      "id": "catalan",
-      "title": "Catalan's Constant",
-      "startLine": 93,
-      "endLine": 119,
-      "summary": "Defines Catalan's constant $G = \\beta(2)$, states convergence and positivity.",
-      "mathContext": "$G = \\beta(2) \\approx 0.9159$, irrationality unknown."
-    },
-    {
-      "id": "beta-three",
-      "title": "$\\beta(3) = \\pi^3/32$",
-      "startLine": 121,
-      "endLine": 133,
-      "summary": "States $\\beta(3) = \\pi^3/32$, requiring Fourier analysis to prove.",
-      "mathContext": "$\\beta(3) = \\sum (-1)^n/(2n+1)^3 = \\pi^3/32$."
-    },
-    {
-      "id": "eta-function",
-      "title": "The Dirichlet Eta Function",
-      "startLine": 135,
-      "endLine": 162,
-      "summary": "Defines the eta partial sum, states $\\eta(1) = \\ln 2$ and $\\eta(2) = \\pi^2/12$.",
-      "mathContext": "$\\eta(s) = \\sum_{n=1}^{\\infty} (-1)^{n-1}/n^s$; $\\eta(2) = (1-1/2)\\zeta(2) = \\pi^2/12$."
-    },
-    {
-      "id": "eta-zeta",
-      "title": "The Eta-Zeta Relationship",
-      "startLine": 164,
+      "id": "part3-catalan",
+      "title": "PART 3 — Catalan's Constant G = β(2)",
+      "startLine": 99,
       "endLine": 176,
-      "summary": "Axiomatizes $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$, the sole axiom of the file.",
-      "mathContext": "Converts alternating to non-alternating: $\\eta(s) = (1-2^{1-s})\\zeta(s)$ for $s > 1$."
+      "summary": "Defines catalansConstant = Σ(-1)ⁿ/(2n+1)² and proves (all no sorry) catalan_eq_beta_two (G = β(2) by rfl); the private magnitude-sequence toolkit catG with catG_pos / catG_anti / catG_summable (dominated by the p-series Σ1/(n+1)²) / catG_alt_tsum / catalan_alt_conv; catalan_series_convergent (β partial sums at s=2 → G, via Summable.tendsto_alternating_series_tsum); and catalan_pos (G > 0 from the even partial sum 8/9 as an alternating-series lower bound).",
+      "mathContext": "$G = \\beta(2) = \\sum_{n\\ge0}(-1)^n/(2n+1)^2 \\approx 0.9159$; positivity from $\\sum_{i<2}(-1)^i\\,\\mathrm{catG}\\,i = 8/9 \\le G$ via `Antitone.alternating_series_le_tendsto`."
     },
     {
-      "id": "general-pattern",
-      "title": "The General Leibniz-Type Pattern",
-      "startLine": 179,
-      "endLine": 200,
-      "summary": "Complete table unifying all Leibniz-type formulas via $\\beta(s)$ and $\\eta(s)$.",
-      "mathContext": "$\\beta$: odd denominators $\\to$ $\\pi$-related. $\\eta$: all denominators $\\to$ $\\zeta$-related."
+      "id": "part4-beta-three",
+      "title": "PART 4 — β(3) = π³/32",
+      "startLine": 177,
+      "endLine": 190,
+      "summary": "States dirichlet_beta_three : the s=3 beta partial sums converge to π³/32. The proof is a `sorry` (line 189) — a genuinely deep evaluation requiring the Fourier series of x² on [-π,π] or Euler's methods.",
+      "mathContext": "$\\beta(3) = \\sum_{n\\ge0}(-1)^n/(2n+1)^3 = \\pi^3/32$ (open sorry; provable via the Fourier expansion of $x^2$)."
     },
     {
-      "id": "algebraic-results",
-      "title": "Proved Algebraic Properties",
-      "startLine": 202,
-      "endLine": 240,
-      "summary": "Proves partial sum recurrences, defines $\\chi_4$, proves its periodicity and values.",
-      "mathContext": "$\\chi_4$: the non-principal character mod 4, with $\\beta(s) = L(s, \\chi_4)$."
+      "id": "part5-eta-function",
+      "title": "PART 5 — The Dirichlet Eta Function (η(1), η(2))",
+      "startLine": 191,
+      "endLine": 219,
+      "summary": "Defines dirichletEtaPartialSum s n = Σ_{k<n} (-1)ᵏ/(k+1)ˢ and states two convergence results, both `sorry` (lines 208, 218): dirichlet_eta_one (η(1) = ln 2, the same series as PART 1 repackaged) and dirichlet_eta_two (η(2) = π²/12, which would follow from the eta-zeta identity below and ζ(2) = π²/6).",
+      "mathContext": "$\\eta(2) = (1 - 2^{1-2})\\zeta(2) = \\tfrac12\\cdot\\tfrac{\\pi^2}{6} = \\pi^2/12$ (open sorry, depends on the eta-zeta axiom)."
     },
     {
-      "id": "irrationality-bounds",
-      "title": "Irrationality Status and Numerical Bounds",
-      "startLine": 242,
-      "endLine": 276,
-      "summary": "Documents irrationality status of all constants, bounds $0.91 < G < 0.92$, and the Leibniz error bound $|\\beta_n(1) - \\pi/4| \\leq 1/(2n+1)$.",
-      "mathContext": "All constants transcendental except $G = \\beta(2)$ — irrationality unknown."
+      "id": "part6-eta-zeta",
+      "title": "PART 6 — The Eta-Zeta Relationship (the sole axiom)",
+      "startLine": 220,
+      "endLine": 233,
+      "summary": "The file's single `axiom`, eta_zeta_relation (line 230): η(s) = (1 − 2¹⁻ˢ)ζ(s) for s > 1 — the fundamental identity converting alternating to non-alternating series. This is the one assumption behind the entry's `axiomatized` status; the deep analytic content (interchanging the alternating sum with the zeta sum) is asserted rather than derived.",
+      "mathContext": "$\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ for $s>1$; the eta zeros occur where $2^{1-s}=1$. Asserted as an axiom, not proved."
+    },
+    {
+      "id": "part7-general-pattern",
+      "title": "PART 7 — The General Leibniz-Type Pattern",
+      "startLine": 234,
+      "endLine": 257,
+      "summary": "A documentation-only table unifying all the formulas as C = Σ(-1)ⁿa(n) for a positive decreasing null sequence a(n): 1/(2n+1)→π/4, 1/(2n+1)²→G, 1/(2n+1)³→π³/32 (the β column, π-related odd denominators); 1/(n+1)→ln2, 1/(n+1)²→π²/12, 1/(n+1)³→3ζ(3)/4 (the η column, ζ-related all denominators).",
+      "mathContext": "$\\beta$ captures odd-denominator ($\\pi$-related) series; $\\eta$ captures all-denominator ($\\zeta$-related) series."
+    },
+    {
+      "id": "part8-algebraic-results",
+      "title": "PART 8 — Proved Algebraic Relationships and χ₄",
+      "startLine": 258,
+      "endLine": 297,
+      "summary": "Fully-proved (no sorry) structural results: beta_partial_sum_alternating and eta_partial_sum_alternating (the one-term recurrences via Finset.sum_range_succ); then the mod-4 Dirichlet character dirichletCharMod4 (0 on evens, ±1 on n≡1,3 mod 4) with char_mod4_periodic (period 4) and char_mod4_values (χ₄(0..3) = 0,1,0,-1), realizing β(s) = L(s, χ₄).",
+      "mathContext": "$\\chi_4$ is the non-principal character mod 4 with $\\beta(s) = L(s,\\chi_4)$; periodicity and its four values are proved by `simp`/`decide`."
+    },
+    {
+      "id": "part9-irrationality",
+      "title": "PART 9 — Known and Unknown Irrationality",
+      "startLine": 298,
+      "endLine": 315,
+      "summary": "A documentation table of irrationality/transcendence status: π/4 = β(1) and π³/32 = β(3), ln 2 = η(1) and π²/12 = η(2) are all irrational and transcendental, while Catalan's G = β(2) has UNKNOWN irrationality — one of the most important open constants (Zudilin 2001: at least one of β(2), β(4) is irrational).",
+      "mathContext": "$G = \\beta(2)$ is the notable open case: its irrationality is unknown despite $\\beta(1),\\beta(3),\\eta(1),\\eta(2)$ all being transcendental."
+    },
+    {
+      "id": "part10-numerical-bounds",
+      "title": "PART 10 — Numerical Bounds and the Leibniz Error Estimate",
+      "startLine": 316,
+      "endLine": 397,
+      "summary": "Two fully-proved (no sorry) quantitative results. catalan_bounds : 0.91 < G < 0.92, from the alternating-series error bound at 8 terms (|G − S₈| ≤ 1/289 with S₈ ≈ 0.91502). The private leibG toolkit (leibG_nonneg, leibG_anti, leib_alt_conv) then supports leibniz_error_bound : |β_n(1) − π/4| ≤ 1/(2n+1), proved by even/odd case split using Antitone.alternating_series_le_tendsto and tendsto_le_alternating_series — the standard alternating-series estimate reproved by hand because Mathlib's alternating_series_error_bound needs absolute convergence.",
+      "mathContext": "Alternating-series error control: $|G - S_8| \\le 1/289$ gives $0.91<G<0.92$, and $|\\beta_n(1) - \\pi/4| \\le 1/(2n+1)$ quantifies the Leibniz series' slow convergence."
+    },
+    {
+      "id": "part11-summary",
+      "title": "PART 11 — Summary",
+      "startLine": 398,
+      "endLine": 437,
+      "summary": "Closing summary docstring tabulating the proved results, the remaining convergence sorries, and the single deep-identity axiom (eta_zeta_relation), plus #check sanity lines and the namespace end. Note: the in-file prose tally is itself partly stale (it lists catalan_bounds and leibniz_error_bound among sorries, though both are now proved); the primary file's live count is 4 sorries + 1 axiom.",
+      "mathContext": "Live status: 4 open sorries (η(1)/ln2 boundary, β(3), η(1)/η(2) repackaged) and 1 axiom (η = (1−2¹⁻ˢ)ζ); the β/η split unifies all known Leibniz-type series."
     }
   ],
   "crossReferences": [
