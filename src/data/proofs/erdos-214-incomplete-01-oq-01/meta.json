@@ -137,6 +137,86 @@
       "endLine": 127,
       "summary": "scaledLattice_unitDistanceFree is the immediate corollary that ScaledLattice satisfies IsUnitDistanceFree (so #214's hypothesis is non-vacuous); scaledLattice_nonempty records that the origin (a = b = 0) belongs to the set.",
       "mathContext": "The unit-distance-free property follows by discarding the p ≠ q argument of scaledLattice_dist_ne_one; the origin witnesses inhabitedness with √2·0 = 0."
+    },
+    {
+      "id": "infinite-family-odd",
+      "title": "Strengthening: an Infinite Family of Avoided Distances (all odd n)",
+      "startLine": 128,
+      "endLine": 198,
+      "summary": "scaledLattice_dist_sq_even shows every squared lattice distance is even, so √2·ℤ² avoids √n for every ODD n (scaledLattice_dist_ne_sqrt_odd) — an infinite family generalising the single unit-distance result. scaledLattice_dist_ne_sqrt_three is the √3 instance; scaledLattice_unitDistanceFree_of_odd repackages the odd-distance-free property.",
+      "mathContext": "$\\text{dist}^2 = 2\\big((a-a')^2 + (b-b')^2\\big) \\in 2\\mathbb{Z}$, so it can never equal an odd $n$; thus $\\sqrt{n}$ is unrealized for all odd $n$ ($n = 1, 3, 5, \\dots$)."
+    },
+    {
+      "id": "even-avoided-family",
+      "title": "Further Strengthening: an Infinite Family of Even Avoided Distances",
+      "startLine": 199,
+      "endLine": 271,
+      "summary": "Even n are not all realized either. sq_add_sq_mod_four_ne_three (a sum of two squares is never ≡ 3 mod 4) and scaledLattice_dist_sq_two_mul_sq_add_sq feed scaledLattice_dist_ne_sqrt_six_mod_eight / scaledLattice_dist_ne_sqrt_six: √6 is avoided although 6 is even.",
+      "mathContext": "$\\text{dist}^2 = 2(u^2+v^2)$; since $u^2+v^2 \\not\\equiv 3 \\pmod 4$, $2(u^2+v^2) \\not\\equiv 6 \\pmod 8$, so $\\sqrt{6}$ (and $\\sqrt{n}$ for $n \\equiv 6 \\bmod 8$) is not a lattice distance."
+    },
+    {
+      "id": "mod-8-dichotomy",
+      "title": "The Complete mod-8 Dichotomy for Achievable Distances",
+      "startLine": 272,
+      "endLine": 310,
+      "summary": "Assembles the mod-8 picture: scaledLattice_achievable_mod_eight shows every achievable squared distance is ≡ 0, 2, or 4 (mod 8), and scaledLattice_dist_ne_sqrt_of_mod_eight avoids √n whenever n ≢ {0, 2, 4} (mod 8).",
+      "mathContext": "$2(u^2+v^2) \\bmod 8 \\in \\{0,2,4\\}$ because $u^2+v^2 \\bmod 4 \\in \\{0,1,2\\}$; the complementary residues $\\{1,3,5,6,7\\}$ are all avoided."
+    },
+    {
+      "id": "beyond-mod-8",
+      "title": "Beyond mod 8: the Achievable Residues {0,2,4} Are Not Sharp",
+      "startLine": 311,
+      "endLine": 373,
+      "summary": "The residues {0,2,4} mod 8 are necessary but not sufficient: √12 has 12 ≡ 4 (mod 8) yet is still avoided. sq_add_sq_mod_eight_ne_six and scaledLattice_dist_ne_sqrt_twelve_mod_sixteen show n ≡ 12 (mod 16) is blocked, giving scaledLattice_dist_ne_sqrt_twelve.",
+      "mathContext": "$12 \\equiv 4 \\pmod 8$ passes the mod-8 test, but $2(u^2+v^2) \\equiv 12 \\pmod{16}$ would require $u^2+v^2 \\equiv 6 \\pmod 8$, impossible — so the mod-8 sieve is not sharp."
+    },
+    {
+      "id": "odd-prime-3-obstruction",
+      "title": "An Odd-Prime Obstruction: 3 Forces a Square Factor",
+      "startLine": 374,
+      "endLine": 445,
+      "summary": "A prime-divisibility obstruction: sq_add_sq_three_dvd shows 3 | u²+v² forces 3 | u and 3 | v (hence 9 | u²+v²), giving scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine — √(2m) is avoided when 3 | m but 9 ∤ m — witnessed by scaledLattice_dist_ne_sqrt_twentyfour (24 = 2·12, 3 | 12, 9 ∤ 12).",
+      "mathContext": "Since $-1$ is not a quadratic residue mod $3$, $3 \\mid u^2+v^2 \\Rightarrow 3\\mid u \\wedge 3\\mid v \\Rightarrow 9 \\mid u^2+v^2$. A distance $\\sqrt{2m}$ needs $m = u^2+v^2$, so an exact single factor of $3$ in $m$ is impossible; $\\sqrt{24}$ is the first witness."
+    },
+    {
+      "id": "sharpness-exact-form",
+      "title": "Sharpness: the Achievable Square-Distances Are Exactly 2·(u²+v²)",
+      "startLine": 446,
+      "endLine": 525,
+      "summary": "The converse (sharpness) direction: latticePoint u v builds an explicit lattice point, latticePoint_mem / scaledLattice_realizes show √(2·(u²+v²)) is actually attained, and scaledLattice_achievable_iff characterizes the achievable squared distances as exactly {2·(u²+v²)}. scaledLattice_realizes_sqrt_eight is the √8 = √(2·4) instance.",
+      "mathContext": "The point $(\\sqrt2\\,u, \\sqrt2\\,v)$ lies at distance $\\sqrt{2(u^2+v^2)}$ from the origin, so every value $2(u^2+v^2)$ is realized — the avoidance results are exactly its complement."
+    },
+    {
+      "id": "minimal-distance-sqrt2",
+      "title": "The Minimal Positive Distance Is Exactly √2",
+      "startLine": 526,
+      "endLine": 665,
+      "summary": "Pins the packing radius: scaledLattice_dist_eq_zero_or_ge_sqrt_two / scaledLattice_dist_ge_sqrt_two show distinct points are ≥ √2 apart, and scaledLattice_realizes_sqrt_two shows √2 is attained by adjacent points. Generalizing the 3-obstruction, sq_add_sq_prime_dvd (for primes p ≡ 3 mod 4: p | u²+v² ⟹ p² | u²+v²) yields scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq and the √56 instance (56 = 2·28, 7 | 28, 7² ∤ 28).",
+      "mathContext": "$\\text{dist}^2 = 2(u^2+v^2) \\ge 2$ for $(u,v)\\neq 0$, with equality at $(\\pm1,0)/(0,\\pm1)$, so the minimal gap is $\\sqrt2$. Fermat's lemma ($p\\equiv 3 \\bmod 4,\\ p \\mid a^2+b^2 \\Rightarrow p\\mid a,\\ p\\mid b$) gives the general prime-power obstruction of which $\\sqrt{24}$ and $\\sqrt{56}$ are cases."
+    },
+    {
+      "id": "fermat-prime-distances",
+      "title": "Fermat's Two-Square Theorem Pins Down the Prime Distances √(2p)",
+      "startLine": 666,
+      "endLine": 757,
+      "summary": "Applies Fermat's two-square theorem (Nat.Prime.sq_add_sq): a prime p is a sum of two squares iff p ≢ 3 (mod 4), so √(2p) is realized iff p ≢ 3 (mod 4) — scaledLattice_realizes_sqrt_two_mul_prime and scaledLattice_dist_ne_sqrt_two_mul_of_mod_four packaged as the iff scaledLattice_realizes_sqrt_two_mul_prime_iff. √10 = √(2·5) is a positive instance; scaledLattice_realizes_two_mul_sq_add_sq_mul supplies the multiplicativity step.",
+      "mathContext": "For a prime $p$: $\\sqrt{2p}$ is a lattice distance $\\iff p = a^2+b^2 \\iff p \\not\\equiv 3 \\pmod 4$ (Fermat). E.g. $\\sqrt{10}$ ($p=5$) is realized, $\\sqrt{6}$ ($p=3$) is not."
+    },
+    {
+      "id": "fermat-full-characterization",
+      "title": "The Complete Fermat Characterization of the Realizable Distances",
+      "startLine": 758,
+      "endLine": 833,
+      "summary": "Extends the prime case to all m: scaledLattice_realizes_sqrt_two_mul_iff_factorization characterizes when √(2m) is realized — iff m is a sum of two squares, i.e. every prime ≡ 3 (mod 4) divides m to an even power — via exists_sq_add_sq_int_iff_nat (bridging ℤ- and ℕ-sums of two squares) and the p-adic obstruction scaledLattice_dist_ne_sqrt_two_mul_of_odd_padicValNat.",
+      "mathContext": "$\\sqrt{2m}$ is a lattice distance $\\iff m = u^2+v^2 \\iff \\forall$ prime $q\\equiv 3 \\pmod 4,\\ v_q(m)$ is even (the sum-of-two-squares theorem). Odd $q$-adic valuation at any such prime blocks realization."
+    },
+    {
+      "id": "all-n-master-characterization",
+      "title": "The All-n Master Characterization (Capstone)",
+      "startLine": 834,
+      "endLine": 901,
+      "summary": "The capstone unifying the whole file: scaledLattice_realizes_sqrt_iff / scaledLattice_realizes_sqrt_iff_half_sum_two_squares characterize √n as a lattice distance for EVERY natural n — iff n is even and n/2 is a sum of two squares; scaledLattice_not_realizes_sqrt_of_odd is the odd-n branch. This subsumes every earlier result: odd-avoidance is the ¬Even n branch, and the mod-4/8/16 and prime-power obstructions are the failure of the n/2 factorization condition.",
+      "mathContext": "$\\sqrt{n} \\in \\text{dist}(\\sqrt2\\cdot\\mathbb{Z}^2) \\iff n \\text{ even} \\wedge (n/2 = u^2+v^2) \\iff n \\text{ even} \\wedge \\forall$ prime $q\\equiv 3\\pmod 4,\\ v_q(n/2)$ even — one statement collapsing every avoidance and realization result in the file."
     }
   ],
   "conclusion": {
