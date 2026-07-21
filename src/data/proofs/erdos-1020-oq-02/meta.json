@@ -114,11 +114,35 @@
       "mathContext": "$\\mathrm{construction2}\\,n\\,r\\,k=\\sum_{j=n-k+1}^{n-1}\\binom{j}{r-1}$, a sum of $k-1$ consecutive binomial coefficients; telescoping $\\binom{j}{r-1}=\\binom{j+1}{r}-\\binom{j}{r}$."
     },
     {
+      "id": "window-sandwich",
+      "title": "Window Sandwich: construction2 Between k−1 Copies of Its Endpoint Summands",
+      "startLine": 287,
+      "endLine": 351,
+      "summary": "Applies the §7 closed form (a sum of k−1 binomials C(j,r−1) over the sliding window [n−k+1, n)) and monotonicity of C(·,r−1) to sandwich construction2 between equal-width multiples of its two endpoint binomials. construction2_window_lb: (k−1)·C(n−k+1,r−1) ≤ construction2 (every summand ≥ the smallest endpoint, via Finset.card_nsmul_le_sum). construction2_window_ub: construction2 ≤ (k−1)·C(n−1,r−1) (every summand ≤ the largest endpoint). construction2_ge_top_summand: for k≥2 the window contains its top point, so the single largest summand C(n−1,r−1) alone lower-bounds construction2 (Finset.single_le_sum) — the degree-(r−1) polynomial growth that eventually overtakes the constant construction1. Two kernel-decide examples at the r=4,k=2 crossover exhibit the tight single-point window (C(7,3)=construction2 8 4 2).",
+      "mathContext": "$(k-1)\\binom{n-k+1}{r-1}\\le \\mathrm{construction2}\\,n\\,r\\,k\\le (k-1)\\binom{n-1}{r-1}$, and for $k\\ge 2$, $\\binom{n-1}{r-1}\\le \\mathrm{construction2}\\,n\\,r\\,k$."
+    },
+    {
+      "id": "large-regime-nonempty",
+      "title": "The Large-n Regime Is Reached: the Dominance Threshold Is Finite",
+      "startLine": 352,
+      "endLine": 391,
+      "summary": "Combines the upward-closed dominance (§1) with the top-summand lower bound (§8) to show the dominance region is nonempty, so the regime transition is a genuine finite threshold rather than a limit never attained. choose_unbounded: C(m,d) is unbounded in m for any fixed degree d≥1 (Pascal's step lifts the base C(m,1)=m by induction on d). exists_large_regime: for r≥2, k≥2 there is an N beyond which construction2 dominates the constant construction1 (witness N=m+k where choose_unbounded realises construction1 ≤ C(m,r−1)), splitting the n-axis into a bounded small-n regime and an unbounded large-n regime with the crossover actually attained.",
+      "mathContext": "$\\forall d\\ge 1,\\ \\forall T,\\ \\exists m,\\ T\\le\\binom{m}{d}$; hence $\\exists N,\\ \\forall n\\ge N,\\ \\mathrm{construction1}\\,r\\,k\\le\\mathrm{construction2}\\,n\\,r\\,k$."
+    },
+    {
       "id": "crossover-r2-threshold",
       "title": "Sharp Crossover Threshold for the r = 2 Family",
-      "startLine": 390,
-      "endLine": 477,
+      "startLine": 392,
+      "endLine": 475,
       "summary": "two_mul_choose_two clears the division in Nat.choose _ 2 (2·C(m,2)=m·(m-1), via Even (m·(m-1))). This gives the two explicit quadratics two_mul_construction2_r2 (2·construction2 n 2 k = (k-1)·(2n-k)) and two_mul_construction1_r2 (2·construction1 2 k = (2k-1)·(2k-2)), each proved by carrying the polynomial content to ℤ with zify+ring and discharging the subtraction side-conditions by omega. crossover_r2 then computes the threshold exactly: for k≥2, n≥k, construction2 reaches construction1 iff 2n ≥ 5k-2, i.e. n₀(2,k)=⌈(5k-2)/2⌉ (k=2 recovers n₀=4). The common factor k-1 is cancelled by Nat.le_of_mul_le_mul_left. conjecturedValue_r2_large reads off that the conjectured value collapses to construction2 on the threshold. This sharpens both the single worked point crossover_r4k2 (n₀(4,2)=8) and the qualitative finiteness exists_large_regime into an exact closed form for a whole infinite family."
+    },
+    {
+      "id": "explicit-linear-growth",
+      "title": "Explicit Linear Growth and the Unconditional Large-n Regime",
+      "startLine": 477,
+      "endLine": 523,
+      "summary": "Upgrades §9's qualitative existence into an explicit growth rate and an unconditional collapse statement. choose_ge_linear: C(m,d) ≥ m+1−d for d≥1 — past the diagonal the binomial grows by at least one per unit increase of m (induction on m with a Pascal step; equality at d=1 and m=d) — complementing the non-quantitative choose_unbounded with an explicit linear rate. construction2_ge_linear: n−(r−1) ≤ construction2 n r k, since the degree-(r−1)≥1 top summand C(n−1,r−1) already contributes a linear-in-n term (combines construction2_ge_top_summand with choose_ge_linear). conjecturedValue_eventually: for every r≥2, k≥2 there is a threshold past which the conjectured extremal value collapses unconditionally to construction2 — what remains open in OQ-02 is the value of f inside the gap band, not the identity of the eventual maximiser. Closes with an axiom-audit note (the #print axioms probe was run in a separate module because this file's decide-heavy examples crash the v4.26 frontend).",
+      "mathContext": "$\\binom{m}{d}\\ge m+1-d$ for $d\\ge 1$; hence $n-(r-1)\\le\\mathrm{construction2}\\,n\\,r\\,k$ and $\\exists N,\\ \\forall n\\ge N,\\ \\mathrm{conjecturedValue}\\,n\\,r\\,k=\\mathrm{construction2}\\,n\\,r\\,k$."
     }
   ],
   "conclusion": {
