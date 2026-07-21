@@ -34,80 +34,80 @@
       "title": "Module Header and Overview",
       "summary": "File header for Erdős #1084 OQ-01: $f_d(n)$ is the maximum number of unit distances among $n$ points in $\\mathbb{R}^d$. Extends the base formalization with a supremum definition of $f_d$, unit-distance degree vs. kissing numbers, the handshaking upper bound $f_d(n)\\le\\tau(d)n/2$, proved bounds $f_2(n)\\le3n$ and $f_3(n)\\le6n$, the isoperimetric-exponent framework, and the conjecture $f_3(n)=6n-\\Theta(n^{2/3})$. Documents the axiom count (4, reduced from 9) and references (Harborth 1974, Bezdek–Reid 2013, Schütte–van der Waerden 1953).",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 48,
       "mathContext": "$f_d(n)$ = max unit distances among $n$ points in $\\mathbb{R}^d$; $f_1=n-1$, $f_2\\le3n$, conjectured $f_3(n)=6n-\\Theta(n^{2/3})$."
     },
     {
       "id": "part1-core-definitions",
       "title": "Part I: Core Definitions",
       "summary": "Defines the `SepConfig d n` structure (a separated configuration of $n$ points in $\\mathbb{R}^d$), `unitPairs` (the unit-distance count), and `unitDegree` (unit distances at a single point).",
-      "startLine": 39,
-      "endLine": 60,
+      "startLine": 49,
+      "endLine": 70,
       "mathContext": "$f_d(n)=\\max_C \\mathrm{unitPairs}(C)$ over separated $n$-point configurations; degree = unit distances at one point."
     },
     {
       "id": "part2-1d-case",
       "title": "Part II: 1D Case — Proving f₁(n) = n - 1",
       "summary": "The machine-verified one-dimensional case: `SepConfig1D`, `unitPairs1D`, and the proof that $f_1(n)=n-1$ (the unit-distance graph on a line is a path).",
-      "startLine": 61,
-      "endLine": 268,
+      "startLine": 71,
+      "endLine": 278,
       "mathContext": "$f_1(n)=n-1$: $n$ collinear points realize at most $n-1$ unit distances (a path)."
     },
     {
       "id": "part3-kissing-degree",
       "title": "Part III: Kissing Number and Degree Bounds",
       "summary": "Defines `kissingNumber` (now a concrete `def` with known values $\\tau(1)=2,\\tau(2)=6,\\tau(3)=12$) and the axiom `degree_le_kissing` bounding each point's unit-degree by the kissing number.",
-      "startLine": 269,
-      "endLine": 314,
+      "startLine": 279,
+      "endLine": 424,
       "mathContext": "Each point has unit-degree $\\le\\tau(d)$ (kissing number): $\\tau(2)=6$, $\\tau(3)=12$ (Schütte–van der Waerden)."
     },
     {
       "id": "part4-double-counting",
       "title": "Part IV: Double-Counting and Upper Bounds",
       "summary": "The handshaking / double-counting argument (now proved, not axiomatized) giving $f_d(n)\\le\\tau(d)\\cdot n/2$, hence the explicit bounds $f_2(n)\\le3n$ and $f_3(n)\\le6n$.",
-      "startLine": 315,
-      "endLine": 439,
+      "startLine": 425,
+      "endLine": 561,
       "mathContext": "Handshaking: $2\\cdot\\mathrm{unitPairs}=\\sum_i\\mathrm{degree}_i\\le\\tau(d)n$, so $f_d(n)\\le\\tau(d)n/2$."
     },
     {
       "id": "part5-3d-lower-bound",
       "title": "Part V: 3D Lower Bound Infrastructure",
       "summary": "The 3D lower bound via FCC (face-centered cubic) clusters: axiom `fcc_cluster_pairs` providing the constructive lower bound on $f_3(n)$.",
-      "startLine": 440,
-      "endLine": 463,
+      "startLine": 562,
+      "endLine": 585,
       "mathContext": "FCC clusters realize $\\approx 6n$ unit distances, the lower-bound side of $f_3(n)=6n-\\Theta(n^{2/3})$."
     },
     {
       "id": "part6-central-conjecture",
       "title": "Part VI: The Central Conjecture",
       "summary": "States the Erdős conjecture $f_3(n)=6n-\\Theta(n^{2/3})$ and records the axiom `bezdek_reid` (the 2013 upper bound $f_3(n)<6n-0.926\\,n^{2/3}$).",
-      "startLine": 464,
-      "endLine": 494,
+      "startLine": 586,
+      "endLine": 616,
       "mathContext": "Conjecture: $f_3(n)=6n-\\Theta(n^{2/3})$; Bezdek–Reid (2013): $f_3(n)<6n-0.926\\,n^{2/3}$."
     },
     {
       "id": "part7-isoperimetric",
       "title": "Part VII: Isoperimetric Exponent Analysis",
-      "summary": "Defines `isoExponent d` $=(d-1)/d$, the isoperimetric exponent framework that links the boundary-loss term $n^{(d-1)/d}$ across dimensions (giving $n^{2/3}$ at $d=3$).",
-      "startLine": 495,
-      "endLine": 550,
-      "mathContext": "Isoperimetric exponent $(d-1)/d$: at $d=3$ gives the $n^{2/3}$ surface-loss term in the conjecture."
+      "summary": "Defines `isoExponent d` $=(d-1)/d$, the isoperimetric exponent framework that links the boundary-loss term $n^{(d-1)/d}$ across dimensions (giving $n^{1/2}$ at $d=2$ and $n^{2/3}$ at $d=3$). Includes five machine-verified lemmas: `iso_exponent_2d` ($=1/2$), `iso_exponent_3d` ($=2/3$), `iso_exponent_pos` and `iso_exponent_lt_one` (bounds $0<(d-1)/d<1$ for $d\\ge2$), and `iso_exponent_monotone` (strict monotonicity in $d$, since $(d-1)/d=1-1/d$ increases toward $1$).",
+      "startLine": 617,
+      "endLine": 672,
+      "mathContext": "Isoperimetric exponent $(d-1)/d=1-1/d$: strictly increasing in $d$, bounded in $(0,1)$; at $d=3$ gives the $n^{2/3}$ surface-loss term in the conjecture."
     },
     {
       "id": "part8-connecting-2d",
       "title": "Part VIII: Connecting 2D Results",
-      "summary": "Connects to the exact 2D theory via axiom `harborth_formula`: Harborth's (1974) exact formula $f_2(n)=\\lfloor 3n-\\sqrt{12n-3}\\rfloor$.",
-      "startLine": 551,
-      "endLine": 577,
-      "mathContext": "Harborth (1974): $f_2(n)=\\lfloor 3n-\\sqrt{12n-3}\\rfloor$ — the exact 2D unit-distance maximum."
+      "summary": "Connects to the exact 2D theory via axiom `harborth_formula`: Harborth's (1974) exact formula $f_2(n)=\\lfloor 3n-\\sqrt{12n-3}\\rfloor$. Two machine-verified corollaries confirm the $d=2$ isoperimetric exponent: `harborth_correction_order` ($\\sqrt{12n-3}\\le\\sqrt{12n}$) and `sqrt_12n_factored` ($\\sqrt{12n}=2\\sqrt3\\,\\sqrt n$), exhibiting the correction as $c\\,n^{1/2}$ with $c=2\\sqrt3$.",
+      "startLine": 673,
+      "endLine": 700,
+      "mathContext": "Harborth (1974): $f_2(n)=\\lfloor 3n-\\sqrt{12n-3}\\rfloor$; correction $\\sqrt{12n-3}\\sim 2\\sqrt3\\,\\sqrt n$ confirms exponent $1/2$."
     },
     {
       "id": "part9-summary",
       "title": "Part IX: Summary of Progress",
-      "summary": "Recaps the progress: $f_1(n)=n-1$ proved, $f_2(n)\\le3n$ and $f_3(n)\\le6n$ proved, the axiom count reduced from 9 to 4, and the $6n-\\Theta(n^{2/3})$ conjecture stated with its FCC/Bezdek-Reid bounds.",
-      "startLine": 578,
-      "endLine": 607,
-      "mathContext": "Status: 1D solved, 2D/3D upper bounds proved; central $f_3$ conjecture axiomatized via FCC lower + Bezdek–Reid upper bounds."
+      "summary": "Recaps the progress: $f_1(n)=n-1$ proved, $f_2(n)\\le3n$ and $f_3(n)\\le6n$ proved, the axiom count reduced from 9 to 4 (four eliminated: `kissingNumber` now concrete, `kissing_1d/2d/3d` by `rfl`, `degree_sum_eq_twice_pairs` by double-counting; one narrowed: `degree_le_kissing` proved for $d=0,1$, axiomatized only for $d\\ge2$), and the $6n-\\Theta(n^{2/3})$ conjecture stated with its FCC/Bezdek–Reid bounds. The four remaining axioms are `degree_le_kissing_dim_ge_two`, `fcc_cluster_pairs`, `bezdek_reid`, and `harborth_formula`.",
+      "startLine": 701,
+      "endLine": 738,
+      "mathContext": "Status: 1D solved, 2D/3D upper bounds proved; central $f_3$ conjecture axiomatized via FCC lower + Bezdek–Reid upper bounds. 4 axioms (was 9), 0 sorries."
     }
   ],
   "overview": {
