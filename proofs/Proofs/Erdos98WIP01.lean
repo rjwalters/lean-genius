@@ -120,6 +120,14 @@ conjectures are *open* in mathematics; nothing below claims to resolve them.
     result to use the *dimension* of the ambient plane rather than only metric/combinatorial
     facts.
 
+18. `h5Config` / `numDistinctDistances_h5Config_le` / `h_five_le_three` / `h_five_bounds`
+    — **`h 5 ≤ 3`**, hence `2 ≤ h 5 ≤ 3`. The explicit five points `(0,0), (1,0),
+    (−√3⁄2,−½), (½,√3⁄2), (½,−(2+√3)⁄2)` are in general position (no three collinear, no
+    four concyclic — the five circumscribed-circle determinants are all nonzero) and realize
+    *exactly three* distinct distances `1, √(2+√3), 1+√3`, giving `numDistinctDistances ≤ 3`.
+    The regular pentagon (the only planar 2-distance 5-set) is concyclic, so `h 5 = 3` is
+    expected; the matching lower bound `h 5 ≥ 3` needs that classification and is left open.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -1382,5 +1390,249 @@ first to use both nondegeneracy hypotheses non-vacuously together with the plana
 dimension bound. -/
 theorem h_four : h 4 = 2 :=
   le_antisymm h_four_le_two h_four_ge_two
+
+/-! ## The upper bound `h 5 ≤ 3` via an explicit three-distance five-point witness
+
+For five points the pinning of `h` runs into genuine difficulty: the linear lower bound
+`three_mul_h_ge 5` gives only `h 5 ≥ 2`, and monotonicity (`h_four`, `h_mono`) gives the
+same `h 5 ≥ 2`, while the natural 2-distance candidate — the **regular pentagon** — is
+*disqualified* (its five vertices are concyclic).  Indeed the only planar 2-distance set
+of five points is the regular pentagon, so no general-position 5-set has two distances and
+in fact `h 5 = 3`; the matching lower bound `h 5 ≥ 3` requires that classification and is
+left open here.
+
+What *is* elementary is the **upper bound** `h 5 ≤ 3`.  The five points
+
+  `A = (0,0)`, `B = (1,0)`, `C = (−√3⁄2, −½)`, `D = (½, √3⁄2)`, `E = (½, −(2+√3)⁄2)`
+
+realize **exactly three** distinct distances — `1`, `√(2+√3)`, and `1+√3` — with the
+multiplicities
+
+  `1`         : `AB, AC, AD, BD`            (four pairs, squared distance `1`),
+  `√(2+√3)`   : `AE, BC, BE, CD, CE`        (five pairs, squared distance `2+√3`),
+  `1+√3`      : `DE`                        (one pair, squared distance `(1+√3)² = 4+2√3`).
+
+The configuration is in general position: no three of the five are collinear (all ten
+triangle areas are nonzero), and no four are concyclic (each of the five quadruples has a
+nonzero circumscribed-circle determinant — `1+√3⁄2`, `2+√3`, `5⁄2+3√3⁄2`).  Hence it
+witnesses `h 5 ≤ numDistinctDistances ≤ 3`, trapping `2 ≤ h 5 ≤ 3`. -/
+
+/-- The explicit five-point configuration `A=(0,0)`, `B=(1,0)`, `C=(−√3⁄2,−½)`,
+`D=(½,√3⁄2)`, `E=(½,−(2+√3)⁄2)` in `ℝ²`.  A three-distance set (`1`, `√(2+√3)`, `1+√3`)
+in general position — the first configuration in the file whose distinct-distance count is
+exactly three. -/
+noncomputable def h5Config : PointConfig 5 :=
+  ![!₂[0, 0], !₂[1, 0], !₂[-(Real.sqrt 3 / 2), -(1 / 2)],
+    !₂[1 / 2, Real.sqrt 3 / 2], !₂[1 / 2, -((2 + Real.sqrt 3) / 2)]]
+
+set_option maxHeartbeats 1600000 in
+/-- **Every pairwise squared distance of `h5Config` is `1`, `2+√3`, or `(1+√3)²`.** A direct
+coordinate computation over all off-diagonal pairs, using `√3² = 3`. -/
+theorem h5Config_dist_sq {i j : Fin 5} (hij : i ≠ j) :
+    dist (h5Config i) (h5Config j) ^ 2 = 1 ∨
+    dist (h5Config i) (h5Config j) ^ 2 = 2 + Real.sqrt 3 ∨
+    dist (h5Config i) (h5Config j) ^ 2 = (1 + Real.sqrt 3) ^ 2 := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  rw [EuclideanSpace.dist_sq_eq]
+  fin_cases i <;> fin_cases j <;>
+    first
+    | exact absurd rfl hij
+    | (simp only [h5Config, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+       first
+       | (left; norm_num [hs2] <;> nlinarith [hs2])
+       | (right; left; norm_num [hs2] <;> nlinarith [hs2])
+       | (right; right; norm_num [hs2] <;> nlinarith [hs2]))
+
+/-- **Every pairwise distance of `h5Config` lies in `{1, √(2+√3), 1+√3}`.** The nonnegative
+square root of `h5Config_dist_sq`; `(1+√3)² ↦ 1+√3` since `1+√3 ≥ 0`. -/
+theorem h5Config_dist_mem {i j : Fin 5} (hij : i ≠ j) :
+    dist (h5Config i) (h5Config j) ∈
+      ({1, Real.sqrt (2 + Real.sqrt 3), 1 + Real.sqrt 3} : Finset ℝ) := by
+  have hd0 : 0 ≤ dist (h5Config i) (h5Config j) := dist_nonneg
+  have h3nn : (0 : ℝ) ≤ 1 + Real.sqrt 3 := by positivity
+  rcases h5Config_dist_sq hij with h | h | h
+  · have he : dist (h5Config i) (h5Config j) = 1 := by
+      rw [← Real.sqrt_sq hd0, h, Real.sqrt_one]
+    simp [he]
+  · have he : dist (h5Config i) (h5Config j) = Real.sqrt (2 + Real.sqrt 3) := by
+      rw [← Real.sqrt_sq hd0, h]
+    simp [he]
+  · have he : dist (h5Config i) (h5Config j) = 1 + Real.sqrt 3 := by
+      rw [← Real.sqrt_sq hd0, h, Real.sqrt_sq h3nn]
+    simp [he]
+
+/-- The five points are distinct: every pairwise distance lies in `{1, √(2+√3), 1+√3}`, all
+of whose elements are positive, so equal indices are forced. -/
+theorem h5Config_injective : Function.Injective h5Config := by
+  intro i j hij
+  by_contra hne
+  have hmem := h5Config_dist_mem hne
+  rw [hij, dist_self] at hmem
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+  have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hs2 : (0 : ℝ) < Real.sqrt (2 + Real.sqrt 3) := Real.sqrt_pos.mpr (by positivity)
+  rcases hmem with h | h | h
+  · norm_num at h
+  · linarith [hs2]
+  · linarith [hs]
+
+set_option maxHeartbeats 1600000 in
+/-- **No three of the five points are collinear.** A line through any three forces
+`(a,b,c) = 0`; the cases involving the `√3`-abscissa points need `√3 > 0`. -/
+theorem noThreeCollinear_h5Config : NoThreeCollinear h5Config := by
+  have hs : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | (simp only [h5Config] at hi hj hk
+       norm_num at hi hj hk
+       simp only [Prod.mk.injEq]
+       refine ⟨?_, ?_, ?_⟩ <;> nlinarith [hs, hs2, hi, hj, hk])
+
+/-- No centre is equidistant from `A, B, C, D` (`h5Config 0,1,2,3`). The three
+squared-distance equalities relative to `A` are linear in the centre and inconsistent. -/
+theorem h5_not_equidistant_0123 (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (h5Config 0) = r) (h1 : dist center (h5Config 1) = r)
+    (h2 : dist center (h5Config 2) = r) (h3 : dist center (h5Config 3) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e01 : dist center (h5Config 0) ^ 2 = dist center (h5Config 1) ^ 2 := by rw [h0, h1]
+  have e02 : dist center (h5Config 0) ^ 2 = dist center (h5Config 2) ^ 2 := by rw [h0, h2]
+  have e03 : dist center (h5Config 0) ^ 2 = dist center (h5Config 3) ^ 2 := by rw [h0, h3]
+  simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] at e01 e02 e03
+  nlinarith [e01, e02, e03, hs2]
+
+/-- No centre is equidistant from `A, B, C, E` (`h5Config 0,1,2,4`). -/
+theorem h5_not_equidistant_0124 (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (h5Config 0) = r) (h1 : dist center (h5Config 1) = r)
+    (h2 : dist center (h5Config 2) = r) (h4 : dist center (h5Config 4) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e01 : dist center (h5Config 0) ^ 2 = dist center (h5Config 1) ^ 2 := by rw [h0, h1]
+  have e02 : dist center (h5Config 0) ^ 2 = dist center (h5Config 2) ^ 2 := by rw [h0, h2]
+  have e04 : dist center (h5Config 0) ^ 2 = dist center (h5Config 4) ^ 2 := by rw [h0, h4]
+  simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] at e01 e02 e04
+  nlinarith [e01, e02, e04, hs2]
+
+/-- No centre is equidistant from `A, B, D, E` (`h5Config 0,1,3,4`). -/
+theorem h5_not_equidistant_0134 (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (h5Config 0) = r) (h1 : dist center (h5Config 1) = r)
+    (h3 : dist center (h5Config 3) = r) (h4 : dist center (h5Config 4) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e01 : dist center (h5Config 0) ^ 2 = dist center (h5Config 1) ^ 2 := by rw [h0, h1]
+  have e03 : dist center (h5Config 0) ^ 2 = dist center (h5Config 3) ^ 2 := by rw [h0, h3]
+  have e04 : dist center (h5Config 0) ^ 2 = dist center (h5Config 4) ^ 2 := by rw [h0, h4]
+  simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] at e01 e03 e04
+  nlinarith [e01, e03, e04, hs2]
+
+/-- No centre is equidistant from `A, C, D, E` (`h5Config 0,2,3,4`). -/
+theorem h5_not_equidistant_0234 (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h0 : dist center (h5Config 0) = r) (h2 : dist center (h5Config 2) = r)
+    (h3 : dist center (h5Config 3) = r) (h4 : dist center (h5Config 4) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e02 : dist center (h5Config 0) ^ 2 = dist center (h5Config 2) ^ 2 := by rw [h0, h2]
+  have e03 : dist center (h5Config 0) ^ 2 = dist center (h5Config 3) ^ 2 := by rw [h0, h3]
+  have e04 : dist center (h5Config 0) ^ 2 = dist center (h5Config 4) ^ 2 := by rw [h0, h4]
+  simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] at e02 e03 e04
+  nlinarith [e02, e03, e04, hs2]
+
+/-- No centre is equidistant from `B, C, D, E` (`h5Config 1,2,3,4`). -/
+theorem h5_not_equidistant_1234 (center : EuclideanSpace ℝ (Fin 2)) (r : ℝ)
+    (h1 : dist center (h5Config 1) = r) (h2 : dist center (h5Config 2) = r)
+    (h3 : dist center (h5Config 3) = r) (h4 : dist center (h5Config 4) = r) : False := by
+  have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have e12 : dist center (h5Config 1) ^ 2 = dist center (h5Config 2) ^ 2 := by rw [h1, h2]
+  have e13 : dist center (h5Config 1) ^ 2 = dist center (h5Config 3) ^ 2 := by rw [h1, h3]
+  have e14 : dist center (h5Config 1) ^ 2 = dist center (h5Config 4) ^ 2 := by rw [h1, h4]
+  simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] at e12 e13 e14
+  nlinarith [e12, e13, e14, hs2]
+
+set_option maxHeartbeats 1600000 in
+/-- **No four of the five points are concyclic.** Every 4-subset is one of the five
+quadruples, and for each no centre is equidistant from its members
+(`h5_not_equidistant_*`), so no common circle exists. -/
+theorem noFourConcyclic_h5Config : NoFourConcyclic h5Config := by
+  intro a b c d hcard
+  rintro ⟨center, r, ha, hb, hc, hd⟩
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact h5_not_equidistant_0123 center r (by assumption) (by assumption) (by assumption)
+        (by assumption)
+    | exact h5_not_equidistant_0124 center r (by assumption) (by assumption) (by assumption)
+        (by assumption)
+    | exact h5_not_equidistant_0134 center r (by assumption) (by assumption) (by assumption)
+        (by assumption)
+    | exact h5_not_equidistant_0234 center r (by assumption) (by assumption) (by assumption)
+        (by assumption)
+    | exact h5_not_equidistant_1234 center r (by assumption) (by assumption) (by assumption)
+        (by assumption)
+
+/-- **`h5Config` is in general position.** -/
+theorem inGeneralPosition_h5Config : InGeneralPosition h5Config :=
+  ⟨h5Config_injective, noThreeCollinear_h5Config, noFourConcyclic_h5Config⟩
+
+/-- **`h5Config` realizes at most three distinct distances.** Every positive pairwise
+distance lies in the three-element set `{1, √(2+√3), 1+√3}` (`h5Config_dist_mem`), so the
+distinct-distance count is at most `3`. -/
+theorem numDistinctDistances_h5Config_le :
+    numDistinctDistances h5Config ≤ 3 := by
+  unfold numDistinctDistances
+  have hsub :
+      ((univ.product univ).image
+          (fun p : Fin 5 × Fin 5 =>
+            dist (h5Config p.1) (h5Config p.2))).filter (· > 0)
+        ⊆ ({1, Real.sqrt (2 + Real.sqrt 3), 1 + Real.sqrt 3} : Finset ℝ) := by
+    intro d hd
+    rw [mem_filter, mem_image] at hd
+    obtain ⟨⟨p, -, hpd⟩, hpos⟩ := hd
+    have hne : p.1 ≠ p.2 := by
+      intro he
+      rw [he, dist_self] at hpd
+      rw [← hpd] at hpos
+      exact lt_irrefl 0 hpos
+    rw [← hpd]
+    exact h5Config_dist_mem hne
+  calc (((univ.product univ).image
+          (fun p : Fin 5 × Fin 5 =>
+            dist (h5Config p.1) (h5Config p.2))).filter (· > 0)).card
+      ≤ ({1, Real.sqrt (2 + Real.sqrt 3), 1 + Real.sqrt 3} : Finset ℝ).card := card_le_card hsub
+    _ ≤ 3 := by
+        refine (Finset.card_insert_le _ _).trans ?_
+        have h2 : ({Real.sqrt (2 + Real.sqrt 3), 1 + Real.sqrt 3} : Finset ℝ).card ≤ 2 := by
+          refine (Finset.card_insert_le _ _).trans ?_
+          simp
+        omega
+
+/-- **`h 5 ≤ 3`, an exact upper bound.** The three-distance witness `h5Config` is in general
+position and realizes at most three distinct distances, so it bounds the minimum:
+`h 5 ≤ numDistinctDistances ≤ 3`. -/
+theorem h_five_le_three : h 5 ≤ 3 :=
+  le_trans (h_le_of_inGeneralPosition inGeneralPosition_h5Config)
+    numDistinctDistances_h5Config_le
+
+/-- **`h 5 ≥ 2`.** From `h 4 = 2` (`h_four_ge_two`) and monotonicity (`h_mono`, `4 ≤ 5`). -/
+theorem h_five_ge_two : 2 ≤ h 5 :=
+  le_trans h_four_ge_two (h_mono (by norm_num))
+
+/-- **`2 ≤ h 5 ≤ 3`.** The three-distance witness gives the upper bound; monotonicity from
+`h 4 = 2` gives the lower bound.  Pinning `h 5 = 3` additionally requires `h 5 ≥ 3` — no
+general-position five-set has only two distinct distances — which reduces to the
+classification of planar 2-distance sets (the regular pentagon, which is concyclic) and is
+left as the next step. -/
+theorem h_five_bounds : 2 ≤ h 5 ∧ h 5 ≤ 3 :=
+  ⟨h_five_ge_two, h_five_le_three⟩
 
 end Erdos98WIP01
