@@ -60,31 +60,31 @@
       "id": "sec-header",
       "title": "Module Header, Imports, and Setup",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 55,
       "summary": "Module docstring framing the leaf as worked corollaries of the parent ∞/∞ rule, a per-limit f/g/f'/g' table, and the status checklist. Imports Log.Deriv, Exp, Exponential, and the parent module Proofs.LHopitalOQ02; opens Set Filter Topology Real.",
       "mathContext": "Each limit is an ∞/∞ indeterminate form f/g with g → +∞. The parent rule LHopitalInfty.lhopital_infty_atTop reduces the limit of f/g to the easy limit of f'/g'."
     },
     {
       "id": "log-over-id",
       "title": "Corollary 1: (ln x)/x → 0",
-      "startLine": 65,
-      "endLine": 86,
+      "startLine": 56,
+      "endLine": 76,
       "summary": "log_div_id_atTop: with f = log, g = id, derivatives x⁻¹ and 1, the ratio f'/g' = x⁻¹ → 0 (tendsto_inv_atTop_zero) and g = id → +∞ (tendsto_id), so the parent rule yields (log x)/x → 0.",
       "mathContext": "The logarithm grows slower than any positive power of x; the degree-one statement is the canonical illustration of the ∞/∞ rule with target c = 0."
     },
     {
       "id": "id-over-exp",
       "title": "Corollary 2: x/eˣ → 0",
-      "startLine": 87,
-      "endLine": 108,
+      "startLine": 77,
+      "endLine": 98,
       "summary": "id_div_exp_atTop: with f = id, g = exp, derivatives 1 and eˣ, the ratio f'/g' = (eˣ)⁻¹ → 0 (tendsto_inv_atTop_zero ∘ tendsto_exp_atTop) and g = exp → +∞, so the parent rule yields x/eˣ → 0.",
       "mathContext": "The exponential dominates every polynomial; the degree-one case x/eˣ → 0 is the classic ∞/∞ example named in the parent entry's commentary, here proved rather than annotated."
     },
     {
       "id": "nonzero-limit",
       "title": "Corollary 3: (x + ln x)/x → 1 (the c ≠ 0 case)",
-      "startLine": 109,
-      "endLine": 122,
+      "startLine": 99,
+      "endLine": 123,
       "summary": "id_add_log_div_id_atTop: with f = x + log x, g = id, derivatives 1 + x⁻¹ and 1, the ratio f'/g' = 1 + x⁻¹ → 1 (tendsto_const_nhds.add tendsto_inv_atTop_zero) and g → +∞, so the parent rule yields (x + ln x)/x → 1.",
       "mathContext": "Exercises the general c ≠ 0 form of the parent rule, confirming it is not silently specialised to vanishing ratios. The leading-order term x dominates, so the ratio tends to 1."
     }
