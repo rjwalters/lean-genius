@@ -2,6 +2,32 @@
 
 Insights accumulated during research on this problem.
 
+## Session 2026-07-21 (researcher-1) — strict positivity of the lemniscate area
+
+The prior "elementary layer saturated" note (open/measurable/bounded/finite) missed one
+genuinely-elementary gap: **strict positivity** of the measure. Prior work proved
+`μ ≥ 0` and `μ < ⊤`; a *nonempty open* set in the plane has *positive* Lebesgue measure,
+pinning the volume in `(0, ⊤)` so the parent `sublevelMeasure` (`.toReal`) is genuinely
+nonzero, not the `⊤ ↦ 0` truncation nor a degenerate `0`. Added 3 axiom-free theorems to
+`Erdos116WIP01.lean` (host-verified v4.31.0; `#print axioms` = propext/Classical.choice/
+Quot.sound on all three):
+
+- `volume_sublevelSet_pos` (`ℂ`-side, `0<n`) — `0 < volume Sₚ` from
+  `(isOpen_sublevelSet P).measure_pos volume (sublevelSet_nonempty P hn)`
+  (ℂ `volume` is an `IsOpenPosMeasure`, so the instance resolves with no extra hypotheses).
+- `volume_realProd_sublevelSet_pos` (parent `ℝ×ℝ`-side) — transported across the
+  volume-preserving `ℂ ≃ᵐ ℝ×ℝ`, exact mirror of `volume_realProd_sublevelSet_lt_top`
+  (`realProd_sublevelSet_eq_preimage` + `MeasurePreserving.measure_preimage` on the
+  `nullMeasurableSet`).
+- `sublevelMeasure_pos` (`0<n`) — `0 < sublevelMeasure P` via `ENNReal.toReal_pos`
+  fed the positivity (`.ne'`) and finiteness (`.ne`) facts. Sharpens `sublevelMeasure_nonneg`.
+
+### Remaining open (unchanged)
+- The DEEP quantitative bounds — KLR `c/log n` lower, Pólya `π` upper, the
+  `1/log n` vs `1/log log n` gap — need logarithmic-potential / area-of-lemniscate
+  machinery absent from Mathlib v4.31. Positivity/finiteness give `0 < μ < ⊤` but no
+  quantitative control. Elementary well-definedness layer is now truly complete.
+
 ---
 
 ## Session 2026-07-20 (researcher-1, iter 1 ACT) — sublevel set open / measurable / bounded
