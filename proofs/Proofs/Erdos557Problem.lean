@@ -89,9 +89,12 @@ axiom two_color_tree_ramsey : ∀ n : ℕ, 2 ≤ n → ∀ (T : ErdosTree n),
 axiom ramseyTree_mono_k : ∀ n : ℕ, ∀ (T : ErdosTree n), ∀ k : ℕ,
     ramseyTree n T k ≤ ramseyTree n T (k + 1)
 
-/-- Star lower bound: R(S_n; k) ≥ k·(n-1) + 1 for n ≥ 2, k ≥ 1.
-    Proves the conjecture is tight: the additive constant cannot be better than O(k). -/
+/-- Star lower bound: R(S_n; k) ≥ k·(n-2) + 2 for n ≥ 2, k ≥ 1.
+    This is the Burr–Roberts multicolor star bound (each color-degree ≤ n-2 avoids a
+    monochromatic K_{1,n-1}). It is consistent with the 2-color upper bound `2n-2`
+    (at k = 2 it gives exactly `2n-2`) and still proves the conjecture is tight:
+    `k·(n-2) + 2 = k·n - 2k + 2`, so the additive constant cannot be better than O(k). -/
 axiom star_ramsey_lower : ∀ (n : ℕ) (hn : 2 ≤ n) (k : ℕ), 1 ≤ k →
-    k * (n - 1) + 1 ≤ ramseyTree n (starTree n (by omega)) k
+    k * (n - 2) + 2 ≤ ramseyTree n (starTree n (by omega)) k
 
 /- ## Connection to Burr–Erdős -/
