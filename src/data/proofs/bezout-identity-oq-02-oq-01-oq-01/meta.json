@@ -53,41 +53,57 @@
     {
       "id": "ufd-instances",
       "title": "UFD and Euclidean Domain Instances for K[X]",
-      "startLine": 33,
-      "endLine": 42,
+      "startLine": 27,
+      "endLine": 43,
       "summary": "Three `example` declarations showing K[X] is a UFD (via inferInstance for Field K), K[X] is an EuclideanDomain (noncomputable, via inferInstance), and R[X] is a UFD when R is a UFD (via Polynomial.uniqueFactorizationMonoid). All proofs are one-liners using Mathlib's typeclass hierarchy.",
       "mathContext": "Field K ⟹ EuclideanDomain K[X] ⟹ UniqueFactorizationMonoid K[X]. Also: UFD R ⟹ UFD R[X] (Gauss). The EuclideanDomain instance uses polynomial long division as the Euclidean function."
     },
     {
       "id": "irreducible-prime",
       "title": "Irreducible ↔ Prime and Euclid's Lemma for Polynomials",
-      "startLine": 50,
-      "endLine": 59,
+      "startLine": 44,
+      "endLine": 60,
       "summary": "poly_irreducible_iff_prime: Irreducible p ↔ Prime p in any polynomial UFD, proved by UniqueFactorizationMonoid.irreducible_iff_prime. poly_euclid_lemma: irreducible p | f·g implies p | f or p | g over K, proved via irreducible_iff_prime + Prime.dvd_or_dvd.",
       "mathContext": "In any UFD: Irreducible ↔ Prime. The implication irreducible → prime is the UFD property. Euclid's Lemma follows: p irreducible and p | f·g ⟹ p | f ∨ p | g."
     },
     {
       "id": "poly-bezout",
       "title": "Polynomial Bézout Identity and IsCoprime",
-      "startLine": 68,
-      "endLine": 74,
+      "startLine": 61,
+      "endLine": 76,
       "summary": "poly_bezout: IsCoprime f g → ∃ a b, a·f + b·g = 1, proved by the hypothesis itself (definitional equality). poly_isCoprime_iff: IsCoprime ↔ ∃ a b, a·f + b·g = 1, proved by Iff.rfl. Both are trivial because IsCoprime is definitionally the Bézout existential in Mathlib.",
       "mathContext": "In Mathlib: `IsCoprime f g := ∃ a b, a * f + b * g = 1`. Polynomial coprimeness ↔ gcd is a unit (nonzero constant) ↔ Bézout coefficients exist."
     },
     {
+      "id": "unique-factorization",
+      "title": "Unique Factorization Theorem for Polynomials",
+      "startLine": 77,
+      "endLine": 91,
+      "summary": "poly_has_irred_factor: every non-constant polynomial over a field has an irreducible factor (Polynomial.exists_irreducible_of_natDegree_ne_zero). poly_ufd_structure: K[X] is a UniqueFactorizationMonoid, giving abstract existence of a factorization into irreducibles (inferInstance).",
+      "mathContext": "The two halves of unique factorization for K[X]: existence of an irreducible factor of any non-constant polynomial (degree descent), plus the ambient UFD structure that upgrades this to a full factorization into irreducibles, unique up to units and reordering."
+    },
+    {
       "id": "concrete-examples",
       "title": "Concrete Irreducibility Examples over ℚ[X]",
-      "startLine": 97,
-      "endLine": 114,
+      "startLine": 92,
+      "endLine": 115,
       "summary": "Three ℚ[X] examples: x²-1 = (x-1)(x+1) by ring; x is irreducible (Polynomial.irreducible_X); x²-1 is reducible (¬Irreducible) by producing the factorization and showing neither factor is a unit via Polynomial.irreducible_X_sub_C.",
       "mathContext": "Irreducibility criteria for K[X]: degree-1 polynomials are always irreducible (Polynomial.irreducible_X_sub_C). Degree-2+ may factor. Over ℚ: x²-1 = (x-1)(x+1) is the standard reducibility example."
     },
     {
-      "id": "gcd-bezout",
-      "title": "GCD Bézout Representation and Integer-Polynomial Parallel",
-      "startLine": 130,
-      "endLine": 151,
-      "summary": "bezout_parallel (line 130): the ℤ and K[X] proofs have identical structure — Bézout → Euclid → UFD. poly_gcd_dvd_both (line 139): gcd(f,g) divides both f and g. poly_gcd_bezout_form (line 146): ∃ a b, gcd(f,g) = a·f + b·g, proved via EuclideanDomain.gcdA/gcdB and gcd_eq_gcd_ab.",
+      "id": "integer-parallel",
+      "title": "Parallel with Integer FTA",
+      "startLine": 116,
+      "endLine": 133,
+      "summary": "bezout_parallel: the ℤ and K[X] factorization proofs share one abstract structure — Bézout → Euclid's lemma → UFD. Restates Euclid's lemma (irreducible p | f·g ⟹ p | f ∨ p | g) to make the parallel with the integer FTA explicit.",
+      "mathContext": "Both ℤ and K[X] are Euclidean domains, hence GCD monoids, hence UFDs. The identical Bézout → Euclid → UFD chain yields the fundamental theorem of arithmetic over ℤ and unique factorization into irreducible polynomials over K[X]."
+    },
+    {
+      "id": "gcd-structure",
+      "title": "GCD Structure over K[X]",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "poly_gcd_dvd_both (line 139): gcd(f,g) divides both f and g. poly_gcd_bezout_form (line 146): ∃ a b, gcd(f,g) = a·f + b·g, proved via EuclideanDomain.gcdA/gcdB and gcd_eq_gcd_ab. Requires DecidableEq K for the computable extended Euclidean algorithm.",
       "mathContext": "EuclideanDomain.gcd_eq_gcd_ab: gcd f g = f * gcdA f g + g * gcdB f g (Lean convention: f-coefficient first). DecidableEq K required for the computable extended Euclidean algorithm."
     }
   ],
