@@ -83,10 +83,18 @@
   },
   "sections": [
     {
+      "id": "overview-header",
+      "title": "Overview: The Iterated Power-Set Beth Hierarchy",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module header, imports (Proofs.CantorsTheoremOQ01 for the parent's |𝒫(ℝ)| = ℶ₂, plus Mathlib), and the docstring laying out the goal: extend the beth tower from ℶ₂ to ℶ₃ = |𝒫(𝒫(ℝ))| and prove the general pattern |𝒫ⁿ(ℝ)| = ℶ_{n+1} for all n, all in ZFC with 0 axioms and 0 sorries. Records the beth hierarchy ℶ₀ = ℵ₀ < ℶ₁ = 𝔠 < ℶ₂ = |𝒫(ℝ)| < ℶ₃ = |𝒫(𝒫(ℝ))|.",
+      "mathContext": "$|\\mathcal{P}^n(\\mathbb{R})| = \\beth_{n+1}$ where $\\mathcal{P}^0(\\mathbb{R}) = \\mathbb{R}$, $\\mathcal{P}^{n+1}(X) = \\mathcal{P}(\\mathcal{P}^n(X))$."
+    },
+    {
       "id": "beth-lemmas",
       "title": "§1: Beth Number Lemmas",
       "startLine": 37,
-      "endLine": 55,
+      "endLine": 56,
       "summary": "beth_three_eq: ℶ₃ = 2^ℶ₂. beth_nat_succ: ℶ_{n+1} = 2^ℶₙ for n : ℕ (private lemmas for the main proofs).",
       "mathContext": "Cardinal.beth_succ states: beth (Order.succ o) = 2^(beth o). The challenge is converting n+1 : ℕ to Order.succ n : Ordinal, handled by Order.succ_eq_add_one + push_cast + ring."
     },
@@ -94,33 +102,41 @@
       "id": "main-theorem",
       "title": "§2: |𝒫(𝒫(ℝ))| = ℶ₃",
       "startLine": 57,
-      "endLine": 90,
+      "endLine": 94,
       "summary": "card_powerSet_powerSet_real_eq_beth_three: #(Set (Set ℝ)) = Cardinal.beth 3. powerSet_powerSet_gt_powerSet_real: #(Set ℝ) < #(Set (Set ℝ)). powerSet_powerSet_gt_real: #ℝ < #(Set (Set ℝ)). beth_two_lt_beth_three: ℶ₂ < ℶ₃.",
       "mathContext": "#(Set (Set ℝ)) = 2^#(Set ℝ) by Cardinal.mk_set, then 2^ℶ₂ = ℶ₃ by beth recursion. Strictness from Cardinal.cantor."
     },
     {
       "id": "general-pattern",
       "title": "§3: General Formula |𝒫ⁿ(ℝ)| = ℶ_{n+1}",
-      "startLine": 92,
-      "endLine": 150,
+      "startLine": 95,
+      "endLine": 133,
       "summary": "iteratedPowerSet: ℕ → Type definition. card_iteratedPowerSet_eq_beth: ∀ n, #(iteratedPowerSet n) = Cardinal.beth (n+1). Inductive proof: base case |ℝ| = ℶ₁, inductive step uses power set formula + beth recursion.",
       "mathContext": "Lean 4 well-founded recursion on ℕ defines iteratedPowerSet. The inductive proof uses Nat.cast to convert ℕ indices to Ordinal for Cardinal.beth, with ring_nf closing the arithmetic."
     },
     {
       "id": "strict-tower",
       "title": "§4: Strict Tower Inequality",
-      "startLine": 152,
-      "endLine": 175,
+      "startLine": 134,
+      "endLine": 152,
       "summary": "iteratedPowerSet_strict_mono: |𝒫ⁿ(ℝ)| < |𝒫^{n+1}(ℝ)| for all n. iteratedPowerSet_lt_of_lt: m < n → |𝒫ᵐ(ℝ)| < |𝒫ⁿ(ℝ)|.",
       "mathContext": "Each step uses Cardinal.cantor applied to the current level's cardinality. Transitivity handles the general m < n case."
     },
     {
       "id": "summary",
       "title": "§5: Summary Theorem",
-      "startLine": 177,
-      "endLine": 195,
+      "startLine": 153,
+      "endLine": 179,
       "summary": "beth_tower_0_to_3: ℶ₀ < ℶ₁ < ℶ₂ < ℶ₃ (explicit). cantors_theorem_oq01oq02_summary: packages the three main results.",
       "mathContext": "Cardinal.beth_strictMono gives ℶₙ < ℶₙ₊₁ for any natural comparison. The summary theorem bundles the main results as a conjunction."
+    },
+    {
+      "id": "konig-constraint",
+      "title": "§6: König's Cofinality Constraint on |𝒫(ℝ)|",
+      "startLine": 180,
+      "endLine": 250,
+      "summary": "The only ZFC constraint on the aleph-index of ℶ₂, via König's theorem cf(2^κ) > κ (Mathlib's Cardinal.lt_cof_power). konig_constraint_powerSet_real: 𝔠 < cf(|𝒫(ℝ)|), so ℶ₂ cannot be any cardinal of cofinality ≤ 𝔠 (ruling out ℵ_ω, ℵ_{ω·2}, ℵ_{ω₁·ω}, …). konig_constraint_beth: the generalized statement ℶₙ < cf(2^ℶₙ) for every n : ℕ (using ℵ₀ = ℶ₀ ≤ ℶₙ via beth monotonicity). aleph_index_lower_cofinality_bound: if |𝒫(ℝ)| = ℵ_α then 𝔠 < cf(ℵ_α). Closes with the conclusion block (ZFC-provable vs Easton-independent facts) and #check exports of the five headline theorems.",
+      "mathContext": "König (1905): $\\operatorname{cf}(2^\\kappa) > \\kappa$. At $\\kappa = \\mathfrak{c}$: $\\operatorname{cf}(\\beth_2) > \\beth_1 = \\mathfrak{c}$, the sole ZFC constraint on the aleph-index of $\\beth_2$."
     }
   ],
   "conclusion": {
@@ -128,7 +144,7 @@
     "implications": "The beth hierarchy grows strictly at each level of power-set iteration. No matter how many times you apply 𝒫 to ℝ, you get a strictly larger set. The aleph-index of each ℶₙ remains independent of ZFC for n ≥ 2 (by Easton's theorem), but the beth equalities themselves are absolute.",
     "openQuestions": [
       "What is the aleph-index of ℶ₃ = |𝒫(𝒫(ℝ))|? (Independent of ZFC by Easton, subject to cf(ℶ₃) > ℶ₂)",
-      "Can König's cofinality constraint cf(2^κ) > κ be formalized for arbitrary κ without axioms? (Mathlib has Cardinal.lt_cof_power)",
+      "The beth-tower case of König's cofinality constraint is now formalized in §6 (konig_constraint_beth: ℶₙ < cf(2^ℶₙ) for all n, via Cardinal.lt_cof_power); can the fully general cf(2^κ) > κ for arbitrary infinite κ be packaged as a reusable axiom-free gallery lemma?",
       "Is there a type-theoretic universe analogue of the beth hierarchy in Lean 4's universe polymorphism?"
     ]
   },
