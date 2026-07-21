@@ -104,11 +104,43 @@
     },
     {
       "id": "equality",
-      "title": "Equality Characterization",
-      "summary": "Proves equality holds iff $f$ and $g$ are linearly dependent in $L^2$: $|\\langle f, g \\rangle| = \\|f\\|\\|g\\| \\iff \\exists c: f = c \\cdot g$, using `norm_inner_eq_norm_iff`.",
+      "title": "Equality Characterization (four companion forms)",
+      "summary": "The complete equality case in all four presentations, each proved via the `L2_inner_eq_integral` bridge and monotone squaring: `cauchy_schwarz_L2_eq_iff` (|⟪f,g⟫| = ‖f‖‖g‖ ⇔ ∃c, f = c•g, via `norm_inner_eq_norm_iff`), its integral companion `bunyakovsky_schwarz_abs_eq_iff`, the squared inner-product form `cauchy_schwarz_L2_sq_eq_iff` (dropping the absolute value via `sq_eq_sq₀` on nonnegative sides), and the squared integral form `bunyakovsky_schwarz_sq_eq_iff`.",
       "startLine": 95,
-      "endLine": 117,
-      "mathContext": "Equality $|\\langle f, g \\rangle| = \\|f\\| \\cdot \\|g\\|$ holds iff $f = cg$ a.e. for some $c \\in \\mathbb{R}$. Geometrically, this means the 'angle' between $f$ and $g$ in $L^2$ is $0$ or $\\pi$ — they point in the same or opposite directions. The proof uses the standard Hilbert space fact: $\\|u - tv\\|^2 = 0$ for some $t$ iff $u$ and $v$ are proportional. In probability, equality means $Y = aX + b$ a.s. (perfect linear correlation $|\\rho| = 1$)."
+      "endLine": 153,
+      "mathContext": "Equality $|\\langle f, g \\rangle| = \\|f\\|\\,\\|g\\|$ (equivalently $\\langle f,g\\rangle^2 = \\|f\\|^2\\|g\\|^2$, or the integral forms) holds iff $f = cg$ a.e. for some $c \\in \\mathbb{R}$ — the pair is linearly dependent (perfect linear correlation $|\\rho| = 1$ in probability)."
+    },
+    {
+      "id": "strict-inequality",
+      "title": "Strict Inequality Characterization (four companion forms)",
+      "summary": "The strict case, complementary to equality: since Cauchy–Schwarz is always a `≤`, it is STRICT exactly on linearly INDEPENDENT pairs. `cauchy_schwarz_L2_abs_lt_iff` (|⟪f,g⟫| < ‖f‖‖g‖ ⇔ ¬∃c, f = c•g, via `lt_iff_le_and_ne` against the already-known `≤` and the equality case), plus its integral, squared inner-product, and squared integral companions (`bunyakovsky_schwarz_abs_lt_iff`, `cauchy_schwarz_L2_sq_lt_iff`, `bunyakovsky_schwarz_sq_lt_iff`).",
+      "startLine": 154,
+      "endLine": 197,
+      "mathContext": "$|\\langle f,g\\rangle| < \\|f\\|\\,\\|g\\|$ (and squared/integral forms) $\\iff$ $f, g$ linearly independent — the generic, non-degenerate case."
+    },
+    {
+      "id": "signed-bounds",
+      "title": "Signed (Two-Sided) Bounds",
+      "summary": "The sharp sign-preserving form that absolute-value/squared bounds lose. `cauchy_schwarz_L2_signed` (⟪f,g⟫ ≤ ‖f‖‖g‖, via `real_inner_le_norm`) and `cauchy_schwarz_L2_signed_lower` (−‖f‖‖g‖ ≤ ⟪f,g⟫) pin the pairing to [−‖f‖‖g‖, ‖f‖‖g‖]; `bunyakovsky_schwarz_signed` and `bunyakovsky_schwarz_signed_lower` are the integral companions. Together the two one-sided signed bounds are exactly the absolute-value bound.",
+      "startLine": 198,
+      "endLine": 231,
+      "mathContext": "$-\\|f\\|\\,\\|g\\| \\le \\langle f,g\\rangle \\le \\|f\\|\\,\\|g\\|$ (and $-\\|f\\|\\|g\\| \\le \\int fg\\,d\\mu \\le \\|f\\|\\|g\\|$): the sharp two-sided pinch."
+    },
+    {
+      "id": "signed-characterizations",
+      "title": "Signed Equality & Strict Characterization",
+      "summary": "Attaining the *positive* extreme is directional (not merely dependent): `cauchy_schwarz_L2_signed_eq_iff` (⟪f,g⟫ = ‖f‖‖g‖ ⇔ ‖g‖•f = ‖f‖•g, via `inner_eq_norm_mul_iff_real`, no nonzero hypotheses needed) and its strict companion `cauchy_schwarz_L2_signed_lt_iff` (< ⇔ ‖g‖•f ≠ ‖f‖•g, via `inner_lt_norm_mul_iff_real`), each with an integral companion (`bunyakovsky_schwarz_signed_eq_iff`, `bunyakovsky_schwarz_signed_lt_iff`).",
+      "startLine": 232,
+      "endLine": 270,
+      "mathContext": "$\\langle f,g\\rangle = \\|f\\|\\,\\|g\\| \\iff \\|g\\|\\cdot f = \\|f\\|\\cdot g$ (same direction), the asymmetric refinement of the symmetric $\\exists c,\\ f=c\\bullet g$."
+    },
+    {
+      "id": "summary-checks",
+      "title": "Summary Type-Checks",
+      "summary": "A closing block of `#check` commands over all 18 headline results (abs / squared / eq_iff / lt_iff / signed families, inner-product and integral forms) documenting the file's public API surface, then closing the `BunyakovskySchwarz` namespace.",
+      "startLine": 271,
+      "endLine": 293,
+      "mathContext": "Type-level audit of the exported Bunyakovsky–Schwarz API: the ≤ bounds, their equality and strict-inequality characterizations, and the signed two-sided refinements."
     }
   ],
   "conclusion": {
