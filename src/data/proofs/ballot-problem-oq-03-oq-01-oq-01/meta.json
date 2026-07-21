@@ -173,7 +173,7 @@
       "id": "sec-corollaries",
       "title": "General Corollaries and Jacobi-Trudi",
       "startLine": 99,
-      "endLine": 130,
+      "endLine": 139,
       "summary": "nxn_lgv_corollary for strictly monotone source/target arrays (StrictMono replaces fin_cases wellFormed proof); jacobi_trudi_interpretation connecting to symmetric function theory.",
       "mathContext": "nxn_lgv_corollary: wellFormed := by intro i j hij; exact hs.lt hij uses StrictMono.lt directly. jacobi_trudi_interpretation: s_λ = det[h_{λᵢ-i+j}] via RSK correspondence and LGV."
     }
