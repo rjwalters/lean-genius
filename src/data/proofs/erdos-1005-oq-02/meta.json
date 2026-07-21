@@ -196,6 +196,38 @@
       "startLine": 2719,
       "endLine": 2814,
       "summary": "§26 gave the additive slope-(d−1) lower bound (d−1)·|ks|+1 ≤ K(ks), the linear shadow of denominator inflation. The sharp statement is MULTIPLICATIVE: on the large-quotient regime (every entry ≥2) the continuant is squeezed between two products of the quotients, ∏(kᵢ−1) ≤ K(ks) ≤ ∏kᵢ (continuant_prod_bounds). Both halves run the §17/§26 single-step recurrence K(k::rest)=k·K(rest)−secondCont(rest) against the §17 core invariant 0 ≤ secondCont(rest) < K(rest). Upper (continuant_le_prod): drop the nonnegative secondCont, K(k::rest) ≤ k·K(rest), then scale the IH K(rest) ≤ rest.prod by k≥0. Lower (prod_sub_one_le_continuant): replace secondCont(rest) by its ceiling K(rest)−1, giving K(k::rest) ≥ (k−1)·K(rest)+1, then scale the IH ∏(rest−1) ≤ K(rest) by k−1≥0. prod_sub_one_one_le shows the lower factor is itself ≥1, re-proving continuant_pos multiplicatively. Honest boundary: the lower product is geometric — on an all-≥d run it is ≥(d−1)^|ks|, so with any order-n continuant ceiling K≤n it forces |ks| ≤ log_{d−1} n, a LOGARITHMIC run-length cap on the large-quotient (d≥3) tail, far sharper than §26's O(n/d) shadow; but at d=2 the lower factor ∏(2−1)=1 is trivial (matching K[2,…,2]=m+1, the slowest growth), so the open 1/12–1/4 constant — decided by the small-quotient regime — is untouched. Concrete sandwich continuant_prod_bounds_example: 4 ≤ K[3,3]=8 ≤ 9. All 0-axiom (propext/Classical.choice/Quot.sound), no native_decide."
+    },
+    {
+      "id": "product-ceiling-equality-locus",
+      "title": "§29 The equality locus of the product ceiling — strictness beyond length 1",
+      "startLine": 2815,
+      "endLine": 2894,
+      "summary": "Pins exactly when §28's upper bound K(ks) ≤ ∏kᵢ is tight: only at the two trivial depths K([])=1=∏[] and K([k])=k=∏[k]. As soon as |ks|≥2 the minus-continuant recurrence K(k::rest)=k·K(rest)−secondCont(rest) subtracts a strictly positive trailing continuant (secondCont(j::rest')=K(rest')≥1 by §17/§22), so continuant_lt_prod gives K(ks) < ∏kᵢ strictly. The engine is the quantitative continuant_prod_deficit: secondCont(rest) ≤ (k::rest).prod − K(k::rest), since the deficit unfolds to secondCont(rest)+k·(∏rest−K rest) with the residual k·(∏rest−K rest) ≥ 0 by §28 continuant_le_prod. continuant_eq_prod_iff packages the dichotomy (equality ⟺ |ks| ≤ 1); continuant_lt_prod_example instantiates it. Sharp-boundary companion to §20's floor sharpness — real strictness, but living in the large-quotient tail that carries negligible mass toward the open 1/12–1/4 constant.",
+      "mathContext": "$K(ks) = \\prod k_i \\iff |ks|\\le 1$; for $|ks|\\ge 2$, $K(ks) < \\prod k_i$, with deficit $\\ge$ the trailing continuant."
+    },
+    {
+      "id": "geometric-growth-log-cap",
+      "title": "§30 Geometric growth and the logarithmic run-length cap",
+      "startLine": 2895,
+      "endLine": 2990,
+      "summary": "Formalizes the logarithmic run-length cap that §26/§28 only advertised informally. pow_sub_one_le_prod_sub_one: on an all-≥d run each decremented factor kᵢ−1 ≥ d−1, so (d−1)^|ks| ≤ ∏(kᵢ−1); chaining through §28's prod_sub_one_le_continuant gives the geometric floor continuant_ge_pow: (d−1)^|ks| ≤ K(ks) — the continuant grows at least geometrically with ratio d−1. continuant_pow_run_length_le and continuant_run_length_le_log then convert a continuant ceiling N (for d≥3, so ratio d−1 ≥ 2 is a genuine base) into the logarithmic cap |ks| ≤ Nat.log (d−1) N — the exponential sharpening of §26's additive (N−1)/(d−1). Honest boundary: at d=2 the base collapses to 1, (d−1)^|ks|=1 is vacuous, and the run grows only linearly (K[2,…,2]=m+1); the geometric cap bites only on the d≥3 tail.",
+      "mathContext": "$(d-1)^{|ks|} \\le K(ks)$ on all-$\\ge d$ runs, so $K \\le N \\Rightarrow |ks| \\le \\log_{d-1} N$ for $d \\ge 3$."
+    },
+    {
+      "id": "two-sided-log-sandwich",
+      "title": "§31 The geometric ceiling and the two-sided logarithmic sandwich",
+      "startLine": 2991,
+      "endLine": 3112,
+      "summary": "The matching upper direction to §30's geometric floor. From §28's K(ks) ≤ ∏kᵢ, if every quotient is also ≤ D then prod_le_pow gives ∏kᵢ ≤ D^|ks|, hence continuant_le_pow: K(ks) ≤ D^|ks|; a continuant floor N ≤ K(ks) then forces the run long, continuant_pow_run_length_ge / continuant_run_length_ge_log: log_D N ≤ |ks|. Together (continuant_run_length_log_sandwich) the two directions pin a bounded-quotient run (d ≤ kᵢ ≤ D, 3 ≤ d) to the logarithmic band log_D K ≤ |ks| ≤ log_{d−1} K — the continuant grows exactly geometrically and the run length is Θ(log K), equivalently Θ(log n) under the order-n Farey cap K ≤ n. Supporting one_le_prod (all-≥2 product ≥ 1). This certifies that any run long enough to matter for f(n) must be built from small quotients: a floor d≥3 collapses admissible lengths to O(log n), the honest opposite extreme to the small-quotient regime where the open 1/12–1/4 constant lives.",
+      "mathContext": "$\\log_D K \\le |ks| \\le \\log_{d-1} K$ for bounded runs $d\\le k_i\\le D$, $d\\ge 3$: run length $\\Theta(\\log K)=\\Theta(\\log n)$."
+    },
+    {
+      "id": "append-strict-mono",
+      "title": "§32 Strict growth from the right end — the append dual of §17 monotonicity",
+      "startLine": 3113,
+      "endLine": 3169,
+      "summary": "Lifts §17's prepend monotonicity (K(ks) < K(k::ks) for k≥2) to the trailing end via the §16 reversal bridge continuant_reverse. continuant_append_strict_mono: appending k≥2 on the right is, after reversal, prepending it to ks.reverse (again a nonempty all-≥2 run, membership being reversal-invariant), so K(ks) < K(ks ++ [k]) by continuant_strict_mono on the reversed run. continuant_lt_cons_append combines both ends (a run wrapped by quotients on both sides grows strictly), with continuant_lt_cons_append_example instantiating it — the two-sided metric statement behind 'long large-quotient runs are expensive'.",
+      "mathContext": "$K(ks) < K(ks \\mathbin{+\\!+} [k])$ for $k\\ge 2$ via reversal, dualizing §17; wrapping both ends is strictly increasing."
     }
   ],
   "crossReferences": [
