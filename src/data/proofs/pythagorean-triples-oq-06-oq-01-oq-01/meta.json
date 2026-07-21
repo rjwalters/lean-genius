@@ -100,13 +100,13 @@
   ],
   "openQuestions": [
     {
-      "id": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
+      "id": "pythagorean-triples-oq001",
       "question": "Refine the package structurally for primitive triples. RESOLVED for the factor 3: `three_not_dvd_hyp_of_coprime` / `three_dvd_leg_of_coprime` prove that for coprime legs 3 never divides the hypotenuse, so the factor 3 always lands on a leg. NOTE: the original hope that '5 never divides z' is FALSE — 5 can divide the hypotenuse, e.g. (3,4,5) has 5∣z — so only a presence statement (five_dvd_prod) is available for 5. REMAINING: pin the even leg's divisibility by 4 for primitive triples (which leg is even, and that it is a multiple of 4).",
       "significance": "medium",
       "status": "partially-resolved"
     },
     {
-      "id": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+      "id": "pythagorean-triples-oq002",
       "question": "RESOLVED: `dvd_all_prod_iff_dvd_sixty` proves that d divides the product xyz of every Pythagorean triple iff d ∣ 60, so 60 is exactly the greatest universal divisor; sharpness is witnessed by (3,4,5) whose product is 60 (`sixty_greatest_universal_divisor`).",
       "significance": "low",
       "status": "resolved"

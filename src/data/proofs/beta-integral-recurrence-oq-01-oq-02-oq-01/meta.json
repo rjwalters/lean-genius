@@ -131,7 +131,7 @@
   ],
   "openQuestions": [
     {
-      "id": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+      "id": "beta-integral-recurrence-oq001",
       "question": "Use the diagonal value B(n+1/2,n+1/2) = π·C(2n,n)/4^(2n) together with Stirling's formula to prove the asymptotic of the symmetric half-integer Beta values as n → ∞. [ANSWERED in child entry beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01: the correct rate is B(n+1/2,n+1/2) ~ √(π/n)·4^(-n) — exponential decay 4^(-n) times the 1/√n polynomial factor, NOT the bare √(π/n).]",
       "significance": "medium"
     },
@@ -158,7 +158,7 @@
       "description": "Both entries evaluate Gamma at rational arguments. The reflection formula's s=1/2 case gives Γ(1/2)²=π; here that same squared Gauss value, propagated up the half-integer lattice by the functional equation, becomes the π-factor of the whole Beta diagonal."
     },
     {
-      "targetId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+      "targetId": "beta-integral-recurrence-oq001",
       "relationship": "related",
       "description": "The child entry that answers this entry's open question oq-01, deriving the n → ∞ asymptotic from the exact diagonal value proved here. Feeding B(n+1/2,n+1/2) = π·C(2n,n)/4^(2n) into the central-binomial Stirling estimate C(2n,n) ~ 4^n/√(πn) gives B(n+1/2,n+1/2) ~ √(π/n)·4^(-n) — exponential decay 4^(-n) modulated by a 1/√n factor, correcting the naive √(π/n) rate. This exact value is the essential input to that asymptotic."
     }

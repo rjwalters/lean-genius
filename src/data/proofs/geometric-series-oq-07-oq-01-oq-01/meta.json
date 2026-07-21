@@ -127,12 +127,12 @@
   },
   "openQuestions": [
     {
-      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "id": "geometric-series-oq002",
       "question": "Build the Eulerian numbers ⟨m,k⟩ explicitly via the combinatorial triangle recurrence ⟨m,k⟩ = (k+1)·⟨m-1,k⟩ + (m-k)·⟨m-1,k-1⟩ and prove that the coefficients of eulerPoly are exactly these integers — i.e. derive the triangle recurrence on coefficients from the differential recurrence by coefficient extraction. This upgrades the present 'differential-recurrence + closed-form' identification to the textbook combinatorial definition (descents of permutations).",
       "significance": "medium"
     },
     {
-      "id": "geometric-series-oq-07-oq-01-oq-01-oq-02",
+      "id": "geometric-series-oq018",
       "question": "Prove the symmetry (palindromicity) of the Eulerian polynomial Eₘ(X) = X^{m+1}·Eₘ(1/X) for m ≥ 1, equivalently ⟨m,k⟩ = ⟨m,m-1-k⟩, directly from either the differential recurrence or the Stirling closed form.",
       "significance": "low"
     }

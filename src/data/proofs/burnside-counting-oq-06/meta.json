@@ -175,7 +175,7 @@
   "crossReferences": [
     {
       "id": "xref-burnside-oq0302010102-divisor-count",
-      "targetId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+      "targetId": "burnside-counting-oq001",
       "relationship": "extends",
       "description": "Specializes that entry's divisor-form cyclic necklace count (#necklaces)·n = ∑_{d∣n} φ(n/d)·k^d at the prime n = p, where Nat.Prime.divisors collapses the sum to two terms and yields Fermat's little theorem."
     },

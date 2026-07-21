@@ -118,7 +118,7 @@
   },
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "targetId": "amgm-inequality-oq003",
       "relationship": "parent",
       "description": "Provides the recurrence p₃ = e₁p₂ − e₂p₁ + 3e₃ and the closed forms p₂ = e₁² − 2e₂, p₁ = e₁ that this entry substitutes to reach the fully reduced k=3 identity."
     },
@@ -138,7 +138,7 @@
       "description": "The e₁, e₂, e₃ appearing here are exactly Vieta's elementary symmetric polynomials in the roots; the identity expresses the third power sum of roots via coefficients."
     },
     {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+      "targetId": "amgm-inequality-oq009",
       "relationship": "extendedBy",
       "description": "Direct child: the next degree, p₄ = e₁⁴ − 4·e₁²·e₂ + 2·e₂² + 4·e₁·e₃ − 4·e₄, in the same universal MvPolynomial and concrete-Finset forms, derived by substituting this k=3 closed form (plus p₂, p₁) into the k=4 Newton recurrence."
     },

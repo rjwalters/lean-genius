@@ -190,7 +190,7 @@
   ],
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "targetId": "amgm-inequality-oq003",
       "relationship": "child",
       "description": "Planned extension: Full Newton-Girard recurrence $p_k = \\sum_{i=1}^k (-1)^{i-1} e_i p_{k-i}$ for all $k \\geq 1$. This entry proves the $k=2$ base case $\\sum_{i \\neq j} x_i x_j = 2e_2$; the child tracks generalization to all $k$ using Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum` (Zeilberger's combinatorial proof of Newton's identities)."
     },

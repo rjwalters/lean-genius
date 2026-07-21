@@ -132,12 +132,12 @@
   },
   "openQuestions": [
     {
-      "id": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+      "id": "geometric-series-oq025",
       "question": "Extend the reindexing viewpoint to a general absolutely convergent series ∑_m c_m: transport ∑_m c_m along Nat.divModEquiv to obtain HasSum (fun (p : ℕ × Fin q) => c_{q·p.1 + p.2}) S and characterise when the residue regrouping ∑_{a<q} ∑_n c_{q·n+a} = S holds, identifying the multisection of an arbitrary HasSum (not just the geometric one) as a Fubini consequence of summability.",
       "significance": "low"
     },
     {
-      "id": "geometric-series-oq-09-oq-01-oq-01-oq-02",
+      "id": "geometric-series-oq027",
       "question": "Prove the composition/associativity law for iterated splittings: reindexing by q and then splitting each block again by p should agree with the single (p·q)-fold reindexing — the multisections form a functor on the divisibility poset (split by q₁ then q₂ = split by q₁·q₂). Formalise via the compatibility of Nat.divModEquiv at pq with its factors.",
       "significance": "medium"
     },

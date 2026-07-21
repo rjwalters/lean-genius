@@ -115,7 +115,7 @@
       "description": "Power sums p_k = ∑ xᵢ^k are the unnormalized building blocks of power means: M_k = (∑ wᵢzᵢ^k)^(1/k) = (p_k/n)^(1/k) for equal weights. Power sum identities (Newton-Girard) relate p_k to elementary symmetric polynomials, connecting this power mean formalization to the Maclaurin chain in amgm-inequality-oq-02"
     },
     {
-      "targetId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+      "targetId": "amgm-inequality-oq015",
       "relationship": "extended-by",
       "description": "Extended Power Mean Monotonicity (OQ-03-OQ-02-OQ-01-OQ-01) unifies the three separate cases proved here — same-sign positive (M_r ≤ M_s for 0 < r ≤ s), same-sign negative (M_r ≤ M_s for r ≤ s < 0 via duality), and the HM ≤ GM crossing — into a single theorem `power_mean_monotone_unified`. This entry proves the cases individually; OQ-03-OQ-02-OQ-01-OQ-01 assembles them into one statement covering all r ≤ s."
     },

@@ -118,7 +118,7 @@
       "question": "Characterise exactly the n for which a qualifying residue class r (with gcd(r,4n)=1, r ≡ −1 (mod n) and J(−n | r) = 1) exists, and prove it coincides with the non-excluded classes n ≠ 4^a(8b+7). The n = 3 obstruction proved here is the first instance of non-existence; a full characterisation would, combined with exists_qr_qualified_multiplier_prime_full, reduce three-square sufficiency on the qualifying classes entirely to the d ∈ {1,2} geometry — i.e. settle the selection layer completely. Likely route: analyse J(−n | ·) as a real Dirichlet character mod 4n restricted to the coset p ≡ −1 (mod n), and show it is non-constant (takes value +1) precisely off the excluded form."
     },
     {
-      "id": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01-oq-02",
+      "id": "lagrange-four-squares-waring-g2-oq002",
       "question": "Generalise the n = 3 obstruction to a uniform family: identify all n (e.g. a congruence/genus description) for which legendreSym p (−n) = −1 for every prime p ≡ −1 (mod n), and prove the corresponding multiplier_route_incomplete statement once for the whole family rather than the single value n = 3."
     }
   ],

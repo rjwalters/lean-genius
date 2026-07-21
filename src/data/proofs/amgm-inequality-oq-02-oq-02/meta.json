@@ -123,7 +123,7 @@
       "description": "Imports `Proofs.NewtonInductiveStep` for the helper lemmas used in the 520-line `newton_cleared_denom_inductive_step` discriminant argument."
     },
     {
-      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+      "targetId": "amgm-inequality-oq008",
       "relationship": "shares-technique",
       "description": "Both proofs depend on the Newton-Girard recurrence $e_k(x_1,\\ldots,x_{n+1}) = e_k(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_{k-1}(x_1,\\ldots,x_n)$ as the inductive scaffold. This entry uses it to set up the discriminant argument for log-concavity; the sibling entry (oq-01-oq-02-oq-01-oq-03) gives a parallel inductive proof of Newton-Girard itself (independent of Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum`). Together they show that the same `induction n` + `elemSymm_succ` template handles both Newton-Girard and Newton's log-concavity."
     },
