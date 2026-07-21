@@ -74,55 +74,55 @@
     {
       "id": "general-partial-sum",
       "title": "Section I: General Taylor Partial Sum",
-      "startLine": 57,
-      "endLine": 75,
+      "startLine": 50,
+      "endLine": 71,
       "summary": "Defines taylorPartialSum f n x as the general n-th Taylor polynomial at 0. Shows agreement with sinPartialSum and cosPartialSum from the parent proof via definitional equality (rfl).",
       "mathContext": "$T_n^f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(0)}{k!} x^k$. For $f = \\sin$, this equals sinPartialSum; for $f = \\cos$, cosPartialSum."
     },
     {
       "id": "mathlib-connection",
       "title": "Section II: Connection to Mathlib's Taylor Polynomial",
-      "startLine": 77,
-      "endLine": 100,
+      "startLine": 72,
+      "endLine": 95,
       "summary": "Proves iteratedDerivWithin equals iteratedDeriv for C^∞ functions on UniqueDiffOn sets. Bridges taylorPartialSum to Mathlib's taylorWithinEval for x > 0.",
       "mathContext": "For $x > 0$ and $f \\in C^\\infty$: $T_n^f(x) = $ taylorWithinEval $f$ $n$ $(\\mathrm{Icc}\\,0\\,x)$ $0$ $x$."
     },
     {
       "id": "remainder-bounds",
       "title": "Section III: Remainder Bounds",
-      "startLine": 102,
-      "endLine": 135,
+      "startLine": 96,
+      "endLine": 168,
       "summary": "Proves the remainder bound ‖f(x) - T_n(x)‖ ≤ C·|x|^{n+1}/n! for all x ∈ ℝ. The x > 0 case uses taylor_mean_remainder_bound directly; the x < 0 case is reduced to the x > 0 case via the reflection g(t) = f(-t) using Mathlib's `iteratedDeriv_comp_neg`; x = 0 is immediate.",
       "mathContext": "$\\|f(x) - T_n^f(x)\\| \\leq C \\cdot \\frac{|x|^{n+1}}{n!}$ for all $x \\in \\mathbb{R}$. The $x < 0$ branch uses the reflection $g(t) = f(-t)$ together with `iteratedDeriv_comp_neg`."
     },
     {
       "id": "convergence",
       "title": "Section IV: Convergence",
-      "startLine": 137,
-      "endLine": 183,
+      "startLine": 169,
+      "endLine": 218,
       "summary": "Proves |x|^n/n! → 0, C·|x|^{n+1}/n! → 0, and the main convergence theorem: taylorPartialSum f n x → f(x) for all x. Uses squeeze_zero_norm' with the remainder bound.",
       "mathContext": "$\\frac{|x|^n}{n!} \\to 0$ (from summable_pow_div_factorial) $\\implies C \\cdot \\frac{|x|^{n+1}}{n!} \\to 0 \\implies T_n^f(x) \\to f(x)$."
     },
     {
       "id": "values-at-zero",
       "title": "Section V: Values at Zero",
-      "startLine": 185,
-      "endLine": 196,
+      "startLine": 219,
+      "endLine": 225,
       "summary": "Proves T_n(0) = f(0) for any f: all terms with k ≥ 1 vanish since 0^k = 0.",
       "mathContext": "$T_n^f(0) = f^{(0)}(0) \\cdot 0^0/0! = f(0)$."
     },
     {
       "id": "sin-cos-instances",
       "title": "Section VI: Instantiation — Sin and Cos",
-      "startLine": 198,
-      "endLine": 228,
+      "startLine": 226,
+      "endLine": 251,
       "summary": "Shows sin and cos satisfy the hypotheses with C = 1 (using parent's norm_iteratedDeriv_sin_le). Recovers sinPartialSum_tendsto and cosPartialSum_tendsto as corollaries.",
       "mathContext": "$\\|\\sin^{(n)}(x)\\| \\leq 1$ and $\\|\\cos^{(n)}(x)\\| \\leq 1$ for all $n, x$ $\\implies T_n^{\\sin}(x) \\to \\sin(x)$ and $T_n^{\\cos}(x) \\to \\cos(x)$."
     },
     {
       "id": "remainder-comparison",
       "title": "Section VII: Remainder Comparison",
-      "startLine": 253,
+      "startLine": 252,
       "endLine": 275,
       "summary": "Proves C = 1 gives the tightest possible remainder in this framework: for C > 1 the bound is strictly larger. Shows smaller C gives tighter bounds (monotonicity).",
       "mathContext": "For $x \\neq 0$ and $C > 1$: $\\frac{|x|^{n+1}}{n!} < \\frac{C \\cdot |x|^{n+1}}{n!}$."
@@ -130,8 +130,8 @@
     {
       "id": "linear-combinations",
       "title": "Section VIII: Linear Combinations",
-      "startLine": 277,
-      "endLine": 309,
+      "startLine": 276,
+      "endLine": 323,
       "summary": "Proves that any linear combination a·sin + b·cos has all derivatives bounded by |a| + |b|, extending the framework to all trigonometric polynomials. Uses iteratedDeriv_add and iteratedDeriv_const_smul to decompose the derivative.",
       "mathContext": "$\\|\\partial^n(a\\sin + b\\cos)(x)\\| \\le |a| + |b|$ via the triangle inequality and the bounds $\\|\\sin^{(n)}\\|, \\|\\cos^{(n)}\\| \\le 1$."
     }
