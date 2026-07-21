@@ -1433,16 +1433,15 @@ theorem h5Config_dist_sq {i j : Fin 5} (hij : i ≠ j) :
     dist (h5Config i) (h5Config j) ^ 2 = 2 + Real.sqrt 3 ∨
     dist (h5Config i) (h5Config j) ^ 2 = (1 + Real.sqrt 3) ^ 2 := by
   have hs2 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  rw [EuclideanSpace.dist_sq_eq]
   fin_cases i <;> fin_cases j <;>
     first
     | exact absurd rfl hij
-    | (simp only [h5Config, EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, Real.dist_eq, sq_abs,
-         Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
-         Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons]
+    | (simp only [h5Config, Fin.sum_univ_two, Real.dist_eq, sq_abs]
        first
-       | (left; nlinarith [hs2])
-       | (right; left; nlinarith [hs2])
-       | (right; right; nlinarith [hs2]))
+       | (left; norm_num [hs2] <;> nlinarith [hs2])
+       | (right; left; norm_num [hs2] <;> nlinarith [hs2])
+       | (right; right; norm_num [hs2] <;> nlinarith [hs2]))
 
 /-- **Every pairwise distance of `h5Config` lies in `{1, √(2+√3), 1+√3}`.** The nonnegative
 square root of `h5Config_dist_sq`; `(1+√3)² ↦ 1+√3` since `1+√3 ≥ 0`. -/
