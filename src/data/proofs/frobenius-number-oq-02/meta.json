@@ -100,31 +100,31 @@
       "id": "residue-helpers",
       "title": "Helpers: mul_mod_inj and exists_kb_mod (Complete Residue System)",
       "startLine": 24,
-      "endLine": 46,
+      "endLine": 43,
       "summary": "Two private lemmas. mul_mod_inj: the map k ↦ (k·b mod a) on Fin a is injective, proved by reducing to a congruence i·b ≡ j·b (mod a) and cancelling the coprime factor b (Nat.ModEq.cancel_right_of_coprime). exists_kb_mod: by Finite.injective_iff_surjective the injective map is surjective, so for every residue r < a there is some k < a with k·b mod a = r.",
       "mathContext": "{0, b, 2b, …, (a−1)b} is a complete residue system mod a precisely when gcd(a, b) = 1 — multiplication by a coprime factor permutes ℤ/aℤ."
     },
     {
       "id": "no-two-reps",
       "title": "Part 1: rep_and_complement_false (n and g−n not both representable)",
-      "startLine": 48,
-      "endLine": 63,
+      "startLine": 44,
+      "endLine": 73,
       "summary": "If n = ax + by and g − n = ax' + by' are both representable, expanding g = ab − a − b gives ab = a(x+x'+1) + b(y+y'+1). Non-negativity bounds each factor (x+x'+1 ≤ b, y+y'+1 ≤ a); rearrangement yields a ∣ b(y+y'+1) and b ∣ a(x+x'+1), and coprimality (Nat.Coprime.dvd_of_dvd_mul_left) plus a linarith squeeze derives False.",
       "mathContext": "The 'at most one' direction: complementary pairs straddling the Frobenius number cannot both lie in the semigroup."
     },
     {
       "id": "at-least-one-rep",
       "title": "Part 2: one_of_pair_rep (at least one of n, g−n representable)",
-      "startLine": 65,
-      "endLine": 88,
+      "startLine": 74,
+      "endLine": 110,
       "summary": "Using exists_kb_mod, pick k < a with k·b ≡ n (mod a). Case split on k·b ≤ n: if so, n − k·b is a non-negative multiple of a, giving Rep(n) = ⟨q, k⟩. Otherwise k·b − n is a positive multiple of a, and a divisibility computation on (ab − a − b − n) − b(a−1−k) = k·b − n − a produces the explicit witness ⟨q, a−1−k⟩ for Rep(g − n).",
       "mathContext": "The 'at least one' direction: the constructive residue search always lands a representation on one side of the pair."
     },
     {
       "id": "main-symmetry",
       "title": "Part 3: frobenius_symmetry (Main Biconditional)",
-      "startLine": 90,
-      "endLine": 101,
+      "startLine": 111,
+      "endLine": 123,
       "summary": "Assembles the biconditional Rep(n) ↔ ¬Rep(g − n). Forward: from Rep(n) and Rep(g − n), rep_and_complement_false gives False, so Rep(n) → ¬Rep(g − n). Backward: from ¬Rep(g − n), one_of_pair_rep yields Rep(n) ∨ Rep(g − n); the second disjunct is absurd, so Rep(n).",
       "mathContext": "The full symmetry — the structural fact that powers Sylvester's genus count formula in sibling OQ-01."
     }
