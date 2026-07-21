@@ -7,15 +7,45 @@
  * module groups a set of {@link ProofListing}s under their *root problem* so the
  * gallery can present a single rollup card with the descendants nested beneath.
  *
- * Grouping is derived purely from each entry's slug via `src/lib/oq-slug.ts`
- * ({@link rootSlug} / {@link lineageDepth}) — it needs no `parentSlug`/`rootSlug`
- * meta backfill (that is the separate held issue #39828). It is pure and
- * dependency-free at runtime (the `ProofListing` import is type-only, erased by
- * the compiler) so it runs in both the browser bundle and tsx test scripts.
+ * Grouping PREFERS the `rootSlug`/`parentSlug` lineage metadata backfilled by
+ * issue #39828, falling back to slug-parsing via `src/lib/oq-slug.ts`
+ * ({@link rootSlug} / {@link lineageDepth}) for legacy entries that lack it.
+ * This is required because the #39828 migration re-slugs deep entries to the
+ * bounded form (`<root>-oqNNN`), whose slug no longer encodes ancestry — so
+ * `rootSlug(slug)` still recovers the root, but `lineageDepth(slug)` reads 0 for
+ * every migrated entry and the depth-ordered tree would flatten without the
+ * meta fields. It is pure and dependency-free at runtime (the `ProofListing`
+ * import is type-only, erased by the compiler) so it runs in both the browser
+ * bundle and tsx test scripts.
  */
 
 import type { ProofListing } from '../types/proof'
 import { rootSlug, lineageDepth } from './oq-slug'
+
+/** The root slug of a listing, preferring the backfilled meta field (#39828). */
+export function listingRoot(listing: ProofListing): string {
+  return listing.rootSlug ?? rootSlug(listing.slug)
+}
+
+/**
+ * Lineage depth of a listing for ordering, preferring the backfilled
+ * `parentSlug` chain (#39828) and falling back to slug-parsing. Walks meta
+ * pointers through `bySlug`, recovering an ancestor's depth by slug-parsing
+ * wherever the metadata runs out. Cycle-guarded.
+ */
+export function listingDepth(
+  listing: ProofListing,
+  bySlug: Map<string, ProofListing>,
+  seen: Set<string> = new Set()
+): number {
+  const p = listing.parentSlug
+  if (p === undefined) return lineageDepth(listing.slug) // legacy: no meta
+  if (p === null) return 0 // known root
+  if (seen.has(listing.slug)) return 0 // cycle guard
+  seen.add(listing.slug)
+  const parent = bySlug.get(p)
+  return 1 + (parent ? listingDepth(parent, bySlug, seen) : lineageDepth(p))
+}
 
 /** Coarse status buckets used for the rollup summary on a root card. */
 export type StatusBucket = 'verified' | 'axiomatized' | 'wip' | 'other'
@@ -101,9 +131,12 @@ export function summarize(descendants: ProofListing[]): RollupSummary {
 export function groupListings(listings: ProofListing[]): ProofGroup[] {
   const buckets = new Map<string, ProofListing[]>()
   const order: string[] = []
+  // Slug → listing map for meta-preferring depth walks (#39828).
+  const bySlug = new Map<string, ProofListing>()
+  for (const listing of listings) bySlug.set(listing.slug, listing)
 
   for (const listing of listings) {
-    const root = rootSlug(listing.slug)
+    const root = listingRoot(listing)
     let bucket = buckets.get(root)
     if (!bucket) {
       bucket = []
@@ -121,15 +154,15 @@ export function groupListings(listings: ProofListing[]): ProofGroup[] {
     let header = members.find((m) => m.slug === root)
     if (!header) {
       header = members.reduce((best, m) =>
-        lineageDepth(m.slug) < lineageDepth(best.slug) ? m : best
+        listingDepth(m, bySlug) < listingDepth(best, bySlug) ? m : best
       )
     }
 
     const descendants = members
       .filter((m) => m !== header)
       .sort((a, b) => {
-        const da = lineageDepth(a.slug)
-        const db = lineageDepth(b.slug)
+        const da = listingDepth(a, bySlug)
+        const db = listingDepth(b, bySlug)
         return da !== db ? da - db : a.slug.localeCompare(b.slug)
       })
 

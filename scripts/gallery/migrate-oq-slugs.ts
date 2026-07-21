@@ -23,9 +23,13 @@
  *                   still reported for shallower entries.
  *   --hash          Use the stable hash bounded form instead of sequential.
  *   --json          Emit the plan as JSON instead of a table.
- *   --apply         Execute the plan (rename dirs, backfill lineage, write
- *                   redirects). GATED — prints a notice and exits unless the
- *                   migration is explicitly authorized under #39828.
+ *   --apply         Execute the plan under issue #39828: rename entry
+ *                   directories to their bounded slug, backfill
+ *                   parentSlug/rootSlug into each moved meta.json, remap every
+ *                   crossReference / [[slug]] link gallery-wide, and populate
+ *                   src/data/proofs/redirects.json with the old→new pairs.
+ *                   Run `pnpm build` afterward to regenerate listings + the
+ *                   Cloudflare `_redirects` file.
  */
 
 import * as fs from 'fs'
@@ -148,6 +152,138 @@ function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+// ---------------------------------------------------------------------------
+// Migration executor (--apply, issue #39828)
+// ---------------------------------------------------------------------------
+
+/**
+ * Re-serialize a parsed meta.json while PRESERVING the file's original
+ * non-ASCII encoding, so re-writing an entry only diffs the fields we changed.
+ *
+ * Gallery meta.json files are machine-written and each is internally consistent:
+ * either every non-ASCII char is `\uXXXX`-escaped (the file's bytes are pure
+ * ASCII) or they are stored raw UTF-8. `JSON.stringify` always emits raw
+ * UTF-8, so for an originally-escaped file we re-apply the escaping to match.
+ */
+function serializeMeta(obj: unknown, originalText: string): string {
+  const wasAsciiEscaped = !/[^\x00-\x7f]/.test(originalText)
+  let out = JSON.stringify(obj, null, 2)
+  if (wasAsciiEscaped) {
+    out = out.replace(/[\u0080-\uffff]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'))
+  }
+  return out + '\n'
+}
+
+/** Remap a parent slug through the rename map: migrated → new, else unchanged. */
+function remap(slug: string | null, renameMap: Map<string, string>): string | null {
+  if (slug === null) return null
+  return renameMap.get(slug) ?? slug
+}
+
+interface ApplyResult {
+  renamed: number
+  metasRewritten: number
+  referencesUpdated: number
+  redirectsWritten: number
+}
+
+/**
+ * Execute a migration plan against `src/data/proofs`:
+ *   1. rename each entry directory `oldSlug` → `newSlug`;
+ *   2. rewrite the moved meta.json: `id`/`slug` → new, and backfill
+ *      `meta.parentSlug` (remapped through the plan) + `meta.rootSlug`;
+ *   3. gallery-wide, remap every crossReference value and `[[slug]]` link that
+ *      points at a migrated old slug (pure text replace — no re-serialization,
+ *      so untouched files keep their exact bytes);
+ *   4. merge the old→new pairs into redirects.json.
+ */
+function applyPlan(plan: PlanRow[], dataDir: string, redirectsSource: string): ApplyResult {
+  const renameMap = new Map<string, string>(plan.map((r) => [r.oldSlug, r.newSlug]))
+
+  // --- 1 & 2: rename dirs + rewrite the moved metas -----------------------
+  let renamed = 0
+  let metasRewritten = 0
+  for (const row of plan) {
+    const oldDir = path.join(dataDir, row.oldSlug)
+    const newDir = path.join(dataDir, row.newSlug)
+    if (!fs.existsSync(oldDir)) {
+      throw new Error(`applyPlan: source directory missing: ${oldDir}`)
+    }
+    if (fs.existsSync(newDir)) {
+      throw new Error(`applyPlan: target directory already exists: ${newDir}`)
+    }
+    fs.renameSync(oldDir, newDir)
+    renamed++
+
+    const metaPath = path.join(newDir, 'meta.json')
+    const originalText = fs.readFileSync(metaPath, 'utf8')
+    const meta = JSON.parse(originalText) as {
+      id?: string
+      slug?: string
+      meta?: Record<string, unknown>
+    }
+    meta.id = row.newSlug
+    meta.slug = row.newSlug
+    meta.meta = meta.meta ?? {}
+    // parentSlug follows the migration: if the parent was itself re-slugged use
+    // its new bounded slug, otherwise keep the (still-live) legacy parent.
+    meta.meta.parentSlug = remap(row.parentSlug, renameMap)
+    meta.meta.rootSlug = row.rootSlug
+    fs.writeFileSync(metaPath, serializeMeta(meta, originalText))
+    metasRewritten++
+  }
+
+  // --- 3: gallery-wide reference remap (crossReferences + [[slug]] links) ---
+  // A quoted exact match (`"<old>"`) only hits JSON string VALUES equal to an
+  // old slug — i.e. crossReference proofId/targetId (object or bare-string
+  // form) — never a slug embedded in prose. Longest-first alternation keeps a
+  // shorter old slug from shadowing a longer one that shares its prefix.
+  const olds = plan.map((r) => r.oldSlug).sort((a, b) => b.length - a.length)
+  const alt = olds.map(escapeRegExp).join('|')
+  const quotedRe = new RegExp(`"(${alt})"`, 'g')
+  const linkRe = new RegExp(`\\[\\[(${alt})\\]\\]`, 'g')
+
+  let referencesUpdated = 0
+  for (const name of fs.readdirSync(dataDir, { withFileTypes: true })) {
+    if (!name.isDirectory()) continue
+    const metaPath = path.join(dataDir, name.name, 'meta.json')
+    if (!fs.existsSync(metaPath)) continue
+    const text = fs.readFileSync(metaPath, 'utf8')
+    // Cheap prefilter: only touch files that actually mention a migrated slug.
+    if (!text.includes('-oq-')) continue
+    const updated = text
+      .replace(quotedRe, (_m, s: string) => `"${renameMap.get(s)}"`)
+      .replace(linkRe, (_m, s: string) => `[[${renameMap.get(s)}]]`)
+    if (updated !== text) {
+      fs.writeFileSync(metaPath, updated)
+      referencesUpdated++
+    }
+  }
+
+  // --- 4: populate redirects.json -----------------------------------------
+  const redirectsRaw = fs.existsSync(redirectsSource)
+    ? (JSON.parse(fs.readFileSync(redirectsSource, 'utf8')) as {
+        $comment?: string
+        redirects?: Record<string, string>
+        [k: string]: unknown
+      })
+    : { redirects: {} }
+  const redirects: Record<string, string> = { ...(redirectsRaw.redirects ?? {}) }
+  for (const row of plan) redirects[row.oldSlug] = row.newSlug
+  // Sort keys for a stable, churn-free diff.
+  const sortedRedirects: Record<string, string> = {}
+  for (const k of Object.keys(redirects).sort()) sortedRedirects[k] = redirects[k]
+  redirectsRaw.redirects = sortedRedirects
+  fs.writeFileSync(redirectsSource, JSON.stringify(redirectsRaw, null, 2) + '\n')
+
+  return {
+    renamed,
+    metasRewritten,
+    referencesUpdated,
+    redirectsWritten: plan.length,
+  }
+}
+
 function printTable(plan: PlanRow[]): void {
   if (plan.length === 0) {
     console.log('No entries at or over the depth threshold — nothing to migrate.')
@@ -174,14 +310,23 @@ function main(): void {
   const plan = buildPlan(allSlugs, { minDepth: args.minDepth, useHash: args.useHash })
 
   if (args.apply) {
-    console.error(
-      '\n✋ --apply is gated. The mass re-slug (renaming ~347 directories, backfilling\n' +
-        '   parentSlug/rootSlug, and populating redirects.json) is deferred to issue\n' +
-        '   #39828. This foundation script only PRINTS the plan.\n\n' +
-        '   To execute the migration under #39828, remove this guard in a dedicated PR\n' +
-        '   after review. Refusing to write anything now.\n'
+    if (plan.length === 0) {
+      console.log('No entries at or over the depth threshold — nothing to migrate.')
+      return
+    }
+    console.log(
+      `Applying migration: ${plan.length} entr${plan.length === 1 ? 'y' : 'ies'} ` +
+        `(min OQ depth ${args.minDepth}, ${args.useHash ? 'hash' : 'sequential'} scheme).`
     )
-    process.exitCode = 2
+    const result = applyPlan(plan, PROOFS_DATA_DIR, REDIRECTS_SOURCE)
+    console.log(
+      `\n✅ Migration applied:\n` +
+        `   ${result.renamed} directories renamed to bounded slugs\n` +
+        `   ${result.metasRewritten} meta.json rewritten (id/slug + parentSlug/rootSlug backfilled)\n` +
+        `   ${result.referencesUpdated} other meta.json had crossReferences / [[links]] remapped\n` +
+        `   ${result.redirectsWritten} old→new pairs written to redirects.json\n\n` +
+        `   Next: run \`pnpm build\` to regenerate listings.json + public/_redirects.\n`
+    )
     return
   }
 

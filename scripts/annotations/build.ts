@@ -609,6 +609,8 @@ function generateListings(
     mathlibCount?: number;
     sorries?: number;
     annotationCount: number;
+    parentSlug?: string | null;
+    rootSlug?: string;
   }
 
   const listings: ProofListing[] = [];
@@ -657,6 +659,10 @@ function generateListings(
       mathlibCount: meta.meta?.mathlibDependencies?.length,
       sorries: meta.meta?.sorries,
       annotationCount,
+      // OQ lineage backfilled by issue #39828 (undefined for legacy entries,
+      // so JSON.stringify omits it and consumers fall back to slug-parsing).
+      parentSlug: meta.meta?.parentSlug,
+      rootSlug: meta.meta?.rootSlug,
     });
   }
 

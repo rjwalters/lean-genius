@@ -155,6 +155,57 @@ eq('format empty → null', formatRollupSummary({ total: 0, verified: 0, axiomat
   eq('grouped entry has one descendant', groups[1].descendants.length, 1)
 }
 
+// --- groupListings: meta-preferring path (bounded slugs, #39828) ----------
+{
+  // Listing factory carrying the backfilled lineage meta. Bounded slugs read
+  // as lineageDepth 0, so correct grouping/ordering MUST come from the meta.
+  function LM(
+    slug: string,
+    rootSlug: string,
+    parentSlug: string | null,
+    status: ProofListing['status'] = 'verified'
+  ): ProofListing {
+    return { ...L(slug, status), rootSlug, parentSlug }
+  }
+
+  const listings: ProofListing[] = [
+    L('erdos-396', 'axiomatized', 'wip'),
+    // Deliberately out of depth order to exercise meta-depth sorting.
+    LM('erdos-396-oq003', 'erdos-396', 'erdos-396-oq002'),
+    LM('erdos-396-oq001', 'erdos-396', 'erdos-396'),
+    LM('erdos-396-oq002', 'erdos-396', 'erdos-396-oq001'),
+    // A bounded slug whose SLUG-parsed root ('weird') differs from its meta
+    // rootSlug — grouping must prefer the meta field and land under erdos-396.
+    LM('weird-oq009', 'erdos-396', 'erdos-396-oq003'),
+  ]
+  const groups = groupListings(listings)
+  eq('meta grouping: single group despite mismatched slug root', groups.length, 1)
+  const g = groups[0]
+  eq('meta grouping: root from meta field', g.rootSlug, 'erdos-396')
+  eq('meta grouping: header is the true root', g.header.slug, 'erdos-396')
+  eq(
+    'meta grouping: descendants ordered by meta-depth (root→leaf)',
+    g.descendants.map((d) => d.slug),
+    ['erdos-396-oq001', 'erdos-396-oq002', 'erdos-396-oq003', 'weird-oq009']
+  )
+  eq('meta grouping: all four descendants captured', g.descendants.length, 4)
+}
+
+// --- groupListings: header fallback via meta-depth when root absent --------
+{
+  function LM(slug: string, rootSlug: string, parentSlug: string | null): ProofListing {
+    return { ...L(slug), rootSlug, parentSlug }
+  }
+  const listings: ProofListing[] = [
+    LM('e-oq002', 'e', 'e-oq001'),
+    LM('e-oq001', 'e', 'e'), // shallowest (depth 1) — should become header
+  ]
+  const groups = groupListings(listings)
+  eq('meta fallback: one group', groups.length, 1)
+  eq('meta fallback: header is shallowest by meta-depth', groups[0].header.slug, 'e-oq001')
+  eq('meta fallback: remaining is descendant', groups[0].descendants.map((d) => d.slug), ['e-oq002'])
+}
+
 // ---------------------------------------------------------------------------
 if (FAIL > 0) {
   console.error(`\noq-group.test: ${FAIL} failed, ${PASS} passed`)
