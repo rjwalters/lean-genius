@@ -79,112 +79,112 @@
       "id": "preamble",
       "title": "Preamble",
       "startLine": 1,
-      "endLine": 69,
+      "endLine": 77,
       "summary": "Module imports, documentation header introducing the formalization scope, and design decisions documenting modeling choices."
     },
     {
       "id": "objects",
       "title": "Objects (TLP 2.02)",
-      "startLine": 72,
-      "endLine": 85,
+      "startLine": 78,
+      "endLine": 92,
       "summary": "Objects as an abstract variable type — simple, structureless entities."
     },
     {
       "id": "states-of-affairs",
       "title": "States of Affairs (TLP 2.01)",
-      "startLine": 87,
-      "endLine": 102,
+      "startLine": 93,
+      "endLine": 109,
       "summary": "States of affairs (Sachverhalte) as an abstract type of possible combinations."
     },
     {
       "id": "worlds",
       "title": "Worlds (TLP 1, 1.1, 2.04)",
-      "startLine": 104,
-      "endLine": 118,
+      "startLine": 110,
+      "endLine": 125,
       "summary": "Worlds as predicates determining which states of affairs obtain."
     },
     {
       "id": "independence",
       "title": "Independence Structure (TLP 2.061-2.062)",
-      "startLine": 120,
-      "endLine": 144,
+      "startLine": 126,
+      "endLine": 151,
       "summary": "IndependentWorlds typeclass and its default instance for the free Boolean cube."
     },
     {
       "id": "propositions",
       "title": "Propositions (TLP 4.21, 5)",
-      "startLine": 146,
-      "endLine": 161,
+      "startLine": 152,
+      "endLine": 168,
       "summary": "Inductive type for propositions: elementary, negation, conjunction."
     },
     {
       "id": "derived-connectives",
       "title": "Derived Connectives (TLP 5.101)",
-      "startLine": 163,
-      "endLine": 189,
+      "startLine": 169,
+      "endLine": 196,
       "summary": "Disjunction, implication, biconditional, and NAND defined from negation and conjunction."
     },
     {
       "id": "evaluation",
       "title": "Semantic Evaluation (TLP 2.21, 4.06)",
-      "startLine": 191,
-      "endLine": 228,
+      "startLine": 197,
+      "endLine": 240,
       "summary": "Recursive truth-value evaluation of propositions relative to worlds, including Bool-valued evaluator and correctness bridge theorem."
     },
     {
       "id": "tautology-contradiction",
       "title": "Tautology and Contradiction (TLP 4.46, 6.1)",
-      "startLine": 229,
-      "endLine": 252,
+      "startLine": 241,
+      "endLine": 264,
       "summary": "Definitions of tautology (true in all worlds), contradiction (false in all worlds), and nontrivial propositions."
     },
     {
       "id": "general-world-models",
       "title": "General World Models",
-      "startLine": 253,
-      "endLine": 341,
+      "startLine": 265,
+      "endLine": 354,
       "summary": "WorldModel structure parameterizing semantics over arbitrary world collections. Includes freeModel, evalM, IsTautologyM, IsContradictionM, generalized compositionality (main result), and a compatibility lemma proving evalM over freeModel equals the original eval."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
-      "startLine": 343,
-      "endLine": 558,
+      "startLine": 355,
+      "endLine": 570,
       "summary": "Core theorems 1-13: compositionality (main result), independence, bivalence, connective semantics, and NAND functional completeness."
     },
     {
       "id": "constrained-models",
       "title": "Constrained World Models",
-      "startLine": 560,
-      "endLine": 648,
+      "startLine": 571,
+      "endLine": 660,
       "summary": "Abstract constrained model (ConstrainedWorld with constrained_independence_fails, main result) and concrete weather model (WeatherFacts with weather_independence_fails). Both demonstrate that independence is a modeling choice, not a logical law."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples",
-      "startLine": 650,
-      "endLine": 698,
+      "startLine": 661,
+      "endLine": 710,
       "summary": "TwoFacts instantiation with rain/snow, Prop-valued and Bool-valued evaluation examples."
     },
     {
       "id": "structural-vs-semantic",
       "title": "Structural vs Semantic Equivalence (TLP 4.0141)",
-      "startLine": 700,
-      "endLine": 1007,
+      "startLine": 711,
+      "endLine": 1117,
       "summary": "Defines structural (structEq), semantic (semEq), and logical-form (formEq via Equiv.Perm) equivalence. Proves formEq is an equivalence relation, establishes strict hierarchy structEq < formEq < semEq, and proves the divergence theorem structEq_ne_semEq (main result)."
     },
     {
       "id": "expresses-and-classification",
       "title": "The expresses Relation and Analytical Decomposition",
-      "startLine": 1008,
-      "endLine": 1070,
+      "startLine": 1118,
+      "endLine": 1182,
       "summary": "The expresses relation (TLP 4.12) bridging object and meta language, and a three-way classification of all results: core invariants, model assumptions, and formal limits."
     },
     {
       "id": "limits",
       "title": "The Limits of Formalization (TLP 6.54, 7)",
-      "startLine": 1071,
-      "endLine": 1230,
+      "startLine": 1183,
+      "endLine": 1345,
       "summary": "World-constant triviality lemma, saying/showing triviality theorem, contingent propositions theorem, nontrivial predicate theorems, proposition seven, nontrivial expressibility theorems, the ladder of TLP 6.54, and the axiom of silence."
     }
   ],
