@@ -1,5 +1,41 @@
 # Knowledge Base: erdos-326-wip-01
 
+## Session 2026-07-21 (researcher-1-6) — growth-limit predicates are non-vacuous (realizability)
+
+Added 5 axiom-free theorems + 1 def to `Erdos326WIP01.lean` (host-verified v4.31.0
+via fresh-parent-olean; `#print axioms` = propext/Classical.choice/Quot.sound on all
+new results; theoremCount 20→25):
+
+- `growthRatio_eq (b c k) (hk : k≠0) (hval : b k = c*k^2) : growthRatio b k = c` —
+  the reusable "value pins the ratio" lemma (`div_eq_iff (pow_ne_zero 2 …)` + `push_cast; ring`).
+- `hasGrowthLimit_quadratic (c) : HasGrowthLimit (fun k => c*k^2) c` — an exactly-quadratic
+  enumeration converges (eventually constant `=ᶠ`, `tendsto_const_nhds.congr'`). Positive
+  realizability of `HasGrowthLimit` (the Cassels-flavour convergent case, for a bare sequence).
+- `oscillating k := (k%2+1)*k^2` — ratio `2` on odds, `1` on evens
+  (`growthRatio_oscillating_odd/even`, both via `growthRatio_eq` after `rw [show …%2=… from by omega]`).
+- `hasNoGrowthLimit_oscillating : HasNoGrowthLimit oscillating` — NON-vacuous `HasNoGrowthLimit`.
+  Both index maps `2m+1`, `2m+2` tend to `atTop` (`tendsto_atTop_atTop.mpr fun b => ⟨b, …omega⟩`),
+  compose with the hypothetical limit (`hx.comp`), collapse each to a constant via the odd/even
+  ratio lemma, then `tendsto_nhds_unique` twice forces `x=2` AND `x=1` → `norm_num`.
+
+This is exactly the `bₖ/k²`-non-convergence phenomenon Erdős #326 conjectures for a
+*sub-basis* — realized here for a plain sequence (no basis constraint); the deep sub-basis
+oscillation dichotomy is untouched.
+
+### Gotchas
+- A `∀ᶠ k, f k = g k` hypothesis must be *typed* as `f =ᶠ[atTop] g` (EventuallyEq) for
+  `.symm`/`.congr'` dot-notation to resolve — the bare `∀ᶠ` (Filter.Eventually) head symbol
+  blocks the field projection (`Invalid field notation … atTop.1 {x | …}`).
+- `rw [show (2*m+1)%2 = 1 from by omega]` then the goal `(1+1)*…=2*…` closes by `rw`'s trailing
+  `rfl` (Nat literal `1+1` reduces to `2`); a following `ring` errors "No goals".
+- Same fresh-parent-olean host-verify recipe as prior sessions (parent Mathlib-only →
+  `lake env lean -o .lake/build/lib/lean/Proofs/Erdos326Problem.olean` first).
+
+### Remaining open (unchanged)
+- Bridge `HasGrowthLimit` to explicit enumeration boundedness (`bₖ=O(k²)` as growthRatio boundedness).
+- The oscillation dichotomy — must every order-2 basis contain a sub-basis with `bₖ/k²`
+  non-convergent — the OPEN part of #326 (structured blocker, deep).
+
 ## Session 2026-07-20 (researcher-1) — squares are NOT an order-3 basis (order = exactly 4)
 
 Added 3 axiom-free lemmas to `Erdos326WIP01.lean` (host-verified v4.31.0 via fresh-parent-olean;
