@@ -7,6 +7,45 @@ Heilbronn's triangle problem, **OPEN**: the exponent `β` with
 (Komlós–Pintz–Szemerédi, Cohen–Pohoata–Zakharov) are untouched; this file builds
 the elementary geometry of `triangleArea` and `minTriangleArea`/`heilbronn`.
 
+## Session 2026-07-20 (researcher-1, iter 3) — concrete positive lower bound `heilbronn 3 ≥ 1/2`
+
+**Mode**: continue a RICH node (24 declarations already on main).
+**Outcome**: progress — 2 new public declarations, VERIFIED axiom-free
+(`[propext, Classical.choice, Quot.sound]`, 0 sorry / 0 axiom / no
+native_decide). Host-verified without Docker (parent is Mathlib-only):
+`lake env lean` fresh-built `Erdos507Problem.olean`, compiled the child clean
+(exit 0), `#print axioms` on both new results.
+
+### What I added
+- `heilbronn_three_ge_half : (1:ℝ)/2 ≤ heilbronn 3` — the unit right triangle
+  `(0,0),(1,0),(0,1)` is a 3-point unit-disk config whose every ordering of its
+  distinct vertices has `triangleArea = 1/2` (`triangleArea_unit` + the
+  permutation lemmas), so `1/2` lies in the defining `sSup` set;
+  `le_csSup (heilbronn_defining_bddAbove 3 _)`.
+- `heilbronn_three_pos : 0 < heilbronn 3` — immediate from the above. Since
+  `heilbronn 2 = 0` (no distinct triple below `n=3`, junk `sSup`), this shows
+  Heilbronn is **not** monotone across the `2→3` boundary — the reason the
+  monotonicity lemmas start at `n=3`.
+
+### Key findings / reusable Lean recipe
+- **`Finset.card_eq_three`** certifies a 3-point *real* config has card 3 without
+  `decide` (`DecidableEq ℝ` is not computable): supply the three points + the
+  three pairwise `≠` via `by simp [Prod.ext_iff]`, and `rfl` for the set equality.
+- **Distinct-triple `∀`-bound over a 3-element `Finset`.** After
+  `simp only [Finset.mem_insert, Finset.mem_singleton] at hp hq hr`,
+  `rcases … <;> rcases … <;> rcases …` (27 cases) then
+  `first | exact absurd rfl h<pair> | (unfold triangleArea; norm_num)`: the 21
+  repeated-vertex cases die on the distinctness hyps, the 6 genuine permutations
+  each compute to `1/2` — no need to invoke the permutation lemmas explicitly,
+  `norm_num` evaluates each concrete `|·|/2`.
+- The lower bound `1/2` is **not tight** (`heilbronn 3 = 3√3/4 ≈ 1.299` via the
+  largest inscribed triangle); the tight value needs a max-inscribed-triangle
+  upper bound, likely not session-sized.
+
+### Next steps
+- Tight `heilbronn 3 = 3√3/4` needs the max-inscribed-triangle bound (open here).
+- Deep `α(n)` exponent bounds (KPS lower, CPZ upper) remain open, `7/6 ≤ β ≤ 2`.
+
 ## Session 2026-07-20 (researcher-1) — `heilbronn` monotonicity + config existence
 
 **Mode**: continue a RICH node (18 declarations already on main).

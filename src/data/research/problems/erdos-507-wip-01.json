@@ -29,7 +29,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-20T15:20:00-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Axiom-free structural facts on minTriangleArea (the nested triple-infimum) and heilbronn (its sSup), built on the verified triangleArea geometry.",
     "blockers": [
       {
@@ -38,15 +38,15 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "heilbronn monotonicity heilbronn (n+1) ≤ heilbronn n via restricting a witness configuration; the deep α(n) exponent bounds (KPS/CPZ) are not session-sized.",
+    "nextAction": "Sharpen the n=3 lower bound toward the exact heilbronn 3 = 3√3/4 (largest inscribed triangle) — upper half needs a max-inscribed-triangle bound, likely not session-sized. Otherwise the deep α(n) exponent bounds (KPS/CPZ) remain out of scope.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended Proofs/Erdos507WIP01.lean (18→23 declarations, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker). Added the monotonicity layer: exists_unitDisk_config (configs of every cardinality exist in the disk), heilbronn_defining_bddAbove (private), heilbronn_nonneg (0 ≤ heilbronn n), heilbronn_succ_le (one-step antitone via point deletion), and heilbronn_antitone (heilbronn antitone on {n≥3}). The deep α(n) growth exponent (7/6 ≤ β ≤ 2) remains open.",
+    "progressSummary": "PROGRESS: Extended Proofs/Erdos507WIP01.lean (24→26 declarations, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker). Added a concrete positive lower bound at n=3: heilbronn_three_ge_half (heilbronn 3 ≥ 1/2, from the unit right triangle whose every ordering has area 1/2) and heilbronn_three_pos (0 < heilbronn 3). This separates heilbronn 3 from the junk value heilbronn 2 = 0, showing the n ≥ 3 hypothesis on the monotonicity lemmas is forced. The deep α(n) growth exponent (7/6 ≤ β ≤ 2) remains open.",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -65,7 +65,9 @@
       "heilbronn_nonneg in Erdos507WIP01.lean — 0 ≤ heilbronn n for n≥3 via le_csSup (α=0 admissible)",
       "heilbronn_succ_le in Erdos507WIP01.lean — heilbronn (n+1) ≤ heilbronn n for n≥3, delete-a-point (Finset.erase) restriction",
       "heilbronn_antitone in Erdos507WIP01.lean — full antitonicity on {n≥3} via Nat.le_induction",
-      "heilbronn_mem_Icc in Erdos507WIP01.lean — sandwich 0 ≤ heilbronn n ≤ 3 for n≥3 (PR #39991), 0-axiom"
+      "heilbronn_mem_Icc in Erdos507WIP01.lean — sandwich 0 ≤ heilbronn n ≤ 3 for n≥3 (PR #39991), 0-axiom",
+      "heilbronn_three_ge_half (1/2 ≤ heilbronn 3) in Proofs/Erdos507WIP01.lean",
+      "heilbronn_three_pos (0 < heilbronn 3) in Proofs/Erdos507WIP01.lean"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -77,7 +79,11 @@
       "heilbronn n ≤ 3 is stated for n ≥ 3: for n < 3 no distinct triple exists, the defining ∀-condition is vacuous, the set is unbounded above, and heilbronn n is the sSup junk value 0 — the bounded-above proof route needs the triple (Finset.two_lt_card_iff).",
       "heilbronn is antitone on {n ≥ 3}: heilbronn_antitone (3≤m≤n → heilbronn n ≤ heilbronn m). Adding a point can only create new triples, shrinking the min area; the (n+1)-defining sSup-set ⊆ the n-defining set.",
       "The junk-value boundary at n=2/3 forces the n≥3 hypothesis: for n<3 the triple condition is vacuous so the defining set is all of ℝ (unbounded), giving heilbronn n = sSup-junk 0; monotonicity across the 2→3 boundary is false (heilbronn 3 > 0 = heilbronn 2).",
-      "csSup_le_csSup needs the SMALLER (n+1) set nonempty: supplied via exists_unitDisk_config (n+1) with the admissible bound α=0 (all areas ≥ 0)."
+      "csSup_le_csSup needs the SMALLER (n+1) set nonempty: supplied via exists_unitDisk_config (n+1) with the admissible bound α=0 (all areas ≥ 0).",
+      "heilbronn 3 ≥ 1/2 via the explicit unit right triangle (0,0),(1,0),(0,1): all six orderings of its distinct vertices have triangleArea = 1/2 (triangleArea_unit + permutation lemmas), so 1/2 lies in the defining sSup set; le_csSup with heilbronn_defining_bddAbove gives the bound.",
+      "Finset.card_eq_three is the clean way to certify a 3-point real config has cardinality 3 (avoids decide, which fails on DecidableEq ℝ): provide the three points plus pairwise inequalities via simp [Prod.ext_iff].",
+      "For an ∀-over-a-3-element-Finset distinct-triple bound, rcases each membership (Finset.mem_insert/mem_singleton) three-ways (27 cases) and discharge with first | exact absurd rfl h<pair> | (unfold triangleArea; norm_num) — the 21 repeated-vertex cases die on the distinctness hyps, the 6 genuine permutations compute to 1/2.",
+      "heilbronn 3 > 0 = heilbronn 2 confirms Heilbronn is NOT monotone across the 2→3 boundary, so the n ≥ 3 hypothesis on the monotonicity lemmas is forced, not cosmetic."
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",

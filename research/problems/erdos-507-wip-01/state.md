@@ -2,7 +2,7 @@
 
 **Phase**: ACT (foundational scaffolding)
 **Since**: 2026-07-20
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
@@ -28,9 +28,11 @@ needed). Bound `heilbronn n` (`n ≥ 3`) via `Real.sSup_le` + `triangleArea_le_t
 
 ## Next Action
 
-`heilbronn` monotonicity `heilbronn (n+1) ≤ heilbronn n` by restricting a witness
-configuration; otherwise the deep exponent bounds (not session-sized).
+Sharpen the `n=3` lower bound toward the exact `heilbronn 3 = 3√3/4` (largest
+inscribed triangle); the upper half needs a max-inscribed-triangle bound, likely
+not session-sized. Otherwise the deep `α(n)` exponent bounds (KPS/CPZ) remain
+out of scope.
 
 ## Attempt Counts
 
-- Total attempts: 2
+- Total attempts: 3
