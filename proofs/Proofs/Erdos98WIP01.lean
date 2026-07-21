@@ -63,6 +63,14 @@ The `Prop` definitions are faithful transcriptions only — Pach/EFP/Guth–Katz
 imported as *assumptions* (deep results, not reproved here) and the two
 conjectures are *open* in mathematics; nothing below claims to resolve them.
 
+9. `exists_inGeneralPosition` — **general-position configurations exist for *every* `n`**,
+   via the uniform parabola witness `i ↦ (i+1, (i+1)²)` (strictly positive, distinct
+   abscissae). This settles the constructive existence question the `n = 4` section flagged
+   as "the deep constructive piece": four parabola points are concyclic iff their abscissae
+   sum to `0`, so positivity of the abscissae rules concyclicity out, and strict convexity
+   rules out collinearity. Consequently `h_attained` upgrades the attained-minimum guarantee
+   from `n ≤ 4` to all `n` — `h n` is never the `sInf ∅` junk value.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -510,5 +518,233 @@ theorem exists_inGeneralPosition_of_le_four (hn : n ≤ 4) :
   · have : n = 4 := by omega
     subst this
     exact exists_inGeneralPosition_four
+
+/-! ## General-position existence for **every** `n` — the parabola with positive abscissae
+
+The concrete `n ≤ 4` witnesses above are subsumed by a single uniform construction that
+settles general-position existence for **all** `n`, the "deep constructive piece" the
+`n = 4` header flagged as open.  The obstruction it named — "the natural parabola
+construction `(t, t²)` already fails *no four concyclic*: any four parabola points whose
+`x`-coordinates sum to `0` are concyclic" — is real but avoidable: four points
+`(xₐ, xₐ²), …, (x_d, x_d²)` on `y = x²` are concyclic **iff** `xₐ + x_b + x_c + x_d = 0`
+(the four abscissae are the roots of the monic quartic `x⁴ + (1-2c₁)x² - 2c₀x + s` cut out by
+a circle `(x-c₀)² + (y-c₁)² = r²`, whose `x³`-coefficient vanishes).  Choosing the abscissae
+**strictly positive** — here `xᵢ = i + 1 ∈ {1, …, n}` — makes every 4-subset sum `≥ 4 > 0`, so
+no four are concyclic.  And on a parabola no three points are *ever* collinear: three points
+`(xᵢ, xᵢ²)` collinear forces `a + b(xᵢ+xⱼ) = 0` for each pair, hence `b = 0` then `a = 0` then
+`c = 0`.  Both nondegeneracy conditions thus hold for `parabolaConfig n`, giving
+`exists_inGeneralPosition n` for all `n` and, via `Nat.sInf_mem`, that `h n` is a genuinely
+attained minimum for every `n` (never the `sInf ∅` junk value). -/
+
+/-- Distinct indices have distinct abscissae `(·) + 1` (the cast `Fin n ↪ ℕ ↪ ℝ` is injective). -/
+private theorem parabola_x_ne {p q : Fin n} (hpq : p ≠ q) :
+    ((p : ℕ) : ℝ) + 1 ≠ ((q : ℕ) : ℝ) + 1 := by
+  intro h
+  apply hpq
+  have : ((p : ℕ) : ℝ) = ((q : ℕ) : ℝ) := by linarith
+  exact Fin.ext (by exact_mod_cast this)
+
+/-- A three-element `{i, j, k}` has pairwise-distinct entries. -/
+private theorem card_triple_pairwise_ne {α : Type*} [DecidableEq α] {i j k : α}
+    (h : ({i, j, k} : Finset α).card = 3) : i ≠ j ∧ i ≠ k ∧ j ≠ k := by
+  have card_le2 : ∀ p q : α, ({p, q} : Finset α).card ≤ 2 :=
+    fun p q => (Finset.card_insert_le _ _).trans (by simp)
+  have hine : i ∉ ({j, k} : Finset α) := by
+    intro hmem
+    rw [Finset.insert_eq_self.mpr hmem] at h
+    have := card_le2 j k; omega
+  have hjk2 : ({j, k} : Finset α).card = 2 := by
+    have := Finset.card_insert_of_notMem hine; omega
+  have hjne : j ≠ k := by
+    intro hjk'; rw [hjk'] at hjk2; simp at hjk2
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hine
+  exact ⟨hine.1, hine.2, hjne⟩
+
+/-- A four-element `{a, b, c, d}` has pairwise-distinct entries. -/
+private theorem card_quad_pairwise_ne {α : Type*} [DecidableEq α] {a b c d : α}
+    (h : ({a, b, c, d} : Finset α).card = 4) :
+    a ≠ b ∧ a ≠ c ∧ a ≠ d ∧ b ≠ c ∧ b ≠ d ∧ c ≠ d := by
+  have card_le3 : ∀ p q r : α, ({p, q, r} : Finset α).card ≤ 3 := by
+    intro p q r
+    calc ({p, q, r} : Finset α).card
+        ≤ ({q, r} : Finset α).card + 1 := Finset.card_insert_le _ _
+      _ ≤ (({r} : Finset α).card + 1) + 1 := by
+            have := Finset.card_insert_le q ({r} : Finset α); omega
+      _ = 3 := by simp
+  have hane : a ∉ ({b, c, d} : Finset α) := by
+    intro hmem
+    rw [Finset.insert_eq_self.mpr hmem] at h
+    have := card_le3 b c d; omega
+  have hbcd : ({b, c, d} : Finset α).card = 3 := by
+    have := Finset.card_insert_of_notMem hane; omega
+  have hbne : b ∉ ({c, d} : Finset α) := by
+    intro hmem
+    rw [Finset.insert_eq_self.mpr hmem] at hbcd
+    have : ({c, d} : Finset α).card ≤ 2 := (Finset.card_insert_le _ _).trans (by simp)
+    omega
+  have hcd2 : ({c, d} : Finset α).card = 2 := by
+    have := Finset.card_insert_of_notMem hbne; omega
+  have hcne : c ≠ d := by
+    intro hcd'; rw [hcd'] at hcd2; simp at hcd2
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hane hbne
+  exact ⟨hane.1, hane.2.1, hane.2.2, hbne.1, hbne.2, hcne⟩
+
+/-- **Parabola no-three-collinear, abstractly.** If a line `a·x + b·y + c = 0` passes through
+three distinct-abscissa parabola points `(xₜ, xₜ²)`, then `(a, b, c) = 0`. Cancelling the
+distinct differences turns the three incidences into `a + b(xᵢ+xⱼ) = 0`, forcing `b = 0`,
+then `a = 0`, then `c = 0`. -/
+private theorem parabola_collinear_trivial (xi xj xk a b c : ℝ)
+    (hxij : xi ≠ xj) (hxik : xi ≠ xk) (hxjk : xj ≠ xk)
+    (hi : a * xi + b * xi ^ 2 + c = 0)
+    (hj : a * xj + b * xj ^ 2 + c = 0)
+    (hk : a * xk + b * xk ^ 2 + c = 0) :
+    a = 0 ∧ b = 0 ∧ c = 0 := by
+  have P1 : a + b * (xi + xj) = 0 := by
+    have hp : (xi - xj) * (a + b * (xi + xj)) = 0 := by linear_combination hi - hj
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hxij
+    · exact hz
+  have P2 : a + b * (xi + xk) = 0 := by
+    have hp : (xi - xk) * (a + b * (xi + xk)) = 0 := by linear_combination hi - hk
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hxik
+    · exact hz
+  have hb : b = 0 := by
+    have hp : (xj - xk) * b = 0 := by linear_combination P1 - P2
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hxjk
+    · exact hz
+  have ha : a = 0 := by linear_combination P1 - (xi + xj) * hb
+  have hc : c = 0 := by linear_combination hi - xi * ha - xi ^ 2 * hb
+  exact ⟨ha, hb, hc⟩
+
+/-- **Parabola concyclicity forces zero abscissa-sum.** Four distinct-abscissa parabola points
+equidistant (squared) from a common centre `(c₀, c₁)` satisfy `w + x + y + z = 0`. This is the
+`x³`-coefficient-`0` Vieta relation, obtained here by three rounds of difference-and-cancel:
+`(c₀-t)²+(c₁-t²)²` equal across pairs ⟹ a linear-in-centre relation `M(t,u)=0` ⟹ a
+quadratic-symmetric relation `N(·,·)=0` ⟹ the abscissa sum. -/
+private theorem parabola_concyclic_sum_zero (w x y z c0 c1 R : ℝ)
+    (hwx : w ≠ x) (hxy : x ≠ y) (hyz : y ≠ z)
+    (hwy : w ≠ y) (hwz : w ≠ z) (hxz : x ≠ z)
+    (Hw : (c0 - w) ^ 2 + (c1 - w ^ 2) ^ 2 = R)
+    (Hx : (c0 - x) ^ 2 + (c1 - x ^ 2) ^ 2 = R)
+    (Hy : (c0 - y) ^ 2 + (c1 - y ^ 2) ^ 2 = R)
+    (Hz : (c0 - z) ^ 2 + (c1 - z ^ 2) ^ 2 = R) :
+    w + x + y + z = 0 := by
+  -- `M(t,u) := -2c₀ + (t+u)(1 - 2c₁ + t² + u²)`: from equal squared distances, `M = 0`.
+  have Mwx : -2 * c0 + (w + x) * (1 - 2 * c1 + w ^ 2 + x ^ 2) = 0 := by
+    have hp : (w - x) * (-2 * c0 + (w + x) * (1 - 2 * c1 + w ^ 2 + x ^ 2)) = 0 := by
+      linear_combination Hw - Hx
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hwx
+    · exact hz
+  have Mwy : -2 * c0 + (w + y) * (1 - 2 * c1 + w ^ 2 + y ^ 2) = 0 := by
+    have hp : (w - y) * (-2 * c0 + (w + y) * (1 - 2 * c1 + w ^ 2 + y ^ 2)) = 0 := by
+      linear_combination Hw - Hy
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hwy
+    · exact hz
+  have Mwz : -2 * c0 + (w + z) * (1 - 2 * c1 + w ^ 2 + z ^ 2) = 0 := by
+    have hp : (w - z) * (-2 * c0 + (w + z) * (1 - 2 * c1 + w ^ 2 + z ^ 2)) = 0 := by
+      linear_combination Hw - Hz
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hwz
+    · exact hz
+  -- `N(u,v) := 1 - 2c₁ + w² + wu + wv + u² + uv + v²`: cancelling `(u-v)` from `M`-differences.
+  have Nxy : 1 - 2 * c1 + w ^ 2 + w * x + w * y + x ^ 2 + x * y + y ^ 2 = 0 := by
+    have hp : (x - y) * (1 - 2 * c1 + w ^ 2 + w * x + w * y + x ^ 2 + x * y + y ^ 2) = 0 := by
+      linear_combination Mwx - Mwy
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hxy
+    · exact hz
+  have Nxz : 1 - 2 * c1 + w ^ 2 + w * x + w * z + x ^ 2 + x * z + z ^ 2 = 0 := by
+    have hp : (x - z) * (1 - 2 * c1 + w ^ 2 + w * x + w * z + x ^ 2 + x * z + z ^ 2) = 0 := by
+      linear_combination Mwx - Mwz
+    rcases mul_eq_zero.mp hp with hz | hz
+    · exact absurd (sub_eq_zero.mp hz) hxz
+    · exact hz
+  -- Final cancel of `(y-z)` yields the abscissa sum.
+  have hp : (y - z) * (w + x + y + z) = 0 := by linear_combination Nxy - Nxz
+  rcases mul_eq_zero.mp hp with hz | hz
+  · exact absurd (sub_eq_zero.mp hz) hyz
+  · exact hz
+
+/-- **The uniform witness.** `parabolaConfig n i = (i+1, (i+1)²)`: `n` points on the parabola
+`y = x²` with strictly positive, pairwise-distinct abscissae `1, 2, …, n`. -/
+noncomputable def parabolaConfig (n : ℕ) : PointConfig n :=
+  fun i => !₂[((i : ℕ) : ℝ) + 1, (((i : ℕ) : ℝ) + 1) ^ 2]
+
+@[simp] theorem parabolaConfig_zero (i : Fin n) :
+    parabolaConfig n i 0 = ((i : ℕ) : ℝ) + 1 := by simp [parabolaConfig]
+
+@[simp] theorem parabolaConfig_one (i : Fin n) :
+    parabolaConfig n i 1 = (((i : ℕ) : ℝ) + 1) ^ 2 := by simp [parabolaConfig]
+
+/-- The `parabolaConfig` points are distinct (distinct abscissae). -/
+theorem parabolaConfig_injective : Function.Injective (parabolaConfig n) := by
+  intro i j hij
+  have h0 : parabolaConfig n i 0 = parabolaConfig n j 0 := by rw [hij]
+  simp only [parabolaConfig_zero] at h0
+  have : ((i : ℕ) : ℝ) = ((j : ℕ) : ℝ) := by linarith
+  exact Fin.ext (by exact_mod_cast this)
+
+/-- **No three parabola points are collinear** — for any distinct-abscissa parabola configuration
+the only line through three of the points is the degenerate `(a,b,c) = 0`. -/
+theorem noThreeCollinear_parabolaConfig : NoThreeCollinear (parabolaConfig n) := by
+  intro i j k hcard
+  obtain ⟨hij, hik, hjk⟩ := card_triple_pairwise_ne hcard
+  rintro ⟨a, b, c, hne, hi, hj, hk⟩
+  apply hne
+  simp only [parabolaConfig_zero, parabolaConfig_one] at hi hj hk
+  obtain ⟨ha, hb, hc⟩ :=
+    parabola_collinear_trivial _ _ _ a b c
+      (parabola_x_ne hij) (parabola_x_ne hik) (parabola_x_ne hjk) hi hj hk
+  rw [ha, hb, hc]
+
+/-- **No four parabola points are concyclic** — the four positive abscissae would have to sum to
+`0` (`parabola_concyclic_sum_zero`), impossible since each is `≥ 1`. -/
+theorem noFourConcyclic_parabolaConfig : NoFourConcyclic (parabolaConfig n) := by
+  intro a b c d hcard
+  obtain ⟨hab, hac, had, hbc, hbd, hcd⟩ := card_quad_pairwise_ne hcard
+  rintro ⟨center, r, ha, hb, hc, hd⟩
+  -- Turn each `dist = r` into the squared-coordinate identity `(c₀-xₜ)² + (c₁-xₜ²)² = r²`.
+  have sq : ∀ t : Fin n, dist center (parabolaConfig n t) = r →
+      (center 0 - (((t : ℕ) : ℝ) + 1)) ^ 2 + (center 1 - ((((t : ℕ) : ℝ) + 1) ^ 2)) ^ 2 = r ^ 2 := by
+    intro t ht
+    have h2 : dist center (parabolaConfig n t) ^ 2 = r ^ 2 := by rw [ht]
+    simp only [EuclideanSpace.dist_sq_eq, Fin.sum_univ_two, parabolaConfig_zero,
+      parabolaConfig_one, Real.dist_eq, sq_abs] at h2
+    linear_combination h2
+  have hsum := parabola_concyclic_sum_zero
+    (((a : ℕ) : ℝ) + 1) (((b : ℕ) : ℝ) + 1) (((c : ℕ) : ℝ) + 1) (((d : ℕ) : ℝ) + 1)
+    (center 0) (center 1) (r ^ 2)
+    (parabola_x_ne hab) (parabola_x_ne hbc) (parabola_x_ne hcd)
+    (parabola_x_ne hac) (parabola_x_ne had) (parabola_x_ne hbd)
+    (sq a ha) (sq b hb) (sq c hc) (sq d hd)
+  have hpos : (0 : ℝ) <
+      (((a : ℕ) : ℝ) + 1) + (((b : ℕ) : ℝ) + 1) + (((c : ℕ) : ℝ) + 1) + (((d : ℕ) : ℝ) + 1) := by
+    positivity
+  linarith
+
+/-- **General-position configurations exist for every `n`.** The parabola configuration
+`i ↦ (i+1, (i+1)²)` is injective, has no three collinear (strict convexity), and no four
+concyclic (positive abscissae cannot sum to `0`). This resolves the constructive existence
+question for all `n`, superseding the concrete `n ≤ 4` witnesses above. -/
+theorem exists_inGeneralPosition (n : ℕ) : ∃ P : PointConfig n, InGeneralPosition P :=
+  ⟨parabolaConfig n, parabolaConfig_injective, noThreeCollinear_parabolaConfig,
+    noFourConcyclic_parabolaConfig⟩
+
+/-- **`h n` is a genuinely attained minimum for every `n`.** Because a general-position
+configuration exists (`exists_inGeneralPosition`), the defining set of `h n` is nonempty, so
+`Nat.sInf_mem` gives a witness `P` in general position with `numDistinctDistances P = h n` — the
+minimum is realized, never the `sInf ∅ = 0` junk value. -/
+theorem h_attained (n : ℕ) :
+    ∃ P : PointConfig n, InGeneralPosition P ∧ numDistinctDistances P = h n := by
+  have hne : {numDistinctDistances P | (P : PointConfig n) (_ : InGeneralPosition P)}.Nonempty :=
+    ⟨numDistinctDistances (parabolaConfig n), parabolaConfig n,
+      ⟨parabolaConfig_injective, noThreeCollinear_parabolaConfig, noFourConcyclic_parabolaConfig⟩,
+      rfl⟩
+  obtain ⟨P, hgp, hval⟩ := Nat.sInf_mem hne
+  exact ⟨P, hgp, hval⟩
 
 end Erdos98WIP01
