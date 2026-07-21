@@ -170,6 +170,14 @@
       "endLine": 364,
       "summary": "Proves `symmetric_lll_complete`: given $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition and the avoidance positivity hold. Combines `threshold_satisfies_lll` and `symmetric_lll_avoidance`.",
       "mathContext": "The conclusion: $\\Pr[\\cap_i \\bar{A}_i] \\geq \\prod_i (1 - x_i) = (d/(d+1))^n > 0$, so a satisfying assignment exists. This is the complete formal statement of the symmetric Lovász Local Lemma."
+    },
+    {
+      "id": "threshold-monotonicity",
+      "title": "Threshold Monotonicity",
+      "startLine": 365,
+      "endLine": 471,
+      "summary": "The file's PART XI block: lllThreshold_mul_succ (bridge identity (d+1)·T(d) = (d/(d+1))ᵈ, the symmetric avoidance-product form), threshold_mono_key (the private arithmetic kernel (d+1)^{2(d+1)} ≤ dᵈ·(d+2)^{d+2}), lllThreshold_succ_le (T(d+1) ≤ T(d): higher-degree dependency graphs get a smaller per-event probability budget, subsuming T(d) ≤ 1/4), and lllThreshold_antitone (the full ≤-chain T(d) ≤ T(c) for 1 ≤ c ≤ d, by induction on the gap).",
+      "mathContext": "$T(d)=\\tfrac{d^d}{(d+1)^{d+1}}$ is antitone: $(d+1)T(d)=(d/(d+1))^d$ and $T(d+1)\\le T(d)$, so $T(d)\\le T(1)=\\tfrac14$."
     }
   ],
   "crossReferences": [
