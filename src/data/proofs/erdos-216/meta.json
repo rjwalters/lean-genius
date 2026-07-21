@@ -118,7 +118,7 @@
       "title": "Empty Convex Polygons",
       "summary": "Axiomatizes IsEmptyConvexKGon — a convex k-gon whose interior contains no other points of S — since formalizing the interior of a convex hull requires substantial geometric infrastructure. Defines ContainsEmptyKGon as the existential wrapper.",
       "startLine": 67,
-      "endLine": 78,
+      "endLine": 79,
       "mathContext": "Axiomatizes IsEmptyConvexKGon — a convex k-gon whose interior contains no other points of S — since formalizing the interior of a convex hull requires substantial geometric infrastructure. Defines ContainsEmptyKGon as the existential wrapper."
     },
     {
@@ -166,7 +166,7 @@
       "title": "Connection to Happy Ending Problem",
       "summary": "Defines happyEnding (g'(k)) for the non-empty variant via Nat.find, and states the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 as the predicate erdos_szekeres_conjecture. (No existence or monotonicity theorem is declared here.)",
       "startLine": 159,
-      "endLine": 173,
+      "endLine": 174,
       "mathContext": "Defines happyEnding (g'(k)) for the non-empty variant via Nat.find, and states the Erdős-Szekeres conjecture g'(k) = 2^(k−2)+1 as the predicate erdos_szekeres_conjecture. (No existence or monotonicity theorem is declared here.)"
     },
     {
