@@ -1,5 +1,58 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=2 sub-case (60°-rhombus)
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — the `k = 2` geometric sub-case of
+the degree-3 exclusion proved, axiom-free. **Docker-verified** `Proofs.Erdos98WIP01` via
+`./proofs/scripts/docker-build.sh` (8577 jobs, "Build succeeded", 0 `error:`, only pre-existing
+deprecation / unused-simp-arg warnings). `grep -c '^axiom '` = 0, `grep -c sorry` = 0, no
+`native_decide` (the single `native_decide` grep hit is the docstring text "no `native_decide`").
+Tactics used (`set`/`rw`/`simp only`/`linarith`/`nlinarith`/`positivity`/`linear_combination`/
+`fin_cases`/`omega`/`abel`) are all axiom-clean, so the axiom footprint matches the k=0 twin
+`[propext, Classical.choice, Quot.sound]`.
+
+### What I did
+Attacked the `k = 2` sub-case (exactly two of the three neighbour pairs at the SHORT distance
+`a`, one at `b`) of "rule out short-degree 3". `{v, y, x, z}` is a 60°-rhombus (two equilateral
+triangles of side `a` glued on diagonal `v x`).
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean`, +1 theorem, before `end`):
+
+- **`degree_three_rhombus_impossible`** (axiom-free, coordinate-free, `set_option
+  maxHeartbeats 800000`): 5 points `v,x,y,z,w` with `dist v {x,y,z}=a`, `dist x y = dist x z = a`,
+  `dist y z = b`, `dist v w = b`, and `dist w {x,y,z} ∈ {a,b}` — then `False`.
+
+**Proof mechanism** (mirrors the k=0 twin, but different algebra):
+1. Edge vectors `uⱼ=j−v`. Inner products: `⟪uₓ,u_y⟫=⟪uₓ,u_z⟫=a²/2` (dist `a`),
+   `⟪u_y,u_z⟫=a²−b²/2` (dist `b`).
+2. Three vectors in ℝ² are dependent; solving the Gram system (independence ⟹ `g₁=g₂`,
+   `g₀=−g₁`, then `(3a²−b²)g₁=0`) forces **`b²=3a²`** (`LinearIndependent.fintype_card_le_finrank`
+   + `omega`).
+3. With `b²=3a²`: `‖uₓ−u_y−u_z‖²=3a²−b²=0`, so **`uₓ=u_y+u_z`** (rhombus diagonal relation).
+4. `⟪u_w, uₓ−u_y−u_z⟫=0` gives `dist(w,y)²+dist(w,z)²=4a²+dist(w,x)²`; each squared distance
+   `∈{a²,3a²}`, so LHS`∈{2a²,4a²,6a²}`, RHS`∈{5a²,7a²}` — disjoint (8-way `rcases` + `nlinarith`).
+
+Numerically pre-verified (sympy/numpy): rhombus relation holds and NO fifth point `w` at
+`dist b` from `v` has all three distances to `x,y,z` in `{a,b}`.
+
+### Degree-3 exclusion status
+- `k=3` DONE (`no_four_equidistant_indices`), `k=0` DONE (`degree_three_equilateral_impossible`),
+  **`k=2` DONE this session** (`degree_three_rhombus_impossible`). **Only `k=1` remains.**
+
+### Exact remaining gap (for next iteration, cold)
+`k=1`: exactly one `a`-edge among neighbour pairs (`dist x y = a`, `dist x z = dist y z = b`).
+Gram is DIFFERENT: `⟪uₓ,u_y⟫=a²/2`, `⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2`, `det Gram = 0` ⟹
+`(a²−b²/2)²=¾a⁴` ⟹ **`b²=(2±√3)a²`** (verified numerically — both branches realizable), NOT
+`b²=3a²`. So k=1 is a genuine two-branch case with a quadratic-irrational `b²`; likely needs
+`nlinarith` on the `(a²−b²/2)²=¾a⁴` relation rather than a clean `b²=3a²` substitution.
+
+### Infra gotcha (recurred this session)
+A background rebase/janitor **reset my local branch to `origin/…` mid-session** (HEAD@{2}
+`reset: moving to origin/research/erdos98-wip01-h5-lb`), wiping my just-made commit AND the
+working file (docker build had already succeeded on the edited tree). Recovered via
+`git reset --hard <lost-sha>` from reflog, then **pushed immediately**. Lesson (again): commit
+AND push right after each research edit; do not leave a local-only commit across a build cycle.
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3: degree-3 exclusion, k=0 sub-case (equilateral neighbour triangle)
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — one geometric sub-case of the

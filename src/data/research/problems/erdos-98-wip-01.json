@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: h5>=3 degree-3 exclusion advanced — k=0 sub-case (equilateral neighbour triangle) proved axiom-free (degree_three_equilateral_impossible); k=1,k=2 sub-cases remain, then 2-regularity + pentagon-concyclic endgame. Bounds still 2 <= h 5 <= 3.",
+    "progressSummary": "PROGRESS: h5>=3 degree-3 exclusion advanced — k=0 (equilateral, degree_three_equilateral_impossible) AND k=2 (60°-rhombus, degree_three_rhombus_impossible) sub-cases proved axiom-free. Only k=1 remains (Gram forces b²=(2±√3)a², two-branch), then 2-regularity + pentagon-concyclic endgame. Bounds still 2 <= h 5 <= 3.",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -85,7 +85,8 @@
       "two_distance_near_degree_bounds (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 has 1 ≤ (short-distance degree) ≤ 3 at every vertex. Axiom-free.",
       "even_sum_symm_degree (Erdos98WIP01.lean): ∑_i #{j≠i : r i j} is Even for any symmetric irreflexive DecidableRel r on a Fintype — handshaking lemma routed through Mathlib SimpleGraph.sum_degrees_eq_twice_card_edges (2·#edges). Axiom-free, host-verified v4.31.",
       "two_distance_exists_degree_two (Erdos98WIP01.lean): general-position 2-distance PointConfig 5 ⟹ ∃ vertex with exactly 2 short-distance neighbours. Combines two_distance_near_degree_bounds (degrees∈{1,2,3}) + even_sum_symm_degree parity + Fin.sum_univ_five/omega. Axiom-free, host-verified v4.31.",
-      "degree_three_equilateral_impossible (Erdos98WIP01.lean): axiom-free coordinate-free lemma ruling out the k=0 sub-case (equilateral neighbour triangle) of a short-degree-3 vertex in a 2-distance 5-set; host-verified v4.31, #print axioms = [propext, Classical.choice, Quot.sound]"
+      "degree_three_equilateral_impossible (Erdos98WIP01.lean): axiom-free coordinate-free lemma ruling out the k=0 sub-case (equilateral neighbour triangle) of a short-degree-3 vertex in a 2-distance 5-set; host-verified v4.31, #print axioms = [propext, Classical.choice, Quot.sound]",
+      "degree_three_rhombus_impossible (Erdos98WIP01.lean, axiom-free): k=2 sub-case of short-degree-3 exclusion — v with neighbours x,y,z at dist a, two neighbour pairs at a (60°-rhombus) + one at b, fifth point w at dist b, dist(w,·)∈{a,b} ⟹ False. Gram forces b²=3a², rhombus relation uₓ=u_y+u_z, then dist(w,y)²+dist(w,z)²=4a²+dist(w,x)² has no {a²,3a²} solution."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -123,18 +124,20 @@
       "Handshake parity obstructs a uniform-odd short-distance degree sequence: for a general-position 2-distance 5-set the short-degrees d_a(i) lie in {1,2,3} and sum to an even number (each unordered a-pair counted twice), so a sum of five odd numbers being odd forces at least one vertex to have EXACTLY 2 short-distance neighbours (and 2 long). First structural pin toward the 2-regular pentagon C5.",
       "h5>=3 degree-3 exclusion splits by k=#{a-edges among the 3 neighbour pairs of a degree-3 vertex}: k=3 done (no_four_equidistant_indices, regular tetrahedron in R^2), k=0 done this session (degree_three_equilateral_impossible), k=1 & k=2 remain",
       "The k=0 sub-case is a genuinely 5-point/global obstruction: {v,x,y,z} (triangle + circumcentre) alone is realizable and NOT concyclic (v is the centre, not on the circumcircle), so the contradiction requires the fifth point w — confirms pure graph/local arguments cannot force C5",
-      "Degree-3 exclusion mechanism: edge vectors u_x,u_y,u_z (norm a, pairwise inner a^2-b^2/2) in EuclideanSpace R (Fin 2) cannot be independent; solving the Gram system forces b^2=3a^2, then ||u_x+u_y+u_z||^2=9a^2-3b^2=0 gives u_x+u_y+u_z=0 (circumcentre=centroid), and <u_w,sum>=0 contradicts each <u_w,u_j>=(b^2+a^2-dist(w,j)^2)/2 being strictly positive"
+      "Degree-3 exclusion mechanism: edge vectors u_x,u_y,u_z (norm a, pairwise inner a^2-b^2/2) in EuclideanSpace R (Fin 2) cannot be independent; solving the Gram system forces b^2=3a^2, then ||u_x+u_y+u_z||^2=9a^2-3b^2=0 gives u_x+u_y+u_z=0 (circumcentre=centroid), and <u_w,sum>=0 contradicts each <u_w,u_j>=(b^2+a^2-dist(w,j)^2)/2 being strictly positive",
+      "k=2 degree-3 sub-case: Gram forces b²=3a² and the rhombus diagonal relation uₓ=u_y+u_z (circumcentre-of-two-glued-equilateral-triangles); pairing with u_w gives a discrete no-solution contradiction {2,4,6}a² vs {5,7}a². Genuinely 5-point: {v,x,y,z} rhombus alone is realizable.",
+      "k=1 degree-3 sub-case has a DIFFERENT Gram: ⟪uₓ,u_y⟫=a²/2, ⟪uₓ,u_z⟫=⟪u_y,u_z⟫=a²−b²/2, det=0 ⟹ (a²−b²/2)²=¾a⁴ ⟹ b²=(2±√3)a² (both branches realizable, verified numerically), NOT b²=3a². Two-branch quadratic-irrational case, harder than k=0/k=2."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3."
     ],
     "nextSteps": [
+      "Prove k=1 sub-case (degree_three_k1_impossible): dist x y=a, dist x z=dist y z=b; b²=(2±√3)a² two-branch; extract linear relation among uₓ,u_y,u_z per branch, contradict on u_w inner products — likely nlinarith with (a²−b²/2)²=¾a⁴.",
       "Close h 5 ≥ 3: prove pentagon rigidity — a general-position 2-distance PointConfig 5 whose short-distance graph is C₅ is the regular pentagon, whose 5 vertices are concyclic, contradicting NoFourConcyclic. Needs coordinate geometry (equilateral+equidiagonal ⇒ regular).",
       "Alternatively enumerate the short-distance graph via two_distance_near_degree_bounds + no_four_equidistant_indices (min-deg≥1, max-deg≤3, K₄-free graph and complement on 5 vertices ⇒ C₅), then apply pentagon rigidity to the single surviving case.",
       "Abstract the Gram/dimension argument: equilateral set in ℝ^d has ≤ d+1 points (generalizes no_four_mutually_equidistant via ∑-of-inner-products, no determinant needed).",
       "Upgrade the single degree-2 vertex to FULL 2-regularity: rule out short-degree 3 (equiv. long-degree 1 by a↔b symmetry) using geometry — 3 concyclic short-neighbours on a circle about the vertex plus the two-distance constraint. Pure graph theory (degrees{1,2,3}, both K4-free) does NOT force C5; the extra geometric (no-3-collinear / no-4-concyclic) constraints are essential.",
       "After 2-regularity: 2-regular graph on Fin 5 = single 5-cycle C5 (finite/decidable graph fact); then C5 two-distance realisation ⟹ regular pentagon ⟹ 5 concyclic points ⟹ contradicts NoFourConcyclic ⟹ h 5 ≥ 3.",
-      "Prove k=2 sub-case of degree-3 exclusion: 60-degree rhombus {v,x,y,z} (two a-edges, one b-edge among neighbours) forces b=a*sqrt3; show fifth point w has no consistent position via the same Gram-system inner-product method",
       "Prove k=1 sub-case, then combine k=0,1,2,3 => no short-degree-3 vertex; by a<->b symmetry exclude b-degree-3 too => all a-degrees=2 => 2-regular => C5 => regular pentagon => 5 concyclic => contradicts NoFourConcyclic => h 5 >= 3"
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
