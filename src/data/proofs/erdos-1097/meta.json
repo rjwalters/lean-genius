@@ -108,23 +108,23 @@
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 310,
-      "endLine": 337,
-      "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm).",
+      "endLine": 359,
+      "summary": "Axiomatizes four lower bounds and derives two of them explicitly: Erdős-Spencer (erdos_spencer_lower, n^{3/2} probabilistic) and Lemm (lemm_lower, n^{1.778} axiom), from which erdos_ruzsa_explicit (n^{1+c}) and alphaevolve_improvement (exponent > 1.77898) are proved as consequences.",
       "mathContext": "Erdős-Spencer: $f(n) \\geq c n^{3/2}$ (probabilistic). Erdős-Ruzsa: $f(n) \\geq n^{1+c}$ (explicit). Lemm: $f(n) \\geq n^{1.778}$ (best known). AlphaEvolve: exponent $> 1.77898$ (marginal improvement)."
     },
     {
       "id": "bourgain",
       "title": "Bourgain's Sums-Differences Equivalence",
-      "startLine": 338,
-      "endLine": 365,
-      "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence theorem connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent.",
+      "startLine": 360,
+      "endLine": 387,
+      "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence (chan_equivalence axiom) connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent.",
       "mathContext": "Bourgain: $\\text{RS}(A) = \\{a_1 + a_2 : a_1 \\neq a_2 \\in A\\}$, $\\text{RD}(A) = \\{a_1 - a_2 : a_1 \\neq a_2\\}$. Chan's equivalence: $\\sup\\{\\alpha : f(n) \\geq n^\\alpha\\} = \\sup\\{\\alpha : |\\text{RS}(A) \\cup \\text{RD}(A)| \\geq n^\\alpha\\}$."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 366,
-      "endLine": 374,
+      "startLine": 388,
+      "endLine": 396,
       "summary": "Proves current_bounds_summary: 1.778 < c* ≤ 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved.",
       "mathContext": "$1.778 < c^* \\leq 11/6$ where $c^* = \\sup\\{\\alpha : f(n) \\geq n^\\alpha\\}$. Proved from `lemm_lower` and `katz_tao_upper` axioms."
     }
