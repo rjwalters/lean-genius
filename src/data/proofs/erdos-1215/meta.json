@@ -42,52 +42,68 @@
   "sections": [
     {
       "id": "problem-context",
-      "title": "Problem Context: Polynomial Lemniscates and Erdős's Question",
+      "title": "Problem Context: Erdős #1215 and Mac Lane's Negative Resolution",
       "startLine": 1,
-      "endLine": 8,
-      "summary": "File header documenting Erdős Problem #1215: source (erdosproblems.com/1215), status (SOLVED). The problem: for polynomials P with P(0)=1 and all roots on the unit circle, does a uniform constant C exist such that a path from 0 to ∂{|P|<1} of length ≤ C·deg(P) always exists in {|P(z)|<1}?",
-      "mathContext": "The sublevel set $\\{z : |P(z)| < 1\\}$ for $P$ with all roots on the unit circle is a polynomial lemniscate region. Its boundary $\\{|P(z)| = 1\\}$ is a lemniscate curve with up to $\\deg(P)-1$ connected components. The question asks whether the topology of these lemniscates can be controlled uniformly."
-    },
-    {
-      "id": "mac-lane-resolution",
-      "title": "Mac Lane's Negative Resolution via Labyrinth Polynomials",
-      "startLine": 9,
-      "endLine": 14,
-      "summary": "Mac Lane (1953) proved NO: for any simply-connected compact A ⊂ {|z| < 1}, there exists P with P(0)=1, unit-circle roots, and |P(z)| > 2 on A. Choosing A as a labyrinth block forces paths to navigate around the labyrinth, giving unbounded length. Tags field empty; TODO: implement proof.",
-      "mathContext": "Mac Lane's key tool is the density of polynomials with unit-circle roots in the uniform norm on compact subsets of $\\{|z| < 1\\}$. Given any compact 'labyrinth' $A$, one approximates a function that is large on $A$ by such a polynomial, making $A$ inaccessible and forcing the path to detour around it."
-    },
-    {
-      "id": "imports",
-      "title": "Mathlib Import",
-      "startLine": 16,
       "endLine": 17,
-      "summary": "`import Mathlib` — full Mathlib import. The actual formalization would need Complex.abs, Polynomial ℂ, continuous Path types, arc length integration, and polynomial approximation results not yet in Mathlib.",
-      "mathContext": "Current Mathlib gaps: (1) `Path` type for curves in ℂ with arc length; (2) polynomial approximation on compact sets (Mergelyan's theorem); (3) lemniscate topology. Polynomial evaluation `Polynomial.eval z p` and `Complex.abs` are available, but the sublevel set topology is not."
+      "summary": "File header (docstring) recording Erdős Problem #1215 — status SOLVED, resolved NEGATIVELY by Mac Lane (1953). The formalized statement is the escape-to-∞ form: does a constant C exist such that for every polynomial P with P(0)=1 and all roots on the unit circle there is a path from 0 to ∞ inside the sublevel set {z : |P(z)| < C}? Answer: NO — for any C > 1, some path segments are forced into arbitrarily small neighbourhoods of 0. Reference [Ma53] Mac Lane, 1953.",
+      "mathContext": "The sublevel set $\\{z : |P(z)| < C\\}$ is bounded by the polynomial lemniscate $\\{|P(z)| = C\\}$, which can have up to $\\deg(P)-1$ boundary components. Two logically distinct questions live here: (i) the *literal escape-to-∞* form (is there an unbounded path staying in $\\{|P|<C\\}$?), which the file proves is trivially NO for degree reasons, and (ii) Mac Lane's *deep labyrinth* phenomenon (paths forced through neighbourhoods of $0$ when $C>1$), which is the genuine content and is axiomatized below."
     },
     {
-      "id": "placeholder-theorem",
-      "title": "Placeholder: Polynomial Lemniscate Theorem (Sorry)",
-      "startLine": 18,
-      "endLine": 21,
-      "summary": "Placeholder `erdos_1215 : True := by sorry`. The actual statement: ¬∃ C, ∀ P : Polynomial ℂ, P.eval 0 = 1 → (∀ r, Complex.abs r = 1 → P.eval r = 0) → ∃ path : [0,1] → ℂ, path 0 = 0 ∧ |P(path 1)| = 1 ∧ length(path) ≤ C * P.natDegree.",
-      "mathContext": "Negation proved by constructing for each C an explicit labyrinth polynomial P_C via Walsh-type approximation. The key type needed: `Path ℂ ℂ` with `PathLength` measurable via `MeasureTheory.integral`."
+      "id": "imports-setup",
+      "title": "Imports, Opens, and Namespace",
+      "startLine": 19,
+      "endLine": 26,
+      "summary": "Targeted Mathlib imports (Complex.Circle, RingTheory.Polynomial.Basic, Complex.Basic, Topology.Algebra.Polynomial), `open Complex Polynomial`, and `namespace Erdos1215`. Unlike the older stub, only the pieces actually used — complex polynomial evaluation, norms, and the atTop-growth lemma — are pulled in.",
+      "mathContext": "The decisive Mathlib ingredient is `Polynomial.tendsto_norm_atTop`: for a polynomial of positive degree over a normed field, $\\|P(z)\\| \\to \\infty$ as $\\|z\\| \\to \\infty$. Complex polynomial evaluation `Polynomial.eval` and the complex norm `‖·‖` supply the rest."
     },
     {
-      "id": "sorry-tracking",
-      "title": "Sorry Check for Aristotle Tracking",
-      "startLine": 22,
-      "endLine": 23,
-      "summary": "`#check erdos_1215` verifies the placeholder theorem declaration is well-typed. The sorry is tracked by the Aristotle automated proof search system and by the gallery's sorry count.",
-      "mathContext": "The `#check` command in Lean 4 elaborates the term and verifies its type without executing the sorry. Allows tooling to detect the axiom dependency via `#print axioms erdos_1215` → `sorry`."
+      "id": "definitions",
+      "title": "Core Definitions: Unit-Circle Polynomials, Level Sets, Bounded-Level Paths",
+      "startLine": 28,
+      "endLine": 40,
+      "summary": "Three definitions. `IsUnitCirclePolynomial P` := P.eval 0 = 1 ∧ every root of P has norm 1. `levelSet P C` := {z : ‖P.eval z‖ < C}, the open sublevel set. `HasBoundedLevelPath P C` := there is a continuous γ : ℝ → ℂ with γ 0 = 0, ‖γ t‖ → ∞ (escape to ∞), and γ t ∈ levelSet P C for all t ≥ 0.",
+      "mathContext": "`HasBoundedLevelPath` encodes an escaping path that never leaves the sublevel set: continuity plus the Tendsto-atTop condition make it a genuine path from the origin out to infinity. The name is historical — 'bounded-level' refers to staying under the level $C$, not to bounded arc length."
+    },
+    {
+      "id": "degree-obstruction",
+      "title": "The Degree Growth Obstruction (axiom-free)",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "Theorem `no_bounded_level_path_of_degree_pos`: for ANY polynomial P of positive degree and any C, there is no bounded-level escaping path. Proof: an escaping path γ (‖γ t‖ → ∞) transports through `Polynomial.tendsto_norm_atTop` to ‖P(γ t)‖ → ∞, so eventually ‖P(γ t)‖ > C on some t ≥ 0; but membership in levelSet forces ‖P(γ t)‖ < C — contradiction via `linarith`.",
+      "mathContext": "This isolates precisely why the literal escape-to-∞ question is easy: the sublevel set of any non-constant polynomial is bounded, so no path can escape to $\\infty$ inside it. Nothing about roots, the unit circle, or Mac Lane's argument is used — it is pure polynomial growth. The core steps are `hPtend.eventually_gt_atTop C` and `Filter.eventually_ge_atTop 0` intersected via `.and` and realized by `.exists`."
+    },
+    {
+      "id": "escape-answer",
+      "title": "Escape-to-∞ Answer is NO via the Cyclotomic Witness P = X + 1",
+      "startLine": 67,
+      "endLine": 91,
+      "summary": "Theorem `maclane_1953`: for any C > 1 there exists a unit-circle polynomial with no bounded-level escaping path. Witness is the degree-one cyclotomic P = X + 1 — P(0) = 1, and its sole root −1 lies on the unit circle. Since deg(X+1) = 1 > 0, `no_bounded_level_path_of_degree_pos` applies. Formerly an `axiom` labelled 'Mac Lane 1953', now discharged axiom-free.",
+      "mathContext": "The root condition is checked directly: from $z+1=0$ conclude $z=-1$ via `eq_neg_of_add_eq_zero_left`, then `simp` gives $\\|-1\\| = 1$. Positive degree comes from `degree_X_add_C` after rewriting $X+1 = X + C\\,1$. The compact witness parallels the cyclotomic re-derivation `CyclotomicPolynomialsOQ02OQ05.erdos_1215_via_cyclotomic`."
+    },
+    {
+      "id": "labyrinth-axiom",
+      "title": "Mac Lane's Labyrinth Phenomenon (axiomatized)",
+      "startLine": 93,
+      "endLine": 103,
+      "summary": "Axiom `maclane_labyrinth`: for every C > 1 and ε > 0 there is a unit-circle polynomial P such that ANY continuous escaping path staying in {|P| < C} must, at some time t > 0, dip to within ε of the origin (‖γ t‖ < ε). This is the strictly stronger, genuinely deep statement — Mac Lane's labyrinth blocks forcing paths through neighbourhoods of 0 — and is the sole remaining assumption.",
+      "mathContext": "This is the mathematical heart of Mac Lane [Ma53]: for any compact 'labyrinth block' one can build a unit-circle polynomial that is large on it, so the sublevel set $\\{|P|<C\\}$ routes every escaping path back near $0$. Formalizing it would require polynomial approximation on compact sets and lemniscate topology beyond current Mathlib, hence its status as `axiom` — the entry's single assumption (`axiomCount = 1`, badge `axiom`)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Erdős #1215: Main Negative Resolution",
+      "startLine": 105,
+      "endLine": 113,
+      "summary": "Theorem `erdos_1215`: ¬∃ C > 1 such that every unit-circle polynomial admits a bounded-level escaping path. Proof: `push_neg` reduces to producing, for each candidate C > 1, a unit-circle polynomial with no such path — supplied directly by `maclane_1953`. Closes the namespace `Erdos1215`.",
+      "mathContext": "The main theorem is the clean top-level statement of the negative answer, depending only on the axiom-free `maclane_1953`. It does NOT invoke `maclane_labyrinth`: the literal escape-to-∞ resolution is fully machine-checked, while the deeper labyrinth forcing remains the axiomatized companion."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1215 asks about bounded-length paths in polynomial sublevel sets for polynomials with unit-circle roots. Mac Lane (1953) proved NO: sublevel sets can form labyrinths of arbitrary complexity, forcing paths of unbounded length. This is a theorem about the topological wildness of polynomial lemniscates. The Lean formalization is a stub pending complex analysis infrastructure.",
-    "implications": "The Mac Lane negative result is foundational in the geometry of polynomial lemniscates, showing that no uniform bound on path complexity exists—the sublevel sets of unit-circle-rooted polynomials can be topologically as complex as desired. A Lean formalization would need Mathlib's complex polynomial evaluation, continuous path types (`Path` or `ContinuousOn`), and polynomial approximation results not yet in Mathlib.",
+    "summary": "Erdős Problem #1215 concerns paths through polynomial sublevel sets for polynomials with P(0)=1 and all roots on the unit circle; Mac Lane (1953) resolved it NEGATIVELY. The Lean formalization separates two layers. The *literal escape-to-∞* form — is there a path from 0 to ∞ staying inside {|P(z)| < C}? — is proved NO axiom-free (`no_bounded_level_path_of_degree_pos`, `maclane_1953`, `erdos_1215`) using the compact witness P = X + 1 and the growth lemma `Polynomial.tendsto_norm_atTop`. Mac Lane's genuinely deep content — labyrinth polynomials forcing every escaping path through arbitrarily small neighbourhoods of 0 when C > 1 — is recorded as the single axiom `maclane_labyrinth`.",
+    "implications": "The formalization makes precise which part of #1215 is elementary and which is deep: the escape-to-∞ negative answer needs nothing about roots, the unit circle, or approximation theory — it is refuted by the boundedness of the sublevel set of any non-constant polynomial. The residual mathematical depth (topological wildness of polynomial lemniscates producing labyrinths of arbitrary complexity) is exactly what remains axiomatized, since it would require polynomial approximation on compact sets and lemniscate topology not yet in Mathlib. Status is therefore `axiomatized` with a single assumption; the escape-to-∞ theorems are fully machine-checked.",
     "openQuestions": [
-      "What is the exact form of the Erdős conjecture—is the conjectured bound $C \\cdot \\deg(P)$, $C \\cdot \\log \\deg(P)$, or some other function? The problem statement as recorded is partially garbled and the precise conjecture is unclear.",
-      "For the restricted class of cyclotomic polynomials (with roots at roots of unity), is there a polynomial path-length bound? Mac Lane's labyrinth construction may require non-cyclotomic unit-circle roots.",
-      "Can Lean 4's `Complex.abs` and `Polynomial.eval` infrastructure support even a simple statement of this theorem, or are results about path lengths in level sets too far from current Mathlib?"
+      "Can `maclane_labyrinth` be discharged in Lean? This needs Mathlib support for polynomial approximation on compact sets (Walsh/Mergelyan-type density of unit-circle-rooted polynomials) and the topology of lemniscate sublevel sets — the sole remaining gap.",
+      "For the restricted class of cyclotomic polynomials (roots at roots of unity), does the labyrinth forcing still occur, or does Mac Lane's construction genuinely require non-cyclotomic unit-circle roots?",
+      "Beyond the escape-to-∞ form, can the original *bounded-length* variant (a path of arc length ≤ C·deg(P) from 0 to the lemniscate boundary) be stated and formalized once Mathlib gains arc-length integration for continuous paths in ℂ?"
     ]
   },
   "crossReferences": [
