@@ -48,42 +48,42 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 24,
       "summary": "Documents the purpose of the file: computational verification of the Rogers-Ramanujan first and second identities for small $n$. Explains the relationship to the parent file (OQ-01) and the significance of computational verification for axiomatized identities."
     },
     {
       "id": "imports",
-      "title": "Imports and Namespace",
-      "startLine": 22,
-      "endLine": 28,
-      "summary": "Imports the parent file `PartitionTheoremOQ01` (which provides the decidable partition set definitions) and `Mathlib.Tactic`. Opens the `RogersRamanujan` namespace to access `rr1GapPartitions`, `rr1Mod5Partitions`, etc."
+      "title": "Namespace, Imports, and the native_decide Bridge Note",
+      "startLine": 25,
+      "endLine": 46,
+      "summary": "Opens the `RogersRamanujan` namespace to access `rr1GapPartitions`, `rr1Mod5Partitions`, etc. Followed by a v4.31-migration note explaining a key subtlety: the noncomputable `rr*Mod5Partitions` (built via `partAllModIn`/`Multiset.toList`) cannot be fed to `native_decide` directly, so the proofs rewrite through the parent file's decidable mirrors (`PartitionDecidable.rr1Gap/rr1Mod5/...`) and their bridge equalities (`rr1Gap_eq_rr1GapPartitions`, etc.) before invoking `native_decide` — keeping the theorem statements in the noncomputable API while discharging them computationally."
     },
     {
       "id": "rr1-verification",
       "title": "Rogers-Ramanujan First Identity Verification ($n \\leq 8$)",
-      "startLine": 29,
-      "endLine": 39,
+      "startLine": 48,
+      "endLine": 67,
       "summary": "Nine theorems `rr1_n0` through `rr1_n8`, each proving $|\\text{rr1GapPartitions}(n)| = |\\text{rr1Mod5Partitions}(n)|$ for a specific $n$ via `native_decide`. Confirms that gap $\\geq 2$ partitions and mod-5 residue $\\{1,4\\}$ partitions have equal count for each $n = 0, \\ldots, 8$."
     },
     {
       "id": "rr2-verification",
       "title": "Rogers-Ramanujan Second Identity Verification ($n \\leq 8$)",
-      "startLine": 41,
-      "endLine": 51,
+      "startLine": 69,
+      "endLine": 87,
       "summary": "Nine theorems `rr2_n0` through `rr2_n8`, each proving $|\\text{rr2GapPartitions}(n)| = |\\text{rr2Mod5Partitions}(n)|$ via `native_decide`. These verify the second identity: partitions with gap $\\geq 2$ and smallest part $\\geq 2$ are equinumerous with partitions into parts $\\equiv 2, 3 \\pmod{5}$."
     },
     {
       "id": "combined-theorem",
       "title": "Combined Verification Theorem",
-      "startLine": 53,
-      "endLine": 61,
+      "startLine": 90,
+      "endLine": 102,
       "summary": "The main theorem `rr_both_verified_through_8` unifies all 18 individual checks: for every $n \\leq 8$, both RR1 and RR2 hold. Uses `interval_cases n` to case-split on $n \\in \\{0, \\ldots, 8\\}$, then closes each case with a conjunction of two `native_decide` calls."
     },
     {
       "id": "consistency-note",
       "title": "Axiom Consistency Discussion",
-      "startLine": 63,
-      "endLine": 71,
+      "startLine": 104,
+      "endLine": 112,
       "summary": "Documents that the computational checks demonstrate the axioms in the parent file are consistent with computed values. Notes that the general identities require Rogers-Ramanujan generating function machinery ($q$-series identity) beyond what is currently available in Lean/Mathlib."
     }
   ],
