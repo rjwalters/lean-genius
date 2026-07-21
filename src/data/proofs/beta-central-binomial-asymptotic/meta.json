@@ -82,6 +82,27 @@
       "startLine": 138,
       "endLine": 147,
       "summary": "betaIntegral_diag_eq proves Complex.betaIntegral (n+1) (n+1) = (betaDiag n : ℂ) via the parent's betaIntegral_diag_centralBinom, so the real sequence analysed here is literally the value of the Euler Beta integral on the diagonal — the asymptotic therefore describes Complex.betaIntegral itself."
+    },
+    {
+      "id": "diagonal-beta-vanishes",
+      "title": "Vanishing of the Diagonal Beta Value",
+      "startLine": 148,
+      "endLine": 174,
+      "summary": "betaDiag_tendsto_zero shows the diagonal Euler Beta value B(n+1,n+1) = betaDiag n tends to 0 as n → ∞. The proof factors betaDiag n through (2n+1)·C(2n,n), whose reciprocal-type growth 4^n/√(πn) is dominated by the 4^{-n}-type normalization, so the product tends to 0 — the qualitative complement to the sharp asymptotic established just below."
+    },
+    {
+      "id": "central-binomial-stirling",
+      "title": "Sharp Stirling Form of the Central Binomial",
+      "startLine": 175,
+      "endLine": 187,
+      "summary": "centralBinom_div_stirling_tendsto_one packages the central binomial asymptotic in its cleanest ratio form: C(2n,n) / (4^n / √(πn)) → 1, i.e. C(2n,n) ~ 4^n/√(πn). This is the Stirling-normalized statement that downstream Catalan and Beta-value asymptotics all reduce to."
+    },
+    {
+      "id": "catalan-asymptotics",
+      "title": "Catalan Number Asymptotics",
+      "startLine": 188,
+      "endLine": 233,
+      "summary": "catalan_cast rewrites catalan n = C(2n,n)/(n+1); catalan_isEquivalent and catalan_div_stirling_tendsto_one then transport the central-binomial Stirling form through this identity to give catalan n ~ 4^n/((n+1)√(πn)) — equivalently catalan n ~ 4^n/(√π · n^{3/2}) — the classical growth rate of the Catalan numbers, obtained here as a direct corollary of the diagonal Beta asymptotic."
     }
   ],
   "conclusion": {
