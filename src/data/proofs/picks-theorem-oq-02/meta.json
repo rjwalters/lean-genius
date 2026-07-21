@@ -58,39 +58,39 @@
       "id": "definitions",
       "title": "Definitions",
       "startLine": 40,
-      "endLine": 55,
+      "endLine": 51,
       "summary": "Defines onSegment (collinearity + bounds) and segmentPoints (image of {0,...,g} under the parameterization k ↦ (k·(a/g), k·(b/g))).",
       "mathContext": "$\\text{segmentPoints}(a,b) = \\{(k \\cdot a/g, k \\cdot b/g) : k = 0,\\ldots,g\\}$ where $g = \\gcd(a,b)$."
     },
     {
       "id": "soundness",
       "title": "Soundness: Parameterized Points Are on Segment",
-      "startLine": 60,
-      "endLine": 95,
+      "startLine": 52,
+      "endLine": 83,
       "summary": "segmentPoint_on_segment: (k·(a/g), k·(b/g)) satisfies collinearity (via calc with ring) and bounds (k ≤ g gives k·(a/g) ≤ g·(a/g) = a). mem_segmentPoints_on_segment follows.",
       "mathContext": "$k \\cdot (a/g) \\cdot b = k \\cdot (a/g) \\cdot (g \\cdot (b/g)) = k \\cdot (b/g) \\cdot (g \\cdot (a/g)) = k \\cdot (b/g) \\cdot a$."
     },
     {
       "id": "injectivity",
       "title": "Injectivity of the Parameterization",
-      "startLine": 99,
-      "endLine": 120,
+      "startLine": 84,
+      "endLine": 106,
       "summary": "segmentMap_injective: case split on a/g=0 vs a/g>0. When a=0, g=b and b/g=1, use second component. When a/g>0, use first component with Nat.eq_of_mul_eq_mul_right.",
       "mathContext": "Either $a/g > 0$ (use $k_1 \\cdot (a/g) = k_2 \\cdot (a/g) \\Rightarrow k_1 = k_2$) or $a=0$ so $g=b$ and $b/g=1$ (use $k_1 = k_2$)."
     },
     {
       "id": "main",
       "title": "GCD Boundary Formula",
-      "startLine": 124,
-      "endLine": 132,
+      "startLine": 107,
+      "endLine": 123,
       "summary": "card_segmentPoints: when gcd=0 (a=b=0), exactly 1 point. When gcd>0, injectivity gives card = card(range(g+1)) = g+1.",
       "mathContext": "$|\\text{segmentPoints}(a,b)| = \\gcd(a,b) + 1$."
     },
     {
       "id": "completeness",
       "title": "Completeness: All Segment Points Parameterized",
-      "startLine": 138,
-      "endLine": 185,
+      "startLine": 124,
+      "endLine": 186,
       "summary": "onSegment_mem_segmentPoints: three cases. gcd=0: trivial. a=0: k=y works directly. a>0: coprimality argument using Nat.coprime_div_gcd_div_gcd and Nat.Coprime.dvd_of_dvd_mul_right.",
       "mathContext": "From $x \\cdot q = y \\cdot p$ and $\\gcd(p,q)=1$: $p \\mid x \\cdot q$ so $p \\mid x$, giving $x = kp$, $y = kq$, $k \\leq g$."
     },
@@ -98,14 +98,14 @@
       "id": "applications",
       "title": "Special Cases and Concrete Examples",
       "startLine": 187,
-      "endLine": 231,
+      "endLine": 229,
       "summary": "Membership characterization plus special cases: segment_coprime (2 endpoints), segment_diagonal (a+1 points), and three concrete lattice-point counts (segment_4_6 = 3, segment_3_5 = 2, segment_6_9 = 4).",
       "mathContext": "$|\\text{segmentPoints}(a,b)| = \\gcd(a,b) + 1$; concrete evaluations verify the count."
     },
     {
       "id": "pick-boundary-formula",
       "title": "Part VIII: Pick's Boundary Formula",
-      "startLine": 232,
+      "startLine": 230,
       "endLine": 248,
       "summary": "pick_edge_contribution (each edge contributes gcd(|Δx|,|Δy|) to the boundary count) and interior_segment_count (interior lattice points on a segment number gcd(a,b) − 1), assembling the boundary term B of Pick's theorem.",
       "mathContext": "$B = \\sum_i \\gcd(|\\Delta x_i|, |\\Delta y_i|)$, with each edge contributing $\\text{card} - 1 = \\gcd(a,b)$ and $\\gcd(a,b) - 1$ interior points."
