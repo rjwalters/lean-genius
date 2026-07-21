@@ -71,55 +71,55 @@
       "id": "part-ii-cyclic-successor",
       "title": "Part II: The Cyclic Successor Bijection",
       "startLine": 52,
-      "endLine": 60,
+      "endLine": 85,
       "summary": "Defines `cyclicSucc`, the permutation i ↦ (i+1) mod j of Fin j (with explicit inverse i ↦ (i+j−1) mod j), making the cyclic shift a bijection — the key fact that lets the index reordering cancel in the product.",
       "mathContext": "$\\mathrm{cyclicSucc} : \\mathrm{Fin}\\,j \\simeq \\mathrm{Fin}\\,j,\\ i \\mapsto (i+1)\\bmod j$, a cyclic permutation."
     },
     {
       "id": "part-iii-product-identities",
       "title": "Part III: Key Product Identities",
-      "startLine": 61,
-      "endLine": 73,
+      "startLine": 86,
+      "endLine": 98,
       "summary": "Two product lemmas: `prod_perm_eq` (a product over a permuted index equals the original, via Equiv.prod_comp) and `prod_two_pow` (∏ᵢ 2^{mᵢ} = 2^{∑ᵢ mᵢ}).",
       "mathContext": "$\\prod_i f(\\sigma i) = \\prod_i f(i)$ for any permutation $\\sigma$, and $\\prod_i 2^{m_i} = 2^{\\sum_i m_i}$."
     },
     {
       "id": "part-iv-product-equation",
       "title": "Part IV: The Product Equation",
-      "startLine": 74,
-      "endLine": 95,
+      "startLine": 99,
+      "endLine": 121,
       "summary": "The main theorem `cycle_product_equation`: ∏ᵢ(3nᵢ+1) = 2^M·∏ᵢ nᵢ. Proof multiplies the step relations, splits the product (Finset.prod_mul_distrib), then applies the two Part III identities — the cyclic shift bijection reindexes ∏ n_{σ(i)} back to ∏ nᵢ.",
       "mathContext": "$\\prod_i (3 n_i + 1) = \\left(\\prod_i 2^{m_i}\\right)\\left(\\prod_i n_{\\sigma(i)}\\right) = 2^M \\prod_i n_i$."
     },
     {
       "id": "part-v-halving-constraint",
       "title": "Part V: The Halving Constraint",
-      "startLine": 96,
-      "endLine": 145,
+      "startLine": 122,
+      "endLine": 171,
       "summary": "Proves `prod_step_gt` (∏(3nᵢ+1) > 3^j·∏nᵢ for positive nᵢ, by induction on j) and combines it with the product equation to get `halving_constraint`: 2^M > 3^j for every cycle.",
       "mathContext": "Since $3n_i + 1 > 3 n_i$, $\\ \\prod_i(3n_i+1) > 3^j \\prod_i n_i$; with the product equation this forces $2^M > 3^j$."
     },
     {
       "id": "part-vi-no-power-equality",
       "title": "Part VI: No Power Equality",
-      "startLine": 146,
-      "endLine": 163,
+      "startLine": 172,
+      "endLine": 189,
       "summary": "Parity argument: `odd_three_pow` (3^j is odd) and `no_power_eq` (2^M ≠ 3^j for M > 0, since 2^M is even while 3^j is odd).",
       "mathContext": "$3^j \\equiv 1 \\pmod 2$, so for $M \\geq 1$ the even number $2^M$ cannot equal the odd $3^j$."
     },
     {
       "id": "part-vii-min-cycle-length",
       "title": "Part VII: Minimum Cycle Length",
-      "startLine": 164,
-      "endLine": 180,
+      "startLine": 190,
+      "endLine": 206,
       "summary": "Derives the cycle-length lower bound: `two_pow_lt_three_pow` (2^j < 3^j) and `cycle_M_gt_j` (combining 2^M > 3^j with 3^j > 2^j and 2^M ≠ 3^j gives M ≥ j+1).",
       "mathContext": "$2^M > 3^j > 2^j$ together with $2^M \\neq 3^j$ yields $M \\geq j+1$ total halvings."
     },
     {
       "id": "part-viii-connection-oq02",
       "title": "Part VIII: Connection to CollatzCycles.lean (OQ-02)",
-      "startLine": 181,
-      "endLine": 209,
+      "startLine": 207,
+      "endLine": 234,
       "summary": "Recovers the specific small-j results of the companion OQ-02 file as corollaries of the general bound: `min_halvings_j1` through `min_halvings_j4` give the minimum halving counts for j = 1,2,3,4, now uniformly implied by M ≥ j+1.",
       "mathContext": "The cases $j=1,2,3,4$ (min halvings $\\geq j+1$) follow uniformly from `cycle_M_gt_j`, unifying the per-case arguments of CollatzCycles.lean."
     }

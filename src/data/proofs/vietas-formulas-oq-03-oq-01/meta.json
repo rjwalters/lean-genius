@@ -85,55 +85,55 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 26,
+      "endLine": 31,
       "summary": "Module docstring explaining the generalization strategy: derive Newton's identities for arbitrary n variables from Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation. Imports MvPolynomial.Symmetric.NewtonIdentities and opens MvPolynomial, Finset namespaces.",
       "mathContext": "The file proves the general Newton identity $k \\cdot e_k(x) = (-1)^{k+1} \\sum_{a+b=k,\\,a<k} (-1)^a e_a(x) p_b(x)$ for $x : \\text{Fin}\\ n \\to R$ in any commutative ring $R$, by specializing Mathlib's abstract MvPolynomial identity via the evaluation homomorphism aeval."
     },
     {
       "id": "concrete-defs",
       "title": "Concrete Definitions",
-      "startLine": 27,
-      "endLine": 42,
+      "startLine": 32,
+      "endLine": 46,
       "summary": "Defines `powerSum k x = ∑ᵢ (x i)^k` and `elemSymm k x = ∑_{|S|=k} ∏_{i∈S} x i` for functions `x : Fin n → R`.",
       "mathContext": "These are the standard concrete forms of symmetric functions, operating on tuples rather than abstract polynomial rings."
     },
     {
       "id": "eval-bridge",
       "title": "Evaluation Bridge",
-      "startLine": 44,
-      "endLine": 58,
+      "startLine": 47,
+      "endLine": 73,
       "summary": "Proves that `aeval x (psum k) = powerSum k x` and `aeval x (esymm k) = elemSymm k x`. These bridge lemmas connect abstract MvPolynomial identities to concrete computations.",
       "mathContext": "The evaluation homomorphism aeval : MvPolynomial σ R →ₐ[R] R sends X i ↦ x i and preserves all ring operations, so it commutes with sums, products, and powers."
     },
     {
       "id": "general-newton",
       "title": "General Newton's Identities",
-      "startLine": 60,
-      "endLine": 102,
+      "startLine": 74,
+      "endLine": 123,
       "summary": "The main results: newton_identity (elementary symmetric form) and newton_identity_psum (power sum form), both for arbitrary n. Derived from Mathlib's MvPolynomial.mul_esymm_eq_sum via evaluation.",
       "mathContext": "k · eₖ(x) = (-1)^{k+1} · Σ_{a+b=k, a<k} (-1)^a · eₐ(x) · p_b(x). This single theorem subsumes all the individual identities from VietasFormulasOQ03.lean."
     },
     {
       "id": "basic-props",
       "title": "Basic Properties",
-      "startLine": 104,
-      "endLine": 118,
+      "startLine": 124,
+      "endLine": 141,
       "summary": "Elementary properties: e₀ = 1, e₁ = Σxᵢ, p₁ = Σxᵢ, and the first Newton identity p₁ = e₁.",
       "mathContext": "These are the base cases that anchor the Newton recurrence."
     },
     {
       "id": "specializations",
       "title": "Specializations to Small n",
-      "startLine": 120,
-      "endLine": 143,
+      "startLine": 142,
+      "endLine": 167,
       "summary": "Ring-verified specializations for n=2 (p₂ = e₁² − 2e₂), n=3 (p₃ = e₁p₂ − e₂p₁ + 3e₃), and n=4 (p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄), showing consistency with VietasFormulasOQ03.lean.",
       "mathContext": "These concrete identities are the same ones proved case-by-case in the parent file, now available as specializations of the general theorem."
     },
     {
       "id": "vieta-connection",
       "title": "Vieta's Formulas Connection",
-      "startLine": 145,
-      "endLine": 168,
+      "startLine": 168,
+      "endLine": 194,
       "summary": "Vieta product formulas ∏(t − xᵢ) expanded for degrees 2, 3, 4, connecting polynomial coefficients to elementary symmetric polynomials.",
       "mathContext": "Vieta gives coefficients as (−1)^k · eₖ. Newton's identities then recover all power sums from those coefficients."
     }
