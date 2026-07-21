@@ -63,36 +63,36 @@
       "summary": "Module docstring and setup: an **axiom-free** generalization of the four-squares type-decomposition contribution formula to sums of $d = 2k$ squares, framed as the orbit-stabilizer theorem in arithmetic form for the hyperoctahedral group $B_d = S_d \\ltimes (\\mathbb{Z}/2)^d$ of signed permutations. States the target identity $\\mathrm{contribution}(\\text{type}) = 2^{\\text{nonzero}} \\cdot (2k)! / \\prod m_i!$ and opens the `noncomputable` namespace."
     },
     {
+      "id": "group-stabilizer-orders",
       "title": "Group and Stabilizer Orders",
       "startLine": 60,
       "endLine": 79,
-      "description": "Defines the hyperoctahedral group order |B_d| = 2^d · d!, the stabilizer order 2^(d−z) · ∏(m v)! of a representation type, and the contribution 2^z · multinomial.",
-      "summary": "Group and Stabilizer Orders",
-      "id": "group-stabilizer-orders"
+      "summary": "Defines the hyperoctahedral group order $|B_d| = 2^d \\cdot d!$, the stabilizer order $2^{d-z} \\cdot \\prod (m\\,v)!$ of a representation type, and the contribution $2^z \\cdot \\text{multinomial}$.",
+      "mathContext": "$B_d = S_d \\ltimes (\\mathbb{Z}/2)^d$ is the group of signed permutations, with $|B_d| = 2^d\\,d!$. The stabilizer of a type (distinct absolute values with multiplicities $m$ and $z$ nonzero coordinates) is $2^{d-z}\\prod_v (m\\,v)!$: sign flips on the $d-z$ zero coordinates times permutations within equal-value blocks."
     },
     {
+      "id": "orbit-stabilizer-identity",
       "title": "The Orbit-Stabilizer Identity (general dimension)",
       "startLine": 80,
       "endLine": 125,
-      "description": "Proves contribution · stabilizerOrder = 2^d · d! for any dimension d via Nat.multinomial_spec, plus the divisibility stab ∣ order and the quotient form contribution = order / stab.",
-      "summary": "The Orbit-Stabilizer Identity (general dimension)",
-      "id": "orbit-stabilizer-identity"
+      "summary": "Proves $\\text{contribution} \\cdot \\text{stabilizerOrder} = 2^d \\cdot d!$ for any dimension $d$ via `Nat.multinomial_spec`, plus the divisibility $\\text{stab} \\mid \\text{order}$ and the quotient form $\\text{contribution} = \\text{order} / \\text{stab}$.",
+      "mathContext": "The orbit-stabilizer theorem gives $|\\text{orbit}| = |B_d|/|\\text{stab}|$. Here it becomes the arithmetic identity $2^z\\,\\text{multinomial} \\cdot 2^{d-z}\\prod (m\\,v)! = 2^d\\,d!$, since $\\text{multinomial}\\cdot\\prod (m\\,v)! = d!$ (`Nat.multinomial_spec`)."
     },
     {
+      "id": "nonzero-count",
       "title": "The Sum-of-Squares Interpretation of z",
       "startLine": 126,
       "endLine": 138,
-      "description": "Shows the nonzero-coordinate count is z = d − m 0, so the stabilizer's sign-flip factor 2^(d−z) counts exactly the sign freedom on the zero coordinates.",
-      "summary": "The Sum-of-Squares Interpretation of z",
-      "id": "nonzero-count"
+      "summary": "Shows the nonzero-coordinate count is $z = d - m\\,0$, so the stabilizer's sign-flip factor $2^{d-z}$ counts exactly the sign freedom on the zero coordinates.",
+      "mathContext": "In a representation of $n$ as a sum of $d$ squares, coordinates equal to $0$ carry no sign choice while nonzero coordinates each contribute a factor of $2$. With $m\\,0$ the multiplicity of the value $0$, the count of nonzero coordinates is $z = d - m\\,0$, matching the $2^{d-z}$ sign factor in the stabilizer."
     },
     {
+      "id": "concrete-instances",
       "title": "Concrete Instances — d = 4 (Jacobi) and d = 8",
       "startLine": 139,
       "endLine": 182,
-      "description": "Instantiates the general formula: four-square types (0,0,0,1)→8 and all-distinct→384, the order 2^4·4!=384, and the eight-square generalization |B₈|=10321920 with a sample contribution 16 — all by `decide` (not native_decide).",
-      "summary": "Concrete Instances — d = 4 (Jacobi) and d = 8",
-      "id": "concrete-instances"
+      "summary": "Instantiates the general formula: four-square types $(0,0,0,1)\\to 8$ and all-distinct $\\to 384$, the order $2^4\\cdot 4! = 384$, and the eight-square generalization $|B_8| = 10321920$ with a sample contribution $16$ — all by `decide` (not `native_decide`).",
+      "mathContext": "For $d = 4$ (Jacobi's theorem) the type $(0,0,0,1)$ has one nonzero coordinate, giving contribution $2^1\\cdot 4!/3! = 8$; the all-distinct type gives $2^4\\cdot 4! / 1 = 384 = |B_4|$. Discharging these by kernel `decide` rather than `native_decide` keeps the entry free of `Lean.ofReduceBool`, hence genuinely axiom-free."
     },
     {
       "id": "summary",
