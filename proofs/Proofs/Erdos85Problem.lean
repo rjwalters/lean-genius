@@ -380,4 +380,117 @@ theorem three_le_minDegreeForC4_five : 3 ≤ minDegreeForC4 5 := by
   rw [not_le] at hk3
   exact hfree (hk (cycleGraph 5) (le_trans (by omega : k ≤ 2) hmin2))
 
+open Fin.CommRing in
+/-- **The `n`-cycle is `C₄`-free for `n ≥ 5`.**  A copy of `C₄` in `cycleGraph n`
+is an injection `f : Fin 4 ↪ Fin n` whose four consecutive images are cycle-adjacent,
+i.e. each consecutive difference `f (i+1) − f i` is `±1` in the additive group `Fin n`.
+The four differences telescope to `0`; injectivity of the two "diagonals" `f 2 − f 0`
+and `f 3 − f 1` forces all three interior steps to share the same sign, so the closing
+difference equals `±3`.  But the closing edge also forces it to be `±1`, giving `2 = 0`
+or `4 = 0` in `Fin n` — impossible once `n ≥ 5`.  (At `n = 4` this fails precisely
+because `cycleGraph 4` *is* a `C₄`; the argument genuinely needs `n ≥ 5`.)  This is the
+general form of the `C₅` witness behind `three_le_minDegreeForC4_five`. -/
+theorem cycleGraph_not_containsC4 {n : ℕ} (hn : 5 ≤ n) :
+    ¬ containsC4 (Fin n) (cycleGraph n) := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
+  have hm : 3 ≤ m := by omega
+  haveI : NeZero (m + 2) := ⟨by omega⟩
+  rintro ⟨f, hinj, hadj⟩
+  -- numeral facts in `Fin (m + 2)` (needs `m ≥ 3`, i.e. `n ≥ 5`)
+  have h2 : (2 : Fin (m + 2)) ≠ 0 := by
+    have hv : (2 : Fin (m + 2)).val = 2 := by simp; omega
+    intro h; rw [h, Fin.val_zero] at hv; omega
+  have h4 : (4 : Fin (m + 2)) ≠ 0 := by
+    have hv : (4 : Fin (m + 2)).val = 4 := by simp; omega
+    intro h; rw [h, Fin.val_zero] at hv; omega
+  -- the four `C₄` edges as difference equations in `Fin (m + 2)`
+  have h01 := cycleGraph_adj.mp (hadj 0 1 C4_adj_zero_one)
+  have h12 := cycleGraph_adj.mp (hadj 1 2 C4_adj_one_two)
+  have h23 := cycleGraph_adj.mp (hadj 2 3 C4_adj_two_three)
+  have h30 := cycleGraph_adj.mp (hadj 3 0 C4_adj_three_zero)
+  -- each consecutive difference is `±1`
+  have hA : f 1 - f 0 = 1 ∨ f 1 - f 0 = -1 := by
+    rcases h01 with h | h
+    · exact Or.inr (by linear_combination -h)
+    · exact Or.inl (by linear_combination h)
+  have hB : f 2 - f 1 = 1 ∨ f 2 - f 1 = -1 := by
+    rcases h12 with h | h
+    · exact Or.inr (by linear_combination -h)
+    · exact Or.inl (by linear_combination h)
+  have hC : f 3 - f 2 = 1 ∨ f 3 - f 2 = -1 := by
+    rcases h23 with h | h
+    · exact Or.inr (by linear_combination -h)
+    · exact Or.inl (by linear_combination h)
+  have hD : f 0 - f 3 = 1 ∨ f 0 - f 3 = -1 := by
+    rcases h30 with h | h
+    · exact Or.inr (by linear_combination -h)
+    · exact Or.inl (by linear_combination h)
+  -- injectivity: the two "diagonals" of the 4-cycle are non-degenerate
+  have hAB : f 2 - f 0 ≠ 0 := fun h =>
+    absurd (hinj (show f 0 = f 2 by linear_combination -h)) (by decide)
+  have hBC : f 3 - f 1 ≠ 0 := fun h =>
+    absurd (hinj (show f 1 = f 3 by linear_combination -h)) (by decide)
+  -- adjacent steps must agree in sign (else a diagonal collapses)
+  have hAeqB : f 1 - f 0 = f 2 - f 1 := by
+    rcases hA with hA | hA <;> rcases hB with hB | hB
+    · rw [hA, hB]
+    · exact absurd (by linear_combination hA + hB : f 2 - f 0 = 0) hAB
+    · exact absurd (by linear_combination hA + hB : f 2 - f 0 = 0) hAB
+    · rw [hA, hB]
+  have hBeqC : f 2 - f 1 = f 3 - f 2 := by
+    rcases hB with hB | hB <;> rcases hC with hC | hC
+    · rw [hB, hC]
+    · exact absurd (by linear_combination hB + hC : f 3 - f 1 = 0) hBC
+    · exact absurd (by linear_combination hB + hC : f 3 - f 1 = 0) hBC
+    · rw [hB, hC]
+  -- the four differences telescope to `0`
+  have hsum : (f 1 - f 0) + (f 2 - f 1) + (f 3 - f 2) + (f 0 - f 3) = 0 := by ring
+  -- all interior steps share `hA`'s sign, so the closing difference is `±3` — contradiction
+  rcases hA with hA | hA
+  · have hAB1 : f 2 - f 1 = 1 := by rw [← hAeqB, hA]
+    have hBC1 : f 3 - f 2 = 1 := by rw [← hBeqC, hAB1]
+    have hD3 : f 0 - f 3 = -3 := by linear_combination hsum - hA - hAB1 - hBC1
+    rcases hD with hD | hD
+    · exact h4 (by linear_combination hD3 - hD)
+    · exact h2 (by linear_combination hD3 - hD)
+  · have hAB1 : f 2 - f 1 = -1 := by rw [← hAeqB, hA]
+    have hBC1 : f 3 - f 2 = -1 := by rw [← hBeqC, hAB1]
+    have hD3 : f 0 - f 3 = 3 := by linear_combination hsum - hA - hAB1 - hBC1
+    rcases hD with hD | hD
+    · exact h2 (by linear_combination hD - hD3)
+    · exact h4 (by linear_combination hD - hD3)
+
+/-- **The `n`-cycle has minimum degree `2` for `n ≥ 3`.**  Every vertex of
+`cycleGraph (k + 3)` has exactly two neighbours (`v - 1` and `v + 1`), so the minimum
+degree is `2`. -/
+theorem two_le_cycleGraph_minDegree {n : ℕ} (hn : 3 ≤ n) :
+    2 ≤ (cycleGraph n).minDegree := by
+  obtain ⟨k, rfl⟩ : ∃ k, n = k + 3 := ⟨n - 3, by omega⟩
+  apply le_minDegree_of_forall_le_degree
+  intro v
+  have hv : (cycleGraph (k + 3)).degree v = 2 := cycleGraph_degree_three_le
+  omega
+
+/-- **The general cycle lower bound: `f(n) ≥ 3` for every `n ≥ 5`.**  The `n`-cycle
+`Cₙ` is `2`-regular (`two_le_cycleGraph_minDegree`) yet `C₄`-free
+(`cycleGraph_not_containsC4`), so no threshold `k ≤ 2` can force a `C₄` on `n` vertices;
+hence `minDegreeForC4 n ≥ 3`.  This uniformly improves the generic star bound `f(n) ≥ 2`
+across all `n ≥ 5` and generalises the single-point witness
+`three_le_minDegreeForC4_five`.  (The true asymptotic `f(n) = (1+o(1))√n` grows without
+bound, but that needs Kővári–Sós–Turán, beyond current Mathlib.) -/
+theorem three_le_minDegreeForC4 {n : ℕ} (hn : 5 ≤ n) :
+    3 ≤ minDegreeForC4 n := by
+  have hfree : ¬ containsC4 (Fin n) (cycleGraph n) := cycleGraph_not_containsC4 hn
+  have hmin2 : 2 ≤ (cycleGraph n).minDegree := two_le_cycleGraph_minDegree (by omega)
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin n) G}.Nonempty := by
+    refine ⟨n - 1, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 (by omega)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  by_contra hk3
+  rw [not_le] at hk3
+  exact hfree (hk (cycleGraph n) (le_trans (by omega : k ≤ 2) hmin2))
+
 end Erdos85
