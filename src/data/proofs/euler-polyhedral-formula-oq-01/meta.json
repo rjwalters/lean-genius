@@ -165,11 +165,67 @@
     },
     {
       "id": "part11-six-color",
-      "title": "Part 11: Six Color Theorem",
+      "title": "Part 11: Six Color Theorem via Degeneracy Coloring (L616–646)",
       "startLine": 616,
+      "endLine": 646,
+      "summary": "Opens the Six Color Theorem development: the degeneracy-coloring strategy (a $k$-degenerate graph is $(k+1)$-colorable; planar graphs are 5-degenerate, hence 6-colorable) and `namespace SixColorTheorem` (L643).",
+      "mathContext": "The Six Color Theorem states every planar graph is 6-colorable. The route taken here is degeneracy: since every planar subgraph has a vertex of degree $\\leq 5$ (from $E \\leq 3V-6$), one can peel vertices in a 5-degenerate order and greedily color with $5+1=6$ colors."
+    },
+    {
+      "id": "part11a-degeneracy-build",
+      "title": "Part 11a: Degeneracy Ordering Construction (L647–694)",
+      "startLine": 647,
+      "endLine": 694,
+      "summary": "`DegeneracyBuild k` (L662): a graph built by adding vertices one at a time, each joined to $\\leq k$ existing vertices, with `vertexCount` (L667) and `edgeCount` (L672). `colorable_of_degenerate` (L682): such a build is $(k+1)$-colorable. `chromatic_bound` (L689): a $k$-degenerate graph needs $\\leq k+1$ colors.",
+      "mathContext": "The degeneracy ordering makes greedy coloring optimal: when a vertex is added with $\\leq k$ earlier neighbors, at least one of $k+1$ colors is free, so induction gives $\\chi \\leq k+1$ for any $k$-degenerate graph."
+    },
+    {
+      "id": "part11b-color-extension",
+      "title": "Part 11b: Colorability of Graphs with a Low-Degree Vertex (L695–714)",
+      "startLine": 695,
+      "endLine": 714,
+      "summary": "`color_extension_step` (L710): if a graph has a vertex of degree $\\leq k$ and deleting it yields a $(k+1)$-colorable graph, the whole graph is $(k+1)$-colorable — the inductive step that lifts degeneracy to a global coloring.",
+      "mathContext": "This is the reduction lemma behind greedy degeneracy coloring: remove a low-degree vertex $v$, color the rest with $k+1$ colors by induction, then $v$'s $\\leq k$ neighbors leave a free color for $v$."
+    },
+    {
+      "id": "part11c-local-embedding",
+      "title": "Part 11c: Proper Statement and Local Planar Embedding (L715–768)",
+      "startLine": 715,
+      "endLine": 768,
+      "summary": "`LocalPlanarEmbedding` (L727): a self-contained Euler-axiom structure mirroring the main file. `local_edge_bound_planar` (L736): $E \\leq 3V-6$. `local_k5_not_planar` (L744): $K_5$ is non-planar. `local_exists_low_degree` (L753): a planar graph has a vertex of degree $\\leq 5$.",
+      "mathContext": "The degree-$\\leq 5$ existence lemma is the geometric input to degeneracy: averaging $\\sum \\deg = 2E \\leq 6V-12 < 6V$ forces some vertex below the mean degree 6, i.e. degree $\\leq 5$ — establishing planar graphs are 5-degenerate."
+    },
+    {
+      "id": "part11d-colorable-statement",
+      "title": "Part 11d: Six Color Theorem — Colorable Statement (L769–795)",
+      "startLine": 769,
+      "endLine": 795,
+      "summary": "`six_colorable_small` (L776): graphs on $\\leq 6$ vertices are trivially 6-colorable (base case). `planar_has_low_degree` (L787): the main structural theorem that every planar graph has a vertex of degree $\\leq 5$, feeding the degeneracy induction.",
+      "mathContext": "Combining the $\\leq 6$-vertex base case with `planar_has_low_degree` and `color_extension_step` gives the full Six Color Theorem by induction on the vertex count."
+    },
+    {
+      "id": "part11e-quantitative",
+      "title": "Part 11e: Quantitative Coloring Bounds (L796–815)",
+      "startLine": 796,
+      "endLine": 815,
+      "summary": "`degeneracy_color_count` (L802): a degeneracy-ordered coloring uses $\\leq k+1$ colors. `planar_color_bound` (L807): for planar graphs ($k=5$) the bound is 6. `six_colors_suffice` (L813): no planar graph needs 7 colors.",
+      "mathContext": "These specialize the general $(k+1)$-color bound to $k=5$, turning the qualitative theorem into the sharp numeric statement $\\chi(G) \\leq 6$ for planar $G$."
+    },
+    {
+      "id": "part11f-five-color-prereq",
+      "title": "Part 11f: Five-Color Prerequisite and Special Families (L816–870)",
+      "startLine": 816,
+      "endLine": 870,
+      "summary": "`kempe_prerequisite` (L824) and `neighborhood_not_complete` (L835): $K_5$-freeness of a degree-5 neighborhood, the Kempe-chain prerequisite for the Five Color Theorem. Special families: `outerplanar_four_degenerate` (L844), `series_parallel_degenerate` (L850), `toroidal_seven_degenerate` (L858), `genus_degeneracy_bound` (L866, Heawood number $H(g)$).",
+      "mathContext": "The Heawood degeneracy bound extends the coloring result to every genus: a graph on a surface of genus $g$ is $(H(g)-1)$-degenerate, hence $H(g)$-colorable, where $H(g) = \\lfloor (7+\\sqrt{1+48g})/2 \\rfloor$ — recovering 6 colors for the plane ($g=0$) and 7 for the torus ($g=1$)."
+    },
+    {
+      "id": "part11-summary",
+      "title": "Part 11: Summary of Six Color Theorem Results (L871–903)",
+      "startLine": 871,
       "endLine": 903,
-      "summary": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate. Also: DegeneracyBuild ordering, kempe_prerequisite for Five Color Theorem.",
-      "mathContext": "Full Six Color Theorem proof: LocalPlanarEmbedding structure with Euler axiom, local_edge_bound_planar (E≤3V-6), local_k5_not_planar (K₅ non-planar), exists_low_degree vertex in planar graphs, six_colorable_small, color_extension_step, and Six Color Theorem via Colorable predicate."
+      "summary": "Closing docstring (`## Summary of Part 11`, L876) recapping the degeneracy-based Six Color Theorem, the $K_5$ non-planarity certificate, the Kempe prerequisite toward five colors, and the Heawood bounds for higher-genus surfaces.",
+      "mathContext": "The section closes the file's arc from Euler's formula $V-E+F=2$ through the edge bound $E \\leq 3V-6$ to graph coloring: the same Euler input that forbids $K_5$ also guarantees a low-degree vertex, the single fact powering both non-planarity and 6-colorability."
     }
   ],
   "conclusion": {
