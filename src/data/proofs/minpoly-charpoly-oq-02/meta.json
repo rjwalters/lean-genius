@@ -144,28 +144,44 @@
       "mathContext": "If $M = P^{-1} D P$ with $D$ diagonal, then $\\mathrm{minpoly}_K(M) = \\mathrm{minpoly}_K(D)$ (similarity invariance via the conjugation algebra automorphism `matConj`), and $\\mathrm{minpoly}_K(D) \\mid \\prod_{c \\in \\mathrm{diag}(D)}(X - c)$ is squarefree. Hence diagonalizable $\\Rightarrow$ squarefree minpoly over any field $K$."
     },
     {
-      "id": "main-theorem",
-      "title": "§4: diagonalizable_iff_squarefree_minpoly — Headline (fully proved)",
-      "startLine": 201,
-      "endLine": 222,
-      "summary": "**The S1 headline theorem.** Over `[IsAlgClosed K] [CharZero K]`, a matrix M is diagonalizable iff its minimal polynomial is squarefree. The **forward** direction is now fully discharged by `Matrix.IsDiagonalizable.squarefree_minpoly` (§3, unconditional). Only the **reverse** direction (squarefree minpoly ⇒ diagonalizable) remains a single `sorry` at line 221 — over an alg-closed field it follows from Bridge C (`isSemisimple_iff_squarefree_minpoly`) plus Bridge B (`iSup_eigenspace_eq_top_of_isSemisimple`) transported back through `Matrix.toLin'`, the target of sub-OQ-02-OQ-02. The docstring notes the hypotheses can be weakened to 'perfect field + minpoly splits' (OQ-02-OQ-03), but alg-closed-char-0 is the textbook gold form.",
-      "mathContext": "$M \\in \\mathrm{Mat}_n(K)$ over $K$ algebraically closed of char 0: $M$ is diagonalizable $\\Leftrightarrow$ $\\mathrm{minpoly}_K(M) \\in K[X]$ is squarefree. Forward arm proved; reverse arm `sorry` (line 221)."
-    },
-    {
       "id": "sanity-lemmas",
-      "title": "§5: Sanity Lemmas — of_isDiag, zero, one, diagonal",
-      "startLine": 223,
-      "endLine": 245,
-      "summary": "Four unconditional sanity helpers giving the file a non-trivial public surface: `Matrix.IsDiagonalizable.of_isDiag` (any matrix satisfying `IsDiag` is diagonalizable, witnessed by P = 1), `.zero` (the zero matrix), `.one` (the identity matrix), and `.diagonal` (any explicitly `diagonal d` matrix). Each is discharged from `of_isDiag` plus the corresponding `Matrix.isDiag_*` lemma.",
+      "title": "§4: Sanity Lemmas — of_isDiag, zero, one, diagonal",
+      "startLine": 201,
+      "endLine": 227,
+      "summary": "A forward-reference comment records that the headline biconditional is stated and PROVED (no sorry) at the end of the file, after the endomorphism-level bridges and the eigenbasis bridge it depends on. Then four unconditional sanity helpers give the file a non-trivial public surface: `Matrix.IsDiagonalizable.of_isDiag` (any matrix satisfying `IsDiag` is diagonalizable, witnessed by P = 1), `.zero` (the zero matrix), `.one` (the identity matrix), and `.diagonal` (any explicitly `diagonal d` matrix). Each is discharged from `of_isDiag` plus the corresponding `Matrix.isDiag_*` lemma.",
       "mathContext": "If $\\mathrm{IsDiag}(M)$ then $M$ is diagonalizable (take $P = I$). In particular $0$, $I$, and every $\\mathrm{diagonal}(d) \\in \\mathrm{Mat}_n(K)$ are diagonalizable."
     },
     {
       "id": "bridges-b-c",
-      "title": "§6: S7 ACT Helpers — Endomorphism-Level Bridges B and C",
-      "startLine": 246,
-      "endLine": 279,
-      "summary": "**S7 ACT contribution (#19095, merged 2026-05-15).** Two endomorphism-level lemmas that the matrix-level reverse-direction discharge will transport via `Matrix.minpoly_toLin'`. Bridge B forward — `Module.End.iSup_eigenspace_eq_top_of_isSemisimple`: over an alg-closed field in finite dimensions, semisimplicity implies the eigenspaces span the whole space, proved by a 3-lemma chain via `iSup_congr` (IsSemisimple → IsFinitelySemisimple → maxGenEigenspace μ = eigenspace μ → ⨆ eigenspace = ⨆ maxGenEigenspace = ⊤; the direct-form lemma is a phantom caught by S4 PREP #18626). Bridge C — `Module.End.isSemisimple_iff_squarefree_minpoly`: an endomorphism is semisimple iff its minpoly is squarefree (forward via `IsSemisimple.minpoly_squarefree`; reverse via `isSemisimple_of_squarefree_aeval_eq_zero` applied to `minpoly.aeval`).",
-      "mathContext": "Bridge B: for $V$ finite-dim over alg-closed $K$ and $f \\in \\mathrm{End}_K(V)$, $f$ semisimple $\\Rightarrow \\bigsqcup_{\\mu} \\ker(f - \\mu) = V$. Bridge C: $f$ semisimple $\\Leftrightarrow \\mathrm{minpoly}_K(f)$ squarefree. Together (+ Bridge B back-transport through `Matrix.toLin'`) they target the reverse arm of the headline."
+      "title": "§5: S7 ACT Helpers — Endomorphism-Level Bridges B and C",
+      "startLine": 228,
+      "endLine": 260,
+      "summary": "**S7 ACT contribution (#19095, merged 2026-05-15).** Two endomorphism-level lemmas that the matrix-level reverse-direction discharge transports via `Matrix.minpoly_toLin'`. Bridge B forward — `Module.End.iSup_eigenspace_eq_top_of_isSemisimple`: over an alg-closed field in finite dimensions, semisimplicity implies the eigenspaces span the whole space, proved by a 3-lemma chain via `iSup_congr` (IsSemisimple → IsFinitelySemisimple → maxGenEigenspace μ = eigenspace μ → ⨆ eigenspace = ⨆ maxGenEigenspace = ⊤; the direct-form lemma is a phantom caught by S4 PREP #18626). Bridge C — `Module.End.isSemisimple_iff_squarefree_minpoly`: an endomorphism is semisimple iff its minpoly is squarefree (forward via `IsSemisimple.minpoly_squarefree`; reverse via `isSemisimple_of_squarefree_aeval_eq_zero` applied to `minpoly.aeval`).",
+      "mathContext": "Bridge B: for $V$ finite-dim over alg-closed $K$ and $f \\in \\mathrm{End}_K(V)$, $f$ semisimple $\\Rightarrow \\bigsqcup_{\\mu} \\ker(f - \\mu) = V$. Bridge C: $f$ semisimple $\\Leftrightarrow \\mathrm{minpoly}_K(f)$ squarefree. Together (+ Bridge B transport through `Matrix.toLin'`) they discharge the reverse arm of the headline."
+    },
+    {
+      "id": "similarity-invariant",
+      "title": "§6: Diagonalizability is a Similarity Invariant (PROVED, any field)",
+      "startLine": 261,
+      "endLine": 302,
+      "summary": "Two matrix-level lemmas showing diagonalizability is preserved under conjugation, over any field. `Matrix.IsDiagonalizable.conj`: if `M = Q⁻¹ D Q` is diagonalizable and `P` is invertible, then `P⁻¹ M P = (P⁻¹Q)⁻¹ D (P⁻¹Q)` is diagonalizable — the matrix-level counterpart of `minpoly.algEquiv_eq` and the change-of-basis step the reverse direction transports through `Matrix.toLin'`. `Matrix.isDiagonalizable_conj_iff` upgrades this to a biconditional (conjugating back by `P⁻¹` and rewriting `(P⁻¹)⁻¹ = P`).",
+      "mathContext": "For $P \\in \\mathrm{GL}_n(K)$, $P^{-1} M P$ is diagonalizable $\\Leftrightarrow$ $M$ is: the witnessing similarity for the conjugate is $P^{-1} Q$ when $Q^{-1} M Q$ is diagonal."
+    },
+    {
+      "id": "reverse-headline",
+      "title": "§7: Reverse Direction — Eigenbasis Bridge and the Headline Biconditional (PROVED, no sorry)",
+      "startLine": 303,
+      "endLine": 388,
+      "summary": "**The S1 headline theorem, fully proved.** `isDiagonalizable_of_eigenbasis` is the reusable reverse-direction core (Bridge A reverse, any field): a basis `b` of eigenvectors of `toLin' M` makes `M` diagonalizable, the witness being the change-of-basis matrix `e.toMatrix b` (so `P⁻¹ M P = LinearMap.toMatrix b b (toLin' M) = diagonal μ`). `diagonalizable_iff_squarefree_minpoly` then discharges the headline over `[IsAlgClosed K] [CharZero K]`: forward via `Matrix.IsDiagonalizable.squarefree_minpoly` (§3); reverse by squarefree minpoly ⇒ `f = toLin' M` semisimple (Bridge C) ⇒ eigenspaces span (Bridge B) and are independent ⇒ internal direct sum ⇒ collected eigenbasis (reindexed to `n` by `Fintype.equivOfCardEq`) ⇒ `isDiagonalizable_of_eigenbasis`. No sorry.",
+      "mathContext": "$M \\in \\mathrm{Mat}_n(K)$ over $K$ algebraically closed of char 0: $M$ diagonalizable $\\Leftrightarrow$ $\\mathrm{minpoly}_K(M)$ squarefree. The reverse arm collects a basis of $\\bigsqcup_\\mu \\ker(f-\\mu) = V$ (internal direct sum of independent eigenspaces) and reindexes it onto $n$ via equal cardinality."
+    },
+    {
+      "id": "charzero-free-headline",
+      "title": "§8: Recovered from PR #32451 — Standalone Eigenbasis and the CharZero-Free Headline",
+      "startLine": 389,
+      "endLine": 456,
+      "summary": "Factors the eigenbasis step into a reusable lemma and drops the redundant characteristic hypothesis. `Matrix.exists_eigenbasis_of_isSemisimple` (only `[IsAlgClosed K]`): a semisimple endomorphism of `n → K` admits a basis of eigenvectors, isolating the internal-direct-sum + reindexing argument from the headline proof. `diagonalizable_iff_squarefree_minpoly'` then proves the headline over an algebraically closed field of *any* characteristic — over alg-closed `K` a squarefree minpoly already splits into distinct linear factors, so no separability (hence no `CharZero`) is needed; the textbook `[CharZero K]` is redundant. Closes with `#print axioms` audits confirming only `propext` / `Classical.choice` / `Quot.sound` (0-axiom).",
+      "mathContext": "Over algebraically closed $K$ of arbitrary characteristic, $M$ diagonalizable $\\Leftrightarrow$ $\\mathrm{minpoly}_K(M)$ squarefree; the general-field form (with an explicit `Polynomial.Splits` hypothesis) is the target of OQ-02-OQ-03."
     }
   ],
   "conclusion": {
