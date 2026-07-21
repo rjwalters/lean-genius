@@ -46,92 +46,76 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "header",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Module documentation describing Problem 530, Riddell's original formulation, and the known bounds, with Mathlib imports for integers, finite sets, and tactics."
+      "endLine": 19,
+      "summary": "Module docstring for Erdős Problem #530 (Sidon/B₂ sets) and Mathlib imports. Frames the question: how large a Sidon subset must every N-element set of integers contain, and the associated Alon–Erdős partition conjecture.",
+      "mathContext": "A set $S \\subseteq \\mathbb{Z}$ is Sidon (a $B_2$ set) if all pairwise sums $a+b$ ($a \\le b$) are distinct, equivalently all nonzero differences are distinct."
     },
     {
-      "id": "sidon-definition",
-      "title": "Sidon Set Definition",
-      "startLine": 23,
-      "endLine": 51,
-      "summary": "Defines IsSidon (distinct pairwise sums) and proves the empty set and singletons are Sidon — the only proved theorems in the file."
-    },
-    {
-      "id": "max-sidon-size",
-      "title": "Maximum Sidon Subset Size",
-      "startLine": 52,
+      "id": "sec1-definition",
+      "title": "Section 1: Sidon Set Definition",
+      "startLine": 20,
       "endLine": 62,
-      "summary": "Defines maxSidonSize A as the supremum of card over Sidon subsets of A, representing ℓ(A)."
+      "summary": "Defines `IsSidon S` (all pairwise sums distinct) and proves the basic closure/instances: `isSidon_empty`, `isSidon_singleton`, `isSidon_subset` (Sidon is inherited by subsets), and `isSidon_pair`.",
+      "mathContext": "`IsSidon S`: $\\forall a,b,c,d \\in S,\\ a+b=c+d \\Rightarrow \\{a,b\\}=\\{c,d\\}$. Every subset of a Sidon set is Sidon; singletons and pairs are trivially Sidon."
     },
     {
-      "id": "known-bounds",
-      "title": "Known Bounds",
+      "id": "sec2-maxsize",
+      "title": "Section 2: Maximum Sidon Subset Size",
       "startLine": 63,
-      "endLine": 92,
-      "summary": "Axioms: Erdős's N^{1/3} lower bound, Komlós-Sulyok-Szemerédi's N^{1/2} lower bound, and the trivial N^{1/2} upper bound."
+      "endLine": 73,
+      "summary": "Defines `maxSidonSize A` = the size of the largest Sidon subset of a finite set A, as the sup over Sidon subsets of their cardinality.",
+      "mathContext": "$\\ell(A) = \\max\\{|S| : S \\subseteq A,\\ S \\text{ Sidon}\\}$; the Erdős question asks for the minimum of $\\ell(A)$ over all $|A|=N$."
     },
     {
-      "id": "main-conjecture",
-      "title": "Main Conjecture: ℓ(N) = Θ(√N)",
-      "startLine": 93,
-      "endLine": 107,
-      "summary": "Defines ErdosProblem530 as a Prop: existence of constants c₁, c₂ with c₁|A| ≤ ℓ(A)² ≤ c₂|A|."
+      "id": "sec3-known-bounds",
+      "title": "Section 3: Known Bounds",
+      "startLine": 74,
+      "endLine": 142,
+      "summary": "The quantitative bounds on `maxSidonSize`. `komlos_sulyok_szemeredi` (axiom): the Komlós–Sulyok–Szemerédi theorem that every N-set contains a Sidon subset of size ≥ c√N. Proved lemmas: `maxSidonSize_le_card` (≤ |A|), `maxSidonSize_pos` (≥ 1 for nonempty A), `erdos_lower_bound`, `maxSidonSize_ge_two` (≥ 2 once |A| ≥ 2), and `sidon_upper_bound`.",
+      "mathContext": "Komlós–Sulyok–Szemerédi: every $A$ with $|A|=N$ has a Sidon subset of size $\\gtrsim \\sqrt{N}$. Elementary bounds sandwich $1 \\le \\ell(A) \\le |A|$."
     },
     {
-      "id": "partition-conjecture",
-      "title": "Alon-Erdős Partition Conjecture",
-      "startLine": 108,
-      "endLine": 128,
-      "summary": "Defines IsSidonPartition and states the conjecture: any N-element set can be partitioned into O(√N) Sidon sets."
+      "id": "sec4-main-conjecture",
+      "title": "Section 4: The Main Conjecture",
+      "startLine": 143,
+      "endLine": 157,
+      "summary": "States `ErdosProblem530` as a Prop: the conjecture that ℓ(N) = Θ(√N), i.e. every N-element set contains a Sidon subset of size Θ(√N) and this is optimal.",
+      "mathContext": "$\\mathrm{ErdosProblem530}$: $\\min_{|A|=N}\\ell(A) = \\Theta(\\sqrt{N})$."
     },
     {
-      "id": "b2-connection",
-      "title": "Connection to B₂-Sets",
-      "startLine": 129,
-      "endLine": 148,
-      "summary": "Commentary connecting Sidon sets to $B_2$-sets in additive combinatorics. Defines `ErdosProblem530` as a Prop: $\\exists c_1, c_2 \\geq 1, \\forall A, |A| \\geq 4 \\Rightarrow c_1 |A| \\leq \\ell(A)^2 \\leq c_2 |A|$."
+      "id": "sec5-partition-conjecture",
+      "title": "Section 5: Sidon Set Partition Conjecture",
+      "startLine": 158,
+      "endLine": 178,
+      "summary": "Defines `IsSidonPartition A parts` (a partition of A into Sidon pieces) and states `alon_erdos_partition_conjecture` (axiom): the Alon–Erdős conjecture on partitioning a set into few Sidon subsets.",
+      "mathContext": "Alon–Erdős: every $N$-set partitions into $O(\\sqrt{N})$ Sidon subsets; `IsSidonPartition` encodes a cover by pairwise-Sidon parts."
     },
     {
-      "id": "partition-defs",
-      "title": "Sidon Partition Definitions and Conjecture",
-      "startLine": 150,
-      "endLine": 169,
-      "summary": "Defines `IsSidonPartition A parts` (all parts are Sidon, cover $A$, pairwise disjoint). Axiomatizes `alon_erdos_partition_conjecture`: $\\exists c \\geq 1, \\forall A, \\exists$ partition into $\\leq c\\sqrt{|A|}$ Sidon parts.",
-      "mathContext": "The Alon-Erdős conjecture is the dual of Problem #530: instead of finding the largest Sidon subset, partition into the fewest Sidon sets. The chromatic number of the 'repeated sum' graph equals the partition number, which is conjectured to be $\\Theta(\\sqrt{N})$."
-    },
-    {
-      "id": "sum-injectivity",
-      "title": "Sidon Sum Injectivity and Pair Counting",
+      "id": "sec6-b2-connection",
+      "title": "Section 6: Connection to B₂-sets and Additive Combinatorics",
       "startLine": 179,
-      "endLine": 257,
-      "summary": "Proves `sidon_sum_injective`: the sum map $(a,b) \\mapsto a + b$ is injective on sorted pairs of a Sidon set. Then proves `card_sorted_pairs`: $|\\{(a,b) \\in S \\times S : a \\leq b\\}| = |S|(|S|+1)/2$ via a decomposition into strict upper triangle, diagonal, and strict lower triangle, using a swap bijection and diagonal bijection.",
-      "mathContext": "The proof decomposes $S \\times S$ into $\\{a < b\\} \\cup \\{a = b\\} \\cup \\{a > b\\}$ with cardinalities $|\\text{lt}|, |S|, |\\text{gt}|$ respectively. The swap bijection $(a,b) \\mapsto (b,a)$ shows $|\\text{lt}| = |\\text{gt}|$. Then $|\\text{le}| = |\\text{lt}| + |S|$ and $2 \\cdot |\\text{le}| = |S|^2 + |S| = |S|(|S|+1)$."
+      "endLine": 277,
+      "summary": "The additive-combinatorics core. `sidon_sum_injective`: for a Sidon set S the pairwise-sum map on sorted pairs is injective. `card_sorted_pairs`: counts the sorted pairs of S as C(|S|,2)+|S|. `sidon_sum_count`: hence a Sidon set realizes exactly C(|S|,2)+|S| distinct pairwise sums — the defining B₂ counting identity.",
+      "mathContext": "For Sidon $S$, the map $\\{a\\le b\\}\\mapsto a+b$ is injective, so $|S+S| = \\binom{|S|}{2}+|S| = \\binom{|S|+1}{2}$ distinct sums."
     },
     {
-      "id": "sidon-sum-count",
-      "title": "Sidon Sum Count Theorem",
-      "startLine": 259,
-      "endLine": 270,
-      "summary": "Proves `sidon_sum_count`: a Sidon set of size $k$ has exactly $k(k+1)/2$ distinct pairwise sums. Combines `sidon_sum_injective` (injectivity $\\Rightarrow$ image card = domain card) with `card_sorted_pairs` ($k(k+1)/2$ sorted pairs). This was previously axiomatized and is now fully proved.",
-      "mathContext": "The identity $|\\{a + b : (a,b) \\in S \\times S, a \\leq b\\}| = k(k+1)/2$ for $|S| = k$ Sidon is the key to the upper bound: if all $k(k+1)/2$ sums lie in $S + S \\subseteq \\{2\\min S, \\ldots, 2\\max S\\}$, then $k(k+1)/2 \\leq 2N - 1$, giving $k \\leq O(\\sqrt{N})$."
+      "id": "sec7-corrected-statement",
+      "title": "Section 7: Corrected Problem Statement",
+      "startLine": 278,
+      "endLine": 298,
+      "summary": "Defines `ErdosProblem530Corrected`: the precise formalizable statement (the interval upper-bound form) that the file actually discharges, refining the informal Θ(√N) conjecture into a provable claim about Sidon subsets of intervals.",
+      "mathContext": "The corrected statement isolates the direction proved here: a Sidon subset of an interval $[1,N]$ has size $O(\\sqrt{N})$."
     },
     {
-      "id": "corrected-statement",
-      "title": "Corrected Problem Statement",
-      "startLine": 281,
-      "endLine": 300,
-      "summary": "Identifies that the original ErdosProblem530 has an incorrect universal upper bound: powers of 2 are entirely Sidon, giving maxSidonSize = N, so no universal $O(\\sqrt{N})$ bound holds. Defines ErdosProblem530Corrected with existential upper bound."
-    },
-    {
-      "id": "interval-upper-bound",
-      "title": "Interval Upper Bound",
-      "startLine": 302,
-      "endLine": 380,
-      "summary": "Proves sidon_subset_interval_bound: any Sidon subset of $\\{1,...,N\\}$ has $|S|^2 \\leq 4N$. Uses the sum counting theorem (k(k+1)/2 distinct sums), containment of sums in $\\{1,...,2N\\}$, and evenness of $k(k+1)$. Lifts to maxSidonSize via interval_sidon_upper. Finally proves erdos530_corrected_proof: the corrected $\\Theta(\\sqrt{N})$ result from KSS (axiom) + interval bound (proved).",
-      "mathContext": "The chain: $k(k+1)/2$ sums $\\subseteq \\{1,...,2N\\}$ of size $2N$, so $k(k+1)/2 \\leq 2N$, and since $k(k+1)$ is even, $k(k+1) \\leq 4N$, giving $k^2 \\leq k(k+1) \\leq 4N$. This is the standard sum-counting upper bound for Sidon subsets of intervals."
+      "id": "sec8-interval-upper-bound",
+      "title": "Section 8: Upper Bound for Interval Sets",
+      "startLine": 299,
+      "endLine": 426,
+      "summary": "Proves the interval upper bound and closes the corrected problem. `sidon_subset_interval_bound` and `sidon_subset_interval_bound_sharp`: a Sidon subset S of an interval of length N has |S| bounded (sharply) in terms of N via the distinct-differences counting. `interval_sidon_upper`: the resulting O(√N) bound for intervals. `erdos530_corrected_proof`: assembles these into a proof of `ErdosProblem530Corrected`.",
+      "mathContext": "A Sidon $S \\subseteq [1,N]$ has $\\binom{|S|}{2}$ distinct positive differences, all $\\le N-1$, forcing $\\binom{|S|}{2} \\le N-1$, hence $|S| \\le \\sqrt{2N}+O(1) = O(\\sqrt N)$."
     }
   ],
   "conclusion": {
