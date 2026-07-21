@@ -140,9 +140,9 @@
     {
       "id": "holder-equality",
       "title": "General Hölder Equality (Finite Sums)",
-      "summary": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions.",
+      "summary": "Reduces Hölder equality to pointwise Young equality: sum of deficits = 0 forces each deficit = 0. Normalized and general cases with both directions, closing with `power_prop_implies_holder_eq_normalized` — the reverse direction on normalized vectors ($\\sum f_i^p=\\sum g_i^q=1$ and $f_i^p=g_i^q$ pointwise $\\Rightarrow \\sum f_ig_i=1$), obtained by summing the vanishing Young deficits.",
       "startLine": 462,
-      "endLine": 600,
+      "endLine": 625,
       "mathContext": "Equality in Hölder: $\\sum f_ig_i = \\left(\\sum f_i^p\\right)^{1/p}\\left(\\sum g_i^q\\right)^{1/q} \\iff \\exists c > 0,\\, f_i^p = c \\cdot g_i^q$ for all $i$ (power proportionality)."
     },
     {
