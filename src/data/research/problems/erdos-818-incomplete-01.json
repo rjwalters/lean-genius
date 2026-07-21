@@ -35,17 +35,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Main file unchanged (1 deep axiom solymosi_theorem + 1 deep proof_outline sorry, both genuine external inputs not in Mathlib). This session cleaned the Erdos818Aristotle.lean companion: 3 sorries → 0, all axiom-free, host-verified. Notably mul_div_ge_div was FALSE as stated (fails for x<0) and now carries the required 0≤x hypothesis. multEnergy_ge_sq and the companion cauchy_schwarz_energy are now proved. The Solymosi energy inequality E×(A)≤C·|A+A|²·log|A| remains the single deep open external input.",
+    "progressSummary": "PROGRESS: Added productSet_lower_bound (|A|≤|A·A|, axiom-free) completing Part II's trivial-bounds section symmetrically with sumset_lower_bound. Elementary content of the file is now saturated. The two remaining deep items are unchanged and genuinely research-depth: the solymosi_theorem axiom (Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, not in Mathlib) and the proof_outline sorry (sharp K-linear product-set bound, a registered blocked route requiring a materially new mechanism).",
     "builtItems": [
       "sumset_eq_add (Erdos818Problem.lean): sumset A = A + A (pointwise), axiom-free.",
       "sumset_lower_bound (Erdos818Problem.lean): 2|A|-1 ≤ |A+A| for nonempty A⊆ℤ, via Mathlib cauchy_davenport_add_of_linearOrder_isCancelAdd; fills the previously comment-only Part II. Axiom-free.",
       "product_lower_of_mult_energy (Erdos818Problem.lean): from cauchy_schwarz_energy + hypothesis E×(A) ≤ C·|A+A|²·log|A|, proves |A·A| ≥ |A|²/(C·K²·log|A|) for |A+A| ≤ K·|A|. Axiom-free (propext/Choice/Quot only).",
-      "Erdos818Aristotle.lean companion: eliminated all 3 sorries (now 0). Fixed mul_div_ge_div (was FALSE without 0≤x); proved multEnergy_ge_sq (E×(A)≥|A|² via diagonal injection) and cauchy_schwarz_energy (E×(A)·|A·A|≥|A|⁴ via Finset.le_card_mul_mul_mulEnergy) + multEnergy_eq_mulEnergy. Host-verified, axiom-free (2026-07-20)."
+      "Erdos818Aristotle.lean companion: eliminated all 3 sorries (now 0). Fixed mul_div_ge_div (was FALSE without 0≤x); proved multEnergy_ge_sq (E×(A)≥|A|² via diagonal injection) and cauchy_schwarz_energy (E×(A)·|A·A|≥|A|⁴ via Finset.le_card_mul_mul_mulEnergy) + multEnergy_eq_mulEnergy. Host-verified, axiom-free (2026-07-20).",
+      "productSet_lower_bound (Erdos818Problem.lean): |A| ≤ |A·A| for A⊆ℤ containing a nonzero element — the multiplicative analogue of sumset_lower_bound, completing the comment-only product-set lower bound of Part II. Injection a↦a₀·a (mul_left_cancel₀, ℤ a domain) into A*A. Axiom-free (propext/Choice/Quot), host-verified under Mathlib v4.31 (2026-07-20)."
     ],
     "insights": [
       "The lone remaining sorry (proof_outline in Erdos818Problem.lean) is genuinely OPEN: its bound |A·A| ≥ |A|²/(K·log|A|) requires Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, which is not in Mathlib. It is NOT derivable from the file's solymosi_theorem axiom (absolute-constant form c·|A|²/log|A|), which would need c·K ≥ 1.",
       "Honest constant mismatch: substituting |A+A| ≤ K·|A| into Solymosi's energy bound E×(A) ≤ C·|A+A|²·log|A| yields |A·A| ≥ |A|²/(C·K²·log|A|) — a K² dependence — NOT the sharper K in proof_outline's stated 1/(K·log|A|). So proof_outline as stated is strictly stronger than the standard argument delivers and remains open.",
-      "The full Solymosi reduction (energy upper bound + Cauchy–Schwarz ⇒ product-set lower bound) is now machine-checked axiom-free, with the energy inequality passed as an explicit hypothesis rather than a new axiom — isolating the single genuine external input."
+      "The full Solymosi reduction (energy upper bound + Cauchy–Schwarz ⇒ product-set lower bound) is now machine-checked axiom-free, with the energy inequality passed as an explicit hypothesis rather than a new axiom — isolating the single genuine external input.",
+      "Part II now has both trivial bounds proved axiom-free: 2|A|-1 ≤ |A+A| (sumset_lower_bound, Cauchy–Davenport) and |A| ≤ |A·A| (productSet_lower_bound, domain injection). The deep content remains isolated: 1 axiom (solymosi_theorem energy inequality) + 1 open sorry (proof_outline sharp 1/(K·log|A|) form)."
     ],
     "mathlibGaps": [
       "Companion cauchy_schwarz_energy reuses Finset.le_card_mul_mul_mulEnergy (Mathlib) — the elementary CS energy bound IS in Mathlib; only Solymosi's energy UPPER bound is the missing deep input."
