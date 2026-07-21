@@ -135,6 +135,15 @@
       "endLine": 566,
       "summary": "The erdos_470 summary theorem combining: 70 is smallest weird, 70 is primitive weird, odd weird > 3465, positive density, Melfi conditional.",
       "mathContext": "Combined theorem asserting all key established results about Erdős Problem #470."
+    },
+    {
+      "id": "density-axiom-main-theorem",
+      "title": "Density Axiom and Main Theorem",
+      "startLine": 567,
+      "endLine": 603,
+      "significance": "key",
+      "summary": "axiom benkoski_erdos_density (a positive density of integers n with the relevant abundancy behaviour), the abundancyIndex σ(n)/n definition, and the capstone theorem erdos_470 assembling the conditional density results into the answer.",
+      "mathContext": "$\\mathrm{abundancyIndex}(n)=\\sigma(n)/n$; erdos_470 packages the Benkoski–Erdős density statement with the conditional results proved above."
     }
   ],
   "conclusion": {
