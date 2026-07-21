@@ -1815,10 +1815,11 @@ theorem two_common_neighbours_dist
   have hew : inner ℝ e w = 0 := by
     rw [hedef]; simp only [inner_sub_left, inner_add_left, euw, evw, eww]; ring
   have hed : inner ℝ e d = 0 := by
+    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm v u
     rw [hedef, hddef]
-    simp only [inner_sub_left, inner_add_left, inner_sub_right, inner_add_right,
+    simp only [inner_sub_left, inner_add_left, inner_sub_right,
       euu, evv, ewu, ewv]
-    rw [real_inner_comm v u]; ring
+    rw [hc]; ring
   have hdw : inner ℝ d w = 0 := by
     rw [hddef]; simp only [inner_sub_left, euw, evw]; ring
   have hwe : inner ℝ w e = 0 := by rw [real_inner_comm]; exact hew
@@ -1869,14 +1870,14 @@ theorem two_common_neighbours_dist
       omega
     -- From `e = 0`: `u + v = w`, so `⟨u,v⟩ = −a²/2` and `‖d‖² = 3a²`.
     have hsum : u + v = w := sub_eq_zero.mp (by rw [← hedef]; exact he0)
+    have hc : inner ℝ v u = inner ℝ u v := real_inner_comm v u
     have htval : inner ℝ u v = -(a ^ 2) / 2 := by
       have h : inner ℝ (u + v) (u + v) = a ^ 2 := by rw [hsum, eww]
       simp only [inner_add_left, inner_add_right, euu, evv] at h
-      rw [real_inner_comm v u] at h; linarith
+      linarith
     have hd2 : inner ℝ d d = 3 * a ^ 2 := by
-      rw [hddef]
-      simp only [inner_sub_left, inner_sub_right, euu, evv]
-      rw [real_inner_comm v u, htval]; ring
+      rw [hddef, inner_sub_left, inner_sub_right, inner_sub_right, euu, evv, hc, htval]
+      ring
     have hnd2 : ‖d‖ ^ 2 = 3 * a ^ 2 := by rw [← real_inner_self_eq_norm_sq]; exact hd2
     have hnd : ‖d‖ = a * Real.sqrt 3 := by
       rw [← Real.sqrt_sq (norm_nonneg d), hnd2, mul_comm (3 : ℝ) (a ^ 2),
