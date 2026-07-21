@@ -345,11 +345,11 @@ theorem integral_cos_mul_cos {n m : ℕ} (hn : 1 ≤ n) (hm : 1 ≤ m) :
       have h0 : (n : ℝ) - (m : ℝ) = 0 := by rw [hnm]; ring
       simp only [h0, zero_mul, Real.cos_zero]
       rw [intervalIntegral.integral_const, smul_eq_mul]; ring
-    · rw [if_neg hnm,
-        show ((n : ℝ) - (m : ℝ)) = (((n : ℤ) - (m : ℤ)) : ℝ) by push_cast; ring]
-      refine integral_cos_int_mul_eq_zero ((n : ℤ) - (m : ℤ)) ?_
-      rw [sub_ne_zero]
-      exact_mod_cast hnm
+    · rw [if_neg hnm]
+      have hk : ((n : ℤ) - (m : ℤ)) ≠ 0 := by rw [sub_ne_zero]; exact_mod_cast hnm
+      have h := integral_cos_int_mul_eq_zero ((n : ℤ) - (m : ℤ)) hk
+      rw [Int.cast_sub, Int.cast_natCast, Int.cast_natCast] at h
+      exact h
   rw [hfun, intervalIntegral.integral_add hI1 hI2,
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, hsum, hdiff]
   by_cases hnm : n = m
