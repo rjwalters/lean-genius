@@ -86,9 +86,17 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Efficient Reduction for Sparse Matrices",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring: the open question of making the Cayley–Hamilton reduction aeval A p = aeval A (p %ₘ charpoly A) efficient for sparse matrices, answered positively for upper-triangular, block-triangular, and nilpotent structures, with imports and namespace.",
+      "mathContext": "For structured sparsity the charpoly cost drops from $O(n^3)$ (dense determinant) to $O(n)$ (upper-triangular: $\\prod_i (X - M_{ii})$) or $O(nk)$ (block-triangular with k blocks)."
+    },
+    {
       "id": "general",
       "title": "General Results",
-      "startLine": 58,
+      "startLine": 55,
       "endLine": 71,
       "summary": "Matrix charpoly is always monic (wrapper theorem for Mathlib's charpoly_monic)."
     },

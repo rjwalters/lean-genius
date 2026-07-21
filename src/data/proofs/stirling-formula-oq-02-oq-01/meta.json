@@ -92,6 +92,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and the Log-Approximation Definition",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring: the continuous Stirling formula Γ(x+1) ~ √(2πx)·(x/e)^x and its log form, derived from log-convexity of Γ (Bohr–Mollerup) with no Laplace method — plus imports, namespace, and the core def logApprox y = ½·log(2πy) + y·log y − y.",
+      "mathContext": "$\\mathrm{logApprox}(y) = \\tfrac12\\log(2\\pi y) + y\\log y - y = \\log\\bigl(\\sqrt{2\\pi y}\\,(y/e)^y\\bigr)$; the target is $\\log\\Gamma(x+1) - \\mathrm{logApprox}(x) \\to 0$."
+    },
+    {
       "id": "part-1-error-estimate",
       "title": "PART 1: Elementary Error Estimate",
       "startLine": 62,
