@@ -91,9 +91,16 @@ noncomputable def chungGrahamLower (s t k : ℕ) : ℝ :=
 noncomputable def chungGrahamUpper (s t k : ℕ) : ℝ :=
   (t - 1 : ℝ) * (k + k^(1 / s : ℝ))^s
 
-/-- Chung-Graham theorem (1975): General bounds -/
+/-- Chung-Graham theorem (1975): General bounds.
+
+    The hypothesis is `t ≥ 2`, not `t ≥ 1`: the upper-bound formula
+    `chungGrahamUpper` carries a `(t - 1)` factor and degenerates to `0` at
+    `t = 1`, while `chungGrahamLower` is strictly positive. Stating the axiom for
+    `t ≥ 1` would therefore assert `0 < lower ≤ R ≤ upper = 0`, a contradiction,
+    making the whole namespace inconsistent (see gallery integrity issue #40899).
+    The Chung–Graham `K_{s,t}` bounds are stated in the literature for `t ≥ 2`. -/
 axiom chung_graham_bounds (s t k : ℕ)
-    (hs : s ≥ 1) (ht : t ≥ 1) (hk : k ≥ 2) :
+    (hs : s ≥ 1) (ht : t ≥ 2) (hk : k ≥ 2) :
   chungGrahamLower s t k ≤ R(K[s, t]; k) ∧
     (R(K[s, t]; k) : ℝ) ≤ chungGrahamUpper s t k
 
@@ -146,45 +153,21 @@ axiom alon_ronyai_szabo (s t k : ℕ)
 The problem asks to determine R(K_{s,t}; k) for all s, t.
 -/
 
-/-- Erdős Problem #558: The main statement -/
-theorem erdos_558 (s t k : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hk : k ≥ 2) :
+/-- Erdős Problem #558: The main statement.
+
+    Scoped to `t ≥ 2`: the Chung–Graham bounds (and the Alon–Rónyai–Szabó
+    theorem) are only meaningful for `t ≥ 2`; the `t = 1` case degenerates the
+    upper bound to `0` (see `chung_graham_bounds` and issue #40899). -/
+theorem erdos_558 (s t k : ℕ) (hs : s ≥ 1) (ht : t ≥ 2) (hk : k ≥ 2) :
     -- Chung-Graham bounds hold
     (chungGrahamLower s t k ≤ R(K[s, t]; k) ∧
       (R(K[s, t]; k) : ℝ) ≤ chungGrahamUpper s t k) ∧
     -- If s ≥ (t-1)!+1, the exponent is exactly t
     (s ≥ criticalS t → ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
       c₁ * k^t ≤ R(K[s, t]; k) ∧ (R(K[s, t]; k) : ℝ) ≤ c₂ * k^t) := by
-  constructor
-  · exact chung_graham_bounds s t k hs ht hk
-  · intro hcrit
-    rcases Nat.lt_or_ge t 2 with ht2 | ht2
-    · -- Here t = 1: the Chung–Graham upper bound degenerates to 0 while the
-      -- lower bound is positive, so the hypotheses are contradictory.
-      have ht1 : t = 1 := by omega
-      subst ht1
-      exfalso
-      obtain ⟨hlo, hup⟩ := chung_graham_bounds s 1 k hs le_rfl hk
-      have hsnat : 0 < s := by omega
-      have hknat : 0 < k := by omega
-      have hs0 : (0 : ℝ) < (s : ℝ) := by exact_mod_cast hsnat
-      have hk0 : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hknat
-      have h0 : (0 : ℝ) < chungGrahamLower s 1 k := by
-        unfold chungGrahamLower
-        have hbase : (0 : ℝ) < 2 * Real.pi * Real.sqrt ((s : ℝ) * ((1 : ℕ) : ℝ)) :=
-          mul_pos (mul_pos two_pos Real.pi_pos)
-            (Real.sqrt_pos.mpr (mul_pos hs0 (by norm_num)))
-        exact mul_pos
-          (mul_pos (Real.rpow_pos_of_pos hbase _)
-            (div_pos (add_pos_of_nonneg_of_pos (Nat.cast_nonneg s) (by norm_num))
-              (Real.exp_pos 2)))
-          (Real.rpow_pos_of_pos hk0 _)
-      have hupeq : chungGrahamUpper s 1 k = 0 := by
-        unfold chungGrahamUpper
-        norm_num
-      rw [hupeq] at hup
-      have hR0 : (0 : ℝ) ≤ (R(K[s, 1]; k) : ℝ) := Nat.cast_nonneg _
-      linarith
-    · exact alon_ronyai_szabo s t k hcrit ht2 hk
+  refine ⟨chung_graham_bounds s t k hs ht hk, ?_⟩
+  intro hcrit
+  exact alon_ronyai_szabo s t k hcrit ht hk
 
 /-
 ## Part 8: Norm Graphs and Lower Bounds
