@@ -132,9 +132,17 @@
       "id": "extremal",
       "title": "The Powers-of-Two Extremal Set",
       "startLine": 118,
-      "endLine": 209,
+      "endLine": 217,
       "summary": "The matching construction: geomSet n = {2^0,…,2^{n-1}} is a genuine distinct-subset-sums set (geomSet_hasDistinctSubsetSums, via Mathlib Finset.geomSum_injective + subset_image_iff), has card n, attains equality ΣA = 2^n − 1 (sum_geomSet), and has max element 2^{n-1} (max'_geomSet). exists_extremal_geomSet packages these into a two-sided wall (2^n−1)/n ≤ M(n) ≤ 2^{n-1} on the Erdős extremal maximum, so the conjectural constant c ≤ 1/2.",
       "mathContext": "Extremal max $M(n)$ obeys $(2^n-1)/n \\le M(n) \\le 2^{n-1}$; the constant $c$ in $\\max A \\ge c\\cdot 2^{|A|}$ satisfies $c \\le 1/2$."
+    },
+    {
+      "id": "superincreasing",
+      "title": "Superincreasing Sets — the Structural Principle",
+      "startLine": 219,
+      "endLine": 346,
+      "summary": "Section 5 abstracts the powers-of-two distinctness into the single structural principle behind it. Superincreasing A := every element exceeds the sum of all strictly smaller elements of A (∀ a ∈ A, Σ{x ∈ A : x < a} < a) — the mechanism underlying knapsack / Merkle–Hellman constructions. Three lemmas: Superincreasing.erase (the property is hereditary), Superincreasing.zero_not_mem (a superincreasing set omits 0, the structural analogue of the distinct-subset-sums zero_not_mem), and the key Superincreasing.hasDistinctSubsetSums — every superincreasing set has distinct subset sums, proved self-contained by strong induction peeling the largest element m (both/neither contain m ⇒ recurse on A∖{m}; exactly one contains m ⇒ Σ(without m) < m ≤ Σ(with m), contradiction). geomSet_superincreasing shows the powers of two are superincreasing (2ⁱ > 2⁰+⋯+2^{i-1} = 2ⁱ−1, the least possible slack, which is why they minimise the maximum and sit on the upper wall M(n) ≤ 2^{n-1}), and a closing example re-derives geomSet distinctness from the general principle with no appeal to geomSum_injective. Closes namespace Erdos1OQ02OQ01.",
+      "mathContext": "$A$ superincreasing $\\iff \\forall a\\in A,\\ \\sum\\{x\\in A: x<a\\} < a$; then any two subsets with equal sum are equal, so superincreasing $\\Rightarrow$ distinct subset sums. Powers of two are the slowest-growing superincreasing set ($2^i = (2^0+\\cdots+2^{i-1})+1$)."
     }
   ],
   "mainTheorems": [
