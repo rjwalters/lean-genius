@@ -256,6 +256,22 @@
       "startLine": 2866,
       "endLine": 3174,
       "summary": "Status table summarizing Σ₁ (open), Π₁(ℚ\\ℤ) (open, formally equivalent to Σ₁ via `integers_diophantine_iff_complement_codiophantine`), Σ₂(ℚ\\ℤ) (PROVED unconditionally as a corollary of Koenigsmann via `koenigsmann_implies_complement_existentialUniversal`), and Π₂ (proved by Koenigsmann). Lists this file's 1 net new axiom and 13 theorems, with #check commands for the main definitions and theorems including the new Σ₂ predicate, the Σ₂/Π₂ duality, and the Σ₂(ℚ\\ℤ) corollary."
+    },
+    {
+      "id": "affine-action",
+      "title": "The Affine Group Action on RatSubset",
+      "startLine": 3175,
+      "endLine": 3302,
+      "summary": "Introduces `affinePullback a b S = {q | a·q + b ∈ S}`, the pullback of a rational subset under the affine map q ↦ a·q + b, and proves it is a group action: `affinePullback_id` (identity), `affinePullback_comp` (composition), and the invertibility lemmas `affinePullback_cancel` / `affinePullback_cancel_left` for a ≠ 0. It is then shown to be a Boolean-algebra homomorphism — `affinePullback_compl`, `affinePullback_union`, `affinePullback_inter` commute the pullback with complement, union and intersection. Finally, each of the four definability classes is proved invariant under the action: `affinePullback_isDiophantineDefinition_iff`, `affinePullback_isCoDiophantineDefinition_iff`, `affinePullback_isExistentialUniversalDefinition_iff`, and `affinePullback_isUniversalExistentialDefinition_iff` (each `a ≠ 0`), so Σ₁/Π₁/Σ₂/Π₂-definability is preserved by invertible affine reparametrisation of ℚ.",
+      "mathContext": "The invertible affine maps $q \\mapsto aq+b$ ($a\\ne 0$) form a group acting on `RatSubset`; `affinePullback` is a Boolean-algebra homomorphism whose action fixes each definability class setwise. Consequently a set is Diophantine (resp. co-Diophantine / ∃∀ / ∀∃) over ℚ iff any affine image of it is — the definability hierarchy is affine-invariant."
+    },
+    {
+      "id": "sharpened-landscape-part9",
+      "title": "Part IX — The Sharpened Landscape and Final Status Roster",
+      "startLine": 3303,
+      "endLine": 3625,
+      "summary": "The closing survey (`Part IX`). A status table records the precise position of ℤ ⊂ ℚ on the arithmetic hierarchy: Σ₁ (ℤ Diophantine over ℚ) OPEN — this problem; Π₁ (ℚ∖ℤ co-Diophantine) OPEN and formally equivalent to Σ₁ via the proved `diophantine_iff_codiophantine_complement` duality; Σ₂ (ℚ∖ℤ) PROVED unconditionally as a Koenigsmann corollary; Π₂ (ℤ ∀∃-definable) PROVED (Koenigsmann 2016). Accompanying prose explains why the Σ₁/Π₂ distinction matters (only Σ₁ transfers H10/ℤ undecidability to H10/ℚ via MRDP; Mazur's conjecture refutes Σ₁ but is consistent with Π₂) and why the Π₁(complement) / Σ₂(complement) reformulations may be more tractable for a refutation. Closes with a `#check` roster of the file's main theorems, including the affine-invariance corollaries `int_existentialUniversal_iff_affinePullback_existentialUniversal` and `int_universalExistential_iff_affinePullback_universalExistential`.",
+      "mathContext": "Landscape: Σ₁(ℤ) ≡ Π₁(ℚ∖ℤ) both OPEN; Σ₂(ℚ∖ℤ) ≡ Π₂(ℤ) both PROVED (Koenigsmann). The open gap is exactly Σ₁ vs Π₂. Only a Σ₁ (Diophantine) definition of ℤ would carry the undecidability of Hilbert's Tenth Problem from ℤ to ℚ; Koenigsmann's Π₂ definition does not."
     }
   ],
   "crossReferences": [
