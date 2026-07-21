@@ -238,51 +238,75 @@
     },
     {
       "id": "newton-chain",
-      "title": "Part III: Newton Log-Concavity and Maclaurin Means",
+      "title": "Part III: Newton's Log-Concavity Axiom and the Maclaurin Means",
       "startLine": 273,
-      "endLine": 310,
-      "summary": "newton_log_concavity (axiom): normalized eₖ sequence is log-concave. maclaurinMean definition: Mₖ = (eₖ/C(n,k))^(1/k). maclaurin_step (THEOREM, derived from newton_log_concavity via maclaurin_core_of_pos + rpow_cross + elemSymm_pos_of_top_pos): Mₖ ≥ Mₖ₊₁. maclaurinMean_nonneg: proved via rpow_nonneg.",
-      "mathContext": "Newton: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Maclaurin mean: $M_k = (e_k/\\binom{n}{k})^{1/k}$. Step: $M_k \\geq M_{k+1}$ follows from Newton + monotonicity of $t^{1/k}$."
+      "endLine": 294,
+      "summary": "newton_log_concavity (the file's sole general-n axiom): the normalized elementary symmetric sequence pₖ = eₖ/C(n,k) is log-concave, (pₖ)² ≥ pₖ₋₁·pₖ₊₁. maclaurinMean definition: Mₖ = (eₖ/C(n,k))^(1/k). Docstring records the axiom's Hardy–Littlewood–Pólya §2.22 provenance (polarization + induction on n).",
+      "mathContext": "Newton: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Maclaurin mean: $M_k = (e_k/\\binom{n}{k})^{1/k}$. The axiom is the sole remaining general-$n$ assumption; the sections below discharge it as a theorem for $n \\leq 4$."
+    },
+    {
+      "id": "maclaurin-step-derivation",
+      "title": "Deriving the Maclaurin Step from Newton — Positivity, Multiplicative Core, Crossed Roots",
+      "startLine": 295,
+      "endLine": 468,
+      "summary": "maclaurin_step is a THEOREM (formerly axiomatized), derived from newton_log_concavity alone. Supporting chain: elemSymm_pos (strict positivity), elemSymm_pred_pos and elemSymm_pos_of_top_pos (zeros form a suffix), normElemSymm and its base/positivity lemmas, maclaurin_core_of_pos (the ℕ-power core pₖ₊₁^k ≤ pₖ^{k+1} by induction on k), rpow_cross (crossed-root extraction), and maclaurinMean_nonneg. The step splits on whether eₖ₊₁ = 0.",
+      "mathContext": "Multiplicative core: $p_{k+1}^{k} \\le p_k^{k+1}$ from Newton by induction; crossed roots ($b^s \\le a^t \\Rightarrow b^{1/t} \\le a^{1/s}$ via $\\mathrm{rpow}$ at exponent $1/(st)$) then yield $M_k \\ge M_{k+1}$. The zero case uses $M_{k+1} = 0$ when $e_{k+1} = 0$."
     },
     {
       "id": "amgm",
-      "title": "Part IV: AM-GM as Corollary",
-      "startLine": 311,
-      "endLine": 331,
-      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Real.geom_mean_le_arith_mean_weighted with uniform weights 1/n.",
+      "title": "Part IV: AM ≥ GM as a Corollary",
+      "startLine": 469,
+      "endLine": 489,
+      "summary": "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n proved directly from Mathlib's Real.geom_mean_le_arith_mean_weighted with uniform weights 1/n (a black-box route; Part VII later re-derives AM–GM through the Maclaurin chain itself).",
       "mathContext": "Mathlib's weighted AM-GM: $\\prod z_i^{w_i} \\leq \\sum w_i z_i$ when $w_i \\geq 0, \\sum w_i = 1$. With $w_i = 1/n$: $(\\prod x_i)^{1/n} \\leq (\\sum x_i)/n$."
     },
     {
       "id": "from-newton",
-      "title": "Part V: M₁² ≥ M₂ from Newton's Axiom",
-      "startLine": 332,
-      "endLine": 365,
-      "summary": "maclaurin_sq_m1_ge_m2_from_newton: alternative proof of C(n,2)·(∑xᵢ)² ≥ n²·e₂ for non-negative inputs using the newton_log_concavity axiom at k=1 and cross-multiplication.",
-      "mathContext": "Newton at $k=1$: $((\\sum x_i)/n)^2 \\geq e_2/\\binom{n}{2}$, cross-multiplied to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$. Complements the axiom-free proof `maclaurin_sq_m1_ge_m2_general` which works for all reals."
+      "title": "Part V: Non-Negative Maclaurin Chain — M₁² ≥ M₂ from Newton",
+      "startLine": 490,
+      "endLine": 525,
+      "summary": "maclaurin_sq_m1_ge_m2_from_newton: C(n,2)·(∑xᵢ)² ≥ n²·e₂ for non-negative inputs, via newton_log_concavity at k=1 and cross-multiplication. Complements the axiom-free maclaurin_sq_m1_ge_m2_general (Part on binomial identity) which holds for all reals.",
+      "mathContext": "Newton at $k=1$: $((\\sum x_i)/n)^2 \\geq e_2/\\binom{n}{2}$, cross-multiplied to $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
     },
     {
       "id": "maclaurin-chain",
-      "title": "Maclaurin Chain by Induction",
-      "startLine": 366,
-      "endLine": 392,
-      "summary": "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on d = k-j. maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as a one-line corollary.",
-      "mathContext": "Induction on gap $d = k - j$: $M_j \\geq M_{j+e}$ (IH) and $M_{j+e} \\geq M_{j+e+1}$ (step axiom) give $M_j \\geq M_{j+e+1}$. Corollary: $M_1 \\geq M_n$, i.e., AM $\\geq$ GM."
+      "title": "Maclaurin Chain by Induction (M₁ ≥ Mₙ)",
+      "startLine": 526,
+      "endLine": 551,
+      "summary": "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on the gap d = k−j, chaining maclaurin_step. maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as a one-line corollary.",
+      "mathContext": "Induction on gap $d = k - j$: $M_j \\geq M_{j+e}$ (IH) and $M_{j+e} \\geq M_{j+e+1}$ (step) give $M_j \\geq M_{j+e+1}$. Corollary: $M_1 \\geq M_n$."
     },
     {
       "id": "general-recurrence",
       "title": "Part VI: General Recurrence and Structural Theorems",
-      "startLine": 393,
-      "endLine": 512,
-      "summary": "elemSymm_succ: general recurrence eₖ₊₁(succ) = eₖ₊₁(castSucc) + xₙ·eₖ(castSucc). elemSymm_gt_eq_zero: eₖ = 0 for k > n. elemSymm_n_eq_prod: eₙ = ∏xᵢ. newton_k1: Newton's inequality at k=1 proved without axioms.",
-      "mathContext": "The recurrence $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$ generalizes the $k=1$ case. Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, proved from $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$."
+      "startLine": 552,
+      "endLine": 670,
+      "summary": "pc_disj_general (disjointness for the powersetCard split), elemSymm_succ (general recurrence eₖ₊₁(succ) = eₖ₊₁(castSucc) + xₙ·eₖ(castSucc)), elemSymm_gt_eq_zero (eₖ = 0 for k > n), elemSymm_n_eq_prod (eₙ = ∏xᵢ), and newton_k1 (Newton's inequality at k=1 proved WITHOUT the axiom, for all reals, from the binomial identity + Cauchy–Schwarz).",
+      "mathContext": "Recurrence: $e_{k+1}(x_1,\\ldots,x_{n+1}) = e_{k+1}(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_k(x_1,\\ldots,x_n)$. Newton at $k=1$: $(e_1/n)^2 \\geq e_2/\\binom{n}{2}$, axiom-free for every $n$."
+    },
+    {
+      "id": "newton-small-n",
+      "title": "Part VI-b: Newton's Inequality Axiom-Free for Small n (n ≤ 4)",
+      "startLine": 671,
+      "endLine": 776,
+      "summary": "Explicit polynomial expansions elemSymm_two_fin3, elemSymm_two_fin4, elemSymm_three_fin4, then newton_n3_k2, newton_n4_k2, newton_n4_k3 — each a genuine instance of newton_log_concavity discharged by nlinarith as a sum of squares, for ALL reals. With newton_k1 (k=1, all n) these make Newton's log-concavity an axiom-free THEOREM for every 1 ≤ k, k+1 ≤ n ≤ 4.",
+      "mathContext": "At fixed small $n$ the $e_k$ expand to explicit polynomials whose Newton inequality is a sum of squares (e.g. $e_2^2 \\geq 3 e_1 e_3$ is $\\tfrac12\\sum (x_ix_j - x_jx_k)^2$), reflecting real-rootedness of $\\prod(t+x_i)$; `nlinarith` closes each with no axiom."
+    },
+    {
+      "id": "chain-endpoints",
+      "title": "Part VII: The Chain Endpoints Are the Arithmetic and Geometric Means",
+      "startLine": 777,
+      "endLine": 833,
+      "summary": "maclaurinMean_one (M₁ = (∑xᵢ)/n, the arithmetic mean) and maclaurinMean_top_eq_geom (Mₙ = (∏xᵢ)^(1/n), the geometric mean) identify the chain's endpoints. maclaurin_chain_amgm then obtains AM–GM through the Maclaurin chain — from newton_log_concavity alone, not Mathlib's weighted AM–GM. geom_le_maclaurinMean_le_arith sandwiches every interior mean: GM ≤ Mₖ ≤ AM.",
+      "mathContext": "$M_1 = (\\sum x_i)/n$ (AM) and $M_n = (\\prod x_i)^{1/n}$ (GM); the top-to-bottom chain $M_1 \\geq M_n$ collapses to AM–GM. Two-sided: $(\\prod x_i)^{1/n} \\leq M_k \\leq (\\sum x_i)/n$ for $1 \\leq k \\leq n$."
     },
     {
       "id": "summary",
-      "title": "Summary of Results",
-      "startLine": 513,
-      "endLine": 543,
-      "summary": "Comprehensive listing of all 17 proved theorems and 2 axioms. The file proves elementary symmetric polynomial infrastructure, M₁²≥M₂ for small and general n, the full Maclaurin chain (via axioms), and AM-GM from Mathlib.",
-      "mathContext": "25 proved results + 1 axiom. Key results: $e_k$ definition and properties, $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ (inductive), $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ (Cauchy-Schwarz), the Maclaurin step $M_k \\geq M_{k+1}$ (now derived from Newton log-concavity, not assumed), $M_j \\geq M_k$ for $j \\leq k$ (chain). Sole axiom: Newton log-concavity."
+      "title": "Summary: Proved Results and the Remaining Axiom",
+      "startLine": 834,
+      "endLine": 879,
+      "summary": "Catalogue of the ~25 proved (sorry-free) results — elementary symmetric infrastructure, the binomial identity, M₁²≥M₂ for small and general n, the full Maclaurin chain, AM–GM both via Mathlib and through the chain, and Newton axiom-free for n ≤ 4 — alongside the single remaining assumption. newton_log_concavity is the sole axiom for GENERAL n (needs real-rootedness / Rolle machinery), now discharged axiom-free for every n ≤ 4.",
+      "mathContext": "Main answer: $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ for non-negative reals, $M_k = (e_k/\\binom{n}{k})^{1/k}$, from Newton log-concavity of $e_k/\\binom{n}{k}$. Sole general-$n$ axiom: `newton_log_concavity`; axiom-free for $n \\leq 4$."
     }
   ],
   "conclusion": {
