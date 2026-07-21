@@ -2,7 +2,7 @@
   "id": "shannon-entropy-oq-03",
   "title": "Strong Subadditivity of Shannon Entropy",
   "slug": "shannon-entropy-oq-03",
-  "description": "Strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z): the deepest inequality in classical information theory. This gallery entry re-exports the verified InformationTheory.strong_subadditivity from the parent Proofs/ShannonEntropy.lean and derives three three-variable corollaries not present there — conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)), its X↔Z dual (H(Z|X,Y) ≤ H(Z|Y)), and conditional mutual information non-negativity (I(X;Z|Y) ≥ 0) — each by a one-line linear rearrangement. 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
+  "description": "Strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z): the deepest inequality in classical information theory. This gallery entry re-exports the verified InformationTheory.strong_subadditivity from the parent Proofs/ShannonEntropy.lean and derives three three-variable corollaries not present there — conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)), its X↔Z dual (H(Z|X,Y) ≤ H(Z|Y)), and conditional mutual information non-negativity (I(X;Z|Y) ≥ 0) — each by a one-line linear rearrangement, then packages the conditional mutual information as a first-class definition and proves its non-negativity, the two conditioning-deficit identities, its X↔Z distribution-level symmetry (conditionalMutualInfo_swap), and the sandwich 0 ≤ I(X;Z|Y) ≤ H(X|Y). 12 theorems, 2 definitions, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lieb & Ruskai (1973)",
     "date": "1973",
@@ -46,8 +46,8 @@
     ],
     "dateAdded": "2026-03-30",
     "lineCount": 300,
-    "theoremCount": 10,
-    "definitionCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 2,
     "additionalFiles": [],
     "mathlib_version": "4.31.0",
     "verifiedAt": "2026-07-07"
@@ -55,7 +55,7 @@
   "overview": {
     "historicalContext": "Strong subadditivity (SSA) of entropy was conjectured by Lanford and Robinson in 1968 (Comm. Math. Phys. 9, 327–338) in the context of quantum statistical mechanics, where they identified it as the missing inequality required for the existence of the thermodynamic limit of mean entropy. After five years of intensive effort by mathematical physicists, Lieb and Ruskai (1973, J. Math. Phys. 14, 1938–1941) proved the quantum (von Neumann) version using Lieb's deep concavity theorem on operator-monotone functions of two matrix arguments. The classical (Shannon) case, formalized here, is comparatively elementary: it follows from the non-negativity of KL divergence applied per-slice to the conditional distribution p(x,z|y), with the y-average preserving non-negativity. SSA is equivalent to the non-negativity of conditional mutual information I(X;Z|Y) ≥ 0, and to the statement that conditioning on more variables can only reduce entropy: H(X|Y,Z) ≤ H(X|Y) — the data-processing intuition for entropy. Pippenger (2003) proved that for three random variables every valid linear entropy inequality is a non-negative combination of submodularity (SSA) and non-negativity, classifying the three-variable entropy cone. The four-variable analogue is famously NOT a finitely generated cone: Zhang and Yeung (1998) discovered the first 'non-Shannon-type' inequality, opening the modern study of the (still incompletely understood) entropy cone for n ≥ 4.",
     "problemStatement": "For any joint distribution p(x,y,z) on three discrete random variables:\n\n$$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$$\n\nEquivalently: the conditional mutual information $I(X;Z|Y) = H(X|Y) - H(X|Y,Z) \\geq 0$.",
-    "text": "A gallery formalization of strong subadditivity of Shannon entropy with 4 theorems, 0 definitions, 0 axioms, 0 sorries. It re-exports the headline theorem strong_subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z) from the parent Proofs/ShannonEntropy.lean (where the marginal operators, their distribution laws, the entropy chain rule, and the conditional-KL argument are proved once and for all), then derives three three-variable corollaries not present in the parent, each by a single linarith rearrangement: conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)), its X↔Z dual (H(Z|X,Y) ≤ H(Z|Y)), and conditional mutual information non-negativity (I(X;Z|Y) ≥ 0).",
+    "text": "A gallery formalization of strong subadditivity of Shannon entropy with 12 theorems, 2 definitions, 0 axioms, 0 sorries. It re-exports the headline theorem strong_subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z) from the parent Proofs/ShannonEntropy.lean (where the marginal operators, their distribution laws, the entropy chain rule, and the conditional-KL argument are proved once and for all), then derives three three-variable corollaries not present in the parent, each by a single linarith rearrangement: conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)), its X↔Z dual (H(Z|X,Y) ≤ H(Z|Y)), and conditional mutual information non-negativity (I(X;Z|Y) ≥ 0). It then packages I(X;Z|Y) as a named quantity (conditionalMutualInfo), proves the two conditioning-deficit identities and their symmetry, lifts that symmetry to a genuine distribution-level invariance under swapping X and Z (conditionalMutualInfo_swap, using that entropy is unchanged by relabeling), and closes with entropy monotonicity H(Y,Z) ≤ H(X,Y,Z) and the sandwich 0 ≤ I(X;Z|Y) ≤ H(X|Y).",
     "proofStrategy": "**SSA proof via conditional KL divergence:**\n\n1. For each y with p(y) > 0, define the conditional distribution p(x,z|y) = p(x,y,z)/p(y)\n2. This is a valid joint distribution on α × γ\n3. Its mutual information I_y(X;Z) = D(p(x,z|y) || p(x|y)·p(z|y)) ≥ 0 by KL non-negativity\n4. The conditional MI is I(X;Z|Y) = Σ_y p(y) · I_y(X;Z) ≥ 0\n5. Algebraically I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y), yielding SSA",
     "keyInsights": [
       "SSA is equivalent to I(X;Z|Y) ≥ 0, which is a weighted average of KL divergences, each ≥ 0",
@@ -104,9 +104,25 @@
       "title": "Conditional mutual information as a first-class quantity",
       "id": "conditional-mutual-info",
       "startLine": 111,
-      "endLine": 153,
-      "summary": "Packages the SSA deficit as a named definition conditionalMutualInfo pXYZ = H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y), and proves two facts about it: conditionalMutualInfo_nonneg (0 ≤ I(X;Z|Y), reusing conditional_mi_nonneg) and conditionalMutualInfo_eq_conditioning_deficit (I(X;Z|Y) = H(X|Y) − H(X|Y,Z), a hypothesis-free ring rearrangement that formalizes the prose claim of the conditioning corollaries).",
-      "mathContext": "Defines $I(X;Z|Y)$ and proves the identity $I(X;Z|Y) = H(X|Y) - H(X|Y,Z)$, i.e. the deficit by which conditioning additionally on $Z$ reduces the entropy of $X$ equals the conditional mutual information."
+      "endLine": 189,
+      "summary": "Packages the SSA deficit as a named definition conditionalMutualInfo pXYZ = H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y), then proves five facts about it: conditionalMutualInfo_nonneg (0 ≤ I(X;Z|Y), reusing conditional_mi_nonneg); the deficit identity conditionalMutualInfo_eq_conditioning_deficit (I(X;Z|Y) = H(X|Y) − H(X|Y,Z), a hypothesis-free ring rearrangement formalizing the prose claim of the conditioning corollaries) and its X↔Z dual conditionalMutualInfo_eq_conditioning_deficit′ (I(X;Z|Y) = H(Z|Y) − H(Z|X,Y)); and conditioning_deficit_symm, the pure algebraic rearrangement equating the two deficits — the symmetry I(X;Z|Y) = I(Z;X|Y) read at the level of conditional entropies. All four rearrangement lemmas hold with no probability hypotheses.",
+      "mathContext": "Defines $I(X;Z|Y)$ and proves the deficit identities $I(X;Z|Y) = H(X|Y) - H(X|Y,Z) = H(Z|Y) - H(Z|X,Y)$, so the amount by which learning $Z$ reduces the entropy of $X$ equals the amount by which learning $X$ reduces the entropy of $Z$ — the symmetry $I(X;Z|Y) = I(Z;X|Y)$."
+    },
+    {
+      "title": "The X↔Z symmetry of I(X;Z|Y) at the distribution level",
+      "id": "xz-symmetry",
+      "startLine": 191,
+      "endLine": 247,
+      "summary": "Upgrades the algebraic conditioning_deficit_symm to a genuine invariance of the joint law. shannonEntropy_comp_equiv shows entropy is unchanged by relabeling outcomes through any bijection e (H(p∘e) = H(p), via Equiv.sum_comp) — entropy depends only on the multiset of probabilities. reorderXZ packages the coordinate swap (z,y,x) ↦ (x,y,z) as an Equiv. conditionalMutualInfo_swap then proves conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ: each of the four entropy terms transports across the swap (marginalXY ↔ marginalYZ up to Equiv.prodComm, marginalY literally unchanged by Finset.sum_comm, the joint entropy invariant because reorderXZ is a bijection). This is the true I(X;Z|Y) = I(Z;X|Y), of which conditioning_deficit_symm is the shadow after the four terms are written out.",
+      "mathContext": "For the swapped law $p_{ZYX} = p_{XYZ} \\circ \\mathrm{reorderXZ}$, $I(X;Z|Y)[p_{ZYX}] = I(X;Z|Y)[p_{XYZ}]$: relabeling never changes entropy ($H(p \\circ e) = H(p)$), so physically exchanging the roles of $X$ and $Z$ leaves the conditional mutual information invariant."
+    },
+    {
+      "title": "Entropy monotonicity and the sandwich 0 ≤ I(X;Z|Y) ≤ H(X|Y)",
+      "id": "monotonicity-sandwich",
+      "startLine": 249,
+      "endLine": 300,
+      "summary": "A complementary absolute fact: entropy_marginalYZ_le proves H(Y,Z) ≤ H(X,Y,Z) — marginalizing out X cannot increase entropy. Since α×β×γ = α×(β×γ) definitionally, pXYZ is a two-variable law over α×(β×γ) whose (β×γ)-marginal is marginalYZ pXYZ; the parent chain rule entropy_chain_rule (H(X,Y,Z) = H(Y,Z) + H(X|Y,Z)) with the parent's conditionalEntropy_nonneg (H(X|Y,Z) ≥ 0) gives the bound. Fed into the deficit identity, conditionalMutualInfo_le_conditional_entropy proves the upper bound I(X;Z|Y) ≤ H(X|Y). Combined with conditionalMutualInfo_nonneg this is the standard sandwich 0 ≤ I(X;Z|Y) ≤ H(X|Y): learning Z reduces the conditional entropy of X by an amount between 0 and all of it. Closes namespace InformationTheory.SSA.",
+      "mathContext": "$H(Y,Z) \\leq H(X,Y,Z)$ from the chain rule $H(X,Y,Z) = H(Y,Z) + H(X|Y,Z)$ with $H(X|Y,Z) \\geq 0$, giving the sandwich $0 \\leq I(X;Z|Y) \\leq H(X|Y)$ — the extra variable $Z$ never makes $X$ more uncertain and cannot remove more information than $X$ had."
     }
   ],
   "conclusion": {
@@ -177,7 +193,7 @@
     "lineCount": 300,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/ShannonEntropySSA.lean",
     "sorries": 0,
     "additionalFiles": []
