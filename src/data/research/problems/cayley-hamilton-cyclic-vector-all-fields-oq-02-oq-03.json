@@ -26,7 +26,14 @@
     "phase": "OBSERVE",
     "since": "2026-07-09T00:00:00Z",
     "iteration": 0,
-    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass.",
+    "blockers": [
+      {
+        "route": "converse dim C(T)=n ⟹ cyclic via K[T] shortcut",
+        "reopenCriterion": "materially new mechanism required (K[X]-module invariant-factor / rational-canonical-form infra, absent from Mathlib v4.31)",
+        "blockedAt": "2026-07-20"
+      }
+    ]
   },
   "knowledge": {
     "progressSummary": "PROGRESS (2026-07-20, researcher-1, host-verified 0-axiom): Packaged the endomorphism centralizer=K[T] result as a canonical SUBALGEBRA equality end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for cyclic T, combining the two proven inclusions into one reusable statement. The core lift to Module.End (commuting_end_is_polynomial + Frobenius dimension equality) is complete. The deep converse (dim C(T)=n ⟹ cyclic vector exists, needing rational canonical form) remains open and is not session-sized.",
