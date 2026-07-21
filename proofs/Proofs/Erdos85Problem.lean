@@ -686,8 +686,8 @@ theorem containsC4_of_card_choose_two_lt {V : Type*} [Fintype V] [DecidableEq V]
   have av'x : G.Adj v' x := (G.mem_neighborFinset v' x).mp hxv'
   have av'y : G.Adj v' y := (G.mem_neighborFinset v' y).mp hyv'
   exact containsC4_of_rim avx.symm avy av'y.symm av'x hxy hvv
-    (G.ne_of_adj avx).symm (G.ne_of_adj avy).symm
-    (G.ne_of_adj av'x).symm (G.ne_of_adj av'y).symm
+    (G.ne_of_adj avx) (G.ne_of_adj avy)
+    (G.ne_of_adj av'x) (G.ne_of_adj av'y)
 
 /-- **The counting upper bound on the threshold.**  If `C(n, 2) < n · C(k, 2)` then every
 `n`-vertex graph of minimum degree `≥ k` has more than `C(n, 2)` cherries, hence a `C₄`; so

@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 2,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 4,
+    "focus": "KST cherry-counting bound formalized; f(6)=3 pinned (third exact value).",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "f(7): KST count gives only f(7) ≤ 4 (7 ≤ 4·3); true value f(7)=3 needs the sharper ex(7;C4)=9 edge bound (min-degree-3-on-7 has 11+ edges > 9). Also the general monotonicity core stays open.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1, VERIFIED 0-axiom host v4.31.0): proved the FIRST TWO exact threshold values f(4)=2 (minDegreeForC4_four) and f(5)=3 (minDegreeForC4_five) plus the sharpened general upper bound f(n)≤n-2 for n≥4 (minDegreeForC4_le_sub_two), via containsC4_of_minDegree_ge (min-degree n-2 forces a C4: non-adjacent pair ⟹ ≥2 common neighbours) and the reusable rim-embedding helper containsC4_of_rim. 24 axiom-free theorems (was 19). Deep results (KST √n scale, monotonicity) remain documented-only.",
+    "progressSummary": "Exact values f(4)=2, f(5)=3, f(6)=3 (all axiom-free). KST cherry-counting lemma containsC4_of_card_choose_two_lt (Σ C(deg v,2) > C(n,2) ⟹ C₄) gives the general upper bound minDegreeForC4_le_of_choose_lt (f(n) ≤ k when C(n,2) < n·C(k,2), i.e. n ≤ k(k−1)) — √n-order, first bound matching the true asymptotic order f(n)=(1+o(1))√n and beating linear n−2. Lower bounds f(n)≥3 (n≥5) from cycleGraph. Next: f(7) (KST gives f(7)≤3 since 7≤3·2? no 7>6; k=4 gives 7≤12 so f(7)≤4; true f(7)=3 needs sharper ex(7;C4)=9) and monotonicity core.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -42,7 +42,10 @@
       "one_le_starGraph_minDegree, two_le_minDegreeForC4, starGraph_decidableAdj in Erdos85Problem.lean — f(n+1)≥2 lower bound, 0-axiom host-verified",
       "cycleGraph_not_containsC4 (Erdos85Problem.lean): ∀ n≥5, ¬ containsC4 (Fin n) (cycleGraph n) — axiom-free, uses open Fin.CommRing for linear_combination/ring on Fin n",
       "two_le_cycleGraph_minDegree (Erdos85Problem.lean): ∀ n≥3, 2 ≤ (cycleGraph n).minDegree (Cn is 2-regular)",
-      "three_le_minDegreeForC4 (Erdos85Problem.lean): ∀ n≥5, 3 ≤ minDegreeForC4 n — GENERAL lower bound f(n)≥3, generalises the C5 point-witness"
+      "three_le_minDegreeForC4 (Erdos85Problem.lean): ∀ n≥5, 3 ≤ minDegreeForC4 n — GENERAL lower bound f(n)≥3, generalises the C5 point-witness",
+      "containsC4_of_card_choose_two_lt in Erdos85Problem.lean — pigeonhole KST lemma: C(|V|,2) < Σ_v C(deg v,2) ⟹ containsC4 (cherries = univ.sigma (N v).powersetCard 2, map ⟨v,e⟩↦e, Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
+      "minDegreeForC4_le_of_choose_lt in Erdos85Problem.lean — n.choose 2 < n * k.choose 2 ⟹ f(n) ≤ k (KST √n-order upper bound)",
+      "minDegreeForC4_six in Erdos85Problem.lean — f(6) = 3 (third exact value; C(6,2)=15 < 18=6·C(3,2))"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -58,7 +61,8 @@
       "minDegreeForC4_le_sub_two: f(n) ≤ n-2 for n≥4, sharpening the crude complete-graph bound f(n) ≤ n-1.",
       "minDegreeForC4_four: f(4) = 2 EXACTLY (first determined threshold value), combining star lower bound f(4)≥2 with n=4 case of the n-2 upper bound. Resolves the previously documented-only base case.",
       "Lean idiom: for a ∀G-with-[DecidableRel] statement, the sInf-membership pattern `apply Nat.sInf_le; intro G _ hmin` handles the instance binder cleanly. Non-neighbour cardinality via Finset.card_sdiff_add_card_eq_card (subset form) + omega; card_sdiff hypothesis-free in v4.31.",
-      "minDegreeForC4_five: f(5) = 3 EXACTLY — the cycle lower bound f(5)≥3 (three_le_minDegreeForC4) meets the n-2 upper bound at n=5 (5-2=3). Second determined value, immediate corollary of the two new bounds."
+      "minDegreeForC4_five: f(5) = 3 EXACTLY — the cycle lower bound f(5)≥3 (three_le_minDegreeForC4) meets the n-2 upper bound at n=5 (5-2=3). Second determined value, immediate corollary of the two new bounds.",
+      "Kővári–Sós–Turán cherry-counting: Σ_v C(deg v,2) counts paths of length 2; each is determined by centre + unordered endpoint pair. If the count exceeds C(|V|,2), pigeonhole gives a pair with two common neighbours = a C₄. This is the C₄/z(n;2,2) case of KST and drives the true √n-order threshold (f(n)=O(√n)), far beating the linear n−2 bound."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
