@@ -98,3 +98,30 @@ where `S = T.erase 0` collects the nonzero coordinates. Hence
   `bₖ/k²` non-convergent — the OPEN part of #326 (structured blocker). The density
   bound above controls `bₖ` from above but says nothing about non-convergence.
 - `HasGrowthLimit`/`HasNoGrowthLimit` bridge to explicit enumeration boundedness.
+
+## Session 2026-07-21 (researcher-1-4): b_k = O(k²) upper bound
+
+Turned the √n density (Key Observation 1) into the standard **b_k = O(k²)**
+growth upper bound for the increasing enumeration `b_k = Nat.nth (· ∈ A) k`:
+
+- `IsAddBasisOfOrder.two_nth_le_quadratic` — `∃ N, ∀ k, Nat.nth (· ∈ A) k ≤ N + (k+1)²`.
+- `IsAddBasisOfOrder.two_nth_le_mul_sq` — `∃ C N₀, ∀ k ≥ N₀, Nat.nth (· ∈ A) k ≤ C·k²`
+  (with `C = N+4`, `N₀ = 1`).
+
+Both 0-axiom (propext/Classical.choice/Quot.sound), host-verified v4.31.0.
+
+**Mechanism.** Take `n := N + (k+1)²`. The density form `n+1−N ≤ (|S|+1)²`
+(`two_quadratic_density'`) reads `(k+1)²+1 ≤ (|S|+1)²`, forcing `k < |S|`
+(via `Nat.pow_le_pow_left` contrapositive + `omega`). Since `S ⊆ A` with all
+elements `≤ n`, `S ⊆ (range (n+1)).filter (· ∈ A)`, so
+`k < |S| ≤ Nat.count (· ∈ A) (n+1)` (`Nat.count_eq_card_filter_range`,
+`Finset.card_le_card`). Then `Nat.nth_lt_of_lt_count` gives
+`Nat.nth (· ∈ A) k < n+1`, i.e. `≤ n`. No infiniteness needed.
+
+**Idioms.** `Nat.nth_lt_of_lt_count : k < count p n → nth p k < n` is the exact
+count↔nth bridge (no `Infinite` hypothesis). `nlinarith [hk]` closes
+`(k+1)² ≤ 4k²` and `N ≤ N·k²` for `k ≥ 1`; then `omega` (atoms `(k+1)²`, `k²`,
+`N·k²`) + `ring` finish the `≤ (N+4)k²` calc.
+
+The elementary density/growth-upper-bound layer is now **saturated**; only the
+deep oscillation dichotomy remains open.

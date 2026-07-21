@@ -339,6 +339,65 @@ theorem IsAddBasisOfOrder.two_quadratic_density' {A : Set ℕ}
   rw [Nat.card_Icc] at hcard
   exact ⟨S, hS, hSn, hcard⟩
 
+/-! ## The `bₖ = O(k²)` growth upper bound for order-2 bases
+
+The `√n` density bound above turns into an *upper* bound on the enumeration
+`bₖ = Nat.nth (· ∈ A) k` (the `k`-th smallest element of `A`, in increasing
+order): a threshold `N` such that `bₖ ≤ N + (k+1)²` for every `k`, hence
+`bₖ ≤ (N+4)·k²` for `k ≥ 1`.  This is the standard `bₖ = O(k²)` estimate that
+Key Observation 1 exists to prove.
+
+Mechanism: with `n := N + (k+1)²` the density bound `n+1−N ≤ (|S|+1)²` reads
+`(k+1)²+1 ≤ (|S|+1)²`, forcing `k < |S|`; since `S ⊆ A` and every element of `S`
+is `≤ n`, we get `k < |S| ≤ Nat.count (· ∈ A) (n+1)`, so
+`Nat.nth (· ∈ A) k < n+1` by `Nat.nth_lt_of_lt_count`.  Axiom-free; no deep
+input — the open oscillation dichotomy of #326 is untouched. -/
+
+/-- **The `bₖ = O(k²)` upper bound.**  Enumerating an order-2 additive basis `A`
+in increasing order via `Nat.nth (· ∈ A)`, the `k`-th element is at most
+`N + (k+1)²` for the density threshold `N`. -/
+theorem IsAddBasisOfOrder.two_nth_le_quadratic {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ N : ℕ, ∀ k : ℕ, Nat.nth (· ∈ A) k ≤ N + (k + 1) ^ 2 := by
+  classical
+  obtain ⟨N, hN⟩ := h.two_quadratic_density'
+  refine ⟨N, fun k => ?_⟩
+  set n : ℕ := N + (k + 1) ^ 2 with hn
+  obtain ⟨S, hS, hSn, hcard⟩ := hN n (by omega)
+  -- `(k+1)²+1 ≤ (|S|+1)²` forces `k < |S|`.
+  have hcard' : (k + 1) ^ 2 + 1 ≤ (S.card + 1) ^ 2 := by
+    have he : n + 1 - N = (k + 1) ^ 2 + 1 := by omega
+    rwa [he] at hcard
+  have hkS : k < S.card := by
+    by_contra hc
+    rw [not_lt] at hc
+    have : (S.card + 1) ^ 2 ≤ (k + 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+    omega
+  -- `S ⊆ {i < n+1 : i ∈ A}`, so `|S| ≤ count (· ∈ A) (n+1)`.
+  have hsub : S ⊆ (Finset.range (n + 1)).filter (· ∈ A) := by
+    intro s hs
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by have := hSn s hs; omega, hS (Finset.mem_coe.mpr hs)⟩
+  have hcount : k < Nat.count (· ∈ A) (n + 1) := by
+    rw [Nat.count_eq_card_filter_range]
+    exact lt_of_lt_of_le hkS (Finset.card_le_card hsub)
+  have hlt := Nat.nth_lt_of_lt_count hcount
+  omega
+
+/-- The `k`-th element of an order-2 basis is `≤ C·k²` for `k ≥ 1`
+(`bₖ = O(k²)`, the standard growth estimate of Key Observation 1). -/
+theorem IsAddBasisOfOrder.two_nth_le_mul_sq {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ C N₀ : ℕ, ∀ k : ℕ, N₀ ≤ k → Nat.nth (· ∈ A) k ≤ C * k ^ 2 := by
+  obtain ⟨N, hN⟩ := h.two_nth_le_quadratic
+  refine ⟨N + 4, 1, fun k hk => ?_⟩
+  have e1 : (k + 1) ^ 2 ≤ 4 * k ^ 2 := by nlinarith [hk]
+  have e2 : N ≤ N * k ^ 2 := by nlinarith [hk]
+  calc Nat.nth (· ∈ A) k
+      ≤ N + (k + 1) ^ 2 := hN k
+    _ ≤ N * k ^ 2 + 4 * k ^ 2 := by omega
+    _ = (N + 4) * k ^ 2 := by ring
+
 /-! ## The growth-limit predicates are non-vacuous (realizability)
 
 The lemmas above about `HasGrowthLimit`/`HasNoGrowthLimit` (uniqueness of the

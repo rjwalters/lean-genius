@@ -27,7 +27,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-20T13:00:00-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio.",
     "blockers": [
       {
@@ -36,7 +36,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Formalize the standard bₖ = O(k²) upper bound for order-2 bases (density ≥ c√n ⟹ k-th element ≤ Ck²); triangular numbers as an order-3 basis if Gauss Eureka is in Mathlib. Deep oscillation content stays open.",
+    "nextAction": "Elementary density/growth-upper-bound layer is now saturated (√n density + b_k=O(k^2) both machine-checked). Only the deep oscillation dichotomy (materially new mechanism required) remains open.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1-6, VERIFIED 0-axiom host v4.31.0): the growth-limit predicates are now realizable — hasGrowthLimit_quadratic (bₖ=c·k²→c) and hasNoGrowthLimit_oscillating (coefficient oscillates 1↔2, no limit). theoremCount 20→25 (+1 def). Deep sub-basis oscillation dichotomy (open part of #326) untouched.",
+    "progressSummary": "PROGRESS (2026-07-21, researcher-1-4, VERIFIED 0-axiom host v4.31.0): the standard b_k=O(k^2) growth UPPER bound for order-2 bases is now formalized (two_nth_le_quadratic / two_nth_le_mul_sq), turning the √n density (Key Observation 1) into an explicit bound on the k-th element Nat.nth(.∈A) k via Nat.nth_lt_of_lt_count. Deep sub-basis oscillation dichotomy (open part of #326) remains untouched.",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -59,7 +59,8 @@
       "growthRatio_eq — growth ratio of an exactly-quadratic enumeration bₖ=c·k² equals c at any k≠0 (Erdos326WIP01.lean)",
       "hasGrowthLimit_quadratic — bₖ=c·k² has growth limit c (HasGrowthLimit non-vacuous; positive realizability, Cassels flavour)",
       "oscillating (def) + growthRatio_oscillating_odd/even — explicit sequence with ratio 2 on odds, 1 on evens",
-      "hasNoGrowthLimit_oscillating — HasNoGrowthLimit is non-vacuous: oscillating sequence has no growth limit"
+      "hasNoGrowthLimit_oscillating — HasNoGrowthLimit is non-vacuous: oscillating sequence has no growth limit",
+      "IsAddBasisOfOrder.two_nth_le_quadratic + two_nth_le_mul_sq in Erdos326WIP01.lean: order-2 basis enumeration b_k=Nat.nth(.∈A) satisfies b_k ≤ N+(k+1)^2 and b_k ≤ (N+4)k^2 (k≥1). 0 axioms (propext/Classical.choice/Quot.sound), host-verified v4.31.0"
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
@@ -70,7 +71,8 @@
       "The √n density lower bound for order-2 bases (Key Observation 1) is now machine-checked axiom-free — the elementary counting core behind b_k=O(k²). The remaining open content is the growth/oscillation dichotomy (Erdős #326 proper), which this bound does not touch: it bounds b_k above but says nothing about the non-convergence of b_k/k² for a sub-basis.",
       "The HasGrowthLimit/HasNoGrowthLimit predicates were previously only equipped with uniqueness lemmas; both are now shown non-vacuous by explicit bare-sequence witnesses (no basis constraint), 0-axiom.",
       "Non-convergence is realized elementarily by oscillating the quadratic coefficient between 1 and 2; the odd/even index maps both tend to atTop so any limit would be forced to equal both 2 and 1 (tendsto_nhds_unique twice).",
-      "Idiom: ∀ᶠ equality must be typed as f =ᶠ[l] g (EventuallyEq) for .symm/.congr' dot notation to resolve; the bare ∀ᶠ (Eventually) head symbol blocks it."
+      "Idiom: ∀ᶠ equality must be typed as f =ᶠ[l] g (EventuallyEq) for .symm/.congr' dot notation to resolve; the bare ∀ᶠ (Eventually) head symbol blocks it.",
+      "The b_k = O(k^2) growth upper bound for order-2 bases is now machine-checked axiom-free (two_nth_le_quadratic: Nat.nth (.∈A) k ≤ N + (k+1)^2; two_nth_le_mul_sq: ≤ (N+4)·k^2 for k≥1). This is the standard consequence of the √n density bound (Key Observation 1): with n = N+(k+1)^2 the density (n+1-N ≤ (|S|+1)^2) forces k < |S| ≤ count(.∈A)(n+1), so Nat.nth (.∈A) k < n+1 via Nat.nth_lt_of_lt_count. No deep input; the oscillation dichotomy stays open."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."
