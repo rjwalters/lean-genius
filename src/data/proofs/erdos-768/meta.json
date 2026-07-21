@@ -140,17 +140,25 @@
       "id": "asymptotic-analysis",
       "title": "Asymptotic Analysis and OEIS",
       "startLine": 167,
-      "endLine": 206,
-      "summary": "Log-log density definition (logLogDensity), expected scaling docstring (no axiom), small elements from OEIS A352287, and proof that 6 ∉ A via interval_cases (six_not_in_setA).",
-      "mathContext": "Formal definition: Log-log density definition (logLogDensity), expected scaling docstring (no axiom), small elements from OEIS A352287, and proof that 6 ∉ A via interval_cases (six_not_in_setA)."
+      "endLine": 210,
+      "summary": "Log-log density definition (logLogDensity), expected scaling docstring (no axiom), the OEIS A352287 framing, and the first excluded value: 6 ∉ A via interval_cases (six_not_in_setA), since no divisor d > 1 of 6 is ≡ 1 (mod 3).",
+      "mathContext": "Formal definition: Log-log density (logLogDensity), expected scaling docstring (no axiom), and 6 ∉ A because the divisors {2,3,6} of 6 give 2,3,6 mod 3 = 2,0,0 — none ≡ 1."
+    },
+    {
+      "id": "concrete-witnesses",
+      "title": "Concrete Witnesses and the Smallest Nontrivial Element",
+      "startLine": 212,
+      "endLine": 260,
+      "summary": "The concrete membership witnesses that pin down the start of A (originally axiomatized, now fully proved by interval_cases): twelve_in_setA (12 = 2²·3, d=3 for p=2, d=4 for p=3) and fiftysix_in_setA (56 = 2³·7, d=7 for p=2, d=8 for p=7), bundled as small_elements_of_A (1, 12, 56 ∈ A). smallest_nontrivial_in_setA then proves 12 is the least element > 1: 2–11 are ruled out one by one (primes/prime powers via prime_power_not_in_setA, and 6, 10 by direct divisor checks).",
+      "mathContext": "$12 = 2^2\\cdot 3 \\in A$, $56 = 2^3\\cdot 7 \\in A$; $12 = \\min\\{n > 1 : n \\in A\\}$ — every $2 \\le m < 12$ is a prime, a prime power, or fails a witness ($6$ at $p=3$, $10$ at $p=5$)."
     },
     {
       "id": "main-problem",
       "title": "Main Open Problem",
-      "startLine": 207,
-      "endLine": 230,
-      "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10.",
-      "mathContext": "Formal statement: there exist c₁ $\\leq$ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N $\\geq$ 10."
+      "startLine": 262,
+      "endLine": 280,
+      "summary": "The documented statement of Erdős Problem #768 (open): is there c > 0 with |A ∩ [1,N]|/N = exp(−(c+o(1))·√(log N)·log log N)? Recorded alongside the known lower bound exp(−c₁√(log N)·log log N) and upper bound exp(−(1+o(1))√(log N·log log N)), and the motivation that |A ∩ [1,N]| bounds the count of orders of non-cyclic simple groups.",
+      "mathContext": "$|A \\cap [1,N]|/N = \\exp(-(c+o(1))\\sqrt{\\log N}\\,\\log\\log N)$? — bounds: lower $\\exp(-c_1\\sqrt{\\log N}\\log\\log N)$, upper $\\exp(-(1+o(1))\\sqrt{\\log N\\cdot\\log\\log N})$."
     }
   ],
   "conclusion": {
