@@ -1,5 +1,54 @@
 # Knowledge Base: erdos-98-wip-01
 
+## Session 2026-07-21 (researcher-1) — intersecting-circles rigidity: two common a-neighbours are equal or a√3 apart
+
+**Mode**: REVISIT (continue, RICH). **Outcome**: progress — a new axiom-free planar-rigidity
+lemma that discharges the intersecting-circle distance equations of the `h 5 ≥ 3` degree-`3`
+sub-cases. **docker-built** `Proofs.Erdos98WIP01` OK ("Build completed successfully (8577
+jobs)"; 0 sorry / 0 axiom / no `native_decide`; new proof uses only standard Mathlib inner-
+product + finrank machinery, so foundational axioms only).
+
+The prior session left two concrete geometric residuals for `h 5 ≥ 3`. This session closes
+the **first-named next step**: *"two circles of radius `a` at centre-distance `a` meet at
+points `a√3` apart"*, as reusable `EuclideanSpace ℝ (Fin 2)` algebra.
+
+**Lean result added** (`proofs/Proofs/Erdos98WIP01.lean:1782`):
+
+- **`two_common_neighbours_dist`** (axiom-free): if `dist p q = a` and both `x` and `y` are
+  at distance `a` from `p` and from `q` (with `a > 0`), then `x = y ∨ dist x y = a·√3`. Two
+  circles of radius `a` with centres `a` apart meet in ≤ 2 points, at distance `a√3`.
+
+**Mechanism (rigorous).** Write `u = x−p`, `v = y−p`, `w = q−p`; all have norm `a`, and
+`⟨u,w⟩ = ⟨v,w⟩ = a²/2` (from `‖u−w‖ = ‖x−q‖ = a`, `norm_sub_sq_real`). The vector
+`e = u+v−w` is orthogonal to both `w` and `d = u−v` (direct inner-product expansion). If
+`x ≠ y` then `d ≠ 0`; were `e ≠ 0`, then `e, w, d` would be three **pairwise-orthogonal
+nonzero** vectors, hence linearly independent — impossible in the `2`-dimensional plane
+(`LinearIndependent.fintype_card_le_finrank`: `3 ≤ 2`). So `e = 0`, i.e. `u+v = w`; taking
+norms of `u+v` gives `⟨u,v⟩ = −a²/2`, whence `‖x−y‖² = ‖u−v‖² = 3a²`. Same
+regular-simplex-needs-dimension argument as `no_four_mutually_equidistant`, run one dimension
+lower.
+
+**Reusable Lean notes.** (i) `simp only [inner_sub_left, inner_add_left, …]` canonicalizes
+`⟪u,v⟫` to a fixed argument order (`⟪v,u⟫`), so a follow-up `rw [real_inner_comm .., htval]`
+with LHS `⟪u,v⟫` won't fire — finish with `linarith [htval, hc]` (`hc : ⟪v,u⟫=⟪u,v⟫`).
+(ii) `real_inner_comm`'s explicit args are the *reverse* orientation; use `real_inner_comm _ _`
+driven by the expected type. (iii) explicit `rw [inner_sub_right]` over a `set`-bound
+`u := x−p` unfolds the local def (`⟪u,u⟫ ↦ ⟪u,x⟫−⟪u,p⟫`); prefer `simp only` for the
+expansion, then a linear closer.
+
+**Honest delta.** Did **not** prove `h 5 ≥ 3` (still open). +1 axiom-free reusable geometric
+lemma that *unlocks* the degree-`3` sub-cases (the last-remaining named gap for those cases
+was exactly this circle-intersection algebra). The all-degree-2 (`C₅`) case —
+"equilateral + equidiagonal convex pentagon ⇒ concyclic" — is still open. Axiom count
+unchanged (0). Bounds remain `2 ≤ h 5 ≤ 3`. Phase `ACT`.
+
+**Files modified**: `proofs/Proofs/Erdos98WIP01.lean`,
+`src/data/research/problems/erdos-98-wip-01.json`, this file.
+
+**Next**: use `two_common_neighbours_dist` to finish the degree-`3` sub-case contradictions;
+then the `C₅` concyclicity fact closes `h 5 ≥ 3`.
+
+
 ## Session 2026-07-21 (researcher-1) — h 5 ≥ 3 reduced to pentagon rigidity: 2-distance reduction + degree structure
 
 **Mode**: REVISIT (continue, RICH). **Outcome**: progress — rigorous reduction of the open
