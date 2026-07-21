@@ -95,57 +95,97 @@
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 45,
-      "endLine": 63,
+      "endLine": 59,
       "summary": "Defines `IsRomanoff n` ($\\exists k \\geq 1, p$ prime: $n = 2^k + p$), `ExceptionalSet` (odd non-Romanoff integers), and documents (not formalized) the characterization that $n$ is exceptional iff $n - 2^k$ is composite for every valid $k$.",
       "mathContext": "Defines `IsRomanoff n` ($\\exists k \\geq 1, p$ prime: $n = 2^k + p$), `ExceptionalSet` (odd non-Romanoff integers), and documents (not formalized) the characterization that $n$ is exceptional iff $n - 2^k$ is composite for every valid $k$."
     },
     {
       "id": "the-romanoff-theorem",
       "title": "The Romanoff Theorem",
-      "startLine": 64,
-      "endLine": 91,
+      "startLine": 60,
+      "endLine": 79,
       "summary": "Defines asymptotic `density` and `lowerDensity`, then documents (not formalized) Romanoff's theorem: the Romanoff numbers have positive lower density among odd integers. Corollary: the exceptional set has density less than $1/2$.",
       "mathContext": "Defines asymptotic `density` and `lowerDensity`, then documents (not formalized) Romanoff's theorem: the Romanoff numbers have positive lower density among odd integers. Corollary: the exceptional set has density less than $1/2$."
     },
     {
       "id": "erd-s-s-covering-congruence-re",
       "title": "Erdős's Covering Congruence Result (1950)",
-      "startLine": 92,
-      "endLine": 116,
+      "startLine": 80,
+      "endLine": 93,
       "summary": "Defines `IsCoveringSystem` and documents (not formalized) Erdős's 1950 result: using covering congruences with moduli $\\{2, 3, 4, 6, 8, 12, 24\\}$, the exceptional set contains an infinite arithmetic progression.",
       "mathContext": "Formal definition: Defines `IsCoveringSystem` and documents (not formalized) Erdős's 1950 result: using covering congruences with moduli $\\{2, 3, 4, 6, 8, 12, 24\\}$, the exceptional set contains an infinite arithmetic progression."
     },
     {
       "id": "the-conjecture-and-its-disproo",
       "title": "The Conjecture and Its Disproof",
-      "startLine": 117,
-      "endLine": 146,
+      "startLine": 94,
+      "endLine": 112,
       "summary": "Formalizes `ErdosConjecture16`: $E = (\\text{AP}) \\cup (\\text{density-0 set})$. Documents (not formalized) Chen's 2023 disproof (stated as ¬ErdosConjecture16; no such declaration exists in the source) and the consequence that no single AP captures $E$ up to density 0.",
       "mathContext": "Formalizes `ErdosConjecture16`: $E = (\\text{AP}) \\cup (\\text{density-0 set})$. Documents (not formalized) Chen's 2023 disproof (stated as ¬ErdosConjecture16; no such declaration exists in the source) and the consequence that no single AP captures $E$ up to density 0."
     },
     {
       "id": "known-exceptional-numbers",
       "title": "Known Exceptional Numbers",
-      "startLine": 147,
-      "endLine": 171,
+      "startLine": 113,
+      "endLine": 121,
       "summary": "Documents (not formalized) specific exceptional numbers: 127, 149, 251. The source notes in prose (not checked in Lean) that $127 - 2^k$ is composite for $k = 1, \\ldots, 6$ and $2^7 > 127$.",
       "mathContext": "Documents (not formalized) specific exceptional numbers: 127, 149, 251. The source notes in prose (not checked in Lean) that $127 - $2^{k}$$ is composite for $k = 1, \\ldots, 6$ and $$2^{7}$ > 127$."
     },
     {
       "id": "connection-to-covering-congrue",
       "title": "Connection to Covering Congruences",
-      "startLine": 172,
-      "endLine": 188,
+      "startLine": 122,
+      "endLine": 132,
       "summary": "Defines `erdosCovering` with moduli $\\{2,3,4,6,8,12,24\\}$ (period 24) and documents (not formalized) that for exceptional $n$, each $n - 2^k$ is divisible by some prime $p < 100$ from the covering.",
       "mathContext": "Defines `erdosCovering` with moduli $\\{2,3,4,6,8,12,24\\}$ (period 24) and documents (not formalized) that for exceptional $n$, each $n - $2^{k}$$ is divisible by some prime $p < 100$ from the covering."
     },
     {
       "id": "density-bounds",
       "title": "Density Bounds",
-      "startLine": 189,
-      "endLine": 203,
+      "startLine": 133,
+      "endLine": 140,
       "summary": "Documents (not formalized) precise density bounds: $\\underline{d}(E) > 0$ (positive density from the arithmetic progression) and $\\underline{d}(E) < 1/10$ (approximately 9% of all integers, 18% of odd integers).",
       "mathContext": "Documents (not formalized) precise density bounds: $\\underline{d}(E) > 0$ (positive density from the arithmetic progression) and $\\underline{d}(E) < 1/10$ (approximately 9% of all integers, 18% of odd integers)."
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 141,
+      "endLine": 163,
+      "summary": "Defines the sibling questions in the 2^k + p family as propositions: Erdos9Question, Erdos10Question, Erdos11Question — the de Polignac / Romanoff neighbourhood of Erdős #16.",
+      "mathContext": "The exceptional-set question sits in a family of representation problems $n = 2^k + p$; these `Prop` definitions record the adjacent Erdős problems #9/#10/#11 for cross-reference."
+    },
+    {
+      "id": "why-chen-significant",
+      "title": "Why Chen's Result is Significant",
+      "startLine": 164,
+      "endLine": 175,
+      "summary": "Prose: Chen's 2023 disproof shows the exceptional set has rich structure beyond a single arithmetic progression — possibly multiple independent progressions, fractal/quasi-random behaviour, and deep ties to prime distribution.",
+      "mathContext": "Motivates the disproof: the exceptional set is not (AP) ∪ (density-0), suggesting genuinely multi-progression / quasi-random structure."
+    },
+    {
+      "id": "foundational-lemmas",
+      "title": "Foundational Lemmas (Axiom-Free)",
+      "startLine": 176,
+      "endLine": 367,
+      "summary": "The machine-checked core (0 axioms): mem_exceptionalSet_iff, isRomanoff_four_le, not_isRomanoff_one/three and membership of 1,3 in the exceptional set; Romanoff witnesses isRomanoff_five/seven with five_not_mem_exceptionalSet; density_nonneg / density_le_one; erdosCovering_moduli_pos and erdosCovering_isCoveringSystem (the {2,3,4,6,8,12,24} system genuinely covers ℤ, by decide); the bounded characterisation isRomanoff_iff / isRomanoff_iff_mem_range with the resulting IsRomanoff Decidable instance; and verified exceptionality of the OEIS A006285 terms 127, 149, 251, 331.",
+      "mathContext": "Everything here depends only on propext/Classical.choice/Quot.sound. Key device: $\\texttt{isRomanoff\\_iff\\_mem\\_range}$ bounds the witness exponent $k$ to a finite range, making $\\texttt{IsRomanoff}$ decidable and the exceptionality of 127/149/251/331 machine-checkable by `decide`."
+    },
+    {
+      "id": "covering-obstruction",
+      "title": "The Covering-Congruence Obstruction Mechanism (Axiom-Free)",
+      "startLine": 368,
+      "endLine": 451,
+      "summary": "The verified gear behind the covering construction: two_pow_mod_three (2^k mod 3 is periodic with period 2), two_pow_modEq_of_dvd (order-periodicity of 2 mod p), the general obstruction covering_prime_not_prime_sub (if p | n − 2^k on a residue class then n − 2^k is composite there), and the concrete gears not_prime_sub_even_mod_three (prime 3, even exponents) and not_prime_sub_mod_seven (prime 7, exponents ≡ 0 mod 3). All axiom-free.",
+      "mathContext": "Formalizes how a covering system forces compositeness: fixing a prime $p$ and exponent period $d$, on the residue class where $p \\mid n - 2^k$ the value $n-2^k$ is divisible by $p$ yet exceeds it, so it is not prime — the mechanism producing an AP of exceptional $n$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 452,
+      "endLine": 479,
+      "summary": "Closing prose: Problem #16 is SOLVED (disproved by Chen 2023). Recap of Romanoff (1934, positive density are representable), Erdős (1950, exceptional set contains an AP), Chen (2023, not a single AP + noise); the exceptional set has small positive density (~0.09) and complex multi-progression structure. References including OEIS A006285.",
+      "mathContext": "Status recap: Erdős #16 disproved; the exceptional set has density $\\approx 0.09$, contains arithmetic progressions via covering congruences, but is not captured by any single progression up to density 0."
     }
   ],
   "conclusion": {
