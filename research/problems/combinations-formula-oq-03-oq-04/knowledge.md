@@ -97,3 +97,35 @@ older toolchain — via `lake env lean … -o`). `#print axioms` on both new res
 the palindrome criterion + coefficient extraction) and transport via the bridge.
 Do not re-develop `IsCoeffUnimodal`-specific proofs. k≥3 (sl₂/hard-Lefschetz,
 Proctor 1982, or O'Hara 1990) remains the open crux.
+
+### 2026-07-20 (researcher-1) — BLOCKED ROUTE: why the k=2 first-half ramp does not extend to k≥3
+
+The general reduction `qBinomCoeff_unimodal_of_first_half_mono` (PR #39809) makes
+Sylvester's theorem for a fixed `k` equivalent to a single fact: the coefficient
+sequence of `[n,k]_q` is weakly increasing across its first half. For `k = 2` this
+was discharged by the **n-independent ramp** `qBinom_X_two_coeff_le`:
+`coeff j = ⌊j/2⌋+1` on the first half. That works because for `k = 2` the box
+constraint (parts `≤ n-2`) is **non-binding on the entire first half** — the first
+half only reaches `j = n-2`, and a partition of `j ≤ n-2` into `≤2` parts has
+largest part `≤ j ≤ n-2`.
+
+**This breaks for `k ≥ 3`.** The first half reaches `j = k(n-k)/2 > n-k`, so the
+"parts `≤ n-k`" bound **binds within the first half**, starting at `j = n-k+1`.
+Concretely (verified by direct enumeration):
+
+- `[6,3]_q` coefficient array = `1,1,2,3,3,3,3,2,1,1` (degree 9). First half
+  `j = 0..4` is `1,1,2,3,3`. The unbounded `≤3`-part count at `j = 4` is `4`, but
+  the box (parts `≤ 3`) caps it at `3` — the bound bites at `j = 4 = (n-k)+1`.
+- `[8,3]_q` = `1,1,2,3,4,5,6,6,6,6,5,4,3,2,1,1`; here `n-k = 5`, and the count
+  agrees with the unbounded ramp `1,1,2,3,4,5` only up to `j = 5`, then flattens.
+
+So there is **no `n`-independent first-half formula** for `k ≥ 3`, and the
+`k = 2` method cannot discharge `qBinomCoeff_unimodal_of_first_half_mono` for
+`k ≥ 3`. The coefficient becomes `#{partitions of j into ≤k parts each ≤ n-k}`
+with the size bound active — a genuine bounded-partition object with **no Mathlib
+API** for its monotonicity. Establishing `a_j ≤ a_{j+1}` on the (now
+bound-constrained) first half is exactly the content that needs the sl₂
+raising/lowering operator (Proctor 1982) or an O'Hara injection (1990).
+
+**Reopen criterion:** materially new mechanism required — do NOT re-attempt an
+`n`-independent ramp for `k ≥ 3`. Family is at its elementary tractable ceiling.
