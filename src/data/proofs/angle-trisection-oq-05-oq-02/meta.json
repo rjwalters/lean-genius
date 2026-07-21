@@ -86,50 +86,58 @@
     {
       "id": "definition",
       "title": "Omega-Fold Constructibility Definition",
-      "startLine": 30,
-      "endLine": 35,
+      "startLine": 34,
+      "endLine": 43,
       "summary": "Defines IsOmegaFoldConstructible d := ∃ k, IsKFoldConstructible d k. The existential closure over all fold levels.",
       "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff \\exists k,\\ \\text{IsKFoldConstructible}(d, k)$. This is the supremum of the fold hierarchy."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
-      "startLine": 40,
-      "endLine": 75,
+      "startLine": 44,
+      "endLine": 71,
       "summary": "omega_fold_one: degree 1 is omega-fold constructible. omega_fold_of_kfold: k-fold implies omega-fold. kfold_self: degree d is d-fold constructible. omega_fold_pos: every d ≥ 1 is omega-fold constructible.",
       "mathContext": "The key lemma kfold_self: $\\text{IsKFoldConstructible}(d, d)$ uses $p_d \\geq d+2 > d$ to bound all prime factors of $d$."
     },
     {
       "id": "characterization",
       "title": "Sharp Characterization",
-      "startLine": 80,
-      "endLine": 115,
+      "startLine": 72,
+      "endLine": 93,
       "summary": "not_omega_fold_zero: degree 0 fails (IsSmooth requires d > 0). omega_fold_complete_iff: d is omega-fold constructible iff d > 0.",
       "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff d > 0$. Degree 0 is excluded definitionally via IsSmooth's positivity requirement."
     },
     {
       "id": "fold-growth",
       "title": "Fold Level Growth",
-      "startLine": 120,
-      "endLine": 150,
+      "startLine": 94,
+      "endLine": 117,
       "summary": "eventually_all_folds_sufficient: for d > 0, every k ≥ d works. min_folds_finite: minimum fold level ≤ d.",
       "mathContext": "For any $d > 0$: $\\text{IsKFoldConstructible}(d, k)$ holds for all $k \\geq d$. The bound is tight: smaller $k$ may fail (e.g., degree $p_{k+1}$ is $(k+1)$-fold constructible but not $k$-fold constructible)."
     },
     {
       "id": "prime-threshold",
       "title": "Prime Fold Thresholds",
-      "startLine": 155,
-      "endLine": 175,
+      "startLine": 118,
+      "endLine": 141,
       "summary": "prime_kfold_iff_bound: prime p is k-fold constructible iff p ≤ foldPrimeBound k. omega_fold_algebraically_complete: formal statement of completeness.",
       "mathContext": "For prime $p$: $\\text{IsKFoldConstructible}(p, k) \\iff p \\leq p_{k+1}$. The fold threshold is exactly the prime's index in the prime sequence."
     },
     {
       "id": "examples",
       "title": "Concrete Examples and Zero Uniqueness",
-      "startLine": 180,
-      "endLine": 196,
+      "startLine": 142,
+      "endLine": 176,
       "summary": "Degrees 2, 3, 5, 7, 11, 100 are all omega-fold constructible. omega_fold_zero_unique_failure: degree 0 is the UNIQUE non-constructible degree.",
       "mathContext": "All positive degrees are constructible: even the large degree $100$ requires only $100$ simultaneous folds to construct. Degree $0$ is the unique exception."
+    },
+    {
+      "id": "fold-comparison",
+      "title": "Fold Level Comparison",
+      "startLine": 177,
+      "endLine": 193,
+      "summary": "kfold_le_omega: every k-fold constructible degree is omega-fold constructible (the hierarchy is monotone). omega_fold_as_union: omega-fold constructibility is exactly the union over all fold levels.",
+      "mathContext": "$\\text{IsOmegaFoldConstructible}(d) \\iff \\exists k,\\ \\text{IsKFoldConstructible}(d, k)$ realizes the omega-fold class as $\\bigcup_k \\{d : \\text{IsKFoldConstructible}(d,k)\\}$, the supremum of the fold hierarchy."
     }
   ],
   "conclusion": {
