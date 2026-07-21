@@ -50,13 +50,13 @@
       "density definition: |A|/N² ratio",
       "GrahamConjectureAxisAligned: formal statement of the conjecture",
       "graham_axis_aligned_true axiom: the main result",
-      "density_hales_jewett axiom: the underlying deep theorem (Furstenberg-Katznelson 1991)",
+      "density_hales_jewett axiom: vacuous True-bodied placeholder gesturing at the Furstenberg-Katznelson 1991 theorem (asserts nothing mathematical; not load-bearing)",
       "erdos_658 theorem: main result",
       "erdos_658_answer theorem: final answer"
     ],
     "axiomCount": 2,
     "lineCount": 285,
-    "assumptions": "2 axioms: graham_axis_aligned_true (main result), density_hales_jewett (Furstenberg-Katznelson 1991). 0 sorries.",
+    "assumptions": "2 axioms: graham_axis_aligned_true (main result, axiomatizes the genuinely-solved GrahamConjectureAxisAligned); density_hales_jewett (vacuous True-bodied placeholder gesturing at Furstenberg-Katznelson 1991, not load-bearing). 0 sorries.",
     "theoremCount": 6,
     "definitionCount": 8
   },
@@ -64,7 +64,7 @@
     "historicalContext": "**Erdős Problem #658: Squares in Dense Grid Subsets**\n\nThis problem, attributed to Graham, asks a natural geometric question: if you have enough points in an N×N grid, must some four of them form the vertices of a square?\n\n**Key History:**\n- Graham: Posed the problem for axis-aligned squares\n- Erdős [Er97e]: Included in his list of favorite unsolved problems (ambiguous about axis-alignment)\n- Furstenberg-Katznelson (1991): Proved qualitatively via the density Hales-Jewett theorem\n- Solymosi (2004): Gave the first quantitative proof with explicit bounds\n\n**Mathematical Setting:**\nThe problem connects discrete geometry with additive combinatorics. The proof uses the density Hales-Jewett theorem, one of the deepest results in the field, showing that dense sets in high-dimensional spaces must contain combinatorial structures.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet $\\delta > 0$ and $N$ be sufficiently large depending on $\\delta$. Is it true that if $A \\subseteq \\{1,\\ldots,N\\}^2$ has $|A| \\geq \\delta N^2$ then $A$ must contain the vertices of a square?\n\n**Answer: YES**\n\nFurstenberg and Katznelson (1991) proved this follows from the density Hales-Jewett theorem. Solymosi (2004) gave explicit (but very large, tower-type) bounds on N₀(δ).",
     "text": "Do dense subsets of the N×N grid contain squares? YES, proved via density Hales-Jewett (Furstenberg-Katznelson 1991), with quantitative bounds by Solymosi (2004).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Grid and Squares:** Define the N×N grid and what it means for four points to form a square\n\n2. **Density:** Define δ-dense subsets where |A| ≥ δN²\n\n3. **Main Conjecture:** State GrahamConjectureAxisAligned formally\n\n4. **Key Axioms:**\n   - graham_axis_aligned_true: The main theorem\n   - density_hales_jewett: The underlying deep result (Furstenberg-Katznelson 1991)\n\n5. **Connections:** Link to Hales-Jewett and higher-dimensional generalizations",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Grid and Squares:** Define the N×N grid and what it means for four points to form a square\n\n2. **Density:** Define δ-dense subsets where |A| ≥ δN²\n\n3. **Main Conjecture:** State GrahamConjectureAxisAligned formally\n\n4. **Key Axioms:**\n   - graham_axis_aligned_true: The main theorem\n   - density_hales_jewett: A vacuous True-bodied placeholder gesturing at the Furstenberg-Katznelson 1991 result (not load-bearing; the genuine combinatorial-line statement is left as future work)\n\n5. **Connections:** Link to Hales-Jewett and higher-dimensional generalizations",
     "keyInsights": [
       "**Density Forces Structure:** Sufficiently dense sets in grids must contain geometric patterns like squares",
       "**Hales-Jewett Connection:** The proof reduces to the density Hales-Jewett theorem, a cornerstone of additive combinatorics",
@@ -109,7 +109,7 @@
       "summary": "CombLine placeholder def, density_hales_jewett axiom",
       "startLine": 169,
       "endLine": 201,
-      "mathContext": "Axiomatized: density_hales_jewett axiom (Furstenberg-Katznelson 1991). CombLine is a placeholder definition; the reduction to Hales-Jewett is discussed in comments only, not formalized."
+      "mathContext": "density_hales_jewett is a vacuous True-bodied placeholder axiom gesturing at the Furstenberg-Katznelson 1991 theorem — it asserts nothing mathematical and is not load-bearing. CombLine is a placeholder definition; the reduction to Hales-Jewett is discussed in comments only, not formalized."
     },
     {
       "id": "solymosi-bounds",

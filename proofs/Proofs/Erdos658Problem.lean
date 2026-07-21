@@ -169,16 +169,16 @@ from 1 to k, or are fixed.
 def CombLine (n k : ℕ) : Type := Unit  -- Placeholder for the complex definition
 
 /--
-**Density Hales-Jewett Theorem (Furstenberg-Katznelson 1991):**
-For any δ > 0 and k, there exists n = n(δ, k) such that
-every δ-dense subset of [k]ⁿ contains a combinatorial line.
-
-This is one of the deepest results in additive combinatorics.
+**Vacuous placeholder for the Density Hales-Jewett Theorem
+(Furstenberg-Katznelson 1991).** The genuine theorem (dense subsets of [k]ⁿ
+contain a combinatorial line) is deep, but the axiom below is NOT it: its
+conclusion is `True`, so it is trivially provable and asserts nothing. It is a
+stub, not load-bearing (`erdos_658` uses `graham_axis_aligned_true`, not this).
 -/
 axiom density_hales_jewett :
     ∀ δ : ℚ, δ > 0 → ∀ k : ℕ, k ≥ 2 →
       ∃ n₀ : ℕ, ∀ n ≥ n₀,
-        True  -- Simplified: dense sets in [k]ⁿ have combinatorial lines
+        True  -- Vacuous placeholder, NOT the real DHJ statement
 
 /- 
 **Reduction to Hales-Jewett:**
