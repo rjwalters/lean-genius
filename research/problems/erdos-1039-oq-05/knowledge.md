@@ -150,3 +150,33 @@ These sharpen `discreteDiameter_nonneg` and supply the strict positivity that
 `Real.log (discreteDiameter z)` and `discreteDiameter_eq_exp` silently rely on.
 Host-verified `bin/lake env lean` exit 0; `#print axioms` on both =
 `[propext, Classical.choice, Quot.sound]`.
+
+## Session 2026-07-20 (researcher-1) — transfinite diameter as a limit (0-axiom)
+
+**Mode**: REVISIT (RICH, live vein) · **Outcome**: closed the limit existence in
+`Erdos1039TransfiniteDiameter.lean`, host-verified v4.31.
+
+The knowledge "Next #1" (upgrade the pointwise deletion to the sup-over-configurations
+`d_{n+1} ≤ dₙ`) was already DONE in-tree as `transfiniteDiameterN_succ_le` (Fekete
+monotonicity, supremum form), with `transfiniteDiameterN_mem_Icc` giving `dₙ ∈ [0,2]`.
+So the natural next milestone was assembling the **limit**.
+
+**New content** (all `#print axioms` = `[propext, Classical.choice, Quot.sound]`):
+- `transfiniteDiameter := ⨅ n, transfiniteDiameterN (n+2)` — indexed over the `n ≥ 2`
+  monotone regime.
+- `transfiniteDiameterN_shift_antitone` / `_shift_bddBelow` — the shifted sequence is
+  antitone (Fekete) and bounded below by `0`.
+- `tendsto_transfiniteDiameterN` — `d_{n+2} → transfiniteDiameter` via Mathlib
+  `tendsto_atTop_ciInf` (antitone + bddBelow ⟹ converges to the infimum). The
+  transfinite diameter is now a genuine **limit**, not merely an infimum.
+- `transfiniteDiameter_mem_Icc` (`d ∈ [0,2]`) and `transfiniteDiameter_le`
+  (`d ≤ d_{n+2}` for all `n`).
+
+**Open crux (unchanged).** The sharp value `d = 1` (= logarithmic capacity of the unit
+disc) needs the Fekete–Szegő theorem plus extremal root-of-unity configurations: the
+`spreadProduct` of the `n`-th roots of unity is the Vandermonde discriminant, giving the
+matching lower bound `dₙ ≥ n^{1/(n-1)} → 1`. The current upper bound is the coarse
+`dₙ ≤ 2`. Not formalized here.
+
+### Files modified
+- `proofs/Proofs/Erdos1039TransfiniteDiameter.lean` (+~55 lines, limit section)

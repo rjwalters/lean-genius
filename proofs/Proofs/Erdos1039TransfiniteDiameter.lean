@@ -507,4 +507,58 @@ theorem transfiniteDiameterN_mem_Icc (hn : 2 ≤ n) :
   · exact csSup_le (unitDiscDiameters_nonempty hn)
       (by rintro d ⟨z, hz, rfl⟩; exact discreteDiameter_le_two hn hz)
 
+/-! ### The transfinite diameter of the closed unit disc as a limit
+
+The sequence `dₙ = transfiniteDiameterN n` is non-increasing for `n ≥ 2`
+(`transfiniteDiameterN_succ_le`) and bounded in `[0,2]`
+(`transfiniteDiameterN_mem_Icc`). A bounded, monotone-decreasing real sequence
+converges to its infimum, so the **transfinite diameter of the disc**
+`d = infₙ dₙ = limₙ dₙ` is a well-defined real number in `[0,2]`. Its exact value
+(`= 1`, the logarithmic capacity of the unit disc) requires the Fekete–Szegő
+theorem and extremal root-of-unity configurations, and is not established here. -/
+
+open Filter Topology
+
+/-- The **transfinite diameter of the closed unit disc**, `d = ⨅ₙ dₙ`. Indexed as
+`n ↦ d_{n+2}` so the entire sequence lies in the `n ≥ 2` monotone regime where
+`transfiniteDiameterN_succ_le` applies. -/
+noncomputable def transfiniteDiameter : ℝ := ⨅ n : ℕ, transfiniteDiameterN (n + 2)
+
+/-- The shifted sequence `n ↦ d_{n+2}` is antitone — this is Fekete monotonicity
+(`transfiniteDiameterN_succ_le`) packaged over the shifted index. -/
+theorem transfiniteDiameterN_shift_antitone :
+    Antitone (fun n : ℕ => transfiniteDiameterN (n + 2)) :=
+  antitone_nat_of_succ_le (fun n => transfiniteDiameterN_succ_le (by omega))
+
+/-- The shifted sequence `n ↦ d_{n+2}` is bounded below by `0`
+(`transfiniteDiameterN_mem_Icc`), so its infimum exists. -/
+theorem transfiniteDiameterN_shift_bddBelow :
+    BddBelow (Set.range (fun n : ℕ => transfiniteDiameterN (n + 2))) := by
+  refine ⟨0, ?_⟩
+  rintro x ⟨n, rfl⟩
+  exact (transfiniteDiameterN_mem_Icc (by omega)).1
+
+/-- **The `n`-point diameters converge to the transfinite diameter.** Being an
+antitone sequence bounded below, `d_{n+2} → ⨅ₙ d_{n+2} = d` as `n → ∞`. This makes
+`transfiniteDiameter` a genuine limit, not merely an infimum. -/
+theorem tendsto_transfiniteDiameterN :
+    Tendsto (fun n : ℕ => transfiniteDiameterN (n + 2)) atTop
+      (nhds transfiniteDiameter) :=
+  tendsto_atTop_ciInf transfiniteDiameterN_shift_antitone transfiniteDiameterN_shift_bddBelow
+
+/-- **The transfinite diameter of the disc lies in `[0,2]`.** As the infimum of the
+`[0,2]`-valued sequence `dₙ`, it inherits both bounds. (The sharp value `d = 1` is
+the deep Fekete–Szegő content, not established here.) -/
+theorem transfiniteDiameter_mem_Icc : transfiniteDiameter ∈ Set.Icc (0 : ℝ) 2 := by
+  constructor
+  · exact le_ciInf (fun n => (transfiniteDiameterN_mem_Icc (by omega)).1)
+  · exact ciInf_le_of_le transfiniteDiameterN_shift_bddBelow 0
+      (transfiniteDiameterN_mem_Icc (by omega)).2
+
+/-- Every finite-stage diameter dominates the transfinite diameter: `d ≤ d_{n+2}`
+for all `n`.  The limit sits below the whole monotone sequence. -/
+theorem transfiniteDiameter_le (n : ℕ) :
+    transfiniteDiameter ≤ transfiniteDiameterN (n + 2) :=
+  ciInf_le transfiniteDiameterN_shift_bddBelow n
+
 end Erdos1039TransfiniteDiameter
