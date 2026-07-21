@@ -101,6 +101,20 @@
       "startLine": 119,
       "endLine": 134,
       "summary": "collisionProb_one: collisionProb 1 d = 0 (no collision with a single person). collisionProb_nonneg / collisionProb_le_one: 0 ≤ collisionProb k d ≤ 1 for k ≤ d+1."
+    },
+    {
+      "id": "strict-monotonicity",
+      "title": "Strict Monotonicity of the Paradox",
+      "startLine": 136,
+      "endLine": 194,
+      "summary": "The strict upgrade of the monotonicity block. factor_pos: each factor 1 − i/d is strictly positive for i < d. birthdayProduct_pos: P(all distinct) > 0 whenever k ≤ d (Finset.prod_pos over strictly positive factors). birthdayProduct_step_lt: P(k+1) < P(k) for 0 < k ≤ d, since the recurrence multiplies the strictly positive P(k) by a factor 1 − k/d strictly below 1 (mul_lt_mul_of_pos_left). birthdayProduct_strict_lt: P(k) < P(j) for 0 < j < k ≤ d, chaining the non-strict antitone bound with one strict step. collisionProb_strict_lt: hence collisionProb j d < collisionProb k d — the strict form of the monotone birthday paradox on 1 ≤ · ≤ d."
+    },
+    {
+      "id": "pigeonhole-certainty",
+      "title": "Pigeonhole Certainty (k > d)",
+      "startLine": 196,
+      "endLine": 212,
+      "summary": "The boundary beyond the distinctness regime. birthdayProduct_eq_zero_of_gt: once there are more people than days (d < k) the factor 1 − d/d = 0 appears in the range-product (Finset.prod_eq_zero at index d), so P(all distinct) = 0. collisionProb_eq_one_of_gt: taking complements, collisionProb k d = 1 — past the pigeonhole threshold a shared birthday is certain, the exact endpoint the monotonicity argument (confined to k ≤ d) approaches."
     }
   ],
   "references": [
@@ -125,14 +139,14 @@
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the qualitative heart of the birthday paradox: the collision probability collisionProb(k,d) = 1 − ∏_{i<k}(1 − i/d) is non-decreasing in the number of people k for 1 ≤ k ≤ d (collisionProb_monotone), so growing the group can only make a shared birthday more likely. The proof rests on a single product recurrence P(k+1) = P(k)·(1 − k/d) and the elementary fact that each conditional avoidance factor lies in [0,1]; Nat.le_induction lifts the one-step bound to the global antitone statement, and taking complements yields the headline. Companion lemmas certify collisionProb is a genuine probability (collisionProb 1 d = 0 and 0 ≤ collisionProb ≤ 1). Everything is machine-checked with 0 axioms and 0 sorries.",
+    "summary": "This file formalizes the qualitative heart of the birthday paradox: the collision probability collisionProb(k,d) = 1 − ∏_{i<k}(1 − i/d) is non-decreasing in the number of people k for 1 ≤ k ≤ d (collisionProb_monotone), so growing the group can only make a shared birthday more likely. The proof rests on a single product recurrence P(k+1) = P(k)·(1 − k/d) and the elementary fact that each conditional avoidance factor lies in [0,1]; Nat.le_induction lifts the one-step bound to the global antitone statement, and taking complements yields the headline. Companion lemmas certify collisionProb is a genuine probability (collisionProb 1 d = 0 and 0 ≤ collisionProb ≤ 1). The file then sharpens the result: on the distinctness regime 1 ≤ k ≤ d every avoidance factor is strictly below 1 and P(all distinct) > 0, so the decrease is strict (birthdayProduct_strict_lt, collisionProb_strict_lt); and past the pigeonhole threshold k > d a zero factor forces P(all distinct) = 0 and collisionProb = 1 (a certain collision). Everything is machine-checked with 0 axioms and 0 sorries.",
     "implications": [
       "Supplies the monotonicity guarantee that the lineage's two-sided exponential estimates (siblings OQ-02 and OQ-02-OQ-01) silently presuppose but never prove, completing the picture: those bounds locate the collision probability, this entry certifies which way it moves.",
+      "The strict version (collisionProb_strict_lt) settles the natural follow-up to plain monotonicity — on 1 ≤ j < k ≤ d the collision probability strictly increases, so no two distinct admissible group sizes share a collision probability — while the pigeonhole endpoint (collisionProb_eq_one_of_gt) pins the exact value 1 that the strictly increasing regime climbs toward.",
       "The argument is template-grade: any 'survival product' ∏(1 − hazardᵢ) with hazards in [0,1] is monotone by the identical recurrence-plus-induction skeleton, so the proof transfers verbatim to coupon-collector survival, reliability of series systems, and hash-collision avoidance.",
       "Isolating the qualitative core from the quantitative estimates clarifies what genuinely makes the paradox 'paradoxical' — the quadratic pair count drives the *speed* of decay, while the monotonicity proved here guarantees only its *direction*."
     ],
     "openQuestions": [
-      "Can the monotonicity be upgraded to strict monotonicity on 2 ≤ k ≤ d (where every avoidance factor 1 − k/d is strictly < 1 and P(k) > 0), giving collisionProb(j,d) < collisionProb(k,d) for j < k ≤ d?",
       "Does the non-uniform birthday distribution preserve monotonicity? With unequal probabilities pᵢ the all-distinct probability is no longer a clean falling-factorial product (cf. sibling OQ-02-OQ-01-OQ-02 on uniform minimizing two-draw collisions) — is collisionProb still monotone in k for every fixed p?",
       "Can monotonicity in the second argument be formalized too — that for fixed k, collisionProb(k,d) is non-increasing in the number of days d (more available birthdays ⇒ collisions no more likely)?"
     ]
