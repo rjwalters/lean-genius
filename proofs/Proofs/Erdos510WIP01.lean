@@ -21,7 +21,10 @@ infimum is fully provable from Mathlib.  This file establishes:
 * continuity of `θ ↦ cosineSum A θ`;
 * boundedness-below of the range, hence the basic `minCosineSum` bounds
   `−N ≤ minCosineSum A ≤ N` and `minCosineSum A ≤ cosineSum A θ`;
-* the exact value `minCosineSum {n} = −1` for `n ≥ 1`.
+* the exact value `minCosineSum {n} = −1` for `n ≥ 1`;
+* the alternating-sum bound `minCosineSum A ≤ ∑_{n ∈ A} (−1)ⁿ` (evaluation at
+  `θ = π`), and the **sharp** all-odd case `minCosineSum A = −A.card` when every
+  `n ∈ A` is odd — an explicit infinite family attaining the extreme `−N`.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
 `−c√N` lower bound — is untouched (it is the mission, not the scaffolding).
@@ -437,5 +440,31 @@ theorem minCosineSum_le_neg_half (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonemp
   rw [hcompute] at hnonneg
   have hpi : 0 < π := Real.pi_pos
   nlinarith [hnonneg, mul_pos hpi hNpos]
+
+/-! ## Evaluation at `θ = π`: the alternating-sum bound and the all-odd sharp case -/
+
+/-- **The minimum is bounded by the alternating sum.**  Evaluating at `θ = π`
+(`cosineSum_pi`) and using that `minCosineSum` is a pointwise lower bound gives
+`minCosineSum A ≤ ∑_{n ∈ A} (−1)ⁿ = #{even ∈ A} − #{odd ∈ A}` — a computable upper bound on the
+Chowla minimum for any frequency set, negative exactly when `A` has more odd than even
+elements. -/
+theorem minCosineSum_le_alternating (A : Finset ℕ) :
+    minCosineSum A ≤ ∑ n ∈ A, (-1 : ℝ) ^ n := by
+  have h := minCosineSum_le A π
+  rwa [cosineSum_pi] at h
+
+/-- **Sharp minimum for all-odd frequency sets.**  If every element of `A` is odd then each
+`cos(nπ) = −1`, so `cosineSum A π = −N`, which already meets the global lower bound
+`−N ≤ minCosineSum A`.  Hence `minCosineSum A = −A.card`: the all-odd sets are an explicit
+infinite family whose Chowla cosine sum attains the extreme value `−N` (far beyond the
+conjectured `−c√N`, but exactly), sharpening the singleton case `minCosineSum {n} = −1`. -/
+theorem minCosineSum_forall_odd (A : Finset ℕ) (hodd : ∀ n ∈ A, Odd n) :
+    minCosineSum A = -A.card := by
+  refine le_antisymm ?_ (neg_card_le_minCosineSum A)
+  have hsum : (∑ n ∈ A, (-1 : ℝ) ^ n) = -A.card := by
+    have hterm : ∀ n ∈ A, (-1 : ℝ) ^ n = -1 := fun n hn => (hodd n hn).neg_one_pow
+    rw [Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul, mul_neg_one]
+  have h := minCosineSum_le_alternating A
+  rwa [hsum] at h
 
 end Erdos510WIP01
