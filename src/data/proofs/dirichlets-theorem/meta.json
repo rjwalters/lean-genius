@@ -87,49 +87,63 @@
       "id": "sec-overview",
       "title": "Overview: Dirichlet's Theorem on Primes in AP",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 89,
       "summary": "Imports and module docstring for Dirichlet's Theorem (1837): every arithmetic progression a, a+d, a+2d, … with gcd(a,d)=1 contains infinitely many primes. These head lines state the theorem and its mod-q form, give the historical context and the L-function proof strategy (Dirichlet characters, L-functions, and the crucial non-vanishing L(1,χ)≠0 for non-principal χ), and identify the Mathlib components (LSeries.PrimesInAP, DirichletCharacter.Basic, LSeries.Nonvanishing) that supply the complete formal proof.",
       "mathContext": "Dirichlet's theorem is proved via characters χ:(ℤ/qℤ)ˣ→ℂˣ and their L-functions L(s,χ)=∑χ(n)/n^s. Summing χ(a⁻¹)·(log L)′ over χ isolates the progression a mod q; the density diverges provided L(1,χ)≠0 for every non-principal χ, the analytic crux (hardest for real characters, where a simple pole with positive residue is needed). The entry delegates to Mathlib's complete formalization in NumberTheory.LSeries.PrimesInAP."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 66,
-      "endLine": 86,
+      "startLine": 90,
+      "endLine": 110,
       "summary": "Definitions of arithmetic progressions, coprimality, and sets of primes in progressions.",
       "mathContext": "$\\text{ArithmeticProgression}(a, d) := \\{n \\in \\mathbb{N} \\mid \\exists k, n = a + kd\\}$. $\\text{PrimesCongruentMod}(a, d) := \\{p \\text{ prime} \\mid p \\equiv a \\pmod{d}\\}$."
     },
     {
       "id": "main-theorem",
       "title": "Dirichlet's Theorem - Primary Formulations",
-      "startLine": 87,
-      "endLine": 131,
+      "startLine": 111,
+      "endLine": 160,
       "summary": "Multiple equivalent formulations: ZMod, natural number congruence, constructive, integer, and filter-theoretic versions.",
       "mathContext": "ZMod form: $\\text{Set.Infinite}\\{p \\text{ prime} \\mid (p : \\mathbb{Z}/q\\mathbb{Z}) = a\\}$ for $a \\in (\\mathbb{Z}/q\\mathbb{Z})^*$. Constructive form: $\\forall n, \\exists p > n, p \\text{ prime} \\wedge p \\equiv a \\pmod{q}$."
     },
     {
       "id": "l-functions",
       "title": "Dirichlet Characters and L-Functions",
-      "startLine": 132,
-      "endLine": 166,
+      "startLine": 161,
+      "endLine": 191,
       "summary": "The analytic machinery behind the proof: Dirichlet characters, L-functions, and the non-vanishing theorem.",
       "mathContext": "$\\chi: (\\mathbb{Z}/q\\mathbb{Z})^* \\to \\mathbb{C}^*$ group homomorphism. $L(s, \\chi) = \\sum_{n=1}^{\\infty} \\chi(n)/n^s = \\prod_p (1 - \\chi(p)/p^s)^{-1}$. Key lemma: $L(1, \\chi) \\neq 0$ for $\\chi \\neq \\chi_0$."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 167,
-      "endLine": 215,
+      "startLine": 192,
+      "endLine": 239,
       "summary": "Concrete applications: infinitely many primes congruent to 1 or 3 mod 4, and 1 or 5 mod 6.",
       "mathContext": "Four instances: $\\{p \\equiv 1 \\pmod 4\\}$, $\\{p \\equiv 3 \\pmod 4\\}$, $\\{p \\equiv 1 \\pmod 6\\}$, $\\{p \\equiv 5 \\pmod 6\\}$ are each infinite. Each proved via `dirichlet_modEq` with coprimality by `decide`."
     },
     {
+      "id": "density-results",
+      "title": "Density Results",
+      "startLine": 240,
+      "endLine": 255,
+      "summary": "Introduces `DirichletDensity a q` as a `Prop` recording the quantitative refinement of the qualitative theorem: the primes $p \\equiv a \\pmod q$ (with $\\gcd(a,q)=1$) have natural (Dirichlet) density $1/\\varphi(q)$ among all primes, i.e. they are equidistributed across the $\\varphi(q)$ admissible residue classes."
+    },
+    {
       "id": "connections",
       "title": "Connections to Other Results",
-      "startLine": 225,
-      "endLine": 313,
+      "startLine": 256,
+      "endLine": 281,
       "summary": "Relations to the Prime Number Theorem for arithmetic progressions and Linnik's theorem.",
       "mathContext": "PNT for APs: $\\pi(x; q, a) \\sim x / (\\phi(q) \\ln x)$. Linnik: $\\exists L, \\forall a, q, \\gcd(a,q)=1 \\implies \\min\\{p \\equiv a \\pmod q\\} \\leq q^L$. Best known $L \\leq 5$."
+    },
+    {
+      "id": "summary-notes",
+      "title": "Summary and Historical Notes",
+      "startLine": 282,
+      "endLine": 312,
+      "summary": "Closes the file with `dirichlet_summary` (a trivial `1 + 1 = 2` well-formedness check) and a block of `#check` commands cataloguing the main results (`dirichlet_constructive`, `infinitely_many_primes_1_mod_4`/`3_mod_4`), together with historical notes on Dirichlet’s 1837 proof — the work that founded analytic number theory."
     }
   ],
   "crossReferences": [
