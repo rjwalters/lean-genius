@@ -105,7 +105,7 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 32,
+      "endLine": 43,
       "summary": "Header: rough numbers in prime gaps, Erdős's counterexample via $13\\# = 30030$, Gafni-Tao (2025) resolution, arXiv:2508.06463",
       "mathContext": "Overview of Erdős Problem #682: does every prime gap $(p_n, p_{n+1})$ contain a $g_n$-rough number, where $g_n = p_{n+1} - p_n$? Erdős's conditional counterexample uses the primorial $13\\# = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 13 = 30030$, which ensures every integer in $[2184, 2200]$ has a prime factor $\\leq 13$. Gafni-Tao (2025, arXiv:2508.06463) resolved the problem affirmatively."
     },
@@ -185,7 +185,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 319,
-      "endLine": 344,
+      "endLine": 368,
       "summary": "`erdos_682_summary` (Gafni-Tao bound + affirmative answer), `erdos_682` main theorem",
       "mathContext": "Main results: `erdos_682_summary` combines the Gafni-Tao bound $E(X) \\ll X/(\\log X)^2$ with the affirmative answer to Problem #682; `erdos_682` packages the full theorem statement. The resolution shows that while Dickson-type obstructions create infinitely many exceptions, they are sparse enough for the property to hold for almost all $n$."
     }
