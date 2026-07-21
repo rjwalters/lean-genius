@@ -90,11 +90,19 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring and imports: the Erdős–Faber–Lovász conjecture — the union of n edge-disjoint copies of Kₙ has chromatic number exactly n — now a theorem (Kang–Kelly–Kühn–Methuku–Osthus 2021 for large n, Hindman for small n).",
+      "mathContext": "Setup: Erdős Problem #19 (EFL conjecture), $\\chi(G)=n$ for the union of $n$ edge-disjoint $K_n$; imports from Mathlib graph theory."
+    },
+    {
       "id": "background",
       "title": "Background",
       "summary": "Historical context and significance of the EFL conjecture",
       "startLine": 37,
-      "endLine": 46,
+      "endLine": 47,
       "mathContext": "Erdos-Faber-Lovasz (1972): if $n$ complete graphs $K_n$ share edges disjointly, the union graph $G$ has $\\\\chi(G) = n$. One of the most famous coloring conjectures."
     },
     {
@@ -102,7 +110,7 @@
       "title": "Graph Definitions",
       "summary": "SimpleGraph', completeGraph, EdgeDisjoint",
       "startLine": 48,
-      "endLine": 66,
+      "endLine": 67,
       "mathContext": "SimpleGraph with adjacency, completeGraph $K_n$ (all pairs adjacent), EdgeDisjoint predicate (shared vertex but no shared edge between copies)."
     },
     {
@@ -110,7 +118,7 @@
       "title": "Chromatic Number",
       "summary": "IsProperColoring, IsKColorable defs; chromaticNumber axiom",
       "startLine": 68,
-      "endLine": 85,
+      "endLine": 86,
       "mathContext": "$\\\\chi(G) = \\\\min k$ such that $G$ admits a proper $k$-coloring. `IsProperColoring` (no monochromatic edge) and `IsKColorable` are defined; `chromaticNumber` is axiomatized."
     },
     {
@@ -118,7 +126,7 @@
       "title": "EFL Setup",
       "summary": "EFLFamily structure, eflUnionGraph construction, efl_edge_count_bound",
       "startLine": 87,
-      "endLine": 115,
+      "endLine": 116,
       "mathContext": "EFL family: $n$ copies of $K_n$ with pairwise edge-disjoint union. The union graph $G$ has at most $\\\\binom{n}{2} \\\\cdot n$ edges but at most $n^2$ vertices."
     },
     {
@@ -126,7 +134,7 @@
       "title": "Lower Bound",
       "summary": "Lower bound discussion: χ(G) ≥ n (commentary, not formalized)",
       "startLine": 117,
-      "endLine": 121,
+      "endLine": 122,
       "mathContext": "$\\\\chi(G) \\\\geq n$: any single $K_n$ copy requires $n$ colors, establishing the lower bound trivially. Discussed in commentary; no separate Lean declaration."
     },
     {
@@ -134,7 +142,7 @@
       "title": "Small Cases",
       "summary": "Hindman's result discussion: n < 10 (commentary, not formalized)",
       "startLine": 123,
-      "endLine": 127,
+      "endLine": 128,
       "mathContext": "Hindman: $\\\\chi(G) = n$ for $n < 10$. Verified by exhaustive analysis of small EFL configurations. Discussed in commentary; no separate Lean declaration."
     },
     {
@@ -142,7 +150,7 @@
       "title": "Kahn's Result (1992)",
       "summary": "Kahn's 1992 asymptotic result discussion: χ(G) ≤ (1+o(1))n (commentary, not formalized)",
       "startLine": 129,
-      "endLine": 133,
+      "endLine": 134,
       "mathContext": "Kahn (1992): $\\\\chi(G) \\\\leq (1+o(1))n$. First near-optimal bound, proved using probabilistic coloring methods. Gap: just $o(n)$ from the conjecture. Discussed in commentary; no separate Lean declaration."
     },
     {
@@ -150,7 +158,7 @@
       "title": "Main Result (2021)",
       "summary": "kang_kelly_kuhn_methuku_osthus, EFLConjecture, efl_conjecture_resolved",
       "startLine": 135,
-      "endLine": 152,
+      "endLine": 153,
       "mathContext": "Kang-Kelly-Kuhn-Methuku-Osthus (2021): $\\\\chi(G) = n$ for sufficiently large $n$. RESOLVED the conjecture asymptotically (and exactly for large $n$)."
     },
     {
@@ -158,7 +166,7 @@
       "title": "Equivalent Formulations",
       "summary": "LinearHypergraph, NearlyDisjointFamily structures; chromaticIndex axiom",
       "startLine": 154,
-      "endLine": 188,
+      "endLine": 189,
       "mathContext": "Equivalent to: (1) linear hypergraph edge-coloring, (2) nearly-disjoint family cover number. Each reformulation connects to different areas."
     },
     {
@@ -166,7 +174,7 @@
       "title": "Special Cases",
       "summary": "Projective plane and Steiner system special cases (commentary, not formalized)",
       "startLine": 190,
-      "endLine": 203,
+      "endLine": 204,
       "mathContext": "Projective planes: $n = q^2+q+1$ lines form an EFL family with $q+1$ points per line. Steiner systems: similar structure with controlled intersections. Discussed in commentary; no separate Lean declarations."
     },
     {
@@ -174,8 +182,16 @@
       "title": "Extensions",
       "summary": "Erdős-Füredi generalization to k-wise intersections (commentary, not formalized)",
       "startLine": 205,
-      "endLine": 213,
+      "endLine": 214,
       "mathContext": "Erdos-Furedi: generalize to $k$-wise intersection conditions. Replace edge-disjoint with bounded pairwise intersection. Discussed in commentary; no separate Lean declaration."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 215,
+      "endLine": 256,
+      "summary": "Closing recap of the resolved conjecture: the full χ(G)=n resolution combining Hindman (small n) with Kang–Kelly–Kühn–Methuku–Osthus (large n), plus the Erdős–Füredi k-wise generalization.",
+      "mathContext": "Summary: the EFL conjecture $\\chi(G)=n$ is now a theorem; restates the combined Hindman + KKKMO resolution and pointers to generalizations."
     }
   ],
   "conclusion": {
