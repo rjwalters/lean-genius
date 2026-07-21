@@ -111,25 +111,25 @@
     {
       "id": "two-flat-generalization",
       "title": "2-Flat Generalization",
-      "summary": "TwoFlat structure (affine plane in R^d), rich 2-flats, and the 2-flat blocking conjecture",
+      "summary": "TwoFlat structure (affine plane in R^d), rich 2-flats, and the 2-flat blocking conjecture richTwoFlatConjecture (for A ⊂ R^d with |A|=n≥d+2 in general position and ≤ n-(d+1) obstacles, an unblocked rich 2-flat exists)",
       "startLine": 107,
-      "endLine": 143,
+      "endLine": 156,
       "mathContext": "TwoFlat with base + 2 linearly independent directions; richTwoFlatConjecture asks about blocking rich 2-flats"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
-      "summary": "Proved: fewer obstacles make it easier to find unblocked flats (for both lines and 2-flats)",
-      "startLine": 145,
-      "endLine": 160,
+      "summary": "Part VI. Proved: fewer obstacles make it easier to find unblocked flats — unblocked_monotone_line and unblocked_monotone_twoflat (B' ⊆ B and unblocked by B implies unblocked by B'), both discharged directly from the definition",
+      "startLine": 158,
+      "endLine": 174,
       "mathContext": "unblocked_monotone: B' subset B and L unblocked by B implies L unblocked by B'"
     },
     {
       "id": "dimension-reduction",
       "title": "Dimension Reduction",
-      "summary": "Counterexamples lift: if the conjecture fails in R^d, it also fails in R^(d+1)",
-      "startLine": 162,
-      "endLine": 170,
+      "summary": "Part VII. Counterexamples lift: counterexample_lifts states that if the higher-dim line conjecture fails in R^d (d≥2) it also fails in R^(d+1), since a counterexample embeds in higher dimensions. Closes with the file Summary block cataloguing the 4 theorems, 9 definitions, 0 axioms, 0 sorries.",
+      "startLine": 176,
+      "endLine": 206,
       "mathContext": "counterexample_lifts: embedding R^d into R^(d+1) preserves counterexample properties"
     }
   ],

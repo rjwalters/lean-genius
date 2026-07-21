@@ -182,23 +182,23 @@
       "id": "sec-predicate",
       "title": "Part III: The Multivariate Puiseux Property",
       "startLine": 131,
-      "endLine": 179,
+      "endLine": 214,
       "summary": "Defines IsMultiPuiseuxSeries : (n : ℕ) → MultiHahnSeries n K → Prop by recursion. At level 0: True; at level n+1: (∃ d : ℕ+, exponents ∈ (1/d)·ℤ) ∧ (∀ coefficient recursively satisfies the predicate). Proves isMultiPuiseux_base (trivial) and isMultiPuiseux_zero (empty support + recursion). Both compile 0 sorries.",
       "mathContext": "IsMultiPuiseuxSeries captures elements of MultiHahnSeries n K whose support has a common denominator at every level of the iteration. This is the correct multivariate generalization of the Puiseux condition."
     },
     {
       "id": "sec-main-comment",
       "title": "Part IV: Multivariate Algebraic Closure (Documented)",
-      "startLine": 181,
-      "endLine": 213,
+      "startLine": 216,
+      "endLine": 248,
       "summary": "Documents the multivariate_puiseux_theorem (MultiHahnSeries n K is IsAlgClosed when K is algebraically closed and CharZero). The inductive structure is clear; the gap is that IsAlgClosed (HahnSeries ℚ K) is not yet in Mathlib 4.26. Recorded in comments with proof sketch.",
       "mathContext": "By induction on n: base case is K (algebraically closed by hypothesis); inductive step applies Puiseux's theorem to conclude HahnSeries ℚ (MultiHahnSeries n K) is algebraically closed. The induction also requires CharZero propagation."
     },
     {
       "id": "sec-properties",
       "title": "Part V: Properties of the Iterated Construction",
-      "startLine": 215,
-      "endLine": 238,
+      "startLine": 250,
+      "endLine": 273,
       "summary": "Proves single_variable_is_univariate: MultiHahnSeries 1 K = HahnSeries ℚ K (definitional equality, 0 sorry). Documents double_puiseux_redundant: HahnSeries ℚ (HahnSeries ℚ K) ≅ HahnSeries ℚ K as algebraically closed fields (requires algebraic closure uniqueness, not yet formalized).",
       "mathContext": "The single-variable case recovers the parent PuiseuxTheorem.lean exactly. The double-iteration redundancy follows from the uniqueness of algebraic closures up to isomorphism."
     }

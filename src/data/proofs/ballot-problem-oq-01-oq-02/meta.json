@@ -274,7 +274,7 @@
       "id": "concrete-open-challenges",
       "title": "Part IX: Reference, Concrete Examples, and Full Ordering Problem",
       "startLine": 993,
-      "endLine": 1047,
+      "endLine": 1079,
       "summary": "#check @Ballot.ballot_problem as reference. Four norm_num examples: (3,1,1)→1/5, (5,2,1,1)→1/9, (5,0,0)→1, (4,3)→1/7. The full ordering open problem: P(a₁>a₂>...>aₘ throughout) = det||(aᵢ-aⱼ)/(aᵢ+aⱼ)|| via LGV. Definitions: pairwiseRatio a b := (a-b)/(a+b) and threeCandidateProduct a b c. Verification: threeCandidateProduct 4 2 1 = 1/15.",
       "mathContext": "Ballot.ballot_problem type: uniformOn (countedSequence p q) staysPositive = (↑p - ↑q)/(↑p + ↑q). The argument order (p q with q < p) differs from our usage (b a hab). threeCandidateProduct 4 2 1 = (2/6)·(1/3)·(3/5) = (1/3)·(1/3)·(3/5) = 1/15. The LGV determinant formula requires the Lindström-Gessel-Viennot lemma for non-intersecting lattice path counting."
     }

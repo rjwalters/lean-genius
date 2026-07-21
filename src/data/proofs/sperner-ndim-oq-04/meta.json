@@ -178,7 +178,7 @@
       "id": "walk-pairing-parity",
       "title": "Walk Pairing Parity and Main Existential",
       "startLine": 820,
-      "endLine": 948,
+      "endLine": 983,
       "summary": "Proves kuhnWalk_not_in_initial_visited (the walk result is never in the initial visited set), states the bdry_all_even_of_no_fc_walks axiom (under hfail, the boundary-door set B has even cardinality via the FPF involution τ), and derives kuhn_path_existential (∃ boundary door whose walk finds FC) and its wrapper kuhnPathStart_finds_fc_existential.",
       "mathContext": "The parity contradiction argument: if no boundary-door walk finds FC, the map τ: (s₀, Fin.last d) ↦ (kuhnPathStart s₀ (Fin.last d), Fin.last d) is a FPF involution on B, giving Even |B| — contradicting the odd boundary-door hypothesis. The τ∘τ=id step (walkTrace_reversal) is axiomatized as bdry_all_even_of_no_fc_walks."
     }
