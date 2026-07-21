@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-20, researcher-1, VERIFIED 0-axiom host, print axioms = propext/Classical.choice/Quot.sound): minCosineSum A <= 0 for positive-frequency sets (0 not in A), via integral over full period = 0 (integral_cosineSum_eq_zero) and constant <= pointwise. Prior work: minCosineSum attained (exists_eq_minCosineSum), two-sided bounds, minCosineSum{n}=-1. Remaining: sharp -c*sqrt(N) bound (deep: Bourgain/Ruzsa/Bedert) and the Sidon sqrt(N)-optimality example.",
+    "progressSummary": "minCosineSum A ≤ 0 (integral avg) and strict <0 for nonempty positive-frequency A were established; NOW upgraded to a UNIFORM QUANTITATIVE constant minCosineSum A ≤ −1/2 (minCosineSum_le_neg_half) via a second-moment/L² argument: first moment ∫cosineSum=0, second moment ∫(cosineSum)²=π·N (integral_cosineSum_sq, from orthogonality integral_cos_mul_cos), and the sandwich m≤f≤N. Axiom-free. This is a materially new mechanism distinct from the still-open/blocked −c√N growth route (which needs Bourgain/Ruzsa/Bedert). Remaining: the sharp −c√N lower bound and the Sidon √N-optimality example.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -56,7 +56,11 @@
       "exists_eq_minCosineSum (Erdos510WIP01.lean): the infimum minCosineSum A is attained at a concrete angle, via periodicity + compactness of [0,2π] (2026-07-20)",
       "integral_cos_mul_eq_zero: integral over 0..2pi of cos(n*theta) = 0 for n>=1 (Erdos510WIP01.lean)",
       "integral_cosineSum_eq_zero: integral over 0..2pi of cosineSum A = 0 when 0 not in A",
-      "minCosineSum_nonpos: minCosineSum A <= 0 for positive-frequency sets (0 not in A)"
+      "minCosineSum_nonpos: minCosineSum A <= 0 for positive-frequency sets (0 not in A)",
+      "integral_cos_int_mul_eq_zero (Erdos510WIP01.lean): ℤ-frequency cos period integral = 0",
+      "integral_cos_mul_cos (Erdos510WIP01.lean): orthogonality ∫cos(nθ)cos(mθ)=π·[n=m]",
+      "integral_cosineSum_sq (Erdos510WIP01.lean): second moment ∫(cosineSum A)²=π·|A|",
+      "minCosineSum_le_neg_half (Erdos510WIP01.lean): minCosineSum A ≤ −1/2, all axiom-free"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
@@ -64,7 +68,10 @@
       "Continuity + 2π-periodicity make minCosineSum an attained minimum, not merely an infimum; formalizing attainment is the natural next structural step.",
       "The θ=0 value N and θ=π value ∑(−1)ⁿ give cheap explicit witnesses bracketing the infimum.",
       "minCosineSum A <= 0 for 0 not in A: the average of cosineSum over a full period is 0, and minCosineSum is a pointwise lower bound, so integrating the constant gives 2pi*minCosineSum <= 0. This is the elementary sign fact behind Chowla (a positive-frequency cosine sum must dip to 0 or below).",
-      "Integral technique: intervalIntegral.integral_comp_mul_left (c!=0) reduces cos(n*theta) to n-inverse-scaled integral_cos = sin(n*2pi)-sin 0 = 0 (via Real.sin_nat_mul_pi with n*2pi = (2n)*pi); intervalIntegral.integral_finsetSum swaps finite sum and integral (each term Continuous.intervalIntegrable); intervalIntegral.integral_mono_on hab hf hg h + integral_const gives (2pi)*c bound; nlinarith [Real.two_pi_pos]. NOTE: needs imports Analysis.SpecialFunctions.Integrals.Basic + MeasureTheory.Integral.IntervalIntegral.Basic (the file did NOT import Mathlib fully)."
+      "Integral technique: intervalIntegral.integral_comp_mul_left (c!=0) reduces cos(n*theta) to n-inverse-scaled integral_cos = sin(n*2pi)-sin 0 = 0 (via Real.sin_nat_mul_pi with n*2pi = (2n)*pi); intervalIntegral.integral_finsetSum swaps finite sum and integral (each term Continuous.intervalIntegrable); intervalIntegral.integral_mono_on hab hf hg h + integral_const gives (2pi)*c bound; nlinarith [Real.two_pi_pos]. NOTE: needs imports Analysis.SpecialFunctions.Integrals.Basic + MeasureTheory.Integral.IntervalIntegral.Basic (the file did NOT import Mathlib fully).",
+      "Second-moment/L² averaging gives a UNIFORM QUANTITATIVE bound minCosineSum A ≤ −1/2 for every nonempty positive-frequency A (minCosineSum_le_neg_half). Mechanism: first moment ∫₀^{2π}cosineSum=0 and second moment ∫₀^{2π}(cosineSum)²=π·N (integral_cosineSum_sq), plus the pointwise sandwich m≤f≤N, give ∫(f−m)(N−f)≥0 ⟹ −πN−2πmN≥0 ⟹ m≤−1/2. A fixed constant, materially DISTINCT from the still-open −c√N growth route.",
+      "Orthogonality of cosine characters over a full period proved from scratch (integral_cos_mul_cos): ∫₀^{2π}cos(nθ)cos(mθ)=π·[n=m] for n,m≥1, via product-to-sum cos(nθ)cos(mθ)=½(cos((n+m)θ)+cos((n−m)θ)) and the ℤ-frequency period-integral vanishing integral_cos_int_mul_eq_zero.",
+      "Lean gotchas hit: (1) integral_congr+integral_div on a big integrand triggers a whnf timeout — rewrite the integrand as a funext function-equality then split with integral_add/integral_const_mul instead; (2) applying integral_cos_int_mul_eq_zero _ with a metavar k plus sub_ne_zero.mpr loops isDefEq — pin k=(n:ℤ)−(m:ℤ) explicitly; (3) (((n:ℤ)−(m:ℤ)):ℝ) elaborates to ↑↑n−↑↑m (difference of casts) not ↑(↑n−↑m) — normalize with Int.cast_sub/Int.cast_natCast."
     ],
     "mathlibGaps": [
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
