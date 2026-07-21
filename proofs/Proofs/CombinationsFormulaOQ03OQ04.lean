@@ -745,8 +745,8 @@ theorem qBinom_X_three_coeff_prefix_mono :
         ≤ (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j + 1)
   | 0, j, hj => by omega
   | N + 1, j, hj => by
-      rw [show N + 1 + 3 = (N + 3) + 1 from by omega]
-      simp only [qBinom_X_three_coeff_succ]
+      rw [show N + 1 + 3 = (N + 3) + 1 from by omega,
+          qBinom_X_three_coeff_succ (N + 3) j, qBinom_X_three_coeff_succ (N + 3) (j + 1)]
       -- `k = 2` increment ≥ 0 on the prefix, via the ramp `⌊j/2⌋+1`
       have e0 : (qBinom (X : ℤ[X]) (N + 3) 2).coeff j = ((j / 2 : ℕ) : ℤ) + 1 :=
         qBinom_X_two_coeff_le (N + 1) j (by omega)
