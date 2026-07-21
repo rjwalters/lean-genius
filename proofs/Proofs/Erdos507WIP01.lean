@@ -427,4 +427,64 @@ reason the monotonicity lemmas are stated only from `n = 3` onward. -/
 theorem heilbronn_three_pos : 0 < heilbronn 3 :=
   lt_of_lt_of_le (by norm_num) heilbronn_three_ge_half
 
+/-! ## The sharp lower bound at `n = 3` -/
+
+/-- **`heilbronn 3 ≥ 3√3/4`.**  The equilateral triangle inscribed in the unit circle,
+`(1,0), (−1/2, √3/2), (−1/2, −√3/2)`, has all three vertices on the boundary of the unit
+disk, and every ordering of its vertices has `triangleArea` equal to `3√3/4` — the area of
+the largest triangle inscribable in a radius-`1` disk.  Hence `3√3/4` is admissible for the
+`sSup` defining `heilbronn 3`.  This sharpens the crude right-triangle witness
+`heilbronn 3 ≥ 1/2` to the *conjectured exact value*: the matching upper bound
+`heilbronn 3 ≤ 3√3/4` (every unit-disk triangle has area `≤ 3√3/4`) would pin
+`heilbronn 3 = 3√3/4`, improving the current `heilbronn 3 ≤ 3`. -/
+theorem heilbronn_three_ge : 3 * Real.sqrt 3 / 4 ≤ heilbronn 3 := by
+  have h3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have hsqrt_pos : 0 < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  -- every ordering of the inscribed equilateral triangle has area `3√3/4`
+  have hval : triangleArea ((1 : ℝ), (0 : ℝ)) (-(1/2), Real.sqrt 3 / 2)
+      (-(1/2), -(Real.sqrt 3 / 2)) = 3 * Real.sqrt 3 / 4 := by
+    unfold triangleArea
+    rw [show ((1:ℝ), (0:ℝ)).1 * (((-(1/2) : ℝ), Real.sqrt 3 / 2).2
+              - ((-(1/2):ℝ), -(Real.sqrt 3 / 2)).2)
+          + ((-(1/2):ℝ), Real.sqrt 3 / 2).1 * (((-(1/2):ℝ), -(Real.sqrt 3 / 2)).2
+              - ((1:ℝ),(0:ℝ)).2)
+          + ((-(1/2):ℝ), -(Real.sqrt 3 / 2)).1 * (((1:ℝ),(0:ℝ)).2
+              - ((-(1/2):ℝ), Real.sqrt 3 / 2).2)
+          = 3 * Real.sqrt 3 / 2 from by ring]
+    rw [abs_of_nonneg (by positivity)]
+    ring
+  unfold heilbronn
+  refine le_csSup (heilbronn_defining_bddAbove 3 (by norm_num)) ?_
+  refine ⟨{((1 : ℝ), (0 : ℝ)), (-(1/2), Real.sqrt 3 / 2), (-(1/2), -(Real.sqrt 3 / 2))},
+    ?_, ?_, ?_⟩
+  · -- the three vertices are distinct, so the configuration has cardinality `3`
+    rw [Finset.card_eq_three]
+    refine ⟨((1:ℝ),(0:ℝ)), (-(1/2), Real.sqrt 3 / 2), (-(1/2), -(Real.sqrt 3 / 2)),
+      ?_, ?_, ?_, rfl⟩
+    · intro h; rw [Prod.ext_iff] at h; norm_num at h
+    · intro h; rw [Prod.ext_iff] at h; norm_num at h
+    · intro h; rw [Prod.ext_iff] at h; have h2 := h.2; linarith [hsqrt_pos]
+  · -- each vertex lies in the closed unit disk (all three on the boundary)
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl
+    · show (1:ℝ) ^ 2 + (0:ℝ) ^ 2 ≤ 1; norm_num
+    · show (-(1/2):ℝ) ^ 2 + (Real.sqrt 3 / 2) ^ 2 ≤ 1; nlinarith [h3]
+    · show (-(1/2):ℝ) ^ 2 + (-(Real.sqrt 3 / 2)) ^ 2 ≤ 1; nlinarith [h3]
+  · -- every ordered distinct triple has area `3√3/4 ≥ 3√3/4` (permutation-invariant)
+    intro p hp q hq r hr hpq hqr hpr
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp hq hr
+    rcases hp with rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl <;>
+        rcases hr with rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hpq
+        | exact absurd rfl hqr
+        | exact absurd rfl hpr
+        | exact ge_of_eq hval
+        | (rw [triangleArea_swap_right]; exact ge_of_eq hval)
+        | (rw [triangleArea_swap_left]; exact ge_of_eq hval)
+        | (rw [triangleArea_cyclic]; exact ge_of_eq hval)
+        | (rw [triangleArea_cyclic, triangleArea_cyclic]; exact ge_of_eq hval)
+        | (rw [triangleArea_swap_left, triangleArea_cyclic]; exact ge_of_eq hval)
+
 end Erdos507WIP01

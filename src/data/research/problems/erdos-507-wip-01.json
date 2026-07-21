@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended Proofs/Erdos507WIP01.lean (24→26 declarations, 0 sorry / 0 axiom, VERIFIED axiom-free [propext, Classical.choice, Quot.sound], host-verified no-Docker). Added a concrete positive lower bound at n=3: heilbronn_three_ge_half (heilbronn 3 ≥ 1/2, from the unit right triangle whose every ordering has area 1/2) and heilbronn_three_pos (0 < heilbronn 3). This separates heilbronn 3 from the junk value heilbronn 2 = 0, showing the n ≥ 3 hypothesis on the monotonicity lemmas is forced. The deep α(n) growth exponent (7/6 ≤ β ≤ 2) remains open.",
+    "progressSummary": "Foundational Heilbronn toolkit complete (triangleArea geometry, unit-disk bounds, minTriangleArea/heilbronn junk-value semantics, heilbronn_le_three, antitone/succ_le monotonicity, heilbronn_three_pos). Lower bound at n=3 now SHARP: heilbronn 3 ≥ 3√3/4 (= conjectured exact value). Open: matching upper bound heilbronn 3 ≤ 3√3/4 (largest-triangle-in-disk optimization), and the deep α(n) exponent bounds (KPS/CPZ).",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -67,7 +67,8 @@
       "heilbronn_antitone in Erdos507WIP01.lean — full antitonicity on {n≥3} via Nat.le_induction",
       "heilbronn_mem_Icc in Erdos507WIP01.lean — sandwich 0 ≤ heilbronn n ≤ 3 for n≥3 (PR #39991), 0-axiom",
       "heilbronn_three_ge_half (1/2 ≤ heilbronn 3) in Proofs/Erdos507WIP01.lean",
-      "heilbronn_three_pos (0 < heilbronn 3) in Proofs/Erdos507WIP01.lean"
+      "heilbronn_three_pos (0 < heilbronn 3) in Proofs/Erdos507WIP01.lean",
+      "heilbronn_three_ge (Erdos507WIP01.lean): heilbronn 3 ≥ 3√3/4, axiom-free (propext/Classical.choice/Quot.sound), host-verified v4.31. Area computed once for the canonical ordering (unfold triangleArea; rw show <signed> = 3√3/2 by ring; abs_of_nonneg; ring); the other 5 ordered triples reduced to it via the permutation lemmas triangleArea_swap_left/right/cyclic inside a first-combinator."
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -83,7 +84,8 @@
       "heilbronn 3 ≥ 1/2 via the explicit unit right triangle (0,0),(1,0),(0,1): all six orderings of its distinct vertices have triangleArea = 1/2 (triangleArea_unit + permutation lemmas), so 1/2 lies in the defining sSup set; le_csSup with heilbronn_defining_bddAbove gives the bound.",
       "Finset.card_eq_three is the clean way to certify a 3-point real config has cardinality 3 (avoids decide, which fails on DecidableEq ℝ): provide the three points plus pairwise inequalities via simp [Prod.ext_iff].",
       "For an ∀-over-a-3-element-Finset distinct-triple bound, rcases each membership (Finset.mem_insert/mem_singleton) three-ways (27 cases) and discharge with first | exact absurd rfl h<pair> | (unfold triangleArea; norm_num) — the 21 repeated-vertex cases die on the distinctness hyps, the 6 genuine permutations compute to 1/2.",
-      "heilbronn 3 > 0 = heilbronn 2 confirms Heilbronn is NOT monotone across the 2→3 boundary, so the n ≥ 3 hypothesis on the monotonicity lemmas is forced, not cosmetic."
+      "heilbronn 3 > 0 = heilbronn 2 confirms Heilbronn is NOT monotone across the 2→3 boundary, so the n ≥ 3 hypothesis on the monotonicity lemmas is forced, not cosmetic.",
+      "heilbronn 3 ≥ 3√3/4 (heilbronn_three_ge): sharp lower bound at n=3 via the equilateral triangle inscribed in the unit circle — (1,0),(−1/2,√3/2),(−1/2,−√3/2), all on the boundary, every ordering has triangleArea = 3√3/4 (the largest triangle inscribable in a radius-1 disk). Strengthens the crude right-triangle witness heilbronn 3 ≥ 1/2 to the conjectured EXACT value; the matching upper bound heilbronn 3 ≤ 3√3/4 (open here) would pin heilbronn 3 = 3√3/4, improving the current crude ≤ 3."
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",

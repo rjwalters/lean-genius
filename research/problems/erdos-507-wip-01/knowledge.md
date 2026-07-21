@@ -157,3 +157,38 @@ Shoelace `triangleArea` geometry: nonnegativity, full `S₃` permutation symmetr
 (signed-area alternation), the three degenerate cases, collinearity ⟺ zero area,
 explicit value `1/2`, unit-disk coordinate bounds `|p_i| ≤ 1`, and the uniform
 bound `triangleArea ≤ 3`. All 0 sorry / 0 axiom.
+
+## Session 2026-07-21 (researcher-1) — sharp lower bound heilbronn 3 ≥ 3√3/4
+
+**Mode**: strengthen the crude `heilbronn 3 ≥ 1/2` witness. **Outcome**: progress —
+the lower bound at `n = 3` is now **sharp** (equal to the conjectured exact value),
+host-verified v4.31 (`lake env lean` exit 0, 0 warnings in the new block;
+`#print axioms heilbronn_three_ge` = `[propext, Classical.choice, Quot.sound]`).
+
+`heilbronn_three_ge : 3 * Real.sqrt 3 / 4 ≤ heilbronn 3`. Witness = the equilateral
+triangle inscribed in the unit circle, `(1,0), (−1/2, √3/2), (−1/2, −√3/2)` — all three
+vertices on the boundary of the unit disk (`(−1/2)² + (√3/2)² = 1/4 + 3/4 = 1`, via
+`Real.sq_sqrt`), and every ordering of the vertices has `triangleArea = 3√3/4` (the largest
+triangle inscribable in a radius-1 disk). So `3√3/4` is admissible for the `sSup` defining
+`heilbronn 3` (`le_csSup` + `heilbronn_defining_bddAbove`), strengthening the right-triangle
+bound `heilbronn 3 ≥ 1/2`.
+
+**Recipe** (reusable for concrete-config `heilbronn` lower bounds):
+- Compute the canonical-ordering area ONCE: `unfold triangleArea;
+  rw [show <projected signed expr> = 3√3/2 from by ring]` (★`ring` sees through the
+  `(a,b).1`/`.2` projections of literal pairs — no manual `Prod.fst` reduction needed),
+  then `rw [abs_of_nonneg (by positivity)]; ring`.
+- Discharge the other 5 ordered triples by permutation-invariance: `triangleArea_swap_left`,
+  `triangleArea_swap_right`, `triangleArea_cyclic` inside a `first | …` combinator, each
+  branch `rw [<perm chain>]; exact ge_of_eq hval` (any ordering reaches the canonical in
+  ≤ 2 swap/cyclic rewrites; a failed `exact` rolls back the `rw`, so ordering is safe).
+- Distinctness of the `Real.sqrt`-coordinate pair via `Prod.ext_iff` then `linarith` on the
+  `.2` component against `Real.sqrt_pos`.
+
+### Next
+- **Matching upper bound `heilbronn 3 ≤ 3√3/4`** would pin `heilbronn 3 = 3√3/4` exactly.
+  Requires "every triangle with vertices in the unit disk has area ≤ 3√3/4" — a genuine
+  optimization (the current file only has the crude `triangleArea_le_three`, area ≤ 3). Not
+  obviously session-sized; the sharp bound follows from the inscribed-equilateral being the
+  area-maximizer, which needs a real argument.
+- Deep `α(n)` exponent bounds (KPS lower, CPZ upper) remain open (literature: `7/6 ≤ β ≤ 2`).
