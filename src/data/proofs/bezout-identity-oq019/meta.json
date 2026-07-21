@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement: Θ(log) Complexity of extGcd",
+      "startLine": 6,
+      "endLine": 41,
+      "summary": "Frames open question 3 of the parent bezout-identity-oq-02-oq-02-oq-01: formalize the O(log min(a,b)) step bound of the extended Euclidean algorithm. Introduces the plan — a `steps` counter reproducing extGcd's recursion exactly — and both arms of the Θ(log) characterization proved below, axiom- and sorry-free.",
+      "mathContext": "The remainder more than halves every two steps ($2(a \\bmod b) < a$), giving the $O(\\log b)$ direction; consecutive Fibonacci inputs attain exactly $n$ steps with $\\mathrm{fib}(n{+}1) \\asymp \\varphi^{n}$, giving the matching $\\Omega(\\log b)$ direction — Gabriel Lamé's 1844 theorem, historically the first running-time analysis of any algorithm."
+    },
+    {
       "id": "step-counter",
       "title": "Step Counter for the Extended Euclidean Algorithm",
       "startLine": 42,
@@ -112,9 +120,17 @@
       "id": "tightness",
       "title": "Tightness: the Θ(log) Characterization",
       "startLine": 157,
-      "endLine": 209,
+      "endLine": 210,
       "summary": "fib_succ_le_two_pow (fib (n+1) ≤ 2ⁿ, two-step induction) yields log_le_steps_fib (⌊log₂ (fib (n+1))⌋ ≤ steps), and steps_fib_theta packages the two-sided sandwich ⌊log₂ b⌋ ≤ steps ≤ 2⌊log₂ b⌋ + 2.",
       "mathContext": "Nat.log 2 (fib (n+1)) ≤ Nat.log 2 (2ⁿ) = n = steps, so the O(log) upper bound is order-optimal."
+    },
+    {
+      "id": "sharp-lame-bound",
+      "title": "The Sharp Lamé Bound: Fibonacci Inputs Are the Smallest",
+      "startLine": 211,
+      "endLine": 300,
+      "summary": "Upgrades the Θ(log) characterization to an exact worst-case identity. fib_succ_le proves fib (steps a b + 1) ≤ b for b > 0 (a genuine two-step Euclidean descent); steps_lt_of_lt_fib is its contrapositive (b < fib (n+1) ⇒ steps a b < n); and fib_isLeast_input concludes that fib (n+1) is the exact minimal positive input attaining n steps — realized by (fib (n+2), fib (n+1)) via steps_fib and minimal by fib_succ_le.",
+      "mathContext": "One Euclidean step sends $(a,b) \\mapsto (b, r)$ with $r = a \\bmod b$, a second $(b,r) \\mapsto (r, s)$ with $s = b \\bmod r$; the quotient $b/r \\ge 1$ forces $r + s \\le b$, the arithmetic shadow of $\\mathrm{fib}(j{+}3) = \\mathrm{fib}(j{+}2) + \\mathrm{fib}(j{+}1)$ that drives the worst case."
     }
   ],
   "conclusion": {
