@@ -1,7 +1,7 @@
 {
   "slug": "erdos-64-wip-01",
   "title": "Complete the Lean Formalization of Erdős #64 (Power-of-Two Cycles in Min-Degree-3 Graphs)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -31,11 +31,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS (infrastructure): proved the elementary base fact — connected min-degree->=2 graphs contain a cycle (3 axiom-free lemmas). The open power-of-two-length refinement is untouched.",
+    "builtItems": [
+      "connected_hasMinDegree_two_not_isAcyclic (Erdos64Problem.lean): nontrivial connected graph, HasMinDegree 2 => ¬IsAcyclic. Axiom-free.",
+      "connected_hasMinDegree_two_exists_cycle (Erdos64Problem.lean): same hyp => ∃ v (c : Walk v v), c.IsCycle. Axiom-free.",
+      "connected_hasMinDegree_three_exists_cycle (Erdos64Problem.lean): the Problem-64 degree-3 hypothesis (connected) forces a cycle. Axiom-free."
+    ],
+    "insights": [
+      "A finite nontrivial TREE has a leaf (degree-1 vertex): Mathlib SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial. Hence a connected graph with min degree >= 2 cannot be a tree, so cannot be acyclic — the elementary base fact under Erdos #64.",
+      "SimpleGraph.IsAcyclic unfolds to (forall closed walk, not IsCycle); its negation directly yields an explicit Walk.IsCycle, so ¬IsAcyclic is packaged as a concrete cycle."
+    ],
+    "mathlibGaps": [
+      "No general (disconnected/forest) leaf lemma: Mathlib only has IsTree.minDegree_eq_one_of_nontrivial (connected). A forest edge-count bound #edges <= n-1 is also absent (only IsTree.card_edgeFinset).",
+      "No pre-existing minDegree => contains-cycle result in Mathlib SimpleGraph."
+    ],
+    "nextSteps": [
+      "General finite-graph case: pass to the connected component of any vertex (degrees preserved inside a component), apply the connected lemma there, lift the cycle to G via the induced-subgraph embedding (Walk.IsCycle transport through SimpleGraph.induce). Needs component-degree-preservation lemma.",
+      "Bridge the file's custom ContainsCycleLength (Fin.succMod encoding) to Mathlib Walk.IsCycle so cycle-LENGTH statements become expressible.",
+      "The open core (some cycle has length 2^k) requires Liu-Montgomery-scale machinery; out of reach elementarily."
+    ],
     "markdown": "# Knowledge Base: erdos-64-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

@@ -158,6 +158,69 @@ def degree_3_conjecture : Prop :=
 
 -- Note: degree_3_conjecture and erdos_64_conjecture are semantically identical.
 
+/- ## Cycle Existence from Minimum Degree (foundational, machine-checked)
+
+These lemmas establish the *base fact* that underlies Problem 64: a graph with
+minimum degree ≥ 2 must contain **some** cycle. Problem 64 asks the far stronger
+(open) question of whether some cycle has length a power of two; the necessary
+elementary precondition — that a cycle exists at all — is proved here in full,
+axiom-free.
+
+The mechanism is the "a tree has a leaf" phenomenon: a finite nontrivial tree
+always has a vertex of degree exactly one (`SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial`),
+so a connected graph in which *every* vertex has degree ≥ 2 cannot be a tree,
+hence (being connected) cannot be acyclic. `SimpleGraph.IsAcyclic` unfolds to
+"no closed walk is a cycle", so its negation hands back an explicit cycle. -/
+
+/-- A nontrivial connected graph with minimum degree at least `2` is **not acyclic**:
+if it were, connectivity would make it a tree, and a nontrivial tree has a vertex
+of degree `1`, contradicting the degree bound. -/
+theorem connected_hasMinDegree_two_not_isAcyclic
+    {W : Type*} [Fintype W] [Nontrivial W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hconn : G.Connected) (hdeg : HasMinDegree G 2) :
+    ¬ G.IsAcyclic := by
+  intro hacyc
+  have htree : G.IsTree := ⟨hconn, hacyc⟩
+  have h1 : G.minDegree = 1 := htree.minDegree_eq_one_of_nontrivial
+  have h2 : 2 ≤ G.minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro v
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]
+    exact hdeg v
+  omega
+
+/-- A nontrivial connected graph with minimum degree at least `2` contains a cycle
+(an explicit closed walk that is a `SimpleGraph.Walk.IsCycle`). -/
+theorem connected_hasMinDegree_two_exists_cycle
+    {W : Type*} [Fintype W] [Nontrivial W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hconn : G.Connected) (hdeg : HasMinDegree G 2) :
+    ∃ (v : W) (c : G.Walk v v), c.IsCycle := by
+  by_contra hcon
+  exact connected_hasMinDegree_two_not_isAcyclic G hconn hdeg
+    (fun v c hc => hcon ⟨v, c, hc⟩)
+
+/-- The Problem-64 hypothesis (minimum degree ≥ `3`) forces at least one cycle, for
+connected graphs. The **open** content of Problem 64 is that some such cycle can be
+taken to have length `2^k`; this lemma isolates the elementary part (a cycle exists),
+which is a strict weakening of the conjecture and does not resolve it. -/
+theorem connected_hasMinDegree_three_exists_cycle
+    {W : Type*} [Fintype W] [Nontrivial W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hconn : G.Connected) (hdeg : HasMinDegree G 3) :
+    ∃ (v : W) (c : G.Walk v v), c.IsCycle :=
+  connected_hasMinDegree_two_exists_cycle G hconn
+    (fun v => le_trans (by norm_num) (hdeg v))
+
+/- **Remaining step toward the finite-graph statement.** The above covers connected
+graphs. For an arbitrary finite graph with minimum degree ≥ 2, pass to the connected
+component of any vertex: degrees are preserved inside a component (every neighbour of
+a vertex lies in its own component), the component is connected and nontrivial (the
+vertex has ≥ 2 neighbours), so the connected case yields a cycle there, which lifts to
+`G` along the induced-subgraph embedding. Formalizing this needs the component-degree
+preservation lemma and `Walk.IsCycle` transport through `SimpleGraph.induce`. -/
+
 /- ## Known Cycle Results -/
 
 /- 
