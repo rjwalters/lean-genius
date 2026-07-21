@@ -1124,10 +1124,12 @@ theorem centeredTriangleConfig_dist_mem {i j : Fin 4} (hij : i ≠ j) :
     fin_cases i <;> fin_cases j <;>
       first
       | exact absurd rfl hij
-      | (left; simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
-               norm_num [hs2] <;> nlinarith [hs2])
-      | (right; simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
-                norm_num [hs2] <;> nlinarith [hs2])
+      | (left
+         simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+         norm_num [hs2] <;> nlinarith [hs2])
+      | (right
+         simp only [centeredTriangleConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+         norm_num [hs2] <;> nlinarith [hs2])
   rcases hsq with h | h
   · have hone : dist (centeredTriangleConfig i) (centeredTriangleConfig j) = 1 := by
       rw [← Real.sqrt_sq hd0, h, Real.sqrt_one]
