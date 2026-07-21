@@ -90,11 +90,27 @@
     },
     {
       "id": "covering-number",
-      "title": "The Covering Number minMonotonicParts and Its Positivity",
+      "title": "The Covering Number minMonotonicParts, Its Positivity, and the Bracket",
       "startLine": 184,
-      "endLine": 237,
-      "summary": "minMonotonicParts seq := sInf {p | ∃ D, D.numParts = p} — the actual extremal invariant OQ-05 asks about, the minimum number of monotone parts (well-defined because singletonDecomposition always supplies a witness). minMonotonicParts_le (≤ n, singleton witness via Nat.sInf_le) and minMonotonicParts_ge (≥ n / max(LIS, LDS), via le_csInf over the per-decomposition lower bound) assemble into minMonotonicParts_bracket. numParts_pos_of_pos and minMonotonicParts_pos add positivity for nonempty sequences: the covering condition demands a part index for element 0, which inhabits Fin numParts, forcing numParts > 0 — a bound the division form n / max(LIS, LDS) misses when the longest monotone run is long relative to n.",
+      "endLine": 247,
+      "summary": "minMonotonicParts seq := sInf {p | ∃ D, D.numParts = p} — the actual extremal invariant OQ-05 asks about, the minimum number of monotone parts (well-defined because singletonDecomposition always supplies a witness). minMonotonicParts_le (≤ n, singleton witness via Nat.sInf_le) and minMonotonicParts_ge (≥ n / max(LIS, LDS), via le_csInf over the per-decomposition lower bound) assemble into minMonotonicParts_bracket: minMonotonicParts seq ∈ [n / max(LIS, LDS), n]. numParts_pos_of_pos and minMonotonicParts_pos add positivity for nonempty sequences: the covering condition demands a part index for element 0, which inhabits Fin numParts, forcing numParts > 0 — a bound the division form n / max(LIS, LDS) misses when the longest monotone run is long relative to n. The docstring flags that the matching O(√n) upper bound for the Erdős–Szekeres-extremal sequences is the hard open direction (stated, not axiomatized).",
       "mathContext": "$\\mathrm{minMonotonicParts}(\\mathrm{seq}) = \\inf\\{\\mathrm{numParts}(D)\\} \\in [\\,n/\\max(\\mathrm{LIS},\\mathrm{LDS}),\\; n\\,]$, and $\\mathrm{minMonotonicParts}(\\mathrm{seq}) > 0$ whenever $n > 0$."
+    },
+    {
+      "id": "type-split-lower-bound",
+      "title": "Type-Split Lower Bound (a Sharpening)",
+      "startLine": 248,
+      "endLine": 337,
+      "summary": "A strictly sharper lower bound that charges increasing parts only LIS and decreasing parts only LDS, rather than every part the crude max(LIS, LDS). monotonicDecomposition_numParts_lower_bound_split: n ≤ (#increasing parts)·LIS + (#decreasing parts)·LDS, proved via the same covering-surjection counting (n ≤ Σ part lengths) followed by splitting the sum by part type with Finset.sum_filter_add_sum_filter_not, bounding increasing parts by len_le_LIS_of_increasing and non-increasing (hence decreasing) parts by len_le_LDS_of_decreasing. monotonicDecomposition_split_le_max shows LIS·numInc + LDS·numDec ≤ max(LIS,LDS)·numParts (via filter_card_add_filter_neg_card_eq_card), so the split bound refines — and implies — the earlier max-bound. Useful when LIS and LDS differ sharply (e.g. an almost-increasing sequence with tiny LDS).",
+      "mathContext": "$n \\le (\\#\\text{inc})\\cdot\\mathrm{LIS} + (\\#\\text{dec})\\cdot\\mathrm{LDS} \\le \\mathrm{numParts}\\cdot\\max(\\mathrm{LIS},\\mathrm{LDS})$ — an exact-counting refinement separating the increasing and decreasing budgets."
+    },
+    {
+      "id": "tightness-lower-bracket",
+      "title": "Tightness of the Lower Bracket",
+      "startLine": 338,
+      "endLine": 377,
+      "summary": "Shows the lower end of the bracket [n / max(LIS,LDS), n] is attained, so the elementary bound cannot be improved in general. wholeSubsequence n = ⟨id, strictMono_id⟩ (the whole index set as one increasing run). LIS_eq_of_strictMono: a strictly increasing sequence has LIS = n (le_antisymm of csSup_le against subsequence_length_le and len_le_LIS_of_increasing). wholeDecomposition: such a sequence is covered by a single monotone part (numParts = 1). minMonotonicParts_eq_one_of_strictMono: hence minMonotonicParts = 1 for a strictly increasing sequence of positive length — matching the division lower bound n / max(LIS,LDS) = n / n = 1. Closes the Erdos1026OQ05 namespace.",
+      "mathContext": "For strictly monotone $\\mathrm{seq}$ with $n > 0$: $\\mathrm{LIS} = n$ and $\\mathrm{minMonotonicParts} = 1 = n/\\max(\\mathrm{LIS},\\mathrm{LDS})$ — the lower bracket end is tight."
     }
   ],
   "conclusion": {
