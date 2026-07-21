@@ -62,38 +62,46 @@
       "id": "header-setup",
       "title": "Module Header and Problem Statement",
       "startLine": 1,
-      "endLine": 21,
+      "endLine": 22,
       "summary": "Documents Erdős Problem #311 on the minimal deviation of unit fraction sums from 1. Known bounds: e^{-(1+o(1))N} (lower, from lcm/PNT) and exp(-cN/(log N log log N)³) (upper, Tang). Imports Mathlib."
     },
     {
       "id": "definitions",
       "title": "Definitions and δ(N) Construction",
       "startLine": 23,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Defines `unitFracSum(A)`, `validCandidates(N)` (subsets of {1,...,N} with sum ≤ 1, ≠ 1), and `deviations(N)` (the set of 1 - unitFracSum(A) over valid candidates). Constructs `delta(N)` as `Finset.min'` of deviations — a concrete definition replacing the former axiom. Proves `delta_pos`: δ(N) > 0 by showing all deviations are positive and min' is in the set.",
       "mathContext": "$\\delta(N) = \\min\\{1 - \\text{unitFracSum}(A) : A \\in \\text{validCandidates}(N)\\}$. Proved: $\\delta(N) > 0$ since each valid $A$ has $\\text{unitFracSum}(A) < 1$."
     },
     {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 72,
+      "endLine": 107,
+      "summary": "Proves basic structural bounds on $\\delta(N)$: `delta_le_one` ($\\delta(N)\\le 1$), `delta_antitone` ($\\delta(N+1)\\le\\delta(N)$), and its packaging `delta_antitone_full : Antitone delta`. All follow from the candidate-set inclusion as $N$ grows.",
+      "mathContext": "Enlarging the admissible denominator set $\\{1,\\ldots,N\\}$ can only shrink the minimal positive deviation, so $\\delta(N+1)\\le\\delta(N)\\le\\delta(1)\\le 1$."
+    },
+    {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "startLine": 72,
-      "endLine": 78,
+      "startLine": 108,
+      "endLine": 115,
       "summary": "Lower bound (axiom): $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
       "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
-      "startLine": 80,
-      "endLine": 86,
+      "startLine": 116,
+      "endLine": 123,
       "summary": "Tang's upper bound (axiom): $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
       "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 88,
-      "endLine": 97,
+      "startLine": 124,
+      "endLine": 131,
       "summary": "The conjecture (axiom): $\\exists c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$, formalized in $\\varepsilon$-$N_0$ form.",
       "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$."
     }

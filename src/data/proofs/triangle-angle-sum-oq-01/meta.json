@@ -49,23 +49,23 @@
       "id": "sec-overview",
       "title": "Overview: Triangle Angle Sum Converse",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 61,
       "summary": "Module docstring and imports for the converse question: if every triangle has angle sum π, must the geometry be Euclidean? These head lines answer yes (equivalent to Saccheri–Legendre in neutral geometry), lay out the three neutral-geometry inputs — Saccheri–Legendre (angle sum ≤ π), defect transitivity (one triangle with sum π forces all), and angle sum π ↔ parallel postulate — and describe the file's five results culminating in the full equivalence angle_sum_iff_parallel, before the TriangleAngleSumOQ01 namespace opens.",
       "mathContext": "In neutral (absolute) geometry, Saccheri–Legendre bounds every triangle's angle sum by π and defect transitivity makes the sum constant; a single triangle with sum π then builds a rectangle, yielding Playfair's parallel axiom, and conversely the parallel postulate forces sum π. The three deep neutral-geometry theorems (Saccheri–Legendre, defect transitivity, sum-π ⇒ Playfair), whose proofs need ~1000+ lines not yet in Mathlib, are stated as axioms, so the entry is axiomatized (4 axioms); the equivalence is then derived with 0 sorries."
     },
     {
       "id": "framework",
       "title": "AngledNeutralGeometry Framework",
-      "startLine": 65,
-      "endLine": 82,
+      "startLine": 62,
+      "endLine": 87,
       "summary": "Extends NeutralGeometry with a triangle angle sum function. Keeps the structure abstract to separate logical content from metric computation.",
       "mathContext": "An angled neutral geometry is a neutral geometry equipped with a function $\\theta: \\text{Triangle} \\to \\mathbb{R}$ satisfying the neutral geometry axioms about angle sums."
     },
     {
       "id": "saccheri-legendre",
       "title": "Saccheri-Legendre Theorem",
-      "startLine": 91,
-      "endLine": 115,
+      "startLine": 88,
+      "endLine": 116,
       "summary": "Axiom: angle sum ≤ π in neutral geometry. Classical proof uses Archimedean halving argument (1733).",
       "mathContext": "For any triangle $T$ in a neutral geometry: $\\theta(T) \\leq \\pi$. The equality case requires the parallel postulate."
     },
@@ -73,15 +73,23 @@
       "id": "defect-transitivity",
       "title": "Defect Transitivity",
       "startLine": 117,
-      "endLine": 135,
+      "endLine": 142,
       "summary": "Axiom: if some triangle has zero defect (angle sum = π), all do. Follows from additivity of angle defect.",
       "mathContext": "Angle defect $d(T) = \\pi - \\theta(T) \\geq 0$. If $d(T_0) = 0$ for some $T_0$, then $d(T) = 0$ for all $T$. Proof uses decomposition of arbitrary triangles into sub-triangles containing $T_0$."
     },
     {
+      "id": "main-theorems-proved-bounds",
+      "title": "Main Theorems: Proved Angle-Sum Bounds",
+      "startLine": 143,
+      "endLine": 163,
+      "summary": "The neutral-geometry axioms are packaged as usable theorems: `angle_sum_le_pi` (Saccheri-Legendre, $\\theta(T)\\le\\pi$) and `defect_transitivity` (zero defect propagates to every triangle), both discharged from the axioms above.",
+      "mathContext": "$\\theta(T)\\le\\pi$ for all triangles $T$; and if one triangle has $\\theta=\\pi$ then every triangle does."
+    },
+    {
       "id": "main-converse",
       "title": "Main Result: Angle Sum = π → Parallel Postulate",
-      "startLine": 155,
-      "endLine": 165,
+      "startLine": 164,
+      "endLine": 185,
       "summary": "The main converse: if all triangles have angle sum π, the parallel postulate holds. Direct from the characterization axiom.",
       "mathContext": "Proof: angle sum = π → rectangles exist → Playfair's axiom holds. The rectangle construction uses four triangles all with angle sum = π."
     },
@@ -96,10 +104,18 @@
     {
       "id": "hyperbolic-consequence",
       "title": "Hyperbolic Geometry Has Angle Sum < π",
-      "startLine": 207,
-      "endLine": 228,
+      "startLine": 203,
+      "endLine": 233,
       "summary": "In any hyperbolic geometry, all angle sums are strictly less than π. Proved by contradiction using the independence result.",
       "mathContext": "If $G$ satisfies the hyperbolic parallel property, then $\\theta(T) < \\pi$ for all $T$. Proof: Saccheri-Legendre gives $\\theta \\leq \\pi$; if $\\theta(T_0) = \\pi$ for some $T_0$, defect transitivity + main converse give Playfair's axiom, contradicting the hyperbolic parallel property."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 234,
+      "endLine": 261,
+      "summary": "Wrap-up: the converse and full equivalence establish that \"every triangle has angle sum $\\pi$\" is logically equivalent to Playfair's parallel postulate within neutral geometry, with hyperbolic geometry as the strict-inequality witness. Recaps the borrowed axioms and the results proved from them.",
+      "mathContext": "$\\bigl(\\forall T,\\ \\theta(T)=\\pi\\bigr)\\iff\\text{Playfair}$; in hyperbolic geometry $\\theta(T)<\\pi$ for every triangle."
     }
   ],
   "conclusion": {
