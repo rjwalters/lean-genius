@@ -90,17 +90,17 @@
       "id": "undecidability",
       "title": "Halting Undecidable",
       "startLine": 78,
-      "endLine": 97,
+      "endLine": 108,
       "summary": "Restates the result using logical equivalence: no Boolean oracle can be consistent with its own diagonal flip at a self-application point.",
       "mathContext": "$$\\forall H\\, c,\\; \\neg\\big((H(c,c){=}\\text{true} \\iff D(c){=}\\text{true}) \\wedge (H(c,c){=}\\text{false} \\iff D(c){=}\\text{false})\\big), \\quad D(c)=\\lnot H(c,c).$$ This is the abstract diagonalization schema. The computation-model statement $\\nexists H.\\ \\forall p\\, i.\\ H(p,i){=}\\text{true} \\iff P_p(i){\\downarrow}$ is the mathematical target but is **not** formalized here — $H$ is an arbitrary Boolean function with no link to program execution."
     },
     {
       "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 120,
+      "title": "Self-Halting Formulation",
+      "startLine": 109,
       "endLine": 131,
-      "summary": "Final statement: for any halting oracle, the diagonal program provides an explicit counterexample.",
-      "mathContext": "$$\\forall H.\\; \\exists d.\\; H(d, d) \\neq D(d) \\quad \\text{(explicit counterexample via diagonalization)}$$"
+      "summary": "The self-halting alternative `no_self_halting_decider`: for any Boolean self-decider $H(n)$ (\"does program $n$ halt on input $n$?\"), the diagonal behavior $b(n)=\\lnot H(n)$ disagrees with $H$ everywhere, so no function correctly decides its own halting. Followed by the transitional commentary motivating the packaged final theorem.",
+      "mathContext": "$$\\forall H:\\mathbb{N}\\to\\text{Bool},\\; \\exists b,\\; \\forall n,\\; b(n) \\neq H(n) \\quad \\text{(the diagonal } b(n)=\\lnot H(n) \\text{ is the explicit counterexample)}$$"
     },
     {
       "id": "main-summary",
