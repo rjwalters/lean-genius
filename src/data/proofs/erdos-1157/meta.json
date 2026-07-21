@@ -120,9 +120,9 @@
       "id": "main-statement",
       "title": "Problem Statement and Summary",
       "startLine": 343,
-      "endLine": 366,
-      "summary": "States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents.",
-      "mathContext": "Verified: States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents."
+      "endLine": 401,
+      "summary": "The resolved-case theorems and the formal Problem #1157 statement. erdos_1157_3uniform_resolved (f^(3)(n;k,s)=o(n²) for s≥3, k≥s+3, via Delcourt-Postle) and erdos_1157_case_716 (the (6,3) case via Ruzsa-Szemerédi). bes_monotone_in_k lifts an o(n²) bound from k₁ to any k₂≥k₁ using extremalNumber_mono_k. Part VIII states erdos_1157 := ∀ t r s k, BESConjecture t r s k (OPEN in full generality), the erdos_1157_summary theorem bundling the two resolved o(n²) bounds with the computed exponents besExponent 3 6 3 = 3/2 and besExponent 3 7 4 = 5/3, and bes_conjecture_3_uniform proving BESConjecture 2 3 s k for the 3-uniform t=2 case.",
+      "mathContext": "The Brown-Erdős-Sós function f^(r)(n;k,s) counts the maximum edges in an r-uniform hypergraph on n vertices with no s+... configuration spanning k vertices with s edges. Monotonicity in k is immediate from extremalNumber_mono_k plus le_trans on the little-o witness. The parameter constraint k ≥ (r-t)·s + t + 1 specializes at r=3, t=2 to k ≥ s+3, exactly Delcourt-Postle's condition, so bes_conjecture_3_uniform discharges BESConjecture 2 3 s k by omega on the hypotheses."
     }
   ],
   "conclusion": {
