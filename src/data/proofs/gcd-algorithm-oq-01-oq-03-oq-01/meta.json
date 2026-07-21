@@ -93,13 +93,62 @@
     }
   ],
   "sections": [
-    "Module Overview and References",
-    "Basic Recursion Lemmas for euclidSteps",
-    "The Fibonacci Mod Identity",
-    "Exact Worst-Case Step Count (Lamé Sharpness)",
-    "Minimality: Fibonacci Pairs Are the Smallest Worst Cases",
-    "Combined Sharp Characterization",
-    "Concrete Verifications"
+    {
+      "id": "overview",
+      "title": "Module Overview and References",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring: the parent entry proves the *upper* side of Lamé's theorem (steps are O(k) for inputs below 10^k); this file proves the matching *sharp* side, euclidSteps (fib(n+2)) (fib(n+1)) = n for n≥1, plus the minimality direction that any n-step pair is at least as large as the n-th Fibonacci pair. Imports Proofs.BinaryGcdOQ01 for the euclidSteps definition. Notes this is the original content of Lamé (1844), historically the first complexity analysis of an algorithm.",
+      "mathContext": "Together the upper bound and this sharp side pin the Euclidean worst case to the Fibonacci sequence: no input of a given size forces more steps, and the Fibonacci pair forces exactly that many. One reduction step: $(F_{n+2},F_{n+1})\\to(F_{n+1},F_{n+2}\\bmod F_{n+1})=(F_{n+1},F_n)$."
+    },
+    {
+      "id": "recursion-lemmas",
+      "title": "Basic Recursion Lemmas for euclidSteps",
+      "startLine": 44,
+      "endLine": 63,
+      "summary": "Part I: `euclidSteps_zero_right` (euclidSteps a 0 = 0) and the clean recursion `euclidSteps_step`: for 0<b<a, euclidSteps a b = 1 + euclidSteps b (a%b). The step lemma unfolds the definition's branch on b'+1 ≤ a', selecting the first branch under the hypothesis b<a.",
+      "mathContext": "Isolating the one-step recursion under $0<b<a$ lets both the exact-count and the minimality induction proceed by peeling a single Euclidean division at a time."
+    },
+    {
+      "id": "fib-mod",
+      "title": "The Fibonacci Mod Identity",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "Part II: `fib_succ_lt` (fib(n+1) < fib(n+2) for n≥1) and the reduction identity `fib_mod`: fib(n+2) % fib(n+1) = fib n for n≥2, proved from fib(n+2)=fib n + fib(n+1) with 0≤fib n<fib(n+1).",
+      "mathContext": "This is the arithmetic core: $F_{n+2}\\bmod F_{n+1}=F_n$ makes each Euclidean step on a Fibonacci pair land on the previous Fibonacci pair, driving the induction."
+    },
+    {
+      "id": "exact-count",
+      "title": "Exact Worst-Case Step Count (Lamé Sharpness)",
+      "startLine": 85,
+      "endLine": 112,
+      "summary": "Part III, main theorem `euclidSteps_fib`: euclidSteps (fib(n+2)) (fib(n+1)) = n for n≥1, by Nat.le_induction from the base euclidSteps (fib 3) (fib 2) = euclidSteps 2 1 = 1, with the inductive step combining euclidSteps_step and fib_mod.",
+      "mathContext": "Achievability: consecutive Fibonacci numbers realise the worst case exactly, the existence half of Lamé's sharp theorem."
+    },
+    {
+      "id": "minimality",
+      "title": "Minimality: Fibonacci Pairs Are the Smallest Worst Cases",
+      "startLine": 114,
+      "endLine": 169,
+      "summary": "Part IV, `fib_le_of_euclidSteps`: any pair 0<b<a with euclidSteps a b = n satisfies fib(n+1)≤b and fib(n+2)≤a, so the Fibonacci pair is the *smallest* input forcing n steps. Proved by strong induction on a: one Euclidean step sends (a,b) to (b, a%b) decreasing a; the hypothesis bounds the smaller pair, and a ≥ b + a%b lifts the bound via fib(n+2)=fib(n+1)+fib n.",
+      "mathContext": "The lower-bound (minimality) half of Lamé sharpness: no pair smaller than $(F_{n+2},F_{n+1})$ can force $n$ divisions, matching the achievability result to characterise the extremum."
+    },
+    {
+      "id": "combined",
+      "title": "Combined Sharp Characterization",
+      "startLine": 171,
+      "endLine": 185,
+      "summary": "Part V, `lame_sharp`: packages both directions for n≥1 — the Fibonacci pair takes exactly n steps, and every pair 0<b<a taking n steps satisfies fib(n+2)≤a and fib(n+1)≤b — exhibiting the Fibonacci pair as a minimal n-step input.",
+      "mathContext": "The full sharp form of Lamé's theorem: existence plus minimality, tying the worst-case complexity of the Euclidean algorithm precisely to the Fibonacci growth rate."
+    },
+    {
+      "id": "verifications",
+      "title": "Concrete Verifications",
+      "startLine": 187,
+      "endLine": 200,
+      "summary": "Part VI: native_decide `example` checks (not theorems) of the exact worst-case counts — euclidSteps (fib 3) (fib 2)=1, (fib 6)(fib 5)=4, (fib 10)(fib 9)=8, (fib 12)(fib 11)=10, and the minimality witness (fib 7, fib 6)=(13,8) at 5 steps. Being examples, these do not affect the axiom status of the exported theorems.",
+      "mathContext": "Illustrative spot-checks; the reusable results above are fully machine-checked from the standard foundational axioms."
+    }
   ],
   "sorries": [],
   "overview": {
