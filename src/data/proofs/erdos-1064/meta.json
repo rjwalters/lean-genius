@@ -56,8 +56,8 @@
       "Prime factorization and coprimality"
     ],
     "assumptions": "1 axiom: lucaPomerance_density_one (the density-1 result of Luca-Pomerance 2002, requiring analytic number theory). The former glw_infinitely_many axiom (Grytczuk-Luca-Wojtowicz 2001, infinitely many n with phi(n) < phi(n-phi(n))) is now constructively PROVED via the explicit family n = 15*2^(k+1). Concrete illustrative examples use native_decide (Lean.ofReduceBool). See Lean source for complete statements.",
-    "theoremCount": 15,
-    "definitionCount": 4
+    "theoremCount": 23,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Euler's totient function $\\phi(n)$ — the count of integers in $\\{1, \\ldots, n\\}$ coprime to $n$ — was introduced by Leonhard Euler in 1763 in his proof that $a^{\\phi(n)} \\equiv 1 \\pmod{n}$ for $\\gcd(a,n)=1$, generalizing Fermat's little theorem. The function is multiplicative ($\\phi(mn) = \\phi(m)\\phi(n)$ when $\\gcd(m,n) = 1$) with the explicit formula $\\phi(n) = n \\prod_{p|n}(1 - 1/p)$, connecting it to the prime factorization of $n$.\n\nErdős Problem 1064 asks about the *iteration* $n \\mapsto n - \\phi(n)$, which maps $n$ to the count of integers $\\leq n$ sharing a common factor with $n$. The problem compares $\\phi(n)$ with $\\phi(n - \\phi(n))$: is $\\phi(n)$ usually larger? Erdős posed this as part of his broader program studying the 'typical' vs 'exceptional' behavior of arithmetic functions — a theme running through hundreds of his problems, including his work with Kac (1940) on the normal order of $\\omega(n)$ (number of distinct prime factors) and his conjecture with Wintner on additive functions.\n\nThe problem was originally connected to a 1960 conjecture of Mąkowski and Schinzel, who studied the equation $\\phi(n) = \\phi(n - \\phi(n))$ and related comparisons.\n\nGrytczuk, Luca, and Wójtowicz (2001, *Colloquium Mathematicum*) made initial progress: they showed the set $A_>$ (where $\\phi(n) > \\phi(n - \\phi(n))$) has lower density at least 0.54 and that $A_<$ is infinite, giving the explicit family $n = 15 \\cdot 2^k$.\n\nLuca and Pomerance (2002, *Colloquium Mathematicum*) completed the solution by proving $A_>$ has natural density 1. Their method uses the distribution of smooth numbers and the typical prime factorization structure of $n - \\phi(n)$. The key analytic input is that $n - \\phi(n) = n(1 - \\prod_{p|n}(1 - 1/p))$ tends to be divisible by many small primes (making it 'smooth'), which forces $\\phi(n - \\phi(n))$ to be small relative to $n - \\phi(n)$. Their stronger result: for any $f(n) = o(n)$, the dominance $\\phi(n) > \\phi(n - \\phi(n)) + f(n)$ holds for almost all $n$, showing the gap is not borderline but grows unboundedly.",
@@ -80,52 +80,76 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview, Problem Statement & Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring: Erdős Problem #1064 asks to compare Euler's totient φ(n) with φ(n − φ(n)). States what is proved (density-1 dominance of the 'greater' set A₊, infinitude of both A₊ and A₋), the problem history (Luca–Pomerance 2002; Grytczuk–Luca–Wójtowicz 2001), the approach, status (Solved), and references. Opens the Erdos1064 namespace.",
+      "mathContext": "The map $n \\mapsto n-\\phi(n)$ counts integers in $[1,n]$ sharing a factor with $n$; for a prime $p$ it gives $p-\\phi(p)=1$. Erdős asks how $\\phi(n)$ compares with $\\phi(n-\\phi(n))$: the answer is that $\\phi(n)>\\phi(n-\\phi(n))$ for a density-1 set, yet the reverse inequality also holds infinitely often."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions: Comparison Sets",
+      "title": "Definitions: The Trichotomy Sets A₊ / A₋ / A₌",
       "startLine": 49,
       "endLine": 62,
-      "summary": "Defines $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$, $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$, and $A_= = \\{n : \\phi(n) = \\phi(n - \\phi(n))\\}$.",
-      "mathContext": "The map $n \\mapsto n - \\phi(n)$ sends $n$ to the count of integers in $[1, n]$ sharing a common factor with $n$. For primes, $n - \\phi(n) = 1$. For $n = p \\cdot q$ (distinct primes), $n - \\phi(n) = p + q - 1$. The comparison $\\phi(n)$ vs $\\phi(n - \\phi(n))$ measures how 'totient-rich' $n$ is relative to its 'non-coprime count.'"
+      "summary": "Defines phiDiff n = φ(n) − φ(n − φ(n)) (as an integer) and the three comparison sets A_greater = {n : φ(n) > φ(n − φ(n))}, A_less, and A_equal.",
+      "mathContext": "The comparison $\\phi(n)$ vs $\\phi(n-\\phi(n))$ measures how 'totient-rich' $n$ is relative to its non-coprime count. For primes $n-\\phi(n)=1$ so $\\phi(n-\\phi(n))=1$; for $n=pq$ (distinct primes) $n-\\phi(n)=p+q-1$."
+    },
+    {
+      "id": "trichotomy",
+      "title": "Disjointness & Exhaustiveness of the Trichotomy",
+      "startLine": 63,
+      "endLine": 92,
+      "summary": "Proves the three sets are pairwise disjoint (A_greater_disjoint_A_less, A_greater_disjoint_A_equal, A_less_disjoint_A_equal) and jointly exhaust ℕ (A_greater_union_A_less_union_A_equal = Set.univ), so every n falls into exactly one regime. All by unfolding the setOf comparisons and omega.",
+      "mathContext": "The trichotomy $A_> \\sqcup A_< \\sqcup A_= = \\mathbb{N}$ is the totient-comparison analogue of the law of trichotomy on the integer $\\phi(n)-\\phi(n-\\phi(n))$."
     },
     {
       "id": "concrete-examples",
-      "title": "Concrete Examples",
-      "startLine": 63,
-      "endLine": 79,
-      "summary": "Decidable totient checks anchoring the comparison: $\\phi(1)=\\phi(2)=1$, $\\phi(6)=2$, $\\phi(15)=8$, $\\phi(30)=8$, verified by `native_decide`.",
-      "mathContext": "These small evaluations of Euler's totient $\\phi$ fix the base values used throughout: e.g. $\\phi(15)=8$ and $\\phi(30)=8$ feed the $15\\cdot 2^k$ analysis, and $\\phi(6)=2$ illustrates the $n-\\phi(n)$ map ($6-\\phi(6)=4$). All are machine-checked with `native_decide` rather than asserted."
+      "title": "Concrete Examples (native_decide)",
+      "startLine": 94,
+      "endLine": 129,
+      "summary": "Machine-checked base evaluations (φ(1)=φ(2)=1, φ(6)=2, φ(15)=8, φ(30)=8) and worked instances of each regime: 'greater' cases n=10,15 and 'less' cases n=30,60,66, each verified by native_decide.",
+      "mathContext": "These anchor the later analysis: $\\phi(15)=8$ and $\\phi(30)=8$ feed the $15\\cdot 2^k$ family, while $n=30$: $\\phi(30)=8<10=\\phi(22)$ exhibits the reverse inequality. Verified with `native_decide` (which relies on `Lean.ofReduceBool`) rather than asserted."
     },
     {
-      "id": "examples-greater",
-      "title": "Examples: φ(n) > φ(n - φ(n))",
-      "startLine": 80,
-      "endLine": 87,
-      "summary": "Verified examples: $n = 10$: $\\phi(10) = 4 > 2 = \\phi(6)$; $n = 15$: $\\phi(15) = 8 > 4 = \\phi(7)$.",
-      "mathContext": "For $n = 10 = 2 \\cdot 5$: $\\phi(10) = 4$, $n - \\phi(n) = 6$, $\\phi(6) = 2$. The inequality $4 > 2$ holds. This is the 'typical' case — most $n$ satisfy the inequality because $n - \\phi(n)$ tends to be smooth (many small prime factors) while $\\phi$ of smooth numbers is relatively small."
+      "id": "density-axiom",
+      "title": "Luca–Pomerance Density-1 Axiom",
+      "startLine": 131,
+      "endLine": 141,
+      "summary": "States the single axiom lucaPomerance_density_one: A₊ = {n : φ(n) > φ(n − φ(n))} has natural density 1 (Luca–Pomerance 2002) — indeed φ(n) > φ(n − φ(n)) + f(n) for any f(n) = o(n) and almost all n. This is the sole remaining assumption (axiomCount = 1).",
+      "mathContext": "Natural density $d(A)=\\lim_{N\\to\\infty}|A\\cap[1,N]|/N$. Density-1 means all but $o(N)$ integers $n\\le N$ satisfy $\\phi(n)>\\phi(n-\\phi(n))$. The analytic proof is out of scope, so it is taken as an axiom."
     },
     {
-      "id": "examples-less",
-      "title": "Examples: φ(n) < φ(n - φ(n)) and the 15·2^k Pattern",
-      "startLine": 88,
-      "endLine": 98,
-      "summary": "Verified counterexamples: $n = 30, 60, 66$. The infinite family $n = 15 \\cdot 2^k$ gives $\\phi(n) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(n - \\phi(n))$.",
-      "mathContext": "For $n = 15 \\cdot 2^k$: $\\phi(n) = \\phi(15) \\cdot \\phi(2^k) = 8 \\cdot 2^{k-1} = 4 \\cdot 2^k$. Then $n - \\phi(n) = 15 \\cdot 2^k - 4 \\cdot 2^k = 11 \\cdot 2^k$. So $\\phi(n - \\phi(n)) = \\phi(11) \\cdot \\phi(2^k) = 10 \\cdot 2^{k-1} = 5 \\cdot 2^k$. Since $5 \\cdot 2^k > 4 \\cdot 2^k$, we get $\\phi(n) < \\phi(n - \\phi(n))$. The key: $\\phi(11)/11 = 10/11 > 8/15 = \\phi(15)/15$."
+      "id": "glw-aless",
+      "title": "Grytczuk–Luca–Wójtowicz: A₋ Infinite via 15·2^(k+1) (de-axiomatized) & Erdős 1064 Resolution",
+      "startLine": 142,
+      "endLine": 205,
+      "summary": "De-axiomatizes the infinitude of A₋ by an explicit family: mem_A_less_pow proves 15·2^(k+1) ∈ A₋ (φ(n)=8·2^k < 10·2^k=φ(n−φ(n))), witness_injective shows k ↦ 15·2^(k+1) is injective, glw_infinitely_many concludes A₋ is infinite, and erdos_1064_resolution packages the resolution (A₊ density 1, both A₊ and A₋ infinite).",
+      "mathContext": "For $n=15\\cdot 2^{k+1}$: $\\phi(n)=\\phi(15)\\phi(2^{k+1})=8\\cdot 2^k$, and $n-\\phi(n)=11\\cdot 2^{k+1}$ so $\\phi(n-\\phi(n))=\\phi(11)\\phi(2^{k+1})=10\\cdot 2^k>\\phi(n)$. The mechanism: $\\phi(11)/11=10/11$ exceeds $\\phi(15)/15=8/15$."
     },
     {
-      "id": "main-theorems",
-      "title": "Main Theorems: Density 1 and Infinitude",
-      "startLine": 99,
-      "endLine": 124,
-      "summary": "Two axioms encoding the solution: `density_of_greater` ($A_>$ has natural density 1, Luca-Pomerance 2002) and `less_is_infinite` ($A_<$ is infinite, Grytczuk-Luca-Wójtowicz 2001).",
-      "mathContext": "Natural density: $d(A) = \\lim_{N \\to \\infty} |A \\cap [1, N]| / N$. The density-1 result means: for any $\\epsilon > 0$, all but $o(N)$ integers $n \\leq N$ satisfy $\\phi(n) > \\phi(n - \\phi(n))$. The infinitude of $A_<$ follows from the explicit family $15 \\cdot 2^k$ (but there are other counterexamples too, like $n = 30, 66$)."
+      "id": "complement-agreater",
+      "title": "Complement: A₊ is Infinite (axiom-free)",
+      "startLine": 206,
+      "endLine": 246,
+      "summary": "An elementary complement to the density axiom: mem_A_greater_of_prime shows every prime p ≥ 3 lies in A₊ (for a prime, n − φ(n) = 1 so φ(n − φ(n)) = 1 < p − 1 = φ(p)), A_greater_infinite concludes A₊ is infinite via the infinitude of primes, and A_less_and_A_greater_infinite records that both comparison sets are infinite — all without the density input.",
+      "mathContext": "For prime $p$: $\\phi(p)=p-1$ while $n-\\phi(n)=p-(p-1)=1$ and $\\phi(1)=1$, so $\\phi(p)=p-1>1=\\phi(p-\\phi(p))$ once $p\\ge 3$."
     },
     {
-      "id": "pattern-and-closing",
-      "title": "The 15·2^k Pattern and Namespace Closing",
-      "startLine": 125,
-      "endLine": 132,
-      "summary": "Documents the explicit infinite family $n = 15 \\cdot 2^k$ in $A_<$ with worked computation: $\\phi(15 \\cdot 2^k) = 4 \\cdot 2^k < 5 \\cdot 2^k = \\phi(11 \\cdot 2^k)$. The key is $\\phi(11)/11 > \\phi(15)/15$: primes have higher totient ratios than composites with small factors. Closes the `Erdos1064` namespace.",
-      "mathContext": "For $n = 15 \\cdot 2^k$: $\\phi(n) = 4 \\cdot 2^k$ and $\\phi(n - \\phi(n)) = \\phi(11 \\cdot 2^k) = 5 \\cdot 2^k$. The ratio $\\phi(11)/11 = 10/11 \\approx 0.909$ exceeds $\\phi(15)/15 = 8/15 \\approx 0.533$ because 11 is prime (only one factor to subtract) while $15 = 3 \\cdot 5$ has two small prime factors reducing its totient ratio. Luca-Pomerance's stronger result: for any $f(n) = o(n)$, the dominance $\\phi(n) > \\phi(n - \\phi(n)) + f(n)$ holds for almost all $n$, showing the gap grows unboundedly."
+      "id": "prime-powers",
+      "title": "Sharper Structure of A₊: Odd Prime Powers & Powers of Two",
+      "startLine": 247,
+      "endLine": 336,
+      "summary": "Refines the A₊ membership: mem_A_greater_of_odd_prime_pow (every odd prime power lies in A₊), mem_A_greater_of_two_pow (every 2^j with j ≥ 2 lies in A₊), two_pow_witness_injective, and A_greater_infinite_via_two_pow (a second, purely 2-power proof that A₊ is infinite). Closes with a prose recap of the 15·2^k pattern in A₋.",
+      "mathContext": "For $n=2^j$ ($j\\ge 2$): $\\phi(2^j)=2^{j-1}$, $n-\\phi(n)=2^{j-1}$, and $\\phi(2^{j-1})=2^{j-2}<2^{j-1}=\\phi(n)$, so $2^j\\in A_>$. This gives an infinite family in $A_>$ disjoint from the primes."
+    },
+    {
+      "id": "oq03",
+      "title": "OQ-03: The Higher Iterate D(n) = n − φ(n − φ(n))",
+      "startLine": 337,
+      "endLine": 474,
+      "summary": "First Lean formalization of the OQ-03 second-order iterate D(n) = n − φ(n − φ(n)) and the trichotomy B₊/B₋/B₌ (defs D, B_greater, B_less, B_equal, their disjointness and exhaustiveness). Proves two unconditional infinitude results: mem_B_greater_of_prime + B_greater_infinite (every odd prime lies in B₊, so B₊ is infinite) and mem_B_equal_pow + B_equal_infinite (the parent reversal family 15·2^(k+1) lands in B₌ — the second iterate neutralizes the first-order reversal — so B₌ is infinite). The density-1 forward direction for the iterate is left open.",
+      "mathContext": "For an odd prime $p$: $n-\\phi(n)=1$, so $D(p)=p-\\phi(1)=p-1$ and $\\phi(D(p))=\\phi(p-1)<p-1=\\phi(p)$, giving $p\\in B_+$. For $n=15\\cdot 2^{k+1}$: $D(n)=5\\cdot 2^{k+2}$ with $\\phi(D(n))=8\\cdot 2^k=\\phi(n)$, i.e. equality at the second order."
     }
   ],
   "conclusion": {
@@ -197,8 +221,8 @@
     "namespace": "Erdos1064",
     "lineCount": 474,
     "axiomCount": 1,
-    "theoremCount": 15,
-    "definitionCount": 4,
+    "theoremCount": 23,
+    "definitionCount": 8,
     "path": "Proofs/Erdos1064Problem.lean",
     "sorries": 0
   },
