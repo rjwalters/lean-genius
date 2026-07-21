@@ -67,41 +67,41 @@
     {
       "id": "modulus",
       "title": "§2: Modulus and Phase",
-      "startLine": 58,
-      "endLine": 82,
+      "startLine": 57,
+      "endLine": 87,
       "summary": "Proves |φ(t)| = exp(-σ²t²/2), strict decay for σ²>0, and unit modulus for point masses.",
       "mathContext": "$|\\varphi(t)| = |\\exp(z)| = \\exp(\\Re(z)) = \\exp(-\\sigma^2 t^2/2)$. For $\\sigma^2 > 0$ and $t \\neq 0$: $-\\sigma^2 t^2/2 < 0$ so $|\\varphi(t)| < 1$."
     },
     {
       "id": "product",
       "title": "§3: Product Formula (Independent Sum)",
-      "startLine": 84,
-      "endLine": 104,
+      "startLine": 88,
+      "endLine": 113,
       "summary": "Product and power formulas encoding that independent Gaussian sums are Gaussian.",
       "mathContext": "$\\varphi_{\\mu_1,\\sigma_1^2} \\cdot \\varphi_{\\mu_2,\\sigma_2^2} = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}$ from $\\exp(a)\\exp(b) = \\exp(a+b)$."
     },
     {
       "id": "symmetry",
       "title": "§4: Symmetry Properties",
-      "startLine": 106,
-      "endLine": 122,
+      "startLine": 114,
+      "endLine": 138,
       "summary": "Conjugate symmetry φ(-t) = conj(φ(t)) and real-valuedness for centered Gaussians.",
       "mathContext": "$\\varphi(-t) = \\overline{\\varphi(t)}$ because the Gaussian density is real-valued."
     },
     {
       "id": "scaling",
       "title": "§5: Scaling and Standardization",
-      "startLine": 124,
-      "endLine": 148,
+      "startLine": 139,
+      "endLine": 170,
       "summary": "Standard Gaussian φ(t) = exp(-t²/2) and scaling relationship φ_{0,σ²}(t) = φ_{0,1}(σt).",
       "mathContext": "Standardization: $(X-\\mu)/\\sigma \\sim N(0,1)$ gives $\\varphi_{0,1}(t) = \\exp(-t^2/2)$."
     },
     {
       "id": "clt",
       "title": "§6: CLT Connection",
-      "startLine": 150,
-      "endLine": 170,
-      "summary": "Gaussian stability: Sₙ/√n ~ N(0,1) via characteristic function algebra.",
+      "startLine": 171,
+      "endLine": 191,
+      "summary": "`clt_gaussian_stable`: the CLT connection — proves gaussianCharFn 0 n (t/√n) = gaussianCharFn 0 1 t, i.e. Sₙ/√n has the standard-Gaussian characteristic function exp(-t²/2), the simplest special case of the CLT (Gaussians are stable).",
       "mathContext": "$\\varphi_{0,n}(t/\\sqrt{n}) = \\exp(-n \\cdot t^2/(2n)) = \\exp(-t^2/2) = \\varphi_{0,1}(t)$."
     }
   ],

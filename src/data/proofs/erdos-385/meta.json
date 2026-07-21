@@ -167,8 +167,16 @@
       "title": "Why This Is Hard",
       "summary": "Connections to prime distribution, sieve theory, Siegel zeros",
       "startLine": 156,
-      "endLine": 175,
+      "endLine": 179,
       "mathContext": "Mathematical content: Connections to prime distribution, sieve theory, Siegel zeros"
+    },
+    {
+      "id": "derived-results",
+      "title": "Derived Results",
+      "summary": "`finitely_many_exceptions`: proves that Question 1 (F(n) > n eventually) implies the set {n : F(n) ≤ n} is finite. The proof extracts the eventual threshold N from the `Filter.eventually_atTop` witness and bounds the exception set inside `Set.Iio N`.",
+      "startLine": 180,
+      "endLine": 195,
+      "mathContext": "$\\text{Question 1} \\implies \\{n : F(n) \\le n\\}$ is finite: every exception lies below the eventual threshold $N$, so the set embeds in $\\{0,\\ldots,N-1\\}$."
     }
   ],
   "conclusion": {
