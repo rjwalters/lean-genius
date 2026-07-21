@@ -88,8 +88,16 @@
   },
   "sections": [
     {
+      "id": "overview-header",
+      "title": "Overview: Statement, Answer, and Axiom Set",
+      "summary": "Module docstring: Erdős #165 asks for the asymptotic order of the off-diagonal Ramsey number R(3,k). The file axiomatizes the ten deep external inputs (the Ramsey recurrence, small exact values, and the six historical AKS/Shearer/Kim/BK-PGM/CJMS/HHKP bounds) and machine-checks everything downstream, including the reduction of the c=1/2 conjecture to a single sharp upper bound.",
+      "startLine": 1,
+      "endLine": 43,
+      "mathContext": "Erdős #165 (OPEN): is $R(3,k) \\sim c\\,k^2/\\log k$, and what is $c$? Known unconditionally: $c \\in [1/2, 1]$ (HHKP lower, Shearer upper). The file's 10 axioms are the only assumptions; the order theory built on them is verified."
+    },
+    {
       "id": "ramsey-basics",
-      "title": "Ramsey Numbers - Basic Definitions",
+      "title": "Part I: Ramsey Numbers — Basic Definitions",
       "summary": "ramseyNumber axiom, ramseyNumber_symm, ramseyNumber_recurrence, R3 definition, R3_small_values (exact values for k=3..9)",
       "startLine": 44,
       "endLine": 72,
@@ -97,7 +105,7 @@
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds",
+      "title": "Part II: Upper Bound — Shearer (1983)",
       "summary": "AKS theorem (1980): O(k²/log k). Shearer's theorem (1983): R(3,k) ≤ (1+ε)k²/log k for any ε > 0.",
       "startLine": 73,
       "endLine": 92,
@@ -105,7 +113,7 @@
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bounds - History of Constant c",
+      "title": "Part III: Lower Bounds — History of Constant c",
       "summary": "Four axioms tracking the history: Kim (1995) c≥1/162, Bohman-Keevash/PGM (2021) c≥1/4, CJMS (2025) c≥1/3, HHKP (2025) c≥1/2.",
       "startLine": 93,
       "endLine": 127,
@@ -113,35 +121,75 @@
     },
     {
       "id": "main-result",
-      "title": "Main Asymptotic Result",
+      "title": "Part IV: Main Asymptotic Result",
       "summary": "current_best_bounds theorem combining HHKP and Shearer. erdos_165 theorem (explicit c₁=1/4, c₂=2 witnesses).",
       "startLine": 128,
-      "endLine": 162,
+      "endLine": 172,
       "mathContext": "Proved: ∀ε>0, ∃k₀, ∀k≥k₀, (1/2-ε)k²/log k ≤ R3 k ≤ (1+ε)k²/log k. Witnesses c₁=1/4, c₂=2."
     },
     {
       "id": "triangle-free-process",
-      "title": "The Triangle-Free Process",
+      "title": "Part V: The Triangle-Free Process",
       "summary": "Informal description of Kim's semi-random construction: greedily add random triangle-free edges; produces graphs with small independence number.",
-      "startLine": 163,
-      "endLine": 185,
+      "startLine": 173,
+      "endLine": 195,
       "mathContext": "The triangle-free process is the probabilistic method behind all lower bound results. Key: tracks codegree evolution via martingales/differential equations."
     },
     {
       "id": "conjectures",
-      "title": "Conjectures and Open Questions",
-      "summary": "mainConjecture (c=1/2, supported by CJMS and HHKP), pgmConjecture (c=1/4, disproved), informal refutation of PGM.",
-      "startLine": 186,
-      "endLine": 221,
-      "mathContext": "mainConjecture: R(3,k) ~ (1/2)k²/log k. pgmConjecture: R(3,k) ~ (1/4)k²/log k (disproved by HHKP lower bound c≥1/2 > 1/4)."
+      "title": "Part VI: Conjectures and the Constant-Analysis Machinery",
+      "summary": "mainConjecture (c=1/2) and pgmConjecture (c=1/4); asymptotic_constant_le, R3_upper_constant_ge_half, R3_lower_constant_le_one; pgm_conjecture_refuted (the HHKP c≥1/2 bound kills c=1/4); the constantConjecture(c) predicate with constantConjecture_refuted_of_one_lt / _of_lt_half / _forces_bracket / _unique; and the equivalences mainConjecture_iff_constant, pgmConjecture_iff_constant, main_pgm_mutually_exclusive.",
+      "startLine": 196,
+      "endLine": 430,
+      "mathContext": "mainConjecture: R(3,k) ~ (1/2)k²/log k. pgmConjecture: R(3,k) ~ (1/4)k²/log k, refuted since HHKP gives c≥1/2>1/4. constantConjecture(c) forces c ∈ [1/2,1] and is unique when it holds — the scalar core of the problem."
     },
     {
       "id": "related",
-      "title": "Related Problems",
+      "title": "Part VII: Related Problems",
       "summary": "Connection to Erdős #544 (diagonal R(k,k)), #986 (off-diagonal R(s,k) for fixed s≥4).",
-      "startLine": 222,
-      "endLine": 239,
+      "startLine": 431,
+      "endLine": 447,
       "mathContext": "R(k,k): 2^(k/2) ≤ R(k,k) ≤ 4^k. R(s,k) for fixed s ≥ 4: Θ(k^((s+1)/2) / (log k)^((s-1)/2)) conjectured."
+    },
+    {
+      "id": "axiom-minimality",
+      "title": "Part VIII: Minimality of the Axiom Set",
+      "summary": "lower_bound_mono (a valid lower constant stays valid when weakened) and the subsumption theorems hhkp_subsumes_cjms / _bk_pgm / _kim and shearer_subsumes_aks, culminating in historical_bounds_redundant: the four historical bounds (Kim, BK-PGM, CJMS, AKS) are all logical consequences of the two sharpest axioms (HHKP + Shearer), so the axiom set could be trimmed to two.",
+      "startLine": 448,
+      "endLine": 523,
+      "mathContext": "Monotonicity of the lower-constant predicate makes HHKP ($c\\ge 1/2$) imply Kim/BK-PGM/CJMS, and Shearer imply AKS — an internal audit showing four of the six analytic axioms are redundant."
+    },
+    {
+      "id": "dual-monotonicity",
+      "title": "Part IX: Dual (Upper-Side) Monotonicity and Uniqueness",
+      "summary": "upper_bound_mono (a valid upper constant stays valid when enlarged), R3_upper_constant_of_one_le (every b≥1 is a valid upper constant, via Shearer), shearer_subsumes_upper_two, and asymptotic_constant_unique — the up-set/down-set structure of valid constants and uniqueness of any genuine asymptotic constant.",
+      "startLine": 524,
+      "endLine": 609,
+      "mathContext": "Dual to Part VIII: valid upper constants form an up-set (bounded below by 1/2), valid lower constants a down-set (bounded above by 1); if an exact asymptotic constant exists it is unique."
+    },
+    {
+      "id": "conjecture-reduces-upper",
+      "title": "Part X: The Conjecture Reduces to the Upper Bound",
+      "summary": "R3_lower_constant_of_le_half (every a≤1/2 is a valid lower constant, via HHKP) and mainConjecture_iff_upper_half: since the lower side is settled at 1/2 unconditionally, the entire Erdős #165 conjecture c=1/2 collapses to the single statement that 1/2 is a valid *upper* constant.",
+      "startLine": 610,
+      "endLine": 654,
+      "mathContext": "HHKP pins the greatest valid lower constant at ≥1/2, so mainConjecture ⟺ '1/2 is a valid upper constant' — reducing the open problem to one sharp upper bound $R(3,k) \\le (1/2+\\varepsilon)k^2/\\log k$."
+    },
+    {
+      "id": "valid-constants-order",
+      "title": "Part XI: The Set of Valid Asymptotic Constants and Its Order Interface",
+      "summary": "The predicates ValidUpperConstant / ValidLowerConstant with monotonicity, the Shearer/HHKP endpoint witnesses, the fences ValidUpperConstant_ge_half / ValidLowerConstant_le_one, validLowerConstant_le_validUpperConstant, and mainConjecture_iff_validUpperConstant_half plus the conditional mainConjecture_imp_isLeast_validUpperConstant.",
+      "startLine": 655,
+      "endLine": 750,
+      "mathContext": "Packages the analysis as two sets $\\{b : \\text{ValidUpperConstant } b\\}$ (up-set, $\\ge 1/2$) and $\\{a : \\text{ValidLowerConstant } a\\}$ (down-set, $\\le 1$), separated by $a \\le b$; the conjecture says $1/2$ is the least valid upper constant."
+    },
+    {
+      "id": "exact-constants-exist",
+      "title": "Part XII: The Exact Asymptotic Constants Exist Unconditionally",
+      "summary": "bddBelow/nonempty_validUpperConstant + bddAbove/nonempty_validLowerConstant give validUpperConstant_sInf_mem / validLowerConstant_sSup_mem and isLeast/isGreatest results; asymptoticUpperConstant := sInf{…}, asymptoticLowerConstant := sSup{…} both lie in [1/2,1] with lower ≤ upper; and mainConjecture_iff_asymptoticUpperConstant_eq_half / _asymptoticConstants_eq_half / _collapse pin the conjecture to c⁺=c⁻=1/2. No new axioms — only the two sharp Ramsey bounds enter, through Part XI.",
+      "startLine": 751,
+      "endLine": 933,
+      "mathContext": "Unconditionally $c^+ := \\inf\\{b\\}$ and $c^- := \\sup\\{a\\}$ exist, are attained, and satisfy $1/2 \\le c^- \\le c^+ \\le 1$; Erdős #165 ⟺ $c^+ = c^- = 1/2$, the exact asymptotic constant genuinely existing."
     }
   ],
   "conclusion": {
