@@ -1730,7 +1730,11 @@ theorem no_four_mutually_equidistant
       (mul_eq_zero.mp (by linear_combination e2 : (g 0 + 2 * g 1 + g 2) * (r ^ 2 / 2) = 0)).resolve_right hne
     have c3 : g 0 + g 1 + 2 * g 2 = 0 :=
       (mul_eq_zero.mp (by linear_combination e3 : (g 0 + g 1 + 2 * g 2) * (r ^ 2 / 2) = 0)).resolve_right hne
-    intro i; fin_cases i <;> linarith
+    intro i
+    fin_cases i
+    · show g 0 = 0; linarith
+    · show g 1 = 0; linarith
+    · show g 2 = 0; linarith
   -- Three linearly independent vectors cannot exist in a `2`-dimensional space.
   have hcard := hli.fintype_card_le_finrank
   rw [finrank_euclideanSpace_fin] at hcard
