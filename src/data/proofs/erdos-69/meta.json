@@ -106,17 +106,17 @@
       "id": "tao-identity",
       "title": "Tao's Identity (Proved by Aristotle)",
       "startLine": 91,
-      "endLine": 164,
+      "endLine": 193,
       "summary": "`tao_identity : omegaSum = primeSum` — the central combinatorial identity, proved by Aristotle via automated proof search. The proof rewrites $\\omega(n)$ as $\\sum_{p|n} 1$, performs a Fubini-style summation interchange (justified by absolute convergence via `Summable.tsum_comm`), and applies `geometric_sum_over_multiples` to each inner sum.",
       "mathContext": "$\\sum_{n \\geq 2} \\frac{\\omega(n)}{2^n} = \\sum_{n \\geq 2} \\frac{\\sum_{p|n} 1}{2^n} = \\sum_p \\sum_{k \\geq 1} \\frac{1}{2^{pk}} = \\sum_p \\frac{1}{2^p - 1}$\n\nThe summation interchange is the mathematical core — it requires absolute convergence of the double sum, proved by comparing $\\omega(n)/2^n \\leq n/2^n$ (since $\\omega(n) \\leq n$) and showing $\\sum n/2^n$ converges via the ratio test with limit $1/2$."
     },
     {
       "id": "irrationality",
       "title": "Irrationality and Main Theorem",
-      "startLine": 165,
-      "endLine": 188,
-      "summary": "`primeSum_irrational : Irrational primeSum` is the deep analytic result (sorry — Tao-Teräväinen 2025, beyond current Mathlib). `erdos_69 : Irrational omegaSum` combines `tao_identity` and `primeSum_irrational` in a two-line proof: rewrite via the identity, then apply irrationality.",
-      "mathContext": "The final proof: `rw [tao_identity]; exact primeSum_irrational`. This two-line argument is the entire reduction of Problem 69 to Problem 257 — the combinatorial identity does all the work, and the deep analytic number theory is encapsulated in the single sorry."
+      "startLine": 195,
+      "endLine": 219,
+      "summary": "`primeSum_irrational : Irrational primeSum` is the deep analytic result (axiom — Tao-Teräväinen 2025, beyond current Mathlib). `erdos_69 : Irrational omegaSum` combines `tao_identity` and `primeSum_irrational` in a two-line proof: rewrite via the identity, then apply irrationality.",
+      "mathContext": "The final proof: `rw [tao_identity]; exact primeSum_irrational`. This two-line argument is the entire reduction of Problem 69 to Problem 257 — the combinatorial identity does all the work, and the deep analytic number theory is encapsulated in the single axiom."
     }
   ],
   "conclusion": {

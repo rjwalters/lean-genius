@@ -91,9 +91,16 @@
       "id": "examples",
       "title": "§ 5. Computational Examples",
       "startLine": 227,
-      "endLine": 244,
+      "endLine": 247,
       "summary": "Five norm_num examples verifying the formula: dr(123)=6, dr(9999)=9, dr(1)=1, dr(10)=1, dr(18)=9.",
       "mathContext": "All proved by `unfold digitalRootFormula; norm_num` — the closed-form definition unfolds to arithmetic that `norm_num` verifies directly. These examples test boundary cases: dr(9999)=9 (multiple of 9), dr(10)=1 (crossing decade), dr(18)=9 (two-digit multiple of 9)."
+    },
+    {
+      "id": "summary-api",
+      "title": "§ 6. Summary and Public API",
+      "startLine": 249,
+      "endLine": 273,
+      "summary": "Docstring summary of the O(1) digital-root construction (13 proved theorems: digitSum_mod9, digitalRoot range/zero/single, congruence n ≡ dr(n) (mod 9), idempotence, div9/div3 characterizations, additive and multiplicative homomorphism laws, five concrete examples) and the resolution of the former decreasing_by sorry via Nat.sum_digits_lt, followed by #check exports of the public API (digitalRootFormula, digitalRoot_idempotent, digitalRoot_div3)."
     }
   ],
   "conclusion": {
