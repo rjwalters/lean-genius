@@ -7,7 +7,7 @@
     "author": "Pochhammer (1870), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Falling_and_rising_factorials",
     "date": "1870",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
     "tags": [
       "combinatorics",
@@ -15,7 +15,7 @@
       "binomial",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -42,14 +42,14 @@
       "factorial_dvd_ascFactorial: k! divides ascFactorial(n+1, k) -- divisibility corollary"
     ],
     "dateAdded": "2026-03-26",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "prerequisites": [
       "Binomial coefficients",
       "Ascending factorial",
       "Simplicial numbers"
     ],
     "lineCount": 156,
-    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. The three concrete numerical checks (check_k4_n3, check_k5_n2, check_product) are discharged by kernel `decide` (not `native_decide`), so `#print axioms` shows no `Lean.ofReduceBool`: the two `simplicial ... = <literal>` checks depend on no axioms at all, and every other theorem depends only on the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted. meta.axiomCount is therefore 0. The core identity `simplicial_factorial` is a Mathlib bridge over `Nat.ascFactorial_eq_factorial_mul_choose` (badge `mathlib`); the explicit product formula, full factorial identity, and specializations are proved independently.",
     "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0
@@ -110,12 +110,12 @@
       "title": "Concrete Verification",
       "startLine": 116,
       "endLine": 130,
-      "summary": "Numerical checks via native_decide: S_4(3)*24 = 840, S_5(2)*120 = 2520.",
+      "summary": "Numerical checks via kernel decide: S_4(3)*24 = 840, S_5(2)*120 = 2520.",
       "mathContext": "Concrete verification: $\\binom{7}{4} \\cdot 24 = 35 \\cdot 24 = 840 = 4 \\cdot 5 \\cdot 6 \\cdot 7$ and $\\binom{7}{5} \\cdot 120 = 21 \\cdot 120 = 2520 = 3 \\cdot 4 \\cdot 5 \\cdot 6 \\cdot 7$."
     }
   ],
   "conclusion": {
-    "summary": "11 theorems with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool). The main identity derives from Mathlib's ascFactorial_eq_factorial_mul_choose; independent contributions include the explicit product formula (by induction) and structural corollaries. The rising factorial identity connects simplicial numbers to ordered selections, explaining why binomial coefficients are integers.",
+    "summary": "11 theorems with 0 sorries and 0 axioms (concrete checks use kernel `decide`, adding no Lean.ofReduceBool). The main identity derives from Mathlib's ascFactorial_eq_factorial_mul_choose; independent contributions include the explicit product formula (by induction) and structural corollaries. The rising factorial identity connects simplicial numbers to ordered selections, explaining why binomial coefficients are integers.",
     "implications": "**Integrality of binomial coefficients**: The divisibility k! | (n+1)(n+2)...(n+k) provides a clean proof that C(n+k,k) is always a natural number. **Permutation counting**: C(n+k,k) * k! counts the number of k-permutations from a set of n+k elements that include all of the last k elements. **Connection to Stirling numbers**: The rising factorial is the fundamental building block for Stirling number identities and the conversion between ordinary and factorial powers.",
     "openQuestions": [
       "Can the descending factorial analogue n * (n-1) * ... * (n-k+1) = C(n,k) * k! be formalized with the same modular structure?",
