@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-276",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #276: does there exist a Lucas-recurrence sequence ($a_{n+2}=a_{n+1}+a_n$) with every term composite yet no common factor across all terms? Graham (1964) constructed one via covering congruences; whether covering congruences are the only mechanism remains open.",
+      "startLine": 1,
+      "endLine": 19,
+      "mathContext": "A \"primefree\" Lucas sequence avoids primes term-by-term; Graham's explicit starting pair ($a_0, a_1$ each ~35-digit numbers) is engineered so every term is forced composite by a covering system of congruences."
+    },
+    {
       "id": "imports",
       "title": "Imports",
       "summary": "Imports Mathlib's natural number arithmetic, GCD, primality, and tactic libraries.",
