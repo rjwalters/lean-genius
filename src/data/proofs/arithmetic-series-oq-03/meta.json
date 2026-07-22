@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: zeta regularization of divergent power sums",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring. Introduces this entry as a follow-up to the Arithmetic Series entry's open question (OQ-03): the analytic continuation of the Riemann zeta function assigns finite values ζ(-1)=-1/12, ζ(0)=-1/2, ζ(-2)=0, ζ(-3)=1/120 to the divergent power-sum series 1+2+3+⋯, 1+1+1+⋯, etc., via Mathlib's riemannZeta_neg_nat_eq_bernoulli formula ζ(-k)=(-1)^k·B_{k+1}/(k+1). Clarifies these are not partial-sum limits (which diverge) but continuation values — the standard 'zeta regularization' of physics and Ramanujan summation — and states the scope/honesty note that the analytic heavy lifting is Mathlib's, with the closed-form evaluations, trivial-zero family, and rationality corollary as this file's contribution.",
+      "mathContext": "Zeta regularization assigns $\\sum_{n\\ge1} n^p \\;\\text{``=''}\\; \\zeta(-p)$ via analytic continuation, not as a literal limit — the divergent series has no sum, but $\\zeta(-p) = (-1)^p B_{p+1}/(p+1)$ is a well-defined finite value determined by a Bernoulli number."
+    },
+    {
       "id": "definition",
       "title": "Part I: The Regularized Power Sum",
       "startLine": 50,
