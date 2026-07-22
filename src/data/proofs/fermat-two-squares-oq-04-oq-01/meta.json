@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Exact Closed Form of Jacobi's Divisor-Character Sum",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the open question — the parent builds the divisor-character sum δ(n) = ∑_{d∣n} χ₄(d) (jacobiSum), proves it multiplicative, and shows δ(n) > 0 iff n is a sum of two squares, but leaves the exact value of δ open. This file supplies the exact values on prime powers (δ(2^k)=1, δ(p^k)=k+1 for p≡1 mod 4, δ(p^k)=[k even] for p≡3 mod 4) and assembles the closed-form product δ(n) = ∏_{p∣n, p≡1(4)} (v_p(n)+1) via multiplicativity — precisely the count side of Jacobi's theorem r₂(n) = 4δ(n). The counting identity r₂(n) = 4δ(n) itself remains genuinely open in this gallery, since it needs the arithmetic of the Gaussian integers ℤ[i] that Mathlib does not yet provide.",
+      "mathContext": "$\\delta(n) = \\prod_{p \\mid n,\\ p \\equiv 1 (4)} (v_p(n)+1)$ for $n$ representable as a sum of two squares, via $\\delta(2^k)=1$, $\\delta(p^k)=k+1$ ($p\\equiv1$), $\\delta(p^k)=[k\\text{ even}]$ ($p\\equiv3$)."
+    },
+    {
       "id": "prime-power-values",
       "title": "Exact Prime-Power Values",
       "startLine": 52,
