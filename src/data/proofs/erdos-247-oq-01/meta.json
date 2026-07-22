@@ -88,6 +88,14 @@
   ],
   "sections": [
     {
+      "id": "sec-header-erdos-247-oq-01",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #247 on transcendence of lacunary sums: for $n_1 < n_2 < \\cdots$ with $\\limsup n_k/k = \\infty$, is $\\sum 1/2^{n_k}$ always transcendental? Erd\u0151s (1975) proved it under the stronger hypothesis $\\limsup n_k/k^t = \\infty$ for all $t \\ge 1$; the general case remains open, and Erd\u0151s (1988) called such problems \"hopeless at present.\"",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "The sum is a binary expansion with 1s exactly at positions $n_k$; sufficiently sparse (lacunary) placement of the 1-bits is the mechanism forcing transcendence via Liouville-type arguments."
+    },
+    {
       "id": "sec-lacunary-sum",
       "title": "The Lacunary Sum and Growth Conditions",
       "startLine": 40,
