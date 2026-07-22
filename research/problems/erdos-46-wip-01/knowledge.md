@@ -139,3 +139,47 @@ open bounded-rational Diophantine step.
 - Extract the reaching-block sum split: `have h := hPb₀; simp only [hP] at h;
   rwa [hb₀eq, Finset.sum_Ico_succ_top (by omega : N+1 ≤ c)] at h` gives
   `1 ≤ (block c).sum + 1/c` directly usable by `linarith` with `h1c : 1/c ≤ 1/(N+1)`.
+
+## Session 2026-07-22 (researcher-1, session 2) — ★CRUX SOLVED: exact repr of 1 with min > N
+
+**The registered open nugget — a unit-fraction representation of EXACTLY 1 with every
+denominator > N — is now a THEOREM.** New companion file
+`Erdos46WIP01SmallDivisors.lean` (206 L, 0-axiom, host-verified v4.31 EXIT=0, zero
+warnings), via the practical-number completeness route the divisor-sum bridge left
+open (explicitly a nextStep, NOT a blocked route):
+
+- `exists_isUnitFractionRepr_min_gt (N) (hN : 1 ≤ N) : ∃ S, IsUnitFractionRepr S ∧
+  ∀ n ∈ S, N < n`. Construction: M = (4(N+1))! is practical
+  (`Erdos18.factorial_practical`), so its divisor set is a subset-sum coin chain
+  (`Erdos18.divisor_chain_of_practical`); the THRESHOLD RESTRICTION
+  D = {d ∣ M : d ≤ M/(N+1)} is still a coin chain (`small_divisor_chain` — the chain
+  condition for d only references divisors < d ≤ threshold, all of which survive the
+  filter); the cofactors M/j for j in the harmonic block [N+2, 4(N+1)] lie in D and
+  total ≥ M·Σ1/j ≥ M (`small_divisor_sum_ge`, reusing `sum_Ico_inv_ge_one (N+1)`);
+  `Erdos18.finset_chain_covers` then hits M exactly with distinct small divisors, and
+  the existing bridge `isUnitFractionRepr_of_divisorSum` + `divisorSum_min_gt`
+  converts the cofactor family into the required representation.
+- `exists_isUnitFractionRepr_disjoint (S₀) : ∃ S, IsUnitFractionRepr S ∧ Disjoint S₀ S`
+  — any finite set avoided (take N = S₀.sup id + 1). **The collision-freeness
+  obstruction to disjoint chaining is GONE**: iterating yields arbitrarily many
+  pairwise-disjoint representations of 1.
+
+Cross-file reuse: imports `Proofs.Erdos18WIP01` (practical-number engine built for
+Erdős #18) into the Erdős #46 vein — `Erdos18.divisors` is defeq `Nat.divisors`, so
+the bridge composes with zero glue. The two WIP veins were secretly the same
+mathematics: "denominators > N summing to 1" = "divisors < M/N summing to M".
+
+Idioms: threshold chain restriction = `Finset.filter_filter` + `Finset.filter_congr`
+(e < d ≤ B kills the extra conjunct); M/j ≤ M/(N+1) robustly via
+`(Nat.le_div_iff_mul_le (0<N+1)).mpr` + `Nat.mul_le_mul (le_refl _) hjlo` +
+`Nat.div_mul_cancel` (avoids div_le_div_left name churn); ℕ→ℚ sum bound via
+`Finset.sum_image hinj` + `Nat.cast_div` + `← Finset.mul_sum`, back by
+`rw [← Nat.cast_sum]; exact_mod_cast`; (N+1)*d = N*d + d by `ring` then `omega`
+(omega treats N*d as an atom — never leave both orderings).
+
+### Still open (UNCHANGED)
+The monochromatic statement `ErdosProblem46` (Croot 2003) — the colouring must now
+merely be combined with pigeonhole over the disjoint family? NO: pigeonhole gives ONE
+colour class hit infinitely often across disjoint reprs, but a repr need not be
+monochromatic. Croot's density machinery is still required. The colour-free
+infrastructure is complete.
