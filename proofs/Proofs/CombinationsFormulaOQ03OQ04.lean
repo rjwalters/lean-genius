@@ -46,14 +46,23 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
       rise-then-fall bump: degree `2(n-2)` is even, first half is the ramp `⌊j/2⌋+1`
       (`qBinom_X_two_coeff_le`, from the recurrence `qBinom_X_two_coeff_succ`), and unimodality
       follows from the reusable criterion `unimodal_of_even_palindrome_first_half_mono`
-- [ ] OPEN: coefficient unimodality for general `k ≥ 3` (Sylvester/Proctor) — the substantive crux
+- [x] Coefficient unimodality, `k = 3` case (`qBinomCoeff_unimodal_three`) — the first case
+      whose first half crosses the box constraint; settled elementarily by the *center-band
+      recursion* (second-form recurrence `qBinom_X_three_coeff_succ'` + exact 0/1 band
+      increments `qBinom_X_three_band`), with no `𝔰𝔩₂`/O'Hara input
+- [x] High-codimension cases `k ≥ n − 3` via `[n,k]_q = [n,n−k]_q`
+      (`qBinomCoeff_unimodal_of_codim_le_three`)
+- [ ] OPEN: coefficient unimodality for the interior range `4 ≤ k ≤ n − 4`
+      (Sylvester/Proctor) — the substantive crux; first open instance `[8,4]_q`
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
 (degree, monicity, coefficient nonnegativity, pinned extreme coefficients) AND the first
-unimodality content: the `Unimodal` predicate/API, the `k ≤ 1` base cases, and the `k = 2`
-case (the first genuinely rise-then-fall coefficient array). It does NOT prove unimodality
-for general `k ≥ 3`, which is the substantive content of the open question: that requires
+unimodality content: the `Unimodal` predicate/API, the `k ≤ 3` cases (`k = 2` the first
+rise-then-fall array, `k = 3` the first box-crossing first half), and their `k ↦ n − k`
+mirrors. It does NOT prove unimodality in the interior range `4 ≤ k ≤ n − 4`, which is the
+remaining substantive content of the open question: there the center band of the recursion
+widens with `k` and the elementary bookkeeping no longer closes; the general case requires
 either an sl₂-action argument or O'Hara's combinatorial decomposition, not attempted here.
 
 ## Gaussian polynomial layer (over `ℤ[X]`)
@@ -699,15 +708,18 @@ box constraint "each part `≤ n-2`" never binds there (`qBinom_X_two_coeff_le`)
   needs `𝔰𝔩₂`-representation theory (Proctor 1982) or O'Hara's decomposition (1990).
 
 This section supplies the `k = 3` coefficient recurrence and settles the box-free prefix:
-the coefficient sequence of `[N+3, 3]_q` is weakly increasing on `j + 1 ≤ N`.  The tail
-stays open.
+the coefficient sequence of `[N+3, 3]_q` is weakly increasing on `j + 1 ≤ N`.  The tail is
+closed in the *center-band* section further below (`qBinom_X_three_coeff_first_half_mono`).
 
-**Why the elementary induction stops at the prefix.**  A naive induction on `n` across the
-*whole* first half fails: once `j` passes the `[n,2]` peak the `q`-Pascal increment
-`(qBinom X n 2).coeff (j+1) − (qBinom X n 2).coeff j` turns negative, so the shifted
-`[n,3]` term would have to *strictly* compensate — precisely the quantitative control an
-`𝔰𝔩₂`/O'Hara argument provides and this recurrence does not.  On the prefix `j + 1 ≤ N`
-both increments are `≥ 0`, so the induction closes there and only there. -/
+**Why the elementary induction stops at the prefix — with THIS recurrence.**  A naive
+induction on `n` across the *whole* first half fails here: once `j` passes the `[n,2]` peak
+the `q`-Pascal increment `(qBinom X n 2).coeff (j+1) − (qBinom X n 2).coeff j` turns
+negative, so the shifted `[n,3]` term would have to *strictly* compensate — quantitative
+control this first-form recurrence does not expose.  On the prefix `j + 1 ≤ N` both
+increments are `≥ 0`, so the induction closes there and only there.  The dual `q`-Pascal
+form (`qBinom_X_three_coeff_succ'` below), whose correction term is the *unshifted*, exactly
+known `k = 2` ramp, recovers precisely the missing control at the at-most-two center-band
+indices — no `𝔰𝔩₂`/O'Hara input is needed at `k = 3`. -/
 
 open Polynomial in
 /-- **The `k = 3` coefficient recurrence.**  From the `q`-Pascal identity
@@ -796,6 +808,346 @@ theorem qBinomCoeff_unimodal_of_codim_le_two {n k : ℕ} (hk : k ≤ n) (hnk : n
   · rcases Nat.lt_or_ge (n - k) 2 with h1' | h2
     · rw [show n - k = 1 from by omega]; exact qBinomCoeff_unimodal_one n
     · rw [show n - k = 2 from by omega]; exact qBinomCoeff_unimodal_two n
+
+/-! ### Closing the `k = 3` box-binding tail: center-band exactness
+
+The section above stopped at the box-free prefix `j + 1 ≤ N`, and its header explains why
+the *first* `q`-Pascal recurrence cannot cross the `[n,2]` peak.  The **second** `q`-Pascal
+form — `[N+4,3]_q = [N+3,3]_q + q^{N+1}·[N+3,2]_q`, already available as `qBinom_pascal'` —
+changes the situation entirely: it writes the increment of the box-`3×(N+1)` array as the
+increment of the box-`3×N` array **plus the increment of the `k = 2` ramp**, which is
+*exactly known* (`qBinom_X_two_coeff_le`, difference `[i odd] ∈ {0,1}`).  The first half of
+box `3×(N+1)` extends past that of box `3×N` by at most **two** indices (the *center band*),
+and at those indices the smaller box's increment is computable on the nose from palindromy:
+one of the two reflection pairs is the odd-degree center pair (increment `0` outright), and
+the other reflects onto the *previous* center band.  So the center-band increments satisfy a
+tiny self-contained recursion of their own:
+
+* box `2M+1` (odd), center `j = 3M`:  increment `0`;
+* box `2M+2` (even), centers `j = 3M+1, 3M+2`:  increments `[M even]`, `[M odd]`.
+
+Everything is `0` or `1` — the array never strictly falls before its midpoint — and the
+generic induction (`prefix + shifted ramp`) covers all indices below the band.  This closes
+Sylvester's first-half inequality for `k = 3` **elementarily**, with no `𝔰𝔩₂`/O'Hara input:
+the quantitative compensation those tools supply for general `k` is, at `k = 3`, just the
+parity of the `⌊i/2⌋` ramp. -/
+
+open Polynomial in
+/-- **The second-form `k = 3` coefficient recurrence.**  From the dual `q`-Pascal identity
+`[N+4,3]_q = q^{N+1}·[N+3,2]_q + [N+3,3]_q` (`qBinom_pascal'` at `k = 2`), the coefficient
+array of the `3×(N+1)` box is the `3×N` array plus the `q^{N+1}`-shifted `k = 2` array:
+
+  `(qBinom X (N+4) 3).coeff j = (qBinom X (N+3) 3).coeff j + [N+1 ≤ j]·(qBinom X (N+3) 2).coeff (j-(N+1))`.
+
+Unlike the first form (`qBinom_X_three_coeff_succ`), the correction term here is the
+**exactly known** `k = 2` ramp — the engine that closes the box-binding tail. -/
+theorem qBinom_X_three_coeff_succ' (N j : ℕ) :
+    (qBinom (X : ℤ[X]) (N + 4) 3).coeff j
+      = (qBinom (X : ℤ[X]) (N + 3) 3).coeff j
+        + (if N + 1 ≤ j then (qBinom (X : ℤ[X]) (N + 3) 2).coeff (j - (N + 1)) else 0) := by
+  have hp := qBinom_pascal' (X : ℤ[X]) (N + 3) 2 (by omega)
+  rw [show N + 3 + 1 = N + 4 from by omega, show N + 3 - 2 = N + 1 from by omega,
+      show (2 : ℕ) + 1 = 3 from by omega] at hp
+  rw [hp, coeff_add, mul_comm (X ^ (N + 1)) (qBinom (X : ℤ[X]) (N + 3) 2),
+      coeff_mul_X_pow']
+  ring
+
+open Polynomial in
+/-- **Odd-degree center pair.**  The box `3×(2M+1)` array (degree `6M+3`) has equal central
+coefficients: `coeff (3M+1) = coeff (3M+2)`.  Pure palindromy — the two indices reflect onto
+each other. -/
+theorem qBinom_X_three_center_pair (M : ℕ) :
+    (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M + 1)
+      = (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M + 2) := by
+  have h := qBinom_X_coeff_symm' (n := 2 * M + 4) (k := 3) (by omega)
+    (j := 3 * M + 1) (by omega)
+  rwa [show 3 * (2 * M + 4 - 3) - (3 * M + 1) = 3 * M + 2 from by omega] at h
+
+open Polynomial in
+/-- **Odd-degree outer reflection pair.**  In the box `3×(2M+1)` array,
+`coeff (3M) = coeff (3M+3)` — the indices flanking the center pair reflect onto each
+other. -/
+theorem qBinom_X_three_outer_pair (M : ℕ) :
+    (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M)
+      = (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M + 3) := by
+  have h := qBinom_X_coeff_symm' (n := 2 * M + 4) (k := 3) (by omega)
+    (j := 3 * M) (by omega)
+  rwa [show 3 * (2 * M + 4 - 3) - 3 * M = 3 * M + 3 from by omega] at h
+
+open Polynomial in
+/-- **Even-degree near-center reflection pair.**  In the box `3×(2M+2)` array (degree
+`6M+6`, center `3M+3`), `coeff (3M+2) = coeff (3M+4)` — the neighbours of the center
+reflect onto each other. -/
+theorem qBinom_X_three_even_pair (M : ℕ) :
+    (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 2)
+      = (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 4) := by
+  have h := qBinom_X_coeff_symm' (n := 2 * M + 5) (k := 3) (by omega)
+    (j := 3 * M + 2) (by omega)
+  rwa [show 3 * (2 * M + 5 - 3) - (3 * M + 2) = 3 * M + 4 from by omega] at h
+
+open Polynomial in
+/-- **Center-band increment, odd box, base case `M = 0`.**  `[4,3]_q = 1 + q + q² + q³`:
+the increment at the center of the `3×1` box is `0` (`coeff 1 = coeff 0 = 1`).  Read off
+the first-form recurrence and the `k = 2` ramp. -/
+theorem qBinom_X_three_band_O_zero :
+    (qBinom (X : ℤ[X]) 4 3).coeff 1 = (qBinom (X : ℤ[X]) 4 3).coeff 0 := by
+  have h0 := qBinom_X_three_coeff_succ 3 0
+  have h1 := qBinom_X_three_coeff_succ 3 1
+  rw [show (3 : ℕ) + 1 = 4 from by omega,
+      if_neg (show ¬ (3 : ℕ) ≤ 0 from by omega)] at h0
+  rw [show (3 : ℕ) + 1 = 4 from by omega,
+      if_neg (show ¬ (3 : ℕ) ≤ 1 from by omega)] at h1
+  have hB0 := qBinom_X_two_coeff_le 1 0 (by omega)
+  have hB1 := qBinom_X_two_coeff_le 1 1 (by omega)
+  rw [show (1 : ℕ) + 2 = 3 from by omega] at hB0 hB1
+  norm_num at hB0 hB1
+  linarith
+
+open Polynomial in
+/-- **Even-box center-band increments, given the odd-box increment.**  If the box
+`3×(2M+1)` array has zero increment at its band point (`coeff (3M+1) = coeff (3M)`),
+then in the box `3×(2M+2)` array the second band increment is exactly the ramp parity:
+`coeff (3M+3) = coeff (3M+2) + [M odd]`.  Proof: the second-form recurrence writes both
+coefficients over box `3×(2M+1)`; the outer and center reflection pairs plus the
+hypothesis collapse the smaller-box difference to `0`, leaving the exact `k = 2` ramp
+step `⌊(M+1)/2⌋ − ⌊M/2⌋ = [M odd]`. -/
+theorem qBinom_X_three_band_E2_of_O (M : ℕ)
+    (hO : (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M + 1)
+        = (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M)) :
+    (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 3)
+      = (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 2)
+        + (if M % 2 = 1 then 1 else 0) := by
+  have h3 := qBinom_X_three_coeff_succ' (2 * M + 1) (3 * M + 3)
+  have h2 := qBinom_X_three_coeff_succ' (2 * M + 1) (3 * M + 2)
+  rw [show 2 * M + 1 + 4 = 2 * M + 5 from by omega,
+      show 2 * M + 1 + 3 = 2 * M + 4 from by omega,
+      show 2 * M + 1 + 1 = 2 * M + 2 from by omega] at h3 h2
+  rw [if_pos (show 2 * M + 2 ≤ 3 * M + 3 from by omega),
+      show 3 * M + 3 - (2 * M + 2) = M + 1 from by omega] at h3
+  rw [if_pos (show 2 * M + 2 ≤ 3 * M + 2 from by omega),
+      show 3 * M + 2 - (2 * M + 2) = M from by omega] at h2
+  have houter := qBinom_X_three_outer_pair M
+  have hcenter := qBinom_X_three_center_pair M
+  have hBM1 := qBinom_X_two_coeff_le (2 * M + 2) (M + 1) (by omega)
+  have hBM := qBinom_X_two_coeff_le (2 * M + 2) M (by omega)
+  rw [show 2 * M + 2 + 2 = 2 * M + 4 from by omega] at hBM1 hBM
+  rw [hBM1] at h3
+  rw [hBM] at h2
+  have hdiv : (((M + 1) / 2 : ℕ) : ℤ)
+      = ((M / 2 : ℕ) : ℤ) + (if M % 2 = 1 then 1 else 0) := by
+    by_cases hM2 : M % 2 = 1
+    · simp only [if_pos hM2]
+      exact_mod_cast show (M + 1) / 2 = M / 2 + 1 from by omega
+    · simp only [if_neg hM2]
+      exact_mod_cast show (M + 1) / 2 = M / 2 from by omega
+  linarith
+
+open Polynomial in
+/-- **The center-band recursion.**  For every `M`:
+* (odd box `3×(2M+1)`)  `coeff (3M+1) = coeff (3M)` — the band increment is `0`;
+* (even box `3×(2M+2)`) `coeff (3M+3) = coeff (3M+2) + [M odd]` — the second band
+  increment is the ramp parity.
+
+The two claims feed each other: the odd-box claim at `M+1` needs the even-box claim at
+`M` (via the even-degree reflection pair), and the even-box claim at `M` needs the
+odd-box claim at `M` (`qBinom_X_three_band_E2_of_O`).  All increments are `0` or `1` —
+this is the exact quantitative control across the peak of the `k = 2` term that the
+first-form recurrence could not provide. -/
+theorem qBinom_X_three_band :
+    ∀ M : ℕ,
+      ((qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M + 1)
+          = (qBinom (X : ℤ[X]) (2 * M + 4) 3).coeff (3 * M))
+      ∧ ((qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 3)
+          = (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 2)
+            + (if M % 2 = 1 then 1 else 0))
+  | 0 => by
+      constructor
+      · simpa using qBinom_X_three_band_O_zero
+      · simpa using qBinom_X_three_band_E2_of_O 0 (by simpa using qBinom_X_three_band_O_zero)
+  | M + 1 => by
+      obtain ⟨hO, hE2⟩ := qBinom_X_three_band M
+      have hO' : (qBinom (X : ℤ[X]) (2 * (M + 1) + 4) 3).coeff (3 * (M + 1) + 1)
+          = (qBinom (X : ℤ[X]) (2 * (M + 1) + 4) 3).coeff (3 * (M + 1)) := by
+        rw [show 2 * (M + 1) + 4 = 2 * M + 6 from by omega,
+            show 3 * (M + 1) + 1 = 3 * M + 4 from by omega,
+            show 3 * (M + 1) = 3 * M + 3 from by omega]
+        have h4 := qBinom_X_three_coeff_succ' (2 * M + 2) (3 * M + 4)
+        have h3 := qBinom_X_three_coeff_succ' (2 * M + 2) (3 * M + 3)
+        rw [show 2 * M + 2 + 4 = 2 * M + 6 from by omega,
+            show 2 * M + 2 + 3 = 2 * M + 5 from by omega,
+            show 2 * M + 2 + 1 = 2 * M + 3 from by omega] at h4 h3
+        rw [if_pos (show 2 * M + 3 ≤ 3 * M + 4 from by omega),
+            show 3 * M + 4 - (2 * M + 3) = M + 1 from by omega] at h4
+        rw [if_pos (show 2 * M + 3 ≤ 3 * M + 3 from by omega),
+            show 3 * M + 3 - (2 * M + 3) = M from by omega] at h3
+        have heven := qBinom_X_three_even_pair M
+        have hBM1 := qBinom_X_two_coeff_le (2 * M + 3) (M + 1) (by omega)
+        have hBM := qBinom_X_two_coeff_le (2 * M + 3) M (by omega)
+        rw [show 2 * M + 3 + 2 = 2 * M + 5 from by omega] at hBM1 hBM
+        rw [hBM1] at h4
+        rw [hBM] at h3
+        have hdiv : (((M + 1) / 2 : ℕ) : ℤ)
+            = ((M / 2 : ℕ) : ℤ) + (if M % 2 = 1 then 1 else 0) := by
+          by_cases hM2 : M % 2 = 1
+          · simp only [if_pos hM2]
+            exact_mod_cast show (M + 1) / 2 = M / 2 + 1 from by omega
+          · simp only [if_neg hM2]
+            exact_mod_cast show (M + 1) / 2 = M / 2 from by omega
+        linarith
+      refine ⟨hO', ?_⟩
+      have := qBinom_X_three_band_E2_of_O (M + 1) (by
+        rw [show 2 * (M + 1) + 4 = 2 * M + 6 from by omega,
+            show 3 * (M + 1) + 1 = 3 * M + 4 from by omega,
+            show 3 * (M + 1) = 3 * M + 3 from by omega] at hO'
+        rwa [show 2 * (M + 1) + 4 = 2 * M + 6 from by omega,
+             show 3 * (M + 1) + 1 = 3 * M + 4 from by omega,
+             show 3 * (M + 1) = 3 * M + 3 from by omega])
+      exact this
+
+open Polynomial in
+/-- **Even-box first band increment.**  In the box `3×(2M+2)` array,
+`coeff (3M+2) = coeff (3M+1) + [M even]`.  No induction needed: the second-form
+recurrence writes both coefficients over box `3×(2M+1)`, whose contribution cancels by
+the pure-palindromy center pair, leaving the ramp step `⌊M/2⌋ − ⌊(M-1)/2⌋ = [M even]`
+(and the `M = 0` case is the explicit `[5,3]_q` computation, where the lower correction
+term is absent). -/
+theorem qBinom_X_three_band_E1 (M : ℕ) :
+    (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 2)
+      = (qBinom (X : ℤ[X]) (2 * M + 5) 3).coeff (3 * M + 1)
+        + (if M % 2 = 0 then 1 else 0) := by
+  have h2 := qBinom_X_three_coeff_succ' (2 * M + 1) (3 * M + 2)
+  have h1 := qBinom_X_three_coeff_succ' (2 * M + 1) (3 * M + 1)
+  rw [show 2 * M + 1 + 4 = 2 * M + 5 from by omega,
+      show 2 * M + 1 + 3 = 2 * M + 4 from by omega,
+      show 2 * M + 1 + 1 = 2 * M + 2 from by omega] at h2 h1
+  rw [if_pos (show 2 * M + 2 ≤ 3 * M + 2 from by omega),
+      show 3 * M + 2 - (2 * M + 2) = M from by omega] at h2
+  have hcenter := qBinom_X_three_center_pair M
+  have hBM := qBinom_X_two_coeff_le (2 * M + 2) M (by omega)
+  rw [show 2 * M + 2 + 2 = 2 * M + 4 from by omega] at hBM
+  rw [hBM] at h2
+  rcases Nat.eq_zero_or_pos M with rfl | hM
+  · -- `M = 0`: the lower correction is absent
+    rw [if_neg (show ¬ (2 * 0 + 2 ≤ 3 * 0 + 1) from by omega)] at h1
+    norm_num at h1 h2 hcenter ⊢
+    linarith
+  · -- `M ≥ 1`: both corrections are ramp values differing by `[M even]`
+    rw [if_pos (show 2 * M + 2 ≤ 3 * M + 1 from by omega),
+        show 3 * M + 1 - (2 * M + 2) = M - 1 from by omega] at h1
+    have hBM1 := qBinom_X_two_coeff_le (2 * M + 2) (M - 1) (by omega)
+    rw [show 2 * M + 2 + 2 = 2 * M + 4 from by omega] at hBM1
+    rw [hBM1] at h1
+    have hdiv : ((M / 2 : ℕ) : ℤ)
+        = (((M - 1) / 2 : ℕ) : ℤ) + (if M % 2 = 0 then 1 else 0) := by
+      by_cases hM2 : M % 2 = 0
+      · simp only [if_pos hM2]
+        exact_mod_cast show M / 2 = (M - 1) / 2 + 1 from by omega
+      · simp only [if_neg hM2]
+        exact_mod_cast show M / 2 = (M - 1) / 2 from by omega
+    linarith
+
+open Polynomial in
+/-- **First-half monotonicity for `k = 3` — the full inequality, box-binding tail
+included.**  For every `N` and every `j` in the first half (`2j + 2 ≤ 3N`), the
+coefficient array of the `3×N` box satisfies `coeff j ≤ coeff (j+1)`.  Induction on `N`
+via the second-form recurrence `qBinom_X_three_coeff_succ'`:
+
+* below the previous box's midpoint the increment is (IH) + (ramp step `≥ 0`);
+* at the at-most-two *center-band* indices the increment is the exact `0`/`1` value from
+  `qBinom_X_three_band`.
+
+This settles the range `N < j ≤ ⌊(3N-2)/2⌋` that `qBinom_X_three_coeff_prefix_mono`
+could not reach — elementarily. -/
+theorem qBinom_X_three_coeff_first_half_mono :
+    ∀ (N j : ℕ), 2 * j + 2 ≤ 3 * N →
+      (qBinom (X : ℤ[X]) (N + 3) 3).coeff j
+        ≤ (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j + 1)
+  | 0, j, hj => by omega
+  | N + 1, j, hj => by
+      rcases Nat.lt_or_ge (2 * j + 2) (3 * N + 1) with hin' | hband'
+      · -- interior: previous box's first half; recurrence + IH + nonnegative ramp step
+        have hin : 2 * j + 2 ≤ 3 * N := by omega
+        have hIH := qBinom_X_three_coeff_first_half_mono N j hin
+        have h1 := qBinom_X_three_coeff_succ' N j
+        have h2 := qBinom_X_three_coeff_succ' N (j + 1)
+        rw [show N + 1 + 3 = N + 4 from by omega, h1, h2]
+        rcases Nat.lt_or_ge (j + 1) (N + 1) with hlt | hge
+        · -- both correction terms vanish
+          rw [if_neg (show ¬ (N + 1 ≤ j) from by omega),
+              if_neg (show ¬ (N + 1 ≤ j + 1) from by omega)]
+          simpa using hIH
+        · rcases eq_or_lt_of_le hge with heq | hgt
+          · -- `j + 1 = N + 1`: right correction is the ramp value `1`
+            rw [if_neg (show ¬ (N + 1 ≤ j) from by omega),
+                if_pos (show N + 1 ≤ j + 1 from by omega),
+                show j + 1 - (N + 1) = 0 from by omega]
+            have hB0 := qBinom_X_two_coeff_le (N + 1) 0 (by omega)
+            rw [show N + 1 + 2 = N + 3 from by omega] at hB0
+            norm_num at hB0
+            rw [hB0]
+            linarith
+          · -- `N + 1 ≤ j`: both corrections are ramp values; the ramp is monotone
+            rw [if_pos (show N + 1 ≤ j from by omega),
+                if_pos (show N + 1 ≤ j + 1 from by omega)]
+            have hBl := qBinom_X_two_coeff_le (N + 1) (j - (N + 1)) (by omega)
+            have hBr := qBinom_X_two_coeff_le (N + 1) (j + 1 - (N + 1)) (by omega)
+            rw [show N + 1 + 2 = N + 3 from by omega] at hBl hBr
+            rw [hBl, hBr]
+            have hdd : ((j - (N + 1)) / 2 : ℕ) ≤ ((j + 1 - (N + 1)) / 2 : ℕ) := by omega
+            have hdd' : (((j - (N + 1)) / 2 : ℕ) : ℤ)
+                ≤ (((j + 1 - (N + 1)) / 2 : ℕ) : ℤ) := by exact_mod_cast hdd
+            linarith
+      · -- center band of box `3×(N+1)`: exact 0/1 increments
+        rcases Nat.even_or_odd N with ⟨M, rfl⟩ | ⟨M, rfl⟩
+        · -- `N = M + M` even: single band point `j = 3M`
+          have hjM : j = 3 * M := by omega
+          subst hjM
+          rw [show M + M + 1 + 3 = 2 * M + 4 from by omega]
+          exact ((qBinom_X_three_band M).1).ge
+        · -- `N = 2M + 1` odd: band points `j = 3M+1` and `j = 3M+2`
+          rw [show 2 * M + 1 + 1 + 3 = 2 * M + 5 from by omega]
+          have hj' : j = 3 * M + 1 ∨ j = 3 * M + 2 := by omega
+          have hE1 := qBinom_X_three_band_E1 M
+          have hE2 := (qBinom_X_three_band M).2
+          rcases hj' with rfl | rfl
+          · have hif : (0 : ℤ) ≤ if M % 2 = 0 then 1 else 0 := by
+              split_ifs <;> norm_num
+            rw [show 3 * M + 1 + 1 = 3 * M + 2 from by omega]
+            linarith
+          · have hif : (0 : ℤ) ≤ if M % 2 = 1 then 1 else 0 := by
+              split_ifs <;> norm_num
+            rw [show 3 * M + 2 + 1 = 3 * M + 3 from by omega]
+            linarith
+
+open Polynomial in
+/-- **Sylvester's unimodality theorem, `k = 3`.**  The coefficient sequence of
+`[n choose 3]_q` is unimodal for every `n` — the first case whose first half genuinely
+crosses the box constraint, settled elementarily by the center-band recursion (no
+`𝔰𝔩₂`-representation theory or O'Hara decomposition).  For `n < 3` the polynomial is
+`0`; otherwise feed `qBinom_X_three_coeff_first_half_mono` to the general reduction
+`qBinomCoeff_unimodal_of_first_half_mono`. -/
+theorem qBinomCoeff_unimodal_three (n : ℕ) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n 3).coeff j) := by
+  rcases Nat.lt_or_ge n 3 with hn | hn
+  · have hz : qBinom (X : ℤ[X]) n 3 = 0 := qBinom_eq_zero_of_lt (X : ℤ[X]) n 3 (by omega)
+    simpa [hz] using unimodal_const (0 : ℤ)
+  · obtain ⟨N, rfl⟩ : ∃ N, n = N + 3 := ⟨n - 3, by omega⟩
+    apply qBinomCoeff_unimodal_of_first_half_mono (show 3 ≤ N + 3 from by omega)
+    intro j hj
+    exact qBinom_X_three_coeff_first_half_mono N j (by omega)
+
+open Polynomial in
+/-- **Sylvester unimodality for `k ≤ 3` and for codimension `≤ 3`.**  Combining the base
+cases with `qBinomCoeff_unimodal_three` and the symmetry `[n,k]_q = [n,n−k]_q`: the
+coefficient sequence of `[n choose k]_q` is unimodal whenever `k ≤ 3` or `k ≥ n − 3`.
+The open range of Sylvester's theorem in this development is now the interior
+`4 ≤ k ≤ n − 4` (first genuinely open instance: `[8,4]_q`). -/
+theorem qBinomCoeff_unimodal_of_codim_le_three {n k : ℕ} (hk : k ≤ n) (hnk : n - 3 ≤ k) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n k).coeff j) := by
+  rcases Nat.lt_or_ge (n - k) 3 with h2 | h3
+  · exact qBinomCoeff_unimodal_of_codim_le_two hk (by omega)
+  · rw [qBinom_symm (X : ℤ[X]) n k hk, show n - k = 3 from by omega]
+    exact qBinomCoeff_unimodal_three n
 
 end QBinomialCoefficients
 

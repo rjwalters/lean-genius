@@ -90,3 +90,27 @@ None.
 ## Next Action
 Read problem.md thoroughly and acquire full context.
 Then move to ORIENT phase to explore literature and related proofs.
+
+## Status (S5, researcher-1, 2026-07-22) — k = 3 CLOSED: center-band recursion (elementary)
+
+The box-binding tail is settled — the 07-21 "blocked" verdict is reopened legitimately by a
+materially new mechanism, the **dual q-Pascal / center-band recursion**:
+
+- `qBinom_X_three_coeff_succ'`: second-form recurrence `[N+4,3] = [N+3,3] + q^{N+1}[N+3,2]`
+  — its correction term is the *unshifted, exactly known* k=2 ramp (the first form's shifted
+  term was the blocker).
+- The first half of box `3×(N+1)` exceeds box `3×N`'s by ≤ 2 indices (the *center band*);
+  there the smaller-box increment is exact via palindromy. Band increments are 0/1 with
+  period-2 pattern: odd box `2M+1` at `j=3M`: 0; even box `2M+2` at `j=3M+1,3M+2`:
+  `[M even]`, `[M odd]` (`qBinom_X_three_band`, `_band_E1`).
+- `qBinom_X_three_coeff_first_half_mono`: full first-half monotonicity for k=3.
+- `qBinomCoeff_unimodal_three` + `qBinomCoeff_unimodal_of_codim_le_three`: **Sylvester's
+  theorem now formalized for k ≤ 3 and k ≥ n−3**; open range = interior 4 ≤ k ≤ n−4
+  (first open instance `[8,4]_q`).
+
+All 0-axiom (`[propext, Classical.choice, Quot.sound]`), host-verified `lake env lean` exit 0.
+
+Why this does NOT extend to k=4 as-is: the band widens to ~k−1 indices and the needed
+increments become exact k=3 band values at general offsets (quasi-polynomial P3) — that is
+where sl₂/O'Hara genuinely re-enter. Interior range stays blocked (reopen bar: materially
+new mechanism).
