@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: bombieriVinogradov (Bombieri-Vinogradov theorem on primes in progressions). 0 sorries. Trust caveat: the finite effort-estimate arithmetic (total_effort_estimate) is closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). This is a finite numeric evaluation; the headline result rests on the stated axiom (bombieriVinogradov).",
+    "assumptions": "1 axiom: bombieriVinogradov (Bombieri-Vinogradov theorem on primes in progressions). 0 sorries.",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.vonMangoldt",
