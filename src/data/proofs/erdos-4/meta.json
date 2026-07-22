@@ -171,7 +171,7 @@
     {
       "id": "simple-properties",
       "title": "Simple Properties",
-      "summary": "**gap_0** = 1 (the only odd gap), **prime_gap_pos**, and **average_gap_asymptotic** ($p_n/(n\\log n) \\to 1$ via PNT).",
+      "summary": "A section-banner placeholder (the range is a comment only, with no declarations). It marks where elementary observations would go — e.g. that $g_1 = 1$ is the only odd prime gap, that gaps are positive, and that the average gap satisfies $p_n/(n\\log n) \\to 1$ by the PNT — but these are unformalized narrative notes, not theorems in the file.",
       "mathContext": "$g_0 = p_1 - p_0 = 3 - 2 = 1$ (only odd gap). $g_n \\geq 1$ for all $n$. Average: $\\sum_{k<n} g_k / n = p_n / n \\sim \\log n$ by PNT.",
       "startLine": 158,
       "endLine": 159
@@ -179,7 +179,7 @@
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
-      "summary": "**erdos_function_growth**: $f(n) < (\\log n)^{1+\\varepsilon}$ eventually. **improved_stronger**: the FGKMT function dominates the original, $f(n) \\leq f'(n)$ for $n \\geq 100$ — fully proved by case-splitting on whether $\\log\\log\\log n \\lessgtr 1$.",
+      "summary": "**improved_stronger**: the FGKMT function dominates the original, $f(n) \\leq f'(n)$ for $n \\geq 100$ — fully proved by case-splitting on whether $\\log\\log\\log n \\lessgtr 1$. The section also comments on the heuristic that $f(n) < (\\log n)^{1+\\varepsilon}$ eventually (narrative only, not a formalized theorem).",
       "mathContext": "$f(n) < (\\log n)^{1+\\varepsilon}$ eventually for any $\\varepsilon > 0$. The FGKMT improved function $f'(n)$ satisfies $f'(n) / f(n) \\to \\infty$.",
       "startLine": 160,
       "endLine": 216
