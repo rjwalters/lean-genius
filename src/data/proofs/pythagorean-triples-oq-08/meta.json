@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Scope: three residue obstructions, no primitivity needed",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring: states the open question (60 ∣ xyz for every Pythagorean triple, no coprimality hypothesis), previews the three independent residue obstructions (3 ∣ xy, 4 ∣ xy via a mod-8 sharpening since mod 4 alone fails, 5 ∣ xyz) that combine to 12 ∣ xy and 60 ∣ xyz, and notes this content is new relative to the sibling parametrization/parity/density files.",
+      "mathContext": "$3 \\mid xy$, $4 \\mid xy$ (via $\\mathbb{Z}/8$, since $\\mathbb{Z}/4$ alone fails), $5 \\mid xyz$ $\\Rightarrow 60 \\mid xyz$."
+    },
+    {
       "id": "residue-obstructions",
       "title": "Finite Residue Obstructions",
       "startLine": 48,
