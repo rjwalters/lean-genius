@@ -94,3 +94,39 @@ pointwise lower bound, integrating the constant gives `2π·minCosineSum A ≤ 0
 ### Next
 - Strict `minCosineSum A < 0` for nonempty positive-frequency `A`.
 - Sharp `−c√N` bound (Chowla; Bourgain/Ruzsa/Bedert) stays a deep imported result.
+
+## Session 2026-07-22 (researcher-1-9) — union superadditivity + candidate-target assessment
+
+**Mode**: build on saturated elementary layer. **Outcome**: small progress — 2 axiom-free
+theorems (host-verified `lake env lean` exit 0, standard triple), plus a scoping
+assessment of the remaining elementary targets.
+
+### Added (Erdos510WIP01.lean)
+- `cosineSum_union` — disjoint frequency sets add pointwise (`Finset.sum_union`).
+- `add_minCosineSum_le_minCosineSum_union` — **superadditivity**: `min A + min B ≤
+  min (A ∪ B)` for disjoint A, B; i.e. the negativity m = −min is subadditive.
+  The elementary union-bound backbone: −N floor = union of singletons (each −1),
+  against which the conjectured sublinear −c√N is measured.
+
+### Candidate-target assessment (why nothing bigger this session)
+- **Interval family {1..N}**: computed min ~ −(2N+1)/(3π) − 1/2 (θ = 3π/(2N+1) via
+  the telescoped Dirichlet identity 2sin(θ/2)Σcos(nθ) = sin((N+½)θ) − sin(θ/2)).
+  Linear negativity — but SUBSUMED: all-odd sets already attain the exact floor −N
+  (`minCosineSum_forall_odd`), so an interval example adds no strength. REJECTED.
+- **Sidon √N-optimality** (min ≥ −C√N for Sidon A, showing conjectured floor tight):
+  needs ∫f⁴ = π·(count of ±a±b±c±d = 0 solutions) via 4-fold product-to-sum, then
+  Hölder ∫f² ≤ (∫f⁴)^{1/3}(∫|f|)^{2/3} → ∫|f| ≥ c√N → |min| ≥ c√N... WAIT that
+  direction gives min ≤ −c√N for Sidon (a LOWER bound on negativity for a special
+  class — the interesting direction!). Route: Sidon ⇒ ∫f⁴ ≤ CπN² ⇒ (πN)³ ≤
+  (∫f⁴)(∫|f|)² ⇒ ∫|f| ≥ c√N·π ⇒ ∫f_− = ∫|f|/2 (since ∫f = 0) ⇒
+  2π|min| ≥ ∫f_− ⇒ min ≤ −c√N. **This is the strongest feasible elementary
+  target**: proves the CONJECTURED −c√N bound for the Sidon class. Est. 2 sessions:
+  (1) 4-fold product-to-sum + ∫f⁴ orthogonality count under B₂[1]; (2) Hölder
+  (Mathlib `inner_mul_le_norm_mul_norm`/`MeasureTheory.integral` Hölder exists as
+  `MeasureTheory.integral_mul_le_Lp_mul_Lq`-style) + negative-part bookkeeping.
+  Distinct from the blocked route (which demanded −c√N for ALL A).
+- **Uniform −1/2 → −1**: L² method is tight at −1/2 (kept terms saturate); −1
+  would need a new mechanism; singleton shows −1 would be sharp. Not attempted.
+
+### Next
+Sidon-class −c√N (2-session plan above) is the recommended BUILD target.

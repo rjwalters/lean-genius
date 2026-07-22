@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "minCosineSum A ≤ 0 (integral avg) and strict <0 for nonempty positive-frequency A were established; NOW upgraded to a UNIFORM QUANTITATIVE constant minCosineSum A ≤ −1/2 (minCosineSum_le_neg_half) via a second-moment/L² argument: first moment ∫cosineSum=0, second moment ∫(cosineSum)²=π·N (integral_cosineSum_sq, from orthogonality integral_cos_mul_cos), and the sandwich m≤f≤N. Axiom-free. This is a materially new mechanism distinct from the still-open/blocked −c√N growth route (which needs Bourgain/Ruzsa/Bedert). Remaining: the sharp −c√N lower bound and the Sidon √N-optimality example.",
+    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified): union superadditivity added (min A + min B <= min(A cup B), disjoint) — negativity subadditive, -N floor = singleton union bound. Elementary layer otherwise saturated (<=-1/2 uniform via L2; all-odd -N sharp; dilation invariance). Assessment recorded: Sidon-class -c*sqrt(N) via int f^4 + Holder is the recommended next BUILD (2-session plan in knowledge.md); interval example subsumed; -1/2 -> -1 needs new mechanism. Deep all-A -c*sqrt(N) (Bourgain/Bedert) unchanged.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -65,7 +65,9 @@
       "integral_cos_mul_cos (Erdos510WIP01.lean): orthogonality ∫cos(nθ)cos(mθ)=π·[n=m]",
       "integral_cosineSum_sq (Erdos510WIP01.lean): second moment ∫(cosineSum A)²=π·|A|",
       "minCosineSum_le_neg_half (Erdos510WIP01.lean): minCosineSum A ≤ −1/2, all axiom-free",
-      "minCosineSum_le_alternating + minCosineSum_forall_odd in Erdos510WIP01.lean, 0-axiom host-verified v4.31"
+      "minCosineSum_le_alternating + minCosineSum_forall_odd in Erdos510WIP01.lean, 0-axiom host-verified v4.31",
+      "cosineSum_union in Erdos510WIP01.lean (disjoint pointwise additivity)",
+      "add_minCosineSum_le_minCosineSum_union in Erdos510WIP01.lean (superadditivity of the Chowla minimum)"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
@@ -77,7 +79,10 @@
       "Second-moment/L² averaging gives a UNIFORM QUANTITATIVE bound minCosineSum A ≤ −1/2 for every nonempty positive-frequency A (minCosineSum_le_neg_half). Mechanism: first moment ∫₀^{2π}cosineSum=0 and second moment ∫₀^{2π}(cosineSum)²=π·N (integral_cosineSum_sq), plus the pointwise sandwich m≤f≤N, give ∫(f−m)(N−f)≥0 ⟹ −πN−2πmN≥0 ⟹ m≤−1/2. A fixed constant, materially DISTINCT from the still-open −c√N growth route.",
       "Orthogonality of cosine characters over a full period proved from scratch (integral_cos_mul_cos): ∫₀^{2π}cos(nθ)cos(mθ)=π·[n=m] for n,m≥1, via product-to-sum cos(nθ)cos(mθ)=½(cos((n+m)θ)+cos((n−m)θ)) and the ℤ-frequency period-integral vanishing integral_cos_int_mul_eq_zero.",
       "Lean gotchas hit: (1) integral_congr+integral_div on a big integrand triggers a whnf timeout — rewrite the integrand as a funext function-equality then split with integral_add/integral_const_mul instead; (2) applying integral_cos_int_mul_eq_zero _ with a metavar k plus sub_ne_zero.mpr loops isDefEq — pin k=(n:ℤ)−(m:ℤ) explicitly; (3) (((n:ℤ)−(m:ℤ)):ℝ) elaborates to ↑↑n−↑↑m (difference of casts) not ↑(↑n−↑m) — normalize with Int.cast_sub/Int.cast_natCast.",
-      "minCosineSum_forall_odd: all-odd frequency sets attain the extreme Chowla minimum minCosineSum A = −A.card (sharp; cos(nπ)=−1 for odd n meets neg_card lower bound). Plus minCosineSum_le_alternating: minCosineSum A ≤ ∑(−1)ⁿ = #even−#odd."
+      "minCosineSum_forall_odd: all-odd frequency sets attain the extreme Chowla minimum minCosineSum A = −A.card (sharp; cos(nπ)=−1 for odd n meets neg_card lower bound). Plus minCosineSum_le_alternating: minCosineSum A ≤ ∑(−1)ⁿ = #even−#odd.",
+      "Union superadditivity proved: min A + min B <= min(A cup B) for disjoint A,B — negativity is subadditive; the -N floor is exactly the union bound over singletons",
+      "Interval family rejected as example: its ~-0.2N negativity is subsumed by the sharp all-odd -N attainment already on file",
+      "Sidon-class -c*sqrt(N) is the strongest feasible elementary target (proves the conjectured bound for the Sidon class, distinct from the blocked all-A route): via int f^4 <= C*N^2 (4-fold product-to-sum orthogonality) + Holder (pi*N)^3 <= (int f^4)(int |f|)^2 + int f = 0 splitting; est. 2 sessions"
     ],
     "mathlibGaps": [
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
