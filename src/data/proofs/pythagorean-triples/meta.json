@@ -206,10 +206,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "pythagorean_triple_parametrization",
+      "name": "primitive_triples_are_classified",
       "type": "core",
-      "description": "All primitive Pythagorean triples are of the form (m^2-n^2, 2mn, m^2+n^2)",
-      "leanType": "primitive_triple a b c -> exists m n, a = m^2 - n^2 and b = 2*m*n and c = m^2 + n^2"
+      "description": "Every primitive Pythagorean triple has the parametric form (m^2-n^2, 2mn, m^2+n^2)",
+      "leanType": "PythagoreanTriple x y z -> Int.gcd x y = 1 -> h.IsPrimitiveClassified"
+    },
+    {
+      "name": "all_triples_are_classified",
+      "type": "core",
+      "description": "Every Pythagorean triple is a scalar multiple of a primitively classified triple",
+      "leanType": "PythagoreanTriple x y z -> h.IsClassified"
     }
   ],
   "sorries": 0
