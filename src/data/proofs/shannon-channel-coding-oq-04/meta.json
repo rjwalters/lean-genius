@@ -79,6 +79,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Binary Entropy Function", "startLine": 1, "endLine": 28, "summary": "Defines the binary entropy function h(p) = -p·ln(p) - (1-p)·ln(1-p) and proves its fundamental properties: boundary values h(0)=h(1)=0, symmetry h(p)=h(1-p), non-negativity, maximum h(1/2)=ln 2, the upper bound h(p)≤ln 2 via Gibbs' inequality, the zero-characterization p∈{0,1}, and concavity on [0,1]. Foundational building block for all the channel-capacity files in the gallery.", "mathContext": "The binary entropy function h(p) quantifies the uncertainty of a Bernoulli(p) random bit; its concavity and maximum at p=1/2 (giving exactly 1 bit) are the analytic facts that drive every BSC/BEC/BEEC capacity computation downstream."},
     {
       "id": "definition",
       "title": "Binary Entropy Definition",
