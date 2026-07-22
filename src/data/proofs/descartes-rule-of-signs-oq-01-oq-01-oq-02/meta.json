@@ -65,6 +65,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Toward Budan–Fourier — Endpoint Sign Variations", "startLine": 1, "endLine": 55, "summary": "States the open question of building a Budan–Fourier formalization on the complex root framework, explains how Descartes' rule is the whole-real-line special case, and previews the six results: leading-coefficient behavior of iterated derivatives, the formal sign functions at ±∞, the vanishing/full sign-variation counts there, the whole-line Budan–Fourier identity, and an analytic anchoring lemma — noting the finite-interval root-counting inequality is left as future work.", "mathContext": "Formalizes the endpoint backbone of the Budan–Fourier theorem: for a real polynomial's Fourier sequence of iterated derivatives, the sign-variation counts at $+\\infty$ and $-\\infty$ satisfy $V(-\\infty) - V(+\\infty) = \\deg p$, recovering Descartes' rule as the whole-line special case."},
     {
       "id": "leading-coefficients",
       "title": "Part 1: Leading Coefficients of the Iterated Derivatives",
