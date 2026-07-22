@@ -486,7 +486,7 @@ theorem sum_offDiag_fst (A : Finset ℕ) :
   have hprod : ∑ p ∈ A ×ˢ A, (p.1 : ℤ) = (A.card : ℤ) * ∑ a ∈ A, (a : ℤ) := by
     rw [Finset.sum_product, Finset.mul_sum]
     refine Finset.sum_congr rfl (fun a _ => ?_)
-    have hc : ∀ b, ((a, b).1 : ℤ) = (a : ℤ) := fun _ => rfl
+    have hc : ∀ b : ℕ, ((a, b).1 : ℤ) = (a : ℤ) := fun _ => rfl
     simp_rw [hc, Finset.sum_const, nsmul_eq_mul]
   have hdiag : ∑ p ∈ A.diag, (p.1 : ℤ) = ∑ a ∈ A, (a : ℤ) := by
     simp [Finset.sum_diag]
@@ -536,7 +536,7 @@ theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
   -- `|P| = 10`: `P` and its swap are the two equal halves of the 20-element off-diagonal.
   have hoffcard : A.offDiag.card = 20 := by
     rw [Finset.offDiag_card, hc5]
-  have hpart := Finset.card_filter_add_card_filter_not A.offDiag (fun p => p.2 < p.1)
+  have hpart := Finset.card_filter_add_card_filter_not (s := A.offDiag) (fun p => p.2 < p.1)
   have hfeq : A.offDiag.filter (fun p => ¬ p.2 < p.1)
             = A.offDiag.filter (fun p => p.1 < p.2) := by
     apply Finset.filter_congr
