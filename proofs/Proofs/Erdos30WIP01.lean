@@ -486,7 +486,8 @@ theorem sum_offDiag_fst (A : Finset ℕ) :
   have hprod : ∑ p ∈ A ×ˢ A, (p.1 : ℤ) = (A.card : ℤ) * ∑ a ∈ A, (a : ℤ) := by
     rw [Finset.sum_product, Finset.mul_sum]
     refine Finset.sum_congr rfl (fun a _ => ?_)
-    rw [Finset.sum_const, nsmul_eq_mul]
+    rw [show (∑ y ∈ A, ((a, y).1 : ℤ)) = ∑ _y ∈ A, (a : ℤ) from rfl,
+      Finset.sum_const, nsmul_eq_mul]
   have hdiag : ∑ p ∈ A.diag, (p.1 : ℤ) = ∑ a ∈ A, (a : ℤ) := by
     simp [Finset.sum_diag]
   rw [hprod, hdiag] at hsplit
@@ -540,7 +541,9 @@ theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
     rw [hP, ← Finset.filter_image, himageFull]; decide
   -- Hence the sum of positive differences is `1 + 2 + ⋯ + 10 = 55`.
   have hsum55 : ∑ p ∈ P, diffMap p = 55 := by
-    rw [← Finset.sum_image hinjP, hPimg]; decide
+    have hsi := Finset.sum_image (f := fun d : ℤ => d) hinjP
+    rw [hPimg] at hsi
+    rw [← hsi]; decide
   -- Structural parity: `∑ p₁ + ∑ p₂ = ∑_{offDiag} p₁ = 4·∑A`, hence even.
   have hS1S2 : ∑ p ∈ P, (p.1 : ℤ) + ∑ p ∈ P, (p.2 : ℤ)
              = ∑ p ∈ A.offDiag, (p.1 : ℤ) := by
@@ -567,7 +570,7 @@ theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
         simp only [diffMap] at hlt
         refine ⟨⟨h2, h1, fun h => hne h.symm⟩, ?_⟩
         show ¬ 0 < (a.2 : ℤ) - (a.1 : ℤ); omega
-    rw [key, hswap]; ring
+    rw [key, hswap]
   have heven : Even (∑ p ∈ P, diffMap p) := by
     have hval : ∑ p ∈ P, diffMap p = ∑ p ∈ P, (p.1 : ℤ) - ∑ p ∈ P, (p.2 : ℤ) := by
       simp only [diffMap]; rw [Finset.sum_sub_distrib]
