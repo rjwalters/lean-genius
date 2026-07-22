@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: a single arithmetic obstruction for both sides",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring. States the parent's open question — the three classical impossibilities (angle trisection, cube doubling, regular 7-gon) are each dispatched by their own ad-hoc `interval_cases` argument; is there one reusable criterion covering both the degree side and the Galois-group-order side of the Wantzel–Galois iff? Answers: the whole content of 'not a power of two' is having an odd prime factor (not_isPowTwo_of_odd_prime_dvd), and since both DegreePowerOfTwo and IsTwoGroup are definitionally IsPowTwo applied to a natural number, this single lemma serves both the degree obstruction and the Galois-side mirror. 0 axioms, 0 sorries.",
+      "mathContext": "Both `DegreePowerOfTwo` (Wantzel, on `p.natDegree`) and `IsTwoGroup` (Galois, on `Fintype.card G`) unfold to the same predicate `IsPowTwo` on a natural number, so `not_isPowTwo_of_odd_prime_dvd` — a number with an odd prime factor is not a power of two — simultaneously obstructs both directions of the Wantzel–Galois characterization."
+    },
+    {
       "id": "part1-powtwo-core",
       "title": "Part 1: The power-of-two predicate and its core obstruction",
       "startLine": 56,
