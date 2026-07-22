@@ -68,7 +68,7 @@
       }
     ],
     "lineCount": 354,
-    "assumptions": "5 axioms: F_eq_max, polya_theorem, mahler_bound, schinzel_upper, pasten_bound. 0 sorries.",
+    "assumptions": "5 axioms: F_eq_max, polya_theorem, mahler_bound, schinzel_upper, pasten_bound. 0 sorries. The concrete-value theorems F_one through F_eight and F_small_values are proved by native_decide, so they additionally depend on Lean.ofReduceBool (compiled-code evaluation); the headline erdos_368_summary depends only on the four bound axioms, not on native_decide.",
     "theoremCount": 14,
     "definitionCount": 12
   },
