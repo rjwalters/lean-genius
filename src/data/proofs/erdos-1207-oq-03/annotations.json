@@ -85,6 +85,29 @@
     ]
   },
   {
+    "id": "ann-1207-oq03-embr",
+    "proofId": "erdos-1207-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 147
+    },
+    "type": "definition",
+    "title": "The real-valued embedding embR and its basic properties",
+    "content": "embR casts toNat k b to ℝ, so S_k is literally Set.range (embR k). embR_injective transports toNat_injective across the cast. toNat_lt_pow bounds every element of S_k below 3ᵏ by induction on k: unfolding toNat_succ, the digit is ≤ 1 and the tail is < 3ᵏ by the inductive hypothesis, so the whole sum is ≤ 1 + 3·(3ᵏ−1) < 3^(k+1); omega closes the arithmetic once pow_succ is rewritten. embR_mem_Ico packages both directions (0 ≤ embR k b, via positivity, and embR k b < 3ᵏ, via toNat_lt_pow cast to ℝ) as membership in Set.Ico 0 (3ᵏ) — exactly the containment S_k ⊆ [0, 3ᵏ) needed for the final bound.",
+    "mathContext": "$\\mathrm{embR}\\,k\\,b=(\\mathrm{toNat}\\,k\\,b:\\mathbb{R})$; $0\\le \\mathrm{embR}\\,k\\,b<3^k$ places $S_k=\\mathrm{range}(\\mathrm{embR}\\,k)$ inside $[0,3^k)$, the ambient interval the lower bound is stated over.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "casting ℕ ↔ ℝ",
+      "Set.Ico",
+      "injectivity transport"
+    ],
+    "prerequisites": [
+      "toNat_injective",
+      "toNat_succ recursion",
+      "positivity tactic"
+    ]
+  },
+  {
     "id": "ann-1207-oq03-midpointfree",
     "proofId": "erdos-1207-oq-03",
     "range": {
@@ -124,6 +147,28 @@
     ],
     "prerequisites": [
       "counting the range of an injective map"
+    ]
+  },
+  {
+    "id": "ann-1207-oq03-general-n",
+    "proofId": "erdos-1207-oq-03",
+    "range": {
+      "startLine": 189,
+      "endLine": 217
+    },
+    "type": "theorem",
+    "title": "Monotonizing to every N: P₁(N) ≥ 2^⌊log₃N⌋",
+    "content": "exists_isoscelesFree_pow only bounds P₁ along the sparse sequence n = 3ᵏ. exists_isoscelesFree_Ico monotonizes it to every N ≥ 1: taking k = ⌊log₃N⌋ gives 3ᵏ ≤ N (Nat.pow_log_le_self), so the isosceles-free set S ⊆ [0,3ᵏ) of size 2ᵏ produced above already sits inside [0,N) — no new construction is needed, just the containment 3^⌊log₃N⌋ ≤ N cast to ℝ and composed with the earlier membership bound. exists_isoscelesFree_Ico_pos records that the bound is never vacuous, 2^⌊log₃N⌋ ≥ 1 for every N, via Nat.one_le_two_pow.",
+    "mathContext": "$3^{\\lfloor\\log_3 N\\rfloor}\\le N$, so the size-$2^{\\lfloor\\log_3 N\\rfloor}$ isosceles-free set for $k=\\lfloor\\log_3N\\rfloor$ fits inside $[0,N)$: $P_1(N)\\ge 2^{\\lfloor\\log_3N\\rfloor}$ for all $N\\ge1$, still $\\sim N^{\\log_3 2}$ up to a bounded factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.pow_log_le_self",
+      "monotonization",
+      "floor logarithm"
+    ],
+    "prerequisites": [
+      "exists_isoscelesFree_pow",
+      "Nat.log"
     ]
   }
 ]
