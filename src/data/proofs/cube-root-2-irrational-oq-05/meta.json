@@ -100,12 +100,20 @@
       "mathContext": "$\\left(p^{1/n}\\right)^n = p$ and $n \\nmid v_p(p) = 1$."
     },
     {
-      "id": "specializations",
-      "title": "Cube Roots and Roots of Two",
+      "id": "cube-root-specializations",
+      "title": "Cube Roots: the n = 3 Slice",
       "startLine": 55,
+      "endLine": 70,
+      "summary": "irrational_cbrt_prime (∛p for all primes) fixes n = 3 and varies p; irrational_cbrt_two recovers the base gallery entry ∛2 and irrational_cbrt_three gives ∛3, both by simpa from irrational_cbrt_prime.",
+      "mathContext": "$\\sqrt[3]{p}, \\sqrt[3]{2}, \\sqrt[3]{3} \\notin \\mathbb{Q}$."
+    },
+    {
+      "id": "roots-of-two-specialization",
+      "title": "Roots of Two: the p = 2 Slice",
+      "startLine": 72,
       "endLine": 78,
-      "summary": "irrational_cbrt_prime (∛p for all primes), irrational_cbrt_two and irrational_cbrt_three (∛2, ∛3), and irrational_rpow_inv_two (every n-th root of 2).",
-      "mathContext": "$\\sqrt[3]{p}, \\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[n]{2} \\notin \\mathbb{Q}$."
+      "summary": "irrational_rpow_inv_two fixes p = 2 and varies n ≥ 2, giving every n-th root of 2 as irrational — the orthogonal specialization direction to the cube-root slice above.",
+      "mathContext": "$\\sqrt[n]{2} \\notin \\mathbb{Q}$ for every $n \\geq 2$."
     }
   ],
   "crossReferences": [
