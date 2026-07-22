@@ -48,11 +48,16 @@ def ErdosProblem327 : Prop :=
 
 /- ## Van Doorn's bound -/
 
-/-- Van Doorn's result: if `|A| ≥ (25/28) * N`, then `A` contains `a ≠ b`
-with `a + b ∣ a * b`. -/
-axiom vanDoorn_bound (N : ℕ) (A : Finset ℕ) :
-    A ⊆ Finset.Icc 1 N → (25 * N ≤ 28 * A.card) →
-      ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b ∣ a * b
+/-- Van Doorn's result: for all sufficiently large `N`, if `|A| ≥ (25/28) * N`,
+then `A` contains `a ≠ b` with `a + b ∣ a * b`.
+
+The density bound is asymptotic, so the statement carries an explicit threshold
+`N₀`; without it the claim is false at small `N` (e.g. `N = 1`, `A = {1}`
+satisfies both hypotheses but the singleton has no distinct pair). -/
+axiom vanDoorn_bound :
+    ∃ N₀ : ℕ, ∀ (N : ℕ), N₀ ≤ N → ∀ (A : Finset ℕ),
+      A ⊆ Finset.Icc 1 N → (25 * N ≤ 28 * A.card) →
+        ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b ∣ a * b
 
 /- ## Variant: factor-of-2 condition -/
 
