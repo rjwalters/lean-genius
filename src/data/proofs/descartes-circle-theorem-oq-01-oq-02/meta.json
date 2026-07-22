@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Integral Apollonian Curvatures",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Answers the integrality question behind integral Apollonian gaskets by proving that an integer fourth curvature completing three integer curvatures to a Descartes quadruple exists iff the symmetric product ab+bc+ca is a perfect square, and that the reflected Soddy curvature 2(a+b+c)−d again yields an integer Descartes quadruple, propagating integrality through gasket generation.",
+      "mathContext": "$(d-(a+b+c))^2 = 4(ab+bc+ca)$; an integer $d$ exists iff $ab+bc+ca$ is a perfect square, and $\\mathrm{soddyReflect}(d)=2(a+b+c)-d$ is the conjugate integer curvature."
+    },
+    {
       "id": "integer-relation",
       "title": "The Integer Descartes Relation and Discriminant Identity",
       "startLine": 51,
