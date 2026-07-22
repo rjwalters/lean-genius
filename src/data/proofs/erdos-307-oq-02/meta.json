@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-307-oq-02",
+      "title": "Problem Statement and Background",
+      "summary": "Documents open question OQ-02 of Erd\u0151s Problem #307: eliminating 2 of the parent file's 4 sorries (`no_two_three_solution` via a tight prime-reciprocal bound, `one_helps_balance` via reciprocal-sum analysis), leaving 2 remaining sorries needing $p$-adic valuation theory and computational partial-sum bounds.",
+      "startLine": 1,
+      "endLine": 21,
+      "mathContext": "The remaining sorries (`prime_sets_disjoint`, `prime_set_size_lower_bound`) are flagged as nontrivial and documented for future work rather than closed in this file."
+    },
+    {
       "id": "setup",
       "title": "Setup",
       "summary": "Defines reciprocalSum, reciprocalProduct, and IsSetOfPrimes — the three basic predicates for the problem.",
