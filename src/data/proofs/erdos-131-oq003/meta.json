@@ -32,6 +32,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: The General Direct-Sum Bound",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "States the goal D(G₁ ⊕ G₂) ≥ D(G₁) + D(G₂) − 1 for arbitrary additive groups, names the two companion files (the rank-2 cyclic bound with an explicit extremal witness, and the exact cyclic value D(ℤ/nℤ) = n), and explains that this file proves the underlying structural concatenation principle in full generality instead of relying on one concrete sequence. Notes the file is deliberately self-contained (imports only Mathlib, not the companions) and that the matching upper bound for a ∣ b is Olson's theorem, not formalized here.",
+      "mathContext": "$D(G_1 \\oplus G_2) \\ge D(G_1) + D(G_2) - 1$, proved via the concatenation principle for zero-sum-free sequences; unconditional, axiom-free."
+    },
+    {
       "id": "davenport-framework",
       "title": "Davenport Set Framework",
       "startLine": 48,
