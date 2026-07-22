@@ -595,6 +595,59 @@ theorem heilbronn_three_mem_Icc :
     heilbronn 3 ∈ Set.Icc (3 * Real.sqrt 3 / 4) (3 / 2) :=
   ⟨heilbronn_three_ge, heilbronn_le_three_halves 3 (by norm_num)⟩
 
+/-! ## A concrete lower bound at `n = 4`: the inscribed square
+
+The `n = 3` ladder above pins `heilbronn 3` inside `[3√3/4, 3/2]`.  The next rung
+is a genuine *four-point* witness: the square inscribed in the unit circle.  Its
+four vertices `(1,0), (0,1), (−1,0), (0,−1)` produce exactly four unordered
+triples, and each spans a right triangle of area exactly `1` (each triple omits
+one vertex; the remaining three form half of the inscribed square, which has
+area `2`).  Hence `1` is admissible for the `sSup` defining `heilbronn 4`, giving
+the first nontrivial lower bound beyond `n = 3` — and, with the Lagrange upper
+bound `heilbronn n ≤ 3/2`, a second sandwich `heilbronn 4 ∈ [1, 3/2]` of width
+`1/2`. -/
+
+/-- **`heilbronn 4 ≥ 1`.**  The square inscribed in the unit circle,
+`(1,0), (0,1), (−1,0), (0,−1)`, is a four-point unit-disk configuration in which
+every ordering of every distinct vertex triple has `triangleArea` exactly `1`,
+so `1` lies in the defining `sSup` set of `heilbronn 4` (`le_csSup`, using
+`heilbronn_defining_bddAbove` for boundedness). -/
+theorem heilbronn_four_ge : (1 : ℝ) ≤ heilbronn 4 := by
+  unfold heilbronn
+  refine le_csSup (heilbronn_defining_bddAbove 4 (by norm_num)) ?_
+  refine ⟨{((1 : ℝ), (0 : ℝ)), (0, 1), (-1, 0), (0, -1)}, ?_, ?_, ?_⟩
+  · -- the four vertices are distinct, so the configuration has cardinality `4`
+    rw [Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_singleton]
+  · -- each vertex lies on the boundary of the closed unit disk
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl | rfl <;> norm_num
+  · -- every ordered distinct triple has area exactly `1 ≥ 1`
+    intro p hp q hq r hr hpq hqr hpr
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp hq hr
+    rcases hp with rfl | rfl | rfl | rfl <;> rcases hq with rfl | rfl | rfl | rfl <;>
+        rcases hr with rfl | rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hpq
+        | exact absurd rfl hqr
+        | exact absurd rfl hpr
+        | (show (1 : ℝ) ≤ triangleArea _ _ _; unfold triangleArea; norm_num)
+
+/-- **`heilbronn 4` is strictly positive** — immediate from `heilbronn_four_ge`. -/
+theorem heilbronn_four_pos : 0 < heilbronn 4 :=
+  lt_of_lt_of_le (by norm_num) heilbronn_four_ge
+
+/-- **Sandwich at `n = 4`:** `heilbronn 4 ∈ [1, 3/2]`.  Lower bound from the
+inscribed square (`heilbronn_four_ge`); upper bound from the Lagrange bound
+`heilbronn n ≤ 3/2` (`heilbronn_le_three_halves`).  Note the lower bound is *not*
+claimed sharp: whether the inscribed square is the optimal four-point
+configuration in the disk is part of the open quantitative problem. -/
+theorem heilbronn_four_mem_Icc : heilbronn 4 ∈ Set.Icc (1 : ℝ) (3 / 2) :=
+  ⟨heilbronn_four_ge, heilbronn_le_three_halves 4 (by norm_num)⟩
+
 /-! ## Quantitative decay: `heilbronn n = O(1/n)`
 
 All the upper bounds above (`heilbronn n ≤ 3`, `≤ 3/2`) are *constant* in `n` —

@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Foundational Heilbronn toolkit + quantitative decay. n=3 SANDWICHED 3√3/4 ≤ heilbronn 3 ≤ 3/2. NEW (2026-07-21): heilbronn n ≤ 4/m for 2(m+1)<n (pigeonhole over vertical strips, heilbronn_le_four_div) ⇒ heilbronn n → 0 (heilbronn_tendsto_zero) — first bound showing genuine DECAY (all prior bounds constant in n); formalizes the elementary α(n)≪1/n remark. Open: sharp heilbronn 3 ≤ 3√3/4, and the deep α(n) exponent bounds (KPS/CPZ, 7/6≤β≤2).",
+    "progressSummary": "PROGRESS: n=3 sandwiched [3sqrt3/4, 3/2] (merged) and n=4 now sandwiched [1, 3/2] (2026-07-22, inscribed square). Elementary witness-ladder pattern (explicit config + le_csSup + case-bash on triples) works rung by rung; remaining deep work: sharp upper at n=3 (Jensen on central angles, ~500+ lines) and asymptotic exponent bounds.",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -76,7 +76,9 @@
       "triangleArea_le_spread in Erdos507WIP01.lean: three points within a w×h box span area ≤ w·h (determinant identity + abs_mul bounds), 0-axiom",
       "strip_spread (private) in Erdos507WIP01.lean: equal strip index ⌊(x+1)·m/2⌋₊ ⇒ |Δx|·m ≤ 2, 0-axiom",
       "heilbronn_le_four_div in Erdos507WIP01.lean: heilbronn n ≤ 4/m for 1≤m, 2(m+1)<n (Finset pigeonhole), 0-axiom",
-      "heilbronn_tendsto_zero in Erdos507WIP01.lean: Tendsto heilbronn atTop (𝓝 0), 0-axiom"
+      "heilbronn_tendsto_zero in Erdos507WIP01.lean: Tendsto heilbronn atTop (𝓝 0), 0-axiom",
+      "heilbronn_four_ge in Erdos507WIP01.lean: heilbronn 4 >= 1 (inscribed square, 0-axiom)",
+      "heilbronn_four_pos, heilbronn_four_mem_Icc: positivity + sandwich heilbronn 4 in [1, 3/2]"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -98,7 +100,8 @@
       "|a×b| ≤ 1 for unit-disk a,b via Lagrange: (a×b)² = |a|²|b|² − ⟨a,b⟩² ≤ |a|²|b|² ≤ 1; nlinarith needs sq_nonneg ⟨a,b⟩ plus the product bound |a|²|b|²≤1. This gives |E| ≤ 3 (abs_add_le twice + gcongr), hence area ≤ 3/2 — strictly better than the summand-wise ≤3.",
       "The upper bound 3/2 is NOT sharp (true max |E|=3√3/2≈2.598, area 3√3/4≈1.299): the three determinants cannot be simultaneously maximal. Closing to the sharp 3√3/4 needs the central-angle constraint (angles subtended at O sum to 2π when O is interior) + Jensen on sin over [0,π] + an O-exterior case split — the genuine open optimization.",
       "Quantitative decay heilbronn n = O(1/n): pigeonhole over ⌊(x+1)·m/2⌋₊ vertical strips gives heilbronn n ≤ 4/m whenever 2(m+1)<n (heilbronn_le_four_div), hence heilbronn n → 0 (heilbronn_tendsto_zero). First non-constant upper bound; formalizes the α(n)≪1/n pigeonhole remark of the problem statement.",
-      "Reusable recipe: the determinant form E=(p₁−r₁)(q₂−r₂)−(q₁−r₁)(p₂−r₂) (anchored at a vertex) is the right handle for LOCAL box/strip area bounds — spread hypotheses |Δx|≤w,|Δy|≤h collapse to two |·|≤w·h products (triangleArea_le_spread: area ≤ w·h)."
+      "Reusable recipe: the determinant form E=(p₁−r₁)(q₂−r₂)−(q₁−r₁)(p₂−r₂) (anchored at a vertex) is the right handle for LOCAL box/strip area bounds — spread hypotheses |Δx|≤w,|Δy|≤h collapse to two |·|≤w·h products (triangleArea_le_spread: area ≤ w·h).",
+      "n=4 rung: the inscribed square (1,0),(0,1),(-1,0),(0,-1) has all four vertex triples spanning right triangles of area exactly 1, giving heilbronn 4 >= 1 by the same le_csSup witness pattern as heilbronn_three_ge_half. With the Lagrange upper bound this sandwiches heilbronn 4 in [1, 3/2] - a second width-1/2 window beyond n=3. Sharpness of the square among 4-point disk configs is NOT claimed (open quantitative question)."
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",
