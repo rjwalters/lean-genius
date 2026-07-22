@@ -112,6 +112,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-37",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #37, disproved by Ruzsa (1987): can a lacunary set (exponentially growing, e.g. $\\{2^n\\}$) be an essential component (one that always strictly raises Schnirelmann density when added)? Answer NO \u2014 Ruzsa showed essential components need $|A\\cap\\{1,\\dots,N\\}| \\ge (\\log N)^{1+c}$, far exceeding a lacunary set's $O(\\log N)$ growth.",
+      "startLine": 1,
+      "endLine": 55,
+      "mathContext": "Ruzsa's bound is sharp: for any $c>0$ there exists an essential component with $|A\\cap\\{1,\\dots,N\\}| \\le (\\log N)^{1+c}$; whether the intermediate-growth set $\\{2^m3^n\\}$ is an essential component is Ruzsa's own 1999 open question."
+    },
+    {
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 56,
