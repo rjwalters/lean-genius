@@ -189,6 +189,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: minimal polynomial degree for non-constructibility",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "States the open question — what minimal polynomial degree guarantees non-constructibility — and the answer this file proves: a degree d guarantees non-constructibility iff d has an odd prime factor, equivalently the constructible degrees are exactly the powers of 2, applied to classify regular n-gon constructibility for n = 3..20 via the Fermat primes.",
+      "mathContext": "$d\\mid 2^n\\iff d$ is a power of $2$; a minimal-polynomial degree with an odd prime factor forces non-constructibility, so constructible degrees are exactly $2^k$."
+    },
+    {
       "id": "powers-of-2",
       "title": "Part I: Powers of 2 Characterization",
       "startLine": 41,
