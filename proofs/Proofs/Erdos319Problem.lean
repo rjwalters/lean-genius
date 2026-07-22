@@ -9,8 +9,8 @@ Find the maximum size c(N) of A ⊆ {1,...,N} for which there exists
 The sum vanishes but removing any element breaks the vanishing.
 
 ## Known Results
-- Croot (2001): every integer in [1, N] is a sum of distinct unit fractions
-  from {1,...,N} (used in constructions)
+- Croot (2001): for large N, some subset of {1,...,N} has distinct unit
+  fractions summing to exactly 1 (used in constructions)
 - Adenwalla: |A| ≥ (1 − 1/e + o(1))N via B ⊆ [(1/e − o(1))N, N]
   with Σ 1/b = 1, then A = B ∪ {1}
 
@@ -78,13 +78,15 @@ theorem trivial_upper_bound (N : ℕ) :
   calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hA.1
     _ = N := by rw [Nat.card_Icc]; omega
 
-/-- **Croot (2001)**: every positive integer ≤ N is a sum of distinct
-    unit fractions with denominators in {1,...,N} for large enough N.
+/-- **Croot (2001)**: for large enough N, some subset of {1,...,N} has
+    distinct unit fractions summing to exactly 1. (Croot's theorem is stated
+    for a color class of {1,...,N}; here we use only the existence of a subset
+    with Σ 1/n = 1, which is what Adenwalla's construction requires.)
     This is used in constructing irreducible configurations. -/
 axiom croot_unit_fraction_theorem :
-  ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ k : ℕ, 1 ≤ k → k ≤ N →
+  ∃ N₀ : ℕ, ∀ N ≥ N₀,
     ∃ S : Finset ℕ, S ⊆ Finset.Icc 1 N ∧
-      S.sum (fun n => (1 : ℚ) / n) = k
+      S.sum (fun n => (1 : ℚ) / n) = 1
 
 /- ## Observations -/
 
