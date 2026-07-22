@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-147",
+      "title": "Problem Statement and Background",
+      "summary": "States the Erd\u0151s\u2013Simonovits conjecture on Tur\u00e1n numbers for bipartite graphs (\\$500 prize, Erd\u0151s #147): for bipartite $H$ with minimum degree $r$, is $\\mathrm{ex}(n;H) \\gg n^{2-1/(r-1)+\\varepsilon}$? Disproved by Janzer, who constructed $r$-regular bipartite $H$ (even $r \\ge 4$) violating the bound.",
+      "startLine": 1,
+      "endLine": 20,
+      "mathContext": "$\\mathrm{ex}(n;H)$ is the Tur\u00e1n number, the maximum edges in an $n$-vertex $H$-free graph; Janzer's explicit construction shows $\\mathrm{ex}(n;H) \\ll n^{2-1/(r-1)+\\varepsilon}$ for all $\\varepsilon>0$, refuting the conjectured lower-bound exponent."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `SimpleGraph.Basic` for the graph type and `IsBipartite`, `Data.Real.Basic` for real exponents, and `Data.Nat.Basic`. Opens `Erdos147` namespace.",
