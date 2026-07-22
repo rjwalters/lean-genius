@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1065-oq-05",
+      "title": "Problem Statement and Background",
+      "summary": "States open question 5 of Erd\u0151s Problem #1065: the Bateman\u2013Horn density prediction for primes of the form $2^k \\cdot q + 1$, and the key observation that the predicted constant $2C_2$ is independent of $k$ since $2^k$ is a unit modulo every odd prime.",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "$C_2 = \\prod_{p \\ge 3} \\frac{p(p-2)}{(p-1)^2} \\approx 0.6602$ is the twin-primes constant; the Bateman\u2013Horn conjecture predicts $\\#\\{q \\le x : q, 2^k q+1 \\text{ prime}\\} \\sim 2C_2 \\cdot x/(\\ln x)^2$ for every fixed $k \\ge 1$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 30,
