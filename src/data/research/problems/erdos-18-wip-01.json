@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hErdos index now has its FIRST EXACT value hErdos(2^k)=k (log2 extreme, powers of two are worst case). Complements sandwich 1<=hErdos<=h<=d(m). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
+    "progressSummary": "PROGRESS: hErdos index now has (a) exact value hErdos(2^k)=k, (b) sandwich 1<=hErdos<=h<=d(m), and (c) SUBADDITIVITY hErdos(a*b)<=hErdos a+hErdos b + corollary hErdos(m^k)<=k*hErdos m (PR #41475, 0-axiom). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -47,7 +47,8 @@
       "le_two_pow_h (Erdos18WIP01.lean): m <= 2^(h m) for practical m [0-axiom]",
       "h_le_card_divisors (Erdos18WIP01.lean): h m <= d(m) for practical m [0-axiom]",
       "factorial_le_two_pow_h (Erdos18WIP01.lean): n! <= 2^(h n!) [0-axiom]",
-      "Erdos18WIP01.lean: hErdos_two_pow — EXACT hErdos(2^k)=k, first exact value of the corrected Erdos #18 index. Upper repLength_two_pow_le (binary digits, <=k), lower two_pow_sub_one_card_ge (2^k-1 all-ones needs all k powers). Helper sum_image_two_pow_range. 0-axiom docker-verified v4.31."
+      "Erdos18WIP01.lean: hErdos_two_pow — EXACT hErdos(2^k)=k, first exact value of the corrected Erdos #18 index. Upper repLength_two_pow_le (binary digits, <=k), lower two_pow_sub_one_card_ge (2^k-1 all-ones needs all k powers). Helper sum_image_two_pow_range. 0-axiom docker-verified v4.31.",
+      "repLength_mul_le, hErdos_mul_le, hErdos_pow_le (hErdos(m^k)<=k*hErdos m, tight at m=2), repLength_zero, repLength_spec in Erdos18WIP01.lean (0-axiom)"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -64,7 +65,8 @@
       "Corollary factorial_le_two_pow_h : n! <= 2^(h n!). Since log2(n!)=Theta(n log n) is superpolynomial, the parent conjecture_part2_weak (h(n!)<n^eps) is FALSE as written for the file s universal-set h.",
       "Proved h_le_card_divisors : IsPractical m -> h m <= (divisors m).card (upper bound d(m)). Together: log2 m <= h m <= d(m) for the file h.",
       "Erdos18OQ01.lean already proves subadditivity h(mn)<=h(m)+h(n) for this universal-set h (correct for that quantity), so the def cannot simply be replaced: mechanic should RENAME the parent h to the universal-set index and introduce the max-representation-length index for the conjectures.",
-      "hErdos(2^k)=k=log2(2^k) is the MAXIMAL value of the Erdos #18 index for a number of that size (hErdos m <= h m <= d(m); d(2^k)=k+1). Powers of two are the WORST case for the index — extremal opposite of the deep conjectured factorial behaviour hErdos(n!)<n^{o(1)} (Vose). First exact hErdos family value."
+      "hErdos(2^k)=k=log2(2^k) is the MAXIMAL value of the Erdos #18 index for a number of that size (hErdos m <= h m <= d(m); d(2^k)=k+1). Powers of two are the WORST case for the index — extremal opposite of the deep conjectured factorial behaviour hErdos(n!)<n^{o(1)} (Vose). First exact hErdos family value.",
+      "hErdos is SUBADDITIVE over products: hErdos(a*b) <= hErdos a + hErdos b for practical a,b (PR #41475). Correct-index counterpart of the parent Erdos18OQ01 subadditivity, which held only for the over-counting universal-set h."
     ],
     "mathlibGaps": [],
     "nextSteps": [
