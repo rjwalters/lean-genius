@@ -113,18 +113,34 @@
       "mathContext": "**Goal**: $\\sum_j|(Ux)(j)|^2 = \\sum_k|x(k)|^2$ and $U \\in \\mathrm{unitaryGroup}(\\mathrm{Fin}\\,n)\\,\\mathbb C$ for $U(j,k) = e^{2\\pi i jk/n}/\\sqrt n$."
     },
     {
-      "id": "energy",
-      "title": "Part I: The Normalised Transform and Exact Energy Law",
-      "summary": "udft, udft_parseval, udft_norm_preserving: (Ux)(j) = x̂(j)/√n, the scale-free Parseval ∑|Ux|² = ∑|x|², and its ℓ²-norm form ‖Ux‖ = ‖x‖",
+      "id": "udft-parseval",
+      "title": "Part I: The Normalised Transform and Exact Parseval Law",
+      "summary": "udft: (Ux)(j) = x̂(j)/√n, and udft_parseval: the scale-free energy law ∑|Ux|² = ∑|x|², the parent's ∑|x̂|² = n·∑|x|² divided by n.",
       "startLine": 53,
-      "endLine": 85,
+      "endLine": 75,
       "mathContext": "$\\sum_{j<n}|(Ux)(j)|^2 = \\sum_{k<n}|x(k)|^2$ — the normalised DFT is an exact isometry of $\\ell^2$ energy."
     },
     {
-      "id": "unitary",
-      "title": "Part II: The DFT Matrix is Unitary",
-      "summary": "dftMatrix and dftMatrix_mem_unitaryGroup: the matrix U(j,k) = char(j,k)/√n and the proof U·Uᴴ = 1 via the parent's character orthonormality scaled by 1/n",
+      "id": "norm-preserving",
+      "title": "Part I (cont.): The ℓ²-Norm Form",
+      "summary": "udft_norm_preserving: taking square roots of udft_parseval gives the literal isometry statement ‖Ux‖ = ‖x‖.",
+      "startLine": 76,
+      "endLine": 85,
+      "mathContext": "$\\lVert Ux \\rVert = \\lVert x \\rVert$."
+    },
+    {
+      "id": "dft-matrix",
+      "title": "Part II: The DFT Matrix",
+      "summary": "dftMatrix: the explicit n×n matrix U(j,k) = char(j,k)/√n implementing udft on Fin n → ℂ.",
       "startLine": 87,
+      "endLine": 88,
+      "mathContext": "$U(j,k) = e^{2\\pi i jk/n}/\\sqrt n$."
+    },
+    {
+      "id": "unitary-proof",
+      "title": "Part II (cont.): The DFT Matrix is Unitary",
+      "summary": "dftMatrix_mem_unitaryGroup: the proof U·Uᴴ = 1 via the parent's character orthonormality scaled by 1/n, so U ∈ Matrix.unitaryGroup (Fin n) ℂ.",
+      "startLine": 89,
       "endLine": 121,
       "mathContext": "$U U^{\\mathsf H} = 1$, i.e. $U \\in \\mathrm{unitaryGroup}(\\mathrm{Fin}\\,n)\\,\\mathbb C$ — the discrete Fourier transform is a genuine unitary operator."
     }
