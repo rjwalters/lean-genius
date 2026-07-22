@@ -84,6 +84,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Practical Applications — Casting Out Nines", "startLine": 1, "endLine": 37, "summary": "States the practical application (OQ-04) of digit-sum congruences to error-detecting arithmetic checks, gives the historical context (al-Khwārizmī, c. 825, through the 20th century), and previews the four results: general casting out, the classical base-10 mod-9 case, error detection via contrapositive, and specific applications (octal, hex, mod-3).", "mathContext": "Formalizes casting-out-nines and its generalizations for verifying arithmetic: digit sums respect $+$ and $\\times$ modulo $d$, so a digit-sum mismatch after an arithmetic operation proves the computation was wrong."},
     {
       "id": "general-add-mul",
       "title": "Part I: General Casting Out",
