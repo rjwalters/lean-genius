@@ -156,15 +156,15 @@ theorem phelps_rodl : ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥ 
 The answer is f(n) ≍ (n log n)^(1/2).
 -/
 
-/-- The main question: estimate f(n). -/
+/-- The main question: estimate f(n). Fixed to `asymptoticBound` (≍ (n log n)^(1/2)),
+    not a free witness function — a free `∃ g : ℕ → ℝ` here would make this trivially
+    true for any f (take g = f). -/
 def erdos_1024_question : Prop :=
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ g : ℕ → ℝ, ∃ N : ℕ, ∀ n ≥ N,
-    c * g n ≤ f n ∧ (f n : ℝ) ≤ C * g n
+  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+    c * asymptoticBound n ≤ f n ∧ (f n : ℝ) ≤ C * asymptoticBound n
 
 /-- The answer: f(n) ≍ (n log n)^(1/2). -/
-theorem erdos_1024_solved : erdos_1024_question := by
-  obtain ⟨c, C, hc, hC, N, hN⟩ := phelps_rodl
-  exact ⟨c, C, hc, hC, asymptoticBound, N, hN⟩
+theorem erdos_1024_solved : erdos_1024_question := phelps_rodl
 
 /-
 ## Steiner Triple Systems
