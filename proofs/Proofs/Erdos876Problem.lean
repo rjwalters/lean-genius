@@ -68,14 +68,60 @@ def IsSumFreeClassical (A : Set ℕ) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, a + b ∉ A
 
 /--
-**Erdős sum-free implies classical sum-free:**
-The Erdős definition is stronger.
--/
-theorem erdos_implies_classical (A : Set ℕ) :
-    IsSumFreeErdos A → IsSumFreeClassical A := by
-  intro hA a ha b hb hab
-  -- If a + b ∈ A with a, b < a + b, this violates IsSumFreeErdos
-  sorry -- Technical: construct the witnessing subset
+**The naive implication `IsSumFreeErdos A → IsSumFreeClassical A` is FALSE.**
+
+One might expect the Erdős definition (no element is a sum of *distinct* smaller
+elements) to be strictly stronger than `IsSumFreeClassical` (no `a + b ∈ A`). It
+is **not**: `A = {2, 4}` is Erdős-sum-free — there is no set of ≥ 2 distinct
+smaller elements of `A` summing to any element — yet `2 + 2 = 4 ∈ A`, so `A`
+fails `IsSumFreeClassical`, which permits the *repeated* summand `a + a`. The two
+notions are incomparable precisely on the "doubling" relation `a + a = c`. -/
+theorem not_isSumFreeErdos_imp_isSumFreeClassical :
+    ¬ ∀ A : Set ℕ, IsSumFreeErdos A → IsSumFreeClassical A := by
+  intro h
+  have herdos : IsSumFreeErdos ({2, 4} : Set ℕ) := by
+    intro a ha S hSsub hlt _hcard _hsum
+    have ha' : a = 2 ∨ a = 4 := by simpa using ha
+    -- every element of `S` is `< a` and lies in `{2, 4}`, forcing it to be `2`
+    have hsub2 : ∀ x ∈ S, x = 2 := by
+      intro x hx
+      have hxA : x = 2 ∨ x = 4 := by simpa using hSsub hx
+      have hxlt := hlt x hx
+      rcases ha' with rfl | rfl <;> rcases hxA with rfl | rfl <;> omega
+    have hss : S ⊆ {2} := fun x hx => by simp [hsub2 x hx]
+    have hc := Finset.card_le_card hss
+    rw [Finset.card_singleton] at hc
+    omega
+  exact (h {2, 4} herdos 2 (by simp) 2 (by simp)) (by simp)
+
+/--
+**Corrected implication: Erdős sum-free ⟹ no `a + b ∈ A` for distinct positive
+`a, b`.**
+
+The Erdős definition *does* forbid `a + b ∈ A` whenever `a` and `b` are
+**distinct** and **positive**: applying the definition to the two-element set
+`{a, b}` (whose elements are both `< a + b` when positive, with sum `a + b`)
+contradicts `a + b ∈ A`. Both hypotheses are necessary: distinctness fails for
+`a = b` (`2 + 2 = 4` in `{2, 4}`, see `not_isSumFreeErdos_imp_isSumFreeClassical`),
+and positivity fails for `a = 0` (`0 + b = b ∈ A` trivially). This is the honest
+form of "the Erdős definition is stronger". -/
+theorem erdos_implies_classical_of_pos {A : Set ℕ} (hA : IsSumFreeErdos A)
+    {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hpa : 0 < a) (hpb : 0 < b)
+    (hab : a ≠ b) : a + b ∉ A := by
+  intro hmem
+  have hsub : (↑({a, b} : Finset ℕ) : Set ℕ) ⊆ A := by
+    intro x hx
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+      Set.mem_singleton_iff] at hx
+    rcases hx with rfl | rfl <;> assumption
+  have hlt : ∀ x ∈ ({a, b} : Finset ℕ), x < a + b := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> omega
+  have hcard2 : ({a, b} : Finset ℕ).card = 2 := Finset.card_pair hab
+  have hsum : ({a, b} : Finset ℕ).sum id = a + b := by
+    simp [Finset.sum_pair hab]
+  exact hA (a + b) hmem {a, b} hsub hlt (by omega) hsum
 
 /-
 ## Part II: Gap Sequences
