@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Def-only parent stub developed with axiom-free scaffolding: base values h(0)=0, h(1)=1 (Erdos117WIP01), n-commuting property closure theory (mono/injective/subgroup/mulEquiv/card_le), and now MONOTONICITY of h(n) in n (Erdos117WIP01Mono, conditional on finite-cover existence). Pyber's exponential bounds and the open exact base remain unformalized.",
+    "progressSummary": "PROGRESS: Added Erdos117WIP01Cover.lean (5 axiom-free theorems). Cyclic-cover existence (every group = union of abelian cyclic subgroups) + structure of the covering set (upward-closed terminal segment, 0 not in set for n>=1, general lower bound h(n)>=1). Prior: h(0)=0, h(1)=1, property closure theory, h monotone. Pyber exponential bounds c1^n < h(n) < c2^n remain deep/unformalized.",
     "builtItems": [
       "abelianCoverNumber_mono in Erdos117WIP01Mono.lean — h(n) is monotone nondecreasing: n<=m and a finite m-cover exists (exists k, CoversWithAbelian k m) => h(n) <= h(m). Crux coversWithAbelian_of_le: an m-cover is an n-cover since the n-commuting property implies the m-property (hasNCommutingProperty_mono). Nonemptiness hypothesis is honest (Nat.sInf empty = 0 convention; well-definedness of h(m) is Pyber's unformalized upper bound). CoversWithAbelian names the defining-set condition; abelianCoverNumber_eq_sInf is rfl. 0-axiom, docker 8578 jobs.",
       "commute_of_hasNCommutingProperty_one - HasNCommutingProperty G 1 implies all pairs commute (Erdos117Problem.lean)",
@@ -40,14 +40,22 @@
       "isAbelianSubgroup_iff_isMulCommutative - bridges local IsAbelianSubgroup to Mathlib IsMulCommutative (Erdos117Problem.lean)",
       "Erdos117WIP01.lean: not_hasNCommutingProperty_zero (¬ HasNCommutingProperty G 0)",
       "Erdos117WIP01.lean: commGroup_hasNCommutingProperty (CommGroup ⟹ n-commuting for all n≥1)",
-      "Erdos117WIP01.lean: abelianCoverNumber_one (h(1)=1) — the flagship base case"
+      "Erdos117WIP01.lean: abelianCoverNumber_one (h(1)=1) — the flagship base case",
+      "isAbelianSubgroup_zpowers — cyclic subgroup zpowers g is abelian (Erdos117WIP01Cover.lean)",
+      "exists_cyclic_abelian_cover — every group covered by abelian cyclic subgroups (Erdos117WIP01Cover.lean)",
+      "coversWithAbelian_upward — covering set upward-closed in k via bot-padding (Erdos117WIP01Cover.lean)",
+      "not_coversWithAbelian_zero — for n>=1, 0 subgroups never cover (PUnit witness) (Erdos117WIP01Cover.lean)",
+      "one_le_abelianCoverNumber — h(n)>=1 for n>=1 when covering set nonempty (Erdos117WIP01Cover.lean)"
     ],
     "insights": [
       "UNIVERSE gotcha (confirmed again): abelianCoverNumber and CoversWithAbelian are universe-polymorphic in the group universe (bodies quantify forall G:Type*), so the VALUE depends on u. Any monotonicity/set-algebra statement must pin one explicit `universe u` and annotate EVERY occurrence with .{u}; unannotated occurrences get independent universes => abelianCoverNumber.{u_1} vs .{u_3} and @h G application-type mismatch. A `universe` command takes a plain /- -/ comment, not a /-- -/ docstring.",
       "Erdos117Problem.lean stub developed: the n=1 case of the n-commuting property is EXACTLY commutativity (commute_of_hasNCommutingProperty_one) - the two-element subset {x,y} forces every distinct pair to commute; plus monotonicity and abelian-subgroup closure lemmas. All axiom-free.",
       "h(1)=1 is fully provable elementarily: the 1-commuting property makes G abelian (commute_of_hasNCommutingProperty_one), so ⊤ is a single abelian subgroup covering G (1 ∈ covering set); and 0 is never in the set since an empty Fin 0 → Subgroup family cannot cover the identity of PUnit. sInf via Nat.sInf_le + Nat.sInf_eq_zero.",
       "No group has the 0-commuting property (singleton {1} has card 1>0 but no distinct pair) — the n-commuting property is vacuous below n=1.",
-      "abelianCoverNumber is universe-polymorphic (its body quantifies ∀ (G:Type*)); membership witnesses must be built INLINE at the set fixed universe — a factored Type* have introduces a second non-unifying universe (level-param mismatch)."
+      "abelianCoverNumber is universe-polymorphic (its body quantifies ∀ (G:Type*)); membership witnesses must be built INLINE at the set fixed universe — a factored Type* have introduces a second non-unifying universe (level-param mismatch).",
+      "Every group (any G, not just finite) is a union of abelian cyclic subgroups: the family g ↦ Subgroup.zpowers g covers G, each zpowers g abelian. So a cover ALWAYS exists for a fixed group (size ≤ |G|); h(n) measures only the UNIFORM count over all n-commuting groups, never existence. (exists_cyclic_abelian_cover, Erdos117WIP01Cover.lean)",
+      "The covering set {k | CoversWithAbelian k n} is a terminal segment: upward-closed in k (pad a k-cover with copies of bot — coversWithAbelian_upward) and, for n>=1, never contains 0 (empty family cannot cover PUnit — not_coversWithAbelian_zero). With Nat.sInf_mem this pins it as [h(n),inf) when nonempty.",
+      "General lower bound h(n)>=1 for n>=1 whenever h(n) is well-defined (covering set nonempty). Complements h(0)=0: the covering number leaves 0 exactly at the n=0->1 step. For n>=2 nonemptiness of the set is precisely Pyber unformalized upper bound. (one_le_abelianCoverNumber)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
