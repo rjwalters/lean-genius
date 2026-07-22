@@ -39,7 +39,7 @@
         "module": "Mathlib.Order.WellFounded"
       }
     ],
-    "assumptions": "1 axiom declaration: prime_divides_central_iff (Kummer's carry characterization: p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉). Proved: choose_dvd_lcm (C(N,k) divides lcm(1,...,N+1), via Nat.factorization_choose_le_log), upper_bound_trivial (least non-divisor ≤ 2n+1, by contradiction using choose_dvd_lcm), two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Note: choose_dvd_lcm and upper_bound_trivial are NOT axioms — both are fully proved theorems in the file.",
+    "assumptions": "1 axiom declaration: prime_divides_central_iff (Kummer's carry characterization: p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉). Proved: choose_dvd_lcm (C(N,k) divides lcm(1,...,N+1), via Nat.factorization_choose_le_log), upper_bound_trivial (least non-divisor ≤ 2n+1, by contradiction using choose_dvd_lcm), two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Note: choose_dvd_lcm and upper_bound_trivial are NOT axioms — both are fully proved theorems in the file. Trust caveat: the concrete central-binomial value/counterexample checks (centralBinom_zero … centralBinom_five, small_primes_divide_false, least_nondiv_counterexample) are closed by native_decide, which adds the compiler-trust axiom Lean.ofReduceBool (beyond propext/Classical.choice/Quot.sound). These are finite-stage demonstrations; the abstract theorems and the headline Kummer characterization axiom prime_divides_central_iff remain kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 32,
     "definitionCount": 3

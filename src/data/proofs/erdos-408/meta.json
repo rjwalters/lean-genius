@@ -53,7 +53,7 @@
     "dateAdded": "2026-01-22",
     "axiomCount": 5,
     "lineCount": 394,
-    "assumptions": "5 axioms: pillai_lower_bound, pillai_upper_bound, shapiro_multiplicativity, ElliottHalberstam, egps_conditional. 0 sorries.",
+    "assumptions": "5 axioms: pillai_lower_bound, pillai_upper_bound, shapiro_multiplicativity, ElliottHalberstam, egps_conditional. 0 sorries. Trust caveat: the concrete Pillai-function examples example_f2 … example_f7_step1 are closed by native_decide, which adds the compiler-trust axiom Lean.ofReduceBool (beyond propext/Classical.choice/Quot.sound). These are finite demonstrations of f(n) for small n; the abstract results rest on the five stated axioms and remain kernel-checked.",
     "theoremCount": 17,
     "definitionCount": 9
   },
