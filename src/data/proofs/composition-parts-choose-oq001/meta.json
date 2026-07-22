@@ -71,7 +71,8 @@
       "**One generating function packages all the moments.** Where each parent extracted a single number from a particular weighted binomial sum ∑_k k^r C(m,k), the identity ∑_c t^(c.length) = t(1+t)^(n−1) encodes every one of them simultaneously: the count is its value at t = 1, the graded counts are its coefficients, and the mean (n+1)/2 and variance (n−1)/4 are its first two derivatives at t = 1 — no binomial sum is recomputed.",
       "**It is the shifted-Binomial PGF.** Normalising by 2^(n−1) turns the identity into t·((1+t)/2)^(n−1), the probability generating function of 1 + Binomial(n−1, 1/2). The part-count is a cut/not-cut choice at each of the n−1 internal gaps, and the generating function makes that product-of-independent-choices structure literal.",
       "**The whole thing rests on one Finset.prod_add.** The engine is the subset generating function ∑_{s ⊆ Fin m} t^(|s|) = (t+1)^m, which is just the expansion of ∏_{i : Fin m}(t + 1): each factor offers the t (include i) or the 1 (exclude i). Transporting it along the gap bijection and pulling out a single factor of t is the entire proof of the part-count generating function.",
-      "**Mathlib has neither piece.** Neither the subset generating function ∑_{s ⊆ Fin m} t^(|s|) = (t+1)^m in this form nor any statement about the part-count distribution of a composition is in Mathlib; the closed-form generating function of the part-count is the original content of this entry, unifying the count, graded count, mean and variance of the parents."
+      "**Mathlib has neither piece.** Neither the subset generating function ∑_{s ⊆ Fin m} t^(|s|) = (t+1)^m in this form nor any statement about the part-count distribution of a composition is in Mathlib; the closed-form generating function of the part-count is the original content of this entry, unifying the count, graded count, mean and variance of the parents.",
+      "**A genuine formal-power-series identity, not just a numerical coincidence.** Proving parts_genfun over an arbitrary commutative semiring R — rather than only for real or complex t — means it holds literally as a polynomial identity in R[t]: instantiating R = ℤ[t] itself, or a formal power series ring, recovers the classical generatingfunctionological reading (Wilf) where t^(c.length) is a formal marker, not a number to be summed. The numerical specialisations at t = 1 (parts_genfun_eval_one) are then just one evaluation among infinitely many available in every semiring, not the reason the identity was proved."
     ],
     "prerequisites": [
       "Compositions of a natural number (Mathlib's Composition n), the number of parts c.length, and the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) with the bridge length c = (gaps c).card + 1 (from the parent entries)",
@@ -85,9 +86,17 @@
       "id": "setup",
       "title": "Header, Imports, and Family Context",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 33,
       "mathContext": "$\\sum_{c : \\mathrm{Composition}\\,n} t^{c.\\mathrm{length}} = t\\,(1+t)^{n-1}$ — the part-count generating function that packages every moment at once.",
-      "summary": "Imports the parent CompositionPartsChooseOQ01OQ01 (source of the gap bijection gapsEquiv and the bridge length_eq_card_gaps) and Mathlib.Tactic, then a module docstring situating this leaf within the composition-statistics family: the grandparent's 2^(n−1) count, the parent's graded C(n−1,k−1) count, and the first/second-moment parents, all of which fall out of the single generating-function identity proved here. Closes with the namespace declaration and open Finset CompositionPartsChooseOQ01OQ01."
+      "summary": "Imports the parent CompositionPartsChooseOQ01OQ01 (source of the gap bijection gapsEquiv and the bridge length_eq_card_gaps) and Mathlib.Tactic, then the '## What this proves' section of the module docstring: it situates this leaf within the composition-statistics family — the grandparent's 2^(n−1) count, the parent's graded C(n−1,k−1) count, and the first/second-moment parents — and states the closed-form generating-function identity ∑_c t^(c.length) = t(1+t)^(n−1) that answers the parent's open question of producing every moment at once."
+    },
+    {
+      "id": "mechanism-and-originality",
+      "title": "The Mechanism and Its Originality",
+      "startLine": 35,
+      "endLine": 64,
+      "mathContext": "$\\mathrm{gapsEquiv}\\,n : \\mathrm{Composition}\\,n \\simeq \\mathrm{Finset}\\,(\\mathrm{Fin}\\,(n-1))$ transports $\\sum_c t^{c.\\mathrm{length}}$ to the subset sum $\\sum_{s} t^{|s|+1}$.",
+      "summary": "The '## The mechanism' section of the module docstring explains the proof strategy in prose: transport the sum along the parent's gap bijection gapsEquiv and the bridge length_eq_card_gaps to reduce it to the subset-cardinality generating function ∑_{s ⊆ Fin m} t^|s| = (t+1)^m, itself the Finset.prod_add expansion of ∏_i (t+1). The '## Originality' section then contrasts this with the parents (each extracting one number from a weighted binomial sum) and records that neither the subset generating function nor a part-count-distribution statement exists in Mathlib. Closes with the namespace declaration and open Finset CompositionPartsChooseOQ01OQ01."
     },
     {
       "id": "subset-generating-function",
