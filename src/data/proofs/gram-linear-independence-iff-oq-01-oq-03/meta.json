@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The k-Dimensional Content via Gram–Schmidt Heights",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "States the open question this closes — the grandparent entry proved the Gramian criterion det(gram v) ≥ 0 with equality iff v is dependent, and a sibling identified √(det gram v) with parallelepiped volume only in the square case (finrank F = n); this entry removes that hypothesis, giving the genuinely k-dimensional content of n vectors in a possibly larger space. The key identity is the Gram–Schmidt factorization det(gram v) = ∏‖gramSchmidt v i‖², so √(det gram v) = ∏‖gramSchmidt v i‖ is the iterated base×height volume, valid in any dimension with no spanning hypothesis — proved via the matrix factorization gram v = C·D·Cᵀ with C unit-triangular (det C = 1) and D diagonal in the squared Gram–Schmidt norms. No sorry, no extra axioms.",
+      "mathContext": "$\\sqrt{\\det(\\mathrm{gram}\\,v)} = \\prod_i \\|\\mathrm{gramSchmidt}\\,v\\,i\\|$, from $\\det(\\mathrm{gram}\\,v) = \\prod_i \\|\\mathrm{gramSchmidt}\\,v\\,i\\|^2$ via the unitriangular change-of-basis factorization $\\mathrm{gram}\\,v = C D C^\\top$."
+    },
+    {
       "id": "change-of-basis",
       "title": "The Unitriangular Change of Basis",
       "startLine": 58,
