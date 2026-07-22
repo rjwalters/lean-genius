@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header: F(n), the constructive goal, and the witness table",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Defines F(n) (largest k such that every k! ordering of a window of k consecutive totients occurs in [1,n]) and states Erdős's asymptotic F(n) ≍ log log log n with an open constant. Announces the constructive lower bound F(n) ≥ 3 this file proves, tabulating the witness m and totient values for each of the 6 orderings of (φ(m), φ(m+1), φ(m+2)) — including the rare increasing run at m=105 and decreasing run at m=313.",
+      "mathContext": "$F(n) = \\max\\{k : \\text{every ordering of } (\\varphi(m{+}1),\\dots,\\varphi(m{+}k)) \\text{ occurs for some } m \\le n\\}$; here $F(n)\\ge 3$ for $n\\ge 315$, witnessed explicitly."
+    },
+    {
       "id": "k2",
       "title": "k = 2: Both Adjacent Orderings",
       "startLine": 33,
