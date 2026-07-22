@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/436",
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 9,
-    "assumptions": "9 axioms: lambda_2_2, lambda_3_2, lambda_4_2, lambda_5_2, lambda_6_2, lambda_7_2, and 3 more. 0 sorries.",
+    "assumptions": "9 axioms: lambda_2_2, lambda_3_2, lambda_4_2, lambda_5_2, lambda_6_2, lambda_7_2, and 3 more. 0 sorries. Trust caveat: theorem lambda_2_gaps (line 562) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it verifies the finite gap values between the tabulated Λ(k,2) constants, not the headline finiteness/growth claims.",
     "lineCount": 686,
     "mathlib_version": "4.31.0",
     "theoremCount": 49,

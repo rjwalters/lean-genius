@@ -65,7 +65,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 116,
-    "assumptions": "1 axiom: erdos_316_generalized — Sándor's 1997 generalization that for every n ≥ 2, there exists a finite A ⊆ ℕ\\{1} with ∑1/k < n that cannot be n-partitioned with all parts summing to < 1. The n=2 case (erdos_316) is proved computationally; the general case is axiomatized.",
+    "assumptions": "1 axiom: erdos_316_generalized — Sándor's 1997 generalization that for every n ≥ 2, there exists a finite A ⊆ ℕ\\{1} with ∑1/k < n that cannot be n-partitioned with all parts summing to < 1. The n=2 case (erdos_316) is proved computationally; the general case is axiomatized. Trust caveat: theorem minimalCounterexample_sum_lt_two (line 43) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it checks the finite reciprocal-sum inequality < 2 for the minimal counterexample, not the axiomatized general case.",
     "theoremCount": 4,
     "definitionCount": 1
   },
