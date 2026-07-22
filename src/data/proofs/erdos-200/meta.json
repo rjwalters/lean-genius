@@ -75,7 +75,7 @@
     "axiomCount": 3,
     "theoremCount": 11,
     "lineCount": 229,
-    "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries.",
+    "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries. Trust caveat: the small prime-AP examples (prime_ap_3, prime_ap_5, prime_ap_6, prime_ap_7) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom; these are finite demonstrations, not the headline conjecture, which rests on the three stated axioms.",
     "mathlib_version": "4.31.0",
     "definitionCount": 3
   },
