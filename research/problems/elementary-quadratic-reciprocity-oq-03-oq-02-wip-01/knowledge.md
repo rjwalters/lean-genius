@@ -182,3 +182,33 @@ the 2 added lemmas depend only on already-proven in-file results + Mathlib `jaco
 
 Still open (unchanged, NOT session-sized): Target 2 Gauss-sum generalized reciprocity core;
 refinement (1) wiring `kronecker2` into the even-modulus branch.
+
+## Session 2026-07-22 (researcher-1) — Section 15: refinement target 1 DONE (classical Kronecker symbol)
+
+Wired `kronecker2` into the 2-adic part — the long-flagged "NOT session-sized" refinement
+turned out session-sized once the right decomposition was found. 7 theorems + 1 def,
+host-verified (`lake env lean` exit 0; `#print axioms` = [propext, Classical.choice,
+Quot.sound] on all 7; no sorry/native_decide; file 1254→1446 L):
+
+- `kroneckerClassical a n := if n = 0 then kronecker0 a else sign * kronecker2 a ^ v₂(|n|) * J(a | |n|/2^v₂)`.
+  KEY SIMPLIFICATION: no special ±1 branches needed (at n=±1 the valuation is 0 and odd
+  part is 1, so the formula collapses to the sign character) — normal form is definitional.
+- `kroneckerClassical_eq_kronecker_of_odd` / `_eq_jacobi`: agreement at odd moduli — ALL
+  Sections 4–14 odd-modulus results transfer verbatim.
+- `kroneckerClassical_two` / `_two_pow`: (a/2) = kronecker2 a, (a/2^k) = kronecker2^k —
+  the defining classical values the original def lacked.
+- `kroneckerClassical_eq_sign_mul_kronecker`: bridge — classical = sign · (a/2)^v · kronecker(odd part).
+- `kroneckerClassical_mul_right` (THE stated WIP target), `_mul_left` (all moduli incl 0),
+  `_pow_right`: full bi-multiplicativity for the refined def. χ₈ multiplicativity imported
+  via `kronecker2_mul`, NOT re-derived.
+
+API notes: `ord_compl[p]` NOTATION DOES NOT EXIST in this Mathlib — use camelCase lemmas
+about the raw expression `n / p ^ n.factorization p`: `Nat.ordCompl_mul`, `Nat.ordCompl_pos`,
+`Nat.not_dvd_ordCompl`, plus `Nat.factorization_mul`+`Finsupp.add_apply` (valuation additive),
+`Nat.Prime.factorization_pow`+`Finsupp.single_eq_same`. All with existing imports.
+Gotchas: `Nat.pos_pow_of_pos` gone (use `pow_pos`); `Nat.dvd_iff_mod_eq_zero` now takes no
+explicit args. Host `lake env lean` sidesteps the documented Docker olean-write SIGBUS-135.
+
+### Still open
+- Target 2 ONLY: generalized reciprocity for fundamental discriminants (Gauss sums) — deep,
+  NOT session-sized. Everything else on this file is done.

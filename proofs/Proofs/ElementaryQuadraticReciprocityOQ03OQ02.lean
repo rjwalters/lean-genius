@@ -1250,5 +1250,197 @@ theorem kronecker_pow_left_odd (a : ℤ) (k : ℕ) (n : ℕ) (hn : 0 < n) (hno :
     kronecker (a ^ k) (n : ℤ) = (kronecker a (n : ℤ)) ^ k := by
   simpa using map_pow (kroneckerNumeratorHom n hn hno) a k
 
+-- ============================================================
+-- Section 15: The CLASSICAL Kronecker symbol (kronecker2 wired
+-- into the 2-adic part) — the long-standing refinement target
+-- ============================================================
+
+/-! The file's `kronecker` routes the *whole* modulus through `jacobiSym a |n|`,
+so at even moduli it takes Jacobi's value at the prime `2` (the mod-2 character)
+rather than the classical mod-8 character `kronecker2`.  This section performs
+the long-flagged refinement: `kroneckerClassical` factors the modulus as
+`±2^v · odd` and sends `2^v` through `kronecker2` — this IS the classical
+Kronecker symbol `(a/n) = sign · (a/2)^v · (a/odd part)` of Kronecker (1885).
+We prove: agreement with `kronecker` at odd moduli (so all Sections 4–14 results
+transfer), the defining value `(a/2) = kronecker2 a` (and its `2^k` power form),
+and — the stated target — full multiplicativity in **both** arguments for the
+refined definition, without re-deriving χ₈ multiplicativity (it is imported
+via `kronecker2_mul`). -/
+
+/-- **The classical Kronecker symbol.**  `(a/0) = kronecker0 a`; for `n ≠ 0`,
+factor `n = ±2^v·m` with `m` odd and set
+`(a/n) = (a/(−1))^{[n<0]} · (a/2)^v · J(a|m)`, where `(a/2) = kronecker2 a` is
+the classical mod-8 character and `v = (|n|).factorization 2` is the 2-adic
+valuation.  At odd moduli this coincides with `kronecker`
+(`kroneckerClassical_eq_kronecker_of_odd`); at even moduli it is the *classical*
+extension, unlike `kronecker` which uses Jacobi's value at `2`. -/
+noncomputable def kroneckerClassical (a n : ℤ) : ℤ :=
+  if n = 0 then kronecker0 a
+  else
+    (if n < 0 then kroneckerNeg1 a else 1)
+      * kronecker2 a ^ n.natAbs.factorization 2
+      * jacobiSym a (n.natAbs / 2 ^ n.natAbs.factorization 2)
+
+/-- Zero modulus: `(a/0) = kronecker0 a` (i.e. `1` iff `a = ±1`). -/
+theorem kroneckerClassical_zero_right (a : ℤ) :
+    kroneckerClassical a 0 = kronecker0 a := by
+  simp [kroneckerClassical]
+
+/-- **Normal form** for nonzero moduli — definitional unfolding of
+`kroneckerClassical` (no special `±1` branches are needed: at `n = ±1` the
+valuation is `0` and the odd part is `1`, so the formula already evaluates to
+the sign character). -/
+theorem kroneckerClassical_eq_of_ne_zero (a n : ℤ) (hn : n ≠ 0) :
+    kroneckerClassical a n
+      = (if n < 0 then kroneckerNeg1 a else 1)
+          * kronecker2 a ^ n.natAbs.factorization 2
+          * jacobiSym a (n.natAbs / 2 ^ n.natAbs.factorization 2) := by
+  simp only [kroneckerClassical, if_neg hn]
+
+/-- **Agreement with `kronecker` at odd moduli.**  For `n ≠ 0` with `|n|` odd,
+the 2-adic valuation vanishes and the odd part is `|n|` itself, so the refined
+symbol collapses to the sign–Jacobi normal form of the original `kronecker`.
+Consequently every odd-modulus result of Sections 4–14 (reciprocity, the
+supplementary laws, the character dictionary, …) transfers verbatim to
+`kroneckerClassical`. -/
+theorem kroneckerClassical_eq_kronecker_of_odd (a n : ℤ) (hn : n ≠ 0)
+    (hno : n.natAbs % 2 = 1) :
+    kroneckerClassical a n = kronecker a n := by
+  have hv : n.natAbs.factorization 2 = 0 :=
+    Nat.factorization_eq_zero_of_not_dvd (by omega)
+  rw [kroneckerClassical_eq_of_ne_zero a n hn, kronecker_eq_sign_jacobi a n hn, hv,
+    pow_zero, mul_one, pow_zero, Nat.div_one]
+
+/-- `ℕ`-typed corollary: at odd positive moduli the classical symbol IS the
+Jacobi symbol. -/
+theorem kroneckerClassical_eq_jacobi (a : ℤ) (n : ℕ) (hn : 0 < n)
+    (hno : n % 2 = 1) :
+    kroneckerClassical a (n : ℤ) = jacobiSym a n := by
+  rw [kroneckerClassical_eq_kronecker_of_odd a n (by omega)
+      (by rwa [Int.natAbs_natCast]),
+    kronecker_eq_jacobi a n hn hno]
+
+/-- **The defining refinement: `(a/2) = kronecker2 a`.**  The value of the
+classical symbol at the modulus `2` is the mod-8 character — exactly the wiring
+the original `kronecker` lacks (`kronecker a 2 = J(a|2)` is the mod-2
+character instead). -/
+theorem kroneckerClassical_two (a : ℤ) :
+    kroneckerClassical a 2 = kronecker2 a := by
+  have h2 : (2 : ℤ).natAbs = 2 := rfl
+  have hv : (2 : ℕ).factorization 2 = 1 := by
+    rw [Nat.Prime.factorization Nat.prime_two, Finsupp.single_eq_same]
+  rw [kroneckerClassical_eq_of_ne_zero a 2 (by norm_num), h2, hv, pow_one]
+  norm_num [jacobiSym.one_right]
+
+/-- **Prime-power moduli of `2`:** `(a/2ᵏ) = (kronecker2 a)ᵏ` for every `k`
+(including `k = 0`, where both sides are `1`).  The classical symbol is the
+multiplicative extension of `kronecker2` across the 2-part. -/
+theorem kroneckerClassical_two_pow (a : ℤ) (k : ℕ) :
+    kroneckerClassical a (2 ^ k) = kronecker2 a ^ k := by
+  have hne : ((2 : ℤ) ^ k) ≠ 0 := pow_ne_zero k (by norm_num)
+  have habs : ((2 : ℤ) ^ k).natAbs = 2 ^ k := by
+    rw [Int.natAbs_pow]; rfl
+  have hv : (2 ^ k : ℕ).factorization 2 = k := by
+    rw [Nat.Prime.factorization_pow Nat.prime_two, Finsupp.single_eq_same]
+  have hpos : ¬ ((2 : ℤ) ^ k) < 0 := not_lt.mpr (by positivity)
+  rw [kroneckerClassical_eq_of_ne_zero a _ hne, habs, hv, if_neg hpos,
+    Nat.div_self (pow_pos (by norm_num : (0 : ℕ) < 2) k), jacobiSym.one_right,
+    one_mul, mul_one]
+
+/-- **Bridge back to `kronecker`:** for `n ≠ 0` the classical symbol factors as
+`sign · (a/2)^v · kronecker a (odd part)` — the odd part is positive and odd,
+where the two symbols agree.  This exhibits `kroneckerClassical` as the original
+symbol corrected by `kronecker2` exactly on the 2-part. -/
+theorem kroneckerClassical_eq_sign_mul_kronecker (a n : ℤ) (hn : n ≠ 0) :
+    kroneckerClassical a n
+      = (if n < 0 then kroneckerNeg1 a else 1)
+          * kronecker2 a ^ n.natAbs.factorization 2
+          * kronecker a ((n.natAbs / 2 ^ n.natAbs.factorization 2 : ℕ) : ℤ) := by
+  have hjn : n.natAbs ≠ 0 := Int.natAbs_ne_zero.mpr hn
+  have hpos : 0 < n.natAbs / 2 ^ n.natAbs.factorization 2 := Nat.ordCompl_pos 2 hjn
+  have hodd : (n.natAbs / 2 ^ n.natAbs.factorization 2) % 2 = 1 := by
+    have h2 : ¬ 2 ∣ n.natAbs / 2 ^ n.natAbs.factorization 2 :=
+      Nat.not_dvd_ordCompl Nat.prime_two hjn
+    rcases Nat.mod_two_eq_zero_or_one (n.natAbs / 2 ^ n.natAbs.factorization 2) with h | h
+    · exact absurd (Nat.dvd_iff_mod_eq_zero.mpr h) h2
+    · exact h
+  rw [kroneckerClassical_eq_of_ne_zero a n hn,
+    kronecker_eq_jacobi a _ hpos hodd]
+
+/-- **Multiplicativity in the second argument for the refined definition** —
+the stated WIP target.  For all nonzero `m, n`:
+`(a/mn) = (a/m)(a/n)` for the *classical* symbol.  The 2-adic valuation is
+additive (`Nat.factorization_mul`), the odd part is multiplicative
+(`Nat.ordCompl_mul`), the Jacobi part is `jacobiSym.mul_right'`, and the sign
+character is multiplicative across a nonzero product (`(a/(−1))² = 1` in the
+both-negative case) — χ₈ multiplicativity is never re-derived. -/
+theorem kroneckerClassical_mul_right (a m n : ℤ) (hmn : m * n ≠ 0) :
+    kroneckerClassical a (m * n) = kroneckerClassical a m * kroneckerClassical a n := by
+  have hm : m ≠ 0 := left_ne_zero_of_mul hmn
+  have hn : n ≠ 0 := right_ne_zero_of_mul hmn
+  have hjm : m.natAbs ≠ 0 := Int.natAbs_ne_zero.mpr hm
+  have hjn : n.natAbs ≠ 0 := Int.natAbs_ne_zero.mpr hn
+  have hom : m.natAbs / 2 ^ m.natAbs.factorization 2 ≠ 0 :=
+    (Nat.ordCompl_pos 2 hjm).ne'
+  have hon : n.natAbs / 2 ^ n.natAbs.factorization 2 ≠ 0 :=
+    (Nat.ordCompl_pos 2 hjn).ne'
+  -- 2-adic valuation is additive across the product.
+  have hv : (m.natAbs * n.natAbs).factorization 2
+      = m.natAbs.factorization 2 + n.natAbs.factorization 2 := by
+    rw [Nat.factorization_mul hjm hjn, Finsupp.add_apply]
+  -- Sign character is multiplicative across a nonzero product.
+  have hsign : (if m * n < 0 then kroneckerNeg1 a else 1) =
+      (if m < 0 then kroneckerNeg1 a else 1) * (if n < 0 then kroneckerNeg1 a else 1) := by
+    by_cases hm0 : m < 0 <;> by_cases hn0 : n < 0
+    · rw [if_neg (not_lt.mpr (mul_pos_of_neg_of_neg hm0 hn0).le), if_pos hm0, if_pos hn0,
+        kroneckerNeg1_sq]
+    · have hn' : 0 < n := lt_of_le_of_ne (not_lt.mp hn0) (Ne.symm hn)
+      rw [if_pos (mul_neg_of_neg_of_pos hm0 hn'), if_pos hm0, if_neg hn0, mul_one]
+    · have hm' : 0 < m := lt_of_le_of_ne (not_lt.mp hm0) (Ne.symm hm)
+      rw [if_pos (mul_neg_of_pos_of_neg hm' hn0), if_neg hm0, if_pos hn0, one_mul]
+    · have hm' : 0 < m := lt_of_le_of_ne (not_lt.mp hm0) (Ne.symm hm)
+      have hn' : 0 < n := lt_of_le_of_ne (not_lt.mp hn0) (Ne.symm hn)
+      rw [if_neg (not_lt.mpr (mul_pos hm' hn').le), if_neg hm0, if_neg hn0, mul_one]
+  rw [kroneckerClassical_eq_of_ne_zero a (m * n) hmn,
+    kroneckerClassical_eq_of_ne_zero a m hm, kroneckerClassical_eq_of_ne_zero a n hn,
+    Int.natAbs_mul, Nat.ordCompl_mul, jacobiSym.mul_right' a hom hon, hv, pow_add, hsign]
+  ring
+
+/-- **Multiplicativity in the first argument for the refined definition**, all
+moduli (including `0`): `(ab/n) = (a/n)(b/n)` for nonzero `a, b`.  Each factor
+of the normal form is multiplicative in the numerator: the sign character by
+`kroneckerNeg1_mul`, the 2-part by `kronecker2_mul` (χ₈ multiplicativity,
+imported not re-proved), the odd part by `jacobiSym.mul_left`. -/
+theorem kroneckerClassical_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
+    kroneckerClassical (a * b) n = kroneckerClassical a n * kroneckerClassical b n := by
+  have ha : a ≠ 0 := left_ne_zero_of_mul hab
+  have hb : b ≠ 0 := right_ne_zero_of_mul hab
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp only [kroneckerClassical_zero_right]
+    exact kronecker0_mul a b hab
+  · rw [kroneckerClassical_eq_of_ne_zero (a * b) n hn,
+      kroneckerClassical_eq_of_ne_zero a n hn, kroneckerClassical_eq_of_ne_zero b n hn,
+      kronecker2_mul, mul_pow, jacobiSym.mul_left]
+    by_cases hn0 : n < 0
+    · rw [if_pos hn0, if_pos hn0, if_pos hn0, kroneckerNeg1_mul a b ha hb]
+      ring
+    · rw [if_neg hn0, if_neg hn0, if_neg hn0]
+      ring
+
+/-- **Power law in the second argument for the refined symbol:**
+`(a/nᵏ) = (a/n)ᵏ` for nonzero `n` — induction off
+`kroneckerClassical_mul_right`, mirroring `kronecker_pow_right`.  Together with
+`kroneckerClassical_two_pow` this pins the classical symbol on every prime
+power, and with `kroneckerClassical_mul_right` on every nonzero modulus. -/
+theorem kroneckerClassical_pow_right (a n : ℤ) (k : ℕ) (hn : n ≠ 0) :
+    kroneckerClassical a (n ^ k) = kroneckerClassical a n ^ k := by
+  induction k with
+  | zero =>
+    simp [pow_zero, kroneckerClassical_eq_of_ne_zero a 1 one_ne_zero,
+      Nat.factorization_one, jacobiSym.one_right]
+  | succ k ih =>
+    have hnk : n ^ k ≠ 0 := pow_ne_zero k hn
+    rw [pow_succ, kroneckerClassical_mul_right a (n ^ k) n (mul_ne_zero hnk hn), ih,
+      pow_succ]
 
 end KroneckerSymbol
