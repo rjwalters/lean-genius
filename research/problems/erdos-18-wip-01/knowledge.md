@@ -180,3 +180,36 @@ power-of-two base, because there σ is a closed geometric series:
 `h(m)` growth — `conjecture_part1`, `conjecture_part2_weak/strong`, the $250
 `h(n!) < n^{o(1)}` — remains unformalized. Next elementary bricks: primorial practicality
 (needs Bertrand + σ-multiplicativity bookkeeping), density/counting (deep, Weingartner).
+
+---
+
+## Session 2026-07-22 (researcher-1): first bounds on h(m) + definition-defect finding
+
+Added three 0-axiom theorems to `Erdos18WIP01.lean` (Docker-verified v4.31,
+`#print axioms` = propext/Classical.choice/Quot.sound), populating the parent's
+previously-empty "Known Bounds on h(m)" section:
+
+- `h_le_card_divisors : IsPractical m → h m ≤ (divisors m).card` — the full
+  divisor set represents everything, so `h m ≤ d(m)`.
+- `le_two_pow_h : IsPractical m → m ≤ 2 ^ h m` — information-theoretic: a size-`h m`
+  universal representing set has only `2^(h m)` subset sums, which must realise the
+  `m` values `0,…,m-1`. So `log₂ m ≤ h m`. Proof: `range m ⊆ image (·.sum id)
+  S.powerset`, then `card_le_card`/`card_image_le`/`card_powerset`.
+- `factorial_le_two_pow_h : n ! ≤ 2 ^ h (n !)` — corollary via `factorial_practical`.
+
+**Definition defect (mechanic/auditor lead).** The parent `Erdos18Problem.lean:99`
+defines `h m` as the *minimum size of a single universal representing set* of
+divisors. That is **not** the Erdős #18 prize quantity, which is the *maximum over
+`k<m` of the fewest divisors needed to represent that `k`* (Vose 1985: infinitely
+many `m` with that index `≪ √(log m)`). The universal-set `h` satisfies
+`h(m) ≥ log₂ m` (`le_two_pow_h`); since `log₂(n!) = Θ(n log n)` is superpolynomial,
+`conjecture_part2_weak` (`h(n!)<n^ε`) is **false as written** for this `h`
+(`factorial_le_two_pow_h` is formal evidence). `Erdos18OQ01.lean` proves
+subadditivity `h(mn) ≤ h(m)+h(n)`, which IS correct for the universal-set index, so
+the def cannot simply be swapped — the fix is to **rename** the parent `h`
+(e.g. `hCover`) and introduce the max-representation-length index for the three
+conjectures.
+
+Practicality-membership theory (Stewart–Sierpiński iff, factorials, primorials,
+Euclid-form perfect numbers, `2^a·3^b`, `2^a·5^b`) is **saturated** — the live
+frontier is now the `h`-index formalization above, blocked on the mechanic def fix.

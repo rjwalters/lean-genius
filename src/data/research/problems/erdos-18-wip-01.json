@@ -23,7 +23,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "MECHANIC/AUDITOR follow-up: the parent Erdos18Problem.lean h (universal-set size) misformalizes the Erdos #18 prize quantity (max representation length); rename it (e.g. hCover) and define the correct h for conjecture_part1/part2_weak/part2_strong. Erdos18OQ01 subadditivity depends on the universal-set h. Practicality-membership theory (Stewart-Sierpinski iff, factorials, primorials, Euclid-form, 2^a3^b, 2^a5^b) is saturated.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added the Euclid-form family to Erdos18WIP01.lean — σ(2^k)=2^{k+1}−1, the sharp criterion 2^k·n practical for 1≤n≤2^{k+1}, and euclid_form_practical (⟹ every even perfect number is practical). 0-axiom, Docker-verified. h(m) growth ($250 open question) remains unformalized.",
+    "progressSummary": "PROGRESS: First theorems about the divisor-completeness index h (parent \"Known Bounds on h(m)\" section was empty). Proved the information-theoretic lower bound m<=2^(h m) and upper bound h(m)<=d(m), pinning log2 m <= h(m) <= d(m) (0-axiom, Docker-verified v4.31). Surfaced a definition defect: the file h is the universal-representing-set size (>=log2 m), NOT the Erdos prize quantity (max single-value representation length, Vose <<sqrt(log m)); consequently conjecture_part2_weak (h(n!)<n^eps) is false as stated for this h (factorial_le_two_pow_h). Recommended mechanic follow-up: rename parent h, add max-length index for the conjectures.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -43,7 +43,10 @@
       "two_dvd_of_practical / even_of_practical in Erdos18WIP01.lean: practical m>=3 => 2 | m (necessary condition)",
       "divisor_chain_of_practical / practical_of_divisor_chain_condition / practical_iff_divisor_chain in Erdos18WIP01.lean (necessary + sufficient divisor-gap condition, iff)",
       "succ_mul_self_practical: n practical ⟹ n(n+1) practical (0-axiom corollary of Stewart–Sierpiński)",
-      "sum_range_two_pow, sum_divisors_two_pow, two_pow_mul_practical_of_le, euclid_form_practical, four_ninety_six_practical in Erdos18WIP01.lean (all 0-axiom: propext/Classical.choice/Quot.sound; Docker-built 8577 jobs)"
+      "sum_range_two_pow, sum_divisors_two_pow, two_pow_mul_practical_of_le, euclid_form_practical, four_ninety_six_practical in Erdos18WIP01.lean (all 0-axiom: propext/Classical.choice/Quot.sound; Docker-built 8577 jobs)",
+      "le_two_pow_h (Erdos18WIP01.lean): m <= 2^(h m) for practical m [0-axiom]",
+      "h_le_card_divisors (Erdos18WIP01.lean): h m <= d(m) for practical m [0-axiom]",
+      "factorial_le_two_pow_h (Erdos18WIP01.lean): n! <= 2^(h n!) [0-axiom]"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -54,7 +57,12 @@
       "sum_divisors_two_pow: σ(2^k)=∑_{d∣2^k}d=2^{k+1}−1 via Nat.sum_divisors_prime_pow (2 prime) + geometric series sum_range_two_pow (induction)",
       "two_pow_mul_practical_of_le: for 1≤n≤2^{k+1}, 2^k·n is practical — sharp specialisation of mul_practical_of_le_succ_sigma to the power-of-two base (1+σ(2^k)=2^{k+1}); generalises two_mul_practical",
       "euclid_form_practical: 2^k·(2^{k+1}−1) practical ∀k; when 2^{k+1}−1 is a Mersenne prime this is Euclids even perfect number, so EVERY EVEN PERFECT NUMBER IS PRACTICAL (6,28,496,... uniform). Note: Mathlib in-repo lacks the Euclid-Euler classification, so the perfect-number statement lives in prose/motivation, not as a Lean theorem",
-      "four_ninety_six_practical: 496=2^4·31 practical (k=4 instance, norm_num)"
+      "four_ninety_six_practical: 496=2^4·31 practical (k=4 instance, norm_num)",
+      "The parent files (Erdos18Problem.lean:99) define h(m) as the MINIMUM SIZE of a single universal representing set of divisors covering every 1<=k<m. This is NOT the Erdos #18 prize quantity, which is the MAX over k<m of the FEWEST divisors needed to represent that particular k (Vose 1985: infinitely many m with that index <<sqrt(log m)).",
+      "Proved (Erdos18WIP01, 0-axiom): le_two_pow_h : IsPractical m -> m <= 2^(h m). Information-theoretic: a size-(h m) representing set has only 2^(h m) subset sums yet must realise the m values 0..m-1. Hence h(m) >= log2 m for the file h.",
+      "Corollary factorial_le_two_pow_h : n! <= 2^(h n!). Since log2(n!)=Theta(n log n) is superpolynomial, the parent conjecture_part2_weak (h(n!)<n^eps) is FALSE as written for the file s universal-set h.",
+      "Proved h_le_card_divisors : IsPractical m -> h m <= (divisors m).card (upper bound d(m)). Together: log2 m <= h m <= d(m) for the file h.",
+      "Erdos18OQ01.lean already proves subadditivity h(mn)<=h(m)+h(n) for this universal-set h (correct for that quantity), so the def cannot simply be replaced: mechanic should RENAME the parent h to the universal-set index and introduce the max-representation-length index for the conjectures."
     ],
     "mathlibGaps": [],
     "nextSteps": [
