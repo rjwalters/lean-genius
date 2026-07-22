@@ -72,6 +72,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: BSC Capacity Proof and Random Coding Foundation", "startLine": 1, "endLine": 32, "summary": "Proves the exact binary symmetric channel capacity BSC(p) = log 2 - h(p) from first principles, replacing the parent file's coarse general bounds with the precise value. Proof: H(Y|X)=h(p) for any input, chain rule gives MI=H(Y)-h(p), the uniform Bernoulli(1/2) input achieves H(Y)=log 2 (BSC is doubly stochastic), giving capacity = log 2 - h(p).", "mathContext": "The binary symmetric channel BSC(p) flips each bit with probability p; the doubly-stochastic property (uniform input maps to uniform output) is what makes the achievability direction of the capacity proof go through cleanly, a template later generalized to arbitrary symmetric channels."},
     {
       "id": "uniform-input",
       "title": "Uniform Input Distribution",
