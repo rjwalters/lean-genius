@@ -36,7 +36,7 @@
     ],
     "dateAdded": "2025-12-31",
     "axiomCount": 3,
-    "assumptions": "3 axiom(s): wolstenholme_theorem, harmonic_divisibility (WolstenholmeTheorem.lean); wolstenholme_prime_mod4_question (WolstenholmeTheoremOQ02OQ02.lean). No sorries.",
+    "assumptions": "3 axiom(s): wolstenholme_theorem, harmonic_divisibility (WolstenholmeTheorem.lean); wolstenholme_prime_mod4_question (WolstenholmeTheoremOQ02OQ02.lean). No sorries. Trust caveat: the concrete small-prime demonstration theorems (central_binomial_5/7/11/13, wolstenholme_5/7/11/13, babbage_3/5/7, wolstenholme_fails_2/3, not_wolstenholme_prime_5/7) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`) beyond the stated axioms. These are finite numerical checks for specific primes; the headline Wolstenholme congruence is carried by the separately stated axiom wolstenholme_theorem and does not depend on them.",
     "lineCount": 220,
     "prerequisites": [
       "Binomial coefficients and central binomial coefficients",

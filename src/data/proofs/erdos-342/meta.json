@@ -29,7 +29,7 @@
       "Lean 4 Set.Infinite and Filter.Tendsto"
     ],
     "lineCount": 224,
-    "assumptions": "3 axioms: ulamSeq, ulamSeq_initial, ulamSeq_strictMono. 0 sorries.",
+    "assumptions": "3 axioms: ulamSeq, ulamSeq_initial, ulamSeq_strictMono. 0 sorries. Trust caveat: the concrete Ulam-sequence term values (ulam_0 … ulam_11) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite evaluations of the sequence's initial terms; the sequence's defining properties are carried by the stated axioms (ulamSeq, ulamSeq_initial, ulamSeq_strictMono).",
     "mathlib_version": "4.31.0",
     "theoremCount": 20,
     "definitionCount": 11

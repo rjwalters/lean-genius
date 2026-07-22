@@ -23,7 +23,7 @@
     "axiomCount": 1,
     "theoremCount": 16,
     "lineCount": 564,
-    "assumptions": "1 axiom: factorizationMax_asymptotic. See Lean source for the complete statement.",
+    "assumptions": "1 axiom: factorizationMax_asymptotic. See Lean source for the complete statement. Trust caveat: the exact small-n values (factorizationMax_3_le … factorizationMax_8_le, factorizationMax_7_eq, factorizationMax_8_eq, together with the vf3…vf8 finite-search witness defs) are established by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These verify finite cases; the asymptotic headline is carried by the stated axiom factorizationMax_asymptotic and does not depend on them.",
     "mathlib_version": "4.31.0",
     "definitionCount": 10
   },
