@@ -309,28 +309,17 @@ theorem buffon_smooth_concrete
   -- (1/(π*d)) * (2 * ∫_a^b sqrt(..)) = 2 * (∫_a^b sqrt(..)) / (π*d)
   ring
 
-/-- **Closing the gap**: When `hFubini` is proved from `angular_average`,
-    the formula is automatic.
+/-- **Closing the gap**: `hFubini` is proved from `angular_average`,
+    making the formula automatic.
 
     The `hFubini` hypothesis above is EXACTLY the angular average theorem
     applied pointwise:
       ∫_0^π |γ'(t).1 sin θ + γ'(t).2 cos θ| dθ = 2√(γ'(t).1² + γ'(t).2²)
 
-    This IS `angular_average (deriv (Prod.fst ∘ γ) t) (deriv (Prod.snd ∘ γ) t)`.
-
-    So the full proof (once `angular_average` sorry is closed) is:
-
-    ```lean
-    theorem buffon_smooth_concrete_full ... :
-        concreteSmoothExpectedCrossings γ a b d = 2 * planarArcLength γ a b / (π * d) := by
-      apply buffon_smooth_concrete ... (fun t _ =>
-        angular_average (deriv (Prod.fst ∘ γ) t) (deriv (Prod.snd ∘ γ) t))
-    ```
-
-    The ONLY remaining sorry is the rotation identity in `angular_average`:
-      a sin θ + b cos θ = √(a²+b²) sin(θ + atan2(b,a))
-
-    This requires a careful Lean proof of the atan2 relationship. -/
+    This IS `angular_average (deriv (Prod.fst ∘ γ) t) (deriv (Prod.snd ∘ γ) t)`,
+    which is fully proved (0 sorries, via `Complex.arg`) in Part III above.
+    Combined with `buffon_smooth_concrete`, this gives `buffon_smooth_full`
+    below with no remaining gap in the angular average step. -/
 theorem hFubini_from_angular_average
     (γ : ℝ → ℝ × ℝ) (a b : ℝ) :
     ∀ t ∈ Set.uIcc a b,
@@ -357,24 +346,18 @@ These can be REPLACED by:
 1. `concreteSmoothExpectedCrossings` (concrete definition above)
 2. `buffon_smooth_concrete` (this file) + `angular_average` proof
 
-## Summary of the Proof Gap
+## Summary
 
-The ONLY remaining sorry is in `angular_average`, specifically the rotation identity:
-  a sin θ + b cos θ = √(a²+b²) sin(θ + arctan(b/a))
-
-This is provable in Lean using:
-- `Real.sin_add`: sin(x+y) = sin x cos y + cos x sin y
-- `Real.cos_arctan`: cos(arctan x) = 1/√(1+x²)
-- `Real.sin_arctan`: sin(arctan x) = x/√(1+x²)
-- Case split on a: when a > 0, a = 0, a < 0 (atan2 cases)
-- For each case, normalize (a/r, b/r) as (cos φ, sin φ)
-
-Estimated: 50-100 lines to close this sorry completely.
+`angular_average` is fully proved (0 sorries): the rotation identity
+  a sin θ + b cos θ = √(a²+b²) sin(θ + φ),  φ = Complex.arg (a + bi)
+is established uniformly for all (a, b), including a = 0, via `Complex.arg`,
+`Complex.cos_arg`, and `Complex.sin_arg` — avoiding a case split on the sign
+of a that an `arctan`-based approach would require.
 -/
 
-/-- **Full theorem via angular_average**: Once the rotation identity sorry
-    in `angular_average` is closed, this gives the complete theorem with
-    all hypotheses made explicit. -/
+/-- **Full theorem via angular_average**: combines `buffon_smooth_concrete`
+    with the rotation identity (`angular_average`, fully proved) to give the
+    complete theorem with all hypotheses made explicit. -/
 theorem buffon_smooth_full
     (γ : ℝ → ℝ × ℝ) (a b d : ℝ)
     (hd : 0 < d) (hab : a ≤ b)

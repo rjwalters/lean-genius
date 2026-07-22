@@ -71,7 +71,7 @@
     ],
     "dateAdded": "2026-02-25",
     "axiomCount": 0,
-    "lineCount": 391,
+    "lineCount": 374,
     "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 2
@@ -128,14 +128,14 @@
       "id": "main-theorem",
       "title": "Buffon-Barbier Smooth Curve Theorem",
       "startLine": 260,
-      "endLine": 340,
+      "endLine": 330,
       "summary": "buffon_smooth_concrete: main theorem given Fubini hypothesis. hFubini_from_angular_average: proves the Fubini hypothesis from angular_average. buffon_smooth_full: the complete theorem."
     },
     {
       "id": "connection",
       "title": "Connection to BuffonsNoodle.lean",
-      "startLine": 341,
-      "endLine": 390,
+      "startLine": 332,
+      "endLine": 374,
       "summary": "Documents how concreteSmoothExpectedCrossings replaces the axiomatic smoothExpectedCrossings from BuffonsNoodle.lean. The open question is fully resolved."
     }
   ],
@@ -197,7 +197,7 @@
       "MeasureTheory"
     ],
     "namespace": "BuffonsNeedleOQ01OQ01",
-    "lineCount": 391,
+    "lineCount": 374,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2,
