@@ -26,7 +26,7 @@
     "erdosProblemStatus": "open-question",
     "axiomCount": 1,
     "lineCount": 374,
-    "assumptions": "One mathematical axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem) — this is the sole substantive assumption and the source of the axiom badge. folkman_upper_bound is now proved via a completeGraph(Fin 2) specialization; 15 theorems are fully proved. Additional compiler-trust disclosure: three theorems — folkman_upper_bound, optimal_constant_pos, and optimal_constant_bounds (which composes both) — discharge the trivial helper fact (completeGraph (Fin 2)).edgeFinset.card = 1 with native_decide, so their axiom footprint also includes Lean.ofReduceBool (kernel reduction trusts the compiler). This affects only a 2-vertex edge-count computation, not the substantive mathematics, and is kernel-decidable (replaceable by decide); it does not raise the mathematical assumption count.",
+    "assumptions": "One mathematical axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem) — this is the sole substantive assumption and the source of the axiom badge. folkman_upper_bound is now proved via a completeGraph(Fin 2) specialization; 15 theorems are fully proved. The trivial helper fact (completeGraph (Fin 2)).edgeFinset.card = 1 (used by folkman_upper_bound, optimal_constant_pos, and optimal_constant_bounds) is discharged with kernel `decide`, so there is no compiler-trust (Lean.ofReduceBool) dependency. The only assumption remains the single mathematical axiom.",
     "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 6
@@ -132,7 +132,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the open question about optimal constants in the $C_4$-free subgraph bound. All 15 theorems fully proved (0 sorries) including the $K_{2,2} = C_4$ equivalence, common neighbor uniqueness, c4free_of_few_edges, optimal_constant_pos, hereditary $C_4$-freeness, and the Folkman ratio $(n^3)^{2/3} = n^2$. Two axioms encode the deep results: Folkman's upper bound $c^* \\leq 1$ (requiring full KST formalization) and the CFS existence theorem.",
+    "summary": "Formalizes the open question about optimal constants in the $C_4$-free subgraph bound. All 15 theorems fully proved (0 sorries) including the $K_{2,2} = C_4$ equivalence, common neighbor uniqueness, c4free_of_few_edges, optimal_constant_pos, hereditary $C_4$-freeness, and the Folkman ratio $(n^3)^{2/3} = n^2$. Folkman's upper bound $c^* \\leq 1$ is now fully proved via a completeGraph(Fin 2) specialization; a single axiom encodes the deep result — the CFS existence theorem (lower bound $c^* > 0$).",
     "implications": "The common neighbor uniqueness theorem ($|N(a) \\cap N(b)| \\leq 1$ in $C_4$-free graphs) is the combinatorial engine behind all density bounds for $C_4$-free graphs, from the original Kővári-Sós-Turán proof to modern dependent random choice arguments. The optimal constant framework via `IsAdmissibleConstant` and `optimalConstant = sSup` provides a clean formalization target: resolving the value of $c^*$ would complete a quantitative picture of $C_4$-free subgraph extraction that has been open since the 1960s. The techniques here connect to graph sparsification in theoretical computer science and to the broader Zarankiewicz problem in combinatorics.",
     "openQuestions": [
       "Determine the exact value of the optimal constant c* in (0, 1]",
