@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Scope: the bilinear lower-central-series bound",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring: states the bilinear estimate ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎ (Mathlib only has the one-sided lowerCentralSeries_succ recursion, not this two-index bound), explains the induction-on-j proof via the three subgroups lemma applied with N = γ₍ᵢ₊ⱼ₊₂₎, and previews the headline consequence — the exponentially sharp derivedSeries G n ≤ γ₍₂ⁿ₋₁₎, strictly stronger than Mathlib's linear derived_le_lower_central.",
+      "mathContext": "$[\\gamma_i,\\gamma_j] \\le \\gamma_{i+j+1}$, giving $\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_{2^n-1}$."
+    },
+    {
       "id": "three-subgroups-lemma",
       "title": "The Three Subgroups Lemma (Normal-Subgroup Form)",
       "startLine": 57,
