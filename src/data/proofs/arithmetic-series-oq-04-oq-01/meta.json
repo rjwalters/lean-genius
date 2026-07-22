@@ -54,6 +54,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Faulhaber Formula via Bernoulli Sums (OQ-04-OQ-01)", "startLine": 1, "endLine": 36, "summary": "States the open question of extending Faulhaber's formula to higher power sums; derives closed forms for p = 4, 5, 6, proves ∑k^p is divisible by the triangular number T(n) = n(n+1)/2 for p ≥ 1, and shows Faulhaber's deeper insight that for odd p, ∑k^p is a polynomial in T(n)² (e.g. p=3: T(n)²; p=5: T(n)²(4T(n)−1)/3), with historical context on Faulhaber (1631).", "mathContext": "For odd $p$, $\\sum k^p$ is a polynomial in $T(n)^2$ where $T(n)=n(n+1)/2$: $\\sum k^3=T(n)^2$, $\\sum k^5=T(n)^2(4T(n)-1)/3$ — Faulhaber's (1631) structural insight beyond mere closed-form existence."},
     {
       "id": "higher-power-sums",
       "title": "Part I: Higher Power Sum Formulas",
