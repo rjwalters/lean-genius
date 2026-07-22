@@ -101,6 +101,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Pythagorean triples via the Gaussian-integer norm",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "The (m,n)-parameterization of Pythagorean triples is exactly squaring in the Gaussian integers Z[i]: since the norm N(a+bi)=a^2+b^2 is multiplicative, N(g^2)=N(g)^2 for g=m+ni recovers the Brahmagupta-Fibonacci identity (m^2-n^2, 2mn, m^2+n^2) as a triple. The completeness direction shows every primitive triple with odd x arises this way, transporting Mathlib's rational-parameterization classification through the identity g^2 = m^2-n^2 + 2mn·i, giving an orthogonal algebraic-number-theory viewpoint to the gallery's existing rational-circle proof."
+    },
+    {
       "id": "norm-and-squaring",
       "title": "Part I: The Gaussian norm and squaring",
       "startLine": 53,
