@@ -1489,6 +1489,111 @@ theorem one_le_hErdos {m : ℕ} (hm : 2 ≤ m) : 1 ≤ hErdos m := by
         unfold hErdos
         exact Finset.le_sup (by rw [Finset.mem_range]; omega)
 
+/- ## An exact `hErdos` value: powers of two
+
+`hErdos(2^k) = k`. This is the first *exact* value of the corrected Erdős #18 index,
+and it is extremal: `k = log₂(2^k)` is the *largest* the index can be for a number of
+that size (it always satisfies `hErdos m ≤ h m ≤ d(m)` and here `d(2^k) = k+1`). Powers
+of two are the worst case for the index — the diametric opposite of the conjectured
+factorial behaviour `hErdos(n!) < n^{o(1)}` (Vose), which this vein leaves deep. -/
+
+/-- The proper power-of-two divisors `{2^0,…,2^{k-1}}` of `2^k` sum to `2^k − 1`. -/
+theorem sum_image_two_pow_range (k : ℕ) :
+    ((Finset.range k).image (2 ^ ·)).sum id = 2 ^ k - 1 := by
+  rw [Finset.sum_image (fun a _ b _ h => Nat.pow_right_injective (le_refl 2) h)]
+  cases k with
+  | zero => simp
+  | succ n => simpa using sum_range_two_pow n
+
+/-- **Any distinct-divisor representation of `2^k − 1` uses at least `k` divisors.**
+The divisors of `2^k` are `2^0,…,2^k`; a set summing to `2^k − 1 < 2^k` cannot use `2^k`,
+so it lies in `{2^0,…,2^{k-1}}`, which sums to *exactly* `2^k − 1`. Dropping any one of
+those `k` powers strictly lowers the sum, so all `k` are required. -/
+theorem two_pow_sub_one_card_ge {k : ℕ} {T : Finset ℕ}
+    (hT : T ⊆ divisors (2 ^ k)) (hsum : T.sum id = 2 ^ k - 1) : k ≤ T.card := by
+  set P := (Finset.range k).image (2 ^ ·) with hP
+  have hPcard : P.card = k := by
+    rw [hP, Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+      Finset.card_range]
+  have hPsum : P.sum id = 2 ^ k - 1 := sum_image_two_pow_range k
+  -- Every element of `T` is a proper power of two, so `T ⊆ P`.
+  have hTP : T ⊆ P := by
+    intro x hxT
+    have hxle : x ≤ 2 ^ k - 1 := by
+      have hh : x ≤ T.sum id := by
+        have hs := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hxT
+        simpa using hs
+      rw [hsum] at hh
+      exact hh
+    have hxdvd : x ∣ 2 ^ k := (Nat.mem_divisors.mp (hT hxT)).1
+    obtain ⟨j, _hjk, rfl⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp hxdvd
+    have hjlt : j < k := by
+      by_contra hjc
+      rw [not_lt] at hjc
+      have h1 : 2 ^ k ≤ 2 ^ j := Nat.pow_le_pow_right (by norm_num) hjc
+      have h2 : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+      omega
+    rw [hP, Finset.mem_image]
+    exact ⟨j, Finset.mem_range.mpr hjlt, rfl⟩
+  -- If `|T| < k = |P|`, `T` misses a power, dropping its sum below `2^k − 1`.
+  by_contra hlt
+  rw [not_le] at hlt
+  have hcardlt : T.card < P.card := by rw [hPcard]; exact hlt
+  have hne : T ≠ P := fun h => by rw [h] at hcardlt; exact lt_irrefl _ hcardlt
+  obtain ⟨x, hxP, hxnT⟩ := Finset.exists_of_ssubset (lt_of_le_of_ne hTP hne)
+  have hxpos : 0 < x :=
+    Nat.pos_of_mem_divisors (image_two_pow_subset_divisors k hxP)
+  have hkey : T.sum id < P.sum id :=
+    Finset.sum_lt_sum_of_subset hTP hxP hxnT hxpos (fun j _ _ => Nat.zero_le _)
+  rw [hsum, hPsum] at hkey
+  exact lt_irrefl _ hkey
+
+/-- **Upper half of `hErdos(2^k) = k`.** Every `j < 2^k` is a sum of at most `k` powers
+of two (its binary digits), so `repLength (2^k) j ≤ k`. -/
+theorem repLength_two_pow_le {k j : ℕ} (hj : j < 2 ^ k) : repLength (2 ^ k) j ≤ k := by
+  obtain ⟨S, hS, hsum⟩ := repr_lt_two_pow k j hj
+  have hScard : S.card ≤ k :=
+    calc S.card ≤ ((Finset.range k).image (2 ^ ·)).card := Finset.card_le_card hS
+      _ ≤ (Finset.range k).card := Finset.card_image_le
+      _ = k := Finset.card_range k
+  calc repLength (2 ^ k) j ≤ S.card :=
+        Nat.sInf_le ⟨S, hS.trans (image_two_pow_subset_divisors k), rfl, hsum⟩
+    _ ≤ k := hScard
+
+/-- **Exact `hErdos` for powers of two: `hErdos(2^k) = k`.** The corrected Erdős #18
+index of `2^k` equals its `log₂` — the *maximum* possible for a number of that size.
+Upper bound: each `j < 2^k` needs at most its `k` binary digits (`repLength_two_pow_le`).
+Lower bound: the all-ones value `2^k − 1` needs all `k` powers `2^0,…,2^{k-1}`
+(`two_pow_sub_one_card_ge`). -/
+theorem hErdos_two_pow (k : ℕ) : hErdos (2 ^ k) = k := by
+  refine le_antisymm ?_ ?_
+  · unfold hErdos
+    apply Finset.sup_le
+    intro j hj
+    rw [Finset.mem_range] at hj
+    exact repLength_two_pow_le hj
+  · rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+    · rw [hk0]; exact Nat.zero_le _
+    · have hk1 : 1 ≤ 2 ^ k - 1 := by
+        have h2 : 2 ≤ 2 ^ k :=
+          calc 2 = 2 ^ 1 := (pow_one 2).symm
+            _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hkpos
+        omega
+      have hklt : 2 ^ k - 1 < 2 ^ k := by
+        have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+        omega
+      have hk_le : k ≤ repLength (2 ^ k) (2 ^ k - 1) := by
+        unfold repLength
+        apply le_csInf
+        · obtain ⟨T, hTsub, hTsum⟩ := (two_pow_practical k).2 (2 ^ k - 1) hk1 hklt
+          exact ⟨T.card, T, hTsub, rfl, hTsum⟩
+        · rintro t ⟨T, hTsub, rfl, hTsum⟩
+          exact two_pow_sub_one_card_ge hTsub hTsum
+      calc k ≤ repLength (2 ^ k) (2 ^ k - 1) := hk_le
+        _ ≤ hErdos (2 ^ k) := by
+            unfold hErdos
+            exact Finset.le_sup (Finset.mem_range.mpr hklt)
+
 /-- **Erdős #18, Part 2 ($250), corrected.** The prize question `h(n!) < n^{o(1)}`
 stated over the correct index `hErdos`. Contrast `conjecture_part2_weak`, which is
 *false* for the parent's universal-set `h` (`factorial_le_two_pow_h`). -/
