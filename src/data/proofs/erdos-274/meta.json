@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-274",
+      "title": "Problem Statement and Background",
+      "summary": "States the Herzog\u2013Sch\u00f6nheim conjecture (Erd\u0151s Problem #274): if cosets $a_1G_1,\\dots,a_kG_k$ exactly partition a group $G$, must two indices $[G:G_i]$ coincide? Proved for abelian (subnormal) subgroups by Sun (2004); the general case is open but verified computationally for $|G|<1440$ (Margolis\u2013Schnabel 2019).",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "An exact covering by cosets partitions every element of $G$ into exactly one coset; the conjecture forbids all indices $[G:G_i]$ being pairwise distinct in such a partition."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "ExactCovering structure with proper partition property and hasDistinctIndices predicate",
