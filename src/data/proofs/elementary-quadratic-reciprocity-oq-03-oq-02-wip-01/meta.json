@@ -40,7 +40,7 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 26,
     "defCount": 0,
     "definitionCount": 0,
     "lineCount": 435,
@@ -128,14 +128,30 @@
       "id": "section-e",
       "title": "Section E: anti-periodicity and the orthogonality normalization of χ₈",
       "startLine": 216,
-      "endLine": 280,
+      "endLine": 291,
       "summary": "Anti-periodicity kronecker2_add_four ((a+4/2) = -(a/2)); translation-invariant orthogonality kronecker2_sum_shifted_period (the mean over ANY full period vanishes, generalizing kronecker2_sum_period); and self-orthogonality kronecker2_sq_sum_period (∑ (a/2)² = φ(8) = 4). The anti-periodicity cancels the two halves of any window and normalizes the second moment.",
       "mathContext": "For the Gauss-sum route to generalized quadratic reciprocity: translation invariance of the character mean lets the Gauss sum ∑ χ₈(a) ζ^a be re-centered freely, and the diagonal norm ⟨χ₈,χ₈⟩ = φ(8) = 4 fixes |τ(χ₈)|² = 8. Anti-periodicity χ₈(a+4) = −χ₈(a) is the primitivity signature (conductor 8, not 4)."
+    },
+    {
+      "id": "section-e-l2norm",
+      "title": "Translation-Invariant L²-Norm and the Shift-4 Autocorrelation Peak",
+      "startLine": 292,
+      "endLine": 348,
+      "summary": "Upgrades the base-window self-orthogonality to full translation invariance and reads off the second nonzero autocorrelation peak. kronecker2_sq_sum_shifted_period generalizes kronecker2_sq_sum_period to any length-8 window (∑ χ₈(c+a)² = 4 for every c, via the parity count of units among 8 consecutive integers). kronecker2_autocorr_four evaluates the shift-4 autocorrelation ∑ χ₈(a)χ₈(a+4) = −4, immediate from the anti-periodicity χ₈(a+4) = −χ₈(a); kronecker2_autocorr_four_shifted extends this to every window c. Together with the diagonal C(0) = 4 these are the two nonzero values of the length-8 autocorrelation function.",
+      "mathContext": "$\\sum_{a=0}^{7}\\chi_8(c+a)^2 = 4$ for every $c$ (translation-invariant $L^2$-norm); $\\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+4) = -4$, the anti-diagonal peak of the autocorrelation $C(t)$, forced by $\\chi_8(a+4)=-\\chi_8(a)$."
+    },
+    {
+      "id": "section-f",
+      "title": "Section F: The Complete Autocorrelation Spectrum of χ₈ = (·/2)",
+      "startLine": 350,
+      "endLine": 435,
+      "summary": "Determines the remaining off-peak values C(1) = C(2) = C(3) = 0 and assembles the full length-8 autocorrelation function. kronecker2_mul_shift_odd shows the pointwise product χ₈(a)·χ₈(a+t) vanishes termwise for every odd t (one of a, a+t is always even, and χ₈ vanishes on evens), giving kronecker2_autocorr_odd and its translation-invariant form (C(t) = 0 for all odd t, all windows) with no cancellation needed. kronecker2_autocorr_two handles the one non-termwise case, C(2) = 0, by exact cancellation of the residue table. kronecker2_autocorr_spectrum assembles all five values into the complete comb C(0,1,2,3,4) = (4,0,0,0,−4) — by the real-character symmetry C(t) = C(8−t) this determines all eight shifts as the sparse pattern (4,0,0,0,−4,0,0,0), the correlation data whose discrete Fourier transform is the power spectrum |τ(χ₈)|² = 8 in the Gauss-sum route to reciprocity.",
+      "mathContext": "$C(t) := \\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+t)$. Odd $t$: termwise $0$ (parity obstruction). $C(2)=0$ by exact residue-table cancellation. Full spectrum: $(C(0),\\dots,C(7)) = (4,0,0,0,-4,0,0,0)$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result), and 8 is its exact conductor — (·/2) is primitive, periodic mod 8 but not mod 4 or mod 2. Eight theorems, 0 axioms, 0 sorries, all derived from the parent's public API.",
-    "implications": "Periodicity in the argument is the defining axiom of a Dirichlet character, so these lemmas turn the parent's prose identification of (·/n) and (·/2) as characters into machine-checked fact. That periodic-character structure is the exact structural input the Gauss-sum route to generalized quadratic reciprocity (for arbitrary fundamental discriminants, not just odd prime moduli) is built on — this file supplies the character axiom that route assumes. The conductor-8 primitivity (kronecker2_conductor_eight) sharpens this: the Gauss-sum route needs a *primitive* character, and only primitive characters have nonvanishing Gauss sums, so pinning the exact conductor — not merely a period — is what makes (·/2) usable there.",
+    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result), and 8 is its exact conductor — (·/2) is primitive, periodic mod 8 but not mod 4 or mod 2. It then goes further and determines the complete length-8 autocorrelation spectrum of χ₈ = (·/2): the diagonal self-orthogonality C(0) = 4 (translation-invariant over any window), the anti-diagonal peak C(4) = −4 (from anti-periodicity χ₈(a+4) = −χ₈(a)), and the three off-peak values C(1) = C(2) = C(3) = 0, assembled into the sparse comb (4,0,0,0,−4,0,0,0). 26 theorems, 0 axioms, 0 sorries, all derived from the parent's public API and kernel `decide`.",
+    "implications": "Periodicity in the argument is the defining axiom of a Dirichlet character, so these lemmas turn the parent's prose identification of (·/n) and (·/2) as characters into machine-checked fact. That periodic-character structure is the exact structural input the Gauss-sum route to generalized quadratic reciprocity (for arbitrary fundamental discriminants, not just odd prime moduli) is built on — this file supplies the character axiom that route assumes. The conductor-8 primitivity (kronecker2_conductor_eight) sharpens this: the Gauss-sum route needs a *primitive* character, and only primitive characters have nonvanishing Gauss sums, so pinning the exact conductor — not merely a period — is what makes (·/2) usable there. The complete autocorrelation spectrum is the concrete correlation data that a Gauss-sum evaluation |τ(χ₈)|² = ∑_t C(t)·(DFT factor) would consume directly, rather than requiring a fresh computation from the character table.",
     "openQuestions": [
       "Package these periodicities as an actual `DirichletCharacter` (or `ZMod n →* ℤ`) instance rather than free-standing periodicity lemmas, so the symbol can be fed directly to Mathlib's Dirichlet-character and L-function machinery.",
       "Extend the numerator periodicity from odd positive n to the full Kronecker symbol at even and negative moduli, wiring kronecker2 into the definition — the broader open target the parent's module note flags as unformalized.",
@@ -249,6 +265,46 @@
       "name": "kronecker2_sq_sum_period",
       "statement": "(∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 a) = 4",
       "description": "Self-orthogonality: the L²-norm of χ₈ over a period counts the units mod 8, ⟨χ₈, χ₈⟩ = φ(8) = 4. The diagonal orthogonality relation complementing the mean-zero kronecker2_sum_period; together they are the ⟨χ_i, χ_j⟩ = φ(8)·δ_ij normalization fixing the modulus of the Gauss sum |τ(χ₈)|² = 8 in the Gauss-sum route to generalized reciprocity."
+    },
+    {
+      "name": "kronecker2_sq_sum_shifted_period",
+      "statement": "∀ c : ℤ, (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a)) = 4",
+      "description": "Translation-invariant self-orthogonality: the L²-norm of χ₈ over ANY length-8 window is φ(8) = 4, generalizing the base-window kronecker2_sq_sum_period (c = 0). Any 8 consecutive integers contain exactly 4 units mod 2, each contributing (±1)² = 1."
+    },
+    {
+      "name": "kronecker2_autocorr_four",
+      "statement": "(∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 (a + 4)) = -4",
+      "description": "The shift-4 autocorrelation of χ₈ is exactly −4, the negative of the diagonal self-orthogonality C(0) = 4. Immediate from the anti-periodicity kronecker2_add_four: every term (a/2)·(a+4/2) becomes −(a/2)²."
+    },
+    {
+      "name": "kronecker2_autocorr_four_shifted",
+      "statement": "∀ c : ℤ, (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a + 4)) = -4",
+      "description": "Translation-invariant version of kronecker2_autocorr_four: the shift-4 autocorrelation is −4 over every window, not just [0,8). Reduces the anti-periodicity against the translation-invariant L²-norm kronecker2_sq_sum_shifted_period."
+    },
+    {
+      "name": "kronecker2_mul_shift_odd",
+      "statement": "Odd t → kronecker2 a * kronecker2 (a + t) = 0",
+      "description": "Pointwise vanishing for every odd shift t: since t is odd, exactly one of a, a+t is even, and χ₈ vanishes on evens (kronecker2_eq_zero_iff), so the product is 0 termwise — a character supported on the odd residues cannot correlate with any odd translate of itself."
+    },
+    {
+      "name": "kronecker2_autocorr_odd",
+      "statement": "Odd t → (∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 (a + t)) = 0",
+      "description": "The autocorrelation C(t) vanishes for every odd t, immediate from the termwise vanishing kronecker2_mul_shift_odd (no cancellation needed). Instantiating t = 1, 3 gives two of the three off-peak zeros of the length-8 spectrum."
+    },
+    {
+      "name": "kronecker2_autocorr_odd_shifted",
+      "statement": "Odd t → ∀ c : ℤ, (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a + t)) = 0",
+      "description": "Translation-invariant version of kronecker2_autocorr_odd: the odd-shift autocorrelation vanishes over every window, since the parity obstruction kronecker2_mul_shift_odd is itself translation invariant."
+    },
+    {
+      "name": "kronecker2_autocorr_two",
+      "statement": "(∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 (a + 2)) = 0",
+      "description": "The one non-termwise off-peak value: C(2) = 0 by exact cancellation of the residue table (χ₈(1)χ₈(3) + χ₈(3)χ₈(5) + χ₈(5)χ₈(7) + χ₈(7)χ₈(9) = (−1)+(1)+(−1)+(1) = 0), unlike the odd shifts where both a and a+2 can be odd so no term is individually zero."
+    },
+    {
+      "name": "kronecker2_autocorr_spectrum",
+      "statement": "C(0) = 4 ∧ C(1) = 0 ∧ C(2) = 0 ∧ C(3) = 0 ∧ C(4) = -4, where C(t) := ∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 (a + t)",
+      "description": "Assembles the complete length-8 autocorrelation spectrum of χ₈ = (·/2) from the diagonal peak (kronecker2_sq_sum_period), the odd off-peaks (kronecker2_autocorr_odd), the even off-peak (kronecker2_autocorr_two), and the anti-diagonal peak (kronecker2_autocorr_four). By the real-character symmetry C(t) = C(8−t) this pins the full sparse comb (4,0,0,0,−4,0,0,0) — the correlation data whose discrete Fourier transform is the power spectrum |τ(χ₈)|² = 8 used in the Gauss-sum route to generalized quadratic reciprocity."
     }
   ]
 }
