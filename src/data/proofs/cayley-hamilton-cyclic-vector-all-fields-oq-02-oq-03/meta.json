@@ -37,7 +37,8 @@
       "endKrylov_linearIndependent: the Krylov vectors {Tᵏ·v}_{k<finrank K V} of a cyclic vector are linearly independent, hence a basis; the endomorphism analogue of CyclicCommutant.krylov_linearIndependent, proved directly over Module.End K V with no FiniteDimensional hypothesis on the statement itself.",
       "commuting_end_is_polynomial: the main lift — if T has a cyclic vector and A commutes with T (A * T = T * A in Module.End K V) then A = aeval T p for some p : K[X]. Coordinate-free version of CyclicCommutant.commuting_matrix_is_polynomial; agreement of A and p(T) on the Krylov basis is closed by Basis.ext rather than the parent's per-column matrix recovery.",
       "end_commutant_commutative: the centralizer of a cyclic endomorphism is commutative — any two endomorphisms commuting with T commute with each other, since both are polynomials in T.",
-      "aeval_end_commute: the trivial inclusion K[T] ⊆ centralizer(T); together with commuting_end_is_polynomial it gives the exact equality centralizer(T) = K[T]."
+      "aeval_end_commute: the trivial inclusion K[T] ⊆ centralizer(T); together with commuting_end_is_polynomial it gives the exact equality centralizer(T) = K[T].",
+      "end_centralizer_isMasa_of_cyclic (Masa file): the commutant of a cyclic endomorphism is a maximal abelian subalgebra of End_K(V) of minimal dimension — commutative, maximal among commutative subalgebras containing it (this leg for arbitrary T), and of K-dimension exactly dim V. Coordinate-free lift of the matrix MASA capstone (oq-02-oq-02 Masa file)."
     ],
     "historicalContext": "An endomorphism T of a finite-dimensional K-vector space V is nonderogatory when its minimal and characteristic polynomials coincide, equivalently when it admits a cyclic vector v (one for which v, Tv, …, T^{n-1}v span V). A third classical characterization (Hoffman & Kunze §7.5, Roman §10.4) describes the centralizer: for a nonderogatory operator, every operator commuting with T is a polynomial in T, so the centralizer equals K[T]. The parent gallery entry oq-02 proves this forward commutant edge for concrete matrices Matrix (Fin n) (Fin n) K. This entry answers the open question recorded by the sibling oq-02-oq-01 ('recast the triple equivalence for Module.End over a finite-dimensional vector space') for the commutant edge, restating and reproving the result basis-free in Module.End K V.",
     "proofStrategy": "Let n = finrank K V and let v be a cyclic vector for T. (1) The Krylov vectors {Tᵏ·v}_{k<n} are linearly independent: a nontrivial relation ∑ cₖ Tᵏ·v = 0 packages into a nonzero polynomial p = ∑ cₖ Xᵏ of degree < n with (p(T))·v = 0, contradicting cyclicity (endKrylov_linearIndependent). Being n independent vectors they form a basis b via basisOfLinearIndependentOfCardEqFinrank. (2) Expand A·v in this basis, A·v = ∑ (b.repr (A·v) k) · (Tᵏ·v), and set p = ∑ (b.repr (A·v) k) Xᵏ; then p(T)·v = A·v by Basis.sum_repr. (3) A and p(T) agree on each basis vector Tⁱ·v: A·(Tⁱ·v) = Tⁱ·(A·v) = Tⁱ·(p(T)·v) = p(T)·(Tⁱ·v), using that A commutes with Tⁱ (Commute.pow_right) and that p(T) commutes with Tⁱ (aeval is an algebra hom). Two linear maps agreeing on a basis are equal (Basis.ext), so A = p(T). The degenerate finrank = 0 case is dispatched by Subsingleton on Module.End K V (Module.finrank_zero_iff)."
@@ -175,10 +176,23 @@
           "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01"
         ],
         "namespace": "EndCyclicCommutant",
-        "lineCount": 205,
+        "lineCount": 251,
         "axiomCount": 0,
-        "theoremCount": 5,
+        "theoremCount": 6,
         "definitionCount": 2,
+        "sorries": 0
+      },
+      {
+        "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Masa.lean",
+        "imports": [
+          "Mathlib",
+          "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Frobenius"
+        ],
+        "namespace": "EndCyclicCommutant",
+        "lineCount": 139,
+        "axiomCount": 0,
+        "theoremCount": 4,
+        "definitionCount": 0,
         "sorries": 0
       }
     ]

@@ -23,7 +23,7 @@
     "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-07-09T00:00:00Z",
     "iteration": 0,
     "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass.",
@@ -36,7 +36,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1-4, Docker+host verified 0-axiom): Upgraded the Frobenius dimension EQUALITY dim C(T)=dim V to a canonical K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V, A ↦ A·v (injective rigidity + equal finrank). This is the module-theoretic content of a cyclic vector (V free rank-1 over K[T]=C(T)) and re-derives the dimension equality as a corollary. The core lift to Module.End (centralizer=K[T], commutativity, Frobenius equality, and now the evaluation iso) is complete. The deep converse (dim C(T)=n ⟹ cyclic, needing rational canonical form) remains BLOCKED (RCF infra absent from Mathlib v4.31).",
+    "progressSummary": "COMPLETED (2026-07-22, researcher-1, Docker verified 0-axiom): MASA capstone added — the commutant of a cyclic endomorphism is a maximal abelian subalgebra of End_K(V) of minimal dimension (commutative + maximal + dim = dim V), lifting the matrix OQ02OQ02Masa file coordinate-free. The Module.End lift (this node objective) is now fully complete: both inclusions, C(T)=K[T] subalgebra equality, commutativity (both forms), Frobenius equality, evaluation isomorphism, minpoly degree, MASA. Only remaining direction is the deep converse (dim C(T)=n ⟹ cyclic), a structured blocker pending rational-canonical-form infra in Mathlib.",
     "builtItems": [
       "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
       "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original.",
@@ -45,7 +45,8 @@
       "centralizerEval (LinearMap A ↦ A·v on the centralizer submodule) in ...OQ02OQ03Frobenius.lean",
       "centralizerEval_injective (evaluation at a cyclic vector is injective on C(T))",
       "centralizerEvalEquiv : C(T) ≃ₗ[K] V via LinearMap.linearEquivOfInjective + finrank_centralizer_eq_of_cyclic",
-      "centralizerEvalEquiv_apply @[simp]: e A = (A:End) v"
+      "centralizerEvalEquiv_apply @[simp]: e A = (A:End) v",
+      "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Masa.lean: end_self_mem_centralizer, end_centralizer_isMaximalCommutative, end_centralizer_mul_comm_of_cyclic, end_centralizer_isMasa_of_cyclic (all 0-axiom, #print-verified)"
     ],
     "insights": [
       "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
@@ -55,7 +56,9 @@
       "Centralizer=K[T] now packaged as a subalgebra equality: end_centralizer_eq_adjoin (Subalgebra.centralizer K {T} = Algebra.adjoin K {T}) for a cyclic endomorphism, combining commuting_end_is_polynomial (⊆) and aeval_end_commute (⊇).",
       "Recipe: Algebra.adjoin_singleton_eq_range_aeval rewrites adjoin K {T} to (aeval T).range; Subalgebra.mem_centralizer_iff unfolds centralizer membership to ∀ g∈s, g*a=a*g; range membership discharged by the anonymous ⟨p, _⟩ constructor.",
       "Gotcha: subst hg with hg : g = T eliminates T (not g), breaking later references to T; use rw [hg] to rewrite g→T instead.",
-      "Evaluation isomorphism: for a cyclic vector v, the map A ↦ A·v is a K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V (injective by rigidity + equal finrank ⟹ bijective). Strengthens the Frobenius dimension EQUALITY to a canonical equivalence — the K-linear shadow of V being a free rank-1 K[T]-module."
+      "Evaluation isomorphism: for a cyclic vector v, the map A ↦ A·v is a K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V (injective by rigidity + equal finrank ⟹ bijective). Strengthens the Frobenius dimension EQUALITY to a canonical equivalence — the K-linear shadow of V being a free rank-1 K[T]-module.",
+      "The masa maximality leg (commutative subalgebra containing C(T) equals C(T)) needs NO hypothesis on T and no finite-dimensionality — it is purely formal from T ∈ C(T).",
+      "Membership-form commutativity of C(T) routes cleanly through end_centralizer_eq_adjoin + Algebra.adjoin_singleton_eq_range_aeval + AlgHom.mem_range, then obtain ⟨p, rfl⟩ and map_mul/mul_comm — same recipe as the matrix Masa file."
     ],
     "nextSteps": [
       "The hard converse: dim C(T)=n (or centralizer=K[T]) IMPLIES T has a cyclic vector — completes nonderogatory⟺cyclic⟺C(T)=K[T]. Requires rational canonical form / structure theory; not session-sized.",

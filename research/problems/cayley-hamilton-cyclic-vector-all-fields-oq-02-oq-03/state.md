@@ -1,25 +1,29 @@
 # Research State: cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-09T17:20:43-07:00
-**Iteration**: 1
+**Since**: 2026-07-22
+**Iteration**: 5
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Node objective (lift the commutant characterization to Module.End) is COMPLETE:
+both inclusions, C(T) = K[T] subalgebra equality, commutativity (both forms),
+Frobenius dimension equality, evaluation isomorphism C(T) ≃ₗ[K] V, minpoly
+degree = dim V, and the MASA capstone (commutative + maximal + minimal dimension).
 
 ## Active Approach
-None yet.
+None — completed. See knowledge.md session log.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 5 sessions, all landed
+- Approaches tried: direct lift mirroring the matrix parent (succeeded throughout)
 
 ## Blockers
-None.
+The deep converse (dim C(T) = n ⟹ cyclic vector) is a structured blocker in the
+tracker JSON: needs rational-canonical-form / invariant-factor infrastructure
+absent from Mathlib v4.31. Reopen bar: materially new mechanism required.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None on this node. If Mathlib lands RCF/invariant-factor theory, the converse
+deserves its own problem.
