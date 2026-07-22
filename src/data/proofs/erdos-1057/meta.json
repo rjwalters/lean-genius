@@ -69,7 +69,7 @@
     "dateAdded": "2026-01-19",
     "axiomCount": 1,
     "lineCount": 1164,
-    "assumptions": "1 axiom: infinitely_many_carmichaels (Alford–Granville–Pomerance infinitude of Carmichael numbers). 0 sorries. Korselt's 1899 criterion is now fully proved in both directions (korselt_forward and korselt_backward).",
+    "assumptions": "1 axiom: infinitely_many_carmichaels (Alford–Granville–Pomerance infinitude of Carmichael numbers). 0 sorries. Korselt's 1899 criterion is now fully proved in both directions (korselt_forward and korselt_backward). Trust caveat: the concrete Carmichael demonstrations — the `primeFactors`/`factorization_*` computations for 561, 1105, 1729, …, the `∀ n : Fin 561, isCarmichaelCheck n.val = false` scan, and the `card = 5`/`card = 7` distinctness checks underpinning the finite 'there exist ≥5 (≥7) Carmichael numbers' theorems — are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these finite witnesses do not feed the axiomatized infinitude claim `infinitely_many_carmichaels`.",
     "theoremCount": 67,
     "definitionCount": 14
   },

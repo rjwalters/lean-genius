@@ -43,7 +43,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 133,
-    "assumptions": "1 axiom: erdos_248. See Lean source for the complete statement.",
+    "assumptions": "1 axiom: erdos_248. See Lean source for the complete statement. Trust caveat: the concrete demonstrations `omega_one`/`omega_two`/`omega_six`/`omega_thirty` (small ω values) and `smooth_tail_n1_k1`..`smooth_tail_n1_k5` (finite smooth-tail bound checks) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these finite computations illustrate the construction and do not feed the axiomatized infinitude claim `erdos_248`.",
     "theoremCount": 11,
     "definitionCount": 2
   },
