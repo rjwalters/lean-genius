@@ -113,7 +113,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 113,
-    "assumptions": "3 axioms: massias_construction_works (Massias construction has square-free sumset), kls_theorem (Khalfalah-Lodha-Szemerédi 2002 — 11/32 is sharp), massias_is_maximal (11 residues mod 32 is maximal). 0 sorries.",
+    "assumptions": "3 axioms: massias_construction_works (Massias construction has square-free sumset), kls_theorem (Khalfalah-Lodha-Szemerédi 2002 — 11/32 is sharp), massias_is_maximal (11 residues mod 32 is maximal). 0 sorries. Trust caveat: the supporting computation `squares_mod_32_count` (there are 7 quadratic residues mod 32) is closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; this residue-count demonstration does not feed the three axiomatized bounds.",
     "theoremCount": 2,
     "definitionCount": 7
   },

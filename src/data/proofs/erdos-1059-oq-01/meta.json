@@ -102,7 +102,7 @@
         "relationship": "Sister file providing an independent decidability proof for AllFactorialSubtractionsComposite"
       }
     ],
-    "assumptions": "1 axiom: density_one_conjecture — asserts that the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, qualifyingPrimeCount(x) * (k+1) ≥ primeCount(x) * k.",
+    "assumptions": "1 axiom: density_one_conjecture — asserts that the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, qualifyingPrimeCount(x) * (k+1) ≥ primeCount(x) * k. Trust caveat: the concrete prime witnesses (prime_461/557/673/769, witness_461/557/673/769, six_prime_witnesses, checkCount_101…769) and the finite-stage facts three_not_qualifying, qualifyingPrimeCount_ge_six, qualifyingPrimeCount_pos are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`) beyond the one stated axiom. Because qualifyingPrimeCount_pos and three_not_qualifying feed the unconditional 'density sandwich' theorem density_strictly_between (0 < C(x) < π(x) for x ≥ 101), that finite-stage claim shifts trust from the kernel to the compiler; the abstract structural lemmas (qualifyingPrimeCount_mono, factorialCheckCount_le_log, and the Selberg-conditional qualifyingPrimeCount_ge / qualifyingPrimes_infinite) are kernel-checked.",
     "theoremCount": 35,
     "definitionCount": 6
   },

@@ -32,7 +32,7 @@
       "Asymptotic notation (little-o)"
     ],
     "lineCount": 359,
-    "assumptions": "3 axioms: kleitman_1971, central_binomial_over_power_tends_to_zero, lcm_triple_in_dense_set. 0 sorries.",
+    "assumptions": "3 axioms: kleitman_1971, central_binomial_over_power_tends_to_zero, lcm_triple_in_dense_set. 0 sorries. Trust caveat: the concrete LCM-triple examples `multiples_of_6_example` (IsLCMTriple 12 18 36) and `even_numbers_example` (IsLCMTriple 4 6 12) close their final divisibility step with `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these demonstrations do not feed the three axiomatized density results.",
     "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 6

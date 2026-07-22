@@ -21,7 +21,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 355,
-    "assumptions": "1 axiom: g3_5_eq. 0 sorries.",
+    "assumptions": "1 axiom: g3_5_eq. 0 sorries. Trust caveat: the concrete rank value `r3_5_eq` (rk 3 5 = 4) closes a Finset-cardinality step with `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom beyond the stated axiom; the abstract results are kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 21,
     "definitionCount": 7
