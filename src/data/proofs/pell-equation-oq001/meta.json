@@ -81,6 +81,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The fundamental regulator as minimal value and subgroup index",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Pins down the arithmetic of the regulator against Mathlib's fundamental solution: the fundamental regulator R0 is strictly positive, every solution's regulator is an integer multiple of R0 (quantization, via the ± power structure theorem), and R0 is the least positive regulator. Combining quantization with the group structure shows the subgroup index [<a1> : <a1^k>] equals k, which equals the regulator ratio R(a1^k)/R0 — bridging the real-analytic regulator to a combinatorial index count."
+    },
+    {
       "id": "norm-positive",
       "title": "The fundamental solution lies beyond 1, so R₀ > 0",
       "startLine": 52,
