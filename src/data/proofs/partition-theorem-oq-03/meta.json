@@ -52,6 +52,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Euler partition identities for overpartitions",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "An overpartition of n allows the first occurrence of each distinct part size to be optionally 'overlined', doubling the choices per distinct part. This file formalizes the overpartition structure (a partition together with a set of overlined parts), axiomatizes small case values, and connects the count to Euler's classical partition identity that partitions into odd parts equal partitions into distinct parts."
+    },
+    {
       "id": "euler-identity",
       "title": "Euler's Partition Identity Foundation",
       "startLine": 25,
