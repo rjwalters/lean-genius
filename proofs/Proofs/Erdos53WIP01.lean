@@ -291,4 +291,186 @@ theorem sumsOrProducts_card_ge_odd_prime {A : Finset ℤ}
   omega
 
 
+/-!
+## Quadratic additive lower bound for arbitrary positive sets (Erdős chain)
+
+Every bound above is specific to the **prime** family — the exponential richness
+comes from the multiplicative side (unique factorisation makes subset products
+injective). This section proves the first bound in this development that holds for
+**arbitrary** sets of distinct positive integers, with no primality whatsoever:
+
+> For any finite `A ⊆ ℤ` with all elements positive,
+> `|subsetSums A| ≥ |A|·(|A|+1)/2 + 1`.
+
+This is the classical Erdős subset-sums argument, by induction on `|A|`: remove
+the maximum `m = max A` and observe that the `|A|` sums
+`{T} ∪ { T - a : a ∈ A, a ≠ m }` (where `T = Σ A`) are pairwise distinct and each
+**strictly exceeds** `T - m = Σ (A \ {m})`, which bounds every subset sum of
+`A \ {m}` from above. So each induction step contributes `|A|` fresh values on top
+of the recursive count, and the triangular number accumulates.
+
+Consequences recorded below:
+
+* `subsetSums_card_ge_quadratic` — `n(n+1) + 2 ≤ 2·|subsetSums A|` (doubled form,
+  division-free), hence `n(n+1)/2 + 1 ≤ |subsetSums A|`.
+* `sumsOrProducts_card_ge_quadratic` — the same bound for the full representable
+  set, i.e. quadratic-in-`|A|` growth for **all** positive sets, the `k = 1` case
+  of Problem 53 with a full extra factor `~|A|/2` to spare.
+* `sumsOrProducts_card_superlinear` — for every linear rate `C` there is a
+  threshold beyond which every positive set satisfies
+  `C·|A| ≤ |sumsOrProducts A|`.
+
+The mechanism (monotone chain via top-element removal) is genuinely additive and
+independent of the parity/primality separations above. It still falls short of
+Chang's theorem — `n(n+1)/2 + 1 < n^2` for `n ≥ 3`, so even `k = 2` over all sets
+remains untouched — but it moves the unconditional frontier from "prime sets only"
+to "all positive sets".
+-/
+
+/-- The full sum `Σ A` is a subset sum (take `S = A` in the powerset). -/
+theorem sum_mem_subsetSums (A : Finset ℤ) : A.sum id ∈ subsetSums A := by
+  rw [subsetSums, Finset.mem_image]
+  exact ⟨A, Finset.mem_powerset.mpr Finset.Subset.rfl, rfl⟩
+
+/-- Dropping a single element from the full sum stays a subset sum:
+    `Σ A - a` is the sum over `A.erase a`. -/
+theorem sum_sub_mem_subsetSums {A : Finset ℤ} {a : ℤ} (ha : a ∈ A) :
+    A.sum id - a ∈ subsetSums A := by
+  rw [subsetSums, Finset.mem_image]
+  refine ⟨A.erase a, Finset.mem_powerset.mpr (fun x hx => Finset.mem_of_mem_erase hx), ?_⟩
+  rw [Finset.sum_erase_eq_sub ha, id_eq]
+
+/-- On a set of **nonnegative** integers, every subset sum is at most the full
+    sum `Σ A` (monotonicity of sums under subset inclusion). -/
+theorem mem_subsetSums_le_sum {A : Finset ℤ} (hnn : ∀ a ∈ A, 0 ≤ a)
+    {s : ℤ} (hs : s ∈ subsetSums A) : s ≤ A.sum id := by
+  rw [subsetSums, Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_powerset] at hS
+  exact Finset.sum_le_sum_of_subset_of_nonneg hS (fun a ha _ => hnn a ha)
+
+/-- **Erdős quadratic bound, induction core.** For any set `A` of `n` distinct
+    positive integers, `n(n+1) + 2 ≤ 2·|subsetSums A|` (the division-free form of
+    `|subsetSums A| ≥ n(n+1)/2 + 1`).
+
+    Induction on `n`, removing `m = max A`: every subset sum of `A' = A.erase m`
+    is at most `T - m` (where `T = Σ A`), while the `n` values
+    `{T} ∪ { T - a : a ∈ A', a ≠ m }` are distinct subset sums of `A` strictly
+    above `T - m`. So the count grows by at least `n` at each step. -/
+theorem subsetSums_card_quadratic :
+    ∀ (n : ℕ) (A : Finset ℤ), A.card = n → (∀ a ∈ A, 0 < a) →
+      n * (n + 1) + 2 ≤ 2 * (subsetSums A).card := by
+  intro n
+  induction n with
+  | zero =>
+      intro A hcard _
+      rw [Finset.card_eq_zero] at hcard
+      subst hcard
+      rw [subsetSums_empty]
+      simp
+  | succ n ih =>
+      intro A hcard hpos
+      have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+      set m := A.max' hne with hm_def
+      have hmA : m ∈ A := A.max'_mem hne
+      have hm_pos : 0 < m := hpos m hmA
+      set A' := A.erase m with hA'_def
+      have hcard' : A'.card = n := by
+        rw [hA'_def, Finset.card_erase_of_mem hmA, hcard]
+        omega
+      have hpos' : ∀ a ∈ A', 0 < a := fun a ha => hpos a (Finset.mem_of_mem_erase ha)
+      have IH : n * (n + 1) + 2 ≤ 2 * (subsetSums A').card := ih A' hcard' hpos'
+      set T := A.sum id with hT_def
+      -- the erased set sums to exactly `T - m`
+      have hT' : A'.sum id = T - m := by
+        rw [hA'_def, Finset.sum_erase_eq_sub hmA, id_eq]
+      -- the `n + 1` "large" subset sums: `T` itself and `T - a` for `a ∈ A'`
+      set B : Finset ℤ := insert T (A'.image (fun a => T - a)) with hB_def
+      have hBsub : B ⊆ subsetSums A := by
+        intro b hb
+        rw [hB_def, Finset.mem_insert] at hb
+        rcases hb with rfl | hb
+        · exact sum_mem_subsetSums A
+        · rw [Finset.mem_image] at hb
+          obtain ⟨a, ha, rfl⟩ := hb
+          exact sum_sub_mem_subsetSums (Finset.mem_of_mem_erase ha)
+      have hBcard : B.card = n + 1 := by
+        have himg : (A'.image (fun a => T - a)).card = A'.card :=
+          Finset.card_image_of_injective _ sub_right_injective
+        have hT_not : T ∉ A'.image (fun a => T - a) := by
+          rw [Finset.mem_image]
+          rintro ⟨a, ha, haeq⟩
+          have := hpos' a ha
+          omega
+        rw [hB_def, Finset.card_insert_of_notMem hT_not, himg, hcard']
+      -- separation: every subset sum of `A'` is `≤ T - m`, every element of `B`
+      -- is `> T - m` (for `T - a` because `a < m` by maximality; for `T` because
+      -- `m > 0`)
+      have hlt : ∀ x ∈ subsetSums A', ∀ b ∈ B, x < b := by
+        intro x hx b hb
+        have hxle : x ≤ T - m := by
+          have h1 := mem_subsetSums_le_sum (fun a ha => (hpos' a ha).le) hx
+          rwa [hT'] at h1
+        rw [hB_def, Finset.mem_insert] at hb
+        rcases hb with rfl | hb
+        · omega
+        · rw [Finset.mem_image] at hb
+          obtain ⟨a, ha, rfl⟩ := hb
+          have hane : a ≠ m := (Finset.mem_erase.mp ha).1
+          have halt : a < m :=
+            lt_of_le_of_ne (A.le_max' a (Finset.mem_of_mem_erase ha)) hane
+          omega
+      have hdisj : Disjoint (subsetSums A') B := by
+        rw [Finset.disjoint_left]
+        intro x hx hxB
+        exact absurd (hlt x hx x hxB) (lt_irrefl x)
+      have hunion : subsetSums A' ∪ B ⊆ subsetSums A :=
+        Finset.union_subset
+          (subsetSums_mono (fun x hx => Finset.mem_of_mem_erase hx)) hBsub
+      have hcount : (subsetSums A').card + (n + 1) ≤ (subsetSums A).card := by
+        have h := Finset.card_le_card hunion
+        rwa [Finset.card_union_of_disjoint hdisj, hBcard] at h
+      nlinarith [IH, hcount]
+
+/-- **Erdős quadratic bound (doubled form).** For any set `A` of distinct positive
+    integers, `|A|·(|A|+1) + 2 ≤ 2·|subsetSums A|` — the additive side **alone**
+    realises quadratically many values, with no primality assumption. -/
+theorem subsetSums_card_ge_quadratic {A : Finset ℤ} (hpos : ∀ a ∈ A, 0 < a) :
+    A.card * (A.card + 1) + 2 ≤ 2 * (subsetSums A).card :=
+  subsetSums_card_quadratic A.card A rfl hpos
+
+/-- **Erdős quadratic bound (division form).** `|A|·(|A|+1)/2 + 1 ≤ |subsetSums A|`
+    for distinct positive integers — the classical triangular-number statement.
+    Sharp for `A = {1, 2, …, n}`, whose subset sums are exactly `[0, n(n+1)/2]`. -/
+theorem subsetSums_card_ge_quadratic' {A : Finset ℤ} (hpos : ∀ a ∈ A, 0 < a) :
+    A.card * (A.card + 1) / 2 + 1 ≤ (subsetSums A).card := by
+  have h := subsetSums_card_ge_quadratic hpos
+  generalize A.card * (A.card + 1) = q at h ⊢
+  omega
+
+/-- **Quadratic growth of the representable set over ALL positive sets.** For any
+    finite set of distinct positive integers — no primality, no parity, no
+    superincreasing structure — `|A|·(|A|+1) + 2 ≤ 2·|sumsOrProducts A|`. The
+    first unconditional bound in this development whose scope matches Problem 53's
+    quantifier "for any large `A`" (restricted to positive elements): the easy
+    linear bound `card_le_sumsOrProducts` is beaten by a full factor `~|A|/2`. -/
+theorem sumsOrProducts_card_ge_quadratic {A : Finset ℤ} (hpos : ∀ a ∈ A, 0 < a) :
+    A.card * (A.card + 1) + 2 ≤ 2 * (sumsOrProducts A).card :=
+  le_trans (subsetSums_card_ge_quadratic hpos)
+    (Nat.mul_le_mul_left 2 (Finset.card_le_card (subsetSums_subset_sumsOrProducts A)))
+
+/-- **Superlinearity over all positive sets.** For every linear rate `C` there is
+    a threshold `N` (explicitly `N = 2C`) beyond which every set of distinct
+    positive integers satisfies `C·|A| ≤ |sumsOrProducts A|`. Strengthens the
+    `k = 1` case of Problem 53 on positive sets from "at least `|A|`" to "at least
+    any prescribed multiple of `|A|`". -/
+theorem sumsOrProducts_card_superlinear (C : ℕ) :
+    ∃ N, ∀ A : Finset ℤ, (∀ a ∈ A, 0 < a) → N ≤ A.card →
+      C * A.card ≤ (sumsOrProducts A).card := by
+  refine ⟨2 * C, fun A hpos hbig => ?_⟩
+  have h := sumsOrProducts_card_ge_quadratic hpos
+  have hsq : 2 * C * A.card ≤ A.card * A.card :=
+    Nat.mul_le_mul_right A.card hbig
+  nlinarith [h, hsq]
+
 end Erdos53
