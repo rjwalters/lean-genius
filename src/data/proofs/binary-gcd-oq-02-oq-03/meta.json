@@ -91,6 +91,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Extended Binary GCD: Certified Bézout Coefficients from Stein's Algorithm", "startLine": 1, "endLine": 36, "summary": "The plain binary GCD (Stein's algorithm) computes only the value of gcd. This file builds the extended binary GCD binaryXgcd / binaryXgcdInt, which additionally returns a Bézout coefficient pair (x,y) and proves the certified identity a*x+b*y=gcd(a,b), with the coefficients produced through the binary reductions themselves (halving, parity-correction, subtract-and-halve) rather than delegated to Mathlib's Int.gcdA/Int.gcdB. Shows the produced identity agrees with Mathlib's. The key non-obvious step is un-halving an even operand using the parity-correcting helper lemmas hL/hR.", "mathContext": "Certifies $a\\cdot x+b\\cdot y=\\gcd(a,b)$ where $(x,y)$ are produced directly by Stein's binary reduction steps (halving, parity-correction, subtract-and-halve), then shown equivalent to Mathlib's $\\mathrm{Int.gcdA}/\\mathrm{Int.gcdB}$."},
     {
       "id": "reductions",
       "title": "Stein's GCD-Preserving Reductions",
