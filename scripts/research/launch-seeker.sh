@@ -293,10 +293,27 @@ launch_agent() {
     # Create or update worktree
     create_worktree
 
-    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree
+    # Symlink OAuth tokens so the claude-wrapper can find them in the worktree.
+    # Guard against self-pointing symlinks: the seeker operates from the MAIN
+    # checkout, so WORKTREE_PATH == REPO_ROOT and dst == src. A bare `ln -sfn`
+    # would then replace main's real tokens dir with a circular self-reference
+    # (.loom/tokens -> .../.loom/tokens), flapping the pool every cycle (#41551).
+    # Mirror the guard used by deploy/auditor/mechanic launchers.
     if [[ -d "$REPO_ROOT/.loom/tokens" ]]; then
-        mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
-        ln -sfn "$REPO_ROOT/.loom/tokens" "$WORKTREE_PATH/.loom/tokens"
+        local src="$REPO_ROOT/.loom/tokens"
+        local dst="$WORKTREE_PATH/.loom/tokens"
+        local src_real dst_real
+        src_real="$(cd "$src" 2>/dev/null && pwd -P)"
+        dst_real="$(dirname "$dst")"; dst_real="$(cd "$dst_real" 2>/dev/null && pwd -P)/$(basename "$dst")"
+        if [[ -z "$src_real" ]]; then
+            print_warning "Skipping tokens symlink: $src is not a resolvable directory (broken symlink?)."
+        elif [[ "$src_real" == "$dst_real" ]]; then
+            print_warning "Refusing to create self-pointing tokens symlink ($dst → $src). Skipping."
+        else
+            mkdir -p "$WORKTREE_PATH/.loom" 2>/dev/null || true
+            ln -sfn "$src_real" "$dst"
+            print_info "Linked .loom/tokens for OAuth token rotation"
+        fi
     fi
 
     # Check pool depth first
