@@ -453,6 +453,114 @@ theorem practical_of_divisor_chain {m : ℕ} (hm : 1 ≤ m) {l : List ℕ}
   refine ⟨hm, fun k hk1 hkm =>
     representable_of_chain_divisors hdvd hnd hchain k (by omega)⟩
 
+/- ## Multiplicative closure
+
+Practical numbers are closed under multiplication. The chain engine makes this
+concrete: if `a` has a coin chain of *proper* divisors reaching `a − 1` and `b` has
+one of divisors reaching `b − 1`, then interleaving gives a coin chain for `a·b`.
+The chain for `a·b` is `chain(a) ++ a · chain(b)`: the `a`-coins cover `[0, ≥ a−1]`,
+and each scaled coin `a·e` first fires at value `a ≤ 1 + (a-chain sum)`, so no gap
+ever opens. Its total reaches `(a−1) + a·(b−1) = a·b − 1`, certifying `a·b` practical
+by `practical_of_divisor_chain`. This is the multiplicative half of the structure
+theory of practical numbers (Stewart 1954). -/
+
+/-- Scaling a list of coins by `a` scales its sum by `a`. -/
+theorem sum_map_mul_left (a : ℕ) : ∀ (l : List ℕ),
+    (l.map (a * ·)).sum = a * l.sum := by
+  intro l
+  induction l with
+  | nil => simp
+  | cons x xs ih => simp only [List.map_cons, List.sum_cons, ih]; ring
+
+/-- **Concatenating coin chains with an offset.** If `l₁` is a coin chain and every
+entry of `l₂` is at most `1 +` the running sum *offset by* the whole of `l₁.sum`, then
+`l₁ ++ l₂` is a coin chain. (This is exactly the condition needed to graft a second,
+"raised" chain onto the end of a first without opening a gap.) -/
+theorem chain_append {l₁ l₂ : List ℕ}
+    (h₁ : ∀ i, (h : i < l₁.length) → l₁[i] ≤ 1 + (l₁.take i).sum)
+    (h₂ : ∀ j, (h : j < l₂.length) → l₂[j] ≤ 1 + l₁.sum + (l₂.take j).sum) :
+    ∀ i, (h : i < (l₁ ++ l₂).length) →
+      (l₁ ++ l₂)[i] ≤ 1 + ((l₁ ++ l₂).take i).sum := by
+  intro i hi
+  rw [List.length_append] at hi
+  by_cases hi1 : i < l₁.length
+  · rw [List.getElem_append_left hi1, List.take_append_of_le_length (le_of_lt hi1)]
+    exact h₁ i hi1
+  · push_neg at hi1
+    obtain ⟨j, rfl⟩ : ∃ j, i = l₁.length + j := ⟨i - l₁.length, by omega⟩
+    have hjlt : j < l₂.length := by omega
+    have hget : (l₁ ++ l₂)[l₁.length + j]'(by rw [List.length_append]; omega) = l₂[j] := by
+      rw [List.getElem_append_right (Nat.le_add_right l₁.length j)]; congr 1; omega
+    have htake : ((l₁ ++ l₂).take (l₁.length + j)).sum = l₁.sum + (l₂.take j).sum := by
+      rw [List.take_append, List.sum_append, Nat.add_sub_cancel_left,
+          List.take_of_length_le (Nat.le_add_right _ _)]
+    rw [hget, htake]
+    have hc := h₂ j hjlt
+    omega
+
+/-- **Multiplicative closure of practical numbers (chain form).** If `la` is a
+duplicate-free coin chain of *proper* divisors of `a` (each `< a`) reaching `a − 1`,
+and `lb` is a coin chain of divisors of `b` reaching `b − 1`, then `a·b` is practical.
+The witnessing chain is `la ++ lb.map (a · ·)`: its entries are all divisors of `a·b`
+(the `la`-entries divide `a`, the scaled entries `a·e` divide `a·b`), it is
+duplicate-free (the `la`-entries are `< a` while the scaled entries are `≥ a`), it
+satisfies the coin-chain condition by `chain_append` (the first scaled coin is `a ≤ 1 +
+la.sum`), and its total `la.sum + a·lb.sum ≥ (a−1) + a·(b−1) = a·b − 1`. Hence
+`practical_of_divisor_chain` applies. -/
+theorem practical_mul_of_chains {a b : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
+    {la lb : List ℕ}
+    (hla_dvd : ∀ d ∈ la, d ∈ divisors a) (hla_lt : ∀ d ∈ la, d < a)
+    (hla_nd : la.Nodup)
+    (hla_chain : ∀ i, (h : i < la.length) → la[i] ≤ 1 + (la.take i).sum)
+    (hla_reach : a - 1 ≤ la.sum)
+    (hlb_dvd : ∀ d ∈ lb, d ∈ divisors b) (hlb_nd : lb.Nodup)
+    (hlb_chain : ∀ i, (h : i < lb.length) → lb[i] ≤ 1 + (lb.take i).sum)
+    (hlb_reach : b - 1 ≤ lb.sum) :
+    IsPractical (a * b) := by
+  have hab : a * b ≠ 0 := by positivity
+  set L := la ++ lb.map (a * ·) with hL
+  have ha_le : a ≤ 1 + la.sum := by omega
+  apply practical_of_divisor_chain (m := a * b) (by simpa using Nat.mul_le_mul ha hb) (l := L)
+  · -- every coin divides `a * b`
+    intro d hd
+    rw [hL, List.mem_append] at hd
+    rcases hd with hd | hd
+    · have := hla_dvd d hd
+      rw [Nat.mem_divisors] at this ⊢
+      exact ⟨this.1.trans ⟨b, rfl⟩, hab⟩
+    · rw [List.mem_map] at hd
+      obtain ⟨e, he, rfl⟩ := hd
+      have hedvd := hlb_dvd e he
+      rw [Nat.mem_divisors] at hedvd ⊢
+      exact ⟨mul_dvd_mul_left a hedvd.1, hab⟩
+  · -- the concatenated chain is duplicate-free
+    rw [hL, List.nodup_append]
+    refine ⟨hla_nd, hlb_nd.map (mul_right_injective₀ (by omega : a ≠ 0)), ?_⟩
+    intro x hx y hy
+    obtain ⟨e, he, heq⟩ := List.mem_map.mp hy
+    have hepos : 0 < e := Nat.pos_of_mem_divisors (hlb_dvd e he)
+    have hxlt := hla_lt x hx
+    have hle : a ≤ a * e := Nat.le_mul_of_pos_right a hepos
+    omega
+  · -- the coin-chain condition, via `chain_append`
+    rw [hL]
+    apply chain_append hla_chain
+    intro j hj
+    rw [List.length_map] at hj
+    rw [List.getElem_map, ← List.map_take, sum_map_mul_left]
+    have hcj := hlb_chain j hj
+    have hmul : a * lb[j] ≤ a * (1 + (lb.take j).sum) := Nat.mul_le_mul (le_refl a) hcj
+    rw [Nat.mul_add, Nat.mul_one] at hmul
+    omega
+  · -- the total reaches `a * b - 1`
+    rw [hL, List.sum_append, sum_map_mul_left]
+    have h3 : a * (b - 1) + a = a * b := by
+      cases b with
+      | zero => omega
+      | succ n => simp [Nat.mul_succ]
+    have hmul : a * (b - 1) ≤ a * lb.sum := Nat.mul_le_mul (le_refl a) hlb_reach
+    omega
+
 /-- **`20` is practical** — via the divisor chain `1, 2, 4, 5, 10` (running sums
 `1, 3, 7, 12, 22`, each coin at most one past the previous total, reaching `22 ≥ 19`).
 Note `20 = 2² · 5`: its odd part `5` is *not* practical, so `20` lies beyond the reach
@@ -471,6 +579,31 @@ theorem twenty_practical : IsPractical 20 := by
 `28 = 2² · 7` is not practical, so the doubling lemmas miss it; the chain engine does not. -/
 theorem twentyeight_practical : IsPractical 28 := by
   apply practical_of_divisor_chain (m := 28) (l := [1, 2, 4, 7, 14]) (by norm_num)
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
+
+/-- **`36` is practical** — as the product `6 · 6`, via multiplicative closure. Each
+factor `6` carries the proper-divisor coin chain `1, 2, 3` (all `< 6`, reaching
+`6 ≥ 5`), so `practical_mul_of_chains` certifies `36 = 2² · 3²`. Note `36` is out of
+reach of `two_pow_mul_practical`: writing `36 = 2² · 9`, the odd part `9` is not
+practical, so no power-of-two doubling produces it — closure under multiplication
+does. -/
+theorem thirtysix_practical : IsPractical 36 := by
+  have h6 : (36 : ℕ) = 6 * 6 := by norm_num
+  rw [h6]
+  refine practical_mul_of_chains (a := 6) (b := 6) (by norm_num) (by norm_num)
+    (la := [1, 2, 3]) (lb := [1, 2, 3]) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+  · intro d hd; fin_cases hd <;> decide
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
   · intro d hd; fin_cases hd <;> decide
   · decide
   · intro i hi
