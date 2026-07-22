@@ -153,15 +153,14 @@ theorem g_asymptotic : ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥
 The answer is g(n) = Θ(n^(1/2)).
 -/
 
-/-- The main question: estimate g(n). -/
+/-- The main question: estimate g(n). Fixed to n^(1/2), not a free witness function —
+    a free `∃ h : ℕ → ℝ` here would make this trivially true for any g (take h = g). -/
 def erdos_1025_question : Prop :=
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ h : ℕ → ℝ, ∃ N : ℕ, ∀ n ≥ N,
-    c * h n ≤ g n ∧ (g n : ℝ) ≤ C * h n
+  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+    c * (n : ℝ) ^ (1/2 : ℝ) ≤ g n ∧ (g n : ℝ) ≤ C * (n : ℝ) ^ (1/2 : ℝ)
 
 /-- The answer: g(n) = Θ(n^(1/2)). -/
-theorem erdos_1025_solved : erdos_1025_question := by
-  obtain ⟨c, C, hc, hC, N, hN⟩ := g_asymptotic
-  use c, C, hc, hC, fun n => (n : ℝ) ^ (1/2 : ℝ), N
+theorem erdos_1025_solved : erdos_1025_question := g_asymptotic
 
 /-
 ## Related: Set Mappings
