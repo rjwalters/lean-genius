@@ -1130,6 +1130,28 @@ from `one_le_transfiniteDiameter` (roots of unity); upper bound from
 theorem transfiniteDiameter_mem_Icc_one_two : transfiniteDiameter ∈ Set.Icc (1 : ℝ) 2 :=
   ⟨one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc.2⟩
 
+/-- **The root-of-unity lower bound is asymptotically sharp.**  The elementary
+lower bounds `d_{n} ≥ n^{1/(n-1)}` realised by the `n`-th roots of unity
+(`transfiniteDiameterN_rootsOfUnity_ge`) satisfy `n^{1/(n-1)} → 1` as `n → ∞`
+(here `(m+2)^{1/(m+1)} → 1`).  Thus this elementary method certifies exactly the
+lower bound `d ≥ 1` — the logarithmic capacity of the closed unit disc — and its
+per-term bounds cannot be pushed above `1` in the limit; it recovers the
+Fekete–Szegő value `d = 1` sharply from below (the matching upper bound `d ≤ 1`
+still requires Fekete–Szegő and is not established here). -/
+theorem tendsto_rootsOfUnity_lowerBound_one :
+    Filter.Tendsto (fun m : ℕ => ((m : ℝ) + 2) ^ ((1 : ℝ) / ((m : ℝ) + 1)))
+      Filter.atTop (nhds 1) := by
+  -- `m ↦ (m : ℝ) + 2` tends to `+∞`
+  have hbase : Filter.Tendsto (fun m : ℕ => (m : ℝ) + 2) Filter.atTop Filter.atTop :=
+    tendsto_atTop_add_const_right _ 2 tendsto_natCast_atTop_atTop
+  -- `x ↦ x ^ (1 / (x - 1)) → 1` at `+∞` (Mathlib: `a / (b·x + c)` with `a=1, b=1, c=-1`)
+  have hfun : Filter.Tendsto (fun x : ℝ => x ^ ((1 : ℝ) / (1 * x + (-1))))
+      Filter.atTop (nhds 1) := tendsto_rpow_div_mul_add 1 1 (-1) (by norm_num)
+  refine (hfun.comp hbase).congr (fun m => ?_)
+  simp only [Function.comp_apply]
+  congr 1
+  ring
+
 end RootsOfUnity
 
 end Erdos1039TransfiniteDiameter
