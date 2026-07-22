@@ -93,6 +93,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: the Integrality-Gap Certificate on K₄",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring framing OQ-03's complexity question against the parent's Györi 1988 existence theorem, stating the two headline numbers ν(K₄) = 1 and ν*(K₄) ≥ 2, and previewing why K₄ works: its four triangles pairwise share an edge (integer bound 1), while each of its six edges lies in exactly two triangles so uniform ½-weights are feasible with value 2. Notes the file is self-contained, reuses the parent's Triangle/edgeDisjoint idea on a concrete decidable Fin 4 model, and is 0-sorry/0-axiom with only kernel-checked decide.",
+      "mathContext": "Certifies $\\nu(K_4)=1 < \\nu^*(K_4) \\ge 2$: the LP relaxation of maximum edge-disjoint triangle packing is not tight, already on the smallest witness."
+    },
+    {
       "id": "model",
       "title": "Decidable Model of K₄",
       "startLine": 57,
