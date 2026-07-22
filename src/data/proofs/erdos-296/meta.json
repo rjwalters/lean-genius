@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-296",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #296, resolved (Hunter\u2013Sawhney via Bloom 2021): for $k(N)$ = the maximum number of disjoint subsets of $\\{1,\\dots,N\\}$ each summing reciprocals to exactly 1, the answer to \"is $k(N)=o(\\log N)$?\" is NO \u2014 instead $k(N) = (1-o(1))\\log N$.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "Egyptian-fraction partitions of 1 (like $1/2+1/3+1/6=1$) packed disjointly into $\\{1,\\dots,N\\}$; the sunflower method gives $N\\exp(-O(\\sqrt{\\log N}))$ disjoint sets, but Bloom's density theorem pushes the count up to essentially $\\log N$."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 41,
