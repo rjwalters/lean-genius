@@ -981,4 +981,36 @@ theorem factorial_practical : ∀ n : ℕ, IsPractical (n !) := by
     have hkfac : k ≤ k ! := Nat.self_le_factorial k
     omega
 
+/-- **The 3-smooth family `2^a · 3^b` (`a ≥ 1`) is practical.** Iterated single-prime
+application of `mul_practical_of_le_succ_sigma` with multiplier `n = 3`: at each step
+`3 ≤ σ(2^a·3^b) + 1` because `σ(2^a·3^b) ≥ 2^a·3^b ≥ 2`. This reaches numbers such as
+`18 = 2·3²` that lie beyond `practical_mul` — `18` is not a product of two practical
+numbers (its only nontrivial factorisation `2 · 9` has the non-practical `9`), yet the
+criterion certifies it directly. -/
+theorem two_pow_mul_three_pow_practical (a b : ℕ) (ha : 1 ≤ a) :
+    IsPractical (2 ^ a * 3 ^ b) := by
+  induction b with
+  | zero => simpa using two_pow_practical a
+  | succ b ih =>
+    have hrw : 2 ^ a * 3 ^ (b + 1) = 3 * (2 ^ a * 3 ^ b) := by ring
+    rw [hrw]
+    refine mul_practical_of_le_succ_sigma ih (by omega) ?_
+    have h2a : 2 ≤ 2 ^ a := by
+      calc 2 = 2 ^ 1 := (pow_one 2).symm
+        _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) ha
+    have hm2 : 2 ≤ 2 ^ a * 3 ^ b :=
+      calc 2 = 2 * 1 := (Nat.mul_one 2).symm
+        _ ≤ 2 ^ a * 3 ^ b := Nat.mul_le_mul h2a (Nat.one_le_pow b 3 (by norm_num))
+    have hsig : 2 ^ a * 3 ^ b ≤ ∑ d ∈ divisors (2 ^ a * 3 ^ b), d := by
+      apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+      exact Nat.mem_divisors.mpr ⟨dvd_refl _, by positivity⟩
+    omega
+
+/-- `18 = 2 · 3²` is practical — a concrete member of the 3-smooth family that
+`practical_mul` cannot reach (its odd part `9` is not practical). -/
+theorem eighteen_practical : IsPractical 18 := by
+  have := two_pow_mul_three_pow_practical 1 2 (le_refl 1)
+  norm_num at this
+  exact this
+
 end Erdos18
