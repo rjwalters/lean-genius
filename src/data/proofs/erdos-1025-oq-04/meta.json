@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: Relaxing the Validity Constraint",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring recalling the parent's valid pair function setup (f x y ≠ x, y) and the Θ(√n) guarantee of Erdős–Hajnal/Spencer/Conlon–Fox–Sudakov, then posing OQ-4: what if degenerate values f x y ∈ {x,y} are allowed, with bounded frequency? Previews the two answers proved below — unbounded degeneracy collapses the guarantee to exactly 1 (the fbad witness), while bounded degeneracy (≤ k pairs) recovers validity on ≥ n − 2k vertices. Imports Mathlib and opens Finset.",
+      "mathContext": "OQ-4: relax `Valid f` to allow `f x y ∈ {x,y}`; ask how the $\\Theta(\\sqrt n)$ independent-set guarantee degrades."
+    },
+    {
       "id": "definitions",
       "title": "Relaxed Pair Functions and Independence",
       "startLine": 36,
