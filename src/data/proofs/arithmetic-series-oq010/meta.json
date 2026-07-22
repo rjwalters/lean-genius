@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Lifting Vandermonde Convolution to Arbitrary Commutative Rings",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "States the open question — lift the numerical falling-factorial Vandermonde identity from ℕ to a polynomial identity over any commutative ring R — and previews the main theorem: the rising-factorial convolution (x+y)^{(r)} = ∑_{j=0}^r C(r,j)·x^{(j)}·y^{(r-j)}. Notes that Mathlib has ascPochhammer/descPochhammer but no binomial-convolution theorem for them, so the content is genuinely new, proved by induction mirroring Commute.add_pow. Also previews the companion falling-factorial mirror obtained via the reflection x^{underline k} = (−1)^k(−x)^{(k)}.",
+      "mathContext": "The rising factorial $x^{(k)} = x(x+1)\\cdots(x+k-1)$ plays the role of monomials for the finite-difference operator $\\Delta f(x) = f(x+1)-f(x)$, exactly as $x^k$ does for ordinary differentiation; the theorem is the umbral/finite-difference analogue of the binomial theorem $(x+y)^r=\\sum\\binom{r}{j}x^jy^{r-j}$."
+    },
+    {
       "id": "rising-convolution",
       "title": "Part I: The Rising-Factorial Vandermonde Convolution (CommRing)",
       "startLine": 37,
