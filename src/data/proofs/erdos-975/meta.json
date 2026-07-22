@@ -47,9 +47,9 @@
       "The famous n² + 1 asymptotic with constant 3/π",
       "Verified divisor counts: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(p)=2 for prime p"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 183,
-    "assumptions": "0 axioms, 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms.",
+    "assumptions": "No mathematical axioms and 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms. Compiler-trust disclosure: the concrete divisor-count facts (divisorCount_two, divisorCount_six, divisorCount_twelve) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 5,
     "definitionCount": 3
   },

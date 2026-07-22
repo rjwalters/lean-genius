@@ -55,7 +55,7 @@
       "erdos_alternative_approach: Erdős's smooth-number variant via l-rough numbers (described in comment, not axiomatized)",
       "two_witnesses: summary theorem packaging both verified examples with primality proofs"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Elementary number theory: primes, factorials, compositeness",
       "Set.Infinite for stating infinitary conjectures",
@@ -72,7 +72,7 @@
         "relationship": "Both involve factorial-prime interactions from different angles"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. ErdosProblem1059 (main conjecture) is a def (open problem, not proved). erdos_alternative_approach is described in a comment but not formally axiomatized. factorial_count_bound and all example theorems are fully proved.",
+    "assumptions": "No mathematical axioms and 0 sorries. ErdosProblem1059 (main conjecture) is a def (open problem, not proved). erdos_alternative_approach is described in a comment but not formally axiomatized. factorial_count_bound and all example theorems are fully proved. Compiler-trust disclosure: the concrete witnesses (example_211, prime_211) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 9,
     "definitionCount": 2
   },
