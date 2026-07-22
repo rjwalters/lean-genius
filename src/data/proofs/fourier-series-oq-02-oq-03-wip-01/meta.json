@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Sharpness of the Half-Period Constant 1/2",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "States the goal: the parent FourierSeriesOQ02OQ03 derives ‖ĉ_n(f)‖ ≤ M/2 from the half-period translation method and asserts 1/2 is optimal but never exhibits a case of equality. This file isolates the constant and proves it is exactly the least possible in the half-period method, with the pure mode `fourier n` as the extremal witness attaining the bound. Explains the self-containment workaround (the parent's sibling import FourierSeriesOQ02OQ04 has unrelated build drift, so this file imports only the pure-Mathlib FourierSeriesOQ02Incomplete01 and re-derives the needed half-period infrastructure) and the honest scope: this settles sharpness for the half-period method only, not the full Hölder-class sharp constant, whose extremal sawtooth witnesses remain open.",
+      "mathContext": "$\\|\\hat c_n(f)\\| \\le M/2$ is sharp: the pure mode `fourier n` has uniform half-period difference $2$ and attains $\\|\\hat c_n(\\mathrm{fourier}\\,n)\\| = 1 = 2/2$, and no constant $k < 1/2$ can replace it."
+    },
+    {
       "id": "part-0-infrastructure",
       "title": "Part 0 — Half-Period Infrastructure",
       "startLine": 74,
