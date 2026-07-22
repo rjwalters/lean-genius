@@ -97,21 +97,21 @@
     {
       "id": "d-functions",
       "title": "The D(a,b) and D(b) Functions",
-      "summary": "Defines maxDenominator (Finset.sup), D_ab (minimax over representations — partially defined with Nat.find), D_ab_value (axiom for proper minimality), and D_b (max over numerators 1 ≤ a < b).",
+      "summary": "Defines maxDenominator (Finset.sup), D_ab (minimax over representations, sInf-based), and D_b (max over numerators 1 ≤ a < b).",
       "startLine": 79,
       "endLine": 118
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Four key bounds axiomatized: trivial D(b) ≥ b, prime lower bound D(p) ≫ p log p, Bleicher-Erdős D(b) ≪ b(log b)², Yokota D(b) ≪ b(log b)(log log b)⁴(log log log b)², and Liu-Sawhney D(b) ≪ b(log b)(log log b)³. Plus the conjecture formalization and solution (sorry for asymptotic comparison).",
+      "summary": "Defines erdos305Conjecture (D(b) ≪ b(log b)^{1+ε}) and states erdos_305_solved, whose proof is a sorry for the asymptotic comparison. No bound axioms are formalized here; the Yokota/Liu-Sawhney bounds are described only in docstrings.",
       "startLine": 119,
       "endLine": 186
     },
     {
       "id": "greedy",
       "title": "The Greedy Algorithm",
-      "summary": "Implements greedyStep (ceiling division + remainder computation), axiomatizes termination, and demonstrates suboptimality via the 2/9 = 1/5 + 1/45 vs 1/6 + 1/18 example.",
+      "summary": "Defines greedyStep (ceiling division + remainder computation) for the Fibonacci-Sylvester algorithm, followed by the erdos305Problem restatement and summary re-exports of erdos_305_solved.",
       "startLine": 186,
       "endLine": 186
     }
