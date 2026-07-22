@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Monotone Birthday Paradox",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "States the falling-factorial formula P(all distinct) = prod_{i<k}(1 - i/d) and its collision complement, then proves the monotonicity intuition the parent file's two-sided exponential estimates never make explicit: adding people can only raise the collision probability. Lists the lemmas birthdayProduct_step_le, birthdayProduct_antitone, collisionProb_monotone, and collisionProb_one/nonneg, noting the elementary argument (multiplying a nonnegative product by a factor in [0,1] cannot increase it) and that the file restates the product recurrence self-contained rather than importing the parent's exponential machinery.",
+      "mathContext": "$P_{k+1}(\\text{distinct})=P_k(\\text{distinct})\\cdot(1-k/d)\\le P_k(\\text{distinct})$, so the collision probability is non-decreasing in $k$."
+    },
+    {
       "id": "definitions",
       "title": "Birthday Product and Collision Probability",
       "startLine": 41,
