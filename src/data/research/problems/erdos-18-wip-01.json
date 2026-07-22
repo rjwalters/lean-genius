@@ -23,7 +23,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "MECHANIC/AUDITOR follow-up: the parent Erdos18Problem.lean h (universal-set size) misformalizes the Erdos #18 prize quantity (max representation length); rename it (e.g. hCover) and define the correct h for conjecture_part1/part2_weak/part2_strong. Erdos18OQ01 subadditivity depends on the universal-set h. Practicality-membership theory (Stewart-Sierpinski iff, factorials, primorials, Euclid-form, 2^a3^b, 2^a5^b) is saturated.",
+    "nextAction": "The correct Erdos #18 index is now formalized in Erdos18WIP01.lean: repLength m k (fewest divisors of m summing to k) and hErdos m = max_{k<m} repLength m k, with the axiom-free sandwich 1 <= hErdos m <= h m <= d(m) for practical m>=2 (hErdos_le_h confirms the parent's universal-set h over-counts) and the prize conjectures re-homed onto hErdos (conjecture_part1_erdos, conjecture_part2_weak_erdos). RESIDUAL mechanic follow-up: rename the parent Erdos18Problem.lean h -> hCover and repoint its conjecture_part1/part2_weak/part2_strong (and the Erdos18OQ01 subadditivity) at hErdos. DEEP/open: hErdos(n!) < n^{o(1)} (Vose 1985, ~sqrt log m i.o.) unformalized. Practicality-membership theory saturated.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
