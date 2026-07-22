@@ -59,7 +59,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 352,
-    "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
+    "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms. Trust caveat: the finite membership demos one_in_ternarySparse, four_in_ternarySparse, pow2_8_in_ternarySparse and the bounded-range checks sparse_complete_to_15, sparse_classification_known_range, dense_complete_to_15 close by native_decide, adding the Lean.ofReduceBool compiler-trust axiom; these are finite computations, not the headline saye_computation axiom (which stays kernel-checked).",
     "theoremCount": 19,
     "definitionCount": 6
   },

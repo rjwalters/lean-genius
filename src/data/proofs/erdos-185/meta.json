@@ -66,7 +66,7 @@
       "Arithmetic progressions and additive combinatorics"
     ],
     "lineCount": 1104,
-    "assumptions": "2 axioms: density_hales_jewett_k3, meshulam_upper_bound. 0 sorries.",
+    "assumptions": "2 axioms: density_hales_jewett_k3, meshulam_upper_bound. 0 sorries. Trust caveat: the small-value theorems f3_1, f3_2, f3_3 (f₃(1)=2, f₃(2)=4, f₃(3)=9) close by native_decide, adding the Lean.ofReduceBool compiler-trust axiom; these are finite computations, not the headline f3_is_little_o (which rests on the density_hales_jewett_k3 axiom and stays kernel-checked).",
     "theoremCount": 73,
     "definitionCount": 31
   },

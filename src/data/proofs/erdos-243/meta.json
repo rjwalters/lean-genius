@@ -49,7 +49,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 128,
-    "assumptions": "2 axioms: erdos_243, sylvester_sum_reciprocals. See Lean source for complete statements.",
+    "assumptions": "2 axioms: erdos_243, sylvester_sum_reciprocals. See Lean source for complete statements. Trust caveat: the finite Sylvester-sequence values sylvester_1, sylvester_2, sylvester_3, sylvester_4 and sylvester_strictMono_small close by native_decide, adding the Lean.ofReduceBool compiler-trust axiom; these are finite computations, not the headline erdos_243 (which stays an explicit axiom, kernel-checked).",
     "theoremCount": 8,
     "definitionCount": 4
   },
