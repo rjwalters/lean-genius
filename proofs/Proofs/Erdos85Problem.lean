@@ -1440,4 +1440,166 @@ theorem containsC4_of_card_add_two_le_degree_add_degree {V : Type*} [Fintype V]
   containsC4_of_degree_sum_subset huv (Finset.subset_univ _) (Finset.subset_univ _)
     (by rwa [Finset.card_univ])
 
+/-- **Common-neighbour bound.**  In a `C₄`-free graph any two distinct vertices
+have at most one common neighbour (two would form the rim of a `C₄`).  The
+contrapositive workhorse for the local analyses of the `f(9)` programme. -/
+theorem card_inter_neighborFinset_le_one {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (hfree : ¬ containsC4 V G)
+    {u v : V} (huv : u ≠ v) :
+    (G.neighborFinset u ∩ G.neighborFinset v).card ≤ 1 := by
+  by_contra hlt
+  rw [not_le] at hlt
+  obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp hlt
+  rw [Finset.mem_inter] at hx hy
+  exact hfree (containsC4_of_two_common huv hxy
+    ((G.mem_neighborFinset u x).mp hx.1).symm
+    ((G.mem_neighborFinset v x).mp hx.2).symm
+    ((G.mem_neighborFinset u y).mp hy.1).symm
+    ((G.mem_neighborFinset v y).mp hy.2).symm)
+
+/-- **A dense `4`-set forces a `C₄`.**  If a `4`-element vertex set `R` has every
+member adjacent to at least two others inside `R`, the graph contains a `C₄`.
+This is the endgame of the `(3⁸, 4)` case of the `f(9)` programme: there the
+four vertices outside the closed neighbourhood of the degree-`4` vertex each
+keep at least two of their three edges inside `R`.  Pure case analysis: pick
+`a ∈ R` with internal neighbours `y ≠ z`, let `t` be the fourth vertex; `t` has
+two internal neighbours among `{a, y, z}`, and every configuration produces two
+distinct vertices with two distinct common neighbours. -/
+theorem containsC4_of_four_set_min_two {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {R : Finset V}
+    (hR : R.card = 4) (hdeg : ∀ x ∈ R, 2 ≤ (G.neighborFinset x ∩ R).card) :
+    containsC4 V G := by
+  by_contra hfree
+  -- pick `a ∈ R` and two distinct internal neighbours `y, z`
+  have hane : R.Nonempty := by rw [← Finset.card_pos, hR]; norm_num
+  obtain ⟨a, ha⟩ := hane
+  have h2a := hdeg a ha
+  obtain ⟨y, hy, z, hz, hyz⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset a ∩ R).card)
+  rw [Finset.mem_inter] at hy hz
+  have hay : G.Adj a y := (G.mem_neighborFinset a y).mp hy.1
+  have haz : G.Adj a z := (G.mem_neighborFinset a z).mp hz.1
+  have hyR : y ∈ R := hy.2
+  have hzR : z ∈ R := hz.2
+  -- the fourth vertex `t`
+  have htne : (R \ {a, y, z}).Nonempty := by
+    rw [← Finset.card_pos]
+    have h1 := Finset.card_insert_le a ({y, z} : Finset V)
+    have h2 := Finset.card_insert_le y ({z} : Finset V)
+    have hsd := Finset.le_card_sdiff ({a, y, z} : Finset V) R
+    simp only [Finset.card_singleton] at h1 h2
+    omega
+  obtain ⟨t, ht⟩ := htne
+  rw [Finset.mem_sdiff] at ht
+  obtain ⟨htR, htn⟩ := ht
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at htn
+  obtain ⟨hta, hty, htz⟩ := htn
+  have hya : y ≠ a := (G.ne_of_adj hay).symm
+  have hza : z ≠ a := (G.ne_of_adj haz).symm
+  -- `R = {a, y, z, t}`
+  have hna : a ∉ ({y, z, t} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (rfl | rfl | rfl)
+    exacts [hya rfl, hza rfl, hta rfl]
+  have hny : y ∉ ({z, t} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (rfl | rfl)
+    exacts [hyz rfl, hty rfl]
+  have hnz : z ∉ ({t} : Finset V) := by
+    rw [Finset.mem_singleton]
+    intro h
+    exact htz h.symm
+  have hsub : ({a, y, z, t} : Finset V) ⊆ R := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl
+    exacts [ha, hyR, hzR, htR]
+  have hcard4 : ({a, y, z, t} : Finset V).card = 4 := by
+    rw [Finset.card_insert_of_notMem hna, Finset.card_insert_of_notMem hny,
+      Finset.card_insert_of_notMem hnz, Finset.card_singleton]
+  have hReq : R = ({a, y, z, t} : Finset V) :=
+    (Finset.eq_of_subset_of_card_le hsub (by omega)).symm
+  -- internal neighbours of any `x` decompose over `R`'s four elements
+  have hmemR : ∀ x w, w ∈ G.neighborFinset x ∩ R →
+      G.Adj x w ∧ (w = a ∨ w = y ∨ w = z ∨ w = t) := by
+    intro x w hw
+    rw [Finset.mem_inter] at hw
+    refine ⟨(G.mem_neighborFinset x w).mp hw.1, ?_⟩
+    have hwR := hw.2
+    rw [hReq] at hwR
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using hwR
+  -- helper: `t ~ y` and `t ~ z` ⟹ pair `(a, t)` has commons `y, z`
+  have case_yz : G.Adj t y → G.Adj t z → False := fun h1 h2 =>
+    hfree (containsC4_of_two_common (show a ≠ t from fun h => hta h.symm) hyz
+      hay.symm h1.symm haz.symm h2.symm)
+  -- helper: `t ~ a` and `t ~ y` ⟹ `z`'s second internal neighbour closes a `C₄`
+  have case_ay : G.Adj t a → G.Adj t y → False := by
+    intro h1 h2
+    have h2z := hdeg z hzR
+    obtain ⟨p, hp, q, hq, hpq⟩ :=
+      Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset z ∩ R).card)
+    obtain ⟨hzp, hpor⟩ := hmemR z p hp
+    obtain ⟨hzq, hqor⟩ := hmemR z q hq
+    have key : G.Adj z y ∨ G.Adj z t := by
+      rcases hpor with rfl | rfl | rfl | rfl
+      · rcases hqor with rfl | rfl | rfl | rfl
+        · exact absurd rfl hpq
+        · exact Or.inl hzq
+        · exact absurd rfl (G.ne_of_adj hzq)
+        · exact Or.inr hzq
+      · exact Or.inl hzp
+      · exact absurd rfl (G.ne_of_adj hzp)
+      · exact Or.inr hzp
+    rcases key with hzy | hzt
+    · -- pair `(y, a)` has commons `z, t`
+      exact hfree (containsC4_of_two_common hya
+        (show z ≠ t from fun h => htz h.symm) hzy haz.symm h2 h1)
+    · exact case_yz h2 hzt.symm
+  -- helper: `t ~ a` and `t ~ z` ⟹ `y`'s second internal neighbour closes a `C₄`
+  have case_az : G.Adj t a → G.Adj t z → False := by
+    intro h1 h2
+    have h2y := hdeg y hyR
+    obtain ⟨p, hp, q, hq, hpq⟩ :=
+      Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset y ∩ R).card)
+    obtain ⟨hyp, hpor⟩ := hmemR y p hp
+    obtain ⟨hyq, hqor⟩ := hmemR y q hq
+    have key : G.Adj y z ∨ G.Adj y t := by
+      rcases hpor with rfl | rfl | rfl | rfl
+      · rcases hqor with rfl | rfl | rfl | rfl
+        · exact absurd rfl hpq
+        · exact absurd rfl (G.ne_of_adj hyq)
+        · exact Or.inl hyq
+        · exact Or.inr hyq
+      · exact absurd rfl (G.ne_of_adj hyp)
+      · exact Or.inl hyp
+      · exact Or.inr hyp
+    rcases key with hyz2 | hyt
+    · -- pair `(z, a)` has commons `y, t`
+      exact hfree (containsC4_of_two_common hza
+        (show y ≠ t from fun h => hty h.symm) hyz2 hay.symm h2 h1)
+    · exact case_yz hyt.symm h2
+  -- main dispatch: `t`'s two internal neighbours among `{a, y, z}`
+  have h2t := hdeg t htR
+  obtain ⟨p, hp, q, hq, hpq⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset t ∩ R).card)
+  obtain ⟨htp, hpor⟩ := hmemR t p hp
+  obtain ⟨htq, hqor⟩ := hmemR t q hq
+  rcases hpor with rfl | rfl | rfl | rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact absurd rfl hpq
+    · exact case_ay htp htq
+    · exact case_az htp htq
+    · exact (G.ne_of_adj htq) rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact case_ay htq htp
+    · exact absurd rfl hpq
+    · exact case_yz htp htq
+    · exact (G.ne_of_adj htq) rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact case_az htq htp
+    · exact case_yz htq htp
+    · exact absurd rfl hpq
+    · exact (G.ne_of_adj htq) rfl
+  · exact (G.ne_of_adj htp) rfl
+
 end Erdos85
