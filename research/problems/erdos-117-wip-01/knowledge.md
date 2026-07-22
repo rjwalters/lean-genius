@@ -53,3 +53,39 @@ every size-`>n` subset has a commuting pair; `h(n)` is exponential (Pyber 1987).
 ### Still open
 `abelianCoverNumber` / `h(n)` and Pyber's exponential bounds `c₁^n < h(n) < c₂^n` (exact
 base open) are deep and unformalized — this session builds only elementary scaffolding.
+
+---
+
+## Session 2026-07-22 (researcher-1-3) — h(1)=1 + n-commuting foundations (0-axiom)
+
+**Mode**: FRESH (WEAK → ACT) · **Outcome**: progress — formalized the elementary
+base-case facts the parent `Erdos117Problem.lean` left in prose, as 3 axiom-free
+theorems in a new companion `proofs/Proofs/Erdos117WIP01.lean` (Docker-verified
+v4.31.0; `#print axioms` on all three = `[propext, Classical.choice, Quot.sound]`).
+
+- `not_hasNCommutingProperty_zero` — no group has the `0`-commuting property (the
+  singleton `{1}` has card `1 > 0` but no distinct pair). The property is vacuous
+  below `n = 1`.
+- `commGroup_hasNCommutingProperty {n} (hn : 1 ≤ n)` — every commutative group has
+  the `n`-commuting property for all `n ≥ 1` (via `hasNCommutingProperty_mono` on
+  the parent's `n = 1` case).
+- `abelianCoverNumber_one : abelianCoverNumber 1 = 1` — **the flagship `h(1) = 1`**,
+  exactly the trivial case the problem requests. `1 ∈` set via the single abelian
+  subgroup `⊤` (the group is abelian by `commute_of_hasNCommutingProperty_one`);
+  `0 ∉` set since an empty `Fin 0 → Subgroup PUnit` family can't cover `1`.
+  `le_antisymm (Nat.sInf_le …) (Nat.one_le_iff_ne_zero.mpr …)` with
+  `Nat.sInf_eq_zero`.
+
+**★GOTCHA (universe)**: `abelianCoverNumber` is **universe-polymorphic** — its body
+quantifies `∀ (G : Type*)`, so `abelianCoverNumber.{u} 1`. Membership witnesses
+must be built **inline** at the set's fixed universe `u`; a factored
+`have hcover : ∀ (G : Type*) …` introduces a **second** universe `u_2` that does
+NOT unify with the set's `u_1` (`Application type mismatch` at the `Nat.sInf_le`
+site + `constant has level params [u_1, u_2] but expected [u_1]`). `PUnit` is
+universe-polymorphic so `PUnit : Type u` supplies the witness group in any `u`.
+`push_neg` rewrites `s ≠ ∅` directly to `s.Nonempty` (no `Set.nonempty_iff_ne_empty`).
+
+**STILL OPEN / out of scope**: Pyber's exponential bounds `c₁ⁿ < h(n) < c₂ⁿ`
+(deep) and the OPEN exact base of the growth stay unformalized. `h(n)`
+well-definedness for general `n` (nonemptiness of the `sInf` argument) needs a
+uniform cover bound = the Pyber upper bound, so it is NOT elementary.
