@@ -71,7 +71,7 @@
       "**The failure at $m = 2$ is sharp**: the conjecture fails at the very first non-trivial scaling step, showing the obstruction is not a large-$m$ phenomenon but inherent to the passage from $(a,b)$ to $(2a,2b)$",
       "**Fractional vs. integer gap**: fractional choosability $\\chi_f^l(G) \\leq a/b$ trivially implies $\\chi_f^l(G) \\leq am/(bm)$ since $a/b = am/(bm)$, but the integer version fails because selecting $2b$ colors from $2a$ is not equivalent to two independent selections of $b$ from $a$",
       "**Kneser-type construction**: the DHS counterexample uses techniques from topological combinatorics, specifically Kneser-type graph structures where the interplay between list sizes and selection sizes creates combinatorial obstructions",
-      "**Structural dichotomy**: the conjecture holds for complete, bipartite, and planar graphs — classes with strong structural constraints — suggesting the counterexample exploits the flexibility of general graphs to create pathological list assignments"
+      "**No positive special-case results are formalized**: despite Part IX-X headers promising results for fractional choosability, complete, bipartite, and planar graphs, none are proved or axiomatized here — the formalization's positive content is limited to the trivial $m=1$/vacuous $b=0$ cases, monotonicity, the $b \\leq a$ necessity bound, and empty-graph choosability"
     ],
     "prerequisites": [
       "Graph theory fundamentals",
@@ -116,48 +116,48 @@
       "title": "Properties of Choosability",
       "summary": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)$-choosable when $b \\leq a$.",
       "startLine": 100,
-      "endLine": 125,
+      "endLine": 164,
       "mathContext": "Proves monotonicity in $a$ (more colors $\\implies$ easier), anti-monotonicity in $b$ (fewer selections $\\implies$ easier), the necessity of $b \\leq a$, and that the empty graph $\\bot$ is always $(a,b)$-choosable when $b \\leq a$."
     },
     {
       "id": "ert-conjecture",
       "title": "The Erdős–Rubin–Taylor Conjecture",
       "summary": "States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere).",
-      "startLine": 126,
-      "endLine": 154,
+      "startLine": 165,
+      "endLine": 193,
       "mathContext": "Verified: States `ERT_Conjecture`: $\\forall G, a, b, m \\geq 1$, $(a,b)$-choosable $\\implies$ $(am, bm)$-choosable. Proves the trivial $m = 1$ case and the vacuous $b = 0$ case (select $\\emptyset$ everywhere)."
     },
     {
       "id": "m-2-case",
       "title": "The $m = 2$ Case",
       "summary": "Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false.",
-      "startLine": 155,
-      "endLine": 173,
+      "startLine": 194,
+      "endLine": 212,
       "mathContext": "Axiomatized: Specializes to `ERT_Case_m2` ($m = 2$) and further to `ERT_Case_4_1_to_8_2`: does $(4,1)$-choosable imply $(8,2)$-choosable? Axiomatizes that this specific case is false."
     },
     {
       "id": "dhs-counterexample",
       "title": "The Dvořák–Hu–Sereni Counterexample",
-      "summary": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections.",
-      "startLine": 174,
-      "endLine": 199,
-      "mathContext": "Axiomatizes the DHS 2019 result: $\\exists G$ with $(4,1)$-choosable $\\wedge \\neg(8,2)$-choosable, with $n > 100$ vertices. Also axiomatizes the existence of a specific bad 8-color assignment that blocks all valid 2-selections."
+      "summary": "A comment restating the Dvořák–Hu–Sereni (2019) theorem in prose: a graph exists that is (4,1)-choosable but NOT (8,2)-choosable — the content already axiomatized as `ert_4_1_to_8_2_false` in Part VI. No new declaration here, only documentation.",
+      "startLine": 213,
+      "endLine": 221,
+      "mathContext": "$\\exists G,\\; \\text{IsChoosable}(G,4,1) \\wedge \\neg\\text{IsChoosable}(G,8,2)$, identical in content to `ert_4_1_to_8_2_false`."
     },
     {
       "id": "disproof",
       "title": "The Main Disproof",
-      "summary": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing $m=2$).",
-      "startLine": 200,
-      "endLine": 226,
+      "summary": "Proves `ert_m2_false` and `ert_conjecture_false`: ¬ ERT_Case_m2 and ¬ ERT_Conjecture. The chain: `ert_4_1_to_8_2_false` ⇒ `ert_m2_false` (by specializing a=4, b=1) ⇒ `ert_conjecture_false` (by specializing m=2). `erdos_632` restates the result as the named answer to Erdős Problem #632.",
+      "startLine": 223,
+      "endLine": 252,
       "mathContext": "Proves `ert_conjecture_false`: $\\neg\\text{ERT\\_Conjecture}$. The chain: `ert_4_1_to_8_2_false` $\\implies$ `ert_m2_false` (by specializing $a=4, b=1$) $\\implies$ `ert_conjecture_false` (by specializing $m=2$)."
     },
     {
-      "id": "positive",
-      "title": "Positive Results for Special Classes",
-      "summary": "Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints).",
-      "startLine": 227,
-      "endLine": 260,
-      "mathContext": "Axiomatized: Axiomatizes cases where the ERT conjecture *does* hold: fractional choosability (Alon–Tuza–Voigt), complete graphs, bipartite graphs, and planar graphs ($m = 2$ case, via Euler's formula constraints)."
+      "id": "tail-and-restatement",
+      "title": "Parts IX–XII: Placeholder Headers and the Final Restatement",
+      "summary": "Parts IX (\"Positive Results\") and X (\"Connections to Other Problems\") are empty placeholder headers with no formalized content — despite the framing, the file does not formalize fractional choosability or the complete/bipartite/planar special cases. The only real content: `ListColoringConjecture` (an unformalized `True` stub gesturing at the classical list-edge-coloring conjecture), then Part XI (another empty placeholder) and Part XII, which restates the already-proved disproof as `erdos_632_disproved` plus two documentation-only `String` defs.",
+      "startLine": 253,
+      "endLine": 302,
+      "mathContext": "`ListColoringConjecture` states `∀ V G, True` — not actually encoded; the real statement $\\chi_L(L(G)) = \\chi'(G)$ is left as a comment. `erdos_632_disproved := ert_conjecture_false` is a pure restatement, not new content."
     }
   ],
   "conclusion": {
