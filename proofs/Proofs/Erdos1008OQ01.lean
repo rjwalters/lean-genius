@@ -224,7 +224,7 @@ theorem folkman_upper_bound : optimalConstant ≤ 1 := by
     intro c hc
     obtain ⟨H, hdr, hsub, _, hge⟩ := hc.2 (Fin 2) (completeGraph (Fin 2))
     letI := hdr
-    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by native_decide
+    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by decide
     have hle : H ≤ completeGraph (Fin 2) := hsub
     have hH_sub : H.edgeFinset ⊆ (completeGraph (Fin 2)).edgeFinset := by
       intro e he; rw [SimpleGraph.mem_edgeFinset] at he ⊢
@@ -256,7 +256,7 @@ theorem optimal_constant_pos : optimalConstant > 0 := by
     obtain ⟨H, hdr, hsub, _, hge⟩ := hc.2 (Fin 2) (completeGraph (Fin 2))
     letI := hdr
     -- completeGraph (Fin 2) has 1 edge
-    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by native_decide
+    have hone : (completeGraph (Fin 2)).edgeFinset.card = 1 := by decide
     -- H is a subgraph, so H has ≤ 1 edge
     have hle : H ≤ completeGraph (Fin 2) := hsub
     have hH_sub : H.edgeFinset ⊆ (completeGraph (Fin 2)).edgeFinset := by
@@ -365,7 +365,7 @@ This file establishes:
 - c4free_of_subgraph: C₄-freeness is hereditary (proved)
 - empty_isC4Free: the empty graph is C₄-free (proved)
 - folkman_ratio: the Folkman ratio equals 1 (proved via real arithmetic)
-- Upper bound c* ≤ 1 (axiomatized - requires full KST formalization)
+- Upper bound c* ≤ 1 (fully proved via completeGraph (Fin 2) specialization)
 - Lower bound c* > 0 (axiomatized - this IS the CFS14 theorem)
 
 Open: determine the exact value of c* ∈ (0, 1].
