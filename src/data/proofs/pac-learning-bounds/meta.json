@@ -82,65 +82,41 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Overview of shattering, VC dimension, and the Sauer-Shelah lemma with full references.",
-      "mathContext": "The fundamental theorem of statistical learning: $\\mathcal{H}$ is PAC learnable $\\iff$ $\\operatorname{VCdim}(\\mathcal{H}) < \\infty$."
+      "endLine": 19,
+      "summary": "Overview docstring listing the four planned parts (growth function/Sauer-Shelah, polynomial bound, PAC sample complexity, fundamental theorem placeholder). Imports all of Mathlib.",
+      "mathContext": "The fundamental theorem of statistical learning: $\\mathcal{H}$ is PAC learnable $\\iff$ $\\operatorname{VCdim}(\\mathcal{H}) < \\infty$ — stated as the module's goal, not formalized in this file."
     },
     {
-      "id": "definitions",
-      "title": "Traces and Shattering Definitions",
-      "startLine": 28,
-      "endLine": 49,
-      "summary": "Core definitions: traceSet (distinct patterns {h ∩ S : h ∈ H}), Shatters (every subset of S appears as a trace), VCDimLE (no set of size > d is shattered).",
-      "mathContext": "$H$ shatters $S$ if $|\\{h \\cap S : h \\in H\\}| = 2^{|S|}$. VCDim$(H) = \\max\\{|S| : H \\text{ shatters } S\\}$."
+      "id": "growth-function",
+      "title": "Part I: Growth Function and Sauer-Shelah Lemma",
+      "startLine": 21,
+      "endLine": 35,
+      "summary": "growthFunction is a placeholder definition that always returns 0 (a real definition would take the supremum over all n-element subsets). sauer_shelah is consequently trivially true (`simp [growthFunction]` closes 0 ≤ anything) — it does not establish the real growth-function bound.",
+      "mathContext": "$\\Pi_H(n) := 0$ (placeholder) so $\\Pi_H(n) \\leq \\sum_{i=0}^d \\binom{n}{i}$ holds vacuously."
     },
     {
-      "id": "trace-properties",
-      "title": "Trace Set Properties",
-      "startLine": 50,
-      "endLine": 87,
-      "summary": "Six theorems on trace sets: subset of powerset, card ≤ |H|, card ≤ 2^|S|, empty family, monotonicity, empty sample gives {∅}.",
-      "mathContext": "$|\\{h \\cap S : h \\in H\\}| \\leq \\min(|H|, 2^{|S|})$"
-    },
-    {
-      "id": "shattering-properties",
-      "title": "Shattering Properties",
-      "startLine": 88,
-      "endLine": 104,
-      "summary": "Eight theorems: empty set shattering, monotonicity in family, anti-monotonicity in set, exponential lower bound 2^|S| ≤ |H|, small family impossibility, powerset characterization.",
-      "mathContext": "If $H$ shatters $S$, then $|H| \\geq 2^{|S|}$ and for every $T \\subseteq S$, $H$ shatters $T$."
-    },
-    {
-      "id": "vc-dimension",
-      "title": "VC Dimension Properties",
-      "startLine": 104,
-      "endLine": 104,
-      "summary": "Seven theorems: monotonicity in d, anti-monotonicity in H, VCDim=0 characterization, empty family, singleton family (VCDim=0).",
-      "mathContext": "VCDim $\\leq d$ is monotone in $d$ and anti-monotone in $H$ (subfamilies have $\\leq$ VC dimension)."
-    },
-    {
-      "id": "sauer-shelah",
-      "title": "Sauer-Shelah Lemma",
-      "startLine": 104,
-      "endLine": 104,
-      "summary": "The central result: if VCDim(F) ≤ d, then |F| ≤ Σ C(n,i). Both family and trace versions stated. The polynomial corollary $\\sum_{i=0}^d \\binom{n}{i} \\le (n+1)^d$ (`sauer_shelah_bound`) is fully proved via a binomial-theorem calc; `sauer_shelah` holds trivially because `growthFunction` is a placeholder constant. No sorries remain in this section — the substantive VC-dimension counting bound is what stays in a block comment pending full formalization.",
-      "mathContext": "$|F| \\leq \\sum_{i=0}^d \\binom{n}{i} \\leq (n+1)^d$ when $\\operatorname{VCdim}(F) \\leq d$ and $F \\subseteq \\mathcal{P}([n])$."
+      "id": "sauer-shelah-bound",
+      "title": "Part II: Sauer-Shelah Polynomial Bound",
+      "startLine": 37,
+      "endLine": 79,
+      "summary": "choose_le_pow (C(n,k) ≤ n^k) and sauer_shelah_bound (∑ C(n,i) ≤ (n+1)^d) are both genuinely proved — a real binomial-theorem calc, not a placeholder. This is the one substantive result in the file.",
+      "mathContext": "$\\sum_{i=0}^{d} \\binom{n}{i} \\leq (n+1)^d$, proved via $\\binom{n}{i} \\le n^i \\le \\binom{d}{i} n^i$ and the binomial theorem $(n+1)^d = \\sum_j \\binom{d}{j} n^j$."
     },
     {
       "id": "pac-complexity",
-      "title": "PAC Sample Complexity",
-      "startLine": 104,
-      "endLine": 104,
-      "summary": "States the PAC sample complexity bound as an axiom: m ≤ (8d + 4 ln(2/δ)) / ε² samples suffice. Requires measure-theoretic probability for full proof.",
-      "mathContext": "$m(\\varepsilon, \\delta) = O\\left(\\frac{d + \\log(1/\\delta)}{\\varepsilon^2}\\right)$"
+      "title": "Part III: PAC Sample Complexity",
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "pac_sample_complexity is a `theorem`, not an axiom — but it's a vacuous existential (`⟨_, le_refl _⟩`): it asserts some m exists with m ≤ the stated bound, trivially satisfied by taking m to be the bound's own ceiling. It does not connect m to any actual learning/sampling procedure.",
+      "mathContext": "$\\exists m, m \\leq \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon \\rceil$ — trivially true for any bound, proves no real sample-complexity fact."
     },
     {
-      "id": "examples",
-      "title": "VC Dimension Examples",
-      "startLine": 104,
-      "endLine": 104,
-      "summary": "Concrete VC computations: powerset 𝒫(S) shatters S, singleton can't shatter nonempty set, VCDim(𝒫(Ω)) ≤ |Ω|, growth function definition and trivial bound.",
-      "mathContext": "$\\operatorname{VCdim}(\\mathcal{P}(\\Omega)) = |\\Omega|$ and $\\Pi_H(n) \\leq 2^n$."
+      "id": "fundamental-theorem-placeholder",
+      "title": "Part IV: Fundamental Theorem (Placeholder)",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "No Lean declaration exists here — this is a block comment noting that the fundamental theorem (PAC learnable ⟺ finite VC dimension) requires formalizing the PAC learning model, uniform convergence, and the full equivalence chain, none of which are defined anywhere in this file.",
+      "mathContext": "Comment only: $\\mathcal{H}$ PAC learnable $\\iff$ $\\operatorname{VCdim}(\\mathcal{H}) < \\infty$ remains entirely unformalized."
     }
   ],
   "crossReferences": [
@@ -229,10 +205,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "pac_bound",
+      "name": "sauer_shelah_bound",
       "type": "core",
-      "description": "PAC learning sample complexity bound using VC dimension",
-      "leanType": "vc_dim H = d -> m >= (d + log(1/delta))/epsilon -> probably_approximately_correct"
+      "description": "Sauer-Shelah polynomial bound ∑ C(n,i) ≤ (n+1)^d — the one genuinely proved, non-vacuous result in the file. (Note: `pac_bound`/`vc_dim`/`probably_approximately_correct` referenced by a prior version of this field do not exist anywhere in Proofs/PACLearning.lean.)",
+      "leanType": "0 < d -> d <= n -> (Finset.range (d + 1)).sum (fun i => n.choose i) <= (n + 1) ^ d"
     }
   ],
   "sorries": 0
