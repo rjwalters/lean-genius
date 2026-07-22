@@ -68,7 +68,8 @@
       "The substitution log(Nat.sqrt m) ≈ ½ log m used to read off the Chebyshev upper density is not free: the integer square root forces an O(1) correction, captured exactly by the additive log 2 in the bracket",
       "The bracket's lower half is the only non-trivial direction; it rests entirely on the single elementary step Nat.sqrt m + 1 ≤ 2·Nat.sqrt m (valid once Nat.sqrt m ≥ 2), which upgrades m < (√m+1)² to m < 4·(√m)²",
       "The bracket constant log 2 is not asymptotically sharp — it comes from the crude step m < 4·(√m)² and the true gap ½ log m − log(√m) tends to 0 as m grows — but it is a clean uniform O(1) constant, which is all the density application needs",
-      "Renormalising the upper bound onto the π(m)·log m scale shows the OQ-06 denominator switch from log m to log(√m) costs only a lower-order 2 log 2·π(m) term, leaving the leading density 2 log 4 intact"
+      "Renormalising the upper bound onto the π(m)·log m scale shows the OQ-06 denominator switch from log m to log(√m) costs only a lower-order 2 log 2·π(m) term, leaving the leading density 2 log 4 intact",
+      "The constants log 2 ≈ 0.693 and 2 log 4 ≈ 2.773 pinned down here are the elementary bridge's own densities, not Chebyshev's actual 1852 constants — his finer factorial argument (via ratios of factorials at 30n, 15n, 10n, 6n, 5n) gives the much tighter A ≈ 0.92129 and B ≈ 1.10555, so this bracket sharpens the bridge's internal bookkeeping without closing the gap to the historical Chebyshev theorem"
     ],
     "prerequisites": [
       "the prime-counting function π and the sibling OQ-05 / OQ-06 Chebyshev bounds",
@@ -85,11 +86,18 @@
       "summary": "Module docstring framing OQ-06·OQ-01: pin the integer-square-root logarithm bracket and use it to consolidate the two Chebyshev halves onto a common scale; then the imports (parent bridge plus siblings OQ-05 and OQ-06, PrimeCounting, Real.log), the namespace, and `open Nat`."
     },
     {
-      "id": "bracket",
-      "title": "The Nat.sqrt logarithm bracket",
+      "id": "bracket-upper",
+      "title": "Bracket, upper half: log(√m) ≤ ½ log m",
       "startLine": 52,
+      "endLine": 77,
+      "summary": "log_natSqrt_le: the easy direction, valid for all m ≥ 1, from (Nat.sqrt m)² ≤ m via Real.log monotonicity and log_pow."
+    },
+    {
+      "id": "bracket-lower",
+      "title": "Bracket, lower half: ½ log m − log 2 ≤ log(√m)",
+      "startLine": 79,
       "endLine": 101,
-      "summary": "log_natSqrt_le and log_natSqrt_ge: ½ log m − log 2 ≤ log(Nat.sqrt m) ≤ ½ log m for m ≥ 4, from (√m)² ≤ m < (√m+1)² ≤ 4·(√m)²."
+      "summary": "log_natSqrt_ge: the only non-trivial direction, needing m ≥ 4, from m < (Nat.sqrt m + 1)² ≤ 4·(Nat.sqrt m)² once Nat.sqrt m ≥ 2."
     },
     {
       "id": "sandwich",
