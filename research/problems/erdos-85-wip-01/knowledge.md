@@ -427,3 +427,50 @@ The active worktree was reaped mid-session WITH dirty uncommitted changes
 work redone from agent context. Worktree janitor is deleting dirty worktrees,
 contrary to the "dirty/unpushed worktrees are always preserved" contract in
 the researcher role (COMMON.md Known-Gaps). Flagging for the operator.
+
+## Session 2026-07-22d (researcher-1-9) — **f(9) = 3 PROVED, axiom-free** (blueprint executed)
+
+**Mode**: execute the f(9)=3 blueprint from session 2026-07-22c (same day).
+**Outcome**: COMPLETE — `minDegreeForC4_nine : minDegreeForC4 9 = 3`, host-verified
+`lake env lean` exit 0, `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+on all new theorems. NO ex(n;C₄) extremal-table input — the recorded blocker is
+formally overturned. File 1548 → 2056 lines. Exact table now
+**f = 1,2,3,2,3,3,3,3,3 for n = 1..9**.
+
+### New theorems (Erdos85Problem.lean)
+- `card_inter_neighborFinset_le_one` — C₄-free ⇒ pairwise common neighbours ≤ 1.
+- `containsC4_of_four_set_min_two` — dense-4-set lemma (case analysis, 6 dispatch
+  cases via three sub-helpers, all ending in `containsC4_of_two_common`).
+- `containsC4_of_nine_one_four` — the (3⁸,4) case: R := complement of the closed
+  neighbourhood has |R| = 4 and each x ∈ R keeps ≥ 2 of 3 edges inside R
+  (common-neighbour bound), then the dense-4-set lemma fires.
+- `nine_degree_pinch` — cherries ≤ 36 + handshake ⇒ degrees ⊆ {3,4} and
+  #(deg-4) ∈ {1,3} (deg ≥ 6: 15+24 > 36; deg 5 forces a 2nd ≥ 4 by parity:
+  10+6+21 > 36; then Σd = 27+k even, Σch = 27+3k ≤ 36).
+- `containsC4_of_nine_three_fours` — the (3⁶,4³) case: cherry count EXACTLY 36 ⇒
+  cherry→pair map on `univ.sigma (powersetCard 2 ∘ N)` is injective (else C₄) with
+  |C| = |T| = 36 ⇒ image = T ⇒ every pair has a common neighbour; double count
+  Σ_{u∈N(w)}(d(u)−1) = 8 (per-x exactly-one common with w; swap via
+  `card_eq_sum_ones` + `sum_filter` + `sum_comm`) forces all neighbours of a
+  deg-4 vertex to degree 3; then two deg-4 vertices have N ⊆ V₃ (|V₃| = 6) and
+  4+4 = 6+2 fires `containsC4_of_degree_sum_subset`.
+- `containsC4_of_nine_min_degree_three` + `minDegreeForC4_nine` — assembly.
+
+### Lean idioms (v4.31)
+- `Finset.card_sdiff` is now `#(t \ s) = #t − #(s ∩ t)` (NO subset hypothesis);
+  pair with `Finset.inter_univ`.
+- `G.loopless` is `Std.Irrefl`, not applicable — use `G.irrefl`.
+- norm_num does NOT evaluate `Nat.choose` — use `decide` (e.g. `choose 9 2 = 36`).
+- `(filter p t).card = Σ ite`: `rw [Finset.card_eq_sum_ones, Finset.sum_filter]`
+  (avoids `sum_boole`'s ℕ-cast).
+- Injectivity-image argument: `Set.InjOn f ↑C` + `Finset.card_image_of_injOn` +
+  `eq_of_subset_of_card_le` upgrades the KST pigeonhole to a bijection when the
+  cherry count is tight.
+
+### Remaining on this problem (unchanged deep blockers)
+- f(10) = 4 needs the Petersen graph (blocked: decide-free formalization).
+- Sharp KST asymptotics, monotonicity core: deep/open.
+- f(11), f(12): counting gives ≤ 4 (C(11,2)=55 < 11·6); lower 4 needs a C₄-free
+  min-deg-3.. wait min-deg 3 graphs exist on ≥ 10 vertices (Petersen ⊕ extras) —
+  next elementary target could be f(11) ≤ 4 / f(12) ≤ 4 via counting (cheap) with
+  lower bounds blocked on Petersen-type witnesses.

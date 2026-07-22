@@ -1440,4 +1440,617 @@ theorem containsC4_of_card_add_two_le_degree_add_degree {V : Type*} [Fintype V]
   containsC4_of_degree_sum_subset huv (Finset.subset_univ _) (Finset.subset_univ _)
     (by rwa [Finset.card_univ])
 
+/-- **Common-neighbour bound.**  In a `C₄`-free graph any two distinct vertices
+have at most one common neighbour (two would form the rim of a `C₄`).  The
+contrapositive workhorse for the local analyses of the `f(9)` programme. -/
+theorem card_inter_neighborFinset_le_one {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (hfree : ¬ containsC4 V G)
+    {u v : V} (huv : u ≠ v) :
+    (G.neighborFinset u ∩ G.neighborFinset v).card ≤ 1 := by
+  by_contra hlt
+  rw [not_le] at hlt
+  obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp hlt
+  rw [Finset.mem_inter] at hx hy
+  exact hfree (containsC4_of_two_common huv hxy
+    ((G.mem_neighborFinset u x).mp hx.1).symm
+    ((G.mem_neighborFinset v x).mp hx.2).symm
+    ((G.mem_neighborFinset u y).mp hy.1).symm
+    ((G.mem_neighborFinset v y).mp hy.2).symm)
+
+/-- **A dense `4`-set forces a `C₄`.**  If a `4`-element vertex set `R` has every
+member adjacent to at least two others inside `R`, the graph contains a `C₄`.
+This is the endgame of the `(3⁸, 4)` case of the `f(9)` programme: there the
+four vertices outside the closed neighbourhood of the degree-`4` vertex each
+keep at least two of their three edges inside `R`.  Pure case analysis: pick
+`a ∈ R` with internal neighbours `y ≠ z`, let `t` be the fourth vertex; `t` has
+two internal neighbours among `{a, y, z}`, and every configuration produces two
+distinct vertices with two distinct common neighbours. -/
+theorem containsC4_of_four_set_min_two {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {R : Finset V}
+    (hR : R.card = 4) (hdeg : ∀ x ∈ R, 2 ≤ (G.neighborFinset x ∩ R).card) :
+    containsC4 V G := by
+  by_contra hfree
+  -- pick `a ∈ R` and two distinct internal neighbours `y, z`
+  have hane : R.Nonempty := by rw [← Finset.card_pos, hR]; norm_num
+  obtain ⟨a, ha⟩ := hane
+  have h2a := hdeg a ha
+  obtain ⟨y, hy, z, hz, hyz⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset a ∩ R).card)
+  rw [Finset.mem_inter] at hy hz
+  have hay : G.Adj a y := (G.mem_neighborFinset a y).mp hy.1
+  have haz : G.Adj a z := (G.mem_neighborFinset a z).mp hz.1
+  have hyR : y ∈ R := hy.2
+  have hzR : z ∈ R := hz.2
+  -- the fourth vertex `t`
+  have htne : (R \ {a, y, z}).Nonempty := by
+    rw [← Finset.card_pos]
+    have h1 := Finset.card_insert_le a ({y, z} : Finset V)
+    have h2 := Finset.card_insert_le y ({z} : Finset V)
+    have hsd := Finset.le_card_sdiff ({a, y, z} : Finset V) R
+    simp only [Finset.card_singleton] at h1 h2
+    omega
+  obtain ⟨t, ht⟩ := htne
+  rw [Finset.mem_sdiff] at ht
+  obtain ⟨htR, htn⟩ := ht
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at htn
+  obtain ⟨hta, hty, htz⟩ := htn
+  have hya : y ≠ a := (G.ne_of_adj hay).symm
+  have hza : z ≠ a := (G.ne_of_adj haz).symm
+  -- `R = {a, y, z, t}`
+  have hna : a ∉ ({y, z, t} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (rfl | rfl | rfl)
+    exacts [hya rfl, hza rfl, hta rfl]
+  have hny : y ∉ ({z, t} : Finset V) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    rintro (rfl | rfl)
+    exacts [hyz rfl, hty rfl]
+  have hnz : z ∉ ({t} : Finset V) := by
+    rw [Finset.mem_singleton]
+    intro h
+    exact htz h.symm
+  have hsub : ({a, y, z, t} : Finset V) ⊆ R := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl
+    exacts [ha, hyR, hzR, htR]
+  have hcard4 : ({a, y, z, t} : Finset V).card = 4 := by
+    rw [Finset.card_insert_of_notMem hna, Finset.card_insert_of_notMem hny,
+      Finset.card_insert_of_notMem hnz, Finset.card_singleton]
+  have hReq : R = ({a, y, z, t} : Finset V) :=
+    (Finset.eq_of_subset_of_card_le hsub (by omega)).symm
+  -- internal neighbours of any `x` decompose over `R`'s four elements
+  have hmemR : ∀ x w, w ∈ G.neighborFinset x ∩ R →
+      G.Adj x w ∧ (w = a ∨ w = y ∨ w = z ∨ w = t) := by
+    intro x w hw
+    rw [Finset.mem_inter] at hw
+    refine ⟨(G.mem_neighborFinset x w).mp hw.1, ?_⟩
+    have hwR := hw.2
+    rw [hReq] at hwR
+    simpa only [Finset.mem_insert, Finset.mem_singleton] using hwR
+  -- helper: `t ~ y` and `t ~ z` ⟹ pair `(a, t)` has commons `y, z`
+  have case_yz : G.Adj t y → G.Adj t z → False := fun h1 h2 =>
+    hfree (containsC4_of_two_common (show a ≠ t from fun h => hta h.symm) hyz
+      hay.symm h1.symm haz.symm h2.symm)
+  -- helper: `t ~ a` and `t ~ y` ⟹ `z`'s second internal neighbour closes a `C₄`
+  have case_ay : G.Adj t a → G.Adj t y → False := by
+    intro h1 h2
+    have h2z := hdeg z hzR
+    obtain ⟨p, hp, q, hq, hpq⟩ :=
+      Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset z ∩ R).card)
+    obtain ⟨hzp, hpor⟩ := hmemR z p hp
+    obtain ⟨hzq, hqor⟩ := hmemR z q hq
+    have key : G.Adj z y ∨ G.Adj z t := by
+      rcases hpor with rfl | rfl | rfl | rfl
+      · rcases hqor with rfl | rfl | rfl | rfl
+        · exact absurd rfl hpq
+        · exact Or.inl hzq
+        · exact absurd rfl (G.ne_of_adj hzq)
+        · exact Or.inr hzq
+      · exact Or.inl hzp
+      · exact absurd rfl (G.ne_of_adj hzp)
+      · exact Or.inr hzp
+    rcases key with hzy | hzt
+    · -- pair `(y, a)` has commons `z, t`
+      exact hfree (containsC4_of_two_common hya
+        (show z ≠ t from fun h => htz h.symm) hzy haz.symm h2 h1)
+    · exact case_yz h2 hzt.symm
+  -- helper: `t ~ a` and `t ~ z` ⟹ `y`'s second internal neighbour closes a `C₄`
+  have case_az : G.Adj t a → G.Adj t z → False := by
+    intro h1 h2
+    have h2y := hdeg y hyR
+    obtain ⟨p, hp, q, hq, hpq⟩ :=
+      Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset y ∩ R).card)
+    obtain ⟨hyp, hpor⟩ := hmemR y p hp
+    obtain ⟨hyq, hqor⟩ := hmemR y q hq
+    have key : G.Adj y z ∨ G.Adj y t := by
+      rcases hpor with rfl | rfl | rfl | rfl
+      · rcases hqor with rfl | rfl | rfl | rfl
+        · exact absurd rfl hpq
+        · exact absurd rfl (G.ne_of_adj hyq)
+        · exact Or.inl hyq
+        · exact Or.inr hyq
+      · exact absurd rfl (G.ne_of_adj hyp)
+      · exact Or.inl hyp
+      · exact Or.inr hyp
+    rcases key with hyz2 | hyt
+    · -- pair `(z, a)` has commons `y, t`
+      exact hfree (containsC4_of_two_common hza
+        (show y ≠ t from fun h => hty h.symm) hyz2 hay.symm h2 h1)
+    · exact case_yz hyt.symm h2
+  -- main dispatch: `t`'s two internal neighbours among `{a, y, z}`
+  have h2t := hdeg t htR
+  obtain ⟨p, hp, q, hq, hpq⟩ :=
+    Finset.one_lt_card.mp (by omega : 1 < (G.neighborFinset t ∩ R).card)
+  obtain ⟨htp, hpor⟩ := hmemR t p hp
+  obtain ⟨htq, hqor⟩ := hmemR t q hq
+  rcases hpor with rfl | rfl | rfl | rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact absurd rfl hpq
+    · exact case_ay htp htq
+    · exact case_az htp htq
+    · exact (G.ne_of_adj htq) rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact case_ay htq htp
+    · exact absurd rfl hpq
+    · exact case_yz htp htq
+    · exact (G.ne_of_adj htq) rfl
+  · rcases hqor with rfl | rfl | rfl | rfl
+    · exact case_az htq htp
+    · exact case_yz htq htp
+    · exact absurd rfl hpq
+    · exact (G.ne_of_adj htq) rfl
+  · exact (G.ne_of_adj htp) rfl
+
+/-- **The `(3⁸, 4)` case of `f(9)`: a unique degree-`4` vertex forces a `C₄`.**
+On `9` vertices with `δ ≥ 3`, if exactly one vertex `w` has degree `4` and the
+rest have degree `3`, the four vertices `R` outside `w`'s closed neighbourhood
+each keep at least two of their three edges inside `R` (they are non-adjacent
+to `w` and share at most one neighbour with it), so the dense-`4`-set lemma
+applies. -/
+theorem containsC4_of_nine_one_four {G : SimpleGraph (Fin 9)}
+    [DecidableRel G.Adj] (w : Fin 9) (hw : G.degree w = 4)
+    (hrest : ∀ v, v ≠ w → G.degree v = 3) :
+    containsC4 (Fin 9) G := by
+  by_contra hfree
+  have hwn : w ∉ G.neighborFinset w :=
+    fun h => G.irrefl ((G.mem_neighborFinset w w).mp h)
+  set B : Finset (Fin 9) := insert w (G.neighborFinset w) with hB
+  have hBcard : B.card = 5 := by
+    rw [hB, Finset.card_insert_of_notMem hwn, G.card_neighborFinset_eq_degree, hw]
+  set R : Finset (Fin 9) := Finset.univ \ B with hRdef
+  have hRcard : R.card = 4 := by
+    rw [hRdef, Finset.card_sdiff, Finset.inter_univ, Finset.card_univ,
+      Fintype.card_fin, hBcard]
+  refine hfree (containsC4_of_four_set_min_two hRcard ?_)
+  intro x hx
+  rw [hRdef, Finset.mem_sdiff] at hx
+  have hxB := hx.2
+  rw [hB, Finset.mem_insert, not_or] at hxB
+  obtain ⟨hxw, hxN⟩ := hxB
+  have hnadj : ¬ G.Adj w x := fun h => hxN ((G.mem_neighborFinset w x).mpr h)
+  have hwNx : w ∉ G.neighborFinset x :=
+    fun h => hnadj ((G.mem_neighborFinset x w).mp h).symm
+  have hdx : G.degree x = 3 := hrest x hxw
+  -- `N(x) ∩ R = N(x) \ B` and `N(x) ∩ B = N(x) ∩ N(w)`
+  have hinterR : G.neighborFinset x ∩ R = G.neighborFinset x \ B := by
+    rw [hRdef]
+    ext u
+    simp [Finset.mem_sdiff]
+  have hinterB : G.neighborFinset x ∩ B = G.neighborFinset x ∩ G.neighborFinset w := by
+    rw [hB]
+    ext u
+    simp only [Finset.mem_inter, Finset.mem_insert]
+    constructor
+    · rintro ⟨hu, rfl | hu'⟩
+      · exact absurd hu hwNx
+      · exact ⟨hu, hu'⟩
+    · rintro ⟨hu, hu'⟩
+      exact ⟨hu, Or.inr hu'⟩
+  have hcomm : (G.neighborFinset x ∩ G.neighborFinset w).card ≤ 1 :=
+    card_inter_neighborFinset_le_one hfree hxw
+  have hsplit := Finset.card_sdiff_add_card_inter (G.neighborFinset x) B
+  have hxcard : (G.neighborFinset x).card = 3 := by
+    rw [G.card_neighborFinset_eq_degree, hdx]
+  rw [hinterB] at hsplit
+  rw [hinterR]
+  omega
+
+/-- **Degree pinch for `f(9)`.**  On `9` vertices, `C₄`-free with `δ ≥ 3`, every
+degree is `3` or `4` and the number `k` of degree-`4` vertices is `1` or `3`.
+Cherry counting (`Σᵥ C(d(v),2) ≤ C(9,2) = 36`): degree `≥ 6` alone gives
+`15 + 8·3 = 39 > 36`; degree `5` forces by handshake parity a second vertex of
+degree `≥ 4`, giving `10 + 6 + 7·3 = 37 > 36`.  Then `Σ d(v) = 27 + k` must be
+even (`k` odd) and `Σ C(d(v),2) = 27 + 3k ≤ 36` (`k ≤ 3`). -/
+theorem nine_degree_pinch {G : SimpleGraph (Fin 9)} [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 9) G) (hmin : ∀ v, 3 ≤ G.degree v) :
+    (∀ v, G.degree v ≤ 4) ∧
+      ((Finset.univ.filter (fun v => G.degree v = 4)).card = 1 ∨
+       (Finset.univ.filter (fun v => G.degree v = 4)).card = 3) := by
+  -- cherry bound
+  have hcherry : ∑ v : Fin 9, (G.degree v).choose 2 ≤ 36 := by
+    by_contra h
+    rw [not_le] at h
+    refine hfree (containsC4_of_card_choose_two_lt G ?_)
+    rw [Fintype.card_fin]
+    have h92 : Nat.choose 9 2 = 36 := by decide
+    omega
+  -- generic single-vertex split: `Σ ≥ C(d(v),2) + 3·8`
+  have hsplit1 : ∀ v : Fin 9,
+      (G.degree v).choose 2 + 24 ≤ ∑ u : Fin 9, (G.degree u).choose 2 := by
+    intro v
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v)]
+    have h24 : 24 ≤ ∑ u ∈ Finset.univ.erase v, (G.degree u).choose 2 := by
+      calc (24 : ℕ) = (Finset.univ.erase v).card * 3 := by
+            rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+              Fintype.card_fin]
+        _ = ∑ _u ∈ Finset.univ.erase v, 3 := by
+            rw [Finset.sum_const, smul_eq_mul]
+        _ ≤ ∑ u ∈ Finset.univ.erase v, (G.degree u).choose 2 :=
+            Finset.sum_le_sum (fun u _ => Nat.choose_le_choose 2 (hmin u))
+    omega
+  -- no vertex of degree ≥ 6
+  have hle5 : ∀ v, G.degree v ≤ 5 := by
+    intro v
+    by_contra h
+    rw [not_le] at h
+    have h15 : 15 ≤ (G.degree v).choose 2 :=
+      le_trans (by decide : 15 ≤ Nat.choose 6 2) (Nat.choose_le_choose 2 h)
+    have := hsplit1 v
+    omega
+  -- handshake
+  have hhs := SimpleGraph.sum_degrees_eq_twice_card_edges G
+  -- no vertex of degree exactly 5
+  have hle4 : ∀ v, G.degree v ≤ 4 := by
+    intro v
+    by_contra h
+    rw [not_le] at h
+    have hd5 : G.degree v = 5 := le_antisymm (hle5 v) h
+    -- a second vertex of degree ≥ 4 must exist, else the degree sum is odd
+    have hsecond : ∃ u, u ≠ v ∧ 4 ≤ G.degree u := by
+      by_contra hno
+      push Not at hno
+      have hall3 : ∀ u ∈ Finset.univ.erase v, G.degree u = 3 := by
+        intro u hu
+        have hne := (Finset.mem_erase.mp hu).1
+        have := hno u hne
+        have := hmin u
+        omega
+      have hsum : ∑ u : Fin 9, G.degree u = 29 := by
+        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v), hd5,
+          Finset.sum_congr rfl hall3, Finset.sum_const,
+          Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+          Fintype.card_fin, smul_eq_mul]
+      omega
+    obtain ⟨u, huv, hu4⟩ := hsecond
+    -- `Σ ≥ C(5,2) + C(4,2) + 7·3 = 37 > 36`
+    have hu6 : 6 ≤ (G.degree u).choose 2 :=
+      le_trans (by decide : 6 ≤ Nat.choose 4 2) (Nat.choose_le_choose 2 hu4)
+    have hv10 : 10 ≤ (G.degree v).choose 2 := by rw [hd5]; decide
+    have hu_mem : u ∈ Finset.univ.erase v := Finset.mem_erase.mpr ⟨huv, Finset.mem_univ u⟩
+    have hsum2 : (G.degree v).choose 2 + ((G.degree u).choose 2 + 21)
+        ≤ ∑ x : Fin 9, (G.degree x).choose 2 := by
+      rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v),
+        ← Finset.add_sum_erase _ _ hu_mem]
+      have h21 : 21 ≤ ∑ x ∈ (Finset.univ.erase v).erase u, (G.degree x).choose 2 := by
+        calc (21 : ℕ) = ((Finset.univ.erase v).erase u).card * 3 := by
+              rw [Finset.card_erase_of_mem hu_mem,
+                Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+                Fintype.card_fin]
+          _ = ∑ _x ∈ (Finset.univ.erase v).erase u, 3 := by
+              rw [Finset.sum_const, smul_eq_mul]
+          _ ≤ ∑ x ∈ (Finset.univ.erase v).erase u, (G.degree x).choose 2 :=
+              Finset.sum_le_sum (fun x _ => Nat.choose_le_choose 2 (hmin x))
+      omega
+    omega
+  refine ⟨hle4, ?_⟩
+  -- degree sum and cherry sum in terms of `k`
+  set k := (Finset.univ.filter (fun v => G.degree v = 4)).card with hk
+  have hcompl : (Finset.univ.filter (fun v => ¬ G.degree v = 4)).card = 9 - k := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (Finset.univ : Finset (Fin 9))) (p := fun v => G.degree v = 4)
+    rw [Finset.card_univ, Fintype.card_fin] at this
+    omega
+  have hdsum : ∑ v : Fin 9, G.degree v = 4 * k + 3 * (9 - k) := by
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => G.degree v = 4)]
+    have h4 : ∑ v ∈ Finset.univ.filter (fun v => G.degree v = 4), G.degree v = 4 * k := by
+      rw [Finset.sum_congr rfl (fun v hv => (Finset.mem_filter.mp hv).2),
+        Finset.sum_const, smul_eq_mul, mul_comm]
+    have h3 : ∑ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4), G.degree v
+        = 3 * (9 - k) := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+          G.degree v = 3 := by
+        intro v hv
+        have h1 := (Finset.mem_filter.mp hv).2
+        have h2 := hmin v
+        have h3 := hle4 v
+        omega
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, hcompl, mul_comm]
+    omega
+  have hcsum : ∑ v : Fin 9, (G.degree v).choose 2 = 6 * k + 3 * (9 - k) := by
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => G.degree v = 4)]
+    have h4 : ∑ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+        (G.degree v).choose 2 = 6 * k := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+          (G.degree v).choose 2 = 6 := by
+        intro v hv
+        rw [(Finset.mem_filter.mp hv).2]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, mul_comm]
+    have h3 : ∑ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+        (G.degree v).choose 2 = 3 * (9 - k) := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+          (G.degree v).choose 2 = 3 := by
+        intro v hv
+        have h1 := (Finset.mem_filter.mp hv).2
+        have h2 := hmin v
+        have h3 := hle4 v
+        have : G.degree v = 3 := by omega
+        rw [this]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, hcompl, mul_comm]
+    omega
+  -- `27 + k` even and `27 + 3k ≤ 36` pin `k ∈ {1, 3}`
+  have hk9 : k ≤ 9 := by
+    have := Finset.card_filter_le (Finset.univ : Finset (Fin 9))
+      (fun v => G.degree v = 4)
+    rw [Finset.card_univ, Fintype.card_fin] at this
+    exact this
+  rw [hdsum] at hhs
+  rw [hcsum] at hcherry
+  omega
+
+/-- **The `(3⁶, 4³)` case of `f(9)`: three degree-`4` vertices force a `C₄`.**
+With exactly three degree-`4` vertices the cherry count is *exactly*
+`36 = C(9,2)`, so the cherry → endpoint-pair map is a bijection and every pair
+of vertices has exactly one common neighbour.  Counting paths of length two out
+of a degree-`4` vertex `w` then gives `Σ_{u ∈ N(w)} (d(u) − 1) = 8`, forcing
+all four neighbour degrees to `3`.  Hence the degree-`4` vertices have their
+neighbourhoods inside the six degree-`3` vertices, and `4 + 4 = 6 + 2` fires
+the pigeonhole engine. -/
+theorem containsC4_of_nine_three_fours {G : SimpleGraph (Fin 9)}
+    [DecidableRel G.Adj] (hmin : ∀ v, 3 ≤ G.degree v)
+    (hle4 : ∀ v, G.degree v ≤ 4)
+    (hk3 : (Finset.univ.filter (fun v => G.degree v = 4)).card = 3) :
+    containsC4 (Fin 9) G := by
+  by_contra hfree
+  classical
+  -- the complementary count: six degree-3 vertices
+  have hcompl : (Finset.univ.filter (fun v => ¬ G.degree v = 4)).card = 6 := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (Finset.univ : Finset (Fin 9))) (p := fun v => G.degree v = 4)
+    rw [Finset.card_univ, Fintype.card_fin, hk3] at this
+    omega
+  -- exact cherry count 36
+  have hcsum : ∑ v : Fin 9, (G.degree v).choose 2 = 36 := by
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => G.degree v = 4)]
+    have h4 : ∑ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+        (G.degree v).choose 2 = 18 := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+          (G.degree v).choose 2 = 6 := by
+        intro v hv
+        rw [(Finset.mem_filter.mp hv).2]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, hk3, smul_eq_mul]
+    have h3 : ∑ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+        (G.degree v).choose 2 = 18 := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+          (G.degree v).choose 2 = 3 := by
+        intro v hv
+        have h1 := (Finset.mem_filter.mp hv).2
+        have h2 := hmin v
+        have h3 := hle4 v
+        have hd : G.degree v = 3 := by omega
+        rw [hd]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, hcompl, smul_eq_mul]
+    omega
+  -- tight cherry count ⟹ every pair has a common neighbour
+  have hcommon : ∀ x y : Fin 9, x ≠ y → ∃ v, G.Adj v x ∧ G.Adj v y := by
+    intro x y hxy
+    set C : Finset (Σ _ : Fin 9, Finset (Fin 9)) :=
+      Finset.univ.sigma (fun v => (G.neighborFinset v).powersetCard 2) with hC
+    have hCcard : C.card = 36 := by
+      rw [hC, Finset.card_sigma]
+      calc ∑ v : Fin 9, ((G.neighborFinset v).powersetCard 2).card
+          = ∑ v : Fin 9, (G.degree v).choose 2 :=
+            Finset.sum_congr rfl (fun v _ => by
+              rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree])
+        _ = 36 := hcsum
+    set T : Finset (Finset (Fin 9)) :=
+      (Finset.univ : Finset (Fin 9)).powersetCard 2 with hT
+    have hTcard : T.card = 36 := by
+      rw [hT, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+      decide
+    have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+      intro p hp
+      rw [hC, Finset.mem_sigma] at hp
+      rw [hT, Finset.mem_powersetCard]
+      exact ⟨Finset.subset_univ _, (Finset.mem_powersetCard.mp hp.2).2⟩
+    have hinj : Set.InjOn (fun p : Σ _ : Fin 9, Finset (Fin 9) => p.2) ↑C := by
+      intro p hp q hq h
+      obtain ⟨v, e⟩ := p
+      obtain ⟨v', e'⟩ := q
+      simp only at h
+      subst h
+      by_cases hv : v = v'
+      · subst hv; rfl
+      · exfalso
+        rw [Finset.mem_coe, hC, Finset.mem_sigma] at hp hq
+        obtain ⟨hsubv, hecard⟩ := Finset.mem_powersetCard.mp hp.2
+        obtain ⟨hsubv', -⟩ := Finset.mem_powersetCard.mp hq.2
+        obtain ⟨x', y', hxy', rfl⟩ := Finset.card_eq_two.mp hecard
+        have hvx : G.Adj v x' := (G.mem_neighborFinset v x').mp (hsubv (by simp))
+        have hvy : G.Adj v y' := (G.mem_neighborFinset v y').mp (hsubv (by simp))
+        have hv'x : G.Adj v' x' := (G.mem_neighborFinset v' x').mp (hsubv' (by simp))
+        have hv'y : G.Adj v' y' := (G.mem_neighborFinset v' y').mp (hsubv' (by simp))
+        exact hfree (containsC4_of_two_common hv hxy' hvx.symm hv'x.symm hvy.symm hv'y.symm)
+    have himg : C.image (fun p => p.2) = T := by
+      apply Finset.eq_of_subset_of_card_le
+      · intro e he
+        obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp he
+        exact hmaps p hp
+      · rw [Finset.card_image_of_injOn hinj, hCcard, hTcard]
+    have hxyT : ({x, y} : Finset (Fin 9)) ∈ T := by
+      rw [hT, Finset.mem_powersetCard]
+      refine ⟨Finset.subset_univ _, ?_⟩
+      rw [Finset.card_insert_of_notMem (by simpa using hxy), Finset.card_singleton]
+    rw [← himg] at hxyT
+    obtain ⟨⟨v, e⟩, hpC, he⟩ := Finset.mem_image.mp hxyT
+    simp only at he
+    subst he
+    rw [hC, Finset.mem_sigma] at hpC
+    obtain ⟨hsubv, -⟩ := Finset.mem_powersetCard.mp hpC.2
+    exact ⟨v, (G.mem_neighborFinset v x).mp (hsubv (by simp)),
+      (G.mem_neighborFinset v y).mp (hsubv (by simp))⟩
+  -- path count: the neighbours of a degree-4 vertex all have degree 3
+  have hnbr3 : ∀ w, G.degree w = 4 → ∀ u ∈ G.neighborFinset w, G.degree u = 3 := by
+    intro w hw4
+    have hNcard : (G.neighborFinset w).card = 4 := by
+      rw [G.card_neighborFinset_eq_degree, hw4]
+    have hwmem : ∀ u ∈ G.neighborFinset w, w ∈ G.neighborFinset u := by
+      intro u hu
+      exact (G.mem_neighborFinset u w).mpr ((G.mem_neighborFinset w u).mp hu).symm
+    -- each `x ≠ w` has exactly one common neighbour with `w`
+    have hone : ∀ x ∈ Finset.univ.erase w,
+        (G.neighborFinset x ∩ G.neighborFinset w).card = 1 := by
+      intro x hx
+      have hxw : x ≠ w := (Finset.mem_erase.mp hx).1
+      refine le_antisymm (card_inter_neighborFinset_le_one hfree hxw)
+        (Finset.card_pos.mpr ?_)
+      obtain ⟨v, hvx, hvw⟩ := hcommon x w hxw
+      exact ⟨v, Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x v).mpr hvx.symm,
+        (G.mem_neighborFinset w v).mpr hvw.symm⟩⟩
+    -- double count `Σ_{u ∈ N(w)} (d(u) − 1) = 8`
+    have hcount : ∑ u ∈ G.neighborFinset w, ((G.neighborFinset u).erase w).card = 8 := by
+      have hstep : ∀ x ∈ Finset.univ.erase w,
+          (G.neighborFinset x ∩ G.neighborFinset w).card
+            = ∑ u ∈ G.neighborFinset w, if G.Adj x u then 1 else 0 := by
+        intro x _
+        have hset : G.neighborFinset x ∩ G.neighborFinset w
+            = (G.neighborFinset w).filter (fun u => G.Adj x u) := by
+          ext u
+          simp only [Finset.mem_inter, Finset.mem_filter, SimpleGraph.mem_neighborFinset]
+          tauto
+        rw [hset, Finset.card_eq_sum_ones, Finset.sum_filter]
+      have hL : (8 : ℕ) = ∑ x ∈ Finset.univ.erase w,
+          (G.neighborFinset x ∩ G.neighborFinset w).card := by
+        rw [Finset.sum_congr rfl hone, Finset.sum_const,
+          Finset.card_erase_of_mem (Finset.mem_univ w), Finset.card_univ,
+          Fintype.card_fin, smul_eq_mul]
+      rw [Finset.sum_congr rfl hstep, Finset.sum_comm] at hL
+      have hinner : ∀ u ∈ G.neighborFinset w,
+          (∑ x ∈ Finset.univ.erase w, if G.Adj x u then 1 else 0)
+            = ((G.neighborFinset u).erase w).card := by
+        intro u hu
+        have hset : (Finset.univ.erase w).filter (fun x => G.Adj x u)
+            = (G.neighborFinset u).erase w := by
+          ext x
+          simp only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, true_and,
+            and_true, SimpleGraph.mem_neighborFinset]
+          rw [SimpleGraph.adj_comm]
+        rw [← hset, Finset.card_eq_sum_ones, Finset.sum_filter]
+      rw [Finset.sum_congr rfl hinner] at hL
+      omega
+    -- extract: four terms, each ≥ 2, summing to 8 ⟹ all equal 2
+    intro u hu
+    by_contra hne
+    have hu4 : G.degree u = 4 := by
+      have h1 := hmin u
+      have h2 := hle4 u
+      omega
+    have huterm : ((G.neighborFinset u).erase w).card = 3 := by
+      rw [Finset.card_erase_of_mem (hwmem u hu), G.card_neighborFinset_eq_degree, hu4]
+    have hrest2 : ∀ x ∈ (G.neighborFinset w).erase u,
+        2 ≤ ((G.neighborFinset x).erase w).card := by
+      intro x hx
+      have hxN := (Finset.mem_erase.mp hx).2
+      rw [Finset.card_erase_of_mem (hwmem x hxN), G.card_neighborFinset_eq_degree]
+      have := hmin x
+      omega
+    have hsplit := Finset.add_sum_erase (G.neighborFinset w)
+      (fun x => ((G.neighborFinset x).erase w).card) hu
+    have hge : 6 ≤ ∑ x ∈ (G.neighborFinset w).erase u,
+        ((G.neighborFinset x).erase w).card := by
+      calc (6 : ℕ) = ((G.neighborFinset w).erase u).card * 2 := by
+            rw [Finset.card_erase_of_mem hu, hNcard]
+        _ = ∑ _x ∈ (G.neighborFinset w).erase u, 2 := by
+            rw [Finset.sum_const, smul_eq_mul]
+        _ ≤ ∑ x ∈ (G.neighborFinset w).erase u,
+              ((G.neighborFinset x).erase w).card :=
+            Finset.sum_le_sum hrest2
+    omega
+  -- assembly: two degree-4 vertices with neighbourhoods inside the six
+  -- degree-3 vertices
+  have h2 : 1 < (Finset.univ.filter (fun v => G.degree v = 4)).card := by
+    rw [hk3]; norm_num
+  obtain ⟨w1, hw1, w2, hw2, hww⟩ := Finset.one_lt_card.mp h2
+  have hw1d := (Finset.mem_filter.mp hw1).2
+  have hw2d := (Finset.mem_filter.mp hw2).2
+  set V3 : Finset (Fin 9) := Finset.univ.filter (fun v => G.degree v = 3) with hV3
+  have hV3card : V3.card = 6 := by
+    have heq : Finset.univ.filter (fun v => ¬ G.degree v = 4) = V3 := by
+      rw [hV3]
+      ext v
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      have h1 := hmin v
+      have h2 := hle4 v
+      omega
+    rw [← heq]
+    exact hcompl
+  have hsub1 : G.neighborFinset w1 ⊆ V3 := by
+    intro u hu
+    rw [hV3, Finset.mem_filter]
+    exact ⟨Finset.mem_univ u, hnbr3 w1 hw1d u hu⟩
+  have hsub2 : G.neighborFinset w2 ⊆ V3 := by
+    intro u hu
+    rw [hV3, Finset.mem_filter]
+    exact ⟨Finset.mem_univ u, hnbr3 w2 hw2d u hu⟩
+  exact hfree (containsC4_of_degree_sum_subset hww hsub1 hsub2
+    (by rw [hV3card, hw1d, hw2d]))
+
+/-- **`f(9)` upper half: minimum degree `3` on `9` vertices forces a `C₄`.**
+The degree pinch (`nine_degree_pinch`) leaves the degree sequences `(3⁸, 4)` and
+`(3⁶, 4³)`; the former dies locally (`containsC4_of_nine_one_four`), the latter
+by the tight-cherry pigeonhole (`containsC4_of_nine_three_fours`). -/
+theorem containsC4_of_nine_min_degree_three (G : SimpleGraph (Fin 9))
+    [DecidableRel G.Adj] (hmin : 3 ≤ G.minDegree) : containsC4 (Fin 9) G := by
+  have hdeg : ∀ v : Fin 9, 3 ≤ G.degree v :=
+    fun v => le_trans hmin (G.minDegree_le_degree v)
+  by_contra hfree
+  obtain ⟨hle4, hk⟩ := nine_degree_pinch hfree hdeg
+  rcases hk with hk1 | hk3
+  · obtain ⟨w, hw⟩ := Finset.card_eq_one.mp hk1
+    have hwd : G.degree w = 4 := by
+      have hmem : w ∈ Finset.univ.filter (fun v => G.degree v = 4) := by
+        rw [hw]
+        exact Finset.mem_singleton_self w
+      exact (Finset.mem_filter.mp hmem).2
+    have hrest : ∀ v, v ≠ w → G.degree v = 3 := by
+      intro v hv
+      have hnot : v ∉ Finset.univ.filter (fun u => G.degree u = 4) := by
+        rw [hw, Finset.mem_singleton]
+        exact hv
+      have h4 : ¬ G.degree v = 4 :=
+        fun h => hnot (Finset.mem_filter.mpr ⟨Finset.mem_univ v, h⟩)
+      have h1 := hdeg v
+      have h2 := hle4 v
+      omega
+    exact hfree (containsC4_of_nine_one_four w hwd hrest)
+  · exact hfree (containsC4_of_nine_three_fours hdeg hle4 hk3)
+
+/-- **A sixth exact value: `f(9) = 3`.**  Lower half: the `9`-cycle is `C₄`-free
+with minimum degree `2` (`three_le_minDegreeForC4`).  Upper half:
+`containsC4_of_nine_min_degree_three` — obtained *without* any `ex(n; C₄)`
+extremal-table input, overturning the recorded blocker for `f(9)`.  The
+exact-value table now reads `f = 1, 2, 3, 2, 3, 3, 3, 3, 3` for `n = 1, …, 9`;
+the next value, `f(10) = 4`, is the Petersen threshold. -/
+theorem minDegreeForC4_nine : minDegreeForC4 9 = 3 := by
+  have hle : minDegreeForC4 9 ≤ 3 := by
+    apply Nat.sInf_le
+    intro G _ hmin
+    exact containsC4_of_nine_min_degree_three G hmin
+  have hge : 3 ≤ minDegreeForC4 9 := three_le_minDegreeForC4 (by norm_num)
+  omega
+
 end Erdos85
