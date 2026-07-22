@@ -73,5 +73,20 @@
     "significance": "standard",
     "relatedConcepts": ["complex structure", "residue classes mod 4", "Radon–Hurwitz number", "Bott periodicity"],
     "prerequisites": ["complexification via a complex structure", "products of anticommuting matrices"]
+  },
+  {
+    "id": "ann-product-engine",
+    "proofId": "hurwitz-theorem-oq-03-wip-01",
+    "range": {
+      "startLine": 139,
+      "endLine": 203
+    },
+    "type": "technique",
+    "title": "The Product Engine: Moving an Element Through P = M₁⋯M_{n-1}",
+    "content": "The ℂ specialization above invokes a product complex structure P = M₁⋯M_{n-1} without proving it exists; this section supplies the one algebraic fact that construction needs, stated over an arbitrary ring R (not just fields), so it applies verbatim to the real crossMat family and its complexification. mul_prod_anticomm shows that if a anticommutes with every entry of a list t, then moving a across the whole product t.prod picks up the sign (-1)^(t.length): a * t.prod = (-1)^(t.length) * (t.prod * a). The Lean proof is a list induction: the nil case is `simp`; the cons case pulls the head b off with `List.prod_cons`, uses the anticommuting hypothesis on b together with the inductive hypothesis on the tail s, and closes the sign bookkeeping between (-1)^s.length and b with `Commute.neg_one_left` before a final `noncomm_ring` normalizes the equation (the ring R need not be commutative, so this is not `ring`). Two immediate corollaries specialize by parity: commute_prod_of_anticomm_of_even (even length ⇒ a commutes with the product) and anticommute_prod_of_anticomm_of_odd (odd length ⇒ a anticommutes with it) — exactly the dichotomy that decides, for n-1 factors M₁,…,M_{n-1}, whether a fresh Mᵢ commutes with P (needed for P to be a genuine complex structure on the whole space) or anticommutes with it.",
+    "mathContext": "$a\\,\\prod t=(-1)^{|t|}(\\prod t)\\,a$ when $a$ anticommutes with every factor of the list $t$; taking $t=[M_1,\\dots,M_{n-1}]$ (length $n-1$) makes the parity of $n-1$ — equivalently of $n$ — decide whether a further $M_i$ commutes or anticommutes with $P=\\prod t$.",
+    "significance": "key",
+    "relatedConcepts": ["List.prod", "noncomm_ring", "Commute", "anticommuting elements", "product complex structure P"],
+    "prerequisites": ["list induction", "noncommutative rings", "the ℝ/ℂ specializations above (why P is needed)"]
   }
 ]
