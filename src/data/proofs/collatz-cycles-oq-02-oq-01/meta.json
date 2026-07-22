@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why This File Exists: the Continued Fraction of log₂3",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Module docstring: the parent CollatzCyclesOQ02 proves the logarithmic bound M > J·log₂3 for a hypothetical non-trivial cycle but leaves Eliahou's sharp continued-fraction refinement unformalized. This file supplies that ingredient — the CF expansion log₂3 = [1;1,1,2,2,3,1,5,…] with convergents 1/1, 2/1, 3/2, 8/5, 19/12, 65/41, 84/53, 485/306, each equivalent to a decidable power comparison 2^p ⋚ 3^q — pinning log₂3 to the width-1/16218 interval (84/53, 485/306), entirely axiom-free. States the honest scope up front: Eliahou's full numerical constant (cycle length ≥ 17,087,915) needs an additional two-sided Diophantine gap beyond what is proved here.",
+      "mathContext": "$\\log_2 3 = [1;1,1,2,2,3,1,5,\\ldots]$, with $\\tfrac{p}{q} < \\log_2 3 \\iff 2^p < 3^q$."
+    },
+    {
       "id": "bridge",
       "title": "From Power Comparisons to Logarithm Bounds",
       "startLine": 79,
