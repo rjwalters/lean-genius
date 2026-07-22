@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Replacing the True Stub",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "States the parent's first open question (prove irrational_exponent_single_valued from cpow_def_of_ne_zero and the single-valuedness of Complex.log) and previews why the irrational case differs from the rational p/q case: the branch family k ↦ e^{2πiαk} is injective, since the orbit never returns to 1, so no integer q creates a finite ambiguity.",
+      "mathContext": "Frames the single-valuedness question and previews the four theorems (principal_value, exp_two_pi_ne_one_of_irrational, branch_injective, irrational_exponent_single_valued)."
+    },
+    {
       "id": "principal",
       "title": "The Single Principal Value",
       "startLine": 37,
