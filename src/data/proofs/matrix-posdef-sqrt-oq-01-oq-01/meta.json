@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Polar decomposition from the PSD square root",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Answers the parent entry's open question on polar decomposition A = U·P. Builds the right polar factor P = sqrt(A^H A) via CFC.sqrt and proves: uniqueness of the PSD factor with no hypothesis on A; existence and uniqueness of (U,P) when A is invertible, with U unitary; and the mirror left decomposition A = P'·U' obtained by applying the construction to A^H."
+    },
+    {
       "id": "polar-factor",
       "title": "The positive semidefinite polar factor √(AᴴA)",
       "startLine": 55,
