@@ -83,6 +83,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The norm as a MonoidHom; the regulator as minimal positive value",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Bundles the previously bare pellNorm_one/pellNorm_mul lemmas into honest MonoidHom packages (pellNormHom, pellNormUnitsHom, pellRegulatorHom), and combines Mathlib's fundamental-solution structure theorem (every nonnegative solution is a power of the fundamental one) with the regulator's additive scaling law to show the fundamental regulator is the least positive value the regulator attains on the solution group."
+    },
+    {
       "id": "definitions",
       "title": "Pell norm and regulator",
       "startLine": 60,
