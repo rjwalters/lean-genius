@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: Squaring the Recurrence to Bracket 1/√π",
+      "startLine": 1,
+      "endLine": 58,
+      "mathContext": "$\\tfrac12 \\cdot \\tfrac{4^n}{\\sqrt n} \\le C(2n,n) \\le \\tfrac{1}{\\sqrt3}\\cdot\\tfrac{4^n}{\\sqrt n}$, bracketing the Wallis constant $1/\\sqrt\\pi$ via $3 < \\pi < 4$.",
+      "summary": "Docstring framing the entry as answering the parent's (Erdos396OQ04OQ01OQ01OQ02OQ02) closing open question: can explicit constants c₁, c₂ with c₁·4^n/√n ≤ C(2n,n) ≤ c₂·4^n/√n be extracted directly from the recurrence, isolating √π as the only analytic ingredient? States the two squared integer bounds (centralBinom_sq_lower/upper), their polynomial-identity induction steps, the resulting explicit bracket with c₁ = 1/2, c₂ = 1/√3, and the closing fact that the true Wallis constant 1/√π lies strictly inside that bracket — equivalent to 3 < π < 4."
+    },
+    {
       "id": "recurrence",
       "title": "The Recurrence over ℝ",
       "startLine": 60,
