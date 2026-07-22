@@ -94,11 +94,10 @@
     },
     "type": "concept",
     "title": "The Disproved Conjecture",
-    "content": "**ErdosConjecture** states: For all epsilon > 0, there exists N such that for all n > N and all pi in S_n, S(pi) < epsilon * n^2.\n\n**erdos_34_disproved** asserts this is FALSE.\n\nCounterexamples exist with S(pi) >= cn^2 for constant c > 0 (specifically c >= 1/4).",
+    "content": "**ErdosConjecture** states: For all epsilon > 0, there exists N such that for all n > N and all pi in S_n, S(pi) < epsilon * n^2.\n\nThis is FALSE, as documented in the file's comments: counterexamples exist with S(pi) >= cn^2 for constant c > 0 (specifically c >= 1/4). NOTE: the falsity of ErdosConjecture is not formalized as a Lean declaration in this file -- it is recorded only in prose comments.",
     "mathContext": "The little-o notation S(pi) = o(n^2) means S(pi)/n^2 -> 0 as n -> infinity.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "counterexample",
       "asymptotic"
     ],
@@ -123,11 +122,10 @@
     },
     "type": "concept",
     "title": "Hegyvari's Counterexample (1986)",
-    "content": "**hegyvari_counterexample** states there exist permutations with S(pi) >= (1/18 + o(1))n^2.\n\nThis was the FIRST counterexample to Erdos's conjecture.\n\n1/18 ~ 0.056 shows the conjecture fails by a constant factor.",
+    "content": "A comment documents that there exist permutations with S(pi) >= (1/18 + o(1))n^2 (Hegyvari, 1986).\n\nThis was the FIRST counterexample to Erdos's conjecture.\n\n1/18 ~ 0.056 shows the conjecture fails by a constant factor. NOTE: this bound is not formalized as a Lean declaration -- it is documentation only.",
     "mathContext": "Hegyvari's construction is explicit but the 1/18 constant was later improved dramatically.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "hegyvari",
       "first-counterexample"
     ],
@@ -151,11 +149,10 @@
     },
     "type": "concept",
     "title": "Konieczny's Quarter Bound (2015)",
-    "content": "**konieczny_quarter_bound** states there exist permutations with S(pi) >= n^2/4.\n\nThis shows the conjecture is 'extremely false' - not just failing by a small constant, but by a factor of 1/4.\n\nSince max possible is ~n^2/2 pairs, this is nearly half the theoretical maximum!",
+    "content": "A comment documents that there exist permutations with S(pi) >= n^2/4 (Konieczny, 2015).\n\nThis shows the conjecture is 'extremely false' - not just failing by a small constant, but by a factor of 1/4.\n\nSince max possible is ~n^2/2 pairs, this is nearly half the theoretical maximum! NOTE: this bound is not formalized as a Lean declaration -- it is documentation only.",
     "mathContext": "1/4 = 0.25, compared to Hegyvari's 1/18 ~ 0.056 - a 4.5x improvement.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "konieczny",
       "optimal-bound"
     ],
@@ -180,7 +177,7 @@
     },
     "type": "concept",
     "title": "Bounds on Maximum f(n)",
-    "content": "**f_lower_bound**: f(n) >= 0.286 * n^2\n**f_upper_bound**: f(n) <= 0.446 * n^2\n\nwhere f(n) = max_{pi} S(pi).\n\nThe gap [0.286, 0.446] shows the exact maximum is not yet known.",
+    "content": "Comments document: f(n) >= 0.286 * n^2 and f(n) <= 0.446 * n^2, where f(n) = max_{pi} S(pi).\n\nThe gap [0.286, 0.446] shows the exact maximum is not yet known. NOTE: neither bound is formalized as a Lean declaration -- both are documentation only.",
     "mathContext": "These bounds from Konieczny (2015) leave room for improvement.",
     "significance": "key",
     "relatedConcepts": [
@@ -209,7 +206,7 @@
     },
     "type": "concept",
     "title": "Random Permutation Behavior",
-    "content": "**random_permutation_limit** states that for a random permutation,\n\nS(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.2838 * n^2\n\nThis shows most permutations violate the conjecture by the same amount as worst-case constructions!",
+    "content": "A comment documents that for a random permutation,\n\nS(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.2838 * n^2\n\nThis shows most permutations violate the conjecture by the same amount as worst-case constructions! NOTE: this asymptotic is not formalized as a Lean declaration -- it is documentation only.",
     "mathContext": "e^-2 ~ 0.135, so (1 + e^-2)/4 ~ 0.2838. Almost identical to the lower bound 0.286.",
     "significance": "key",
     "relatedConcepts": [
@@ -238,7 +235,7 @@
     },
     "type": "concept",
     "title": "The Identity Permutation is Special",
-    "content": "**identity_is_little_o** states S(iota) = o(n^2) for the identity permutation.\n\nFor iota(i) = i, consecutive sums are arithmetic progressions: sum_{i=u}^v i = (v-u+1)(u+v)/2.\n\nThe number of distinct such sums is O(n^1.5), not Theta(n^2).\n\nThis special case motivated Erdos's (false) conjecture.",
+    "content": "A comment documents that S(iota) = o(n^2) for the identity permutation.\n\nFor iota(i) = i, consecutive sums are arithmetic progressions: sum_{i=u}^v i = (v-u+1)(u+v)/2.\n\nThe number of distinct such sums is O(n^1.5), not Theta(n^2).\n\nThis special case motivated Erdos's (false) conjecture. NOTE: this o(n^2) property is not formalized as a Lean declaration -- it is documentation only (the file defines identityPerm but proves no theorem about its S-value).",
     "mathContext": "Identity has fewer distinct sums because arithmetic progression sums have algebraic structure.",
     "significance": "key",
     "relatedConcepts": [
@@ -267,7 +264,7 @@
     },
     "type": "concept",
     "title": "Minimum Bounds g(n)",
-    "content": "**g_lower_bound**: g(n) >= c * n^(3/2) for some c > 0.\n\n**MinimumConjecture**: Is g(n) >= n^(2-o(1))? (conjectured)\n\nwhere g(n) = min_{pi} S(pi).\n\nEven the minimum is superlinear - every permutation has many distinct consecutive sums.",
+    "content": "A comment documents that g(n) >= c * n^(3/2) for some c > 0 (not formalized as a Lean declaration).\n\n**MinimumConjecture** (a formal def in this file) asks: Is g(n) >= n^(2-o(1))? (conjectured, open)\n\nwhere g(n) = min_{pi} S(pi).\n\nEven the minimum is superlinear - every permutation has many distinct consecutive sums.",
     "mathContext": "The gap between n^1.5 (known) and n^(2-o(1)) (conjectured) is significant.",
     "significance": "supporting",
     "relatedConcepts": [
