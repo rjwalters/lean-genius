@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module Header: Statement, Scope, and Status",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "$\\mathrm{Fintype.card}\\,(\\mathrm{Composition}\\ n) = 2^{n-1}$, via the bijection with subsets of the $n-1$ internal gaps of $n$ unit boxes.",
+      "summary": "The module docstring states the headline count Fintype.card (Composition n) = 2^(n−1) and the 'bar or no bar' bijective model behind it, then draws the line between what Mathlib already supplies (the count itself, as composition_card, re-exported below as card_composition_eq) and what this file derives beyond that: the doubling recurrence, positivity, the explicit bijection to CompositionAsSet n, and worked small-n instances. It also flags upfront that the doubling recurrence genuinely needs n ≥ 1 — the 0→1 step fails because ℕ-subtraction truncates card (Composition 0) to 2^0 = 1 — which is why the recurrence below is phrased with n+2. A status checklist closes the header: 0 sorries, 0 axiom declarations, re-export plus original corollaries, plus pedagogical examples."
+    },
+    {
       "id": "headline-count",
       "title": "The Headline Count (re-exported from Mathlib)",
       "startLine": 61,
