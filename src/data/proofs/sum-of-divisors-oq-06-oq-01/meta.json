@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "title": "Scope: the product formula and its sharpness",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring: states the open question (isolate the multiplicative structure of τ = σ₀ used internally by the parent's parity proof) and the three contributions over a raw Mathlib citation — the Finset.prod restatement of the divisor-count formula, the prime-power specialization τ(pᵃ) = a+1 (absent from Mathlib), and the sharpness example showing coprimality is genuinely necessary for multiplicativity.",
+      "mathContext": "$\\tau(n) = \\prod_{p \\mid n}(v_p(n)+1)$; sharpness: $\\tau(2\\cdot 2)=3\\neq 4=\\tau(2)\\tau(2)$."
+    },
+    {
       "title": "The product formula and prime-power values",
       "startLine": 37,
       "endLine": 52,
