@@ -1195,4 +1195,79 @@ theorem four_ninety_six_practical : IsPractical 496 := by
   norm_num at h
   exact h
 
+/- ## Repeated multiplication by a fixed factor
+
+The Stewart–Sierpiński criterion `mul_practical_of_le_succ_sigma` lets us append a single
+multiplier `n ≤ σ(m) + 1` to a practical base `m`. A key structural observation is that
+this can be *iterated with the same multiplier*: once `n ≤ σ(m) + 1`, the number
+`m · nᵇ` is practical for **every** `b`. The point is that multiplying by `n` only enlarges
+the divisor sum (`m ∣ m · nᵇ`, so `σ(m) ≤ σ(m · nᵇ)`), so the gap condition `n ≤ σ(·) + 1`
+is *preserved* at every step and never has to be re-checked.
+
+* `sigma_le_sigma_of_dvd` — divisor-sum monotonicity: `m ∣ M` (with `M ≠ 0`) implies
+  `σ(m) ≤ σ(M)`, since `divisors m ⊆ divisors M`.
+* `repeated_mul_practical` — the iteration: `IsPractical m` and `1 ≤ n ≤ σ(m) + 1` imply
+  `IsPractical (m · nᵇ)` for all `b`. This subsumes `two_pow_mul_three_pow_practical`
+  (take `m = 2^a`, `n = 3`) and, unlike a naive "`k`-smooth numbers are practical" claim,
+  keeps the *honest* σ-gap hypothesis — recall `10 = 2 · 5` is **not** practical because
+  `5 > σ(2) + 1 = 4`.
+* `two_pow_mul_five_pow_practical` — a concrete new family `2^a · 5^b` (for `a ≥ 2`, where
+  `5 ≤ σ(2^a) + 1 = 2^{a+1}`), yielding e.g. `hundred_practical` (`100 = 2² · 5²`), a
+  number that `practical_mul` cannot reach (it has no factorisation into two nontrivial
+  practical numbers).
+
+All results are axiom-free. -/
+
+/-- **Divisor-sum monotonicity under divisibility.** If `m ∣ M` and `M ≠ 0` then
+`σ(m) = ∑_{d ∣ m} d ≤ ∑_{d ∣ M} d = σ(M)`, because every divisor of `m` is a divisor of
+`M` (`Nat.divisors_subset_of_dvd`) and the summand `id` is nonnegative. -/
+theorem sigma_le_sigma_of_dvd {m M : ℕ} (hMne : M ≠ 0) (hdvd : m ∣ M) :
+    ∑ d ∈ divisors m, d ≤ ∑ d ∈ divisors M, d := by
+  apply Finset.sum_le_sum_of_subset
+  exact Nat.divisors_subset_of_dvd hMne hdvd
+
+/-- **Iterated multiplication by a fixed factor preserves practicality.** If `m` is
+practical and `1 ≤ n ≤ σ(m) + 1`, then `m · nᵇ` is practical for every `b`. The gap
+condition survives each step: `m ∣ m · nᵇ` gives `σ(m) ≤ σ(m · nᵇ)`
+(`sigma_le_sigma_of_dvd`), so `n ≤ σ(m) + 1 ≤ σ(m · nᵇ) + 1` and one more application of
+`mul_practical_of_le_succ_sigma` appends another factor of `n`. Strictly generalises
+`two_pow_mul_three_pow_practical`. -/
+theorem repeated_mul_practical {m n : ℕ} (hm : IsPractical m) (hn1 : 1 ≤ n)
+    (hnle : n ≤ 1 + ∑ d ∈ divisors m, d) : ∀ b, IsPractical (m * n ^ b) := by
+  have hm1 : 1 ≤ m := hm.1
+  intro b
+  induction b with
+  | zero => simpa using hm
+  | succ b ih =>
+    have hrw : m * n ^ (b + 1) = n * (m * n ^ b) := by ring
+    rw [hrw]
+    refine mul_practical_of_le_succ_sigma ih hn1 ?_
+    have hMne : m * n ^ b ≠ 0 := Nat.mul_ne_zero (by omega) (pow_ne_zero b (by omega))
+    have hmono : ∑ d ∈ divisors m, d ≤ ∑ d ∈ divisors (m * n ^ b), d :=
+      sigma_le_sigma_of_dvd hMne (dvd_mul_right m (n ^ b))
+    omega
+
+/-- **The family `2^a · 5^b` is practical for `a ≥ 2`.** Since `σ(2^a) + 1 = 2^{a+1} ≥ 8 ≥ 5`
+whenever `a ≥ 2`, the multiplier `5` satisfies the σ-gap condition, so
+`repeated_mul_practical` appends every power `5^b`. Note the constraint `a ≥ 2` is
+necessary: `2 · 5 = 10` is **not** practical. -/
+theorem two_pow_mul_five_pow_practical (a b : ℕ) (ha : 2 ≤ a) :
+    IsPractical (2 ^ a * 5 ^ b) := by
+  apply repeated_mul_practical (two_pow_practical a) (by norm_num) ?_ b
+  rw [sum_divisors_two_pow]
+  have h8 : (8 : ℕ) ≤ 2 ^ (a + 1) := by
+    calc (8 : ℕ) = 2 ^ 3 := by norm_num
+      _ ≤ 2 ^ (a + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+  have h1 : 1 ≤ 2 ^ (a + 1) := Nat.one_le_two_pow
+  omega
+
+/-- `100 = 2² · 5²` is practical — a concrete member of the `2^a · 5^b` family, and one
+that `practical_mul` cannot reach: `100` has no factorisation `100 = a · b` with both
+`a, b` nontrivial practical numbers (its only practical proper divisors are `1, 2, 4, 20`,
+and none of `50, 25` is practical). -/
+theorem hundred_practical : IsPractical 100 := by
+  have h := two_pow_mul_five_pow_practical 2 2 (le_refl 2)
+  norm_num at h
+  exact h
+
 end Erdos18
