@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Arithmetic/Field Structure of the Dichotomy",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring situating this entry against the parent (countability of the algebraic numbers) and sibling leaves (cardinality/measure/category of the transcendentals): this file supplies the arithmetic/field structure none of them touch. States the two themes — (1) the algebraic numbers over a field extension K ⊆ L form a subfield, closed under +,-,*,⁻¹, via integrality; (2) transcendence is preserved by algebraic perturbations (translates, rescalings, inversion, powers, the affine map a·t+b), each a one-line back-substitution contradiction from theme 1 — and the contrasting fact that the transcendentals themselves are NOT closed under these operations. Imports RingTheory.Algebraic.Basic/Integral, IntegralClosure.Algebra.Basic, and Mathlib.Tactic; opens the AlgebraicNumbersCountableOQ01 namespace with variables K L : Type* [Field K] [Field L] [Algebra K L].",
+      "mathContext": "Algebraicity routes through integrality ($K$ a field): $\\text{IsAlgebraic} \\iff \\text{IsIntegral}$, so Mathlib's integral-closure subring lemmas give the subfield structure, and transcendence-preservation follows by contradiction."
+    },
+    {
       "id": "subfield",
       "title": "§1: The algebraic numbers form a subfield",
       "startLine": 60,
