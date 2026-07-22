@@ -62,7 +62,8 @@
       "The strict statement is not new mathematics on top of the equality case — it is exactly `lt_of_le_of_ne` of (parent inequality) and (¬ parent equality), so the whole content lives in the rigidity lemma proved upstream.",
       "Strictness is local: a single index pair that varies in both coordinates is enough to make the global inequality strict, which is why the cleanest hypothesis is one doubly-varying pair rather than a global non-constancy assumption.",
       "For monotone sequences the doubly-varying pair always exists at the extremes (min', max') once neither sequence is constant, which is precisely what the parent's `chebyshev_sum_eq_iff_const` packages.",
-      "Strict monotonicity plus two distinct indices is the slickest sufficient condition: injectivity removes any need to exhibit the varying pair by hand."
+      "Strict monotonicity plus two distinct indices is the slickest sufficient condition: injectivity removes any need to exhibit the varying pair by hand.",
+      "Probabilistically, the strict statement says two comonotone random variables uniform on s have strictly positive covariance unless one is almost surely constant — the equality case of the discrete Chebyshev/covariance inequality is exactly this degeneracy, not merely a boundary configuration of the sum."
     ],
     "prerequisites": [
       "Finite sums over a Finset and Finset.card",
@@ -81,30 +82,37 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Module Header and Imports",
+      "id": "header",
+      "title": "Module Header",
       "startLine": 1,
+      "endLine": 28,
+      "summary": "Expository docstring relating the strict statement to the parent's inequality (chebyshev_sum) and its two equality characterisations (chebyshev_sum_eq_iff, chebyshev_sum_eq_iff_const), and naming the three theorems this file adds."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 29,
       "endLine": 38,
-      "summary": "Imports (Mathlib and the parent equality-case file), an expository docstring relating the strict statement to the parent's inequality and equality lemmas, and namespace setup opening RearrangementChebyshevEq."
+      "summary": "Imports Mathlib and the parent equality-case file, opens Finset, enters namespace RearrangementChebyshevStrict, opens RearrangementChebyshevEq, and declares the shared f g : ι → ℝ variables."
     },
     {
       "id": "pair-form",
       "title": "Strict Form from a Single Doubly-Varying Pair",
       "startLine": 40,
-      "endLine": 57,
+      "endLine": 53,
       "summary": "chebyshev_sum_strict_of_pair — for monovarying f, g, one pair a, b ∈ s with f a ≠ f b and g a ≠ g b forces the strict inequality, via lt_of_le_of_ne and the negated chebyshev_sum_eq_iff."
     },
     {
       "id": "monotone-form",
       "title": "Textbook Monotone Form",
-      "startLine": 58,
-      "endLine": 71,
+      "startLine": 55,
+      "endLine": 68,
       "summary": "chebyshev_sum_strict — for monotone f, g on a linearly ordered index with s nonempty, strict inequality whenever neither f nor g is constant, via the negated chebyshev_sum_eq_iff_const."
     },
     {
       "id": "strictmono-form",
       "title": "Strictly Monotone Specialisation",
-      "startLine": 72,
+      "startLine": 70,
       "endLine": 83,
       "summary": "chebyshev_sum_strict_strictMono — strictly monotone f, g over a set with at least two elements always give the strict inequality, extracting the varying pair from Finset.one_lt_card and StrictMono.injective."
     }
