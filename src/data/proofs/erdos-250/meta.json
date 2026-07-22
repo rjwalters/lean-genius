@@ -47,7 +47,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 188,
-    "assumptions": "2 axioms: sigma_series_summable, nesterenko_irrationality. 0 sorries.",
+    "assumptions": "2 axioms: sigma_series_summable, nesterenko_irrationality. 0 sorries. Trust caveat: the finite divisor-sum values sigma_one, sigma_two, sigma_three, sigma_four, sigma_six, sigma_twelve close by native_decide, adding the Lean.ofReduceBool compiler-trust axiom; these are finite computations, not the headline nesterenko_irrationality (which stays an explicit axiom, kernel-checked).",
     "theoremCount": 10,
     "definitionCount": 3
   },

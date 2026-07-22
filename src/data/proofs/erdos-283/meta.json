@@ -52,7 +52,7 @@
     ],
     "axiomCount": 2,
     "lineCount": 157,
-    "assumptions": "2 axioms: graham_theorem, alekseyev_theorem. 0 sorries.",
+    "assumptions": "2 axioms: graham_theorem, alekseyev_theorem. 0 sorries. Trust caveat: the finite examples egyptian_example_236, egyptian_example_2_4_6_12, alekseyev_example, and trivial_egyptian close by native_decide, adding the Lean.ofReduceBool compiler-trust axiom; these are finite demonstrations, not the headline graham_theorem/alekseyev_theorem (which stay explicit axioms, kernel-checked).",
     "theoremCount": 7,
     "definitionCount": 4
   },
