@@ -70,7 +70,7 @@
     "keyInsights": [
       "**Constructive smooth component:** $s_t(n)$ is defined as `(n.factors.filter (· < t)).prod`, not axiomatized — enabling fully proved core properties (divisibility, smoothness, positivity)",
       "**Erdős–Graham bound falls a log factor short:** The known $f(n,t) \\gg t/\\log t$ vs conjectured $f(n,t) \\gg t$ parallels the prime counting gap ($\\pi(t) \\sim t/\\log t$ vs $t$)",
-      "**Near-complete formalization:** Only 1 sorry (`smoothComponent_largest`) out of ~15 results; the coprime decomposition infrastructure is already in place",
+      "**Complete formalization:** all ~15 results are proved with no sorries (the previously sorry'd `smoothComponent_largest` is now fully proved and reused downstream); the coprime decomposition infrastructure is already in place",
       "**Uniform $\\forall n$ quantification:** The conjecture requires the bound for ALL starting points, not just typical ones — substantially stronger than an average-case statement",
       "**Smooth-rough decomposition as key tool:** The factorization $n = s_t(n) \\cdot r_t(n)$ where $\\gcd(s_t(n), r_t(n)) = 1$ underlies the maximality proof strategy"
     ],
