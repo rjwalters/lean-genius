@@ -57,6 +57,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring: proves Euler's triangle formula OI² = R² − 2Rr, where O is the circumcenter, I the incenter, R the circumradius and r the inradius; OI² ≥ 0 gives Euler's inequality R ≥ 2r. This is the open-question child oq-06-oq-01 of the Heron's-formula entry — the sibling oq-06 established Euler's inequality only in the side-length algebraic model, this file upgrades it to genuine geometry: O and I are honest points of a real inner-product space and OI² their honest squared Euclidean distance. Strategy: place O at the origin, let u=A−O, v=B−O, w=C−O (each of norm R), take I as the barycentric combination (aA+bB+cC)/(a+b+c), and prove the pure inner-product identity ‖au+bv+cw‖² = R²(a+b+c)² − abc(a+b+c) via polarization ⟪u,v⟫=R²−c²/2. Dividing by (a+b+c)² gives OI² = R² − abc/(a+b+c), then 2Rr = abc/(a+b+c) bridges to the named form.",
+      "mathContext": "$OI^2 = R^2 - \\dfrac{abc}{a+b+c} = R^2 - 2Rr$, obtained from the Gram expansion $\\|au+bv+cw\\|^2 = R^2(a+b+c)^2 - abc(a+b+c)$."
+    },
+    {
       "id": "inner-product-core",
       "title": "The Inner-Product Core",
       "startLine": 58,
