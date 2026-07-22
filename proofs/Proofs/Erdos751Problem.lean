@@ -116,7 +116,9 @@ of cycle lengths of `H` is contained in that of `G`. -/
 theorem cycleLengths_mono {G H : SimpleGraph V} [DecidableRel G.Adj]
     [DecidableRel H.Adj] (h : H ≤ G) : cycleLengths H ⊆ cycleLengths G := by
   rintro n ⟨v, c, hcyc, hlen⟩
-  exact ⟨v, c.mapLe h, (Walk.mapLe_isCycle h).mpr hcyc, by simpa using hlen⟩
+  refine ⟨v, c.mapLe h, (Walk.mapLe_isCycle h).mpr hcyc, ?_⟩
+  have hlm : (c.mapLe h).length = c.length := c.length_map (Hom.ofLE h)
+  rw [hlm]; exact hlen
 
 /-
 **Chromatic Number and Minimum Degree:**
