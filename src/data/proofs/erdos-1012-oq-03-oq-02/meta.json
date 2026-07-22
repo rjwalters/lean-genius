@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Directed Handshake Lemma and Tournament Score Sums",
+      "summary": "Module docstring: notes the companion file's Hamiltonicity theorems rest on degree-counting identities that were never stated there, and states this file's headline result — the directed handshake lemma ∑outDegree = arcCount = ∑inDegree — together with its tournament specializations (outDegree+inDegree=n−1, 2·arcCount=n(n−1), the Landau score-sum identity) and a pigeonhole averaging consequence used by Ghouila–Houri-style threshold arguments.",
+      "startLine": 1,
+      "endLine": 54,
+      "mathContext": "Directed handshake lemma: $\\sum_v \\mathrm{outDegree}(v) = \\mathrm{arcCount} = \\sum_v \\mathrm{inDegree}(v)$; for tournaments, $\\mathrm{outDegree}(v)+\\mathrm{inDegree}(v)=n-1$, $2\\cdot\\mathrm{arcCount}=n(n-1)$, and $2\\sum_v\\mathrm{outDegree}(v)=n(n-1)$ (Landau's identity)."
+    },
+    {
       "id": "definitions",
       "title": "§0: Digraph definitions",
       "startLine": 56,
