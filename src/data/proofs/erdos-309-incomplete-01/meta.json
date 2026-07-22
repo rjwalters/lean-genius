@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Axiom-Free Upper Bound F(N) ≤ log N + 2",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring: states Erdős Problem #309 (does F(N), the count of integers expressible as a sum of distinct unit fractions with denominators ≤ N, satisfy F(N) = o(log N)?), reports the known answer F(N) = Θ(log N) (Yokota, Croot), notes the parent file no longer builds under current Mathlib, and lists this self-contained file's four zero-axiom results culminating in the elementary bound F(N) ≤ log N + 2.",
+      "mathContext": "$F(N) \\le \\lfloor H_N \\rfloor + 1 \\le \\log N + 2$ via Mathlib's `harmonic_le_one_add_log`, where $H_N$ is the $N$-th harmonic number; this is the easy upper half of Erdős #309, the deep matching lower bound (Yokota) is not reproved here."
+    },
+    {
       "id": "definitions",
       "title": "Self-Contained Definitions",
       "startLine": 40,
