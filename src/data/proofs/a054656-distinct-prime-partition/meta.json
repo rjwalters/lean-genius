@@ -1,0 +1,55 @@
+{
+  "id": "a054656-distinct-prime-partition",
+  "slug": "a054656-distinct-prime-partition",
+  "title": "OEIS A054656: Primes Absent from Every Distinct-Prime Partition of n",
+  "status": "formalized",
+  "description": "For n ≥ 23, the primes p ≤ n absent from every partition of n into distinct primes are exactly {n−1, n−4, n−6} ∩ P. This first iteration machine-checks the elementary core — the residuals 1, 4, 6 are not sums of distinct primes, and the reduction 'p present in n ⟺ n−p is a distinct-prime sum avoiding p' — and scaffolds the seed-block / interval-extension / Bertrand-Ramanujan engine.",
+  "overview": "OEIS A054656 (created April 2000) is still labeled conjectural. Encoding a distinct-prime sum as a Finset of primes, the entry verifies (kernel `decide`, 0 sorries) that 1, 4 and 6 admit no distinct-prime representation, and proves the pivot reduction present_iff_residual_repr. The main theorem and the representability engine (seed block of ≥64 consecutive residuals, interval-extension, and the Ramanujan-prime induction) remain sorry pending a two-primes-in-(q,2q] lemma that Mathlib lacks.",
+  "conclusion": "The elementary core is machine-checked; the full theorem is not yet verified. Status is honestly `formalized` (4 sorries remain).",
+  "leanFile": {
+    "path": "Proofs/A054656DistinctPrimePartition.lean",
+    "sorries": 4,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-07-22",
+    "dateAdded": "2026-07-22",
+    "status": "formalized",
+    "badge": "formalized",
+    "proofRepoPath": "Proofs/A054656DistinctPrimePartition.lean",
+    "sorries": 4,
+    "axiomCount": 0,
+    "assumptions": "Main theorem A054656_main and the representability engine (seed_block, interval_extension, repr_of_ge_seven_ne) are stated as `sorry`. No `axiom` declarations and no structure-encoded assumptions. All verified lemmas use kernel `decide` (no native_decide, so no Lean.ofReduceBool dependency).",
+    "verifiedContributions": [
+      "not_repr_one / not_repr_four / not_repr_six — 1, 4, 6 are not sums of distinct primes (kernel decide, 0 sorries)",
+      "present_iff_residual_repr — the reduction: p occurs in a distinct-prime partition of n ⟺ p prime ∧ p ≤ n ∧ n−p is a sum of distinct primes avoiding p",
+      "le_of_mem_repr, repr_of_reprAvoiding, not_reprAvoiding_of_mem_exceptional — verified supporting lemmas"
+    ],
+    "deferred": [
+      "seed_block — ≥64 consecutive representable residuals from the nine primes ≤23 (decide/powerset enumeration)",
+      "interval_extension — extend a representable interval by an unused prime",
+      "repr_of_ge_seven_ne — every non-exceptional residual is representable avoiding p",
+      "A054656_main — the main theorem for n ≥ 23"
+    ],
+    "mathlibGap": "Mathlib has Bertrand (Nat.exists_prime_lt_and_le_two_mul) but no Ramanujan-prime result. The proof needs '(q,2q] contains ≥2 primes' (R₂=11); this two-primes strengthening must be built on top of Bertrand.",
+    "tags": [
+      "oeis",
+      "additive-number-theory",
+      "distinct-primes",
+      "partitions",
+      "bertrand",
+      "ramanujan-prime",
+      "research"
+    ]
+  },
+  "sections": [],
+  "crossReferences": [],
+  "references": [
+    "OEIS A054656 — https://oeis.org/A054656",
+    "GitHub issue #41831 (rjwalters/lean-genius)",
+    "Mathlib/NumberTheory/Bertrand.lean"
+  ]
+}
