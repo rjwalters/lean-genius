@@ -144,16 +144,16 @@
       "title": "Part VII: Connection to Egyptian Fractions",
       "startLine": 150,
       "endLine": 166,
-      "summary": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). The axiom problem_321_connection formalizes egyptianCount(q, N) ≤ S(N), linking to Erdős Problem #321 which asks about representation counts directly.",
-      "mathContext": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). The axiom problem_321_connection formalizes egyptianCount(q, N) ≤ S(N), linking to Erdős Problem #321 which asks about representation counts directly."
+      "summary": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). A comment notes the informal link egyptianCount(q, N) ≤ S(N) to Erdős Problem #321, but no axiom or theorem named problem_321_connection (or otherwise) formalizes this bound in the file.",
+      "mathContext": "Defines IsEgyptianFraction (A represents q as sum of distinct unit fractions) and egyptianCount (number of representations of q using {1,...,N}). A comment notes the informal link egyptianCount(q, N) ≤ S(N) to Erdős Problem #321, but no axiom or theorem formalizes this bound in the file."
     },
     {
       "id": "specific-values",
       "title": "Part VIII: Specific Values and Bounds",
       "startLine": 167,
       "endLine": 187,
-      "summary": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (derived from oeis_A072207 axiom). The axiom S_small asserts S(N) = 2^N for N ≤ 6. The axiom S_collisions asserts S(N) < 2^N for N ≥ 8. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom.",
-      "mathContext": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (all sorry — require Finset computation). The axiom S_small asserts S(N) = 2^N for N ≤ 6. The axiom S_collisions asserts S(N) < 2^N for N ≥ 8. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom."
+      "summary": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (derived from oeis_A072207 axiom via tuple projection, not sorry). Docstring comments (not axioms or theorems) note that S(N) = 2^N for N ≤ 7 (no collisions) and collisions occur for N ≥ 8; only the concrete N = 1,...,8 values are actually formalized, via the oeis_A072207 axiom. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom.",
+      "mathContext": "Individual theorems S_one = 2, S_two = 4, S_three = 8 (derived from oeis_A072207 axiom via tuple projection, not sorry). Docstring comments (not axioms or theorems) note that S(N) = 2^N for N ≤ 7 and collisions occur for N ≥ 8; only the concrete N = 1,...,8 values are actually formalized, via the oeis_A072207 axiom. The gap at N = 7: S(7) = 128 = 2^7 (no collision) is covered by the OEIS axiom."
     },
     {
       "id": "oeis-values",
@@ -176,7 +176,7 @@
       "title": "Part XI: Summary",
       "startLine": 219,
       "endLine": 232,
-      "summary": "The theorem erdos_320_summary is GENUINELY PROVED by extracting S(1) = 2, S(2) = 4, S(3) = 8, S(8) = 255 from oeis_A072207 via nested tuple projections. The status string records the OPEN problem with the known bound gap. Final tally: 2 sorries, 8 axioms. Genuinely proved theorems: bgms_improves_bleicher_erdos, first_collision, erdos_320_summary, S_pos, S_one, S_two, S_three.",
+      "summary": "The theorem erdos_320_summary is GENUINELY PROVED by extracting S(1) = 2, S(2) = 4, S(3) = 8, S(8) = 255 from oeis_A072207 via nested tuple projections. The status string records the OPEN problem with the known bound gap. Final tally: 0 sorries, 2 axioms. Genuinely proved theorems: bgms_improves_bleicher_erdos, first_collision, erdos_320_summary, S_pos, S_one, S_two, S_three.",
       "mathContext": "The theorem erdos_320_summary is GENUINELY PROVED by extracting S(1) = 2, S(2) = 4, S(3) = 8, S(8) = 255 from oeis_A072207 via nested tuple projections. The status string records the OPEN problem with the known bound gap."
     }
   ],
