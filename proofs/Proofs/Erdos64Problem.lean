@@ -455,16 +455,16 @@ theorem hasMinDegree_three_exists_even_cycle
       2 ≤ (p.takeUntil w hw).length →
       ∃ c : G.Walk v₀ v₀, c.IsCycle ∧ c.length = (p.takeUntil w hw).length + 1 := by
     intro w hw hadj h2
-    set q := p.takeUntil w hw with hq
-    refine ⟨Walk.cons hadj q.reverse, ?_, ?_⟩
+    refine ⟨Walk.cons hadj (p.takeUntil w hw).reverse, ?_, ?_⟩
     · rw [Walk.cons_isCycle_iff]
       refine ⟨(hp.takeUntil hw).reverse, ?_⟩
       intro hmem
       rw [Walk.edges_reverse, List.mem_reverse] at hmem
       -- an edge of a path through its start must be the first edge …
-      have hsnd : w = q.snd := (hp.takeUntil hw).eq_snd_of_mem_edges hmem
-      -- … but `w` is the endpoint of `q`, at index `q.length ≥ 2`
-      have h1 : q.getVert 1 = q.getVert q.length := by
+      have hsnd : w = (p.takeUntil w hw).snd := (hp.takeUntil hw).eq_snd_of_mem_edges hmem
+      -- … but `w` is the endpoint of the prefix, at index `≥ 2`
+      have h1 : (p.takeUntil w hw).getVert 1 =
+          (p.takeUntil w hw).getVert (p.takeUntil w hw).length := by
         rw [Walk.getVert_length]
         exact hsnd.symm
       have := (hp.takeUntil hw).getVert_injOn
