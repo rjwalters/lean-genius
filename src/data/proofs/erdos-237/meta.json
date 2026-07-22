@@ -118,7 +118,7 @@
     {
       "id": "chen-ding",
       "title": "Chen and Ding's Theorem",
-      "summary": "Axiomatizes chen_ding_2022: every infinite set has unbounded representation count. Derives erdos_conjecture_true by showing log-density implies infinitude (with one sorry for the Set.Infinite deduction from bounded intersection cardinality).",
+      "summary": "Axiomatizes chen_ding_2022: every infinite set has unbounded representation count. Derives erdos_conjecture_true by showing log-density implies infinitude; the Set.Infinite deduction from bounded intersection cardinality is proved in full (no remaining sorry).",
       "startLine": 105,
       "endLine": 158,
       "mathContext": "Chen-Ding (2022): resolved the conjecture. Every infinite $A \\subseteq \\mathbb{N}$ has $\\limsup f_A(n) = \\infty$."

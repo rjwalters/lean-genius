@@ -113,7 +113,7 @@
       "title": "The Möbius Decomposition Identity",
       "startLine": 206,
       "endLine": 269,
-      "summary": "States countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋². The proof is complete except for one sorry: the finite sum exchange (finite Fubini argument). All other steps use previously proved lemmas.",
+      "summary": "States countCoprimePairs(N) = Σ_{d≤N} μ(d)⌊N/d⌋². The proof is complete: the finite sum exchange (finite Fubini argument, discharged by Finset.sum_comm) and all other steps use previously proved lemmas.",
       "mathContext": "$|\\{(m,n)\\in[N]^2:\\gcd(m,n)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^2$ — the central combinatorial identity. The sum exchange counts triples $(m,n,d)$ with $1\\le m,n\\le N$ and $d|\\gcd(m,n)$."
     },
     {
