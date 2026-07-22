@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-20",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Sunflower Conjecture (Erd\u0151s Problem #20, \\$1000 prize): is the threshold $f(n,k)$ forcing a $k$-sunflower in an $n$-uniform family bounded by $c_k^n$? Traces the bound's history from Erd\u0151s\u2013Rado's original sunflower lemma through Alweiss\u2013Lovett\u2013Wu\u2013Zhang (2020) and Rao (2020).",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "A $k$-sunflower is a family of $k$ sets with identical pairwise intersections (the \"core\"); the current best bound $f(n,k) \\le (Ck\\log n)^n$ (Rao 2020) still carries a $\\log n$ factor the conjecture predicts can be removed entirely."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces; declares type variable $\\alpha$ with `DecidableEq`",
