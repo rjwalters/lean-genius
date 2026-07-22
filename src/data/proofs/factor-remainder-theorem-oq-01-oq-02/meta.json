@@ -102,6 +102,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Multiplicity Factor Theorem in All Characteristics",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States the gap the open question closes — the parent's multiplicity factor theorem (X−a)^k ∣ p ⟺ p(a)=p′(a)=⋯=p^{(k−1)}(a)=0 only holds in characteristic zero, since its proof divides by factorials; in positive characteristic ordinary derivatives can vanish identically (e.g. every derivative of X^p over ZMod p is 0), making the criterion false. This file proves the fix due to Hasse: replacing ordinary derivatives with the divided-power Hasse derivative (the Taylor coefficient without dividing by m!) gives (X−a)^k ∣ p ⟺ ∀ m < k, (hasseDeriv m p)(a) = 0, valid over an arbitrary commutative ring with no characteristic hypothesis, plus an explicit ZMod 2 witness showing the Hasse derivative correctly detects multiplicity where the ordinary derivative is blind.",
+      "mathContext": "$(X-a)^k \\mid p \\iff \\forall m<k,\\ (\\mathrm{hasseDeriv}\\,m\\,p)(a)=0$, valid over any commutative ring (vs. the ordinary-derivative criterion, which needs characteristic 0)."
+    },
+    {
       "id": "taylor-transfer",
       "title": "Section I: Divisibility Transfers Through the Taylor Shift",
       "startLine": 53,
