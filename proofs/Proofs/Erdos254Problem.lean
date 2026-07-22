@@ -145,13 +145,15 @@ axiom cassels_theorem :
 /-- The set of powers of 2: {1, 2, 4, 8, ...} -/
 def PowersOf2 : Set ℕ := {n | ∃ k, n = 2^k}
 
-/-- Powers of 2 satisfy the growth condition. -/
-axiom powers_of_2_growth :
-  HasGrowthCondition PowersOf2
-
-/-- Powers of 2 satisfy the irrationality condition. -/
-axiom powers_of_2_irrationality :
-  HasIrrationalityCondition PowersOf2
+/-
+Note. Powers of 2 do **not** satisfy the Erdős #254 hypotheses: they are far too
+sparse. Every dyadic interval `(x, 2x]` contains at most one power of 2, so the
+growth condition fails (`¬HasGrowthCondition PowersOf2` is provable); and at
+`θ = 1/2` the fractional distances `{θ·2^k}` vanish for all `k ≥ 1`, making the
+series summable, so the irrationality condition fails too. We therefore keep only
+the true statement about powers of 2 — that they represent every sufficiently
+large integer via binary expansion. (See issue #41263.)
+-/
 
 /-- Every sufficiently large n is a sum of distinct powers of 2 (binary representation). -/
 axiom powers_of_2_representation :
@@ -169,19 +171,18 @@ then every sufficiently large integer is a subset sum of A.
 
 Combines:
 1. Cassels's theorem under stronger hypotheses
-2. Powers of 2 as a concrete example satisfying all conditions
-3. Powers of 2 represent all sufficiently large integers
+2. Powers of 2 represent all sufficiently large integers (binary expansion)
+
+(Powers of 2 do **not** satisfy the growth/irrationality hypotheses — they are
+too sparse — so no such conjunct is claimed here. See issue #41263.)
 -/
 theorem erdos_254_summary :
     -- Cassels's theorem holds under stronger conditions
     (∀ A : Set ℕ, HasStrongGrowthCondition A →
       HasStrongIrrationalityCondition A → RepresentsAllLarge A) ∧
-    -- Powers of 2 satisfy both conditions
-    (HasGrowthCondition PowersOf2 ∧ HasIrrationalityCondition PowersOf2) ∧
-    -- Powers of 2 represent all large integers
+    -- Powers of 2 represent all large integers (binary expansion)
     RepresentsAllLarge PowersOf2 :=
   ⟨cassels_theorem,
-   ⟨powers_of_2_growth, powers_of_2_irrationality⟩,
    powers_of_2_representation⟩
 
 end Erdos254
