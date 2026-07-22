@@ -61,7 +61,7 @@
       "Hardy-Ramanujan and Erdős-Kac theorems on average/typical Ω(n)"
     ],
     "lineCount": 444,
-    "assumptions": "6 axioms: barreto_leeham_counterexample, threshold_dominates_loglog, romanoff_positive_density, and 3 more. See Lean source for complete statements.",
+    "assumptions": "6 axioms: barreto_leeham_counterexample, threshold_dominates_loglog, romanoff_positive_density, and 3 more. See Lean source for complete statements. Trust caveat: the concrete demonstrations — the 12 `bigOmega_*` values, `erdosCoveringModulus_val = 5592405`, the `pow2_mod_*` multiplicative-order computations, and the `not_prime_*` checks — are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these finite verifications support the covering-system illustration and do not feed the six axiomatized bounds.",
     "mathlib_version": "4.31.0",
     "theoremCount": 44,
     "definitionCount": 9
