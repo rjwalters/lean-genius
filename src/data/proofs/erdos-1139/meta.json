@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1139",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #1139: for the sequence $u_1 < u_2 < \\cdots$ of integers with at most 2 prime factors (with multiplicity), is $\\limsup (u_{k+1}-u_k)/\\log k = \\infty$?",
+      "startLine": 1,
+      "endLine": 24,
+      "mathContext": "The sequence of \"almost-primes\" (primes and semiprimes) includes $2,3,4,5,6,7,9,10,11,13,14,\\dots$, first excluding $8=2^3$; the question asks about the growth rate of gaps relative to $\\log k$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 25,
