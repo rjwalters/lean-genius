@@ -365,40 +365,40 @@ private theorem isSidonSet_0_1_4_6 : IsSidonSet {0, 1, 4, 6} := by
 /-- `h(0) = 1`: the only nonempty Sidon set in `{0}` is `{0}` itself. -/
 theorem sidonNumber_zero : sidonNumber 0 = 1 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) (one_le_sidonNumber 0)
-  by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
 
 /-- `h(1) = 2`, with optimal witness `{0,1}`. -/
 theorem sidonNumber_one : sidonNumber 1 = 2 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 2 = ({0, 1} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 1 := sidonNumber_ge_card (by decide) isSidonSet_0_1
 
 /-- `h(2) = 2`: `{0,1,2}` fails (`0+2 = 1+1`), so `{0,1}` is still optimal. -/
 theorem sidonNumber_two : sidonNumber 2 = 2 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 2 = ({0, 1} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 2 := sidonNumber_ge_card (by decide) isSidonSet_0_1
 
 /-- `h(3) = 3`, with optimal witness `{0,1,3}`. -/
 theorem sidonNumber_three : sidonNumber 3 = 3 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 3 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
 
 /-- `h(4) = 3`: six distinct differences cannot fit in `{1,…,4}`, so `{0,1,3}` stays optimal. -/
 theorem sidonNumber_four : sidonNumber 4 = 3 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 4 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
 
 /-- `h(5) = 3`: still no room for a 4-element Sidon set (`4·3 = 12 > 10 = 2·5`). -/
 theorem sidonNumber_five : sidonNumber 5 = 3 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 5 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
 
@@ -406,7 +406,7 @@ theorem sidonNumber_five : sidonNumber 5 = 3 := by
 differences `1,2,3,4,5,6` exhaust `{1,…,6}`. -/
 theorem sidonNumber_six : sidonNumber 6 = 4 := by
   refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
-  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · by_contra hc; rw [not_le] at hc; nlinarith [hm, hc]
   · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 6 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
 
