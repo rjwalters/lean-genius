@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-334",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #334 on smooth-number representation: find the best $f(n)$ such that every $n=a+b$ with both $a,b$ being $f(n)$-smooth (no prime factor exceeding $f(n)$). Erd\u0151s originally asked if $f(n) \\le n^{1/3}$; Balog (1989) proved $f(n) \\ll n^{4/(9\\sqrt e)+\\varepsilon} \\approx n^{0.2695}$.",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "Conjectured sharper bounds range down to $f(n) \\le n^{o(1)}$ or even $f(n) \\le e^{O(\\sqrt{\\log n})}$, per Green's Open Problems List (Problem 59)."
+    },
+    {
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
       "summary": "isSmooth definition, one_smooth, prime_power_smooth, smooth_mul",
