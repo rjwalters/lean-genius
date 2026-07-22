@@ -81,6 +81,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Kolmogorov Complexity and Shannon Entropy Connection", "startLine": 1, "endLine": 33, "summary": "Formalizes the link H(X) ≈ E[K(X)] + O(1) between algorithmic (Kolmogorov) and information-theoretic (Shannon) notions of information for computable distributions, via Kraft's inequality (lower bound, from prefix-freeness of Kolmogorov descriptions) and Shannon coding (upper bound, from an optimal code achieving near-optimal lengths).", "mathContext": "Kolmogorov complexity K(x) is the length of the shortest program producing x; Kraft's inequality constrains any prefix-free code's length distribution, and combining both bounds pins the gap between expected complexity and Shannon entropy to a constant, the classical algorithmic-information-theory result of Chaitin/Kolmogorov."},
     {
       "id": "kolmogorov-axioms",
       "title": "Axiomatized Kolmogorov Complexity",
