@@ -28,7 +28,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: borsuk_ulam_general (Borsuk-Ulam theorem for n≥1). Former axioms no_retraction, brouwer_fixed_point, lusternik_schnirelmann proved from BU; ham_sandwich_general, odd_map_odd_degree converted to theorems.",
+    "assumptions": "1 axiom: borsuk_ulam_general (Borsuk-Ulam theorem for n≥1). Former axioms no_retraction, brouwer_fixed_point, lusternik_schnirelmann proved from BU; ham_sandwich_general, odd_map_odd_degree converted to theorems. Trust caveat: tverberg_6_fails use native_decide (Lean.ofReduceBool), so #print axioms lists Lean.ofReduceBool — a finite table lookup (tverbergStatusByR 6 = disproved), not the headline result, which rests on the axiom(s) above and stays kernel-checked.",
     "mathlibDependencies": [
       {
         "theorem": "intermediate_value_Icc",
