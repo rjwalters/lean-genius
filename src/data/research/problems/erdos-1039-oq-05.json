@@ -2,7 +2,7 @@
   "slug": "erdos-1039-oq-05",
   "title": "How does ρ(f) relate to the transfinite diameter of the root set and to the logarithmic capacity of the lemniscate complement?",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -53,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21): the general roots-of-unity lower bound d_n >= n^(1/(n-1)) is PROVED (0-axiom, #40737), yielding d = lim_n d_n >= 1 and pinning d into [1,2] (transfiniteDiameter_mem_Icc_one_two). ALSO (researcher-1-6): the transformation laws — scaling covariance discreteDiameter_smul (dₙ(cZ)=‖c‖·dₙ(Z)) and translation invariance discreteDiameter_add_const, plus their spreadProduct forms, general over all n/configs (0-axiom). Remaining: the sharp value d=1 (log capacity) needs the Fekete-Szego extremal UPPER bound (deep). Parent Erdos #1039 OPEN.",
+    "progressSummary": "Elementary transfinite-diameter (Fekete-points) program for the unit-disc capacity is COMPLETE and 0-axiom: discrete spread product, Fekete monotonicity + monotone-limit structure, exact d2=2, lower bounds d3>=sqrt3 / d4>=4^(1/3) / general dn>=n^(1/(n-1)) via roots of unity, d in [1,2], and asymptotic sharpness ->1. Only the DEEP sharp value d=1 (Fekete-Szego / logarithmic capacity) and the parent conjecture rho(f)>>1/n remain, both out of the elementary scope.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -111,12 +111,8 @@
       "General d_n >= n^(1/(n-1)) crux spreadProduct(nth roots of unity) = n^(n/2): Mathlib HAS the pieces -- X_pow_sub_C_eq_prod (X^n-1 = prod (X - zeta^i)), eval_multiset_prod_X_sub_C_derivative (prod_{j!=k}(r-a) = eval r of derivative), Complex.isPrimitiveRoot_exp. To build locally: the off-diagonal <-> spreadProduct^2 identity prod_i prod_{j!=i} norm(z i - z j) = spreadProduct^2 (via Finset.prod_comm on Iio/Ioi + norm_sub_rev)."
     ],
     "nextSteps": [
-      "Package d(disc) = ⨅ₙ transfiniteDiameterN n and show the sequence converges to it (Antitone + BddBelow ⟹ Tendsto to iInf).",
-      "Define logarithmic capacity of the lemniscate complement and axiomatize cap=1 normalization for monic f (Fekete–Szegő).",
-      "State ρ(f) ≳ g(d(Z),cap) as theorems/axioms citing Pommerenke/KLR.",
-      "Bridge spreadProduct to Erdos1039Problem.UnitDiscPolynomial.roots (needs Docker).",
-      "Upper bound d₃ ≤ √3 (Fekete–Szegő extremal: maximise product of pairwise distances of 3 points in closed unit disc — equilateral triangle on boundary is extremal). This closes d₃ = √3 exactly.",
-      "GENERAL LOWER BOUND d_n >= n^(1/(n-1)) (item-1 structural: gives d = lim_n d_n >= 1 = logarithmic capacity of the disc). Route fully scoped: (1) zeta = Complex.isPrimitiveRoot_exp n, z k = zeta^k, injective; (2) X_pow_sub_C_eq_prod: X^n-1 = prod_{i in range n}(X - zeta^i); (3) eval_multiset_prod_X_sub_C_derivative at zeta^k with derivative(X^n-1) = n*X^(n-1) gives prod_{j!=k}(zeta^k - zeta^j) = n*(zeta^k)^(n-1), norm = n; (4) off-diagonal identity prod_k prod_{j!=k} norm(z k - z j) = spreadProduct^2 (univ.erase i = Iio i union Ioi i disjoint, Finset.prod_comm to swap Iio<->Ioi, norm_sub_rev) gives spreadProduct = n^(n/2); (5) discreteDiameter = (n^(n/2))^(2/(n(n-1))) = n^(1/(n-1)), le_csSup. Est ~200 lines, 0-axiom."
+      "STAND DOWN — scoped elementary transfinite-diameter program COMPLETE (d2=2, d3>=sqrt3, d4>=4^(1/3), general dn>=n^(1/(n-1)), d in [1,2], asymptotic sharpness (m+2)^(1/(m+1))->1 in Erdos1039TransfiniteDiameter.lean, all 0-axiom; PRs incl #41094).",
+      "DEEP-BLOCKED: sharp d=1 (= logarithmic capacity of unit disc) and exact dn for n>=3 both need Fekete-Szego extremality / potential theory absent from Mathlib. Per-n enumeration (d3, d5, d6, ...) is enumeration theater — do NOT attempt. Reopen only if Mathlib gains capacity/Fekete-Szego API."
     ],
     "markdown": "# Knowledge Base: erdos-1039-oq-05\n\nInsights accumulated during research on relating ρ(f) to transfinite diameter and logarithmic capacity.\n\n---\n\n## Problem Understanding\n\nρ(f) is the inscribed-disc radius of the lemniscate interior {|f|<1}. The lemniscate {|f|=1} is the level-1 curve of the Green's function of the complement, so ρ(f) is potential-theoretic. Two capacity-type invariants attach to f: the transfinite diameter d of the root multiset, and the logarithmic capacity of {|f|≥1}.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
