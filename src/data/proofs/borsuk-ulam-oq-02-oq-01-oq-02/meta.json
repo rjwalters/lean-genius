@@ -90,6 +90,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Prime-Localization of Freeness for Cyclic Representations",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States the parent open question — do composite cyclic groups admit exotic representations with strictly higher equivariant Borsuk–Ulam dimension than any prime subgroup detects? Answers no in the free-action regime: a complex Z/n-representation, recorded by rotation weights a : Fin m → ℕ, acts freely on its sphere iff each weight is a unit mod n, and restriction to the order-p subgroup sends a weight to its residue mod p, so freeness is free iff no weight is divisible by p — hence freeness localizes entirely to the primes dividing n and composite groups gain nothing beyond their prime subgroups.",
+      "mathContext": "The freeness obstruction for a $\\mathbb{Z}/n$-representation with weights $a$ is $\\gcd(a_i,n)=1$ for all $i$, which by $\\mathrm{coprime\\_iff\\_forall\\_prime\\_dvd}$ splits as $\\forall p \\mid n$ prime, $p \\nmid a_i$ — freeness at $n$ is exactly the conjunction of freeness at each prime divisor."
+    },
+    {
       "id": "nt-core",
       "title": "Number-theoretic core: prime localization of coprimality",
       "startLine": 53,
