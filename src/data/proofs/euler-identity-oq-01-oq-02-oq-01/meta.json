@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Euler's Formula from the Taylor Series as Definitions",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the open question — reverse the parent chain's foundational dependency by taking the Maclaurin series for sin and cos as the definitions of the trigonometric functions, then proving Euler's exponential formula e^{ix} = cos x + i sin x from them. This file defines cosSeries/sinSeries by their series and derives Euler's formula directly from the exponential series e^w = Σ wⁿ/n! by regrouping the sum over ℕ into even- and odd-indexed parts (via Nat.divModEquiv 2 and HasSum.prod_fiberwise), splitting e^{iz} into cosSeries z + i·sinSeries z without ever appealing to the value of Complex.cos in the core derivation; Mathlib's cosine is invoked only at the end to identify the series-definitions with the standard functions and recover e^{iπ} = −1. 0 axioms, 0 sorries.",
+      "mathContext": "$e^{iz} = \\sum_n (iz)^n/n! = \\sum_k (iz)^{2k}/(2k)! + \\sum_k (iz)^{2k+1}/(2k+1)! = \\mathrm{cosSeries}(z) + i\\,\\mathrm{sinSeries}(z)$, by even/odd regrouping of the exponential series."
+    },
+    {
       "id": "definitions",
       "title": "Section I: cos and sin as Maclaurin Series",
       "startLine": 45,
