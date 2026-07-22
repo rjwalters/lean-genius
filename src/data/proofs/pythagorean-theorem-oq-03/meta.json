@@ -92,6 +92,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The Pythagorean theorem in hyperbolic and spherical geometry",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "The Pythagorean law generalizes to non-Euclidean geometries: spherical right triangles satisfy cos(c/R) = cos(a/R)·cos(b/R), hyperbolic ones satisfy cosh(c) = cosh(a)·cosh(b), and both reduce to a^2+b^2=c^2 as curvature κ → 0 via the Taylor expansions of cos and cosh. Right triangles in each geometry are axiomatized via their side-length law, with structural properties (symmetry, degeneracy, monotonicity) and the flat-limit connection proved via derivatives."
+    },
+    {
       "id": "hyperbolic-pythagorean",
       "title": "Hyperbolic Pythagorean Theorem",
       "startLine": 49,
