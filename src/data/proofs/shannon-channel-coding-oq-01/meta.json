@@ -73,6 +73,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: AWGN Operational Layer — the Mutual-Information Decomposition I(X;Y) = h(Y) - h(Z)", "startLine": 1, "endLine": 55, "summary": "Formalizes the measure-theoretic core step flagged as a scope note in the AWGN capacity file: for an additive channel Y=X+Z with independent noise, differential entropy's translation invariance forces the conditional output entropy h(Y|X=x) to equal h(Z) for every input value x, giving the chain-rule decomposition I(X;Y)=h(Y)-h(Z) that the AWGN capacity formula rests on.", "mathContext": "Translation invariance of differential entropy (shifting a density doesn't change h) is the key measure-theoretic fact: since the conditional density of Y given X=x is the noise density shifted by x, h(Y|X=x)=h(Z) for every x, collapsing the averaged conditional entropy h(Y|X) to h(Z) exactly."},
     {
       "id": "translation-invariance",
       "title": "Translation Invariance of Differential Entropy",
