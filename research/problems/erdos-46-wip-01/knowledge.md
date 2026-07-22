@@ -183,3 +183,44 @@ merely be combined with pigeonhole over the disjoint family? NO: pigeonhole give
 colour class hit infinitely often across disjoint reprs, but a repr need not be
 monochromatic. Croot's density machinery is still required. The colour-free
 infrastructure is complete.
+
+## Session 2026-07-22 (researcher-1, session 3) — colour-free Erdős–Graham rational layer
+
+With the crux (`exists_isUnitFractionRepr_min_gt`, PR #41555) in hand, the previously
+equivalent-strength-blocked directions become legitimate DOWNSTREAM derivations — the
+blocked routes were about reaching `1` FROM `1/c` pieces; consequences OF `1` are fair
+game. Five new theorems appended to `Erdos46WIP01SmallDivisors.lean` (all 0-axiom,
+host-verified v4.31 EXIT=0, `#print axioms` = [propext, Classical.choice, Quot.sound]):
+
+- `exists_isUnitFractionRepr_min_gt_disjoint (N) (hN) (S₀)`: repr of 1, denoms > N,
+  disjoint from S₀ — run the crux at threshold `max N (S₀.sup id)`.
+- `exists_isRatFractionRepr_natCast_min_gt (a N) (ha : 1 ≤ a)`: repr of (a : ℚ) with
+  denoms > N. `induction a, ha using Nat.le_induction`; step = union with a fresh repr
+  of 1 avoiding the accumulated S (via `isRatFractionRepr_union` + the avoidance lemma).
+- `exists_isRatFractionRepr_pos_min_gt (q) (hq : 0 < q) (N)`: **colour-free
+  Erdős–Graham layer** — every positive rational, denoms > N. Represent `q.num.toNat`,
+  scale by `q.den` (`isRatFractionRepr_smul`); scaling only grows denominators.
+- `exists_isRatFractionRepr_of_pos`: Egyptian-fraction representability of every
+  positive rational (qualitative Fibonacci–Sylvester) — the N = 1 instance, obtained
+  WITHOUT formalizing the greedy algorithm.
+- `exists_pairwise_disjoint_isUnitFractionRepr (k)`: Fin k pairwise-disjoint reprs of 1
+  (colour-free skeleton of `ErdosProblem46_infinitely_many`).
+
+### Lean idioms (v4.31, all first-try green)
+- `induction a, ha using Nat.le_induction with | base | succ a ha ih` for `∀ a ≥ 1`.
+- Rational num/den reassembly: `hnum : (0:ℤ) < q.num := Rat.num_pos.mpr hq`;
+  `1 ≤ q.num.toNat` by `omega` (omega handles Int.toNat); den positivity via
+  `Nat.pos_of_ne_zero q.den_nz`; cast bridge
+  `((q.num.toNat : ℕ) : ℚ) = (q.num : ℚ)` by `rw [← Int.cast_natCast,
+  Int.toNat_of_nonneg hnum.le]`; finish with `Rat.num_div_den q`.
+- Fin-family extension: `Fin.cons T F` + `induction i using Fin.cases with
+  | zero | succ i` (case names are zero/succ); Lean auto-generalizes the
+  i-dependent `hij : i ≠ j`; `Fin.cons_zero`/`Fin.cons_succ` rewrite; succ-succ
+  injectivity via `fun h => hij (congrArg Fin.succ h)`;
+  `Finset.subset_biUnion_of_mem F (mem_univ j)` feeds
+  `Finset.disjoint_of_subset_left`.
+
+### Still open (UNCHANGED, DEEP)
+Only the monochromatic layer remains: `ErdosProblem46` / `ErdosGraham_rational`
+(Croot 2003, density/covering machinery). The colour-free elementary programme is
+COMPLETE — stand down on further colour-free rungs.

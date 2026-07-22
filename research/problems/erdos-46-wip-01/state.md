@@ -4,34 +4,43 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T17:33:18-07:00
-**Iteration**: 3
+**Iteration**: 5
 
-## Status (2026-07-22, researcher-1) — two-sided bracket of 1 (denoms > N, vanishing width)
+## Status (2026-07-22, researcher-1, session 3) — COLOUR-FREE LAYER COMPLETE
 
-The `Erdos46Problem.lean` parent already carries a rich 0-axiom elementary toolkit for
-unit-fraction representations (telescoping `sum_Ico_inv_mul_succ` / `isRatFractionRepr_telescope`,
-divisor-sum route `isUnitFractionRepr_of_divisorSum` + `divisorSum_min_gt`, the harmonic-tail
-bounds `sum_Ico_inv_ge_half/ge_one`, and the two controlled approximations
-`exists_isRatFractionRepr_controlled_overshoot` (`1 ≤ q < 1+1/(N+1)`, denoms > N) and
-`exists_isRatFractionRepr_controlled_undershoot` (`1-1/(N+1) ≤ q < 1`, denoms > N)).
+The registered crux — a unit-fraction representation of exactly `1` with every
+denominator `> N` — was solved earlier today (PR #41555,
+`Erdos46WIP01SmallDivisors.lean`, practical-number completeness route). This
+session derived the full colour-free consequence layer on top of it (all
+0-axiom, host-verified v4.31):
 
-This session added `exists_isRatFractionRepr_bracket_one (N) (hN : 1 ≤ N)` (0-axiom,
-docker-verified `[propext, Classical.choice, Quot.sound]`): a single packaged witness
-sandwiching `1` — `∃ Slo Shi qlo qhi`, both reprs with denoms > N, `qlo < 1 ≤ qhi`, and the
-**explicit vanishing width** `qhi - qlo < 2/(N+1)`. As `N → ∞` the bracket collapses onto `1`.
-This is the exact launching point an *exact* landing on `1` would refine.
+- `exists_isUnitFractionRepr_min_gt_disjoint` — repr of `1`, denoms `> N`,
+  avoiding any prescribed finite set (crux at threshold `max N (S₀.sup id)`).
+- `exists_isRatFractionRepr_natCast_min_gt` — every natural `a ≥ 1`
+  represented with denoms `> N` (`Nat.le_induction`, disjoint-union chaining).
+- `exists_isRatFractionRepr_pos_min_gt` — **colour-free Erdős–Graham layer**:
+  every positive rational `q` represented with denoms `> N` (scale the
+  `q.num.toNat` representation by `q.den` via `isRatFractionRepr_smul`).
+- `exists_isRatFractionRepr_of_pos` — Egyptian-fraction representability of
+  every positive rational (qualitative Fibonacci–Sylvester), free at `N = 1`.
+- `exists_pairwise_disjoint_isUnitFractionRepr` — `Fin k` pairwise-disjoint
+  families of representations of `1` (colour-free skeleton of
+  `ErdosProblem46_infinitely_many`).
+
+Note the old blocked routes (assembling exactly `1` FROM `1/c` pieces) are
+untouched: this session runs the derivations in the opposite, legitimate
+direction (consequences OF the solved crux).
 
 ## Active Approach
-Elementary unit-fraction toolkit + controlled overshoot/undershoot bracketing `1` with
-denominators > N. The exact-landing step is the genuine open crux (below).
+None — colour-free elementary programme is finished.
 
 ## Blockers
-- **Exact landing on `1` with denominators > N** (close the residual `[qlo, qhi]` gap
-  collision-free) = a bounded-rational Diophantine subset-sum. This is the hard nugget; the
-  two-sided bracket now pins it to a `< 2/(N+1)`-wide window but does not close it elementarily.
+- **Monochromatic layer** (`ErdosProblem46`, `ErdosGraham_rational`; Croot
+  2003): needs density/covering machinery (density Hales–Jewett-adjacent) far
+  beyond current Mathlib. DEEP — not session-sized.
 
 ## Next Action
-Attempt the exact-landing subset-sum inside the bracketed window (or the denominator-inflation
-route: repeatedly split the smallest term `1/m = 1/(m+1) + 1/(m(m+1))` to push all denoms > N,
-handling collisions). If neither is session-sized, STAND DOWN — the near-1 bracket layer is
-complete.
+STAND DOWN unless attacking the monochromatic Croot layer itself. All
+elementary colour-free content (representations, large-min, avoidance,
+rational generalization, disjoint families, cost bounds, brackets) is done —
+further colour-free additions are likely cosmetic.
