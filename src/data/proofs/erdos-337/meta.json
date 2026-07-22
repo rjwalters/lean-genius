@@ -61,10 +61,8 @@
       "erdos_conjecture_false: proved theorem with contradiction argument",
       "generalizedConjecture: h-fold version",
       "ruzsa_turjanyi_generalization: h-fold also fails",
-      "scaledSumsetRatio: 3-fold scaled version",
-      "ruzsa_turjanyi_positive: scaled 3-fold version is true",
+      "scaledSumsetRatio: DEFINES the 3-fold scaled ratio |3A ∩ [1,3N]|/|A ∩ [1,N]| (positive result stated informally in prose, not proved)",
       "scaledConjecture: open 2-fold scaled version",
-      "plunnecke_ruzsa: upper bound context",
       "erdos_337_summary: summary combining all results"
     ],
     "dateAdded": "2026-01-19",
@@ -158,7 +156,7 @@
       "title": "Positive Result: Scaled Version",
       "startLine": 165,
       "endLine": 182,
-      "summary": "`scaledSumsetRatio` and `ruzsa_turjanyi_positive`: $|3A \\cap [1,3N]|/|A \\cap [1,N]| \\to \\infty$ IS true for sparse bases",
+      "summary": "`scaledSumsetRatio` DEFINES the 3-fold scaled ratio $|3A \\cap [1,3N]|/|A \\cap [1,N]|$; the positive result that it $\\to \\infty$ for sparse bases is stated informally in prose, not formalized as a theorem",
       "mathContext": "Ruzsa-Turjanyi positive: $|3A \\\\cap [1,3N]| / |A \\\\cap [1,N]| \\\\to \\\\infty$ for any sparse basis. Three-fold sumsets always grow relative to the basis."
     },
     {
@@ -174,7 +172,7 @@
       "title": "Why the Conjecture Fails",
       "startLine": 205,
       "endLine": 227,
-      "summary": "`construction_insight`: collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion",
+      "summary": "Prose commentary (no Lean declaration): collisions in $A+A$ limit growth; sparsity alone is insufficient for sumset expansion",
       "mathContext": "Collisions in $A+A$ limit growth: if $a_1+b_1 = a_2+b_2$ frequently, the sumset can be nearly as sparse as $A$. Turjanyi constructs $A$ with maximal collision rate."
     },
     {
@@ -182,7 +180,7 @@
       "title": "Plünnecke-Ruzsa Context",
       "startLine": 228,
       "endLine": 248,
-      "summary": "`plunnecke_ruzsa`: $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios",
+      "summary": "Prose commentary (no Lean declaration): $|hA| \\leq |A|^h$ gives upper bounds but no lower bounds; the gap allows bounded ratios",
       "mathContext": "Plunnecke-Ruzsa: $|hA| \\\\leq |A+A|^h / |A|^{h-1}$. Gives upper bounds on sumset growth but no lower bounds for the ratio question."
     },
     {
