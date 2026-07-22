@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring: the parent FourierSeriesOQ04.lean models the n-torus as Fin n → ℝ and leaves the Fourier coefficient as a placeholder (fourierCoeff := 0). Its OQ-04 asks whether the placeholder can be implemented via Mathlib's integration and Haar measure on compact groups, suggesting Fin n → AddCircle (1 : ℝ) with the product Haar measure. This file follows that path exactly: it builds the n-dimensional character e_k(x) = ∏ᵢ eᵢ(xᵢ) from Mathlib's fourier : ℤ → C(AddCircle T, ℂ), defines the genuine coefficient f̂(k) = ∫ f(x)·conj(e_k(x)) dHaar, and proves the character is a unimodular group homomorphism ℤⁿ → ℂˣ plus linearity of the coefficient.",
+      "mathContext": "$\\hat f(k) = \\int_{T^n} f(x)\\,\\overline{e_k(x)}\\,d\\mathrm{Haar}$, replacing the parent's placeholder $\\text{fourierCoeff} := 0$."
+    },
+    {
       "id": "definitions",
       "title": "Section I: The Genuine Character and Coefficient",
       "startLine": 43,
