@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Tight Collision Asymptotics for the Birthday Problem",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "States the file formalizes the exponential approximation P(collision) >= 1 - exp(-k(k-1)/(2d)) from the classical inequality 1 - x <= exp(-x) applied factor-by-factor to the product formula P(all distinct) = prod_{i<k}(1 - i/d). Lists the key results: the general product formula, the fundamental inequality, the exponential upper bound on P(all distinct), the collision lower bound, a threshold formula k(k-1) > 2d*ln(1/(1-p)), and numerical consistency with the classical 23-person threshold. Notes the historical use of this bound in cryptographic birthday attacks.",
+      "mathContext": "$1-x\\le e^{-x}$ applied to $P(\\text{all distinct})=\\prod_{i<k}(1-i/d)$ gives $P(\\text{collision})\\ge 1-e^{-k(k-1)/(2d)}$."
+    },
+    {
       "id": "definitions",
       "title": "Probability Definitions",
       "startLine": 60,
