@@ -696,4 +696,97 @@ theorem hasGrowthLimit_of_between_quadratic (b : ℕ → ℕ) (c : ℕ)
   hasGrowthLimit_of_le_of_le hlo hhi (hasGrowthLimit_quadratic c)
     (hasGrowthLimit_quadratic c)
 
+/-! ## Order and algebra of the growth-limit functional
+
+Beyond uniqueness (`HasGrowthLimit.unique`) and the squeeze principle
+(`hasGrowthLimit_of_le_of_le`), the growth limit behaves as a well-structured
+functional on enumerations:
+
+* it is **monotone** — an eventually-pointwise-smaller enumeration has a
+  smaller (or equal) growth limit (`HasGrowthLimit.mono`).  Together with
+  uniqueness and the squeeze this makes `{unique, monotone, squeeze}` a complete
+  order-theoretic toolkit for reasoning about the limit;
+* it is **linear under scaling** — multiplying every term by a constant `c`
+  scales the limit by `c` (`HasGrowthLimit.const_mul`); and
+* **non-convergence is a tail invariant** (`hasNoGrowthLimit_congr'`), the dual
+  of `hasGrowthLimit_congr'` — so, exactly as for the convergent case, a
+  sub-basis may be modified on a finite prefix without affecting whether its
+  `bₖ/k²` oscillates.
+
+All results are `0`-axiom. -/
+
+/-- **Monotonicity of the growth limit.**  If `a k ≤ b k` holds eventually and
+both enumerations have growth limits, the limits are ordered the same way:
+`x ≤ y`.  Pointwise domination of the numerators passes to the ratios
+(`growthRatio_mono`) and then, in the limit, to the coefficients. -/
+theorem HasGrowthLimit.mono {a b : ℕ → ℕ} {x y : ℝ}
+    (hab : ∀ᶠ k in atTop, a k ≤ b k) (ha : HasGrowthLimit a x)
+    (hb : HasGrowthLimit b y) : x ≤ y := by
+  have hle : ∀ᶠ k in atTop, growthRatio a k ≤ growthRatio b k := by
+    filter_upwards [hab] with k hk using growthRatio_mono hk
+  exact le_of_tendsto_of_tendsto ha hb hle
+
+/-- **The growth limit scales linearly.**  Multiplying every term of the
+enumeration by a constant `c` multiplies the growth ratio, hence the limit, by
+`c`: from `HasGrowthLimit b x` we get `HasGrowthLimit (c·b) (c·x)`.  The `c = 0`
+case gives the constant-`0` enumeration with limit `0`, and `c = 1` is the
+identity. -/
+theorem HasGrowthLimit.const_mul {b : ℕ → ℕ} {x : ℝ} (h : HasGrowthLimit b x)
+    (c : ℕ) : HasGrowthLimit (fun k => c * b k) ((c : ℝ) * x) := by
+  have hgr : ∀ k, growthRatio (fun k => c * b k) k = (c : ℝ) * growthRatio b k := by
+    intro k; unfold growthRatio; push_cast; ring
+  exact Filter.Tendsto.congr (fun k => (hgr k).symm) (Filter.Tendsto.const_mul (c : ℝ) h)
+
+/-- **Non-convergence is a tail invariant.**  If two enumerations agree
+eventually then one has *no* growth limit iff the other does — the
+non-convergent dual of `hasGrowthLimit_congr'`.  This is what lets a sub-basis
+construction ignore any finite prefix when arranging `bₖ/k²` to oscillate. -/
+theorem hasNoGrowthLimit_congr' {b b' : ℕ → ℕ} (h : b =ᶠ[atTop] b') :
+    HasNoGrowthLimit b ↔ HasNoGrowthLimit b' := by
+  unfold HasNoGrowthLimit
+  refine ⟨fun H x hx => H x ((hasGrowthLimit_congr' h).mpr hx),
+    fun H x hx => H x ((hasGrowthLimit_congr' h).mp hx)⟩
+
+/-! ## A two-parameter oscillating family
+
+The single oscillating example (`oscillating`, coefficients `1` and `2`)
+generalises to an enumeration `oscPair c₁ c₂` whose quadratic coefficient
+alternates between *any* two naturals `c₁` (even indices) and `c₂` (odd
+indices).  Whenever `c₁ ≠ c₂` it realizes `HasNoGrowthLimit`, so the full
+integer spectrum of coefficient gaps is attainable — not just the `{1,2}` gap.
+`oscillating` is the instance `oscPair 1 2`. -/
+
+/-- An enumeration whose quadratic coefficient alternates between `c₁` (even
+indices) and `c₂` (odd indices): `bₖ = c₁·k²` for even `k`, `c₂·k²` for odd. -/
+def oscPair (c₁ c₂ : ℕ) (k : ℕ) : ℕ := (if k % 2 = 0 then c₁ else c₂) * k ^ 2
+
+/-- On even indices the two-parameter oscillating growth ratio is `c₁`. -/
+theorem growthRatio_oscPair_even (c₁ c₂ m : ℕ) :
+    growthRatio (oscPair c₁ c₂) (2 * m + 2) = (c₁ : ℝ) := by
+  have hval : oscPair c₁ c₂ (2 * m + 2) = c₁ * (2 * m + 2) ^ 2 := by
+    unfold oscPair; rw [if_pos (show (2 * m + 2) % 2 = 0 from by omega)]
+  exact growthRatio_eq (oscPair c₁ c₂) c₁ (2 * m + 2) (by omega) hval
+
+/-- On odd indices the two-parameter oscillating growth ratio is `c₂`. -/
+theorem growthRatio_oscPair_odd (c₁ c₂ m : ℕ) :
+    growthRatio (oscPair c₁ c₂) (2 * m + 1) = (c₂ : ℝ) := by
+  have hval : oscPair c₁ c₂ (2 * m + 1) = c₂ * (2 * m + 1) ^ 2 := by
+    unfold oscPair; rw [if_neg (show ¬ (2 * m + 1) % 2 = 0 from by omega)]
+  exact growthRatio_eq (oscPair c₁ c₂) c₂ (2 * m + 1) (by omega) hval
+
+/-- **The two-parameter oscillating enumeration has no growth limit whenever
+`c₁ ≠ c₂`.**  Its growth ratio equals the constant `c₁` on the (cofinal) even
+indices and `c₂` on the odd ones, so the two-subsequence criterion applies with
+distinct limits.  Generalises `hasNoGrowthLimit_oscillating` (the `c₁ = 1`,
+`c₂ = 2` case) to every pair of distinct coefficients. -/
+theorem hasNoGrowthLimit_oscPair {c₁ c₂ : ℕ} (h : c₁ ≠ c₂) :
+    HasNoGrowthLimit (oscPair c₁ c₂) := by
+  refine hasNoGrowthLimit_of_two_subseq_limits
+    (φ := fun m => 2 * m + 2) (ψ := fun m => 2 * m + 1)
+    (L := (c₁ : ℝ)) (L' := (c₂ : ℝ))
+    (by intro a b hab; dsimp only; omega) (by intro a b hab; dsimp only; omega)
+    ?_ ?_ (by exact_mod_cast h)
+  · simp only [growthRatio_oscPair_even]; exact tendsto_const_nhds
+  · simp only [growthRatio_oscPair_odd]; exact tendsto_const_nhds
+
 end Erdos326

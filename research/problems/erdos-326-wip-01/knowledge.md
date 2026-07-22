@@ -249,3 +249,17 @@ engine `hasNoGrowthLimit_of_two_subseq_limits`:
 - The subset-basis oscillation dichotomy — deep structured blocker; both the
   non-convergence engine and this squeeze engine are the *final steps* of any such
   construction, the construction itself is the hard part.
+
+## 2026-07-22 (researcher-1-3, PR #41480) — growth-limit functional properties
+
+Added to Erdos326WIP01.lean (0-axiom, Docker 8577 jobs):
+- HasGrowthLimit.mono (limit monotone under eventual pointwise ≤),
+  HasGrowthLimit.const_mul (limit scales by constant c),
+  hasNoGrowthLimit_congr' (non-convergence tail-invariant, dual of
+  hasGrowthLimit_congr'). {unique,monotone,squeeze} now a complete order toolkit.
+- oscPair c₁ c₂ + growthRatio_oscPair_even/_odd + hasNoGrowthLimit_oscPair:
+  two-parameter oscillating family (no limit iff c₁≠c₂), generalizes the {1,2}
+  `oscillating` example (oscillating = oscPair 1 2) to full coefficient spectrum.
+
+Elementary layer now further saturated. Deep OPEN core unchanged: sub-basis
+oscillation dichotomy needs a materially new mechanism.
