@@ -16,6 +16,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: The Singleton Correspondence Bridge", "startLine": 1, "endLine": 48, "summary": "Describes the fully machine-checkable, zero-axiom piece of the Kakutani/Fan-Glicksberg hierarchy: the singleton correspondence F_f(x) = {f(x)} embeds every single-valued fixed-point theorem (Brouwer, Schauder) into the set-valued theory (Kakutani, Fan-Glicksberg), preserving hypotheses (continuity \u2194 upper hemicontinuity plus nonempty/closed/convex values) and conclusions (fixed points).", "mathContext": "Upper hemicontinuity of $F_f$ is equivalent to continuity of $f$, and $x$ is a fixed point of $F_f$ iff $f(x)=x$; this reduction theorem takes any set-valued Kakutani-type principle as a hypothesis and derives the corresponding single-valued statement axiom-free."},
     {
       "id": "set-valued-vocabulary",
       "title": "Part I — Set-Valued Vocabulary and the Singleton Correspondence",
