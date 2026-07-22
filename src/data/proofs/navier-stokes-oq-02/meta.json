@@ -60,7 +60,7 @@
     ],
     "dateAdded": "2026-02-28",
     "lineCount": 21089,
-    "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t), the core PDE estimate — mathematically known but not formalized in this file)",
+    "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t), the core PDE estimate — mathematically known but not formalized in this file) Trust caveat: 5 named theorems are discharged by native_decide (lions_3d, lions_2d, critical_at_lions_is_zero, standard_ns_gap, standard_2d_gap), which trusts the Lean compiler's kernel reduction and introduces the Lean.ofReduceBool axiom (not reflected in axiomCount, which counts mathematical assumptions). These are finite demonstrations — Lions-exponent arithmetic checks — and do NOT carry the global-regularity headline, which rests on the NSSolutionPair2D.stability_estimate assumption above.",
     "mathlib_version": "4.31.0",
     "theoremCount": 845,
     "definitionCount": 366
