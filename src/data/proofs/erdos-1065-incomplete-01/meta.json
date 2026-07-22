@@ -165,43 +165,28 @@
         "content": "IsFormA, oddPart, twoVal, sub_one_eq, oddPart_eq.",
         "startLine": 53,
         "endLine": 82,
-        "theorems": [
-          "sub_one_eq",
-          "oddPart_eq"
-        ]
+        "theorems": ["sub_one_eq", "oddPart_eq"]
       },
       {
         "title": "Sufficiency",
         "content": "isFormA_of_oddPart_prime, isFormA_of_oddPart_one, isFormA_of_oddPart.",
         "startLine": 85,
         "endLine": 118,
-        "theorems": [
-          "isFormA_of_oddPart_prime",
-          "isFormA_of_oddPart_one",
-          "isFormA_of_oddPart"
-        ]
+        "theorems": ["isFormA_of_oddPart_prime", "isFormA_of_oddPart_one", "isFormA_of_oddPart"]
       },
       {
         "title": "Necessity",
         "content": "oddPart_of_isFormA (q=2 / q-odd split).",
         "startLine": 124,
         "endLine": 145,
-        "theorems": [
-          "oddPart_of_isFormA"
-        ]
+        "theorems": ["oddPart_of_isFormA"]
       },
       {
         "title": "Characterization and Examples",
         "content": "isFormA_iff_oddPart and the 37/41/17/71 reproofs.",
         "startLine": 149,
         "endLine": 181,
-        "theorems": [
-          "isFormA_iff_oddPart",
-          "not_isFormA_37",
-          "isFormA_41",
-          "isFormA_17",
-          "not_isFormA_71"
-        ]
+        "theorems": ["isFormA_iff_oddPart", "not_isFormA_37", "isFormA_41", "isFormA_17", "not_isFormA_71"]
       }
     ],
     "mathContext": {
