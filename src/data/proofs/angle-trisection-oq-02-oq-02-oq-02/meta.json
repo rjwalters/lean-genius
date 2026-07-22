@@ -147,6 +147,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the Gauss–Wantzel number-theoretic core",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring. States the Gauss–Wantzel theorem (regular n-gon constructible iff φ(n) is a power of two, iff n = 2^a·p₁⋯p_r for distinct Fermat primes), distinguishes this entry's purely number-theoretic skeleton from the parent's geometric axiomatization and a sibling's n ≤ 50 enumeration, and previews the three results proved: Wantzel necessity, Gauss sufficiency, and worked instances derived from the general theorems. Declares the IsPow2 predicate used throughout.",
+      "mathContext": "The docstring frames $n$-gon constructibility as the number-theoretic statement $\\varphi(n) = 2^k \\iff n = 2^a \\prod p_i$ for distinct Fermat primes $p_i = 2^{2^j}+1$, isolating the arithmetic half of Gauss–Wantzel from its geometric half (proved elsewhere)."
+    },
+    {
       "id": "ispow2-toolbox",
       "title": "Section 0: Powers-of-two toolbox",
       "startLine": 39,
