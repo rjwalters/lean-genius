@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: bₖ=O(k²) fully bridged to growthRatio boundedness (3 axiom-free lemmas tying growthRatio to the actual order-2-basis enumeration Nat.nth; range is BddAbove). Only the open non-convergence/oscillation dichotomy of #326 remains.",
+    "progressSummary": "PROGRESS: growth-spectrum toolkit now has {unique,monotone,squeeze} order structure + const-scaling + non-convergence tail-invariance + two-parameter oscillating family oscPair (PR #41480, 0-axiom). Deep OPEN core: sub-basis oscillation dichotomy (materially new mechanism required).",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -76,7 +76,8 @@
       "Idiom: ∀ᶠ equality must be typed as f =ᶠ[l] g (EventuallyEq) for .symm/.congr' dot notation to resolve; the bare ∀ᶠ (Eventually) head symbol blocks it.",
       "The b_k = O(k^2) growth upper bound for order-2 bases is now machine-checked axiom-free (two_nth_le_quadratic: Nat.nth (.∈A) k ≤ N + (k+1)^2; two_nth_le_mul_sq: ≤ (N+4)·k^2 for k≥1). This is the standard consequence of the √n density bound (Key Observation 1): with n = N+(k+1)^2 the density (n+1-N ≤ (|S|+1)^2) forces k < |S| ≤ count(.∈A)(n+1), so Nat.nth (.∈A) k < n+1 via Nat.nth_lt_of_lt_count. No deep input; the oscillation dichotomy stays open.",
       "growthRatio bₖ/k² of an order-2 basis enumeration (Nat.nth) is bounded above: eventually ≤ C (two_growthRatio_le), eventually in [0,C] (two_growthRatio_mem_Icc), and its full range is BddAbove (two_growthRatio_bddAbove) — the growthRatio restatement of bₖ=O(k²). First results connecting growthRatio to the real basis enumeration rather than toy sequences.",
-      "hasNoGrowthLimit_of_two_subseq_limits: two strictly-monotone index subsequences of growthRatio with distinct limits ⇒ HasNoGrowthLimit. Reusable engine for the OPEN oscillation direction of #326; generalizes the ad-hoc oscillating example. Idiom: hx.comp hφ.tendsto_atTop (subsequence shares limit) + tendsto_nhds_unique."
+      "hasNoGrowthLimit_of_two_subseq_limits: two strictly-monotone index subsequences of growthRatio with distinct limits ⇒ HasNoGrowthLimit. Reusable engine for the OPEN oscillation direction of #326; generalizes the ad-hoc oscillating example. Idiom: hx.comp hφ.tendsto_atTop (subsequence shares limit) + tendsto_nhds_unique.",
+      "Growth-limit functional is MONOTONE (HasGrowthLimit.mono), LINEAR under constant scaling (HasGrowthLimit.const_mul), and non-convergence is a TAIL INVARIANT (hasNoGrowthLimit_congr); two-parameter oscillating family oscPair c1 c2 realizes HasNoGrowthLimit for all c1!=c2 (PR #41480)."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."
