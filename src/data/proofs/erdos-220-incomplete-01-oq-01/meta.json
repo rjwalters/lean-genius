@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module Header: Closing the p = 7-Only Gap of the Companion",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "The module docstring states the open question this entry closes: the companion erdos-220-incomplete-01 only checks ∑gaps² = p−2 for the single modulus p = 7, while the sibling erdos-220-oq-01 proves the general Cauchy–Schwarz lower bound (n−2)² ≤ (φ(n)−1)·∑gaps². It sketches the three-step argument — every gap is ≥ 1 by monotonicity, the φ(p)−1 = p−2 gaps telescope to p−2, so a sum of nonnegatives equal to their count forces every gap to be exactly 1 — and notes the file is 0 axioms, 0 sorries, no native_decide, importing Mathlib and Proofs.Erdos220OQ01.",
+      "mathContext": "$\\sum_k (a_{k+1}-a_k)^2 = p - 2$ for every prime $p$, identified as the Cauchy–Schwarz equality case of the sibling's bound $(n-2)^2 \\le (\\varphi(n)-1)\\sum(a_{k+1}-a_k)^2$."
+    },
+    {
       "id": "gap-lower-bound",
       "title": "Every Gap is at Least 1",
       "startLine": 56,
