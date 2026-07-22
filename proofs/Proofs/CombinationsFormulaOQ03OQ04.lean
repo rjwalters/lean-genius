@@ -1064,13 +1064,14 @@ theorem qBinom_X_three_coeff_first_half_mono :
         ≤ (qBinom (X : ℤ[X]) (N + 3) 3).coeff (j + 1)
   | 0, j, hj => by omega
   | N + 1, j, hj => by
-      rcases le_or_lt (2 * j + 2) (3 * N) with hin | hband
+      rcases Nat.lt_or_ge (2 * j + 2) (3 * N + 1) with hin' | hband'
       · -- interior: previous box's first half; recurrence + IH + nonnegative ramp step
+        have hin : 2 * j + 2 ≤ 3 * N := by omega
         have hIH := qBinom_X_three_coeff_first_half_mono N j hin
         have h1 := qBinom_X_three_coeff_succ' N j
         have h2 := qBinom_X_three_coeff_succ' N (j + 1)
         rw [show N + 1 + 3 = N + 4 from by omega, h1, h2]
-        rcases lt_or_ge (j + 1) (N + 1) with hlt | hge
+        rcases Nat.lt_or_ge (j + 1) (N + 1) with hlt | hge
         · -- both correction terms vanish
           rw [if_neg (show ¬ (N + 1 ≤ j) from by omega),
               if_neg (show ¬ (N + 1 ≤ j + 1) from by omega)]
