@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Docstring: the By-Length Refinement",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "Goal: $\\#\\{c:\\mathrm{Composition}\\ n \\mid c.\\mathrm{length}=k\\} = \\binom{n-1}{k-1}$, summing to $2^{n-1}$.",
+      "summary": "Imports Composition, Fintype.Powerset, Nat.Choose.Sum, and Tactic, then a docstring stating the by-length refinement of the parent's total count: compositions of n into exactly k parts number C(n−1, k−1), recovering the parent's 2^(n−1) by summing over k. Previews the route — Mathlib's compositionEquiv/compositionAsSetEquiv bijection to gap subsets, the length↔cardinality dictionary equiv_card_add_one, and Fintype.card_finset_len for counting fixed-cardinality subsets — before opening Finset and the namespace."
+    },
+    {
       "id": "length-cardinality-dictionary",
       "title": "The Length ↔ Subset-Cardinality Dictionary",
       "startLine": 51,
