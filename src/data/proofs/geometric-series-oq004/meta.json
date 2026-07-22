@@ -154,6 +154,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Mean and variance of the Eulerian descent statistic",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Computes the first two moments of the distribution of descents of a uniformly random permutation, as read off the Eulerian numbers $\\langle n,k\\rangle$: the mean $(n-1)/2$ follows from the row's palindromy by reflection, while the variance $(n+1)/12$ needs a moment-transfer recurrence derived from the Eulerian triangle recurrence.",
+      "mathContext": "$2\\sum_k k\\langle n,k\\rangle = (n-1)\\,n!$ and $12\\sum_k k^2\\langle n,k\\rangle = n!(3n^2-5n+4)$, giving variance $(n+1)/12$."
+    },
+    {
       "id": "zeroth-moment",
       "title": "The Zeroth Moment (Row Sum)",
       "startLine": 53,
