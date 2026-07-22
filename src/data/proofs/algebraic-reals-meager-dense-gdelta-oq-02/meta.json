@@ -224,6 +224,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: making the transcendental Gδ constructive",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module docstring. States the parent's second open question — its transcendental dense-Gδ witness is only abstract (via IsGδ.biInter_of_isOpen over the family {a}ᶜ), with no honest sequence to enumerate; can this be made fully constructive? Answers by fixing an enumeration algEnum : ℕ → ℝ of the algebraic reals and defining Uₙ = (algEnum '' Iic n)ᶜ, each open (finite complement), dense (countable complement in a perfect Baire space), decreasing, with ⋂ₙ Uₙ exactly the transcendentals — upgrading the abstract Gδ witness to a concrete antitone basis. Lists the eight declared results.",
+      "mathContext": "Being told a set is $G_\\delta$ via `IsGδ.biInter_of_isOpen` over an arbitrary countable index gives no canonical enumeration; fixing a bijection $\\mathrm{algEnum} : \\mathbb{N} \\to \\{\\text{algebraic reals}\\}$ and removing one more point per stage, $U_n = (\\mathrm{algEnum}(\\{0,\\dots,n\\}))^c$, produces an explicit antitone dense-open sequence with $\\bigcap_n U_n$ exactly the transcendentals."
+    },
+    {
       "id": "enumeration",
       "title": "An enumeration of the algebraic reals",
       "startLine": 64,
