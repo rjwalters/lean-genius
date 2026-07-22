@@ -20,10 +20,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 2,
-    "focus": "Session 4: unconditional upper bound h(n) ≤ n.choose 2 (h_le_choose_two, sidesteps the missing general-position existence witness via the sInf-empty case) + degenerate values h(n)=0 for n≤1. 2 axiom-free theorems, theoremCount 10→12, host-verified.",
-    "blockers": [],
-    "nextAction": "Full general-position existence for all n: the failure locus (3-collinear ∪ 4-concyclic) is a finite union of proper algebraic subvarieties of the configuration space (ℝ²)ⁿ, so its complement is nonempty — a dimension/genericity argument, the deep constructive piece. n≤3 now fully covered.",
+    "iteration": 3,
+    "focus": "Elementary layer SATURATED (verified 2026-07-21, 2866 lines, 0-axiom/0-sorry): exact values h(2)=h(3)=1, h(4)=2, h(5)=3 (h_five_eq_three); all-n general-position existence (parabolaConfig); h_mono; and the general lower bound le_h_of_three_mul_sub_one_le (k ≤ h n for n ≥ 3k−1). Matches knowledge.progressSummary; supersedes the stale Session-4 nextAction below.",
+    "blockers": [
+      {
+        "route": "super-linear lower bound: improve h(n) ≥ (n-1)/3 toward the conjectured rate (Erdős #98 / Guth–Katz n/log n)",
+        "reopenCriterion": "materially new mechanism required: the no-4-concyclic fibre bound caps each vertex distance-multiplicity at 3, so the elementary pigeonhole cannot beat (n-1)/3. Needs incidence-geometry / Guth–Katz polynomial-partitioning machinery absent from Mathlib v4.31.",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "exact value h(6) (= 3 iff a general-position 6-point 3-distance set exists)",
+        "reopenCriterion": "materially new mechanism required: monotonicity gives h(6) ≥ h(5) = 3; pinning h(6)=3 needs an explicit no-3-collinear, no-4-concyclic 6-point config with exactly 3 distinct distances (regular hexagon and pentagon+centre are disqualified — 4 concyclic), whose existence is itself open; else h(6) ≥ 4 needs a new lower bound.",
+        "blockedAt": "2026-07-21"
+      }
+    ],
+    "nextAction": "STAND DOWN on elementary work. Open directions are deep (recorded as blockers): the super-linear lower bound (needs incidence geometry / Guth–Katz) and exact values h(n) for n ≥ 6 (need general-position min-distance constructions of uncertain existence).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -179,7 +190,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.785Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6
 }
