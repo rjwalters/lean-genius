@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-15",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #15 on the alternating prime series $\\sum (-1)^n n/p_n$, whose convergence remains open but is now conditionally proved by Tao (2023) under a strong Hardy\u2013Littlewood prime-tuples hypothesis, and lists related Erd\u0151s conjectures on prime-gap series.",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "Related conjectures: $\\sum (-1)^n/(n(p_{n+1}-p_n))$ converges, $\\sum(-1)^n/(p_{n+1}-p_n)$ diverges (proved via Zhang 2014's bounded gaps), and a weighted variant with $(\\log\\log n)^c$ converges for all $c>0$."
+    },
+    {
       "id": "background",
       "title": "Background",
       "summary": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases).",
