@@ -57,6 +57,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Differential Entropy for Continuous Distributions", "startLine": 1, "endLine": 39, "summary": "Formalizes differential entropy h(X) = -∫f(x)ln f(x)dx for continuous distributions via Mathlib's Bochner integral, answering the open question of whether this can be done in Lean. Proves translation invariance h(f(·-c))=h(f), scale equivariance h(f(·/a)/|a|)=h(f)+ln|a|, and the continuous Gibbs inequality D(f‖g)≥0, while noting differential entropy (unlike discrete entropy) can be negative.", "mathContext": "Differential entropy generalizes Shannon entropy to continuous densities but loses non-negativity (e.g. Uniform[0,a] has h=ln a<0 for a<1); its translation invariance is the key lemma later reused to derive the AWGN channel's chain-rule mutual-information decomposition."},
     {
       "id": "definitions",
       "title": "Definitions",
