@@ -72,7 +72,8 @@
       "The covariance identity carries no order hypothesis, so it serves both regimes unchanged — only the sign of each summand flips (non-negative for monovarying, non-positive for antivarying), which is exactly why the inequality reverses.",
       "The equality characterisation ∀ i j, f i = f j ∨ g i = g j is literally identical to the monovarying case, because a real product is zero precisely when a factor is zero, independent of the product's sign.",
       "Strictness remains local: one index pair varying in both coordinates makes a single summand strictly negative and forces the global strict inequality.",
-      "An antitone g still produces an extreme varying pair at (min' s, max' s) once it is non-constant; the min'/max' argument is sign-agnostic, so the rigidity lemma transfers verbatim from the monotone case."
+      "An antitone g still produces an extreme varying pair at (min' s, max' s) once it is non-constant; the min'/max' argument is sign-agnostic, so the rigidity lemma transfers verbatim from the monotone case.",
+      "chebyshev_sum_reverse_strict_strictMonoAnti trades a semantic hypothesis for a numerical one: the general strict lemma needs 'f, g not constant on s', which requires exhibiting a witness pair, but strict monotonicity/antitonicity make f and g automatically injective, so any two distinct indices already supply f a ≠ f b and g a ≠ g b — leaving only the checkable count hypothesis 1 < #s."
     ],
     "prerequisites": [
       "Finite sums over a Finset and Finset.card",
@@ -105,11 +106,18 @@
       "summary": "term_nonpos — each covariance summand (f i − f j)(g i − g j) ≤ 0 under AntivaryOn, by a sign case split; chebyshev_sum_reverse — Finset.sum_nonpos plus the covariance identity give #s·∑ f·g ≤ (∑ f)(∑ g)."
     },
     {
-      "id": "equality-case",
-      "title": "Equality Characterisation",
+      "id": "equality-iff",
+      "title": "Equality Characterisation (Pairwise Form)",
       "startLine": 92,
+      "endLine": 119,
+      "summary": "chebyshev_sum_reverse_eq_iff — equality holds iff every pair i, j ∈ s satisfies f i = f j ∨ g i = g j, via Finset.sum_eq_zero_iff_of_nonpos pinning every covariance summand to 0 and mul_eq_zero reading off the disjunction."
+    },
+    {
+      "id": "equality-const",
+      "title": "Equality Characterisation (Textbook Constant Form)",
+      "startLine": 121,
       "endLine": 159,
-      "summary": "chebyshev_sum_reverse_eq_iff — equality iff every pair varies in at most one coordinate, via Finset.sum_eq_zero_iff_of_nonpos; chebyshev_sum_reverse_eq_iff_const — the monotone/antitone textbook form through the extreme-pair (min', max') argument adapted to an antitone g."
+      "summary": "chebyshev_sum_reverse_eq_iff_const — for f monotone, g antitone on a nonempty linearly ordered index, equality holds iff f or g is constant on s, via the extreme-pair (min', max') argument adapted to an antitone g."
     },
     {
       "id": "strict-forms",
