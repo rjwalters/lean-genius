@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Parity dichotomy: exactly one leg is even",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "In a primitive Pythagorean triple x^2+y^2=z^2 with coprime legs, exactly one leg is even and the other odd. Both-odd is impossible for any Pythagorean triple at all (an odd square is 1 mod 4, so a sum of two is 2 mod 4, never a perfect square), while both-even is excluded by coprimality; together they give the dichotomy Mathlib packages as PythagoreanTriple.even_odd_of_coprime, with the standalone both-odd obstruction surfaced as the genuine new content here."
+    },
+    {
       "id": "obstruction",
       "title": "The mod-4 Obstruction",
       "startLine": 30,
