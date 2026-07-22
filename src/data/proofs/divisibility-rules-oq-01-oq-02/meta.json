@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Universal Power-of-10 Bases for Digit-Sum Rules",
+      "summary": "Module docstring: notes the parent file only proved digit-sum divisibility rules for a hand-picked list of moduli, states the open question's universal claim — every modulus d coprime to 10 admits a power-of-10 base 10^k with d ∣ n ↔ d ∣ digitsum, witnessed by k=φ(d) via Fermat–Euler — and that the exact valid exponents are the multiples of the multiplicative order ord_d(10).",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "For every $d$ coprime to 10, $d \\mid n \\iff d \\mid \\sum \\mathrm{digits}(10^k, n)$ for $k=\\varphi(d)$ (Fermat–Euler: $10^{\\varphi(d)}\\equiv 1 \\pmod d$), and more sharply for every multiple of $\\mathrm{ord}_d(10) = \\mathrm{orderOf}(10 : \\mathbb Z/d)$, the minimal such exponent."
+    },
+    {
       "id": "sec-divOQ0102-general-rule",
       "title": "Part I: The General Digit-Sum Rule from 10^k ≡ 1 (mod d)",
       "startLine": 41,
