@@ -103,11 +103,19 @@
       "mathContext": "$m^{1/n} \\in \\mathbb{Q} \\iff \\exists k,\\ k^n = m$."
     },
     {
-      "id": "prime-and-instances",
-      "title": "Prime Corollary and Worked Instances",
+      "id": "prime-corollary",
+      "title": "The Prime Corollary",
       "startLine": 83,
+      "endLine": 101,
+      "summary": "not_isPerfectNthPow_prime (a prime is never a perfect n-th power, n ≥ 2, via k ∣ p and Nat.pow_right_injective) and irrational_rpow_inv_prime, recovering the parent entry's one-directional prime result as a corollary of the general criterion.",
+      "mathContext": "A prime $p$ is never a perfect $n$-th power for $n \\ge 2$, so $p^{1/n} \\notin \\mathbb{Q}$."
+    },
+    {
+      "id": "worked-instances",
+      "title": "Worked Instances: ∛2, ∛8, ∛6",
+      "startLine": 103,
       "endLine": 126,
-      "summary": "not_isPerfectNthPow_prime (a prime is never a perfect n-th power, n ≥ 2), irrational_rpow_inv_prime (parent result recovered), and instances irrational_cbrt_two, rational_cbrt_eight (= 2), irrational_cbrt_six (composite).",
+      "summary": "irrational_cbrt_two (the base entry, recovered), rational_cbrt_eight (∛8 = 2, the converse direction firing on a genuine perfect cube), and irrational_cbrt_six (∛6 irrational although 6 is composite — beyond the prime corollary's reach).",
       "mathContext": "$\\sqrt[3]{2},\\sqrt[3]{6} \\notin \\mathbb{Q}$ but $\\sqrt[3]{8} = 2 \\in \\mathbb{Q}$."
     }
   ],
