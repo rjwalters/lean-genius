@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Putzer's Algorithm — the Analytic ODE Coefficients",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Explains that the companion file proves the algebraic core of Putzer's algorithm for computing e^{At} (the telescoping identity, the Cayley–Hamilton truncation, and the assembled algebraic IVP for any coefficient family with the Putzer initial data), leaving open the analytic half: exhibiting coefficient functions P_k : ℝ → ℂ solving the triangular linear ODE system Ṗ_0 = λ_0 P_0, Ṗ_{k+1} = λ_{k+1} P_{k+1} + P_k. This file constructs those functions via the classical variation-of-parameters recursion and proves their derivatives and initial conditions, leaving only the matrix-ODE uniqueness step to feed into NormedSpace.exp.",
+      "mathContext": "$P_0(t) = e^{\\lambda_0 t}$, $P_{k+1}(t) = e^{\\lambda_{k+1} t}\\int_0^t e^{-\\lambda_{k+1} s} P_k(s)\\, ds$, satisfying $\\dot P_0 = \\lambda_0 P_0$ and $\\dot P_{k+1} = \\lambda_{k+1} P_{k+1} + P_k$ with $P_0(0)=1$, $P_{k+1}(0)=0$."
+    },
+    {
       "id": "scoeff-def",
       "title": "The scalar coefficients Pₖ",
       "startLine": 45,
