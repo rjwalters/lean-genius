@@ -121,6 +121,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Closing the Deferred General Relative Case",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "States what is being settled: the parent branch (oq-04) defined the relative predicate IsMaxNorm H K and its child (oq-04-oq-01) proved the IsMaxNorm ⇔ IsSimpleGroup bridge only for K = ⊤, explicitly deferring 'the fully general K/subgroupOf version — working inside the subtype group ↥K' because of quotient typeclass issues. This file closes that gap axiom-free, identifies the added mathematical content as the lattice transfer between Subgroup ↥K and the ambient interval [H, K] of Subgroup G (via Subgroup.map K.subtype / Subgroup.subgroupOf K round trips), lists the four main results, and notes the K = ⊤ correspondence is reproved inline so the file depends only on import Mathlib.",
+      "mathContext": "Goal: for $H \\le K$ with $H.\\mathrm{subgroupOf}\\,K \\trianglelefteq \\uparrow K$, show $\\uparrow K / (H.\\mathrm{subgroupOf}\\,K)$ simple $\\iff \\mathrm{IsMaxNorm}\\,H\\,K$, via the lattice transfer between $\\mathrm{Subgroup}\\,\\uparrow K$ and $[H,K] \\subseteq \\mathrm{Subgroup}\\,G$."
+    },
+    {
       "id": "absolute",
       "title": "The Absolute Correspondence (K = ⊤, reproved inline)",
       "startLine": 48,
