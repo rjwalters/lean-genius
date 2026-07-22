@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1031",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1031: whether graphs with no trivial (empty/complete) subgraph on $\\ge 10\\log n$ vertices must contain an induced regular subgraph on $\\gg \\log n$ vertices \u2014 resolved YES by Pr\u00f6mel\u2013R\u00f6dl (1999), who proved the stronger universal-induced-subgraph result.",
+      "startLine": 1,
+      "endLine": 24,
+      "mathContext": "\"Non-Ramsey\" graphs (bounded trivial-subgraph size) are shown to contain every graph on $O(\\log n)$ vertices as an induced subgraph, which in particular forces regular induced subgraphs of that size."
+    },
+    {
       "id": "simple-graphs",
       "title": "Simple Graphs",
       "summary": "$K_S = \\top$ (complete) and $\\overline{K}_S = \\bot$ (empty) graph definitions",
