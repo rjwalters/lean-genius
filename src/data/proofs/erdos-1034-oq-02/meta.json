@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Erdős #1034 and the Book-Lemma Mechanism",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "States Erdős #1034 (disproved by Ma–Tang), the current bounds (1/6-o(1))n ≤ h(n) ≤ (2-√(5/2)+o(1))n on the good-neighbour threshold, and OQ-02's question of whether the book-lemma's n/6 lower bound can be improved. Previews that this file formalizes the book-lemma mechanism exactly (book_le_goodNeighborCount, book_goodNeighborCount_eq) without resolving the open question.",
+      "mathContext": "$(1/6 - o(1))n \\le h(n) \\le (2 - \\sqrt{5/2} + o(1))n$; a book of spine $\\{a,b\\}$ and $|P|$ pages gives a triangle with $\\ge |P|-1$ good neighbours."
+    },
+    {
       "id": "definitions",
       "title": "Triangles and Good Neighbours",
       "startLine": 43,
