@@ -95,6 +95,14 @@
   ],
   "sections": [
     {
+      "id": "sec-header-erdos-349",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #349: for which $t,\\alpha \\in (0,\\infty)$ is the exponential-floor sequence $\\lfloor t\\alpha^n\\rfloor$ complete (every sufficiently large integer a sum of distinct terms)? Conjectured complete for all $t>0$ and $1<\\alpha<\\varphi$ (the golden ratio).",
+      "startLine": 1,
+      "endLine": 16,
+      "mathContext": "The problem connects to the notoriously difficult parity question of whether $\\lfloor(3/2)^n\\rfloor$ is odd/even infinitely often, illustrating why even specific instances of completeness are hard to settle."
+    },
+    {
       "id": "imports",
       "title": "Mathlib Imports",
       "startLine": 17,
