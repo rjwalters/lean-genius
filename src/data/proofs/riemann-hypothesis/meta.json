@@ -92,162 +92,63 @@
   },
   "sections": [
     {
-      "id": "foundations-i-viii",
+      "id": "foundations",
       "title": "Parts I-VIII: Foundations and Statement",
       "startLine": 1,
-      "endLine": 472,
-      "summary": "Basic definitions (critical line, strip, trivial/non-trivial zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg), computational verification, and Euler product non-vanishing for Re(s) > 1.",
+      "endLine": 700,
+      "summary": "Basic definitions (critical line, strip, zeros), formal RH statement, known facts about zeros (trivial zeros, functional equation, zero symmetry), equivalent formulations (Robin, Mertens, prime counting), partial results (Hardy, Selberg, zero-free region), computational verification, and consequences.",
       "mathContext": "RH: $\\zeta(\\rho) = 0$ and $0 < \\text{Re}(\\rho) < 1 \\Rightarrow \\text{Re}(\\rho) = 1/2$. Euler product: $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$."
     },
     {
-      "id": "nonvanishing-symmetry-nyman-beurling",
-      "title": "Parts IX-X-ter: PNT-Strength Non-Vanishing, Conjugate/Quadruple Symmetry, Nyman-Beurling",
-      "startLine": 473,
-      "endLine": 1060,
-      "summary": "PNT-strength non-vanishing (ζ(s) ≠ 0 for Re(s) ≥ 1), conjugate symmetry of zeros (ρ ↦ ρ̄), quadruple symmetry (ρ ↦ 1-ρ̄), the Nyman-Beurling criterion (axiomatized), and proved elementary properties of the fractional-part function underlying it."
+      "id": "conjugation-equivalences",
+      "title": "Parts IX-XV: Conjugation and Equivalences",
+      "startLine": 700,
+      "endLine": 1700,
+      "summary": "Zeta conjugation symmetry (proved for Re(s)>1), Nyman-Beurling criterion, GRH definition and GRH→RH proof, de Bruijn-Newman constant (Rodgers-Tao, upper bound, RH↔Λ=0), Lagarias inequality, Speiser criterion, explicit zeta values at negative integers.",
+      "mathContext": "GRH: $L(\\rho, \\chi) = 0 \\Rightarrow \\text{Re}(\\rho) = 1/2$ for all Dirichlet $L$-functions. de Bruijn-Newman: RH $\\iff \\Lambda = 0$ (Rodgers-Tao 2018: $\\Lambda \\geq 0$)."
     },
     {
-      "id": "grh-debruijn-lagarias-zeta-values",
-      "title": "Parts XI-XV: GRH, de Bruijn-Newman Constant, Lagarias's Inequality, Zeta Special Values",
-      "startLine": 1061,
-      "endLine": 1529,
-      "summary": "GRH definition and GRH⇒RH, the de Bruijn-Newman constant Λ (Rodgers-Tao Λ≥0, RH iff Λ=0), Lagarias's 2002 inequality plus concrete arithmetic verifications via native_decide, special zeta values ζ(2), ζ(4), and non-existence of real zeros in the open critical strip.",
-      "mathContext": "de Bruijn-Newman: RH $\\iff \\Lambda = 0$ (Rodgers-Tao 2018: $\\Lambda \\geq 0$)."
+      "id": "deep-theory",
+      "title": "Parts XVI-XXXI: Deep Theory",
+      "startLine": 1700,
+      "endLine": 3080,
+      "summary": "Functional equation consequences, Weil positivity, completed zeta analysis, Selberg class axioms, universality, computational verification milestones, approaches and barriers (Hilbert-Polya, Connes), zero-free regions (Vinogradov-Korobov), density estimates, Selberg class (Grand RH, Kaczorowski-Perelli)."
     },
     {
-      "id": "weil-positivity-explicit-values-mathlib",
-      "title": "Parts XVI-XX: Weil Positivity, Explicit Zeta Values, Functional Equation, Mathlib Equivalence",
-      "startLine": 1530,
-      "endLine": 1815,
-      "summary": "Weil positivity criterion (axiomatized, RH iff WeilPositivity), a summary/significance recap, explicit values ζ(-1) = -1/12 etc. with trivial-zero enumeration, functional-equation consequences bounding the de Bruijn-Newman constant under RH/¬RH, and equivalence with Mathlib's own RiemannHypothesis statement."
+      "id": "arithmetic-consequences",
+      "title": "Parts XXXII-XXXVIII: Arithmetic Consequences",
+      "startLine": 3080,
+      "endLine": 3800,
+      "summary": "Explicit estimates (Rosser-Schoenfeld, Dusart, Littlewood oscillation, Skewes number), cryptography (Miller primality under GRH), Dirichlet consequences (Linnik constant, Artin primitive root), Bombieri-Vinogradov, Elliott-Halberstam, Schoenfeld explicit bounds, Platt-Trudgian verification."
     },
     {
-      "id": "lindelof-speiser-montgomery-primegaps",
-      "title": "Parts XXI-XXV: Lindelöf Hypothesis, Cross-Equivalences, Speiser's Criterion, Montgomery Pair Correlation, Prime Gaps",
-      "startLine": 1816,
-      "endLine": 2180,
-      "summary": "The Lindelöf hypothesis and RH⇒Lindelöf⇒convexity bounds, cross-equivalence theorems linking Robin/Lagarias/Mertens/prime-counting/de Bruijn-Newman, Speiser's 1934 criterion (no zeros of ζ' left of the critical line iff RH), Montgomery's 1973 pair-correlation conjecture, and Cramér-type prime gap conjectures."
+      "id": "structure-theorems",
+      "title": "Parts XXXIX-XLVI: Structure Theorems (All Proved)",
+      "startLine": 3800,
+      "endLine": 5155,
+      "summary": "Siegel zeros, critical line proportion (Conrey 2/5), completed zeta structure, analytic properties, equivalence network K₉ (36 pairwise equivalences including Connes' positivity), Euler product algebra, counterexample structure (¬RH→4 off-line zeros), failure consequences, GRH comprehensive (GRH implies all 9+Lindelof)."
     },
     {
-      "id": "backlund-turan-crypto-structural",
-      "title": "Parts XXVI-XXIX: Backlund's Theorem, Turán's Power Sums, Cryptographic Consequences, Structural Theorems",
-      "startLine": 2181,
-      "endLine": 2741,
-      "summary": "Backlund's bound on S(T), Turán's power-sum method with coefficient bounds, consequences for cryptography and computation (Miller primality testing under GRH), and structural theorems derived from the equivalence network (e.g. ¬Speiser iff ¬RH, chained negations across all formulations)."
+      "id": "li-criterion-k10",
+      "title": "Part XLVIII: Li's Criterion and K₁₀",
+      "startLine": 5377,
+      "endLine": 5772,
+      "summary": "Li's criterion (1997): RH ↔ all Li coefficients λₙ ≥ 0. Extends the equivalence network from K₉ to K₁₀ with 45 pairwise equivalences. Keiper's conjecture (strict positivity and monotonicity), Bombieri-Lagarias generalization to L-functions, GRH implies all 10 formulations, single negative Li coefficient disproves everything.",
+      "mathContext": "Li's criterion: RH $\\iff \\lambda_n \\geq 0$ for all $n \\geq 1$, where $\\lambda_n = \\sum_\\rho [1 - (1-1/\\rho)^n]$. Network: 10 equivalent formulations, $\\binom{10}{2} = 45$ pairwise equivalences."
     },
     {
-      "id": "zerofree-selberg-arithmetic",
-      "title": "Parts XXX-XXXII: Zero-Free Regions, the Selberg Class, Arithmetic Consequences",
-      "startLine": 2742,
-      "endLine": 2922,
-      "summary": "Zero-density estimates (Ingham, Huxley) and the density hypothesis with RH⇒density hypothesis and the Vinogradov-Korobov improvement, Selberg class axioms and structure with Kaczorowski-Perelli degree-one classification, and explicit prime-counting estimates (Rosser-Schoenfeld)."
-    },
-    {
-      "id": "random-matrix-hilbert-polya",
-      "title": "Parts XXXIII-XXXIV: Random Matrix Theory (Keating-Snaith) and the Hilbert-Pólya Conjecture",
-      "startLine": 2923,
-      "endLine": 3063,
-      "summary": "GUE (Gaussian Unitary Ensemble) structure and pair-correlation function matching zeta-zero statistics, moment-exponent predictions, Katz-Sarnak symmetry types, and the Hilbert-Pólya/Connes noncommutative-geometry approach (axiomatized ConnesPositivity iff RH)."
-    },
-    {
-      "id": "logical-structure-dirichlet",
-      "title": "Parts XXXV-XXXVI: Logical Structure of the RH Network, Dirichlet L-functions",
-      "startLine": 3064,
-      "endLine": 3275,
-      "summary": "Logical-structure lemmas (RH is 'barely true', failure propagation, Λ-positivity under ¬RH), de Bruijn-Newman dichotomy/window results, and Dirichlet L-function foundations (primitive roots mod p, arithmetic progressions) underlying GRH."
-    },
-    {
-      "id": "bombieri-vinogradov-pnt-bounds",
-      "title": "Parts XXXVII-XXXVIII: Bombieri-Vinogradov Theorem, Explicit PNT Error Bounds",
-      "startLine": 3276,
-      "endLine": 3404,
-      "summary": "The Bombieri-Vinogradov theorem (RH-on-average for primes in arithmetic progressions), Zhang's gap-bound refinement, and explicit Schoenfeld/Trudgian-style PNT error bounds with increasing verification-height thresholds."
-    },
-    {
-      "id": "selberg-clt-siegel-conrey",
-      "title": "Parts XXXIX-XLI: Selberg's Central Limit Theorem, Deuring-Heilbronn/Siegel Zeros, Conrey's Proportion",
-      "startLine": 3405,
-      "endLine": 3742,
-      "summary": "Selberg's central limit theorem for log|ζ(1/2+it)|, zeta moment patterns and Keating-Snaith predictions, the Deuring-Heilbronn phenomenon and Siegel-zero repulsion trade-off, and Conrey's proof that at least 2/5 of zeros lie on the critical line."
-    },
-    {
-      "id": "completed-zeta-analytic-growth",
-      "title": "Parts XXXIX-bis - XLI-bis: Completed Zeta Structural Properties, Analytic Growth",
-      "startLine": 3743,
-      "endLine": 3934,
-      "summary": "The completed zeta function ξ(s)'s symmetry and double reflection, off-real-axis and conjugate/quadruple zero pairing, RH iff quadruple-zero collapse, and analytic characterizations of critical-line/critical-strip membership.",
-      "mathContext": "These parts are mislabeled 'Part XXXIX' / 'Part XXXIXI' in the source (duplicating earlier Part XXXIX/XLI banners) but cover genuinely distinct content on completed-zeta structure and zero growth."
-    },
-    {
-      "id": "complete-equivalence-network-k8",
-      "title": "Part XLII: Complete Equivalence Network (K₈)",
-      "startLine": 3935,
-      "endLine": 4082,
-      "summary": "The full pairwise equivalence network among Speiser, Lagarias, Mertens, prime-counting, Weil positivity, Nyman-Beurling, Robin, and de Bruijn-Newman formulations of RH, establishing all C(8,2) = 28 proved equivalences."
-    },
-    {
-      "id": "euler-product-counterexample",
-      "title": "Parts XLIII-XLIV: Euler Product Algebra, Counterexample Structure Analysis",
-      "startLine": 4083,
-      "endLine": 4378,
-      "summary": "Algebraic identities underlying the Euler product (Möbius-sum and von Mangoldt factorization identities for small n), and the counterexample structure showing ¬RH forces at least 4 distinct non-trivial zeros off the critical line, all proved."
-    },
-    {
-      "id": "failure-consequences-grh-comprehensive",
-      "title": "Parts XLV-XLVI: Failure Consequences, GRH Comprehensive Consequences",
-      "startLine": 4379,
-      "endLine": 4709,
-      "summary": "Consequences of ¬RH for each equivalent formulation (Robin, Lagarias, Mertens, Λ-positivity, Weil positivity, Speiser, prime-counting all fail simultaneously and uniformly), and comprehensive results showing GRH implies all 9 formulations plus Lindelöf."
-    },
-    {
-      "id": "extended-equivalence-k9-connes",
-      "title": "Part XLVII: Extended Equivalence Network K₉ — Connes' Positivity",
-      "startLine": 4710,
-      "endLine": 4938,
-      "summary": "Extends the K₈ equivalence network to K₉ by adding Connes' noncommutative-geometry positivity criterion, proving its equivalence to all 8 prior formulations for a total of 36 pairwise equivalences."
-    },
-    {
-      "id": "li-criterion-k10-network",
-      "title": "Part XLVIII: Li's Criterion and the K₁₀ Equivalence Network",
-      "startLine": 4939,
-      "endLine": 5333,
-      "summary": "Li's 1997 criterion (RH iff λₙ ≥ 0 for all n), extending the equivalence network to K₁₀ (45 pairwise equivalences), Keiper's conjecture on strict positivity/monotonicity, the Bombieri-Lagarias generalization to L-functions, and GRH implies all 10 formulations.",
-      "mathContext": "Li's criterion: RH $\\iff \\lambda_n \\geq 0$ for all $n \\geq 1$, where $\\lambda_n = \\sum_\\rho [1 - (1-1/\\rho)^n]$."
-    },
-    {
-      "id": "montgomery-weil-explicit-formula",
-      "title": "Parts XLIX-L: Montgomery Pair Correlation & Random Matrix Theory, Weil Explicit Formulae",
-      "startLine": 5334,
-      "endLine": 5560,
-      "summary": "Montgomery pair-correlation statistics matched against Odlyzko's GUE computations and Keating-Snaith exponents, followed by Weil's explicit formula connecting zeta zeros to primes via the Riemann-von Mangoldt parameters."
-    },
-    {
-      "id": "zerofree-devallee-selberg-trace",
-      "title": "Parts LI-LII: Zero-Free Regions (de la Vallée-Poussin), Selberg Trace Formula",
-      "startLine": 5561,
-      "endLine": 5811,
-      "summary": "Classical zero-free regions with de la Vallée-Poussin/Vinogradov-Korobov exponents and Siegel-zero obstructions, and the Selberg trace formula analogy connecting spectral theory to the Langlands program, Katz-Sarnak symmetries, and the BSD-RH parallel."
-    },
-    {
-      "id": "computational-verification-riemann-siegel",
-      "title": "Part LIII: Computational Verification and the Riemann-Siegel Formula",
-      "startLine": 5812,
-      "endLine": 5948,
-      "summary": "Timeline of computational RH verification from Riemann's hand computations through Gourdon's 10^13 zeros, accuracy of the Riemann-Siegel formula, and Turing's method for rigorously counting zeros up to a given height."
-    },
-    {
-      "id": "moment-conjectures-integral-criteria",
-      "title": "Parts LIV-LV: Moment Conjectures, Integral Criteria for RH",
-      "startLine": 5949,
-      "endLine": 6208,
-      "summary": "The 2k-th moments of |ζ(1/2+it)|, CFKRS conjecture consistency with known cases, Harper's sharp upper bound and Radziwiłł-Soundararajan lower bound, the moment growth rate T(log T)^{k²}; plus integral reformulations of RH (Balazard-Saias-Yor, Riesz, Báez-Duarte, Volchkov criteria)."
-    },
-    {
-      "id": "keiperli-primeconstellations-crypto",
-      "title": "Parts LVI-LVIII: Keiper-Li Coefficients, RH and Prime Constellations, Cryptographic Number Theory",
-      "startLine": 6209,
+      "id": "moment-conjectures",
+      "title": "Part LIV: Moment Conjectures and Mean Value Theorems",
+      "startLine": 6408,
       "endLine": 6594,
-      "summary": "A sharp form of Li's criterion via the Keiper-Li coefficients, RH consequences for prime gaps, short-interval prime counts, effective ternary Goldbach, and twin-prime constant positivity, and RH/GRH's role in cryptographic number theory (Miller-Rabin parameters, primality testing)."
+      "summary": "Mean values of |ζ(1/2+it)|^{2k}: Hardy-Littlewood second moment (T log T), Ingham fourth moment (T log⁴T/(2π²)), CFKRS conjecture for all k, Soundararajan/Harper upper bounds, Radziwiłł-Soundararajan lower bounds. Growth rate T·(log T)^{k²} determined under RH. Random matrix connection via Keating-Snaith dictionary."
+    },
+    {
+      "id": "integral-criteria",
+      "title": "Part LV: Integral Criteria and Alternative Reformulations",
+      "startLine": 6064,
+      "endLine": 6594,
+      "summary": "Four additional equivalent formulations of RH beyond K₁₀: Balazard-Saias-Yor vanishing integral, Riesz criterion (growth of entire function from ζ(2k)), Báez-Duarte criterion (coefficients from ζ values at even integers), Volchkov's integral criterion (single integral equals explicit constant). All proved pairwise equivalent via RH transitivity."
     }
   ],
   "references": [
