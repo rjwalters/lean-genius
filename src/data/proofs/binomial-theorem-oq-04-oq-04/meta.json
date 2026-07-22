@@ -25,6 +25,7 @@
     "sorries": 0
   },
   "sections": [
+    {"id": "header", "title": "LGV–Vandermonde Bridge: Non-Intersecting Lattice Paths and the Path Matrix", "startLine": 1, "endLine": 46, "summary": "Connects the Lindström–Gessel–Viennot (LGV) lemma, which computes non-intersecting lattice-path counts as a determinant of the path matrix M[i][j] = e(A_i,B_j), to Vandermonde-type identities. Vandermonde's identity C(m+n,r) = sum_k C(m,k)*C(n,r-k) is exhibited as the single-path (r=1 degenerate) case of LGV: splitting a path from y=0 to y=r into a width-m segment (k North steps) and a width-n segment (r-k North steps) gives non-crossing segments by construction, so the LGV determinant collapses to the plain sum of products, i.e. the Vandermonde sum. Delivers the e-function, the powersetCard-based combinatorial proof, the disjoint path-product decomposition, and the 2x2 LGV determinant formula. 0 sorries, 0 axioms.", "mathContext": "LGV $e$-function $e(m,a,b)=\\binom{m+(b-a)}{m}$; splitting a $0\\to r$ path into disjoint width-$m$/width-$n$ segments makes the LGV determinant collapse exactly to $\\binom{m+n}{r}=\\sum_k\\binom{m}{k}\\binom{n}{r-k}$."},
     {
       "id": "lgv-path-matrix",
       "title": "Part I — LGV Path Matrix Entry",
