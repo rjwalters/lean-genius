@@ -1493,6 +1493,67 @@ write_missing_agents() {
     fi
 }
 
+# Helper: Persistent-missing-session detection & alerting (#39652, #41509).
+# Tracks how many CONSECUTIVE cycles each CONFIGURED agent has stayed below
+# target; once the count crosses MISSING_SESSION_ALERT_CYCLES it escalates to a
+# WARN and persists a MISSING record (via write_missing_agents) that
+# /lean health & /lean status render as a red row instead of silently omitting
+# the agent. Live counts come from count_agent_sessions so this is a single
+# source of truth and can run in BOTH the normal daemon cycle AND the total-pool
+# blackout path where get_all_agent_sessions is empty (#41509 -- otherwise the
+# blackout early-continues before detection and /lean status stays empty).
+# Args, in order:
+#   enricher researcher aristotle auditor seeker deployer herald mechanic tester
+detect_and_persist_missing_agents() {
+    local enricher="$1" researcher="$2" aristotle="$3" auditor="$4" \
+          seeker="$5" deployer="$6" herald="$7" mechanic="$8" tester="$9"
+    local missing_json="[]"
+    local mtype mtarget mactive mcycles
+    for _pair in \
+        "enricher $enricher" \
+        "researcher $researcher" \
+        "aristotle $aristotle" \
+        "auditor $auditor" \
+        "seeker $seeker" \
+        "deployer $deployer" \
+        "herald $herald" \
+        "mechanic $mechanic" \
+        "tester $tester"; do
+        read -r mtype mtarget <<< "$_pair"
+
+        # Only configured agents (target >= 1) can be "missing".
+        if [[ "$mtarget" -lt 1 ]]; then
+            set_missing_cycles "$mtype" 0
+            continue
+        fi
+
+        # Aristotle scale-to-zero (issue #22471) is an intentional absence,
+        # not a failed launch -- don't false-alarm on it.
+        if [[ "$mtype" == "aristotle" ]] && [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+            set_missing_cycles "$mtype" 0
+            continue
+        fi
+
+        mactive=$(count_agent_sessions "$mtype")
+        if [[ "$mactive" -lt "$mtarget" ]]; then
+            mcycles=$(get_missing_cycles "$mtype")
+            mcycles=$((mcycles + 1))
+            set_missing_cycles "$mtype" "$mcycles"
+            if [[ "$mcycles" -ge "$MISSING_SESSION_ALERT_CYCLES" ]]; then
+                daemon_log "WARN" "Agent '$mtype' MISSING: configured=$mtarget running=$mactive for $mcycles consecutive cycles (respawn attempted, session still absent)"
+                missing_json=$(echo "$missing_json" | jq -c \
+                    --arg t "$mtype" --argjson cfg "$mtarget" \
+                    --argjson run "$mactive" --argjson cyc "$mcycles" \
+                    '. += [{type: $t, configured: $cfg, running: $run, missing_cycles: $cyc}]' \
+                    2>/dev/null || echo "$missing_json")
+            fi
+        else
+            set_missing_cycles "$mtype" 0
+        fi
+    done
+    write_missing_agents "$missing_json"
+}
+
 # Helper: Daemon log with timestamp
 daemon_log() {
     local level="$1"
@@ -2348,12 +2409,41 @@ cmd_daemon() {
             break
         fi
 
+        # Re-read target config from state file each cycle, then apply the
+        # time-based schedule. Done BEFORE the health check so both the normal
+        # path and the total-blackout early-continue (#41509) see the same
+        # scheduled targets -- otherwise a scheduled scale-to-zero during a
+        # blackout would false-alarm on stale config.
+        # (This ensures scale-down / stop commands are respected without a
+        # daemon restart.)
+        if [[ -f "$STATE_FILE" ]]; then
+            enricher=$(jq -r '.config.enricher // 0' "$STATE_FILE" 2>/dev/null || echo "$enricher")
+            aristotle=$(jq -r '.config.aristotle // 0' "$STATE_FILE" 2>/dev/null || echo "$aristotle")
+            researcher=$(jq -r '.config.researcher // 0' "$STATE_FILE" 2>/dev/null || echo "$researcher")
+            seeker=$(jq -r '.config.seeker // 0' "$STATE_FILE" 2>/dev/null || echo "$seeker")
+            auditor=$(jq -r '.config.auditor // 0' "$STATE_FILE" 2>/dev/null || echo "$auditor")
+            deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
+            herald=$(jq -r '.config.herald // 0' "$STATE_FILE" 2>/dev/null || echo "$herald")
+            mechanic=$(jq -r '.config.mechanic // 0' "$STATE_FILE" 2>/dev/null || echo "$mechanic")
+        fi
+
+        # Apply time-based schedule overrides
+        apply_schedule
+
         # 2. Health check all agent sessions
         local sessions
         sessions=$(get_all_agent_sessions)
 
         if [[ -z "$sessions" ]]; then
             daemon_log "WARN" "No agent sessions found, cycle $cycle_count"
+            # Total-pool blackout (#41509): the health-check / pool-gap / respawn
+            # logic below is intentionally skipped when there are zero sessions,
+            # but persistent-missing detection must still fire so .missing_agents
+            # is persisted and /lean status shows MISSING rows (not just the live
+            # /lean health view). Reuse the same helper as the normal path.
+            detect_and_persist_missing_agents \
+                "$enricher" "$researcher" "$aristotle" "$auditor" \
+                "$seeker" "$deployer" "$herald" "$mechanic" "$tester"
             update_daemon_state "$cycle_count" "$total_respawns"
             continue
         fi
@@ -2468,24 +2558,9 @@ cmd_daemon() {
 
         # 2b. Pool gap detection: spawn missing agents whose sessions vanished
         # (get_all_agent_sessions only returns existing sessions, so if a session
-        # exits entirely, the health check above never sees it)
-
-        # Re-read target config from state file each cycle.
-        # This ensures scale-down / stop commands are respected by the daemon
-        # without needing to restart it.
-        if [[ -f "$STATE_FILE" ]]; then
-            enricher=$(jq -r '.config.enricher // 0' "$STATE_FILE" 2>/dev/null || echo "$enricher")
-            aristotle=$(jq -r '.config.aristotle // 0' "$STATE_FILE" 2>/dev/null || echo "$aristotle")
-            researcher=$(jq -r '.config.researcher // 0' "$STATE_FILE" 2>/dev/null || echo "$researcher")
-            seeker=$(jq -r '.config.seeker // 0' "$STATE_FILE" 2>/dev/null || echo "$seeker")
-            auditor=$(jq -r '.config.auditor // 0' "$STATE_FILE" 2>/dev/null || echo "$auditor")
-            deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
-            herald=$(jq -r '.config.herald // 0' "$STATE_FILE" 2>/dev/null || echo "$herald")
-            mechanic=$(jq -r '.config.mechanic // 0' "$STATE_FILE" 2>/dev/null || echo "$mechanic")
-        fi
-
-        # Apply time-based schedule overrides
-        apply_schedule
+        # exits entirely, the health check above never sees it). Target config
+        # was already re-read from STATE_FILE + schedule-adjusted at the top of
+        # this cycle (before the blackout early-continue).
 
         local enricher_active=0 researcher_active=0 aristotle_active=0 auditor_active=0 seeker_active=0 deployer_active=0 herald_active=0 mechanic_active=0
         for i in $(seq 1 $MAX_ENRICHER); do
@@ -2599,56 +2674,14 @@ cmd_daemon() {
         # cycle, but when the launcher dies silently (#39649) a CONFIGURED
         # agent can stay session-less indefinitely with only routine INFO
         # "pool gap" noise -- exactly how the deployer went unnoticed for 7
-        # days. Track how many CONSECUTIVE cycles each configured agent has
-        # stayed below target; once it crosses the threshold, escalate to a
-        # WARN and persist a MISSING record that /lean health & /lean status
-        # render as a red row instead of silently omitting the agent.
-        local tester_active=0
-        tmux has-session -t "tester-agent" 2>/dev/null && tester_active=1
-        local missing_json="[]"
-        local mtype mactive mtarget mcycles
-        for _pair in \
-            "enricher $enricher_active $enricher" \
-            "researcher $researcher_active $researcher" \
-            "aristotle $aristotle_active $aristotle" \
-            "auditor $auditor_active $auditor" \
-            "seeker $seeker_active $seeker" \
-            "deployer $deployer_active $deployer" \
-            "herald $herald_active $herald" \
-            "mechanic $mechanic_active $mechanic" \
-            "tester $tester_active $tester"; do
-            read -r mtype mactive mtarget <<< "$_pair"
-
-            # Only configured agents (target >= 1) can be "missing".
-            if [[ "$mtarget" -lt 1 ]]; then
-                set_missing_cycles "$mtype" 0
-                continue
-            fi
-
-            # Aristotle scale-to-zero (issue #22471) is an intentional absence,
-            # not a failed launch -- don't false-alarm on it.
-            if [[ "$mtype" == "aristotle" ]] && [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
-                set_missing_cycles "$mtype" 0
-                continue
-            fi
-
-            if [[ "$mactive" -lt "$mtarget" ]]; then
-                mcycles=$(get_missing_cycles "$mtype")
-                mcycles=$((mcycles + 1))
-                set_missing_cycles "$mtype" "$mcycles"
-                if [[ "$mcycles" -ge "$MISSING_SESSION_ALERT_CYCLES" ]]; then
-                    daemon_log "WARN" "Agent '$mtype' MISSING: configured=$mtarget running=$mactive for $mcycles consecutive cycles (respawn attempted, session still absent)"
-                    missing_json=$(echo "$missing_json" | jq -c \
-                        --arg t "$mtype" --argjson cfg "$mtarget" \
-                        --argjson run "$mactive" --argjson cyc "$mcycles" \
-                        '. += [{type: $t, configured: $cfg, running: $run, missing_cycles: $cyc}]' \
-                        2>/dev/null || echo "$missing_json")
-                fi
-            else
-                set_missing_cycles "$mtype" 0
-            fi
-        done
-        write_missing_agents "$missing_json"
+        # days. detect_and_persist_missing_agents tracks consecutive absent
+        # cycles per configured agent, escalates to a WARN past the threshold,
+        # and persists the MISSING set that /lean health & /lean status render
+        # as a red row. (The same helper also runs on the total-blackout
+        # early-continue path above -- #41509.)
+        detect_and_persist_missing_agents \
+            "$enricher" "$researcher" "$aristotle" "$auditor" \
+            "$seeker" "$deployer" "$herald" "$mechanic" "$tester"
 
         # 3. Work queue assessment (with timeout protection)
         local queue_stats

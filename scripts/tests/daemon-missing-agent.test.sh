@@ -170,6 +170,47 @@ simulate_cycle 1 1   # came back -> reset
 assert_eq "one absent cycle then recovery: no warn" "$warned" ""
 assert_eq "counter reset to 0 after recovery" "$(get_missing_cycles deployer)" "0"
 
+echo "== total-pool blackout persists .missing_agents for /lean status (#41509) =="
+# Regression for the edge case where the daemon early-continues on an empty pool
+# BEFORE running missing-agent detection, leaving .missing_agents (which
+# /lean status reads) empty even though a configured agent is absent. The shared
+# helper detect_and_persist_missing_agents now runs on the blackout path too.
+# Args order: enricher researcher aristotle auditor seeker deployer herald mechanic tester
+write_state 1 0                 # deployer configured=1, everything else 0
+FAKE_SESSIONS=""                # zero sessions -> total blackout
+set_missing_cycles deployer 0
+# Cycles 1 and 2: below threshold, nothing persisted yet.
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >> "$DAEMON_LOG_FILE"
+assert_eq "blackout cycle 1: no missing persisted yet" \
+    "$(jq -c '.missing_agents' "$STATE_FILE")" "[]"
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >> "$DAEMON_LOG_FILE"
+assert_eq "blackout cycle 2: still below threshold" \
+    "$(jq -c '.missing_agents' "$STATE_FILE")" "[]"
+# Cycle 3: threshold reached -> .missing_agents persisted for /lean status.
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >> "$DAEMON_LOG_FILE"
+assert_eq "blackout cycle 3: deployer persisted to .missing_agents" \
+    "$(jq -r '.missing_agents[0].type' "$STATE_FILE")" "deployer"
+assert_eq "blackout: persisted configured=1" \
+    "$(jq -r '.missing_agents[0].configured' "$STATE_FILE")" "1"
+assert_eq "blackout: persisted running=0" \
+    "$(jq -r '.missing_agents[0].running' "$STATE_FILE")" "0"
+# The same rows /lean status reads are what cmd_health renders from live state.
+status_out="$(cmd_health 2>/dev/null | strip_ansi)"
+assert_contains "blackout: MISSING surfaced (status/health share the record)" \
+    "$status_out" "MISSING"
+
+echo "== healthy pool in blackout helper: no false alarm, nothing persisted =="
+write_state 1 0
+FAKE_SESSIONS="deployer"         # deployer session live -> healthy
+set_missing_cycles deployer 0
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >/dev/null
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >/dev/null
+detect_and_persist_missing_agents 0 0 0 0 0 1 0 0 0 >/dev/null
+assert_eq "healthy pool: .missing_agents stays empty" \
+    "$(jq -c '.missing_agents' "$STATE_FILE")" "[]"
+assert_eq "healthy pool: deployer cycle counter stays 0" \
+    "$(get_missing_cycles deployer)" "0"
+
 echo ""
 echo "Results: $PASS passed, $FAIL failed"
 [[ "$FAIL" -eq 0 ]]
