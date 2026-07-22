@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Exact Consequences of the GCD–Totient Identity",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring: poses the parent's open question of sharpening φ(a)·φ(b) ≤ φ(ab) to an exact equality via the GCD–totient identity φ(gcd(a,b))·φ(ab) = φ(a)·φ(b)·gcd(a,b), and lists the four quantitative consequences this file extracts — the exact division form, the coprime and divisibility collapses, and a general power formula φ(n^{k+1}) = n^k·φ(n) for arbitrary base n.",
+      "mathContext": "$\\varphi(\\gcd(a,b))\\cdot\\varphi(ab)=\\varphi(a)\\varphi(b)\\gcd(a,b)$ specializes to $\\varphi(ab)=\\varphi(a)\\varphi(b)$ when $\\gcd(a,b)=1$, to $\\varphi(ab)=a\\cdot\\varphi(b)$ when $a\\mid b$, and by induction to $\\varphi(n^{k+1})=n^k\\varphi(n)$ for any base $n$."
+    },
+    {
       "id": "foundation",
       "title": "Foundation: The GCD–Totient Identity",
       "startLine": 53,
