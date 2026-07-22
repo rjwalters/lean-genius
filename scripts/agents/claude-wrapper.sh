@@ -37,12 +37,20 @@ unset CLAUDECODE 2>/dev/null || true
 # Falls back to CLAUDE_CODE_OAUTH_TOKEN in .env for single-account setups.
 #
 # Account selection strategy (in priority order):
+#   0. If claude-monitor's ~/.claude-monitor/ranking.json exists and is fresh
+#      (<10 min by generated_at / mtime), pick the least-utilized `available`
+#      account (ordered by status, util_7d, util_5h), joining ranking emails to
+#      on-disk token files via loom's derive_token_filename convention. This is
+#      a SOFT dependency: absent/stale/unparseable export → fall through below.
+#      Mirrors loom 0.12.0 (rjwalters/loom#3697, #3699) + lean-genius #41033.
 #   1. If .loom/tokens/.ranking exists and is <10 min old, pick the first
 #      account that has remaining weekly capacity (sorted by soonest reset).
 #   2. If .loom/tokens/.allowlist exists, random among allowed accounts.
 #   3. Otherwise, random among all .token files.
 #
-# The ranking file is written by: scripts/agents/check-accounts.sh --ranking
+# The ranking file (strategy 1) is written by:
+#   scripts/agents/check-accounts.sh --ranking
+# The ranking.json (strategy 0) is written by the external claude-monitor tool.
 if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
     _tokens_dir="$_repo_root/.loom/tokens"
@@ -150,8 +158,117 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
         _selected=""
         _mode="random"
 
+        # ------------------------------------------------------------------
+        # Strategy 0: claude-monitor ranking.json (soft, auto-detected).
+        #
+        # Consumes the non-secret quota export written by the external
+        # claude-monitor tool at ~/.claude-monitor/ranking.json (override the
+        # directory with LOOM_CLAUDE_MONITOR_DIR, mirroring loom 0.12.0's
+        # monitor.claude_monitor_dir()). Picks the least-utilized `available`
+        # account, ordered by (status, util_7d, util_5h), joining each ranking
+        # account's EMAIL to its on-disk token via loom's derive_token_filename
+        # convention. Absent/stale/unparseable/no-eligible-present-account →
+        # falls through to strategies 1-3 unchanged (claude-monitor NOT
+        # required). Mirrors loom 0.12.0 (rjwalters/loom#3697, #3699) + #41033.
+        #
+        # bash 3.2: no associative arrays. jq (1.7+) parses ranking.json;
+        # parallel arrays / linear loops handle the rest.
+        # ------------------------------------------------------------------
+        if [[ -n "${LOOM_CLAUDE_MONITOR_DIR:-}" ]]; then
+            _monitor_dir="$LOOM_CLAUDE_MONITOR_DIR"
+        else
+            _monitor_dir="$HOME/.claude-monitor"
+        fi
+        _monitor_json="$_monitor_dir/ranking.json"
+
+        # loom 0.12.0 derive_token_filename: strip '.' and '-' from the email
+        # local-part, append '-<first-domain-label>', lowercase, drop unsafe
+        # chars. STABLE convention — must match loom exactly. Examples:
+        #   alice@example.com     -> alice-example
+        #   a.b.jones@example.org -> abjones-example
+        #   agent-1@example.com   -> agent1-example
+        _derive_token_stem() {
+            local _email="$1" _local _domain _label
+            [[ "$_email" == *@* ]] || return 1
+            _local="${_email%@*}"
+            _domain="${_email#*@}"
+            _label="${_domain%%.*}"
+            [[ -n "$_local" && -n "$_label" ]] || return 1
+            _local=$(printf '%s' "$_local" | tr -d '.-')
+            printf '%s-%s' "$_local" "$_label" \
+                | tr '[:upper:]' '[:lower:]' \
+                | tr -cd 'a-z0-9._-'
+        }
+
+        # Parse an ISO-8601 timestamp (UTC 'Z') to epoch seconds. Tries GNU
+        # date (Linux) then BSD date (macOS); empty on failure.
+        _iso_to_epoch() {
+            local _ts="$1" _e
+            _e=$(date -u -d "$_ts" +%s 2>/dev/null) && { printf '%s' "$_e"; return 0; }
+            _e=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%SZ" "$_ts" +%s 2>/dev/null) \
+                && { printf '%s' "$_e"; return 0; }
+            return 1
+        }
+
+        if command -v jq >/dev/null 2>&1 && [[ -f "$_monitor_json" ]]; then
+            # Freshness gate: prefer generated_at, else file mtime; <600s window.
+            _mon_schema=$(jq -r '.schema // empty' "$_monitor_json" 2>/dev/null)
+            _mon_gen=$(jq -r '.generated_at // empty' "$_monitor_json" 2>/dev/null)
+            _mon_epoch=""
+            [[ -n "$_mon_gen" ]] && _mon_epoch=$(_iso_to_epoch "$_mon_gen")
+            if [[ -z "$_mon_epoch" ]]; then
+                _mon_epoch=$(stat -f %m "$_monitor_json" 2>/dev/null \
+                    || stat -c %Y "$_monitor_json" 2>/dev/null || echo 0)
+            fi
+            _mon_age=$(( $(date +%s) - _mon_epoch ))
+            # Only consume schema v1 (or unspecified); skip other versions.
+            if { [[ -z "$_mon_schema" ]] || [[ "$_mon_schema" == "1" ]]; } \
+                && [[ $_mon_age -lt 600 ]]; then
+                # Emails of `available` accounts, least-utilized first
+                # (util_7d then util_5h). jq parse failure -> empty -> fall through.
+                _mon_emails=$(jq -r '
+                    .accounts // []
+                    | map(select(.status == "available"))
+                    | sort_by((.utilization["7d"] // 0), (.utilization["5h"] // 0))
+                    | .[].email // empty
+                ' "$_monitor_json" 2>/dev/null)
+
+                # Precompute allowlist stems (if any) to preserve current
+                # semantics: allowlisted accounts remain the only eligible set.
+                _mon_allow=""
+                if [[ -f "$_allowlist_file" ]]; then
+                    while IFS= read -r _an || [[ -n "$_an" ]]; do
+                        _an=$(echo "$_an" | tr -d '[:space:]')
+                        [[ -z "$_an" || "$_an" == \#* ]] && continue
+                        _mon_allow+="$_an"$'\n'
+                    done < "$_allowlist_file"
+                fi
+
+                while IFS= read -r _memail || [[ -n "$_memail" ]]; do
+                    [[ -z "$_memail" ]] && continue
+                    _mstem=$(_derive_token_stem "$_memail") || continue
+                    [[ -z "$_mstem" ]] && continue
+                    # Must have a matching on-disk token file.
+                    [[ -f "$_tokens_dir/${_mstem}.token" ]] || continue
+                    # Respect allowlist if present (and non-empty).
+                    if [[ -n "$_mon_allow" ]] \
+                        && ! printf '%s' "$_mon_allow" | grep -qxF "$_mstem"; then
+                        continue
+                    fi
+                    # Skip bad tokens.
+                    if [[ -f "$_bad_tokens_file" ]] \
+                        && grep -q " $_mstem " "$_bad_tokens_file" 2>/dev/null; then
+                        continue
+                    fi
+                    _selected="$_tokens_dir/${_mstem}.token"
+                    _mode="monitor"
+                    break
+                done <<< "$_mon_emails"
+            fi
+        fi
+
         # Strategy 1: Use cached ranking (soonest-reset-first, skip exhausted/blocked)
-        if [[ -f "$_ranking_file" ]]; then
+        if [[ -z "$_selected" && -f "$_ranking_file" ]]; then
             _ranking_age=$(( $(date +%s) - $(stat -f %m "$_ranking_file" 2>/dev/null || stat -c %Y "$_ranking_file" 2>/dev/null || echo 0) ))
             if [[ $_ranking_age -lt 600 ]]; then  # <10 min old
                 while IFS='|' read -r _rname _rstatus || [[ -n "$_rname" ]]; do
