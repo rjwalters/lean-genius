@@ -26,7 +26,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 197,
+    "lineCount": 225,
     "theoremCount": 5,
     "definitionCount": 1,
     "assumptions": "None. Fully machine-checked, 0 axioms, 0 sorries. #print axioms commuting_end_is_polynomial and #print axioms end_commutant_commutative report only propext, Classical.choice, Quot.sound (the standard foundational trio, which do not count as assumptions). The file imports only Mathlib.",
@@ -45,6 +45,7 @@
   "overview": {
     "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields-oq-02 (recorded on oq-02-oq-01)**: The matrix entry oq-02 shows a cyclic vector forces the centralizer of $M \\in K^{n\\times n}$ to equal $K[M]$. Lift this to the coordinate-free endomorphism setting.\n\nFormally: for a finite-dimensional $K$-vector space $V$ and $T : \\mathrm{End}_K V$ with a cyclic vector $v$, show that any $A$ commuting with $T$ satisfies $A = p(T)$ for some $p \\in K[X]$; hence the centralizer of $T$ inside $\\mathrm{End}_K V$ equals $K[T]$ and is commutative.",
     "historicalContext": "The centralizer of a single linear operator is a classical object. In his work on linear substitutions and bilinear forms Frobenius studied the algebra of matrices commuting with a fixed matrix and computed its dimension in terms of the invariant factors; for a **nonderogatory** operator — one whose minimal and characteristic polynomials coincide, equivalently one admitting a cyclic vector — that centralizer collapses to the algebra $K[T]$ of polynomials in $T$ (Hoffman–Kunze §7.5, Roman §10.4). This is the commutant edge of the triple equivalence nonderogatory $\\iff$ cyclic vector $\\iff$ centralizer $= K[T]$ that the rational (Frobenius) canonical form organises. The matrix form of this edge is settled by the parent gallery entry over concrete $K^{n\\times n}$; the endomorphism form proved here is the reusable, basis-free statement the gallery's linear-algebra entries can build on, and was flagged as an explicit open direction by the sibling converse entry.",
+    "proofStrategy": "Let $n = \\dim_K V$ and let $v$ be a cyclic vector for $T$. **(1) Krylov basis.** The vectors $v, Tv, \\dots, T^{n-1}v$ are linearly independent (`endKrylov_linearIndependent`): a nontrivial relation $\\sum_k c_k\\,T^k v = 0$ repackages, via `Fintype.linearIndependent_iff`, into a nonzero polynomial $p = \\sum_k c_k X^k$ of degree $< n$ with $(\\mathrm{aeval}\\,T\\,p)\\,v = 0$, contradicting cyclicity; the coefficients are then recovered from $p = 0$ through `Polynomial.coeff` of a monomial sum. Being $n$ independent vectors in an $n$-dimensional space, they form a basis $b$ via `basisOfLinearIndependentOfCardEqFinrank`. **(2) Read off the polynomial.** Given $A$ commuting with $T$, expand $A\\cdot v$ in this basis, $A\\cdot v = \\sum_k (b.\\mathrm{repr}(A\\cdot v)_k)\\,(T^k v)$, and set $p = \\sum_k (b.\\mathrm{repr}(A\\cdot v)_k)\\,X^k$; then $p(T)\\cdot v = A\\cdot v$ by `Basis.sum_repr`. **(3) Agree on the basis.** $A$ and $p(T)$ agree on every basis vector $T^i v$: $A\\cdot(T^i v) = T^i\\cdot(A\\cdot v) = T^i\\cdot(p(T)\\cdot v) = p(T)\\cdot(T^i v)$, using that $A$ commutes with $T^i$ (`Commute.pow_right`) and that $p(T)$ commutes with $T^i$ (`aeval_end_commute_pow`, since $\\mathrm{aeval}\\,T$ is a $K$-algebra homomorphism). Two linear maps agreeing on a basis are equal (`Basis.ext`), so $A = p(T)$ (`commuting_end_is_polynomial`). The degenerate $\\dim_K V = 0$ case is dispatched by `Subsingleton` on `Module.End K V` (`Module.finrank_zero_iff`). **(4) Consequences.** Since any two operators commuting with $T$ are polynomials in $T$, and polynomials in $T$ commute, the centralizer is commutative (`end_commutant_commutative`); combined with the trivial inclusion $K[T] \\subseteq \\operatorname{centralizer}(T)$ (`aeval_end_commute`), the two inclusions package into the exact subalgebra equality $\\operatorname{centralizer}_K\\{T\\} = \\operatorname{adjoin}_K\\{T\\} = K[T]$ (`end_centralizer_eq_adjoin`).",
     "keyInsights": [
       "The cyclic-vector predicate transfers verbatim to endomorphisms: v is cyclic for T iff no nonzero polynomial of degree < finrank K V annihilates v. This is all that is needed to make the Krylov vectors a basis.",
       "Linear independence of the Krylov vectors {Tᵏ·v} is exactly cyclicity: a dependence ∑ cₖ Tᵏ·v = 0 is a nonzero low-degree annihilating polynomial, so cyclicity forbids it.",
@@ -159,7 +160,7 @@
       "Mathlib"
     ],
     "namespace": "EndCyclicCommutant",
-    "lineCount": 197,
+    "lineCount": 225,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 1,
