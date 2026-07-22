@@ -58,6 +58,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Vandermonde Convolution for Rising Factorials", "startLine": 1, "endLine": 45, "summary": "Answers two open questions (arithmetic-series-oq-02-oq-04-oq-01-oq-01, #2 and #3) at once: proves the Chu-Vandermonde identity in rising-factorial form (x+y)^{(k)} = ∑ C(k,m)·x^{(m)}·y^{(k-m)} over any commutative semiring via ascPochhammer, then specializes to ℕ recovering the multiset identity for Nat.ascFactorial. Proof by induction on k mirroring Commute.add_pow, using ascPochhammer_succ_eval in place of pow_succ and Pascal's rule for the index shift; parents ArithmeticSeriesOQ02OQ04OQ01OQ01 (multiset coefficient) and ArithmeticSeriesOQ02OQ04OQ01 (descending factorial).", "mathContext": "$(x+y)^{(k)}=\\sum_{m=0}^k\\binom{k}{m}x^{(m)}y^{(k-m)}$ for rising factorials $z^{(j)}=z(z+1)\\cdots(z+j-1)$ — the additive (Vandermonde) convolution law Mathlib's `ascPochhammer_mul` (compositional) does not supply; specializes to the Chu–Vandermonde identity for `Nat.ascFactorial`."},
     {
       "id": "vandermonde-convolution",
       "title": "Part I: The Rising-Factorial Vandermonde Convolution (CommSemiring)",
