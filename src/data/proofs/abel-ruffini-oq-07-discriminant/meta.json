@@ -20,7 +20,7 @@
       "jordan-theorem",
       "quintic"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "This file proves the DISCRIMINANT-ROUTE group-theoretic reduction of Gal(X⁵−X−1) ≅ S₅. The assembler gal_eq_top_of_transitive_threeCycle_odd takes three hypotheses: (i) the Galois action is transitive on the 5 roots (from irreducibility, Selmer 1956); (ii) Gal contains a 3-cycle (from 3 ∣ |Gal|); (iii) Gal contains an odd permutation (from Δ = 2869 not being a square, formalized as disc_not_square). It concludes Gal = ⊤ = S₅ via Mathlib's Jordan theorem (alternatingGroup_le_of_isPreprimitive_of_isThreeCycle_mem) plus the index-2 maximality of the alternating group. All three inputs are explicit HYPOTHESES, not axioms: the bridges that produce them in full generality — the Dedekind–Frobenius cycle-type theorem and the discriminant criterion 'Gal ⊆ A_n ⟺ disc is a square' — are not present in Mathlib v4.26.0. Every theorem in this file is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; disc_not_square uses decide, NOT native_decide, so no Lean.ofReduceBool).",

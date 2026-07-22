@@ -43,7 +43,7 @@
     "lineCount": 212,
     "theoremCount": 7,
     "definitionCount": 1,
-    "badge": "verified",
+    "badge": "mathlib",
     "originalContributions": [
       "marching_not_tendstoUniformlyOn_of_volume_lt_top: the headline sharpness result — for ANY set s ⊆ ℝ of finite Lebesgue measure, the marching indicators fₙ = 𝟙_[n,n+1] do NOT converge uniformly to 0 on the complement sᶜ. This establishes that Egorov's finite-(total-)measure hypothesis is essential: on the infinite-measure space ℝ no finite-measure exceptional set can be removed to obtain uniform convergence. Mathlib has the abstract Egorov theorem but no counterexample witnessing the necessity of finiteness.",
       "marching_tendsto_zero: the marching indicators fₙ = 𝟙_[n,n+1] converge to 0 at EVERY point of ℝ (not merely a.e.) — for a fixed x, once n > x the bump [n,n+1] has marched past x, so fₙ(x) = 0 eventually. This is the everywhere-pointwise convergence that makes the failure of uniformity striking.",

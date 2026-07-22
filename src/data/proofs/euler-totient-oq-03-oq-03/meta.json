@@ -13,7 +13,7 @@
       "product-formula"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ03OQ03.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. All seven theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (not counted). The example sanity checks use kernel `decide`/`norm_num` only — no `native_decide`, so `Lean.ofReduceBool` is NOT introduced. Built against Mathlib's `Nat.totient` API; the central identity `Nat.totient_gcd_mul_totient_mul` is from Mathlib, and the consequences derived here (exact division form, coprime/divisibility collapses, general power formula) are proved from it.",

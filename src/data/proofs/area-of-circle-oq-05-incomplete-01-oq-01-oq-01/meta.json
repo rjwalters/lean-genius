@@ -44,7 +44,7 @@
     "lineCount": 225,
     "theoremCount": 18,
     "definitionCount": 1,
-    "badge": "verified",
+    "badge": "mathlib",
     "originalContributions": [
       "stdNormal_even_moment_doubleFactorial: ∫ x^{2k} ∂stdNormal = (2k-1)‼ — the general even-moment formula for the standard normal N(0,1), for every k. The grandparent AreaOfCircleOQ05Incomplete01OQ01 evaluated only E[X⁰], E[X¹], E[X²] and explicitly left the general formula open; this entry closes it. The probabilist normalization (E[X^{2k}] = (2k-1)‼, no √π factor) is distinct from the physicist Gaussian-weight sibling area-of-circle-oq-07-oq-05-oq-01 (∫ x^{2n} e^{-x²} = (2n-1)‼√π/2ⁿ), and the method differs entirely: MGF-derivative recursion rather than integration by parts.",
       "stdNormal_odd_moment: ∫ x^{2k+1} ∂stdNormal = 0 — the vanishing of every odd moment, obtained from the same recursion seeded by E[X] = 0 (the ODE gives g'(0) = 0·g(0) = 0). Both open strands — even and odd — fall out of one parity-preserving recursion.",

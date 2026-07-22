@@ -19,7 +19,7 @@
       "equivalence-relation"
     ],
     "proofRepoPath": "Proofs/TriangleInequalityOQ07.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "packagingNote": "Tier B bundle with an original structural layer. The atomic facts are re-exports of named Mathlib lemmas (IsUltrametricDist.dist_triangle_max, ball_eq_of_mem, ball_eq_or_disjoint, isClopen_ball) and the general Setoid/partition API (Setoid.classes, isPartition_classes, IsPartition.pairwiseDisjoint/sUnion_eq_univ). The genuinely new content — which Mathlib does NOT provide — is the equivalence-relation packaging: SameBall (the fixed-radius relation), ballSetoid (proof that it is an equivalence relation, with transitivity supplied by the strong triangle inequality), ballSetoid_class (each class equals a ball), balls_eq_classes (the classes are exactly the radius-r balls), and balls_isPartition (the radius-r balls partition the space). Status is verified (0 sorries, 0 axioms — only propext/Classical.choice/Quot.sound).",
     "sorries": 0,
     "axiomCount": 0,

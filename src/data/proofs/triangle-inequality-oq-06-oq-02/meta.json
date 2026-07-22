@@ -17,7 +17,7 @@
       "sharpness"
     ],
     "proofRepoPath": "Proofs/TriangleInequalityOQ06OQ02.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "packagingNote": "Tier C follow-up that answers an open question posed verbatim in the parent triangle-inequality-oq-06 gallery entry. The core inequality is a two-step composition of the Mathlib lemmas abs_dist_sub_le (three-point reverse) and dist_le_range_sum_dist (polygon/path inequality), so the inequality itself is short. The genuinely new content is the sharpness layer: telescoping_reverse_triangle_sharp_mono proves that for every monotone real chain a₀ ≤ ⋯ ≤ aₙ ≤ w the telescoping bound is an equality (both sides equal aₙ − a₀, the right via Finset.sum_range_sub telescoping), certifying the inequality cannot be improved, plus an explicit numeric witness (0,1,2 chain, w = 10). Status is verified (0 sorries, 0 axioms — only propext/Classical.choice/Quot.sound).",
     "sorries": 0,
     "axiomCount": 0,

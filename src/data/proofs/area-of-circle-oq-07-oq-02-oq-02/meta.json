@@ -42,7 +42,7 @@
     "lineCount": 164,
     "theoremCount": 8,
     "definitionCount": 0,
-    "badge": "verified",
+    "badge": "mathlib",
     "originalContributions": [
       "first_half_moment: ∫_{(0,∞)} x·e^{-b x²} dx = 1/(2b) for b > 0, evaluated via the explicit primitive -(2b)⁻¹·e^{-b x²} and integral_Ioi_of_hasDerivAt_of_tendsto' — a genuinely non-trivial value, unlike the full-line first moment which vanishes by odd symmetry",
       "second_half_moment: ∫_{(0,∞)} x²·e^{-b x²} dx = √(π/b)/(4b) for b > 0, obtained by a single integration by parts (primitive g(x) = -(2b)⁻¹·x·e^{-b x²}, vanishing at 0 and ∞) that reduces the second moment to (2b)⁻¹ times the parent's zeroth moment √(π/b)/2",

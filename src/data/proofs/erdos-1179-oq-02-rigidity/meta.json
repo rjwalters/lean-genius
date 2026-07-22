@@ -18,7 +18,7 @@
       "erdos-problem",
       "rigidity"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Depends only on Erdos1179.epsUniform_spanning (from the verified sibling Proofs/Erdos1179OQ02.lean) and Erdos1179.total_reprCount (from the parent Proofs/Erdos1179Problem.lean), plus the named Mathlib lemma Finset.sum_eq_sum_iff_of_le (the @[to_additive] image of Finset.prod_eq_prod_iff_of_le). This file formalizes the EQUALITY/rigidity case of the trivial lower bound only; the headline OQ-02 (the additive Oₑ(1) UPPER bound) remains open.",

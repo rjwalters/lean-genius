@@ -20,7 +20,7 @@
       "prime-powers"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ03OQ02.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. Every theorem depends only on the foundational axioms propext, Classical.choice, Quot.sound (not counted), as confirmed by `#print axioms` on totient_sq_ge_self and sqrt_le_totient. No `native_decide` is used (the `decide`/`norm_num`/`nlinarith` calls are kernel-checked), so `Lean.ofReduceBool` is NOT introduced. Built against Mathlib's `Nat.totient` API (`totient_prime_pow`, `totient_mul`, `recOnPosPrimePosCoprime`, `exists_eq_two_pow_mul_odd`).",

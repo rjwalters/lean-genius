@@ -16,7 +16,7 @@
       "verified"
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. The strong-subadditivity inequality H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) is proved axiom-free (0 sorries) in the parent file Proofs/ShannonEntropy.lean as InformationTheory.strong_subadditivity (conditional-KL-divergence argument: each term p·log(p/q) ≥ p−q via the Gibbs inequality, block sum telescoping to 0). This file re-exports that theorem and derives its three three-variable corollaries (conditioning_reduces_entropy_general, conditioning_reduces_entropy_general′, conditional_mi_nonneg) by linear rearrangement. #print axioms reports only [propext, Classical.choice, Quot.sound].",

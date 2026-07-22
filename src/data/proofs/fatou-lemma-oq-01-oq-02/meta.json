@@ -41,7 +41,7 @@
     "lineCount": 161,
     "theoremCount": 6,
     "definitionCount": 0,
-    "badge": "synthesis",
+    "badge": "mathlib",
     "originalContributions": [
       "escaping_no_integrable_majorant: the headline — the escaping-mass sequence escaping n = 𝟙_[n,n+1) admits NO integrable majorant. Every g : ℝ → ℝ≥0∞ with escaping n ≤ g for all n has ∫⁻ g = ∞. This formalizes the claim the parent entry asserted only informally, and is the precise quantitative reason the dominated convergence theorem cannot be applied to the escaping bumps. Mathlib records DCT and its integrable-majorant hypothesis but no witness that the hypothesis is genuinely necessary.",
       "ici_indicator_le_of_dominates: the supporting mechanism — any g dominating all bumps dominates the indicator of [0,∞). For x ≥ 0 the single bump escaping ⌊x⌋₊ already equals 1 at x (as x ∈ [⌊x⌋₊, ⌊x⌋₊+1)), so 𝟙_[0,∞) ≤ g pointwise; this is the pointwise supremum ⨆ₙ escaping n = 𝟙_[0,∞) in usable form. Integrating against volume (Set.Ici 0) = ∞ forces ∫⁻ g = ∞.",

@@ -18,7 +18,7 @@
       "erdos-problem",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Machine-checked: green docker-build of Proofs.Erdos1179OQ02 (7744 jobs, 2026-06-19) confirms the typecheck. Depends only on Erdos1179.total_reprCount and Erdos1179.expectedReprCount_pos from the parent Proofs/Erdos1179Problem.lean. This file formalizes only the LOWER-BOUND direction together with structural API for the ε-uniformity predicate (monotonicity in ε, the two-sided count sandwich, and the contrapositive too-small bound); the headline OQ-02 (the additive Oₑ(1) UPPER bound) remains open. The structural bounds and the exact small-N gap are additionally certified by research/problems/erdos-1179-oq-02/verify_uniform_subset_sums.py (all pass; the script notes it cannot decide the asymptotic Oₑ(1) question).",

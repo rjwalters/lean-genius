@@ -13,7 +13,7 @@
       "lagrange-theorem"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ02OQ02.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide`. All 8 theorems depend only on the ordinary foundational axioms propext, Classical.choice, Quot.sound (confirmed via `#print axioms`); there is no `sorryAx` and no `Lean.ofReduceBool`. This entry deliberately avoids the base file's `native_decide` numerical checks, replacing the non-coprime counterexamples with the general 0-axiom theorem `coprime_of_pow_modEq_one`.",
