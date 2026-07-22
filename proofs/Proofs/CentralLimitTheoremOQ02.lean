@@ -926,10 +926,11 @@ AXIOMATIZED (deep results):
 - Martingale CLT (McLeish 1974) — characteristic function method
 - CLT for α-mixing sequences (Ibragimov 1962) — long-run variance
 
-REMAINING SORRIES (3):
-- independent_implies_zero_mixing: nested ciSup of zeros = 0 (ℝ ConditionallyCompleteLattice)
-- i.i.d. Lindeberg condition: dominated convergence for truncated moments
-- i.i.d. Lyapunov condition: moment computation with rpow decay
+REMAINING SORRIES (0):
+All three formerly-remaining sorries are now fully proved in this file:
+- independent_implies_zero_mixing: nested ciSup of zeros = 0 (ℝ ConditionallyCompleteLattice) ✓
+- i.i.d. Lindeberg condition: dominated convergence for truncated moments ✓
+- i.i.d. Lyapunov condition: moment computation with rpow decay ✓
 -/
 
 end CentralLimitTheoremOQ02

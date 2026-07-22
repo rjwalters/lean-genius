@@ -22,7 +22,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
-    "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) — the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 1 sorry: nested ciSup of zeros = 0 for independent sequences (independent_implies_zero_mixing). (The i.i.d. Lindeberg condition and the i.i.d. Lyapunov condition, formerly sorries, are now fully proved in the main file.)",
+    "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) — the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 0 sorries: the nested-ciSup independence lemma (independent_implies_zero_mixing), the i.i.d. Lindeberg condition, and the i.i.d. Lyapunov condition — all formerly sorries — are now fully proved in the main file.",
     "lineCount": 935,
     "theoremCount": 23,
     "definitionCount": 14,
