@@ -90,6 +90,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: G\u00f6del's Incompleteness Theorem as a Lawvere Instance", "startLine": 1, "endLine": 47, "summary": "States the open question of formalizing G\u00f6del's First Incompleteness Theorem as an instance of Lawvere's fixed-point theorem, with the diagonal/Carnap lemma as point-surjectivity and 'negate provability' as the endomorphism. Lists the six theorems proved (existence of the G\u00f6del sentence, first incompleteness, semantic truth, completeness failure, a Rosser-strengthened version) and notes this is a sister result to the Rice's-theorem and Cantor formalizations sharing the same Lawvere core.", "mathContext": "The Carnap diagonal lemma gives, for any formula $F(x)$, a sentence $G$ with $S \\vdash G \\leftrightarrow F(\\ulcorner G\\urcorner)$; applying Lawvere's fixed-point theorem with $f = \\lnot\\mathrm{Pr}(\\cdot)$ yields $G \\leftrightarrow \\lnot\\mathrm{Pr}(G)$, the G\u00f6del sentence."},
     {
       "id": "eval-framework",
       "title": "Section I: Evaluation Structure and Lawvere Fixed-Point Theorem",
