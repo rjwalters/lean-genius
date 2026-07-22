@@ -62,6 +62,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Motivic classes of maps to partial flag varieties",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Extends the motivic-class formalization from the parent file to partial flag varieties Fl(d_1,...,d_k;n), answering whether the pattern generalizes beyond complete flags. Develops q-analog infrastructure (q-numbers, q-factorials), Grassmannian motivic classes via Schubert cell decomposition, and the partial-flag factorization, with the Grassmannian Gr(d,n) = Fl(d;n) as the simplest special case whose motivic class is the Gaussian binomial [n choose d]_L."
+    },
+    {
       "id": "grothendieck-ring",
       "title": "Part I: Grothendieck Ring Setup",
       "description": "The Grothendieck ring of varieties K₀(Var_k) with affine class [A^n]=L^n, projective class [P^n], triangular numbers, [GL_n], and complete-flag class [Fl_n], imported from the parent MotivicFlagMaps formalization.",
