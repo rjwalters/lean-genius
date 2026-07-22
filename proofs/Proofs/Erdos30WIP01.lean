@@ -593,4 +593,71 @@ theorem sidonNumber_ten : sidonNumber 10 = 4 := by
   · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 10 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
 
+/-! ### `h(11) = h(12) = h(13) = h(14) = 5` — the counting bound resumes
+
+At `N = 11` a 5-element Sidon set first fits: `{0,1,4,9,11}` (pairwise sums
+`1,4,5,9,10,11,12,13,15,20` and doubles `0,2,8,18,22` — all distinct).  On the
+upper side the counting bound `|A|² ≤ 2N + |A|` is active again against a
+6-element set: `6·5 = 30 > 2N` for every `N ≤ 14`, i.e. the `C(6,2) = 15`
+distinct positive differences of a 6-element Sidon set cannot fit in `{1,…,N}`.
+So the exact table extends through `h(14) = 5` with a single witness and the
+existing counting machinery.
+
+The wall returns at `N = 15`: `6·5 = 30 = 2·15` goes slack, and the `h(10)`
+parity obstruction does NOT transfer — a 6-mark perfect ruler of length 15
+would have difference sum `1 + ⋯ + 15 = 120`, which is *even*, so parity is
+silent.  Ruling out `h(15) = 6` requires the (true, but finer) nonexistence of
+a perfect 6-mark ruler — the natural next-session target. -/
+
+private theorem isSidonSet_0_1_4_9_11 : IsSidonSet {0, 1, 4, 9, 11} := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+  rcases ha with rfl | rfl | rfl | rfl | rfl <;>
+    rcases hb with rfl | rfl | rfl | rfl | rfl <;>
+    rcases hc with rfl | rfl | rfl | rfl | rfl <;>
+    rcases hd with rfl | rfl | rfl | rfl | rfl <;> omega
+
+/-- `h(11) = 5`, with optimal witness `{0,1,4,9,11}` — a 5-element Sidon set first
+fits at `N = 11`, and the counting bound (`6·5 = 30 > 22 = 2·11`) rules out `6`. -/
+theorem sidonNumber_eleven : sidonNumber 11 = 5 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h6 : 6 ≤ m := hc
+    nlinarith [hm, h6]
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 11 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
+
+/-- `h(12) = 5`: `6·5 = 30 > 24 = 2·12` still blocks a 6-element Sidon set, and
+`{0,1,4,9,11} ⊆ {0,…,12}` attains `5`. -/
+theorem sidonNumber_twelve : sidonNumber 12 = 5 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h6 : 6 ≤ m := hc
+    nlinarith [hm, h6]
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 12 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
+
+/-- `h(13) = 5`: `6·5 = 30 > 26 = 2·13` blocks a 6-element Sidon set, and
+`{0,1,4,9,11} ⊆ {0,…,13}` attains `5`. -/
+theorem sidonNumber_thirteen : sidonNumber 13 = 5 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h6 : 6 ≤ m := hc
+    nlinarith [hm, h6]
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 13 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
+
+/-- `h(14) = 5`: `6·5 = 30 > 28 = 2·14` blocks a 6-element Sidon set, and
+`{0,1,4,9,11} ⊆ {0,…,14}` attains `5`.  This closes the easy stretch: at `N = 15`
+the counting bound goes slack (`30 = 2·15`) and the parity argument is silent
+(`1+⋯+15 = 120` is even), so `h(15)` needs the nonexistence of a perfect 6-mark
+ruler. -/
+theorem sidonNumber_fourteen : sidonNumber 14 = 5 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h6 : 6 ≤ m := hc
+    nlinarith [hm, h6]
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 14 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
+
 end Erdos30
