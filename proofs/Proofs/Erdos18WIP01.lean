@@ -1594,6 +1594,141 @@ theorem hErdos_two_pow (k : ℕ) : hErdos (2 ^ k) = k := by
             unfold hErdos
             exact Finset.le_sup (Finset.mem_range.mpr hklt)
 
+/- ## Subadditivity of the corrected index `hErdos`
+
+`hErdos(a·b) ≤ hErdos a + hErdos b` for practical `a, b`. This is the
+multiplicative-subadditivity law for the *correct* Erdős #18 index — the analogue,
+for `hErdos`, of the universal-set subadditivity `h(mn) ≤ h(m) + h(n)` that
+`Erdos18OQ01` proves for the parent (over-counting) `h`. It is the mechanism behind
+the conjectured smallness of `hErdos(n!)`: bounding a product's index by the sum of
+its factors' indices is exactly how one controls a factorial through its prime-power
+factorisation (Vose's `hErdos(n!) ≪ √log(n!)` is the deep quantitative form, still
+out of reach; this brick is its qualitative skeleton). The proof reuses the Euclidean
+coin split of `practical_mul` but tracks *cardinalities*: a minimum-size representation
+of the quotient scaled by `b`, disjointly unioned with a minimum-size representation of
+the remainder. -/
+
+/-- `repLength m 0 = 0`: the empty set of divisors already sums to `0`. -/
+theorem repLength_zero (m : ℕ) : repLength m 0 = 0 := by
+  have h : repLength m 0 ≤ 0 :=
+    Nat.sInf_le ⟨∅, Finset.empty_subset _, Finset.card_empty, by simp⟩
+  omega
+
+/-- Sharpened `repLength_spec` also covering `k = 0`: for practical `m` and `k < m`
+there is a divisor set of size *exactly* `repLength m k` summing to `k`. -/
+theorem repLength_spec' {m k : ℕ} (hm : IsPractical m) (hkm : k < m) :
+    ∃ T : Finset ℕ, T ⊆ divisors m ∧ T.card = repLength m k ∧ T.sum id = k := by
+  rcases Nat.eq_zero_or_pos k with hk0 | hk1
+  · subst hk0
+    exact ⟨∅, Finset.empty_subset _, by rw [Finset.card_empty, repLength_zero], by simp⟩
+  · exact repLength_spec hm hk1 hkm
+
+/-- **Pointwise product bound for `repLength`.** For practical `a, b` and `N < a·b`,
+representing `N = (N/b)·b + N%b` costs at most `repLength a (N/b) + repLength b (N%b)`
+divisors of `a·b`: take a minimum-size representation of the quotient by divisors of
+`a`, scale it by `b` (coins `≥ b`), and disjointly adjoin a minimum-size representation
+of the remainder by divisors of `b` (coins `< b`). -/
+theorem repLength_mul_le {a b : ℕ} (ha : IsPractical a) (hb : IsPractical b)
+    {N : ℕ} (hN : N < a * b) :
+    repLength (a * b) N ≤ repLength a (N / b) + repLength b (N % b) := by
+  have hb0 : 0 < b := hb.1
+  have ha0 : 0 < a := ha.1
+  have hbne : b ≠ 0 := by omega
+  have hab0 : a * b ≠ 0 := Nat.mul_ne_zero (by omega) hbne
+  set q := N / b with hq
+  set r := N % b with hr
+  have hrb : r < b := Nat.mod_lt N hb0
+  have hNqr : N = q * b + r := by
+    rw [hq, hr, Nat.mul_comm]; exact (Nat.div_add_mod N b).symm
+  have hqa : q < a := by
+    by_contra hc
+    rw [not_lt] at hc
+    have h1 : a * b ≤ q * b := Nat.mul_le_mul hc (le_refl b)
+    have h2 : q * b ≤ N := Nat.div_mul_le_self N b
+    omega
+  obtain ⟨D, hD, hDcard, hDsum⟩ := repLength_spec' ha hqa
+  obtain ⟨E, hE, hEcard, hEsum⟩ := repLength_spec' hb hrb
+  -- scaled coins `≥ b`; remainder coins `≤ r < b`; hence the two sets are disjoint
+  have hD'_ge : ∀ x ∈ D.image (· * b), b ≤ x := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨d, hd, rfl⟩ := hx
+    have hdpos : 1 ≤ d := Nat.pos_of_mem_divisors (hD hd)
+    calc b = 1 * b := (Nat.one_mul b).symm
+      _ ≤ d * b := Nat.mul_le_mul hdpos (le_refl b)
+  have hE_lt : ∀ y ∈ E, y < b := by
+    intro y hy
+    have hyle : y ≤ r := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hy
+      rwa [hEsum, id_eq] at this
+    omega
+  have hdisj : Disjoint (D.image (· * b)) E := by
+    rw [Finset.disjoint_left]
+    intro z hzD hzE
+    have h1 := hD'_ge z hzD
+    have h2 := hE_lt z hzE
+    omega
+  have hunion_sub : D.image (· * b) ∪ E ⊆ divisors (a * b) := by
+    apply Finset.union_subset
+    · exact image_mul_right_subset_divisors hbne hD
+    · intro y hy
+      have hyb := Nat.mem_divisors.mp (hE hy)
+      exact Nat.mem_divisors.mpr ⟨hyb.1.trans (dvd_mul_left b a), hab0⟩
+  have hunion_sum : (D.image (· * b) ∪ E).sum id = N := by
+    rw [Finset.sum_union hdisj, sum_image_mul_right hb.1 D, hDsum, hEsum, hNqr]
+  have hunion_card :
+      (D.image (· * b) ∪ E).card = repLength a q + repLength b r := by
+    rw [Finset.card_union_of_disjoint hdisj,
+        Finset.card_image_of_injective _ (fun x y h => mul_right_cancel₀ hbne h),
+        hDcard, hEcard]
+  calc repLength (a * b) N
+      ≤ (D.image (· * b) ∪ E).card :=
+        Nat.sInf_le ⟨_, hunion_sub, rfl, hunion_sum⟩
+    _ = repLength a q + repLength b r := hunion_card
+
+/-- **Subadditivity of the corrected Erdős #18 index:**
+`hErdos(a·b) ≤ hErdos a + hErdos b` for practical `a, b`. Every `N < a·b` splits as
+quotient-plus-remainder, and its `repLength` is bounded by the two factors' `repLength`s
+(`repLength_mul_le`), each of which is at most the corresponding `hErdos`. This is the
+correct-index counterpart of the parent `Erdos18OQ01` subadditivity for the
+universal-set `h`. -/
+theorem hErdos_mul_le {a b : ℕ} (ha : IsPractical a) (hb : IsPractical b) :
+    hErdos (a * b) ≤ hErdos a + hErdos b := by
+  have hb0 : 0 < b := hb.1
+  unfold hErdos
+  apply Finset.sup_le
+  intro N hN
+  rw [Finset.mem_range] at hN
+  have hqa : N / b < a := by
+    by_contra hc
+    rw [not_lt] at hc
+    have h1 : a * b ≤ (N / b) * b := Nat.mul_le_mul hc (le_refl b)
+    have h2 : (N / b) * b ≤ N := Nat.div_mul_le_self N b
+    omega
+  have hrb : N % b < b := Nat.mod_lt N hb0
+  calc repLength (a * b) N
+      ≤ repLength a (N / b) + repLength b (N % b) := repLength_mul_le ha hb hN
+    _ ≤ (Finset.range a).sup (fun k => repLength a k)
+          + (Finset.range b).sup (fun k => repLength b k) :=
+        Nat.add_le_add (Finset.le_sup (Finset.mem_range.mpr hqa))
+          (Finset.le_sup (Finset.mem_range.mpr hrb))
+
+/-- **`hErdos(m^k) ≤ k · hErdos m`** for practical `m`: iterate subadditivity. A clean
+qualitative consequence — the index of a prime-power (or any perfect power) grows at most
+linearly in the exponent. For `m = 2` this is tight (`hErdos(2^k) = k`, `hErdos_two_pow`),
+so the bound cannot be improved in general. -/
+theorem hErdos_pow_le {m : ℕ} (hm : IsPractical m) :
+    ∀ k, hErdos (m ^ k) ≤ k * hErdos m
+  | 0 => by
+      have h1 : hErdos (m ^ 0) = 0 := by
+        rw [pow_zero]; unfold hErdos; simp [Finset.range_one, repLength_zero]
+      rw [h1]; exact Nat.zero_le _
+  | k + 1 => by
+      calc hErdos (m ^ (k + 1)) = hErdos (m ^ k * m) := by rw [pow_succ]
+        _ ≤ hErdos (m ^ k) + hErdos m := hErdos_mul_le (practical_pow hm k) hm
+        _ ≤ k * hErdos m + hErdos m := Nat.add_le_add_right (hErdos_pow_le hm k) _
+        _ = (k + 1) * hErdos m := by ring
+
 /-- **Erdős #18, Part 2 ($250), corrected.** The prize question `h(n!) < n^{o(1)}`
 stated over the correct index `hErdos`. Contrast `conjecture_part2_weak`, which is
 *false* for the parent's universal-set `h` (`factorial_le_two_pow_h`). -/
