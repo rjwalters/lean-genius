@@ -29,7 +29,7 @@
       "linear programming relaxation"
     ],
     "lineCount": 276,
-    "assumptions": "1 axiom: IsPlanar. 0 sorries.",
+    "assumptions": "1 axiom: IsPlanar. 0 sorries. Trust caveat: the finite tightness witnesses k4_tight and k5_tight (existence of specific small graphs on Fin 4 / Fin 5 achieving the packing/covering bound) close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are finite small-case demonstrations; the IsPlanar axiom and the abstract Tuza-bound lemmas remain kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 7

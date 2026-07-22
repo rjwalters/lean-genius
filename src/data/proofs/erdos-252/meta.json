@@ -48,7 +48,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 216,
-    "assumptions": "5 axioms: erdos_252_k0 through erdos_252_k4 (irrationality of divisorPowerSum for k=0..4).",
+    "assumptions": "5 axioms: erdos_252_k0 through erdos_252_k4 (irrationality of divisorPowerSum for k=0..4). Trust caveat: three named computation theorems — sigma_1_six (σ₁(6)=12), sigma_0_six (σ₀(6)=4) and sigma_2_two (σ₂(2)=5) — close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are self-contained finite divisor-power values; the erdos_252_k0..k4 irrationality axioms remain the sole assumptions.",
     "theoremCount": 7,
     "definitionCount": 5
   },

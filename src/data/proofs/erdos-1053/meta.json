@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/1053",
     "dateAdded": "2025-01-15",
     "axiomCount": 1,
-    "assumptions": "1 axiom: robin_inequality_conditional. 0 sorries.",
+    "assumptions": "1 axiom: robin_inequality_conditional. 0 sorries. Trust caveat: named computation theorems — sigma_one (σ(1)=1, used by IsKPerfect_one_iff), perfect_examples (6,28,496,8128 are 2-perfect) and triperfect_examples (120,672,523776 are 3-perfect) — close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are finite k-perfect verifications; the robin_inequality_conditional axiom is unaffected.",
     "badge": "axiom",
     "proofRepoPath": "Proofs/Erdos1053Problem.lean",
     "mathlib_version": "4.31.0",
