@@ -99,6 +99,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-13",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #13 (\\$100 prize), solved by Bedert (2023): for $A \\subseteq \\{1,\\dots,N\\}$ with no $a,b,c \\in A$ satisfying $a \\mid (b+c)$ and $a < \\min(b,c)$, is $|A| \\le N/3 + O(1)$? Answered YES, with the tight lower bound realized by $(2N/3,N]$.",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "The generalized $r$-sum version (no $a \\mid (b_1+\\cdots+b_r)$ with $a < \\min(b_i)$) is conjectured by Erd\u0151s to satisfy $|A| \\le N/(r+1)+O(1)$, still open beyond $r=2$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines IsBadTriple (a | (b+c) with a < min(b,c)), DivisibilityFree (no bad triples), and proves their equivalence.",
