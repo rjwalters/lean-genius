@@ -86,10 +86,10 @@
     {
       "id": "iteration-length",
       "title": "The Iteration Length f(n)",
-      "summary": "Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find with a sorry'd existence proof. Axiomatizes $f(1) = 0$, $f(2) = 1$, and $f(n) \\ge 1$ for $n > 1$.",
+      "summary": "Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find, with the existence hypothesis supplied by the proved private theorem `iteratedTotient_reaches_one` (no sorry). $f(1) = 0$ holds by definition and `iterationLength_pos` proves $f(n) \\ge 1$ for $n > 1$ — none of these are axioms.",
       "startLine": 70,
       "endLine": 104,
-      "mathContext": "Formal definition: Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find with a sorry'd existence proof. Axiomatizes $f(1) = 0$, $f(2) = 1$, and $f(n) \\ge 1$ for $n > 1$."
+      "mathContext": "Formal definition: Defines $f(n) = \\min\\{k : \\phi_k(n) = 1\\}$ via Nat.find, with the existence hypothesis supplied by the proved private theorem `iteratedTotient_reaches_one` (no sorry). $f(1) = 0$ holds by definition and `iterationLength_pos` proves $f(n) \\ge 1$ for $n > 1$ — none of these are axioms."
     },
     {
       "id": "pillai-bounds",
