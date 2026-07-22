@@ -59,7 +59,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 352,
-    "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms. Trust caveat: the finite membership/completeness checks (one_in_ternarySparse, four_in_ternarySparse, pow2_8_in_ternarySparse, dense_complete_to_15, sparse_complete_to_15) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom; these are finite demonstrations, while the headline result rests on the stated axiom.",
+    "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
     "theoremCount": 19,
     "definitionCount": 6
   },
