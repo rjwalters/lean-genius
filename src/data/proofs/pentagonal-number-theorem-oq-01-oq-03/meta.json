@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Square-discriminant criterion for general figurate numbers",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Extends the pentagonal square-discriminant test ($24m+1$ a perfect square) to generalized heptagonal numbers ($40m+9$ a perfect square via a `ZMod 10` argument mirroring the pentagonal `ZMod 6` case), then isolates a single discriminant identity uniform across all polygon parameters $s$.",
+      "mathContext": "$m$ generalized heptagonal $\\iff 40m+9$ is a perfect square; uniformly $8(s-2)P+(s-4)^2$ is a perfect square for generalized $s$-gonal $P$."
+    },
+    {
       "id": "heptagonal-defs",
       "title": "Generalized heptagonal numbers and the doubling relation",
       "startLine": 41,
