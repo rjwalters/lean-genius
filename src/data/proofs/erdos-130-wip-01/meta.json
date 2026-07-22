@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-130-wip-01",
+      "title": "Problem Statement and Background",
+      "summary": "States the Anning\u2013Erd\u0151s theorem (1945) underlying Erd\u0151s Problem #130: a finite planar set with no three points collinear and all pairwise integer distances has size at most $4(2D+1)(2E+1)$ for distances $D,E$ from any non-collinear triple, and outlines the five-step proof strategy formalized in the file.",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "The proof strategy fixes coordinates $P=(0,0)$, $Q=(D,0)$ and bounds the signed distance-difference $s=a-b$ (at most $2D+1$ choices), then derives a quadratic identity in $a$ from a third point $R$, giving at most 2 roots per $(s,t)$ pair and hence the product bound."
+    },
+    {
       "id": "x-coord",
       "title": "X-Coordinate Formula",
       "startLine": 38,
