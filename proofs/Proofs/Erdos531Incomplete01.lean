@@ -9,9 +9,10 @@ import Proofs.Erdos531Problem
 
 **Erdős Problem #531** (OPEN growth rate). `F(k)` is the least `N` such that every
 2-colouring of `{1,…,N}` admits a `k`-element set whose non-empty subset sums are
-monochromatic. `Erdos531Problem.lean` proves `F 1 = 1` but leaves `F 2 = 8` as a
-`sorry`, noting it needs the reduction of the infinite colouring quantifier
-`∀ c : ℕ → Bool` to a finite search — deferred there as out of scope.
+monochromatic. `Erdos531Problem.lean` proves `F 1 = 1` and (as of 2026-07-22)
+`F 2 = 8` in full: the infinite colouring quantifier `∀ c : ℕ → Bool` is reduced
+to a kernel-`decide` check `forcedCheck_all` over the 256 restrictions to
+`{1,…,8}`, plus the explicit `N = 7` witness colouring.
 
 This companion supplies the reusable **`k = 2` subset-sum machinery** that
 reduction rests on: for a genuine two-element set `{a, b}` (`a ≠ b`) the

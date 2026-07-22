@@ -229,9 +229,9 @@ def forcedCheck (v : Fin 8 → Bool) : Bool :=
   ((List.range 8).any fun k =>
     monoPairSumCheck v (k + 9) true && monoPairSumCheck v (k + 9) false)
 
+set_option maxRecDepth 8192 in
 /-- Exhaustive kernel check over all `2^8 = 256` colourings of `{1,…,8}`:
     every one is forced. Pure `decide` — no `native_decide`, no new axioms. -/
-set_option maxRecDepth 8192 in
 theorem forcedCheck_all : ∀ v : Fin 8 → Bool, forcedCheck v = true := by decide
 
 /-- `8 ∈ ValidN 2`: every 2-colouring of `ℕ` admits a distinct pair
@@ -354,7 +354,8 @@ theorem F_2 : F 2 = 8 := by
   have h7 : (7 : ℕ) ∉ ValidN 2 := seven_not_mem_validN_two
   have hne : (ValidN 2).Nonempty := ⟨8, h8⟩
   rcases Nat.lt_or_ge (F 2) 8 with hlt | hge
-  · exact absurd (validN_mono (by omega) (Nat.sInf_mem hne)) h7
+  · have hmem : F 2 ∈ ValidN 2 := Nat.sInf_mem hne
+    exact absurd (validN_mono (by omega) hmem) h7
   · exact le_antisymm (Nat.sInf_le h8) hge
 
 /-  F(3) ≥ 11: Lower bound for 3-element sets. -/
