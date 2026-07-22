@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring: the parent HermiteSawtoothIdentity proves the m=1 fractional-part sawtooth identity ∑_{k<n}{x+k/n} = {nx}+(n-1)/2, whose Bernoulli-polynomial form is the m=1 case of the Raabe multiplication theorem ∑_{k=0}^{n-1} Bₘ(x+k/n) = n^{1-m}·Bₘ(nx). The general-m theorem is classically proved via the exponential generating function t·e^{xt}/(e^t-1) — heavy machinery formally. This file proves the low orders m=0,1,2, where n^{1-m} is a concrete coefficient and the identity reduces to an elementary power-sum computation (Gauss/square power-sum formulas), with raabe_one recovering the parent's sawtooth identity as its Bernoulli-polynomial twin. Everything is over ℚ, 0-axiom.",
+      "mathContext": "$\\sum_{k=0}^{n-1} B_m\\!\\left(x+\\tfrac{k}{n}\\right) = n^{1-m} B_m(nx)$ for $m=0,1,2$ (Raabe multiplication theorem, low orders)."
+    },
+    {
       "id": "evals",
       "title": "Explicit evaluations of the low Bernoulli polynomials",
       "startLine": 37,
