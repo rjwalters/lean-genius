@@ -52,6 +52,22 @@
     divisors cover `[0, m − 1]`, and adjoining the divisor `m` reaches `2m − 1`. This
     matches the `σ(m) ≥ 2m − 1` bound exactly.
 
+  Folding the extension step along a list yields the full engine behind the
+  Stewart–Sierpiński characterisation of practicality:
+
+  * `subsetSum_covers_of_chain` — a *coin chain* (a duplicate-free list in which each
+    entry is `≤ 1 +` the sum of all earlier entries) represents, as distinct-subset
+    sums, every value up to its total sum. Reverse induction folding
+    `subsetSum_interval_extend` from `∅`.
+  * `representable_of_chain_divisors` — if such a chain consists of divisors of `m`,
+    every `k ≤ (chain sum)` is a sum of distinct divisors of `m`. Exhibiting a divisor
+    chain reaching `m − 1` is precisely the sufficient half of Stewart–Sierpiński.
+  * `practical_of_divisor_chain` — the criterion packaged as a reusable *test*: one
+    divisor chain reaching `m − 1` certifies `m` practical.
+  * `twenty_practical`, `twentyeight_practical` — concrete applications. Both `20 = 2²·5`
+    and `28 = 2²·7` have a non-practical odd part, so they lie beyond `two_pow_mul_practical`
+    (which needs a practical base); the chain engine reaches them directly.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -352,5 +368,114 @@ theorem representable_le_two_mul_sub_one_of_practical {m : ℕ} (h : IsPractical
   obtain ⟨T, hT, hTsum⟩ := key k (by omega)
   rw [Finset.insert_erase hmdvd] at hT
   exact ⟨T, hT, hTsum⟩
+
+/- ## The chain-covering engine
+
+Folding `subsetSum_interval_extend` from the empty set along a list of coins yields
+the full engine behind Stewart's product criterion: a *coin chain* — a duplicate-free
+list in which each coin is at most one more than the sum of all preceding coins — covers
+every value up to its total sum. (Reading a coin chain of divisors of `m` from `1`
+upward is exactly the Stewart–Sierpiński characterisation of practicality.) -/
+
+/-- **Chain-covering theorem.** If `l` is a duplicate-free list of naturals in which
+each entry `l[i]` is at most `1 +` the sum of the entries before it, then every
+`k ≤ l.sum` is a distinct-subset sum of `l.toFinset`. Proved by reverse induction on
+`l`: the empty list covers `{0}`, and appending a coin `d ≤ 1 + (previous sum)` extends
+the covered interval via `subsetSum_interval_extend`. -/
+theorem subsetSum_covers_of_chain :
+    ∀ (l : List ℕ), l.Nodup →
+      (∀ i, (h : i < l.length) → l[i] ≤ 1 + (l.take i).sum) →
+      ∀ k, k ≤ l.sum → ∃ T ⊆ l.toFinset, T.sum id = k := by
+  intro l
+  induction l using List.reverseRecOn with
+  | nil =>
+    intro _ _ k hk
+    simp only [List.sum_nil, Nat.le_zero] at hk
+    exact ⟨∅, by simp, by simp [hk]⟩
+  | append_singleton xs d ih =>
+    intro hnd hchain
+    have hlenapp : (xs ++ [d]).length = xs.length + 1 := by simp
+    rw [List.nodup_append] at hnd
+    have hxs_nd : xs.Nodup := hnd.1
+    have hd_notin : d ∉ xs := fun hmem => hnd.2.2 d hmem d (by simp) rfl
+    -- The chain condition restricts to the prefix `xs`.
+    have hchain_xs : ∀ i, (h : i < xs.length) → xs[i] ≤ 1 + (xs.take i).sum := by
+      intro i hi
+      have hi' : i < (xs ++ [d]).length := by rw [hlenapp]; omega
+      have hc := hchain i hi'
+      rwa [List.getElem_append_left hi, List.take_append_of_le_length (le_of_lt hi)] at hc
+    -- The last coin `d` obeys `d ≤ 1 + (sum of the prefix)`.
+    have hd_bound : d ≤ 1 + xs.sum := by
+      have hlen : xs.length < (xs ++ [d]).length := by rw [hlenapp]; omega
+      have hc := hchain xs.length hlen
+      rwa [List.getElem_concat_length rfl, List.take_left] at hc
+    -- Cover the prefix, then push out by `d`.
+    have hcov := ih hxs_nd hchain_xs
+    have hd_fin : d ∉ xs.toFinset := by rwa [List.mem_toFinset]
+    have hext := subsetSum_interval_extend (S := xs.toFinset) (N := xs.sum) (d := d)
+      hcov (by omega) hd_fin
+    intro k hk
+    have hk' : k ≤ xs.sum + d := by rwa [List.sum_append, List.sum_singleton] at hk
+    obtain ⟨T, hT, hTsum⟩ := hext k hk'
+    have hset : insert d xs.toFinset = (xs ++ [d]).toFinset := by
+      ext a
+      simp only [Finset.mem_insert, List.mem_toFinset, List.toFinset_append,
+        Finset.mem_union, List.mem_singleton]
+      tauto
+    exact ⟨T, hset ▸ hT, hTsum⟩
+
+/-- **Bridge to representability.** If a coin chain consists entirely of divisors of
+`m`, then every `k ≤ (chain sum)` is a sum of distinct divisors of `m`. Exhibiting such
+a chain that reaches `m − 1` is exactly what it takes to prove `m` practical — this is
+the sufficient half of the Stewart–Sierpiński criterion. -/
+theorem representable_of_chain_divisors {m : ℕ} {l : List ℕ}
+    (hdvd : ∀ d ∈ l, d ∈ divisors m) (hnd : l.Nodup)
+    (hchain : ∀ i, (h : i < l.length) → l[i] ≤ 1 + (l.take i).sum) :
+    ∀ k, k ≤ l.sum → IsRepresentable k m := by
+  intro k hk
+  obtain ⟨T, hT, hTsum⟩ := subsetSum_covers_of_chain l hnd hchain k hk
+  refine ⟨T, ?_, hTsum⟩
+  intro x hx
+  have hxl := hT hx
+  rw [List.mem_toFinset] at hxl
+  exact hdvd x hxl
+
+/-- **Practicality test (sufficient half of Stewart–Sierpiński).** To prove `m`
+practical it suffices to exhibit *one* duplicate-free coin chain of divisors of `m`
+whose running sums never leave a gap (each coin `≤ 1 +` the sum of the earlier ones)
+and whose total reaches `m − 1`. Then every `1 ≤ k < m` — indeed every `k ≤ (chain
+sum)` — is a distinct-divisor sum by `representable_of_chain_divisors`. This packages
+the chain engine into a single reusable criterion. -/
+theorem practical_of_divisor_chain {m : ℕ} (hm : 1 ≤ m) {l : List ℕ}
+    (hdvd : ∀ d ∈ l, d ∈ divisors m) (hnd : l.Nodup)
+    (hchain : ∀ i, (h : i < l.length) → l[i] ≤ 1 + (l.take i).sum)
+    (hreach : m - 1 ≤ l.sum) : IsPractical m := by
+  refine ⟨hm, fun k hk1 hkm =>
+    representable_of_chain_divisors hdvd hnd hchain k (by omega)⟩
+
+/-- **`20` is practical** — via the divisor chain `1, 2, 4, 5, 10` (running sums
+`1, 3, 7, 12, 22`, each coin at most one past the previous total, reaching `22 ≥ 19`).
+Note `20 = 2² · 5`: its odd part `5` is *not* practical, so `20` lies beyond the reach
+of `two_pow_mul_practical` (which needs a practical base). The chain engine finds it. -/
+theorem twenty_practical : IsPractical 20 := by
+  apply practical_of_divisor_chain (m := 20) (l := [1, 2, 4, 5, 10]) (by norm_num)
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
+
+/-- **`28` is practical** (the perfect number) — via the divisor chain `1, 2, 4, 7, 14`
+(running sums `1, 3, 7, 14, 28`, reaching `28 ≥ 27`). As with `20`, the odd part `7` of
+`28 = 2² · 7` is not practical, so the doubling lemmas miss it; the chain engine does not. -/
+theorem twentyeight_practical : IsPractical 28 := by
+  apply practical_of_divisor_chain (m := 28) (l := [1, 2, 4, 7, 14]) (by norm_num)
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
 
 end Erdos18
