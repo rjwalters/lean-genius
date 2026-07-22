@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1070",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1070 (estimate $f(n)$, the guaranteed independent \u2014 unit-distance-free \u2014 subset size among $n$ planar points; is $f(n) \\ge n/4$?), with best known bounds $0.22936n \\le f(n) \\le (2/7)n$ and the Hadwiger\u2013Nelson connection via the chromatic number of the plane.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "The Moser spindle (7 vertices, independence number 2) gives the $(2/7)n$ upper bound; Croft's density bound $m_1 \\ge 0.22936$ gives the lower bound, while $\\omega \\cdot \\chi \\ge n$ links $f(n)$ to the chromatic number $\\chi$ of the plane ($5 \\le \\chi \\le 7$)."
+    },
+    {
       "id": "unit-distance-graphs",
       "title": "Unit Distance Graphs",
       "startLine": 39,
