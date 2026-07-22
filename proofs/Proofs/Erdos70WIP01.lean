@@ -263,21 +263,21 @@ the last step because `ω^Tₙ = T_{n+1}` is by definition of the tower and shif
 identifies `ε₀` as the *least countable* ordinal fixed by `ω^·` — the exact top of the
 exponential hierarchy the file's narrative points at. -/
 theorem omega0_opow_iSup_omegaTower :
-    Ordinal.omega0 ^ (⨆ n : ℕ, omegaTower n) = ⨆ n : ℕ, omegaTower n := by
-  have hN : Ordinal.IsNormal (Ordinal.omega0 ^ ·) :=
+    Ordinal.omega0.{0} ^ (⨆ n : ℕ, omegaTower n) = ⨆ n : ℕ, omegaTower n := by
+  have hN : Ordinal.IsNormal (Ordinal.omega0.{0} ^ ·) :=
     Ordinal.isNormal_opow Ordinal.one_lt_omega0
   apply le_antisymm
   · -- `ω^ε₀ = ⨆ₙ ω^Tₙ = ⨆ₙ T_{n+1} ≤ ⨆ₘ Tₘ`
-    rw [Order.IsNormal.map_iSup hN bddAbove_of_small]
+    rw [hN.map_iSup omegaTower]
     apply Ordinal.iSup_le
     intro n
-    calc Ordinal.omega0 ^ (omegaTower n) = omegaTower (n + 1) := rfl
+    calc Ordinal.omega0.{0} ^ (omegaTower n) = omegaTower (n + 1) := rfl
       _ ≤ ⨆ m : ℕ, omegaTower m := Ordinal.le_iSup omegaTower (n + 1)
   · -- `ε₀ = ⨆ₙ Tₙ ≤ ⨆ₙ ω^Tₙ = ω^ε₀`, using `Tₙ ≤ ω^Tₙ` and monotonicity of `ω^·`
     apply Ordinal.iSup_le
     intro n
-    calc omegaTower n ≤ Ordinal.omega0 ^ (omegaTower n) := hN.le_apply
-      _ ≤ Ordinal.omega0 ^ (⨆ m : ℕ, omegaTower m) :=
+    calc omegaTower n ≤ Ordinal.omega0.{0} ^ (omegaTower n) := hN.le_apply
+      _ ≤ Ordinal.omega0.{0} ^ (⨆ m : ℕ, omegaTower m) :=
           Ordinal.opow_le_opow_right Ordinal.omega0_pos (Ordinal.le_iSup omegaTower n)
 
 /-- The open conjecture specializes all the way to `ε₀`: `𝔠 → (ε₀, n)₂³`, using the
