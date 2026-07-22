@@ -114,6 +114,7 @@
     "lineCount": 156,
     "sorries": 0,
     "path": "Proofs/Erdos1107OQ02.lean",
+    "assumptions": "1 axiom: squareful_sum_threshold (effective Heath-Brown — every n ≥ 120 is a sum of at most 3 squareful numbers; encodes the infinite continuation beyond the computational range). 0 sorries. Trust caveat: the *unconditional* finite results are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`): the exceptional-set facts not_sum3_7/15/23/87/111/119 (and threshold_tight), the completeness check below_threshold_nonexceptions (every n < 120 outside {7,15,23,87,111,119} is representable), the finite range verifications range_120_200 … range_901_1000 (n ∈ [120,1000]), and the squareful-witness computations isSquareful_4/8/9/27/108 and threshold_120. These finite verifications therefore rest on compiler trust rather than the kernel; only the infinite continuation beyond the checked range is the stated axiom.",
     "definitionCount": 3,
     "theoremCount": 25
   }
