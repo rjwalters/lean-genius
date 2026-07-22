@@ -81,6 +81,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: The equality case of the crossing-zero power-mean chain", "startLine": 1, "endLine": 51, "summary": "States the sharp converse this file supplies to the non-strict crossing-zero inequalities $M_r\\le GM\\le M_s$ for $r<0<s$: an exact characterization of when equality holds (all data equal), shown to be the same locus regardless of the sign of $r$, plus the resulting strict inequalities for non-constant data.", "mathContext": "For every $r\\neq 0$: $M_r(z,w)=GM(z,w)\\iff z_i=z_j\\ \\forall i,j$, the same equality locus independent of the sign of $r$; sharpens $M_r\\le GM\\le M_s$ ($r<0<s$) to strict inequalities off the diagonal."},
     {
       "id": "helpers",
       "title": "§1: Positivity and Algebraic Helpers",
