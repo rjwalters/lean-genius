@@ -53,7 +53,7 @@
       "Finite field constructions (for dense Sidon sets)",
       "Counting arguments and asymptotic analysis"
     ],
-    "assumptions": "1 axiom: erdos_44 (Erdős conjecture on Sidon sets). 0 sorries.",
+    "assumptions": "1 axiom: erdos_44 (Erdős conjecture on Sidon sets). 0 sorries. Trust caveat: two named demonstration theorems — example_sidon_card ({1,2,4,8,13}.card = 5) and example_achieves_bound (card ≥ Nat.sqrt 13) — close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are finite computations over a concrete Sidon set; the headline erdos_44 conjecture and the abstract Sidon-bound lemmas remain kernel-checked.",
     "theoremCount": 8,
     "definitionCount": 0,
     "additionalFiles": [

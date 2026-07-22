@@ -73,7 +73,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 404,
-    "assumptions": "4 axioms: starLikeFamily_achieves, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 2 sorry(s) (both DEFINITION sorries: criticalRatio, akFamily). The Erdős–Ko–Rado bound (erdos_ko_rado_bound: max 1-intersecting k-uniform family on [n], n≥2k, has ≤ C(n-1,k-1) members) is now proved from Mathlib Finset.erdos_ko_rado (formerly an axiom). starLikeFamily_valid, the starLikeFamily construction, and ekr_achieved were also previously axioms and are now proved.",
+    "assumptions": "4 axioms: starLikeFamily_achieves, ahlswede_khachatrian_theorem, erdos83_from_ak, erdos83_bound_asymptotic. 2 sorry(s) (both DEFINITION sorries: criticalRatio, akFamily). The Erdős–Ko–Rado bound (erdos_ko_rado_bound: max 1-intersecting k-uniform family on [n], n≥2k, has ≤ C(n-1,k-1) members) is now proved from Mathlib Finset.erdos_ko_rado (formerly an axiom). starLikeFamily_valid, the starLikeFamily construction, and ekr_achieved were also previously axioms and are now proved. Trust caveat: two named computation theorems — erdos83_bound_n1 (erdos83Bound 1 = 1) and erdos83_bound_n2 (erdos83Bound 2 = 17) — close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are finite small-n bound evaluations; the abstract Ahlswede–Khachatrian / Erdős–Ko–Rado results remain kernel-checked.",
     "theoremCount": 9,
     "definitionCount": 13,
     "additionalFiles": [
