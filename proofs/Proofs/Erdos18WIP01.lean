@@ -108,6 +108,10 @@
     and `k + 1 ≤ σ(k!) + 1` (since `σ(k!) ≥ k! ≥ k`), so the sufficient condition applies
     at each step from `0! = 1`. A super-exponentially growing infinite family, alongside
     the geometric family of powers of two.
+  * `two_pow_mul_three_pow_practical` — the **3-smooth family `2^a · 3^b` (`a ≥ 1`)** is
+    practical, by iterating the criterion with multiplier `3` (`3 ≤ σ(2^a·3^b) + 1`
+    always holds). It reaches `18 = 2·3²` (`eighteen_practical`), which `practical_mul`
+    cannot — `18`'s only nontrivial factorisation `2·9` has the non-practical `9`.
 
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
