@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Is the Conway-Guy Construction Optimal for Distinct Subset Sums?",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Defines the Conway–Guy sequence (OEIS A005318, f(n) ~ 0.22009·2ⁿ) achieving small maximum elements while maintaining distinct subset sums, verifies the greedy recurrence a_k = a_{k-1} + ⌈S_{k-1}/2⌉ on small cases, connects to the asymptotic growth rate, and states the (still open) optimality conjecture from Erdős Problem #1.",
+      "mathContext": "Conway–Guy: $f(1)=1,f(2)=2,f(3)=4,f(4)=7,f(5)=13,\\dots$ with $a_k = a_{k-1}+\\lceil S_{k-1}/2\\rceil$; asymptotically $f(n)\\sim 0.22009\\cdot 2^n$, and whether this is the minimal-max-element construction with distinct subset sums is open."
+    },
+    {
       "id": "sequence-def",
       "title": "Conway-Guy Sequence Definition",
       "startLine": 30,
