@@ -81,7 +81,7 @@
     "type": "concept",
     "title": "The Main Conjecture and Equivalence",
     "content": "The conjecture is formalized as Tendsto ramseyRatio atTop atTop, where ramseyRatio k = R(k)/(k·2^{k/2}). An equivalent formulation using explicit ε-δ style (for every M, ratio eventually exceeds M) is proved equivalent via Filter.tendsto_atTop_atTop. This demonstrates how Mathlib's filter framework connects topological and quantifier-based formulations.",
-    "mathContext": "The equivalence proof unpacks Tendsto in terms of Filter.map_atTop_atTop, showing that divergence to infinity is equivalent to the ∀M ∃K ∀k≥K formulation. This is a clean application of Mathlib's filter API.",
+    "mathContext": "The equivalence proof unpacks Tendsto in terms of Filter.tendsto_atTop_atTop, showing that divergence to infinity is equivalent to the ∀M ∃K ∀k≥K formulation. This is a clean application of Mathlib's filter API.",
     "significance": "key",
     "relatedConcepts": [
       "Filter.Tendsto",
