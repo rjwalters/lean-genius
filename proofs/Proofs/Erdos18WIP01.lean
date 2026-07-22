@@ -96,6 +96,19 @@
     `[0, σ(m)]` exactly — sharpening `representable_le_two_mul_sub_one_of_practical` up to
     the `two_mul_sub_one_le_sigma` bound.
 
+  Sharp representability in turn unlocks the classical *multiplicative* sufficient
+  condition and its most famous corollary:
+
+  * `mul_practical_of_le_succ_sigma` — **Stewart–Sierpiński**: if `m` is practical and
+    `1 ≤ n ≤ σ(m) + 1`, then `n · m` is practical. Two-scale coin argument: split
+    `q = n·a + b` with `b < n` and `a < m`; represent `b ≤ n − 1 ≤ σ(m)` and
+    `a < m ≤ σ(m)` by divisors of `m`, keep the `b`-coins (each `< n`) and scale the
+    `a`-coins by `n` (each `≥ n`, all dividing `n·m`), so the two families are disjoint.
+  * `factorial_practical` — **every factorial `n!` is practical**: `(k+1)! = (k+1)·k!`
+    and `k + 1 ≤ σ(k!) + 1` (since `σ(k!) ≥ k! ≥ k`), so the sufficient condition applies
+    at each step from `0! = 1`. A super-exponentially growing infinite family, alongside
+    the geometric family of powers of two.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
