@@ -332,6 +332,234 @@ theorem hasMinDegree_three_containsCycleLength
     ∃ k : ℕ, k ≥ 3 ∧ ContainsCycleLength G k :=
   hasMinDegree_two_containsCycleLength G (fun v => le_trans (by norm_num) (hdeg v))
 
+/- ## Even cycle from minimum degree 3 (longest-path parity argument)
+
+Every power of two `2^k` (`k ≥ 2`) is even, so "the graph contains an **even** cycle"
+is a necessary — and classically nontrivial — precondition of Problem 64, sitting
+strictly between plain cycle existence (proved above from minimum degree `2`) and the
+open power-of-two-length core.
+
+The classical argument: take a path `p` of maximum length, starting at `v₀`.
+Maximality traps every neighbour of `v₀` on `p` (else `p` could be extended), so the
+at-least-three neighbours of `v₀` sit at distinct positive indices along `p`. If
+`a < b` are the two largest such indices (so `a ≥ 2`), closing `p` back to `v₀` from
+index `a`, from index `b`, and around the segment `[a, b]` produces three cycles of
+lengths `a + 1`, `b + 1`, and `b - a + 2`. These lengths sum to `2b + 4`, which is
+even — so they cannot all be odd, and one of the three cycles is even. -/
+
+/-- **Minimum degree `3` forces an even cycle.** Every nonempty finite graph with
+minimum degree at least `3` contains a cycle of even length (as an explicit
+`SimpleGraph.Walk.IsCycle` witness). This is the parity part of the necessary
+condition for Problem 64: a `2^k`-cycle is in particular even. The proof is the
+classical longest-path argument; see the section header above. -/
+theorem hasMinDegree_three_exists_even_cycle
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hdeg : HasMinDegree G 3) :
+    ∃ (v : W) (c : G.Walk v v), c.IsCycle ∧ Even c.length := by
+  classical
+  -- ### A path of maximum length exists
+  have hne : ({n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n}).Nonempty :=
+    ⟨0, Classical.arbitrary W, Classical.arbitrary W, Walk.nil, Walk.IsPath.nil, rfl⟩
+  have hbdd : BddAbove {n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n} := by
+    refine ⟨Fintype.card W, ?_⟩
+    rintro n ⟨a, b, q, hq, rfl⟩
+    exact hq.length_lt.le
+  obtain ⟨v₀, u, p, hp, hplen⟩ := Nat.sSup_mem hne hbdd
+  have hmax : ∀ (a b : W) (q : G.Walk a b), q.IsPath → q.length ≤ p.length := by
+    intro a b q hq
+    rw [hplen]
+    exact le_csSup hbdd ⟨a, b, q, hq, rfl⟩
+  -- ### Maximality traps every neighbour of the start vertex `v₀` on `p`
+  have hnbr : ∀ w : W, G.Adj v₀ w → w ∈ p.support := by
+    intro w hw
+    by_contra hws
+    have hcons : (Walk.cons hw.symm p).IsPath := (Walk.cons_isPath_iff _ _).mpr ⟨hp, hws⟩
+    have := hmax _ _ _ hcons
+    rw [Walk.length_cons] at this
+    omega
+  -- ### The neighbours of `v₀` sit at distinct positive indices along `p`
+  set idx : W → ℕ := fun w => if hw : w ∈ p.support then (p.takeUntil w hw).length else 0
+    with hidx
+  have hidx_get : ∀ w (hw : w ∈ p.support), p.getVert (idx w) = w := by
+    intro w hw
+    simp only [hidx, dif_pos hw]
+    exact Walk.getVert_length_takeUntil hw
+  -- the finset of neighbour indices
+  set T : Finset ℕ := (G.neighborFinset v₀).image idx with hT
+  have hTcard : 3 ≤ T.card := by
+    rw [hT, Finset.card_image_of_injOn]
+    · exact hdeg v₀
+    · intro w₁ hw₁ w₂ hw₂ hww
+      have h₁ : G.Adj v₀ w₁ := (G.mem_neighborFinset v₀ w₁).mp (Finset.mem_coe.mp hw₁)
+      have h₂ : G.Adj v₀ w₂ := (G.mem_neighborFinset v₀ w₂).mp (Finset.mem_coe.mp hw₂)
+      calc w₁ = p.getVert (idx w₁) := (hidx_get w₁ (hnbr _ h₁)).symm
+        _ = p.getVert (idx w₂) := by rw [hww]
+        _ = w₂ := hidx_get w₂ (hnbr _ h₂)
+  have hpos : ∀ n ∈ T, 1 ≤ n := by
+    intro n hn
+    rw [hT] at hn
+    obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hn
+    have hadj : G.Adj v₀ w := (G.mem_neighborFinset v₀ w).mp hw
+    rcases Nat.eq_zero_or_pos (idx w) with h0 | h1
+    · exfalso
+      have hgw := hidx_get w (hnbr _ hadj)
+      rw [h0, Walk.getVert_zero] at hgw
+      exact hadj.ne hgw
+    · exact h1
+  -- ### Extract the two largest indices `a < b`, with `a ≥ 2`
+  have hTne : T.Nonempty := Finset.card_pos.mp (by omega)
+  have hbT : T.max' hTne ∈ T := T.max'_mem hTne
+  set b := T.max' hTne with hbdef
+  have hT'ne : (T.erase b).Nonempty := by
+    rw [← Finset.card_pos, Finset.card_erase_of_mem hbT]
+    omega
+  have haT' : (T.erase b).max' hT'ne ∈ T.erase b := (T.erase b).max'_mem hT'ne
+  set a := (T.erase b).max' hT'ne with hadef
+  have haT : a ∈ T := Finset.mem_of_mem_erase haT'
+  have hab : a < b := lt_of_le_of_ne (T.le_max' a haT) (Finset.ne_of_mem_erase haT')
+  have ha2 : 2 ≤ a := by
+    have hcne : ((T.erase b).erase a).Nonempty := by
+      rw [← Finset.card_pos, Finset.card_erase_of_mem haT', Finset.card_erase_of_mem hbT]
+      omega
+    obtain ⟨c, hc⟩ := hcne
+    have hcT' : c ∈ T.erase b := Finset.mem_of_mem_erase hc
+    have hca : c < a := lt_of_le_of_ne ((T.erase b).le_max' c hcT') (Finset.ne_of_mem_erase hc)
+    have := hpos c (Finset.mem_of_mem_erase hcT')
+    omega
+  -- ### The neighbours `x` (at index `a`) and `y` (at index `b`)
+  have hbT2 : b ∈ (G.neighborFinset v₀).image idx := by rw [← hT]; exact hbT
+  have haT2 : a ∈ (G.neighborFinset v₀).image idx := by rw [← hT]; exact haT
+  obtain ⟨y, hyN, hyb⟩ := Finset.mem_image.mp hbT2
+  obtain ⟨x, hxN, hxa⟩ := Finset.mem_image.mp haT2
+  have hax : G.Adj v₀ x := (G.mem_neighborFinset v₀ x).mp hxN
+  have hay : G.Adj v₀ y := (G.mem_neighborFinset v₀ y).mp hyN
+  have hxs : x ∈ p.support := hnbr x hax
+  have hys : y ∈ p.support := hnbr y hay
+  have hxa' : (p.takeUntil x hxs).length = a := by
+    rw [← hxa]; simp only [hidx, dif_pos hxs]
+  have hyb' : (p.takeUntil y hys).length = b := by
+    rw [← hyb]; simp only [hidx, dif_pos hys]
+  have hgx : p.getVert a = x := by rw [← hxa']; exact Walk.getVert_length_takeUntil hxs
+  have hgy : p.getVert b = y := by rw [← hyb']; exact Walk.getVert_length_takeUntil hys
+  have hblen : b ≤ p.length := by rw [← hyb']; exact p.length_takeUntil_le_length hys
+  have halen : a ≤ p.length := by omega
+  have hxy : x ≠ y := by
+    intro h
+    have hgg : p.getVert a = p.getVert b := by rw [hgx, hgy, h]
+    have := hp.getVert_injOn (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) hgg
+    omega
+  -- ### Closing a prefix `p.takeUntil w` through the edge `w — v₀` yields a cycle
+  have hclose : ∀ (w : W) (hw : w ∈ p.support) (hadj : G.Adj v₀ w),
+      2 ≤ (p.takeUntil w hw).length →
+      ∃ c : G.Walk v₀ v₀, c.IsCycle ∧ c.length = (p.takeUntil w hw).length + 1 := by
+    intro w hw hadj h2
+    set q := p.takeUntil w hw with hq
+    refine ⟨Walk.cons hadj q.reverse, ?_, ?_⟩
+    · rw [Walk.cons_isCycle_iff]
+      refine ⟨(hp.takeUntil hw).reverse, ?_⟩
+      intro hmem
+      rw [Walk.edges_reverse, List.mem_reverse] at hmem
+      -- an edge of a path through its start must be the first edge …
+      have hsnd : w = q.snd := (hp.takeUntil hw).eq_snd_of_mem_edges hmem
+      -- … but `w` is the endpoint of `q`, at index `q.length ≥ 2`
+      have h1 : q.getVert 1 = q.getVert q.length := by
+        rw [Walk.getVert_length]
+        exact hsnd.symm
+      have := (hp.takeUntil hw).getVert_injOn
+        (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega) h1
+      omega
+    · rw [Walk.length_cons, Walk.length_reverse]
+  -- ### The middle segment from `x` to `y` along `p`
+  have hia : p.support.idxOf x = a := by
+    rw [← p.length_takeUntil hxs]; exact hxa'
+  have hdrop_gv : (p.dropUntil x hxs).getVert (b - a) = y := by
+    rw [Walk.dropUntil_eq_drop, Walk.getVert_copy, Walk.drop_getVert, hia,
+      show a + (b - a) = b by omega]
+    exact hgy
+  have hdrop_len : b - a ≤ (p.dropUntil x hxs).length := by
+    rw [Walk.length_dropUntil, hia]
+    omega
+  have hyd : y ∈ (p.dropUntil x hxs).support :=
+    Walk.mem_support_iff_exists_getVert.mpr ⟨b - a, hdrop_gv, hdrop_len⟩
+  set r := (p.dropUntil x hxs).takeUntil y hyd with hr
+  have hrpath : r.IsPath := (hp.dropUntil hxs).takeUntil hyd
+  have hrlen : r.length = b - a := by
+    have h₁ : (p.dropUntil x hxs).getVert r.length = y := Walk.getVert_length_takeUntil hyd
+    have hle : r.length ≤ (p.dropUntil x hxs).length :=
+      (p.dropUntil x hxs).length_takeUntil_le_length hyd
+    exact (hp.dropUntil hxs).getVert_injOn
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (h₁.trans hdrop_gv.symm)
+  have hv₀r : v₀ ∉ r.support := by
+    intro hmem
+    have hmem' : v₀ ∈ (p.dropUntil x hxs).support :=
+      (p.dropUntil x hxs).support_takeUntil_subset_support hyd hmem
+    obtain ⟨n, hgv, hn⟩ := Walk.mem_support_iff_exists_getVert.mp hmem'
+    rw [Walk.dropUntil_eq_drop, Walk.getVert_copy, Walk.drop_getVert, hia] at hgv
+    have h0 : p.getVert (a + n) = p.getVert 0 := by rw [hgv, Walk.getVert_zero]
+    have hanle : a + n ≤ p.length := by
+      rw [Walk.length_dropUntil, hia] at hn
+      omega
+    have := hp.getVert_injOn (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) h0
+    omega
+  -- ### The third cycle: `v₀ — x — ⋯ — y — v₀` around the segment `[a, b]`
+  have hyv₀ : G.Adj y v₀ := hay.symm
+  have hc₃path : (r.concat hyv₀).IsPath := hrpath.concat hv₀r hyv₀
+  have hc₃edge : s(v₀, x) ∉ (r.concat hyv₀).edges := by
+    rw [Walk.edges_concat]
+    intro hmem
+    rw [List.concat_eq_append, List.mem_append, List.mem_singleton] at hmem
+    rcases hmem with hin | heq
+    · exact hv₀r (r.fst_mem_support_of_mem_edges hin)
+    · rcases Sym2.eq_iff.mp heq with ⟨h1, _⟩ | ⟨_, h2⟩
+      · exact hay.ne h1
+      · exact hxy h2
+  have hc₃ : (Walk.cons hax (r.concat hyv₀)).IsCycle :=
+    (Walk.cons_isCycle_iff _ _).mpr ⟨hc₃path, hc₃edge⟩
+  have hc₃len : (Walk.cons hax (r.concat hyv₀)).length = (b - a) + 2 := by
+    rw [Walk.length_cons, Walk.length_concat, hrlen]
+  -- ### Parity: the three cycle lengths `a+1`, `b+1`, `b-a+2` sum to `2b+4`
+  rcases Nat.even_or_odd a with hae | hao
+  · rcases Nat.even_or_odd b with hbe | hbo
+    · -- `a`, `b` both even: the segment cycle has even length `b - a + 2`
+      refine ⟨v₀, _, hc₃, ?_⟩
+      rw [hc₃len]
+      obtain ⟨i, hi⟩ := hae
+      obtain ⟨j, hj⟩ := hbe
+      exact ⟨j - i + 1, by omega⟩
+    · -- `b` odd: the cycle through index `b` has even length `b + 1`
+      obtain ⟨c, hcyc, hclen⟩ := hclose y hys hay (by rw [hyb']; omega)
+      refine ⟨v₀, c, hcyc, ?_⟩
+      rw [hclen, hyb']
+      obtain ⟨j, hj⟩ := hbo
+      exact ⟨j + 1, by omega⟩
+  · -- `a` odd: the cycle through index `a` has even length `a + 1`
+    obtain ⟨c, hcyc, hclen⟩ := hclose x hxs hax (by rw [hxa']; omega)
+    refine ⟨v₀, c, hcyc, ?_⟩
+    rw [hclen, hxa']
+    obtain ⟨i, hi⟩ := hao
+    exact ⟨i + 1, by omega⟩
+
+/-- Restatement in the `ContainsCycleLength` predicate: minimum degree `3` yields an
+**even** cycle length `k ≥ 4`. Every power of two `2^m` with `m ≥ 2` is even and `≥ 4`,
+so this proves exactly the parity-and-size part of the necessary condition of Problem 64;
+the open core is whether `k` can moreover be taken to be an exact power of two. -/
+theorem hasMinDegree_three_exists_even_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj]
+    (hdeg : HasMinDegree G 3) :
+    ∃ k : ℕ, 4 ≤ k ∧ Even k ∧ ContainsCycleLength G k := by
+  obtain ⟨v, c, hc, heven⟩ := hasMinDegree_three_exists_even_cycle G hdeg
+  refine ⟨c.length, ?_, heven, isCycle_containsCycleLength G c hc⟩
+  have h3 := hc.three_le_length
+  obtain ⟨m, hm⟩ := heven
+  omega
+
 /- ## Known Cycle Results -/
 
 /- 
