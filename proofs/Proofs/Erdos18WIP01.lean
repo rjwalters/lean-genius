@@ -1017,4 +1017,84 @@ theorem eighteen_practical : IsPractical 18 := by
   norm_num at this
   exact this
 
+/- ## The full Stewart–Sierpiński characterisation (an `iff`)
+
+The sufficiency engine `finset_chain_covers` and the sharp-representability lemma
+`representable_le_sigma_of_practical` together pin practicality down to a single
+*divisor-gap* condition on the divisor set, giving a complete characterisation:
+
+  `m` is practical  ⟺  `1 ≤ m` and every divisor `d ∣ m` satisfies
+  `d ≤ 1 + ∑_{e ∣ m, e < d} e`.
+
+The condition says the sorted divisors `1 = d₁ < d₂ < … < d_τ = m` form a *coin chain*:
+each divisor is at most one more than the sum of all smaller divisors, so no gap in the
+subset-sum reachability ever opens. This is precisely Stewart's/Sierpiński's criterion,
+here in its purely divisor-theoretic (rather than prime-factorisation) form.
+
+* `divisor_chain_of_practical` — the **necessary** half: extracted from the coin-chain
+  argument already used inside `representable_le_sigma_of_practical`. If `d ∣ m` with
+  `d ≥ 2`, then `d − 1 < m` is a distinct-divisor sum (practicality), and every divisor it
+  uses is `≤ d − 1 < d`, so those smaller divisors already sum to `≥ d − 1`.
+* `practical_of_divisor_chain_condition` — the **sufficient** half: `finset_chain_covers`
+  on the full divisor set covers `[0, σ(m)] ⊇ [0, m)`, hence every `1 ≤ k < m` is
+  representable.
+* `practical_iff_divisor_chain` — the two directions packaged as an `iff`. -/
+
+/-- **Necessary divisor-gap condition.** If `m` is practical then every divisor `d ∣ m`
+satisfies `d ≤ 1 + ∑_{e ∣ m, e < d} e`: to represent `d − 1 < m` only divisors `< d` are
+available, so they already sum to at least `d − 1`. This is the converse of the coin-chain
+sufficiency `finset_chain_covers`. -/
+theorem divisor_chain_of_practical {m : ℕ} (h : IsPractical m) :
+    ∀ d ∈ divisors m, d ≤ 1 + ∑ e ∈ (divisors m).filter (· < d), e := by
+  obtain ⟨hm1, hrep⟩ := h
+  intro s hs
+  have hsmem : s ∈ m.divisors := by rw [divisors] at hs; exact hs
+  have hsdvd : s ∣ m := (Nat.mem_divisors.mp hsmem).1
+  have hspos : 1 ≤ s := Nat.pos_of_mem_divisors hsmem
+  have hsm : s ≤ m := Nat.le_of_dvd hm1 hsdvd
+  rcases Nat.lt_or_ge s 2 with h1 | h2
+  · omega
+  · set k := s - 1 with hk
+    have hk1 : 1 ≤ k := by omega
+    have hkm : k < m := by omega
+    obtain ⟨T, hT, hTsum⟩ := hrep k hk1 hkm
+    have hTsub : T ⊆ (divisors m).filter (· < s) := by
+      intro x hx
+      rw [Finset.mem_filter]
+      have hxle : x ≤ k := by
+        have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hx
+        rwa [hTsum, id_eq] at this
+      exact ⟨hT hx, by omega⟩
+    have hsum_le : ∑ t ∈ T, t ≤ ∑ t ∈ (divisors m).filter (· < s), t :=
+      Finset.sum_le_sum_of_subset hTsub
+    have hbridge : ∑ t ∈ T, t = k := by simpa [id_eq] using hTsum
+    omega
+
+/-- **Sufficient divisor-gap condition.** If `1 ≤ m` and every divisor `d ∣ m` satisfies
+`d ≤ 1 + ∑_{e ∣ m, e < d} e`, then `m` is practical. The full divisor set is a coin chain,
+so `finset_chain_covers` represents every `k ≤ σ(m)`, in particular every `1 ≤ k < m`. -/
+theorem practical_of_divisor_chain_condition {m : ℕ} (hm1 : 1 ≤ m)
+    (hchain : ∀ d ∈ divisors m, d ≤ 1 + ∑ e ∈ (divisors m).filter (· < d), e) :
+    IsPractical m := by
+  refine ⟨hm1, ?_⟩
+  intro k hk1 hkm
+  have hmmem : m ∈ divisors m := by
+    rw [divisors]; exact Nat.mem_divisors.mpr ⟨dvd_refl _, by omega⟩
+  have hksig : k ≤ ∑ d ∈ divisors m, d := by
+    have hmle : m ≤ ∑ d ∈ divisors m, d :=
+      Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i) hmmem
+    omega
+  obtain ⟨T, hT, hTsum⟩ := finset_chain_covers (divisors m) hchain k hksig
+  exact ⟨T, hT, by simpa [id_eq] using hTsum⟩
+
+/-- **Stewart–Sierpiński characterisation.** `m` is practical iff `1 ≤ m` and its divisors
+form a coin chain: every divisor `d` is at most `1 +` the sum of the strictly smaller
+divisors. Combines `divisor_chain_of_practical` (necessity) and
+`practical_of_divisor_chain_condition` (sufficiency). -/
+theorem practical_iff_divisor_chain {m : ℕ} :
+    IsPractical m ↔
+      1 ≤ m ∧ ∀ d ∈ divisors m, d ≤ 1 + ∑ e ∈ (divisors m).filter (· < d), e :=
+  ⟨fun h => ⟨h.1, divisor_chain_of_practical h⟩,
+    fun ⟨hm1, hchain⟩ => practical_of_divisor_chain_condition hm1 hchain⟩
+
 end Erdos18
