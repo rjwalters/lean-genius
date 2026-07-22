@@ -98,6 +98,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Scope: the algebraic numbers form an algebraically closed field",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring: previews the five results — promoting the parent's algebraicSubfield to an IntermediateField, identifying it with Mathlib's algebraicClosure K L, the transitivity-of-algebraicity crux (an element algebraic over the field of algebraic elements is already algebraic over K), the algebraic-closedness theorem when L is algebraically closed, and the specialization to ℚ ⊆ ℂ giving a countable algebraically closed field strictly inside the uncountable ℂ.",
+      "mathContext": "$\\overline{K}^{\\text{rel}}_L$ closed under roots when $L$ is algebraically closed; specializes to $\\overline{\\mathbb{Q}} \\subset \\mathbb{C}$ countable."
+    },
+    {
       "id": "upgrade",
       "title": "§1: From subfield to intermediate field",
       "startLine": 60,
