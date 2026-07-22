@@ -238,6 +238,43 @@ theorem same_minpoly :
   rw [minpoly_matA, minpoly_matB]
 
 -- ============================================================
+-- PART 3b: Same Characteristic Polynomial (X⁴)
+-- ============================================================
+
+/-- The characteristic polynomial of matA is X⁴.
+
+    A nilpotent 4×4 matrix has characteristic polynomial X⁴. Formally,
+    `Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent` shows
+    `charpoly A - X ^ (card (Fin 4))` is nilpotent; since K[X] over a
+    field is an integral domain (hence reduced), the only nilpotent is
+    0, so `charpoly A = X ^ 4`. -/
+theorem charpoly_matA :
+    (matA : Matrix (Fin 4) (Fin 4) K).charpoly = X ^ 4 := by
+  have hnil : IsNilpotent (matA : Matrix (Fin 4) (Fin 4) K) :=
+    ⟨2, by rw [pow_two]; exact matA_sq_zero⟩
+  have h := Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hnil
+  rw [Fintype.card_fin] at h
+  have hz : (matA : Matrix (Fin 4) (Fin 4) K).charpoly - X ^ 4 = 0 := h.eq_zero
+  exact sub_eq_zero.mp hz
+
+/-- The characteristic polynomial of matB is X⁴. Same argument as matA. -/
+theorem charpoly_matB :
+    (matB : Matrix (Fin 4) (Fin 4) K).charpoly = X ^ 4 := by
+  have hnil : IsNilpotent (matB : Matrix (Fin 4) (Fin 4) K) :=
+    ⟨2, by rw [pow_two]; exact matB_sq_zero⟩
+  have h := Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent hnil
+  rw [Fintype.card_fin] at h
+  have hz : (matB : Matrix (Fin 4) (Fin 4) K).charpoly - X ^ 4 = 0 := h.eq_zero
+  exact sub_eq_zero.mp hz
+
+/-- Both matrices have the same characteristic polynomial (X⁴). Together with
+    `same_minpoly`, this completes the shared-invariants half of the
+    counterexample: A and B share both minimal and characteristic polynomial. -/
+theorem same_charpoly :
+    (matA : Matrix (Fin 4) (Fin 4) K).charpoly = (matB : Matrix (Fin 4) (Fin 4) K).charpoly := by
+  rw [charpoly_matA, charpoly_matB]
+
+-- ============================================================
 -- PART 4: NOT SIMILAR (Main Result)
 -- ============================================================
 
