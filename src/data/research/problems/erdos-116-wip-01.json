@@ -37,13 +37,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-20, host-verified lake env lean exit 0, #print axioms=[propext,Classical.choice,Quot.sound] on all 3): sublevelMeasure well-definedness discharged — volume Sₚ<⊤ (ℂ-side, compact closed ball) and, via the volume-preserving ℂ≃ᵐℝ² equiv, the parent ℝ×ℝ sublevel measure is finite, so sublevelMeasure=(volume).toReal is faithful. Key lemma 1 (open/measurable/bounded) done previously. Deep KLR c/log n lower and Pólya π upper bounds remain unformalized (potential theory not in Mathlib).",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-22, host-verified lake env lean exit 0): EXACT lemniscate areas added — extremal candidate z^n has sublevelSet = ball 0 1 and sublevelMeasure = pi on the nose (all n>=1); degree-1 lemniscates are unit disks so area is identically pi; exists_sublevelMeasure_eq_pi gives the attainment half of the sharp Polya-type bound. Well-definedness layer (open/measurable/bounded/finite/positive) was already complete. Remaining: deep KLR c/log n lower and Polya pi upper bounds (logarithmic potential theory, not in Mathlib).",
     "builtItems": [
       "UnitDiskPoly.eval_root_eq_zero / root_mem_sublevelSet / sublevelSet_nonempty / eval_of_degree_zero / sublevelSet_of_degree_zero / sublevelMeasure_nonneg in proofs/Proofs/Erdos116Problem.lean (6 axiom-free foundational theorems; host-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound only)",
       "proofs/Proofs/Erdos116WIP01.lean — 6 axiom-free decls (continuous_eval, sublevelSet_eq_preimage, isOpen_sublevelSet, measurableSet_sublevelSet, sublevelSet_subset_closedBall, isBounded_sublevelSet)",
       "volume_sublevelSet_lt_top — volume Sₚ < ⊤: Sₚ⊆closedBall 0 2, compact in proper space ℂ, finite measure (Erdos116WIP01.lean)",
       "realProd_sublevelSet_eq_preimage — parent ℝ×ℝ sublevel set = measurableEquivRealProd.symm ⁻¹ Sₚ (Erdos116WIP01.lean)",
-      "volume_realProd_sublevelSet_lt_top — parent sublevelMeasure volume is finite, via volume-preserving ℂ≃ᵐℝ² (Erdos116WIP01.lean)"
+      "volume_realProd_sublevelSet_lt_top — parent sublevelMeasure volume is finite, via volume-preserving ℂ≃ᵐℝ² (Erdos116WIP01.lean)",
+      "allRootsZero/eval_allRootsZero/sublevelSet_allRootsZero/volume_sublevelSet_allRootsZero/volume_realProd_sublevelSet_allRootsZero/sublevelMeasure_allRootsZero in Erdos116WIP01.lean (z^n extremal config, area = pi)",
+      "singleRoot/eval_singleRoot/sublevelSet_singleRoot/volume_sublevelSet_singleRoot/volume_realProd_sublevelSet_singleRoot/sublevelMeasure_singleRoot (degree-1 area identically pi)",
+      "exists_sublevelMeasure_eq_pi (pi attained at every degree n >= 1)"
     ],
     "insights": [
       "Erdos116Problem.lean was a bare statement-stub: real definitions (UnitDiskPoly, eval, sublevelSet, sublevelMeasure) but ZERO theorems, while gallery meta prose falsely described four bounds \"stated as axioms\" and a main theorem ErdosProblem116 that did not exist in source.",
@@ -53,7 +56,10 @@
       "Sₚ ⊆ closedBall 0 2 (BOUNDED): if ‖z‖>2 then each factor ‖z-zᵢ‖ ≥ ‖z‖-‖zᵢ‖ ≥ ‖z‖-1 > 1 (roots in unit disk), so ‖p(z)‖=∏‖z-zᵢ‖ ≥ 1 and z∉Sₚ. Holds for all n incl. n=0 (Sₚ=∅).",
       "Lean gotcha: Finset.one_le_prod does NOT work on ℝ (needs MulLeftMono ℝ, false for a field with negatives). Use Finset.prod_le_prod against the constant-1 product: 1 = ∏ 1 ≤ ∏ f via Finset.prod_const_one. norm_prod rewrites ‖∏ f‖ = ∏ ‖f‖; norm_sub_norm_le for the reverse-triangle per-factor bound.",
       "sublevelMeasure well-definedness DISCHARGED: the parent defines sublevelMeasure = (volume {p:ℝ×ℝ|...}).toReal; proving that volume < ⊤ makes the .toReal faithful (not the ⊤↦0 truncation). Bridge: parent ℝ×ℝ set = Complex.measurableEquivRealProd.symm ⁻¹ Sₚ; Complex.volume_preserving_equiv_real_prod.symm + MeasurePreserving.measure_preimage transports volume to the ℂ side, bounded by volume(closedBall 0 2)<⊤ via IsCompact.measure_lt_top.",
-      "Key Mathlib names: isCompact_closedBall (ℂ ProperSpace) + IsCompact.measure_lt_top (volume IsFiniteMeasureOnCompacts); measure_lt_top_of_subset; Complex.measurableEquivRealProd{,_symm_apply}; measure_preimage needs NullMeasurableSet (use .measurableSet.nullMeasurableSet)."
+      "Key Mathlib names: isCompact_closedBall (ℂ ProperSpace) + IsCompact.measure_lt_top (volume IsFiniteMeasureOnCompacts); measure_lt_top_of_subset; Complex.measurableEquivRealProd{,_symm_apply}; measure_preimage needs NullMeasurableSet (use .measurableSet.nullMeasurableSet).",
+      "The extremal candidate p(z)=z^n has lemniscate EXACTLY ball 0 1 (pow_lt_one_iff_of_nonneg on ||z||^n), so its area is exactly pi via Complex.volume_ball — first exact value of sublevelMeasure in the vein",
+      "At degree 1 the area functional is CONSTANT: every lemniscate {|z-z0|<1} is ball z0 1 of area pi regardless of root position — the extremal problem only becomes nontrivial at degree >= 2",
+      "Attainment half of the sharp Polya-type upper bound is now formal: exists P : UnitDiskPoly n, sublevelMeasure P = pi for every n >= 1; only the inequality sublevelMeasure P <= pi remains (deep, potential theory)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

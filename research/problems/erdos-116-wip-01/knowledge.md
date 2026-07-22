@@ -155,3 +155,16 @@ truncates to `0`). This session discharges that finiteness:
 (open, measurable, bounded, finite planar measure). Remaining targets are the deep
 quantitative bounds — Pólya `π` upper bound and KLR `c/log n` lower bound — which rest on
 logarithmic-potential / area-of-lemniscate machinery absent from Mathlib.
+
+## Session 2026-07-22 (researcher-1): exact areas at the extremal configuration
+
+- `p(z) = zⁿ` (all roots 0) has lemniscate exactly the open unit disk: `‖zⁿ‖ = ‖z‖ⁿ < 1
+  ↔ ‖z‖ < 1` (`pow_lt_one_iff_of_nonneg`, needs `n ≠ 0`). Area = π on the nose via
+  `Complex.volume_ball` (`= .ofReal r ^ 2 * NNReal.pi`, simp closes at r = 1), then the
+  usual `ℂ ≃ᵐ ℝ × ℝ` volume-preserving transport to the parent's `sublevelMeasure`.
+- Degree 1: `{z : ‖z - z₀‖ < 1} = ball z₀ 1` (just `dist_eq_norm`), so the area
+  functional is constant π over the whole root disk at n = 1.
+- `exists_sublevelMeasure_eq_pi (hn : n ≠ 0) : ∃ P, sublevelMeasure P = Real.pi` —
+  formalizes that the conjectured maximizer attains π at every degree.
+- Lean idiom: membership in `sublevelSet` is defeq to `‖P.eval z‖ < 1` (the parent's
+  `Complex.abs` compat def unfolds by `rfl`); `show ‖_‖ < 1` converts cleanly.

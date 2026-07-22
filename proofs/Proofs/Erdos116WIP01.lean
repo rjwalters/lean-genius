@@ -168,4 +168,130 @@ theorem sublevelMeasure_pos (P : UnitDiskPoly n) (hn : 0 < n) :
   exact ENNReal.toReal_pos (P.volume_realProd_sublevelSet_pos hn).ne'
     (P.volume_realProd_sublevelSet_lt_top).ne
 
+/-! ## Exact areas: the extremal configuration `p(z) = zⁿ` and degree one
+
+The Erdős–Herzog–Piranian extremal candidate puts all `n` roots at the origin,
+`p(z) = zⁿ`.  Its lemniscate is *exactly* the open unit disk — `‖zⁿ‖ = ‖z‖ⁿ < 1`
+iff `‖z‖ < 1` — so its area is exactly `π` (`Complex.volume_ball`).  At degree
+one every lemniscate is a unit disk `ball z₀ 1`, so the area is identically `π`
+wherever the root sits.  These are the first *exact* area values in this
+development: everything before only pinned `0 < area < ∞`.  In particular the
+value `π` of the conjectured maximizer is attained at every degree `n ≥ 1`
+(`exists_sublevelMeasure_eq_pi`), which is the "attainment" half of the sharp
+Pólya-type upper bound `sublevelMeasure P ≤ π` (the other half is the deep
+open content and stays out of this file). -/
+
+/-- The extremal candidate: all `n` roots at the origin, so `p(z) = zⁿ`. -/
+noncomputable def allRootsZero (n : ℕ) : UnitDiskPoly n :=
+  ⟨fun _ => (0 : ℂ), fun _ => by simp [Complex.abs]⟩
+
+/-- The extremal candidate evaluates to `p(z) = zⁿ`: a product of `n` copies of
+the single factor `z - 0 = z`. -/
+theorem eval_allRootsZero (n : ℕ) (z : ℂ) : (allRootsZero n).eval z = z ^ n := by
+  simp [UnitDiskPoly.eval, allRootsZero, Finset.prod_const]
+
+/-- **The extremal lemniscate is exactly the open unit disk.**  For `n ≠ 0`,
+`{z : ‖zⁿ‖ < 1} = ball 0 1`, since `‖zⁿ‖ = ‖z‖ⁿ` and, for a nonnegative base,
+`‖z‖ⁿ < 1 ↔ ‖z‖ < 1`. -/
+theorem sublevelSet_allRootsZero (hn : n ≠ 0) :
+    (allRootsZero n).sublevelSet = Metric.ball (0 : ℂ) 1 := by
+  ext z
+  constructor
+  · intro hz
+    have h1 : ‖(allRootsZero n).eval z‖ < 1 := hz
+    rw [eval_allRootsZero, norm_pow] at h1
+    rw [Metric.mem_ball, dist_zero_right]
+    exact (pow_lt_one_iff_of_nonneg (norm_nonneg z) hn).mp h1
+  · intro hz
+    rw [Metric.mem_ball, dist_zero_right] at hz
+    show ‖(allRootsZero n).eval z‖ < 1
+    rw [eval_allRootsZero, norm_pow]
+    exact (pow_lt_one_iff_of_nonneg (norm_nonneg z) hn).mpr hz
+
+/-- **`volume Sₚ = π` for the extremal candidate** (`ℂ`-side): the lemniscate is
+the unit ball, whose planar volume is `π` (`Complex.volume_ball`). -/
+theorem volume_sublevelSet_allRootsZero (hn : n ≠ 0) :
+    volume ((allRootsZero n).sublevelSet) = NNReal.pi := by
+  rw [sublevelSet_allRootsZero hn, Complex.volume_ball]
+  simp
+
+/-- The parent's `ℝ × ℝ` volume of the extremal lemniscate is `π`, transported
+across the volume-preserving equivalence `ℂ ≃ᵐ ℝ × ℝ` (same route as
+`volume_realProd_sublevelSet_lt_top`). -/
+theorem volume_realProd_sublevelSet_allRootsZero (hn : n ≠ 0) :
+    volume {p : ℝ × ℝ | Complex.abs ((allRootsZero n).eval ⟨p.1, p.2⟩) < 1}
+      = NNReal.pi := by
+  rw [(allRootsZero n).realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage (allRootsZero n).measurableSet_sublevelSet.nullMeasurableSet]
+  exact volume_sublevelSet_allRootsZero hn
+
+/-- **The conjectured maximizer has lemniscate area exactly `π`.**  The parent's
+`sublevelMeasure` of `p(z) = zⁿ` is `π` on the nose for every `n ≠ 0` — the
+first exact value of `sublevelMeasure` in this development. -/
+theorem sublevelMeasure_allRootsZero (hn : n ≠ 0) :
+    sublevelMeasure (allRootsZero n) = Real.pi := by
+  rw [sublevelMeasure, volume_realProd_sublevelSet_allRootsZero hn]
+  simp [NNReal.coe_real_pi]
+
+/-- The degree-`1` polynomial `p(z) = z - z₀` with its single root `z₀` in the
+closed unit disk. -/
+noncomputable def singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) : UnitDiskPoly 1 :=
+  ⟨fun _ => z₀, fun _ => hz₀⟩
+
+/-- The degree-`1` polynomial evaluates to `z - z₀`. -/
+theorem eval_singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) (z : ℂ) :
+    (singleRoot z₀ hz₀).eval z = z - z₀ := by
+  simp [UnitDiskPoly.eval, singleRoot]
+
+/-- **Every degree-`1` lemniscate is a unit disk**: `{z : ‖z - z₀‖ < 1} = ball z₀ 1`. -/
+theorem sublevelSet_singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) :
+    (singleRoot z₀ hz₀).sublevelSet = Metric.ball z₀ 1 := by
+  ext z
+  constructor
+  · intro hz
+    have h1 : ‖(singleRoot z₀ hz₀).eval z‖ < 1 := hz
+    rw [eval_singleRoot] at h1
+    rw [Metric.mem_ball, dist_eq_norm]
+    exact h1
+  · intro hz
+    rw [Metric.mem_ball, dist_eq_norm] at hz
+    show ‖(singleRoot z₀ hz₀).eval z‖ < 1
+    rw [eval_singleRoot]
+    exact hz
+
+/-- `volume Sₚ = π` at degree `1` (`ℂ`-side), independent of the root. -/
+theorem volume_sublevelSet_singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) :
+    volume ((singleRoot z₀ hz₀).sublevelSet) = NNReal.pi := by
+  rw [sublevelSet_singleRoot, Complex.volume_ball]
+  simp
+
+/-- The parent's `ℝ × ℝ` volume at degree `1` is `π`, transported across
+`ℂ ≃ᵐ ℝ × ℝ` as above. -/
+theorem volume_realProd_sublevelSet_singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) :
+    volume {p : ℝ × ℝ | Complex.abs ((singleRoot z₀ hz₀).eval ⟨p.1, p.2⟩) < 1}
+      = NNReal.pi := by
+  rw [(singleRoot z₀ hz₀).realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage (singleRoot z₀ hz₀).measurableSet_sublevelSet.nullMeasurableSet]
+  exact volume_sublevelSet_singleRoot z₀ hz₀
+
+/-- **At degree `1` the lemniscate area is identically `π`**, wherever the root
+sits in the closed unit disk: `sublevelMeasure (z - z₀) = π` for all `‖z₀‖ ≤ 1`.
+So at degree one the area functional is *constant* — the extremal problem only
+becomes nontrivial from degree `2` on. -/
+theorem sublevelMeasure_singleRoot (z₀ : ℂ) (hz₀ : Complex.abs z₀ ≤ 1) :
+    sublevelMeasure (singleRoot z₀ hz₀) = Real.pi := by
+  rw [sublevelMeasure, volume_realProd_sublevelSet_singleRoot z₀ hz₀]
+  simp [NNReal.coe_real_pi]
+
+/-- **The conjectured extremal value `π` is attained at every degree `n ≥ 1`:**
+some `UnitDiskPoly n` has lemniscate area exactly `π` (namely `p(z) = zⁿ`).
+So the supremum of the area functional over `UnitDiskPoly n` is at least `π`,
+and if the deep sharp upper bound `sublevelMeasure P ≤ π` holds, that supremum
+equals `π` and is achieved. -/
+theorem exists_sublevelMeasure_eq_pi (hn : n ≠ 0) :
+    ∃ P : UnitDiskPoly n, sublevelMeasure P = Real.pi :=
+  ⟨allRootsZero n, sublevelMeasure_allRootsZero hn⟩
+
 end UnitDiskPoly
