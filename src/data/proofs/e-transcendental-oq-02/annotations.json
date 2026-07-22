@@ -52,11 +52,11 @@
     "proofId": "e-transcendental-oq-02",
     "range": {
       "startLine": 66,
-      "endLine": 74
+      "endLine": 78
     },
     "type": "concept",
     "title": "IsNormalInBase: Tendsto Formalization of Digit Frequency",
-    "content": "The definition of normality uses Lean 4's Filter.Tendsto to express limiting frequency. For each k and each k-string s : Fin k → Fin b, we require that the proportion of starting positions n < N where the k consecutive digits match s converges to 1/bᵏ. The Finset.filter operation counts positions where ALL k digits match simultaneously. Note the Fin b type for string characters (automatically bounded in {0,...,b-1}) vs the ℤ return type of nthDigit — the filter condition casts (s i : ℤ) for comparison. The limit target 1/bᵏ is expressed as (b : ℝ) ^ (-(k : ℤ)), using integer exponents to handle the negative power cleanly.",
+    "content": "The definition of normality uses Lean 4's Filter.Tendsto to express limiting frequency. For each k and each k-string s : Fin k → Fin b, we require that the proportion of starting positions n < N where the k consecutive digits match s converges to 1/bᵏ. The Finset.filter operation counts positions where ALL k digits match simultaneously. Note the Fin b type for string characters (automatically bounded in {0,...,b-1}) vs the ℤ return type of nthDigit — the filter condition casts (s i : ℤ) for comparison. The limit target 1/bᵏ is expressed as (b : ℝ) ^ (-(k : ℤ)), using integer exponents to handle the negative power cleanly. `IsAbsolutelyNormal` (line 77) extends this to normal in every base b ≥ 2 simultaneously.",
     "mathContext": "`IsNormalInBase b x`: $\\forall k, s: (\\text{Fin}\\,k \\to \\text{Fin}\\,b)$, $\\text{Tendsto}\\left(N \\mapsto \\frac{|\\{n < N : \\forall i, d_{n+i} = s(i)\\}|}{N}\\right) \\text{atTop}\\; (\\mathcal{N}(b^{-k}))$. Uses `(b : ℝ) ^ (-(k : ℤ))` for $b^{-k}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -72,15 +72,36 @@
     ]
   },
   {
+    "id": "e-known-properties",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 84,
+      "endLine": 104
+    },
+    "type": "context",
+    "title": "Known Facts About e: Irrationality, Transcendence, and Bounds",
+    "content": "Collects what classical results Mathlib already supplies about e: `e_irrational` (Euler 1737, via the existing `ETranscendental` file), `e_transcendental` (Hermite 1873), the tight numeric bounds `e_bounds` ($2.718281828 < e < 2.7182818286$), the integer part `e_floor = 2`, and `e_between_2_3`. These are the foundation the rest of the file builds on: the digit computations in Part III use `e_bounds` directly, and `e_irrational` is the classical fact that `normal_imp_irrational` later re-derives abstractly as a special case of the general normal-implies-irrational theorem.",
+    "mathContext": "$2.718281828 < e < 2.7182818286$, $\\lfloor e \\rfloor = 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler (1737)",
+      "Hermite (1873)",
+      "Mathlib exp bounds"
+    ],
+    "prerequisites": [
+      "Real.exp"
+    ]
+  },
+  {
     "id": "ann-oq02-e-digits",
     "proofId": "e-transcendental-oq-02",
     "range": {
       "startLine": 106,
-      "endLine": 170
+      "endLine": 202
     },
     "type": "concept",
     "title": "Machine-Verified Decimal Digits of e via Tight Mathlib Bounds",
-    "content": "A uniform pattern proves each decimal digit of e. The two Mathlib lemmas `Real.exp_one_gt_d9 : 2.718281828 < exp 1` and `Real.exp_one_lt_d9 : exp 1 < 2.7182818286` provide a 9-digit window. For each digit position, we show ⌊10ⁿ·e⌋ = k by proving k ≤ 10ⁿ·e < k+1 via linarith from the bounds. The digit itself is then k % 10, proved by `decide` after rewriting with the floor theorem. All 6 digits 7,1,8,2,8,1 are individually machine-checked. This approach generalizes: with tighter Mathlib bounds, more digits could be proved the same way.",
+    "content": "Machine-checked proofs of the first nine decimal digits of e = 2.718281828...: for each n=1..9, `e_floor_10^n` computes `⌊10ⁿ·e⌋` exactly via `Int.floor_eq_iff` and Mathlib's `exp_one_gt_d9`/`exp_one_lt_d9` bounds, then `e_digitN` extracts the digit via `% 10`. The ninth digit's floor computation (`e_floor_1000000000`, line 194) saturates the Mathlib lower bound `2.718281828 < e` exactly — one more digit of precision would need a tighter Mathlib bound than currently available.",
     "mathContext": "Pattern: `Int.floor_eq_iff.mpr ⟨by push_cast; linarith [exp_one_gt_d9], by push_cast; linarith [exp_one_lt_d9]⟩` proves $\\lfloor 10^n e \\rfloor = k$ when $10^n \\cdot 2.718281828 \\leq k$ and $k + 1 > 10^n \\cdot 2.7182818286$. For $n=6$: $2718281.828 < 10^6 e < 2718281.86$, so $\\lfloor 10^6 e \\rfloor = 2718281$ and digit $= 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -97,75 +118,376 @@
     ]
   },
   {
+    "id": "layer1-orbit-pigeonhole",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 204,
+      "endLine": 259
+    },
+    "type": "technique",
+    "title": "Part IV Layer 1: Finite-Orbit Pigeonhole",
+    "content": "Preparatory lemmas for eliminating the (formerly axiomatized) periodicity of rational digit expansions. `exists_iterate_collision`: pigeonhole on `Fin (Fintype.card α + 1) → α` forces some iterate collision $g^{[i]}x_0 = g^{[j]}x_0$ with $i<j$. `eventually_periodic_iterate` upgrades this single collision to full eventual periodicity ($g^{[n+T]}x_0 = g^{[n]}x_0$ for all $n \\geq N_0$) by propagating the period via `Function.iterate_add_apply`. The comment flags this as the 'orbit form' of the argument — the naive pigeonhole on `f i = f j` does NOT propagate to later indices, which is why the iterate/orbit framing is needed.",
+    "mathContext": "$\\exists\\, i<j\\leq |\\alpha|,\\ g^{[i]}x_0=g^{[j]}x_0\\ \\Rightarrow\\ \\exists\\,T,N_0,\\ \\forall n\\geq N_0,\\ g^{[n+T]}x_0 = g^{[n]}x_0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "finite orbits",
+      "Function.iterate_add_apply"
+    ],
+    "prerequisites": [
+      "Fintype basics"
+    ]
+  },
+  {
+    "id": "layer2-rational-residue",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 260,
+      "endLine": 326
+    },
+    "type": "technique",
+    "title": "Part IV Layer 2: Rational Digit Dynamics as a Finite-Type Iteration",
+    "content": "Realizes the base-b digit dynamics of a rational q as an iteration on the finite type `ZMod q.den`, so Layer 1's pigeonhole applies. `ratResidue` (private) is the residue $(q.\\mathrm{num}\\cdot b^n) \\bmod q.\\mathrm{den}$ at step n; `ratResidue_succ` shows it steps by multiplication by b, and `ratResidue_eq_iterate` expresses the whole sequence as iterating the ×b map on `ZMod q.den` starting from q.num. `ratResidue_eventually_periodic` then applies Layer 1 directly to conclude the residue sequence is eventually periodic.",
+    "mathContext": "$\\mathrm{ratResidue}(n) = q.\\mathrm{num}\\cdot b^n \\bmod q.\\mathrm{den} \\in \\mathrm{ZMod}\\,q.\\mathrm{den}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod",
+      "iteration on finite types",
+      "residue sequences"
+    ],
+    "prerequisites": [
+      "layer1-orbit-pigeonhole"
+    ]
+  },
+  {
+    "id": "layer3-floor-residue-bridge",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 327,
+      "endLine": 488
+    },
+    "type": "technique",
+    "title": "Part IV Layer 3: From Residues Back to Actual Digits",
+    "content": "Bridges the abstract residue periodicity back to concrete digit values. `floor_pow_mul_div`/`floor_pow_rat_eq_ediv`/`int_mul_ediv_eq` reduce `⌊bⁿ·(p/q)⌋` to integer (Euclidean) division; `nthDigit_succ_via_residue` and `nthDigit_succ_eq_of_emod_eq` show the digit at position n+1 is determined solely by the integer residue at position n. This lets `rational_digits_eventually_periodic` (proved just after this block) transport Layer 2's residue-periodicity directly into digit-periodicity, and `periodic_has_missing_ktuple` then observes that any period-T sequence must omit some length-k digit string once $b^k > T$ — the combinatorial fact that ultimately forces normal numbers to be irrational.",
+    "mathContext": "$\\lfloor b^n \\cdot p/q\\rfloor = (p\\cdot b^n)\\mathbin{/\\!/} q$ (Euclidean division); period $T$, $b^k>T \\Rightarrow$ some $k$-tuple never occurs",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor/division identities",
+      "pigeonhole on tuples"
+    ],
+    "prerequisites": [
+      "layer2-rational-residue"
+    ]
+  },
+  {
     "id": "ann-oq02-rational-periodic",
     "proofId": "e-transcendental-oq-02",
     "range": {
-      "startLine": 175,
-      "endLine": 181
+      "startLine": 414,
+      "endLine": 441
     },
     "type": "concept",
-    "title": "Why Rational Numbers Have Periodic Expansions",
-    "content": "The axiom `rational_digits_eventually_periodic` captures a classical number-theoretic fact: if x = p/q, then ⌊bⁿ·p/q⌋ % b depends only on bⁿ mod q (by the division algorithm). Since there are only q residues, the sequence bⁿ mod q is eventually periodic by pigeonhole, with period dividing φ(q) ≤ q. This is why all long division representations of fractions eventually repeat. The axiom is stated for the ℤ-valued nthDigit function with ℚ input (not ℝ), allowing the period argument to work over the integers.",
-    "mathContext": "For $x = p/q \\in \\mathbb{Q}$: $\\lfloor b^n \\cdot (p/q) \\rfloor \\bmod b = f(b^n \\bmod q)$ for some function $f$. By pigeonhole on $\\{0,\\ldots,q-1\\}$, the sequence $b^n \\bmod q$ repeats with period $T$ dividing $\\text{ord}_q(b)$ which divides $\\varphi(q) \\leq q$.",
+    "title": "Rational Digits Are Eventually Periodic (Theorem, was Axiom)",
+    "content": "`rational_digits_eventually_periodic`: for any rational q and base b ≥ 2, the base-b digit sequence of q is eventually periodic — `nthDigit b (n+T) q = nthDigit b n q` for all n past some pre-period N₀. This was formerly an axiom; it is now proved by chaining three layers built earlier in Part IV: Layer 1's finite-orbit pigeonhole, Layer 2's realization of digit dynamics as an iterate on `ZMod q.den`, and Layer 3's floor/residue bridge connecting the residue periodicity back to actual digits.",
+    "mathContext": "$\\exists\\, T>0,\\, N_0,\\ \\forall n \\geq N_0,\\ d_b(n+T,q) = d_b(n,q)$",
     "significance": "supporting",
     "relatedConcepts": [
-      "eventually periodic",
+      "eventual periodicity",
       "pigeonhole principle",
-      "rational numbers",
-      "period"
+      "ZMod residues",
+      "axiom elimination"
     ],
     "prerequisites": [
-      "modular arithmetic and the division algorithm",
-      "pigeonhole principle",
-      "multiplicative order and Euler's totient function"
+      "Layer 1 orbit pigeonhole",
+      "Layer 2 residue dynamics"
+    ]
+  },
+  {
+    "id": "layer4a-fin-cast-bridge",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 489,
+      "endLine": 728
+    },
+    "type": "technique",
+    "title": "Part IV.5 Layer 4a: The Missing-Tuple Frequency Argument",
+    "content": "The final layer culminating in `normal_imp_irrational` (annotated in detail below). `nthDigit_nonneg`/`nthDigit_lt_base` show digits land in `[0,b)`; the private `nthDigitFin` recasts the ℤ-valued `nthDigit` as a `Fin b` value via `nthDigitFin_intCast`/`nthDigitFin_eq_iff`. `rational_has_missing_ktuple(_intCast)` uses Layer 3's periodicity to produce, for any rational, a length-k digit string with zero asymptotic density; `rational_match_count_le` and `tendsto_bounded_count_div_atTop_zero` show the matching-position count over the first N positions is bounded, so its frequency tends to 0. This block also contains `normal_ktuple_infinitely_often`/`normal_imp_disjunctive` just after the main theorem, showing normal numbers contain every finite digit string infinitely often.",
+    "mathContext": "some $k$-tuple has $\\lim_{N\\to\\infty} \\text{count}_N/N = 0$ for any rational — the seed contradicting normality's required $b^{-k}>0$ frequency",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin b casting",
+      "asymptotic density",
+      "missing-tuple lemma"
+    ],
+    "prerequisites": [
+      "layer3-floor-residue-bridge"
     ]
   },
   {
     "id": "ann-oq02-normal-irrational",
     "proofId": "e-transcendental-oq-02",
     "range": {
-      "startLine": 191,
-      "endLine": 198
+      "startLine": 656,
+      "endLine": 690
     },
     "type": "concept",
     "title": "Normal Implies Irrational: Proof Sketch",
-    "content": "The theorem `normal_imp_irrational` is a classical result: every normal number is irrational. The proof idea: if x = p/q is rational, its base-b expansion has period T ≤ q (rational_digits_eventually_periodic). For any k with bᵏ > T, the orbit map n ↦ (digit_n, ..., digit_{n+k-1}) is T-periodic, so its image has at most T distinct k-tuples. Since there are bᵏ > T possible k-tuples, some string s₀ is never seen after position N₀. The count of s₀ in [0,N) is bounded by N₀, so count/N → 0. But normality requires count/N → 1/bᵏ > 0 — a contradiction. The axiomatization is needed because connecting the ℤ-valued nthDigit definition to the Fin b setting in the Tendsto framework requires careful casting.",
-    "mathContext": "If $x = p/q$ and expansion has period $T$, then for $k$ with $b^k > T$: the image $\\{(d_n,\\ldots,d_{n+k-1}) : n \\geq N_0\\}$ has cardinality $\\leq T < b^k$. Some $s_0$ never appears: $|\\{n < N : \\text{matches}\\}| \\leq N_0$ for all $N$. So frequency $\\to 0 \\neq b^{-k}$.",
-    "significance": "supporting",
+    "content": "`normal_imp_irrational` (Session 13): the file's central theorem — if x is normal in base b then x is irrational. Proof by contradiction: writing x = q rational, `rational_has_missing_ktuple_intCast` (built from the periodicity theorem above) produces a length-k digit string that never appears past position N₀, so its match count is bounded by N₀ and its frequency tends to 0 — but normality forces that same frequency to tend to b⁻ᵏ > 0, and uniqueness of limits forces b⁻ᵏ = 0, a contradiction.",
+    "mathContext": "$\\mathrm{IsNormalInBase}(b,x) \\Rightarrow \\mathrm{Irrational}(x)$, via $b^{-k} = \\lim (\\text{freq of missing tuple}) = 0$",
+    "significance": "key",
     "relatedConcepts": [
-      "normality",
-      "irrationality",
-      "periodic expansion",
-      "orbit cardinality"
+      "proof by contradiction",
+      "uniqueness of limits",
+      "missing k-tuple argument"
     ],
     "prerequisites": [
-      "eventually periodic sequences",
-      "asymptotic density and limits",
-      "proof by contradiction"
+      "rational_digits_eventually_periodic",
+      "IsNormalInBase"
+    ]
+  },
+  {
+    "id": "non-normality-criterion",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 729,
+      "endLine": 820
+    },
+    "type": "insight",
+    "title": "Part IV.6: The Converse Obstruction — Missing Strings Forbid Normality",
+    "content": "Turns the missing-tuple argument around into a general non-normality CRITERION, not just a fact about rationals. `match_count_le` bounds the count of any k-tuple that is eventually absent; `not_normal_of_eventually_missing_ktuple` and its single-digit specialization `not_normal_of_eventually_missing_digit` conclude x is NOT normal in base b if some k-tuple (or digit) is eventually missing from its expansion. `normal_imp_irrational_of_criterion` then re-derives the main irrationality theorem as an instance of this more general criterion, showing the earlier direct proof and this criterion-based route agree.",
+    "mathContext": "$\\exists N_0,\\forall n\\geq N_0,\\ d_b(n{:}n{+}k,x)\\neq s \\ \\Rightarrow\\ \\neg \\mathrm{IsNormalInBase}(b,x)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-normality criteria",
+      "contrapositive of normality"
+    ],
+    "prerequisites": [
+      "layer4a-fin-cast-bridge"
+    ]
+  },
+  {
+    "id": "frequency-anomaly",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 821,
+      "endLine": 946
+    },
+    "type": "insight",
+    "title": "Part IV.7: From 'Missing' to 'Wrong Frequency'",
+    "content": "Generalizes the missing-string criterion from 'never occurs' to 'occurs with the wrong asymptotic frequency'. The family `not_normal_of_match_freq_tendsto_ne` / `_eventually_le` / `_eventually_ge` (and their single-digit counterparts `not_normal_of_digit_freq_*`) rule out normality whenever a k-tuple's empirical frequency converges to something other than $b^{-k}$, or is eventually bounded strictly above or below it — a strictly finer obstruction than mere non-occurrence.",
+    "mathContext": "$\\mathrm{freq}_N(s) \\to c \\neq b^{-k}$ (or eventually $\\neq b^{-k}$ in one direction) $\\Rightarrow \\neg\\mathrm{IsNormalInBase}(b,x)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "frequency criteria",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "non-normality-criterion"
+    ]
+  },
+  {
+    "id": "quantitative-disjunctivity",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 947,
+      "endLine": 1050
+    },
+    "type": "insight",
+    "title": "Part IV.8: Quantitative Disjunctivity — Early and Linear Occurrence",
+    "content": "Strengthens 'every string occurs infinitely often' (disjunctivity) to explicit quantitative bounds. `exists_match_lt_of_count_pos`, `eventually_match_count_pos_of_normal`, and `eventually_exists_match_lt_of_normal` show a normal number's first occurrence of any given string appears early (bounded position); `match_count_ge_linear_of_normal` shows the count of a k-tuple among the first N digits grows linearly, $\\approx N\\cdot b^{-k}$, not just 'eventually positive'.",
+    "mathContext": "$\\mathrm{count}_N(s) \\gtrsim N\\cdot b^{-k}$ for a normal $x$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quantitative disjunctivity",
+      "linear growth bounds"
+    ],
+    "prerequisites": [
+      "frequency-anomaly"
+    ]
+  },
+  {
+    "id": "effective-normality-modulus",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1051,
+      "endLine": 1266
+    },
+    "type": "technique",
+    "title": "Part IV.9: Effective Normality with an Explicit Convergence Modulus",
+    "content": "Packages normality together with a rate of convergence. `EffectivelyNormalWithModulus` bundles the Tendsto statement with an explicit modulus function bounding how fast each frequency converges; `isNormal_of_effectivelyNormal` shows this implies ordinary normality. `first_occurrence_lt_of_modulus`, `match_count_ge_linear_of_modulus`, `exists_match_ge_of_count_gt`, and `next_occurrence_lt_of_modulus` derive explicit first- and next-occurrence position bounds for every string purely in terms of the modulus — the effective (constructive) strengthening of Part IV.8's qualitative bounds.",
+    "mathContext": "$|\\text{freq}_N(s) - b^{-k}| \\leq \\mathrm{modulus}(k,N)$ with modulus $\\to 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "effective bounds",
+      "constructive convergence rates"
+    ],
+    "prerequisites": [
+      "quantitative-disjunctivity"
+    ]
+  },
+  {
+    "id": "conservation-law-frequencies",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1267,
+      "endLine": 1442
+    },
+    "type": "insight",
+    "title": "Part IV.10: The Conservation Law — Tuple Frequencies Sum to One",
+    "content": "Proves the $b^k$ possible k-tuple frequencies form a genuine probability distribution. `matchFreq` defines the empirical frequency of a fixed k-tuple; `sum_match_count_eq` and `sum_matchFreq_eq_one` show the counts (resp. frequencies) over all $b^k$ tuples sum to N (resp. 1) exactly, since every position belongs to exactly one k-tuple-starting-there. `matchFreq_tendsto_of_others` and `isNormalInBase_of_all_but_one` exploit this conservation law: if all-but-one tuple's frequency is pinned to $b^{-k}$, the last one is forced by subtraction, giving a shortcut criterion for normality.",
+    "mathContext": "$\\sum_{s\\in \\mathrm{Fin}(k)\\to\\mathrm{Fin}(b)} \\mathrm{matchFreq}(s) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conservation law",
+      "probability distribution",
+      "combinatorial identity"
+    ],
+    "prerequisites": [
+      "effective-normality-modulus"
+    ]
+  },
+  {
+    "id": "translation-invariance",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1443,
+      "endLine": 1585
+    },
+    "type": "technique",
+    "title": "Part IV.11: Normality Is Invariant Under Integer Translation",
+    "content": "Shows adding an integer to x does not change its normality. `nthDigit_add_int` proves the digits of x and x+m agree past the integer part (only the digits before the decimal point shift); the helper `tendsto_div_of_diff_le_one` controls the effect of counts differing by at most 1, yielding `isNormalInBase_add_int`, its iff form `isNormalInBase_add_int_iff`, and the absolute-normality version `isAbsolutelyNormal_add_int`. This closes Part IV's toolkit before Part V states the open conjecture about e itself.",
+    "mathContext": "$\\mathrm{IsNormalInBase}(b,x) \\iff \\mathrm{IsNormalInBase}(b,x+m)$ for $m\\in\\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "translation invariance",
+      "integer shifts"
+    ],
+    "prerequisites": [
+      "conservation-law-frequencies"
     ]
   },
   {
     "id": "ann-oq02-uniform-digits",
     "proofId": "e-transcendental-oq-02",
     "range": {
-      "startLine": 219,
-      "endLine": 231
+      "startLine": 1586,
+      "endLine": 1619
     },
     "type": "concept",
     "title": "Consequence of Normality: Uniform Decimal Digit Distribution",
-    "content": "The theorem `e_normal_implies_uniform_decimal_digits` shows that if e is normal in base 10, then each digit 0-9 appears with frequency exactly 1/10. This follows immediately from the k=1 case of IsNormalInBase 10: for each d : Fin 10, the frequency of single-digit strings (d) tends to 10⁻¹ = 1/10. The proof extracts this from the normality hypothesis via `simp`, a `congr` to align the filter condition, and `norm_num` for 1/10 = (10 : ℝ)^(-(1 : ℤ)). This demonstrates the gallery's approach: conditional theorems assuming the open axiom, showing what would follow.",
-    "mathContext": "From `IsNormalInBase 10 e` with $k=1$, $s = (d)$: $\\lim_{N\\to\\infty} \\frac{|\\{n < N : \\text{nthDigit}\\,10\\,n\\,e = d\\}|}{N} = 10^{-1} = 1/10$.",
+    "content": "The file's sole remaining axiom, `e_absolutely_normal : IsAbsolutelyNormal (Real.exp 1)` — the open conjecture that e is normal in every base — with its immediate consequences: `e_normal_base_10`/`e_normal_binary` specialize it to bases 10 and 2; `e_normal_implies_uniform_decimal_digits` derives that each decimal digit 0–9 has asymptotic frequency exactly 1/10; `e_irrational_necessary_for_normality` records that e's (already-known) irrationality is consistent with, and necessary for, this open claim via the `normal_imp_irrational` theorem proved independently above.",
+    "mathContext": "$\\text{(axiom)}\\ \\mathrm{IsAbsolutelyNormal}(e) \\Rightarrow \\forall d\\in\\{0,..,9\\},\\ \\text{freq}(d) = 1/10$",
     "significance": "supporting",
     "relatedConcepts": [
-      "uniform distribution",
-      "decimal digits",
-      "Tendsto",
-      "normality consequence"
+      "open conjecture",
+      "digit frequency",
+      "axiomatization boundary"
     ],
     "prerequisites": [
-      "filters and limits (Filter.Tendsto)",
-      "definition of normality (digit frequency)",
-      "Lean simplification tactics (simp, norm_num)"
+      "IsAbsolutelyNormal",
+      "normal_imp_irrational"
+    ]
+  },
+  {
+    "id": "liouville-sharpness",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1620,
+      "endLine": 1789
+    },
+    "type": "insight",
+    "title": "Part VI: The Liouville Constant — Irrational but Explicitly Non-Normal",
+    "content": "Shows the converse of `normal_imp_irrational` fails, with an explicit witness: the Liouville constant $L = \\sum_i b^{-i!}$. `exists_factorial_window` and `liouvilleNumber_floor`/`liouvilleNumber_digit_le_one` analyze its extremely sparse digit structure (nonzero only at factorial positions); `liouvilleNumber_irrational` proves it irrational (already known via Liouville's classical theorem, re-derived here from Mathlib's `LiouvilleNumber` machinery) and `liouvilleNumber_not_normal` (for base $b\\geq3$) proves it is NOT normal, since the digit 2 (say) never occurs at all. `exists_irrational_not_normal` packages the strict separation: irrationality does not imply normality.",
+    "mathContext": "$L = \\sum_{i\\geq1} b^{-i!}$; irrational, yet the digit set $\\{2,\\ldots,b{-}1\\}$ never appears for $b\\geq3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Liouville numbers",
+      "sharpness example",
+      "irrational ⊊ normal"
+    ],
+    "prerequisites": [
+      "Mathlib LiouvilleNumber"
+    ]
+  },
+  {
+    "id": "liouville-base2-structure",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1790,
+      "endLine": 1881
+    },
+    "type": "technique",
+    "title": "Part VII: Base-2 Digit Structure — the Harder Case",
+    "content": "Sets up the base-2 analysis, where the 'missing digit' trick from Part VI is unavailable (a binary expansion has only digits 0 and 1, and an irrational number cannot have an eventually-constant tail, so neither digit can be literally absent). `liouvilleNumber_window_digit` and `liouvilleNumber_base_two_one_iff` instead pin down EXACTLY which bit positions of $L_2$ equal 1 — precisely the factorial positions — laying the groundwork for a frequency-based (rather than occurrence-based) non-normality argument in base 2.",
+    "mathContext": "$L_2\\text{'s bit at position } n = 1 \\iff n = i! \\text{ for some } i$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binary digit structure",
+      "factorial positions"
+    ],
+    "prerequisites": [
+      "liouville-sharpness"
+    ]
+  },
+  {
+    "id": "liouville-base2-nonnormal",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 1882,
+      "endLine": 2057
+    },
+    "type": "insight",
+    "title": "Part VIII: Base-2 Non-Normality via a Frequency (not Occurrence) Argument",
+    "content": "The first genuine application of the frequency-criterion machinery from Part IV.7. `two_pow_le_factorial_succ` and `liouvilleNumber_two_one_count_le` bound the number of 1-bits among the first N positions by roughly $\\log_2 N$ (there are only that many factorials below N); `tendsto_natLog_two_div_atTop_zero` and `liouvilleNumber_two_one_density_zero` conclude the density of 1s is 0, not the required $1/2$; `liouvilleNumber_not_normal_base_two` applies the frequency criterion to conclude non-normality, and `exists_irrational_not_normal_of_two_le` packages a sharpness witness for every base $b\\geq2$.",
+    "mathContext": "$\\#\\{n<N : L_2\\text{'s bit}_n=1\\} = O(\\log N)$, so density $\\to 0 \\neq 1/2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "frequency criterion in action",
+      "logarithmic sparsity"
+    ],
+    "prerequisites": [
+      "frequency-anomaly",
+      "liouville-base2-structure"
+    ]
+  },
+  {
+    "id": "block-distribution-all-zeros",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 2058,
+      "endLine": 2258
+    },
+    "type": "technique",
+    "title": "Part IX: The All-Zeros k-Tuple Has Density 1, Not 2⁻ᵏ",
+    "content": "Computes a full length-k block frequency, the over-representation counterpart to Part VIII's single-digit under-representation. `nthDigit_two_eq_zero_or_one` confirms binary digits are 0 or 1; `liouvilleNumber_two_zeros_bad_count_le` bounds the (rare) positions where an all-zeros length-k block FAILS to occur; `liouvilleNumber_two_all_zeros_density_one` shows the all-zeros k-tuple actually has density 1 (not the required $2^{-k}$), since 1s are so sparse that almost every length-k window is all-zeros; `liouvilleNumber_all_zeros_not_normal_base_two` re-derives non-normality at the block level, an independent confirmation of Part VIII's single-digit argument.",
+    "mathContext": "$\\lim_{N\\to\\infty}\\text{density}(\\underbrace{0\\cdots0}_{k}) = 1 \\neq 2^{-k}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "block frequency",
+      "over-representation"
+    ],
+    "prerequisites": [
+      "liouville-base2-nonnormal"
+    ]
+  },
+  {
+    "id": "absolute-normality-consequences",
+    "proofId": "e-transcendental-oq-02",
+    "range": {
+      "startLine": 2259,
+      "endLine": 2302
+    },
+    "type": "context",
+    "title": "Part X: Corollaries of Absolute Normality",
+    "content": "Closes the file with the strongest-level consequences. `absolutely_normal_imp_irrational` and `absolutely_normal_imp_disjunctive` derive irrationality and disjunctivity (every finite digit-string occurs, in every base) from absolute normality in general; `e_disjunctive` applies this specifically to e via the `e_absolutely_normal` axiom, concluding that IF e is absolutely normal (still open), its decimal (and every other base's) expansion contains every finite digit-string — e.g. any phone number, any text encoded as digits, appears somewhere in e's expansion.",
+    "mathContext": "$\\mathrm{IsAbsolutelyNormal}(e)\\ (\\text{open}) \\Rightarrow$ every finite digit string occurs in every base-$b$ expansion of $e$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "disjunctive numbers",
+      "consequences of the open conjecture"
+    ],
+    "prerequisites": [
+      "e_absolutely_normal axiom"
     ]
   }
 ]
