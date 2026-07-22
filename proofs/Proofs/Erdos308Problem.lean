@@ -158,7 +158,7 @@ The second-order term involves (log log N)²/log N.
 axiom croot_lower_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       -- f(N) ≥ floor of (H_N - 9/2 · (log log N)² / log N) asymptotically
-      f N ≥ (H N).num.natAbs - 1 - 5
+      (f N : ℤ) ≥ ⌊H N⌋ - 6
 
 /--
 **Croot's Upper Bound (1999):**
@@ -169,7 +169,7 @@ The gap from H_N is at least half a second-order term.
 axiom croot_upper_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       -- f(N) ≤ floor of (H_N - 1/2 · (log log N)² / log N) asymptotically
-      f N ≤ (H N).num.natAbs
+      (f N : ℤ) ≤ ⌊H N⌋
 
 /- 
 **Croot's Main Theorem (1999):**
@@ -257,8 +257,8 @@ involving (log log N)²/log N.
 -/
 theorem erdos_308_summary :
     -- Croot's bounds
-    (∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≥ (H N).num.natAbs - 1 - 5) ∧
-    (∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≤ (H N).num.natAbs) ∧
+    (∃ N₀ : ℕ, ∀ N ≥ N₀, (f N : ℤ) ≥ ⌊H N⌋ - 6) ∧
+    (∃ N₀ : ℕ, ∀ N ≥ N₀, (f N : ℤ) ≤ ⌊H N⌋) ∧
     -- Contiguity holds for large N
     (∃ N₀ : ℕ, ∀ N ≥ N₀, question2 N) := by
   constructor
