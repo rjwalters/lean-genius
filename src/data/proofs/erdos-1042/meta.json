@@ -37,15 +37,14 @@
       }
     ],
     "originalContributions": [
-      "transfiniteDiameter axiom with nonnegativity",
-      "disc_transfinite_diameter and interval_transfinite_diameter axioms",
+      "transfiniteDiameter axiom (nonnegativity, disc, and interval values discussed only in comments, not formalized)",
       "PolynomialWithRoots structure, lemniscate definition",
-      "numComponents and maxComponents axioms",
+      "numComponents and maxComponents definitions (Nat.card / sSup, not axioms)",
       "mainQuestion1 and mainQuestion2 definitions",
-      "ehp_disc_result and roots_of_unity_example axioms (1958)",
       "ghosh_ramachandran_small_diameter axiom: d < 1 → (1-c)n bound",
       "ghosh_ramachandran_diameter_one_examples axiom: d = 1 → n components",
-      "erdos_1042_summary theorem combining key results"
+      "erdos_1042_summary theorem combining key results",
+      "note: the EHP 1958 disc/roots-of-unity example and the GR d ≤ 1/4 single-component result are discussed only in comments, not formalized as declarations"
     ],
     "axiomCount": 3,
     "lineCount": 129,
@@ -57,7 +56,7 @@
     "historicalContext": "Erdős, Herzog, and Piranian posed this problem in their 1958 paper on metric properties of polynomials. A polynomial lemniscate is the sublevel set {z : |f(z)| < 1} of a polynomial f, and the question concerns how many connected components it can have when the roots are constrained to lie in a closed set F ⊆ ℂ. The transfinite diameter (logarithmic capacity) of F controls the answer.\n\nThe 1958 paper showed that for the unit disc (transfinite diameter 1), the lemniscate of f(z) = zⁿ + 1 has exactly n connected components — one small disc around each nth root of -1. This left open whether sets with smaller transfinite diameter must have fewer components, and whether the answer depends on diameter alone.\n\nThe problem remained open for over 65 years until Ghosh and Ramachandran (2024) gave a complete solution. They proved that for transfinite diameter d < 1, components are bounded by (1-c)n for some c > 0 depending on F. For d ≤ 1/4 with F connected, only one component is possible. Crucially, they showed the answer cannot depend on transfinite diameter alone: the disc of radius 1/2 and the interval [-1,1] both have transfinite diameter 1/2, but behave completely differently.",
     "problemStatement": "Let F ⊆ ℂ be closed with transfinite diameter d. For f(z) = ∏ᵢ(z - zᵢ) with roots zᵢ ∈ F, the lemniscate is L = {z : |f(z)| < 1}.\n\n**Q1:** If d = 1 and F is not contained in any disc of radius 1, can L have n components?\n**Q2:** If d < 1, must L have at most (1-c)n components for some c > 0?\n\n**Status:** SOLVED (Ghosh-Ramachandran 2024).",
     "text": "For polynomials with roots in a closed set F ⊆ ℂ, how many connected components can the lemniscate {z : |f(z)| < 1} have? Depends on transfinite diameter and geometry. SOLVED by Ghosh-Ramachandran (2024).",
-    "proofStrategy": "The formalization axiomatizes transfiniteDiameter, numComponents, and maxComponents to avoid requiring full potential theory and topological component machinery. The key Ghosh-Ramachandran theorems (small diameter, small connected, diameter-one examples) are stated as axioms. The summary theorem combines the two main results via exact.",
+    "proofStrategy": "The formalization axiomatizes transfiniteDiameter (logarithmic capacity) to avoid requiring full potential theory machinery; numComponents and maxComponents are ordinary definitions (Nat.card / sSup), not axioms. Two of the three key Ghosh-Ramachandran results (small diameter bound, diameter-one examples) are stated as axioms; the third (d ≤ 1/4 and F connected ⇒ single component) appears only in a comment and is not formalized as a declaration. The summary theorem combines the two axiomatized GR results via exact.",
     "keyInsights": [
       "**Transfinite diameter** (logarithmic capacity) controls lemniscate component counts",
       "**EHP 1958:** f(z) = zⁿ + 1 gives n components for the unit disc",
@@ -74,7 +73,7 @@
     {
       "id": "transfinite-diameter",
       "title": "Transfinite Diameter",
-      "summary": "transfiniteDiameter axiom, nonnegativity, disc and interval examples",
+      "summary": "transfiniteDiameter axiom; nonnegativity, disc, and interval values are comments only, not formalized",
       "startLine": 31,
       "endLine": 50,
       "mathContext": "The transfinite diameter (logarithmic capacity) $d(F) = \\lim_{n \\to \\infty} \\max_{z_1,\\ldots,z_n \\in F} \\left(\\prod_{i<j} |z_i - z_j|\\right)^{2/(n(n-1))}$. Examples: $d(\\overline{\\mathbb{D}}) = 1$ (unit disc), $d([-1,1]) = 1/2$ (interval). Axiomatized with $d(F) \\ge 0$."
@@ -98,7 +97,7 @@
     {
       "id": "ehp-result",
       "title": "Erdős-Herzog-Piranian Result (1958)",
-      "summary": "ehp_disc_result and roots_of_unity_example axioms",
+      "summary": "EHP 1958 disc/roots-of-unity example, discussed only in comments — not formalized as an axiom or theorem",
       "startLine": 88,
       "endLine": 102,
       "mathContext": "Erdős-Herzog-Piranian (1958): for $F = \\overline{\\mathbb{D}}$ (unit disc), $\\text{maxComponents}(F, n) = n$. Witness: $f(z) = z^n + 1$, whose lemniscate has $n$ small discs around the $n$th roots of $-1$: $\\{z : |z^n + 1| < 1\\}$ has one component near each $e^{i\\pi(2k+1)/n}$."
@@ -106,10 +105,10 @@
     {
       "id": "gr-solution",
       "title": "Ghosh-Ramachandran Solution (2024)",
-      "summary": "Three main GR theorems: small diameter, small connected, diameter-1",
+      "summary": "Two GR theorems formalized as axioms: small diameter bound, diameter-1 examples; the small-connected (d ≤ 1/4) result is comment-only",
       "startLine": 103,
       "endLine": 125,
-      "mathContext": "Ghosh-Ramachandran (2024): (1) $d(F) < 1 \\Rightarrow \\text{maxComponents}(F, n) \\le (1-c)n$ for some $c = c(F) > 0$; (2) $d(F) \\le 1/4$ and $F$ connected $\\Rightarrow \\text{maxComponents}(F, n) = 1$; (3) $d(F) = 1$ and $F$ not in a unit disc $\\Rightarrow \\text{maxComponents}(F, n) = n$."
+      "mathContext": "Ghosh-Ramachandran (2024): (1) $d(F) < 1 \\Rightarrow \\text{maxComponents}(F, n) \\le (1-c)n$ for some $c = c(F) > 0$ — formalized as axiom `ghosh_ramachandran_small_diameter`; (2) $d(F) \\le 1/4$ and $F$ connected $\\Rightarrow \\text{maxComponents}(F, n) = 1$ — discussed only in a comment, not formalized; (3) $d(F) = 1$ and $F$ not in a unit disc $\\Rightarrow \\text{maxComponents}(F, n) = n$ — formalized as axiom `ghosh_ramachandran_diameter_one_examples`."
     },
     {
       "id": "counterexample",
