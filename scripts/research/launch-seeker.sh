@@ -40,6 +40,11 @@ REPO_ROOT="$(find_repo_root)"
 # worktree.root override; default $REPO_ROOT/.loom/worktrees).
 # shellcheck source=../lib/worktree-root.sh
 source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+# Shared branch-reclaim + fatal-logging helpers (reclaim_branch_worktree,
+# log_worktree_fatal) so a stale/locked worktree holding feature/seeker can't
+# silently kill this backgrounded launcher (issue #39649).
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
 WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
@@ -120,13 +125,21 @@ create_worktree() {
 
     print_info "Creating worktree for seeker at $WORKTREE_PATH..."
 
-    # Try to create worktree
+    # Free the branch if a stale/locked/legacy worktree still holds it at another
+    # path (e.g. left by the /Volumes/Stripe migration); otherwise every add
+    # below fails and this backgrounded launcher dies silently (issue #39649).
+    reclaim_branch_worktree "$BRANCH_NAME" "$WORKTREE_PATH" || \
+        log_worktree_fatal "$LOG_FILE" "could not reclaim '$BRANCH_NAME' from a stale worktree (see 'git worktree list')"
+
+    # Try to create worktree. The final attempt must NOT die silently under
+    # `set -e` (backgrounded launcher, invisible non-zero exit — issue #39649).
     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || {
         # Branch might exist, try to use it
         git worktree add "$WORKTREE_PATH" "$BRANCH_NAME" 2>/dev/null || {
             # Remove and recreate branch
             git branch -D "$BRANCH_NAME" 2>/dev/null || true
-            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || \
+                log_worktree_fatal "$LOG_FILE" "worktree setup failed for '$BRANCH_NAME' at $WORKTREE_PATH (branch may be checked out elsewhere; see 'git worktree list')"
         }
     }
 

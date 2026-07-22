@@ -122,13 +122,23 @@ create_worktree() {
 
     print_info "Creating worktree for deployer at $WORKTREE_PATH..."
 
-    # Try to create worktree
+    # Free the branch if a stale/locked/legacy worktree still holds it at another
+    # path (e.g. the /Volumes/Stripe migration orphaned the locked
+    # .loom/worktrees/deployer, blocking every `git worktree add` below and
+    # silently killing this launcher — the 7-day deployer outage, issue #39649).
+    reclaim_branch_worktree "$BRANCH_NAME" "$WORKTREE_PATH" || \
+        log_worktree_fatal "$LOG_FILE" "could not reclaim '$BRANCH_NAME' from a stale worktree (see 'git worktree list')"
+
+    # Try to create worktree. The final attempt must NOT die silently under
+    # `set -e`: the daemon backgrounds this launcher, so an un-logged non-zero
+    # exit leaves the deployer dead with no trace (issue #39649).
     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || {
         # Branch might exist, try to use it
         git worktree add "$WORKTREE_PATH" "$BRANCH_NAME" 2>/dev/null || {
             # Remove and recreate branch
             git branch -D "$BRANCH_NAME" 2>/dev/null || true
-            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || \
+                log_worktree_fatal "$LOG_FILE" "worktree setup failed for '$BRANCH_NAME' at $WORKTREE_PATH (branch may be checked out elsewhere; see 'git worktree list')"
         }
     }
 
