@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: One Factorisation, Many Fibonacci Identities",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring: poses the open question of reading Fibonacci addition identities directly off the matrix law Q^(m+n) = Q^m Q^n, then lists the results this file derives as corollaries of the single closed form Q_pow_succ — fib_add_matrix, fib_add_offdiag, cassini_matrix, the two duplication identities, and d'Ocagne's identity via the adjugate.",
+      "mathContext": "$Q^{n+1} = \\begin{pmatrix} F_{n+2} & F_{n+1} \\\\ F_{n+1} & F_n \\end{pmatrix}$ is the one induction; every identity below reads off an entry or determinant of $Q^{m+n+1} = Q^{m+1}Q^{n+1}$ or its adjugate factorisation."
+    },
+    {
       "id": "q-matrix",
       "title": "The Fibonacci Q-Matrix",
       "startLine": 37,
