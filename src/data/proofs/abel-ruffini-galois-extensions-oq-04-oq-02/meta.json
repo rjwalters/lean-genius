@@ -120,6 +120,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: the Module Instance of Jordan–Hölder",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring explains that Mathlib already supplies JordanHolderLattice (Submodule R M) — IsMaximal = the covering relation ⋖, Iso = a linear equivalence of successive quotients — so this file specializes CompositionSeries.jordan_holder to that instance; then imports Mathlib and opens the ambient ring/module variables and namespace."
+    },
+    {
       "id": "main-theorem",
       "title": "Jordan–Hölder for Modules",
       "startLine": 46,
