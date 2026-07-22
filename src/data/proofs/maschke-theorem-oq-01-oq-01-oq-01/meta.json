@@ -92,6 +92,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The augmentation sequence does not split",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Identifies the nilpotent g-1 from the parent entry with a generator of the augmentation ideal I = ker(ε) and shows the short exact sequence 0 → I → F_p[Z/p] → F_p → 0 does not split as F_p[Z/p]-modules: any splitting would force a g-invariant element with augmentation both 1 and 0 (mod p), a contradiction driven by the cyclic-shift structure of the regular representation."
+    },
+    {
       "id": "setup",
       "title": "Setup: the Group Algebra, Generator, and Augmentation",
       "startLine": 53,
