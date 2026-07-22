@@ -121,11 +121,19 @@
     },
     {
       "id": "polya-vinogradov",
-      "title": "Pólya-Vinogradov Inequality",
-      "summary": "Statement of the key missing Mathlib lemma and its role in the BV proof",
+      "title": "Pólya-Vinogradov Inequality and the Large Sieve",
+      "summary": "Statement of the key missing Mathlib lemma (Pólya-Vinogradov, Layer 1) and, immediately after it, a placeholder statement of the large sieve inequality (Layer 3's averaging tool)",
       "startLine": 300,
       "endLine": 337,
-      "mathContext": "Pólya-Vinogradov (1918): $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$ for non-principal $\\chi \\pmod{q}$, any $M, N$. The $\\sqrt{q}\\log q$ bound is independent of the interval length."
+      "mathContext": "Pólya-Vinogradov (1918): $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq \\sqrt{q} \\log q$ for non-principal $\\chi \\pmod{q}$, any $M, N$. Large sieve: $\\sum_{q\\leq Q}\\varphi(q)^{-1}\\sum_{\\gcd(a,q)=1}|\\sum_{n\\leq N}a_n e(na/q)|^2 \\leq (N+Q^2-1)\\sum|a_n|^2$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: What Is Formalized and What Remains",
+      "summary": "Closing comment block inventorying the 8 formalized definitions/theorems, restating the ~12000-line/4-layer effort estimate with Pólya-Vinogradov as the highest-leverage next step, and tying BV back to the `maynard_tao_sieve` axiom it would let BoundedPrimeGaps.lean discharge.",
+      "startLine": 338,
+      "endLine": 365,
+      "mathContext": "BV formalized as 1 axiom of 3 in the bounded-gaps chain; discharging it (via the 4-layer roadmap) would leave `maynard_tao_sieve` resting only on Selberg sieve combinatorics."
     }
   ],
   "conclusion": {
