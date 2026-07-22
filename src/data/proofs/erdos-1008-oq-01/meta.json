@@ -26,7 +26,7 @@
     "erdosProblemStatus": "open-question",
     "axiomCount": 1,
     "lineCount": 374,
-    "assumptions": "One axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). folkman_upper_bound now proved via completeGraph(Fin 2) specialization. 15 theorems fully proved.",
+    "assumptions": "One mathematical axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem) — this is the sole substantive assumption and the source of the axiom badge. folkman_upper_bound is now proved via a completeGraph(Fin 2) specialization; 15 theorems are fully proved. Additional compiler-trust disclosure: three theorems — folkman_upper_bound, optimal_constant_pos, and optimal_constant_bounds (which composes both) — discharge the trivial helper fact (completeGraph (Fin 2)).edgeFinset.card = 1 with native_decide, so their axiom footprint also includes Lean.ofReduceBool (kernel reduction trusts the compiler). This affects only a 2-vertex edge-count computation, not the substantive mathematics, and is kernel-decidable (replaceable by decide); it does not raise the mathematical assumption count.",
     "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 6
