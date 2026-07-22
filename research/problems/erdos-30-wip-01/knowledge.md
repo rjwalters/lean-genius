@@ -65,3 +65,50 @@ refinement (Erdős–Turán exact form `√N + N^{1/4} + 1`, and Lindström/BFR/
 improvements), Singer's projective-plane LOWER bound `h(N) ≥ (1−o(1))√N` (deep
 finite geometry), and the OPEN `$1000` Erdős–Turán conjecture (error `≤ N^ε` for
 all `ε > 0`) which stays a `Prop`.
+
+## Session 2026-07-22 (researcher-1-3) — h(10)=4 past the counting wall (perfect-ruler parity)
+
+Added 4 axiom-free theorems to `Erdos30WIP01.lean` (Docker-verified v4.31.0, 8577 jobs;
+`#print axioms` = propext/Classical.choice/Quot.sound on all headline results; no
+sorry/native_decide/axiom):
+
+- `sidonNumber_ten : sidonNumber 10 = 4` — the **first exact value past the counting wall**.
+  For N<=9 the counting bound |A|^2 <= 2N+|A| alone forces |A|<=4; at N=10 it goes slack
+  (5*4 = 20 = 2*10), so a genuinely new obstruction is needed.
+- `no_sidon_card_five_range_eleven : A ⊆ range 11 → IsSidonSet A → A.card <= 4` — the crux,
+  a **perfect-ruler parity argument**. A 5-element Sidon set in {0,...,10} has C(5,2)=10
+  distinct positive differences a-b, all in {1,...,10}; being 10 distinct values in a
+  10-element set they are EXACTLY {1,...,10} (a perfect difference set / perfect ruler),
+  summing to 1+...+10 = 55 (odd). But the sum of ordered positive differences is always
+  EVEN: S1-S2 with S1+S2 = sum_{offDiag} p.1 = (|A|-1)*sum A = 4*sum A (each element is a
+  first coordinate of |A|-1 ordered pairs), so S1-S2 = 4*sum A - 2*S2 is even. Even != 55.
+- `sidonNumber_le_of_card` — general helper: (∀ Sidon A ⊆ {0..N}, |A|<=B) → h(N)<=B.
+- `sum_offDiag_fst : sum_{p∈A.offDiag} p.1 = (|A|-1)*sum A` — reusable off-diagonal
+  first-coordinate sum (via A×A = diag ⊔ offDiag; sum_product - sum_diag).
+
+### Lean idioms / gotchas (all cost Docker cycles)
+- Positive-difference SET = {1..10} WITHOUT computing |P|: take the FULL off-diagonal image
+  `A.offDiag.image diffMap = (Icc (-10) 10).erase 0` (eq_of_subset_of_card_le, 20=20 via
+  offDiag_card+card_erase_of_mem+Int.card_Icc), then `Finset.filter_image` turns
+  `P.image diffMap = (offDiag.image diffMap).filter (0<·) = ((Icc -10 10).erase 0).filter(0<·)
+  = Icc 1 10` — closed by `decide` on concrete ℤ finsets. Avoids the swap-bijection card count.
+- `Finset.card_nbij'` uses `Set.MapsTo` (coe-membership, painful); `Finset.sum_nbij'` uses
+  plain `∀ a ∈ s, i a ∈ t` — MUCH cleaner. Used sum_nbij' with i=j=Prod.swap for the
+  swap identity `sum_{offDiag.filter ¬(0<diffMap)} p.1 = sum_P p.2`; left/right_inv =
+  `Prod.swap_swap`, value goal = `rfl` (`(swap a).2` defeq `a.1`), membership via
+  `show 0 < (a.2:ℤ)-(a.1:ℤ); omega` (defeq reduces `(swap a).1`/`.2`).
+- `sum_product` leaves body `((a,y).1:ℤ)` (contains bound var y) so `Finset.sum_const`
+  WON'T fire; first fold via `rw [show (∑ y∈A,((a,y).1:ℤ)) = ∑ _y∈A,(a:ℤ) from rfl]`.
+- `Finset.sum_image` needs the SUMMAND `f` pinned (`(f := fun d:ℤ => d)`) — Lean can't infer
+  it (higher-order); then `rw [← hsi]` to fold `∑_P diffMap → ∑_{image} id`.
+- `Finset.sum_filter_add_sum_filter_not s p f` (s,p,f all EXPLICIT) vs
+  `Finset.card_filter_add_card_filter_not (s := ...) p` (s IMPLICIT) — inconsistent arg style.
+- `Finset.eq_of_subset_of_card_le (h:s⊆t)(h2:#t<=#s) : s=t`.
+
+### Remaining open (unchanged mission)
+- h(11)=5 next (witness {0,1,4,9,11}); table continues by case analysis but each new value
+  past the wall needs its own exhaustive/parity argument.
+- Sharp `-c*sqrt(N)`... (Sidon: polynomial sqrt(N)-order LOWER bound, Singer perfect-difference
+  sets) needs modular Sidon infrastructure Mathlib lacks. The $1000 N^{1/4}-error conjecture
+  stays a Prop. Elementary two-sided (upper sqrt(2N)+1, lower log via powers-of-two) + exact
+  table h(0..10) is the provable envelope.

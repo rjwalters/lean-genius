@@ -446,4 +446,151 @@ theorem sidonNumber_nine : sidonNumber 9 = 4 := by
   · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 9 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
 
+/-! ### `h(10) = 4` — breaking the counting wall with a parity argument
+
+For `N ≤ 9` the counting bound `|A|² ≤ 2N + |A|` alone forces `|A| ≤ 4`.  At `N = 10`
+it goes slack: `5·4 = 20 = 2·10` admits a 5-element set.  A genuinely new obstruction
+is needed, and it is a clean parity fact.
+
+A 5-element Sidon set `A ⊆ {0,…,10}` has `C(5,2) = 10` *distinct* ordered positive
+differences `a − b` (`a > b`), all lying in `{1,…,10}`; being 10 distinct values in a
+10-element set they are **exactly** `{1,…,10}` — a *perfect difference set* / perfect
+ruler.  Their sum is therefore `1 + 2 + ⋯ + 10 = 55`, which is **odd**.
+
+But the sum of the ordered positive differences is always **even**: writing
+`S₁ = ∑_{a>b} a` and `S₂ = ∑_{a>b} b`, the sum is `S₁ − S₂`, while `S₁ + S₂` equals
+`∑_{(a,b) ∈ offDiag} a = (|A| − 1)·∑A = 4·∑A` (each element is a first coordinate of
+`|A| − 1` ordered pairs).  Hence `S₁ − S₂ = 4·∑A − 2·S₂` is even.  Even ≠ 55, so no
+such set exists and `h(10) = 4`.  A perfect ruler with 5 marks does not exist. -/
+
+/-- **General size bound helper.** If every Sidon subset of `{0,…,N}` has size at most
+`B`, then `h(N) = sidonNumber N ≤ B`.  (The counting-based `sidonNumber_le_of_sq` is the
+special case `B = ⌊…⌋`; this form accepts any pointwise size argument.) -/
+theorem sidonNumber_le_of_card {N B : ℕ}
+    (h : ∀ A : Finset ℕ, A ⊆ Finset.range (N + 1) → IsSidonSet A → A.card ≤ B) :
+    sidonNumber N ≤ B := by
+  unfold sidonNumber
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  exact h A hA.1 hA.2
+
+/-- **Off-diagonal first-coordinate sum.** `∑_{(a,b) ∈ A.offDiag} a = (|A| − 1)·∑A`:
+each `a ∈ A` is the first coordinate of exactly `|A| − 1` ordered off-diagonal pairs.
+(Computed as `∑_{A×A} a − ∑_{diag} a = |A|·∑A − ∑A`.) -/
+theorem sum_offDiag_fst (A : Finset ℕ) :
+    ∑ p ∈ A.offDiag, (p.1 : ℤ) = ((A.card : ℤ) - 1) * ∑ a ∈ A, (a : ℤ) := by
+  have hsplit : ∑ p ∈ A ×ˢ A, (p.1 : ℤ)
+      = ∑ p ∈ A.diag, (p.1 : ℤ) + ∑ p ∈ A.offDiag, (p.1 : ℤ) := by
+    rw [← Finset.diag_union_offDiag A, Finset.sum_union (Finset.disjoint_diag_offDiag A)]
+  have hprod : ∑ p ∈ A ×ˢ A, (p.1 : ℤ) = (A.card : ℤ) * ∑ a ∈ A, (a : ℤ) := by
+    rw [Finset.sum_product, Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun a _ => ?_)
+    rw [show (∑ y ∈ A, ((a, y).1 : ℤ)) = ∑ _y ∈ A, (a : ℤ) from rfl,
+      Finset.sum_const, nsmul_eq_mul]
+  have hdiag : ∑ p ∈ A.diag, (p.1 : ℤ) = ∑ a ∈ A, (a : ℤ) := by
+    simp [Finset.sum_diag]
+  rw [hprod, hdiag] at hsplit
+  have hoff : ∑ p ∈ A.offDiag, (p.1 : ℤ)
+      = (A.card : ℤ) * ∑ a ∈ A, (a : ℤ) - ∑ a ∈ A, (a : ℤ) := by linarith
+  rw [hoff]; ring
+
+/-- **No 5-element Sidon set fits in `{0,…,10}`** — the perfect-ruler parity obstruction.
+Such a set would have `10` distinct positive differences exhausting `{1,…,10}` (sum `55`,
+odd), yet the sum of ordered positive differences is always even. -/
+theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 11) (hA : IsSidonSet A) : A.card ≤ 4 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  -- Counting caps the size at 5, so a violating set has exactly 5 elements.
+  have hup : A.card * A.card ≤ 20 + A.card := by
+    have := sidon_card_sq_le 10 hsub hA; omega
+  have hc5 : A.card = 5 := by
+    have h5 : 5 ≤ A.card := hcard
+    by_contra hne
+    have h6 : 6 ≤ A.card := by omega
+    have hmul : 6 * A.card ≤ A.card * A.card := Nat.mul_le_mul h6 (le_refl A.card)
+    omega
+  -- `P` = the positive-difference ordered pairs `(a, b)` with `a > b` (i.e. `diffMap > 0`).
+  set P := A.offDiag.filter (fun p => 0 < diffMap p) with hP
+  have hPsub : P ⊆ A.offDiag := Finset.filter_subset _ _
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hinjP : Set.InjOn diffMap ↑P := hfull.mono (Finset.coe_subset.mpr hPsub)
+  have hoffcard : A.offDiag.card = 20 := by rw [Finset.offDiag_card, hc5]
+  -- `diffMap` sends the off-diagonal onto the 20 nonzero integers of `[-10, 10]`.
+  have hmapsFull : ∀ p ∈ A.offDiag, diffMap p ∈ (Finset.Icc (-10 : ℤ) 10).erase 0 := by
+    intro p hp
+    rw [Finset.mem_offDiag] at hp
+    obtain ⟨hp1, hp2, hpne⟩ := hp
+    have hb1 := hsub hp1; have hb2 := hsub hp2
+    rw [Finset.mem_range] at hb1 hb2
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    simp only [diffMap]
+    exact ⟨fun h => hpne (by omega), by omega, by omega⟩
+  have hcardErase : ((Finset.Icc (-10 : ℤ) 10).erase 0).card = 20 := by
+    rw [Finset.card_erase_of_mem (by decide), Int.card_Icc]; decide
+  have himageFull : A.offDiag.image diffMap = (Finset.Icc (-10 : ℤ) 10).erase 0 := by
+    refine Finset.eq_of_subset_of_card_le (fun d hd => ?_) ?_
+    · rw [Finset.mem_image] at hd
+      obtain ⟨p, hp, rfl⟩ := hd
+      exact hmapsFull p hp
+    · rw [Finset.card_image_of_injOn hfull, hoffcard]
+      exact le_of_eq hcardErase
+  -- The positive differences are exactly `{1, …, 10}` (a perfect difference set).
+  have hPimg : P.image diffMap = Finset.Icc (1 : ℤ) 10 := by
+    rw [hP, ← Finset.filter_image, himageFull]; decide
+  -- Hence the sum of positive differences is `1 + 2 + ⋯ + 10 = 55`.
+  have hsum55 : ∑ p ∈ P, diffMap p = 55 := by
+    have hsi := Finset.sum_image (f := fun d : ℤ => d) hinjP
+    rw [hPimg] at hsi
+    rw [← hsi]; decide
+  -- Structural parity: `∑ p₁ + ∑ p₂ = ∑_{offDiag} p₁ = 4·∑A`, hence even.
+  have hS1S2 : ∑ p ∈ P, (p.1 : ℤ) + ∑ p ∈ P, (p.2 : ℤ)
+             = ∑ p ∈ A.offDiag, (p.1 : ℤ) := by
+    have key : ∑ p ∈ A.offDiag, (p.1 : ℤ)
+        = ∑ p ∈ P, (p.1 : ℤ)
+          + ∑ p ∈ A.offDiag.filter (fun p => ¬ 0 < diffMap p), (p.1 : ℤ) := by
+      rw [hP]
+      exact (Finset.sum_filter_add_sum_filter_not A.offDiag
+        (fun p => 0 < diffMap p) (fun p => (p.1 : ℤ))).symm
+    have hswap : ∑ p ∈ A.offDiag.filter (fun p => ¬ 0 < diffMap p), (p.1 : ℤ)
+               = ∑ p ∈ P, (p.2 : ℤ) := by
+      rw [hP]
+      refine Finset.sum_nbij' Prod.swap Prod.swap ?_ ?_
+        (fun a _ => Prod.swap_swap a) (fun a _ => Prod.swap_swap a) (fun a _ => rfl)
+      · intro a ha
+        rw [Finset.mem_filter, Finset.mem_offDiag] at ha ⊢
+        obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := ha
+        simp only [diffMap, not_lt] at hlt
+        refine ⟨⟨h2, h1, fun h => hne h.symm⟩, ?_⟩
+        show 0 < (a.2 : ℤ) - (a.1 : ℤ); omega
+      · intro a ha
+        rw [Finset.mem_filter, Finset.mem_offDiag] at ha ⊢
+        obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := ha
+        simp only [diffMap] at hlt
+        refine ⟨⟨h2, h1, fun h => hne h.symm⟩, ?_⟩
+        show ¬ 0 < (a.2 : ℤ) - (a.1 : ℤ); omega
+    rw [key, hswap]
+  have heven : Even (∑ p ∈ P, diffMap p) := by
+    have hval : ∑ p ∈ P, diffMap p = ∑ p ∈ P, (p.1 : ℤ) - ∑ p ∈ P, (p.2 : ℤ) := by
+      simp only [diffMap]; rw [Finset.sum_sub_distrib]
+    have hoff := sum_offDiag_fst A
+    rw [hc5] at hoff
+    have h4 : ∑ p ∈ P, (p.1 : ℤ) + ∑ p ∈ P, (p.2 : ℤ) = 4 * ∑ a ∈ A, (a : ℤ) := by
+      rw [hS1S2, hoff]; norm_num
+    rw [hval]
+    exact ⟨2 * ∑ a ∈ A, (a : ℤ) - ∑ p ∈ P, (p.2 : ℤ), by linarith [h4]⟩
+  rw [hsum55] at heven
+  exact absurd heven (by norm_num)
+
+/-- `h(10) = 4` — the first value past the counting wall.  A perfect ruler with 5 marks
+would be required for `h(10) = 5` and none exists (`no_sidon_card_five_range_eleven`);
+`{0,1,4,6} ⊆ {0,…,10}` still attains `4`. -/
+theorem sidonNumber_ten : sidonNumber 10 = 4 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_five_range_eleven A hsub hA)
+  · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 10 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
+
 end Erdos30
