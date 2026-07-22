@@ -78,6 +78,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: A transitive subgroup of $S_p$ containing a transposition is $S_p$", "startLine": 1, "endLine": 32, "summary": "States the classical group-theory lemma the parent Galois-group computation ($\\mathrm{Gal}(x^5-4x+2)\\cong S_5$) had originally sidestepped via Sylow theory, and sketches the four-step proof this file supplies instead: orbit–stabilizer gives $p\\mid|G|$, Cauchy's theorem yields an order-$p$ element, an order-$p$ permutation of a $p$-set is a full $p$-cycle, and a $p$-cycle together with any transposition generates $S_p$.", "mathContext": "Transitive $G\\le S_p$ ($p$ prime) containing a transposition $\\Rightarrow G=S_p$, via $p\\mid|G|$ (orbit–stabilizer), Cauchy's theorem, and $\\langle\\sigma,\\tau\\rangle=S_p$ for a $p$-cycle $\\sigma$ and transposition $\\tau$."},
     {
       "id": "statement",
       "title": "The Key Group Theory Lemma",
