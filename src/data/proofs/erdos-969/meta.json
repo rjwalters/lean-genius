@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 2,
     "lineCount": 232,
-    "assumptions": "2 axioms: elementary_upper_bound, evelyn_linfoot_lower_bound. 0 sorries.",
+    "assumptions": "2 axioms: elementary_upper_bound, evelyn_linfoot_lower_bound. 0 sorries. Trust caveat: three named computation theorems — Q_one (Q(1)=1), Q_ten (Q(10)=7) and Q_twenty (Q(20)=13) — close via `native_decide`, which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are self-contained finite Q-values; the elementary_upper_bound and evelyn_linfoot_lower_bound axioms are unaffected.",
     "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 7
