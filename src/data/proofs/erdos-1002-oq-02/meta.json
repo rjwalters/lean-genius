@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: The Cauchy Distribution Connection",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "States the background (Erdős #1002 asks whether S(α,n) has an asymptotic distribution; Kesten 1960 proved the two-parameter variant converges to a Cauchy law) and the gap this file fills: the sibling Erdos1002OQ01 only records the Cauchy law's CDF, while the object in Kesten's theorem is the density. Lists the three connecting results — cauchyDistribution_hasDerivAt (CDF differentiates to density), integral_cauchyDensity (FTC form), integral_cauchyDensity_univ (total mass one) — plus supporting positivity/symmetry/continuity lemmas, self-contained and axiom-free.",
+      "mathContext": "Kesten's two-parameter limit is Cauchy with CDF $g_\\rho(c)=\\tfrac1\\pi\\arctan(\\rho c)+\\tfrac12$ and density $f_\\rho(x)=\\rho/(\\pi(1+(\\rho x)^2))$; this file proves $g_\\rho' = f_\\rho$ and $\\int_{\\mathbb R} f_\\rho = 1$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Cauchy CDF and Density",
       "summary": "Two definitions at an arbitrary scale ρ: cauchyDistribution ρ c = (1/π)·arctan(ρc) + 1/2 (the Cauchy CDF, mirroring the sibling Erdos1002OQ01), and cauchyDensity ρ x = ρ/(π(1+(ρx)²)) (the Cauchy probability density).",
