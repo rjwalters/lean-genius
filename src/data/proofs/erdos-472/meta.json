@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 327,
-    "assumptions": "1 axiom: ulam35_contains_all_odd_primes_conjecture. See Lean source for the complete statement.",
+    "assumptions": "1 axiom: ulam35_contains_all_odd_primes_conjecture. See Lean source for the complete statement. Trust caveat: the concrete Ulam (3,5)-sequence checks (ulam35_first_terms, ulam35_term2 … ulam35_term7, ulam35_extends_8) are closed by native_decide, which adds the compiler-trust axiom Lean.ofReduceBool (beyond propext/Classical.choice/Quot.sound). These are finite verifications of initial sequence terms; the headline all-odd-primes claim rests on the ulam35_contains_all_odd_primes_conjecture axiom and stays kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 30,
     "definitionCount": 8
