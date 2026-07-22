@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: The Folding-Map Proof Idea",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "For $a \\in A$, the residues mod $a$ occupied by larger elements number at most $\\lfloor a/2 \\rfloor + 1$, via the injective folding map $r \\mapsto \\min(r, a-r)$.",
+      "summary": "Docstring framing the entry as a follow-up (OQ-01) to erdos-12-wip-01: sharpens that file's qualitative residue-level obstruction no_antipodal_pair into the quantitative bound that larger elements of a divisibility-free set occupy at most a/2 + 1 residue classes mod a. States the folding-map proof idea (fold r = min r (a-r) is injective on an antipodal-free residue set) and lists the seven results this file proves, ending with the import and namespace declaration."
+    },
+    {
       "id": "obstruction",
       "title": "The Residue-Level Obstruction",
       "startLine": 41,
