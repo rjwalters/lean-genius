@@ -27,7 +27,7 @@
     "relatedProblems": [
       {
         "id": "descartes-rule-of-signs-oq-02",
-        "relationship": "Proves the budan_upper_bound_axiom from OQ-02"
+        "relationship": "Proves the building blocks and the natDegree=0 base case (budan_upper_bound_natDegree_zero) of the budan_upper_bound_axiom from OQ-02; the full axiom remains open"
       }
     ],
     "theoremCount": 10,
@@ -206,7 +206,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file establishes the foundational building blocks for Budan's upper bound theorem: constant and linear polynomial bounds (proved), Rolle's theorem for polynomials (proved), IVT-based root existence (proved), and documented placeholders for the sign-change accounting and inductive step. The three proved theorems are sound; the two placeholder theorems prove `True` to document proof architecture without introducing unsound assumptions.",
+    "summary": "This file establishes the foundational building blocks for Budan's upper bound theorem: iterated-derivative infrastructure (degree bound and vanishing beyond natDegree, proved), constant and linear polynomial root bounds (proved), Rolle's theorem for polynomials (proved), IVT-based root existence (proved), and the natDegree=0 base case budan_upper_bound_natDegree_zero (proved). All 10 theorems are genuinely proved with 0 axioms and 0 sorries; the remaining sign-change accounting and inductive step are documented in comment blocks (§2–§4) rather than placeholder theorems, so no unsound assumptions are introduced. The full budan_upper_bound_axiom is not yet discharged.",
     "implications": "Budan's theorem is the algorithmic heart of real root isolation: computer algebra systems use V_p(a) - V_p(b) as a quick upper bound on roots in (a,b] to bisect intervals. The theorem also implies Descartes' Rule (sign changes in coefficients = upper bound on positive roots) as a corollary. A complete Lean formalization would: (1) give a verified foundation for root isolation algorithms, (2) enable formal proofs of Sturm's theorem as a tighter cousin, and (3) contribute to Mathlib's polynomial root-counting infrastructure.",
     "openQuestions": [
       "Sign-change accounting: Formalize the lemma relating V_p(x) and V_{p'}(x) across a root of p — this is the heart of the induction and requires careful analysis of how sign variations change when a root is factored out",
