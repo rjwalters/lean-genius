@@ -1602,4 +1602,60 @@ theorem containsC4_of_four_set_min_two {V : Type*} [Fintype V] [DecidableEq V]
     · exact (G.ne_of_adj htq) rfl
   · exact (G.ne_of_adj htp) rfl
 
+/-- **The `(3⁸, 4)` case of `f(9)`: a unique degree-`4` vertex forces a `C₄`.**
+On `9` vertices with `δ ≥ 3`, if exactly one vertex `w` has degree `4` and the
+rest have degree `3`, the four vertices `R` outside `w`'s closed neighbourhood
+each keep at least two of their three edges inside `R` (they are non-adjacent
+to `w` and share at most one neighbour with it), so the dense-`4`-set lemma
+applies. -/
+theorem containsC4_of_nine_one_four {G : SimpleGraph (Fin 9)}
+    [DecidableRel G.Adj] (w : Fin 9) (hw : G.degree w = 4)
+    (hrest : ∀ v, v ≠ w → G.degree v = 3) :
+    containsC4 (Fin 9) G := by
+  by_contra hfree
+  have hwn : w ∉ G.neighborFinset w :=
+    fun h => G.irrefl ((G.mem_neighborFinset w w).mp h)
+  set B : Finset (Fin 9) := insert w (G.neighborFinset w) with hB
+  have hBcard : B.card = 5 := by
+    rw [hB, Finset.card_insert_of_notMem hwn, G.card_neighborFinset_eq_degree, hw]
+  set R : Finset (Fin 9) := Finset.univ \ B with hRdef
+  have hRcard : R.card = 4 := by
+    rw [hRdef, Finset.card_sdiff, Finset.inter_univ, Finset.card_univ,
+      Fintype.card_fin, hBcard]
+  refine hfree (containsC4_of_four_set_min_two hRcard ?_)
+  intro x hx
+  rw [hRdef, Finset.mem_sdiff] at hx
+  have hxB := hx.2
+  rw [hB, Finset.mem_insert, not_or] at hxB
+  obtain ⟨hxw, hxN⟩ := hxB
+  have hnadj : ¬ G.Adj w x := fun h => hxN ((G.mem_neighborFinset w x).mpr h)
+  have hwNx : w ∉ G.neighborFinset x :=
+    fun h => hnadj ((G.mem_neighborFinset x w).mp h).symm
+  have hdx : G.degree x = 3 := hrest x hxw
+  -- `N(x) ∩ R = N(x) \ B` and `N(x) ∩ B = N(x) ∩ N(w)`
+  have hinterR : G.neighborFinset x ∩ R = G.neighborFinset x \ B := by
+    rw [hRdef]
+    ext u
+    simp [Finset.mem_sdiff]
+  have hinterB : G.neighborFinset x ∩ B = G.neighborFinset x ∩ G.neighborFinset w := by
+    rw [hB]
+    ext u
+    simp only [Finset.mem_inter, Finset.mem_insert]
+    constructor
+    · rintro ⟨hu, rfl | hu'⟩
+      · exact absurd hu hwNx
+      · exact ⟨hu, hu'⟩
+    · rintro ⟨hu, hu'⟩
+      exact ⟨hu, Or.inr hu'⟩
+  have hcomm : (G.neighborFinset x ∩ G.neighborFinset w).card ≤ 1 :=
+    card_inter_neighborFinset_le_one hfree hxw
+  have hsplit := Finset.card_sdiff_add_card_inter (G.neighborFinset x) B
+  have hxcard : (G.neighborFinset x).card = 3 := by
+    rw [G.card_neighborFinset_eq_degree, hdx]
+  rw [hinterB] at hsplit
+  rw [hinterR]
+  omega
+
 end Erdos85
+
+#print axioms Erdos85.containsC4_of_nine_one_four
