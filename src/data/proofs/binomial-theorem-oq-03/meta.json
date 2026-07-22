@@ -96,6 +96,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Deriving the Binomial Distribution from the Binomial Theorem", "startLine": 1, "endLine": 24, "summary": "Asks whether the binomial distribution and its key properties can be derived directly from the binomial theorem. Answer: yes — expanding (p+(1-p))^n = 1 gives normalization, and further algebraic manipulation yields the mean np. The file proves normalization, mean, symmetry, the fair-coin and Bernoulli special cases, the probability generating function, the Poisson limit theorem, the convolution property, and a Chebyshev concentration bound, all traced back to the binomial theorem.", "mathContext": "$\\mathrm{binomPMF}(n,p,k) = \\binom{n}{k}p^k(1-p)^{n-k}$; normalization $\\sum_k \\mathrm{binomPMF}(n,p,k)=1$ follows directly from $(p+(1-p))^n=1$."},
     {
       "id": "pmf",
       "title": "The Binomial Distribution PMF",
