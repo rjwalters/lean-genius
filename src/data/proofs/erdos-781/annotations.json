@@ -204,8 +204,8 @@
     },
     "type": "definition",
     "title": "Monochromatic Wave",
-    "content": "`HasMonochromaticWave n k c` asserts that coloring c of {1,...,n} contains a k-term descending wave where all terms share the same color.\n\n```lean\ndef HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=\n  ∃ (w : DescendingWaveIn ... k),\n    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by sorry⟩ = color\n```\n\nThe `sorry` handles the index bound `w.seq i - 1 < n`.",
-    "mathContext": "`HasMonochromaticWave n k c`: existential over waves, then over a Boolean color. Wave elements are 1-indexed ($\\{1,\\ldots,n\\}$) while `Fin n` is 0-indexed, requiring `w.seq i - 1` for the color lookup. The `by sorry` in `⟨w.seq i - 1, by sorry⟩` skips proving `w.seq i - 1 < n` — provable from `in_S` but omitted for brevity.",
+    "content": "`HasMonochromaticWave n k c` asserts that coloring c of {1,...,n} contains a k-term descending wave where all terms share the same color.\n\n```lean\ndef HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=\n  ∃ (w : DescendingWaveIn (Finset.univ.image (fun i : Fin n => i.val + 1)) k),\n    ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by\n      have := w.in_S i\n      simp [Finset.mem_image] at this\n      obtain ⟨j, hj⟩ := this\n      omega⟩ = color\n```\n\nThe index bound `w.seq i - 1 < n` is fully proved (no `sorry`) from `in_S` via `Finset.mem_image` and `omega`.",
+    "mathContext": "`HasMonochromaticWave n k c`: existential over waves, then over a Boolean color. Wave elements are 1-indexed ($\\{1,\\ldots,n\\}$) while `Fin n` is 0-indexed, requiring `w.seq i - 1` for the color lookup. The bound `w.seq i - 1 < n` is derived from `in_S` (membership in the image set) via `simp [Finset.mem_image]` and `omega` — fully proved, no `sorry`.",
     "significance": "key",
     "relatedConcepts": [
       "monochromatic pattern",
@@ -231,48 +231,44 @@
     },
     "type": "definition",
     "title": "The Ramsey Threshold Function f(k)",
-    "content": "**f(k):** The minimal n such that every 2-coloring of {1,...,n} contains a monochromatic k-term descending wave.\n\n```lean\nnoncomputable def f (k : ℕ) : ℕ :=\n  Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified\n```\n\nThis is the central Ramsey-type threshold function. The actual minimum is encoded via `f_exists` and `f_minimal` axioms.",
-    "mathContext": "$f(k) = \\min\\{n \\mid \\forall c : \\text{TwoColoring}(n),\\ \\text{HasMonochromaticWave}(n, k, c)\\}$. The simplified Lean definition uses `Nat.find` with a trivial existence proof to avoid defining the full minimum predicate. The `axioms` `f_exists` and `f_minimal` encode the true definition. `noncomputable` because `Nat.find` is not computable in general.",
+    "content": "**f(k):** Intended to denote the minimal n such that every 2-coloring of {1,...,n} contains a monochromatic k-term descending wave.\n\n```lean\naxiom f : ℕ → ℕ\n```\n\n`f` is an uninterpreted axiomatized function — it carries no defining equation in Lean. Its intended Ramsey-threshold meaning is only informally documented; the file characterizes it partially via `BEF_lower_bound`, `alon_spencer_cubic`, `f_1`, `f_2`, `f_3` below. (Previously `f` was given a `noncomputable def ... := Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)` body, but that predicate is trivially true at `n = 0`, so `Nat.find` provably returned `0` for every `k` — directly contradicting the `f_1`/`f_2`/`f_3` axioms and making the file's axiom set kernel-inconsistent. Fixed by declaring `f` as a bare axiom.)",
+    "mathContext": "$f(k) = \\min\\{n \\mid \\forall c : \\text{TwoColoring}(n),\\ \\text{HasMonochromaticWave}(n, k, c)\\}$ is the *intended* meaning, but this is not formalized as a defining property in Lean — `f` is simply postulated to exist. There are no `f_exists`/`f_minimal` axioms in this file (an earlier draft of this annotation described such axioms; they do not appear in the source).",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey number",
       "threshold function",
-      "Nat.find",
-      "f_exists",
-      "f_minimal",
-      "noncomputable"
+      "axiom",
+      "BEF_lower_bound",
+      "alon_spencer_cubic"
     ],
     "prerequisites": [
       "f",
-      "Nat.find",
       "HasMonochromaticWave",
-      "noncomputable def"
+      "axiom declarations"
     ]
   },
   {
     "id": "ann-e781-f-axioms",
     "proofId": "erdos-781",
     "range": {
-      "startLine": 121,
-      "endLine": 122
+      "startLine": 118,
+      "endLine": 119
     },
     "type": "concept",
-    "title": "f(k) is Well-Defined: Existence and Minimality",
-    "content": "**f_exists (axiom):** Every 2-coloring of {1,...,f(k)} contains a monochromatic k-wave.\n\n**f_minimal (axiom):** For n < f(k), some 2-coloring of {1,...,n} avoids monochromatic k-waves.\n\n```lean\naxiom f_exists (k : ℕ) (hk : k ≥ 1) :\n    ∀ c : TwoColoring (f k), HasMonochromaticWave (f k) k c\naxiom f_minimal (k : ℕ) (hk : k ≥ 1) :\n    ∀ n < f k, ∃ c : TwoColoring n, ¬HasMonochromaticWave n k c\n```\n\nThese two axioms jointly encode f(k) as the Ramsey threshold.",
-    "mathContext": "`f_exists`: Ramsey property — at $n = f(k)$, all colorings contain a wave. `f_minimal`: minimality — at $n < f(k)$, some coloring avoids waves. Together: $f(k) = \\min\\{n \\mid \\forall c, \\text{HasMonochromaticWave}(n,k,c)\\}$. These axioms compensate for the simplified `Nat.find` definition.",
-    "significance": "key",
+    "title": "f(k)'s Intended Well-Definedness Is Prose Only",
+    "content": "The comments `/- f is well-defined for k ≥ 1. -/` and `/- f(k) is minimal. -/` are **prose remarks, not Lean declarations** — there is no `f_exists` or `f_minimal` axiom (or theorem) anywhere in this file. The intended Ramsey-threshold semantics of `f` (that every coloring of `{1,...,f k}` has a monochromatic wave, and that some coloring of any smaller set avoids one) is never formalized; `f` is only constrained by the concrete axioms `BEF_lower_bound`, `alon_spencer_cubic`, `f_1`, `f_2`, `f_3`.",
+    "mathContext": "Do not confuse comment-only text with axiom declarations: `grep '^axiom'` on this file shows `f`, `g`, `BEF_lower_bound`, `alon_spencer_cubic`, `f_1`, `f_2`, `f_3` — seven axioms total, and no `f_exists`/`f_minimal`.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "f_exists",
-      "f_minimal",
+      "f",
       "Ramsey threshold",
-      "minimality axiom",
-      "well-defined minimum"
+      "prose vs. declaration",
+      "no f_exists/f_minimal axioms"
     ],
     "prerequisites": [
       "f",
       "TwoColoring",
-      "HasMonochromaticWave",
-      "axiom declarations"
+      "HasMonochromaticWave"
     ]
   },
   {
@@ -492,22 +488,19 @@
     },
     "type": "concept",
     "title": "Alon-Spencer Probabilistic Construction",
-    "content": "**alon_spencer_construction (axiom):** For some c > 0 and all n ≤ c·k³, there exists a 2-coloring of {1,...,n} with no monochromatic k-term descending wave.\n\n```lean\naxiom alon_spencer_construction (k : ℕ) (hk : k ≥ 1) :\n    ∃ c : ℝ, c > 0 ∧\n    ∀ n : ℕ, (n : ℝ) ≤ c * k^3 →\n      ∃ coloring : TwoColoring n, ¬HasMonochromaticWave n k coloring\n```\n\nThe probabilistic construction is the core of the Alon-Spencer disproof.",
-    "mathContext": "`alon_spencer_construction`: $\\exists c > 0,\\ \\forall n \\leq ck^3,\\ \\exists$ coloring avoiding $k$-waves. The **probabilistic method**: a uniformly random 2-coloring avoids a specific $k$-wave with probability $2^{1-k}$. Number of $k$-term descending waves in $\\{1,\\ldots,n\\}$ is $\\leq \\binom{n}{k}$. Expected monochromatic waves $\\leq \\binom{n}{k}/2^{k-1}$. For $n = O(k^3)$: $\\leq O(k^{3k}/k! \\cdot 2^{k}) \\to 0$. By expectation, some coloring works.",
-    "significance": "key",
+    "content": "The source lines 192-202 are a **comment block only** — there is no `alon_spencer_construction` axiom or theorem in this file. The comment informally describes the probabilistic-method idea: for some c > 0 and all n ≤ c·k³, a random 2-coloring of {1,...,n} avoids a monochromatic k-term descending wave with positive probability.",
+    "mathContext": "No Lean declaration corresponds to `alon_spencer_construction` (an earlier version of this annotation showed a fabricated `axiom alon_spencer_construction (...)` code block; it does not appear in the source). The **probabilistic method** idea it describes: a uniformly random 2-coloring avoids a specific $k$-wave with probability $2^{1-k}$; number of $k$-term descending waves in $\\{1,\\ldots,n\\}$ is $\\leq \\binom{n}{k}$; for $n = O(k^3)$ the expected monochromatic-wave count $\\to 0$. This intuition is not formalized anywhere in the file — the file's only route to the cubic bound is the axiom `alon_spencer_cubic`.",
+    "significance": "supporting",
     "relatedConcepts": [
       "probabilistic method",
-      "Alon-Spencer construction",
+      "comment-only",
       "first moment method",
-      "union bound",
-      "random coloring"
+      "alon_spencer_cubic"
     ],
     "prerequisites": [
-      "alon_spencer_construction",
       "TwoColoring",
       "HasMonochromaticWave",
-      "probabilistic method",
-      "Real cast"
+      "alon_spencer_cubic"
     ]
   },
   {
@@ -519,22 +512,19 @@
     },
     "type": "definition",
     "title": "Ascending Waves and Symmetric Cubic Growth",
-    "content": "`IsAscendingWave seq`: dual notion — gaps are non-decreasing.\n\n`g(k)`: analog of f(k) for ascending waves.\n\n`ascending_descending_similar`: Both f(k) and g(k) grow as Θ(k³):\n\n```lean\naxiom ascending_descending_similar (k : ℕ) (hk : k ≥ 1) :\n    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧\n    c₁ * k^3 ≤ (f k : ℝ) ∧ (f k : ℝ) ≤ c₂ * k^3 ∧\n    c₁ * k^3 ≤ (g k : ℝ) ∧ (g k : ℝ) ≤ c₂ * k^3\n```",
-    "mathContext": "`IsAscendingWave seq ↔ gaps non-decreasing`. The Alon-Spencer 1989 paper is titled 'Ascending waves' — they studied ascending waves first, then noted the same bounds apply to descending waves by symmetry. `ascending_descending_similar` gives the complete picture: $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$, so both threshold functions are $\\Theta(k^3)$.",
+    "content": "`IsAscendingWave seq`: dual notion — gaps are non-decreasing.\n\n```lean\naxiom g : ℕ → ℕ\n```\n\n`g(k)` is the axiomatized analog of `f(k)` for ascending waves — an uninterpreted function with no defining axioms of its own in this file. There is **no** `ascending_descending_similar` axiom or theorem in the source; the comment at lines 216-218 only informally notes that the Alon-Spencer paper's bounds are claimed to apply symmetrically to both cases.",
+    "mathContext": "`IsAscendingWave seq ↔ gaps non-decreasing`. The Alon-Spencer 1989 paper is titled 'Ascending waves'. No Lean declaration formalizes the claim that $f$ and $g$ share the same $\\Theta(k^3)$ growth (an earlier version of this annotation showed a fabricated `axiom ascending_descending_similar (...)` code block; it does not appear in the source) — `g` carries zero constraining axioms in this file.",
     "significance": "supporting",
     "relatedConcepts": [
       "IsAscendingWave",
       "g function",
-      "symmetric growth",
-      "ascending_descending_similar",
+      "comment-only claim",
       "Alon-Spencer paper title"
     ],
     "prerequisites": [
       "IsAscendingWave",
       "g",
-      "f",
-      "ascending_descending_similar",
-      "Real.cast"
+      "f"
     ]
   },
   {
@@ -546,19 +536,17 @@
     },
     "type": "definition",
     "title": "Quasi-Progressions and the BEF Paper",
-    "content": "`IsQuasiProgression seq d error`: gaps are approximately d, within ±error.\n\n`descending_wave_is_quasi`: Every descending wave is a quasi-progression with common difference d and error bounded by seq(0) (the first element).\n\n```lean\naxiom descending_wave_is_quasi {k : ℕ} (seq : Fin k → ℕ) ...\n    ∃ d, IsQuasiProgression seq d (seq ⟨0, by sorry⟩)\n```",
-    "mathContext": "`IsQuasiProgression seq d error ↔ \\forall i: |\\text{gap}_i - d| \\leq \\text{error}$. The BEF paper is titled 'Quasi-progressions and descending waves' — this connection is central. `descending_wave_is_quasi`: a descending wave starting at $x_0$ is an arithmetic-like progression with error $\\leq x_0$. The initial value bounds the deviation from an exact AP. This connects descending waves to the broader theory of approximate arithmetic progressions.",
+    "content": "`IsQuasiProgression seq d error`: gaps are approximately d, within ±error.\n\nThere is **no** `descending_wave_is_quasi` axiom or theorem in this file — the claim that every descending wave is a quasi-progression with error bounded by its first element is only a comment (lines 227-228), never formalized.",
+    "mathContext": "`IsQuasiProgression seq d error ↔ \\forall i: |\\text{gap}_i - d| \\leq \\text{error}$. The BEF paper is titled 'Quasi-progressions and descending waves' — this connection is central to the informal narrative. No Lean declaration connects `IsDescendingWave`/`IsQuasiProgression` in this file (an earlier version of this annotation showed a fabricated `axiom descending_wave_is_quasi (...)` code block, including a fake `sorry`; neither appears in the source).",
     "significance": "supporting",
     "relatedConcepts": [
       "IsQuasiProgression",
       "BEF 1990 paper title",
-      "descending_wave_is_quasi",
-      "approximate AP",
+      "comment-only claim",
       "quasi-arithmetic progression"
     ],
     "prerequisites": [
       "IsQuasiProgression",
-      "descending_wave_is_quasi",
       "StrictlyIncreasing",
       "IsDescendingWave"
     ]
@@ -572,8 +560,8 @@
     },
     "type": "concept",
     "title": "Summary: BEF Bounds and Cubic Growth",
-    "content": "`erdos_781_summary` combines three results:\n\n1. **Lower bound:** f(k) ≥ k² - k + 1 for all k ≥ 1\n2. **Cubic growth:** ∃c > 0, f(k) ≥ c·k³ for all k ≥ 1\n3. **Disproved:** ¬ErdosConjecture781\n\n```lean\ntheorem erdos_781_summary : ... :=\n  ⟨BEF_lower_bound, ⟨by use 1/10; sorry⟩, conjecture_disproved⟩\n```\n\nThe `1/10` guesses the Alon-Spencer constant; the actual value is not computed.",
-    "mathContext": "The three-part conjunction: $(\\forall k \\geq 1,\\ f(k) \\geq k^2-k+1) \\wedge (\\exists c > 0,\\ \\forall k \\geq 1,\\ f(k) \\geq ck^3) \\wedge \\neg\\text{ErdosConjecture781}$. Proved by `⟨BEF_lower_bound, ⟨by use 1/10; sorry⟩, conjecture_disproved⟩`. The `use 1/10` guesses $c = 1/10$; the `sorry` then needs to prove $f(k) \\geq k^3/10$ for all $k \\geq 1$ using `alon_spencer_cubic`.",
+    "content": "`erdos_781_summary` combines three results:\n\n1. **Lower bound:** f(k) ≥ k² - k + 1 for all k ≥ 1\n2. **Cubic growth:** ∃c > 0, f(k) ≥ c·k³ for all k ≥ 1\n3. **Disproved:** ¬ErdosConjecture781\n\n```lean\ntheorem erdos_781_summary :\n    (∀ k ≥ 1, f k ≥ k^2 - k + 1) ∧\n    (∀ k ≥ 1, ∃ c : ℝ, c > 0 ∧ (f k : ℝ) ≥ c * k^3) ∧\n    ¬ErdosConjecture781 :=\n  ⟨BEF_lower_bound, alon_spencer_cubic, conjecture_disproved⟩\n```\n\nA direct term proof with no `sorry` — each conjunct is exactly one of the three axioms/theorems already established.",
+    "mathContext": "The three-part conjunction: $(\\forall k \\geq 1,\\ f(k) \\geq k^2-k+1) \\wedge (\\exists c > 0,\\ \\forall k \\geq 1,\\ f(k) \\geq ck^3) \\wedge \\neg\\text{ErdosConjecture781}$. Proved by the one-line term `⟨BEF_lower_bound, alon_spencer_cubic, conjecture_disproved⟩` — `alon_spencer_cubic` already has exactly the required `∃ c, c > 0 ∧ ...` shape, so no `sorry` or constant-guessing is needed (an earlier version of this annotation showed a fabricated `⟨by use 1/10; sorry⟩` proof; it does not appear in the source).",
     "significance": "key",
     "relatedConcepts": [
       "erdos_781_summary",
