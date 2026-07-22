@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Filling the Parent's Unproved Corollary",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "States that the registered parent Erdos733Problem.lean axiomatizes the Szemerédi–Trotter answer and leaves its Part III rich-line corollary as an unproved docstring claim. This file proves the elementary unconditional baseline instead: #{k-rich lines}·C(k,2) ≤ C(n,2) from double-counting point-pairs, using only the linear-space hypothesis that two distinct lines meet in ≤ 1 point — no incidence theorem, no real-analytic input. Notes the honest comparison (O(n²/k²) here vs. Szemerédi–Trotter's O(n²/k³ + n/k)) and that hsub/hlin are ordinary theorem hypotheses, not structure-encoded axioms, so the file is genuinely 0-axiom.",
+      "mathContext": "Elementary baseline $\\#\\{L : |L|\\ge k\\}\\cdot\\binom{k}{2} \\le \\binom{n}{2}$, i.e. $O(n^2/k^2)$, vs. Szemerédi–Trotter's sharper $O(n^2/k^3+n/k)$."
+    },
+    {
       "id": "core-double-counting",
       "title": "The core double-counting inequality",
       "startLine": 60,
