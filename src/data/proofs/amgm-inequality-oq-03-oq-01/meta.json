@@ -84,6 +84,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Weighted power means interpolating between AM and GM", "startLine": 1, "endLine": 56, "summary": "Defines the weighted power mean $M_r$ of non-negative reals and states the Power Mean Inequality — monotonicity of $M_r$ in $r$ — recovering $HM\\le GM\\le AM$ as the $r=-1,0,1$ special cases. Lists the eight results this file proves, built from Mathlib's Jensen inequality plus a duality argument $M_r(z)=M_{-r}(z^{-1})^{-1}$ for negative exponents.", "mathContext": "$M_r(z,w)=(\\sum_i w_i z_i^r)^{1/r}$ is monotone increasing in $r$; $HM\\le GM\\le AM$ at $r=-1,0,1$, proved via Jensen's inequality and the reciprocal duality $M_r(z)=M_{-r}(z^{-1})^{-1}$."},
     {
       "id": "parent-dependencies",
       "title": "Dependencies from Parent Entry",
