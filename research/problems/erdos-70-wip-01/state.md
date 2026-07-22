@@ -1,25 +1,32 @@
 # Research State: erdos-70-wip-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-09T17:33:19-07:00
-**Iteration**: 1
+**Since**: 2026-07-22
+**Iteration**: 4
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Node complete at the surrogate level: `InfiniteRamsey3` proved from scratch
+(iterated ultrafilter majorities over `hyperfilter ℕ`), so the formalized
+(cardinality-surrogate) `erdos_70_conjecture` is an unconditional theorem,
+together with all its specializations (ω, ω², tower, ε₀). 0 axioms, 0 sorries.
 
 ## Active Approach
-None yet.
+None — completed. The only remaining direction is the faithful order-type
+upgrade (see blockers / next steps in the tracker JSON).
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 4
+- Approaches tried: 3 (closure lemmas; ε₀ fixed point; ultrafilter Ramsey build)
 
 ## Blockers
-None.
+- True order-type partition relation (Erdős–Rado partition calculus): genuinely
+  open core of Erdős #70; reopen bar "materially new mechanism required
+  (Mathlib gains order-type-preserving homogeneous-set machinery)".
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Optional follow-up (new node): faithful order-type arrow for β = ω — provable
+from `InfiniteRamsey3` since any infinite subset of a well-ordered set contains
+an ω-chain. Materially weaker than the parent target (ω² onward needs
+Erdős–Rado), hence valid decomposition, not an equivalent-strength restatement.

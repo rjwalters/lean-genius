@@ -45,6 +45,15 @@ and `*`; and it wires the open conjecture to its published special cases.
    the tower supremum is a fixed point of `ξ ↦ ω^ξ`, the defining property the
    development above only stated in prose.  Proved from normality of `ω^·`.
 
+6. `infiniteRamsey3_holds` / `erdos_70_formalized_conjecture_holds` — the
+   **infinite Ramsey theorem for 2-colourings of 3-element subsets** (absent from
+   Mathlib v4.31), proved from scratch by the iterated-ultrafilter-majority
+   argument over the hyperfilter on `ℕ`; consequently the *formalized* conjecture
+   `erdos_70_conjecture` is an unconditional theorem.  **Faithfulness caveat**: the
+   parent's `HasOrderTypeAtLeast` is a cardinality surrogate for order type, so
+   this does NOT settle Erdős #70 itself — the genuine order-type partition
+   relation `𝔠 → (β, n)₂³` remains open.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -314,8 +323,9 @@ the real order-type problem, which remains open. -/
 
 /-- **The missing ingredient.**  Infinite Ramsey for 2-colourings of 3-element
 subsets of a continuum-sized set: some colour class has an *infinite* homogeneous
-set.  A classical theorem, but not present in Mathlib v4.31; carried here as a
-named hypothesis rather than an `axiom` so the reduction stays assumption-free. -/
+set.  A classical theorem, but not present in Mathlib v4.31; stated here as a
+named proposition so the reduction below stays assumption-free — and **proved
+outright** in the final section of this file (`infiniteRamsey3_holds`). -/
 def InfiniteRamsey3 : Prop :=
   ∀ (S : Type) [DecidableEq S] (_ : Cardinal.mk S = continuum_card) (c : Coloring S 3 2),
     ∃ (H : Set S) (i : Fin 2), H.Infinite ∧ IsHomogeneous H 3 c i
@@ -354,5 +364,362 @@ cannot have a counterexample — the open content lives entirely in the gap betw
 theorem counterexample_imp_not_infiniteRamsey3
     (h : erdos_70_counterexample) : ¬ InfiniteRamsey3 :=
   fun hR => conjecture_xor_counterexample.mp (infiniteRamsey3_imp_conjecture hR) h
+
+/-! ## `InfiniteRamsey3` is a theorem: infinite Ramsey for triples, proved
+
+The section above isolated `InfiniteRamsey3` as the single missing ingredient and
+proved the reduction `InfiniteRamsey3 → erdos_70_conjecture`.  This section supplies
+the ingredient: a complete, assumption-free proof of the infinite Ramsey theorem for
+2-colourings of 3-element subsets — a statement absent from Mathlib v4.31 — by the
+classical iterated-ultrafilter-majority argument.
+
+**Proof sketch.**  It suffices to work on `ℕ`: a continuum-sized `S` receives an
+embedding `ℕ ↪ S`, colourings pull back along it, and infinite homogeneous sets push
+forward.  Fix `U := hyperfilter ℕ`, the ultrafilter extending the cofinite filter,
+and a 2-colouring `c` of the 3-subsets of `ℕ`.  Iterate the `U`-majority operation:
+
+* `pairMaj x y` — the colour `z ↦ c {x, y, z}` takes on a `U`-large set of `z`;
+* `pointMaj x` — the colour `y ↦ pairMaj x y` takes on a `U`-large set of `y`;
+* `topMaj`     — the colour `pointMaj` takes on a `U`-large set.
+
+Recursively pick `ramseySeq 0 < ramseySeq 1 < ⋯`, the `n`-th term being the least
+member of the **good set** of the list `L` of earlier terms: `m` is *good for `L`*
+when `pointMaj m = topMaj`, `m` exceeds every element of `L`, `pairMaj a m = topMaj`
+for every `a ∈ L`, and `c {b, a, m} = topMaj` for every `b < a` in `L`.  Each clause
+cuts out a `U`-large set of `m` — by the majority property `majColor_mem` plus the
+invariant that all earlier terms were themselves chosen good — so the good set, a
+finite intersection, lies in `U`, hence is nonempty.  Every 3-subset
+`{ramseySeq p, ramseySeq q, ramseySeq r}` (`p < q < r`) of the range then has colour
+`topMaj`, because its largest point was chosen good for a list containing the other
+two.  Ordering every clause smaller-point-first means no symmetry lemmas for the
+triple colour are ever needed. -/
+
+section RamseyProof
+
+open Filter
+
+/-- The colour of the (unordered) triple `{x, y, z}` under a colouring of 3-subsets,
+as a total function of the three points; junk value `0` when the points collide. -/
+noncomputable def tripleColor (c : Coloring ℕ 3 2) (x y z : ℕ) : Fin 2 :=
+  if h : ({x, y, z} : Finset ℕ).card = 3 then c ⟨{x, y, z}, h⟩ else 0
+
+/-- Evaluation: on an honest 3-subset, `tripleColor` computes the colouring. -/
+theorem tripleColor_eval (c : Coloring ℕ 3 2) {t : Finset ℕ} (ht : t.card = 3)
+    {x y z : ℕ} (h : t = {x, y, z}) : c ⟨t, ht⟩ = tripleColor c x y z := by
+  subst h
+  rw [tripleColor, dif_pos ht]
+
+open scoped Classical in
+/-- The `U`-majority colour of a 2-valued function on `ℕ`, `U` = the hyperfilter
+(the ultrafilter extending the cofinite filter). -/
+noncomputable def majColor (f : ℕ → Fin 2) : Fin 2 :=
+  if {n | f n = 0} ∈ hyperfilter ℕ then 0 else 1
+
+/-- The defining property of the majority colour: it is attained on a `U`-large set. -/
+theorem majColor_mem (f : ℕ → Fin 2) : {n | f n = majColor f} ∈ hyperfilter ℕ := by
+  by_cases h : {n | f n = 0} ∈ hyperfilter ℕ
+  · simp [majColor, h]
+  · have h' : {n | f n = 0}ᶜ ∈ hyperfilter ℕ := Ultrafilter.compl_mem_iff_notMem.mpr h
+    have hset : {n | f n = 0}ᶜ = {n | f n = 1} := by
+      have h2 : ∀ x : Fin 2, ¬x = 0 ↔ x = 1 := by decide
+      ext n
+      simp only [Set.mem_compl_iff, Set.mem_setOf_eq]
+      exact h2 (f n)
+    rw [hset] at h'
+    simpa [majColor, h] using h'
+
+/-- Level-2 majority: the `U`-majority colour of `z ↦ c {x, y, z}`. -/
+noncomputable def pairMaj (c : Coloring ℕ 3 2) (x y : ℕ) : Fin 2 :=
+  majColor (fun z => tripleColor c x y z)
+
+/-- Level-1 majority: the `U`-majority colour of `y ↦ pairMaj x y`. -/
+noncomputable def pointMaj (c : Coloring ℕ 3 2) (x : ℕ) : Fin 2 :=
+  majColor (fun y => pairMaj c x y)
+
+/-- The top-level majority colour — the colour of the homogeneous set we build. -/
+noncomputable def topMaj (c : Coloring ℕ 3 2) : Fin 2 :=
+  majColor (fun x => pointMaj c x)
+
+theorem pointMaj_large (c : Coloring ℕ 3 2) :
+    {x | pointMaj c x = topMaj c} ∈ hyperfilter ℕ :=
+  majColor_mem (fun x => pointMaj c x)
+
+theorem pairMaj_large (c : Coloring ℕ 3 2) {x : ℕ} (hx : pointMaj c x = topMaj c) :
+    {y | pairMaj c x y = topMaj c} ∈ hyperfilter ℕ := by
+  have h := majColor_mem (fun y => pairMaj c x y)
+  rwa [show majColor (fun y => pairMaj c x y) = topMaj c from hx] at h
+
+theorem triple_large (c : Coloring ℕ 3 2) {x y : ℕ}
+    (hxy : pairMaj c x y = topMaj c) :
+    {z | tripleColor c x y z = topMaj c} ∈ hyperfilter ℕ := by
+  have h := majColor_mem (fun z => tripleColor c x y z)
+  rwa [show majColor (fun z => tripleColor c x y z) = topMaj c from hxy] at h
+
+/-- Tails are `U`-large: `U` extends the cofinite filter. -/
+theorem gt_large (a : ℕ) : {m | a < m} ∈ hyperfilter ℕ :=
+  Nat.hyperfilter_le_atTop (Filter.Ioi_mem_atTop a)
+
+/-- A conjunction of `U`-large conditions indexed by a finite list is `U`-large. -/
+theorem list_forall_large {P : ℕ → ℕ → Prop} (L : List ℕ)
+    (h : ∀ a ∈ L, {m | P a m} ∈ hyperfilter ℕ) :
+    {m | ∀ a ∈ L, P a m} ∈ hyperfilter ℕ := by
+  induction L with
+  | nil =>
+    have huniv : {m : ℕ | ∀ a ∈ ([] : List ℕ), P a m} = Set.univ := by
+      ext m; simp
+    rw [huniv]
+    exact Filter.univ_mem
+  | cons a L ih =>
+    have h1 : {m | P a m} ∈ hyperfilter ℕ := h a (by simp)
+    have h2 : {m | ∀ b ∈ L, P b m} ∈ hyperfilter ℕ :=
+      ih fun b hb => h b (List.mem_cons_of_mem a hb)
+    have hsub : {m | P a m} ∩ {m | ∀ b ∈ L, P b m} ⊆ {m | ∀ b ∈ a :: L, P b m} := by
+      rintro m ⟨hm1, hm2⟩ b hb
+      rcases List.mem_cons.mp hb with rfl | hb'
+      · exact hm1
+      · exact hm2 b hb'
+    exact Filter.mem_of_superset (Filter.inter_mem h1 h2) hsub
+
+/-- The set of viable next elements after the finite prefix `L`: correct level-1
+majority, larger than all of `L`, correct level-2 majority against each element of
+`L`, and correct triple colour against each increasing pair from `L`. -/
+def goodSet (c : Coloring ℕ 3 2) (L : List ℕ) : Set ℕ :=
+  {m | pointMaj c m = topMaj c ∧ ∀ a ∈ L, a < m ∧ pairMaj c a m = topMaj c ∧
+        ∀ b ∈ L, b < a → tripleColor c b a m = topMaj c}
+
+/-- The good set is `U`-large, given the choice invariant for the prefix `L`. -/
+theorem goodSet_mem (c : Coloring ℕ 3 2) {L : List ℕ}
+    (h1 : ∀ a ∈ L, pointMaj c a = topMaj c)
+    (h2 : ∀ a ∈ L, ∀ b ∈ L, b < a → pairMaj c b a = topMaj c) :
+    goodSet c L ∈ hyperfilter ℕ := by
+  have hA : {m | pointMaj c m = topMaj c} ∈ hyperfilter ℕ := pointMaj_large c
+  have hB : {m | ∀ a ∈ L, a < m ∧ pairMaj c a m = topMaj c ∧
+      ∀ b ∈ L, b < a → tripleColor c b a m = topMaj c} ∈ hyperfilter ℕ := by
+    apply list_forall_large
+    intro a ha
+    have hBa1 : {m | a < m} ∈ hyperfilter ℕ := gt_large a
+    have hBa2 : {m | pairMaj c a m = topMaj c} ∈ hyperfilter ℕ :=
+      pairMaj_large c (h1 a ha)
+    have hBa3 : {m | ∀ b ∈ L, b < a → tripleColor c b a m = topMaj c} ∈
+        hyperfilter ℕ := by
+      apply list_forall_large
+      intro b hb
+      by_cases hba : b < a
+      · exact Filter.mem_of_superset (triple_large c (h2 a ha b hb hba))
+          fun m hm _ => hm
+      · exact Filter.mem_of_superset Filter.univ_mem
+          fun m _ hba' => absurd hba' hba
+    exact Filter.inter_mem hBa1 (Filter.inter_mem hBa2 hBa3)
+  exact Filter.inter_mem hA hB
+
+/-- The increasing prefix lists of the homogeneous sequence: each new term is the
+least member of the good set of its predecessors. -/
+noncomputable def ramseyPrefix (c : Coloring ℕ 3 2) : ℕ → List ℕ
+  | 0 => []
+  | n + 1 => ramseyPrefix c n ++ [sInf (goodSet c (ramseyPrefix c n))]
+
+/-- The homogeneous sequence itself. -/
+noncomputable def ramseySeq (c : Coloring ℕ 3 2) (n : ℕ) : ℕ :=
+  sInf (goodSet c (ramseyPrefix c n))
+
+theorem ramseyPrefix_succ (c : Coloring ℕ 3 2) (n : ℕ) :
+    ramseyPrefix c (n + 1) = ramseyPrefix c n ++ [ramseySeq c n] := rfl
+
+theorem mem_ramseyPrefix_iff (c : Coloring ℕ 3 2) {a : ℕ} {n : ℕ} :
+    a ∈ ramseyPrefix c n ↔ ∃ k, k < n ∧ ramseySeq c k = a := by
+  induction n with
+  | zero => simp [ramseyPrefix]
+  | succ n ih =>
+    rw [ramseyPrefix_succ, List.mem_append, List.mem_singleton, ih]
+    constructor
+    · rintro (⟨k, hk, rfl⟩ | rfl)
+      · exact ⟨k, Nat.lt_succ_of_lt hk, rfl⟩
+      · exact ⟨n, Nat.lt_succ_self n, rfl⟩
+    · rintro ⟨k, hk, rfl⟩
+      rcases Nat.lt_succ_iff_lt_or_eq.mp hk with hk' | rfl
+      · exact Or.inl ⟨k, hk', rfl⟩
+      · exact Or.inr rfl
+
+/-- The choice invariant: every prefix element has the majority level-1 colour, and
+every increasing pair from the prefix has the majority level-2 colour. -/
+def RamseyInv (c : Coloring ℕ 3 2) (L : List ℕ) : Prop :=
+  (∀ a ∈ L, pointMaj c a = topMaj c) ∧
+    ∀ a ∈ L, ∀ b ∈ L, b < a → pairMaj c b a = topMaj c
+
+/-- Main induction: the invariant propagates, and every term really is chosen from
+the good set of its predecessors (which is `U`-large, hence nonempty). -/
+theorem ramsey_invariant (c : Coloring ℕ 3 2) (n : ℕ) :
+    RamseyInv c (ramseyPrefix c n) ∧
+      ramseySeq c n ∈ goodSet c (ramseyPrefix c n) := by
+  induction n with
+  | zero =>
+    have hInv : RamseyInv c (ramseyPrefix c 0) := by
+      constructor
+      · intro a ha; simp [ramseyPrefix] at ha
+      · intro a ha; simp [ramseyPrefix] at ha
+    exact ⟨hInv,
+      Nat.sInf_mem (Ultrafilter.nonempty_of_mem (goodSet_mem c hInv.1 hInv.2))⟩
+  | succ n ih =>
+    obtain ⟨hInv, hGood⟩ := ih
+    have hg : pointMaj c (ramseySeq c n) = topMaj c ∧
+        ∀ a ∈ ramseyPrefix c n, a < ramseySeq c n ∧
+          pairMaj c a (ramseySeq c n) = topMaj c ∧
+          ∀ b ∈ ramseyPrefix c n, b < a →
+            tripleColor c b a (ramseySeq c n) = topMaj c := hGood
+    have hInv' : RamseyInv c (ramseyPrefix c (n + 1)) := by
+      constructor
+      · intro a ha
+        rw [ramseyPrefix_succ, List.mem_append, List.mem_singleton] at ha
+        rcases ha with ha | rfl
+        · exact hInv.1 a ha
+        · exact hg.1
+      · intro a ha b hb hba
+        rw [ramseyPrefix_succ, List.mem_append, List.mem_singleton] at ha hb
+        rcases ha with ha | rfl <;> rcases hb with hb | rfl
+        · exact hInv.2 a ha b hb hba
+        · exact absurd hba (not_lt.mpr (hg.2 a ha).1.le)
+        · exact (hg.2 b hb).2.1
+        · exact absurd hba (lt_irrefl _)
+    exact ⟨hInv',
+      Nat.sInf_mem (Ultrafilter.nonempty_of_mem (goodSet_mem c hInv'.1 hInv'.2))⟩
+
+/-- Unpacked good-set membership of the `n`-th term. -/
+theorem goodSet_spec (c : Coloring ℕ 3 2) (n : ℕ) :
+    pointMaj c (ramseySeq c n) = topMaj c ∧
+      ∀ a ∈ ramseyPrefix c n, a < ramseySeq c n ∧
+        pairMaj c a (ramseySeq c n) = topMaj c ∧
+        ∀ b ∈ ramseyPrefix c n, b < a →
+          tripleColor c b a (ramseySeq c n) = topMaj c :=
+  (ramsey_invariant c n).2
+
+theorem ramseySeq_strictMono (c : Coloring ℕ 3 2) : StrictMono (ramseySeq c) := by
+  intro j k hjk
+  have hmem : ramseySeq c j ∈ ramseyPrefix c k :=
+    (mem_ramseyPrefix_iff c).mpr ⟨j, hjk, rfl⟩
+  exact ((goodSet_spec c k).2 (ramseySeq c j) hmem).1
+
+/-- The heart of homogeneity: every increasing triple from the sequence has the
+majority colour, because the largest point was chosen good for a prefix containing
+the other two. -/
+theorem ramseySeq_triple (c : Coloring ℕ 3 2) {p q r : ℕ}
+    (hpq : p < q) (hqr : q < r) :
+    tripleColor c (ramseySeq c p) (ramseySeq c q) (ramseySeq c r) = topMaj c := by
+  have hp : ramseySeq c p ∈ ramseyPrefix c r :=
+    (mem_ramseyPrefix_iff c).mpr ⟨p, hpq.trans hqr, rfl⟩
+  have hq : ramseySeq c q ∈ ramseyPrefix c r :=
+    (mem_ramseyPrefix_iff c).mpr ⟨q, hqr, rfl⟩
+  exact ((goodSet_spec c r).2 (ramseySeq c q) hq).2.2 (ramseySeq c p) hp
+    (ramseySeq_strictMono c hpq)
+
+/-- Any 3-element finset of naturals lists as a strictly increasing triple. -/
+theorem exists_sorted_triple {t : Finset ℕ} (ht : t.card = 3) :
+    ∃ x y z : ℕ, x < y ∧ y < z ∧ t = {x, y, z} := by
+  obtain ⟨a, b, d, hab, had, hbd, rfl⟩ := Finset.card_eq_three.mp ht
+  rcases Nat.lt_or_ge a b with h1 | h1
+  · rcases Nat.lt_or_ge b d with h2 | h2
+    · exact ⟨a, b, d, h1, h2, rfl⟩
+    · have h2' : d < b := lt_of_le_of_ne h2 (Ne.symm hbd)
+      rcases Nat.lt_or_ge a d with h3 | h3
+      · exact ⟨a, d, b, h3, h2', by ext w; simp; tauto⟩
+      · have h3' : d < a := lt_of_le_of_ne h3 (Ne.symm had)
+        exact ⟨d, a, b, h3', h1, by ext w; simp; tauto⟩
+  · have h1' : b < a := lt_of_le_of_ne h1 (Ne.symm hab)
+    rcases Nat.lt_or_ge a d with h2 | h2
+    · exact ⟨b, a, d, h1', h2, by ext w; simp; tauto⟩
+    · have h2' : d < a := lt_of_le_of_ne h2 (Ne.symm had)
+      rcases Nat.lt_or_ge b d with h3 | h3
+      · exact ⟨b, d, a, h3, h2', by ext w; simp; tauto⟩
+      · have h3' : d < b := lt_of_le_of_ne h3 (Ne.symm hbd)
+        exact ⟨d, b, a, h3', h1', by ext w; simp; tauto⟩
+
+/-- **Infinite Ramsey for triples on `ℕ`**: any 2-colouring of the 3-subsets of `ℕ`
+admits an infinite homogeneous set (namely the range of `ramseySeq`, with the
+top-majority colour). -/
+theorem ramsey3_nat (c : Coloring ℕ 3 2) :
+    ∃ (H : Set ℕ) (i : Fin 2), H.Infinite ∧ IsHomogeneous H 3 c i := by
+  refine ⟨Set.range (ramseySeq c), topMaj c, ?_, ?_⟩
+  · exact Set.infinite_range_of_injective (ramseySeq_strictMono c).injective
+  · intro t ht hsub
+    obtain ⟨x, y, z, hxy, hyz, rfl⟩ := exists_sorted_triple ht
+    have hx : x ∈ Set.range (ramseySeq c) := hsub (by simp)
+    have hy : y ∈ Set.range (ramseySeq c) := hsub (by simp)
+    have hz : z ∈ Set.range (ramseySeq c) := hsub (by simp)
+    obtain ⟨p, rfl⟩ := hx
+    obtain ⟨q, rfl⟩ := hy
+    obtain ⟨r, rfl⟩ := hz
+    have hpq : p < q := (ramseySeq_strictMono c).lt_iff_lt.mp hxy
+    have hqr : q < r := (ramseySeq_strictMono c).lt_iff_lt.mp hyz
+    exact (tripleColor_eval c ht rfl).trans (ramseySeq_triple c hpq hqr)
+
+/-- **The missing ingredient, delivered: `InfiniteRamsey3` is a theorem.**  Any
+continuum-sized type embeds a copy of `ℕ`; pull the colouring back, run the
+ultrafilter construction there, and push the infinite homogeneous set forward. -/
+theorem infiniteRamsey3_holds : InfiniteRamsey3 := by
+  intro S _ hS c
+  have hinf : Infinite S := Cardinal.infinite_iff.mpr
+    (by rw [hS]; exact Cardinal.aleph0_le_continuum)
+  let f : ℕ ↪ S := Infinite.natEmbedding S
+  obtain ⟨A, i, hAinf, hAhom⟩ :=
+    ramsey3_nat (fun t => c ⟨t.1.map f, by rw [Finset.card_map]; exact t.2⟩)
+  refine ⟨f '' A, i, hAinf.image f.injective.injOn, ?_⟩
+  intro t ht hsub
+  obtain ⟨x, y, z, hxy, hxz, hyz, rfl⟩ := Finset.card_eq_three.mp ht
+  have hx : x ∈ f '' A := hsub (by simp)
+  have hy : y ∈ f '' A := hsub (by simp)
+  have hz : z ∈ f '' A := hsub (by simp)
+  obtain ⟨a, ha, rfl⟩ := hx
+  obtain ⟨b, hb, rfl⟩ := hy
+  obtain ⟨d, hd, rfl⟩ := hz
+  have hab : a ≠ b := fun h => hxy (by rw [h])
+  have had : a ≠ d := fun h => hxz (by rw [h])
+  have hbd : b ≠ d := fun h => hyz (by rw [h])
+  have hs3 : ({a, b, d} : Finset ℕ).card = 3 :=
+    Finset.card_eq_three.mpr ⟨a, b, d, hab, had, hbd, rfl⟩
+  have hmap : ({a, b, d} : Finset ℕ).map f = {f a, f b, f d} := by
+    simp [Finset.map_insert, Finset.map_singleton]
+  have hsubA : (↑({a, b, d} : Finset ℕ) : Set ℕ) ⊆ A := by
+    intro w hw
+    simp only [Finset.coe_insert, Set.mem_insert_iff, Finset.coe_singleton,
+      Set.mem_singleton_iff] at hw
+    rcases hw with rfl | rfl | rfl <;> assumption
+  have hkey := hAhom {a, b, d} hs3 hsubA
+  have hmapcard : (({a, b, d} : Finset ℕ).map f).card = 3 := by
+    rw [Finset.card_map]; exact hs3
+  have hcast : (⟨{f a, f b, f d}, ht⟩ : {u : Finset S // u.card = 3}) =
+      ⟨({a, b, d} : Finset ℕ).map f, hmapcard⟩ := Subtype.ext hmap.symm
+  rw [hcast]
+  exact hkey
+
+/-- **The formalized conjecture is a theorem** — with the file's standing
+faithfulness caveat.  Because the parent's `HasOrderTypeAtLeast` is the cardinality
+surrogate `β.card ≤ #H`, this establishes the *formalized* statement
+`erdos_70_conjecture`, not the genuine partition relation `𝔠 → (β, n)₂³` with true
+order type `β`, which is Erdős Problem #70 and remains **open**.  What is proved:
+for every countable `β` and every `n ≥ 2`, every 2-colouring of the 3-subsets of a
+continuum-sized set admits either a colour-0 homogeneous set of cardinality
+`≥ β.card` or a colour-1 homogeneous set of size `n` — an unconditional consequence
+of the infinite Ramsey theorem for triples proved above. -/
+theorem erdos_70_formalized_conjecture_holds : erdos_70_conjecture :=
+  infiniteRamsey3_imp_conjecture infiniteRamsey3_holds
+
+/-- The formalized counterexample predicate is refuted outright. -/
+theorem no_erdos_70_counterexample : ¬ erdos_70_counterexample :=
+  conjecture_xor_counterexample.mp erdos_70_formalized_conjecture_holds
+
+/-- The flagship case `𝔠 → (ω, n)₂³` (cardinality surrogate), now unconditional. -/
+theorem conjecture_omega_holds (n : ℕ) (hn : 2 ≤ n) : conjecture_omega n :=
+  erdos_70_conjecture_imp_omega erdos_70_formalized_conjecture_holds n hn
+
+/-- The case `𝔠 → (ω², n)₂³` (cardinality surrogate), now unconditional. -/
+theorem conjecture_omega_squared_holds (n : ℕ) (hn : 2 ≤ n) :
+    conjecture_omega_squared n :=
+  erdos_70_conjecture_imp_omega_squared erdos_70_formalized_conjecture_holds n hn
+
+/-- The `ε₀` case (cardinality surrogate), now unconditional. -/
+theorem epsilon0_partitionArrow_holds (n : ℕ) (hn : 2 ≤ n) :
+    PartitionArrow continuum_card (⨆ k : ℕ, omegaTower k) n :=
+  erdos_70_conjecture_imp_epsilon0 erdos_70_formalized_conjecture_holds n hn
+
+end RamseyProof
 
 end Erdos70
