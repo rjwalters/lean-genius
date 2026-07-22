@@ -65,7 +65,7 @@
     "dateAdded": "2026-02-23",
     "axiomCount": 1,
     "lineCount": 538,
-    "assumptions": "1 axiom: nesterenko_algebraic_independence (Nesterenko 1996: π, e^π, Γ(1/4) are algebraically independent over ℚ). Former open problem axioms schanuel_conjecture, e_plus_pi_transcendental, e_times_pi_transcendental, e_plus_pi_irrational now proved as theorems from Nesterenko's theorem.",
+    "assumptions": "1 axiom: nesterenko_algebraic_independence (Nesterenko 1996: π, e^π, Γ(1/4) are algebraically independent over ℚ). From this axiom the file derives one unconditional new transcendence result: π + e^π is transcendental (pi_plus_exp_pi_transcendental). The transcendence of e + π and e·π, and the irrationality of e + π, remain OPEN — they are formalized only as CONDITIONAL theorems (e_plus_pi_transcendental_from_independence, e_times_pi_transcendental_from_independence, e_plus_pi_irrational_from_independence) whose hypothesis is the unproven algebraic independence of e and π (which would follow from Schanuel's Conjecture, itself unproven and not axiomatized here).",
     "mathlib_version": "4.31.0",
     "definitionCount": 2
   },
