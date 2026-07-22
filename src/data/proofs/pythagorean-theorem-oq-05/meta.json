@@ -101,6 +101,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Flat-limit reduction of the non-Euclidean Pythagorean theorems",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Both the hyperbolic (cosh(tc)=cosh(ta)cosh(tb)) and spherical (cos(tc)=cos(ta)cos(tb)) Pythagorean laws reduce to the flat c^2=a^2+b^2 as the curvature parameter t → 0. Proved via the squeeze theorem on (cosh(tx)-1)/t^2 → x^2/2, using a two-level monotonicity argument on the second derivative of u^2·cosh(u) - 2(cosh(u)-1), then decomposing the product limit via continuity of cosh at 0."
+    },
+    {
       "id": "derivatives",
       "title": "Part I: Derivatives of cosh and sinh",
       "startLine": 47,
