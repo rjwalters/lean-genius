@@ -142,5 +142,35 @@
       "divisibility",
       "key-result"
     ]
+  },
+  {
+    "id": "ann-e729oq04-binom",
+    "proofId": "erdos-729-oq-04",
+    "range": {
+      "startLine": 156,
+      "endLine": 234
+    },
+    "type": "theorem",
+    "title": "Binomial Specialisations and the No-Carry Complements",
+    "content": "Four corollaries bring (★) back down to the classical two-part (`Nat.choose`) setting and complete the carry picture. `sub_one_mul_padicValNat_choose` restates the identity directly on `C(m+n, n)`: `(p−1)·v_p(C(m+n,n)) + s_p(m+n) = s_p(m)+s_p(n)`, obtained by applying `legendre_add` to the three factorials in `(m+n)! = C(m+n,n)·n!·m!` (via `Nat.choose_mul_factorial_mul_factorial`) and letting `omega` combine the three resulting additive relations. `prime_dvd_choose_iff` is its Kummer divisibility form: `p ∣ C(m+n,n) ↔ s_p(m+n) < s_p(m)+s_p(n)`. The remaining two theorems are the *equality* complements of the divisibility criteria proved earlier: `not_prime_dvd_multinomial_iff` and `not_prime_dvd_choose_iff` show that since the Kummer identity forces the digit sum of a sum never to exceed the sum of the digit sums, non-divisibility is exactly equality of digit sums (no carry at all), not merely `≤`. At `p = 2` `not_prime_dvd_choose_iff` recovers the classical criterion that `C(m+n,n)` is odd iff `m` and `n` have disjoint binary supports (Lucas' theorem, carry form).",
+    "mathContext": "$s_p(m+n)\\le s_p(m)+s_p(n)$ always (Kummer); so $p\\nmid\\binom{m+n}{n} \\iff s_p(m+n)=s_p(m)+s_p(n)$ (equality, i.e. no carry), and at $p=2$ this is disjoint binary supports of $m,n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose",
+      "Kummer's theorem",
+      "Lucas' theorem",
+      "No-carry criteria"
+    ],
+    "prerequisites": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "legendre_add",
+      "prime_dvd_multinomial_iff / prime_dvd_choose_iff"
+    ],
+    "tags": [
+      "theorem",
+      "choose",
+      "kummer-theorem",
+      "lucas-theorem"
+    ]
   }
 ]
