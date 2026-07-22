@@ -168,4 +168,124 @@ theorem erdosProblem53_prime_exponent_eventually (k : ℕ) :
     erdosProblem53_prime_of_dominates hA hpos (hN _ hbig)⟩
 
 
+/-!
+## Parity separation sharpens the easy-direction constant
+
+The bound `sumsOrProducts_card_ge_two_pow_of_prime` counts the `2^{|A|} - 1`
+distinct subset **products** and adjoins the single new subset **sum** `0`,
+giving `2^{|A|}`. That uses only *one* additive value. On a set of distinct
+**odd** primes we can do strictly better with a genuinely new mechanism —
+**parity separation** of the two operations:
+
+* every nonempty subset product of odd numbers is **odd**
+  (`subsetProducts_odd_of_odd`);
+* `0` and every two-element subset sum `p + q` of odd numbers is **even**.
+
+So the products and this family of even sums are overlap-free. Fixing the least
+element `p = min A` and ranging over the two-element subsets `{p, q}`
+(`q ≠ p`) yields `|A| - 1` distinct even positive sums, all injective in `q`;
+together with `0` that is `|A|` even values, none of them a subset product. The
+count therefore jumps from `2^{|A|}` to `2^{|A|} + |A| - 1`
+(`sumsOrProducts_card_ge_odd_prime`). This is a lower-order sharpening of the
+*easy* direction (it does not touch Chang's theorem for arbitrary large sets),
+but the mechanism — the additive and multiplicative sides cannot collide on the
+even numbers — is a real structural fact about Problem 53's two operations.
+-/
+
+/-- **Odd subset products.** Every nonempty subset product of a set of **odd**
+    integers is odd (a product of odd integers is odd). This is the
+    multiplicative half of the parity-separation observation: it forces every
+    element of `subsetProducts A` into the odd residue class, disjoint from the
+    even subset sums used below. -/
+theorem subsetProducts_odd_of_odd {A : Finset ℤ} (hodd : ∀ p ∈ A, Odd p)
+    {x : ℤ} (hx : x ∈ subsetProducts A) : Odd x := by
+  rw [subsetProducts, Finset.mem_image] at hx
+  obtain ⟨S, hS, rfl⟩ := hx
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSA, _⟩ := hS
+  -- a product of odd factors is odd, by induction over the Finset product
+  exact Finset.prod_induction id (fun z => Odd z) (fun _ _ ha hb => ha.mul hb)
+    odd_one (fun i hi => hodd i (hSA hi))
+
+/-- **Parity-sharpened richness of odd-prime sets.** For a nonempty set `A` of
+    distinct **odd** positive primes,
+    `2^{|A|} + |A| - 1 ≤ |sumsOrProducts A|` — strictly stronger than
+    `sumsOrProducts_card_ge_two_pow_of_prime` (which gives `2^{|A|}`).
+
+    The `2^{|A|} - 1` subset products are all odd; adjoining the `|A|` *even*
+    values `{0} ∪ { min A + q : q ∈ A, q ≠ min A }` (which are pairwise distinct
+    and never subset products, by parity) adds exactly `|A|` fresh integers. The
+    gain over the base bound is the linear term `|A| - 1`. -/
+theorem sumsOrProducts_card_ge_odd_prime {A : Finset ℤ}
+    (hA : ∀ p ∈ A, Prime p) (hpos : ∀ p ∈ A, 0 < p) (hodd : ∀ p ∈ A, Odd p)
+    (hne : A.Nonempty) :
+    2 ^ A.card + A.card - 1 ≤ (sumsOrProducts A).card := by
+  classical
+  set p := A.min' hne with hp_def
+  have hpA : p ∈ A := A.min'_mem hne
+  -- the even family: `0` together with the star sums `p + q`, `q ∈ A.erase p`.
+  set E : Finset ℤ := insert 0 ((A.erase p).image (fun q => p + q)) with hE_def
+  -- `E ⊆ subsetSums A`: `0` is the empty sum, `p + q = ({p, q}).sum id`.
+  have hEsub : E ⊆ subsetSums A := by
+    intro e he
+    rw [hE_def, Finset.mem_insert] at he
+    rcases he with rfl | he
+    · exact zero_mem_subsetSums A
+    · rw [Finset.mem_image] at he
+      obtain ⟨q, hq, rfl⟩ := he
+      have hqp : q ≠ p := (Finset.mem_erase.mp hq).1
+      have hqA : q ∈ A := (Finset.mem_erase.mp hq).2
+      refine Finset.mem_image.mpr ⟨{p, q}, ?_, ?_⟩
+      · rw [Finset.mem_powerset]
+        intro x hx
+        rw [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact hpA
+        · exact hqA
+      · simp [Finset.sum_pair (Ne.symm hqp)]
+  -- `|E| = |A|`: the `|A| - 1` distinct star sums plus `0`.
+  have hEcard : E.card = A.card := by
+    have himg : ((A.erase p).image (fun q => p + q)).card = (A.erase p).card :=
+      Finset.card_image_of_injective _ (add_right_injective p)
+    have h0 : (0 : ℤ) ∉ (A.erase p).image (fun q => p + q) := by
+      rw [Finset.mem_image]
+      rintro ⟨q, hq, hq0⟩
+      have hqA : q ∈ A := (Finset.mem_erase.mp hq).2
+      have := hpos p hpA
+      have := hpos q hqA
+      omega
+    rw [hE_def, Finset.card_insert_of_not_mem h0, himg,
+      Finset.card_erase_of_mem hpA]
+    have : 1 ≤ A.card := Finset.card_pos.mpr hne
+    omega
+  -- `E` (all even) is disjoint from `subsetProducts A` (all odd).
+  have hdisj : Disjoint E (subsetProducts A) := by
+    rw [Finset.disjoint_left]
+    intro e heE heP
+    have heven : Even e := by
+      rw [hE_def, Finset.mem_insert] at heE
+      rcases heE with rfl | he
+      · exact even_zero
+      · rw [Finset.mem_image] at he
+        obtain ⟨q, hq, rfl⟩ := he
+        have hqA : q ∈ A := (Finset.mem_erase.mp hq).2
+        exact (hodd p hpA).add_odd (hodd q hqA)
+    exact (Int.even_iff_not_odd.mp heven) (subsetProducts_odd_of_odd hodd heP)
+  -- combine: `E ∪ subsetProducts A ⊆ sumsOrProducts A`, disjoint union counts add.
+  have hunion : E ∪ subsetProducts A ⊆ sumsOrProducts A :=
+    Finset.union_subset (hEsub.trans (subsetSums_subset_sumsOrProducts A))
+      (subsetProducts_subset_sumsOrProducts A)
+  have hcard : (E ∪ subsetProducts A).card = E.card + (subsetProducts A).card :=
+    Finset.card_union_of_disjoint hdisj
+  have hPcard : (subsetProducts A).card = 2 ^ A.card - 1 :=
+    subsetProducts_card_of_prime hA hpos
+  have h1 : 1 ≤ 2 ^ A.card := Nat.one_le_two_pow
+  have key : A.card + (2 ^ A.card - 1) ≤ (sumsOrProducts A).card := by
+    calc A.card + (2 ^ A.card - 1)
+        = E.card + (subsetProducts A).card := by rw [hEcard, hPcard]
+      _ = (E ∪ subsetProducts A).card := hcard.symm
+      _ ≤ (sumsOrProducts A).card := Finset.card_le_card hunion
+  omega
+
+
 end Erdos53
