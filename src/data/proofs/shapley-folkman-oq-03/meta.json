@@ -59,7 +59,7 @@
     "text": "Economic application of the Shapley-Folkman lemma: large markets are approximately convex, with approximation error bounded by dim(E)·δ independently of the number of agents."
   },
   "conclusion": {
-    "summary": "Formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. Main contributions: convexHull_dist_le (distance lemma for convex hulls), shapley_folkman_starr (Starr's theorem with the d·δ bound), large_economy_near_convex (n-agent corollary), no_excess_for_convex (zero error for convex sets). 0 sorries, 0 local axioms; depends on 1 sorry in parent ShapleyFolkman.lean (reduce_excess_by_one, line 795).",
+    "summary": "Formalizes Starr's (1969) economic application of the Shapley-Folkman lemma. Main contributions: convexHull_dist_le (distance lemma for convex hulls), shapley_folkman_starr (Starr's theorem with the d·δ bound), large_economy_near_convex (n-agent corollary), no_excess_for_convex (zero error for convex sets). 0 sorries, 0 local axioms; the supporting `reduce_excess_by_one` reduction it builds on is itself fully proved in the parent ShapleyFolkman.lean (also 0 sorries).",
     "implications": "Validates the use of convex analysis in large-market equilibrium theory. Non-convexities (indivisibilities, increasing returns) in individual agent preferences become negligible in aggregate markets with many participants.",
     "openQuestions": [
       "Can the norm bound dim(E)·δ be sharpened to √d·δ (the tighter Starr bound via Cauchy-Schwarz on the individual excess errors)? The current bound uses triangle inequality additively; a Cauchy-Schwarz argument could give ‖Σ eᵢ‖ ≤ √|J| · max‖eᵢ‖ ≤ √d · δ.",
