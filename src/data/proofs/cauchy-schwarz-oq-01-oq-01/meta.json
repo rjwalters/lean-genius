@@ -83,6 +83,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Cauchy-Schwarz Equality for Complex Inner Product Spaces", "startLine": 1, "endLine": 35, "summary": "States the open question of whether the equality characterization \u2016\u27eau,v\u27eb\u2016 = \u2016u\u2016\u00b7\u2016v\u2016 \u2194 u,v linearly dependent extends to complex inner product spaces, answered yes via orthogonal decomposition (write u = c\u00b7v + w with w \u22a5 v; equality forces \u2016w\u2016=0). Lists the backward direction, the orthogonal-projection lemma, the forward direction via Pythagoras, and the general iff theorem covering complex and RCLike spaces.", "mathContext": "For $v\\ne 0$, writing $u = c v + w$ with $c=\\langle v,u\\rangle/\\langle v,v\\rangle$ and $w\\perp v$, equality $|\\langle u,v\\rangle|=\\|u\\|\\|v\\|$ forces $\\|w\\|=0$ by the Pythagorean identity $\\|u\\|^2=|c|^2\\|v\\|^2+\\|w\\|^2$."},
     {
       "id": "backward",
       "title": "Backward Direction: Scalar Multiple → Equality",
