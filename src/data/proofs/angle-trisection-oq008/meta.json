@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: attacking the sufficiency engine",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring. Recalls the parent's two remaining sorries (necessity engine `not_constructible_of_bad_degree`, sufficiency engine `wantzel_galois_iff`) and the sibling's shared arithmetic obstruction, then targets sufficiency: if Gal(K/ℚ) is a 2-group then α is constructible, via (1) |G|=2^k so G is a finite 2-group, (2) a nontrivial finite 2-group has a normal index-2 subgroup, iterating to a composition chain, (3) the Galois correspondence turns this into a tower of quadratic extensions. Proves steps (1)-(2) fully (0 axioms/sorries); step (3), the field-theoretic tower translation, is left in prose to a companion entry. Lists the five verified results.",
+      "mathContext": "The sufficiency direction of Wantzel–Galois needs a normal subgroup chain $G = G_0 \\triangleright G_1 \\triangleright \\cdots \\triangleright G_k = 1$ with each index $2$, obtained from $|G| = 2^k$ via the standard fact that nontrivial finite $2$-groups have a normal index-$2$ subgroup; the Galois correspondence turns this descending chain into an ascending tower of quadratic field extensions."
+    },
+    {
       "id": "part1-definition-bridge",
       "title": "Part 1: The 2-group predicate and the bridge to the parent",
       "startLine": 65,
