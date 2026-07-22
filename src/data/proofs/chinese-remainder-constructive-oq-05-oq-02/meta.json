@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Imports & Statement",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "File docstring framing the open question: the sibling proves 2- and 3-modulus CRT uniqueness certificates (crt_pair_iff, crt_triple_iff); this file generalises to an arbitrary pairwise-coprime list, connecting to the oq-04 list thread. Lists the three original deliverables (prod_dvd_of_forall_dvd, crt_list_unique, crt_345_unique); then `import Mathlib`, the namespace, and `open Nat`.",
+      "mathContext": "Goal: generalise the sibling's 2-/3-modulus CRT uniqueness certificates to an arbitrary pairwise-coprime list."
+    },
+    {
       "id": "engine",
       "title": "The Combination Engine: Product Divides Common Multiples",
       "startLine": 33,
@@ -94,7 +102,8 @@
       "**Coprimality lifts to the product.** The head modulus being coprime to every tail modulus makes it coprime to the whole tail product (`coprime_list_prod_right_iff`), which is exactly what lets the products multiply into a single divisor.",
       "**Uniqueness is one divisibility plus a bound.** Once `ms.prod` divides the difference of two solutions and that difference is smaller than `ms.prod`, it must be zero — no explicit construction is needed for the uniqueness half.",
       "**The certificate is the practical content.** Knowing the solution below the product is unique means any candidate found (e.g. by search or by the pair/triple constructions) is *the* answer.",
-      "**Pairwise, not setwise.** The hypothesis is `List.Pairwise Nat.Coprime`; the induction consumes the head's pairwise relations exactly once per step."
+      "**Pairwise, not setwise.** The hypothesis is `List.Pairwise Nat.Coprime`; the induction consumes the head's pairwise relations exactly once per step.",
+      "**Existence reduces the n-modulus case to one 2-modulus CRT step per cons.** `crt_list_exists` combines the head modulus with `Nat.chineseRemainder` against a tail solution `y` (congruent mod `t.prod`), then downgrades `x ≡ y [MOD t.prod]` to each individual tail modulus `m` via `ModEq.of_dvd` (since `m ∣ t.prod`) and chains with `y`'s own congruence — so the n-ary construction is literally the binary `Nat.chineseRemainder` applied once per list element."
     ],
     "prerequisites": [
       "Modular arithmetic and Nat.ModEq",
