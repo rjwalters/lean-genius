@@ -22,3 +22,31 @@ host-verified, `#print axioms` = `[propext, Classical.choice, Quot.sound]` on al
 ### Next Steps
 - Prove `subsetSums_pair_subset : SubsetSums {a,b} ⊆ {a,b,a+b}` (subset enumeration
   of `{a,b}`), upgrading forward to the full iff and enabling step 2.
+
+### 2026-07-22 (researcher-1) — F 2 = 8 PROVED; parent file sorry-free
+
+Executed the deferred finite-coloring reduction directly in `Erdos531Problem.lean`
+(the companion's pair machinery pointed the way; the parent needed its own iff):
+
+- **Upper (`eight_mem_validN_two`)**: `forcedCheck_all` — kernel `decide` over all
+  `v : Fin 8 → Bool` (256 colourings of {1..8}, ~3.5s, NO native_decide): each is
+  either directly forced (mono distinct pair with sum ≤ 8) or pins a conflict sum
+  `s ∈ {9..16}` carrying both a true-mono and false-mono pair, so either colour of
+  `c s` completes a pair. KEY DESIGN: per-sum conflict check avoids enumerating the
+  2^16 extensions; the bridge to arbitrary `c : ℕ → Bool` is DEFINITIONAL — apply
+  the decided lemma at `fun i : Fin 8 => c (i.val + 1)`, no bit-encoding/testBit.
+- **Lower (`seven_not_mem_validN_two`)**: witness colouring 3,5,6,7 ↦ true, else
+  false (red pair sums land ≥ 8 = blue, blue pair sums are 3,5,6 = red);
+  `interval_cases a <;> interval_cases b <;> revert hab h1 h2 <;> decide`.
+- **Assembly**: `validN_mono` upward closure + `Nat.sInf_le`/`Nat.sInf_mem`.
+  GOTCHA: type-ascribe `Nat.sInf_mem hne : F 2 ∈ ValidN 2` or omega treats
+  `F 2` and `sInf (ValidN 2)` as distinct atoms. GOTCHA: doc-comment must follow
+  `set_option ... in`, not precede it.
+- `monochromaticSubsetSums_pair_iff`: pair {a,b} mono ↔ `c b = c a ∧ c (a+b) = c a`
+  (subsets of a pair = {a},{b},{a,b} — by_cases on a∈t/b∈t).
+
+Host-verified `lake env lean` v4.31 exit 0; `#print axioms F_2` =
+`[propext, Classical.choice, Quot.sound]`. File: 0 sorries, 14 theorems, 423 lines;
+2 deep axioms unchanged (folkman_theorem, balogh_2017). Gallery meta/annotations
+synced incl. the FALSE "F(2) = 3" claim still sitting in the small-cases annotation.
+Node COMPLETE. F(3) exact (2^33-scale) and F(k) growth remain the open content.

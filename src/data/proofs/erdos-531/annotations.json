@@ -181,11 +181,11 @@
     "proofId": "erdos-531",
     "range": {
       "startLine": 104,
-      "endLine": 113
+      "endLine": 361
     },
     "type": "concept",
     "title": "Small Cases",
-    "content": "**Explicit Values:**\n\n- **F(1) = 1:** Any single element has exactly one subset sum (itself), trivially monochromatic\n- **F(2) = 3:** In {1,2,3}, any 2-coloring forces {a,b,a+b} monochromatic\n- **F(3) ≥ 11:** The 3-element case requires at least 11 elements\n\nEven F(3) is only known as a lower bound - exact computation is very hard.",
+    "content": "**Explicit Values:**\n\n- **F(1) = 1:** Any single element has exactly one subset sum (itself), trivially monochromatic — proven as `F_1`.\n- **F(2) = 8:** For the distinct-pair Folkman number defined here, $N = 7$ still admits a defeating coloring ($3,5,6,7$ red, everything else blue), while every 2-coloring of $\\{1,\\ldots,8\\}$ forces a monochromatic pair $\\{a, b, a+b\\}$ — proven as `F_2` via a kernel-`decide` check (`forcedCheck_all`) over all 256 restrictions. An earlier draft's F(2) = 3 was false.\n- **F(3) ≥ 11:** Documented in a source comment only (no Lean declaration).\n\nEven F(3) is only known as a lower bound - exact computation is very hard.",
     "significance": "supporting",
     "relatedConcepts": [
       "Base cases",

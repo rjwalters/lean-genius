@@ -16,12 +16,18 @@
     "goal": "Eliminate the 2 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
     "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "blockers": [
+      {
+        "route": "exact values / growth rate beyond F(2): F(3) (search space 2^33 colourings per candidate N) and the open doubly-exponential-vs-tower growth of F(k)",
+        "reopenCriterion": "materially new mechanism required (symmetry reduction or SAT-style certificate import for F(3); the growth rate is the open content of Erdős #531)",
+        "blockedAt": "2026-07-22"
+      }
+    ],
+    "nextAction": "None — F 2 = 8 fully proved in Erdos531Problem.lean (kernel decide, axiom-free); node complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,18 +35,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created Erdos531Incomplete01.lean — axiom-free k=2 subset-sum machinery toward the deferred F 2 = 8 finite-coloring reduction. Establishes SubsetSums {a,b} membership of a,b,a+b and the forward monochromatic characterization (c a = c b = c(a+b)).",
+    "progressSummary": "COMPLETED: F 2 = 8 fully proved in Erdos531Problem.lean (2026-07-22), eliminating the file's only sorry. Mechanism: (upper) kernel-decide forcedCheck_all over all 256 colourings of {1..8} — each either contains a direct monochromatic distinct pair with sum <= 8, or pins a conflict sum s in {9..16} carrying both a true- and a false-monochromatic pair, so either colour of s completes a pair; bridged to arbitrary c : Nat -> Bool definitionally via v := fun i : Fin 8 => c (i+1). (lower) explicit witness colouring (3,5,6,7 red, else blue) defeats N = 7, checked by interval_cases + decide. sInf assembly via upward closure validN_mono. Host-verified lake env lean v4.31 exit 0; #print axioms F_2 = [propext, Classical.choice, Quot.sound] — no native_decide. File: 0 sorries, 2 deep axioms (folkman_theorem, balogh_2017).",
     "builtItems": [
       "Erdos531.mem_subsetSums_pair_left / _right / _add in Erdos531Incomplete01.lean",
-      "Erdos531.monochromaticSubsetSums_pair_forward in Erdos531Incomplete01.lean"
+      "Erdos531.monochromaticSubsetSums_pair_forward in Erdos531Incomplete01.lean",
+      "Erdos531Problem.lean: monochromaticSubsetSums_pair_iff, monoPairSumCheck, forcedCheck, forcedCheck_all (kernel decide, 256 cases), eight_mem_validN_two, witnessColoring, seven_not_mem_validN_two, validN_mono, F_2 proof (+29 lines companion docstring sync)"
     ],
     "insights": [
       "For a distinct pair {a,b} the non-empty subset sums are exactly a, b, a+b (witnessed by {a},{b},{a,b}; the a+b witness needs a≠b via Finset.sum_pair). This is the concrete SubsetSums the abstract F_2 reduction must range over.",
       "monochromaticSubsetSums_pair_forward gives the necessary condition c a = c b = c(a+b): the forward direction the F 2 ≥ 8 counterexample checks pair-by-pair against the witness colouring 1,2,4↦B / 3,5,6,7↦R. The backward direction (constructing a mono set) additionally needs SubsetSums {a,b} ⊆ {a,b,a+b}, left for follow-up.",
-      "The F 2 = 8 sorry in the parent needs (a) reduce ∀ c:ℕ→Bool to c|[1,15] finite search, (b) 8∈ValidN 2 via backward char, (c) ∀ m<8, m∉ValidN 2 via the explicit witness colouring + forward char. This session supplies the pair machinery for steps (b)/(c)."
+      "The F 2 = 8 sorry in the parent needs (a) reduce ∀ c:ℕ→Bool to c|[1,15] finite search, (b) 8∈ValidN 2 via backward char, (c) ∀ m<8, m∉ValidN 2 via the explicit witness colouring + forward char. This session supplies the pair machinery for steps (b)/(c).",
+      "Finite-coloring reduction pattern for adversary-coloured sums: quantify the decided statement over v : Fin 8 -> Bool (Fintype decide enumerates all 256 in ~3s kernel time) and phrase out-of-window sums as a per-sum CONFLICT check (both colours banned) rather than enumerating extensions (2^16 would be needed). The bridge to c : Nat -> Bool is definitional (apply the decided lemma at fun i => c (i+1)) — no bit-encoding or testBit lemmas needed. Doc-comment must come AFTER `set_option ... in`, and pin Nat.sInf_mem's type to `F 2 ∈ ...` so omega sees one atom."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "None at this node. F(3) exact value would need symmetry reduction or certificate import (2^33-scale search); the F(k) growth rate is the open content of Erdős #531."
+    ]
   },
   "tags": [
     "seeker-selected",
