@@ -235,12 +235,12 @@
     "id": "ann-e64-liu-mont",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 102,
-      "endLine": 105
+      "startLine": 96,
+      "endLine": 101
     },
     "type": "concept",
     "title": "Liu-Montgomery Threshold Theorem (2020)",
-    "content": "Axiomatizes the Liu-Montgomery result: there exists a constant $D$ such that every graph with $\\delta(G) \\ge D$ contains a cycle of length $2^k$ for some $k \\ge 2$. This disproves the Erdős-Gyárfás conjecture for $r \\ge D$ but leaves $r < D$ (especially $r = 3$) open.",
+    "content": "Documents the Liu-Montgomery result in a source comment (expository only — no Lean axiom or declaration is given): there exists a constant $D$ such that every graph with $\\delta(G) \\ge D$ contains a cycle of length $2^k$ for some $k \\ge 2$. This disproves the Erdős-Gyárfás conjecture for $r \\ge D$ but leaves $r < D$ (especially $r = 3$) open.",
     "mathContext": "$\\exists D \\in \\mathbb{N}$ such that $\\delta(G) \\ge D \\implies \\exists k \\ge 2,\\, C_{2^k} \\subseteq G$. The exact value of $D$ is unknown; the proof gives a tower-type bound.",
     "significance": "key",
     "relatedConcepts": [
@@ -259,12 +259,12 @@
     "id": "ann-e64-even-cycles",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 116,
-      "endLine": 121
+      "startLine": 104,
+      "endLine": 110
     },
     "type": "concept",
     "title": "Liu-Montgomery Even Cycles Theorem",
-    "content": "Axiomatizes the stronger result: graphs with $\\delta(G) \\ge D$ contain all even cycle lengths in $[4, L]$ for some $L \\ge 16$. This is much stronger than just finding one power-of-two cycle—it gives a full spectrum of even cycles.",
+    "content": "Documents the stronger result in a source comment (expository only — no Lean axiom or declaration is given): graphs with $\\delta(G) \\ge D$ contain all even cycle lengths in $[4, L]$ for some $L \\ge 16$. This is much stronger than just finding one power-of-two cycle—it gives a full spectrum of even cycles.",
     "mathContext": "$\\delta(G) \\ge D \\implies \\exists L \\ge 16$ such that $\\forall m \\in \\{4, 6, 8, \\ldots, L\\},\\, C_m \\subseteq G$. The range $[4, L]$ contains $2^k = 4$ whenever $L \\ge 4$.",
     "significance": "key",
     "relatedConcepts": [
@@ -329,12 +329,12 @@
     "id": "ann-e64-tree",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 159,
-      "endLine": 160
+      "startLine": 142,
+      "endLine": 146
     },
     "type": "concept",
     "title": "Infinite 3-Regular Tree Exists",
-    "content": "Axiomatizes the existence of an infinite 3-regular tree: a connected acyclic graph where every vertex has exactly 3 neighbors. This shows finiteness is essential for the conjecture—without it, 3-regular acyclic graphs exist and trivially avoid all cycles.",
+    "content": "Documents the existence of an infinite 3-regular tree in a source comment (expository only — no Lean axiom or declaration is given): a connected acyclic graph where every vertex has exactly 3 neighbors. This shows finiteness is essential for the conjecture—without it, 3-regular acyclic graphs exist and trivially avoid all cycles.",
     "mathContext": "$\\exists$ infinite graph $T$ with $\\deg(v) = 3$ for all $v$ and no cycles. This is the infinite binary tree where each vertex connects to a parent and two children (the root has three children). $T$ has $\\delta = 3$ but $C_k \\not\\subseteq T$ for all $k \\ge 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -353,8 +353,8 @@
     "id": "ann-e64-degree3",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 169,
-      "endLine": 172
+      "startLine": 154,
+      "endLine": 157
     },
     "type": "definition",
     "title": "Degree 3 Conjecture (Open)",
@@ -368,19 +368,19 @@
     ],
     "prerequisites": [
       "erdos_64_conjecture",
-      "liu_montgomery_threshold"
+      "Liu-Montgomery threshold (source-comment result, not a Lean declaration)"
     ]
   },
   {
     "id": "ann-e64-dirac",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 183,
-      "endLine": 185
+      "startLine": 690,
+      "endLine": 694
     },
     "type": "concept",
     "title": "Dirac's Theorem (1952)",
-    "content": "Axiomatizes Dirac's theorem: if $n \\ge 3$ and $\\delta(G) \\ge n/2$, then $G$ is Hamiltonian (contains a cycle through all $n$ vertices). This shows that high minimum degree forces long cycles, but does not directly control which specific lengths appear.",
+    "content": "Documents Dirac's theorem in a source comment (expository only — no Lean axiom or declaration is given): if $n \\ge 3$ and $\\delta(G) \\ge n/2$, then $G$ is Hamiltonian (contains a cycle through all $n$ vertices). This shows that high minimum degree forces long cycles, but does not directly control which specific lengths appear.",
     "mathContext": "Dirac (1952): $|V(G)| = n \\ge 3$ and $\\delta(G) \\ge n/2 \\implies G$ contains $C_n$. This is the classical sufficient condition for Hamiltonicity. It does not directly help with Problem #64 (which needs specific lengths, not just long cycles).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -399,12 +399,12 @@
     "id": "ann-e64-bondy",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 192,
-      "endLine": 197
+      "startLine": 695,
+      "endLine": 699
     },
     "type": "concept",
     "title": "Bondy's Pancyclicity Theorem (1971)",
-    "content": "Axiomatizes Bondy's theorem: if $|E(G)| \\ge n^2/4$ and $n \\ge 3$, then either $G$ is bipartite or $G$ contains all cycle lengths $3, 4, \\ldots, n$. Dense non-bipartite graphs have all cycle lengths, so they trivially satisfy Problem #64.",
+    "content": "Documents Bondy's theorem in a source comment (expository only — no Lean axiom or declaration is given): if $|E(G)| \\ge n^2/4$ and $n \\ge 3$, then either $G$ is bipartite or $G$ contains all cycle lengths $3, 4, \\ldots, n$. Dense non-bipartite graphs have all cycle lengths, so they trivially satisfy Problem #64.",
     "mathContext": "Bondy (1971): $|E(G)| \\ge n^2/4$ and $G$ not bipartite $\\implies$ $G$ contains $C_k$ for all $3 \\le k \\le n$. Combined with Mantel's theorem ($n^2/4$ is the max for triangle-free), this characterizes dense graphs as pancyclic or bipartite.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -417,6 +417,98 @@
       "edgeFinset.card",
       "bipartite definition",
       "ContainsCycleLength"
+    ]
+  },
+  {
+    "id": "ann-e64-even-cycle-thm",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 355,
+      "endLine": 546
+    },
+    "type": "technique",
+    "title": "Longest-Path Trapped-Neighbours Argument",
+    "content": "`hasMinDegree_three_exists_even_cycle` is machine-checked and axiom-free: it takes a path $p$ of maximum length in $G$, starting at $v_0$. Maximality traps every neighbour of $v_0$ at a distinct positive index along $p$ (otherwise $p$ could be extended). With $\\delta(G) \\ge 3$, at least three such indices exist; let $a < b$ be the two largest. Closing the prefix of $p$ at index $a$ back through the edge to $v_0$ gives a cycle of length $a+1$; closing at $b$ gives length $b+1$; and the segment of $p$ strictly between indices $a$ and $b$, closed through $v_0$ via both endpoint edges, gives a third cycle of length $b-a+2$. These three lengths sum to $2b+4$, which is even, so they cannot all be odd — one of the three cycles is even.",
+    "mathContext": "On a maximum-length path $p$ with start $v_0$, every neighbour $w$ of $v_0$ satisfies $w \\in p.\\mathrm{support}$ (else $\\mathrm{cons}\\,w\\,p$ is a longer path), so the set $T$ of neighbour indices $\\mathrm{idx}(w) = |p.\\mathrm{takeUntil}\\,w|$ has $|T| \\geq 3$ and every element $\\geq 1$. Taking $b = \\max T$ and $a = \\max(T \\setminus \\{b\\})$ gives $2 \\leq a < b$. Three explicit cycles of lengths $a+1$, $b+1$, $b-a+2$ then exist (via `Walk.cons` closures), and $(a+1)+(b+1)+(b-a+2) = 2b+4$ is even, forcing at least one summand even.",
+    "significance": "key",
+    "relatedConcepts": [
+      "longest path argument",
+      "parity argument",
+      "SimpleGraph.Walk.IsCycle",
+      "extremal path technique"
+    ],
+    "prerequisites": [
+      "hasMinDegree_two_exists_cycle",
+      "Walk.takeUntil / Walk.dropUntil",
+      "Nat.even_or_odd"
+    ]
+  },
+  {
+    "id": "ann-e64-even-cycle-bridge",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 552,
+      "endLine": 561
+    },
+    "type": "concept",
+    "title": "Even Cycle, Restated via ContainsCycleLength",
+    "content": "`hasMinDegree_three_exists_even_containsCycleLength` reindexes the even-cycle witness from `hasMinDegree_three_exists_even_cycle` through `isCycle_containsCycleLength`, giving $\\exists k \\geq 4$, $\\mathrm{Even}\\,k$, with $\\mathrm{ContainsCycleLength}\\,G\\,k$ — the necessary parity-and-size part of Problem 64's hypothesis, phrased in the predicate the open conjecture itself uses. It is still a strict weakening: it does not pin $k$ down to a power of two.",
+    "mathContext": "Combines `hasMinDegree_three_exists_even_cycle` with `isCycle_containsCycleLength` and `IsCycle.three_le_length`: $\\delta(G) \\geq 3 \\Rightarrow \\exists k \\geq 4,\\ \\mathrm{Even}\\,k \\wedge \\mathrm{ContainsCycleLength}\\,G\\,k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ContainsCycleLength",
+      "isCycle_containsCycleLength",
+      "even cycle"
+    ],
+    "prerequisites": [
+      "hasMinDegree_three_exists_even_cycle",
+      "isCycle_containsCycleLength"
+    ]
+  },
+  {
+    "id": "ann-e64-dirac-rung",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 578,
+      "endLine": 673
+    },
+    "type": "technique",
+    "title": "Dirac-Type Rung: Cycle Length ≥ d + 1",
+    "content": "`hasMinDegree_exists_cycle_length_ge` is machine-checked and axiom-free: reusing the trapped-neighbour set-up from the even-cycle argument, if $\\delta(G) \\ge d$ (with $d \\ge 2$) then the $\\ge d$ neighbours of a maximum-length path's start vertex $v_0$ occupy $\\ge d$ distinct positive indices. Since $d$ distinct positive integers cannot all be less than $d$, the largest index $b$ satisfies $b \\geq d$; closing the path's prefix at $b$ back through the edge to $v_0$ yields an explicit cycle of length $b+1 \\geq d+1$. This is the classical quantitative rung underlying Dirac-type results, proved here directly rather than via Dirac's Hamiltonicity theorem (which needs $\\delta \\geq n/2$, far stronger than this hypothesis).",
+    "mathContext": "$d \\geq 2$, $\\delta(G) \\geq d$: the neighbour-index set $T$ (as in the parity argument) satisfies $|T| \\geq d$ and $T \\subseteq \\mathrm{Icc}\\,1\\,b$ where $b = \\max T$, so $d \\leq |\\mathrm{Icc}\\,1\\,b| = b$ (`Finset.card_le_card`). Closing $p$'s prefix of length $b$ through $v_0$'s edge to the neighbour at index $b$ gives a cycle of length $b + 1 \\geq d + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "longest path argument",
+      "Dirac-type bound",
+      "quantitative extremal result",
+      "Finset.card_le_card"
+    ],
+    "prerequisites": [
+      "HasMinDegree",
+      "Walk.takeUntil",
+      "Finset.max'"
+    ]
+  },
+  {
+    "id": "ann-e64-dirac-rung-bridge",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 675,
+      "endLine": 686
+    },
+    "type": "concept",
+    "title": "Dirac-Type Rung, Restated via ContainsCycleLength",
+    "content": "`hasMinDegree_containsCycleLength_ge` restates the Dirac-type rung in `ContainsCycleLength`: $\\delta(G) \\geq d$ (with $d \\geq 2$) gives $\\exists k \\geq d+1$ with $\\mathrm{ContainsCycleLength}\\,G\\,k$. Combined with the parity result, minimum-degree-3 graphs have both an even cycle and a cycle of length $\\geq 4$ — but Problem 64's open core, that some cycle length can be forced to be exactly a power of two, remains untouched by either.",
+    "mathContext": "Combines `hasMinDegree_exists_cycle_length_ge` with `isCycle_containsCycleLength`: $d \\geq 2$, $\\delta(G) \\geq d \\Rightarrow \\exists k \\geq d+1,\\ \\mathrm{ContainsCycleLength}\\,G\\,k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ContainsCycleLength",
+      "isCycle_containsCycleLength",
+      "Dirac-type bound"
+    ],
+    "prerequisites": [
+      "hasMinDegree_exists_cycle_length_ge",
+      "isCycle_containsCycleLength"
     ]
   }
 ]
