@@ -73,6 +73,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Tucker's 2D Lemma via Graph Path-Following", "startLine": 1, "endLine": 32, "summary": "Introduces the combinatorial, graph-theoretic proof of Tucker's lemma in 2D: build a graph on the triangles of a Tucker-labeled triangulated disk (edges = shared complementary edges), then use a parity argument on vertex degrees to force a complementary edge to exist. Notes this file extends the 1D Tucker/Borsuk-Ulam results of BorsukUlamOQ03OQ01 and BorsukUlamOQ03.", "mathContext": "Tucker's lemma: any antipodally-symmetric $\\{\\pm1,\\pm2\\}$-labeling of a triangulated disk's boundary has a triangle with a complementary edge ($k$, $-k$); the parity of boundary sign changes forces an odd number of such edges overall."},
     {
       "id": "labelings",
       "title": "Tucker Labeling Definitions",
