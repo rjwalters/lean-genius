@@ -130,6 +130,14 @@
       "endLine": 203,
       "summary": "selberg_implies_erdos: density axiom → Erdős #1059. For any N, take l = N+3 and extract qualifying p > N.",
       "mathContext": "Proof: $\\forall N, l = N+3 \\geq 3$, sieve gives $p \\in I(l)$ with $p > l! \\geq N$. Disjoint intervals ensure distinct primes."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Open Question",
+      "startLine": 205,
+      "endLine": 231,
+      "summary": "Closing comment: recaps the 5 proved (0-sorry) results and the single `selberg_density_axiom`, cross-references the companion file `Erdos1059Problem.lean` (which axiomatizes a different route, `erdos_alternative_approach`, via l-smooth numbers rather than a direct sieve density estimate) and `Erdos1059OQ05.lean` (whose decidability result applies to this file's definitions), and poses the open question of whether either file's axiom can be derived from the other's.",
+      "mathContext": "Two independent, unproven routes to the same conjecture: this file's `selberg_density_axiom` (a direct Selberg-sieve prime-density bound in each primorial interval $I(l)$) versus `Erdos1059Problem.lean`'s `erdos_alternative_approach` (existence of an $l$-smooth number in $I(l)$). Neither formalization currently shows one axiom implies the other, so the file honestly records two distinct unproven assumptions capturing the same open conjecture rather than a single reduced one."
     }
   ],
   "conclusion": {
