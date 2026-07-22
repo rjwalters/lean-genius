@@ -88,6 +88,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Ehrhart polynomials for lattice polytopes",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Ehrhart polynomials (1962) generalize Pick's formula to arbitrary dimensions: for a d-dimensional lattice polytope P, the number of lattice points in the dilate nP is a degree-d polynomial in n, with leading coefficient the normalized volume and constant term 1. This file axiomatizes lattice polytopes with their counting functions, verifies the theory on cubes/simplices/cross-polytopes, and recovers Pick's theorem as the d=2 specialization together with Ehrhart-Macdonald reciprocity."
+    },
+    {
       "id": "lattice-polytopes",
       "title": "Lattice Polytopes",
       "startLine": 39,
