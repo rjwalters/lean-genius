@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-122",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy problem (#122): for which arithmetic functions $f$ does short-interval concentration of $n+f(n)$ hold whenever $f(n)/F(n)\\to 0$? Known to hold for $f=d,\\omega$ (Erd\u0151s\u2013Pomerance\u2013S\u00e1rk\u00f6zy 1997); conjectured to fail for $f=\\varphi,\\sigma$.",
+      "startLine": 1,
+      "endLine": 26,
+      "mathContext": "The \"short interval concentration property\" asks whether $\\#\\{n : n+f(n) \\in (x,x+F(x))\\}/F(x) \\to \\infty$ along a sequence of $x$, for any $F$ with $f(n)/F(n) \\to 0$ almost everywhere."
+    },
+    {
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 27,
