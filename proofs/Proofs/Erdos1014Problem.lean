@@ -6,10 +6,15 @@ where R(k, l) is the Ramsey number.
 
 ## Key Results
 
-- Open even for k = 3
+- Open in general (k ≥ 4)
+- The k = 3 case is settled unconditionally below (`R3_ratio_convergence`):
+  Kim's lower bound R(3,l) ≥ c·l²/log l together with the elementary
+  increment bound R(3,l+1) - R(3,l) ≤ l+1 already forces the ratio to 1;
+  the matching Θ(l²/log l) upper bound is not needed
 - Best known bounds for R(3, l): between c₁ l² / log l and c₂ l² / log l
   (Bohman–Keevash, Shearer, Mattheus–Verstraëte)
-- The conjecture would follow from precise enough asymptotics for R(k, l)
+- For general k, the conjecture would follow from precise enough
+  asymptotics for R(k, l)
 
 ## References
 
