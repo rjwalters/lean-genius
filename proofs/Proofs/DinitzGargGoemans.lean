@@ -124,8 +124,9 @@ def D : ℕ := 15
 
 /-- The fractional flow is **feasible**: conservation holds at every internal node
 `u, v, w`; each terminal receives exactly its demand; the source emits the total
-demand; and every arc respects its capacity `u_a = x_a` (`x_a ≤ x_a`, trivially). -/
-def FractionalFeasible : Prop :=
+demand; and every arc respects its capacity `u_a = x_a` (`x_a ≤ x_a`, trivially).
+Marked `@[reducible]` so `decide`'s instance synthesis sees the decidable body. -/
+@[reducible] def FractionalFeasible : Prop :=
   inflow .u = outflow .u ∧ inflow .v = outflow .v ∧ inflow .w = outflow .w ∧
   inflow .t1 = d1 ∧ inflow .t2 = d2 ∧ inflow .t3 = d3 ∧
   outflow .s = d1 + d2 + d3 ∧
@@ -162,8 +163,9 @@ def routingCost (r : Routing) : ℕ :=
   d1 * pathCost (path1 r.1) + d2 * pathCost (path2 r.2.1) + d3 * pathCost (path3 r.2.2)
 
 /-- A routing is **capacity-good** if every arc load stays within `x_a + D`
-(capacity violation at most the maximum demand `D`). -/
-def CapGood (r : Routing) : Prop := ∀ a ∈ allArcs, load a r ≤ xflow a + D
+(capacity violation at most the maximum demand `D`). Marked `@[reducible]` so
+`decide`'s instance synthesis sees the bounded quantifier over `allArcs`. -/
+@[reducible] def CapGood (r : Routing) : Prop := ∀ a ∈ allArcs, load a r ≤ xflow a + D
 
 /-! ## The three verified facts (plain kernel `decide`, 0 axioms) -/
 
