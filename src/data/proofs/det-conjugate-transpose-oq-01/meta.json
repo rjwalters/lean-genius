@@ -125,6 +125,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "File Docstring and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "$\\det(M^{\\mathsf H}) = \\overline{\\det M}$, with the Hermitian-reality and unitary-unit-circle corollaries previewed.",
+      "summary": "Module docstring stating the base identity det Mᴴ = star (det M) over a StarRing, noting it re-exports Mathlib's Matrix.det_conjTranspose (previously absent from the gallery), and previewing the two structural corollaries: Hermitian matrices have a self-adjoint (over ℂ, real) determinant, and unitary matrices have a determinant of modulus one. Imports Determinant.Basic, Hermitian, and the Complex circle API; opens Matrix and the namespace."
+    },
+    {
       "id": "base-identity",
       "title": "The Base Identity det Mᴴ = star (det M)",
       "startLine": 37,
