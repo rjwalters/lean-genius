@@ -30,6 +30,7 @@ import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Lattice
 
 open SimpleGraph
 
@@ -90,7 +91,16 @@ def cycleLengths (G : SimpleGraph V) [DecidableRel G.Adj] : Set ℕ :=
 Given the cycle lengths, the minimum gap between consecutive lengths.
 -/
 noncomputable def minCycleLengthGap (lengths : Set ℕ) : ℕ :=
-  sorry -- Requires enumeration of consecutive pairs
+  sInf {d : ℕ | ∃ a ∈ lengths, ∃ b ∈ lengths, a < b ∧ d = b - a}
+
+/--
+**Minimum gap upper bound.**
+Any pair of distinct lengths in the set witnesses an upper bound on the minimum
+gap: the closest pair of elements is always a consecutive pair, so the minimum
+difference over all distinct pairs equals the minimum consecutive gap. -/
+theorem minCycleLengthGap_le {S : Set ℕ} {a b : ℕ} (ha : a ∈ S) (hb : b ∈ S)
+    (hab : a < b) : minCycleLengthGap S ≤ b - a :=
+  Nat.sInf_le ⟨a, ha, b, hb, hab, rfl⟩
 
 /-
 ## Part II: Key Relationships
@@ -183,7 +193,11 @@ theorem erdos_751 (G : SimpleGraph V) [DecidableRel G.Adj] :
   obtain ⟨m, m', hm, hm', hne, hgap1, hgap2⟩ := h
   -- The minimum gap is at most |m - m'| ≤ 2
   have hgap_bound : minCycleLengthGap (cycleLengths G) ≤ 2 := by
-    sorry -- Would need the full definition of minCycleLengthGap
+    rcases lt_or_gt_of_ne hne with h | h
+    · calc minCycleLengthGap (cycleLengths G) ≤ m' - m := minCycleLengthGap_le hm hm' h
+        _ ≤ 2 := by omega
+    · calc minCycleLengthGap (cycleLengths G) ≤ m - m' := minCycleLengthGap_le hm' hm h
+        _ ≤ 2 := by omega
   -- But hcontra says gap > 3, contradiction
   have := hcontra 3
   omega
