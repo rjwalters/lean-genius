@@ -19,7 +19,7 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "assumptions": "1 axiom: best_theorem (the BEST theorem counting directed Eulerian circuits via Matrix Tree Theorem; axiomatized pending Mathlib formalization of the arborescence-bijection proof).",
+    "assumptions": "1 axiom: best_theorem (the BEST theorem counting directed Eulerian circuits via Matrix Tree Theorem; axiomatized pending Mathlib formalization of the arborescence-bijection proof). Trust caveat: 4 named theorems close with `native_decide`, introducing the `Lean.ofReduceBool` compiler-trust axiom — BEST-formula products and K3 degree/balance computations on fixed finite digraphs (`tri_best_consistent`, `k3_outDeg`, `k3_balanced`, `k3_best_consistent`, lines 128-259). These are decidable finite-graph computations feeding the worked demonstrations; the headline Eulerian-circuit-count result rests on the explicit `best_theorem` axiom and is otherwise kernel-checked.",
     "lineCount": 340,
     "theoremCount": 9,
     "definitionCount": 11
