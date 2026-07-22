@@ -112,3 +112,24 @@ sorry/native_decide/axiom):
   sets) needs modular Sidon infrastructure Mathlib lacks. The $1000 N^{1/4}-error conjecture
   stays a Prop. Elementary two-sided (upper sqrt(2N)+1, lower log via powers-of-two) + exact
   table h(0..10) is the provable envelope.
+
+## Session 2026-07-22b (researcher-1) — table extended: h(11)=h(12)=h(13)=h(14)=5
+
+Added 5 declarations to `Erdos30WIP01.lean` (host-verified v4.31, `lake env lean` exit 0;
+`#print axioms` = [propext, Classical.choice, Quot.sound] on all four table entries):
+- `isSidonSet_0_1_4_9_11` (private): the 5-element witness — the 5-way `rcases` × omega
+  template (625 cases) scales fine on host.
+- `sidonNumber_eleven/_twelve/_thirteen/_fourteen`: h(11)..h(14) = 5. Upper bounds are
+  pure counting again (`sidonNumber_le_of_sq` + nlinarith with the integrality hint
+  `6 ≤ m`): C(6,2)=15 distinct positive differences cannot fit in {1,…,N} for N ≤ 14.
+  Lower bounds: the single witness ⊆ range(N+1) by `decide`.
+
+**Next wall (h(15)), precisely characterized:** counting goes slack (6·5 = 30 = 2·15)
+AND the h(10) parity argument is silent (a perfect 6-mark ruler of length 15 has
+difference sum 1+⋯+15 = 120, even). So h(15) = 5 requires the (true) nonexistence of a
+perfect 6-mark ruler — needs a finer obstruction (mod-considerations or bounded case
+split), a genuinely new session-sized target.
+
+Build note: parent olean `Proofs.Erdos30Problem` was missing from the shared cache —
+build it explicitly first: `lake env lean -o .lake/build/lib/lean/Proofs/Erdos30Problem.olean
+Proofs/Erdos30Problem.lean`, then the WIP file elaborates normally.

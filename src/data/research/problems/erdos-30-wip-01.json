@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1-3, 2026-07-22): extended the exact sidonNumber table to h(7)=h(8)=h(9)=4 (previously through h(6)=4). Counting bound tight through N=9; N=10 first slack (needs exhaustive lower bound). Two-sided elementary bounds stand: upper floor-sqrt(2N)+1 / sharp counting; lower unbounded(log2) via powers of two. DEEP: sharp sqrt(N) construction (Singer), N^{1/4} refinement, $1000 conjecture remain.",
+    "progressSummary": "Exact sidonNumber table now COMPLETE through h(14): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4 (h(10) via perfect-ruler parity); h(11..14)=5 (witness {0,1,4,9,11} + counting bound active again vs 6-element sets). Two-sided elementary bounds stand. NEXT: h(15)=5 needs perfect 6-mark ruler nonexistence (counting slack at 30=2*15, parity silent since 120 even). DEEP unchanged: Singer sqrt(N) lower construction, N^{1/4} refinement, $1000 conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -44,7 +44,9 @@
       "sidonNumber_two_pow_ge (Erdos30WIP01.lean): k+1 <= sidonNumber (2^k) [0-axiom]",
       "sidonNumber_unbounded (Erdos30WIP01.lean): forall M, exists N, M <= sidonNumber N [0-axiom]",
       "Erdos30WIP01.lean: exact initial Sidon numbers sidonNumber_zero..six — h(0..6)=1,2,2,3,3,3,4. Sharp counting bound sidon_card_sq_le matched to optimal explicit Sidon sets {0},{0,1},{0,1,3},{0,1,4,6}. Reusable helpers sidonNumber_ge_card (lower from explicit set) + sidonNumber_le_of_sq (sharp upper via quadratic, tighter than floor-sqrt). 0-axiom docker-verified v4.31.",
-      "sidonNumber_seven/eight/nine = 4 — exact values via counting upper + {0,1,4,6} witness (Erdos30WIP01.lean, 0-axiom)"
+      "sidonNumber_seven/eight/nine = 4 — exact values via counting upper + {0,1,4,6} witness (Erdos30WIP01.lean, 0-axiom)",
+      "isSidonSet_0_1_4_9_11 in Erdos30WIP01.lean (5-element Sidon witness)",
+      "sidonNumber_eleven, sidonNumber_twelve, sidonNumber_thirteen, sidonNumber_fourteen in Erdos30WIP01.lean (h(11)..h(14)=5)"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -53,7 +55,11 @@
       "Powers of two {2^0,...,2^k} form a Sidon set (isSidonSet_two_pow_range): sum-injectivity via 2-adic parity (two_pow_add_inj) — factor out 2^min, then odd-vs-even cofactor / 2-vs->=4 forces exponents to match.",
       "sidonNumber_two_pow_ge: h(2^k) >= k+1, so sidonNumber is UNBOUNDED (sidonNumber_unbounded). First growing lower bound in the file (previously only trivial h(N)>=1). Only logarithmic — sharp sqrt(N) growth needs Singer/perfect-difference-set constructions absent from Mathlib.",
       "h(N) exact for N<=6 is a non-strict step function 1,2,2,3,3,3,4; the elementary quadratic bound |A|(|A|-1)<=2N is TIGHT here (floor-sqrt(2N)+1 is NOT, e.g. it gives h(5)<=4 but truth is 3). Optimal witnesses are perfect rulers/difference sets: {0,1,3} (N<=5), {0,1,4,6} (N=6, diffs 1..6 exhaust).",
-      "Exact-value table extended to h(7)=h(8)=h(9)=4: counting bound sidonNumber_le_of_sq blocks a 5-element Sidon set (5*4=20 > 2N for N<=9), and {0,1,4,6}<=range(N+1) attains 4. h(10) is the first slack point (5*4=20=2*10 admits m=5); a 5-element Sidon set first fits at N=11 ({0,1,4,9,11}). For N>=7 nlinarith needs the integrality step 5<=m since the quadratic real root exceeds 4. (Erdos30WIP01.lean, 0-axiom)"
+      "Exact-value table extended to h(7)=h(8)=h(9)=4: counting bound sidonNumber_le_of_sq blocks a 5-element Sidon set (5*4=20 > 2N for N<=9), and {0,1,4,6}<=range(N+1) attains 4. h(10) is the first slack point (5*4=20=2*10 admits m=5); a 5-element Sidon set first fits at N=11 ({0,1,4,9,11}). For N>=7 nlinarith needs the integrality step 5<=m since the quadratic real root exceeds 4. (Erdos30WIP01.lean, 0-axiom)",
+      "Exact table extended past the h(10) parity wall for free: at N=11 the 5-element witness {0,1,4,9,11} first fits, and the COUNTING bound is active again against 6-element sets (C(6,2)=15 distinct positive differences > N for all N<=14). One witness + sidonNumber_le_of_sq closes h(11)=h(12)=h(13)=h(14)=5.",
+      "Next wall precisely characterized: at N=15 the counting bound goes slack (6*5=30=2*15) AND the parity argument is silent (perfect 6-mark ruler of length 15 has difference sum 120, even). h(15)=5 requires nonexistence of a perfect 6-mark ruler — a genuinely finer argument (next session target).",
+      "5-way rcases witness pattern scales: 625 omega cases for isSidonSet_0_1_4_9_11 compile fast on host; the isSidonSet_0_1_4_6 template generalizes verbatim.",
+      "Shared-cache gotcha: Proofs.Erdos30Problem olean was missing — build parent explicitly with lake env lean -o .lake/build/lib/lean/Proofs/<X>.olean Proofs/<X>.lean, then the WIP file elaborates."
     ],
     "mathlibGaps": [],
     "nextSteps": [
