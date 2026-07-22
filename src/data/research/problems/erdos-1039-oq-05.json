@@ -31,16 +31,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 4,
-    "focus": "Iteration 4: pointwise Fekete monotonicity exists_deleteAt_discreteDiameter_ge (d_{n+1}(Z) <= d_n(delete k Z)) proved axiom-free from the deletion identity via some-term-meets-mean. Erdos1039TransfiniteDiameter.lean now 16 theorems, 0 axioms/sorries.",
+    "iteration": 5,
+    "focus": "Iteration 5: elementary lower-bound program COMPLETE. General bound dₙ ≥ n^{1/(n-1)} (roots of unity, #40737) + transformation laws (#40759) + d ∈ [1,2] (transfiniteDiameter_mem_Icc_one_two) all merged, 0-axiom. This session added tendsto_rootsOfUnity_lowerBound_one: (m+2)^{1/(m+1)} → 1, certifying the elementary root-of-unity lower bound is asymptotically sharp (saturates exactly at log-capacity 1). Erdos1039TransfiniteDiameter.lean now ~1150 lines, 0 axioms/sorries.",
     "blockers": [
       {
         "route": "sharp value d = 1 (log-capacity of unit disc) via Fekete–Szegő / potential theory",
         "reopenCriterion": "materially new Mathlib potential-theory API required",
         "blockedAt": "2026-07-20"
+      },
+      {
+        "route": "exact dₙ = n^{1/(n-1)} for n ≥ 3 via the extremal (upper) bound that n-th roots of unity maximise the spread product",
+        "reopenCriterion": "materially new Mathlib potential-theory / Fekete–Szegő extremality API required",
+        "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "Exact d₃ via cube-roots-of-unity on the boundary, or strict d₃ < d₂ = 2 (Fekete strict at top); both fiddly. Sharp limit d=1 deep-blocked (Fekete–Szegő, not in Mathlib).",
+    "nextAction": "Elementary layer SATURATED. Remaining work is DEEP: sharp value d = 1 (matching upper bound d ≤ 1) requires Fekete–Szegő / potential-theory API absent from Mathlib; exact dₙ = n^{1/(n-1)} for n ≥ 3 requires the extremal (upper) bound, same deep obstruction. Both recorded as blocked routes.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -198,5 +203,5 @@
     }
   ],
   "lastUpdate": "2026-07-21",
-  "nextAction": "Prove the extremal upper bound d₃ ≤ √3 (Fekete–Szegő: equilateral triangle on the boundary is extremal for 3 points) to close d₃ = √3 exactly; and/or the general roots-of-unity lower bound dₙ ≥ n^{1/(n-1)} via spreadProduct(n-th roots of unity) = n^{n/2}."
+  "nextAction": "DEEP-BLOCKED: the sharp value d = 1 and exact dₙ (n ≥ 3) both need the Fekete–Szegő extremal/upper bound (potential theory, not in Mathlib). Elementary lower-bound program (dₙ ≥ n^{1/(n-1)}, d ∈ [1,2], asymptotic sharpness) is complete and 0-axiom."
 }
