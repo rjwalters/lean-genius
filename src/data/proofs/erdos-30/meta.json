@@ -57,7 +57,7 @@
     "historicalContext": "Simon Sidon originally studied sets with distinct pairwise sums in the context of lacunary Fourier series in the 1930s, seeking sets of integers whose exponential sums have good analytic properties. In 1938, James Singer constructed near-optimal Sidon sets using perfect difference sets from finite projective geometry PG(2,q), establishing the lower bound h(N) ≥ (1-o(1))√N. Erdős and Turán proved their foundational upper bound h(N) ≤ √N + N^{1/4} + 1 in 1941 using a simple but powerful counting argument: a Sidon set of size s contributes s(s-1)/2 distinct pairwise sums in {2,...,2N}, giving a quadratic inequality. This bound stood essentially unchanged for 80 years — Lindström (1969) shaved the constant to +1/2 but left the N^{1/4} exponent untouched. The breakthrough came in 2021 when Balogh, Füredi, and Roy reduced the coefficient of N^{1/4} from 1 to 0.998, and Carter, Hunter, and O'Bryant (2025) further improved it to 0.98183. Erdős offered $1,000 for proving or disproving the conjecture that h(N) = N^{1/2} + O_ε(N^ε).",
     "problemStatement": "**Conjecture (Erdős-Turán, OPEN):** For every ε > 0,\n\nh(N) = N^{1/2} + O_ε(N^ε)\n\n**Current best:**\n- Upper: N^{1/2} + 0.98183·N^{1/4} + O(1) (Carter-Hunter-O'Bryant 2025)\n- Lower: (1-o(1))·N^{1/2} (Singer 1938)\n\n**The prize:** $1,000 for proving or disproving.",
     "text": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
-    "proofStrategy": "The formalization defines:\n\n1. `IsSidonSet A`: all pairwise sums are distinct\n2. `HasDistinctSums A`: equivalent characterization (proved equivalent)\n3. `sidonNumber N`: maximum size h(N)\n4. `Erdos30Conjecture`: h(N) = N^{1/2} + O_ε(N^ε)\n\nWe axiomatize the historical bounds progression:\n- Erdős-Turán (1941): N^{1/2} + N^{1/4} + 1\n- Lindström (1969): slight improvement\n- Balogh-Füredi-Roy (2021): 0.998 coefficient\n- Carter-Hunter-O'Bryant (2025): 0.98183 coefficient\n- Singer (1938): lower bound via perfect difference sets\n\nThe formalization also includes perfect difference sets, B_h generalization, and a reduction theorem showing any improvement to the 1/4 exponent would resolve the conjecture.",
+    "proofStrategy": "The formalization defines:\n\n1. `IsSidonSet A`: all pairwise sums are distinct\n2. `HasDistinctSums A`: equivalent characterization (proved equivalent)\n3. `sidonNumber N`: maximum size h(N)\n4. `Erdos30Conjecture`: h(N) = N^{1/2} + O_ε(N^ε)\n\nThe historical bounds progression is documented in comments only (no axioms — the file has 0 axioms):\n- Erdős-Turán (1941): N^{1/2} + N^{1/4} + 1\n- Lindström (1969): slight improvement\n- Balogh-Füredi-Roy (2021): 0.998 coefficient\n- Carter-Hunter-O'Bryant (2025): 0.98183 coefficient\n- Singer (1938): lower bound via perfect difference sets\n\nThe formalization also defines `RequiredUpperBound(ε)`, `IsPerfectDifferenceSet`, and the B_h generalization (`IsBhSet`); the reduction from any 1/4-exponent improvement to the full conjecture is sketched in comments, not proved.",
     "keyInsights": [
       "The N^{1/4} barrier persists after 80+ years of work: all improvements since 1941 have only affected the constant multiplier, not the exponent. Breaking 1/4 requires fundamentally new ideas beyond counting arguments.",
       "Singer's perfect difference sets from PG(2,q) achieve h(N) ~ √N, showing the leading term is tight. The construction uses the Singer cycle acting on lines of the projective plane over F_q.",
@@ -100,7 +100,7 @@
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Historical progression: Erdős-Turán (1941, +N^{1/4}+1), Lindström (1969, +N^{1/4}+1/2), Balogh-Füredi-Roy (2021, +0.998·N^{1/4}), Carter-Hunter-O'Bryant (2025, +0.98183·N^{1/4}+O(1)).",
+      "summary": "Documentation only (comment header, no declarations): records the historical upper-bound progression — Erdős-Turán (1941, +N^{1/4}+1), Lindström (1969, +N^{1/4}+1/2), Balogh-Füredi-Roy (2021, +0.998·N^{1/4}), Carter-Hunter-O'Bryant (2025, +0.98183·N^{1/4}+O(1)).",
       "startLine": 104,
       "endLine": 126,
       "mathContext": "Upper bounds: Erdős-Turán (1941): $h(N) \\leq \\sqrt{N} + N^{1/4} + 1$. Lindström (1969): $\\leq \\sqrt{N} + N^{1/4} + 1/2$. Cilleruelo (2010): $\\leq \\sqrt{N} + 0.998 N^{1/4}$."
@@ -108,7 +108,7 @@
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Singer's asymptotic bound h(N) ≥ (1-o(1))√N and the explicit quantitative version h(N) ≥ √N - N^{0.525} for infinitely many N.",
+      "summary": "Documentation only (comment header, no declarations): records Singer's asymptotic lower bound h(N) ≥ (1-o(1))√N and the explicit quantitative version h(N) ≥ √N - N^{0.525} for infinitely many N.",
       "startLine": 127,
       "endLine": 141,
       "mathContext": "Lower bounds: Singer difference sets give $h(N) \\geq (1-o(1))\\sqrt{N}$ when $N$ is near a prime power."
@@ -116,7 +116,7 @@
     {
       "id": "gap",
       "title": "The Gap Analysis",
-      "summary": "Formalizes RequiredUpperBound(ε) and the reduction theorem: any single improvement to ε < 1/4 implies the full conjecture.",
+      "summary": "Defines RequiredUpperBound(ε); the reduction claim — that any single improvement to ε < 1/4 implies the full conjecture — is a comment proof-sketch, not a proved theorem.",
       "startLine": 142,
       "endLine": 167,
       "mathContext": "Gap: the error term $h(N) - \\sqrt{N}$ is between $O(1)$ (conjectured) and $O(N^{1/4})$ (best known). Any improvement to $O(N^{1/4-\\delta})$ would be progress."
@@ -124,7 +124,7 @@
     {
       "id": "perfect-difference",
       "title": "Perfect Difference Sets",
-      "summary": "Defines IsPerfectDifferenceSet, axiomatizes that they are Sidon, and states Singer's construction for prime power q giving sets of size q+1 mod q²+q+1.",
+      "summary": "Defines IsPerfectDifferenceSet; the facts that such sets are Sidon and Singer's construction for prime power q (sets of size q+1 mod q²+q+1) are described in comments only, not axiomatized or declared.",
       "startLine": 168,
       "endLine": 184,
       "mathContext": "Perfect difference set: $D \\subseteq \\mathbb{Z}/n\\mathbb{Z}$ with every nonzero element represented exactly once as $d_i - d_j$. These are optimal Sidon sets."
@@ -139,7 +139,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #30, an OPEN $1,000 problem asking whether the maximum Sidon set size h(N) equals N^{1/2} up to an error of N^ε for any ε > 0. The formalization includes a fully-proved equivalence of two Sidon characterizations, the complete historical progression of upper bounds from 1941 to 2025, Singer's construction via perfect difference sets, a reduction theorem, and the B_h generalization.",
+    "summary": "Formalizes Erdős Problem #30, an OPEN $1,000 problem asking whether the maximum Sidon set size h(N) equals N^{1/2} up to an error of N^ε for any ε > 0. The formalization includes a fully-proved equivalence of two Sidon characterizations, definitions for the Sidon number, the conjecture and its stronger variant, `RequiredUpperBound(ε)`, perfect difference sets, and the B_h generalization; the historical upper/lower bound progression (1941–2025), Singer's construction, and the reduction argument are documented in comments only (0 axioms, 0 sorries).",
     "implications": "**Theoretical Significance**: Sidon sets connect multiple areas:\n\n1. **Fourier analysis:** Originally studied for lacunary series, determining which thin sets support good analytic behavior\n2. **Finite geometry:** Perfect difference sets from projective planes PG(2,q) provide the best known constructions\n**3. Coding theory:** Error-correcting codes with similar uniqueness constraints on codeword distances\n4. **Additive combinatorics:** B_h sequences, sumset structure, and the sum-product phenomenon\n5. **Number theory:** Connections to prime gaps (via Baker-Harman-Pintz) and additive bases of integers.",
     "openQuestions": [
       "Can the N^{1/4} exponent in the upper bound be reduced to any ε < 1/4, or is there a structural barrier?",

@@ -213,12 +213,12 @@ def harmonicConnection (t N : ℕ) : Prop :=
 /--
 **The f(n) function:**
 f(n) = minimum k such that 1 can be written as sum of k distinct unit fractions
-with largest denominator n.
+with all denominators at most n.
 -/
 axiom f_func_exists (n : ℕ) (hn : n ≥ 6) :
-    ∃ k, ∃ S : Finset ℕ, S.card = k ∧ n ∈ S ∧
+    ∃ k, ∃ S : Finset ℕ, S.card = k ∧
       (∀ m ∈ S, m ≤ n) ∧ egyptianSum S = 1
-  -- For n ≥ 6, such representations exist (e.g., {2, 3, 6} for n=6)
+  -- For n ≥ 6, such representations exist (e.g., {2, 3, 6}, all ≤ n)
 
 noncomputable def f_func (n : ℕ) (hn : n ≥ 6) : ℕ :=
   Nat.find (f_func_exists n hn)
