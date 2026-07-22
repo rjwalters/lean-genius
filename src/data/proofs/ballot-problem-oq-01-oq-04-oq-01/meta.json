@@ -118,6 +118,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Chung–Feller Bijection via Rotation Index", "startLine": 1, "endLine": 43, "summary": "States OQ-01: can the parent's axiomatized chung_feller_uniform (all n+1 path types share the Catalan count Cₙ) be proved via an explicit bijection? Answers YES via the Chung–Feller rotation: rotating a balanced path at its rightmost-minimum position produces a Dyck-path tail, giving an (n+1)-to-1 correspondence between rotation start positions and path types. Notes what remains sorry'd — showing rotations at different 1-positions give pairwise distinct types.", "mathContext": "The Chung–Feller rotation `cyclicRotation (1::l) (rightmostMinPos (1::l))` maps a balanced lattice path to one whose tail is a Dyck path; the $n+1$ preimages of each Dyck path (one per rotation start) witness the uniform count $C_n$ across all $n+1$ path types, though pairwise-distinctness of types across rotations remains open here."},
     {
       "id": "sec-cf-definitions",
       "title": "Definitions: IsDyckPath and chungFellerRot",
