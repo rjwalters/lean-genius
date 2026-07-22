@@ -44,6 +44,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Correcting the Parent's Open Question",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring lays out the correction in full: the parent's claim that x⁵ − x − 1 has 3 real roots is FALSE (it has exactly 1, so 2 complex-conjugate pairs), which breaks the parent's transposition argument; sketches the correct route (Dedekind mod 2 gives cycle type (2,3)) and lists precisely what is machine-checked below versus left open, before importing Mathlib and opening the namespace."
+    },
+    {
       "id": "witness-polynomial",
       "title": "The witness polynomial and its shape",
       "startLine": 57,
