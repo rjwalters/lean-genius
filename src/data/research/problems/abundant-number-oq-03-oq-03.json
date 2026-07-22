@@ -52,7 +52,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Base witness 945 verified axiom-free (kernel decide). Route-1 sigma-arithmetic engine complete and now FULLY ARITHMETIC: isPrimitiveAbundant_mul_prime_arith reduces primitivity of m*p to three divisor-sum inequalities (no Abundant/Deficient predicates), validated end-to-end by primitive_945_via_engine (189*5). Prime window crystallized as I*/(2-I*) < p < I(m)/(2-I(m)). Infinitude open (no odd family known).",
+    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified lake env lean exit 0, all new results [propext, Classical.choice, Quot.sound]): corrected Route 2 PROVED at A091191 strength — extraction (every abundant number has a weakly primitive abundant divisor) + characterization (abundant iff multiple of an A091191-primitive), odd-compatible structure theorem included. 12 is weak-primitive but not strict (perfect divisor 6). Infinitude NOT resolved — question sharpens to: infinitely many odd A091191-primitives? Route-1 sigma engine + prime window unchanged; base witness 945 verified in both senses.",
     "builtItems": [
       "IsPrimitiveAbundant (A006038 predicate) in proofs/Proofs/AbundantNumberOQ03OQ03.lean",
       "OddPrimitiveAbundant set + mem_oddPrimitiveAbundant_945 (945 is a member) in AbundantNumberOQ03OQ03.lean",
@@ -71,7 +71,12 @@
       "isPrimitiveAbundant_mul_prime_arith: fully arithmetic primitivity criterion for m*p (three divisor-sum inequalities)",
       "primitive_945_via_engine: 189*5=945 certified primitive abundant through the arithmetic criterion by decide",
       "not_isPrimitiveAbundant_12 + no_isPrimitiveAbundant_dvd_12 in AbundantNumberOQ03OQ03.lean - Route-2 counterexample (axiom-free, kernel decide)",
-      "instance DecidablePred IsPrimitiveAbundant in AbundantNumberOQ03OQ03.lean"
+      "instance DecidablePred IsPrimitiveAbundant in AbundantNumberOQ03OQ03.lean",
+      "IsWeakPrimitiveAbundant (A091191) + DecidablePred instance in AbundantNumberOQ03OQ03.lean",
+      "exists_isWeakPrimitiveAbundant_dvd (extraction, strong induction) in AbundantNumberOQ03OQ03.lean",
+      "abundant_iff_exists_isWeakPrimitiveAbundant_dvd (characterization) in AbundantNumberOQ03OQ03.lean",
+      "odd_abundant_iff_exists_odd_isWeakPrimitiveAbundant_dvd (odd structure theorem) in AbundantNumberOQ03OQ03.lean",
+      "isWeakPrimitiveAbundant_twelve + IsPrimitiveAbundant.isWeakPrimitiveAbundant in AbundantNumberOQ03OQ03.lean"
     ],
     "insights": [
       "945 = 3³·5·7 is not just the smallest odd abundant number but is odd PRIMITIVE abundant (OEIS A006038): all 15 proper divisors 1,3,5,7,9,15,21,27,35,45,63,105,135,189,315 are deficient — verified axiom-free.",
@@ -83,7 +88,10 @@
       "Route-1 primitivity is now reducible to conditions purely on m and its p-multiples: mem_properDivisors_mul_prime shows every proper divisor of m·p (p prime, 0<m) is either a divisor of m or p·(a proper divisor of m), and isPrimitiveAbundant_mul_prime turns primitivity of m·p into (m·p abundant) ∧ (all divisors of m deficient) ∧ (all p·(proper divisors of m) deficient). The divisor-structure gap flagged in the prior next step is closed.",
       "Deficiency is downward-closed under divisibility: deficient_of_dvd (m ∣ n, n deficient, m≠0 ⇒ m deficient), the dual of Mathlib Nat.Abundant.of_dvd, via monotonicity of the abundancy index (abundancyIndex_le_of_dvd) and the helper deficient_iff_abundancyIndex_lt_two (n≠0 ⇒ (Deficient n ↔ abundancyIndex n < 2)).",
       "Consequence: the isPrimitiveAbundant_mul_prime obligation ∀ d ∈ m.divisors, d.Deficient is EQUIVALENT to just m.Deficient. Route-1 witness search therefore only needs (i) m·p abundant, (ii) m deficient, (iii) every p·e (e proper divisor of m) deficient.",
-      "Route-2 (primitive-part extraction) as recorded is FALSE under the strict IsPrimitiveAbundant (all proper divisors deficient, A071395): 12 is abundant but no divisor of 12 is strict-primitive-abundant (smallest is 20); a perfect proper divisor (6|12) blocks strict primitivity. Extraction holds only for the weaker A091191 notion (no abundant proper divisor)."
+      "Route-2 (primitive-part extraction) as recorded is FALSE under the strict IsPrimitiveAbundant (all proper divisors deficient, A071395): 12 is abundant but no divisor of 12 is strict-primitive-abundant (smallest is 20); a perfect proper divisor (6|12) blocks strict primitivity. Extraction holds only for the weaker A091191 notion (no abundant proper divisor).",
+      "Corrected Route 2 PROVED at A091191 strength: every abundant number has a weakly-primitive (no abundant proper divisor) abundant divisor, by strong induction; upgrades to characterization abundant iff multiple of an A091191-primitive, odd-compatibly (Nat.Abundant.of_dvd + Odd.of_dvd_nat)",
+      "12 is A091191-weakly-primitive but not A071395-strict-primitive: the two notions part ways exactly at the smallest abundant number, blocked only by its perfect divisor 6",
+      "Extraction does NOT give infinitude: the infinite odd abundant set could in principle be generated by finitely many odd A091191-primitives (e.g. 945 alone for Mathlib witnesses) — the open question sharpens to: are there infinitely many odd A091191-primitives?"
     ],
     "mathlibGaps": [
       "No Nat.Coprime.divisors_mul (Finset equality for divisors of a coprime product) in Mathlib v4.31 — only Nat.Coprime.sum_divisors_mul (the sum) and card_divisors_mul (the count). Blocks a clean coprime proper-divisor decomposition."
