@@ -40,7 +40,7 @@
       "Well-founded recursive definition of primeClass using nonSmooth_factor_lt termination",
       "Machine-verified class values c(2)=1, c(13)=2, c(37)=3, c(73)=4, c(1021)=5 via native_decide",
       "Structural properties: class monotonicity, class-1 characterization, positivity",
-      "Axiomatization of four open conjectures (infinitude, Erdős growth, Selfridge bounded, density)"
+      "Axiomatization of two open conjectures (infinitude, density); formal statement of the competing Erdős growth and Selfridge bounded conjectures (as defs, not axioms) with a proved mutual-exclusivity theorem"
     ]
   },
   "sections": [
@@ -89,8 +89,8 @@
       "title": "Main Conjectures (OPEN)",
       "startLine": 208,
       "endLine": 233,
-      "summary": "States the four OPEN conjectures as axioms: infinitude of each class, Erdős growth conjecture ($p_r^{1/r} \\to \\infty$), Selfridge bounded conjecture ($p_r^{1/r}$ bounded), and subpolynomial density of each class. Note Erdős and Selfridge conjectures are mutually exclusive.",
-      "mathContext": "Four axioms: (1) $|\\{p \\leq n : c(p) = r\\}| \\to \\infty$; (2) Erdős: $p_r^{1/r} \\to \\infty$; (3) Selfridge: $\\exists C, p_r^{1/r} \\leq C$; (4) $|\\{p \\leq n : c(p) = r\\}| = n^{o(1)}$. Note (2) and (3) are mutually exclusive."
+      "summary": "States two OPEN conjectures as axioms (infinitude of each class, subpolynomial density of each class) and defines the competing Erdős growth ($p_r^{1/r} \\to \\infty$) and Selfridge bounded ($p_r^{1/r}$ bounded) conjectures as Props, not axioms. Note Erdős and Selfridge conjectures are mutually exclusive.",
+      "mathContext": "Two axioms: (1) $|\\{p \\leq n : c(p) = r\\}| \\to \\infty$; (4) $|\\{p \\leq n : c(p) = r\\}| = n^{o(1)}$. Two further Props (not axioms): (2) Erdős: $p_r^{1/r} \\to \\infty$; (3) Selfridge: $\\exists C, p_r^{1/r} \\leq C$. Note (2) and (3) are mutually exclusive."
     },
     {
       "id": "mutex-density",
@@ -105,7 +105,7 @@
     "historicalContext": "**The Erdős–Selfridge Prime Classification: Measuring Factorization Depth**\n\nPaul Erdős and John Selfridge developed a recursive classification of primes that measures the **factorization depth** of $p + 1$. A prime $p$ is class 1 if $p + 1$ is $3$-smooth (has only 2 and 3 as prime factors). A prime is class $r$ if the largest class among the prime factors of $p + 1$ is $r - 1$. This creates a hierarchy where higher classes require deeper chains of factorizations.\n\nThe classification connects to smooth number theory: the $3$-smooth numbers $\\{2^a \\cdot 3^b\\}$ are the **regular numbers** studied since Babylonian mathematics, and class 1 primes are those adjacent to regular numbers. The sequence of least primes $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ (OEIS A005113) reveals a fascinating chain structure.\n\nRemarkably, Erdős and Selfridge made **contradictory conjectures** about the growth of $p_r$: Erdős believed $p_r^{1/r} \\to \\infty$ (superexponential growth), while Selfridge believed $p_r^{1/r}$ is bounded (at most exponential growth). The known data for $r \\le 5$ is too limited to distinguish these possibilities. The problem appears as A18 in Guy's *Unsolved Problems in Number Theory* and connects to the distribution of primes with prescribed factorization properties of $p + 1$.",
     "problemStatement": "Are there infinitely many primes in each class? If p_r is the least prime in class r, how does p_r^{1/r} behave as r → ∞?",
     "text": "Classify primes by the factorization depth of p+1. Class 1: p+1 is 3-smooth. Class r: all prime factors of p+1 have class ≤ r-1. Are there infinitely many primes in each class? How does p_r^{1/r} grow? Status: OPEN.",
-    "proofStrategy": "We formalize the recursive prime classification, axiomatize known values of p_r from OEIS A005113, state the infinitude conjecture, and present the competing Erdős (p_r^{1/r} → ∞) and Selfridge (bounded) conjectures about growth.",
+    "proofStrategy": "We formalize the recursive prime classification, verify known values of p_r from OEIS A005113 via native_decide (no axioms), axiomatize the infinitude and density conjectures, and present the competing Erdős (p_r^{1/r} → ∞) and Selfridge (bounded) conjectures about growth as unaxiomatized Props with a proved mutual-exclusivity theorem.",
     "keyInsights": [
       "The recursive classification $c(p) = 1 + \\max\\{c(q) : q \\mid p+1\\}$ creates a natural hierarchy measuring how 'deep' the factorization of $p+1$ is—class 1 primes are adjacent to $3$-smooth numbers, and each higher class requires one more level of factorization recursion",
       "The known least primes $p_1 = 2, p_2 = 13, p_3 = 37, p_4 = 73, p_5 = 1021$ form chains: $73 + 1 = 2 \\cdot 37$ (class 3), $1021 + 1 = 2 \\cdot 7 \\cdot 73$ (class 4). The values $p_r^{1/r} \\in \\{2, 3.61, 3.33, 2.92, 4.01\\}$ are genuinely ambiguous about the growth rate",
