@@ -2,7 +2,7 @@
   "id": "erdos-1098-oq-01",
   "title": "Groups with Small Clique Number in the Non-Commuting Graph",
   "slug": "erdos-1098-oq-01",
-  "description": "Characterizes groups with small clique number ω in the non-commuting graph Γ(G). Proves: ω(Γ(G)) = 0 iff G abelian, center elements excluded from large cliques, clique elements lie in different cosets of Z(G), finite index center implies finite clique number. All theorems fully proved (0 sorries, 0 axioms).",
+  "description": "Characterizes groups with small clique number ω in the non-commuting graph Γ(G). Proves: ω(Γ(G)) = 0 iff G abelian, ω = 1 is impossible, center elements are excluded from cliques of size ≥ 2, and abelian groups have clique number ≤ 1. All 8 theorems fully proved (0 sorries, 0 axioms). The coset-injection bound and the finite-index-implies-finite-clique direction remain open questions for this entry (see openQuestions); they are formalized only in the sibling entry erdos-1098, and there modulo an axiom.",
   "meta": {
     "author": "Neumann (1976); Abdollahi-Akbari-Maimani (2006)",
     "sourceUrl": "https://erdosproblems.com/1098",
@@ -105,16 +105,16 @@
       "leanType": "biconditional"
     },
     {
-      "name": "clique_different_cosets",
+      "name": "center_not_in_clique",
       "type": "core",
-      "description": "Clique elements lie in different cosets of Z(G)",
-      "leanType": "∀ g h ∈ clique, g⁻¹*h ∉ Z(G)"
+      "description": "Center elements cannot appear in any clique of size ≥ 2",
+      "leanType": "z ∈ Z(G) → IsClique S → 2 ≤ S.card → z ∉ S"
     },
     {
-      "name": "finite_index_implies_finite_clique",
+      "name": "abelian_clique_bound",
       "type": "core",
-      "description": "[G:Z(G)] < ∞ implies ω(Γ(G)) < ∞",
-      "leanType": "Subgroup.index (center G) finite → clique number finite"
+      "description": "In an abelian group every clique has size ≤ 1",
+      "leanType": "(∀ g h, g*h = h*g) → IsClique S → S.card ≤ 1"
     }
   ],
   "crossReferences": [
