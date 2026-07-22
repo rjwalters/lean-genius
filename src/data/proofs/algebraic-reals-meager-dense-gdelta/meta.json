@@ -202,6 +202,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the explicit dense Gδ strengthening",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring. States the parent's open question (exhibit the comeagre transcendentals as an explicit dense Gδ rather than an abstract residual-filter member), the set identity driving the proof — {x | ¬ IsAlgebraic ℚ x} = ⋂_{a algebraic} {a}ᶜ, a countable intersection of open sets since ℝ is T1 — and the dual corollary that the algebraic reals, being dense yet meagre, are not a Gδ (mirroring Mathlib's irrational/rational Gδ/Fσ contrast). Lists the five Main Results."
+    },
+    {
       "id": "abstract-lemmas",
       "title": "Abstract lemmas: complements of countable sets",
       "startLine": 54,
