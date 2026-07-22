@@ -31,6 +31,11 @@ ratio and its limit:
   (`hasNoGrowthLimit_of_two_subseq_limits`): two strictly-monotone index
   subsequences along which the growth ratio tends to distinct limits force
   `HasNoGrowthLimit` — the reusable engine behind the oscillation direction;
+* its convergent-direction companion, a **squeeze criterion**
+  (`hasGrowthLimit_of_le_of_le`): an enumeration eventually sandwiched
+  `a ≤ b ≤ c` between two enumerations of the *same* growth limit `x` inherits
+  that limit `x` (`growthRatio_mono` gives the pointwise ratio comparison), with
+  the exactly-quadratic instance `hasGrowthLimit_of_between_quadratic`;
 * both growth-limit predicates are non-vacuous: an exactly-quadratic
   enumeration `bₖ = c·k²` has growth limit `c`, while an enumeration whose
   quadratic coefficient oscillates between `1` and `2` has **no** growth limit;
@@ -646,5 +651,49 @@ limit `0`.  Contrast `hasGrowthLimit_quadratic` (limit `c`) and
 `0` end of the growth spectrum. -/
 theorem hasGrowthLimit_id_zero : HasGrowthLimit (fun k => k) 0 :=
   hasGrowthLimit_zero_of_linear_bound _ 1 (fun k => by simp)
+
+/-! ## A squeeze criterion for convergence
+
+The convergent-direction companion of `hasNoGrowthLimit_of_two_subseq_limits`: if
+an enumeration `b` is sandwiched between two enumerations `a ≤ b ≤ c` (eventually)
+whose growth ratios both converge to the **same** limit `x`, then `b/k²` also
+converges to `x`.  This is the natural comparison principle for the open direction
+of #326 — a sub-basis enumeration is pointwise squeezed by controlling sequences,
+and if those pin the same quadratic coefficient the sub-basis cannot oscillate. -/
+
+/-- **Growth ratio is monotone in the enumeration.**  A pointwise-larger
+numerator gives a pointwise-larger growth ratio (division by the nonnegative
+`k²`). -/
+theorem growthRatio_mono {a b : ℕ → ℕ} {k : ℕ} (h : a k ≤ b k) :
+    growthRatio a k ≤ growthRatio b k := by
+  have : (a k : ℝ) ≤ (b k : ℝ) := by exact_mod_cast h
+  unfold growthRatio; gcongr
+
+/-- **Squeeze criterion for a growth limit.**  If `a k ≤ b k ≤ c k` holds
+eventually and both `a` and `c` have growth limit `x`, then `b` has growth limit
+`x` as well.  The two bounding ratios trap `growthRatio b` between two sequences
+converging to `x`, so `tendsto_of_tendsto_of_tendsto_of_le_of_le'` forces the
+squeeze.  Convergent-direction counterpart of
+`hasNoGrowthLimit_of_two_subseq_limits`. -/
+theorem hasGrowthLimit_of_le_of_le {a b c : ℕ → ℕ} {x : ℝ}
+    (hab : ∀ᶠ k in atTop, a k ≤ b k) (hbc : ∀ᶠ k in atTop, b k ≤ c k)
+    (ha : HasGrowthLimit a x) (hc : HasGrowthLimit c x) : HasGrowthLimit b x := by
+  have e1 : ∀ᶠ k in atTop, growthRatio a k ≤ growthRatio b k := by
+    filter_upwards [hab] with k hk using growthRatio_mono hk
+  have e2 : ∀ᶠ k in atTop, growthRatio b k ≤ growthRatio c k := by
+    filter_upwards [hbc] with k hk using growthRatio_mono hk
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' ha hc e1 e2
+
+/-- **Sandwich between two exactly-quadratic enumerations with the same
+coefficient.**  If `c·k² ≤ b k ≤ c·k²` — more usefully, if `b` is eventually
+trapped between two enumerations both of growth limit `c` — then `b` has growth
+limit `c`.  Concrete instance of `hasGrowthLimit_of_le_of_le` against the
+exactly-quadratic witnesses `hasGrowthLimit_quadratic`: any enumeration pinned
+between `c·k²` and `c·k²` from below/above inherits the limit `c`. -/
+theorem hasGrowthLimit_of_between_quadratic (b : ℕ → ℕ) (c : ℕ)
+    (hlo : ∀ᶠ k in atTop, c * k ^ 2 ≤ b k)
+    (hhi : ∀ᶠ k in atTop, b k ≤ c * k ^ 2) : HasGrowthLimit b (c : ℝ) :=
+  hasGrowthLimit_of_le_of_le hlo hhi (hasGrowthLimit_quadratic c)
+    (hasGrowthLimit_quadratic c)
 
 end Erdos326

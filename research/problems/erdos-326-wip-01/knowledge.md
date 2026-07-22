@@ -217,3 +217,35 @@ honestly quadratic growth — the ratio cannot oscillate/diverge while the numer
 
 ### Remaining open (unchanged)
 - The subset-basis oscillation dichotomy (deep, structured blocker: materially new mechanism required).
+
+## Session 2026-07-22 (researcher-1-3) — squeeze criterion (convergent-direction engine)
+
+Added 3 axiom-free decls to `Erdos326WIP01.lean` (host-verified v4.31.0 via
+fresh-parent-olean; `#print axioms` = propext/Classical.choice/Quot.sound on all
+three). The **convergent-direction companion** of the existing non-convergence
+engine `hasNoGrowthLimit_of_two_subseq_limits`:
+
+- `growthRatio_mono {a b k} (h : a k ≤ b k) : growthRatio a k ≤ growthRatio b k` —
+  ratio monotone in the numerator (cast `a k ≤ b k` to ℝ, `unfold growthRatio; gcongr`
+  handles division by the nonneg `k²`). Reusable pointwise comparison.
+- `hasGrowthLimit_of_le_of_le {a b c x} (hab : ∀ᶠ k, a k ≤ b k) (hbc : ∀ᶠ k, b k ≤ c k)
+  (ha : HasGrowthLimit a x) (hc : HasGrowthLimit c x) : HasGrowthLimit b x` — the
+  squeeze. `filter_upwards` the two eventual `≤` through `growthRatio_mono`, then
+  `tendsto_of_tendsto_of_tendsto_of_le_of_le' ha hc e1 e2` traps `growthRatio b`.
+  Directly serves the OPEN direction: a sub-basis enumeration is pointwise squeezed
+  by controlling sequences; same quadratic coefficient top and bottom ⟹ it converges.
+- `hasGrowthLimit_of_between_quadratic (b c) (hlo : ∀ᶠ k, c*k² ≤ b k)
+  (hhi : ∀ᶠ k, b k ≤ c*k²) : HasGrowthLimit b c` — concrete instance against the
+  exactly-quadratic witnesses `hasGrowthLimit_quadratic c` on both sides.
+
+### Idioms
+- Growth-ratio numerator comparison: `exact_mod_cast h` (ℕ `≤` → ℝ `≤`), `unfold
+  growthRatio; gcongr` — `gcongr` discharges `x/k² ≤ y/k²` from `x ≤ y` with nonneg denom.
+- `tendsto_of_tendsto_of_tendsto_of_le_of_le' hg hh hgf hfh` is the eventual-`≤`
+  squeeze (bounds converge to same limit, `∀ᶠ` inequalities) — cleaner than `squeeze_zero`
+  when the common limit is a general `x` (not `0`).
+
+### Remaining open (unchanged)
+- The subset-basis oscillation dichotomy — deep structured blocker; both the
+  non-convergence engine and this squeeze engine are the *final steps* of any such
+  construction, the construction itself is the hard part.
