@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Is minEdges Monotone in d?",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Investigates whether minEdges(d), the minimum edges in a graph of dimension exactly d, is monotone non-decreasing — known values 1,3,6,9,15 for d=1..5 are monotone — proving monotonicity on [0,5], a deficiency-bound sufficient condition, an equivalence with consecutive monotonicity, and an unconditional gap theorem between far-apart values.",
+      "mathContext": "$\\mathrm{minEdges}(1..5) = 1,3,6,9,15$ (monotone); a sufficient condition $\\mathrm{deficiency}(d)\\le d\\ \\forall d$ implies full monotonicity, reduced to checking consecutive values."
+    },
+    {
       "id": "abstract-function",
       "title": "Abstract Minimum Edges Function",
       "summary": "Defines `knownMinEdges` recording the 6 known values (0,1,3,6,9,15) and `MinEdgesConstraints` structure capturing the properties any candidate for the true minEdges function must satisfy: agreement with known values, lower bound $d \\le f(d)$, and upper bound $f(d) \\le \\binom{d+1}{2}$.",
