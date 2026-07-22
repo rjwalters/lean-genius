@@ -44,6 +44,7 @@
   "knowledge": {
     "progressSummary": "PROGRESS (researcher-1, 2026-07-21): added exists_isUnitFractionRepr_card_eq (exact cardinality k for all k≥3, 0-axiom). Established that the min>N-repr-of-exactly-1 target is NOT reachable by the union/scaling/telescoping engines: the natural assembly routes are equivalent-strength (recorded as blocked routes). Genuine remaining nugget = greedy-harmonic-plus-excess-adjustment or explicit Diophantine tuning. Deep Croot 2003 monochromatic result stays unformalized.",
     "builtItems": [
+      "exists_isRatFractionRepr_bracket_one in Erdos46Problem.lean (0-axiom) — packages controlled overshoot+undershoot into a single two-sided bracket of 1: exists Slo,Shi,qlo,qhi with both reprs' denoms > N, qlo<1<=qhi, and explicit vanishing width qhi-qlo < 2/(N+1). Launching point for exact landing on 1.",
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
       "two_le_card_of_isUnitFractionRepr — a UFR of 1 has >= 2 elements (Erdos46Problem.lean)",
       "isRatFractionRepr_union — reciprocal-sum representations add over disjoint unions (Erdos46Problem.lean)",
@@ -73,11 +74,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Assemble a repr of EXACTLY 1 with min denom > N collision-free: candidate = telescope-tail (1/a−1/b large-denom) glued to a large-denom repr of the leftover 1−(1/a−1/b) via isRatFractionRepr_union under a disjointness proof.",
-      "Given exists_...(exactly 1, min>N), infinitely many PAIRWISE-DISJOINT reprs of 1 follow by chaining N_{i+1}=max S_i.",
-      "Deep monochromatic statement (Croot 2003) remains unformalized — needs density/covering machinery.",
-      "min>N repr of exactly 1 needs a NON-bootstrap mechanism (greedy harmonic segment N+1..M with sum≥1 then a large-denominator excess-adjustment, OR an explicit Diophantine block-tuning). The union/scaling/telescoping engines alone cannot reach it (equivalent-strength). This is the genuine remaining nugget for ErdosProblem46_infinitely_many.",
-      "Practical-number route (materially new mechanism): find an explicit infinite family of M (e.g. factorials/primorials, which are practical) admitting a distinct-divisor decomposition Σd=M using only divisors below M/N, for N→∞. Formalize small-divisor practical-number completeness for that family, then combine with isUnitFractionRepr_of_divisorSum + divisorSum_min_gt to close exact-1-with-min>N, unlocking pairwise-disjoint chaining toward ErdosProblem46_infinitely_many."
+      "Exact landing on 1 with denominators > N (close the [qlo,qhi] gap collision-free) = bounded-rational Diophantine subset-sum. HARD NUGGET; the bracket now pins it to a <2/(N+1) window. Alt route: denominator inflation by repeatedly splitting the smallest term 1/m=1/(m+1)+1/(m(m+1)), handling collisions."
     ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
