@@ -44,6 +44,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Is |\ud835\udcab(\u211d)| = \u2135\u2082?", "startLine": 1, "endLine": 37, "summary": "States the research question \u2014 whether |\ud835\udcab(\u211d)| = \u2135\u2082, independent of ZFC (true under GCH+CH by G\u00f6del 1938, but any regular cardinal above \u2135\u2081 is possible under \u00acGCH by Easton 1970) \u2014 and outlines the four angles explored: equivalent formulations, implications for \u211d and Set \u211d, cofinality constraints via K\u00f6nig's theorem, and the trichotomy |\ud835\udcab(\u211d)| \u2276 \u2135\u2082.", "mathContext": "K\u00f6nig's theorem $\\mathrm{cf}(2^{\\aleph_0}) > \\aleph_0$ constrains which cardinals $2^{\\aleph_0}$ can equal; Easton's theorem shows $2^{\\aleph_0}$ can consistently be any regular cardinal of uncountable cofinality exceeding $\\aleph_1$."},
     {
       "id": "definitions",
       "title": "The Proposition and Beth Equivalence",
