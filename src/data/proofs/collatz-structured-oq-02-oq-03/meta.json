@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 2329,
-    "assumptions": "1 axiom: tao_2019 — the precise statement of Tao (2019, Forum Math. Pi), that for every f : ℕ → ℝ with f n → ∞ the set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. This is the deep analytic result the open question asks about; it is recorded, not proved, because its proof (3-adic transport/concentration estimates plus a Fourier-analytic input) is far beyond current Mathlib. No theorem in the file is derived from this axiom — the proven Parts II–III are independently machine-verified and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound.",
+    "assumptions": "1 axiom: tao_2019 — the precise statement of Tao (2019, Forum Math. Pi), that for every f : ℕ → ℝ with f n → ∞ the set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. This is the deep analytic result the open question asks about; it is recorded, not proved, because its proof (3-adic transport/concentration estimates plus a Fourier-analytic input) is far beyond current Mathlib. No theorem in the file is derived from this axiom — the proven Parts II–III are independently machine-verified and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound. Trust caveat: the finite density/certificate checks (attainsBelow_density_lower_16_general and autoDropCert_attainsBelow evaluated on concrete residues) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite evaluations; the headline logarithmic-density-one claim rests on the stated axiom (tao_2019).",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.31.0",
     "theoremCount": 81,

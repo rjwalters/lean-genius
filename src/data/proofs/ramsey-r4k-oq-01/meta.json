@@ -21,7 +21,7 @@
     "lineCount": 187,
     "theoremCount": 17,
     "definitionCount": 0,
-    "assumptions": "4 assumptions: 1 opaque constant (ramseyR4k \u2014 the actual R(4,k) Ramsey number, declared opaque since no closed form is known) + 3 axioms: (1) ramseyR4k_classical_upper \u2014 classical binomial bound R(4,k) \u2264 C(k+2,3), proved in parent file; (2) aks_r4k_upper \u2014 AKS probabilistic deletion bound R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2, requires triangle-free process; (3) mv_r4k_lower \u2014 Mattheus-Verstra\u00ebte algebraic geometry bound R(4,k) \u2265 c\u00b7k\u00b3/(log k)\u2074, requires Hermitian varieties over F_q.",
+    "assumptions": "4 assumptions: 1 opaque constant (ramseyR4k \u2014 the actual R(4,k) Ramsey number, declared opaque since no closed form is known) + 3 axioms: (1) ramseyR4k_classical_upper \u2014 classical binomial bound R(4,k) \u2264 C(k+2,3), proved in parent file; (2) aks_r4k_upper \u2014 AKS probabilistic deletion bound R(4,k) \u2264 C\u00b7k\u00b3/(log k)\u00b2, requires triangle-free process; (3) mv_r4k_lower \u2014 Mattheus-Verstra\u00ebte algebraic geometry bound R(4,k) \u2265 c\u00b7k\u00b3/(log k)\u2074, requires Hermitian varieties over F_q. Trust caveat: the finite binomial evaluations (comb_bound_k4 = C(6,3) = 20, comb_bound_k10 = C(12,3) = 220, comb_bound_k20 = C(22,3) = 1540, comb_bound_k50 = C(52,3) = 22100, feeding r4_4_le_20 and r4_10_le_220) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite arithmetic checks; the headline bounds rest on the stated assumptions (ramseyR4k opaque + ramseyR4k_classical_upper, aks_r4k_upper, mv_r4k_lower).",
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pos",
