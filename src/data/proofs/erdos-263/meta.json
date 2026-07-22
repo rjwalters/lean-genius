@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-263",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #263 on irrationality sequences: does $a_n = 2^{2^n}$ force $\\sum 1/b_n$ irrational for every $b_n/a_n \\to 1$? Notes the folklore sufficient condition $\\lim a_n^{1/2^n}=\\infty$ and Kova\u010d\u2013Tao's (2024) partial converse.",
+      "startLine": 1,
+      "endLine": 22,
+      "mathContext": "Kova\u010d\u2013Tao showed strictly increasing sequences with $\\sum 1/a_n$ convergent and $\\lim a_{n+1}/a_n^2=0$ fail to be irrationality sequences, narrowing the search for the exact growth threshold that forces irrationality."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's real analysis, irrationality definitions, power functions, and topology framework. Opens the $\\texttt{Filter}$, $\\texttt{Topology}$, and $\\texttt{Real}$ namespaces.",
