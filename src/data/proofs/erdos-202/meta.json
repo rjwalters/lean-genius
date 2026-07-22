@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-202",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #202 on disjoint covering systems: for residues $a_i \\bmod n_i$ ($n_1 < \\cdots < n_r \\le N$) forming pairwise disjoint congruence classes, how large can $r=f(N)$ be? The Erd\u0151s\u2013Stein conjecture $f(N)=o(N)$ was proved by Erd\u0151s\u2013Szemer\u00e9di (1968); sharper bounds followed from Croot (2003) and Chen/de la Bret\u00e8che\u2013Ford\u2013Vandehey (2013).",
+      "startLine": 1,
+      "endLine": 58,
+      "mathContext": "With $L(N)=\\exp(\\sqrt{\\log N \\log\\log N})$, the best known bounds sandwich $f(N)$ between $N/L(N)^{1+o(1)}$ and $N/L(N)^{\\sqrt3/2+o(1)}$; the lower-bound exponent is conjectured to be the truth."
+    },
+    {
       "id": "imports",
       "title": "Imports and Namespace",
       "startLine": 59,
