@@ -93,6 +93,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: Packaging the Determinant–Shear Volume Technique",
+      "startLine": 1,
+      "endLine": 54,
+      "mathContext": "Goal: $\\operatorname{vol}(M\\cdot[a,b]) = |\\det M|\\prod_i(b_i-a_i)$, closing the parent's open $\\operatorname{vol}(K(\\alpha,N))=4$ step.",
+      "summary": "Docstring framing the entry against the parent's single open volume step (volume(body α N) = 4) and packaging the general-dimension 'volume = |det| · box volume' lemma its third open question requested. Previews the five results (the reusable core, unit-cube volume, concrete parallelepiped volume, the 2-D shoelace specialisation, and the Dirichlet-body closure) and notes the relation to Mathlib's abstract addHaar_image_linearMap / addHaar_parallelepiped. import Mathlib only; opens the namespace."
+    },
+    {
       "id": "reusable-core",
       "title": "The Reusable Core: volume of a box-image = |det| · box volume",
       "startLine": 55,
@@ -112,7 +120,7 @@
       "id": "plane-and-dirichlet",
       "title": "The Plane Specialisation and the Dirichlet Body Volume",
       "startLine": 106,
-      "endLine": 123,
+      "endLine": 130,
       "mathContext": "Area of the $(a,b),(c,d)$ parallelogram $= |ad - bc|$; $\\operatorname{vol}(\\text{shear}\\cdot[-N,N]\\times[-1/N,1/N]) = 4$.",
       "summary": "volume_parallelogram_2d evaluates Matrix.det_fin_two on the 2×2 coordinate matrix to recover the shoelace area |a·d − b·c|. volume_dirichlet_body instantiates the core lemma at the shear !![1,0; α,−1] (determinant −1 by Matrix.det_fin_two_of) and the box [−N,N]×[−1/N,1/N]: |det| = 1 and the sides (2N)(2/N) = 4 (ENNReal.ofReal_mul, N > 0), closing the parent entry's open volume(K) = 4 step."
     }
