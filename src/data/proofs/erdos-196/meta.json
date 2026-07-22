@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-196",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #196 (must every permutation of $\\mathbb{N}$ contain a monotone 4-term AP?), noting DEGS (1977) proved the $k=3$ case YES and the $k=5$ case NO, leaving $k=4$ as the central open question.",
+      "startLine": 1,
+      "endLine": 20,
+      "mathContext": "LeSaulnier\u2013Vijay (2011) showed permutations can avoid monotone 4-APs with odd common difference, while a monotone 3-AP with odd common difference always exists \u2014 a partial structural result short of resolving $k=4$."
+    },
+    {
       "id": "imports",
       "title": "Imports and Module Overview",
       "startLine": 21,
