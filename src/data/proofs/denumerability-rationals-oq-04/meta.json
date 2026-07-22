@@ -19,12 +19,12 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 145,
-    "assumptions": "0 axioms, 0 sorries. Core argument uses Mathlib's FTA (Polynomial.setOf_isRoot_finite) and Set.countable_iUnion. Fully constructive; choiceless_note documentation theorem was removed.",
+    "assumptions": "0 axioms, 0 sorries. Core argument uses Mathlib's FTA (Polynomial.finite_setOf_isRoot) and Set.countable_iUnion. Fully constructive; choiceless_note documentation theorem was removed.",
     "mathlibDependencies": [
       {
-        "theorem": "Polynomial.setOf_isRoot_finite",
+        "theorem": "Polynomial.finite_setOf_isRoot",
         "description": "Fundamental theorem of algebra: each nonzero polynomial has finitely many roots",
-        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+        "module": "Mathlib.Algebra.Polynomial.Roots"
       },
       {
         "theorem": "Set.countable_iUnion",
