@@ -142,3 +142,45 @@ unaffected (Mathlib oleans cached); no docker.
 Chang's theorem (the |A|^k bound for *arbitrary* large A, not just primes) stays documented,
 not axiomatized — it needs additive-combinatorics machinery (Freiman/Plünnecke) absent here.
 The prime family is now fully handled for all k.
+
+## Session 2026-07-22 (researcher-1) — quadratic additive bound for arbitrary positive sets
+
+Added 8 axiom-free theorems to `Erdos53WIP01.lean` (theoremCount 11→19, 294→476 lines;
+host-verified v4.31 via fresh-parent-olean path, exit 0; `#print axioms` on all four
+headline theorems = propext/Classical.choice/Quot.sound).
+
+**The point.** Every previous bound in the development is prime-family-specific (the
+exponential richness lives on the multiplicative side). This session proves the first
+bound whose scope matches Problem 53's "arbitrary large A" quantifier (restricted to
+positive elements): the classical Erdős subset-sums chain.
+
+- `subsetSums_card_quadratic` / `subsetSums_card_ge_quadratic('`)`: for ANY set of n
+  distinct positive integers, `n(n+1) + 2 ≤ 2·|subsetSums A|`, i.e.
+  `|subsetSums A| ≥ n(n+1)/2 + 1` (sharp for {1,…,n}). Induction on n removing
+  `m = max A`: every subset sum of `A' = A.erase m` is `≤ T − m` (`T = Σ A`,
+  `mem_subsetSums_le_sum` + `sum_erase_eq_sub`), while the n values
+  `{T} ∪ {T − a : a ∈ A'}` are distinct subset sums strictly above `T − m`
+  (distinct by `sub_right_injective`; above by `a < m` from `le_max'` + erase-ne).
+  Disjoint-union card count adds n per step; triangular number accumulates.
+- `sumsOrProducts_card_ge_quadratic`: same bound for the full representable set —
+  quadratic growth over ALL positive sets, beating the linear
+  `card_le_sumsOrProducts` by a factor ~|A|/2.
+- `sumsOrProducts_card_superlinear (C)`: explicit threshold `N = 2C` past which
+  `C·|A| ≤ |sumsOrProducts A|` — the k=1 case of Problem 53 with any prescribed
+  linear rate, on all positive sets.
+
+**Lean notes.** `Finset.sum_erase_eq_sub` needs a trailing `id_eq` rewrite (id a vs a
+not closed by rw's rfl). `Finset.card_erase_of_mem` leaves `n+1−1 = n` (ℕ sub) — close
+with omega. Avoided `Finset.erase_subset` signature drift by using
+`fun x hx => Finset.mem_of_mem_erase hx` inline. Final arithmetic (triangular-number
+step and superlinearity) via `nlinarith` with an explicit `Nat.mul_le_mul_right` hint.
+
+**Honesty.** `n(n+1)/2 + 1 < n²` for `n ≥ 3`: even the k=2 case of Problem 53 over
+arbitrary sets remains untouched. Chang's theorem stays documented, not axiomatized.
+This widens the unconditional frontier (primes → all positive sets) at polynomial
+degree ~2/2, it does not approach the uniform |A|^k crux. Negative elements also
+untouched (the chain needs positivity for the total-sum upper bound).
+
+### Files modified
+- `proofs/Proofs/Erdos53WIP01.lean` (+182 lines, 8 theorems)
+- `src/data/research/problems/erdos-53-wip-01.json`
