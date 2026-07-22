@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Eliminating the Weierstrass-Product Axiom",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "States the open question — can the parent entry's axiomatized sin(πx)/(πx) = ∏'(1−x²/n²) be proved without the Weierstrass factorization theorem or contour integration? — and answers yes: Mathlib's `Real.tendsto_euler_sin_prod` gives the Euler product as a partial-product limit via an elementary Wallis-integral recursion, and the missing bridge (partial-product limit ⟹ infinite tprod, via multipliability from ∑x²/n² converging) is what this file supplies, eliminating the parent's axiom entirely.",
+      "mathContext": "The parent's axiom $\\sin(\\pi x)/(\\pi x) = \\prod_{n=1}^{\\infty}(1-x^2/n^2)$ is reproved 0-axiom by bridging Mathlib's limit form $\\pi x\\cdot\\prod_{j<n}(1-x^2/(j+1)^2) \\to \\sin(\\pi x)$ to the `tprod` form via multipliability, which holds since $\\sum x^2/n^2$ converges for every real $x$."
+    },
+    {
       "id": "sec-convergence",
       "title": "I. Convergence of the product factors",
       "startLine": 47,
