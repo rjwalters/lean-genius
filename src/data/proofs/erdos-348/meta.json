@@ -55,9 +55,7 @@
       "ValidPairs set characterization as formal set comprehension",
       "Powers of 2 witness (0,1) validity: PROVED completeness (binary representation by strong induction) and non-1-robustness (even-sum argument: all 2^i for i≥1 are even)",
       "Fibonacci sequence witness (1,2) validity with Zeckendorf-based completeness",
-      "Van Doorn's theorem formalized: no strongly complete sequence is 2-robust",
-      "Representation count function and equivalence with completeness",
-      "Gap property: complete sequences have eventually bounded gaps",
+      "Fibonacci-specific instance proved: fib_not_2_robust (removing the two indices 0,1 breaks completeness); the general Van Doorn theorem (no strongly complete sequence is 2-robust) is noted in prose only, not formalized",
       "Main conjecture as disjunction: all (m,m+1) valid or cutoff exists"
     ],
     "axiomCount": 1,
