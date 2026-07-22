@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Sharpening Lamé's Bound to the Golden-Ratio Constant",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "States the open question from the parent entry — sharpen Lamé's Θ(log) step-count bound to the exact golden-ratio constant ⌊log_φ b⌋+O(1) — and previews the answer: `lame_fib_lower` (the missing converse direction, n+1≤steps a b ⟹ fib(n+2)≤b) combines with Fibonacci's φⁿ growth to give `steps_le_logb_golden`: steps a b ≤ log_φ b + 1, with the constant 1 shown optimal by the parent's Fibonacci worst-case family.",
+      "mathContext": "Lamé's theorem for the extended Euclidean algorithm: the parent showed steps a b = Θ(log b) up to an unspecified constant; this file pins the constant to the golden ratio $\\varphi=(1+\\sqrt5)/2$ via $\\varphi^n \\le \\mathrm{fib}(n+2)$, giving the sharp bound $\\text{steps}\\,a\\,b \\le \\log_\\varphi b + 1$."
+    },
+    {
       "id": "step-counter",
       "title": "Step Counter (mirrored from the parent)",
       "startLine": 61,
