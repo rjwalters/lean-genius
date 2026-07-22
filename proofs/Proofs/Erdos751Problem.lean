@@ -12,12 +12,14 @@ if the girth of G is large?
 Answer: NO
 
 Bondy and Vince (1998) proved that every graph with minimum degree at least 3
-has two cycles whose lengths differ by at most 2. Since every graph with
-chromatic number 4 has minimum degree at least 3, the answer follows.
+has two cycles whose lengths differ by at most 2. Every graph with chromatic
+number 4 contains a subgraph H with minimum degree at least 3, and every cycle
+of H is a cycle of G, so the answer follows.
 
 Key Insight:
-The chromatic number lower bounds the minimum degree (χ(G) ≤ Δ(G) + 1, and
-more relevantly, minimum degree at least χ(G) - 1 for graphs with χ(G) ≥ 2).
+The chromatic number lower bounds the degeneracy: a graph with χ(G) ≥ k always
+contains a subgraph of minimum degree ≥ k - 1 (the bound is on a subgraph, not
+on G itself — a 4-chromatic graph can still have low-degree vertices).
 
 References:
 - Bondy, Vince (1998): "Cycles in a graph whose lengths differ by one or two"
@@ -115,12 +117,31 @@ More importantly for us:
   If χ(G) ≥ k, then G has a subgraph with minimum degree ≥ k - 1.
 -/
 /--
-**Alternative formulation:**
-Every graph with chromatic number 4 contains a subgraph of minimum degree 3.
-In fact, for χ(G) = 4, we need minimum degree at least 3.
--/
+**Chromatic number and degeneracy (subgraph minimum degree):**
+The true chromatic–degeneracy result: if `χ(G) ≥ k` then `G` contains a subgraph
+`H ≤ G` with minimum degree `≥ k - 1`. For `χ(G) = 4` this gives a subgraph of
+minimum degree `≥ 3`.
+
+The bound is on a **subgraph**, not on `G` itself. A 4-chromatic graph can have
+low-degree vertices — e.g. `K₄` together with a pendant vertex is 4-chromatic yet
+has `δ(G) = 1` — so the naïve statement `χ(G) = 4 → minDegree G ≥ 3` is false. The
+color-critical (equivalently, greedy/degeneracy) argument always yields a subgraph
+`H` with `δ(H) ≥ 3`, and every cycle of `H` is a cycle of `G` (see
+`cycleLengths_mono`), which is exactly what the Bondy–Vince reduction needs. -/
 axiom four_chromatic_minDeg (G : SimpleGraph V) [DecidableRel G.Adj] :
-    chromaticNumber G = 4 → minDegree G ≥ 3
+    chromaticNumber G = 4 →
+    ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
+      H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3
+
+/--
+**Cycle lengths are monotone under subgraph inclusion.**
+Every cycle of a subgraph `H ≤ G` is a cycle of `G`: map the cycle walk along the
+inclusion (which is injective and length-preserving). This lets us transfer the
+Bondy–Vince conclusion from the min-degree-3 subgraph back to `G`. -/
+theorem cycleLengths_mono {G H : SimpleGraph V} [DecidableRel G.Adj]
+    [DecidableRel H.Adj] (h : H ≤ G) : cycleLengths H ⊆ cycleLengths G := by
+  rintro n ⟨v, c, hc, rfl⟩
+  exact ⟨v, c.mapLe h, hc.mapLe h, by simp⟩
 
 /-
 ## Part III: Bondy-Vince Theorem
@@ -163,8 +184,10 @@ theorem erdos_751_chromatic_4 (G : SimpleGraph V) [DecidableRel G.Adj] :
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 := by
   intro hchi
-  have hminDeg : minDegree G ≥ 3 := four_chromatic_minDeg G hchi
-  exact bondy_vince_theorem G hminDeg
+  obtain ⟨H, inst, hHG, hHdeg⟩ := four_chromatic_minDeg G hchi
+  haveI := inst
+  obtain ⟨m, m', hm, hm', hne, h1, h2⟩ := bondy_vince_theorem H hHdeg
+  exact ⟨m, m', cycleLengths_mono hHG hm, cycleLengths_mono hHG hm', hne, h1, h2⟩
 
 /--
 **Erdős Problem #751: Part 2**
@@ -217,13 +240,15 @@ theorem min_degree_3_cycle_gap (G : SimpleGraph V) [DecidableRel G.Adj] :
   bondy_vince_theorem G
 
 /--
-**Why Chromatic Number 4 Implies Minimum Degree 3:**
-A graph with χ(G) = 4 must have a vertex of degree ≥ 3.
-Actually, it must have minimum degree ≥ 3 (otherwise we could
-color greedily with fewer colors).
+**Why Chromatic Number 4 Yields a Minimum-Degree-3 Subgraph:**
+A graph with χ(G) = 4 must contain a subgraph `H ≤ G` with minimum degree ≥ 3
+(otherwise we could color greedily with fewer colors). Note the bound is on the
+subgraph, not on `G` itself.
 -/
 theorem chromatic_4_implies_min_deg_3 (G : SimpleGraph V) [DecidableRel G.Adj] :
-    chromaticNumber G = 4 → minDegree G ≥ 3 :=
+    chromaticNumber G = 4 →
+    ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
+      H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3 :=
   four_chromatic_minDeg G
 
 /-
@@ -234,8 +259,8 @@ theorem chromatic_4_implies_min_deg_3 (G : SimpleGraph V) [DecidableRel G.Adj] :
 **Erdős Problem #751: SOLVED**
 
 Summary of results:
-1. Bondy-Vince: δ(G) ≥ 3 ⟹ two cycles differ by at most 2
-2. χ(G) = 4 ⟹ δ(G) ≥ 3
+1. Bondy-Vince: δ(H) ≥ 3 ⟹ two cycles differ by at most 2
+2. χ(G) = 4 ⟹ ∃ subgraph H ≤ G with δ(H) ≥ 3 (whose cycles are cycles of G)
 3. Therefore: χ(G) = 4 ⟹ gap ≤ 2
 
 The answer is NO - the gap cannot be arbitrarily large, and large
@@ -250,8 +275,10 @@ theorem erdos_751_summary (G : SimpleGraph V) [DecidableRel G.Adj] :
     (minDegree G ≥ 3 →
       ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
         (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2) ∧
-    -- Connection: χ = 4 implies min degree ≥ 3
-    (chromaticNumber G = 4 → minDegree G ≥ 3) :=
+    -- Connection: χ = 4 yields a subgraph of min degree ≥ 3
+    (chromaticNumber G = 4 →
+      ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
+        H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3) :=
   ⟨erdos_751_chromatic_4 G, min_degree_3_cycle_gap G, chromatic_4_implies_min_deg_3 G⟩
 
 end Erdos751
