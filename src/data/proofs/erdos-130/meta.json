@@ -29,6 +29,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring: states Erdős Problem #130 — given an infinite set $A \\subseteq \\mathbb{R}^2$ with no three points collinear and no four points cocircular, form the integer-distance graph $G(A)$ on vertex set $A$ connecting pairs at integer distance. Poses whether the chromatic number $\\chi(G(A))$ can be infinite, whether the clique number $\\omega(G(A))$ can be infinite, and how large $\\chi(G(A))$ can be. Records Anning–Erdős (1945): $\\omega(G(A))$ must be finite under these hypotheses, but the chromatic-number question remains open.",
+      "mathContext": "$G(A)$: vertices $A$, edges $\\{p,q\\}$ with $|pq| \\in \\mathbb{Z}_{>0}$, for $A$ with no 3 collinear and no 4 cocircular points. Anning–Erdős: $\\omega(G(A)) < \\infty$. Open: $\\chi(G(A)) \\overset{?}{=} \\infty$."
+    },
+    {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 20,
