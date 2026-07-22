@@ -106,8 +106,8 @@
       "title": "The $\\alpha > 2$ Regime",
       "startLine": 200,
       "endLine": 221,
-      "summary": "Two axioms for the parameter $\\alpha = k/p_u$: `erdos_selfridge_exact` ($2 < \\alpha < 3$, exact value of $F_k$ exists — paper not located), `alpha_gt_3_open` ($\\alpha > 3$, $F_k$ bounded between $k(d-1)$ and $kd + u$).",
-      "mathContext": "When $k = \\alpha p_u$ with $2 < \\alpha < 3$, the interval spans 2+ complete periods of $p_u$, enabling exact computation. For $\\alpha > 3$: only density bounds are known."
+      "summary": "Two theorems for the parameter $\\alpha = k/p_u$: `erdos_selfridge_exact` ($2 < \\alpha < 3$, a trivially-proved existence statement — the Erdős-Selfridge exact formula itself is not derived, paper not located), `alpha_gt_3_open` ($\\alpha > 3$, $F_k$ bounded between $k(d-1)$ and $kd + u$, proved from `covering_lower_bound` and the axiom `covering_upper_bound`).",
+      "mathContext": "When $k = \\alpha p_u$ with $2 < \\alpha < 3$, the interval spans 2+ complete periods of $p_u$, enabling exact computation (formula not formalized here). For $\\alpha > 3$: only density bounds are known, proved modulo the `covering_upper_bound` axiom."
     },
     {
       "id": "examples",
