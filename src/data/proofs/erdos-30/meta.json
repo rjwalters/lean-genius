@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-30",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #30 (\\$1000 prize) on Sidon sets: is the maximum Sidon-set size $h(N)$ in $\\{1,\\dots,N\\}$ equal to $N^{1/2}+O_\\varepsilon(N^\\varepsilon)$ for every $\\varepsilon>0$? Traces bounds from Erd\u0151s\u2013Tur\u00e1n (1941) and Singer (1938) through Carter\u2013Hunter\u2013O'Bryant (2025).",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "A Sidon set has all pairwise sums distinct; the gap between the proven upper bound $N^{1/2}+0.98183N^{1/4}+O(1)$ and lower bound $(1-o(1))N^{1/2}$ is exactly whether the $N^{1/4}$-order term can be shrunk to $N^\\varepsilon$."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines IsSidonSet (ordered pairwise sum distinctness), HasDistinctSums (unordered variant), and proves their equivalence via case analysis on orderings.",
