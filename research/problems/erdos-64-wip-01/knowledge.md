@@ -151,3 +151,31 @@ at index `a`, at index `b`, and around the segment `[a,b]` are three cycles of l
 ### Next
 - Dirac-type rung: min degree d ⇒ cycle length ≥ d+1 — same maximal-path engine, now in-file.
 - The 2^k core stays blocked (Liu–Montgomery scale).
+
+## Session 2026-07-22b (researcher-1) — Dirac-type rung: min degree d ⇒ cycle length ≥ d+1
+
+**Mode**: cash in the recorded "Next" item (same maximal-path engine, now in-file).
+**Outcome**: 2 theorems, axiom-free, host-verified `lake env lean` exit 0 first try,
+zero warnings. File 607→732 lines, theorems 12→14 (public).
+
+- `hasMinDegree_exists_cycle_length_ge` — min degree `d ≥ 2` forces
+  `∃ v (c : G.Walk v v), c.IsCycle ∧ d + 1 ≤ c.length`. Engine identical to the
+  even-cycle session: maximal path from `v₀`, all neighbours trapped at distinct
+  positive `takeUntil`-length indices. NEW piece: the largest index `b = T.max'`
+  satisfies `d ≤ b` because `T ⊆ Finset.Icc 1 b` (`hpos` + `le_max'`) and
+  `Finset.card_le_card` + `Nat.card_Icc` give `d ≤ |T| ≤ b`. Close the prefix at
+  index `b` (needs only `2 ≤ b`, from `d ≥ 2`) — cycle length `b + 1 ≥ d + 1`.
+- `hasMinDegree_containsCycleLength_ge` — `ContainsCycleLength` restatement via
+  `isCycle_containsCycleLength`.
+
+### Lean notes
+- The pigeonhole "d distinct positive integers have max ≥ d" is exactly
+  `T ⊆ Icc 1 max'` + `Nat.card_Icc` (`|Icc 1 b| = b`), then omega. No induction.
+- Single-index cycle closure needs NO segment machinery (no dropUntil) — the
+  `hclose` sub-proof of the even-cycle theorem inlines cleanly with `y` at `max'`.
+
+### Next
+- Elementary layer now FULLY saturated: existence (min-deg 2), length-predicate
+  bridge, parity (even cycle, min-deg 3), Dirac rung (length ≥ d+1). Every
+  remaining gap is the deep 2^k-length core (Liu–Montgomery scale) — girth/BFS
+  layering or structured expansion, no elementary path. STAND DOWN.

@@ -560,6 +560,131 @@ theorem hasMinDegree_three_exists_even_containsCycleLength
   obtain ⟨m, hm⟩ := heven
   omega
 
+/- ## Dirac-Type Lower Bound on Cycle Length
+
+The same longest-path engine gives the classical quantitative rung: minimum
+degree `d ≥ 2` forces a cycle of length at least `d + 1`.  All `≥ d` neighbours
+of the start vertex `v₀` of a maximum-length path are trapped at distinct
+POSITIVE indices along the path, so the largest such index is at least `d`
+(`d` distinct positive integers cannot all be smaller than `d`); closing the
+prefix at that index through the edge back to `v₀` is a cycle of length `≥ d+1`.
+
+For Problem 64 this is the quantitative companion to the parity layer above:
+it shows how minimum degree pushes the guaranteed cycle length up linearly —
+but "some length `≥ d + 1`" is far from "length exactly `2^k`", which is the
+open core.
+-/
+
+/-- **Dirac-type rung: minimum degree `d ≥ 2` forces a cycle of length `≥ d + 1`.**
+The classical longest-path argument: every neighbour of the start of a
+maximum-length path sits at a distinct positive index on the path, so the
+largest neighbour index is at least `d`; closing the prefix there through the
+edge back to the start yields a cycle of length at least `d + 1`. -/
+theorem hasMinDegree_exists_cycle_length_ge
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ} (hd : 2 ≤ d)
+    (hdeg : HasMinDegree G d) :
+    ∃ (v : W) (c : G.Walk v v), c.IsCycle ∧ d + 1 ≤ c.length := by
+  classical
+  -- a path of maximum length (as in `hasMinDegree_three_exists_even_cycle`)
+  have hne : ({n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n}).Nonempty :=
+    ⟨0, Classical.arbitrary W, Classical.arbitrary W, Walk.nil, Walk.IsPath.nil, rfl⟩
+  have hbdd : BddAbove {n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n} := by
+    refine ⟨Fintype.card W, ?_⟩
+    rintro n ⟨a, b, q, hq, rfl⟩
+    exact hq.length_lt.le
+  obtain ⟨v₀, u, p, hp, hplen⟩ := Nat.sSup_mem hne hbdd
+  have hmax : ∀ (a b : W) (q : G.Walk a b), q.IsPath → q.length ≤ p.length := by
+    intro a b q hq
+    rw [hplen]
+    exact le_csSup hbdd ⟨a, b, q, hq, rfl⟩
+  -- maximality traps every neighbour of `v₀` on `p`
+  have hnbr : ∀ w : W, G.Adj v₀ w → w ∈ p.support := by
+    intro w hw
+    by_contra hws
+    have hcons : (Walk.cons hw.symm p).IsPath := (Walk.cons_isPath_iff _ _).mpr ⟨hp, hws⟩
+    have := hmax _ _ _ hcons
+    rw [Walk.length_cons] at this
+    omega
+  set idx : W → ℕ := fun w => if hw : w ∈ p.support then (p.takeUntil w hw).length else 0
+    with hidx
+  have hidx_get : ∀ w (hw : w ∈ p.support), p.getVert (idx w) = w := by
+    intro w hw
+    simp only [hidx, dif_pos hw]
+    exact Walk.getVert_length_takeUntil hw
+  set T : Finset ℕ := (G.neighborFinset v₀).image idx with hT
+  have hTcard : d ≤ T.card := by
+    rw [hT, Finset.card_image_of_injOn]
+    · exact hdeg v₀
+    · intro w₁ hw₁ w₂ hw₂ hww
+      have h₁ : G.Adj v₀ w₁ := (G.mem_neighborFinset v₀ w₁).mp (Finset.mem_coe.mp hw₁)
+      have h₂ : G.Adj v₀ w₂ := (G.mem_neighborFinset v₀ w₂).mp (Finset.mem_coe.mp hw₂)
+      calc w₁ = p.getVert (idx w₁) := (hidx_get w₁ (hnbr _ h₁)).symm
+        _ = p.getVert (idx w₂) := by rw [hww]
+        _ = w₂ := hidx_get w₂ (hnbr _ h₂)
+  have hpos : ∀ n ∈ T, 1 ≤ n := by
+    intro n hn
+    rw [hT] at hn
+    obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hn
+    have hadj : G.Adj v₀ w := (G.mem_neighborFinset v₀ w).mp hw
+    rcases Nat.eq_zero_or_pos (idx w) with h0 | h1
+    · exfalso
+      have hgw := hidx_get w (hnbr _ hadj)
+      rw [h0, Walk.getVert_zero] at hgw
+      exact hadj.ne hgw
+    · exact h1
+  -- the largest neighbour index `b` is at least `d`:
+  -- `T` packs `≥ d` distinct integers into `[1, b]`, so `d ≤ |Icc 1 b| = b`
+  have hTne : T.Nonempty := Finset.card_pos.mp (by omega)
+  set b := T.max' hTne with hbdef
+  have hbT : b ∈ T := T.max'_mem hTne
+  have hsub : T ⊆ Finset.Icc 1 b := by
+    intro n hn
+    exact Finset.mem_Icc.mpr ⟨hpos n hn, T.le_max' n hn⟩
+  have hdb : d ≤ b := by
+    have hcard := Finset.card_le_card hsub
+    rw [Nat.card_Icc] at hcard
+    omega
+  -- the neighbour `y` sitting at index `b`
+  have hbT2 : b ∈ (G.neighborFinset v₀).image idx := by rw [← hT]; exact hbT
+  obtain ⟨y, hyN, hyb⟩ := Finset.mem_image.mp hbT2
+  have hay : G.Adj v₀ y := (G.mem_neighborFinset v₀ y).mp hyN
+  have hys : y ∈ p.support := hnbr y hay
+  have hyb' : (p.takeUntil y hys).length = b := by
+    rw [← hyb]; simp only [hidx, dif_pos hys]
+  -- close the prefix at `y` through the edge `y — v₀`
+  refine ⟨v₀, Walk.cons hay (p.takeUntil y hys).reverse, ?_, ?_⟩
+  · rw [Walk.cons_isCycle_iff]
+    refine ⟨(hp.takeUntil hys).reverse, ?_⟩
+    intro hmem
+    rw [Walk.edges_reverse, List.mem_reverse] at hmem
+    -- an edge of a path through its start must be the first edge …
+    have hsnd : y = (p.takeUntil y hys).snd := (hp.takeUntil hys).eq_snd_of_mem_edges hmem
+    -- … but `y` is the endpoint of the prefix, at index `b ≥ 2`
+    have h1 : (p.takeUntil y hys).getVert 1 =
+        (p.takeUntil y hys).getVert (p.takeUntil y hys).length := by
+      rw [Walk.getVert_length]
+      exact hsnd.symm
+    have := (hp.takeUntil hys).getVert_injOn
+      (by simp only [Set.mem_setOf_eq]; omega)
+      (by simp only [Set.mem_setOf_eq]; omega) h1
+    omega
+  · rw [Walk.length_cons, Walk.length_reverse, hyb']
+    omega
+
+/-- Restatement in the `ContainsCycleLength` predicate: minimum degree `d ≥ 2`
+yields a cycle length `k ≥ d + 1`.  Combined with the parity layer, min-degree-`3`
+graphs have an even cycle of length `≥ 4` and some cycle of length `≥ 4`; the
+open core of Problem 64 is whether a length can be taken to be an exact power
+of two. -/
+theorem hasMinDegree_containsCycleLength_ge
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ} (hd : 2 ≤ d)
+    (hdeg : HasMinDegree G d) :
+    ∃ k : ℕ, d + 1 ≤ k ∧ ContainsCycleLength G k := by
+  obtain ⟨v, c, hc, hlen⟩ := hasMinDegree_exists_cycle_length_ge G hd hdeg
+  exact ⟨c.length, hlen, isCycle_containsCycleLength G c hc⟩
+
 /- ## Known Cycle Results -/
 
 /- 
