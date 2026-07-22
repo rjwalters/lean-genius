@@ -46,11 +46,11 @@
       }
     ],
     "originalContributions": [
-      "numSubgroups axiom: f(n) = number of subgroups of S_n",
+      "numSubgroups: concrete noncomputable def f(n) = Nat.card (Subgroup (Equiv.Perm (Fin n))) (not an axiom)",
       "roney_dougal_tracey: log f(n) / n² → 1/16 (Tendsto formulation)",
       "rdt_implies_pyber: convergence → eventual bounds (PROVED, no sorry)",
       "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey (no longer an axiom)",
-      "Elementary abelian 2-group infrastructure (maxElem2Rank, numSubgroupsElem2)",
+      "Elementary abelian 2-group infrastructure (maxElem2Rank)",
       "constant_explanation: (1/4)² = 1/16 (proved by norm_num)",
       "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
       "erdos1162_asymptotic: formal statement of the asymptotic result"
@@ -85,7 +85,7 @@
     {
       "id": "subgroups-sn",
       "title": "Part I: Subgroups of S_n",
-      "summary": "Sn definition, numSubgroups axiom, positivity.",
+      "summary": "Sn definition, numSubgroups (concrete def), positivity.",
       "startLine": 1,
       "endLine": 58,
       "mathContext": "$S_n = \\text{Equiv.Perm}(\\text{Fin } n)$. $f(n) = |\\{H : H \\leq S_n\\}|$."
@@ -117,7 +117,7 @@
     {
       "id": "elem2-groups",
       "title": "Part V: Elementary Abelian 2-Groups",
-      "summary": "maxElem2Rank, numSubgroupsElem2, constant_explanation.",
+      "summary": "maxElem2Rank, constant_explanation.",
       "startLine": 126,
       "endLine": 146,
       "mathContext": "$(\\mathbb{Z}/2\\mathbb{Z})^k$ has $\\sim 2^{k^2/4}$ subgroups. For $k = n/4$, this gives $\\log_2 f \\approx (n/4)^2/4 = n^2/64$."
