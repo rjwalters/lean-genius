@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-2",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #2 (\\$1000 prize, Erd\u0151s's self-described favorite): can the smallest modulus of a covering system be arbitrarily large? Answered NO by Hough (2015, bound $10^{16}$), improved to 616,000 by Balister\u2013Bollob\u00e1s\u2013Morris\u2013Sahasrabudhe\u2013Tiba (2022); Owens (2014) exhibited a covering system with smallest modulus 42.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "A covering system is a finite set of residue classes $\\{a_i \\bmod n_i\\}$ with distinct moduli $n_i \\ge 2$ covering every integer; Erd\u0151s conjectured the smallest modulus could be unbounded, but Hough's proof shows a universal cap."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib and opens `Set`/`Finset` namespaces for the `Erdos2` namespace.",
