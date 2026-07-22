@@ -23,10 +23,10 @@
     "theoremCount": 4,
     "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",
     "problemStatement": "De Moivre's classical theorem states: for integer n ≥ 1,\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta).$$\n\nThis file investigates three extensions:\n\n1. **Real exponents**: For α ∈ ℝ and θ ∈ (-π, π], using the principal branch z^α = exp(α log z),\n$$e^{i\\theta\\alpha} = (e^{i\\theta})^\\alpha.$$\n\n2. **Rational exponents**: For α = p/q ∈ ℚ, (cos θ + i sin θ)^{p/q} takes exactly q distinct values,\n$$e^{i(p\\theta + 2\\pi k)/q}, \\quad k = 0, 1, \\ldots, q-1.$$\n\n3. **Irrational exponents and equidistribution**: For irrational α, the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle S¹.",
-    "proofStrategy": "The proofs use Mathlib's `Complex.cpow` — defined via the principal logarithm as z^w = exp(w · log z) for z ≠ 0. Part I unfolds `cpow_def_of_ne_zero` and applies `Complex.log_exp` with the principal branch hypothesis θ ∈ (-π, π], then uses `push_cast` and `ring`. Part II constructs the q distinct values explicitly as a function `Fin q → ℂ` and proves correctness by `rfl`. Part III is a True stub. Part IV proves continuity by composing `Complex.continuous_exp` with multiplication by constants.",
+    "proofStrategy": "The proofs use Mathlib's `Complex.cpow` — defined via the principal logarithm as z^w = exp(w · log z) for z ≠ 0. Part I unfolds `cpow_def_of_ne_zero` and applies `Complex.log_exp` with the principal branch hypothesis θ ∈ (-π, π], then uses `push_cast` and `ring`. Part II enumerates the q candidate values as an explicit function `Fin q → ℂ` and proves the defining equalities by `rfl` (existence by construction; distinctness and the q-th-root property are not formalized). Part III is a True stub. Part IV proves continuity by composing `Complex.continuous_exp` with multiplication by constants.",
     "keyInsights": [
       "The principal branch restriction θ ∈ (-π, π] is essential: exp(2πi) = 1, so z = 1, but z^α = exp(2παi) ≠ 1 for generic α. Without the branch cut, De Moivre's formula is false for real exponents.",
-      "Rational exponents p/q naturally produce multi-valuedness: the q values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are exactly the q-th roots of the integer-exponent result e^{ipθ}.",
+      "Rational exponents p/q naturally produce multi-valuedness: the q candidate values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are the q-th roots of the integer-exponent result e^{ipθ} — though the Lean theorem only enumerates them as an explicit Fin q → ℂ function; distinctness and the q-th-root property are not formalized.",
       "For irrational α, Weyl's equidistribution theorem (axiomatized here) asserts that {e^{2πiαn} : n ∈ ℤ} is dense in S¹. This is equivalent to the equidistribution of {αn mod 1} in [0,1), a cornerstone of ergodic theory.",
       "Complex.cpow unifies all exponent types through the principal logarithm: integer, rational, and irrational cases all reduce to exp(α · log z), with multi-valuedness encoded by choice of branch rather than by the formula itself.",
       "The True stub for `irrational_exponent_single_valued` reveals a formalization gap: the actual claim follows immediately from the definition of cpow, but stating it precisely requires careful attention to the domain of log.",
@@ -35,7 +35,7 @@
     "mathlib_version": "4.31.0",
     "originalContributions": [
       "Principal-branch real-exponent De Moivre formula via cpow",
-      "Explicit construction of q-th root multi-valued set for rational exponents",
+      "Explicit enumeration of the q candidate values as a Fin q → ℂ function for rational exponents (distinctness and q-th-root property not formalized)",
       "Continuous group homomorphism from ℝ to S¹",
       "Identification of irrational_exponent_single_valued as a True stub and weyl_equidistribution as axiom"
     ],
@@ -56,7 +56,7 @@
       {
         "name": "rational_exponent_multivalued",
         "status": "proved",
-        "description": "For rational p/q, constructs q distinct q-th roots of (e^{iθ})^p"
+        "description": "For rational p/q, enumerates the q candidate values e^{i(pθ+2πk)/q} as an explicit Fin q → ℂ function (existence by construction, rfl); distinctness and the q-th-root property are not formalized"
       },
       {
         "name": "irrational_exponent_single_valued",
@@ -75,10 +75,10 @@
   "overview": {
     "historicalContext": "Abraham de Moivre stated his famous theorem around 1707, though a full proof appeared later in Euler's 1748 work *Introductio in analysin infinitorum*. Euler's formula e^{iθ} = cos θ + i sin θ reframes De Moivre as the elementary identity (e^{iθ})^n = e^{inθ}. The natural extension to real and complex exponents requires the complex logarithm and its branch structure — a subtlety invisible in the integer case. For irrational exponents, Hermann Weyl's 1916 equidistribution theorem revealed a deep connection to ergodic theory: the orbit {e^{2πiαn} : n ∈ ℤ} is dense in the unit circle precisely when α is irrational. This connects De Moivre's geometric insight to Fourier analysis and the mixing properties of irrational rotations.",
     "problemStatement": "Extend De Moivre's theorem (cos θ + i sin θ)^n = cos(nθ) + i sin(nθ) from integer n to real and complex exponents via Complex.cpow. Address multi-valuedness for rational exponents and equidistribution for irrational ones.",
-    "proofStrategy": "Use Mathlib's Complex.cpow = exp(w · log z) via the principal logarithm. Part I: unfold cpow_def_of_ne_zero, apply Complex.log_exp with principal branch θ ∈ (-π,π]. Part II: construct q distinct values as Fin q → ℂ explicitly. Part III: True stub (formalization gap). Part IV: prove continuity by composing Complex.continuous_exp with constant multiplication.",
+    "proofStrategy": "Use Mathlib's Complex.cpow = exp(w · log z) via the principal logarithm. Part I: unfold cpow_def_of_ne_zero, apply Complex.log_exp with principal branch θ ∈ (-π,π]. Part II: enumerate the q candidate values as Fin q → ℂ explicitly (distinctness and q-th-root property not formalized). Part III: True stub (formalization gap). Part IV: prove continuity by composing Complex.continuous_exp with constant multiplication.",
     "keyInsights": [
       "The principal branch restriction θ ∈ (-π, π] is essential: exp(2πi) = 1, so z = 1, but z^α = exp(2παi) ≠ 1 for generic α. Without the branch cut, De Moivre's formula is false for real exponents.",
-      "Rational exponents p/q naturally produce multi-valuedness: the q values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are exactly the q-th roots of the integer-exponent result e^{ipθ}.",
+      "Rational exponents p/q naturally produce multi-valuedness: the q candidate values e^{i(pθ + 2πk)/q} for k = 0, …, q-1 are the q-th roots of the integer-exponent result e^{ipθ} — though the Lean theorem only enumerates them as an explicit Fin q → ℂ function; distinctness and the q-th-root property are not formalized.",
       "For irrational α, Weyl's equidistribution theorem asserts that {e^{2πiαn} : n ∈ ℤ} is dense in S¹ — axiomatized here as it requires Fourier analysis or continued fractions beyond available Mathlib infrastructure.",
       "Complex.cpow unifies all exponent types through the principal logarithm: integer, rational, and irrational cases all reduce to exp(α · log z), with multi-valuedness encoded by choice of branch.",
       "The True stub for irrational_exponent_single_valued reveals a formalization gap: cpow always picks the principal branch (single-valued by construction), so the 'theorem' is trivially true but requires careful statement.",
@@ -129,7 +129,7 @@
       "title": "Part II: Multi-Valued Rational Roots",
       "startLine": 37,
       "endLine": 47,
-      "summary": "PROVES `rational_exponent_multivalued`: for rational $\\alpha=p/q$, $(\\cos\\theta+i\\sin\\theta)^{p/q}$ has $q$ distinct values $e^{i(p\\theta+2\\pi k)/q}$ ($k<q$), the $q$-th roots.",
+      "summary": "PROVES `rational_exponent_multivalued`: for rational $\\alpha=p/q$, enumerates the $q$ candidate values $e^{i(p\\theta+2\\pi k)/q}$ ($k<q$) as an explicit `Fin q → ℂ` function (existence by construction, `rfl`); distinctness and the $q$-th-root property are not formalized.",
       "mathContext": "$(\\cos\\theta+i\\sin\\theta)^{p/q}$ has $q$ values $e^{i(p\\theta+2\\pi k)/q}$."
     },
     {
