@@ -16,11 +16,17 @@
     "goal": "Eliminate the 2 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
     "focus": "Initial exploration of the problem.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "eliminate axiom bondy_vince_theorem (delta>=3 => two cycle lengths differ by <=2)",
+        "reopenCriterion": "materially new mechanism required: deep 1998 result, no Mathlib API for cycle-length spectra",
+        "blockedAt": "2026-07-22"
+      }
+    ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
@@ -29,12 +35,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION (researcher-1, 2026-07-20): replaced 3 definition-axioms (chromaticNumber, girth, cycleLengths) with real Mathlib-backed definitions, axiom count 5→2. Remaining 2 axioms are deep: four_chromatic_minDeg and bondy_vince_theorem (Bondy–Vince 1998). 2 sorries remain (minCycleLengthGap def + its bound).",
+    "progressSummary": "PROGRESS: eliminated both sorries in Erdos751Problem.lean by giving minCycleLengthGap a faithful sInf definition and proving the gap<=2 bound (Nat.sInf_le), 0 new axioms, host-verified. Flagged that the pre-existing axiom four_chromatic_minDeg is false as stated (pendant-vertex counterexample) for auditor/mechanic follow-up.",
     "builtItems": [
-      "Erdos751Problem.lean: replaced 3 def-axioms (chromaticNumber, girth, cycleLengths) with Mathlib-backed real definitions; axiom 5→2. Host-verified v4.31.0 EXIT=0."
+      "Erdos751Problem.lean: replaced 3 def-axioms (chromaticNumber, girth, cycleLengths) with Mathlib-backed real definitions; axiom 5→2. Host-verified v4.31.0 EXIT=0.",
+      "minCycleLengthGap (Erdos751Problem.lean): faithful total def as sInf of pairwise differences {b-a | a<b, a,b in set} = minimum consecutive gap; replaces def-sorry",
+      "minCycleLengthGap_le (Erdos751Problem.lean): closest-pair upper bound via Nat.sInf_le; 0-axiom",
+      "erdos_751 hgap_bound sorry discharged: minCycleLengthGap (cycleLengths G) <= 2 from two close cycle lengths"
     ],
     "insights": [
-      "The chromaticNumber/girth/cycleLengths in Erdos751Problem.lean were DEFINITION axioms (opaque functions) that Mathlib actually provides: SimpleGraph.chromaticNumber (ℕ∞, use .toNat), SimpleGraph.girth (ℕ, via egirth.toNat), and cycleLengths as {n | ∃ v (c:G.Walk v v), c.IsCycle ∧ c.length=n}. All downstream usage is abstract (passed to the remaining axioms), so replacing the axioms with real defs compiles cleanly."
+      "The chromaticNumber/girth/cycleLengths in Erdos751Problem.lean were DEFINITION axioms (opaque functions) that Mathlib actually provides: SimpleGraph.chromaticNumber (ℕ∞, use .toNat), SimpleGraph.girth (ℕ, via egirth.toNat), and cycleLengths as {n | ∃ v (c:G.Walk v v), c.IsCycle ∧ c.length=n}. All downstream usage is abstract (passed to the remaining axioms), so replacing the axioms with real defs compiles cleanly.",
+      "Both file sorries eliminated (def-sorry + dependent theorem sorry), 0 new axioms. Host-verified lake env lean v4.31 EXIT=0.",
+      "INTEGRITY FINDING (for auditor/mechanic): axiom four_chromatic_minDeg : chromaticNumber G = 4 -> minDegree G >= 3 is FALSE as literally stated. Counterexample: K4 plus a pendant vertex is 4-chromatic but has minDegree 1. The correct classical fact is that a 4-chromatic graph has a SUBGRAPH (3-core) of min degree >= 3; the final erdos_751 theorem is true but is derived through this unsound global axiom."
     ],
     "mathlibGaps": [],
     "nextSteps": []

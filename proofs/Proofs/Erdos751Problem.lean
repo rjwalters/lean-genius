@@ -30,7 +30,7 @@ import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Lattice
+import Mathlib.Order.Lattice.Nat
 
 open SimpleGraph
 
