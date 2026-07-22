@@ -211,8 +211,7 @@
     "implications": "**Theoretical Significance**: The prime number graph provides geometric insight into prime distribution.\n\nConvex hull analysis is a powerful tool for studying multiplicative properties of primes. The technique of converting arithmetic questions into geometric ones via logarithms is broadly applicable.",
     "openQuestions": [
       "What is the natural density of $\\{n \\mid \\forall\\, 0 < i < n : p_n^2 > p_{n+i}p_{n-i}\\}$ in $\\mathbb{N}$? Pomerance proved infinitude but not a density estimate.",
-      "Can `convexity_implies_product_bound` be proved in Lean without `sorry`? It requires `Real.log_mul` and `Real.exp_lt_exp` — straightforward but not yet formalized.",
-      "Is there an explicit constructive sequence of counterexamples (not just an existence proof)? The Lean axiom `pomerance_1979` is non-constructive.",
+      "Is there an explicit constructive sequence of counterexamples (not just an existence proof)? The theorem `pomerance_1979` is proved from the non-constructive axiom `pomerance_convex_hull_lemma`.",
       "Can the full argument be formalized in Lean without any `axiom` or `sorry`, using only Mathlib's PNT and real analysis lemmas?"
     ]
   },
