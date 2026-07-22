@@ -42,10 +42,10 @@
     "originalContributions": [
       "Formal definition of amicable pairs using Mathlib's sigma function",
       "Machine-verified examples: (220,284), (1184,1210), (2620,2924)",
-      "Formal statements of Erdős and Pomerance upper bounds",
+      "Documentation of the Erdős and Pomerance upper bounds (recorded in source comments; not yet formalized as Lean statements)",
       "Counting function A(x) formalization"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 142,
     "dateAdded": "2025-12-22",
     "prerequisites": [
@@ -55,11 +55,8 @@
       "Asymptotic density of number-theoretic sets"
     ],
     "assumptions": [
-      "infinitely_many_amicable_pairs: There exist infinitely many amicable pairs (OPEN)",
-      "amicable_lower_bound: A(x) > x^{1-o(1)} (OPEN)",
-      "erdos_amicable_bound: A(x) = o(x) (Erdős 1955)",
-      "pomerance_1981: A(x) ≤ x·exp(-(log x)^{1/3}) (Pomerance 1981)",
-      "pomerance_2015: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x)) (Pomerance 2015)"
+      "Lean.ofReduceBool — the six divisor-sum equalities (sigma_220, sigma_284, sigma_1184, sigma_1210, sigma_2620, sigma_2924, from which the amicable-pair theorems follow) are discharged by `native_decide`, which trusts the Lean compiler's kernel evaluation of the `Decidable` instance rather than producing a checked proof term. This compiler-trust footprint is the only assumption the formalization introduces (there are no `axiom` declarations in the source).",
+      "The two open questions (infinitely many amicable pairs; A(x) > x^{1-o(1)}) and the known upper bounds (Erdős 1955: A(x) = o(x); Pomerance 1981: A(x) ≤ x·exp(-(log x)^{1/3}); Pomerance 2015: A(x) ≤ x·exp(-(1/2+o(1))√(log x · log log x))) are documented in the source as background context — they are NOT formalized as Lean axioms or theorems."
     ],
     "theoremCount": 9,
     "definitionCount": 3
@@ -68,7 +65,7 @@
     "historicalContext": "Amicable numbers have fascinated mathematicians since antiquity. The pair (220, 284) was known to the Pythagoreans and appears in Arabic and medieval European mathematical texts. The definition is elegant: two numbers are amicable if each equals the sum of the proper divisors (all divisors except the number itself) of the other.\n\nFor 220: proper divisors are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110, which sum to 284.\nFor 284: proper divisors are 1, 2, 4, 71, 142, which sum to 220.\n\nWhile thousands of amicable pairs are now known (discovered computationally), whether infinitely many exist remains one of the oldest unsolved problems in number theory. Erdős established the first non-trivial upper bound A(x) = o(x) in 1955, and Carl Pomerance made major improvements in 1981 and 2015.",
     "problemStatement": "Two natural numbers $a$ and $b$ are **amicable** if $\\sigma(a) = \\sigma(b) = a + b$, where $\\sigma(n)$ is the sum of all divisors of $n$.\n\n**Open Questions**:\n1. Are there infinitely many amicable pairs?\n2. If $A(x)$ counts amicable pairs with $1 \\leq a \\leq b \\leq x$, is $A(x) > x^{1-o(1)}$?\n\n**Known Upper Bounds** (SOLVED):\n- Erdős (1955): $A(x) = o(x)$\n- Pomerance (1981): $A(x) \\leq x \\cdot \\exp(-(\\log x)^{1/3})$\n- Pomerance (2015): $A(x) \\leq x \\cdot \\exp(-(\\frac{1}{2}+o(1))\\sqrt{\\log x \\cdot \\log\\log x})$",
     "text": "Are there infinitely many amicable pairs? Two numbers are amicable if each is the sum of the other's proper divisors, like 220 and 284.",
-    "proofStrategy": "Since the main questions are open, we cannot prove them. Our formalization:\n\n1. **Defines amicable pairs** using Mathlib's `ArithmeticFunction.sigma` for the sum of divisors\n2. **Verifies concrete examples** (220,284), (1184,1210), (2620,2924) using `native_decide`\n3. **Defines the counting function** A(x) formally\n4. **States the open conjectures** as axioms\n5. **Records proven upper bounds** (Erdős 1955, Pomerance 1981, 2015) as axioms pending full formalization",
+    "proofStrategy": "Since the main questions are open, we cannot prove them. Our formalization:\n\n1. **Defines amicable pairs** using Mathlib's `ArithmeticFunction.sigma` for the sum of divisors\n2. **Verifies concrete examples** (220,284), (1184,1210), (2620,2924) using `native_decide`\n3. **Defines the counting function** A(x) formally\n4. **Documents the open conjectures** in the source (as commentary — not formalized as axioms or theorems)\n5. **Records the proven upper bounds** (Erdős 1955, Pomerance 1981, 2015) in the source commentary, pending full formalization\n\nThe concrete divisor-sum checks in step 2 use `native_decide`, so the verified theorems carry the `Lean.ofReduceBool` compiler-trust axiom.",
     "keyInsights": [
       "**Sum of Divisors**: σ(n) = Σ_{d|n} d. For amicable (a,b): σ(a) = σ(b) = a+b, which means the 'excess' of each (σ(n)-n) equals the other number.",
       "**Ancient History**: The (220, 284) pair was known to Pythagoras (~500 BCE). The next pair (1184, 1210) wasn't found until 1866, by a 16-year-old Nicolo Paganini.",
@@ -113,7 +110,7 @@
       "title": "Open Questions",
       "startLine": 74,
       "endLine": 101,
-      "summary": "Axiomatizes the two main open conjectures: (1) infinitely many amicable pairs exist, (2) A(x) > x^{1-o(1)}.",
+      "summary": "Documents the two main open conjectures in source commentary: (1) infinitely many amicable pairs exist, (2) A(x) > x^{1-o(1)}. These are stated as context, not formalized as axioms or theorems.",
       "mathContext": "Conjecture 1: $|\\{(a,b) : \\text{IsAmicable}(a,b)\\}| = \\infty$. Conjecture 2: $\\forall \\varepsilon > 0,\\, A(x) \\geq x^{1-\\varepsilon}$ eventually."
     },
     {
