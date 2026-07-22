@@ -35,7 +35,14 @@ REPO_ROOT="${REPO_ROOT:-$(find_repo_root)}"
 CLAIMS_DIR="$REPO_ROOT/.lean/state/enrichment-claims"
 TRACKER_FILE="$REPO_ROOT/src/data/proofs/enrichment-tracker.json"
 FIND_TARGETS="$REPO_ROOT/scripts/enricher/find-targets.ts"
-COMPLETIONS_DIR="$REPO_ROOT/.loom/signals/completions"
+
+# Canonical (main-checkout) completions dir shared with the lean daemon. When
+# this runs standalone (REPO_ROOT unset -> find_repo_root returns the worktree),
+# a worktree-local .loom/ would be invisible to the daemon, so enrichment
+# signals would never increment session_stats (#41047).
+# shellcheck source=../lib/completions-dir.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/completions-dir.sh"
+COMPLETIONS_DIR="$(resolve_completions_dir)"
 
 # Defaults
 TTL_MINUTES="${CLAIM_TTL:-90}"

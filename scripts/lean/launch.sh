@@ -30,6 +30,13 @@ source "$_LAUNCH_SCRIPT_DIR/../lib/worktree-cleanup.sh"
 # shellcheck source=../lib/worktree-root.sh
 source "$_LAUNCH_SCRIPT_DIR/../lib/worktree-root.sh"
 
+# Canonical completion-signal directory resolver. Producers (enricher,
+# researcher, deployer, aristotle) run in worktrees; the daemon consumes signals
+# from the main checkout. Both sides must resolve the SAME
+# .loom/signals/completions or session_stats never increment (#41047).
+# shellcheck source=../lib/completions-dir.sh
+source "$_LAUNCH_SCRIPT_DIR/../lib/completions-dir.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -1845,8 +1852,13 @@ update_daemon_state() {
 # Helper: Process completion signals and update session stats
 # Agents create signal files when they complete work, daemon consumes them and updates counters
 process_completion_signals() {
+    # Resolve the canonical completions directory (shared main checkout), NOT a
+    # daemon-cwd-relative path -- producers in worktrees write here too (#41047).
+    local comp_dir
+    comp_dir="$(resolve_completions_dir)"
+
     # Ensure completions directory exists
-    mkdir -p "$COMPLETIONS_DIR/archive"
+    mkdir -p "$comp_dir/archive"
 
     local enriched=0
     local proofs=0
@@ -1856,12 +1868,12 @@ process_completion_signals() {
     local researched=0
 
     # Count signals by type (use find to avoid glob expansion issues)
-    enriched=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'enrichment-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
-    proofs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-submitted-*' -type f 2>/dev/null | wc -l | tr -d ' ')
-    integrated=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-integrated-*' -type f 2>/dev/null | wc -l | tr -d ' ')
-    selected=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'problem-selected-*' -type f 2>/dev/null | wc -l | tr -d ' ')
-    deploys=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'deployment-*' -type f 2>/dev/null | wc -l | tr -d ' ')
-    researched=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'research-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    enriched=$(find "$comp_dir" -maxdepth 1 -name 'enrichment-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    proofs=$(find "$comp_dir" -maxdepth 1 -name 'proof-submitted-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    integrated=$(find "$comp_dir" -maxdepth 1 -name 'proof-integrated-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    selected=$(find "$comp_dir" -maxdepth 1 -name 'problem-selected-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    deploys=$(find "$comp_dir" -maxdepth 1 -name 'deployment-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    researched=$(find "$comp_dir" -maxdepth 1 -name 'research-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
 
     local total=$((enriched + proofs + integrated + selected + deploys + researched))
 
@@ -1889,12 +1901,12 @@ process_completion_signals() {
         daemon_log "INFO" "Stats updated: +$enriched enriched, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys, +$researched researched"
 
         # Archive signals (preserve for debugging but don't recount)
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'enrichment-completed-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-submitted-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-integrated-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'problem-selected-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'deployment-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'research-completed-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'enrichment-completed-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'proof-submitted-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'proof-integrated-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'problem-selected-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'deployment-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
+        find "$comp_dir" -maxdepth 1 -type f -name 'research-completed-*' -exec mv {} "$comp_dir/archive/" \; 2>/dev/null || true
     fi
 }
 
@@ -1997,7 +2009,7 @@ cmd_daemon() {
     rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
 
     # Ensure completions directory exists for session stats tracking
-    mkdir -p "$COMPLETIONS_DIR/archive"
+    mkdir -p "$(resolve_completions_dir)/archive"
 
     # Write PID file
     mkdir -p "$(dirname "$DAEMON_PID_FILE")"

@@ -47,6 +47,12 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+
+# Canonical completion-signal directory resolver (shared with the lean daemon
+# so research-completed signals land where the daemon reads them -- #41047).
+# shellcheck source=../lib/completions-dir.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/completions-dir.sh"
+
 CLAIMS_DIR="$REPO_ROOT/research/claims"
 POOL_FILE="$REPO_ROOT/.lean/state/candidate-pool.json"
 PROBLEMS_DIR="$REPO_ROOT/src/data/research/problems"
@@ -539,9 +545,12 @@ update_problem_status() {
 
     with_pool_lock _update_problem_status_inner
 
-    # Create completion signal when problem is marked completed
+    # Create completion signal when problem is marked completed. Resolve the
+    # canonical (main-checkout) completions dir so the daemon actually sees it --
+    # writing to this worktree's .loom/ would be invisible (#41047).
     if [[ "$new_status" == "completed" ]]; then
-        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        local completions_dir
+        completions_dir="$(resolve_completions_dir)"
         mkdir -p "$completions_dir"
         touch "$completions_dir/research-completed-$problem_id-$(date +%s)"
     fi
