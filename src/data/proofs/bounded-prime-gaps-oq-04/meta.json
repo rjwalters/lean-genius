@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: bombieriVinogradov (Bombieri-Vinogradov theorem on primes in progressions). 0 sorries.",
+    "assumptions": "1 axiom: bombieriVinogradov (Bombieri-Vinogradov theorem on primes in progressions). 0 sorries. Trust caveat: total_effort_estimate use native_decide (Lean.ofReduceBool), so #print axioms lists Lean.ofReduceBool — a finite arithmetic estimate, not the headline result, which rests on the axiom(s) above and stays kernel-checked.",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.vonMangoldt",
