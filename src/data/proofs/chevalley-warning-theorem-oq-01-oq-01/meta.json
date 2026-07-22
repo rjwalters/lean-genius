@@ -77,7 +77,8 @@
       "**Divisibility has a shape, not just a residue**: p ∣ #solutions is usually quoted as a congruence, but as a constraint on a nonnegative count it says the count lives in {0, p, 2p, …} — so the first nonzero value is already p. Naming this 0-or-≥-p dichotomy turns 'a solution exists' directly into 'at least p solutions exist'.",
       "**A singleton solution set is impossible**: because 1 is not a multiple of any prime p, no low-degree system over a finite field has a unique common zero — a clean obstruction that needs only Nat.dvd_one.",
       "**The origin is not special**: the parent corollary used the origin only to witness one solution; the same counting works from ANY known zero, so the second-solution theorem is the honest general statement and the origin corollary its corollary.",
-      "**The bound here is the elementary one**: 0-or-≥-p is far weaker than Warning's second theorem (0-or-≥-qⁿ⁻ᵈ); this entry deliberately proves only the elementary dichotomy that the divisibility yields for free, and does not attempt the sharp bound."
+      "**The bound here is the elementary one**: 0-or-≥-p is far weaker than Warning's second theorem (0-or-≥-qⁿ⁻ᵈ); this entry deliberately proves only the elementary dichotomy that the divisibility yields for free, and does not attempt the sharp bound.",
+      "**char_le_card_of_exists is a convenience restatement, not new content.** It follows immediately from card_zero_or_ge once a witness x shows the count is positive (ruling out the = 0 branch) — it is stated separately purely because the existential hypothesis ∃ x, … is the shape callers like exists_second_common_zero actually have on hand, not the raw divisibility p ∣ #S."
     ],
     "prerequisites": [
       "Finite fields and their (prime) characteristic (CharP, Fact p.Prime)",
@@ -107,16 +108,24 @@
       "id": "no-unique",
       "title": "The No-Unique-Solution Law",
       "startLine": 92,
-      "endLine": 127,
+      "endLine": 113,
       "summary": "card_ne_one and card_ne_one_single: a low-degree system never has exactly one common zero, since #solutions = 1 would give p ∣ 1, contradicting primality of p (Nat.dvd_one + Fact.out.ne_one).",
       "mathContext": "A singleton solution set is impossible: no prime divides 1."
     },
     {
+      "id": "existence-lower-bound",
+      "title": "Existence Lower Bound",
+      "startLine": 114,
+      "endLine": 129,
+      "summary": "char_le_card_of_exists: if a low-degree system has even one common zero, it has at least p of them. A known zero x₀ witnesses #solutions ≥ 1 via Fintype.card_pos_iff, then Nat.le_of_dvd lifts the Chevalley–Warning divisibility to the bound p ≤ #solutions — the existential-hypothesis restatement of card_zero_or_ge that the second-solution theorem below actually consumes.",
+      "mathContext": "One known common zero ⟹ p ≤ #solutions."
+    },
+    {
       "id": "second-solution",
-      "title": "Existence Lower Bound and the Second-Solution Theorem",
-      "startLine": 128,
+      "title": "The Second-Solution Theorem",
+      "startLine": 131,
       "endLine": 182,
-      "summary": "char_le_card_of_exists (one zero ⟹ at least p), exists_second_common_zero and exists_second_common_zero_single (any known zero x₀ ⟹ a distinct second zero), and nontrivial_of_origin recovering the parent's chevalley_warning_nontrivial as the x₀ = 0 instance.",
+      "summary": "exists_second_common_zero and exists_second_common_zero_single: any known common zero x₀ (not only the origin) forces a distinct second common zero, via p ≤ #solutions and p ≥ 2 giving 1 < #solutions, then Fintype.exists_ne_of_one_lt_card. nontrivial_of_origin recovers the parent's chevalley_warning_nontrivial as the x₀ = 0 instance.",
       "mathContext": "From any single known common zero a second distinct one is forced; the origin corollary is the special case."
     }
   ],
