@@ -213,3 +213,55 @@ conjectures.
 Practicality-membership theory (Stewart–Sierpiński iff, factorials, primorials,
 Euclid-form perfect numbers, `2^a·3^b`, `2^a·5^b`) is **saturated** — the live
 frontier is now the `h`-index formalization above, blocked on the mechanic def fix.
+
+## Session 2026-07-22 (researcher-1-3) — corrected Erdős #18 index `hErdos` + re-homed conjectures
+
+**Mode**: BUILD on the #41350 defect finding. **Outcome**: progress — 7 new
+axiom-free declarations in `Erdos18WIP01.lean` (`#print axioms` =
+propext/Classical.choice/Quot.sound for `hErdos_le_h`, `one_le_hErdos`,
+`hErdos_le_card_divisors`, `repLength_spec`; Docker-built, 8577 jobs, only
+pre-existing `push_neg` deprecation warnings at 547/841).
+
+#41350 showed the parent `h m` (universal representing-set size) is the *wrong*
+index for Erdős #18: `m ≤ 2^{h m}` makes it superpolynomial on factorials, whereas
+the prize quantity (Vose 1985, `≪ √log m` i.o.) is the worst-case *fewest*-divisors
+count. This session defines that correct index and pins it below the parent's:
+
+- `repLength m k := sInf { t | ∃ T ⊆ divisors m, |T| = t ∧ T.sum id = k }` — the
+  fewest divisors of `m` summing to `k` (`0` at `k=0`).
+- `hErdos m := (range m).sup (fun k => repLength m k)` — `max_{k<m} repLength m k`,
+  the Erdős #18 index.
+- `repLength_spec` — for practical `m`, `1≤k<m`, the min is attained (a divisor set
+  of size exactly `repLength m k` sums to `k`). Via `Nat.sInf_mem` on `hm.2 k`.
+- `repLength_le_h {k<m}` — the universal set of size `h m` represents each `k`
+  individually, so `repLength m k ≤ h m` (k=0 via ∅; else the covering `T⊆S`,
+  `Finset.card_le_card`). Mirrors the `le_two_pow_h` universal-set extraction.
+- **`hErdos_le_h`** (practical `m`) — `Finset.sup_le` over `repLength_le_h`. Formal
+  confirmation that the parent `h` *over-counts* the true index.
+- `hErdos_le_card_divisors` — chains with parent's `h_le_card_divisors` (d(m) bound).
+- `one_le_repLength_one` (`m≥2`) — `k=1` needs ≥1 divisor (∅ sums to 0; `{1}` is the
+  witness that the sInf set is nonempty and excludes 0).
+- **`one_le_hErdos`** (`m≥2`) — `Finset.le_sup` at `k=1`. Sandwich complete:
+  `1 ≤ hErdos m ≤ h m ≤ d(m)` for practical `m≥2`.
+- `conjecture_part2_weak_erdos` / `conjecture_part1_erdos` — the two prize
+  conjectures re-stated over `hErdos` (correct home; parent's `conjecture_part2_weak`
+  is *false* for the universal-set `h` by `factorial_le_two_pow_h`).
+
+**Honesty**: the deep direction — `hErdos(n!)` polynomially small (Vose/Erdős) — is
+NOT proved; it stays a conjecture `Prop`. This session supplies only the correct
+*definition* and the elementary sandwich; it does not resolve any part of #18.
+
+### Idiom notes (v4.31)
+- `repLength_spec` must route through membership: state it as `∃ T, …`, prove
+  `repLength m k ∈ {t | …}` by `apply Nat.sInf_mem` then `exact` the membership
+  (defeq to the ∃-goal). `apply Nat.sInf_mem` directly on an ∃-goal fails (unifies
+  against `sInf ?s ∈ ?s`, not the unfolded existential).
+- `hErdos` is a `Finset.sup` over `range m`; `Finset.sup_le` / `Finset.le_sup` after
+  `unfold hErdos`. Lower bound: pull out `k=1` with `Finset.le_sup (mem_range)`.
+
+### Still open (unchanged, deep) + remaining mechanic follow-up
+Parent `Erdos18Problem.lean` still names the universal-set index `h` and points
+`conjecture_part1/part2_weak/part2_strong` at it; `Erdos18OQ01.lean` subadditivity
+also depends on that `h`. Renaming the parent `h`→`hCover` and repointing the parent
+conjectures at `hErdos` is a mechanic edit across parent+OQ01 (behaviour-preserving).
+The deep `hErdos(n!) < n^{o(1)}` bound (Vose) remains unformalized.

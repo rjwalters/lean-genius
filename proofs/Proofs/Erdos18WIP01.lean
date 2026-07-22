@@ -1387,4 +1387,121 @@ Erdős max-representation-length index (Vose `≪ √log m`) the prize concerns.
 theorem factorial_le_two_pow_h (n : ℕ) : n ! ≤ 2 ^ h (n !) :=
   le_two_pow_h (factorial_practical n)
 
+/- ## The corrected Erdős #18 index `hErdos` (max-representation-length)
+
+The parent `h m` is the **universal representing-set size** — the fewest divisors
+that jointly represent *every* `1 ≤ k < m`. `le_two_pow_h` / `factorial_le_two_pow_h`
+show it is superpolynomial on factorials (`m ≤ 2 ^ h m`), so it is *not* the quantity
+Erdős Problem #18 concerns. The prize index (Vose 1985, `≪ √(log m)` infinitely often)
+is the **worst-case fewest-divisors** count: for each `k` take the *minimum* number of
+divisors of `m` summing to `k`, then the *maximum* over `1 ≤ k < m`.
+
+This section supplies the correct definition and the elementary sandwich
+`1 ≤ hErdos m ≤ h m ≤ d(m)` for practical `m ≥ 2` — pinning the corrected index
+below the (over-counting) universal-set index — and re-homes the two prize
+conjectures onto `hErdos`. The deep upper bound (`hErdos(n!)` polynomially small,
+Vose/Erdős) is stated as a conjecture `Prop`, not proved here. -/
+
+/-- `repLength m k` — the fewest divisors of `m` whose distinct sum is `k`
+(`0` at `k = 0`, via the empty set). -/
+noncomputable def repLength (m k : ℕ) : ℕ :=
+  sInf { t : ℕ | ∃ T : Finset ℕ, T ⊆ divisors m ∧ T.card = t ∧ T.sum id = k }
+
+/-- `hErdos m` — the Erdős #18 index: the worst case, over `1 ≤ k < m`, of the
+fewest divisors of `m` needed to represent `k`, i.e. `max_{k < m} repLength m k`.
+This — not the universal-set `h` — is the quantity the prize conjectures concern. -/
+noncomputable def hErdos (m : ℕ) : ℕ :=
+  (Finset.range m).sup (fun k => repLength m k)
+
+/-- For practical `m` and `1 ≤ k < m` the minimum is attained: there is a divisor
+set of size exactly `repLength m k` summing to `k`. -/
+theorem repLength_spec {m k : ℕ} (hm : IsPractical m) (hk1 : 1 ≤ k) (hkm : k < m) :
+    ∃ T : Finset ℕ, T ⊆ divisors m ∧ T.card = repLength m k ∧ T.sum id = k := by
+  have hmem : repLength m k ∈ { t : ℕ | ∃ T : Finset ℕ, T ⊆ divisors m ∧
+      T.card = t ∧ T.sum id = k } := by
+    apply Nat.sInf_mem
+    obtain ⟨T, hTsub, hTsum⟩ := hm.2 k hk1 hkm
+    exact ⟨T.card, T, hTsub, rfl, hTsum⟩
+  exact hmem
+
+/-- **`repLength m k ≤ h m`** for `k < m`. The universal representing set of size
+`h m` already represents each individual `k`, so the per-`k` minimum never exceeds
+it. -/
+theorem repLength_le_h {m k : ℕ} (hm : IsPractical m) (hkm : k < m) :
+    repLength m k ≤ h m := by
+  have hne : { s : ℕ | ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = s ∧
+      ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k }.Nonempty :=
+    ⟨(divisors m).card, divisors m, Finset.Subset.refl _, rfl,
+      fun k hk1 hkm => hm.2 k hk1 hkm⟩
+  obtain ⟨S, hSdvd, hScard, hScov⟩ := Nat.sInf_mem hne
+  have hScard' : S.card = h m := hScard
+  rcases Nat.eq_zero_or_pos k with h0 | hpos
+  · calc repLength m k ≤ 0 :=
+          Nat.sInf_le ⟨∅, Finset.empty_subset _, Finset.card_empty, by simp [h0]⟩
+      _ ≤ h m := Nat.zero_le _
+  · obtain ⟨T, hTS, hTsum⟩ := hScov k hpos hkm
+    calc repLength m k ≤ T.card :=
+          Nat.sInf_le ⟨T, hTS.trans hSdvd, rfl, hTsum⟩
+      _ ≤ S.card := Finset.card_le_card hTS
+      _ = h m := hScard'
+
+/-- **`hErdos m ≤ h m`** for practical `m`: the corrected index is dominated by the
+universal-set index — formal confirmation that the parent `h` over-counts. -/
+theorem hErdos_le_h {m : ℕ} (hm : IsPractical m) : hErdos m ≤ h m := by
+  unfold hErdos
+  apply Finset.sup_le
+  intro k hk
+  rw [Finset.mem_range] at hk
+  exact repLength_le_h hm hk
+
+/-- **`hErdos m ≤ d(m)`** for practical `m`, chaining `hErdos_le_h` with
+`h_le_card_divisors`. -/
+theorem hErdos_le_card_divisors {m : ℕ} (hm : IsPractical m) :
+    hErdos m ≤ (divisors m).card :=
+  (hErdos_le_h hm).trans (h_le_card_divisors hm)
+
+/-- Representing `1` needs at least one divisor (the empty set sums to `0`), so for
+`m ≥ 2` we have `1 ≤ repLength m 1`. -/
+theorem one_le_repLength_one {m : ℕ} (hm : 2 ≤ m) : 1 ≤ repLength m 1 := by
+  rcases Nat.eq_zero_or_pos (repLength m 1) with h0 | h1
+  · exfalso
+    have hmem : repLength m 1 ∈ { t : ℕ | ∃ T : Finset ℕ, T ⊆ divisors m ∧
+        T.card = t ∧ T.sum id = 1 } := by
+      apply Nat.sInf_mem
+      refine ⟨1, {1}, ?_, ?_, ?_⟩
+      · intro x hx
+        simp only [Finset.mem_singleton] at hx
+        subst hx
+        exact Nat.one_mem_divisors.mpr (by omega)
+      · simp
+      · simp
+    rw [h0] at hmem
+    obtain ⟨T, _, hTcard, hTsum⟩ := hmem
+    rw [Finset.card_eq_zero] at hTcard
+    subst hTcard
+    simp at hTsum
+  · exact h1
+
+/-- **`1 ≤ hErdos m`** for `m ≥ 2`: representing `k = 1` already costs one divisor. -/
+theorem one_le_hErdos {m : ℕ} (hm : 2 ≤ m) : 1 ≤ hErdos m := by
+  calc 1 ≤ repLength m 1 := one_le_repLength_one hm
+    _ ≤ hErdos m := by
+        unfold hErdos
+        exact Finset.le_sup (by rw [Finset.mem_range]; omega)
+
+/-- **Erdős #18, Part 2 ($250), corrected.** The prize question `h(n!) < n^{o(1)}`
+stated over the correct index `hErdos`. Contrast `conjecture_part2_weak`, which is
+*false* for the parent's universal-set `h` (`factorial_le_two_pow_h`). -/
+def conjecture_part2_weak_erdos : Prop :=
+  ∀ ε : ℝ, ε > 0 →
+    ∃ N : ℕ, ∀ n ≥ N, (hErdos n.factorial : ℝ) < n ^ ε
+
+/-- **Erdős #18, Part 1, corrected** — infinitely many practical `m` whose correct
+index `hErdos m` is doubly-logarithmically bounded. -/
+def conjecture_part1_erdos : Prop :=
+  ∃ C : ℝ, C > 0 ∧
+    Set.Infinite { m : ℕ | IsPractical m ∧
+      (hErdos m : ℝ) < (Real.log (Real.log m)) ^ C }
+
 end Erdos18
+
