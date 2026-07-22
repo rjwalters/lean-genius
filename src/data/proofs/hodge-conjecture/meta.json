@@ -16,7 +16,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 57,
-    "assumptions": "49 axiom declarations (down from 101) encoding Hodge structures, known cases (Lefschetz 1,1, abelian varieties, K3, top codimension), categorical operations, motives, p-adic Hodge theory, counterexamples (Atiyah-Hirzebruch, Voisin, Totaro), and related conjectures. 3 unused axioms removed (tateTwist, tateStructure, deligne_cycle_class). The Hodge Conjecture itself remains open. 0 sorries remain.",
+    "assumptions": "49 axiom declarations (down from 101) encoding Hodge structures, known cases (Lefschetz 1,1, abelian varieties, K3, top codimension), categorical operations, motives, p-adic Hodge theory, counterexamples (Atiyah-Hirzebruch, Voisin, Totaro), and related conjectures. 3 unused axioms removed (tateTwist, tateStructure, deligne_cycle_class). The Hodge Conjecture itself remains open. 0 sorries remain. Trust caveat: 15 named theorems are discharged by native_decide (e.g. hodge_classes_count_g3, quintic_total_betti, mirror_quintic_total_betti, hodge_locus_codimension), which trusts the Lean compiler's kernel reduction and introduces the Lean.ofReduceBool axiom (not reflected in axiomCount, which counts mathematical assumptions). These are finite demonstrations — Betti and Hodge-number computations for specific varieties (quintic, mirror quintic, low-genus examples) — and do NOT carry the Hodge Conjecture, which remains open and rests on the axiom declarations above.",
     "mathlibDependencies": [],
     "originalContributions": [
       "Abstract Hodge structures with complexification maps",
