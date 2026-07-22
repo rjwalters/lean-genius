@@ -144,6 +144,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Packaging the Chebyshev Semigroup Law as a Monoid Homomorphism",
+      "summary": "Module docstring: states the open question — package the parent's Chebyshev–De Moivre recurrence as the semigroup/nesting law C_mn(x) = C_m(C_n(x)) over 𝔽_p, expressed as a monoid homomorphism (ℤ,·) →* (End 𝔽_p, ∘) — and explains this builds on Mathlib's existing polynomial composition identity C_mul, with the new content being the evaluation-map packaging, the commuting family, and the power-map conjugacy via z ↦ z+z⁻¹.",
+      "startLine": 1,
+      "endLine": 44,
+      "mathContext": "$C_{mn}(x) = C_m(C_n(x))$ over $\\mathbb F_p$, from Mathlib's $C_{R}(m\\cdot n) = C_R(m)\\circ C_R(n)$; bundled as a monoid homomorphism $(\\mathbb Z,\\cdot) \\to^* \\mathrm{End}(\\mathbb F_p)$, with $C_n$ conjugate to $z\\mapsto z^n$ via $z\\mapsto z+z^{-1}$ on the unit circle $zw=1$."
+    },
+    {
       "id": "evaluation-law",
       "title": "Evaluation-Map Composition Law",
       "startLine": 45,
