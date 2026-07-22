@@ -75,9 +75,13 @@ axiom vanDoorn_Tang_lower_bound :
 
 /- ## Known Upper Bounds -/
 
-/-- Elementary upper bound: v(k) ≤ k · c₀^{2^k}. -/
+/-- Elementary upper bound: v(k) ≤ k · c₀^{2^k} for all sufficiently large k.
+The bound holds asymptotically; it is *false* at small k (e.g. at k = 1 it would
+force v(1) ≤ c₀² ≈ 1.60, contradicting v(1) = 2), so it must be stated with a
+threshold k₀ rather than for all k > 0. Coupling an all-k form with the lower
+bound derives False (see gallery audit #41224). -/
 axiom elementary_upper_bound :
-    ∀ k : ℕ, k > 0 →
+    ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
       (v k : ℝ) ≤ k * vardiConstant ^ (2^k : ℕ)
 
 /-  Maximum denominator bound: in any k-term decomposition,
@@ -108,12 +112,14 @@ so the first missing denominator is 4. -/
 /- ## Summary -/
 
 /-- **Erdős Problem #293 Summary.**
-Current best bounds on v(k): e^{ck²} ≤ v(k) ≤ k · c₀^{2^k}.
-The gap (e^{k²} vs e^{2^k}) is one of the largest in combinatorics. -/
+Current best bounds on v(k): e^{ck²} ≤ v(k) (for all k > 0), and v(k) ≤ k · c₀^{2^k}
+for all sufficiently large k. The gap (e^{k²} vs e^{2^k}) is one of the largest in
+combinatorics. The upper bound is asymptotic — it fails at small k — so the two
+bounds are stated over compatible ranges and do not jointly derive False. -/
 theorem erdos_293_summary :
     (∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k > 0 →
       (v k : ℝ) ≥ Real.exp (c * k^2)) ∧
-    (∀ k : ℕ, k > 0 →
+    (∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
       (v k : ℝ) ≤ k * vardiConstant ^ (2^k : ℕ)) :=
   ⟨vanDoorn_Tang_lower_bound, elementary_upper_bound⟩
 
