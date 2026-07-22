@@ -372,3 +372,58 @@ the degree sum 7·3 + 4 = 25 odd — handshake. So either a C₄ exists or G is 
   parity boost only yields one degree-4 vertex — not enough. Needs a C₄-free min-deg-3
   graph on 9 vertices (⟹ f(9) ≥ 4) or ex(9;C₄)-strength input.
 - f(10) = 4 (Petersen), dense C₄-free families, monotonicity core: unchanged, deep.
+
+## Session 2026-07-22c (researcher-1-9) — f(9) BLOCKER OVERTURNED: elementary route mapped + pigeonhole engine formalized
+
+**Mode**: attack the recorded f(9) blocker ("needs ex(9;C₄)-strength input").
+**Outcome**: the blocker is WRONG (third "needs extremal tables" note to fall) — a
+complete elementary route to **f(9) = 3** is mapped, and its counting engine is
+formalized (2 theorems, 0-axiom, host-verified `lake env lean` exit 0).
+
+### The f(9) = 3 blueprint (full, elementary, no ex(n;C₄) input)
+Suppose G on 9 vertices, δ ≥ 3, C₄-free.
+1. **Degree-sequence pinch**: cherry count Σᵥ C(d(v),2) ≤ C(9,2) = 36. Max degree
+   ≤ 5 (deg 6: 15+8·3 = 39 > 36); deg 5 impossible (parity: sum 29 odd forces a
+   second ≥4 vertex → 10+6+7·3 = 37 > 36). So degrees ∈ {3,4}; k = #(deg-4)
+   satisfies 27+k even (k odd) and 24+3k ≤ 36 (k ≤ 4): **k ∈ {1,3}**.
+2. **(3⁶,4³) dies by pigeonhole**: k=3 makes the cherry count EXACTLY 36 — every
+   pair has exactly one common neighbour. Path-count out of v:
+   Σ_{u∈N(v)}(d(u)−1) = 8 (each x ≠ v reached exactly once). For a deg-4 vertex:
+   four terms ≥2 summing to 8 → all four neighbours have degree 3. So the three
+   deg-4 vertices are pairwise non-adjacent with N ⊆ V₃ (|V₃| = 6), and
+   4 + 4 = 6 + 2 fires `containsC4_of_degree_sum_subset` → C₄. Contradiction.
+   (No friendship theorem needed — it's only in Mathlib's Archive, no olean.)
+3. **(3⁸,4) dies locally at the deg-4 vertex w**: each x ∈ R := V∖({w}∪N(w))
+   (|R| = 4) is adjacent to ≤ 1 member of N(w) (two ⇒ second common neighbour
+   with w ⇒ C₄ via the engine). R's degrees sum 12 = 2e(R) + e(R,N(w)) ≤
+   2e(R) + 4 → e(R) ≥ 4; C₄-free on 4 vertices → e(R) ≤ 4 (5 = K₄−e has C₄), so
+   e(R) = 4 and R is the paw (unique C₄-free 4-vertex 4-edge graph) — whose
+   pendant vertex has total degree ≤ 1 + 1 = 2 < 3. Contradiction.
+
+f(9) ≥ 3 is already known (three_le_minDegreeForC4). Hence f(9) = 3.
+
+### Formalized this session (Erdos85Problem.lean, end of file)
+- `containsC4_of_degree_sum_subset` — **pigeonhole C₄ engine (subset form)**:
+  u ≠ v, N(u) ⊆ S, N(v) ⊆ S, |S|+2 ≤ d(u)+d(v) → containsC4. Via
+  `Finset.card_union_add_card_inter` + `Finset.one_lt_card` +
+  `containsC4_of_two_common`.
+- `containsC4_of_card_add_two_le_degree_add_degree` — global form (S = univ):
+  |V|+2 ≤ d(u)+d(v) → C₄.
+
+### Remaining for f(9) = 3 (next session, all elementary)
+(a) The degree-sequence pinch (step 1) — cherry-sum bookkeeping in the style of
+    `containsC4_of_eight_min_degree_three`'s counting prelude.
+(b) The exact-path-count argument (step 2) — needs the tight-cherry ⇒
+    exactly-one-common-neighbour upgrade (double counting: injection
+    cherry→pair is bijective when counts match; Finset.card_le_card equality).
+(c) The paw analysis (step 3) — small finite case work; candidate for the
+    decide-engine style used in erdos-18 (4-vertex graphs).
+
+Estimated 300-450 lines total. Steps are independent; (c) may be easiest first.
+
+### Ops note
+The active worktree was reaped mid-session WITH dirty uncommitted changes
+(second reap today: researcher-1 at ~21:44Z, researcher-1-9-e116 at ~22:25Z) —
+work redone from agent context. Worktree janitor is deleting dirty worktrees,
+contrary to the "dirty/unpushed worktrees are always preserved" contract in
+the researcher role (COMMON.md Known-Gaps). Flagging for the operator.

@@ -42,6 +42,11 @@
         "route": "the actual Erdos #85 monotonicity core (f(n+1) >= f(n) eventually)",
         "reopenCriterion": "materially new mechanism required; genuinely open in the literature.",
         "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "PARTIALLY RESOLVED 2026-07-22 (was: f(9) needs ex(9;C4)-strength input): elementary f(9)=3 route found — degree pinch + pigeonhole engine (formalized) + path-count + paw analysis (blueprinted). Residual: formalize steps (a)-(c) per knowledge.md.",
+        "reopenCriterion": "open for formalization — mechanism identified, no new mathematics needed",
+        "blockedAt": "2026-07-22"
       }
     ],
     "nextAction": "STAND DOWN on elementary work. Reopen only per a blocker reopenCriterion: an ex(n;C4) edge bound (unlocks f(9)), a decide-free Petersen (f(10)=4), a dense C4-free family (KST lower bound), or the open monotonicity core. Note: the triangle-partition trick is 8-specific. At n=9 the cherry count is silent (9*C(3,2)=27 < 36=C(9,2)) so it cannot reduce min-deg 3 to a regular case; pinning f(9) in {3,4} needs either a C4-free min-deg-3 graph on 9 vertices (would give f(9)>=4) or an ex(9;C4)-strength edge bound.",
@@ -52,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Exact-value table complete for 1<=n<=8 (f = 1,2,3,2,3,3,3,3). f(8)=3 proved 2026-07-22 via a LOCAL triangle-partition argument — the recorded blocker ('f(8)=3 iff ex(8;C4)=11 formalized') was WRONG. Reduction: a degree-5 vertex gives 31>28 cherries, two degree-4 vertices give 30>28, exactly one degree-4 vertex makes the degree sum 25 odd (handshake), so min-deg 3 on 8 vertices reduces to 3-regular; there a C4-free graph would have every vertex in a UNIQUE triangle (pairwise-disjoint punctured neighbourhoods pack 6 vertices into 4 slots otherwise; two triangles at v give a C4 or degree>=4), so triangles partition the 8 vertices into 3-sets — 3∤8. Earlier: f(7)=3 via handshake-parity boost; f(4m^2+2m+1)<=2m+1=sqrt(n)+1 upper-Beatty family. Remaining: f(9) (parity silent, needs ex(n;C4)-strength input), f(10)=4 (Petersen), odd-s Beatty, monotonicity core OPEN.",
+    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified): f(9) blocker OVERTURNED — complete elementary blueprint for f(9)=3 recorded in knowledge.md (degree pinch to (3^8,4)/(3^6,4^3); pigeonhole + path-count kills k=3; paw analysis kills k=1) and the counting engine formalized 0-axiom (containsC4_of_degree_sum_subset + global form). Exact table 1..8 = 1,2,3,2,3,3,3,3 unchanged; f(9)=3 formalization is next (est. 300-450 lines, 3 independent steps). f(10)=4 (Petersen), dense families, monotonicity core: unchanged, deep.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -84,7 +89,9 @@
       "triangle_pair_unique (at degree 3 the triangle through a vertex is unique) in Erdos85Problem.lean",
       "containsC4_of_three_regular_eight (no 3-regular C4-free graph on 8 vertices: triangle partition, 3∤8) in Erdos85Problem.lean",
       "containsC4_of_eight_min_degree_three (min-deg 3 on Fin 8 forces C4: cherry-count + parity casework down to 3-regular) in Erdos85Problem.lean",
-      "minDegreeForC4_eight (f(8)=3, FIFTH exact value; table complete 1..8) in Erdos85Problem.lean — all 0-axiom, host-verified lake env lean exit 0"
+      "minDegreeForC4_eight (f(8)=3, FIFTH exact value; table complete 1..8) in Erdos85Problem.lean — all 0-axiom, host-verified lake env lean exit 0",
+      "containsC4_of_degree_sum_subset in Erdos85Problem.lean (pigeonhole C4 engine, subset form)",
+      "containsC4_of_card_add_two_le_degree_add_degree in Erdos85Problem.lean (global form)"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -109,7 +116,10 @@
       "Parity boost: odd |V| + odd k + min-deg >= k forces a vertex of degree >= k+1 (degree sum |V|*k odd contradicts handshake sum deg = 2|E|). This upgrades the KST cherry count exactly where it ties.",
       "At n = s^2+s+1 with s = 2m even, n-1 = k(k-1) EXACTLY for k = s+1, so the parity-refined count wins by the margin C(k+1,2)-C(k,2) = k; this is the unique j for which the parity argument works in the upper Beatty half (j >= 2 provably out of reach).",
       "The f(7) blocker 'needs ex(7;C4)' was refuted: 21 = C(7,2) < 24 = 6*C(3,2)+C(4,2). Plain count ties at 21=21; handshake parity breaks the tie.",
-      "omega rejects nonlinear atoms like card V * k: rewrite the Odd product away first (obtain <a, ha> := hodd.mul hk; rw [ha] at hhs) before calling omega."
+      "omega rejects nonlinear atoms like card V * k: rewrite the Odd product away first (obtain <a, ha> := hodd.mul hk; rw [ha] at hhs) before calling omega.",
+      "f(9) blocker overturned (third extremal-tables blocker to fall): complete elementary route to f(9)=3 mapped — cherry+parity pinch degrees to (3^8,4) or (3^6,4^3); pigeonhole kills (3^6,4^3) (deg-4 vertices have all-deg-3 neighbourhoods by exact path count, then 4+4=6+2); paw analysis kills (3^8,4) locally",
+      "Friendship theorem NOT needed for the tight-cherry case (and is unavailable anyway: Mathlib ships it only in Archive/Wiedijk100Theorems, no olean in the shared cache)",
+      "Pigeonhole C4 engine formalized: containsC4_of_degree_sum_subset (N(u),N(v) inside S with |S|+2 <= d(u)+d(v) forces C4) + global |V|+2 form — reusable for all future exact values"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
