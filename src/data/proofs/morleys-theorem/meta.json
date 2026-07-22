@@ -143,7 +143,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Morley's theorem is formalized using Conway's backward proof in complex coordinates. The TriangleAngles structure captures the angle-sum constraint, cube roots of unity define the equilateral Morley triangle, and the symmetric side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) encodes the equilateral property. Two trigonometric identities are proved from Mathlib; the main theorem is axiomatized.",
+    "summary": "Morley's theorem is fully proved via the sine rule / cosine rule method: the symmetric side length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) is derived for all three Morley sides and shown equal, proving the equilateral property (0 axioms, 0 sorries). Conway's backward construction with cube roots of unity is also proved and retained for geometric context, but the main theorem's derivation uses the trigonometric identities, not the complex-coordinate approach.",
     "implications": "**Theoretical Significance**: The formalization demonstrates how complex coordinates elegantly combine algebraic and geometric reasoning.\n\nThe TriangleAngles structure and backward construction provide a reusable framework for formalizing other triangle-center theorems (Napoleon's theorem, Feuerbach's theorem). The connection between Morley's theorem and angle trisection impossibility links classical geometry to Galois theory.",
     "openQuestions": [
       "Can Napoleon's theorem (equilateral triangles on sides → centroids form equilateral) be formalized using the TriangleAngles framework?",
