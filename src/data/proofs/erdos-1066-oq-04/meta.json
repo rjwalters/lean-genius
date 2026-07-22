@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1066-oq-04",
+      "title": "Problem Statement and Background",
+      "summary": "Asks how the independence guarantee $g(n)$ for planar unit-distance graphs generalizes to $g_d(n)$ in $\\mathbb{R}^d$, noting the greedy bound $g_d(n) \\ge n/(\\tau(d)+1)$ via the $d$-dimensional kissing number $\\tau(d)$.",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "In $\\mathbb{R}^2$, $(8/31)n \\le g(n) \\le (5/16)n$ bounds the largest independent set forced in any unit-distance graph on $n$ separated points; $\\tau(d)$ bounds vertex degree, giving the higher-dimensional greedy-coloring lower bound."
+    },
+    {
       "id": "config",
       "title": "Part I: Separated Configurations",
       "startLine": 26,
