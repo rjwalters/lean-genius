@@ -72,6 +72,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Reducing the General Cubic to Depressed Form", "startLine": 1, "endLine": 48, "summary": "Proves the Tschirnhaus shift x=t-b/(3a), which annihilates the quadratic term of a general cubic ax³+bx²+cx+d, as a clean field identity, then bridges it to the parent's Cardano formula to produce an explicit radical root of the general cubic — closing the loop from the general to the depressed case.", "mathContext": "The Tschirnhaus shift is the historically essential first step of Cardano's method, reducing any general cubic to the depressed form t³+pt+q the parent file solves directly; here it is proved as a root-preserving bijection rather than merely asserted."},
     {
       "id": "depressed-params",
       "title": "Part 1: The Depressed Parameters",
