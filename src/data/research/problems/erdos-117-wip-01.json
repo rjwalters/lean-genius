@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,18 +31,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FOUNDATIONS (researcher-1, 2026-07-20): developed the def-only Erdos117Problem.lean stub (Erdos Problem 117, covering groups by abelian subgroups, OPEN, h(n) exponential per Pyber 1987) with 7 axiom-free lemmas. Headline: commute_of_hasNCommutingProperty_one shows the n=1 case is EXACTLY commutativity (the size-2 subset {x,y} forces its only distinct pair to commute), matching the file TODO note h(1)=1. Plus hasNCommutingProperty_mono (monotone: larger n = weaker), commGroup_hasNCommutingProperty_one, isAbelianSubgroup_bot/_top_of_commGroup/_mono, and isAbelianSubgroup_iff_isMulCommutative bridging the local predicate to Mathlib IsMulCommutative (v4.31 rename of Subgroup.IsCommutative; setLike_mul_comm). File 62->128 lines, 0->7 theorems. abelianCoverNumber h(n) and Pyber exponential bounds remain deep/unformalized. Host-verified v4.31 lake env lean, exit 0; print axioms clean.",
+    "progressSummary": "PROGRESS: formalized the elementary/base-case facts the parent Erdos117Problem.lean left as prose — 3 axiom-free theorems in companion Erdos117WIP01.lean (Docker-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound). Flagship: abelianCoverNumber_one (h(1)=1), exactly the trivial case the problem requests. Pyber exponential bounds c₁ⁿ<h(n)<c₂ⁿ and the OPEN exact base remain unformalized (deep).",
     "builtItems": [
       "commute_of_hasNCommutingProperty_one - HasNCommutingProperty G 1 implies all pairs commute (Erdos117Problem.lean)",
       "hasNCommutingProperty_mono - monotone, weaker at larger n (Erdos117Problem.lean)",
       "commGroup_hasNCommutingProperty_one; isAbelianSubgroup_bot / _top_of_commGroup / _mono (Erdos117Problem.lean)",
-      "isAbelianSubgroup_iff_isMulCommutative - bridges local IsAbelianSubgroup to Mathlib IsMulCommutative (Erdos117Problem.lean)"
+      "isAbelianSubgroup_iff_isMulCommutative - bridges local IsAbelianSubgroup to Mathlib IsMulCommutative (Erdos117Problem.lean)",
+      "Erdos117WIP01.lean: not_hasNCommutingProperty_zero (¬ HasNCommutingProperty G 0)",
+      "Erdos117WIP01.lean: commGroup_hasNCommutingProperty (CommGroup ⟹ n-commuting for all n≥1)",
+      "Erdos117WIP01.lean: abelianCoverNumber_one (h(1)=1) — the flagship base case"
     ],
     "insights": [
-      "Erdos117Problem.lean stub developed: the n=1 case of the n-commuting property is EXACTLY commutativity (commute_of_hasNCommutingProperty_one) - the two-element subset {x,y} forces every distinct pair to commute; plus monotonicity and abelian-subgroup closure lemmas. All axiom-free."
+      "Erdos117Problem.lean stub developed: the n=1 case of the n-commuting property is EXACTLY commutativity (commute_of_hasNCommutingProperty_one) - the two-element subset {x,y} forces every distinct pair to commute; plus monotonicity and abelian-subgroup closure lemmas. All axiom-free.",
+      "h(1)=1 is fully provable elementarily: the 1-commuting property makes G abelian (commute_of_hasNCommutingProperty_one), so ⊤ is a single abelian subgroup covering G (1 ∈ covering set); and 0 is never in the set since an empty Fin 0 → Subgroup family cannot cover the identity of PUnit. sInf via Nat.sInf_le + Nat.sInf_eq_zero.",
+      "No group has the 0-commuting property (singleton {1} has card 1>0 but no distinct pair) — the n-commuting property is vacuous below n=1.",
+      "abelianCoverNumber is universe-polymorphic (its body quantifies ∀ (G:Type*)); membership witnesses must be built INLINE at the set fixed universe — a factored Type* have introduces a second non-unifying universe (level-param mismatch)."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Pyber upper/lower bounds c₁ⁿ<h(n)<c₂ⁿ stay as named assumptions (deep, exact base OPEN) — do NOT claim proved.",
+      "Optional: covering-set well-definedness for general n (nonemptiness of the sInf argument) needs a uniform cover bound = the deep Pyber upper bound; not elementary.",
+      "Optional: h(n)≥1 for all n via the same 0∉set argument (trivial generalization of the h(1)=1 lower half)."
+    ],
     "markdown": "# Knowledge Base: erdos-117-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -64,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.779Z",
-  "lastUpdate": "2026-07-10T00:41:25.926Z",
+  "lastUpdate": "2026-07-22",
   "significance": 6,
   "tractability": 6
 }
