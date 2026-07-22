@@ -97,6 +97,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Resolvent Cubic Reduces to Cardano's Formula", "startLine": 1, "endLine": 39, "summary": "Proves that the resolvent cubic 8m³+20pm²+(16p²-8r)m+(4p³-4pr-q²)=0 arising from Ferrari's quartic method reduces (via m=t-5p/6) to a depressed cubic solvable by Cardano's formula, completing the radical-solvability chain: depress the quartic, derive the resolvent cubic (Ferrari), depress and solve it (Cardano), then use the cubic root to factor the quartic into quadratics.", "mathContext": "Ferrari's 16th-century method for solving the general quartic reduces it to solving an auxiliary (resolvent) cubic; this file supplies the missing link showing that resolvent cubic is itself amenable to the depressed-cubic Cardano machinery already formalized in the gallery."},
     {
       "id": "resolvent",
       "title": "The Resolvent Cubic",
