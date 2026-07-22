@@ -38,15 +38,25 @@ unset CLAUDECODE 2>/dev/null || true
 #
 # Account selection strategy (in priority order):
 #   0. If claude-monitor's ~/.claude-monitor/ranking.json exists and is fresh
-#      (<10 min by generated_at / mtime), pick the least-utilized `available`
-#      account (ordered by status, util_7d, util_5h), joining ranking emails to
-#      on-disk token files via loom's derive_token_filename convention. This is
-#      a SOFT dependency: absent/stale/unparseable export → fall through below.
-#      Mirrors loom 0.12.0 (rjwalters/loom#3697, #3699) + lean-genius #41033.
-#   1. If .loom/tokens/.ranking exists and is <10 min old, pick the first
-#      account that has remaining weekly capacity (sorted by soonest reset).
+#      (<10 min by generated_at / mtime), rank `available` accounts least-utilized
+#      first (ordered by status, util_7d, util_5h) and pick one at RANDOM among
+#      the top-N (env LEAN_ACCOUNT_SPREAD_TOP_N, default 3; #41727), joining
+#      ranking emails to on-disk token files via loom's derive_token_filename
+#      convention. This is a SOFT dependency: absent/stale/unparseable export →
+#      fall through below. Mirrors loom 0.12.0 (rjwalters/loom#3697, #3699) +
+#      lean-genius #41033.
+#   1. If .loom/tokens/.ranking exists and is <10 min old, pick at random among
+#      the top-N accounts (same LEAN_ACCOUNT_SPREAD_TOP_N band) that still have
+#      remaining weekly capacity (sorted by soonest reset).
 #   2. If .loom/tokens/.allowlist exists, random among allowed accounts.
 #   3. Otherwise, random among all .token files.
+#
+# LEAN_ACCOUNT_SPREAD_TOP_N spreads load across the freshest accounts so that
+# many concurrent workers (and a sibling Loom daemon reading the same ranking)
+# don't all collide on the single most-available account and drive it to its
+# session limit (#41727). N is clamped to the eligible count and never widens
+# into exhausted/blocked accounts; N=1 reproduces the old deterministic
+# least-utilized pick exactly (a safe rollback).
 #
 # The ranking file (strategy 1) is written by:
 #   scripts/agents/check-accounts.sh --ranking
@@ -305,6 +315,35 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             return 1
         }
 
+        # Top-N spread pick (#41727). Given the count of ELIGIBLE accounts
+        # (already filtered: available/present/allowlisted/not-bad, ordered
+        # best-first), echo a random 0-based index into the top band and record
+        # the clamped band size in _spread_top_n (for the log line).
+        #
+        # The band size is env LEAN_ACCOUNT_SPREAD_TOP_N (default 3), clamped to
+        # the eligible count so we NEVER widen the band into exhausted/blocked
+        # accounts just to fill it — if fewer than N are eligible, we pick among
+        # those. N=1 always yields index 0 (RANDOM % 1 == 0), reproducing today's
+        # exact deterministic least-utilized pick — a safe rollback.
+        #
+        # Rationale: many concurrent workers (enricher×N, researcher×N, …) plus a
+        # sibling Loom daemon read the SAME claude-monitor ranking and each
+        # greedily took account[0], piling ~9 sessions onto one account until it
+        # hit its session limit in ~90s while others sat idle. Spreading the pick
+        # over the top-N least-utilized *available* accounts makes both consumers
+        # statistically fan out across the freshest accounts instead of colliding.
+        # Echoes "<chosen 0-based index> <clamped band size>" so callers can
+        # read both in the PARENT shell (a bare global set here would be lost —
+        # callers invoke this via $()/command substitution, i.e. a subshell).
+        _spread_top_n=1
+        _spread_pick() {  # $1 = eligible count (>=1)
+            local _n="$1" _band="${LEAN_ACCOUNT_SPREAD_TOP_N:-3}"
+            [[ "$_band" =~ ^[0-9]+$ ]] || _band=3
+            [[ "$_band" -lt 1 ]] && _band=1
+            [[ "$_band" -gt "$_n" ]] && _band="$_n"
+            echo "$(( RANDOM % _band )) $_band"
+        }
+
         if command -v jq >/dev/null 2>&1 && [[ -f "$_monitor_json" ]]; then
             # Freshness gate: prefer generated_at, else file mtime; <600s window.
             _mon_schema=$(jq -r '.schema // empty' "$_monitor_json" 2>/dev/null)
@@ -339,6 +378,12 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
                     done < "$_allowlist_file"
                 fi
 
+                # Collect ALL eligible stems in least-utilized-first order, then
+                # spread the pick over the top-N (#41727) instead of always
+                # taking account[0]. Only available/present/allowlisted/not-bad
+                # accounts enter the band, so the band is never widened into an
+                # ineligible account.
+                _mon_eligible=()
                 while IFS= read -r _memail || [[ -n "$_memail" ]]; do
                     [[ -z "$_memail" ]] && continue
                     _mstem=$(_derive_token_stem "$_memail") || continue
@@ -355,10 +400,18 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
                         && grep -q " $_mstem " "$_bad_tokens_file" 2>/dev/null; then
                         continue
                     fi
-                    _selected="$_tokens_dir/${_mstem}.token"
-                    _mode="monitor"
-                    break
+                    _mon_eligible+=("$_mstem")
                 done <<< "$_mon_emails"
+                if [[ ${#_mon_eligible[@]} -gt 0 ]]; then
+                    read -r _mpick _spread_top_n <<< "$(_spread_pick "${#_mon_eligible[@]}")"
+                    _mstem="${_mon_eligible[$_mpick]}"
+                    _selected="$_tokens_dir/${_mstem}.token"
+                    if [[ "$_spread_top_n" -gt 1 ]]; then
+                        _mode="monitor-spread"
+                    else
+                        _mode="monitor"
+                    fi
+                fi
             fi
         fi
 
@@ -366,21 +419,33 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
         if [[ -z "$_selected" && -f "$_ranking_file" ]]; then
             _ranking_age=$(( $(date +%s) - $(stat -f %m "$_ranking_file" 2>/dev/null || stat -c %Y "$_ranking_file" 2>/dev/null || echo 0) ))
             if [[ $_ranking_age -lt 600 ]]; then  # <10 min old
+                # Collect the top band of eligible ranking entries (soonest-reset
+                # order, skipping exhausted/blocked/bad/missing), then spread the
+                # pick over the top-N (#41727) instead of always taking the first.
+                # Exhausted/blocked entries are dropped, never counted toward N.
+                _rank_eligible=()
                 while IFS='|' read -r _rname _rstatus || [[ -n "$_rname" ]]; do
                     _rname=$(echo "$_rname" | tr -d '[:space:]')
                     _rstatus=$(echo "$_rstatus" | tr -d '[:space:]')
                     [[ -z "$_rname" || "$_rname" == \#* ]] && continue
                     [[ "$_rstatus" == "exhausted" || "$_rstatus" == "blocked" ]] && continue
-                    if [[ -f "$_tokens_dir/${_rname}.token" ]]; then
-                        # Skip bad tokens
-                        if [[ -f "$_bad_tokens_file" ]] && grep -q " $_rname " "$_bad_tokens_file" 2>/dev/null; then
-                            continue
-                        fi
-                        _selected="$_tokens_dir/${_rname}.token"
-                        _mode="ranked"
-                        break
+                    [[ -f "$_tokens_dir/${_rname}.token" ]] || continue
+                    # Skip bad tokens
+                    if [[ -f "$_bad_tokens_file" ]] && grep -q " $_rname " "$_bad_tokens_file" 2>/dev/null; then
+                        continue
                     fi
+                    _rank_eligible+=("$_rname")
                 done < "$_ranking_file"
+                if [[ ${#_rank_eligible[@]} -gt 0 ]]; then
+                    read -r _rpick _spread_top_n <<< "$(_spread_pick "${#_rank_eligible[@]}")"
+                    _rname="${_rank_eligible[$_rpick]}"
+                    _selected="$_tokens_dir/${_rname}.token"
+                    if [[ "$_spread_top_n" -gt 1 ]]; then
+                        _mode="ranked-spread"
+                    else
+                        _mode="ranked"
+                    fi
+                fi
             fi
         fi
 
