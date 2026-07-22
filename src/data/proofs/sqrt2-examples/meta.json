@@ -184,10 +184,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "sqrt2_irrational_variants",
+      "name": "square_nonneg",
       "type": "core",
-      "description": "Multiple proof variants of irrationality of sqrt(2)",
-      "leanType": "Irrational (Real.sqrt 2)"
+      "description": "The square of any integer is non-negative",
+      "leanType": "0 ≤ n * n"
+    },
+    {
+      "name": "imp_trans",
+      "type": "core",
+      "description": "Implication is transitive",
+      "leanType": "(P → Q) → (Q → R) → (P → R)"
     }
   ],
   "sorries": 0
