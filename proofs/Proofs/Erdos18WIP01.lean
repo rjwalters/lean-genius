@@ -1270,4 +1270,59 @@ theorem hundred_practical : IsPractical 100 := by
   norm_num at h
   exact h
 
+/-! ## Primorials are practical
+
+The **primorial** `n#  = ∏_{p ≤ n, p prime} p` (Mathlib's `primorial n`) is the product
+of all primes up to `n`. Primorials are a classical family of practical numbers. We prove
+`IsPractical (primorial n)` for every `n` — a second infinite family (alongside factorials
+and powers of two) generated purely from the Stewart–Sierpiński sufficient condition.
+
+The proof is a clean induction with no appeal to Bertrand's postulate: the only new prime
+that can enter `primorial (n+1)` is `n+1` itself, and the gap condition `n+1 ≤ σ(n#) + 1`
+holds because `n ≤ n#` (`Nat.le_primorial_self`) and `n# ≤ σ(n#)`. -/
+
+/-- **Recursion for the primorial.** `primorial (n+1)` acquires the factor `n+1` exactly
+when `n+1` is prime, and is otherwise unchanged. -/
+theorem primorial_succ_eq (n : ℕ) :
+    primorial (n + 1) = (if (n + 1).Prime then n + 1 else 1) * primorial n := by
+  unfold primorial
+  rw [Finset.range_add_one, Finset.filter_insert]
+  have hnotmem : (n + 1) ∉ Finset.filter Nat.Prime (Finset.range (n + 1)) := by
+    simp only [Finset.mem_filter, Finset.mem_range]
+    rintro ⟨h, _⟩; omega
+  by_cases hp : (n + 1).Prime
+  · rw [if_pos hp, if_pos hp, Finset.prod_insert hnotmem]
+  · rw [if_neg hp, if_neg hp, one_mul]
+
+/-- **Every primorial is practical.** By the Stewart–Sierpiński sufficient condition,
+`primorial (k+1)` is either `primorial k` (when `k+1` is composite) or `(k+1)·primorial k`
+(when `k+1` is prime); in the prime case the multiplier `k+1` satisfies
+`k + 1 ≤ σ(primorial k) + 1` since `k ≤ primorial k ≤ σ(primorial k)`
+(`Nat.le_primorial_self` and self-divisibility). Starting from `primorial 0 = 1`, induction
+gives a practical `primorial n` for every `n` — the classical primorial family, obtained
+without Bertrand's postulate. -/
+theorem primorial_practical : ∀ n : ℕ, IsPractical (primorial n) := by
+  intro n
+  induction n with
+  | zero => rw [primorial_zero]; exact one_practical
+  | succ k ih =>
+    rw [primorial_succ_eq]
+    by_cases hp : (k + 1).Prime
+    · rw [if_pos hp]
+      refine mul_practical_of_le_succ_sigma ih (by omega) ?_
+      have hsig : primorial k ≤ ∑ d ∈ divisors (primorial k), d := by
+        apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+        exact Nat.mem_divisors.mpr ⟨dvd_refl _, (primorial_pos k).ne'⟩
+      have hle : k ≤ primorial k := le_primorial_self
+      omega
+    · rw [if_neg hp, one_mul]; exact ih
+
+/-- `210 = 2 · 3 · 5 · 7 = primorial 7` is practical — the product of the first four primes,
+and a member of the primorial family that lies beyond the factorial and prime-power families
+covered earlier. -/
+theorem two_hundred_ten_practical : IsPractical 210 := by
+  have h := primorial_practical 7
+  have he : primorial 7 = 210 := by decide
+  rwa [he] at h
+
 end Erdos18
