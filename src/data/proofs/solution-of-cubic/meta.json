@@ -159,6 +159,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Header: Solution of a Cubic — Cardano's Formula (Wiedijk #37)", "startLine": 1, "endLine": 48, "summary": "States and proves Cardano's formula for the depressed cubic x³+px+q=0: x = ∛(-q/2+√Δ) + ∛(-q/2-√Δ) with discriminant Δ=q²/4+p³/27, working over ℂ to uniformly handle the casus irreducibilis. Records the historical background (Cardano's 1545 Ars Magna, earlier discovery by del Ferro and Tartaglia) and notes the reduction of a general cubic to depressed form via x=y-b/(3a).", "mathContext": "Cardano's formula is Wiedijk's Formalizing 100 Theorems item #37; it was the first algebraic solution to a polynomial equation beyond the quadratic, and applying it to the casus irreducibilis (three real roots) historically motivated the introduction of complex numbers."},
     {
       "id": "depressed-cubic",
       "title": "The Depressed Cubic",
