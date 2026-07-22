@@ -129,10 +129,10 @@
     {
       "id": "disproof",
       "title": "The Disproof",
-      "summary": "Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (1 sorry) to negate the conjecture by exhibiting the Ruzsa set counterexample",
+      "summary": "Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (proved, modulo the 3 axioms above) to negate the conjecture by exhibiting the Ruzsa set counterexample",
       "startLine": 158,
       "endLine": 199,
-      "mathContext": "Mathematical content: Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (1 sorry) to negate the conjecture by exhibiting the Ruzsa set counterexample"
+      "mathContext": "Mathematical content: Assembles $\\text{ruzsa\\_no\\_three\\_products}$ (proved) and $\\text{erdos\\_537\\_disproved}$ (proved, modulo the 3 axioms above) to negate the conjecture by exhibiting the Ruzsa set counterexample"
     },
     {
       "id": "understanding",
@@ -167,7 +167,7 @@
       "Can Ruzsa's construction be adapted to disprove analogous problems with k > 3 equal prime products?",
       "What is the status of the related Problem #536 (two equal prime products), now that the #537 pathway is blocked?",
       "Are there dense sets avoiding three equal prime products that do NOT use the lacunary squarefree construction?",
-      "Can the remaining sorry in erdos_537_disproved be resolved by formalizing the set-theoretic bookkeeping for the interval argument?"
+      "Can the 3 axioms (positive density of the Ruzsa set, its large intersection with (N/2, N), and the contradiction lemma) be discharged with a fully constructive proof?"
     ]
   },
   "crossReferences": [

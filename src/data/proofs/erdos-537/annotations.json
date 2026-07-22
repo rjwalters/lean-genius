@@ -190,7 +190,7 @@
     },
     "type": "concept",
     "title": "Ratio Bound Theorem",
-    "content": "If a₂ > a₃ both lie in the interval (N/2, N], then a₂/a₃ ∈ (1, 2). This is the only fully proved theorem in the file (no sorry). The proof uses the interval containment: a₂ ≤ N and a₃ > N/2 give a₂/a₃ < N/(N/2) = 2. The bound a₂ > a₃ gives the lower bound > 1.",
+    "content": "If a₂ > a₃ both lie in the interval (N/2, N], then a₂/a₃ ∈ (1, 2). The proof uses the interval containment: a₂ ≤ N and a₃ > N/2 give a₂/a₃ < N/(N/2) = 2. The bound a₂ > a₃ gives the lower bound > 1.",
     "mathContext": "For $a_2, a_3 \\in (N/2, N]$ with $a_2 > a_3$: $1 < a_2/a_3 < N/(N/2) = 2$. The proof works in $\\mathbb{Q}$: `one_lt_div` gives $a_2/a_3 > 1$ from $a_2 > a_3 > 0$, and `div_lt_iff` with $a_2 \\leq N$ and $a_3 > N/2$ gives $a_2/a_3 < 2$ via `linarith`. This interval constraint is incompatible with the gap property $p_3/p_2 > 2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -257,8 +257,8 @@
     },
     "type": "concept",
     "title": "Erdős #537 Disproved",
-    "content": "The main theorem: ¬Erdos537Conjecture. The proof assumes the conjecture and derives a contradiction: Ruzsa's set is dense enough to trigger the conjecture's conclusion but has no three equal prime products. Contains 1 sorry for the final bookkeeping step connecting the density of the Ruzsa set in (N/2, N] to the IsDenseSubset predicate.",
-    "mathContext": "$\\neg\\text{Erdos537Conjecture}$: the proof proceeds by contradiction. Assuming the conjecture, for $\\varepsilon$ from `ruzsa_set_positive_density` and $N = \\max(N_0, N_1) + 1$, the Ruzsa set restricted to $(N/2, N]$ is $\\varepsilon/2$-dense (by `ruzsa_set_large_intersection`) and thus must contain three equal prime products (by the conjecture). But `ruzsa_no_three_products` says it doesn't. The `sorry` is for the final technical step converting between the two density formulations.",
+    "content": "The main theorem: ¬Erdos537Conjecture. The proof assumes the conjecture and derives a contradiction: Ruzsa's set is dense enough to trigger the conjecture's conclusion but has no three equal prime products. Fully proved (no sorry), modulo the file's 3 axioms (`ruzsa_set_positive_density`, `ruzsa_set_large_intersection`, `ruzsa_contradiction`).",
+    "mathContext": "$\\neg\\text{Erdos537Conjecture}$: the proof proceeds by contradiction. Assuming the conjecture, for $\\varepsilon$ from `ruzsa_set_positive_density` and $N = \\max(N_0, N_1) + 1$, the Ruzsa set restricted to $(N/2, N]$ is $\\varepsilon/2$-dense (by `ruzsa_set_large_intersection`) and thus must contain three equal prime products (by the conjecture). But `ruzsa_no_three_products` says it doesn't.",
     "significance": "key",
     "relatedConcepts": [
       "proof by contradiction",
