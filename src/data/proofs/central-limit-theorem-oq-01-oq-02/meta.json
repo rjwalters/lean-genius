@@ -140,12 +140,10 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization builds the complete algebraic framework for the Lévy-Khintchine representation: Lévy triplets as the canonical parameterization of infinitely divisible distributions, explicit Gaussian and Poisson instances as fundamental building blocks, componentwise triplet addition reflecting independent sums, the Lévy-Itô decomposition into continuous and jump parts, and classification theorems that reduce distribution identification to checking which triplet components vanish. With 19 theorems (19 fully proved, 1 True stub for stable infinite divisibility) and 0 axioms, it provides a near-complete type-theoretic foundation for Lévy process theory.",
+    "summary": "This formalization builds the complete algebraic framework for the Lévy-Khintchine representation: Lévy triplets as the canonical parameterization of infinitely divisible distributions, explicit Gaussian and Poisson instances as fundamental building blocks, componentwise triplet addition reflecting independent sums, the Lévy-Itô decomposition into continuous and jump parts, and classification theorems that reduce distribution identification to checking which triplet components vanish. With 19 theorems (all fully proved) and 0 axioms, it provides a near-complete type-theoretic foundation for Lévy process theory; stable_inf_divisible (α-stable infinite divisibility) was left as a comment rather than formalized, since it needs characteristic-function theory beyond current Mathlib.",
     "implications": "The framework opens several formalization directions: full Lévy-Khintchine existence and uniqueness (from triplet to distribution), Lévy process construction via the Lévy-Itô theorem, jump-diffusion models for mathematical finance, and the connection between stable distributions and generalized central limit theorems. The algebraic structure of triplet addition also suggests formalizing infinitely divisible distributions as a commutative monoid in Lean's algebraic hierarchy.",
     "openQuestions": [
-      "Can gaussianExponent_zero be closed with simp/ring lemmas for Complex.ofReal arithmetic?",
-      "Can the stable_scaling rpow identity be proved using Mathlib's Real.rpow_natCast lemmas?",
-      "Can gaussian_variance_from_exponent be proved using Mathlib's Asymptotics.isLittleO framework?",
+      "Can stable_inf_divisible (α-stable distributions are infinitely divisible) be formalized with current Mathlib's characteristic-function theory?",
       "Is a full Lévy-Khintchine existence proof (triplet → distribution) feasible with current Mathlib measure theory?"
     ]
   },
