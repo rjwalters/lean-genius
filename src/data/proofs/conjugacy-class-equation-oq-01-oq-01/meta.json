@@ -82,7 +82,8 @@
       "**Cardinality form ⟶ index form by a single summand rewrite.** Mathlib already does the hard combinatorial work (partitioning G into center and nontrivial classes); converting to the textbook index form is exactly one pointwise rewrite of the summand, |K| ↦ [G : C_G(gK)], under finsum_mem_congr.",
       "**Representative selection makes the summand index meaningful.** A conjugacy class is a quotient with no canonical element, so the centralizer index [G : C_G(gᵢ)] requires choosing a representative; classRep via ConjClasses.exists_rep supplies one, and mk_classRep lets the per-class identity transfer to an arbitrary class.",
       "**[Finite G] suffices.** Stating everything with Nat.card and ∑ᶠ avoids Fintype/Decidability bookkeeping: the only hypothesis is finiteness, inherited directly from Mathlib's nat_card form of the class equation.",
-      "**This is the form the applications use.** The index form is what powers p ∣ |Z(G)| for p-groups and the Sylow/Cauchy arguments, because each noncentral term [G : C_G(gᵢ)] is a proper divisor of |G| with the relevant arithmetic visible."
+      "**This is the form the applications use.** The index form is what powers p ∣ |Z(G)| for p-groups and the Sylow/Cauchy arguments, because each noncentral term [G : C_G(gᵢ)] is a proper divisor of |G| with the relevant arithmetic visible.",
+      "**The corollary's truncated subtraction is safe by construction.** sum_noncenter_index_eq_card_sub_center states the noncentral sum equals Nat.card G - Nat.card (center G) using ℕ's truncated subtraction, which only recovers ordinary subtraction because it never underflows: the index-form identity already asserts Nat.card (center G) plus that very sum equals Nat.card G, so center's cardinality is a summand, not merely a bound. omega closes the corollary in one line because it can see this additive fact directly, with no separate `≤` lemma needed first."
     ],
     "prerequisites": [
       "The conjugation action ConjAct G ↷ G, ConjClasses, and the noncenter set (GroupAction/ConjAct.lean, Subgroup/Basic.lean)",
@@ -120,9 +121,17 @@
       "id": "index-form",
       "title": "The Class Equation in Index Form",
       "startLine": 63,
-      "endLine": 89,
-      "summary": "classEquation_centralizer_index_form rewrites Mathlib's summed class equation summand-by-summand (congr 1 then finsum_mem_congr) into |Z(G)| + Σ_{noncentral classes} [G : C_G(classRep x)] = |G|; sum_noncenter_index_eq_card_sub_center derives Σ [G : C_G(gᵢ)] = |G| − |Z(G)| by omega. Closes namespace ConjugacyClassEquationOQ01OQ01.",
+      "endLine": 78,
+      "summary": "classEquation_centralizer_index_form rewrites Mathlib's summed class equation summand-by-summand (congr 1 then finsum_mem_congr) into |Z(G)| + Σ_{noncentral classes} [G : C_G(classRep x)] = |G|.",
       "mathContext": "$|Z(G)| + \\sum_{x} [G : C_G(g_x)] = |G|$."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary: the Noncentral Count",
+      "startLine": 80,
+      "endLine": 89,
+      "summary": "sum_noncenter_index_eq_card_sub_center derives Σ [G : C_G(gᵢ)] = |G| − |Z(G)| from the index-form equation by omega, a pure additive rearrangement with no further group theory. Closes namespace ConjugacyClassEquationOQ01OQ01.",
+      "mathContext": "$\\sum_{x} [G : C_G(g_x)] = |G| - |Z(G)|$."
     }
   ],
   "mainTheorems": [
