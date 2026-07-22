@@ -4,11 +4,11 @@
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
       "startLine": 1,
-      "endLine": 62
+      "endLine": 84
     },
     "type": "concept",
-    "title": "Myhill's Isomorphism Theorem: Computable Analogue of Schr\u00f6der-Bernstein",
-    "content": "The module docstring presents Myhill's 1955 theorem as the computable version of Cantor-Schr\u00f6der-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections. The key distinction is between many-one reducibility (\u2264\u2098, function need not be injective) and one-one reducibility (\u2264\u2081, function must be injective). The back-and-forth construction classifies each n by its backward orbit type (A: chain exits range(g), B: chain exits range(f), C: infinite). References to Myhill (1955, creative sets), Rogers (1967, \u00a77.4), and Soare (2016, Chapter 3) establish the classical literature context.",
+    "title": "Myhill's Isomorphism Theorem: Computable Analogue of Schröder-Bernstein",
+    "content": "The module docstring presents Myhill's 1955 theorem as the computable version of Cantor-Schröder-Bernstein: classical CBS gives any bijection from two injections; Myhill's theorem gives a computable bijection from two computable injections. The key distinction is between many-one reducibility (≤ₘ, function need not be injective) and one-one reducibility (≤₁, function must be injective). The back-and-forth construction classifies each n by its backward orbit type (A: chain exits range(g), B: chain exits range(f), C: infinite). References to Myhill (1955, creative sets), Rogers (1967, §7.4), and Soare (2016, Chapter 3) establish the classical literature context.",
     "mathContext": "One-one reducibility: $p \\leq_1 q$ iff $\\exists$ computable injective $f$ with $\\forall n, p(n) \\leftrightarrow q(f(n))$. One-one equivalence: $p \\equiv_1 q$ iff $p \\leq_1 q$ and $q \\leq_1 p$. Myhill: $p \\equiv_1 q \\iff \\exists$ computable permutation $e : \\mathbb{N} \\simeq \\mathbb{N}$ with $\\forall n, p(n) \\leftrightarrow q(e(n))$. Back-and-forth: orbit $n \\leftarrow g^{-1}(n) \\leftarrow f^{-1}(g^{-1}(n)) \\leftarrow \\cdots$ determines which injection to use for $\\sigma(n)$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -16,7 +16,7 @@
       "many-one reducibility",
       "creative sets",
       "back-and-forth argument",
-      "Cantor-Schr\u00f6der-Bernstein"
+      "Cantor-Schröder-Bernstein"
     ],
     "prerequisites": [
       "computability theory basics",
@@ -28,8 +28,8 @@
     "id": "ann-myhill-corresponds",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 64,
-      "endLine": 70
+      "startLine": 86,
+      "endLine": 93
     },
     "type": "definition",
     "title": "Corresponds: Predicate Mapping Under a Permutation",
@@ -51,12 +51,12 @@
     "id": "ann-myhill-easy",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 73,
-      "endLine": 94
+      "startLine": 94,
+      "endLine": 117
     },
     "type": "insight",
     "title": "Easy Direction: Computable Bijection Implies One-One Equivalence",
-    "content": "The easy direction is fully proved. Given a computable bijection e with Corresponds p e q, construct: (1) e witnesses p \u2264\u2081 q \u2014 e is computable (he.1), injective (e.injective), and maps p to q (hpq). (2) e.symm witnesses q \u2264\u2081 p \u2014 e.symm is computable (he.2), injective, and the iff q n \u2194 p (e.symm n) follows by applying hpq at e.symm(n) and using e(e.symm(n)) = n. The simp/Equiv.apply_symm_apply lemma handles the cancellation. The variant one_one_equiv_of_computable_perm takes explicit Computable hypotheses rather than e.Computable.",
+    "content": "The easy direction is fully proved. Given a computable bijection e with Corresponds p e q, construct: (1) e witnesses p ≤₁ q — e is computable (he.1), injective (e.injective), and maps p to q (hpq). (2) e.symm witnesses q ≤₁ p — e.symm is computable (he.2), injective, and the iff q n ↔ p (e.symm n) follows by applying hpq at e.symm(n) and using e(e.symm(n)) = n. The simp/Equiv.apply_symm_apply lemma handles the cancellation. The variant one_one_equiv_of_computable_perm takes explicit Computable hypotheses rather than e.Computable.",
     "mathContext": "Proof of $q(n) \\leftrightarrow p(e^{-1}(n))$: by hypothesis, $p(e^{-1}(n)) \\leftrightarrow q(e(e^{-1}(n))) = q(n)$. So the iff holds by symmetry. This uses the key identity $e \\circ e^{-1} = \\text{id}$, i.e., $e(e^{-1}(n)) = n$ for all $n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -75,20 +75,20 @@
     "id": "ann-myhill-partial-inverse",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 97,
-      "endLine": 134
+      "startLine": 118,
+      "endLine": 166
     },
     "type": "concept",
-    "title": "Partial Inverse via Nat.rfind \u2014 Infrastructure for the Hard Direction",
-    "content": "The partial inverse partialInverse(g)(m) = Nat.rfind(n \u21a6 decide(g(n) = m)) searches for a preimage of m under g using unbounded search. Three key lemmas are stated (with sorry): (1) partialInverse_partrec: if g is computable, the partial inverse is Partrec. (2) partialInverse_spec: if n \u2208 partialInverse(g)(m), then g(n) = m. (3) partialInverse_dom: elements in range(g) have a defined partial inverse. The forward orbit fwdOrbit(f,g,n,k) = (g\u2218f)^k(n) is defined by recursion. isGFree(g)(n) captures that n \u2209 range(g), the condition for Type A orbit classification.",
-    "mathContext": "Partial inverse: $g^{-1}(m) := \\mu n[g(n) = m]$ (least $n$ with $g(n) = m$ if one exists, undefined otherwise). By `Nat.rfind_mem`: $n \\in \\text{Nat.rfind}(P) \\iff P(n) = \\text{true} \\wedge \\forall m < n, P(m) = \\text{false}$. `Partrec.rfind` states: if $P : \\mathbb{N} \\to \\mathbb{N}$ is partial recursive, then $\\mu n[P(n) = 0]$ is partial recursive. Applied here: $(m, n) \\mapsto \\text{decide}(g(n) = m)$ is computable (as $g$ is computable), so $g^{-1}$ is `Partrec`.",
+    "title": "Partial Inverse via Nat.rfind — Infrastructure for the Hard Direction",
+    "content": "partialInverse(g)(m) := Nat.rfind (n ↦ decide (g n = m)) is the partial-recursive stand-in for the (generally non-computable) set-theoretic inverse g⁻¹, searching for a preimage of m under g via unbounded search. Four lemmas make this infrastructure fully usable, all fully proved (0-sorry): partialInverse_partrec (g computable ⟹ the partial inverse is Partrec, via Partrec.rfind applied to the Computable₂ equality test), partialInverse_spec (any witness n returned recovers g n = m, no injectivity needed), partialInverse_dom (m ∈ range g ⟹ the search terminates), and partialInverse_unique (injectivity of g makes any two returned witnesses for the same m equal — the single-valuedness the back-and-forth extension steps rely on to avoid collisions).",
+    "mathContext": "Partial inverse: $g^{-1}(m) := \\mu n[g(n) = m]$ (least $n$ with $g(n) = m$ if one exists, undefined otherwise), computed via `Nat.rfind`. `Partrec.rfind` states: if $P$ is partial recursive, then $\\mu n[P(n)]$ is partial recursive; here $(m, n) \\mapsto \\text{decide}(g(n) = m)$ is `Computable₂` since $g$ is computable, so `partialInverse g` is `Partrec`. Injectivity of $g$ gives single-valuedness: $n_1, n_2 \\in g^{-1}(m) \\Rightarrow g(n_1) = m = g(n_2) \\Rightarrow n_1 = n_2$.",
     "significance": "key",
     "relatedConcepts": [
       "Partrec.rfind",
       "Nat.rfind",
       "partial recursive functions",
       "Partrec typeclass",
-      "computable partial functions"
+      "single-valuedness"
     ],
     "prerequisites": [
       "Partrec vs Computable in Lean 4",
@@ -97,79 +97,534 @@
     ]
   },
   {
-    "id": "ann-myhill-main-theorem",
+    "id": "ann-orbit-structure",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 136,
-      "endLine": 183
+      "startLine": 167,
+      "endLine": 242
     },
-    "type": "insight",
-    "title": "Myhill's Isomorphism Theorem \u2014 Full Statement with Hard Direction (sorry'd)",
-    "content": "The main theorem myhill_isomorphism states the full biconditional. The easy direction (\u2190) immediately applies myhill_easy. The hard direction (\u2192) is sorry'd with a detailed comment explaining the back-and-forth construction: at stage 2k, ensure k \u2208 dom(\u03c3); at stage 2k+1, ensure k \u2208 range(\u03c3). The priority argument uses: (a) each stage terminates by injectivity of f and g; (b) domain/range exhaustion covers all of \u2115; (c) the membership condition p(n) \u2194 q(\u03c3(n)) is preserved; (d) computability from partialInverse_partrec. The sorry covers approximately 200 lines of Partrec-based formalization.",
-    "mathContext": "Hard direction strategy: define $\\sigma$ via stage-by-stage extension. At each stage, either extend $\\sigma$'s domain (using $f$) or ensure an element is in $\\sigma$'s range (using $g^{-1}$). Orbit classification: for $n$, let $n_0 = n$, $n_1 = g^{-1}(n_0)$, $n_2 = f^{-1}(n_1)$, $n_3 = g^{-1}(n_2), \\ldots$ If the chain terminates because $n_k \\notin \\text{range}(g)$ (Type A) or $n_k \\notin \\text{range}(f)$ (Type B), or runs forever (Type C): use $\\sigma(n) = f(n)$ for Type A and C, $\\sigma(n) = g^{-1}(n)$ for Type B.",
+    "type": "concept",
+    "title": "Forward Orbits and the Π₁ Obstruction (isGFree)",
+    "content": "This section defines the forward orbit fwdOrbit f g n k = (g∘f)^k(n) by structural recursion and proves it coincides with Mathlib's Function.iterate (fwdOrbit_eq_iterate), then shows it is Computable₂ in both the base point and the iteration count (fwdOrbit_computable, via Computable.nat_rec). It also introduces isGFree g n := ∀ k, g k ≠ n (n is not a g-image) and proves isGFree_iff_not_mem_range identifies it with n ∉ range g. The accompanying docstring explains why classical Schröder–Bernstein's orbit classification is not computable: range g is only Σ₁ (c.e.) for a computable g, so its complement isGFree g is Π₁ and undecidable in general — precisely the obstruction Myhill's construction must route around.",
+    "mathContext": "Forward orbit: $\\mathrm{fwdOrbit}(f,g,n,k) = (g\\circ f)^k(n)$, always computable when $f,g$ are (the *backward* direction is where the difficulty lies). $\\mathrm{isGFree}(g,n) \\equiv \\forall k,\\, g(k)\\neq n \\iff n\\notin\\mathrm{range}(g)$. Complexity: for computable $g$, $\\mathrm{range}(g)$ is $\\Sigma_1$ (computably enumerable); its complement $\\mathrm{isGFree}(g)$ is therefore $\\Pi_1$, and $\\Pi_1$-but-not-decidable sets cannot be tested by a terminating algorithm — the classical orbit-type test cannot be implemented as a decision procedure.",
     "significance": "key",
     "relatedConcepts": [
-      "back-and-forth construction",
-      "priority argument",
-      "Friedberg-Muchnik",
-      "orbit classification",
+      "forward orbit",
+      "Function.iterate",
+      "Σ₁/Π₁ complexity",
+      "Computable₂",
+      "computably enumerable sets"
+    ],
+    "prerequisites": [
+      "Computable.nat_rec",
+      "Function.iterate API",
+      "arithmetical hierarchy basics"
+    ]
+  },
+  {
+    "id": "ann-collision-chase",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 243,
+      "endLine": 384
+    },
+    "type": "technique",
+    "title": "The Collision Chase Is a Bounded Forward-Orbit Walk",
+    "content": "When a fresh domain point a's naive image f a is already used (a collision), the scheduler 'chases' the forward orbit a, g(f a), g(f(g(f a))), … until it finds a range-fresh point. This section proves the chase is genuinely bounded: fwdOrbit_succ gives the chase-step recurrence g(f x), fwdOrbit_prefix_distinct shows a fresh-anchored colliding prefix cannot repeat (injectivity of g∘f would force the anchor back into the occupied set), and fwdOrbit_chase_length_le turns this into the quantitative bound N ≤ D.length. fwdOrbit_corr and chase_target_corr then show the p-value is invariant along the whole orbit, so wherever the chase lands, the resulting pair still respects the p ↔ q correspondence.",
+    "mathContext": "If $a\\notin D$ and every chase point $\\mathrm{fwdOrbit}(f,g,a,k)\\in D$ for $1\\le k\\le N$, injectivity of $g\\circ f$ forces the prefix $\\mathrm{fwdOrbit}(f,g,a,0),\\dots,N$ to be pairwise distinct (a repeat would put $a$ back in $D$), hence $N\\le |D|$ via `Finset.card_le_card_of_injOn`. Correspondence invariance: $p(x)\\leftrightarrow q(fx)\\leftrightarrow p(gfx)$ makes $p$ constant along the orbit, so $p(a)\\leftrightarrow q(f(\\mathrm{fwdOrbit}(f,g,a,N)))$ for every $N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bounded search",
+      "pigeonhole principle",
+      "collision resolution",
+      "MatchingCorr invariant"
+    ],
+    "prerequisites": [
+      "fwdOrbit",
+      "Function.Injective",
+      "Finset.card_le_card_of_injOn"
+    ]
+  },
+  {
+    "id": "ann-complexity-gfree",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 385,
+      "endLine": 506
+    },
+    "type": "concept",
+    "title": "Machine-Checking the Σ₁/Π₁ Complexity Claim, and the Fully Computable Case",
+    "content": "This section turns the earlier prose complexity claim into theorems: mem_range_re shows range g is REPred (computably enumerable) for computable g, via partialInverse_dom_iff_mem_range identifying range g with the halting domain of partialInverse g; not_isGFree_re then gives the Π₁ complexity of isGFree g. The second half handles the degenerate case where the obstruction vanishes: decidableIsGFree shows isGFree becomes decidable once range g is decidable, and — when g is a computable bijection — totalInverse (with totalInverse_left/_right/_computable) and computable_bijection_isComputablePerm show the partial inverse becomes a genuine computable two-sided inverse, so g itself is already a computable permutation and oneOneEquiv_of_computable_bijection discharges Myhill's theorem without any back-and-forth.",
+    "mathContext": "$\\mathrm{REPred}\\,p$ means $p$ is the halting-domain of a partial recursive function; `Partrec.dom_re` converts `Partrec (partialInverse g)` into `REPred (\\cdot \\in \\mathrm{range}\\,g)`. When $g$ is additionally surjective, $\\mathrm{partialInverse}(g)$ is everywhere-defined, hence (by `Part.some_get`) equals a total computable function $\\mathrm{totalInverse}(g)$, giving `(Equiv.ofBijective g hg).Computable` — the base case of Myhill's theorem where the reductions are already bijections.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "REPred",
+      "computably enumerable sets",
+      "Partrec.dom_re",
+      "computable bijection",
+      "total inverse"
+    ],
+    "prerequisites": [
+      "Mathlib.Computability.Halting",
+      "partialInverse",
+      "Bijective vs Injective+Surjective"
+    ]
+  },
+  {
+    "id": "ann-matchings",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 507,
+      "endLine": 617
+    },
+    "type": "definition",
+    "title": "Matchings: Finite Partial Bijections and the Atomic Back-and-Forth Steps",
+    "content": "IsMatching L := (mDom L).Nodup ∧ (mRan L).Nodup encodes a finite partial injection ℕ ⇀ ℕ as an association list injective on both coordinates. matching_functional and matching_cofunctional show the two Nodup sides make the list single-valued in both directions. MatchingCorr p q L requires every recorded pair to respect p ↔ q, and the two atomic extension steps matching_step_f (domain step, adds (a, f a)) and matching_step_g (range step, adds (g c, c)) each extend a matching while preserving MatchingCorr — purely by the f- or g-reduction, never by testing p/q directly, which matters because p, q may be non-computable.",
+    "mathContext": "A matching is a finite partial bijection $L\\subseteq\\mathbb N\\times\\mathbb N$ with both projections injective. The domain step uses $p(a)\\leftrightarrow q(fa)$ (the $f$-reduction) to justify prepending $(a,fa)$; dually the range step uses $q(c)\\leftrightarrow p(gc)$. `matching_length_cons`: each step grows $|L|$ by exactly one — the measure the priority scheduler decreases against full coverage.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite partial bijection",
+      "association list",
+      "Nodup",
+      "priority construction"
+    ],
+    "prerequisites": [
+      "List.Nodup",
+      "injective functions",
+      "back-and-forth method"
+    ]
+  },
+  {
+    "id": "ann-first-missing",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 618,
+      "endLine": 729
+    },
+    "type": "technique",
+    "title": "firstMissing: The Computable Least-Fresh-Element Targeting Primitive",
+    "content": "To guarantee the back-and-forth eventually covers every natural number, the scheduler must target the least uncovered element at each stage rather than an arbitrary one. firstMissing L (built from firstMissingPart via Nat.rfind, terminating by exists_not_mem_list since ℕ is infinite) returns exactly that value, with firstMissing_not_mem certifying it is genuinely absent and firstMissing_lt_mem certifying minimality (every smaller number already occurs in L). firstMissing_computable shows the whole search is Computable (List.idxOf/List.length are primitive recursive). firstMissing_le_length bounds it by L.length, the quantitative exhaustion guarantee: repeatedly targeting the least-fresh element covers an ever-larger initial segment of ℕ.",
+    "mathContext": "$\\mathrm{firstMissing}(L) := \\mu n[\\mathrm{idxOf}(n,L) = |L|]$ (the index of $n$ in $L$ equals $L$'s length iff $n\\notin L$). Minimality: $m<\\mathrm{firstMissing}(L)\\Rightarrow m\\in L$, so $\\{0,\\dots,\\mathrm{firstMissing}(L)-1\\}\\subseteq L$, giving $\\mathrm{firstMissing}(L)\\le |L|$ via a cardinality/pigeonhole bound (`Finset.card_le_card`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.rfind",
+      "computable search",
+      "exhaustion argument",
+      "termination measure"
+    ],
+    "prerequisites": [
+      "Nat.rfind_dom'",
+      "List.idxOf",
+      "pigeonhole via Finset.card"
+    ]
+  },
+  {
+    "id": "ann-duality-exhaustion",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 730,
+      "endLine": 826
+    },
+    "type": "insight",
+    "title": "Coordinate-Swap Duality and the Strict-Progress Measure",
+    "content": "The domain (even) and range (odd) stages are structurally identical up to swapping coordinates: mDom_map_swap/mRan_map_swap show L.map Prod.swap exchanges domain and range lists, isMatching_map_swap shows the swap preserves the matching property, and matchingCorr_map_swap turns a p ↔ q correspondence into a q ↔ p one — so every domain-side lemma yields its range-side dual for free, halving the scheduler's proof burden. The second half packages firstMissing's minimality as a genuine initial-segment cover (range_firstMissing_subset, its converse le_firstMissing_of_range_subset) and proves firstMissing_lt_cons_self: prepending the least-fresh element strictly increases firstMissing, the strictly-monotone progress measure guaranteeing every k is reached after finitely many stages.",
+    "mathContext": "Duality: $\\mathrm{mDom}(L.\\mathrm{map}\\ \\mathrm{swap}) = \\mathrm{mRan}(L)$ and dually, so the odd stage on $(p,q,g)$ is literally the even stage on the swapped problem $(q,p,g)$. Progress: $\\mathrm{firstMissing}(L) < \\mathrm{firstMissing}(\\mathrm{firstMissing}(L) :: L)$ — an $\\mathbb N$-valued strictly increasing measure, dual to the length measure `matching_length_cons`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coordinate swap duality",
+      "Prod.swap",
+      "monotone exhaustion",
+      "well-founded measure"
+    ],
+    "prerequisites": [
+      "List.map with Prod.swap",
+      "firstMissing",
+      "Finset.range subset arguments"
+    ]
+  },
+  {
+    "id": "ann-readoff",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 827,
+      "endLine": 966
+    },
+    "type": "definition",
+    "title": "mLookup: The Computable Evaluator and Its Coherence Guarantees",
+    "content": "mLookup L n := (mRan L).getD (List.idxOf n (mDom L)) 0 reads the partner a matching L assigns to n — a total, computable function returning the placeholder 0 off the domain. mLookup_eq_of_mem proves correctness (it recovers the recorded partner on a matching), and mLookup_computable shows it is Computable₂ via primitive-recursive List.idxOf/List.getD. Section 4f-bis then supplies the three coherence facts the eventual limit assembly needs: mLookup_mem_of_mem_dom (the read-off lands on a genuine recorded edge), mLookup_injOn (distinct domain points get distinct partners, from range-side Nodup), and mLookup_stable (the value is unchanged as the matching grows) — together certifying that stage-wise read-offs converge to a single well-defined, injective limit function, independent of how collisions are resolved.",
+    "mathContext": "$\\mathrm{mLookup}(L,n) = (\\mathrm{mRan}\\,L)[\\mathrm{idxOf}(n,\\mathrm{mDom}\\,L)]$ with placeholder default. Stability: if $L_1\\subseteq L_2$ as sets of pairs and $n\\in\\mathrm{dom}(L_1)$, then $\\mathrm{mLookup}(L_1,n)=\\mathrm{mLookup}(L_2,n)$ — this is exactly the hypothesis a limit-permutation read-off $\\sigma(n) := \\mathrm{mLookup}(L_s, n)$ (for any stage $s$ past $n$'s entry) needs to be well-defined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "computable evaluator",
+      "List.idxOf/List.getD",
+      "read-off coherence",
+      "limit permutation well-definedness"
+    ],
+    "prerequisites": [
+      "mDom/mRan projections",
+      "IsMatching",
+      "Primrec.list_idxOf"
+    ]
+  },
+  {
+    "id": "ann-builtfrom-collision",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 967,
+      "endLine": 1100
+    },
+    "type": "insight",
+    "title": "BuiltFrom Invariant and the Determinacy of Collisions",
+    "content": "BuiltFrom f g L records that every pair in the matching is either an f-edge (x, f x) or a g-edge (g y, y); it is preserved by both atomic steps (builtFrom_cons_f/_cons_g) and self-dual under coordinate swap (builtFrom_map_swap). Under this invariant, a collision has a uniquely determined source: collision_f_source shows that if a fresh domain point a's image f a is already used, the blocking pair MUST be the g-edge (g (f a), f a) — it cannot be an f-edge, since that would force a back into the domain via injectivity of f. collision_g_source is the dual range-side statement. step_f_available_or_collision packages this as a clean dichotomy: either the naive step is available, or the specific blocking edge is named — turning an opaque 'target taken' failure into a concrete next orbit point to chase, with no appeal to the undecidable isGFree.",
+    "mathContext": "Given `BuiltFrom f g L` and `Injective f`, if $a\\notin\\mathrm{mDom}(L)$ and $fa\\in\\mathrm{mRan}(L)$, the recorded pair witnessing that must be a $g$-edge $(g(fa), fa)$: an $f$-edge $(x,fx)$ with $fx=fa$ would give $x=a$ (injectivity), contradicting $a\\notin\\mathrm{mDom}(L)$. So collisions are always resolved by naming the next forward-orbit point, never by deciding the $\\Pi_1$ predicate $\\mathrm{isGFree}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "construction invariant",
+      "collision resolution",
+      "determinacy",
+      "matching functionality"
+    ],
+    "prerequisites": [
+      "BuiltFrom",
+      "matching_functional/matching_cofunctional",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-chase-target-step",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 1101,
+      "endLine": 1188
+    },
+    "type": "technique",
+    "title": "chaseTarget and the General (Any-Depth) Domain Step",
+    "content": "fwdOrbit_pred_iff shows p's value is constant along the whole forward orbit (one step crosses to q via the f-reduction and back to p via the g-reduction). chaseTarget f g a k := f (fwdOrbit f g a k) packages the k-th green candidate the chase inspects, with chaseTarget_succ confirming the 'apply f; on collision apply g then f repeatedly' recurrence, chaseTarget_corr giving correspondence p a ↔ q (chaseTarget f g a k) at every depth, and chaseTarget_computable showing the whole two-argument function is Computable₂. matching_step_chase then generalizes matching_step_f from collision-free depth 0 to any chase depth k: whenever the anchor is domain-fresh and the k-th chase target is range-fresh, prepending (a, chaseTarget f g a k) is a valid, correspondence-preserving extension.",
+    "mathContext": "$\\mathrm{chaseTarget}(f,g,a,k) := f(\\mathrm{fwdOrbit}(f,g,a,k))$, satisfying $\\mathrm{chaseTarget}(f,g,a,k+1) = f(g(\\mathrm{chaseTarget}(f,g,a,k)))$. Correspondence: $p(a)\\leftrightarrow q(\\mathrm{chaseTarget}(f,g,a,k))$ for every $k$, since $p$ is orbit-invariant (`fwdOrbit_pred_iff`). This is `matching_step_f` generalized past the $k=0$ collision-free case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "chase target",
+      "orbit invariance",
+      "generalized domain step",
+      "Computable₂"
+    ],
+    "prerequisites": [
+      "fwdOrbit",
+      "fwdOrbit_succ",
+      "MatchingCorr"
+    ]
+  },
+  {
+    "id": "ann-escape-dichotomy",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 1189,
+      "endLine": 1571
+    },
+    "type": "insight",
+    "title": "Escape Existence: The OnCycle Dichotomy (Infinite vs Periodic Orbits)",
+    "content": "This is the technical heart guaranteeing the collision chase always finds a fresh target. chase_gedge_chain shows a persistent collision forces the g-edge chain (fwdOrbit f g a m, f (fwdOrbit f g a (m-1))) at every stage — the f-edge alternative is excluded by matching functionality, which would force an orbit repeat and hence a ∈ mDom L, a contradiction. The section then splits on whether a's orbit is periodic (OnCycle f g a := ∃ m ≥ 1, fwdOrbit f g a m = a): escape_of_infinite_orbit handles the non-periodic case by a pigeonhole argument (an injective orbit map cannot embed (mRan L).length + 1 stages into a smaller occupied set), while the periodic arm needs the cycle-balance invariant Balanced f g L (equal domain/range occupancy counts on every g∘f-cycle, built atop orbitPeriod/orbitCycle infrastructure) and is discharged by escape_of_balanced via a counting argument. escape_exists' combines both arms into the BuiltFrom-free escape guarantee the extension-only scheduler needs.",
+    "mathContext": "$\\mathrm{OnCycle}(f,g,a) \\equiv \\exists m\\ge 1,\\ \\mathrm{fwdOrbit}(f,g,a,m)=a$. Infinite-orbit case: injectivity of $\\mathrm{fwdOrbit}(f,g,a,\\cdot)$ plus pigeonhole on $\\{0,\\dots,|\\mathrm{mRan}\\,L|\\}\\hookrightarrow \\mathrm{mRan}(L)$ forces some stage to escape. Periodic case: on the cycle $C$ of size $m=\\mathrm{orbitPeriod}$, $\\mathrm{Balanced}$ gives $|C\\cap\\mathrm{mDom}(L)| = |f[C]\\cap\\mathrm{mRan}(L)|$; since $a\\in C\\setminus\\mathrm{mDom}(L)$ the LHS is $\\le m-1 < |f[C]|=m$, so $f[C]\\not\\subseteq\\mathrm{mRan}(L)$: some cycle point's $f$-image is fresh.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OnCycle",
+      "orbitPeriod",
+      "orbitCycle",
+      "Balanced invariant",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "fwdOrbit_prefix_distinct",
+      "matching_functional",
+      "Finset.card arguments"
+    ]
+  },
+  {
+    "id": "ann-balanced-preservation",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 1572,
+      "endLine": 1982
+    },
+    "type": "technique",
+    "title": "Preserving Balanced Across Both Step Directions, and Totality of the Domain Step",
+    "content": "This block first develops the orbit arithmetic needed to reason about cycles: fwdOrbit_add (additivity), fwdOrbit_add_mul_period/fwdOrbit_mod_period (period wrap-around), and the reach/back/closure characterizations of orbitCycle (mem_orbitCycle_of_reach, exists_fwdOrbit_eq_anchor, mem_orbitCycle_of_fwdOrbit_mem). These power balanced_cons_domain (a domain cons preserves Balanced f g L: the placed anchor's own cycle gains one fresh point on each side, every other cycle is inert) and its dual balanced_cons_range. Because the scheduler must carry BOTH the un-swapped and swapped balance simultaneously, balanced_swap_cons_domain and balanced_swap_cons_range close the remaining 'cross' cases (a domain step also preserves the swapped balance, and vice versa) via fwdOrbit_swap_apply (conjugating the forward orbit under coordinate swap) and onCycle_of_onCycle_apply. The section culminates in escape_exists (the BuiltFrom-hypothesised bounded-escape theorem) and domain_step_exists, making the even-stage domain move genuinely total.",
+    "mathContext": "The 2×2 matrix of preservation lemmas — (domain step | range step) × (un-swapped $\\mathrm{Balanced}(f,g,L)$ | swapped $\\mathrm{Balanced}(g,f,L^{\\mathrm{swap}})$) — is exactly what the extension-only scheduler needs to maintain across every stage, since the domain escape (`escape_exists'`) consumes the un-swapped balance while the range escape (via the swapped problem) consumes the swapped one. Conjugation: $\\mathrm{fwdOrbit}(g,f,fx,j) = f(\\mathrm{fwdOrbit}(f,g,x,j))$ transports periodicity and cycle membership across the swap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Balanced invariant preservation",
+      "coordinate-swap conjugation",
+      "cycle arithmetic",
+      "totality of the domain step"
+    ],
+    "prerequisites": [
+      "OnCycle/orbitCycle",
+      "escape_of_balanced/escape_of_infinite_orbit",
+      "chase_gedge_chain"
+    ]
+  },
+  {
+    "id": "ann-augpath-construction",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 1983,
+      "endLine": 2085
+    },
+    "type": "technique",
+    "title": "The Augmenting Path: Re-labelling the Chase to Restore BuiltFrom",
+    "content": "domain_step_exists places a fresh anchor a at the escaped chase target but does NOT preserve BuiltFrom when the escape depth N > 0 (the added pair is neither a pure f-edge nor g-edge). The fix is the classical augmenting path: augPath f g a N := the list of f-edges (oₖ, f oₖ) for k = 0,…,N (where oₖ = fwdOrbit f g a k), re-labelling the stale g-edges the chase walked through. mem_augPath_iff, mDom_augPath, mRan_augPath characterize its membership and projections; augPath_builtFrom, augPath_matchingCorr show every relabelled pair is a genuine f-edge respecting the correspondence; and augPath_isMatching (with the collision-context specialization augPath_isMatching_of_chase) shows the block is itself a valid matching whenever the underlying orbit prefix is distinct — which holds automatically for a fresh anchor's collision chase.",
+    "mathContext": "$\\mathrm{augPath}(f,g,a,N) := [(o_k, f\\,o_k) : k=0,\\dots,N]$ where $o_k=\\mathrm{fwdOrbit}(f,g,a,k)$. Every pair is an $f$-edge, so splicing this block into a matching restores `BuiltFrom` — the invariant `domain_step_exists`'s naive single-pair placement destroys — while still anchoring $a=o_0$ and terminating at the escaped fresh range point $f\\,o_N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "augmenting path",
+      "Hopcroft-Karp style splicing",
+      "BuiltFrom restoration",
+      "list surgery"
+    ],
+    "prerequisites": [
+      "chaseTarget/fwdOrbit",
+      "escape_exists",
+      "fwdOrbit_prefix_distinct"
+    ]
+  },
+  {
+    "id": "ann-augment-steps",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 2086,
+      "endLine": 2358
+    },
+    "type": "insight",
+    "title": "Splicing the Augmenting Path: The Domain and (Dual) Range Steps",
+    "content": "augment_domain_step performs the genuine list surgery: given a fresh anchor a, it finds the minimal escape depth N (chase_gedge_chain identifies the stale g-edges being re-labelled), builds L' := augPath f g a N ++ keptL (keptL = L filtered to drop exactly the re-labelled pairs), and proves L' is a matching, respects the correspondence, satisfies BuiltFrom, covers a, and is monotone on both mDom and mRan — the fully invariant-preserving even-stage move the scheduler can actually iterate (unlike domain_step_exists). augment_range_step then obtains the odd-stage range move entirely for free, by applying augment_domain_step to the coordinate-swapped problem (q, p, g, f) with L.map Prod.swap and swapping the resulting matching back — no new list surgery is needed, only the Section 4e duality.",
+    "mathContext": "$L' = \\mathrm{augPath}(f,g,a,N) \\mathbin{+\\!+} L.\\mathrm{filter}(\\lambda ab.\\ ab.1 \\notin \\mathrm{mDom}(\\mathrm{augPath}))$ for the minimal escaping $N$. Every invariant transfers: matching-ness from disjointness of the spliced domains/ranges (co-functionality pins down which pairs are removed), correspondence and `BuiltFrom` from the two pieces separately, and monotonicity because every deleted pair's endpoints are re-added by the augmenting path itself. The range step is `augment_domain_step` on $(q,p,g,f,L^{\\mathrm{swap}})$, swapped back.",
+    "significance": "key",
+    "relatedConcepts": [
+      "list splicing",
+      "BuiltFrom-preserving domain step",
+      "coordinate-swap duality",
+      "invariant-preserving extension"
+    ],
+    "prerequisites": [
+      "augPath and its lemmas",
+      "List.filter/List.Sublist",
+      "matching_cofunctional"
+    ]
+  },
+  {
+    "id": "ann-stage-sequence",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 2359,
+      "endLine": 2533
+    },
+    "type": "definition",
+    "title": "stageSeq: Iterating the Atomic Moves into the Back-and-Forth (Path A)",
+    "content": "StageInv bundles the three invariants (IsMatching, MatchingCorr, BuiltFrom) that augment_domain_step/augment_range_step maintain. stageStep dispatches on stage parity — even s targets domain element s/2 via augment_domain_step, odd s targets range element s/2 via augment_range_step, leaving the matching unchanged if the target is already covered — and stageSeq iterates it from the empty matching. stageSeq_isMatching/_matchingCorr/_builtFrom confirm the invariants persist at every stage; stageSeq_mDom_mono/_mRan_mono show coverage only grows; and stageSeq_covers_dom/_covers_ran give the exhaustion guarantee (element k is covered by stage 2k+1 on the domain side, 2k+2 on the range side). Because stageStep is built with Classical.choose on the existential augment_*_step, stageSeq is noncomputable — the reason the later Path B/C reconstructions are needed for the .Computable half of myhill_isomorphism.",
+    "mathContext": "$\\mathrm{stageSeq}(0) = []$, $\\mathrm{stageSeq}(s+1) = \\mathrm{stageStep}(s, \\mathrm{stageSeq}(s))$, alternately covering domain element $k$ at stage $2k$ and range element $k$ at stage $2k+1$. Exhaustion: $k\\in\\mathrm{mDom}(\\mathrm{stageSeq}(2k+1))$ and $k\\in\\mathrm{mRan}(\\mathrm{stageSeq}(2k+2))$ — every natural number is eventually covered on both sides, the totality/surjectivity skeleton of the eventual limit permutation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "priority construction",
+      "stage sequence",
+      "Classical.choose noncomputability",
+      "domain/range exhaustion"
+    ],
+    "prerequisites": [
+      "augment_domain_step/augment_range_step",
+      "StageInv",
+      "subtype-carried invariants"
+    ]
+  },
+  {
+    "id": "ann-entry-stage-threshold",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 2534,
+      "endLine": 2859
+    },
+    "type": "concept",
+    "title": "Entry-Stage Thresholds, the Extension-Only Scheduler, and the Choice-Free Escape Depth",
+    "content": "entryStageDom/entryStageRan give each point's least covering stage (via Nat.find on the exhaustion+monotonicity facts), compressing the whole growth history into a single threshold — but the docstring flags a scope caveat: because augment_domain_step can re-label already-placed pairs, the naive stage-wise mLookup value is NOT stable past entryStageDom, so this membership-level layer alone cannot assemble a well-defined limit function. The fix is Path B: StageInvB replaces BuiltFrom with the cons-preserved Balanced invariant (both Balanced f g L and its swapped dual), and domain_consStep/range_consStep (built from escape_exists' plus the four balance-preservation lemmas) are PURE CONS steps — nothing is ever removed, so mLookup_stable applies unconditionally. The remaining subsection (5·B-comp) removes the one Classical.choose left in the scheduler: escapeDepth is a genuine Nat.find (computable even though its existence witness hex is a mere Prop, erased at runtime), escapeDepth_le bounds it by (mRan L).length, and firstEscapeB is a fully proof-free List.findIdx over that bounded window, certified by firstEscapeB_eq_escapeDepth to reproduce the exact same least-depth pairing — yielding the choice-free cons steps domain_consStepC/range_consStepC.",
+    "mathContext": "$\\mathrm{entryStageDom}(n) := \\mu s[n\\in\\mathrm{mDom}(\\mathrm{stageSeq}(s))]$, with $n\\in\\mathrm{mDom}(\\mathrm{stageSeq}(s)) \\iff \\mathrm{entryStageDom}(n)\\le s$. `StageInvB` swaps `BuiltFrom` for $\\mathrm{Balanced}(f,g,L)\\wedge\\mathrm{Balanced}(g,f,L^{\\mathrm{swap}})$, so every extension is a pure cons $(a,b) :: L$. $\\mathrm{escapeDepth} := \\mu N[f(\\mathrm{fwdOrbit}(f,g,a,N))\\notin\\mathrm{mRan}(L)]$ is bounded by `escapeDepth_le`: $\\mathrm{escapeDepth}\\le |\\mathrm{mRan}(L)|$, licensing the proof-free bounded scan $\\mathrm{firstEscapeB} := (\\mathrm{List.range}(|\\mathrm{mRan}\\,L|+1)).\\mathrm{findIdx}(\\cdots)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "entry stage threshold",
+      "Nat.find",
+      "extension-only (cons) scheduler",
+      "Balanced invariant",
+      "choice-free bounded search"
+    ],
+    "prerequisites": [
+      "stageSeq exhaustion/monotonicity",
+      "escape_exists'",
+      "balanced_cons_domain/range and swap duals"
+    ]
+  },
+  {
+    "id": "ann-sigmaB-assembly",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 2860,
+      "endLine": 3054
+    },
+    "type": "insight",
+    "title": "Assembling sigmaB: The Pair-Monotone Limit Permutation (Path B)",
+    "content": "stageStepB/stageSeqB iterate the cons-only steps domain_consStep/range_consStep, and — because nothing is ever removed — stageStepB_pair_subset/stageSeqB_pair_subset establish genuine pair-monotonicity along the whole sequence, the property Path A's splicing lacked. entryStageDomB gives each point's entry stage, and sigmaB n := mLookup (stageSeqB (entryStageDomB n)) n is the read-off. Because pair-monotonicity makes mLookup_stable applicable unconditionally, sigmaB_eq_of_mem_dom shows the read-off value never changes once a point is covered, and sigmaB_eq_bound pins it down at the fixed, entry-stage-free bound 2n+1. sigmaB_corr, sigmaB_injective, sigmaB_surjective establish it is a genuine bijection respecting p ↔ q, packaged as the Equiv sigmaEquivB. The section's closing remark records the sole remaining gap: stageSeqB is noncomputable (built via Classical.choose on the escape existentials), so upgrading to a computable parallel construction (Section 5·C) is the only work left to finish myhill_isomorphism.",
+    "mathContext": "Pair-monotonicity: $x\\in\\mathrm{stageSeqB}(s)\\Rightarrow x\\in\\mathrm{stageSeqB}(t)$ for $t\\ge s$ (nothing removed), so `mLookup_stable` gives $\\mathrm{mLookup}(\\mathrm{stageSeqB}(s),n) = \\sigma(n)$ for every $s\\ge \\mathrm{entryStageDomB}(n)$ — in particular at the fixed bound $s=2n+1$ (`sigmaB_eq_bound`). Injectivity/surjectivity follow by evaluating two points at a common stage $\\max(\\cdot,\\cdot)$ and using `mLookup_injOn` / range exhaustion respectively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pair-monotonicity",
+      "mLookup_stable",
+      "limit permutation",
+      "Equiv.ofBijective",
+      "noncomputable Classical.choose gap"
+    ],
+    "prerequisites": [
+      "domain_consStep/range_consStep",
+      "mLookup_mem_of_mem_dom/mLookup_injOn",
+      "entryStageDomB via Nat.find"
+    ]
+  },
+  {
+    "id": "ann-escscan-stagelistc",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 3055,
+      "endLine": 3268
+    },
+    "type": "technique",
+    "title": "escScan and stageListC: A Genuinely Computable Scheduler",
+    "content": "This section rebuilds stageSeqB as a plain, Classical.choose-free def. escScan performs the bounded escape search as a manifestly computable Nat.rec (rather than firstEscapeB's List.findIdx, whose scan predicate calls the merely-Computable chaseTarget, or escapeDepth's Nat.find, which carries a Prop witness): escScan_computable assembles it from Computable.nat_rec/Computable.cond plus the primitive-recursive membership test computable_mem_bool, and escScan_eq_of_least / escScan_eq_escapeDepth certify it reproduces the exact least-depth pairing of the earlier (noncomputable) construction. stageStepC and stageListC then define the extension-only scheduler as ordinary defs (no Classical.choose anywhere), with stageStepC_pair_subset/stageListC_pair_subset giving pair-monotonicity and stageListC_covers_dom/_covers_ran giving domain/range exhaustion exactly as in Path B. sigmaC f g n := mLookup (stageListC f g (2n+1)) n is the resulting read-off — a plain lookup into a computable list at a fixed, computable stage index.",
+    "mathContext": "$\\mathrm{escScan}(f,g,\\mathrm{prev},a)$ is a `Nat.rec` over the window $0,\\dots,|\\mathrm{mRan}(\\mathrm{prev})|$ that keeps a found answer once discovered and returns the sentinel $|\\mathrm{mRan}(\\mathrm{prev})|+1$ if none escapes; `escScan_eq_of_least` shows it equals the true least escaping stage $m$ whenever one exists in the window. $\\mathrm{stageListC}(0)=[]$, $\\mathrm{stageListC}(s+1) = \\mathrm{stageStepC}(s,\\mathrm{stageListC}(s))$, entirely via plain pattern-matching recursion — no proof terms appear in the *computational* content, only in the correctness lemmas proved alongside.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.rec as computable recursion",
+      "Computable.nat_rec/Computable.cond",
+      "choice-free scheduler",
+      "sigmaC read-off"
+    ],
+    "prerequisites": [
+      "firstEscapeB_eq_escapeDepth (Section 5·B-comp)",
+      "chaseTarget_computable",
+      "Primrec.list_idxOf"
+    ]
+  },
+  {
+    "id": "ann-sigmaC-correctness-computability",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 3269,
+      "endLine": 3433
+    },
+    "type": "insight",
+    "title": "sigmaC Is a Computable Bijection: Correctness and the Three Capstone Computability Theorems",
+    "content": "stageListC_inv proves every computable stage carries the four-fold StageInvB invariant, bridging the hypothesis-free escScan to the choice-carrying escapeDepth via escScan_eq_escapeDepth and then invoking the choice-free cons steps domain_consStepC/range_consStepC. sigmaC_eq_at, sigmaC_corr, sigmaC_injective, sigmaC_surjective mirror the Path B bijection proofs verbatim, now over the plain stageListC. The section then closes the sole remaining obstruction of the entire file: stageStepC_computable assembles the stage-step function from Computable.cond over primitive-recursive parity/membership tests and the computable escScan/chaseTarget; stageListC_computable lifts this through Computable.nat_rec to the whole stage-indexed list; and sigmaC_computable composes mLookup_computable with stageListC_computable at the fixed index 2n+1 — establishing Computable (sigmaC f g), the final ingredient myhill_isomorphism needs to produce a genuine computable permutation.",
+    "mathContext": "$\\mathrm{stageListC\\_inv}(s)$: `StageInvB p q f g (stageListC f g s)` for every $s$, by induction using $\\mathrm{escScan} = \\mathrm{escapeDepth}$ under the (inductively maintained) `Balanced` hypothesis. Computability chain: $\\mathrm{stageStepC}$ is `Computable` (as a function of $(s,\\mathrm{prev})$) $\\Rightarrow$ $\\mathrm{stageListC}$ is `Computable` (via `Computable.nat_rec`) $\\Rightarrow$ $\\sigma_C(n) = \\mathrm{mLookup}(\\mathrm{stageListC}(2n+1), n)$ is `Computable` (via `mLookup_computable`, composition, and $n\\mapsto 2n+1$ computable). This is the theorem that upgrades the whole construction from merely *correct* to *effectively computable*.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StageInvB induction",
+      "Computable.nat_rec composition chain",
+      "mLookup_computable",
       "computable bijection"
     ],
     "prerequisites": [
-      "partial recursive functions",
-      "back-and-forth method",
-      "injectivity arguments",
-      "partialInverse_partrec"
+      "escScan_eq_escapeDepth",
+      "domain_consStepC/range_consStepC",
+      "sigmaB analogues (injective/surjective proofs)"
+    ]
+  },
+  {
+    "id": "ann-myhill-main-theorem",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 3434,
+      "endLine": 3484
+    },
+    "type": "insight",
+    "title": "Myhill's Isomorphism Theorem — Both Directions, Fully Proved",
+    "content": "myhill_isomorphism states the full biconditional OneOneEquiv p q ↔ ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n). The easy direction (←) is immediate from myhill_easy. The hard direction (→) is COMPLETE (not sorry'd): given computable injections f, g witnessing p ≤₁ q and q ≤₁ p, it invokes the Section 5·C computable extension-only scheduler — sigmaC_injective and sigmaC_surjective give bijectivity of sigmaC f g, sigmaC_corr gives the correspondence p n ↔ q (sigmaC f g n), and sigmaC_computable gives computability, so computable_bijection_isComputablePerm packages Equiv.ofBijective (sigmaC f g) as a genuine computable permutation e. The docstring's #print axioms myhill_isomorphism → [propext, Classical.choice, Quot.sound] confirms 0 sorries and 0 custom axioms.",
+    "mathContext": "Hard direction closes as: $\\sigma := \\mathrm{sigmaC}(f,g)$ is bijective (`sigmaC_injective`/`sigmaC_surjective`), satisfies $p(n)\\leftrightarrow q(\\sigma(n))$ (`sigmaC_corr`), and is `Computable` (`sigmaC_computable`); hence $e := \\mathrm{Equiv.ofBijective}(\\sigma,\\ \\cdot)$ satisfies `e.Computable` via `computable_bijection_isComputablePerm`. No orbit-type classification (Type A/B/C) is needed at the top level — that classical sketch is replaced end-to-end by the extension-only scheduler of Sections 4–5·C.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sigmaC",
+      "Equiv.ofBijective",
+      "computable_bijection_isComputablePerm",
+      "extension-only scheduler"
+    ],
+    "prerequisites": [
+      "sigmaC_injective/_surjective/_corr/_computable",
+      "myhill_easy",
+      "OneOneEquiv/OneOneReducible"
     ]
   },
   {
     "id": "ann-myhill-equivalence-relation",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 186,
-      "endLine": 234
+      "startLine": 3485,
+      "endLine": 3511
     },
     "type": "insight",
-    "title": "Computable Isomorphism is an Equivalence Relation",
-    "content": "Six theorems establish the equivalence-relation structure. myhill_self: use the identity permutation (Equiv.refl \u2115, trivially computable, trivially maps p to p). myhill_symm: if e witnesses p \u2243_c q, then e.symm witnesses q \u2243_c p (using the same Computable pair with .symm). myhill_trans: if e\u2081 witnesses p \u2243_c q and e\u2082 witnesses q \u2243_c r, then e\u2081.trans e\u2082 witnesses p \u2243_c r (using Computable.trans, and (hpq n).trans (hqr (e\u2081 n)) for the correspondence). computable_iso_is_equivalence packages these into the Mathlib Equivalence structure.",
-    "mathContext": "Reflexivity: $e = \\text{id}$, $p(n) \\leftrightarrow p(\\text{id}(n)) = p(n)$ by `Iff.rfl`. Symmetry: $p(n) \\leftrightarrow q(e(n)) \\Rightarrow q(m) \\leftrightarrow p(e^{-1}(m))$ by substituting $n = e^{-1}(m)$. Transitivity: $p(n) \\leftrightarrow q(e_1(n)) \\leftrightarrow r(e_2(e_1(n))) = r((e_1 \\circ e_2)(n))$ using `Iff.trans`. Composition of computable functions is computable: `he\u2081.trans he\u2082`.",
+    "title": "Computable Isomorphism Is an Equivalence Relation",
+    "content": "Three theorems establish the equivalence-relation structure of computable isomorphism, all fully proved. myhill_self uses the identity permutation Equiv.refl ℕ (trivially computable both ways, trivially self-corresponding). myhill_symm takes a witness e for p and q and produces e.symm as the witness for q and p, using he.symm and Equiv.apply_symm_apply to invert the correspondence. myhill_trans composes two witnesses e₁ (p to q) and e₂ (q to r) into e₁.trans e₂ (p to r), using he₁.trans he₂ for computability of the composition and (hpq n).trans (hqr (e₁ n)) for the correspondence. computable_iso_is_equivalence packages all three into Mathlib's Equivalence structure over the relation λ p q, ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n).",
+    "mathContext": "Reflexivity: $e=\\mathrm{id}$. Symmetry: from $\\forall n,\\ p(n)\\leftrightarrow q(en)$ derive $\\forall n,\\ q(n)\\leftrightarrow p(e^{-1}n)$ by substituting $n:=e^{-1}m$ and using $e(e^{-1}m)=m$. Transitivity: $p(n)\\leftrightarrow q(e_1 n)\\leftrightarrow r(e_2(e_1 n)) = r((e_1\\circ e_2)(n))$, with computability of the composite from `Computable.trans`. Together these make computable isomorphism a genuine `Equivalence` on `ℕ → Prop`, the basis for a quotient by one-one degrees.",
     "significance": "supporting",
     "relatedConcepts": [
       "Equivalence in Lean 4",
-      "Equiv.refl",
-      "Equiv.trans",
+      "Equiv.refl/symm/trans",
       "Computable.trans",
       "one-one degrees"
     ],
     "prerequisites": [
-      "Equivalence typeclass in Lean 4",
-      "Equiv.Computable",
-      "Iff.rfl and Iff.trans"
+      "Equiv.Computable typeclass",
+      "Equiv.apply_symm_apply",
+      "myhill_isomorphism"
+    ]
+  },
+  {
+    "id": "ann-oneone-equiv-structure",
+    "proofId": "schroeder-bernstein-oq-03",
+    "range": {
+      "startLine": 3512,
+      "endLine": 3536
+    },
+    "type": "context",
+    "title": "Bridging to the OneOneEquiv Structure",
+    "content": "This section restates the main theorem at the level of Mathlib's/the gallery's structured OneOneEquiv predicate rather than the raw existential. exists_computable_perm_of_one_one_equiv is the existence form of the hard direction, obtained directly from (myhill_isomorphism p q).mp. one_one_equiv_of_computable_iso is the easy direction restated with explicit computable-permutation hypotheses, delegating to myhill_easy. computable_iso_is_equivalence (restated here as the structural capstone) packages reflexivity/symmetry/transitivity into a single Equivalence value, confirming that OneOneEquiv A B holds exactly when A and B lie in the same computable-isomorphism class.",
+    "mathContext": "$\\mathrm{OneOneEquiv}(p,q) \\iff \\exists e:\\mathbb N\\simeq\\mathbb N,\\ e.\\mathrm{Computable} \\wedge \\forall n,\\ p(n)\\leftrightarrow q(en)$ — the theorem re-expressed as a statement purely about the `OneOneEquiv` relation, so downstream users of the gallery's one-one-reducibility API can invoke Myhill's theorem without unfolding the existential by hand.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OneOneEquiv",
+      "structural restatement",
+      "Equivalence packaging"
+    ],
+    "prerequisites": [
+      "myhill_isomorphism",
+      "myhill_easy",
+      "computable_iso_is_equivalence"
     ]
   },
   {
     "id": "ann-myhill-special-cases",
     "proofId": "schroeder-bernstein-oq-03",
     "range": {
-      "startLine": 238,
-      "endLine": 257
+      "startLine": 3537,
+      "endLine": 3557
     },
     "type": "insight",
-    "title": "Fixed Points: \u2205 and \u2115 Are the Extreme One-One Degree Classes",
-    "content": "The empty predicate (\u22a5) and universal predicate (\u22a4) are fixed points of computable isomorphism: any computable permutation maps \u2205 to \u2205 and \u2115 to \u2115. Proof for \u2205: if e maps \u22a5 to p (meaning False \u2194 p(e(n)) for all n), then for any m, surjectivity gives m = e(k) for some k, so p(m) = p(e(k)) \u2194 False is False. Proof for \u22a4: dual argument. These are the minimum and maximum in the one-one degree hierarchy, and they cannot be computably isomorphic to any other predicate.",
-    "mathContext": "Surjectivity of $e : \\mathbb{N} \\simeq \\mathbb{N}$: $\\forall m, \\exists k, e(k) = m$ (used as `e.surjective`). For the empty case: $\\text{False} \\leftrightarrow p(e(k))$ means $p(e(k)) = \\text{False}$; with $e(k) = m$ arbitrary, $p(m) = \\text{False}$. The one-one degrees form a partially ordered set (under $\\leq_1$) with $[\\emptyset]_1$ as minimum and $[\\mathbb{N}]_1$ as maximum.",
+    "title": "The Empty Set and All of ℕ Are Isolated Computable-Isomorphism Classes",
+    "content": "myhill_empty_unique and myhill_univ_unique verify the theorem's behavior at its two degenerate boundary predicates. If a computable permutation e witnesses that the empty predicate (False) corresponds to some p (i.e. ∀ n, False ↔ p (e n)), then p is nowhere true: given any n, surjectivity of e supplies m with e m = n, and False ↔ p (e m) forces ¬ p n. myhill_univ_unique is the dual statement for the universal predicate (True): if True ↔ p (e n) for all n, then p holds everywhere. Both proofs use only e.surjective (not injectivity or computability), showing ∅ and ℕ are each computably isomorphic only to themselves — the minimum and maximum elements of the one-one-degree hierarchy are fixed points.",
+    "mathContext": "If $\\forall n,\\ \\mathrm{False}\\leftrightarrow p(en)$ then for arbitrary $m$, surjectivity gives $n$ with $en=m$, so $p(m) = p(en) \\leftrightarrow \\mathrm{False}$, i.e. $\\neg p(m)$: $p\\equiv\\emptyset$. Dually for $\\mathrm{True}$. So $[\\emptyset]$ and $[\\mathbb N]$ are singleton computable-isomorphism classes — the extremal points of the $\\le_1$-degree structure that `myhill_isomorphism` induces on $\\mathcal P(\\mathbb N)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Equiv.surjective",
-      "one-one degrees",
-      "creative sets",
-      "simple sets",
-      "completeness in reducibility"
+      "one-one degree hierarchy",
+      "degenerate/boundary cases"
     ],
     "prerequisites": [
       "Equiv surjectivity",
-      "one-one degree hierarchy",
-      "Post's problem context"
+      "myhill_isomorphism",
+      "one-one degrees"
     ]
   }
 ]
