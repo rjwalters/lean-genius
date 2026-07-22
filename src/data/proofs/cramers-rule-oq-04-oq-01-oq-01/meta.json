@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: From the Determinant Form to the Scalar Formula",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "States the parent's open question OQ-01 — promote the determinant-scaled solution A·(adj A · b) = (det A)·b to the honest scalar formula xᵢ = det(Aᵢ)/det A — and names the bridge: Matrix.cramer, whose i-th component cramer_apply identifies with det(Aᵢ), collapses to (det A)·x via the same adjugate identity the parent used. Lists the five main results (det_smul_solution_eq_cramer, cramer_solution, cramer_solution_eq, cramer_solution_unique, cramer_formula_isSolution) before opening the Matrix namespace and fixing the ambient commutative-ring section.",
+      "mathContext": "Bridges the parent's determinant form $A\\cdot(\\mathrm{adj}\\,A\\cdot b) = (\\det A)\\cdot b$ to the scalar formula $x_i = \\det(A_i)/\\det A$ via $\\mathrm{cramer}\\,A\\,b\\,i = \\det(A.\\mathrm{updateCol}\\,i\\,b)$."
+    },
+    {
       "id": "algebraic-core",
       "title": "Section I: The Invertibility-Free Algebraic Core",
       "startLine": 42,
