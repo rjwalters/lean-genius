@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-290",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #290, solved by van Doorn (2024): for any $a \\ge 1$, must some $b>a$ make the reduced denominator of $\\sum_{a\\le n\\le b} 1/n$ exceed that of the sum up to $b+1$? Answered YES, with $b(a)$ always existing and satisfying $a+0.54\\log a < b(a) < 4.374a$.",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "For $a \\in (3^k, 3^{k+1}]$, $b=2\\cdot 3^{k+1}-1$ always works; the illustrative case $\\sum_{3\\le n\\le5}1/n = 47/60$ vs. $\\sum_{3\\le n\\le6}1/n=19/20$ shows the denominator dropping from 60 to 20 despite adding a term."
+    },
+    {
       "id": "partial-harmonic-sums",
       "title": "Partial Harmonic Sums",
       "summary": "Defines partialHarmonic(a,b) = Σ_{a≤n≤b} 1/n as ℚ via Finset.Icc, reducedDenominator via Rat.den, and reducedNumerator via Rat.num. These are noncomputable due to classical choice in rational canonicalization.",
