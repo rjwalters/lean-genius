@@ -37,6 +37,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
+# Per-role model tiering (gitignored, host-local — see .loom/model-config.env.example).
+# Exports CLAUDE_MODEL (global default) + <ROLE>_CLAUDE_MODEL overrides that the
+# daemon reads at agent-spawn time (resolution chain: <ROLE>_<slot> > <ROLE> >
+# CLAUDE_MODEL > wrapper default). Sourced here so the whole fleet inherits it and
+# it survives daemon crash/respawn. Absent → wrapper default (opus) for all roles.
+if [[ -f "$REPO_ROOT/.loom/model-config.env" ]]; then
+    # shellcheck disable=SC1091
+    source "$REPO_ROOT/.loom/model-config.env"
+fi
+
 DAEMON="$SCRIPT_DIR/launch.sh"
 SIGNALS_DIR=".loom/signals"
 STOP_SIGNAL_FILE="$SIGNALS_DIR/stop-lean-daemon"
