@@ -54,6 +54,16 @@ and `*`; and it wires the open conjecture to its published special cases.
    this does NOT settle Erdős #70 itself — the genuine order-type partition
    relation `𝔠 → (β, n)₂³` remains open.
 
+7. `partitionArrowOmegaFaithful_holds` — the **faithful order-type upgrade at
+   `β = ω`**: on every *well-ordered* continuum-sized ground set, the colour-0
+   homogeneous set can be taken to contain a strictly increasing ω-chain
+   (`HasOmegaChain`, true order type ≥ ω — implies the surrogate, see
+   `HasOmegaChain.hasOrderTypeAtLeast`), via the order-theoretic lemma
+   `omegaChain_of_infinite` (infinite subsets of well-founded linear orders
+   contain ω-chains, by `Set.IsWF.isPWO` monotone subsequences).  The first
+   faithful case beyond reach of `InfiniteRamsey3` is `β = ω + 1` (Erdős–Rado
+   stepping-up) — the genuinely open core.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -721,5 +731,101 @@ theorem epsilon0_partitionArrow_holds (n : ℕ) (hn : 2 ≤ n) :
   erdos_70_conjecture_imp_epsilon0 erdos_70_formalized_conjecture_holds n hn
 
 end RamseyProof
+
+/-! ## Faithful order type for `β = ω`: a genuine increasing ω-chain
+
+Everything proved above lives under the parent's cardinality surrogate
+`HasOrderTypeAtLeast S H α := α.card ≤ #H`.  This section upgrades the flagship
+case `β = ω` to the **faithful** reading on well-ordered ground sets: the
+colour-0 homogeneous set contains a strictly increasing sequence indexed by `ℕ`
+— an honest copy of `ω` inside the order of `S`, not merely `ℵ₀` many points.
+
+The upgrade is strictly stronger than the surrogate conclusion on such `S` (an
+ω-chain forces `HasOrderTypeAtLeast S H ω`, see
+`HasOmegaChain.hasOrderTypeAtLeast`), and it is the strongest faithful case
+reachable from `InfiniteRamsey3` alone: already `β = ω + 1` demands a
+homogeneous point *above* an entire homogeneous ω-chain, which is the content of
+the Erdős–Rado theorem `𝔠 → (ω + n, 4)₂³` — the stepping-up core recorded as a
+blocked route for this node.
+
+The one new ingredient is order-theoretic, not Ramsey-theoretic: **every
+infinite subset of a well-founded linear order contains a strictly increasing
+ω-chain** (`omegaChain_of_infinite`), extracted via `Set.IsWF.isPWO` and the
+monotone-subsequence property of partially well-ordered sets. -/
+
+section FaithfulOmega
+
+/-- `H` contains a strictly increasing `ω`-chain: a faithful witness that the
+order type of `H` in the ambient order of `S` is at least `ω`. -/
+def HasOmegaChain {S : Type*} [Preorder S] (H : Set S) : Prop :=
+  ∃ f : ℕ → S, StrictMono f ∧ ∀ n, f n ∈ H
+
+/-- An ω-chain is injective, so a set containing one is infinite; hence the
+faithful witness implies the parent's cardinality surrogate at `α = ω`. -/
+theorem HasOmegaChain.hasOrderTypeAtLeast {S : Type*} [Preorder S] {H : Set S}
+    (h : HasOmegaChain H) : HasOrderTypeAtLeast S H Ordinal.omega0 := by
+  obtain ⟨f, hmono, hmem⟩ := h
+  have hinf : H.Infinite :=
+    Set.infinite_of_injective_forall_mem hmono.injective hmem
+  unfold HasOrderTypeAtLeast
+  rw [Ordinal.card_omega0]
+  exact Cardinal.aleph0_le_mk_iff.mpr (Set.infinite_coe_iff.mpr hinf)
+
+/-- **ω-chain extraction.**  In a well-founded linear order every infinite set
+contains a strictly increasing ω-chain: choose an injective `ℕ`-indexed family
+inside the set, extract a monotone subsequence (`Set.IsWF.isPWO` — in a linear
+order well-founded sets are partially well-ordered, so every sequence in one has
+a monotone subsequence), and observe that a monotone injective sequence is
+strictly monotone. -/
+theorem omegaChain_of_infinite {S : Type*} [LinearOrder S] [WellFoundedLT S]
+    {H : Set S} (hH : H.Infinite) : HasOmegaChain H := by
+  let e : ℕ ↪ H := Set.Infinite.natEmbedding H hH
+  have hinj : Function.Injective (fun n => (e n : S)) :=
+    Subtype.coe_injective.comp e.injective
+  have hwf : H.IsWF :=
+    (Set.isWF_univ_iff.mpr wellFounded_lt).mono (Set.subset_univ H)
+  obtain ⟨g, hg⟩ :=
+    hwf.isPWO.exists_monotone_subseq (fun n => (e n : S)) (fun n => (e n).2)
+  exact ⟨(fun n => (e n : S)) ∘ g,
+    hg.strictMono_of_injective (hinj.comp g.injective),
+    fun n => (e (g n)).2⟩
+
+/-- The **faithful** `β = ω` partition arrow on well-ordered ground sets of size
+`κ`: every 2-colouring of 3-subsets admits either a colour-0 homogeneous set
+containing a strictly increasing ω-chain, or a colour-1 homogeneous set of size
+`m`.  Unlike the surrogate `PartitionArrow κ ω m`, the colour-0 conclusion here
+carries true order-type content. -/
+def PartitionArrowOmegaFaithful (κ : Cardinal) (m : ℕ) : Prop :=
+  ∀ (S : Type) [LinearOrder S] [WellFoundedLT S]
+    (_ : Cardinal.mk S = κ) (c : Coloring S 3 2),
+    (∃ H : Set S, HasOmegaChain H ∧ IsHomogeneous H 3 c 0) ∨
+    (∃ H : Finset S, m ≤ H.card ∧ FinsetIsHomogeneous H 3 2 c 1)
+
+/-- **The faithful `ω` case is a theorem**: `𝔠 → (ω, m)₂³` holds in the honest
+order-type sense on every well-ordered continuum-sized ground set.  Infinite
+Ramsey (proved above) supplies an infinite homogeneous set; in a well-order
+every infinite set contains an ω-chain.  This closes the surrogate-vs-faithful
+gap at `β = ω`; the first faithful case not reachable this way is `β = ω + 1`
+(Erdős–Rado stepping-up, the open core). -/
+theorem partitionArrowOmegaFaithful_holds (m : ℕ) :
+    PartitionArrowOmegaFaithful continuum_card m := by
+  intro S _ _ hS c
+  obtain ⟨H, i, hHinf, hHom⟩ := infiniteRamsey3_holds S hS c
+  fin_cases i
+  · exact Or.inl ⟨H, omegaChain_of_infinite hHinf, hHom⟩
+  · obtain ⟨t, hts, htc⟩ := hHinf.exists_subset_card_eq m
+    refine Or.inr ⟨t, htc.ge, ?_⟩
+    intro s hs hsub
+    exact hHom s hs (subset_trans (Finset.coe_subset.mpr hsub) hts)
+
+/-- Non-vacuity: well-ordered ground sets of continuum size exist — the initial
+ordinal of the continuum, as a type — so the faithful arrow has real content. -/
+theorem exists_wellOrder_continuum :
+    ∃ (S : Type) (_ : LinearOrder S) (_ : WellFoundedLT S),
+      Cardinal.mk S = continuum_card := by
+  refine ⟨(Cardinal.ord continuum_card).toType, inferInstance, inferInstance, ?_⟩
+  rw [Ordinal.mk_toType, Cardinal.card_ord]
+
+end FaithfulOmega
 
 end Erdos70
