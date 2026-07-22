@@ -68,6 +68,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Binary Error-and-Erasure Channel (BEEC) Capacity", "startLine": 1, "endLine": 59, "summary": "Extends the BEC to a channel with both erasures (probability ε) and bit-flip errors (crossover probability q given no erasure), proving the common-generalization capacity formula C(BEEC(ε,q)) = (1-ε)·(log 2 - h(q)), 0 axioms, 0 sorries. Shows this formula correctly degenerates to the BEC (q=0) and BSC (ε=0) formulas already in the gallery.", "mathContext": "The BEEC's proof mirrors the BSC development: constant conditional output entropy H(Y|X)=h(ε)+(1-ε)h(q) across inputs, uniform-input achievability, and a converse via the grouping bound on the output marginal's fixed erasure mass."},
     {
       "id": "grouping-bound",
       "title": "The Two-Point Log Inequality (Grouping Engine)",
