@@ -142,6 +142,7 @@
   },
   "sorries": 0,
   "sections": [
+    {"id": "header", "title": "Setup: Non-Autonomous Picard–Lindelöf via IsPicardLindelof", "startLine": 1, "endLine": 37, "summary": "Extends the parent's (PicardLindelofOQ01) autonomous Cauchy–Lipschitz packaging to the non-autonomous IVP y'(t) = F(t, y(t)), y(t₀) = x₀. Lists the four results: isPicardLindelof_of_box (packages Mathlib's IsPicardLindelof from three analytic conditions plus a box inequality, OQ1), exists_local_solution_Icc (closed-interval existence, OQ1), exists_local_solution_integral (solution as a fixed point of the Picard integral operator, OQ2), exists_local_solution (open-interval existence with explicit half-width ε = a/L, OQ3), and solution_unique (via Grönwall). Everything a 0-axiom derivation from Mathlib's ODE library.", "mathContext": "Non-autonomous IVP $y'(t)=F(t,y(t))$, $y(t_0)=x_0$ packaged from Mathlib's `IsPicardLindelof`; the solution is exhibited as a fixed point of the Picard integral operator $(Py)(t)=x_0+\\int_{t_0}^t F(\\tau,y(\\tau))\\,d\\tau$, with explicit existence half-width $\\varepsilon=a/L$ and uniqueness via Grönwall's inequality."},
     {
       "id": "setup",
       "title": "Setup: Banach space and the non-autonomous field",
