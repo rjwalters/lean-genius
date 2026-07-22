@@ -53,6 +53,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Symmetric Channel Capacity — Generalization of the BSC Proof", "startLine": 1, "endLine": 43, "summary": "Generalizes the BSC capacity proof to arbitrary finite-alphabet channels satisfying three symmetry conditions (constant row entropy, doubly-balanced columns, strict positivity), proving channelCapacity = log|β| + C where C is the common row entropy constant, and verifying the BSC satisfies all three hypotheses as an instance.", "mathContext": "Row symmetry (every input row has the same entropy) and column balance (uniform input gives uniform output) are exactly the two properties that made the BSC capacity proof work; abstracting them yields the general symmetric-channel capacity theorem log|β|+C, the same template used later for the BEC/QEC/BEEC family."},
     {
       "id": "chain-rule",
       "title": "Chain Rule: MI = H(Y) - H(Y|X)",
