@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Erdos117WIP01Cover.lean (5 axiom-free theorems). Cyclic-cover existence (every group = union of abelian cyclic subgroups) + structure of the covering set (upward-closed terminal segment, 0 not in set for n>=1, general lower bound h(n)>=1). Prior: h(0)=0, h(1)=1, property closure theory, h monotone. Pyber exponential bounds c1^n < h(n) < c2^n remain deep/unformalized.",
+    "progressSummary": "PROGRESS: Added Erdos117WIP01Two.lean (5 axiom-free theorems). The hierarchy collapses at n=2: 2-commuting property ⟺ commutativity via the {a,b,ab} 3-clique in the non-commuting graph, hence h(2)=1 and h(1)=h(2). Ladder now h(0)=0, h(1)=h(2)=1 exact. Prior: closure theory, h monotonicity (conditional), cyclic covers, covering-set terminal-segment structure. Next elementary rung: Q8 ⟹ h(3)≥3 (needs QuaternionGroup formalization). Deep: Pyber bounds unformalized.",
     "builtItems": [
       "abelianCoverNumber_mono in Erdos117WIP01Mono.lean — h(n) is monotone nondecreasing: n<=m and a finite m-cover exists (exists k, CoversWithAbelian k m) => h(n) <= h(m). Crux coversWithAbelian_of_le: an m-cover is an n-cover since the n-commuting property implies the m-property (hasNCommutingProperty_mono). Nonemptiness hypothesis is honest (Nat.sInf empty = 0 convention; well-definedness of h(m) is Pyber's unformalized upper bound). CoversWithAbelian names the defining-set condition; abelianCoverNumber_eq_sInf is rfl. 0-axiom, docker 8578 jobs.",
       "commute_of_hasNCommutingProperty_one - HasNCommutingProperty G 1 implies all pairs commute (Erdos117Problem.lean)",
@@ -45,7 +45,8 @@
       "exists_cyclic_abelian_cover — every group covered by abelian cyclic subgroups (Erdos117WIP01Cover.lean)",
       "coversWithAbelian_upward — covering set upward-closed in k via bot-padding (Erdos117WIP01Cover.lean)",
       "not_coversWithAbelian_zero — for n>=1, 0 subgroups never cover (PUnit witness) (Erdos117WIP01Cover.lean)",
-      "one_le_abelianCoverNumber — h(n)>=1 for n>=1 when covering set nonempty (Erdos117WIP01Cover.lean)"
+      "one_le_abelianCoverNumber — h(n)>=1 for n>=1 when covering set nonempty (Erdos117WIP01Cover.lean)",
+      "Erdos117WIP01Two.lean: exists_three_pairwise_noncommuting, hasNCommutingProperty_two_iff, hasNCommutingProperty_two_iff_one, abelianCoverNumber_two (h(2)=1), abelianCoverNumber_one_eq_two — 0 axioms, 0 sorries"
     ],
     "insights": [
       "UNIVERSE gotcha (confirmed again): abelianCoverNumber and CoversWithAbelian are universe-polymorphic in the group universe (bodies quantify forall G:Type*), so the VALUE depends on u. Any monotonicity/set-algebra statement must pin one explicit `universe u` and annotate EVERY occurrence with .{u}; unannotated occurrences get independent universes => abelianCoverNumber.{u_1} vs .{u_3} and @h G application-type mismatch. A `universe` command takes a plain /- -/ comment, not a /-- -/ docstring.",
@@ -55,14 +56,16 @@
       "abelianCoverNumber is universe-polymorphic (its body quantifies ∀ (G:Type*)); membership witnesses must be built INLINE at the set fixed universe — a factored Type* have introduces a second non-unifying universe (level-param mismatch).",
       "Every group (any G, not just finite) is a union of abelian cyclic subgroups: the family g ↦ Subgroup.zpowers g covers G, each zpowers g abelian. So a cover ALWAYS exists for a fixed group (size ≤ |G|); h(n) measures only the UNIFORM count over all n-commuting groups, never existence. (exists_cyclic_abelian_cover, Erdos117WIP01Cover.lean)",
       "The covering set {k | CoversWithAbelian k n} is a terminal segment: upward-closed in k (pad a k-cover with copies of bot — coversWithAbelian_upward) and, for n>=1, never contains 0 (empty family cannot cover PUnit — not_coversWithAbelian_zero). With Nat.sInf_mem this pins it as [h(n),inf) when nonempty.",
-      "General lower bound h(n)>=1 for n>=1 whenever h(n) is well-defined (covering set nonempty). Complements h(0)=0: the covering number leaves 0 exactly at the n=0->1 step. For n>=2 nonemptiness of the set is precisely Pyber unformalized upper bound. (one_le_abelianCoverNumber)"
+      "General lower bound h(n)>=1 for n>=1 whenever h(n) is well-defined (covering set nonempty). Complements h(0)=0: the covering number leaves 0 exactly at the n=0->1 step. For n>=2 nonemptiness of the set is precisely Pyber unformalized upper bound. (one_le_abelianCoverNumber)",
+      "COLLAPSE AT n=2: the 2-commuting property is exactly commutativity — in any non-abelian group a non-commuting pair a,b spawns the 3-element pairwise non-commuting set {a,b,ab} (a vs ab commute iff ab=ba by left cancellation; b vs ab iff ba=ab by right cancellation; distinctness forced since a=ab ⟹ b=1 central). So the n=2 threshold adds nothing over n=1, and h(2)=1 unconditionally.",
+      "Where the collapse stops: Q8 is non-abelian with the 3-commuting property (non-commuting graph clique number 3: a clique picks at most one of each {±i},{±j},{±k}), and no 2 abelian subgroups cover Q8 (abelian subgroups have order ≤4; 4+4−|shared ⊇ {±1}| ≤ 6 < 8). So h(3) ≥ 3 — first genuinely non-abelian rung, NOT yet formalized."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "h(n) monotonicity done (conditional on m-cover existence). Remaining elementary targets are thin: possibly h(n) >= 1 for n>=1 given a cover exists (>=1 abelian subgroup needed), or specialize mono to concrete small pairs. Deep: Pyber upper bound (well-definedness / nonemptiness of the sInf set for general n) and the exponential base are NOT elementary.",
-      "Pyber upper/lower bounds c₁ⁿ<h(n)<c₂ⁿ stay as named assumptions (deep, exact base OPEN) — do NOT claim proved.",
-      "Optional: covering-set well-definedness for general n (nonemptiness of the sInf argument) needs a uniform cover bound = the deep Pyber upper bound; not elementary.",
-      "Optional: h(n)≥1 for all n via the same 0∉set argument (trivial generalization of the h(1)=1 lower half)."
+      "h(3) ≥ 3 via Q8: formalize (i) Q8 has the 3-commuting property (clique number 3 of its non-commuting graph), (ii) no 2 abelian subgroups cover Q8 (order counting: abelian subgroups of Q8 have order ≤ 4). Mathlib has QuaternionGroup 2 = Q8. Meaty but elementary — best candidate for next session.",
+      "h(3) ≤ 3 would need a classification of groups with 3-commuting property — NOT elementary, likely blocked.",
+      "Pyber upper/lower bounds c₁ⁿ<h(n)<c₂ⁿ stay unformalized (deep, exact base OPEN) — do NOT claim proved.",
+      "Well-definedness of h(n) for general n (nonemptiness of the sInf set) = Pyber upper bound; not elementary."
     ],
     "markdown": "# Knowledge Base: erdos-117-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
