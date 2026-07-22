@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hErdos index has exact values hErdos(2^k)=k, hErdos 6=2, hErdos 12=3 (subadditivity TIGHT at 2*6), characterization hErdos m=1 iff m=2 via upper-half divisor gap (no divisor in (m/2,m)), sandwich 1<=hErdos<=h<=d(m), subadditivity + m<=(d(m)+1)^hErdos counting lower bound (all 0-axiom). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
+    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified lake env lean exit 0, all new results [propext, Classical.choice, Quot.sound]): decide-powered exact-value ENGINES (upper: hErdos_le_of_witnesses; lower: le_hErdos_of_card) + two new exact values — hErdos 24 = 3 (first STRICT subadditivity: hErdos(4*6) = 3 < 2+2) and hErdos 30 = 4 (first value unreachable by subadditivity since 30 has no practical factorisation; d(24)=d(30)=8 yet indices differ). Known exact values: hErdos 1,2,4,6,12,24,30,2^k = 0,1,2,2,3,3,4,k. Deep/open: hErdos(n!) < n^{o(1)} (Vose); residual mechanic = rename parent h -> hCover.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -51,7 +51,12 @@
       "repLength_mul_le, hErdos_mul_le, hErdos_pow_le (hErdos(m^k)<=k*hErdos m, tight at m=2), repLength_zero, repLength_spec in Erdos18WIP01.lean (0-axiom)",
       "repLength_le_of_witness, two_mul_le_of_dvd_of_lt, two_le_card_of_sum_upper_half, two_le_repLength_of_upper_half in Erdos18WIP01.lean (upper-half gap engine)",
       "two_le_hErdos (practical m>=3), hErdos_one, hErdos_two, hErdos_eq_one_iff in Erdos18WIP01.lean",
-      "hErdos_six (=2, first non-2-power exact value), twelve_practical, three_le_card_of_sum_eleven (kernel decide over 64 subsets), three_le_repLength_twelve_eleven, hErdos_twelve (=3, subadditivity tight) in Erdos18WIP01.lean"
+      "hErdos_six (=2, first non-2-power exact value), twelve_practical, three_le_card_of_sum_eleven (kernel decide over 64 subsets), three_le_repLength_twelve_eleven, hErdos_twelve (=3, subadditivity tight) in Erdos18WIP01.lean",
+      "hErdos_le_of_witnesses in Erdos18WIP01.lean (decide-powered upper-bound engine)",
+      "le_repLength_of_card + le_hErdos_of_card in Erdos18WIP01.lean (decide-powered lower-bound engine)",
+      "hErdos_twentyfour = 3, hErdos_four = 2, twentyfour_practical in Erdos18WIP01.lean",
+      "hErdos_mul_lt_four_six in Erdos18WIP01.lean (first strict subadditivity instance)",
+      "hErdos_thirty = 4, thirty_practical in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -72,7 +77,10 @@
       "hErdos is SUBADDITIVE over products: hErdos(a*b) <= hErdos a + hErdos b for practical a,b (PR #41475). Correct-index counterpart of the parent Erdos18OQ01 subadditivity, which held only for the over-counting universal-set h.",
       "Upper-half divisor gap: no divisor of m lies strictly in (m/2, m) (proper divisor has cofactor >= 2), so any k with m<2k<2m needs >= 2 divisors in every distinct-divisor representation",
       "hErdos m = 1 exactly at m = 2 (over practical m): m=1 gives 0, and k=m-1 forces hErdos >= 2 for practical m>=3",
-      "hErdos 12 = 3 shows subadditivity hErdos(a*b)<=hErdos a+hErdos b is TIGHT at 12=2*6; the counting bound lt_hErdos_of_pow_lt only gives hErdos 12 >= 2, so the combinatorial gap argument is strictly sharper at small scales"
+      "hErdos 12 = 3 shows subadditivity hErdos(a*b)<=hErdos a+hErdos b is TIGHT at 12=2*6; the counting bound lt_hErdos_of_pow_lt only gives hErdos 12 >= 2, so the combinatorial gap argument is strictly sharper at small scales",
+      "Exact hErdos values reduce to two kernel decides via engines: upper (forall k < m exists small witness subset) + lower (one hard target where every summing subset is large); maxRecDepth 20000 needed for 8-divisor powersets",
+      "Subadditivity hErdos(ab) <= hErdos a + hErdos b can be STRICT: hErdos(4*6) = 3 < 4 = hErdos 4 + hErdos 6, while 12 = 2*6 is tight — tightness depends on the factorisation",
+      "hErdos 30 = 4 is unreachable by subadditivity (30 = 2*3*5 has no practical factorisation) — the decide engine is strictly stronger than all prior bound tools; d(24) = d(30) = 8 but hErdos differs (3 vs 4), so the index sees divisor structure not divisor count"
     ],
     "mathlibGaps": [],
     "nextSteps": [

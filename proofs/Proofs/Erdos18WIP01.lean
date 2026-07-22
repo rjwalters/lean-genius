@@ -2042,5 +2042,111 @@ theorem hErdos_twelve : hErdos 12 = 3 := by
           unfold hErdos
           exact Finset.le_sup (Finset.mem_range.mpr (by omega))
 
-end Erdos18
+/- ## Decide-powered exact-value engines, and `hErdos 24 = 3`, `hErdos 30 = 4`
 
+The exact values so far (`hErdos 6 = 2`, `hErdos 12 = 3`) were computed by hand:
+one `repLength_le_of_witness` invocation per target `k` for the upper bound, and a
+bespoke kernel check for the lower bound. The two **engines** below reduce *any*
+concrete exact value to two `decide` calls:
+
+* `hErdos_le_of_witnesses` — upper bound: a kernel search finding, for every
+  `k < m`, some divisor subset of size `≤ t` summing to `k`;
+* `le_repLength_of_card` / `le_hErdos_of_card` — lower bound: a kernel check
+  that every divisor subset summing to one chosen hard target `k` has `≥ t`
+  elements.
+
+With them we pin two new exact values, each carrying theory-level information:
+
+* **`hErdos 24 = 3`** — the first *strict* instance of subadditivity:
+  `hErdos (4·6) = 3 < 2 + 2 = hErdos 4 + hErdos 6` (`hErdos_mul_lt_four_six`),
+  in contrast to `12 = 2·6` where the subadditive bound is attained.
+* **`hErdos 30 = 4`** — `30` has *no* factorisation into practical parts
+  (`15`, `10`, `5` are not practical), so `hErdos_mul_le` gives no upper bound at
+  all and the engine is the only available route. Moreover `24` and `30` both
+  have `d(m) = 8` divisors, yet their indices differ (`3` vs `4`): the index
+  depends on the divisor *structure*, not the divisor count. The counting bound
+  `lt_hErdos_of_pow_lt` gives only `≥ 2` for both, and the upper-half gap only
+  `≥ 2`; the hard target `k = 29` (`29 = 15+10+3+1` is forced, no three divisors
+  of `30` sum to `29`) needs the full kernel check. -/
+
+/-- **Upper-bound engine**: if a kernel search finds, for every `k < m`, a divisor
+subset of size `≤ t` summing to `k`, then `hErdos m ≤ t`. Reduces the upper half
+of any concrete exact-value computation to one `decide`. -/
+theorem hErdos_le_of_witnesses {m t : ℕ}
+    (h : ∀ k ∈ Finset.range m, ∃ T ∈ (divisors m).powerset, T.card ≤ t ∧ T.sum id = k) :
+    hErdos m ≤ t := by
+  unfold hErdos
+  apply Finset.sup_le
+  intro k hk
+  obtain ⟨T, hTpow, hTcard, hTsum⟩ := h k hk
+  exact (repLength_le_of_witness (Finset.mem_powerset.mp hTpow) hTsum).trans hTcard
+
+/-- **Lower-bound engine (per target)**: if every divisor subset summing to `k`
+has at least `t` elements (a finite kernel check over the powerset), then
+`t ≤ repLength m k`. Generalises the bespoke `three_le_repLength_twelve_eleven`. -/
+theorem le_repLength_of_card {m k t : ℕ} (hm : IsPractical m) (hk1 : 1 ≤ k)
+    (hkm : k < m)
+    (h : ∀ T ∈ (divisors m).powerset, T.sum id = k → t ≤ T.card) :
+    t ≤ repLength m k := by
+  unfold repLength
+  apply le_csInf
+  · obtain ⟨T, hTsub, hTsum⟩ := hm.2 k hk1 hkm
+    exact ⟨T.card, T, hTsub, rfl, hTsum⟩
+  · rintro s ⟨T, hTsub, rfl, hTsum⟩
+    exact h T (Finset.mem_powerset.mpr hTsub) hTsum
+
+/-- **Lower-bound engine (index)**: one hard target `k < m` needing `≥ t` divisors
+forces `t ≤ hErdos m`. -/
+theorem le_hErdos_of_card {m k t : ℕ} (hm : IsPractical m) (hk1 : 1 ≤ k)
+    (hkm : k < m)
+    (h : ∀ T ∈ (divisors m).powerset, T.sum id = k → t ≤ T.card) :
+    t ≤ hErdos m := by
+  refine (le_repLength_of_card hm hk1 hkm h).trans ?_
+  unfold hErdos
+  exact Finset.le_sup (Finset.mem_range.mpr hkm)
+
+/-- `24` is practical — decision procedure. -/
+theorem twentyfour_practical : IsPractical 24 := by decide
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 24 = 3`.** Upper: the engine finds `≤ 3`-divisor representations for
+all `k < 24` (the two-divisor sums from `{1,2,3,4,6,8,12}` reach up to `20`, and
+`12 + 8 + {1,2,3}` covers `21, 22, 23`). Lower: no two divisors of `24` sum to
+`23` (max two-divisor sum below `24` is `12 + 8 = 20`), so `k = 23` needs three. -/
+theorem hErdos_twentyfour : hErdos 24 = 3 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 23) twentyfour_practical (by omega) (by omega)
+    (by decide)
+
+/-- `hErdos 4 = 2` — the power-of-two formula at `k = 2`. -/
+theorem hErdos_four : hErdos 4 = 2 := by
+  have h := hErdos_two_pow 2
+  norm_num at h
+  exact h
+
+/-- **Subadditivity can be strict**: `hErdos (4·6) = 3 < 2 + 2 = hErdos 4 + hErdos 6`.
+Contrast with `12 = 2·6`, where `hErdos 12 = 3 = 1 + 2` attains the subadditive
+bound (`hErdos_twelve`). So `hErdos_mul_le` is tight at some factorisations and
+strict at others — even for the same kind of split of highly practical numbers. -/
+theorem hErdos_mul_lt_four_six : hErdos (4 * 6) < hErdos 4 + hErdos 6 := by
+  have h24 : (4 * 6 : ℕ) = 24 := by norm_num
+  rw [h24, hErdos_twentyfour, hErdos_four, hErdos_six]
+  norm_num
+
+/-- `30` is practical — decision procedure. -/
+theorem thirty_practical : IsPractical 30 := by decide
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 30 = 4`** — the first exact value out of reach of *both* prior
+methods: `30 = 2·3·5` has no factorisation into practical parts, so
+`hErdos_mul_le` is inapplicable, and the upper-half gap gives only `≥ 2`. The
+hard target is `k = 29`: the only representation is `29 = 15 + 10 + 3 + 1`
+(no three divisors of `30` sum to `29`), so four divisors are needed. Note
+`d(24) = d(30) = 8` while `hErdos 24 = 3 ≠ 4 = hErdos 30`: the index sees the
+divisor structure, not the divisor count. -/
+theorem hErdos_thirty : hErdos 30 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 29) thirty_practical (by omega) (by omega)
+    (by decide)
+
+end Erdos18

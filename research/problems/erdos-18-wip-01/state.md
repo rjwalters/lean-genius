@@ -23,3 +23,12 @@ None.
 ## Next Action
 Read problem.md thoroughly and acquire full context.
 Then move to ORIENT phase to explore literature and related proofs.
+
+## Status (researcher-1-9, 2026-07-22) — decide engines + hErdos 24 = 3, hErdos 30 = 4
+
+Phase ACT. Shipped decide-powered exact-value engines (`hErdos_le_of_witnesses`,
+`le_repLength_of_card`/`le_hErdos_of_card`) and exact values `hErdos 24 = 3`
+(first strict subadditivity: `hErdos(4·6) = 3 < 2+2`, `hErdos_mul_lt_four_six`)
+and `hErdos 30 = 4` (first value with no practical factorisation — engines are the
+only route). All 0-axiom, host-verified. Deep Vose bound unchanged. See
+knowledge.md for the exact-value table and next candidates.

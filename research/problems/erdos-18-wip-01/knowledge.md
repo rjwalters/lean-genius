@@ -312,3 +312,43 @@ Idioms: after `rcases c with _ | _ | c` state helper products as `d * (c + 1 + 1
 NEXT: exact hErdos on 2^a·3 family or hErdos 24/30; a general lower-bound engine
 (iterating the gap argument below m/2?); or the deep Vose hErdos(n!) < n^{o(1)}
 (still blocked at elementary layer).
+
+## 2026-07-22 (researcher-1-9) — DECIDE ENGINES + hErdos 24 = 3 (strict subadditivity), hErdos 30 = 4
+
+Shipped the general exact-value engines requested by the prior session's NEXT, plus
+two new exact values (0-axiom, host-verified `lake env lean` exit 0, `#print axioms`
+= propext/Classical.choice/Quot.sound on all six new public results):
+
+- `hErdos_le_of_witnesses` — **upper-bound engine**: `(∀ k ∈ range m, ∃ T ∈
+  (divisors m).powerset, T.card ≤ t ∧ T.sum id = k) → hErdos m ≤ t`; hypothesis
+  discharged by one kernel `decide`. Replaces per-k `interval_cases` +
+  `repLength_le_of_witness` case lists (24/30 cases would have been needed here).
+- `le_repLength_of_card` / `le_hErdos_of_card` — **lower-bound engine**: one hard
+  target `k` with "every divisor subset summing to `k` has ≥ t elements" (kernel
+  `decide` over the powerset) forces `t ≤ hErdos m`. Generalises the bespoke
+  `three_le_repLength_twelve_eleven`.
+- `hErdos_twentyfour : hErdos 24 = 3` (+ `twentyfour_practical`, `hErdos_four`).
+- `hErdos_mul_lt_four_six : hErdos (4·6) < hErdos 4 + hErdos 6` — **first strict
+  instance of subadditivity** (3 < 2+2), contrasting the tight split 12 = 2·6.
+- `hErdos_thirty : hErdos 30 = 4` (+ `thirty_practical`) — first exact value out of
+  reach of BOTH prior methods: 30 = 2·3·5 has no practical factorisation
+  (`hErdos_mul_le` inapplicable) and gap/counting bounds stop at ≥ 2. Hard target
+  k=29 (only rep 15+10+3+1). Also d(24) = d(30) = 8 but indices 3 ≠ 4: the index
+  sees divisor structure, not divisor count.
+
+### Idioms (v4.31)
+- The engine `decide`s (powerset of 8 divisors × ≤30 targets) exceed the default
+  elaborator recursion: put `set_option maxRecDepth 20000 in` BEFORE the docstring
+  (`/-- ... -/ set_option ... in theorem` is a parse error, "expected 'lemma'").
+- Exact-value skeleton is now 3 lines: `refine le_antisymm
+  (hErdos_le_of_witnesses (by decide)) ?_; exact le_hErdos_of_card (k := K)
+  <m>_practical (by omega) (by omega) (by decide)`.
+
+### Known exact values (all 0-axiom)
+hErdos 1=0, 2=1, 4=2, 6=2, 12=3, 24=3, 30=4, 2^k=k. Strictness data: 12=2·6 tight,
+24=4·6 strict.
+
+NEXT: minimal-m-with-hErdos=t sequence (2,6,12?,30? — needs hErdos 16,18,20,28 to
+confirm 30 is minimal for 4); hErdos of 2^a·3 family via engines; a lower-bound
+engine iterating the gap argument below m/2 (theory, not per-m decide); deep Vose
+hErdos(n!) < n^{o(1)} still blocked at elementary layer.
