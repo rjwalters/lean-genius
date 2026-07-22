@@ -23,14 +23,13 @@ inequality is fundamentally about the multiplicative structure of ℂ and the tr
 
 ## Status
 - [x] Algebraic identity (over CommRing)
-- [x] Ptolemy's inequality (norm, abs, and dist forms)
+- [x] Ptolemy's inequality (norm and dist forms)
 - [x] Equality characterization (sufficient condition via proportionality)
 - [x] Complete — 0 sorries, 0 axioms
 
 ## Mathlib Dependencies
 - `norm_mul` : Multiplicativity of norm in normed fields
 - `norm_add_le` : Triangle inequality for norms
-- `Complex.norm_eq_abs` : Connection between ‖·‖ and Complex.abs
 - `dist_eq_norm` : Connection between dist and ‖·‖
 -/
 
