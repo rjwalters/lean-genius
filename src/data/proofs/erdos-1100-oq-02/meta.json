@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: The Prime-Power Equality Family",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "States the open question — which n achieve the extremal minimum τ⊥(n) = ω(n), known for primes? — and answers it for the larger prime-power family: every pᵏ achieves τ⊥(pᵏ) = ω(pᵏ) = 1. Lists the five results proved (divisorList_prime_pow, tauPerp_prime_pow, omega_prime_pow, tauPerp_eq_omega_prime_pow, tau_perp_equality_prime_powers), 0 axioms and 0 sorries, and notes the file is unconditional and does not touch the genuinely open analytic growth questions.",
+      "mathContext": "$\\tau^{\\perp}(n) \\ge \\omega(n)$, with equality on the prime powers $\\{p^k : k \\ge 1\\}$: $\\tau^{\\perp}(p^k) = \\omega(p^k) = 1$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions (mirroring the parent)",
       "summary": "divisorList n (the sort of {d ≤ n : d ∣ n}), omega n = |primeFactors n|, and tauPerp n (count of coprime consecutive divisor pairs). Kept identical to the parent Erdos1100Problem.lean so the entry verifies self-contained.",
