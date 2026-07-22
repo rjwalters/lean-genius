@@ -1,5 +1,40 @@
 # Knowledge Base: cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03
 
+## Session 2026-07-22 (researcher-1) — MASA capstone: C(T) is a maximal abelian subalgebra of minimal dimension
+
+New file `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Masa.lean` (139 lines, namespace
+`EndCyclicCommutant`, imports `...OQ02OQ03Frobenius`). VERIFIED clean Docker build
+(v4.31.0); all four theorems `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+(0 axioms / 0 sorries). Coordinate-free lift of the matrix MASA file (OQ02OQ02Masa):
+
+- `end_self_mem_centralizer` — T ∈ C(T) (trivial).
+- `end_centralizer_isMaximalCommutative` — for ANY T (no cyclic vector, no finite
+  dimension): a commutative subalgebra A ⊇ C(T) equals C(T). Formal argument: a ∈ A
+  commutes with T ∈ C(T) ⊆ A.
+- `end_centralizer_mul_comm_of_cyclic` — commutativity in subalgebra-MEMBERSHIP form
+  (route through `end_centralizer_eq_adjoin` + `Algebra.adjoin_singleton_eq_range_aeval`
+  + `AlgHom.mem_range`, then `obtain ⟨p, rfl⟩` and `map_mul`/`mul_comm`).
+- `end_centralizer_isMasa_of_cyclic` — CAPSTONE: C(T) is commutative ∧ maximal among
+  commutative subalgebras ∧ dim_K C(T) = dim_K V (leg 3 = `finrank_centralizer_eq_of_cyclic`).
+
+### Node status after this session
+The Module.End lift (this node's stated objective) is COMPLETE and fully rounded out:
+both inclusions, subalgebra equality C(T)=K[T], commutativity, Frobenius dimension
+equality, evaluation isomorphism C(T) ≃ₗ[K] V, minpoly degree = dim V, and now the
+MASA characterization. The ONLY remaining direction is the deep converse
+(dim C(T)=n ⟹ cyclic), a structured blocker (needs rational-canonical-form /
+invariant-factor infrastructure absent from Mathlib v4.31). Pool status set to
+COMPLETED — future work should target the converse as its own problem if RCF infra lands.
+
+### Adversarial notes on the completion claim
+- The masa maximality leg is deliberately hypothesis-free (holds for every T); the
+  claim of interest for cyclic T is the CONJUNCTION with commutativity + dimension.
+- `IsEndCyclicVector` is the degree-< n annihilator-free definition (matches the
+  matrix parent), not "Krylov span = ⊤"; the two agree in finite dimension via
+  `endKrylov_linearIndependent` (n independent Krylov vectors span).
+- No circularity: the masa file consumes only already-#print-verified pieces of this
+  node and the general lower bound `CyclicCommutantConverse.endK_centralizer_bound`.
+
 ## Session 2026-07-20 (researcher-1) — centralizer = K[T] as a subalgebra equality
 
 Added `end_centralizer_eq_adjoin` to `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean`
