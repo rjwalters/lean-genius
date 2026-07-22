@@ -211,6 +211,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the explicit Fσ dual, completing the dichotomy",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring. States the parent's open question (dualize the transcendentals-as-dense-Gδ result to an explicit Fσ presentation of the algebraic reals), introduces IsFσ (a countable union of closed sets) as the De Morgan dual of Mathlib's IsGδ since Mathlib lacks an Fσ predicate, and gives the four-way Gδ/Fσ classification table completing the dichotomy: algebraic reals are Fσ-but-not-Gδ, transcendentals are Gδ-but-not-Fσ — the classical analogue of 'ℚ is Fσ but not Gδ'. Lists the seven Main results."
+    },
+    {
       "id": "fsigma-predicate-duality",
       "title": "The Fσ predicate and its duality with Gδ",
       "startLine": 57,
