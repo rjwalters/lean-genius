@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module docstring: states Nesbitt's inequality — for positive reals $a,b,c$, $\\frac{a}{b+c}+\\frac{b}{c+a}+\\frac{c}{a+b} \\ge \\frac{3}{2}$, with equality iff $a=b=c$ — and previews the proof strategy: a sum-of-squares identity for the defect $\\Sigma - 3/2$, obtained by pairing each term against $1/2$ and collecting equal differences. Notes that Nesbitt's inequality is absent from Mathlib and distinct from the AM-GM family, since it bounds a cyclic sum of fractions rather than comparing a mean.",
+      "mathContext": "$\\dfrac{a}{b+c}+\\dfrac{b}{c+a}+\\dfrac{c}{a+b} - \\dfrac{3}{2} = \\dfrac{(a-b)^2}{2(b+c)(c+a)} + \\dfrac{(b-c)^2}{2(c+a)(a+b)} + \\dfrac{(c-a)^2}{2(a+b)(b+c)} \\ge 0$, with equality iff $a=b=c$."
+    },
+    {
       "id": "sos-identity",
       "title": "The Sum-of-Squares Identity",
       "startLine": 28,
