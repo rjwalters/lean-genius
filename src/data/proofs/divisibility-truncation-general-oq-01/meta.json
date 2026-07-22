@@ -81,6 +81,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header Docstring",
+      "startLine": 1,
+      "endLine": 15,
+      "summary": "States the open question: can the positive and negative osculator theorems be merged into one theorem with a signed osculator $c \\in \\mathbb{Z}$? Answers YES, since `truncation_pos` already works for $c \\in \\mathbb{Z}$ with $d \\mid (10c - 1)$, and the negative case is the positive case with $c$ replaced by $-c_{\\text{neg}}$."
+    },
+    {
       "id": "setup",
       "title": "Imports and Algebraic Identity",
       "startLine": 16,
