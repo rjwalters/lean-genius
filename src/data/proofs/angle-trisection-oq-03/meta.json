@@ -119,6 +119,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Overview: Computational Complexity of Constructibility Decidability", "startLine": 1, "endLine": 25, "summary": "Extends the angle-trisection formalization to the decidability and complexity of compass-and-straightedge constructibility: a positive natural number divides some power of 2 iff it is itself a power of 2; constructibility (given the minimal polynomial degree) is decidable; n-gon constructibility is decidable via Euler's totient; and the decision problem reduces to O(log d) arithmetic operations. Builds on AngleTrisection.lean (IsConstructible, Wantzel's theorem) and AngleTrisectionOQ02OQ03.lean (Gauss-Wantzel theorem, IsConstructibleNgon).", "mathContext": "Characterizes $d \\mid 2^m$ (for $d>0$) as $\\exists k,\\ d = 2^k$, then packages constructibility and $n$-gon constructibility as decidable predicates reducing to $O(\\log d)$ arithmetic operations."},
     {
       "id": "power-of-2-characterization",
       "title": "Part I: Power-of-2 Divisibility",
