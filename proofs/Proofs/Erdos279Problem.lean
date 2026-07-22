@@ -39,16 +39,23 @@ def CoversEventually (a : ResidueChoice) (k : ℕ) : Prop :=
 
 /- ## Density Conditions for Generalization -/
 
-/-- A set A ⊆ ℕ has counting function ≫ N/log N -/
-def HasPrimeLikeDensity (A : Set ℕ) : Prop :=
-  ∃ c : ℚ, 0 < c ∧
-    -- |A ∩ [1,N]| ≥ c · N / log N for large N
-    True
+/-- A set A ⊆ ℕ has counting function ≫ N/log N: `|A ∩ [1,N]| ≥ c · N / log N`
+    for some `c > 0` and all large `N`.
 
-/-- The log-log condition: Σ_{n∈A, n≤N} 1/n − log log N → ∞ -/
-def HasLogLogDivergence (A : Set ℕ) : Prop :=
-  -- Σ_{n∈A, n≤N} 1/n exceeds log log N by an unbounded amount
-  True
+    Left `opaque` rather than given a `True` placeholder body on purpose: a
+    trivially-provable body would make `ErdosProblem279_generalized` instantiable
+    at junk sets (e.g. `A = ∅`), for which `GeneralizedCovering A k` is provably
+    false — instantiating the axiom there would derive `False` (kernel
+    inconsistency, issue #41236). Keeping the predicate opaque means it cannot be
+    discharged for any set until a genuine density formalization replaces it, so
+    the generalized axiom remains an honest, consistent Tier-C scaffold. -/
+opaque HasPrimeLikeDensity (A : Set ℕ) : Prop
+
+/-- The log-log condition: `Σ_{n∈A, n≤N} 1/n − log log N → ∞`.
+
+    Also left `opaque` (not a `True` placeholder) for the same soundness reason
+    as `HasPrimeLikeDensity` above — see issue #41236. -/
+opaque HasLogLogDivergence (A : Set ℕ) : Prop
 
 /- ## The Erdős Problem -/
 
