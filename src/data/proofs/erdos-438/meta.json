@@ -59,13 +59,13 @@
     ],
     "originalContributions": [
       "Definition of IsSquare, sumset, IsSquareFreeSumset, maxSquareFreeDensity",
-      "Mod 3 construction and correctness axioms",
+      "Section header for a simple mod-3 construction (Part 2 is an empty banner; no declarations)",
       "Massias residues definition and construction",
       "Axiom: massias_construction_works (square-free property)",
-      "Axiom: los_upper_bound (0.475N, Lagarias-Odlyzko-Shearer)",
+      "Lagarias-Odlyzko-Shearer 0.475N bound noted in source comments only (no Lean declaration)",
       "Axiom: kls_theorem (11/32 tight bound, Khalfalah-Lodha-Szemerédi)",
       "Definition: squares_mod_32 with proved cardinality (native_decide)",
-      "Axiom: massias_avoids_squares and massias_is_maximal (optimality)",
+      "Axiom: massias_is_maximal (optimality: at most 11 residues mod 32 avoid square sums)",
       "Summary theorem combining construction, upper bound, and maximality"
     ],
     "mathContext": {
@@ -156,7 +156,7 @@
       "title": "Simple mod $3$ Construction",
       "startLine": 58,
       "endLine": 74,
-      "summary": "Axiomatizes: squares are $0$ or $1 \\pmod{3}$, so $\\{n : n \\equiv 1 \\pmod{3}\\}$ gives square-free sumset (since $1+1 \\equiv 2 \\pmod{3}$). Achieves density $\\approx N/3$."
+      "summary": "Empty section banner (no declarations). The mathematical remark — squares are $0$ or $1 \\pmod{3}$, so $\\{n : n \\equiv 1 \\pmod{3}\\}$ gives a square-free sumset of density $\\approx N/3$ — is not formalized in the file."
     },
     {
       "id": "massias",
