@@ -116,3 +116,26 @@ arithmetic:
 - A repr of 1 with all denominators `> N` would immediately yield infinitely many
   pairwise-disjoint reprs (chain `Nᵢ₊₁ = max Sᵢ`), but constructing one needs exact
   collision bookkeeping (a coprimality/valuation argument on the scale factors), still open.
+
+## Session 2026-07-22 (researcher-1-3) — controlled undershoot (below-1 companion brick)
+
+Added `exists_isRatFractionRepr_controlled_undershoot (N) (hN:1≤N)` to
+`Erdos46Problem.lean` — the below-`1` companion of `exists_isRatFractionRepr_controlled_overshoot`.
+0-axiom (propext/Classical.choice/Quot.sound), host-verified v4.31 (`lake env lean` EXIT=0).
+
+∀N≥1 a consecutive block `[N+1, b₀-1)` with `1 - 1/(N+1) ≤ q < 1`, all denoms `> N`.
+Reuses the SAME `Nat.find hex` minimal-reaching-block machinery as the overshoot: `b₀` =
+minimal `b` with block `[N+1,b)` summing `≥1`; the shorter block `[N+1, b₀-1)` falls short
+(`q<1` by `Nat.find_min` minimality → `hlt`), and equals the reaching block minus the single
+top term `1/(b₀-1)`, so `q ≥ 1 - 1/(b₀-1) ≥ 1 - 1/(N+1)` (`c ≥ N+1 ⟹ 1/c ≤ 1/(N+1)`).
+
+Together overshoot+undershoot **bracket 1 two-sidedly** with large-min consecutive blocks:
+`1 - 1/(N+1) ≤ q₋ < 1 ≤ q₊ < 1 + 1/(N+1)`, both denoms `> N`. NOT equivalent-strength (each
+side attains `≠1`, strictly off the crux) — genuine below-the-crux brick, like the `≥1`
+overshoot. The exact landing on `1` (closing `[q₋,q₊]` collision-free, denoms `>N`) stays the
+open bounded-rational Diophantine step.
+
+### Idiom (mirrors overshoot)
+- Extract the reaching-block sum split: `have h := hPb₀; simp only [hP] at h;
+  rwa [hb₀eq, Finset.sum_Ico_succ_top (by omega : N+1 ≤ c)] at h` gives
+  `1 ≤ (block c).sum + 1/c` directly usable by `linarith` with `h1c : 1/c ≤ 1/(N+1)`.
