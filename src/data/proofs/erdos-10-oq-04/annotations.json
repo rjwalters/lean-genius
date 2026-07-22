@@ -72,6 +72,18 @@
     "prerequisites": ["every prime is ≥ 2", "nonnegativity of a power sum"]
   },
   {
+    "id": "ann-thm-densityicc-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 101, "endLine": 134 },
+    "type": "theorem",
+    "title": "Two concrete witnesses, then the counting ratio lands in [0, 1]",
+    "content": "`4 = 2 + 2¹` and `9 = 7 + 2¹` are exhibited as concrete elements of `S₁` via the membership iff, confirming the `p + 2ᵃ` branch is nonvacuous. `densityFn_mem_Icc` then proves the finite counting ratio always lies in `[0, 1]`: nonnegativity is `positivity`, and the upper bound rewrites `div_le_one` to the numerator-vs-denominator inequality `|S ∩ [0,n]| ≤ n + 1`, which follows because a filtered subset of `Finset.range (n+1)` can have at most `Finset.card_range` many elements. The two boundedness lemmas that follow package this `[0,1]` bound as the `IsBoundedUnder`/`IsCoboundedUnder` side-conditions `Filter.liminf_le_liminf` will need.",
+    "mathContext": "$4,9\\in S_1$ (concrete); $\\mathrm{densityFn}\\,S\\,n=\\tfrac{|S\\cap[0,n]|}{n+1}\\in[0,1]$ via $|S\\cap[0,n]|\\le n+1=|[0,n]|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_filter_le", "Finset.card_range", "div_le_one", "IsBoundedUnder / IsCoboundedUnder", "concrete membership witnesses"],
+    "prerequisites": ["filtered Finset cardinality bounds", "the ≥/≤ boundedness predicates liminf needs"]
+  },
+  {
     "id": "ann-thm-densitymono-erdos10oq04",
     "proofId": "erdos-10-oq-04",
     "range": { "startLine": 135, "endLine": 148 },
@@ -82,6 +94,18 @@
     "significance": "key",
     "relatedConcepts": ["monotonicity of liminf", "Filter.liminf_le_liminf", "Finset.card_le_card", "boundedness side-conditions"],
     "prerequisites": ["liminf preserves pointwise ≤", "counting ratios bounded in [0,1]", "filtered Finset cardinalities"]
+  },
+  {
+    "id": "ann-thm-densityrange-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 149, "endLine": 172 },
+    "type": "theorem",
+    "title": "The liminf itself lands in [0, 1]",
+    "content": "`lowerDensity_nonneg` and `lowerDensity_le_one` lift the pointwise `densityFn ∈ [0,1]` bound to the liminf, each via `Filter.liminf_le_liminf` sandwiched against the constant sequences `0` and `1` (rewritten as liminfs of themselves through `Filter.liminf_const`), discharging the boundedness/coboundedness side-conditions with the two lemmas proved just above. `lowerDensity_S1_mem_Icc` packages both halves into the single membership fact `d̲(S₁) ∈ [0,1]` — the coarsest possible statement about the open quantity, obtained with no case-specific work at all.",
+    "mathContext": "$0\\le \\underline{d}(S)\\le 1$ via $\\mathrm{liminf}$ sandwiched between constant sequences $0$ and $1$; hence $\\underline{d}(S_1)\\in[0,1]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Filter.liminf_const", "Filter.liminf_le_liminf", "sandwiching a liminf", "Set.Icc membership"],
+    "prerequisites": ["liminf of a constant sequence", "combining two one-sided liminf bounds"]
   },
   {
     "id": "ann-thm-s1le-erdos10oq04",
