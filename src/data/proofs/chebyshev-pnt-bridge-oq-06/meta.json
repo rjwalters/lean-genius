@@ -150,6 +150,16 @@
       "proofId": "chebyshev-pnt-bridge-oq-05",
       "relationship": "sibling",
       "description": "OQ-05 packaged the LOWER bound in real-log form (primeCounting_mul_log_lower, primeCounting_ge_div_log); OQ-06 is its UPPER-bound mirror, completing the symmetric pair of Chebyshev densities."
+    },
+    {
+      "proofId": "chebyshev-pnt-bridge-oq-06-oq-01",
+      "relationship": "extended by",
+      "description": "Pins down the exact Nat.sqrt logarithm bracket ½·log m − log 2 ≤ log(Nat.sqrt m) ≤ ½·log m and uses it to renormalise this file's primeCounting_mul_log_sqrt_le onto OQ-05's π(m)·log m scale, packaging both Chebyshev halves into the two-sided sandwich this entry's open questions asked for."
+    },
+    {
+      "proofId": "chebyshev-pnt-bridge-oq-06-oq-02",
+      "relationship": "extended by",
+      "description": "Feeds m = pₙ (the n-th prime, via the identity π(pₙ) = n+1) into this file's primeCounting_mul_log_sqrt_le to derive an explicit n·log n lower bound on the n-th prime, sharper than Mathlib's linear Nat.add_two_le_nth_prime."
     }
   ],
   "leanFile": {
@@ -172,8 +182,9 @@
     "implications": "Both halves of Chebyshev's 1852 theorem are now available in matching Real.log form (OQ-05 lower density ≥ log 2 − o(1), OQ-06 upper density ≤ 2 log 4 + o(1)). The natural next step is tightening the constants toward Chebyshev's sharper 0.921/1.106, and ultimately the asymptotic π(x) ∼ x/log x (PNT), which needs the analytic machinery (ζ non-vanishing on Re s = 1) not yet in this development.",
     "openQuestions": [
       "Tighten the constants from (log 2, 2 log 4) toward Chebyshev's (0.921, 1.106) via sharper primorial / central-binomial estimates.",
-      "Combine OQ-05 and OQ-06 into a single two-sided sandwich theorem with a common normalisation.",
-      "Bridge to the full Prime Number Theorem π(x) ∼ x/log x (requires analytic continuation and ζ non-vanishing)."
+      "Combine OQ-05 and OQ-06 into a single two-sided sandwich theorem with a common normalisation — done in OQ-06-OQ-01, which also pins down the exact Nat.sqrt-vs-real-log bracket needed to make the renormalisation rigorous.",
+      "Bridge to the full Prime Number Theorem π(x) ∼ x/log x (requires analytic continuation and ζ non-vanishing).",
+      "Invert the density bounds into growth statements for the n-th prime pₙ: OQ-06-OQ-02 already extracts an n·log n lower bound on pₙ from this file's upper density; the matching upper bound pₙ ≤ C·n·log n from OQ-05's lower density remains open."
     ]
   },
   "sorries": 0
