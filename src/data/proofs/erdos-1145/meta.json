@@ -35,6 +35,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1145",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s\u2013S\u00e1rk\u00f6zy conjecture (Problem #1145): for infinite sets $A,B$ with $a_n/b_n \\to 1$ whose sumset $A+B$ contains all sufficiently large integers, must $\\limsup r_{A,B}(n) = \\infty$? Contrasts with Ruzsa's counterexample (Problem #331) when the ratio condition is dropped.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "$r_{A,B}(n) = |\\{(a,b) \\in A \\times B : a+b=n\\}|$ counts representations; this generalizes the Erd\u0151s\u2013Tur\u00e1n conjecture (Problem #28) on $A+A$ to the two-set case under the asymptotic-ratio condition."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 28,
