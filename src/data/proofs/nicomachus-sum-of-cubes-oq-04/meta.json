@@ -44,6 +44,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The p=5 Faulhaber Identity, Subtraction-Free",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring stating the p=5 Faulhaber closed form ∑ k⁵ = n²(n+1)²(2n²+2n−1)/12, extending the parent Nicomachus cube-sum identity and the sibling p=4 entry. Explains why the headline division/subtraction form is hostile to `ring` over ℕ, and the fix: prove the subtraction-free, division-free equivalent 12·(∑ k⁵) + n² = 2n⁶+6n⁵+5n⁴ by adding n² to both sides, closing the inductive step with `ring` + `omega`. States the novelty (Mathlib has Bernoulli-polynomial Faulhaber machinery but not this elementary factored identity) and confirms 0 sorries, 0 axioms.",
+      "mathContext": "Adding $n^2$ to both sides of $12\\sum k^5 = 2n^6+6n^5+5n^4-n^2$ clears the truncated ℕ-subtraction, leaving a pure polynomial identity for `ring`/`omega`."
+    },
+    {
       "id": "subtraction-free",
       "title": "Subtraction-free, division-free core",
       "startLine": 62,
