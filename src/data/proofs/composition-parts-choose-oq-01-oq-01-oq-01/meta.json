@@ -69,7 +69,8 @@
       "**The variance is the Binomial(n−1, 1/2) variance.** The part-count of a composition is 1 + (number of cut gaps), and each of the n−1 internal gaps is cut independently, so X − 1 ~ Binomial(n−1, 1/2). The mean (n+1)/2 and variance (n−1)/4 are exactly the shifted-Binomial mean and variance — recovered here purely combinatorially, by transporting the moments along the gap bijection rather than invoking probability theory.",
       "**The second moment collapses to three subset sums.** Under the gap bijection, ∑_c c.length² becomes ∑_{s ⊆ Fin (n−1)} (|s|+1)² = ∑_s |s|² + 2∑_s |s| + ∑_s 1, reducing everything to the subset-size second moment ∑|s|², the first moment ∑|s| = m·2^(m−1) (the parent's), and the count ∑1 = 2^m.",
       "**4∑ k²C(m,k) = m(m+1)2^m from a single absorption.** The arithmetic core sum_choose_mul_sq is proved by applying the absorption rule (k+1)·C(m,k+1) = m·C(m−1,k) once: it lowers the troublesome k² to (k+1) inside an (m−1)-binomial, reducing the second-moment sum to the already-known first-moment sum plus the plain binomial sum. Stating it times 4 sidesteps the truncated ℕ-subtraction in the exact form m(m+1)2^(m−2).",
-      "**Mathlib stops at ∑ C(m,k) = 2^m.** Neither the weighted binomial sums ∑ k·C(m,k), ∑ k²·C(m,k) nor any moment of the part-count of a composition is in Mathlib; the second-moment identity and the variance are the original content of this entry, extending the parent's first moment."
+      "**Mathlib stops at ∑ C(m,k) = 2^m.** Neither the weighted binomial sums ∑ k·C(m,k), ∑ k²·C(m,k) nor any moment of the part-count of a composition is in Mathlib; the second-moment identity and the variance are the original content of this entry, extending the parent's first moment.",
+      "**Grouping subsets by cardinality is an exact reindexing, not an estimate.** sum_finset_card_sq obtains ∑_{s⊆Fin m} |s|² from ∑_k C(m,k)k² via Finset.sum_powerset_apply_card, which groups the 2^m subsets by size (C(m,k) subsets of each size k) with no approximation. This single bridge — unchanged from the parent's first-moment version — is what turns any weighted binomial sum (k here, k² there) into a sum over subsets, so the whole subset-sum machinery is really just one combinatorial identity reused with a different summand."
     ],
     "prerequisites": [
       "Compositions of a natural number (Mathlib's Composition n), the number of parts c.length, and the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) with the bridge length c = (gaps c).card + 1 (from the parent entry)",
@@ -83,33 +84,41 @@
       "id": "sec-overview",
       "title": "Overview: second moment and variance of the number of parts of a composition",
       "startLine": 1,
-      "endLine": 70,
+      "endLine": 69,
       "summary": "Imports and header docstring: the family lineage, the second-moment closed form and the variance (n−1)/4, the gaps-bijection mechanism, the binomial identity, and the originality note.",
       "mathContext": "This file (open question composition-parts-choose-oq-01-oq-01-oq-01) computes the second moment and variance of the part-count X(c) = c.length of a composition of n (an ordered tuple of positive integers summing to n). Lineage: the grandparent gives 2^(n−1) compositions of n, the parents give C(n−1,k−1) with k parts and the first moment (total parts (n+1)·2^(n−2), mean (n+1)/2). This leaf proves second_moment: 4·Σ_c X(c)² = n(n+3)·2^(n−1) (stated ×4 to stay in ℕ) and hence variance: Var(X) = (n−1)/4 under the uniform distribution. The header docstring (lines 1–70) explains the mechanism: the bijection gapsEquiv n : Composition n ≃ Finset (Fin (n−1)) with length_eq_card_gaps reduces the sum to Σ_{s ⊆ Fin m}(|s|+1)² = Σ|s|² + 2Σ|s| + Σ1; the new piece Σ_s|s|² comes from the binomial identity 4 Σ_k C(m,k)k² = m(m+1)2^m (proved by the same absorption trick as the parent's Σ_k C(m,k)k = m 2^(m−1), peeling k=0 and using (k+1)C(m,k+1)=m·C(m−1,k)), the parent supplies Σ|s| = m·2^(m−1), and Σ1 = 2^m; the variance follows by expanding (X−μ)². Originality: Mathlib has Σ C(m,k)=2^m but neither the weighted sums nor any statement on the part-count distribution of a composition. Fully machine-checked."
     },
     {
-      "id": "second-moment-binomial",
-      "title": "The Second-Moment Binomial Sum",
-      "startLine": 71,
-      "endLine": 124,
-      "mathContext": "$4\\sum_{k} k^2\\binom{m}{k} = m(m+1)2^m$ and $4\\sum_{s \\subseteq \\mathrm{Fin}\\,m} \\#s^2 = m(m+1)2^m$.",
-      "summary": "sum_choose_mul_sq proves 4·∑_{k=0}^m k²·C(m,k) = m(m+1)2^m by peeling the k = 0 term and applying the absorption identity (k+1)·C(m,k+1) = m·C(m−1,k) (Nat.add_one_mul_choose_eq) once, lowering the k²-sum to ∑_k C(m−1,k)·(k+1) = ∑_k C(m−1,k)·k + ∑_k C(m−1,k), evaluated by the parent's sum_choose_mul and Nat.sum_range_choose; a final case split resolves the 2^(m−1) and ring closes. The factor 4 keeps the identity in ℕ for all m. sum_finset_card_sq transports this to the subset sum ∑_{s ⊆ Fin m} |s|² via Finset.powerset_univ and Finset.sum_powerset_apply_card."
+      "id": "binomial-identity",
+      "title": "The Second-Moment Binomial Identity",
+      "startLine": 70,
+      "endLine": 105,
+      "mathContext": "$4\\sum_{k} k^2\\binom{m}{k} = m(m+1)2^m$.",
+      "summary": "sum_choose_mul_sq proves 4·∑_{k=0}^m k²·C(m,k) = m(m+1)2^m by peeling the k = 0 term and applying the absorption identity (k+1)·C(m,k+1) = m·C(m−1,k) (Nat.add_one_mul_choose_eq) once, lowering the k²-sum to ∑_k C(m−1,k)·(k+1) = ∑_k C(m−1,k)·k + ∑_k C(m−1,k), evaluated by the parent's sum_choose_mul and Nat.sum_range_choose; a final case split resolves the 2^(m−1) and ring closes. The factor 4 keeps the identity in ℕ for all m — the pure arithmetic core of the file."
+    },
+    {
+      "id": "subset-sum-transport",
+      "title": "Transport to the Subset-Cardinality Sum",
+      "startLine": 106,
+      "endLine": 118,
+      "mathContext": "$4\\sum_{s \\subseteq \\mathrm{Fin}\\,m} \\#s^2 = m(m+1)2^m$.",
+      "summary": "sum_finset_card_sq transports the binomial identity to the subset sum ∑_{s ⊆ Fin m} |s|² via Finset.powerset_univ and Finset.sum_powerset_apply_card, which groups the 2^m subsets by cardinality (C(m,k) subsets of each size k). This is the exact bridge that turns any weighted binomial sum into a sum over subsets, reused unchanged from the parent entry's first-moment version."
     },
     {
       "id": "second-moment",
       "title": "The Second Moment of the Number of Parts",
-      "startLine": 126,
-      "endLine": 170,
+      "startLine": 119,
+      "endLine": 159,
       "mathContext": "$4\\sum_{c} (c.\\mathrm{length})^2 = n(n+3)2^{n-1}$ for $n \\ge 2$.",
       "summary": "second_moment rewrites ∑_c c.length² through length_eq_card_gaps as ∑_c ((gapsEquiv n c).card + 1)², reindexes by Equiv.sum_comp to ∑_{s : Finset (Fin (n−1))} (|s|+1)², expands (|s|+1)² = |s|² + 2|s| + 1, and combines the three subset sums — sum_finset_card_sq, the parent's sum_finset_card (∑|s| = m·2^(m−1)), and the count ∑1 = 2^(n−1) (Fintype.card_finset) — to give n(n+3)2^(n−1) by ring after substituting n = M + 2."
     },
     {
       "id": "variance",
       "title": "The Variance",
-      "startLine": 172,
-      "endLine": 211,
+      "startLine": 160,
+      "endLine": 213,
       "mathContext": "$\\mathrm{Var}(X) = \\tfrac{1}{2^{n-1}}\\sum_c (c.\\mathrm{length} - \\tfrac{n+1}{2})^2 = \\tfrac{n-1}{4}$ for $n \\ge 2$.",
-      "summary": "variance expands ∑_c (length − μ)² = ∑ length² − 2μ∑ length + (card)·μ² over ℚ with μ = (n+1)/2 (Finset.mul_sum, sum_sub_distrib, sum_add_distrib), substitutes the second moment (divided by 4), the parent's first moment total_parts, and composition_card for the count, then clears denominators with field_simp and closes by ring after substituting n = M + 2 — yielding exactly (n−1)/4, the Binomial(n−1, 1/2) variance."
+      "summary": "variance expands ∑_c (length − μ)² = ∑ length² − 2μ∑ length + (card)·μ² over ℚ with μ = (n+1)/2 (Finset.mul_sum, sum_sub_distrib, sum_add_distrib), substitutes the second moment (divided by 4), the parent's first moment total_parts, and composition_card for the count, then clears denominators with field_simp and closes by ring after substituting n = M + 2 — yielding exactly (n−1)/4, the Binomial(n−1, 1/2) variance. Closes with end namespace."
     }
   ],
   "conclusion": {
