@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Collatz Cycles — Non-Existence of Small Cycles",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Answers OQ-02 (are there Collatz cycles other than 1→4→2→1?) by proving no fixed points, no 2-cycles, that the orbit of 1 is exactly {1,2,4} with period 3, and a 3/4-contraction lemma plus a halving-count constraint bounding cycle length via Eliahou/Lagarias-style case analysis.",
+      "mathContext": "For $n\\equiv 1\\pmod 4$, three Collatz steps give $(3n+1)/4 < n$; a $j$-odd-step cycle needs $\\ge \\lceil j\\log_2 3\\rceil$ halving steps, the combinatorial constraint used to rule out small cycles."
+    },
+    {
       "id": "collatz-function",
       "title": "The Collatz Function",
       "startLine": 27,
