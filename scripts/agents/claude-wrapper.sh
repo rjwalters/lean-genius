@@ -165,8 +165,21 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
         _repo_tsv=$(_emit_accounts "$_repo_accts" repo)
         _mon_tsv=$(_emit_accounts "$_monitor_accts" monitor)
         if [[ -n "$_home_tsv" || -n "$_repo_tsv" || -n "$_mon_tsv" ]]; then
-            # Replace whatever is at $_tokens_dir (broken symlink, etc) with a real dir.
-            rm -f "$_tokens_dir" 2>/dev/null || true
+            # Update the pool IN PLACE — never destructively wipe the dir. A
+            # concurrent agent spawn shares this directory: if we `rm -rf` it and
+            # rebuild, its bootstrap gate (`! ls *.token`) fires on the empty
+            # window and it races us, and a selector reading mid-window sees no
+            # tokens (observed live: transient broken symlink + empty glob).
+            # Loom's bootstrap_tokens (loom_tools/tokens/bootstrap.py) solved this:
+            # mkdir(exist_ok=True) + per-token os.replace() atomic rename +
+            # prune-not-wipe. Port that pattern here (loom 0.12.0 #3699/#3700).
+            #
+            # Self-heal, scoped: only replace $_tokens_dir if it EXISTS but is NOT
+            # a real directory (e.g. a broken/self-referencing symlink). Never
+            # blow away a valid, populated directory.
+            if [[ -L "$_tokens_dir" || ( -e "$_tokens_dir" && ! -d "$_tokens_dir" ) ]]; then
+                rm -f "$_tokens_dir" 2>/dev/null || true
+            fi
             mkdir -p "$_tokens_dir" 2>/dev/null || true
             # bash 3.2 has no associative arrays: parallel arrays + linear email
             # match (account counts are tiny). Applied LOW→HIGH precedence: home
@@ -197,13 +210,35 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             done <<< "$_mon_tsv"
             _hc=0; _rc=0; _mc=0
             for _i in "${!_m_emails[@]}"; do
-                printf '%s' "${_m_keys[$_i]}" > "$_tokens_dir/${_m_files[$_i]}"
-                chmod 600 "$_tokens_dir/${_m_files[$_i]}" 2>/dev/null || true
+                _dst="$_tokens_dir/${_m_files[$_i]}"
+                # Atomic per-token write: temp file in the SAME dir + rename.
+                # mv within one filesystem is an atomic rename — a concurrent
+                # reader sees either the old or the new content, never a partial
+                # write (mirrors loom's os.replace(tmp, token_path)).
+                if printf '%s' "${_m_keys[$_i]}" > "$_dst.tmp" 2>/dev/null; then
+                    chmod 600 "$_dst.tmp" 2>/dev/null || true
+                    mv -f "$_dst.tmp" "$_dst" 2>/dev/null || rm -f "$_dst.tmp" 2>/dev/null || true
+                fi
                 case "${_m_src[$_i]}" in
                     monitor) _mc=$((_mc+1)) ;;
                     repo)    _rc=$((_rc+1)) ;;
                     home)    _hc=$((_hc+1)) ;;
                 esac
+            done
+            # Prune, don't wipe: remove only *.token files whose stem is NOT in
+            # the freshly-merged account set (retired accounts still get cleaned)
+            # so the directory is never transiently empty. Dotfiles (.ranking,
+            # .allowlist, .bad_tokens) never match "*.token" and are preserved.
+            for _existing in "$_tokens_dir"/*.token; do
+                [[ -e "$_existing" ]] || continue   # no-match glob guard (no nullglob)
+                _base="${_existing##*/}"
+                _keep=0
+                for _i in "${!_m_files[@]}"; do
+                    [[ "${_m_files[$_i]}" == "$_base" ]] && { _keep=1; break; }
+                done
+                if [[ $_keep -eq 0 ]]; then
+                    rm -f "$_existing" 2>/dev/null || true
+                fi
             done
             # Provenance = winning (highest) source per email. Absent monitor file
             # → monitor:0, i.e. today's home+repo behavior (no regression).
