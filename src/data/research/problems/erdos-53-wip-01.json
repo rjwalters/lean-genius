@@ -22,7 +22,13 @@
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 3,
     "focus": "Session: general poly-vs-exp domination exists_pow_le_two_pow (∀k ∃N, n≥N→n^k≤2^n, via isLittleO_pow_const_const_pow_of_one_lt) generalising sq_le_two_pow(k=2); + erdosProblem53_prime_exponent_eventually (Problem-53 on primes for arbitrary exponent k). 2 axiom-free theorems, theoremCount 7→9, host-verified.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "lower-order refinement of the easy-direction lower bound (parity/prefix-sum even-value counting) past 2^|A| + |A| - 1",
+        "reopenCriterion": "materially new mechanism required (pushing beyond the linear +|A| term = counting subset-sum vs subset-product collisions on the even numbers, which is essentially the deep sum-product problem itself)",
+        "blockedAt": "2026-07-21"
+      }
+    ],
     "nextAction": "Chang's theorem (|A|^k for arbitrary large A, not just primes) remains documented not axiomatized — needs Freiman/Plünnecke additive-combinatorics machinery absent from the file. Prime family fully handled for all k.",
     "attemptCounts": {
       "total": 0,
