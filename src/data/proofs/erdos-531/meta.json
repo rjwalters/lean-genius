@@ -18,7 +18,7 @@
       "combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 531,
     "erdosUrl": "https://erdosproblems.com/531",
     "erdosProblemStatus": "open",
@@ -50,14 +50,14 @@
       "folkman_theorem axiom: existence of F(k)",
       "balogh_2017 axiom: F(k) ≥ 2^{2^{k-1}/k}",
       "F_1 theorem (F(1) = 1): fully proven via one_mem_validN_one and validN_one_ge_one (no sorry)",
-      "F_2 theorem (F(2) = 8): value corrected from an earlier false F(2) = 3; proof sorry'd pending finite-coloring reduction. F(3) ≥ 11 documented in source comment only (no Lean declaration)",
+      "F_2 theorem (F(2) = 8): value corrected from an earlier false F(2) = 3; fully proven via a kernel-decide finite-coloring reduction (forcedCheck_all over all 256 restrictions to {1,...,8}, plus the explicit N = 7 witness coloring). F(3) ≥ 11 documented in source comment only (no Lean declaration)",
       "erdos_531 theorem: main result"
     ],
     "axiomCount": 2,
-    "lineCount": 220,
-    "assumptions": "2 axioms: folkman_theorem, balogh_2017. 1 sorry (F_2, the exact value F(2) = 8).",
-    "theoremCount": 9,
-    "definitionCount": 6,
+    "lineCount": 423,
+    "assumptions": "2 axioms: folkman_theorem, balogh_2017 (deep published results). 0 sorries.",
+    "theoremCount": 14,
+    "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos531Aristotle.lean"
     ]
@@ -66,7 +66,7 @@
     "historicalContext": "**Erdős Problem #531: Folkman's Theorem**\n\nThis problem asks about the quantitative aspects of Folkman's theorem, a fundamental result in Ramsey theory.\n\n**Key History:**\n- Sanders and Folkman (1960s): Proved the existence of F(k)\n- Rado's theorem (1933): Provides an alternative proof via partition regularity\n- Erdős-Spencer (1989): First non-trivial lower bound F(k) ≥ 2^{ck²/log k}\n- Balogh et al. (2017): Improved to F(k) ≥ 2^{2^{k-1}/k}\n\n**Mathematical Setting:**\nThe function F(k) is the Folkman number: the minimum N such that any 2-coloring of {1,...,N} contains a k-element subset where all 2^k - 1 non-empty subset sums are monochromatic.",
     "problemStatement": "**Problem Statement (Bounds Established, Exact Growth Open)**\n\nLet F(k) be the minimal N such that if we two-colour {1,...,N}, there is a set A of size k such that all subset sums (for non-empty subsets) are monochromatic. Estimate F(k).\n\n**Known Results:**\n$$F(k) \\geq 2^{2^{k-1}/k}$$\n\nBalogh-Eberhard-Narayanan-Treglown-Wagner (2017) proved this doubly-exponential lower bound, improving on Erdős-Spencer (1989).\n\nThe upper bound (from Folkman's existence proof) is much larger, leaving a huge gap.",
     "text": "Estimate F(k), the minimal N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums. Lower bound: F(k) ≥ 2^{2^{k-1}/k}.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n   - erdos_spencer_1989 (documented in source comment only; no Lean declaration exists)\n\n3. **Small Cases:** F_1 (F(1) = 1) is fully proven; F_2 (F(2) = 8) is sorry-stubbed pending a finite-coloring reduction (an earlier draft's F(2) = 3 was false for the distinct-pair Folkman number defined here). F(3) ≥ 11 is documented in a source comment only (no Lean declaration)\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - Coloring: ℕ → Bool\n   - SubsetSums: all non-empty subset sums of a finite set\n   - MonochromaticSubsetSums: all sums have same color\n   - F(k): minimum N using sInf\n\n2. **Main Theorems as Axioms:**\n   - folkman_theorem: F(k) exists (finite for all k ≥ 1)\n   - balogh_2017: F(k) ≥ 2^{2^{k-1}/k}\n   - erdos_spencer_1989 (documented in source comment only; no Lean declaration exists)\n\n3. **Small Cases:** F_1 (F(1) = 1) is fully proven; F_2 (F(2) = 8) is fully proven: a kernel-decide check over all 256 colorings of {1,...,8} shows each forces a direct pair or a conflict sum, and the explicit N = 7 witness coloring gives the lower bound (an earlier draft's F(2) = 3 was false for the distinct-pair Folkman number defined here). F(3) ≥ 11 is documented in a source comment only (no Lean declaration)\n\n4. **Connections:** Link to Rado's theorem on partition regularity",
     "keyInsights": [
       "A $k$-element set $A$ has $2^k - 1$ non-empty subsets, each producing a sum. Monochromaticity requires ALL these sums to get the same color — an exponentially growing constraint that explains why $F(k)$ grows so fast",
       "The lower bound $F(k) \\geq 2^{2^{k-1}/k}$ is doubly exponential: even the exponent $2^{k-1}/k$ grows exponentially in $k$. This means $F(5) \\geq 2^{16/5} \\approx 10$, but $F(20) \\geq 2^{2^{19}/20} \\approx 2^{26000}$ — enormous growth",
@@ -124,34 +124,34 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Proves `F_1` ($F(1) = 1$) in full. Declares `F_2` ($F(2) = 8$) as a sorry-stubbed theorem pending a finite-coloring reduction; an earlier draft's $F(2) = 3$ was false for the distinct-pair Folkman number defined here. $F(3) \\geq 11$ is documented in a source comment only (no Lean declaration exists).",
+      "summary": "Proves `F_1` ($F(1) = 1$) and `F_2` ($F(2) = 8$) in full. The finite-coloring reduction is a kernel `decide` (`forcedCheck_all`) over all $256$ restrictions to $\\{1,\\ldots,8\\}$; an earlier draft's $F(2) = 3$ was false for the distinct-pair Folkman number defined here. $F(3) \\geq 11$ is documented in a source comment only (no Lean declaration exists).",
       "startLine": 96,
-      "endLine": 159,
-      "mathContext": "$F(1) = 1$: any single element has its (unique) subset sum trivially monochromatic (fully proven). $F(2) = 8$: for the distinct-pair number defined here ($\\{a,b\\}$ with $a,b,a+b$ mono), $N = 7$ admits a defeating 2-coloring while every 2-coloring of $\\{1,\\ldots,8\\}$ forces such a pair — so $F(2) = 8$, not $3$ (established by exhaustive check; the Lean proof needs a finite-coloring reduction). $F(3) \\geq 11$: verified by exhaustive search."
+      "endLine": 361,
+      "mathContext": "$F(1) = 1$: any single element has its (unique) subset sum trivially monochromatic (fully proven). $F(2) = 8$: for the distinct-pair number defined here ($\\{a,b\\}$ with $a,b,a+b$ mono), $N = 7$ admits a defeating 2-coloring while every 2-coloring of $\\{1,\\ldots,8\\}$ forces such a pair — so $F(2) = 8$, not $3$ (fully machine-checked: kernel `decide` over the $256$ restrictions plus the explicit $N = 7$ witness coloring). $F(3) \\geq 11$: verified by exhaustive search."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Documents the tower-type upper bound from Folkman's original existence proof and the Hales-Jewett/Rado approach, which gives $F(k) \\leq \\text{tower}(k)$ for an iterated exponential.",
-      "startLine": 160,
-      "endLine": 167,
+      "startLine": 362,
+      "endLine": 369,
       "mathContext": "Upper bounds come from the Rado/Hales-Jewett proof, giving $F(k) \\leq \\text{tower}(O(k))$ (iterated exponential). The gap between lower ($2^{2^{k-1}/k}$) and upper ($\\text{tower}(O(k))$) is enormous — closing it is the core of Problem #531."
     },
     {
       "id": "rado-connection",
       "title": "Connection to Rado's Theorem",
       "summary": "documents in source comments `folkman_from_rado` (no Lean declaration exists): Folkman's theorem follows from Rado's theorem on partition regularity. The subset sum equations form a partition-regular system because the coefficient matrix satisfies Rado's columns condition.",
-      "startLine": 168,
-      "endLine": 181,
+      "startLine": 370,
+      "endLine": 383,
       "mathContext": "Rado's theorem (1933): a system $Ax = 0$ over $\\mathbb{Z}$ is partition regular iff $A$ satisfies the columns condition. For Folkman: the variables are $x_1, \\ldots, x_k$ and $y_S$ for each $\\emptyset \\neq S \\subseteq [k]$, with equations $\\sum_{i \\in S} x_i = y_S$. The coefficient matrix satisfies Rado's condition."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "Combines all results into `erdos_531`: Folkman's theorem holds, $F(k) \\geq 2^{2^{k-1}/k}$, and exact values for $k \\leq 2$. Asserts the exact growth rate remains open.",
-      "startLine": 182,
-      "endLine": 220,
-      "mathContext": "Summary: $F(k) < \\infty$ (Folkman), $F(k) \\geq 2^{2^{k-1}/k}$ (Balogh et al.), $F(1) = 1$ (proven), $F(2) = 8$ (value corrected from a false $F(2) = 3$; Lean proof sorry'd). The exact growth rate of $F(k)$ — somewhere between doubly exponential and tower-type — remains open."
+      "startLine": 384,
+      "endLine": 423,
+      "mathContext": "Summary: $F(k) < \\infty$ (Folkman), $F(k) \\geq 2^{2^{k-1}/k}$ (Balogh et al.), $F(1) = 1$ (proven), $F(2) = 8$ (value corrected from a false $F(2) = 3$; fully proven). The exact growth rate of $F(k)$ — somewhere between doubly exponential and tower-type — remains open."
     }
   ],
   "conclusion": {
@@ -176,12 +176,12 @@
     ],
     "opens": [],
     "namespace": "Erdos531",
-    "lineCount": 220,
+    "lineCount": 423,
     "axiomCount": 2,
-    "theoremCount": 9,
-    "definitionCount": 6,
+    "theoremCount": 14,
+    "definitionCount": 9,
     "path": "Proofs/Erdos531Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos531Aristotle.lean"
     ]
@@ -203,5 +203,5 @@
       "description": "Erdős #843 concerns subset sums in combinatorial settings — directly related to the subset sum monochromaticity condition that defines $F(k)$"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

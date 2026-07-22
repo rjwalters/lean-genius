@@ -135,6 +135,201 @@ theorem F_1 : F 1 = 1 := by
   have hge : 1 ≤ F 1 := validN_one_ge_one (Nat.sInf_mem ⟨1, hmem⟩)
   exact le_antisymm hle hge
 
+/-- For a distinct pair `{a, b}`, monochromaticity of all subset sums is exactly
+    `c b = c a ∧ c (a + b) = c a`: the non-empty subsets of a pair are `{a}`,
+    `{b}`, `{a, b}`, with sums `a`, `b`, `a + b`. -/
+theorem monochromaticSubsetSums_pair_iff (c : Coloring) {a b : ℕ} (hab : a ≠ b) :
+    MonochromaticSubsetSums c {a, b} ↔ c b = c a ∧ c (a + b) = c a := by
+  constructor
+  · rintro ⟨col, hcol⟩
+    have hmem_a : a ∈ SubsetSums {a, b} := by
+      rw [SubsetSums, Finset.mem_image]
+      refine ⟨{a}, ?_, by simp⟩
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      exact ⟨Finset.singleton_subset_iff.mpr (Finset.mem_insert_self a {b}),
+        Finset.singleton_ne_empty a⟩
+    have hmem_b : b ∈ SubsetSums {a, b} := by
+      rw [SubsetSums, Finset.mem_image]
+      refine ⟨{b}, ?_, by simp⟩
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      exact ⟨Finset.singleton_subset_iff.mpr
+        (Finset.mem_insert_of_mem (Finset.mem_singleton_self b)),
+        Finset.singleton_ne_empty b⟩
+    have hmem_ab : a + b ∈ SubsetSums {a, b} := by
+      rw [SubsetSums, Finset.mem_image]
+      refine ⟨{a, b}, ?_, by simp [Finset.sum_pair hab]⟩
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      exact ⟨Finset.Subset.refl _, Finset.insert_ne_empty a {b}⟩
+    rw [hcol a hmem_a, hcol b hmem_b, hcol (a + b) hmem_ab]
+    exact ⟨rfl, rfl⟩
+  · rintro ⟨hba, hsum⟩
+    refine ⟨c a, ?_⟩
+    intro s hs
+    rw [SubsetSums, Finset.mem_image] at hs
+    obtain ⟨t, htf, hts⟩ := hs
+    rw [Finset.mem_filter, Finset.mem_powerset] at htf
+    obtain ⟨hsub, hne⟩ := htf
+    by_cases ha' : a ∈ t <;> by_cases hb' : b ∈ t
+    · have ht : t = {a, b} := by
+        apply Finset.Subset.antisymm hsub
+        intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact ha'
+        · rw [Finset.mem_singleton] at hx'; subst hx'; exact hb'
+      subst ht
+      rw [Finset.sum_pair hab] at hts
+      simp only [id_eq] at hts
+      rw [← hts]; exact hsum
+    · have ht : t = {a} := by
+        apply Finset.Subset.antisymm
+        · intro x hx
+          rcases Finset.mem_insert.mp (hsub hx) with rfl | hx'
+          · exact Finset.mem_singleton_self _
+          · rw [Finset.mem_singleton] at hx'; subst hx'; exact absurd hx hb'
+        · exact Finset.singleton_subset_iff.mpr ha'
+      subst ht
+      simp only [Finset.sum_singleton, id_eq] at hts
+      rw [← hts]
+    · have ht : t = {b} := by
+        apply Finset.Subset.antisymm
+        · intro x hx
+          rcases Finset.mem_insert.mp (hsub hx) with rfl | hx'
+          · exact absurd hx ha'
+          · rw [Finset.mem_singleton] at hx'; subst hx'
+            exact Finset.mem_singleton_self _
+        · exact Finset.singleton_subset_iff.mpr hb'
+      subst ht
+      simp only [Finset.sum_singleton, id_eq] at hts
+      rw [← hts]; exact hba
+    · obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.mpr hne
+      rcases Finset.mem_insert.mp (hsub hx) with rfl | hx'
+      · exact absurd hx ha'
+      · rw [Finset.mem_singleton] at hx'; subst hx'; exact absurd hx hb'
+
+/-- Bool-level check: some distinct pair `{i+1, j+1} ⊆ {1,…,8}` of colour `col`
+    (under `v : Fin 8 → Bool`, `v i` = colour of `i+1`) has element sum `s`. -/
+def monoPairSumCheck (v : Fin 8 → Bool) (s : ℕ) (col : Bool) : Bool :=
+  (List.finRange 8).any fun i =>
+    (List.finRange 8).any fun j =>
+      decide (i.val < j.val) && decide (i.val + j.val + 2 = s) &&
+        (v i == col) && (v j == col)
+
+/-- Bool-level check that a colouring of `{1,…,8}` is *forced*: either some
+    distinct pair with sum ≤ 8 is already monochromatic, or some sum
+    `s ∈ {9,…,16}` carries both a `true`-monochromatic and a
+    `false`-monochromatic pair — so no colour of `s` avoids a pair. -/
+def forcedCheck (v : Fin 8 → Bool) : Bool :=
+  ((List.finRange 8).any fun i =>
+    (List.finRange 8).any fun j =>
+      decide (i.val < j.val) &&
+        (if h : i.val + j.val + 2 ≤ 8 then
+          (v i == v j) && (v ⟨i.val + j.val + 1, by omega⟩ == v i)
+        else false))
+  ||
+  ((List.range 8).any fun k =>
+    monoPairSumCheck v (k + 9) true && monoPairSumCheck v (k + 9) false)
+
+set_option maxRecDepth 8192 in
+/-- Exhaustive kernel check over all `2^8 = 256` colourings of `{1,…,8}`:
+    every one is forced. Pure `decide` — no `native_decide`, no new axioms. -/
+theorem forcedCheck_all : ∀ v : Fin 8 → Bool, forcedCheck v = true := by decide
+
+/-- `8 ∈ ValidN 2`: every 2-colouring of `ℕ` admits a distinct pair
+    `{a, b} ⊆ {1,…,8}` whose subset sums `a`, `b`, `a + b` are monochromatic. -/
+theorem eight_mem_validN_two : (8 : ℕ) ∈ ValidN 2 := by
+  intro c
+  have hb := forcedCheck_all (fun i : Fin 8 => c (i.val + 1))
+  simp only [forcedCheck, Bool.or_eq_true] at hb
+  rcases hb with h | h
+  · -- a direct pair with sum ≤ 8
+    obtain ⟨i, -, hi⟩ := List.any_eq_true.mp h
+    obtain ⟨j, -, hj⟩ := List.any_eq_true.mp hi
+    rw [Bool.and_eq_true] at hj
+    obtain ⟨hij', hd⟩ := hj
+    have hij : i.val < j.val := of_decide_eq_true hij'
+    have hi8 := i.isLt
+    have hj8 := j.isLt
+    by_cases hs : i.val + j.val + 2 ≤ 8
+    · rw [dif_pos hs, Bool.and_eq_true] at hd
+      obtain ⟨hvv, hvs⟩ := hd
+      have h1 : c (j.val + 1) = c (i.val + 1) := (beq_iff_eq.mp hvv).symm
+      have h2 : c (i.val + j.val + 1 + 1) = c (i.val + 1) := beq_iff_eq.mp hvs
+      refine ⟨{i.val + 1, j.val + 1}, Finset.card_pair (by omega), ?_, ?_⟩
+      · intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact ⟨by omega, by omega⟩
+        · rw [Finset.mem_singleton] at hx'; subst hx'
+          exact ⟨by omega, by omega⟩
+      · refine (monochromaticSubsetSums_pair_iff c (by omega)).mpr ⟨h1, ?_⟩
+        have hrw : i.val + 1 + (j.val + 1) = i.val + j.val + 1 + 1 := by omega
+        rw [hrw]
+        exact h2
+    · rw [dif_neg hs] at hd
+      exact absurd hd (by simp)
+  · -- a conflict sum s = k + 9: both colours of s are excluded, so whichever
+    -- colour `c (k+9)` takes completes one of the two recorded pairs
+    obtain ⟨k, -, hk⟩ := List.any_eq_true.mp h
+    rw [Bool.and_eq_true] at hk
+    obtain ⟨ht, hf⟩ := hk
+    simp only [monoPairSumCheck] at ht hf
+    obtain ⟨i₁, -, hi₁⟩ := List.any_eq_true.mp ht
+    obtain ⟨j₁, -, hj₁⟩ := List.any_eq_true.mp hi₁
+    obtain ⟨i₂, -, hi₂⟩ := List.any_eq_true.mp hf
+    obtain ⟨j₂, -, hj₂⟩ := List.any_eq_true.mp hi₂
+    simp only [Bool.and_eq_true, beq_iff_eq, decide_eq_true_eq] at hj₁ hj₂
+    obtain ⟨⟨⟨hij₁, hsum₁⟩, hci₁⟩, hcj₁⟩ := hj₁
+    obtain ⟨⟨⟨hij₂, hsum₂⟩, hci₂⟩, hcj₂⟩ := hj₂
+    have hb₁ := i₁.isLt; have hb₂ := j₁.isLt
+    have hb₃ := i₂.isLt; have hb₄ := j₂.isLt
+    cases hcs : c (k + 9)
+    · -- c (k+9) = false: the false-coloured pair completes
+      refine ⟨{i₂.val + 1, j₂.val + 1}, Finset.card_pair (by omega), ?_, ?_⟩
+      · intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact ⟨by omega, by omega⟩
+        · rw [Finset.mem_singleton] at hx'; subst hx'
+          exact ⟨by omega, by omega⟩
+      · refine (monochromaticSubsetSums_pair_iff c (by omega)).mpr ⟨?_, ?_⟩
+        · rw [hci₂, hcj₂]
+        · have hrw : i₂.val + 1 + (j₂.val + 1) = k + 9 := by omega
+          rw [hrw, hcs, hci₂]
+    · -- c (k+9) = true: the true-coloured pair completes
+      refine ⟨{i₁.val + 1, j₁.val + 1}, Finset.card_pair (by omega), ?_, ?_⟩
+      · intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact ⟨by omega, by omega⟩
+        · rw [Finset.mem_singleton] at hx'; subst hx'
+          exact ⟨by omega, by omega⟩
+      · refine (monochromaticSubsetSums_pair_iff c (by omega)).mpr ⟨?_, ?_⟩
+        · rw [hci₁, hcj₁]
+        · have hrw : i₁.val + 1 + (j₁.val + 1) = k + 9 := by omega
+          rw [hrw, hcs, hci₁]
+
+/-- The explicit colouring defeating `N = 7`: colour `3, 5, 6, 7` red (`true`)
+    and everything else — in particular `1, 2, 4` and all sums `≥ 8` — blue
+    (`false`). Red pair sums land in `{8,…,13}` (blue), blue pair sums land in
+    `{3, 5, 6}` (red). -/
+def witnessColoring : Coloring := fun n =>
+  decide (n = 3 ∨ n = 5 ∨ n = 6 ∨ n = 7)
+
+/-- `7 ∉ ValidN 2`: the witness colouring leaves every distinct pair in
+    `{1,…,7}` non-monochromatic. -/
+theorem seven_not_mem_validN_two : (7 : ℕ) ∉ ValidN 2 := by
+  intro h
+  obtain ⟨A, hcard, hbound, hmono⟩ := h witnessColoring
+  obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+  obtain ⟨h1, h2⟩ := (monochromaticSubsetSums_pair_iff witnessColoring hab).mp hmono
+  obtain ⟨ha1, ha7⟩ := hbound a (Finset.mem_insert_self a {b})
+  obtain ⟨hb1, hb7⟩ := hbound b (Finset.mem_insert_of_mem (Finset.mem_singleton_self b))
+  interval_cases a <;> interval_cases b <;> revert hab h1 h2 <;> decide
+
+/-- `ValidN k` is upward closed: a witness set for `N` also lies in `{1,…,M}`
+    for any `M ≥ N`. -/
+theorem validN_mono {k N M : ℕ} (hNM : N ≤ M) (hN : N ∈ ValidN k) : M ∈ ValidN k := by
+  intro c
+  obtain ⟨A, hcard, hbound, hmono⟩ := hN c
+  exact ⟨A, hcard, fun a ha => ⟨(hbound a ha).1, (hbound a ha).2.trans hNM⟩, hmono⟩
+
 /-- F(2) = 8. **Correction (2026-07-10):** an earlier draft claimed `F 2 = 3`.
     That value is FALSE for the distinct-pair Folkman number defined here (a set
     `A` of `k = 2` *distinct* elements `{a, b}` with `a, b, a+b` monochromatic).
@@ -149,11 +344,19 @@ theorem F_1 : F 1 = 1 := by
     (In particular `3 ∉ ValidN 2`: the colouring `3 ↦ R`, everything else `B`
     defeats all three pairs of `{1,2,3}`, namely `{1,2}`, `{1,3}`, `{2,3}`.)
 
-    The exact-value proof requires reducing the infinite coloring quantifier
-    `∀ c : ℕ → Bool` to a finite search over `{1,…,15}`; that finite-reduction is
-    left for a follow-up session (out of scope here). -/
+    The finite-coloring reduction is carried out below: `forcedCheck_all` kernel-
+    checks all 256 restrictions of a colouring to `{1,…,8}`, certifying that each
+    either contains a direct monochromatic pair (sum ≤ 8) or pins a sum
+    `s ∈ {9,…,16}` on which two opposite-coloured pairs collide — so either
+    colour of `s` completes a pair. -/
 theorem F_2 : F 2 = 8 := by
-  sorry -- Verified by exhaustive computation; needs finite-coloring reduction to formalize.
+  have h8 : (8 : ℕ) ∈ ValidN 2 := eight_mem_validN_two
+  have h7 : (7 : ℕ) ∉ ValidN 2 := seven_not_mem_validN_two
+  have hne : (ValidN 2).Nonempty := ⟨8, h8⟩
+  rcases Nat.lt_or_ge (F 2) 8 with hlt | hge
+  · have hmem : F 2 ∈ ValidN 2 := Nat.sInf_mem hne
+    exact absurd (validN_mono (by omega) hmem) h7
+  · exact le_antisymm (Nat.sInf_le h8) hge
 
 /-  F(3) ≥ 11: Lower bound for 3-element sets. -/
 /-
