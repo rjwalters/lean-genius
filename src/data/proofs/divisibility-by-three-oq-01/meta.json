@@ -62,6 +62,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Formal Divisibility Rules Extension (OQ-01)", "startLine": 1, "endLine": 23, "summary": "Lists the eight extensions this file adds beyond DivisibilityBy3 and DivisibilityRules: the general last-k-digits theorem unifying the 2/4/8/5/25/125 rules, power-of-2/5 general theorems, truncation-method rules for 13 and 37, casting out nines/threes theory, digital root theory, further digit-sum instantiations (base 100, 1000), and coprime factorization rules for composite moduli like 6, 12, 15, 36, 45, 60, 90.", "mathContext": "Extends the base divisibility-rule files with a unified last-$k$-digits theorem, truncation-method rules for 13 and 37, casting-out-nines/threes theory, and digital root properties."},
     {
       "id": "last-k-digits",
       "title": "Part I: General Last-k-Digits Theorem",
