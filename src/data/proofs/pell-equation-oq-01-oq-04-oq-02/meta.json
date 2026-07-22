@@ -78,6 +78,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The regulator faithfully orders the powers",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Building on the grandparent's Pell norm ||a|| = x + y√d and its regulator R(a) = log||a||, this file shows that once ||a|| > 1 the regulator is strictly positive, and since R(a^n) = n·R(a) is then a strictly increasing Z-linear ruler, the powers a^n are pairwise distinct and a has infinite order. The bridge is from the additive exponent group (Z,+) to the ordered group (R,+,<) via R(a) > 0 as an order embedding."
+    },
+    {
       "id": "definitions",
       "title": "Pell norm and regulator",
       "startLine": 47,
