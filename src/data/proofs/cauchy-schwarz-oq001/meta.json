@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: from Robertson to Schrödinger",
+      "summary": "Module docstring explains that the parent file derives Robertson's uncertainty inequality ΔA·ΔB ≥ ½|⟨[A,B]⟩| by applying Cauchy–Schwarz to the centered vectors u=(A−⟨A⟩)ψ, v=(B−⟨B⟩)ψ and keeping only the imaginary (commutator) part of ⟪u,v⟫; the real part, discarded by Robertson, is the covariance ½⟨{A,B}⟩−⟨A⟩⟨B⟩, and retaining it gives Schrödinger's (1930) strictly sharper relation σ_A²σ_B² ≥ (½⟨{A,B}⟩−⟨A⟩⟨B⟩)² + (½|⟨[A,B]⟩|)². All results are 0-axiom, building on the parent file's symmetric-operator API. Then imports Mathlib's inner-product-space and RCLike APIs plus the parent file, opens scoped notation, and fixes the ambient complex inner product space E.",
+      "startLine": 1,
+      "endLine": 41,
+      "mathContext": "$\\sigma_A^2\\sigma_B^2 \\ge \\left(\\tfrac12\\langle\\{A,B\\}\\rangle-\\langle A\\rangle\\langle B\\rangle\\right)^2 + \\left(\\tfrac12|\\langle[A,B]\\rangle|\\right)^2$, strengthening Robertson by retaining the covariance term Cauchy–Schwarz also controls."
+    },
+    {
       "id": "modulus-identity",
       "title": "Part I: Squared-Modulus Identity",
       "summary": "Private helper cnorm_sq: ‖z‖² = (Re z)² + (Im z)² for z ∈ ℂ, via Complex.sq_norm and Complex.normSq_apply. This is the algebraic split that separates the Robertson (imaginary) and covariance (real) contributions.",
