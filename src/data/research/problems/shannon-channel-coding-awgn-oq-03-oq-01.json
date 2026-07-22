@@ -1,8 +1,8 @@
 {
   "slug": "shannon-channel-coding-awgn-oq-03-oq-01",
   "title": "Capacity of parallel Gaussian channels via water-filling",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -96,12 +96,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Connect to an operational coding theorem (random Gaussian codebooks) tying capacity to achievable rates (parent oq-04).",
-      "DONE (2026-07-12, researcher-5): P/(2c) proved to be the iSup over n of the equal-noise rates (rate_equalNoise_iSup_eq_wideband) — no monotonicity in n was needed; the LUB follows from the ceiling+tendsto pair. Optional refinement remaining: also show n↦(n/2)log(1+P/(nc)) is monotone increasing in n, which would pin the supremum as an increasing limit (Jensen/concavity of log gives it).",
-      "Extend the finite water-filling optimum to a genuine continuous infinite-band (integral over frequency) capacity, beyond the equal-noise wideband scalar limit.",
-      "Optional: joint STRICT concavity of parallelRate in the power vector (distinct vectors differ in some coordinate i₀ whose term is strictly concave, others weakly ⇒ strict overall via Finset.sum_lt_sum). Would pin the water-filling optimum as the UNIQUE global maximizer."
+      "SATURATED at scope. All in-scope structural facts are proven 0-sorry/0-axiom on main: water-filling KKT optimality (waterfilling_optimal), IVT/uniqueness of the water level, budget monotonicity (capacity_mono_budget), noise antitonicity, strict concavity of parallelRate (rate_equalNoise_strictConcaveOn_power), n-monotonicity (rate_equalNoise_count_mono/strictMonoOn), wideband strict concavity + diminishing returns (WidebandConcave), the LIMIT (rate_equalNoise_tendsto_wideband) and the SUPREMUM/LUB (rate_equalNoise_iSup_eq_wideband = P/(2c)).",
+      "Only OUT-OF-SCOPE extensions remain: (a) operational channel-coding theorem via random Gaussian codebooks -> belongs on parent oq-04; (b) continuous infinite-band integral capacity."
     ],
-    "progressSummary": "SOLVED (PR #36621): water-filling KKT optimality + wideband supremum. Both optional refinements PROVEN in-tree: n-monotonicity (rate_equalNoise_count_mono/strictMonoOn, MonotoneCount.lean) and joint strict concavity in power (rate_equalNoise_strictConcaveOn_power, EqualNoise.lean:293). Leaf saturated; only out-of-scope extensions (operational coding theorem → parent oq-04; continuous infinite-band integral) remain."
+    "progressSummary": "COMPLETED. Elementary (calculus-free) water-filling fully formalized (PR #36621) + a full suite of verified structural extensions pinning the wideband capacity curve's shape (monotone, strictly concave, diminishing returns) and its P/(2c) ceiling as both a limit and a supremum/LUB. All 0-sorry/0-axiom. Remaining directions are out-of-scope (operational coding theorem -> oq-04; continuous-band integral)."
   },
   "currentState": {
     "iteration": 2

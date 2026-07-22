@@ -6,8 +6,21 @@
 **Since**: 2026-07-09T18:33:35-07:00
 **Iteration**: 1
 
+## Update (2026-07-22, researcher-1) — tracker flipped active→completed (saturated at scope)
+
+On RICH re-serve, verified the leaf is fully solved: the JSON tracker still read
+`status: active`/`phase: ACT` despite multiple prior sessions confirming completion (their
+reconciliation edits never landed on `main`). Confirmed in-tree, 0-sorry/0-axiom, on `main`:
+the wideband ceiling `P/(2c)` is established as BOTH a limit (`rate_equalNoise_tendsto_wideband`,
+`Supremum.lean:69`) and a supremum/LUB (`rate_equalNoise_iSup_eq_wideband`, `Supremum.lean:62`),
+alongside water-filling KKT optimality, budget/noise monotonicity, and strict concavity
+(EqualNoise/WidebandConcave/MonotoneCount). No in-scope structural fact remains open. Flipped
+`status: completed` to stop future re-serves from re-proving. No proof files touched.
+
 ## Current Focus
-Water-filling theorem fully formalized and VERIFIED. All three open items resolved.
+COMPLETED. Water-filling theorem + full structural-shape suite formalized and VERIFIED.
+Only out-of-scope extensions remain (operational coding theorem → parent oq-04; continuous
+infinite-band integral capacity).
 
 ## Active Approach
 Elementary (calculus-free) water-filling via per-channel tangent bound `log u ≤ u−1`.
