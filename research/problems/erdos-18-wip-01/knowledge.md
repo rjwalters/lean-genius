@@ -136,3 +136,47 @@ growth (`conjecture_part1/2`, the $250 `h(n!) < n^{o(1)}`) remains unformalized 
   corollary of `mul_practical_of_le_succ_sigma` with multiplier `n+1`: `n ∣ n` ⟹ `σ(n) ≥ n`
   ⟹ `n+1 ≤ σ(n)+1`. Iterating gives the fast-growing family `2 → 6 → 42 → …` (practical
   analogue of Sylvester's sequence). Clean, unblocked.
+
+## Session 2026-07-22 (researcher-1-3) — Euclid-form family: σ(2^k) and even perfect numbers are practical
+
+**Mode**: BUILD on the merged Stewart–Sierpiński layer. **Outcome**: progress — 5 new
+axiom-free theorems in `Erdos18WIP01.lean` (`#print axioms` = propext/Classical.choice/
+Quot.sound for all; Docker-built, 8577 jobs, only pre-existing warnings).
+
+The multiplicative sufficient condition `mul_practical_of_le_succ_sigma` is sharpest over a
+power-of-two base, because there σ is a closed geometric series:
+
+- `sum_range_two_pow (k) : ∑ i ∈ range (k+1), 2^i = 2^(k+1) − 1` — trivial induction
+  (`Finset.sum_range_succ` + `pow_succ` + `omega`).
+- `sum_divisors_two_pow (k) : ∑ d ∈ divisors (2^k), d = 2^(k+1) − 1` — via
+  `Nat.sum_divisors_prime_pow Nat.prime_two` (divisors of a prime power are `{p^i : i≤k}`)
+  then the geometric series. **New named σ fact.**
+- `two_pow_mul_practical_of_le {k n} (1 ≤ n) (n ≤ 2^(k+1)) : IsPractical (2^k * n)` — the
+  sharp criterion: `1 + σ(2^k) = 2^(k+1)`, feed to `mul_practical_of_le_succ_sigma` (base
+  `2^k`), `mul_comm` to reorder. Strictly generalises `two_mul_practical` (`n = 2`).
+- `euclid_form_practical (k) : IsPractical (2^k * (2^(k+1) − 1))` — the Euclid shape.
+  Whenever `2^(k+1) − 1` is a Mersenne prime this IS the even perfect number, so **every
+  even perfect number is practical** (`k=1→6, k=2→28, k=4→496`). Uniform recovery of
+  `twentyeight_practical`.
+- `four_ninety_six_practical : IsPractical 496` — `k=4` instance by `norm_num`.
+
+### Idiom notes (v4.31)
+- `Nat.sum_divisors_prime_pow` (additive `to_additive` of `prod_divisors_prime_pow`) gives
+  `∑ x ∈ (p^k).divisors, f x = ∑ x ∈ range (k+1), f (p^x)`; with `f = id` and `p = 2` this
+  is the divisor sum of a power of two. Needs `rw [divisors]` first to unfold the parent's
+  `divisors n := n.divisors` def.
+- `Nat.one_le_two_pow : 1 ≤ 2^n` and `Nat.pow_le_pow_right (by norm_num) (h : a ≤ b)` for
+  `2^1 ≤ 2^(k+1)` monotonicity feeding `omega`.
+- `mul_practical_of_le_succ_sigma` returns `IsPractical (n * m)`; reorder to `m * n` with
+  `rw [Nat.mul_comm n (2^k)] at hres`.
+
+### Caveat / dead-end
+- The Euclid–Euler classification (`even n ∧ Perfect n ↔ ∃k, Prime(2^{k+1}−1) ∧ n =
+  2^k(2^{k+1}−1)`) is **absent from the in-repo Mathlib** (no `mersenne`-perfect theorems,
+  only `def mersenne`), so "every even perfect number is practical" is stated as prose
+  motivation on `euclid_form_practical`, not as a standalone Lean theorem over `Nat.Perfect`.
+
+### Still open (unchanged, deep)
+`h(m)` growth — `conjecture_part1`, `conjecture_part2_weak/strong`, the $250
+`h(n!) < n^{o(1)}` — remains unformalized. Next elementary bricks: primorial practicality
+(needs Bertrand + σ-multiplicativity bookkeeping), density/counting (deep, Weingartner).

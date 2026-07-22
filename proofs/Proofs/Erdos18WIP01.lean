@@ -1124,4 +1124,75 @@ theorem succ_mul_self_practical {n : ℕ} (h : IsPractical n) :
     Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i) hnmem
   omega
 
+/- ## Powers of two as a multiplier base: the Euclid-form family
+
+The Stewart–Sierpiński sufficient condition `mul_practical_of_le_succ_sigma` is at its
+sharpest when the practical base is a power of two, because there the divisor sum
+`σ(2^k)` is *exactly* `2^{k+1} − 1` (the geometric series `1 + 2 + ⋯ + 2^k`). This yields
+a clean, easily-applied criterion and, as a corollary, the practicality of every even
+perfect number.
+
+* `sum_range_two_pow` / `sum_divisors_two_pow` — `σ(2^k) = 2^{k+1} − 1`.
+* `two_pow_mul_practical_of_le` — for every `1 ≤ n ≤ 2^{k+1}`, the number `2^k · n` is
+  practical. This is a strict generalisation of `two_mul_practical` (the case `n = 2`) and
+  of the ad-hoc families `two_pow_mul_six_practical`.
+* `euclid_form_practical` — `2^k · (2^{k+1} − 1)` is practical for every `k`. When
+  `2^{k+1} − 1` is a Mersenne prime this is *precisely* Euclid's even perfect number
+  (`k = 1 → 6`, `k = 2 → 28`, `k = 4 → 496`, …), so **every even perfect number is
+  practical** — recovering `twentyeight_practical` as the uniform special case `k = 2`.
+
+All results are axiom-free. -/
+
+/-- **Geometric series of powers of two.** `∑_{i=0}^{k} 2^i = 2^{k+1} − 1`. -/
+theorem sum_range_two_pow (k : ℕ) :
+    ∑ i ∈ Finset.range (k + 1), 2 ^ i = 2 ^ (k + 1) - 1 := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    have h1 : 1 ≤ 2 ^ (n + 1) := Nat.one_le_two_pow
+    have h2 : 2 ^ (n + 2) = 2 ^ (n + 1) + 2 ^ (n + 1) := by rw [pow_succ]; ring
+    omega
+
+/-- **The divisor sum of a power of two.** `σ(2^k) = ∑_{d ∣ 2^k} d = 2^{k+1} − 1`. The
+divisors of `2^k` are exactly `{2^0, 2^1, …, 2^k}`, whose sum is the geometric series
+`sum_range_two_pow`. -/
+theorem sum_divisors_two_pow (k : ℕ) :
+    ∑ d ∈ divisors (2 ^ k), d = 2 ^ (k + 1) - 1 := by
+  rw [divisors, Nat.sum_divisors_prime_pow Nat.prime_two]
+  exact sum_range_two_pow k
+
+/-- **Sharp power-of-two multiplier criterion.** For every `1 ≤ n ≤ 2^{k+1}`, the number
+`2^k · n` is practical. Immediate from `mul_practical_of_le_succ_sigma` applied to the
+practical base `2^k`, since `1 + σ(2^k) = 2^{k+1}`. Generalises `two_mul_practical`
+(`n = 2`). -/
+theorem two_pow_mul_practical_of_le {k n : ℕ} (hn1 : 1 ≤ n) (hn : n ≤ 2 ^ (k + 1)) :
+    IsPractical (2 ^ k * n) := by
+  have hbase : IsPractical (2 ^ k) := two_pow_practical k
+  have hσ : n ≤ 1 + ∑ d ∈ divisors (2 ^ k), d := by
+    rw [sum_divisors_two_pow]
+    have h1 : 1 ≤ 2 ^ (k + 1) := Nat.one_le_two_pow
+    omega
+  have hres := mul_practical_of_le_succ_sigma hbase hn1 hσ
+  rwa [Nat.mul_comm n (2 ^ k)] at hres
+
+/-- **Euclid-form numbers are practical.** `2^k · (2^{k+1} − 1)` is practical for every
+`k`. When `2^{k+1} − 1` is prime this is the even perfect number of Euclid's construction,
+so this theorem shows in particular that **every even perfect number is practical**. -/
+theorem euclid_form_practical (k : ℕ) :
+    IsPractical (2 ^ k * (2 ^ (k + 1) - 1)) := by
+  have hge : 2 ≤ 2 ^ (k + 1) := by
+    calc 2 = 2 ^ 1 := (pow_one 2).symm
+      _ ≤ 2 ^ (k + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+  apply two_pow_mul_practical_of_le
+  · omega
+  · omega
+
+/-- **`496` is practical** — the third even perfect number, `496 = 2^4 · (2^5 − 1) = 16·31`,
+as the Euclid-form instance `k = 4`. -/
+theorem four_ninety_six_practical : IsPractical 496 := by
+  have h := euclid_form_practical 4
+  norm_num at h
+  exact h
+
 end Erdos18
