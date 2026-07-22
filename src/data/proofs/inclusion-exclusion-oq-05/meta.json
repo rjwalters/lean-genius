@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Resolving Mathlib's Bonferroni TODO",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring stating the Bonferroni inequalities (truncating inclusion-exclusion at an odd number of terms overestimates the union's cardinality, at an even number underestimates it) and identifying this as the standing TODO in Mathlib's InclusionExclusion.lean. Sketches the strategy: a partial alternating binomial identity ∑_{k=0}^m (-1)^k C(n+1,k) = (-1)^m C(n,m), not yet in Mathlib (which only has the full-sum version), applied pointwise at an element lying in exactly N of the sets and then summed via Finset.card_powersetCard. Imports Mathlib and opens Finset.",
+      "mathContext": "$\\sum_{k=1}^m (-1)^{k+1}\\binom{N}{k} = 1-(-1)^m\\binom{N-1}{m} \\gtrless 1$ for $m$ odd/even — the pointwise seed for the set-level Bonferroni bounds."
+    },
+    {
       "id": "part-1-partial-binomial",
       "title": "Part I: The Partial Alternating Binomial Identity",
       "startLine": 34,
