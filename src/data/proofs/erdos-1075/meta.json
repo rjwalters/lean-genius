@@ -103,6 +103,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1075",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #1075: whether the density constant $r^{-r}$ in Erd\u0151s's 1964 dense-subgraph theorem for $r$-uniform hypergraphs can be improved under the weaker edge threshold $(1+\\varepsilon)(n/r)^r$, versus the stronger threshold $\\varepsilon n^r$ under which $c_r = r^{-r}$ is known to suffice.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "Erd\u0151s's original theorem guarantees a subgraph on $m \\to \\infty$ vertices with $\\ge c_r m^r$ edges once the host hypergraph exceeds $\\varepsilon n^r$ edges; the open question is whether $c_r > r^{-r}$ is achievable under the weaker near-Tur\u00e1n threshold."
+    },
+    {
       "id": "definitions",
       "title": "Hypergraph Definitions",
       "summary": "Defines `Hypergraph V r` as a structure with `edges : Finset (Finset V)` and uniformity constraint. `Hypergraph.numEdges` counts edges. `Hypergraph.induced H S` restricts to edges $\\subseteq S$ with a proof term showing the result is still $r$-uniform. `thresholdConstant r = r^{-r}` gives the random selection baseline.",
