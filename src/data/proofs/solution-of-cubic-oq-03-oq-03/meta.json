@@ -68,7 +68,7 @@
       "Depression of resolvent cubic via m = t - 5p/6 substitution",
       "Ring identity: resolvent at shifted t equals 8 times depressed cubic",
       "Recovery of Ferrari parameter from Cardano root",
-      "Complete quartic-to-Cardano solution chain theorem",
+      "Reduction theorem: a depressed-cubic (Cardano) root yields a valid resolvent (Ferrari) parameter m",
       "Explicit Cardano root verification for the resolvent"
     ],
     "dateAdded": "2026-03-28",
@@ -197,8 +197,8 @@
     "quartic-equations"
   ],
   "conclusion": {
-    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6. 8 theorems, 0 sorries, 0 axioms. Completes the quartic-cubic-Cardano solution chain.",
-    "implications": "Every quartic equation over C is solvable in radicals: the full chain quartic -> depressed quartic -> resolvent cubic -> depressed cubic -> Cardano is now formally connected.",
+    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6, and that a depressed-cubic (Cardano) root yields a valid resolvent (Ferrari) parameter. 8 theorems, 0 sorries, 0 axioms. Formalizes the resolvent-cubic -> Cardano reduction link; the quartic -> depressed-quartic factorization and Cardano-root existence steps are not formalized here.",
+    "implications": "The resolvent cubic is formally reduced to Cardano's depressed form t^3 + At + B = 0, and depressed-cubic roots are shown to yield valid Ferrari parameters m. This establishes one middle link of the classical solvability chain; the quartic -> depressed-quartic step, the resolvent-root -> quartic-factorization (Ferrari) step, and the existence of a radical Cardano root are not formalized here or in siblings, so full end-to-end quartic solvability in radicals is not yet formally connected.",
     "openQuestions": [
       "Can the Ferrari factorization axioms in GeneralQuartic.lean be proved?",
       "Can the explicit quartic roots be computed and verified?"
