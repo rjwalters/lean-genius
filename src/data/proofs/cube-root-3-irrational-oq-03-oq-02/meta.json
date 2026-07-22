@@ -98,6 +98,14 @@
   ],
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module Header: Doubling the Cube via the Algebraic Characterization",
+      "startLine": 1,
+      "endLine": 49,
+      "mathContext": "Constructible$(\\alpha) :\\Leftrightarrow \\alpha$ lies in a tower $\\mathbb{Q}=K_0\\subseteq\\cdots\\subseteq K_n$, each $[K_{i+1}:K_i]=2$.",
+      "summary": "The module docstring frames this entry as the geometric corollary of the parent's degree computation [ℚ(∛3):ℚ] = 3. Since Mathlib lacks a geometric development of ruler-and-compass constructibility, the file adopts the classical algebraic characterization directly as the definition IsQuadraticTower — a real number is constructible iff it lies in a field reached from ℚ by a finite tower of quadratic extensions — explicitly flagging the geometry⟺algebra equivalence itself (Wantzel's reduction) as the one unformalized, universally-accepted step. It previews the four results proved: quadratic towers have 2-power degree, constructible numbers inherit 2-power degree, any non-2-power degree obstructs constructibility, and ∛3 (degree 3) fails this test, resolving the Delian problem of doubling the cube."
+    },
+    {
       "id": "quadratic-towers",
       "title": "Quadratic Towers over ℚ and Their Degree",
       "startLine": 51,
