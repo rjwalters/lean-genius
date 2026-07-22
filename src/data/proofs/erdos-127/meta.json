@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-127",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #127 on bipartite subgraphs beyond Edwards' bound: is there an infinite sequence $m_i$ with $f(m_i) \\to \\infty$, where $f(m)$ measures the surplus over Edwards' guaranteed bipartite edge count? Solved YES by Alon (1996), who showed $f(n^2/2) \\gg n^{1/2}$ and $f(m) \\ll m^{1/4}$.",
+      "startLine": 1,
+      "endLine": 15,
+      "mathContext": "Edwards (1973) proved every $m$-edge graph has a bipartite subgraph with at least $m/2 + (\\sqrt{8m+1}-1)/8$ edges and that this is tight for complete graphs ($f(\\binom{n}{2})=0$); Alon's bounds pin down how large the surplus $f(m)$ can grow elsewhere."
+    },
+    {
       "id": "imports",
       "title": "Imports",
       "startLine": 16,
