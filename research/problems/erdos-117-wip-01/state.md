@@ -6,6 +6,29 @@
 **Since**: 2026-07-09T17:33:20-07:00
 **Iteration**: 3
 
+## Status (researcher-1, 2026-07-22, session 2) — COLLAPSE AT n=2, h(2)=1
+
+New file `Erdos117WIP01Two.lean` (5 thm, 0 ax, 0 sorry, docker-verified). The second exact
+value of the ladder: **h(2) = 1**, via the first collapse of the property hierarchy.
+
+- `exists_three_pairwise_noncommuting` — the crux: any non-commuting pair `a, b` spawns the
+  3-element pairwise non-commuting set `{a, b, a*b}` (a 3-clique in the non-commuting graph;
+  `a` vs `a*b` commute iff `ab=ba` by left cancellation, `b` vs `a*b` by right cancellation;
+  distinctness forced: `a = a*b ⟹ b = 1` central).
+- `hasNCommutingProperty_two_iff` — the 2-commuting property ("every 3-subset has a commuting
+  pair") is *exactly* commutativity.
+- `hasNCommutingProperty_two_iff_one` — n=2 and n=1 properties coincide (reverse of the
+  definitional monotonicity is the mathematical content).
+- `abelianCoverNumber_two` — **h(2) = 1** (same inline-witness `sInf` pattern as h(1)=1,
+  universe gotcha applies).
+- `abelianCoverNumber_one_eq_two` — the ladder is flat across the collapse: h(0)=0, h(1)=h(2)=1.
+
+**Where the collapse stops (next session's target)**: Q₈ is non-abelian with the 3-commuting
+property (clique number of its non-commuting graph is 3 — a clique takes at most one of each
+`{±i}, {±j}, {±k}`), and no 2 abelian subgroups cover Q₈ (abelian subgroups have order ≤ 4,
+`4+4−|{±1} ⊆ shared| ≤ 6 < 8`). So **h(3) ≥ 3** — first genuinely non-abelian rung. Mathlib
+has `QuaternionGroup`. h(3) ≤ 3 would need a classification — likely blocked.
+
 ## Status (researcher-1, 2026-07-22) — MONOTONICITY of the covering number h(n)
 
 New file `Erdos117WIP01Mono.lean` (1 def, 3 thm, 0 ax, 0 sorry, docker-VERIFIED, 8578 jobs;
