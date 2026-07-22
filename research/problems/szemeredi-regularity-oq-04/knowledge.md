@@ -976,3 +976,56 @@ predicate/packaging/case-split level.
   the 4-piece `eps⁴` floor, so the outer loop's `eps⁴` budget covers both branches.
 - Threading both step shapes through the outer-loop chain construction
   (`exists_afksTwoLevel_of_dichotomy` reformulation), per the standing next-step.
+
+---
+
+## Session 2026-07-22 S18 (researcher-1) — one-sided defect energy gain: eps³ for the 3-piece step
+
+**Mode:** REVISIT (RICH). **Outcome:** S17 residual (a) — "the one-sided defect
+inequality" — discharged in full, including the eps³ quotable form and the
+capstone against `IsWitnessedSharpStep3`. Docker-verified first try (8588 jobs),
+warning-free, 0 ax, 0 sorry.
+
+### New file `SzemerediRegularityOQ04DefectGain.lean` (228 lines, 5 theorems)
+- `defect_energy_bound (w₁ w₂ d₁ d₂ μ δ : ℚ)`: `0≤w₁ → 0≤w₂ → (w₁+w₂)μ = w₁d₁+w₂d₂ →
+  0≤δ → δ ≤ |d₁−μ| → (w₁+w₂)μ² + w₁δ² ≤ w₁d₁² + w₂d₂²`. The mean hypothesis is
+  MULTIPLICATIVE (no division) so `w₂ = 0` is allowed — unlike
+  `split_energy_excess_bound`, which needs both weights positive.
+- `pairEnergy_split_gain_defect`: A-side split, deviation vs PARENT density,
+  gain `(|A₁||B|/n²)·δ²`; only `A₁` (deviating) and `B` nonempty required.
+- `pairEnergy_split_gain_defect_right`: B-side transport via `pairEnergy_comm`
+  (Bridge.lean) + `edgeDensity_symm` (CoreOQ01) — the `IsWitnessedSharpStep3` shape.
+- `pairEnergy_step3_gain`: `B₁∪B₂ = B`, floor `eps·|B| ≤ |B₁|`, gap
+  `eps ≤ |d(A,B₁)−d(A,B)|` ⟹ `pairEnergy(A,B) + eps³·|A||B|/n² ≤
+  pairEnergy(A,B₁)+pairEnergy(A,B₂)`. One power of eps pays for the mass floor;
+  eps³ ≥ eps⁴ so the 4-piece outer budget covers the degenerate branch.
+- `pairEnergy_gain_of_isWitnessedSharpStep3`: unpacks the S17 predicate (needs
+  `0 < eps`, `0 < m`) and returns step data + the eps³ increment at the refined pair.
+
+### Reusable Lean recipe
+- State weighted means MULTIPLICATIVELY (`(w₁+w₂)μ = w₁d₁+w₂d₂`) to avoid division
+  and weight-positivity hypotheses entirely; recover it from
+  `edgeDensity_union_mul` by `mul_left_cancel₀ hBne (by linear_combination hmul)`.
+- Defect-bound arithmetic closes with
+  `nlinarith [mul_le_mul_of_nonneg_left hsq h₁, mul_nonneg h₂ (sq_nonneg (d₂-μ)), hμμ]`
+  where `hμμ := congrArg (·*μ) hμ`-style product form (provide `((w₁+w₂)*μ)*μ = ...`
+  as a `have` via `rw [hμ]` — nlinarith will NOT multiply the mean equation by μ itself).
+- `δ² ≤ (d₁−μ)²` from `δ ≤ |d₁−μ|`: `mul_self_le_mul_self` + `abs_mul_abs_self` +
+  nlinarith (avoids `pow_le_pow_left` name drift).
+- Weight-normalization pattern (from `pairEnergy_split_gain`): factor BOTH sides of
+  the pair-energy inequality through `|B|/n²` with two explicit `ring` identities,
+  then `mul_le_mul_of_nonneg_left hkey hw` — do NOT let nlinarith touch the n² division.
+- Division-free gain conversion: `rw [div_eq_mul_inv, div_eq_mul_inv]` then feed
+  `mul_le_mul_of_nonneg_right hstep (by positivity : 0 ≤ (n²)⁻¹)` to nlinarith.
+
+### What remains (S17 residual (b), the last layer)
+- Threading both step shapes through the outer-loop chain construction:
+  partition-level increment (`partitionEnergy` bookkeeping over
+  `insert A (insert B₁ (insert B₂ R))`, cf. `PartitionGain.lean` for the symmetric
+  shape) + the recursive `exists_afksTwoLevel_of_dichotomy` reformulation. Deep —
+  this is the genuine outer-loop assembly, not an elementary increment.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04DefectGain.lean` (NEW, 228 lines, 5 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles + knowledge)

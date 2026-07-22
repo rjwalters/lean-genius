@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T19:18:01-07:00
-**Iteration**: 3
+**Iteration**: 5
 
 ## Status (S16, researcher-1, 2026-07-22) — DENSITY GAP forbids a doubly-trivial split
 
@@ -377,3 +377,29 @@ Remaining: (a) one-sided defect inequality for the 3-piece step (mean preserved 
 edge-count additivity, expected floor `eps³ ≥ eps⁴` — outer budget covers both
 branches); (b) chain construction threading BOTH step shapes through
 `exists_afksTwoLevel_of_dichotomy`.
+
+## Status (S18, researcher-1, 2026-07-22) — one-sided defect energy gain (eps³ for the 3-piece step)
+
+New file `SzemerediRegularityOQ04DefectGain.lean` (5 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8588 jobs, warning-free). Discharges the FIRST of the two residuals recorded by S17: the
+energy content of the asymmetric 3-piece step. The symmetric engine
+(`pairEnergy_split_gain`) compares the two HALVES and needs both nonempty;
+`energy_excess_A_split` likewise. The 3-piece witness only controls the deviation of ONE
+half from the PARENT — that one-sided (defect) form is what this file adds.
+
+- `defect_energy_bound` — two-cell weighted-mean defect inequality, multiplicative mean
+  hypothesis `(w₁+w₂)μ = w₁d₁+w₂d₂` (no division, `w₂ = 0` allowed):
+  `(w₁+w₂)μ² + w₁δ² ≤ w₁d₁² + w₂d₂²` when `δ ≤ |d₁−μ|`.
+- `pairEnergy_split_gain_defect` — A-side split: deviation `δ` of `d(A₁,B)` from the
+  PARENT `d(A₁∪A₂,B)` gains `(|A₁||B|/n²)·δ²`; only the deviating piece must be nonempty.
+- `pairEnergy_split_gain_defect_right` — B-side transport (the step-3 shape) via
+  `pairEnergy_comm` + `edgeDensity_symm`.
+- `pairEnergy_step3_gain` — the eps³ form: mass floor `eps·|B| ≤ |B₁|` + eps-gap give
+  `pairEnergy(A,B) + eps³·|A||B|/n² ≤ pairEnergy(A,B₁) + pairEnergy(A,B₂)`.
+- `pairEnergy_gain_of_isWitnessedSharpStep3` — capstone: every witnessed 3-piece step
+  (with `0 < eps`, `0 < m`) carries the eps³ gain at its refined pair.
+
+**What this leaves (S17 residual (b), unchanged):** threading BOTH step shapes
+(4-piece `IsWitnessedSharpStep` with its eps⁴ gain, 3-piece with this eps³ ≥ eps⁴ gain)
+through the outer-loop chain construction (`exists_afksTwoLevel_of_dichotomy`
+reformulation) — the partition-level increment + freshness bookkeeping. Deep.
