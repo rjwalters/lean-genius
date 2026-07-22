@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: The Offset Reduction and the Barrier at k ≥ 2",
+      "startLine": 1,
+      "endLine": 70,
+      "mathContext": "$\\neg\\mathrm{IsPrimePlusKPowers}\\,k\\,n \\iff \\forall w \\le n,\\ \\mathrm{popcount}(w) \\le k \\to \\neg(n-w).\\mathrm{Prime}$, the offset re-indexing of the parent's popcount characterization.",
+      "summary": "Docstring framing the entry against Erdős Problem #10: writing Sₖ = {n | IsPrimePlusKPowers k n}, it states the offset re-indexing not_isPrimePlusKPowers_iff (valid for every k), explains why the k = 1 case closes via the six-prime covering system and the parity clash 2^a odd ⟹ a = 0, and pins the barrier at k ≥ 2 — Crocker's (1971) two-power covering and the open k = 3 extension require simultaneously killing multi-bit offsets 2^a + 2^b + 2^c, beyond what the elementary single-power covering can reach. Lists the five results, the two references (Erdős 1950, Crocker 1971), and the erdosproblems.com link; imports the two parent thread files and opens their namespaces."
+    },
+    {
       "title": "The covering-method reduction (all k)",
       "startLine": 72,
       "endLine": 111,
