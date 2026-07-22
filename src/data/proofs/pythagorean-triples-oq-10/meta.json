@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Sharpening Oddness to a Mod-4 Residue",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States the result — z ≡ 1 (mod 4), not merely odd — and explains why the sharper residue needs the actual parametrization z = m²+n² rather than z² ≡ 1 (mod 4) alone (both 1 and 3 square to 1 mod 4). Notes that 0 < z is essential to select the positive root, and previews the structural consequence that no integer ≡ 3 (mod 4) is ever a primitive hypotenuse.",
+      "mathContext": "$z^2 \\equiv 1 \\pmod 4$ is compatible with $z\\equiv 1$ or $z\\equiv 3$; the parametrization $z=m^2+n^2$, $m,n$ opposite parity, pins it to $z\\equiv 1\\pmod 4$."
+    },
+    {
       "id": "squares-mod-four",
       "title": "Squares modulo 4",
       "startLine": 39,
