@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Minimal Polynomial Is a Similarity Invariant",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "States what this entry adds to the parent chain's similarity invariants (determinant, trace, characteristic polynomial, rank/nullity/invertibility) — the minimal polynomial, strictly finer than the characteristic polynomial. It proves minpoly is a similarity invariant over any commutative ring, by realizing conjugation by an invertible matrix as an algebra automorphism (via MulSemiringAction.toAlgEquiv for the ConjAct action) and invoking that algebra equivalences preserve minpoly (minpoly.algEquiv_eq); descends the result to the similarity quotient; and gives a worked separating example over a field — the 2×2 zero matrix and the nilpotent Jordan block share characteristic polynomial X² but have different minimal polynomials, certifying they are not similar. Absent from Mathlib, which has the two ingredient lemmas separately but not this bridge.",
+      "mathContext": "$A \\sim B \\implies \\mathrm{minpoly}\\,A = \\mathrm{minpoly}\\,B$ over any \\texttt{CommRing}, via the conjugation \\texttt{AlgEquiv}; separates $\\begin{smallmatrix}0&0\\\\0&0\\end{smallmatrix}$ from $\\begin{smallmatrix}0&1\\\\0&0\\end{smallmatrix}$ despite equal characteristic polynomial $X^2$."
+    },
+    {
       "id": "relation",
       "title": "The Similarity Relation",
       "startLine": 43,
