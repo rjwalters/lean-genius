@@ -20,7 +20,7 @@
     "sorries": 2,
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
-    "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom, all_different_implies_long_chains_axiom. 2 sorries for geometric confinement lemmas (smallest_above_is_smaller, global_min_not_reaching_top).",
+    "assumptions": "2 axioms inherited from DissectionOfCubes.lean: smaller_cube_above_axiom, all_different_implies_long_chains_axiom. 2 sorries for geometric confinement lemmas: smallest_above_is_smaller (genuinely open, HARD), and global_min_not_reaching_top, which is FALSE AS STATED — dissection-of-cubes-oq-03-oq-02 proves a formal counterexample (global_min_false_for_unit_cube) and supplies the correct bottom-floor reformulation (bottom_floor_min_not_reaching_top, 0 sorries/0 axioms); the sorry is retained here only for interface stability pending a rewrite of its two downstream consumers.",
     "lineCount": 623,
     "theoremCount": 17,
     "definitionCount": 13,
@@ -134,7 +134,7 @@
       "title": "Descent Chains from Coverage",
       "startLine": 440,
       "endLine": 493,
-      "summary": "States global_min_not_reaching_top (sorry: the globally minimum cube doesn't reach height 1) and proves descent_chains_from_coverage by contradiction: the global minimum's strict minimality is violated by exists_smaller_cube, making the hypotheses inconsistent via exfalso."
+      "summary": "States global_min_not_reaching_top (sorry: the globally minimum cube doesn't reach height 1 — FALSE AS STATED, see dissection-of-cubes-oq-03-oq-02 for the counterexample and corrected bottom-floor version) and proves descent_chains_from_coverage by contradiction: the global minimum's strict minimality is violated by exists_smaller_cube, making the hypotheses inconsistent via exfalso."
     },
     {
       "id": "alternative-proof",
@@ -153,10 +153,10 @@
   ],
   "conclusion": {
     "summary": "Cube packing formalized as dissection relaxation with a bridge theorem transferring impossibility. Three originally unjustified axioms eliminated: two volume-bound axioms deleted (unused), one de Bruijn axiom replaced with a correct formulation and proved. Geometric descent infrastructure established with 2 clearly-scoped sorries. Direct impossibility proof from the formalized coverage predicate demonstrated. 17 theorems, 13 definitions, 623 lines, 0 axioms.",
-    "implications": "The geometric descent approach (minimum cube → smaller above → infinite descent) is a clean, self-contained proof strategy requiring only local geometric reasoning about cube adjacency. This is mathematically distinct from the algebraic de Bruijn harmonic series approach (no all-natural solution to Σ 1/nᵢ³ = 1 with distinct nᵢ). Completing the 2 geometric confinement sorries would give the first fully machine-checked geometric proof of cube dissection impossibility. The proof architecture also demonstrates best practices for axiom hygiene: replacing `axiom A := True` with a proper predicate and provable lemma chain.",
+    "implications": "The geometric descent approach (minimum cube → smaller above → infinite descent) is a clean, self-contained proof strategy requiring only local geometric reasoning about cube adjacency. This is mathematically distinct from the algebraic de Bruijn harmonic series approach (no all-natural solution to Σ 1/nᵢ³ = 1 with distinct nᵢ). Resolving smallest_above_is_smaller and rewriting the two global-minimum consumers to descend from the bottom-floor minimum (per dissection-of-cubes-oq-03-oq-02) would give the first fully machine-checked geometric proof of cube dissection impossibility. The proof architecture also demonstrates best practices for axiom hygiene: replacing `axiom A := True` with a proper predicate and provable lemma chain.",
     "openQuestions": [
       "Prove smallest_above_is_smaller: the 2D tiling argument shows all floor neighbors of the minimum cube are taller, so the region above the minimum cube's top face is bounded, forcing any covering cube to be strictly smaller.",
-      "Prove global_min_not_reaching_top: for bottom-floor minimums, the filling argument applies (side = 1 forces the cube to be unique, contradicting exists_smaller_cube); for non-bottom minimums, coverage forces cubes below that constrain the z-range.",
+      "global_min_not_reaching_top is FALSE AS STATED (formal counterexample: global_min_false_for_unit_cube in dissection-of-cubes-oq-03-oq-02, both for the 1-cube case and for multi-cube dissections whose global minimum sits at the top). The correct fact is the bottom-floor version, already proved with 0 sorries/0 axioms in dissection-of-cubes-oq-03-oq-02 (bottom_floor_min_not_reaching_top). Remaining work: rewrite descent_chains_from_coverage and dissection_of_cubes_from_coverage to descend from the bottom-floor minimum instead.",
       "Formalize the de Bruijn harmonic series proof path: derive impossibility from the non-existence of a natural-number solution to $\\sum_{i=1}^{n} \\frac{1}{k_i^3} = 1$ with all $k_i$ distinct.",
       "Extend to n ≥ 3 dimensions: the geometric descent generalizes, since the (n−1)-dimensional 'floor' argument preserves the covering structure.",
       "Connect to the positive 2D result: formalize Duijvestijn's 21-square perfect squared square as a Lean 4 construction, providing a computational witness."
@@ -194,6 +194,11 @@
       "targetId": "dissection-of-cubes-oq-02",
       "relationship": "sibling",
       "description": "Sibling open question on the de Bruijn divisibility approach; this file corrects the original unsound de Bruijn axiom (↔ True) and provides the proper CanTileWithBrick formulation"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-03-oq-02",
+      "relationship": "corrects",
+      "description": "Proves this file's global_min_not_reaching_top sorry is false as stated (formal counterexample global_min_false_for_unit_cube) and supplies the correct bottom-floor reformulation (bottom_floor_min_not_reaching_top), 0 sorries/0 axioms"
     }
   ],
   "references": [
