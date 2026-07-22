@@ -467,4 +467,50 @@ theorem minCosineSum_forall_odd (A : Finset ℕ) (hodd : ∀ n ∈ A, Odd n) :
   have h := minCosineSum_le_alternating A
   rwa [hsum] at h
 
+/-! ## Dilation invariance: reduction to primitive frequency sets
+
+Scaling every frequency by a common factor `d ≥ 1` (`A ↦ d·A := A.image (d · ·)`)
+leaves the whole Chowla cosine minimum unchanged: dilating the frequencies merely
+rescales the angle (`θ ↦ d·θ`), and since `θ` ranges over all of `ℝ` this is a
+bijective reparametrisation of the range.  This is the standard structural reduction
+that lets one assume `gcd A = 1` (a *primitive* set) when studying `minCosineSum`. -/
+
+/-- **Dilation rescales the angle.**  For a scaling factor `d ≠ 0`, the cosine sum of
+the dilated set `d·A = A.image (d · ·)` at angle `θ` equals the cosine sum of `A` at
+the scaled angle `d·θ`:  `∑_{n∈A} cos((d n) θ) = ∑_{n∈A} cos(n (d θ))`. -/
+theorem cosineSum_dilate {d : ℕ} (hd : d ≠ 0) :
+    cosineSum (A.image (fun n => d * n)) θ = cosineSum A ((d : ℝ) * θ) := by
+  unfold cosineSum
+  rw [Finset.sum_image]
+  · refine Finset.sum_congr rfl (fun n _ => ?_)
+    congr 1
+    push_cast
+    ring
+  · intro a _ b _ hab
+    exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hd) hab
+
+/-- **The Chowla cosine minimum is dilation-invariant.**  For any scaling factor
+`d ≥ 1`, `minCosineSum (d·A) = minCosineSum A`.  The range of `cosineSum (d·A)` equals
+the range of `cosineSum A` (the map `θ ↦ d·θ` is a surjection of `ℝ` onto itself when
+`d ≠ 0`), so the two infima coincide.  Consequently every frequency set has the same
+minimum as its primitive core `A / gcd A`, reducing the general problem to primitive
+sets. -/
+theorem minCosineSum_dilate {d : ℕ} (hd : d ≠ 0) :
+    minCosineSum (A.image (fun n => d * n)) = minCosineSum A := by
+  have hrange : Set.range (cosineSum (A.image (fun n => d * n)))
+      = Set.range (cosineSum A) := by
+    ext y
+    simp only [Set.mem_range]
+    constructor
+    · rintro ⟨θ, rfl⟩
+      exact ⟨(d : ℝ) * θ, (cosineSum_dilate A θ hd).symm⟩
+    · rintro ⟨φ, rfl⟩
+      refine ⟨φ / d, ?_⟩
+      rw [cosineSum_dilate A (φ / d) hd]
+      congr 1
+      field_simp
+  show sInf (Set.range (cosineSum (A.image (fun n => d * n))))
+      = sInf (Set.range (cosineSum A))
+  rw [hrange]
+
 end Erdos510WIP01

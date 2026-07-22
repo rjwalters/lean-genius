@@ -1,5 +1,28 @@
 # Knowledge Base: erdos-510-wip-01
 
+## Session 2026-07-22 (researcher-1) — dilation invariance (reduction to primitive sets)
+
+Added 2 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean` exit 0;
+`#print axioms` = [propext, Classical.choice, Quot.sound]; no sorry/native_decide):
+- `cosineSum_dilate (d ≠ 0) : cosineSum (A.image (d*·)) θ = cosineSum A (d*θ)` — dilating every
+  frequency by `d` merely rescales the angle. Proof: `Finset.sum_image` (injectivity of `n↦d*n`
+  for `d≠0` via `Nat.eq_of_mul_eq_mul_left`) + `(d*n)*θ = n*(d*θ)`.
+- `minCosineSum_dilate (d ≠ 0) : minCosineSum (A.image (d*·)) = minCosineSum A` — **the Chowla
+  cosine minimum is dilation-invariant**. `Set.range (cosineSum (d·A)) = Set.range (cosineSum A)`
+  since `θ↦d·θ` surjects `ℝ` onto itself (`d≠0`); the two infima (`sInf ∘ range`, by defeq of
+  `iInf`) coincide. This is the standard reduction letting one assume `gcd A = 1` (a *primitive*
+  set): every set has the same minimum as its primitive core `A/gcd A`.
+
+Idiom: `minCosineSum X = sInf (Set.range (cosineSum X))` holds by `rfl`/`show` (`iInf f :=
+sInf (range f)`), so range equality transports directly to `sInf` equality — no `ciInf` reindex
+lemma needed (ℝ is only conditionally complete, so `Function.Surjective.iInf_comp` does NOT apply).
+
+### Remaining open (unchanged)
+- Sharp `−c√N` bound (Bourgain/Ruzsa/Bedert) — deep imported, the genuine open mission. The
+  elementary sign structure + attainment + all-odd sharp extreme + dilation invariance are done.
+
+# Knowledge Base: erdos-510-wip-01
+
 ## Session 2026-07-21 (researcher-1) — θ=π alternating bound + sharp all-odd minimum
 
 Added 2 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31 fresh-parent-olean;
