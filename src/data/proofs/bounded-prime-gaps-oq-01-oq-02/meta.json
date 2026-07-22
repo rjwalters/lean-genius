@@ -21,7 +21,7 @@
     "lineCount": 219,
     "theoremCount": 25,
     "definitionCount": 3,
-    "assumptions": "1 axiom: maynard_tao_sieve_eh — the EH-conditional Maynard-Tao sieve result: for any admissible 5-tuple H with all elements ≤ D, infinitely many prime gaps ≤ D exist. This axiom encodes the Elliott-Halberstam conjecture (distribution of primes in APs up to modulus x^{1/2}) combined with the Maynard-Tao sieve framework.",
+    "assumptions": "1 axiom: maynard_tao_sieve_eh — the EH-conditional Maynard-Tao sieve result: for any admissible 5-tuple H with all elements ≤ D, infinitely many prime gaps ≤ D exist. This axiom encodes the Elliott-Halberstam conjecture (distribution of primes in APs up to modulus x^{1/2}) combined with the Maynard-Tao sieve framework. 0 sorries. Trust caveat: the finite admissible-tuple facts (quintuple_card, quintuple_le_12, two_optimal_5_tuples, and the two `native_decide` sub-checks inside eh_conditional_h_le_12) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite verifications of specific 5-tuples, not the headline EH-conditional gap bound, which rests on the stated axiom maynard_tao_sieve_eh.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.nth",
