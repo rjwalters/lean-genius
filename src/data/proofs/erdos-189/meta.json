@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-189",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #189 (must every finite coloring of $\\mathbb{R}^2$ have a color class containing rectangles of every area?), disproved by Kova\u010d (2023) with an explicit 25-coloring avoiding area-1 rectangles in every class.",
+      "startLine": 1,
+      "endLine": 30,
+      "mathContext": "Contrasts with Graham's 1980 result (true for right-angled triangles) and the easy falsity for rhombuses; the parallelogram case remains open."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 31,
