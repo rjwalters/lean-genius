@@ -16,12 +16,18 @@
     "goal": "Eliminate the 2 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalization complete: all sorries eliminated; sole remaining assumption is the deep graham_result axiom.",
+    "blockers": [
+      {
+        "route": "proving graham_result (gap bound n^{1+o(1)}, Graham) or resolving ErdosQuestion876 (linear gaps) in Lean",
+        "reopenCriterion": "materially new mechanism required (this is the open content of Erdős #876 itself)",
+        "blockedAt": "2026-07-22"
+      }
+    ],
+    "nextAction": "None — node complete. The linear-gap question (ErdosQuestion876) is the genuinely open problem and lives behind the graham_result axiom; no elementary path.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,18 +35,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: corrected the false gallery theorem erdos_implies_classical in Erdos876Problem.lean (counterexample {2,4} + the true distinct-positive version erdos_implies_classical_of_pos), eliminating its sorry (file sorries 2->1), 0 axioms, host-verified. Remaining sorry: powers_of_two_sumfree (true, binary-uniqueness argument). Main gap question (linear gaps) stays open behind graham_result axiom.",
+    "progressSummary": "COMPLETED: Erdos876Problem.lean now has 0 sorries. powers_of_two_sumfree proved (session 2026-07-22): any finset of distinct powers of two below 2^k embeds in {2^0..2^(k-1)} via injectivity of 2^-, so its sum is at most the geometric sum 2^k - 1 < 2^k. Host-verified lake env lean v4.31 exit 0; #print axioms = [propext, Classical.choice, Quot.sound]. Earlier session corrected the false erdos_implies_classical (counterexample {2,4}). Sole remaining assumption: the deep graham_result axiom (Graham's n^{1+o(1)} gap bound); the linear-gap question ErdosQuestion876 is the open content of Erdős #876.",
     "builtItems": [
       "not_isSumFreeErdos_imp_isSumFreeClassical (Erdos876Problem.lean): machine-checked counterexample {2,4} proving the naive Erdos=>classical implication is false; 0-axiom",
-      "erdos_implies_classical_of_pos (Erdos876Problem.lean): corrected implication for distinct positive a,b via 2-element witness {a,b}; 0-axiom"
+      "erdos_implies_classical_of_pos (Erdos876Problem.lean): corrected implication for distinct positive a,b via 2-element witness {a,b}; 0-axiom",
+      "Proved powers_of_two_sumfree in Erdos876Problem.lean:250 (was the file's last sorry; +29 lines)"
     ],
     "insights": [
       "The gallery theorem erdos_implies_classical (IsSumFreeErdos A -> IsSumFreeClassical A) was FALSE: A={2,4} is Erdos-sum-free (no >=2 distinct smaller elements sum to an element) but 2+2=4 in A violates IsSumFreeClassical (which permits repeated summand a+a). Distinctness AND positivity are both required for the true implication.",
-      "Replaced the false theorem + its sorry with a counterexample and the corrected erdos_implies_classical_of_pos; file sorries 2->1 (only powers_of_two_sumfree remains). Host-verified lake env lean v4.31 EXIT=0."
+      "Replaced the false theorem + its sorry with a counterexample and the corrected erdos_implies_classical_of_pos; file sorries 2->1 (only powers_of_two_sumfree remains). Host-verified lake env lean v4.31 EXIT=0.",
+      "powers_of_two_sumfree needs no binary-representation uniqueness: the inequality route suffices. Map each member of S to its exponent (2^j < 2^k gives j < k via monotonicity), embed S in (range k).image (2 ^ .), and bound sum S <= sum_{j<k} 2^j = 2^k - 1 by Finset.sum_le_sum_of_subset. Lean pieces: Finset.sum_image with Nat.pow_right_injective le_rfl; geometric sum by induction + omega (pow_succ then treat 2^n as an atom); final contradiction is one omega over the chained atoms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove powers_of_two_sumfree (2^k is Erdos-sum-free via binary representation uniqueness)."
+      "None at this node — formalization complete. Remaining open content (graham_result proof, linear-gap question) is deep; see blockers."
     ]
   },
   "tags": [

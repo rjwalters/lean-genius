@@ -215,12 +215,12 @@
     "id": "ann-876-10",
     "proofId": "erdos-876",
     "range": {
-      "startLine": 237,
-      "endLine": 241
+      "startLine": 244,
+      "endLine": 283
     },
     "type": "concept",
     "title": "Powers of Two: Sum-Free Example",
-    "content": "`powers_of_two_sumfree` states that $\\{2^n : n \\in \\mathbb{N}\\}$ is Erdős sum-free (with sorry). The proof relies on uniqueness of binary representation: $2^n$ has a single $1$-bit in position $n$, while any sum of distinct smaller powers of 2 has $1$-bits only in positions $< n$. Hence their sum is $< 2^n$, and equality is impossible. This is the simplest infinite sum-free set, but with exponential gaps $2^{n+1} - 2^n = 2^n$.",
+    "content": "`powers_of_two_sumfree` proves that $\\{2^n : n \\in \\mathbb{N}\\}$ is Erdős sum-free. Any finset of distinct powers of 2 below $2^k$ embeds in $\\{2^0, \\dots, 2^{k-1}\\}$ (injectivity of $j \\mapsto 2^j$), so its sum is at most the full geometric sum $2^k - 1 < 2^k$, and equality is impossible. This is the simplest infinite sum-free set, but with exponential gaps $2^{n+1} - 2^n = 2^n$.",
     "mathContext": "$\\{1, 2, 4, 8, 16, \\ldots\\}$ is sum-free: $2^n = \\sum_{i \\in S} 2^i$ with $S \\subseteq \\{0,\\ldots,n-1\\}$ implies $2^n \\leq \\sum_{i=0}^{n-1} 2^i = 2^n - 1 < 2^n$, a contradiction. Gaps: $2^{n+1} - 2^n = 2^n$, which is exponential — far from linear.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -237,8 +237,8 @@
     "id": "ann-876-11",
     "proofId": "erdos-876",
     "range": {
-      "startLine": 249,
-      "endLine": 257
+      "startLine": 290,
+      "endLine": 303
     },
     "type": "concept",
     "title": "Connections to Sidon Sets and $B_h$ Sequences",

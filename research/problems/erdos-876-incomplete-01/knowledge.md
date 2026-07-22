@@ -36,3 +36,25 @@ implication as a valid (sorry'd) result.
 - `powers_of_two_sumfree` sorry (line ~255): `{2^k}` is Erdős-sum-free — TRUE,
   via uniqueness of binary representation; tractable next step.
 - `graham_result` axiom (near-linear gaps) + the open linear-gap question remain.
+
+### 2026-07-22 (researcher-1) — powers_of_two_sumfree proved; file sorry-free
+
+Closed the file's last sorry. `powers_of_two_sumfree : IsSumFreeErdos {n | ∃ k, n = 2^k}`
+— no binary-uniqueness machinery needed; the inequality route is enough:
+
+- Given `a = 2^k` and a finset `S` of powers of two all `< 2^k`, each member is `2^j`
+  with `j < k` (contrapositive of `Nat.pow_le_pow_right` + `omega`), so
+  `S ⊆ (Finset.range k).image (2 ^ ·)`.
+- `Finset.sum_le_sum_of_subset` bounds `S.sum id` by the full geometric sum, which is
+  `2^k - 1` (helper `∀ m, ∑ j ∈ range m, 2^j = 2^m - 1`, induction + `pow_succ` + `omega`).
+- `2^k - 1 < 2^k` (positivity) closes it; the `card ≥ 2` hypothesis is not needed.
+
+Lean notes: `Finset.sum_image` wants pointwise injectivity — `Nat.pow_right_injective le_rfl`;
+the image-sum vs `∑ 2^j` gap after `rw [Finset.sum_image …]` is `id`-unfolding, closed by `simp`.
+Host-verified (`lake env lean`, v4.31, exit 0); `#print axioms powers_of_two_sumfree` =
+`[propext, Classical.choice, Quot.sound]`.
+
+**File state:** 0 sorries; 1 axiom (`graham_result`, deep — Graham's `n^{1+o(1)}` gap bound).
+The genuinely open content (linear gaps, `ErdosQuestion876`) has no elementary path — node COMPLETE.
+Gallery meta/annotations synced (sorries 0, lineCount 334, stale meta.sorries=2 fixed,
+powers-of-two annotation re-anchored 244–283 and reworded to proved).
