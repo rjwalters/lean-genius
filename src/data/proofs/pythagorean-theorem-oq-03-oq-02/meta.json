@@ -70,6 +70,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Relativistic velocity addition from rapidity",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Answers the parent entry's open question on the rapidity-velocity relation β = tanh(φ). Since Lorentz boosts compose by adding rapidities, the velocity β = tanh(φ) obeys the relativistic addition law β = (β1+β2)/(1+β1β2). Proves subluminal closure (composing two speeds under c stays under c), light-speed invariance (adding any velocity to c gives c), the Galilean low-speed limit, and the Lorentz factor identity γ^2 = 1/(1-β^2), all with zero axioms from Mathlib's sinh/cosh/tanh alone."
+    },
+    {
       "id": "subluminal",
       "title": "Rapidities Give Subluminal Speeds",
       "startLine": 42,
