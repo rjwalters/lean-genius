@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-107-oq-01",
+      "title": "Problem Statement and Background",
+      "summary": "Explains this file's goal: discharging the parent's bundled axiom `f_four_eq : f 4 = 5` (Klein's theorem) into two genuine theorems \u2014 the hard upper bound $5 \\in \\mathrm{CardSet}\\,4$ (via an Aristotle-proved companion module) and an elementary lower-bound witness (triangle plus centroid).",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "Klein's theorem states any 5 points in general position contain a convex quadrilateral; combined with an explicit 4-point configuration avoiding one, this pins down $f(4) = 5$ with no remaining axioms beyond the standard foundational ones."
+    },
+    {
       "id": "witness-configuration",
       "title": "Witness Configuration",
       "startLine": 43,
