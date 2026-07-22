@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-179",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #179 on arithmetic-progression supersaturation, resolved by Fox\u2013Pohoata (2020) and sharpened by Leng\u2013Sah\u2013Sawhney (2024): the threshold $F_k(N,\\ell)$ for forcing an $\\ell$-term AP from many $k$-term APs satisfies $F_k(N,\\ell) = N^{2-o(1)}$.",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "Builds on Szemer\u00e9di's theorem, Roth's theorem, and Behrend's construction; Fox\u2013Pohoata give $F_k(N,\\ell) \\le N^2/(\\log\\log N)^{C_\\ell}$, improved by Leng\u2013Sah\u2013Sawhney to a doubly-exponential saving."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 32,
