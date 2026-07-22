@@ -149,8 +149,8 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization of Erdős Problem 461 is notably strong: the smooth component is constructively defined (not axiomatized), and most core properties are fully proved. The only sorry is the maximality theorem, for which the infrastructure (complement lemma, list product divisibility) is already in place. The gap between the known $t/\\log t$ bound and the conjectured linear bound remains open.",
-    "implications": "Resolution would reveal fine structure in the distribution of smooth parts of integers across short intervals. The constructive definition and proved properties make this formalization particularly amenable to Aristotle proof search for the remaining sorry.",
+    "summary": "The formalization of Erdős Problem 461 is notably strong: the smooth component is constructively defined (not axiomatized), and the core properties — including the maximality theorem `smoothComponent_largest` — are fully proved with no sorries. The single remaining assumption is the `axiom erdos_graham_lower`, which states the known Erdős–Graham lower bound $f(n,t) \\gg t/\\log t$ as background. The gap between that $t/\\log t$ bound and the conjectured linear bound remains open.",
+    "implications": "Resolution would reveal fine structure in the distribution of smooth parts of integers across short intervals. The remaining incompleteness is the stated `axiom erdos_graham_lower` (the Erdős–Graham $t/\\log t$ lower bound), not a sorry — so it lies outside Aristotle's reach (Aristotle proves theorem/lemma sorries, never axioms). Discharging it would require formalizing the underlying sieve argument.",
     "openQuestions": [
       "Is $f(n,t) \\gg t$ or is the logarithmic loss in the Erdős–Graham bound essential?",
       "What is the true order of growth of $\\min_n f(n,t)$?",
