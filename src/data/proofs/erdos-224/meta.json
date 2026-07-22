@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-224",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #224, proved by Danzer\u2013Gr\u00fcnbaum (1962): any set of $2^d+1$ points in $\\mathbb{R}^d$ has three points forming an obtuse angle, with the hypercube's $2^d$ vertices (all angles $60\u00b0$ or $90\u00b0$) showing this is sharp.",
+      "startLine": 1,
+      "endLine": 23,
+      "mathContext": "The $d=2$ case is trivial and $d=3$ was solved earlier by Kuiper and Boerdijk (unpublished); the hypercube extremal configuration shows $2^d$ points can avoid obtuse angles entirely, making $2^d+1$ the exact threshold."
+    },
+    {
       "id": "imports",
       "title": "Imports and Namespace",
       "summary": "Imports Mathlib's **InnerProductSpace**, **Finset**, **Real**, and **Finrank** for the `Erdos224` namespace.",
