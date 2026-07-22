@@ -72,6 +72,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: q-ary Erasure Channel (QEC) Capacity", "startLine": 1, "endLine": 58, "summary": "Generalizes the binary erasure channel to an arbitrary finite input alphabet of size q, proving C(QEC(p)) = (1-p)·log q from first principles. Shows the binary case is the special instance α=Bool, where the channel kernel coincides exactly with the BEC and the capacity specializes to (1-p)·log 2.", "mathContext": "The erasure decomposition H(X|Y)=p·H(X) used for the BEC needs nothing about the alphabet size; only the maximum-entropy value log q (from the uniform distribution on a q-element type) is alphabet-specific, making the generalization from Bool to a general Fintype essentially free."},
     {
       "id": "qec-channel-def",
       "title": "The q-ary Erasure Channel",
