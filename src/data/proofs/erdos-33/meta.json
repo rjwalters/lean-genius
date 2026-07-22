@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-33",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #33 on additive complements of squares (partially solved): for a set $A$ such that every large integer is $n^2+a$ for some $a \\in A$, what is the smallest $\\limsup |A\\cap\\{1,\\dots,N\\}|/\\sqrt N$, and is the $\\liminf$ ratio strictly above 1? Bounds tightened from Moser (1965) through Cilleruelo/Habsieger/Balasubramanian-Ramana and Van Doorn.",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "Current bounds sandwich the liminf ratio at $\\ge 4/\\pi \\approx 1.273$ and the limsup at $\\le 2\\varphi^{5/2} \\approx 6.66$ (golden ratio $\\varphi$); the exact minimal limsup value remains open."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 38,
