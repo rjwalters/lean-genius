@@ -52,9 +52,9 @@
       "Provides educational context connecting to Linnik's and Dirichlet's theorems",
       "Includes verified computational examples for small moduli"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 143,
-    "assumptions": "0 axioms, 0 sorries. Open problem — the conjectured bound on p(a,d) is not yet formalized. The status 'axiomatized' reflects the open mathematical question, not Lean axiom declarations.",
+    "assumptions": "No mathematical axioms and 0 sorries. Open problem — the conjectured bound on p(a,d) is not yet formalized. The status 'axiomatized' reflects the open mathematical question, not Lean axiom declarations. Compiler-trust disclosure: the concrete witnesses (example_p_3_10, example_p_1_10) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 2,
     "definitionCount": 2
   },

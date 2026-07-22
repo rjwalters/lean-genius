@@ -65,9 +65,9 @@
       "`no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ rules out period-1 cycles (one-step case of no-periodicity)",
       "`erdos_412_summary`: triple of growth, equivalence, no-periodicity"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 213,
-    "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "None. Open conjecture; supporting lemmas fully verified. Compiler-trust disclosure: the concrete aliquot/sigma computations (sigma_one, iterSigma_succ, merge_2_3, equiv_2_3, equiv_2_4, equiv_5_6, equiv_7_8) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 12,
     "definitionCount": 6
   },

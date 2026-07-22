@@ -27,9 +27,9 @@
       "Graph density and extremal graph theory",
       "Turán-type bounds"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 383,
-    "assumptions": "None. All auxiliary theorems proved. Q_n regularity, edge count (n·2^n directed edges), handshaking lemma (2|E|=n·2^n), and bipartiteness proved for all n. Main conjecture stated as Prop definition (open problem). Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "None. All auxiliary theorems proved. Q_n regularity, edge count (n·2^n directed edges), handshaking lemma (2|E|=n·2^n), and bipartiteness proved for all n. Main conjecture stated as Prop definition (open problem). Open conjecture; supporting lemmas fully verified. Compiler-trust disclosure: the small-dimension hypercube facts (hypercube_one_regular, hypercube_two_regular, hypercube_two_edge_count, hypercube_three_regular, hypercube_three_edge_count) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",
     "theoremCount": 20,
     "definitionCount": 10

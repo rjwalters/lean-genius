@@ -21,9 +21,9 @@
     "erdosNumber": 1016,
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 306,
-    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). A grounded SimpleGraph (Fin n) model now sits alongside the abstract scaffold: it defines HasCycleOfLength/IsPancyclicGraph on the concrete graph and proves a genuine (non-vacuous) edge lower bound n <= #E(G), the excess h_G = #E(G) - n, and the crude sandwich 0 <= h_G <= C(n,2) - n. The deep Bondy/Griffin/GKW bounds remain open targets on top of this corrected model.",
+    "assumptions": "No mathematical axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). A grounded SimpleGraph (Fin n) model now sits alongside the abstract scaffold: it defines HasCycleOfLength/IsPancyclicGraph on the concrete graph and proves a genuine (non-vacuous) edge lower bound n <= #E(G), the excess h_G = #E(G) - n, and the crude sandwich 0 <= h_G <= C(n,2) - n. The deep Bondy/Griffin/GKW bounds remain open targets on top of this corrected model. Compiler-trust disclosure: the concrete threshold check (bondy_quadratic_threshold) is discharged with native_decide, so its axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); this is a finite decidable computation and adds no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",
     "theoremCount": 18,
     "definitionCount": 6
