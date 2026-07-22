@@ -11,7 +11,7 @@ Extensions of the Cauchy-Schwarz/Bunyakovsky-Schwarz inequality family:
 3. L² norm-squared = integral of square (bridge theorem)
 4. Pythagorean theorem in L² (orthogonal functions)
 5. Parallelogram law in L² (inner product space characterization)
-6. Reverse Cauchy-Schwarz (Kantorovich-type bound setup)
+6. Triangle inequality via Cauchy-Schwarz (Hilbert-space / p=2 case)
 7. Weighted Cauchy-Schwarz for finite sums
 
 ## Historical Note
@@ -27,7 +27,7 @@ Minkowski (1896) proved the triangle inequality for Lp spaces using Hölder.
 - [x] Parallelogram law in L²
 - [x] Inner product polarization identity
 - [x] Weighted Cauchy-Schwarz
-- [x] Minkowski inequality (subadditive Lp norm)
+- [x] Triangle inequality via Cauchy-Schwarz (Hilbert-space / p=2 case)
 -/
 
 noncomputable section

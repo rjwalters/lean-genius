@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-02",
   "title": "Cauchy-Schwarz OQ-02: Hölder, L² Theory, and Minkowski",
   "slug": "cauchy-schwarz-oq-02",
-  "description": "Extends Cauchy-Schwarz to the Hölder-Minkowski family. Proves Hölder's inequality for finite NNReal sums (Cauchy-Schwarz is the p=q=2 case), the L² Pythagorean theorem (orthogonal functions have ‖f+g‖²=‖f‖²+‖g‖²), the parallelogram law in L², the inner product polarization identity, weighted Cauchy-Schwarz for finite sums, and Minkowski's triangle inequality for Lp norms. 18 theorems, 0 definitions, 0 axioms.",
+  "description": "Extends Cauchy-Schwarz to the Hölder-Minkowski family. Proves Hölder's inequality for finite NNReal sums (Cauchy-Schwarz is the p=q=2 case), the L² Pythagorean theorem (orthogonal functions have ‖f+g‖²=‖f‖²+‖g‖²), the parallelogram law in L², the inner product polarization identity, weighted Cauchy-Schwarz for finite sums, and the triangle inequality for real inner product spaces derived from Cauchy-Schwarz (Minkowski's inequality in the Hilbert-space p=2 case). 18 theorems, 0 definitions, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -36,7 +36,7 @@
   "overview": {
     "historicalContext": "Cauchy proved the discrete inequality $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ in his 1821 *Cours d'analyse*. Viktor Bunyakovsky extended it to integrals in 1859, predating Hermann Schwarz's 1888 independent proof by nearly three decades — hence the Lean file's title 'Bunyakovsky-Schwarz Integral Inequality.' Hölder generalized to conjugate exponents $1/p + 1/q = 1$ in 1889, and Minkowski used Hölder in 1896 to prove the triangle inequality for $L^p$ spaces, establishing the foundation of functional analysis. Pascual Jordan and John von Neumann showed in 1935 that the parallelogram law characterizes inner product spaces among Banach spaces, and Friedrich Bessel's 1828 inequality $\\sum |\\langle x, e_i \\rangle|^2 \\leq \\|x\\|^2$ for orthonormal systems laid the groundwork for Parseval's identity and Fourier analysis. Together, these form the core inequality chain of Hilbert space theory.",
     "problemStatement": "Formalize the Hölder-Minkowski family as extensions of Cauchy-Schwarz. Prove L² structure theorems (Pythagorean, parallelogram, polarization).",
-    "text": "Hölder's inequality generalizes Cauchy-Schwarz to conjugate exponents p,q. For p=q=2: Hölder becomes Cauchy-Schwarz. For general p: Minkowski's triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p follows from Hölder by the standard proof. In L² specifically: orthogonal functions satisfy ‖f+g‖² = ‖f‖² + ‖g‖² (Pythagorean). The parallelogram law ‖f+g‖²+‖f-g‖² = 2‖f‖²+2‖g‖² characterizes inner product spaces among Banach spaces.",
+    "text": "Hölder's inequality generalizes Cauchy-Schwarz to conjugate exponents p,q. For p=q=2: Hölder becomes Cauchy-Schwarz. For general p, Minkowski's triangle inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p follows from Hölder by the standard proof; this file proves the Hilbert-space p=2 case (‖f+g‖ ≤ ‖f‖ + ‖g‖) directly from Cauchy-Schwarz. In L² specifically: orthogonal functions satisfy ‖f+g‖² = ‖f‖² + ‖g‖² (Pythagorean). The parallelogram law ‖f+g‖²+‖f-g‖² = 2‖f‖²+2‖g‖² characterizes inner product spaces among Banach spaces.",
     "proofStrategy": "Apply NNReal.inner_le_Lp_mul_Lq from Mathlib for Hölder. Use L2Space, MeasureTheory.inner_le_Lp_mul_Lq for the L² results. Derive Cauchy-Schwarz as p=q=2 specialization. Prove structural identities from inner product axioms.",
     "keyInsights": [
       "Hölder contains Cauchy-Schwarz: the p=q=2 case gives ∑ fg ≤ √(∑f²)√(∑g²)",
@@ -53,7 +53,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Cauchy-Schwarz extended to Hölder family: Hölder inequality, L² Pythagorean, parallelogram law, polarization identity, weighted Cauchy-Schwarz, Minkowski, Bessel's inequality. 18 theorems, 335 lines, 0 axioms.",
+    "summary": "Cauchy-Schwarz extended to Hölder family: Hölder inequality, L² Pythagorean, parallelogram law, polarization identity, weighted Cauchy-Schwarz, the CS-derived triangle inequality, Bessel's inequality. 18 theorems, 338 lines, 0 axioms.",
     "implications": "The Hölder-Minkowski family underlies all of functional analysis and harmonic analysis. The L² results are foundational for Fourier analysis (Parseval's identity follows from the Pythagorean theorem) and quantum mechanics (Hilbert space formulation).",
     "openQuestions": [
       "Formalize Parseval's identity: ∑|ĉₙ|² = ‖f‖² for Fourier coefficients (the infinite-dimensional limit of Bessel's inequality when the ONB is complete)",
