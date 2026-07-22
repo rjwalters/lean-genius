@@ -61,6 +61,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why This File Exists: from Groups to Monoids",
+      "startLine": 1,
+      "endLine": 77,
+      "summary": "Module docstring: the parent CauchyGroupTheoremOQ01OQ01OQ01 proves the finite-group dichotomy Bijective(x ↦ xⁿ) ⟺ (Nat.card G).Coprime n via Cauchy's theorem, which needs every element invertible. This file asks what survives for a finite monoid M, where non-units exist and Cauchy's theorem does not apply. States the bridge (isUnit_pow_iff: a bijective power map restricts to a bijection on Mˣ), the resulting one-directional necessary condition, and previews the ZMod 4 / n = 3 counterexample showing the converse fails because nilpotence is invisible to the unit group.",
+      "mathContext": "$n \\neq 0: \\mathrm{IsUnit}(x^n) \\iff \\mathrm{IsUnit}(x)$, so a bijective power map on finite $M$ restricts to one on $M^\\times$ but coprimality to $|M^\\times|$ is only necessary, not sufficient."
+    },
+    {
       "id": "group-dichotomy",
       "title": "The Group Dichotomy, Recalled Self-Contained",
       "startLine": 78,
