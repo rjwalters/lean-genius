@@ -1374,4 +1374,70 @@ theorem minDegreeForC4_eight : minDegreeForC4 8 = 3 := by
   have hge : 3 ≤ minDegreeForC4 8 := three_le_minDegreeForC4 (by norm_num)
   omega
 
+/- ## Toward `f(9)`: the pigeonhole `C₄` engine
+
+The remaining open exact value below the Petersen threshold is `f(9)`.  The two
+lemmas below supply the *counting engine* for the planned elementary proof of
+`f(9) = 3` (no `ex(n; C₄)` extremal-table input), whose blueprint is:
+
+1. `δ ≥ 3`, `C₄`-free on `9` vertices bounds the cherry count
+   `Σᵥ C(d(v), 2) ≤ C(9,2) = 36`, and handshake parity forces the degree
+   sequence to be `(3⁸, 4)` or `(3⁶, 4³)` — a vertex of degree `≥ 6` gives
+   `15 + 24 > 36`, and degree `5` forces (parity) a second vertex of degree
+   `≥ 4`, giving `10 + 6 + 21 > 36`.
+2. **`(3⁶, 4³)` dies by pigeonhole**: the tight cherry count `36 = C(9,2)`
+   makes every pair have *exactly* one common neighbour, so counting paths of
+   length `2` out of any vertex `v` gives `Σ_{u ∈ N(v)} (d(u) − 1) = 8`; for a
+   degree-`4` vertex all four neighbour degrees are then forced to `3`, so the
+   three degree-`4` vertices are pairwise non-adjacent with neighbourhoods
+   inside the six degree-`3` vertices — and `4 + 4 = 6 + 2` triggers
+   `containsC4_of_degree_sum_subset` below.
+3. **`(3⁸, 4)` dies locally at the degree-`4` vertex `w`**: each of the four
+   remaining vertices (`R = V ∖ ({w} ∪ N(w))`) is adjacent to at most one
+   member of `N(w)` (two would be a second common neighbour with `w`), so `R`'s
+   internal edge count is at least `(12 − 4)/2 = 4`; a `C₄`-free graph on `4`
+   vertices has at most `4` edges, with the unique extremal graph the *paw*
+   (triangle plus pendant) — whose pendant then has total degree at most `2`,
+   contradicting `δ ≥ 3`.
+
+Steps 1–3 are recorded here as the working plan; only the engine is formalized
+in this file so far. -/
+
+/-- **Pigeonhole `C₄` engine (subset form).**  If two distinct vertices have
+their neighbourhoods inside a common vertex set `S` and their degrees sum to at
+least `|S| + 2`, the neighbourhoods share two distinct vertices — a `C₄`.  The
+`f(9)` programme applies this with `S` the six degree-`3` vertices of a
+hypothetical `(3⁶, 4³)` graph and `u, v` two of its degree-`4` vertices:
+`4 + 4 = 6 + 2`. -/
+theorem containsC4_of_degree_sum_subset {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] {u v : V} {S : Finset V}
+    (huv : u ≠ v) (hu : G.neighborFinset u ⊆ S) (hv : G.neighborFinset v ⊆ S)
+    (hsum : S.card + 2 ≤ G.degree u + G.degree v) :
+    containsC4 V G := by
+  have hunion : (G.neighborFinset u ∪ G.neighborFinset v).card ≤ S.card :=
+    Finset.card_le_card (Finset.union_subset hu hv)
+  have hcards := Finset.card_union_add_card_inter
+    (G.neighborFinset u) (G.neighborFinset v)
+  rw [G.card_neighborFinset_eq_degree, G.card_neighborFinset_eq_degree] at hcards
+  have hinter : 1 < (G.neighborFinset u ∩ G.neighborFinset v).card := by omega
+  obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp hinter
+  rw [Finset.mem_inter] at hx hy
+  exact containsC4_of_two_common huv hxy
+    ((G.mem_neighborFinset u x).mp hx.1).symm
+    ((G.mem_neighborFinset v x).mp hx.2).symm
+    ((G.mem_neighborFinset u y).mp hy.1).symm
+    ((G.mem_neighborFinset v y).mp hy.2).symm
+
+/-- **Pigeonhole `C₄` engine (global form).**  Two distinct vertices whose
+degrees sum to at least `|V| + 2` force a `C₄`.  (Immediate from the subset
+form with `S = univ`.)  E.g. on `9` vertices any two vertices of degree `≥ 6`,
+or degrees `7 + 4`, already force a `C₄` — a cheap complement to the cherry
+count. -/
+theorem containsC4_of_card_add_two_le_degree_add_degree {V : Type*} [Fintype V]
+    [DecidableEq V] {G : SimpleGraph V} [DecidableRel G.Adj] {u v : V}
+    (huv : u ≠ v) (hsum : Fintype.card V + 2 ≤ G.degree u + G.degree v) :
+    containsC4 V G :=
+  containsC4_of_degree_sum_subset huv (Finset.subset_univ _) (Finset.subset_univ _)
+    (by rwa [Finset.card_univ])
+
 end Erdos85
