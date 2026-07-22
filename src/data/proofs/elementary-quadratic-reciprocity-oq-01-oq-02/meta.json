@@ -48,6 +48,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Cubic and Quartic Character Uniqueness", "startLine": 1, "endLine": 54, "summary": "Recaps Zolotarev's uniqueness-of-homomorphism proof of QR, states the generalization to cubic characters χ₃ for primes p ≡ 1 (mod 3), and previews the eight results: the homomorphism property of χ₃, its image in cube roots of unity, the easy and hard Euler criteria, the cyclic-group uniqueness framework, a parallel quartic construction, concrete computations for p=7,13, and cubic reciprocity axiomatized pending Eisenstein integers (not yet in Mathlib 4.26.0).", "mathContext": "Generalizes Zolotarev's uniqueness argument (the Legendre symbol is the unique non-trivial homomorphism $(\\mathbb{Z}/p)^\\times \\to \\{\\pm 1\\}$) to cubic characters for $p \\equiv 1 \\pmod 3$, via the cubic Euler criterion $a^{(p-1)/3}=1 \\iff a$ is a cube mod $p$."},
     {
       "id": "cubic-character",
       "title": "Cubic Character Construction",
