@@ -89,6 +89,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: [ℚ(∛3):ℚ] = 3 as Corollary of Eisenstein Approach",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Answers OQ-01 by deriving the degree-3 field extension [ℚ(∛3):ℚ] = 3 as a one-line specialization (n=3, m=3, p=3) of the general adjoin_nthRoot_finrank theorem, strengthening mere irrationality of ∛3 to the stronger fact that no quadratic rational relation holds.",
+      "mathContext": "Specializing $\\mathrm{Module.finrank}\\ \\mathbb Q\\ \\mathbb Q\\langle m^{1/n}\\rangle = n$ at $n=3,m=3,p=3$ (since $3\\mid 3$, $9\\nmid 3$) gives $[\\mathbb Q(\\sqrt[3]3):\\mathbb Q]=3$, hence $\\mathrm{minpoly}$ has degree 3."
+    },
+    {
       "id": "sec-setup",
       "title": "Setup: Imports and Namespace",
       "startLine": 40,
