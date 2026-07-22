@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
-    "assumptions": "1 axiom: nball_volume_scaling — Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)). This is a standard measure theory fact requiring careful handling of EuclideanSpace/PiLp volume isomorphism in Mathlib.",
+    "assumptions": "1 axiom: nball_volume_scaling — Vol(Bⁿ(r)) = rⁿ·Vol(Bⁿ(1)) for n ≥ 1. This is a standard measure theory fact requiring careful handling of EuclideanSpace/PiLp volume isomorphism in Mathlib. (The n ≥ 1 hypothesis is required: at n=0, r=0 the unguarded statement is false — ball(0,0)=∅ has volume 0, but 0^0·unitBallVolume 0 = 1 — see area-of-circle-oq-02-oq-01.)",
     "lineCount": 210,
     "theoremCount": 17,
     "definitionCount": 1,
@@ -142,9 +142,9 @@
     {
       "name": "nball_volume_scaling",
       "type": "axiom",
-      "statement": "$\\forall n\\ \\forall r \\geq 0,\\ \\mathrm{volume}(B_n(r)) = r^n \\cdot V_n$ (as `ENNReal`)",
-      "significance": "**The single axiom.** Encodes the geometric fact that translating-and-scaling a ball in `EuclideanSpace ℝ (Fin n)` multiplies its Lebesgue measure by $r^n$. Mathematically obvious, but technically expensive in Lean because `EuclideanSpace ℝ (Fin n) = PiLp 2 (fun _ : Fin n => ℝ)` and bridging its measure to the product measure on `Fin n → ℝ` requires `MeasurePreserving` plumbing. The companion entry `area-of-circle-oq-02-oq-01` is dedicated to discharging this axiom.",
-      "description": "Stated as `axiom nball_volume_scaling (n : ℕ) (r : ℝ) (hr : 0 ≤ r) : volume (ball (0 : EuclideanSpace ℝ (Fin n)) r) = ENNReal.ofReal (r ^ n * unitBallVolume n)`. The `axiomCount: 1` and `status: \"axiomatized\"` in this file's metadata reflect this single declaration."
+      "statement": "$\\forall n \\geq 1\\ \\forall r \\geq 0,\\ \\mathrm{volume}(B_n(r)) = r^n \\cdot V_n$ (as `ENNReal`)",
+      "significance": "**The single axiom.** Encodes the geometric fact that translating-and-scaling a ball in `EuclideanSpace ℝ (Fin n)` multiplies its Lebesgue measure by $r^n$. Mathematically obvious, but technically expensive in Lean because `EuclideanSpace ℝ (Fin n) = PiLp 2 (fun _ : Fin n => ℝ)` and bridging its measure to the product measure on `Fin n → ℝ` requires `MeasurePreserving` plumbing. The companion entry `area-of-circle-oq-02-oq-01` is dedicated to discharging this axiom for $n \\geq 1$ and shows the statement is false without that guard (at $n=0, r=0$: $\\mathrm{ball}(0,0)=\\emptyset$ has volume 0, but $0^0 \\cdot V_0 = 1$).",
+      "description": "Stated as `axiom nball_volume_scaling (n : ℕ) (hn : 0 < n) (r : ℝ) (hr : 0 ≤ r) : volume (ball (0 : EuclideanSpace ℝ (Fin n)) r) = ENNReal.ofReal (r ^ n * unitBallVolume n)`. The `axiomCount: 1` and `status: \"axiomatized\"` in this file's metadata reflect this single declaration. The `hn : 0 < n` hypothesis was added to fix an inconsistency at n=0 (audit finding, 2026-07-22)."
     },
     {
       "name": "area_scaling_2d",
