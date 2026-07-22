@@ -1,0 +1,166 @@
+{
+  "id": "dinitz-garg-goemans-counterexample",
+  "title": "Dinitz–Garg–Goemans Separation: a Finite Unsplittable-Flow Certificate (machine-verified)",
+  "slug": "dinitz-garg-goemans-counterexample",
+  "description": "A recently-announced (Rybin 2026, found with GPT-5.6 Pro), machine-verified finite certificate that separates the exact-D cost bound for single-source unsplittable flow — the quantity at the heart of the ~30-year-old Dinitz–Garg–Goemans (DGG) conjecture. For one explicit instance (7 vertices, 9 arcs, 3 demands d1=15, d2=10, d3=15, so D=dmax=15) with fractional loads x_a and unit costs c_a, this file encodes everything in pure integer arithmetic and discharges three facts by plain kernel `decide` (NOT native_decide), so the entry is 0-axiom / verified: (1) the given fractional flow is feasible (conservation + capacities) with cost cᵀx = 58; (2) every unsplittable routing whose arc loads stay within x_a + D (capacity violation ≤ D) costs ≥ 60; (3) that bound is attained, so the unsplittable optimum is exactly 60 > 58. AUDIT CAVEAT: this documents the finite separation certificate, which is solid and independently re-derived; the primary source (Jan 2026) still lists the DGG conjecture as OPEN, and the counterexample awaits independent audit — so the 'refutes DGG Conjecture 1.3' interpretation is deliberately NOT claimed here.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://x.com/DmitryRybin1/status/2079904005652893709",
+    "date": "2026-07-22",
+    "status": "verified",
+    "tags": [
+      "combinatorial-optimization",
+      "unsplittable-flow",
+      "network-flow",
+      "counterexample",
+      "finite-verification",
+      "decide",
+      "ai-assisted",
+      "verified"
+    ],
+    "proofRepoPath": "Proofs/DinitzGargGoemans.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "dateAdded": "07/22/26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.decidableForallFintype",
+        "description": "Decidability of the universally-quantified statement over all routings (Bool × Bool × Bool is a Fintype), enabling the exhaustive `decide` over the 8 routings.",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "List.decidableBAll",
+        "description": "Decidability of bounded ∀ over the list of nine arcs (`∀ a ∈ allArcs, …`), used for the capacity-good predicate and the feasibility capacity check.",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Arc / Node: the explicit instance encoded as two small `deriving DecidableEq` enums (9 arcs, 7 nodes) with `xflow` (fractional load x_a = capacity u_a), `ucost` (unit cost c_a), and `tail`/`head` endpoint maps — a fully integer, kernel-reducible model.",
+      "fractional_cost_eq: `decide` proof that the fractional flow has cost cᵀx = Σ c_a·x_a = 58.",
+      "fractional_feasible: `decide` proof that the fractional flow conserves at internal nodes u,v,w, delivers d1,d2,d3 at the terminals, emits d1+d2+d3 at the source, and respects capacities u_a = x_a.",
+      "every_capgood_routing_costly: `decide` proof (exhaustive over the 8 routings Bool³) that every routing with arc loads ≤ x_a + D costs ≥ 60.",
+      "capgood_optimum_is_60 + dgg_separation: the routing (E,E,Z) attains cost 60, packaging the strict separation 58 < 60 between the fractional optimum and the capacity-good unsplittable optimum."
+    ],
+    "assumptions": "None — 0 axioms. All three facts are discharged by plain kernel `decide`, NOT `native_decide`, so `#print axioms dgg_separation` lists only the foundational axioms `propext` / `Classical.choice` / `Quot.sound` — no `Lean.ofReduceBool`, no `sorryAx`, no literal `axiom` declarations. Per the project's Axiom Integrity Policy, those three foundational axioms do not count as assumptions (only `Lean.ofReduceBool` / `sorryAx` would), so the entry is genuinely axiom-free / `verified`. The enumeration is tiny (8 routings, 9 arcs, integers ≤ 40), so the trusted kernel evaluates it directly — the compiler-trust step of `native_decide` is unnecessary. SEPARATE from the axiom question: the *mathematical interpretation* that this refutes the DGG conjecture is announced but NOT independently audited (the Jan-2026 primary source still lists DGG as open); this file proves only the self-contained finite separation for this explicit instance and makes no claim to settle DGG.",
+    "theoremCount": 4,
+    "definitionCount": 13,
+    "lastUpdated": "2026-07-22"
+  },
+  "overview": {
+    "historicalContext": "In the single-source unsplittable flow problem, a source s must route each of several demands d_i to its terminal t_i along a *single* path (unsplittable), given that a fractional (splittable) flow of the same demands exists. Dinitz, Garg and Goemans (Combinatorica, 1999) studied how much congestion and cost an unsplittable routing must incur relative to the fractional optimum; a central conjecture (in the exact-D form) asserts the cost can be preserved while violating each arc capacity by at most the maximum demand D = dmax. That question stood open for roughly three decades. In 2026 Dmitry Rybin announced (with GPT-5.6 Pro assistance) a concrete finite instance whose capacity-good unsplittable optimum strictly exceeds its fractional cost, separating the exact-D cost bound. Because a counterexample is a *finite* object — one fixed graph, finitely many demands, finitely many routings — the core arithmetic claim is verifiable by finite computation, which is exactly what this entry does in Lean.",
+    "problemStatement": "For the explicit instance (vertices s,u,v,w,t1,t2,t3; demands d1=15,d2=10,d3=15, D=15; arcs with the given fractional loads x_a and unit costs c_a), show that the fractional flow is feasible with cost 58, yet every unsplittable routing keeping each arc load within x_a + D costs at least 60 — and that 60 is attained. Hence the capacity-good unsplittable optimum (60) strictly exceeds the fractional cost (58), separating the exact-D DGG cost guarantee for this instance.",
+    "proofStrategy": "Encode the nine arcs and seven nodes as `deriving DecidableEq` enums, with integer maps `xflow` (= capacity), `ucost`, `tail`, `head`. Feasibility is a decidable conjunction: `inflow = outflow` at internal nodes, `inflow = d_i` at terminals, `outflow s = Σ d_i`, and `x_a ≤ x_a` for capacities. A routing is a triple `(b1,b2,b3) : Bool³` selecting the direct path E_i (b=false) or long path Z_i (b=true) per terminal; `load a r` sums the demands of terminals whose chosen path uses arc a, and `CapGood r := ∀ a ∈ allArcs, load a r ≤ x_a + D`. Mark `FractionalFeasible` and `CapGood` `@[reducible]` so `decide`'s instance synthesis sees the bounded quantifiers, then discharge `fractionalCost = 58`, `FractionalFeasible`, and `∀ r, CapGood r → 60 ≤ routingCost r` by plain kernel `decide` — the last an exhaustive check over the 8 routings.",
+    "keyInsights": [
+      "**A counterexample is finite and decidable.** Unlike proving a conjecture, refuting one here reduces to a fixed finite object: 7 vertices, 9 arcs, 3 demands, 6 candidate paths, 8 routings, all integer. The whole separation becomes a small `decide`, kernel-checkable with no external solver and no compiler-trust axiom.",
+      "**At most one long path can be used.** The capacity rule y_a ≤ x_a + D forbids any two of Z1,Z2,Z3 simultaneously: Z2+Z3 overloads v→w (25>24), Z1+Z3 overloads u→v (30>29), Z1+Z2 overloads s→u (40>39, since terminal 3 always traverses s→u). So every capacity-good routing uses ≥2 of the cost-30 direct paths, forcing cost ≥ 60.",
+      "**The separation is 58 vs 60.** The fractional flow costs cᵀx = 2·10 + 3·6 + 2·10 = 58; the capacity-good unsplittable optimum is exactly 60 (attained e.g. by (E,E,Z)). The strict gap 58 < 60 is the certificate.",
+      "**Kernel `decide`, not `native_decide`.** The enumeration is tiny, so the trusted Lean kernel evaluates it directly, leaving only propext / Classical.choice / Quot.sound in `#print axioms` — a strictly stronger guarantee than a `native_decide` certificate (which would add the compiler-trust axiom `Lean.ofReduceBool`).",
+      "**Provable content vs interpretation.** The Lean statement — 'for this explicit instance the fractional cost is 58 and every capacity-good unsplittable routing costs ≥ 60' — is true and machine-checkable regardless of any external audit. The further reading 'this refutes DGG Conjecture 1.3' is announced but pending independent audit (the Jan-2026 primary source still lists DGG as open), so the entry deliberately proves only the finite separation and hedges the interpretation."
+    ],
+    "prerequisites": [
+      "Single-source unsplittable flow and the fractional relaxation",
+      "Flow conservation and arc capacities",
+      "Decidability of bounded quantifiers over Fintype / List (`decide`)",
+      "The DGG conjecture (Dinitz–Garg–Goemans 1999) in its exact-D cost form"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: the instance, the claim, and the audit caveat",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Docstring: the DGG single-source unsplittable-flow question, the explicit instance (arcs with x_a/c_a, demands, the six E/Z paths), the three facts proved (fractional cost 58, feasibility, every capacity-good routing ≥ 60), that all use plain kernel `decide` (0 axioms — no Lean.ofReduceBool), and the audit caveat: the finite facts are solid but the 'refutes DGG' interpretation is pending independent audit (primary source still lists DGG as open).",
+      "mathContext": "Rybin (2026, via GPT-5.6 Pro): a finite instance separating the exact-D DGG cost bound — fractional cost 58 vs capacity-good unsplittable optimum 60."
+    },
+    {
+      "id": "instance",
+      "title": "The instance: arcs, capacities, unit costs",
+      "startLine": 73,
+      "endLine": 92,
+      "summary": "The nine arcs as a `deriving DecidableEq` enum `Arc`, listed in `allArcs`; `xflow` gives the fractional load x_a (= capacity u_a) and `ucost` the unit cost c_a of each arc.",
+      "mathContext": "Arcs s→t1 (10,2), s→t2 (6,3), s→u (24,0), u→t3 (10,2), u→v (14,0), v→t1 (5,0), v→w (9,0), w→t2 (4,0), w→t3 (5,0)."
+    },
+    {
+      "id": "conservation",
+      "title": "Nodes and the fractional flow's feasibility",
+      "startLine": 94,
+      "endLine": 136,
+      "summary": "The seven vertices as an enum `Node`; `tail`/`head` endpoint maps; `inflow`/`outflow` per node; demands d1=15,d2=10,d3=15 and D=15; `FractionalFeasible` (reducible) asserting conservation at u,v,w, delivery of each demand at its terminal, emission of Σd_i at s, and the trivial capacity check x_a ≤ x_a; and `fractionalCost = Σ c_a·x_a`.",
+      "mathContext": "Conservation: u 24=10+14, v 14=5+9, w 9=4+5; terminals receive 15,10,15; source emits 40; cᵀx = 58."
+    },
+    {
+      "id": "routings",
+      "title": "Unsplittable routings, loads, and the capacity rule",
+      "startLine": 138,
+      "endLine": 168,
+      "summary": "A `Routing` is `Bool³` selecting E_i (direct) or Z_i (long) per terminal; `path1/2/3` give the arcs of each choice; `load a r` sums the demands of terminals whose chosen path uses arc a; `routingCost` = Σ d_i·c(path_i); `CapGood` (reducible) requires every arc load ≤ x_a + D.",
+      "mathContext": "E_i costs d_i·c(E_i) = 30 each, Z_i costs 0; capacity rule y_a ≤ x_a + D allows at most one Z_i."
+    },
+    {
+      "id": "verified",
+      "title": "The three verified facts and the separation (0 axioms)",
+      "startLine": 170,
+      "endLine": 205,
+      "summary": "`fractional_cost_eq` (=58), `fractional_feasible`, `every_capgood_routing_costly` (∀ capacity-good routing, cost ≥ 60, exhaustive over the 8 routings), `capgood_optimum_is_60` ((E,E,Z) attains 60), and `dgg_separation` packaging 58 < 60 — all by plain kernel `decide`. `#print axioms dgg_separation` confirms only propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx).",
+      "mathContext": "Fractional optimum 58 < 60 = capacity-good unsplittable optimum, separating the exact-D DGG cost bound for this instance."
+    }
+  ],
+  "conclusion": {
+    "summary": "For one explicit single-source instance, a machine-verified finite certificate: the fractional flow is feasible with cost 58, yet every unsplittable routing keeping each arc load within x_a + D (capacity violation ≤ D = dmax = 15) costs at least 60, with 60 attained. The strict gap 58 < 60 separates the exact-D DGG cost guarantee. All facts are discharged by plain kernel `decide`, so the entry is 0-axiom / verified (no Lean.ofReduceBool, no sorry).",
+    "implications": "Provides a fully kernel-checkable reproduction of the finite arithmetic behind Rybin's 2026 announced counterexample to the exact-D form of the Dinitz–Garg–Goemans conjecture. The Lean content — the separation for this specific instance — is solid and independent of any external audit.",
+    "openQuestions": [
+      "Independent audit of the interpretation: does this instance formally refute DGG Conjecture 1.3 as stated in the primary source? The Jan-2026 source still lists DGG as open; the announcement itself asks for independent audit before treating the refutation as established. This entry deliberately does not claim to settle DGG.",
+      "Formalize the exact DGG conjecture statement (the cost-plus-congestion bound) and connect it to this instance, so the refutation — if the audit confirms it — becomes a single machine-checked implication rather than a separation of one derived quantity.",
+      "Minimality: is this the smallest instance separating the exact-D cost bound, and what is the true worst-case cost ratio for capacity-good unsplittable flow?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Rybin, D. (@DmitryRybin1)",
+      "title": "Announced finite counterexample separating the exact-D cost bound for single-source unsplittable flow (found with GPT-5.6 Pro)",
+      "year": "2026",
+      "venue": "X (Twitter) announcement + shared ChatGPT transcript",
+      "note": "Source of the explicit instance formalized here: https://x.com/DmitryRybin1/status/2079904005652893709 . The announcement notes the counterexample should be independently audited before being treated as an established refutation, and that the latest primary source (Jan 2026) still lists the DGG conjecture as open."
+    },
+    {
+      "authors": "Dinitz, Y.; Garg, N.; Goemans, M. X.",
+      "title": "On the single-source unsplittable flow problem",
+      "year": "1999",
+      "venue": "Combinatorica 19(1), 17–41",
+      "note": "The origin of the DGG conjecture on cost and congestion of unsplittable flow relative to the fractional optimum; the exact-D cost form is the guarantee this finite certificate separates."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib.Data.Fintype.Basic and Mathlib.Data.List.Basic (decidable quantifiers, `decide`)",
+      "year": "2024",
+      "note": "Provides the Fintype/List decidability instances that make feasibility, the capacity-good predicate, and the exhaustive routing check computable by plain `decide` over the finite instance, yielding a 0-axiom kernel verification."
+    }
+  ],
+  "crossReferences": [],
+  "mainTheorems": [
+    {
+      "name": "dgg_separation",
+      "statement": "fractionalCost = 58 ∧ FractionalFeasible ∧ (∀ r : Routing, CapGood r → 60 ≤ routingCost r) ∧ (∃ r : Routing, CapGood r ∧ routingCost r = 60) ∧ fractionalCost < 60",
+      "description": "The finite DGG separation for this instance: fractional optimum 58, every capacity-good unsplittable routing costs ≥ 60 (with 60 attained), so 58 < 60. Machine-verified by plain kernel `decide` (0 axioms)."
+    },
+    {
+      "name": "fractional_cost_eq",
+      "statement": "fractionalCost = 58",
+      "description": "The exhibited fractional flow has cost cᵀx = Σ c_a·x_a = 58 (decide)."
+    },
+    {
+      "name": "fractional_feasible",
+      "statement": "FractionalFeasible",
+      "description": "The fractional flow conserves at internal nodes, delivers each demand at its terminal, emits the total demand at the source, and respects the arc capacities u_a = x_a (decide)."
+    },
+    {
+      "name": "every_capgood_routing_costly",
+      "statement": "∀ r : Routing, CapGood r → 60 ≤ routingCost r",
+      "description": "Every unsplittable routing whose arc loads stay within x_a + D (capacity violation ≤ D) costs at least 60 — exhaustive over the 8 routings (decide)."
+    }
+  ],
+  "sorries": 0
+}
