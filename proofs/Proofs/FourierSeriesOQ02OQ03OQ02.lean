@@ -84,7 +84,7 @@ def stripNorm (δ : ℝ) (f : AddCircle T → ℂ) : ℝ :=
 /-- **Axiom 1: Contour-Shifting Decay Bound.**
 
     If f extends holomorphically to the strip |Im z| < δ and is bounded
-    there by M, then its Fourier coefficients satisfy:
+    there by some constant M, then its Fourier coefficients satisfy:
 
       |ĉ_n(f)| ≤ M · e^{-2πδ|n|/T}
 
@@ -93,12 +93,18 @@ def stripNorm (δ : ℝ) (f : AddCircle T → ℂ) : ℝ :=
     segments cancel), the integral equals (1/T)∫f(x+i(δ-ε))e^{-2πin(x+i(δ-ε))/T}dx.
     The exponential factor contributes e^{-2πn(δ-ε)/T}. Take ε → 0.
 
+    The decay constant `M` is the sup-bound of `f` on the strip; it is provided
+    existentially in the conclusion (tied to `f` via the hypothesis) rather than
+    as a free parameter, so that a too-small `M` cannot vacuously falsify the
+    bound. See the audit note in §9 for why an independent `∀ M, 0 < M` binder
+    made the earlier phrasing inconsistent.
+
     Not yet in Mathlib: requires complex contour integration, Cauchy's theorem
     for periodic functions, and interchange of integral with limit. -/
-axiom contour_shift_decay (δ : ℝ) (hδ : 0 < δ) (M : ℝ) (hM : 0 < M)
+axiom contour_shift_decay (δ : ℝ) (hδ : 0 < δ)
     (f : AddCircle T → ℂ) (hf : Integrable f)
     (hbound : IsStripAnalytic δ f) :
-    ∀ n : ℤ, n ≠ 0 →
+    ∃ M : ℝ, 0 < M ∧ ∀ n : ℤ, n ≠ 0 →
       ‖fourierCoeff f n‖ ≤ M * Real.exp (-(2 * Real.pi * δ * |↑n|) / T)
 
 -- ============================================================================
@@ -403,6 +409,12 @@ theorem trig_poly_vacuous (f : AddCircle T → ℂ) (N : ℕ)
 - **Mathlib gap:** `Complex.integral_boundary_rect_eq_zero_of_differentiable`
   exists but the periodic contour setup is not formalized
 - **Difficulty:** MODERATE (≈300-500 lines)
+- **Audit note:** the decay constant `M` is quantified existentially in the
+  conclusion (the strip sup-bound of `f`). An earlier phrasing took `M` as an
+  independent `∀ M, 0 < M` binder disconnected from `f`, which made the axiom
+  inconsistent (a too-small `M` falsified the bound for the Poisson-kernel
+  witness). A faithful elimination should instead expose `M` as the genuine
+  holomorphic sup-bound input.
 
 ### Axiom 2 (rate_is_sharp):
 - **Need:** Explicit construction of extremal functions
