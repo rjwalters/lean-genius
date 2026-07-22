@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The positive semidefinite square root: existence, structure, uniqueness",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Every PSD matrix A over R or C has a PSD square root, supplied by Mathlib's continuous functional calculus as CFC.sqrt A. This file packages the full characterization: the defining property sqrt(A)*sqrt(A) = A, that sqrt(A) stays PSD, its uniqueness among PSD square roots, corollaries (sqrt(0)=0, sqrt(1)=1, sqrt(A^2)=A), the determinant identity det(sqrt A)^2 = det A, and a concrete diag(4,9) instance."
+    },
+    {
       "id": "defining-property",
       "title": "Defining Property: √A is a Square Root of A",
       "startLine": 56,
