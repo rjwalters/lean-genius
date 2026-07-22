@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Open Question and Equality-Case Roadmap",
+      "summary": "Module docstring: states the parent file's open question #2 (does the weighted power-mean equality case extend?), answers YES, lists the individual equality lemmas (WAM=WQM, WGM=WAM, WHM=WGM) plus the headline chain collapse, and sketches the three proof techniques (weighted-variance identity, Mathlib's weighted AM–GM equality condition, reciprocal duality).",
+      "startLine": 1,
+      "endLine": 47,
+      "mathContext": "Chain collapse: $\\mathrm{WHM}=\\mathrm{WGM}=\\mathrm{WAM}=\\mathrm{WQM} \\iff a=b$, proved via the individual links $\\mathrm{WAM}=\\mathrm{WQM}\\iff a=b$ (weighted-variance identity $w_1a^2+w_2b^2-(w_1a+w_2b)^2=w_1w_2(a-b)^2$), $\\mathrm{WGM}=\\mathrm{WAM}\\iff a=b$ (weighted AM–GM equality), and $\\mathrm{WHM}=\\mathrm{WGM}\\iff a=b$ (reciprocal duality)."
+    },
+    {
       "id": "definitions",
       "title": "Weighted Mean Definitions",
       "summary": "Four noncomputable defs mirroring the parent: WHM, WGM, WAM, WQM",
