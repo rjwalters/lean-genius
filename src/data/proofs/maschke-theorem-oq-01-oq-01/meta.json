@@ -93,6 +93,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The modular counterexample: F_p[Z/p] is not semisimple",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Maschke's theorem requires char(k) not dividing |G|; this file witnesses the sharpness of that hypothesis. For k = F_p and G = Z/p, the freshman's-dream identity (g-1)^p = g^p - 1 = 0 exhibits a nonzero nilpotent in the group algebra F_p[Z/p], so the ring is not reduced and hence not semisimple — equivalently, the augmentation ideal has no complement."
+    },
+    {
       "id": "setup-definitions",
       "title": "Setup: the Modular Group Algebra and Its Generator",
       "startLine": 63,
