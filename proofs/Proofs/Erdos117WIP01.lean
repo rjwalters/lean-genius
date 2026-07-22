@@ -152,6 +152,7 @@ all axiom-free. -/
 theorem hasNCommutingProperty_of_injective {G H : Type*} [Group G] [Group H]
     {n : ℕ} (f : G →* H) (hf : Function.Injective f)
     (hH : HasNCommutingProperty H n) : HasNCommutingProperty G n := by
+  classical
   intro S hS
   have hcard : (S.image f).card = S.card := Finset.card_image_of_injective S hf
   obtain ⟨x, y, hx, hy, hxy, hcomm⟩ := hH (S.image f) (by rw [hcard]; exact hS)
@@ -188,5 +189,5 @@ theorem hasNCommutingProperty_of_mulEquiv {G H : Type*} [Group G] [Group H]
 theorem hasNCommutingProperty_of_card_le {G : Type*} [Group G] [Fintype G] {n : ℕ}
     (h : Fintype.card G ≤ n) : HasNCommutingProperty G n := by
   intro S hS
-  have hSn : S.card ≤ n := (Finset.card_le_univ S).trans (by rwa [Finset.card_univ])
+  have hSn : S.card ≤ n := (Finset.card_le_univ S).trans h
   exact absurd hS (Nat.not_lt.mpr hSn)
