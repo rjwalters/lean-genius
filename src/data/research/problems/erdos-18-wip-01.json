@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "STRUCTURAL (researcher-1, 2026-07-22T05:59:07Z): added Erdos18WIP01.lean (imports Proofs.Erdos18Problem) with the first results covering infinitely many m at once, all 0-axiom (#print axioms = [propext,Classical.choice,Quot.sound]), Docker-verified (8577 jobs) + host-verified. (1) two_pow_practical: every power of two is practical, via repr_lt_two_pow (binary representation, strong induction). (2) infinite_practicalNumbers: there are infinitely many practical numbers. (3) two_dvd_of_practical/even_of_practical: a matching necessary condition, every practical m>=3 is even. This lifts the parents finite decide-checked examples to uniform structural theorems. The h(m) growth conjectures (Erdos #18 Parts 1-2, $250) remain open/unformalized.",
+    "progressSummary": "PROGRESS: Stewart–Sierpiński practicality criterion closed into a genuine iff (practical_iff_divisor_chain) — divisor-coin-chain characterisation, 0-axiom. Prime-factorisation form and h(m) growth remain open.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -40,13 +40,16 @@
       "repr_lt_two_pow in Erdos18WIP01.lean: every k<2^n is a sum of distinct powers of two from {2^0..2^{n-1}} (binary-representation induction)",
       "two_pow_practical in Erdos18WIP01.lean: IsPractical (2^n) for all n (infinite family)",
       "infinite_practicalNumbers in Erdos18WIP01.lean: PracticalNumbers.Infinite",
-      "two_dvd_of_practical / even_of_practical in Erdos18WIP01.lean: practical m>=3 => 2 | m (necessary condition)"
+      "two_dvd_of_practical / even_of_practical in Erdos18WIP01.lean: practical m>=3 => 2 | m (necessary condition)",
+      "divisor_chain_of_practical / practical_of_divisor_chain_condition / practical_iff_divisor_chain in Erdos18WIP01.lean (necessary + sufficient divisor-gap condition, iff)",
+      "succ_mul_self_practical: n practical ⟹ n(n+1) practical (0-axiom corollary of Stewart–Sierpiński)"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
       "Powers of two are an INFINITE family of practical numbers: every k<2^n is a sum of distinct divisors {2^0,...,2^{n-1}} of 2^n by binary representation (repr_lt_two_pow, proved by strong induction on n). This lifts the parents finite decide-checked examples (4,6,8) to a uniform structural theorem two_pow_practical.",
       "Consequently there are INFINITELY MANY practical numbers (infinite_practicalNumbers: PracticalNumbers.Infinite), via injectivity of n |-> 2^n on the practical set.",
-      "Matching NECESSARY condition: any practical m>=3 is even (two_dvd_of_practical / even_of_practical). To represent 2 as a sum of distinct divisors of m, since 1 is the only divisor below 2, the divisor 2 itself must be used, so 2 | m. Proof: a subset of positive divisors summing to 2 is forced to be {2} (each element <=2 by single_le_sum, so S subset {1,2}; sum 2 rules out subsets of {1})."
+      "Matching NECESSARY condition: any practical m>=3 is even (two_dvd_of_practical / even_of_practical). To represent 2 as a sum of distinct divisors of m, since 1 is the only divisor below 2, the divisor 2 itself must be used, so 2 | m. Proof: a subset of positive divisors summing to 2 is forced to be {2} (each element <=2 by single_le_sum, so S subset {1,2}; sum 2 rules out subsets of {1}).",
+      "Full Stewart–Sierpiński characterisation as an iff: practical_iff_divisor_chain — m practical ⟺ 1≤m ∧ every divisor d ≤ 1 + sum of smaller divisors (coin-chain condition), 0-axiom"
     ],
     "mathlibGaps": [],
     "nextSteps": [
