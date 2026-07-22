@@ -26,8 +26,9 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "AFKS strong regularity lemma: energy-increment (item 1) + two-level packaging (item 2) + outer-loop assembly modulo dichotomy (item 3, Outer) all DONE; S11 closed the dichotomy analytic core (sharp 2×2 split exists); S12 (isWitnessedSharpStep_of_split) discharges the reusable chain/freshness bookkeeping, reducing the residual to a purely constructive obligation: exhibit the refinement chain with the four new blocks pairwise distinct and ∉R. Remaining genuine crux = the recursive chain construction + its flat freshness (degenerate empty-piece collisions).",
+    "progressSummary": "AFKS strong regularity lemma: energy-increment (item 1) + two-level packaging (item 2) + outer-loop assembly modulo dichotomy (item 3, Outer) all DONE; S11 closed the analytic realizability core; S12-S15 discharged chain/freshness bookkeeping and derived the deviating-corner (A1,B1) nonemptiness from the mass floors. S16: the density gap forbids a DOUBLY-trivial split (A2 or B2 nonempty). Residual is pinned to the single degenerate side (one corner exhausts its block -> asymmetric 3-piece refinement).",
     "builtItems": [
+      "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
       "pairEnergy_split_gain — quantitative energy increment: |d1-d2|>=delta gives gain >= (|A1||A2|/(|A1|+|A2|))(|B|/n^2)delta^2 (the AFKS Cauchy-Schwarz boost).",
@@ -89,6 +90,7 @@
       "isWitnessedSharpStep_of_split_of_nonempty in SzemerediRegularityOQ04Freshness.lean: freshness-free packaging — full IsWitnessedSharpStep from split data + mass floors + gap + nonemptiness of the four pieces. 0-axiom, docker-VERIFIED."
     ],
     "insights": [
+      "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
       "The weighted-average d(A1cupA2,B)=(|A1|d1+|A2|d2)/(|A1|+|A2|) plus split_energy_identity/excess_bound give the increment purely; scaling by |B|/n^2>=0 lifts density_sq_convex into the normalized energy.",
       "The whole-partition energy JUMP reduces to a SINGLE strengthened block: only the row block against R needs the gain; diagonal and column blocks contribute nonneg increments by monotonicity, so linarith[h1,h2gain,h3] assembles exactly as the mono proof plus the gain atom.",
@@ -125,6 +127,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Handle the ONE degenerate side left by S16: define an asymmetric 3-piece witnessed-step predicate (IsWitnessedSharpStep3) for when A1=A (only B splits), and case-split the dichotomy on gap_forces_complement_nonempty. Likely elementary-layer saturated for the symmetric 4-piece shape.",
       "Package the sharp split into the exact IsWitnessedSharpStep chain shape (parts n = insert A (insert B R); parts(n+1)=insert A₁ (insert A₂ (insert B₁ (insert B₂ R)))) with fresh-block side-conditions — this needs a recursively CONSTRUCTED refinement chain, not an arbitrary given one, so exists_afksTwoLevel_of_dichotomy may need reformulating to build parts internally.",
       "Discharge freshness: A₁,A₂,B₁,B₂ ∉ each other / R via card or membership disjointness of the split pieces."
     ],
@@ -326,6 +329,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04PartitionGain.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04SplitProper.lean",
+      "filename": "SzemerediRegularityOQ04SplitProper.lean",
+      "lineCount": 95,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04SplitProper.lean"
     }
   ],
   "lastUpdate": "2026-07-12"

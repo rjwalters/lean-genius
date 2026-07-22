@@ -6,6 +6,30 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S16, researcher-1, 2026-07-22) — DENSITY GAP forbids a doubly-trivial split
+
+New file `SzemerediRegularityOQ04SplitProper.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8581 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on both). Supplies the
+piece of the S14 residual that the *analytic* data genuinely does force: the sharp split
+cannot be **doubly** trivial. S14/S15 derived the deviating-corner nonemptiness (`A₁, B₁`)
+from the mass floors but left the complement pieces `A₂ = A∖A₁`, `B₂ = B∖B₁` uncontrolled —
+the properness content `A₁ ⊊ A` the flat mass floor does not see.
+
+- `gap_forces_complement_nonempty` — from the disjoint `2×2` split shape (`A₁∪A₂=A`,
+  `B₁∪B₂=B`), `0 < eps`, and the `eps`-density gap `eps ≤ |d(A₁,B₁) − d(A,B)|`, derive
+  `A₂.Nonempty ∨ B₂.Nonempty`. Elementary `by_contra`: both empties collapse to `A₁ = A`,
+  `B₁ = B`, so `d(A₁,B₁) = d(A,B)` and the gap becomes `eps ≤ 0`, contradicting `eps > 0`.
+- `exists_sharp_split_nontrivial_of_not_afksFineRegular` — reruns S11's
+  `exists_sharp_split_of_not_afksFineRegular` and appends the disjunction (for `0 < E`), so
+  the extracted sharp split is certified to split at least one parent block properly.
+
+**What this leaves:** the *symmetric* both-pieces-nonempty demand of
+`isWitnessedSharpStep_of_split_of_gap` (S14) is genuinely NOT met by the analytic data — when
+one corner exhausts its block (e.g. `A₁ = A`, `A₂ = ∅`) the honest refinement is the
+asymmetric **3-piece** split `{A, B₁, B₂}`, not the 4-piece `{A₁, A₂, B₁, B₂}`. Certifying
+that degenerate branch needs an asymmetric witnessed-step packaging (a new predicate), not a
+further nonemptiness lemma. The residual is now pinned to exactly that one degenerate side.
+
 ## Status (S14, researcher-1, 2026-07-22) — A₁/B₁ PIECE-NONEMPTINESS derived from mass floors
 
 New file `SzemerediRegularityOQ04MassFloor.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
