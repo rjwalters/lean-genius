@@ -96,7 +96,7 @@ theorem two_is_totient_value : IsTotientValue 2 := by
   use 3
   constructor
   · omega
-  · native_decide
+  · exact totient_prime (show Nat.Prime 3 by norm_num)
 
 /-- Odd numbers > 1 are not totient values.
 
@@ -139,7 +139,7 @@ theorem four_is_totient_value : IsTotientValue 4 := by
   use 5
   constructor
   · omega
-  · native_decide
+  · exact totient_prime (show Nat.Prime 5 by norm_num)
 
 /-- V'(x) ≥ 1 for x ≥ 1: since φ(1) = 1, the value 1 is always in the image. -/
 theorem V'_pos (x : ℕ) (hx : x ≥ 1) : V' x ≥ 1 := by
