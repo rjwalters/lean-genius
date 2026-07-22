@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1143",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #1143: for primes $p_1 < \\cdots < p_u$ and $k \\ge 1$, estimate $F_k(p_1,\\dots,p_u)$, the minimum count of integers in any length-$k$ interval divisible by some $p_i$, especially for $k = \\alpha p_u$ with constant $\\alpha > 2$.",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "By inclusion-exclusion the expected proportion divisible by some $p_i$ is $1-\\prod(1-1/p_i)$; Erd\u0151s\u2013Selfridge found the exact bound for $2 < \\alpha < 3$, but little is known for $\\alpha > 3$. Related to Jacobsthal's function (Problem #970)."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 38,
