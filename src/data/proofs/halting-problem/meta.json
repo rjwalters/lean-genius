@@ -63,33 +63,41 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring: states the goal (no algorithm decides whether an arbitrary program halts) and the approach — a fully self-contained diagonalization argument using only Lean's core Nat/Bool types, with no Mathlib dependency. Notes the historical link to Turing's 1936 undecidability proof and the shared diagonalization technique with Cantor's uncountability argument and Gödel's incompleteness theorems.",
+      "mathContext": "No formal statement here — this is prose context. The diagonal behavior developed in the sections below is $D(n) = \\lnot H(n, n)$, the counterexample to any halting oracle $H$."
+    },
+    {
       "id": "setup",
       "title": "Definitions",
-      "startLine": 21,
-      "endLine": 33,
+      "startLine": 33,
+      "endLine": 44,
       "summary": "Defines halting oracles as functions from (program, input) pairs to Bool, and the diagonal behavior that negates the oracle's self-prediction.",
       "mathContext": "$$H : \\mathbb{N} \\times \\mathbb{N} \\to \\{\\text{true}, \\text{false}\\}, \\quad D(n) = \\lnot H(n, n)$$"
     },
     {
       "id": "diagonal-lemma",
       "title": "The Diagonal Differs",
-      "startLine": 35,
-      "endLine": 43,
+      "startLine": 46,
+      "endLine": 54,
       "summary": "Proves the key lemma: the diagonal behavior always differs from the oracle's prediction at self-application points.",
       "mathContext": "$$\\forall n,\\; D(n) \\neq H(n, n) \\quad \\text{(the diagonal always disagrees)}$$"
     },
     {
       "id": "main-theorem",
       "title": "No Correct Oracle",
-      "startLine": 45,
-      "endLine": 76,
+      "startLine": 56,
+      "endLine": 87,
       "summary": "Proves that no oracle can correctly predict the diagonal program's behavior, by deriving a contradiction from either prediction.",
       "mathContext": "$$H(d, d) = \\text{true} \\Rightarrow D(d) = \\text{false}, \\quad H(d, d) = \\text{false} \\Rightarrow D(d) = \\text{true} \\quad \\Rightarrow\\!\\Leftarrow$$"
     },
     {
       "id": "undecidability",
       "title": "Halting Undecidable",
-      "startLine": 78,
+      "startLine": 89,
       "endLine": 108,
       "summary": "Restates the result using logical equivalence: no Boolean oracle can be consistent with its own diagonal flip at a self-application point.",
       "mathContext": "$$\\forall H\\, c,\\; \\neg\\big((H(c,c){=}\\text{true} \\iff D(c){=}\\text{true}) \\wedge (H(c,c){=}\\text{false} \\iff D(c){=}\\text{false})\\big), \\quad D(c)=\\lnot H(c,c).$$ This is the abstract diagonalization schema. The computation-model statement $\\nexists H.\\ \\forall p\\, i.\\ H(p,i){=}\\text{true} \\iff P_p(i){\\downarrow}$ is the mathematical target but is **not** formalized here — $H$ is an arbitrary Boolean function with no link to program execution."
@@ -97,18 +105,18 @@
     {
       "id": "summary",
       "title": "Self-Halting Formulation",
-      "startLine": 109,
-      "endLine": 131,
+      "startLine": 110,
+      "endLine": 130,
       "summary": "The self-halting alternative `no_self_halting_decider`: for any Boolean self-decider $H(n)$ (\"does program $n$ halt on input $n$?\"), the diagonal behavior $b(n)=\\lnot H(n)$ disagrees with $H$ everywhere, so no function correctly decides its own halting. Followed by the transitional commentary motivating the packaged final theorem.",
       "mathContext": "$$\\forall H:\\mathbb{N}\\to\\text{Bool},\\; \\exists b,\\; \\forall n,\\; b(n) \\neq H(n) \\quad \\text{(the diagonal } b(n)=\\lnot H(n) \\text{ is the explicit counterexample)}$$"
     },
     {
       "id": "main-summary",
       "title": "Full Undecidability Theorem and Diagonalization Visualization",
-      "startLine": 132,
+      "startLine": 131,
       "endLine": 172,
-      "summary": "States $\text{halting\\_problem\\_undecidable}$: for any halting oracle $H$, there exists a behavior that $H$ fails to predict on some code. The diagonal construction visualizes the 2D table of program behaviors, flipping the diagonal to create an impossible row. Verification section with $\texttt{\\#check}$ on all key theorems.",
-      "mathContext": "Main result: $\forall H : \text{HaltingOracle}, \\exists b : \text{Behavior}, \forall c : \\mathbb{N}, H(c,c) \neq b(c)$. The diagonal argument pattern unifies halting undecidability with Cantor, Godel, Russell, and Tarski."
+      "summary": "States $\\text{halting\\_problem\\_undecidable}$: for any halting oracle $H$, there exists a behavior that $H$ fails to predict on some code. The diagonal construction visualizes the 2D table of program behaviors, flipping the diagonal to create an impossible row. Verification section with $\\texttt{\\#check}$ on all key theorems.",
+      "mathContext": "Main result: $\\forall H : \\text{HaltingOracle}, \\exists b : \\text{Behavior}, \\forall c : \\mathbb{N}, H(c,c) \\neq b(c)$. The diagonal argument pattern unifies halting undecidability with Cantor, Godel, Russell, and Tarski."
     }
   ],
   "conclusion": {
