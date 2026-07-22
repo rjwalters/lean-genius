@@ -5,37 +5,59 @@ Open Question (from elementary-quadratic-reciprocity-oq-01):
   Can a Gauss sum proof provide a third formal QR pathway alongside
   Eisenstein and Zolotarev?
 
-Answer: YES. We formalize the logical skeleton of the Gauss sum proof,
-axiomatizing the deep cyclotomic evaluation τ² = χ(-1)·p and proving
-QR follows. This gives three independent QR proof strategies in Lean 4.
+Answer: YES. We formalize the logical skeleton of the Gauss sum proof: the
+cyclotomic evaluation τ² = χ(-1)·p, proved (not axiomatized) by specializing
+Mathlib's generic `gaussSum_sq` to the quadratic character of `ZMod p` — see
+`QuadraticGaussSumSquare.gaussSum_quadratic_sq` — combined with Mathlib's
+`AddChar.FiniteField.primitiveChar_to_Complex`, which supplies a primitive
+ℂ-valued additive character for any finite field. This gives three
+independent, fully formalized QR proof strategies in Lean 4.
 
 The Gauss sum proof proceeds:
-1. Define τ = Σ_a (a/p)·ζ^a (Gauss sum)
-2. Evaluate τ² = χ(-1)·p (deep result, axiomatized)
+1. Define τ = Σ_a (a/p)·ψ(a) (Gauss sum, τ ∈ ℂ)
+2. Evaluate τ² = χ(-1)·p (proved via Mathlib's `gaussSum_sq`)
 3. Derive QR by raising τ to q-th power and using Frobenius
 -/
 
 import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
+import Mathlib.NumberTheory.LegendreSymbol.Complex
 import Mathlib.Tactic
+import Proofs.QuadraticGaussSumSquare
 
 open ZMod Finset
 
 namespace GaussSumQR
 
 -- ============================================================================
--- Part I: Gauss Sum Squared Evaluation (Axiomatized)
+-- Part I: Gauss Sum Squared Evaluation
 -- ============================================================================
 
-/-- The fundamental Gauss sum evaluation: there exists an algebraic integer τ
-    (the Gauss sum of the Legendre symbol) satisfying τ² = (-1)^((p-1)/2) · p.
+/-- The fundamental Gauss sum evaluation: there exists τ ∈ ℂ (the Gauss sum
+    of the Legendre symbol, τ = Σ_a (a/p)·ψ(a) for a primitive additive
+    character ψ) satisfying τ² = (-1)^((p-1)/2) · p.
 
-    The full proof requires:
-    - Double sum: τ² = Σ_{a,b} χ(a)χ(b)ζ^{a+b}
-    - Substitution b = ac: τ² = Σ_c χ(c) · Σ_a ζ^{a(1+c)}
-    - Orthogonality: Σ_a ζ^{ak} = p·δ_{p|k}
+    NOTE: τ must range over ℂ, not ℤ — the Gauss sum is generally irrational
+    (e.g. for p = 5 it equals +√5). An earlier version of this file
+    axiomatized this fact with `τ : ℤ`, which is false for every odd prime
+    (no prime is a perfect square) and made the file's logic inconsistent.
+
+    Proved via Mathlib's generic `gaussSum_sq`, specialized to the
+    ℂ-valued quadratic character (`QuadraticGaussSumSquare.chiC`) evaluated
+    against a primitive character supplied by
+    `AddChar.FiniteField.primitiveChar_to_Complex`:
+    - Double sum: τ² = Σ_{a,b} χ(a)χ(b)ψ(a)ψ(b)
+    - Substitution b = ac: τ² = Σ_c χ(c) · Σ_a ψ(a(1+c))
+    - Orthogonality: Σ_a ψ(ak) = p·δ_{p|k}
     - Only c = -1 survives: τ² = χ(-1)·p -/
-axiom gauss_sum_sq (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
-    ∃ (τ : ℤ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℤ)
+theorem gauss_sum_sq (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
+    ∃ (τ : ℂ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℂ) := by
+  have hpe : p / 2 = (p - 1) / 2 := by
+    have hoddp : Odd p := hp.out.odd_of_ne_two hodd
+    obtain ⟨k, rfl⟩ := hoddp; omega
+  set ψ := AddChar.FiniteField.primitiveChar_to_Complex (ZMod p)
+  have hψ : ψ.IsPrimitive := AddChar.FiniteField.primitiveChar_to_Complex_isPrimitive (ZMod p)
+  refine ⟨gaussSum (QuadraticGaussSumSquare.chiC p) ψ, ?_⟩
+  rw [QuadraticGaussSumSquare.gaussSum_quadratic_sq hodd hψ, hpe]
 
 -- ============================================================================
 -- Part II: QR from Gauss Sum — The Logical Derivation
@@ -165,7 +187,7 @@ example : legendreSym 7 (-1) = -1 := by native_decide
 
 /-- The Gauss sum τ satisfies |τ²| = p (from τ² = χ(-1)·p and χ(-1) ∈ {±1}). -/
 theorem gauss_sum_abs (p : ℕ) [hp : Fact p.Prime] (hodd : p ≠ 2) :
-    ∃ (τ : ℤ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℤ) := gauss_sum_sq p hodd
+    ∃ (τ : ℂ), τ ^ 2 = (-1) ^ (p / 2) * (p : ℂ) := gauss_sum_sq p hodd
 
 #check legendreSym.quadratic_reciprocity
 #check legendreSym.at_neg_one
