@@ -14,9 +14,13 @@
   },
   "knownResults": {
     "proven": [
-      "Elementary two-sided bound |cosineSum A θ| ≤ N (this session).",
-      "cosineSum is even, 2π-periodic, continuous; minCosineSum ∈ [−N, N] (this session).",
-      "Exact value minCosineSum {n} = −1 for n ≥ 1 (this session)."
+      "Elementary two-sided bound |cosineSum A θ| ≤ N.",
+      "cosineSum is even, 2π-periodic, continuous; minCosineSum ∈ [−N, N].",
+      "Exact value minCosineSum {n} = −1 for n ≥ 1.",
+      "Attained minimum: exists_eq_minCosineSum (infimum realized at a concrete angle via periodicity + compactness of [0,2π]).",
+      "Sign: minCosineSum A ≤ 0 (minCosineSum_nonpos) and STRICT minCosineSum A < 0 (minCosineSum_neg) for nonempty positive-frequency A, with an explicit negative-value angle (exists_angle_cosineSum_neg).",
+      "Uniform quantitative bound minCosineSum A ≤ −1/2 (minCosineSum_le_neg_half) via a second-moment/L² argument: orthogonality ∫cos(nθ)cos(mθ)=π·[n=m] (integral_cos_mul_cos) and ∫(cosineSum)²=π·N (integral_cosineSum_sq).",
+      "Sharp all-odd extreme minCosineSum A = −card A (minCosineSum_forall_odd), plus minCosineSum A ≤ ∑(−1)ⁿ (minCosineSum_le_alternating). All axiom-free, host-verified v4.31."
     ],
     "open": [
       "The −c√N lower bound (the conjecture itself) — deep, untouched.",
@@ -26,9 +30,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-20T12:00:00-07:00",
-    "iteration": 1,
-    "focus": "Axiom-free foundational lemmas on the cosine sum and its infimum.",
+    "since": "2026-07-22T06:00:00-07:00",
+    "iteration": 2,
+    "focus": "Elementary sign/attainment/second-moment layer for the cosine sum is COMPLETE; only the deep −c√N growth bound remains.",
     "blockers": [
       {
         "route": "the −c√N lower bound via elementary trigonometric identities",
@@ -36,7 +40,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "The deep -c*sqrt(N) lower bound (Chowla conjecture regime) stays imported. Elementary sign/attainment layer now covers: attained minimum, two-sided bounds, minCosineSum{n}=-1, and minCosineSum<=0 (this session).",
+    "nextAction": "STAND DOWN at the elementary layer — it is now saturated. The file establishes: attained minimum (exists_eq_minCosineSum), two-sided bounds, minCosineSum{n}=-1, minCosineSum<=0 (minCosineSum_nonpos), STRICT minCosineSum<0 (minCosineSum_neg) + witness angle (exists_angle_cosineSum_neg), the uniform quantitative second-moment bound minCosineSum<=-1/2 (minCosineSum_le_neg_half, via orthogonality integral_cos_mul_cos + ∫cosineSum²=πN), and the SHARP all-odd extreme minCosineSum=-card (minCosineSum_forall_odd) plus minCosineSum_le_alternating. The only open direction is the deep -c*sqrt(N) growth bound (Bourgain/Ruzsa/Bedert N^{1/7} regime), which stays imported/blocked — do not reopen unless attacking that with a materially new mechanism.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -79,9 +83,9 @@
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
     ],
     "nextSteps": [
-      "minCosineSum A < 0 STRICT for nonempty positive-frequency A (the <=0 result plus ruling out the identically-zero case; needs cosineSum not constant 0, e.g. value N at theta=0).",
-      "The sharp -c*sqrt(N) bound (Chowla) stays a deep imported result (Bourgain/Ruzsa/Bedert).",
-      "Sidon-set difference-set example for sqrt(N) optimality (harder)."
+      "Elementary layer SATURATED — strict minCosineSum<0 (minCosineSum_neg), the second-moment minCosineSum<=-1/2 (minCosineSum_le_neg_half), and the sharp all-odd minCosineSum=-card (minCosineSum_forall_odd) are all DONE. Do not re-attempt these.",
+      "The sharp -c*sqrt(N) bound (Chowla) stays a deep imported result (Bourgain/Ruzsa/Bedert N^{1/7} regime); only reopen with a materially new mechanism.",
+      "Sidon-set difference-set example for sqrt(N) optimality (harder; deep, tied to the -c*sqrt(N) route)."
     ],
     "markdown": "# Knowledge Base: erdos-510-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational cosine-sum scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos510Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos510WIP01.lean` (16 theorems) establishing the elementary structure of the Chowla cosine sum `cosineSum A θ = ∑_{n∈A} cos(nθ)` and its infimum `minCosineSum A = ⨅_θ cosineSum A θ`:\n- **Evaluation**: `cosineSum_empty`, `cosineSum_singleton`, `cosineSum_insert`, `cosineSum_zero_angle` (`= N`), `cosineSum_pi` (`= ∑(−1)ⁿ`).\n- **Symmetry / periodicity**: `cosineSum_neg` (even), `cosineSum_add_two_pi` (2π-periodic).\n- **Continuity**: `continuous_cosineSum`.\n- **Two-sided bound**: `abs_cosineSum_le_card` (`|·| ≤ N`), `cosineSum_le_card`, `neg_card_le_cosineSum`.\n- **Infimum**: `bddBelow_range_cosineSum`, `minCosineSum_le`, `neg_card_le_minCosineSum`, `minCosineSum_le_card`, `minCosineSum_empty`, and the exact value `minCosineSum_singleton` (`= −1` for `n ≥ 1`).\n\n### Key findings\n- The cosine sum lives in `[−N, N]`; the conjectured extremum `−c√N` is strictly interior, so every elementary bound is far from the truth — the mathematics is entirely in the cancellation.\n- `minCosineSum {n} = −1` exactly (attained at `θ = π/n`): single-frequency sets are maximally negative per size, so the `−c√N` difficulty is a genuine many-frequency phenomenon.\n\n### Reusable Lean recipe\n- Periodicity per term: `Real.cos_add_nat_mul_two_pi (n*θ) n` after `ring`-rewriting `n·(θ+2π) = n·θ + n·(2π)`.\n- `θ=π` collapse: `Real.cos_nat_mul_pi n : cos(n·π) = (−1)ⁿ`.\n- Infimum bounds in ℝ: `ciInf_le (bddBelow …) θ` and `le_ciInf (fun θ => …)` (index `ℝ` is `Nonempty`); bound the range below by `−N` via `neg_card_le_cosineSum`.\n- `|cos| ≤ 1` without `Analysis.Complex.Trigonometric`: `abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩`.\n- Continuity of a partially-applied `def`: `show Continuous (fun θ => …)` (not `simp only [def]`, which makes no progress under `Continuous`), then `continuous_finsetSum`.\n\n### Next steps\n- Attainment: `∃ θ, cosineSum A θ = minCosineSum A` (continuity on `[0,2π]` + periodicity).\n- `minCosineSum A ≤ 0` for `A ⊂ ℕ⁺` via `∫_0^{2π} cosineSum A = 0`.\n\n### Still open (unchanged)\nThe `−c√N` lower bound (Chowla's conjecture) — deep; Bedert (2025) reached `−cN^{1/7}`, the `N^{1/7}`↔`N^{1/2}` gap is open.\n"
   },
@@ -106,7 +110,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T12:00:00.000Z",
-  "lastUpdate": "2026-07-20T23:10:00.000Z",
+  "lastUpdate": "2026-07-22T13:00:00.000Z",
   "significance": 6,
   "tractability": 5
 }
