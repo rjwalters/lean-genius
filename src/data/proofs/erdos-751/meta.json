@@ -134,19 +134,22 @@
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
       "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex",
+      "Mathlib.Combinatorics.SimpleGraph.Girth",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Nat.Basic"
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Lattice.Nat"
     ],
     "opens": [
       "SimpleGraph"
     ],
     "namespace": "Erdos751",
-    "lineCount": 235,
+    "lineCount": 257,
     "axiomCount": 2,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 3,
     "path": "Proofs/Erdos751Problem.lean",
-    "sorries": 2
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -165,5 +168,7 @@
       "description": "Related Erdős problem sharing themes: chromatic-number, cycles, graph-theory"
     }
   ],
-  "sorries": 2
+  "sorries": 0,
+  "status": "axiomatized",
+  "badge": "axiom"
 }
