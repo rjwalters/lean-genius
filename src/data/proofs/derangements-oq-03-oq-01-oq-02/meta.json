@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Closed-Form Error D(n)/n! − 1/e as Alternating Sum",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Gives the exact closed-form error D(n)/n! − 1/e = (−1)ⁿ·∑_{k≥0}(−1)^k/(n+1+k)! as a signed alternating series, establishing strict sign alternation (even n above 1/e, odd n below) and that the normalized error (−1)ⁿ·e(n)·(n+1)! tends to 1.",
+      "mathContext": "$D(n)/n! - 1/e = (-1)^n\\sum_{k\\ge0}(-1)^k/(n+1+k)!$, the tail of the exponential series for $e^{-1}$ starting at index $n+1$ with the sign factored out."
+    },
+    {
       "id": "foundations",
       "title": "Foundations",
       "startLine": 44,
