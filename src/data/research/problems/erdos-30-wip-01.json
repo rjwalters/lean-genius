@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added the first GROWING lower bound / unboundedness for the Sidon number. Powers of two {2^0..2^k} are a Sidon set (isSidonSet_two_pow_range, sum-injectivity by 2-adic parity), giving h(2^k) >= k+1 and hence sidonNumber unbounded (sidonNumber_unbounded). Complements the existing Erdos-Turan upper bound h(N) <= sqrt(2N)+1; brackets 1 <= h(N) with an explicit growing family. 0-axiom, Docker-verified v4.31. The bound is only logarithmic — the sharp sqrt(N) growth (Singer difference sets) stays deep/unformalized.",
+    "progressSummary": "PROGRESS: Two-sided elementary theory now includes EXACT small values h(0..6)=1,2,2,3,3,3,4 (sharp counting bound + optimal explicit sets) alongside upper sqrt(2N)+1 and lower unbounded(log). Remaining DEEP: N^{1/4} refinement, Singer sqrt(N) lower bound, $1000 conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -42,14 +42,16 @@
       "isSidonSet_two_pow_range (Erdos30WIP01.lean): {2^0..2^k} is Sidon [0-axiom]",
       "two_pow_add_inj (Erdos30WIP01.lean): 2^i+2^j=2^p+2^q (sorted) => exponents match [0-axiom]",
       "sidonNumber_two_pow_ge (Erdos30WIP01.lean): k+1 <= sidonNumber (2^k) [0-axiom]",
-      "sidonNumber_unbounded (Erdos30WIP01.lean): forall M, exists N, M <= sidonNumber N [0-axiom]"
+      "sidonNumber_unbounded (Erdos30WIP01.lean): forall M, exists N, M <= sidonNumber N [0-axiom]",
+      "Erdos30WIP01.lean: exact initial Sidon numbers sidonNumber_zero..six — h(0..6)=1,2,2,3,3,3,4. Sharp counting bound sidon_card_sq_le matched to optimal explicit Sidon sets {0},{0,1},{0,1,3},{0,1,4,6}. Reusable helpers sidonNumber_ge_card (lower from explicit set) + sidonNumber_le_of_sq (sharp upper via quadratic, tighter than floor-sqrt). 0-axiom docker-verified v4.31."
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
       "Clean √-form: |A|² ≤ 2N + |A| gives (|A|−1)² ≤ |A|(|A|−1) ≤ 2N, hence |A| ≤ Nat.sqrt(2N)+1; passes to the supremum sidonNumber via Finset.sup_le, giving h(N) ≤ ⌊√(2N)⌋+1 ~ √(2N).",
       "Mathlib has NO Sidon/B₂-set API and no roots-of-unity/Vandermonde discriminant product; the counting bound is best built from Finset.offDiag_card, Int.card_Icc, and Nat.le_sqrt.",
       "Powers of two {2^0,...,2^k} form a Sidon set (isSidonSet_two_pow_range): sum-injectivity via 2-adic parity (two_pow_add_inj) — factor out 2^min, then odd-vs-even cofactor / 2-vs->=4 forces exponents to match.",
-      "sidonNumber_two_pow_ge: h(2^k) >= k+1, so sidonNumber is UNBOUNDED (sidonNumber_unbounded). First growing lower bound in the file (previously only trivial h(N)>=1). Only logarithmic — sharp sqrt(N) growth needs Singer/perfect-difference-set constructions absent from Mathlib."
+      "sidonNumber_two_pow_ge: h(2^k) >= k+1, so sidonNumber is UNBOUNDED (sidonNumber_unbounded). First growing lower bound in the file (previously only trivial h(N)>=1). Only logarithmic — sharp sqrt(N) growth needs Singer/perfect-difference-set constructions absent from Mathlib.",
+      "h(N) exact for N<=6 is a non-strict step function 1,2,2,3,3,3,4; the elementary quadratic bound |A|(|A|-1)<=2N is TIGHT here (floor-sqrt(2N)+1 is NOT, e.g. it gives h(5)<=4 but truth is 3). Optimal witnesses are perfect rulers/difference sets: {0,1,3} (N<=5), {0,1,4,6} (N=6, diffs 1..6 exhaust)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
