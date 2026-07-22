@@ -61,6 +61,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "From PNT to optimal prime distribution under the Riemann Hypothesis",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "The Prime Number Theorem gives π(x) ~ x/log x via non-vanishing of ζ(s) on Re(s)=1; the Riemann Hypothesis conjectures all non-trivial zeros lie on Re(s)=1/2, which via the explicit formula would sharpen the PNT error term to von Koch's optimal O(√x log x). This file formalizes the RH statement, proves the zero-free strip consequences conditional on RH, and axiomatizes von Koch's bound, the unconditional error term, Littlewood's Ω lower bound, and Backlund's zero-counting asymptotic — RH itself is left as an open conjecture."
+    },
+    {
       "id": "formal-rh",
       "title": "The Formal Riemann Hypothesis",
       "startLine": 58,
