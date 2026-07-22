@@ -62,6 +62,11 @@
   * `representable_of_chain_divisors` — if such a chain consists of divisors of `m`,
     every `k ≤ (chain sum)` is a sum of distinct divisors of `m`. Exhibiting a divisor
     chain reaching `m − 1` is precisely the sufficient half of Stewart–Sierpiński.
+  * `practical_of_divisor_chain` — the criterion packaged as a reusable *test*: one
+    divisor chain reaching `m − 1` certifies `m` practical.
+  * `twenty_practical`, `twentyeight_practical` — concrete applications. Both `20 = 2²·5`
+    and `28 = 2²·7` have a non-practical odd part, so they lie beyond `two_pow_mul_practical`
+    (which needs a practical base); the chain engine reaches them directly.
 
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
@@ -434,5 +439,43 @@ theorem representable_of_chain_divisors {m : ℕ} {l : List ℕ}
   have hxl := hT hx
   rw [List.mem_toFinset] at hxl
   exact hdvd x hxl
+
+/-- **Practicality test (sufficient half of Stewart–Sierpiński).** To prove `m`
+practical it suffices to exhibit *one* duplicate-free coin chain of divisors of `m`
+whose running sums never leave a gap (each coin `≤ 1 +` the sum of the earlier ones)
+and whose total reaches `m − 1`. Then every `1 ≤ k < m` — indeed every `k ≤ (chain
+sum)` — is a distinct-divisor sum by `representable_of_chain_divisors`. This packages
+the chain engine into a single reusable criterion. -/
+theorem practical_of_divisor_chain {m : ℕ} (hm : 1 ≤ m) {l : List ℕ}
+    (hdvd : ∀ d ∈ l, d ∈ divisors m) (hnd : l.Nodup)
+    (hchain : ∀ i, (h : i < l.length) → l[i] ≤ 1 + (l.take i).sum)
+    (hreach : m - 1 ≤ l.sum) : IsPractical m := by
+  refine ⟨hm, fun k hk1 hkm =>
+    representable_of_chain_divisors hdvd hnd hchain k (by omega)⟩
+
+/-- **`20` is practical** — via the divisor chain `1, 2, 4, 5, 10` (running sums
+`1, 3, 7, 12, 22`, each coin at most one past the previous total, reaching `22 ≥ 19`).
+Note `20 = 2² · 5`: its odd part `5` is *not* practical, so `20` lies beyond the reach
+of `two_pow_mul_practical` (which needs a practical base). The chain engine finds it. -/
+theorem twenty_practical : IsPractical 20 := by
+  apply practical_of_divisor_chain (m := 20) (l := [1, 2, 4, 5, 10]) (by norm_num)
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
+
+/-- **`28` is practical** (the perfect number) — via the divisor chain `1, 2, 4, 7, 14`
+(running sums `1, 3, 7, 14, 28`, reaching `28 ≥ 27`). As with `20`, the odd part `7` of
+`28 = 2² · 7` is not practical, so the doubling lemmas miss it; the chain engine does not. -/
+theorem twentyeight_practical : IsPractical 28 := by
+  apply practical_of_divisor_chain (m := 28) (l := [1, 2, 4, 7, 14]) (by norm_num)
+  · intro d hd; fin_cases hd <;> decide
+  · decide
+  · intro i hi
+    simp only [List.length_cons, List.length_nil] at hi
+    interval_cases i <;> simp
+  · decide
 
 end Erdos18
