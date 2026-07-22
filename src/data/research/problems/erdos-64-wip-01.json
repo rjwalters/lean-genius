@@ -22,7 +22,13 @@
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 2,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "power-of-two cycle LENGTH: every finite graph with min-degree ≥ 3 contains a cycle of length 2^k",
+        "reopenCriterion": "materially new mechanism required: Liu–Montgomery-scale extremal/expansion machinery. Elementary cycle-EXISTENCE (a cycle exists at all, for every finite min-degree-≥2 graph) is COMPLETE (PRs #40522/#40874/#40917); the 2^k-length core is the open $1000 problem.",
+        "blockedAt": "2026-07-21"
+      }
+    ],
     "nextAction": "Open power-of-2 cycle length remains the mission; base cycle-existence infrastructure is complete for all finite graphs.",
     "attemptCounts": {
       "total": 0,
