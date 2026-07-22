@@ -129,3 +129,21 @@ raising/lowering operator (Proctor 1982) or an O'Hara injection (1990).
 
 **Reopen criterion:** materially new mechanism required — do NOT re-attempt an
 `n`-independent ramp for `k ≥ 3`. Family is at its elementary tractable ceiling.
+
+## Session 2026-07-22 (researcher-1): k = 3 closed via dual-Pascal center-band recursion
+
+Key idea: swap recurrences. First q-Pascal form `[n+1,3] = [n,2] + q³[n,3]` fails past the
+`[n,2]` peak (shifted term must strictly compensate a negative increment). The SECOND form
+`[N+4,3] = [N+3,3] + q^{N+1}[N+3,2]` (from `qBinom_pascal'`, k=2) has the k=2 term
+*unshifted*, so the increment decomposes as (previous box increment) + (k=2 ramp step
+`⌊i/2⌋` parity, exactly `[i odd] ∈ {0,1}`). The previous-box increment is ≥ 0 by induction
+below its midpoint, and at the ≤ 2 center-band indices it is EXACT by palindromy: the
+odd-degree center pair gives 0 outright, and the other reflection lands on the *previous*
+center band — a tiny self-contained period-2 recursion (`qBinom_X_three_band`):
+odd box 0; even box `[M even]`, `[M odd]`.
+
+Lean idioms: canonicalize every index with `rw [show a = b from by omega]` BEFORE linarith
+(atoms must match syntactically); div-parity facts as `((M/2 : ℕ) : ℤ) = (((M−1)/2 : ℕ) : ℤ)
++ if M % 2 = 0 then 1 else 0` via `by_cases` + `exact_mod_cast (by omega)`; equation-compiler
+mutual recursion packaged as `∀ M, O M ∧ E2 M` with helper `E2_of_O`. GOTCHA: `le_or_lt` is
+gone at v4.31-era Mathlib — use `Nat.lt_or_ge` (bare `lt_or_ge`/`eq_or_lt_of_le` still exist).
