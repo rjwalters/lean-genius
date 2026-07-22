@@ -410,4 +410,40 @@ theorem sidonNumber_six : sidonNumber 6 = 4 := by
   · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 6 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
 
+/-- `h(7) = 4`: the counting bound rules out a 5-element Sidon set
+(`5·4 = 20 > 14 = 2·7`), and `{0,1,4,6} ⊆ {0,…,7}` still attains `4`.
+
+Unlike `h(6)`, the quadratic `m² ≤ 2·7 + m` has its real root at `(1+√57)/2 ≈ 4.27`,
+so `nlinarith` needs the integrality step `5 ≤ m` (from `4 < m` over `ℕ`) to exclude
+the real gap `(4, 4.27]`. -/
+theorem sidonNumber_seven : sidonNumber 7 = 4 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h5 : 5 ≤ m := hc
+    nlinarith [hm, h5]
+  · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 7 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
+
+/-- `h(8) = 4`: `5·4 = 20 > 16 = 2·8` still blocks a 5-element Sidon set, and
+`{0,1,4,6} ⊆ {0,…,8}` attains `4`. -/
+theorem sidonNumber_eight : sidonNumber 8 = 4 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h5 : 5 ≤ m := hc
+    nlinarith [hm, h5]
+  · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 8 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
+
+/-- `h(9) = 4`: `5·4 = 20 > 18 = 2·9` blocks a 5-element Sidon set, and
+`{0,1,4,6} ⊆ {0,…,9}` attains `4`.  `h(10)` is the first value where the counting
+bound goes slack (`5·4 = 20 = 2·10` admits `m = 5`), so the table's easy stretch
+ends here — a 5-element Sidon set first fits at `N = 11` (`{0,1,4,9,11}`). -/
+theorem sidonNumber_nine : sidonNumber 9 = 4 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; rw [not_le] at hc
+    have h5 : 5 ≤ m := hc
+    nlinarith [hm, h5]
+  · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 9 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
+
 end Erdos30
