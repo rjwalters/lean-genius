@@ -118,25 +118,25 @@
       "id": "core-identity",
       "title": "The Fubini identity and the main inequality",
       "startLine": 88,
-      "endLine": 159,
-      "summary": "chebyshev_integral_monotoneOn_setIntegral. After the degenerate a=b case, sets μ = volume.restrict (Icc a b) (mass b−a), proves integrability of f, g, f·g and of the four product cross-terms, then shows ∫∫(f x−f y)(g x−g y) d(μ×μ) = 2(b−a)∫fg − 2(∫f)(∫g) via integral_prod_mul / integral_fun_fst / integral_fun_snd; nonnegativity of the integrand closes it.",
+      "endLine": 171,
+      "summary": "chebyshev_integral_monotoneOn_setIntegral. After the degenerate a=b case, sets μ = volume.restrict (Icc a b) (mass b−a), proves integrability of f, g, f·g and of the four product cross-terms, then shows ∫∫(f x−f y)(g x−g y) d(μ×μ) = 2(b−a)∫fg − 2(∫f)(∫g) via integral_prod_mul / integral_fun_fst / integral_fun_snd; nonnegativity of the integrand (transported to the square [a,b]² via Measure.prod_restrict) closes the theorem.",
       "mathContext": "$\\iint (f(x)-f(y))(g(x)-g(y)) = 2(b-a)\\!\\int\\! fg - 2\\big(\\!\\int\\! f\\big)\\big(\\!\\int\\! g\\big) \\ge 0$."
     },
     {
       "id": "reverse",
       "title": "Reverse inequality for opposite monotonicity",
-      "startLine": 161,
-      "endLine": 171,
+      "startLine": 173,
+      "endLine": 184,
       "summary": "chebyshev_integral_antitoneOn_setIntegral: with f monotone and g antitone, −g is monotone, so the main theorem applied to (f, −g) and simplified with mul_neg / integral_neg yields the reversed bound (b−a)∫fg ≤ (∫f)(∫g).",
       "mathContext": "$f\\uparrow,\\ g\\downarrow \\;\\Rightarrow\\; (b-a)\\!\\int\\! fg \\le \\big(\\!\\int\\! f\\big)\\big(\\!\\int\\! g\\big)$."
     },
     {
       "id": "interval-forms",
       "title": "Interval-integral statements",
-      "startLine": 173,
-      "endLine": 195,
-      "summary": "chebyshev_integral_monotoneOn and chebyshev_integral_antitoneOn restate both inequalities with the familiar interval integral ∫ x in a..b, obtained from the set-integral forms via integral_of_le and integral_Icc_eq_integral_Ioc.",
-      "mathContext": "$\\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big) \\le (b-a)\\int_a^b f\\cdot g$."
+      "startLine": 186,
+      "endLine": 212,
+      "summary": "chebyshev_integral_monotoneOn and chebyshev_integral_antitoneOn restate both the monotone and the reversed antitone inequalities with the familiar interval integral ∫ x in a..b, obtained from the set-integral forms via integral_of_le and integral_Icc_eq_integral_Ioc (Icc and Ioc agree up to a null set).",
+      "mathContext": "$\\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big) \\le (b-a)\\int_a^b f\\cdot g$, and its antitone reverse $(b-a)\\int_a^b fg \\le \\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big)$."
     }
   ],
   "conclusion": {

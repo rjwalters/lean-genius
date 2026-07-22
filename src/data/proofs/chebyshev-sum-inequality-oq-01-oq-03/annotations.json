@@ -50,10 +50,10 @@
   {
     "id": "ann-cheby-oq0103-reverse",
     "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
-    "range": { "startLine": 161, "endLine": 195 },
+    "range": { "startLine": 161, "endLine": 212 },
     "type": "tactic",
     "title": "Reverse inequality and interval-integral packaging",
-    "content": "For opposite monotonicity (f up, g down), −g is monotone, so applying the main theorem to (f, −g) and simplifying with mul_neg / integral_neg flips the inequality to (b−a)∫fg ≤ (∫f)(∫g). Finally both directions are restated with the everyday interval integral ∫ x in a..b via integral_of_le and integral_Icc_eq_integral_Ioc (Icc and Ioc agree up to a null set).",
+    "content": "For opposite monotonicity (f up, g down), −g is monotone, so applying the main theorem to (f, −g) and simplifying with mul_neg / integral_neg flips the inequality to (b−a)∫fg ≤ (∫f)(∫g) (chebyshev_integral_antitoneOn_setIntegral). Finally both directions — chebyshev_integral_monotoneOn and chebyshev_integral_antitoneOn — are restated with the everyday interval integral ∫ x in a..b via integral_of_le and integral_Icc_eq_integral_Ioc (Icc and Ioc agree up to a null set).",
     "mathContext": "$f\\uparrow, g\\downarrow \\Rightarrow (b-a)\\int_a^b fg \\le \\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big)$.",
     "significance": "supporting",
     "relatedConcepts": ["AntitoneOn.neg", "intervalIntegral", "integral_neg"],
