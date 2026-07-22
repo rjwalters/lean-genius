@@ -130,3 +130,9 @@ Closed the practicality criterion into a genuine **iff** in `Erdos18WIP01.lean`
 The prime-factorisation form (`p₁ = 2`, `pᵢ ≤ σ(∏_{j<i} pⱼ^aⱼ)+1`) would follow from this
 divisor-chain iff plus a sorted-prime bookkeeping layer — mechanical but sizeable. `h(m)`
 growth (`conjecture_part1/2`, the $250 `h(n!) < n^{o(1)}`) remains unformalized and deep.
+
+### Follow-on (same PR #41201): consecutive-integer closure
+- `succ_mul_self_practical` — `n practical ⟹ (n+1)·n practical` (0-axiom). One-line
+  corollary of `mul_practical_of_le_succ_sigma` with multiplier `n+1`: `n ∣ n` ⟹ `σ(n) ≥ n`
+  ⟹ `n+1 ≤ σ(n)+1`. Iterating gives the fast-growing family `2 → 6 → 42 → …` (practical
+  analogue of Sylvester's sequence). Clean, unblocked.

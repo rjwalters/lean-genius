@@ -41,7 +41,8 @@
       "two_pow_practical in Erdos18WIP01.lean: IsPractical (2^n) for all n (infinite family)",
       "infinite_practicalNumbers in Erdos18WIP01.lean: PracticalNumbers.Infinite",
       "two_dvd_of_practical / even_of_practical in Erdos18WIP01.lean: practical m>=3 => 2 | m (necessary condition)",
-      "divisor_chain_of_practical / practical_of_divisor_chain_condition / practical_iff_divisor_chain in Erdos18WIP01.lean (necessary + sufficient divisor-gap condition, iff)"
+      "divisor_chain_of_practical / practical_of_divisor_chain_condition / practical_iff_divisor_chain in Erdos18WIP01.lean (necessary + sufficient divisor-gap condition, iff)",
+      "succ_mul_self_practical: n practical ⟹ n(n+1) practical (0-axiom corollary of Stewart–Sierpiński)"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
