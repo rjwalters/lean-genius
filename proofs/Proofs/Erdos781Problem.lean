@@ -112,8 +112,8 @@ a monochromatic k-term descending wave.
 
 This is the central object of study in Erdős Problem #781.
 -/
-noncomputable def f (k : ℕ) : ℕ :=
-  Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified; actual min is complex
+axiom f : ℕ → ℕ
+  -- Uninterpreted; characterized by BEF_lower_bound, alon_spencer_cubic, f_1, f_2, f_3 below
 
 /-  f is well-defined for k ≥ 1. -/
 /-  f(k) is minimal. -/
@@ -210,8 +210,8 @@ def IsAscendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     seq j - seq ⟨j.val - 1, by omega⟩ ≤ seq ⟨j.val + 1, by omega⟩ - seq j
 
 /-- The function g(k) for ascending waves. -/
-noncomputable def g (k : ℕ) : ℕ :=
-  Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified
+axiom g : ℕ → ℕ
+  -- Uninterpreted analog of f for ascending waves (no defining axioms in this file)
 
 /-  Ascending and descending waves have similar growth.
     In fact, the paper is titled "Ascending waves" because the

@@ -43,7 +43,7 @@
       "HasNonIncreasingGaps equivalent characterization",
       "DescendingWaveIn structure for waves in sets",
       "HasMonochromaticWave predicate",
-      "f function for minimal n",
+      "f axiomatized as minimal n (uninterpreted function)",
       "ErdosConjecture781 formal statement",
       "BEF_lower_bound and BEF_upper_bound axioms",
       "alon_spencer_cubic axiom: f(k) ≫ k³",
@@ -52,11 +52,11 @@
       "IsQuasiProgression connection",
       "erdos_781_summary main theorem"
     ],
-    "axiomCount": 5,
-    "assumptions": "5 axioms (BEF_lower_bound, alon_spencer_cubic, f_1, f_2, f_3) and 0 sorries. Key bounds axiomatized from Brown-Erdos-Freedman (1990) and Alon-Spencer (1989). The disproof theorem is fully proved from axiomatized small values.",
+    "axiomCount": 7,
+    "assumptions": "7 axioms (f, g, BEF_lower_bound, alon_spencer_cubic, f_1, f_2, f_3) and 0 sorries. f and g were previously defined via a `Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)` construction, but that predicate is trivially satisfied at n=0, so Nat.find provably returned 0 for every k — directly contradicting axioms f_1/f_2/f_3 (which pin f 1=1, f 2=2, f 3=7) and making the file's axiom set kernel-inconsistent (False was derivable). Fixed by declaring f and g as bare axioms (uninterpreted functions), matching this file's existing axiomatized style. Key bounds remain axiomatized from Brown-Erdos-Freedman (1990) and Alon-Spencer (1989); the disproof theorem is fully proved from the axiomatized small values.",
     "lineCount": 265,
     "theoremCount": 6,
-    "definitionCount": 11
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "**Erdős Problem #781: Descending Waves in 2-Colorings**\n\nThis problem concerns monochromatic patterns in 2-colorings of integers, specifically \"descending waves\" where successive gaps are non-increasing.\n\n**Key History:**\n- Brown, Erdős, Freedman (1990): Introduced the problem, proved k² - k + 1 ≤ f(k) ≤ (k³ - 4k + 9)/3\n- Alon, Spencer (1989): DISPROVED the conjecture by showing f(k) ≫ k³\n\n**Mathematical Setting:**\nA descending wave x₁ < x₂ < ... < xₖ satisfies x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently, the gaps (x_{i+1} - x_i) form a non-increasing sequence.",
@@ -104,10 +104,10 @@
     {
       "id": "f-function",
       "title": "The Function f(k)",
-      "summary": "Defines `f(k) = min{n | every 2-coloring of {1,...,n} has a monochromatic k-wave}` via `Nat.find`. documents in source comments `f_exists` (no Lean declaration exists) (Ramsey property at $n = f(k)$) and `f_minimal` (some coloring avoids waves for $n < f(k)$).",
+      "summary": "Axiomatizes `f : ℕ → ℕ` as an uninterpreted function, intended to denote $\\min\\{n \\mid$ every 2-coloring of $\\{1,\\ldots,n\\}$ has a monochromatic $k$-wave$\\}$; characterized only by the BEF_lower_bound/alon_spencer_cubic/f_1/f_2/f_3 axioms below (previously a `Nat.find` def that was provably ≡ 0, contradicting those axioms).",
       "startLine": 110,
       "endLine": 122,
-      "mathContext": "Defines `f(k) = min{n | every 2-coloring of {1,...,n} has a monochromatic k-wave}` via `Nat.find`. documents in source comments `f_exists` (no Lean declaration exists) (Ramsey property at $n = f(k)$) and `f_minimal` (some coloring avoids waves for $n < f(k)$)."
+      "mathContext": "Axiomatizes `f : ℕ → ℕ` as an uninterpreted function, intended to denote $\\min\\{n \\mid$ every 2-coloring of $\\{1,\\ldots,n\\}$ has a monochromatic $k$-wave$\\}$; characterized only by the BEF_lower_bound/alon_spencer_cubic/f_1/f_2/f_3 axioms below (previously a `Nat.find` def that was provably ≡ 0, contradicting those axioms)."
     },
     {
       "id": "conjecture",
@@ -160,10 +160,10 @@
     {
       "id": "ascending-waves",
       "title": "Ascending Waves and Symmetric Growth",
-      "summary": "Defines `IsAscendingWave` (gaps non-decreasing) and `g(k)` (analog of $f(k)$). documents in source comments `ascending_descending_similar` (no Lean declaration exists): $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$. The Alon-Spencer paper is titled 'Ascending waves' but treats both cases.",
+      "summary": "Defines `IsAscendingWave` (gaps non-decreasing) and axiomatizes `g : ℕ → ℕ` (uninterpreted analog of $f(k)$; no defining axioms about g in this file). documents in source comments `ascending_descending_similar` (no Lean declaration exists): $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$. The Alon-Spencer paper is titled 'Ascending waves' but treats both cases.",
       "startLine": 203,
       "endLine": 217,
-      "mathContext": "Defines `IsAscendingWave` (gaps non-decreasing) and `g(k)` (analog of $f(k)$). documents in source comments `ascending_descending_similar` (no Lean declaration exists): $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$."
+      "mathContext": "Defines `IsAscendingWave` (gaps non-decreasing) and axiomatizes `g : ℕ → ℕ` (uninterpreted analog of $f(k)$; no defining axioms about g in this file). documents in source comments `ascending_descending_similar` (no Lean declaration exists): $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ AND $c_1 k^3 \\leq g(k) \\leq c_2 k^3$."
     },
     {
       "id": "quasi-progressions",
@@ -204,9 +204,9 @@
     ],
     "namespace": "Erdos781",
     "lineCount": 265,
-    "axiomCount": 5,
+    "axiomCount": 7,
     "theoremCount": 6,
-    "definitionCount": 11,
+    "definitionCount": 9,
     "path": "Proofs/Erdos781Problem.lean",
     "sorries": 0
   },
