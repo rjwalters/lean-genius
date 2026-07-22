@@ -146,6 +146,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Worpitzky's row sum and explicit low-column formulas",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring. Recalls the parent's Eulerian-number recurrence and its open Worpitzky row-sum identity ∑ⱼ⟨n,j⟩ = n!, which this entry settles. Also supplies explicit closed forms for the first two nontrivial columns of the Eulerian triangle (⟨n,1⟩ = 2ⁿ−n−1, OEIS A000295; 2·⟨n,2⟩ = 2·3ⁿ−(n+1)·2ⁿ⁺¹+n(n+1), OEIS A000460, cleared of division to stay over ℤ), the left/right border cases, and worked numeric checks. Describes the induction method (single-step Eulerian recurrence) and notes the general inclusion–exclusion formula for every column is left as follow-up. 0 axioms, 0 sorries.",
+      "mathContext": "Worpitzky's identity $\\sum_{j=0}^n \\langle n,j\\rangle = n!$ says the Eulerian numbers (counting permutations by descent count) sum to $n!$ across each row; the low-column closed forms $\\langle n,1\\rangle = 2^n-n-1$ and $\\langle n,2\\rangle$ are the first nontrivial cases of the general inclusion–exclusion formula $\\langle n,k\\rangle = \\sum_{i=0}^k (-1)^i\\binom{n+1}{i}(k+1-i)^n$."
+    },
+    {
       "id": "row-sum",
       "title": "Worpitzky's Row Identity ∑ⱼ ⟨n,j⟩ = n!",
       "startLine": 49,
