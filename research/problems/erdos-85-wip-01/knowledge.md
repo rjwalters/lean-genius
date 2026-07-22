@@ -326,3 +326,49 @@ axiom-free (no `native_decide`, kernel `decide` on small numerals only), host-ve
   min-deg 4 on 8 vtx forces 16 > 11 edges — but 3-regular on 8 vtx = 12 > 11 edges too, so
   f(8) = 3 IF ex(8;C₄) = 11 formalizable. Genuine next target but needs real extremal input.
 - The OPEN core remains eventual monotonicity f(n+1) ≥ f(n) — untouched.
+
+## Session 2026-07-22b (researcher-1) — f(8) = 3 via local triangle-partition (no ex(n;C₄) input)
+
+**Mode**: attack the recorded "f(8)=3 iff ex(8;C₄)=11" blocker head-on. **Outcome**: the
+blocker was WRONG (second time a "needs extremal tables" note fell) — f(8) = 3 proved with
+purely local arguments. 6 theorems, axiom-free (no `native_decide`; kernel `decide` on small
+numerals only), host-verified `lake env lean` exit 0, zero warnings. File 1014→1377 lines,
+theoremCount 39→45.
+
+**Reduction to 3-regular** (`containsC4_of_eight_min_degree_three`): with min-deg ≥ 3 on 8
+vertices, a vertex of degree ≥ 5 gives cherry count ≥ 7·3 + 10 = 31 > 28 = C(8,2); two
+vertices of degree ≥ 4 give ≥ 6·3 + 6 + 6 = 30 > 28; exactly one vertex of degree 4 makes
+the degree sum 7·3 + 4 = 25 odd — handshake. So either a C₄ exists or G is 3-regular.
+
+**No 3-regular C₄-free graph on 8 vertices** (`containsC4_of_three_regular_eight`), locally:
+- `exists_triangle_of_three_regular`: if v's neighbours a,b,c were pairwise non-adjacent,
+  the punctured neighbourhoods N(·)\{v} are pairwise-disjoint 2-sets (a shared vertex = a
+  second common neighbour = C₄) avoiding {v,a,b,c} — six vertices in 8−4 = 4 slots.
+- `triangle_pair_unique`: two triangles through v coincide, or give an edge at v with two
+  common neighbours (C₄), or force deg v ≥ 4.
+- So `t w := {w, f w, g w}` is coherent (`t u = t w` for `u ∈ t w`) and the image
+  `T = univ.image t` partitions Fin 8 into 3-sets: `8 = 3·|T|`, absurd (omega).
+
+### Reusable Lean recipe
+- v4.31 rename: `Finset.card_insert_of_not_mem` → `Finset.card_insert_of_notMem`.
+- `Finset.sum_erase_add` wants the eta-expanded function: `(fun v => G.degree v)`, NOT bare
+  `G.degree` (elaboration mismatch against the motive).
+- whnf-heartbeat trap: `exact Finset.mem_biUnion.mpr ⟨t x, Finset.mem_image_of_mem …, hmem x⟩`
+  against a `set`-bound `T : Finset (Finset (Fin 8))` blows 200k heartbeats unifying the
+  `DecidableEq (Finset (Fin 8))` instances through the let-binding. Fix: split out
+  `have hx : t x ∈ T := by rw [hT]; exact Finset.mem_image_of_mem t (Finset.mem_univ x)`
+  first — the `rw` aligns the instances syntactically; then the `.mpr` is instant.
+- `rw [← hu]` with `hu : #univ = 8` on goal `8 = 3 * #T` fails (motive not type correct):
+  the abstracted `8` also occurs in `Fin 8` inside T's TYPE. Derive forward instead:
+  `have hu : #univ = 3 * #T := by rw [hcover, hcount, hsum3]` then `simpa using hu`.
+- Triangle partition assembly: `choose f g hf hg hfg using …` (∀v ∃ a b) → `set t := fun w
+  => {w, f w, g w}`; coherence via `triangle_pair_unique` + `ext`/`tauto`; count via
+  `Finset.card_biUnion` (needs `Set.PairwiseDisjoint` on `↑T` with `Function.onFun`/`id_eq`
+  simp) + `Finset.sum_congr`/`sum_const`.
+
+### Next
+- Exact table COMPLETE for 1 ≤ n ≤ 8: f = 1,2,3,2,3,3,3,3. VEIN SATURATED AGAIN.
+- f(9): cherry count silent (27 < 36); 3-regularity impossible on odd order, and the
+  parity boost only yields one degree-4 vertex — not enough. Needs a C₄-free min-deg-3
+  graph on 9 vertices (⟹ f(9) ≥ 4) or ex(9;C₄)-strength input.
+- f(10) = 4 (Petersen), dense C₄-free families, monotonicity core: unchanged, deep.

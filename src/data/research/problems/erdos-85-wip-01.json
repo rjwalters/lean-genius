@@ -20,11 +20,11 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 5,
-    "focus": "f(7)=3 PROVED (2026-07-22, parity refinement of cherry count) — former f(7) blocker resolved by a materially new mechanism (handshake parity boost), NOT ex(n;C4). Exact table complete 1<=n<=7. Remaining routes (f(8)+, odd-s Beatty, monotonicity) are deep; blockers updated.",
+    "iteration": 6,
+    "focus": "f(8)=3 PROVED (2026-07-22, local triangle-partition argument) — the recorded 'f(8) needs ex(8;C4)=11' blocker was WRONG: min-deg-3 on 8 vertices reduces to the 3-regular case (cherry count + handshake parity kill any degree-4+ vertex), and a 3-regular C4-free graph on 8 vertices is impossible purely locally (every vertex lies in a unique triangle => triangles partition 8 vertices into 3-sets, 3∤8). Exact table complete 1<=n<=8: f = 1,2,3,2,3,3,3,3. Remaining routes (f(9), f(10)=4 Petersen, odd-s Beatty, monotonicity core) are deep; blockers updated.",
     "blockers": [
       {
-        "route": "RESOLVED 2026-07-22 (was: sharp exact value f(7)=3): handshake-parity boost of the cherry count proved f(7)=3 without ex(n;C4). Residual blocked part: upper-Beatty points beyond j=1 (n = s^2+s+j, j>=2) and odd-s points still need ex(n;C4)-strength input.",
+        "route": "RESOLVED 2026-07-22 (was: f(7)=3, then f(8)=3): handshake-parity boost proved f(7)=3; a LOCAL triangle-partition argument (no ex(n;C4) input) proved f(8)=3. Residual blocked part: upper-Beatty points beyond j=1 (n = s^2+s+j, j>=2), odd-s points, and f(9) still need ex(n;C4)-strength input.",
         "reopenCriterion": "materially new mechanism required (parity boost provably insufficient for j>=2 and for even k)",
         "blockedAt": "2026-07-22"
       },
@@ -44,7 +44,7 @@
         "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "STAND DOWN on elementary work. Reopen only per a blocker reopenCriterion: an ex(n;C4) edge bound (unlocks f(7)=3), a decide-free Petersen (f(10)=4), a dense C4-free family (KST lower bound), or the open monotonicity core.",
+    "nextAction": "STAND DOWN on elementary work. Reopen only per a blocker reopenCriterion: an ex(n;C4) edge bound (unlocks f(9)), a decide-free Petersen (f(10)=4), a dense C4-free family (KST lower bound), or the open monotonicity core. Note: the triangle-partition trick is 8-specific. At n=9 the cherry count is silent (9*C(3,2)=27 < 36=C(9,2)) so it cannot reduce min-deg 3 to a regular case; pinning f(9) in {3,4} needs either a C4-free min-deg-3 graph on 9 vertices (would give f(9)>=4) or an ex(9;C4)-strength edge bound.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -52,7 +52,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Exact-value table now complete for 1<=n<=7 (f = 1,2,3,2,3,3,3). f(7)=3 proved 2026-07-22 via a PARITY REFINEMENT of the KST cherry count — the previously recorded blocker ('needs ex(7;C4)=9') was WRONG: on odd n with odd min-degree k, the handshake identity forces a vertex of degree k+1, upgrading the cherry count to (n-1)C(k,2)+C(k+1,2) > C(n,2). Same mechanism gives the infinite family f(4m^2+2m+1) <= 2m+1 = sqrt(n)+1 at the first point of each even upper Beatty half, where plain counting is provably stuck at sqrt(n)+2. Remaining: f(8),f(9) (need ex(n;C4)-strength input), odd-s Beatty points (parity silent), monotonicity core OPEN.",
+    "progressSummary": "PROGRESS: Exact-value table complete for 1<=n<=8 (f = 1,2,3,2,3,3,3,3). f(8)=3 proved 2026-07-22 via a LOCAL triangle-partition argument — the recorded blocker ('f(8)=3 iff ex(8;C4)=11 formalized') was WRONG. Reduction: a degree-5 vertex gives 31>28 cherries, two degree-4 vertices give 30>28, exactly one degree-4 vertex makes the degree sum 25 odd (handshake), so min-deg 3 on 8 vertices reduces to 3-regular; there a C4-free graph would have every vertex in a UNIQUE triangle (pairwise-disjoint punctured neighbourhoods pack 6 vertices into 4 slots otherwise; two triangles at v give a C4 or degree>=4), so triangles partition the 8 vertices into 3-sets — 3∤8. Earlier: f(7)=3 via handshake-parity boost; f(4m^2+2m+1)<=2m+1=sqrt(n)+1 upper-Beatty family. Remaining: f(9) (parity silent, needs ex(n;C4)-strength input), f(10)=4 (Petersen), odd-s Beatty, monotonicity core OPEN.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -78,7 +78,13 @@
       "minDegreeForC4_le_of_choose_lt_odd in Erdos85Problem.lean (parity-refined KST bound)",
       "minDegreeForC4_seven in Erdos85Problem.lean (f(7)=3, fourth exact value)",
       "choose_lt_family (private) + minDegreeForC4_le_of_upper_beatty in Erdos85Problem.lean (f(4m^2+2m+1) <= 2m+1)",
-      "minDegreeForC4_le_sqrt_add_one_of_upper_beatty in Erdos85Problem.lean (sqrt(n)+1 on upper-Beatty family)"
+      "minDegreeForC4_le_sqrt_add_one_of_upper_beatty in Erdos85Problem.lean (sqrt(n)+1 on upper-Beatty family)",
+      "containsC4_of_two_common (two common neighbours of a vertex pair give a C4; repackages containsC4_of_rim) in Erdos85Problem.lean",
+      "exists_triangle_of_three_regular (3-regular C4-free on Fin 8: every vertex lies in a triangle, by packing punctured neighbourhoods) in Erdos85Problem.lean",
+      "triangle_pair_unique (at degree 3 the triangle through a vertex is unique) in Erdos85Problem.lean",
+      "containsC4_of_three_regular_eight (no 3-regular C4-free graph on 8 vertices: triangle partition, 3∤8) in Erdos85Problem.lean",
+      "containsC4_of_eight_min_degree_three (min-deg 3 on Fin 8 forces C4: cherry-count + parity casework down to 3-regular) in Erdos85Problem.lean",
+      "minDegreeForC4_eight (f(8)=3, FIFTH exact value; table complete 1..8) in Erdos85Problem.lean — all 0-axiom, host-verified lake env lean exit 0"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",

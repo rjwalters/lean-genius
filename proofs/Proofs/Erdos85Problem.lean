@@ -1011,4 +1011,367 @@ theorem minDegreeForC4_le_sqrt_add_one_of_upper_beatty {m : ℕ} (hm : 1 ≤ m) 
   rw [hsqrt]
   exact minDegreeForC4_le_of_upper_beatty m
 
+/-!
+## A fifth exact value: `f(8) = 3` — beyond the counting/parity barrier
+
+Cherry counting stalls at `f(8) ≤ 4` (`C(8,2) = 28 ≥ 24 = 8·C(3,2)`, no strict excess) and
+the odd-order parity boost is silent (`8` is even).  Earlier sessions recorded `f(8) = 3` as
+needing the extremal table value `ex(8; C₄) = 11`.  It does not.  Minimum degree `3` on `8`
+vertices reduces to the `3`-regular case — a vertex of degree `≥ 5` gives `31 > 28`
+cherries, two vertices of degree `4` give `30 > 28`, and *exactly one* vertex of degree `4`
+makes the degree sum `25`, odd, contradicting the handshake identity.  And a `3`-regular
+`C₄`-free graph on `8` vertices is impossible by a purely **local** argument:
+
+* **every vertex would lie in a triangle**: if the three neighbours `a, b, c` of `v` were
+  pairwise non-adjacent, the punctured neighbourhoods `N(a)\{v}`, `N(b)\{v}`, `N(c)\{v}`
+  (each of size `2`) would be pairwise disjoint — a shared vertex is a second common
+  neighbour of two of `a, b, c`, i.e. a `C₄` — and avoid all of `v, a, b, c`, packing `6`
+  vertices into the remaining `8 − 4 = 4`;
+* **the triangle through a vertex is unique** at degree `3`: two triangles through `v`
+  either coincide, or exhibit two common neighbours of an edge at `v` (a `C₄`), or force
+  `deg v ≥ 4`;
+* so the triangles would **partition** the `8` vertices into disjoint `3`-sets — `3 ∣ 8`,
+  absurd.
+
+This breaks the "needs `ex(n; C₄)` tables" barrier for the first even-order value past the
+counting threshold and completes the exact-value table for `1 ≤ n ≤ 8`.
+-/
+
+/-- **Two common neighbours make a `C₄`.**  If distinct `x, y` have distinct common
+neighbours `v, v'`, the rim `x–v–y–v'` is a `4`-cycle.  (Repackages `containsC4_of_rim`;
+`C₄`-freeness is exactly "every vertex pair has at most one common neighbour".) -/
+theorem containsC4_of_two_common {V : Type*} {G : SimpleGraph V} {x y v v' : V}
+    (hxy : x ≠ y) (hvv : v ≠ v') (hvx : G.Adj v x) (hvy : G.Adj v y)
+    (hv'x : G.Adj v' x) (hv'y : G.Adj v' y) : containsC4 V G :=
+  containsC4_of_rim hvx.symm hvy hv'y.symm hv'x hxy hvv
+    (G.ne_of_adj hvx) (G.ne_of_adj hvy) (G.ne_of_adj hv'x) (G.ne_of_adj hv'y)
+
+/-- **In a `3`-regular `C₄`-free graph on `8` vertices, every vertex lies in a triangle.**
+If `v`'s neighbours `a, b, c` were pairwise non-adjacent, their punctured neighbourhoods
+`N(·) \ {v}` would be pairwise-disjoint `2`-sets avoiding `{v, a, b, c}` — six vertices in
+the remaining four slots. -/
+theorem exists_triangle_of_three_regular {G : SimpleGraph (Fin 8)} [DecidableRel G.Adj]
+    (hreg : ∀ w : Fin 8, G.degree w = 3) (hfree : ¬ containsC4 (Fin 8) G) (v : Fin 8) :
+    ∃ a b : Fin 8, G.Adj v a ∧ G.Adj v b ∧ G.Adj a b := by
+  have hcard : (G.neighborFinset v).card = 3 := by
+    rw [G.card_neighborFinset_eq_degree]; exact hreg v
+  obtain ⟨a, b, c, hab, hac, hbc, hN⟩ := Finset.card_eq_three.mp hcard
+  have hva : G.Adj v a := (G.mem_neighborFinset v a).mp (by rw [hN]; simp)
+  have hvb : G.Adj v b := (G.mem_neighborFinset v b).mp (by rw [hN]; simp)
+  have hvc : G.Adj v c := (G.mem_neighborFinset v c).mp (by rw [hN]; simp)
+  by_contra hcon
+  push Not at hcon
+  have hnab : ¬ G.Adj a b := hcon a b hva hvb
+  have hnac : ¬ G.Adj a c := hcon a c hva hvc
+  have hnbc : ¬ G.Adj b c := hcon b c hvb hvc
+  -- pairwise disjointness of the punctured neighbourhoods
+  have hkey : ∀ p q : Fin 8, G.Adj v p → G.Adj v q → p ≠ q →
+      Disjoint ((G.neighborFinset p).erase v) ((G.neighborFinset q).erase v) := by
+    intro p q hvp hvq hpq
+    rw [Finset.disjoint_left]
+    intro x hxp hxq
+    obtain ⟨hxv, hxp'⟩ := Finset.mem_erase.mp hxp
+    obtain ⟨-, hxq'⟩ := Finset.mem_erase.mp hxq
+    exact hfree (containsC4_of_two_common hpq (Ne.symm hxv) hvp hvq
+      ((G.mem_neighborFinset p x).mp hxp').symm ((G.mem_neighborFinset q x).mp hxq').symm)
+  have hcard2 : ∀ p : Fin 8, G.Adj v p → ((G.neighborFinset p).erase v).card = 2 := by
+    intro p hvp
+    rw [Finset.card_erase_of_mem ((G.mem_neighborFinset p v).mpr hvp.symm),
+        G.card_neighborFinset_eq_degree, hreg p]
+  -- the union has six elements
+  have hdab := hkey a b hva hvb hab
+  have hdac := hkey a c hva hvc hac
+  have hdbc := hkey b c hvb hvc hbc
+  have h1 : ((G.neighborFinset a).erase v ∪ (G.neighborFinset b).erase v).card = 4 := by
+    rw [Finset.card_union_of_disjoint hdab, hcard2 a hva, hcard2 b hvb]
+  have hdc : Disjoint ((G.neighborFinset a).erase v ∪ (G.neighborFinset b).erase v)
+      ((G.neighborFinset c).erase v) := Finset.disjoint_union_left.mpr ⟨hdac, hdbc⟩
+  have hScard : (((G.neighborFinset a).erase v ∪ (G.neighborFinset b).erase v)
+      ∪ (G.neighborFinset c).erase v).card = 6 := by
+    rw [Finset.card_union_of_disjoint hdc, h1, hcard2 c hvc]
+  -- ... but it sits inside the four vertices outside {v, a, b, c}
+  have hmv : v ∈ (univ : Finset (Fin 8)) := Finset.mem_univ v
+  have hma : a ∈ (univ : Finset (Fin 8)).erase v :=
+    Finset.mem_erase.mpr ⟨(G.ne_of_adj hva).symm, Finset.mem_univ a⟩
+  have hmb : b ∈ ((univ : Finset (Fin 8)).erase v).erase a :=
+    Finset.mem_erase.mpr ⟨(hab).symm,
+      Finset.mem_erase.mpr ⟨(G.ne_of_adj hvb).symm, Finset.mem_univ b⟩⟩
+  have hmc : c ∈ (((univ : Finset (Fin 8)).erase v).erase a).erase b :=
+    Finset.mem_erase.mpr ⟨(hbc).symm, Finset.mem_erase.mpr ⟨(hac).symm,
+      Finset.mem_erase.mpr ⟨(G.ne_of_adj hvc).symm, Finset.mem_univ c⟩⟩⟩
+  have htcard : (((((univ : Finset (Fin 8)).erase v).erase a).erase b).erase c).card = 4 := by
+    rw [Finset.card_erase_of_mem hmc, Finset.card_erase_of_mem hmb,
+        Finset.card_erase_of_mem hma, Finset.card_erase_of_mem hmv,
+        Finset.card_univ, Fintype.card_fin]
+  have hsub : ((G.neighborFinset a).erase v ∪ (G.neighborFinset b).erase v)
+      ∪ (G.neighborFinset c).erase v
+      ⊆ ((((univ : Finset (Fin 8)).erase v).erase a).erase b).erase c := by
+    intro x hx
+    have hx3 : x ∈ (G.neighborFinset a).erase v ∨ x ∈ (G.neighborFinset b).erase v
+        ∨ x ∈ (G.neighborFinset c).erase v := by
+      rcases Finset.mem_union.mp hx with h | h
+      · rcases Finset.mem_union.mp h with h' | h'
+        · exact Or.inl h'
+        · exact Or.inr (Or.inl h')
+      · exact Or.inr (Or.inr h)
+    rcases hx3 with hxm | hxm | hxm
+    · obtain ⟨hxv, hm⟩ := Finset.mem_erase.mp hxm
+      have hax : G.Adj a x := (G.mem_neighborFinset a x).mp hm
+      refine Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨?_,
+        Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨hxv, Finset.mem_univ x⟩⟩⟩⟩
+      · rintro rfl; exact hnac hax
+      · rintro rfl; exact hnab hax
+      · rintro rfl; exact (G.ne_of_adj hax) rfl
+    · obtain ⟨hxv, hm⟩ := Finset.mem_erase.mp hxm
+      have hbx : G.Adj b x := (G.mem_neighborFinset b x).mp hm
+      refine Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨?_,
+        Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨hxv, Finset.mem_univ x⟩⟩⟩⟩
+      · rintro rfl; exact hnbc hbx
+      · rintro rfl; exact (G.ne_of_adj hbx) rfl
+      · rintro rfl; exact hnab hbx.symm
+    · obtain ⟨hxv, hm⟩ := Finset.mem_erase.mp hxm
+      have hcx : G.Adj c x := (G.mem_neighborFinset c x).mp hm
+      refine Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨?_,
+        Finset.mem_erase.mpr ⟨?_, Finset.mem_erase.mpr ⟨hxv, Finset.mem_univ x⟩⟩⟩⟩
+      · rintro rfl; exact (G.ne_of_adj hcx) rfl
+      · rintro rfl; exact hnbc hcx.symm
+      · rintro rfl; exact hnac hcx.symm
+  have hle := Finset.card_le_card hsub
+  rw [hScard, htcard] at hle
+  omega
+
+/-- **At degree `3`, the triangle through a vertex is unique** (as its pair of non-apex
+vertices): two triangles `v–a–b` and `v–a'–b'` have `{a, b} = {a', b'}`, else either an
+edge at `v` acquires two common neighbours (a `C₄`) or `v` acquires four distinct
+neighbours. -/
+theorem triangle_pair_unique {G : SimpleGraph (Fin 8)} [DecidableRel G.Adj]
+    (hreg : ∀ w : Fin 8, G.degree w = 3) (hfree : ¬ containsC4 (Fin 8) G) {v a b a' b' : Fin 8}
+    (hva : G.Adj v a) (hvb : G.Adj v b) (hab : G.Adj a b)
+    (hva' : G.Adj v a') (hvb' : G.Adj v b') (hab' : G.Adj a' b') :
+    ({a, b} : Finset (Fin 8)) = {a', b'} := by
+  -- an edge at `v` with two distinct common neighbours yields a `C₄`
+  have hkill : ∀ p q q' : Fin 8, G.Adj v p → G.Adj v q → G.Adj v q' → q ≠ q' →
+      G.Adj p q → G.Adj p q' → False := by
+    intro p q q' hvp hvq hvq' hqq' hpq hpq'
+    exact hfree (containsC4_of_two_common (G.ne_of_adj hvp) hqq'
+      hvq.symm hpq.symm hvq'.symm hpq'.symm)
+  by_cases h1 : a' = a
+  · by_cases h2 : b' = b
+    · rw [h1, h2]
+    · -- edge `v–a` has common neighbours `b` and `b'`
+      have hab'' : G.Adj a b' := h1 ▸ hab'
+      exact (hkill a b b' hva hvb hvb' (fun h => h2 h.symm) hab hab'').elim
+  · by_cases h1b : a' = b
+    · by_cases h2 : b' = a
+      · rw [h1b, h2]; exact Finset.pair_comm a b
+      · -- edge `v–b` has common neighbours `a` and `b'`
+        have hab'' : G.Adj b b' := h1b ▸ hab'
+        exact (hkill b a b' hvb hva hvb' (fun h => h2 h.symm) hab.symm hab'').elim
+    · -- `a' ∉ {a, b}`: then `N(v) = {a, b, a'}` and `b'` must be one of them
+      have hcard : (G.neighborFinset v).card = 3 := by
+        rw [G.card_neighborFinset_eq_degree]; exact hreg v
+      have hsub3 : ({a, b, a'} : Finset (Fin 8)) ⊆ G.neighborFinset v := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl
+        · exact (G.mem_neighborFinset v x).mpr hva
+        · exact (G.mem_neighborFinset v x).mpr hvb
+        · exact (G.mem_neighborFinset v x).mpr hva'
+      have hcard3 : ({a, b, a'} : Finset (Fin 8)).card = 3 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton]
+              push Not
+              exact ⟨G.ne_of_adj hab, fun h => h1 h.symm⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]
+              exact fun h => h1b h.symm),
+            Finset.card_singleton]
+      have hNeq : ({a, b, a'} : Finset (Fin 8)) = G.neighborFinset v :=
+        Finset.eq_of_subset_of_card_le hsub3 (by rw [hcard, hcard3])
+      have hb'mem : b' ∈ ({a, b, a'} : Finset (Fin 8)) := by
+        rw [hNeq]; exact (G.mem_neighborFinset v b').mpr hvb'
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hb'mem
+      rcases hb'mem with h | h | h
+      · -- `b' = a`: edge `v–a` has common neighbours `b` and `a'`
+        have hab'' : G.Adj a' a := h ▸ hab'
+        exact (hkill a b a' hva hvb hva' (fun hh => h1b hh.symm) hab
+          hab''.symm).elim
+      · -- `b' = b`: edge `v–b` has common neighbours `a` and `a'`
+        have hab'' : G.Adj a' b := h ▸ hab'
+        exact (hkill b a a' hvb hva hva' (fun hh => h1 hh.symm) hab.symm
+          hab''.symm).elim
+      · -- `b' = a'`: a triangle needs distinct vertices
+        exact absurd h.symm (G.ne_of_adj hab')
+
+/-- **No `3`-regular `C₄`-free graph on `8` vertices.**  Every vertex lies in a triangle
+(`exists_triangle_of_three_regular`), the triangle through each vertex is unique
+(`triangle_pair_unique`), so the triangles partition the vertex set into `3`-sets —
+`3 ∣ 8`, absurd.  Contrapositive: every `3`-regular graph on `8` vertices contains a `C₄`. -/
+theorem containsC4_of_three_regular_eight (G : SimpleGraph (Fin 8)) [DecidableRel G.Adj]
+    (hreg : ∀ w : Fin 8, G.degree w = 3) : containsC4 (Fin 8) G := by
+  by_contra hfree
+  choose f g hf hg hfg using exists_triangle_of_three_regular hreg hfree
+  -- the triangle 3-set through each vertex
+  set t : Fin 8 → Finset (Fin 8) := fun w => {w, f w, g w} with ht
+  have htw : ∀ w : Fin 8, t w = {w, f w, g w} := fun _ => rfl
+  have hmem : ∀ w, w ∈ t w := by
+    intro w; rw [htw w]; exact Finset.mem_insert_self w _
+  have hcard3 : ∀ w, (t w).card = 3 := by
+    intro w
+    rw [htw w,
+        Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_insert, Finset.mem_singleton]
+          push Not
+          exact ⟨G.ne_of_adj (hf w), G.ne_of_adj (hg w)⟩),
+        Finset.card_insert_of_notMem (by
+          simp only [Finset.mem_singleton]
+          exact G.ne_of_adj (hfg w)),
+        Finset.card_singleton]
+  -- coherence: any member of `t w` has the same triangle
+  have hcoh : ∀ w u : Fin 8, u ∈ t w → t u = t w := by
+    intro w u hu
+    rw [htw w] at hu
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hu
+    rcases hu with h | h | h
+    · rw [h]
+    · -- `u = f w`: both `{f u, g u}` and `{w, g w}` are triangle pairs at `u`
+      have hpair := triangle_pair_unique hreg hfree (hf (f w)) (hg (f w)) (hfg (f w))
+        (hf w).symm (hfg w) (hg w)
+      rw [h, htw (f w), htw w, hpair]
+      ext x
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      tauto
+    · -- `u = g w`: both `{f u, g u}` and `{w, f w}` are triangle pairs at `u`
+      have hpair := triangle_pair_unique hreg hfree (hf (g w)) (hg (g w)) (hfg (g w))
+        (hg w).symm (hfg w).symm (hf w)
+      rw [h, htw (g w), htw w, hpair]
+      ext x
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      tauto
+  -- the distinct triangles partition `Fin 8`
+  set T : Finset (Finset (Fin 8)) := Finset.univ.image t with hT
+  have hcover : (Finset.univ : Finset (Fin 8)) = T.biUnion id := by
+    apply Finset.ext
+    intro x
+    constructor
+    · intro _
+      have hx : t x ∈ T := by
+        rw [hT]
+        exact Finset.mem_image_of_mem t (Finset.mem_univ x)
+      exact Finset.mem_biUnion.mpr ⟨t x, hx, hmem x⟩
+    · intro _
+      exact Finset.mem_univ x
+  have hdisjT : ((T : Set (Finset (Fin 8)))).PairwiseDisjoint id := by
+    intro s1 hs1 s2 hs2 hne
+    obtain ⟨w1, -, rfl⟩ := Finset.mem_image.mp (Finset.mem_coe.mp hs1)
+    obtain ⟨w2, -, rfl⟩ := Finset.mem_image.mp (Finset.mem_coe.mp hs2)
+    simp only [Function.onFun, id_eq]
+    rw [Finset.disjoint_left]
+    intro x hx1 hx2
+    exact hne ((hcoh w1 x hx1).symm.trans (hcoh w2 x hx2))
+  have hcount : (T.biUnion id).card = ∑ s ∈ T, s.card := Finset.card_biUnion hdisjT
+  have hsum3 : ∑ s ∈ T, s.card = 3 * T.card := by
+    have h3 : ∀ s ∈ T, s.card = 3 := by
+      intro s hs
+      rw [hT] at hs
+      obtain ⟨w, -, rfl⟩ := Finset.mem_image.mp hs
+      exact hcard3 w
+    rw [Finset.sum_congr rfl h3, Finset.sum_const, smul_eq_mul, mul_comm]
+  have h8 : (8 : ℕ) = 3 * T.card := by
+    have hu : (Finset.univ : Finset (Fin 8)).card = 3 * T.card := by
+      rw [hcover, hcount, hsum3]
+    simpa using hu
+  omega
+
+/-- **Minimum degree `3` forces a `C₄` on `8` vertices.**  Degree casework: a vertex of
+degree `≥ 5` pushes the cherry count to `31 > 28`; two vertices of degree `≥ 4` push it to
+`30 > 28`; exactly one vertex of degree `4` (all others `3`) makes the degree sum `25`,
+odd — impossible by handshake; and the `3`-regular case is
+`containsC4_of_three_regular_eight`. -/
+theorem containsC4_of_eight_min_degree_three (G : SimpleGraph (Fin 8)) [DecidableRel G.Adj]
+    (hmin : 3 ≤ G.minDegree) : containsC4 (Fin 8) G := by
+  have hdeg : ∀ v : Fin 8, 3 ≤ G.degree v :=
+    fun v => le_trans hmin (G.minDegree_le_degree v)
+  by_cases hreg : ∀ v : Fin 8, G.degree v = 3
+  · exact containsC4_of_three_regular_eight G hreg
+  · push Not at hreg
+    obtain ⟨v₀, hv₀⟩ := hreg
+    have hv₀4 : 4 ≤ G.degree v₀ := by have := hdeg v₀; omega
+    have hrest : ∀ s : Finset (Fin 8), (∀ v ∈ s, 3 ≤ G.degree v) →
+        s.card * 3 ≤ ∑ v ∈ s, (G.degree v).choose 2 := by
+      intro s hs
+      calc s.card * 3 = s.card • 3 := by rw [smul_eq_mul]
+        _ ≤ ∑ v ∈ s, (G.degree v).choose 2 :=
+            Finset.card_nsmul_le_sum s _ 3
+              (fun v hv => le_trans (by decide : (3 : ℕ) ≤ Nat.choose 3 2)
+                (Nat.choose_le_choose 2 (hs v hv)))
+    have h28 : Nat.choose 8 2 = 28 := by decide
+    by_cases h5 : 5 ≤ G.degree v₀
+    · -- one vertex of degree ≥ 5: cherry count `≥ 21 + 10 = 31 > 28`
+      apply containsC4_of_card_choose_two_lt
+      rw [Fintype.card_fin]
+      have hsplit := Finset.sum_erase_add univ
+        (fun v => (G.degree v).choose 2) (Finset.mem_univ v₀)
+      have h7 : ((univ : Finset (Fin 8)).erase v₀).card = 7 := by
+        rw [Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ,
+          Fintype.card_fin]
+      have hr := hrest ((univ : Finset (Fin 8)).erase v₀) (fun v _ => hdeg v)
+      rw [h7] at hr
+      have hbig : 10 ≤ (G.degree v₀).choose 2 :=
+        le_trans (by decide : (10 : ℕ) ≤ Nat.choose 5 2) (Nat.choose_le_choose 2 h5)
+      omega
+    · have hv04 : G.degree v₀ = 4 := by omega
+      by_cases h2nd : ∃ u : Fin 8, u ≠ v₀ ∧ 4 ≤ G.degree u
+      · -- two vertices of degree ≥ 4: cherry count `≥ 18 + 6 + 6 = 30 > 28`
+        obtain ⟨u₀, hu₀ne, hu₀4⟩ := h2nd
+        apply containsC4_of_card_choose_two_lt
+        rw [Fintype.card_fin]
+        have hsplit := Finset.sum_erase_add univ
+          (fun v => (G.degree v).choose 2) (Finset.mem_univ v₀)
+        have hu₀mem : u₀ ∈ (univ : Finset (Fin 8)).erase v₀ :=
+          Finset.mem_erase.mpr ⟨hu₀ne, Finset.mem_univ u₀⟩
+        have hsplit2 := Finset.sum_erase_add ((univ : Finset (Fin 8)).erase v₀)
+          (fun v => (G.degree v).choose 2) hu₀mem
+        have h6 : (((univ : Finset (Fin 8)).erase v₀).erase u₀).card = 6 := by
+          rw [Finset.card_erase_of_mem hu₀mem,
+            Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ,
+            Fintype.card_fin]
+        have hr := hrest (((univ : Finset (Fin 8)).erase v₀).erase u₀) (fun v _ => hdeg v)
+        rw [h6] at hr
+        have hb1 : 6 ≤ (G.degree v₀).choose 2 :=
+          le_trans (by decide : (6 : ℕ) ≤ Nat.choose 4 2) (Nat.choose_le_choose 2 hv₀4)
+        have hb2 : 6 ≤ (G.degree u₀).choose 2 :=
+          le_trans (by decide : (6 : ℕ) ≤ Nat.choose 4 2) (Nat.choose_le_choose 2 hu₀4)
+        omega
+      · -- exactly one vertex of degree `4`: degree sum `25` is odd — handshake kills it
+        exfalso
+        push Not at h2nd
+        have hall : ∀ u ∈ (univ : Finset (Fin 8)).erase v₀, G.degree u = 3 := by
+          intro u hu
+          have hne := (Finset.mem_erase.mp hu).1
+          have h4 := h2nd u hne
+          have := hdeg u
+          omega
+        have hsplit := Finset.sum_erase_add univ (fun v => G.degree v)
+          (Finset.mem_univ v₀)
+        have hconst : ∑ u ∈ (univ : Finset (Fin 8)).erase v₀, G.degree u = 21 := by
+          rw [Finset.sum_congr rfl hall, Finset.sum_const,
+            Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ,
+            Fintype.card_fin, smul_eq_mul]
+        have hhs := SimpleGraph.sum_degrees_eq_twice_card_edges G
+        omega
+
+/-- **A fifth exact value: `f(8) = 3`.**  Lower half: the `8`-cycle is `C₄`-free with
+minimum degree `2` (`three_le_minDegreeForC4`).  Upper half:
+`containsC4_of_eight_min_degree_three` — the first exact value past the plain-counting
+threshold at even order, obtained without any `ex(n; C₄)` extremal-table input.  The
+exact-value table now reads `f = 1, 2, 3, 2, 3, 3, 3, 3` for `n = 1, …, 8`. -/
+theorem minDegreeForC4_eight : minDegreeForC4 8 = 3 := by
+  have hle : minDegreeForC4 8 ≤ 3 := by
+    apply Nat.sInf_le
+    intro G _ hmin
+    exact containsC4_of_eight_min_degree_three G hmin
+  have hge : 3 ≤ minDegreeForC4 8 := three_le_minDegreeForC4 (by norm_num)
+  omega
+
 end Erdos85
