@@ -42,7 +42,8 @@
       "**The upper bound was the missing sibling.** The parent stated 'π(n) ≤ √n + n·log 4/log √n' only as a header comment; OQ-05 formalized the lower density but not the upper. OQ-06 closes that asymmetry so limsup and liminf bounds are now both available in Real.log form.",
       "**The integer square root is harmless.** Keeping Nat.sqrt n rather than the real √n makes every inequality exact (no asymptotic slack), at the cost of carrying log(Nat.sqrt n) ≈ ½ log n; the asymptotic constant 2 log 4 is read off afterwards.",
       "**π(√n) ≤ √n turns a difference bound into an absolute bound.** The trivial prime-counting bound from the parent is exactly what lets the small-prime correction term be dropped into the explicit √n summand.",
-      "**Same proof skeleton as OQ-05.** Reusing Real.log_le_log / Real.log_pow / Nat.cast_sub keeps the upper and lower developments structurally identical — the only difference is which parent inequality is fed in."
+      "**Same proof skeleton as OQ-05.** Reusing Real.log_le_log / Real.log_pow / Nat.cast_sub keeps the upper and lower developments structurally identical — the only difference is which parent inequality is fed in.",
+      "**2·log 4 ≈ 2.77 is still far from sharp.** Chebyshev's own 1852 argument reached 1.106 (Chebyshev's actual upper constant), and the Prime Number Theorem pins the constant to exactly 1. Closing that remaining gap needs genuinely new machinery — analytic continuation of ζ(s) and its non-vanishing on Re(s) = 1 (de la Vallée Poussin), or the intricate Erdős–Selberg elementary proof — beyond this file's combinatorial log-of-a-power route."
     ],
     "prerequisites": [
       "Chebyshev's bounds on π(x) and the parent gallery entry chebyshev-pnt-bridge",
@@ -81,9 +82,17 @@
       "id": "upper-density",
       "title": "Chebyshev Upper Density (Quotient Form)",
       "startLine": 124,
-      "endLine": 160,
+      "endLine": 153,
       "summary": "primeCounting_le_div_log_sqrt divides by log(√n) > 0 (positive since √n ≥ 2 for n ≥ 4) via le_of_mul_le_mul_right and a field_simp identity, giving π(n) ≤ n·log 4/log(√n) + √n. As log(√n) ≈ ½ log n, this yields limsup π(x)·log x/x ≤ 2 log 4.",
       "mathContext": "$\\pi(n) \\le \\dfrac{n\\log 4}{\\log\\sqrt n} + \\sqrt n$, hence $\\limsup \\dfrac{\\pi(x)\\log x}{x} \\le 2\\log 4$."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Public API Sanity Checks",
+      "startLine": 154,
+      "endLine": 160,
+      "summary": "Four closing `#check` statements pin down the three deliverable theorem names (and one fully-qualified form) as a lightweight, compiler-verified guarantee that the intended public API — primeCounting_diff_mul_log_sqrt_le, primeCounting_mul_log_sqrt_le, primeCounting_le_div_log_sqrt — actually exists with those exact names and types before the namespace closes.",
+      "mathContext": "Compiler-checked name/type existence for the three exported theorems, mirroring OQ-05's closing `#check` block."
     }
   ],
   "mainTheorems": [
