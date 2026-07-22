@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring: The Higher-Dimensional Scissors-Congruence Question",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "Target group $\\mathrm{TotalDehn}\\,d = \\mathrm{Fin}\\,d \\to (\\mathbb{R} \\otimes_{\\mathbb{Z}} \\mathbb{R}/\\pi\\mathbb{Q})$, the graded generalization of the 3D Dehn invariant $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Q})$.",
+      "summary": "Docstring framing the entry against Hilbert's third problem: Dehn (1900) shows volume alone does not determine scissors congruence in dimension 3; Sydler (1965) shows volume plus the Dehn invariant is a complete system there. The open question for the gallery's hilbert-3 line is what the scissors congruence groups are in higher dimensions — classically (Hadwiger, Jessen–Thorup, Sah) the obstruction becomes a graded family of Dehn-type invariants, one per codimension-2 stratum. States that this file formalizes only the target group and its core algebra (not full classification), lists the four references, and sets up the namespace with `open scoped TensorProduct`."
+    },
+    {
       "id": "dehn-target",
       "title": "The Single-Stratum Dehn Target (3D shape)",
       "startLine": 52,
