@@ -62,7 +62,7 @@
     "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",
     "problemStatement": "Let v(k) be the minimal positive integer not appearing as a denominator in any k-term Egyptian fraction decomposition 1 = 1/n₁ + ... + 1/nₖ with distinct n₁ < ... < nₖ. Estimate v(k).\n\n**Status: OPEN** — current bounds: e^{ck²} ≤ v(k) ≤ k · c₀^{2^k}.",
     "text": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}. The enormous gap remains open.",
-    "proofStrategy": "The formalization axiomatizes v(k) with three properties (positivity, non-membership, minimality) instead of using Nat.find with sorry. The Vardi sequence and constant are defined constructively, with vardiSeq_values proved by simp. Both lower bounds (Bleicher-Erdős and van Doorn-Tang) and the upper bound are axiomatized. The summary theorem packages both bounds via exact.",
+    "proofStrategy": "The formalization axiomatizes v(k) as an opaque natural-number-valued function (axiom v (k : ℕ) : ℕ) rather than defining it via Nat.find with sorry, since proving existence requires bounding the denominators. The Vardi sequence and constant are defined constructively, with vardiSeq_values proved by simp. The van Doorn–Tang lower bound (v(k) ≥ e^{ck²} for all k > 0) and the elementary upper bound are axiomatized; the upper bound is stated asymptotically (for k ≥ some threshold k₀) because its closed form k·c₀^{2^k} lies below the true value at small k (≈ 1.60 < v(1) = 2) — a literal ∀ k > 0 form would be false at k = 1 and, together with the lower bound, would make the axiom set inconsistent. The summary theorem packages both bounds.",
     "keyInsights": [
       "**The Vardi sequence** uₙ = uₙ₋₁(uₙ₋₁ + 1) controls the upper bound via the Vardi constant c₀ ≈ 1.26408",
       "**van Doorn-Tang (2025)** improved the lower bound from k! to e^{ck²}, a huge leap",
@@ -102,7 +102,7 @@
       "title": "Known Upper Bounds",
       "startLine": 93,
       "endLine": 106,
-      "summary": "Elementary bound v(k) ≤ k · c₀^{2^k} and max denominator bound"
+      "summary": "Elementary bound v(k) ≤ k · c₀^{2^k} (asymptotic, for k ≥ some k₀) and max denominator bound"
     },
     {
       "id": "conjectures",
