@@ -57,12 +57,16 @@
       "Verified basic properties (empty/singleton exclusion, monotone, |S| ≥ 2 cardinality lower bound)",
       "Fibonacci–Sylvester splitting engine: inv_mul_succ, split_unit_fraction, isUnitFractionRepr_replace, and exists_isUnitFractionRepr_card_ge (arbitrarily long representations)",
       "infinite_isUnitFractionRepr: axiom-free proof that infinitely many distinct unit-fraction representations of 1 exist",
-      "Multiplicative scaling engine: isRatFractionRepr_smul and exists_isRatFractionRepr_inv_min_ge (representations of 1/t with all denominators ≥ 2t)"
+      "Multiplicative scaling engine: isRatFractionRepr_smul and exists_isRatFractionRepr_inv_min_ge (representations of 1/t with all denominators ≥ 2t)",
+      "Telescoping engine: sum_Ico_inv_mul_succ, injective_mul_succ, isRatFractionRepr_telescope, and exists_isRatFractionRepr_min_gt (builds representations of a positive rational from pronic-number denominators, all exceeding a given bound)",
+      "Divisor-sum bridge: isUnitFractionRepr_of_divisorSum and divisorSum_min_gt, reducing the min-denominator->N crux to a pseudoperfect/practical-number decomposition",
+      "Greedy harmonic overshoot: sum_Ico_inv_ge_half, sum_Ico_inv_ge_one, exists_isRatFractionRepr_ge_one_min_gt, and exists_isRatFractionRepr_controlled_overshoot (a consecutive-block representation of q in [1, 1+1/(N+1)) with every denominator > N)",
+      "Two-sided bracket of 1: exists_isRatFractionRepr_controlled_undershoot and exists_isRatFractionRepr_bracket_one (representations of q₋ < 1 ≤ q₊ with q₊ - q₋ < 2/(N+1), all denominators > N)"
     ],
     "axiomCount": 0,
-    "lineCount": 359,
+    "lineCount": 752,
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
-    "theoremCount": 25,
+    "theoremCount": 38,
     "definitionCount": 7
   },
   "overview": {
@@ -77,7 +81,9 @@
       "**Non-constructive proof**: Croot's argument gives no explicit bounds on the size of the denominators or number of colours needed",
       "**Minimum representation**: $|S| \\ge 2$ for any unit fraction representation (e.g., $1/2 + 1/3 + 1/6 = 1$ is minimal with 3 terms)",
       "**Formalized elementary core (0 axioms)**: what is machine-checked here is the *colouring-free* skeleton — representations of $1$ exist ($\\{2,3,6\\}$), have $\\ge 2$ terms, and are infinitely many — proved by iterating the Fibonacci–Sylvester splitting $1/n = 1/(n{+}1) + 1/(n(n{+}1))$ on the largest denominator. Croot's deep monochromatic theorem is stated as a `Prop`, not formalized",
-      "**Two assembly engines**: representations combine *additively* over disjoint denominator sets (`isRatFractionRepr_union`, $q + p$) and *multiplicatively* by scaling every denominator by $t$ (`isRatFractionRepr_smul`, $q \\mapsto q/t$ with all denominators $\\ge 2t$) — the multiplicative engine forces large denominators, the prerequisite for the pairwise-disjoint chaining behind the infinitely-many variant"
+      "**Two assembly engines**: representations combine *additively* over disjoint denominator sets (`isRatFractionRepr_union`, $q + p$) and *multiplicatively* by scaling every denominator by $t$ (`isRatFractionRepr_smul`, $q \\mapsto q/t$ with all denominators $\\ge 2t$) — the multiplicative engine forces large denominators, the prerequisite for the pairwise-disjoint chaining behind the infinitely-many variant",
+      "**Greedy harmonic bracket (axiom-free)**: the block-doubling bound $\\sum_{k=N+1}^{2N} 1/k \\ge 1/2$, concatenated at $N$ and $2N$, gives $\\sum_{k=N+1}^{4N} 1/k \\ge 1$ — a consecutive-block Egyptian representation of some $q \\ge 1$ with every denominator $> N$. Taking the minimal such block sharpens this to a *controlled* overshoot $q \\in [1, 1 + 1/(N+1))$, and the one-term-shorter block gives a matching undershoot $q \\in [1 - 1/(N+1), 1)$",
+      "**Two-sided bracket, still open at the last step**: the controlled overshoot and undershoot sandwich $1$ between two large-denominator representations with gap $< 2/(N+1) \\to 0$ as $N \\to \\infty$ — an elementary, colouring-free approach to representing *exactly* $1$ with arbitrarily large minimum denominator, but closing the residual gap collision-free remains a bounded-rational Diophantine step that this file leaves open"
     ],
     "prerequisites": [
       "Unit fractions and Egyptian fractions",
@@ -166,6 +172,22 @@
       "endLine": 550,
       "summary": "A structurally different attack surface that translates the open crux into multiplicative number theory. `isUnitFractionRepr_of_divisorSum`: if $T$ is a set of distinct divisors of $M$ with $\\sum_{d \\in T} d = M$ (so $M$ is *pseudoperfect via $T$*) and each $2d \\le M$, then the cofactor set $\\{M/d : d \\in T\\}$ is a unit-fraction representation of $1$, since $\\sum 1/(M/d) = (\\sum d)/M = 1$. `divisorSum_min_gt`: if additionally every chosen divisor satisfies $N \\cdot d < M$ (i.e. $d < M/N$), every cofactor denominator $M/d$ exceeds $N$. Together they reduce \"represent $1$ with min denominator $> N$\" to \"write $M$ as a sum of distinct divisors of $M$, each $< M/N$\". The reduction is an **equivalence** (from any Egyptian representation $S$ of $1$, take $M = \\operatorname{lcm} S$ and $d_s = M/s$), so under the equivalent-strength rule it earns no decomposition credit; it is recorded as infrastructure exposing the divisor / practical-number route.",
       "mathContext": "Divisor-sum bridge: dividing a pseudoperfect decomposition $\\sum_{d \\in T} d = M$ through by $M$ turns each divisor $d$ into a reciprocal $1/(M/d) = d/M$, and the cofactor map $d \\mapsto M/d$ is injective on divisors of $M$ (left inverse $q \\mapsto M/q$). The minimum denominator is $M / \\max T$, which exceeds $N$ exactly when every $d < M/N$. This phrases the crux entirely in terms of $\\texttt{Nat.divisors}$: the genuine open content becomes a **practical-number completeness** fact — producing an $M$ with enough *small* divisors summing exactly to $M$."
+    },
+    {
+      "id": "greedy-overshoot",
+      "title": "Greedy Harmonic Overshoot",
+      "startLine": 552,
+      "endLine": 676,
+      "summary": "A fourth engine, complementary to the additive/multiplicative/telescoping ones (which all stay strictly below $1$): the **greedy harmonic block**. `sum_Ico_inv_ge_half`: the $N$-term block $[N{+}1, 2N]$ sums to $\\ge 1/2$ (each term $\\ge 1/(2N)$). `sum_Ico_inv_ge_one`: concatenating this bound at $N$ and at $2N$ shows $[N{+}1, 4N]$ sums to $\\ge 1$, with every denominator $> N$. `exists_isRatFractionRepr_ge_one_min_gt` packages this as a representation of some $q \\ge 1$. `exists_isRatFractionRepr_controlled_overshoot` sharpens it: taking the *minimal* block reaching sum $\\ge 1$ (via `Nat.find`) bounds the overshoot to $q < 1 + 1/(N{+}1)$, since the one-term-shorter block still falls short and the single extra term is $\\le 1/(N{+}1)$.",
+      "mathContext": "Half-block bound: $\\sum_{k=N+1}^{2N} 1/k \\ge N \\cdot 1/(2N) = 1/2$. Doubling: $\\sum_{k=N+1}^{4N} 1/k = \\sum_{k=N+1}^{2N} 1/k + \\sum_{k=2N+1}^{4N} 1/k \\ge 1/2 + 1/2 = 1$. Minimality (`Nat.find`) on $b \\mapsto \\sum_{k=N+1}^{b-1} 1/k \\ge 1$ gives the least $b_0$ with $\\sum_{[N+1,b_0)} 1/k \\ge 1$; the block one shorter, $[N{+}1, b_0{-}1)$, sums to $< 1$, and the two blocks differ by the single term $1/(b_0{-}1) \\le 1/(N{+}1)$, forcing $q < 1 + 1/(N{+}1)$."
+    },
+    {
+      "id": "two-sided-bracket",
+      "title": "Two-Sided Bracket of 1 with Vanishing Width",
+      "startLine": 677,
+      "endLine": 752,
+      "summary": "The below-$1$ companion and its combination with the overshoot. `exists_isRatFractionRepr_controlled_undershoot`: the same minimal block $b_0$ from the overshoot construction, taken one term short ($[N{+}1, b_0{-}1)$), sums to some $q < 1$ with $q \\ge 1 - 1/(N{+}1)$ by the same single-term difference bound. `exists_isRatFractionRepr_bracket_one` combines both: representations $q_- < 1 \\le q_+$ exist with every denominator $> N$ and gap $q_+ - q_- < 2/(N{+}1)$, so the bracket collapses onto $1$ as $N \\to \\infty$. This is the file's closest elementary approach to the open crux (an *exact* representation of $1$ with min denominator $> N$) — the residual $[q_-, q_+]$ gap must still be closed collision-free, which is not done here.",
+      "mathContext": "Undershoot: with $b_0$ minimal such that $\\sum_{[N+1,b_0)} 1/k \\ge 1$, the shorter block $[N{+}1, b_0{-}1)$ sums to $q_- < 1$ with $q_- \\ge 1 - 1/(b_0{-}1) \\ge 1 - 1/(N{+}1)$ (since $b_0 - 1 \\ge N+1$). Bracket: $q_+ - q_- < (1 + 1/(N{+}1)) - (1 - 1/(N{+}1)) = 2/(N{+}1) \\to 0$. Both $q_-, q_+$ use only denominators $> N$; exactly landing on $1$ (a bounded-rational Diophantine subset-sum) remains open."
     }
   ],
   "conclusion": {
