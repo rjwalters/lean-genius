@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1022-oq-04",
+      "title": "Problem Statement and Background",
+      "summary": "States the exact 2-colorability threshold for the complete $t$-uniform hypergraph $K_n^{(t)}$: Property B holds iff $n \\le 2t-2$, giving an explicit non-2-colorable witness at $n = 2t-1$ with $\\binom{2t-1}{t}$ edges.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "Combined with the parent file's first-moment bound $2^{t-1} \\le m(t)$, the witness gives $m(t) \\le \\binom{2t-1}{t}$, sandwiching the still-open extremal function $m(t)$ (least edges in a $t$-uniform family without Property B)."
+    },
+    {
       "id": "definitions",
       "title": "Property B and the Complete Uniform Hypergraph",
       "startLine": 49,
