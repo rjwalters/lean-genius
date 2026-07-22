@@ -78,6 +78,21 @@
   description: Issue is part of an epic phase (references parent epic)
   color: "8B5CF6"  # violet-500 - lighter variant for child issues
 
+# Research Pipeline Labels
+# Bridge GitHub-filed research problems into the researcher candidate pool.
+# See scripts/research/ingest-issue-problems.sh (run each Seeker cycle).
+- name: research
+  description: Research agent work (general topic tag)
+  color: "5319E7"  # deep violet
+
+- name: research:queued
+  description: Math problem to route into the researcher candidate pool (Seeker intake trigger)
+  color: "1D76DB"  # blue - queued for the fleet
+
+- name: research:pooled
+  description: Ingested into the candidate pool by the Seeker intake (idempotency marker)
+  color: "0E8A16"  # green - now claimable by Researchers
+
 # Tier Labels (Goal Alignment)
 - name: tier:goal-advancing
   description: Directly implements a milestone deliverable or unblocks goal work

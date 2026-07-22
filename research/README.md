@@ -79,8 +79,34 @@ Problems are automatically extracted from the proof gallery:
 | **Conditional** | ~4 | Proofs depending on unproven hypotheses |
 | **Millennium** | 7 | Millennium Prize Problems |
 | **Hilbert** | 21 | Hilbert's 23 Problems |
+| **GitHub issues** | on demand | Human-filed problems tagged `research:queued` (see below) |
 
 **Total**: 427+ extractable open problems
+
+### GitHub-issue intake (`research:queued`)
+
+Beyond gallery extraction, you can hand the fleet a problem by **filing a GitHub
+issue and tagging it `research:queued`** (a dedicated trigger label — not the
+broad `research` topic tag). Each Seeker cycle runs:
+
+```bash
+./scripts/research/ingest-issue-problems.sh          # ingest newly-labeled issues
+./scripts/research/ingest-issue-problems.sh --dry-run # preview; mutate nothing
+```
+
+The script lists open `research:queued` issues and, for each one not already
+ingested, synthesizes a candidate-pool entry (slug `issue-<number>-<title>`,
+`status: available`, `sourceIssue: <number>`, issue URL in `references.urls`),
+inserts it into `research/db/knowledge.db`, writes
+`src/data/research/problems/<slug>.json`, regenerates the pool, and marks the
+issue `research:pooled` with a comment linking the pool slug. A Researcher then
+claims it via `claim-problem.sh claim-random` like any other candidate.
+
+Ingestion is **idempotent** (dedup by the `research:pooled` marker, the
+`sourceIssue` field, and the DB slug) and **additive** — gallery-derived
+sourcing is unchanged. Issue-sourced candidates are explicit human requests, so
+they are ingested every cycle regardless of pool depth. First test case: issue
+#41831 (OEIS A054656).
 
 ### View Problems by Tractability
 
