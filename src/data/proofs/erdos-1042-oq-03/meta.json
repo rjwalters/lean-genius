@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Geometric Mechanism Behind oq-03",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States oq-03 (what geometric properties of the root set affect the lemniscate's component count) and the answer this file isolates: a monic f(z) = ∏ᵢ(z - rootᵢ) has its lemniscate {|f| < 1} confined to the union of open unit balls about the roots, since any z at distance ≥1 from every root forces |f(z)| ≥ 1. This confinement is what makes every bounded component trap a root, forcing the classical 'at most n components' bound. All results are re-declared self-contained and axiom-free, independent of the parent's Ghosh–Ramachandran axioms.",
+      "mathContext": "$z \\notin \\bigcup_i B(r_i,1) \\Rightarrow |f(z)| = \\prod_i |z-r_i| \\geq 1 \\Rightarrow z \\notin \\{|f|<1\\}$."
+    },
+    {
       "id": "setup",
       "title": "§I: Monic Polynomials and Their Lemniscates",
       "startLine": 34,
