@@ -57,7 +57,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 253,
-    "assumptions": "5 axioms: decompNumber, lower_bound_from_bipartite, bucic_montgomery_bound, conlon_fox_sudakov, coverNumber. 0 sorries.",
+    "assumptions": "5 axioms: decompNumber, lower_bound_from_bipartite, bucic_montgomery_bound, conlon_fox_sudakov, coverNumber. 0 sorries. Trust caveat: theorem key_insight_log_star (line 251) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it verifies finite iterated-logarithm values (logStar 65536 = 4, logStar 4 = 2), not the headline decomposition bounds.",
     "theoremCount": 2,
     "definitionCount": 10
   },

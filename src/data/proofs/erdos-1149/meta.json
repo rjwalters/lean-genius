@@ -90,7 +90,7 @@
       "Divisibility and powers (dvd_pow_self)"
     ],
     "lineCount": 335,
-    "assumptions": "1 axiom (bergelson_richter). The Bergelson-Richter theorem is axiomatized (deep ergodic theory); random_coprime_density proved via BaselProblemOQ04OQ03 Möbius+Tannery.",
+    "assumptions": "1 axiom (bergelson_richter). The Bergelson-Richter theorem is axiomatized (deep ergodic theory); random_coprime_density proved via BaselProblemOQ04OQ03 Möbius+Tannery. Trust caveat: theorem countCoprimePairs_one (line 196) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it verifies the finite base case countCoprimePairs 1 = 1, not the axiomatized Bergelson-Richter density.",
     "theoremCount": 18,
     "definitionCount": 5,
     "additionalFiles": [

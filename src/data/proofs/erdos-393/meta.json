@@ -56,7 +56,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 175,
-    "assumptions": "4 axioms: f_exists, berend_osgood_1992, bpz_2023, luca_2002. 0 sorries.",
+    "assumptions": "4 axioms: f_exists, berend_osgood_1992, bpz_2023, luca_2002. 0 sorries. Trust caveat: theorem example_3_factorial (line 88) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it checks the finite identity 3! = 2·3, not the headline conjecture.",
     "theoremCount": 4,
     "definitionCount": 12
   },

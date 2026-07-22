@@ -67,7 +67,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 303,
-    "assumptions": "3 axiom(s): erdos_269 (main conjecture, OPEN), erdos_269_infinite (infinite P case), erdos_269_distinct (distinct LCM case). Former axiom smoothSeq_zero now proved.",
+    "assumptions": "3 axiom(s): erdos_269 (main conjecture, OPEN), erdos_269_infinite (infinite P case), erdos_269_distinct (distinct LCM case). Former axiom smoothSeq_zero now proved. Trust caveat: theorem twoThreeSmooth_card (line 214) is closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (#print axioms); it verifies the finite fact ({2,3} : Finset).card = 2, not the headline conjecture.",
     "theoremCount": 15,
     "definitionCount": 9
   },
