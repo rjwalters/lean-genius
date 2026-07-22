@@ -83,6 +83,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Formal Divisibility Rules (OQ-01 Extension)", "startLine": 1, "endLine": 21, "summary": "Lists the self-contained extensions in this file: the fully-proved alternating digit-sum rule for 11, digit-sum rules in various bases via Mathlib's modEq_digits_sum, the general last-k-digit framework and its instantiations, truncation methods for 7 and 13, casting-out-nines compatibility with sum and product, and multi-digit grouping rules for 37, 27, 99, and 101.", "mathContext": "A self-contained extension adding the alternating digit-sum rule for 11, base digit-sum rules via \\texttt{Nat.modEq\\_digits\\_sum}, a general last-$k$-digit framework, and multi-digit-grouping rules for 37, 27, 99, and 101."},
     {
       "id": "sec-divOQ01-alternating-sum",
       "title": "Part I: Alternating Digit Sum Framework",
