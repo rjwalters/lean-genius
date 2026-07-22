@@ -789,4 +789,119 @@ theorem hasNoGrowthLimit_oscPair {c₁ c₂ : ℕ} (h : c₁ ≠ c₂) :
   · simp only [growthRatio_oscPair_even]; exact tendsto_const_nhds
   · simp only [growthRatio_oscPair_odd]; exact tendsto_const_nhds
 
+/-! ## The limsup/liminf layer
+
+Erdős #326 asks for a sub-basis whose growth ratio `bₖ/k²` **fails to
+converge**.  For the ratio sequence of an order-2 basis — which is bounded
+(`two_growthRatio_le`) and nonnegative (`growthRatio_nonneg`) — failing to
+converge is *exactly* the strict inequality `liminf < limsup`.  This section
+records that translation, so the open dichotomy can be attacked directly in
+`limsup`/`liminf` language:
+
+* boundedness plumbing (`growthRatio_isBoundedUnder_ge`,
+  `two_growthRatio_isBoundedUnder_le`);
+* the limsup form of `bₖ = O(k²)` (`two_growthRatio_limsup_le`) and
+  nonnegativity of the liminf (`growthRatio_liminf_nonneg`);
+* a growth limit pins both quantities (`HasGrowthLimit.limsup_eq`,
+  `HasGrowthLimit.liminf_eq`), and conversely `liminf = limsup` recovers the
+  limit for bounded ratios (`hasGrowthLimit_of_liminf_eq_limsup`);
+* the characterization `HasNoGrowthLimit b ↔ liminf < limsup`
+  (`hasNoGrowthLimit_iff_liminf_lt_limsup`), specialized to order-2 bases
+  (`IsAddBasisOfOrder.two_hasNoGrowthLimit_iff_liminf_lt_limsup`).
+
+None of this touches the open construction itself; it re-expresses its target. -/
+
+/-- The growth ratio sequence is bounded below (by `0`) along `atTop`, for any
+enumeration: the coboundedness input every limsup estimate needs. -/
+theorem growthRatio_isBoundedUnder_ge (b : ℕ → ℕ) :
+    IsBoundedUnder (· ≥ ·) atTop (growthRatio b) :=
+  isBoundedUnder_of ⟨0, fun k => growthRatio_nonneg b k⟩
+
+/-- **Boundedness of the ratio sequence of an order-2 basis**, in filter
+language: `growthRatio (Nat.nth (· ∈ A))` is `IsBoundedUnder (· ≤ ·)` along
+`atTop`.  This is `two_growthRatio_le` repackaged as the hypothesis shape the
+`limsup`/`liminf` API consumes. -/
+theorem IsAddBasisOfOrder.two_growthRatio_isBoundedUnder_le {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    IsBoundedUnder (· ≤ ·) atTop (growthRatio (Nat.nth (· ∈ A))) := by
+  obtain ⟨C, N₀, hC⟩ := h.two_growthRatio_le
+  exact ⟨(C : ℝ), eventually_map.mpr (eventually_atTop.mpr ⟨N₀, hC⟩)⟩
+
+/-- **The limsup form of `bₖ = O(k²)`.**  For an order-2 basis `A`, the limsup
+of the growth ratio `bₖ/k²` of its increasing enumeration is at most some
+natural constant `C`.  This is the quantity the open dichotomy of #326 is
+about: any sub-basis inherits a finite limsup, so non-convergence can only
+happen through `liminf < limsup` within `[0, C]`. -/
+theorem IsAddBasisOfOrder.two_growthRatio_limsup_le {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    ∃ C : ℕ, Filter.limsup (growthRatio (Nat.nth (· ∈ A))) atTop ≤ (C : ℝ) := by
+  obtain ⟨C, N₀, hC⟩ := h.two_growthRatio_le
+  refine ⟨C, Filter.limsup_le_of_le
+    ((growthRatio_isBoundedUnder_ge _).isCoboundedUnder_le) ?_⟩
+  exact eventually_atTop.mpr ⟨N₀, hC⟩
+
+/-- The liminf of any growth ratio sequence with bounded ratios is
+nonnegative. -/
+theorem growthRatio_liminf_nonneg {b : ℕ → ℕ}
+    (hbdd : IsBoundedUnder (· ≤ ·) atTop (growthRatio b)) :
+    0 ≤ Filter.liminf (growthRatio b) atTop :=
+  Filter.le_liminf_of_le hbdd.isCoboundedUnder_ge
+    (Eventually.of_forall fun k => growthRatio_nonneg b k)
+
+/-- A growth limit pins the limsup: if `bₖ/k² → x` then
+`limsup (bₖ/k²) = x`. -/
+theorem HasGrowthLimit.limsup_eq {b : ℕ → ℕ} {x : ℝ} (h : HasGrowthLimit b x) :
+    Filter.limsup (growthRatio b) atTop = x :=
+  Filter.Tendsto.limsup_eq h
+
+/-- A growth limit pins the liminf: if `bₖ/k² → x` then
+`liminf (bₖ/k²) = x`. -/
+theorem HasGrowthLimit.liminf_eq {b : ℕ → ℕ} {x : ℝ} (h : HasGrowthLimit b x) :
+    Filter.liminf (growthRatio b) atTop = x :=
+  Filter.Tendsto.liminf_eq h
+
+/-- **Convergence from `liminf = limsup`.**  For a ratio sequence bounded
+above (below is automatic from `growthRatio_nonneg`), if liminf and limsup
+agree at `x` then the growth limit exists and equals `x` — the converse of
+`HasGrowthLimit.limsup_eq`/`liminf_eq`. -/
+theorem hasGrowthLimit_of_liminf_eq_limsup {b : ℕ → ℕ} {x : ℝ}
+    (hbdd : IsBoundedUnder (· ≤ ·) atTop (growthRatio b))
+    (hinf : Filter.liminf (growthRatio b) atTop = x)
+    (hsup : Filter.limsup (growthRatio b) atTop = x) :
+    HasGrowthLimit b x :=
+  tendsto_of_liminf_eq_limsup hinf hsup hbdd (growthRatio_isBoundedUnder_ge b)
+
+/-- **Non-convergence is exactly `liminf < limsup`** for a bounded ratio
+sequence.  This is the precise sense in which the open part of Erdős #326 —
+"the sub-basis enumeration has no growth limit" — is a statement about the
+gap between liminf and limsup of `bₖ/k²`. -/
+theorem hasNoGrowthLimit_iff_liminf_lt_limsup {b : ℕ → ℕ}
+    (hbdd : IsBoundedUnder (· ≤ ·) atTop (growthRatio b)) :
+    HasNoGrowthLimit b ↔
+      Filter.liminf (growthRatio b) atTop <
+        Filter.limsup (growthRatio b) atTop := by
+  constructor
+  · intro h
+    rcases lt_or_eq_of_le
+        (liminf_le_limsup hbdd (growthRatio_isBoundedUnder_ge b)) with hlt | heq
+    · exact hlt
+    · exact absurd (hasGrowthLimit_of_liminf_eq_limsup hbdd heq rfl) (h _)
+  · intro hlt x hx
+    have h1 : Filter.liminf (growthRatio b) atTop = x := HasGrowthLimit.liminf_eq hx
+    have h2 : Filter.limsup (growthRatio b) atTop = x := HasGrowthLimit.limsup_eq hx
+    rw [h1, h2] at hlt
+    exact lt_irrefl x hlt
+
+/-- **The dichotomy of Erdős #326 in limsup/liminf form, for order-2 bases.**
+The increasing enumeration of an order-2 basis has no growth limit **iff**
+`liminf (bₖ/k²) < limsup (bₖ/k²)`.  In particular the open question "does
+every order-2 basis contain a sub-basis with no growth limit?" asks exactly
+for a sub-basis whose ratio sequence keeps a persistent liminf/limsup gap. -/
+theorem IsAddBasisOfOrder.two_hasNoGrowthLimit_iff_liminf_lt_limsup {A : Set ℕ}
+    (h : IsAddBasisOfOrder A 2) :
+    HasNoGrowthLimit (Nat.nth (· ∈ A)) ↔
+      Filter.liminf (growthRatio (Nat.nth (· ∈ A))) atTop <
+        Filter.limsup (growthRatio (Nat.nth (· ∈ A))) atTop :=
+  hasNoGrowthLimit_iff_liminf_lt_limsup h.two_growthRatio_isBoundedUnder_le
+
 end Erdos326
