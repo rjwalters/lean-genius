@@ -1,7 +1,7 @@
 [
   {
     "id": "power-moment-context",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 1, "endLine": 64 },
     "type": "concept",
     "title": "From the Cubic Moment to Every Power Moment, via Stirling Numbers",
@@ -22,7 +22,7 @@
   },
   {
     "id": "falling-shift",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 65, "endLine": 79 },
     "type": "lemma",
     "title": "The Falling-Factorial Shift m·(m)_r = (m)_{r+1} + r·(m)_r",
@@ -34,7 +34,7 @@
   },
   {
     "id": "stirling-bridge",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 81, "endLine": 122 },
     "type": "theorem",
     "title": "The Stirling Bridge: m^p = ∑ S(p,r)·(m)_r",
@@ -56,7 +56,7 @@
   },
   {
     "id": "unconditional-moment",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 124, "endLine": 135 },
     "type": "theorem",
     "title": "Removing the r ≤ n Hypothesis from the Falling Moment",
@@ -68,7 +68,7 @@
   },
   {
     "id": "power-moment",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 137, "endLine": 157 },
     "type": "theorem",
     "title": "The General Power Moment ∑ k^p·C(n,k)² = ∑ S(p,r)·(n)_r·C(2n−r,n−r)",
@@ -80,7 +80,7 @@
   },
   {
     "id": "consistency-checks",
-    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02",
+    "proofId": "combinations-formula-oq003",
     "range": { "startLine": 159, "endLine": 185 },
     "type": "concept",
     "title": "Consistency with the Parent's Cubic Moment, and Numeric Checks",

@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-header",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 1, "endLine": 70 },
     "type": "concept",
     "title": "Iterated Discrete Integration by Parts → Finite Taylor–Abel Expansion",
@@ -13,7 +13,7 @@
   },
   {
     "id": "ann-fdiff",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 78, "endLine": 87 },
     "type": "definition",
     "title": "The Forward Difference and Its Iterate",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-abel",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 89, "endLine": 102 },
     "type": "theorem",
     "title": "abel_summation: The Single-Step Transform (Self-Contained)",
@@ -37,7 +37,7 @@
   },
   {
     "id": "ann-step",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 104, "endLine": 125 },
     "type": "insight",
     "title": "step: One Layer of the Iteration (the Recurrence R_d = bd_d − R_{d+1})",
@@ -49,7 +49,7 @@
   },
   {
     "id": "ann-main",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 127, "endLine": 154 },
     "type": "theorem",
     "title": "discrete_taylor_abel: The D-Fold Closed Form (and Termination)",
@@ -61,7 +61,7 @@
   },
   {
     "id": "ann-depth-one",
-    "proofId": "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "summation-by-parts-oq002",
     "range": { "startLine": 156, "endLine": 168 },
     "type": "theorem",
     "title": "discrete_taylor_abel_one: Depth 1 Recovers the Parent Transform",

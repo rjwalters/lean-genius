@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-eqr-oq01x4-context",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Final Assembly: Four-Step Gauss Sum Proof of Quadratic Reciprocity",
@@ -25,7 +25,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-character",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 44, "endLine": 47 },
     "type": "definition",
     "title": "legendreCharQ: Legendre Symbol as MulChar (ZMod p) (ZMod q)",
@@ -46,7 +46,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-nontriv",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 56, "endLine": 97 },
     "type": "insight",
     "title": "Nontriviality Proof: Three-Way Case Split on Quadratic Values",
@@ -67,7 +67,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-evals",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 101, "endLine": 124 },
     "type": "insight",
     "title": "Character Evaluations: χ(-1) and χ(q)",
@@ -88,7 +88,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-step4",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 128, "endLine": 141 },
     "type": "insight",
     "title": "Step 4: Apply qr_gauss_sums_identity to legendreCharQ",
@@ -109,7 +109,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-zmod-qr",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 145, "endLine": 165 },
     "type": "insight",
     "title": "ZMod-Form QR via Euler's Criterion",
@@ -131,7 +131,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-main",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 169, "endLine": 178 },
     "type": "insight",
     "title": "Main Theorem: gauss_sum_qr_assembled",
@@ -151,7 +151,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-citations",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 182, "endLine": 204 },
     "type": "concept",
     "title": "Explicit Citations of the Four Steps",
@@ -171,7 +171,7 @@
   },
   {
     "id": "ann-eqr-oq01x4-verifications",
-    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
+    "proofId": "elementary-quadratic-reciprocity-oq001",
     "range": { "startLine": 208, "endLine": 243 },
     "type": "concept",
     "title": "Concrete Verifications via native_decide",

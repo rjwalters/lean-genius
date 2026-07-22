@@ -1,7 +1,7 @@
 [
   {
     "id": "burnside-oq04010101-ann-overview",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 3, "endLine": 48 },
     "type": "concept",
     "title": "From per-n decide to a uniform closed form",
@@ -13,7 +13,7 @@
   },
   {
     "id": "burnside-oq04010101-ann-defs",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 50, "endLine": 71 },
     "type": "definition",
     "title": "Colourings, rotation-invariance, and the fixed subtype",
@@ -25,7 +25,7 @@
   },
   {
     "id": "burnside-oq04010101-ann-zsmul",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 73, "endLine": 93 },
     "type": "tactic",
     "title": "invariant_zsmul — single shift extends to the whole cyclic subgroup",
@@ -37,7 +37,7 @@
   },
   {
     "id": "burnside-oq04010101-ann-equiv",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 95, "endLine": 121 },
     "type": "theorem",
     "title": "rotFixedEquiv — fixed colourings ≃ functions on the coset space",
@@ -49,7 +49,7 @@
   },
   {
     "id": "burnside-oq04010101-ann-gcd",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 123, "endLine": 149 },
     "type": "theorem",
     "title": "card_quotient_zmultiples — the orbit count is gcd(n, i)",
@@ -61,7 +61,7 @@
   },
   {
     "id": "burnside-oq04010101-ann-closedform",
-    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "proofId": "burnside-counting-oq002",
     "range": { "startLine": 150, "endLine": 183 },
     "type": "theorem",
     "title": "card_rotFixed and corollaries — the 2^gcd(n,i) closed form",
