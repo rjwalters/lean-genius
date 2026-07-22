@@ -1325,4 +1325,66 @@ theorem two_hundred_ten_practical : IsPractical 210 := by
   have he : primorial 7 = 210 := by decide
   rwa [he] at h
 
+/- ## Bounds on the divisor-completeness index `h`
+
+`h m` (defined in the parent `Erdos18Problem.lean`) is the least size of a
+*single* set `S` of divisors of `m` from which every `1 ≤ k < m` can be
+assembled as a subset sum — the size of a "universal representing set". This
+section supplies the first theorems about it (the parent's "Known Bounds on
+h(m)" section is otherwise empty), pinning it between a logarithm and the
+divisor count: `log₂ m ≤ h m ≤ d(m)`.
+
+**Caveat — this is not the Erdős prize quantity.** Erdős #18 concerns a
+*different* index: the maximum over `k < m` of the *fewest* divisors needed to
+represent that particular `k` (Vose 1985: infinitely many `m` with that index
+`≪ √(log m)`). The parent `h` is the universal-set size, which
+`le_two_pow_h` below shows is always `≥ log₂ m`. In particular the parent's
+`conjecture_part2_weak` (`h(n!) < n^ε`) is *false as stated for this `h`*, since
+`log₂(n!) = Θ(n log n)` is superpolynomial (see `factorial_le_two_pow_h`). The
+subadditivity theorem in `Erdos18OQ01.lean` is correct for this universal-set
+`h`, so the resolution is to *rename* the parent `h` and introduce the
+max-representation-length index for the conjectures (mechanic follow-up). -/
+
+/-- **Upper bound `h m ≤ d(m)`.** For practical `m`, the full divisor set already
+represents every `1 ≤ k < m`, so a universal representing set needs no more
+divisors than `m` has. -/
+theorem h_le_card_divisors {m : ℕ} (hm : IsPractical m) :
+    h m ≤ (divisors m).card := by
+  apply Nat.sInf_le
+  exact ⟨divisors m, Finset.Subset.refl _, rfl, fun k hk1 hkm => hm.2 k hk1 hkm⟩
+
+/-- **Lower bound `m ≤ 2 ^ h m`.** A universal representing set `S` of size `h m`
+admits only `2 ^ |S|` distinct subset sums, yet these must realise the `m`
+values `0, 1, …, m − 1`. Hence `log₂ m ≤ h m`. -/
+theorem le_two_pow_h {m : ℕ} (hm : IsPractical m) :
+    m ≤ 2 ^ h m := by
+  have hne : { s : ℕ | ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = s ∧
+      ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k }.Nonempty :=
+    ⟨(divisors m).card, divisors m, Finset.Subset.refl _, rfl,
+      fun k hk1 hkm => hm.2 k hk1 hkm⟩
+  obtain ⟨S, hSdvd, hScard, hScov⟩ := Nat.sInf_mem hne
+  have hScard' : S.card = h m := hScard
+  have hsub : Finset.range m ⊆ (S.powerset).image (fun T => T.sum id) := by
+    intro k hk
+    rw [Finset.mem_range] at hk
+    rcases Nat.eq_zero_or_pos k with hk0 | hk1
+    · exact Finset.mem_image.mpr ⟨∅, Finset.mem_powerset.mpr (Finset.empty_subset _),
+        by simp [hk0]⟩
+    · obtain ⟨T, hTS, hTsum⟩ := hScov k hk1 hk
+      exact Finset.mem_image.mpr ⟨T, Finset.mem_powerset.mpr hTS, hTsum⟩
+  calc m = (Finset.range m).card := (Finset.card_range m).symm
+    _ ≤ ((S.powerset).image (fun T => T.sum id)).card := Finset.card_le_card hsub
+    _ ≤ (S.powerset).card := Finset.card_image_le
+    _ = 2 ^ S.card := Finset.card_powerset S
+    _ = 2 ^ h m := by rw [hScard']
+
+/-- **Consequence for factorials.** Applying `le_two_pow_h` to `n !` (practical by
+`factorial_practical`): the universal representing-set index satisfies
+`n ! ≤ 2 ^ h (n !)`. Because `log₂(n!) = Θ(n log n)` is superpolynomial in `n`,
+this refutes the parent's `conjecture_part2_weak` (`h(n!) < n^ε`) *for this `h`* —
+formal evidence that the parent `h` is the universal-set size rather than the
+Erdős max-representation-length index (Vose `≪ √log m`) the prize concerns. -/
+theorem factorial_le_two_pow_h (n : ℕ) : n ! ≤ 2 ^ h (n !) :=
+  le_two_pow_h (factorial_practical n)
+
 end Erdos18
