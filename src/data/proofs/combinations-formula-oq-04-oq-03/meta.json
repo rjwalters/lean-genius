@@ -64,7 +64,8 @@
       "**Keep the factor the parent throws away.** The parent multiplies the two ratio relations to a·c·(t+2)(k+2) = b²·(k+1)(t+1) and then immediately weakens `=` to `≤`. Retaining the equality is the whole content of this entry: it is strictly more information, and it is exactly the ultra-log-concavity data.",
       "**Equality, not inequality, is what ULC asks for.** Log-concavity says the defect a_k² − a_{k−1}a_{k+1} is ≥ 0; the exact identity computes that defect precisely, and centered it says the binomial row attains Liggett's ULC bound C(n,j)² = (1+1/j)(1+1/(n−j))·C(n,j−1)·C(n,j+1) with equality — the row is the extremal ULC sequence.",
       "**The identity is unconditional because truncation helps here.** Off the row (n < k+2) the truncated factor n−k−1 is automatically 0 (n−k is 0 or 1), so the right side vanishes exactly when C(n,k+2) makes the left side vanish. No side hypothesis is needed for the core identity — only the centered reindex needs 1 ≤ j ≤ n.",
-      "**Log-concavity is a one-line corollary.** Once the exact factor is on record, the parent's weak and strict inequalities follow by the single arithmetic fact (k+1)(n−k−1) ≤ (n−k)(k+2), whose difference is n+1 > 0. The sharper statement subsumes the parent."
+      "**Log-concavity is a one-line corollary.** Once the exact factor is on record, the parent's weak and strict inequalities follow by the single arithmetic fact (k+1)(n−k−1) ≤ (n−k)(k+2), whose difference is n+1 > 0. The sharper statement subsumes the parent.",
+      "**Strictness needs a positivity fact the algebra alone can't supply.** The weak corollary only needs the factor inequality (k+1)(n−k−1) ≤ (n−k)(k+2); the strict form additionally invokes Nat.choose_pos to know C(n,k+1)² > 0 before mul_lt_mul_of_pos_left can turn the strict factor gap into a strict product inequality — over ℕ, a strict inequality between products needs a positive multiplier, not just a strict one."
     ],
     "prerequisites": [
       "Binomial coefficients and Mathlib's Nat.choose",
@@ -75,11 +76,19 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Docstring, Imports & Setup",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports (Nat.Choose.Basic, Tactic.Ring/Linarith/Positivity), then a docstring stating the parent's log-concavity inequality, the exact identity (★) this file proves, its centered Liggett-ULC reading, and the mechanism (multiply the two adjacent-ratio relations after substituting n = k+2+t); lists the four proved theorems. Namespace CombinationsFormulaOQ04OQ03 and open Nat.",
+      "mathContext": "Goal: keep the exact factor the parent's log-concavity proof discards, reading it as Liggett's ULC bound met with equality."
+    },
+    {
       "id": "exact-identity",
       "title": "The Exact Adjacent-Triple Identity",
       "summary": "choose_mul_choose_mul_eq: C(n,k)·C(n,k+2)·(n−k)(k+2) = C(n,k+1)²·(k+1)(n−k−1) for all n, k. Off-row, C(n,k+2)=0 and n−k−1=0 make both sides 0; in range, substitute n = k+2+t, apply choose_succ_right_eq at k and k+1, and multiply the two ratio relations to an exact equality.",
-      "startLine": 62,
-      "endLine": 95
+      "startLine": 64,
+      "endLine": 97
     },
     {
       "id": "ulc-equality",
@@ -101,6 +110,14 @@
       "summary": "choose_mul_choose_lt_sq: the strict inequality C(n,k)·C(n,k+2) < C(n,k+1)² for k+2 ≤ n, where the factor gap is strict and C(n,k+1) > 0.",
       "startLine": 134,
       "endLine": 147
+    },
+    {
+      "id": "closing-summary",
+      "title": "Sanity Checks and Closing Summary",
+      "startLine": 148,
+      "endLine": 173,
+      "summary": "Four closing #check statements pin down the exact identity, its centered ULC form, and the two log-concavity corollaries by name; a closing docstring restates all four results and reiterates that keeping the exact factor (rather than the parent's discarded inequality slack) is what settles the ultra-log-concavity open question.",
+      "mathContext": "Compiler-checked name/type existence for the four exported theorems, plus a restatement of the file's headline claim."
     }
   ],
   "conclusion": {
