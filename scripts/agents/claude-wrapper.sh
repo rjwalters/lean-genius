@@ -56,28 +56,43 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     _tokens_dir="$_repo_root/.loom/tokens"
 
     # Bootstrap: if .loom/tokens is missing/empty/broken-symlink, materialize
-    # the account pool from a home master + a repo-local source, merged by
-    # EMAIL, matching loom PR #3696 / issue #3695.
+    # the account pool from three sources, merged by EMAIL. Mirrors loom 0.12.0
+    # (rjwalters/loom#3699, #3700) + lean-genius #41045 — the credential-sourcing
+    # half of the claude-monitor migration (#41033/#41044 did the SELECTION half).
     #
-    # Sources & precedence:
-    #   1. Home master — ~/.loom/accounts.env (override path with the
+    # Sources & precedence (LOW → HIGH):
+    #   1. Home    — ~/.loom/accounts.env (override path with the
     #      LOOM_ACCOUNTS_ENV env var; set LOOM_ACCOUNTS_ENV="" to disable it).
-    #   2. Repo-local  — <repo>/.loom/accounts.env if present, else legacy
+    #      loom #3700 retires the ~/.loom default as PRIMARY; here it is demoted
+    #      to the LOWEST-precedence layer, still readable/supported.
+    #   2. Repo    — <repo>/.loom/accounts.env if present, else legacy
     #      <repo>/.env (backward-compatible fallback).
-    # The two sets are merged **by account email** (ACCOUNT_EMAIL, case-
-    # insensitive): a repo-local account whose email is also in the master
-    # OVERRIDES it (rotate key / repoint file); a repo-local account with a new
-    # email is ADDED. The merge only adds/overrides, never subtracts — use the
-    # .allowlist pin (pin-account.sh) to exclude accounts. Ordering: master
-    # accounts first (in index order), then repo-only additions.
+    #   3. Monitor — ~/.claude-monitor/accounts.env (PRIMARY; directory
+    #      overridable via LOOM_CLAUDE_MONITOR_DIR, mirroring loom's
+    #      monitor.claude_monitor_dir()). This file carries EMAIL + KEY only,
+    #      NO ACCOUNT_TOKEN_FILE — the token filename is auto-derived from the
+    #      email via loom's derive_token_filename convention (see below).
     #
-    # Each merged account is written to its declared ACCOUNT_TOKEN_FILE_N (the
-    # real on-disk filename, validated: no path separators, [A-Za-z0-9._-]).
+    # The sets are merged **by account email** (ACCOUNT_EMAIL, case-insensitive)
+    # in ascending-precedence order (home, then repo, then monitor): an account
+    # whose email is also present in a HIGHER source OVERRIDES the lower one
+    # (rotate key / repoint file), so claude-monitor wins over repo wins over
+    # home; an account with a new email is ADDED. The merge only adds/overrides,
+    # never subtracts — use the .allowlist pin (pin-account.sh) to exclude
+    # accounts. Ordering: home accounts first (in index order), then repo-only
+    # additions, then monitor-only additions.
+    #
+    # Soft dependency: an absent ~/.claude-monitor/accounts.env collapses to the
+    # prior home+repo merge (no regression); an absent everything falls through
+    # to the single-token .env fallback below (unchanged).
+    #
+    # Each merged account is written to its (declared or derived) token filename
+    # (the real on-disk filename, validated: no path separators, [A-Za-z0-9._-]).
     # ACCOUNT_KEY/EMAIL/TOKEN_FILE with the same index N form one account within
     # a source; the positional index is NOT the merge key. Selection/rotation
     # below globs "*.token", so the .token files remain the source of truth.
     #
-    # Resolve the home master path (default + LOOM_ACCOUNTS_ENV; "" disables).
+    # Resolve the home path (default + LOOM_ACCOUNTS_ENV; "" disables).
     if [[ -n "${LOOM_ACCOUNTS_ENV+x}" ]]; then
         _home_accts="$LOOM_ACCOUNTS_ENV"
     else
@@ -89,10 +104,35 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     else
         _repo_accts="$_repo_root/.env"
     fi
+    # Resolve the claude-monitor PRIMARY source (loom monitor.claude_monitor_dir()).
+    if [[ -n "${LOOM_CLAUDE_MONITOR_DIR:-}" ]]; then
+        _monitor_accts="$LOOM_CLAUDE_MONITOR_DIR/accounts.env"
+    else
+        _monitor_accts="$HOME/.claude-monitor/accounts.env"
+    fi
+    # loom 0.12.0 derive_token_filename (#3699): strip '.' and '-' from the email
+    # local-part, append '-<first-domain-label>', lowercase, drop unsafe chars.
+    # STABLE convention — must match loom exactly (same helper used by the
+    # SELECTION path below). Examples:
+    #   alice@example.com     -> alice-example
+    #   a.b.jones@example.org -> abjones-example
+    #   agent-1@example.com   -> agent1-example
+    _bootstrap_derive_stem() {
+        local _email="$1" _local _domain _label
+        [[ "$_email" == *@* ]] || return 1
+        _local="${_email%@*}"
+        _domain="${_email#*@}"
+        _label="${_domain%%.*}"
+        [[ -n "$_local" && -n "$_label" ]] || return 1
+        _local=$(printf '%s' "$_local" | tr -d '.-')
+        printf '%s-%s' "$_local" "$_label" \
+            | tr '[:upper:]' '[:lower:]' \
+            | tr -cd 'a-z0-9._-'
+    }
     # Emit validated account triples from one source as TSV lines:
     #   email_lower <TAB> email <TAB> key <TAB> token_file
     _emit_accounts() {
-        local _src="$1" _tag="$2" _idxs _n _email _key _file
+        local _src="$1" _tag="$2" _idxs _n _email _key _file _stem
         [[ -n "$_src" && -f "$_src" ]] || return 0
         _idxs=$(grep -oE '^ACCOUNT_(EMAIL|KEY|TOKEN_FILE)_[0-9]+=' "$_src" 2>/dev/null \
                 | sed -E 's/^ACCOUNT_(EMAIL|KEY|TOKEN_FILE)_([0-9]+)=/\2/' | sort -un)
@@ -100,8 +140,19 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             _email=$(grep -E "^ACCOUNT_EMAIL_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
             _key=$(grep -E "^ACCOUNT_KEY_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
             _file=$(grep -E "^ACCOUNT_TOKEN_FILE_${_n}=" "$_src" | head -1 | cut -d= -f2- | tr -d "'\"" | tr -d '\n')
-            if [[ -z "$_email" || -z "$_key" || -z "$_file" ]]; then
-                echo "[wrapper] skip [${_tag}] ACCOUNT_*_${_n}: incomplete triple" >&2; continue
+            # EMAIL + KEY are mandatory; TOKEN_FILE is optional. When a source
+            # declares ACCOUNT_TOKEN_FILE prefer it, else derive the filename
+            # from the email via loom's derive_token_filename convention (the
+            # claude-monitor source is EMAIL+KEY only). loom 0.12.0 (#3699).
+            if [[ -z "$_email" || -z "$_key" ]]; then
+                echo "[wrapper] skip [${_tag}] ACCOUNT_*_${_n}: missing email/key" >&2; continue
+            fi
+            if [[ -z "$_file" ]]; then
+                _stem=$(_bootstrap_derive_stem "$_email") || _stem=""
+                if [[ -z "$_stem" ]]; then
+                    echo "[wrapper] skip [${_tag}] ACCOUNT_*_${_n} ('${_email}'): cannot derive token filename" >&2; continue
+                fi
+                _file="${_stem}.token"
             fi
             if [[ "$_file" == */* || "$_file" == *\\* || ! "$_file" =~ ^[A-Za-z0-9._-]+$ ]]; then
                 echo "[wrapper] skip [${_tag}] ACCOUNT_TOKEN_FILE_${_n}='${_file}': unsafe filename" >&2; continue
@@ -112,21 +163,25 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
     if [[ ! -d "$_tokens_dir" ]] || ! ls "$_tokens_dir"/*.token &>/dev/null 2>&1; then
         _home_tsv=$(_emit_accounts "$_home_accts" home)
         _repo_tsv=$(_emit_accounts "$_repo_accts" repo)
-        if [[ -n "$_home_tsv" || -n "$_repo_tsv" ]]; then
+        _mon_tsv=$(_emit_accounts "$_monitor_accts" monitor)
+        if [[ -n "$_home_tsv" || -n "$_repo_tsv" || -n "$_mon_tsv" ]]; then
             # Replace whatever is at $_tokens_dir (broken symlink, etc) with a real dir.
             rm -f "$_tokens_dir" 2>/dev/null || true
             mkdir -p "$_tokens_dir" 2>/dev/null || true
             # bash 3.2 has no associative arrays: parallel arrays + linear email
-            # match (account counts are tiny). Home first, then repo overrides/adds.
+            # match (account counts are tiny). Applied LOW→HIGH precedence: home
+            # first, then repo overrides/adds, then monitor overrides/adds — so
+            # the winning source (_m_src) records the highest source that set the
+            # account (loom 0.12.0 #3699/#3700: monitor > repo > home).
             _m_emails=(); _m_keys=(); _m_files=(); _m_src=()
-            _merge_acct() {  # $1 email_lower  $2 email  $3 key  $4 file  $5 home|repo
+            _merge_acct() {  # $1 email_lower  $2 email  $3 key  $4 file  $5 home|repo|monitor
                 local i _found=-1
                 for i in "${!_m_emails[@]}"; do
                     [[ "${_m_emails[$i]}" == "$1" ]] && { _found=$i; break; }
                 done
                 if [[ $_found -ge 0 ]]; then
-                    _m_keys[$_found]="$3"; _m_files[$_found]="$4"
-                    [[ "$5" == repo ]] && _m_src[$_found]="repo-override"
+                    # Higher-precedence source overrides key/file and claims provenance.
+                    _m_keys[$_found]="$3"; _m_files[$_found]="$4"; _m_src[$_found]="$5"
                 else
                     _m_emails+=("$1"); _m_keys+=("$3"); _m_files+=("$4"); _m_src+=("$5")
                 fi
@@ -137,17 +192,22 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             while IFS=$'\t' read -r _el _em _ky _fl; do
                 [[ -n "$_el" ]] && _merge_acct "$_el" "$_em" "$_ky" "$_fl" repo
             done <<< "$_repo_tsv"
-            _hc=0; _rc=0; _oc=0
+            while IFS=$'\t' read -r _el _em _ky _fl; do
+                [[ -n "$_el" ]] && _merge_acct "$_el" "$_em" "$_ky" "$_fl" monitor
+            done <<< "$_mon_tsv"
+            _hc=0; _rc=0; _mc=0
             for _i in "${!_m_emails[@]}"; do
                 printf '%s' "${_m_keys[$_i]}" > "$_tokens_dir/${_m_files[$_i]}"
                 chmod 600 "$_tokens_dir/${_m_files[$_i]}" 2>/dev/null || true
                 case "${_m_src[$_i]}" in
-                    home) _hc=$((_hc+1)) ;;
-                    repo) _rc=$((_rc+1)) ;;
-                    repo-override) _oc=$((_oc+1)) ;;
+                    monitor) _mc=$((_mc+1)) ;;
+                    repo)    _rc=$((_rc+1)) ;;
+                    home)    _hc=$((_hc+1)) ;;
                 esac
             done
-            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth accounts (home:${_hc} repo-add:${_rc} repo-override:${_oc}; sources: ${_home_accts/#$HOME/\~} + ${_repo_accts#$_repo_root/})" >&2
+            # Provenance = winning (highest) source per email. Absent monitor file
+            # → monitor:0, i.e. today's home+repo behavior (no regression).
+            echo "[wrapper] Bootstrapped $(ls "$_tokens_dir"/*.token 2>/dev/null | wc -l | tr -d ' ') OAuth accounts (monitor:${_mc} repo:${_rc} home:${_hc}; sources: ${_monitor_accts/#$HOME/\~} > ${_repo_accts#$_repo_root/} > ${_home_accts/#$HOME/\~})" >&2
         fi
     fi
 
