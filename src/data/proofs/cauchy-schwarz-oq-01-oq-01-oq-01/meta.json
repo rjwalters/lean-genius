@@ -46,6 +46,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Complex Gram-Schmidt via Cauchy-Schwarz Equality", "startLine": 1, "endLine": 32, "summary": "Answers whether the complex Gram-Schmidt process can be formalized via the Cauchy-Schwarz equality characterization: yes, since the projection step u \u21a6 u \u2212 (\u27eav,u\u27eb/\u27eav,v\u27eb)\u00b7v is exactly the orthogonal decomposition, and CS equality tells us exactly when this step is trivial (the residual vanishes iff the vectors were already dependent). Covers 2- and 3-vector Gram-Schmidt and the residual-vanishing/dependence connection.", "mathContext": "The Gram-Schmidt residual $u - \\frac{\\langle v,u\\rangle}{\\langle v,v\\rangle}v$ vanishes exactly when the Cauchy-Schwarz inequality $|\\langle u,v\\rangle|\\le\\|u\\|\\|v\\|$ is tight, linking orthogonalization directly to the equality case from the parent file."},
     {
       "id": "projection-pipeline",
       "title": "Orthogonal Projection and Residual",
