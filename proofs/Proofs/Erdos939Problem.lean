@@ -180,13 +180,13 @@ theorem lander_parkin_counterexample : ¬EulerConjecture := by
   · norm_num
   use {27, 84, 110, 133}
   constructor
-  · native_decide
+  · decide
   use 144
-  native_decide
+  norm_num [Finset.sum_insert, Finset.mem_insert, Finset.mem_singleton, Finset.sum_singleton]
 
 /-- Direct verification of the Lander-Parkin identity -/
 theorem lander_parkin_identity :
-    27^5 + 84^5 + 110^5 + 133^5 = 144^5 := by native_decide
+    27^5 + 84^5 + 110^5 + 133^5 = 144^5 := by norm_num
 
 /-
 ## Connection to r-Powerful Numbers

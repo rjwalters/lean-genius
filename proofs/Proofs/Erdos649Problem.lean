@@ -73,7 +73,7 @@ private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
   simp [this]
 
 /-- P(1) = 0 by convention. Proved by computation. -/
-theorem gpf_one : P(1) = 0 := by native_decide
+theorem gpf_one : P(1) = 0 := by simp [greatestPrimeFactor]
 
 /-- P(m) divides m for m > 1. Proved from Mathlib's primeFactorsList API. -/
 theorem gpf_divides (m : ℕ) (hm : m > 1) : P(m) ∣ m :=
@@ -317,7 +317,7 @@ Since ord_7(2) = 3, which is odd, 2^k ≡ -1 (mod 7) has no solution.
 -/
 theorem odd_order_no_minus_one : ∀ k : ℕ, (2 ^ k : ZMod 7) ≠ -1 := by
   intro k
-  have h6 : (-1 : ZMod 7) = 6 := by native_decide
+  have h6 : (-1 : ZMod 7) = 6 := by decide
   rw [h6]
   exact two_power_mod_seven k
 
@@ -340,7 +340,7 @@ theorem erdos_649 : ¬ErdosConjecture649 := by
   intro hconj
   -- The conjecture claims all (p, q) pairs work
   -- But (2, 7) has no solution
-  have hp7 : Nat.Prime 7 := by native_decide
+  have hp7 : Nat.Prime 7 := by norm_num
   have h27 := hconj 2 7 Nat.prime_two hp7
   obtain ⟨n, hn_pos, hPn, hPn1⟩ := h27
   have hfalse := no_solution_2_7
