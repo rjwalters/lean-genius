@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The cyclic subgroup <a> as an ordered group",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Packages the parent's faithfulness result (n ↦ a^n injective for ||a|| > 1) into a genuine order isomorphism (Z,+,<) ≃ (<a>,·,⪯), where the order on the cyclic subgroup <a> is pulled back from the regulator (g ⪯ h iff R(g) ≤ R(h)). Shows the isomorphism is simultaneously a group isomorphism, realizing <a> as the discrete subgroup R(a)·Z of the ordered additive reals."
+    },
+    {
       "id": "definitions",
       "title": "Pell norm and regulator",
       "startLine": 47,
