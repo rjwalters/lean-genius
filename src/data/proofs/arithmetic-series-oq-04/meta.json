@@ -77,6 +77,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Faulhaber's Formula for Power Sums via Bernoulli Numbers", "startLine": 1, "endLine": 50, "summary": "Answers whether Faulhaber's formula for the sum of p-th powers can be formalized: yes, Mathlib already has the full proof as sum_Ico_pow / sum_range_pow. The file states Faulhaber's formula as a clean alias of the Mathlib theorem, derives specific power-sum formulas as corollaries (p=1,2,3), and demonstrates the Bernoulli numbers that appear. Historical note: Johann Faulhaber (1580-1635) published power-sum formulas up to k=17; Jacob Bernoulli identified the general pattern in 1713's Ars Conjectandi.", "mathContext": "$\\sum_{k=1}^{n} k^p = \\sum_{i=0}^{p} B'_i \\binom{p+1}{i} \\frac{n^{p+1-i}}{p+1}$, where $B'_i$ are the Bernoulli numbers with $B'_1 = +1/2$."},
     {
       "id": "faulhaber-formula",
       "title": "Part I: Faulhaber's Formula",
