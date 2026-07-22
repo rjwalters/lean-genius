@@ -106,6 +106,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Orbit structure of the iterated outer Napoleon construction",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Where the parent entry shows the outer-then-inner Napoleon composition collapses a triangle to its centroid, this file iterates the single outer construction T_out and pins down its orbit: T_out preserves the centroid, T_out^2 is the point reflection of T_out about the centroid, the orbit has period dividing two (T_out^3 = T_out), and doubling is not idempotent for nondegenerate triangles. Every identity reduces to the algebraic fact that the displacement coefficient a = i√3/6 satisfies a^2 = -1/12."
+    },
+    {
       "title": "Definitions: the outer Napoleon self-map",
       "startLine": 50,
       "endLine": 69,
