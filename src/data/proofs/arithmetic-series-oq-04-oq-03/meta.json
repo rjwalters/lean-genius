@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Open Question and the Faulhaber↔ζ Bridge",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the open question — can ζ(−n) = −B_{n+1}/(n+1) be derived from Faulhaber's power-sum formula via analytic continuation? — and answers it: yes, via Mathlib's riemannZeta_neg_nat_eq_bernoulli'. Previews the file's four consequences (the Faulhaber↔ζ bridge, convention reconciliation, trivial zeros, special values) and states the honest scope: the analytic continuation itself is Mathlib's; the new content is the algebraic bridge.",
+      "mathContext": "Faulhaber's identity (p+1)·∑_{k<n} k^p = B_{p+1}(n) − B_{p+1} subtracts a Bernoulli-number constant B_{p+1}; the file's thesis is that this constant equals −(p+1)·ζ(−p), making ζ(−1) = −1/12 the rigorous shadow of the divergent '1+2+3+⋯ = −1/12'."
+    },
+    {
       "id": "value-formula",
       "title": "Part I: The Value Formula ζ(−n) = −B_{n+1}/(n+1)",
       "startLine": 53,
