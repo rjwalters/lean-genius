@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Discharging the Parent's Three Sorries",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States the goal — completing the parent entry's three sorries (alternating_tail_bound and the sin/cos remainder applications) self-contained and axiom-free, via Mathlib's alternating_series_error_bound and the tsum forms of sin/cos. Flags that |x| ≤ 1 is exactly the domain where the term sequence is monotone, the hypothesis the alternating estimation needs, so the term definitions are reproduced rather than imported from the still-sorry-carrying parent.",
+      "mathContext": "Leibniz tail bound $\\|\\sum'_k (-1)^{k+n}a(k+n)\\| \\le a_n$ for antitone summable $a$, applied to the sin/cos tsum tails on $|x|\\le 1$."
+    },
+    {
       "id": "leibniz",
       "title": "The Leibniz Estimation",
       "startLine": 34,
