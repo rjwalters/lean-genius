@@ -28,13 +28,13 @@
       }
     ],
     "axiomCount": 2,
-    "lineCount": 79,
+    "lineCount": 86,
     "originalContributions": [
       "Formal statement of Erdős Problem 279 as an existential over residue choices for prime moduli",
       "Generalization to arbitrary sets with prime-like density and log-log divergence conditions",
       "Clean separation of the covering property (IsCoveredBy, CoversEventually) from the density hypotheses"
     ],
-    "assumptions": "2 axioms: ErdosProblem279 (main conjecture for k ≥ 3) and ErdosProblem279_generalized (generalization to dense sets). Both are open conjectures. The density conditions HasPrimeLikeDensity and HasLogLogDivergence use placeholder True bodies.",
+    "assumptions": "2 axioms: ErdosProblem279 (main conjecture for k ≥ 3) and ErdosProblem279_generalized (generalization to dense sets). Both are open conjectures. The density conditions HasPrimeLikeDensity and HasLogLogDivergence are left opaque (not defined) rather than given trivially-true placeholder bodies: a True body would make ErdosProblem279_generalized instantiable at junk sets such as A = ∅, where GeneralizedCovering A k is provably false, yielding a kernel inconsistency (issue #41236). Keeping the predicates opaque means the generalized axiom cannot be discharged until a genuine density formalization replaces them, so the module stays a consistent Tier-C scaffold.",
     "mathlib_version": "4.31.0",
     "theoremCount": 1,
     "definitionCount": 6
@@ -88,8 +88,8 @@
       "title": "Density Conditions for Generalization",
       "startLine": 48,
       "endLine": 60,
-      "summary": "Defines two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A ∩ [1,N]| ≥ c·N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that Σ_{n∈A,n≤N} 1/n exceeds log log N by an unbounded amount. Both are currently placeholder definitions.",
-      "mathContext": "Two density conditions isolating the essential properties of primes: (1) $|A \\cap [1,N]| \\geq c \\cdot N/\\log N$ matches the PNT ($\\pi(N) \\sim N/\\log N$). (2) $\\sum_{n \\in A, n \\leq N} 1/n - \\log\\log N \\to \\infty$ matches Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). Both use placeholder `True` bodies pending formalization of asymptotic counting in Lean."
+      "summary": "Declares two density conditions for the generalized conjecture: HasPrimeLikeDensity requiring |A ∩ [1,N]| ≥ c·N/log N for some c > 0 (matching the prime counting function up to a constant), and HasLogLogDivergence requiring that Σ_{n∈A,n≤N} 1/n exceeds log log N by an unbounded amount. Both are left opaque (undefined) rather than given trivially-true bodies — a True body would make ErdosProblem279_generalized instantiable at junk sets like A = ∅ where GeneralizedCovering fails, deriving False (issue #41236). Opacity keeps the generalized axiom honest until a genuine asymptotic formalization replaces the predicates.",
+      "mathContext": "Two density conditions isolating the essential properties of primes: (1) $|A \\cap [1,N]| \\geq c \\cdot N/\\log N$ matches the PNT ($\\pi(N) \\sim N/\\log N$). (2) $\\sum_{n \\in A, n \\leq N} 1/n - \\log\\log N \\to \\infty$ matches Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). Both are declared `opaque` (no body) pending formalization of asymptotic counting in Lean; an earlier `True` placeholder body was load-bearing and made the generalized axiom inconsistent."
     },
     {
       "id": "conjectures",
@@ -119,7 +119,7 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 79,
+    "lineCount": 86,
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 6,
