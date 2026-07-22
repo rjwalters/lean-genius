@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1098-oq-04",
+      "title": "Problem Statement and Background",
+      "summary": "Defines the commutativity degree $\\mathrm{commProb}(G) = |\\{(g,h) : gh=hg\\}|/|G|^2$ of a finite group and connects it to Erd\u0151s Problem #1098 via Neumann's result that the non-commuting graph $\\Gamma(G)$ has no infinite clique iff $[G:Z(G)] < \\infty$.",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "Key facts formalized: $\\mathrm{commProb}(G) = 1$ iff $G$ is abelian, the classical $5/8$ theorem bound $\\mathrm{commProb}(G) \\le 5/8$ for non-abelian $G$ (Gustafson 1973), and that $\\Gamma(G)$'s edges correspond exactly to non-commuting pairs."
+    },
+    {
       "id": "nonccomm-graph",
       "title": "The Non-Commuting Graph",
       "startLine": 30,
