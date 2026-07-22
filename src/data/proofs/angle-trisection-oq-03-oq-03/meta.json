@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module docstring: origami constructibility and 3-smooth degrees",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "States the parent's third open question (generalize the power-of-2 constructibility criterion to origami/higher-dimensional constructions using cubic extensions) and previews the answer: origami degrees are exactly the 3-smooth numbers 2^a·3^b, with the separation result that degree 3 is origami- but not compass-constructible, and the degree-5 limit showing origami is still bounded.",
+      "mathContext": "$\\mathrm{ThreeSmooth}(d) \\iff d = 2^a 3^b$, the origami-admissible degree criterion"
+    },
+    {
       "id": "defs",
       "title": "3-Smooth Degrees and Origami Constructibility",
       "startLine": 40,
