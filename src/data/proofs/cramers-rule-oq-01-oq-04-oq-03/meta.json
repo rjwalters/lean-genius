@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module Header: The Matrix Half of Faddeev-LeVerrier",
+      "startLine": 1,
+      "endLine": 62,
+      "mathContext": "$M_0=I,\\ M_k = A M_{k-1} + c_k I$, terminating at $M_n = \\chi_A(A) = 0$ by Cayley–Hamilton.",
+      "summary": "The module docstring frames this entry as the matrix half of the Faddeev-LeVerrier algorithm, answering the parent's open question of extending it to a recursive Lean function. It states the auxiliary-matrix recursion M₀ = I, Mₖ = A·Mₖ₋₁ + cₖ·I, lists the four results proved (the Horner closed form flAux_eq_sum, the Cayley-Hamilton termination flAux_card_eq_aeval/flAux_card_eq_zero, the final step flAux_terminal, and the adjugate bridge flAux_penultimate_mul back to Cramer's rule), and is explicit about scope: it does not make the coefficients cₖ computable from traces — that scalar recursion (Newton's identities) stays axiomatized in the parent — only the matrix recursion and its Cayley-Hamilton/adjugate consequences are verified here, with zero axioms over an arbitrary commutative ring."
+    },
+    {
       "id": "charpoly-coefficients",
       "title": "Characteristic-Polynomial Coefficients",
       "startLine": 63,
