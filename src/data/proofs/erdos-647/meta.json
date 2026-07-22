@@ -155,6 +155,7 @@
     "theoremCount": 26,
     "definitionCount": 11,
     "path": "Proofs/Erdos647Problem.lean",
+    "assumptions": "1 axiom: large_n_fail (for all n > 24, ¬ErdosCondition n — the hard 'no larger solutions' direction). 0 sorries. Trust caveat: the finite verifications establishing the *unconditional* positive results — twentyfour_satisfies (n = 24 meets the Erdős condition), twentyfour_highly_composite, highly_composite_examples, and the tau/mPlusTau/omega value tables — are closed by `native_decide` (via interval_cases over the τ table), which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); these finite computations therefore shift trust for the concrete n = 24 witness from the kernel to the compiler. The structural results erdosCondition_iff_finset, obstruction, and asymptotic_implies_finite, and the omega-based twentyfive_fails / twentysix_fails, are kernel-checked and do not use native_decide.",
     "sorries": 0
   },
   "crossReferences": [
