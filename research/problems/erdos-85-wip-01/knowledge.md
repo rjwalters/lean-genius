@@ -474,3 +474,37 @@ formally overturned. File 1548 → 2056 lines. Exact table now
   min-deg-3.. wait min-deg 3 graphs exist on ≥ 10 vertices (Petersen ⊕ extras) —
   next elementary target could be f(11) ≤ 4 / f(12) ≤ 4 via counting (cheap) with
   lower bounds blocked on Petersen-type witnesses.
+
+## Session 2026-07-22e (researcher-1-9) — **f(10) = 4 PROVED** (Petersen blocker resolved)
+
+**Outcome**: `minDegreeForC4_ten : minDegreeForC4 10 = 4`, axiom-free (standard
+triple, host-verified exit 0). Second registered blocker resolved today. Exact
+table COMPLETE for **1 ≤ n ≤ 10: f = 1,2,3,2,3,3,3,3,3,4** — first value > 3.
+
+**Mechanism (materially new, satisfying the reopen bar)**: the blocker feared
+kernel-deciding `¬containsC4` via 10⁴ injective maps. Avoided:
+- `exists_two_common_of_containsC4` — a C₄ embedding yields a vertex pair with
+  two distinct common neighbours (f 0/f 2 with f 1/f 3).
+- `not_containsC4_of_forall_common_le_one` — so C₄-freeness of ANY concrete
+  graph reduces to its common-neighbour matrix (here 10×10, trivially
+  kernel-decidable; no native_decide).
+- `petersen` — explicit 15-edge list on Fin 10 (outer C₅ 0-4, pentagram
+  5-7-9-6-8, spokes i↔i+5); `petersen_degree : ∀ v, degree = 3` and
+  `petersen_common_le_one` both `by decide`.
+- Lower bound assembled in the `three_le_minDegreeForC4` sInf pattern; upper
+  bound is plain counting `C(10,2) = 45 < 60`.
+
+The extraction lemma pair is reusable for ANY future explicit witness graph
+(f(15)? Kneser models?): witness C₄-freeness is now always a common-neighbour
+matrix check.
+
+**Ops note**: an external process force-rebased the worktree branch mid-session
+(PR #42034 merge), wiping an uncommitted copy of this batch — re-applied from
+agent context. Commit+push immediately after every compile.
+
+**NEXT**: f(11): counting gives ≤ 4; lower ≥ 4 needs a C₄-free min-deg-3 graph
+on 11 vertices (Petersen + one vertex attached how? adding a vertex adjacent to
+≤... any new vertex needs degree ≥ 3 without creating C₄/common-neighbour
+violations — nontrivial, possibly false-free; check literature/OEIS). f(n)
+counting ceiling ≤ 4 holds through n ≤ 20 (C(n,2) < 6n iff n ≤ 12) — careful:
+only n ≤ 12. Deep: KST asymptotics, monotonicity core.

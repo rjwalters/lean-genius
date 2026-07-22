@@ -29,8 +29,8 @@
         "blockedAt": "2026-07-22"
       },
       {
-        "route": "fourth exact value f(10)=4 via the Petersen graph (3-regular girth-5 => C4-free => f(10)>=4)",
-        "reopenCriterion": "materially new mechanism required: a decide-free formalization of the Petersen graph and its C4-freeness (10^4 injective maps; kernel decide risky, native_decide taints axioms). No 3-regular C4-free graph exists below 10 vertices (Moore bound), so no easier small witness.",
+        "route": "RESOLVED 2026-07-22 (was: f(10)=4 needs decide-free Petersen): PROVED via explicit 15-edge Petersen + common-neighbour extraction criterion (10x10 kernel decide, no native_decide) — minDegreeForC4_ten.",
+        "reopenCriterion": "resolved, nothing to reopen",
         "blockedAt": "2026-07-21"
       },
       {
@@ -57,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR PROGRESS (researcher-1-9, 2026-07-22, host-verified exit 0, standard triple): f(9) = 3 PROVED axiom-free (minDegreeForC4_nine) — blueprint executed same-day, no ex(n;C4) input. Exact table COMPLETE for 1<=n<=9: f = 1,2,3,2,3,3,3,3,3. Machinery: degree pinch, dense-4-set lemma, tight-cherry bijection upgrade, path-count, pigeonhole engine. Remaining: f(10)=4 (Petersen, blocked on decide-free witness), f(11)/f(12) upper bounds via counting (cheap next target), deep KST asymptotics + monotonicity core (open).",
+    "progressSummary": "MAJOR PROGRESS (researcher-1-9, 2026-07-22, host-verified, standard triple): f(9) = 3 AND f(10) = 4 both PROVED axiom-free in one day — exact table COMPLETE for 1 <= n <= 10: f = 1,2,3,2,3,3,3,3,3,4. Both registered blockers resolved (f(9): elementary pinch + tight-cherry bijection + pigeonhole; f(10): edge-list Petersen + common-neighbour extraction criterion, no embedding enumeration). Remaining: f(11)/f(12) (counting gives <= 4, lower bounds open), deep KST asymptotics, monotonicity core (open in literature).",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -94,7 +94,10 @@
       "containsC4_of_card_add_two_le_degree_add_degree in Erdos85Problem.lean (global form)",
       "minDegreeForC4_nine (f(9)=3) + containsC4_of_nine_min_degree_three in Erdos85Problem.lean",
       "nine_degree_pinch, containsC4_of_nine_one_four, containsC4_of_nine_three_fours in Erdos85Problem.lean",
-      "containsC4_of_four_set_min_two (dense-4-set lemma) + card_inter_neighborFinset_le_one in Erdos85Problem.lean"
+      "containsC4_of_four_set_min_two (dense-4-set lemma) + card_inter_neighborFinset_le_one in Erdos85Problem.lean",
+      "minDegreeForC4_ten (f(10)=4) + four_le_minDegreeForC4_ten in Erdos85Problem.lean",
+      "petersen (explicit edge-list) + petersen_degree + petersen_common_le_one in Erdos85Problem.lean",
+      "exists_two_common_of_containsC4 + not_containsC4_of_forall_common_le_one (reusable C4-freeness criterion) in Erdos85Problem.lean"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -124,7 +127,9 @@
       "Friendship theorem NOT needed for the tight-cherry case (and is unavailable anyway: Mathlib ships it only in Archive/Wiedijk100Theorems, no olean in the shared cache)",
       "Pigeonhole C4 engine formalized: containsC4_of_degree_sum_subset (N(u),N(v) inside S with |S|+2 <= d(u)+d(v) forces C4) + global |V|+2 form — reusable for all future exact values",
       "f(9) = 3 PROVED axiom-free in one session, executing the same-day blueprint: degree pinch (cherry+parity), (3^8,4) killed by dense-4-set local analysis, (3^6,4^3) killed by tight-cherry bijection + path-count + pigeonhole engine — NO ex(n;C4) input; fourth extremal-tables blocker claim overturned by formal proof",
-      "Tight-counting upgrade pattern: when the KST cherry-to-pair map has equal source/target cards, Set.InjOn + card_image_of_injOn + eq_of_subset_of_card_le turns the pigeonhole into a bijection giving EXISTENCE of a common neighbour for every pair — reusable wherever a counting bound is attained exactly"
+      "Tight-counting upgrade pattern: when the KST cherry-to-pair map has equal source/target cards, Set.InjOn + card_image_of_injOn + eq_of_subset_of_card_le turns the pigeonhole into a bijection giving EXISTENCE of a common neighbour for every pair — reusable wherever a counting bound is attained exactly",
+      "f(10) = 4 PROVED: the feared 10^4 embedding enumeration was never needed — extraction lemma (C4 embedding => two common neighbours) reduces C4-freeness of any explicit witness graph to its common-neighbour matrix, a 10x10 kernel decide for the 15-edge Petersen list",
+      "Both registered exact-value blockers on this problem fell in one day (f(9) via elementary pinch+pigeonhole, f(10) via common-neighbour extraction) — extremal-table and enumeration fears repeatedly overestimate the difficulty"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
