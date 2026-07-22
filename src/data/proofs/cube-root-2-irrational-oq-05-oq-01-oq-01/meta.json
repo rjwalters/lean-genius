@@ -76,7 +76,8 @@
       "**Rationality of the root is rationality of an n-th power.** The real-analytic content is entirely in the one-line bridge q^(1/n) ∈ ℚ ⟺ q ∈ (ℚ⁺)ⁿ; everything afterward is pure arithmetic of fractions.",
       "**Uniqueness of reduced fractions does all the work.** That cⁿ/dⁿ is automatically in lowest terms when c/d is — i.e. coprimality survives taking powers — is exactly what lets the single condition q = sⁿ split into two independent coordinate conditions. Mathlib's Rat.num_pow / Rat.den_pow are this fact in usable form.",
       "**The numerator and denominator decouple.** Unlike the integer case (one condition), the rational case is a conjunction: a single non-perfect-power coordinate — numerator OR denominator — already forces irrationality.",
-      "**Strictly generalizes the parent.** Setting q.den = 1 recovers the natural-number criterion verbatim, so this entry subsumes cube-root-2-irrational-oq-05-oq-01 rather than merely paralleling it."
+      "**Strictly generalizes the parent.** Setting q.den = 1 recovers the natural-number criterion verbatim, so this entry subsumes cube-root-2-irrational-oq-05-oq-01 rather than merely paralleling it.",
+      "**The toNat coercion is safe only because q > 0.** IsPerfectNthPow is stated over ℕ, but Rat.num is an integer, so q.num.toNat silently discards sign information in general. Here that's lossless only because the hypothesis q > 0 forces q.num > 0 (Rat.num_pos): positivity does double duty, both making the real root well-defined and making the ℕ-valued perfect-power predicate apply to the numerator without any sign ambiguity."
     ],
     "prerequisites": [
       "Real power (rpow) arithmetic: rpow_mul, rpow_natCast for nonnegative base",
@@ -110,12 +111,20 @@
       "mathContext": "$q \\in (\\mathbb{Q}_{>0})^n \\iff q.\\mathrm{num},\\ q.\\mathrm{den}$ are perfect $n$-th powers."
     },
     {
-      "id": "criterion-and-corollary",
-      "title": "Criterion, Irrationality Form, and Integer Special Case",
+      "id": "criterion",
+      "title": "The Criterion and Its Irrationality Form",
       "startLine": 113,
-      "endLine": 144,
-      "summary": "rational_rpow_inv_iff_rat (the assembled criterion), irrational_rpow_inv_iff_rat (its contrapositive), and rational_rpow_inv_iff_natCast recovering the parent's natural-number criterion at q.den = 1.",
+      "endLine": 127,
+      "summary": "rational_rpow_inv_iff_rat assembles the bridge and the arithmetic core into the main criterion; irrational_rpow_inv_iff_rat is its contrapositive (irrationality) form.",
       "mathContext": "$q^{1/n} \\in \\mathbb{Q} \\iff (\\exists k,\\ k^n = q.\\mathrm{num}) \\wedge (\\exists k,\\ k^n = q.\\mathrm{den})$."
+    },
+    {
+      "id": "integer-special-case",
+      "title": "Corollary: the Integer Special Case",
+      "startLine": 129,
+      "endLine": 144,
+      "summary": "rational_rpow_inv_iff_natCast recovers the parent's natural-number criterion at q.den = 1, where the denominator condition IsPerfectNthPow 1 n is automatic since 1 = 1ⁿ.",
+      "mathContext": "At $q.\\mathrm{den} = 1$: $m^{1/n} \\in \\mathbb{Q} \\iff \\exists k,\\ k^n = m$ — the parent's criterion."
     }
   ],
   "crossReferences": [
