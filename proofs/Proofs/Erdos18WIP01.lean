@@ -1520,10 +1520,13 @@ theorem two_pow_sub_one_card_ge {k : ℕ} {T : Finset ℕ}
   have hTP : T ⊆ P := by
     intro x hxT
     have hxle : x ≤ 2 ^ k - 1 := by
-      have hh := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hxT
-      simpa [hsum] using hh
+      have hh : x ≤ T.sum id := by
+        have hs := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hxT
+        simpa using hs
+      rw [hsum] at hh
+      exact hh
     have hxdvd : x ∣ 2 ^ k := (Nat.mem_divisors.mp (hT hxT)).1
-    obtain ⟨j, hjk, rfl⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp hxdvd
+    obtain ⟨j, _hjk, rfl⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp hxdvd
     have hjlt : j < k := by
       by_contra hjc
       rw [not_lt] at hjc

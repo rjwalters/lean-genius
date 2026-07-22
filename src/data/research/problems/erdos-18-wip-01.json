@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: First theorems about the divisor-completeness index h (parent \"Known Bounds on h(m)\" section was empty). Proved the information-theoretic lower bound m<=2^(h m) and upper bound h(m)<=d(m), pinning log2 m <= h(m) <= d(m) (0-axiom, Docker-verified v4.31). Surfaced a definition defect: the file h is the universal-representing-set size (>=log2 m), NOT the Erdos prize quantity (max single-value representation length, Vose <<sqrt(log m)); consequently conjecture_part2_weak (h(n!)<n^eps) is false as stated for this h (factorial_le_two_pow_h). Recommended mechanic follow-up: rename parent h, add max-length index for the conjectures.",
+    "progressSummary": "PROGRESS: hErdos index now has its FIRST EXACT value hErdos(2^k)=k (log2 extreme, powers of two are worst case). Complements sandwich 1<=hErdos<=h<=d(m). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -46,7 +46,8 @@
       "sum_range_two_pow, sum_divisors_two_pow, two_pow_mul_practical_of_le, euclid_form_practical, four_ninety_six_practical in Erdos18WIP01.lean (all 0-axiom: propext/Classical.choice/Quot.sound; Docker-built 8577 jobs)",
       "le_two_pow_h (Erdos18WIP01.lean): m <= 2^(h m) for practical m [0-axiom]",
       "h_le_card_divisors (Erdos18WIP01.lean): h m <= d(m) for practical m [0-axiom]",
-      "factorial_le_two_pow_h (Erdos18WIP01.lean): n! <= 2^(h n!) [0-axiom]"
+      "factorial_le_two_pow_h (Erdos18WIP01.lean): n! <= 2^(h n!) [0-axiom]",
+      "Erdos18WIP01.lean: hErdos_two_pow — EXACT hErdos(2^k)=k, first exact value of the corrected Erdos #18 index. Upper repLength_two_pow_le (binary digits, <=k), lower two_pow_sub_one_card_ge (2^k-1 all-ones needs all k powers). Helper sum_image_two_pow_range. 0-axiom docker-verified v4.31."
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -62,7 +63,8 @@
       "Proved (Erdos18WIP01, 0-axiom): le_two_pow_h : IsPractical m -> m <= 2^(h m). Information-theoretic: a size-(h m) representing set has only 2^(h m) subset sums yet must realise the m values 0..m-1. Hence h(m) >= log2 m for the file h.",
       "Corollary factorial_le_two_pow_h : n! <= 2^(h n!). Since log2(n!)=Theta(n log n) is superpolynomial, the parent conjecture_part2_weak (h(n!)<n^eps) is FALSE as written for the file s universal-set h.",
       "Proved h_le_card_divisors : IsPractical m -> h m <= (divisors m).card (upper bound d(m)). Together: log2 m <= h m <= d(m) for the file h.",
-      "Erdos18OQ01.lean already proves subadditivity h(mn)<=h(m)+h(n) for this universal-set h (correct for that quantity), so the def cannot simply be replaced: mechanic should RENAME the parent h to the universal-set index and introduce the max-representation-length index for the conjectures."
+      "Erdos18OQ01.lean already proves subadditivity h(mn)<=h(m)+h(n) for this universal-set h (correct for that quantity), so the def cannot simply be replaced: mechanic should RENAME the parent h to the universal-set index and introduce the max-representation-length index for the conjectures.",
+      "hErdos(2^k)=k=log2(2^k) is the MAXIMAL value of the Erdos #18 index for a number of that size (hErdos m <= h m <= d(m); d(2^k)=k+1). Powers of two are the WORST case for the index — extremal opposite of the deep conjectured factorial behaviour hErdos(n!)<n^{o(1)} (Vose). First exact hErdos family value."
     ],
     "mathlibGaps": [],
     "nextSteps": [
