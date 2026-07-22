@@ -31,6 +31,7 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Order.Interval.Set.Basic
 
 open Nat BigOperators Finset Real
@@ -145,7 +146,7 @@ lim_{n→∞} F(n^{4/9}, n) = ∞
 The exponent 4/9 can be improved slightly.
 -/
 axiom four_ninths_gives_infinity :
-    ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M
+    ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ) ^ ((4 : ℝ) / 9)) n > M
 
 /- 
 **EGIP96 Theorem 3:**
@@ -227,7 +228,7 @@ theorem erdos_420 :
     -- lim F(√n, n) = ∞
     (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => Real.sqrt n) n > M) ∧
     -- lim F(n^{4/9}, n) = ∞
-    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M) :=
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ) ^ ((4 : ℝ) / 9)) n > M) :=
   ⟨sqrt_gives_infinity, four_ninths_gives_infinity⟩
 
 /-
@@ -269,7 +270,7 @@ for any g(n) → ∞.
 theorem erdos_420_summary :
     -- F(√n, n) → ∞ and F(n^{4/9}, n) → ∞
     (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => Real.sqrt n) n > M) ∧
-    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M) ∧
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ) ^ ((4 : ℝ) / 9)) n > M) ∧
     -- Bounded gaps consequence
     (∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →
       ∀ M : ℝ, ∃ᶠ n in Filter.atTop, F g n > M) :=
