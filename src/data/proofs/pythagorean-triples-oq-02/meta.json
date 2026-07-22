@@ -53,6 +53,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Pythagorean triples via Gaussian integers",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Answers why the parametric Pythagorean-triple formula works, algebraically: over the Gaussian integers Z[i], the norm N(a+bi)=a^2+b^2 is multiplicative, so squaring z=m+ni gives z^2=(m^2-n^2)+2mni with norm |z|^4=(m^2+n^2)^2, directly yielding the triple (m^2-n^2, 2mn, m^2+n^2) and the Brahmagupta-Fibonacci identity as norm multiplicativity."
+    },
+    {
       "id": "gaussian-arithmetic",
       "title": "Gaussian Integer Arithmetic",
       "startLine": 24,
