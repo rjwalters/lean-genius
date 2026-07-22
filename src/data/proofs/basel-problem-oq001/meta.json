@@ -132,6 +132,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Apéry Numbers and the Central-Binomial Lower Bound",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring frames this as a self-contained, axiom-free companion to the ζ(3)-irrationality file BaselProblemOQ01OQ01OQ02.lean: that file assumes bₙ ≤ 34ⁿ as one of five axioms, and this file supplies the missing lower-bound half of the squeeze — that the Apéry numbers bₙ = ∑ₖ C(n,k)²C(n+k,k)² grow at least geometrically. Lists the results proved (aperyB_centralTerm, centralBinom_sq_le_aperyB, two_pow_le_centralBinom, four_pow_le_aperyB, sixteen_pow_le_aperyB, aperyB_tendsto_atTop), notes the true growth rate (1+√2)⁴ ≈ 33.97 against which these bracket [4,34], cites Apéry (1979) and van der Poorten (1979), then imports Mathlib and opens the AperyCentralBinom namespace.",
+      "mathContext": "$b_n=\\sum_{k=0}^n\\binom{n}{k}^2\\binom{n+k}{k}^2$ satisfies $4^n \\le 16^n/(4n^2) \\lesssim b_n \\le 34^n$, bracketing the true exponential base $(1+\\sqrt2)^4=17+12\\sqrt2\\approx33.97$."
+    },
+    {
       "id": "definition-values",
       "title": "Section 0: Definition and small values",
       "startLine": 45,
