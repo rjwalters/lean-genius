@@ -51,7 +51,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 339,
-    "assumptions": "1 axiom: eberhard_theorem. 0 sorries.",
+    "assumptions": "1 axiom: eberhard_theorem. 0 sorries. Trust caveat: tau_four, tau_six, tau_twelve (Erdos964Aristotle.lean L55/L58/L61) are discharged by native_decide (finite divisor-count values tau(4)=3, tau(6)=4, tau(12)=6), so the build additionally depends on the Lean.ofReduceBool compiler-trust axiom; these are finite demonstrations, not the eberhard_theorem headline axiom.",
     "theoremCount": 10,
     "definitionCount": 8,
     "additionalFiles": [
