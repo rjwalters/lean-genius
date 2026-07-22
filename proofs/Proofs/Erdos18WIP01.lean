@@ -857,4 +857,115 @@ theorem representable_le_sigma_of_practical {m : ℕ} (h : IsPractical m) :
   obtain ⟨T, hT, hTsum⟩ := finset_chain_covers (divisors m) hchain k hk
   exact ⟨T, hT, by simpa [id_eq] using hTsum⟩
 
+/- ## The Stewart–Sierpiński sufficient condition and practicality of factorials
+
+The sharp representability lemma `representable_le_sigma_of_practical` unlocks the
+classical *multiplicative* sufficient condition of Stewart (1954) and Sierpiński (1955):
+
+* `mul_practical_of_le_succ_sigma` — if `m` is practical and `1 ≤ n ≤ σ(m) + 1`, then
+  `n · m` is again practical. The proof is a clean two-scale coin argument. To represent
+  `q < n·m`, Euclidean-divide `q = n·a + b` with `0 ≤ b < n` and `0 ≤ a < m`. Since
+  `b ≤ n − 1 ≤ σ(m)` and `a < m ≤ σ(m)`, sharp representability writes both `b` and `a`
+  as sums of distinct divisors of `m`. Keep the `b`-coins as they are (divisors of `m`,
+  hence of `n·m`) and scale the `a`-coins by `n` (each `n·d ∣ n·m`). The `b`-coins sum to
+  `b < n` so each is `< n`, while every scaled coin is `≥ n`; the two coin sets are
+  therefore disjoint and their union is a set of distinct divisors of `n·m` summing to
+  `n·a + b = q`.
+
+* `factorial_practical` — **every factorial `n!` is practical** (a classical fact):
+  `(k+1)! = (k+1)·k!` and `k + 1 ≤ σ(k!) + 1` because `σ(k!) ≥ k! ≥ k`, so the sufficient
+  condition applies at each step from the base `0! = 1`. This is an infinite family of
+  practical numbers of *super-exponential* growth, complementing the geometric family of
+  powers of two (`two_pow_practical`).
+
+Both results are axiom-free. -/
+
+/-- **Stewart–Sierpiński sufficient condition.** If `m` is practical and
+`1 ≤ n ≤ σ(m) + 1` (where `σ(m) = ∑_{d ∣ m} d`), then `n · m` is practical. -/
+theorem mul_practical_of_le_succ_sigma {m n : ℕ} (h : IsPractical m)
+    (hn1 : 1 ≤ n) (hn : n ≤ 1 + ∑ d ∈ divisors m, d) :
+    IsPractical (n * m) := by
+  obtain ⟨hm1, _⟩ := h
+  have hnpos : 0 < n := hn1
+  have hmpos : 0 < m := hm1
+  have hnm1 : 0 < n * m := Nat.mul_pos hnpos hmpos
+  have hnm0 : n * m ≠ 0 := by omega
+  -- `m ≤ σ(m)`, since `m` is a divisor of itself.
+  have hsig_ge : m ≤ ∑ d ∈ divisors m, d := by
+    apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+    exact Nat.mem_divisors.mpr ⟨dvd_refl m, by omega⟩
+  refine ⟨hnm1, ?_⟩
+  intro q hq1 hqnm
+  -- Euclidean split: `q = n * a + b` with `b < n` and `a < m`.
+  set a := q / n with ha
+  set b := q % n with hb
+  have hbn : b < n := Nat.mod_lt q hnpos
+  have hqab : n * a + b = q := Nat.div_add_mod q n
+  have ham : a < m := Nat.div_lt_of_lt_mul hqnm
+  -- Represent `b ≤ n - 1 ≤ σ(m)` and `a < m ≤ σ(m)` by distinct divisors of `m`.
+  obtain ⟨B, hBsub, hBsum⟩ := representable_le_sigma_of_practical h b (by omega)
+  obtain ⟨A, hAsub, hAsum⟩ := representable_le_sigma_of_practical h a (by omega)
+  -- The large-coin set: scale each `a`-coin by `n`.
+  set Aset : Finset ℕ := A.image (fun d => n * d) with hAset
+  have hinj : ∀ x ∈ A, ∀ y ∈ A, n * x = n * y → x = y :=
+    fun x _ y _ hxy => Nat.eq_of_mul_eq_mul_left hnpos hxy
+  -- Both coin families are divisors of `n * m`.
+  have hBdiv : B ⊆ divisors (n * m) := by
+    intro x hx
+    have hxm : x ∣ m := (Nat.mem_divisors.mp (hBsub hx)).1
+    exact Nat.mem_divisors.mpr ⟨hxm.trans (dvd_mul_left m n), hnm0⟩
+  have hAdiv : Aset ⊆ divisors (n * m) := by
+    intro x hx
+    rw [hAset, Finset.mem_image] at hx
+    obtain ⟨d, hdA, rfl⟩ := hx
+    have hdm : d ∣ m := (Nat.mem_divisors.mp (hAsub hdA)).1
+    exact Nat.mem_divisors.mpr ⟨Nat.mul_dvd_mul_left n hdm, hnm0⟩
+  -- Small coins are `< n` (they sum to `b < n`); large coins are `≥ n`.
+  have hBlt : ∀ x ∈ B, x < n := by
+    intro x hx
+    have hxle : x ≤ b := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hx
+      rwa [hBsum, id_eq] at this
+    omega
+  have hAge : ∀ x ∈ Aset, n ≤ x := by
+    intro x hx
+    rw [hAset, Finset.mem_image] at hx
+    obtain ⟨d, hdA, rfl⟩ := hx
+    have hd1 : 1 ≤ d := Nat.pos_of_mem_divisors (hAsub hdA)
+    calc n = n * 1 := (Nat.mul_one n).symm
+      _ ≤ n * d := Nat.mul_le_mul_left n hd1
+  have hdisj : Disjoint B Aset := by
+    rw [Finset.disjoint_left]
+    intro x hxB hxA
+    have := hBlt x hxB
+    have := hAge x hxA
+    omega
+  -- Assemble the union and compute its divisor-sum.
+  refine ⟨B ∪ Aset, ?_, ?_⟩
+  · rw [Finset.union_subset_iff]; exact ⟨hBdiv, hAdiv⟩
+  · have hAsetsum : (Aset).sum id = n * a := by
+      rw [hAset, Finset.sum_image hinj]
+      have : ∑ d ∈ A, id (n * d) = n * ∑ d ∈ A, id d := by
+        simp only [id_eq]; rw [Finset.mul_sum]
+      rw [this, hAsum]
+    rw [Finset.sum_union hdisj, hBsum, hAsetsum]
+    omega
+
+/-- **Every factorial is practical.** By the Stewart–Sierpiński sufficient condition,
+`(k+1)! = (k+1)·k!` is practical whenever `k! ` is, because `k + 1 ≤ σ(k!) + 1`
+(indeed `σ(k!) ≥ k! ≥ k`). Starting from `0! = 1`, induction gives a practical `n!` for
+every `n` — an infinite, super-exponentially growing family of practical numbers. -/
+theorem factorial_practical : ∀ n : ℕ, IsPractical (n !) := by
+  intro n
+  induction n with
+  | zero => simpa using one_practical
+  | succ k ih =>
+    rw [Nat.factorial_succ]
+    refine mul_practical_of_le_succ_sigma ih (by omega) ?_
+    have hfac_le : (k !) ≤ ∑ d ∈ divisors (k !), d := by
+      apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+      exact Nat.mem_divisors.mpr ⟨dvd_refl _, Nat.factorial_ne_zero k⟩
+    have hkfac : k ≤ k ! := Nat.self_le_factorial k
+    omega
+
 end Erdos18
