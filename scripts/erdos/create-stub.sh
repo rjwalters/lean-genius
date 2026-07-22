@@ -10,8 +10,9 @@
 # Creates:
 #   - src/data/proofs/erdos-{N}/meta.json
 #   - src/data/proofs/erdos-{N}/annotations.json
-#   - src/data/proofs/erdos-{N}/index.ts
 #   - proofs/Proofs/Erdos{N}Problem.lean
+# (per-proof index.ts shims are no longer emitted; the gallery uses a runtime
+#  loader src/data/proofs/index.ts that fetches by slug — #20993/#39401)
 
 set -euo pipefail
 
@@ -162,13 +163,8 @@ create_stub() {
 ]
 EOF
 
-    # Create index.ts
-    cat > "$gallery_path/index.ts" << EOF
-import meta from './meta.json'
-import annotations from './annotations.json'
-
-export { meta, annotations }
-EOF
+    # Per-proof index.ts shims are no longer emitted — the gallery uses a
+    # runtime loader (src/data/proofs/index.ts) that fetches by slug (#20993/#39401).
 
     # Create Lean proof file if it doesn't exist
     if [[ ! -f "$proof_file" ]]; then
