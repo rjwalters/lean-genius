@@ -26,8 +26,8 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-21T22:00:00-07:00",
-    "iteration": 4,
+    "since": "2026-07-22",
+    "iteration": 5,
     "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio and its limit.",
     "blockers": [
       {
@@ -36,7 +36,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Growth-ratio limit layer now records: boundedness (b_k=O(k^2)), a two-subsequence non-convergence criterion, non-vacuity of both limit predicates, and (this session) tail-invariance of the growth limit plus sub-quadratic (linear) growth => limit 0. Only the deep oscillation dichotomy (materially new mechanism required) remains open.",
+    "nextAction": "The limsup lemma (previously the only remaining elementary increment) is DONE. Entry now fully saturated at the elementary layer; do not add further bricks. Remaining open content = the sub-basis construction achieving liminf<limsup (deep, blocked).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: growth-spectrum toolkit now has {unique,monotone,squeeze} order structure + const-scaling + non-convergence tail-invariance + two-parameter oscillating family oscPair (PR #41480, 0-axiom). Deep OPEN core: sub-basis oscillation dichotomy (materially new mechanism required).",
+    "progressSummary": "Elementary layer complete INCLUDING the limsup/liminf translation (2026-07-22): non-convergence == liminf<limsup for bounded ratios, specialized to order-2 bases (two_hasNoGrowthLimit_iff_liminf_lt_limsup); limsup form of b_k=O(k^2) landed (two_growthRatio_limsup_le). The deferred filter-API increment is done. ONLY the deep sub-basis oscillation construction remains (structured blocker, materially new mechanism required).",
     "builtItems": [
       "IsAddBasisOfOrder.mono_order / .mono_set in Erdos326WIP01.lean",
       "IsAddBasis.mono",
@@ -62,7 +62,8 @@
       "hasNoGrowthLimit_oscillating — HasNoGrowthLimit is non-vacuous: oscillating sequence has no growth limit",
       "IsAddBasisOfOrder.two_nth_le_quadratic + two_nth_le_mul_sq in Erdos326WIP01.lean: order-2 basis enumeration b_k=Nat.nth(.∈A) satisfies b_k ≤ N+(k+1)^2 and b_k ≤ (N+4)k^2 (k≥1). 0 axioms (propext/Classical.choice/Quot.sound), host-verified v4.31.0",
       "IsAddBasisOfOrder.two_growthRatio_le / two_growthRatio_mem_Icc / two_growthRatio_bddAbove in Erdos326WIP01.lean (axiom-free, host-verified v4.31.0)",
-      "hasNoGrowthLimit_of_two_subseq_limits in Erdos326WIP01.lean: two-subsequence non-convergence criterion, 0-axiom host-verified v4.31"
+      "hasNoGrowthLimit_of_two_subseq_limits in Erdos326WIP01.lean: two-subsequence non-convergence criterion, 0-axiom host-verified v4.31",
+      "limsup/liminf layer in Erdos326WIP01.lean: growthRatio_isBoundedUnder_ge, IsAddBasisOfOrder.two_growthRatio_isBoundedUnder_le (boundedness plumbing), two_growthRatio_limsup_le (limsup form of b_k=O(k^2)), growthRatio_liminf_nonneg, HasGrowthLimit.limsup_eq/liminf_eq, hasGrowthLimit_of_liminf_eq_limsup (converse), hasNoGrowthLimit_iff_liminf_lt_limsup (characterization), IsAddBasisOfOrder.two_hasNoGrowthLimit_iff_liminf_lt_limsup (order-2 specialization)"
     ],
     "insights": [
       "The basis predicates form a monotone lattice: raising the order or enlarging the set preserves the basis property — the atomic order theory underlying any basis-comparison argument.",
@@ -77,7 +78,10 @@
       "The b_k = O(k^2) growth upper bound for order-2 bases is now machine-checked axiom-free (two_nth_le_quadratic: Nat.nth (.∈A) k ≤ N + (k+1)^2; two_nth_le_mul_sq: ≤ (N+4)·k^2 for k≥1). This is the standard consequence of the √n density bound (Key Observation 1): with n = N+(k+1)^2 the density (n+1-N ≤ (|S|+1)^2) forces k < |S| ≤ count(.∈A)(n+1), so Nat.nth (.∈A) k < n+1 via Nat.nth_lt_of_lt_count. No deep input; the oscillation dichotomy stays open.",
       "growthRatio bₖ/k² of an order-2 basis enumeration (Nat.nth) is bounded above: eventually ≤ C (two_growthRatio_le), eventually in [0,C] (two_growthRatio_mem_Icc), and its full range is BddAbove (two_growthRatio_bddAbove) — the growthRatio restatement of bₖ=O(k²). First results connecting growthRatio to the real basis enumeration rather than toy sequences.",
       "hasNoGrowthLimit_of_two_subseq_limits: two strictly-monotone index subsequences of growthRatio with distinct limits ⇒ HasNoGrowthLimit. Reusable engine for the OPEN oscillation direction of #326; generalizes the ad-hoc oscillating example. Idiom: hx.comp hφ.tendsto_atTop (subsequence shares limit) + tendsto_nhds_unique.",
-      "Growth-limit functional is MONOTONE (HasGrowthLimit.mono), LINEAR under constant scaling (HasGrowthLimit.const_mul), and non-convergence is a TAIL INVARIANT (hasNoGrowthLimit_congr); two-parameter oscillating family oscPair c1 c2 realizes HasNoGrowthLimit for all c1!=c2 (PR #41480)."
+      "Growth-limit functional is MONOTONE (HasGrowthLimit.mono), LINEAR under constant scaling (HasGrowthLimit.const_mul), and non-convergence is a TAIL INVARIANT (hasNoGrowthLimit_congr); two-parameter oscillating family oscPair c1 c2 realizes HasNoGrowthLimit for all c1!=c2 (PR #41480).",
+      "Non-convergence of b_k/k^2 for an order-2 basis is EXACTLY liminf < limsup: ratios are bounded (two_growthRatio_le) and nonneg, so tendsto_of_liminf_eq_limsup + Tendsto.limsup_eq/liminf_eq give HasNoGrowthLimit b iff liminf(growthRatio b) < limsup(growthRatio b). The open dichotomy is now stated in the language it concerns: find a sub-basis with a persistent liminf/limsup gap inside [0, C].",
+      "Filter-API names (the earlier deferral risk, all verified v4.31): Filter.isBoundedUnder_of takes (exists b, forall x, r (u x) b); IsBoundedUnder.isCoboundedUnder_le needs (>=)-boundedness (and _ge needs <=); limsup_le_of_le/le_liminf_of_le take the cobounded side as explicit first arg (isBoundedDefault autoparam does not fire in conditionally-complete R); tendsto_of_liminf_eq_limsup takes hinf hsup then both boundedness sides.",
+      "IsBoundedUnder (<=) atTop from an eventual bound: anonymous constructor with eventually_map.mpr (eventually_atTop.mpr ...) — IsBoundedUnder unfolds to IsBounded on (map u atTop)."
     ],
     "mathlibGaps": [
       "No packaged bₖ = O(k²) bound for order-2 additive bases; would need a density-counting argument (|A ∩ [0,n]| ≥ c√n) not currently in Mathlib."

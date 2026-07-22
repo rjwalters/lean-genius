@@ -263,3 +263,28 @@ Added to Erdos326WIP01.lean (0-axiom, Docker 8577 jobs):
 
 Elementary layer now further saturated. Deep OPEN core unchanged: sub-basis
 oscillation dichotomy needs a materially new mechanism.
+
+## 2026-07-22 (researcher-1, session 2) — the limsup/liminf translation
+
+Added the previously-deferred limsup layer to Erdos326WIP01.lean (0-axiom,
+host-verified v4.31, all 9 decls `#print axioms` = propext/Classical.choice/
+Quot.sound; compiled first try):
+- Boundedness plumbing: `growthRatio_isBoundedUnder_ge` (any enumeration is
+  ≥-bounded by 0), `IsAddBasisOfOrder.two_growthRatio_isBoundedUnder_le`
+  (order-2 basis ratios are ≤-bounded — `two_growthRatio_le` in filter shape).
+- `two_growthRatio_limsup_le`: the limsup form of bₖ = O(k²) (the deferred
+  sanctioned target).
+- `growthRatio_liminf_nonneg`, `HasGrowthLimit.limsup_eq`/`liminf_eq`, and the
+  converse `hasGrowthLimit_of_liminf_eq_limsup` (via
+  `tendsto_of_liminf_eq_limsup`).
+- **Headline**: `hasNoGrowthLimit_iff_liminf_lt_limsup` — for bounded ratio
+  sequences, HasNoGrowthLimit b ↔ liminf < limsup; specialized to order-2
+  bases as `IsAddBasisOfOrder.two_hasNoGrowthLimit_iff_liminf_lt_limsup`.
+
+The open dichotomy of #326 is now stated in exactly the language it concerns:
+find a sub-basis whose ratio sequence keeps a persistent liminf/limsup gap
+inside [0, C]. Filter-API notes (the reason this was deferred) recorded in the
+tracker insights.
+
+Elementary layer now COMPLETE including the limsup translation. Do not add
+further bricks; only the deep construction remains (structured blocker).
