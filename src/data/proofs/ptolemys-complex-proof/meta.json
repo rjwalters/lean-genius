@@ -33,7 +33,7 @@
     "originalContributions": [
       "Complete complex-number proof of Ptolemy's inequality from the algebraic identity",
       "Generalization of the algebraic identity to arbitrary commutative rings",
-      "Three equivalent formulations: norm, Complex.abs, and metric distance",
+      "Two equivalent formulations: norm and metric distance",
       "Equality characterization: Ptolemy's equality holds when opposite-side products are positively proportional"
     ],
     "dateAdded": "2026-03-30",
@@ -92,8 +92,8 @@
       "title": "Alternative Formulations",
       "startLine": 82,
       "endLine": 101,
-      "summary": "Two equivalent formulations: using Complex.abs (via Complex.norm_eq_abs) and using dist (via dist_eq_norm).",
-      "mathContext": "Complex.abs and ‖·‖ agree on ℂ. The dist formulation dist(z₁,z₃)·dist(z₂,z₄) ≤ dist(z₁,z₂)·dist(z₃,z₄) + dist(z₂,z₃)·dist(z₁,z₄) connects directly to the classical geometric statement."
+      "summary": "One alternative formulation: using dist (via dist_eq_norm).",
+      "mathContext": "The dist formulation dist(z₁,z₃)·dist(z₂,z₄) ≤ dist(z₁,z₂)·dist(z₃,z₄) + dist(z₂,z₃)·dist(z₁,z₄) connects directly to the classical geometric statement."
     },
     {
       "id": "equality-characterization",
@@ -116,8 +116,8 @@
       "title": "Exported Theorems",
       "startLine": 145,
       "endLine": 145,
-      "summary": "#check verification of all six exported theorems.",
-      "mathContext": "Six theorems: ptolemy_algebraic_identity (CommRing), ptolemy_complex_identity (ℂ), ptolemy_inequality (norm), ptolemy_inequality_abs (Complex.abs), ptolemy_inequality_dist (dist), ptolemy_equality_of_proportional (equality characterization)."
+      "summary": "#check verification of all five exported theorems.",
+      "mathContext": "Five theorems: ptolemy_algebraic_identity (CommRing), ptolemy_complex_identity (ℂ), ptolemy_inequality (norm), ptolemy_inequality_dist (dist), ptolemy_equality_of_proportional (equality characterization)."
     }
   ],
   "crossReferences": [
@@ -158,7 +158,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete complex-number proof of Ptolemy's inequality with equality characterization. Starting from a purely algebraic identity over any commutative ring, the inequality follows from multiplicativity of norm and the triangle inequality. The equality condition (when opposite-side products are positively proportional) is also proved. Six theorems, 0 sorries, 0 axioms.",
+    "summary": "A complete complex-number proof of Ptolemy's inequality with equality characterization. Starting from a purely algebraic identity over any commutative ring, the inequality follows from multiplicativity of norm and the triangle inequality. The equality condition (when opposite-side products are positively proportional) is also proved. Five theorems, 0 sorries, 0 axioms.",
     "implications": "**Theoretical Significance**: The complex-number proof reveals the algebraic essence of Ptolemy's theorem. While the geometric proof works with cospherical points and angle conditions, the algebraic proof needs only a commutative ring and a norm satisfying the triangle inequality. This explains why Ptolemy-type results appear in many settings beyond Euclidean geometry.\n\nThe inequality form is strictly more general than the equality: it holds for all four-point configurations in ℂ, with the geometric condition (concyclicity) characterizing when equality holds.",
     "openQuestions": [
       "Can the converse direction be proved: if Ptolemy's equality holds, are the opposite-side products necessarily positively proportional (equivalently, are the points concyclic)?",
