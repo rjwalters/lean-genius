@@ -2053,4 +2053,116 @@ theorem minDegreeForC4_nine : minDegreeForC4 9 = 3 := by
   have hge : 3 ≤ minDegreeForC4 9 := three_le_minDegreeForC4 (by norm_num)
   omega
 
+/-! ## `f(10) = 4`: the Petersen graph, decide-free at the global level
+
+The lower half `f(10) ≥ 4` needs a `C₄`-free graph of minimum degree `3` on ten
+vertices — the Petersen graph, and by the Moore bound nothing smaller works.
+The route recorded as blocked ("kernel `decide` over the `10⁴` injective maps")
+is avoided entirely: `containsC4` is *extracted* to a pair of vertices with two
+distinct common neighbours (`exists_two_common_of_containsC4`), so `C₄`-freeness
+reduces to the `10 × 10` common-neighbour matrix — a tiny kernel check — via
+`not_containsC4_of_forall_common_le_one`.  The graph itself is the explicit
+edge-list Petersen: outer `5`-cycle `0–4`, inner pentagram `5–9`, spokes. -/
+
+/-- **Extracting two common neighbours from a `C₄`.**  An embedded `4`-cycle
+`f` gives the opposite pair `f 0 ≠ f 2` with the two distinct common neighbours
+`f 1 ≠ f 3`. -/
+theorem exists_two_common_of_containsC4 {V : Type*} {G : SimpleGraph V}
+    (h : containsC4 V G) :
+    ∃ x y v v' : V, x ≠ y ∧ v ≠ v' ∧
+      G.Adj v x ∧ G.Adj v y ∧ G.Adj v' x ∧ G.Adj v' y := by
+  obtain ⟨f, hinj, hadj⟩ := h
+  refine ⟨f 0, f 2, f 1, f 3, fun h => ?_, fun h => ?_, ?_, ?_, ?_, ?_⟩
+  · exact absurd (hinj h) (by decide)
+  · exact absurd (hinj h) (by decide)
+  · exact (hadj 0 1 (by decide)).symm
+  · exact hadj 1 2 (by decide)
+  · exact hadj 3 0 (by decide)
+  · exact (hadj 2 3 (by decide)).symm
+
+/-- **The common-neighbour criterion for `C₄`-freeness.**  If every pair of
+distinct vertices has at most one common neighbour, the graph is `C₄`-free.
+Converse workhorse to `containsC4_of_two_common`; together they make
+`C₄`-freeness of a concrete graph a finite check on the common-neighbour
+matrix rather than an enumeration of embeddings. -/
+theorem not_containsC4_of_forall_common_le_one {V : Type*} [Fintype V]
+    [DecidableEq V] {G : SimpleGraph V} [DecidableRel G.Adj]
+    (h : ∀ x y : V, x ≠ y → (G.neighborFinset x ∩ G.neighborFinset y).card ≤ 1) :
+    ¬ containsC4 V G := by
+  intro hc
+  obtain ⟨x, y, v, v', hxy, hvv, hvx, hvy, hv'x, hv'y⟩ :=
+    exists_two_common_of_containsC4 hc
+  have h2 : 1 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+    Finset.one_lt_card.mpr ⟨v,
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x v).mpr hvx.symm,
+        (G.mem_neighborFinset y v).mpr hvy.symm⟩, v',
+      Finset.mem_inter.mpr ⟨(G.mem_neighborFinset x v').mpr hv'x.symm,
+        (G.mem_neighborFinset y v').mpr hv'y.symm⟩, hvv⟩
+  have := h x y hxy
+  omega
+
+/-- The fifteen edges of the Petersen graph: outer `5`-cycle `0–1–2–3–4`, inner
+pentagram `5–7–9–6–8`, and the five spokes `i – i+5`. -/
+def petersenEdges : List (Fin 10 × Fin 10) :=
+  [(0,1), (1,2), (2,3), (3,4), (4,0),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (0,5), (1,6), (2,7), (3,8), (4,9)]
+
+/-- **The Petersen graph** on `Fin 10`, via its explicit edge list. -/
+def petersen : SimpleGraph (Fin 10) where
+  Adj i j := (i, j) ∈ petersenEdges ∨ (j, i) ∈ petersenEdges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersenEdges ∨ (j, i) ∈ petersenEdges) Iff.rfl
+
+/-- The Petersen graph is `3`-regular — a `10`-vertex kernel check. -/
+theorem petersen_degree : ∀ v, petersen.degree v = 3 := by decide
+
+/-- **Every pair of distinct Petersen vertices has at most one common
+neighbour** — the `10 × 10` kernel check that replaces the `10⁴` embedding
+enumeration.  (In fact girth `5` gives exactly one for non-adjacent pairs and
+zero for adjacent ones; `≤ 1` is all that is needed.) -/
+theorem petersen_common_le_one : ∀ x y : Fin 10, x ≠ y →
+    (petersen.neighborFinset x ∩ petersen.neighborFinset y).card ≤ 1 := by decide
+
+/-- **The Petersen graph is `C₄`-free** — no finite embedding search needed. -/
+theorem petersen_not_containsC4 : ¬ containsC4 (Fin 10) petersen :=
+  not_containsC4_of_forall_common_le_one petersen_common_le_one
+
+/-- The Petersen graph has minimum degree `3`. -/
+theorem petersen_three_le_minDegree : 3 ≤ petersen.minDegree := by
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  intro v
+  rw [petersen_degree v]
+
+/-- **`f(10) ≥ 4`**: the Petersen graph is a `C₄`-free graph of minimum degree
+`3` on ten vertices, so threshold `3` does not force a `C₄` at order `10`. -/
+theorem four_le_minDegreeForC4_ten : 4 ≤ minDegreeForC4 10 := by
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin 10)) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin 10) G}.Nonempty := by
+    refine ⟨9, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 (by norm_num)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  by_contra hk4
+  rw [not_le] at hk4
+  exact petersen_not_containsC4
+    (hk petersen (le_trans (by omega : k ≤ 3) petersen_three_le_minDegree))
+
+/-- **A seventh exact value: `f(10) = 4` — the Petersen threshold.**  Upper
+half: plain counting, `C(10,2) = 45 < 60 = 10·C(4,2)`.  Lower half: the
+Petersen graph (`four_le_minDegreeForC4_ten`).  This resolves the route
+recorded as blocked on a "decide-free formalization of the Petersen graph":
+the common-neighbour extraction reduces `C₄`-freeness to a `10 × 10` kernel
+check, so no embedding enumeration (and no `native_decide`) is needed.  The
+exact table now reads `f = 1, 2, 3, 2, 3, 3, 3, 3, 3, 4` for `n = 1, …, 10` —
+the first value where the answer exceeds `3`, witnessing the `√n` growth. -/
+theorem minDegreeForC4_ten : minDegreeForC4 10 = 4 := by
+  have hle : minDegreeForC4 10 ≤ 4 := minDegreeForC4_le_of_choose_lt (by decide)
+  have hge := four_le_minDegreeForC4_ten
+  omega
+
 end Erdos85
