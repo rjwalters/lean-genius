@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Mertens' Lower Bound for ∑ 1/p",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States the follow-up question to erdos-31-primes-density — that entry proves the primes have density zero via the Chebyshev bound π(N) = O(N/log N); its third open question asks for the accumulation rate ∑_{p≤N} 1/p ~ log log N (Mertens' second theorem), which Mathlib only supplies qualitatively (divergence, no rate). This file proves the quantitative lower half with an explicit constant, ∑_{p≤N} 1/p ≥ log log(N+1) − 1, via the classical Euler-product argument: bounding the harmonic sum by the Euler product over primes ≤ N, taking logs, and controlling the per-prime error −log(1−1/p) − 1/p ≤ 1/(p(p−1)).",
+      "mathContext": "$\\sum_{p \\le N} 1/p \\ge \\log\\log(N+1) - 1$, from $\\sum_{k=1}^N 1/k \\le \\prod_{p\\le N}(1-1/p)^{-1}$ and $\\sum_{p\\le N}\\log((1-1/p)^{-1}) \\le \\sum_{p\\le N} 1/p + 1$."
+    },
+    {
       "id": "setup",
       "title": "Primes ≤ N and Euler Factor Positivity",
       "startLine": 34,
