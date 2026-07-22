@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Multiset-Coefficient Rising-Factorial Identity",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the open question — does C(n+k-1,k)·k! = ∏ i in range k, (n+i) generalize the choose–factorial identity to multiset coefficients? — and answers yes, identifying the multiset coefficient C(n+k-1,k) (stars-and-bars count of size-k multisets from n symbols) with the rising factorial n(n+1)⋯(n+k-1) via Nat.ascFactorial. Places the file in the OQ family: parent OQ01 gives the descending form, grandparent OQ04 the ascending form indexed one step over.",
+      "mathContext": "$\\binom{n+k-1}{k}\\cdot k! = \\prod_{i<k}(n+i) = n^{\\overline{k}}$ (the rising/Pochhammer factorial), proved by composing Mathlib's `Nat.ascFactorial_eq_factorial_mul_choose'` with `Nat.ascFactorial_eq_prod_range`; holds for all $n$ including $n=0$, no case split needed."
+    },
+    {
       "id": "main-identity",
       "title": "Part I: The Main Identity",
       "summary": "multichoose_factorial: C(n+k-1,k)·k! = ∏ i in range k, (n+i), and multichoose_eq_ascFactorial: the same packaged against Nat.ascFactorial. Reduce to two Mathlib lemmas.",
