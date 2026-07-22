@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "4 axiom(s). No sorries.",
+    "assumptions": "4 axiom(s). No sorries. Trust caveat: the finite partition-function evaluations in `partition_small_values`, `example_F5`, and `F_one`\u2013`F_four` are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); these are concrete small-value checks, while the headline result rests on the stated axioms.",
     "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 7

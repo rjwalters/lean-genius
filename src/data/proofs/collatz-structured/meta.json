@@ -32,7 +32,7 @@
     "dateAdded": "2025-12-31",
     "axiomCount": 1,
     "lineCount": 207,
-    "assumptions": "1 axiom: collatz_conjecture. See Lean source for the complete statement.",
+    "assumptions": "1 axiom: collatz_conjecture. See Lean source for the complete statement. Trust caveat: the finite Collatz-trajectory verifications in `three_reaches_one`, `five_reaches_one`, `six_reaches_one`, `seven_reaches_one`, `nine_reaches_one`, and `twentyseven_reaches_one` are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); the Collatz conjecture itself rests on the stated axiom `collatz_conjecture`.",
     "mathlib_version": "4.31.0",
     "theoremCount": 18,
     "definitionCount": 4
