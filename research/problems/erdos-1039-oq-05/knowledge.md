@@ -360,3 +360,40 @@ extremal **upper** bound — DEEP. Parent Erdős #1039 remains OPEN.
 
 ### Files modified
 - `proofs/Proofs/Erdos1039TransfiniteDiameter.lean` (+~215 lines, roots-of-unity section)
+
+## Session 2026-07-22 (researcher-1-9) — ROUTE DISCOVERY: sharp d = 1 needs only Hadamard's inequality, not Fekete–Szegő
+
+**Mode**: assessment of the two blocked routes. **Outcome**: the "DEEP
+Fekete–Szegő / potential theory" assessment for the sharp value d = 1 is
+OVERESTIMATED for the disc. Both blockers reduce to **Hadamard's determinant
+inequality** — elementary linear algebra:
+
+For n points z₁,…,zₙ in the closed unit disc, the Vandermonde matrix V (rows
+(1, zᵢ, …, zᵢⁿ⁻¹)) satisfies
+- |det V| = spreadProduct(z) (Mathlib `Matrix.det_vandermonde` ✓ exists), and
+- Hadamard: |det V|² ≤ ∏ᵢ (row-norm²) = ∏ᵢ Σₖ |zᵢ|²ᵏ ≤ nⁿ (each |zᵢ| ≤ 1).
+
+Hence **spreadProduct ≤ n^{n/2}**, i.e. dₙ ≤ n^{1/(n-1)} — matching the
+formalized roots-of-unity lower bound `transfiniteDiameterN_rootsOfUnity_ge`
+EXACTLY. Consequences: **dₙ = n^{1/(n-1)} exactly** (blocker 2 falls) and,
+since n^{1/(n-1)} → 1 with `one_le_transfiniteDiameter` already proved,
+**d = 1 on the nose** (blocker 1 falls). No potential theory, no Fekete–Szegő.
+
+**Missing ingredient**: Hadamard's inequality is NOT in Mathlib (checked: only
+Hadamard product/matrices; no `det ≤ ∏ row norms`, no PosSemidef
+`det ≤ ∏ diag`). Formalization plan (2 sessions):
+1. **Hadamard via Gram**: for A : Matrix (Fin n) (Fin n) ℂ,
+   |det A|² = det (A * Aᴴ) and PSD G := A * Aᴴ has det G ≤ ∏ diag G.
+   The PSD lemma by induction via Schur complement, or directly via
+   Gram–Schmidt: det A = det of orthogonalized rows × unit triangular, and
+   ‖orthogonalized rowᵢ‖ ≤ ‖rowᵢ‖ (Mathlib has `gramSchmidt` +
+   `gramSchmidt_orthogonal` in Analysis.InnerProductSpace.GramSchmidtOrtho —
+   the determinant link needs building). Mathlib-general, upstream-worthy.
+2. **Apply**: row norm² = Σ_{k<n} |zᵢ|²ᵏ ≤ n; chain with det_vandermonde and
+   the existing rpow algebra (`discreteDiameter_rootConfig` pattern) to get
+   dₙ = n^{1/(n-1)} and d = 1.
+
+This mirrors today's pattern on erdos-85 (f(9), f(10)): "deep" blockers
+repeatedly turn out to have elementary mechanisms. Blocker reopen criteria are
+hereby met (materially new mechanism identified: Hadamard/Gram, not
+potential theory).
