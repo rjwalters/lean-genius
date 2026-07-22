@@ -62,7 +62,8 @@
       "The zero vector is annihilated by the unit constant 1, so it can never be cyclic — this single observation supplies the missing direction of the characterization.",
       "Once cyclic ⟺ nonzero, the cyclic locus is forced to be {0}ᶜ, the maximal possible: a matrix with irreducible full-degree minimal polynomial is as cyclic as a matrix can be.",
       "The finite-field count qⁿ − 1 drops out of the set description with no extra structure — it is the cardinality of the punctured space.",
-      "The result is a clean strengthening that reuses the verified parent unchanged (imported), rather than re-deriving the Bézout argument."
+      "The result is a clean strengthening that reuses the verified parent unchanged (imported), rather than re-deriving the Bézout argument.",
+      "Irreducibility of the minimal polynomial is exactly what forces the cyclic locus to be maximal: for a reducible or prime-power minimal polynomial the module Kⁿ has nontrivial submodules, so some nonzero vectors are annihilated by proper divisors and fail to be cyclic — the qⁿ − 1 count is specific to the irreducible, field-quotient case."
     ],
     "prerequisites": [
       "Parent: cayley-hamilton-minpoly-oq-04-backward-incomplete-01 (IsCyclicVector, cyclic_of_irreducible_minpoly)",
@@ -84,24 +85,32 @@
       "id": "zero",
       "title": "The Zero Vector is Never Cyclic",
       "startLine": 39,
-      "endLine": 50,
+      "endLine": 49,
       "summary": "zero_not_cyclic: for n>0 the nonzero constant polynomial 1 has degree 0 < n and annihilates 0 under M, so the zero vector fails the cyclic-vector condition.",
       "mathContext": "(aeval M 1).mulVec 0 = 0 with 1 ≠ 0 and deg 1 = 0 < n witnesses non-cyclicity of 0."
     },
     {
       "id": "iff",
-      "title": "Full Characterization and Set Description",
-      "startLine": 52,
-      "endLine": 74,
-      "summary": "cyclic_iff_ne_zero combines zero_not_cyclic (forward) with the parent's cyclic_of_irreducible_minpoly (backward) into cyclic ⟺ nonzero. setOf_cyclic_eq_compl_zero rephrases this as {v | IsCyclicVector M v} = {0}ᶜ.",
-      "mathContext": "cyclic ⟺ v ≠ 0; equivalently the cyclic locus is the punctured space {0}ᶜ."
+      "title": "Full Characterization: Cyclic Iff Nonzero",
+      "startLine": 50,
+      "endLine": 61,
+      "summary": "cyclic_iff_ne_zero combines zero_not_cyclic (forward, contrapositive) with the parent's cyclic_of_irreducible_minpoly (backward) into the sharp characterization cyclic ⟺ nonzero.",
+      "mathContext": "IsCyclicVector M v ⟺ v ≠ 0, for irreducible minpoly K M of full degree n > 0."
+    },
+    {
+      "id": "setof",
+      "title": "The Cyclic Locus as a Set: the Punctured Space",
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "setOf_cyclic_eq_compl_zero rephrases cyclic_iff_ne_zero at the level of sets: {v | IsCyclicVector M v} = {0}ᶜ, the punctured space Kⁿ ∖ {0} — the bridge to the finite-field count.",
+      "mathContext": "{v | IsCyclicVector M v} = ({0} : Set (Fin n → K))ᶜ, by extensionality from cyclic_iff_ne_zero."
     },
     {
       "id": "count",
       "title": "Count over a Finite Field",
-      "startLine": 76,
+      "startLine": 70,
       "endLine": 86,
-      "summary": "ncard_cyclic_vectors: over a finite field with q elements, the cyclic-vector set has cardinality qⁿ − 1, via the {0}ᶜ description, Finset.card_compl, and Fintype.card (Fin n → K) = qⁿ.",
+      "summary": "ncard_cyclic_vectors: over a finite field with q elements, the cyclic-vector set has cardinality qⁿ − 1, via the {0}ᶜ description, Finset.card_compl, and Fintype.card (Fin n → K) = qⁿ. Followed by three #print axioms checks confirming the axiom-free status of the three headline theorems.",
       "mathContext": "#{v | cyclic} = #({0}ᶜ) = qⁿ − 1."
     }
   ],
