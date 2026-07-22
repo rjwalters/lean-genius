@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: How the Inner Sum Behaves for Rational α",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Resolves the rational case of Erdős #1002 completely with no axioms: for a reduced fraction α=p/q, the inner sum S over one full period equals the universal constant 1/2 independent of p and q, so S(p/q, n·q) grows exactly linearly with rate 1/(2q), via the fact that multiplication by a unit permutes ℤ/qℤ.",
+      "mathContext": "$S(p/q,q)=1/2$ and $S(p/q, nq)=n/2$ for $\\gcd(p,q)=1$, since $p\\cdot m \\bmod q$ ranges over a complete residue system as $m$ runs over one period, giving $\\sum \\{pm/q\\} = (q-1)/2$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Deviation and Inner Sum",
       "summary": "File header and two definitions mirrored from the parent Erdos1002Problem.lean: deviation x = 1/2 − {x} (deviation from the midpoint), and innerSum α n = Σ_{k<n} deviation(α·(k+1)) = Σ_{k=1}^n (1/2 − {αk}).",
