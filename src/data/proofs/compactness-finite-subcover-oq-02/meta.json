@@ -88,6 +88,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Subordinate Finite ε-Nets",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "States the headline result exists_subordinate_finite_ball_cover — a metric-space refinement of the finite-subcover characterization of compactness, producing a single Lebesgue radius δ and a finite set of centers whose δ-balls cover the space and are each subordinate to (contained in) some member of the cover. Names the two Mathlib ingredients assembled (lebesgue_number_lemma_of_metric, exists_finite_cover_balls_of_isCompact_closure) and the two structural corollaries (a constructive Heine–Borel finite subcover, and a fineness refinement bounding diameters by 2δ), explaining why no single Mathlib lemma packages this combination."
+    },
+    {
       "id": "subordinate-net",
       "title": "The Subordinate Finite ε-Net",
       "startLine": 56,
