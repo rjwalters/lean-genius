@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Power-of-2 RNS Channels",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Answers whether the RNS framework extends to bases including a power-of-2 modulus: yes, provided exactly one power of 2 appears alongside pairwise coprime odd moduli, since gcd(2^a,2^b) = 2^min(a,b) ≥ 2 breaks coprimality for two powers of 2 but 2^k is always coprime to any odd modulus.",
+      "mathContext": "$\\gcd(2^k,m)=1$ for odd $m$ (via Nat.Coprime.pow_left, Nat.coprime_two_right); a valid base $\\{2^k,m_1,\\dots,m_n\\}$ with odd pairwise-coprime $m_i$ has dynamic range $2^k\\prod m_i$ and $x\\bmod 2^k$ is a single bit-AND."
+    },
+    {
       "id": "coprimality-basics",
       "title": "Coprimality of Powers of 2 with Odd Numbers",
       "startLine": 54,
