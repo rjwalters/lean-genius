@@ -84,6 +84,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: The Tschirnhaus Shift as a Bijection of Root Multisets", "startLine": 1, "endLine": 55, "summary": "Promotes the parent's pointwise root correspondence between the general and depressed cubic to the level of the full root multiset and polynomial factorization: the general cubic's roots (with multiplicity) equal the depressed cubic's roots shifted by -b/(3a), and the general cubic factors as a times the product of the correspondingly shifted linear factors.", "mathContext": "The technical engine is that composing a polynomial with the shift X↦X-C(s) translates its root multiset by +s (`roots_comp_X_sub_C`), proved over an arbitrary commutative ring via Mathlib's root-multiplicity API, then specialized to ℂ for the splitting factorization."},
     {
       "id": "shift-roots-lemma",
       "title": "Part 0: A Shift-of-Variable Lemma for Root Multisets",
