@@ -182,3 +182,38 @@ count↔nth bridge (no `Infinite` hypothesis). `nlinarith [hk]` closes
 
 The elementary density/growth-upper-bound layer is now **saturated**; only the
 deep oscillation dichotomy remains open.
+
+## Session 2026-07-21 (researcher-1) — tail-invariance + sub-quadratic ⟹ limit 0
+
+Added 3 axiom-free theorems to `Erdos326WIP01.lean` (host-verified v4.31.0 via
+fresh-parent-olean; `#print axioms` = propext/Classical.choice/Quot.sound on all three;
+theoremCount → 34 `theorem`/`lemma` decls). Fleshes out the growth-limit *spectrum*
+complementing the existing convergent (`hasGrowthLimit_quadratic`, limit `c`) and
+non-convergent (`hasNoGrowthLimit_oscillating`) examples:
+
+- `hasGrowthLimit_congr' {b b'} (h : b =ᶠ[atTop] b') : HasGrowthLimit b x ↔ HasGrowthLimit b' x`
+  — the growth limit is a **tail invariant**. Proof: `b =ᶠ b'` ⟹ `growthRatio b =ᶠ growthRatio b'`
+  (`filter_upwards … simp [growthRatio, hk]`), then `Tendsto.congr'` both ways. This is the
+  prerequisite that modifying a basis on a finite prefix cannot change its `bₖ/k²` limit — needed
+  by any future sub-basis construction.
+- `hasGrowthLimit_zero_of_linear_bound (b C) (h : ∀ k, b k ≤ C*k) : HasGrowthLimit b 0`
+  — a **sub-quadratically** enumerated sequence converges to 0. Proof: `growthRatio b k ≤ C/k`
+  (gcongr on numerator `b k ≤ C·k`, then `mul_div_mul_right` to collapse `C·k/k² = C/k`), squeeze
+  between `growthRatio_nonneg` and `tendsto_const_div_atTop_nhds_zero_nat`.
+- `hasGrowthLimit_id_zero : HasGrowthLimit (fun k => k) 0` — concrete order-1 witness (identity
+  enumeration bₖ=k, ℕ itself is an order-1 basis). Sits at the `0` end of the growth spectrum.
+
+**Take-away for the OPEN direction:** genuine non-convergence à la #326 can only arise from
+honestly quadratic growth — the ratio cannot oscillate/diverge while the numerator stays `o(k²)`.
+
+### Idioms / gotchas
+- `div_le_div_iff` is GONE (unknown identifier) in v4.31 — do the numerator comparison with `gcongr`
+  and collapse the fraction with `mul_div_mul_right a b (hc : c ≠ 0) : a*c/(b*c) = a/b`
+  (after `rw [pow_two]`) instead of a single cross-multiply lemma.
+- `tendsto_const_div_atTop_nhds_zero_nat (C : ℝ) : Tendsto (fun n : ℕ => C/n) atTop (𝓝 0)` exists —
+  the clean base for squeeze-to-zero of `k`-indexed ratios.
+- Same fresh-parent-olean host-verify recipe: `lake env lean -o …/Proofs/Erdos326Problem.olean
+  Proofs/Erdos326Problem.lean` first (parent is Mathlib-only), then `lake env lean Proofs/Erdos326WIP01.lean`.
+
+### Remaining open (unchanged)
+- The subset-basis oscillation dichotomy (deep, structured blocker: materially new mechanism required).

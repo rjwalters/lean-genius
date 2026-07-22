@@ -26,9 +26,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-20T13:00:00-07:00",
-    "iteration": 3,
-    "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio.",
+    "since": "2026-07-21T22:00:00-07:00",
+    "iteration": 4,
+    "focus": "Axiom-free foundational lemmas on IsAddBasis / IsAddBasisOfOrder / growthRatio and its limit.",
     "blockers": [
       {
         "route": "the subset-basis oscillation dichotomy via elementary density",
@@ -36,9 +36,9 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Elementary density/growth-upper-bound layer is now saturated (√n density + b_k=O(k^2) both machine-checked). Only the deep oscillation dichotomy (materially new mechanism required) remains open.",
+    "nextAction": "Growth-ratio limit layer now records: boundedness (b_k=O(k^2)), a two-subsequence non-convergence criterion, non-vacuity of both limit predicates, and (this session) tail-invariance of the growth limit plus sub-quadratic (linear) growth => limit 0. Only the deep oscillation dichotomy (materially new mechanism required) remains open.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
