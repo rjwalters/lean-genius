@@ -69,6 +69,11 @@ find_repo_root() {
 
 REPO_ROOT="$(find_repo_root)"
 
+# Canonical completion-signal directory resolver (shared with the lean daemon
+# so deployment signals land where the daemon reads them -- #41047).
+# shellcheck source=../lib/completions-dir.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/completions-dir.sh"
+
 # Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
 # worktree.root override; default $REPO_ROOT/.loom/worktrees).
 # shellcheck source=../lib/worktree-root.sh
@@ -1117,8 +1122,11 @@ deploy_website() {
         # Prune old deployments, keeping only the latest N
         prune_old_deployments
 
-        # Create completion signal for daemon stats tracking
-        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        # Create completion signal for daemon stats tracking. Resolve the
+        # canonical (main-checkout) completions dir so the daemon actually sees
+        # it -- writing to this worktree's .loom/ would be invisible (#41047).
+        local completions_dir
+        completions_dir="$(resolve_completions_dir)"
         mkdir -p "$completions_dir"
         touch "$completions_dir/deployment-$(date +%s)"
     else

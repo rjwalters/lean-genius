@@ -100,7 +100,15 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-COMPLETIONS_DIR="$REPO_ROOT/.loom/signals/completions"
+
+# Resolve the canonical (main-checkout) completions dir shared with the lean
+# daemon. find_repo_root returns the *worktree* root when run inside an agent
+# worktree, whose gitignored .loom/ the daemon never reads -- so signals dropped
+# there (e.g. the seeker's problem-selected) never increment session_stats
+# (#41047). The resolver anchors on the git common dir instead.
+# shellcheck source=../lib/completions-dir.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/completions-dir.sh"
+COMPLETIONS_DIR="$(resolve_completions_dir)"
 
 # Validate signal type
 validate_signal_type() {

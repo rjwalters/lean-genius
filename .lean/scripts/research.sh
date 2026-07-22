@@ -16,6 +16,12 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 RESEARCH_DIR="$REPO_ROOT/research"
+
+# Canonical (main-checkout) completions dir shared with the lean daemon so
+# problem-selected signals land where the daemon reads them, not in a throwaway
+# worktree's gitignored .loom/ (#41047).
+# shellcheck source=../../scripts/lib/completions-dir.sh
+source "$REPO_ROOT/scripts/lib/completions-dir.sh"
 TEMPLATES_DIR="$RESEARCH_DIR/templates"
 PROBLEMS_DIR="$RESEARCH_DIR/problems"
 
@@ -480,7 +486,8 @@ EOF
         "$REGISTRY_FILE" > "$tmp" && mv "$tmp" "$REGISTRY_FILE"
 
     # Create completion signal for daemon stats tracking (problem selected for research)
-    local completions_dir="$REPO_ROOT/.loom/signals/completions"
+    local completions_dir
+    completions_dir="$(resolve_completions_dir)"
     mkdir -p "$completions_dir"
     touch "$completions_dir/problem-selected-$slug-$(date +%s)"
 
@@ -696,7 +703,8 @@ EOF
             "$REGISTRY_FILE" > "$tmp" && mv "$tmp" "$REGISTRY_FILE"
 
         # Create completion signal for daemon stats tracking (problem selected for research)
-        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        local completions_dir
+        completions_dir="$(resolve_completions_dir)"
         mkdir -p "$completions_dir"
         touch "$completions_dir/problem-selected-$slug-$(date +%s)"
 
@@ -774,7 +782,8 @@ EOF
     register_problem "$slug" "OBSERVE" "$path_type"
 
     # Create completion signal for daemon stats tracking (problem selected for research)
-    local completions_dir="$REPO_ROOT/.loom/signals/completions"
+    local completions_dir
+    completions_dir="$(resolve_completions_dir)"
     mkdir -p "$completions_dir"
     touch "$completions_dir/problem-selected-$slug-$(date +%s)"
 

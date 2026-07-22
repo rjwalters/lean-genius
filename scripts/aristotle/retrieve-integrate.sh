@@ -19,6 +19,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# Canonical completion-signal directory resolver (shared with the lean daemon
+# so proof-integrated signals land where the daemon reads them -- #41047).
+# shellcheck source=../lib/completions-dir.sh
+source "$SCRIPT_DIR/../lib/completions-dir.sh"
 JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 RESULTS_DIR="$PROJECT_ROOT/aristotle-results/new"
 PROCESSED_DIR="$PROJECT_ROOT/aristotle-results/processed"
@@ -426,8 +431,12 @@ integrate_solution() {
                 update_job_status_with_theorems "$project_id" "integrated" "$outcome_note" "$theorems_proved"
                 update_job_verification "$project_id" "$verification"
 
-                # Create completion signal for daemon stats tracking
-                local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
+                # Create completion signal for daemon stats tracking. Resolve the
+                # canonical (main-checkout) completions dir so the daemon actually
+                # sees it -- writing to this worktree's .loom/ would be invisible
+                # (#41047).
+                local completions_dir
+                completions_dir="$(resolve_completions_dir)"
                 mkdir -p "$completions_dir"
                 touch "$completions_dir/proof-integrated-$problem_id-$(date +%s)"
             fi
