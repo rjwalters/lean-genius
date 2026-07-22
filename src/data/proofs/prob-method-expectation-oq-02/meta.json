@@ -63,6 +63,13 @@
     }
   ],
   "sections": [
+    {
+      "id": "header",
+      "title": "The first-moment (union-bound) Ramsey lower bound",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Formalizes Erdős's 1947 union-bound criterion over genuine edge 2-colorings of K_n: if 2·C(n,k) < 2^C(k,2), a coloring with no monochromatic K_k exists, so R(k,k) > n — the tightest bound the first-moment method alone can give. Proved by direct counting (an explicit injection bounding colorings monochromatic on a fixed clique) rather than probability measures, replacing a vacuous placeholder bound in the parent entry with genuine content."
+    },
     { "id": "edges-colorings", "title": "Edges and Colorings", "startLine": 41, "endLine": 49, "summary": "Edges n is the set of 2-element subsets of Fin n (the edges of K_n), and a Coloring assigns a Bool to each. card_Edges proves there are exactly C(n,2) edges, via Finset.card_powersetCard." },
     { "id": "induced-edges", "title": "Induced Clique Edges", "startLine": 51, "endLine": 77, "summary": "EdgesIn n K is the set of edges contained in a vertex set K. card_EdgesIn proves these biject with the 2-subsets of K (image under coercion equals K.powersetCard 2), so a k-clique has exactly C(k,2) induced edges." },
     { "id": "mono", "title": "Monochromatic Cliques", "startLine": 79, "endLine": 84, "summary": "Mono c K holds when all induced edges of K share one color under c, with a Decidable instance. This is the event whose colorings are counted in the union bound." },
