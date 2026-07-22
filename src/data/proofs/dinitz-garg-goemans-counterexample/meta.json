@@ -44,8 +44,8 @@
       "capgood_optimum_is_60 + dgg_separation: the routing (E,E,Z) attains cost 60, packaging the strict separation 58 < 60 between the fractional optimum and the capacity-good unsplittable optimum."
     ],
     "assumptions": "None — 0 axioms. All three facts are discharged by plain kernel `decide`, NOT `native_decide`, so `#print axioms dgg_separation` lists only the foundational axioms `propext` / `Classical.choice` / `Quot.sound` — no `Lean.ofReduceBool`, no `sorryAx`, no literal `axiom` declarations. Per the project's Axiom Integrity Policy, those three foundational axioms do not count as assumptions (only `Lean.ofReduceBool` / `sorryAx` would), so the entry is genuinely axiom-free / `verified`. The enumeration is tiny (8 routings, 9 arcs, integers ≤ 40), so the trusted kernel evaluates it directly — the compiler-trust step of `native_decide` is unnecessary. SEPARATE from the axiom question: the *mathematical interpretation* that this refutes the DGG conjecture is announced but NOT independently audited (the Jan-2026 primary source still lists DGG as open); this file proves only the self-contained finite separation for this explicit instance and makes no claim to settle DGG.",
-    "theoremCount": 4,
-    "definitionCount": 13,
+    "theoremCount": 5,
+    "definitionCount": 20,
     "lastUpdated": "2026-07-22"
   },
   "overview": {
@@ -160,6 +160,11 @@
       "name": "every_capgood_routing_costly",
       "statement": "∀ r : Routing, CapGood r → 60 ≤ routingCost r",
       "description": "Every unsplittable routing whose arc loads stay within x_a + D (capacity violation ≤ D) costs at least 60 — exhaustive over the 8 routings (decide)."
+    },
+    {
+      "name": "capgood_optimum_is_60",
+      "statement": "∃ r : Routing, CapGood r ∧ routingCost r = 60",
+      "description": "The routing (E,E,Z) = (false, false, true) is capacity-good and costs exactly 60, so the bound in every_capgood_routing_costly is tight (decide)."
     }
   ],
   "sorries": 0
