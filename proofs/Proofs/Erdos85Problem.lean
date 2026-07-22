@@ -883,4 +883,132 @@ theorem minDegreeForC4_le_sq {m : ℕ} (hm : 1 ≤ m) :
   have h := minDegreeForC4_le_sqrt_add_one hn (by rw [hsqrt]; nlinarith)
   rwa [hsqrt] at h
 
+/-!
+## A parity refinement of the counting bound, and `f(7) = 3`
+
+At `n = 7` the plain cherry count *just* fails: minimum degree `3` on seven vertices gives
+`∑_v C(deg v, 2) ≥ 7 · C(3,2) = 21 = C(7,2)` — equality, not the strict inequality the
+pigeonhole needs.  But the degree sum of any graph is even (handshake), while seven vertices
+of degree exactly `3` would sum to the odd number `21`.  So minimum degree `3` on `7`
+vertices in fact forces some vertex of degree `≥ 4`, boosting the cherry count to at least
+`6 · C(3,2) + C(4,2) = 24 > 21` and forcing a `C₄` after all.
+
+In general, whenever `n` and `k` are **both odd**, the threshold hypothesis upgrades itself:
+some vertex has degree `≥ k + 1`, so the cherry count is at least
+`(n − 1) · C(k,2) + C(k+1,2)`, strictly more than the naive `n · C(k,2)` gives credit for.
+This parity refinement yields the fourth exact value `f(7) = 3` — a point where BOTH earlier
+upper bounds fail (`n − 2 = 5`; plain counting only `f(7) ≤ 4`) — and an infinite family
+`f(4m² + 2m + 1) ≤ 2m + 1 = √n + 1` inside the upper Beatty half `(s² + s, (s+1)²)` with
+`s = 2m`, where the plain counting bound is provably inapplicable below `√n + 2`.
+-/
+
+/-- **Parity boost.**  In a graph on an odd number of vertices where every degree is at
+least the odd number `k`, some vertex has degree `≥ k + 1`: otherwise every degree equals
+`k` exactly, making the degree sum the odd number `|V| · k` — contradicting the handshake
+identity `∑_v deg v = 2 · |E|`. -/
+theorem exists_succ_le_degree_of_odd {V : Type*} [Fintype V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ}
+    (hodd : Odd (Fintype.card V)) (hk : Odd k) (hdeg : ∀ v : V, k ≤ G.degree v) :
+    ∃ v : V, k + 1 ≤ G.degree v := by
+  by_contra hcon
+  push Not at hcon
+  have hall : ∀ v : V, G.degree v = k :=
+    fun v => le_antisymm (Nat.lt_succ_iff.mp (hcon v)) (hdeg v)
+  have hsum : ∑ v : V, G.degree v = Fintype.card V * k := by
+    rw [Finset.sum_congr rfl fun v _ => hall v, Finset.sum_const, Finset.card_univ,
+      smul_eq_mul]
+  have hhs := SimpleGraph.sum_degrees_eq_twice_card_edges G
+  rw [hsum] at hhs
+  obtain ⟨a, ha⟩ := hodd.mul hk
+  rw [ha] at hhs
+  omega
+
+/-- **Parity-refined counting bound.**  For odd `n` and odd `k`, the sharpened cherry
+inequality `C(n, 2) < (n − 1) · C(k, 2) + C(k + 1, 2)` already forces `f(n) ≤ k`:
+minimum degree `k` plus the parity boost gives one vertex of degree `≥ k + 1`, so the
+cherries number at least `(n − 1) · C(k, 2) + C(k + 1, 2)`, exceeding the `C(n, 2)`
+available endpoint pairs — and two cherries sharing a pair form a `C₄`. -/
+theorem minDegreeForC4_le_of_choose_lt_odd {n k : ℕ} (hn : Odd n) (hk : Odd k)
+    (h : n.choose 2 < (n - 1) * k.choose 2 + (k + 1).choose 2) :
+    minDegreeForC4 n ≤ k := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  have hdeg : ∀ v : Fin n, k ≤ G.degree v :=
+    fun v => le_trans hmin (G.minDegree_le_degree v)
+  obtain ⟨v₀, hv₀⟩ := exists_succ_le_degree_of_odd G (by simpa using hn) hk hdeg
+  apply containsC4_of_card_choose_two_lt
+  rw [Fintype.card_fin]
+  have hcard : ((Finset.univ : Finset (Fin n)).erase v₀).card = n - 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ, Fintype.card_fin]
+  calc n.choose 2
+      < (n - 1) * k.choose 2 + (k + 1).choose 2 := h
+    _ = (∑ _v ∈ Finset.univ.erase v₀, k.choose 2) + (k + 1).choose 2 := by
+        rw [Finset.sum_const, hcard, smul_eq_mul]
+    _ ≤ (∑ v ∈ Finset.univ.erase v₀, (G.degree v).choose 2) + (G.degree v₀).choose 2 :=
+        Nat.add_le_add
+          (Finset.sum_le_sum fun v _ => Nat.choose_le_choose 2 (hdeg v))
+          (Nat.choose_le_choose 2 hv₀)
+    _ = ∑ v : Fin n, (G.degree v).choose 2 :=
+        Finset.sum_erase_add _ _ (Finset.mem_univ v₀)
+
+/-- **A fourth exact value: `f(7) = 3`.**  The lower half is the general cycle bound
+`three_le_minDegreeForC4`.  The upper half `f(7) ≤ 3` is the parity-refined count:
+`C(7,2) = 21 < 24 = 6 · C(3,2) + C(4,2)`.  Both earlier upper bounds fail at `n = 7`:
+the linear bound gives `7 − 2 = 5`, and the plain cherry count only `f(7) ≤ 4` since
+`7 · C(3,2) = 21 = C(7,2)` holds with *equality* — it is the handshake parity that pins
+the value.  The exact-value table is now complete for `1 ≤ n ≤ 7`:
+`f = 1, 2, 3, 2, 3, 3, 3`. -/
+theorem minDegreeForC4_seven : minDegreeForC4 7 = 3 := by
+  have hle : minDegreeForC4 7 ≤ 3 :=
+    minDegreeForC4_le_of_choose_lt_odd (by decide) (by decide) (by decide)
+  have hge : 3 ≤ minDegreeForC4 7 := three_le_minDegreeForC4 (by norm_num)
+  omega
+
+/-- Arithmetic core of the family bound: with `n = 4m² + 2m + 1` and `k = 2m + 1` we have
+`n − 1 = k(k − 1)` *exactly*, so after doubling (`two_mul_choose_two`), the parity-refined
+cherry inequality reduces to `n − 1 < k(k + 1)`, i.e. `4m² + 2m < 4m² + 6m + 2`. -/
+private theorem choose_lt_family (m : ℕ) :
+    (4 * m * m + 2 * m + 1).choose 2
+      < (4 * m * m + 2 * m + 1 - 1) * (2 * m + 1).choose 2 + (2 * m + 1 + 1).choose 2 := by
+  have hsub : 4 * m * m + 2 * m + 1 - 1 = 4 * m * m + 2 * m := by omega
+  rw [hsub]
+  have key : 2 * (4 * m * m + 2 * m + 1).choose 2
+      < 2 * ((4 * m * m + 2 * m) * (2 * m + 1).choose 2 + (2 * m + 1 + 1).choose 2) := by
+    rw [two_mul_choose_two, Nat.mul_add, mul_left_comm 2 (4 * m * m + 2 * m),
+      two_mul_choose_two, two_mul_choose_two]
+    have h1 : 4 * m * m + 2 * m + 1 - 1 = 4 * m * m + 2 * m := by omega
+    have h2 : 2 * m + 1 - 1 = 2 * m := by omega
+    have h3 : 2 * m + 1 + 1 - 1 = 2 * m + 1 := by omega
+    rw [h1, h2, h3]
+    nlinarith
+  exact Nat.lt_of_mul_lt_mul_left key
+
+/-- **Sharp constant on an infinite family in the upper Beatty half:**
+`f(4m² + 2m + 1) ≤ 2m + 1` for every `m`.  Writing `s = 2m`, these are the points
+`n = s² + s + 1` — the FIRST point of the upper half-interval `(s² + s, (s+1)²)` for each
+even `s`, where the plain counting bound `minDegreeForC4_le_of_le_mul_pred` is provably
+inapplicable below `√n + 2` (it needs `n ≤ k(k−1)`, but `n = s² + s + 1 > s(s+1)`).
+Parity rescues the sharp constant there: `n` and `k = s + 1 = 2m + 1` are both odd, and
+`n − 1 = k(k−1)` exactly, so the boosted count wins by the margin
+`C(k+1,2) − C(k,2) = k > 0`.  At `m = 1` this is exactly `f(7) ≤ 3`. -/
+theorem minDegreeForC4_le_of_upper_beatty (m : ℕ) :
+    minDegreeForC4 (4 * m * m + 2 * m + 1) ≤ 2 * m + 1 :=
+  minDegreeForC4_le_of_choose_lt_odd
+    ⟨2 * m * m + m, by ring⟩ ⟨m, rfl⟩ (choose_lt_family m)
+
+/-- The family bound in `√n` form: for `m ≥ 1` we have `√(4m² + 2m + 1) = 2m`, so
+`minDegreeForC4_le_of_upper_beatty` reads `f(n) ≤ √n + 1` at `n = 4m² + 2m + 1` — beating
+the general `√n + 2` bound (`minDegreeForC4_le_sqrt`) at infinitely many points of the
+upper Beatty half, which no plain-counting argument can reach. -/
+theorem minDegreeForC4_le_sqrt_add_one_of_upper_beatty {m : ℕ} (hm : 1 ≤ m) :
+    minDegreeForC4 (4 * m * m + 2 * m + 1)
+      ≤ Nat.sqrt (4 * m * m + 2 * m + 1) + 1 := by
+  have h1 : 2 * m ≤ Nat.sqrt (4 * m * m + 2 * m + 1) :=
+    Nat.le_sqrt.mpr (by nlinarith)
+  have h2 : Nat.sqrt (4 * m * m + 2 * m + 1) < 2 * m + 1 :=
+    Nat.sqrt_lt.mpr (by nlinarith)
+  have hsqrt : Nat.sqrt (4 * m * m + 2 * m + 1) = 2 * m := by omega
+  rw [hsqrt]
+  exact minDegreeForC4_le_of_upper_beatty m
+
 end Erdos85
