@@ -525,14 +525,12 @@ theorem practical_mul_of_chains {a b : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
     intro d hd
     rw [hL, List.mem_append] at hd
     rcases hd with hd | hd
-    · have := hla_dvd d hd
-      rw [Nat.mem_divisors] at this ⊢
-      exact ⟨this.1.trans ⟨b, rfl⟩, hab⟩
+    · have hd' := Nat.mem_divisors.mp (hla_dvd d hd)
+      exact Nat.mem_divisors.mpr ⟨hd'.1.trans ⟨b, rfl⟩, hab⟩
     · rw [List.mem_map] at hd
       obtain ⟨e, he, rfl⟩ := hd
-      have hedvd := hlb_dvd e he
-      rw [Nat.mem_divisors] at hedvd ⊢
-      exact ⟨mul_dvd_mul_left a hedvd.1, hab⟩
+      have hedvd := Nat.mem_divisors.mp (hlb_dvd e he)
+      exact Nat.mem_divisors.mpr ⟨mul_dvd_mul_left a hedvd.1, hab⟩
   · -- the concatenated chain is duplicate-free
     rw [hL, List.nodup_append]
     refine ⟨hla_nd, hlb_nd.map (mul_right_injective₀ (by omega : a ≠ 0)), ?_⟩
