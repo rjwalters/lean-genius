@@ -254,7 +254,7 @@ theorem sumsOrProducts_card_ge_odd_prime {A : Finset ℤ}
       have := hpos p hpA
       have := hpos q hqA
       omega
-    rw [hE_def, Finset.card_insert_of_not_mem h0, himg,
+    rw [hE_def, Finset.card_insert_of_notMem h0, himg,
       Finset.card_erase_of_mem hpA]
     have : 1 ≤ A.card := Finset.card_pos.mpr hne
     omega
@@ -265,12 +265,15 @@ theorem sumsOrProducts_card_ge_odd_prime {A : Finset ℤ}
     have heven : Even e := by
       rw [hE_def, Finset.mem_insert] at heE
       rcases heE with rfl | he
-      · exact even_zero
+      · exact ⟨0, by norm_num⟩
       · rw [Finset.mem_image] at he
         obtain ⟨q, hq, rfl⟩ := he
         have hqA : q ∈ A := (Finset.mem_erase.mp hq).2
         exact (hodd p hpA).add_odd (hodd q hqA)
-    exact (Int.even_iff_not_odd.mp heven) (subsetProducts_odd_of_odd hodd heP)
+    -- an integer cannot be both even and odd
+    obtain ⟨r, hr⟩ := heven
+    obtain ⟨k, hk⟩ := subsetProducts_odd_of_odd hodd heP
+    omega
   -- combine: `E ∪ subsetProducts A ⊆ sumsOrProducts A`, disjoint union counts add.
   have hunion : E ∪ subsetProducts A ⊆ sumsOrProducts A :=
     Finset.union_subset (hEsub.trans (subsetSums_subset_sumsOrProducts A))
