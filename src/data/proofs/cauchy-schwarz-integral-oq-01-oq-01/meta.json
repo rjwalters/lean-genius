@@ -75,6 +75,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: H\u00f6lder's Inequality in eLpNorm Form", "startLine": 1, "endLine": 37, "summary": "Answers whether the snorm-based H\u00f6lder inequality can be restated with Mathlib 4.26+'s renamed eLpNorm API: yes. Lists the six formalized results \u2014 H\u00f6lder at the lintegral (ENNReal) level, the p=q=2 Cauchy-Schwarz specialization, Minkowski in eLpNorm form, inner-product Cauchy-Schwarz, a classical Minkowski-from-CS derivation, and Young's inequality as the pointwise foundation.", "mathContext": "H\u00f6lder's inequality $\\|fg\\|_{L^1} \\le \\|f\\|_{L^p}\\|g\\|_{L^q}$ for conjugate exponents $1/p+1/q=1$, formalized via the ENNReal-valued $\\mathrm{eLpNorm}$ (Mathlib's successor to the deprecated $\\mathrm{snorm}$)."},
     {
       "id": "holder-lintegral",
       "title": "Part I: Hölder at Lintegral Level",
