@@ -49,92 +49,134 @@
     ]
   },
   {
+    "id": "schur-gap-full-definition",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Computable Schur Gap Predicate (with mod-3 Exception)",
+    "content": "`hasSchurGapFull` mirrors `hasMinGap` but uses a variable gap: consecutive parts must differ by 4 if either is divisible by 3, otherwise by 3. This mod-3 exception is exactly the correction that fixes the false `n=9` case of the naive uniform-gap-3 Schur predicate (see the removed-axiom note before Part VI).",
+    "mathContext": "$\\mathrm{gap}(a,b) = \\begin{cases}4 & 3\\mid a \\text{ or } 3\\mid b\\\\ 3 & \\text{else}\\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur's partition identity",
+      "mod-3 exception",
+      "recursive Bool predicates"
+    ],
+    "prerequisites": [
+      "hasMinGap"
+    ]
+  },
+  {
+    "id": "hasmingap-pairwise-equivalence",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 128
+    },
+    "type": "insight",
+    "title": "Part I-B: hasMinGap ⟺ List.Pairwise Equivalence",
+    "content": "Proves both directions of the key bridge lemma: `hasMinGap_pairwise_ge_d` (consecutive gap $d$ implies ALL pairs, not just adjacent ones, are separated by $\\geq d$ — non-adjacent elements accumulate gap through the chain) and its converse `pairwise_ge_d_implies_hasMinGap`. `hasMinGap_iff_pairwise` packages both as an iff, and `hasMinGap_pairwise_sep` derives the symmetric two-sided separation statement used by later distinctness arguments. This equivalence is what lets every downstream gap-implies-distinct theorem work with the simpler `List.Pairwise` API instead of unfolding the recursive `hasMinGap` definition.",
+    "mathContext": "$\\mathrm{hasMinGap}(l,d) = \\mathrm{true} \\iff l.\\mathrm{Pairwise}(\\lambda a\\, b, a \\geq b+d)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.Pairwise",
+      "structural induction",
+      "gap conditions"
+    ],
+    "prerequisites": [
+      "hasMinGap definition",
+      "List induction"
+    ]
+  },
+  {
     "id": "partition-extensions",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 59,
-      "endLine": 71
+      "startLine": 133,
+      "endLine": 151
     },
     "type": "definition",
     "title": "Noncomputable Partition Predicates via Multiset Sorting",
-    "content": "The predicates partHasMinGap, partSmallestPart, and partAllModIn lift the list-level gap condition to Nat.Partition by converting the multiset of parts to a sorted list. This requires the noncomputable section because Multiset.sort produces a list from a multiset, which is not computationally canonical. The modular condition check partAllModIn is the key predicate for the congruence side of the Rogers-Ramanujan identities.",
-    "mathContext": "For a partition $\\lambda \\vdash n$ with parts multiset $\\{\\lambda_1, \\ldots, \\lambda_k\\}$, sorting produces the sequence $\\lambda_1 \\geq \\lambda_2 \\geq \\cdots \\geq \\lambda_k$ on which gap and modular conditions are checked.",
+    "content": "Lifts the list-level `hasMinGap` predicate to `Nat.Partition n` by sorting its multiset of parts: `partHasMinGap` (gap condition on the decreasingly-sorted parts), `partSmallestPart` (the minimum part, 0 if empty), and `partAllModIn` (all parts lie in a given list of residues mod m). The whole block is a `noncomputable section` because `Multiset.sort` has no canonical computable implementation — this is the noncomputable twin later mirrored by the decidable `PartitionDecidable` namespace in Part IX.",
+    "mathContext": "$\\mathrm{partHasMinGap}(p,d) = \\mathrm{hasMinGap}(\\mathrm{sort}_{\\geq}(p.\\mathrm{parts}), d)$",
     "significance": "supporting",
     "relatedConcepts": [
       "Multiset.sort",
-      "Nat.Partition",
       "noncomputable definitions",
-      "modular arithmetic on parts"
+      "partition predicates",
+      "modular residue conditions"
     ],
     "prerequisites": [
-      "Mathlib Nat.Partition type",
-      "Multiset API",
-      "noncomputable in Lean 4"
+      "Nat.Partition",
+      "Multiset basics"
     ]
   },
   {
     "id": "rr1-partition-sets",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 77,
-      "endLine": 94
+      "startLine": 157,
+      "endLine": 174
     },
     "type": "concept",
     "title": "Rogers-Ramanujan Partition Set Definitions",
-    "content": "Four partition sets are defined for the two Rogers-Ramanujan identities. rr1GapPartitions selects partitions with gap at least 2 between consecutive parts, while rr1Mod5Partitions selects partitions whose parts are all congruent to 1 or 4 modulo 5. The RR2 variants additionally require the smallest part to be at least 2 (gap side) or restrict to residues 2 and 3 modulo 5 (congruence side). All sets are defined as filtered Finsets over the universe of Nat.Partition n.",
-    "mathContext": "RR1: $|\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\geq 2\\}| = |\\{\\lambda \\vdash n : \\text{all parts} \\equiv 1,4 \\pmod{5}\\}|$. RR2: same with $\\lambda_k \\geq 2$ and residues $\\{2,3\\}$ mod 5.",
+    "content": "Defines the four partition subsets used throughout the file as filtered `Finset`s over `Nat.Partition n`: `rr1GapPartitions` (consecutive parts differ by $\\geq 2$), `rr1Mod5Partitions` (all parts $\\equiv 1,4 \\pmod 5$), `rr2GapPartitions` (gap $\\geq 2$ and smallest part $\\geq 2$), and `rr2Mod5Partitions` (all parts $\\equiv 2,3 \\pmod 5$). These are the noncomputable (sort-based) definitions; Part IX restates them decidably.",
+    "mathContext": "$\\mathrm{RR1Gap}(n) = \\{p \\vdash n : \\mathrm{gap}(p) \\geq 2\\}$, $\\mathrm{RR1Mod5}(n) = \\{p \\vdash n : \\text{parts} \\equiv 1,4 \\!\\!\\pmod 5\\}$",
     "significance": "key",
     "relatedConcepts": [
       "Rogers-Ramanujan identities",
-      "partition gap conditions",
-      "modular partition classes",
-      "Finset.filter"
+      "Finset.filter",
+      "partition subsets",
+      "modular partitions"
     ],
     "prerequisites": [
-      "Finset.univ for Nat.Partition",
-      "Fintype instance for partitions"
+      "Nat.Partition",
+      "Finset basics"
     ]
   },
   {
     "id": "rr-axioms",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 100,
-      "endLine": 106
+      "startLine": 180,
+      "endLine": 186
     },
     "type": "insight",
     "title": "Rogers-Ramanujan Identities as Axioms",
-    "content": "The two Rogers-Ramanujan identities are stated as axioms rather than proved theorems. This is a deliberate formalization choice: proving these identities requires either q-series manipulation (the Jacobi triple product and related machinery, not yet available in Mathlib) or intricate bijective proofs such as the Garsia-Milne involution principle, which would require 500+ lines of combinatorial construction each. The axiom-based approach lets the formalization establish the structural framework and prove consequences without waiting for the deep proof infrastructure.",
-    "mathContext": "The RR1 identity has the q-series form: $\\sum_{k=0}^{\\infty} \\frac{q^{k^2}}{(q;q)_k} = \\prod_{n=0}^{\\infty} \\frac{1}{(1-q^{5n+1})(1-q^{5n+4})}$",
+    "content": "States the two Rogers-Ramanujan identities as axioms: `rogers_ramanujan_first` ($|\\mathrm{RR1Gap}(n)| = |\\mathrm{RR1Mod5}(n)|$) and `rogers_ramanujan_second` ($|\\mathrm{RR2Gap}(n)| = |\\mathrm{RR2Mod5}(n)|$). Both are axiomatized rather than proved because their classical proofs require $q$-series identities (Jacobi triple product) or an explicit bijection (e.g. Garsia-Milne involution) that Mathlib does not yet supply; Part X verifies both computationally for $n \\le 7$ via `native_decide`.",
+    "mathContext": "$|\\mathrm{RR1Gap}(n)| = |\\mathrm{RR1Mod5}(n)|$, $|\\mathrm{RR2Gap}(n)| = |\\mathrm{RR2Mod5}(n)|$",
     "significance": "key",
     "relatedConcepts": [
+      "Rogers-Ramanujan identities",
       "q-series",
       "Jacobi triple product",
-      "Garsia-Milne involution",
-      "axiom-based formalization"
+      "axiomatization"
     ],
     "prerequisites": [
-      "formal power series",
-      "partition generating functions"
+      "partition theory fundamentals"
     ]
   },
   {
     "id": "schur-identity",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 112,
-      "endLine": 125
+      "startLine": 192,
+      "endLine": 221
     },
     "type": "concept",
     "title": "Schur's Partition Identity (1926)",
-    "content": "Schur's identity equates two classes of partitions of n: those into distinct parts congruent to 1 or 2 modulo 3 (the mod side), and those with minimum gap 3 between consecutive parts and distinctness (the gap side). The formalization uses Nodup on both sides to enforce distinctness. Like the Rogers-Ramanujan identities, Schur's identity is stated as an axiom, as it requires similarly deep combinatorial or analytic machinery to prove.",
-    "mathContext": "Schur (1926): $|\\{\\lambda \\vdash n : \\text{distinct, parts} \\equiv \\pm 1 \\pmod{3}\\}| = |\\{\\lambda \\vdash n : \\text{gap} \\geq 3, \\text{distinct}\\}|$",
+    "content": "Defines the gap-side and mod-side Schur partition sets — `schurGapPartitions` (distinct parts with gap $\\geq 3$) and `schurModPartitions` (distinct parts $\\equiv \\pm 1 \\pmod 3$) — and states `schur_partition_identity_corrected` as an axiom equating their cardinalities. A comment records that an earlier simplified version (`schur_partition_identity`, uniform gap $\\geq 3$ with no mod-3 exception) was REMOVED after being found mathematically incorrect at $n=9$; Part V-B's `schurGapFullPartitions` is the corrected replacement.",
+    "mathContext": "$|\\{\\lambda \\vdash n : \\text{distinct, parts} \\equiv \\pm 1 \\pmod 3\\}| = |\\{\\lambda \\vdash n : \\text{gap} \\geq 3, \\text{distinct}\\}|$",
     "significance": "key",
     "relatedConcepts": [
       "Schur's theorem",
       "distinct partitions",
       "modular partition identities",
-      "List.Nodup"
+      "List.Nodup",
+      "regression fix (n=9 counterexample)"
     ],
     "prerequisites": [
       "partition theory fundamentals",
@@ -142,117 +184,445 @@
     ]
   },
   {
+    "id": "schur-gap-full-subset-bridge",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 223,
+      "endLine": 246
+    },
+    "type": "technique",
+    "title": "Corrected Schur Gap Implies the Simplified Gap Condition",
+    "content": "`schurGapFullPartitions_subset_schurGapPartitions`: the corrected gap-$\\geq 3$-or-$4$ predicate implies the simplified uniform gap-$\\geq 3$ predicate, since $4 \\geq 3$ in the mod-3-exception case. The proof case-splits on whether either part is divisible by 3 and closes both branches with `omega`. This connects the mathematically-correct `schurGapFullPartitions` (used from Part V-B onward) back to the original `schurGapPartitions` so earlier lemmas about the latter still apply to the former.",
+    "mathContext": "$\\mathrm{hasSchurGapFull}(l) \\Rightarrow \\mathrm{hasMinGap}(l,3)$, hence $\\mathrm{schurGapFullPartitions}(n) \\subseteq \\mathrm{schurGapPartitions}(n)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schur's theorem correction",
+      "case analysis",
+      "omega"
+    ],
+    "prerequisites": [
+      "hasSchurGapFull",
+      "hasMinGap"
+    ]
+  },
+  {
     "id": "gap-two-pairwise-gt",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 131,
-      "endLine": 147
+      "startLine": 252,
+      "endLine": 268
     },
     "type": "concept",
     "title": "Gap >= 2 Implies Pairwise Strict Inequality",
-    "content": "This private lemma is the technical heart of the structural results. It proves that if a list has minimum gap 2 between consecutive elements, then all elements are pairwise strictly decreasing. The proof proceeds by induction on the list, using pattern matching to handle the base cases (empty and singleton lists). For the inductive step, it shows that the head is greater than every element in the tail by combining the direct gap with the inductively established pairwise relation on the tail, using omega to discharge the arithmetic.",
-    "mathContext": "If $a_i - a_{i+1} \\geq 2$ for all consecutive pairs in a decreasing list, then $a_i > a_j$ for all $i < j$, establishing $\\texttt{List.Pairwise}\\;(\\cdot > \\cdot)$.",
+    "content": "`hasMinGap_two_pairwise_gt`: if a sorted list has minimum consecutive gap 2, every pair of its elements is strictly ordered (`l.Pairwise (· > ·)`), proved by the same induction pattern as the general `hasMinGap_pairwise_ge_d` from Part I-B, specialized to $d=2$. This is the key lemma feeding `rr1_gap_implies_distinct` immediately below: strict pairwise ordering rules out any repeated part.",
+    "mathContext": "$\\mathrm{hasMinGap}(l,2) \\Rightarrow \\forall i<j,\\, l_i > l_j$",
     "significance": "key",
     "relatedConcepts": [
       "List.Pairwise",
-      "structural induction",
-      "omega tactic",
-      "strict monotonicity"
+      "strict ordering",
+      "induction on lists"
     ],
     "prerequisites": [
-      "List induction in Lean 4",
-      "Pairwise relation on lists"
+      "List.Pairwise basics"
     ]
   },
   {
     "id": "rr1-gap-distinct",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 149,
-      "endLine": 161
+      "startLine": 270,
+      "endLine": 282
     },
     "type": "concept",
     "title": "Gap >= 2 Partitions Have Distinct Parts",
-    "content": "This theorem establishes that every RR1 gap partition (consecutive parts differ by at least 2) is also a distinct partition. The proof chains the pairwise strict inequality lemma through ne_of_gt to get a Nodup property on the sorted list, then uses Multiset.sort_eq to transfer the Nodup back to the original multiset of parts. This is one of the key original contributions of the formalization, placing gap partitions in the correct containment hierarchy.",
-    "mathContext": "If $\\lambda_i - \\lambda_{i+1} \\geq 2$ for all $i$, then all $\\lambda_i$ are distinct, i.e., $\\lambda \\in \\mathcal{D}(n)$ (the set of partitions into distinct parts).",
+    "content": "`rr1_gap_implies_distinct`: every partition in `rr1GapPartitions n` lies in `Nat.Partition.distincts n`. The proof converts the gap-2 pairwise-strict-order fact into `Nodup` on the sorted parts list via `List.Pairwise.imp ne_of_gt`, then transports Nodup back to the underlying multiset with `Multiset.sort_eq`, bridging the computable list-level fact to the multiset-level partition property.",
+    "mathContext": "$\\mathrm{RR1Gap}(n) \\subseteq \\mathcal{D}(n)$ (distinct partitions)",
     "significance": "key",
     "relatedConcepts": [
       "Nat.Partition.distincts",
-      "Multiset.coe_nodup",
       "Multiset.sort_eq",
-      "partition containment hierarchy"
+      "List.Nodup"
     ],
     "prerequisites": [
-      "List.Pairwise implies Nodup",
-      "Multiset.sort properties"
+      "Multiset-List sort correspondence"
     ]
   },
   {
     "id": "rr2-subset-rr1",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 163,
-      "endLine": 169
+      "startLine": 284,
+      "endLine": 290
     },
     "type": "concept",
     "title": "RR2 Gap Partitions are a Subset of RR1 Gap Partitions",
-    "content": "This theorem proves the natural containment: every RR2 gap partition is also an RR1 gap partition. Since RR2 partitions require both the gap-2 condition and a minimum part of 2, they form a strictly smaller class than RR1 partitions which only require the gap condition. The proof uses simp to unfold the filter definitions and tauto to dispatch the logical implication from a conjunction to one of its components.",
-    "mathContext": "The containment hierarchy: $\\text{RR2\\_gap}(n) \\subseteq \\text{RR1\\_gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$ where $\\mathcal{D}(n)$ is distinct partitions and $\\mathcal{P}(n)$ is all partitions.",
+    "content": "`rr2_subset_rr1`: `rr2GapPartitions n ⊆ rr1GapPartitions n`, immediate by conjunction elimination since `rr2GapPartitions` is defined as `rr1GapPartitions`'s condition (gap $\\geq 2$) conjoined with the extra smallest-part-$\\geq 2$ constraint.",
+    "mathContext": "$\\mathrm{RR2Gap}(n) \\subseteq \\mathrm{RR1Gap}(n)$",
     "significance": "supporting",
     "relatedConcepts": [
-      "set containment",
-      "partition hierarchy",
-      "Rogers-Ramanujan gap conditions",
-      "tauto tactic"
+      "Finset subset",
+      "conjunction elimination"
     ],
     "prerequisites": [
-      "Finset subset relation",
-      "Boolean conjunction properties"
+      "Finset.filter"
     ]
   },
   {
     "id": "false-theorem-counterexample",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 164,
-      "endLine": 172
+      "startLine": 292,
+      "endLine": 294
     },
     "type": "insight",
     "title": "Identifying a False Containment: Mod-5 Partitions Are Not Necessarily Distinct",
-    "content": "This comment documents an important negative result discovered during formalization: the conjecture that rr1Mod5Partitions is contained in the distinct partitions is FALSE. The counterexample is the partition 1+1+1 = 3, where every part is congruent to 1 modulo 5 (so it belongs to rr1Mod5Partitions) but the partition has repeated parts (so it is not distinct). This illustrates the asymmetry between the gap and congruence sides of the Rogers-Ramanujan identity: gap conditions force distinctness, but modular conditions do not.",
-    "mathContext": "Counterexample: $3 = 1+1+1$. Each part satisfies $1 \\equiv 1 \\pmod{5}$, so $\\lambda \\in \\text{RR1\\_mod5}(3)$, but $\\lambda \\notin \\mathcal{D}(3)$ since parts repeat.",
-    "significance": "key",
+    "content": "Documents a deliberately false containment that is NOT proved: `rr1Mod5Partitions n ⊆ Nat.Partition.distincts n` is false in general, witnessed by $n=3=1+1+1$ — every part is $\\equiv 1 \\pmod 5$, yet the partition is not distinct. Recording rejected containments alongside the proved ones documents the exact boundary of what the gap-vs-mod correspondence implies structurally (only the *gap*-side sets are forced into `distincts`, not the *mod*-side sets).",
+    "mathContext": "$1+1+1=3$: all parts $\\equiv 1\\!\\!\\pmod 5$, not distinct",
+    "significance": "technical",
     "relatedConcepts": [
-      "counterexample discovery",
-      "partition distinctness",
-      "gap vs congruence asymmetry"
+      "counterexample",
+      "proof boundary documentation"
     ],
     "prerequisites": [
-      "modular arithmetic",
-      "distinct partitions"
+      "partition notation"
     ]
   },
   {
     "id": "formalization-summary",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 175,
-      "endLine": 177
+      "startLine": 295,
+      "endLine": 298
     },
     "type": "definition",
-    "title": "RR1 Gap Subset and Containment Hierarchy",
-    "content": "This theorem wraps `rr1_gap_implies_distinct` into a Finset subset statement: `rr1GapPartitions n \u2286 Nat.Partition.distincts n`. Together with `rr2_subset_rr1`, this establishes the complete containment hierarchy: RR2 gap $\\subseteq$ RR1 gap $\\subseteq$ distinct $\\subseteq$ all partitions. The formalization catalogs 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and 3 fully proved structural theorems with 0 sorries. The axiomatization is justified by the infrastructure gap: proving the identities would require q-series manipulation (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each).",
-    "mathContext": "$\\text{RR2\\_gap}(n) \\subseteq \\text{RR1\\_gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$. The q-series proof requires $(q;q)_k = \\prod_{i=1}^k (1-q^i)$.",
+    "title": "RR1 Gap Subset of Distinct Partitions (Wrap-Up)",
+    "content": "`rr1_gap_subset_distinct` restates `rr1_gap_implies_distinct` as an explicit `Finset` subset statement, `rr1GapPartitions n ⊆ Nat.Partition.distincts n`. Combined with `rr2_subset_rr1` just above, this gives the containment chain $\\mathrm{RR2Gap} \\subseteq \\mathrm{RR1Gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$ that Part VIII's type-checking summary later catalogs in full.",
+    "mathContext": "$\\mathrm{RR2Gap}(n) \\subseteq \\mathrm{RR1Gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$",
     "significance": "supporting",
     "relatedConcepts": [
-      "axiom-based formalization methodology",
-      "Mathlib infrastructure gaps",
-      "q-series",
-      "bijective combinatorics"
+      "containment hierarchy",
+      "Finset subset"
     ],
     "prerequisites": [
-      "formal power series in Lean",
-      "Mathlib Combinatorics.Enumerative"
+      "Nat.Partition.distincts"
+    ]
+  },
+  {
+    "id": "part7-additional-structural-theorems",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 304,
+      "endLine": 364
+    },
+    "type": "technique",
+    "title": "Gap Monotonicity and the Schur-to-RR1 Containment",
+    "content": "Proves `hasMinGap_mono` (a list with gap $d$ also has any smaller gap $d' \\le d$), its consequences `hasMinGap_ge_one_pairwise_gt`/`hasMinGap_ge_one_nodup` (gap $\\geq 1$ already forces strict ordering and hence Nodup), then `schur_gap_subset_rr1_gap` (gap $\\geq 3$ implies gap $\\geq 2$ via monotonicity with $3\\geq 2$), `schur_gap_implies_distinct` (composing with `rr1_gap_implies_distinct`), and `schur_nodup_redundant` (the explicit `Nodup` conjunct in `schurGapPartitions`'s definition is provably redundant once gap $\\geq 3$ holds, since $3 \\geq 1$).",
+    "mathContext": "$d' \\leq d \\wedge \\mathrm{hasMinGap}(l,d) \\Rightarrow \\mathrm{hasMinGap}(l,d')$; $\\mathrm{SchurGap}(n) \\subseteq \\mathrm{RR1Gap}(n)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "redundancy elimination",
+      "containment chains"
+    ],
+    "prerequisites": [
+      "hasMinGap_two_pairwise_gt",
+      "rr1_gap_implies_distinct"
+    ]
+  },
+  {
+    "id": "part8-type-checking-summary",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 367,
+      "endLine": 414
+    },
+    "type": "context",
+    "title": "Type-Checking Summary and the Full Containment Hierarchy",
+    "content": "A `#check`-only section (no new proofs) that catalogs the state of the formalization: 6 partition-set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and the proved structural theorems, all with 0 sorries. It records the complete containment hierarchy established so far: $\\mathrm{SchurGap} \\subseteq \\mathrm{RR2Gap} \\subseteq \\mathrm{RR1Gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$, serving as a checkpoint before the file pivots to decidable reformulations (Part IX) needed for `native_decide`.",
+    "mathContext": "$\\mathrm{SchurGap}(n) \\subseteq \\mathrm{RR2Gap}(n) \\subseteq \\mathrm{RR1Gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$",
+    "significance": "context",
+    "relatedConcepts": [
+      "containment hierarchy",
+      "#check",
+      "formalization checkpoint"
+    ],
+    "prerequisites": [
+      "all Part I-VII definitions and theorems"
+    ]
+  },
+  {
+    "id": "part9-decidable-predicates",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 415,
+      "endLine": 466
+    },
+    "type": "technique",
+    "title": "Decidable Reformulation via Direct Pairwise Separation",
+    "content": "The noncomputable definitions rely on `Multiset.sort`, which blocks `native_decide`. `PartitionDecidable` reformulates each set directly on the multiset: 'sorted list has gap $\\geq d$' becomes 'multiset is `Nodup` and every pair of distinct elements is separated by $\\geq d$' — mathematically equivalent (Part XXI proves the bridge) but avoiding sorting entirely, so Lean can evaluate the predicate and `native_decide` becomes available. Defines decidable `rr1Gap`, `rr1Mod5`, `rr2Gap`, `rr2Mod5`, `schurGap`, `schurMod`.",
+    "mathContext": "$\\mathrm{Nodup}(p) \\wedge \\forall a\\neq b \\in p,\\, a+d\\leq b \\vee b+d \\leq a$",
+    "significance": "key",
+    "relatedConcepts": [
+      "decidability",
+      "native_decide",
+      "pairwise separation"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Decidable instances"
+    ]
+  },
+  {
+    "id": "part10-computational-verification",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 467,
+      "endLine": 509
+    },
+    "type": "insight",
+    "title": "Computational Verification for n = 0..7",
+    "content": "Verifies all three identities (Rogers-Ramanujan I, II, and Schur) computationally for $n=0,\\ldots,7$ via `native_decide` — 24 concrete checked instances of the axiomatized identities, each enumerating every partition of $n$, filtering by the decidable predicate, and comparing cardinalities. This is empirical corroboration of the three `axiom`s declared earlier, not a proof of them for general $n$.",
+    "mathContext": "$|\\mathrm{rr1Gap}(n)| = |\\mathrm{rr1Mod5}(n)|$ for $n=0,\\ldots,7$ (`native_decide`-checked)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "finite verification",
+      "axiom corroboration"
+    ],
+    "prerequisites": [
+      "Part IX decidable predicates"
+    ]
+  },
+  {
+    "id": "part11-euler-connection",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 510,
+      "endLine": 603
+    },
+    "type": "insight",
+    "title": "Containment Bounds and the Connection to Euler's Theorem",
+    "content": "Proves `rr1_gap_card_le_distinct`, `rr2_gap_card_le_rr1`, `schur_gap_card_le_rr1`, giving $|\\mathrm{SchurGap}| \\leq |\\mathrm{RR1Gap}| \\leq |\\mathcal{D}|$ and $|\\mathrm{RR2Gap}| \\leq |\\mathrm{RR1Gap}|$ as explicit cardinality inequalities (not just subset facts). Connects to Euler's partition theorem (already in Mathlib's `Archive.Wiedijk100Theorems.Partition`: distinct partitions $=$ odd partitions in count) to situate the Rogers-Ramanujan gap partitions within the classical partition-counting landscape.",
+    "mathContext": "$|\\mathrm{SchurGap}(n)| \\leq |\\mathrm{RR1Gap}(n)| \\leq |\\mathcal{D}(n)| = |\\mathcal{O}(n)|$ (Euler: distinct = odd)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler's partition theorem",
+      "cardinality inequalities",
+      "Finset.card_le_card"
+    ],
+    "prerequisites": [
+      "Archive.Wiedijk100Theorems.Partition"
+    ]
+  },
+  {
+    "id": "part12-16-strict-containment",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 604,
+      "endLine": 717
+    },
+    "type": "insight",
+    "title": "Strict Containment, Explicit Counts (n=8,9), and Parity Observations",
+    "content": "Shows the containments proved above are STRICT, not just $\\leq$: `rr1_gap_strict_subset_distinct_5`, `schur_gap_strict_subset_rr1_8`, `rr2_gap_strict_subset_rr1_5` each exhibit a witnessing $n$ where the smaller set is a proper subset. Extends computational verification to $n=8,9$, records explicit counts (`rr1_count_*`, `schur_count_*` via `native_decide`), and proves parity/residue facts on the mod-side sets: `rr1_mod5_parts_nonzero`, `rr2_mod5_parts_ge_two`, `schur_mod_parts_coprime_three` (no part divisible by 3 in the Schur mod set).",
+    "mathContext": "e.g. $\\mathrm{RR1Gap}(5) \\subsetneq \\mathcal{D}(5)$ (strict, witnessed at $n=5$)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict subset",
+      "explicit counterexamples",
+      "residue conditions"
+    ],
+    "prerequisites": [
+      "Part XI containment bounds"
+    ]
+  },
+  {
+    "id": "part17-20-corrected-schur-decidable-bridge",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 718,
+      "endLine": 922
+    },
+    "type": "technique",
+    "title": "The Corrected Schur Set and the hasMinGap/Decidable-Gap Bridge",
+    "content": "Introduces `schurGapFull` (the corrected, mod-3-aware gap set) with its own structural theorems: `schurGapFull_subset_schurGap`, `schurGapFull_implies_distinct`, cardinality bounds against `schurGap`/`rr1Gap`, and `schurGapFull_ne_schurGap_9` (an explicit witness at $n=9$ separating the corrected and naive Schur sets — the same value that broke the removed axiom). Then proves the two-way equivalence between the recursive `hasMinGap` predicate and the direct pairwise-separation predicate used in `PartitionDecidable`: `hasMinGap_implies_decidable_gap` and `decidable_gap_sorted_implies_hasMinGap`.",
+    "mathContext": "$\\mathrm{schurGapFull}(n) \\neq \\mathrm{schurGap}(n)$ at $n=9$ (explicit witness)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur correction witness",
+      "decidable/recursive predicate bridge"
+    ],
+    "prerequisites": [
+      "hasSchurGapFull",
+      "Part IX decidable predicates"
+    ]
+  },
+  {
+    "id": "part21-22-decidable-bridges-rr1",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 923,
+      "endLine": 1058
+    },
+    "type": "technique",
+    "title": "Decidable ↔ Noncomputable Bridge Theorems (RR1 Side)",
+    "content": "Proves the decidable `PartitionDecidable` predicates agree exactly with the earlier `Multiset.sort`-based ones: `rr1Gap_eq_rr1GapPartitions`, `rr1Mod5_eq_rr1Mod5Partitions`, `rr2Mod5_eq_rr2Mod5Partitions`. Combined with these set-equalities, the axiomatized `rogers_ramanujan_first` transports directly to a decidable-predicate restatement, `rogers_ramanujan_first_decidable` — giving the same identity in the form that `native_decide` can check instance-by-instance.",
+    "mathContext": "$\\mathrm{rr1Gap}(n) = \\mathrm{rr1GapPartitions}(n)$ as `Finset`s (extensional equality)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "set equality",
+      "decidable/noncomputable transport"
+    ],
+    "prerequisites": [
+      "Part IX decidable predicates",
+      "Part III partition sets"
+    ]
+  },
+  {
+    "id": "part23-24-rr2-schur-bridges",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 1059,
+      "endLine": 1426
+    },
+    "type": "technique",
+    "title": "Completing the Decidable ↔ Noncomputable Dictionary",
+    "content": "Finishes the bridge for the remaining sets: `rr2Gap_eq_rr2GapPartitions`, `schurGapFull_eq_schurGapFullPartitions`, `schurMod_eq_schurModPartitions` — the longest bridge proofs in the file, since they must carefully transport `Multiset.sort`/`List.Pairwise` facts across the sort. Derives the fully decidable identity restatements `rogers_ramanujan_second_decidable` and `schur_partition_identity_corrected_decidable`, completing decidable forms of all three axiomatized identities.",
+    "mathContext": "$\\mathrm{schurGapFull}(n) = \\mathrm{schurGapFullPartitions}(n)$; decidable restatement of the corrected Schur identity",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "set equality",
+      "Multiset.sort transport"
+    ],
+    "prerequisites": [
+      "Part V-B corrected Schur set"
+    ]
+  },
+  {
+    "id": "part25-29-part-count-bounds",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 1427,
+      "endLine": 1642
+    },
+    "type": "insight",
+    "title": "Part-Count Bounds via Gap-Sum Estimates and the SchurMod Characterization",
+    "content": "Verifies further explicit counts ($n=10,11,12$) and proves quantitative part-count bounds from the gap condition by summing consecutive gaps: a $k$-part partition with gap $\\geq 2$ needs $k^2 \\leq n$ (RR1), gap $\\geq 2$ with smallest part $\\geq 2$ needs $k(k+1) \\leq n$ (RR2), and gap $\\geq 3$ needs $k(3k-1)/2 \\leq n$ (Schur) — arithmetic-series lower bounds on the sum of a gap-separated sequence. Characterizes the Schur mod side structurally: `schurMod_no_zero_mod3` (no part divisible by 3), and shows a part divisible by 3 forces the corrected gap to jump to 4 and become disjoint from `schurMod`.",
+    "mathContext": "gap $\\geq g$ over $k$ parts $\\Rightarrow n \\geq \\sum_{i=0}^{k-1}(a_{\\min}+ig) \\geq \\tfrac{g}{2}k(k-1)$ (arithmetic series bound)",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic series bounds",
+      "part-count estimates",
+      "structural characterization"
+    ],
+    "prerequisites": [
+      "gap conditions",
+      "summation bounds"
+    ]
+  },
+  {
+    "id": "part30-34-generating-function-infrastructure",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 1643,
+      "endLine": 2161
+    },
+    "type": "insight",
+    "title": "Generating-Function Toolkit and the Subset-Sum Bijection",
+    "content": "Builds formal power-series machinery over `PowerSeries`: `distinctPartGF` ($=\\prod_k (1+X^k)$, the generating function for partitions into distinct parts) with its empty/singleton/insert/union laws, `schurModGF`/`rr1ModGF` for the two modular sets, and `subsetsWithSum` (subsets of a finite set summing to a target). Proves the insert recursion for subset counts, the coefficient formula `distinctPartGF_coeff`, and a map `partitionOfSubset` turning a summing subset into an actual `Nat.Partition`, culminating in a bijection `schurMod_card_eq_gf_coeff` between `schurModPartitions` and a generating-function coefficient — the analytic machinery underlying why these identities hold.",
+    "mathContext": "$\\mathrm{distinctPartGF}(S) = \\prod_{k \\in S}(1+X^k)$; $[\\!X^n]\\,\\mathrm{distinctPartGF}(S) = |\\{T \\subseteq S : \\textstyle\\sum T = n\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal power series",
+      "generating functions",
+      "subset-sum bijection"
+    ],
+    "prerequisites": [
+      "PowerSeries basics",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "part35-37-repetition-gf-verification",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 2162,
+      "endLine": 2476
+    },
+    "type": "technique",
+    "title": "Generating Functions with Repetition and Verification to n=15",
+    "content": "Extends `native_decide` verification to $n=13,14,15$, then develops the generating-function analogue for partitions WITH repetition (needed for `rr1Mod`/`rr2Mod`, whose parts may repeat, unlike the distinct-part sets of Part XXX): `geomPow` ($=\\sum_j X^{jk}$, geometric series in a single part size $k$) with a telescoping identity `one_sub_X_pow_mul_geomPow` ($(1-X^k)\\cdot\\mathrm{geomPow}(k) = 1$), the product `partGF` over allowed part sizes, and `partitionsFrom` (multisets of allowed sizes summing to $n$), connecting it to `rr1Mod5`/`rr2Mod5` via `_eq_partitionsFrom` lemmas.",
+    "mathContext": "$\\mathrm{geomPow}(k) = \\sum_{j\\geq0} X^{jk} = \\dfrac{1}{1-X^k}$ (formal power series)",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric power series",
+      "partitions with repetition",
+      "telescoping identities"
+    ],
+    "prerequisites": [
+      "Part XXX generating-function infrastructure"
+    ]
+  },
+  {
+    "id": "part38-40-bounded-counts-unrestricted-gf",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 2477,
+      "endLine": 2863
+    },
+    "type": "technique",
+    "title": "Bounded Schur Counting Functions and the Unrestricted Generating Series",
+    "content": "Defines `schurGapBounded`/`schurModBounded` (counts restricted to parts $\\leq$ some bound) with monotonicity and a mod-3 split/decomposition (`schurGapBounded_split`, `schurModBounded_div3`), plus the recurrences `schurGapRec`/`schurModRec` these bounded counts satisfy. Introduces the fully unrestricted partition generating series `geomSeries` ($=1/(1-X^k)$ over ALL $k$, not just an allowed subset) with its own coefficient/constant-term lemmas, feeding `partGF'`, `rr1ModGFUnrestricted`, `rr2ModGFUnrestricted`.",
+    "mathContext": "$\\mathrm{geomSeries}(k) = \\dfrac{1}{1-X^k}$; recurrence $\\mathrm{schurModRec}(n) = \\mathrm{schurModBounded}(n) - \\mathrm{schurModBounded}_{n\\equiv0(3)}(n)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bounded counting functions",
+      "recurrence relations",
+      "unrestricted generating series"
+    ],
+    "prerequisites": [
+      "Part XXX-XXXIV generating functions"
+    ]
+  },
+  {
+    "id": "part41-43-convolution-partgf-recursion",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 2864,
+      "endLine": 3139
+    },
+    "type": "technique",
+    "title": "Convolution Identities and the partGF Coefficient Recursion",
+    "content": "Establishes the functional equation `geomSeries_functional_eq` ($(1-X^k)\\cdot\\mathrm{geomSeries}(k)=1$ restated for the unrestricted series) and the convolution lemmas `geomSeries_mul_coeff_rec`/`geomSeries_mul_coeff_sum` describing how coefficients of a product power series combine. Uses these to derive the `partGF` coefficient recursion (`partGF_coeff_empty`, `partGF_insert'`, `partGF_coeff_insert`) — the standard 'include or exclude the next part size' recursion for partition-counting generating functions — and bridges it back to `subsetsWithSum` cardinalities.",
+    "mathContext": "$[\\!X^n]\\,(fg) = \\sum_{i=0}^n [\\!X^i]f \\cdot [\\!X^{n-i}]g$ (Cauchy product coefficient formula)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy product",
+      "coefficient recursion",
+      "convolution"
+    ],
+    "prerequisites": [
+      "Part XXX-XXXVII generating functions"
+    ]
+  },
+  {
+    "id": "part44-47-partition-count-bridges",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 3140,
+      "endLine": 3541
+    },
+    "type": "insight",
+    "title": "Final Bridge: partGF Coefficients Count Partitions with Repetition",
+    "content": "Proves the structural lemmas for `partitionsFrom` (`_subset`, `_card_mono`, `_singleton_card`, `_remove_k`, `_insert_card`) and multiset decomposition helpers (`multiset_sum_filter_eq`, `multiset_sum_decompose`), building to the file's final analytic payoff: `partGF_coeff_eq_card`, which proves the `partGF` coefficient literally counts partitions with repetition from a given part-size set, and the mod-side bridges `rr1Mod_card_eq_gf_coeff`/`rr2Mod_card_eq_gf_coeff` connecting `rr1ModSet`/`rr2ModSet` cardinalities to generating-function coefficients — closing the loop between the combinatorial partition sets and the formal power-series machinery built since Part XXX.",
+    "mathContext": "$[\\!X^n]\\,\\mathrm{partGF}(S) = |\\mathrm{partitionsFrom}(S,n)| = |\\{p \\vdash n : \\text{all parts} \\in S\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "generating function coefficient extraction",
+      "partitions with repetition",
+      "closing bridge"
+    ],
+    "prerequisites": [
+      "Part XXX-XLIII generating-function machinery"
     ]
   }
 ]
