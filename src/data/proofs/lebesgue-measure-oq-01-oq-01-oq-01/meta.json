@@ -99,6 +99,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Thomae's Function via Lebesgue's Criterion",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "States the open question — can Thomae's function's Riemann integrability be formalized via Lebesgue's criterion (bounded ⟹ Riemann integrable iff the discontinuity set has measure zero), rather than the prior entry's route through thomae =ᵐ 0? Answers yes: this file reproves that Thomae's function is continuous at every irrational (only finitely many bounded-denominator rationals lie near any irrational, and they sit a positive distance away), so the discontinuity set is contained in the countable rationals, hence Lebesgue-null, hence Thomae's function is continuous almost everywhere — exactly Lebesgue's criterion — and packages this with the integral value ∫ = 0 on the line and on [0,1]. The continuity argument is reproved self-contained rather than imported, since the existing gallery file carrying it had bit-rotted against current Mathlib API.",
+      "mathContext": "$\\{x : \\neg\\,\\mathrm{ContinuousAt}\\ \\mathrm{thomae}\\ x\\} \\subseteq \\mathrm{range}(\\mathbb{Q}\\to\\mathbb{R})$, countable hence null, so Thomae's function is continuous a.e. — Lebesgue's criterion for Riemann integrability, with $\\int \\mathrm{thomae} = 0$."
+    },
+    {
       "id": "definition",
       "title": "Thomae's Function: Definition and Values",
       "startLine": 51,
