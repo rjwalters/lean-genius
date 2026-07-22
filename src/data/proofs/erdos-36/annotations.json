@@ -97,12 +97,12 @@
     "proofId": "erdos-36",
     "range": {
       "startLine": 88,
-      "endLine": 122
+      "endLine": 136
     },
     "type": "insight",
     "title": "Lower Bounds: Erdős (1/4), Scherk (0.293), White (0.379)",
-    "content": "Three historical lower bounds. `white_lower` (White 2022, axiomatized) is the strongest: $M(N)/N > 0.379005$, obtained via Fourier analysis and convex optimization. The classical bounds are then derived *as corollaries* of it in-file: `erdos_lower_quarter` ($>1/4$, Erdős 1955) by $0.379>0.25$, and `scherk_lower` ($>1-1/\\sqrt2\\approx0.293$, Scherk 1955) via the elementary estimate $\\sqrt2<3/2 \\Rightarrow 1/\\sqrt2>2/3$. So only White's bound is axiomatized; the older two become real Lean proofs.",
-    "mathContext": "$1-\\tfrac{1}{\\sqrt2}\\approx 0.293 < \\tfrac14$? No — $0.293>0.25$; both are dominated by White's $0.379005$. The Scherk derivation uses $\\sqrt2<3/2$, i.e. $2<9/4$.",
+    "content": "Three historical lower bounds, with three distinct logical statuses. `white_lower` (White 2022, axiomatized) is the strongest: $M(N)/N > 0.379005$, obtained via Fourier analysis and convex optimization — but it is stated *asymptotically* (`∃ N₀, ∀ N ≥ N₀`), the honest form, since the analytic argument only controls the tail. `scherk_lower` ($>1-1/\\sqrt2\\approx0.293$, Scherk 1955) is derived in-file as an *asymptotic corollary* of White's, via the elementary estimate $\\sqrt2<3/2 \\Rightarrow 1/\\sqrt2>2/3$ (so $1-1/\\sqrt2 < 1/3 < 0.379005$). Erdős's classical $>1/4$ bound (`erdos_lower_quarter`) is *not* a corollary of White's — it is proved uniformly for all $N\\ge1$ and axiom-free by pigeonhole in Part VIII. So White's is the sole axiomatized lower bound; Scherk's is a derived (asymptotic) corollary; Erdős's is fully elementary.",
+    "mathContext": "$\\tfrac14 = 0.25 < 1-\\tfrac{1}{\\sqrt2}\\approx 0.293 < 0.379005 < c$. The Scherk derivation uses $\\sqrt2<3/2$ (i.e. $2<9/4$). White's and Haugland's bounds are asymptotic ($\\exists N_0$); Erdős's is uniform in $N$.",
     "significance": "key",
     "relatedConcepts": [
       "Fourier analysis",
@@ -120,13 +120,13 @@
     "id": "ann-e36-upper-bound",
     "proofId": "erdos-36",
     "range": {
-      "startLine": 124,
-      "endLine": 128
+      "startLine": 100,
+      "endLine": 110
     },
     "type": "warning",
     "title": "Upper Bound: Haugland (2016) → TTT-Discover (2026)",
-    "content": "`upper_bound` axiomatizes the best known upper bound $M(N)/N < 0.380876$. Haugland (2016) obtained $<0.380926$ via step-function constructions; TTT-Discover (2026) refined it to $0.380876$. Together with `white_lower` this traps $c$ in the narrow window $(0.379005, 0.380876)$ — a gap of about $0.0019$.",
-    "mathContext": "$M(N)/N < 0.380876$. Combined with the White lower bound: $0.379005 < c < 0.380876$.",
+    "content": "`upper_bound` axiomatizes the best known upper bound $M(N)/N < 0.380876$. Haugland (2016) obtained $<0.380926$ via step-function constructions; TTT-Discover (2026) refined it to $0.380876$. Crucially it is stated *asymptotically* (`∃ N₀, ∀ N ≥ N₀`): a universal `∀ N ≥ 1` form would be **inconsistent**, since the file proves $M(1)=1$, giving $1 < 0.380876 = $ False. As an asymptotic statement it is exactly what step-function constructions establish. Together with `white_lower` this traps $c$ in the narrow window $(0.379005, 0.380876)$ — a gap of about $0.0019$.",
+    "mathContext": "$M(N)/N < 0.380876$ for large $N$. Combined with the White lower bound: $0.379005 < c < 0.380876$. (A universal $\\forall N\\ge1$ form is false at $N=1$.)",
     "significance": "supporting",
     "relatedConcepts": [
       "step functions",
@@ -188,13 +188,13 @@
     "id": "ann-e36-constant-bounds",
     "proofId": "erdos-36",
     "range": {
-      "startLine": 164,
-      "endLine": 190
+      "startLine": 178,
+      "endLine": 205
     },
     "type": "theorem",
     "title": "Sandwiching the Asymptotic Constant",
-    "content": "`constant_bounds` proves that any limit $c$ of $M(N)/N$ must satisfy $0.379005 \\le c \\le 0.380876$. The argument is a clean ε-chase: if $c$ violated either bound, choosing $\\varepsilon$ as the gap and evaluating the convergence at a large $N$ contradicts `white_lower` / `upper_bound`. This turns the per-$N$ axiomatized bounds into a statement about the limit itself.",
-    "mathContext": "$M(N)/N\\to c \\Rightarrow 379005/10^6 \\le c \\le 380876/10^6$. Proof: $\\varepsilon$-$N_0$ definition of limit + the two bound axioms at $N_0+1$.",
+    "content": "`constant_bounds` proves that any limit $c$ of $M(N)/N$ must satisfy $0.379005 \\le c \\le 0.380876$. The argument is a clean ε-chase: if $c$ violated either bound, choose $\\varepsilon$ as the gap, obtain the convergence threshold $N_c$, obtain the axiom's own asymptotic threshold $N_*$ from `white_lower` / `upper_bound`, and evaluate both at the common point $\\max(N_c, N_*)+1$ to derive a contradiction. This is exactly why the axiomatized bounds are asymptotic — they only need to hold past *some* threshold to pin the limit, and the ε-chase supplies a large enough $N$.",
+    "mathContext": "$M(N)/N\\to c \\Rightarrow 379005/10^6 \\le c \\le 380876/10^6$. Proof: $\\varepsilon$-$N_0$ limit definition + the two asymptotic bound axioms evaluated at $\\max(N_c,N_*)+1$.",
     "significance": "key",
     "relatedConcepts": [
       "limit bounds",
@@ -283,12 +283,12 @@
     "id": "ann-e36-trivial-bound",
     "proofId": "erdos-36",
     "range": {
-      "startLine": 354,
-      "endLine": 380
+      "startLine": 369,
+      "endLine": 404
     },
     "type": "theorem",
     "title": "Axiom-Free Lower Bound c ≥ 1/4",
-    "content": "`trivial_lower_bound` is the entry's headline machine-verified result: $M(N)/N > 1/4$ for all $N\\ge1$, proved *purely by pigeonhole counting with zero axioms*. From $(4N-1)M(N)\\ge N^2$ and the strict gap $4N-1<4N$, it follows that $M(N) > N/4$. This recovers Erdős's 1955 bound without invoking the axiomatized `white_lower`, so $c \\ge 1/4$ is established unconditionally inside Lean.",
+    "content": "`trivial_lower_bound` is the entry's headline machine-verified result: $M(N)/N > 1/4$ for all $N\\ge1$, proved *purely by pigeonhole counting with zero axioms*. From $(4N-1)M(N)\\ge N^2$ and the strict gap $4N-1<4N$, it follows that $M(N) > N/4$. This recovers Erdős's 1955 bound without invoking the axiomatized `white_lower` — and the historical restatement `erdos_lower_quarter` is defined immediately after it as a one-line corollary. So $c \\ge 1/4$ is established unconditionally, uniformly in $N$, inside Lean.",
     "mathContext": "$(4N-1)\\,M(N)\\ge N^2$ and $4N-1<4N$ give $M(N) > N/4$, i.e. $M(N)/N > 1/4$ — axiom-free.",
     "significance": "key",
     "relatedConcepts": [
