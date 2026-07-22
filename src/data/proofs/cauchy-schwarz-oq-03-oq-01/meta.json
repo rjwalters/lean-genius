@@ -81,6 +81,7 @@
     "definitionCount": 1
   },
   "sections": [
+      {"id": "header", "title": "Header: H\u00f6lder's Inequality Equality Case", "startLine": 1, "endLine": 25, "summary": "Formalizes when equality holds in H\u00f6lder's/Cauchy-Schwarz inequality: for the p=q=2 finite-sum case via Lagrange's identity (the double sum of squared cross-terms \u2211\u1d62\u2c7c(f\u1d62g\u2c7c\u2212f\u2c7cg\u1d62)\u00b2 vanishes iff all cross-terms vanish), and for the abstract inner-product-space case via Mathlib's norm_inner_eq_norm_iff (equality iff u,v are proportional).", "mathContext": "Lagrange's identity $\\left(\\sum f_ig_i\\right)^2 = \\left(\\sum f_i^2\\right)\\left(\\sum g_i^2\\right) - \\sum_{i<j}(f_ig_j-f_jg_i)^2$ makes the Cauchy\u2013Schwarz equality case (all cross-terms $f_ig_j-f_jg_i$ vanish, i.e. $f,g$ proportional) transparent."},
     {
       "id": "lagrange-identity",
       "title": "Lagrange Identity",
