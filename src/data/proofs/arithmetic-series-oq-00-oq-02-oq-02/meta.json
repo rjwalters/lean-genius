@@ -65,6 +65,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: A Uniform Recurrence Generating Every Faulhaber Closed Form", "startLine": 1, "endLine": 41, "summary": "Answers the open question (arithmetic-series-oq-00-oq-02) of whether the Nicomachus identity generalizes to power sums via a single pattern: the recurrence (★) ∑_{j=0}^{p} C(p+1,j)·S_j(n) = n^{p+1}, solved for its top term to give the standard descent determining S_p from S_0,...,S_{p-1}. The proof is elementary and Bernoulli-free, from the telescoping identity ∑((k+1)^{p+1}−k^{p+1}) = n^{p+1} plus binomial expansion.", "mathContext": "$\\sum_{j=0}^{p}\\binom{p+1}{j}S_j(n)=n^{p+1}$ $(\\star)$, solved for its top term: $(p+1)S_p(n)=n^{p+1}-\\sum_{j<p}\\binom{p+1}{j}S_j(n)$ — the uniform recurrence generating each Faulhaber closed form from the lower ones, proved via telescoping plus binomial expansion."},
     {
       "id": "definition",
       "title": "I. The Power Sum S(p,n)",
