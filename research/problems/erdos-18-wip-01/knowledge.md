@@ -284,3 +284,31 @@ Vose's deep hErdos(n!)≪√log(n!) (still out of reach).
 
 NEXT: exact hErdos on other extremal families, hErdos lower bounds via prime
 factorisation, or the deep Vose bound (blocked at elementary layer).
+
+## 2026-07-22 (researcher-1) — UPPER-HALF GAP: hErdos m = 1 iff m = 2; hErdos 6 = 2, hErdos 12 = 3
+
+Shipped the upper-half divisor gap and the first exact composite values of the
+corrected index into `Erdos18WIP01.lean` (0-axiom, host-verified v4.31):
+- `two_mul_le_of_dvd_of_lt`: proper divisor d < m has 2d ≤ m — **no divisor of m
+  lies strictly in (m/2, m)**.
+- `two_le_card_of_sum_upper_half` / `two_le_repLength_of_upper_half`: any k with
+  m < 2k, k < m needs ≥ 2 divisors (k ≠ 0 and k is not itself a divisor).
+- `two_le_hErdos`: practical m ≥ 3 ⟹ hErdos m ≥ 2 (take k = m−1).
+- `hErdos_one` (=0), `hErdos_two` (=1), `hErdos_eq_one_iff`: **hErdos m = 1 ↔ m = 2**
+  over practical m — small values fully pinned.
+- `hErdos_six = 2`: first exact value at a non-power-of-two. Upper: 6 explicit
+  minimum reps via new `repLength_le_of_witness` (4=1+3, 5=2+3, each `by decide`
+  side conditions). Lower: k=5 in the gap (3,6).
+- `hErdos_twelve = 3`: **subadditivity hErdos(2·6) ≤ hErdos 2 + hErdos 6 is TIGHT**.
+  Lower via `three_le_card_of_sum_eleven` — kernel `decide` over the 64 subsets of
+  divisors 12 (largest 2-divisor sum below 12 is 4+6=10); `twelve_practical` by decide.
+  Counting bound `lt_hErdos_of_pow_lt` only gives ≥ 2 here — gap argument strictly sharper.
+
+Idioms: after `rcases c with _ | _ | c` state helper products as `d * (c + 1 + 1)`
+(NOT `d * (c + 2)`) or omega sees distinct atoms; `le_csInf` still needs
+`unfold repLength` first; witness bounds compose as
+`(repLength_le_of_witness (T := {2,3}) (by decide) (by decide)).trans (by decide)`.
+
+NEXT: exact hErdos on 2^a·3 family or hErdos 24/30; a general lower-bound engine
+(iterating the gap argument below m/2?); or the deep Vose hErdos(n!) < n^{o(1)}
+(still blocked at elementary layer).

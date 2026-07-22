@@ -1859,5 +1859,188 @@ def conjecture_part1_erdos : Prop :=
     Set.Infinite { m : ℕ | IsPractical m ∧
       (hErdos m : ℝ) < (Real.log (Real.log m)) ^ C }
 
+/- ## The upper-half divisor gap: `hErdos m = 1` exactly at `m = 2`, and the
+first composite exact values
+
+No divisor of `m` lies strictly between `m/2` and `m`: a proper divisor `d < m`
+has cofactor at least `2`, so `2d ≤ m`. Hence any target `k` with `m < 2k` and
+`k < m` is not itself a divisor, and every distinct-divisor representation of it
+needs at least **two** divisors. Taking `k = m − 1` (for `m ≥ 3`) pins
+`hErdos m ≥ 2`, so the corrected index equals `1` exactly at `m = 2`
+(`hErdos_eq_one_iff`) — the complete list of small values starts
+`hErdos 1 = 0`, `hErdos 2 = 1`, and `≥ 2` from then on.
+
+The same gap argument yields the first exact values beyond the extremal powers
+of two (`hErdos_two_pow`):
+
+* `hErdos 6 = 2` — the first practical number that is not a power of two. Upper
+  bound: six explicit minimum representations (`4 = 1+3`, `5 = 2+3`). Lower
+  bound: `k = 5` lies in the gap `(3, 6)`.
+* `hErdos 12 = 3` — the subadditivity `hErdos(2·6) ≤ hErdos 2 + hErdos 6` is
+  **tight** here: `k = 11` genuinely needs three divisors (`11 = 1 + 4 + 6`;
+  the largest two-divisor sum below `12` is `4 + 6 = 10`), confirmed by a finite
+  kernel check over the 64 subsets of `divisors 12`. Note the counting bound
+  `lt_hErdos_of_pow_lt` gives only `hErdos 12 ≥ 2` (`(d(12)+1)^1 = 7 < 12 ≤ 49`),
+  so the combinatorial gap argument is strictly sharper here. -/
+
+/-- Any witness set bounds `repLength`: if `T ⊆ divisors m` sums to `k`, then
+`repLength m k ≤ |T|`. -/
+theorem repLength_le_of_witness {m k : ℕ} {T : Finset ℕ} (hsub : T ⊆ divisors m)
+    (hsum : T.sum id = k) : repLength m k ≤ T.card :=
+  Nat.sInf_le ⟨T, hsub, rfl, hsum⟩
+
+/-- **No divisor in the upper half**: a proper divisor `d < m` satisfies
+`2d ≤ m` — its cofactor is at least `2`. -/
+theorem two_mul_le_of_dvd_of_lt {d m : ℕ} (hdvd : d ∣ m) (hlt : d < m) :
+    2 * d ≤ m := by
+  obtain ⟨c, rfl⟩ := hdvd
+  rcases c with _ | _ | c
+  · omega
+  · omega
+  · have h2 : d * 2 ≤ d * (c + 1 + 1) := Nat.mul_le_mul (le_refl d) (by omega)
+    omega
+
+/-- **Two divisors are needed in the upper half**: if `T ⊆ divisors m` sums to
+`k` with `m < 2k` and `k < m`, then `|T| ≥ 2`. Indeed `k ≥ 1` (so `T ≠ ∅`), and
+a singleton `{d}` would make `k = d` a divisor lying in the forbidden interval
+`(m/2, m)` (`two_mul_le_of_dvd_of_lt`). -/
+theorem two_le_card_of_sum_upper_half {m k : ℕ} {T : Finset ℕ}
+    (hsub : T ⊆ divisors m) (hsum : T.sum id = k) (hk2 : m < 2 * k)
+    (hkm : k < m) : 2 ≤ T.card := by
+  by_contra hlt
+  rw [not_le] at hlt
+  rcases Finset.eq_empty_or_nonempty T with rfl | hne
+  · rw [Finset.sum_empty] at hsum
+    omega
+  · have hcard1 : T.card = 1 := by
+      have hpos := Finset.card_pos.mpr hne
+      omega
+    obtain ⟨d, rfl⟩ := Finset.card_eq_one.mp hcard1
+    rw [Finset.sum_singleton, id_eq] at hsum
+    subst hsum
+    have hdvd : d ∣ m :=
+      (Nat.mem_divisors.mp (hsub (Finset.mem_singleton_self d))).1
+    have hhalf := two_mul_le_of_dvd_of_lt hdvd hkm
+    omega
+
+/-- **Lower bound from the upper-half gap**: for practical `m`, any target in
+the open upper half (`m < 2k`, `k < m`) has `repLength m k ≥ 2`. -/
+theorem two_le_repLength_of_upper_half {m k : ℕ} (hm : IsPractical m)
+    (hk2 : m < 2 * k) (hkm : k < m) : 2 ≤ repLength m k := by
+  unfold repLength
+  apply le_csInf
+  · obtain ⟨T, hTsub, hTsum⟩ := hm.2 k (by omega) hkm
+    exact ⟨T.card, T, hTsub, rfl, hTsum⟩
+  · rintro t ⟨T, hTsub, rfl, hTsum⟩
+    exact two_le_card_of_sum_upper_half hTsub hTsum hk2 hkm
+
+/-- **`hErdos m ≥ 2` for practical `m ≥ 3`**: the value `k = m − 1` lies in the
+upper-half gap. Together with `one_le_hErdos` this pins all small values of the
+corrected index. -/
+theorem two_le_hErdos {m : ℕ} (hm : IsPractical m) (hm3 : 3 ≤ m) :
+    2 ≤ hErdos m := by
+  have h1 : 2 ≤ repLength m (m - 1) :=
+    two_le_repLength_of_upper_half hm (by omega) (by omega)
+  calc 2 ≤ repLength m (m - 1) := h1
+    _ ≤ hErdos m := by
+        unfold hErdos
+        exact Finset.le_sup (Finset.mem_range.mpr (by omega))
+
+/-- `hErdos 1 = 0`: the only value to cover is `k = 0`, handled by `∅`. -/
+theorem hErdos_one : hErdos 1 = 0 := by
+  unfold hErdos
+  simp [Finset.range_one, repLength_zero]
+
+/-- `hErdos 2 = 1` — the power-of-two formula at `k = 1`. -/
+theorem hErdos_two : hErdos 2 = 1 := by
+  have h := hErdos_two_pow 1
+  norm_num at h
+  exact h
+
+/-- **`hErdos m = 1` exactly at `m = 2`** (over practical `m`): `m = 1` gives
+index `0`, and every practical `m ≥ 3` needs two divisors somewhere
+(`two_le_hErdos`). -/
+theorem hErdos_eq_one_iff {m : ℕ} (hm : IsPractical m) :
+    hErdos m = 1 ↔ m = 2 := by
+  constructor
+  · intro h1
+    by_contra hne
+    have hm1 : 1 ≤ m := hm.1
+    rcases Nat.lt_or_ge m 3 with hlt | hge
+    · interval_cases m
+      · rw [hErdos_one] at h1
+        omega
+      · exact hne rfl
+    · have h2 := two_le_hErdos hm hge
+      omega
+  · rintro rfl
+    exact hErdos_two
+
+/-- **`hErdos 6 = 2`** — the first exact value of the corrected index at a
+practical number that is not a power of two. Upper bound: every `k < 6` has a
+representation by at most two divisors of `6` (`4 = 1+3`, `5 = 2+3`). Lower
+bound: `k = 5` lies in the upper-half gap `(3, 6)`. -/
+theorem hErdos_six : hErdos 6 = 2 := by
+  refine le_antisymm ?_ ?_
+  · unfold hErdos
+    apply Finset.sup_le
+    intro k hk
+    rw [Finset.mem_range] at hk
+    interval_cases k
+    · rw [repLength_zero]
+      omega
+    · exact (repLength_le_of_witness (T := {1}) (by decide) (by decide)).trans
+        (by decide)
+    · exact (repLength_le_of_witness (T := {2}) (by decide) (by decide)).trans
+        (by decide)
+    · exact (repLength_le_of_witness (T := {3}) (by decide) (by decide)).trans
+        (by decide)
+    · exact (repLength_le_of_witness (T := {1, 3}) (by decide) (by decide)).trans
+        (by decide)
+    · exact (repLength_le_of_witness (T := {2, 3}) (by decide) (by decide)).trans
+        (by decide)
+  · calc 2 ≤ repLength 6 5 :=
+          two_le_repLength_of_upper_half six_practical (by omega) (by omega)
+      _ ≤ hErdos 6 := by
+          unfold hErdos
+          exact Finset.le_sup (Finset.mem_range.mpr (by omega))
+
+/-- `12` is practical — via the decision procedure. -/
+theorem twelve_practical : IsPractical 12 := by decide
+
+/-- **Kernel check**: every subset of `divisors 12 = {1,2,3,4,6,12}` summing to
+`11` has at least three elements — the largest two-divisor sum below `12` is
+`4 + 6 = 10`. A finite `decide` over the 64 subsets. -/
+theorem three_le_card_of_sum_eleven :
+    ∀ T ∈ (divisors 12).powerset, T.sum id = 11 → 3 ≤ T.card := by decide
+
+/-- `repLength 12 11 ≥ 3`: the target `11` genuinely needs three divisors. -/
+theorem three_le_repLength_twelve_eleven : 3 ≤ repLength 12 11 := by
+  unfold repLength
+  apply le_csInf
+  · obtain ⟨T, hTsub, hTsum⟩ := twelve_practical.2 11 (by omega) (by omega)
+    exact ⟨T.card, T, hTsub, rfl, hTsum⟩
+  · rintro t ⟨T, hTsub, rfl, hTsum⟩
+    exact three_le_card_of_sum_eleven T (Finset.mem_powerset.mpr hTsub) hTsum
+
+/-- **`hErdos 12 = 3`: subadditivity is tight.** Upper bound:
+`hErdos(2·6) ≤ hErdos 2 + hErdos 6 = 1 + 2` (`hErdos_mul_le`). Lower bound:
+`k = 11` needs three divisors (`three_le_repLength_twelve_eleven`). The counting
+bound `lt_hErdos_of_pow_lt` gives only `hErdos 12 ≥ 2` here, so the tight value
+comes from the combinatorial check, and the subadditive upper bound is attained
+with equality at the factorisation `12 = 2 · 6`. -/
+theorem hErdos_twelve : hErdos 12 = 3 := by
+  refine le_antisymm ?_ ?_
+  · have h : hErdos (2 * 6) ≤ hErdos 2 + hErdos 6 :=
+      hErdos_mul_le two_practical six_practical
+    rw [hErdos_two, hErdos_six] at h
+    calc hErdos 12 = hErdos (2 * 6) := by norm_num
+      _ ≤ 1 + 2 := h
+      _ = 3 := by norm_num
+  · calc 3 ≤ repLength 12 11 := three_le_repLength_twelve_eleven
+      _ ≤ hErdos 12 := by
+          unfold hErdos
+          exact Finset.le_sup (Finset.mem_range.mpr (by omega))
+
 end Erdos18
 
