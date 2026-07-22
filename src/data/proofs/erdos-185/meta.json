@@ -66,7 +66,7 @@
       "Arithmetic progressions and additive combinatorics"
     ],
     "lineCount": 1104,
-    "assumptions": "2 axioms: density_hales_jewett_k3, meshulam_upper_bound. 0 sorries.",
+    "assumptions": "2 axioms: density_hales_jewett_k3, meshulam_upper_bound. 0 sorries. Trust caveat: the finite-configuration lemmas (capSet4_card, capSet9_card, capSet9_no_collinear, capSet20_card, capSet20_no_collinear, binaryCube3_card, ag23_line_or_small) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom; these are finite demonstrations, while the headline density/upper-bound results rest on the two stated axioms and stay kernel-checked.",
     "theoremCount": 73,
     "definitionCount": 31
   },
