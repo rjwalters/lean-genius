@@ -727,3 +727,26 @@ theorem exists_isRatFractionRepr_controlled_undershoot (N : ℕ) (hN : 1 ≤ N) 
   · intro n hn
     rw [Finset.mem_Ico] at hn
     omega
+
+/-- **Two-sided bracket of `1` with denominators `> N` and vanishing width.**
+Combining `exists_isRatFractionRepr_controlled_undershoot` (a representation of some
+`q₋ < 1`) and `exists_isRatFractionRepr_controlled_overshoot` (a representation of some
+`q₊ ≥ 1`), both using only denominators exceeding `N`, sandwiches `1` between two
+representable rationals whose gap is `< 2/(N+1)`.  As `N → ∞` the bracket collapses onto
+`1`, so `1` is approximated arbitrarily well from both sides by unit-fraction sums with
+arbitrarily large denominators.  This is the exact setup an *exact* landing on `1`
+(denominators `> N`) would refine — closing the residual `[q₋, q₊]` collision-free is the
+bounded-rational Diophantine subset-sum that remains open. -/
+theorem exists_isRatFractionRepr_bracket_one (N : ℕ) (hN : 1 ≤ N) :
+    ∃ (Slo Shi : Finset ℕ) (qlo qhi : ℚ),
+      IsRatFractionRepr Slo qlo ∧ IsRatFractionRepr Shi qhi ∧
+      (∀ n ∈ Slo, N < n) ∧ (∀ n ∈ Shi, N < n) ∧
+      qlo < 1 ∧ 1 ≤ qhi ∧ qhi - qlo < 2 / ((N : ℚ) + 1) := by
+  obtain ⟨Shi, qhi, hHiRepr, hHiGe, hHiLt, hHiMin⟩ :=
+    exists_isRatFractionRepr_controlled_overshoot N hN
+  obtain ⟨Slo, qlo, hLoRepr, hLoGe, hLoLt, hLoMin⟩ :=
+    exists_isRatFractionRepr_controlled_undershoot N hN
+  refine ⟨Slo, Shi, qlo, qhi, hLoRepr, hHiRepr, hLoMin, hHiMin, hLoLt, hHiGe, ?_⟩
+  have hwidth : (2 : ℚ) / ((N : ℚ) + 1) = 1 / ((N : ℚ) + 1) + 1 / ((N : ℚ) + 1) := by
+    ring
+  linarith [hHiLt, hLoGe, hwidth]
