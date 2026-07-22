@@ -18,6 +18,14 @@
   * `sidonNumber_le_sqrt`   : h(N) = sidonNumber N ≤ ⌊√(2N)⌋ + 1.
   * `sidonNumber_le_real`   : (h(N) : ℝ) ≤ √(2N) + 1  — the √N shape of Erdős–Turán.
 
+  Structural theory of the Sidon predicate (no Mathlib Sidon API; all axiom-free):
+
+  * `isSidonSet_subset`     : Sidon-ness is hereditary (subsets of Sidon are Sidon).
+  * `isSidonSet_image_add`  : Sidon-ness is translation-invariant (`A ↦ A + t`).
+  * `one_le_sidonNumber`    : `1 ≤ h(N)` (the singleton `{0}` is Sidon), bracketing
+                              `1 ≤ h(N) ≤ √(2N) + 1` with the bound above.
+  * `sidonNumber_mono`      : `N ≤ M ⟹ h(N) ≤ h(M)` — `h` is monotone in the range.
+
   The mechanism: for a Sidon set the differences a − b (a ≠ b) are all distinct
   (a − b = c − d rewrites to a + d = c + b, and the Sidon property forces the
   pair to match), and they are nonzero integers in [−N, N], of which there are
@@ -138,5 +146,66 @@ theorem sidonNumber_le_real (N : ℕ) :
   calc (sidonNumber N : ℝ) ≤ ((Nat.sqrt (2 * N) + 1 : ℕ) : ℝ) := by exact_mod_cast h
     _ = (Nat.sqrt (2 * N) : ℝ) + 1 := by push_cast; ring
     _ ≤ Real.sqrt (2 * N) + 1 := by linarith [hnr]
+
+/- ## Structural theory of Sidon sets
+
+The counting bound above pins the *size* of a Sidon set; these are the elementary
+closure/structure facts of the Sidon predicate itself (absent from Mathlib, which
+has no `B₂`/Sidon API).  They are the natural companions of the Erdős–Turán bound:
+Sidon-ness is hereditary and translation-invariant, and the Sidon number `h(N)` is
+monotone in `N` and bounded *below* by `1` — so together with `sidonNumber_le_real`
+the Sidon number is bracketed `1 ≤ h(N) ≤ √(2N) + 1`. -/
+
+/-- **Sidon-ness is hereditary.**  Every subset of a Sidon set is Sidon: the
+    distinct-sums condition on `A` restricts verbatim to any `B ⊆ A`, since all four
+    witnesses `a,b,c,d ∈ B` are then in `A`. -/
+theorem isSidonSet_subset {A B : Finset ℕ} (hBA : B ⊆ A) (hA : IsSidonSet A) :
+    IsSidonSet B :=
+  fun a b c d ha hb hc hd => hA a b c d (hBA ha) (hBA hb) (hBA hc) (hBA hd)
+
+/-- **Sidon-ness is translation-invariant.**  Translating a Sidon set by a constant
+    `t` (`A ↦ {a + t : a ∈ A}`) keeps it Sidon: a sum collision
+    `(a+t)+(b+t) = (c+t)+(d+t)` cancels the `4t` to `a+b = c+d`, which the Sidon
+    property of `A` resolves.  So the Sidon condition depends only on the *difference
+    structure* of `A`, not its position. -/
+theorem isSidonSet_image_add {A : Finset ℕ} (hA : IsSidonSet A) (t : ℕ) :
+    IsSidonSet (A.image (· + t)) := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_image] at ha hb hc hd
+  obtain ⟨a', ha', rfl⟩ := ha
+  obtain ⟨b', hb', rfl⟩ := hb
+  obtain ⟨c', hc', rfl⟩ := hc
+  obtain ⟨d', hd', rfl⟩ := hd
+  obtain ⟨h1, h2⟩ := hA a' b' c' d' ha' hb' hc' hd' (by omega) (by omega) (by omega)
+  exact ⟨by omega, by omega⟩
+
+/-- **The Sidon number is at least `1`.**  The singleton `{0}` is a Sidon subset of
+    `{0,…,N}`, so `h(N) = sidonNumber N ≥ 1`.  Combined with `sidonNumber_le_real`
+    this brackets `1 ≤ h(N) ≤ √(2N) + 1`. -/
+theorem one_le_sidonNumber (N : ℕ) : 1 ≤ sidonNumber N := by
+  unfold sidonNumber
+  have hmem : ({0} : Finset ℕ) ∈
+      (Finset.range (N + 1)).powerset.filter IsSidonSet := by
+    simp only [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_⟩
+    · intro x hx
+      simp only [Finset.mem_singleton] at hx
+      subst hx; simp
+    · intro a b c d ha hb hc hd _ _ _
+      simp only [Finset.mem_singleton] at ha hb hc hd
+      subst ha; subst hb; subst hc; subst hd
+      exact ⟨rfl, rfl⟩
+  calc (1 : ℕ) = ({0} : Finset ℕ).card := by simp
+    _ ≤ _ := Finset.le_sup hmem
+
+/-- **The Sidon number is monotone in the range.**  `N ≤ M ⟹ h(N) ≤ h(M)`: every
+    Sidon subset of `{0,…,N}` is a Sidon subset of the larger `{0,…,M}`, so the
+    supremum of Sidon-set sizes can only grow. -/
+theorem sidonNumber_mono {N M : ℕ} (h : N ≤ M) : sidonNumber N ≤ sidonNumber M := by
+  unfold sidonNumber
+  apply Finset.sup_mono
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.range_subset.mpr (by omega)), hA.2⟩
 
 end Erdos30
