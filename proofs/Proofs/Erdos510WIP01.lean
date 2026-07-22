@@ -24,10 +24,17 @@ infimum is fully provable from Mathlib.  This file establishes:
 * the exact value `minCosineSum {n} = −1` for `n ≥ 1`;
 * the alternating-sum bound `minCosineSum A ≤ ∑_{n ∈ A} (−1)ⁿ` (evaluation at
   `θ = π`), and the **sharp** all-odd case `minCosineSum A = −A.card` when every
-  `n ∈ A` is odd — an explicit infinite family attaining the extreme `−N`.
+  `n ∈ A` is odd — an explicit infinite family attaining the extreme `−N`;
+* **Chowla's `√N` bound for sum-free sets**: the third moment
+  `∫₀^{2π} (cosineSum A)³` vanishes when `A` is sum-free (triple-product
+  orthogonality), and a moment bootstrap then gives
+  `minCosineSum A ≤ −√(N/2)` — the conjectured `√N` growth rate with explicit
+  constant `1/√2`, on the sum-free subclass.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
-`−c√N` lower bound — is untouched (it is the mission, not the scaffolding).
+`−c√N` lower bound for *general* sets (those with additive structure, where
+the third moment is large) — is untouched (it is the mission, not the
+scaffolding).
 
 Reference: <https://erdosproblems.com/510>
 -/
@@ -512,5 +519,212 @@ theorem minCosineSum_dilate {d : ℕ} (hd : d ≠ 0) :
   show sInf (Set.range (cosineSum (A.image (fun n => d * n))))
       = sInf (Set.range (cosineSum A))
   rw [hrange]
+
+/-! ## The third moment and Chowla's `√N` bound for sum-free sets
+
+For a **sum-free** frequency set (`a, b ∈ A → a + b ∉ A`), the third moment
+`∫₀^{2π} (cosineSum A)³` vanishes: expanding the cube, each triple product
+`cos(aθ)cos(bθ)cos(cθ)` splits into four cosines at the signed frequencies
+`±a±b±c`, and sum-freeness makes every one of them nonzero, so each integrates
+to `0` over a period.  Combining the three moments `∫f = 0`, `∫f² = πN`,
+`∫f³ = 0` with the pointwise bound `f ≥ m := minCosineSum A` via the
+Cauchy–Schwarz-type inequality `∫ (f−m)·((−2m)(f−m) − (N+2m²))² ≥ 0`
+(the nonnegative integrand `u·(αu−β)²` with the optimal linear factor, scaled
+to clear denominators) yields `m² ≥ N/2`, i.e.
+
+    `minCosineSum A ≤ −√(N/2)`.
+
+This is the conjectured `−c√N` **growth rate** of Chowla's problem (with the
+explicit constant `c = 1/√2`), established here for the *sum-free subclass* —
+e.g. every "top half" interval `{N+1, …, 2N}`.  The general conjecture is NOT
+touched: sets with additive structure (where the third moment is large and
+positive) are exactly the hard case, and remain the open mission. -/
+
+/-- **Triple-product orthogonality.**  If none of the three additive relations
+`a + b = c`, `a + c = b`, `b + c = a` holds, the triple product
+`cos(aθ)cos(bθ)cos(cθ)` integrates to `0` over a full period: product-to-sum
+splits it into four cosines at the signed integer frequencies `a+b+c`, `a+b−c`,
+`a−b+c`, `a−b−c`, each nonzero under the hypotheses (the first is zero only if
+`a = b = c = 0`, which already violates `a + b ≠ c`). -/
+theorem integral_cos_mul_cos_mul_cos_eq_zero {a b c : ℕ}
+    (h1 : a + b ≠ c) (h2 : a + c ≠ b) (h3 : b + c ≠ a) :
+    (∫ θ in (0 : ℝ)..(2 * π),
+      Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ)) = 0 := by
+  have hk1 : ((a : ℤ) + b + c) ≠ 0 := by omega
+  have hk2 : ((a : ℤ) + b - c) ≠ 0 := by omega
+  have hk3 : ((a : ℤ) - b + c) ≠ 0 := by omega
+  have hk4 : ((a : ℤ) - b - c) ≠ 0 := by omega
+  -- product-to-sum, as a function equality
+  have hfun : (fun θ : ℝ =>
+        Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ))
+      = fun θ => ((1 / 4) * Real.cos ((((a : ℤ) + b + c : ℤ) : ℝ) * θ)
+          + (1 / 4) * Real.cos ((((a : ℤ) + b - c : ℤ) : ℝ) * θ))
+          + ((1 / 4) * Real.cos ((((a : ℤ) - b + c : ℤ) : ℝ) * θ)
+          + (1 / 4) * Real.cos ((((a : ℤ) - b - c : ℤ) : ℝ) * θ)) := by
+    funext θ
+    push_cast
+    have e1 : ((a : ℝ) + b + c) * θ = ((a : ℝ) * θ + (b : ℝ) * θ) + (c : ℝ) * θ := by ring
+    have e2 : ((a : ℝ) + b - c) * θ = ((a : ℝ) * θ + (b : ℝ) * θ) - (c : ℝ) * θ := by ring
+    have e3 : ((a : ℝ) - b + c) * θ = ((a : ℝ) * θ - (b : ℝ) * θ) + (c : ℝ) * θ := by ring
+    have e4 : ((a : ℝ) - b - c) * θ = ((a : ℝ) * θ - (b : ℝ) * θ) - (c : ℝ) * θ := by ring
+    rw [e1, e2, e3, e4]
+    simp only [Real.cos_add, Real.cos_sub, Real.sin_add, Real.sin_sub]
+    ring
+  have hcos : ∀ k : ℤ, IntervalIntegrable
+      (fun θ : ℝ => (1 / 4) * Real.cos ((k : ℝ) * θ)) MeasureTheory.volume 0 (2 * π) :=
+    fun k => ((Real.continuous_cos.comp
+      (continuous_const.mul continuous_id)).const_mul _).intervalIntegrable _ _
+  rw [hfun, intervalIntegral.integral_add ((hcos _).add (hcos _)) ((hcos _).add (hcos _)),
+      intervalIntegral.integral_add (hcos _) (hcos _),
+      intervalIntegral.integral_add (hcos _) (hcos _),
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+      integral_cos_int_mul_eq_zero _ hk1, integral_cos_int_mul_eq_zero _ hk2,
+      integral_cos_int_mul_eq_zero _ hk3, integral_cos_int_mul_eq_zero _ hk4]
+  ring
+
+/-- **The third moment vanishes on sum-free sets:** `∫₀^{2π} (cosineSum A)³ = 0`
+when `a, b ∈ A → a + b ∉ A`.  Expand the cube into the triple sum
+`∑_{a,b,c ∈ A} cos(aθ)cos(bθ)cos(cθ)`; sum-freeness rules out all three additive
+relations for every triple, so each term integrates to `0`
+(`integral_cos_mul_cos_mul_cos_eq_zero`).  (In general the third moment equals
+`(3π/2)·#{(a,b) ∈ A² : a + b ∈ A}`; only the vanishing case is needed here.) -/
+theorem integral_cosineSum_cube_eq_zero (A : Finset ℕ)
+    (hsf : ∀ a ∈ A, ∀ b ∈ A, a + b ∉ A) :
+    ∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 3 = 0 := by
+  have hexp : ∀ θ : ℝ, (cosineSum A θ) ^ 3
+      = ∑ a ∈ A, ∑ b ∈ A, ∑ c ∈ A,
+          Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ) := by
+    intro θ
+    have h3 : (cosineSum A θ) ^ 3 = cosineSum A θ * cosineSum A θ * cosineSum A θ := by ring
+    rw [h3]
+    simp only [cosineSum]
+    rw [Finset.sum_mul_sum, Finset.sum_mul]
+    refine Finset.sum_congr rfl (fun a _ => ?_)
+    rw [Finset.sum_mul]
+    refine Finset.sum_congr rfl (fun b _ => ?_)
+    rw [Finset.mul_sum]
+  have hcont : ∀ n : ℕ, Continuous (fun θ : ℝ => Real.cos ((n : ℝ) * θ)) :=
+    fun n => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hint3 : ∀ a b c : ℕ, IntervalIntegrable
+      (fun θ => Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    fun a b c => (((hcont a).mul (hcont b)).mul (hcont c)).intervalIntegrable _ _
+  have hint2 : ∀ a b : ℕ, IntervalIntegrable
+      (fun θ => ∑ c ∈ A,
+        Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    fun a b => (continuous_finsetSum A
+      (fun c _ => ((hcont a).mul (hcont b)).mul (hcont c))).intervalIntegrable _ _
+  have hint1 : ∀ a : ℕ, IntervalIntegrable
+      (fun θ => ∑ b ∈ A, ∑ c ∈ A,
+        Real.cos ((a : ℝ) * θ) * Real.cos ((b : ℝ) * θ) * Real.cos ((c : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    fun a => (continuous_finsetSum A (fun b _ => continuous_finsetSum A
+      (fun c _ => ((hcont a).mul (hcont b)).mul (hcont c)))).intervalIntegrable _ _
+  rw [intervalIntegral.integral_congr (fun θ _ => hexp θ),
+      intervalIntegral.integral_finsetSum (fun a _ => hint1 a)]
+  refine Finset.sum_eq_zero (fun a ha => ?_)
+  rw [intervalIntegral.integral_finsetSum (fun b _ => hint2 a b)]
+  refine Finset.sum_eq_zero (fun b hb => ?_)
+  rw [intervalIntegral.integral_finsetSum (fun c _ => hint3 a b c)]
+  refine Finset.sum_eq_zero (fun c hc => ?_)
+  exact integral_cos_mul_cos_mul_cos_eq_zero
+    (fun h => hsf a ha b hb (by rw [h]; exact hc))
+    (fun h => hsf a ha c hc (by rw [h]; exact hb))
+    (fun h => hsf b hb c hc (by rw [h]; exact ha))
+
+/-- **Chowla's `√N` bound for sum-free sets:** if `A` is nonempty and sum-free
+(`a, b ∈ A → a + b ∉ A`), then `minCosineSum A ≤ −√(N/2)` where `N = |A|`.
+Moment bootstrap: with `f = cosineSum A`, `m = minCosineSum A` the three moments
+are `∫f = 0`, `∫f² = πN`, `∫f³ = 0` (sum-freeness kills the third moment), and
+`f − m ≥ 0` pointwise, so the Cauchy–Schwarz-type integrand
+`(f−m)·((−2m)(f−m) − (N+2m²))² ≥ 0` integrates to `2πmN(N − 2m²) ≥ 0`; since
+`m < 0 < N` this forces `N ≤ 2m²`, i.e. `m ≤ −√(N/2)`.  This establishes the
+conjectured `√N` growth rate (with explicit constant `1/√2`) on the sum-free
+subclass; the general case — sets with additive structure — remains open. -/
+theorem minCosineSum_le_neg_sqrt_half_card (A : Finset ℕ) (hne : A.Nonempty)
+    (hsf : ∀ a ∈ A, ∀ b ∈ A, a + b ∉ A) :
+    minCosineSum A ≤ -Real.sqrt ((A.card : ℝ) / 2) := by
+  have hA : 0 ∉ A := by
+    intro h0
+    exact hsf 0 h0 0 h0 (by simpa using h0)
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  set N : ℝ := (A.card : ℝ) with hN
+  have hNpos : 0 < N := by rw [hN]; exact_mod_cast Finset.card_pos.mpr hne
+  have hmneg : m < 0 := minCosineSum_neg A hA hne
+  have I1 : ∫ θ in (0 : ℝ)..(2 * π), g θ = 0 := integral_cosineSum_eq_zero A hA
+  have I2 : ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 = π * N := integral_cosineSum_sq A hA
+  have I3 : ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 3 = 0 := integral_cosineSum_cube_eq_zero A hsf
+  have hlow : ∀ θ, m ≤ g θ := fun θ => minCosineSum_le A θ
+  -- The nonnegative integrand `u·(αu − β)²` with `u = f − m ≥ 0`, `α = −2m`, `β = N + 2m²`.
+  have hnonneg : 0 ≤ ∫ θ in (0 : ℝ)..(2 * π),
+      (g θ - m) * ((-2 * m) * (g θ - m) - (N + 2 * m ^ 2)) ^ 2 := by
+    apply intervalIntegral.integral_nonneg (by positivity)
+    intro θ _
+    exact mul_nonneg (by linarith [hlow θ]) (sq_nonneg _)
+  -- Evaluate that integral in closed form via the three moments.
+  have hc3 : IntervalIntegrable (fun θ => 4 * m ^ 2 * (g θ) ^ 3)
+      MeasureTheory.volume 0 (2 * π) :=
+    (((continuous_cosineSum A).pow 3).const_mul _).intervalIntegrable _ _
+  have hc2 : IntervalIntegrable (fun θ => (4 * m * N - 4 * m ^ 3) * (g θ) ^ 2)
+      MeasureTheory.volume 0 (2 * π) :=
+    (((continuous_cosineSum A).pow 2).const_mul _).intervalIntegrable _ _
+  have hc1 : IntervalIntegrable (fun θ => (N ^ 2 - 4 * N * m ^ 2) * g θ)
+      MeasureTheory.volume 0 (2 * π) :=
+    ((continuous_cosineSum A).const_mul _).intervalIntegrable _ _
+  have hcompute : (∫ θ in (0 : ℝ)..(2 * π),
+      (g θ - m) * ((-2 * m) * (g θ - m) - (N + 2 * m ^ 2)) ^ 2)
+      = 2 * π * m * N * (N - 2 * m ^ 2) := by
+    rw [intervalIntegral.integral_congr (fun θ _ => show
+          (g θ - m) * ((-2 * m) * (g θ - m) - (N + 2 * m ^ 2)) ^ 2
+            = 4 * m ^ 2 * (g θ) ^ 3 + ((4 * m * N - 4 * m ^ 3) * (g θ) ^ 2
+              + ((N ^ 2 - 4 * N * m ^ 2) * g θ + -(m * N ^ 2))) by ring),
+        intervalIntegral.integral_add hc3 (hc2.add (hc1.add intervalIntegrable_const)),
+        intervalIntegral.integral_add hc2 (hc1.add intervalIntegrable_const),
+        intervalIntegral.integral_add hc1 intervalIntegrable_const,
+        intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+        intervalIntegral.integral_const_mul, intervalIntegral.integral_const,
+        I1, I2, I3]
+    simp only [smul_eq_mul]; ring
+  rw [hcompute] at hnonneg
+  -- `0 ≤ 2πmN(N − 2m²)` with `m < 0 < N` forces `N ≤ 2m²`.
+  have hπ : 0 < π := Real.pi_pos
+  have hQ : m * (π * N) < 0 := mul_neg_of_neg_of_pos hmneg (mul_pos hπ hNpos)
+  have hkey : N ≤ 2 * m ^ 2 := by nlinarith [hnonneg, hQ]
+  -- Convert `N ≤ 2m²` into `m ≤ −√(N/2)`.
+  have habs : Real.sqrt (N / 2) ≤ -m := by
+    have h1 : Real.sqrt (N / 2) ≤ Real.sqrt ((-m) ^ 2) :=
+      Real.sqrt_le_sqrt (by nlinarith)
+    rwa [Real.sqrt_sq (by linarith : (0 : ℝ) ≤ -m)] at h1
+  linarith
+
+/-- **Existential form of the sum-free `√N` bound**, matching the shape of
+Chowla's conjecture: a nonempty sum-free set admits an angle `θ` with
+`cosineSum A θ < −(1/2)·√N` (strict, with the clean constant `c = 1/2 < 1/√2`).
+The minimizing angle (`exists_eq_minCosineSum`) realises the value
+`minCosineSum A ≤ −√(N/2)`, and `√(N/2) = √N/√2 > √N/2` for `N ≥ 1`. -/
+theorem exists_angle_cosineSum_lt_neg_half_sqrt (A : Finset ℕ) (hne : A.Nonempty)
+    (hsf : ∀ a ∈ A, ∀ b ∈ A, a + b ∉ A) :
+    ∃ θ, cosineSum A θ < -(1 / 2) * Real.sqrt (A.card : ℝ) := by
+  obtain ⟨θ₀, hθ₀⟩ := exists_eq_minCosineSum A
+  refine ⟨θ₀, ?_⟩
+  have hbound := minCosineSum_le_neg_sqrt_half_card A hne hsf
+  set N : ℝ := (A.card : ℝ) with hN
+  have hNpos : 0 < N := by rw [hN]; exact_mod_cast Finset.card_pos.mpr hne
+  -- `(1/2)·√N = √(N/4) < √(N/2)`
+  have h14 : Real.sqrt ((1 : ℝ) / 4) = 1 / 2 := by
+    rw [show ((1 : ℝ) / 4) = (1 / 2) ^ 2 by norm_num,
+        Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1 / 2)]
+  have hq : (1 / 2) * Real.sqrt N = Real.sqrt (N / 4) := by
+    rw [show (N / 4) = N * (1 / 4) by ring, Real.sqrt_mul hNpos.le, h14]
+    ring
+  have hlt : Real.sqrt (N / 4) < Real.sqrt (N / 2) :=
+    Real.sqrt_lt_sqrt (by positivity) (by linarith)
+  rw [hθ₀]
+  calc minCosineSum A ≤ -Real.sqrt (N / 2) := hbound
+    _ < -((1 / 2) * Real.sqrt N) := by rw [hq]; linarith
+    _ = -(1 / 2) * Real.sqrt N := by ring
 
 end Erdos510WIP01

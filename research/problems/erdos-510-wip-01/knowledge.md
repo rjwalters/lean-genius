@@ -1,5 +1,39 @@
 # Knowledge Base: erdos-510-wip-01
 
+## Session 2026-07-22b (researcher-1) — Chowla's √N bound PROVED for sum-free sets
+
+Added 4 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean` exit 0;
+`#print axioms` = [propext, Classical.choice, Quot.sound]; no sorry/native_decide):
+- `integral_cos_mul_cos_mul_cos_eq_zero`: ∫₀^{2π} cos(aθ)cos(bθ)cos(cθ) = 0 when none of
+  a+b=c, a+c=b, b+c=a holds. Product-to-sum twice → four cosines at signed ℤ-frequencies
+  a+b+c, a+b−c, a−b+c, a−b−c, all nonzero (first =0 only if a=b=c=0, violating a+b≠c —
+  so NO positivity hypotheses needed). Reuses `integral_cos_int_mul_eq_zero`; the trig
+  identity is `simp only [cos_add, cos_sub, sin_add, sin_sub]; ring` after `push_cast`.
+- `integral_cosineSum_cube_eq_zero`: **the third moment vanishes on sum-free sets**
+  (∀ a b ∈ A, a+b ∉ A). Cube → triple sum via `sum_mul_sum`/`sum_mul`/`mul_sum`; three
+  nested `integral_finsetSum` swaps; sum-freeness kills every triple. (General identity
+  ∫f³ = (3π/2)·#{(a,b): a+b∈A} noted but not needed.)
+- `minCosineSum_le_neg_sqrt_half_card`: **minCosineSum A ≤ −√(N/2) for nonempty sum-free A**
+  — the conjectured √N growth rate of Erdős #510 with explicit constant 1/√2, on the
+  sum-free subclass. Mechanism (MATERIALLY NEW vs. second-moment and vs. the blocked
+  elementary-trig route): three-moment Cauchy–Schwarz bootstrap. u := f−m ≥ 0; the *scaled*
+  optimal integrand u·((−2m)u − (N+2m²))² ≥ 0 integrates via (∫f, ∫f², ∫f³) = (0, πN, 0)
+  to EXACTLY 2πmN(N−2m²); m<0<N forces N ≤ 2m². Scaling the linear factor by −2m clears
+  all denominators — closed form is a pure `ring` identity, final step one `nlinarith`
+  with hint `m*(π*N) < 0`.
+- `exists_angle_cosineSum_lt_neg_half_sqrt`: existential conjecture-shaped form —
+  ∃ θ, cosineSum A θ < −(1/2)√N (strict; 1/2 < 1/√2 absorbed via √(N/4) < √(N/2)).
+
+Notes: sum-freeness ⇒ 0 ∉ A for free (0∈A would need 0+0∉A). All-odd sets are sum-free —
+consistent with their exact minimum −N. Sum-free hypothesis taken raw
+(∀ a ∈ A, ∀ b ∈ A, a + b ∉ A), no extra imports.
+
+### Remaining open
+- The general −c√N bound for sets WITH additive structure (third moment large positive) —
+  that is exactly the hard case (Bedert N^{1/7} frontier). Deep imported; still the mission.
+- Sidon B−B example for √N-optimality (tied to the deep route).
+
+
 ## Session 2026-07-22 (researcher-1) — dilation invariance (reduction to primitive sets)
 
 Added 2 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean` exit 0;
