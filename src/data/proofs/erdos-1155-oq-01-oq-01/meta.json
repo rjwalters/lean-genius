@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1155-oq-01-oq-01",
+      "title": "Problem Statement and Background",
+      "summary": "States open question OQ-01-OQ-01 of the triangle removal process (Erd\u0151s #1155): does $f(n)/n^{3/2}$ converge to a constant $L$, strictly strengthening the parent's $\\Theta(n^{3/2})$ conjecture, which itself strengthens the Bohman\u2013Frieze\u2013Lubetzky $n^{3/2+o(1)}$ theorem.",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "The triangle removal process repeatedly deletes a random triangle's edges from $K_n$ until triangle-free; $f(n)$ is the expected number of surviving edges. This file formalizes the convergence hierarchy: convergence $\\Rightarrow$ $\\Theta$-bound $\\Rightarrow$ BFL two-sided bounds."
+    },
+    {
       "id": "definitions",
       "title": "§ 1. Definitions",
       "startLine": 43,
