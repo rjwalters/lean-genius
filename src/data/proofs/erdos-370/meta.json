@@ -65,7 +65,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 311,
-    "assumptions": "1 axiom (dickman_density — Dickman-de Bruijn smooth-number density, deep analytic result) and 2 sorries (the two main Steinerberger existence theorems). gpf function and 9 properties now proved from Mathlib, including gpf_mul_le (greatest prime factor of a product ≤ max of the factors' gpfs), previously an axiom.",
+    "assumptions": "1 axiom (dickman_density — Dickman-de Bruijn smooth-number density, deep analytic result) and 2 sorries (the two main Steinerberger existence theorems). gpf function and 9 properties now proved from Mathlib, including gpf_mul_le (greatest prime factor of a product ≤ max of the factors' gpfs), previously an axiom. Trust caveat: three named computation theorems — gpf_le_one (gpf n = 0 for n ≤ 1), gpf_63 (gpf 63 = 7) and gpf_64 (gpf 64 = 2) — close via `native_decide` (plus benign SteinerbergerConstruction `example` blocks), which relies on the `Lean.ofReduceBool` compiler-trust axiom (not counted in the axiom total above). These are finite greatest-prime-factor computations; the dickman_density axiom and the two Steinerberger existence theorems (the headline claims) remain unaffected.",
     "theoremCount": 18,
     "definitionCount": 7
   },
