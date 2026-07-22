@@ -40,6 +40,18 @@
   * `odd_practical_eq_one` — the only *odd* practical number is `1` (immediate from
     the evenness necessary condition).
 
+  Finally, the reusable inductive brick behind Stewart's product criterion, with a
+  sharpening of the representability range it yields:
+
+  * `subsetSum_interval_extend` — if a coin set `S` represents every `k ≤ N` as a
+    distinct-subset sum, then adjoining a coin `d ≤ N + 1` (with `d ∉ S`) extends the
+    represented interval to every `k ≤ N + d`. This is the general induction step of
+    which `two_mul_practical`'s doubling argument is one instance.
+  * `representable_le_two_mul_sub_one_of_practical` — for practical `m`, *every*
+    `k ≤ 2m − 1` is a sum of distinct divisors of `m` (not merely `k < m`): the proper
+    divisors cover `[0, m − 1]`, and adjoining the divisor `m` reaches `2m − 1`. This
+    matches the `σ(m) ≥ 2m − 1` bound exactly.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -273,5 +285,72 @@ theorem odd_practical_eq_one {m : ℕ} (h : IsPractical m) (hodd : Odd m) : m = 
     obtain ⟨a, ha⟩ := even_of_practical hge h
     obtain ⟨b, hb⟩ := hodd
     omega
+
+/- ## The interval-covering brick and a sharpened representability range
+
+The engine behind Stewart's product criterion is a single inductive step: if a
+finite set `S` of "coins" already represents (as distinct-subset sums) every value
+in the interval `[0, N]`, then adjoining one further coin `d ≤ N + 1` extends the
+represented interval seamlessly to `[0, N + d]`. (The bound `d ≤ N + 1` is exactly
+what prevents a gap opening at `N + 1`.) This is the reusable induction step; the
+`two_mul_practical` doubling proof above is one hand-rolled instance of it. -/
+
+/-- **Interval-covering extension step.** If every `k ≤ N` is a distinct-subset sum
+of `S`, and `d ∉ S` satisfies `d ≤ N + 1`, then every `k ≤ N + d` is a
+distinct-subset sum of `insert d S`. Values `k ≤ N` reuse the old representation;
+values `N < k ≤ N + d` take the representation of `k - d ≤ N` and adjoin `d`. -/
+theorem subsetSum_interval_extend {S : Finset ℕ} {N d : ℕ}
+    (hcov : ∀ k, k ≤ N → ∃ T ⊆ S, T.sum id = k)
+    (hdN : d ≤ N + 1) (hdS : d ∉ S) :
+    ∀ k, k ≤ N + d → ∃ T ⊆ insert d S, T.sum id = k := by
+  intro k hk
+  by_cases hkN : k ≤ N
+  · obtain ⟨T, hT, hTsum⟩ := hcov k hkN
+    exact ⟨T, hT.trans (Finset.subset_insert d S), hTsum⟩
+  · rw [not_le] at hkN
+    have hkd : k - d ≤ N := by omega
+    obtain ⟨T, hT, hTsum⟩ := hcov (k - d) hkd
+    have hdT : d ∉ T := fun hmem => hdS (hT hmem)
+    refine ⟨insert d T, ?_, ?_⟩
+    · rw [Finset.insert_subset_iff]
+      exact ⟨Finset.mem_insert_self d S, hT.trans (Finset.subset_insert d S)⟩
+    · rw [Finset.sum_insert hdT, hTsum]
+      simp only [id_eq]
+      omega
+
+/-- **For practical `m`, every `k ≤ 2m − 1` is a sum of distinct divisors of `m`.**
+This sharpens the definition (which only asks for `k < m`) by one full multiple of
+`m`. Proof: the *proper* divisors `(divisors m).erase m` already represent every
+`k ≤ m − 1` (a representation of `k < m` can never use the divisor `m`, being too
+large); the divisor `m` itself satisfies `m ≤ (m − 1) + 1`, so `subsetSum_interval_extend`
+pushes the represented range out to `(m − 1) + m = 2m − 1`. Compare
+`two_mul_sub_one_le_sigma`, which shows `σ(m) ≥ 2m − 1`: the represented range is
+exactly as large as that lower bound allows. -/
+theorem representable_le_two_mul_sub_one_of_practical {m : ℕ} (h : IsPractical m) :
+    ∀ k, k ≤ 2 * m - 1 → IsRepresentable k m := by
+  obtain ⟨hm1, hrep⟩ := h
+  have hmdvd : m ∈ divisors m := by
+    rw [divisors, Nat.mem_divisors]; exact ⟨dvd_refl m, by omega⟩
+  -- The proper divisors represent every value below `m`.
+  have hcov : ∀ k, k ≤ m - 1 → ∃ T ⊆ (divisors m).erase m, T.sum id = k := by
+    intro k hk
+    rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+    · exact ⟨∅, Finset.empty_subset _, by simp [hk0]⟩
+    · obtain ⟨T, hT, hTsum⟩ := hrep k hkpos (by omega)
+      refine ⟨T, ?_, hTsum⟩
+      intro x hx
+      rw [Finset.mem_erase]
+      have hxdiv := hT hx
+      have hxle : x ≤ k := by
+        have hle := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hx
+        rwa [hTsum, id_eq] at hle
+      exact ⟨by omega, hxdiv⟩
+  -- Adjoin the divisor `m` to reach `2m − 1`.
+  have key := subsetSum_interval_extend hcov (d := m)
+    (by omega : m ≤ (m - 1) + 1) (Finset.notMem_erase m (divisors m))
+  intro k hk
+  obtain ⟨T, hT, hTsum⟩ := key k (by omega)
+  rw [Finset.insert_erase hmdvd] at hT
+  exact ⟨T, hT, hTsum⟩
 
 end Erdos18
