@@ -68,6 +68,20 @@
     and `28 = 2²·7` have a non-practical odd part, so they lie beyond `two_pow_mul_practical`
     (which needs a practical base); the chain engine reaches them directly.
 
+  The chain engine also yields a *multiplicative closure* rule, and — as the
+  headline structural theorem — closure directly from practicality itself:
+
+  * `practical_mul_of_chains` — if `a` carries a proper-divisor coin chain reaching
+    `a − 1` and `b` a divisor coin chain reaching `b − 1`, then `a·b` is practical
+    (witness chain `chain(a) ++ a · chain(b)`).
+  * `practical_mul` — **the product of two practical numbers is practical**, with no
+    chain hypotheses at all (Stewart 1954). A Euclidean argument: to represent
+    `N < a·b`, write `N = q·b + r` with `q < a`, `r < b`; scale a divisor
+    representation of `q` (from practicality of `a`) by `b`, and adjoin a divisor
+    representation of `r` (from practicality of `b`). The scaled coins are `≥ b`, the
+    `r`-coins are `< b`, so the two sets are disjoint and their union sums to `N`.
+  * `practical_pow` — consequently every power `m^k` of a practical `m` is practical.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -558,6 +572,115 @@ theorem practical_mul_of_chains {a b : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
       | succ n => simp [Nat.mul_succ]
     have hmul : a * (b - 1) ≤ a * lb.sum := Nat.mul_le_mul (le_refl a) hlb_reach
     omega
+
+/- ## Full multiplicative closure (directly from practicality)
+
+`practical_mul_of_chains` above takes explicit coin chains as input. In fact
+practicality *alone* suffices: the product of any two practical numbers is
+practical, with no chain hypotheses. This is the headline structural theorem of
+Stewart (1954). The proof is a Euclidean argument. To represent `N < a·b`, write
+`N = q·b + r` with `0 ≤ r < b` and `q < a`. Practicality of `a` represents `q` as a
+sum of distinct divisors of `a`; scaling that representation by `b` gives distinct
+divisors of `a·b` summing to `q·b`, each `≥ b`. Practicality of `b` represents `r`
+as a sum of distinct divisors of `b` — hence of `a·b` — each `≤ r < b`. The two coin
+sets are disjoint (one lies `≥ b`, the other `< b`), so their union represents
+`q·b + r = N`. -/
+
+/-- Scaling a divisor-subset on the right by `b ≥ 1` scales its sum by `b` (the map
+`d ↦ d·b` is injective, so `Finset.sum_image` applies). -/
+theorem sum_image_mul_right {b : ℕ} (hb : 1 ≤ b) (D : Finset ℕ) :
+    (D.image (· * b)).sum id = D.sum id * b := by
+  rw [Finset.sum_image (fun x _ y _ h => mul_right_cancel₀ (by omega : b ≠ 0) h),
+      Finset.sum_mul]
+  simp only [id_eq]
+
+/-- If `D` is a set of divisors of `a`, then `b · D` is a set of divisors of `a·b`
+(`d ∣ a ⟹ d·b ∣ a·b`, and `b ≠ 0` keeps `a·b ≠ 0`). The right-scaled analogue of
+`image_two_mul_subset_divisors`. -/
+theorem image_mul_right_subset_divisors {D : Finset ℕ} {a b : ℕ}
+    (hb : b ≠ 0) (hD : D ⊆ divisors a) :
+    D.image (· * b) ⊆ divisors (a * b) := by
+  intro x hx
+  rw [Finset.mem_image] at hx
+  obtain ⟨d, hd, rfl⟩ := hx
+  have hdm := Nat.mem_divisors.mp (hD hd)
+  exact Nat.mem_divisors.mpr ⟨mul_dvd_mul_right hdm.1 b, Nat.mul_ne_zero hdm.2 hb⟩
+
+/-- **Multiplicative closure of practical numbers (Stewart 1954).** The product of
+two practical numbers is practical — proved directly from the definition, with no
+coin-chain hypotheses (contrast `practical_mul_of_chains`). To represent an arbitrary
+`N < a·b`, split it as `N = q·b + r` with `q < a` and `r < b`: represent `q` by
+divisors of `a` and scale by `b` (each scaled coin `≥ b`), represent `r` by divisors
+of `b` (each coin `≤ r < b`); the two coin sets are disjoint and their union — all
+divisors of `a·b` — sums to `N`. -/
+theorem practical_mul {a b : ℕ} (ha : IsPractical a) (hb : IsPractical b) :
+    IsPractical (a * b) := by
+  obtain ⟨ha1, harep⟩ := ha
+  obtain ⟨hb1, hbrep⟩ := hb
+  have hb0 : 0 < b := hb1
+  have hab0 : a * b ≠ 0 := by positivity
+  refine ⟨Nat.one_le_iff_ne_zero.mpr hab0, ?_⟩
+  intro N _ hNab
+  -- Euclidean split `N = q·b + r`, with `q < a` and `r < b`.
+  obtain ⟨q, r, hrb, hNqr⟩ : ∃ q r, r < b ∧ N = q * b + r :=
+    ⟨N / b, N % b, Nat.mod_lt N hb0, by
+      rw [Nat.mul_comm (N / b) b]; exact (Nat.div_add_mod N b).symm⟩
+  have hqa : q < a := by
+    by_contra hqa
+    rw [not_lt] at hqa
+    have : a * b ≤ q * b := Nat.mul_le_mul hqa (le_refl b)
+    omega
+  -- Represent `q` by divisors of `a` and `r` by divisors of `b`.
+  obtain ⟨D, hD, hDsum⟩ : IsRepresentable q a := by
+    rcases Nat.eq_zero_or_pos q with hq0 | hqpos
+    · rw [hq0]; exact zero_isRepresentable a
+    · exact harep q hqpos hqa
+  obtain ⟨E, hE, hEsum⟩ : IsRepresentable r b := by
+    rcases Nat.eq_zero_or_pos r with hr0 | hrpos
+    · rw [hr0]; exact zero_isRepresentable b
+    · exact hbrep r hrpos hrb
+  -- The scaled coins `b · D` are `≥ b`; the `r`-coins `E` are `< b`; hence disjoint.
+  have hD'_ge : ∀ x ∈ D.image (· * b), b ≤ x := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨d, hd, rfl⟩ := hx
+    have hdpos : 1 ≤ d := Nat.pos_of_mem_divisors (hD hd)
+    calc b = 1 * b := (Nat.one_mul b).symm
+      _ ≤ d * b := Nat.mul_le_mul hdpos (le_refl b)
+  have hE_lt : ∀ y ∈ E, y < b := by
+    intro y hy
+    have hyle : y ≤ r := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hy
+      rwa [hEsum, id_eq] at this
+    omega
+  have hdisj : Disjoint (D.image (· * b)) E := by
+    rw [Finset.disjoint_left]
+    intro z hzD hzE
+    have h1 := hD'_ge z hzD
+    have h2 := hE_lt z hzE
+    omega
+  refine ⟨D.image (· * b) ∪ E, ?_, ?_⟩
+  · -- every coin divides `a · b`
+    apply Finset.union_subset
+    · exact image_mul_right_subset_divisors hb0.ne' hD
+    · intro y hy
+      have hyb := Nat.mem_divisors.mp (hE hy)
+      exact Nat.mem_divisors.mpr ⟨hyb.1.trans (dvd_mul_left b a), hab0⟩
+  · -- the union sums to `q·b + r = N`
+    rw [Finset.sum_union hdisj, sum_image_mul_right hb1 D, hDsum, hEsum]
+    omega
+
+/-- **Powers of a practical number are practical.** Immediate from multiplicative
+closure by induction: `m^0 = 1` is practical, and `m^{k+1} = m^k · m`. -/
+theorem practical_pow {m : ℕ} (h : IsPractical m) : ∀ k, IsPractical (m ^ k)
+  | 0 => by simpa using one_practical
+  | k + 1 => by rw [pow_succ]; exact practical_mul (practical_pow h k) h
+
+/-- **`48 = 8 · 6` is practical**, directly from multiplicative closure of the two
+practical factors (no chain bookkeeping). -/
+theorem fortyeight_practical : IsPractical 48 := by
+  have h : (48 : ℕ) = 8 * 6 := by norm_num
+  rw [h]; exact practical_mul eight_practical six_practical
 
 /-- **`20` is practical** — via the divisor chain `1, 2, 4, 5, 10` (running sums
 `1, 3, 7, 12, 22`, each coin at most one past the previous total, reaching `22 ≥ 19`).
