@@ -48,7 +48,7 @@
       "erdos_267_open by classical EM (decidability of open conjecture)",
       "pow_two_series_first_terms computation via native_decide"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Fibonacci sequence and recurrence relations",
       "Golden ratio and Binet's formula",
@@ -57,7 +57,7 @@
       "Geometric series comparison test"
     ],
     "lineCount": 224,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "No mathematical axioms and 0 sorries. Compiler-trust disclosure: pow_two_series_first_terms is discharged with native_decide, so its axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). This is a finite decidable computation and adds no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 5

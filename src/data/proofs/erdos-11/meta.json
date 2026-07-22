@@ -45,9 +45,9 @@
       "Statement of Granville-Soundararajan connection",
       "Axiomatization of computational verification bounds"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 115,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete Wieferich-prime facts (known_wieferich_1093, known_wieferich_3511) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 10,
     "definitionCount": 8
   },
