@@ -122,6 +122,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: X⁴ − 2, the case Mathlib's Kummer API cannot reach",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring. States the sharpened goal (⁴√2 has degree exactly 4 over ℚ, not just irrationality) and the crux obstruction: Mathlib's Kummer-theory irreducibility lemmas for Xⁿ − C require an odd exponent or a prime p ≠ 2, and since 4 = 2² neither applies. Routes around this via Eisenstein's criterion at the prime 2 over ℤ followed by Gauss's lemma to descend to ℚ[X]. Lists the seven results: irreducibility over ℤ and ℚ, the minimal polynomial, the field degree, the quadratic tower ℚ ⊂ ℚ(√2) ⊂ ℚ(⁴√2), linear independence of the power basis, and the no-cubic-relation corollary. Notes ⁴√2 is modeled concretely as √√2.",
+      "mathContext": "Mathlib's `X_pow_sub_C_irreducible_of_prime_pow` needs $p \\ne 2$ and `X_pow_sub_C_irreducible_of_odd` needs odd exponent, so neither covers $X^4 - 2$ ($4 = 2^2$); Eisenstein's criterion at the prime $2$ (coefficients $0,0,0,-2$ all in $(2)$, constant term $-2 \\notin (4)$, leading coefficient a unit) gives irreducibility over $\\mathbb{Z}$, and Gauss's lemma transfers it to $\\mathbb{Q}[X]$."
+    },
+    {
       "id": "arithmetic-input",
       "title": "The arithmetic input: 2 has no rational fourth root",
       "startLine": 44,
