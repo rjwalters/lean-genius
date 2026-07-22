@@ -67,6 +67,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Binary Erasure Channel (BEC) Capacity", "startLine": 1, "endLine": 48, "summary": "Proves BEC(p) capacity = (1-p)·log 2 from first principles (0 axioms, 0 sorries), complementing the already-proved BSC capacity. Derives the key identity H(X|Y)=p·H(X) (erasure destroys the input with probability p, otherwise reveals it exactly), applies the chain rule, and notes the BEC is not weakly symmetric so the general symmetric-channel machinery doesn't apply — this erasure-specific identity is the right proof engine instead.", "mathContext": "The BEC has input Bool and output Option Bool with erasure symbol `none`; unlike the BSC its erasure column breaks the doubly-stochastic symmetry, so capacity is derived via the direct conditional-entropy identity H(X|Y)=p·H(X) rather than the symmetric-channel shortcut."},
     {
       "id": "bec-channel",
       "title": "The Binary Erasure Channel BEC(p)",
