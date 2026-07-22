@@ -97,7 +97,8 @@
       "**A cardinality is not a set**: the parent's p ≤ Fintype.card {x // …} certifies how many solutions exist but hands you nothing to iterate over. Combinatorial applications (pigeonhole, double counting) operate on a Finset, so the reification — map the subtype's universal Finset by the coercion embedding — is the bridge from 'how many' to 'which ones'.",
       "**One other becomes p − 1 others, for free**: the parent's second-solution theorem extracts a single zero ≠ x₀ via Fintype.exists_ne_of_one_lt_card. Once you have the explicit p-element set, deleting x₀ leaves p − 1 of them at once — the effective count the parent left open, with no extra mathematics beyond a card_erase bookkeeping step.",
       "**The erase lower bound needs no membership hypothesis**: (s.erase a).card ≥ s.card − 1 holds whether or not a ∈ s — if a ∉ s the erase is a no-op and the bound is slack. Casing on membership and discharging each branch with omega avoids needing to know in advance whether x₀ landed in the constructed set.",
-      "**This is the EGZ-shaped output**: the origin-vanishing case returns an explicit Finset of nonzero common zeros, which is exactly the object the Erdős–Ginzburg–Ziv pigeonhole consumes after Chevalley–Warning produces the solutions to the two degree-(p−1) forms."
+      "**This is the EGZ-shaped output**: the origin-vanishing case returns an explicit Finset of nonzero common zeros, which is exactly the object the Erdős–Ginzburg–Ziv pigeonhole consumes after Chevalley–Warning produces the solutions to the two degree-(p−1) forms.",
+      "**The single-polynomial form can't reuse the family form's existence bound.** exists_finset_common_zeros calls the parent's char_le_card_of_exists directly, but the parent only proves that Finset (family) form, not a single-polynomial counterpart — so exists_finset_common_zeros_single re-derives its own p ≤ Fintype.card bound inline from char_dvd_card_solutions + Nat.le_of_dvd, three lines of duplication tracing back to a missing lemma one level up the chain."
     ],
     "prerequisites": [
       "Finite fields and their (prime) characteristic (CharP)",
@@ -117,11 +118,19 @@
     },
     {
       "id": "explicit-solution-set",
-      "title": "The Explicit Solution Set: a Finset of at least p common zeros",
+      "title": "The Explicit Solution Set (Family Form)",
       "startLine": 52,
-      "endLine": 98,
-      "summary": "exists_finset_common_zeros and exists_finset_common_zeros_single: if a low-degree system (resp. single polynomial) has one common zero, an explicit Finset of at least p common zeros exists, built as the image of the solution subtype's universal Finset under the coercion embedding (Finset.map + Finset.card_map + Finset.card_univ).",
+      "endLine": 77,
+      "summary": "exists_finset_common_zeros: if a low-degree system has one common zero, an explicit Finset of at least p common zeros exists, built from the parent's char_le_card_of_exists as the image of the solution subtype's universal Finset under the coercion embedding (Finset.map + Finset.card_map + Finset.card_univ).",
       "mathContext": "Reify p ≤ Fintype.card S into a Finset (σ → K) of cardinality ≥ p whose members are all common zeros."
+    },
+    {
+      "id": "explicit-solution-set-single",
+      "title": "The Explicit Solution Set (Single Polynomial)",
+      "startLine": 78,
+      "endLine": 98,
+      "summary": "exists_finset_common_zeros_single: the single-polynomial analogue, re-deriving its own p ≤ Fintype.card bound from char_dvd_card_solutions + Nat.le_of_dvd inline (the parent has no single-polynomial existence-lower-bound lemma to call), then the same Finset.map reification.",
+      "mathContext": "Same reification, single-polynomial hypotheses, existence bound re-derived rather than reused."
     },
     {
       "id": "p-minus-one-others",
