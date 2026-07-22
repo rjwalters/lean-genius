@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module docstring: states Erdős Problem #608 — does a graph $G$ with $> n^2/4$ edges necessarily have $\\geq (2/9)n^2$ edges lying in some $C_5$? Records the answer as NO, with the correct threshold constant $c = (2+\\sqrt{2})/16 \\approx 0.2134$ established by Füredi–Maleki (upper bound, $cn^2 + O(n)$) and Grzesik–Hu–Volec (matching lower bound, $(c-o(1))n^2$, via flag algebras). Also flags that for general odd cycles $C_{2k+1}$ with $k \\geq 3$ the original $(2/9)n^2$ bound is correct — $C_5$ is the unique exception.",
+      "mathContext": "$c = \\dfrac{2+\\sqrt{2}}{16} \\approx 0.2134 < \\dfrac{2}{9} \\approx 0.2222$, the sharp asymptotic constant replacing Erdős's original conjectured bound."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Data.Real.Sqrt`, and `Tactic`. Opens `SimpleGraph`, `Finset`, `Real` namespaces with universe-polymorphic vertex type $V$.",
