@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1160",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #1160: if $g(n)$ counts non-isomorphic groups of order $n$ (OEIS A000001), is it true that $n \\le 2^m \\implies g(n) \\le g(2^m)$, i.e. powers of 2 maximize the group-counting function?",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "$g(2^m)$ grows super-exponentially, $g(2^m) \\sim 2^{(2/27)m^3}$; Pantelidakis (2003) proved the conjecture for odd $n$ once $m \\ge 3619$, but the general case remains open."
+    },
+    {
       "id": "group-counting",
       "title": "Section I: The Group Counting Function",
       "startLine": 30,
