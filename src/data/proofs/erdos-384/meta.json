@@ -31,7 +31,7 @@
       "Basic Lean 4 tactics (native_decide, norm_num, interval_cases)"
     ],
     "lineCount": 231,
-    "assumptions": "1 axiom: ecklund_1969 (Ecklund 1969 — C(n,k) has a small prime divisor except for (7,3)). 0 sorries.",
+    "assumptions": "1 axiom: ecklund_1969 (Ecklund 1969 — C(n,k) has a small prime divisor except for (7,3)). 0 sorries. Trust caveat: the finite exceptional-case computations in `choose_7_3` and `minPrimeDivisor_35` (concrete C(7,3)=35 and its least prime divisor) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); the general result rests on the stated axiom `ecklund_1969`.",
     "theoremCount": 12,
     "definitionCount": 8
   },

@@ -55,7 +55,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 384,
-    "assumptions": "1 axiom (bloom_theorem: Bloom's 2021 result on positive density sets). 0 sorries.",
+    "assumptions": "1 axiom (bloom_theorem: Bloom's 2021 result on positive density sets). 0 sorries. Trust caveat: the finite Egyptian-fraction identity checks in `egyptian_236` and `egyptian_2_4_6_12` are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); the density result rests on the stated axiom `bloom_theorem`.",
     "theoremCount": 10,
     "definitionCount": 7
   },
