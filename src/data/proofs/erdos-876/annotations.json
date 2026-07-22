@@ -55,7 +55,7 @@
     },
     "type": "definition",
     "title": "Classical Sum-Free and Implication",
-    "content": "`IsSumFreeClassical A` requires $\\forall a, b \\in A,\\; a + b \\notin A$. The theorem `erdos_implies_classical` (with sorry) states that Erdős sum-free implies classical sum-free, since the Erdős condition forbids all subset sums including 2-element ones. The sorry is technical: constructing the witnessing 2-element subset $\\{a, b\\}$ from the pair $(a, b)$.",
+    "content": "`IsSumFreeClassical A` requires $\\forall a, b \\in A,\\; a + b \\notin A$ (permitting $a=b$). The naive claim that `IsSumFreeErdos` implies this is **false** (`not_isSumFreeErdos_imp_isSumFreeClassical`): $\\{2, 4\\}$ is Erdős-sum-free yet $2+2=4\\in A$, because the Erdős condition only forbids sums of $\\ge 2$ *distinct* smaller elements. The corrected `erdos_implies_classical_of_pos` shows the implication holds for **distinct positive** $a, b$, via the 2-element witness $\\{a, b\\}$.",
     "mathContext": "**Classical sum-free:** $\\forall a, b \\in A,\\; a + b \\notin A$. **Implication:** If $a + b \\in A$ with $a, b < a+b$ and $a, b \\in A$, then $S = \\{a, b\\}$ witnesses a violation of `IsSumFreeErdos` at element $a + b$.",
     "significance": "key",
     "relatedConcepts": [
