@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Scope: the combinatorial index layer of Sperner→Brouwer",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring naming the five results (fpIndex_eq_boundaryIndex, exists_panchromatic_of_boundaryIndex_ne_zero, boundaryIndex_eq_zero_of_no_panchromatic, the parity dichotomy, the boundaryless corollary) and stating the honesty boundary: this file is only the combinatorial fixed-point-index computation on an abstract CellComplex, not the geometric realization (subdivision, boundary index = 1, compactness) that full topological Brouwer needs.",
+      "mathContext": "Packages Sperner's parity theorem as an index identity $\\mathrm{fpIndex} = \\mathrm{boundaryIndex} \\in \\mathbb{Z}/2$, 0-axiom."
+    },
+    {
       "id": "counts",
       "title": "Panchromatic and Boundary-Door Counts",
       "startLine": 57,
