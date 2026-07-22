@@ -19,7 +19,7 @@
     "sorries": 0,
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
-    "assumptions": "2 axioms: directed_euler_circuit_sufficient (balanced digraph → Eulerian circuit exists) and directed_euler_path_sufficient (exactly one source + one sink → Eulerian path exists). The necessary conditions are fully proved; the sufficiency requires an Eulerian circuit construction algorithm (e.g., Hierholzer's algorithm) not yet in Mathlib.",
+    "assumptions": "2 axioms: directed_euler_circuit_sufficient (balanced digraph → Eulerian circuit exists) and directed_euler_path_sufficient (exactly one source + one sink → Eulerian path exists). The necessary conditions are fully proved; the sufficiency requires an Eulerian circuit construction algorithm (e.g., Hierholzer's algorithm) not yet in Mathlib. Trust caveat: the concrete digraph degree and arc-count facts (tri_outDegree/tri_inDegree/tri_arcCount, sqDir_outDegree/sqDir_inDegree/sqDir_arcCount, unbal_A_outDegree/unbal_A_inDegree, path_A/B/C_outDegree and _inDegree) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite computations on specific small digraphs used to instantiate the Eulerian criteria; the two sufficiency axioms remain the only mathematical assumptions.",
     "lineCount": 812,
     "theoremCount": 35,
     "definitionCount": 13,
