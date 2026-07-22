@@ -14,6 +14,7 @@
     "defCount": 0,
     "axiomCount": 1,
     "sorries": 0,
+    "assumptions": "1 axiom (imported from BoundedPrimeGapsOQ03): engelsma_lower_bound — Engelsma's 2005 exhaustive-computation lower bound that no admissible 50-tuple has diameter below 246. 0 sorries. Trust caveat: the finite minimum-diameter witness checks (table_k2, table_k3, table_k5 for the small tuples {0,2}, {0,2,6}, {0,2,6,8,12}) use `native_decide` for their diameter side-conditions, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite evaluations of explicit small tuples; the headline k=50 diameter=246 claim rests on the stated axiom (engelsma_lower_bound).",
     "tags": [
       "number-theory",
       "prime-gaps",
