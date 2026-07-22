@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: The Topology of the Fixed-Point Set",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Frames the entry as complementary to the base Schauder/Brouwer/Kakutani existence results: rather than proving a fixed point exists, it shows the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set. Lists the four results (closed, compact intersection, 1D Brouwer via IVT, and the combined nonempty-compact statement) and stresses the whole file is 0-axiom and sorry-free, importing only Mathlib rather than the axiom-bearing base file.",
+      "mathContext": "$f:[a,b]\\to[a,b]$ continuous $\\Rightarrow \\{x\\mid f(x)=x\\}$ is nonempty and compact."
+    },
+    {
       "id": "closed-compact",
       "title": "The Fixed-Point Set is Closed and Compact",
       "startLine": 31,
