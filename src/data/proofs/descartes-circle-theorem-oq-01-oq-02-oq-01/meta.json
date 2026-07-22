@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: How Many Curvatures Are Odd?",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Poses the follow-up question to the sibling integrality leaf: among the four integer curvatures of a Descartes quadruple, how many are odd? Answer: always 0 or 2, and exactly 2 in the primitive (not-all-even) case. Previews the elementary mod-4 argument used throughout.",
+      "mathContext": "$(a+b+c+d)^2 = 2(a^2+b^2+c^2+d^2)$; oddCount $\\in \\{0,2\\}$, and $=2$ when not all of $a,b,c,d$ are even."
+    },
+    {
       "id": "definitions",
       "title": "The Integer Descartes Relation and Odd-Count",
       "startLine": 43,
