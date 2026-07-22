@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: A parametrised SOS family for weighted Nesbitt",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Proves the one-parameter weighted Nesbitt inequality for all $t>0$ via a three-term Titu/Engel-form Cauchy–Schwarz identity whose defect is itself a sum of squares parametrised by $t$, combined with the parameter-free estimate $(a+b+c)^2\\ge 3(ab+bc+ca)$.",
+      "mathContext": "$\\frac{a}{tb+c}+\\frac{b}{tc+a}+\\frac{c}{ta+b}\\ge \\frac{3}{t+1}$; $t=1$ recovers the classical Nesbitt inequality."
+    },
+    {
       "id": "titu3",
       "title": "Three-Term Cauchy–Schwarz (Engel/Titu Form)",
       "startLine": 44,
