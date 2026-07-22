@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-audit-header",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 1, "endLine": 39 },
     "type": "concept",
     "title": "S1 OBSERVE Audit: Codomain Genericity Confirmed",
@@ -21,7 +21,7 @@
   },
   {
     "id": "ann-imports-setup",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 41, "endLine": 54 },
     "type": "definition",
     "title": "Banach Codomain Variable Block",
@@ -42,7 +42,7 @@
   },
   {
     "id": "ann-ordered-case",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 56, "endLine": 81 },
     "type": "insight",
     "title": "Ordered Case: Icc-to-Ioc Bridge, Then Bochner Fubini",
@@ -65,7 +65,7 @@
   },
   {
     "id": "ann-sign-helpers",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 83, "endLine": 95 },
     "type": "insight",
     "title": "Sign-Flip and Negation-Extraction (Codomain-Generic)",
@@ -84,7 +84,7 @@
   },
   {
     "id": "ann-general-case",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 97, "endLine": 189 },
     "type": "insight",
     "title": "General Case (S3 proven): Four-Way Sign Analysis, linarith → rw+neg_neg",
@@ -107,7 +107,7 @@
   },
   {
     "id": "ann-case-4-structure",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 163, "endLine": 189 },
     "type": "insight",
     "title": "Case 4 (b < a ∧ d < c): Five Sign-Flips, Closed by simp only [neg_neg]",
@@ -127,7 +127,7 @@
   },
   {
     "id": "ann-continuous-case",
-    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "proofId": "greens-theorem-oq002",
     "range": { "startLine": 191, "endLine": 214 },
     "type": "insight",
     "title": "Continuous Case (S3 proven): Hypothesis-Free via Compact Rectangle",

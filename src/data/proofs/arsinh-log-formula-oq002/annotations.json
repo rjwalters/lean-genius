@@ -1,7 +1,7 @@
 [
   {
     "id": "arsinh-oq01020101-ann-deriv",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 56, "endLine": 82 },
     "type": "theorem",
     "title": "arcosh Is an Antiderivative of 1/√(t²−1) on (1,∞)",
@@ -21,7 +21,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-proper-ftc",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 84, "endLine": 109 },
     "type": "concept",
     "title": "Parent Proper FTC on [a,b] ⊂ (1,∞)",
@@ -40,7 +40,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-continuity",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 113, "endLine": 127 },
     "type": "theorem",
     "title": "arcosh Is Continuous at the Singular Endpoint t = 1",
@@ -60,7 +60,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-integrability",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 131, "endLine": 179 },
     "type": "theorem",
     "title": "Integrability Across the Singularity by rpow Domination",
@@ -81,7 +81,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-improper",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 183, "endLine": 202 },
     "type": "insight",
     "title": "The Improper Integral ∫_1^b 1/√(t²−1) dt = arcosh b",
@@ -101,7 +101,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-limit",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 204, "endLine": 223 },
     "type": "theorem",
     "title": "The Improper Integral as a Limit (a → 1⁺)",
@@ -121,7 +121,7 @@
   },
   {
     "id": "arsinh-oq01020101-ann-concrete",
-    "proofId": "arsinh-log-formula-oq-01-oq-02-oq-01-oq-01",
+    "proofId": "arsinh-log-formula-oq002",
     "range": { "startLine": 227, "endLine": 237 },
     "type": "concept",
     "title": "Concrete Corollary: ∫_1^{5/3} 1/√(t²−1) dt = log 3",

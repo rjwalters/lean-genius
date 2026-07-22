@@ -1,7 +1,7 @@
 [
   {
     "id": "wz-ann-overview",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 1, "endLine": 58 },
     "type": "concept",
     "title": "What the WZ Method Is, and What This File Proves",
@@ -23,7 +23,7 @@
   },
   {
     "id": "wz-ann-telescope-engine",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 80, "endLine": 94 },
     "type": "tactic",
     "title": "wz_telescope — the abstract creative-telescoping engine",
@@ -35,7 +35,7 @@
   },
   {
     "id": "wz-ann-summand",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 104, "endLine": 112 },
     "type": "definition",
     "title": "The normalized summand F and its WZ mate G",
@@ -47,7 +47,7 @@
   },
   {
     "id": "wz-ann-boundary",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 114, "endLine": 123 },
     "type": "tactic",
     "title": "Values of the mate G: two vanishing endpoints and the nonzero k=1 value",
@@ -59,7 +59,7 @@
   },
   {
     "id": "wz-ann-equation",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 136, "endLine": 151 },
     "type": "insight",
     "title": "wz_equation — verifying the certificate by hand",
@@ -71,7 +71,7 @@
   },
   {
     "id": "wz-ann-recurrence",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 157, "endLine": 175 },
     "type": "tactic",
     "title": "rowSum_succ — the WZ recurrence from the engine",
@@ -83,7 +83,7 @@
   },
   {
     "id": "wz-ann-main",
-    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
+    "proofId": "arithmetic-series-oq006",
     "range": { "startLine": 176, "endLine": 215 },
     "type": "insight",
     "title": "binomial_sum_eq_pow — the identity from recurrence + base case",

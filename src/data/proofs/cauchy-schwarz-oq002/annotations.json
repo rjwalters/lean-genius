@@ -20,7 +20,7 @@
       "orthogonal projection onto a complete subspace"
     ],
     "content": "The finite-rank orthogonal projection is the sum of the one-line projectors over an orthonormal basis of the subspace — a finite-rank resolution of the identity P_S = ∑ i e_i e_i^*.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 1, "endLine": 52 }
   },
   {
@@ -41,7 +41,7 @@
       "completeness of finite-dimensional spaces over a complete field"
     ],
     "content": "Finite-dimensionality of the span, not completeness of E, is what makes the orthogonal projection well defined.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 54, "endLine": 66 }
   },
   {
@@ -62,7 +62,7 @@
       "linearity of the inner product"
     ],
     "content": "The projection keeps x's coordinates along the basis; the residual carries everything orthogonal to S.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 79, "endLine": 90 }
   },
   {
@@ -83,7 +83,7 @@
       "conjugate symmetry of the inner product"
     ],
     "content": "A linear functional vanishing on a spanning set vanishes on the whole span — this promotes basis-orthogonality of the residual to subspace-orthogonality.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 92, "endLine": 114 }
   },
   {
@@ -103,7 +103,7 @@
       "orthogonal projection characterization"
     ],
     "content": "The headline identity: Mathlib's orthogonal projection onto S is exactly the sum of the rank-one projectors over the orthonormal basis.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 115, "endLine": 133 }
   },
   {
@@ -124,7 +124,7 @@
       "orthonormal double-sum collapse"
     ],
     "content": "The squared projection norm is exactly the sum of squared coordinate moduli — the sharp, attained form of Bessel's inequality on the subspace.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 134, "endLine": 153 }
   },
   {
@@ -144,7 +144,7 @@
       "the parent's rank-one projector"
     ],
     "content": "The single-line projector of the parent entry is the k=1 term of this sum-of-projectors identity.",
-    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01-oq-03",
+    "proofId": "cauchy-schwarz-oq002",
     "range": { "startLine": 168, "endLine": 192 }
   }
 ]

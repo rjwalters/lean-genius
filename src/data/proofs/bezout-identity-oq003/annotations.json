@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-ext-binary-overview",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 1, "endLine": 72 },
     "type": "concept",
     "title": "Tracking Bézout Coefficients Through Stein's Algorithm",
@@ -21,7 +21,7 @@
   },
   {
     "id": "ann-ext-binary-subtract-dont-rehalve",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 20, "endLine": 44 },
     "type": "insight",
     "title": "Subtract-Don't-Rehalve: Why Every Transform Is Exact",
@@ -40,7 +40,7 @@
   },
   {
     "id": "ann-ext-binary-def",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 85, "endLine": 115 },
     "type": "definition",
     "title": "ebGcd: The Constructive Extended Binary GCD",
@@ -59,7 +59,7 @@
   },
   {
     "id": "ann-ext-binary-gcd-fst",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 124, "endLine": 156 },
     "type": "tactic",
     "title": "ebGcd_fst: gcd Component via the Grandparent Template",
@@ -79,7 +79,7 @@
   },
   {
     "id": "ann-ext-binary-bezout",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 164, "endLine": 220 },
     "type": "tactic",
     "title": "ebGcd_bezout: One linear_combination Per Branch",
@@ -99,7 +99,7 @@
   },
   {
     "id": "ann-ext-binary-int",
-    "proofId": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+    "proofId": "bezout-identity-oq003",
     "range": { "startLine": 233, "endLine": 258 },
     "type": "tactic",
     "title": "intExtBinaryGcd: Folding Signs onto the Coefficients",
