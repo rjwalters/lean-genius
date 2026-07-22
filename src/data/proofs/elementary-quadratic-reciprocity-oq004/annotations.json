@@ -110,7 +110,7 @@
   {
     "id": "ann-eqr-oq01030101-summary",
     "proofId": "elementary-quadratic-reciprocity-oq004",
-    "range": { "startLine": 175, "endLine": 211 },
+    "range": { "startLine": 177, "endLine": 211 },
     "type": "insight",
     "title": "Summary: the recursive shadow of the Jacobi symbol",
     "content": "The closing docstring restates the file's two results (the Bezout unit bridge and the main squarefree-odd Frobenius/Zolotarev theorem) and re-emphasizes the honest scope: prime-power factors pᵉ (e ≥ 2) are not covered, since CRT only separates coprime factors and the sign on ℤ/(pᵉ) needs a genuinely different argument. It then names the key insight driving the whole file: jacobiSym.mul_right (multiplicativity of the Jacobi symbol over its denominator) is the value-level shadow of sign_ringMulPerm_mul_of_odd (multiplicativity of the permutation sign under CRT) — the induction succeeds because the symbol's own recursive definition mirrors the CRT splitting. The trailing #check lines are a lightweight sanity confirmation that all three declarations elaborate under their stated names.",
