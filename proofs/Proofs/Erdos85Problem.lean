@@ -1178,11 +1178,11 @@ theorem triangle_pair_unique {G : SimpleGraph (Fin 8)} [DecidableRel G.Adj]
         · exact (G.mem_neighborFinset v x).mpr hvb
         · exact (G.mem_neighborFinset v x).mpr hva'
       have hcard3 : ({a, b, a'} : Finset (Fin 8)).card = 3 := by
-        rw [Finset.card_insert_of_not_mem (by
+        rw [Finset.card_insert_of_notMem (by
               simp only [Finset.mem_insert, Finset.mem_singleton]
               push Not
               exact ⟨G.ne_of_adj hab, fun h => h1 h.symm⟩),
-            Finset.card_insert_of_not_mem (by
+            Finset.card_insert_of_notMem (by
               simp only [Finset.mem_singleton]
               exact fun h => h1b h.symm),
             Finset.card_singleton]
@@ -1219,11 +1219,11 @@ theorem containsC4_of_three_regular_eight (G : SimpleGraph (Fin 8)) [DecidableRe
   have hcard3 : ∀ w, (t w).card = 3 := by
     intro w
     rw [htw w,
-        Finset.card_insert_of_not_mem (by
+        Finset.card_insert_of_notMem (by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           push Not
           exact ⟨G.ne_of_adj (hf w), G.ne_of_adj (hg w)⟩),
-        Finset.card_insert_of_not_mem (by
+        Finset.card_insert_of_notMem (by
           simp only [Finset.mem_singleton]
           exact G.ne_of_adj (hfg w)),
         Finset.card_singleton]
@@ -1255,8 +1255,10 @@ theorem containsC4_of_three_regular_eight (G : SimpleGraph (Fin 8)) [DecidableRe
     intro x
     constructor
     · intro _
-      exact Finset.mem_biUnion.mpr
-        ⟨t x, Finset.mem_image_of_mem t (Finset.mem_univ x), hmem x⟩
+      have hx : t x ∈ T := by
+        rw [hT]
+        exact Finset.mem_image_of_mem t (Finset.mem_univ x)
+      exact Finset.mem_biUnion.mpr ⟨t x, hx, hmem x⟩
     · intro _
       exact Finset.mem_univ x
   have hdisjT : ((T : Set (Finset (Fin 8)))).PairwiseDisjoint id := by
@@ -1276,9 +1278,9 @@ theorem containsC4_of_three_regular_eight (G : SimpleGraph (Fin 8)) [DecidableRe
       exact hcard3 w
     rw [Finset.sum_congr rfl h3, Finset.sum_const, smul_eq_mul, mul_comm]
   have h8 : (8 : ℕ) = 3 * T.card := by
-    have hu : (Finset.univ : Finset (Fin 8)).card = 8 := by
-      rw [Finset.card_univ, Fintype.card_fin]
-    rw [← hu, hcover, hcount, hsum3]
+    have hu : (Finset.univ : Finset (Fin 8)).card = 3 * T.card := by
+      rw [hcover, hcount, hsum3]
+    simpa using hu
   omega
 
 /-- **Minimum degree `3` forces a `C₄` on `8` vertices.**  Degree casework: a vertex of
@@ -1350,7 +1352,8 @@ theorem containsC4_of_eight_min_degree_three (G : SimpleGraph (Fin 8)) [Decidabl
           have h4 := h2nd u hne
           have := hdeg u
           omega
-        have hsplit := Finset.sum_erase_add univ G.degree (Finset.mem_univ v₀)
+        have hsplit := Finset.sum_erase_add univ (fun v => G.degree v)
+          (Finset.mem_univ v₀)
         have hconst : ∑ u ∈ (univ : Finset (Fin 8)).erase v₀, G.degree u = 21 := by
           rw [Finset.sum_congr rfl hall, Finset.sum_const,
             Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ,
