@@ -180,7 +180,7 @@
     "summary": "This formalization captures Erdős Problem #1142 in Lean 4 with full computational verification of all seven known solutions and three non-examples. It establishes structural constraints (oddness, lower bound, modular arithmetic) and formalizes both the infinitude conjecture and the stronger o(log n) conjecture.",
     "implications": "The formalization demonstrates how `native_decide` can provide kernel-verified exhaustive search over finite ranges, bridging computational number theory with formal verification. The logical relationship between the stronger conjecture and finiteness illustrates how asymptotic density arguments can be made precise in type theory.",
     "openQuestions": [
-      "Prove the structural sorry placeholders (oddness, lower bound, n − 2 prime) using Finset membership reasoning",
+      "The structural constraints (oddness via `erdos1142_odd_or_4`, the lower bound `erdos1142_ge_4`, and n − 2 prime via `erdos1142_n_minus_2_prime`) are already fully proved; can the infinitude conjecture `erdos_1142_conjecture` — currently stated as a `Prop` — be discharged rather than left open?",
       "Extend the exhaustive verification beyond 105 to match the Mientka–Weitzenkamp bound of 2^44",
       "Formalize Vaughan's (1973) upper bound on the density of solutions",
       "Connect to covering congruence methods that could establish finiteness"

@@ -121,7 +121,7 @@
     "openQuestions": [
       "What is the exact second-order term in max_k f_k(n) - (n-1)!?",
       "How many values of k achieve f_k(n) ≥ (n-1)! for a given n?",
-      "Can the sorry placeholders (small cases, sum formula) be filled with decidable computations?",
+      "The small-case values and the sum formula $\\sum_k f_k(n) = n!$ are already proved in Lean; can Beker's full asymptotic $\\max_k f_k(n) \\sim (n-1)!$ and the lcm-divisibility characterization of the maximizer be formalized directly rather than stated as background results?",
       "What is the analogous result for other finite groups beyond S_n?"
     ]
   },

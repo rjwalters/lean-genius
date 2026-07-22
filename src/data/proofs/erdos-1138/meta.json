@@ -122,7 +122,7 @@
       "title": "Basic Properties of $\\pi$",
       "startLine": 53,
       "endLine": 89,
-      "summary": "Proves fundamental properties: monotonicity ($a \\le b \\Rightarrow \\pi(a) \\le \\pi(b)$) via `Finset.card_le_card`, exact values $\\pi(0) = 0$, $\\pi(1) = 0$, $\\pi(2) = 1$ by `decide`, the trivial bound $\\pi(n) \\le n + 1$ via `Finset.card_filter_le`, and $d(x) \\le x$ (with a sorry for the `BddAbove` argument)."
+      "summary": "Proves fundamental properties: monotonicity ($a \\le b \\Rightarrow \\pi(a) \\le \\pi(b)$) via `Finset.card_le_card`, exact values $\\pi(0) = 0$, $\\pi(1) = 0$, $\\pi(2) = 1$ by `decide`, the trivial bound $\\pi(n) \\le n + 1$ via `Finset.card_filter_le`, and $d(x) \\le x$ (`maxPrimeGap_le`), with the `BddAbove` argument (`primeGapBelow_bddAbove`) fully proved via `csSup_le` — no sorries remain in this section."
     },
     {
       "id": "erdos-conjecture",
