@@ -65,7 +65,7 @@
     "badge": "axiom",
     "axiomCount": 1,
     "sorries": 0,
-    "assumptions": "kronecker_qr_fundamental: The generalized Kronecker QR with sign correction: (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K for coprime fundamental discriminants, where ε=-1 if both D₁<0 and D₂<0, else ε=1. Proved for positive odd discriminants via Jacobi QR. The sign correction for both-negative is confirmed numerically ((-7/3)=-(-3/7)). Full proof requires Artin reciprocity or genus theory.",
+    "assumptions": "kronecker_qr_fundamental: The generalized Kronecker QR with sign correction: (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K for coprime fundamental discriminants, where ε=-1 if both D₁<0 and D₂<0, else ε=1. Proved for positive odd discriminants via Jacobi QR. The sign correction for both-negative is confirmed numerically ((-7/3)=-(-3/7)). Full proof requires Artin reciprocity or genus theory. Trust caveat: the concrete Kronecker-symbol values and symmetries (kronecker_3_5_val, kronecker_5_3_val, kronecker_3_7_vals, kronecker_5_7_symm, kronecker_5_11_symm, kronecker_5_13_symm, kronecker_neg7_neg3_vals — 9 theorems) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite numeric confirmations, not the headline reciprocity axiom kronecker_qr_fundamental, which remains stated.",
     "mathlibDependencies": [
       {
         "theorem": "jacobiSym.quadratic_reciprocity_one_mod_four",
