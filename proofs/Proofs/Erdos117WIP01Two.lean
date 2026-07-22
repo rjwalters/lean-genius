@@ -79,11 +79,14 @@ theorem exists_three_pairwise_noncommuting {G : Type*} [Group G]
   have hne_ab : a ≠ b := fun hc => hab (by rw [hc])
   have hb1 : b ≠ 1 := fun hc => hab (by rw [hc, mul_one, one_mul])
   have ha1 : a ≠ 1 := fun hc => hab (by rw [hc, mul_one, one_mul])
-  have hne_a_ab : a ≠ a * b := fun hc => hb1 (self_eq_mul_right.mp hc)
-  have hne_b_ab : b ≠ a * b := fun hc => ha1 (self_eq_mul_left.mp hc)
+  have hne_a_ab : a ≠ a * b := fun hc =>
+    hb1 (mul_left_cancel (a := a) (by rw [mul_one]; exact hc)).symm
+  have hne_b_ab : b ≠ a * b := fun hc =>
+    ha1 (mul_right_cancel (b := b) (by rw [one_mul]; exact hc)).symm
   refine ⟨{a, b, a * b}, ?_, ?_⟩
-  · rw [Finset.card_insert_of_not_mem (by simp [hne_ab, hne_a_ab]),
-      Finset.card_insert_of_not_mem (by simp [hne_b_ab]), Finset.card_singleton]
+  · rw [Finset.card_insert_of_notMem (by simp [hne_ab, hne_a_ab]),
+      Finset.card_insert_of_notMem (by simp [hne_b_ab]), Finset.card_singleton]
+    omega
   · intro x hx y hy hxy
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
     rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
