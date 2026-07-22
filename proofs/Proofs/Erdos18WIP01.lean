@@ -1110,4 +1110,18 @@ theorem practical_iff_divisor_chain {m : ℕ} :
   ⟨fun h => ⟨h.1, divisor_chain_of_practical h⟩,
     fun ⟨hm1, hchain⟩ => practical_of_divisor_chain_condition hm1 hchain⟩
 
+/-- **Consecutive-integer closure.** If `n` is practical then so is `n·(n+1)`. Immediate
+from the Stewart–Sierpiński sufficient condition with multiplier `n + 1`: since `n ∣ n`,
+`σ(n) ≥ n`, hence `n + 1 ≤ σ(n) + 1`. Iterating produces a rapidly growing family
+(`2 → 6 → 42 → …`), the "practical" analogue of Sylvester's sequence. -/
+theorem succ_mul_self_practical {n : ℕ} (h : IsPractical n) :
+    IsPractical ((n + 1) * n) := by
+  refine mul_practical_of_le_succ_sigma h (by omega) ?_
+  have hn1 : 1 ≤ n := h.1
+  have hnmem : n ∈ divisors n := by
+    rw [divisors]; exact Nat.mem_divisors.mpr ⟨dvd_refl _, by omega⟩
+  have hnle : n ≤ ∑ d ∈ divisors n, d :=
+    Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i) hnmem
+  omega
+
 end Erdos18
