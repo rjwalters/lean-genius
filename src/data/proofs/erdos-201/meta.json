@@ -45,6 +45,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-201",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #201 on AP-free subsets: defines $G_k(N)$ (guaranteed $k$-AP-free subset size in any $N$-set) and $R_k(N)$ (maximum $k$-AP-free subset of $\\{1,\\dots,N\\}$), asking whether $R_3(N)/G_3(N) \\to 1$, with the known bound $R_k(N) \\ll_k G_k(N)$ (Koml\u00f3s\u2013Sulyok\u2013Szemer\u00e9di 1975).",
+      "startLine": 1,
+      "endLine": 22,
+      "mathContext": "This file proves structural monotonicity of $R_k$ in both $N$ and $k$, an AP-containment transfer between uniformity levels $k \\le \\ell$, and the trivial bound $G_k \\le R_k$, as scaffolding toward the open ratio question."
+    },
+    {
       "id": "imports",
       "title": "Library Imports",
       "startLine": 23,
