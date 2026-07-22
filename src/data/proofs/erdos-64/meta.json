@@ -88,25 +88,30 @@
       "degree_3_conjecture: explicit δ = 3 restatement",
       "dirac_theorem: axiomatized Hamiltonicity for δ ≥ n/2",
       "bondy_pancyclic: axiomatized pancyclicity for dense graphs",
-      "random_graph_cycles: axiomatized probabilistic evidence"
+      "random_graph_cycles: axiomatized probabilistic evidence",
+      "hasMinDegree_three_exists_even_cycle: proved (0-axiom) δ ≥ 3 forces an even-length cycle via longest-path parity argument",
+      "hasMinDegree_three_exists_even_containsCycleLength: proved (0-axiom) restatement in the ContainsCycleLength predicate, k ≥ 4",
+      "hasMinDegree_exists_cycle_length_ge: proved (0-axiom) Dirac-type rung, δ ≥ d forces a cycle of length ≥ d+1",
+      "hasMinDegree_containsCycleLength_ge: proved (0-axiom) restatement in the ContainsCycleLength predicate"
     ],
     "axiomCount": 0,
-    "lineCount": 205,
+    "lineCount": 732,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 3,
-    "definitionCount": 12
+    "theoremCount": 14,
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Erdős and Gyárfás posed this problem in the 1990s, conjecturing that the answer is NO: for every $r$, there should exist a graph with minimum degree $r$ avoiding all $2^k$-length cycles. This belief stemmed from the seeming rigidity of exponential cycle lengths compared to the flexibility available in dense graphs. The problem carries a $1000 Erdős prize, one of his highest bounties, reflecting its perceived difficulty. A breakthrough came from Hong Liu and Richard Montgomery (2020), who proved that for sufficiently large minimum degree $D$, every graph must contain a cycle of length $2^k$. Their proof, published as part of a broader result on even cycle lengths in graphs of large average degree, leverages the regularity method and a deep structural analysis showing that dense graphs contain cycles of every even length in a geometric range $[(\\log \\ell)^8, \\ell]$. Since this range contains a power of 2 whenever $\\ell \\ge 16$, the Erdős-Gyárfás conjecture is disproved for large $r$. However, the exact value of the threshold $D$ is not known, and the critical case $r = 3$ (minimum degree exactly 3) remains completely open. The problem connects to Dirac's theorem (1952), Bondy's pancyclicity theorem (1971), and the broader study of unavoidable cycle lengths in graph theory.",
     "problemStatement": "Does every finite graph with minimum degree at least $3$ contain a cycle of length $2^k$ for some $k \\ge 2$?",
     "text": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
-    "proofStrategy": "The formalization defines cycle containment via injective vertex maps with cyclic adjacency (using `Fin.succMod`), minimum degree via `Finset.inf'` over neighbor counts, and the set $\\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. The main conjecture and the disproved Erdős-Gyárfás conjecture are stated as Lean `Prop` definitions. Liu-Montgomery's threshold result and even-cycle theorem are axiomatized. An infinite counterexample (the infinite 3-regular tree) is formalized via a custom `InfGraph` structure, demonstrating that finiteness is essential. Supporting results include Dirac's theorem (Hamiltonicity from high degree), Bondy's pancyclicity theorem (dense graphs have all cycle lengths), and a probabilistic argument that random graphs contain power-of-two cycles.",
+    "proofStrategy": "The formalization defines cycle containment via injective vertex maps with cyclic adjacency (using `Fin.succMod`), minimum degree via `Finset.inf'` over neighbor counts, and the set $\\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. The main conjecture and the disproved Erdős-Gyárfás conjecture are stated as Lean `Prop` definitions. Liu-Montgomery's threshold result and even-cycle theorem are axiomatized. An infinite counterexample (the infinite 3-regular tree) is formalized via a custom `InfGraph` structure, demonstrating that finiteness is essential. Supporting results include Dirac's theorem (Hamiltonicity from high degree), Bondy's pancyclicity theorem (dense graphs have all cycle lengths), and a probabilistic argument that random graphs contain power-of-two cycles. Two further machine-checked, axiom-free theorems apply the same longest-maximum-path technique used for plain cycle existence: `hasMinDegree_three_exists_even_cycle` shows δ ≥ 3 forces a cycle of even length (closing the parity half of the necessary condition), and `hasMinDegree_exists_cycle_length_ge` shows δ ≥ d forces a cycle of length at least d+1 (a Dirac-type quantitative rung, weaker than Dirac's theorem but requiring no density hypothesis).",
     "keyInsights": [
       "Liu-Montgomery breakthrough: ∃ D such that δ(G) ≥ D forces a C_{2^k} cycle. The proof shows dense graphs contain every even cycle length in a range [(log ℓ)^8, ℓ], which must include some 2^k",
       "Erdős-Gyárfás disproof: The conjecture that counterexamples exist for all r was disproved for large r, but r = 3 remains completely open",
       "Finiteness is essential: The infinite 3-regular tree has δ = 3 and no cycles at all",
       "Power-of-two special structure: {4, 8, 16, ...} is exponentially sparse (logarithmic density), making unavoidability a much stronger condition than for dense sets of cycle lengths",
-      "Probabilistic evidence: Random graphs G(n, c/n) almost surely satisfy the conjecture, so counterexamples must be highly structured"
+      "Probabilistic evidence: Random graphs G(n, c/n) almost surely satisfy the conjecture, so counterexamples must be highly structured",
+      "Longest-path engine proves two necessary conditions in full, axiom-free: δ ≥ 3 forces an even cycle (parity half of Problem 64), and δ ≥ d more generally forces a cycle of length ≥ d+1 (Dirac-type quantitative rung). Both reuse the same construction — the neighbours of a maximum-length path's start vertex sit at distinct positive indices, and closing the path there yields an explicit cycle — but neither touches the power-of-two half, which is the problem's entire remaining difficulty"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -196,27 +201,43 @@
       "mathContext": "Reconciles the two encodings of 'contains a cycle': the existence results hand back an explicit walk witnessing `Walk.IsCycle`, whereas the conjecture uses the length-indexed predicate `ContainsCycleLength G k`. `isCycle_containsCycleLength` turns an explicit cycle `c` into `ContainsCycleLength G c.length` by reindexing $i \\mapsto c.\\mathrm{getVert}\\, i$ and closing the wrap-around adjacency at the last vertex ($c.\\mathrm{getVert}\\, \\ell = v = c.\\mathrm{getVert}\\, 0$). `hasMinDegree_two_containsCycleLength` measures the cycle from `hasMinDegree_two_exists_cycle` to get a concrete $k \\geq 3$ (via `IsCycle.three_le_length`); `hasMinDegree_three_containsCycleLength` specializes to δ $\\geq$ 3 by $3 \\geq 2$. All axiom-free, and all prove only that *some* length $k \\geq 3$ occurs — not that $k = 2^{m}$, which is Problem 64's open core."
     },
     {
+      "id": "even-cycle-min-degree-3",
+      "title": "Even Cycle from Minimum Degree 3 (machine-checked, axiom-free)",
+      "summary": "Proves in full, without axioms, that every nonempty finite graph with δ(G) ≥ 3 contains a cycle of even length: `hasMinDegree_three_exists_even_cycle` and its `ContainsCycleLength`-restatement `hasMinDegree_three_exists_even_containsCycleLength`. The classical longest-path argument: take a path `p` of maximum length starting at `v₀`; maximality traps all ≥3 neighbours of `v₀` at distinct positive indices along `p`. Taking the two largest such indices `a < b`, closing the prefix at `a`, at `b`, and around the segment `[a,b]` produces three cycles of lengths `a+1`, `b+1`, `b-a+2`, which sum to `2b+4` — even — so they cannot all be odd, and one is even. Since every `2^k` (`k ≥ 2`) is itself even, this proves the parity half of Problem 64's necessary condition, though not the power-of-two half.",
+      "startLine": 335,
+      "endLine": 561,
+      "mathContext": "The three cycle lengths satisfy $c_1+c_2+c_3 = (a+1)+(b+1)+(b-a+2) = 2b+4$, even, so an all-odd split is impossible — at least one $c_i$ is even. Every $2^{k}$ ($k \\geq 2$) is even, so this discharges the parity-necessary-condition half of Problem 64 while leaving the power-of-two half open."
+    },
+    {
+      "id": "dirac-type-lower-bound",
+      "title": "Dirac-Type Lower Bound on Cycle Length (machine-checked, axiom-free)",
+      "summary": "Proves the quantitative companion to the parity result above: `hasMinDegree_exists_cycle_length_ge` shows minimum degree `d ≥ 2` forces a cycle of length at least `d+1`, with restatement `hasMinDegree_containsCycleLength_ge` in the `ContainsCycleLength` predicate. Reuses the same longest-path engine: the ≥d neighbours of the start vertex of a maximum-length path sit at distinct positive indices, so by pigeonhole the largest index `b` satisfies `b ≥ d` (d distinct positive integers cannot all lie below d); closing the path prefix at that index yields an explicit cycle of length `b+1 ≥ d+1`. For Problem 64 this shows minimum degree pushes the guaranteed cycle length up linearly, but a length merely `≥ d+1` is far weaker than a length exactly `2^k`, which remains the open core.",
+      "startLine": 563,
+      "endLine": 687,
+      "mathContext": "The neighbour-index set has $|T| \\geq d$ elements in $\\{1,\\ldots,b\\}$ (via `Finset.Icc 1 b`), so $d \\leq b$ by pigeonhole. Closing the maximum-length path's prefix at the largest index yields a cycle of length $b+1 \\geq d+1$ — a linear-in-$d$ guarantee, far short of the exponential target $2^{k}$."
+    },
+    {
       "id": "known-results",
       "title": "Known Cycle Results",
       "summary": "Documents in source comments the classical Dirac theorem (1952: δ ≥ n/2 → Hamiltonian) and Bondy theorem (1971: ≥ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3.",
-      "startLine": 335,
-      "endLine": 346,
+      "startLine": 688,
+      "endLine": 699,
       "mathContext": "Documents in source comments the classical Dirac theorem (1952: δ $\\geq$ n/2 → Hamiltonian) and Bondy theorem (1971: $\\geq$ n²/4 edges → pancyclic or bipartite), neither carrying a Lean declaration. These classical results show high degree forces cycles but do not resolve specific lengths at δ = 3."
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
       "summary": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ ≥ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared.",
-      "startLine": 347,
-      "endLine": 354,
+      "startLine": 700,
+      "endLine": 707,
       "mathContext": "Documents in a source comment that random graphs G(n, c/n) almost surely have δ $\\geq$ 3 and contain cycles of many lengths, offering heuristic evidence that any counterexample must be highly structured. Expository only — no axiom is declared."
     },
     {
       "id": "summary-status",
       "title": "Summary and Problem Status",
       "summary": "Closing source-comment digest of Problem 64's status (OPEN, $1000 prize): the main question (δ ≥ 3 forces a 2^k-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace.",
-      "startLine": 355,
-      "endLine": 379,
+      "startLine": 708,
+      "endLine": 732,
       "mathContext": "Closing source-comment digest of Problem 64's status (OPEN, \\$1000 prize): the main question (δ $\\geq$ 3 forces a $2^{k}$-cycle), the key results (Liu-Montgomery 2020 for large degree, the resulting disproof of Erdős-Gyárfás, the still-open δ = 3 case, and the NO answer for infinite graphs), open questions on the Liu-Montgomery threshold and 'almost counterexamples', and references. Ends the `Erdos64` namespace."
     }
   ],

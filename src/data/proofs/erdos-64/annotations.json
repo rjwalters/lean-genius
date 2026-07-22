@@ -235,8 +235,8 @@
     "id": "ann-e64-liu-mont",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 102,
-      "endLine": 105
+      "startLine": 96,
+      "endLine": 101
     },
     "type": "concept",
     "title": "Liu-Montgomery Threshold Theorem (2020)",
@@ -259,8 +259,8 @@
     "id": "ann-e64-even-cycles",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 116,
-      "endLine": 121
+      "startLine": 104,
+      "endLine": 110
     },
     "type": "concept",
     "title": "Liu-Montgomery Even Cycles Theorem",
@@ -283,8 +283,8 @@
     "id": "ann-e64-range-power",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 124,
-      "endLine": 131
+      "startLine": 111,
+      "endLine": 119
     },
     "type": "concept",
     "title": "Range Contains Power of Two",
@@ -305,8 +305,8 @@
     "id": "ann-e64-infgraph",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 136,
-      "endLine": 139
+      "startLine": 123,
+      "endLine": 127
     },
     "type": "definition",
     "title": "Infinite Graph Structure",
@@ -329,8 +329,8 @@
     "id": "ann-e64-tree",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 159,
-      "endLine": 160
+      "startLine": 142,
+      "endLine": 146
     },
     "type": "concept",
     "title": "Infinite 3-Regular Tree Exists",
@@ -353,8 +353,8 @@
     "id": "ann-e64-degree3",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 169,
-      "endLine": 172
+      "startLine": 149,
+      "endLine": 157
     },
     "type": "definition",
     "title": "Degree 3 Conjecture (Open)",
@@ -375,8 +375,8 @@
     "id": "ann-e64-dirac",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 183,
-      "endLine": 185
+      "startLine": 690,
+      "endLine": 694
     },
     "type": "concept",
     "title": "Dirac's Theorem (1952)",
@@ -399,8 +399,8 @@
     "id": "ann-e64-bondy",
     "proofId": "erdos-64",
     "range": {
-      "startLine": 192,
-      "endLine": 197
+      "startLine": 695,
+      "endLine": 699
     },
     "type": "concept",
     "title": "Bondy's Pancyclicity Theorem (1971)",
@@ -417,6 +417,54 @@
       "edgeFinset.card",
       "bipartite definition",
       "ContainsCycleLength"
+    ]
+  },
+  {
+    "id": "ann-e64-even-cycle-mindeg3",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 335,
+      "endLine": 359
+    },
+    "type": "insight",
+    "title": "Even Cycle from Minimum Degree 3 (machine-checked, axiom-free)",
+    "content": "Proves `hasMinDegree_three_exists_even_cycle`: every nonempty finite graph with $\\delta(G) \\ge 3$ contains a cycle of even length, with an explicit `SimpleGraph.Walk.IsCycle` witness. The classical longest-path argument: take a path $p$ of maximum length from $v_0$; maximality traps all $\\ge 3$ neighbours of $v_0$ at distinct positive indices along $p$. Taking the two largest such indices $a < b$, closing the prefix at $a$, at $b$, and around the segment $[a,b]$ yields three cycles of lengths $a+1$, $b+1$, $b-a+2$, summing to $2b+4$ (even) — so they cannot all be odd, and one is even.",
+    "mathContext": "$c_1 + c_2 + c_3 = (a+1) + (b+1) + (b-a+2) = 2b+4$, which is even, so an odd/odd/odd split is impossible by parity — at least one $c_i$ is even. Since every $2^k$ ($k \\ge 2$) is itself even, this proves the parity half of Problem 64's necessary condition (a $2^k$-cycle is in particular even), though not the power-of-two half, which remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "longest-path method",
+      "parity argument",
+      "even cycle",
+      "Erdős-Gyárfás conjecture"
+    ],
+    "prerequisites": [
+      "hasMinDegree_two_exists_cycle",
+      "SimpleGraph.Walk.takeUntil",
+      "SimpleGraph.Walk.IsCycle"
+    ]
+  },
+  {
+    "id": "ann-e64-dirac-type-lower-bound",
+    "proofId": "erdos-64",
+    "range": {
+      "startLine": 563,
+      "endLine": 587
+    },
+    "type": "insight",
+    "title": "Dirac-Type Lower Bound on Cycle Length (machine-checked, axiom-free)",
+    "content": "Proves `hasMinDegree_exists_cycle_length_ge`, the quantitative companion to the parity result: minimum degree $d \\ge 2$ forces a cycle of length at least $d+1$. Reuses the same longest-path engine: the $\\ge d$ neighbours of the start vertex of a maximum-length path sit at distinct positive indices, so by pigeonhole the largest index $b$ satisfies $b \\ge d$ ($d$ distinct positive integers cannot all lie below $d$); closing the path prefix at that index yields an explicit cycle of length $b+1 \\ge d+1$.",
+    "mathContext": "The neighbour-index set $T \\subseteq \\{1, \\ldots, b\\}$ (via `Finset.Icc 1 b`) has $|T| \\ge d$, so $d \\le |\\mathrm{Icc}\\,1\\,b| = b$. For Problem 64 this shows minimum degree pushes the guaranteed cycle length up linearly, but a length merely $\\ge d+1$ is far weaker than a length exactly $2^k$, which remains the open core.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "longest-path method",
+      "minimum degree",
+      "Dirac's theorem"
+    ],
+    "prerequisites": [
+      "hasMinDegree_three_exists_even_cycle",
+      "Finset.Icc",
+      "Finset.card_le_card"
     ]
   }
 ]
