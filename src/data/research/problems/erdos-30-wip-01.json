@@ -23,7 +23,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Elementary two-sided understanding now in place: upper h(N)<=sqrt(2N)+1 (Erdos-Turan) and lower h(N) unbounded via powers-of-two (log N). NEXT (harder): a polynomial sqrt(N)-order lower-bound construction (Singer/perfect difference sets, or the Erdos-Turan {2ip + (i^2 mod p)} construction) — needs modular-arithmetic Sidon infrastructure absent from Mathlib. The open N^{1/4}-error Erdos-Turan conjecture ($1000) stays a Prop.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,19 +31,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: formalized the Erdős–Turán (1941) counting UPPER bound as 6 axiom-free theorems (Erdos30WIP01.lean, Docker-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound). Bounds the gallery Sidon number: h(N) = sidonNumber N ≤ ⌊√(2N)⌋+1 ≤ √(2N)+1. The parent Erdos30Problem.lean previously left ALL bounds in comments/axioms; this converts the classical upper bound into genuine theorems. The N^{1/4} refinement and the OPEN Erdős–Turán conjecture (whether error ≤ N^ε) remain untouched.",
+    "progressSummary": "PROGRESS: Added the first GROWING lower bound / unboundedness for the Sidon number. Powers of two {2^0..2^k} are a Sidon set (isSidonSet_two_pow_range, sum-injectivity by 2-adic parity), giving h(2^k) >= k+1 and hence sidonNumber unbounded (sidonNumber_unbounded). Complements the existing Erdos-Turan upper bound h(N) <= sqrt(2N)+1; brackets 1 <= h(N) with an explicit growing family. 0-axiom, Docker-verified v4.31. The bound is only logarithmic — the sharp sqrt(N) growth (Singer difference sets) stays deep/unformalized.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
       "Erdos30WIP01.lean: sidon_card_sq_le (|A|² ≤ 2N + |A|)",
       "Erdos30WIP01.lean: sidon_card_le_sqrt (|A| ≤ ⌊√(2N)⌋+1)",
       "Erdos30WIP01.lean: sidonNumber_le_sqrt (h(N) ≤ ⌊√(2N)⌋+1) — bounds the gallery Sidon number",
-      "Erdos30WIP01.lean: sidonNumber_le_real ((h(N):ℝ) ≤ √(2N)+1)"
+      "Erdos30WIP01.lean: sidonNumber_le_real ((h(N):ℝ) ≤ √(2N)+1)",
+      "isSidonSet_two_pow_range (Erdos30WIP01.lean): {2^0..2^k} is Sidon [0-axiom]",
+      "two_pow_add_inj (Erdos30WIP01.lean): 2^i+2^j=2^p+2^q (sorted) => exponents match [0-axiom]",
+      "sidonNumber_two_pow_ge (Erdos30WIP01.lean): k+1 <= sidonNumber (2^k) [0-axiom]",
+      "sidonNumber_unbounded (Erdos30WIP01.lean): forall M, exists N, M <= sidonNumber N [0-axiom]"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
       "Clean √-form: |A|² ≤ 2N + |A| gives (|A|−1)² ≤ |A|(|A|−1) ≤ 2N, hence |A| ≤ Nat.sqrt(2N)+1; passes to the supremum sidonNumber via Finset.sup_le, giving h(N) ≤ ⌊√(2N)⌋+1 ~ √(2N).",
-      "Mathlib has NO Sidon/B₂-set API and no roots-of-unity/Vandermonde discriminant product; the counting bound is best built from Finset.offDiag_card, Int.card_Icc, and Nat.le_sqrt."
+      "Mathlib has NO Sidon/B₂-set API and no roots-of-unity/Vandermonde discriminant product; the counting bound is best built from Finset.offDiag_card, Int.card_Icc, and Nat.le_sqrt.",
+      "Powers of two {2^0,...,2^k} form a Sidon set (isSidonSet_two_pow_range): sum-injectivity via 2-adic parity (two_pow_add_inj) — factor out 2^min, then odd-vs-even cofactor / 2-vs->=4 forces exponents to match.",
+      "sidonNumber_two_pow_ge: h(2^k) >= k+1, so sidonNumber is UNBOUNDED (sidonNumber_unbounded). First growing lower bound in the file (previously only trivial h(N)>=1). Only logarithmic — sharp sqrt(N) growth needs Singer/perfect-difference-set constructions absent from Mathlib."
     ],
     "mathlibGaps": [],
     "nextSteps": [
