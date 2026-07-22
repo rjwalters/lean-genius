@@ -58,7 +58,7 @@
       "Kővári-Sós-Turán theorem",
       "Zarankiewicz problem"
     ],
-    "assumptions": "8 axiom(s). No sorries. 0 sorries remain.(s) remain.",
+    "assumptions": "8 axiom(s). No sorries. 0 sorries remain.(s) remain. Trust caveat: the named theorem `K4_minus_edge_card` is closed by `native_decide`, which introduces the `Lean.ofReduceBool` compiler-trust axiom (kernel-external); it verifies a finite edge-set decidability check on K₄ minus an edge, a finite demonstration, while the headline result rests on the explicit axiom declaration(s) above and stays kernel-checked.",
     "theoremCount": 10,
     "definitionCount": 12
   },

@@ -64,7 +64,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 336,
-    "assumptions": "4 axioms: moser_bound, nppz_bound, regular_polygon_distances, stronger_conjecture_is_false. 3 sorries.",
+    "assumptions": "4 axioms: moser_bound, nppz_bound, regular_polygon_distances, stronger_conjecture_is_false. 3 sorries. Trust caveat: the named theorem `gap_value` is closed by `native_decide`, which introduces the `Lean.ofReduceBool` compiler-trust axiom (kernel-external); it verifies the finite value currentGap 1 = 5/36, a finite demonstration, while the headline result rests on the explicit axiom declaration(s) above and stays kernel-checked.",
     "theoremCount": 6,
     "definitionCount": 9,
     "additionalFiles": [

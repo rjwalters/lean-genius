@@ -55,7 +55,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 235,
-    "assumptions": "1 axiom: h_superlinear. 0 sorries.",
+    "assumptions": "1 axiom: h_superlinear. 0 sorries. Trust caveat: the named theorem `example_coprime_pair` is closed by `native_decide`, which introduces the `Lean.ofReduceBool` compiler-trust axiom (kernel-external); it verifies the finite fact σ(14) = σ(15), a finite demonstration, while the headline result rests on the explicit axiom declaration(s) above and stays kernel-checked.",
     "theoremCount": 5,
     "definitionCount": 10
   },
