@@ -41,6 +41,10 @@ and `*`; and it wires the open conjecture to its published special cases.
    the conjecture specializes to every such `β` (`erdos_70_conjecture_imp_omega_tower`,
    `_imp_omega_tower_two`).
 
+5. `omega0_opow_iSup_omegaTower` — **`ε₀` is an epsilon number** (`ω ^ ε₀ = ε₀`):
+   the tower supremum is a fixed point of `ξ ↦ ω^ξ`, the defining property the
+   development above only stated in prose.  Proved from normality of `ω^·`.
+
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Built over the gallery defs.
 -/
 
@@ -244,6 +248,37 @@ theorem iSup_omegaTower_countable :
   apply Ordinal.iSup_lt_omega_one
   intro n
   exact isCountableOrdinal_iff_lt_omega_one.mp (omegaTower_countable n)
+
+/-- **`ε₀` is an epsilon number: `ω ^ ε₀ = ε₀`.**  The supremum `ε₀ = ⨆ₙ (ω`-tower
+`n)` is a *fixed point* of the base-`ω` exponential `ξ ↦ ω^ξ` — the defining property
+of an epsilon number, which the development above only asserts in prose.  The proof
+uses that `ω^·` is a normal function (`Ordinal.isNormal_opow Ordinal.one_lt_omega0`)
+and hence commutes with the countable supremum (`IsNormal.map_iSup`):
+
+  `ω ^ (⨆ₙ Tₙ) = ⨆ₙ ω^Tₙ = ⨆ₙ T_{n+1} = ⨆ₙ Tₙ`,
+
+the last step because `ω^Tₙ = T_{n+1}` is by definition of the tower and shifting the
+`ℕ`-index leaves the supremum unchanged (`≤` by the inflationary `x ≤ ω^x`, `≥` because
+`{T_{n+1}}` is a subfamily of `{Tₙ}`).  Combined with `iSup_omegaTower_countable`, this
+identifies `ε₀` as the *least countable* ordinal fixed by `ω^·` — the exact top of the
+exponential hierarchy the file's narrative points at. -/
+theorem omega0_opow_iSup_omegaTower :
+    Ordinal.omega0 ^ (⨆ n : ℕ, omegaTower n) = ⨆ n : ℕ, omegaTower n := by
+  have hN : Ordinal.IsNormal (Ordinal.omega0 ^ ·) :=
+    Ordinal.isNormal_opow Ordinal.one_lt_omega0
+  apply le_antisymm
+  · -- `ω^ε₀ = ⨆ₙ ω^Tₙ = ⨆ₙ T_{n+1} ≤ ⨆ₘ Tₘ`
+    rw [Order.IsNormal.map_iSup hN bddAbove_of_small]
+    apply Ordinal.iSup_le
+    intro n
+    calc Ordinal.omega0 ^ (omegaTower n) = omegaTower (n + 1) := rfl
+      _ ≤ ⨆ m : ℕ, omegaTower m := Ordinal.le_iSup omegaTower (n + 1)
+  · -- `ε₀ = ⨆ₙ Tₙ ≤ ⨆ₙ ω^Tₙ = ω^ε₀`, using `Tₙ ≤ ω^Tₙ` and monotonicity of `ω^·`
+    apply Ordinal.iSup_le
+    intro n
+    calc omegaTower n ≤ Ordinal.omega0 ^ (omegaTower n) := hN.le_apply
+      _ ≤ Ordinal.omega0 ^ (⨆ m : ℕ, omegaTower m) :=
+          Ordinal.opow_le_opow_right Ordinal.omega0_pos (Ordinal.le_iSup omegaTower n)
 
 /-- The open conjecture specializes all the way to `ε₀`: `𝔠 → (ε₀, n)₂³`, using the
 countability witness `iSup_omegaTower_countable`.  Every ordinal in the naturally-described
