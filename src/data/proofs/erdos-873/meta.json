@@ -41,15 +41,15 @@
     ],
     "originalContributions": [
       "Definition of consecutive LCM counting function F(A,X,k)",
-      "Formal statement of the open conjecture",
-      "Axioms for Erdős-Szemerédi bounds on F(A,X,3)",
+      "Formal statement of the open conjecture as a `Prop` (`lcmConjecture`)",
+      "Documentation of the Erdős-Szemerédi bounds on F(A,X,3) (recorded in source comments; not formalized as axioms or theorems)",
       "Verified examples for natural and exponential sequences"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 148,
     "assumptions": [
-      "erdos_szemeredi_upper: F(A,X,3) ≪ X^{1/3} log X for all strictly increasing A — Erdős-Szemerédi (1992)",
-      "erdos_szemeredi_lower: There exists A with F(A,X,3) ≫ X^{1/3} log X infinitely often — Erdős-Szemerédi (1992)"
+      "Lean.ofReduceBool — the named theorem `consecutiveLcm_powers_of_two` is discharged with `native_decide` in its base cases, which trusts the Lean compiler's kernel evaluation rather than producing a checked proof term. This compiler-trust footprint is the only assumption the formalization introduces (there are no `axiom` declarations in the source).",
+      "The Erdős-Szemerédi (1992) bounds for k=3 (upper F(A,X,3) ≪ X^{1/3} log X for all strictly increasing A; matching lower bound ≫ X^{1/3} log X infinitely often) are documented in the source as background context — they are NOT formalized as Lean axioms or theorems."
     ],
     "dateAdded": "2025-12-22",
     "prerequisites": [
@@ -65,7 +65,7 @@
     "historicalContext": "This problem was posed by Erdős and Szemerédi in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^ε.\n\nErdős and Szemerédi proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
     "problemStatement": "**Conjecture (Erdős-Szemerédi)**: Let $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count positions $i$ where $[a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X$ (LCM of $k$ consecutive terms).\n\nFor every $\\varepsilon > 0$, does there exist $k$ such that $F(A,X,k) < X^\\varepsilon$?\n\n**Status**: OPEN\n\n**Known**: For $k=3$, we have $F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and this is tight.",
     "text": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
-    "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: State the Erdős-Szemerédi theorem for k=3 as axioms.\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2).",
+    "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: Document the Erdős-Szemerédi theorem for k=3 in source commentary (not formalized as axioms or theorems).\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2). The powers-of-2 theorem uses `native_decide`, so it carries the `Lean.ofReduceBool` compiler-trust axiom.",
     "keyInsights": [
       "**Multiplicative dependence**: The LCM measures how much consecutive terms share prime factors. Small LCM means high dependence.",
       "**Window size tradeoff**: Larger k means the LCM includes more terms, so it grows faster and F(A,X,k) shrinks.",
@@ -118,7 +118,7 @@
       "title": "Known Results",
       "startLine": 96,
       "endLine": 117,
-      "summary": "Axiomatizes Erdős-Szemerédi bounds for $k=3$: upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
+      "summary": "Documents the Erdős-Szemerédi bounds for $k=3$ in source commentary (not formalized): upper bound $F(A,X,3) \\ll X^{1/3} \\log X$ and matching lower bound showing tightness.",
       "mathContext": "$F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and $\\exists A$ with $F(A,X,3) \\gg X^{1/3} \\log X$ infinitely often. The exponent $1/3$ is optimal for $k = 3$."
     },
     {
