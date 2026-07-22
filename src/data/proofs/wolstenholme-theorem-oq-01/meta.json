@@ -62,7 +62,7 @@
       "Axiom elimination: cb_16843 proved via choose_fast, reducing axiom count from 4 to 3"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "3 axiom(s): cb_2124679 (binomial too large for native_decide in reasonable time), no_wp_below_billion (McIntosh-Roettger 2007 search), bernoulli_characterization (McIntosh 1995 equivalence). cb_16843 proved via choose_fast + native_decide. No sorries.",
+    "assumptions": "3 axiom(s): cb_2124679 (binomial too large for native_decide in reasonable time), no_wp_below_billion (McIntosh-Roettger 2007 search), bernoulli_characterization (McIntosh 1995 equivalence). Additionally, native_decide (relying on the Lean.ofReduceBool compiled-evaluation trust axiom) is used in 8 places across 6 named theorems: prime_16843 and prime_2124679 (primality), cb_16843 (the mod p⁴ congruence, via choose_fast), wp_ge_five (refuting IsWP 2 and IsWP 3), and isWieferich_1093 / isWieferich_3511 (the two Wieferich witnesses). Consequently the headline results isWP_16843 and at_least_two_wp depend on Lean.ofReduceBool; #print axioms lists it. No sorries.",
     "prerequisites": [
       "Binomial coefficients and Wolstenholme's theorem",
       "Bernoulli numbers and irregular primes",
