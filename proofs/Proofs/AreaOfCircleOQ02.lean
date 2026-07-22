@@ -153,8 +153,14 @@ theorem unitBallVolume_four : unitBallVolume 4 = π ^ 2 / 2 := by
 
 /-- The n-ball volume scales as rⁿ times the unit ball volume.
     This is an axiom because the direct Mathlib formulation requires
-    careful handling of EuclideanSpace / PiLp volume theorems. -/
-axiom nball_volume_scaling (n : ℕ) (r : ℝ) (hr : 0 ≤ r) :
+    careful handling of EuclideanSpace / PiLp volume theorems.
+
+    Requires `n ≥ 1`: at `n = 0, r = 0`, `EuclideanSpace ℝ (Fin 0)` is a
+    single point so `ball 0 0 = ∅` has volume `0`, while `0 ^ 0 = 1` in `ℝ`
+    would force the RHS to be `unitBallVolume 0 = 1` — a `0 = 1`
+    contradiction. See `AreaOfCircleOQ02OQ01.lean` for the n ≥ 1 proof and
+    the explicit disproof at n = 0. -/
+axiom nball_volume_scaling (n : ℕ) (hn : 0 < n) (r : ℝ) (hr : 0 ≤ r) :
     MeasureTheory.volume (ball (0 : EuclideanSpace ℝ (Fin n)) r) =
     ENNReal.ofReal (r ^ n * unitBallVolume n)
 
@@ -162,7 +168,8 @@ axiom nball_volume_scaling (n : ℕ) (r : ℝ) (hr : 0 ≤ r) :
 theorem area_scaling_2d (r : ℝ) (hr : 0 ≤ r) :
     MeasureTheory.volume (ball (0 : EuclideanSpace ℝ (Fin 2)) (2 * r)) =
     4 * MeasureTheory.volume (ball (0 : EuclideanSpace ℝ (Fin 2)) r) := by
-  rw [nball_volume_scaling 2 (2 * r) (by linarith), nball_volume_scaling 2 r hr]
+  rw [nball_volume_scaling 2 (by norm_num) (2 * r) (by linarith),
+      nball_volume_scaling 2 (by norm_num) r hr]
   simp [unitBallVolume_two]
   rw [show (2 * r) ^ 2 * π = 4 * (r ^ 2 * π) by ring]
   rw [ENNReal.ofReal_mul (by norm_num : (0:ℝ) ≤ 4), ENNReal.ofReal_ofNat]
