@@ -301,8 +301,8 @@
     },
     "type": "concept",
     "title": "primeSquares3mod4_is_good (Fully Proved)",
-    "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, using Dirichlet's theorem as axiom + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~√N/log N.",
-    "mathContext": "Infiniteness: the map $p \\mapsto p^2$ is injective on $\\{p : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$, and this set is infinite by Dirichlet's theorem (axiomatized as $\\texttt{infinitely\\_many\\_primes\\_3mod4}$). So the image $\\{p^2\\}$ is infinite. Combined with $\\texttt{primeSquares3mod4\\_divisibility\\_free}$: the conjunction gives a fully-verified example.",
+    "content": "Combines two proved results: primeSquares3mod4_infinite (the set is infinite, from infinitely_many_primes_3mod4 + injectivity of squaring) and primeSquares3mod4_divisibility_free (the set satisfies the property, via quadratic residue argument). This provides a concrete infinite divisibility-free set with growth ~√N/log N.",
+    "mathContext": "Infiniteness: the map $p \\mapsto p^2$ is injective on $\\{p : p \\equiv 3 \\pmod{4},\\; p \\text{ prime}\\}$, and this set is infinite by $\\texttt{infinitely\\_many\\_primes\\_3mod4}$ — a proved theorem, derived from Mathlib's $\\texttt{Nat.infinite\\_setOf\\_prime\\_and\\_modEq}$ (Dirichlet in arithmetic progressions), not an axiom. So the image $\\{p^2\\}$ is infinite. Combined with $\\texttt{primeSquares3mod4\\_divisibility\\_free}$: the conjunction gives a fully-verified example.",
     "significance": "key",
     "relatedConcepts": [
       "Set.Infinite",
