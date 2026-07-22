@@ -29,6 +29,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1117",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1117 on maximum-modulus points of an entire function on circles $|z|=r$: whether $\\limsup \\nu(r) = \\infty$ (YES, Herzog\u2013Piranian 1968) and whether $\\liminf \\nu(r) = \\infty$ (OPEN, approximated by Gl\u00fccksam\u2013Pardo-Sim\u00f3n 2024).",
+      "startLine": 1,
+      "endLine": 21,
+      "mathContext": "$\\nu(r)$ counts points on $|z|=r$ where $|f(z)|$ attains $M(r) = \\max_{|z|=r}|f(z)|$; for a monomial every point is maximal so $\\nu(r)=\\infty$, while for non-monomials $\\nu(r)$ is finite and the question concerns how it can grow."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 22,
