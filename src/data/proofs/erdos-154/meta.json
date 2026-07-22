@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-154",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #154, proved by Lindstr\u00f6m (1998) and strengthened by Kolountzakis (1999): for a Sidon set $A \\subset \\{1,\\dots,N\\}$ with $|A| \\sim N^{1/2}$, the sumset $A+A$ is well-distributed over small moduli, in particular split roughly evenly between even and odd.",
+      "startLine": 1,
+      "endLine": 22,
+      "mathContext": "A Sidon set has all pairwise sums distinct; the Sidon property is the key structural input that forces the modular equidistribution of $A+A$ beyond what holds for arbitrary sets of the same density."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `Data.Nat.Basic` and `Data.Finset.Basic` for finite set operations on $\\mathbb{N}$. Opens the `Erdos154` namespace.",
