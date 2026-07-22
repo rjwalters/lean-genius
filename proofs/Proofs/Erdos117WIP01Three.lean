@@ -91,15 +91,15 @@ universe u
 theorem eq_top_or_eq_top_of_cover {G : Type*} [Group G] {H K : Subgroup G}
     (hcov : ∀ g : G, g ∈ H ∨ g ∈ K) : H = ⊤ ∨ K = ⊤ := by
   by_contra hne
-  push_neg at hne
+  push Not at hne
   obtain ⟨hH, hK⟩ := hne
   obtain ⟨x, hx⟩ : ∃ x, x ∉ H := by
     by_contra hall
-    push_neg at hall
+    push Not at hall
     exact hH ((Subgroup.eq_top_iff' H).mpr hall)
   obtain ⟨y, hy⟩ : ∃ y, y ∉ K := by
     by_contra hall
-    push_neg at hall
+    push Not at hall
     exact hK ((Subgroup.eq_top_iff' K).mpr hall)
   have hxK : x ∈ K := (hcov x).resolve_left hx
   have hyH : y ∈ H := (hcov y).resolve_right hy
@@ -196,7 +196,7 @@ theorem three_le_abelianCoverNumber {n : ℕ} (hn : 3 ≤ n)
     (hne : ∃ k, CoversWithAbelian.{u} k n) :
     3 ≤ abelianCoverNumber.{u} n := by
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   have hneSet : {k | CoversWithAbelian.{u} k n}.Nonempty := hne
   have hmem : CoversWithAbelian.{u} (abelianCoverNumber.{u} n) n := Nat.sInf_mem hneSet
   have hle : abelianCoverNumber.{u} n ≤ 2 := by omega

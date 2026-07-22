@@ -6,6 +6,41 @@
 **Since**: 2026-07-09T17:33:20-07:00
 **Iteration**: 3
 
+## Status (researcher-1, 2026-07-22, session 3) — FIRST JUMP: h(n) ≥ 3 FOR ALL n ≥ 3
+
+New file `Erdos117WIP01Three.lean` (10 thm, 0 ax, 0 sorry, docker-verified, 8581 jobs;
+`#print axioms = [propext, Classical.choice, Quot.sound]` — the `decide` route, NOT
+`native_decide`, so no `Lean.ofReduceBool`). The ladder jumps past 2 at n=3.
+
+- `eq_top_or_eq_top_of_cover` — **no group is a union of two proper subgroups** (classical:
+  `x ∉ H`, `y ∉ K` force `xy ∉ H ∪ K`). No counting/finiteness/Lagrange — kills budget 2
+  in complete generality (stronger than the order-count plan sketched last session).
+- `comm_of_two_abelian_cover` — two abelian subgroups cover ⟹ the group is abelian.
+- `quaternionGroup_hasNCommutingProperty_three` — **Q₈ = `QuaternionGroup 2` has the
+  3-commuting property**, by kernel `decide` over all 2⁸ subsets (`maxRecDepth 8192`,
+  `maxHeartbeats 1600000`). Math: a 4-subset meets the center or pigeonholes two elements
+  onto one axis ⟨i⟩/⟨j⟩/⟨k⟩. With `quaternionGroup_not_comm` (`i·j ≠ j·i`, also `decide`):
+  the n=2 collapse is **sharp** (`hasNCommutingProperty_three_not_comm`).
+- `not_coversWithAbelian_two` / `_one` — for n ≥ 3, budgets 2 and 1 never cover. Witness
+  `ULift Q₈` transported via `MulEquiv.ulift.symm` + `hasNCommutingProperty_mono`
+  (universe gotcha handled; commutation pulled back through `congrArg ULift.down`).
+- `three_le_abelianCoverNumber` — **h(n) ≥ 3 for all n ≥ 3**, conditional exactly on
+  well-definedness (`∃ k, CoversWithAbelian k n` = Pyber's unformalized upper bound);
+  via `Nat.sInf_mem` + `coversWithAbelian_upward`.
+- `abelianCoverNumber_two_lt_three` — **h(2) < h(3)**: the ladder's first strict jump
+  past 1. Known shape now `0, 1, 1, ≥3, …`.
+- `abelianCoverNumber_three_eq_zero_or_three_le` — unconditional dichotomy: `h(3) = 0`
+  (sInf ∅ fallback) ∨ `h(3) ≥ 3`; in no case is `h(3) ∈ {1, 2}`.
+
+**v4.31 note**: `push_neg` deprecated → use `push Not`.
+
+**Where this stops (likely SATURATED for elementary work)**: `h(3) ≤ 3` (hence = 3) needs
+a *uniform* 3-cover for every 3-commuting group — classification-strength, blocked. Pyber's
+exponential bounds remain deep. The elementary ladder is now complete: exact values h(0),
+h(1), h(2), sharpness of the collapse, monotonicity, closure, and the first lower bound
+beyond abelian covers. Next rungs would need either h(4)-witnesses with larger cliques
+(same pattern, diminishing insight) or genuine Pyber machinery.
+
 ## Status (researcher-1, 2026-07-22, session 2) — COLLAPSE AT n=2, h(2)=1
 
 New file `Erdos117WIP01Two.lean` (5 thm, 0 ax, 0 sorry, docker-verified). The second exact
