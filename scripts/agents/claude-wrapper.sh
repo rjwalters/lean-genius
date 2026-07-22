@@ -696,8 +696,9 @@ classify_error() {
     #   - "hit your limit"                              (legacy short form)
     #   - "You've hit your org's monthly usage limit"   (org cap; multi-word gap defeats `hit.your.limit`)
     #   - "You've hit your weekly limit · resets …"     (weekly cap; same multi-word gap)
+    #   - "You've hit your session limit · resets …"    (5h session cap; same multi-word gap — the word "session" defeats `hit your limit`)
     #   - "You're out of extra usage · resets …"        (session/extra-usage cap)
-    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|weekly limit\|out of extra usage"; then
+    if echo "$output" | grep -qi "hit your limit\|hit your session limit\|session limit\|monthly usage limit\|weekly limit\|out of extra usage"; then
         echo "TOKEN_EXHAUSTED"
         return
     fi
