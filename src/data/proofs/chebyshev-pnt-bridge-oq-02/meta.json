@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Explicit Real-Valued PNT Bounds from Chebyshev Power Bound",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "States the lower bound n·log(4) − log(2n+1) ≤ π(2n)·log(2n) derived from the Chebyshev integer power bound, together with the previously-established upper bound, giving explicit constants log(2) and 2·log(4) sandwiching π(x)·log(x)/x — Chebyshev's 1852 result establishing π(x) = Θ(x/log x).",
+      "mathContext": "$n\\log 4 - \\log(2n+1) \\le \\pi(2n)\\log(2n)$ combined with the upper bound $\\pi(N) \\le 2N\\log 4/\\log N + \\sqrt N + 1$ gives $\\log 2 \\le \\liminf \\pi(2n)\\log(2n)/n \\le \\limsup \\pi(n)\\log(n)/n \\le 2\\log 4$."
+    },
+    {
       "id": "lower-log",
       "title": "Lower Bound (Log Form)",
       "startLine": 59,
