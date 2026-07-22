@@ -294,4 +294,131 @@ theorem exists_sublevelMeasure_eq_pi (hn : n ≠ 0) :
     ∃ P : UnitDiskPoly n, sublevelMeasure P = Real.pi :=
   ⟨allRootsZero n, sublevelMeasure_allRootsZero hn⟩
 
+/-! ## First quantitative bounds: `π / 9 ^ n ≤ sublevelMeasure P ≤ 4 · π`
+
+Everything above pins `0 < sublevelMeasure P < ∞` and computes exact values at
+special configurations, but gives no quantitative control for an *arbitrary*
+`P : UnitDiskPoly n`.  This section proves the first two-sided quantitative
+bounds — the same shape as the deep targets, with elementary constants:
+
+* **Upper bound `4π`** (weak Pólya): `Sₚ ⊆ closedBall 0 2`
+  (`sublevelSet_subset_closedBall`), and the disk of radius `2` has area `4π`.
+  Pólya's sharp constant `π` needs potential theory and stays open here.
+* **Lower bound `π/9ⁿ`** (weak Pommerenke): the ball of radius `3⁻ⁿ` around any
+  root lies inside the lemniscate — for `z` in that ball the distinguished
+  factor is `< 3⁻ⁿ`, while each of the `n - 1` other factors satisfies
+  `‖z - zⱼ‖ ≤ ‖z - zᵢ‖ + ‖zᵢ - zⱼ‖ < 3⁻ⁿ + 2 ≤ 3`, so
+  `‖p(z)‖ < 3⁻ⁿ · 3^(n-1) = 1/3 < 1`.  Hence `μ(Sₚ) ≥ π · 9⁻ⁿ`.
+
+Pommerenke's `c/n⁴` and KLR's sharp `c/log n` require logarithmic potential
+theory; `π/9ⁿ` is what the bare triangle inequality yields, and it is the first
+positive quantitative lower bound in this development. -/
+
+/-- **`sublevelMeasure` is the `toReal` of the `ℂ`-side lemniscate volume.**  The
+parent's `ℝ × ℝ` sublevel set is the volume-preserving image of `Sₚ` under
+`ℂ ≃ᵐ ℝ × ℝ`, so its measure agrees with `volume Sₚ`.  Deduplicates the transport
+used in the exact-area computations above and lets the quantitative bounds below
+work entirely on the `ℂ` side. -/
+theorem sublevelMeasure_eq_toReal_volume (P : UnitDiskPoly n) :
+    sublevelMeasure P = (volume P.sublevelSet).toReal := by
+  rw [sublevelMeasure, P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+
+/-- **Weak Pólya upper bound: `sublevelMeasure P ≤ 4π`.**  The lemniscate sits
+inside `closedBall 0 2` (`sublevelSet_subset_closedBall`), whose area is `4π`.
+This is the first quantitative upper bound valid for every `P`; Pólya's sharp
+constant `π` (attained by `zⁿ`, see `sublevelMeasure_allRootsZero`) is the deep
+open content. -/
+theorem sublevelMeasure_le_four_pi (P : UnitDiskPoly n) :
+    sublevelMeasure P ≤ 4 * Real.pi := by
+  rw [P.sublevelMeasure_eq_toReal_volume]
+  have hfin : volume (Metric.closedBall (0 : ℂ) 2) ≠ ⊤ :=
+    (isCompact_closedBall (0 : ℂ) 2).measure_lt_top.ne
+  have hmono : volume P.sublevelSet ≤ volume (Metric.closedBall (0 : ℂ) 2) :=
+    measure_mono P.sublevelSet_subset_closedBall
+  calc (volume P.sublevelSet).toReal
+      ≤ (volume (Metric.closedBall (0 : ℂ) 2)).toReal := ENNReal.toReal_mono hfin hmono
+    _ = 4 * Real.pi := by
+        rw [Complex.volume_closedBall, ENNReal.toReal_mul, ENNReal.toReal_pow,
+          ENNReal.toReal_ofReal (by norm_num : (0:ℝ) ≤ 2), ENNReal.coe_toReal,
+          NNReal.coe_real_pi]
+        ring
+
+/-- **A ball of radius `3⁻ⁿ` around any root lies inside the lemniscate.**  For
+`z ∈ ball zᵢ 3⁻ⁿ`, split off the distinguished factor `‖z - zᵢ‖ < 3⁻ⁿ`; each of
+the `n - 1` remaining factors satisfies
+`‖z - zⱼ‖ ≤ ‖z - zᵢ‖ + ‖zᵢ - zⱼ‖ < 3⁻ⁿ + 2 ≤ 3`, so
+`‖p(z)‖ < 3⁻ⁿ · 3^(n-1) = 1/3 < 1`.  (The argument `i : Fin n` forces `n ≥ 1`.) -/
+theorem ball_subset_sublevelSet (P : UnitDiskPoly n) (i : Fin n) :
+    Metric.ball (P.roots i) (1 / 3 ^ n) ⊆ P.sublevelSet := by
+  intro z hz
+  rw [Metric.mem_ball, dist_eq_norm] at hz
+  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, (Nat.succ_pred_eq_of_pos i.pos).symm⟩
+  show ‖P.eval z‖ < 1
+  rw [UnitDiskPoly.eval, norm_prod,
+    ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]
+  have hrpos : (0:ℝ) < 3 ^ (m + 1) := by positivity
+  have hr1 : (1:ℝ) / 3 ^ (m + 1) ≤ 1 := by
+    rw [div_le_one hrpos]
+    exact one_le_pow₀ (by norm_num)
+  have hrest : ∏ j ∈ Finset.univ.erase i, ‖z - P.roots j‖ ≤ 3 ^ m := by
+    have hcard : (Finset.univ.erase i).card = m := by
+      simp [Finset.card_erase_of_mem]
+    calc ∏ j ∈ Finset.univ.erase i, ‖z - P.roots j‖
+        ≤ ∏ _j ∈ Finset.univ.erase i, (3:ℝ) := by
+          refine Finset.prod_le_prod (fun j _ => norm_nonneg _) (fun j _ => ?_)
+          have hij : ‖P.roots i - P.roots j‖ ≤ 2 := by
+            have h1 : ‖P.roots i‖ ≤ 1 := P.roots_in_disk i
+            have h2 : ‖P.roots j‖ ≤ 1 := P.roots_in_disk j
+            calc ‖P.roots i - P.roots j‖
+                ≤ ‖P.roots i‖ + ‖P.roots j‖ := norm_sub_le _ _
+              _ ≤ 2 := by linarith
+          calc ‖z - P.roots j‖
+              = ‖(z - P.roots i) + (P.roots i - P.roots j)‖ := by
+                rw [sub_add_sub_cancel]
+            _ ≤ ‖z - P.roots i‖ + ‖P.roots i - P.roots j‖ := norm_add_le _ _
+            _ ≤ 3 := by linarith
+      _ = 3 ^ m := by rw [Finset.prod_const, hcard]
+  have h3m : (0:ℝ) < 3 ^ m := by positivity
+  calc ‖z - P.roots i‖ * ∏ j ∈ Finset.univ.erase i, ‖z - P.roots j‖
+      ≤ ‖z - P.roots i‖ * 3 ^ m := mul_le_mul_of_nonneg_left hrest (norm_nonneg _)
+    _ < 1 / 3 ^ (m + 1) * 3 ^ m := mul_lt_mul_of_pos_right hz h3m
+    _ = 1 / 3 := by
+        have h3m' : (3:ℝ) ^ m ≠ 0 := ne_of_gt h3m
+        rw [pow_succ]
+        field_simp
+    _ < 1 := by norm_num
+
+/-- **Weak Pommerenke lower bound: `π / 9 ^ n ≤ sublevelMeasure P`.**  The
+lemniscate contains a ball of radius `3⁻ⁿ` around each root
+(`ball_subset_sublevelSet`), and that ball has area `π · 9⁻ⁿ`.  This is the
+first positive quantitative lower bound valid for every `P` — exponentially
+weaker than Pommerenke's `c/n⁴` and KLR's sharp `c/log n` (both requiring
+potential theory), but fully machine-checked. -/
+theorem pi_div_pow_le_sublevelMeasure (P : UnitDiskPoly n) (hn : 0 < n) :
+    Real.pi / 9 ^ n ≤ sublevelMeasure P := by
+  rw [P.sublevelMeasure_eq_toReal_volume]
+  have hmono : volume (Metric.ball (P.roots ⟨0, hn⟩) (1 / 3 ^ n)) ≤ volume P.sublevelSet :=
+    measure_mono (P.ball_subset_sublevelSet ⟨0, hn⟩)
+  have hfin : volume P.sublevelSet ≠ ⊤ := P.volume_sublevelSet_lt_top.ne
+  have hle := ENNReal.toReal_mono hfin hmono
+  rw [Complex.volume_ball, ENNReal.toReal_mul, ENNReal.toReal_pow,
+    ENNReal.toReal_ofReal (by positivity : (0:ℝ) ≤ 1 / 3 ^ n), ENNReal.coe_toReal,
+    NNReal.coe_real_pi] at hle
+  refine le_trans (le_of_eq ?_) hle
+  have h32 : ((3:ℝ) ^ n) ^ 2 = 9 ^ n := by
+    rw [← pow_mul, Nat.mul_comm n 2, pow_mul]
+    norm_num
+  rw [div_pow, one_pow, h32]
+  ring
+
+/-- **First two-sided quantitative control of the lemniscate area:**
+`π / 9ⁿ ≤ sublevelMeasure P ≤ 4π` for every degree-`n ≥ 1` polynomial with
+roots in the closed unit disk.  The deep content of Erdős #116 is narrowing
+this window to `[c / log n, π]` (KLR lower bound + Pólya upper bound). -/
+theorem sublevelMeasure_mem_Icc (P : UnitDiskPoly n) (hn : 0 < n) :
+    sublevelMeasure P ∈ Set.Icc (Real.pi / 9 ^ n) (4 * Real.pi) :=
+  ⟨P.pi_div_pow_le_sublevelMeasure hn, P.sublevelMeasure_le_four_pi⟩
+
 end UnitDiskPoly

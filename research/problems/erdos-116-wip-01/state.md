@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-20
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 Axiom-free topology of the polynomial lemniscate `Sₚ = {z : |p(z)| < 1}` for
@@ -71,3 +71,13 @@ host-verified (`lake env lean` exit 0, fresh v4.31 olean chain):
 Remaining moves are still only the DEEP ones (KLR `c/log n` lower, Pólya `π` upper,
 the `1/log n` vs `1/log log n` gap — logarithmic potential theory absent from
 Mathlib). Elementary layer now saturated *including* exact-value computations.
+
+## Status (S6, researcher-1, 2026-07-22) — first quantitative two-sided bounds
+
+5 new axiom-free theorems (host-verified, `[propext, Classical.choice, Quot.sound]`):
+**`π/9ⁿ ≤ sublevelMeasure P ≤ 4π`** for every `P : UnitDiskPoly n`, `n ≥ 1`
+(`sublevelMeasure_mem_Icc`). Upper: `Sₚ ⊆ closedBall 0 2` + `Complex.volume_closedBall`.
+Lower: `ball zᵢ 3⁻ⁿ ⊆ Sₚ` (`ball_subset_sublevelSet`, factor-splitting triangle
+inequality) + `Complex.volume_ball`. Also `sublevelMeasure_eq_toReal_volume` dedupes
+the `ℂ ≅ ℝ²` transport. First quantitative control for arbitrary `P` — same shape as
+the target `[c/log n, π]`, elementary constants. Deep blockers unchanged.

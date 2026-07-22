@@ -168,3 +168,45 @@ logarithmic-potential / area-of-lemniscate machinery absent from Mathlib.
   formalizes that the conjectured maximizer attains π at every degree.
 - Lean idiom: membership in `sublevelSet` is defeq to `‖P.eval z‖ < 1` (the parent's
   `Complex.abs` compat def unfolds by `rfl`); `show ‖_‖ < 1` converts cleanly.
+
+## Session 2026-07-22 (researcher-1, iter 3 ACT): first quantitative two-sided bounds
+
+**Outcome**: progress — 5 new axiom-free theorems in `Erdos116WIP01.lean`
+(host-verified `lake env lean` exit 0, `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` on all five). First *quantitative*
+control for arbitrary `P`: **`π/9ⁿ ≤ sublevelMeasure P ≤ 4π`** — same shape as
+the target `[c/log n, π]`, elementary constants.
+
+### What was added (namespace `UnitDiskPoly`)
+- `sublevelMeasure_eq_toReal_volume` — `sublevelMeasure P = (volume Sₚ).toReal`;
+  dedupes the ℂ ≅ ℝ×ℝ transport (all later bounds work purely on the ℂ side).
+- `sublevelMeasure_le_four_pi` — weak Pólya: `Sₚ ⊆ closedBall 0 2` +
+  `Complex.volume_closedBall` (area `4π`), `ENNReal.toReal_mono` with the
+  compact-ball finiteness.
+- `ball_subset_sublevelSet (i : Fin n)` — `ball zᵢ 3⁻ⁿ ⊆ Sₚ`: split the
+  distinguished factor off via `Finset.mul_prod_erase`; the other `n-1` factors
+  are `≤ 3` by `‖z-zⱼ‖ ≤ ‖z-zᵢ‖ + ‖zᵢ-zⱼ‖ < 3⁻ⁿ + 2`; product
+  `< 3⁻ⁿ·3ⁿ⁻¹ = 1/3 < 1`.
+- `pi_div_pow_le_sublevelMeasure` — weak Pommerenke: `π/9ⁿ ≤ sublevelMeasure P`
+  via `Complex.volume_ball` at radius `3⁻ⁿ`.
+- `sublevelMeasure_mem_Icc` — headline: `sublevelMeasure P ∈ Icc (π/9ⁿ) (4π)`.
+
+### Reusable Lean recipes
+- Split one factor from a `Finset.univ` product: `rw [← Finset.mul_prod_erase
+  Finset.univ _ (Finset.mem_univ i)]`; `(univ.erase i).card = m` for `Fin (m+1)`
+  closes with `simp [Finset.card_erase_of_mem]`.
+- `n = m + 1` from `i : Fin n`: `obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 :=
+  ⟨n - 1, (Nat.succ_pred_eq_of_pos i.pos).symm⟩`.
+- `(ENNReal.ofReal r ^ 2 * NNReal.pi).toReal` unpacks with `ENNReal.toReal_mul`,
+  `ENNReal.toReal_pow`, `ENNReal.toReal_ofReal`, `ENNReal.coe_toReal`,
+  `NNReal.coe_real_pi`.
+- `((3:ℝ)^n)^2 = 9^n`: `rw [← pow_mul, Nat.mul_comm n 2, pow_mul]; norm_num`.
+
+### Remaining open (unchanged)
+Narrowing `[π/9ⁿ, 4π]` to `[c/log n, π]` is the deep content: Pólya's sharp `π`
+and KLR's `c/log n` both need logarithmic-potential machinery absent from
+Mathlib. Next elementary increments could be: polynomial-in-`n` lower bound via
+covering by root clusters (probably still exponential without potential theory),
+or the `n = 1` sharpness statement `sublevelMeasure P = π` for all degree-1 `P`
+(already done) extended to a monotonicity/continuity statement of the area
+functional in the roots.
