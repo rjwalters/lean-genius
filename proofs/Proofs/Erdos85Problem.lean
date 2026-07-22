@@ -1656,6 +1656,148 @@ theorem containsC4_of_nine_one_four {G : SimpleGraph (Fin 9)}
   rw [hinterR]
   omega
 
-end Erdos85
+/-- **Degree pinch for `f(9)`.**  On `9` vertices, `C₄`-free with `δ ≥ 3`, every
+degree is `3` or `4` and the number `k` of degree-`4` vertices is `1` or `3`.
+Cherry counting (`Σᵥ C(d(v),2) ≤ C(9,2) = 36`): degree `≥ 6` alone gives
+`15 + 8·3 = 39 > 36`; degree `5` forces by handshake parity a second vertex of
+degree `≥ 4`, giving `10 + 6 + 7·3 = 37 > 36`.  Then `Σ d(v) = 27 + k` must be
+even (`k` odd) and `Σ C(d(v),2) = 27 + 3k ≤ 36` (`k ≤ 3`). -/
+theorem nine_degree_pinch {G : SimpleGraph (Fin 9)} [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 9) G) (hmin : ∀ v, 3 ≤ G.degree v) :
+    (∀ v, G.degree v ≤ 4) ∧
+      ((Finset.univ.filter (fun v => G.degree v = 4)).card = 1 ∨
+       (Finset.univ.filter (fun v => G.degree v = 4)).card = 3) := by
+  -- cherry bound
+  have hcherry : ∑ v : Fin 9, (G.degree v).choose 2 ≤ 36 := by
+    by_contra h
+    rw [not_le] at h
+    refine hfree (containsC4_of_card_choose_two_lt G ?_)
+    rw [Fintype.card_fin]
+    have h92 : Nat.choose 9 2 = 36 := by decide
+    omega
+  -- generic single-vertex split: `Σ ≥ C(d(v),2) + 3·8`
+  have hsplit1 : ∀ v : Fin 9,
+      (G.degree v).choose 2 + 24 ≤ ∑ u : Fin 9, (G.degree u).choose 2 := by
+    intro v
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v)]
+    have h24 : 24 ≤ ∑ u ∈ Finset.univ.erase v, (G.degree u).choose 2 := by
+      calc (24 : ℕ) = (Finset.univ.erase v).card * 3 := by
+            rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+              Fintype.card_fin]
+        _ = ∑ _u ∈ Finset.univ.erase v, 3 := by
+            rw [Finset.sum_const, smul_eq_mul]
+        _ ≤ ∑ u ∈ Finset.univ.erase v, (G.degree u).choose 2 :=
+            Finset.sum_le_sum (fun u _ => Nat.choose_le_choose 2 (hmin u))
+    omega
+  -- no vertex of degree ≥ 6
+  have hle5 : ∀ v, G.degree v ≤ 5 := by
+    intro v
+    by_contra h
+    rw [not_le] at h
+    have h15 : 15 ≤ (G.degree v).choose 2 :=
+      le_trans (by decide : 15 ≤ Nat.choose 6 2) (Nat.choose_le_choose 2 h)
+    have := hsplit1 v
+    omega
+  -- handshake
+  have hhs := SimpleGraph.sum_degrees_eq_twice_card_edges G
+  -- no vertex of degree exactly 5
+  have hle4 : ∀ v, G.degree v ≤ 4 := by
+    intro v
+    by_contra h
+    rw [not_le] at h
+    have hd5 : G.degree v = 5 := le_antisymm (hle5 v) h
+    -- a second vertex of degree ≥ 4 must exist, else the degree sum is odd
+    have hsecond : ∃ u, u ≠ v ∧ 4 ≤ G.degree u := by
+      by_contra hno
+      push Not at hno
+      have hall3 : ∀ u ∈ Finset.univ.erase v, G.degree u = 3 := by
+        intro u hu
+        have hne := (Finset.mem_erase.mp hu).1
+        have := hno u hne
+        have := hmin u
+        omega
+      have hsum : ∑ u : Fin 9, G.degree u = 29 := by
+        rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v), hd5,
+          Finset.sum_congr rfl hall3, Finset.sum_const,
+          Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+          Fintype.card_fin, smul_eq_mul]
+      omega
+    obtain ⟨u, huv, hu4⟩ := hsecond
+    -- `Σ ≥ C(5,2) + C(4,2) + 7·3 = 37 > 36`
+    have hu6 : 6 ≤ (G.degree u).choose 2 :=
+      le_trans (by decide : 6 ≤ Nat.choose 4 2) (Nat.choose_le_choose 2 hu4)
+    have hv10 : 10 ≤ (G.degree v).choose 2 := by rw [hd5]; decide
+    have hu_mem : u ∈ Finset.univ.erase v := Finset.mem_erase.mpr ⟨huv, Finset.mem_univ u⟩
+    have hsum2 : (G.degree v).choose 2 + ((G.degree u).choose 2 + 21)
+        ≤ ∑ x : Fin 9, (G.degree x).choose 2 := by
+      rw [← Finset.add_sum_erase _ _ (Finset.mem_univ v),
+        ← Finset.add_sum_erase _ _ hu_mem]
+      have h21 : 21 ≤ ∑ x ∈ (Finset.univ.erase v).erase u, (G.degree x).choose 2 := by
+        calc (21 : ℕ) = ((Finset.univ.erase v).erase u).card * 3 := by
+              rw [Finset.card_erase_of_mem hu_mem,
+                Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+                Fintype.card_fin]
+          _ = ∑ _x ∈ (Finset.univ.erase v).erase u, 3 := by
+              rw [Finset.sum_const, smul_eq_mul]
+          _ ≤ ∑ x ∈ (Finset.univ.erase v).erase u, (G.degree x).choose 2 :=
+              Finset.sum_le_sum (fun x _ => Nat.choose_le_choose 2 (hmin x))
+      omega
+    omega
+  refine ⟨hle4, ?_⟩
+  -- degree sum and cherry sum in terms of `k`
+  set k := (Finset.univ.filter (fun v => G.degree v = 4)).card with hk
+  have hcompl : (Finset.univ.filter (fun v => ¬ G.degree v = 4)).card = 9 - k := by
+    have := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (Finset.univ : Finset (Fin 9))) (p := fun v => G.degree v = 4)
+    rw [Finset.card_univ, Fintype.card_fin] at this
+    omega
+  have hdsum : ∑ v : Fin 9, G.degree v = 4 * k + 3 * (9 - k) := by
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => G.degree v = 4)]
+    have h4 : ∑ v ∈ Finset.univ.filter (fun v => G.degree v = 4), G.degree v = 4 * k := by
+      rw [Finset.sum_congr rfl (fun v hv => (Finset.mem_filter.mp hv).2),
+        Finset.sum_const, smul_eq_mul, mul_comm]
+    have h3 : ∑ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4), G.degree v
+        = 3 * (9 - k) := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+          G.degree v = 3 := by
+        intro v hv
+        have h1 := (Finset.mem_filter.mp hv).2
+        have h2 := hmin v
+        have h3 := hle4 v
+        omega
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, hcompl, mul_comm]
+    omega
+  have hcsum : ∑ v : Fin 9, (G.degree v).choose 2 = 6 * k + 3 * (9 - k) := by
+    rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun v => G.degree v = 4)]
+    have h4 : ∑ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+        (G.degree v).choose 2 = 6 * k := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => G.degree v = 4),
+          (G.degree v).choose 2 = 6 := by
+        intro v hv
+        rw [(Finset.mem_filter.mp hv).2]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, mul_comm]
+    have h3 : ∑ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+        (G.degree v).choose 2 = 3 * (9 - k) := by
+      have hall : ∀ v ∈ Finset.univ.filter (fun v => ¬ G.degree v = 4),
+          (G.degree v).choose 2 = 3 := by
+        intro v hv
+        have h1 := (Finset.mem_filter.mp hv).2
+        have h2 := hmin v
+        have h3 := hle4 v
+        have : G.degree v = 3 := by omega
+        rw [this]
+        decide
+      rw [Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, hcompl, mul_comm]
+    omega
+  -- `27 + k` even and `27 + 3k ≤ 36` pin `k ∈ {1, 3}`
+  have hk9 : k ≤ 9 := by
+    have := Finset.card_filter_le (Finset.univ : Finset (Fin 9))
+      (fun v => G.degree v = 4)
+    rw [Finset.card_univ, Fintype.card_fin] at this
+    exact this
+  rw [hdsum] at hhs
+  rw [hcsum] at hcherry
+  omega
 
-#print axioms Erdos85.containsC4_of_nine_one_four
+end Erdos85
