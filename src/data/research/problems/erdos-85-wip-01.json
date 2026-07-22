@@ -52,7 +52,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact values f(4)=2, f(5)=3, f(6)=3 (axiom-free). Upper bound f(n) ≤ √n+2 (minDegreeForC4_le_sqrt), NOW SHARPENED on the lower Beatty half to f(n) ≤ √n+1 when n ≤ √n·(√n+1) (minDegreeForC4_le_sqrt_add_one); corollary f(m²) ≤ m+1 pins the additive constant to +1 on all perfect squares, matching the true f(n)=(1+o(1))√n up to one additive unit. Lower bounds f(n)≥3 (n≥5). Next: upper-half n∈(s²+s,(s+1)²) still only √n+2 (needs a non-counting witness to sharpen); f(7) exact needs ex(7;C4); eventual-monotonicity (OPEN core).",
+    "progressSummary": "PROGRESS: Exact-value table now complete for 1<=n<=6 (f(1)=1,f(2)=2,f(3)=3 degenerate + f(4)=2,f(5)=3,f(6)=3). Elementary vein remains SATURATED above n=6: f(7)=3 needs ex(7;C4) edge bound, f(10)=4 needs Petersen, asymptotic/monotonicity DEEP (see currentState.blockers).",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -72,7 +72,8 @@
       "minDegreeForC4_le_of_le_mul_pred: n≤k(k−1) ⟹ f(n)≤k (clean packaging of the counting bound)",
       "minDegreeForC4_le_sqrt: f(n) ≤ Nat.sqrt n + 2 for n≥1 (explicit O(√n) upper bound)",
       "minDegreeForC4_le_sqrt_add_one (Erdos85Problem.lean): f(n) ≤ √n+1 on the lower Beatty half n ≤ √n·(√n+1), axiom-free",
-      "minDegreeForC4_le_sq (Erdos85Problem.lean): f(m²) ≤ m+1, axiom-free"
+      "minDegreeForC4_le_sq (Erdos85Problem.lean): f(m²) ≤ m+1, axiom-free",
+      "minDegreeForC4_eq_self_of_le_three (Erdos85Problem.lean): f(n)=n for 1<=n<=3 — degenerate small-n exact values (no C4 possible below 4 vertices), completing the exact-value table below f(4)=2. Helper not_containsC4_of_card_lt_four (contrapositive of containsC4_four_le_card). 0-axiom, docker-verified v4.31."
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -92,7 +93,8 @@
       "Kővári–Sós–Turán cherry-counting: Σ_v C(deg v,2) counts paths of length 2; each is determined by centre + unordered endpoint pair. If the count exceeds C(|V|,2), pigeonhole gives a pair with two common neighbours = a C₄. This is the C₄/z(n;2,2) case of KST and drives the true √n-order threshold (f(n)=O(√n)), far beating the linear n−2 bound.",
       "Explicit closed-form upper bound minDegreeForC4_le_sqrt: f(n) ≤ √n + 2 for all n ≥ 1 (axiom-free). Leading constant 1 matches the true f(n)=(1+o(1))√n; only an additive O(1) is lost vs the sharp KST constant (1+√(4n−3))/2. First quotable closed-form of the correct order for this entry.",
       "Sharpened the additive constant on the lower Beatty half: minDegreeForC4_le_sqrt_add_one gives f(n) ≤ √n+1 whenever n ≤ √n·(√n+1) (the sharp KST constant on the lower half of each gap [s²,(s+1)²)), improving √n+2 by one. Take k=√n+1; k(k−1)=(√n+1)·√n ≥ n is exactly the hypothesis.",
-      "Perfect-square corollary minDegreeForC4_le_sq: f(m²) ≤ m+1 for m≥1 (Nat.sqrt_eq gives √(m²)=m, and m² ≤ m(m+1)). Additive constant pinned to +1 on the squares — within a single unit of the true (1+o(1))√n. Cleanest quotable correct-order upper bound for the entry."
+      "Perfect-square corollary minDegreeForC4_le_sq: f(m²) ≤ m+1 for m≥1 (Nat.sqrt_eq gives √(m²)=m, and m² ≤ m(m+1)). Additive constant pinned to +1 on the squares — within a single unit of the true (1+o(1))√n. Cleanest quotable correct-order upper bound for the entry.",
+      "Below 4 vertices no graph contains C4, so f(n) is degenerate: the threshold set is {k | no graph on Fin n reaches min-degree k} and max attainable min-degree is n-1 (complete graph), giving f(n)=n for 1<=n<=3. Not evidence about sqrt(n) growth (begins at n>=4)."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"

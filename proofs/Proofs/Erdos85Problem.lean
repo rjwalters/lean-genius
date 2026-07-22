@@ -334,13 +334,17 @@ theorem minDegreeForC4_eq_self_of_le_three {n : ℕ} (h1 : 1 ≤ n) (h3 : n ≤ 
   have hup : ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
       G.minDegree ≤ n - 1 := by
     intro G _
-    refine le_trans (G.minDegree_le_degree ⟨0, by omega⟩) ?_
+    set v0 : Fin n := ⟨0, by omega⟩ with hv0
+    refine le_trans (G.minDegree_le_degree v0) ?_
     rw [← G.card_neighborFinset_eq_degree]
-    refine le_trans (Finset.card_le_card ?_) ?_
-    · intro x hx
+    have hsub : G.neighborFinset v0 ⊆ Finset.univ.erase v0 := by
+      intro x hx
       exact Finset.mem_erase.mpr
         ⟨(G.ne_of_adj ((G.mem_neighborFinset _ _).mp hx)).symm, Finset.mem_univ x⟩
-    · rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
+    calc (G.neighborFinset v0).card
+        ≤ (Finset.univ.erase v0).card := Finset.card_le_card hsub
+      _ = n - 1 := by
+          rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
   -- The complete graph attains minimum degree `n − 1`.
   have htop : n - 1 ≤ (⊤ : SimpleGraph (Fin n)).minDegree := by
     apply le_minDegree_of_forall_le_degree
@@ -353,12 +357,18 @@ theorem minDegreeForC4_eq_self_of_le_three {n : ℕ} (h1 : 1 ≤ n) (h3 : n ≤ 
   -- Assemble via antisymmetry on the defining `sInf`.
   unfold minDegreeForC4
   apply le_antisymm
-  · exact Nat.sInf_le (fun G _ hmin => absurd (le_trans hmin (hup G)) (by omega))
-  · apply le_csInf ⟨n, fun G _ hmin => absurd (le_trans hmin (hup G)) (by omega)⟩
-    intro k hk
-    by_contra hlt
-    push_neg at hlt
-    exact hfree _ (hk _ (le_trans (show k ≤ n - 1 by omega) htop))
+  · apply Nat.sInf_le
+    intro G _ hmin
+    exact absurd (le_trans hmin (hup G)) (by omega)
+  · apply le_csInf
+    · refine ⟨n, ?_⟩
+      intro G _ hmin
+      exact absurd (le_trans hmin (hup G)) (by omega)
+    · intro k hk
+      by_contra hlt
+      rw [not_le] at hlt
+      exact hfree (⊤ : SimpleGraph (Fin n))
+        (hk (⊤ : SimpleGraph (Fin n)) (le_trans (show k ≤ n - 1 by omega) htop))
 
 /-- **The star has minimum degree at least `1`.**  In `K_{1,n}` on `Fin (n+1)` the
 centre `0` is adjacent to every leaf and each leaf is adjacent to the centre, so
