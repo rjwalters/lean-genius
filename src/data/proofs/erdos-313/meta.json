@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-313",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #313 on primary pseudoperfect numbers: are there infinitely many pairs $(m,P)$ with $P$ a prime set satisfying $\\sum_{p\\in P}1/p = 1-1/m$? Lists all 8 known solutions (OEIS A054377), from $m=2$ up to a 32-digit value.",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "The defining identity forces $m = \\prod_{p \\in P} p$, so at most one solution exists per $m$; small examples like $1/2+1/3=1-1/6$ ($m=6$) illustrate the pattern before the values grow astronomically."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 30,
