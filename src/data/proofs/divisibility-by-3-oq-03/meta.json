@@ -7,7 +7,7 @@
     "author": "Classical result",
     "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root",
     "date": "Classical",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03.lean",
     "tags": [
       "number-theory",
@@ -17,10 +17,10 @@
       "algorithms",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "0 literal `axiom` declarations and 0 sorries. The load-bearing supporting lemma digitSum_le_self discharges its n<10 base cases with `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Otherwise uses Mathlib's Nat.sum_digits_lt and digit/modular-arithmetic API.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Kernel-verified: `#print axioms` lists only the standard foundational axioms (propext, Classical.choice, Quot.sound), which the project does not count. There is no `native_decide`/`Lean.ofReduceBool` dependency — the supporting lemma digitSum_le_self is discharged by Mathlib's `Nat.digit_sum_le`. Core digit-sum and modular-arithmetic facts (`Nat.modEq_nine_digits_sum`, `Nat.digit_sum_le`, `Nat.sub_one_mul_sum_log_div_pow_eq_sub_sum_digits`) come from Mathlib.",
     "lineCount": 273,
     "mathlibDependencies": [
       {
