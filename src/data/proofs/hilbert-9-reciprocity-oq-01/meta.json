@@ -102,6 +102,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Cyclotomic Reciprocity — the Abelian Case over ℚ",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "States what this file settles concretely — Hilbert's 9th problem asks for the most general reciprocity law in algebraic number fields, whose complete answer is Artin reciprocity (1927), stated axiomatically in the parent entry since its full proof needs all of class field theory. This file formalizes with 0 axioms and 0 sorries the single most important concrete instance: the reciprocity law for cyclotomic extensions of ℚ (Hilbert's own 1897 case, and by Kronecker–Weber all of the abelian extensions of ℚ). It proves the isomorphism Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/n)ˣ under which σ corresponds to the unique unit t with σ(ζ)=ζᵗ, that the Galois group is abelian (the defining hypothesis of Artin reciprocity), and |Gal(ℚ(ζₙ)/ℚ)| = φ(n), with concrete cardinalities for n=5,7,8.",
+      "mathContext": "$\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times$, $\\sigma \\leftrightarrow t$ with $\\sigma(\\zeta)=\\zeta^t$; the Artin symbol of an unramified prime $p \\nmid n$ is the residue class $p \\bmod n$."
+    },
+    {
       "id": "irreducibility-input",
       "title": "The Arithmetic Input: Irreducibility over ℚ",
       "startLine": 73,
