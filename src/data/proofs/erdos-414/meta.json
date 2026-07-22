@@ -49,7 +49,8 @@
     ],
     "axiomCount": 1,
     "assumptions": [
-      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)"
+      "erdos_414_conjecture: ∀ m, n ≥ 1, ∃ i, j: h^i(m) = h^j(n) — all orbits eventually merge (main open question)",
+      "Trust caveat: the finite verification theorems (h_one/two/three/four/five/six/seven/eight/nine/ten function values, orbit_1_start, orbit_2/…/10_merges_with_1) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (visible via #print axioms). These discharge only concrete finite orbit computations demonstrating that small starting values merge; the headline claim (erdos_414_conjecture) is an abstract axiom and stays kernel-checked."
     ],
     "lineCount": 303,
     "theoremCount": 34,

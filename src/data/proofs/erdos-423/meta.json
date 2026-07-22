@@ -29,7 +29,7 @@
       "Set.Infinite and natural density concepts"
     ],
     "lineCount": 409,
-    "assumptions": "Compiles green on Lean v4.31 (autoImplicit off, verified via docker-build.sh) with 0 sorries following the Class A Lean-source repair in PR #39078 (the earlier #39061 audit finding is resolved). Stated assumptions: 3 axioms: excess_nondecreasing, excess_unbounded, infinitely_many_missing.",
+    "assumptions": "Compiles green on Lean v4.31 (autoImplicit off, verified via docker-build.sh) with 0 sorries following the Class A Lean-source repair in PR #39078 (the earlier #39061 audit finding is resolved). Stated assumptions: 3 axioms: excess_nondecreasing, excess_unbounded, infinitely_many_missing. Trust caveat: the finite verification theorems (consSeq_zero/one/two/three/four/five/six/seven values, verify_three/five/six/eight/ten/eleven, consSeq_succ_gt, consSeq_strictMono_initial) and the ErdosQuestion423_convergence def are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (visible via #print axioms). These discharge only concrete finite sequence computations demonstrating initial behavior; the headline results rest on the three stated axioms above and stay kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 42,
     "definitionCount": 9

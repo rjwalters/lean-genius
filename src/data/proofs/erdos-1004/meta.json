@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 3,
     "lineCount": 609,
-    "assumptions": "Three axioms: EPS87 upper bound (eps87_theorem: consolidated existential for constant, threshold, and bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998). eps87_constant, eps87_threshold derived as noncomputable defs; eps87_constant_pos, eps87_upper_bound derived as theorems. 0 sorries remain.",
+    "assumptions": "Three axioms: EPS87 upper bound (eps87_theorem: consolidated existential for constant, threshold, and bound), existence of fixed-length distinct runs (longer_runs_need_larger_n), and asymptotic count of distinct totient values (distinct_totients_asymptotic, Erdős 1935/Ford 1998). eps87_constant, eps87_threshold derived as noncomputable defs; eps87_constant_pos, eps87_upper_bound derived as theorems. 0 sorries remain. Trust caveat: the finite verification theorems (totient_eq_one_iff, totient_eq_two_iff, totient_eq_four_iff totient-fiber enumerations, collision_1_2, collision_3_4) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (visible via #print axioms). These discharge only concrete finite totient computations demonstrating small fibers and collisions; the headline results rest on the three stated axioms above and stay kernel-checked.",
     "mathlib_version": "4.31.0",
     "theoremCount": 30,
     "definitionCount": 15

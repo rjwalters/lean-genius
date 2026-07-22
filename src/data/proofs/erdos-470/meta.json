@@ -65,7 +65,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 602,
-    "assumptions": "3 axioms: liddy_riedl_6_primes (odd weird has ≥6 prime divisors), melfi_conditional (prime gap hypothesis implies infinitely many primitive weirds), benkoski_erdos_density (weird numbers have positive density). All deep results; no routine axioms remain.",
+    "assumptions": "3 axioms: liddy_riedl_6_primes (odd weird has ≥6 prime divisors), melfi_conditional (prime gap hypothesis implies infinitely many primitive weirds), benkoski_erdos_density (weird numbers have positive density). All deep results; no routine axioms remain. Trust caveat: the finite verification theorems (seventy_is_abundant, seventy_not_pseudoperfect, no_weird_below_70, weird_836, nine45_odd_abundant, the *_semiperfect witnesses, and the no_odd_abundant_below_945/…/no_odd_abundant_5776_to_5985 range checks) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (visible via #print axioms). These discharge only concrete finite abundance/weird/semiperfect computations demonstrating specific witnesses and ranges; the headline results rest on the three stated axioms above and stay kernel-checked.",
     "theoremCount": 42,
     "definitionCount": 14
   },

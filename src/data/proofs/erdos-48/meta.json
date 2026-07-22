@@ -61,7 +61,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 480,
-    "assumptions": "3 axioms: ford_luca_pomerance (Ford-Luca-Pomerance — totient-sigma pairs are infinite), commonValues_infinite (common values of φ and σ are infinite), garaev_improvement (Garaev improvement). 0 sorries.",
+    "assumptions": "3 axioms: ford_luca_pomerance (Ford-Luca-Pomerance — totient-sigma pairs are infinite), commonValues_infinite (common values of φ and σ are infinite), garaev_improvement (Garaev improvement). 0 sorries. Trust caveat: the finite verification theorems (totient_one/two/three/four/five/seven/thirteen, sumDivisors_two/three/four/five/six/eleven, pair_2_1/pair_5_3/pair_7_5/pair_13_6/pair_13_11, one/four/six/twelve_is_common, six_is_perfect, at_least_five_pairs) are closed by native_decide, which adds the Lean.ofReduceBool compiler-trust axiom (visible via #print axioms). These discharge only concrete finite φ/σ computations demonstrating small common values; the headline infinitude claims rest on the three stated axioms above and stay kernel-checked.",
     "theoremCount": 40,
     "definitionCount": 7
   },
