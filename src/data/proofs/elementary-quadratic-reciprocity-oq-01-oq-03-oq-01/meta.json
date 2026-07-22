@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Base Case of the Frobenius/Jacobi Generalization of Zolotarev's Lemma",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Closes the gap the parent CRT-decomposition file left open by proving sign(ringMulPerm a on ZMod p) = legendreSym p a for prime p, bridging the units-level Zolotarev lemma to the whole-ring permutation via a fixed-point argument (multiplication by a unit fixes 0), and composes it with the parent's multiplicativity result to reach the Jacobi-value statement for squarefree odd moduli.",
+      "mathContext": "$(\\mathbb Z/p)^\\times \\simeq \\{x\\in\\mathbb Z/p : x\\ne 0\\}$; transporting the sign of $x\\mapsto ax$ across this equivalence and using that multiplication by $a$ fixes $0$ gives $\\mathrm{sign}(\\mathrm{ringMulPerm}\\,a) = \\mathrm{legendreSym}\\,p\\,a$."
+    },
+    {
       "id": "mul-perm-units",
       "title": "The multiplication permutation on the units (self-contained)",
       "startLine": 63,
