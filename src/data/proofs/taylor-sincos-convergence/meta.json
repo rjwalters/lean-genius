@@ -215,10 +215,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "sin_taylor",
+      "name": "sinPartialSum_tendsto",
       "type": "core",
-      "description": "Taylor series for sin(x) converges for all x",
-      "leanType": "HasSum (fun n => (-1)^n * x^(2*n+1) / (2*n+1)!) (Real.sin x)"
+      "description": "Taylor partial sums for sin(x) converge to sin(x) for all x",
+      "leanType": "Tendsto (fun n => sinPartialSum n x) atTop (𝓝 (Real.sin x))"
+    },
+    {
+      "name": "cosPartialSum_tendsto",
+      "type": "core",
+      "description": "Taylor partial sums for cos(x) converge to cos(x) for all x",
+      "leanType": "Tendsto (fun n => cosPartialSum n x) atTop (𝓝 (Real.cos x))"
     }
   ],
   "sorries": 0,
