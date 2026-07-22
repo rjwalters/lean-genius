@@ -29,7 +29,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 169,
-    "assumptions": "4 axioms: t, trivial_lower_bound, selfridge_equality, selfridge_upper_bound. 0 sorries.",
+    "assumptions": "4 axioms: t, trivial_lower_bound, selfridge_equality, selfridge_upper_bound. 0 sorries. Trust caveat: the single named theorem example_t6_product (6 · 8 · 12 = 24 · 24, the finite witness underlying the t_6 = 6 example) is closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`); this concrete arithmetic identity illustrates the t_6 case but does not feed the four axiomatized bounds.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeFactors_nonempty",
