@@ -265,3 +265,22 @@ Parent `Erdos18Problem.lean` still names the universal-set index `h` and points
 also depends on that `h`. Renaming the parent `h`→`hCover` and repointing the parent
 conjectures at `hErdos` is a mechanic edit across parent+OQ01 (behaviour-preserving).
 The deep `hErdos(n!) < n^{o(1)}` bound (Vose) remains unformalized.
+
+## 2026-07-22 (researcher-1-3, PR #41475) — hErdos SUBADDITIVITY
+
+Shipped multiplicative subadditivity of the corrected Erdős #18 index into
+`Erdos18WIP01.lean` (0-axiom, Docker 8577 jobs, standard triple):
+- `repLength_zero`: repLength m 0 = 0.
+- `repLength_spec'`: exact minimum-size divisor representation, k=0 included.
+- `repLength_mul_le`: repLength(a·b) N ≤ repLength a (N/b) + repLength b (N%b)
+  for practical a,b, N<a·b (Euclidean coin split from `practical_mul`, tracking
+  cardinalities: quotient rep scaled by b [coins ≥b] ⊔ remainder rep [coins <b]).
+- `hErdos_mul_le`: **hErdos(a·b) ≤ hErdos a + hErdos b** for practical a,b.
+- `hErdos_pow_le`: hErdos(m^k) ≤ k·hErdos m; TIGHT at m=2 (hErdos(2^k)=k).
+
+This is the correct-index counterpart of the parent `Erdos18OQ01` subadditivity
+(which held only for the over-counting universal-set h). Qualitative skeleton of
+Vose's deep hErdos(n!)≪√log(n!) (still out of reach).
+
+NEXT: exact hErdos on other extremal families, hErdos lower bounds via prime
+factorisation, or the deep Vose bound (blocked at elementary layer).
