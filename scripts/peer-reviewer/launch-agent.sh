@@ -103,10 +103,17 @@ create_worktree() {
 
     print_info "Creating worktree for ${AGENT_ID} at $WORKTREE_PATH..."
 
+    # Free the branch if a stale/locked/legacy worktree still holds it at another
+    # path (e.g. left by the /Volumes/Stripe migration); otherwise every add
+    # below fails and this backgrounded launcher dies silently (issue #39649).
+    reclaim_branch_worktree "$BRANCH_NAME" "$WORKTREE_PATH" || \
+        log_worktree_fatal "$LOG_FILE" "could not reclaim '$BRANCH_NAME' from a stale worktree (see 'git worktree list')"
+
     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || {
         git worktree add "$WORKTREE_PATH" "$BRANCH_NAME" 2>/dev/null || {
             git branch -D "$BRANCH_NAME" 2>/dev/null || true
-            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || \
+                log_worktree_fatal "$LOG_FILE" "worktree setup failed for '$BRANCH_NAME' at $WORKTREE_PATH (branch may be checked out elsewhere; see 'git worktree list')"
         }
     }
 

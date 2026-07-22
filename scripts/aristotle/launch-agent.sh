@@ -133,11 +133,19 @@ create_worktree() {
         git worktree remove "$WORKTREE_PATH" --force 2>/dev/null || rm -rf "$WORKTREE_PATH"
     fi
 
+    # Free the branch if a stale/locked/legacy worktree still holds it at another
+    # path (e.g. left by the /Volumes/Stripe migration). Without this, the
+    # `git branch -D` below is a no-op (can't delete a checked-out branch) and
+    # the `git worktree add` dies silently under `set -e` (issue #39649).
+    reclaim_branch_worktree "$BRANCH_NAME" "$WORKTREE_PATH" || \
+        log_worktree_fatal "$LOG_FILE" "could not reclaim '$BRANCH_NAME' from a stale worktree (see 'git worktree list')"
+
     git branch -D "$BRANCH_NAME" 2>/dev/null || true
 
     print_info "Creating worktree..."
     mkdir -p "$(dirname "$WORKTREE_PATH")"
-    git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+    git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || \
+        log_worktree_fatal "$LOG_FILE" "worktree setup failed for '$BRANCH_NAME' at $WORKTREE_PATH (branch may be checked out elsewhere; see 'git worktree list')"
 
     # Symlink .lake for fast Lean builds
     if [[ -d "$REPO_ROOT/proofs/.lake" ]] && [[ -d "$WORKTREE_PATH/proofs" ]]; then
