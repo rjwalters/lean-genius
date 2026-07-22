@@ -53,9 +53,9 @@
       "Connection theorems linking to Problems #716 and #1076",
       "solymosi_d3_10 axiom + d3_10_bounds: 13 ≤ d_3(10) ≤ 14 (gap of 1 from conjectured 13)"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 274,
-    "assumptions": "3 axioms: sarkozy_selkow_result (Sárközy-Selkow 2005 upper bound construction), bes_lower_bound (Brown-Erdős-Sós 1973 lower bound via Steiner systems), and solymosi_d3_10 (Solymosi-Solymosi 2017 specific bound dr 3 10 ≤ 14). All three are deep published results not available in Mathlib. All derived theorems (dr_spec, dr_minimal, sarkozy_selkow_upper, ruzsa_szemeredi_d3_3, efr_e3, solymosi_d3_10_gap, bes_d3_10_lower, d3_10_bounds) are fully proved from these axioms. 0 sorries.",
+    "assumptions": "3 literal `axiom` declarations plus 1 foundational-trust dependency (`Lean.ofReduceBool`), for meta.axiomCount = 4. The 3 axioms are: sarkozy_selkow_result (Sárközy-Selkow 2005 upper bound construction), bes_lower_bound (Brown-Erdős-Sós 1973 lower bound via Steiner systems), and solymosi_d3_10 (Solymosi-Solymosi 2017 specific bound dr 3 10 ≤ 14). All three are deep published results not available in Mathlib. All derived theorems (dr_spec, dr_minimal, sarkozy_selkow_upper, ruzsa_szemeredi_d3_3, efr_e3, solymosi_d3_10_gap, bes_d3_10_lower, d3_10_bounds) are fully proved from these axioms, with 0 sorries. The file is NOT `Lean.ofReduceBool`-free, however: the two named 'solved case' theorems `ruzsa_szemeredi_d3_3` (dr 3 3 = 6, the Ruzsa-Szemerédi (6,3)-theorem) and `efr_e3` (dr r 3 = (r-2)·3+3, Erdős-Frankl-Rödl) each close their upper-bound branch with `have hlog : Nat.log 2 3 = 1 := by native_decide`, so `Lean.ofReduceBool` (the axiom `native_decide` trusts the compiler's kernel reduction through) propagates into both. meta.axiomCount = 4 counts this dependency; `leanFile.axiomCount` remains 3 as it tallies only literal `axiom` declarations (the ordinary foundational axioms propext/Classical.choice/Quot.sound are not counted). The native_decide fact itself (⌊log₂ 3⌋ = 1) is trivially true and could be replaced by a kernel-checked proof (e.g. `Nat.log_eq_of_pow_le_of_lt_pow`), which would drop meta.axiomCount back to 3.",
     "theoremCount": 16,
     "definitionCount": 11
   },
