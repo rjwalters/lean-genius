@@ -107,6 +107,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Surjections as a Second Sieve Instance",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring answering the derangements entry's open question by instantiating the same dual sieve to derive the surjection count #(Fin n ↠ Fin k) = Σ_j (-1)^j C(k,j)(k-j)^n, taking the bad property j = 'value j is missed'. Explains why this is a genuinely new gallery/Mathlib result (the second sieve application after derangements, equivalently k!·S(n,k) with S the Stirling numbers of the second kind), states the crux count (functions missing a t-set of values number (k-|t|)^n, via an explicit equivalence with the complementary codomain), and lists the Mathlib/gallery dependencies. Imports Fintype.Pi/Card/BigOperators, Finset.Powerset, Mathlib.Tactic, and the parent InclusionExclusionSieve file.",
+      "mathContext": "$\\#(\\text{surjections } \\mathrm{Fin}\\,n \\to \\mathrm{Fin}\\,k) = \\sum_{j=0}^k (-1)^j \\binom{k}{j}(k-j)^n = k!\\,S(n,k)$, the sieve's avoid-count for the bad properties 'value $j$ is missed'."
+    },
+    {
       "id": "misssets-and-crux",
       "title": "Miss Sets and the Crux Count",
       "startLine": 60,
