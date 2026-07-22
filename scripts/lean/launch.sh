@@ -1826,8 +1826,19 @@ get_work_queue_stats() {
         aristotle_candidates=$(timeout 10 ./scripts/aristotle/find-candidates.sh --count 2>/dev/null || echo "0")
     fi
 
-    # PRs ready to merge
-    ready_prs=$(timeout 10 gh pr list --label "loom:pr" --json number 2>/dev/null | jq 'length' 2>/dev/null || echo "0")
+    # PRs in the deployer's real merge queue (#39651).
+    # Counting only `loom:pr` masked a 537-PR backlog during the #39649 deployer
+    # outage: math agents (Researcher/Enricher/Aristotle/Auditor) do NOT label
+    # their PRs `loom:pr` — the deployer merges them by their content labels
+    # (enrichment/research/loom:auditor/aristotle-integration) directly. Count
+    # every OPEN PR carrying any deployer-merged label (math labels + loom:pr) so
+    # a stalled deployer surfaces as a large number here, not 0. One API call,
+    # OR-filtered in jq; `timeout 10` + `|| echo 0` keep a slow/failing gh safe.
+    ready_prs=$(timeout 10 gh pr list --state open --limit 1000 --json labels 2>/dev/null \
+        | jq '[.[] | select(any(.labels[].name;
+              . == "loom:pr" or . == "enrichment" or . == "research"
+              or . == "loom:auditor" or . == "aristotle-integration"))] | length' 2>/dev/null \
+        || echo "0")
 
     echo "$enrichment_targets $candidates $aristotle_jobs $aristotle_candidates $ready_prs"
 }
