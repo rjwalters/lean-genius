@@ -99,6 +99,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The open mapping theorem and its Banach-space consequences",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "The Banach open mapping theorem — a surjective bounded linear map between Banach spaces is open — is one of the three cornerstones of linear functional analysis. This file packages its consequences under uniform names: the surjection is automatically a quotient map, a continuous linear bijection has a continuous inverse (bounded inverse theorem), the domain norm and pulled-back norm are equivalent, and a closed-graph linear map between Banach spaces is automatically continuous."
+    },
+    {
       "id": "setup",
       "title": "Setup: Banach Spaces over a Normed Field",
       "startLine": 29,
