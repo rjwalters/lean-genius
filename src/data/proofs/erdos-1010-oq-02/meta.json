@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1010-oq-02",
+      "title": "Problem Statement and Background",
+      "summary": "Introduces open question 2 of Erd\u0151s Problem #1010: supersaturation for $K_r$ with $r \\ge 3$, generalizing the parent problem's triangle count bound, and surveys the partial results (Razborov for $r=3$, Nikiforov for $r=4$).",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "Supersaturation asks for the minimum number of copies of $K_r$ forced once the edge count exceeds the Tur\u00e1n threshold $\\mathrm{ex}(n, K_r)$; the Kruskal\u2013Katona theorem supplies shadow-based lower bounds on clique counts from edge counts."
+    },
+    {
       "id": "turan-number",
       "title": "Turán Number for K_r",
       "summary": "ex(n, K_r) = (1 - 1/(r-1)) · n²/2, the maximum K_r-free edge count",
