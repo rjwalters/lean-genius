@@ -42,10 +42,10 @@
     ],
     "originalContributions": [
       "Verified all four conjectured solutions: 9!, 10! (two ways), 16!",
-      "Formalization of Erdos's reduction via prime factor bounds",
-      "Definition of ABC conjecture and Luca's conditional result",
-      "Hickerson's conjecture on complete classification",
-      "Suranyi's conjecture on two-factor solutions"
+      "Definition of maxPrimeFactor (object underlying Erdos's prime-factor reduction; the reduction P(n(n-1)) > 4 log n => S.Finite is not formalized)",
+      "Definition of ABCConjecture (Luca's conditional finiteness theorem ABCConjecture => S.Finite is not formalized)",
+      "Definition of hickersonSolutions (Hickerson's complete-classification conjecture represented as an object, not stated as a proposition)",
+      "Definition of TwoFactorSolutions (Suranyi's two-factor uniqueness conjecture represented as an object, not stated as a proposition)"
     ],
     "axiomCount": 1,
     "lineCount": 168,
