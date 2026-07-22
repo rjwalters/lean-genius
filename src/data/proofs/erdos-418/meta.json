@@ -48,9 +48,9 @@
       "Browkin-Schinzel witness sequence 2^k * 509203",
       "Conditional result: Goldbach implies all odd numbers are cototients"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 227,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete cototient facts (cototient_two and the small IsCototientValue witnesses such as two_is_cototient, three_is_cototient, four_is_cototient) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 10,
     "definitionCount": 11
   },

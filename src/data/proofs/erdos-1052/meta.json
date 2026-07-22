@@ -58,9 +58,9 @@
       "Three verified examples (6, 60, 90) via native_decide",
       "erdos_1052_conjecture: finiteness conjecture described in comment (not formally axiomatized)"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 529,
-    "assumptions": "0 axioms, 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition. Finiteness conjecture not formally stated as axiom — open problem described in closing comment.",
+    "assumptions": "No mathematical axioms and 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition, and the finiteness conjecture is not formally stated as an axiom (open problem described in the closing comment). Compiler-trust disclosure: the concrete unitary-perfect verifications (isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90, isUnitaryPerfect_87360) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 24,
     "definitionCount": 3,
     "additionalFiles": [
