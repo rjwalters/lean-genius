@@ -23,7 +23,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Elementary two-sided understanding now in place: upper h(N)<=sqrt(2N)+1 (Erdos-Turan) and lower h(N) unbounded via powers-of-two (log N). NEXT (harder): a polynomial sqrt(N)-order lower-bound construction (Singer/perfect difference sets, or the Erdos-Turan {2ip + (i^2 mod p)} construction) — needs modular-arithmetic Sidon infrastructure absent from Mathlib. The open N^{1/4}-error Erdos-Turan conjecture ($1000) stays a Prop.",
+    "nextAction": "Exact table now extends past the counting wall to h(10)=4 (sidonNumber_ten), proved by the perfect-ruler parity obstruction (no 5-element Sidon set in {0,...,10}: its 10 distinct positive differences would exhaust {1,...,10}, sum 55 odd, but the sum of ordered positive differences is always even = 4*sum A). Reusable helpers added: sidonNumber_le_of_card, sum_offDiag_fst (offDiag first-coordinate sum = (|A|-1)*sum A). Counting bound alone caps at h(9); h(10) is the first value needing a genuinely new obstruction. NEXT (harder): h(11)=5 (needs the witness {0,1,4,9,11}) then h(12),h(13)... via case analysis, OR the polynomial sqrt(N)-order lower-bound construction (Singer/perfect difference sets) needing modular Sidon infrastructure absent from Mathlib. The open N^{1/4}-error Erdos-Turan conjecture ($1000) stays a Prop.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
