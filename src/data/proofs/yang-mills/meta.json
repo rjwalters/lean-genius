@@ -58,7 +58,7 @@
     "dateAdded": "2025-12-29",
     "millenniumProblem": "yang-mills",
     "axiomCount": 16,
-    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple — 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi — 2), FieldStrength (antisymmetric — 1), YangMillsAction (coupling_pos, action_nonneg — 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy — 3), QuantumYangMillsTheory (nontrivial — 1), Instanton (action_formula — 1), EnergyMomentumTensor (symmetric, energy_density_nonneg — 2). The Yang-Mills 4D mass gap conjecture remains OPEN.",
+    "assumptions": "16 total assumptions: 1 explicit axiom (gaugeTransform) + 15 structure-encoded: CompactSimpleGaugeGroup (compact, connected, simple — 3), GaugeLieAlgebra (bracket_anticomm, bracket_jacobi — 2), FieldStrength (antisymmetric — 1), YangMillsAction (coupling_pos, action_nonneg — 2), WightmanQFT (vacuum_normalized, energy_bounded_below, vacuum_lowest_energy — 3), QuantumYangMillsTheory (nontrivial — 1), Instanton (action_formula — 1), EnergyMomentumTensor (symmetric, energy_density_nonneg — 2). The Yang-Mills 4D mass gap conjecture remains OPEN. Trust caveat: two named theorems in YangMills/Classical.lean (fieldStrength_independent_components, em_independent_components) discharge finite component-count facts (an antisymmetric 4×4 tensor has 6 independent components) via native_decide, which additionally depends on the Lean.ofReduceBool compiler-trust axiom (#print axioms lists it). These are finite demonstrations, not the headline mass-gap result.",
     "lineCount": 48,
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
