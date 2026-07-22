@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: From Decidability to an Explicit Witness",
+      "summary": "Module docstring explaining the motivation: the parent (hilbert-10-oq-04-oq-03) proves solvability of a·x + b·y = c is decidable (gcd(a,b) ∣ c) but produces no actual solution. This entry supplies the constructive companion — an explicit Bézout witness (Int.gcdA/Int.gcdB) and the complete solution set as a one-parameter family (x₀ + (b/g)·t, y₀ − (a/g)·t). Sketches the mechanism (Bézout scaling for the witness, coprime-cofactor descent for completeness) and lists the four theorems proved. Imports Data.Int.GCD, RingTheory.Int.Basic, and the Ring/Linarith/LinearCombination tactics; opens the Int namespace.",
+      "mathContext": "Upgrades the parent's decidability criterion $\\gcd(a,b) \\mid c$ to an explicit witness and the full parametrisation $(x_0 + (b/g)t,\\, y_0 - (a/g)t)$.",
+      "startLine": 1,
+      "endLine": 51
+    },
+    {
       "id": "witness",
       "title": "The Explicit Bézout Witness",
       "summary": "bezout_witness: for g ∣ c, the pair x₀ = (c/g)·gcdA a b, y₀ = (c/g)·gcdB a b solves a·x + b·y = c. Scale Bézout's identity a·u + b·v = g by c/g and cancel with Int.ediv_mul_cancel.",
