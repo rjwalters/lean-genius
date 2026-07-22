@@ -82,12 +82,18 @@ def nextStanleyElement (S : Finset ℕ) (start : ℕ) : ℕ :=
 **Stanley Sequence:**
 The infinite sequence A(n) where a₀ = 0, a₁ = n, and each
 subsequent term is the smallest integer preserving AP-freeness.
--/
-def stanleySequence (n : ℕ) : ℕ → ℕ :=
-  fun k =>
-    if k = 0 then 0
-    else if k = 1 then n
-    else k  -- Placeholder for the greedy construction
+
+Left `opaque` rather than given a concrete stub body on purpose: the intended
+greedy construction is noncomputable and hard to formalize, but a placeholder
+body (e.g. `fun k => if k = 0 then 0 else if k = 1 then n else k`) makes the
+range of `stanleySequence 1 ·` definitionally all of ℕ. The characterization
+axiom `a1_characterization` below would then assert `True ↔ noDigit2InBase3 n`,
+which is false at `n = 2` (base-3 digit 2), rendering the axiom set inconsistent
+and every downstream result vacuous (issue #41242, matching the erdos-279 fix
+pattern #41238). Keeping `stanleySequence` opaque means no term reduces to a
+concrete value, so the Tier-C axioms become honest, satisfiable assumptions
+about the intended sequence rather than false statements about a stub. -/
+opaque stanleySequence (n : ℕ) : ℕ → ℕ
 
 /- 
 **Basic Property: Strictly Increasing**
