@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free). Lower-bound frontier now consolidated: le_h_of_three_mul_sub_one_le gives the general elementary bound k ≤ h n for n ≥ 3k−1 (subsumes the whole ladder). Improving the linear (n−1)/3 bound toward the conjectured super-linear rate is the deep open direction (Erdős #98).",
+    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free). General ladder le_h_of_three_mul_sub_one_le (k<=h(n) for n>=3k-1) subsumes the uniform lower-bound ladder. Added (2026-07-22, researcher-1-3) Erdos98WIP01Thresholds.lean: monotonicity-sharpened small-n bounds filling the ladder gap — 3<=h(n) for all n>=5 (ladder only reaches n>=8), giving 3<=h(6),3<=h(7) as best-known. Deep open: super-linear rate (Guth-Katz, absent from Mathlib) and exact h(6) (needs open 6-point 3-distance config).",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -105,7 +105,8 @@
       "three_le_h_five (Erdos98WIP01.lean): 3 <= h 5, via centroid concyclicity contradicting NoFourConcyclic (axiom-free, maxHeartbeats 1600000, docker-verified).",
       "h_five_eq_three (Erdos98WIP01.lean): h 5 = 3, pinned exactly via le_antisymm h_five_le_three three_le_h_five (axiom-free, docker-verified).",
       "two_common_neighbours_dist (Erdos98WIP01.lean:1782, axiom-free, docker-built 8577 jobs): in EuclideanSpace ℝ (Fin 2), dist p q = a ∧ dist x p = dist x q = dist y p = dist y q = a ∧ a>0 → x = y ∨ dist x y = a·√3. Discharges the intersecting-circle distance equations of the h 5 ≥ 3 degree-3 sub-cases.",
-      "le_h_of_three_mul_sub_one_le (Erdos98WIP01.lean:~1901): general closed-form lower bound k ≤ h n for n ≥ 3k−1, axiom-free (omega from three_mul_h_ge). Existing rungs three_le_h_of_eight_le / four_le_h_of_eleven_le rewritten as one-line k=3/k=4 specializations; added five_le_h_of_fourteen_le (k=5)."
+      "le_h_of_three_mul_sub_one_le (Erdos98WIP01.lean:~1901): general closed-form lower bound k ≤ h n for n ≥ 3k−1, axiom-free (omega from three_mul_h_ge). Existing rungs three_le_h_of_eight_le / four_le_h_of_eleven_le rewritten as one-line k=3/k=4 specializations; added five_le_h_of_fourteen_le (k=5).",
+      "two_le_h_of_four_le, three_le_h_of_five_le, three_le_h_six, three_le_h_seven — monotonicity-sharpened small-n lower bounds (Erdos98WIP01Thresholds.lean, 0-axiom)"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -158,7 +159,8 @@
       "Intersecting-circles rigidity (two_common_neighbours_dist): two points each at distance a from both endpoints of an a-length segment are equal or exactly a√3 apart — the two circle intersections are the far vertices of a two-equilateral-triangle rhombus. This is the exact metric fact behind the degree-3 sub-case circle equations (|YZ| = a√3).",
       "Clean planar-rigidity mechanism: with u=x−p, v=y−p, w=q−p (all norm a, ⟨u,w⟩=⟨v,w⟩=a²/2), the vector e=u+v−w is orthogonal to both w and d=u−v; if x≠y then d≠0, and e≠0 would make e,w,d three pairwise-orthogonal nonzero vectors (linearly independent) — impossible in dim 2. So e=0, i.e. u+v=w, forcing ⟨u,v⟩=−a²/2 and ‖x−y‖²=3a². Same regular-simplex-needs-dimension argument as no_four_mutually_equidistant, run one dimension lower.",
       "Lean gotcha: simp only [inner_sub_left, inner_add_left, ...] canonicalizes ⟪u,v⟫ to a fixed argument order (⟪v,u⟫ here), so a follow-up rw [real_inner_comm .., htval] whose LHS is ⟪u,v⟫ fails to fire — finish such goals with linarith [htval, hc] (hc : ⟪v,u⟫=⟪u,v⟫) instead of orientation-sensitive rw. Also real_inner_comms explicit args are the reverse orientation; use real_inner_comm _ _ driven by the expected type. And explicit rw [inner_sub_right] over `set`-bound u:=x−p unfolds the local def (⟪u,u⟫→⟪u,x⟫−⟪u,p⟫); prefer simp only for the expansion.",
-      "General elementary lower bound in closed form: le_h_of_three_mul_sub_one_le proves k ≤ h n for every target k as soon as n ≥ 3·k − 1 (from n−1 ≤ 3·h n = three_mul_h_ge, since then 3·h n ≥ 3k−2 > 3(k−1)). This single theorem subsumes the entire infinite ladder of concrete rungs (k=3⇒n≥8, k=4⇒n≥11, k=5⇒n≥14, …), replacing enumeration with the general statement — the sharpest elementary general lower bound on h; the conjectured super-linear rate h n/n → ∞ (Erdős #98) is far beyond it and stays open."
+      "General elementary lower bound in closed form: le_h_of_three_mul_sub_one_le proves k ≤ h n for every target k as soon as n ≥ 3·k − 1 (from n−1 ≤ 3·h n = three_mul_h_ge, since then 3·h n ≥ 3k−2 > 3(k−1)). This single theorem subsumes the entire infinite ladder of concrete rungs (k=3⇒n≥8, k=4⇒n≥11, k=5⇒n≥14, …), replacing enumeration with the general statement — the sharpest elementary general lower bound on h; the conjectured super-linear rate h n/n → ∞ (Erdős #98) is far beyond it and stays open.",
+      "Monotonicity sharpens small-n lower bounds beyond the ladder: le_h_of_three_mul_sub_one_le reaches 3<=h(n) only from n>=8, but h(5)=3 + h_mono gives 3<=h(n) for ALL n>=5, filling the n in {5,6,7} gap. three_le_h_six / three_le_h_seven are the current best-known lower bounds for h(6),h(7). (Erdos98WIP01Thresholds.lean, 0-axiom)"
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3.",
