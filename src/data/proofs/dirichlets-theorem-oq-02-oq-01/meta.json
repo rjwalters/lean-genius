@@ -2,7 +2,7 @@
   "id": "dirichlets-theorem-oq-02-oq-01",
   "title": "Generalized Riemann Hypothesis for Dirichlet L-functions",
   "slug": "dirichlets-theorem-oq-02-oq-01",
-  "description": "The Generalized Riemann Hypothesis (GRH) asserts that all non-trivial zeros of Dirichlet L-functions L(s, χ) lie on the critical line Re(s) = 1/2. We formalize GRH, prove equivalences between formulations, and axiomatize its dramatic consequences: improved PNT for arithmetic progressions (error O(√x log x)), effective Linnik bound (least prime O(q² log² q)), elimination of Siegel zeros, and effective class number bounds.",
+  "description": "The Generalized Riemann Hypothesis (GRH) asserts that all non-trivial zeros of Dirichlet L-functions L(s, χ) lie on the critical line Re(s) = 1/2. We formalize GRH over Mathlib's Dirichlet L-functions, prove the GRH ↔ right-half-plane-zero-free equivalence via an axiomatized functional symmetry, and derive Siegel-zero elimination and an effective L(1, χ) positivity bound (from an axiomatized effective lower bound). Sublinearity facts (√x·log x < x; q²·log²q < q⁵) motivate the improved PNT-for-AP and Linnik exponents, but the prime-counting error term, least-prime bound, and class-number consequences are not themselves formalized.",
   "meta": {
     "author": "Open (Riemann 1859 for ζ; Piltz 1884 for L-functions; Montgomery-Vaughan for character sums)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Generalized_Riemann_hypothesis",
