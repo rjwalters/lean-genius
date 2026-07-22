@@ -88,6 +88,14 @@
   ],
   "sections": [
     {
+      "id": "sec-header-erdos-28-additive-bases",
+      "title": "Problem Statement and Background",
+      "summary": "States the Erd\u0151s\u2013Tur\u00e1n conjecture on additive bases (\\$500 prize, Erd\u0151s #28): if $A+A$ covers all but finitely many integers, must $\\limsup r_A(n) = \\infty$? Still open; known partial results give $r_A(n) \\ge 6$ (Grekos et al. 2003) and $\\ge 8$ (Borwein et al.) infinitely often.",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "$r_A(n) = |\\{(a,b) \\in A \\times A : a+b=n\\}|$ is the representation function; a stronger form of the conjecture asks $\\limsup r_A(n)/\\log n > 0$, and whether density $|A \\cap [1,N]| \\gg N^{1/2}$ already suffices."
+    },
+    {
       "id": "representation-function",
       "title": "Representation Function",
       "summary": "Defines repFunc (ordered), repFuncUnordered, and repFuncFinset — three ways to count additive representations.",
