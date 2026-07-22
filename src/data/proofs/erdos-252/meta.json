@@ -134,6 +134,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-252",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #252 on irrationality of divisor power sums $\\sum \\sigma_k(n)/n!$: proved irrational for $k \\le 4$ (Erd\u0151s\u2013Straus 1971 for $k=0$; Erd\u0151s 1952 for $k=1,2$; Schlage-Puchta/Friedlander\u2013Luca\u2013Stoiciu 2006\u201307 for $k=3$; Pratt 2022 for $k=4$), open for $k \\ge 5$.",
+      "startLine": 1,
+      "endLine": 24,
+      "mathContext": "$\\sigma_k(n) = \\sum_{d\\mid n} d^k$; irrationality for all $k \\ge 1$ would follow from Schinzel's Hypothesis H, and for all $k \\ge 4$ from the prime $k$-tuples conjecture."
+    },
+    {
       "id": "imports-setup",
       "title": "Imports and Namespace",
       "startLine": 25,
