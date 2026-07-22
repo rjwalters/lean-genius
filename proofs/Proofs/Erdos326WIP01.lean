@@ -33,7 +33,13 @@ ratio and its limit:
   `HasNoGrowthLimit` — the reusable engine behind the oscillation direction;
 * both growth-limit predicates are non-vacuous: an exactly-quadratic
   enumeration `bₖ = c·k²` has growth limit `c`, while an enumeration whose
-  quadratic coefficient oscillates between `1` and `2` has **no** growth limit.
+  quadratic coefficient oscillates between `1` and `2` has **no** growth limit;
+* the growth limit is a **tail invariant** (`hasGrowthLimit_congr'`: agreeing
+  eventually ⟹ same growth-limit behaviour), and a **sub-quadratically**
+  enumerated sequence `bₖ ≤ C·k` has growth limit `0`
+  (`hasGrowthLimit_zero_of_linear_bound`, with the identity enumeration `bₖ = k`
+  as concrete order-`1` witness) — so non-convergence requires honestly
+  quadratic growth.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -579,5 +585,66 @@ theorem hasNoGrowthLimit_oscillating : HasNoGrowthLimit oscillating := by
   have hx1 : x = 1 := tendsto_nhds_unique heven heven1
   rw [hx2] at hx1
   norm_num at hx1
+
+/-! ## The growth limit is a tail invariant; sub-quadratic growth ⟹ limit `0`
+
+Two structural facts complementing the convergent (`hasGrowthLimit_quadratic`)
+and non-convergent (`hasNoGrowthLimit_oscillating`) examples above:
+
+* the growth limit depends only on the **tail** of the enumeration — two
+  sequences that agree eventually have the same growth-limit behaviour
+  (`hasGrowthLimit_congr'`).  This is exactly what makes modifying a basis on a
+  finite prefix irrelevant to its `bₖ/k²` limit, a prerequisite for any
+  sub-basis argument;
+* a **sub-quadratically** enumerated sequence converges — to `0`.  If `bₖ ≤ C·k`
+  (linear growth, as for an order-`1` basis such as `ℕ` itself) then
+  `bₖ/k² ≤ C/k → 0`, so `HasGrowthLimit b 0` (`hasGrowthLimit_zero_of_linear_bound`),
+  realized concretely by the identity enumeration `bₖ = k`
+  (`hasGrowthLimit_id_zero`).  So genuine non-convergence à la Erdős #326 can only
+  arise from honestly quadratic growth — the ratio cannot oscillate while the
+  numerator stays `o(k²)`.
+
+All results remain `0`-axiom / `0`-sorry. -/
+
+/-- **The growth limit is a tail invariant.**  If two enumerations agree
+eventually (`b =ᶠ[atTop] b'`) then their growth ratios agree eventually, so one
+has growth limit `x` iff the other does.  In particular modifying an enumeration
+on finitely many indices leaves every growth-limit statement unchanged. -/
+theorem hasGrowthLimit_congr' {b b' : ℕ → ℕ} {x : ℝ} (h : b =ᶠ[atTop] b') :
+    HasGrowthLimit b x ↔ HasGrowthLimit b' x := by
+  have hg : growthRatio b =ᶠ[atTop] growthRatio b' := by
+    filter_upwards [h] with k hk
+    simp only [growthRatio, hk]
+  unfold HasGrowthLimit
+  exact ⟨fun H => H.congr' hg, fun H => H.congr' hg.symm⟩
+
+/-- **A sub-quadratically enumerated sequence has growth limit `0`.**  If
+`bₖ ≤ C·k` for all `k` (linear growth), then `bₖ/k² ≤ C/k → 0`, and since the
+ratio is nonnegative the squeeze gives `HasGrowthLimit b 0`.  This is the
+convergent-to-`0` counterpart of `hasGrowthLimit_quadratic`: a numerator that is
+`O(k)` cannot make the ratio oscillate or diverge. -/
+theorem hasGrowthLimit_zero_of_linear_bound (b : ℕ → ℕ) (C : ℕ)
+    (h : ∀ k, b k ≤ C * k) : HasGrowthLimit b 0 := by
+  have hle : ∀ k, growthRatio b k ≤ (C : ℝ) / k := by
+    intro k
+    rcases Nat.eq_zero_or_pos k with hk | hk
+    · subst hk; simp [growthRatio_zero]
+    · have hkR : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
+      have hkne : (k : ℝ) ≠ 0 := ne_of_gt hkR
+      have hbk : (b k : ℝ) ≤ (C : ℝ) * k := by exact_mod_cast h k
+      rw [growthRatio]
+      calc (b k : ℝ) / (k : ℝ) ^ 2 ≤ (C : ℝ) * k / (k : ℝ) ^ 2 := by gcongr
+        _ = (C : ℝ) / k := by rw [pow_two, mul_div_mul_right _ _ hkne]
+  refine squeeze_zero (growthRatio_nonneg b) hle ?_
+  exact tendsto_const_div_atTop_nhds_zero_nat _
+
+/-- **Concrete convergent order-`1` enumeration.**  The identity enumeration
+`bₖ = k` — the increasing enumeration of `ℕ` itself, an order-`1` additive basis
+(`isAddBasisOfOrder_univ_one`) — has growth ratio `k/k² = 1/k → 0`, hence growth
+limit `0`.  Contrast `hasGrowthLimit_quadratic` (limit `c`) and
+`hasNoGrowthLimit_oscillating` (no limit): sparser (linear) bases sit at the
+`0` end of the growth spectrum. -/
+theorem hasGrowthLimit_id_zero : HasGrowthLimit (fun k => k) 0 :=
+  hasGrowthLimit_zero_of_linear_bound _ 1 (fun k => by simp)
 
 end Erdos326
