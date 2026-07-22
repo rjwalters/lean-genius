@@ -184,19 +184,15 @@ theorem isSidonSet_image_add {A : Finset ℕ} (hA : IsSidonSet A) (t : ℕ) :
     this brackets `1 ≤ h(N) ≤ √(2N) + 1`. -/
 theorem one_le_sidonNumber (N : ℕ) : 1 ≤ sidonNumber N := by
   unfold sidonNumber
-  have hmem : ({0} : Finset ℕ) ∈
-      (Finset.range (N + 1)).powerset.filter IsSidonSet := by
-    simp only [Finset.mem_filter, Finset.mem_powerset]
-    refine ⟨?_, ?_⟩
-    · intro x hx
-      simp only [Finset.mem_singleton] at hx
-      subst hx; simp
-    · intro a b c d ha hb hc hd _ _ _
-      simp only [Finset.mem_singleton] at ha hb hc hd
-      subst ha; subst hb; subst hc; subst hd
-      exact ⟨rfl, rfl⟩
-  calc (1 : ℕ) = ({0} : Finset ℕ).card := by simp
-    _ ≤ _ := Finset.le_sup hmem
+  have h1 : (1 : ℕ) ≤ ({0} : Finset ℕ).card := by simp
+  refine h1.trans (Finset.le_sup ?_)
+  simp only [Finset.mem_filter, Finset.mem_powerset]
+  refine ⟨fun x hx => ?_, fun a b c d ha hb hc hd _ _ _ => ?_⟩
+  · simp only [Finset.mem_singleton] at hx
+    subst hx; simp
+  · simp only [Finset.mem_singleton] at ha hb hc hd
+    subst ha; subst hb; subst hc; subst hd
+    exact ⟨rfl, rfl⟩
 
 /-- **The Sidon number is monotone in the range.**  `N ≤ M ⟹ h(N) ≤ h(M)`: every
     Sidon subset of `{0,…,N}` is a Sidon subset of the larger `{0,…,M}`, so the
@@ -206,6 +202,9 @@ theorem sidonNumber_mono {N M : ℕ} (h : N ≤ M) : sidonNumber N ≤ sidonNumb
   apply Finset.sup_mono
   intro A hA
   simp only [Finset.mem_filter, Finset.mem_powerset] at hA ⊢
-  exact ⟨hA.1.trans (Finset.range_subset.mpr (by omega)), hA.2⟩
+  refine ⟨fun x hx => ?_, hA.2⟩
+  have hxN := hA.1 hx
+  rw [Finset.mem_range] at hxN ⊢
+  omega
 
 end Erdos30
