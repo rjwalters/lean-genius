@@ -21,9 +21,15 @@
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 4,
-    "focus": "g(5)=2 CLOSED via regular pentagon (axiom-free). Exact table complete through n=5.",
-    "blockers": [],
-    "nextAction": "g(6): lower bound g(6) ≥ 3 (max planar 2-distance set has 5 points, so a 6-set forces ≥3 distances) + a 6-point construction realizing 3 distances; and √n×√n grid toward the conjectured rate.",
+    "focus": "Elementary distinct-distances ladder SATURATED: g(2..5) exact (g(3)=1 #40056, g(4)=2 #40580, g(5)=2 #40856) and g(6) ∈ [2,3] (minDistinctDistances_six_le_three via pentagon-plus-centre + minDistinctDistances_six_mem_Icc) all merged, 0-axiom/0-sorry in Erdos89WIP01.lean. No session-sized elementary increment remains.",
+    "blockers": [
+      {
+        "route": "sharp lower bounds g(n) ≥ (matching value): g(6) ≥ 3 = two-distance set in ℝ² has ≤ 5 points, and asymptotic √n rate",
+        "reopenCriterion": "materially new combinatorial-geometry infrastructure (two-distance-set bound / incidence machinery) not currently in Mathlib",
+        "blockedAt": "2026-07-21"
+      }
+    ],
+    "nextAction": "All remaining directions are HARD/large, not elementary: (1) g(6) ≥ 3 ≡ sharp planar two-distance-set ≤ 5 points (Kelly/Erdős, beyond the Larman–Rogers–Seidel rank ceiling); (2) general regular-n-gon upper bound g(n) ≤ ⌊n/2⌋ (chord-length trig infrastructure, ~250+ lines); (3) √n × √n grid toward the conjectured rate. STAND DOWN unless taking on one of these as a full dedicated session.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -115,5 +121,6 @@
   "started": "2026-07-10T00:41:25.783Z",
   "lastUpdate": "2026-07-21",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "nextAction": "Elementary upper-bound ladder complete (g(2..5) exact, g(6) ∈ [2,3], 0-axiom). Remaining: hard lower bounds (two-distance-set ≤ 5) + general n-gon ⌊n/2⌋ construction (large trig session). Stand down unless committing a full session."
 }
