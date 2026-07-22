@@ -21,6 +21,18 @@
     any practical `m ≥ 3` is even (to represent `2`, the divisor `2` itself must be
     used, since `1` is the only smaller divisor).
 
+  It then adds a *closure* result — a genuine multiplication rule generating new
+  practical numbers from old ones (the simplest instance of the Stewart product
+  criterion `n ≤ σ(m) + 1 ⟹ mn practical`, here `n = 2`):
+
+  * `two_mul_practical` — **if `m` is practical then so is `2m`.** Every `k < 2m`
+    splits as `k = 2q + r` with `r ∈ {0,1}` and `q ≤ m - 1`; represent `q` by
+    divisors of `m`, double that representation (`d ∣ m ⟹ 2d ∣ 2m`) to reach `2q`,
+    and add the divisor `1` when `r = 1`.
+  * `two_pow_mul_practical` — iterating: `2^n · m` is practical whenever `m` is.
+    This produces infinitely many *new* families, e.g. `2^n · 6`, beyond the pure
+    powers of two.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -136,5 +148,84 @@ theorem two_dvd_of_practical {m : ℕ} (hm : 3 ≤ m) (h : IsPractical m) : 2 �
 theorem even_of_practical {m : ℕ} (hm : 3 ≤ m) (h : IsPractical m) : Even m := by
   obtain ⟨c, hc⟩ := two_dvd_of_practical hm h
   exact ⟨c, by omega⟩
+
+/- ## Closure under doubling: `m` practical ⟹ `2m` practical
+
+The core building block is that a representation by divisors of `m` doubles to one
+by divisors of `2m`: if `d ∣ m` then `2d ∣ 2m`, so `S ↦ 2·S` sends distinct
+divisors of `m` to distinct divisors of `2m` while doubling the subset sum. -/
+
+/-- Doubling a divisor-subset doubles its sum (the map `d ↦ 2d` is injective). -/
+theorem sum_image_two_mul (S : Finset ℕ) :
+    (S.image (2 * ·)).sum id = 2 * S.sum id := by
+  rw [Finset.sum_image (fun a _ b _ hab => by omega), Finset.mul_sum]
+  exact Finset.sum_congr rfl (fun x _ => rfl)
+
+/-- If `S` is a set of divisors of `m`, then `2·S` is a set of divisors of `2m`
+(since `d ∣ m ⟹ 2d ∣ 2m`, and `m ≠ 0` forces `2m ≠ 0`). -/
+theorem image_two_mul_subset_divisors {S : Finset ℕ} {m : ℕ} (hS : S ⊆ divisors m) :
+    S.image (2 * ·) ⊆ divisors (2 * m) := by
+  intro x hx
+  rw [Finset.mem_image] at hx
+  obtain ⟨d, hd, rfl⟩ := hx
+  have hdm := hS hd
+  rw [divisors, Nat.mem_divisors] at hdm
+  rw [divisors, Nat.mem_divisors]
+  exact ⟨Nat.mul_dvd_mul_left 2 hdm.1, Nat.mul_ne_zero two_ne_zero hdm.2⟩
+
+/-- If `q` is a sum of distinct divisors of `m`, then `2q` is a sum of distinct
+divisors of `2m`. -/
+theorem repr_two_mul {q m : ℕ} (h : IsRepresentable q m) :
+    IsRepresentable (2 * q) (2 * m) := by
+  obtain ⟨S, hS, hsum⟩ := h
+  exact ⟨S.image (2 * ·), image_two_mul_subset_divisors hS,
+    by rw [sum_image_two_mul, hsum]⟩
+
+/-- If `q` is a sum of distinct divisors of `m` (with `m ≥ 1`), then `2q + 1` is a
+sum of distinct divisors of `2m`: double the representation of `q`, then adjoin the
+divisor `1` (which, being odd, is not among the doubled — hence even — divisors). -/
+theorem repr_two_mul_add_one {q m : ℕ} (hm : 1 ≤ m) (h : IsRepresentable q m) :
+    IsRepresentable (2 * q + 1) (2 * m) := by
+  obtain ⟨S, hS, hsum⟩ := h
+  have h1notmem : (1 : ℕ) ∉ S.image (2 * ·) := by
+    rw [Finset.mem_image]; rintro ⟨d, _, hd⟩; omega
+  refine ⟨insert 1 (S.image (2 * ·)), ?_, ?_⟩
+  · rw [Finset.insert_subset_iff]
+    refine ⟨?_, image_two_mul_subset_divisors hS⟩
+    rw [divisors, Nat.mem_divisors]
+    exact ⟨one_dvd _, Nat.mul_ne_zero two_ne_zero (by omega)⟩
+  · rw [Finset.sum_insert h1notmem, sum_image_two_mul, hsum]
+    simp only [id_eq]; omega
+
+/-- **If `m` is practical, then `2m` is practical.** A concrete new-family generator:
+the divisors of `2m` include every divisor `d` of `m` and its double `2d`, which
+suffices to represent every `k < 2m`. This is the `n = 2` case of the Stewart
+product criterion. -/
+theorem two_mul_practical {m : ℕ} (h : IsPractical m) : IsPractical (2 * m) := by
+  obtain ⟨hm1, hrep⟩ := h
+  refine ⟨by omega, ?_⟩
+  intro k _ hk2m
+  have hqlt : k / 2 < m := by omega
+  have hqrep : IsRepresentable (k / 2) m := by
+    rcases Nat.eq_zero_or_pos (k / 2) with hq0 | hqpos
+    · rw [hq0]; exact zero_isRepresentable m
+    · exact hrep (k / 2) hqpos hqlt
+  rcases Nat.mod_two_eq_zero_or_one k with h2 | h2
+  · rw [show k = 2 * (k / 2) by omega]; exact repr_two_mul hqrep
+  · rw [show k = 2 * (k / 2) + 1 by omega]; exact repr_two_mul_add_one hm1 hqrep
+
+/-- Iterating `two_mul_practical`: `2^n · m` is practical whenever `m` is. -/
+theorem two_pow_mul_practical (n : ℕ) {m : ℕ} (h : IsPractical m) :
+    IsPractical (2 ^ n * m) := by
+  induction n with
+  | zero => simpa using h
+  | succ n ih =>
+    rw [show 2 ^ (n + 1) * m = 2 * (2 ^ n * m) by ring]
+    exact two_mul_practical ih
+
+/-- A concrete new infinite family beyond the powers of two: `2^n · 6` is practical
+(e.g. `6, 12, 24, 48, …`). -/
+theorem two_pow_mul_six_practical (n : ℕ) : IsPractical (2 ^ n * 6) :=
+  two_pow_mul_practical n six_practical
 
 end Erdos18
