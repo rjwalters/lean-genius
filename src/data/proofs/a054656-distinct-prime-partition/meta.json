@@ -4,8 +4,28 @@
   "title": "OEIS A054656: Primes Absent from Every Distinct-Prime Partition of n",
   "status": "formalized",
   "description": "For n ≥ 23, the primes p ≤ n absent from every partition of n into distinct primes are exactly {n−1, n−4, n−6} ∩ P. This first iteration machine-checks the elementary core — the residuals 1, 4, 6 are not sums of distinct primes, and the reduction 'p present in n ⟺ n−p is a distinct-prime sum avoiding p' — and scaffolds the seed-block / interval-extension / Bertrand-Ramanujan engine.",
-  "overview": "OEIS A054656 (created April 2000) is still labeled conjectural. Encoding a distinct-prime sum as a Finset of primes, the entry verifies (kernel `decide`, 0 sorries) that 1, 4 and 6 admit no distinct-prime representation, and proves the pivot reduction present_iff_residual_repr. The main theorem and the representability engine (seed block of ≥64 consecutive residuals, interval-extension, and the Ramanujan-prime induction) remain sorry pending a two-primes-in-(q,2q] lemma that Mathlib lacks.",
-  "conclusion": "The elementary core is machine-checked; the full theorem is not yet verified. Status is honestly `formalized` (4 sorries remain).",
+  "overview": {
+    "historicalContext": "OEIS A054656 was created in April 2000 and, as of this entry, is still labeled conjectural — over two decades with no published proof. The sequence counts primes p ≤ n absent from every partition of n into distinct primes, and the conjectural closed form is remarkably simple: for n ≥ 23 the absent primes are exactly {n−1, n−4, n−6} intersected with the primes. GitHub issue #41831 tracks an AI-claimed elementary proof (GPT-5.6 Pro); this file is the first Lean iteration turning that claimed argument into machine-checked mathematics, separating what is genuinely elementary (and now verified) from what still needs a number-theoretic ingredient Mathlib does not yet have.",
+    "problemStatement": "For every integer n ≥ 23, show that the primes p ≤ n occurring in NO partition of n into distinct primes are exactly the primes among {n−1, n−4, n−6}. Equivalently: a prime p ≤ n is present in some distinct-prime partition of n if and only if the residual m = n − p is itself a sum of distinct primes none equal to p, and the only residuals with no such representation are m ∈ {1, 4, 6}.",
+    "proofStrategy": "Encode a distinct-prime sum as `Repr m := ∃ S : Finset ℕ, (∀ q ∈ S, Nat.Prime q) ∧ S.sum id = m`, with `ReprAvoiding` adding a forbidden prime and `Present p n` asserting p occurs in some distinct-prime partition of n. The pivot is `present_iff_residual_repr`: p is present in n iff p is prime, p ≤ n, and n − p is representable avoiding p — proved by a `Finset.erase`/`insert` bookkeeping argument with no case analysis on primality. On the base-case side, `not_repr_one`, `not_repr_four`, `not_repr_six` rule out the three exceptional residuals by bounding the candidate primes (≤ 1, ≤ 4, ≤ 6) and exhausting the finitely many subsets with `decide`. What remains sorry is the representability engine for every OTHER residual: a `seed_block` of ≥64 consecutive representable integers built from the nine primes ≤ 23, an `interval_extension` step that grows a representable interval by one fresh prime, and a Bertrand/Ramanujan induction (`repr_of_ge_seven_ne`) that pushes this to infinity — which needs a '(q, 2q] contains ≥ 2 primes' lemma that Mathlib does not currently provide.",
+    "keyInsights": [
+      "**The reduction is the whole ballgame.** `present_iff_residual_repr` converts a statement about partitions containing p into a statement about representing the residual n − p while avoiding p — a clean `Finset.erase`/`Finset.insert` correspondence that needs no primality case analysis, only the arithmetic identity p + (S.erase p).sum id = n.",
+      "**Exactly three residuals are unrepresentable.** 1 is below the smallest prime 2; {2,3} (the only primes ≤ 4) cannot sum to 4; {2,3,5} (the only primes ≤ 6) cannot sum to 6. Each is a finite, fully verified `decide` check over subsets — the base case of the whole conjecture is closed with zero sorries.",
+      "**Every larger residual is expected representable, but that needs infrastructure, not just computation.** The claimed argument bootstraps a finite seed block of ≥64 consecutive representable residuals (from the nine primes ≤ 23) and then extends it indefinitely by injecting one fresh prime at a time — an induction, not a single decidable check.",
+      "**A genuine Mathlib gap surfaces here.** Mathlib has Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul`, one prime in (n, 2n]) but no Ramanujan-prime result. The induction step needs TWO primes in (q, 2q] so that after deleting the one forbidden prime p, an eligible fresh prime still remains — this must be built on top of Bertrand, not found off the shelf.",
+      "**Kernel `decide` throughout, deliberately.** Every verified lemma uses plain `decide`, not `native_decide`, so the finished portion carries no `Lean.ofReduceBool` dependency, keeping the door open for the finished entry to be genuinely axiom-free rather than merely axiomatized.",
+      "**The status is reported honestly.** `formalized` with 4 sorries (`seed_block`, `interval_extension`, `repr_of_ge_seven_ne`, `A054656_main`) rather than a premature `verified` claim — the elementary core is real progress, but the sequence remains conjectural until the Ramanujan-prime gap is closed."
+    ]
+  },
+  "conclusion": {
+    "summary": "The elementary core of OEIS A054656 is machine-checked with zero sorries: the pivot reduction `present_iff_residual_repr` and the non-representability of the three exceptional residuals 1, 4, 6. The main theorem and the representability engine that would cover every other residual remain `sorry`, pending a Ramanujan-prime-style lemma not yet in Mathlib. Status is honestly reported as `formalized`, not `verified`.",
+    "implications": "This first iteration converts a 25-year-old conjectural OEIS sequence into a precisely scoped Lean scaffold: the parts that are genuinely elementary are now verified, and the single missing number-theoretic ingredient — at least two primes in (q, 2q] — is identified explicitly rather than left implicit in an informal AI-generated argument. That makes the remaining work a well-defined target for either a future research pass or an Aristotle submission once the Ramanujan-prime lemma is stated.",
+    "openQuestions": [
+      "Does the seed-block enumeration (≥64 consecutive representable residuals from the nine primes ≤ 23, for each excluded prime p) stay within reach of kernel `decide`, or does the 2⁹-subset search force `native_decide` (which would require disclosing `Lean.ofReduceBool` and downgrading the eventual badge to `axiom`)?",
+      "Can the needed '≥ 2 primes in (q, 2q]' lemma be derived by applying Bertrand's postulate twice with a case split, or does it require genuinely new number-theoretic input beyond `Nat.exists_prime_lt_and_le_two_mul`?",
+      "Is the conjectural closed form {n−1, n−4, n−6} ∩ P actually correct for all n ≥ 23, or does OEIS A054656 have exceptions the informal proof missed?"
+    ]
+  },
   "leanFile": {
     "path": "Proofs/A054656DistinctPrimePartition.lean",
     "sorries": 4,
@@ -45,11 +65,76 @@
       "research"
     ]
   },
-  "sections": [],
-  "crossReferences": [],
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: the conjecture, the AI-claimed proof, and the Mathlib gap",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Docstring: OEIS A054656 (n ≥ 23, absent primes = {n−1,n−4,n−6} ∩ P), the source of the claimed elementary proof (GitHub issue #41831, GPT-5.6 Pro), a status ledger of what is verified vs. scaffolded in this first iteration, and the identified Mathlib gap — Bertrand's postulate exists but the needed two-primes-in-(q,2q] Ramanujan-style strengthening does not."
+    },
+    {
+      "id": "definitions",
+      "title": "Core definitions: Repr, ReprAvoiding, Present, D",
+      "startLine": 49,
+      "endLine": 69,
+      "summary": "`Repr m` (m is a sum of distinct primes), `ReprAvoiding m avoid` (a representation excluding one prime), `Present p n` (p occurs in some distinct-prime partition of n), and `D n` (the primes ≤ n absent from every such partition — |D n| is the OEIS sequence)."
+    },
+    {
+      "id": "basic-facts",
+      "title": "Basic facts about representations",
+      "startLine": 71,
+      "endLine": 83,
+      "summary": "`le_of_mem_repr` (every prime in a representing set is ≤ the sum) and `repr_of_reprAvoiding` (an avoiding representation is in particular a representation) — small supporting lemmas used by the reduction and the exceptional-residual proofs."
+    },
+    {
+      "id": "exceptional-residuals",
+      "title": "The three exceptional residuals: 1, 4, 6 are not sums of distinct primes",
+      "startLine": 85,
+      "endLine": 136,
+      "summary": "`not_repr_one`, `not_repr_four`, `not_repr_six` — fully verified (kernel `decide`) proofs that 1, 4, 6 admit no distinct-prime representation, by bounding candidate primes and exhausting the finitely many subsets of {2,3}/{2,3,5}. `not_reprAvoiding_of_mem_exceptional` packages the three as one lemma."
+    },
+    {
+      "id": "reduction",
+      "title": "The reduction lemma (VERIFIED): present_iff_residual_repr",
+      "startLine": 138,
+      "endLine": 169,
+      "summary": "The pivot the whole proof rests on: p occurs in a distinct-prime partition of n iff p is prime, p ≤ n, and n − p has a distinct-prime representation avoiding p. Proved elementarily via `Finset.erase`/`Finset.insert` and the arithmetic identity relating S.sum id to (S.erase p).sum id."
+    },
+    {
+      "id": "scaffolding",
+      "title": "Scaffolding for the representability engine (DEFERRED)",
+      "startLine": 171,
+      "endLine": 213,
+      "summary": "`seed_block` (≥64 consecutive representable residuals from the nine primes ≤ 23), `interval_extension` (grow a representable interval by one fresh prime), and `repr_of_ge_seven_ne` (every non-exceptional residual is representable avoiding p, via seed block + extension + Bertrand/Ramanujan induction) — all stated but `sorry`, with the missing Ramanujan-prime ingredient documented inline."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main theorem (DEFERRED assembly): A054656_main",
+      "startLine": 215,
+      "endLine": 228,
+      "summary": "The target statement for n ≥ 23: D n = {p | Nat.Prime p ∧ (p = n−1 ∨ p = n−4 ∨ p = n−6)}. Once `repr_of_ge_seven_ne` is discharged this follows immediately from the verified reduction and the three verified non-representability facts; currently `sorry`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "bertrands-postulate",
+      "relationship": "Mathlib dependency and identified gap",
+      "description": "This proof's deferred representability engine needs a two-primes-in-(q,2q] Ramanujan-style strengthening built on top of Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul`), which Mathlib has but does not extend to the two-prime version this argument requires."
+    }
+  ],
   "references": [
-    "OEIS A054656 — https://oeis.org/A054656",
-    "GitHub issue #41831 (rjwalters/lean-genius)",
-    "Mathlib/NumberTheory/Bertrand.lean"
+    {
+      "text": "OEIS A054656 — Primes not appearing in any partition of n into distinct primes",
+      "url": "https://oeis.org/A054656",
+      "note": "Created April 2000; still labeled conjectural as of this entry."
+    },
+    {
+      "text": "GitHub issue #41831 (rjwalters/lean-genius) — AI-claimed elementary proof (GPT-5.6 Pro) motivating this formalization",
+      "url": "https://github.com/rjwalters/lean-genius/issues/41831"
+    },
+    {
+      "text": "Mathlib.NumberTheory.Bertrand — Nat.exists_prime_lt_and_le_two_mul (Bertrand's postulate), the single-prime result the deferred Ramanujan-prime lemma must be built on top of"
+    }
   ]
 }
