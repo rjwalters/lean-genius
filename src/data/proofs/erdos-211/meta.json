@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-211",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #211 (\\$100 prize, awarded), resolved independently by Beck (1983) and Szemer\u00e9di\u2013Trotter (1983): given $n$ points in the plane with at most $n-k$ on any line, there are $\\gg kn$ lines through at least two points; the constant $1/6$ in Erd\u0151s's conjectured bound is best possible.",
+      "startLine": 1,
+      "endLine": 33,
+      "mathContext": "The special case ($2n$ points, at most $n$ collinear) forces $\\gg n^2$ lines; extremal configurations achieving the $1/6$ constant have $\\approx n^2/6$ lines each containing exactly 3 points."
+    },
+    {
       "id": "basic-setup",
       "title": "Geometric Foundation",
       "summary": "Defines `Point` as $\\mathbb{R}^2$, `Line` via point-direction pairs, `Collinear` via affine combinations, and counting functions `numLines` and `maxCollinear`. These form the type-theoretic substrate for stating incidence bounds.",
