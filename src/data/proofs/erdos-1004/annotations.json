@@ -4,7 +4,7 @@
     "proofId": "erdos-1004",
     "type": "concept",
     "title": "Module Header and Imports",
-    "content": "File documentation for Erdős Problem 1004 on distinct consecutive totient values, citing EPS (1987). Imports Mathlib's `EulerPhi.Basic` (providing `Nat.totient`), `ArithmeticFunction`, logarithms and powers over $\\mathbb{R}$, and the real number topology needed for asymptotic statements via `Filter.atTop`.",
+    "content": "File documentation for Erdős Problem 1004 on distinct consecutive totient values, citing EPS (1987). Imports all of `Mathlib` (providing `Nat.totient`, logarithms and powers over $\\mathbb{R}$, and the real number topology needed for asymptotic statements via `Filter.atTop`).",
     "mathContext": "The formalization uses `Nat.totient` from Mathlib, which computes $\\varphi(n) = |\\{k : 1 \\leq k \\leq n,\\ \\gcd(k,n) = 1\\}|$. Asymptotic bounds require coercion to $\\mathbb{R}$ and `Real.log`, `Real.exp`.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -247,7 +247,7 @@
     "proofId": "erdos-1004",
     "type": "insight",
     "title": "Birthday Problem Heuristic for Collisions",
-    "content": "The birthday paradox provides intuition: if there are $V \\sim n / \\log n$ distinct totient values near $n$, the probability that $K$ consecutive values are all distinct is $\\approx \\prod_{k=0}^{K-1}(1 - k/V)$, dropping below $1/2$ when $K \\approx \\sqrt{V} \\sim \\sqrt{n/\\log n}$. The asymptotic `distinct_totients_asymptotic` formalizes $|\\{\\varphi(k) : k \\leq x\\}| \\sim x / \\log x$ (proof sorry'd).",
+    "content": "The birthday paradox provides intuition: if there are $V \\sim n / \\log n$ distinct totient values near $n$, the probability that $K$ consecutive values are all distinct is $\\approx \\prod_{k=0}^{K-1}(1 - k/V)$, dropping below $1/2$ when $K \\approx \\sqrt{V} \\sim \\sqrt{n/\\log n}$. The asymptotic `distinct_totients_asymptotic` formalizes $|\\{\\varphi(k) : k \\leq x\\}| \\sim x / \\log x$ (axiomatized, not sorry'd).",
     "mathContext": "$V(x) := |\\{\\varphi(n) : n \\leq x\\}| \\sim x / \\log x$. Collisions likely after $K \\approx \\sqrt{V} \\sim \\sqrt{x / \\log x}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -411,7 +411,7 @@
     "proofId": "erdos-1004",
     "type": "theorem",
     "title": "Classification of Small Totient Values (Part XII)",
-    "content": "The mathematical centerpiece — fully proved, no axioms: `totient_eq_one_iff` ($\\varphi(n)=1 \\iff n\\in\\{1,2\\}$), `totient_eq_two_iff` ($\\iff n\\in\\{3,4,6\\}$), and `totient_eq_four_iff` ($\\iff n\\in\\{5,8,10,12\\}$). Each is a complete inverse-totient computation, supported by seven private helper lemmas (`coprime_two_odd`, `totient_two_mul_odd`, `totient_prime_mul_not_dvd`, `odd_totient_ne_two`, `odd_totient_ne_four`, …) that bound the smallest prime factor and recurse on $n/p$.",
+    "content": "The mathematical centerpiece — fully proved, no axioms: `totient_eq_one_iff` ($\\varphi(n)=1 \\iff n\\in\\{1,2\\}$), `totient_eq_two_iff` ($\\iff n\\in\\{3,4,6\\}$), and `totient_eq_four_iff` ($\\iff n\\in\\{5,8,10,12\\}$). Each is a complete inverse-totient computation, supported by eight private helper lemmas (`coprime_two_odd`, `totient_two_mul_odd`, `totient_prime_mul_not_dvd`, `odd_totient_ne_two`, `odd_totient_ne_four`, …) that bound the smallest prime factor and recurse on $n/p$.",
     "mathContext": "The proofs combine a finite check on small $n$ (`native_decide` once $n$ is bounded) with a structural argument ruling out large $n$: if $\\varphi(n)=v$ then $(\\mathrm{minFac}(n)-1) \\mid v$ (from `Nat.totient_dvd_of_dvd` + `Nat.totient_prime`), forcing $\\mathrm{minFac}(n) \\in$ a small set; then `totient_mul` with coprimality peels off the prime-power factor and recurses (e.g. $\\varphi(2m)=\\varphi(m)$ for odd $m$, $\\varphi(p\\cdot m)=(p{-}1)\\varphi(m)$ for $p\\nmid m$), reducing to the already-solved smaller cases. The increasing preimage sizes $2,3,4$ are concrete data toward Carmichael's conjecture (every totient value has multiplicity $\\geq 2$). The `native_decide` calls here sit inside finite case-checks, not load-bearing headline claims.",
     "significance": "key",
     "relatedConcepts": [
