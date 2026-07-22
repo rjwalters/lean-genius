@@ -673,3 +673,57 @@ theorem exists_isRatFractionRepr_controlled_overshoot (N : ℕ) (hN : 1 ≤ N) :
   · intro n hn
     rw [Finset.mem_Ico] at hn
     omega
+
+/-- **Controlled greedy undershoot.** The below-`1` companion of
+`exists_isRatFractionRepr_controlled_overshoot`. For every threshold `N ≥ 1` there is a
+consecutive block `[N+1, M)` whose reciprocals sum to a value `q` with
+`1 - 1/(N+1) ≤ q < 1`, every denominator `> N`. Take the *minimal* `M = b₀` for which the
+block `[N+1, b₀)` reaches `1`; the block one term shorter, `[N+1, b₀-1)`, falls short of `1`
+(`q < 1` by minimality), yet differs from the reaching block only by the single top term
+`1/(b₀-1) ≤ 1/(N+1)`, so `q ≥ 1 - 1/(b₀-1) ≥ 1 - 1/(N+1)`.
+
+Together with the overshoot this brackets `1` two-sidedly by large-minimum consecutive
+blocks: `1 - 1/(N+1) ≤ q₋ < 1 ≤ q₊ < 1 + 1/(N+1)`, both with denominators `> N`. The
+exact landing on `1` (closing the `[q₋, q₊]` gap collision-free with denominators `> N`)
+remains the open bounded-rational Diophantine step (see the tracker). -/
+theorem exists_isRatFractionRepr_controlled_undershoot (N : ℕ) (hN : 1 ≤ N) :
+    ∃ (S : Finset ℕ) (q : ℚ),
+      IsRatFractionRepr S q ∧ 1 - 1 / (N + 1) ≤ q ∧ q < 1 ∧ (∀ n ∈ S, N < n) := by
+  classical
+  set P : ℕ → Prop :=
+    fun b => (1 : ℚ) ≤ (Finset.Ico (N + 1) b).sum (fun k => (1 : ℚ) / k) with hP
+  have hex : ∃ b, P b := ⟨4 * N + 1, sum_Ico_inv_ge_one N hN⟩
+  set b₀ := Nat.find hex with hb₀
+  have hPb₀ : P b₀ := Nat.find_spec hex
+  have hb₀_ge : N + 2 ≤ b₀ := by
+    by_contra h
+    have hempty : Finset.Ico (N + 1) b₀ = ∅ := Finset.Ico_eq_empty (by omega)
+    simp only [hP, hempty, Finset.sum_empty] at hPb₀
+    norm_num at hPb₀
+  set c := b₀ - 1 with hc_def
+  have hb₀eq : b₀ = c + 1 := by omega
+  have hc : N + 1 ≤ c := by omega
+  -- the shorter block `[N+1, c)` still falls short of `1`
+  have hnPc : ¬ P c := Nat.find_min hex (by omega)
+  have hlt : (Finset.Ico (N + 1) c).sum (fun k => (1 : ℚ) / k) < 1 := by
+    simpa only [hP, not_le] using hnPc
+  -- but the reaching block is the shorter block plus the single top term `1/c`
+  have hsplit :
+      (1 : ℚ) ≤ (Finset.Ico (N + 1) c).sum (fun k => (1 : ℚ) / k) + 1 / (c : ℚ) := by
+    have h := hPb₀
+    simp only [hP] at h
+    rwa [hb₀eq, Finset.sum_Ico_succ_top (by omega : N + 1 ≤ c)] at h
+  refine ⟨Finset.Ico (N + 1) c,
+    (Finset.Ico (N + 1) c).sum (fun k => (1 : ℚ) / k), ⟨?_, rfl⟩, ?_, hlt, ?_⟩
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
+  · -- the undershoot bound `1 - 1/(N+1) ≤ q`
+    have h1c : (1 : ℚ) / (c : ℚ) ≤ 1 / ((N : ℚ) + 1) := by
+      apply one_div_le_one_div_of_le
+      · exact_mod_cast (by omega : 0 < N + 1)
+      · exact_mod_cast hc
+    linarith
+  · intro n hn
+    rw [Finset.mem_Ico] at hn
+    omega
