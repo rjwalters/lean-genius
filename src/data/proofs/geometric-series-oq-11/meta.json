@@ -36,6 +36,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Negative Binomial Series",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "States what this file proves — for |r| < 1 and fixed order k, ∑_{n=0}^∞ C(n+k,k)·rⁿ = 1/(1-r)^{k+1}, the negative binomial series that is the common parent of the geometric-moment family already in the gallery (k=0 recovers the geometric series, k=1 gives 1/(1-r)², etc.). Building on Mathlib's core analytic fact hasSum_choose_mul_geometric_of_norm_lt_one, this file exposes three faces of the coefficient C(n+k,k): the symmetric form C(n+k,k)=C(n+k,n), the stars-and-bars/multichoose identity C(n+k,k)=multichoose(k+1) n (counting weak compositions of n into k+1 parts), and bridges to the k=0 and k=1 moment-family members. 0 sorries, 0 axioms.",
+      "mathContext": "$\\sum_{n=0}^\\infty \\binom{n+k}{k} r^n = 1/(1-r)^{k+1}$, with $\\binom{n+k}{k}=\\mathrm{multichoose}(k{+}1)\\,n$ counting degree-$n$ monomials in $k{+}1$ variables."
+    },
+    {
       "id": "negative-binomial-series",
       "title": "The Negative Binomial Series",
       "startLine": 57,
