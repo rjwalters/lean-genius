@@ -103,6 +103,21 @@
       "targetId": "bezout-identity-oq-02-oq-01",
       "relationship": "related",
       "description": "Grandparent. Derives the Fundamental Theorem of Arithmetic from Euclid's lemma; the Fermat factorization here is the polynomial analogue of 'every prime residue is a root', specialised to 𝔽_p."
+    },
+    {
+      "targetId": "frobenius-endomorphism-oq-01",
+      "relationship": "related",
+      "description": "Supplies the exact machinery of the Frobenius collapse here: the 'freshman's dream' additivity (x+y)^p = x^p + y^p (sub_pow_char) and Frobenius = identity over ZMod p (a^p = a). frobenius_factorization (X^p − a = (X − a)^p) is that endomorphism read at the level of polynomials — the inseparable extreme."
+    },
+    {
+      "targetId": "burnside-counting-oq-06",
+      "relationship": "related",
+      "description": "Proves Fermat's little theorem p ∣ k^p − k via cyclic necklace orbit counting — a combinatorial route to the same a^q = a fact that, read polynomially, is exactly fermat_factorization ('every element is a root of X^q − X'). Same theorem, orthogonal proof."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's generalization a^φ(n) ≡ 1 (mod n) of Fermat's little theorem. Over the field 𝔽_p the special case n = p (φ(p) = p − 1, so a^{p−1} = 1 for a ≠ 0, i.e. a^p = a) is precisely the root condition powering the Fermat factorization X^p − X = ∏_a (X − a)."
     }
   ],
   "leanFile": {
