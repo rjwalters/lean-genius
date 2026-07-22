@@ -85,8 +85,8 @@
       "title": "Prime Sequence Definitions",
       "startLine": 32,
       "endLine": 62,
-      "summary": "Axiomatizes the prime sequence and its properties",
-      "mathContext": "The prime-counting sequence $p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7, p_5 = 11, \\ldots$ is axiomatized as a strictly increasing function $\\text{prime\\_seq}: \\mathbb{N} \\to \\mathbb{N}$ with $\\text{Prime}(\\text{prime\\_seq}(n))$ for all $n$."
+      "summary": "Defines the prime sequence via `Nat.nth Nat.Prime` and proves its basic properties",
+      "mathContext": "The prime-counting sequence $p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7, p_5 = 11, \\ldots$ is defined as `Nat.nth Nat.Prime` (not axiomatized); strict monotonicity and $\\text{Prime}(\\text{prime\\_seq}(n))$ for all $n$ are proved from Mathlib's `Nat.nth` API."
     },
     {
       "id": "problem-statement",

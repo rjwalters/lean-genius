@@ -31,9 +31,9 @@
     },
     "type": "definition",
     "title": "Prime Sequence",
-    "content": "**prime_seq n:** The n-th prime number (p₁=2, p₂=3, p₃=5, ...).\n\nAxiomatized with basic properties: strictly increasing and each value is prime. The first five values are specified explicitly for verification.",
+    "content": "**prime_seq n:** The n-th prime number (p₁=2, p₂=3, p₃=5, ...), defined via `Nat.nth Nat.Prime`.\n\nNot an axiom: strictly increasing and primality are proved from Mathlib's `Nat.nth` API. The first five values are proved explicitly for verification.",
     "significance": "key",
-    "mathContext": "$p_n$ denotes the $n$-th prime: $p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7, p_5 = 11, \\ldots$ Axiomatized as a strictly increasing function with $\\text{Nat.Prime}(p_n)$ for all $n \\ge 1$.",
+    "mathContext": "$p_n$ denotes the $n$-th prime: $p_1 = 2, p_2 = 3, p_3 = 5, p_4 = 7, p_5 = 11, \\ldots$ Defined via `Nat.nth Nat.Prime` (not axiomatized); strict monotonicity and $\\text{Nat.Prime}(p_n)$ for all $n \\ge 1$ are proved.",
     "relatedConcepts": [
       "Prime enumeration",
       "Consecutive primes",
@@ -97,8 +97,8 @@
       "endLine": 102
     },
     "type": "concept",
-    "title": "Erdős-Stewart Conjecture (Proved)",
-    "content": "**erdos_stewart_conjecture:** There are only finitely many n satisfying the condition.\n\n**erdos_stewart_conjecture_true:** Luca proved this in 2001.\n\nAppears as Problem A2 in Guy's 'Unsolved Problems in Number Theory'.",
+    "title": "Erdős-Stewart Conjecture (Axiomatized)",
+    "content": "**erdos_stewart_conjecture:** There are only finitely many n satisfying the condition.\n\n**erdos_stewart_conjecture_true:** an `axiom` in this file, asserting Luca's 2001 result. Luca's own proof is not formalized in Lean; we assume the historically-published theorem rather than machine-verify it.\n\nAppears as Problem A2 in Guy's 'Unsolved Problems in Number Theory'.",
     "significance": "key",
     "mathContext": "$|\\{n : \\text{satisfiesCondition}(n)\\}| < \\infty$. Appeared as Problem A2 in Guy's 'Unsolved Problems in Number Theory'. Luca's resolution in Mathematics of Computation (2001) gave the complete answer.",
     "relatedConcepts": [
@@ -119,8 +119,8 @@
       "endLine": 113
     },
     "type": "concept",
-    "title": "Luca's Complete Classification",
-    "content": "**luca_theorem:** The only n satisfying the Erdős-Stewart condition are n = 1, 2, 3, 4, 5.\n\nThis completely classifies all solutions. Luca's proof uses factorial growth bounds and diophantine equation techniques to eliminate all n ≥ 6.",
+    "title": "Luca's Complete Classification (Axiomatized)",
+    "content": "**luca_theorem:** an `axiom` in this file, asserting the only n satisfying the Erdős-Stewart condition are n = 1, 2, 3, 4, 5.\n\nThis completely classifies all solutions, per Luca's published proof (factorial growth bounds and diophantine equation techniques to eliminate all n ≥ 6) — that proof itself is not formalized in Lean.",
     "mathContext": "Published in Mathematics of Computation (2001).",
     "significance": "key",
     "relatedConcepts": [
