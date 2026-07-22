@@ -50,6 +50,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Asymptotic Distribution of Weighted Fractional Sums",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States Erdős Problem #1002 — for 0 < α < 1, does f(α,n) = (1/log n)·Σₖ(1/2 − {αk}) have an asymptotic distribution function? — noting Weyl's 1916 equidistribution theorem and Kesten's 1960 two-parameter Cauchy-limit result, while the one-parameter case remains open, and defines the deviation function 1/2 − {x} driving the sum.",
+      "mathContext": "$f(\\alpha,n) = \\frac{1}{\\log n}\\sum_{k=1}^n \\left(\\frac12 - \\{\\alpha k\\}\\right)$; Weyl equidistribution gives $\\{k\\alpha\\}$ uniform for irrational $\\alpha$, but the limiting distribution of $f$ itself is open."
+    },
+    {
       "id": "fractional-part",
       "title": "Fractional Part",
       "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and deviation from midpoint",
