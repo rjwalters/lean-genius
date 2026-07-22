@@ -144,6 +144,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Borsuk-Ulam for Symmetric Groups \u2014 the Largest-Prime-Below Conjecture", "startLine": 1, "endLine": 53, "summary": "States the conjectured equality symBUDim n d = buDim p* d (p* = largest prime \u2264 n) and outlines the six-step phase-2 axiomatization: definition of largestPrimeBelow, the equality axiom, the derived closed form for even d, the unconditional lower bound via Bertrand's postulate, a quantitative Bertrand bound pinning p* in (n/2, n], and an axiom-free n=2 consistency check showing the new axiom is not needed at n=2.", "mathContext": "Builds on the parent's lower bound $\\mathrm{buDim}(p,d) \\le \\mathrm{symBUDim}(n,d)$ for any prime $p \\le n$ (subgroup monotonicity of the Fadell-Husseini index); Bertrand's postulate guarantees $p^*$ lies within a factor 2 of $n$."},
     {
       "id": "largest-prime",
       "title": "Part I: The Largest Prime ≤ n",
