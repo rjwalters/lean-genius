@@ -121,6 +121,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1149",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1149, solved by Bergelson\u2013Richter (2017): for non-integer $\\alpha > 0$, the natural density of $\\{n \\ge 1 : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}$ equals $6/\\pi^2$, the classical coprimality probability.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "$6/\\pi^2 = 1/\\zeta(2)$ is the density of coprime pairs of \"random\" integers; the result shows $n$ and $\\lfloor n^\\alpha \\rfloor$ behave coprimality-independently despite their deterministic relationship."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 28,
