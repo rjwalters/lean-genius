@@ -101,74 +101,74 @@
     {
       "id": "background",
       "title": "Background",
-      "startLine": 40,
-      "endLine": 55,
-      "summary": "Unit fractions, Egyptian fractions, and density definitions.",
+      "startLine": 34,
+      "endLine": 48,
+      "summary": "Documentation comment on unit fractions, Egyptian fractions, and density (no declarations).",
       "mathContext": "Unit fractions: $1/n$. Egyptian fraction representation: $1 = 1/a_1 + \\\\cdots + 1/a_k$ with distinct $a_i$. Density: $\\\\bar{d}(A) = \\\\limsup |A \\\\cap [1,N]|/N > 0$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 56,
-      "endLine": 90,
-      "summary": "countUpTo, densityRatio, HasPosDensity, unitFractionSum, etc.",
-      "mathContext": "$A(N) = |A \\\\cap [1,N]|$. $\\\\bar{d}(A) = \\\\limsup A(N)/N$. Unit fraction sum: $\\\\sum_{n \\\\in S} 1/n$ for finite $S \\\\subset A$."
+      "startLine": 50,
+      "endLine": 74,
+      "summary": "Axioms HasPosDensity, upperDensity; defs HasPosUpperDensity, unitFractionSum, SumsToOne, ContainsUnitSumSubset.",
+      "mathContext": "$\\\\bar{d}(A) = \\\\limsup |A \\\\cap [1,N]|/N$ (axiomatized). Unit fraction sum: $\\\\sum_{n \\\\in S} 1/n$ for finite $S \\\\subset A$; $A$ contains a unit-sum subset iff some finite $S \\\\subseteq A$ has $\\\\sum 1/n = 1$."
     },
     {
       "id": "examples",
       "title": "Unit Fraction Sum Examples",
-      "startLine": 91,
-      "endLine": 105,
-      "summary": "Examples: {2,3,6}, {2,4,5,20}, {3,4,5,6,20} all sum to 1.",
-      "mathContext": "$\\\\{2,3,6\\\\}$: $1/2+1/3+1/6=1$. $\\\\{2,4,5,20\\\\}$: $1/2+1/4+1/5+1/20=1$. Many Egyptian fraction representations of 1 exist."
+      "startLine": 76,
+      "endLine": 80,
+      "summary": "Documentation comment noting unit-fraction sums equal to 1 exist (no example declarations).",
+      "mathContext": "$\\\\{2,3,6\\\\}$: $1/2+1/3+1/6=1$. Many Egyptian fraction representations of 1 exist. These are described in prose only, not formalized."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
-      "startLine": 106,
-      "endLine": 135,
-      "summary": "erdos_298_conjecture, bloom_2021, bloom_theorem.",
-      "mathContext": "Erdos-Graham conjecture: positive density $\\\\Rightarrow$ contains $S$ with $\\\\sum 1/n = 1$. SOLVED: Bloom (2021)."
+      "startLine": 82,
+      "endLine": 110,
+      "summary": "def erdos_298_conjecture, axiom bloom_2021, theorem bloom_theorem.",
+      "mathContext": "Erdős conjecture: positive density $\\\\Rightarrow$ contains $S$ with $\\\\sum 1/n = 1$. Encoded as the opaque axiom bloom_2021; SOLVED by Bloom (2021)."
     },
     {
       "id": "upper-density",
       "title": "Upper Density Version",
-      "startLine": 136,
-      "endLine": 163,
-      "summary": "Stronger version with upper density; bloom_2021_upper.",
-      "mathContext": "Stronger: holds for upper density (not just natural density). Bloom proves $\\\\bar{d}(A) > 0 \\\\Rightarrow \\\\exists S \\\\subset A$ with $\\\\sum 1/n = 1$."
+      "startLine": 112,
+      "endLine": 135,
+      "summary": "def erdos_298_upper_density, axiom pos_dens_implies_pos_upper, theorem upper_implies_natural.",
+      "mathContext": "Stronger: holds for upper density (not just natural density). upper_implies_natural derives the natural-density conjecture from the upper-density version via pos_dens_implies_pos_upper."
     },
     {
       "id": "density-props",
       "title": "Density Properties",
-      "startLine": 164,
-      "endLine": 183,
-      "summary": "Basic properties: monotonicity, finite sets have density 0.",
-      "mathContext": "Monotonicity: $A \\\\subseteq B \\\\Rightarrow \\\\bar{d}(A) \\\\leq \\\\bar{d}(B)$. Finite sets have density 0. $\\\\bar{d}(\\\\mathbb{N}) = 1$."
+      "startLine": 137,
+      "endLine": 141,
+      "summary": "Documentation comment on basic density properties (no declarations formalized).",
+      "mathContext": "Monotonicity: $A \\\\subseteq B \\\\Rightarrow \\\\bar{d}(A) \\\\leq \\\\bar{d}(B)$; finite sets have density 0. Described in prose only, not formalized."
     },
     {
       "id": "egyptian",
       "title": "Egyptian Fractions",
-      "startLine": 184,
-      "endLine": 203,
-      "summary": "HasEgyptianRep, egyptian_fraction_exists, one_has_egyptian_rep.",
+      "startLine": 143,
+      "endLine": 156,
+      "summary": "def HasEgyptianRep; the classical existence theorem is noted as a comment only.",
       "mathContext": "Every positive rational has an Egyptian fraction representation (greedy algorithm). The question asks when the representation can be found WITHIN the set $A$."
     },
     {
       "id": "quantitative",
       "title": "Quantitative Aspects",
-      "startLine": 204,
-      "endLine": 224,
-      "summary": "bloom_quantitative (finitary), sparse_counterexample.",
-      "mathContext": "Bloom quantitative: if $\\\\bar{d}(A) > \\\\delta$, there exists $S \\\\subset A \\\\cap [1, N(\\\\delta)]$ with $\\\\sum 1/n = 1$. Effective bound on $N$."
+      "startLine": 158,
+      "endLine": 171,
+      "summary": "Documentation comments on finitary bounds and sparse counterexamples (no declarations formalized).",
+      "mathContext": "Finitary version: if $|A| \\\\geq \\\\delta N$ for $A \\\\subseteq \\\\{1,\\\\dots,N\\\\}$ then $A$ contains a unit-sum subset for $N \\\\geq N(\\\\delta)$. Described in prose only, not formalized."
     },
     {
       "id": "formalization",
-      "title": "Lean 3 Formalization",
-      "startLine": 225,
+      "title": "Formalization Note & Final Theorem",
+      "startLine": 173,
       "endLine": 227,
-      "summary": "Reference to Bloom-Mehta formalization.",
-      "mathContext": "Bloom-Mehta: formal verification of the proof in Lean/Mathlib (partial). One of few Erdos problems with a machine-checked proof."
+      "summary": "Documentation of the Bloom–Mehta Lean 3 formalization and related problems #46/#47; theorem erdos_298_solved concludes the file.",
+      "mathContext": "Bloom & Mehta formalized the full proof in Lean 3 (~10,000 lines, github.com/b-mehta/unit-fractions). The final theorem erdos_298_solved := bloom_2021 records that Erdős #298 is solved (answer YES)."
     }
   ],
   "conclusion": {
