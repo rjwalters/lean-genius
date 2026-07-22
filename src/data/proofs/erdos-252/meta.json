@@ -43,7 +43,7 @@
     "originalContributions": [
       "Unified formalization of all known cases k = 0, 1, 2, 3, 4",
       "Clear axiomatization of main irrationality results",
-      "Formalization of conditional results (Schinzel, prime k-tuples)",
+      "Formal statements (definitions) of Schinzel's Hypothesis H and the prime k-tuples conjecture (implications to #252 not formalized)",
       "Verified computational examples for small cases"
     ],
     "axiomCount": 5,
@@ -119,7 +119,7 @@
     "historicalContext": "The divisor sum function $\\sigma_k(n) = \\sum_{d \\mid n} d^k$ is one of the most fundamental arithmetic functions in number theory, studied since Euler. Erdős posed Problem #252 in 1952, asking whether the series $\\sum_{n=1}^{\\infty} \\sigma_k(n)/n!$ is irrational for each $k \\geq 1$. The problem appears as B14 in Richard Guy's *Unsolved Problems in Number Theory* (3rd edition, 2004).\n\nThe case $k = 0$ (where $\\sigma_0(n) = d(n)$ counts divisors) was proved by Erdős and Straus in 1971. The cases $k = 1, 2$ were described by Erdős as 'reasonably straightforward,' relying on elementary irrationality criteria involving factorial denominators. The case $k = 3$ required a qualitative leap: Schlage-Puchta (2006) and independently Friedlander, Luca, and Stoiciu (2007) both proved it, but using substantially different techniques. Schlage-Puchta's approach exploited sieve methods and the distribution of prime factors, while Friedlander-Luca-Stoiciu used properties of the Euler totient function and divisor bounds.\n\nThe most recent breakthrough came from Pratt (2022), who proved $k = 4$ using arithmetic density arguments and careful analysis of the $p$-adic valuations of partial sums. For $k \\geq 5$, the problem remains open unconditionally. However, Schlage-Puchta showed that Schinzel's Hypothesis H (a deep conjecture about simultaneous prime values of polynomials) would resolve all cases, and Friedlander-Luca-Stoiciu showed the prime $k$-tuples conjecture (Hardy-Littlewood) implies irrationality for $k \\geq 4$.",
     "problemStatement": "**The Problem**: For k ≥ 1 and σₖ(n) = Σ_{d|n} d^k, is the sum\n\n$$\\sum_{n=1}^{\\infty} \\frac{\\sigma_k(n)}{n!}$$\n\nirrational?\n\n**Known Results**:\n- k = 0: Yes (Erdős-Straus 1971)\n- k = 1, 2: Yes (Erdős 1952)\n- k = 3: Yes (Schlage-Puchta 2006, Friedlander-Luca-Stoiciu 2007)\n- k = 4: Yes (Pratt 2022)\n- k ≥ 5: **OPEN**",
     "text": "For k ≥ 1, is the infinite sum Σ σₖ(n)/n! irrational? Proved for k ≤ 4; OPEN for k ≥ 5.",
-    "proofStrategy": "The formalization axiomatizes the irrationality results for k ≤ 4 since the proofs involve transcendence-theoretic techniques beyond current Mathlib.\n\nWe define:\n1. The divisor power sum: divisorPowerSum k = Σ σₖ(n)/n!\n2. Individual irrationality axioms for k = 0, 1, 2, 3, 4\n3. A combined theorem erdos_252_le_4 proving irrationality for all k ≤ 4\n\nWe also formalize the conditional results:\n- Schinzel's Hypothesis H → irrationality for all k\n- Prime k-tuples conjecture → irrationality for k ≥ 4",
+    "proofStrategy": "The formalization axiomatizes the irrationality results for k ≤ 4 since the proofs involve transcendence-theoretic techniques beyond current Mathlib.\n\nWe define:\n1. The divisor power sum: divisorPowerSum k = Σ σₖ(n)/n!\n2. Individual irrationality axioms for k = 0, 1, 2, 3, 4\n3. A combined theorem erdos_252_le_4 proving irrationality for all k ≤ 4\n\nWe also state the hypotheses behind the conditional results as `Prop` definitions (SchinzelHypothesisH, PrimeKTuplesConjecture); the implications themselves — Schinzel's Hypothesis H → irrationality for all k, and the prime k-tuples conjecture → irrationality for k ≥ 4 — are noted in comments but not formalized as declarations.",
     "keyInsights": [
       "**Multiplicativity of $\\sigma_k$**: The divisor sum $\\sigma_k$ is a multiplicative arithmetic function, meaning $\\sigma_k(mn) = \\sigma_k(m)\\sigma_k(n)$ for $\\gcd(m,n) = 1$. This structure is essential for analyzing the series via Euler products and prime factorization.",
       "**Factorial denominators enable irrationality**: Series of the form $\\sum f(n)/n!$ are 'irrationality-friendly' because the rapid growth of $n!$ ensures that rational approximations $\\sum_{n=1}^{N} f(n)/n!$ converge too quickly for the limit to be rational, provided $f$ has suitable arithmetic properties.",
@@ -170,16 +170,16 @@
       "title": "Schinzel's Hypothesis H",
       "startLine": 103,
       "endLine": 127,
-      "summary": "Formalizes Schinzel's Hypothesis H on simultaneous prime values of irreducible polynomials, and axiomatizes the implication $\\text{Schinzel H} \\Rightarrow \\text{Erdős 252 Conjecture}$ (Schlage-Puchta 2006).",
-      "mathContext": "Formalizes Schinzel's Hypothesis H on simultaneous prime values of irreducible polynomials, and axiomatizes the implication $\\text{Schinzel H} \\Rightarrow \\text{Erdős 252 Conjecture}$ (Schlage-Puchta 2006)."
+      "summary": "Defines Schinzel's Hypothesis H on simultaneous prime values of irreducible polynomials as a `Prop`; the implication $\\text{Schinzel H} \\Rightarrow \\text{Erdős 252 Conjecture}$ (Schlage-Puchta 2006) is noted in a comment but not formalized.",
+      "mathContext": "Formal definition: Defines Schinzel's Hypothesis H on simultaneous prime values of irreducible polynomials as a `Prop`; the implication $\\text{Schinzel H} \\Rightarrow \\text{Erdős 252 Conjecture}$ (Schlage-Puchta 2006) is noted in a comment but not formalized."
     },
     {
       "id": "prime-ktuples",
       "title": "Prime k-tuples Conjecture",
       "startLine": 128,
       "endLine": 138,
-      "summary": "Formalizes the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms, and axiomatizes the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007).",
-      "mathContext": "Axiomatized: Formalizes the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms, and axiomatizes the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007)."
+      "summary": "Defines the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms as a `Prop`; the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007) is noted in a comment but not formalized.",
+      "mathContext": "Formal definition: Defines the Hardy-Littlewood prime $k$-tuples conjecture on admissible linear forms as a `Prop`; the implication for $k \\geq 4$ (Friedlander-Luca-Stoiciu 2007) is noted in a comment but not formalized."
     },
     {
       "id": "computations",
@@ -194,16 +194,16 @@
       "title": "Divisor Sum at Primes",
       "startLine": 156,
       "endLine": 162,
-      "summary": "Axiomatizes $\\sigma_k(p) = 1 + p^k$ for prime $p$, since the only divisors are $1$ and $p$.",
-      "mathContext": "Axiomatized: Axiomatizes $\\sigma_k(p) = 1 + p^k$ for prime $p$, since the only divisors are $1$ and $p$."
+      "summary": "Proves $\\sigma_k(p) = 1 + p^k$ for prime $p$ (theorem `sigma_prime`), since the only divisors are $1$ and $p$.",
+      "mathContext": "Proved theorem: Proves $\\sigma_k(p) = 1 + p^k$ for prime $p$ (`sigma_prime`) via Mathlib's `Nat.Prime.divisors` and `Finset.sum_pair`, since the only divisors are $1$ and $p$."
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "startLine": 163,
       "endLine": 182,
-      "summary": "Axiomatizes the upper bound $\\sigma_k(n) \\leq n^{k+1}$ and summability of the series via comparison with $\\sum n^{k+1}/n!$.",
-      "mathContext": "Axiomatized: Axiomatizes the upper bound $\\sigma_k(n) \\leq n^{k+1}$ and summability of the series via comparison with $\\sum n^{k+1}/n!$."
+      "summary": "Proves the upper bound $\\sigma_k(n) \\leq n^{k+1}$ (theorem `sigma_le_pow`); summability of the series via comparison with $\\sum n^{k+1}/n!$ is sketched in a comment but not formalized.",
+      "mathContext": "Proved theorem: Proves the upper bound $\\sigma_k(n) \\leq n^{k+1}$ (`sigma_le_pow`) by bounding each divisor and counting; summability of the series via comparison with $\\sum n^{k+1}/n!$ is sketched in a comment but not formalized."
     },
     {
       "id": "summary-checks",
@@ -215,7 +215,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #252 on the irrationality of divisor power sum series $\\sum \\sigma_k(n)/n!$. The formalization axiomatizes all known results ($k \\leq 4$, spanning seven decades of work from Erdős-Straus 1971 to Pratt 2022) and the conditional implications from Schinzel's Hypothesis H and the Hardy-Littlewood prime $k$-tuples conjecture.",
+    "summary": "We formalize Erdős Problem #252 on the irrationality of divisor power sum series $\\sum \\sigma_k(n)/n!$. The formalization axiomatizes all known results ($k \\leq 4$, spanning seven decades of work from Erdős-Straus 1971 to Pratt 2022) and states Schinzel's Hypothesis H and the Hardy-Littlewood prime $k$-tuples conjecture as `Prop` definitions; the conditional implications to #252 are noted in comments but not formalized.",
     "implications": "**Theoretical Significance**: This problem sits at the intersection of arithmetic functions and transcendence theory. The incremental progress ($k = 3$ in 2006 after a 54-year gap, $k = 4$ in 2022) demonstrates that each new case demands qualitatively new techniques.\n\nThe conditional results show that resolving Erdős #252 for all $k$ is essentially equivalent to proving deep structural results about prime distribution. The connection to perfect numbers (via $\\sigma_1$) and modular forms (via the related Erdős #250) places this problem within a rich web of number-theoretic questions.",
     "openQuestions": [
       "Is $\\sum \\sigma_5(n)/n!$ irrational? Can Pratt's arithmetic density method be extended from $k = 4$ to $k = 5$?",
