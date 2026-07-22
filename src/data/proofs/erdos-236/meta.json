@@ -51,9 +51,9 @@
       "Stated main conjecture f(n) = o(log n) formally",
       "Axiomatized Erdős lower bound and Vaughan sparsity bound"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 175,
-    "assumptions": "0 axioms. 0 sorries. All results formalized without axioms.",
+    "assumptions": "No mathematical axioms and 0 sorries. Compiler-trust disclosure: the concrete f-values (f_nine, f_fifteen) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure; #print axioms lists Lean.ofReduceBool). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 12,
     "definitionCount": 4
   },

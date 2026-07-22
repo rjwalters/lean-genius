@@ -47,9 +47,9 @@
       "Statement of Wooley's partial result for k=3",
       "Context: Mahler-Erdős theorem for two-term sums"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 126,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete sum-of-three-powers witnesses (three_isSumThreePower_two, three_isSumThreePower_three, twentynine_isSumThreePower_three) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 4,
     "definitionCount": 4
   },

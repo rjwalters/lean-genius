@@ -46,8 +46,8 @@
       "Defined WellDefinedAt and IsWellDefined predicates for well-definedness analysis",
       "Documented the four open questions (well-definedness, infinitely many missing integers, non-surjectivity, linear growth f(n) ≤ (1+ε)n) as comments in the Open Questions section — none are formalized as axioms or theorems, keeping the entry honestly open"
     ],
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "axiomCount": 1,
+    "assumptions": "No mathematical axioms and 0 sorries. Compiler-trust disclosure: the concrete Hofstadter-sequence values (hofstadterF_one through hofstadterF_six) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "lineCount": 93,
     "theoremCount": 7,
     "definitionCount": 4
