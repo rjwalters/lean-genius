@@ -115,7 +115,7 @@
       "title": "Ramsey Lower Bound",
       "startLine": 16,
       "endLine": 19,
-      "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Simplified existential form. Sorry'd — the full proof requires the first moment method on random 2-colorings of K_n.",
+      "summary": "R(k,k) >= 2^((k-1)/2) for k >= 3. Not sorry'd — proved (0 sorries), but the statement is a disconnected trivial existential (n = 2^((k-1)/2) itself witnesses n >= 2^((k-1)/2)); it does not formalize the actual Ramsey number bound. The real first-moment instantiation lives in the prob-method-applications-wip-01-oq-01 companion entry.",
       "mathContext": "$R(k,k) \\geq 2^{(k-1)/2}$"
     },
     {
@@ -123,7 +123,7 @@
       "title": "High Girth + High Chromatic Number",
       "startLine": 20,
       "endLine": 25,
-      "summary": "Erdős (1959): graphs exist with arbitrarily high girth and chromatic number. Proves True (placeholder) — requires graph type for full formalization.",
+      "summary": "Erdős (1959): graphs exist with arbitrarily high girth and chromatic number. No Lean declaration exists for this — lines 20-27 are a comment noting it as future work; there is no `theorem`, `def`, or `True`-stub of any kind here.",
       "mathContext": "$\\forall g, c \\geq 3$, $\\exists G$ with $\\text{girth}(G) \\geq g$ and $\\chi(G) \\geq c$"
     },
     {
@@ -131,7 +131,7 @@
       "title": "Tournament Domination",
       "startLine": 26,
       "endLine": 29,
-      "summary": "Every tournament on n vertices has a dominating set of size <= log₂(n) + 1. Sorry'd — proof via random sampling with union bound.",
+      "summary": "Every tournament on n vertices has a dominating set of size <= log₂(n) + 1. Not sorry'd — proved (0 sorries), but the statement is a disconnected trivial existential (k=1 witnesses k in the stated range for n >= 1); no Tournament/domination structure is defined or used. The real bound with exact cross-edge count lives in the prob-method-applications-wip-01-oq-03 companion entry.",
       "mathContext": "Domination number $\\gamma(T) \\leq \\lceil \\log_2 n \\rceil + 1$"
     },
     {
@@ -139,7 +139,7 @@
       "title": "Crossing Number Inequality",
       "startLine": 30,
       "endLine": 34,
-      "summary": "Ajtai-Chvátal-Newborn-Szemerédi (1982): cr(G) >= e³/(64n²) when e >= 4n. Currently only states positivity of this expression. Sorry'd.",
+      "summary": "Ajtai-Chvátal-Newborn-Szemerédi (1982): cr(G) >= e³/(64n²) when e >= 4n. Not sorry'd — genuinely proved via nlinarith, but only the positivity of the bound expression e³/(64n²) > 0, not the crossing-number inequality itself (no graph or crossing-number structure is defined).",
       "mathContext": "$\\text{cr}(G) \\geq \\frac{e^3}{64n^2}$ for $e \\geq 4n$"
     },
     {
@@ -147,7 +147,7 @@
       "title": "Unbalancing Lights and Property B",
       "startLine": 35,
       "endLine": 51,
-      "summary": "Two results: (1) for any ±1 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Both sorry'd with simplified statements.",
+      "summary": "Two results: (1) for any ±1 matrix, some row/column sums are >= sqrt(n)/2; (2) every 2-colorable k-uniform hypergraph has >= 2^(k-1) edges. Neither is sorry'd — both are proved (0 sorries), but as disconnected trivial existentials/positivity facts (k = sqrt(n)/2 itself; 2^(k-1) > 0) with no matrix or hypergraph structure defined. The real Property B bound lives in the prob-method-applications-wip-01-oq-02 companion entry.",
       "mathContext": "Unbalancing: $\\exists$ row/column sum $\\geq \\sqrt{n}/2$. Property B lower: $m \\geq 2^{k-1}$."
     }
   ],
