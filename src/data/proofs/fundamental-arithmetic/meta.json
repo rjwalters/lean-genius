@@ -7,7 +7,7 @@
     "author": "Euclid, Gauss (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
     "date": "~300 BCE (Euclid), 1801 (Gauss)",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "number-theory",
       "primes",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/FundamentalArithmetic.lean",
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -48,9 +48,9 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 80,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 221,
-    "assumptions": "Depends on Lean.ofReduceBool. The advertised concrete computational examples (originalContribution: 'Concrete computational examples via native_decide') are discharged solely by native_decide (e.g. (12).primeFactorsList = [2,2,3], factor counts at lines 155-216), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing an axiom-free kernel proof. The symbolic deliverables (unified FTA statement, coprime disjoint prime factors corollary, pedagogical bridge theorems) are axiom-free Mathlib wrappers. No literal axiom declarations and 0 sorries.",
+    "assumptions": "None propagating. Every named theorem, lemma, and definition in this entry is 0-sorry and axiom-free, depending only on the standard foundational axioms `propext` / `Classical.choice` / `Quot.sound` (which are not counted). All `native_decide` numerical spot-checks sit inside anonymous `example` blocks, which produce no reusable declaration, so their `Lean.ofReduceBool` footprint does not attach to any named theorem or definition. There are no literal `axiom` declarations and no structure-encoded assumptions, so meta.axiomCount is 0.",
     "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0

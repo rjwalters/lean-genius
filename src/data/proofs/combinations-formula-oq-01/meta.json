@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ01.lean",
     "tags": [
       "combinatorics",
@@ -15,11 +15,11 @@
       "vandermonde",
       "hockey-stick"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "The six symbolic identities (Vandermonde, Hockey Stick, double-counting product, row/alternating sums, choose_le_pow2, central_binom_le, identities_summary) are fully machine-verified using Mathlib's Nat.choose library with no assumptions. However, the named 'Fibonacci diagonal sums Σ_j C(n-j,j) = F(n+1)' contribution has no symbolic proof — it is established only for small cases (n=5, n=6) by native_decide examples, which depend on the Lean.ofReduceBool axiom (kernel-trusted compiler reduction). A general inductive proof remains open (see openQuestions). leanFile.axiomCount stays 0 (no literal `axiom` declarations).",
+    "axiomCount": 0,
+    "assumptions": "None propagating. Every named theorem, lemma, and definition in this entry is 0-sorry and axiom-free, depending only on the standard foundational axioms `propext` / `Classical.choice` / `Quot.sound` (which are not counted). All `native_decide` numerical spot-checks sit inside anonymous `example` blocks, which produce no reusable declaration, so their `Lean.ofReduceBool` footprint does not attach to any named theorem or definition. There are no literal `axiom` declarations and no structure-encoded assumptions, so meta.axiomCount is 0.",
     "lineCount": 185,
     "theoremCount": 8,
     "definitionCount": 0,

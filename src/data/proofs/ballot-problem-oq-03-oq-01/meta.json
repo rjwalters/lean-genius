@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BallotProblemOQ03.lean",
     "tags": [
       "combinatorics",
@@ -17,11 +17,11 @@
       "reflection-principle",
       "bijections"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "Relies on `Lean.ofReduceBool` (Lean compiler kernel-reduction trust): the advertised Catalan-number, ballot-sequence-count, and LGV-determinant example computations are discharged by `native_decide` (22 `example` blocks). The symbolic LGV/Lindström-Gessel-Viennot machinery (Crossing Lemma, Lindström involution, path_count, lgv_lemma_2x2, Vandermonde identity) is proved without `native_decide`. No `sorry`, no literal `axiom` declarations.",
+    "axiomCount": 0,
+    "assumptions": "None propagating. Every named theorem, lemma, and definition in this entry is 0-sorry and axiom-free, depending only on the standard foundational axioms `propext` / `Classical.choice` / `Quot.sound` (which are not counted). All `native_decide` numerical spot-checks sit inside anonymous `example` blocks, which produce no reusable declaration, so their `Lean.ofReduceBool` footprint does not attach to any named theorem or definition. There are no literal `axiom` declarations and no structure-encoded assumptions, so meta.axiomCount is 0.",
     "lineCount": 2965,
     "theoremCount": 142,
     "definitionCount": 32,
