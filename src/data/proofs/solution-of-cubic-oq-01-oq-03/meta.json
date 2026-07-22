@@ -74,6 +74,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Tschirnhaus Depression over a General Field of Characteristic ≠ 3", "startLine": 1, "endLine": 44, "summary": "Ports the Tschirnhaus cubic-depression reduction from ℂ to an arbitrary field K with (3:K)≠0, isolating exactly where invertibility of 3 is needed, and proves the sharp characteristic-3 boundary: the quadratic coefficient shifts by exactly 3s under a shift by s, so it is shift-invariant precisely when 3=0 — a generic cubic cannot be depressed there.", "mathContext": "This is the completing-the-cube analogue for cubics: just as completing the square needs 2 invertible, depressing a cubic needs 3 invertible; the characteristic-3 boundary theorem makes precise exactly why the reduction fails in that case."},
     {
       "id": "depressed-params",
       "title": "Part 1: The Depressed Parameters over a General Field",
