@@ -59,6 +59,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Formal Divisibility Rules for Various Bases", "startLine": 1, "endLine": 39, "summary": "Lists the comprehensive set of divisibility rules formalized: digit-sum rules (3, 9, octal 7), the fully-proved alternating digit-sum rule for 11, last-digit rules (2, 5, 10), last-two-digit rules (4, 25), last-three-digit rules (8, 125), coprime-factorization combinations (e.g. 6 ↔ 2 ∧ 3), the truncation method for 7, and digital root properties, framing this as an extension of DivisibilityBy3 (Wiedijk #85).", "mathContext": "Extends Wiedijk #85 (DivisibilityBy3) to a comprehensive collection of divisibility rules: digit-sum rules for 3/9/7, the alternating-sum rule for 11, last-digit/last-two/last-three-digit rules, and coprime factorization for composite moduli."},
     {
       "id": "section-altsum-framework",
       "title": "Part I: Alternating Digit Sum Framework",
