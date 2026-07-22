@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parent Erdos53Problem.lean is a rich 0-axiom base (k=1 case, trivial 2^{|A|+1} upper bracket, distinct-prime product richness 2^|A|-1, superincreasing subset-sum injectivity). WIP01 adds the exponential lower bound for prime sets |sumsOrProducts A| ≥ 2^|A| (adjoining empty-sum 0 to the 2^|A|-1 products), a pinning corollary, n^2≤2^n, and the honest conditional connection to Problem 53 (witnessed for k=2, |A|≥4). All 0-axiom, host-verified. Chang’s theorem (uniform over all large sets) stays documented, not axiomatized.",
+    "progressSummary": "PROGRESS: Easy direction sharpened via parity separation. Prime family already handled for all k (2^|A| lower bound, all-k eventual). New: for ODD primes, 2^|A|+|A|-1 lower bound via overlap-free even sums vs odd products. This is a lower-order refinement of the EASY direction; Chang for arbitrary large sets remains the deep open crux (documented, untouched).",
     "builtItems": [
       "zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem in Erdos53Problem.lean",
       "subsetSums/Products_subset_sumsOrProducts, subsetSumCount/subsetProductCount_le_card in Erdos53Problem.lean",
@@ -42,13 +42,16 @@
       "Erdos53WIP01.lean (new, 0-axiom, host-verified v4.31): sumsOrProducts_card_ge_two_pow_of_prime — for distinct positive primes A, 2^|A| ≤ |sumsOrProducts A| (strengthens parent subsetProducts_card_of_prime by adjoining the empty-sum value 0)",
       "sq_le_two_pow: n^2 ≤ 2^n for n≥4 (elementary induction, no analysis import)",
       "erdosProblem53_prime_exponent_two: distinct positive primes with |A|≥4 realise ≥ |A|^2 representable integers (first superlinear instance on the prime family)",
-      "sumsOrProducts_card_prime_pinned: prime sets pinned in [2^|A|, 2^{|A|+1}]"
+      "sumsOrProducts_card_prime_pinned: prime sets pinned in [2^|A|, 2^{|A|+1}]",
+      "subsetProducts_odd_of_odd in Erdos53WIP01.lean: every nonempty subset product of odd integers is odd (Finset.prod_induction over Odd).",
+      "sumsOrProducts_card_ge_odd_prime in Erdos53WIP01.lean: for a nonempty set of distinct odd positive primes, 2^|A| + |A| - 1 <= |sumsOrProducts A|, strictly stronger than the base 2^|A| bound; the even family {0} union {min A + q : q != min A} adds |A| fresh values disjoint from the odd products. Axiom-free."
     ],
     "insights": [
       "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
       "Clean generic Finset targets that generalize across these stubs: image-of-powerset card bound (card_image_le + card_powerset gives <= 2^|A|), image-of-product card bound (card_image_le + card_product gives <= |A|^2), monotonicity via powerset_mono + image_subset_image, membership via singleton subset.",
       "k=1 slice of Problem 53 is elementary: A ⊆ subsetSums A ⊆ sumsOrProducts A gives |A| ≤ |sumsOrProducts A| (erdosProblem53_exponent_one, N₀=0). Distinct-prime richness |subsetProducts A|=2^|A|-1 requires 0<p (Prime over ℤ is closed under negation; positivity kills the p↔-p product collision). Proved axiom-free via Prime.dvd_finsetProd_iff + Prime.associated_of_dvd + Int.associated_iff_natAbs.",
-      "Exponential-richness witness (researcher-1, 2026-07-20): the additive side contributes exactly one value the multiplicative side cannot — 0 (empty subset sum), which is never a product of positive primes. So for distinct positive primes |sumsOrProducts A| ≥ (2^|A|-1)+1 = 2^|A|, exhibiting sets where the Problem-53 count is exponential. This is the strongest witness on the EASY direction; it does NOT bear on Chang’s theorem, which is the uniform bound over ALL large sets (prime sets are never the obstruction)."
+      "Exponential-richness witness (researcher-1, 2026-07-20): the additive side contributes exactly one value the multiplicative side cannot — 0 (empty subset sum), which is never a product of positive primes. So for distinct positive primes |sumsOrProducts A| ≥ (2^|A|-1)+1 = 2^|A|, exhibiting sets where the Problem-53 count is exponential. This is the strongest witness on the EASY direction; it does NOT bear on Chang’s theorem, which is the uniform bound over ALL large sets (prime sets are never the obstruction).",
+      "Parity separation: for a set of distinct ODD primes, every nonempty subset product is odd (product of odds), while 0 and every 2-element subset sum p+q of odds is even. So the multiplicative and additive sides are provably overlap-free on the even numbers -- a genuine structural fact about Problem 53 two operations."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
