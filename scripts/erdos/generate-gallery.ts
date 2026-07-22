@@ -4,8 +4,10 @@
  * Creates:
  * - src/data/proofs/erdos-{n}-{slug}/meta.json
  * - src/data/proofs/erdos-{n}-{slug}/annotations.json
- * - src/data/proofs/erdos-{n}-{slug}/index.ts
  * - proofs/Proofs/Erdos{N}{PascalSlug}.lean (placeholder)
+ *
+ * Note: per-proof index.ts shims are no longer emitted — the gallery uses a
+ * runtime loader (src/data/proofs/index.ts) that fetches by slug (#20993/#39401).
  */
 
 import * as fs from 'fs'
@@ -95,64 +97,6 @@ function generateAnnotationsJson(): object {
 }
 
 /**
- * Generate index.ts content
- */
-function generateIndexTs(problem: TransformedProblem): string {
-  const pascalSlug = toPascalCase(problem.slug.replace(/^erdos-\d+-?/, ''))
-  const leanFileName = `Erdos${problem.number}${pascalSlug || 'Problem'}`
-
-  return `import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, ProofReference } from '@/types/proof'
-import metaJson from './meta.json'
-import annotationsJson from './annotations.json'
-
-// Type assertion for JSON import
-const meta = metaJson as {
-  id: string
-  title: string
-  slug: string
-  description: string
-  meta: ProofMeta
-  sections: ProofSection[]
-  overview?: ProofOverview
-  conclusion?: ProofConclusion
-  crossReferences?: CrossReference[]
-  references?: ProofReference[]
-}
-
-// Import the Lean source file
-const leanSource = () => import('../../../../proofs/Proofs/${leanFileName}.lean?raw')
-
-export const proof: Proof = {
-  id: meta.id,
-  title: meta.title,
-  slug: meta.slug,
-  description: meta.description,
-  meta: meta.meta,
-  sections: meta.sections,
-  source: '', // Loaded dynamically
-  overview: meta.overview,
-  conclusion: meta.conclusion,
-  crossReferences: meta.crossReferences,
-  references: meta.references,
-}
-
-export const annotations: Annotation[] = annotationsJson as Annotation[]
-
-export const proofData: ProofData = {
-  proof,
-  annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
-}
-
-export default proofData
-`
-}
-
-/**
  * Generate Lean placeholder file
  */
 function generateLeanPlaceholder(problem: TransformedProblem): string {
@@ -238,7 +182,6 @@ export function generateGalleryEntry(
       files: [
         path.join(GALLERY_DIR, problem.slug, 'meta.json'),
         path.join(GALLERY_DIR, problem.slug, 'annotations.json'),
-        path.join(GALLERY_DIR, problem.slug, 'index.ts'),
         path.join(PROOFS_DIR, leanFileName),
       ],
       skipped: false,
@@ -257,11 +200,6 @@ export function generateGalleryEntry(
   const annotationsPath = path.join(galleryPath, 'annotations.json')
   fs.writeFileSync(annotationsPath, JSON.stringify(generateAnnotationsJson(), null, 2))
   files.push(path.join(GALLERY_DIR, problem.slug, 'annotations.json'))
-
-  // Write index.ts
-  const indexPath = path.join(galleryPath, 'index.ts')
-  fs.writeFileSync(indexPath, generateIndexTs(problem))
-  files.push(path.join(GALLERY_DIR, problem.slug, 'index.ts'))
 
   // Ensure proofs directory exists
   if (!fs.existsSync(proofsPath)) {

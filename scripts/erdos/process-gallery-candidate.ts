@@ -204,12 +204,6 @@ ${leanContent}
         significance: 'supporting',
       },
     ]
-    const indexTs = `import meta from './meta.json'
-import annotations from './annotations.json'
-
-export { meta, annotations }
-`
-
     fs.writeFileSync(
       path.join(galleryPath, 'meta.json'),
       JSON.stringify(meta, null, 2) + '\n'
@@ -218,10 +212,10 @@ export { meta, annotations }
       path.join(galleryPath, 'annotations.json'),
       JSON.stringify(annotations, null, 2) + '\n'
     )
-    fs.writeFileSync(path.join(galleryPath, 'index.ts'), indexTs)
+    // Per-proof index.ts shims are no longer emitted — the gallery uses a
+    // runtime loader (src/data/proofs/index.ts) that fetches by slug (#20993/#39401).
     console.log(`✓ Created: ${galleryPath}/meta.json`)
     console.log(`✓ Created: ${galleryPath}/annotations.json`)
-    console.log(`✓ Created: ${galleryPath}/index.ts`)
   }
 
   // Print next steps
