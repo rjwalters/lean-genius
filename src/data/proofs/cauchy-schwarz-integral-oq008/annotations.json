@@ -1,7 +1,7 @@
 [
   {
     "id": "csi-strict-ann-header",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 1, "endLine": 54 },
     "type": "concept",
     "title": "From non-strict chain and equality case to strict monotonicity",
@@ -13,7 +13,7 @@
   },
   {
     "id": "csi-strict-ann-setup",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 56, "endLine": 60 },
     "type": "definition",
     "title": "Setup: reuse the parent's mean definitions",
@@ -25,7 +25,7 @@
   },
   {
     "id": "csi-strict-ann-nonstrict",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 62, "endLine": 94 },
     "type": "tactic",
     "title": "The two non-strict links, re-derived from Mathlib AM-GM",
@@ -37,7 +37,7 @@
   },
   {
     "id": "csi-strict-ann-strict-links",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 96, "endLine": 122 },
     "type": "tactic",
     "title": "The three strict links: ≤ upgraded by a ≠ b",
@@ -49,7 +49,7 @@
   },
   {
     "id": "csi-strict-ann-iff",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 124, "endLine": 147 },
     "type": "insight",
     "title": "Each strict gap is equivalent to a ≠ b",
@@ -61,7 +61,7 @@
   },
   {
     "id": "csi-strict-ann-headline",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 149, "endLine": 193 },
     "type": "insight",
     "title": "Headline: strict chain and the all-or-nothing rigidity dichotomy",
@@ -73,7 +73,7 @@
   },
   {
     "id": "csi-strict-ann-specialization",
-    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "proofId": "cauchy-schwarz-integral-oq008",
     "range": { "startLine": 195, "endLine": 226 },
     "type": "concept",
     "title": "Equal-weight specialization: the classical strict HM < GM < AM < QM",

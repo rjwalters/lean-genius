@@ -1,7 +1,7 @@
 [
   {
     "id": "ann-docstring",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 1, "endLine": 38 },
     "type": "concept",
     "title": "The Combinatorial Eulerian → Stirling Identity",
@@ -23,7 +23,7 @@
   },
   {
     "id": "ann-term-binom",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 40, "endLine": 62 },
     "type": "tactic",
     "title": "The Per-Term Binomial Identity (Pascal + Absorption)",
@@ -43,7 +43,7 @@
   },
   {
     "id": "ann-row-regroup",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 64, "endLine": 113 },
     "type": "tactic",
     "title": "Regrouping the Eulerian Recurrence in a Row Sum",
@@ -63,7 +63,7 @@
   },
   {
     "id": "ann-eulerian-stirling-succ",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 115, "endLine": 192 },
     "type": "insight",
     "title": "The Inductive Engine: Stirling Recurrence Meets row_regroup",
@@ -84,7 +84,7 @@
   },
   {
     "id": "ann-eulerian-stirling",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 194, "endLine": 201 },
     "type": "definition",
     "title": "The Public Eulerian → Stirling Identity",
@@ -105,7 +105,7 @@
   },
   {
     "id": "ann-concrete-rows",
-    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06",
+    "proofId": "geometric-series-oq016",
     "range": { "startLine": 203, "endLine": 217 },
     "type": "tactic",
     "title": "Kernel-Checked Corroboration on Small Rows",
