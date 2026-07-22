@@ -98,6 +98,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Gauss Sum Proof Architecture for Quadratic Reciprocity",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Formalizes the logical skeleton of the Gauss-sum proof of quadratic reciprocity — the cyclotomic evaluation τ² = χ(−1)·p, proved rather than axiomatized by specializing Mathlib's gaussSum_sq to the quadratic character of ZMod p, combined with a primitive ℂ-valued additive character — giving a third independent, fully formalized QR proof strategy.",
+      "mathContext": "Gauss sum $\\tau = \\sum_a \\left(\\frac{a}{p}\\right)\\psi(a)$ satisfies $\\tau^2 = \\chi(-1)\\cdot p$; raising $\\tau$ to the $q$-th power and applying Frobenius derives quadratic reciprocity."
+    },
+    {
       "id": "gauss-sum-proof",
       "title": "Part I: Gauss Sum Squared Evaluation",
       "startLine": 26,
