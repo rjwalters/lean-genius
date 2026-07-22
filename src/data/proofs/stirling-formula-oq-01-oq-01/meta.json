@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Scope: pinning the corrections to Bernoulli numbers",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring: states the parent's open question (formalize 1/(288n²) and −139/(51840n³)), then explains this file's answer — the multiplicative coefficients are the exponential Taylor coefficients of the Bernoulli log-series, so a₂ = g₁²/2 and a₃ = g₂ + g₁³/6 pin down the 'magic constants'. Records the status line (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$a_2 = g_1^2/2 = (1/12)^2/2 = 1/288$, $a_3 = g_2 + g_1^3/6 = -1/360 + (1/12)^3/6 = -139/51840$."
+    },
+    {
       "id": "coeffs",
       "title": "Multiplicative Coefficients and the Fourth Partial Sum",
       "startLine": 36,
