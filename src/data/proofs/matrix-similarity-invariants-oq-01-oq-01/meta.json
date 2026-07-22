@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Rank, Nullity, and Invertibility as the Structural Layer",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring: the companion entry [oq-01] collects the classical *scalar* similarity invariants (determinant, trace, characteristic polynomial); this entry adds the *structural* layer — rank, nullity, and invertibility — the data a change of basis cannot see about a linear map. Lists the four results proved (rank_eq, isUnit_iff/isUnit_det_iff, rank_add_nullity, nullity_eq, nullity_eq_zero_iff_rank_eq_card) and notes Mathlib has the ingredients but no packaged similarity-invariance theorems.",
+      "mathContext": "$B = PAP^{-1} \\Rightarrow \\operatorname{rank} B = \\operatorname{rank} A,\\ \\operatorname{nullity} B = \\operatorname{nullity} A,\\ (\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} A)$."
+    },
+    {
       "id": "relation",
       "title": "The Similarity Relation",
       "startLine": 45,
