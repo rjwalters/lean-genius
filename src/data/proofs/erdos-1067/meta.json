@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1067",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1067 (does every chromatic-number-$\\aleph_1$ graph contain an infinitely connected subgraph of chromatic number $\\aleph_1$?) \u2014 disproved by Komj\u00e1th (2013, consistency), Soukup (2015, ZFC counterexample), and Bowler\u2013Pitz (2024, elementary counterexample).",
+      "startLine": 1,
+      "endLine": 35,
+      "mathContext": "A graph is infinitely connected if every two vertices are joined by infinitely many pairwise disjoint paths; the vertex-count version is independent of ZFC while the edge-connectivity variant has a ZFC counterexample (Thomassen 2017)."
+    },
+    {
       "id": "graph-definitions",
       "title": "Basic Graph Definitions",
       "summary": "$\\chi(G) = \\inf\\{\\kappa : G \\text{ is } \\kappa\\text{-colorable}\\}$ and $\\text{hasAleph1ChromaticNumber}(G) :\\equiv \\chi(G) = \\aleph_1$",
