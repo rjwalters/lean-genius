@@ -885,7 +885,7 @@ Both results are axiom-free. -/
 theorem mul_practical_of_le_succ_sigma {m n : ℕ} (h : IsPractical m)
     (hn1 : 1 ≤ n) (hn : n ≤ 1 + ∑ d ∈ divisors m, d) :
     IsPractical (n * m) := by
-  obtain ⟨hm1, _⟩ := h
+  have hm1 : 1 ≤ m := h.1
   have hnpos : 0 < n := hn1
   have hmpos : 0 < m := hm1
   have hnm1 : 0 < n * m := Nat.mul_pos hnpos hmpos
