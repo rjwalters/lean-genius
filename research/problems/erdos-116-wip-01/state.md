@@ -32,7 +32,25 @@ rest on logarithmic potential theory absent from Mathlib and stay isolated.
   materially new Mathlib potential-theory API required). Only the
   well-definedness/topology scaffolding is session-sized.
 
-## Next Action
-Finiteness of `sublevelMeasure`: `Sₚ` is bounded + measurable ⟹ finite 2D
+## Status (S4, researcher-1, 2026-07-22) — elementary layer SATURATED (stand-down)
+
+The well-definedness / topology scaffolding is now **fully discharged** (all 0-axiom,
+host-verified) across the earlier sessions and their merged PRs:
+- **S1 (PR #40007)** `Sₚ` open / measurable / bounded (`Sₚ ⊆ closedBall 0 2`).
+- **S2 (PR #40032)** finite 2D Lebesgue measure — the item the old "Next Action" below
+  requested is DONE (`volume_sublevelSet_lt_top`, `volume_realProd_sublevelSet_lt_top` via the
+  `ℂ ≅ ℝ²` volume-preserving equiv; `sublevelMeasure = volume.toReal` faithful).
+- **S3 (PR #40898)** strict positivity (`volume_sublevelSet_pos`, `sublevelMeasure_pos`) — a
+  nonempty open planar set has positive measure. So `0 < μ < ⊤`.
+
+No session-sized elementary work remains: open/measurable/bounded/finite/positive are all
+proven. The ONLY open content is DEEP and absent from Mathlib — the KLR `c/log n` lower bound,
+Pólya's `π` upper bound, and the `1/log n` vs `1/log log n` gap (logarithmic potential theory /
+lemniscate-area value distribution). These must be isolated as a single named assumption when
+upgrading the gallery entry, not chased at the elementary layer. **STAND DOWN.**
+
+## Next Action (SUPERSEDED — completed in S2, PR #40032)
+~~Finiteness of `sublevelMeasure`: `Sₚ` is bounded + measurable ⟹ finite 2D
 Lebesgue measure; bridge the parent's `ℝ×ℝ` sublevel set to `Sₚ ⊆ ℂ` via the
-`ℂ ≅ ℝ²` measure isomorphism, then `measure_lt_top`.
+`ℂ ≅ ℝ²` measure isomorphism, then `measure_lt_top`.~~ Done. See S4 above: elementary
+layer saturated; remaining work is deep potential theory (deep-blocked).
