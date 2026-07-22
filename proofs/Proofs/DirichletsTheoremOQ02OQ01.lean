@@ -31,7 +31,7 @@ We axiomatize GRH and prove its consequences rigorously.
 
 ## Status
 
-Axiomatized (GRH is an open conjecture). 0 sorry, 13 axiom.
+Axiomatized (GRH is an open conjecture). 0 sorry, 4 axioms.
 -/
 
 import Mathlib.NumberTheory.LSeries.PrimesInAP
