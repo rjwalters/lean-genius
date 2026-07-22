@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1129-oq-02",
+      "title": "Problem Statement and Background",
+      "summary": "States open question 2 of Erd\u0151s Problem #1129: since the Lebesgue constant is affine-invariant under transformations from $[-1,1]$ to $[a,b]$, optimal interpolation nodes for $[-1,1]$ transfer immediately to any interval, eliminating 2 axioms from the parent file down to 0.",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "The affine map $T(x)=(b-a)/2 \\cdot x + (a+b)/2$ satisfies $T(x)-T(y)=c(x-y)$, so the invariance factor $c^{n-1}$ cancels between numerator and denominator of the Lagrange basis, proving affine-invariance of the Lebesgue constant."
+    },
+    {
       "id": "affine-map",
       "title": "Affine Transformation Between Intervals",
       "startLine": 33,
