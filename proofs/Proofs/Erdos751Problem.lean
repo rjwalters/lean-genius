@@ -31,6 +31,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Combinatorics.SimpleGraph.Girth
+import Mathlib.Combinatorics.SimpleGraph.Maps
+import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Lattice.Nat
@@ -128,18 +130,190 @@ For any graph G with at least one vertex:
 More importantly for us:
   If χ(G) ≥ k, then G has a subgraph with minimum degree ≥ k - 1.
 -/
-/--
-**Chromatic–degeneracy lemma (subgraph form):**
-Every graph with chromatic number 4 contains a subgraph `H ≤ G` of minimum
-degree at least 3. The bound holds on a *subgraph*, **not** on the global
-minimum degree of `G`: e.g. `K₄` plus an isolated vertex is 4-chromatic yet has
-global minimum degree 0.
+/-- A graph on an empty vertex type is `n`-colorable for every `n`. -/
+theorem colorable_of_isEmpty {W : Type*} [IsEmpty W] (H : SimpleGraph W) (n : ℕ) :
+    H.Colorable n :=
+  ⟨Coloring.mk (fun v => isEmptyElim v) (fun {v} _ _ => isEmptyElim v)⟩
 
-This is the standard chromatic–degeneracy fact: `χ(G) ≥ k` implies `G` has a
-subgraph of minimum degree `≥ k − 1` (equivalently, degeneracy `≥ k − 1`). -/
-axiom four_chromatic_subgraph_minDeg (G : SimpleGraph V) [DecidableRel G.Adj] :
-    chromaticNumber G = 4 →
-    ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj), H ≤ G ∧ minDegree H ≥ 3
+/-- A graph whose (file) chromatic number is `4` is not 3-colorable. -/
+theorem not_colorable_three_of_chromaticNumber_four (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hchi : chromaticNumber G = 4) : ¬ G.Colorable 3 := by
+  intro hcol
+  have hle : SimpleGraph.chromaticNumber G ≤ (3 : ℕ) := hcol.chromaticNumber_le
+  have h3 : ((3 : ℕ) : ℕ∞) ≠ ⊤ := by simp
+  have hton := ENat.toNat_le_toNat hle h3
+  unfold chromaticNumber at hchi
+  simp at hton
+  omega
+
+/-- **Greedy extension step**: if `v ∈ t` has fewer than `3` neighbours inside
+`t` and the graph induced on `t.erase v` is 3-colorable, then so is the graph
+induced on `t` — colour `v` with a colour unused by its (at most two)
+neighbours. -/
+theorem colorable_of_erase_colorable (G : SimpleGraph V) [DecidableRel G.Adj]
+    {t : Finset V} {v : V} (hv : v ∈ t)
+    (hdeg : (t.filter (fun u => G.Adj v u)).card < 3)
+    (hcol : (G.induce (↑(t.erase v) : Set V)).Colorable 3) :
+    (G.induce (↑t : Set V)).Colorable 3 := by
+  obtain ⟨C⟩ := hcol
+  -- the colours used by neighbours of `v` inside `t.erase v`
+  set N : Finset V := (t.erase v).filter (fun u => G.Adj v u) with hN
+  have hNsub : ∀ u ∈ N, u ∈ t.erase v := fun u hu => (Finset.mem_filter.mp hu).1
+  set used : Finset (Fin 3) :=
+    N.attach.image (fun u => C ⟨u.1, Finset.mem_coe.mpr (hNsub u.1 u.2)⟩) with hused
+  have husedcard : used.card < 3 := by
+    have h1 : used.card ≤ N.attach.card := Finset.card_image_le
+    have h1' : N.attach.card = N.card := Finset.card_attach
+    have h2 : N.card ≤ (t.filter (fun u => G.Adj v u)).card := by
+      apply Finset.card_le_card
+      intro u hu
+      rw [hN, Finset.mem_filter] at hu
+      rw [Finset.mem_filter]
+      exact ⟨Finset.mem_of_mem_erase hu.1, hu.2⟩
+    omega
+  -- a free colour exists
+  obtain ⟨c, hc⟩ : ∃ c : Fin 3, c ∉ used := by
+    by_contra hcon
+    have hall : used = Finset.univ := by
+      apply Finset.eq_univ_iff_forall.mpr
+      intro c
+      by_contra hcc
+      exact hcon ⟨c, hcc⟩
+    rw [hall, Finset.card_univ] at husedcard
+    simp at husedcard
+  -- extend the colouring by giving `v` the free colour
+  refine ⟨Coloring.mk (fun x => if hx : x.1 = v then c else
+    C ⟨x.1, Finset.mem_coe.mpr
+      (Finset.mem_erase.mpr ⟨hx, Finset.mem_coe.mp x.2⟩)⟩) ?_⟩
+  rintro ⟨a, ha⟩ ⟨b, hb⟩ hadj
+  have hadj' : G.Adj a b := hadj
+  by_cases hav : a = v <;> by_cases hbv : b = v
+  · subst hav
+    subst hbv
+    exact absurd hadj' G.irrefl
+  · simp only [dif_pos hav, dif_neg hbv]
+    have hbN : b ∈ N := by
+      rw [hN, Finset.mem_filter]
+      exact ⟨Finset.mem_erase.mpr ⟨hbv, Finset.mem_coe.mp hb⟩, hav ▸ hadj'⟩
+    intro heq
+    apply hc
+    rw [heq]
+    exact Finset.mem_image.mpr ⟨⟨b, hbN⟩, Finset.mem_attach _ _, rfl⟩
+  · simp only [dif_pos hbv, dif_neg hav]
+    have haN : a ∈ N := by
+      rw [hN, Finset.mem_filter]
+      exact ⟨Finset.mem_erase.mpr ⟨hav, Finset.mem_coe.mp ha⟩,
+        (show G.Adj a v from hbv ▸ hadj').symm⟩
+    intro heq
+    apply hc
+    rw [← heq]
+    exact Finset.mem_image.mpr ⟨⟨a, haN⟩, Finset.mem_attach _ _, rfl⟩
+  · simp only [dif_neg hav, dif_neg hbv]
+    exact C.valid hadj'
+
+/-- **Critical-subgraph extraction**: any vertex set whose induced subgraph is
+not 3-colorable contains a nonempty subset in which every vertex has at least
+`3` neighbours *inside the subset*. Strong induction on the vertex set: a
+vertex with fewer than 3 internal neighbours can be removed without making the
+induced graph 3-colorable (`colorable_of_erase_colorable`). -/
+theorem exists_min_subset_of_not_colorable (G : SimpleGraph V)
+    [DecidableRel G.Adj] :
+    ∀ t : Finset V, ¬ (G.induce (↑t : Set V)).Colorable 3 →
+    ∃ s : Finset V, s.Nonempty ∧
+      ∀ v ∈ s, 3 ≤ (s.filter (fun u => G.Adj v u)).card := by
+  intro t
+  induction t using Finset.strongInduction with
+  | _ t ih =>
+    intro hncol
+    by_cases hall : ∀ v ∈ t, 3 ≤ (t.filter (fun u => G.Adj v u)).card
+    · refine ⟨t, ?_, hall⟩
+      rcases Finset.eq_empty_or_nonempty t with rfl | hne
+      · exfalso
+        apply hncol
+        haveI : IsEmpty ↥((↑(∅ : Finset V)) : Set V) := by
+          constructor
+          rintro ⟨x, hx⟩
+          simp at hx
+        exact colorable_of_isEmpty _ 3
+      · exact hne
+    · simp only [not_forall, not_le] at hall
+      obtain ⟨v, hvt, hdeg⟩ := hall
+      exact ih (t.erase v) (Finset.erase_ssubset hvt)
+        (fun hcol => hncol (colorable_of_erase_colorable G hvt hdeg hcol))
+
+/--
+**Chromatic–degeneracy lemma (PROVED, sound induced-subgraph form):**
+Every graph with chromatic number 4 contains a nonempty vertex set `s` in which
+every vertex has at least `3` neighbours *inside `s`* — i.e. the subgraph
+induced on `s` has minimum degree at least 3.
+
+The bound is on the *induced subgraph*: a previous formalization asserted
+`∃ H ≤ G, minDegree H ≥ 3` with `minDegree` ranging over **all** of `V`, which
+is false (for `K₄` plus an isolated vertex every subgraph `H ≤ G` on the same
+vertex type keeps the isolated vertex at degree 0). This statement quantifies
+the degree only over the extracted vertex set, which is the correct classical
+fact — and it is proved here (formerly an axiom): take a vertex-minimal subset
+whose induced subgraph is not 3-colorable; each of its vertices must have `≥ 3`
+internal neighbours, else greedy extension of a 3-colouring of the smaller set
+would 3-colour it. -/
+theorem four_chromatic_subgraph_minDeg (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hchi : chromaticNumber G = 4) :
+    ∃ s : Finset V, s.Nonempty ∧
+      ∀ v ∈ s, 3 ≤ (s.filter (fun u => G.Adj v u)).card := by
+  apply exists_min_subset_of_not_colorable G Finset.univ
+  intro hcol
+  apply not_colorable_three_of_chromaticNumber_four G hchi
+  obtain ⟨C⟩ := hcol
+  exact ⟨C.comp ⟨fun v => ⟨v, by simp⟩, fun {a b} h => h⟩⟩
+
+/-- The degree of a vertex in the graph induced on `↑s` equals the number of
+its neighbours inside `s`. -/
+theorem degree_induce_eq_filter_card (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s : Finset V) [DecidableRel (G.induce (↑s : Set V)).Adj]
+    (x : ↥(↑s : Set V)) :
+    (G.induce (↑s : Set V)).degree x = (s.filter (fun u => G.Adj x.1 u)).card := by
+  show ((G.induce (↑s : Set V)).neighborFinset x).card = _
+  apply Finset.card_bij (fun y _ => y.1)
+  · intro y hy
+    rw [SimpleGraph.mem_neighborFinset] at hy
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_coe.mp y.2, hy⟩
+  · intro y1 h1 y2 h2 heq
+    exact Subtype.ext heq
+  · intro u hu
+    rw [Finset.mem_filter] at hu
+    exact ⟨⟨u, Finset.mem_coe.mpr hu.1⟩,
+      by rw [SimpleGraph.mem_neighborFinset]; exact hu.2, rfl⟩
+
+/-- If every vertex of `s` has at least 3 neighbours inside `s`, the graph
+induced on `s` has minimum degree at least 3. -/
+theorem minDegree_induce_ge (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s : Finset V) [Nonempty ↥(↑s : Set V)]
+    [DecidableRel (G.induce (↑s : Set V)).Adj]
+    (h : ∀ v ∈ s, 3 ≤ (s.filter (fun u => G.Adj v u)).card) :
+    minDegree (G.induce (↑s : Set V)) ≥ 3 := by
+  unfold minDegree
+  apply Finset.le_min'
+  intro y hy
+  rw [Finset.mem_image] at hy
+  obtain ⟨x, _, rfl⟩ := hy
+  rw [degree_induce_eq_filter_card]
+  exact h x.1 (Finset.mem_coe.mp x.2)
+
+/-- Every cycle of the graph induced on `s` is a cycle of `G`: the induced
+graph embeds into `G`, and cycles map to cycles along injective
+homomorphisms. -/
+theorem cycleLengths_induce_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s : Set V) [DecidableRel (G.induce s).Adj] :
+    cycleLengths (G.induce s) ⊆ cycleLengths G := by
+  rintro n ⟨v, c, hcyc, hlen⟩
+  let f : G.induce s ↪g G :=
+    (induceUnivIso G).toEmbedding.comp (G.induceHomOfLE (Set.subset_univ s))
+  have hinj : Function.Injective (f.toHom : ↥s → V) := f.injective
+  refine ⟨f.toHom v, c.map f.toHom, ?_, ?_⟩
+  · exact (Walk.map_isCycle_iff_of_injective hinj).mpr hcyc
+  · rw [Walk.length_map]
+    exact hlen
 
 /-
 ## Part III: Bondy-Vince Theorem
@@ -182,10 +356,16 @@ theorem erdos_751_chromatic_4 (G : SimpleGraph V) [DecidableRel G.Adj] :
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 := by
   intro hchi
-  obtain ⟨H, hH, hle, hminH⟩ := four_chromatic_subgraph_minDeg G hchi
-  letI := hH
-  obtain ⟨m, m', hm, hm', hne, hg1, hg2⟩ := bondy_vince_theorem H hminH
-  exact ⟨m, m', cycleLengths_mono hle hm, cycleLengths_mono hle hm', hne, hg1, hg2⟩
+  obtain ⟨s, hne, hdeg⟩ := four_chromatic_subgraph_minDeg G hchi
+  haveI : Nonempty ↥((↑s : Set V)) :=
+    ⟨⟨hne.choose, Finset.mem_coe.mpr hne.choose_spec⟩⟩
+  letI : DecidableRel (G.induce (↑s : Set V)).Adj :=
+    fun a b => decidable_of_iff (G.Adj a.1 b.1) induce_adj.symm
+  have hmin : minDegree (G.induce (↑s : Set V)) ≥ 3 := minDegree_induce_ge G s hdeg
+  obtain ⟨m, m', hm, hm', hnem, hg1, hg2⟩ :=
+    bondy_vince_theorem (G.induce (↑s : Set V)) hmin
+  exact ⟨m, m', cycleLengths_induce_subset G _ hm,
+    cycleLengths_induce_subset G _ hm', hnem, hg1, hg2⟩
 
 /--
 **Erdős Problem #751: Part 2**
@@ -239,14 +419,16 @@ theorem min_degree_3_cycle_gap (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 /--
 **Why Chromatic Number 4 Implies a Dense Subgraph:**
-A graph with χ(G) = 4 must contain a subgraph of minimum degree ≥ 3
-(the chromatic–degeneracy lemma). The bound holds on the subgraph, not on the
-global minimum degree of `G` (an isolated vertex forces the latter to 0).
+A graph with χ(G) = 4 must contain a nonempty vertex set on which the induced
+subgraph has minimum degree ≥ 3 (the chromatic–degeneracy lemma, proved above).
+The bound holds inside the extracted vertex set, not on the global minimum
+degree of `G` (an isolated vertex forces the latter to 0).
 -/
 theorem chromatic_4_implies_subgraph_min_deg_3 (G : SimpleGraph V)
     [DecidableRel G.Adj] :
     chromaticNumber G = 4 →
-    ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj), H ≤ G ∧ minDegree H ≥ 3 :=
+    ∃ s : Finset V, s.Nonempty ∧
+      ∀ v ∈ s, 3 ≤ (s.filter (fun u => G.Adj v u)).card :=
   four_chromatic_subgraph_minDeg G
 
 /-
@@ -273,9 +455,10 @@ theorem erdos_751_summary (G : SimpleGraph V) [DecidableRel G.Adj] :
     (minDegree G ≥ 3 →
       ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
         (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2) ∧
-    -- Connection: χ = 4 implies a subgraph of min degree ≥ 3
+    -- Connection: χ = 4 implies an induced subgraph of min degree ≥ 3
     (chromaticNumber G = 4 →
-      ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj), H ≤ G ∧ minDegree H ≥ 3) :=
+      ∃ s : Finset V, s.Nonempty ∧
+        ∀ v ∈ s, 3 ≤ (s.filter (fun u => G.Adj v u)).card) :=
   ⟨erdos_751_chromatic_4 G, min_degree_3_cycle_gap G,
     chromatic_4_implies_subgraph_min_deg_3 G⟩
 
