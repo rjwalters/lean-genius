@@ -83,7 +83,8 @@
       "The identity π(Nat.nth Prime n) = n + 1 is the precise bridge that lets a bound on the counting function π be re-read as a bound on the n-th prime — π' counts primes strictly below, so the +1 comes from pₙ being prime itself",
       "A bound π(m) ≤ C·m/log m on the counting function inverts to a lower bound pₙ ≳ (1/C)·n·log n on the n-th prime; the upper density constant 2 log 4 of Chebyshev becomes the denominator 4 log 4 of the prime growth",
       "The √pₙ tail in the OQ-06 bound, a nuisance for the density reading, is harmless here: log(√pₙ) ≤ √pₙ and log 4 ≥ 1 give √pₙ·log(√pₙ) ≤ pₙ·log 4, so the tail merely doubles the leading term",
-      "The result is genuinely sharper than Mathlib's Nat.add_two_le_nth_prime (pₙ ≥ n + 2): it supplies the extra log(n+2) factor, recovering the correct n·log n order of magnitude rather than mere linear growth"
+      "The result is genuinely sharper than Mathlib's Nat.add_two_le_nth_prime (pₙ ≥ n + 2): it supplies the extra log(n+2) factor, recovering the correct n·log n order of magnitude rather than mere linear growth",
+      "The constant 1/(4 log 4) ≈ 0.18 recovered here is far from the classical sharp result: Rosser's theorem (1939) shows pₙ > n·ln n for every n ≥ 1 by a more careful elementary argument, and the Prime Number Theorem gives the exact asymptotic pₙ/(n log n) → 1 — this entry's contribution is the correct n·log n order via the shortest possible route from the Chebyshev density already on hand, not the sharpest constant"
     ],
     "prerequisites": [
       "the prime-counting function π, π', and the n-th prime Nat.nth Nat.Prime",
@@ -117,8 +118,15 @@
       "id": "nth-prime-bound",
       "title": "The n·log n lower bound on the n-th prime",
       "startLine": 86,
+      "endLine": 153,
+      "summary": "nth_prime_lower_bound: read OQ-06 at m = pₙ, absorb the √pₙ correction, substitute the log bracket and pₙ ≥ n+2, yielding pₙ ≥ (n+1)·(½·log(n+2) − log 2)/(2·log 4)."
+    },
+    {
+      "id": "checks",
+      "title": "Verification and closing",
+      "startLine": 155,
       "endLine": 158,
-      "summary": "nth_prime_lower_bound: read OQ-06 at m = pₙ, absorb the √pₙ correction, substitute the log bracket and pₙ ≥ n+2, yielding pₙ ≥ (n+1)·(½·log(n+2) − log 2)/(2·log 4); closes with the #check sanity lines and the namespace end."
+      "summary": "#check sanity lines recording the two exported signatures (primeCounting_nth_prime and nth_prime_lower_bound), and the namespace end."
     }
   ],
   "conclusion": {
