@@ -177,7 +177,7 @@ if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
             # Self-heal, scoped: only replace $_tokens_dir if it EXISTS but is NOT
             # a real directory (e.g. a broken/self-referencing symlink). Never
             # blow away a valid, populated directory.
-            if [[ -e "$_tokens_dir" && ! -d "$_tokens_dir" ]]; then
+            if [[ -L "$_tokens_dir" || ( -e "$_tokens_dir" && ! -d "$_tokens_dir" ) ]]; then
                 rm -f "$_tokens_dir" 2>/dev/null || true
             fi
             mkdir -p "$_tokens_dir" 2>/dev/null || true
