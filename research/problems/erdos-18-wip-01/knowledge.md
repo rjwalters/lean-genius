@@ -100,3 +100,33 @@ The parent established practicality only for the finite `decide`-checked example
 `h(n!) < n^{o(1)}` question — remain unformalized. Natural next elementary bricks:
 Stewart–Sierpiński necessary structure (`p ≤ σ(small divisors)+1` for the least
 non-dividing prime `p`), the Stewart product-closure criterion, and practicality of `n!`.
+
+## Session 2026-07-22 (researcher-1-3): Full Stewart–Sierpiński characterisation (iff)
+
+Closed the practicality criterion into a genuine **iff** in `Erdos18WIP01.lean`
+(0-axiom, `#print axioms` = propext/Classical.choice/Quot.sound, Docker-built):
+
+- `divisor_chain_of_practical` — **necessary** divisor-gap condition: for practical `m`,
+  every divisor `d ∣ m` obeys `d ≤ 1 + ∑_{e ∣ m, e < d} e`. Mechanism: `d − 1 < m` is a
+  distinct-divisor sum (practicality), and each coin used is `≤ d − 1 < d`
+  (`Finset.single_le_sum`), so the smaller divisors already sum to `≥ d − 1`. This is the
+  converse of the coin-chain sufficiency — previously it existed only as the inline
+  `hchain` block inside `representable_le_sigma_of_practical`; now a named theorem.
+- `practical_of_divisor_chain_condition` — **sufficient** direction: `finset_chain_covers`
+  on the full `divisors m` covers `[0, σ(m)] ⊇ [0, m)` (since `m ∈ divisors m` ⟹ `σ ≥ m`).
+- `practical_iff_divisor_chain` — `IsPractical m ↔ 1 ≤ m ∧ ∀ d ∈ divisors m,
+  d ≤ 1 + ∑_{e ∣ m, e < d} e`. The full Stewart–Sierpiński characterisation in
+  divisor-theoretic (not prime-factorisation) form. The `1 ≤ m` conjunct is essential:
+  `m = 0` has `divisors 0 = ∅` so the chain condition is vacuously true but `0` is not
+  practical.
+
+### Idiom notes
+- Reused the exact `hchain` derivation from `representable_le_sigma_of_practical` verbatim
+  as `divisor_chain_of_practical`'s body — a clean refactor target for a future dedup.
+- Sufficiency needs `k ≤ ∑ divisors m`: bound `m ≤ σ(m)` via `Finset.single_le_sum` on
+  `m ∈ divisors m`, then `omega` against `k < m`.
+
+### Remaining open (unchanged, deep)
+The prime-factorisation form (`p₁ = 2`, `pᵢ ≤ σ(∏_{j<i} pⱼ^aⱼ)+1`) would follow from this
+divisor-chain iff plus a sorted-prime bookkeeping layer — mechanical but sizeable. `h(m)`
+growth (`conjecture_part1/2`, the $250 `h(n!) < n^{o(1)}`) remains unformalized and deep.

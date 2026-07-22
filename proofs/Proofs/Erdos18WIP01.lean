@@ -113,6 +113,19 @@
     always holds). It reaches `18 = 2·3²` (`eighteen_practical`), which `practical_mul`
     cannot — `18`'s only nontrivial factorisation `2·9` has the non-practical `9`.
 
+  The characterisation is then closed into a genuine *iff*:
+
+  * `divisor_chain_of_practical` — the **necessary** divisor-gap condition: for practical
+    `m`, every divisor `d ∣ m` obeys `d ≤ 1 + ∑_{e ∣ m, e < d} e` (to represent `d − 1 < m`
+    only smaller divisors are available). The converse of the `finset_chain_covers`
+    sufficiency, previously used only as an inline step inside
+    `representable_le_sigma_of_practical`.
+  * `practical_of_divisor_chain_condition` — the **sufficient** direction packaged from
+    `finset_chain_covers` on the full divisor set.
+  * `practical_iff_divisor_chain` — **`m` practical ⟺ `1 ≤ m` and its divisors form a coin
+    chain** (each divisor `≤ 1 +` the sum of the smaller divisors). This is the full
+    Stewart–Sierpiński characterisation in purely divisor-theoretic form.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
