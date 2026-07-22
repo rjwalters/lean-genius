@@ -53,6 +53,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1027",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1027 on intersecting set families: for a family $F$ of $n$-sets with $|F| \\le c \\cdot 2^n$, must there exist $\\gg_c 2^{|X|}$ \"good sets\" intersecting every member of $F$ but containing none \u2014 answered YES by Koishi Chan.",
+      "startLine": 1,
+      "endLine": 35,
+      "mathContext": "A good set $B$ satisfies $B \\cap A \\ne \\emptyset$ and $A \\not\\subseteq B$ for every $A \\in F$; existence of a good set is equivalent to Property B (2-colorability) of $F$."
+    },
+    {
       "id": "definitions",
       "title": "Section I: Definitions",
       "summary": "Defines `SetFamily α` as `Finset (Finset α)`, `familyUnion F` ($\\bigcup \\mathcal{F}$), `IsNUniform F n`, `IntersectsAll`, `ContainsNone`, `IsGoodSet`, `goodSets`, and `HasPropertyB`. These define the core vocabulary: an $n$-uniform family, good sets (transversals that are not covers), and Property B.",
