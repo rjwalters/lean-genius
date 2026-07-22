@@ -69,6 +69,13 @@
   },
   "sections": [
     {
+      "title": "Module header: statement and honest scope note",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "States the handshake identity ∑ deg(v) = 2·|E(G)| and its parity corollary, notes Mathlib already has the two headline facts (sum_degrees_eq_twice_card_edges, even_card_odd_degree_vertices), and lists the four original contributions this file adds on top: even_sum_degrees, even_card_of_all_odd_degree, even_card_of_oddRegular, and the K₃ sharpness witness.",
+      "mathContext": "$\\sum_v \\deg(v) = 2|E(G)|$; honest-scope note: only the four listed corollaries are new content, the rest re-exports Mathlib."
+    },
+    {
       "title": "The handshake lemma and its parity forms",
       "startLine": 46,
       "endLine": 62,
