@@ -119,12 +119,12 @@
     },
     "type": "insight",
     "title": "Example: p = 211 (Verified)",
-    "content": "Fully verified: $211$ satisfies the property with 6 cases ($k \\leq 5$ since $5! = 120 < 211 < 720 = 6!$). Subtractions: $211 - 1 = 210$, $211 - 2 = 209 = 11 \\times 19$, $211 - 6 = 205 = 5 \\times 41$, $211 - 24 = 187 = 11 \\times 17$, $211 - 120 = 91 = 7 \\times 13$. All composite.",
+    "content": "Fully verified: $211$ satisfies the property with 6 cases ($k \\leq 5$ since $5! = 120 < 211 < 720 = 6!$). Subtractions: $211 - 1 = 210$, $211 - 2 = 209 = 11 \\times 19$, $211 - 6 = 205 = 5 \\times 41$, $211 - 24 = 187 = 11 \\times 17$, $211 - 120 = 91 = 7 \\times 13$. All composite. Compositeness is discharged via `native_decide` rather than `decide`, so this proof's trust footprint includes `Lean.ofReduceBool` in addition to the kernel.",
     "mathContext": "$211 - 5! = 211 - 120 = 91 = 7 \\times 13$. The largest factorial subtraction is still composite.",
     "significance": "key",
     "relatedConcepts": [
       "interval_cases tactic",
-      "decide tactic",
+      "native_decide tactic",
       "OEIS A064152"
     ],
     "prerequisites": [
@@ -163,7 +163,7 @@
     },
     "type": "concept",
     "title": "Main Conjecture: Infinitely Many Factorial-Avoiding Primes",
-    "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests not just infinitude but density 1 among primes: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$, and with only $\\sim \\log p / \\log \\log p$ values to check, the probability all are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$.\n\nCompare with the infinitude of primes itself (see `infinitude-primes`): that result is constructive and ancient (Euclid, ~300 BCE), while this conjecture about a structured subset of primes remains open — illustrating how much harder it is to prove infinitude results for subsets of primes than for primes themselves.",
+    "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Stated as a `def` using `Set.Infinite` — not an axiom declaration, and not proved (open conjecture). The probabilistic heuristic suggests not just infinitude but density 1 among primes: each $p - k!$ is prime independently with probability $\\sim 1/\\ln p$, and with only $\\sim \\log p / \\log \\log p$ values to check, the probability all are composite is $(1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$.\n\nCompare with the infinitude of primes itself (see `infinitude-primes`): that result is constructive and ancient (Euclid, ~300 BCE), while this conjecture about a structured subset of primes remains open — illustrating how much harder it is to prove infinitude results for subsets of primes than for primes themselves.",
     "mathContext": "$\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid p.\\text{Prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$. Heuristic: $\\Pr[\\text{all } p - k! \\text{ composite}] \\approx (1 - 1/\\ln p)^{O(\\log p / \\log \\log p)} \\to 1$ as $p \\to \\infty$.",
     "significance": "key",
     "relatedConcepts": [
@@ -235,8 +235,8 @@
       "endLine": 154
     },
     "type": "concept",
-    "title": "Primality Verification via decide",
-    "content": "Proves `prime_101` and `prime_211` using Lean's `decide` tactic, which compiles the primality test to native code and evaluates it at kernel level. This produces a proof term — stronger than `#eval` — confirming the computation is correct. These primality proofs are prerequisites for the summary theorem.\n\nThe `decide` tactic works by reducing the proposition to a Boolean computation via the `Decidable` typeclass. For `Nat.Prime n`, Lean checks whether any integer from 2 to $\\sqrt{n}$ divides $n$. For $n = 211$, this means checking divisibility by 2, 3, 5, 7, 11, 13 (since $14^2 = 196 < 211 < 225 = 15^2$). The entire computation is verified by the kernel — no axioms, no trust assumptions.",
+    "title": "Primality Verification via decide / native_decide",
+    "content": "Proves `prime_101` via Lean's `decide` tactic and `prime_211` via `native_decide`, which compiles the primality test to native code and evaluates it outside the kernel. These primality proofs are prerequisites for the summary theorem.\n\nBoth tactics work by reducing the proposition to a Boolean computation via the `Decidable` typeclass. For `Nat.Prime n`, Lean checks whether any integer from 2 to $\\sqrt{n}$ divides $n$. For $n = 211$, this means checking divisibility by 2, 3, 5, 7, 11, 13 (since $14^2 = 196 < 211 < 225 = 15^2$). `decide` (used for `prime_101`) produces a kernel-checked proof term with no extra trust assumptions. `native_decide` (used for `prime_211`) instead trusts the compiled evaluator, adding `Lean.ofReduceBool` to the axiom footprint of anything depending on it — a compiler-trust assumption, not a kernel-verified one.",
     "mathContext": "$101$ is prime (not divisible by $2, 3, 5, 7$ since $10^2 = 100 < 101$). $211$ is prime (not divisible by $2, 3, 5, 7, 11, 13$ since $14^2 = 196 < 211$). Lean's `decide` performs certified trial division, producing a proof term checked by the kernel.",
     "significance": "supporting",
     "relatedConcepts": [
