@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1063",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s\u2013Selfridge (1983) problem on binomial coefficient divisibility: estimate $n_k$, the least $n \\ge 2k$ such that $(n-i) \\mid \\binom{n}{k}$ for all but one $0 \\le i < k$, and lists known small values and bounds.",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "Erd\u0151s\u2013Selfridge showed some $i$ always fails divisibility for $n \\ge 2k$; known bounds are $n_k \\le k!$ (Monier 1985) and $n_k \\le k \\cdot \\mathrm{lcm}(2,\\dots,k-1) \\le e^{(1+o(1))k}$ (Cambie)."
+    },
+    {
       "id": "divisibility",
       "title": "Divisibility Condition",
       "startLine": 37,
