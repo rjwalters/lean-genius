@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1124",
+      "title": "Problem Statement and Background",
+      "summary": "States Tarski's Circle-Squaring Problem (Erd\u0151s #1124): can a square and equal-area circle be decomposed into finitely many congruent pieces? Solved YES by Laczkovich (1990), using only translations and roughly $10^{50}$ pieces via a non-constructive axiom-of-choice argument.",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "Erd\u0151s offered \\$1000 for the problem; Laczkovich's strengthening shows translations alone suffice (the original question allowed arbitrary isometries), though the proof gives no explicit decomposition."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports `EuclideanDist` for the inner product space $\\mathbb{R}^2$, `Lebesgue.Basic` for measurability, `Set.Finite.Basic` for finite decompositions, and `Data.Real.Basic` for $\\pi$ and real arithmetic. Opens the `Set` and `MeasureTheory` namespaces.",
