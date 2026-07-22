@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-02-oq-02",
   "title": "Counterexample: Same Minpoly and Charpoly, Not Similar",
   "slug": "cayley-hamilton-minpoly-oq-02-oq-02",
-  "description": "A concrete counterexample to the converse of similarity invariance: two 4x4 nilpotent matrices (Jordan types [2,2] and [2,1,1]) share the same minimal polynomial X^2 and characteristic polynomial X^4, yet are not similar. Non-similarity is proved by showing any intertwining matrix has determinant zero.",
+  "description": "A concrete counterexample to the converse of similarity invariance: two 4x4 nilpotent matrices (Jordan types [2,2] and [2,1,1]) share the same minimal polynomial X^2 and characteristic polynomial X^4, yet are not similar. The Lean file formalizes the shared minimal polynomial (X^2) and non-similarity; the shared characteristic polynomial X^4 holds classically for any 4x4 nilpotent matrix but is documented, not separately proved. Non-similarity is proved by showing any intertwining matrix has determinant zero.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Jordan_normal_form#Uniqueness",
@@ -51,7 +51,7 @@
       }
     ],
     "originalContributions": [
-      "Concrete 4x4 counterexample: Jordan types [2,2] vs [2,1,1] share minpoly and charpoly",
+      "Concrete 4x4 counterexample: Jordan types [2,2] vs [2,1,1] share minpoly X^2 (formalized); the shared charpoly X^4 follows from 4x4 nilpotency but is documented rather than separately formalized",
       "Intertwining constraint extraction: AP = PB forces 6 zero entries in P",
       "Pigeonhole determinant argument: every Leibniz term has a zero factor",
       "Non-similarity theorem: no invertible intertwiner exists (det = 0 vs unit)"
@@ -59,14 +59,14 @@
     "dateAdded": "2026-03-27",
     "axiomCount": 0,
     "lineCount": 397,
-    "assumptions": "None. All theorems fully proved including minpoly computations via UFD divisor classification and intertwining constraint extraction via Fin 4 case analysis.",
+    "assumptions": "None. All theorems fully proved including minpoly computations via UFD divisor classification and intertwining constraint extraction via Fin 4 case analysis. Note: the advertised characteristic-polynomial equality charpoly(A) = charpoly(B) = X^4 is a classical consequence of 4x4 nilpotency and appears in the file's documentation, but is not separately formalized as a theorem; the formalized invariants are the minimal polynomial (X^2) and non-similarity.",
     "mathlib_version": "4.31.0",
     "theoremCount": 16,
     "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The question of when two matrices are similar is a central problem in linear algebra. Frobenius (1878) and Weierstrass showed that the rational canonical form (invariant factors) completely determines the similarity class. The Jordan normal form over algebraically closed fields gives an equivalent description via elementary divisors.\n\nIt is well-known that the minimal and characteristic polynomials are necessary but NOT sufficient invariants for similarity. The standard counterexample uses 4x4 nilpotent matrices of different Jordan types but the same minimal and characteristic polynomials.",
-    "problemStatement": "**Open Question**: Can the converse be formalized: if two matrices have the same minimal polynomial and characteristic polynomial, are they similar?\n\n**Answer**: NO. This file provides a concrete counterexample over any field K.\n\nMatrices A (Jordan type [2,2]) and B (Jordan type [2,1,1]) satisfy:\n- minpoly(A) = minpoly(B) = X^2\n- charpoly(A) = charpoly(B) = X^4\n- A is NOT similar to B",
+    "problemStatement": "**Open Question**: Can the converse be formalized: if two matrices have the same minimal polynomial and characteristic polynomial, are they similar?\n\n**Answer**: NO. This file provides a concrete counterexample over any field K.\n\nMatrices A (Jordan type [2,2]) and B (Jordan type [2,1,1]) satisfy:\n- minpoly(A) = minpoly(B) = X^2\n- charpoly(A) = charpoly(B) = X^4\n- A is NOT similar to B\n\nThe Lean file formalizes the minimal-polynomial equality (X^2) and non-similarity. The characteristic-polynomial equality X^4 is a classical consequence of 4x4 nilpotency and is stated in the file's documentation but not established by a separate theorem.",
     "text": "A concrete counterexample to the converse of similarity invariance. Two 4x4 nilpotent matrices share the same minimal and characteristic polynomial but are not similar, because any intertwining matrix must have determinant zero.",
     "proofStrategy": "**Non-similarity via intertwining analysis**: If B = P^{-1}AP, then AP = PB. The structure of A and B forces rows 1 and 3 of P to have nonzero entries only in column 1. In the Leibniz determinant formula, every permutation requires three column indices (0, 2, 3) to map to the 2-element set {0, 2}, which is impossible by pigeonhole. So det(P) = 0 for any intertwiner, and no invertible P exists.",
     "keyInsights": [
