@@ -99,6 +99,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Header: Gauss's AGM iteration and its elliptic-integral connection", "startLine": 1, "endLine": 40, "summary": "Defines the arithmetic-geometric mean (AGM) iteration $a_{n+1}=(a_n+b_n)/2$, $b_{n+1}=\\sqrt{a_nb_n}$ and lists the axiom-free convergence facts this file proves: the sandwich property, geometric gap contraction, and convergence to a common limit. Points to a companion child file for Gauss's transcendental identity linking the AGM to the complete elliptic integral $K$.", "mathContext": "$a_{n+1}=\\tfrac{a_n+b_n}{2}$, $b_{n+1}=\\sqrt{a_nb_n}$: $b_n\\le b_{n+1}\\le a_{n+1}\\le a_n$ and $a_{n+1}-b_{n+1}\\le\\tfrac12(a_n-b_n)$, giving a common limit $M(a,b)$; Gauss's identity $M(1,\\sqrt2/2)=\\pi/(2K(1/\\sqrt2))$ lives in the child file."},
     {
       "id": "sec-definitions",
       "title": "§ 1: Core Definitions",
