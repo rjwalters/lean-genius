@@ -2,7 +2,7 @@
   "id": "solution-of-cubic",
   "title": "Solution of the Cubic Equation",
   "slug": "solution-of-cubic",
-  "description": "Cardano's formula provides explicit radical solutions to cubic equations x³ + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4 with all three roots via cube roots of unity.",
+  "description": "Cardano's formula provides explicit radical solutions to cubic equations x³ + px + q = 0 via cube roots of the discriminant. Wiedijk #37. Fully proved in Lean 4, with two of the three roots via cube roots of unity (the third follows by symmetry).",
   "meta": {
     "wiedijkNumber": 37,
     "author": "Cardano, Tartaglia, del Ferro (16th century)",
@@ -58,7 +58,7 @@
       "cardano_verification_core: the key lemma reducing cubic solving to sum/product conditions",
       "cardano_formula: main theorem (Wiedijk #37) — fully proved",
       "omega definition as e^(2πi/3) and three properties (cubed, ne_one, sum)",
-      "second_root: all three roots via omega multiplication — fully proved",
+      "second_root: second root via omega multiplication — fully proved (third root follows by symmetry, not separately formalized)",
       "Four verified numerical examples"
     ],
     "axiomCount": 0,
@@ -225,7 +225,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Cardano's formula is fully proved in Lean 4 with 0 axioms and 13 proved theorems. The formalization verifies the main formula (Wiedijk #37), proves all three roots exist via cube roots of unity, and includes four concrete verified examples. The proof works entirely over ℂ, which handles all discriminant cases uniformly including the casus irreducibilis.",
+    "summary": "Cardano's formula is fully proved in Lean 4 with 0 axioms and 12 proved theorems. The formalization verifies the main formula (Wiedijk #37) and proves two of the three roots via cube roots of unity (the third follows by symmetry, not separately formalized), and includes four concrete verified examples. The proof works entirely over ℂ, which handles all discriminant cases uniformly including the casus irreducibilis.",
     "implications": "**Theoretical Significance**: **Significance for Mathematics and History**\n\n1. **Birth of Modern Algebra**: Cardano's *Ars Magna* (1545) marks the beginning of modern algebra. The cubic formula was the first algebraic solution beyond the quadratic, demonstrating that systematic methods could crack higher-degree equations.\n\n2. **Discovery of Complex Numbers**: The *casus irreducibilis* — where three real roots require complex intermediaries — forced the invention of complex arithmetic.\n\nBombelli (1572) developed rules for $\\sqrt{-1}$, and the full theory of $\\mathbb{C}$ followed.\n\n3. **Path to Galois Theory**: The cubic (solvable) → quartic (solvable via cubic resolvent) → quintic (unsolvable by Abel-Ruffini) progression drove two centuries of investigation, culminating in Galois's theory connecting polynomial solvability to group structure.\n\n4. **Roots of Unity Framework**: The three roots $u+v$, $\\omega u + \\omega^2 v$, $\\omega^2 u + \\omega v$ demonstrate how cyclotomic structure organizes polynomial roots — a pattern that generalizes to all solvable polynomials via radical towers.\n\n5. **Fully Constructive**: Unlike existence results (FTA), Cardano's formula explicitly constructs the roots. Our 0-axiom Lean proof verifies this construction is correct, making it one of the most complete formalizations in the gallery.",
     "openQuestions": [
       "Can the reduction from general cubic ax³+bx²+cx+d=0 to depressed form be formalized and composed with cardano_formula?",
