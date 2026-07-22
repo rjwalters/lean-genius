@@ -224,6 +224,15 @@ theorem containsC4_four_le_card {V : Type*} [Fintype V] {G : SimpleGraph V}
   obtain ⟨f, hinj, _⟩ := h
   simpa using Fintype.card_le_of_injective f hinj
 
+/-- **No `C₄` below four vertices.**  The contrapositive of
+`containsC4_four_le_card`: a host graph on fewer than four vertices cannot carry a
+4-cycle, because `containsC4` supplies an injection `Fin 4 ↪ V`.  This is the
+degenerate boundary of the whole degree-threshold question — for `n < 4` the
+predicate "forces a `C₄`" can only hold vacuously. -/
+theorem not_containsC4_of_card_lt_four {V : Type*} [Fintype V] {G : SimpleGraph V}
+    (h : Fintype.card V < 4) : ¬ containsC4 V G :=
+  fun hc => absurd (containsC4_four_le_card hc) (by omega)
+
 /-- **Complete graphs on `≥ 4` vertices contain a `C₄`.**  Embed `Fin 4 ↪ Fin n`
 by `Fin.castLE`; every cycle edge joins two *distinct* vertices, and in `⊤` all
 distinct vertices are adjacent.  This is the extremal counterpart to
@@ -301,6 +310,55 @@ theorem minDegreeForC4_le_sub_one {n : ℕ} (hn : 4 ≤ n) :
   intro G _ hmin
   rw [eq_top_of_minDegree_ge G hmin]
   exact completeGraph_containsC4 hn
+
+/-- **Degenerate small cases: `f(n) = n` for `1 ≤ n ≤ 3`.**  When `n < 4` *no*
+graph on `Fin n` can contain a `C₄` at all (`not_containsC4_of_card_lt_four`), so
+the defining threshold "minimum degree `≥ k` forces a `C₄`" holds only *vacuously*
+— precisely for those `k` no graph attains.  The largest minimum degree attainable
+on `Fin n` is `n − 1` (realised by the complete graph `⊤`, and never exceeded since
+`deg v ≤ n − 1`), so the least `k` with no graph reaching it is `k = n`.  Hence
+`f(1) = 1`, `f(2) = 2`, `f(3) = 3`, completing the exact-value table below the first
+genuine case `f(4) = 2`.  (These are boundary values where a 4-cycle is impossible,
+not evidence about the `√n` growth, which begins at `n ≥ 4`.) -/
+theorem minDegreeForC4_eq_self_of_le_three {n : ℕ} (h1 : 1 ≤ n) (h3 : n ≤ 3) :
+    minDegreeForC4 n = n := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  haveI hdec : DecidableRel (⊤ : SimpleGraph (Fin n)).Adj := fun i j => by
+    rw [top_adj]; infer_instance
+  -- No graph on `Fin n` contains a `C₄` (too few vertices).
+  have hfree : ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      ¬ containsC4 (Fin n) G := by
+    intro G _
+    exact not_containsC4_of_card_lt_four (by rw [Fintype.card_fin]; omega)
+  -- Every graph on `Fin n` has minimum degree at most `n − 1`.
+  have hup : ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      G.minDegree ≤ n - 1 := by
+    intro G _
+    refine le_trans (G.minDegree_le_degree ⟨0, by omega⟩) ?_
+    rw [← G.card_neighborFinset_eq_degree]
+    refine le_trans (Finset.card_le_card ?_) ?_
+    · intro x hx
+      exact Finset.mem_erase.mpr
+        ⟨(G.ne_of_adj ((G.mem_neighborFinset _ _).mp hx)).symm, Finset.mem_univ x⟩
+    · rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
+  -- The complete graph attains minimum degree `n − 1`.
+  have htop : n - 1 ≤ (⊤ : SimpleGraph (Fin n)).minDegree := by
+    apply le_minDegree_of_forall_le_degree
+    intro v
+    have hnb : (⊤ : SimpleGraph (Fin n)).neighborFinset v = Finset.univ.erase v := by
+      ext x
+      simp [SimpleGraph.mem_neighborFinset, top_adj, Finset.mem_erase, ne_comm]
+    rw [← SimpleGraph.card_neighborFinset_eq_degree, hnb,
+      Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ, Fintype.card_fin]
+  -- Assemble via antisymmetry on the defining `sInf`.
+  unfold minDegreeForC4
+  apply le_antisymm
+  · exact Nat.sInf_le (fun G _ hmin => absurd (le_trans hmin (hup G)) (by omega))
+  · apply le_csInf ⟨n, fun G _ hmin => absurd (le_trans hmin (hup G)) (by omega)⟩
+    intro k hk
+    by_contra hlt
+    push_neg at hlt
+    exact hfree _ (hk _ (le_trans (show k ≤ n - 1 by omega) htop))
 
 /-- **The star has minimum degree at least `1`.**  In `K_{1,n}` on `Fin (n+1)` the
 centre `0` is adjacent to every leaf and each leaf is adjacent to the centre, so
