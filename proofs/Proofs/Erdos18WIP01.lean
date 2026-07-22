@@ -82,6 +82,20 @@
     `r`-coins are `< b`, so the two sets are disjoint and their union sums to `N`.
   * `practical_pow` — consequently every power `m^k` of a practical `m` is practical.
 
+  Finally, the *sharp* form of representability, closing the gap left by the `2m − 1`
+  bound above:
+
+  * `finset_chain_covers` — a `Finset`-native coin-covering engine: if every element of a
+    finite `S ⊆ ℕ` is at most `1 +` the sum of the strictly smaller elements, then every
+    `k ≤ ∑ S` is a distinct-subset sum. Strong induction peeling off `max' S`; no
+    sorted-list index bookkeeping.
+  * `representable_le_sigma_of_practical` — for practical `m`, **every `k ≤ σ(m) = ∑_{d ∣ m} d`
+    is a sum of distinct divisors of `m`.** The full divisor set is a coin chain (for a
+    divisor `d`, the smaller divisors already sum to `≥ d − 1`, since `d − 1 < m` is a
+    distinct-divisor sum using only divisors `< d`), so `finset_chain_covers` covers
+    `[0, σ(m)]` exactly — sharpening `representable_le_two_mul_sub_one_of_practical` up to
+    the `two_mul_sub_one_le_sigma` bound.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -731,5 +745,116 @@ theorem thirtysix_practical : IsPractical 36 := by
     simp only [List.length_cons, List.length_nil] at hi
     interval_cases i <;> simp
   · decide
+
+/- ## Sharp σ-representability: the coin chain of *all* divisors
+
+`representable_le_two_mul_sub_one_of_practical` reaches only `2m − 1`, while
+`two_mul_sub_one_le_sigma` shows the sum of divisors already satisfies `σ(m) ≥ 2m − 1`.
+For abundant `m` these differ (e.g. `m = 12`: `2m − 1 = 23 < 28 = σ(12)`). This section
+closes the gap: for practical `m`, the *entire* set of divisors — read in increasing
+order — is a coin chain, so every `k ≤ σ(m)` is a sum of distinct divisors. The
+represented range is then exactly `[0, σ(m)]`, the sharp form of the representability
+half of the Stewart–Sierpiński theory.
+
+The engine is a `Finset`-native restatement of the chain-covering theorem, proved by
+strong induction peeling off the largest coin, which avoids all sorted-list index
+bookkeeping. -/
+
+/-- **Finset coin-covering engine.** If every element `s` of a finite set `S ⊆ ℕ` is at
+most `1 +` the sum of the strictly smaller elements of `S`, then every `k ≤ ∑ S` is a
+sum of a distinct subset of `S`. Proved by strong induction: peel off the maximum coin
+`d = max' S`; the coins below it are exactly `S.erase d`, whose total is `≥ d − 1` by the
+chain condition on `d`, so either `k` already fits in `S.erase d` or `k − d` does. -/
+theorem finset_chain_covers :
+    ∀ (S : Finset ℕ), (∀ s ∈ S, s ≤ 1 + ∑ t ∈ S.filter (· < s), t) →
+      ∀ k, k ≤ ∑ s ∈ S, s → ∃ T ⊆ S, ∑ t ∈ T, t = k := by
+  intro S
+  induction S using Finset.strongInduction with
+  | _ S ih =>
+    intro hchain k hk
+    rcases S.eq_empty_or_nonempty with hS | hS
+    · subst hS
+      simp only [Finset.sum_empty, Nat.le_zero] at hk
+      exact ⟨∅, Finset.empty_subset _, by simp [hk]⟩
+    · set d := S.max' hS with hd
+      have hdmem : d ∈ S := S.max'_mem hS
+      set S' := S.erase d with hS'
+      have hS'sub : S' ⊂ S := Finset.erase_ssubset hdmem
+      -- Everything strictly below `d` is precisely `S.erase d`.
+      have hfil : S.filter (· < d) = S' := by
+        ext a
+        simp only [hS', Finset.mem_filter, Finset.mem_erase]
+        constructor
+        · rintro ⟨haS, had⟩; exact ⟨by omega, haS⟩
+        · rintro ⟨hane, haS⟩
+          exact ⟨haS, lt_of_le_of_ne (S.le_max' a haS) hane⟩
+      -- The chain condition restricts to the smaller set `S'`.
+      have hchain' : ∀ s ∈ S', s ≤ 1 + ∑ t ∈ S'.filter (· < s), t := by
+        intro s hs
+        have hsS : s ∈ S := Finset.mem_of_mem_erase hs
+        have hsd : s < d := lt_of_le_of_ne (S.le_max' s hsS) (Finset.ne_of_mem_erase hs)
+        have hfe : S'.filter (· < s) = S.filter (· < s) := by
+          ext a
+          simp only [hS', Finset.mem_filter, Finset.mem_erase]
+          constructor
+          · rintro ⟨⟨_, haS⟩, has⟩; exact ⟨haS, has⟩
+          · rintro ⟨haS, has⟩; exact ⟨⟨by omega, haS⟩, has⟩
+        rw [hfe]; exact hchain s hsS
+      -- The largest coin `d` is `≤ 1 + (sum of the rest)`.
+      have hdbound : d ≤ 1 + ∑ t ∈ S', t := by
+        have := hchain d hdmem; rwa [hfil] at this
+      have hsum' : ∑ t ∈ S, t = (∑ t ∈ S', t) + d :=
+        (Finset.sum_erase_add S _ hdmem).symm
+      by_cases hkd : k ≤ ∑ t ∈ S', t
+      · obtain ⟨T, hT, hTsum⟩ := ih S' hS'sub hchain' k hkd
+        exact ⟨T, hT.trans (Finset.erase_subset _ _), hTsum⟩
+      · push_neg at hkd
+        have hkd2 : k - d ≤ ∑ t ∈ S', t := by omega
+        obtain ⟨T, hT, hTsum⟩ := ih S' hS'sub hchain' (k - d) hkd2
+        have hdT : d ∉ T := fun h => (Finset.mem_erase.mp (hT h)).1 rfl
+        refine ⟨insert d T, ?_, ?_⟩
+        · rw [Finset.insert_subset_iff]
+          exact ⟨hdmem, hT.trans (Finset.erase_subset _ _)⟩
+        · rw [Finset.sum_insert hdT, hTsum]; omega
+
+/-- **Sharp σ-representability.** For practical `m`, *every* `k ≤ σ(m) = ∑_{d ∣ m} d` is a
+sum of distinct divisors of `m` — the represented interval is the full `[0, σ(m)]`.
+
+The sorted list of divisors is a coin chain: for a divisor `d`, the value `d − 1 < m` is a
+distinct-divisor sum (practicality), and every divisor it uses is `≤ d − 1 < d`, hence lies
+among the divisors below `d`; so those sum to `≥ d − 1`, i.e. `d ≤ 1 + ∑_{d' ∣ m, d' < d} d'`.
+Feeding this to `finset_chain_covers` covers `[0, σ(m)]`. This strictly sharpens
+`representable_le_two_mul_sub_one_of_practical` (which stops at `2m − 1`) up to the exact
+bound allowed by `two_mul_sub_one_le_sigma`. -/
+theorem representable_le_sigma_of_practical {m : ℕ} (h : IsPractical m) :
+    ∀ k, k ≤ ∑ d ∈ divisors m, d → IsRepresentable k m := by
+  obtain ⟨hm1, hrep⟩ := h
+  -- Every divisor `s` satisfies the chain condition against the smaller divisors.
+  have hchain : ∀ s ∈ divisors m, s ≤ 1 + ∑ t ∈ (divisors m).filter (· < s), t := by
+    intro s hs
+    have hsmem : s ∈ m.divisors := by rw [divisors] at hs; exact hs
+    have hsdvd : s ∣ m := (Nat.mem_divisors.mp hsmem).1
+    have hspos : 1 ≤ s := Nat.pos_of_mem_divisors hsmem
+    have hsm : s ≤ m := Nat.le_of_dvd hm1 hsdvd
+    rcases Nat.lt_or_ge s 2 with h1 | h2
+    · omega
+    · set k := s - 1 with hk
+      have hk1 : 1 ≤ k := by omega
+      have hkm : k < m := by omega
+      obtain ⟨T, hT, hTsum⟩ := hrep k hk1 hkm
+      have hTsub : T ⊆ (divisors m).filter (· < s) := by
+        intro x hx
+        rw [Finset.mem_filter]
+        have hxle : x ≤ k := by
+          have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hx
+          rwa [hTsum, id_eq] at this
+        exact ⟨hT hx, by omega⟩
+      have hsum_le : ∑ t ∈ T, t ≤ ∑ t ∈ (divisors m).filter (· < s), t :=
+        Finset.sum_le_sum_of_subset hTsub
+      have hbridge : ∑ t ∈ T, t = k := by simpa [id_eq] using hTsum
+      omega
+  intro k hk
+  obtain ⟨T, hT, hTsum⟩ := finset_chain_covers (divisors m) hchain k hk
+  exact ⟨T, hT, by simpa [id_eq] using hTsum⟩
 
 end Erdos18
