@@ -112,8 +112,8 @@
       "title": "Part III: Bleicher-Erdős Lower Bound (1975)",
       "startLine": 83,
       "endLine": 97,
-      "summary": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The derived theorem lower_bound_growth (sorry) extracts the simpler corollary S(N) ≥ exp(N/log N).",
-      "mathContext": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The derived theorem lower_bound_growth (sorry) extracts the simpler corollary S(N) ≥ exp(N/log N)."
+      "summary": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The proved theorem lower_bound_growth extracts the simpler corollary S(N) ≥ exp(N/log N) (derived from the stated erdos_320_open_bounds axiom, not a remaining sorry).",
+      "mathContext": "Axiomatizes the 1975 lower bound: log S(N) ≥ (N/log N)(log 2 · ∏ log_i N) for k ≥ 4 and log_k(N) ≥ k. The constant log 2 arises from binary choices among prime denominators. The proved theorem lower_bound_growth extracts the simpler corollary S(N) ≥ exp(N/log N) (derived from the stated erdos_320_open_bounds axiom, not a remaining sorry)."
     },
     {
       "id": "upper-bound",
@@ -168,8 +168,8 @@
       "title": "Part X: Growth Rate Analysis",
       "startLine": 205,
       "endLine": 218,
-      "summary": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The theorem log_S_leading_term (sorry) asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior.",
-      "mathContext": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The theorem log_S_leading_term (sorry) asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior."
+      "summary": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The proved theorem log_S_leading_term asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior.",
+      "mathContext": "Defines asymptotic_exponent(N) = N/log N as the leading term of log S(N). The proved theorem log_S_leading_term asserts sandwich bounds c₁ · N/log N ≤ log S(N) ≤ c₂ · (N/log N) · log log N, showing N/log N ~ π(N) is the leading behavior."
     },
     {
       "id": "summary",
