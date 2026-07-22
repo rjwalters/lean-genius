@@ -27,6 +27,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-112",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #112: determine the minimum $k(n,m)$ such that every tournament on $k$ vertices contains either an independent set of size $n$ or a transitive tournament of size $m$; still open, with known bounds $R(n,m) \\le k(n,m) \\le R(n,m,m)$ and $k(n,3) \\le n^2$ (Larson\u2013Mitchell 1997).",
+      "startLine": 1,
+      "endLine": 19,
+      "mathContext": "A tournament is a complete directed graph; the problem is a directed analogue of Ramsey numbers, replacing cliques/independent-sets with transitive-tournaments/independent-sets."
+    },
+    {
       "id": "imports-and-preamble",
       "title": "Imports and Preamble",
       "startLine": 20,
