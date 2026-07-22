@@ -283,3 +283,46 @@ Unfolded the implicit `O(√n)` of `minDegreeForC4_le_of_choose_lt` into a quota
   half of each `[s²+1, (s+1)²]` window); a case split on `n ≤ √n·(√n+1)` gives `√n+1` there.
 - `f(7)` exact needs `ex(7; C₄) = 9` (KST count only gives `f(7) ≤ 4`, cycle gives `≥ 3`).
 - The OPEN core remains eventual monotonicity `f(n+1) ≥ f(n)` — untouched.
+
+## Session 2026-07-22 (researcher-1) — parity refinement: f(7) = 3 + upper-Beatty family √n+1
+
+**Mode**: build on KST cherry count. **Outcome**: progress — 6 theorems (1 private helper),
+axiom-free (no `native_decide`, kernel `decide` on small numerals only), host-verified
+`lake env lean` exit 0, zero warnings. File 886→1014 lines.
+
+**The prior "Next" note was WRONG**: f(7) = 3 does NOT need `ex(7; C₄) = 9`. The parity
+(handshake) refinement suffices:
+
+- `exists_succ_le_degree_of_odd`: odd `|V|`, odd `k`, all degrees ≥ k ⟹ some degree ≥ k+1
+  (else degree sum = |V|·k is odd, contradicting `sum_degrees_eq_twice_card_edges`).
+- `minDegreeForC4_le_of_choose_lt_odd`: odd n, odd k, `C(n,2) < (n−1)·C(k,2) + C(k+1,2)`
+  ⟹ `f(n) ≤ k` — the boosted vertex upgrades the naive `n·C(k,2)` cherry count.
+- `minDegreeForC4_seven : f(7) = 3` — FOURTH exact value. `21 = C(7,2) < 24 = 6·3 + 6`.
+  Plain count fails at n=7 with *equality* (`7·C(3,2) = 21 = C(7,2)`); parity breaks the tie.
+  Exact table now complete for 1 ≤ n ≤ 7: `f = 1,2,3,2,3,3,3`.
+- `minDegreeForC4_le_of_upper_beatty : f(4m²+2m+1) ≤ 2m+1` — infinite family at
+  `n = s²+s+1` (s = 2m even), FIRST point of the upper Beatty half `(s²+s, (s+1)²)` where
+  plain counting is provably stuck at √n+2 (needs `n ≤ k(k−1)` but `n = s²+s+1 > s(s+1)`).
+  Key arithmetic: `n−1 = k(k−1)` EXACTLY at these points; the parity boost wins by margin
+  `C(k+1,2) − C(k,2) = k`.
+- `minDegreeForC4_le_sqrt_add_one_of_upper_beatty`: same in √ form — `f(n) ≤ √n + 1` at
+  `n = 4m²+2m+1`, m ≥ 1. Partially breaks the earlier "upper half stuck at √n+2" blocker.
+
+### Reusable Lean recipe
+- Parity contradiction: `obtain ⟨a, ha⟩ := hodd.mul hk; rw [ha] at hhs; omega` — rewrite the
+  odd product away BEFORE omega (omega rejects the nonlinear atom `card V * k`).
+- Split a degree sum at a distinguished vertex: `Finset.sum_erase_add _ _ (Finset.mem_univ v₀)`
+  with `Finset.card_erase_of_mem` + `Finset.sum_const` to lower-bound the erased part.
+- `push_neg` is deprecated in v4.31 → use `push Not at hcon`.
+- `Nat.sqrt` pinning: `Nat.le_sqrt.mpr` + `Nat.sqrt_lt.mpr` (both fed by `nlinarith`), then omega.
+
+### Next
+- Upper Beatty half at odd s (n = s²+s+1 with s odd makes k = s+1 even — parity silent);
+  deeper points n = s²+s+j, j ≥ 2, provably beyond THIS parity argument ((n−1)(n−s²−s) ≥
+  2(n−1) > (s+1)(s+2) already at j=2). Would need ex(n;C₄)-strength input.
+- f(8), f(9): plain count gives f(8) ≤ 4 (8 ≤ 4·3), f(9) ≤ 4; lower bound 3 ≤ f. Pinning
+  f(8) ∈ {3,4} needs either a 3-regular C₄-free graph on 8 vertices (cube graph Q₃! degree 3,
+  girth 4 — Q₃ HAS C₄s; Wagner/Möbius–Kantor?) or an edge bound. ex(8;C₄) = 11 known;
+  min-deg 4 on 8 vtx forces 16 > 11 edges — but 3-regular on 8 vtx = 12 > 11 edges too, so
+  f(8) = 3 IF ex(8;C₄) = 11 formalizable. Genuine next target but needs real extremal input.
+- The OPEN core remains eventual monotonicity f(n+1) ≥ f(n) — untouched.
