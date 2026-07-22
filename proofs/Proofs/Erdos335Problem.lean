@@ -26,6 +26,7 @@ import Mathlib.Topology.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Combinatorics.Schnirelmann
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Tactic
 
 open Set Filter
@@ -71,13 +72,21 @@ noncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋
 def FractionalPartSet (θ : ℝ) (X : Set ℝ) : Set ℕ :=
   {n | n > 0 ∧ frac (n * θ) ∈ X}
 
-/-- For irrational θ, the density of FractionalPartSet θ X equals μ(X)
-    by Weyl's equidistribution theorem. This is a deep result from
-    classical analysis, not currently in Mathlib. -/
-axiom weyl_equidistribution (θ : ℝ) (X : Set ℝ) (hθ : Irrational θ)
-    (μX : ℝ) (hμ : 0 ≤ μX) (hμ1 : μX ≤ 1) :
+/-- For irrational θ, the density of FractionalPartSet θ X equals the Lebesgue
+    measure of X restricted to the fundamental domain [0,1), by Weyl's
+    equidistribution theorem. This is a deep result from classical analysis,
+    not currently in Mathlib.
+
+    The target density is `(volume (X ∩ Ico 0 1)).toReal`, a value *determined
+    by X* — earlier this file passed the density as a free parameter `μX`
+    unconnected to `X`, which was logically inconsistent (a fixed `X` could be
+    assigned any density in `[0,1]`, e.g. both `0` and `1`, giving `0 = 1`;
+    see #41168). Tying the conclusion to `volume (X ∩ Ico 0 1)` removes that
+    inconsistency: for a fixed θ, X the density is now a single fixed real. -/
+axiom weyl_equidistribution (θ : ℝ) (X : Set ℝ) (hθ : Irrational θ) :
     DensityExists (FractionalPartSet θ X) ∧
-    asympDensity (FractionalPartSet θ X) = μX
+    asympDensity (FractionalPartSet θ X) =
+      (MeasureTheory.volume (X ∩ Set.Ico 0 1)).toReal
 
 /-- The known construction: if X_A and X_B have additive measure on ℝ/ℤ
     (μ(X_A + X_B) = μ(X_A) + μ(X_B)), then the corresponding fractional
@@ -416,6 +425,21 @@ theorem density_additive_lt_one_right (A B : Set ℕ) (h : DensityAdditive A B)
 
 /- ## A Non-Degenerate Witness for Erdős #335 -/
 
+/-- The Lebesgue measure of `[0, 1/4) ∩ [0, 1)` (as a real) is `1/4`.
+    This discharges the `weyl_equidistribution` density target for the concrete
+    `X = [0, 1/4)` witness below, replacing the old free-parameter `μX := 1/4`. -/
+private lemma volume_Ico_quarter_inter :
+    (MeasureTheory.volume (Set.Ico (0 : ℝ) (1 / 4) ∩ Set.Ico (0 : ℝ) 1)).toReal
+      = 1 / 4 := by
+  have hset : Set.Ico (0 : ℝ) (1 / 4) ∩ Set.Ico (0 : ℝ) 1 = Set.Ico (0 : ℝ) (1 / 4) := by
+    ext x
+    simp only [Set.mem_inter_iff, Set.mem_Ico]
+    constructor
+    · rintro ⟨⟨h0, h1⟩, _⟩; exact ⟨h0, h1⟩
+    · rintro ⟨h0, h1⟩; exact ⟨⟨h0, h1⟩, h0, by linarith⟩
+  rw [hset, Real.volume_Ico, ENNReal.toReal_ofReal (by norm_num)]
+  norm_num
+
 /-- **A positive-density density-additive pair exists.**
 
     `density_additive_zero_singleton` only produced the *degenerate* witness
@@ -433,8 +457,8 @@ theorem exists_positive_density_additive_pair :
     ∃ A B : Set ℕ, HasPositiveDensity A ∧ HasPositiveDensity B ∧ DensityAdditive A B := by
   have hθ : Irrational (Real.sqrt 2) := irrational_sqrt_two
   obtain ⟨_, hdens⟩ :=
-    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4)
-      (by norm_num) (by norm_num)
+    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ
+  rw [volume_Ico_quarter_inter] at hdens
   refine ⟨FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)),
           FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)), ?_, ?_, ?_⟩
   · unfold HasPositiveDensity; rw [hdens]; norm_num
@@ -451,8 +475,8 @@ theorem exists_self_additive_density_quarter :
       asympDensity A = 1 / 4 ∧ asympDensity (Sumset A A) = 1 / 2 := by
   have hθ : Irrational (Real.sqrt 2) := irrational_sqrt_two
   obtain ⟨_, hdens⟩ :=
-    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4)
-      (by norm_num) (by norm_num)
+    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ
+  rw [volume_Ico_quarter_inter] at hdens
   have hadd := fractional_part_density_additive (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4))
     (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4) (1 / 4) (by norm_num)
   refine ⟨FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)), ?_, hadd, hdens, ?_⟩
