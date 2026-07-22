@@ -74,6 +74,14 @@ STUCK_CPU_THRESHOLD="0.5"
 DEFAULT_DAEMON_INTERVAL=60
 RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
+# Persistent-missing-session alerting (#39652). A configured agent whose session
+# is absent for a single cycle is routine (mid-respawn, cooldown). Only after
+# this many CONSECUTIVE cycles below target does the daemon escalate from a
+# routine "pool gap" INFO to a MISSING WARN and surface a red row in
+# `/lean health` / `/lean status`. Kept small so a genuine multi-cycle outage
+# (e.g. the deployer that went unnoticed for 7 days) is caught within minutes.
+MISSING_SESSION_ALERT_CYCLES=3
+
 # Default pool sizes
 # Balanced team: 5 researchers (continuous), 8 support agents (sleeping between cycles)
 # ~72 active min/hr across 9 accounts = ~8 min/hr per account
@@ -1104,6 +1112,44 @@ get_agent_status() {
     echo "RUNNING"
 }
 
+# Helper: Render red MISSING rows for configured agents with no live session (#39652).
+# Compares the daemon's pool config (STATE_FILE .config) against live tmux
+# sessions and prints a table row for each configured-but-absent agent. Sets
+# the global MISSING_AGENTS_FOUND to the number of missing agents. Callable even
+# when NO other agent sessions are live, so a configured agent that is the only
+# thing that should be running (and isn't) is still surfaced.
+MISSING_AGENTS_FOUND=0
+print_missing_agent_rows() {
+    MISSING_AGENTS_FOUND=0
+    { [[ -f "$STATE_FILE" ]] && jq empty "$STATE_FILE" >/dev/null 2>&1; } || return 0
+
+    local aristotle_scaled_local=0
+    is_aristotle_scaled_to_zero && aristotle_scaled_local=1
+
+    local htype hcfg hrun hcyc cyc_note
+    for htype in enricher researcher aristotle auditor seeker deployer herald mechanic tester; do
+        hcfg=$(jq -r ".config.${htype} // 0" "$STATE_FILE" 2>/dev/null || echo 0)
+        [[ "$hcfg" =~ ^[0-9]+$ ]] || hcfg=0
+        [[ "$hcfg" -ge 1 ]] || continue
+        # Aristotle scale-to-zero (issue #22471) is an intentional absence.
+        if [[ "$htype" == "aristotle" ]] && [[ "$aristotle_scaled_local" -eq 1 ]]; then
+            continue
+        fi
+        hrun=$(count_agent_sessions "$htype")
+        if [[ "$hrun" -lt "$hcfg" ]]; then
+            MISSING_AGENTS_FOUND=$((MISSING_AGENTS_FOUND + 1))
+            # Consecutive-cycle count recorded by the daemon, if available.
+            hcyc=$(jq -r --arg t "$htype" \
+                '(.missing_agents // []) | map(select(.type == $t)) | .[0].missing_cycles // empty' \
+                "$STATE_FILE" 2>/dev/null || echo "")
+            cyc_note=""
+            [[ -n "$hcyc" ]] && cyc_note=" ${hcyc} cycles"
+            printf "%-22s %-8s %-10s %-7s %-5s %-6s " "$htype" "-" "-" "-" "-" "-"
+            echo -e "${RED}MISSING${NC} (configured:${hcfg} running:${hrun})${cyc_note}"
+        fi
+    done
+}
+
 # Command: health - Show agent process health
 cmd_health() {
     echo -e "${BOLD}Agent Health Check${NC}"
@@ -1113,6 +1159,17 @@ cmd_health() {
     sessions=$(get_all_agent_sessions)
 
     if [[ -z "$sessions" ]]; then
+        # No live sessions at all -- but configured agents may still be MISSING
+        # (e.g. the whole pool died). Surface those before returning (#39652).
+        print_missing_agent_rows
+        if [[ "$MISSING_AGENTS_FOUND" -gt 0 ]]; then
+            echo ""
+            echo -e "Summary: ${RED}$MISSING_AGENTS_FOUND missing${NC} (configured agents with no live session)"
+            echo ""
+            echo -e "${YELLOW}Configured agent(s) have no live session. The launcher may be dying silently (#39649).${NC}"
+            echo -e "${YELLOW}Check the daemon log ($DAEMON_LOG_FILE) and restart the daemon if needed.${NC}"
+            return 0
+        fi
         echo "No agent tmux sessions found."
         return 0
     fi
@@ -1246,6 +1303,12 @@ cmd_health() {
         echo -e "${YELLOW}SCALED_TO_ZERO${NC} (idle queue)"
     fi
 
+    # Surface CONFIGURED agents that have no live session (#39652). Previously
+    # health simply omitted them (get_all_agent_sessions only enumerates live
+    # sessions), which let the deployer stay dead for 7 days unnoticed.
+    print_missing_agent_rows
+    local missing_count=$MISSING_AGENTS_FOUND
+
     echo ""
     local summary="Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed"
     if [[ $idle_count -gt 0 ]]; then
@@ -1257,6 +1320,9 @@ cmd_health() {
     if [[ $failing_count -gt 0 ]]; then
         summary+=", ${RED}$failing_count failing${NC}"
     fi
+    if [[ $missing_count -gt 0 ]]; then
+        summary+=", ${RED}$missing_count missing${NC}"
+    fi
     summary+=", ${RED}$stuck_count stuck${NC}"
     echo -e "$summary"
 
@@ -1267,6 +1333,11 @@ cmd_health() {
     if [[ $failing_count -gt 0 ]]; then
         echo ""
         echo -e "${YELLOW}Failing agents detected (${CONSECUTIVE_FAILURE_THRESHOLD}+ consecutive failures). Check logs and restart.${NC}"
+    fi
+    if [[ $missing_count -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}Configured agent(s) have no live session. The launcher may be dying silently (#39649).${NC}"
+        echo -e "${YELLOW}Check the daemon log ($DAEMON_LOG_FILE) and restart the daemon if needed.${NC}"
     fi
 
     return $stuck_count
@@ -1343,6 +1414,82 @@ set_last_respawn() {
         LAST_RESPAWN_TIME[$session]="$epoch"
     else
         echo "$epoch" > "/tmp/lean-daemon-respawn-${session}"
+    fi
+}
+
+# Consecutive-cycles-missing counter per agent type (#39652). Same bash 4+
+# associative array with a bash 3 /tmp fallback as LAST_RESPAWN_TIME above.
+declare -A MISSING_CYCLE_COUNT 2>/dev/null || true
+
+# Helper: Get consecutive-missing cycle count for an agent type
+get_missing_cycles() {
+    local type="$1"
+    if declare -p MISSING_CYCLE_COUNT &>/dev/null 2>&1; then
+        echo "${MISSING_CYCLE_COUNT[$type]:-0}"
+    else
+        local cache_file="/tmp/lean-daemon-missing-${type}"
+        if [[ -f "$cache_file" ]]; then cat "$cache_file"; else echo "0"; fi
+    fi
+}
+
+# Helper: Set consecutive-missing cycle count for an agent type
+set_missing_cycles() {
+    local type="$1"
+    local count="$2"
+    if declare -p MISSING_CYCLE_COUNT &>/dev/null 2>&1; then
+        MISSING_CYCLE_COUNT[$type]="$count"
+    else
+        echo "$count" > "/tmp/lean-daemon-missing-${type}"
+    fi
+}
+
+# Helper: Count live tmux sessions for an agent type (#39652).
+# Used by both the daemon detection loop and `cmd_health` so the two agree on
+# what "running" means for each agent family.
+count_agent_sessions() {
+    local type="$1"
+    local count=0
+    local i
+    case "$type" in
+        enricher)
+            for i in $(seq 1 "$MAX_ENRICHER"); do
+                tmux has-session -t "enricher-$i" 2>/dev/null && count=$((count + 1))
+            done ;;
+        researcher)
+            for i in $(seq 1 "$MAX_RESEARCHER"); do
+                tmux has-session -t "researcher-$i" 2>/dev/null && count=$((count + 1))
+            done ;;
+        mechanic)
+            for i in 1 2 3; do
+                tmux has-session -t "mechanic-$i" 2>/dev/null && count=$((count + 1))
+            done
+            tmux has-session -t "mechanic-agent" 2>/dev/null && count=$((count + 1)) ;;
+        aristotle) tmux has-session -t "aristotle-agent" 2>/dev/null && count=1 ;;
+        auditor)   tmux has-session -t "auditor-agent" 2>/dev/null && count=1 ;;
+        seeker)    tmux has-session -t "seeker-agent" 2>/dev/null && count=1 ;;
+        deployer)  tmux has-session -t "deployer" 2>/dev/null && count=1 ;;
+        herald)    tmux has-session -t "herald-agent" 2>/dev/null && count=1 ;;
+        tester)    tmux has-session -t "tester-agent" 2>/dev/null && count=1 ;;
+    esac
+    echo "$count"
+}
+
+# Helper: Persist the set of persistently-missing agents to STATE_FILE (#39652).
+# Consumed by `cmd_health` / `status.sh` so the absence stays visible between
+# daemon cycles and after the daemon exits. Argument is a compact JSON array of
+# {type, configured, running, missing_cycles} objects (may be "[]").
+write_missing_agents() {
+    local missing_json="$1"
+    [[ -f "$STATE_FILE" ]] || return 0
+    jq empty "$STATE_FILE" >/dev/null 2>&1 || return 0
+    local tmp
+    tmp=$(mktemp)
+    if jq --argjson missing "$missing_json" \
+          '.missing_agents = $missing' \
+          "$STATE_FILE" > "$tmp" 2>/dev/null; then
+        mv "$tmp" "$STATE_FILE"
+    else
+        rm -f "$tmp"
     fi
 }
 
@@ -2447,6 +2594,62 @@ cmd_daemon() {
             done
         fi
 
+        # 2c. Persistent-missing-session detection & alerting (#39652).
+        # The pool-gap respawns above try to bring absent agents back every
+        # cycle, but when the launcher dies silently (#39649) a CONFIGURED
+        # agent can stay session-less indefinitely with only routine INFO
+        # "pool gap" noise -- exactly how the deployer went unnoticed for 7
+        # days. Track how many CONSECUTIVE cycles each configured agent has
+        # stayed below target; once it crosses the threshold, escalate to a
+        # WARN and persist a MISSING record that /lean health & /lean status
+        # render as a red row instead of silently omitting the agent.
+        local tester_active=0
+        tmux has-session -t "tester-agent" 2>/dev/null && tester_active=1
+        local missing_json="[]"
+        local mtype mactive mtarget mcycles
+        for _pair in \
+            "enricher $enricher_active $enricher" \
+            "researcher $researcher_active $researcher" \
+            "aristotle $aristotle_active $aristotle" \
+            "auditor $auditor_active $auditor" \
+            "seeker $seeker_active $seeker" \
+            "deployer $deployer_active $deployer" \
+            "herald $herald_active $herald" \
+            "mechanic $mechanic_active $mechanic" \
+            "tester $tester_active $tester"; do
+            read -r mtype mactive mtarget <<< "$_pair"
+
+            # Only configured agents (target >= 1) can be "missing".
+            if [[ "$mtarget" -lt 1 ]]; then
+                set_missing_cycles "$mtype" 0
+                continue
+            fi
+
+            # Aristotle scale-to-zero (issue #22471) is an intentional absence,
+            # not a failed launch -- don't false-alarm on it.
+            if [[ "$mtype" == "aristotle" ]] && [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+                set_missing_cycles "$mtype" 0
+                continue
+            fi
+
+            if [[ "$mactive" -lt "$mtarget" ]]; then
+                mcycles=$(get_missing_cycles "$mtype")
+                mcycles=$((mcycles + 1))
+                set_missing_cycles "$mtype" "$mcycles"
+                if [[ "$mcycles" -ge "$MISSING_SESSION_ALERT_CYCLES" ]]; then
+                    daemon_log "WARN" "Agent '$mtype' MISSING: configured=$mtarget running=$mactive for $mcycles consecutive cycles (respawn attempted, session still absent)"
+                    missing_json=$(echo "$missing_json" | jq -c \
+                        --arg t "$mtype" --argjson cfg "$mtarget" \
+                        --argjson run "$mactive" --argjson cyc "$mcycles" \
+                        '. += [{type: $t, configured: $cfg, running: $run, missing_cycles: $cyc}]' \
+                        2>/dev/null || echo "$missing_json")
+                fi
+            else
+                set_missing_cycles "$mtype" 0
+            fi
+        done
+        write_missing_agents "$missing_json"
+
         # 3. Work queue assessment (with timeout protection)
         local queue_stats
         queue_stats=$(get_work_queue_stats)
@@ -3303,4 +3506,9 @@ main() {
     esac
 }
 
-main "$@"
+# Only run main when executed directly, not when sourced (e.g. by tests such as
+# scripts/tests/daemon-missing-agent.test.sh, which exercise the missing-session
+# detection helpers in isolation). #39652.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi

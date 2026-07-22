@@ -275,6 +275,11 @@ gather_status() {
     fi
 
     if $JSON_OUTPUT; then
+        # Persistently-missing configured agents recorded by the daemon (#39652).
+        local missing_agents_json="[]"
+        if [[ -f "$STATE_FILE" ]] && jq empty "$STATE_FILE" >/dev/null 2>&1; then
+            missing_agents_json=$(jq -c '.missing_agents // []' "$STATE_FILE" 2>/dev/null || echo "[]")
+        fi
         # Output as JSON
         cat <<EOF
 {
@@ -334,6 +339,7 @@ gather_status() {
       "sessions": $(printf '%s\n' "${mechanic_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
     }
   },
+  "missing_agents": $missing_agents_json,
   "session_stats": {
     "entries_enriched": $entries_enriched,
     "proofs_submitted": $proofs_submitted,
@@ -510,6 +516,24 @@ EOF
             done
         else
             echo -e "    ${BOLD}Mechanic:${NC} ${YELLOW}0 active${NC}"
+        fi
+
+        # Persistently-missing configured agents (#39652). The daemon records a
+        # .missing_agents array when a configured agent has had no live session
+        # for several consecutive cycles (e.g. a silently-dying launcher). Surface
+        # it loudly instead of leaving it buried in the "0 active" rows above.
+        if [[ -f "$STATE_FILE" ]] && jq empty "$STATE_FILE" >/dev/null 2>&1; then
+            local missing_rows
+            missing_rows=$(jq -r \
+                '(.missing_agents // [])
+                 | map("      \(.type): configured \(.configured), running \(.running) (\(.missing_cycles) cycles)")
+                 | .[]' \
+                "$STATE_FILE" 2>/dev/null || echo "")
+            if [[ -n "$missing_rows" ]]; then
+                echo ""
+                echo -e "    ${RED}MISSING (configured but no session):${NC}"
+                echo -e "${RED}${missing_rows}${NC}"
+            fi
         fi
         echo ""
 
