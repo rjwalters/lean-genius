@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 3,
-    "focus": "Session 2: splitting identity (Fibonacci–Sylvester 1/n=1/(n+1)+1/(n(n+1))), telescoping form, concrete witness {2,3,6}, existence, and the term-replacement lengthening step (isUnitFractionRepr_replace). 5 axiom-free theorems, theoremCount 16→21, host-verified.",
+    "iteration": 4,
+    "focus": "colour-free layer complete; only deep monochromatic (Croot) input remains",
     "blockers": [
       {
         "route": "union/scaling assembly of large-min 1/c pieces into exactly 1",
@@ -34,7 +34,7 @@
         "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "Croot's theorem (existence of monochromatic representation) is deep/unformalized — needs density/covering machinery from the 2003 paper. Elementary splitting/lengthening toolkit now in place; a full lengthening-to-infinity chain would need denominator-freshness bookkeeping.",
+    "nextAction": "STAND DOWN unless attacking the monochromatic Croot layer itself (deep). All elementary colour-free content is done.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR (researcher-1, 2026-07-22): THE REGISTERED CRUX IS SOLVED — exists_isUnitFractionRepr_min_gt (new companion Erdos46WIP01SmallDivisors.lean, 0-axiom, host-verified): for every N >= 1 a unit-fraction representation of EXACTLY 1 with all denominators > N. Route = practical-number completeness (the divisor-sum bridge's open nextStep): M = (4(N+1))! is practical (Erdos18 toolkit import), its divisors <= M/(N+1) remain a subset-sum coin chain under threshold restriction and total >= M via harmonic-block cofactors, so finset_chain_covers hits M exactly; the bridge converts cofactors into the repr. Corollary exists_isUnitFractionRepr_disjoint: any finite set avoided — the collision-freeness obstruction to disjoint chaining is GONE. Still open: the monochromatic ErdosProblem46 (Croot 2003 density machinery).",
+    "progressSummary": "COLOUR-FREE LAYER COMPLETE: crux (exact repr of 1, denoms > N, PR #41555) extended to every positive rational q with denoms > N, plus Egyptian-fraction representability of all q > 0 and Fin k pairwise-disjoint families of reprs of 1 (all 0-axiom, host-verified). The ONLY remaining content is the monochromatic layer (ErdosProblem46 / ErdosGraham_rational, Croot 2003), which needs density/covering machinery far beyond current Mathlib.",
     "builtItems": [
       "exists_isRatFractionRepr_bracket_one in Erdos46Problem.lean (0-axiom) — packages controlled overshoot+undershoot into a single two-sided bracket of 1: exists Slo,Shi,qlo,qhi with both reprs' denoms > N, qlo<1<=qhi, and explicit vanishing width qhi-qlo < 2/(N+1). Launching point for exact landing on 1.",
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
@@ -63,7 +63,12 @@
       "exists_le_card — smallest denom <= card in any unit-fraction repr of 1 (Erdos46WIP01Cost.lean, 0-axiom)",
       "Erdos46WIP01SmallDivisors.lean: exists_isUnitFractionRepr_min_gt — exact repr of 1, all denoms > N (THE CRUX) [0-axiom]",
       "small_divisor_chain (threshold restriction of practical divisor coin chain), small_divisor_sum_ge (harmonic cofactor total >= M)",
-      "exists_isUnitFractionRepr_disjoint: repr of 1 avoiding any finite set (collision obstruction removed)"
+      "exists_isUnitFractionRepr_disjoint: repr of 1 avoiding any finite set (collision obstruction removed)",
+      "exists_isUnitFractionRepr_min_gt_disjoint in Erdos46WIP01SmallDivisors.lean (repr of 1, denoms > N, avoiding any finite S0)",
+      "exists_isRatFractionRepr_natCast_min_gt (every a >= 1 represented, denoms > N, via Nat.le_induction disjoint chaining)",
+      "exists_isRatFractionRepr_pos_min_gt (colour-free Erdos-Graham layer: every q > 0, denoms > N)",
+      "exists_isRatFractionRepr_of_pos (Egyptian fractions for every positive rational)",
+      "exists_pairwise_disjoint_isUnitFractionRepr (Fin k pairwise-disjoint reprs of 1)"
     ],
     "insights": [
       "Erdos46Problem.lean stub developed: 13 axiom-free foundational lemmas on unit-fraction / rational representations and monochromatic sets (all [propext,Classical.choice,Quot.sound], no sorry/native_decide).",
@@ -80,11 +85,14 @@
       "DUAL: in ANY unit-fraction repr of 1 the smallest denominator is <= number of terms (some n in S has n<=|S|); else all denoms >|S| would force |S|>=|S|+1. (exists_le_card)",
       "The erdos-18 practical-number engine and the erdos-46 crux are the same mathematics: denominators > N summing to 1 = distinct divisors < M/N summing to M; Erdos18.divisors is defeq Nat.divisors so the toolkits compose with zero glue",
       "Threshold restriction preserves subset-sum coin chains: the chain condition for d references only divisors < d, all below the threshold — so practical numbers have COMPLETE small-divisor pools once the pool total passes M (harmonic block of cofactors)",
-      "The equivalent-strength blocked routes (bootstraps) are all obsolete: the target itself is now constructed; remaining open content is exclusively the monochromatic/Croot layer"
+      "The equivalent-strength blocked routes (bootstraps) are all obsolete: the target itself is now constructed; remaining open content is exclusively the monochromatic/Croot layer",
+      "With the crux solved, the previously equivalent-strength directions become legitimate DOWNSTREAM derivations: 1 -> a (disjoint-union chaining) -> a/b (scaling by q.den) gives every positive rational with denominators > N. The blocked routes were only about reaching 1 FROM 1/c pieces, not about deriving consequences of 1.",
+      "Egyptian-fraction representability of every positive rational (qualitative Fibonacci-Sylvester) falls out of the practical-number engine without formalizing the greedy algorithm: it is the N=1 instance of the colour-free Erdos-Graham layer.",
+      "Fin.cons + induction using Fin.cases (case names zero/succ) is the clean pattern for extending a Fin k family of pairwise-disjoint sets by one avoiding element; Lean 4 induction auto-generalizes the i-dependent hypothesis hij."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Exact landing on 1 with denominators > N (close the [qlo,qhi] gap collision-free) = bounded-rational Diophantine subset-sum. HARD NUGGET; the bracket now pins it to a <2/(N+1) window. Alt route: denominator inflation by repeatedly splitting the smallest term 1/m=1/(m+1)+1/(m(m+1)), handling collisions."
+      "Monochromatic layer (Croot 2003): density/covering machinery not in Mathlib — DEEP, not session-sized. The colour-free infrastructure is complete; do not add further colour-free rungs without checking they are not cosmetic."
     ],
     "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

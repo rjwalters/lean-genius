@@ -203,4 +203,119 @@ theorem exists_isUnitFractionRepr_disjoint (S₀ : Finset ℕ) :
   have h2 := hmin a hamem
   omega
 
+/- ## From `1` to every positive rational
+
+With the crux `exists_isUnitFractionRepr_min_gt` in hand, the disjoint-union
+and scaling primitives of the parent file (`isRatFractionRepr_union`,
+`isRatFractionRepr_smul`) upgrade "exactly `1`, denominators `> N`" to
+"exactly `q`, denominators `> N`" for EVERY positive rational `q`.  This is the
+colour-free layer of the Erdős–Graham rational generalization
+(`ErdosGraham_rational` with the colouring stripped): the remaining distance
+from these results to `ErdosGraham_rational` / `ErdosProblem46` is purely the
+monochromatic (Croot 2003) input. -/
+
+/-- Combined avoidance: a representation of `1` whose denominators all exceed
+`N` AND which avoids any prescribed finite set `S₀`.  Runs the crux at
+threshold `max N (S₀.sup id)`. -/
+theorem exists_isUnitFractionRepr_min_gt_disjoint (N : ℕ) (hN : 1 ≤ N)
+    (S₀ : Finset ℕ) :
+    ∃ S : Finset ℕ, IsUnitFractionRepr S ∧ (∀ n ∈ S, N < n) ∧ Disjoint S₀ S := by
+  obtain ⟨S, hS, hmin⟩ :=
+    exists_isUnitFractionRepr_min_gt (max N (S₀.sup id)) (hN.trans (le_max_left _ _))
+  refine ⟨S, hS, fun n hn => lt_of_le_of_lt (le_max_left _ _) (hmin n hn), ?_⟩
+  refine Finset.disjoint_left.mpr fun a ha hamem => ?_
+  have h1 : a ≤ S₀.sup id := Finset.le_sup (f := id) ha
+  have h2 := hmin a hamem
+  have h3 := le_max_right N (S₀.sup id)
+  omega
+
+/-- Every positive natural `a` is a sum of distinct unit fractions with all
+denominators `> N`: chain `a` pairwise-disjoint representations of `1` via
+`isRatFractionRepr_union` and the avoidance lemma. -/
+theorem exists_isRatFractionRepr_natCast_min_gt (a N : ℕ) (ha : 1 ≤ a)
+    (hN : 1 ≤ N) :
+    ∃ S : Finset ℕ, IsRatFractionRepr S (a : ℚ) ∧ ∀ n ∈ S, N < n := by
+  induction a, ha using Nat.le_induction with
+  | base =>
+    obtain ⟨S, hS, hmin⟩ := exists_isUnitFractionRepr_min_gt N hN
+    refine ⟨S, ?_, hmin⟩
+    rw [Nat.cast_one]
+    exact hS
+  | succ a ha ih =>
+    obtain ⟨S, hS, hSmin⟩ := ih
+    obtain ⟨T, hT, hTmin, hdisj⟩ := exists_isUnitFractionRepr_min_gt_disjoint N hN S
+    refine ⟨S ∪ T, ?_, fun n hn => ?_⟩
+    · have hcast : ((a + 1 : ℕ) : ℚ) = (a : ℚ) + 1 := by push_cast; ring
+      rw [hcast]
+      exact isRatFractionRepr_union hdisj hS ((isRatFractionRepr_one_iff T).mpr hT)
+    · rcases Finset.mem_union.mp hn with h | h
+      · exact hSmin n h
+      · exact hTmin n h
+
+/-- **Colour-free Erdős–Graham layer.**  Every positive rational `q` has a
+representation by distinct unit fractions with all denominators `> N`: write
+`q = q.num / q.den`, represent the positive natural `q.num.toNat` with
+denominators `> N`, and scale every denominator by `q.den`
+(`isRatFractionRepr_smul`). -/
+theorem exists_isRatFractionRepr_pos_min_gt (q : ℚ) (hq : 0 < q) (N : ℕ)
+    (hN : 1 ≤ N) :
+    ∃ S : Finset ℕ, IsRatFractionRepr S q ∧ ∀ n ∈ S, N < n := by
+  have hnum : (0 : ℤ) < q.num := Rat.num_pos.mpr hq
+  have hapos : 1 ≤ q.num.toNat := by omega
+  have hbpos : 0 < q.den := Nat.pos_of_ne_zero q.den_nz
+  obtain ⟨S, hS, hmin⟩ :=
+    exists_isRatFractionRepr_natCast_min_gt q.num.toNat N hapos hN
+  refine ⟨S.image (fun n => q.den * n), ?_, fun m hm => ?_⟩
+  · have hsmul := isRatFractionRepr_smul hS hbpos
+    have hcast : ((q.num.toNat : ℕ) : ℚ) = (q.num : ℚ) := by
+      rw [← Int.cast_natCast, Int.toNat_of_nonneg hnum.le]
+    rw [hcast, Rat.num_div_den q] at hsmul
+    exact hsmul
+  · obtain ⟨n, hn, rfl⟩ := Finset.mem_image.mp hm
+    exact lt_of_lt_of_le (hmin n hn) (Nat.le_mul_of_pos_left n hbpos)
+
+/-- **Egyptian-fraction representability of every positive rational** — the
+qualitative Fibonacci–Sylvester theorem, obtained here from the
+practical-number engine rather than the greedy algorithm: every `q > 0` is a
+finite sum of distinct unit fractions (denominators `≥ 2`). -/
+theorem exists_isRatFractionRepr_of_pos (q : ℚ) (hq : 0 < q) :
+    ∃ S : Finset ℕ, IsRatFractionRepr S q :=
+  let ⟨S, hS, _⟩ := exists_isRatFractionRepr_pos_min_gt q hq 1 le_rfl
+  ⟨S, hS⟩
+
+/-- Arbitrarily many pairwise-disjoint representations of `1`: for every `k`
+there is a `Fin k`-indexed family of pairwise-disjoint unit-fraction
+representations of `1` — the colour-free skeleton of
+`ErdosProblem46_infinitely_many`. -/
+theorem exists_pairwise_disjoint_isUnitFractionRepr (k : ℕ) :
+    ∃ F : Fin k → Finset ℕ, (∀ i, IsUnitFractionRepr (F i)) ∧
+      ∀ i j, i ≠ j → Disjoint (F i) (F j) := by
+  induction k with
+  | zero => exact ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩
+  | succ k ih =>
+    obtain ⟨F, hF, hdisj⟩ := ih
+    obtain ⟨T, hT, hTdisj⟩ :=
+      exists_isUnitFractionRepr_disjoint (Finset.univ.biUnion F)
+    have hsub : ∀ j : Fin k, F j ⊆ Finset.univ.biUnion F := fun j =>
+      Finset.subset_biUnion_of_mem F (Finset.mem_univ j)
+    refine ⟨Fin.cons T F, fun i => ?_, fun i j hij => ?_⟩
+    · induction i using Fin.cases with
+      | zero => rw [Fin.cons_zero]; exact hT
+      | succ i => rw [Fin.cons_succ]; exact hF i
+    · induction i using Fin.cases with
+      | zero =>
+        induction j using Fin.cases with
+        | zero => exact absurd rfl hij
+        | succ j =>
+          rw [Fin.cons_zero, Fin.cons_succ]
+          exact (Finset.disjoint_of_subset_left (hsub j) hTdisj).symm
+      | succ i =>
+        induction j using Fin.cases with
+        | zero =>
+          rw [Fin.cons_succ, Fin.cons_zero]
+          exact Finset.disjoint_of_subset_left (hsub i) hTdisj
+        | succ j =>
+          rw [Fin.cons_succ, Fin.cons_succ]
+          exact hdisj i j fun h => hij (congrArg Fin.succ h)
+
 end Erdos46SmallDivisors
