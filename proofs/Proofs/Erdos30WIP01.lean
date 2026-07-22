@@ -207,4 +207,103 @@ theorem sidonNumber_mono {N M : ℕ} (h : N ≤ M) : sidonNumber N ≤ sidonNumb
   rw [Finset.mem_range] at hxN ⊢
   omega
 
+/- ## A growing Sidon family: powers of two (a lower bound on `h(N)`)
+
+The results above bound `h(N)` from *above* by `√(2N) + 1`, but the only lower
+bound so far is the trivial `1 ≤ h(N)` (the singleton). Here we supply a genuine
+*growing* lower bound: the `k + 1` powers `{2^0, 2^1, …, 2^k}` form a Sidon set
+inside `{0, …, 2^k}`, so `h(2^k) ≥ k + 1`. In particular `h(N)` is unbounded
+(`sidonNumber_unbounded`). This is only a logarithmic bound — far from the sharp
+`√N` growth (which needs Singer/perfect-difference-set constructions, absent from
+Mathlib) — but it is the first proof in this file that `h(N) → ∞`. -/
+
+/-- **Powers of two have distinct pairwise sums.** If `2^i + 2^j = 2^p + 2^q` with
+`i ≤ j` and `p ≤ q` and `i ≤ p`, then `(i, j) = (p, q)`. The 2-adic valuation of the
+smaller exponent must match (else one side is odd and the other even, or one side is
+`2` while the other is `≥ 4`), forcing `i = p`; cancelling then gives `j = q`. -/
+private theorem two_pow_add_inj {i j p q : ℕ} (hij : i ≤ j) (hpq : p ≤ q)
+    (hip : i ≤ p) (h : 2 ^ i + 2 ^ j = 2 ^ p + 2 ^ q) : i = p ∧ j = q := by
+  have hiq : i ≤ q := hip.trans hpq
+  have hi_p : i = p := by
+    by_contra hne
+    have hlt : i < p := lt_of_le_of_ne hip hne
+    have e1 : 2 ^ i + 2 ^ j = 2 ^ i * (1 + 2 ^ (j - i)) := by
+      rw [Nat.mul_add, Nat.mul_one, ← pow_add, Nat.add_sub_cancel' hij]
+    have e2 : 2 ^ p + 2 ^ q = 2 ^ i * (2 ^ (p - i) + 2 ^ (q - i)) := by
+      rw [Nat.mul_add, ← pow_add, ← pow_add, Nat.add_sub_cancel' hip,
+        Nat.add_sub_cancel' hiq]
+    rw [e1, e2] at h
+    have hcancel : 1 + 2 ^ (j - i) = 2 ^ (p - i) + 2 ^ (q - i) :=
+      Nat.eq_of_mul_eq_mul_left (by positivity) h
+    have hPpos : 0 < p - i := by omega
+    have hQpos : 0 < q - i := by omega
+    have hReven : Even (2 ^ (p - i) + 2 ^ (q - i)) :=
+      (Nat.even_pow.mpr ⟨even_two, by omega⟩).add (Nat.even_pow.mpr ⟨even_two, by omega⟩)
+    rcases Nat.eq_zero_or_pos (j - i) with hj0 | hjpos
+    · rw [hj0] at hcancel
+      have h2p : 2 ≤ 2 ^ (p - i) := by
+        calc 2 = 2 ^ 1 := (pow_one 2).symm
+          _ ≤ 2 ^ (p - i) := Nat.pow_le_pow_right (by norm_num) hPpos
+      have h2q : 2 ≤ 2 ^ (q - i) := by
+        calc 2 = 2 ^ 1 := (pow_one 2).symm
+          _ ≤ 2 ^ (q - i) := Nat.pow_le_pow_right (by norm_num) hQpos
+      simp only [pow_zero] at hcancel
+      omega
+    · have hLodd : Odd (1 + 2 ^ (j - i)) := by
+        rw [Nat.add_comm]
+        exact Even.add_one (Nat.even_pow.mpr ⟨even_two, by omega⟩)
+      rw [hcancel] at hLodd
+      rw [Nat.even_iff] at hReven
+      rw [Nat.odd_iff] at hLodd
+      omega
+  refine ⟨hi_p, ?_⟩
+  subst hi_p
+  have hjq : 2 ^ j = 2 ^ q := by omega
+  exact Nat.pow_right_injective (by norm_num) hjq
+
+/-- **The powers `{2^0, …, 2^k}` form a Sidon set.** -/
+theorem isSidonSet_two_pow_range (k : ℕ) :
+    IsSidonSet ((Finset.range (k + 1)).image (2 ^ ·)) := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_image, Finset.mem_range] at ha hb hc hd
+  obtain ⟨i, _, rfl⟩ := ha
+  obtain ⟨j, _, rfl⟩ := hb
+  obtain ⟨p, _, rfl⟩ := hc
+  obtain ⟨q, _, rfl⟩ := hd
+  have hij : i ≤ j := (Nat.pow_le_pow_iff_right (by norm_num)).mp hab
+  have hpq : p ≤ q := (Nat.pow_le_pow_iff_right (by norm_num)).mp hcd
+  rcases le_total i p with hip | hpi
+  · obtain ⟨hi, hj⟩ := two_pow_add_inj hij hpq hip heq
+    exact ⟨by rw [hi], by rw [hj]⟩
+  · obtain ⟨hp, hq⟩ := two_pow_add_inj hpq hij hpi heq.symm
+    exact ⟨by rw [hp], by rw [hq]⟩
+
+/-- **`{2^0, …, 2^k}` sits inside `{0, …, 2^k}`.** -/
+theorem two_pow_range_subset (k : ℕ) :
+    (Finset.range (k + 1)).image (2 ^ ·) ⊆ Finset.range (2 ^ k + 1) := by
+  intro x hx
+  simp only [Finset.mem_image, Finset.mem_range] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  rw [Finset.mem_range]
+  have : 2 ^ i ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (by omega)
+  omega
+
+/-- **Lower bound `h(2^k) ≥ k + 1`.** The `k + 1` distinct powers `{2^0, …, 2^k}` are a
+Sidon subset of `{0, …, 2^k}`, so the Sidon number of `2^k` is at least their count. -/
+theorem sidonNumber_two_pow_ge (k : ℕ) : k + 1 ≤ sidonNumber (2 ^ k) := by
+  have hcard : ((Finset.range (k + 1)).image (2 ^ ·)).card = k + 1 := by
+    rw [Finset.card_image_of_injective _ (Nat.pow_right_injective (by norm_num)),
+      Finset.card_range]
+  unfold sidonNumber
+  rw [← hcard]
+  apply Finset.le_sup
+  simp only [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨two_pow_range_subset k, isSidonSet_two_pow_range k⟩
+
+/-- **The Sidon number is unbounded.** For every `M` there is an `N` with
+`h(N) ≥ M` (take `N = 2^M`, giving `h(2^M) ≥ M + 1`). So `h(N) → ∞`, a qualitative
+lower complement to the `√(2N) + 1` upper bound. -/
+theorem sidonNumber_unbounded : ∀ M : ℕ, ∃ N : ℕ, M ≤ sidonNumber N :=
+  fun M => ⟨2 ^ M, (Nat.le_succ M).trans (sidonNumber_two_pow_ge M)⟩
+
 end Erdos30
