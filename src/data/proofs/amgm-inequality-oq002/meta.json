@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Dual Newton–Girard Identities",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring explains that the parent file proved the forward Newton–Girard recurrence k·eₖ = (−1)^{k+1}∑_{i+j=k,i<k}(−1)ⁱeᵢpⱼ, expressing k·eₖ through lower-degree elementary symmetric polynomials and power sums, and that its open question asks to invert this recurrence over a ℚ-algebra (where k is invertible) to express each eₖ as a polynomial in the power sums — the dual Newton–Girard formulae. States the main results: psum_mem_adjoin_esymm (forward), esymm_mem_adjoin_psum (inverted/dual), adjoin_psum_eq_adjoin_esymm (the two ℚ-subalgebras coincide), and the explicit low-degree formula 2e₂ = p₁² − p₂. Then opens the AmgmInequalityOQ02OQ01OQ01OQ02 namespace and fixes the ambient MvPolynomial variables σ, R.",
+      "mathContext": "Over a $\\mathbb{Q}$-algebra, the power sums $p_1,p_2,\\dots$ and elementary symmetric polynomials $e_1,e_2,\\dots$ generate the *same* $\\mathbb{Q}$-subalgebra of $\\mathrm{MvPolynomial}\\,\\sigma\\,R$, via mutually inverse Newton–Girard recurrences."
+    },
+    {
       "id": "forward",
       "title": "Section I: Power Sums ⊆ ℚ⟪elementary symmetrics⟫",
       "startLine": 49,
