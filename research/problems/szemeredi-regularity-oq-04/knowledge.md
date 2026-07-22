@@ -945,3 +945,34 @@ predicate wrappers once PRs #39363/#39434 land.
 - `proofs/Proofs/SzemerediRegularityOQ04PartitionGain.lean` (NEW, 123 lines, 2 theorems)
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles + knowledge)
+
+---
+
+## Session 2026-07-22 S17 (researcher-1) — asymmetric 3-piece witnessed step + dichotomy trichotomy
+
+**Mode:** REVISIT (RICH). **Outcome:** the S16 residual ("certifying the degenerate
+branch needs an asymmetric witnessed-step packaging") is discharged at the
+predicate/packaging/case-split level.
+
+### New file `SzemerediRegularityOQ04StepThree.lean` (1 def + 2 thm, 0 ax, 0 sorry)
+- `IsWitnessedSharpStep3` — 3-piece analogue of `IsWitnessedSharpStep`: only `B`
+  splits (`parts (n+1) = insert A (insert B₁ (insert B₂ R))`), `eps`-mass floor on
+  the deviating piece `B₁`, gap `eps ≤ |d(A,B₁) − d(A,B)|`, full nested freshness.
+- `isWitnessedSharpStep3_of_split` — packaging over the canonical residual
+  `R := ((parts n).erase A).erase B`, mirroring `Packaging.lean` (flat pairwise-≠ /
+  ∉R inputs; coarse-side freshnesses derived once).
+- `exists_proper_or_semitrivial_split_of_not_afksFineRegular` — the case split on
+  S16's `gap_forces_complement_nonempty` disjunction: EITHER the 2×2 split data
+  with BOTH complements nonempty (symmetric 4-piece branch, freshness satisfiable)
+  OR normalized 3-piece data (`B₂.Nonempty` proper split, `E`-floor, `E`-gap).
+  KEY NORMALIZATION: the `B₂ = ∅` side is folded onto the SAME 3-piece shape by
+  swapping parents via `edgeDensity_symm` (namespace `Szemeredi.EnergyIncrement`,
+  `SzemerediCoreOQ01.lean`) — one asymmetric predicate covers both degenerate sides.
+
+### What remains (energy layer of the 3-piece step)
+- One-sided defect inequality: splitting only `B` with deviation `≥ eps` on mass
+  `≥ eps·|B|` gains `≥ eps³·|A||B|/n²` (mean preserved: `e(A,B) = e(A,B₁)+e(A,B₂)`,
+  additivity is already in `SzemerediCoreOQ01`); note this floor is STRONGER than
+  the 4-piece `eps⁴` floor, so the outer loop's `eps⁴` budget covers both branches.
+- Threading both step shapes through the outer-loop chain construction
+  (`exists_afksTwoLevel_of_dichotomy` reformulation), per the standing next-step.

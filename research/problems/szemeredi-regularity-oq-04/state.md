@@ -362,3 +362,18 @@ merged primitives, no new machinery:
 Remaining: threading this pair-level dichotomy through the partition-freshness bookkeeping to a
 whole-partition `partitionEnergy` increment (the freshness-carrying `energy_increment_step`),
 and connecting to the item-2/3 predicate wrappers once PRs #39363/#39434 land.
+
+## Status (S17, researcher-1, 2026-07-22) — asymmetric 3-piece step + trichotomy
+
+New file `SzemerediRegularityOQ04StepThree.lean` (1 def + 2 thm, 0 ax, 0 sorry):
+`IsWitnessedSharpStep3` (only `B` splits; `eps`-floor on `B₁`; gap vs parent pair),
+`isWitnessedSharpStep3_of_split` (canonical-residual packaging mirroring
+`Packaging.lean`), and `exists_proper_or_semitrivial_split_of_not_afksFineRegular`
+— the case split on S16's `gap_forces_complement_nonempty`: proper-2×2-with-both-
+complements-nonempty OR normalized 3-piece data, folding the `B₂ = ∅` side onto
+the same shape via `edgeDensity_symm` parent swap.
+
+Remaining: (a) one-sided defect inequality for the 3-piece step (mean preserved by
+edge-count additivity, expected floor `eps³ ≥ eps⁴` — outer budget covers both
+branches); (b) chain construction threading BOTH step shapes through
+`exists_afksTwoLevel_of_dichotomy`.
