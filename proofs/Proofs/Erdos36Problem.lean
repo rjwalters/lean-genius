@@ -85,35 +85,41 @@ axiom erdos_36_limit_exists :
 -- Part V: Known Bounds
 -- ============================================================================
 
-/-- **White (2022)**: best known lower bound M(N)/N > 0.379005,
-    obtained via Fourier analysis and convex optimization. -/
+/-- **White (2022)**: best known *asymptotic* lower bound M(N)/N > 0.379005,
+    obtained via Fourier analysis and convex optimization.
+
+    Stated for all sufficiently large N. The analytic argument controls the
+    tail behaviour of M(N)/N, not the individual small values, so the honest
+    formalization is `∃ N₀, ∀ N ≥ N₀`. (A universal `∀ N ≥ 1` form is not
+    what the literature proves; see `upper_bound` for why an unqualified
+    version would even be inconsistent with the computed small values.) -/
 axiom white_lower :
-  ∀ N : ℕ, N ≥ 1 →
+  ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (M N : ℝ) / N > 379005 / 1000000
 
-/-- **Haugland (2016)**: upper bound M(N)/N < 0.380926 via step
-    functions. Improved to 0.380876 by TTT-Discover (2026). -/
+/-- **Haugland (2016)**: *asymptotic* upper bound M(N)/N < 0.380926 via step
+    functions. Improved to 0.380876 by TTT-Discover (2026).
+
+    Stated for all sufficiently large N. This is essential for soundness: a
+    universal `∀ N ≥ 1` form would be **inconsistent**, since the file proves
+    `M 1 = 1` (`small_values`), giving M(1)/1 = 1 > 0.380876 — a direct
+    contradiction. The step-function upper bound is genuinely an asymptotic
+    statement about the limit, so `∃ N₀, ∀ N ≥ N₀` is the faithful form. -/
 axiom upper_bound :
-  ∀ N : ℕ, N ≥ 1 →
+  ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (M N : ℝ) / N < 380876 / 1000000
 
-/-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4.
-    Originally a pigeonhole argument (N² pairs in ≤ 4N−1 differences),
-    now proved as a corollary of White's sharper bound (0.379 > 0.25). -/
-theorem erdos_lower_quarter :
-    ∀ N : ℕ, N ≥ 1 → (M N : ℝ) / N > 1 / 4 := by
-  intro N hN
-  calc (M N : ℝ) / N > 379005 / 1000000 := white_lower N hN
-    _ > 1 / 4 := by norm_num
-
-/-- **Scherk (1955)**: improved lower bound M(N)/N > 1 − 1/√2 ≈ 0.293.
-    Now a corollary of White's sharper bound, since √2 < 3/2 implies
-    1 − 1/√2 < 1/3 < 0.379. -/
+/-- **Scherk (1955)**: lower bound M(N)/N > 1 − 1/√2 ≈ 0.293, historically the
+    first improvement over Erdős's 1/4. It is subsumed by White's sharper
+    (asymptotic) bound, so we record it as an asymptotic corollary of
+    `white_lower`: since √2 < 3/2 implies 1 − 1/√2 < 1/3 < 0.379005, White's
+    tail bound already forces M(N)/N above 1 − 1/√2 for large N. -/
 theorem scherk_lower :
-    ∀ N : ℕ, N ≥ 1 →
+    ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (M N : ℝ) / N > 1 - 1 / Real.sqrt 2 := by
-  intro N hN
-  have hw := white_lower N hN
+  obtain ⟨N₀, hN₀⟩ := white_lower
+  refine ⟨N₀, fun N hN => ?_⟩
+  have hw := hN₀ N hN
   have h_sqrt_pos : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos_of_pos (by norm_num)
   -- √2 < 3/2 since 2 < (3/2)² = 9/4
   have h_sqrt_lt : Real.sqrt 2 < 3 / 2 := by
@@ -176,24 +182,25 @@ theorem constant_bounds :
     c ≥ 379005 / 1000000 ∧ c ≤ 380876 / 1000000 := by
   intro c hc
   constructor
-  · -- Lower bound: from white_lower
+  · -- Lower bound: from white_lower (asymptotic — evaluate both the
+    -- convergence hypothesis and the axiom past their respective thresholds).
     by_contra h
     push_neg at h
     have hε : (0 : ℝ) < 379005 / 1000000 - c := by linarith
-    obtain ⟨N₀, hN₀⟩ := hc _ hε
-    have hN : N₀ + 1 ≥ 1 := by omega
-    have h1 := white_lower (N₀ + 1) hN
-    have h2 := hN₀ (N₀ + 1) (by omega)
+    obtain ⟨Nc, hNc⟩ := hc _ hε
+    obtain ⟨Nw, hNw⟩ := white_lower
+    have h1 := hNw (max Nc Nw + 1) (by omega)
+    have h2 := hNc (max Nc Nw + 1) (by omega)
     rw [abs_lt] at h2
     linarith
-  · -- Upper bound: from upper_bound
+  · -- Upper bound: from upper_bound (asymptotic — same threshold argument).
     by_contra h
     push_neg at h
     have hε : (0 : ℝ) < c - 380876 / 1000000 := by linarith
-    obtain ⟨N₀, hN₀⟩ := hc _ hε
-    have hN : N₀ + 1 ≥ 1 := by omega
-    have h1 := upper_bound (N₀ + 1) hN
-    have h2 := hN₀ (N₀ + 1) (by omega)
+    obtain ⟨Nc, hNc⟩ := hc _ hε
+    obtain ⟨Nu, hNu⟩ := upper_bound
+    have h1 := hNu (max Nc Nu + 1) (by omega)
+    have h2 := hNc (max Nc Nu + 1) (by omega)
     rw [abs_lt] at h2
     linarith
 
@@ -386,3 +393,12 @@ theorem trivial_lower_bound (N : ℕ) (hN : 1 ≤ N) :
   -- M N / N > 1/4
   rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 4) hN_pos]
   linarith
+
+/-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4, for *all* N ≥ 1.
+    Unlike White's and Haugland's asymptotic bounds, this one is genuinely
+    uniform in N — it is a direct corollary of the axiom-free pigeonhole
+    bound `trivial_lower_bound`, so it holds at every single N ≥ 1 (no
+    threshold, no axioms). -/
+theorem erdos_lower_quarter :
+    ∀ N : ℕ, N ≥ 1 → (M N : ℝ) / N > 1 / 4 :=
+  fun N hN => trivial_lower_bound N hN
