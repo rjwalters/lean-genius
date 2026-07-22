@@ -16,7 +16,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 34,
+    "axiomCount": 32,
     "assumptions": "32 axioms: perelman_finite_extinction, generalized_poincare_high_dim, poincare_dim_4, poincare_dim_2, sphere_n_simply_connected, ConnectedSum, and 26 more. 0 sorries. Trust caveat: 61 named theorems are discharged by native_decide (e.g. thurston_geometry_count, spherical_platonic_count, lens_L51_L52_not_homeo_criterion, quarter_pinching_sharpness), which trusts the Lean compiler's kernel reduction and introduces the Lean.ofReduceBool axiom (not reflected in axiomCount, which counts mathematical assumptions). These are finite demonstrations — small enumerations of Thurston geometries, Platonic tilings, lens-space and exotic-sphere invariants — and do NOT carry the Poincare/geometrization headline, which rests on the axiom declarations above and stays kernel-checked.",
     "mathlibDependencies": [
       {
