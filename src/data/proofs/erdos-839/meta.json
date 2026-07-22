@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module docstring: states Erdős Problem #839 on sequences $1 \\le a_1 < a_2 < \\cdots$ where no term equals a sum of consecutive earlier terms ($a_m \\neq a_i + a_{i+1} + \\cdots + a_j$ for $i \\le j < m$). Poses two open questions — whether $\\limsup a_n/n = \\infty$, and whether the logarithmic density $\\frac{1}{\\log x}\\sum_{a_n < x} 1/a_n \\to 0$ — and records partial known results, including Freud's upper density bound of $19/36$ disproving Erdős's conjectured $1/2$.",
+      "mathContext": "$a_m \\neq \\sum_{k=i}^{j} a_k$ for all $i \\le j < m$; open: $\\limsup_n a_n/n \\overset{?}{=} \\infty$ and $\\frac{1}{\\log x}\\sum_{a_n<x} 1/a_n \\overset{?}{\\to} 0$."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 21,
