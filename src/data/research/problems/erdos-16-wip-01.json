@@ -21,9 +21,20 @@
     "phase": "ACT",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 4,
-    "focus": "Session 4: formalized the covering-congruence obstruction mechanism (Erdős 1950 gear + 2 concrete instances).",
-    "blockers": [],
-    "nextAction": "CRT-assemble the individual covering gears over a full covering system of the exponent to force an infinite arithmetic progression into the exceptional set (formalizing Erdős 1950). Needs order-of-2 facts for primes 5,13,17,241 and CRT packaging — substantial but analytic-free.",
+    "focus": "Covering-congruence layer COMPLETE (Erdős 1950 in full, PR #40830, verified 0-axiom/0-sorry): exceptionalSet_infinite (the CRT progression n ≡ 7629217 mod 11184810 forced into ExceptionalSet via six order-of-2 covering gears + window confinement) and exists_exceptional_gt. Supersedes the stale nextAction below, which described this completed work as pending.",
+    "blockers": [
+      {
+        "route": "Romanoff 1934: {2^k+p} has positive lower density among the odds",
+        "reopenCriterion": "materially new mechanism required: analytic number theory (sieve + PNT / additive density), not covering-congruence — absent from Mathlib v4.31.",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "Chen 2023: ExceptionalSet is richer than one AP plus a density-0 set",
+        "reopenCriterion": "materially new mechanism required: fine structure of the exceptional set beyond the single covering progression.",
+        "blockedAt": "2026-07-21"
+      }
+    ],
+    "nextAction": "STAND DOWN on elementary/covering work — Erdős 1950 is fully formalized. Remaining directions are deep-analytic (recorded as blockers): Romanoff 1934 positive density and Chen 2023 exceptional-set structure.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -93,7 +104,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.779Z",
-  "lastUpdate": "2026-07-10T00:41:25.926Z",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 5
 }
