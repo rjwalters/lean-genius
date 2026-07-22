@@ -21,9 +21,30 @@
     "phase": "ORIENT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 4,
-    "focus": "KST cherry-counting bound formalized; f(6)=3 pinned (third exact value).",
-    "blockers": [],
-    "nextAction": "f(7): KST count gives only f(7) ≤ 4 (7 ≤ 4·3); true value f(7)=3 needs the sharper ex(7;C4)=9 edge bound (min-degree-3-on-7 has 11+ edges > 9). Also the general monotonicity core stays open.",
+    "focus": "Elementary layer SATURATED (verified 2026-07-21): 0-axiom/0-sorry, exact values f(4)=2,f(5)=3,f(6)=3, KST sqrt(n) upper bounds and cycle-graph lower bounds all proved. All remaining routes are deep (recorded as blockers).",
+    "blockers": [
+      {
+        "route": "sharp exact value f(7)=3 (and f(n)=3 upper on the Beatty gap n in (s^2+s,(s+1)^2))",
+        "reopenCriterion": "materially new mechanism required: a C4-free extremal edge bound ex(n;C4) in Lean (e.g. Reiman ex(7;C4)=9). KST cherry-counting caps at f(7)<=4 and cannot reach 3; kernel decide over 7-vertex graphs is infeasible and native_decide would taint axiom-freeness.",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "fourth exact value f(10)=4 via the Petersen graph (3-regular girth-5 => C4-free => f(10)>=4)",
+        "reopenCriterion": "materially new mechanism required: a decide-free formalization of the Petersen graph and its C4-freeness (10^4 injective maps; kernel decide risky, native_decide taints axioms). No 3-regular C4-free graph exists below 10 vertices (Moore bound), so no easier small witness.",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "matching lower bound f(n) >= (1-o(1))*sqrt(n) and the full KST asymptotic f(n)=(1+o(1))*sqrt(n)",
+        "reopenCriterion": "materially new mechanism required: an explicit dense C4-free graph family (Erdos-Renyi-Sos polarity / projective-plane incidence graphs), none of which is elementary or currently in Mathlib.",
+        "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "the actual Erdos #85 monotonicity core (f(n+1) >= f(n) eventually)",
+        "reopenCriterion": "materially new mechanism required; genuinely open in the literature.",
+        "blockedAt": "2026-07-21"
+      }
+    ],
+    "nextAction": "STAND DOWN on elementary work. Reopen only per a blocker reopenCriterion: an ex(n;C4) edge bound (unlocks f(7)=3), a decide-free Petersen (f(10)=4), a dense C4-free family (KST lower bound), or the open monotonicity core.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -102,7 +123,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.783Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6
 }
