@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the type-partition identity closing the method-of-types loop",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States the gap this file fills in the parent proof: the parent computes the size and count of each type class but never sums over them. This file supplies that missing identity — k^n = sum over types f of |T_f| = sum over types of multinomial(f) — the multinomial theorem realized combinatorially through the empirical-distribution partition of the sequence space.",
+      "mathContext": "$k^n=\\sum_{f}|T_f|=\\sum_f \\mathrm{multinomial}(f)$, the combinatorial multinomial theorem $(1+\\cdots+1)^n=k^n$ realized through the type-class partition."
+    },
+    {
       "id": "indexing",
       "title": "Part I: Indexing the Types",
       "startLine": 49,
