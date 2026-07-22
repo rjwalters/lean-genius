@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports and Docstring: the First Moment of Part-Count",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "Goal: $\\sum_{c:\\mathrm{Composition}\\ n} c.\\mathrm{length} = (n+1)2^{n-2}$, hence mean part-count $= \\tfrac{n+1}{2}$.",
+      "summary": "Imports Composition and Tactic, then a docstring framing the entry against the grandparent (card (Composition n) = 2^(n−1)) and parent (C(n−1,k−1) compositions with exactly k parts): this file computes the first moment — the total and mean number of parts across all compositions of n. States the headline results total_parts and two_mul_total_parts/mean_parts, and previews the route (the bridge length = gaps.card + 1 transported along the gap bijection, reducing to the elementary subset-sum m·2^(m−1)) before opening the namespace and Finset."
+    },
+    {
       "id": "gap-bridge",
       "title": "The Gap Bijection and the Part-Count Bridge",
       "startLine": 61,
