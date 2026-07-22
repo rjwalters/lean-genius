@@ -46,9 +46,9 @@
       "Statements of Erdős-Mirsky bounds and Beker's improvement",
       "Conditional result under Cramér's conjecture"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 148,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete divisor-count facts (tau_1, tau_2, tau_6, tau_12) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 4,
     "definitionCount": 4
   },
