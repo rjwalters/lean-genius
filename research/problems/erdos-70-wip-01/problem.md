@@ -117,3 +117,35 @@ created: 2026-07-09T17:33:19-07:00
 
 **Significance**: 8/10
 **Tractability**: 5/10
+
+## Adversarial Checklist (claim: `erdos_70_conjecture` — the formalized surrogate — is a theorem, 2026-07-22)
+
+How THIS claim could be wrong; auditors should check each:
+
+1. **Surrogate vs. genuine order type (the named near-miss).** The proved
+   statement `erdos_70_formalized_conjecture_holds` uses the parent's
+   `HasOrderTypeAtLeast S H α := α.card ≤ #H` — a cardinality proxy. Confirm no
+   prose anywhere claims Erdős #70 itself is settled: the genuine relation
+   `𝔠 → (β, n)₂³` with TRUE order type β remains open. Any presentation of this
+   result must carry that caveat (the theorem docstring and file header do).
+2. **No circularity.** `infiniteRamsey3_holds` must use only Mathlib ultrafilter
+   and pigeonhole facts — verify the file has 0 `axiom` declarations, no
+   structure-encoded partition-calculus assumptions, and that `InfiniteRamsey3`
+   is not itself assumed anywhere (it is a `def Prop` + a proved theorem).
+3. **Junk-value trap in `tripleColor`.** `tripleColor` returns 0 on collided
+   points. Confirm homogeneity only ever consults it through `tripleColor_eval`,
+   which requires `t.card = 3` (honest 3-subsets), so the junk branch never
+   leaks into `IsHomogeneous`.
+4. **Boundary of the colour-1 disjunct.** `PartitionArrow`'s right disjunct needs
+   `H.card ≥ m` with `FinsetIsHomogeneous` — confirm the reduction (proved last
+   session) supplies an exact-size-n subset of the infinite homogeneous set via
+   `Set.Infinite.exists_subset_card_eq`, not merely the infinite set itself.
+5. **Ultrafilter membership vs. nonemptiness.** The construction needs every
+   good set NONEMPTY; this comes from `Ultrafilter.nonempty_of_mem` (U proper),
+   not from any finiteness/decidability shortcut. Confirm `Nat.sInf_mem` is fed
+   a genuine `Nonempty` witness, else `sInf = 0` junk would silently corrupt the
+   sequence.
+6. **Universe/size restriction.** `InfiniteRamsey3` quantifies over `S : Type`
+   (Type 0) with `#S = 𝔠`, matching the parent's `PartitionArrow`. Confirm the
+   claim is not silently about a restricted subclass of colourings — the
+   colouring `c` is arbitrary in `Coloring S 3 2`.

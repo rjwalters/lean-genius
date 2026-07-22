@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-09T17:33:19-07:00",
     "iteration": 3,
     "focus": "Session 4: general closure isCountableOrdinal_opow — countable ordinals closed under α^β for arbitrary countable α,β (transfinite induction on exponent + iSup_lt_omega_one/regularity of ℵ₁). Plus omega0_opow_omega0_opow_omega0_countable (ω^(ω^ω), 2nd tower level) and its conjecture specialization. 0 axioms, host-verified.",
@@ -26,11 +26,6 @@
       {
         "route": "true order-type partition relation (Erdos-Rado partition calculus)",
         "reopenCriterion": "materially new mechanism required (Mathlib gains order-type-preserving homogeneous-set machinery)",
-        "blockedAt": "2026-07-21"
-      },
-      {
-        "route": "build infinite Ramsey for 3-uniform 2-colourings from infinite pigeonhole",
-        "reopenCriterion": "self-contained ~200-400 line construction; discharges the surrogate conjecture but not the true order-type problem",
         "blockedAt": "2026-07-21"
       }
     ],
@@ -42,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Reduction direction added: the WHOLE formalized conjecture reduces to (and follows from) infinite Ramsey for 3-uniform 2-colourings, uniformly in beta. Faithfulness finding: the cardinality-surrogate HasOrderTypeAtLeast makes the formalized statement a theorem-modulo-Ramsey, strictly weaker than the genuine order-type Erdos #70. 0 axioms, 0 sorries.",
+    "progressSummary": "COMPLETED at the surrogate level: InfiniteRamsey3 (infinite Ramsey for 3-uniform 2-colourings) proved from scratch via iterated ultrafilter majorities (0 axioms, 0 sorries), so erdos_70_conjecture — the cardinality-surrogate formalization — is an unconditional theorem, as are all its specializations (omega, omega^2, tower, epsilon_0). The ONLY remaining gap is faithfulness: HasOrderTypeAtLeast is a cardinality proxy, so genuine Erdős #70 (true order type) remains open and blocked on Erdős–Rado partition-calculus machinery.",
     "builtItems": [
       "Erdos70.IsCountableOrdinal.of_le in Erdos70WIP01.lean",
       "Erdos70.isCountableOrdinal_add in Erdos70WIP01.lean",
@@ -59,7 +54,11 @@
       "erdos_70_conjecture_imp_epsilon0: conjecture specialized to ε₀",
       "InfiniteRamsey3 (def) in Erdos70WIP01.lean - named hypothesis for infinite Ramsey on 3-subsets of a continuum-sized set",
       "infiniteRamsey3_imp_conjecture in Erdos70WIP01.lean - InfiniteRamsey3 implies erdos_70_conjecture uniformly in countable beta (0 axioms)",
-      "counterexample_imp_not_infiniteRamsey3 in Erdos70WIP01.lean - contrapositive packaging"
+      "counterexample_imp_not_infiniteRamsey3 in Erdos70WIP01.lean - contrapositive packaging",
+      "majColor/majColor_mem: U-majority colour of a Fin 2-valued function on NN, attained on a U-large set (hyperfilter)",
+      "ramsey3_nat: infinite Ramsey theorem for 2-colourings of 3-subsets of NN (0 axioms) - absent from Mathlib v4.31",
+      "infiniteRamsey3_holds: InfiniteRamsey3 is a theorem (transfer to any continuum-sized S via Infinite.natEmbedding)",
+      "erdos_70_formalized_conjecture_holds: the formalized (cardinality-surrogate) conjecture is now an unconditional theorem; no_erdos_70_counterexample; conjecture_omega_holds / conjecture_omega_squared_holds / epsilon0_partitionArrow_holds unconditional"
     ],
     "insights": [
       "The parent proved specific instances (omega0_plus_n_countable, omega0_squared_countable); these are corollaries of three general closure lemmas: IsCountableOrdinal is downward-closed (Ordinal.card_le_card), and closed under ordinal + (Cardinal.add_le_aleph0) and * (mul_le_mul + Cardinal.aleph0_mul_aleph0).",
@@ -70,12 +69,14 @@
       "Capstone: ε₀ is a countable ordinal. Defined the ω-tower omegaTower (T0=ω, T(n+1)=ω^Tn) and proved iSup_omegaTower_countable: ⨆ₙ Tn = ε₀ is a countable ℕ-indexed supremum of countable ordinals (each via isCountableOrdinal_opow), hence <ω₁ by Ordinal.iSup_lt_omega_one (regularity of ℵ₁). The least epsilon number — top of the whole exponential hierarchy over ω — is countable. Conjecture specializes to 𝔠→(ε₀,n) (erdos_70_conjecture_imp_epsilon0).",
       "Lean gotcha: an ordinal-valued recursive def using ^ (Ordinal.instPow noncomputable) must be marked noncomputable.",
       "FAITHFULNESS: parent HasOrderTypeAtLeast is the cardinality surrogate (alpha.card <= #H), so the formalized erdos_70_conjecture is strictly WEAKER than the true order-type relation and is a theorem-modulo-infinite-Ramsey; the open content of Erdos #70 lives in the gap between cardinality and true order type",
-      "Infinite Ramsey for 3-uniform 2-colourings is ABSENT from Mathlib v4.31 (Combinatorics stops at Hales-Jewett/Hindman/finite pigeonhole); it is the single missing ingredient for the surrogate conjecture"
+      "Infinite Ramsey for 3-uniform 2-colourings is ABSENT from Mathlib v4.31 (Combinatorics stops at Hales-Jewett/Hindman/finite pigeonhole); it is the single missing ingredient for the surrogate conjecture",
+      "InfiniteRamsey3 is provable in ~370 self-contained lines by iterated ultrafilter majorities over hyperfilter NN: pairMaj/pointMaj/topMaj limit colours, a goodSet of viable next elements (each clause U-large), and an sInf-chosen strictly increasing sequence whose every increasing triple has the top-majority colour. Ordering every clause smaller-point-first eliminates all symmetry lemmas for the unordered triple colour.",
+      "Recursion-with-invariant in Lean without dependent choice plumbing: define ramseyPrefix : NN -> List NN by structural recursion with sInf (total), then prove membership/invariant/goodness afterwards by induction (ramsey_invariant). Nat.sInf_mem + Ultrafilter.nonempty_of_mem discharge nonemptiness."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Erdős #70 positive direction (Erdős–Rado partition calculus) is out of reach — no 𝔠→(ω+n,4)₂³ machinery in Mathlib v4.31.",
-      "Countability toolkit is complete for ordinal arithmetic; further tower levels are one-liners from isCountableOrdinal_opow."
+      "Faithful order-type upgrade for beta = omega: define order-type-true HasOrderTypeAtLeast (order embedding of beta under a fixed well-order) and prove the omega case genuinely — an infinite homogeneous set contains an omega-chain, so InfiniteRamsey3 already suffices; materially weaker than the parent target (omega^2 onward needs Erdős–Rado), so a valid decomposition step.",
+      "Generalize the Ramsey engine to r-uniform k-colourings on NN (same majority-iteration, r nested levels) — reusable Mathlib-gap infrastructure."
     ],
     "markdown": "# Knowledge Base: erdos-70-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

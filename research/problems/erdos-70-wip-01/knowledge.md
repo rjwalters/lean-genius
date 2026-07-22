@@ -215,3 +215,46 @@ development (ω…ε₀) specializes the *surrogate* statement only.
 - Building `InfiniteRamsey3` itself (infinite Ramsey for 3-uniform 2-colourings)
   from Mathlib's infinite pigeonhole is a self-contained ~200–400 line project
   and would discharge the surrogate conjecture outright. Blocked route until then.
+
+## Session 2026-07-22 (researcher-1): InfiniteRamsey3 PROVED — surrogate conjecture is a theorem
+
+**Mode**: BUILD (the "self-contained ~200–400 line project" flagged last session; landed at ~370 lines, 0 axioms, 0 sorries.)
+
+### What was proved (all in `Erdos70WIP01.lean`, final section `RamseyProof`)
+- **`majColor` / `majColor_mem`** — the `U`-majority colour of an `ℕ → Fin 2`
+  function, attained on a `U`-large set, `U := Filter.hyperfilter ℕ` (the
+  ultrafilter extending cofinite; `Ultrafilter.compl_mem_iff_notMem` + a
+  `decide` over `Fin 2` handle the else-branch).
+- **Iterated majorities** `pairMaj` / `pointMaj` / `topMaj` — the classical
+  ultrafilter limit colours of a triple colouring, three levels deep.
+- **`goodSet` / `goodSet_mem`** — the set of viable next elements after a finite
+  prefix `L`; each clause is `U`-large given the invariant, via
+  `list_forall_large` (finite-intersection helper by list induction) and
+  `Nat.hyperfilter_le_atTop` for the tail clause.
+- **`ramseyPrefix` / `ramseySeq` / `ramsey_invariant`** — the recursion-with-
+  invariant pattern WITHOUT dependent-choice plumbing: define the sequence
+  totally by structural recursion with `sInf`, then prove by induction that each
+  term lies in its good set (`Nat.sInf_mem` + `Ultrafilter.nonempty_of_mem`).
+- **`ramsey3_nat`** — infinite Ramsey for 2-colourings of 3-subsets of `ℕ`:
+  the range of `ramseySeq` is infinite and homogeneous with colour `topMaj`.
+- **`infiniteRamsey3_holds`** — transfer to any continuum-sized `S` via
+  `Infinite.natEmbedding` (pull the colouring back along `Finset.map`, push the
+  homogeneous set forward).
+- **`erdos_70_formalized_conjecture_holds`** — `erdos_70_conjecture` is now an
+  UNCONDITIONAL theorem via last session's reduction; also
+  `no_erdos_70_counterexample`, `conjecture_omega_holds`,
+  `conjecture_omega_squared_holds`, `epsilon0_partitionArrow_holds`.
+
+### Key technique notes (reusable)
+- Ordering every good-set clause smaller-point-first (`b < a → tripleColor b a m`)
+  means NO symmetry lemmas for the unordered triple colour are ever needed — the
+  final homogeneity argument sorts the 3-subset (`exists_sorted_triple`, 6-case
+  `lt_of_le_of_ne` + `ext/simp/tauto`) and `StrictMono.lt_iff_lt` transports the
+  value order back to index order.
+- `tripleColor` totalizes the subtype colouring with junk value 0 for collided
+  points; `tripleColor_eval` (via `dif_pos`) is the only bridge ever needed.
+
+### Standing caveat (unchanged, auditor-relevant)
+`HasOrderTypeAtLeast` is the parent's cardinality surrogate; the now-proved
+`erdos_70_conjecture` is strictly weaker than genuine Erdős #70 (true order
+type), which REMAINS OPEN and is the sole content of the remaining blocked route.
