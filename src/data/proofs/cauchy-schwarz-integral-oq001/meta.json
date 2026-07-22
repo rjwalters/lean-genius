@@ -63,6 +63,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Power Mean Inequality Chain", "startLine": 1, "endLine": 29, "summary": "States the power mean chain for two positive reals \u2014 min(a,b) \u2264 HM \u2264 GM \u2264 AM \u2264 QM \u2264 max(a,b) \u2014 defining each mean and noting the parent file already proved GM \u2264 AM and AM\u00b2 \u2264 QM\u00b2; this file completes the remaining chain links from first principles.", "mathContext": "$\\mathrm{HM}=\\dfrac{2ab}{a+b}\\le \\mathrm{GM}=\\sqrt{ab}\\le \\mathrm{AM}=\\dfrac{a+b}{2}\\le \\mathrm{QM}=\\sqrt{\\dfrac{a^2+b^2}{2}}$, each inequality proved directly rather than cited."},
     {
       "id": "definitions",
       "title": "Definitions",
