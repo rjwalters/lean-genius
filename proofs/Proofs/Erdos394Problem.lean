@@ -193,10 +193,16 @@ Does t_{n-3}(n!) have any special structure?
 /--
 **The Strict Decrease Property:**
 For infinitely many n, is it true that
-  t_k(n!) < t_{k-1}(n!) - 1 for all 1 ≤ k < n?
+  t_k(n!) < t_{k-1}(n!) - 1 for all 2 ≤ k < n?
+
+The range starts at k = 2 so that the comparison term `t (k-1)` stays within the
+well-defined range (k-1 ≥ 1). At k = 1 the term would be `t 0`, which is the
+junk value 0 by the `k ≥ 1` guard in `t`, making the inequality vacuously false;
+the intended Selfridge statement compares consecutive `t_k` only where both are
+meaningful.
 -/
 def strict_decrease_property (n : ℕ) : Prop :=
-  ∀ k : ℕ, 1 ≤ k → k < n →
+  ∀ k : ℕ, 2 ≤ k → k < n →
     t k n.factorial + 1 < t (k - 1) n.factorial
 
 /--
