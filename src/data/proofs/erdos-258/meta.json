@@ -46,9 +46,9 @@
       "Statement of the open general case as a Prop",
       "Verified computations of τ for small values"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 108,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete divisor-count facts (tau_one, tau_two, tau_six, tau_twelve, tau_prime_five, tau_prime_seven, and the tau_pos_* positivity witnesses) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 9,
     "definitionCount": 4
   },

@@ -19,9 +19,9 @@
     "erdosNumber": 1094,
     "erdosUrl": "https://erdosproblems.com/1094",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 248,
-    "assumptions": "None. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "No mathematical axioms. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false. Open conjecture; supporting lemmas fully verified. Compiler-trust disclosure: the 14 known exception witnesses (exception_7_3 … exception_284_28, the largest checking C(284,28)≈2.4×10³⁸), the non-exception witnesses (non_exception_4_2 … non_exception_100_2), the bound_* simplifications, erdos384_naive_false, and the choose_gt_one_* facts are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",
     "theoremCount": 38,
     "definitionCount": 8
@@ -122,8 +122,8 @@
       "title": "Part 9: Binomial Coefficient Properties & Summary",
       "startLine": 213,
       "endLine": 248,
-      "summary": "Verifies C(n,k) > 1 for small specific cases (ensuring minFac is a genuine prime, not the minFac(1)=1 degenerate case), then the closing summary docstring recapping what is proved (14 exceptions, 8 non-exceptions, structural results, naive #384 falsity) and what remains open (the finiteness conjecture, Selfridge, stronger bounds), noting 0 axioms (a previously-incorrect #1094⇒naive-#384 axiom was removed).",
-      "mathContext": "`choose_gt_one_*` lemmas confirm $\\binom{n}{k} > 1$ so $\\mathrm{minFac}$ is a true prime factor. Summary: status OPEN, 0 axioms, 0 sorries — the conjecture itself is stated as a `Prop`, not proved."
+      "summary": "Verifies C(n,k) > 1 for small specific cases (ensuring minFac is a genuine prime, not the minFac(1)=1 degenerate case), then the closing summary docstring recapping what is proved (14 exceptions, 8 non-exceptions, structural results, naive #384 falsity) and what remains open (the finiteness conjecture, Selfridge, stronger bounds), noting 0 literal axiom declarations (a previously-incorrect #1094⇒naive-#384 axiom was removed; the native_decide witnesses carry the Lean.ofReduceBool compiler-trust footprint).",
+      "mathContext": "`choose_gt_one_*` lemmas confirm $\\binom{n}{k} > 1$ so $\\mathrm{minFac}$ is a true prime factor. Summary: status OPEN, 0 literal axiom declarations (native_decide adds Lean.ofReduceBool), 0 sorries — the conjecture itself is stated as a `Prop`, not proved."
     }
   ],
   "conclusion": {

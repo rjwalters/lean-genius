@@ -20,7 +20,7 @@
     ],
     "badge": "wip",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 22,
     "defCount": 31,
     "lineCount": 237,
@@ -41,7 +41,7 @@
       "Soccer ball (truncated icosahedron) identified as Archimedean"
     ],
     "dateAdded": "2026-03-28",
-    "assumptions": "0 axioms, 0 sorries. archimedean_classification is a True-stub theorem (∀ vt, True := fun _ => trivial), not an axiom declaration — the full classification statement requires geometric definitions not yet formalized. All 21 other proved theorems are genuine.",
+    "assumptions": "No mathematical axioms and 0 sorries. archimedean_classification is a True-stub theorem (∀ vt, True := fun _ => trivial), not an axiom declaration — the full classification statement requires geometric definitions not yet formalized. All 21 other proved theorems are genuine. Compiler-trust disclosure: the per-solid positive-angle-defect validity facts (truncatedTetrahedron_valid, cuboctahedron_valid, … through snubDodecahedron_valid) and the aggregate archimedean_count / archimedean_distinct / archimedean_not_platonic checks are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "prerequisites": [
       "Euler's polyhedral formula V - E + F = 2",
       "Interior angles of regular polygons",

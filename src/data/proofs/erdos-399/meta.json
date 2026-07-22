@@ -46,9 +46,9 @@
       "Verification that gcd(48,36) = 12 (not coprime)",
       "Algebraic factorization 48^4 - 36^4 = 12^4 * 175"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 123,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete Barfield-counterexample facts (factorial_10, pow_48_4, pow_36_4, barfield_counterexample = 10! + 36^4 = 48^4, erdos_399_alt, and the barfield_gcd/barfield_factored/diff_4_3_pow4 witnesses) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 16,
     "definitionCount": 0
   },
