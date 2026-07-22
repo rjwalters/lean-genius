@@ -19,6 +19,15 @@
                                         (the whole group, which is abelian by the
                                         `1`-commuting property) suffices, and zero
                                         never does.
+  * `abelianCoverNumber_zero`         : **`h(0) = 0`** — the `0`-commuting property
+                                        holds for no group, so the covering
+                                        condition is vacuous and the empty family
+                                        `Fin 0 → Subgroup G` witnesses `0 ∈` the
+                                        covering set.
+  * `hasNCommutingProperty_one_iff`   : the `1`-commuting property is *exactly*
+                                        commutativity (both directions).
+  * `abelianCoverNumber_zero_lt_one`  : **`h(0) < h(1)`** — the covering number
+                                        already jumps at the base of the ladder.
 
   The open Erdős #117 (the exact base of the exponential growth of `h(n)`) and
   Pyber's bounds are untouched.
@@ -43,6 +52,20 @@ theorem not_hasNCommutingProperty_zero {G : Type*} [Group G] :
 theorem commGroup_hasNCommutingProperty {G : Type*} [CommGroup G] {n : ℕ}
     (hn : 1 ≤ n) : HasNCommutingProperty G n :=
   hasNCommutingProperty_mono hn commGroup_hasNCommutingProperty_one
+
+/-- **The `1`-commuting property is exactly commutativity.** The forward
+    direction is `commute_of_hasNCommutingProperty_one`; conversely, if every pair
+    commutes then any subset of size `> 1` contains two distinct commuting
+    elements, so the property holds. This pins down `h` at the base of the ladder:
+    `HasNCommutingProperty G 1` characterises abelian groups. -/
+theorem hasNCommutingProperty_one_iff {G : Type*} [Group G] :
+    HasNCommutingProperty G 1 ↔ ∀ x y : G, x * y = y * x := by
+  constructor
+  · intro h x y
+    exact commute_of_hasNCommutingProperty_one h x y
+  · intro h S hS
+    obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp hS
+    exact ⟨x, y, hx, hy, hxy, h x y⟩
 
 /-- **`h(1) = 1`.** A group with the `1`-commuting property is abelian
     (`commute_of_hasNCommutingProperty_one`), so the single subgroup `⊤` — abelian
@@ -77,3 +100,23 @@ theorem abelianCoverNumber_one : abelianCoverNumber 1 = 1 := by
       exact ⟨fun _ => ⊤,
         fun _ x y _ _ => commute_of_hasNCommutingProperty_one hprop x y,
         fun g => ⟨0, Subgroup.mem_top g⟩⟩
+
+/-- **`h(0) = 0`.** No group has the `0`-commuting property
+    (`not_hasNCommutingProperty_zero`), so the covering hypothesis is false for
+    every group and the implication defining the covering set is vacuously true —
+    even for `k = 0`, whose empty family `Fin 0 → Subgroup G` would otherwise cover
+    nothing. Hence `0` lies in the set and `h(0) = 0`. -/
+theorem abelianCoverNumber_zero : abelianCoverNumber 0 = 0 := by
+  unfold abelianCoverNumber
+  apply Nat.le_zero.mp
+  apply Nat.sInf_le
+  intro G _ _ hprop
+  exact absurd hprop not_hasNCommutingProperty_zero
+
+/-- **`h(0) < h(1)`.** The covering number already increases at the base of the
+    ladder: from `h(0) = 0` and `h(1) = 1`. (Pyber's exponential growth `c₁ⁿ <
+    h(n) < c₂ⁿ` for large `n` remains unformalized.) -/
+theorem abelianCoverNumber_zero_lt_one :
+    abelianCoverNumber 0 < abelianCoverNumber 1 := by
+  rw [abelianCoverNumber_zero, abelianCoverNumber_one]
+  exact Nat.zero_lt_one
