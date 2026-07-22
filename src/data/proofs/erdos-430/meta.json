@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/430",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). 0 sorries. Equivalence with Problem #385 fully proved. Sequence termination proved: greedySeq n n = 0. Small-n positive witnesses: hasComposite for n ∈ {5, 7, 9} (verified by native_decide; smallest n with composite n-1).",
+    "assumptions": "1 axiom: erdos_430_conjecture (the open conjecture: composites appear for large n). 0 sorries. Equivalence with Problem #385 fully proved. Sequence termination proved: greedySeq n n = 0. Small-n positive witnesses: hasComposite for n ∈ {5, 7, 9} (verified by native_decide; smallest n with composite n-1). Trust caveat: the small-n witnesses hasComposite_5/7/9 and example_n8 use native_decide, which adds the compiler-trust axiom Lean.ofReduceBool (beyond propext/Classical.choice/Quot.sound). These are finite demonstrations; the open-conjecture headline erdos_430_conjecture is an axiom independent of native_decide.",
     "lineCount": 275,
     "mathlib_version": "4.31.0",
     "theoremCount": 13,
