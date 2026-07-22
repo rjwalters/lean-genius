@@ -48,7 +48,7 @@
       "hasPolynomialPrecision: the c/K² precision property",
       "erdos_graham_polynomial axiom: known polynomial bound",
       "exponential_stronger_than_polynomial: exp(-cK) < c'/K² for large K",
-      "conjecture_implies_known: proved - exponential implies polynomial",
+      "conjecture_implies_known: from mainConjecture, extracts a feasible subset (Σ_S ≤ 1) for large multisets (upper-bound half only)",
       "harmonicNumber definition: H_n = Σ 1/k for k=1..n",
       "harmonic_unbounded theorem: H_n → ∞",
       "erdos_312_status summary theorem"
@@ -184,7 +184,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #312 asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version (c/K²) is proved by Erdős-Graham, but the conjectured exponential bound (exp(-cK)) remains open. We prove that the conjecture implies the known result.",
+    "summary": "Erdős Problem #312 asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version (c/K²) is proved by Erdős-Graham, but the conjectured exponential bound (exp(-cK)) remains open. We prove the pointwise strengthening exponential_implies_polynomial_pointwise (exp-precision ⟹ poly-precision where exp(-cK) < c'/K²); conjecture_implies_known extracts only a feasible subset (Σ_S ≤ 1) from the conjecture.",
     "implications": "**Theoretical Significance**: **Connections**\n\n1. **Egyptian Fractions:** Understanding subset sums of unit fractions connects to the ancient problem of representing rationals as sums of distinct unit fractions\n\n**2. Combinatorial Number Theory:** The transition from polynomial to exponential bounds is a fundamental threshold in many problems\n\n3. **Approximation Theory:** How well can we approximate target values using discrete building blocks?\n\n4. **Computational Complexity:** Subset sum is NP-hard in general; the large reciprocal sum condition enables polynomial-time solutions.",
     "openQuestions": [
       "Does the exponential bound exp(-cK) hold?",
@@ -260,9 +260,9 @@
     {
       "name": "conjecture_implies_known",
       "type": "theorem",
-      "statement": "mainConjecture ⟹ ∃ c > 0, (the Erdős–Graham polynomial-precision statement)",
-      "significance": "Consistency check: the open exponential conjecture would imply the known polynomial result, confirming the formalization's conjecture is genuinely at least as strong as established theory.",
-      "description": "Instantiates the exponential precision from mainConjecture and uses exponential_implies_polynomial_pointwise to descend to the polynomial bound."
+      "statement": "mainConjecture ⟹ ∃ c > 0, ∀ K > 1, ∃ N₀, ∀ large A, ∃ S ⊆ A with Σ_S 1/n ≤ 1",
+      "significance": "Consistency check: the conjecture yields, for every large multiset, a feasible subset (reciprocal sum ≤ 1). Note the conclusion keeps only the upper (feasibility) half of polynomial precision, not the lower bound 1 − c/K² < Σ_S — the full pointwise strengthening exp-precision ⟹ poly-precision lives in exponential_implies_polynomial_pointwise, which holds only where exp(−cK) < c'/K² (large K).",
+      "description": "Extracts the subset S from mainConjecture's exponential precision and retains its Σ_S ≤ 1 bound; it does not invoke exponential_implies_polynomial_pointwise and does not re-derive the polynomial lower bound."
     },
     {
       "name": "exponential_implies_polynomial_pointwise",
