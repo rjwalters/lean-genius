@@ -246,12 +246,277 @@
       "mathContext": "Perelman: Thurston geometrization. Every closed 3-manifold decomposes into geometric pieces."
     },
     {
-      "id": "summary",
-      "title": "Summary of Verified Results",
+      "id": "sphere-local-structure-prime-basics",
+      "title": "Sphere Local Structure, Simple Connectivity Axioms, and Prime Decomposition Basics",
       "startLine": 629,
-      "endLine": 17684,
-      "summary": "Catalogues all proved results (15+) and axiomatized components (~12), with `#check` statements verifying each declaration.",
-      "mathContext": "SOLVED (Perelman 2003). Simply connected closed 3-manifold ~ S^3. Via Ricci flow with surgery."
+      "endLine": 890,
+      "summary": "Proves sphere_n_locally_euclidean and punctured-sphere contractibility/simple-connectivity axiom-free via stereographic projection, while axiomatizing sphere_n_simply_connected for n≥2. Proves simply_connected_of_homeomorphic and closed_3_manifold_classification, then axiomatizes ConnectedSum and proves kneser_prime_decomposition and sphere3_is_prime."
+    },
+    {
+      "id": "hopf-fibration-quaternion-lie-group",
+      "title": "Hopf Fibration Setup and Concrete Quaternion Lie Group on S³",
+      "startLine": 891,
+      "endLine": 1375,
+      "summary": "Constructs quaternion multiplication, conjugation, and identity on ℝ⁴ with proved norm-preservation, continuity, and group laws, giving sphere3_is_lie_group axiom-free. Constructs the concrete Hopf map with proved continuity and surjectivity (hopf_map_exists), alongside the axiom sphere3_not_contractible."
+    },
+    {
+      "id": "antipodal-invariants-lens-corollaries",
+      "title": "Antipodal Map, Topological Invariants, Lens Spaces, and Proved Corollaries",
+      "startLine": 1376,
+      "endLine": 1832,
+      "summary": "Proves the antipodal map is continuous, involutive, and fixed-point-free (antipodalHomeomorph), plus sphere Euler-characteristic and Betti-number formulas. Defines LensSpaceParams with concrete instances and proves sphere-metric bounds and Poincaré corollaries."
+    },
+    {
+      "id": "non-examples-dichotomy-thurston-classification",
+      "title": "Non-Examples, 3-Manifold Dichotomy, and Thurston Geometry Classification",
+      "startLine": 1833,
+      "endLine": 2098,
+      "summary": "Axiomatizes PoincareHomologySphere and WhiteheadManifold as non-examples showing closedness is essential, then proves closed_3mfd_dichotomy. Proves properties of the 8 ThurstonGeometry values and geometrization_implies_poincare."
+    },
+    {
+      "id": "heegaard-mcg-surgery-quaternion-identities",
+      "title": "Heegaard Splittings, Mapping Class Group, Dehn Surgery, and Quaternion Algebra Identities",
+      "startLine": 2099,
+      "endLine": 2563,
+      "summary": "Defines HeegaardSplitting and heegaardGenus, proving heegaard_characterization_S3, and covers basic mapping-class-group facts. Axiomatizes Knot and SurgerySlope with lickorish_wallace, then proves the Euler four-square identity and quaternion group axioms purely algebraically."
+    },
+    {
+      "id": "covering-spaces-rp3",
+      "title": "Covering Spaces and Real Projective Space RP³",
+      "startLine": 2564,
+      "endLine": 3220,
+      "summary": "Defines CoveringSpace and FiniteCoveringSpace, then constructs RP³ as a quotient of S³ by the antipodal setoid. Proves rp3_locallyEuclidean via explicit gnomonic projection, rp3_closed3manifold, the S³→RP³ double covering, rp3_pi1_nontrivial, and rp3_is_poincare_counterexample."
+    },
+    {
+      "id": "alexander-schoenflies-fundamental-group-surgery",
+      "title": "Alexander's Theorem/Schoenflies and Fundamental Group & Surgery",
+      "startLine": 3221,
+      "endLine": 3476,
+      "summary": "Defines Ball3 and proves ball3_not_S3, then defines MilnorSwanConstraint and proves pi1_connected_sum and poincare_connected_sum. Axiomatizes pi1_surgery_nontrivial and property_P, proves S3_surgery_rigidity, and closes with a backward-looking recap comment of Parts XXXVIII-XL."
+    },
+    {
+      "id": "milnor-uniqueness-ricci-volume-bounds",
+      "title": "Milnor Uniqueness, Prime Decomposition Structure, Ricci Flow Foundations, and Volume/Topology Bounds",
+      "startLine": 3477,
+      "endLine": 4122,
+      "summary": "Axiomatizes irreducible_implies_prime and milnor_uniqueness, proving S1_cross_S2_closed and rp3_is_prime. Defines Ricci-flow structures for hamilton_sphere_theorem and perelman_finite_extinction_detailed, and proves Betti/Euler facts and Gromov-style Betti-number bounds, ending with a recap comment."
+    },
+    {
+      "id": "jsj-graph-manifolds-perelman-outline",
+      "title": "JSJ Decomposition, Graph Manifolds/Thurston Norm, and Perelman's Proof Outline through Post-Perelman Developments",
+      "startLine": 4123,
+      "endLine": 4807,
+      "summary": "Defines EssentialTorus and JSJPiece, axiomatizing jsj_decomposition and jsj_uniqueness, and defines a placeholder thurstonNorm. Proves finite_extinction_time, perelman_proof_outline, mostow_rigidity, and agol_virtual_haken, closing with a recap comment of Parts XLIV-XLVIII."
+    },
+    {
+      "id": "homology-sphere-generalizations-lens-actions",
+      "title": "Poincaré Homology Sphere, Higher-Dimensional Generalizations, Dehn Surgery, Knots, and Concrete Cyclic Actions on Lens Spaces",
+      "startLine": 4808,
+      "endLine": 5324,
+      "summary": "Covers Σ(2,3,5) constructions, a dimension-by-dimension generalized-Poincaré resolution table, and Dehn surgery/knot basics. Gives explicit rotation formulas instantiating lens-space cyclic actions (rp3CyclicAction, l31CyclicAction, l52CyclicAction) with proved sphere-preservation and freeness."
+    },
+    {
+      "id": "euler-characteristic-betti-classification",
+      "title": "Euler Characteristic/Homology-Sphere Invariants, Covering Space Consequences, and Betti Classification",
+      "startLine": 5325,
+      "endLine": 5605,
+      "summary": "Proves simply_connected_b1_zero and betti_not_complete_invariant, showing S³ and Σ(2,3,5) share Betti numbers but differ in π₁. Derives covering-space consequences of simple connectivity and classifies manifolds by first Betti number."
+    },
+    {
+      "id": "circle-doubling-product-coverings",
+      "title": "Circle Doubling Map, Product Coverings, and Fundamental-Group Obstructions",
+      "startLine": 5606,
+      "endLine": 5995,
+      "summary": "Constructs the circle-doubling covering map, proving sphere1_not_simply_connected, then builds product coverings converting former axioms sphere2_cross_S1_not_simply_connected and torus3_not_simply_connected into proved theorems."
+    },
+    {
+      "id": "morse-theory-handle-decomposition",
+      "title": "Morse Theory Foundations and Handle Decomposition of 3-Manifolds",
+      "startLine": 5996,
+      "endLine": 6474,
+      "summary": "Defines MorseData3 and morseEuler, proving the Morse inequalities with concrete perfect Morse functions for S³, S¹×S², and T³. Defines HandleDecomp3 with the Morse-handle correspondence and handle-cancellation lemmas."
+    },
+    {
+      "id": "surgery-triangle-seifert-space-forms",
+      "title": "Surgery Triangle, Thurston Norm/Fibering, Concrete S¹×S²/RP³ Topology, Seifert Fibered Spaces, and Spherical Space Forms",
+      "startLine": 6475,
+      "endLine": 7242,
+      "summary": "Covers exceptional-filling bounds, Thurston norm and Agol's virtual fibering theorem, and concrete S¹×S²/RP³ instances. Defines Seifert-fibered data with Thurston-geometry classification and finite groups acting freely on S³, closing with a recap block folding in Parts LIII-LXX."
+    },
+    {
+      "id": "h-cobordism-kirby-borel-surgery-presentations",
+      "title": "h-Cobordism Theorem, Kirby Calculus, Topological Rigidity/Borel Conjecture, and Concrete Surgery Presentations",
+      "startLine": 7243,
+      "endLine": 7888,
+      "summary": "Formalizes Cobordism', HCobordism', and WhiteheadTorsion, explaining why h-cobordism proves generalized Poincaré for dim≥5 but not dim 3. Defines FramedLink and Kirby moves, states the Borel conjecture framework, and gives concrete surgery presentations including the E8 plumbing for Σ(2,3,5)."
+    },
+    {
+      "id": "turaev-viro-perelman-entropy",
+      "title": "Turaev-Viro/Quantum Invariants and Perelman's Entropy Functionals",
+      "startLine": 7889,
+      "endLine": 8153,
+      "summary": "Defines QuantumInvariant3, claiming (via placeholder numeric values) that Turaev-Viro invariants distinguish Σ(2,3,5) from S³. Formalizes Perelman's F-functional, W-entropy, and no-local-collapsing theorem."
+    },
+    {
+      "id": "hamilton-program-exotic-spheres",
+      "title": "Hamilton's Ricci Flow Program and Exotic Spheres/Smooth Poincaré Conjecture",
+      "startLine": 8154,
+      "endLine": 8690,
+      "summary": "Formalizes Hamilton's pre-Perelman results (curvature pinching, Harnack inequality, compactness) culminating in hamilton_years_of_work. Covers Milnor's exotic 7-spheres, the Kervaire-Milnor group, dimension 4 as the last open smooth-Poincaré case, and Moise's theorem."
+    },
+    {
+      "id": "kappa-solutions-standard-solution-surgery-algorithm",
+      "title": "κ-Solutions, the Standard Solution, and the Surgery Algorithm",
+      "startLine": 8691,
+      "endLine": 9313,
+      "summary": "Defines KappaSolution and KappaSolutionType3D, the Bryant soliton, and Brendle's 2018 canonical-neighborhood refinement. Defines StandardSolution, SurgeryParameters, and the surgery algorithm, closing with proof_chain_complete tying W-entropy to κ-solutions to surgery to Poincaré."
+    },
+    {
+      "id": "sphere-recognition-normal-surfaces",
+      "title": "3-Sphere Recognition and Normal Surface Theory",
+      "startLine": 9314,
+      "endLine": 9650,
+      "summary": "Formalizes Haken normal-disk types, VertexNormalSurface, and the Rubinstein-Thompson recognition algorithm, defining CrushingAlgorithm and stating Kuperberg's 2014 decidability result, contrasting dim-3-decidable versus dim-4-undecidable homeomorphism problems."
+    },
+    {
+      "id": "taut-foliations-novikov",
+      "title": "Taut Foliations, Reeb Components, and the Novikov Theorem",
+      "startLine": 9651,
+      "endLine": 9973,
+      "summary": "Defines Foliation3, ReebComponent, and TautFoliation3, stating novikov_compact_leaf and s3_no_taut_foliation; novikov_compact_leaf is proved vacuously since ReebComponent has only Prop-valued fields."
+    },
+    {
+      "id": "casson-invariant-homology-spheres",
+      "title": "Casson Invariant and Integer Homology Spheres",
+      "startLine": 9974,
+      "endLine": 10248,
+      "summary": "Defines CassonInvariant with cassonS3=0 and cassonPHS=1, the surgery formula via Alexander-polynomial derivatives, additivity under connected sum, and the Rokhlin-invariant mod-2 lift."
+    },
+    {
+      "id": "heegaard-floer-homology",
+      "title": "Heegaard Floer Homology",
+      "startLine": 10249,
+      "endLine": 10736,
+      "summary": "Defines SpinCStructure3, HFHatData with concrete rank computations for standard examples, LSpaceDef, DInvariant, SurgeryExactTriangle, KnotFloerData covering genus/fiberedness for several knots, and the τ concordance invariant."
+    },
+    {
+      "id": "l-space-conjecture-contact-structures",
+      "title": "The L-Space Conjecture and Contact Structures",
+      "startLine": 10737,
+      "endLine": 11322,
+      "summary": "Formalizes the Boyer-Gordon-Watson L-space conjecture with worked examples, and formalizes ContactType/ContactData covering the tight/overtwisted dichotomy, Legendrian invariants, Bennequin's bound, and the FillabilityLevel hierarchy."
+    },
+    {
+      "id": "virtual-haken-wise-program",
+      "title": "Virtual Haken Conjecture and Wise's Program",
+      "startLine": 11323,
+      "endLine": 11671,
+      "summary": "Formalizes Agol's 2012 proof chain (Kahn-Markovic to Bergeron-Wise cube complexes to Agol virtual specialness to LERF to virtual Haken/fibering), verifying these properties concretely on several example manifolds and the 8 Thurston-geometry fundamental groups."
+    },
+    {
+      "id": "gordon-luecke-knot-complements",
+      "title": "Gordon-Luecke Theorem and Knot Complements",
+      "startLine": 11672,
+      "endLine": 11952,
+      "summary": "Formalizes the Gordon-Luecke theorem (1989), defining KnotComplementData and AlexanderPolyData for several knots, and proves gordon_luecke_verified plus determinant/volume-ordering and fibered-genus facts."
+    },
+    {
+      "id": "character-varieties-a-polynomial",
+      "title": "SL(2,C) Character Varieties and the A-Polynomial",
+      "startLine": 11953,
+      "endLine": 12273,
+      "summary": "Defines CharacterVarietyData and VolumeConjectureData for several knot complements, proving char_var_dim_one and A-polynomial degree comparisons, including the figure-eight knot's proved Volume Conjecture instance (Kashaev 1997)."
+    },
+    {
+      "id": "hempel-distance-mcg-complexity",
+      "title": "Hempel Distance and Mapping Class Group Complexity",
+      "startLine": 12274,
+      "endLine": 12662,
+      "summary": "Defines HempelDistanceData for several manifolds (including the Weeks manifold at distance 3), MCGComplexityData with Lickorish/Humphries bounds, and CurveComplexData covering Gromov hyperbolicity and the Behrstock inequality."
+    },
+    {
+      "id": "surgery-coefficients-reidemeister-torsion",
+      "title": "Dehn Surgery Coefficients/Exceptional Surgeries and Reidemeister Torsion",
+      "startLine": 12663,
+      "endLine": 13193,
+      "summary": "Defines SurgeryCoeff and surgeryDistance with the 6-theorem and 2π-theorem constants over concrete trefoil/figure-eight surgery tables. Defines RTLensParams and proves the classical Reidemeister-torsion example that L(7,1) and L(7,2) are homotopy equivalent but not homeomorphic."
+    },
+    {
+      "id": "seifert-hyperbolic-volume-sol-property-p",
+      "title": "Seifert Fibered Spaces, Hyperbolic Volume, Sol Geometry/Torus Bundles, and Property P/L-Space Conjecture",
+      "startLine": 13194,
+      "endLine": 14041,
+      "summary": "Classifies spaces by Seifert invariants and Thurston geometry, defines HypVolData (Weeks manifold smallest closed, figure-eight smallest cusped), and classifies torus-bundle monodromy by trace. Formalizes Property P and Property R, verifying the L-space-conjecture pattern on examples, ending with a cumulative summary comment."
+    },
+    {
+      "id": "chern-simons-smooth-4manifolds-duplicate-numerals",
+      "title": "Duplicate-Numbered Content: Chern-Simons Theory, Smooth 4-Manifolds, and a Geometrization \"Deeper Analysis\"",
+      "startLine": 14042,
+      "endLine": 14294,
+      "summary": "Reuses already-used Roman numerals for genuinely different topics: Chern-Simons TQFT/Jones polynomial theorems, Freedman's classification and exotic Θ₇≅ℤ₂₈, and a Thurston-geometry isometry-dimension recap; most theorems here prove only a trivial arithmetic identity rather than the substantive claim named in the docstring."
+    },
+    {
+      "id": "floer-recap-perelman-chain-hyperbolic-dehn-surgery",
+      "title": "Heegaard Floer/L-Space Recap, Perelman's Entropy Chain, and Thurston's Hyperbolic Dehn Surgery Theorem",
+      "startLine": 14295,
+      "endLine": 14619,
+      "summary": "Restates Heegaard-Floer-homology and L-space facts as numeric identities, and summarizes the Perelman F/W/reduced-volume functional chain. Defines CuspedHyperbolicManifold with concrete examples and proves volume-monotonicity/threshold facts (Cao-Meyerhoff, Agol-Lackenby, Gordon)."
+    },
+    {
+      "id": "rokhlin-mu-invariant-intersection-forms",
+      "title": "Rokhlin's Theorem/μ-Invariant and Intersection Forms of 4-Manifolds",
+      "startLine": 14620,
+      "endLine": 15045,
+      "summary": "Defines RokhlinInvariantData and BrieskornSphereData examples plus casson_rokhlin_consistency. Defines IntersectionFormData with concrete forms (S⁴, CP², K3, E8) and donaldson_diagonalization/freedman_all_realized verified over a fixed example list, plus 11/8-conjecture data."
+    },
+    {
+      "id": "moise-theorem-top-pl-diff",
+      "title": "Moise's Theorem — TOP=PL=DIFF in Dimension 3",
+      "startLine": 15046,
+      "endLine": 15315,
+      "summary": "Defines ManifoldCategory and CategoryRelation with tables of category coincidence by dimension, covering Bing's results and Kirby-Siebenmann vanishing in dimension 3, and notes the subsequent duplicate Part numbering as two parallel content tracks."
+    },
+    {
+      "id": "weinstein-giroux-thurston-norm-whitney",
+      "title": "Weinstein/Reeb Dynamics, BGW L-Space Examples, Giroux Open Books, Thurston Norm, and a Second h-Cobordism/Whitney Trick Block",
+      "startLine": 15316,
+      "endLine": 15616,
+      "summary": "Covers several compact sections under overlapping 'Part XCI/XCII' numerals: Weinstein-conjecture examples, a second BGW L-space example set, the Giroux correspondence, Thurston/McMullen-norm examples, and a distinct h-Cobordism/Whitney-trick block (whitney_trick_dimension, handle_cancellation_principle)."
+    },
+    {
+      "id": "tqft-axioms-papakyriakopoulos-smith-conjecture",
+      "title": "TQFT Axioms, the Papakyriakopoulos Tower, and the Smith Conjecture",
+      "startLine": 15617,
+      "endLine": 16113,
+      "summary": "Defines TQFT3d, chernSimonsTQFT, and the Verlinde formula with tqft_characterization_of_s3, then narrates Dehn's Lemma, the Loop Theorem, and the Sphere Theorem. Formalizes the Smith conjecture (CyclicAction, smith_conjecture, orbifold_group_unknot)."
+    },
+    {
+      "id": "h-cobordism-dimensions-sphere-theorems",
+      "title": "h-Cobordism Theorem (Dimensions 3 vs ≥5) and Sphere Theorems",
+      "startLine": 16114,
+      "endLine": 16547,
+      "summary": "Proves whitney_trick_dimension', handle_cancellation_pairs, poincare_by_dimension, and exotic_spheres_kervaire_milnor (Θ₇=28). Covers classical, Brendle-Schoen, Grove-Shiohama, and Cheng sphere theorems, framing Perelman's result as the strongest sphere theorem."
+    },
+    {
+      "id": "kneser-milnor-finite-extinction",
+      "title": "Kneser-Milnor Prime Decomposition and Finite Extinction Time",
+      "startLine": 16548,
+      "endLine": 17013,
+      "summary": "Formalizes the prime-type classification and kneser_finiteness, and the van Kampen free-product argument reducing Poincaré to 'simply-connected irreducible = S³'. Defines the scalar-curvature width functional and blowup bound, proves s3ExtinctionTime, and tallies Perelman's page count against the verification literature."
+    },
+    {
+      "id": "contractibility-hopf-galois-correspondence",
+      "title": "Contractibility Obstructions, Hopf Map Structure, and Covering Space Galois Correspondence",
+      "startLine": 17014,
+      "endLine": 17514,
+      "summary": "Proves rp3_not_contractible, antipodal_fixed_point_free, and hopf_antipodal_invariant from earlier lemmas. Defines the Galois correspondence for covering spaces and classifies universal-cover types for the 8 Thurston geometries, plus residual-finiteness/virtual-property facts (Agol-Wise, Wilton-Zalesskii)."
+    },
+    {
+      "id": "generalized-sphere-theorem-dimension-panorama",
+      "title": "Generalized Sphere Theorem and Dimension Panorama (file end)",
+      "startLine": 17515,
+      "endLine": 17683,
+      "summary": "Tabulates sphereTheoremHierarchy (7 theorems, 1951-2003) and genPoincareDimStatus by dimension, noting the smooth Poincaré conjecture is open only in dimension 4, with pinching examples (CP², HP², CaP² as sharp δ=1/4 cases); the file terminates with `end PoincareConjecture`."
     }
   ],
   "crossReferences": [
