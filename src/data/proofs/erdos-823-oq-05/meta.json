@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Why this file exists",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring: the registered Erdős #823 parent proves its concrete σ-values (σ(14)=σ(15)=24, etc.) via native_decide, which depends on Lean.ofReduceBool and so is not axiom-free under the project's axiom-integrity policy. This file reproves the same σ-values symbolically from Mathlib's arithmetic-function API — multiplicativity plus the value on primes and prime powers — so every result is kernel-checked with no native_decide and no axiom. It also flags a latent bug in the parent: its native_decide claim sigma_206_210 (σ(206)=σ(210)) is false.",
+      "mathContext": "$\\sigma(206)=\\sigma(2\\cdot103)=3\\cdot104=312 \\ne \\sigma(210)=\\sigma(2\\cdot3\\cdot5\\cdot7)=3\\cdot4\\cdot6\\cdot8=576$."
+    },
+    {
       "id": "sigma-on-primes",
       "title": "σ on a prime",
       "startLine": 45,
