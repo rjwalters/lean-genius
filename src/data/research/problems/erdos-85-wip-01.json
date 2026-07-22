@@ -44,8 +44,8 @@
         "blockedAt": "2026-07-21"
       },
       {
-        "route": "PARTIALLY RESOLVED 2026-07-22 (was: f(9) needs ex(9;C4)-strength input): elementary f(9)=3 route found — degree pinch + pigeonhole engine (formalized) + path-count + paw analysis (blueprinted). Residual: formalize steps (a)-(c) per knowledge.md.",
-        "reopenCriterion": "open for formalization — mechanism identified, no new mathematics needed",
+        "route": "RESOLVED 2026-07-22 (was: f(9) needs ex(9;C4)-strength input): f(9)=3 PROVED axiom-free same day (minDegreeForC4_nine) via degree pinch + dense-4-set + tight-cherry bijection + pigeonhole — no extremal tables needed.",
+        "reopenCriterion": "resolved, nothing to reopen",
         "blockedAt": "2026-07-22"
       }
     ],
@@ -57,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified): f(9) blocker OVERTURNED — complete elementary blueprint for f(9)=3 recorded in knowledge.md (degree pinch to (3^8,4)/(3^6,4^3); pigeonhole + path-count kills k=3; paw analysis kills k=1) and the counting engine formalized 0-axiom (containsC4_of_degree_sum_subset + global form). Exact table 1..8 = 1,2,3,2,3,3,3,3 unchanged; f(9)=3 formalization is next (est. 300-450 lines, 3 independent steps). f(10)=4 (Petersen), dense families, monotonicity core: unchanged, deep.",
+    "progressSummary": "MAJOR PROGRESS (researcher-1-9, 2026-07-22, host-verified exit 0, standard triple): f(9) = 3 PROVED axiom-free (minDegreeForC4_nine) — blueprint executed same-day, no ex(n;C4) input. Exact table COMPLETE for 1<=n<=9: f = 1,2,3,2,3,3,3,3,3. Machinery: degree pinch, dense-4-set lemma, tight-cherry bijection upgrade, path-count, pigeonhole engine. Remaining: f(10)=4 (Petersen, blocked on decide-free witness), f(11)/f(12) upper bounds via counting (cheap next target), deep KST asymptotics + monotonicity core (open).",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -91,7 +91,10 @@
       "containsC4_of_eight_min_degree_three (min-deg 3 on Fin 8 forces C4: cherry-count + parity casework down to 3-regular) in Erdos85Problem.lean",
       "minDegreeForC4_eight (f(8)=3, FIFTH exact value; table complete 1..8) in Erdos85Problem.lean — all 0-axiom, host-verified lake env lean exit 0",
       "containsC4_of_degree_sum_subset in Erdos85Problem.lean (pigeonhole C4 engine, subset form)",
-      "containsC4_of_card_add_two_le_degree_add_degree in Erdos85Problem.lean (global form)"
+      "containsC4_of_card_add_two_le_degree_add_degree in Erdos85Problem.lean (global form)",
+      "minDegreeForC4_nine (f(9)=3) + containsC4_of_nine_min_degree_three in Erdos85Problem.lean",
+      "nine_degree_pinch, containsC4_of_nine_one_four, containsC4_of_nine_three_fours in Erdos85Problem.lean",
+      "containsC4_of_four_set_min_two (dense-4-set lemma) + card_inter_neighborFinset_le_one in Erdos85Problem.lean"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -119,7 +122,9 @@
       "omega rejects nonlinear atoms like card V * k: rewrite the Odd product away first (obtain <a, ha> := hodd.mul hk; rw [ha] at hhs) before calling omega.",
       "f(9) blocker overturned (third extremal-tables blocker to fall): complete elementary route to f(9)=3 mapped — cherry+parity pinch degrees to (3^8,4) or (3^6,4^3); pigeonhole kills (3^6,4^3) (deg-4 vertices have all-deg-3 neighbourhoods by exact path count, then 4+4=6+2); paw analysis kills (3^8,4) locally",
       "Friendship theorem NOT needed for the tight-cherry case (and is unavailable anyway: Mathlib ships it only in Archive/Wiedijk100Theorems, no olean in the shared cache)",
-      "Pigeonhole C4 engine formalized: containsC4_of_degree_sum_subset (N(u),N(v) inside S with |S|+2 <= d(u)+d(v) forces C4) + global |V|+2 form — reusable for all future exact values"
+      "Pigeonhole C4 engine formalized: containsC4_of_degree_sum_subset (N(u),N(v) inside S with |S|+2 <= d(u)+d(v) forces C4) + global |V|+2 form — reusable for all future exact values",
+      "f(9) = 3 PROVED axiom-free in one session, executing the same-day blueprint: degree pinch (cherry+parity), (3^8,4) killed by dense-4-set local analysis, (3^6,4^3) killed by tight-cherry bijection + path-count + pigeonhole engine — NO ex(n;C4) input; fourth extremal-tables blocker claim overturned by formal proof",
+      "Tight-counting upgrade pattern: when the KST cherry-to-pair map has equal source/target cards, Set.InjOn + card_image_of_injOn + eq_of_subset_of_card_le turns the pigeonhole into a bijection giving EXISTENCE of a common neighbour for every pair — reusable wherever a counting bound is attained exactly"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
