@@ -48,6 +48,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Wallis/Stirling Asymptotics of the Diagonal Beta Value", "startLine": 1, "endLine": 49, "summary": "Establishes the asymptotic decay of the parent's diagonal Beta value B(n+1,n+1) = 1/((2n+1)·C(2n,n)) as n→∞. Derives, from Mathlib's Stirling.factorial_isEquivalent_stirling, the not-yet-in-Mathlib central binomial asymptotic centralBinom_isEquivalent: C(2n,n) ~ 4ⁿ/√(πn), giving betaDiag_isEquivalent: B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). Connects to Complex.betaIntegral via betaIntegral_diag_eq; the same engine yields the Catalan asymptotic Cₙ ~ 4ⁿ/((n+1)√(πn)).", "mathContext": "$C(2n,n)\\sim 4^n/\\sqrt{\\pi n}$ (from Mathlib's Stirling asymptotic for $n!$, not itself in Mathlib), giving the diagonal Beta decay $B(n+1,n+1)\\sim\\sqrt{\\pi n}/((2n+1)4^n)$ and, via $C_n=C(2n,n)/(n+1)$, the Catalan asymptotic $C_n\\sim 4^n/((n+1)\\sqrt{\\pi n})$."},
     {
       "id": "factorial-form",
       "title": "The Central Binomial as a Factorial Quotient",
