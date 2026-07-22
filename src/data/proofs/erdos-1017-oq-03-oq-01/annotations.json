@@ -2,7 +2,7 @@
   {
     "id": "erdos1017oq03oq01-ann-header",
     "proofId": "erdos-1017-oq-03-oq-01",
-    "range": { "startLine": 3, "endLine": 42 },
+    "range": { "startLine": 1, "endLine": 42 },
     "type": "concept",
     "title": "The Quarter-Square ↔ Triangular-Number Bridge",
     "content": "Erdős Problem #1017 (Erdős–Goodman–Pósa, 1966) has extremal value T(n) = ⌊n²/4⌋ — the quarter-square sequence, both the worst-case number of complete subgraphs needed to edge-partition an n-vertex graph and the edge count of the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉}. The sibling file Erdos1017OQ03.lean records T's closed forms, monotonicity, and two-sided envelope; this child entry records the exact additive link between the quarter-squares and the triangular numbers. The central identity T(n) + T(n+1) = C(n+1,2) = n(n+1)/2 says two consecutive quarter-squares sum to a triangular number, so the extremal bipartite edge counts on n and n+1 vertices together tile the complete graph K_{n+1}. turanBound n := n²/4 is re-declared, so the file is self-contained over Mathlib.",
@@ -18,6 +18,18 @@
       "extremal graph theory",
       "floor function over ℕ"
     ]
+  },
+  {
+    "id": "erdos1017oq03oq01-ann-def",
+    "proofId": "erdos-1017-oq-03-oq-01",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Re-declaring the Turán Bound",
+    "content": "turanBound n := n^2 / 4 is re-declared here rather than imported from the sibling Erdos1017OQ03.lean, so this file depends only on Mathlib and stays self-contained (0 sorries, 0 axioms, no native_decide). Every downstream identity in this file — the increments, the triangular-number bridge, the binomial bridge, and the accumulation formula — is proved directly from this one-line definition.",
+    "mathContext": "$T(n) := \\lfloor n^2/4 \\rfloor$",
+    "significance": "context",
+    "relatedConcepts": ["Turán bound", "natural-number division", "self-contained re-declaration"],
+    "prerequisites": ["floor division over ℕ"]
   },
   {
     "id": "erdos1017oq03oq01-ann-succ",
@@ -118,5 +130,17 @@
       "the additive increment",
       "finite sums over ranges"
     ]
+  },
+  {
+    "id": "erdos1017oq03oq01-ann-significance",
+    "proofId": "erdos-1017-oq-03-oq-01",
+    "range": { "startLine": 123, "endLine": 146 },
+    "type": "context",
+    "title": "Significance: the additive/telescoping structure of the quarter-squares",
+    "content": "The closing docstring ties the file's three results together: the central identity T(n) + T(n+1) = C(n+1,2) = n(n+1)/2 (two consecutive quarter-squares tile the edges of K_{n+1}); the exact, parity-blind two-step increment T(n+2) = T(n) + (n+1); and the accumulation formula T(n) = ∑_{k<n} ⌈k/2⌉ expressing T as the running sum of its own increments. Together these pin the additive/telescoping structure of the quarter-square sequence, complementing the sibling file's multiplicative identity T(m+n) − T(m−n) = m·n and its discrete convexity.",
+    "mathContext": "$T(n)+T(n+1)=\\binom{n+1}{2},\\quad T(n+2)=T(n)+(n+1),\\quad T(n)=\\textstyle\\sum_{k<n}\\lceil k/2\\rceil$",
+    "significance": "supporting",
+    "relatedConcepts": ["additive structure", "telescoping sum", "quarter-square identity", "discrete convexity"],
+    "prerequisites": ["the three main results of this file", "the sibling file's multiplicative identity"]
   }
 ]
