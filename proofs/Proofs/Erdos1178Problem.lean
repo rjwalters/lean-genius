@@ -148,7 +148,7 @@ theorem ruzsa_szemeredi_d3_3 : dr 3 3 = conjecturedValue 3 3 := by
   apply le_antisymm
   · -- Upper bound: dr 3 3 ≤ 6
     have h := sarkozy_selkow_upper 3 3 (by omega) (by omega)
-    have hlog : Nat.log 2 3 = 1 := by native_decide
+    have hlog : Nat.log 2 3 = 1 := Nat.log_eq_of_pow_le_of_lt_pow (by norm_num) (by norm_num)
     rw [hlog] at h
     unfold conjecturedValue; omega
   · -- Lower bound: dr 3 3 ≥ 6
@@ -162,7 +162,7 @@ theorem efr_e3 (r : ℕ) (hr : r ≥ 3) : dr r 3 = conjecturedValue r 3 := by
   apply le_antisymm
   · -- Upper bound: dr r 3 ≤ (r-2)·3 + 3
     have h := sarkozy_selkow_upper r 3 hr (by omega)
-    have hlog : Nat.log 2 3 = 1 := by native_decide
+    have hlog : Nat.log 2 3 = 1 := Nat.log_eq_of_pow_le_of_lt_pow (by norm_num) (by norm_num)
     rw [hlog] at h
     unfold conjecturedValue; omega
   · -- Lower bound: dr r 3 ≥ (r-2)·3 + 3
