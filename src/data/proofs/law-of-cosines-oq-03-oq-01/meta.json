@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Deriving the Law From the Model",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring stating the open question (derive the hyperbolic law of cosines from a concrete model rather than axiomatizing it) and sketching the whole derivation: the hyperboloid model's Minkowski form, the geodesic-polar map geo r θ, the one-`ring`-call identity −⟨geo a 0, geo b C⟩ = cosh a cosh b − sinh a sinh b cos C, the reverse Cauchy–Schwarz bound certifying it is a genuine cosh value, and the separate verification that C is the true interior angle via unit initial velocities. Notes the vertex-at-apex placement is WLOG by transitivity of the isometry group (documented, not re-derived), and lists the Thurston/Ratcliffe/Iversen references. Imports Mathlib and opens Real.",
+      "mathContext": "$\\cosh d(u,v) = -\\langle u,v\\rangle$ on the hyperboloid sheet $\\langle u,u\\rangle=-1$ turns the law of cosines into a one-line Minkowski-form computation."
+    },
+    {
       "id": "model",
       "title": "The Minkowski form and the hyperboloid model",
       "startLine": 62,
