@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header: the open question and the chain it answers",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "States OQ-01-OQ-02 — derive cos_eq_tsum (the power series of cos) from Mathlib's definition cos z = (e^{iz}+e^{-iz})/2 — and lists the five results the file packages: the exponential definitions, the complex and real power series, Euler's formula, and Euler's identity, exhibiting the chain definition → series → identity.",
+      "mathContext": "$\\cos z = \\tfrac{1}{2}(e^{iz}+e^{-iz})$ is Mathlib's *definition*; the file derives $\\cos z = \\sum_n (-1)^n z^{2n}/(2n)!$ from it, then $e^{ix} = \\cos x + i\\sin x$ and $e^{i\\pi} = -1$."
+    },
+    {
       "id": "exp-form",
       "title": "Section I: The Exponential Definitions",
       "startLine": 30,
