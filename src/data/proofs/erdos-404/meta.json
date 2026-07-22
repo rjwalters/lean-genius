@@ -45,9 +45,9 @@
       "StrictIncSeq: strictly increasing sequence starting at a",
       "factorialSum: sum of factorials over a sequence",
       "dividesByPrimePower, divisiblePowers: prime power divisibility",
-      "f(a, p): supremum of achievable powers via sSup over ℕ∞",
+      "f(a, p): supremum of achievable powers via sSup over ℕ (Nat.sSup returns junk value 0 when the set is unbounded, not ∞)",
       "secondaryQuestion: unbounded v_p of partial factorial sums",
-      "erdos404Conjecture: finiteness of f for all (a, p)",
+      "erdos404Conjecture: BddAbove (divisiblePowers a p) for all a ≥ 1 and primes p (the genuine boundedness question; the naive ∃ B, f a p ≤ B would be vacuously true for ℕ-valued f)",
       "lin_bound axiom: f(2, 2) ≤ 254",
       "lin_bound_meaning axiom: 2^255 never divides such sums",
       "legendreSum: Legendre's formula computation",
@@ -63,7 +63,7 @@
     "prerequisites": [
       "p-adic valuation (padicValNat) and basic properties",
       "Factorials and divisibility in number theory",
-      "Supremum in extended naturals (sSup, WithTop)",
+      "Supremum over ℕ (Nat.sSup; junk value 0 for unbounded sets, boundedness via BddAbove)",
       "Legendre's formula for v_p(n!)",
       "Filter.Tendsto and convergence in Lean/Mathlib"
     ],
@@ -78,7 +78,7 @@
     "text": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) ≤ 254. OPEN.",
     "proofStrategy": "The formalization defines StrictIncSeq, factorialSum, dividesByPrimePower, and f(a, p). The main conjecture and secondary question are stated. Lin's bound is axiomatized. p-adic tools (Legendre's formula, asymptotics) and structural lemmas are included. Two concrete examples are proved by native_decide. The summary theorem proves the conjunction of Lin's bounds.",
     "keyInsights": [
-      "**Supremum formulation:** $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\}$ uses extended naturals, allowing $f(a,p) = \\infty$ when arbitrarily high powers are achievable — the conjecture asks if this never happens",
+      "**Supremum formulation:** $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\}$ is formalized as `sSup` over ℕ, so `f a p : ℕ`. Mathlib's `Nat.sSup` returns the junk value $0$ (not $\\infty$) when the set is unbounded, so the genuine open question is whether $\\{k : p^k \\mid \\sum a_i!\\}$ is bounded above — the conjecture is stated via `BddAbove`, since the naive $\\exists B, f(a,p) \\le B$ is trivially true for any ℕ-valued $f$",
       "**Only known bound:** Lin proved $f(2,2) \\leq 254$, meaning $2^{255}$ never divides any sum of factorials starting at $2!$. The gap $3 \\leq f(2,2) \\leq 254$ remains enormous",
       "**Legendre's formula governs individual terms:** $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor \\approx n/(p-1)$, so individual factorials have linearly growing $p$-adic valuations. The challenge is understanding what happens when they are summed",
       "**Factorization is the key tool:** $a_1! + a_2! = a_1!(1 + a_2!/a_1!)$, so $v_p$ of the sum splits into $v_p(a_1!)$ (known) plus $v_p(1 + a_2!/a_1!)$ (the mysterious part). The ratio $a_2!/a_1! = (a_1+1)(a_1+2)\\cdots a_2$ is a product of consecutive integers",
@@ -89,7 +89,7 @@
     "prerequisites": [
       "p-adic valuation (padicValNat) and basic properties",
       "Factorials and divisibility in number theory",
-      "Supremum in extended naturals (sSup, WithTop)",
+      "Supremum over ℕ (Nat.sSup; junk value 0 for unbounded sets, boundedness via BddAbove)",
       "Legendre's formula for v_p(n!)",
       "Filter.Tendsto and convergence in Lean/Mathlib"
     ]
@@ -101,7 +101,7 @@
       "startLine": 27,
       "endLine": 46,
       "summary": "StrictIncSeq, factorialSum, dividesByPrimePower, f(a, p) = sSup",
-      "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over ℕ, allowing $f(a,p) = \\infty$ if arbitrarily high powers are achievable."
+      "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over ℕ, so it is ℕ-valued; `Nat.sSup` returns the junk value $0$ (not $\\infty$) when the set is unbounded above."
     },
     {
       "id": "main-questions",
@@ -109,7 +109,7 @@
       "startLine": 47,
       "endLine": 55,
       "summary": "secondaryQuestion and erdos404Conjecture (OPEN)",
-      "mathContext": "Two open questions: (1) Is $f(a,p) < \\infty$ for all $(a,p)$? (2) Does there exist a prime $p$ and strictly increasing sequence $\\{a_i\\}$ with $v_p(\\sum_{i \\leq k} a_i!) \\to \\infty$?"
+      "mathContext": "Two open questions: (1) Is $\\{k : p^k \\mid \\sum a_i!\\}$ bounded above (`BddAbove (divisiblePowers a p)`) for all $(a,p)$ — equivalently, is $f(a,p)$ a genuine finite supremum rather than the junk value $0$? (2) Does there exist a prime $p$ and strictly increasing sequence $\\{a_i\\}$ with $v_p(\\sum_{i \\leq k} a_i!) \\to \\infty$?"
     },
     {
       "id": "known-results",

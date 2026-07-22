@@ -52,8 +52,16 @@ def secondaryQuestion : Prop :=
   ∃ p : ℕ, p.Prime ∧ ∃ seq : ℕ → ℕ, StrictMono seq ∧
     Tendsto (fun k => padicValNat p (∑ i ∈ Finset.range (k+1), (seq i).factorial)) atTop atTop
 
+/-- The genuine Erdős #404 finiteness question: for every `a ≥ 1` and prime `p`,
+    is the set of achievable prime-power exponents `divisiblePowers a p` bounded
+    above?  Note `f a p := sSup (divisiblePowers a p)` is `ℕ`-valued, and
+    `Nat.sSup` returns the junk value `0` (not `∞`) when the set is unbounded
+    (`Nat.sSup_of_not_bddAbove`).  We therefore state the conjecture via
+    `BddAbove`, which captures the real open problem — the naive
+    `∃ B : ℕ, f a p ≤ B` is trivially true for every `ℕ`-valued `f` and so does
+    not encode any mathematical content. -/
 def erdos404Conjecture : Prop :=
-  ∀ a : ℕ, a ≥ 1 → ∀ p : ℕ, p.Prime → ∃ B : ℕ, f a p ≤ B
+  ∀ a : ℕ, a ≥ 1 → ∀ p : ℕ, p.Prime → BddAbove (divisiblePowers a p)
 
 /- ## Part III: Known Results -/
 
