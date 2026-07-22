@@ -85,12 +85,20 @@
       "mathContext": "Eisenstein's criterion at the natural level of generality."
     },
     {
-      "id": "instances",
-      "title": "Instances over ℤ and ℚ[X]",
-      "startLine": 86,
-      "endLine": 107,
-      "summary": "Yⁿ − 2, Yⁿ − 3 over ℤ; Yⁿ − X and Y³ − X over the Euclidean domain ℚ[X] (Eisenstein at the prime X).",
-      "mathContext": "The criterion in genuinely different domains, including the parent's Euclidean-domain setting."
+      "id": "int-instances",
+      "title": "Instances over ℤ",
+      "startLine": 85,
+      "endLine": 93,
+      "summary": "irreducible_Y_pow_sub_two_int and irreducible_Y_pow_sub_three_int: Yⁿ − 2 and Yⁿ − 3 are irreducible over ℤ[Y], each by supplying the general theorem a concrete prime (Int.prime_two, Int.prime_three).",
+      "mathContext": "$Y^n - 2$ and $Y^n - 3$ irreducible over $\\mathbb{Z}[Y]$ — Eisenstein at the primes $2$ and $3$."
+    },
+    {
+      "id": "ratpoly-instances",
+      "title": "Instances over the Euclidean domain ℚ[X]",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "irreducible_Y_pow_sub_X_ratPoly and its cubic specialization irreducible_Y_cubed_sub_X_ratPoly: over the Euclidean domain ℚ[X] — the parent's own setting — Yⁿ − X (and Y³ − X) is irreducible in ℚ[X][Y], Eisenstein at the prime element X, generating the function-field extension ℚ(X)(X^{1/n}).",
+      "mathContext": "$Y^n - X$ irreducible over $\\mathbb{Q}[X][Y]$ — Eisenstein at the prime element $X$, root generating $\\mathbb{Q}(X)(X^{1/n})$."
     }
   ],
   "conclusion": {
