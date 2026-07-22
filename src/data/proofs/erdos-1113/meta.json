@@ -144,6 +144,14 @@
       "startLine": 144,
       "endLine": 151,
       "mathContext": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. No specific Fermat-prime facts (e.g. $F_5$'s factorization $641 \\times 6700417$) or an Erdos-Graham connection are formalized as Lean declarations in this file; these were among the axioms removed in a prior fix (see `assumptions`)."
+    },
+    {
+      "id": "summary-theorem",
+      "title": "Summary Theorem (Parts IX-X)",
+      "summary": "Part IX is an empty section header (the FFK simultaneous-compositeness power result is not formalized). Part X proves `erdos_1113_summary`, the file's capstone: a single verified conjunction of `izotov_is_sierpinski`, `izotov_is_power`, and `ffk_consistent_with_izotov`, packaging all the assembled evidence for Problem #1113 into one result without resolving the open question.",
+      "startLine": 152,
+      "endLine": 175,
+      "mathContext": "$\\text{IsSierpinskiNumber}(m_{\\text{Izotov}}) \\wedge \\text{IsPerfectPower}(m_{\\text{Izotov}}) \\wedge (\\text{FFKConjecture} \\Rightarrow \\text{IsPerfectPower}(m_{\\text{Izotov}}) \\vee \\text{HasFiniteCoveringSet}(m_{\\text{Izotov}}))$, proved via the anonymous constructor combining the three prior results."
     }
   ],
   "conclusion": {

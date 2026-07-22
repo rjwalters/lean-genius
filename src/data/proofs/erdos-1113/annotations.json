@@ -157,14 +157,14 @@
     "id": "ann-e1113-fermat",
     "proofId": "erdos-1113",
     "range": {
-      "startLine": 159,
-      "endLine": 172
+      "startLine": 144,
+      "endLine": 151
     },
     "type": "definition",
-    "title": "Connection to Fermat Primes",
-    "content": "**Fermat numbers** $F_n = 2^{2^n} + 1$. Only 5 are known to be prime: $F_0 = 3, F_1 = 5, F_2 = 17, F_3 = 257, F_4 = 65537$. $F_5 = 4294967297 = 641 \\times 6700417$ is composite (axiomatized). The **Erdos-Graham observation** (axiomatized): if ALL Sierpinski numbers have covering sets, then infinitely many Fermat primes exist. Since this is considered highly unlikely, it provides strong indirect evidence that Problem #1113 has answer YES.",
-    "mathContext": "$F_n = 2^{2^n} + 1$, $\\text{AllSierpinskiHaveCoverings} \\Rightarrow \\forall\\, N$, $\\exists\\, n > N$, $F_n$ prime. The connection arises because if $m = 1$, then $2^k \\cdot 1 + 1 = 2^k + 1$, and the prime values are exactly the Fermat primes.",
-    "significance": "key",
+    "title": "Fermat Numbers and Fermat Primes",
+    "content": "**FermatNumber** $F_n = 2^{2^n} + 1$ and **IsFermatPrime** ($F_n$ prime). Only 5 Fermat numbers are known to be prime: $F_0 = 3, F_1 = 5, F_2 = 17, F_3 = 257, F_4 = 65537$; $F_5 = 4294967297 = 641 \\times 6700417$ is composite, and no further Fermat prime has ever been found despite extensive search. Neither $F_5$'s factorization nor the Erdos-Graham observation linking universal covering to Fermat-prime infinitude is stated as a Lean declaration in this file (both were among the axioms removed in a prior fix -- see `assumptions`); only the two definitions themselves are formalized here.",
+    "mathContext": "$F_n = 2^{2^n} + 1$, $\\text{IsFermatPrime}(n) \\Leftrightarrow \\text{Nat.Prime}(F_n)$. Setting $m = 1$ in the Sierpinski sequence gives $2^k \\cdot 1 + 1 = 2^k + 1$, whose prime values are exactly the Fermat primes -- the reason Problem #1113 connects to Fermat's conjecture at all.",
+    "significance": "supporting",
     "relatedConcepts": [
       "fermat-number",
       "fermat-prime",
@@ -174,6 +174,29 @@
       "sierpinski-number",
       "covering-set",
       "prime-numbers"
+    ]
+  },
+  {
+    "id": "ann-e1113-summary",
+    "proofId": "erdos-1113",
+    "range": {
+      "startLine": 154,
+      "endLine": 175
+    },
+    "type": "theorem",
+    "title": "Summary Theorem: Combining the Evidence",
+    "content": "**erdos_1113_summary** is the file's capstone result: a single verified conjunction of `izotov_is_sierpinski` (the axiom), `izotov_is_power`, and `ffk_consistent_with_izotov`, packaging every piece of evidence for Problem #1113 into one theorem. It does not resolve the open problem -- it certifies that all the assembled evidence (Izotov's candidate is Sierpinski *and* a perfect power, and this is consistent with FFK) is jointly consistent, which is the strongest statement this formalization can make about a genuinely open question.",
+    "mathContext": "$\\text{IsSierpinskiNumber}(m_{\\text{Izotov}}) \\wedge \\text{IsPerfectPower}(m_{\\text{Izotov}}) \\wedge (\\text{FFKConjecture} \\Rightarrow \\text{IsPerfectPower}(m_{\\text{Izotov}}) \\vee \\text{HasFiniteCoveringSet}(m_{\\text{Izotov}}))$, proved by the anonymous constructor $\\langle \\text{izotov\\_is\\_sierpinski}, \\text{izotov\\_is\\_power}, \\text{ffk\\_consistent\\_with\\_izotov} \\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "izotov-candidate",
+      "ffk-conjecture",
+      "conjunctive-summary"
+    ],
+    "prerequisites": [
+      "izotov-is-sierpinski axiom",
+      "izotov-is-power",
+      "ffk-consistent-with-izotov"
     ]
   }
 ]
