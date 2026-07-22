@@ -1729,6 +1729,122 @@ theorem hErdos_pow_le {m : ℕ} (hm : IsPractical m) :
         _ ≤ k * hErdos m + hErdos m := Nat.add_le_add_right (hErdos_pow_le hm k) _
         _ = (k + 1) * hErdos m := by ring
 
+/- ## An information-theoretic lower bound for the corrected index
+
+`le_two_pow_h` bounded the *universal-set* index from below — `m ≤ 2^(h m)`, i.e.
+`h m ≥ log₂ m` — which is exactly what made the parent's `conjecture_part2_weak`
+false as stated. The corrected index `hErdos` escapes that argument (a small
+per-`k` budget does not force a small universal set), but it cannot escape
+counting entirely: each `k < m` is a sum of at most `hErdos m` of the `d(m)`
+divisors of `m`, distinct `k` use distinct divisor subsets, and a `d`-element
+set has at most `∑_{i ≤ t} C(d, i) ≤ (d+1)^t` subsets of size at most `t`.
+Hence
+
+  `m ≤ (d(m)+1)^(hErdos m)`,   i.e.   `hErdos m ≥ log m / log (d(m)+1)`.
+
+This is the correct-index analogue of `le_two_pow_h`, and it locates exactly why
+the prize conjecture `hErdos(n!) < n^{o(1)}` can survive: only because `d(n!)`
+is super-polynomial in `n` (`log d(n!) ≍ n / log n`). Quantitatively the bound
+forces `hErdos(n!) ≳ (log n)²` — comfortably below Vose's upper bound
+`O(√log(n!)) = O(√(n log n))`, but already unbounded: the corrected index of
+`n!` genuinely tends to infinity, so the prize question is a race between two
+growing quantities, not a claim of boundedness. -/
+
+/-- Geometric-series cap `∑_{i ≤ t} d^i ≤ (d+1)^t`, used to convert the
+binomial-sum subset count into a clean power. -/
+theorem sum_pow_le_succ_pow (d t : ℕ) :
+    ∑ i ∈ Finset.range (t + 1), d ^ i ≤ (d + 1) ^ t := by
+  induction t with
+  | zero => simp
+  | succ t ih =>
+      rw [Finset.sum_range_succ]
+      have h1 : d ^ (t + 1) ≤ d * (d + 1) ^ t := by
+        have h2 : d ^ (t + 1) = d * d ^ t := by ring
+        rw [h2]
+        exact Nat.mul_le_mul (le_refl d) (Nat.pow_le_pow_left (by omega) t)
+      calc (∑ i ∈ Finset.range (t + 1), d ^ i) + d ^ (t + 1)
+          ≤ (d + 1) ^ t + d * (d + 1) ^ t := Nat.add_le_add ih h1
+        _ = (d + 1) ^ (t + 1) := by ring
+
+/-- A `d`-element set has at most `∑_{i ≤ t} C(d, i) ≤ (d+1)^t` subsets of size
+at most `t`: the size-`≤ t` slice of the powerset sits inside the union of the
+`powersetCard i` layers for `i ≤ t`. -/
+theorem card_powerset_filter_card_le (D : Finset ℕ) (t : ℕ) :
+    (D.powerset.filter (fun T => T.card ≤ t)).card ≤ (D.card + 1) ^ t := by
+  classical
+  have hsub : D.powerset.filter (fun T => T.card ≤ t) ⊆
+      (Finset.range (t + 1)).biUnion (fun i => Finset.powersetCard i D) := by
+    intro T hT
+    rw [Finset.mem_filter, Finset.mem_powerset] at hT
+    rw [Finset.mem_biUnion]
+    exact ⟨T.card, Finset.mem_range.mpr (by omega),
+      Finset.mem_powersetCard.mpr ⟨hT.1, rfl⟩⟩
+  calc (D.powerset.filter (fun T => T.card ≤ t)).card
+      ≤ ((Finset.range (t + 1)).biUnion (fun i => Finset.powersetCard i D)).card :=
+        Finset.card_le_card hsub
+    _ ≤ ∑ i ∈ Finset.range (t + 1), (Finset.powersetCard i D).card :=
+        Finset.card_biUnion_le
+    _ = ∑ i ∈ Finset.range (t + 1), D.card.choose i :=
+        Finset.sum_congr rfl fun i _ => Finset.card_powersetCard i D
+    _ ≤ ∑ i ∈ Finset.range (t + 1), D.card ^ i :=
+        Finset.sum_le_sum fun i _ => Nat.choose_le_pow D.card i
+    _ ≤ (D.card + 1) ^ t := sum_pow_le_succ_pow D.card t
+
+/-- **Injection step**: for practical `m`, distinct `k < m` have distinct
+minimum-size representing sets (the sum recovers `k`), all of size at most
+`hErdos m` — so `m` is at most the number of subsets of `divisors m` of size at
+most `hErdos m`. -/
+theorem le_card_small_subsets_of_practical {m : ℕ} (hm : IsPractical m) :
+    m ≤ ((divisors m).powerset.filter (fun T => T.card ≤ hErdos m)).card := by
+  classical
+  have hspec : ∀ k : ℕ, ∃ T : Finset ℕ, k < m →
+      T ⊆ divisors m ∧ T.card = repLength m k ∧ T.sum id = k := by
+    intro k
+    by_cases hk : k < m
+    · obtain ⟨T, h1, h2, h3⟩ := repLength_spec' hm hk
+      exact ⟨T, fun _ => ⟨h1, h2, h3⟩⟩
+    · exact ⟨∅, fun h => absurd h hk⟩
+  choose f hf using hspec
+  have hmaps : Set.MapsTo f (Finset.range m : Set ℕ)
+      (((divisors m).powerset.filter (fun T => T.card ≤ hErdos m)) :
+        Set (Finset ℕ)) := by
+    intro k hk
+    rw [Finset.mem_coe, Finset.mem_range] at hk
+    obtain ⟨h1, h2, h3⟩ := hf k hk
+    rw [Finset.mem_coe, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨h1, ?_⟩
+    rw [h2]
+    unfold hErdos
+    exact Finset.le_sup (Finset.mem_range.mpr hk)
+  have hinj : Set.InjOn f (Finset.range m : Set ℕ) := by
+    intro k₁ hk₁ k₂ hk₂ heq
+    rw [Finset.mem_coe, Finset.mem_range] at hk₁ hk₂
+    have h₁ := (hf k₁ hk₁).2.2
+    have h₂ := (hf k₂ hk₂).2.2
+    rw [← h₁, ← h₂, heq]
+  have hcard := Finset.card_le_card_of_injOn f hmaps hinj
+  rwa [Finset.card_range] at hcard
+
+/-- **Information-theoretic lower bound for `hErdos`** (power form): for
+practical `m`, `m ≤ (d(m)+1)^(hErdos m)` — equivalently
+`hErdos m ≥ log m / log (d(m)+1)`. The correct-index analogue of
+`le_two_pow_h`. -/
+theorem le_succ_card_divisors_pow_hErdos {m : ℕ} (hm : IsPractical m) :
+    m ≤ ((divisors m).card + 1) ^ hErdos m :=
+  (le_card_small_subsets_of_practical hm).trans
+    (card_powerset_filter_card_le (divisors m) (hErdos m))
+
+/-- Contrapositive reading of the lower bound: any `t` with `(d(m)+1)^t < m` is a
+strict lower bound for `hErdos m`. -/
+theorem lt_hErdos_of_pow_lt {m t : ℕ} (hm : IsPractical m)
+    (h : ((divisors m).card + 1) ^ t < m) : t < hErdos m := by
+  by_contra hle
+  rw [not_lt] at hle
+  have hb := le_succ_card_divisors_pow_hErdos hm
+  have hmono : ((divisors m).card + 1) ^ hErdos m ≤ ((divisors m).card + 1) ^ t :=
+    Nat.pow_le_pow_right (by omega) hle
+  omega
+
 /-- **Erdős #18, Part 2 ($250), corrected.** The prize question `h(n!) < n^{o(1)}`
 stated over the correct index `hErdos`. Contrast `conjecture_part2_weak`, which is
 *false* for the parent's universal-set `h` (`factorial_le_two_pow_h`). -/
