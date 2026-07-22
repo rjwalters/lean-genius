@@ -81,6 +81,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Dirichlet's Approximation Theorem", "startLine": 1, "endLine": 21, "summary": "States Dirichlet's 1842 approximation theorem, its role as a key ingredient in the density increment lemma of Roth's theorem, and the pigeonhole proof sketch: partitioning [0,1) into Q equal intervals forces two of the Q+1 fractional parts {iα} into the same interval.", "mathContext": "For any real $\\alpha$ and positive integer $Q$, there exist integers $p,q$ with $1 \\le q \\le Q$ such that $|q\\alpha - p| < 1/Q$, proved by Dirichlet (1842) via pigeonhole on the $Q+1$ fractional parts $\\{i\\alpha\\}$."},
     {
       "id": "floor-bracketing",
       "title": "Floor Bracketing: Equal Floor ⇒ Difference < 1",
