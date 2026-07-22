@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: From Existence Witness to Genuine Exponential Bound",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring explaining the gap this file closes: the sibling RamseyFirstMoment.lean proves the first-moment criterion only in hypothesis form, and the gallery's erdos_ramsey_lower_bound stated the Erdős 1947 exponential bound as a trivial existence witness (∃ n, n ≥ 2^(k/2)) that says nothing about Ramsey numbers. This file discharges the counting hypothesis for the even-index family k=2m, n=2^m, proving the honest theorem R(2m,2m) > 2^m for all m ≥ 2 — a fully finite, integer-only proof via C(n,k)·k! ≤ n^k against the factorial growth (2m)! > 2^{m+1}. Imports Mathlib and the RamseyFirstMoment file; opens Nat and Finset.",
+      "mathContext": "$R(2m,2m) > 2^m$ for $m \\ge 2$, from discharging the first-moment hypothesis $2\\binom{n}{k} < 2^{\\binom{k}{2}}$ via $\\binom{n}{k}k! \\le n^k$ and $(2m)! > 2^{m+1}$."
+    },
+    {
       "id": "blocks",
       "title": "Arithmetic Building Blocks",
       "startLine": 37,
