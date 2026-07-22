@@ -131,7 +131,7 @@ color-critical (equivalently, greedy/degeneracy) argument always yields a subgra
 axiom four_chromatic_minDeg (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 →
     ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
-      H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3
+      H ≤ G ∧ @minDegree V _ _ H inst ≥ 3
 
 /--
 **Cycle lengths are monotone under subgraph inclusion.**
@@ -141,7 +141,7 @@ Bondy–Vince conclusion from the min-degree-3 subgraph back to `G`. -/
 theorem cycleLengths_mono {G H : SimpleGraph V} [DecidableRel G.Adj]
     [DecidableRel H.Adj] (h : H ≤ G) : cycleLengths H ⊆ cycleLengths G := by
   rintro n ⟨v, c, hc, rfl⟩
-  exact ⟨v, c.mapLe h, hc.mapLe h, by simp⟩
+  exact ⟨v, c.mapLe h, hc.mapLe h, Walk.length_map (Hom.ofLE h) c⟩
 
 /-
 ## Part III: Bondy-Vince Theorem
@@ -185,7 +185,7 @@ theorem erdos_751_chromatic_4 (G : SimpleGraph V) [DecidableRel G.Adj] :
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2 := by
   intro hchi
   obtain ⟨H, inst, hHG, hHdeg⟩ := four_chromatic_minDeg G hchi
-  haveI := inst
+  letI := inst
   obtain ⟨m, m', hm, hm', hne, h1, h2⟩ := bondy_vince_theorem H hHdeg
   exact ⟨m, m', cycleLengths_mono hHG hm, cycleLengths_mono hHG hm', hne, h1, h2⟩
 
@@ -248,7 +248,7 @@ subgraph, not on `G` itself.
 theorem chromatic_4_implies_min_deg_3 (G : SimpleGraph V) [DecidableRel G.Adj] :
     chromaticNumber G = 4 →
     ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
-      H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3 :=
+      H ≤ G ∧ @minDegree V _ _ H inst ≥ 3 :=
   four_chromatic_minDeg G
 
 /-
@@ -278,7 +278,7 @@ theorem erdos_751_summary (G : SimpleGraph V) [DecidableRel G.Adj] :
     -- Connection: χ = 4 yields a subgraph of min degree ≥ 3
     (chromaticNumber G = 4 →
       ∃ (H : SimpleGraph V) (inst : DecidableRel H.Adj),
-        H ≤ G ∧ @minDegree V _ _ _ H inst ≥ 3) :=
+        H ≤ G ∧ @minDegree V _ _ H inst ≥ 3) :=
   ⟨erdos_751_chromatic_4 G, min_degree_3_cycle_gap G, chromatic_4_implies_min_deg_3 G⟩
 
 end Erdos751
