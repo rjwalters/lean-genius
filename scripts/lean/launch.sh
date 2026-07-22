@@ -1833,9 +1833,119 @@ get_work_queue_stats() {
 }
 
 # Helper: Write daemon state to state file
+# Helper: Derive the daemon process start time as an ISO-8601 UTC timestamp.
+# Uses the running daemon PID (arg > $DAEMON_PID_FILE > $$) so a recreated
+# STATE_FILE reflects the ACTUAL uptime rather than a false 0 from `date` now.
+# Handles both macOS/BSD (`ps -o lstart=`, `date -j`) and GNU date (Linux).
+daemon_start_time_iso() {
+    local pid="${1:-}"
+    if [[ -z "$pid" && -f "$DAEMON_PID_FILE" ]]; then
+        pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
+    fi
+    [[ -z "$pid" ]] && pid=$$
+
+    local lstart epoch iso
+    # `ps -o lstart=` prints local-time wall clock, e.g. "Mon Jul 21 08:15:30 2026"
+    lstart=$(ps -o lstart= -p "$pid" 2>/dev/null | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    if [[ -n "$lstart" ]]; then
+        # BSD/macOS: parse local-time string -> epoch, then format as UTC.
+        epoch=$(date -j -f "%a %b %e %H:%M:%S %Y" "$lstart" +%s 2>/dev/null)
+        if [[ -n "$epoch" ]]; then
+            iso=$(date -u -r "$epoch" +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null)
+        else
+            # GNU date fallback (Linux)
+            iso=$(date -u -d "$lstart" +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null)
+        fi
+        if [[ -n "$iso" ]]; then
+            echo "$iso"
+            return 0
+        fi
+    fi
+    # Last resort: now (better a fresh uptime than a bogus multi-day one).
+    date -u +"%Y-%m-%dT%H:%M:%SZ"
+}
+
+# Helper: Recreate a missing/corrupt daemon STATE_FILE in place (#41048).
+# The state file lives under .loom/ (Loom-managed); a Loom reinstall's uninstall
+# phase can delete it, after which update_daemon_state() would no-op forever and
+# `/lean status` would report a bogus multi-day uptime with zeroed stats. This
+# rebuilds the same schema init_state() writes, deriving started_at from the real
+# daemon process start time and preserving pool config from the daemon's live
+# in-memory args (exposed as DAEMON_CONFIG_* globals by cmd_daemon).
+recreate_daemon_state() {
+    mkdir -p "$(dirname "$STATE_FILE")"
+
+    # Preserve session_stats only if a corrupt-but-readable file remains. A fully
+    # deleted file means stats are genuinely lost (acceptable); a still-present
+    # file must not be clobbered.
+    local prev_stats='{}'
+    if [[ -f "$STATE_FILE" ]]; then
+        prev_stats=$(jq '.session_stats // {}' "$STATE_FILE" 2>/dev/null || echo '{}')
+    fi
+
+    local started_at
+    started_at="$(daemon_start_time_iso)"
+
+    local new_state tmp
+    new_state=$(jq -n \
+        --arg started_at "$started_at" \
+        --argjson enricher "${DAEMON_CONFIG_ENRICHER:-$DEFAULT_ENRICHER}" \
+        --argjson aristotle "${DAEMON_CONFIG_ARISTOTLE:-$DEFAULT_ARISTOTLE}" \
+        --argjson researcher "${DAEMON_CONFIG_RESEARCHER:-$DEFAULT_RESEARCHER}" \
+        --argjson auditor "${DAEMON_CONFIG_AUDITOR:-$DEFAULT_AUDITOR}" \
+        --argjson seeker "${DAEMON_CONFIG_SEEKER:-$DEFAULT_SEEKER}" \
+        --argjson deployer "${DAEMON_CONFIG_DEPLOYER:-$DEFAULT_DEPLOYER}" \
+        --argjson tester "${DAEMON_CONFIG_TESTER:-$DEFAULT_TESTER}" \
+        --argjson herald "${DAEMON_CONFIG_HERALD:-$DEFAULT_HERALD}" \
+        --argjson mechanic "${DAEMON_CONFIG_MECHANIC:-$DEFAULT_MECHANIC}" \
+        --argjson prev_stats "$prev_stats" \
+        '{
+            started_at: $started_at,
+            running: true,
+            config: {
+                enricher: $enricher,
+                aristotle: $aristotle,
+                researcher: $researcher,
+                auditor: $auditor,
+                seeker: $seeker,
+                deployer: $deployer,
+                tester: $tester,
+                herald: $herald,
+                mechanic: $mechanic
+            },
+            agents: {},
+            session_stats: (
+                if ($prev_stats | length) > 0 then $prev_stats
+                else {
+                    entries_enriched: 0,
+                    proofs_submitted: 0,
+                    proofs_integrated: 0,
+                    problems_selected: 0,
+                    deployments: 0,
+                    research_completed: 0
+                }
+                end
+            )
+        }')
+
+    # Atomic write (temp-file + mv), matching the existing update patterns.
+    tmp=$(mktemp)
+    printf '%s\n' "$new_state" > "$tmp" && mv "$tmp" "$STATE_FILE"
+
+    if declare -F daemon_log >/dev/null 2>&1; then
+        daemon_log "WARN" "STATE_FILE was missing/corrupt; self-healed with started_at=$started_at (#41048)"
+    fi
+}
+
 update_daemon_state() {
     local cycle_count="$1"
     local respawn_count="$2"
+
+    # Self-heal: if the state file was deleted (e.g. a Loom reinstall wiped
+    # .loom/) or corrupted, recreate it instead of silently no-op'ing (#41048).
+    if [[ ! -f "$STATE_FILE" ]] || ! jq empty "$STATE_FILE" >/dev/null 2>&1; then
+        recreate_daemon_state
+    fi
 
     if [[ -f "$STATE_FILE" ]]; then
         local tmp
@@ -1990,6 +2100,18 @@ cmd_daemon() {
                 ;;
         esac
     done
+
+    # Expose the daemon's live pool config as globals so recreate_daemon_state()
+    # can rebuild a deleted/corrupt STATE_FILE without a full restart (#41048).
+    DAEMON_CONFIG_ENRICHER="$enricher"
+    DAEMON_CONFIG_ARISTOTLE="$aristotle"
+    DAEMON_CONFIG_RESEARCHER="$researcher"
+    DAEMON_CONFIG_AUDITOR="$auditor"
+    DAEMON_CONFIG_SEEKER="$seeker"
+    DAEMON_CONFIG_DEPLOYER="$deployer"
+    DAEMON_CONFIG_TESTER="$tester"
+    DAEMON_CONFIG_HERALD="$herald"
+    DAEMON_CONFIG_MECHANIC="$mechanic"
 
     # Check for existing daemon
     if [[ -f "$DAEMON_PID_FILE" ]]; then
