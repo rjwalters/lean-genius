@@ -187,6 +187,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: which transcendentals are topologically generic?",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring. States the parent's third open question — the transcendentals are comeagre but not homogeneous, so which are topologically generic? Answers via the classical Baire-category theorem for Liouville numbers: the Liouville numbers are themselves a dense Gδ inside the transcendentals, so the generic (Baire-comeagre) transcendental is Liouville, while the non-Liouville transcendentals are meagre. States the measure-theoretic counterpoint: the Liouville set has Lebesgue measure zero, so it is simultaneously comeagre and null — the comeagre transcendental is Liouville, the almost-every transcendental is non-Liouville, and the two genericity filters are disjoint. Lists the eight Main Results.",
+      "mathContext": "Comeagre (Baire-generic) and full-measure (Lebesgue-generic) are independent notions of 'almost all': the Liouville numbers are comeagre yet Lebesgue-null, so the Baire-typical transcendental is Liouville while the measure-typical transcendental is not — `Real.disjoint_residual_ae` makes this divergence precise."
+    },
+    {
       "id": "transcendence-bridge",
       "title": "The transcendence bridge: Liouville ⟹ transcendental over ℚ",
       "startLine": 57,
