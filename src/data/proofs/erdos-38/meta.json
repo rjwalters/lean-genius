@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-38",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #38: does there exist $B \\subseteq \\mathbb{N}$ that is NOT an additive basis, yet for every set $A$ of Schnirelmann density $\\alpha$ some $b \\in B$ boosts $|(A \\cup (A+b)) \\cap \\{1,\\dots,N\\}|$ by a density-dependent factor $f(\\alpha)>0$? Linnik (1942) built a weaker essential component that isn't a basis.",
+      "startLine": 1,
+      "endLine": 35,
+      "mathContext": "Schnirelmann density $\\sigma(A) = \\inf_N |A\\cap\\{1,\\dots,N\\}|/N$; an additive basis of order $k$ satisfies $B+\\cdots+B$ ($k$ times) $=\\mathbb{N}$, and Erd\u0151s's 1936 inequality bounds the density gain by $\\alpha(1-\\alpha)/(2k)$ for genuine bases."
+    },
+    {
       "id": "schnirelmann",
       "title": "Schnirelmann Density",
       "startLine": 36,
