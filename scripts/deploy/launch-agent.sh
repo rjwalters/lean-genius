@@ -279,12 +279,19 @@ launch_agent() {
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     # Per-role override: DEPLOYER_CLAUDE_MODEL > CLAUDE_MODEL > wrapper default.
     local deployer_model="${DEPLOYER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+    # Enforce the check interval as a floor between cycles. When a cycle finds
+    # nothing to merge and the build/deploy stages are skipped, it can return in
+    # well under a minute; without a floor the wrapper busy-loops and re-invokes
+    # Claude every ~30-90s instead of every INTERVAL minutes, burning quota on
+    # no-op cycles (same fix as seeker/herald; see scripts/research/launch-seeker.sh
+    # and scripts/herald/launch-agent.sh).
+    local cycle_min_seconds=$((INTERVAL * 60))
     # Deploy build is memory-heavy (large vite module graph); give it a 12GB heap
     # to avoid GC thrash that stalls vite at `transforming...`, and a 2h CLI cap so
     # a ~40m build leaves room for merge/sync/deploy. All env-overridable. These are
     # band-aids until #20984 moves gallery data out of the vite module graph.
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
-        "ENHANCER_ID=deployer REPO_ROOT=$WORKTREE_PATH BUILD_TIMEOUT='${BUILD_TIMEOUT:-45m}' BUILD_NODE_OPTIONS='${BUILD_NODE_OPTIONS:---max-old-space-size=12288}' CLAUDE_TIMEOUT='${CLAUDE_TIMEOUT:-7200}' CLAUDE_MODEL=$deployer_model $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=deployer REPO_ROOT=$WORKTREE_PATH BUILD_TIMEOUT='${BUILD_TIMEOUT:-45m}' BUILD_NODE_OPTIONS='${BUILD_NODE_OPTIONS:---max-old-space-size=12288}' CLAUDE_TIMEOUT='${CLAUDE_TIMEOUT:-7200}' CLAUDE_MODEL=$deployer_model CYCLE_MIN_SECONDS=$cycle_min_seconds $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
 
     print_success "Launched deployer agent"
     echo ""
