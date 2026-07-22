@@ -56,6 +56,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Gaussian Characteristic Function exp(i\u03bct \u2212 \u03c3\u00b2t\u00b2/2)", "startLine": 1, "endLine": 25, "summary": "States the properties proved for the Gaussian characteristic function \u03c6(t) = exp(i\u03bct \u2212 \u03c3\u00b2t\u00b2/2): \u03c6(0)=1, |\u03c6(t)| = exp(\u2212\u03c3\u00b2t\u00b2/2), the product formula for independent sums, and the inversion relationship to the Gaussian density, noting \u03c6 is the Fourier transform of the N(\u03bc,\u03c3\u00b2) density.", "mathContext": "$\\varphi(t)=\\exp(i\\mu t - \\sigma^2t^2/2)$ is the Fourier transform of the Gaussian density $(2\\pi\\sigma^2)^{-1/2}\\exp(-(x-\\mu)^2/(2\\sigma^2))$; its modulus $\\exp(-\\sigma^2t^2/2)$ and multiplicativity under independent sums are the two facts driving the CLT proof via characteristic functions."},
     {
       "id": "definition",
       "title": "§1: Definition and Basic Properties",
