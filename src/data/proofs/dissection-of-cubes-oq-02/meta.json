@@ -65,6 +65,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Dehn Invariant and Hilbert's Third Problem", "startLine": 1, "endLine": 46, "summary": "States Hilbert's Third Problem (1900) and Dehn's 1900 negative answer via the Dehn invariant, defines scissors congruence and the Dehn invariant, states Dehn's theorem that scissors-congruent polyhedra share the same invariant, and notes this file extends DissectionOfCubes.lean (Wiedijk #82) and DissectionOfCubesOQ01.lean.", "mathContext": "Formalizes the Dehn invariant $D(P) = \\sum_e \\mathrm{length}(e) \\otimes \\theta(e)$ in $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$, showing a cube (invariant 0) and equal-volume regular tetrahedron (nonzero invariant, since $\\arccos(1/3)$ is an irrational multiple of $\\pi$) are not scissors congruent."},
     {
       "id": "scissors",
       "title": "Scissors Congruence",
