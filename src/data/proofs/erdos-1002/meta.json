@@ -24,7 +24,7 @@
     "relatedProblems": [],
     "axiomCount": 1,
     "lineCount": 183,
-    "assumptions": "1 axiom: erdos_1002_conjecture (OPEN: Erdős #1002 main conjecture on Cauchy distribution sums). Supporting lemmas cauchy_is_distribution, kesten_theorem, f_bounded_for_irrational, innerSum_log_bound, weyl_equidistribution, innerSum_periodic_rational now proved.",
+    "assumptions": "1 axiom: erdos_1002_conjecture (OPEN: Erdős #1002 main conjecture on Cauchy distribution sums). Two lemmas formerly axiomatized in this file — cauchy_is_distribution and innerSum_periodic_rational — are now proved in the companion file Erdos1002OQ01.lean.",
     "theoremCount": 2,
     "definitionCount": 11
   },
