@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-289",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s\u2013Graham problem (#289): for all sufficiently large $k$, do there exist $k$ disjoint, non-adjacent intervals of naturals (each of size $\\ge 2$) whose reciprocal sums total exactly 1? Hickerson\u2013Montgomery found 5 such intervals summing to 2 as a partial data point.",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "The non-adjacency and disjointness constraints rule out trivially splicing one interval's unit fractions into two; each interval $I_i$ contributes $\\sum_{n \\in I_i} 1/n$ toward the target total of exactly 1."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 29,
