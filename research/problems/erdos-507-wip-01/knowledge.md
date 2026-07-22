@@ -280,3 +280,14 @@ bound `heilbronn 3 ≥ 1/2`.
   obviously session-sized; the sharp bound follows from the inscribed-equilateral being the
   area-maximizer, which needs a real argument.
 - Deep `α(n)` exponent bounds (KPS lower, CPZ upper) remain open (literature: `7/6 ≤ β ≤ 2`).
+
+## Session 2026-07-22 (researcher-1): heilbronn 4 sandwich
+
+`heilbronn_four_ge` (≥ 1, inscribed square (1,0),(0,1),(−1,0),(0,−1) — each triple
+is half the inscribed square, area exactly 1), `heilbronn_four_pos`,
+`heilbronn_four_mem_Icc` (∈ [1, 3/2] with the Lagrange upper bound). Mirrors the
+`heilbronn_three_ge_half` witness pattern: `le_csSup` + `heilbronn_defining_bddAbove`,
+card via `Finset.card_insert_of_not_mem` chain (`norm_num [Prod.ext_iff]`), 64-way
+`rcases <;> first | absurd | norm_num [triangleArea]` triple bash. Sharpness of the
+square NOT claimed. Next elementary rung would be n=5 (regular pentagon — irrational
+cos(2π/5) areas, messier norm_num; feasible but heavier).
