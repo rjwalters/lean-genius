@@ -2,7 +2,7 @@
   {
     "id": "erdos128-wip01oq01oq01oq01-ann-header",
     "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 3, "endLine": 53 },
+    "range": { "startLine": 1, "endLine": 53 },
     "type": "concept",
     "title": "From cliques to arbitrary forbidden subgraphs",
     "content": "Erdős Problem #128 ($250, open) asks whether a uniform edge-density condition on all large induced subgraphs forces a triangle; the conjectured-optimal constant 1/50 is witnessed by blow-ups of C₅. The parent chain lifted the homomorphism-pullback principle from triangles to K_r-cliques of every order. This entry answers that parent's stated open question by generalizing once more — beyond cliques to arbitrary forbidden subgraphs F — and shows clique-freeness is exactly the F = K_r case.",
@@ -10,6 +10,18 @@
     "significance": "key",
     "relatedConcepts": ["Ramsey–Turán theory", "forbidden subgraph", "graph homomorphism", "C₅ blow-up"],
     "prerequisites": ["graph theory", "extremal combinatorics"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-graph-hom",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 66 },
+    "type": "definition",
+    "title": "Re-declaring Graph and IsHom",
+    "content": "Graph n re-declares a simple graph on Fin n (an irreflexive, symmetric adjacency relation) and IsHom re-declares a graph homomorphism f : G → H (adjacent vertices map to adjacent vertices, with no injectivity or surjectivity required) — both carried over unchanged from the parent files so this entry stays self-contained over Mathlib. Every later definition (hasHomCopy, homFree, blowup) and theorem in the file is built on exactly these two declarations.",
+    "mathContext": "$G = (\\mathrm{adj}, \\mathrm{symm}, \\mathrm{irrefl})$ on $\\mathrm{Fin}\\,n$; $\\mathrm{IsHom}\\,G\\,H\\,f := \\forall\\,u\\,v,\\ G.\\mathrm{adj}\\,u\\,v \\to H.\\mathrm{adj}\\,(f\\,u)\\,(f\\,v)$.",
+    "significance": "context",
+    "relatedConcepts": ["simple graph", "graph homomorphism", "self-contained re-declaration"],
+    "prerequisites": ["irreflexive symmetric relations", "Fin n"]
   },
   {
     "id": "erdos128-wip01oq01oq01oq01-ann-homcopy",
@@ -26,7 +38,7 @@
   {
     "id": "erdos128-wip01oq01oq01oq01-ann-pullback",
     "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 82, "endLine": 92 },
+    "range": { "startLine": 82, "endLine": 89 },
     "type": "theorem",
     "title": "homFree_of_hom — pullback by pure composition",
     "content": "For every fixed graph F: if there is a homomorphism f : G → H and H has no homomorphic copy of F, then neither does G. The proof composes — a copy φ : F → G followed by f is a copy f ∘ φ : F → H. No irreflexivity is used here; this is the general structural reason behind the parent's cliqueFree_of_hom, with the clique case's appeal to irreflexivity moved entirely into the bridge.",
@@ -46,6 +58,18 @@
     "significance": "key",
     "relatedConcepts": ["graph minor order", "homomorphism order", "monotonicity"],
     "prerequisites": ["graph homomorphism"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-clique-setup",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 116 },
+    "type": "definition",
+    "title": "Cliques and the complete graph K_r",
+    "content": "Graph.hasClique re-declares an r-clique as an injective family of r pairwise-adjacent vertices, and Graph.cliqueFree its negation. completeGraph r declares K_r on Fin r (distinct vertices adjacent). completeGraph_castLE_isHom records that the inclusion Fin.castLE is a graph homomorphism K_m → K_r whenever m ≤ r — the fact that feeds hasHomCopy_mono to give clique-order monotonicity. These four declarations set up everything the bridge below needs.",
+    "mathContext": "$G.\\mathrm{hasClique}\\,r := \\exists\\,s : \\mathrm{Fin}\\,r \\to \\mathrm{Fin}\\,n,\\ \\mathrm{Inj}(s) \\wedge \\forall\\,i\\ne j,\\ G.\\mathrm{adj}(s\\,i)(s\\,j)$; $K_r.\\mathrm{adj}\\,i\\,j := i \\ne j$.",
+    "significance": "context",
+    "relatedConcepts": ["clique", "complete graph", "Fin.castLE", "graph homomorphism"],
+    "prerequisites": ["injective functions", "Fin.castLE"]
   },
   {
     "id": "erdos128-wip01oq01oq01oq01-ann-bridge",
@@ -70,5 +94,17 @@
     "significance": "key",
     "relatedConcepts": ["blow-up", "C₅", "extremal construction", "decision procedure"],
     "prerequisites": ["graph blow-up", "finite decidability"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-significance",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 204, "endLine": 219 },
+    "type": "insight",
+    "title": "Significance: freeness of any fixed subgraph pulls back",
+    "content": "The closing docstring names the general mechanism this file isolates: freeness of a homomorphic copy of ANY fixed graph F pulls back along homomorphisms, by nothing more than composing f ∘ φ. The clique results (cliqueFree_of_hom, C5_cliqueFree, blowup_C5_cliqueFree) are recovered as the F = K_r instance via the bridge, and clique-order monotonicity becomes monotonicity along homomorphisms F' → F. It closes by noting what remains open: the analytic content of Erdős #128 itself — that the C₅-blow-ups achieve induced density > 1/50, and that 1/50 is optimal.",
+    "mathContext": "General mechanism: $\\mathrm{homFree}\\,F\\,H \\wedge (G \\to H) \\Rightarrow \\mathrm{homFree}\\,F\\,G$, with clique-freeness as the $F=K_r$ instance; the density bound $>1/50$ remains open.",
+    "significance": "supporting",
+    "relatedConcepts": ["forbidden subgraph", "homomorphism pullback", "Erdős problem #128", "open density bound"],
+    "prerequisites": ["all results of this file", "the parent's triangle/clique pullback results"]
   }
 ]
