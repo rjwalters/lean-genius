@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header Docstring",
+      "startLine": 1,
+      "endLine": 15,
+      "summary": "States Erdős Problem #1021: for every $k \\ge 3$, does there exist $c_k > 0$ with $\\text{ex}(n, G_k) \\ll n^{3/2 - c_k}$, where $G_k$ is the bipartite graph joining $k$ primary vertices to $\\binom{k}{2}$ pair vertices? Status: OPEN. Records $c_k \\to 0$ (Erdős-Simonovits) and the special case $G_3 = C_6$.",
+      "mathContext": "Docstring only; no formal declarations."
+    },
+    {
       "id": "graph-basics",
       "title": "Graph Basics",
       "summary": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite types.",
