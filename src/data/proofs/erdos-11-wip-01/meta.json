@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Statement and Roadmap",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States Erdős #11 (open): is every odd n > 1 the sum of a squarefree number and a power of two? Notes the parent Erdos11Problem bit-rotted against current Mathlib and lists this file's three tools — isSquarefreePlusPow2_iff (bounded characterization), squarefreePlusPow2_of_witness (easy direction), and the worked cases 3..17 — plus the honest caveat that a kernel decide over a range is unavailable since Squarefree routes through Nat.minSqFac.",
+      "mathContext": "Erdős #11: $\\forall$ odd $n>1,\\ n = s + 2^k$ with $s$ squarefree? 0 axioms, 0 sorries; Hercher (2024), Granville–Soundararajan (1998)."
+    },
+    {
       "id": "definitions",
       "title": "Self-Contained Predicates",
       "startLine": 33,
