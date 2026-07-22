@@ -29,6 +29,17 @@
   * `abelianCoverNumber_zero_lt_one`  : **`h(0) < h(1)`** — the covering number
                                         already jumps at the base of the ladder.
 
+  Structural theory of the property itself (closure properties, all axiom-free):
+
+  * `hasNCommutingProperty_of_injective` : the property transfers along injective
+                                        homomorphisms (it only weakens under
+                                        embedding into a larger group).
+  * `hasNCommutingProperty_subgroup`    : subgroups inherit the property
+                                        (hereditary).
+  * `hasNCommutingProperty_of_mulEquiv` : the property is an isomorphism invariant.
+  * `hasNCommutingProperty_of_card_le`  : every finite group has the property once
+                                        `n` reaches its order (eventually universal).
+
   The open Erdős #117 (the exact base of the exponential growth of `h(n)`) and
   Pyber's bounds are untouched.
 -/
@@ -120,3 +131,63 @@ theorem abelianCoverNumber_zero_lt_one :
     abelianCoverNumber 0 < abelianCoverNumber 1 := by
   rw [abelianCoverNumber_zero, abelianCoverNumber_one]
   exact Nat.zero_lt_one
+
+/- ## Structural theory of the `n`-commuting property
+
+The covering *number* `h(n)` is bounded below only through Pyber's deep theorem
+(the covering set is nonempty), but the underlying `n`-commuting *property* has a
+clean, unconditional elementary theory: it is inherited by embeddings (hence by
+subgroups), invariant under isomorphism, and eventually universal (every finite
+group has it once the threshold reaches its order).  These are the closure
+properties that make `HasNCommutingProperty` a genuine group-theoretic invariant,
+all axiom-free. -/
+
+/-- **The `n`-commuting property transfers along injective homomorphisms.** If
+    `f : G →* H` is injective and `H` has the `n`-commuting property, then so does
+    `G`: an `n`-exceeding subset `S ⊆ G` maps to an equal-cardinality subset
+    `f(S) ⊆ H` (injectivity preserves cardinality), whose guaranteed distinct
+    commuting pair `f a, f b` pulls back — `f (a*b) = f (b*a)` gives `a*b = b*a`,
+    and `f a ≠ f b` gives `a ≠ b`.  So the property only ever *weakens* under
+    embedding into a larger group. -/
+theorem hasNCommutingProperty_of_injective {G H : Type*} [Group G] [Group H]
+    {n : ℕ} (f : G →* H) (hf : Function.Injective f)
+    (hH : HasNCommutingProperty H n) : HasNCommutingProperty G n := by
+  classical
+  intro S hS
+  have hcard : (S.image f).card = S.card := Finset.card_image_of_injective S hf
+  obtain ⟨x, y, hx, hy, hxy, hcomm⟩ := hH (S.image f) (by rw [hcard]; exact hS)
+  rw [Finset.mem_image] at hx hy
+  obtain ⟨a, ha, rfl⟩ := hx
+  obtain ⟨b, hb, rfl⟩ := hy
+  refine ⟨a, b, ha, hb, fun hab => hxy (by rw [hab]), hf ?_⟩
+  rw [map_mul, map_mul, hcomm]
+
+/-- **Subgroups inherit the `n`-commuting property.** For any subgroup `K ≤ G`, if
+    `G` has the `n`-commuting property then so does `K`, since the inclusion
+    `K ↪ G` is an injective homomorphism (`hasNCommutingProperty_of_injective`).
+    The property is therefore *hereditary*. -/
+theorem hasNCommutingProperty_subgroup {G : Type*} [Group G] (K : Subgroup G)
+    {n : ℕ} (h : HasNCommutingProperty G n) : HasNCommutingProperty K n :=
+  hasNCommutingProperty_of_injective K.subtype K.subtype_injective h
+
+/-- **The `n`-commuting property is an isomorphism invariant.** A group
+    isomorphism `e : G ≃* H` carries the property from `G` to `H`, via the
+    injective homomorphism `e.symm : H →* G` (`hasNCommutingProperty_of_injective`).
+    Together with `hasNCommutingProperty_subgroup` this makes
+    `HasNCommutingProperty` a genuine invariant of the isomorphism type. -/
+theorem hasNCommutingProperty_of_mulEquiv {G H : Type*} [Group G] [Group H]
+    {n : ℕ} (e : G ≃* H) (h : HasNCommutingProperty G n) :
+    HasNCommutingProperty H n :=
+  hasNCommutingProperty_of_injective e.symm.toMonoidHom e.symm.injective h
+
+/-- **Every finite group has the `n`-commuting property once `n` reaches its
+    order.** If `Fintype.card G ≤ n` then no subset of `G` can exceed size `n`
+    (`Finset.card_le_univ`), so the defining condition is vacuously satisfied.
+    Hence the property is *eventually universal*: for each finite `G` it holds for
+    all large `n` — the elementary reason the interesting content of `h(n)` lives
+    at thresholds below the group order. -/
+theorem hasNCommutingProperty_of_card_le {G : Type*} [Group G] [Fintype G] {n : ℕ}
+    (h : Fintype.card G ≤ n) : HasNCommutingProperty G n := by
+  intro S hS
+  have hSn : S.card ≤ n := (Finset.card_le_univ S).trans h
+  exact absurd hS (Nat.not_lt.mpr hSn)
