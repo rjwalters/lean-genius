@@ -67,10 +67,12 @@ theorem V_mono : Monotone V := by
 theorem one_is_totient : ∃ m : ℕ, m.totient = 1 := ⟨1, rfl⟩
 
 /-- Small values: 2 is a totient value (φ(3) = 2) -/
-theorem two_is_totient : ∃ m : ℕ, m.totient = 2 := ⟨3, by native_decide⟩
+theorem two_is_totient : ∃ m : ℕ, m.totient = 2 :=
+  ⟨3, by rw [Nat.totient_prime (by norm_num : Nat.Prime 3)]⟩
 
 /-- Small values: 4 is a totient value (φ(5) = 4) -/
-theorem four_is_totient : ∃ m : ℕ, m.totient = 4 := ⟨5, by native_decide⟩
+theorem four_is_totient : ∃ m : ℕ, m.totient = 4 :=
+  ⟨5, by rw [Nat.totient_prime (by norm_num : Nat.Prime 5)]⟩
 
 /- ## Partial Results (Solved) -/
 
