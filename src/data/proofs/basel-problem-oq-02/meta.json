@@ -80,6 +80,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Are Odd Zeta Values Transcendental? (Open)", "startLine": 1, "endLine": 38, "summary": "States the open question extending the Basel problem: whether odd zeta values ζ(2k+1) are transcendental. Surveys known results — ζ(2k) rational×π^{2k} hence transcendental (Euler + Lindemann 1882), ζ(3) irrational (Apéry 1978), infinitely many ζ(2k+1) irrational (Rivoal 2000), at least one of ζ(5,7,9,11) irrational (Zudilin 2001) — and summarizes the formalization: zetaValue infrastructure, even values proved transcendental from the Lindemann axiom, odd values left as conjectures with Apéry axiomatized.", "mathContext": "$\\zeta(2k)=q\\cdot\\pi^{2k}$ for rational $q$, hence transcendental (Euler + Lindemann 1882); $\\zeta(3)$ irrational (Apéry 1978); infinitely many $\\zeta(2k+1)$ irrational (Rivoal 2000); whether any $\\zeta(2k+1)$ is transcendental remains OPEN."},
     {
       "id": "zeta-values-natural",
       "title": "Part 1: Zeta Values at Natural Numbers",
