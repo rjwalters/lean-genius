@@ -117,6 +117,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Vandermonde Invariant for the Alternating Group",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "States the follow-up question this file addresses — the parent chain settles the optimal degree bound β(Sₙ)=n for the symmetric group's invariant ring R[e₁,…,eₙ]; this entry identifies the generating invariant for the alternating group Aₙ ⊆ Sₙ, namely the Vandermonde/discriminant polynomial Δ = ∏_{i<j}(xⱼ−xᵢ). It proves Δ is alternating (rename e Δ = sign(e)•Δ, via MvPolynomial.funext and the classical fact that permuting Vandermonde matrix rows scales the determinant by the sign), hence Aₙ-invariant but not Sₙ-invariant (so Δ ∉ R[e₁,…,eₙ], a genuinely new generator), while Δ² is symmetric — the algebraic relation Aₙ-invariants satisfy over the Sₙ-invariants — and Δ is homogeneous of degree C(n,2).",
+      "mathContext": "$\\Delta = \\prod_{i<j}(x_j-x_i)$ satisfies $\\mathrm{rename}\\,e\\,\\Delta = \\mathrm{sign}(e)\\cdot\\Delta$; $\\Delta$ generates the $A_n$-invariants beyond $R[e_1,\\dots,e_n]$, with $\\Delta^2$ symmetric and $\\deg\\Delta = \\binom{n}{2}$."
+    },
+    {
       "id": "definition-eval",
       "title": "Section I: The Vandermonde Invariant and Its Evaluation",
       "startLine": 48,
