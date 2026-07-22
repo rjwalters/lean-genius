@@ -33,6 +33,13 @@
     This produces infinitely many *new* families, e.g. `2^n · 6`, beyond the pure
     powers of two.
 
+  Finally, two structural bounds:
+
+  * `two_mul_sub_one_le_sigma` — for practical `m`, the sum of divisors obeys
+    `σ(m) ≥ 2m − 1` (`m − 1` is a sum of proper divisors, plus the divisor `m`).
+  * `odd_practical_eq_one` — the only *odd* practical number is `1` (immediate from
+    the evenness necessary condition).
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -227,5 +234,44 @@ theorem two_pow_mul_practical (n : ℕ) {m : ℕ} (h : IsPractical m) :
 (e.g. `6, 12, 24, 48, …`). -/
 theorem two_pow_mul_six_practical (n : ℕ) : IsPractical (2 ^ n * 6) :=
   two_pow_mul_practical n six_practical
+
+/- ## Structural bounds -/
+
+/-- **For practical `m`, the sum of divisors satisfies `σ(m) ≥ 2m − 1`.** Since `m − 1`
+is a sum of divisors, and any such subset must avoid `m` itself (`m > m − 1`), it is a
+sum of *proper* divisors; adjoining the divisor `m` gives `σ(m) ≥ (m − 1) + m`. -/
+theorem two_mul_sub_one_le_sigma {m : ℕ} (h : IsPractical m) :
+    2 * m - 1 ≤ (divisors m).sum id := by
+  obtain ⟨hm1, hrep⟩ := h
+  rcases Nat.lt_or_ge m 2 with hlt | hge
+  · interval_cases m
+    simp [divisors, Nat.divisors_one]
+  · obtain ⟨S, hS, hsum⟩ := hrep (m - 1) (by omega) (by omega)
+    have hmS : m ∉ S := by
+      intro hmem
+      have hle := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hmem
+      rw [hsum, id_eq] at hle
+      omega
+    have hsub : insert m S ⊆ divisors m := by
+      rw [Finset.insert_subset_iff]
+      refine ⟨?_, hS⟩
+      rw [divisors, Nat.mem_divisors]
+      exact ⟨dvd_refl m, by omega⟩
+    have hle : (insert m S).sum id ≤ (divisors m).sum id :=
+      Finset.sum_le_sum_of_subset hsub
+    rw [Finset.sum_insert hmS, hsum, id_eq] at hle
+    omega
+
+/-- **The only odd practical number is `1`.** A practical `m ≥ 3` is even
+(`even_of_practical`), so an odd practical number is `< 3`, hence `1`. -/
+theorem odd_practical_eq_one {m : ℕ} (h : IsPractical m) (hodd : Odd m) : m = 1 := by
+  rcases Nat.lt_or_ge m 3 with hlt | hge
+  · obtain ⟨b, hb⟩ := hodd
+    have hm1 := h.1
+    omega
+  · exfalso
+    obtain ⟨a, ha⟩ := even_of_practical hge h
+    obtain ⟨b, hb⟩ := hodd
+    omega
 
 end Erdos18
