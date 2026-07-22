@@ -113,6 +113,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Rate-Distortion Theory", "startLine": 1, "endLine": 28, "summary": "Formalizes Shannon's 1959 rate-distortion function R(D) = min I(X;X̂) over all conditional distributions with expected distortion ≤ D, proving monotonicity, non-negativity, and for the Gaussian case R(D)=½log(σ²/D) with boundary value R(σ²)=0. One axiom (rateDistortion_convex) remains, requiring optimization over test channels.", "mathContext": "Rate-distortion theory quantifies the minimum bit rate needed for lossy compression at a target distortion level, the natural extension of Shannon's lossless source coding theorem when exact reconstruction is not required; the Gaussian case is the canonical worked example with a closed-form R(D)."},
     {
       "id": "definitions",
       "title": "Core Definitions",
