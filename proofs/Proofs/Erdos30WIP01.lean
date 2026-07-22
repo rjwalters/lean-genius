@@ -486,8 +486,7 @@ theorem sum_offDiag_fst (A : Finset ℕ) :
   have hprod : ∑ p ∈ A ×ˢ A, (p.1 : ℤ) = (A.card : ℤ) * ∑ a ∈ A, (a : ℤ) := by
     rw [Finset.sum_product, Finset.mul_sum]
     refine Finset.sum_congr rfl (fun a _ => ?_)
-    have hc : ∀ b : ℕ, ((a, b).1 : ℤ) = (a : ℤ) := fun _ => rfl
-    simp_rw [hc, Finset.sum_const, nsmul_eq_mul]
+    rw [Finset.sum_const, nsmul_eq_mul]
   have hdiag : ∑ p ∈ A.diag, (p.1 : ℤ) = ∑ a ∈ A, (a : ℤ) := by
     simp [Finset.sum_diag]
   rw [hprod, hdiag] at hsplit
@@ -511,95 +510,64 @@ theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
     have h6 : 6 ≤ A.card := by omega
     have hmul : 6 * A.card ≤ A.card * A.card := Nat.mul_le_mul h6 (le_refl A.card)
     omega
-  -- `P` = ordered pairs `(a,b)` with `a > b`: the positive-difference pairs.
-  set P := A.offDiag.filter (fun p => p.2 < p.1) with hP
+  -- `P` = the positive-difference ordered pairs `(a, b)` with `a > b` (i.e. `diffMap > 0`).
+  set P := A.offDiag.filter (fun p => 0 < diffMap p) with hP
   have hPsub : P ⊆ A.offDiag := Finset.filter_subset _ _
-  have hinjP : Set.InjOn diffMap ↑P :=
-    (diffMap_injOn hA).mono (Finset.coe_subset.mpr hPsub)
-  -- Both coordinates of any off-diagonal pair are `≤ 10`.
-  have hle10 : ∀ p ∈ A.offDiag, p.1 ≤ 10 ∧ p.2 ≤ 10 := by
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hinjP : Set.InjOn diffMap ↑P := hfull.mono (Finset.coe_subset.mpr hPsub)
+  have hoffcard : A.offDiag.card = 20 := by rw [Finset.offDiag_card, hc5]
+  -- `diffMap` sends the off-diagonal onto the 20 nonzero integers of `[-10, 10]`.
+  have hmapsFull : ∀ p ∈ A.offDiag, diffMap p ∈ (Finset.Icc (-10 : ℤ) 10).erase 0 := by
     intro p hp
     rw [Finset.mem_offDiag] at hp
-    have h1 := hsub hp.1
-    have h2 := hsub hp.2.1
-    rw [Finset.mem_range] at h1 h2
-    omega
-  -- Positive differences land in `[1,10]`.
-  have hmaps : ∀ p ∈ P, diffMap p ∈ Finset.Icc (1 : ℤ) 10 := by
-    intro p hp
-    rw [hP, Finset.mem_filter] at hp
-    obtain ⟨hpoff, hlt⟩ := hp
-    have hb := hle10 p hpoff
-    rw [Finset.mem_Icc]
+    obtain ⟨hp1, hp2, hpne⟩ := hp
+    have hb1 := hsub hp1; have hb2 := hsub hp2
+    rw [Finset.mem_range] at hb1 hb2
+    rw [Finset.mem_erase, Finset.mem_Icc]
     simp only [diffMap]
-    constructor <;> omega
-  -- `|P| = 10`: `P` and its swap are the two equal halves of the 20-element off-diagonal.
-  have hoffcard : A.offDiag.card = 20 := by
-    rw [Finset.offDiag_card, hc5]
-  have hpart := Finset.card_filter_add_card_filter_not (s := A.offDiag) (fun p => p.2 < p.1)
-  have hfeq : A.offDiag.filter (fun p => ¬ p.2 < p.1)
-            = A.offDiag.filter (fun p => p.1 < p.2) := by
-    apply Finset.filter_congr
-    intro p hp
-    rw [Finset.mem_offDiag] at hp
-    obtain ⟨_, _, hne⟩ := hp
-    constructor <;> intro <;> omega
-  have hswapcard : (A.offDiag.filter (fun p => p.1 < p.2)).card
-                 = (A.offDiag.filter (fun p => p.2 < p.1)).card := by
-    apply Finset.card_nbij' Prod.swap Prod.swap
-    · intro p hp
-      rw [Finset.mem_filter, Finset.mem_offDiag] at hp ⊢
-      obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := hp
-      exact ⟨⟨h2, h1, fun h => hne h.symm⟩, by simp only [Prod.swap]; omega⟩
-    · intro p hp
-      rw [Finset.mem_filter, Finset.mem_offDiag] at hp ⊢
-      obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := hp
-      exact ⟨⟨h2, h1, fun h => hne h.symm⟩, by simp only [Prod.swap]; omega⟩
-    · intro p _; simp [Prod.swap]
-    · intro p _; simp [Prod.swap]
-  have hcardP : P.card = 10 := by
-    rw [hP] at hoffcard hpart ⊢
-    rw [hfeq, hswapcard] at hpart
-    omega
-  -- The image of `P` under `diffMap` is exactly `{1,…,10}`.
-  have hDsub : P.image diffMap ⊆ Finset.Icc (1 : ℤ) 10 := by
-    intro d hd
-    rw [Finset.mem_image] at hd
-    obtain ⟨p, hp, rfl⟩ := hd
-    exact hmaps p hp
-  have hcardimg : (P.image diffMap).card = 10 := by
-    rw [Finset.card_image_of_injOn hinjP, hcardP]
-  have hIcc : (Finset.Icc (1 : ℤ) 10).card = 10 := by decide
-  have hDeq : P.image diffMap = Finset.Icc (1 : ℤ) 10 :=
-    Finset.eq_of_subset_of_card_le hDsub (by rw [hcardimg, hIcc])
-  -- Sum of the positive differences is `1 + ⋯ + 10 = 55`.
-  have himg_sum : ∑ d ∈ P.image diffMap, d = ∑ p ∈ P, diffMap p :=
-    Finset.sum_image hinjP
+    exact ⟨fun h => hpne (by omega), by omega, by omega⟩
+  have hcardErase : ((Finset.Icc (-10 : ℤ) 10).erase 0).card = 20 := by
+    rw [Finset.card_erase_of_mem (by decide), Int.card_Icc]; decide
+  have himageFull : A.offDiag.image diffMap = (Finset.Icc (-10 : ℤ) 10).erase 0 := by
+    refine Finset.eq_of_subset_of_card_le (fun d hd => ?_) ?_
+    · rw [Finset.mem_image] at hd
+      obtain ⟨p, hp, rfl⟩ := hd
+      exact hmapsFull p hp
+    · rw [Finset.card_image_of_injOn hfull, hoffcard]
+      exact le_of_eq hcardErase
+  -- The positive differences are exactly `{1, …, 10}` (a perfect difference set).
+  have hPimg : P.image diffMap = Finset.Icc (1 : ℤ) 10 := by
+    rw [hP, ← Finset.filter_image, himageFull]; decide
+  -- Hence the sum of positive differences is `1 + 2 + ⋯ + 10 = 55`.
   have hsum55 : ∑ p ∈ P, diffMap p = 55 := by
-    rw [← himg_sum, hDeq]; decide
-  -- Structural parity: `∑ p₁ + ∑ p₂ = ∑_{offDiag} p₁ = 4·∑A` is even.
+    rw [← Finset.sum_image hinjP, hPimg]; decide
+  -- Structural parity: `∑ p₁ + ∑ p₂ = ∑_{offDiag} p₁ = 4·∑A`, hence even.
   have hS1S2 : ∑ p ∈ P, (p.1 : ℤ) + ∑ p ∈ P, (p.2 : ℤ)
              = ∑ p ∈ A.offDiag, (p.1 : ℤ) := by
-    have hfa := Finset.sum_filter_add_sum_filter_not A.offDiag
-      (fun p => p.2 < p.1) (fun p => (p.1 : ℤ))
-    have hswap : ∑ p ∈ A.offDiag.filter (fun p => ¬ p.2 < p.1), (p.1 : ℤ)
+    have key : ∑ p ∈ A.offDiag, (p.1 : ℤ)
+        = ∑ p ∈ P, (p.1 : ℤ)
+          + ∑ p ∈ A.offDiag.filter (fun p => ¬ 0 < diffMap p), (p.1 : ℤ) := by
+      rw [hP]
+      exact (Finset.sum_filter_add_sum_filter_not A.offDiag
+        (fun p => 0 < diffMap p) (fun p => (p.1 : ℤ))).symm
+    have hswap : ∑ p ∈ A.offDiag.filter (fun p => ¬ 0 < diffMap p), (p.1 : ℤ)
                = ∑ p ∈ P, (p.2 : ℤ) := by
       rw [hP]
-      refine Finset.sum_nbij' Prod.swap Prod.swap ?_ ?_ ?_ ?_ ?_
-      · intro q hq
-        rw [Finset.mem_filter, Finset.mem_offDiag] at hq ⊢
-        obtain ⟨⟨h1, h2, hne⟩, hnlt⟩ := hq
-        exact ⟨⟨h2, h1, fun h => hne h.symm⟩, by simp only [Prod.swap]; omega⟩
-      · intro p hp
-        rw [Finset.mem_filter, Finset.mem_offDiag] at hp ⊢
-        obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := hp
-        exact ⟨⟨h2, h1, fun h => hne h.symm⟩, by simp only [Prod.swap]; omega⟩
-      · intro q _; simp [Prod.swap]
-      · intro p _; simp [Prod.swap]
-      · intro q _; simp only [Prod.swap]
-    rw [hswap] at hfa
-    rw [← hP] at hfa
-    linarith [hfa]
+      refine Finset.sum_nbij' Prod.swap Prod.swap ?_ ?_
+        (fun a _ => Prod.swap_swap a) (fun a _ => Prod.swap_swap a) (fun a _ => rfl)
+      · intro a ha
+        rw [Finset.mem_filter, Finset.mem_offDiag] at ha ⊢
+        obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := ha
+        simp only [diffMap, not_lt] at hlt
+        refine ⟨⟨h2, h1, fun h => hne h.symm⟩, ?_⟩
+        show 0 < (a.2 : ℤ) - (a.1 : ℤ); omega
+      · intro a ha
+        rw [Finset.mem_filter, Finset.mem_offDiag] at ha ⊢
+        obtain ⟨⟨h1, h2, hne⟩, hlt⟩ := ha
+        simp only [diffMap] at hlt
+        refine ⟨⟨h2, h1, fun h => hne h.symm⟩, ?_⟩
+        show ¬ 0 < (a.2 : ℤ) - (a.1 : ℤ); omega
+    rw [key, hswap]; ring
   have heven : Even (∑ p ∈ P, diffMap p) := by
     have hval : ∑ p ∈ P, diffMap p = ∑ p ∈ P, (p.1 : ℤ) - ∑ p ∈ P, (p.2 : ℤ) := by
       simp only [diffMap]; rw [Finset.sum_sub_distrib]
@@ -608,8 +576,7 @@ theorem no_sidon_card_five_range_eleven (A : Finset ℕ)
     have h4 : ∑ p ∈ P, (p.1 : ℤ) + ∑ p ∈ P, (p.2 : ℤ) = 4 * ∑ a ∈ A, (a : ℤ) := by
       rw [hS1S2, hoff]; norm_num
     rw [hval]
-    refine ⟨2 * ∑ a ∈ A, (a : ℤ) - ∑ p ∈ P, (p.2 : ℤ), ?_⟩
-    linarith [h4]
+    exact ⟨2 * ∑ a ∈ A, (a : ℤ) - ∑ p ∈ P, (p.2 : ℤ), by linarith [h4]⟩
   rw [hsum55] at heven
   exact absurd heven (by norm_num)
 
