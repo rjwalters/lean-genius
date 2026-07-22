@@ -82,6 +82,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Algebraic Characterization of k-Fold Origami Constructibility", "startLine": 1, "endLine": 32, "summary": "States the open question (OQ-05-OQ-01) of the precise algebraic characterization of k-fold origami constructibility for k ≥ 3, recalls the background from AngleTrisectionOQ05 (1-fold gives 3-smooth degrees, 2-fold gives 5-smooth degrees), and states the natural conjecture: k-fold constructibility corresponds to p_{k+1}-smooth degrees.", "mathContext": "$k$-fold origami constructibility of degree $d$ conjectured $\\iff$ $d$ is $p_{k+1}$-smooth (every prime factor among the first $k+1$ primes), generalizing $1$-fold $\\leftrightarrow$ 3-smooth and $2$-fold $\\leftrightarrow$ 5-smooth from `AngleTrisectionOQ05`."},
     {
       "id": "smooth-numbers",
       "title": "Smooth Numbers",
