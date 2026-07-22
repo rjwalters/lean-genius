@@ -152,7 +152,7 @@
       "summary": "Ledger of the formalization's assumptions: five auxiliary axioms (numSubgroups and f(1)–f(4)) were eliminated in favour of concrete definitions and native_decide, leaving the single deep axiom roney_dougal_tracey and zero sorries.",
       "startLine": 207,
       "endLine": 220,
-      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. All small-case values $f(1),\\dots,f(4)$ are machine-checked via $\\texttt{native\\_decide}$ (hence rely on $\\texttt{Lean.ofReduceBool}$)."
+      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. The small-case values $f(2),\\dots,f(4)$ are $\\textit{intended}$ to be discharged by $\\texttt{native\\_decide}$ (which would rely on $\\texttt{Lean.ofReduceBool}$), but the file is build-blocked (issue #39058): the $S_4$ subgroup-lattice enumeration is compile-infeasible, so these values are $\\textit{not}$ currently machine-checked. Only $f(1)$ is proved (Subsingleton→Unique)."
     }
   ],
   "conclusion": {
