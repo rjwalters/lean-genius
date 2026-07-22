@@ -51,13 +51,11 @@
       "consecutiveSums definition: Finset of all consecutive subsums",
       "distinctConsecutiveSums: cardinality of the consecutive sums Finset",
       "trivialSequence: the sequence {1,...,n} as a baseline",
-      "trivial_collision_structure: arithmetic structure causes sub-quadratic growth",
       "isValidSequence: strictly increasing and bounded by n",
       "erdosGrahamConjecture: formal statement of the cn² conjecture",
       "beker_theorem axiom: the conjecture is true (Beker 2023)",
       "permutationConjecture and konieczny_theorem axiom (Konieczny 2015)",
       "erdos357Question: related consecutive-integers variant",
-      "upper_bound and lower_bound_exists axioms: Θ(n²) growth",
       "erdos_356_solved: combined main result theorem"
     ],
     "axiomCount": 2,
@@ -70,7 +68,7 @@
     "historicalContext": "Erdős Problem #356 originates from the Erdős-Graham collaboration on combinatorial number theory [ErGr80]. The question asks whether carefully chosen strictly increasing sequences can achieve quadratically many distinct consecutive subsums — far more than the trivial sequence {1, 2, ..., n}, which achieves only O(n) distinct values due to arithmetic structure causing sum collisions.\n\nThe problem connects to broader themes in additive combinatorics: how does the structure of a set affect the richness of its sumset? The trivial sequence fails because arithmetic progressions produce highly regular sums with many coincidences. Breaking this regularity is the key to achieving quadratic growth.\n\nKonieczny (2015) first showed that permutations of {1,...,n} can achieve cn² distinct consecutive sums, solving a related variant. Beker (2023) then settled the original problem, proving that strictly increasing sequences bounded by n can also achieve cn² distinct sums. This resolved the problem in the affirmative.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there some constant $c > 0$ such that for all sufficiently large $n$, there exist integers $a_1 < a_2 < \\cdots < a_k \\leq n$ with at least $cn^2$ distinct integers of the form $\\sum_{u \\leq i \\leq v} a_i$ (consecutive subsums)?\n\n**Answer: YES** — proved by Adrian Beker (2023).\n\nThe trivial sequence $\\{1, 2, \\ldots, n\\}$ fails (only $O(n)$ distinct sums). Konieczny (2015) proved the permutation variant. Beker (2023) proved the original strictly increasing version.",
     "text": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? YES, proved by Beker (2023).",
-    "proofStrategy": "The formalization defines consecutive subsums and the counting function distinctConsecutiveSums. The trivial sequence {1,...,n} is shown to fail via axiom. The main concepts — strictly increasing sequences, valid sequences, and the Erdős-Graham conjecture — are formalized as Lean definitions. Beker's theorem and Konieczny's theorem are axiomatized since their proofs require deep combinatorial constructions beyond Mathlib. Upper and lower bounds establish that the growth rate is Θ(n²). A summary theorem combines both results.",
+    "proofStrategy": "The formalization defines consecutive subsums and the counting function distinctConsecutiveSums. The trivial sequence {1,...,n} is defined as a baseline, with its sub-quadratic growth noted in documentation comments. The main concepts — strictly increasing sequences, valid sequences, and the Erdős-Graham conjecture — are formalized as Lean definitions. Beker's theorem and Konieczny's theorem are axiomatized since their proofs require deep combinatorial constructions beyond Mathlib. The expected Θ(n²) growth rate is discussed in comments but not formalized. A summary theorem combines both axiomatized results.",
     "keyInsights": [
       "**Trivial Failure**: The sequence {1,...,n} achieves only O(n) distinct consecutive sums due to arithmetic regularity — sums (v-u+1)(v+u)/2 collide frequently",
       "**Spacing Principle**: To achieve cn² distinct sums, elements must be spaced to break arithmetic regularity and minimize sum collisions",
