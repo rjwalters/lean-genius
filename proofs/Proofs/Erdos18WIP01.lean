@@ -96,6 +96,23 @@
     `[0, σ(m)]` exactly — sharpening `representable_le_two_mul_sub_one_of_practical` up to
     the `two_mul_sub_one_le_sigma` bound.
 
+  Sharp representability in turn unlocks the classical *multiplicative* sufficient
+  condition and its most famous corollary:
+
+  * `mul_practical_of_le_succ_sigma` — **Stewart–Sierpiński**: if `m` is practical and
+    `1 ≤ n ≤ σ(m) + 1`, then `n · m` is practical. Two-scale coin argument: split
+    `q = n·a + b` with `b < n` and `a < m`; represent `b ≤ n − 1 ≤ σ(m)` and
+    `a < m ≤ σ(m)` by divisors of `m`, keep the `b`-coins (each `< n`) and scale the
+    `a`-coins by `n` (each `≥ n`, all dividing `n·m`), so the two families are disjoint.
+  * `factorial_practical` — **every factorial `n!` is practical**: `(k+1)! = (k+1)·k!`
+    and `k + 1 ≤ σ(k!) + 1` (since `σ(k!) ≥ k! ≥ k`), so the sufficient condition applies
+    at each step from `0! = 1`. A super-exponentially growing infinite family, alongside
+    the geometric family of powers of two.
+  * `two_pow_mul_three_pow_practical` — the **3-smooth family `2^a · 3^b` (`a ≥ 1`)** is
+    practical, by iterating the criterion with multiplier `3` (`3 ≤ σ(2^a·3^b) + 1`
+    always holds). It reaches `18 = 2·3²` (`eighteen_practical`), which `practical_mul`
+    cannot — `18`'s only nontrivial factorisation `2·9` has the non-practical `9`.
+
   All results are axiom-free (`#print axioms` = `[propext, Classical.choice,
   Quot.sound]`) and contain no `sorry`.
 -/
@@ -856,5 +873,148 @@ theorem representable_le_sigma_of_practical {m : ℕ} (h : IsPractical m) :
   intro k hk
   obtain ⟨T, hT, hTsum⟩ := finset_chain_covers (divisors m) hchain k hk
   exact ⟨T, hT, by simpa [id_eq] using hTsum⟩
+
+/- ## The Stewart–Sierpiński sufficient condition and practicality of factorials
+
+The sharp representability lemma `representable_le_sigma_of_practical` unlocks the
+classical *multiplicative* sufficient condition of Stewart (1954) and Sierpiński (1955):
+
+* `mul_practical_of_le_succ_sigma` — if `m` is practical and `1 ≤ n ≤ σ(m) + 1`, then
+  `n · m` is again practical. The proof is a clean two-scale coin argument. To represent
+  `q < n·m`, Euclidean-divide `q = n·a + b` with `0 ≤ b < n` and `0 ≤ a < m`. Since
+  `b ≤ n − 1 ≤ σ(m)` and `a < m ≤ σ(m)`, sharp representability writes both `b` and `a`
+  as sums of distinct divisors of `m`. Keep the `b`-coins as they are (divisors of `m`,
+  hence of `n·m`) and scale the `a`-coins by `n` (each `n·d ∣ n·m`). The `b`-coins sum to
+  `b < n` so each is `< n`, while every scaled coin is `≥ n`; the two coin sets are
+  therefore disjoint and their union is a set of distinct divisors of `n·m` summing to
+  `n·a + b = q`.
+
+* `factorial_practical` — **every factorial `n!` is practical** (a classical fact):
+  `(k+1)! = (k+1)·k!` and `k + 1 ≤ σ(k!) + 1` because `σ(k!) ≥ k! ≥ k`, so the sufficient
+  condition applies at each step from the base `0! = 1`. This is an infinite family of
+  practical numbers of *super-exponential* growth, complementing the geometric family of
+  powers of two (`two_pow_practical`).
+
+Both results are axiom-free. -/
+
+/-- **Stewart–Sierpiński sufficient condition.** If `m` is practical and
+`1 ≤ n ≤ σ(m) + 1` (where `σ(m) = ∑_{d ∣ m} d`), then `n · m` is practical. -/
+theorem mul_practical_of_le_succ_sigma {m n : ℕ} (h : IsPractical m)
+    (hn1 : 1 ≤ n) (hn : n ≤ 1 + ∑ d ∈ divisors m, d) :
+    IsPractical (n * m) := by
+  have hm1 : 1 ≤ m := h.1
+  have hnpos : 0 < n := hn1
+  have hmpos : 0 < m := hm1
+  have hnm1 : 0 < n * m := Nat.mul_pos hnpos hmpos
+  have hnm0 : n * m ≠ 0 := by omega
+  -- `m ≤ σ(m)`, since `m` is a divisor of itself.
+  have hsig_ge : m ≤ ∑ d ∈ divisors m, d := by
+    apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+    exact Nat.mem_divisors.mpr ⟨dvd_refl m, by omega⟩
+  refine ⟨hnm1, ?_⟩
+  intro q hq1 hqnm
+  -- Euclidean split: `q = n * a + b` with `b < n` and `a < m`.
+  set a := q / n with ha
+  set b := q % n with hb
+  have hbn : b < n := Nat.mod_lt q hnpos
+  have hqab : n * a + b = q := Nat.div_add_mod q n
+  have ham : a < m := Nat.div_lt_of_lt_mul hqnm
+  -- Represent `b ≤ n - 1 ≤ σ(m)` and `a < m ≤ σ(m)` by distinct divisors of `m`.
+  obtain ⟨B, hBsub, hBsum⟩ := representable_le_sigma_of_practical h b (by omega)
+  obtain ⟨A, hAsub, hAsum⟩ := representable_le_sigma_of_practical h a (by omega)
+  -- The large-coin set: scale each `a`-coin by `n`.
+  set Aset : Finset ℕ := A.image (fun d => n * d) with hAset
+  have hinj : ∀ x ∈ A, ∀ y ∈ A, n * x = n * y → x = y :=
+    fun x _ y _ hxy => Nat.eq_of_mul_eq_mul_left hnpos hxy
+  -- Both coin families are divisors of `n * m`.
+  have hBdiv : B ⊆ divisors (n * m) := by
+    intro x hx
+    have hxm : x ∣ m := (Nat.mem_divisors.mp (hBsub hx)).1
+    exact Nat.mem_divisors.mpr ⟨hxm.trans (dvd_mul_left m n), hnm0⟩
+  have hAdiv : Aset ⊆ divisors (n * m) := by
+    intro x hx
+    rw [hAset, Finset.mem_image] at hx
+    obtain ⟨d, hdA, rfl⟩ := hx
+    have hdm : d ∣ m := (Nat.mem_divisors.mp (hAsub hdA)).1
+    exact Nat.mem_divisors.mpr ⟨Nat.mul_dvd_mul_left n hdm, hnm0⟩
+  -- Small coins are `< n` (they sum to `b < n`); large coins are `≥ n`.
+  have hBlt : ∀ x ∈ B, x < n := by
+    intro x hx
+    have hxle : x ≤ b := by
+      have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hx
+      rwa [hBsum, id_eq] at this
+    omega
+  have hAge : ∀ x ∈ Aset, n ≤ x := by
+    intro x hx
+    rw [hAset, Finset.mem_image] at hx
+    obtain ⟨d, hdA, rfl⟩ := hx
+    have hd1 : 1 ≤ d := Nat.pos_of_mem_divisors (hAsub hdA)
+    calc n = n * 1 := (Nat.mul_one n).symm
+      _ ≤ n * d := Nat.mul_le_mul_left n hd1
+  have hdisj : Disjoint B Aset := by
+    rw [Finset.disjoint_left]
+    intro x hxB hxA
+    have := hBlt x hxB
+    have := hAge x hxA
+    omega
+  -- Assemble the union and compute its divisor-sum.
+  refine ⟨B ∪ Aset, ?_, ?_⟩
+  · rw [Finset.union_subset_iff]; exact ⟨hBdiv, hAdiv⟩
+  · have hAsetsum : (Aset).sum id = n * a := by
+      rw [hAset, Finset.sum_image hinj]
+      have : ∑ d ∈ A, id (n * d) = n * ∑ d ∈ A, id d := by
+        simp only [id_eq]; rw [Finset.mul_sum]
+      rw [this, hAsum]
+    rw [Finset.sum_union hdisj, hBsum, hAsetsum]
+    omega
+
+/-- **Every factorial is practical.** By the Stewart–Sierpiński sufficient condition,
+`(k+1)! = (k+1)·k!` is practical whenever `k! ` is, because `k + 1 ≤ σ(k!) + 1`
+(indeed `σ(k!) ≥ k! ≥ k`). Starting from `0! = 1`, induction gives a practical `n!` for
+every `n` — an infinite, super-exponentially growing family of practical numbers. -/
+theorem factorial_practical : ∀ n : ℕ, IsPractical (n !) := by
+  intro n
+  induction n with
+  | zero => simpa using one_practical
+  | succ k ih =>
+    rw [Nat.factorial_succ]
+    refine mul_practical_of_le_succ_sigma ih (by omega) ?_
+    have hfac_le : (k !) ≤ ∑ d ∈ divisors (k !), d := by
+      apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+      exact Nat.mem_divisors.mpr ⟨dvd_refl _, Nat.factorial_ne_zero k⟩
+    have hkfac : k ≤ k ! := Nat.self_le_factorial k
+    omega
+
+/-- **The 3-smooth family `2^a · 3^b` (`a ≥ 1`) is practical.** Iterated single-prime
+application of `mul_practical_of_le_succ_sigma` with multiplier `n = 3`: at each step
+`3 ≤ σ(2^a·3^b) + 1` because `σ(2^a·3^b) ≥ 2^a·3^b ≥ 2`. This reaches numbers such as
+`18 = 2·3²` that lie beyond `practical_mul` — `18` is not a product of two practical
+numbers (its only nontrivial factorisation `2 · 9` has the non-practical `9`), yet the
+criterion certifies it directly. -/
+theorem two_pow_mul_three_pow_practical (a b : ℕ) (ha : 1 ≤ a) :
+    IsPractical (2 ^ a * 3 ^ b) := by
+  induction b with
+  | zero => simpa using two_pow_practical a
+  | succ b ih =>
+    have hrw : 2 ^ a * 3 ^ (b + 1) = 3 * (2 ^ a * 3 ^ b) := by ring
+    rw [hrw]
+    refine mul_practical_of_le_succ_sigma ih (by omega) ?_
+    have h2a : 2 ≤ 2 ^ a := by
+      calc 2 = 2 ^ 1 := (pow_one 2).symm
+        _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) ha
+    have hm2 : 2 ≤ 2 ^ a * 3 ^ b :=
+      calc 2 = 2 * 1 := (Nat.mul_one 2).symm
+        _ ≤ 2 ^ a * 3 ^ b := Nat.mul_le_mul h2a (Nat.one_le_pow b 3 (by norm_num))
+    have hsig : 2 ^ a * 3 ^ b ≤ ∑ d ∈ divisors (2 ^ a * 3 ^ b), d := by
+      apply Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+      exact Nat.mem_divisors.mpr ⟨dvd_refl _, by positivity⟩
+    omega
+
+/-- `18 = 2 · 3²` is practical — a concrete member of the 3-smooth family that
+`practical_mul` cannot reach (its odd part `9` is not practical). -/
+theorem eighteen_practical : IsPractical 18 := by
+  have := two_pow_mul_three_pow_practical 1 2 (le_refl 1)
+  norm_num at this
+  exact this
 
 end Erdos18
