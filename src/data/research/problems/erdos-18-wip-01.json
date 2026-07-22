@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: hErdos index now has (a) exact value hErdos(2^k)=k, (b) sandwich 1<=hErdos<=h<=d(m), and (c) SUBADDITIVITY hErdos(a*b)<=hErdos a+hErdos b + corollary hErdos(m^k)<=k*hErdos m (PR #41475, 0-axiom). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
+    "progressSummary": "PROGRESS: hErdos index has exact values hErdos(2^k)=k, hErdos 6=2, hErdos 12=3 (subadditivity TIGHT at 2*6), characterization hErdos m=1 iff m=2 via upper-half divisor gap (no divisor in (m/2,m)), sandwich 1<=hErdos<=h<=d(m), subadditivity + m<=(d(m)+1)^hErdos counting lower bound (all 0-axiom). Deep/open: hErdos(n!)<n^{o(1)} (Vose); residual mechanic = rename parent h->hCover.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -48,7 +48,10 @@
       "h_le_card_divisors (Erdos18WIP01.lean): h m <= d(m) for practical m [0-axiom]",
       "factorial_le_two_pow_h (Erdos18WIP01.lean): n! <= 2^(h n!) [0-axiom]",
       "Erdos18WIP01.lean: hErdos_two_pow — EXACT hErdos(2^k)=k, first exact value of the corrected Erdos #18 index. Upper repLength_two_pow_le (binary digits, <=k), lower two_pow_sub_one_card_ge (2^k-1 all-ones needs all k powers). Helper sum_image_two_pow_range. 0-axiom docker-verified v4.31.",
-      "repLength_mul_le, hErdos_mul_le, hErdos_pow_le (hErdos(m^k)<=k*hErdos m, tight at m=2), repLength_zero, repLength_spec in Erdos18WIP01.lean (0-axiom)"
+      "repLength_mul_le, hErdos_mul_le, hErdos_pow_le (hErdos(m^k)<=k*hErdos m, tight at m=2), repLength_zero, repLength_spec in Erdos18WIP01.lean (0-axiom)",
+      "repLength_le_of_witness, two_mul_le_of_dvd_of_lt, two_le_card_of_sum_upper_half, two_le_repLength_of_upper_half in Erdos18WIP01.lean (upper-half gap engine)",
+      "two_le_hErdos (practical m>=3), hErdos_one, hErdos_two, hErdos_eq_one_iff in Erdos18WIP01.lean",
+      "hErdos_six (=2, first non-2-power exact value), twelve_practical, three_le_card_of_sum_eleven (kernel decide over 64 subsets), three_le_repLength_twelve_eleven, hErdos_twelve (=3, subadditivity tight) in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -66,7 +69,10 @@
       "Proved h_le_card_divisors : IsPractical m -> h m <= (divisors m).card (upper bound d(m)). Together: log2 m <= h m <= d(m) for the file h.",
       "Erdos18OQ01.lean already proves subadditivity h(mn)<=h(m)+h(n) for this universal-set h (correct for that quantity), so the def cannot simply be replaced: mechanic should RENAME the parent h to the universal-set index and introduce the max-representation-length index for the conjectures.",
       "hErdos(2^k)=k=log2(2^k) is the MAXIMAL value of the Erdos #18 index for a number of that size (hErdos m <= h m <= d(m); d(2^k)=k+1). Powers of two are the WORST case for the index — extremal opposite of the deep conjectured factorial behaviour hErdos(n!)<n^{o(1)} (Vose). First exact hErdos family value.",
-      "hErdos is SUBADDITIVE over products: hErdos(a*b) <= hErdos a + hErdos b for practical a,b (PR #41475). Correct-index counterpart of the parent Erdos18OQ01 subadditivity, which held only for the over-counting universal-set h."
+      "hErdos is SUBADDITIVE over products: hErdos(a*b) <= hErdos a + hErdos b for practical a,b (PR #41475). Correct-index counterpart of the parent Erdos18OQ01 subadditivity, which held only for the over-counting universal-set h.",
+      "Upper-half divisor gap: no divisor of m lies strictly in (m/2, m) (proper divisor has cofactor >= 2), so any k with m<2k<2m needs >= 2 divisors in every distinct-divisor representation",
+      "hErdos m = 1 exactly at m = 2 (over practical m): m=1 gives 0, and k=m-1 forces hErdos >= 2 for practical m>=3",
+      "hErdos 12 = 3 shows subadditivity hErdos(a*b)<=hErdos a+hErdos b is TIGHT at 12=2*6; the counting bound lt_hErdos_of_pow_lt only gives hErdos 12 >= 2, so the combinatorial gap argument is strictly sharper at small scales"
     ],
     "mathlibGaps": [],
     "nextSteps": [
