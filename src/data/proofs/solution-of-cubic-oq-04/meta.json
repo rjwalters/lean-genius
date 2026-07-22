@@ -122,6 +122,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: closed-form vs. iterative cost for solving the cubic",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States OQ-04 — compare the arithmetic-operation cost of Cardano's closed form against an iterative bisection root-finder for the depressed cubic x^3+px+q=0 to accuracy epsilon — and the answer this file proves: Cardano's cost is a fixed epsilon-independent constant, while bisection needs an unbounded number of steps growing like log(1/epsilon), giving a rigorous closed-form vs. iterative separation.",
+      "mathContext": "$T_{\\text{Cardano}}(\\varepsilon)=O(1)$ vs. $T_{\\text{iterative}}(\\varepsilon)=\\Theta(\\log(1/\\varepsilon))$, since bisection width $W/2^n$ reaching accuracy $\\varepsilon$ forces $n\\ge\\log_2(W/\\varepsilon)$."
+    },
+    {
       "id": "bisection-recurrence",
       "title": "Part 1: The Bisection Width Recurrence",
       "summary": "Defines bisectionWidth W n = W/2^n and proves the halving step and positivity.",
