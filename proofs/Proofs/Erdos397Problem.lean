@@ -112,12 +112,12 @@ theorem C_zero : C 0 = 1 := by rfl
 theorem C_one : C 1 = 2 := by rfl
 
 /-- C(2) = 6 (the central binomial for n=2 is C(4,2) = 6) -/
-theorem C_two : C 2 = 6 := by native_decide
+theorem C_two : C 2 = 6 := by decide
 
 /-- C(3) = 20 (the central binomial for n=3 is C(6,3) = 20) -/
-theorem C_three : C 3 = 20 := by native_decide
+theorem C_three : C 3 = 20 := by decide
 
 /-- somaniC(2) = 8·4 + 8·2 + 1 = 49 -/
-theorem somaniC_two : somaniC 2 = 49 := by native_decide
+theorem somaniC_two : somaniC 2 = 49 := by decide
 
 end Erdos397
