@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: All-k Growth Bound for Prime RNS Bases via Nat.nth",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Extends the parent's primorial-based dynamic-range bound 2^k ≤ primorial(k), proved only for k ≤ 6 by a lookup table, to all k using Mathlib's Nat.nth to define the k-th prime properly, delivering primorialProper_ge_two_pow for every k while leaving full optimality of prime bases open.",
+      "mathContext": "$\\mathrm{kthPrime}(i) = \\mathrm{Nat.nth}\\,\\mathrm{Prime}(i)$; $\\mathrm{primorialProper}(k) = \\prod_{i<k}\\mathrm{kthPrime}(i)$ satisfies $2^k \\le \\mathrm{primorialProper}(k)$ for all $k$, generalizing the parent's $k\\le 6$ table."
+    },
+    {
       "id": "rns-base",
       "title": "Minimal RNS Base (Self-Contained)",
       "startLine": 62,
