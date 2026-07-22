@@ -98,6 +98,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Canonical vs. Homemade Representability",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring explaining the motivation: the parent entry `FrobeniusNumber.lean` proves Sylvester's theorem with a homemade `Representable` predicate and a plain `frobeniusNumber` function, encoding 'largest non-representable' by hand. This entry instead grounds the theorem in Mathlib's canonical `FrobeniusNumber n s := IsGreatest { k | k ∉ AddSubmonoid.closure s } n`, invoking `frobeniusNumber_pair` and unpacking it via `frobeniusNumber_iff` and `AddSubmonoid.mem_closure_pair` so the final corollaries read in the same elementary `a*m + b*n` language. Imports `Mathlib.NumberTheory.FrobeniusNumber` and `Mathlib.Algebra.Group.Submonoid.Membership`; opens the `FrobeniusNumberOQ04` namespace.",
+      "mathContext": "$\\text{FrobeniusNumber}\\,n\\,s := \\text{IsGreatest}\\,\\{k \\mid k \\notin \\text{AddSubmonoid.closure}\\,s\\}\\,n$ replaces the homemade `Representable` predicate of the parent entry."
+    },
+    {
       "id": "part-i-bridge",
       "title": "Part I: The Elementary Bridge for the Closure of a Pair",
       "startLine": 40,
