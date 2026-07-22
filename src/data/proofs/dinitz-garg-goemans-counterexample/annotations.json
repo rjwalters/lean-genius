@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-dgg-docstring",
+    "proofId": "dinitz-garg-goemans-counterexample",
+    "range": { "startLine": 1, "endLine": 69 },
+    "type": "concept",
+    "title": "A finite certificate separating the exact-D DGG cost bound",
+    "content": "The Dinitz–Garg–Goemans (DGG) conjecture (1999) concerns single-source unsplittable flow: route each demand along ONE path, given a fractional flow, while (in the exact-D form) preserving cost with capacity violation ≤ D = dmax. This file encodes one explicit instance (7 vertices, 9 arcs, demands d1=15,d2=10,d3=15, D=15) in pure integer arithmetic and proves three finite facts by plain kernel `decide`: the fractional flow is feasible with cost cᵀx = 58; every unsplittable routing with arc loads ≤ x_a + D costs ≥ 60; and 60 is attained. So the capacity-good unsplittable optimum (60) strictly exceeds the fractional cost (58). AUDIT CAVEAT: the finite facts are solid and independently re-derived, but the primary source (Jan 2026) still lists DGG as OPEN and the counterexample awaits independent audit — so this entry proves only the self-contained separation and does NOT claim to settle DGG.",
+    "mathContext": "Rybin (2026, via GPT-5.6 Pro): fractional cost 58 vs capacity-good unsplittable optimum 60 for one explicit instance.",
+    "significance": "critical",
+    "relatedConcepts": ["unsplittable flow", "DGG conjecture", "fractional relaxation", "capacity violation"],
+    "prerequisites": ["network flow", "combinatorial optimization"]
+  },
+  {
+    "id": "ann-dgg-instance",
+    "proofId": "dinitz-garg-goemans-counterexample",
+    "range": { "startLine": 73, "endLine": 92 },
+    "type": "definition",
+    "title": "The instance: nine arcs with fractional loads and unit costs",
+    "content": "`Arc` is a `deriving DecidableEq` enum of the nine arcs; `allArcs` lists them for bounded quantification. `xflow` gives the fractional load x_a on each arc, which also serves as its capacity u_a = x_a. `ucost` gives the unit cost c_a. The nonzero costs are s→t1 (c=2), s→t2 (c=3), u→t3 (c=2); all other arcs have cost 0. Encoding arcs as a small enum with integer maps keeps everything directly kernel-reducible, so `decide` can evaluate loads, costs, and conservation without any external solver.",
+    "mathContext": "s→t1 (10,2), s→t2 (6,3), s→u (24,0), u→t3 (10,2), u→v (14,0), v→t1 (5,0), v→w (9,0), w→t2 (4,0), w→t3 (5,0).",
+    "significance": "key",
+    "relatedConcepts": ["directed graph", "arc capacity", "unit cost", "DecidableEq"],
+    "prerequisites": ["network flow", "enumerated types"]
+  },
+  {
+    "id": "ann-dgg-feasibility",
+    "proofId": "dinitz-garg-goemans-counterexample",
+    "range": { "startLine": 94, "endLine": 136 },
+    "type": "definition",
+    "title": "Nodes, conservation, and fractional feasibility",
+    "content": "`Node` enumerates the seven vertices; `tail`/`head` give each arc's endpoints; `inflow`/`outflow` sum the fractional flow entering/leaving a node. `FractionalFeasible` (marked @[reducible] so `decide` sees its decidable body) bundles: conservation at internal nodes u,v,w (inflow = outflow), delivery of each demand at its terminal (inflow t_i = d_i), emission of the total demand at the source (outflow s = d1+d2+d3), and the arc-capacity check x_a ≤ x_a (u_a = x_a, trivially met). `fractionalCost` = Σ_a c_a·x_a. Numerically: u 24=10+14, v 14=5+9, w 9=4+5, terminals receive 15/10/15, source emits 40, and cᵀx = 2·10+3·6+2·10 = 58.",
+    "mathContext": "A valid s-rooted flow of the three demands with total cost 58.",
+    "significance": "key",
+    "relatedConcepts": ["flow conservation", "feasibility", "reducibility", "bounded quantifier"],
+    "prerequisites": ["network flow", "decidable quantifiers"]
+  },
+  {
+    "id": "ann-dgg-routings",
+    "proofId": "dinitz-garg-goemans-counterexample",
+    "range": { "startLine": 138, "endLine": 168 },
+    "type": "definition",
+    "title": "Unsplittable routings, arc loads, and the capacity rule",
+    "content": "A `Routing` is `Bool × Bool × Bool`: bit i selects terminal i's path — false = direct E_i, true = long Z_i. `path1/2/3` list the arcs of each choice (E1=[s→t1], Z1=[s→u,u→v,v→t1], etc.). `load a r` sums the demands of the terminals whose chosen path traverses arc a. `routingCost r` = Σ_i d_i·c(path_i); each E_i costs d_i·c(E_i) = 30 and each Z_i costs 0. `CapGood r` (marked @[reducible]) requires every arc load ≤ x_a + D — a capacity violation of at most the maximum demand D = 15. The rule forbids any two long paths (Z2+Z3 overloads v→w 25>24; Z1+Z3 overloads u→v 30>29; Z1+Z2 overloads s→u 40>39).",
+    "mathContext": "8 routings; at most one Z_i is capacity-good, so ≥2 cost-30 direct paths are forced.",
+    "significance": "critical",
+    "relatedConcepts": ["unsplittable routing", "arc congestion", "capacity violation", "path selection"],
+    "prerequisites": ["network flow", "boolean encoding"]
+  },
+  {
+    "id": "ann-dgg-verified",
+    "proofId": "dinitz-garg-goemans-counterexample",
+    "range": { "startLine": 170, "endLine": 205 },
+    "type": "theorem",
+    "title": "The separation, verified by kernel `decide` (0 axioms)",
+    "content": "`fractional_cost_eq` proves cᵀx = 58; `fractional_feasible` proves the flow is feasible; `every_capgood_routing_costly` proves — exhaustively over all 8 routings — that every capacity-good routing costs ≥ 60; `capgood_optimum_is_60` exhibits (E,E,Z) attaining cost 60; and `dgg_separation` packages 58 < 60, the strict gap between the fractional optimum and the capacity-good unsplittable optimum. All are discharged by plain kernel `decide` (NOT native_decide), so `#print axioms dgg_separation` lists only propext / Classical.choice / Quot.sound — no Lean.ofReduceBool, no sorryAx. Per the Axiom Integrity Policy those foundational axioms don't count, so the entry is genuinely axiom-free / verified. (Separately: the *interpretation* that this refutes DGG is announced but pending independent audit — this file proves only the finite separation.)",
+    "mathContext": "Fractional optimum 58 < 60 = capacity-good unsplittable optimum ⟹ the exact-D DGG cost bound is separated for this instance.",
+    "significance": "critical",
+    "relatedConcepts": ["decide", "exhaustive kernel verification", "0-axiom proof", "cost separation"],
+    "prerequisites": ["decidable propositions", "Fintype quantifiers"]
+  }
+]
