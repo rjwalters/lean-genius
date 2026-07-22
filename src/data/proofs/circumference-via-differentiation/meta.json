@@ -38,6 +38,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Circumference Formula via Differentiation of Area",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Derives the circumference C(r) = 2πr of a circle by differentiating its area A(r) = πr², formalizing the geometric fact that an infinitesimal growth dr of a disk adds an annular strip of area C(r)·dr, generalizing to the surface-area/volume relation for n-balls.",
+      "mathContext": "$A(r)=\\pi r^2 \\Rightarrow C(r) = dA/dr = 2\\pi r$, proved via Mathlib calculus (`Analysis.Calculus.Deriv.Polynomial`) and connected to the measure-theoretic disk volume via `ENNReal.toReal`."
+    },
+    {
       "id": "definitions",
       "title": "Area and Circumference Definitions",
       "startLine": 38,
