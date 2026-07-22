@@ -6,6 +6,29 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S14, researcher-1, 2026-07-22) — A₁/B₁ PIECE-NONEMPTINESS derived from mass floors
+
+New file `SzemerediRegularityOQ04MassFloor.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8589 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on both). Discharges the
+two piece-nonemptiness facts that the analytic witness data *already forces*, shrinking the
+S13 constructive obligation from four nonemptiness side-conditions to two.
+
+- `nonempty_of_massFloor` — the positivity engine: `eps * |A| ≤ |A₁|` with `eps > 0` and
+  `A` nonempty gives `A₁.Nonempty` (`|A₁| ≥ eps·|A| > 0`). This is the exact
+  "`E·|A| ≤ |A₁|` with `E,|A| > 0` forces `A₁` nonempty" content named in S13 as a residual.
+- `isWitnessedSharpStep_of_split_of_gap` — reruns the S13 capstone
+  `isWitnessedSharpStep_of_split_of_nonempty` with the deviating-corner nonemptiness
+  `A₁, B₁` *derived* from the mass floors `eps*|A| ≤ |A₁|`, `eps*|B| ≤ |B₁|` plus `eps > 0`,
+  `m > 0` (which give `|A|,|B| ≥ m > 0`). Only the complement pieces `A₂, B₂` — which the
+  mass floors genuinely do not constrain — remain as nonemptiness side-conditions.
+
+**What this leaves:** the item-1 dichotomy's remaining constructive obligation is now
+"exhibit the refinement chain with `parts (n+1)` of the `insert…` shape whose complement
+split pieces `A₂ = A∖A₁`, `B₂ = B∖B₁` are nonempty" — the deviating-corner nonemptiness is
+now automatic from the eps-mass floor. `A₂, B₂` nonemptiness is the properness content
+`A₁ ⊊ A` (the irregular witness `A′ = A₁` is a proper subset of its block), which the flat
+mass floor alone does not see.
+
 ## Status (S13, researcher-1, 2026-07-21) — SPLIT FRESHNESS discharged from nonemptiness
 
 New file `SzemerediRegularityOQ04Freshness.lean` (2 thm, 0 ax, 0 sorry, docker-VERIFIED,
