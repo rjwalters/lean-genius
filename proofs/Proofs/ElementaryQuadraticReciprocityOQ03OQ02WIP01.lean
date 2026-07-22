@@ -46,6 +46,17 @@ structural input the Gauss-sum route to generalized quadratic reciprocity rests 
 * `kronecker2_sq_sum_period`    — `∑_{a=0}^{7} (a/2)² = φ(8) = 4`: the self-orthogonality /
                                   `L²`-norm normalizing the Gauss sum `|τ(χ₈)|² = 8`.
 
+## The complete autocorrelation spectrum of `χ₈ = (·/2)` (Section F)
+
+* `kronecker2_mul_shift_odd`     — `(a/2)·(a+t/2) = 0` for every odd `t`: the parity
+                                   obstruction, pointwise, on every `a`.
+* `kronecker2_autocorr_odd`       — `C(t) = ∑_a (a/2)(a+t/2) = 0` for odd `t` (and its
+                                   translation-invariant `_shifted` form).
+* `kronecker2_autocorr_two`       — `C(2) = 0`, the one non-trivial (non-termwise) off-peak.
+* `kronecker2_autocorr_spectrum`  — the full comb `C = (4,0,0,0,−4,0,0,0)`: `C(0)=4`,
+                                   `C(1)=C(2)=C(3)=0`, `C(4)=−4`, completing the length-`8`
+                                   autocorrelation whose DFT is the power spectrum `|τ(χ₈)|²=8`.
+
 All results are fully machine-checked (0 axioms, 0 sorries).
 
 Reference: Kronecker (1885); Hardy–Wright ch. 6; parent `ElementaryQuadraticReciprocityOQ03OQ02`.
@@ -335,5 +346,90 @@ theorem kronecker2_autocorr_four_shifted (c : ℤ) :
     rw [kronecker2_add_four]; ring
   rw [Finset.sum_congr rfl h, ← Finset.mul_sum, kronecker2_sq_sum_shifted_period]
   norm_num
+
+-- ============================================================
+-- Section F: The complete autocorrelation spectrum of χ₈ = (·/2)
+--            — the off-peak values C(1) = C(2) = C(3) = 0
+-- ============================================================
+
+/-- **Odd-shift pointwise vanishing: `(a/2)·(a+t/2) = 0` for every odd `t`.**  If `t` is
+    odd then exactly one of `a`, `a + t` is even, and `χ₈` vanishes on the even residues
+    (`kronecker2_eq_zero_iff`); so the product is `0` for *every* `a`, term by term.  This
+    is the parity obstruction behind all the odd-shift autocorrelations of the conductor-`8`
+    character: a character supported on the odd residues can never correlate with an
+    odd translate of itself. -/
+theorem kronecker2_mul_shift_odd (a : ℤ) {t : ℤ} (ht : Odd t) :
+    kronecker2 a * kronecker2 (a + t) = 0 := by
+  rcases Int.even_or_odd a with ha | ha
+  · rw [(kronecker2_eq_zero_iff a).2 (Int.even_iff.mp ha), zero_mul]
+  · have hz : (a + t) % 2 = 0 := by
+      obtain ⟨j, hj⟩ := ha; obtain ⟨k, hk⟩ := ht; omega
+    rw [(kronecker2_eq_zero_iff (a + t)).2 hz, mul_zero]
+
+/-- **Odd-shift autocorrelation vanishes: `C(t) = 0` for every odd `t`.**
+
+        ∀ odd t, ∑_{a = 0}^{7} kronecker2 a * kronecker2 (a + t) = 0.
+
+    Immediate from the pointwise `kronecker2_mul_shift_odd`: every summand is already `0`,
+    so no cancellation is even needed.  Instantiating `t = 1, 3` (and `t = 5, 7` by the
+    evenness `C(t) = C(8−t)` implicit in period `8`) gives the four odd off-peak values of
+    the length-`8` autocorrelation `C(t) = ∑_a χ₈(a) χ₈(a+t)`. -/
+theorem kronecker2_autocorr_odd {t : ℤ} (ht : Odd t) :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + t)) = 0 :=
+  Finset.sum_eq_zero fun a _ => kronecker2_mul_shift_odd (a : ℤ) ht
+
+/-- **Translation-invariant odd-shift autocorrelation: `C(t) = 0` over any window.**
+
+        ∀ c, ∀ odd t, ∑_{a = 0}^{7} kronecker2 (c + a) * kronecker2 (c + a + t) = 0.
+
+    The odd-shift autocorrelation vanishes over *every* length-`8` window, not just `[0, 8)`
+    (`c = 0` recovers `kronecker2_autocorr_odd`).  Still termwise from
+    `kronecker2_mul_shift_odd` — the parity obstruction is translation invariant, since
+    `c + a` and `c + a + t` have opposite parity whenever `t` is odd. -/
+theorem kronecker2_autocorr_odd_shifted {t : ℤ} (ht : Odd t) (c : ℤ) :
+    (∑ a ∈ Finset.range 8, kronecker2 (c + a) * kronecker2 (c + a + t)) = 0 :=
+  Finset.sum_eq_zero fun a _ => kronecker2_mul_shift_odd (c + a) ht
+
+/-- **Shift-`2` autocorrelation vanishes: `C(2) = 0`.**
+
+        ∑_{a = 0}^{7} kronecker2 a * kronecker2 (a + 2) = 0.
+
+    The one non-trivial off-peak value.  Unlike the odd shifts this is *not* termwise `0`
+    (both `a` and `a + 2` can be odd); it vanishes by exact cancellation of the residue
+    table: `χ₈(1)χ₈(3) + χ₈(3)χ₈(5) + χ₈(5)χ₈(7) + χ₈(7)χ₈(9) = (−1)+(1)+(−1)+(1) = 0`.
+    Together with `kronecker2_autocorr_odd` this leaves `C(0) = 4` and `C(4) = −4` as the
+    *only* non-zero autocorrelations of `χ₈`. -/
+theorem kronecker2_autocorr_two :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 2)) = 0 := by
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_ofNat,
+    Nat.cast_zero, Nat.cast_one]
+  decide
+
+/-- **The complete autocorrelation spectrum of `χ₈ = (·/2)`.**
+
+        C(t) := ∑_{a = 0}^{7} kronecker2 a · kronecker2 (a + t)
+        C(0) = 4,  C(1) = 0,  C(2) = 0,  C(3) = 0,  C(4) = −4.
+
+    Assembles the full length-`8` autocorrelation function of the conductor-`8` character
+    from the pieces: the diagonal peak `C(0) = φ(8) = 4` (`kronecker2_sq_sum_period`), the
+    odd off-peaks `C(1) = C(3) = 0` (`kronecker2_autocorr_odd`), the even off-peak
+    `C(2) = 0` (`kronecker2_autocorr_two`), and the anti-diagonal peak `C(4) = −4`
+    (`kronecker2_autocorr_four`).  By the real-character symmetry `C(t) = C(8 − t)` the
+    remaining shifts are determined (`C(5) = C(3) = 0`, `C(6) = C(2) = 0`, `C(7) = C(1) = 0`),
+    so the autocorrelation is the sparse comb `(4, 0, 0, 0, −4, 0, 0, 0)` — two equal-and-
+    opposite spikes a half-period apart.  This is the correlation datum whose discrete
+    Fourier transform is the power spectrum `|τ(χ₈)|² = 8` in the Gauss-sum route to
+    generalized quadratic reciprocity. -/
+theorem kronecker2_autocorr_spectrum :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 0)) = 4 ∧
+      (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 1)) = 0 ∧
+      (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 2)) = 0 ∧
+      (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 3)) = 0 ∧
+      (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 ((a : ℤ) + 4)) = -4 :=
+  ⟨by simpa using kronecker2_sq_sum_period,
+    kronecker2_autocorr_odd (Int.odd_iff.mpr (by decide)),
+    kronecker2_autocorr_two,
+    kronecker2_autocorr_odd (Int.odd_iff.mpr (by decide)),
+    kronecker2_autocorr_four⟩
 
 end KroneckerSymbol
