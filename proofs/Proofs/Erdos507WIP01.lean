@@ -617,9 +617,9 @@ theorem heilbronn_four_ge : (1 : ℝ) ≤ heilbronn 4 := by
   refine le_csSup (heilbronn_defining_bddAbove 4 (by norm_num)) ?_
   refine ⟨{((1 : ℝ), (0 : ℝ)), (0, 1), (-1, 0), (0, -1)}, ?_, ?_, ?_⟩
   · -- the four vertices are distinct, so the configuration has cardinality `4`
-    rw [Finset.card_insert_of_not_mem (by norm_num [Prod.ext_iff]),
-      Finset.card_insert_of_not_mem (by norm_num [Prod.ext_iff]),
-      Finset.card_insert_of_not_mem (by norm_num [Prod.ext_iff]),
+    rw [Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
       Finset.card_singleton]
   · -- each vertex lies on the boundary of the closed unit disk
     intro p hp
