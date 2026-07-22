@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-17",
+      "title": "Problem Statement and Background",
+      "summary": "States the open Erd\u0151s Problem #17 (\\$97 prize) on cluster primes \u2014 primes $p$ such that every even $n \\le p-3$ is a difference of two primes $\\le p$ \u2014 noting 97 is the first non-cluster prime and giving the Blecksmith\u2013Erd\u0151s\u2013Selfridge and Elsholtz density bounds.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "The count of cluster primes up to $x$ is $\\ll x/(\\log x)^A$ for all $A>0$ (Blecksmith\u2013Erd\u0151s\u2013Selfridge), sharpened by Elsholtz to $\\ll x\\exp(-c(\\log\\log x)^2)$ for $c<1/8$; related to prime gaps and the twin prime conjecture."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `primesUpTo` (primes ≤ n via Finset.filter), `primeDifferences` (all q₁ - q₂ for prime pairs ≤ p), `IsClusterPrime` (every even n ≤ p-3 is a prime difference), and `ClusterPrimes` (the set of all cluster primes)",
