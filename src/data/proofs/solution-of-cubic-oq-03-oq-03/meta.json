@@ -2,7 +2,7 @@
   "id": "solution-of-cubic-oq-03-oq-03",
   "title": "Resolvent Cubic Reduces to Cardano's Formula",
   "slug": "solution-of-cubic-oq-03-oq-03",
-  "description": "Proves that Ferrari's resolvent cubic for the quartic equation reduces to a depressed cubic solvable by Cardano's formula, completing the quartic-cubic-Cardano solution chain.",
+  "description": "Proves that Ferrari's resolvent cubic for the quartic equation reduces to a depressed cubic solvable by Cardano's formula, and that any root of that depressed cubic yields a valid Ferrari parameter — the resolvent-to-Cardano reduction link of the quartic solution chain.",
   "category": "algebra",
   "status": "verified",
   "badge": "original",
@@ -68,7 +68,7 @@
       "Depression of resolvent cubic via m = t - 5p/6 substitution",
       "Ring identity: resolvent at shifted t equals 8 times depressed cubic",
       "Recovery of Ferrari parameter from Cardano root",
-      "Complete quartic-to-Cardano solution chain theorem",
+      "Reduction theorem (quartic_to_cardano): any root of the depressed cubic yields a valid Ferrari (resolvent) parameter m",
       "Explicit Cardano root verification for the resolvent"
     ],
     "dateAdded": "2026-03-28",
@@ -89,7 +89,7 @@
       "The substitution m = t - 5p/6 eliminates the m^2 term (depression), just as x -> x + a/4 depresses the quartic.",
       "The depressed coefficients A = -p^2/12 - r and B = -p^3/108 + pr/3 - q^2/8 are explicit rational functions of the quartic coefficients.",
       "Cardano's formula gives t = u + v where u^3 + v^3 = -B and uv = -A/3, and the Ferrari parameter is m = t - 5p/6.",
-      "This completes the algebraic chain: every quartic is solvable in radicals via quartic -> Ferrari -> resolvent cubic -> Cardano."
+      "Classically this reduction is one link of the chain quartic -> Ferrari -> resolvent cubic -> Cardano that yields radical solvability of the quartic; this file formalizes the resolvent-cubic-to-Cardano reduction and Ferrari-parameter recovery, not the full chain."
     ],
     "prerequisites": [
       "Algebra (cubic and quartic equations, Cardano's formula, Ferrari's method)",
@@ -150,8 +150,8 @@
       "title": "Complete Solution Chain",
       "startLine": 195,
       "endLine": 229,
-      "summary": "Assembles the full quartic-to-Cardano chain in a single theorem.",
-      "mathContext": "Quartic $\\to$ resolvent cubic $\\to$ depressed cubic $\\to$ Cardano $\\to$ radicals."
+      "summary": "States quartic_to_cardano: for any p, q, r there exist explicit A, B such that every root of the depressed cubic t^3 + At + B = 0 yields a valid resolvent (Ferrari) parameter m = t - 5p/6 — the resolvent-to-Cardano reduction link, not a full quartic factorization.",
+      "mathContext": "Reduction link: resolvent cubic $\\to$ depressed cubic $t^3+At+B=0$ (Cardano form); any root $t \\to$ Ferrari parameter $m = t - 5p/6$."
     },
     {
       "id": "summary",
@@ -197,8 +197,8 @@
     "quartic-equations"
   ],
   "conclusion": {
-    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6. 8 theorems, 0 sorries, 0 axioms. Completes the quartic-cubic-Cardano solution chain.",
-    "implications": "Every quartic equation over C is solvable in radicals: the full chain quartic -> depressed quartic -> resolvent cubic -> depressed cubic -> Cardano is now formally connected.",
+    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6, and that any root of the depressed cubic yields a valid Ferrari (resolvent) parameter. 8 theorems, 0 sorries, 0 axioms. Formalizes the resolvent-cubic-to-depressed-cubic reduction link of the quartic solution chain; the Ferrari factorization step (resolvent root -> four quartic roots) and Cardano-root existence are not formalized here.",
+    "implications": "The resolvent cubic is formally reduced to Cardano's depressed form, and every root of that depressed cubic is shown to give a valid Ferrari parameter m. This is one middle link of the classical chain quartic -> depressed quartic -> resolvent cubic -> depressed cubic -> Cardano; the remaining links (quartic -> depressed quartic, Cardano-root existence, and resolvent root -> quartic factorization into quadratics) are classical but not formalized in this file, so full radical solvability of the quartic is not established end-to-end here.",
     "openQuestions": [
       "Can the Ferrari factorization axioms in GeneralQuartic.lean be proved?",
       "Can the explicit quartic roots be computed and verified?"
