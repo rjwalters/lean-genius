@@ -62,7 +62,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 591,
-    "assumptions": "1 axiom: selfridge_construction (deep result). 0 sorries — all lemmas fully proved.",
+    "assumptions": "1 axiom: selfridge_construction (deep result). 0 sorries. Additionally, two counterexample theorems (natSeq_not_distinct, pow2Seq_not_distinct) verify concrete interval-product collisions via native_decide, which adds the Lean.ofReduceBool compiler-trust axiom to those results; the main results do not depend on them.",
     "theoremCount": 25,
     "definitionCount": 20
   },
