@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-22, host-verified lake env lean exit 0, all new theorems [propext, Classical.choice, Quot.sound]): first QUANTITATIVE two-sided bounds for arbitrary P — pi/9^n <= sublevelMeasure P <= 4pi (sublevelMeasure_mem_Icc). Upper: S_p inside closedBall 0 2, area 4pi. Lower: ball of radius 3^-n around any root inside the lemniscate via factor-splitting triangle inequality. Same shape as target [c/log n, pi] with elementary constants. Remaining: sharp Polya pi upper and KLR c/log n lower need logarithmic potential theory absent from Mathlib (blocked route unchanged).",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-22, host-verified lake env lean exit 0, all new theorems [propext, Classical.choice, Quot.sound]): first QUANTITATIVE two-sided bounds for arbitrary P — pi/9^n <= sublevelMeasure P <= 4pi (sublevelMeasure_mem_Icc). Upper: S_p inside closedBall 0 2, area 4pi. Lower: ball of radius 3^-n around any root inside the lemniscate via factor-splitting triangle inequality. Same shape as target [c/log n, pi] with elementary constants. Remaining: sharp Polya pi upper and KLR c/log n lower need logarithmic potential theory absent from Mathlib (blocked route unchanged). UPDATE 2026-07-22b: full Polya equality family added (allRootsAt: (z-a)^n has area pi for every |a|<=1), same PR #41875.",
     "builtItems": [
       "UnitDiskPoly.eval_root_eq_zero / root_mem_sublevelSet / sublevelSet_nonempty / eval_of_degree_zero / sublevelSet_of_degree_zero / sublevelMeasure_nonneg in proofs/Proofs/Erdos116Problem.lean (6 axiom-free foundational theorems; host-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound only)",
       "proofs/Proofs/Erdos116WIP01.lean — 6 axiom-free decls (continuous_eval, sublevelSet_eq_preimage, isOpen_sublevelSet, measurableSet_sublevelSet, sublevelSet_subset_closedBall, isBounded_sublevelSet)",
@@ -51,7 +51,8 @@
       "sublevelMeasure_le_four_pi in Erdos116WIP01.lean (weak Polya upper bound 4pi)",
       "ball_subset_sublevelSet in Erdos116WIP01.lean (ball 3^-n around each root inside lemniscate)",
       "pi_div_pow_le_sublevelMeasure in Erdos116WIP01.lean (weak Pommerenke lower bound pi/9^n)",
-      "sublevelMeasure_mem_Icc in Erdos116WIP01.lean (headline two-sided bound)"
+      "sublevelMeasure_mem_Icc in Erdos116WIP01.lean (headline two-sided bound)",
+      "allRootsAt family (sublevelSet = ball a 1, sublevelMeasure = pi for every |a|<=1, n>=1) in Erdos116WIP01.lean"
     ],
     "insights": [
       "Erdos116Problem.lean was a bare statement-stub: real definitions (UnitDiskPoly, eval, sublevelSet, sublevelMeasure) but ZERO theorems, while gallery meta prose falsely described four bounds \"stated as axioms\" and a main theorem ErdosProblem116 that did not exist in source.",
@@ -67,7 +68,8 @@
       "Attainment half of the sharp Polya-type upper bound is now formal: exists P : UnitDiskPoly n, sublevelMeasure P = pi for every n >= 1; only the inequality sublevelMeasure P <= pi remains (deep, potential theory)",
       "Elementary triangle-inequality geometry already yields two-sided quantitative bounds pi/9^n <= mu(S_p) <= 4pi for every P — no potential theory needed; the deep content is narrowing this window to [c/log n, pi]",
       "Ball of radius 3^-n around ANY root lies inside the lemniscate: distinguished factor < 3^-n, each other factor <= 3, product < 1/3",
-      "sublevelMeasure_eq_toReal_volume dedupes the C ~ RxR measure transport once and for all; quantitative bounds then work purely on the C side via measure_mono + ENNReal.toReal_mono"
+      "sublevelMeasure_eq_toReal_volume dedupes the C ~ RxR measure transport once and for all; quantitative bounds then work purely on the C side via measure_mono + ENNReal.toReal_mono",
+      "The whole Polya equality family (z-a)^n is now covered exactly: area functional constant pi on repeated-root configs anywhere in the disk — Complex.volume_ball at arbitrary center makes translation machinery unnecessary"
     ],
     "mathlibGaps": [],
     "nextSteps": [

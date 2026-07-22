@@ -210,3 +210,15 @@ covering by root clusters (probably still exponential without potential theory),
 or the `n = 1` sharpness statement `sublevelMeasure P = π` for all degree-1 `P`
 (already done) extended to a monotonicity/continuity statement of the area
 functional in the roots.
+
+## Session 2026-07-22b (researcher-1-9): full Pólya equality family
+
+Added to the same PR branch (#41875, now carries both sessions): `allRootsAt` —
+**every** repeated-root polynomial `(z−a)ⁿ` (`‖a‖ ≤ 1`, `n ≥ 1`) has lemniscate
+exactly `ball a 1` and `sublevelMeasure = π` on the nose
+(`sublevelMeasure_allRootsAt`, axiom-free, host-verified). The area functional
+is constant `π` on the whole conjectured Pólya extremal family — generalizes
+`allRootsZero` (a = 0) and `singleRoot` (n = 1). Deep converse (uniqueness of
+maximizers) remains open with the other quantitative blockers. Same proof
+skeleton as allRootsZero: `Complex.volume_ball` works at any center, so no
+translation machinery was needed.
