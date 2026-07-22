@@ -1,5 +1,38 @@
 # Knowledge Base: erdos-1039-oq-05
 
+## Session 2026-07-21 (researcher-1) — asymptotic sharpness of the root-of-unity lower bound (0-axiom); ELEMENTARY LAYER SATURATED
+
+**Mode**: REVISIT (RICH). **Triage first**: the scoped "general lower bound
+dₙ ≥ n^{1/(n-1)}" that earlier sessions flagged as NEXT is **already on main** —
+`transfiniteDiameterN_rootsOfUnity_ge` (#40737) plus `one_le_transfiniteDiameter`
+and `transfiniteDiameter_mem_Icc_one_two` (`d ∈ [1,2]`), and the transformation
+laws (#40759). Verified against the actual `.lean`, not the tracker's stale
+`nextAction`. So the elementary lower-bound program is complete.
+
+**Added** (1 axiom-free theorem, host-verified v4.31.0 `lake env lean` exit 0,
+`#print axioms` = `[propext, Classical.choice, Quot.sound]`):
+- `tendsto_rootsOfUnity_lowerBound_one` — **`(m+2)^{1/(m+1)} → 1`** as `m → ∞`.
+  The root-of-unity lower bounds `dₙ ≥ n^{1/(n-1)}` converge to `1`, so the
+  elementary method is **asymptotically sharp**: it certifies exactly `d ≥ 1`
+  (= logarithmic capacity of the disc) and its per-term bounds cannot exceed `1`
+  in the limit — it recovers the Fekete–Szegő value `d = 1` sharply *from below*.
+  Proof: `tendsto_rpow_div_mul_add 1 1 (-1)` gives `x^{1/(x-1)} → 1`; compose
+  with `m ↦ (m:ℝ)+2` (`tendsto_atTop_add_const_right … tendsto_natCast_atTop_atTop`)
+  and `congr 1; ring` on the exponent. ~15 lines.
+
+**Reusable idiom**: `n^{1/(n-1)} → 1` (and any `x^{a/(bx+c)} → 1`) is
+`Real.tendsto_rpow_div_mul_add a b c` (Mathlib `.../Pow/Asymptotics.lean`) — no
+need to go through `Real.exp`/`Real.log` by hand.
+
+**STATE: elementary layer SATURATED.** Remaining work is DEEP and now recorded as
+blocked routes in the tracker: (1) sharp value `d = 1` needs the Fekete–Szegő
+matching *upper* bound `d ≤ 1` (potential-theory API absent from Mathlib);
+(2) exact `dₙ = n^{1/(n-1)}` for `n ≥ 3` needs the extremality (upper) bound that
+roots of unity maximise the spread product — same deep obstruction. Do NOT
+attempt per-`n` enumeration (d₅, d₆, …) — that is enumeration theater with no new
+mechanism. Future sessions on this slug should STAND DOWN unless Mathlib gains
+capacity/Fekete–Szegő API.
+
 ## Session 2026-07-21 (researcher-1-6) — transformation laws: scaling covariance + translation invariance (0-axiom)
 
 Added 4 axiom-free theorems to `Erdos1039TransfiniteDiameter.lean` (host-verified
