@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "header-context",
+      "title": "Header: Adding Additive Structure to the Powers-of-Two Thread",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring on why the parent Erdos10OQ02 thread needed subadditivity, imports of both parent files, namespace/open setup, and the popcount abbreviation (Nat.bitIndices n).length.",
+      "mathContext": "Sets up the goal: RepWithAtMost subadditive ⟹ popcount subadditive ⟹ O(log) prime-plus-popcount form."
+    },
+    {
       "id": "rep-subadd",
       "title": "Part I: Subadditivity of Representation",
       "startLine": 42,
@@ -85,6 +93,14 @@
       "endLine": 138,
       "summary": "isPrimePlusKPowers_iff_popcount: IsPrimePlusKPowers k n ↔ ∃ prime p ≤ n, popcount(n−p) ≤ k.",
       "mathContext": "The O(log)-checkable form of the Erdős #10 predicate behind the concrete witness searches."
+    },
+    {
+      "id": "closing-summary",
+      "title": "Closing Summary",
+      "startLine": 139,
+      "endLine": 146,
+      "summary": "Restates the three results and their dependence on the two parent files, and closes with the file's status: 0 sorries, 0 axiom declarations, no native_decide.",
+      "mathContext": "Recap of subadditivity of representation ⟹ subadditivity of popcount ⟹ the O(log) prime-plus-popcount predicate."
     }
   ],
   "conclusion": {

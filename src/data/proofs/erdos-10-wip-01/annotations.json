@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-header-context",
+    "proofId": "erdos-10-wip-01",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "Adding Additive Structure to the Erdős #10 Powers-of-Two Thread",
+    "content": "The parent Erdos10OQ02 thread built RepWithAtMost k n ('n is a sum of at most k powers of two') and its reduction to popcount via repWithAtMost_iff_bitIndices_length, but had no additive structure. This file supplies exactly that: repWithAtMost_add shows RepWithAtMost is subadditive by concatenating exponent multisets, and feeding the popcount-minimal representations through it gives — for free — the classical fact that binary popcount is subadditive. The file closes with isPrimePlusKPowers_iff_popcount, rewriting the Erdős #10 predicate ('n is a prime plus at most k powers of two') into an O(log)-checkable form via popcount(n − p), the form the concrete witness searches (e.g. Grechuk's 1117175146) rest on. Imports both parent files and opens Erdos10OQ02 for RepWithAtMost and its lemmas.",
+    "mathContext": "Goal: $\\mathrm{RepWithAtMost}$ is subadditive, so $\\mathrm{popcount}(a+b)\\le\\mathrm{popcount}(a)+\\mathrm{popcount}(b)$, and the Erdős #10 predicate rewrites via $\\mathrm{popcount}(n-p)$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős–Graham problem", "RepWithAtMost", "binary popcount", "additive combinatorics"],
+    "prerequisites": ["the parent RepWithAtMost/popcount characterization (Erdos10OQ02)", "powSum_add"]
+  },
+  {
     "id": "ann-popcount-def",
     "proofId": "erdos-10-wip-01",
     "range": {
@@ -73,5 +85,17 @@
     "significance": "key",
     "relatedConcepts": ["Erdős problem #10", "prime plus powers of two", "computational witness search", "Grechuk's counterexample"],
     "prerequisites": ["the IsPrimePlusKPowers predicate", "popcount_le_iff", "Nat subtraction (omega)"]
+  },
+  {
+    "id": "ann-closing-summary",
+    "proofId": "erdos-10-wip-01",
+    "range": { "startLine": 129, "endLine": 146 },
+    "type": "insight",
+    "title": "Summary: From Subadditive Representation to the O(log) Predicate",
+    "content": "The closing docstring restates the three results in one line each — repWithAtMost_add (subadditivity of representation), bitIndices_length_add_le / bitIndices_length_sum_le (binary popcount subadditivity, single and iterated), and isPrimePlusKPowers_iff_popcount (the O(log) prime-plus-popcount form) — and names their dependencies on the two parent files Erdos10OQ02 and Erdos10OQ02Popcount. It closes with the file's status line: 0 sorries, 0 axiom declarations, no native_decide.",
+    "mathContext": "$\\mathrm{popcount}(a+b)\\le\\mathrm{popcount}(a)+\\mathrm{popcount}(b)$ and $\\mathrm{IsPrimePlusKPowers}\\,k\\,n \\iff \\exists\\,p\\ \\text{prime} \\le n,\\ \\mathrm{popcount}(n-p)\\le k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["subadditivity", "binary popcount", "Erdős problem #10", "O(log) predicate"],
+    "prerequisites": ["all three main results of this file"]
   }
 ]
