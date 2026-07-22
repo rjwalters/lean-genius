@@ -98,6 +98,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module Header: The Part-Graded Refinement",
+      "startLine": 1,
+      "endLine": 53,
+      "mathContext": "$\\mathrm{card}\\,\\{c : \\mathrm{Composition}\\ n \\mid c.\\mathrm{length}=k\\} = \\binom{n-1}{k-1}$, summing to $2^{n-1}$ over $k$.",
+      "summary": "The module docstring states the part-graded refinement of the composition count: compositions of n into exactly k parts number C(n−1, k−1), summing over k to the ungraded total 2^(n−1) by the binomial theorem. It explains the bijective idea — cutting k−1 of the n−1 gaps between n unit boxes yields a composition into k parts, so k-part compositions correspond to (k−1)-subsets of an (n−1)-set — and draws the line between Mathlib's ungraded composition_card (routed through compositionEquiv and compositionAsSetEquiv) and the three original contributions this file adds on top: card_gapSubset (the gap-subset of a composition has cardinality one less than its length), the part-graded count card_composition_length, and the consistency corollary sum_card_composition_length recovering 2^(n−1)."
+    },
+    {
       "id": "composite-bijection-and-crux",
       "title": "The Composite Bijection and the Crux Count",
       "startLine": 54,
