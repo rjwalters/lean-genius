@@ -23,7 +23,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-04",
     "axiomCount": 2,
-    "assumptions": "chebotarev_density: For a Galois extension L/ℚ with group G and conjugacy class C ⊆ G, the natural density of primes with Frobenius in C is |C|/|G|. Chebotarev (1922). Proof requires Dedekind domain theory, Frobenius elements, and L-function analytic continuation — not in Mathlib. | dirichlet_density: For gcd(a,n)=1, primes p ≡ a (mod n) have density 1/φ(n). Dirichlet (1837). Provable from chebotarev_density via cyclotomic fields; stated separately for clarity.",
+    "assumptions": "chebotarev_density: For a Galois extension L/ℚ with group G and conjugacy class C ⊆ G, the natural density of primes with Frobenius in C is |C|/|G|. Chebotarev (1922). Proof requires Dedekind domain theory, Frobenius elements, and L-function analytic continuation — not in Mathlib. | dirichlet_density: For gcd(a,n)=1, primes p ≡ a (mod n) have density 1/φ(n). Dirichlet (1837). Provable from chebotarev_density via cyclotomic fields; stated separately for clarity. Trust caveat: the concrete conjugacy-class counts in S₅ and A₅ (s5_card, a5_card, s5_fivecycles_count … s5_identity_count, a5_order5_count, a5_order3_count, a5_order2_count — 12 theorems) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite group-enumeration facts, not the headline density results, which rest on the stated axioms chebotarev_density and dirichlet_density.",
     "lineCount": 385,
     "theoremCount": 23,
     "definitionCount": 1,

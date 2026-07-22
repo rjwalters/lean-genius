@@ -20,7 +20,7 @@
       "winding-number"
     ],
     "axiomCount": 1,
-    "assumptions": "1 axiom: knuth_unique_four_oblique — any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour. Accepted based on Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025).",
+    "assumptions": "1 axiom: knuth_unique_four_oblique — any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour. Accepted based on Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025). Trust caveat: the concrete tour facts (corner00/07/70/77_oblique_1/2, corner*_neighbors_distinct, tour_visits_all, oblique_lower_bound, minimal_tour_has_four, minimal_tour_starts_at_origin, and the isCanonical predicate — 23 uses) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite checks on the minimal oblique tour, not the headline uniqueness result, which rests on the stated axiom knuth_unique_four_oblique.",
     "proofRepoPath": "Proofs/KnightsTourOblique.lean",
     "mathlib_version": "4.31.0",
     "lineCount": 2341,
