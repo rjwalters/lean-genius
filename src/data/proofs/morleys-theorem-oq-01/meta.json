@@ -60,6 +60,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Conway's backward construction for Morley's theorem",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Instead of starting from an arbitrary triangle and locating its Morley triangle, Conway's proof starts from an equilateral triangle PQR and builds three isoceles 'ear' triangles on its sides whose outer vertices form the original triangle ABC. Verifying the trisector angles at each vertex (using α/3 + β/3 + γ/3 = π/3) reduces the full Morley theorem to a concrete angle-identity check, which this file sets up and proves."
+    },
+    {
       "id": "angle-setup",
       "title": "Triangle Angle Setup",
       "summary": "TriangleAngles structure and the three trisected angles α₃, β₃, γ₃",
