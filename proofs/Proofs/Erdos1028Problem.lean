@@ -182,15 +182,14 @@ theorem H_asymptotic : ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥
 The answer is H(n) = Θ(n^{3/2}).
 -/
 
-/-- The main question: estimate H(n). -/
+/-- The main question: estimate H(n). Fixed to n^(3/2), not a free witness function —
+    a free `∃ h : ℕ → ℝ` here would make this trivially true for any H (take h = H). -/
 def erdos_1028_question : Prop :=
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ h : ℕ → ℝ, ∃ N : ℕ, ∀ n ≥ N,
-    c * h n ≤ H n ∧ (H n : ℝ) ≤ C * h n
+  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+    c * (n : ℝ) ^ (3/2 : ℝ) ≤ H n ∧ (H n : ℝ) ≤ C * (n : ℝ) ^ (3/2 : ℝ)
 
 /-- The answer: H(n) = Θ(n^(3/2)). -/
-theorem erdos_1028_solved : erdos_1028_question := by
-  obtain ⟨c, C, hc, hC, N, hN⟩ := H_asymptotic
-  exact ⟨c, C, hc, hC, fun n => (n : ℝ) ^ (3/2 : ℝ), N, hN⟩
+theorem erdos_1028_solved : erdos_1028_question := H_asymptotic
 
 /-
 ## Symmetric Functions
