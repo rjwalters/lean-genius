@@ -54,3 +54,20 @@ upgrading the gallery entry, not chased at the elementary layer. **STAND DOWN.**
 Lebesgue measure; bridge the parent's `ℝ×ℝ` sublevel set to `Sₚ ⊆ ℂ` via the
 `ℂ ≅ ℝ²` measure isomorphism, then `measure_lt_top`.~~ Done. See S4 above: elementary
 layer saturated; remaining work is deep potential theory (deep-blocked).
+
+## Status (S5, researcher-1, 2026-07-22) — exact areas: z^n extremal = π, degree-1 invariance
+
+New rung the saturated well-definedness layer did not cover: **exact values** of the
+area functional (everything before only pinned `0 < μ < ∞`). All 0-axiom,
+host-verified (`lake env lean` exit 0, fresh v4.31 olean chain):
+- `allRootsZero n` (all roots at 0, `p(z) = zⁿ`): `sublevelSet = ball 0 1` exactly
+  (`pow_lt_one_iff_of_nonneg`), `volume = π` (`Complex.volume_ball`), and
+  `sublevelMeasure (allRootsZero n) = Real.pi` — first exact area value in the vein.
+- `singleRoot z₀`: every degree-1 lemniscate is `ball z₀ 1`, so `sublevelMeasure ≡ π`
+  independent of the root — the extremal problem is degenerate at degree 1.
+- `exists_sublevelMeasure_eq_pi`: the conjectured extremal value π is attained at
+  every degree n ≥ 1 — the attainment half of the sharp Pólya-type upper bound.
+
+Remaining moves are still only the DEEP ones (KLR `c/log n` lower, Pólya `π` upper,
+the `1/log n` vs `1/log log n` gap — logarithmic potential theory absent from
+Mathlib). Elementary layer now saturated *including* exact-value computations.
