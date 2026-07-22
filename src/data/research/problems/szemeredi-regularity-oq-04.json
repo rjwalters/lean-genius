@@ -20,13 +20,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 4,
-    "focus": "AFKS hybrid-regularity bridge: IsAFKSFineRegular (strong fine tolerance E, coarse budget ε) with bridge-up isRegularPartition_of_afksFineRegular (E-fine ⟹ ε-regular partition for E≤ε), bridge-down afksFineRegular_of_isRegularPartition, and both-sided monotonicity — pins the AFKS conclusion (iii) currency in the regularity hierarchy [VERIFIED 0 axioms].",
+    "iteration": 5,
+    "focus": "S18 (2026-07-22): one-sided defect energy gain DONE — SzemerediRegularityOQ04DefectGain.lean proves defect_energy_bound (weighted-mean defect, w2=0 allowed), pairEnergy_split_gain_defect(_right) (deviation vs PARENT density, gain |A1||B|/n^2 * delta^2), pairEnergy_step3_gain (eps^3 * |A||B|/n^2 via the eps-mass floor), and the capstone pairEnergy_gain_of_isWitnessedSharpStep3. The S17 3-piece step now carries its quantitative energy increment; eps^3 >= eps^4 so the symmetric outer budget covers both dichotomy branches. [VERIFIED 0 axioms, docker 8588 jobs]",
     "blockers": [],
-    "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
+    "nextAction": "S17 residual (b), the last layer: thread BOTH step shapes (4-piece IsWitnessedSharpStep with eps^4 gain, 3-piece IsWitnessedSharpStep3 with the new eps^3 gain) through the outer-loop chain construction — partition-level increment over insert A (insert B1 (insert B2 R)) (cf. PartitionGain.lean for the symmetric shape) and the recursive exists_afksTwoLevel_of_dichotomy reformulation. Deep outer-loop assembly; no elementary increment remains at the pair level."
   },
   "knowledge": {
-    "progressSummary": "AFKS strong regularity: items 1-3 machinery done modulo chain construction. S14-S16 derived all reachable piece-nonemptiness and pinned the residual to one degenerate side. S17 (StepThree.lean) DISCHARGED the S16 residual at the predicate level: IsWitnessedSharpStep3 (asymmetric 3-piece step) + packaging + the trichotomy normalizing both degenerate sides onto one shape via edgeDensity_symm. Remaining: one-sided energy defect inequality (eps^3 floor, mean preserved) and the recursive chain construction threading both step shapes through exists_afksTwoLevel_of_dichotomy.",
+    "progressSummary": "Item-1 dichotomy: constructive core COMPLETE at the pair level. S12-S15 packaging/freshness/mass-floor/ceiling; S16 gap forbids doubly-trivial splits; S17 asymmetric 3-piece predicate IsWitnessedSharpStep3 + trichotomy (one normalized shape covers both degenerate sides via edgeDensity_symm); S18 (2026-07-22) the one-sided DEFECT energy inequality: deviation of ONE half from the PARENT density gains (|A1||B|/n^2)*delta^2 (defect_energy_bound, multiplicative mean, empty complement allowed), and with the eps-mass floor the 3-piece step gains eps^3*|A||B|/n^2 (pairEnergy_step3_gain, capstone pairEnergy_gain_of_isWitnessedSharpStep3). Remaining: outer-loop chain construction threading both step shapes (deep).",
     "builtItems": [
       "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
@@ -90,7 +90,11 @@
       "isWitnessedSharpStep_of_split_of_nonempty in SzemerediRegularityOQ04Freshness.lean: freshness-free packaging — full IsWitnessedSharpStep from split data + mass floors + gap + nonemptiness of the four pieces. 0-axiom, docker-VERIFIED.",
       "IsWitnessedSharpStep3 in SzemerediRegularityOQ04StepThree.lean: asymmetric 3-piece witnessed-step predicate (only B splits), S16 residual shape",
       "isWitnessedSharpStep3_of_split: canonical-residual packaging lemma for the 3-piece step (mirrors Packaging.lean)",
-      "exists_proper_or_semitrivial_split_of_not_afksFineRegular: trichotomy case-split on gap_forces_complement_nonempty - proper 2x2 (both complements nonempty) OR normalized 3-piece data"
+      "exists_proper_or_semitrivial_split_of_not_afksFineRegular: trichotomy case-split on gap_forces_complement_nonempty - proper 2x2 (both complements nonempty) OR normalized 3-piece data",
+      "defect_energy_bound (two-cell weighted-mean defect inequality, w2=0 allowed) in SzemerediRegularityOQ04DefectGain.lean",
+      "pairEnergy_split_gain_defect / _right (one-sided gain vs parent density, A-side and B-side) in SzemerediRegularityOQ04DefectGain.lean",
+      "pairEnergy_step3_gain (eps^3*|A||B|/n^2 gain of the 3-piece split via the eps-mass floor) in SzemerediRegularityOQ04DefectGain.lean",
+      "pairEnergy_gain_of_isWitnessedSharpStep3 (capstone: witnessed 3-piece step carries the eps^3 pair-energy gain) in SzemerediRegularityOQ04DefectGain.lean"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -132,9 +136,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "One-sided defect inequality for the 3-piece step: pairEnergy(A,B1)+pairEnergy(A,B2) >= pairEnergy(A,B) + eps^2*|A||B1|/n^2 via the bias-variance identity (mean preserved: e(A,B)=e(A,B1)+e(A,B2), additivity in SzemerediCoreOQ01); with the B1 mass floor this gives the eps^3 >= eps^4 budget floor.",
-      "Chain construction: reformulate exists_afksTwoLevel_of_dichotomy to BUILD parts internally, casing each step on exists_proper_or_semitrivial_split_of_not_afksFineRegular into IsWitnessedSharpStep (4-piece) or IsWitnessedSharpStep3 (3-piece) via the two packaging lemmas.",
-      "Freshness discharge for the 3-piece branch: A, B1, B2 pairwise distinct and B1, B2 notin R from disjointness/nonemptiness (B1 nonempty from floor when eps,|B|>0; B2 nonempty supplied by the trichotomy)."
+      "Thread both witnessed step shapes (eps^4 symmetric, eps^3 asymmetric) through the outer-loop chain construction (exists_afksTwoLevel_of_dichotomy reformulation) — partition-level increment + freshness bookkeeping."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "score": 63
@@ -345,7 +347,29 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04SplitProper.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04StepThree.lean",
+      "filename": "SzemerediRegularityOQ04StepThree.lean",
+      "lineCount": 176,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04StepThree.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04DefectGain.lean",
+      "filename": "SzemerediRegularityOQ04DefectGain.lean",
+      "lineCount": 228,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04DefectGain.lean"
     }
   ],
-  "lastUpdate": "2026-07-12"
+  "lastUpdate": "2026-07-22"
 }
