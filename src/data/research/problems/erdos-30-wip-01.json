@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -31,11 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: formalized the Erdős–Turán (1941) counting UPPER bound as 6 axiom-free theorems (Erdos30WIP01.lean, Docker-verified v4.31, #print axioms = propext/Classical.choice/Quot.sound). Bounds the gallery Sidon number: h(N) = sidonNumber N ≤ ⌊√(2N)⌋+1 ≤ √(2N)+1. The parent Erdos30Problem.lean previously left ALL bounds in comments/axioms; this converts the classical upper bound into genuine theorems. The N^{1/4} refinement and the OPEN Erdős–Turán conjecture (whether error ≤ N^ε) remain untouched.",
+    "builtItems": [
+      "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
+      "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
+      "Erdos30WIP01.lean: sidon_card_sq_le (|A|² ≤ 2N + |A|)",
+      "Erdos30WIP01.lean: sidon_card_le_sqrt (|A| ≤ ⌊√(2N)⌋+1)",
+      "Erdos30WIP01.lean: sidonNumber_le_sqrt (h(N) ≤ ⌊√(2N)⌋+1) — bounds the gallery Sidon number",
+      "Erdos30WIP01.lean: sidonNumber_le_real ((h(N):ℝ) ≤ √(2N)+1)"
+    ],
+    "insights": [
+      "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
+      "Clean √-form: |A|² ≤ 2N + |A| gives (|A|−1)² ≤ |A|(|A|−1) ≤ 2N, hence |A| ≤ Nat.sqrt(2N)+1; passes to the supremum sidonNumber via Finset.sup_le, giving h(N) ≤ ⌊√(2N)⌋+1 ~ √(2N).",
+      "Mathlib has NO Sidon/B₂-set API and no roots-of-unity/Vandermonde discriminant product; the counting bound is best built from Finset.offDiag_card, Int.card_Icc, and Nat.le_sqrt."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Optional: sharpen the constant toward √N + N^{1/4} + 1 (Erdős–Turán 1941) — needs the finer sum-counting over {2,…,2N}; the √(2N)+1 form is the clean elementary envelope.",
+      "Lower bound side: Singer/Bose difference-set construction giving h(N) ≥ (1−o(1))√N is DEEP (finite projective geometry) — keep axiomatized.",
+      "The Erdős–Turán conjecture (error N^ε for all ε>0, $1000) stays OPEN as a Prop; do NOT claim proved."
+    ],
     "markdown": "# Knowledge Base: erdos-30-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -56,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-10T00:41:25.927Z",
+  "lastUpdate": "2026-07-22",
   "significance": 8,
   "tractability": 6
 }
