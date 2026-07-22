@@ -76,6 +76,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup and Statement of the Bridge",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring states the target: prove IsMaxNorm H K ↔ IsSimpleGroup (K ⧸ H.subgroupOf K) in the K = ⊤ case, axiom-free, via the correspondence theorem; then imports Mathlib and opens the ambient group G."
+    },
+    {
       "id": "predicate",
       "title": "The Maximal-Normal Predicate",
       "startLine": 44,
