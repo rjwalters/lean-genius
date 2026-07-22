@@ -109,12 +109,20 @@
       "mathContext": "The topologist's sine curve shows path-connectedness genuinely fails to survive closure."
     },
     {
-      "id": "positive-half",
-      "title": "Section II: Local Path-Connectedness Restores Rigidity",
+      "id": "positive-half-component-closure",
+      "title": "Section II: Path Components Are Their Own Closure",
       "startLine": 87,
-      "endLine": 125,
-      "summary": "closure_pathComponent, isPathConnected_closure_pathComponent, closure_pathComponent_eq_connectedComponent, isPathConnected_of_isConnected_of_isOpen, pathConnectedSpace_of_connected: in a LocPathConnectedSpace path components are clopen, so closure fixes them, and connectedness recovers path-connectedness on open sets and globally.",
+      "endLine": 110,
+      "summary": "closure_pathComponent, isPathConnected_closure_pathComponent, closure_pathComponent_eq_connectedComponent: in a LocPathConnectedSpace path components are clopen, so closure fixes them, identifying the closure with the path component itself and with the connected component.",
       "mathContext": "Clopen path components are their own closures — exactly where closure preserves path-connectedness."
+    },
+    {
+      "id": "positive-half-recovery",
+      "title": "Section III: Recovering Path-Connectedness from Connectedness",
+      "startLine": 112,
+      "endLine": 125,
+      "summary": "isPathConnected_of_isConnected_of_isOpen and pathConnectedSpace_of_connected: given local path-connectedness, a connected open set is path-connected, and a connected space is path-connected globally — the converse direction from the component-closure identity above.",
+      "mathContext": "Local path-connectedness makes connected and path-connected agree, on open sets and globally."
     }
   ],
   "mainTheorems": [
