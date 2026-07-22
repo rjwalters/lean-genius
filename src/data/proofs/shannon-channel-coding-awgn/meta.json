@@ -67,6 +67,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: AWGN Channel Capacity C = ½ log(1 + P/N)", "startLine": 1, "endLine": 52, "summary": "Assembles the classical Shannon capacity formula for the additive white Gaussian noise channel Y=X+Z from two already-proved facts about differential entropy: the Gaussian entropy formula and the Gaussian's max-entropy property. Notes the companion BSC and BEC capacity formulas already proved axiom-free, and flags the remaining scope gap: the continuous-alphabet chain-rule identity I(X;Y)=h(Y)-h(Z) is taken as grounded rather than derived measure-theoretically here.", "mathContext": "Mutual information for a continuous additive channel decomposes as I(X;Y)=h(Y)-h(Z) when noise is independent of input; combined with the Gaussian's entropy-maximizing property among fixed-variance densities, a Gaussian input achieves C(P,N)=½log(1+P/N), matching Shannon's 1948 formula."},
     {
       "id": "awgn-capacity-def",
       "title": "The AWGN Capacity C(P, N)",
