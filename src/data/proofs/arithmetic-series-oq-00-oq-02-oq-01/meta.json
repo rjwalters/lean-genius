@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the unique rational weight for a Nicomachus-type identity",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "States the question left open by the parent (w(k)=k^2 fails the identity sum w(k)(2k-1) = (sum k)^2) and answers it: the unique rational weight is w(k)=k^3/(2k-1), forced by telescoping, with no integer weight existing since w(2)=8/3.",
+      "mathContext": "$w(k)=k^3/(2k-1)$ is the unique rational solution of $\\sum_{k=1}^n w(k)(2k-1)=\\left(\\sum_{k=1}^n k\\right)^2$, since $w(k)(2k-1)=S_k-S_{k-1}=k^3$."
+    },
+    {
       "id": "weight-definition",
       "title": "I. The Rational Weight w(k) = k³/(2k-1)",
       "startLine": 42,
