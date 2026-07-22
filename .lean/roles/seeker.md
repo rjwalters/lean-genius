@@ -40,6 +40,14 @@ Launched by `scripts/research/launch-seeker.sh` (tmux + claude-wrapper daemon):
    # .lean/state/candidate-pool.json (see #26802). No copy step is needed.
    python3 research/db/sync_pool.py 2>/dev/null
    ```
+2b. **Ingest GitHub research issues** (issue #41840 — additional source):
+   ```bash
+   # Turns each open issue labeled `research:queued` into a claimable pool
+   # entry (DB insert + site JSON + pool regen), then marks it `research:pooled`.
+   # Idempotent and ingest-always (independent of pool depth) — these are
+   # explicit human requests. Runs AFTER the gallery refresh above.
+   ./scripts/research/ingest-issue-problems.sh
+   ```
 3. **Check pool depth**:
    ```bash
    jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json
@@ -50,7 +58,8 @@ Launched by `scripts/research/launch-seeker.sh` (tmux + claude-wrapper daemon):
 
 ## Problem Sources
 
-Problems are extracted from the proof gallery:
+Problems are extracted from the proof gallery, **plus** human-filed GitHub
+issues (issue #41840):
 
 | Source | Description | Location |
 |--------|-------------|----------|
@@ -58,6 +67,25 @@ Problems are extracted from the proof gallery:
 | **Incomplete** | Proofs with `sorry` statements | `sorries > 0` in meta.json |
 | **WIP** | Work-in-progress proofs | `badge: "wip"` |
 | **Conditional** | Proofs depending on unproven hypotheses | `status: "conditional"` |
+| **GitHub issues** | Human-filed problems tagged `research:queued` | `scripts/research/ingest-issue-problems.sh` |
+
+### GitHub-issue intake (`research:queued`)
+
+`scripts/research/ingest-issue-problems.sh` bridges GitHub issues into the pool.
+Tag an issue **`research:queued`** (a dedicated trigger label — NOT the broad
+`research` topic tag) to route it to the fleet. Each cycle the script:
+
+1. Lists open issues labeled `research:queued`.
+2. For each not-yet-ingested issue, synthesizes a candidate (slug
+   `issue-<number>-<title>`, `status: available`, `sourceIssue: <number>`, issue
+   URL in `references.urls`), inserts it into `research/db/knowledge.db`, writes
+   `src/data/research/problems/<slug>.json`, and regenerates the pool.
+3. Marks the issue `research:pooled` and leaves a comment linking the pool slug.
+
+Idempotency is enforced by the `research:pooled` marker, the `sourceIssue` field
+in the site JSON, and the DB slug — an issue is never ingested twice. This is
+**additive**: gallery-derived sourcing is unchanged. First test case: #41831
+(OEIS A054656).
 | **Millennium** | Millennium Prize Problems | `millenniumProblem` field |
 | **Hilbert** | Hilbert's 23 Problems | `hilbertNumber` field |
 

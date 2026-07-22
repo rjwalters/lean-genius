@@ -207,6 +207,18 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    python3 research/db/sync_pool.py 2>/dev/null
    \`\`\`
 
+2b. **Ingest GitHub research issues** (ADDITIONAL source — issue #41840)
+   Human-filed research problems tagged \`research:queued\` are explicit
+   requests, so they are ingested EVERY cycle regardless of pool depth (the
+   gallery-derived replenishment below stays threshold-gated). This inserts each
+   new such issue into the DB, writes its site JSON, regenerates the pool, and
+   marks the issue \`research:pooled\` so it is never ingested twice.
+   \`\`\`bash
+   # Idempotent: skips issues already carrying research:pooled or already in the
+   # DB. Re-runs sync_pool.py internally, so run it AFTER the refresh above.
+   ./scripts/research/ingest-issue-problems.sh 2>&1 | tee -a "$LOG_FILE"
+   \`\`\`
+
 3. **Check candidate pool depth**
    \`\`\`bash
    AVAILABLE=\$(jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json)
