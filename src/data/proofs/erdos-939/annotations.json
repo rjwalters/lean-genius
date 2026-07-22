@@ -280,17 +280,17 @@
     },
     "type": "concept",
     "title": "Lander-Parkin Counterexample",
-    "content": "**Lander and Parkin (1967)** disproved Euler's conjecture by finding:\n\n27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵\n\nThis was discovered by computer search—one of the first major mathematical results found by computer.\n\nThe proof uses `native_decide` for direct computation.",
+    "content": "**Lander and Parkin (1967)** disproved Euler's conjecture by finding:\n\n27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵\n\nThis was discovered by computer search—one of the first major mathematical results found by computer.\n\nThe proof verifies the identity by kernel computation with `decide` and `norm_num`.",
     "mathContext": "27^5 + 84^5 + 110^5 + 133^5 = 14348907 + 4182119424 + 16105100000 + 40725541933 = 61917364224 = 144^5.",
     "significance": "key",
     "relatedConcepts": [
       "lander-parkin",
       "counterexample",
-      "native-decide"
+      "kernel-computation"
     ],
     "prerequisites": [
       "Counterexamples by computer search",
-      "`native_decide`",
+      "`decide` / `norm_num`",
       "Sums of fifth powers"
     ]
   },
