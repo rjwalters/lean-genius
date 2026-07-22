@@ -55,6 +55,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "GCD boundary formula for lattice points on a segment",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Answers the parent entry's open question on constructive boundary counting for Pick's theorem: the number of integer lattice points on the segment from (0,0) to (a,b), including endpoints, is exactly gcd(a,b)+1, realized as the points (k·a/g, k·b/g) for k = 0,...,g. This gives the boundary term B = sum of gcd(|Δx|,|Δy|) over edges in Pick's formula A = I + B/2 - 1."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 40,
