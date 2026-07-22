@@ -306,4 +306,108 @@ lower complement to the `√(2N) + 1` upper bound. -/
 theorem sidonNumber_unbounded : ∀ M : ℕ, ∃ N : ℕ, M ≤ sidonNumber N :=
   fun M => ⟨2 ^ M, (Nat.le_succ M).trans (sidonNumber_two_pow_ge M)⟩
 
+/- ## Exact initial values of the Sidon number
+
+The counting upper bound `|A|² ≤ 2N + |A|` (`sidon_card_sq_le`) is *sharp* for small
+`N`: matched against explicit optimal Sidon sets it pins the exact value of
+`h(N) = sidonNumber N` for `N ≤ 6`, giving the initial segment
+
+  `h(0), …, h(6) = 1, 2, 2, 3, 3, 3, 4`.
+
+This exhibits `h` as a (non-strict) step function — the counting bound alone already
+determines `h` exactly in the small range, before the `√N` asymptotics take over. The
+optimal witnesses are `{0}`, `{0,1}`, `{0,1,3}` (a perfect ruler on 4 points) and
+`{0,1,4,6}` (whose six differences `1,2,3,4,5,6` are all distinct — a perfect
+difference set on 7 points). -/
+
+/-- **Lower bound from an explicit Sidon set.**  Any Sidon set `A ⊆ {0,…,N}` witnesses
+`|A| ≤ h(N)`, since `h(N)` is the supremum of the sizes of such sets.  This is the
+lower-bound companion of `sidon_card_le_sqrt` (the per-set upper bound). -/
+theorem sidonNumber_ge_card {A : Finset ℕ} {N : ℕ}
+    (hsub : A ⊆ Finset.range (N + 1)) (hA : IsSidonSet A) : A.card ≤ sidonNumber N := by
+  unfold sidonNumber
+  apply Finset.le_sup
+  simp only [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hsub, hA⟩
+
+/-- **Sharp counting upper bound on `h(N)`.**  If every `m` with `m² ≤ 2N + m` satisfies
+`m ≤ B`, then `h(N) ≤ B`.  Each Sidon set in `{0,…,N}` has `|A|² ≤ 2N + |A|`
+(`sidon_card_sq_le`), so its size — and hence the supremum `h(N)` — is `≤ B`.  For small
+`N` this is *sharp* (unlike the looser `⌊√(2N)⌋ + 1`), because it uses the exact
+quadratic rather than a square-root relaxation. -/
+theorem sidonNumber_le_of_sq {N B : ℕ}
+    (h : ∀ m : ℕ, m * m ≤ 2 * N + m → m ≤ B) : sidonNumber N ≤ B := by
+  unfold sidonNumber
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  exact h A.card (sidon_card_sq_le N hA.1 hA.2)
+
+-- Explicit optimal Sidon sets (verified by exhaustive case analysis on membership).
+private theorem isSidonSet_0_1 : IsSidonSet {0, 1} := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;>
+    rcases hc with rfl | rfl <;> rcases hd with rfl | rfl <;> omega
+
+private theorem isSidonSet_0_1_3 : IsSidonSet {0, 1, 3} := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+  rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl <;>
+    rcases hc with rfl | rfl | rfl <;> rcases hd with rfl | rfl | rfl <;> omega
+
+private theorem isSidonSet_0_1_4_6 : IsSidonSet {0, 1, 4, 6} := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
+  rcases ha with rfl | rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl | rfl <;>
+    rcases hc with rfl | rfl | rfl | rfl <;> rcases hd with rfl | rfl | rfl | rfl <;> omega
+
+/-- `h(0) = 1`: the only nonempty Sidon set in `{0}` is `{0}` itself. -/
+theorem sidonNumber_zero : sidonNumber 0 = 1 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) (one_le_sidonNumber 0)
+  by_contra hc; push_neg at hc; nlinarith [hm, hc]
+
+/-- `h(1) = 2`, with optimal witness `{0,1}`. -/
+theorem sidonNumber_one : sidonNumber 1 = 2 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 2 = ({0, 1} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 1 := sidonNumber_ge_card (by decide) isSidonSet_0_1
+
+/-- `h(2) = 2`: `{0,1,2}` fails (`0+2 = 1+1`), so `{0,1}` is still optimal. -/
+theorem sidonNumber_two : sidonNumber 2 = 2 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 2 = ({0, 1} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 2 := sidonNumber_ge_card (by decide) isSidonSet_0_1
+
+/-- `h(3) = 3`, with optimal witness `{0,1,3}`. -/
+theorem sidonNumber_three : sidonNumber 3 = 3 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 3 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
+
+/-- `h(4) = 3`: six distinct differences cannot fit in `{1,…,4}`, so `{0,1,3}` stays optimal. -/
+theorem sidonNumber_four : sidonNumber 4 = 3 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 4 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
+
+/-- `h(5) = 3`: still no room for a 4-element Sidon set (`4·3 = 12 > 10 = 2·5`). -/
+theorem sidonNumber_five : sidonNumber 5 = 3 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 3 = ({0, 1, 3} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 5 := sidonNumber_ge_card (by decide) isSidonSet_0_1_3
+
+/-- `h(6) = 4`, with optimal witness `{0,1,4,6}` — a perfect difference set whose six
+differences `1,2,3,4,5,6` exhaust `{1,…,6}`. -/
+theorem sidonNumber_six : sidonNumber 6 = 4 := by
+  refine le_antisymm (sidonNumber_le_of_sq fun m hm => ?_) ?_
+  · by_contra hc; push_neg at hc; nlinarith [hm, hc]
+  · calc 4 = ({0, 1, 4, 6} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 6 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_6
+
 end Erdos30
