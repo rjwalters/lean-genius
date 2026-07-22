@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-371",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #371 on largest-prime-factor comparisons: show $\\{n : P(n)<P(n+1)\\}$ has density $1/2$. Erd\u0151s\u2013Pomerance (1978) proved positive upper density for both orderings; Ter\u00e4v\u00e4inen (2018) established logarithmic density $1/2$, and Wang (2021) gave the full result conditional on Elliott\u2013Halberstam.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "$P(n)$ denotes the largest prime factor of $n$; Tao\u2013Ter\u00e4v\u00e4inen (2019) extended to asymptotic density $1/2$ at almost all scales, and L\u00fc\u2013Wang (2025) gave an unconditional density lower bound of $0.2017$."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's primorial, prime basics, real logarithm, real topology, and tactics. Opens the `Erdos371` namespace with `Nat`, `Real`, `Filter`, `Finset` in scope.",
