@@ -33,7 +33,8 @@
       "The combined supplement needs no new permutation-theoretic computation: multiplicativity of the Jacobi symbol in its top argument reduces a = -2 to the already-established a = -1 and a = 2, and (-1)^a·(-1)^b = (-1)^(a+b) fuses their exponents. The new object x ↦ -2·x is literally the composition of the negation and doubling permutations of the two sibling entries.",
       "Mathlib carries the -2 character χ₈' only as a mod-8 case split (χ₈'_nat_eq_if_mod_eight); the closed-form power expression χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) is not in the library, and is the reusable contribution here — the -2 analogue of the octic power formula chi8_eq_neg_one_pow established in the second-supplement sibling.",
       "The fused exponent (n-1)/2 + (n²-1)/8 is even exactly for n ≡ 1, 3 (mod 8): at n ≡ 1 both summands are even; at n ≡ 3 both are odd (sum even); at n ≡ 5, 7 exactly one is odd. This is the classical 'when is -2 a quadratic residue' characterization, recovered as the parity of a single sum.",
-      "Both sibling supplements being phrased as Zolotarev signs of the SAME shape — sign(ringMulPerm u) = J(a | n) for the appropriate unit u — lets the combined supplement be read directly off the unit -2 = (-1)·2 via the parent's full-odd identity, with no re-derivation of any sign count."
+      "Both sibling supplements being phrased as Zolotarev signs of the SAME shape — sign(ringMulPerm u) = J(a | n) for the appropriate unit u — lets the combined supplement be read directly off the unit -2 = (-1)·2 via the parent's full-odd identity, with no re-derivation of any sign count.",
+      "Only Part I does real arithmetic work (deriving the power form jacobiSym_neg_two from the two sibling supplements); Parts II and III are one-line corollaries that substitute jacobiSym_neg_two into a fixed identity — the grandparent's sign(ringMulPerm u) = J(a | n) for Part II, and Euler's criterion legendreSym = jacobiSym for Part III — so the whole file's mathematical content reduces to a single equality established once and transported twice"
     ],
     "prerequisites": [
       "The full odd-modulus Zolotarev–Frobenius identity ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd (the grandparent) and the whole-ring multiplication permutation ZolotarevCRT.ringMulPerm",
@@ -45,30 +46,38 @@
   },
   "sections": [
     {
-      "id": "power-form-combined-supplement",
-      "title": "The power form of the combined supplement J(-2 | n)",
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
       "startLine": 1,
-      "endLine": 106,
+      "endLine": 76,
+      "summary": "Docstring framing the combined supplement as the fusion of the two sibling supplements; imports both sibling files, sets maxHeartbeats, opens ZolotarevCRT/ZolotarevFirstSupplement/ZolotarevSecondSupplement, declares namespace ZolotarevThirdSupplement and the variable {n : ℕ} [NeZero n].",
+      "mathContext": "$-2 = (-1)\\cdot 2$, so $J(-2\\mid n) = J(-1\\mid n)\\cdot J(2\\mid n)$ by multiplicativity of the Jacobi symbol in its top argument."
+    },
+    {
+      "id": "power-form-combined-supplement",
+      "title": "Part I(a): The Power Form of J(-2 | n) and its Mod-8 Indicator",
+      "startLine": 78,
+      "endLine": 105,
       "summary": "jacobiSym_neg_two: J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) for odd n. Split -2 = (-1)·2 (jacobiSym.mul_left), rewrite the two factors by the sibling supplements J(-1|n) = (-1)^((n-1)/2) and J(2|n) = (-1)^((n²-1)/8), and fuse the exponents with pow_add. jacobiSym_neg_two_eq: the value form, J(-2|n) = (if n % 8 = 1 ∨ n % 8 = 3 then 1 else -1), read off Mathlib's χ₈' via jacobiSym.at_neg_two and χ₈'_nat_eq_if_mod_eight (the n-even branch discarded by oddness).",
       "mathContext": "$J(-2 \\mid n) = (-1)^{(n-1)/2 + (n^2-1)/8}$"
     },
     {
       "id": "closed-form-power-formula-chi8prime",
-      "title": "Closed-form power formula for χ₈'",
+      "title": "Part I(b): Closed-Form Power Formula for χ₈'",
       "startLine": 107,
-      "endLine": 126,
+      "endLine": 125,
       "summary": "chi8'_eq_neg_one_pow: χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n — the -2 analogue of the second supplement's chi8_eq_neg_one_pow, absent from Mathlib (which carries χ₈' only as the mod-8 case split χ₈'_nat_eq_if_mod_eight). Proved by chaining jacobiSym_neg_two_eq and jacobiSym_neg_two. neg_one_pow_neg_two records the dual reading: the fused exponent evaluates to +1 at n ≡ 1,3 (mod 8) and -1 at n ≡ 5,7 (mod 8)."
     },
     {
       "id": "zolotarev-permutation-neg-two",
-      "title": "The Zolotarev permutation x ↦ -2·x",
+      "title": "Part II: The Zolotarev Permutation x ↦ -2·x",
       "startLine": 127,
-      "endLine": 155,
+      "endLine": 154,
       "summary": "sign_ringMulPerm_neg_two and sign_neg_two: the grandparent's full odd-modulus identity sign_ringMulPerm_eq_jacobiSym_odd (with a unit of residue -2 and integer representative -2) gives sign(x ↦ -2·x on ℤ/n) = J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8). The canonical hypothesis-free form builds the unit as -(ZMod.unitOfCoprime 2 _), using Nat.Coprime 2 n from oddness and Units.val_neg. This reads the combined supplement off the composition of Zolotarev's negation and doubling permutations."
     },
     {
       "id": "legendre-special-case-qr-characterization",
-      "title": "Legendre special case and the QR characterization",
+      "title": "Part III: Legendre Special Case and the QR Characterization",
       "startLine": 156,
       "endLine": 201,
       "summary": "legendreSym_neg_two: for an odd prime p, (-2 / p) = (-1)^((p-1)/2 + (p²-1)/8), via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two. legendreSym_neg_two_eq gives the prime mod-8 indicator, and neg_two_qr_iff packages the classical statement: legendreSym p (-2) = 1 ↔ p ≡ 1 or 3 (mod 8) — i.e. -2 is a quadratic residue mod p exactly for those residues."
