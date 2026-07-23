@@ -66,7 +66,7 @@
       "erdos-1050"
     ],
     "axiomCount": 2,
-    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erdős's published result; the second is computationally verified. 4 former placeholder axioms (chowla_conjecture_open, lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were eliminated by proving them as theorems.",
+    "assumptions": "2 axiom declarations: erdos_integer_irrational (Erdős 1948 irrationality for integer t ≥ 2), S_at_2_approx (numerical bound 1.606 < S(2) < 1.607). The first is Erdős's published result; the second is computationally verified. 3 former True-stub placeholder theorems (lambert_arithmetic_property, partial_rational_results, linear_independence_partial) were removed and converted to plain comments, not proved. chowla_conjecture_open remains as a vacuous tautology (ChowlaConjecture ↔ ChowlaConjecture := Iff.rfl) that asserts nothing about the conjecture's status.",
     "prerequisites": [
       "Analytic number theory: divisor function and Lambert series",
       "Irrationality and transcendence theory",
@@ -169,7 +169,7 @@
     {
       "id": "lambert",
       "title": "Part VIII: Connection to Lambert Series",
-      "summary": "Defines isLambertSeries as sum a_n * q^n / (1 - q^n). States S_as_lambert showing S(t) equals the Lambert series with a_n = 1 and q = 1/t. Includes lambert_arithmetic_property axiom (placeholder for arithmetic properties of Lambert series).",
+      "summary": "Defines isLambertSeries as sum a_n * q^n / (1 - q^n). States S_as_lambert showing S(t) equals the Lambert series with a_n = 1 and q = 1/t (sorry'd). A note on arithmetic properties of Lambert series is recorded as a plain comment, not a declaration.",
       "startLine": 251,
       "endLine": 271,
       "mathContext": "$L(q) = \\sum_{n=1}^{\\infty} \\frac{a_n q^n}{1 - q^n}$. Setting $a_n \\equiv 1$ and $q = 1/t$ gives $L(1/t) = S(t)$."
@@ -177,7 +177,7 @@
     {
       "id": "partial",
       "title": "Part IX: Partial Results",
-      "summary": "Includes placeholder axioms partial_rational_results and linear_independence_partial for known partial progress on Chowla's conjecture. Proves S_bounds giving 1/(t-1) <= S(t) <= t/(t-1)^2 (sorry'd), providing useful numerical approximation bounds.",
+      "summary": "Notes on partial progress toward Chowla's conjecture (rational special cases, linear independence) are recorded as plain comments, not declarations. Proves S_bounds giving 1/(t-1) <= S(t) <= t/(t-1)^2 (sorry'd), providing useful numerical approximation bounds.",
       "startLine": 272,
       "endLine": 293,
       "mathContext": "$\\frac{1}{t-1} \\le S(t) \\le \\frac{t}{(t-1)^2}$ for $t > 1$. For $t = 2$: $1 \\le S(2) \\le 2$."
