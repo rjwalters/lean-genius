@@ -74,6 +74,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Sum of Reciprocal Odd Squares via Even/Odd Splitting", "startLine": 1, "endLine": 51, "summary": "Derives ∑_{k=0}^∞ 1/(2k+1)² = π²/8 as an elementary corollary of the Basel identity, splitting ∑ 1/n² into even + odd subsequences via HasSum.even_add_odd. The even part rescales to (1/4)(π²/6) = π²/24, so by uniqueness of infinite sums the odd part is π²/6 − π²/24 = π²/8; also records the companion even-square identity ∑ 1/(2k)² = π²/24. 0 sorries, 0 axioms.", "mathContext": "$\\sum_n 1/n^2=\\sum_k 1/(2k)^2+\\sum_k 1/(2k+1)^2$ via `HasSum.even_add_odd`; the even part rescales to $\\pi^2/24$, so uniqueness of sums gives the odd part $\\pi^2/6-\\pi^2/24=\\pi^2/8$."},
     {
       "id": "basel-identity",
       "title": "Basel Identity (Mathlib)",
