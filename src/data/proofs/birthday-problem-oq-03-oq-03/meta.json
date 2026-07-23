@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Asymptotic Scaling of k-Way Birthday Thresholds",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Poses the open question of the asymptotic scaling of the k-way birthday threshold as a function of k and d, and answers n_k ~ (k! * d^(k-1))^(1/k). Lists the properties proved: for fixed k the threshold grows sub-linearly as d^((k-1)/k), the exponent (k-1)/k tends to 1 as k -> infinity (approaching the pigeonhole bound), the k! factor captures combinatorial growth of coincidence patterns, and the classical k=2 case recovers the square-root law n_2 ~ sqrt(2d). States 0 axioms, 0 sorries.",
+      "mathContext": "$n_k\\sim(k!\\,d^{k-1})^{1/k}$, recovering $n_2\\sim\\sqrt{2d}$ at $k=2$ and approaching the pigeonhole bound $(k-1)d+1$ as $k\\to\\infty$."
+    },
+    {
       "id": "pigeonhole-scaling",
       "title": "Pigeonhole Bound (Linear Scaling)",
       "startLine": 39,
