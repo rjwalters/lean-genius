@@ -140,7 +140,7 @@
     "openQuestions": [
       {
         "id": "basel-problem-oq-11-oq-01",
-        "question": "Generalize the even/odd parity split to a reusable lemma η(2m) = (1 - 2^(1-2m)) ζ(2m) for all even arguments, deriving η(4) = 7π⁴/720 from Mathlib's hasSum_zeta_four with no new analytic input.",
+        "question": "Now discharged by basel-problem-oq-11-oq-01, which proves the general lemma η(e) = (1 − 2^{1−e})ζ(e) for arbitrary natural e (recovering η(4) = 7π⁴/720 at e = 4). The next step that lemma itself poses: package it against Mathlib's hasSum_zeta_nat to get a closed Bernoulli-number form η(2m) = (1 − 2^{1−2m})·(−1)^{m+1} B_{2m} (2π)^{2m} / (2·(2m)!) for all m ≥ 1.",
         "significance": "medium"
       },
       {
@@ -164,7 +164,12 @@
     {
       "targetId": "basel-problem-oq-14",
       "relationship": "related — degree-4 analog",
-      "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4). It is precisely the η(2m) generalization this entry's open question 1 asks for, at m = 2."
+      "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template directly to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4), as a standalone concrete proof rather than an instance of a general lemma."
+    },
+    {
+      "targetId": "basel-problem-oq-11-oq-01",
+      "relationship": "extended-by",
+      "description": "Directly answers this entry's open question 1: generalizes the even/odd parity split proved here at s = 2 into a single reusable lemma η(e) = (1 − 2^{1−e})ζ(e) for arbitrary natural exponent e, then specializes it at e = 4 to recover η(4) = 7π⁴/720 — the actual η(2m) generalization requested, as opposed to basel-problem-oq-14's standalone concrete proof of the same value."
     },
     {
       "targetId": "basel-problem-oq-10",
@@ -197,7 +202,7 @@
   "openQuestions": [
     {
       "id": "basel-problem-oq-11-oq-01",
-      "question": "Generalize the even/odd parity split to η(2m) = (1 - 2^(1-2m)) ζ(2m) and derive η(4) = 7π⁴/720 from hasSum_zeta_four.",
+      "question": "Now discharged by basel-problem-oq-11-oq-01 (general lemma η(e) = (1 − 2^{1−e})ζ(e), specialized at e = 4 to η(4) = 7π⁴/720). Next: package it against hasSum_zeta_nat for a closed Bernoulli-number form η(2m) = (1 − 2^{1−2m})·(−1)^{m+1} B_{2m} (2π)^{2m} / (2·(2m)!) for all m ≥ 1.",
       "significance": "medium"
     },
     {
