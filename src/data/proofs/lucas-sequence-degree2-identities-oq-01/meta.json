@@ -28,9 +28,17 @@
       "id": "fast-doubling-pair",
       "title": "Section I: The Fast-Doubling Pair (U_double_pair)",
       "startLine": 42,
+      "endLine": 73,
+      "summary": "U_double_pair: U₂ₙ = Uₙ·Vₙ and U₂ₙ₊₁ = Uₙ₊₁² − Q·Uₙ² by one simultaneous induction on n; the successor step expands the recurrence at the doubled index, feeds in the inductive pair, eliminates Vₖ by V_eq, and closes by ring.",
+      "mathContext": "$U_{2n}=U_n V_n,\\ U_{2n+1}=U_{n+1}^2-Q U_n^2$, by simultaneous induction pairing the two doubled indices."
+    },
+    {
+      "id": "fundamental-doubling",
+      "title": "Extracting U_two_mul and U_two_mul_add_one",
+      "startLine": 74,
       "endLine": 82,
-      "summary": "U_double_pair: U₂ₙ = Uₙ·Vₙ and U₂ₙ₊₁ = Uₙ₊₁² − Q·Uₙ² by one simultaneous induction on n; the successor step expands the recurrence at the doubled index, feeds in the inductive pair, eliminates Vₖ by V_eq, and closes by ring. U_two_mul and U_two_mul_add_one extract the two components.",
-      "mathContext": "$U_{2n}=U_n V_n,\\ U_{2n+1}=U_{n+1}^2-Q U_n^2$; e.g. Fibonacci $F_6=8=F_3 L_3=2\\cdot4$."
+      "summary": "U_two_mul and U_two_mul_add_one extract the two components of U_double_pair as standalone named theorems — U₂ₙ = Uₙ·Vₙ is the OQ-01 first target.",
+      "mathContext": "$U_{2n}=U_n V_n$; e.g. Fibonacci $F_6=8=F_3 L_3=2\\cdot4$."
     },
     {
       "id": "companion-doubling",
@@ -42,11 +50,19 @@
     },
     {
       "id": "specializations",
-      "title": "Section III: Named Specializations and Numeric Checks",
+      "title": "Section III: Named Specializations",
       "startLine": 111,
-      "endLine": 133,
-      "summary": "fib_doubling F₂ₙ = Fₙ·Lₙ and lucas_doubling L₂ₙ = Lₙ² − 2·(−1)ⁿ at (1,−1), pell_doubling U₂ₙ = Uₙ·Vₙ at (2,−1), plus kernel-decide numeric sanity checks (F₆=8, L₆=18).",
+      "endLine": 125,
+      "summary": "fib_doubling F₂ₙ = Fₙ·Lₙ and lucas_doubling L₂ₙ = Lₙ² − 2·(−1)ⁿ at (P,Q)=(1,−1), pell_doubling U₂ₙ = Uₙ·Vₙ at (2,−1) — the general doubling laws instantiated at the classical parameter pairs.",
       "mathContext": "The (P,Q)=(1,−1) and (2,−1) instances of the general doubling laws."
+    },
+    {
+      "id": "numeric-check",
+      "title": "Kernel-Decide Numeric Sanity Check",
+      "startLine": 126,
+      "endLine": 133,
+      "summary": "Verifies F₆ = 8, L₆ = 18, F₆ = F₃·L₃, and L₆ = L₃² − 2·(−1)³ by kernel `decide` at (P,Q) = (1,−1), n = 3 — a concrete check of both doubling formulas at once.",
+      "mathContext": "$F_6=8=F_3L_3=2\\cdot4,\\ L_6=18=L_3^2-2(-1)^3=16+2$."
     }
   ],
   "conclusion": {
