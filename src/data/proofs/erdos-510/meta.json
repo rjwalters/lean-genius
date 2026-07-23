@@ -40,7 +40,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 64,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "0 axioms, 0 theorems, 0 sorries. Only cosineSum/minCosineSum are formalized; the conjecture, known bounds, and optimality result are documented in comments, not declared as axioms or theorems.",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 2
@@ -65,28 +65,28 @@
       "title": "Main Conjecture",
       "startLine": 33,
       "endLine": 42,
-      "summary": "Axiom **erdos_510_chowla**: ∃ c > 0, ∀ A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A,θ) < −c√N. The central open conjecture with optimal exponent 1/2."
+      "summary": "Documents (in a comment, not a Lean declaration) Chowla's cosine conjecture: ∃ c > 0, ∀ A ⊂ ℕ⁺ of size N, ∃ θ with cosineSum(A,θ) < −c√N. No axiom, definition, or theorem states this — it is prose only."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 43,
       "endLine": 58,
-      "summary": "Axiom **bedert_bound**: ∃ c > 0 with cosineSum < −cN^{1/7} (Bedert 2025, first polynomial bound). Comments record Ruzsa's (2004) exp(√(log N)) and Bourgain's (1986) initial bounds."
+      "summary": "Comments (not Lean declarations) record Bedert's (2025) −cN^{1/7} bound, Ruzsa's (2004) exp(√(log N)) bound, and Bourgain's (1986) initial bound. None are formalized as axioms or theorems."
     },
     {
       "id": "optimality",
       "title": "Optimality",
       "startLine": 59,
       "endLine": 64,
-      "summary": "Axiom **sidon_optimality**: For any ε > 0, ∃ A with min cosine sum > −(1+ε)√|A|. Proved via Sidon difference sets A = B−B, showing √N is the exact threshold."
+      "summary": "Comment (not a Lean declaration) describing the Sidon-set optimality argument: for any ε > 0, A = B−B for a Sidon set B gives min cosine sum > −(1+ε)√|A|, showing √N is the exact threshold. Not proved or axiomatized in Lean."
     }
   ],
   "overview": {
     "historicalContext": "**Sarvadaman Chowla** posed the cosine problem, which Erdős publicized as Problem #510. The conjecture asks whether every finite set of N positive integers has a cosine sum below −c√N at some angle. **Bourgain (1986)** proved the first non-trivial bound. **Ruzsa (2004)** improved it to the quasi-polynomial −exp(c√(log N)) using the Balog-Szemerédi-Gowers theorem. After 21 years with no polynomial progress, **Bedert (2025)** achieved the breakthrough −cN^{1/7}, and **Jin-Milojević-Tomon-Zhang (2025)** independently proved a polynomial bound, confirming the polynomial threshold. The conjectured exponent 1/2 is optimal: Sidon difference sets A = B−B achieve min cosine sum ≈ −√N. The problem appears as **Problem 81** on Ben Green's list of open problems in additive combinatorics.",
     "problemStatement": "For finite A ⊂ ℕ⁺ of size N, does there exist an absolute constant c > 0 such that min_θ ∑_{n ∈ A} cos(nθ) < −c√N? Known: −cN^{1/7} (Bedert 2025). The exponent 1/2 is optimal by Sidon sets.",
     "text": "For finite A ⊂ ℕ of size N, must there exist θ with ∑ cos(nθ) < −c√N for absolute c > 0? Best known: −cN^{1/7} (Bedert 2025). Sidon sets show √N is optimal. OPEN.",
-    "proofStrategy": "The formalization defines cosineSum and minCosineSum using Finset.sum and iInf. The √N conjecture (erdos_510_chowla) and Bedert's N^{1/7} bound are axiomatized. Optimality (sidon_optimality) is axiomatized via the Sidon difference set construction. Historical bounds (Bourgain, Ruzsa) appear in comments. The file has 0 sorries.",
+    "proofStrategy": "The formalization defines cosineSum and minCosineSum using Finset.sum and iInf. The √N conjecture, Bedert's N^{1/7} bound, Sidon-set optimality, and the historical Bourgain/Ruzsa bounds are all documented in comments only — none are declared as Lean axioms, definitions, or theorems (0 axioms, 0 theorems). The file has 0 sorries.",
     "keyInsights": [
       "**Parseval forces negativity**: ∫|f_A|² = N and f_A(0) = N, so f_A must be small (hence Re(f_A) negative) on a positive-measure set of angles",
       "**Sidon optimality**: A = B−B for Sidon B gives cosineSum = |∑ e^{ibθ}|² − |B|, achieving min ≈ −√N exactly — the conjecture is sharp",
