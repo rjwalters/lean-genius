@@ -76,7 +76,8 @@
       "**Pointwise + monotone + compact ⟹ uniform is the whole content**, and the gallery value here is not the (re-exported) theorem but the formal demonstration that each hypothesis is load-bearing.",
       "**Discontinuity defeats uniformity for free**: witness #1 never touches an ε–N argument. The single Mathlib fact 'a uniform limit of continuous functions is continuous' converts the visible jump of xⁿ at x = 1 directly into non-uniform convergence.",
       "**Compactness is independently necessary**: witness #2 keeps a continuous limit (the constant 0), so the continuity route is unavailable; instead the intermediate value theorem manufactures, for every n, a point of [0,1) at which the error equals 1/2. The two witnesses isolate two different failure modes of the same sequence.",
-      "**Monotonicity in n is automatic for xⁿ on [0,1]** (pow_right_anti₀), so the witnesses genuinely satisfy every hypothesis of Dini's theorem except the one each is designed to remove — they are honest counterexamples, not strawmen."
+      "**Monotonicity in n is automatic for xⁿ on [0,1]** (pow_right_anti₀), so the witnesses genuinely satisfy every hypothesis of Dini's theorem except the one each is designed to remove — they are honest counterexamples, not strawmen.",
+      "**The two witnesses fail for structurally different reasons.** Witness #1 is a soft, purely topological argument — TendstoUniformlyOn.continuousOn is a one-line contrapositive with no quantifier bookkeeping, because the failure (a genuine discontinuity) is qualitative. Witness #2 is a hard, quantitative argument — the intermediate value theorem must be invoked afresh for every n to manufacture a point where the error is exactly 1/2, because the failure here is purely a rate phenomenon (the limit stays continuous throughout). The proof technique tracks which hypothesis is being tested."
     ],
     "prerequisites": [
       "Pointwise versus uniform convergence of sequences of functions",
@@ -95,12 +96,20 @@
       "mathContext": "Dini's theorem: pointwise + monotone + continuous limit + compact ⟹ uniform convergence."
     },
     {
-      "id": "dini-theorem",
-      "title": "Dini's Theorem (four faces)",
+      "id": "dini-theorem-compact-space",
+      "title": "Dini's Theorem: Compact Space Versions",
       "startLine": 38,
+      "endLine": 51,
+      "summary": "dini_monotone and dini_antitone re-export Mathlib's Monotone/Antitone.tendstoUniformly_of_forall_tendsto for real-valued functions on a compact space.",
+      "mathContext": "Monotone/antitone continuous functions converging pointwise on a compact space converge uniformly."
+    },
+    {
+      "id": "dini-theorem-compact-subset",
+      "title": "Dini's Theorem: Compact Subset Versions",
+      "startLine": 53,
       "endLine": 68,
-      "summary": "dini_monotone and dini_antitone (compact space) and dini_monotone_on / dini_antitone_on (compact subset) re-export Mathlib's Dini lemmas for real-valued functions.",
-      "mathContext": "Monotone/antitone sequences of continuous functions converging pointwise on a compact set converge uniformly."
+      "summary": "dini_monotone_on and dini_antitone_on localize the theorem to a compact subset s, requiring continuity / monotonicity / pointwise convergence only on s.",
+      "mathContext": "The same conclusion holds with all hypotheses relativized to any compact subset s of a (not necessarily compact) space."
     },
     {
       "id": "witness-discontinuous-limit",
