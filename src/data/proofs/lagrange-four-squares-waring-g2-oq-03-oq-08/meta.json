@@ -127,10 +127,19 @@
     },
     {
       "id": "g2-isleast",
-      "title": "g(2) = 4, sharp and axiom-free",
+      "title": "g(2) = 4, Sharp and Axiom-Free",
       "startLine": 73,
+      "endLine": 87,
+      "summary": "Sufficient k (def) and g2_isLeast: IsLeast {k | Sufficient k} 4. The lower half proceeds by contradiction — a hypothetical k ≤ 3 in the sufficient set would, via mono, make 7 representable by ≤ 3 squares, contradicting seven_not_three.",
+      "mathContext": "$g(2)=4$ as $\\mathrm{IsLeast}\\{k : \\mathrm{Sufficient}(k)\\}\\,4$: $4\\in\\{k\\}$ by Lagrange, and no $k\\le 3$ works since that would make $7$ a sum of $\\le 3$ squares."
+    },
+    {
+      "id": "waring-infimum",
+      "title": "Infimum Form and Human-Readable Restatements",
+      "startLine": 89,
       "endLine": 98,
-      "summary": "Sufficient k (def), g2_isLeast (IsLeast {k | Sufficient k} 4 — lower half by contradiction via mono + seven_not_three), waring_g2 (sInf = 4 via IsLeast.csInf_eq), and the human-readable four_squares_suffice / three_squares_insufficient."
+      "summary": "waring_g2 restates g2_isLeast as an infimum, sInf {k | Sufficient k} = 4, via IsLeast.csInf_eq. four_squares_suffice and three_squares_insufficient give the plain-language restatements of the two halves. Closes the namespace.",
+      "mathContext": "$\\operatorname{sInf}\\{k : \\mathrm{Sufficient}(k)\\} = 4$, the infimum form of the least-element statement."
     }
   ],
   "sorries": []
