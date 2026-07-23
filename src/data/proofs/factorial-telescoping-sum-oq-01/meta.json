@@ -13,7 +13,8 @@
       "The summand telescopes: k·k! = (k+1)! − k!, so ∑_{k=1}^{n} k·k! = (n+1)! − 1! = (n+1)! − 1.",
       "Over ℕ the clean statement uses truncated subtraction; proving the subtraction-free form (∑)+1 = (n+1)! first makes the induction a one-liner and lets omega discharge the subtraction step.",
       "The inductive step reduces to a linear fact in three opaque atoms (∑, (n+1)!, (n+1)·(n+1)!) once (n+2)! is expanded, so omega — not nonlinear reasoning — finishes it.",
-      "The lower limit k = 1 is cosmetic: the k = 0 term 0·0! vanishes, so the range (n+1) sum and the Finset.Icc 1 n sum coincide."
+      "The lower limit k = 1 is cosmetic: the k = 0 term 0·0! vanishes, so the range (n+1) sum and the Finset.Icc 1 n sum coincide.",
+      "The identity is the extremal case of the factorial number system: every 0 ≤ m ≤ (n+1)! − 1 has a unique factoradic expansion m = ∑_{k=1}^{n} d_k·k! with 0 ≤ d_k ≤ k, and taking every digit at its maximum d_k = k recovers exactly ∑_{k=1}^{n} k·k!, which must therefore equal the largest representable value (n+1)! − 1."
     ],
     "prerequisites": [
       "The factorial Nat.factorial and its recurrence (n+1)! = (n+1)·n!",
@@ -39,16 +40,24 @@
       "mathContext": "From (∑)+1 = (n+1)! and (n+1)! ≥ 1, the truncated subtraction ∑ = (n+1)! − 1 is exact; omega handles ℕ subtraction directly."
     },
     {
-      "id": "literal-form",
-      "title": "Section III: The Literal ∑_{k=1}^{n} Form",
+      "id": "icc-bridge",
+      "title": "Section III: Bridging Icc to Range",
       "startLine": 63,
+      "endLine": 70,
+      "summary": "sum_Icc_eq_sum_range: ∑_{k ∈ Icc 1 n} k·k! = ∑_{k ∈ range (n+1)} k·k!, proved by a parallel induction matching Finset.sum_Icc_succ_top against Finset.sum_range_succ term by term.",
+      "mathContext": "The two sums differ only in whether index 0 is included; since 0·0! = 0, the induction lines up Finset.sum_Icc_succ_top with Finset.sum_range_succ at every step, so the bridge is a one-line rewrite once the base case (n = 0) is checked."
+    },
+    {
+      "id": "literal-form",
+      "title": "Section IV: The Literal ∑_{k=1}^{n} Form",
+      "startLine": 72,
       "endLine": 76,
-      "summary": "sum_Icc_eq_sum_range bridges Finset.Icc 1 n to range (n+1) (the k=0 term vanishes), and sum_Icc_mul_factorial states the identity with the usual lower limit k = 1.",
-      "mathContext": "Induction via Finset.sum_Icc_succ_top matches Finset.sum_range_succ term by term; the extra index 0 contributes 0·0! = 0."
+      "summary": "sum_Icc_mul_factorial: ∑_{k ∈ Icc 1 n} k·k! = (n+1)! − 1, the identity restated with the usual lower limit k = 1, combining the Icc bridge with the headline form.",
+      "mathContext": "A direct composition: rewrite by sum_Icc_eq_sum_range to land on the range (n+1) sum, then close with sum_mul_factorial."
     },
     {
       "id": "pointwise",
-      "title": "Section IV: The Pointwise Telescoping Identity",
+      "title": "Section V: The Pointwise Telescoping Identity",
       "startLine": 78,
       "endLine": 82,
       "summary": "mul_factorial_eq: k·k! = (k+1)! − k!, the per-term collapse that makes the sum telescope.",
