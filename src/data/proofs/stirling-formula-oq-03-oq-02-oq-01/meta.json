@@ -93,17 +93,25 @@
       "id": "ratio-limit",
       "title": "The Ratio Limit n/(n+1) → 1",
       "startLine": 74,
-      "endLine": 86,
-      "summary": "ratio_tendsto: n/(n+1) → 1. Shows (n+1) → +∞ via tendsto_natCast_atTop_atTop, so (n+1)⁻¹ → 0 (inv_tendsto_atTop); then n/(n+1) = 1 − (n+1)⁻¹ → 1 (field_simp on the eventual equality).",
+      "endLine": 87,
+      "summary": "ratio_tendsto: n/(n+1) → 1. Shows (n+1) → +∞ via tendsto_natCast_atTop_atTop, so (n+1)⁻¹ → 0 (inv_tendsto_atTop); then n/(n+1) = 1 − (n+1)⁻¹ → 1 (field_simp + ring on the eventual equality).",
       "mathContext": "1 − 1/(n+1) = n/(n+1), and 1/(n+1) → 0, so n/(n+1) → 1 — the only asymptotic content beyond the parent limit."
     },
     {
       "id": "catalan-asymptotic",
-      "title": "The Catalan Asymptotic and its Reciprocal Form",
-      "startLine": 88,
+      "title": "The Catalan Asymptotic",
+      "startLine": 89,
+      "endLine": 101,
+      "summary": "catalan_asymptotic: catalan n · n · √(πn)/4ⁿ → 1, the parent limit times n/(n+1), pointwise-equal after rewriting catalan n = cb n/(n+1) and field_simp.",
+      "mathContext": "catalan n · n · √(πn)/4ⁿ = [C(2n,n)·√(πn)/4ⁿ]·[n/(n+1)] → 1·1 = 1, i.e. Cₙ ~ 4ⁿ/(√π·n^{3/2})."
+    },
+    {
+      "id": "catalan-asymptotic-inv",
+      "title": "The Reciprocal Form",
+      "startLine": 103,
       "endLine": 112,
-      "summary": "catalan_asymptotic (catalan n · n · √(πn)/4ⁿ → 1, the parent limit times n/(n+1), pointwise-equal after rewriting catalan n = cb n/(n+1) and field_simp) and catalan_asymptotic_inv (4ⁿ/(catalan n · n · √(πn)) → 1 via Tendsto.inv₀ at the nonzero limit 1 and inv_div).",
-      "mathContext": "catalan n · n · √(πn)/4ⁿ = [C(2n,n)·√(πn)/4ⁿ]·[n/(n+1)] → 1·1 = 1, i.e. Cₙ ~ 4ⁿ/(√π·n^{3/2}); the reciprocal limit follows since the limit 1 is nonzero."
+      "summary": "catalan_asymptotic_inv: 4ⁿ/(catalan n · n · √(πn)) → 1, via Tendsto.inv₀ at the nonzero limit 1 and the pointwise identity inv_div.",
+      "mathContext": "$\\dfrac{4^n}{C_n\\, n\\,\\sqrt{\\pi n}} \\to 1$, the reciprocal limit at the nonzero point 1."
     }
   ],
   "references": [
