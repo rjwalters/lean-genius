@@ -24,9 +24,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring stating the headline identity ∑_{k=1}^{n} k/(k+1)! = 1 − 1/(n+1)! and the telescoping key insight; imports (Mathlib.Data.Nat.Factorial.Basic, Mathlib.Algebra.BigOperators.Intervals, Mathlib.Tactic), open Finset Nat, and the FactorialTelescopingSumFractional namespace.",
+      "mathContext": "1/k! − 1/(k+1)! = ((k+1)−1)/(k+1)! = k/(k+1)! using (k+1)! = (k+1)·k!, so the sum telescopes to 1 − 1/(n+1)!."
+    },
+    {
       "id": "pointwise",
       "title": "Section I: The Pointwise Telescoping Identity",
-      "startLine": 41,
+      "startLine": 37,
       "endLine": 50,
       "summary": "term_telescope: k/(k+1)! = 1/k! − 1/(k+1)! over ℚ — the exact reciprocal difference that makes the sum telescope.",
       "mathContext": "Rewrite (k+1)! = (k+1)·k! (Nat.factorial_succ, push_cast) to expose the shared denominator, then field_simp/ring close the goal using k! ≠ 0 and k+1 ≠ 0."
@@ -34,7 +42,7 @@
     {
       "id": "range-engine",
       "title": "Section II: The Inductive Engine (range form)",
-      "startLine": 56,
+      "startLine": 52,
       "endLine": 64,
       "summary": "sum_range_div_factorial: ∑_{k=0}^{n} k/(k+1)! = 1 − 1/(n+1)!, proved by induction — the genuine content.",
       "mathContext": "Finset.sum_range_succ peels the top summand; term_telescope (n+1) rewrites it as 1/(n+1)! − 1/(n+2)!; ring cancels the interior 1/(n+1)! against the inductive hypothesis, leaving 1 − 1/(n+2)!."
@@ -42,10 +50,18 @@
     {
       "id": "literal-form",
       "title": "Section III: The Literal ∑_{k=1}^{n} Form",
-      "startLine": 68,
+      "startLine": 66,
       "endLine": 79,
       "summary": "sum_Icc_eq_sum_range bridges Finset.Icc 1 n to range (n+1) (the k=0 term vanishes), and sum_Icc_div_factorial states the headline identity with the usual lower limit k = 1.",
       "mathContext": "Induction via Finset.sum_Icc_succ_top matches Finset.sum_range_succ term by term; the extra index 0 contributes 0/1! = 0, so the two sums agree."
+    },
+    {
+      "id": "examples",
+      "title": "Sanity-Check Examples",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "Two concrete instances derived from the closed form via norm_num: ∑_{Icc 1 3} k/(k+1)! = 23/24 = 1 − 1/4!, and ∑_{Icc 1 4} k/(k+1)! = 119/120 = 1 − 1/5!.",
+      "mathContext": "1/2 + 2/6 + 3/24 = 23/24; adding 4/120 = 1/30 gives 119/120."
     }
   ],
   "conclusion": {
