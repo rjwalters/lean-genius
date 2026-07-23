@@ -72,7 +72,8 @@
       "**The squeeze closes iff the ends meet**: The bracket $n\\,\\varphi(n) \\mid |\\mathrm{Gal}| \\mid n!$ determines $|\\mathrm{Gal}|$ exactly precisely when its lower and upper ends coincide, $n\\,\\varphi(n) = n!$. This reframes 'when is the Galois order pinned?' as a clean elementary number-theoretic identity.",
       "**The boundary is exactly {2,3}**: For $n \\ge 4$ the metacyclic order $n\\,\\varphi(n) \\le n(n-1)$ is dwarfed by $n! \\ge 2n(n-1)$, so equality fails. Only $n = 2$ and $n = 3$ survive — the metacyclic holomorph $\\mathbb{Z}/n \\rtimes (\\mathbb{Z}/n)^\\times$ equals the full symmetric group $S_n$ exactly in these two degrees.",
       "**Coprimality is automatic at the boundary**: The pin theorem needs no `gcd(n, φ(n)) = 1` hypothesis, because every solution of $n\\,\\varphi(n) = n!$ already satisfies it ($\\gcd(2,1) = \\gcd(3,2) = 1$). The arithmetic boundary condition silently supplies the algebraic one.",
-      "**Quadratic and cubic are the only argument-free pins**: $|\\mathrm{Gal}(X^2-p)| = 2 = |C_2|$ and $|\\mathrm{Gal}(X^3-p)| = 6 = |S_3|$ fall straight out of the bracket, uniform in the prime $p$. For $n = 4$ the bracket gives only $4 \\mid |\\mathrm{Gal}| \\mid 24$ (here $4\\varphi(4) = 8 \\ne 24$), which is exactly why the base $D_4$ entry $|\\mathrm{Gal}(X^4-2)| = 8$ required a separate $\\mathbb{R}$-embedding/resolvent argument."
+      "**Quadratic and cubic are the only argument-free pins**: $|\\mathrm{Gal}(X^2-p)| = 2 = |C_2|$ and $|\\mathrm{Gal}(X^3-p)| = 6 = |S_3|$ fall straight out of the bracket, uniform in the prime $p$. For $n = 4$ the bracket gives only $4 \\mid |\\mathrm{Gal}| \\mid 24$ (here $4\\varphi(4) = 8 \\ne 24$), which is exactly why the base $D_4$ entry $|\\mathrm{Gal}(X^4-2)| = 8$ required a separate $\\mathbb{R}$-embedding/resolvent argument.",
+      "**Why the boundary is finite and small**: $\\varphi(n) \\le n - 1$ is a linear ceiling, while $n!$ grows super-exponentially past $n = 3$ ($n! / (n(n-1)) = (n-2)! \\ge 2$ once $n \\ge 4$), so the gap between $n\\varphi(n)$ and $n!$ only widens for larger $n$ — no boundary solution can hide at a larger degree once $n = 4$ already fails. This is why `totient_mul_eq_factorial_iff` needs no search or bound beyond the single algebraic inequality `nlinarith` closes."
     ]
   },
   "sections": [
@@ -80,28 +81,35 @@
       "id": "overview",
       "title": "Overview: the bracket squeeze and the boundary question",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Header docstring and imports. Recalls the parent's divisibility bracket n·φ(n) ∣ |Gal(Xⁿ−p)| ∣ n! and frames the boundary question: for which degrees n does the squeeze close (n·φ(n) = n!) and pin the Galois order exactly? Imports the verified parent lemmas mul_totient_dvd_gal_card_of_coprime and gal_card_dvd_factorial."
+      "endLine": 41,
+      "summary": "Header docstring. Recalls the parent's divisibility bracket n·φ(n) ∣ |Gal(Xⁿ−p)| ∣ n! and frames the boundary question: for which degrees n does the squeeze close (n·φ(n) = n!) and pin the Galois order exactly? Names the three results below and states the status line: 0 sorries, 0 axioms, no native_decide."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and namespace setup",
+      "startLine": 42,
+      "endLine": 50,
+      "summary": "Imports Mathlib and the parent Proofs.InverseGaloisD4OQ02OQ03 (which supplies mul_totient_dvd_gal_card_of_coprime and gal_card_dvd_factorial, reused by Part II below). Opens Classical (scoped), enters the InverseGaloisExtensions namespace, and opens Polynomial."
     },
     {
       "id": "boundary-count",
       "title": "Part I — The sharp degree boundary n·φ(n) = n! ⟺ n ∈ {2,3}",
-      "startLine": 49,
-      "endLine": 86,
+      "startLine": 51,
+      "endLine": 88,
       "summary": "Proves totient_mul_eq_factorial_iff. Reverse direction by decide; forward direction by contradiction: writing n = m+2 (m ≥ 2), the totient bound φ(n) ≤ n−1 caps n·φ(n) ≤ n(n−1) while (m+2)! = (m+2)(m+1)·m! with m! ≥ 2 gives n! ≥ 2n(n−1), and nlinarith closes the gap."
     },
     {
       "id": "pin-theorem",
       "title": "Part II — The pin theorem with automatic coprimality",
-      "startLine": 88,
-      "endLine": 104,
+      "startLine": 90,
+      "endLine": 106,
       "summary": "Proves gal_card_eq_factorial_of_pin: n·φ(n) = n! forces |Gal(Xⁿ−p)| = n! with no coprimality hypothesis. The boundary solutions n ∈ {2,3} are automatically coprime to their totient, so the parent coprime lower bound applies and Nat.dvd_antisymm squeezes equality against |Gal| ∣ n!."
     },
     {
       "id": "quadratic-witness",
       "title": "Part III — The quadratic companion |Gal(X²−p)| = 2",
-      "startLine": 106,
-      "endLine": 118,
+      "startLine": 108,
+      "endLine": 120,
       "summary": "Proves gal_card_quadratic_eq_two by instantiating the pin theorem at n = 2 (2·φ(2) = 2 = 2!), yielding |Gal(X²−p/ℚ)| = 2 = |C₂| for every prime p — the quadratic companion of the parent's cubic witness |Gal(X³−p)| = 6."
     }
   ],
