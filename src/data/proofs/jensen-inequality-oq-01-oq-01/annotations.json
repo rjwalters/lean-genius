@@ -2,10 +2,10 @@
   {
     "id": "young-oq0101-header",
     "proofId": "jensen-inequality-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 28 },
+    "range": { "startLine": 1, "endLine": 34 },
     "type": "concept",
     "title": "Young's inequality is weighted AM–GM in disguise",
-    "content": "The header frames the contribution. Young's inequality a·b ≤ aᵖ/p + bᵍ/q (Hölder-conjugate p, q, so 1/p + 1/q = 1, p,q > 1) is in Mathlib (`Real.young_inequality_of_nonneg`), but its *equality case* — equality iff aᵖ = bᵍ — is not. This file supplies it by recognizing the whole statement as the two-term weighted AM–GM inequality: with weights wₓ = 1/p, w_y = 1/q (which sum to 1) and data x = aᵖ, y = bᵍ, the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} collapses to a·b and the weighted arithmetic mean is aᵖ/p + bᵍ/q. So both the inequality and its equality case descend from the parent's weighted AM–GM equality characterization.",
+    "content": "The header frames the contribution. Young's inequality a·b ≤ aᵖ/p + bᵍ/q (Hölder-conjugate p, q, so 1/p + 1/q = 1, p,q > 1) is in Mathlib (`Real.young_inequality_of_nonneg`), but its *equality case* — equality iff aᵖ = bᵍ — is not. This file supplies it by recognizing the whole statement as the two-term weighted AM–GM inequality: with weights wₓ = 1/p, w_y = 1/q (which sum to 1) and data x = aᵖ, y = bᵍ, the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} collapses to a·b and the weighted arithmetic mean is aᵖ/p + bᵍ/q. So both the inequality and its equality case descend from the parent's weighted AM–GM equality characterization. Followed by the imports (Mathlib, the parent JensenInequalityOQ01) and open Finset Real.",
     "mathContext": "$ab \\le \\frac{a^p}{p} + \\frac{b^q}{q},\\quad \\tfrac1p + \\tfrac1q = 1,\\quad (a^p)^{1/p}(b^q)^{1/q} = ab$",
     "significance": "supporting",
     "relatedConcepts": ["Young's inequality", "weighted AM–GM", "Hölder conjugate exponents", "equality case"],

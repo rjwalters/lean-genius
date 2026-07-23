@@ -57,25 +57,41 @@
       "id": "header",
       "title": "Module Header and Overview",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Frames Young's inequality as two-term weighted AM–GM, notes Mathlib has the inequality but not the equality case, and lists the four results.",
+      "endLine": 34,
+      "summary": "Frames Young's inequality as two-term weighted AM–GM, notes Mathlib has the inequality but not the equality case, and lists the four results. Followed by the imports (Mathlib, the parent JensenInequalityOQ01) and open Finset Real.",
       "mathContext": "Young: $ab \\le a^p/p + b^q/q$ for $1/p+1/q=1$, $p,q>1$. With weights $1/p, 1/q$ and data $a^p, b^q$ this is weighted AM–GM; the geometric mean $(a^p)^{1/p}(b^q)^{1/q}=ab$."
     },
     {
       "id": "amgm-two",
       "title": "Two-variable weighted AM–GM equality case",
-      "startLine": 39,
-      "endLine": 65,
+      "startLine": 35,
+      "endLine": 58,
       "summary": "amgm_two_weighted_eq_iff specializes the parent's weighted_amgm_eq_iff to a Fin 2 index set: x^{wₓ}y^{w_y} = wₓx + w_y y ↔ x = y.",
       "mathContext": "For $w_x,w_y>0$ with $w_x+w_y=1$ and $x,y\\ge0$: $x^{w_x}y^{w_y}=w_xx+w_yy\\iff x=y$. Proved by evaluating the general statement on $\\mathrm{Fin}\\,2$ with $w=![w_x,w_y]$, $z=![x,y]$."
     },
     {
-      "id": "young",
-      "title": "Young's inequality and its equality case",
-      "startLine": 66,
-      "endLine": 89,
-      "summary": "young_le re-exports the inequality; young_eq_iff proves equality ↔ aᵖ = bᵍ by the two-variable AM–GM equality case with weights 1/p, 1/q; young_lt_of_ne gives the strict form.",
+      "id": "young-le",
+      "title": "Young's Inequality",
+      "startLine": 60,
+      "endLine": 63,
+      "summary": "young_le re-exports Real.young_inequality_of_nonneg: a·b ≤ aᵖ/p + bᵍ/q for Hölder-conjugate p, q and nonnegative a, b.",
+      "mathContext": "$ab \\le a^p/p + b^q/q$."
+    },
+    {
+      "id": "young-eq-iff",
+      "title": "Young's Equality Case",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "young_eq_iff proves equality ↔ aᵖ = bᵍ, by applying the two-variable AM–GM equality case with weights 1/p, 1/q and data aᵖ, bᵍ, using (aᵖ)^{1/p} = a.",
       "mathContext": "$ab=a^p/p+b^q/q\\iff a^p=b^q$. Apply amgm_two_weighted_eq_iff with $w_x=p^{-1}$, $w_y=q^{-1}$, $x=a^p$, $y=b^q$; $(a^p)^{p^{-1}}=a$ via $a^{p\\cdot p^{-1}}=a^1$."
+    },
+    {
+      "id": "young-lt-of-ne",
+      "title": "Strict Young's Inequality",
+      "startLine": 85,
+      "endLine": 89,
+      "summary": "young_lt_of_ne: when aᵖ ≠ bᵍ, Young's inequality is strict, via lt_of_le_of_ne against the equality case.",
+      "mathContext": "$a^p \\ne b^q \\Rightarrow ab < a^p/p + b^q/q$."
     }
   ],
   "references": [
