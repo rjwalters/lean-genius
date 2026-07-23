@@ -105,12 +105,20 @@
       "mathContext": "The half of Schur's lemma valid over any ring."
     },
     {
-      "id": "scalar-form",
-      "title": "Layer 3: The Scalar Form",
+      "id": "scalar-headline",
+      "title": "Layer 3a: The Scalar Form (Eigenvalue Argument)",
       "startLine": 89,
-      "endLine": 139,
-      "summary": "schur_endomorphism_scalar (headline): over an algebraically closed field, every A-linear endomorphism of a finite-dimensional simple module is multiplication by a scalar, proved by the eigenvalue argument. schur_endomorphism_eq_smul_id packages it as f = c • id, the absolute-simplicity statement.",
+      "endLine": 128,
+      "summary": "schur_endomorphism_scalar: over an algebraically closed field, every A-linear endomorphism of a finite-dimensional simple module is multiplication by a scalar. Proved by extracting an eigenvalue c of f as a k-linear map, then showing f − c•id kills the eigenvector, hence is zero by the dichotomy.",
       "mathContext": "Endomorphisms of an irreducible representation over an algebraically closed field are scalars."
+    },
+    {
+      "id": "scalar-eqsmul",
+      "title": "Layer 3b: Absolute Simplicity",
+      "startLine": 130,
+      "endLine": 139,
+      "summary": "schur_endomorphism_eq_smul_id repackages the scalar form as the linear-map equality f = c • id — the 'absolute simplicity' statement that End(M) is exactly k·id ≅ k.",
+      "mathContext": "$\\mathrm{End}_A(M) = k\\cdot\\mathrm{id} \\cong k$."
     },
     {
       "id": "categorical-fdrep",
