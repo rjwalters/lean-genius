@@ -185,32 +185,40 @@
       "id": "header",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 55,
-      "summary": "Module docstring stating the parent's open question (sin/cos convergence on all of ℝ via the global bound M = 1) and the three contribution layers — global derivative bounds, the two-sided convergence engine, and the trigonometric payoff. Imports the parent file plus Mathlib's trigonometric-derivative and iterated-derivative-lemmas modules; opens Real/Set/Filter/Topology and the ancestor namespaces.",
+      "endLine": 46,
+      "summary": "Module docstring stating the parent's open question (sin/cos convergence on all of ℝ via the global bound M = 1) and the three contribution layers — global derivative bounds, the two-sided convergence engine, and the trigonometric payoff. Imports the parent file plus Mathlib's trigonometric-derivative and iterated-derivative-lemmas modules; opens Real/Set/Filter/Topology and the ancestor namespaces, then opens the file's own namespace.",
       "mathContext": "All iterated derivatives of $\\sin,\\cos$ are bounded by $1$ on $\\mathbb{R}$, so the parent's remainder estimate yields convergence everywhere."
     },
     {
       "id": "part1-bounds",
       "title": "Part I: Global Derivative Bounds for sin and cos",
-      "startLine": 56,
-      "endLine": 93,
+      "startLine": 47,
+      "endLine": 90,
       "summary": "abs_iteratedDeriv_sin_le_one and abs_iteratedDeriv_cos_le_one: each iterated derivative is bounded by 1 at every point. The proof splits n into 2m / 2m+1 (Nat.even_or_odd'), rewrites with Mathlib's even/odd closed forms to ±sin or ±cos scaled by (−1)ᵐ, simplifies the absolute value of the unit scalar to 1, and closes with the elementary bounds |sin|, |cos| ≤ 1.",
       "mathContext": "$|\\,(\\sin)^{(n)}(x)| \\le 1$ and $|\\,(\\cos)^{(n)}(x)| \\le 1$ for all $n, x$, since $(\\sin)^{(n)} \\in \\{\\pm\\sin, \\pm\\cos\\}$."
     },
     {
-      "id": "part2-engine",
-      "title": "Part II: A Two-Sided Convergence Engine from a Global Bound",
-      "startLine": 94,
-      "endLine": 164,
-      "summary": "reflect_taylor_eq establishes that reflecting f through the origin reproduces its Taylor polynomial at the mirrored point (the chain-rule (−1)ᵏ and the (−b)ᵏ sign cancel, proved termwise via linear_combination). taylorPolynomial_tendsto_globalBound then upgrades the parent's one-sided engine to all real b by trichotomy: b > 0 is the parent, b = 0 is a constant sequence (only the k = 0 term survives), and b < 0 reflects to −b > 0 and reuses the parent on g(t) = f(−t).",
+      "id": "part2a-reflection",
+      "title": "Part II.a: The Reflection Identity",
+      "startLine": 91,
+      "endLine": 114,
+      "summary": "Docstring introducing the reflection trick for reaching evaluation points left of the center. reflect_taylor_eq proves taylorPolynomial (fun x => f(-x)) 0 n (-b) = taylorPolynomial f 0 n b: the (−1)ᵏ produced by differentiating the reflection (iteratedDeriv_comp_neg) cancels the (−1)ᵏ from (−b)ᵏ, closed termwise by a Finset.sum_congr and one linear_combination.",
+      "mathContext": "$T_n(f(-\\cdot))\\big|_{-b} = T_n(f)\\big|_{b}$, since $(-1)^k \\cdot (-b)^k = b^k$ cancels the reflection sign."
+    },
+    {
+      "id": "part2b-engine",
+      "title": "Part II.b: The Two-Sided Convergence Engine",
+      "startLine": 115,
+      "endLine": 155,
+      "summary": "taylorPolynomial_tendsto_globalBound upgrades the parent's one-sided engine to all real b by trichotomy on lt_trichotomy b 0: b > 0 is the parent theorem verbatim; b = 0 makes Tₙ(0) the constant f 0 (only the k = 0 term of the sum survives); b < 0 reflects through the origin, applies the parent at −b > 0 to g(t) = f(−t), and identifies the result with f(b) via reflect_taylor_eq.",
       "mathContext": "A uniform global bound $|f^{(n)}| \\le M$ on $\\mathbb{R}$ forces $T_n(b) \\to f(b)$ for every $b$, with the negative side handled by $g(t) = f(-t)$."
     },
     {
       "id": "part3-sincos",
       "title": "Part III: Convergence of the Taylor Series of sin and cos on all of ℝ",
-      "startLine": 165,
-      "endLine": 178,
-      "summary": "sin_taylor_tendsto and cos_taylor_tendsto: instantiate the two-sided engine with M = 1, contDiff_sin/cos, and the Part I bounds, giving convergence of the Taylor polynomials to sin x / cos x at every real x — the direct answer to the parent's open question.",
+      "startLine": 156,
+      "endLine": 177,
+      "summary": "sin_taylor_tendsto and cos_taylor_tendsto: instantiate the two-sided engine with M = 1, contDiff_sin/cos, and the Part I bounds, giving convergence of the Taylor polynomials to sin x / cos x at every real x — the direct answer to the parent's open question. The namespace closes at the end of the file.",
       "mathContext": "$T_n(x) \\to \\sin x$ and $T_n(x) \\to \\cos x$ for every $x \\in \\mathbb{R}$."
     }
   ],
