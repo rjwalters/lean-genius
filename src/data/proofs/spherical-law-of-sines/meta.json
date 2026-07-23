@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-spherical-law-of-sines",
+      "title": "Module Overview: Spherical Law of Sines",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States the spherical law of sines: for a spherical triangle with unit-vector vertices A,B,C and arc-length sides a,b,c opposite dihedral angles α,β,γ, sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ). Outlines the proof: the key cross-product identity projPerp(B,A)×projPerp(C,A) = det[A,B,C]·A (valid since both projections are ⊥ to unit vector A) yields sin²(α) = det²/(sin²b sin²c), symmetric in a,b,c, giving the law of sines.",
+      "mathContext": "$\\dfrac{\\sin a}{\\sin\\alpha} = \\dfrac{\\sin b}{\\sin\\beta} = \\dfrac{\\sin c}{\\sin\\gamma}$ via $\\text{proj}_\\perp(B,A)\\times\\text{proj}_\\perp(C,A) = \\det[A,B,C]\\cdot A$."
+    },
+    {
       "id": "setup",
       "title": "Part I: Setup and Basic Lemmas",
       "startLine": 33,
