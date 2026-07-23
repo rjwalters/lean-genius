@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, Formal Statement, and Proof Status Table",
+      "startLine": 1,
+      "endLine": 99,
+      "summary": "States the Hodge Conjecture (every Hodge class on a smooth projective complex variety is a rational combination of algebraic-cycle classes), one of the seven Millennium Prize Problems, and gives a component-by-component table of what is proved vs. axiomatized vs. left conjectural in this formalization, plus a historical timeline from Lefschetz (1924) to Voisin's 2002 Kähler counterexample.",
+      "mathContext": "The conjecture: for a smooth projective variety $X$ over $\\mathbb{C}$, the Hodge classes $H^{p,p}(X) \\cap H^{2p}(X,\\mathbb{Q})$ equal the $\\mathbb{Q}$-span of fundamental classes of codimension-$p$ algebraic subvarieties."
+    },
+    {
       "id": "hodge-structures",
       "title": "Hodge Structures with Complexification",
       "startLine": 100,
