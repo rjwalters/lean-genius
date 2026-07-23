@@ -167,6 +167,11 @@
       "proofId": "basel-problem",
       "relationship": "Another exact reciprocal-series evaluation",
       "description": "Both establish an exact closed value for a series of reciprocals as a genuine limit; here the value is the Egyptian-fraction unit 1 rather than the Basel value π²/6."
+    },
+    {
+      "proofId": "sylvester-sequence-oq-01-oq-02",
+      "relationship": "Answers this entry's first open question with the requested quantitative bound",
+      "description": "Proves the doubly-exponential lower bound aₙ ≥ 2^(2^(n-1)) and combines it with this entry's exact error term 1/(a_{n+1}-1) to certify the explicit convergence rate 1 - ∑_{k≤n} 1/aₖ ≤ 1/2^(2ⁿ) — exactly the quantitative bound this entry's open question asks for."
     }
   ],
   "conclusion": {
