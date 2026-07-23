@@ -93,12 +93,20 @@
       "mathContext": "The CBS operator on the complete lattice Set α, as in OQ-02."
     },
     {
-      "id": "any-fixed-point",
-      "title": "A Bijection from Any Fixed Point",
+      "id": "fixed-point-lemmas",
+      "title": "Structural Facts About Any Fixed Point",
       "startLine": 72,
+      "endLine": 117,
+      "summary": "For any S with cbsOp f g S = S, re-derived from the fixed-point equation alone: compl_range_subset_fp, mem_range_of_not_mem_fp, gf_image_subset_fp, gf_mem_fp, mem_fimage_of_gb_mem_fp, gb_not_mem_fp — the parent's lemmas, generalized off minimality.",
+      "mathContext": "Every fixed point of T shares the same structural facts — minimality is not used."
+    },
+    {
+      "id": "piecewise-bijection",
+      "title": "The Piecewise Bijection equivFP",
+      "startLine": 119,
       "endLine": 165,
-      "summary": "The crux generalization: for any S with cbsOp f g S = S, the parent's lemmas (compl_range_subset_fp, mem_range_of_not_mem_fp, gf_image_subset_fp, gf_mem_fp, mem_fimage_of_gb_mem_fp, gb_not_mem_fp) are re-derived from the fixed-point equation alone. The piecewise map bijFP is injective (needs only f injective) and surjective (needs only g injective), packaged as equivFP : α ≃ β.",
-      "mathContext": "Every fixed point of T yields a Schroeder–Bernstein bijection — minimality is not used."
+      "summary": "bijFP: a ↦ f a on S, a ↦ g⁻¹ a off S. bijFP_injective needs only f injective; bijFP_surjective needs only g injective. equivFP packages both as α ≃ β — every fixed point of T yields a Schroeder–Bernstein bijection.",
+      "mathContext": "The piecewise map built from any fixed point S is a bijection α ≃ β."
     },
     {
       "id": "lfp-gfp",
