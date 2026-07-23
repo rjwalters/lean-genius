@@ -99,22 +99,38 @@
       "id": "preamble",
       "title": "Overview: from Sylow theory to group extensions",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Imports (SchurZassenhaus, Sylow, Complement, tactics) and the module docstring, which quotes the parent entry's open question — can Schur–Zassenhaus (coprime order/index ⟹ complemented) be formalized as an extension of Sylow theory? — and states the answer: Mathlib supplies the existence half (Subgroup.exists_right_complement'_of_coprime), and this file packages it in gallery form and derives the Sylow bridge — a normal Sylow p-subgroup is always complemented by a Hall p′-subgroup, so G splits as an internal semidirect product P ⋊ K. Opens Subgroup and fixes the ambient finite group G.",
+      "endLine": 37,
+      "summary": "Imports (SchurZassenhaus, Sylow, Complement, tactics) and the module docstring, which quotes the parent entry's open question — can Schur–Zassenhaus (coprime order/index ⟹ complemented) be formalized as an extension of Sylow theory? — and states the answer: Mathlib supplies the existence half (Subgroup.exists_right_complement'_of_coprime), and this file packages it in gallery form and derives the Sylow bridge — a normal Sylow p-subgroup is always complemented by a Hall p′-subgroup, so G splits as an internal semidirect product P ⋊ K.",
       "mathContext": "$\\gcd(|N|,[G:N])=1,\\ N\\trianglelefteq G \\Rightarrow G = N\\rtimes K$; specialised to a normal Sylow $p$-subgroup $P$, whose Hall property makes coprimality automatic."
     },
     {
-      "id": "schur-zassenhaus",
-      "title": "Section I: Schur–Zassenhaus Existence and Structure",
+      "id": "setup",
+      "title": "Namespace and Ambient Group",
+      "startLine": 38,
+      "endLine": 43,
+      "summary": "Opens the SylowTheoremSchurZassenhaus namespace and Subgroup, then fixes an ambient (not-yet-finite) group G — the existence theorem schurZassenhaus below needs no finiteness, so G is left as a bare Group until the structural corollaries require Finite G.",
+      "mathContext": "Ambient data: an arbitrary group $G$, with $\\mathrm{Subgroup}$ opened so $N \\sqcap K$, $N \\sqcup K$, and $N.\\mathrm{index}$ can be written unqualified."
+    },
+    {
+      "id": "schur-zassenhaus-existence",
+      "title": "Section I: Schur–Zassenhaus Existence and the Complement's Order",
       "startLine": 44,
-      "endLine": 80,
-      "summary": "schurZassenhaus restates Mathlib's existence theorem; isComplement'_card_eq_index proves |K| = [G:N]; schurZassenhaus_structure bundles disjointness (N ⊓ K = ⊥), generation (N ⊔ K = ⊤), and the order; complement_of_coprime_orders gives the |G| = m·n factorization phrasing.",
+      "endLine": 60,
+      "summary": "schurZassenhaus restates Mathlib's existence theorem (a coprime normal subgroup has a complement); isComplement'_card_eq_index proves |K| = [G:N] by cancelling |N| in |N|·|K| = |G| = |N|·[G:N].",
+      "mathContext": "$\\mathrm{IsComplement}'\\,N\\,K \\Rightarrow |K| = [G:N]$, via cancellation in $|N|\\cdot|K| = |G| = |N|\\cdot[G:N]$."
+    },
+    {
+      "id": "schur-zassenhaus-structure",
+      "title": "Section II: The Internal Semidirect Product",
+      "startLine": 61,
+      "endLine": 84,
+      "summary": "schurZassenhaus_structure bundles disjointness (N ⊓ K = ⊥), generation (N ⊔ K = ⊤), and the order |K| = [G:N] into the full semidirect-product statement; complement_of_coprime_orders gives the |G| = m·n factorization phrasing used in small-order classification.",
       "mathContext": "A coprime normal subgroup splits off: G is the internal semidirect product N ⋊ K with K of order exactly [G:N]."
     },
     {
       "id": "sylow-extension",
-      "title": "Section II: The Sylow Extension — Normal Sylow Subgroups Split",
-      "startLine": 81,
+      "title": "Section III: The Sylow Extension — Normal Sylow Subgroups Split",
+      "startLine": 85,
       "endLine": 121,
       "summary": "normalSylow_isComplemented: a normal Sylow p-subgroup is complemented (coprimality from Sylow.card_coprime_index). normalSylow_complement_card / _not_dvd / _coprime: the complement has order [G:P], is a Hall p′-subgroup (p ∤ |K|), and has order coprime to |P|.",
       "mathContext": "When a Sylow subgroup is normal, the Hall property makes Schur–Zassenhaus apply automatically, yielding a p-complement and the splitting G = P ⋊ K."
