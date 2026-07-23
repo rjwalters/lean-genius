@@ -115,5 +115,28 @@
       "monoProb_half and monoProb_half_le",
       "field_simp / pow_succ arithmetic"
     ]
+  },
+  {
+    "id": "ann-pbfm-oq03oq01-expected",
+    "proofId": "property-b-first-moment-oq-03-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 123
+    },
+    "type": "theorem",
+    "title": "The First-Moment Expectation Form (expected_mono_half_le)",
+    "content": "`expected_mono_half_le` restates `monoProb_half_le` at the level of expectation: for a `k`-uniform hypergraph with `m ≥ 0` edges, the expected number of monochromatic edges under a `p`-biased coloring, `m · monoProb k p`, is minimized at `p = 1/2`. The proof is a single call to `mul_le_mul_of_nonneg_left`, scaling `monoProb_half_le k hp0 hp1` by the nonnegative edge count `m`. This is the form actually used in a first-moment argument — 'the expected number of bad edges is smallest under the symmetric coloring' — rather than the per-edge probability statement alone.",
+    "mathContext": "$\\mathbb{E}[\\#\\text{mono edges}] = m\\cdot\\mathrm{monoProb}(k,p) \\ge m\\cdot\\mathrm{monoProb}(k,\\tfrac12)$ for any bias $p\\in[0,1]$, by linearity of expectation over the $m$ edges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "mul_le_mul_of_nonneg_left",
+      "first-moment method",
+      "monoProb_half_le"
+    ],
+    "prerequisites": [
+      "monoProb_half_le",
+      "monotonicity of multiplication by a nonnegative scalar"
+    ]
   }
 ]
