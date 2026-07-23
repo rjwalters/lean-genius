@@ -56,7 +56,8 @@
       "**Cast first, induct once.** Moving to ℤ before the induction makes the alternating sign a first-class object and turns the determinant into honest integer subtraction, so a single induction suffices.",
       "**The step is a sign flip.** The crux cancellation Fₙ₊₂·Fₙ − Fₙ₊₁² = −(Fₙ₊₃·Fₙ₊₁ − Fₙ₊₂²) means each Cassini value is the negative of the next — precisely (−1)ⁿ⁺¹ ↦ (−1)ⁿ⁺², so one linear_combination with coefficient −1 against the hypothesis closes the algebra.",
       "**Recurrence as the only input.** Beyond the base values, the proof uses nothing but Nat.fib_add_two cast to ℤ; no closed form, matrices, or Binet formula are needed.",
-      "**Not in Mathlib.** Mathlib carries the recurrence, fib_add, fib_two_mul, and fib_gcd, but no ±1 determinant identity, so Cassini (and its shifted and absolute-value forms) is an original contribution."
+      "**Not in Mathlib.** Mathlib carries the recurrence, fib_add, fib_two_mul, and fib_gcd, but no ±1 determinant identity, so Cassini (and its shifted and absolute-value forms) is an original contribution.",
+      "**Corollaries are nearly free once the master identity is proved.** fib_cassini_shift needs no induction of its own — a single linear_combination rewrite of fib_cassini suffices — and fib_cassini_abs adds only abs_pow; deriving cheap shifted-index and unsigned forms from one inducted lemma, rather than re-inducting per variant, is the reusable pattern."
     ],
     "prerequisites": [
       "The Fibonacci recurrence Nat.fib_add_two and base values",
@@ -66,12 +67,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Setup",
+      "id": "header-statement",
+      "title": "Cassini's Identity: Statement",
       "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports and module docstring stating Cassini's identity Fₙ₊₂·Fₙ − Fₙ₊₁² = (−1)ⁿ⁺¹ over ℤ, with four worked numerical examples (n = 1..4) checking the alternating sign.",
+      "mathContext": "$F_{n+2} F_n - F_{n+1}^2 = (-1)^{n+1}$, with $F_0=0, F_1=1, F_{n+2}=F_n+F_{n+1}$; equivalently $F_{n-1}F_{n+1}-F_n^2=(-1)^n$ after an index shift."
+    },
+    {
+      "id": "header-approach",
+      "title": "Proof Approach and Mathlib Gap",
+      "startLine": 25,
       "endLine": 51,
-      "summary": "Module docstring stating Cassini's identity with worked numerical examples, the Fibonacci/tactic imports, namespace, and open Nat.",
-      "mathContext": "$F_{n+2} F_n - F_{n+1}^2 = (-1)^{n+1}$, with $F_0=0, F_1=1, F_{n+2}=F_n+F_{n+1}$."
+      "summary": "Describes the cast-then-induct strategy and the sign-flip cancellation driving the successor step, confirms Cassini's identity is absent from Mathlib's Fibonacci API, and opens the namespace.",
+      "mathContext": "The successor step reduces to $F_{n+2}F_n-F_{n+1}^2=-(F_{n+3}F_{n+1}-F_{n+2}^2)$, so linear_combination with coefficient $-1$ against the inductive hypothesis closes it."
     },
     {
       "id": "cassini",
