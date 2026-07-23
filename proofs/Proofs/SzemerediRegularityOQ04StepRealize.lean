@@ -253,6 +253,7 @@ theorem refined4_disjoint
   · exact ((hRB hPR).mono_left sB2).symm
   · exact hRR hPR hQR hPQ
 
+omit [Fintype V] in
 /-- The 4-piece refined family refines every coarse partition the parent
     refines: pieces sit inside their block's coarse host, residual blocks keep
     their own host. -/
@@ -278,6 +279,7 @@ theorem refined4_refines
   · exact ⟨VB, hVB, sB2.trans hBVB⟩
   · exact href W (Finset.mem_of_mem_erase (Finset.mem_of_mem_erase hWR))
 
+omit [Fintype V] in
 /-- The 3-piece refined family still covers the vertices: `A` survives intact, a
     vertex of `B` lands in `B₁` or `B₂`, other vertices keep their block. -/
 theorem refined3_cover
@@ -301,6 +303,7 @@ theorem refined3_cover
     exact ⟨P, Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
       (Finset.mem_insert_of_mem hPR)), hvP⟩
 
+omit [Fintype V] in
 /-- The 3-piece refined family is pairwise disjoint. -/
 theorem refined3_disjoint
     (q : Finset (Finset V)) (A B B₁ B₂ : Finset V)
@@ -350,6 +353,7 @@ theorem refined3_disjoint
   · exact ((hRB hPR).mono_left sB2).symm
   · exact hRR hPR hQR hPQ
 
+omit [Fintype V] in
 /-- The 3-piece refined family refines every coarse partition the parent
     refines. -/
 theorem refined3_refines
