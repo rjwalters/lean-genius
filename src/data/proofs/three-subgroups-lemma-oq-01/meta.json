@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and the Normal-Subgroup Statement",
+      "startLine": 1,
+      "endLine": 56,
+      "mathContext": "$\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N \\wedge \\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N \\Rightarrow \\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$ for $N \\trianglelefteq G$, recovering Mathlib's $=\\bot$ case as $N=\\bot$.",
+      "summary": "Imports (Commutator.Basic, QuotientGroup.Defs, Tactic) and the module docstring: states the classical ≤ N three subgroups lemma, contrasts it with Mathlib's = ⊥ special case (Subgroup.commutator_commutator_eq_bot_of_rotate, from the Hall–Witt identity), and previews the quotient-transport proof (X ≤ N ⟺ X.map (mk' N) = ⊥, map distributing over the bracket via Subgroup.map_commutator). Opens the ThreeSubgroupsLemmaOQ01 namespace, opens Subgroup, and fixes the ambient group G."
+    },
+    {
       "id": "normal-form",
       "title": "The Normal-Subgroup Three Subgroups Lemma",
       "startLine": 57,
