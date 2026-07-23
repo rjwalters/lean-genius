@@ -73,12 +73,20 @@
       "mathContext": "The core theorem. The pointwise identity $1/p^s = p^{-s}$ turns the $1/p^s$ packaging into Mathlib's $p^{-s}$ dichotomy, whose threshold $r < -1$ becomes $s > 1$."
     },
     {
-      "id": "directions",
-      "title": "One-Directional Corollaries",
+      "id": "convergence-direction",
+      "title": "Convergence Corollary: s > 1",
       "startLine": 44,
+      "endLine": 47,
+      "summary": "`prime_zeta_summable`: `∑_p 1/p^s` is summable for `s > 1`, the `.mpr` direction of the iff.",
+      "mathContext": "Extracts the convergence half of `prime_zeta_summable_iff`."
+    },
+    {
+      "id": "divergence-direction",
+      "title": "Divergence Corollary: s ≤ 1",
+      "startLine": 49,
       "endLine": 54,
-      "summary": "`prime_zeta_summable` (convergence for `s > 1`) and `prime_zeta_not_summable` (divergence for `s ≤ 1`) extract the two implications of the iff.",
-      "mathContext": "Splits the biconditional into the usable convergence and divergence statements."
+      "summary": "`prime_zeta_not_summable`: `∑_p 1/p^s` diverges for `s ≤ 1`, obtained by contraposing the `.mp` direction of the iff and closing with `linarith`.",
+      "mathContext": "Extracts the divergence half of `prime_zeta_summable_iff`."
     },
     {
       "id": "boundary-instances",
