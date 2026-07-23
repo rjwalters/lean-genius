@@ -65,20 +65,36 @@
       "mathContext": "Goal: Fₘ ∣ Fₙ ⟺ m ∣ n for m ≥ 3; the m ≥ 3 hypothesis is necessary because F₁ = F₂ = 1 divide every Fibonacci number."
     },
     {
-      "id": "reverse-divisibility",
-      "title": "Reverse Divisibility (the new content)",
-      "summary": "dvd_of_fib_dvd: for m ≥ 3, Fₘ ∣ Fₙ → m ∣ n, via fib_gcd and injectivity of fib on [2,∞).",
+      "id": "reverse-divisibility-setup",
+      "title": "Reverse Divisibility: the GCD Rewrite",
+      "summary": "dvd_of_fib_dvd, first half: from Fₘ ∣ Fₙ, obtain gcd(Fₘ,Fₙ) = Fₘ (Nat.gcd_eq_left), then rewrite the left side via the strong-divisibility identity Nat.fib_gcd to get F_{gcd(m,n)} = Fₘ, and bound Fₘ ≥ F₃ = 2 from m ≥ 3 (Nat.fib_mono).",
       "startLine": 30,
-      "endLine": 59,
-      "mathContext": "From $F_m \\mid F_n$ we obtain $\\gcd(F_m, F_n) = F_m$; the strong-divisibility identity $\\gcd(F_m, F_n) = F_{\\gcd(m,n)}$ (`Nat.fib_gcd`) turns this into $F_{\\gcd(m,n)} = F_m$. As $m \\ge 3$ gives $F_m \\ge F_3 = 2$, the equality forces $\\gcd(m,n) \\ge 2$ (otherwise the left side would be $F_0 = 0$ or $F_1 = 1$). Fibonacci is strictly monotone on $[2,\\infty)$ (`Nat.fib_strictMonoOn`), hence injective there, so $\\gcd(m,n) = m$, which is $m \\mid n$."
+      "endLine": 47,
+      "mathContext": "$F_m \\mid F_n \\Rightarrow \\gcd(F_m,F_n) = F_m = F_{\\gcd(m,n)}$, with $F_m \\ge F_3 = 2$."
     },
     {
-      "id": "characterization",
-      "title": "The Characterization and its Sharpness",
-      "summary": "fib_dvd_iff: Fₘ ∣ Fₙ ↔ m ∣ n for m ≥ 3; fib_dvd_iff_needs_three: the hypothesis is necessary; not_fib_dvd_of_not_dvd: contrapositive form.",
+      "id": "reverse-divisibility-injectivity",
+      "title": "Reverse Divisibility: Injectivity Closes the Argument",
+      "summary": "dvd_of_fib_dvd, second half: rule out gcd(m,n) ∈ {0,1} by contradiction (interval_cases), since those would force F_{gcd(m,n)} ≤ 1 < 2; then Fibonacci's strict monotonicity on [2,∞) (Nat.fib_strictMonoOn) makes it injective there, so F_{gcd(m,n)} = Fₘ gives gcd(m,n) = m, i.e. m ∣ n.",
+      "startLine": 48,
+      "endLine": 59,
+      "mathContext": "$\\gcd(m,n) \\ge 2$ and $F_{\\gcd(m,n)} = F_m$ with $F$ injective on $[2,\\infty)$ $\\Rightarrow$ $\\gcd(m,n) = m \\Rightarrow m \\mid n$."
+    },
+    {
+      "id": "characterization-sharpness",
+      "title": "The Characterization and its Sharp Boundary",
+      "summary": "fib_dvd_iff: combining Mathlib's forward Nat.fib_dvd with dvd_of_fib_dvd gives the biconditional Fₘ ∣ Fₙ ↔ m ∣ n for m ≥ 3. fib_dvd_iff_needs_three: the hypothesis is necessary — F₂ = 1 ∣ F₃ = 2 yet 2 ∤ 3, decided by computation.",
       "startLine": 61,
+      "endLine": 73,
+      "mathContext": "$F_m \\mid F_n \\leftrightarrow m \\mid n$ for $m \\ge 3$; sharp at $m=2$: $F_2 \\mid F_3$ but $2 \\nmid 3$."
+    },
+    {
+      "id": "contrapositive",
+      "title": "Contrapositive Form",
+      "summary": "not_fib_dvd_of_not_dvd: for m ≥ 3, m ∤ n implies Fₘ ∤ Fₙ — the contrapositive of fib_dvd_iff, a convenience form for proofs that rule out divisibility of Fibonacci numbers via non-divisibility of indices.",
+      "startLine": 75,
       "endLine": 78,
-      "mathContext": "Combining the forward `Nat.fib_dvd` with `dvd_of_fib_dvd` gives the biconditional $F_m \\mid F_n \\leftrightarrow m \\mid n$ for $m \\ge 3$ (`fib_dvd_iff`). The restriction is sharp: at $m = 2$, $F_2 = 1$ divides every Fibonacci number, so $F_2 \\mid F_3$ holds while $2 \\nmid 3$ (`fib_dvd_iff_needs_three`, decided by computation); the same obstruction rules out $m = 1$. The contrapositive `not_fib_dvd_of_not_dvd` records that $m \\nmid n$ implies $F_m \\nmid F_n$."
+      "mathContext": "$m \\ge 3,\\ m \\nmid n \\implies F_m \\nmid F_n$."
     }
   ],
   "conclusion": {
