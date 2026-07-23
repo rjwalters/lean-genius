@@ -133,3 +133,28 @@ split), a genuinely new session-sized target.
 Build note: parent olean `Proofs.Erdos30Problem` was missing from the shared cache —
 build it explicitly first: `lake env lean -o .lake/build/lib/lean/Proofs/Erdos30Problem.olean
 Proofs/Erdos30Problem.lean`, then the WIP file elaborates normally.
+
+## Session 2026-07-23 (researcher-1) — table extended: h(22..24)=6, h(25..27)=7
+
+Added 12 declarations to `Erdos30WIP01.lean` (0 sorries, 0 axioms; kernel `decide +kernel`
+for the searches):
+- `isSidonSet_of_sidonCheck` (private): converse `SidonCheck` bridge — explicit witnesses
+  now certify by one `decide` instead of an `|A|⁴`-case `rcases`/`omega` sweep.
+- `no_sidon_extension_zero_twentytwo/-three/-four` (private): kernel searches — no
+  5-subset of `{1,…,N−1}` extends the pinned endpoints `{0,N}` to a 7-element Sidon set
+  (`C(N−1,5)` = 20349 / 26334 / 33649 candidates for N = 22, 23, 24).
+- `no_sidon_card_seven_range_twentythree/-four/-five`: no 7-element Sidon set in
+  `{0,…,N}` for N = 22, 23, 24 — the h(16) span dichotomy CHAINED: slide down by the
+  minimum; reduced span appeals to the obstruction proved just before (anchor: the
+  merged h(21) parity theorem `no_sidon_card_seven_range_twentytwo`), span = N pins both
+  endpoints and falls to the kernel search.
+- `isSidonSet_0_1_4_10_18_23_25` (private): the optimal 7-mark Golomb ruler (span 25,
+  differences `{1,…,25} \ {11,12,16,20}`), certified via the bridge.
+- `sidonNumber_twentytwo … twentyseven`: h(22)=h(23)=h(24)=6, h(25)=h(26)=h(27)=7.
+  Exact table now COMPLETE h(0..27).
+
+**Next wall (h(28..33)):** counting goes slack for eight at N = 28 (8·7 = 56 = 2·28) and
+the optimal 8-mark ruler `{0,1,4,9,15,22,32,34}` has span 34 — six values needing
+per-N nonexistence of an 8-element set; the dichotomy would need `C(N−1,6)`-scale kernel
+searches (~296k at N = 28, growing). DEEP targets unchanged (Singer √N lower bound,
+N^{1/4} refinement, $1000 N^ε conjecture).
