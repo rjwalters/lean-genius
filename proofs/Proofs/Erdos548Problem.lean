@@ -477,6 +477,139 @@ def erdos_548_open : Prop := ErdosSosConjecture ∨ ¬ErdosSosConjecture
 theorem erdos_548_status : erdos_548_open :=
   Classical.em ErdosSosConjecture
 
+/- ## Part XI: Toward eliminating `trivial_tree_bound` — min-degree extraction
+
+The classical proof of the trivial bound has two halves:
+1. **Extraction** (PROVED below): a graph with at least `(k−1)·n + 1` edges
+   contains a nonempty vertex set `s` in which every vertex has at least `k`
+   neighbours *inside `s`* — iteratively delete any vertex with fewer than
+   `k` internal neighbours; each deletion destroys at most `k − 1` edges, so
+   the edge surplus survives to a nonempty core.
+2. **Greedy tree embedding** (remaining): a set of internal minimum degree
+   `≥ k` contains every tree on `k + 1` vertices — embed the tree one leaf at
+   a time; at most `k` vertices are used, so a fresh neighbour always exists.
+   This needs a leaf-removal induction for trees (Mathlib:
+   `IsTree.exists_vert_degree_one_of_nontrivial`,
+   `Connected.induce_compl_singleton_of_degree_eq_one`) and is left for a
+   future session.
+
+The extraction half is stated over `edgesInside` (edges with both endpoints
+in a `Finset`), mirroring the sound internal-degree formulation used for the
+chromatic-degeneracy lemma of Erdős #751 — a global min-degree statement
+would be false (isolated vertices survive in any same-vertex-type subgraph). -/
+
+/-- The edges of `G` with both endpoints inside `t`. -/
+noncomputable def edgesInside (G : SimpleGraph V) [DecidableRel G.Adj]
+    (t : Finset V) : Finset (Sym2 V) :=
+  G.edgeFinset.filter (fun e => ∀ x ∈ e, x ∈ t)
+
+/-- On the full vertex set, `edgesInside` is the whole edge set. -/
+theorem edgesInside_univ (G : SimpleGraph V) [DecidableRel G.Adj] :
+    edgesInside G Finset.univ = G.edgeFinset := by
+  unfold edgesInside
+  exact Finset.filter_true_of_mem (fun e _ x _ => Finset.mem_univ x)
+
+/-- Removing a vertex `v` from `t` destroys at most `deg_t(v)` inside-edges:
+every inside-edge either avoids `v` (and survives in `t.erase v`) or joins
+`v` to one of its neighbours inside `t`. -/
+theorem edgesInside_erase_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (t : Finset V) (v : V) :
+    (edgesInside G t).card ≤
+      (edgesInside G (t.erase v)).card +
+        (t.filter (fun u => G.Adj v u)).card := by
+  have hsub : edgesInside G t ⊆
+      edgesInside G (t.erase v) ∪
+        (t.filter (fun u => G.Adj v u)).image (fun u => s(v, u)) := by
+    intro e he
+    unfold edgesInside at he
+    rw [Finset.mem_filter] at he
+    obtain ⟨heE, hin⟩ := he
+    by_cases hv : v ∈ e
+    · -- `e = s(v, u)` for the other endpoint `u`
+      rw [Finset.mem_union]
+      right
+      have hother := Sym2.other_spec hv
+      refine Finset.mem_image.mpr ⟨Sym2.Mem.other hv, ?_, hother⟩
+      rw [Finset.mem_filter]
+      constructor
+      · exact hin _ (by rw [← hother]; exact Sym2.mem_mk_right _ _)
+      · have hadj : s(v, Sym2.Mem.other hv) ∈ G.edgeSet := by
+          rw [hother]
+          exact SimpleGraph.mem_edgeFinset.mp heE
+        exact hadj
+    · rw [Finset.mem_union]
+      left
+      unfold edgesInside
+      rw [Finset.mem_filter]
+      refine ⟨heE, fun x hx => Finset.mem_erase.mpr ⟨?_, hin x hx⟩⟩
+      rintro rfl
+      exact hv hx
+  calc (edgesInside G t).card
+      ≤ (edgesInside G (t.erase v) ∪
+          (t.filter (fun u => G.Adj v u)).image (fun u => s(v, u))).card :=
+        Finset.card_le_card hsub
+    _ ≤ (edgesInside G (t.erase v)).card
+        + ((t.filter (fun u => G.Adj v u)).image (fun u => s(v, u))).card :=
+        Finset.card_union_le _ _
+    _ ≤ _ := by
+        have himg := Finset.card_image_le
+          (s := t.filter (fun u => G.Adj v u)) (f := fun u => s(v, u))
+        omega
+
+/-- **Min-degree extraction (strong-induction core).** Any vertex set `t`
+carrying at least `(k−1)·|t| + 1` inside-edges contains a nonempty subset
+`s ⊆ t` in which every vertex has at least `k` neighbours inside `s`. -/
+theorem exists_min_degree_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (k : ℕ) :
+    ∀ t : Finset V, (k - 1) * t.card + 1 ≤ (edgesInside G t).card →
+      ∃ s : Finset V, s.Nonempty ∧ s ⊆ t ∧
+        ∀ v ∈ s, k ≤ (s.filter (fun u => G.Adj v u)).card := by
+  intro t
+  induction t using Finset.strongInduction with
+  | _ t ih =>
+    intro hE
+    by_cases hall : ∀ v ∈ t, k ≤ (t.filter (fun u => G.Adj v u)).card
+    · refine ⟨t, ?_, Finset.Subset.refl t, hall⟩
+      rcases Finset.eq_empty_or_nonempty t with rfl | hne
+      · exfalso
+        have hempty : edgesInside G (∅ : Finset V) = ∅ := by
+          rw [Finset.eq_empty_iff_forall_notMem]
+          intro e he
+          unfold edgesInside at he
+          rw [Finset.mem_filter] at he
+          exact absurd (he.2 e.out.1 (Sym2.out_fst_mem e))
+            (Finset.notMem_empty _)
+        rw [hempty] at hE
+        simp at hE
+      · exact hne
+    · simp only [not_forall, not_le] at hall
+      obtain ⟨v, hvt, hdeg⟩ := hall
+      have hcard : (t.erase v).card = t.card - 1 := Finset.card_erase_of_mem hvt
+      have hpos : 1 ≤ t.card := Finset.card_pos.mpr ⟨v, hvt⟩
+      have hbound := edgesInside_erase_bound G t v
+      have hmul : (k - 1) * t.card = (k - 1) * (t.card - 1) + (k - 1) := by
+        conv_lhs => rw [← Nat.sub_add_cancel hpos]
+        ring
+      obtain ⟨s, hne, hsub, hdegs⟩ := ih (t.erase v) (Finset.erase_ssubset hvt)
+        (by rw [hcard]; omega)
+      exact ⟨s, hne, hsub.trans (Finset.erase_subset v t), hdegs⟩
+
+/-- **Min-degree extraction from the edge count.** A graph on `V` with at
+least `(k−1)·|V| + 1` edges contains a nonempty vertex set `s` in which every
+vertex has at least `k` neighbours inside `s` — the extraction half of the
+classical proof of `trivial_tree_bound` (the hypothesis matches its
+`edgeCount G ≥ n·(k−1) + 1` up to commutativity). The remaining half is the
+greedy embedding of an arbitrary `(k+1)`-vertex tree into such an `s`. -/
+theorem exists_min_degree_subset_of_edgeCount (G : SimpleGraph V)
+    [DecidableRel G.Adj] (k : ℕ)
+    (h : (k - 1) * Fintype.card V + 1 ≤ edgeCount G) :
+    ∃ s : Finset V, s.Nonempty ∧
+      ∀ v ∈ s, k ≤ (s.filter (fun u => G.Adj v u)).card := by
+  obtain ⟨s, hne, _, hdeg⟩ := exists_min_degree_subset G k Finset.univ (by
+    rw [edgesInside_univ]
+    simpa [edgeCount, Finset.card_univ] using h)
+  exact ⟨s, hne, hdeg⟩
+
 end Erdos548
 
 /-
