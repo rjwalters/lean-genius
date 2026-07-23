@@ -47,7 +47,8 @@
       "The lemniscate of a polynomial scales with its leading coefficient: rescaling f(z) = (z - c)^n by R^{-n} dilates the unit disc B(c,1) to B(c,R), and the area π scales to π·R². So the single number that the monic normalization fixes is precisely the size of the lemniscate.",
       "Monicity is the load-bearing hypothesis behind μ({c}) = π. Among single-root degree-n polynomials, ONLY the monic one (R = 1) is forced to area π; the rest realise every positive value, so the infimum over the un-normalized family collapses to 0.",
       "The area function R ↦ π·R² is a bijection (0,∞) → (0,∞): single-root lemniscate areas are completely unconstrained once the leading coefficient is free, both arbitrarily large and arbitrarily small.",
-      "The phenomenon is purely metric — multiplicativity of the norm on powers and the area of a disc of radius R — so it is fully axiom-free and needs no polynomial-structure machinery, only the bare sub-level set lemOf."
+      "The phenomenon is purely metric — multiplicativity of the norm on powers and the area of a disc of radius R — so it is fully axiom-free and needs no polynomial-structure machinery, only the bare sub-level set lemOf.",
+      "Unboundedness below is a corollary of surjectivity, not a separate construction: area_arbitrarily_small simply invokes area_surjective at the target ε/2 — surjectivity onto all of (0,∞) already forces areas arbitrarily close to 0, so no additional witness or limiting argument is needed beyond the one surjectivity theorem."
     ],
     "prerequisites": [
       "Lebesgue measure on ℂ: Complex.volume_ball (area of a metric ball of radius r is .ofReal r² · π)",
@@ -82,12 +83,20 @@
       "mathContext": "$|B(c, R)| = \\pi R^2$; at $R = 1$, area $= \\pi$ for all $n \\geq 1$."
     },
     {
-      "id": "normalization",
-      "title": "§IV: Areas Span (0,∞) and the Capstone",
+      "id": "surjectivity",
+      "title": "§IV.a: Areas Span (0,∞)",
       "startLine": 101,
-      "endLine": 142,
-      "summary": "Every positive area A is realised at radius R = √(A/π) (surjectivity), and the areas become arbitrarily small, so the un-normalized single-root infimum is 0. The capstone packages monic ⇒ π against surjectivity and unboundedness below: monicity is essential to μ({c}) = π.",
-      "mathContext": "$R \\mapsto \\pi R^2$ is onto $(0,\\infty)$; $\\inf$ over non-monic single-root polynomials $= 0$."
+      "endLine": 122,
+      "summary": "area_surjective realises every target area A > 0 at radius R = √(A/π); area_arbitrarily_small specialises this at A = ε/2 to show areas become smaller than any ε > 0.",
+      "mathContext": "$R \\mapsto \\pi R^2$ is onto $(0,\\infty)$; areas are arbitrarily small without monicity."
+    },
+    {
+      "id": "capstone",
+      "title": "§IV.b: Capstone — Monic Normalization is Essential",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "monic_normalization_essential packages monic ⇒ area exactly π against surjectivity and unboundedness below: the finite positive value μ({c}) = π is a consequence of monicity, without which the infimum collapses to 0.",
+      "mathContext": "Monic $\\Rightarrow$ area $=\\pi$; non-monic single-root areas realise all of $(0,\\infty)$, so $\\inf = 0$ without monicity."
     }
   ],
   "conclusion": {
