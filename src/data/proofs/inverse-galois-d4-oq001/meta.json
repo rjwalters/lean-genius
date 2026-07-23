@@ -99,22 +99,36 @@
       "id": "overview",
       "title": "Overview: the missing ceiling of the bracket",
       "startLine": 1,
-      "endLine": 54,
-      "summary": "Header docstring and imports. Recalls the parent bracket n·φ(n) ∣ |Gal(Xⁿ−p)| ∣ n! and frames the gap: for n ≥ 4 the factorial bound is loose (n·φ(n) < n!), so the order is unpinned. Lays out the metacyclic ceiling |Gal| ≤ n·φ(n) (via the radical tower ℚ ⊆ ℚ(ζₙ) ⊆ ℚ(ζₙ)(ⁿ√p)), the coprime pin |Gal| = n·φ(n), and this entry's headline quintic instance. Imports Proofs.InverseGaloisD4OQ02OQ03 (and transitively InverseGaloisD4OQ02, where the general ceiling and coprime pin now live)."
+      "endLine": 23,
+      "summary": "Header docstring, part 1. Recalls the parent bracket n ∣ |Gal|, φ(n) ∣ |Gal| (combining to n·φ(n) ∣ |Gal| when gcd(n,φ(n)) = 1) against the symmetric-group ceiling |Gal| ∣ n!. The deepest parent entry pins the order exactly only at n = 2, 3, where n·φ(n) = n! closes the squeeze; for n ≥ 4 the factorial bound is loose, leaving the order open. States the goal: an unconditional matching upper bound |Gal| ≤ n·φ(n) via the tower ℚ ⊆ ℚ(ζₙ) ⊆ ℚ(ζₙ)(ⁿ√p), sharp exactly where the Sₙ bound is not (e.g. n = 5)."
     },
     {
-      "id": "imported-lemmas",
-      "title": "The general ceiling and coprime pin now live in the ancestor",
-      "startLine": 55,
-      "endLine": 63,
-      "summary": "Namespace-hygiene note. The metacyclic ceiling gal_card_le_n_mul_totient (via generation L = ℚ(ζ)(α) — every root β = ζⁱ·α — plus the tower law [L:ℚ] = φ(n)·[L:ℚ(ζ)] ≤ φ(n)·n) and the coprime pin gal_card_eq_n_mul_totient_of_coprime (ceiling meeting the coprime lower bound n·φ(n) ∣ |Gal|, squeezed by Nat.le_antisymm) were originally proved in this file but were merged into the ancestor InverseGaloisD4OQ02.lean (PR #31630) and removed as duplicates. They remain in scope via the transitive import and are invoked by the quintic instance below."
+      "id": "theorem-summaries",
+      "title": "The three theorems: ceiling, coprime pin, quintic witness",
+      "startLine": 24,
+      "endLine": 48,
+      "summary": "Header docstring, part 2. Bullet-by-bullet summary of the file's mathematical content: gal_card_le_n_mul_totient (the unconditional ceiling |Gal| ≤ n·φ(n), from the two-generator tower ℚ(ζ)(α) = L), gal_card_eq_n_mul_totient_of_coprime (the ceiling meeting the parent's coprime lower bound to pin |Gal| = n·φ(n) exactly), and gal_card_quintic_eq_twenty (the headline instance |Gal(X⁵−p)| = 20 = |F₂₀|). Closes with the status line: 0 sorries, 0 axioms, no native_decide."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and namespace setup",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "Imports Mathlib and the ancestor file Proofs.InverseGaloisD4OQ02OQ03 (which transitively re-exports the general ceiling and coprime-pin lemmas from InverseGaloisD4OQ02). Opens Classical (scoped) and the InverseGaloisExtensions namespace, and opens Polynomial for the X/C notation used in the quintic statement below."
+    },
+    {
+      "id": "namespace-hygiene",
+      "title": "Namespace hygiene: why this file proves only one theorem",
+      "startLine": 58,
+      "endLine": 66,
+      "summary": "Code comment explaining an apparent mismatch between the docstring (which narrates three theorems) and the file body (which declares only one). gal_card_le_n_mul_totient and gal_card_eq_n_mul_totient_of_coprime were originally proved in this file but were later merged verbatim into the ancestor InverseGaloisD4OQ02.lean (PR #31630) and deleted here as duplicates; they remain in scope through the transitive import, so the quintic instance below can still invoke gal_card_eq_n_mul_totient_of_coprime directly."
     },
     {
       "id": "quintic-witness",
       "title": "The quintic witness |Gal(X⁵−p)| = 20 = |F₂₀|",
-      "startLine": 65,
-      "endLine": 75,
-      "summary": "Proves gal_card_quintic_eq_twenty by instantiating the coprime pin at n = 5 (gcd(5,4) = 1, 5·φ(5) = 20), yielding |Gal(X⁵−p/ℚ)| = 20 = |AGL(1,5)| for every prime p. The factorial bound |Gal| ∣ 120 alone cannot close this; the cyclotomic ceiling is essential. Both `decide` calls are kernel decide (Coprime 5 (φ 5), 5·φ(5) = 20)."
+      "startLine": 67,
+      "endLine": 78,
+      "summary": "Proves gal_card_quintic_eq_twenty by instantiating the imported coprime pin at n = 5 (gcd(5,4) = 1, 5·φ(5) = 20), yielding |Gal(X⁵−p/ℚ)| = 20 = |AGL(1,5)| for every prime p. The factorial bound |Gal| ∣ 120 alone cannot close this; the cyclotomic ceiling is essential. Both `decide` calls are kernel decide (Coprime 5 (φ 5), 5·φ(5) = 20), so no Lean.ofReduceBool axiom is introduced."
     }
   ],
   "conclusion": {
