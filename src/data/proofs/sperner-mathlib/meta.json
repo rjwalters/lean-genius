@@ -38,6 +38,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sperner-mathlib",
+      "title": "Module Overview: Sperner's Lemma via Door Counting",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Proves Sperner's lemma for finite cell families with an abstract adjacency interface (each cell has d+1 faces, adj s k returns the adjacent cell across a face or none for boundary), using the classical door-counting parity argument: interior doors pair via the adjacency involution, and a per-cell parity lemma shows the door count of a coloring is odd iff the coloring is surjective, so the panchromatic count matches the boundary door count mod 2.",
+      "mathContext": "Fixed-point-free involution parity + per-cell surjectivity-parity $\\Rightarrow$ panchromatic count $\\equiv$ boundary door count (mod 2)."
+    },
+    {
       "id": "fpf-invol",
       "title": "Fixed-Point-Free Involution Parity",
       "startLine": 52,
