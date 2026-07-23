@@ -1,5 +1,27 @@
 [
   {
+    "id": "ann-425-header",
+    "proofId": "erdos-425",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "title": "Problem Statement and Background",
+    "content": "States Erdős Problem #425 (1968, partially solved): the maximum size $F(n)$ of a multiplicative Sidon subset of $\\{1,\\ldots,n\\}$. Poses two open questions (a single-constant refinement of the $n^{3/4}(\\log n)^{-3/2}$ secondary term, and the $r$-fold generalization) and summarizes Erdős's bounds and Alexander's disproof of the real-version conjecture.",
+    "significance": "key",
+    "mathContext": "The header fixes the extremal-function framing used by every later section: $F(n)$ counts subsets where all pairwise products $ab$ ($a<b$) are distinct. Erdős's 1968 bounds $\\pi(n) + c_1 n^{3/4}(\\log n)^{-3/2} \\le F(n) \\le \\pi(n) + c_2 n^{3/4}(\\log n)^{-3/2}$ are stated here as background before being formalized as the `erdos_bounds` axiom later in the file.",
+    "relatedConcepts": [
+      "multiplicative Sidon sets",
+      "prime counting function",
+      "asymptotic bounds"
+    ],
+    "prerequisites": [
+      "basic number theory",
+      "asymptotic notation"
+    ]
+  },
+  {
     "id": "ann-425-imports",
     "proofId": "erdos-425",
     "type": "concept",
