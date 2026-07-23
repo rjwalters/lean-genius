@@ -86,10 +86,12 @@ axiom ess_upper_lower_bound :
       ∃ᶠ N : ℕ in (atTop : Filter ℕ),
         C * (N : ℝ) ^ ((1 : ℝ) / 3 - ε) ≤ (nonUniqueSumCountInf A N : ℝ))
 
-/-- **Erdős–Freud**: For any finite A ⊆ ℕ, the non-unique sum count satisfies
-    |{1,...,N}\B| < 2^{3/2} · N^{1/2}. The constant 2^{3/2} may be optimal. -/
+/-- **Erdős–Freud**: For every N, there exists A ⊆ {1,...,N} whose non-unique sum
+    count satisfies |{1,...,N}\B| < 2^{3/2} · N^{1/2}. The constant 2^{3/2} may be
+    optimal. (Existential: an upper bound achieved by some choice of A, not a bound
+    satisfied by every A — e.g. A = {1,...,N} itself violates it.) -/
 axiom erdos_freud_finite :
-  ∀ (A : Finset ℕ) (N : ℕ),
+  ∀ N : ℕ, ∃ A : Finset ℕ, A ⊆ Icc 1 N ∧
     (nonUniqueSumCount A N : ℝ) < 2 ^ ((3 : ℝ) / 2) * (N : ℝ) ^ ((1 : ℝ) / 2)
 
 /- ## Structural Observations -/
