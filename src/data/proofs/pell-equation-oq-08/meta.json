@@ -88,9 +88,16 @@
       "id": "prime-factor-obstruction",
       "title": "The Prime-Factor Obstruction: p ≡ 3 (mod 4), p ∣ D",
       "startLine": 71,
-      "endLine": 101,
-      "summary": "neg_pell_no_sol_of_prime_factor_three_mod_four reduces the equation mod a prime p ∣ D (killing the D-term via ZMod.intCast_zmod_eq_zero_iff_dvd) to get (x : ZMod p)² = −1, contradicting ZMod.mod_four_ne_three_of_sq_eq_neg_one when p ≡ 3 (mod 4). neg_pell_solvable_imp_no_prime_factor_three_mod_four packages the contrapositive as the classical necessary condition.",
+      "endLine": 92,
+      "summary": "neg_pell_no_sol_of_prime_factor_three_mod_four reduces the equation mod a prime p ∣ D (killing the D-term via ZMod.intCast_zmod_eq_zero_iff_dvd) to get (x : ZMod p)² = −1, contradicting ZMod.mod_four_ne_three_of_sq_eq_neg_one when p ≡ 3 (mod 4).",
       "mathContext": "$-1$ is a quadratic residue mod an odd prime $p$ iff $p \\equiv 1 \\pmod 4$; a factor $p \\equiv 3 \\pmod 4$ of $D$ blocks $x^2 \\equiv -1 \\pmod p$."
+    },
+    {
+      "id": "solvability-necessary-condition",
+      "title": "The Necessary Condition for Solvability",
+      "startLine": 94,
+      "endLine": 101,
+      "summary": "neg_pell_solvable_imp_no_prime_factor_three_mod_four packages the contrapositive of the prime-factor obstruction as the classical necessary condition: if x² − Dy² = −1 has a solution, no prime factor of D is ≡ 3 (mod 4)."
     },
     {
       "id": "concrete-instances",
