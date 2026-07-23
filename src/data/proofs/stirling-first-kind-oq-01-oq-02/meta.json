@@ -91,16 +91,24 @@
       "id": "unsigned-foundation",
       "title": "Unsigned Generating Identity (Foundation)",
       "startLine": 61,
-      "endLine": 116,
+      "endLine": 114,
       "summary": "natCast_mul_stirlingFirst_zero_left (the boundary n·c(n,0)=0) and stirlingFirst_generating (∑ₖ c(n,k) xᵏ = ∏(x+i)), proved by induction on the Stirling recurrence with the index shift sum_range_succ'.",
       "mathContext": "The rising-factorial recursion F(n+1) = (x+n)·F(n) with F(0)=1, carrying the polynomial weights xᵏ."
     },
     {
-      "id": "falling-factorial",
+      "id": "eval-descpochhammer",
+      "title": "Evaluating the Falling-Factorial Polynomial",
+      "startLine": 116,
+      "endLine": 125,
+      "summary": "eval_descPochhammer_eq_prod identifies Mathlib's falling-factorial polynomial with the explicit product: (descPochhammer R n).eval x = ∏(x−i), by induction on descPochhammer_succ_right. Fills a small Mathlib gap so the signed identity can be restated in Mathlib's own vocabulary.",
+      "mathContext": "$(\\mathrm{descPochhammer}\\ R\\ n).\\mathrm{eval}\\ x = \\prod_{i<n}(x-i).$"
+    },
+    {
+      "id": "signed-generating",
       "title": "The Signed/Falling-Factorial Identity",
-      "startLine": 117,
+      "startLine": 127,
       "endLine": 172,
-      "summary": "eval_descPochhammer_eq_prod identifies ∏(x−i) with descPochhammer.eval; stirlingFirst_generating_signed proves ∑ₖ (−1)^{n−k} c(n,k) xᵏ = ∏(x−i) via the parity bridge and x ↦ −x; stirlingFirst_generating_signed_descPochhammer restates it with descPochhammer.",
+      "summary": "stirlingFirst_generating_signed proves ∑ₖ (−1)^{n−k} c(n,k) xᵏ = ∏(x−i) via the parity bridge (−1)^{n−k}=(−1)ⁿ(−1)ᵏ and x ↦ −x applied to the unsigned identity; stirlingFirst_generating_signed_descPochhammer restates it with descPochhammer.",
       "mathContext": "The falling factorial ∏(x−i) is the rising factorial composed with negation, and the signed Stirling numbers are its monomial coefficients."
     },
     {
