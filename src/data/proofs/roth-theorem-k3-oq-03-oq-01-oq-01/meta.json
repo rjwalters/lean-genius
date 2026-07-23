@@ -60,7 +60,8 @@
       "**Multilinearity is the structural workhorse:** every density/energy-increment expansion of Λ_k over a decomposition 1_A = δ·1 + (1_A − δ) is an instance of additivity + homogeneity in one slot.",
       "**One lemma does the work:** `prod_update_factor` isolates a single slot of the k-AP product; additivity and homogeneity are then bookkeeping over the double average E_{x,d}.",
       "**Function.update is the right slot address:** it lets the statements quantify over 'the tuple with its j-th entry changed' without naming the other k−1 functions.",
-      "**The Gowers norm is a real norm:** nonnegativity is definitional, the first of the metric properties needed to use it as a control on the error terms."
+      "**The Gowers norm is a real norm:** nonnegativity is definitional, the first of the metric properties needed to use it as a control on the error terms.",
+      "**'Multilinear' means separately, not jointly, linear:** additivity and homogeneity hold in one slot at a time with the other k−1 arguments frozen — Λ_k is not asserted to be linear in the tuple (f₀,…,f_{k-1}) as a whole. It is exactly this per-slot linearity that the density-increment expansion needs, since it swaps one slot at a time between 1_A and δ·1 + g."
     ],
     "prerequisites": [
       "The parent operators: Λ_k = kAPCount and the Gowers norm (Proofs.RothTheoremOQ03OQ01)",
@@ -85,12 +86,20 @@
       "mathContext": "Finset.mul_prod_erase + Function.update_self/update_of_ne isolate the j-th factor."
     },
     {
-      "id": "multilinear",
-      "title": "Multilinearity of Λ_k",
-      "summary": "kAPCount_add_slot (additive in slot j) and kAPCount_smul_slot (homogeneous in slot j).",
+      "id": "add-slot",
+      "title": "Additivity in a Slot",
+      "summary": "kAPCount_add_slot: Λ_k(…,a+b,…) = Λ_k(…,a,…) + Λ_k(…,b,…). Rewrites both sides with the factorization engine, splits the j-th factor via Pi.add_apply/add_mul, and distributes the double average E_{x,d} over the sum (Finset.sum_add_distrib twice, mul_add).",
       "startLine": 41,
+      "endLine": 53,
+      "mathContext": "Λ_k(update f j (a+b)) = Λ_k(update f j a) + Λ_k(update f j b)."
+    },
+    {
+      "id": "smul-slot",
+      "title": "Homogeneity in a Slot",
+      "summary": "kAPCount_smul_slot: Λ_k(…,c•a,…) = c · Λ_k(…,a,…). Same factorization engine, then Pi.smul_apply/smul_eq_mul turns the j-th factor into c·a(x+j·d), and mul_left_comm/Finset.mul_sum (twice) pull c out through the double average.",
+      "startLine": 55,
       "endLine": 68,
-      "mathContext": "Distribute the double average E_{x,d} over the split/scaled j-th factor (sum_add_distrib, mul_sum)."
+      "mathContext": "Λ_k(update f j (c•a)) = c · Λ_k(update f j a)."
     },
     {
       "id": "norm",
