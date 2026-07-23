@@ -90,7 +90,8 @@
       "**The dichotomy is structural, not about ℚ.** The only properties used are 'countable' and 'infinite' (plus a ring structure to form R[X]). ℚ was incidental; ℤ, ℚ, ℤ[i], 𝔽_p[t], or any countable infinite ring behaves identically.",
       "**Polynomials don't escape ℵ₀; sequences do.** R[X] is a countable colimit ⋃_d {polynomials of degree ≤ d} of finite-rank free modules, so it stays denumerable — even though it is algebraically much larger than R. The countable *power* ℕ → R is the operation that breaks ℵ₀-closure, exactly as a power (not a product or colimit).",
       "**Same cardinality, larger ring: #(R[X]) = #R.** The polynomial ring is an honestly bigger ring but the same-size set, with an explicit bijection R[X] ≃ R from `Cardinal.eq` — the ℵ₀ analogue of a Hilbert-hotel repackaging.",
-      "**One inequality captures the boundary: #(R[X]) < #(ℕ → R) is ℵ₀ < 𝔠.** Cantor's gap, instantiated at the level of an arbitrary countable ring."
+      "**One inequality captures the boundary: #(R[X]) < #(ℕ → R) is ℵ₀ < 𝔠.** Cantor's gap, instantiated at the level of an arbitrary countable ring.",
+      "**The ring structure is needed on only one side.** `mk_seq`/`not_countable_seq` require just `[Countable R] [Infinite R]` — the escape to 𝔠 is a fact about countable powers of *any* countably infinite type, not about rings. `[CommRing R]` only enters to form `R[X]` for the ℵ₀ side; strip the ring axioms away and the sequence-space half of the dichotomy is untouched."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (ℵ₀, 𝔠, exponentiation, mk_arrow)",
@@ -119,9 +120,17 @@
       "id": "polynomial",
       "title": "The Polynomial Ring Stays Denumerable",
       "startLine": 62,
+      "endLine": 85,
+      "summary": "countable_polynomial (Countable R[X], via the injective toFinsupp into ℕ →₀ R), mk_polynomial (#(R[X]) = ℵ₀), mk_polynomial_eq_mk (#(R[X]) = #R), and nonempty_equiv_polynomial (an explicit bijection R[X] ≃ R from Cardinal.eq).",
+      "mathContext": "$R[X] = \\mathbb{N} \\to_0 R$ is countable and infinite, so $\\#(R[X]) = \\aleph_0 = \\#R$, witnessed by $R[X] \\simeq R$."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Dichotomy in One Inequality",
+      "startLine": 86,
       "endLine": 95,
-      "summary": "countable_polynomial (Countable R[X]), mk_polynomial (#(R[X]) = ℵ₀), mk_polynomial_eq_mk (#(R[X]) = #R), nonempty_equiv_polynomial (R[X] ≃ R), and mk_polynomial_lt_mk_seq (#(R[X]) < #(ℕ → R)).",
-      "mathContext": "$R[X] = \\mathbb{N} \\to_0 R$ is countable and infinite, so $\\#(R[X]) = \\aleph_0 = \\#R$."
+      "summary": "mk_polynomial_lt_mk_seq combines the two halves into a single inequality #(R[X]) < #(ℕ → R), reducing to aleph0_lt_continuum once both sides are rewritten to ℵ₀ and 𝔠 — Cantor's gap, now at the level of an arbitrary countable ring.",
+      "mathContext": "$\\#(R[X]) < \\#(\\mathbb{N} \\to R) \\iff \\aleph_0 < \\mathfrak{c}.$"
     },
     {
       "id": "instances",
