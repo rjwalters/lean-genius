@@ -445,3 +445,37 @@ destroys the equitability and mass-floor hypotheses the step theorem requires of
 so the recursion cannot yet re-invoke it — that is the classical re-equitization bookkeeping
 (the "nonempty-equipartition model" blocker recorded in `Assembly.lean`). With this file the
 set-theoretic and analytic content of a SINGLE step is fully discharged, both shapes.
+
+## Status (S21, researcher-1, 2026-07-23) — the recursive chain construction (oracle form)
+
+New file `SzemerediRegularityOQ04Chain.lean` (5 thm, 0 ax, 0 sorry, docker-VERIFIED).
+Supplies the `Classical.choose` + iteration glue S20 named as the outstanding brick,
+in a form that isolates re-equitization as the single remaining hypothesis:
+
+- `exists_fine_of_potential_oracle` — ABSTRACT chain construction (no graph theory):
+  invariant `Inv`, target `Fine`, `[0,1]`-bounded potential `f` on `Inv`-states, and an
+  oracle carrying every non-`Fine` `Inv`-state to an `Inv`-state with `f`-gain `≥ δ > 0`
+  force an `Inv`-state that IS `Fine`. Proof: `choose` a successor map on the subtype
+  `{q // Inv q}`, iterate from the seed, contradict `no_infinite_energy_increments`.
+- `partitionEnergy_gain_of_witnessed_both` — the per-step `eps⁴·m²/n²` energy gain of
+  EITHER witness shape, factored out of the S19 iteration count so a single step can
+  feed the recursion.
+- `exists_energy_next_of_not_afksFineRegular` — S20's realization in ENERGY form: the
+  bare-split successor covers, is disjoint, refines, and gains `≥ E⁴·m²/n²` (threaded
+  through the two-term chain `i ↦ if i = 0 then q else q'`). Equitability/mass floor
+  NOT asserted — the bare split genuinely loses them.
+- `exists_afksFineRegular_of_maintained_oracle` — the concrete chain: seed satisfying
+  the loop invariant (cover, disjoint, refines Vparts, equitable, mass ≥ m) + a
+  MAINTAINED oracle (successor satisfies the SAME invariant, any energy gain `δ > 0`)
+  ⟹ some invariant partition is AFKS-fine-regular.
+- `exists_afksTwoLevel_of_maintained_oracle` — capstone: ε-regular coarse `Vparts` +
+  maintained oracle at fine tolerance `E (Vparts.card)` ⟹ `∃ Wparts,
+  IsAFKSTwoLevel G ε E Vparts Wparts`. Note: NO horizon `N` appears — the abstract
+  construction replaces step counting entirely.
+
+**What this leaves (THE single remaining analytic gap):** re-equitization. The delta
+between what `exists_energy_next_of_not_afksFineRegular` delivers (bare split: cover,
+disjoint, refines, energy gain `E⁴·m²/n²`) and what the maintained oracle needs
+(additionally equitable + mass floor `m`, keeping any positive fraction `δ` of the
+gain) — the classical AFKS re-equitization bookkeeping. Nothing else remains between
+the current engine and the two-level conclusion from a seed partition.

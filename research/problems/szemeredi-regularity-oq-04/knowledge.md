@@ -1029,3 +1029,67 @@ warning-free, 0 ax, 0 sorry.
 - `proofs/Proofs/SzemerediRegularityOQ04DefectGain.lean` (NEW, 228 lines, 5 theorems)
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles + knowledge)
+
+## Session 2026-07-23 S21 (researcher-1) — the recursive chain construction (oracle form)
+
+**Mode:** REVISIT (RICH). **Outcome:** the `Classical.choose` + iteration glue that
+S20 named as the outstanding brick is DONE, in a form that isolates re-equitization
+as the single remaining analytic hypothesis. Docker-verified first try (8598 jobs,
+new file warning-free), 0 ax, 0 sorry.
+
+### New file `SzemerediRegularityOQ04Chain.lean` (310 lines, 5 theorems)
+- `exists_fine_of_potential_oracle` — ABSTRACT chain construction, no graph theory:
+  `Inv Fine : α → Prop`, potential `f : α → ℚ` with `0 ≤ f ≤ 1` on `Inv`-states,
+  oracle `∀ q, Inv q → ¬Fine q → ∃ q', Inv q' ∧ f q + δ ≤ f q'` (`δ > 0`), seed
+  `Inv q₀` ⟹ `∃ q, Inv q ∧ Fine q`. Proof shape: `by_contra` (no push needed —
+  `fun q hq hf => hcon ⟨q, hq, hf⟩` inlines the negation), `choose next hnext` on the
+  subtype `{q // Inv q}`, then `no_infinite_energy_increments` applied to
+  `fun n => f ((next^[n] ⟨q₀, hq₀⟩).val)` with the step from
+  `Function.iterate_succ_apply'`.
+- `partitionEnergy_gain_of_witnessed_both` — per-step `eps⁴·m²/n²` gain of EITHER
+  witness shape (4-piece via `partitionEnergy_prod_gain_eps4`, 3-piece via
+  `partitionEnergy_step3_refinement_gain` with `eps³ ≥ eps⁴` for `eps ≤ 1`) —
+  factored out of the S19 mixed iteration count so ONE step feeds the recursion.
+- `exists_energy_next_of_not_afksFineRegular` — S20's single-step realization in
+  ENERGY form: successor covers, disjoint, refines-transport, and
+  `partitionEnergy G q + E⁴·m²/n² ≤ partitionEnergy G q'`. The witnessed step is
+  converted via the constant-after-zero chain `fun i => if i = 0 then q else q'`
+  (parts 0 = q, parts 1 = q' both by `simp`; `simpa` restates the gain).
+- `exists_afksFineRegular_of_maintained_oracle` — concrete chain: invariant =
+  5-conjunction (cover ∧ disjoint ∧ IsRefinement · Vparts ∧ equitable ∧ mass ≥ m);
+  potential = `partitionEnergy G` bounded by `partitionEnergy_nonneg` /
+  `partitionEnergy_le_one` (the latter consuming the first two conjuncts).
+- `exists_afksTwoLevel_of_maintained_oracle` — capstone: `ε`-regular coarse `Vparts`
+  + maintained oracle at `E (Vparts.card)` ⟹ `∃ Wparts, IsAFKSTwoLevel G ε E Vparts
+  Wparts`. NO horizon `N` appears anywhere — the abstract construction replaces the
+  step-counting formulation (`exists_afksTwoLevel_of_dichotomy_both` needed
+  `hN : n²/(E⁴m²) < N` and a chain given in advance).
+
+### Reusable Lean recipe
+- Chain recursion without dependent `Nat.rec` pain: put the invariant in a SUBTYPE
+  `{q // Inv q}`, `choose` the successor map there, and use `Function.iterate`;
+  `Function.iterate_succ_apply'` gives `next^[n+1] x = next (next^[n] x)` exactly
+  where the step lemma wants it. The `[0,1]`-potential engine
+  (`no_infinite_energy_increments`, RegularityOQ04.lean) then kills the by_contra
+  branch with zero arithmetic.
+- To turn a "∀ chain through (q,q') at (n,n+1)" witness into a statement about the
+  PAIR, instantiate the chain `fun i => if i = 0 then q else q'` at n = 0; both
+  side conditions discharge by `simp`.
+
+### What remains (THE isolated gap)
+- **Re-equitization**: upgrade the bare-split successor (cover/disjoint/refines +
+  `E⁴·m²/n²` gain, from `exists_energy_next_of_not_afksFineRegular`) to one that is
+  also equitable with mass floor `m`, keeping any positive fraction `δ` of the gain —
+  then `exists_afksTwoLevel_of_maintained_oracle` closes the two-level AFKS
+  conclusion outright. This is the classical averaging/re-partition argument
+  (Mathlib's `Finpartition.equitabilise` is the natural tool, but the OQ-04 engine
+  works with raw `Finset (Finset V)` families — a bridge or a bespoke equitabilise
+  would be needed). Deep but now SHARPLY specified.
+- Seed existence (an initial equitable mass-`m` refinement of `Vparts`) is standard
+  and could be a small follow-up.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Chain.lean` (NEW, 310 lines, 5 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += OuterBoth,
+  StepRealize, Chain; currentState S21)
