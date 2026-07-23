@@ -56,7 +56,8 @@
       "The deviation has a sharp, elementary pointwise envelope |deviation x| <= 1/2 with the upper value attained at integers — no equidistribution input needed.",
       "That envelope alone controls the whole weighted sum a priori: |S(alpha,n)| <= n/2 and |f(alpha,n)| <= (n/2)/log n, so f is finite and the open question is purely about its finer distribution.",
       "The deviation has zero mean over a period: integral over [0,1] of deviation = 0. This is the exact value every Weyl/Cesaro average of deviation converges to in the irrational case, and it needs no approximation theory.",
-      "The a.e. congruence trick (drop the single point x = 1) lets the fractional-part integral be computed as the ordinary integral of the identity, avoiding any special fractional-part integration lemma."
+      "The a.e. congruence trick (drop the single point x = 1) lets the fractional-part integral be computed as the ordinary integral of the identity, avoiding any special fractional-part integration lemma.",
+      "The n >= 2 hypothesis in abs_f_le is not a technical nicety but the same edge case handled twice: log n is only strictly positive for n >= 2 (log 1 = 0, and log 0 = 0 by Mathlib convention), so the guard 'if n <= 1 then 0' in the definition of f keeps f total, and the hypothesis n >= 2 in the bound keeps that same division meaningful."
     ]
   },
   "sections": [
@@ -77,12 +78,20 @@
       "mathContext": "deviation x = 1/2 - {x} with {x} in [0,1) gives the sharp two-sided envelope."
     },
     {
-      "id": "a-priori-control",
-      "title": "A Priori Control of the Weighted Sum",
-      "summary": "abs_innerSum_le (|S| <= n/2) and abs_f_le (|f| <= (n/2)/log n for n >= 2), certifying the weighted sum and its normalization are finite and bounded.",
+      "id": "sum-bound",
+      "title": "A Priori Bound on the Inner Sum",
+      "summary": "abs_innerSum_le: |S(alpha,n)| <= n/2, by the triangle inequality (Finset.abs_sum_le_sum_abs) summing n copies of the pointwise envelope 1/2.",
       "startLine": 100,
-      "endLine": 127,
-      "mathContext": "Triangle inequality over the |deviation| <= 1/2 envelope; division by log n > 0 (Real.log_pos) for n >= 2."
+      "endLine": 113,
+      "mathContext": "Triangle inequality over the |deviation| <= 1/2 envelope: |sum deviation| <= sum |deviation| <= n * (1/2)."
+    },
+    {
+      "id": "normalized-bound",
+      "title": "A Priori Bound on the Normalized Sum",
+      "summary": "abs_f_le: |f(alpha,n)| <= (n/2)/log n for n >= 2, dividing the sum bound by log n > 0 (Real.log_pos); certifies f is finite and well-defined, with the open question about the far finer true scale.",
+      "startLine": 115,
+      "endLine": 126,
+      "mathContext": "Division by log n > 0 (Real.log_pos, needs n >= 2) propagated through the sum bound via gcongr."
     },
     {
       "id": "zero-mean",
