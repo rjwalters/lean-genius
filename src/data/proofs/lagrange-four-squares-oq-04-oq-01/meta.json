@@ -57,6 +57,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-four-squares-oq-04-oq-01", "title": "Module Header: Sums of Three Squares Are Not Multiplicatively Closed", "startLine": 1, "endLine": 37, "summary": "Contrasts the two- and four-square theorems (multiplicatively closed representable sets, via Brahmagupta–Fibonacci and Euler's identity) with the three-square case, which is not: 3 and 5 are each sums of three squares but 3·5=15 is not, since 15 ≡ 7 (mod 8) violates the classical mod-8 obstruction. Proves this concretely (3·5=15, 3·21=63) and, as a genuine contrast, reproves that the four-square representable set IS multiplicatively closed via Euler's identity. Fully self-contained, 0 sorries, 0 axioms.", "mathContext": "The three-square representable set has no ternary composition law: $3=1^2+1^2+1^2$ and $5=0^2+1^2+2^2$ are each sums of three squares, yet $15 \\equiv 7 \\pmod 8$ is not, unlike the two- and four-square cases which are multiplicatively closed via the Brahmagupta–Fibonacci and Euler identities."},
     {
       "id": "definitions",
       "title": "Section I: Predicates",
