@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Fadell–Husseini Index Theory for Equivariant Borsuk–Ulam",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Poses whether the Fadell–Husseini ideal-valued cohomological index can be formalized to resolve specific cases of the equivariant Borsuk–Ulam dimension for composite cyclic groups. Explains the index Index_G(X) as a homogeneous ideal in H*(BG;k) that bounds equivariant maps and determines the Borsuk-Ulam dimension for cyclic groups, and states the file axiomatizes only the topological layer (classifying spaces, equivariant cohomology) while building the algebraic structure on Mathlib's existing graded-ring and homogeneous-ideal infrastructure. Cites Fadell & Husseini (1988), Matousek (2003), and Volovikov (1996).",
+      "mathContext": "$\\mathrm{Index}_G(X)\\subseteq H^*(BG;k)$ is a homogeneous ideal bounding equivariant maps, used here to determine the Borsuk–Ulam dimension for cyclic groups."
+    },
+    {
       "id": "graded-cohomology",
       "title": "Graded Cohomology Ring of BG",
       "summary": "Defines `CohDegree`, `CohRing` structure with group order and generator degree, and `cohRing` constructor for cyclic groups.",
