@@ -42,6 +42,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: discharging the cyclic-order axiom via half-angle sines",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States what this file proves — the parent leaf's axiom `positive_ratio_implies_cyclic_order` (positive real proportionality of the opposite-side products forces a CCW/CW order on the unit circle) is discharged as a theorem — and sketches the proof: anchoring at z_1, converting the complex proportionality into a real sine equation via a half-angle factorization, then reading the order off the sign and monotonicity of sin.",
+      "mathContext": "$t\\cdot\\sin(\\tfrac{\\theta_1-\\theta_2}2)\\sin(\\tfrac{\\theta_3-\\theta_4}2)=\\sin(\\tfrac{\\theta_2-\\theta_3}2)\\sin(\\tfrac{\\theta_1-\\theta_4}2)$ with $t>0$ forces $\\varphi_3$ between $\\varphi_2,\\varphi_4$, giving CCW or CW order."
+    },
+    {
       "id": "local-restatements",
       "title": "Local Restatements of the Parent's Definitions",
       "startLine": 52,
