@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Weak/Positive Duality and the ±1 Bijection",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "$g\\,i = f\\,i + 1$: adding $1$ to each of the $k$ parts of a weak composition of $m$ gives a positive composition of $m+k$; the count of positive compositions of $n$ into $k$ parts is $\\binom{n-1}{k-1}$.",
+      "summary": "Imports the parent StarsAndBarsWeakCompositions file and states the module docstring: defines weak and positive compositions, states the classical ±1 shift duality between them, previews the explicit bijection positiveCompositionEquivWeak and the resulting count C(n−1,k−1) for 0 < k ≤ n, and notes what this adds over the parent (which counts only weak compositions) — both the positive-composition tuple count and this explicit shift equivalence are absent from Mathlib. Opens Finset, enters the StarsAndBars namespace, and fixes the ambient variables {k n : ℕ}."
+    },
+    {
       "id": "the-shift-arithmetic",
       "title": "The Arithmetic of the Per-Part Shift",
       "startLine": 49,
