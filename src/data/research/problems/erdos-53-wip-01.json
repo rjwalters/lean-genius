@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Unconditional frontier widened from prime sets to ALL positive sets. New quadratic additive bound |subsetSums A| >= n(n+1)/2+1 (Erdős max-removal chain, 0-axiom, host-verified), hence quadratic/superlinear growth of |sumsOrProducts A| with no primality. Prime family: 2^|A| bound, all-k eventual (done earlier). Remaining deep crux: Chang's |A|^k for arbitrary large sets (k>=2 over all sets untouched; n(n+1)/2+1 < n^2).",
+    "progressSummary": "PROGRESS: prime family all-k + parity separation + BOTH quadratic chains (additive |subsetSums| >= n(n+1)/2+1 all positive sets; multiplicative |subsetProducts| >= n(n+1)/2 all sets >1) done, 0 axioms; elementary vein saturated; remaining = Chang |A|^k arbitrary sets (deep)",
     "builtItems": [
       "zero_mem_subsetSums, mem_subsetSums_of_mem, mem_subsetProducts_of_mem in Erdos53Problem.lean",
       "subsetSums/Products_subset_sumsOrProducts, subsetSumCount/subsetProductCount_le_card in Erdos53Problem.lean",
@@ -53,7 +53,9 @@
       "sumsOrProducts_card_ge_odd_prime in Erdos53WIP01.lean: for a nonempty set of distinct odd positive primes, 2^|A| + |A| - 1 <= |sumsOrProducts A|, strictly stronger than the base 2^|A| bound; the even family {0} union {min A + q : q != min A} adds |A| fresh values disjoint from the odd products. Axiom-free.",
       "sum_mem_subsetSums / sum_sub_mem_subsetSums / mem_subsetSums_le_sum in Erdos53WIP01.lean (subset-sum membership + total-sum upper bound helpers)",
       "subsetSums_card_quadratic + subsetSums_card_ge_quadratic(') in Erdos53WIP01.lean: n(n+1)+2 <= 2|subsetSums A| (and /2+1 form) for all positive sets, 0-axiom",
-      "sumsOrProducts_card_ge_quadratic + sumsOrProducts_card_superlinear in Erdos53WIP01.lean: quadratic growth of the representable set over ALL positive sets; every linear rate C beaten past |A| >= 2C"
+      "sumsOrProducts_card_ge_quadratic + sumsOrProducts_card_superlinear in Erdos53WIP01.lean: quadratic growth of the representable set over ALL positive sets; every linear rate C beaten past |A| >= 2C",
+      "prod_mem_subsetProducts, prod_erase_mem_subsetProducts, mem_subsetProducts_le_prod in Erdos53WIP01.lean",
+      "subsetProducts_card_quadratic (induction core) + subsetProducts_card_ge_quadratic + division form in Erdos53WIP01.lean"
     ],
     "insights": [
       "Erdos53Problem.lean was a definitions-only stub (9 defs, 0 theorems). Chang 2003 (conjecture holds) and the Erdos-Szemeredi upper bound need deep additive combinatorics beyond Mathlib; tractable axiom-free content is elementary structural facts about subsetSums/subsetProducts/sumset/productset.",
@@ -61,7 +63,11 @@
       "k=1 slice of Problem 53 is elementary: A ⊆ subsetSums A ⊆ sumsOrProducts A gives |A| ≤ |sumsOrProducts A| (erdosProblem53_exponent_one, N₀=0). Distinct-prime richness |subsetProducts A|=2^|A|-1 requires 0<p (Prime over ℤ is closed under negation; positivity kills the p↔-p product collision). Proved axiom-free via Prime.dvd_finsetProd_iff + Prime.associated_of_dvd + Int.associated_iff_natAbs.",
       "Exponential-richness witness (researcher-1, 2026-07-20): the additive side contributes exactly one value the multiplicative side cannot — 0 (empty subset sum), which is never a product of positive primes. So for distinct positive primes |sumsOrProducts A| ≥ (2^|A|-1)+1 = 2^|A|, exhibiting sets where the Problem-53 count is exponential. This is the strongest witness on the EASY direction; it does NOT bear on Chang’s theorem, which is the uniform bound over ALL large sets (prime sets are never the obstruction).",
       "Parity separation: for a set of distinct ODD primes, every nonempty subset product is odd (product of odds), while 0 and every 2-element subset sum p+q of odds is even. So the multiplicative and additive sides are provably overlap-free on the even numbers -- a genuine structural fact about Problem 53 two operations.",
-      "Erdős max-removal chain gives the first non-prime-specific bound: for ANY set of n distinct POSITIVE integers, |subsetSums A| >= n(n+1)/2 + 1 (sharp for {1..n}). Mechanism: every subset sum of A' = A.erase(max) is <= T - m (T = total, m = max), while the n values {T} u {T - a : a in A', a != m} are distinct subset sums strictly above T - m, so the count grows by n per step. Independent of parity/primality separations; still short of Chang (n(n+1)/2+1 < n^2 for n>=3, so k=2 over all sets remains open)."
+      "Erdős max-removal chain gives the first non-prime-specific bound: for ANY set of n distinct POSITIVE integers, |subsetSums A| >= n(n+1)/2 + 1 (sharp for {1..n}). Mechanism: every subset sum of A' = A.erase(max) is <= T - m (T = total, m = max), while the n values {T} u {T - a : a in A', a != m} are distinct subset sums strictly above T - m, so the count grows by n per step. Independent of parity/primality separations; still short of Chang (n(n+1)/2+1 < n^2 for n>=3, so k=2 over all sets remains open).",
+      "Multiplicative mirror of the Erdős chain: |subsetProducts A| >= n(n+1)/2 for arbitrary sets of integers > 1 — frontier moved from prime-only (2^n-1) to all sets of elements >= 2",
+      "Transposition is not mechanical: ZZ multiplicative monoid is unordered, so subset-product <= full-product goes via prod_dvd_prod_of_subset + Int.le_of_dvd; fresh values written Pi(A.erase a) (never P/a); all comparisons via cancellation on Pi(A.erase a)*a = Pi A",
+      "Elements->1 hypothesis essential multiplicatively where >0 sufficed additively: 1 in A collides Pi(A.erase 1) with Pi A, exact mirror of the 0-element degeneracy",
+      "Bound sharp for geometric {2,4,...,2^n} (products realize exactly 2^[1..n(n+1)/2]); both Problem-53 sides now individually quadratic — remaining content is exactly the sum-product tension (Chang, deep)"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
