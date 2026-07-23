@@ -32,6 +32,16 @@
         "route": "Chen 2023: ExceptionalSet is richer than one AP plus a density-0 set",
         "reopenCriterion": "materially new mechanism required: fine structure of the exceptional set beyond the single covering progression.",
         "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "Romanoff 1934: positive density of Romanoff numbers (sieve + PNT / additive density)",
+        "reopenCriterion": "Mathlib gains Brun/Selberg sieve or Romanoff-type additive density infrastructure",
+        "blockedAt": "2026-07-23"
+      },
+      {
+        "route": "Chen 2023 disproof structure (exceptional set beyond one AP + density-0 set)",
+        "reopenCriterion": "materially new mechanism required",
+        "blockedAt": "2026-07-23"
       }
     ],
     "nextAction": "STAND DOWN on elementary/covering work \u2014 Erd\u0151s 1950 is fully formalized. Remaining directions are deep-analytic (recorded as blockers): Romanoff 1934 positive density and Chen 2023 exceptional-set structure.",
