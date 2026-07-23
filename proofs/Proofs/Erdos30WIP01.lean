@@ -724,7 +724,7 @@ theorem no_sidon_card_six_range_sixteen (A : Finset ℕ)
   -- Its image is the 10 nonzero multiples of 3 in `[-15, 15]`, so `|T| = 10`.
   have hTimg : T.image diffMap
       = ((Finset.Icc (-15 : ℤ) 15).erase 0).filter (fun d => d % 3 = 0) := by
-    rw [hT, ← Finset.filter_image, himageFull]
+    rw [hT, ← Finset.filter_image (p := fun d : ℤ => d % 3 = 0), himageFull]
   have hTcard : T.card = 10 := by
     rw [← Finset.card_image_of_injOn hinjT, hTimg]
     decide
