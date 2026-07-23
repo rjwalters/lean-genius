@@ -3,7 +3,7 @@
   "slug": "a054656-distinct-prime-partition",
   "title": "OEIS A054656: Primes Absent from Every Distinct-Prime Partition of n",
   "status": "formalized",
-  "description": "For n ≥ 23, the primes p ≤ n absent from every partition of n into distinct primes are exactly {n−1, n−4, n−6} ∩ P. This first iteration machine-checks the elementary core — the residuals 1, 4, 6 are not sums of distinct primes, and the reduction 'p present in n ⟺ n−p is a distinct-prime sum avoiding p' — and scaffolds the seed-block / interval-extension / Bertrand-Ramanujan engine.",
+  "description": "For n ≥ 23, the primes p ≤ n absent from every partition of n into distinct primes are exactly {n−1, n−4, n−6} ∩ P. Iteration 1 machine-checked the elementary core (residuals 1, 4, 6 are not distinct-prime sums; the reduction 'p present in n ⟺ n−p is a distinct-prime sum avoiding p'). Iteration 2 proves the seed block (the window [13, 90] is representable avoiding any one prime, via a kernel subset-sum checker over the primes ≤ 31) and the fresh-prime extension step, and repairs two defective scaffold statements; only the Bertrand–Ramanujan induction and final assembly remain sorried.",
   "overview": {
     "historicalContext": "OEIS A054656 was created in April 2000 and, as of this entry, is still labeled conjectural — over two decades with no published proof. The sequence counts primes p ≤ n absent from every partition of n into distinct primes, and the conjectural closed form is remarkably simple: for n ≥ 23 the absent primes are exactly {n−1, n−4, n−6} intersected with the primes. GitHub issue #41831 tracks an AI-claimed elementary proof (GPT-5.6 Pro); this file is the first Lean iteration turning that claimed argument into machine-checked mathematics, separating what is genuinely elementary (and now verified) from what still needs a number-theoretic ingredient Mathlib does not yet have.",
     "problemStatement": "For every integer n ≥ 23, show that the primes p ≤ n occurring in NO partition of n into distinct primes are exactly the primes among {n−1, n−4, n−6}. Equivalently: a prime p ≤ n is present in some distinct-prime partition of n if and only if the residual m = n − p is itself a sum of distinct primes none equal to p, and the only residuals with no such representation are m ∈ {1, 4, 6}.",
@@ -28,7 +28,7 @@
   },
   "leanFile": {
     "path": "Proofs/A054656DistinctPrimePartition.lean",
-    "sorries": 4,
+    "sorries": 2,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 4
