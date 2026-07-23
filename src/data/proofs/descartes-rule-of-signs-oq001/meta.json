@@ -108,15 +108,13 @@
       ]
     },
     {
-      "title": "§ 2. Effective (Explicit) Bisection Depth",
+      "title": "§ 2a. Threshold Engine and the Explicit Witness",
       "startLine": 123,
-      "endLine": 186,
-      "description": "width_lt_minGap_of_clog_lt proves that any level strictly above Nat.clog 2 ⌈w / minGap S⌉₊ forces the width below the gap, via Nat.le_ceil, Nat.le_pow_clog, Nat.pow_lt_pow_right and a cast to ℝ. level_isolates_explicit_bound instantiates the witness clog + 1; level_isolates_explicit and level_isolates_explicit_each package the resulting root-isolation statements, upgrading the parent's existential to an explicit computable level.",
+      "endLine": 163,
+      "description": "width_lt_minGap_of_clog_lt proves that any level strictly above Nat.clog 2 ⌈w / minGap S⌉₊ forces the width below the gap, via Nat.le_ceil, Nat.le_pow_clog, Nat.pow_lt_pow_right and a cast to ℝ. level_isolates_explicit_bound instantiates the packaged witness k₀ = clog + 1, the effective replacement for the parent's existential level.",
       "theorems": [
         "width_lt_minGap_of_clog_lt",
-        "level_isolates_explicit_bound",
-        "level_isolates_explicit",
-        "level_isolates_explicit_each"
+        "level_isolates_explicit_bound"
       ],
       "tactics": [
         "set",
@@ -126,6 +124,17 @@
         "rw",
         "positivity"
       ]
+    },
+    {
+      "title": "§ 2b. Packaged Isolation at the Explicit Level",
+      "startLine": 164,
+      "endLine": 186,
+      "description": "level_isolates_explicit and level_isolates_explicit_each package the width bound into the root-isolation statements a bisection implementation consumes: every subinterval at level k₀ isolates at most one root, first in the abstract [c, c+w/2^{k₀}] form and then enumerated over the dyadic pieces of a concrete interval [a, b].",
+      "theorems": [
+        "level_isolates_explicit",
+        "level_isolates_explicit_each"
+      ],
+      "tactics": []
     }
   ],
   "mainTheorems": [
