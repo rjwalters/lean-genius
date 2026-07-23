@@ -44,14 +44,13 @@
       "Definition of f(n) counting p + 2^k representations",
       "Proved f_trivial_upper_bound: f(n) ≤ log₂(n) + 1",
       "Proved f(2)=0, f(3)=1, f(5)=1 by decide",
-      "Axiomatized f(9)=2, f(15)=3 with verifications",
+      "Proved f(9)=2, f(15)=3 via native_decide",
       "Definition of HasAllPrimeProperty",
-      "Proved 4, 7 have all-prime property",
-      "Axiomatized Erdős-Guy conjecture on all-prime numbers",
-      "Stated main conjecture f(n) = o(log n) formally",
-      "Axiomatized Erdős lower bound and Vaughan sparsity bound"
+      "Proved 4, 7, 15, 21 have the all-prime property",
+      "Stated main conjecture f(n) = o(log n) formally (open, unproved)",
+      "Documented (in comments, not formalized) the Erdős-Guy conjecture and the Erdős/Vaughan bounds"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 175,
     "assumptions": "No mathematical axioms and 0 sorries. Compiler-trust disclosure: the concrete f-values (f_nine, f_fifteen) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure; #print axioms lists Lean.ofReduceBool). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 12,
@@ -61,7 +60,7 @@
     "historicalContext": "This problem connects two fundamental themes in Erdős's work: the representation of integers as sums involving primes, and the asymptotic growth of counting functions. The question emerged from his 1950 paper on representing integers as 2^k + p, where he showed that infinitely many n cannot be written in this form. Problem #236 asks about the opposite extreme: how many ways can a given n be represented? Erdős's lower bound f(n) ≫ log log n infinitely often shows that representations can be surprisingly abundant. The related conjecture that only 7 numbers have ALL residues n - 2^k prime (the 'all-prime' property) has been verified to 2^44 by Mientka-Weitzenkamp.",
     "problemStatement": "Let f(n) count the number of solutions to n = p + 2^k for prime p and k ≥ 0. Is it true that f(n) = o(log n)? Equivalently, does the ratio f(n)/log(n) tend to 0 as n → ∞?",
     "text": "Is it true that f(n) = o(log n), where f(n) counts solutions to n = p + 2^k with p prime? Erdős proved infinitely many n have f(n) ≫ log log n, showing the conjecture is tight if true.",
-    "proofStrategy": "We formalize the counting function f(n) computationally and state the main conjecture using Mathlib's asymptotic notation. Since the problem is OPEN, we use axioms for the main conjecture and known bounds. We prove concrete values f(2)=0, f(3)=1, f(5)=1 and verify the 'all-prime' property for small cases {4, 7} directly. The Erdős-Guy conjecture listing all 7 all-prime numbers and Vaughan's upper bound on their density are stated as axioms with proper attribution.",
+    "proofStrategy": "We formalize the counting function f(n) computationally and state the main conjecture using Mathlib's asymptotic notation. Since the problem is OPEN, the main conjecture is left as an unproved Prop. We prove concrete values f(2)=0, f(3)=1, f(5)=1, f(9)=2, f(15)=3 and verify the 'all-prime' property for small cases {4, 7, 15, 21} directly. The Erdős-Guy conjecture listing all 7 all-prime numbers, Erdős's lower bound, and Vaughan's upper bound on their density are documented in source comments with proper attribution but are not formalized as Lean declarations.",
     "keyInsights": [
       "The trivial upper bound f(n) ≤ log₂(n) + 1 is immediate from the definition",
       "Erdős's lower bound f(n) ≫ log log n infinitely often shows the conjecture, if true, is essentially tight",
@@ -113,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #236 on the growth rate of representations n = p + 2^k. We define the counting function f, verify concrete values, formalize the 'all-prime' property and Erdős-Guy conjecture, and state the main asymptotic conjecture along with known bounds from Erdős and Vaughan.",
+    "summary": "This formalization captures Erdős Problem #236 on the growth rate of representations n = p + 2^k. We define the counting function f, verify concrete values, and formalize the 'all-prime' property with worked examples. The main asymptotic conjecture f(n) = o(log n) is stated formally but left open; the Erdős-Guy conjecture and the Erdős/Vaughan bounds are documented in comments for context, not formalized as Lean declarations.",
     "implications": "Understanding the growth of f(n) would illuminate the distribution of primes in arithmetic progressions and the structure of sums involving prime and exponential components.",
     "openQuestions": [
       "Is f(n) = o(log n)?",
