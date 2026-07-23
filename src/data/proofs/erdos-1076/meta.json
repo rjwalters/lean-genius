@@ -43,15 +43,13 @@
     ],
     "originalContributions": [
       "Hypergraph3: 3-uniform hypergraph structure with ordered triples",
-      "FamilyF, IsInFamilyF: the family F_k definition with k vertices and k-2 edges",
+      "FamilyF, IsInFamilyF, family_F4/F5/F6_description: the family F_k definition with k vertices and k-2 edges",
       "ContainsSubgraph, IsFkFree: subgraph containment with all 6 permutations",
-      "ex3 axiom: extremal number with ex3_achieved and ex3_is_max",
-      "brown_erdos_sos_k4 and brown_erdos_sos_general: 1973 foundational results",
-      "erdos_1974_supporting: Erdős's threshold theorem for F_5/F_6",
-      "BrownErdosSosConjecture: formal statement via Filter.Tendsto",
-      "bohman_warnke_theorem and glock_kuhn_lo_osthus_theorem: solution axioms",
-      "IsSteinerTripleSystem and sts_num_edges: STS connection",
-      "extremal_sts_connection: near-STS density of extremal hypergraphs",
+      "ex3 axiom: bare extremal number (achieved/is-max characterizations removed as dead code in a 2026-03-27 cleanup)",
+      "thresholdEdges, threshold_asymptotic: numeric threshold n²/6 - n/6 only (Erdős's 1974 supporting theorem itself is not formalized)",
+      "BrownErdosSosConjecture, BrownErdosSosConjecture': formal statement via Filter.Tendsto",
+      "bohman_warnke_theorem: solution axiom for Bohman-Warnke's proof only (Glock-Kühn-Lo-Osthus's independent proof is not separately axiomatized)",
+      "IsSteinerTripleSystem: STS definition (sts_num_edges, extremal_sts_connection removed as dead code)",
       "erdos_1076 and erdos_1076_solved: main result theorems"
     ],
     "axiomCount": 2,
@@ -64,7 +62,7 @@
     "historicalContext": "Brown, Erdős, and Sós (1973) studied extremal problems for r-graphs (hypergraphs). They defined F_k as the family of 3-uniform hypergraphs with k vertices and k-2 edges, and conjectured that ex₃(n, F_k) ~ n²/6 for all k ≥ 5. They proved the k=4 case and showed ex₃(n, F_k) = Θ_k(n²) for all k ≥ 4.\n\nErdős (1974) provided supporting evidence: any 3-uniform hypergraph on n vertices with more than (1/3)C(n,2) edges must contain a member of F_5 or F_6. He also noted that the conjecture 'may easily turn out to be nonsense', highlighting the difficulty of the problem.\n\nThe conjecture was independently proved by Bohman and Warnke (2019) using large girth approximate Steiner triple system constructions, and by Glock, Kühn, Lo, and Osthus (2020). The key insight is that the extremal density n²/6 matches Steiner triple system density — extremal F_k-free hypergraphs resemble approximate Steiner systems with large girth, avoiding short cycles that would create F_k subgraphs.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 5 and let $\\mathcal{F}_k$ be the family of all 3-uniform hypergraphs with k vertices and k-2 edges.\n\n**Question:** Is $\\text{ex}_3(n, \\mathcal{F}_k) \\sim n^2/6$?\n\n**Answer: YES**\n\n- Brown-Erdős-Sós (1973): Proved for k=4, showed $\\Theta_k(n^2)$ bounds\n- Bohman-Warnke (2019): Proved asymptotic for all k ≥ 5\n- Glock-Kühn-Lo-Osthus (2020): Independent proof\n\nThe extremal number is asymptotically $n^2/6$, matching Steiner triple system density.",
     "text": "For k ≥ 5, let F_k be all 3-uniform hypergraphs with k vertices and k-2 edges. Is ex₃(n, F_k) ~ n²/6? SOLVED: YES (Bohman-Warnke 2019, Glock-Kühn-Lo-Osthus 2020).",
-    "proofStrategy": "The formalization defines 3-uniform hypergraphs via ordered triples, the family F_k, subgraph containment (with all 6 permutations of a triple), and the extremal number ex₃(n, F_k) as an axiom with achieved/maximum properties. Historical results from Brown-Erdős-Sós and Erdős are stated as axioms. The main conjecture is formalized using Filter.Tendsto for asymptotic convergence. Bohman-Warnke and Glock-Kühn-Lo-Osthus theorems resolve it. The connection to Steiner triple systems explains why n²/6 is the right constant.",
+    "proofStrategy": "The formalization defines 3-uniform hypergraphs via ordered triples, the family F_k, subgraph containment (with all 6 permutations of a triple), and the extremal number ex₃(n, F_k) as a bare axiom. Its achieved/maximum characterizing axioms, the Brown-Erdős-Sós 1973 axioms, Erdős's 1974 supporting-theorem axiom, the explicit upper/lower-bound axioms, and the Steiner-triple-system density axioms were all removed as dead (unreferenced) code in a 2026-03-27 batch cleanup (commit b22da88e49) — only the numeric threshold identity thresholdEdges n = n²/6 - n/6 (proved by `ring`) and the IsSteinerTripleSystem definition remain from those parts. The main conjecture is formalized using Filter.Tendsto for asymptotic convergence. Only Bohman-Warnke's proof is axiomatized (bohman_warnke_theorem); Glock-Kühn-Lo-Osthus's independent proof is not separately formalized.",
     "keyInsights": [
       "**F_k Family**: 3-uniform hypergraphs with k vertices and k-2 edges — the forbidden configurations whose avoidance gives the extremal number.",
       "**Asymptotic n²/6**: Matches Steiner triple system edge density n(n-1)/6 ~ n²/6, connecting extremal combinatorics to design theory.",
@@ -85,73 +83,89 @@
       "id": "hypergraph-basics",
       "title": "Part I: 3-Uniform Hypergraphs",
       "summary": "Hypergraph3 structure, numEdges, numVertices, IsInFamilyF definitions.",
-      "startLine": 38,
-      "endLine": 55,
+      "startLine": 34,
+      "endLine": 50,
       "mathContext": "3-uniform hypergraph: every edge has exactly 3 vertices. $|E|$ = numEdges, $|V|$ = numVertices."
     },
     {
       "id": "family-fk",
       "title": "Part II: The Family F_k",
-      "summary": "FamilyF definition, descriptions for k=4,5,6.",
-      "startLine": 56,
-      "endLine": 79,
+      "summary": "FamilyF definition plus family_F4/F5/F6_description theorems characterizing membership for k=4,5,6.",
+      "startLine": 52,
+      "endLine": 74,
       "mathContext": "Family $\\\\mathcal{F}_k$: all 3-uniform hypergraphs on $k$ vertices with exactly $k-2$ edges. For $k=4$: $\\\\binom{4}{3} - 2 = 2$ edges (missing 2 of 4 triangles)."
     },
     {
       "id": "subgraph-containment",
       "title": "Part III: Subgraph Containment",
       "summary": "ContainsSubgraph with 6 permutations, IsFkFree predicate.",
-      "startLine": 80,
-      "endLine": 95,
+      "startLine": 76,
+      "endLine": 90,
       "mathContext": "ContainsSubgraph: $H \\\\subseteq G$ as a subhypergraph (up to vertex permutation). $\\\\mathcal{F}_k$-free: no member of $\\\\mathcal{F}_k$ is a subgraph."
     },
     {
       "id": "extremal-numbers",
       "title": "Part IV: Extremal Numbers",
-      "summary": "ex3 axiom, ex3_achieved and ex3_is_max characterization.",
-      "startLine": 96,
-      "endLine": 110,
-      "mathContext": "$\\\\text{ex}_3(n, \\\\mathcal{F}_k) = \\\\max |E|$ over $\\\\mathcal{F}_k$-free 3-uniform hypergraphs on $n$ vertices. The Turan-type extremal number."
+      "summary": "ex3 axiomatized as a bare extremal number; the ex3_achieved and ex3_is_max characterizing axioms that once stood here were removed as dead (unreferenced) code on 2026-03-27.",
+      "startLine": 92,
+      "endLine": 97,
+      "mathContext": "$\\\\text{ex}_3(n, \\\\mathcal{F}_k)$ is an uninterpreted axiom; no achieved/maximality guarantee is formalized."
     },
     {
       "id": "bes-1973",
       "title": "Part V: Brown-Erdős-Sós Results (1973)",
-      "summary": "brown_erdos_sos_k4 (k=4 case) and brown_erdos_sos_general (Θ_k(n²)).",
-      "startLine": 111,
-      "endLine": 121,
-      "mathContext": "Brown-Erdos-Sos (1973): $\\\\text{ex}_3(n, \\\\mathcal{F}_4) = \\\\Theta(n^2)$. For $k \\\\geq 5$: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) = \\\\Theta_k(n^2)$ with constants depending on $k$."
+      "summary": "Header only. The brown_erdos_sos_k4 and brown_erdos_sos_general axioms that once stood here were removed as dead (unreferenced) code on 2026-03-27; the 1973 results are not formalized in this file.",
+      "startLine": 99,
+      "endLine": 100,
+      "mathContext": "No declarations remain in this range; see commit b22da88e49 for the removed axiom statements."
     },
     {
       "id": "erdos-1974",
       "title": "Part VI: Erdős's Supporting Theorem (1974)",
-      "summary": "erdos_1974_supporting, thresholdEdges, threshold_asymptotic.",
-      "startLine": 122,
-      "endLine": 138,
-      "mathContext": "Erdos (1974): supporting evidence for the $n^2/6$ conjecture. The threshold $n^2/6$ arises from Steiner triple system density."
+      "summary": "thresholdEdges definition and threshold_asymptotic theorem (proved by ring). The erdos_1974_supporting axiom that once stood here was removed as dead code on 2026-03-27 — Erdős's 1974 theorem itself is not formalized.",
+      "startLine": 101,
+      "endLine": 110,
+      "mathContext": "thresholdEdges n := (1/3)*n*(n-1)/2. threshold_asymptotic: thresholdEdges n = n^2/6 - n/6, proved by `ring`."
     },
     {
       "id": "main-conjecture",
       "title": "Part VII: The Main Conjecture",
       "summary": "BrownErdosSosConjecture and BrownErdosSosConjecture' definitions.",
-      "startLine": 139,
-      "endLine": 149,
+      "startLine": 112,
+      "endLine": 121,
       "mathContext": "Brown-Erdos-Sos Conjecture: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\sim n^2/6$ for all $k \\\\geq 5$. The extremal density is $1/6$ regardless of $k$."
     },
     {
       "id": "solution",
       "title": "Part VIII: The Solution",
-      "summary": "bohman_warnke_theorem, glock_kuhn_lo_osthus_theorem, ex3_asymptotic.",
-      "startLine": 150,
-      "endLine": 165,
-      "mathContext": "SOLVED: Bohman-Warnke (2021) and Glock-Kuhn-Lo-Osthus (2022) proved $\\\\text{ex}_3(n, \\\\mathcal{F}_k) = (1+o(1))n^2/6$ for $k \\\\geq 5$."
+      "summary": "bohman_warnke_theorem axiom and ex3_asymptotic theorem. Only Bohman-Warnke's proof is axiomatized; the glock_kuhn_lo_osthus_theorem axiom for the independent GKLO proof was removed as dead code on 2026-03-27.",
+      "startLine": 123,
+      "endLine": 133,
+      "mathContext": "bohman_warnke_theorem : BrownErdosSosConjecture. ex3_asymptotic k hk := bohman_warnke_theorem k hk."
     },
     {
       "id": "bounds",
       "title": "Part IX: Upper and Lower Bounds",
-      "summary": "ex3_upper_bound and ex3_lower_bound axioms.",
-      "startLine": 166,
-      "endLine": 173,
-      "mathContext": "Upper: $\\\\text{ex}_3(n, \\\\mathcal{F}_k) \\\\leq (1+o(1))n^2/6$. Lower: Steiner triple system constructions achieve $\\\\sim n^2/6$ edges."
+      "summary": "Header only. The ex3_upper_bound and ex3_lower_bound axioms that once stood here were removed as dead (unreferenced) code on 2026-03-27.",
+      "startLine": 135,
+      "endLine": 139,
+      "mathContext": "No declarations remain in this range; see commit b22da88e49 for the removed axiom statements."
+    },
+    {
+      "id": "steiner-connection",
+      "title": "Part X: Connection to Steiner Triple Systems",
+      "summary": "IsSteinerTripleSystem definition only. The sts_num_edges and extremal_sts_connection axioms that once related STS density to the extremal number were removed as dead code on 2026-03-27.",
+      "startLine": 141,
+      "endLine": 147,
+      "mathContext": "IsSteinerTripleSystem H := every pair of vertices lies in exactly one edge. No density relationship to ex3 is formalized."
+    },
+    {
+      "id": "summary",
+      "title": "Part XII: Summary",
+      "summary": "erdos_1076 and erdos_1076_solved theorems restating the resolved conjecture directly via bohman_warnke_theorem.",
+      "startLine": 151,
+      "endLine": 167,
+      "mathContext": "erdos_1076 : BrownErdosSosConjecture := bohman_warnke_theorem. erdos_1076_solved specializes it to a given k >= 5."
     }
   ],
   "conclusion": {
