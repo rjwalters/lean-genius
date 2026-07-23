@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Weyl Equidistribution",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Proves Weyl's exponential sum criterion (1/N)·‖Σₙ e^{2πiknα}‖ → 0 for irrational α and nonzero integer k, the computational engine underlying equidistribution of {nα} mod 1, via a Cesàro geometric-series bound; one well-scoped sorry remains for density of trigonometric polynomials, and the log bound is axiomatized pending continued-fraction theory.",
+      "mathContext": "For irrational $\\alpha$, $k\\ne 0$: $\\frac1N\\left\\|\\sum_{n=0}^{N-1} e^{2\\pi i kn\\alpha}\\right\\| \\to 0$, Weyl's criterion for equidistribution of $\\{n\\alpha\\} \\bmod 1$."
+    },
+    {
       "id": "setup",
       "title": "Definitions",
       "summary": "Definitions of `deviation x = 1/2 - {x}` and `innerSum α n = Σ_{k<n} deviation(α·(k+1))`, the core quantities from Erdős #1002.",
