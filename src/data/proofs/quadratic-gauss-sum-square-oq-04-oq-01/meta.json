@@ -92,6 +92,26 @@
       "For the quartic Gauss sum attached to a prime $p \\equiv 1 \\pmod 4$, is the analogous squared quantity a fundamental discriminant (or conductor) of the corresponding subfield of $\\mathbb{Q}(\\zeta_p)$?"
     ]
   },
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "C. F. Gauss",
+      "year": 1801,
+      "note": "Introduces the quadratic Gauss sum and the sign pattern p* = (-1)^((p-1)/2)·p in the course of the Gauss-sum proof of quadratic reciprocity; the first supplement giving p* ≡ 1 (mod 4) in both residue classes is the arithmetic fact this entry verifies."
+    },
+    {
+      "title": "A Course in Computational Algebraic Number Theory",
+      "author": "H. Cohen",
+      "year": 1993,
+      "note": "Definition 5.1.1 characterizes fundamental discriminants as the squarefree D ≡ 1 (mod 4) together with 4m for squarefree m ≡ 2, 3 (mod 4); this entry shows p* falls in the first family, hence is the genuine field discriminant of ℚ(√p*)."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.LegendreSymbol.GaussSum, RingTheory.Int.Basic",
+      "author": "The Mathlib Community",
+      "year": 2024,
+      "note": "Provides the generic `gaussSum_sq` identity re-derived here, plus `Int.squarefree_natAbs` and `Nat.Prime.squarefree` used to establish squarefreeness of p*."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "quadratic-gauss-sum-square-oq-04",
