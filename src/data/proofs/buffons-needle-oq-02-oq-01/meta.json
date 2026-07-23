@@ -86,6 +86,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: N-Dimensional Buffon Noodle Formula", "startLine": 1, "endLine": 40, "summary": "Formalizes the general n-dimensional Buffon noodle formula E[crossings] = \u03b1\u2099\u00b7L/d, where the crossing factor \u03b1\u2099 satisfies the recurrence \u03b1_{n+2} = (n/(n+1))\u00b7\u03b1\u2099 from the Gamma-function identity \u0393((n+2)/2) = (n/2)\u0393(n/2). Verifies specific values (\u03b1\u2084, \u03b1\u2085), proves \u03b1\u2099 is strictly decreasing in n, and connects to the classical 2D/3D Buffon files.", "mathContext": "$\\alpha_n = E_{S^{n-1}}[|u_1|] = \\dfrac{\\Gamma(n/2)}{\\sqrt{\\pi}\\,\\Gamma((n+1)/2)}$, the average absolute first coordinate of a uniform point on the $(n-1)$-sphere."},
     {
       "id": "part-i-recurrence",
       "title": "Part I: The Crossing Factor Recurrence",
