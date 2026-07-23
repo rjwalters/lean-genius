@@ -102,10 +102,18 @@
     },
     {
       "id": "main",
-      "title": "LTE at p = 2 — Difference Form",
+      "title": "LTE at p = 2 — Difference Form (Additive)",
       "startLine": 90,
+      "endLine": 118,
+      "summary": "padicValInt_two_pow_sub_pow: discharges the Int.two_pow_sub_pow hypotheses (¬2∣x, 2∣x-y) and the four nonzero side conditions, casts into ℕ∞, rewrites every valuation to emultiplicity, closes with the Mathlib law plus abel, and returns to ℕ.",
+      "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x-y) + v_2(x+y) + v_2(n)$."
+    },
+    {
+      "id": "main-truncated",
+      "title": "LTE at p = 2 — Truncated-Subtraction Form",
+      "startLine": 120,
       "endLine": 130,
-      "summary": "padicValInt_two_pow_sub_pow: discharges the Int.two_pow_sub_pow hypotheses (¬2∣x, 2∣x-y) and the four nonzero side conditions, casts into ℕ∞, rewrites every valuation to emultiplicity, closes with the Mathlib law plus abel, and returns to ℕ; padicValInt_two_pow_sub_pow' restates with truncated subtraction via omega.",
+      "summary": "padicValInt_two_pow_sub_pow': restates the additive form with ℕ-truncated subtraction via omega, matching the parent entry's presentation of the odd-prime law.",
       "mathContext": "$v_2(x^n - y^n) = v_2(x-y) + v_2(x+y) + v_2(n) - 1$."
     },
     {
