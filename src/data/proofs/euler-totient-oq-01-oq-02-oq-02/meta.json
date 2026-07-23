@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-euler-totient-oq-01-oq-02-oq-02",
+      "title": "Problem Statement: Non-Cyclicity and the Carmichael Function mod $2^k$",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating the dual to the odd-prime sibling: for $k \\ge 3$ the unit group $(\\mathbb{Z}/2^k\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$ is not cyclic, so no primitive root exists mod $2^k$ and the Carmichael function is strictly smaller than the totient, $\\lambda(2^k) = 2^{k-2} < 2^{k-1} = \\varphi(2^k)$. Lists the eight main results establishing non-cyclicity, the absence of a primitive root, the forced value of $\\lambda(2^k)$, and the sharp $k \\le 2$/$k \\ge 3$ cyclicity boundary. Imports the Carmichael-function and cyclic-units API and opens the `EulerTotientOQ01OQ02OQ02` namespace.",
+      "mathContext": "$\\lambda(2^k) = 2^{k-2}$ for $k \\ge 3$, strictly less than $\\varphi(2^k) = 2^{k-1}$; boundary at $k=3$ where $(\\mathbb{Z}/2^k\\mathbb{Z})^\\times$ stops being cyclic."
+    },
+    {
       "id": "mechanism",
       "title": "Section I: The Non-Cyclic Mechanism",
       "startLine": 51,
