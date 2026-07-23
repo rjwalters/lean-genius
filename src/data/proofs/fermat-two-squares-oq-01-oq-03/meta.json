@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-fermat-two-squares-oq-01-oq-03",
+      "title": "Problem Statement: Hurwitz Quaternions and the Four Squares Theorem",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring posing the open question: can Hurwitz quaternions (half-integer coordinates like $\\tfrac12(1+i+j+k)$) prove every natural number is a sum of four integer squares? Answers YES: the Hurwitz ring is a Euclidean domain (unlike the Lipschitz integers), because adjoining the unit $\\omega = \\tfrac12(1+i+j+k)$ restores Euclidean division. Lists the nine results built (the Hurwitz type, norm properties, the Euclidean-division axiom, Lipschitz representation, and Lagrange's theorem via Hurwitz), notes 0 sorries / 1 axiom, and gives historical references (Hurwitz 1896; Conway & Smith 2003).",
+      "mathContext": "Hurwitz quaternions $\\mathbb{H} \\supset$ Lipschitz quaternions, with unit $\\omega=\\tfrac12(1+i+j+k)$; every prime $p$ has a Lipschitz element of norm $p$, giving $p = a^2+b^2+c^2+d^2$."
+    },
+    {
       "id": "hurwitz-type",
       "title": "Hurwitz Quaternion Type",
       "startLine": 48,
