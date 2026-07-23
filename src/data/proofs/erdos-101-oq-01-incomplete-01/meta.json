@@ -69,20 +69,36 @@
       "mathContext": "Goal: extract from the elementary packing bound the exact threshold above which the OQ-01 little-oh conjecture is already proved."
     },
     {
-      "id": "real-form-bound",
-      "title": "The Elementary Bound in Real Form",
-      "summary": "12 * fourPointLineCount P <= n^2 (clearing the natural-number floor division), the density bound fourPointLineCount P <= n^2/12, and the ratio form <= 1/12.",
+      "id": "cleared-real-bound",
+      "title": "Clearing the Natural-Number Division",
+      "summary": "twelve_mul_fourPointLineCount_le_sq: the framework's improved_upper_bound (fourPointLineCount P <= n(n-1)/12 in naturals) multiplied by 12 and bounded n(n-1) <= n^2, then cast to the reals, giving 12 * fourPointLineCount P <= n^2.",
       "startLine": 63,
-      "endLine": 104,
-      "mathContext": "From improved_upper_bound (<= n(n-1)/12 in N): multiply by 12, use n(n-1) <= n^2 and Nat.div_mul_le_self, then cast to the reals."
+      "endLine": 83,
+      "mathContext": "Nat.div_mul_le_self clears the floor division before exact_mod_cast moves the inequality from N to R."
+    },
+    {
+      "id": "density-ratio-bounds",
+      "title": "The Density and Ratio Bounds",
+      "summary": "fourPointLineCount_le_sq_div_twelve and fourPointLineCount_div_sq_le: dividing the cleared bound by 12 and by n^2 respectively, showing the four-point-line density fourPointLineCount P / n^2 never exceeds 1/12.",
+      "startLine": 84,
+      "endLine": 103,
+      "mathContext": "Direct linarith/div_le_iff₀ consequences of twelve_mul_fourPointLineCount_le_sq; the ratio form needs |P| >= 1 to keep n^2 > 0."
     },
     {
       "id": "settled-above-one-twelfth",
       "title": "OQ-01 Holds Unconditionally for Every ε > 1/12",
       "summary": "fourPointLineCount_lt_eps_sq and oq01_holds_above_one_twelfth: for every epsilon > 1/12, every P with |P| >= 1 and no five collinear satisfies the conjecture, with no size threshold; the open content is exactly 0 < epsilon <= 1/12.",
-      "startLine": 105,
-      "endLine": 152,
+      "startLine": 104,
+      "endLine": 129,
       "mathContext": "n^2/12 < epsilon * n^2 strictly for epsilon > 1/12 and n >= 1 (n^2 > 0), via nlinarith on the real-form bound."
+    },
+    {
+      "id": "significance",
+      "title": "Significance: Pinning Down the Open Frontier",
+      "summary": "Closing commentary: the elementary method delivers exactly the density ceiling 1/12 and no better; the entire remaining $100 open content is the regime 0 < epsilon <= 1/12, a slowly-varying o(1) refinement per the Solymosi–Stojaković lower bound.",
+      "startLine": 130,
+      "endLine": 152,
+      "mathContext": "Documents the precise boundary between the now-formalized elementary half and the still-open asymptotic half of Erdős #101 OQ-01."
     }
   ],
   "conclusion": {
