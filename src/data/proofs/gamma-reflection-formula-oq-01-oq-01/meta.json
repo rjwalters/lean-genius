@@ -137,25 +137,41 @@
       "id": "docstring",
       "title": "Module Docstring: From Γ(1/2)² to the Arcsine Mass",
       "startLine": 1,
-      "endLine": 39,
-      "summary": "States the open question — derive B(1/2,1/2) = π from Γ(1/2)² = π via the Beta–Gamma relation — and the arcsine reading ∫₀¹ dt/√(t(1-t)) = π. Names the Mathlib sources (Complex.betaIntegral, Complex.Gamma_mul_Gamma_eq_betaIntegral) and the new content: the special value, the real closed form, and the probability normalisation of the arcsine law.",
+      "endLine": 45,
+      "summary": "States the open question — derive B(1/2,1/2) = π from Γ(1/2)² = π via the Beta–Gamma relation — and the arcsine reading ∫₀¹ dt/√(t(1-t)) = π. Names the Mathlib sources (Complex.betaIntegral, Complex.Gamma_mul_Gamma_eq_betaIntegral) and the new content: the special value, the real closed form, and the probability normalisation of the arcsine law. Imports Mathlib, opens the `GammaReflectionFormulaOQ01OQ01` namespace and `scoped Real` for the bare `π` notation used throughout.",
       "mathContext": "$B(1/2,1/2) = \\Gamma(1/2)^2/\\Gamma(1) = \\pi$ and $\\int_0^1 dt/\\sqrt{t(1-t)} = \\pi$."
     },
     {
-      "id": "beta-value",
-      "title": "The Beta Value at the Symmetric Point",
+      "id": "beta-value-complex",
+      "title": "betaIntegral_half_half: B(1/2,1/2) = π over ℂ",
       "startLine": 46,
-      "endLine": 67,
-      "summary": "betaIntegral_half_half computes B(1/2,1/2) = π from the Beta–Gamma relation at s = t = 1/2 (Γ(1) = 1, Γ(1/2) = π^(1/2), cpow addition). beta_half_half_gamma_ratio records the real ratio form B(1/2,1/2) = Γ(1/2)²/Γ(1) = π recovering the parent's Γ(1/2)² = π.",
-      "mathContext": "$\\Gamma(1/2)\\Gamma(1/2) = \\Gamma(1)\\,B(1/2,1/2)$, $\\Gamma(1)=1$, $\\Gamma(1/2)=\\pi^{1/2}$."
+      "endLine": 59,
+      "summary": "betaIntegral_half_half instantiates the Beta–Gamma relation Γ(s)·Γ(t) = Γ(s+t)·B(s,t) at s = t = 1/2: the right Gamma factor collapses to Γ(1) = 1, leaving B(1/2,1/2) = Γ(1/2)². Substituting Γ(1/2) = π^(1/2) and applying the cpow addition law π^(1/2)·π^(1/2) = π^1 = π gives the complex-valued special value B(1/2,1/2) = π.",
+      "mathContext": "$\\Gamma(1/2)\\cdot\\Gamma(1/2) = \\Gamma(1)\\cdot B(1/2,1/2)$, $\\Gamma(1)=1$, $\\Gamma(1/2)=\\pi^{1/2}$, so $B(1/2,1/2)=\\pi$ over $\\mathbb{C}$."
     },
     {
-      "id": "arcsine-mass",
-      "title": "The Arcsine Total Mass",
+      "id": "beta-value-real-ratio",
+      "title": "beta_half_half_gamma_ratio: the Real Ratio Form",
+      "startLine": 61,
+      "endLine": 67,
+      "summary": "beta_half_half_gamma_ratio records the textbook ratio form of the Beta–Gamma relation over the real Gamma function, B(1/2,1/2) = Γ(1/2)·Γ(1/2)/Γ(1) = π, proved directly from Real.Gamma_one_half_eq and Real.sq_sqrt — recovering the parent entry's Γ(1/2)² = π as the numerator.",
+      "mathContext": "$B(1/2,1/2) = \\dfrac{\\Gamma(1/2)^2}{\\Gamma(1)} = \\pi$ over $\\mathbb{R}$."
+    },
+    {
+      "id": "arcsine-integrand",
+      "title": "beta_integrand_eq: Complex Integrand = Real Arcsine Kernel",
       "startLine": 69,
-      "endLine": 118,
-      "summary": "beta_integrand_eq identifies the complex Beta integrand x^(1/2-1)(1-x)^(1/2-1) with the cast of 1/√(x(1-x)) on [0,1]. arcsine_total_mass transports B(1/2,1/2) = π to the real closed form ∫₀¹ dx/√(x(1-x)) = π via integral_ofReal. arcsine_density_total_mass factors out 1/π to show the arcsine density integrates to 1.",
-      "mathContext": "$\\int_0^1 \\frac{dx}{\\sqrt{x(1-x)}} = \\pi$, hence $\\int_0^1 \\frac{dx}{\\pi\\sqrt{x(1-x)}} = 1$."
+      "endLine": 89,
+      "summary": "Reinterprets B(1/2,1/2) = π as a statement about a concrete real integral. beta_integrand_eq identifies the complex Beta integrand x^(1/2-1)·(1-x)^(1/2-1) at (1/2,1/2) with the cast of the real arcsine kernel 1/√(x(1-x)), pointwise for every x ∈ [0,1]; the endpoint convention 0^(-1/2) = 0 makes both sides vanish there, so the identity holds on the closed interval.",
+      "mathContext": "$x^{-1/2}(1-x)^{-1/2} = \\dfrac{1}{\\sqrt{x(1-x)}}$ for $x \\in [0,1]$."
+    },
+    {
+      "id": "arcsine-mass-and-normalisation",
+      "title": "arcsine_total_mass & arcsine_density_total_mass",
+      "startLine": 91,
+      "endLine": 119,
+      "summary": "arcsine_total_mass transports B(1/2,1/2) = π along intervalIntegral.integral_ofReal, using beta_integrand_eq to rewrite the complex Beta integral as the cast of the real arcsine integral: ∫₀¹ dx/√(x(1-x)) = π. arcsine_density_total_mass then factors out the constant 1/π (integral_const_mul) to show the normalised arcsine density integrates to 1, so the arcsine law on [0,1] is a genuine probability distribution.",
+      "mathContext": "$\\int_0^1 \\frac{dx}{\\sqrt{x(1-x)}} = \\pi \\;\\Rightarrow\\; \\int_0^1 \\frac{dx}{\\pi\\sqrt{x(1-x)}} = 1$."
     }
   ],
   "sorries": 0,
