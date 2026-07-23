@@ -36,16 +36,28 @@
     "prerequisites": ["fractional part bounds", "linarith"]
   },
   {
-    "id": "ann-erdos1002-apriori",
+    "id": "ann-erdos1002-sum-bound",
     "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 100, "endLine": 126 },
+    "range": { "startLine": 100, "endLine": 113 },
     "type": "theorem",
-    "title": "A Priori Control of the Weighted Sum",
-    "content": "abs_innerSum_le bounds the inner sum |S(α,n)| ≤ n/2 by the triangle inequality (Finset.abs_sum_le_sum_abs) over the pointwise envelope, summing n copies of 1/2. abs_f_le divides by log n > 0 (Real.log_pos, valid for n ≥ 2) to get |f(α,n)| ≤ (n/2)/log n, with gcongr propagating the inner bound through the division. This is the crude control certifying f is finite and well-defined — the open problem asks for the far finer O(1)-distributed behaviour, but even this trivial envelope confirms the question is about distribution, not size.",
-    "mathContext": "$|S(\\alpha,n)| \\le \\sum_{k=1}^n |\\mathrm{deviation}| \\le n\\cdot\\tfrac12 = \\tfrac n2$; $|f(\\alpha,n)| \\le \\frac{n/2}{\\log n}$ for $n \\ge 2$.",
+    "title": "A Priori Bound on the Inner Sum",
+    "content": "abs_innerSum_le bounds the inner sum |S(α,n)| ≤ n/2 by the triangle inequality (Finset.abs_sum_le_sum_abs) over the pointwise envelope, summing n copies of the bound 1/2 (Finset.sum_le_sum) and collapsing the constant sum via Finset.sum_const / Finset.card_range.",
+    "mathContext": "$|S(\\alpha,n)| \\le \\sum_{k=1}^n |\\mathrm{deviation}| \\le n\\cdot\\tfrac12 = \\tfrac n2$.",
     "significance": "key",
-    "relatedConcepts": ["Finset.abs_sum_le_sum_abs", "Finset.sum_le_sum", "Real.log_pos", "gcongr", "triangle inequality"],
-    "prerequisites": ["finite sums", "logarithm positivity"]
+    "relatedConcepts": ["Finset.abs_sum_le_sum_abs", "Finset.sum_le_sum", "Finset.sum_const", "triangle inequality"],
+    "prerequisites": ["finite sums"]
+  },
+  {
+    "id": "ann-erdos1002-normalized-bound",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 115, "endLine": 126 },
+    "type": "theorem",
+    "title": "A Priori Bound on the Normalized Sum",
+    "content": "abs_f_le divides the sum bound by log n > 0 (Real.log_pos, valid for n ≥ 2) to get |f(α,n)| ≤ (n/2)/log n, with gcongr propagating abs_innerSum_le through the division. This is the crude control certifying f is finite and well-defined — the open problem asks for the far finer O(1)-distributed behaviour, but even this trivial envelope confirms the question is about distribution, not size. The n ≥ 2 hypothesis is load-bearing, not cosmetic: it is exactly what keeps log n away from the zero value at n = 1 (and the n ≤ 1 guard in f's definition covers the remaining case).",
+    "mathContext": "$|f(\\alpha,n)| \\le \\frac{n/2}{\\log n}$ for $n \\ge 2$, since $\\log n > 0$ there.",
+    "significance": "key",
+    "relatedConcepts": ["Real.log_pos", "gcongr", "abs_div"],
+    "prerequisites": ["logarithm positivity", "abs_innerSum_le"]
   },
   {
     "id": "ann-erdos1002-zero-mean",
