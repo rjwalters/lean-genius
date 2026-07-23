@@ -284,7 +284,7 @@ theorem reprAvoidingBdd_add_fresh {m p b q : ℕ} (hq : Nat.Prime q)
     · exact h2 h
   · intro x hx
     rcases Finset.mem_insert.mp hx with rfl | hx
-    · exact le_refl q
+    · exact le_rfl
     · exact le_trans (h3 x hx) (le_of_lt hbq)
   · rw [Finset.sum_insert hqS, h4]
     simp only [id_eq]
@@ -347,7 +347,7 @@ theorem seed_block_bdd (p : ℕ) :
         (by decide) (by decide) (by decide) (by decide) (by decide)
   · exact seed_case seedPool (by decide) (by decide) hmem (by decide) (by decide)
 
-theorem seed_block (p : ℕ) (hp : Nat.Prime p) :
+theorem seed_block (p : ℕ) (_hp : Nat.Prime p) :
     ∃ A B : ℕ, 64 ≤ B - A ∧ ∀ m, A ≤ m → m ≤ B → ReprAvoiding m p :=
   ⟨13, 90, by norm_num,
     fun m h1 h2 => reprAvoiding_of_bdd (seed_block_bdd p m h1 h2)⟩
@@ -483,9 +483,10 @@ avoid `p` outright.  Everything except the engine's single Ramanujan-type
 theorem repr_of_ge_seven_ne (m p : ℕ) (hp : Nat.Prime p)
     (hm : 2 ≤ m) (hne : m ≠ 4 ∧ m ≠ 6) (hnp : 23 ≤ m + p) :
     ReprAvoiding m p := by
-  rcases le_or_lt 13 m with h13 | h13
+  by_cases h13 : 13 ≤ m
   · exact reprAvoiding_of_thirteen_le p m h13
   · -- `m ≤ 12`, so `p ≥ 23 − m ≥ 11`; explicit small witnesses avoid `p`.
+    have h12 : m ≤ 12 := by omega
     have hp2 : 2 ≤ p := hp.two_le
     have hpne12 : p ≠ 12 := by rintro rfl; exact absurd hp (by decide)
     obtain ⟨hne4, hne6⟩ := hne
@@ -544,7 +545,7 @@ theorem A054656_main (n : ℕ) (hn : 23 ≤ n) :
   · rintro ⟨hp, hpn, hnpres⟩
     refine ⟨hp, ?_⟩
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     obtain ⟨h1, h4, h6⟩ := hcon
     apply hnpres
     rw [present_iff_residual_repr]
