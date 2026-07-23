@@ -75,6 +75,22 @@ def computeF (n : ℕ) (bound : ℕ := 10000) : ℕ :=
   | [] => 0
   | m :: _ => m + 1
 
+open Classical in
+/--
+The true (unbounded) f(n): the least m ≥ 1 such that n is the sum of the k
+smallest divisors of m for some k ≥ 1, or 0 if no such m exists.
+
+Unlike `computeF` (which caps the search at a fixed `bound`, defaulting to
+10000, and is therefore bounded by that constant for every n), this searches all
+of ℕ, so it faithfully represents the function of Erdős #1054. It is
+`noncomputable` because the search has no a priori bound. The open questions
+below (and Tao's disproof of Part I) are stated in terms of this `f`; using the
+bounded `computeF` instead would make them trivially decidable and render the
+disproof axiom inconsistent.
+-/
+noncomputable def f (n : ℕ) : ℕ :=
+  if h : ∃ m : ℕ, m ≥ 1 ∧ n ∈ partialDivisorSums m then Nat.find h else 0
+
 /-
 ## Concrete Values of f(n)
 
@@ -447,7 +463,7 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
 Terry Tao showed this is FALSE.
 -/
 def erdos_1054_part_i : Prop :=
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (computeF n : ℝ) < ε * n
+  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) < ε * n
 
 /--
 **Open Question II**: Is f(n) = o(n) for almost all n?
@@ -455,13 +471,13 @@ The set of exceptions should have natural density 0.
 -/
 def erdos_1054_part_ii : Prop :=
   ∀ ε > 0, ∀ δ > 0, ∃ N : ℕ, ∀ M ≥ N,
-    ((Finset.filter (fun n => decide ((computeF n : ℝ) ≥ ε * n)) (Finset.range M)).card : ℝ) < δ * M
+    ((Finset.filter (fun n => decide ((f n : ℝ) ≥ ε * n)) (Finset.range M)).card : ℝ) < δ * M
 
 /--
 **Open Question III**: Is limsup f(n)/n = ∞?
 -/
 def erdos_1054_part_iii : Prop :=
-  ∀ C : ℝ, ∃ n : ℕ, n ≥ 1 ∧ (computeF n : ℝ) ≥ C * n
+  ∀ C : ℝ, ∃ n : ℕ, n ≥ 1 ∧ (f n : ℝ) ≥ C * n
 
 /--
 Tao's result: Part I is FALSE.
