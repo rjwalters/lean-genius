@@ -72,6 +72,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Weighted Power Mean Chain", "startLine": 1, "endLine": 39, "summary": "Extends the unweighted power mean chain to weighted means WHM \u2264 WGM \u2264 WAM \u2264 WQM for weights w\u2081,w\u2082>0 summing to 1, answering yes. Each step uses a different technique: WGM\u2264WAM from Mathlib's weighted AM-GM, WAM\u2264WQM from Jensen's inequality via the identity w\u2081a\u00b2+w\u2082b\u00b2\u2212(w\u2081a+w\u2082b)\u00b2 = w\u2081w\u2082(a\u2212b)\u00b2 \u2265 0, and WHM\u2264WGM by applying WGM\u2264WAM to reciprocals.", "mathContext": "Setting $w_1=w_2=1/2$ recovers the unweighted chain; the WAM\u2013WQM gap is exactly the weighted variance $w_1 w_2(a-b)^2$."},
     {
       "id": "definitions",
       "title": "Weighted Mean Definitions",
