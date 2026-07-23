@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: From Necessity to a Full Characterisation",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring: the parent law-of-cosines-oq-07 proved the parallelogram law necessary via Apollonius; this entry adds the converse (Jordan–von Neumann 1935) to get a two-sided characterisation, over an arbitrary RCLike field 𝕜.",
+      "mathContext": "States the three headline results — parallelogram_of_innerProductSpace, innerProductSpaceOfParallelogram, nonempty_innerProductSpace_iff_parallelogram — and distinguishes this entry's functional-analytic focus from sibling oq-02's metric/affine one."
+    },
+    {
       "id": "part1-necessity",
       "title": "Part I: Necessity (Forward Direction)",
       "startLine": 56,
@@ -75,7 +83,7 @@
       "id": "part4-instantiation",
       "title": "Part IV: Euclidean Plane Instantiation",
       "startLine": 97,
-      "endLine": 103,
+      "endLine": 104,
       "summary": "Confirms the characterisation recognises the standard model EuclideanSpace ℝ (Fin 2)."
     }
   ],
