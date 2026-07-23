@@ -98,23 +98,23 @@
       "id": "bit-length-lemma",
       "title": "The Key Bit-Length Lemma",
       "startLine": 80,
-      "endLine": 105,
+      "endLine": 109,
       "summary": "size_div_two_succ_le: halving a positive number drops Nat.size by one. size_half_lt: (m/2).size + 1 <= n.size when m < n, covering the odd-odd branch.",
       "mathContext": "$\\operatorname{size}(n/2) + 1 \\le \\operatorname{size}(n)$ for $n \\ge 1$"
     },
     {
       "id": "log-bound",
       "title": "The Logarithmic Step Bound",
-      "startLine": 107,
-      "endLine": 149,
+      "startLine": 110,
+      "endLine": 153,
       "summary": "binaryGcdSteps_le_size_add: the master bound size a + size b via functional induction. binaryGcdSteps_le_two_mul_size_max: the classical 2 * size (max a b) form.",
       "mathContext": "$\\text{binaryGcdSteps}(a,b) \\le \\operatorname{size}(a)+\\operatorname{size}(b) \\le 2\\operatorname{size}(\\max(a,b))$"
     },
     {
       "id": "tightness",
       "title": "Order Tightness on the Diagonal",
-      "startLine": 151,
-      "endLine": 183,
+      "startLine": 154,
+      "endLine": 188,
       "summary": "binaryGcdSteps_two_mul_two_mul: recursion equation on doubled inputs. binaryGcdSteps_pow_two_self: exactly k+1 steps on (2^k, 2^k), matching the Theta(log) order.",
       "mathContext": "$\\text{binaryGcdSteps}(2^k, 2^k) = k + 1$"
     }
