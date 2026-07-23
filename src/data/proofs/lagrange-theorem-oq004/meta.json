@@ -101,6 +101,7 @@
     }
   ],
   "sections": [
+      {"id": "sec-header-lagrange-theorem-oq004", "title": "Module Header: Burnside's Fixed-Point Congruence and Nontrivial Center of a p-Group", "startLine": 1, "endLine": 52, "summary": "Explains how Lagrange's theorem (|H| divides |G|) feeds into p-group structure theory via Burnside's fixed-point congruence: for a p-group G acting on a finite set α, |α| ≡ |fixed points| (mod p), since every non-singleton orbit has size a power of p by orbit-stabilizer + Lagrange. Applying this to conjugation turns the fixed points into the center Z(G), forcing p | |Z(G)| and hence a nontrivial center for any nontrivial p-group — the cornerstone fact behind nilpotency and Sylow theory. Lists the five packaged Mathlib-wrapper results. 0 axioms, 0 sorries.", "mathContext": "Burnside's fixed-point congruence $|\\alpha| \\equiv |\\mathrm{Fix}_G(\\alpha)| \\pmod p$ for a $p$-group $G$ acting on a finite set $\\alpha$; applied to conjugation of $G$ on itself, since $p \\mid |G|$ this forces $p \\mid |Z(G)|$, so every nontrivial finite $p$-group has nontrivial center."},
     {
       "id": "congruence",
       "title": "Part I: Burnside's fixed-point congruence",
