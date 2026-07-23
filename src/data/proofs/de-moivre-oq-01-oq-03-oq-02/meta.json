@@ -144,6 +144,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Chebyshev Semigroup Law over 𝔽_p",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the open question — package the parent's Chebyshev–De Moivre recurrence as the semigroup/nesting law C_{mn}(x) = C_m(C_n(x)) over a finite field 𝔽_p = ZMod p, as a monoid homomorphism (ℤ,·) →* (End 𝔽_p, ∘), whose commuting family C_a ∘ C_b = C_b ∘ C_a is the algebraic trapdoor behind Chebyshev/Lucas-sequence public-key exchange. Builds the evaluation-map form and commuting family as corollaries of Mathlib's existing polynomial composition law C_mul, plus a power-map conjugacy showing the Chebyshev map family is conjugate (via z ↦ z + z⁻¹) to the power monoid n ↦ (·^n) on the unit circle z·w = 1.",
+      "mathContext": "$C_{mn}(x) = C_m(C_n(x))$ as a monoid hom $(\\mathbb{Z},\\cdot) \\to^* \\mathrm{End}(\\mathbb{F}_p)$; on $zw=1$ it is conjugate to $(z^n)^m = z^{mn}$ via $z \\mapsto z+z^{-1}$."
+    },
+    {
       "id": "evaluation-law",
       "title": "Evaluation-Map Composition Law",
       "startLine": 45,
