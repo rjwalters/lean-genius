@@ -81,6 +81,25 @@
     ]
   },
   {
+    "id": "ann-isc-oq0102-mem-ioo",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "theorem",
+    "title": "Packaging the Bracket as a Nested Enclosure",
+    "content": "gamma_mem_Ioo pairs the two one-sided bracket lemmas into a single membership statement: for every n ≥ 1, γ lies in the open interval (Hₙ − log(n+1), Hₙ − log n). This is purely bookkeeping — the pair ⟨harmonic_sub_log_add_one_lt_gamma n, gamma_lt_harmonic_sub_log n hn⟩ — but it is the form the next section's shrinking-width argument needs: a single indexed family of intervals known to contain γ, rather than two separate inequalities.",
+    "mathContext": "\\gamma \\in \\bigl(H_n - \\log(n+1),\\, H_n - \\log n\\bigr) \\qquad (n \\ge 1)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Ioo membership",
+      "nested intervals",
+      "conjunction of one-sided bounds"
+    ],
+    "prerequisites": [
+      "harmonic_sub_log_add_one_lt_gamma",
+      "gamma_lt_harmonic_sub_log"
+    ]
+  },
+  {
     "id": "ann-isc-oq0102-width",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
     "range": { "startLine": 82, "endLine": 95 },
