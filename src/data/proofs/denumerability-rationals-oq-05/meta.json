@@ -95,22 +95,38 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 28,
       "summary": "Module docstring framing ℵ₀-closure and its breakdown at the countable power, the Mathlib import, namespace, and Cardinal open.",
       "mathContext": "$\\#(\\mathbb{Q} \\times \\mathbb{Q}) = \\aleph_0$ but $\\#(\\mathbb{N} \\to \\mathbb{Q}) = \\mathfrak{c}$."
     },
     {
-      "id": "finite",
-      "title": "Finite Operations Preserve ℵ₀",
-      "startLine": 36,
-      "endLine": 62,
-      "summary": "mk_rat (#ℚ = ℵ₀), mk_rat_prod (#(ℚ × ℚ) = ℵ₀), mk_rat_prod_eq_mk_rat, nonempty_equiv_prod_rat (ℚ × ℚ ≃ ℚ), mk_list_rat (#(List ℚ) = ℵ₀), mk_finset_rat (#(Finset ℚ) = ℵ₀).",
-      "mathContext": "$\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$, and finite sequences/subsets of ℚ stay $\\aleph_0$."
+      "id": "engine",
+      "title": "The Engine: #ℚ = ℵ₀",
+      "startLine": 30,
+      "endLine": 33,
+      "summary": "mk_rat: the rationals are countable and infinite, hence exactly ℵ₀ (Cardinal.mk_eq_aleph0) — the single fact every downstream result reduces to.",
+      "mathContext": "$\\#\\mathbb{Q} = \\aleph_0$."
+    },
+    {
+      "id": "product",
+      "title": "Finite Products: ℵ₀ · ℵ₀ = ℵ₀",
+      "startLine": 35,
+      "endLine": 48,
+      "summary": "mk_rat_prod (#(ℚ × ℚ) = ℵ₀ via aleph0_mul_aleph0), mk_rat_prod_eq_mk_rat (#(ℚ × ℚ) = #ℚ), and nonempty_equiv_prod_rat — the explicit bijection ℚ × ℚ ≃ ℚ unpacked from the cardinal equality.",
+      "mathContext": "$\\#(\\mathbb{Q}\\times\\mathbb{Q}) = \\aleph_0\\cdot\\aleph_0 = \\aleph_0$, witnessed by $\\mathbb{Q}\\times\\mathbb{Q} \\simeq \\mathbb{Q}$."
+    },
+    {
+      "id": "list-finset",
+      "title": "Finite Sequences and Finite Subsets Stay ℵ₀",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "mk_list_rat (#(List ℚ) = ℵ₀ via mk_list_eq_aleph0) and mk_finset_rat (#(Finset ℚ) = ℵ₀ via mk_finset_of_infinite) — the remaining two finite operations that preserve denumerability.",
+      "mathContext": "$\\#(\\mathrm{List}\\,\\mathbb{Q}) = \\aleph_0$, $\\#(\\mathrm{Finset}\\,\\mathbb{Q}) = \\aleph_0$."
     },
     {
       "id": "boundary",
       "title": "The Boundary: Countable Powers Reach 𝔠",
-      "startLine": 64,
+      "startLine": 60,
       "endLine": 73,
       "summary": "mk_seq_rat (#(ℕ → ℚ) = 𝔠 via mk_arrow + aleph0_power_aleph0) and not_countable_seq_rat (¬ Countable (ℕ → ℚ) via aleph0_lt_continuum).",
       "mathContext": "$\\aleph_0^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$, so $\\mathbb{N} \\to \\mathbb{Q}$ is uncountable."
