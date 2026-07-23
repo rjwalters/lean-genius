@@ -87,19 +87,35 @@
       "mathContext": "θ a rational multiple of π and sin θ ∈ ℚ ⇒ sin θ ∈ {0, ±1/2, ±1}."
     },
     {
-      "id": "cos-helper",
-      "title": "Cosine Niven (restated helper)",
+      "id": "cos-niven-statement",
+      "title": "cos_niven: Statement",
       "startLine": 44,
-      "endLine": 71,
-      "summary": "`cos_niven`: the cosine classification, restated so the sine corollary is self-contained. Writes θ = q·π (q = m/n : ℚ), invokes `Real.isIntegral_two_mul_cos_rat_mul_pi` and `IsIntegral.exists_int_iff_exists_rat` to get 2·cos θ = k ∈ ℤ, bounds k to {−2,…,2} via the cosine bounds, and closes the five `interval_cases` branches by `linarith`.",
+      "endLine": 51,
+      "summary": "`cos_niven`'s signature: for θ a rational multiple of π (θ = (m/n)π, n ≠ 0) with cos θ rational, cos θ ∈ {0, ±1/2, ±1}. Restated locally from niven-theorem-oq-01 so the sine corollary is self-contained.",
       "mathContext": "θ = (m/n)π, cos θ ∈ ℚ ⇒ cos θ ∈ {0, ±1/2, ±1}."
     },
     {
-      "id": "sine-corollary",
-      "title": "Sine Companion via the Complementary Angle",
+      "id": "cos-niven-proof",
+      "title": "cos_niven: Proof",
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "Invokes `Real.isIntegral_two_mul_cos_rat_mul_pi` and `IsIntegral.exists_int_iff_exists_rat` to get 2·cos θ = k ∈ ℤ, bounds k to {−2,…,2} via the cosine bounds, and closes the five `interval_cases` branches by `linarith`.",
+      "mathContext": "$2\\cos\\theta = k \\in \\mathbb Z,\\ -2\\le k\\le 2$, five cases by `interval_cases`."
+    },
+    {
+      "id": "sin-niven-statement",
+      "title": "sin_niven: Statement",
       "startLine": 73,
+      "endLine": 78,
+      "summary": "`sin_niven`'s signature: the sine companion — for θ a rational multiple of π with sin θ rational, sin θ ∈ {0, ±1/2, ±1}.",
+      "mathContext": "θ = (m/n)π, sin θ ∈ ℚ ⇒ sin θ ∈ {0, ±1/2, ±1}."
+    },
+    {
+      "id": "sin-niven-proof",
+      "title": "sin_niven: Proof via the Complementary Angle",
+      "startLine": 79,
       "endLine": 95,
-      "summary": "`sin_niven`: set φ = π/2 − θ; `Real.cos_pi_div_two_sub` gives cos φ = sin θ. A `push_cast`/`field_simp` computation establishes φ = ((n − 2m)/(2n))·π with 2n ≠ 0, so φ is a rational multiple of π. The sine hypothesis transports to cos φ ∈ ℚ, `cos_niven` applies to φ, and rewriting cos φ = sin θ delivers sin θ ∈ {0, ±1/2, ±1}.",
+      "summary": "Sets φ = π/2 − θ; `Real.cos_pi_div_two_sub` gives cos φ = sin θ. A `push_cast`/`field_simp` computation establishes φ = ((n − 2m)/(2n))·π with 2n ≠ 0, so φ is a rational multiple of π. The sine hypothesis transports to cos φ ∈ ℚ, `cos_niven` applies to φ, and rewriting cos φ = sin θ delivers sin θ ∈ {0, ±1/2, ±1}.",
       "mathContext": "φ = π/2 − θ = ((n − 2m)/(2n))π, cos φ = sin θ ⇒ sin θ ∈ {0, ±1/2, ±1}."
     }
   ],
