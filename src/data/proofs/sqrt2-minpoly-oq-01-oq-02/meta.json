@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sqrt2-minpoly-oq-01-oq-02",
+      "title": "Module Overview: Minimal Polynomial of √r for Rational r",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Generalizes the gallery's minpoly ℚ(√n) = X² − n (for natural n) to an arbitrary nonnegative rational radicand r: if r ≥ 0 is not a square in ℚ, then minpoly ℚ(√r) = X² − r, with the non-monic integer associate q·X² − p from r = p/q in lowest terms. Mirrors the natural-number argument's degree-bounding steps, but notes the irrationality step is simpler over ℚ (s² = r directly witnesses r as a rational square, with no appeal to irrational_nrt_of_notint_nrt). Corollary: √r is irrational iff r is not a rational square.",
+      "mathContext": "$r\\ge 0$ not a square in $\\mathbb{Q}$ $\\Rightarrow \\text{minpoly}\\,\\mathbb{Q}(\\sqrt r) = X^2 - r$; iff-corollary for irrationality of $\\sqrt r$."
+    },
+    {
       "id": "irrationality",
       "title": "Part I: Irrationality for a Rational Radicand",
       "startLine": 50,
