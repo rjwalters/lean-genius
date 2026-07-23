@@ -124,6 +124,11 @@
       "targetId": "sum-of-kth-powers-oq-02",
       "relationship": "related",
       "description": "The Euler–Maclaurin machinery underlying this entry is the classical bridge from power sums to the Riemann zeta function; OQ-02 pushes the parent's power sums to non-integer exponents and analytic continuation, the regime where these same asymptotics govern the partial sums of ζ."
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-05",
+      "relationship": "related",
+      "description": "The orthogonal modular face of the same power-sum family: where this entry gives the n→∞ asymptotic ∑ iᵏ/n^{k+1} → 1/(k+1), OQ-05 gives the exact finite-field congruence ∑_{x∈𝔽_q} xᵏ = −1 iff (q−1)∣k — an integer/asymptotic closed form versus a Fermat-little-theorem congruence."
     }
   ],
   "conclusion": {
