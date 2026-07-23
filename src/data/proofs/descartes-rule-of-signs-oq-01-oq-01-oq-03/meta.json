@@ -73,7 +73,8 @@
       "Conjugation is a ring automorphism fixing real-coefficient polynomials, so Mathlib's eq_rootMultiplicity_map applies directly and gives multiplicity equality — no bespoke multiplicity bookkeeping is needed",
       "Working at the level of Polynomial.roots (a multiset) automatically tracks multiplicities, which the earlier set-level pairing could not",
       "The upper/lower half-plane split avoids fixed-point-free-involution machinery: conjugation sends 0 < z.im to z.im < 0 bijectively, so the non-real count is literally twice a half-plane count",
-      "Algebraic closure of ℂ supplies card(roots) = degree, turning the even non-real count into the real-root parity"
+      "Algebraic closure of ℂ supplies card(roots) = degree, turning the even non-real count into the real-root parity",
+      "Exactly one fact about real coefficients is used anywhere in the file — toC_map_conj, that conjugation fixes q — every later theorem is a purely formal multiset/count manipulation built on top of that single equation, so the multiplicity-aware refinement adds no new use of realness beyond what the set-level parent already needed"
     ],
     "prerequisites": [
       "Conjugate root theorem",
@@ -85,32 +86,40 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Imports",
+      "title": "Module Header, Imports, and the toC Embedding",
       "startLine": 1,
-      "endLine": 47,
+      "endLine": 46,
       "summary": "Docstring stating the multiplicity-aware refinement and what is proved; imports Mathlib; namespace DescartesRuleComplexMult and the definition toC mapping ℝ[X] into ℂ[X]",
       "mathContext": "q = p.map (algebraMap ℝ ℂ); conjugation fixes q since p has real coefficients."
     },
     {
+      "id": "conjugation-basics",
+      "title": "Conjugation Injectivity and the Real-Coefficient Fixed Point",
+      "startLine": 48,
+      "endLine": 58,
+      "summary": "conj_injective (conjugation is its own inverse, hence injective) and toC_map_conj — the single load-bearing fact that a real polynomial mapped into ℂ[X] is fixed by conjugating its coefficients",
+      "mathContext": "$\\overline{\\iota(r)} = \\iota(r)$ for all $r \\in \\mathbb{R}$ (where $\\iota = $ algebraMap ℝ ℂ), hence $\\overline{q} = q$ for $q = p.\\mathrm{map}\\,\\iota$."
+    },
+    {
       "id": "multiplicity-core",
       "title": "Multiplicity-Aware Conjugate Root Theorem",
-      "startLine": 48,
-      "endLine": 90,
-      "summary": "conj_injective, toC_map_conj, rootMultiplicity_conj, count_roots_conj — z and z̄ have equal multiplicity, via eq_rootMultiplicity_map applied to the conjugation automorphism",
+      "startLine": 60,
+      "endLine": 73,
+      "summary": "rootMultiplicity_conj, count_roots_conj — z and z̄ have equal multiplicity, via eq_rootMultiplicity_map applied to the conjugation automorphism, restated at the level of the root multiset",
       "mathContext": "$\\operatorname{rootMult}_{\\bar z}(q) = \\operatorname{rootMult}_z(q)$; equivalently $q.\\mathrm{roots}.\\mathrm{count}\\,\\bar z = q.\\mathrm{roots}.\\mathrm{count}\\,z$."
     },
     {
       "id": "invariance",
       "title": "Root Multiset Conjugation-Invariance and Half-Plane Bijection",
-      "startLine": 91,
-      "endLine": 116,
+      "startLine": 75,
+      "endLine": 100,
       "summary": "roots_map_conj (the multiset is fixed by conjugation) and roots_filter_neg_im (conjugation bijects upper-half-plane roots onto lower-half-plane roots)",
       "mathContext": "$\\operatorname{map}\\,\\mathrm{conj}\\,(q.\\mathrm{roots}) = q.\\mathrm{roots}$ and $\\{z\\in\\mathrm{roots}: \\Im z<0\\} = \\mathrm{conj}\\,\\{z\\in\\mathrm{roots}: \\Im z>0\\}$."
     },
     {
       "id": "parity",
       "title": "Even Non-Real Count and Real-Root Parity",
-      "startLine": 117,
+      "startLine": 102,
       "endLine": 147,
       "summary": "nonreal_roots_card_even and realRoots_card_parity: the non-real roots (with multiplicity) are even, hence the real roots (with multiplicity) are ≡ deg p (mod 2)",
       "mathContext": "$\\#\\{z: \\Im z\\ne 0\\}$ even $\\Rightarrow \\#\\{z: \\Im z=0\\} \\equiv \\deg p \\pmod 2$ (counts with multiplicity, using $\\#\\mathrm{roots}=\\deg p$ over $\\mathbb{C}$)."
