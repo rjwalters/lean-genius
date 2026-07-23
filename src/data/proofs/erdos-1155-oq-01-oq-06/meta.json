@@ -57,11 +57,25 @@
   },
   "sections": [
     {
-      "id": "placeholder-stub",
-      "title": "Placeholder Stub for Terminal Graph Structure",
+      "id": "header-docstring",
+      "title": "Header Docstring: Problem Identification",
       "startLine": 1,
+      "endLine": 5,
+      "summary": "Identifies the file as the stub for Erdős Problem #1155 OQ-01-OQ-06 (terminal graph structure) and records that full formalization is pending, tracked against researcher PR #9455."
+    },
+    {
+      "id": "import",
+      "title": "Mathlib Import",
+      "startLine": 6,
+      "endLine": 7,
+      "summary": "`import Mathlib` pulls in the full library. Only a handful of lemmas are actually needed for the planned proof — `Real.rpow_add`, `Real.rpow_le_rpow`, `Real.rpow_natCast` for the exponent arithmetic and `Metric.tendsto_atTop`, `Filter.Eventually.and` for the limit argument — but none are invoked yet since no declarations exist below."
+    },
+    {
+      "id": "placeholder-marker",
+      "title": "Placeholder Stub Marker",
+      "startLine": 8,
       "endLine": 10,
-      "summary": "This file is a placeholder stub for Erdős Problem #1155 OQ-01-OQ-06 (terminal graph structure). It contains only a header docstring, an `import Mathlib`, and a comment noting that full formalization is pending (tracked for a future researcher PR). No definitions, theorems, or lemmas are present yet — the Turán-density framework, structural non-Turán-likeness result, exponent gap, and bipartiteness questions described in the problem remain to be formalized."
+      "summary": "A second comment, `erdos1155_oq01_oq06_placeholder`, marks the point where the ~11 planned theorems (0 sorries, 0 new axioms beyond those inherited from the parent `Erdos1155Problem.lean`) will be declared once the terminal-graph structure result is formalized. No definitions, theorems, or lemmas are present yet — the Turán-density framework, structural non-Turán-likeness result, exponent gap, and bipartiteness questions described in the problem remain to be formalized."
     }
   ],
   "overview": {
