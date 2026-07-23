@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and What This File Formalizes",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "States the extension of Hilbert's 19th problem to fully nonlinear elliptic equations $F(D^2u, Du, u, x) = 0$ and its resolution via the Evans-Krylov theorem (1982), which gives $C^{2,\\alpha}$ interior regularity for viscosity solutions of uniformly elliptic, convex fully nonlinear equations.",
+      "mathContext": "Lists what the file formalizes: fully nonlinear elliptic operators, Pucci extremal operators, viscosity solutions, the Evans-Krylov and ABP maximum-principle statements (as axioms), the Krylov-Safonov Harnack inequality, and the proved logical chain connecting them."
+    },
+    {
       "id": "operators",
       "title": "Fully Nonlinear Elliptic Operators",
       "summary": "Defines `FullyNonlinearOp1D` as a normalized operator $F : \\mathbb{R} \\to \\mathbb{R}$ with $F(0) = 0$, `IsMonotone` (degenerate ellipticity via Mathlib's `Monotone`), and the `IsUniformlyElliptic1D` structure with sandwich bounds $\\lambda(b-a) \\leq F(b) - F(a) \\leq \\Lambda(b-a)$. Proves `uniformly_elliptic_is_monotone` via `linarith` from $\\lambda > 0$.",
