@@ -114,6 +114,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Two Coordinate Systems on the Shifted Line",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports (Taylor, ForwardDiff, Binomial), the namespace, and the module docstring framing the open question: a degree-N polynomial p sampled along a + r carries Taylor (monomial) coefficients t_j = (taylor a p).coeff j and Newton (forward-difference) coefficients c_m = Δᵐ p(a). The bridge is the kernel K(j,m) = Δᵐ(rʲ)(0) = m!·S(j,m); the docstring previews the five main results, closing with '0 axioms'.",
+      "mathContext": "Taylor: $p(a+r) = \\sum_j t_j r^j$. Newton: $p(a+r) = \\sum_m c_m \\binom{r}{m}$. Change of basis: $c_m = \\sum_j t_j K(j,m)$, $K(j,m) = m! \\, S(j,m)$."
+    },
+    {
       "id": "kernel",
       "title": "Section I: The Finite-Difference-of-Monomials Kernel",
       "startLine": 57,
@@ -130,12 +138,20 @@
       "mathContext": "Pushing the linear operator Δᵐ through the monomial expansion of p(a+r) realizes the Newton coordinates as a linear image of the Taylor coordinates; the leading case is the divided-difference reading of the leading coefficient."
     },
     {
-      "id": "interpolation",
-      "title": "Section III: Newton Interpolation — Integer Nodes and Polynomial Identity",
+      "id": "interpolation-integer",
+      "title": "Section III: Newton Interpolation at Integer Nodes",
       "startLine": 119,
+      "endLine": 162,
+      "summary": "fwdDiff_iter_eval_eq_zero terminates the Newton coefficients at the degree: c_m = 0 for m > deg p. eval_add_natCast_eq_sum_fwdDiff_choose then reconstructs p(a+n) = Σ_{m ≤ N} c_m·(n choose m) at every integer node n, from the operator identity shiftⁿ = (1+Δ)ⁿ (Mathlib's shift_eq_sum_fwdDiff_iter) after padding both index sets to a common range.",
+      "mathContext": "$\\text{shift} = 1 + \\Delta \\implies \\text{shift}^n = \\sum_m \\binom{n}{m}\\Delta^m$; so $p(a+n) = \\sum_{m \\le N} c_m \\binom{n}{m}$ for $n \\in \\mathbb{N}$."
+    },
+    {
+      "id": "interpolation-polynomial",
+      "title": "Section IV: From Integer Nodes to a Polynomial Identity over ℚ",
+      "startLine": 164,
       "endLine": 205,
-      "summary": "fwdDiff_iter_eval_eq_zero terminates the Newton coefficients at the degree. eval_add_natCast_eq_sum_fwdDiff_choose reconstructs p(a+n) = Σ_{m ≤ N} c_m·(n choose m) at every integer node from the difference table. newtonPoly_eval realizes the binomial basis as (m!)⁻¹·descPochhammer ℚ m, and eval_add_eq_sum_fwdDiff_choose upgrades the reconstruction to a polynomial identity p(a+x) = Σ c_m·Ring.choose x m for all x : ℚ via agreement on ℕ ⊆ ℚ.",
-      "mathContext": "The shift-equals-(1+Δ)ⁿ operator identity gives interpolation at integers with no analysis; density of ℕ in the polynomial ring over ℚ then forces the identity at all points."
+      "summary": "newtonPoly_eval realizes the Newton basis as a genuine polynomial: (m!)⁻¹·descPochhammer ℚ m evaluates to Ring.choose x m. The reconstruction polynomial built from the c_m then agrees with taylor a p at every natural argument, and eq_of_infinite_eval_eq upgrades this to full polynomial equality, yielding eval_add_eq_sum_fwdDiff_choose: p(a+x) = Σ c_m·Ring.choose x m for all x : ℚ.",
+      "mathContext": "$\\binom{x}{m} = \\text{Ring.choose}\\ x\\ m = (m!)^{-1}\\,\\text{descPochhammer}_{\\mathbb{Q}}(m)(x)$; agreement on $\\mathbb{N} \\subset \\mathbb{Q}$ forces $p(a+x) = \\sum_{m \\le N} c_m \\binom{x}{m}$ for all $x$."
     }
   ],
   "conclusion": {
