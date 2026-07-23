@@ -150,6 +150,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Subfield Lattice of a Finite Field",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "States the open question — formalize that the subfields of GF(p^n) are exactly the GF(p^m) for divisors m∣n, with GF(p^a) ⊆ GF(p^b) iff a∣b. This file answers it on two levels: abstractly, a ZMod p-algebra embedding GaloisField p m →ₐ GaloisField p n exists iff m∣n, via Mathlib's nonempty_algHom_iff_finrank_dvd; concretely, inside a fixed GF(p^n), the fixed-point set of the m-fold Frobenius {x : x^(p^m) = x} is a genuine Subfield with exactly p^m elements for every divisor m∣n, nested by divisibility — the cardinality count being new content Mathlib records only in the abstract algHom form. The count follows because the fixed points are the roots of the separable X^(p^m) − X, which divides X^(p^n) − X = X^|K| − X and so splits with p^m distinct roots. No axioms or sorries.",
+      "mathContext": "$\\mathrm{GF}(p^m) \\hookrightarrow \\mathrm{GF}(p^n) \\iff m \\mid n$; inside a fixed $K$ with $|K|=p^n$, $\\{x : x^{p^m}=x\\}$ is a subfield of order $p^m$ for every $m \\mid n$."
+    },
+    {
       "id": "embedding-lattice",
       "title": "Abstract Embedding Lattice: GF(p^m) ↪ GF(p^n) ⟺ m ∣ n",
       "startLine": 48,
