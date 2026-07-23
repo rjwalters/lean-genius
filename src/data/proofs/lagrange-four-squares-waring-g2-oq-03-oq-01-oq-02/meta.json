@@ -73,17 +73,33 @@
       "id": "triangular-setup",
       "title": "Triangular Numbers and the Defining Identity",
       "startLine": 44,
-      "endLine": 73,
-      "summary": "Defines tri k = k(k+1)/2 and IsTriangular; establishes the exact halving 2·T(k)=k(k+1) (two_mul_tri) and the keystone identity (2k+1)² = 8·T(k)+1 (sq_two_mul_add_one), plus strict monotonicity of T (tri_strictMono) for index uniqueness.",
+      "endLine": 66,
+      "summary": "Defines tri k = k(k+1)/2 and IsTriangular; establishes the exact halving 2·T(k)=k(k+1) (two_mul_tri) and the keystone identity (2k+1)² = 8·T(k)+1 (sq_two_mul_add_one), the single fact both directions of the characterization run on.",
       "mathContext": "T(k)=k(k+1)/2 with 2T(k)=k(k+1) exact and (2k+1)²=8T(k)+1."
     },
     {
+      "id": "monotonicity",
+      "title": "Strict Monotonicity and Index Uniqueness",
+      "startLine": 68,
+      "endLine": 74,
+      "summary": "tri_strictMono: T is strictly monotone, established via the exact halving 2·T(k)=k(k+1). Powers the uniqueness of the recovered triangular index — the representation, when it exists, is one-of-a-kind.",
+      "mathContext": "$a < b \\Rightarrow T(a) < T(b)$, via $2T(a)=a(a+1) < b(b+1)=2T(b)$."
+    },
+    {
       "id": "characterization",
-      "title": "The 8n+1 Square Characterization and Decidability",
-      "startLine": 75,
+      "title": "The 8n+1 Square Characterization",
+      "startLine": 76,
+      "endLine": 93,
+      "summary": "The headline equivalence isTriangular_iff_isSquare: n is a triangular number iff 8n+1 is a perfect square. Forward reads the defining identity left-to-right; backward uses that 8n+1 is odd to pin the square root's shape r=2k+1, then runs the identity in reverse.",
+      "mathContext": "n = T(k) ⟺ IsSquare (8n+1); k recovered from r = √(8n+1) = 2k+1."
+    },
+    {
+      "id": "decidability",
+      "title": "Exact Index Recovery and a Decidable Test",
+      "startLine": 95,
       "endLine": 116,
-      "summary": "The headline equivalence isTriangular_iff_isSquare (n triangular ⟺ 8n+1 a perfect square), the exact index recovery eq_tri_of_eight_mul_add_one, and the DecidablePred instance obtained by transporting decidability of IsSquare across the equivalence; closes with worked sanity checks.",
-      "mathContext": "n = T(k) ⟺ IsSquare (8n+1); k recovered from r=√(8n+1)=2k+1."
+      "summary": "eq_tri_of_eight_mul_add_one recovers the triangular index exactly from 8n+1=(2k+1)², and the DecidablePred IsTriangular instance transports decidability of IsSquare across the equivalence, giving a constant-cost triangular-number test; closes with worked sanity checks.",
+      "mathContext": "$8n+1=(2k+1)^2 \\Rightarrow n = T(k)$; $\\mathrm{DecidablePred}\\ \\textsf{IsTriangular}$ via transport across the iff."
     }
   ],
   "meta": {
