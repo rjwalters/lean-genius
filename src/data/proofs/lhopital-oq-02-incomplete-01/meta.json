@@ -57,11 +57,19 @@
   },
   "sections": [
     {
-      "id": "sec-header",
-      "title": "Module Header, Imports, and Setup",
+      "id": "sec-imports",
+      "title": "Imports: the Parent ∞/∞ Rule",
       "startLine": 1,
+      "endLine": 4,
+      "summary": "Imports Log.Deriv, Exp, Exponential, and the parent module Proofs.LHopitalOQ02 — the load-bearing dependency, since Mathlib's own 26 L'Hôpital variants only cover the 0/0 form.",
+      "mathContext": "The parent rule LHopitalInfty.lhopital_infty_atTop is what makes the three ∞/∞ corollaries below possible without reproving L'Hôpital from scratch."
+    },
+    {
+      "id": "sec-header",
+      "title": "Module Header and Setup",
+      "startLine": 6,
       "endLine": 55,
-      "summary": "Module docstring framing the leaf as worked corollaries of the parent ∞/∞ rule, a per-limit f/g/f'/g' table, and the status checklist. Imports Log.Deriv, Exp, Exponential, and the parent module Proofs.LHopitalOQ02; opens Set Filter Topology Real.",
+      "summary": "Module docstring framing the leaf as worked corollaries of the parent ∞/∞ rule, a per-limit f/g/f'/g' table, and the status checklist. Opens Set Filter Topology Real inside the namespace.",
       "mathContext": "Each limit is an ∞/∞ indeterminate form f/g with g → +∞. The parent rule LHopitalInfty.lhopital_infty_atTop reduces the limit of f/g to the easy limit of f'/g'."
     },
     {
