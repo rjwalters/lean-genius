@@ -87,33 +87,41 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 32,
-      "summary": "Module docstring framing the modular face of power sums, the Mathlib import, namespace, and the finite-field variable setup.",
+      "endLine": 33,
+      "summary": "Module docstring framing the modular face of power sums, the Mathlib import, namespace, opens, and the finite-field variable setup.",
       "mathContext": "$\\sum_{x \\in K} x^k$ over a finite field $K$ of cardinality $q = \\#K$."
     },
     {
       "id": "main",
       "title": "Complete Power Sum over a Finite Field",
-      "startLine": 34,
-      "endLine": 62,
+      "startLine": 35,
+      "endLine": 66,
       "summary": "sum_pow_eq: ∑_{x : K} xᵏ = if k≠0 ∧ (q−1)∣k then −1 else 0, by splitting on k=0 (cardinality collapse) and reducing the nonzero terms to FiniteField.sum_pow_units.",
       "mathContext": "$\\sum_{x : K} x^k = \\begin{cases} -1 & k \\neq 0 \\text{ and } (q-1) \\mid k \\\\ 0 & \\text{otherwise} \\end{cases}$"
     },
     {
       "id": "zmod",
       "title": "Specialization to ZMod p",
-      "startLine": 64,
-      "endLine": 82,
+      "startLine": 68,
+      "endLine": 86,
       "summary": "sum_pow_zmod and sum_pow_zmod_eq_neg_one_iff: the prime-field form via ZMod.card, and the precise criterion for the sum to equal −1.",
       "mathContext": "$\\sum_{x : \\mathbb{Z}/p} x^k = -1 \\iff k \\neq 0 \\text{ and } (p-1) \\mid k$."
     },
     {
       "id": "residues",
-      "title": "Sum of Residues and Instances",
-      "startLine": 84,
-      "endLine": 109,
-      "summary": "sum_residues_eq_zero (∑ residues = 0 for odd primes, the k=1 case) and concrete decide-verified instances over ZMod 5 and ZMod 7.",
-      "mathContext": "$\\sum_{x : \\mathbb{Z}/p} x = 0$ for odd $p$; e.g. $\\sum_{x : \\mathbb{Z}/5} x^4 = -1$."
+      "title": "Sum of All Residues",
+      "startLine": 88,
+      "endLine": 97,
+      "summary": "sum_residues_eq_zero: the residues 0, 1, …, p−1 sum to 0 for an odd prime p, the k=1 case of sum_pow_zmod where (p−1) ∤ 1 once p > 2.",
+      "mathContext": "$\\sum_{x : \\mathbb{Z}/p} x = 0$ for odd $p$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Instances",
+      "startLine": 99,
+      "endLine": 113,
+      "summary": "Kernel-decide-verified instances: ∑ x⁴ = −1 = 4 over ZMod 5 (since (5−1)∣4), ∑ x² = 0 over ZMod 5 (since (5−1)∤2), ∑ x⁶ = −1 = 6 over ZMod 7, and the sum of residues of ZMod 5 equals 0.",
+      "mathContext": "E.g. $\\sum_{x : \\mathbb{Z}/5} x^4 = -1$; $\\sum_{x : \\mathbb{Z}/5} x^2 = 0$."
     }
   ],
   "crossReferences": [
