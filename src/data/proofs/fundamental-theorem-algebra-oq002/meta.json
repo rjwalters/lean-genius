@@ -44,7 +44,8 @@
       "Rigidity beats construction: for a group of order two there is exactly one isomorphism from Multiplicative (ZMod 2), so naming the generator of any one such map (the parent did, via conjAe) pins down all of them — including Mathlib's choice-built one.",
       "The non-identity element ofAdd 1 must map to a non-identity automorphism, and Gal(ℂ/ℝ) has a unique one (complex conjugation), so the generator's image is forced.",
       "Treating zmodCyclicMulEquiv as an opaque arbitrary isomorphism avoids unfolding any Classical.choice data: the cast transporting ZMod (Nat.card G) to ZMod 2 is never reduced, only consumed by a universally-quantified rigidity lemma.",
-      "Identifying a hand-built object with a library object turns a bespoke construction into the canonical one — the explicit iso IS Mathlib's generic iso, with the choice of generator resolved."
+      "Identifying a hand-built object with a library object turns a bespoke construction into the canonical one — the explicit iso IS Mathlib's generic iso, with the choice of generator resolved.",
+      "The cardinality cast is purely a type-level transport: mathlibGaloisIso is `congrArg (fun n => Multiplicative (ZMod n) ≃* Gal(ℂ/ℝ)) card_galoisGroup_eq_two ▸ zmodCyclicMulEquiv ...` — the `▸` rewrites the TYPE from ZMod (Nat.card G) to ZMod 2 using the cardinality proof, without touching the zmodCyclicMulEquiv term itself, which is exactly why the rigidity lemmas can consume it as an opaque arbitrary isomorphism."
     ],
     "prerequisites": [
       "The parent's explicit isomorphism galoisGroupEquivZMod2 and its structure theorem eq_one_or_conjAe",
@@ -76,10 +77,17 @@
       "endLine": 88
     },
     {
-      "id": "specialise",
-      "title": "Specialisation to Mathlib's generic iso",
-      "summary": "mathlibGaloisIso (zmodCyclicMulEquiv transported along |Gal(ℂ/ℝ)| = 2), mathlibGaloisIso_eq (it equals the explicit iso) and mathlibGaloisIso_ofAdd_one (its generator is conjugation).",
+      "id": "specialise-definition",
+      "title": "The Generic Isomorphism, Specialised",
+      "summary": "mathlibGaloisIso: Mathlib's generic zmodCyclicMulEquiv transported along |Gal(ℂ/ℝ)| = 2, via a type-level cast (congrArg ... ▸) that never unfolds the underlying Classical.choice term.",
       "startLine": 90,
+      "endLine": 97
+    },
+    {
+      "id": "specialise-consequences",
+      "title": "Identification and the Canonical Generator",
+      "summary": "mathlibGaloisIso_eq: Mathlib's specialised iso equals the explicit galoisGroupEquivZMod2.symm, by feeding it into eq_galoisGroupEquivZMod2_symm as an arbitrary isomorphism. mathlibGaloisIso_ofAdd_one: its generator ofAdd 1 maps to complex conjugation, by feeding it into any_equiv_ofAdd_one.",
+      "startLine": 99,
       "endLine": 110
     }
   ],
