@@ -59,19 +59,35 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Algebraic Setup",
+      "id": "context",
+      "title": "Module Docstring: the Gap and the Method",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Docstring stating the finite arithmetico-geometric identity ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1, explaining that it is the discrete analogue of differentiating the geometric series and the finite partial sum behind the classical infinite value r/(1−r)². Notes the gap it fills — Mathlib has geom_sum_eq but no weighted ∑ k·rᵏ, and the gallery's GeometricSeriesOQ06 is the distinct infinite/normed object. Then the imports (BigOperators.Module, Tactic), the namespace, open Finset, and the ambient variable {K : Type*} [Field K] establishing that only a field and r ≠ 1 are assumed.",
+      "endLine": 42,
+      "summary": "Docstring stating the finite arithmetico-geometric identity ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1, explaining that it is the discrete analogue of differentiating the geometric series and the finite partial sum behind the classical infinite value r/(1−r)². Notes the gap it fills — Mathlib has geom_sum_eq but no weighted ∑ k·rᵏ, and the gallery's GeometricSeriesOQ06 is the distinct infinite/normed object — and previews the induction and Abel-summation-by-parts methods.",
       "mathContext": "$\\sum_{k=0}^{n-1} k\\,r^{k} = \\frac{r - n r^{n} + (n-1) r^{n+1}}{(r-1)^{2}},\\qquad r \\neq 1.$"
     },
     {
-      "id": "closed-form",
-      "title": "The Closed Form by Induction",
+      "id": "setup",
+      "title": "Namespace and Field Setup",
+      "startLine": 44,
+      "endLine": 49,
+      "summary": "namespace SummationByPartsOQ01, open Finset, and the ambient variable {K : Type*} [Field K] — the whole development lives over an arbitrary field, with r ≠ 1 the only hypothesis introduced per-theorem.",
+      "mathContext": "No normed structure is assumed; the identity is purely algebraic over $K$."
+    },
+    {
+      "id": "closed-form-statement",
+      "title": "The Closed Form: Statement",
       "startLine": 50,
+      "endLine": 55,
+      "summary": "sum_range_mul_geom states ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1 in an arbitrary field K.",
+      "mathContext": "$\\sum_{k<n} k\\,r^k = \\dfrac{r - n r^n + (n-1) r^{n+1}}{(r-1)^2}$."
+    },
+    {
+      "id": "closed-form-proof",
+      "title": "The Closed Form: Proof by Induction",
+      "startLine": 56,
       "endLine": 64,
-      "summary": "sum_range_mul_geom: ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1, proved by induction with field_simp + ring on the step.",
+      "summary": "Induction on n: the base case is the empty sum; the step uses Finset.sum_range_succ to add the term m·rᵐ, then field_simp clears the (r−1)² denominator (legal since r−1 ≠ 0) and ring closes the resulting polynomial identity.",
       "mathContext": "The inductive step absorbs the new term m·rᵐ by the polynomial identity n·rⁿ(r−1)² = n·rⁿ⁺² − 2n·rⁿ⁺¹ + n·rⁿ."
     },
     {
