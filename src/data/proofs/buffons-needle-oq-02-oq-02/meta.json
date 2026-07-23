@@ -87,6 +87,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Buffon Noodle Extension to Smooth 3D Curves", "startLine": 1, "endLine": 45, "summary": "Extends the 3D polygonal Buffon formula to smooth C\u00b9 curves: for a C\u00b9 curve of arc length L dropped on parallel planes spaced d apart, the expected crossing count is L/(2d), depending only on arc length. Proof approach: approximate the curve by inscribed polygons, apply the polygonal theorem, and pass to the limit by C\u00b9-continuity of arc length.", "mathContext": "The 3D crossing factor $\\alpha_3 = 1/2$ (from $\\int_0^\\pi \\sin\\theta|\\cos\\theta|\\,d\\theta = 1$) extends from polygonal paths to smooth curves via inscribed-polygon approximation and continuity of arc length under refinement."},
     {
       "id": "part-i",
       "title": "Part I: 3D Arc Length",
