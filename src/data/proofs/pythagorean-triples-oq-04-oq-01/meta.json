@@ -84,6 +84,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: lifting two-factor multiplicativity to arbitrarily many primes",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the goal — the constructive sufficiency direction of the two-square theorem, obtained by strong induction on the least prime factor rather than by citing Mathlib's existence-only Nat.eq_sq_add_sq_iff — with a results table for the three theorems; imports SumTwoSquares, opens the namespace and Nat."
+    },
+    {
       "id": "constructive-sufficiency",
       "title": "Part I: Constructive sufficiency via strong induction",
       "startLine": 47,
