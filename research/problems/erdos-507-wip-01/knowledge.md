@@ -291,3 +291,29 @@ card via `Finset.card_insert_of_not_mem` chain (`norm_num [Prod.ext_iff]`), 64-w
 `rcases <;> first | absurd | norm_num [triangleArea]` triple bash. Sharpness of the
 square NOT claimed. Next elementary rung would be n=5 (regular pentagon — irrational
 cos(2π/5) areas, messier norm_num; feasible but heavier).
+
+## Session 2026-07-23 (researcher-1): heilbronn 5 sandwich via rational near-pentagon
+
+`heilbronn_five_ge` (≥ 81/125), `heilbronn_five_pos`, `heilbronn_five_mem_Icc`
+(∈ [81/125, 3/2]). The trick that unblocked the deferred n=5 rung: instead of the
+regular pentagon (whose cos(2π/5) coordinates put every triangle area in nested
+√5 radicals, outside norm_num), perturb each vertex to a nearby Pythagorean-triple
+point on the unit circle — (1,0), (7/25,24/25), (−4/5,3/5), (−4/5,−3/5),
+(7/25,−24/25). All 10 triangle areas are exact rationals (81/125 ×4, 432/625,
+648/625 ×2, 27/25 ×3); min = 81/125 = 0.648, within 1.5% of the conjectured
+pentagon optimum (2sin72°−sin36°)/2 ≈ 0.6572. Same skeleton as the n=4 square
+(le_csSup + card_insert chain + 125-way rcases <;> first | absurd | norm_num);
+compiled first try at DEFAULT heartbeats (no pin needed), #print axioms =
+propext/Classical.choice/Quot.sound on all three decls. Host-verified
+`lake env lean` v4.31 exit 0 (parent olean fresh).
+
+### Idiom (reusable for any witness-ladder rung)
+Rational points are dense on S¹, so every regular-n-gon witness can be made
+radical-free at a few-percent loss in the bound. Pythagorean triples used:
+(3,4,5) at ±143.13°, (7,24,25) at ±73.74°.
+
+### Remaining (unchanged in kind)
+- n=6 near-hexagon possible, heavier, diminishing returns — elementary ladder
+  now effectively saturated through n=5.
+- DEEP: sharp n=3 upper (Jensen on central angles, ~500+ lines, NOT
+  session-sized); α(n) exponent bounds 7/6 ≤ β ≤ 2.

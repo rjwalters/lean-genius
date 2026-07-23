@@ -800,4 +800,82 @@ theorem heilbronn_tendsto_zero :
   rw [Real.dist_eq, sub_zero, abs_of_nonneg hpos]
   linarith [hbound, h4m]
 
+/-! ## A concrete lower bound at `n = 5`: a rational near-pentagon
+
+The natural five-point witness is the regular pentagon inscribed in the unit
+circle, whose minimum triangle area is `(2 sin 72° − sin 36°)/2 ≈ 0.6572`.  Its
+coordinates, however, involve the nested radicals of `cos(2π/5)` — every one of
+the ten triangle areas would be an expression in `√5` and `√(10 ± 2√5)`, far
+outside `norm_num`'s reach (this is exactly why the `n = 5` rung was deferred
+when the `n = 4` square was formalized).
+
+Rational points are dense on the unit circle, so we instead perturb each
+pentagon vertex to a nearby *Pythagorean-triple* point:
+
+    A = (1, 0)              (angle    0°)
+    B = (7/25,  24/25)      (angle  73.7°, near  72°)
+    C = (−4/5,  3/5)        (angle 143.1°, near 144°)
+    D = (−4/5, −3/5)        (angle 216.9°, near 216°)
+    E = (7/25, −24/25)      (angle 286.3°, near 288°)
+
+All five points lie *exactly* on the unit circle (`3² + 4² = 5²`,
+`7² + 24² = 25²`), and every one of the ten triangle areas is an exact rational:
+
+    ABC = ADE = BCD = CDE = 81/125,   ABE = 432/625,
+    BCE = BDE = 648/625,              ABD = ACD = ACE = 27/25.
+
+The minimum is `81/125 = 0.648` — within `1.5%` of the conjectured optimum
+`≈ 0.6572` — and the whole certificate is a kernel-friendly `norm_num`
+computation.  This yields the third sandwich of the elementary ladder:
+`heilbronn 5 ∈ [81/125, 3/2]`. -/
+
+/-- **`heilbronn 5 ≥ 81/125`.**  The rational near-pentagon
+`(1,0), (7/25, 24/25), (−4/5, 3/5), (−4/5, −3/5), (7/25, −24/25)` — five
+Pythagorean-triple points lying exactly on the unit circle near the vertices of
+the regular pentagon — has minimum triangle area exactly `81/125`, so `81/125`
+lies in the defining `sSup` set of `heilbronn 5` (`le_csSup`, using
+`heilbronn_defining_bddAbove` for boundedness).  All ten triple areas are
+rational (`81/125`, `432/625`, `648/625`, `27/25`), so every ordering of every
+distinct triple is discharged by `norm_num` — no radicals appear anywhere,
+unlike for the exact regular pentagon. -/
+theorem heilbronn_five_ge : (81 / 125 : ℝ) ≤ heilbronn 5 := by
+  unfold heilbronn
+  refine le_csSup (heilbronn_defining_bddAbove 5 (by norm_num)) ?_
+  refine ⟨{((1 : ℝ), (0 : ℝ)), (7 / 25, 24 / 25), (-(4 / 5), 3 / 5),
+    (-(4 / 5), -(3 / 5)), (7 / 25, -(24 / 25))}, ?_, ?_, ?_⟩
+  · -- the five vertices are distinct, so the configuration has cardinality `5`
+    rw [Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_insert_of_notMem (by norm_num [Prod.ext_iff]),
+      Finset.card_singleton]
+  · -- each vertex lies exactly on the boundary of the closed unit disk
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl | rfl | rfl <;> norm_num
+  · -- every ordered distinct triple has area `≥ 81/125`
+    intro p hp q hq r hr hpq hqr hpr
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp hq hr
+    rcases hp with rfl | rfl | rfl | rfl | rfl <;>
+        rcases hq with rfl | rfl | rfl | rfl | rfl <;>
+        rcases hr with rfl | rfl | rfl | rfl | rfl <;>
+      first
+        | exact absurd rfl hpq
+        | exact absurd rfl hqr
+        | exact absurd rfl hpr
+        | (show (81 / 125 : ℝ) ≤ triangleArea _ _ _; unfold triangleArea; norm_num)
+
+/-- **`heilbronn 5` is strictly positive** — immediate from `heilbronn_five_ge`. -/
+theorem heilbronn_five_pos : 0 < heilbronn 5 :=
+  lt_of_lt_of_le (by norm_num) heilbronn_five_ge
+
+/-- **Sandwich at `n = 5`:** `heilbronn 5 ∈ [81/125, 3/2]`.  Lower bound from the
+rational near-pentagon (`heilbronn_five_ge`); upper bound from the Lagrange bound
+`heilbronn n ≤ 3/2` (`heilbronn_le_three_halves`).  The lower bound is *not*
+claimed sharp — the true five-point optimum is conjecturally the regular
+pentagon's `(2 sin 72° − sin 36°)/2 ≈ 0.6572`, and `81/125 = 0.648` sits within
+`1.5%` of it. -/
+theorem heilbronn_five_mem_Icc : heilbronn 5 ∈ Set.Icc (81 / 125 : ℝ) (3 / 2) :=
+  ⟨heilbronn_five_ge, heilbronn_le_three_halves 5 (by norm_num)⟩
+
 end Erdos507WIP01
