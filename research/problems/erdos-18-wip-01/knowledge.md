@@ -352,3 +352,53 @@ NEXT: minimal-m-with-hErdos=t sequence (2,6,12?,30? — needs hErdos 16,18,20,28
 confirm 30 is minimal for 4); hErdos of 2^a·3 family via engines; a lower-bound
 engine iterating the gap argument below m/2 (theory, not per-m decide); deep Vose
 hErdos(n!) < n^{o(1)} still blocked at elementary layer.
+
+## 2026-07-23 (researcher-1) — hErdos 18/20/28 + record-setters (least practical m with index t = 2^t, t ≤ 4)
+
+Engine session answering the prior NEXT (minimal-m sequence). Six new exact-value/
+record theorems + one helper, all 0-axiom (docker-verified):
+
+- `hErdos_eighteen = 3` — 18 = 2·3² joins 30 in the "no practical factorisation"
+  class (9, 3 odd ⟹ hErdos_mul_le silent); hard target k = 17 (pair sums from
+  {1,2,3,6,9} top out at 15).
+- `hErdos_twenty = 4` — the UNIQUE hard target k = 18 (18 = 10+5+2+1 forced; no
+  triple from {1,2,4,5,10} hits 18). **Non-monotonicity datum**: 20 < 24 but
+  hErdos 20 = 4 > 3 = hErdos 24; also d(20) = 6 < 8 = d(24) with LARGER index on
+  SMALLER divisor count — sharpens the structure-not-count moral of 24/30.
+- `hErdos_twentyeight = 4` — hard target k = 27 (14+7+4+2 forced; triples ≤ 25).
+- `hErdos_eight = 3`, `hErdos_sixteen = 4` — hErdos_two_pow specialisations
+  (same norm_num pattern as hErdos_four).
+- `hErdos_le_three_of_lt_sixteen` — interval_cases + per-value decide: practicals
+  below 16 are exactly 1,2,4,6,8,12 (indices 0,1,2,2,3,3).
+- `minimal_hErdos_two/three/four : IsLeast {m | IsPractical m ∧ hErdos m = t} 2^t`
+  — the record-setter sequence starts 2, 4, 8, 16 (t = 1 case is hErdos_eq_one_iff).
+
+### Table (all 0-axiom)
+hErdos: 1↦0, 2↦1, 4↦2, 6↦2, 8↦3, 12↦3, 16↦4, 18↦3, 20↦4, 24↦3, 28↦4, 30↦4, 2^k↦k.
+Hard targets: 12:11, 18:17, 20:18(unique), 24:23, 28:27, 30:29.
+
+### Open question crystallised (NOT a theorem)
+Is the record-setter 2^t for ALL t? Would follow from hErdos m ≤ log₂ m for
+practical m. The greedy halving proof FAILS: greedy needs the largest divisor
+d ≤ k to satisfy 2d > k, i.e. consecutive-divisor ratio ≤ 2, but practical
+numbers can violate this (78 = 2·3·13 is practical with divisor gap 6 → 13,
+ratio 2.17 — check: σ(6) = 12 ≥ 13−1). So the general upper bound needs a
+non-greedy argument (or a counterexample exists at larger t). Good future target.
+
+### Idioms
+- interval_cases + `exact absurd hpr (by decide)` for non-practical values +
+  `simp [hErdos_<val>]` for known values kills finite practical-enumeration goals.
+- IsLeast lower half: `rintro m ⟨hpr, ht⟩; by_contra hlt; push Not at hlt` then
+  the ≤-helper + omega (v4.31: push Not, not push_neg).
+
+UPDATE (same session): went ahead and closed t = 5 too — `hErdos_thirtytwo = 5`,
+`hErdos_le_four_of_lt_thirtytwo` (case split at 16 chains the ≤3 helper; sweep
+16..31), `minimal_hErdos_five : IsLeast ... 32`. Record-setter sequence proved
+2, 4, 8, 16, 32 for t = 1..5.
+
+NEXT: record-setter t = 6 (= 64?) needs engine values for the practicals in
+(32, 64): 36, 40, 42, 48, 54, 56, 60 (7 values; decides get slower — d(48) = 10
+⟹ 1024-subset powerset × 48 targets, likely needs bigger maxRecDepth or a
+smarter engine). General lower-bound engine iterating the gap argument below
+m/2. Non-monotonicity (20 vs 24) suggests studying WHERE the index drops.
+Deep Vose bound still blocked at the elementary layer.
