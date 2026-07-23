@@ -255,5 +255,29 @@
       "sum-free definition",
       "Sidon set definition"
     ]
+  },
+  {
+    "id": "ann-876-12",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 259,
+      "endLine": 305
+    },
+    "type": "theorem",
+    "title": "Part VIII–IX: Sidon/B_h remarks and the summary theorem",
+    "content": "Part VIII (prose comments, not formalized) elaborates the Sidon-set connection begun in the previous block and introduces $B_h$ sequences (generalizing Sidon to no repeated $h$-fold sum) as the natural hierarchy sum-free sets sit atop. Part IX restates Problem #876's status as PARTIALLY SOLVED, listing the three open questions (linear gaps, exact reciprocal-sum supremum, gap-vs-density tightness) and four known results as a prose ledger, then proves `erdos_876_summary`. That theorem is not new mathematics: it destructures `graham_result ε hε` and forwards the sum-free and gap-bound components directly, restating Graham's axiom as the file's closing corollary rather than adding independent content.",
+    "mathContext": "`erdos_876_summary : \\forall \\varepsilon > 0, \\exists a : \\mathbb{N} \\to \\mathbb{N}, \\text{IsSumFreeErdos}(\\text{range } a) \\land \\exists N, \\forall n \\ge N, (a_{n+1}-a_n) < n^{1+\\varepsilon}$ — proved by `obtain \\langle a, hincr, hsum, N, hgap\\rangle := graham_result \\varepsilon h\\varepsilon; exact \\langle a, hsum, N, hgap\\rangle`, discarding only the `hincr` (increasing enumeration) witness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_h sequences",
+      "Graham's result",
+      "proof by destructuring an axiom"
+    ],
+    "prerequisites": [
+      "graham_result",
+      "IsSumFreeErdos",
+      "gap"
+    ]
   }
 ]
