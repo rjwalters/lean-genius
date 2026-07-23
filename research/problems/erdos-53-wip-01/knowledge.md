@@ -184,3 +184,34 @@ untouched (the chain needs positivity for the total-sum upper bound).
 ### Files modified
 - `proofs/Proofs/Erdos53WIP01.lean` (+182 lines, 8 theorems)
 - `src/data/research/problems/erdos-53-wip-01.json`
+
+## Session 2026-07-23 (researcher-1) — multiplicative Erdős chain (product-side quadratic)
+
+`subsetProducts_card_quadratic`: |subsetProducts A| ≥ n(n+1)/2 for ARBITRARY
+finite A ⊆ ℤ with all elements > 1. Mirror of the additive chain (same
+max-removal induction), transposed division-free:
+
+- Fresh values: {Π A} ∪ {Π(A.erase a) : a ∈ A.erase m} — never written P/a.
+- Recombination law `hRmul : Π(A.erase a) · a = Π A` (Finset.prod_erase_mul)
+  drives everything: injectivity via mul_left_cancel₀, strict separation
+  Q < Π(A.erase a) via Q·a < Q·m = Π(A.erase a)·a then lt_of_mul_lt_mul_right.
+- Subset-product ≤ full-product: prod_dvd_prod_of_subset + Int.le_of_dvd
+  (ℤ's multiplicative monoid is NOT ordered — Finset.prod_le_prod_of_subset_
+  of_one_le' does not apply to ℤ; divisibility+positivity is the correct route).
+- Hypothesis 1 < a essential (1 ∈ A ⟹ Π(A.erase 1) = Π A, injectivity dies);
+  0 excluded a fortiori. Additive chain needed only 0 < a.
+- No +1 in the bound: subsetProducts filters out the empty subset.
+- Sharp: {2,4,…,2^n} products = 2^s, s ∈ [1, n(n+1)/2] (remark, not formalised).
+
+Lean gotchas (new this session):
+- Set.InjOn intro gives SET-coe memberships; convert with Finset.mem_coe.mp
+  before feeding Finset lemmas (or `have ha' : a ∈ A' := ha` — defeq works).
+- InjOn's hab `(fun a => …) a = (fun a => …) b` is NOT beta-reduced for rw;
+  materialise `have hab' : Π(A.erase a) = Π(A.erase b) := hab` first.
+- rw-order trap: rewriting haeq (R = P) before hRmul (R·a = P) destroys the
+  R·a pattern — order [mul_one, hRmul, haeq] not [mul_one, haeq, hRmul].
+
+Elementary vein now fully SATURATED (both sides individually quadratic).
+Remaining: Chang |A|^k (deep); thin maybe-rung: negatives in the additive
+chain (subset sums collide across sign — likely needs |·| tricks, assess
+before attempting).

@@ -473,4 +473,207 @@ theorem sumsOrProducts_card_superlinear (C : ℕ) :
     Nat.mul_le_mul_right A.card hbig
   nlinarith [h, hsq]
 
+/-!
+## Quadratic multiplicative lower bound for sets of integers ≥ 2 (product chain)
+
+The quadratic chain above is purely **additive**: it bounds `subsetSums`. This
+section proves its exact multiplicative mirror, moving the unconditional
+`subsetProducts` frontier from "prime sets only" (`2^{|A|} − 1`, unique
+factorisation) to **arbitrary sets of integers `≥ 2`**:
+
+> For any finite `A ⊆ ℤ` with all elements `> 1`,
+> `|subsetProducts A| ≥ |A|·(|A|+1)/2`.
+
+Same top-element-removal chain, transposed: remove `m = max A` and observe that
+the `|A|` products `{Π A} ∪ { Π (A.erase a) : a ∈ A, a ≠ m }` are pairwise
+distinct and each strictly exceeds `Π (A.erase m)`, which bounds every subset
+product of `A.erase m` from above. The transposition is not mechanical, because
+the multiplicative monoid of `ℤ` is not an ordered monoid (negatives flip
+inequalities) and `ℤ` has no exact division:
+
+* "subset product `≤` full product" comes from **divisibility plus positivity**
+  (`Finset.prod_dvd_prod_of_subset` + `Int.le_of_dvd`), not sum monotonicity;
+* the fresh values are written `Π (A.erase a)` — never `P / a` — and all their
+  comparisons go through **cancellation** on `Π (A.erase a) · a = Π A`
+  (`mul_left_cancel₀`, `lt_of_mul_lt_mul_right`), not subtraction;
+* the elements-`> 1` hypothesis is genuinely needed where the additive chain
+  needed only `> 0`: with `1 ∈ A` the fresh value `Π (A.erase 1) = Π A`
+  collides with the full product (injectivity dies), matching the additive
+  chain's failure at `0 ∈ A`.
+
+The bound differs from the additive one by exactly the missing `+1`:
+`subsetProducts` excludes the empty subset (there is no multiplicative
+analogue of the free value `0`). It is **sharp**: for the geometric set
+`A = {2, 4, …, 2^n}` the subset products are `2^s` for `s` a nonempty subset
+sum of `{1, …, n}`, i.e. exactly the `n(n+1)/2` values `2^1, …, 2^{n(n+1)/2}`
+(remark, not formalised here). Together with `subsetSums_card_ge_quadratic`
+this shows each side of Problem 53 is *individually* quadratic on its natural
+domain — the open content of Erdős–Szemerédi/Chang is that sums and products
+cannot both stay near-minimal *simultaneously*.
+-/
+
+/-- The full product `Π A` is a subset product (take `S = A`), for nonempty `A`. -/
+theorem prod_mem_subsetProducts {A : Finset ℤ} (hA : A.Nonempty) :
+    A.prod id ∈ subsetProducts A := by
+  rw [subsetProducts, Finset.mem_image]
+  exact ⟨A, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr Finset.Subset.rfl, hA⟩, rfl⟩
+
+/-- Erasing one element leaves a subset product, provided something remains:
+    `Π (A.erase a) ∈ subsetProducts A` when `A.erase a` is nonempty. -/
+theorem prod_erase_mem_subsetProducts {A : Finset ℤ} {a : ℤ} (hne : (A.erase a).Nonempty) :
+    (A.erase a).prod id ∈ subsetProducts A := by
+  rw [subsetProducts, Finset.mem_image]
+  exact ⟨A.erase a, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
+    (fun x hx => Finset.mem_of_mem_erase hx), hne⟩, rfl⟩
+
+/-- On a set of **positive** integers every subset product is at most the full
+    product `Π A`: a subset product divides the full product
+    (`Finset.prod_dvd_prod_of_subset`), and a positive divisor of a positive
+    integer is at most it (`Int.le_of_dvd`). The multiplicative counterpart of
+    `mem_subsetSums_le_sum` — sum monotonicity is unavailable because `ℤ` under
+    `*` is not an ordered monoid. -/
+theorem mem_subsetProducts_le_prod {A : Finset ℤ} (hpos : ∀ a ∈ A, 0 < a)
+    {x : ℤ} (hx : x ∈ subsetProducts A) : x ≤ A.prod id := by
+  rw [subsetProducts, Finset.mem_image] at hx
+  obtain ⟨S, hS, rfl⟩ := hx
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  exact Int.le_of_dvd (Finset.prod_pos (fun i hi => hpos i hi))
+    (Finset.prod_dvd_prod_of_subset S A id hS.1)
+
+/-- **Multiplicative Erdős chain, induction core.** For any set `A` of `n`
+    distinct integers `> 1`, `n(n+1) ≤ 2·|subsetProducts A|` (the division-free
+    form of `|subsetProducts A| ≥ n(n+1)/2`).
+
+    Induction on `n`, removing `m = max A`: every subset product of
+    `A' = A.erase m` divides — hence is at most — `Q = Π A'`, while the `n`
+    values `{Π A} ∪ { Π (A.erase a) : a ∈ A' }` are distinct subset products of
+    `A` strictly above `Q`. All comparisons run through cancellation on
+    `Π (A.erase a) · a = Π A = Q · m`: from `a < m` and `Q > 0` follows
+    `Π (A.erase a) > Q`, and from `m > 1` follows `Π A > Q`. -/
+theorem subsetProducts_card_quadratic :
+    ∀ (n : ℕ) (A : Finset ℤ), A.card = n → (∀ a ∈ A, 1 < a) →
+      n * (n + 1) ≤ 2 * (subsetProducts A).card := by
+  intro n
+  induction n with
+  | zero =>
+      intro A hcard _
+      simp
+  | succ n ih =>
+      intro A hcard hgt
+      have hpos : ∀ a ∈ A, (0 : ℤ) < a := fun a ha => lt_trans zero_lt_one (hgt a ha)
+      have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+      set m := A.max' hne with hm_def
+      have hmA : m ∈ A := A.max'_mem hne
+      set A' := A.erase m with hA'_def
+      have hcard' : A'.card = n := by
+        rw [hA'_def, Finset.card_erase_of_mem hmA, hcard]
+        omega
+      have hgt' : ∀ a ∈ A', (1 : ℤ) < a := fun a ha => hgt a (Finset.mem_of_mem_erase ha)
+      have hpos' : ∀ a ∈ A', (0 : ℤ) < a := fun a ha => hpos a (Finset.mem_of_mem_erase ha)
+      have IH : n * (n + 1) ≤ 2 * (subsetProducts A').card := ih A' hcard' hgt'
+      set P := A.prod id with hP_def
+      set Q := A'.prod id with hQ_def
+      have hQpos : (0 : ℤ) < Q := Finset.prod_pos (fun i hi => hpos' i hi)
+      -- the erased set multiplies back up to the full product
+      have hQm : Q * m = P := by
+        rw [hQ_def, hA'_def, hP_def]
+        simpa using Finset.prod_erase_mul A id hmA
+      -- the generic one-element-erased product recombination law
+      have hRmul : ∀ a ∈ A, (A.erase a).prod id * a = P := by
+        intro a ha
+        rw [hP_def]
+        simpa using Finset.prod_erase_mul A id ha
+      -- the `n + 1` "large" subset products: `P` itself and `Π (A.erase a)` for `a ∈ A'`
+      set B : Finset ℤ := insert P (A'.image (fun a => (A.erase a).prod id)) with hB_def
+      have hBsub : B ⊆ subsetProducts A := by
+        intro b hb
+        rw [hB_def, Finset.mem_insert] at hb
+        rcases hb with rfl | hb
+        · exact prod_mem_subsetProducts hne
+        · rw [Finset.mem_image] at hb
+          obtain ⟨a, ha, rfl⟩ := hb
+          have hma : m ∈ A.erase a :=
+            Finset.mem_erase.mpr ⟨fun h => (Finset.mem_erase.mp ha).1 h.symm, hmA⟩
+          exact prod_erase_mem_subsetProducts ⟨m, hma⟩
+      -- each fresh product strictly exceeds `Q`
+      have hRgtQ : ∀ a ∈ A', Q < (A.erase a).prod id := by
+        intro a ha
+        have haA : a ∈ A := Finset.mem_of_mem_erase ha
+        have halt : a < m :=
+          lt_of_le_of_ne (A.le_max' a haA) (Finset.mem_erase.mp ha).1
+        have hkey : Q * a < (A.erase a).prod id * a := by
+          calc Q * a < Q * m := mul_lt_mul_of_pos_left halt hQpos
+            _ = P := hQm
+            _ = (A.erase a).prod id * a := (hRmul a haA).symm
+        exact lt_of_mul_lt_mul_right hkey (hpos a haA).le
+      have hPgtQ : Q < P := by
+        have h1 : Q * 1 < Q * m := mul_lt_mul_of_pos_left (hgt m hmA) hQpos
+        rw [mul_one, hQm] at h1
+        exact h1
+      have hBcard : B.card = n + 1 := by
+        have hinj : Set.InjOn (fun a => (A.erase a).prod id) A' := by
+          intro a ha b hb hab
+          have ha' : a ∈ A' := Finset.mem_coe.mp ha
+          have hb' : b ∈ A' := Finset.mem_coe.mp hb
+          have haA : a ∈ A := Finset.mem_of_mem_erase ha'
+          have hbA : b ∈ A := Finset.mem_of_mem_erase hb'
+          have hRpos : (0 : ℤ) < (A.erase a).prod id := lt_trans hQpos (hRgtQ a ha')
+          have hab' : (A.erase a).prod id = (A.erase b).prod id := hab
+          have h : (A.erase a).prod id * a = (A.erase a).prod id * b := by
+            rw [hRmul a haA, hab']
+            exact (hRmul b hbA).symm
+          exact mul_left_cancel₀ (ne_of_gt hRpos) h
+        have himg : (A'.image (fun a => (A.erase a).prod id)).card = A'.card :=
+          Finset.card_image_of_injOn hinj
+        have hP_not : P ∉ A'.image (fun a => (A.erase a).prod id) := by
+          rw [Finset.mem_image]
+          rintro ⟨a, ha, haeq⟩
+          have haA : a ∈ A := Finset.mem_of_mem_erase ha
+          have hRpos : (0 : ℤ) < (A.erase a).prod id := lt_trans hQpos (hRgtQ a ha)
+          -- `Π (A.erase a) = P` forces `a = 1`, impossible for elements `> 1`
+          have h1 : (A.erase a).prod id * a = (A.erase a).prod id * 1 := by
+            rw [mul_one, hRmul a haA, haeq]
+          have := mul_left_cancel₀ (ne_of_gt hRpos) h1
+          exact absurd this (ne_of_gt (hgt a haA))
+        rw [hB_def, Finset.card_insert_of_notMem hP_not, himg, hcard']
+      -- separation: every subset product of `A'` is `≤ Q`, every element of `B` is `> Q`
+      have hlt : ∀ x ∈ subsetProducts A', ∀ b ∈ B, x < b := by
+        intro x hx b hb
+        have hxle : x ≤ Q := mem_subsetProducts_le_prod hpos' hx
+        rw [hB_def, Finset.mem_insert] at hb
+        rcases hb with rfl | hb
+        · exact lt_of_le_of_lt hxle hPgtQ
+        · rw [Finset.mem_image] at hb
+          obtain ⟨a, ha, rfl⟩ := hb
+          exact lt_of_le_of_lt hxle (hRgtQ a ha)
+      have hdisj : Disjoint (subsetProducts A') B := by
+        rw [Finset.disjoint_left]
+        intro x hx hxB
+        exact absurd (hlt x hx x hxB) (lt_irrefl x)
+      have hunion : subsetProducts A' ∪ B ⊆ subsetProducts A :=
+        Finset.union_subset
+          (subsetProducts_mono (fun x hx => Finset.mem_of_mem_erase hx)) hBsub
+      have hcount : (subsetProducts A').card + (n + 1) ≤ (subsetProducts A).card := by
+        have h := Finset.card_le_card hunion
+        rwa [Finset.card_union_of_disjoint hdisj, hBcard] at h
+      nlinarith [IH, hcount]
+
+/-- **Multiplicative quadratic bound (doubled form).** For any set `A` of
+    distinct integers `> 1`, `|A|·(|A|+1) ≤ 2·|subsetProducts A|` — the
+    multiplicative side **alone** realises quadratically many values, with no
+    primality assumption. Mirror of `subsetSums_card_ge_quadratic`; the missing
+    `+2` is the excluded empty subset. -/
+theorem subsetProducts_card_ge_quadratic {A : Finset ℤ} (hgt : ∀ a ∈ A, 1 < a) :
+    A.card * (A.card + 1) ≤ 2 * (subsetProducts A).card :=
+  subsetProducts_card_quadratic A.card A rfl hgt
+
+/-- **Multiplicative quadratic bound (division form).**
+    `|A|·(|A|+1)/2 ≤ |subsetProducts A|` for distinct integers `> 1` — sharp for
+    the geometric progression `{2, 4, …, 2^n}`, whose subset products are exactly
+    `2^1, …, 2^{n(n+1)/2}`. -/
+theorem subsetProducts_card_ge_quadratic' {A : Finset ℤ} (hgt : ∀ a ∈ A, 1 < a) :
+    A.card * (A.card + 1) / 2 ≤ (subsetProducts A).card := by
+  have h := subsetProducts_card_ge_quadratic hgt
+  omega
+
 end Erdos53
