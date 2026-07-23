@@ -43,7 +43,8 @@
       "Fermat's little theorem and the explicit factorization of X^q − X are the same statement read two ways: 'every a satisfies a^q = a' is exactly 'every a is a root of X^q − X', and once you know a monic polynomial has as many roots as its degree, the product form is forced.",
       "X^q − X and X^p − a sit at opposite ends of separability: the first has q distinct simple roots (squarefree), the second has one root of multiplicity p (maximally inseparable). Both factorizations are completely explicit, and both are invisible to the abstract UFD existence statement of the parent.",
       "Characteristic p is doing all the work in the Frobenius case: sub_pow_char is false in characteristic 0, which is precisely why X^p − a does not collapse over ℚ.",
-      "The witness 2 is not arbitrary — over 𝔽_5 every element is a root of X^5 − X by Fermat, so any non-trivial scalar (here 2) certifies that the all-linear split cannot survive the move to ℚ."
+      "The witness 2 is not arbitrary — over 𝔽_5 every element is a root of X^5 − X by Fermat, so any non-trivial scalar (here 2) certifies that the all-linear split cannot survive the move to ℚ.",
+      "Specializing the general finite-field theorem to 𝔽_p costs one rewrite (Fintype.card (ZMod p) → p via ZMod.card p), but it leans on the Fact p.Prime instance that makes ZMod p a field; for composite n, ZMod n is only a ring, and both this factorization and Fermat's little theorem itself fail there (e.g. 2^4 ≡ 0, not 2, mod 4)."
     ],
     "prerequisites": [
       "FiniteField.roots_X_pow_card_sub_X: roots (X^q − X) = univ.val over a finite field",
@@ -64,11 +65,18 @@
       "summary": "Module docstring contrasting the abstract UFD existence of the parent with the explicit closed-form factorizations proved here. Imports Mathlib and opens the Polynomial namespace."
     },
     {
-      "id": "fermat",
-      "title": "Fermat Factorization over a Finite Field",
+      "id": "fermat-general",
+      "title": "Fermat Factorization over a General Finite Field",
       "startLine": 40,
+      "endLine": 71,
+      "summary": "fermat_factorization: X^|K| − X = ∏_{a:K}(X − a). Monicity from monic_X_pow_sub, the root multiset and degree from the FiniteField lemmas, and prod_multiset_X_sub_C_of_monic_of_roots_card_eq to assemble the product."
+    },
+    {
+      "id": "fermat-zmod",
+      "title": "Specializing to 𝔽_p",
+      "startLine": 73,
       "endLine": 78,
-      "summary": "fermat_factorization: X^|K| − X = ∏_{a:K}(X − a). Monicity from monic_X_pow_sub, the root multiset and degree from the FiniteField lemmas, and prod_multiset_X_sub_C_of_monic_of_roots_card_eq to assemble the product. fermat_factorization_zmod specializes to 𝔽_p by rewriting |ZMod p| = p."
+      "summary": "fermat_factorization_zmod: the concrete-prime form X^p − X = ∏_{a:ZMod p}(X − a), obtained from fermat_factorization by rewriting |ZMod p| = p (ZMod.card p) — a single-instantiation specialization that sets up the Section II Frobenius theorems."
     },
     {
       "id": "frobenius",
