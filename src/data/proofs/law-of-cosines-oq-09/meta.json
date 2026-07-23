@@ -102,20 +102,36 @@
       "mathContext": "Law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$; the classification of $C$ against $\\pi/2$ becomes the algebraic comparison of $c^2$ with $a^2+b^2$."
     },
     {
-      "id": "cos-sign",
-      "title": "Sign of cos C against π/2 on [0, π]",
-      "summary": "Private helpers: cos C > 0 ↔ C < π/2, cos C = 0 ↔ C = π/2, cos C < 0 ↔ C > π/2, for C ∈ [0, π].",
+      "id": "cos-sign-lt-eq",
+      "title": "Sign of cos C: Positive and Zero Cases",
+      "summary": "Private helpers cos_pos_iff_lt (cos C > 0 ↔ C < π/2) and cos_eq_zero_iff_eq (cos C = 0 ↔ C = π/2), for C ∈ [0, π].",
       "startLine": 33,
-      "endLine": 73,
-      "mathContext": "On $[0,\\pi]$ the cosine is strictly decreasing from $1$ to $-1$, crossing $0$ at $\\pi/2$. `cos_pos_iff_lt` proves $\\cos C > 0 \\iff C < \\pi/2$: the forward direction from `Real.cos_pos_of_mem_Ioo` (as $C \\ge 0 > -\\pi/2$), the reverse by contraposition through `Real.cos_nonpos_of_pi_div_two_le_of_le`. `cos_eq_zero_iff_eq` proves $\\cos C = 0 \\iff C = \\pi/2$ using injectivity of $\\cos$ on $[0,\\pi]$ (`Real.strictAntiOn_cos.injOn`) and $\\cos(\\pi/2)=0$. `cos_neg_iff_gt` proves $\\cos C < 0 \\iff C > \\pi/2$ via `Real.cos_neg_of_pi_div_two_lt_of_lt`. These three lemmas isolate all the trigonometry; the trichotomy theorems are then pure algebra."
+      "endLine": 58,
+      "mathContext": "`cos_pos_iff_lt` proves $\\cos C > 0 \\iff C < \\pi/2$: the forward direction from `Real.cos_pos_of_mem_Ioo`, the reverse by contraposition through `Real.cos_nonpos_of_pi_div_two_le_of_le`. `cos_eq_zero_iff_eq` proves $\\cos C = 0 \\iff C = \\pi/2$ using injectivity of $\\cos$ on $[0,\\pi]$ (`Real.strictAntiOn_cos.injOn`) and $\\cos(\\pi/2)=0$."
     },
     {
-      "id": "trichotomy",
-      "title": "The Acute–Right–Obtuse Trichotomy",
-      "summary": "angle_acute_iff (II.13), angle_right_iff (Pythagoras), angle_obtuse_iff (II.12): C ≶ π/2 ⟺ a²+b² ≶ c².",
+      "id": "cos-sign-gt",
+      "title": "Sign of cos C: Negative Case",
+      "summary": "Private helper cos_neg_iff_gt: cos C < 0 ↔ C > π/2, for C ∈ [0, π], via Real.cos_neg_of_pi_div_two_lt_of_lt. Completes the three-way sign analysis that isolates all the trigonometry; the trichotomy theorems are then pure algebra.",
+      "startLine": 60,
+      "endLine": 73,
+      "mathContext": "`cos_neg_iff_gt` proves $\\cos C < 0 \\iff C > \\pi/2$ via `Real.cos_neg_of_pi_div_two_lt_of_lt`, dispatching the case $C \\le \\pi/2$ by contradiction."
+    },
+    {
+      "id": "trichotomy-acute-right",
+      "title": "Acute and Right Angle Cases",
+      "summary": "angle_acute_iff (Euclid II.13): C < π/2 ⟺ c² < a²+b². angle_right_iff (Pythagoras): C = π/2 ⟺ c² = a²+b², the boundary where cos C = 0 forces 2ab·cos C = 0.",
       "startLine": 75,
+      "endLine": 107,
+      "mathContext": "Each theorem rewrites its angle condition using the matching cos-sign helper, leaving a comparison of $a^2+b^2$ and $c^2$. Since the Law of Cosines gives $a^2 + b^2 - c^2 = 2ab\\cos C$ with $2ab > 0$, the sign of $a^2+b^2-c^2$ equals the sign of $\\cos C$. `angle_acute_iff` closes by `linarith`/`nlinarith`; `angle_right_iff` uses `mul_eq_zero` on $2ab\\cos C = 0$."
+    },
+    {
+      "id": "trichotomy-obtuse",
+      "title": "Obtuse Angle Case",
+      "summary": "angle_obtuse_iff (Euclid II.12): C > π/2 ⟺ a²+b² < c², closing the trichotomy. Closes the namespace.",
+      "startLine": 109,
       "endLine": 124,
-      "mathContext": "Each theorem rewrites its angle condition using the matching cos-sign helper, leaving a comparison of $a^2+b^2$ and $c^2$. Since the Law of Cosines gives $a^2 + b^2 - c^2 = 2ab\\cos C$ with $2ab > 0$, the sign of $a^2+b^2-c^2$ equals the sign of $\\cos C$. `angle_acute_iff` ($C < \\pi/2 \\iff c^2 < a^2+b^2$, Euclid II.13) and `angle_obtuse_iff` ($C > \\pi/2 \\iff a^2+b^2 < c^2$, Euclid II.12) close by `linarith`/`nlinarith` using $2ab>0$; `angle_right_iff` ($C = \\pi/2 \\iff c^2 = a^2+b^2$) is the Pythagorean boundary, where $\\cos C = 0$ forces $2ab\\cos C = 0$ and hence $c^2 = a^2+b^2$ (and conversely via `mul_eq_zero`)."
+      "mathContext": "$C > \\pi/2 \\iff \\cos C < 0 \\iff 2ab\\cos C < 0 \\iff a^2+b^2 < c^2$, closed by `linarith`/`nlinarith` using $2ab>0$."
     }
   ],
   "conclusion": {
