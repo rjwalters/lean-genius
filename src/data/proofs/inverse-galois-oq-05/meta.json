@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "§0: Shafarevich's Theorem and the Group-Theoretic Skeleton",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring: Shafarevich's theorem is split into a fully machine-checked group-theoretic induction (this file) and a single class-field-theory hypothesis (abelian-kernel embedding problems solvable over ℚ) left as a parameter.",
+      "mathContext": "$\\text{Shafarevich's theorem} = (\\text{group-theoretic induction, HERE, 0 axioms}) + (\\text{abelian-kernel embedding problems solvable over } \\mathbb{Q}\\text{, left as a hypothesis})$."
+    },
+    {
       "id": "peeling",
       "title": "§I: Peeling the Derived Series",
       "startLine": 63,
@@ -78,12 +86,20 @@
       "mathContext": "Induction on the derived length: strip the top abelian layer $D_n$, apply the inductive hypothesis to the shorter quotient $G / D_n$, and lift back through the abelian-kernel extension step."
     },
     {
-      "id": "realizability",
-      "title": "§III: Instantiation to Realizability over ℚ",
+      "id": "realizability-def",
+      "title": "§III: Realizability over ℚ — Definition and Base Case",
       "startLine": 141,
+      "endLine": 167,
+      "summary": "Defines RealizableOverRat and proves the base case concretely: the trivial group is Gal(ℚ/ℚ), the Galois group of the trivial extension ℚ/ℚ.",
+      "mathContext": "$\\textsf{RealizableOverRat}(G) := \\exists K/\\mathbb{Q}$ finite Galois with $G \\cong \\mathrm{Gal}(K/\\mathbb{Q})$. Subsingleton $\\Rightarrow$ $\\mathrm{Gal}(\\mathbb{Q}/\\mathbb{Q})$ is itself subsingleton, so the unique group homomorphism is automatically an isomorphism."
+    },
+    {
+      "id": "embedding-theorem",
+      "title": "§IV: Shafarevich's Theorem, Reduced to the Embedding Step",
+      "startLine": 169,
       "endLine": 184,
-      "summary": "Taking P = 'realizable over ℚ' with the trivial base case Gal(ℚ/ℚ) proved concretely, Shafarevich's theorem reduces to the single hypothesis that abelian-kernel embedding problems over ℚ are solvable. Axiom-free conditional.",
-      "mathContext": "$\\textsf{RealizableOverRat}(G) := \\exists K/\\mathbb{Q}$ finite Galois with $G \\cong \\mathrm{Gal}(K/\\mathbb{Q})$. The embedding hypothesis is exactly the class-field-theory heart of Shafarevich's theorem."
+      "summary": "Instantiating the abstract induction with P = 'realizable over ℚ' shows Shafarevich's theorem reduces to the single hypothesis that abelian-kernel embedding problems over ℚ are solvable. Axiom-free conditional.",
+      "mathContext": "The embedding hypothesis $\\textsf{embed}$ is exactly the class-field-theory heart of Shafarevich's theorem — everything else in the reduction is verified group theory."
     }
   ],
   "conclusion": {
