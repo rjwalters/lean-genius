@@ -83,9 +83,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Strengthening the Sibling Entry Along Three Axes",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Imports Finset.sum_range_by_parts (Mathlib.Algebra.BigOperators.Module) and Mathlib.Tactic. The module docstring states the headline second-moment identity and its relation to the sibling entry summation-by-parts-oq-01-oq-02, which the same closed form holds over ℝ only and by bare induction: this entry strengthens it along generality (any field K), the genuine Abel summation-by-parts derivation, and the falling-factorial companion/decomposition. Opens the SummationByPartsOQ01OQ02OQ01 namespace and Finset, and fixes a generic field K.",
+      "mathContext": "Sets up the ambient field $K$ in which all four theorems are proved, with no reference to $\\mathbb{R}$ or a norm."
+    },
+    {
       "id": "second-moment-closed-form",
       "title": "The Second-Moment Closed Form over Any Field",
-      "startLine": 1,
+      "startLine": 54,
       "endLine": 68,
       "summary": "Establishes the headline identity `sum_range_sq_geom`: for a field element r ≠ 1, ∑_{k<n} k²·rᵏ = (rⁿ·(n² + (1+2n−2n²)·r + (n−1)²·r²) − r − r²)/(r−1)³. Unlike the sibling entry (real, bare induction), this holds over an arbitrary field K as a purely algebraic fact. Proved by induction on n: Finset.sum_range_succ adds the next term, then push_cast/field_simp/ring close the polynomial identity after clearing (r−1)³.",
       "mathContext": "$\\sum_{k<n} k^2 r^k = \\dfrac{r^n\\bigl(n^2 + (1+2n-2n^2)r + (n-1)^2 r^2\\bigr) - r - r^2}{(r-1)^3}$"
