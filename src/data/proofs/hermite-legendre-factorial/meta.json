@@ -40,7 +40,8 @@
       "Hermite's identity is exactly the tool that refines a Legendre quotient: ⌊n/p^i⌋ counts, but ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ resolves that same count into p uniformly-sampled floors at the next prime power, because Hermite says the p samples of ⌊·⌋ around n/p^{i+1} reassemble ⌊p·(n/p^{i+1})⌋ = ⌊n/p^i⌋.",
       "The real-vs-natural mismatch is illusory: Hermite lives over ℝ (arbitrary real x) while Legendre's summands are natural Euclidean quotients, but ⌊(n:ℝ)/m^j⌋ = n/m^j (Int.floor_div_natCast then Int.natCast_div) bridges the two with no error term.",
       "The synthesis is purely term-by-term: once each summand is split, Mathlib's `padicValNat_factorial` carries the whole double-sum identity with a single sum_congr, so the Legendre core and the Hermite layer compose cleanly.",
-      "The construction is uniform in the level: legendre_summand_split holds for every m ≥ 1 and every j, so the same Hermite refinement could be iterated to express v_p(n!) at any chosen depth of prime powers."
+      "The construction is uniform in the level: legendre_summand_split holds for every m ≥ 1 and every j, so the same Hermite refinement could be iterated to express v_p(n!) at any chosen depth of prime powers.",
+      "floor_natCast_div_pow is not specific to Legendre: any natural-number floor-sum identity built on ⌊(a:ℝ)/(b:ℕ)⌋ can be bootstrapped through Hermite's real-valued identity the same way, since the real/Euclidean floors coincide for all naturals, not just n and m^j — the recipe here (bridge to ℝ, apply Hermite, bridge back) is reusable for other natural-number floor-sum formulas, such as the base-p digit-sum identity."
     ],
     "prerequisites": [
       "The floor function ⌊·⌋ on ℝ and the law ⌊a/n⌋ = ⌊a⌋/n (Euclidean division)",
@@ -51,33 +52,41 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "§0: Module Setup and Statement",
+      "id": "docstring",
+      "title": "§0: Module Docstring and Bridge",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Module docstring stating Legendre's formula, recalling Hermite's identity, and outlining the bridge (specialise Hermite at x = n/m^{j+1}, identify ⌊(n:ℝ)/m^j⌋ with the natural quotient, feed term-by-term into Mathlib's padicValNat_factorial). Imports full Mathlib plus Proofs.HermiteFloorIdentity for the Hermite identity, opens Finset, and declares the namespace.",
+      "endLine": 35,
+      "summary": "Module docstring stating Legendre's formula, recalling Hermite's identity, and outlining the bridge: specialise Hermite at x = n/m^{j+1} with m copies, identify ⌊(n:ℝ)/m^j⌋ with the natural quotient, then feed term-by-term into Mathlib's padicValNat_factorial to get the headline double sum.",
       "mathContext": "Targets $v_p(n!) = \\sum_i \\lfloor n/p^i\\rfloor$ rewritten through $\\sum_{k=0}^{m-1}\\lfloor x + k/m\\rfloor = \\lfloor m x\\rfloor$."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace",
+      "startLine": 36,
+      "endLine": 41,
+      "summary": "Imports full Mathlib plus the gallery entry Proofs.HermiteFloorIdentity for hermite_floor_identity, opens Finset for the range/Ico sum API, and enters the HermiteLegendreFactorial namespace.",
+      "mathContext": "The one non-Mathlib dependency is HermiteFloorIdentity, whose hermite_floor_identity drives legendre_summand_split."
     },
     {
       "id": "floor-natcast-div-pow",
       "title": "Real Floor of a Natural Ratio",
-      "startLine": 44,
-      "endLine": 50,
+      "startLine": 43,
+      "endLine": 47,
       "summary": "floor_natCast_div_pow: ⌊(n:ℝ)/m^j⌋ = ↑(n/m^j). Rewrites (m:ℝ)^j as the cast of m^j, applies Int.floor_div_natCast (⌊a/n⌋ = ⌊a⌋/n) and Int.floor_natCast (⌊(n:ℝ)⌋ = n), then Int.natCast_div to match the natural Euclidean quotient.",
       "mathContext": "$\\lfloor (n:\\mathbb R)/m^j\\rfloor = \\lfloor n/m^j\\rfloor_{\\mathbb N}$: the real floor of a ratio of naturals is Euclidean division."
     },
     {
       "id": "legendre-summand-split",
       "title": "Hermite Splitting of a Legendre Summand",
-      "startLine": 52,
-      "endLine": 68,
+      "startLine": 49,
+      "endLine": 65,
       "summary": "legendre_summand_split: ↑(n/m^j) = ∑_{k<m} ⌊n/m^{j+1} + k/m⌋ for m ≥ 1. Instantiates HermiteFloorIdentity.hermite_floor_identity at x = n/m^{j+1} with m copies, collapses m·(n/m^{j+1}) to n/m^j (field_simp/ring using m^{j+1} = m·m^j), and applies floor_natCast_div_pow to identify ⌊n/m^j⌋ with ↑(n/m^j).",
       "mathContext": "$\\lfloor n/m^j\\rfloor = \\sum_{k=0}^{m-1}\\lfloor n/m^{j+1} + k/m\\rfloor$ by Hermite's identity at $x = n/m^{j+1}$."
     },
     {
       "id": "legendre-hermite",
       "title": "Legendre's Formula via Hermite",
-      "startLine": 70,
+      "startLine": 67,
       "endLine": 82,
       "summary": "legendre_factorial_hermite: (padicValNat p (n!) : ℤ) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋. Rewrites v_p(n!) by Mathlib's padicValNat_factorial to ∑_{i∈Ico 1 b} n/p^i, pushes the cast through with Nat.cast_sum, and applies legendre_summand_split (m = p, j = i) term-by-term via sum_congr.",
       "mathContext": "$v_p(n!) = \\sum_{i=1}^{b-1}\\sum_{k=0}^{p-1}\\lfloor n/p^{i+1} + k/p\\rfloor$: each Legendre quotient resolved into its Hermite refinement."
