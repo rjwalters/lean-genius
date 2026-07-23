@@ -49,6 +49,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Catalan Closed Form via Factorials",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Answers the open question of proving Cₙ = C(2n,n)/(n+1) directly (without the parent's catalan_mul_succ route) by deriving it from the factorial expansion of binomial coefficients and central-coefficient row-maximality, obtaining the cross identity C(2n,n)·n = C(2n,n+1)·(n+1) and the fully-factorial closed form.",
+      "mathContext": "$C_n\\cdot(n+1)=\\binom{2n}{n}$, re-derived from $\\binom{2n}{n}\\cdot n = \\binom{2n}{n+1}\\cdot(n+1)$ by cancelling a common factorial factor, giving $C_n=(2n)!/((n+1)!\\,n!)$."
+    },
+    {
       "id": "definition",
       "title": "The Catalan Number (Ballot Form)",
       "startLine": 54,
