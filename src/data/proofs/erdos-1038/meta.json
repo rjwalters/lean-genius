@@ -40,8 +40,8 @@
       }
     ],
     "originalContributions": [
-      "Formalized Tao's 2025 supremum result in Lean 4",
-      "Stated precise infimum bounds with ENNReal measure types",
+      "Formalized the definitional infrastructure (monic-polynomial-with-roots-in-[-1,1] class, sublevel set, its ENNReal Lebesgue measure) used to state Erdős #1038",
+      "Documented (but did not formalize as axiom or theorem) Tao's 2025 supremum result and the known infimum bounds",
       "Provided educational structure connecting potential theory to polynomial analysis"
     ],
     "axiomCount": 0,
@@ -54,7 +54,7 @@
     "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in their 1958 paper 'Metric properties of polynomials.' They studied the sublevel set {x ∈ ℝ : |f(x)| < 1} for monic polynomials with real roots restricted to [-1, 1].\n\nThe 1958 paper proved the upper bound sup ≤ 2√2 when roots are in {-1, 1}, and conjectured this is optimal for roots in [-1, 1]. They also showed the infimum is less than 2 using polynomials like (x+1)(x-1)³.\n\nTerence Tao resolved the supremum question in December 2025, confirming that sup = 2√2 for the full class of polynomials with roots in [-1, 1]. The exact infimum remains an open problem, with current best bounds 2^(4/3) - 1 ≈ 1.519 ≤ inf ≤ 1.835.",
     "problemStatement": "Let $f \\in \\mathbb{R}[x]$ be a non-constant monic polynomial with all roots real and in $[-1,1]$. Determine:\n\n$$\\sup_f |\\{x \\in \\mathbb{R} : |f(x)| < 1\\}| = 2\\sqrt{2}$$\n\n$$1.519 \\approx 2^{4/3} - 1 \\leq \\inf_f |\\{x \\in \\mathbb{R} : |f(x)| < 1\\}| \\leq 1.835$$\n\nThe supremum was proved by Tao (2025). The exact infimum remains open.",
     "text": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2√2 (Tao, 2025); infimum bounds: 1.519 ≤ inf ≤ 1.835.",
-    "proofStrategy": "We formalize the main results as axioms since the proofs require potential theory beyond current Mathlib:\n\n1. **Supremum axiom**: The supremum equals 2√2, achieved by polynomials approaching (x-1)(x+1) = x² - 1\n\n2. **Infimum bounds**: Lower bound via potential theory, upper bound witnessed by explicit constructions\n\n3. **Type handling**: Volume returns ℝ≥0∞ (extended non-negative reals), requiring ENNReal.ofReal for comparisons with real constants",
+    "proofStrategy": "We formalize only the definitional infrastructure — the class of monic polynomials with roots in [-1,1], the sublevel set {x : |f(x)| < 1}, and its Lebesgue measure — since the supremum and infimum results require logarithmic potential theory beyond current Mathlib. No axiom or theorem states the numeric bounds in Lean; the supremum (2√2, Tao 2025) and infimum bounds (1.519 ≤ inf ≤ 1.835) are recorded only as documentation comments, not machine-checked. Type handling: Volume returns ℝ≥0∞ (extended non-negative reals), requiring ENNReal.ofReal for comparisons with real constants.",
     "keyInsights": [
       "**Sublevel sets**: For a polynomial f, the sublevel set {x : |f(x)| < 1} measures where the polynomial stays small",
       "**Monic constraint**: Requiring f to be monic (leading coefficient 1) normalizes the problem",
