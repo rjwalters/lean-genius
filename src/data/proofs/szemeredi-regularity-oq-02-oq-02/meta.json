@@ -84,18 +84,34 @@
     {
       "id": "sharp-pair-bound",
       "title": "Sharp Per-Pair Cut Error Bound",
-      "summary": "pair_cut_error_bound_sharp: for an ε-regular pair (P,Q) and A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)|A||B|| ≤ ε|P||Q| — the tight constant, improving the parent's 2ε|P||Q|.",
+      "summary": "pair_cut_error_bound_sharp: for an ε-regular pair (P,Q) and A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)|A||B|| ≤ ε|P||Q| — the tight constant, improving the parent's 2ε|P||Q|. Splits on whether A, B are 'large' (≥ ε fraction of their part): the large case invokes ε-regularity directly, the two symmetric small cases bound e and d|A||B| each by ε|P||Q| and close via |x−y| ≤ max(x,y).",
       "startLine": 71,
-      "endLine": 160,
+      "endLine": 164,
       "mathContext": "Large case: ε-regularity gives |d(A,B) − d(P,Q)| ≤ ε, so the error is ≤ ε|A||B| ≤ ε|P||Q|. Small case: both e and d|A||B| are ≤ |A||B| ≤ ε|P||Q|, and |x − y| ≤ max(x, y) for x, y ≥ 0 bounds the difference by ε|P||Q|."
     },
     {
       "id": "sharp-main",
-      "title": "Sharp Main Comparison and Corollary",
-      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs. sharp_recovers_original: the ε result entails the parent's 2ε result. Closes with #check/#print axioms audits confirming reliance only on propext / Classical.choice / Quot.sound.",
-      "startLine": 162,
-      "endLine": 229,
-      "mathContext": "The partition decomposition e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ) and the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n² (both from the parent) convert per-pair ε|P||Q| into global ε·n²."
+      "title": "Sharp Main Comparison: szemeredi_implies_fk_sharp",
+      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs via the partition decomposition and the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n².",
+      "startLine": 166,
+      "endLine": 206,
+      "mathContext": "|e(A,B) − Σᵢⱼ d(Pᵢ,Pⱼ)|A∩Pᵢ||B∩Pⱼ|| ≤ Σᵢⱼ ε|Pᵢ||Pⱼ| = ε·n², via edge_count_partition_sum and parts_product_sum_eq_card_sq."
+    },
+    {
+      "id": "sharp-recovers-original",
+      "title": "Corollary: sharp_recovers_original",
+      "summary": "sharp_recovers_original: since ε ≤ 2ε for ε ≥ 0, the sharp ε-cut-approximation entails the parent's 2ε-cut-approximation, so szemeredi_implies_fk_sharp strictly generalizes szemeredi_implies_fk.",
+      "startLine": 208,
+      "endLine": 223,
+      "mathContext": "eps · n² ≤ 2 · eps · n² for eps, n² ≥ 0, so an ε-cut-approximation is automatically a 2ε-cut-approximation."
+    },
+    {
+      "id": "closing-checks-and-axioms",
+      "title": "Closing Checks and Axiom Audit",
+      "summary": "#check confirms both main theorems typecheck; end of namespace; #print axioms on all three theorems (pair_cut_error_bound_sharp, szemeredi_implies_fk_sharp, sharp_recovers_original) substantiates the 0-axiom claim.",
+      "startLine": 225,
+      "endLine": 233,
+      "mathContext": "Dependency set = {propext, Classical.choice, Quot.sound} for all three theorems — no sorryAx, no axiom declarations, no native_decide."
     }
   ],
   "mainTheorems": [
