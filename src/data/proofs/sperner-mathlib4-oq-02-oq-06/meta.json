@@ -40,7 +40,8 @@
       "The program had verified the entire door-counting MACHINERY at n = 2 (the door graph is paths-and-cycles, the sign-degree seed is odd) but never Tucker's own CONCLUSION — that a complementary edge exists — on a concrete triangulation. This entry supplies that conclusion directly, by exhaustive kernel evaluation, orthogonally to the engine files.",
       "The result is genuinely 2-dimensional, not a disguised 1-D fact: on 24 of the 64 antipodal boundary labellings the hexagon RING carries no complementary edge, so the already-verified 1-D (S¹) Tucker does not by itself produce the edge — the interior centre vertex is essential.",
       "The interior does exactly the missing work: whenever the boundary ring has no complementary edge, a spoke to the centre is complementary for EVERY centre label d. This is the concrete n = 1 → n = 2 cone step — the boundary being an n = 1 Tucker instance on the antipodal ring, and its failure on the ring being repaired by the interior cone over it.",
-      "The whole verification is 0-axiom (propext / Quot.sound only, no Classical.choice, no native_decide): plain kernel decide over Fin-indexed existentials keeps the exhaustive 256-labelling search inside the kernel's trusted reduction, so the concrete Tucker conclusion is machine-checked without the Lean.ofReduceBool trust extension."
+      "The whole verification is 0-axiom (propext / Quot.sound only, no Classical.choice, no native_decide): plain kernel decide over Fin-indexed existentials keeps the exhaustive 256-labelling search inside the kernel's trusted reduction, so the concrete Tucker conclusion is machine-checked without the Lean.ofReduceBool trust extension.",
+      "tucker_hexagon and exists_complementary_edge are definitionally the same fact stated two ways: the former packages it behind the named predicates spokeCompl/boundaryCompl, the latter unfolds it to the raw existential over vertex indices that a downstream Borsuk–Ulam corollary would pattern-match on to extract an actual edge — a deliberate split between the internal abstraction and the concrete witness a consumer needs."
     ]
   },
   "sections": [
@@ -69,8 +70,15 @@
       "id": "tucker-conclusion",
       "title": "Tucker's Lemma for the Hexagon Disk",
       "startLine": 124,
+      "endLine": 129,
+      "summary": "tucker_hexagon decides spokeCompl a b c d ∨ boundaryCompl a b c over all 4⁴ = 256 labellings — the conclusion of Tucker's lemma at n = 2: a complementary edge always exists. exists_complementary_edge unpacks it to the two endpoint labels; it is definitionally tucker_hexagon with the predicates unfolded to the raw existentials."
+    },
+    {
+      "id": "interior-rescue",
+      "title": "The Result is 2-Dimensional: the Interior Spoke Rescues the Boundary",
+      "startLine": 130,
       "endLine": 145,
-      "summary": "tucker_hexagon decides spokeCompl a b c d ∨ boundaryCompl a b c over all 4⁴ = 256 labellings — the conclusion of Tucker's lemma at n = 2: a complementary edge always exists. exists_complementary_edge unpacks it to the two endpoint labels. boundary_ring_insufficient decides that some boundary labelling has no complementary boundary edge (the result is genuinely 2-dimensional), and interior_spoke_rescues decides that in every such case a spoke is complementary for every centre label d (the interior n = 1 → n = 2 cone step). All four #print axioms report propext / Quot.sound only."
+      "summary": "boundary_ring_insufficient decides that some boundary labelling has no complementary boundary edge (24 of the 64 boundary labellings) — so the hexagon disk does not reduce to the 1-D (S¹) statement. interior_spoke_rescues decides that in every such case a spoke is complementary for every centre label d — the concrete n = 1 → n = 2 cone step. All four #print axioms report propext / Quot.sound only."
     }
   ],
   "conclusion": {
