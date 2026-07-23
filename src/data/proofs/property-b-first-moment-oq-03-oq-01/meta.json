@@ -90,28 +90,44 @@
   },
   "sections": [
     {
-      "id": "model",
+      "id": "setup",
       "title": "The p-Biased Monochromatic Probability",
       "startLine": 1,
-      "endLine": 62,
+      "endLine": 59,
       "mathContext": "$\\mathrm{monoProb}(k,p) := p^k + (1-p)^k, \\qquad \\mathrm{monoProb}(k,\\tfrac12) = 2\\cdot(\\tfrac12)^k = 2^{1-k}$",
       "summary": "Module docstring framing the result as the negative resolution of the 'asymmetry' half of the Radhakrishnan–Srinivasan program. monoProb(k,p) = p^k + (1-p)^k models the probability a k-edge is monochromatic under a p-biased independent coloring; monoProb_half evaluates it at the symmetric point to 2·(1/2)^k."
     },
     {
-      "id": "optimality",
-      "title": "Asymmetry Never Helps; Symmetry is the Unique Optimum",
-      "startLine": 63,
-      "endLine": 104,
-      "mathContext": "$2^{1-k} \\le \\mathrm{monoProb}(k,p)\\ \\ (p\\in[0,1]); \\quad \\mathrm{monoProb}(k,\\tfrac12) < \\mathrm{monoProb}(k,p)\\ \\ (k\\ge2,\\ p\\ne\\tfrac12)$",
-      "summary": "monoProb_ge: convexity of x ↦ x^k at the midpoint of p and 1-p gives monoProb(k,p) ≥ 2·(1/2)^k. monoProb_half_le restates this as optimality of p = 1/2. monoProb_half_lt uses strict convexity (k ≥ 2) at the distinct points p ≠ 1-p to make p = 1/2 the unique minimizer."
+      "id": "asymmetry-never-helps",
+      "title": "Asymmetry Never Helps",
+      "startLine": 60,
+      "endLine": 76,
+      "mathContext": "$2^{1-k} \\le \\mathrm{monoProb}(k,p) \\qquad (0\\le p\\le 1,\\ k\\ge1)$",
+      "summary": "monoProb_ge: convexity of x ↦ x^k applied at the midpoint of p and 1-p gives monoProb(k,p) ≥ 2·(1/2)^k = 2^(1-k) for every bias p ∈ [0,1] — the precise 'asymmetry cannot beat Erdős' inequality."
+    },
+    {
+      "id": "symmetric-is-unique-optimum",
+      "title": "Symmetry is the (Unique) Optimum",
+      "startLine": 77,
+      "endLine": 101,
+      "mathContext": "$\\mathrm{monoProb}(k,\\tfrac12) \\le \\mathrm{monoProb}(k,p); \\quad \\mathrm{monoProb}(k,\\tfrac12) < \\mathrm{monoProb}(k,p)\\ \\ (k\\ge2,\\ p\\ne\\tfrac12)$",
+      "summary": "monoProb_half_le restates monoProb_ge as optimality of p = 1/2. monoProb_half_lt upgrades this to a strict inequality via strict convexity (k ≥ 2) at the distinct points p ≠ 1-p, making p = 1/2 the unique minimizer for k ≥ 2."
     },
     {
       "id": "threshold",
       "title": "The Symmetric Threshold is Exactly Erdős' 2^(k-1)",
-      "startLine": 105,
+      "startLine": 102,
+      "endLine": 116,
+      "mathContext": "$\\dfrac{1}{\\mathrm{monoProb}(k,\\tfrac12)} = 2^{k-1}$",
+      "summary": "threshold_half evaluates the symmetric first-moment threshold 1/(2·(1/2)^k) = 2^(k-1) by elementary power algebra, tying the optimum to the grandparent entry's integer bound and confirming no bias raises the threshold above 2^(k-1)."
+    },
+    {
+      "id": "expected-value-form",
+      "title": "The First-Moment Expectation Form",
+      "startLine": 117,
       "endLine": 125,
-      "mathContext": "$\\dfrac{1}{\\mathrm{monoProb}(k,\\tfrac12)} = 2^{k-1}, \\qquad m\\cdot\\mathrm{monoProb}(k,\\tfrac12) \\le m\\cdot\\mathrm{monoProb}(k,p)$",
-      "summary": "threshold_half evaluates the symmetric first-moment threshold 1/(2·(1/2)^k) = 2^(k-1), tying the optimum to the grandparent entry's integer bound. expected_mono_half_le gives the first-moment expectation form: an m-edge hypergraph's expected monochromatic-edge count is minimized at p = 1/2."
+      "mathContext": "$m\\cdot\\mathrm{monoProb}(k,\\tfrac12) \\le m\\cdot\\mathrm{monoProb}(k,p)$",
+      "summary": "expected_mono_half_le: for an m-edge hypergraph, the expected number of monochromatic edges m·monoProb(k,p) is minimized at p = 1/2 — the first-moment expectation form of the optimality result."
     }
   ],
   "conclusion": {
