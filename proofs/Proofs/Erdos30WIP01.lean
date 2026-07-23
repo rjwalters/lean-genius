@@ -812,7 +812,8 @@ set in `{0,…,16}` has 15 distinct differences among `{1,…,16}`, *missing exa
 value* `d` — a near-perfect ruler, where the exhaustion arguments above lose traction.
 Parity forces `d` even; the mod-3 count forces `3 ∣ d` (with residue profile
 `(3,2,1)`); so `d ∈ {6, 12}`, but finishing requires a finer invariant or a structured
-search, left open here. -/
+search — supplied at the end of this file (`sidonNumber_sixteen`) by a span dichotomy
+plus a kernel-checked search over the four interior elements. -/
 
 private theorem isSidonSet_0_1_4_10_12_17 : IsSidonSet {0, 1, 4, 10, 12, 17} := by
   intro a b c d ha hb hc hd hab hcd heq
@@ -956,5 +957,149 @@ theorem sidonNumber_twentyone : sidonNumber 21 = 6 := by
       (fun A hsub hA => no_sidon_card_seven_range_twentytwo A hsub hA)
   · calc 6 = ({0, 1, 4, 10, 12, 17} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 21 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_12_17
+
+/-! ### `h(16) = 5` — the near-perfect ruler, felled by a span dichotomy
+
+A 6-element Sidon set in `{0,…,16}` would be a 6-mark Golomb ruler of length at most
+`16` — but the optimal 6-mark ruler (`{0,1,4,10,12,17}`) has length `17`, so none
+exists and `h(16) = 5`.  The counting, parity, and mod-3 invariants all go slack here
+(the near-perfect ruler misses one difference `d ∈ {6,12}` and every residue count
+stays feasible), so this is the first entry of the table that genuinely needs a
+*search*.  We keep it small with a span dichotomy:
+
+* **Span ≤ 15.**  Sliding the set down by its minimum (`IsSidonSet` is
+  translation-invariant, and sliding preserves cardinality) lands it inside
+  `{0,…,15}` — impossible by the mod-3 obstruction `no_sidon_card_six_range_sixteen`
+  already proved for `h(15)`.
+* **Span = 16.**  The minimum slides to `0` and the maximum to `16`, so after the
+  slide the set is `{0, 16} ∪ B` with `B` one of the `C(15,4) = 1365` four-element
+  subsets of `{1,…,15}`.  A kernel-checked `decide` (`no_sidon_extension_zero_sixteen`)
+  rules out every one of them.  This stays well inside kernel range: `1365` subsets
+  with `6⁴ = 1296` quadruple checks each.
+
+The lower bound is the familiar 5-element witness `{0,1,4,9,11}`.  This closes the
+last missing value below `22`: the table `h(0),…,h(21)` is now complete. -/
+
+/-- Membership-bounded (hence decidable) form of the Sidon predicate, used for the
+finite search below.  `IsSidonSet` itself quantifies over all of `ℕ` and so has no
+`Decidable` instance; this form is equivalent (`sidonCheck_of_isSidonSet`). -/
+private def SidonCheck (A : Finset ℕ) : Prop :=
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
+    a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
+
+private instance (A : Finset ℕ) : Decidable (SidonCheck A) :=
+  inferInstanceAs (Decidable (∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
+    a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d))
+
+private theorem sidonCheck_of_isSidonSet {A : Finset ℕ} (hA : IsSidonSet A) :
+    SidonCheck A :=
+  fun a ha b hb c hc d hd hab hcd heq => hA a b c d ha hb hc hd hab hcd heq
+
+set_option maxRecDepth 10000 in
+/-- **The exhaustive kernel search**: no four interior elements `B ⊆ {1,…,15}` extend
+the pinned endpoints `{0, 16}` to a 6-element Sidon set.  `1365` candidate subsets,
+each checked against the bounded Sidon predicate; `decide +kernel` hands the whole
+evaluation to the kernel's fast numeral arithmetic. -/
+private theorem no_sidon_extension_zero_sixteen :
+    ∀ B ∈ (Finset.Icc 1 15).powersetCard 4,
+      ¬ SidonCheck (insert 0 (insert 16 B)) := by
+  decide +kernel
+
+/-- **No 6-element Sidon set fits in `{0,…,16}`** — equivalently, every 6-mark Golomb
+ruler has length `≥ 17`.  Span dichotomy: after sliding the minimum to `0`, either the
+set lies in `{0,…,15}` (killed by the `h(15)` mod-3 obstruction) or its maximum is
+`16` and the four interior elements fall to the kernel search. -/
+theorem no_sidon_card_six_range_seventeen (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 17) (hA : IsSidonSet A) : A.card ≤ 5 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  -- Counting caps the size at 6, so a violating set has exactly 6 elements.
+  have hup : A.card * A.card ≤ 32 + A.card := by
+    have := sidon_card_sq_le 16 hsub hA; omega
+  have hc6 : A.card = 6 := by
+    by_contra hne
+    have h7 : 7 ≤ A.card := by omega
+    have hmul : 7 * A.card ≤ A.card * A.card := Nat.mul_le_mul h7 (le_refl A.card)
+    omega
+  have hne : A.Nonempty := Finset.card_pos.mp (by omega)
+  set m := A.min' hne with hm
+  have hmle : ∀ x ∈ A, m ≤ x := fun x hx => A.min'_le x hx
+  have hbound : ∀ x ∈ A, x ≤ 16 := fun x hx => by
+    have := hsub hx; rw [Finset.mem_range] at this; omega
+  -- Slide the set down by its minimum.
+  set A' := A.image (fun x => x - m) with hA'
+  have hinj : Set.InjOn (fun x => x - m) ↑A := by
+    intro x hx y hy hxy
+    have hx' := hmle x (Finset.mem_coe.mp hx)
+    have hy' := hmle y (Finset.mem_coe.mp hy)
+    have hxy' : x - m = y - m := hxy
+    omega
+  have hA'card : A'.card = 6 := by
+    rw [hA', Finset.card_image_of_injOn hinj, hc6]
+  have hA'sidon : IsSidonSet A' := by
+    intro a b c d ha hb hc hd hab hcd heq
+    rw [hA'] at ha hb hc hd
+    simp only [Finset.mem_image] at ha hb hc hd
+    obtain ⟨a₀, ha₀, rfl⟩ := ha
+    obtain ⟨b₀, hb₀, rfl⟩ := hb
+    obtain ⟨c₀, hc₀, rfl⟩ := hc
+    obtain ⟨d₀, hd₀, rfl⟩ := hd
+    have hma := hmle a₀ ha₀; have hmb := hmle b₀ hb₀
+    have hmc := hmle c₀ hc₀; have hmd := hmle d₀ hd₀
+    obtain ⟨h1, h2⟩ := hA a₀ b₀ c₀ d₀ ha₀ hb₀ hc₀ hd₀ (by omega) (by omega) (by omega)
+    exact ⟨by omega, by omega⟩
+  have hzero : (0 : ℕ) ∈ A' := by
+    rw [hA']
+    exact Finset.mem_image.mpr ⟨m, A.min'_mem hne, Nat.sub_self m⟩
+  have hA'ne : A'.Nonempty := ⟨0, hzero⟩
+  have hA'bound : ∀ x ∈ A', x ≤ 16 := by
+    intro x hx
+    rw [hA'] at hx
+    obtain ⟨x₀, hx₀, hx₀eq⟩ := Finset.mem_image.mp hx
+    have hb := hbound x₀ hx₀
+    have hx₀eq' : x₀ - m = x := hx₀eq
+    omega
+  rcases Nat.lt_or_ge (A'.max' hA'ne) 16 with hM | hM
+  · -- Span ≤ 15: the slid set lives in {0,…,15}; the h(15) obstruction applies.
+    have hsub' : A' ⊆ Finset.range 16 := fun x hx => by
+      rw [Finset.mem_range]
+      exact lt_of_le_of_lt (A'.le_max' x hx) hM
+    have := no_sidon_card_six_range_sixteen A' hsub' hA'sidon
+    omega
+  · -- Span = 16: both endpoints pinned; the four interior elements fall to `decide`.
+    have h16 : (16 : ℕ) ∈ A' := by
+      have hMle : A'.max' hA'ne ≤ 16 := hA'bound _ (A'.max'_mem hA'ne)
+      have hMeq : A'.max' hA'ne = 16 := le_antisymm hMle hM
+      rw [← hMeq]
+      exact A'.max'_mem hA'ne
+    set B := (A'.erase 0).erase 16 with hB
+    have h16' : (16 : ℕ) ∈ A'.erase 0 := Finset.mem_erase.mpr ⟨by omega, h16⟩
+    have hrecon : insert 0 (insert 16 B) = A' := by
+      rw [hB, Finset.insert_erase h16', Finset.insert_erase hzero]
+    have hBcard : B.card = 4 := by
+      rw [hB, Finset.card_erase_of_mem h16', Finset.card_erase_of_mem hzero, hA'card]
+    have hBsub : B ⊆ Finset.Icc 1 15 := by
+      intro x hx
+      rw [hB] at hx
+      have hx16 := (Finset.mem_erase.mp hx).1
+      have hx' := Finset.mem_of_mem_erase hx
+      have hx0 := (Finset.mem_erase.mp hx').1
+      have hxA := Finset.mem_of_mem_erase hx'
+      have := hA'bound x hxA
+      rw [Finset.mem_Icc]
+      omega
+    exact no_sidon_extension_zero_sixteen B
+      (Finset.mem_powersetCard.mpr ⟨hBsub, hBcard⟩)
+      (by rw [hrecon]; exact sidonCheck_of_isSidonSet hA'sidon)
+
+/-- `h(16) = 5` — the last missing value below `22`, completing the exact table
+`h(0),…,h(21)`.  No 6-mark Golomb ruler has length `≤ 16`
+(`no_sidon_card_six_range_seventeen`); the 5-element witness `{0,1,4,9,11}` persists. -/
+theorem sidonNumber_sixteen : sidonNumber 16 = 5 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_six_range_seventeen A hsub hA)
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 16 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
 
 end Erdos30
