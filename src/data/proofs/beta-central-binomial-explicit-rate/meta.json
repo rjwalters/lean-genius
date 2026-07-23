@@ -44,6 +44,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Upgrading the Diagonal Beta Asymptotic to an Explicit O(1/n) Rate", "startLine": 1, "endLine": 57, "summary": "The parent entry establishes only the bare asymptotic equivalence B(n+1,n+1) ~ sqrt(pi n)/((2n+1)*4^n) with no control on the rate. This file upgrades it to an explicit two-sided rate with effective constants: writing T(n) for the leading term and q(n) for the correction factor, it proves the exact identity B(n+1,n+1) = T(n)*q(n), the effective bracket exp(-1/(4(2n-1))) <= q(n) <= exp(1/(2(n-1))) for n>=2, and the resulting clean Landau form (q(n)-1) = O(1/n). The engine is Mathlib's Stirling sequence and a telescoping tail bound on log(stirlingSeq) not previously packaged in Mathlib.", "mathContext": "$q(n) := B(n+1,n+1)/T(n)$ satisfies $e^{-1/(4(2n-1))} \\le q(n) \\le e^{1/(2(n-1))}$ for $n \\ge 2$, giving the effective form of $q(n) = 1 + O(1/n)$."},
     {
       "id": "diagonal-beta-restatement",
       "title": "The Diagonal Beta Value (Self-Contained Restatement)",
