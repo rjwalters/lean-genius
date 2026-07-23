@@ -2165,4 +2165,160 @@ theorem minDegreeForC4_ten : minDegreeForC4 10 = 4 := by
   have hge := four_le_minDegreeForC4_ten
   omega
 
+/-! ## `f(11) = f(12) = 4`: growing the Petersen witness vertex by vertex
+
+The counting ceiling `n ≤ k(k−1)` gives `f(n) ≤ 4` exactly for `n ≤ 12`, so
+orders `11` and `12` are the last two values the elementary counting bound can
+pin — provided matching `C₄`-free graphs of minimum degree `3` exist there.
+A `3`-*regular* such graph is impossible at order `11` (handshake parity), and
+no standard `11`- or `12`-vertex analogue of the Petersen graph exists.
+Instead we *grow* the Petersen graph one vertex at a time by a local surgery:
+
+  **delete** an edge `a – b`, then **add** a new vertex `v` joined to `a`,
+  `b`, and one further neighbour `c` of `b`.
+
+Degrees survive (`a` and `b` each trade one neighbour for `v`; `c` gains one),
+and the common-neighbour matrix stays `≤ 1` everywhere: within `{a, b, c}` the
+pairs `(a, b)` and `(b, c)` were *adjacent* (zero common neighbours, girth
+`5`), while the unique common neighbour of the non-adjacent pair `(a, c)` was
+exactly `b` — which the deleted edge removes just as `v` arrives to replace
+it.  And a vertex `x` outside `{a, b, c}` adjacent to two of them would have
+been a *second* common neighbour of that pair beforehand — impossible.
+`C₄`-freeness of each explicit graph is then the same tiny kernel check as for
+the Petersen graph itself, via `not_containsC4_of_forall_common_le_one`; no
+embedding enumeration and no `native_decide`. -/
+
+/-- The seventeen edges of the `11`-vertex extended Petersen graph: the
+Petersen list with the outer edge `(0, 1)` deleted and the new vertex `10`
+joined to `0`, `1`, and `6` (a pentagram neighbour of `1`). -/
+def petersen11Edges : List (Fin 11 × Fin 11) :=
+  [(1,2), (2,3), (3,4), (4,0),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (0,5), (1,6), (2,7), (3,8), (4,9),
+   (10,0), (10,1), (10,6)]
+
+/-- **An `11`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after the vertex-adding surgery.  Vertex `6` has degree `4`; all other
+vertices have degree `3`. -/
+def petersen11 : SimpleGraph (Fin 11) where
+  Adj i j := (i, j) ∈ petersen11Edges ∨ (j, i) ∈ petersen11Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen11.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen11Edges ∨ (j, i) ∈ petersen11Edges) Iff.rfl
+
+/-- Every vertex of `petersen11` has degree at least `3` — an `11`-vertex
+kernel check.  (Vertex `6` has degree `4`, so `3`-regularity fails — as it
+must at odd order — but the minimum-degree bound only needs `≥ 3`.) -/
+theorem petersen11_degree : ∀ v, 3 ≤ petersen11.degree v := by decide
+
+/-- **Every pair of distinct `petersen11` vertices has at most one common
+neighbour** — the `11 × 11` kernel check certifying `C₄`-freeness. -/
+theorem petersen11_common_le_one : ∀ x y : Fin 11, x ≠ y →
+    (petersen11.neighborFinset x ∩ petersen11.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`petersen11` is `C₄`-free** — via the common-neighbour criterion. -/
+theorem petersen11_not_containsC4 : ¬ containsC4 (Fin 11) petersen11 :=
+  not_containsC4_of_forall_common_le_one petersen11_common_le_one
+
+/-- `petersen11` has minimum degree at least `3`. -/
+theorem petersen11_three_le_minDegree : 3 ≤ petersen11.minDegree := by
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  exact petersen11_degree
+
+/-- **`f(11) ≥ 4`**: `petersen11` is a `C₄`-free graph of minimum degree `3`
+on eleven vertices, so threshold `3` does not force a `C₄` at order `11`. -/
+theorem four_le_minDegreeForC4_eleven : 4 ≤ minDegreeForC4 11 := by
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin 11)) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin 11) G}.Nonempty := by
+    refine ⟨10, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 (by norm_num)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  by_contra hk4
+  rw [not_le] at hk4
+  exact petersen11_not_containsC4
+    (hk petersen11 (le_trans (by omega : k ≤ 3) petersen11_three_le_minDegree))
+
+/-- **An eighth exact value: `f(11) = 4`.**  Upper half: counting,
+`11 ≤ 4·3` (`minDegreeForC4_le_of_le_mul_pred`).  Lower half: the extended
+Petersen graph (`four_le_minDegreeForC4_eleven`). -/
+theorem minDegreeForC4_eleven : minDegreeForC4 11 = 4 := by
+  have hle : minDegreeForC4 11 ≤ 4 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_eleven
+  omega
+
+/-- The nineteen edges of the `12`-vertex graph: `petersen11Edges` with the
+outer edge `(2, 3)` deleted and the new vertex `11` joined to `2`, `3`, and
+`8` (a spoke neighbour of `3`) — the same surgery applied once more. -/
+def petersen12Edges : List (Fin 12 × Fin 12) :=
+  [(1,2), (3,4), (4,0),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (0,5), (1,6), (2,7), (3,8), (4,9),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8)]
+
+/-- **A `12`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after two vertex-adding surgeries.  Vertices `6` and `8` have degree
+`4`; all other vertices have degree `3`. -/
+def petersen12 : SimpleGraph (Fin 12) where
+  Adj i j := (i, j) ∈ petersen12Edges ∨ (j, i) ∈ petersen12Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen12.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen12Edges ∨ (j, i) ∈ petersen12Edges) Iff.rfl
+
+/-- Every vertex of `petersen12` has degree at least `3` — a `12`-vertex
+kernel check. -/
+theorem petersen12_degree : ∀ v, 3 ≤ petersen12.degree v := by decide
+
+/-- **Every pair of distinct `petersen12` vertices has at most one common
+neighbour** — the `12 × 12` kernel check certifying `C₄`-freeness. -/
+theorem petersen12_common_le_one : ∀ x y : Fin 12, x ≠ y →
+    (petersen12.neighborFinset x ∩ petersen12.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`petersen12` is `C₄`-free** — via the common-neighbour criterion. -/
+theorem petersen12_not_containsC4 : ¬ containsC4 (Fin 12) petersen12 :=
+  not_containsC4_of_forall_common_le_one petersen12_common_le_one
+
+/-- `petersen12` has minimum degree at least `3`. -/
+theorem petersen12_three_le_minDegree : 3 ≤ petersen12.minDegree := by
+  apply SimpleGraph.le_minDegree_of_forall_le_degree
+  exact petersen12_degree
+
+/-- **`f(12) ≥ 4`**: `petersen12` is a `C₄`-free graph of minimum degree `3`
+on twelve vertices, so threshold `3` does not force a `C₄` at order `12`. -/
+theorem four_le_minDegreeForC4_twelve : 4 ≤ minDegreeForC4 12 := by
+  have hne : {k : ℕ | ∀ (G : SimpleGraph (Fin 12)) [DecidableRel G.Adj],
+      G.minDegree ≥ k → containsC4 (Fin 12) G}.Nonempty := by
+    refine ⟨11, fun G _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge G hmin]
+    exact completeGraph_containsC4 (by norm_num)
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  by_contra hk4
+  rw [not_le] at hk4
+  exact petersen12_not_containsC4
+    (hk petersen12 (le_trans (by omega : k ≤ 3) petersen12_three_le_minDegree))
+
+/-- **A ninth exact value: `f(12) = 4` — and the end of the counting range.**
+Upper half: counting, `12 ≤ 4·3` — the *boundary case* `n = k(k−1)` of
+`minDegreeForC4_le_of_le_mul_pred`, sharp with no room to spare (`C(13,2) =
+78 = 13·6` fails the strict inequality, so order `13` is out of the counting
+bound's reach for `k = 4`).  Lower half: the twice-extended Petersen graph
+(`four_le_minDegreeForC4_twelve`).  The exact table now reads
+`f = 1, 2, 3, 2, 3, 3, 3, 3, 3, 4, 4, 4` for `n = 1, …, 12` — complete over
+the entire range the elementary cherry count can reach. -/
+theorem minDegreeForC4_twelve : minDegreeForC4 12 = 4 := by
+  have hle : minDegreeForC4 12 ≤ 4 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_twelve
+  omega
+
 end Erdos85
