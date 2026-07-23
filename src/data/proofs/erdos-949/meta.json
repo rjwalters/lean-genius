@@ -49,6 +49,13 @@
   },
   "sections": [
     {
+      "id": "sec-949-header",
+      "title": "Header Docstring",
+      "startLine": 1,
+      "endLine": 14,
+      "summary": "Module docstring stating Erdős Problem #949: for sum-free $S \\subseteq \\mathbb{R}$, must $\\mathbb{R} \\setminus S$ contain a continuum-sized $A$ with $A + A \\subseteq \\mathbb{R} \\setminus S$? Records status (open in general, solved for Sidon sets) and cites Erdős and the Dillies-AlphaProof solution of the Sidon variant."
+    },
+    {
       "id": "sec-949-imports",
       "title": "Imports and Setup",
       "startLine": 15,
