@@ -145,6 +145,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Worpitzky's Identity for the Eulerian Numbers",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States the identity this file proves — building on the parent's combinatorial Eulerian numbers ⟨m,j⟩ from the triangle recurrence, Worpitzky's identity expands the monomial nᵐ in the binomial-coefficient basis: nᵐ = ∑_{j=0}^m ⟨m,j⟩·C(n+j,m) (e.g. n² = C(n,2)+C(n+1,2), n³ = C(n,3)+4C(n+1,3)+C(n+2,3)). The proof is by induction on m via a single ℕ-valued binomial identity worpitzky_term, (k+1)·C(x+k,m+1)+(m−k)·C(x+k+1,m+1) = x·C(x+k,m), obtained from Pascal's rule and absorption transferred to ℤ, then re-indexing the order-(m+1) Eulerian row through its triangle recurrence. 0 axioms, 0 sorries.",
+      "mathContext": "$n^m = \\sum_{j=0}^m \\langle m,j\\rangle \\binom{n+j}{m}$, proved by induction via $(k{+}1)\\binom{x+k}{m+1}+(m{-}k)\\binom{x+k+1}{m+1}=x\\binom{x+k}{m}$."
+    },
+    {
       "id": "absorption",
       "title": "The Key Absorption Identity",
       "startLine": 39,
