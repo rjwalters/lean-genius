@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Liouville (Super-Approximable) Class",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Resolves the Liouville side of Erdős #1002 via a perturbation lemma: if α sits within 1/(Nq)² of a reduced fraction p/q, the inner sum S(α, Nq) tracks the rational value N/2 up to error < 1, which — since rationals admit arbitrarily good one-sided irrational approximations — forces the inner sum to be unbounded over the irrationals near every rational, in sharp contrast to O(log n) boundedness for quadratic irrationals.",
+      "mathContext": "$0 < \\alpha - p/q < 1/(Nq)^2 \\Rightarrow N/2 - 1 < S(\\alpha, Nq) < N/2$; iterating along $p_j/q_j\\to\\alpha$ with $N_j\\to\\infty$ yields a Liouville number with $S(\\alpha,\\cdot)$ unbounded."
+    },
+    {
       "id": "helpers",
       "title": "Elementary Helpers",
       "summary": "Two reusable facts: fract_natDiv (Int.fract(a/q) = (a mod q)/q for naturals, mirrored from OQ-03) used to bound the fractional part of (p/q)·j by (q−1)/q, and sum_range_add_one (the Gauss sum Σ_{k<m}(k+1) = m(m+1)/2) used to evaluate the accumulated linear drift.",
