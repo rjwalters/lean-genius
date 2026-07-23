@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Binet's Closest-Integer Formula",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "States the parent's open question (formalize fib(n) = ⌊φⁿ/√5 + ½⌋) and previews the three results: the < ½ Binet error, the closest-integer identity, and the explicit sandwich. Imports Mathlib, opens scoped goldenRatio and Real, and opens the GcdAlgorithmOQ01OQ01 namespace.",
+      "mathContext": "$\\mathrm{fib}(n) = \\mathrm{round}(\\varphi^n/\\sqrt5)$, via $|\\mathrm{fib}(n) - \\varphi^n/\\sqrt5| < 1/2$."
+    },
+    {
       "id": "bounds",
       "title": "The Supporting Bounds",
       "startLine": 34,
@@ -78,17 +86,25 @@
       "id": "error",
       "title": "The Binet Error Is < ½",
       "startLine": 44,
-      "endLine": 54,
+      "endLine": 53,
       "summary": "abs_fib_sub_binet: |fib(n) − φⁿ/√5| < ½, since the difference is −ψⁿ/√5 and |ψⁿ|/√5 ≤ 1/√5 < ½.",
       "mathContext": "The ψⁿ term of Binet's formula never reaches half a unit."
     },
     {
       "id": "round",
       "title": "The Closest-Integer Formula",
-      "startLine": 56,
-      "endLine": 73,
-      "summary": "fib_eq_round_binet (round(φⁿ/√5) = fib(n)) and the explicit sandwich φⁿ/√5 − ½ < fib(n) < φⁿ/√5 + ½.",
+      "startLine": 54,
+      "endLine": 62,
+      "summary": "fib_eq_round_binet: round(φⁿ/√5) = fib(n), from Int.floor_eq_iff applied to the < ½ error bound.",
       "mathContext": "Fibonacci numbers are the nearest integers to the geometric sequence φⁿ/√5."
+    },
+    {
+      "id": "sandwich",
+      "title": "The Explicit Half-Unit Sandwich",
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "fib_lt_goldenRatio_pow_div_add_half and goldenRatio_pow_div_sub_half_lt_fib: the two halves of |fib(n) − φⁿ/√5| < ½ read off separately as φⁿ/√5 − ½ < fib(n) < φⁿ/√5 + ½.",
+      "mathContext": "$\\varphi^n/\\sqrt5 - 1/2 < \\mathrm{fib}(n) < \\varphi^n/\\sqrt5 + 1/2$."
     }
   ],
   "conclusion": {
