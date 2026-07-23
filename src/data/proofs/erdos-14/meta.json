@@ -21,14 +21,14 @@
     "erdosUrl": "https://erdosproblems.com/14",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 109,
+    "lineCount": 111,
     "prerequisites": [
       "Additive combinatorics (sumsets and representation functions)",
       "Finite set theory",
       "Extremal combinatorics",
       "Probabilistic method"
     ],
-    "assumptions": "2 axioms: ess_upper_lower_bound (Erdős-Sárközy-Szemerédi combined upper+lower bound) and erdos_freud_finite (Erdős-Freud finite analogue). Open conjectures Erdos14a and Erdos14b are formalized as Prop definitions. 0 sorries.",
+    "assumptions": "2 axioms: ess_upper_lower_bound (Erdős-Sárközy-Szemerédi combined upper+lower bound) and erdos_freud_finite (Erdős-Freud finite analogue: ∃ A ⊆ {1,...,N} achieving the bound). Open conjectures Erdos14a and Erdos14b are formalized as Prop definitions. 0 sorries.",
     "mathlib_version": "4.31.0",
     "theoremCount": 1,
     "definitionCount": 6
@@ -105,21 +105,21 @@
       "id": "erdos-freud",
       "title": "Erdős-Freud Finite Analogue",
       "startLine": 89,
-      "endLine": 93,
+      "endLine": 95,
       "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
       "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < $$2^{{3/2}$}$\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
-      "startLine": 94,
-      "endLine": 109,
+      "startLine": 97,
+      "endLine": 111,
       "summary": "`non_unique_monotone`: proves the non-unique sum count `nonUniqueSumCountInf A N` is monotonically non-decreasing in N (M ≤ N ⟹ count M ≤ count N), via `Set.ncard_le_ncard` on the nested difference sets. A preceding comment records the Sidon-set heuristic: a Sidon A has ≤ √N + O(N^{1/4}) elements up to N, so its sumset misses ~N integers.",
       "mathContext": "$M \\le N \\implies \\mathrm{nonUniqueSumCount}(A,M) \\le \\mathrm{nonUniqueSumCount}(A,N)$ — the count of non-uniquely-represented sums grows with the window, proved by monotonicity of `Set.ncard` on nested `Icc` differences."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #14 in 110 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
+    "summary": "This formalization captures Erdős Problem #14 in 111 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
     "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\nIf conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
     "openQuestions": [
       "Is $f_A(N) \\gg N^{1/2-\\varepsilon}$ for all $A$ and all large $N$? This is conjecture (a), the main open question.",
@@ -141,7 +141,7 @@
       "Asymptotics"
     ],
     "namespace": null,
-    "lineCount": 109,
+    "lineCount": 111,
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 6,
