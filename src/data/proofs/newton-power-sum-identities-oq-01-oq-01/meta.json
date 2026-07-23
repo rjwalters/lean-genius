@@ -89,12 +89,20 @@
       "mathContext": "$p_k = (-1)^{k+1} k\\,e_k - \\sum_{0<i<k} (-1)^i e_i\\, p_{k-i}$."
     },
     {
-      "id": "degrees-one-two-three",
-      "title": "Degrees 1–3 (restated): p₁, p₂, p₃",
+      "id": "degrees-one-two",
+      "title": "Degrees 1–2 (restated): p₁, p₂",
       "startLine": 45,
+      "endLine": 61,
+      "summary": "psum_one_eq (base case, from psum_one/esymm_one) and psum_two_eq (the recurrence at k = 2 with the omega-computed inner set {(1,1)}), reproved verbatim from the parent entry so the file is self-contained.",
+      "mathContext": "$p_1 = e_1,\\quad p_2 = e_1^2 - 2e_2$."
+    },
+    {
+      "id": "degree-three",
+      "title": "Degree 3 (restated): p₃",
+      "startLine": 63,
       "endLine": 77,
-      "summary": "psum_one_eq, psum_two_eq, psum_three_eq: the parent's three identities reproved verbatim so the file is self-contained — base case from psum_one/esymm_one, then the recurrence at k = 2, 3 with omega-computed inner sets {(1,1)} and {(1,2),(2,1)}.",
-      "mathContext": "$p_1 = e_1,\\quad p_2 = e_1^2 - 2e_2,\\quad p_3 = e_1^3 - 3e_1 e_2 + 3e_3$."
+      "summary": "psum_three_eq: the recurrence at k = 3, reducing its inner index set to {(1,2),(2,1)} via an omega-proved set equality, evaluated by Finset.sum_pair and the degree-1,2 identities.",
+      "mathContext": "$p_3 = e_1^3 - 3e_1 e_2 + 3e_3$."
     },
     {
       "id": "degree-four",
