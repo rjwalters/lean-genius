@@ -130,7 +130,7 @@
     "proofId": "angle-trisection-oq-05-oq-03",
     "range": {
       "startLine": 100,
-      "endLine": 156
+      "endLine": 183
     },
     "type": "insight",
     "title": "minFoldLevel for Small Primes: 1, 2, 3, 5, 7, 11",
@@ -155,8 +155,8 @@
     "id": "multiplicative-property",
     "proofId": "angle-trisection-oq-05-oq-03",
     "range": {
-      "startLine": 160,
-      "endLine": 175
+      "startLine": 184,
+      "endLine": 201
     },
     "type": "insight",
     "title": "minFoldLevel_mul: The Dominant Prime Controls",
@@ -180,8 +180,8 @@
     "id": "concrete-computations",
     "proofId": "angle-trisection-oq-05-oq-03",
     "range": {
-      "startLine": 177,
-      "endLine": 237
+      "startLine": 202,
+      "endLine": 262
     },
     "type": "insight",
     "title": "Concrete Fold Levels: 6, 10, 14, 15, 42",
@@ -207,8 +207,8 @@
     "id": "unboundedness",
     "proofId": "angle-trisection-oq-05-oq-03",
     "range": {
-      "startLine": 240,
-      "endLine": 248
+      "startLine": 264,
+      "endLine": 275
     },
     "type": "insight",
     "title": "minFoldLevel_unbounded: Arbitrarily Many Folds Required",
@@ -226,6 +226,27 @@
       "minFoldLevel_nth_prime j hj: minFoldLevel (foldPrimeBound j) = j",
       "nth_prime_not_constructible_below: foldPrimeBound (j+1) is NOT j-fold constructible",
       "Nat.infinite_setOf_prime: used to ensure Nat.nth prime k exists for all k"
+    ]
+  },
+  {
+    "id": "summary-block",
+    "proofId": "angle-trisection-oq-05-oq-03",
+    "range": {
+      "startLine": 276,
+      "endLine": 298
+    },
+    "type": "context",
+    "title": "Closing Summary: The Dominant-Prime Answer",
+    "content": "The file's closing docstring restates the answer to open question OQ-05-OQ-03 in one line — minFoldLevel(d) = max{ j ≥ 1 : p_j divides d }, the prime-sequence index of d's largest prime factor — then catalogs all 8 results proved earlier (generalized monotonicity, multiplicativity, the `Nat.find`-based definition and its ≤-characterization, exact prime fold levels, the max-multiplicative property, the five concrete computations, and unboundedness) as a numbered ledger. It records the file's status (0 axioms, 0 sorries) and its dependency on the two prior files in the series, `AngleTrisectionOQ05OQ01` and `AngleTrisectionOQ05OQ02`.",
+    "mathContext": "$\\mathrm{minFoldLevel}(d) = \\max\\{j \\ge 1 : p_j \\mid d\\}$ — the dominant prime factor's index in the odd-prime sequence determines the fold count exactly.",
+    "significance": "context",
+    "relatedConcepts": [
+      "minFoldLevel",
+      "AngleTrisectionOQ05OQ01",
+      "AngleTrisectionOQ05OQ02"
+    ],
+    "prerequisites": [
+      "all theorems proved earlier in this file"
     ]
   }
 ]
