@@ -1,4 +1,5 @@
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
 /-
@@ -56,6 +57,22 @@ structural input the Gauss-sum route to generalized quadratic reciprocity rests 
 * `kronecker2_autocorr_spectrum`  — the full comb `C = (4,0,0,0,−4,0,0,0)`: `C(0)=4`,
                                    `C(1)=C(2)=C(3)=0`, `C(4)=−4`, completing the length-`8`
                                    autocorrelation whose DFT is the power spectrum `|τ(χ₈)|²=8`.
+
+## The Gauss sum of `χ₈` — explicit value and sign (Section G)
+
+* `zeta8` / `zeta8_eq_exp`        — the canonical primitive 8th root of unity
+                                    `ζ₈ = (1+i)/√2 = e^{2πi/8}`, with `ζ₈² = i`, `ζ₈⁴ = −1`,
+                                    `ζ₈⁸ = 1` and exact order `8` (`zeta8_orderOf`).
+* `gaussSumChi8_eq`               — **the Gauss sum evaluated**: `τ(χ₈) = ∑_{a=0}^{7} χ₈(a)ζ₈^a
+                                    = 2√2`, a *positive real* number.
+* `gaussSumChi8_eq_sqrt_conductor` — the sign of the Gauss sum (Gauss 1805, instance `D = 8`):
+                                    `τ(χ₈) = +√8`, the positive square root of the conductor.
+* `gaussSumChi8_sq`               — `τ(χ₈)² = 8 = χ₈(−1)·8`: the squared Gauss sum equals the
+                                    conductor, the identity that powers the Gauss-sum proof of
+                                    (generalized) quadratic reciprocity for the even character `χ₈`.
+* `gaussSumChi8_twisted`          — multiplicative covariance `∑_a χ₈(a)ζ₈^{ca} = χ₈(c)·τ(χ₈)`
+                                    for every unit `c ∈ {1,3,5,7}` mod `8` — the twisted Gauss
+                                    sums, the engine of the reciprocity argument.
 
 All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -431,5 +448,222 @@ theorem kronecker2_autocorr_spectrum :
     kronecker2_autocorr_two,
     kronecker2_autocorr_odd (Int.odd_iff.mpr (by decide)),
     kronecker2_autocorr_four⟩
+
+-- ============================================================
+-- Section G: The Gauss sum τ(χ₈) — explicit value and sign
+-- ============================================================
+
+/-- The canonical primitive eighth root of unity `ζ₈ = (1 + i)/√2`.  This is the
+    algebraic normal form of `e^{2πi/8}` (`zeta8_eq_exp` below); working with the
+    closed form keeps every Gauss-sum computation inside field arithmetic over
+    `ℚ(i, √2)` rather than transcendental-function manipulation. -/
+noncomputable def zeta8 : ℂ := (1 + Complex.I) / (Real.sqrt 2 : ℂ)
+
+/-- `(√2)² = 2` inside `ℂ` — the single algebraic relation through which every
+    occurrence of `√2` is eliminated in the Gauss-sum computations below. -/
+theorem sqrt_two_sq_complex : ((Real.sqrt 2 : ℂ)) ^ 2 = 2 := by
+  rw [← Complex.ofReal_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+  norm_num
+
+/-- `√2 ≠ 0` in `ℂ`, so division by `√2` in `zeta8` is honest field division. -/
+theorem sqrt_two_ne_zero_complex : ((Real.sqrt 2 : ℂ)) ≠ 0 :=
+  Complex.ofReal_ne_zero.mpr (Real.sqrt_ne_zero'.mpr (by norm_num))
+
+/-- `ζ₈² = i`: squaring the canonical eighth root of unity gives the canonical
+    fourth root of unity.  With `(√2)² = 2` this is pure ring algebra:
+    `((1+i)/√2)² = (1 + 2i + i²)/2 = i`. -/
+theorem zeta8_sq : zeta8 ^ 2 = Complex.I := by
+  unfold zeta8
+  rw [div_pow, sqrt_two_sq_complex]
+  linear_combination Complex.I_sq / 2
+
+/-- `ζ₈⁴ = −1`: the fourth power lands on the primitive square root of unity —
+    `ζ₈` is a square root of `i`, hence a fourth root of `−1`. -/
+theorem zeta8_pow_four : zeta8 ^ 4 = -1 := by
+  have h : zeta8 ^ 4 = (zeta8 ^ 2) ^ 2 := by ring
+  rw [h, zeta8_sq, Complex.I_sq]
+
+/-- `ζ₈⁸ = 1`: `ζ₈` is an eighth root of unity. -/
+theorem zeta8_pow_eight : zeta8 ^ 8 = 1 := by
+  have h : zeta8 ^ 8 = (zeta8 ^ 4) ^ 2 := by ring
+  rw [h, zeta8_pow_four]
+  norm_num
+
+/-- **`ζ₈` is a *primitive* eighth root of unity**: its multiplicative order is
+    exactly `8`.  Since `ζ₈⁸ = 1` the order divides `8 = 2³`; since `ζ₈⁴ = −1 ≠ 1`
+    it does not divide `4 = 2²`, which forces order `2³` exactly
+    (`orderOf_eq_prime_pow` with `p = 2`, `n = 2`). -/
+theorem zeta8_orderOf : orderOf zeta8 = 8 := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have h := orderOf_eq_prime_pow (x := zeta8) (p := 2) (n := 2)
+    (by rw [show (2:ℕ) ^ 2 = 4 from rfl, zeta8_pow_four]; norm_num)
+    (by rw [show (2:ℕ) ^ (2 + 1) = 8 from rfl, zeta8_pow_eight])
+  simpa using h
+
+/-- **`ζ₈ = e^{2πi/8}`**: the closed form `(1+i)/√2` is exactly the canonical
+    exponential eighth root of unity.  Unfolds `e^{iπ/4} = cos(π/4) + i·sin(π/4)`
+    (Euler) and evaluates both trigonometric values to `√2/2`. -/
+theorem zeta8_eq_exp : zeta8 = Complex.exp (2 * (Real.pi : ℂ) * Complex.I / 8) := by
+  have harg : (2 * (Real.pi : ℂ) * Complex.I / 8) = ((Real.pi / 4 : ℝ) : ℂ) * Complex.I := by
+    push_cast
+    ring
+  rw [harg, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin,
+    Real.cos_pi_div_four, Real.sin_pi_div_four]
+  unfold zeta8
+  rw [div_eq_iff sqrt_two_ne_zero_complex]
+  push_cast
+  linear_combination (-(1 + Complex.I) / 2) * sqrt_two_sq_complex
+
+/-- Powers of `ζ₈` reduce modulo `8` — the computational form of `ζ₈⁸ = 1`,
+    used to fold the exponents `ca` of the twisted Gauss sums back into `[0, 8)`. -/
+theorem zeta8_pow_mod (n : ℕ) : zeta8 ^ n = zeta8 ^ (n % 8) := by
+  conv_lhs => rw [← Nat.div_add_mod n 8]
+  rw [pow_add, pow_mul, zeta8_pow_eight, one_pow, one_mul]
+
+/-- **The Gauss sum of `χ₈ = (·/2)`**: `τ(χ₈) = ∑_{a=0}^{7} χ₈(a) ζ₈^a`, the
+    character sum against the canonical additive character of `ℤ/8ℤ`.  The
+    orthogonality data of Sections E–F pins its modulus (`|τ|² = 8`); the theorems
+    below compute the sum itself, sign included. -/
+noncomputable def gaussSumChi8 : ℂ :=
+  ∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : ℂ) * zeta8 ^ a
+
+/-- **The Gauss sum evaluated: `τ(χ₈) = 2√2`.**  Only the odd residues
+    contribute, giving `τ = ζ₈ − ζ₈³ − ζ₈⁵ + ζ₈⁷ = 2ζ₈(1 − i) = 2√2` — a
+    *positive real* number.  This single identity subsumes the modulus computation
+    `|τ(χ₈)|² = 8` of the autocorrelation spectrum *and* determines the sign,
+    which no amount of `|τ|` bookkeeping can see. -/
+theorem gaussSumChi8_eq : gaussSumChi8 = 2 * (Real.sqrt 2 : ℂ) := by
+  have h3 : zeta8 ^ 3 = zeta8 * Complex.I := by
+    have h : zeta8 ^ 3 = zeta8 * zeta8 ^ 2 := by ring
+    rw [h, zeta8_sq]
+  have h5 : zeta8 ^ 5 = -zeta8 := by
+    have h : zeta8 ^ 5 = zeta8 * zeta8 ^ 4 := by ring
+    rw [h, zeta8_pow_four]
+    ring
+  have h7 : zeta8 ^ 7 = -(zeta8 * Complex.I) := by
+    have h : zeta8 ^ 7 = zeta8 ^ 3 * zeta8 ^ 4 := by ring
+    rw [h, h3, zeta8_pow_four]
+    ring
+  have key : zeta8 * (1 - Complex.I) = (Real.sqrt 2 : ℂ) := by
+    unfold zeta8
+    rw [div_mul_eq_mul_div, div_eq_iff sqrt_two_ne_zero_complex]
+    linear_combination (-1 : ℂ) * sqrt_two_sq_complex - Complex.I_sq
+  unfold gaussSumChi8
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_zero, Nat.cast_one,
+    Nat.cast_ofNat]
+  rw [show kronecker2 0 = 0 from by decide, show kronecker2 1 = 1 from by decide,
+    show kronecker2 2 = 0 from by decide, show kronecker2 3 = -1 from by decide,
+    show kronecker2 4 = 0 from by decide, show kronecker2 5 = -1 from by decide,
+    show kronecker2 6 = 0 from by decide, show kronecker2 7 = 1 from by decide,
+    h3, h5, h7]
+  push_cast
+  linear_combination 2 * key
+
+/-- **`τ(χ₈)² = 8`: the squared Gauss sum is the conductor.**  This is the
+    `D = 8` instance of the fundamental identity `τ(χ_D)² = χ_D(−1)·D` for real
+    primitive characters — since `χ₈(−1) = 1` (`kronecker2` is even), the square
+    is `+8`.  It is exactly this identity that transports quadratic reciprocity
+    through the Gauss-sum argument. -/
+theorem gaussSumChi8_sq : gaussSumChi8 ^ 2 = 8 := by
+  rw [gaussSumChi8_eq]
+  linear_combination 4 * sqrt_two_sq_complex
+
+/-- `τ(χ₈)² = χ₈(−1)·8`, the even-character form of the conductor identity,
+    with the character value `χ₈(−1) = (−1/2) = 1` appearing explicitly. -/
+theorem gaussSumChi8_sq_eq_chi_neg_one_mul_conductor :
+    gaussSumChi8 ^ 2 = (kronecker2 (-1) : ℂ) * 8 := by
+  rw [show kronecker2 (-1) = 1 from by decide, gaussSumChi8_sq]
+  norm_num
+
+/-- `√8 = 2√2` — the conductor's square root in lowest surd form. -/
+theorem sqrt_eight_eq_two_mul_sqrt_two : Real.sqrt 8 = 2 * Real.sqrt 2 := by
+  rw [show (8:ℝ) = 4 * 2 by norm_num, Real.sqrt_mul (by norm_num : (0:ℝ) ≤ 4) 2,
+    show (4:ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2)]
+
+/-- **The sign of the Gauss sum (Gauss 1805, instance `D = 8`)**:
+    `τ(χ₈) = +√8`, the *positive* square root of the conductor.  Determining this
+    sign for general `D` was famously hard — Gauss conjectured it in 1801 and
+    needed four more years for a proof.  For the even real primitive character of
+    conductor `8` the present file settles it by direct evaluation. -/
+theorem gaussSumChi8_eq_sqrt_conductor : gaussSumChi8 = (Real.sqrt 8 : ℂ) := by
+  rw [gaussSumChi8_eq, sqrt_eight_eq_two_mul_sqrt_two]
+  push_cast
+  ring
+
+/-- Twisted Gauss sum at `c = 3`: `∑_a χ₈(a) ζ₈^{3a} = χ₈(3)·τ(χ₈)`.
+    Folding the exponents `3a mod 8` permutes the odd residues `{1,3,5,7}` and the
+    permutation sign realized on the character values is exactly `χ₈(3) = −1`. -/
+theorem gaussSumChi8_twisted_three :
+    (∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : ℂ) * zeta8 ^ (3 * a)) =
+      (kronecker2 3 : ℂ) * gaussSumChi8 := by
+  unfold gaussSumChi8
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_zero, Nat.cast_one,
+    Nat.cast_ofNat, Nat.reduceMul]
+  rw [show kronecker2 0 = 0 from by decide, show kronecker2 1 = 1 from by decide,
+    show kronecker2 2 = 0 from by decide, show kronecker2 3 = -1 from by decide,
+    show kronecker2 4 = 0 from by decide, show kronecker2 5 = -1 from by decide,
+    show kronecker2 6 = 0 from by decide, show kronecker2 7 = 1 from by decide]
+  rw [show zeta8 ^ (9:ℕ) = zeta8 ^ (1:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (15:ℕ) = zeta8 ^ (7:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (21:ℕ) = zeta8 ^ (5:ℕ) from by rw [zeta8_pow_mod]]
+  push_cast
+  ring
+
+/-- Twisted Gauss sum at `c = 5`: `∑_a χ₈(a) ζ₈^{5a} = χ₈(5)·τ(χ₈)`. -/
+theorem gaussSumChi8_twisted_five :
+    (∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : ℂ) * zeta8 ^ (5 * a)) =
+      (kronecker2 5 : ℂ) * gaussSumChi8 := by
+  unfold gaussSumChi8
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_zero, Nat.cast_one,
+    Nat.cast_ofNat, Nat.reduceMul]
+  rw [show kronecker2 0 = 0 from by decide, show kronecker2 1 = 1 from by decide,
+    show kronecker2 2 = 0 from by decide, show kronecker2 3 = -1 from by decide,
+    show kronecker2 4 = 0 from by decide, show kronecker2 5 = -1 from by decide,
+    show kronecker2 6 = 0 from by decide, show kronecker2 7 = 1 from by decide]
+  rw [show zeta8 ^ (15:ℕ) = zeta8 ^ (7:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (25:ℕ) = zeta8 ^ (1:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (35:ℕ) = zeta8 ^ (3:ℕ) from by rw [zeta8_pow_mod]]
+  push_cast
+  ring
+
+/-- Twisted Gauss sum at `c = 7`: `∑_a χ₈(a) ζ₈^{7a} = χ₈(7)·τ(χ₈)`. -/
+theorem gaussSumChi8_twisted_seven :
+    (∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : ℂ) * zeta8 ^ (7 * a)) =
+      (kronecker2 7 : ℂ) * gaussSumChi8 := by
+  unfold gaussSumChi8
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_zero, Nat.cast_one,
+    Nat.cast_ofNat, Nat.reduceMul]
+  rw [show kronecker2 0 = 0 from by decide, show kronecker2 1 = 1 from by decide,
+    show kronecker2 2 = 0 from by decide, show kronecker2 3 = -1 from by decide,
+    show kronecker2 4 = 0 from by decide, show kronecker2 5 = -1 from by decide,
+    show kronecker2 6 = 0 from by decide, show kronecker2 7 = 1 from by decide]
+  rw [show zeta8 ^ (21:ℕ) = zeta8 ^ (5:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (35:ℕ) = zeta8 ^ (3:ℕ) from by rw [zeta8_pow_mod],
+    show zeta8 ^ (49:ℕ) = zeta8 ^ (1:ℕ) from by rw [zeta8_pow_mod]]
+  push_cast
+  ring
+
+/-- **Multiplicative covariance of the Gauss sum — the reciprocity engine.**
+    For every unit `c` of `ℤ/8ℤ`, twisting the additive character by `c` scales
+    the Gauss sum by the character value:
+
+        ∑_{a=0}^{7} χ₈(a) ζ₈^{ca} = χ₈(c) · τ(χ₈).
+
+    This covariance (substitute `a ↦ c⁻¹a` and use complete multiplicativity of
+    `χ₈`) is the identity through which the Gauss sum transports quadratic
+    reciprocity; here it is verified exhaustively over the unit group
+    `(ℤ/8ℤ)ˣ = {1, 3, 5, 7}`. -/
+theorem gaussSumChi8_twisted (c : ℕ) (hc : c = 1 ∨ c = 3 ∨ c = 5 ∨ c = 7) :
+    (∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : ℂ) * zeta8 ^ (c * a)) =
+      (kronecker2 (c : ℤ) : ℂ) * gaussSumChi8 := by
+  rcases hc with rfl | rfl | rfl | rfl
+  · unfold gaussSumChi8
+    simp only [one_mul, Nat.cast_one]
+    rw [show kronecker2 1 = 1 from by decide]
+    push_cast
+    ring
+  · exact gaussSumChi8_twisted_three
+  · exact gaussSumChi8_twisted_five
+  · exact gaussSumChi8_twisted_seven
 
 end KroneckerSymbol
