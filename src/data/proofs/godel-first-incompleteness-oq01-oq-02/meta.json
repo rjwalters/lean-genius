@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Open Question and the Repair",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States OQ-02 left by the sibling …OQ01OQ03 (find a consistent, model-having axiom set giving First Incompleteness non-vacuously) and answers it: replace the parent's illegitimate meta self-reference ⊢G ↔ ¬⊢Prov⌜G⌝ with the object-level fixed-point clauses F ⊢ (G→¬Prov⌜G⌝) and F ⊢ (¬G→Prov⌜G⌝), keeping derivability D1, consistency, and ω-consistency.",
+      "mathContext": "Object-level F ⊢ (G ↔ ¬Prov⌜G⌝) splits into the directional clauses FixG and NegGProv used throughout the file."
+    },
+    {
       "id": "clauses",
       "title": "The Repaired Clauses as Predicates",
       "startLine": 53,
@@ -74,6 +82,14 @@
       "endLine": 148,
       "summary": "has_model (∃ P satisfying all five — the parent's set had none), has_nontrivial_model (a model with a provable sentence, so incompleteness is not the Provable:=False cheat), and provG_not_provable (Prov⌜G⌝ unprovable in every model).",
       "mathContext": "fun _ => False and (· = negProvGCode) are explicit models, closed by decide."
+    },
+    {
+      "id": "summary",
+      "title": "Closing Summary",
+      "startLine": 150,
+      "endLine": 167,
+      "summary": "Recaps the OQ-02 answer: dropping the meta self-reference for the object-level clauses FixG and NegGProv (with D1G, Consistent, OmegaCons) makes the axiom set both consistent (has_model, has_nontrivial_model) and sufficient (first_incompleteness), so G's undecidability is drawn from satisfiable, not contradictory, hypotheses.",
+      "mathContext": "Five clauses $\\Rightarrow$ $\\neg P(G) \\wedge \\neg P(\\neg G)$, plus satisfiability of the same five clauses."
     }
   ],
   "conclusion": {
