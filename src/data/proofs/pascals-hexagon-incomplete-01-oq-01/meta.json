@@ -78,7 +78,7 @@
       "id": "api",
       "title": "Minimal Conic API",
       "startLine": 53,
-      "endLine": 83,
+      "endLine": 84,
       "summary": "ProjPoint, Conic, conicQuadraticForm, pointOnConic, Conic.symmetric, Conic.nondegenerate, projTransform, stdConic — mirroring the (bit-rotted) parent PascalsHexagon.lean so the reduction slots into the same framework.",
       "mathContext": "Conics as matrices (not assumed symmetric) and their quadratic forms."
     },
@@ -91,12 +91,20 @@
       "mathContext": "The quadratic form sees only the symmetric part of the matrix."
     },
     {
-      "id": "main",
+      "id": "sylvester-reduction",
       "title": "Removing the Symmetry Hypothesis",
       "startLine": 119,
+      "endLine": 148,
+      "summary": "sylvester_without_symmetry: given the symmetric case as a black box, transports the isotropic witness p₀ onto symmetrize C via pointOnConic_symmetrize, applies the symmetric-case hypothesis there to get M, and shows the same M works for C since C and symmetrize C share every point.",
+      "mathContext": "The symmetric-case Sylvester reduction covers asymmetric conics: the witnessing M for symmetrize C already works for C."
+    },
+    {
+      "id": "sanity-check",
+      "title": "Non-Vacuity: A Concrete Asymmetric Witness",
+      "startLine": 149,
       "endLine": 160,
-      "summary": "sylvester_without_symmetry (the symmetric case implies the general case) and a concrete asymmetric witness confirming non-vacuity.",
-      "mathContext": "The symmetric-case Sylvester reduction covers asymmetric conics."
+      "summary": "symmetrize_nontrivial_example: the concretely asymmetric conic C = !![0,2,0; 0,0,0; 0,0,0] (C 0 1 = 2 ≠ 0 = C 1 0) shares every point with its symmetrization, confirming the reduction is non-vacuous rather than a statement about only-already-symmetric conics. Closes the namespace.",
+      "mathContext": "An explicit asymmetric $C$ with $\\mathrm{pointOnConic}\\ p\\ C \\iff \\mathrm{pointOnConic}\\ p\\ (\\mathrm{symmetrize}\\ C)$ for all $p$."
     }
   ],
   "conclusion": {
