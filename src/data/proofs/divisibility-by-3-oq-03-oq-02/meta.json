@@ -64,6 +64,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Base-Parametrized Digital Root", "startLine": 1, "endLine": 35, "summary": "States the open question (OQ-03-OQ-02) of a base-parametrized digital root using Nat.digits with variable base, answers yes, and describes the proof route via b % (b-1) = 1 and Nat.modEq_digits_sum.", "mathContext": "Generalizes the digital root formula to any base $b \\ge 3$: $\\mathrm{dr}_b(n) = 1 + ((n-1) \\bmod (b-1))$ for $n>0$, using the congruence $n \\equiv \\mathrm{dr}_b(n) \\pmod{b-1}$ from Mathlib's \\texttt{Nat.modEq\\_digits\\_sum}."},
     {
       "id": "helper-lemma",
       "title": "Key Helper: b mod (b-1) = 1",
