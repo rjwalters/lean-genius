@@ -69,12 +69,28 @@
       "mathContext": "Power mean $M_r(z;w) = (\\sum_i w_i z_i^r)^{1/r}$; claim: $0 < p \\le q \\Rightarrow M_p \\le M_q$ for $z_i \\ge 0$, $w_i \\ge 0$, $\\sum_i w_i = 1$."
     },
     {
-      "id": "power-mean-monotone",
-      "title": "Weighted power-mean monotonicity",
+      "id": "power-mean-setup",
+      "title": "powerMean_le_powerMean — Setup: the Exponent Ratio t = q/p",
       "startLine": 40,
+      "endLine": 63,
+      "summary": "Sets t = q/p ≥ 1 (valid since 0 < p ≤ q) and establishes the nonnegativity side conditions, then proves the exponent identity p·t = q which will collapse (zᵢ^p)^t to zᵢ^q.",
+      "mathContext": "$t := q/p \\ge 1$; nonnegativity $w_i z_i^p \\ge 0$; identity $p \\cdot t = q$."
+    },
+    {
+      "id": "power-mean-jensen",
+      "title": "powerMean_le_powerMean — Applying Jensen with Exponent t",
+      "startLine": 64,
+      "endLine": 69,
+      "summary": "Applies Mathlib's rpow Jensen inequality (Real.rpow_arith_mean_le_arith_mean_rpow) with exponent t ≥ 1 to the data yᵢ = zᵢ^p, then rewrites via p·t = q to conclude A^t ≤ B where A = ∑ wᵢ zᵢ^p, B = ∑ wᵢ zᵢ^q.",
+      "mathContext": "$A^t = (\\sum_i w_i z_i^p)^t \\le \\sum_i w_i (z_i^p)^t = \\sum_i w_i z_i^q = B.$"
+    },
+    {
+      "id": "power-mean-collapse",
+      "title": "powerMean_le_powerMean — Closing the Loop: (Aᵗ)^{1/q} = A^{1/p}",
+      "startLine": 70,
       "endLine": 77,
-      "summary": "powerMean_le_powerMean: set t = q/p ≥ 1; Jensen (Real.rpow_arith_mean_le_arith_mean_rpow) on yᵢ = zᵢ^p gives A^t ≤ ∑ wᵢ zᵢ^q = B (via (zᵢ^p)^t = zᵢ^{p·t}, p·t = q); raise to 1/q (Real.rpow_le_rpow) and simplify (A^t)^{1/q} = A^{1/p} to conclude M_p ≤ M_q.",
-      "mathContext": "$A^{q/p} \\le B$ then $(A^{q/p})^{1/q} = A^{1/p} \\le B^{1/q}$, where $A = \\sum_i w_i z_i^p$, $B = \\sum_i w_i z_i^q$."
+      "summary": "Raises A^t ≤ B to the power 1/q ≥ 0 (Real.rpow_le_rpow), then uses the identity t·(1/q) = 1/p to rewrite (A^t)^{1/q} as A^{1/p}, giving M_p = A^{1/p} ≤ B^{1/q} = M_q.",
+      "mathContext": "$(A^t)^{1/q} = A^{t/q} = A^{1/p} \\le B^{1/q}$, since $t \\cdot (1/q) = (q/p)\\cdot(1/q) = 1/p$."
     },
     {
       "id": "am-le-qm",
