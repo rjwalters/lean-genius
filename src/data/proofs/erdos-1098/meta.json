@@ -44,9 +44,9 @@
         "module": "Mathlib.GroupTheory.Subgroup.Basic"
       },
       {
-        "theorem": "conjugacyClass",
-        "description": "Conjugacy classes for BFC groups",
-        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+        "theorem": "conjugatesOf",
+        "description": "Conjugacy class (orbit) of an element, used in the isBFCGroup definition",
+        "module": "Mathlib.Algebra.Group.Conj"
       }
     ],
     "originalContributions": [
@@ -147,22 +147,22 @@
       "id": "non-commuting-graph",
       "title": "Non-Commuting Graph",
       "startLine": 80,
-      "endLine": 120,
+      "endLine": 131,
       "summary": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite).",
       "mathContext": "Defines `NonCommGraph G` structure with vertices (Set.univ), adj (nonCommuting), symm, and irrefl. Defines `isClique S` (pairwise non-commuting), `cliqueNumber` via `⨆` over finite cliques, `hasFiniteCliqueNumber` (∃ n bounding all cliques), `noInfiniteClique` (all cliques finite)."
     },
     {
       "id": "finite-index",
       "title": "Finite Index Center",
-      "startLine": 121,
-      "endLine": 137,
+      "startLine": 132,
+      "endLine": 150,
       "summary": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index ≠ ⊤` and `centerIndex G` as the `ℕ∞`-valued index.",
       "mathContext": "Defines `centerHasFiniteIndex G` as `(Subgroup.center G).index $\\neq$ ⊤` and `centerIndex G` as the `$\\mathbb{N}$∞`-valued index."
     },
     {
       "id": "neumann-theorem",
       "title": "Part IV: Neumann's Theorem",
-      "startLine": 138,
+      "startLine": 151,
       "endLine": 160,
       "summary": "Defines `centerHasFiniteIndex` and `centerIndex`, then axiomatizes `neumann_theorem : noInfiniteClique G ↔ centerHasFiniteIndex G` — B. H. Neumann's (1976) equivalence that the non-commuting graph Γ(G) has no infinite clique iff the centre Z(G) has finite index.",
       "mathContext": "`centerHasFiniteIndex G :⇔ [G : Z(G)] < ∞`; the axiomatized equivalence is $\\text{noInfiniteClique}(G) \\iff [G:Z(G)] < \\infty$."
@@ -195,7 +195,7 @@
       "id": "summary",
       "title": "Part IX: Summary",
       "startLine": 330,
-      "endLine": 369,
+      "endLine": 368,
       "summary": "The top-level statements: `erdos_1098 := erdos_question_answered` (noInfiniteClique G → hasFiniteCliqueNumber G), `erdos_1098_summary` (the Neumann equivalence together with finite-index ⇒ finite clique number), and `erdos_1098_status := neumann_theorem` (the clean iff form). Together they record that Erdős #1098 is SOLVED (Neumann 1976).",
       "mathContext": "Erdős #1098 answer: Γ(G) has no infinite clique iff Z(G) has finite index, in which case every clique has size ≤ [G : Z(G)]."
     }

@@ -4,13 +4,13 @@
     "proofId": "erdos-1098",
     "range": {
       "startLine": 1,
-      "endLine": 38
+      "endLine": 39
     },
     "type": "concept",
     "title": "Module Header and Imports",
-    "content": "The file imports `Mathlib.Data.Nat.Basic`, `Mathlib.GroupTheory.Subgroup.Basic` (for `Subgroup`, `Subgroup.center`, `mem_center_iff`), and `Mathlib.GroupTheory.Index` (for `Subgroup.index`). Opens `Subgroup` namespace for direct access to center and index.",
+    "content": "The file imports the full `Mathlib` library plus explicit `Mathlib.Data.Nat.Basic`, `Mathlib.GroupTheory.Index` (for `Subgroup.index`), and `Mathlib.GroupTheory.QuotientGroup.Basic` (for the coset/quotient argument). Opens `Subgroup` namespace for direct access to `center` and `index`.",
     "significance": "supporting",
-    "mathContext": "`open Subgroup` brings `center`, `index`, `mem_center_iff`, and `quotient` into scope. The `namespace Erdos1098` scopes all definitions. The implicit `variable {G : Type*} [Group G]` (line 43) provides the group structure to all subsequent definitions.",
+    "mathContext": "`open Subgroup` brings `center` and `index` into scope. The `namespace Erdos1098` scopes all definitions. The implicit `variable {G : Type*} [Group G]` (line 44) provides the group structure to all subsequent definitions.",
     "relatedConcepts": [
       "GroupTheory imports",
       "Subgroup API",
@@ -31,8 +31,8 @@
     "id": "ann-non-commuting-rel",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 45,
-      "endLine": 63
+      "startLine": 44,
+      "endLine": 64
     },
     "type": "definition",
     "title": "Non-Commuting and Commuting Relations",
@@ -60,14 +60,14 @@
     "id": "ann-center-def",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 65,
-      "endLine": 77
+      "startLine": 66,
+      "endLine": 79
     },
     "type": "definition",
     "title": "Center of a Group",
     "content": "**centerDef** wraps `Subgroup.center G`, the center Z(G) = {g | ∀ h, gh = hg}. **mem_center_iff** characterizes membership: g ∈ Z(G) ↔ g commutes with all elements, proved by `simp [commuting, Subgroup.mem_center_iff]`.",
     "significance": "key",
-    "mathContext": "`def centerDef : Subgroup G := Subgroup.center G` — a thin wrapper. `theorem mem_center_iff (g : G) : g ∈ Subgroup.center G ↔ ∀ h : G, commuting g h := by simp [commuting, Subgroup.mem_center_iff]` — Mathlib's `Subgroup.mem_center_iff` states `g ∈ center G ↔ ∀ h, g * h = h * g`, which `simp` unifies with the `commuting` definition.",
+    "mathContext": "`def centerDef : Subgroup G := Subgroup.center G` — a thin wrapper. `theorem mem_center_iff (g : G) : g ∈ Subgroup.center G ↔ ∀ h : G, commuting g h := by simp only [commuting, Subgroup.mem_center_iff]; constructor <;> intro H h <;> exact (H h).symm` — Mathlib's `Subgroup.mem_center_iff` states `g ∈ center G ↔ ∀ h, h * g = g * h`, reconciled with `commuting`'s orientation via `.symm`.",
     "relatedConcepts": [
       "Subgroup.center",
       "Subgroup.mem_center_iff",
@@ -89,14 +89,14 @@
     "id": "ann-noncomm-graph",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 82,
-      "endLine": 91
+      "startLine": 84,
+      "endLine": 102
     },
     "type": "definition",
     "title": "Non-Commuting Graph Structure",
-    "content": "**NonCommGraph G** bundles the graph: vertices = Set.univ (all of G), adjacency = nonCommuting, with symmetry and irreflexivity. The `irrefl` field proves `¬nonCommuting g g` since `g * g = g * g` always holds.",
+    "content": "**NonCommGraph G** bundles the graph: `vertices` defaults to `Set.univ`, while `adj`, `symm`, and `irrefl` must be supplied explicitly (they carry no default value in the structure itself). **nonCommGraph G** is the canonical instance: adjacency is `nonCommuting`, symmetry comes from `nonCommuting_symm`, and irreflexivity holds because `adj g g` would mean `g ≠ g`.",
     "significance": "key",
-    "mathContext": "`structure NonCommGraph (G : Type*) [Group G] where vertices : Set G := Set.univ; adj : G → G → Prop := nonCommuting; symm : ∀ g h, adj g h ↔ adj h g := fun g h => nonCommuting_symm g h; irrefl : ∀ g, ¬adj g g := fun g => by simp [nonCommuting]` — the default values make NonCommGraph a zero-argument constructor. `simp [nonCommuting]` reduces `g * g ≠ g * g` to `False`.",
+    "mathContext": "`structure NonCommGraph (G : Type*) [Group G] where vertices : Set G := Set.univ; adj : G → G → Prop; symm : ∀ g h, adj g h ↔ adj h g; irrefl : ∀ g, ¬adj g g` — only `vertices` has a default. `def nonCommGraph (G : Type*) [Group G] : NonCommGraph G where adj := nonCommuting; symm := nonCommuting_symm; irrefl := fun _ h => h rfl` — the canonical instance built from `nonCommuting` and its symmetry lemma.",
     "relatedConcepts": [
       "structure defaults",
       "Set.univ",
@@ -118,14 +118,14 @@
     "id": "ann-clique-defs",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 93,
-      "endLine": 120
+      "startLine": 104,
+      "endLine": 130
     },
     "type": "definition",
     "title": "Cliques and Clique Number",
-    "content": "**isClique S** requires every distinct pair in S to be non-commuting. **cliqueNumber** computes the supremum of finite clique sizes via `⨆`. **hasFiniteCliqueNumber** asserts ∃ n bounding all clique sizes. **noInfiniteClique** requires all cliques to be finite sets.",
+    "content": "**isClique S** requires every distinct pair in S to be non-commuting. **cliqueNumber** computes the supremum of finite clique sizes via `⨆`, valued in `ℕ∞`. **hasFiniteCliqueNumber** asserts ∃ n : ℕ bounding all clique sizes. **noInfiniteClique** requires all cliques to be finite sets.",
     "significance": "key",
-    "mathContext": "`def isClique (S : Set G) : Prop := ∀ g ∈ S, ∀ h ∈ S, g ≠ h → nonCommuting g h` — pairwise non-commutativity. `noncomputable def cliqueNumber (G : Type*) [Group G] : ℕ∞ := ⨆ (S : Set G) (_ : isClique S) (_ : S.Finite), S.ncard` — uses `⨆` (iSup) over all finite cliques, returning `ℕ∞` to handle possibly unbounded values. `Set.ncard` gives the cardinality of a finite set.",
+    "mathContext": "`def isClique (S : Set G) : Prop := ∀ g ∈ S, ∀ h ∈ S, g ≠ h → nonCommuting g h` — pairwise non-commutativity. `noncomputable def cliqueNumber (G : Type*) [Group G] : ℕ∞ := ⨆ (S : Set G) (_ : isClique S) (_ : S.Finite), S.ncard` — uses `⨆` (iSup) over all finite cliques, returning `ℕ∞` to handle possibly unbounded values. `def hasFiniteCliqueNumber (G : Type*) [Group G] : Prop := ∃ n : ℕ, ∀ S : Set G, isClique S → S.Finite → S.ncard ≤ n` and `def noInfiniteClique (G : Type*) [Group G] : Prop := ∀ S : Set G, isClique S → S.Finite`.",
     "relatedConcepts": [
       "iSup",
       "Set.ncard",
@@ -148,19 +148,18 @@
     "id": "ann-finite-index",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 124,
-      "endLine": 137
+      "startLine": 132,
+      "endLine": 149
     },
     "type": "definition",
     "title": "Finite Index Center",
-    "content": "**centerHasFiniteIndex G** is `(Subgroup.center G).index ≠ ⊤`, where `⊤ : ℕ∞` represents infinity. **centerIndex G** is the actual `ℕ∞`-valued index [G : Z(G)]. These connect the algebraic notion of index to the graph-theoretic bound.",
+    "content": "**centerHasFiniteIndex G** is `(Subgroup.center G).index ≠ 0`. Mathlib's `Subgroup.index` is `ℕ`-valued and returns `0` exactly when the index is infinite, so `≠ 0` (not `≠ ⊤`) is the finite-index condition. **centerIndex G** is a thin `ℕ`-valued wrapper around the same index.",
     "significance": "key",
-    "mathContext": "`def centerHasFiniteIndex (G : Type*) [Group G] : Prop := (Subgroup.center G).index ≠ ⊤` — `Subgroup.index` returns `ℕ∞` (with `⊤` for infinite index). `noncomputable def centerIndex (G : Type*) [Group G] : ℕ∞ := (Subgroup.center G).index` — a thin wrapper exposing the index value for use in bounds.",
+    "mathContext": "`def centerHasFiniteIndex (G : Type*) [Group G] : Prop := (Subgroup.center G).index ≠ 0` — `Subgroup.index : ℕ` returns `0` for infinite index. `noncomputable def centerIndex (G : Type*) [Group G] : ℕ := (Subgroup.center G).index` — a thin wrapper exposing the index value for use in bounds.",
     "relatedConcepts": [
       "Subgroup.index",
-      "ℕ∞",
-      "WithTop",
-      "finite index"
+      "finite index",
+      "index_ne_zero_iff_finite"
     ],
     "tags": [
       "finite-index",
@@ -171,30 +170,29 @@
     "prerequisites": [
       "Subgroup Index",
       "Cosets And Quotient Groups",
-      "WithTop And Extended Naturals"
+      "Natural-Number-Valued Index"
     ]
   },
   {
     "id": "ann-neumann-theorem",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 141,
-      "endLine": 171
+      "startLine": 151,
+      "endLine": 159
     },
     "type": "concept",
     "title": "Neumann's Theorem (1976)",
-    "content": "**neumann_theorem** (axiom): `noInfiniteClique G ↔ centerHasFiniteIndex G` — the key equivalence. **neumann_bound** (axiom): if [G : Z(G)] = n, every clique has size ≤ n. **erdos_question_answered** combines these: from `noInfiniteClique`, rewrite via `neumann_theorem` to get `centerHasFiniteIndex`, then apply the finite-clique implication.",
+    "content": "**neumann_theorem** is the file's sole axiom: `noInfiniteClique G ↔ centerHasFiniteIndex G`, B.H. Neumann's 1976 equivalence. It is the only unproved assumption in the file — the quantitative bound (`neumann_bound`) and every other result are proved, not axiomatized.",
     "significance": "key",
-    "mathContext": "`axiom neumann_theorem (G : Type*) [Group G] : noInfiniteClique G ↔ centerHasFiniteIndex G` — the deep algebraic result. `axiom neumann_bound (G : Type*) [Group G] (n : ℕ) (hn : (Subgroup.center G).index = n) : ∀ S : Set G, isClique S → S.Finite → S.ncard ≤ n` — the quantitative bound. `theorem erdos_question_answered ... := by rw [neumann_theorem] at h; exact finite_index_implies_finite_clique G h` — `rw` rewrites the hypothesis `h : noInfiniteClique G` to `centerHasFiniteIndex G` using the iff.",
+    "mathContext": "`axiom neumann_theorem (G : Type*) [Group G] : noInfiniteClique G ↔ centerHasFiniteIndex G` — the deep algebraic result asserted without proof.",
     "relatedConcepts": [
-      "rw tactic",
       "iff rewriting",
-      "axiom + theorem pattern"
+      "single-axiom formalization"
     ],
     "tags": [
       "neumann-theorem",
       "equivalence",
-      "clique-bound",
+      "axiom",
       "key-result"
     ],
     "prerequisites": [
@@ -207,18 +205,19 @@
     "id": "ann-coset-structure",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 175,
-      "endLine": 199
+      "startLine": 161,
+      "endLine": 252
     },
     "type": "concept",
-    "title": "Coset Structure Argument",
-    "content": "**same_coset_commute** (sorry): If g and h differ by a central element (g * z = h for z ∈ Z(G)), they commute. **clique_different_cosets** (sorry): Distinct clique members map to distinct elements in the quotient G/Z(G). **clique_size_bound** (sorry): |S| ≤ [G : Z(G)] for any clique S. This is the heart of the proof.",
+    "title": "Coset Structure Argument and the Answer",
+    "content": "**same_coset_commute**, **clique_different_cosets**, and **clique_size_bound** are all fully proved (no `sorry`): if g and h lie in the same coset of Z(G) they commute, so clique members lie in distinct cosets, giving `S.ncard ≤ [G : Z(G)]`. **neumann_bound** restates this bound for an explicit index value `n`; it is proved directly from `clique_size_bound` (the source comment notes this proof \"eliminates former axiom\" — `neumann_bound` is a theorem, not an axiom). **finite_index_implies_finite_clique** and **erdos_question_answered** assemble the pieces: the latter uses `rw [neumann_theorem]` to convert `noInfiniteClique` into `centerHasFiniteIndex`, then applies the finite-clique implication.",
     "significance": "key",
-    "mathContext": "`theorem same_coset_commute (g h : G) (hcoset : ∃ z ∈ Subgroup.center G, g * z = h) : commuting g h := by sorry` — the key insight that same-coset elements commute. `theorem clique_different_cosets ... : (Subgroup.center G).quotient.mk g ≠ (Subgroup.center G).quotient.mk h` — uses the quotient map to show distinct coset images. `theorem clique_size_bound ... : S.ncard ≤ (Subgroup.center G).index` — the cardinality bound via injection into cosets.",
+    "mathContext": "`theorem same_coset_commute (g h : G) (hcoset : ∃ z ∈ Subgroup.center G, g * z = h) : commuting g h := by obtain ⟨z, hz, rfl⟩ := hcoset; ...` — proved via `mul_assoc` and centrality. `theorem clique_different_cosets ... : (QuotientGroup.mk g : G ⧸ Subgroup.center G) ≠ QuotientGroup.mk h := by ...` — proved via `QuotientGroup.eq`. `theorem clique_size_bound (S : Set G) (hS : isClique S) (_hSfin : S.Finite) (hfin : centerHasFiniteIndex G) : S.ncard ≤ (Subgroup.center G).index := by ...` — proved via `Set.InjOn` into the quotient and a `calc` chain ending in `Subgroup.index_eq_card`. `theorem erdos_question_answered ... := by rw [neumann_theorem] at h; exact finite_index_implies_finite_clique G h`.",
     "relatedConcepts": [
-      "quotient.mk",
+      "rw tactic",
+      "iff rewriting",
       "coset injection",
-      "Subgroup.quotient"
+      "cardinality bounds via injection"
     ],
     "tags": [
       "coset-argument",
@@ -236,14 +235,14 @@
     "id": "ann-abelian-no-edges",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 204,
-      "endLine": 214
+      "startLine": 254,
+      "endLine": 267
     },
     "type": "concept",
     "title": "Abelian Groups Have No Edges",
     "content": "**abelian_no_edges**: If Z(G) = G (i.e., `Subgroup.center G = ⊤`), then no pair of elements is non-commuting. Proved by showing every g is central via `simp [habel]`, then applying `Subgroup.mem_center_iff` to get commutativity.",
     "significance": "key",
-    "mathContext": "`theorem abelian_no_edges (G : Type*) [Group G] (habel : Subgroup.center G = ⊤) : ∀ g h : G, ¬nonCommuting g h := by intro g h; simp [nonCommuting]; have : g ∈ Subgroup.center G := by simp [habel]; exact Subgroup.mem_center_iff.mp this h` — `simp [habel]` proves `g ∈ center G` since `center G = ⊤` means every element is central. `mem_center_iff.mp this h` extracts `g * h = h * g`, and `simp [nonCommuting]` reduces the goal to showing commutativity.",
+    "mathContext": "`theorem abelian_no_edges (G : Type*) [Group G] (habel : Subgroup.center G = ⊤) : ∀ g h : G, ¬nonCommuting g h := by intro g h; simp [nonCommuting]; have : g ∈ Subgroup.center G := by simp [habel]; exact (Subgroup.mem_center_iff.mp this h).symm`.",
     "relatedConcepts": [
       "Subgroup.center = ⊤",
       "mem_center_iff",
@@ -265,17 +264,17 @@
     "id": "ann-examples",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 220,
-      "endLine": 249
+      "startLine": 269,
+      "endLine": 293
     },
     "type": "concept",
     "title": "Group Examples",
-    "content": "**infinite_clique_example** (axiom): Non-abelian groups like free groups can have infinite cliques. **symmetric_group_clique_bound** (axiom): For S_n (n ≥ 3), Z(S_n) = {1}, so clique size ≤ n!. **dihedral_group_center_index** (axiom): D_n has center index n (even n) or 2n (odd n). **finite_group_finite_index** (sorry): Every finite group trivially has finite index center.",
+    "content": "Source comments (not formalized as Lean declarations) note that non-abelian infinite groups can have infinite cliques, and sketch bounds for the symmetric group (Z(S_n) is trivial for n ≥ 3, so clique number ≤ n!) and dihedral groups. The only formalized result in this part is **finite_group_finite_index**, fully proved (no `sorry`): every finite group trivially has a finite-index center.",
     "significance": "supporting",
-    "mathContext": "`axiom infinite_clique_example : ∃ G : Type*, ∃ _ : Group G, ¬noInfiniteClique G` — existential for a group with infinite cliques. `axiom symmetric_group_clique_bound (n : ℕ) (hn : n ≥ 3) : ∃ bound : ℕ, bound = n.factorial ∧ ...` — S_n has trivial center for n ≥ 3. `theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] : centerHasFiniteIndex G := by sorry` — the `[Finite G]` instance should make index automatically finite.",
+    "mathContext": "`theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] : centerHasFiniteIndex G := by unfold centerHasFiniteIndex; exact Subgroup.index_ne_zero_of_finite (H := Subgroup.center G)` — the `[Finite G]` instance makes the index automatically nonzero.",
     "relatedConcepts": [
-      "symmetric group",
-      "dihedral group",
+      "symmetric group (discussed in comments only)",
+      "dihedral group (discussed in comments only)",
       "Finite typeclass"
     ],
     "tags": [
@@ -294,19 +293,19 @@
     "id": "ann-generalizations",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 254,
-      "endLine": 279
+      "startLine": 295,
+      "endLine": 329
     },
     "type": "definition",
     "title": "Generalizations: Commuting Probability and BFC Groups",
-    "content": "**commutingProbability** (axiom): Pr(G) = |{(g,h) : gh = hg}| / |G|² for finite G. **isBFCGroup**: Groups where all conjugacy classes are finite and uniformly bounded. **bfc_center_connection** (axiom): Finite index center implies BFC, connecting to Schur's theorem that Z(G) having finite index implies G' is finite.",
+    "content": "**commutingProbability** is a `noncomputable def` (not an axiom): Pr(G) = |{(g,h) : gh = hg}| / |G|² for finite G, computed via `Nat.card`. **prob_clique_relation** is a fully proved theorem: every finite group has finite clique number, bounded by `Nat.card G`. **isBFCGroup** is a `def` using Mathlib's `conjugatesOf` (bounded finite conjugacy classes). The BFC–center connection is discussed only in a source comment; no `bfc_center_connection` declaration exists in the file.",
     "significance": "supporting",
-    "mathContext": "`axiom commutingProbability (G : Type*) [Group G] [Finite G] : ℚ` — returns a rational value (axiomatized since the counting is non-trivial). `def isBFCGroup (G : Type*) [Group G] : Prop := ∃ n : ℕ, ∀ g : G, (conjugacyClass g).Finite ∧ (conjugacyClass g).ncard ≤ n` — uses `conjugacyClass` from Mathlib. `axiom bfc_center_connection` states the one-directional implication.",
+    "mathContext": "`noncomputable def commutingProbability (G : Type*) [Group G] [Finite G] : ℚ := (Nat.card {p : G × G | p.1 * p.2 = p.2 * p.1} : ℚ) / ((Nat.card G : ℚ) ^ 2)`. `theorem prob_clique_relation (G : Type*) [Group G] [Finite G] : hasFiniteCliqueNumber G := by use Nat.card G; ...`. `def isBFCGroup (G : Type*) [Group G] : Prop := ∃ n : ℕ, ∀ g : G, (conjugatesOf g).Finite ∧ (conjugatesOf g).ncard ≤ n`.",
     "relatedConcepts": [
       "commuting probability",
-      "conjugacyClass",
+      "conjugatesOf",
       "BFC groups",
-      "Schur's theorem"
+      "Schur's theorem (discussed in comments only)"
     ],
     "tags": [
       "commuting-probability",
@@ -324,8 +323,8 @@
     "id": "ann-summary",
     "proofId": "erdos-1098",
     "range": {
-      "startLine": 295,
-      "endLine": 318
+      "startLine": 330,
+      "endLine": 368
     },
     "type": "concept",
     "title": "Summary: SOLVED",
