@@ -5,7 +5,7 @@
     "type": "concept",
     "range": {
       "startLine": 1,
-      "endLine": 56
+      "endLine": 55
     },
     "title": "Two commuting symmetries of closed knight's tours",
     "content": "The OQ-02 program studies the symmetries that act on the histogram of oblique counts of closed knight's tours on the 8×8 board (Knuth, 2025). Two symmetries are natural and conceptually independent: the dihedral board group D₄ (applyD4Tour) permutes the SQUARES of the board (an isometry of the plane), while time-reversal (reverseTour, built in the OQ-02 reversal companion) permutes the TRAVERSAL ORDER of a fixed tour. This file proves they commute, so closed tours carry an order-16 D₄ × ℤ/2 action, refining the orbit-divisibility picture of the histogram. The docstring's honesty note distinguishes this assumption-free file from the base lineage, which uses native_decide (Lean.ofReduceBool) and accepts the uniqueness theorem unique_four_oblique as an axiom (Knuth's enumeration of ~1.3×10¹³ tours).",
@@ -28,7 +28,7 @@
     "proofId": "knights-tour-oblique-oq-03",
     "type": "theorem",
     "range": {
-      "startLine": 64,
+      "startLine": 56,
       "endLine": 71
     },
     "title": "reverseTour_applyD4Tour: reversal commutes with D₄",
