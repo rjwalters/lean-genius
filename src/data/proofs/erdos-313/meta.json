@@ -90,7 +90,7 @@
       "title": "Main Conjecture",
       "startLine": 51,
       "endLine": 61,
-      "summary": "States the two equivalent forms of the main OPEN question: **erdos_313_conjecture** (infinitely many solution pairs) and **primary_pseudoperfect_infinite** (infinitely many primary pseudoperfect numbers)."
+      "summary": "States (in a comment, not as a formal Prop or theorem) the main OPEN question in its two equivalent forms: infinitely many solution pairs, equivalently infinitely many primary pseudoperfect numbers."
     },
     {
       "id": "examples",
@@ -132,7 +132,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #313 asks whether there are infinitely many primary pseudoperfect numbers — integers $m$ whose prime reciprocals sum to $1 - 1/m$. The formalization captures the solution set, the primary pseudoperfect predicate, five verified examples, structural constraints (product and uniqueness), the count of 8 known solutions, and the Egyptian fraction connection. The 122-line Lean file has 0 sorries and 0 axioms: the five example solutions and `egyptian_fraction_form` are fully proved, while the `axiomatized` status reflects only that the infinitude conjecture itself is stated (as a Prop) but not yet formalized.",
+    "summary": "Erdős Problem #313 asks whether there are infinitely many primary pseudoperfect numbers — integers $m$ whose prime reciprocals sum to $1 - 1/m$. The formalization captures the solution set, the primary pseudoperfect predicate, five verified examples, structural constraints (product and uniqueness), the count of 8 known solutions, and the Egyptian fraction connection. The 122-line Lean file has 0 sorries and 0 axioms: the five example solutions and `egyptian_fraction_form` are fully proved, while the `axiomatized` status reflects only that the infinitude conjecture itself is stated (in a comment) but not yet formalized as a Prop.",
     "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Egyptian Fraction Cluster:** Primary pseudoperfect numbers are special Egyptian fractions of $1$ with mostly-prime denominators. This connects to the broader Erdős Egyptian fraction program: #282 (greedy termination), #283 (polynomial denominators), #284 (maximum denominators), #285 (asymptotics).\n\n2. **Number-Theoretic Depth:** The product constraint $m = \\prod P$ means primary pseudoperfect numbers are squarefree, and the equation becomes a constraint on which subsets of primes have reciprocal sums close to $1$.\n\nThis connects to the theory of the prime harmonic series and Mertens' theorem ($\\sum_{p \\leq x} 1/p \\approx \\log \\log x$).\n\n3. **Pseudoperfect Number Theory:** The problem bridges unit fraction theory and the classical theory of perfect and pseudoperfect numbers. The abundancy index $\\sigma(n)/n$ for primary pseudoperfect $m$ satisfies a special identity.\n\n4. **Computational Challenges:** The super-exponential growth of known solutions ($m_8$ has 31 digits) makes exhaustive search for a 9th term computationally challenging. Graph-theoretic methods (Butske-Jaje-Mayernik) offer structured search strategies.",
     "openQuestions": [
       "**The Main Question:** Are there infinitely many primary pseudoperfect numbers, or only finitely many?",
