@@ -17,6 +17,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header: statement, approach, and honest scope",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "The docstring states Abel's theorem in the regular direction at full strength — every convergent series ∑ₙ aₙ is Abel summable to its ordinary sum, generalizing the parent's geometric-only case — and previews the four-step approach: on-disc summability, the Mathlib left-limit, synthesis into AbelSummableTo, and the geometric consistency check. An 'Honest Scope' note flags this as a packaging result around Mathlib's Abel limit theorem, not a rederivation of it. Imports Mathlib.Analysis.Complex.AbelLimit and the parent file, and opens the GeometricSeriesOQ01OQ03 namespace.",
+      "mathContext": "$\\sum_n a_n = L \\implies \\sum_n a_n x^n \\to L \\text{ as } x \\to 1^-$"
+    },
+    {
       "id": "summable-on-disc",
       "title": "On-disc summability of the power series",
       "startLine": 55,
