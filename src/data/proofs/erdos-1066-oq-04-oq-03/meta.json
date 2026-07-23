@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Proving the Kissing-Number Axioms — the Graph-Theory Half",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "States the parent's open question — can the two axioms behind its independence bound g_d(n) ≥ n/(τ(d)+1) for unit-distance graphs (degree_le_kissing and greedy_independence) be proved in Lean? This file answers the graph-theory half completely and axiom-free: greedy_independence_of_maxDegree proves the general greedy/Turán-type bound for any degree cap Δ via the classic \"maximum independent set is dominating\" argument, and instantiating Δ := τ(d) recovers the parent's greedy_independence as a theorem. The remaining degree_le_kissing axiom is isolated as the true open target — with τ(4)=24, τ(8)=240, τ(24)=196560, it is the kissing-number problem itself (the d=8,24 cases being Viazovska-level theorems), so this entry honestly reduces the axiom budget from 2 to 1 rather than eliminating it.",
+      "mathContext": "$n \\le \\sum_{u\\in S}(1+\\deg u) \\le |S|(\\Delta+1)$ gives an independent set of size $\\ge n/(\\Delta+1)$ for any degree bound $\\Delta$; setting $\\Delta=\\tau(d)$ recovers the kissing-number independence bound, leaving only $\\mathrm{degree\\_le\\_kissing}$ open."
+    },
+    {
       "id": "framework",
       "title": "Part I: Self-contained Framework",
       "startLine": 57,
