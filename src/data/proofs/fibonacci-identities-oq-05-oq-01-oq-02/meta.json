@@ -64,7 +64,8 @@
       "The Fibonacci parity correction ±1 is not special: for a general Gibonacci sequence it is exactly ±D where D = G₁² − G₁G₀ − G₀² is the Cassini discriminant. The sign alternates with parity; the magnitude is the invariant D.",
       "A nonzero initial seed contributes a single extra constant 2 G₀ G₁ to the closed form, absent for Fibonacci (G₀ = 0) but equal to 4 for Lucas — so the full correction is 2 G₀ G₁ + D·(parity term).",
       "For Lucas numbers the discriminant is D = −5, directly exhibiting the '5' of Binet's formula as the coefficient governing the weighted sum's parity correction; Cassini reads Lₙ₊₁² − Lₙ₊₁Lₙ − Lₙ² = −5·(−1)ⁿ.",
-      "Abstracting the recurrence as a hypothesis makes Fibonacci and Lucas mere instances of one induction, so the parent's four-line Fibonacci proof and the new Lucas identity are the same theorem evaluated at different seeds."
+      "Abstracting the recurrence as a hypothesis makes Fibonacci and Lucas mere instances of one induction, so the parent's four-line Fibonacci proof and the new Lucas identity are the same theorem evaluated at different seeds.",
+      "Specialization is mechanical, not a re-proof. Because gib_cassini and gib_weighted_prod_sum are established once for an abstract G satisfying only the recurrence, fib_weighted_prod_sum and lucas_weighted_prod_sum are recovered by supplying just the recurrence witness (fib_hrec, Luc_rec) and closing with a single linear_combination h against the general theorem — no new induction or parity split is needed for either specialization."
     ],
     "prerequisites": [
       "The parent Fibonacci weighted product-sum identity",
@@ -82,16 +83,24 @@
       "summary": "States the open question and the answer: for a Gibonacci sequence the parity correction is ±D for the discriminant D = G₁² − G₁G₀ − G₀², plus a seed constant 2G₀G₁; lists the Fibonacci (D=1) and Lucas (D=−5) specializations."
     },
     {
-      "id": "gibonacci",
-      "title": "The Gibonacci core: Cassini and the weighted product-sum",
+      "id": "gib-cassini",
+      "title": "Cassini's identity for a Gibonacci sequence",
       "startLine": 45,
-      "endLine": 97,
-      "summary": "For an arbitrary sequence satisfying the Fibonacci recurrence, proves gib_cassini (Cassini with discriminant D) and gib_weighted_prod_sum (the general closed form) by induction, splitting on parity and closing each branch with a linear_combination against Cassini."
+      "endLine": 59,
+      "summary": "gib_cassini: for any G satisfying the Fibonacci recurrence, Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿ·D with discriminant D = G₁² − G₁G₀ − G₀². Proved by induction, the step closing via the recurrence and linear_combination -ih."
+    },
+    {
+      "id": "gib-weighted-sum",
+      "title": "The weighted product-sum closed form",
+      "startLine": 61,
+      "endLine": 96,
+      "summary": "gib_weighted_prod_sum: the general closed form 2·∑ k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 Gₙ Gₙ₊₁ + 2 G₀ G₁ + D·(if n even then −n else n+1). Proved by induction, peeling the top term with sum_range_succ, splitting on the parity of n, and closing each branch with linear_combination against the Cassini instance for that n.",
+      "mathContext": "$2\\sum_{k\\le n} k\\,G_kG_{k+1} = 2nG_{n+1}^2 - 2G_nG_{n+1} + 2G_0G_1 + D\\cdot(\\pm)$"
     },
     {
       "id": "fib-recovery",
       "title": "Fibonacci recovery (D = 1, seed 0)",
-      "startLine": 98,
+      "startLine": 97,
       "endLine": 115,
       "summary": "Instantiates the general theorem at the integer-cast Fibonacci sequence (fib_hrec supplies the recurrence) to reproduce the parent's Fibonacci weighted product-sum, confirming the generalization is faithful."
     },
