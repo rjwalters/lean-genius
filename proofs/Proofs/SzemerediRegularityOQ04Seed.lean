@@ -299,7 +299,8 @@ theorem exists_equitable_seed (m : ℕ) (hm : 0 < m)
     rcases hqcard B₁ h₁ with h | h <;> rcases hqcard B₂ h₂ with h' | h' <;>
       (rw [h, h']; push_cast; omega)
   · intro B hB
-    rcases hqcard B hB with h | h <;> (rw [h]; push_cast; linarith)
+    have hcard : m ≤ B.card := by rcases hqcard B hB with h | h <;> omega
+    exact Nat.cast_le.mpr hcard
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: THE CAPSTONE WITHOUT SEED HYPOTHESES
