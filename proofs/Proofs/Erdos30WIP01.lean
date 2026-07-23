@@ -660,4 +660,137 @@ theorem sidonNumber_fourteen : sidonNumber 14 = 5 := by
   · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 14 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
 
+/-! ### `h(15) = 5` — breaking the second wall with a mod-3 class count
+
+At `N = 15` the counting bound goes slack again (`6·5 = 30 = 2·15` admits a 6-element
+set) and the `h(10)` parity trick is silent: a 6-element Sidon set in `{0,…,15}` would
+have `C(6,2) = 15` distinct positive differences exhausting `{1,…,15}` — a perfect
+6-mark ruler — whose sum `1 + ⋯ + 15 = 120` is *even*, so no parity contradiction.
+
+A **mod-3 class count** kills it instead.  Among `{1,…,15}` exactly `5` values are
+divisible by `3`.  On the other hand, a pair `(a, b)` has `3 ∣ a − b` iff `a` and `b`
+lie in the same residue class mod `3`; writing `c₀, c₁, c₂` for the sizes of the three
+residue classes of `A`, the number of *ordered* off-diagonal pairs with `3 ∣ a − b` is
+`∑ cᵣ(cᵣ − 1)`, which must equal `2·5 = 10`.  But with `c₀ + c₁ + c₂ = 6` the quantity
+`∑ cᵣ(cᵣ − 1)` only takes the values
+
+  `(6,0,0) ↦ 30, (5,1,0) ↦ 20, (4,2,0) ↦ 14, (4,1,1) ↦ 12, (3,3,0) ↦ 12,
+   (3,2,1) ↦ 8, (2,2,2) ↦ 6`
+
+— never `10`.  So no perfect 6-mark ruler exists and `h(15) = 5`. -/
+
+/-- **No 6-element Sidon set fits in `{0,…,15}`** — the perfect-ruler mod-3 obstruction.
+Such a set would have `15` distinct positive differences exhausting `{1,…,15}`, hence
+exactly `10` ordered off-diagonal pairs with difference divisible by `3`; but the
+same-residue-class pair count `∑ cᵣ(cᵣ − 1)` with `c₀ + c₁ + c₂ = 6` never equals `10`. -/
+theorem no_sidon_card_six_range_sixteen (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 16) (hA : IsSidonSet A) : A.card ≤ 5 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  -- Counting caps the size at 6, so a violating set has exactly 6 elements.
+  have hup : A.card * A.card ≤ 30 + A.card := by
+    have := sidon_card_sq_le 15 hsub hA; omega
+  have hc6 : A.card = 6 := by
+    have h6 : 6 ≤ A.card := hcard
+    by_contra hne
+    have h7 : 7 ≤ A.card := by omega
+    have hmul : 7 * A.card ≤ A.card * A.card := Nat.mul_le_mul h7 (le_refl A.card)
+    omega
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hoffcard : A.offDiag.card = 30 := by rw [Finset.offDiag_card, hc6]
+  -- `diffMap` sends the off-diagonal onto the 30 nonzero integers of `[-15, 15]`.
+  have hmapsFull : ∀ p ∈ A.offDiag, diffMap p ∈ (Finset.Icc (-15 : ℤ) 15).erase 0 := by
+    intro p hp
+    rw [Finset.mem_offDiag] at hp
+    obtain ⟨hp1, hp2, hpne⟩ := hp
+    have hb1 := hsub hp1; have hb2 := hsub hp2
+    rw [Finset.mem_range] at hb1 hb2
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    simp only [diffMap]
+    exact ⟨fun h => hpne (by omega), by omega, by omega⟩
+  have hcardErase : ((Finset.Icc (-15 : ℤ) 15).erase 0).card = 30 := by
+    rw [Finset.card_erase_of_mem (by decide), Int.card_Icc]; decide
+  have himageFull : A.offDiag.image diffMap = (Finset.Icc (-15 : ℤ) 15).erase 0 := by
+    refine Finset.eq_of_subset_of_card_le (fun d hd => ?_) ?_
+    · rw [Finset.mem_image] at hd
+      obtain ⟨p, hp, rfl⟩ := hd
+      exact hmapsFull p hp
+    · rw [Finset.card_image_of_injOn hfull, hoffcard]
+      exact le_of_eq hcardErase
+  -- `T` = the off-diagonal pairs whose difference is divisible by `3`.
+  set T := A.offDiag.filter (fun p => diffMap p % 3 = 0) with hT
+  have hTsub : T ⊆ A.offDiag := Finset.filter_subset _ _
+  have hinjT : Set.InjOn diffMap ↑T := hfull.mono (Finset.coe_subset.mpr hTsub)
+  -- Its image is the 10 nonzero multiples of 3 in `[-15, 15]`, so `|T| = 10`.
+  have hTimg : T.image diffMap
+      = ((Finset.Icc (-15 : ℤ) 15).erase 0).filter (fun d => d % 3 = 0) := by
+    rw [hT, ← Finset.filter_image, himageFull]
+  have hTcard : T.card = 10 := by
+    rw [← Finset.card_image_of_injOn hinjT, hTimg]
+    decide
+  -- Structurally, `T` is the set of same-residue pairs, fibered by the residue class.
+  have hTeq : T = A.offDiag.filter (fun p => p.1 % 3 = p.2 % 3) := by
+    rw [hT]
+    refine Finset.filter_congr (fun p hp => ?_)
+    simp only [diffMap]
+    omega
+  have hfiber : ∀ r : ℕ, T.filter (fun p => p.1 % 3 = r)
+      = (A.filter (fun a => a % 3 = r)).offDiag := by
+    intro r
+    ext p
+    rw [hTeq]
+    simp only [Finset.mem_filter, Finset.mem_offDiag]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, heqr⟩, h1r⟩
+      exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+    · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+      exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+  -- Fiberwise counts: `|A| = c₀ + c₁ + c₂` and `|T| = ∑ cᵣ(cᵣ − 1)`.
+  have hfib : A.card = ∑ r ∈ Finset.range 3, (A.filter (fun a => a % 3 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hTfib : T.card = ∑ r ∈ Finset.range 3, (T.filter (fun p => p.1 % 3 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun p _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hcount : (10 : ℕ) = ∑ r ∈ Finset.range 3,
+      ((A.filter (fun a => a % 3 = r)).card * (A.filter (fun a => a % 3 = r)).card
+        - (A.filter (fun a => a % 3 = r)).card) := by
+    rw [← hTcard, hTfib]
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [hfiber r, Finset.offDiag_card]
+  -- Extract the two Diophantine constraints and refute them by finite case analysis.
+  have hsum6 : (A.filter (fun a => a % 3 = 0)).card + (A.filter (fun a => a % 3 = 1)).card
+      + (A.filter (fun a => a % 3 = 2)).card = 6 := by
+    have h := hfib
+    rw [hc6] at h
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
+    omega
+  have hsum10 : ((A.filter (fun a => a % 3 = 0)).card * (A.filter (fun a => a % 3 = 0)).card
+        - (A.filter (fun a => a % 3 = 0)).card)
+      + ((A.filter (fun a => a % 3 = 1)).card * (A.filter (fun a => a % 3 = 1)).card
+        - (A.filter (fun a => a % 3 = 1)).card)
+      + ((A.filter (fun a => a % 3 = 2)).card * (A.filter (fun a => a % 3 = 2)).card
+        - (A.filter (fun a => a % 3 = 2)).card) = 10 := by
+    have h := hcount
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
+    exact h.symm
+  generalize hg0 : (A.filter (fun a => a % 3 = 0)).card = c0 at hsum6 hsum10
+  generalize hg1 : (A.filter (fun a => a % 3 = 1)).card = c1 at hsum6 hsum10
+  generalize hg2 : (A.filter (fun a => a % 3 = 2)).card = c2 at hsum6 hsum10
+  have hb0 : c0 ≤ 6 := by omega
+  have hb1 : c1 ≤ 6 := by omega
+  have hb2 : c2 ≤ 6 := by omega
+  interval_cases c0 <;> interval_cases c1 <;> interval_cases c2 <;> omega
+
+/-- `h(15) = 5` — the second wall.  Counting is slack (`30 = 2·15`) and parity is
+silent (`1 + ⋯ + 15 = 120` even); the mod-3 class count
+(`no_sidon_card_six_range_sixteen`) rules out the perfect 6-mark ruler, and
+`{0,1,4,9,11} ⊆ {0,…,15}` still attains `5`. -/
+theorem sidonNumber_fifteen : sidonNumber 15 = 5 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_six_range_sixteen A hsub hA)
+  · calc 5 = ({0, 1, 4, 9, 11} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 15 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_9_11
+
 end Erdos30
