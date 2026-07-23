@@ -42,6 +42,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-kummer-theorem-oq-01-oq-01", "title": "Module Header: p-adic Valuation of Multinomial Coefficients via Carries", "startLine": 1, "endLine": 47, "summary": "Poses the open question of whether the multinomial p-adic valuation formula (total base-p carries when adding the parts) can be derived in Lean from the parent's binomial decomposition plus Mathlib's Kummer theorem, and answers YES, sketching the three-step derivation chain. Notes that the parent file's comment claiming base-p carry counting was 'not yet in Mathlib' is outdated — Mathlib 4.26.0 supplies it directly as Nat.factorization_choose'.", "mathContext": "$v_p\\!\\left(\\binom{n}{k_1,\\dots,k_m}\\right)$ equals the total number of carries when adding $k_1,\\dots,k_m$ in base $p$, derived by telescoping the binomial decomposition $\\binom{n}{k_1,\\dots,k_m} = \\prod \\binom{\\mathrm{acc}+k_i}{k_i}$ through Kummer's carry-counting theorem for each factor."},
     {
       "id": "distribution",
       "title": "Part I: Factorization Distributes Over List Products",
