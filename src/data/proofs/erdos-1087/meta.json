@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 1087,
     "erdosUrl": "https://erdosproblems.com/1087",
     "erdosProblemStatus": "open",
@@ -65,8 +65,8 @@
       "erdos_1087 theorem: combining known bounds"
     ],
     "axiomCount": 2,
-    "lineCount": 321,
-    "assumptions": "2 axioms: erdos_purdy_lower_bound, erdos_purdy_upper_bound. 1 sorry.",
+    "lineCount": 329,
+    "assumptions": "2 axioms: erdos_purdy_lower_bound, erdos_purdy_upper_bound. 2 sorries. The extremal function f(n) is declared `opaque` (not a concrete def) so it does not reduce to a junk value by rfl; this keeps the two bound axioms consistent (an ordinary `def := 0` placeholder made f 4 = 0 provable, contradicting the positive lower bound and rendering the axiom set kernel-inconsistent).",
     "theoremCount": 6,
     "definitionCount": 14
   },
@@ -282,12 +282,12 @@
       "Finset"
     ],
     "namespace": "Erdos1087",
-    "lineCount": 321,
+    "lineCount": 329,
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 14,
     "path": "Proofs/Erdos1087Problem.lean",
-    "sorries": 1
+    "sorries": 2
   },
-  "sorries": 1
+  "sorries": 2
 }
