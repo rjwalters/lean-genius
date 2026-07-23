@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Rectangular generalization of the oblique-turn bound",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Generalizes the square $n\\times n$ oblique-turn lower bound to rectangular $m\\times n$ boards ($m,n\\ge 5$): the $\\ge 4$ forced oblique turns are purely a corner phenomenon (each corner has knight-graph degree 2 and entry/exit dot product always $-4$), independent of the board's aspect ratio.",
+      "mathContext": "Dot product of entry/exit move vectors at any corner $=-4<0$, so 4 distinct corners force $\\ge 4$ oblique ($>90^\\circ$) turns."
+    },
+    {
       "id": "rect-board",
       "title": "Rectangular Board and Knight Graph",
       "startLine": 41,
