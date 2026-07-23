@@ -27,16 +27,6 @@
         "theorem": "Nat",
         "description": "Natural number arithmetic and properties",
         "module": "Mathlib.Data.Nat.Basic"
-      },
-      {
-        "theorem": "Set.Infinite",
-        "description": "Predicate for infinite sets",
-        "module": "Mathlib.Data.Set.Finite.Basic"
-      },
-      {
-        "theorem": "Function.Surjective",
-        "description": "Surjectivity of functions",
-        "module": "Mathlib.Logic.Function.Basic"
       }
     ],
     "originalContributions": [
@@ -46,7 +36,7 @@
       "Defined WellDefinedAt and IsWellDefined predicates for well-definedness analysis",
       "Documented the four open questions (well-definedness, infinitely many missing integers, non-surjectivity, linear growth f(n) ≤ (1+ε)n) as comments in the Open Questions section — none are formalized as axioms or theorems, keeping the entry honestly open"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "assumptions": "No mathematical axioms and 0 sorries. Compiler-trust disclosure: the concrete Hofstadter-sequence values (hofstadterF_one through hofstadterF_six) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "lineCount": 93,
     "theoremCount": 7,
