@@ -118,29 +118,36 @@
       "id": "header-overview",
       "title": "Module Overview, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 48,
       "summary": "Module docstring framing the two goals — the general gcd product formula and the sharp iff for φ(m·n) = m·φ(n) — and recalling the parent engine it builds on. Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.PrimeFin`, `Mathlib.Tactic`, and `Proofs.EulerTotientOQ09`; opens namespace `EulerTotientOQ09OQ01` and `Nat` so `φ` denotes `Nat.totient`."
     },
     {
       "id": "strict-product-helpers",
       "title": "ℚ-Product Helpers for the Necessity Direction",
-      "startLine": 52,
-      "endLine": 106,
+      "startLine": 50,
+      "endLine": 102,
       "summary": "`prod_lt_one_aux`: a nonempty finite product of ℚ-factors each strictly in (0,1) is < 1 (induction on the Finset, closing the inductive step with `nlinarith`). `one_sub_inv_pos` and `one_sub_inv_lt_one`: for a prime p the Euler factor 1 − 1/p lies in (0,1). `primeFactors_subset_of_prod_eq_one`: if the Euler product over m.primeFactors ∖ n.primeFactors equals 1 then that difference set is empty (contradicting the strict bound otherwise), hence m.primeFactors ⊆ n.primeFactors."
     },
     {
       "id": "gcd-product-formula",
       "title": "The General Product Formula via gcd",
-      "startLine": 107,
-      "endLine": 121,
+      "startLine": 104,
+      "endLine": 115,
       "summary": "`totient_mul_mul_totient_gcd`: φ(m·n)·φ(gcd(m,n)) = gcd(m,n)·φ(m)·φ(n), a three-step `calc` rearrangement of Mathlib's `Nat.totient_gcd_mul_totient_mul` using commutativity (`ring` over ℕ). Collapses to the coprime law `Nat.totient_mul` when gcd(m,n) = 1."
     },
     {
       "id": "characterization",
-      "title": "The Sharp Characterization and Its Symmetric Form",
-      "startLine": 122,
-      "endLine": 162,
-      "summary": "`totient_mul_eq_iff_primeFactors_subset` (n ≠ 0): φ(m·n) = m·φ(n) ⟺ m.primeFactors ⊆ n.primeFactors. The ⟸ direction is the parent engine; the ⟹ direction casts to ℚ, expands via `Nat.totient_eq_mul_prod_factors`, splits (m·n).primeFactors with `Nat.primeFactors_mul`, factors the union product with `Finset.prod_sdiff`/`Finset.union_sdiff_right`, cancels the common nonzero factor, and applies the helper. `totient_mul_eq_iff_primeFactors_subset'` gives the symmetric φ(m·n) = n·φ(m) ⟺ n.primeFactors ⊆ m.primeFactors via `mul_comm`."
+      "title": "The Sharp Characterization",
+      "startLine": 117,
+      "endLine": 153,
+      "summary": "`totient_mul_eq_iff_primeFactors_subset` (n ≠ 0): φ(m·n) = m·φ(n) ⟺ m.primeFactors ⊆ n.primeFactors. The ⟸ direction is the parent engine; the ⟹ direction casts to ℚ, expands via `Nat.totient_eq_mul_prod_factors`, splits (m·n).primeFactors with `Nat.primeFactors_mul`, factors the union product with `Finset.prod_sdiff`/`Finset.union_sdiff_right`, cancels the common nonzero factor, and applies the helper."
+    },
+    {
+      "id": "symmetric-form",
+      "title": "The Symmetric Form",
+      "startLine": 155,
+      "endLine": 160,
+      "summary": "`totient_mul_eq_iff_primeFactors_subset'` (m ≠ 0): φ(m·n) = n·φ(m) ⟺ n.primeFactors ⊆ m.primeFactors, obtained from the main characterization via `mul_comm`."
     }
   ],
   "crossReferences": [
