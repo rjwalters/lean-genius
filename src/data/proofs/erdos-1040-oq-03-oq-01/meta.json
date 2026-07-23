@@ -45,7 +45,8 @@
       "Coalescing all roots of a monic polynomial at a single point c turns the lemniscate into a perfect disc: |(z - c)^n| < 1 is, factor for factor, the single condition |z - c| < 1, so the n-fold multiplicity is invisible to the sublevel set.",
       "The pure-power lemniscate area is π for EVERY degree — the area does not grow with n at all. This shows the parent's unconditional bound degree·π overshoots by the full factor degree and is attained only when n = 1.",
       "Attainment of π at every degree gives an exact upper envelope μ({c}) ≤ π for the single-point infimum; combined with Pólya's lower bound area ≥ π one gets μ({c}) = π, of which the elementary upper half is formalized here.",
-      "The whole phenomenon is metric and multiplicity-driven: nothing beyond the norm being multiplicative on powers and the area of a unit disc is needed, so the witness is fully axiom-free."
+      "The whole phenomenon is metric and multiplicity-driven: nothing beyond the norm being multiplicative on powers and the area of a unit disc is needed, so the witness is fully axiom-free.",
+      "Working in ℝ≥0∞ throughout avoids any real-subtraction detour: since volume is ℝ≥0∞-valued, the strict inequality π < n·π is proved with ENNReal.mul_lt_mul_left (needing only the side conditions π ≠ 0 and π ≠ ⊤), never an ordered-field cancellation lemma — the comparison stays entirely inside the extended nonnegative reals that Complex.volume_ball naturally produces."
     ],
     "prerequisites": [
       "Lebesgue measure on ℂ: Complex.volume_ball (area of a metric ball is .ofReal r² · π)",
@@ -81,11 +82,19 @@
     },
     {
       "id": "nonsharp",
-      "title": "§IV: Non-Sharpness of degree·π and Capstone",
+      "title": "§IV.a: Non-Sharpness of the degree·π Bound",
       "startLine": 108,
-      "endLine": 137,
-      "summary": "For every n ≥ 2 the pure-power area π is strictly below the parent's unconditional bound degree·π, so that bound is sharp only at degree one; the capstone packages the disc identity, exact area, and strict gap.",
+      "endLine": 121,
+      "summary": "For every n ≥ 2 the pure-power area π is strictly below the parent's unconditional bound degree·π (ENNReal.mul_lt_mul_left), so that bound is sharp only at degree one.",
       "mathContext": "$\\pi < n\\pi$ for $n \\geq 2$, hence $|\\{|f|<1\\}| < \\deg(f)\\cdot\\pi$ strictly."
+    },
+    {
+      "id": "capstone",
+      "title": "§IV.b: The Capstone Theorem",
+      "startLine": 123,
+      "endLine": 137,
+      "summary": "purePower_sharp_witness packages all three facts at once for n ≥ 2: the lemniscate equals the open unit disc, its area is exactly π, and this area lies strictly below degree·π.",
+      "mathContext": "$\\mathrm{lem}((z-c)^n) = B(c,1),\\ \\mathrm{vol} = \\pi,\\ \\pi < n\\pi$ simultaneously, for $n \\geq 2$."
     }
   ],
   "conclusion": {
