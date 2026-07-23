@@ -72,7 +72,8 @@
       "**The valuation form is not a cosmetic restatement of Mathlib's lemma.** emultiplicity lives in ℕ∞ and silently absorbs the degenerate cases (valuation of 0 is ⊤); padicValNat is a genuine natural number, so the textbook equation is only true once xⁿ - yⁿ, x - y, and n are known nonzero. Establishing those side conditions and transporting across the cast is the entire content of the bridge.",
       "**Nonzeroness is geometric, not algebraic.** xⁿ - yⁿ ≠ 0 reduces to yⁿ < xⁿ, i.e. y < x with n ≥ 1 — exactly the hypotheses already needed to make truncated natural subtraction behave like real subtraction.",
       "**¬ p ∣ x is free in the repunit form.** In v_p(aⁿ - 1) the hypothesis p ∤ a need not be assumed: p ∣ a together with p ∣ a - 1 would give p ∣ 1, impossible for a prime, so the specialisation has one fewer hypothesis than the general theorem.",
-      "**Reuse over reproof.** All three forms delegate the hard p-adic induction to Mathlib's emultiplicity LTE; the file adds only the finiteness plumbing, keeping the proofs short and fully axiom-free (no native_decide even for the numeric sanity check)."
+      "**Reuse over reproof.** All three forms delegate the hard p-adic induction to Mathlib's emultiplicity LTE; the file adds only the finiteness plumbing, keeping the proofs short and fully axiom-free (no native_decide even for the numeric sanity check).",
+      "**The bridge is a reusable template, not a one-off.** Any Mathlib theorem stated in `emultiplicity`/ℕ∞ form admits the same three-step recipe — establish nonzeroness, rewrite `padicValNat` to `emultiplicity` via `padicValNat_eq_emultiplicity`, cast back with `exact_mod_cast` — to yield a `padicValNat` corollary, exactly as done here for both the subtraction and addition forms."
     ],
     "prerequisites": [
       "The p-adic valuation padicValNat and its relation to multiplicity/emultiplicity",
@@ -107,11 +108,19 @@
     },
     {
       "id": "repunit",
-      "title": "Specialisation v_p(aⁿ - 1) and Numeric Check",
+      "title": "Specialisation v_p(aⁿ - 1)",
       "startLine": 93,
-      "endLine": 116,
-      "summary": "padicValNat_pow_sub_one: applies the subtraction form at y = 1, deriving ¬ p ∣ a internally from p ∣ a ∧ p ∣ a - 1 ⟹ p ∣ 1; followed by a worked example v_3(4⁶ - 1) = v_3(3) + v_3(6) = 2 proved through the theorem (axiom-free).",
+      "endLine": 107,
+      "summary": "padicValNat_pow_sub_one: applies the subtraction form at y = 1, deriving ¬ p ∣ a internally from p ∣ a ∧ p ∣ a - 1 ⟹ p ∣ 1, so the corollary needs one fewer hypothesis than the general theorem.",
       "mathContext": "$v_p(a^n - 1) = v_p(a - 1) + v_p(n)$ when $p \\mid a - 1$."
+    },
+    {
+      "id": "numeric-check",
+      "title": "Worked Numeric Check",
+      "startLine": 109,
+      "endLine": 116,
+      "summary": "v_3(4⁶ - 1) = v_3(3) + v_3(6) = 1 + 1 = 2 (since 4⁶ - 1 = 4095 = 3²·5·7·13), proved by applying padicValNat_pow_sub_one rather than raw kernel computation, so the check stays fully axiom-free.",
+      "mathContext": "$v_3(4^6-1) = v_3(3) + v_3(6) = 2$, verified through the theorem, not `decide`/`native_decide`."
     }
   ],
   "crossReferences": [
