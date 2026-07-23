@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Carmichael Function on Odd Prime Powers",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the closed form λ(pᵏ) = pᵏ⁻¹(p − 1) for odd primes p and its mechanism (cyclic ⟹ exponent = order), contrasted with the parent's non-cyclic λ(2ᵏ) = 2ᵏ⁻² case; imports of ArithmeticFunction.Carmichael and RingTheory.ZMod.UnitsCyclic, the EulerTotientOQ01OQ02OQ01 namespace, and open ArithmeticFunction Nat.",
+      "mathContext": "$\\lambda(p^k) = p^{k-1}(p-1)$ for odd prime $p$, because $(\\mathbb{Z}/p^k\\mathbb{Z})^\\times$ is cyclic so its exponent $\\lambda$ equals its order $\\varphi(p^k)$."
+    },
+    {
       "id": "mechanism",
       "title": "Section I: The Cyclic Mechanism",
       "startLine": 44,
