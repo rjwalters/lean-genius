@@ -89,10 +89,19 @@
       "The entire matrix inequality is the parent's Gramian bound pulled back along one identification: the Gram matrix of the columns of A is the Hermitian product Aᴴ A, so the abstract det(gram v) ≤ ∏ ‖vⱼ‖² becomes ‖det A‖² ≤ ∏ ‖colⱼ‖² with no new analysis.",
       "det(gram (col A)) = ‖det A‖² is the precise sense in which the Gramian is the 'squared determinant': det(Aᴴ A) = conj(det A) · det A, and RCLike.conj_mul collapses this to ‖det A‖², a nonnegative real, uniformly over ℝ and ℂ.",
       "Passing from the squared bound to the norm bound is pure positivity: both sides are nonnegative and the right-hand product of squares is the square of the product, so a single monotone square root finishes the job.",
-      "Working in EuclideanSpace 𝕜 (Fin n) makes the dimension hypothesis finrank = card automatic, so the corollary needs no side conditions on A — it holds for every square matrix, singular or not (when det A = 0 the bound is trivially true)."
+      "Working in EuclideanSpace 𝕜 (Fin n) makes the dimension hypothesis finrank = card automatic, so the corollary needs no side conditions on A — it holds for every square matrix, singular or not (when det A = 0 the bound is trivially true).",
+      "The pullback pattern (gram_col_eq + gram_col_det) is reusable, not special to this one inequality: any statement proved for an abstract Gramian det(gram v) transports to matrices by the same two lemmas, applied to A for the column bound or to Aᵀ for the dual row bound — the mechanism the conclusion's row-duality and Fischer-refinement open questions would reuse verbatim."
     ]
   },
   "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Docstring and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports Mathlib and the parent file GramLinearIndependenceOQ01OQ01, then states the three forms of Hadamard's matrix inequality the file will derive and sketches the bridge (gram(col A) = AᴴA, det(gram(col A)) = ‖det A‖²) as a module docstring. Opens Matrix, RCLike, Finset with the ComplexOrder and InnerProductSpace scoped notations, and fixes an ambient RCLike field 𝕜 and dimension n : ℕ.",
+      "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\lVert a_j\\rVert$ for $A$ a square matrix over $\\mathbb{R}$ or $\\mathbb{C}$, to be derived from the parent's Gramian bound $\\det\\mathrm{gram}(v) \\le \\prod_i \\lVert v_i\\rVert^2$."
+    },
     {
       "id": "column-embedding",
       "title": "Columns as Euclidean Vectors and the Gram = AᴴA Bridge",
