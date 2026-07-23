@@ -150,6 +150,14 @@
       "endLine": 149,
       "summary": "Proves real_symmetric_oxtoby: ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, and oq01_resolution packaging the dual witness with the decomposition.",
       "mathContext": "A single partition of ℝ witnesses both failures of implication: comeagre ⇏ conull (on L) and meagre ⇏ null (on Lᶜ)."
+    },
+    {
+      "id": "results-summary",
+      "title": "Sanity Checks and Results Summary",
+      "startLine": 151,
+      "endLine": 175,
+      "summary": "Six `#check` sanity checks confirming every named theorem elaborates, followed by a closing `## Results Summary` comment: a table listing all 8 theorems (2 inherited from Mathlib: `liouville_residual`, `liouville_null`; 6 proved in this file) with their statements and status, and the final tally — 0 sorries, 0 declared axioms (the file's proofs rest only on the inherited Mathlib triple).",
+      "mathContext": "Confirms the complete dependency chain is sorry-free and axiom-free: `isMeagre_compl_of_mem_residual` (complement of residual is meagre) → `nonLiouville_meagre`/`nonLiouville_conull` (via Mathlib's `liouville_residual`/`liouville_null`) → `exists_meagre_conull` (dual Oxtoby witness) → `real_symmetric_oxtoby` (symmetric decomposition) → `oq01_resolution` (final packaging)."
     }
   ],
   "conclusion": {
