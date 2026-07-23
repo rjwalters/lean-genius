@@ -49,7 +49,8 @@
       "A 2D grid tiles because both families of interior edges cancel: the vertical edge x=e is handled by the two strip glues, the horizontal edge y=g by the final glue — no cancellation input is needed beyond integrability of the outer edges.",
       "The 2×2 grid is exactly two vertical glues plus one horizontal glue; no new analytic content is required beyond the parent's single-cut lemmas, only their composition in the right order.",
       "Gluing first within rows (vertical cut) and then across rows (horizontal cut) makes the orientation cancellation of each interior segment automatic and local to one gluing step.",
-      "This is the base case for Green's theorem on an arbitrary m×n rectangular grid: iterate the vertical capstone along each row, then the horizontal capstone across rows."
+      "This is the base case for Green's theorem on an arbitrary m×n rectangular grid: iterate the vertical capstone along each row, then the horizontal capstone across rows.",
+      "Because the strip-then-glue order lets each hypothesis be consumed by exactly one composition step, the same integrability data used for the two row strips is reused verbatim in the final horizontal glue — the hypothesis count grows linearly with the number of interior edges, not combinatorially with the number of cells."
     ],
     "prerequisites": [
       "Green's theorem additive under a single subdivision (greens-theorem-oq-01-oq-03)",
@@ -59,12 +60,20 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "header-docstring",
       "title": "Open Question and Grid Strategy",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "Module docstring: the two next steps left by the parent (horizontal capstone and a 2D grid lemma), what is new relative to the gallery (first two-direction tiling), imports (Mathlib + Proofs.GreensTheoremOQ01OQ03), namespace, and opens.",
+      "endLine": 63,
+      "summary": "Module docstring: the two next steps left by the parent (horizontal capstone and a 2D grid lemma), the four-cell BL/BR/TL/TR layout, and what is new relative to the gallery (the first two-direction tiling in the gallery).",
       "mathContext": "Tile a rectangle with a grid; both vertical and horizontal interior edges cancel by orientation."
+    },
+    {
+      "id": "header-setup",
+      "title": "Namespace and Opens",
+      "startLine": 65,
+      "endLine": 70,
+      "summary": "Namespace GreensTheoremOQ01OQ03OQ02 and the three opens (MeasureTheory, intervalIntegral, GreensTheoremOQ01, GreensTheoremOQ01OQ03) bringing the parent's rectLineIntegral/rectDoubleIntegral and split lemmas into scope unqualified.",
+      "mathContext": "Opens expose rectLineIntegral_hsplit and rectDoubleIntegral_hsplit from the parent without qualification."
     },
     {
       "id": "part-i-horizontal",
