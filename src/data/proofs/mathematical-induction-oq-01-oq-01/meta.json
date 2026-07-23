@@ -111,12 +111,20 @@
       "mathContext": "$o \\neq 0 \\ \\Rightarrow\\ o \\bmod \\omega^{\\log_\\omega o} < o.$"
     },
     {
-      "id": "structure-and-base-case",
-      "title": "Leading Exponent and Base Case",
+      "id": "leading-exponent",
+      "title": "The Leading Exponent Bound",
       "startLine": 78,
-      "endLine": 88,
-      "summary": "cnf_exponent_le_log: every exponent is <= log omega o, so the leading exponent = log omega o (the base-omega 'degree'); cantor_normal_form_zero: CNF omega 0 = [].",
-      "mathContext": "$p \\in \\mathrm{CNF}\\,\\omega\\,o \\Rightarrow p_1 \\le \\log_\\omega o;\\qquad \\mathrm{CNF}\\,\\omega\\,0 = [\\,].$"
+      "endLine": 83,
+      "summary": "cnf_exponent_le_log: every exponent appearing in the base-omega Cantor normal form of o is <= log omega o, so the leading exponent equals log omega o — the analogue of the 'degree' of o in base omega.",
+      "mathContext": "$p \\in \\mathrm{CNF}\\,\\omega\\,o \\Rightarrow p_1 \\le \\log_\\omega o.$"
+    },
+    {
+      "id": "base-case",
+      "title": "The Base Case",
+      "startLine": 85,
+      "endLine": 90,
+      "summary": "cantor_normal_form_zero: the Cantor normal form of the zero ordinal is the empty list, CNF omega 0 = [] — the base case anchoring the transfinite recursion.",
+      "mathContext": "$\\mathrm{CNF}\\,\\omega\\,0 = [\\,].$"
     }
   ],
   "references": [
