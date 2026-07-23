@@ -25,11 +25,6 @@
     "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
-        "theorem": "Filter.Tendsto",
-        "description": "Limits for growth rate statements",
-        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
-      },
-      {
         "theorem": "Finset.Icc",
         "description": "Closed intervals for consecutive sums",
         "module": "Mathlib.Data.Finset.Basic"
@@ -49,12 +44,11 @@
       "Formal definition of consecutive sum achievability",
       "Definition of MacMahon sequence as 'good for 1'",
       "Verified examples of why 3 and 6 are skipped",
-      "Formalization of Andrews' asymptotic conjecture",
-      "Formalization of Porubsky's density bounds"
+      "Documented (not formalized) Andrews' asymptotic conjecture and Porubsky's density bounds as comments"
     ],
     "axiomCount": 0,
     "lineCount": 207,
-    "assumptions": "0 axioms, 0 sorries. Partial formalization of MacMahon's sequence problem: defines the sequence recursively and proves 6 basic structural properties. The main open conjectures about density and asymptotic growth (macmahon_initial_values, growth_faster_than_linear, etc.) are not formalized.",
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of MacMahon's sequence problem: defines the sequence recursively and proves 6 basic structural properties. The main open conjectures (superlinear growth, subpolynomial growth, Andrews' asymptotic formula, Porubsky's density bound) are recorded only as prose comments, not as Lean axioms, definitions, or theorems.",
     "theoremCount": 6,
     "definitionCount": 7
   },
@@ -62,7 +56,7 @@
     "historicalContext": "Erdos Problem #359 concerns MacMahon's 'prime numbers of measurement' (OEIS A002048), a sequence defined by P.A. MacMahon in the early 20th century. The sequence starts with 1, and each subsequent term is the smallest positive integer that cannot be expressed as a sum of consecutive earlier terms.\n\nThe sequence begins: 1, 2, 4, 5, 8, 10, 14, 15, 21, 22, 26, 28, ...\n\nGeorge Andrews studied this sequence in 1975 and conjectured that a_k ~ (k log k) / (log log k). Stefan Porubsky proved partial results in 1977, establishing bounds comparing the sequence to the prime counting function.\n\nThe question of the exact growth rate remains OPEN. It is conjectured that a_k/k tends to infinity (superlinear growth) but a_k/k^{1+c} tends to 0 for any c > 0 (subpolynomial growth).",
     "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an infinite sequence where $a_1 = n$ and $a_{i+1}$ is the smallest integer not expressible as a sum of consecutive earlier terms $a_j + a_{j+1} + \\cdots + a_k$.\n\n**Questions** (for $n = 1$):\n1. Prove $a_k / k \\to \\infty$\n2. Prove $a_k / k^{1+c} \\to 0$ for any $c > 0$\n\n**Conjecture** (Andrews): $a_k \\sim \\frac{k \\log k}{\\log \\log k}$\n\n**Status**: OPEN",
     "text": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
-    "proofStrategy": "We formalize the problem by defining:\n\n1. **ConsecutiveSum**: The sum of terms A(a) + A(a+1) + ... + A(b)\n2. **AchievableSums**: All integers expressible as consecutive sums\n3. **IsGoodFor**: A sequence is 'good for n' if A(0) = n and each A(j+1) is the smallest integer greater than A(j) not in AchievableSums\n4. **IsMacMahonSeq**: The sequence 'good for 1'\n\nThe growth rate conjectures are stated as axioms since they remain open. We verify concrete examples (why 3 and 6 are skipped) and formalize Porubsky's density bounds.",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **ConsecutiveSum**: The sum of terms A(a) + A(a+1) + ... + A(b)\n2. **AchievableSums**: All integers expressible as consecutive sums\n3. **IsGoodFor**: A sequence is 'good for n' if A(0) = n and each A(j+1) is the smallest integer greater than A(j) not in AchievableSums\n4. **IsMacMahonSeq**: The sequence 'good for 1'\n\nThe growth rate conjectures remain open and are documented only as prose comments, not as Lean axioms or theorems, since stating them as axioms would misrepresent open conjectures as established facts. We verify concrete examples (why 3 and 6 are skipped) and define counting functions to compare the sequence's density with the primes, following Porubsky's approach.",
     "keyInsights": [
       "**Consecutive sums**: Unlike subset sums, we only consider sums of consecutive terms. This is more restrictive but creates interesting gaps.",
       "**OEIS A002048**: The MacMahon sequence 1, 2, 4, 5, 8, 10, 14, 15, ... is well-studied. Note 3 is missing because 3 = 1 + 2.",
@@ -95,29 +89,29 @@
       "id": "known-values",
       "title": "Known Values",
       "startLine": 94,
-      "endLine": 135,
+      "endLine": 131,
       "summary": "First 8 values: 1, 2, 4, 5, 8, 10, 14, 15. Why 3 and 6 are skipped."
     },
     {
       "id": "growth-conjectures",
       "title": "Growth Rate Conjectures",
-      "startLine": 136,
-      "endLine": 163,
-      "summary": "Open conjectures: superlinear but subpolynomial growth, Andrews' asymptotic."
+      "startLine": 133,
+      "endLine": 146,
+      "summary": "Open conjectures (comments only): superlinear but subpolynomial growth, Andrews' asymptotic."
     },
     {
       "id": "porubsky",
       "title": "Porubsky's Results",
-      "startLine": 164,
-      "endLine": 193,
-      "summary": "Porubsky's upper bound and density comparison with primes."
+      "startLine": 148,
+      "endLine": 166,
+      "summary": "Porubsky's upper bound (comment) and density comparison with primes via countingFunction/primeCounting."
     },
     {
       "id": "general-n",
       "title": "General Starting Value",
-      "startLine": 194,
-      "endLine": 207,
-      "summary": "Extension to sequences starting with n != 1."
+      "startLine": 168,
+      "endLine": 174,
+      "summary": "Comment noting the conjectured extension to sequences starting with n != 1."
     }
   ],
   "conclusion": {
