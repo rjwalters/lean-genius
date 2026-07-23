@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Divergence Rate of Σ 1/(n·log n)",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "States that $\\sum_{n\\ge 2} 1/(n\\log n)$ diverges (like $\\log\\log N$, via the Cauchy condensation test) while $\\sum 1/(n(\\log n)^2)$ converges, since squaring the log denominator turns the condensed series into a Basel-rescaled $p=2$ series; both results are 0-axiom, 0-sorry.",
+      "mathContext": "Condensation: $2^k f(2^k) = 1/(k\\log 2)$ gives the divergent rescaled harmonic series $\\sum 1/k$; $2^k g(2^k) = 1/(k^2(\\log 2)^2)$ gives the convergent rescaled Basel series $\\sum 1/k^2$."
+    },
+    {
       "id": "definition",
       "title": "The logHarmonic Function",
       "startLine": 35,
