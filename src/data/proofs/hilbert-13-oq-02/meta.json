@@ -37,7 +37,8 @@
       "**Covering dimension is a topological invariant**: a homeomorphism transports finite open covers and their refinements in both directions, and preserves cover order exactly (since x ∈ e⁻¹'S ↔ e x ∈ S). No compactness or metric assumption is needed for the transport.",
       "**Complexity is presentation-independent**: because the minimal KA term count is 2·dim+1 and dim is invariant, homeomorphic presentations (different finite approximations, metrics, or embeddings of the same space) all yield the same superposition complexity. This is what makes 'the complexity of the presented space' well-defined.",
       "**Universe-safe definition matters**: indexing finite covers by Fin m (Type 0) and measuring order with Set.ncard avoids both the DecidablePred synthesis failure and the universe-metavariable problems that prevent the companion Hilbert13GeneralSpaces.lean from compiling — while remaining the standard definition (covering dimension is determined by finite covers).",
-      "**Honest boundary**: only the well-posedness of OQ-02 is secured here; the actual computational/effective complexity of producing a KA representation remains open and is not assumed."
+      "**Honest boundary**: only the well-posedness of OQ-02 is secured here; the actual computational/effective complexity of producing a KA representation remains open and is not assumed.",
+      "**One direction proves both**: covDimLE_homeo (the iff) is not proved symmetrically from scratch — it applies the single one-directional lemma covDimLE_homeo_le twice, once with e and once with e.symm, so the harder transport argument (pushing a cover forward and pulling a refinement back) is written and verified only once."
     ],
     "prerequisites": [
       "Lebesgue covering dimension (finite open covers, refinements, order)",
@@ -48,11 +49,19 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Docstring framing the file as the verified well-posedness kernel of OQ-02 (dimension invariance implies presentation-independent complexity), listing the four results and references, followed by the import, namespace Hilbert13OQ02, and the X Y TopologicalSpace variables.",
+      "mathContext": "OPEN: computational complexity of a KA representation. PROVED HERE: dim is a topological invariant, so 2·dim+1 is presentation-independent."
+    },
+    {
       "id": "definitions",
       "title": "Universe-Safe Covering Dimension",
-      "startLine": 1,
+      "startLine": 43,
       "endLine": 73,
-      "summary": "Docstring framing the file as the verified well-posedness kernel of OQ-02, plus definitions of coverOrderAt (via Set.ncard), coverOrderAtMost, IsRefinement, and covDimLE over finite Fin m covers.",
+      "summary": "Definitions of coverOrderAt (via Set.ncard), coverOrderAtMost, IsRefinement, and covDimLE over finite Fin m covers — universe-monomorphic and decidability-free.",
       "mathContext": "$\\dim X \\le n$: every finite open cover has a finite open refinement of order $\\le n+1$."
     },
     {
