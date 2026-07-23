@@ -71,6 +71,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-four-squares-oq-01", "title": "Module Header: Computational Aspects of Four-Square Representations", "startLine": 1, "endLine": 52, "summary": "Addresses the gallery open question on the computational complexity of finding a four-square representation of n. Lists five results: component bounds (each summand ≤ √n), a finite O(n²) search space, a computable greedy decomposition algorithm, its correctness/completeness, and computational verification for all n ≤ 100. Surveys complexity context: deterministic O(n^(1/2+ε)) exhaustive search versus the randomized Rabin-Shallit algorithm's expected O(log²n) time.", "mathContext": "Any four-square representation $n = a^2+b^2+c^2+d^2$ has every component bounded by $\\sqrt n$, giving an $O(n^2)$ brute-force search space; the randomized Rabin–Shallit algorithm (1986) finds a representation in expected $O(\\log^2 n)$ time."},
     {
       "id": "component-bounds",
       "title": "Component Bounds: Each Square Is at Most n",
