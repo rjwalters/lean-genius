@@ -48,7 +48,7 @@
       "erdos_267_open by classical EM (decidability of open conjecture)",
       "pow_two_series_first_terms computation via native_decide"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "prerequisites": [
       "Fibonacci sequence and recurrence relations",
       "Golden ratio and Binet's formula",
@@ -66,7 +66,7 @@
     "historicalContext": "This problem connects to a long tradition of irrationality questions in number theory going back to Euler's work on $e$ and Lambert's proof that $\\pi$ is irrational (1761). Erdős posed it as part of his broader program asking when 'natural' arithmetic series sum to irrational numbers.\n\nGood (1974) proved the first special case: $\\sum 1/F_{2^n}$ is irrational, using the rapid growth of $F_{2^n}$ and a clever continued fraction argument. Bicknell and Hoggatt (1976) extended this to related subsequences with indices $2^n k$.\n\nThe breakthrough came when André-Jeannin (1989) proved the full sum $\\sum 1/F_n$ is irrational using techniques from transcendence theory, specifically Padé approximation and the connection between Fibonacci numbers and the theory of $q$-series. Paradoxically, this proves the $c = 1$ case (all indices, weakest sparsity condition) while the general $c > 1$ case remains open — a situation where the strongest-looking result is proved but weaker-looking intermediate cases resist proof.\n\nThe problem is part of a cluster of Erdős irrationality conjectures including #250 ($\\sum \\sigma(n)/2^n$, solved by Nesterenko 1996) and #259 ($\\sum \\mu(n)^2 n / 2^n$, solved by Chen-Ruzsa).",
     "problemStatement": "Let F_n be the Fibonacci sequence (F₁ = F₂ = 1, F_{n+1} = F_n + F_{n-1}). If n₁ < n₂ < ... is an infinite sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? Erdős also asked if n_k/k → ∞ might suffice.",
     "text": "If n₁ < n₂ < ... is a sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? PARTIALLY SOLVED: Special cases proved, general conjecture OPEN.",
-    "proofStrategy": "The formalization defines Fibonacci growth, the golden ratio, and series convergence. Verified theorems include Fibonacci values and the golden ratio bound. The solved cases (2^n indices and full sum) are recorded as axioms. The main conjecture and weaker variant are formalized as open problems.",
+    "proofStrategy": "The formalization defines Fibonacci growth, the golden ratio, and series convergence. Verified theorems include Fibonacci values and the golden ratio bound. The solved cases (2^n indices and full sum) are described in prose comments only — they are not formalized as axioms or theorems in this file. The main conjecture and weaker variant are formalized as open Prop statements.",
     "keyInsights": [
       "Fibonacci values F₁ through F₁₂ verified by rfl",
       "goldenRatio_gt_one verified: φ = (1+√5)/2 > 1",
@@ -119,18 +119,18 @@
     {
       "id": "convergence",
       "title": "Series Convergence",
-      "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
+      "summary": "Convergence via comparison with geometric series, discussed in prose comments only — no axiom or theorem declared",
       "startLine": 96,
       "endLine": 107,
-      "mathContext": "Axiomatized: fibonacci_reciprocal_summable axiom, comparison with geometric series"
+      "mathContext": "Not formalized: convergence argument (comparison with geometric series) is prose only, with no corresponding declaration"
     },
     {
       "id": "solved-cases",
       "title": "Solved Cases",
-      "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
+      "summary": "Good/Bicknell-Hoggatt (2^n indices) and André-Jeannin (full sum) results are cited in prose comments; not formalized as declarations in this file",
       "startLine": 108,
       "endLine": 129,
-      "mathContext": "good_bicknell_hoggatt ($2^{n}$ indices), andre_jeannin (full sum) axioms"
+      "mathContext": "Not formalized: Good/Bicknell-Hoggatt ($2^{n}$ indices) and André-Jeannin (full sum) are cited in comments only, with no corresponding axiom or theorem"
     },
     {
       "id": "main-conjecture",

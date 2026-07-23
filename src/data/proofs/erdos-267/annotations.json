@@ -103,7 +103,7 @@
     },
     "type": "concept",
     "title": "Series Convergence",
-    "content": "**axiom fibonacci_reciprocal_summable**:\n  Summable (n ↦ 1/F_n)\n\nThe series Σ 1/F_n converges because:\n- F_n ≈ φⁿ/√5 with φ > 1\n- 1/F_n ≈ √5/φⁿ\n- Σ 1/φⁿ is a convergent geometric series\n\nThe value is Σ 1/F_n ≈ 3.3598...",
+    "content": "Convergence of Σ 1/F_n is discussed in prose comments only — no axiom or theorem is declared in this file. The comments note that:\n- F_n ≈ φⁿ/√5 with φ > 1\n- 1/F_n ≈ √5/φⁿ\n- Σ 1/φⁿ is a convergent geometric series\n\nThe value is Σ 1/F_n ≈ 3.3598...",
     "mathContext": "Convergence follows from comparison with geometric series. The exact value involves complex formulas with q-series.",
     "significance": "key",
     "relatedConcepts": [
@@ -115,7 +115,7 @@
       "analysis",
       "convergence",
       "series",
-      "axiom"
+      "geometric-series"
     ]
   },
   {
@@ -127,7 +127,7 @@
     },
     "type": "concept",
     "title": "Solved Cases",
-    "content": "**axiom good_bicknell_hoggatt** (1974/1976):\n  Irrational (Σ 1/F_{2^n})\n\nThe first special case proved. Indices 2^n are very sparse.\n\n**axiom andre_jeannin** (1989):\n  Irrational (Σ 1/F_n)\n\nThe full reciprocal sum is irrational!\n\nUses transcendence theory and continued fractions.",
+    "content": "These historical results are cited in prose comments only — neither is formalized as an axiom or theorem in this file.\n\n**Good, Bicknell-Hoggatt** (1974/1976): Irrational (Σ 1/F_{2^n})\n\nThe first special case proved. Indices 2^n are very sparse.\n\n**André-Jeannin** (1989): Irrational (Σ 1/F_n)\n\nThe full reciprocal sum is irrational!\n\nUses transcendence theory and continued fractions.",
     "mathContext": "André-Jeannin's result is stronger than what Erdős asked. It shows even c = 1 (all indices) gives irrationality.",
     "significance": "key",
     "relatedConcepts": [
