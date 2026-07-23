@@ -69,8 +69,9 @@
       "Stated optimal example {2,3,5} achieving equality 1/2 + 1/3 + 1/5 = 31/30",
       "Stated Chen's 1996 stronger bound for n > 172509",
       "Stated maximal sets conjecture ({2,3,5} and {3,4,5,7,11} only)",
-      "Proved singleton validity and no-divisibility property",
-      "Proved reciprocal sum formula for explicit sets"
+      "Proved singleton validity property",
+      "Proved reciprocal sum formula for explicit sets",
+      "Documented (as source comments, not Lean proofs) the no-divisibility property and the tight/maximal example facts"
     ],
     "axiomCount": 0,
     "lineCount": 99,
@@ -82,7 +83,7 @@
     "historicalContext": "Erdos posed this extremal problem about sets with pairwise large least common multiples, likely in the 1950s as part of his extensive investigations into primitive sets and multiplicative number theory.\n\n**Andrzej Schinzel** (born 1937, one of Poland's most prolific number theorists) and **George Szekeres** (1911-2005, Hungarian-Australian mathematician famous for the Erdos-Szekeres theorem) solved the problem in their 1959 paper 'Sur un probleme de M. Paul Erdos.' They proved $\\sum 1/a \\le 31/30$ using elementary but careful analysis of prime factorization structures. The bound is tight: $\\{2, 3, 5\\}$ achieves equality with $1/2 + 1/3 + 1/5 = 31/30$ for $n \\ge 6$.\n\nThe problem connects to **primitive sets** — sets where no element divides another — studied by Behrend (1935) and Erdos himself. The LCM condition $\\text{lcm}(a,b) > n$ is strictly stronger than primitivity and forces a form of multiplicative independence.\n\n**Yong-Gao Chen** (1996) proved that for $n > 172509$, the bound drops below $31/30$ to $4699/4620 \\approx 1.017$, showing the extremal configuration $\\{2,3,5\\}$ only works for small $n$. The threshold arises because large $n$ prevents small elements (especially $2$) from participating in valid sets.\n\nThe remaining **Erdos-Schinzel-Szekeres conjecture** posits that exactly two sets achieve reciprocal sum $> 1$: $\\{2,3,5\\}$ and $\\{3,4,5,7,11\\}$. This classification problem remains open and connects to questions about **Mertens-type bounds** for primitive sets and the theory of **B-free numbers**.",
     "problemStatement": "If $A \\subseteq \\{1, \\ldots, n\\}$ satisfies $\\text{lcm}(a,b) > n$ for all distinct $a, b \\in A$, must $\\sum_{a \\in A} 1/a \\le 31/30$?",
     "text": "If A ⊆ {1,...,n} with lcm(a,b) > n for distinct a,b ∈ A, must ∑ 1/a ≤ 31/30? Solved by Schinzel-Szekeres (1959).",
-    "proofStrategy": "We formalize PairwiseLCMExceeds (the pairwise LCM condition) and reciprocalSum. The Schinzel-Szekeres theorem is stated as the main result, with {2,3,5} as the optimal example. Chen's stronger bound for large n and the maximal sets conjecture are stated as additional results. We prove structural properties: singleton sets always satisfy the LCM condition, the reciprocal sum formula for explicit sets, and the no-divisibility property (lcm(a,b) > n implies neither divides the other within {1,...,n}).",
+    "proofStrategy": "We formalize PairwiseLCMExceeds (the pairwise LCM condition) and reciprocalSum. The Schinzel-Szekeres theorem is stated as the main result, with {2,3,5} as the optimal example. Chen's stronger bound for large n and the maximal sets conjecture are stated as additional results. We prove structural properties: singleton sets always satisfy the LCM condition, and the reciprocal sum formula for explicit sets. The no-divisibility property (lcm(a,b) > n implies neither divides the other within {1,...,n}) is documented only as a source comment, not proved in Lean.",
     "keyInsights": [
       "**Tight Bound**: The set {2, 3, 5} achieves 1/2 + 1/3 + 1/5 = 31/30 exactly, making the Schinzel-Szekeres bound best possible",
       "**LCM as Independence**: The condition lcm(a,b) > n is a strong form of multiplicative independence — it prevents any divisibility relation between elements",
@@ -115,7 +116,7 @@
       "title": "Schinzel-Szekeres Theorem",
       "startLine": 37,
       "endLine": 46,
-      "summary": "States `ErdosProblem542`: $\\sum 1/a \\le 31/30$ under the LCM condition. Axiomatizes the tight example $\\{2,3,5\\}$ with $1/2 + 1/3 + 1/5 = 31/30$ and its validity for $n = 5$."
+      "summary": "States `ErdosProblem542`: $\\sum 1/a \\le 31/30$ under the LCM condition. Documents in source comments (no Lean declarations exist) the tight example $\\{2,3,5\\}$ with $1/2 + 1/3 + 1/5 = 31/30$ and its validity for $n = 5$."
     },
     {
       "id": "chen-bound",
@@ -129,14 +130,14 @@
       "title": "Maximal Sets Conjecture",
       "startLine": 63,
       "endLine": 75,
-      "summary": "States `MaximalSetsConjecture`: only $\\{2,3,5\\}$ and $\\{3,4,5,7,11\\}$ achieve $\\sum 1/a > 1$. Axiomatizes that $\\{3,4,5,7,11\\}$ has sum $> 1$ and satisfies the LCM condition for $n = 11$."
+      "summary": "States `MaximalSetsConjecture`: only $\\{2,3,5\\}$ and $\\{3,4,5,7,11\\}$ achieve $\\sum 1/a > 1$. Documents in source comments (no Lean declarations exist) that $\\{3,4,5,7,11\\}$ has sum $> 1$ and satisfies the LCM condition for $n = 11$."
     },
     {
       "id": "structural",
       "title": "Structural Properties and Final Theorem",
       "startLine": 76,
       "endLine": 97,
-      "summary": "documents in source comments `lcm_condition_no_divisibility` (no Lean declaration exists) ($a \\mid b \\implies b > n$, i.e., $A$ is an antichain). Proves `singleton_satisfies_lcm` (vacuous satisfaction) and `reciprocal_sum_singleton` ($\\sum_{\\{a\\}} 1/x = 1/a$). `schinzel_szekeres_solves_542` axiomatizes the full resolution."
+      "summary": "Documents in source comments (no Lean declarations exist) the no-divisibility property ($a \\mid b \\implies b > n$, i.e., $A$ is an antichain) and the closing remark that the Schinzel-Szekeres theorem solves Erdős Problem 542. Proves `singleton_satisfies_lcm` (vacuous satisfaction) and `reciprocal_sum_singleton` ($\\sum_{\\{a\\}} 1/x = 1/a$)."
     }
   ],
   "conclusion": {

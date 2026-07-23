@@ -27,7 +27,7 @@
     "proofId": "erdos-542",
     "type": "definition",
     "range": {
-      "startLine": 27,
+      "startLine": 25,
       "endLine": 33
     },
     "title": "Pairwise LCM Condition and Reciprocal Sum",
@@ -53,11 +53,11 @@
     "proofId": "erdos-542",
     "type": "definition",
     "range": {
-      "startLine": 39,
-      "endLine": 49
+      "startLine": 37,
+      "endLine": 45
     },
     "title": "Schinzel-Szekeres Theorem and Optimal Example",
-    "content": "`ErdosProblem542`: $\\forall n, A,\\, \\text{PairwiseLCMExceeds}(A,n) \\implies \\sum 1/a \\le 31/30$. `bound_achieved_by_235`: $\\sum 1/a = 31/30$ for $A = \\{2,3,5\\}$. `example_235_valid`: $\\{2,3,5\\}$ satisfies the LCM condition for $n = 5$ (since $\\text{lcm}(2,3) = 6, \\text{lcm}(2,5) = 10, \\text{lcm}(3,5) = 15$, all $> 5$).",
+    "content": "`ErdosProblem542`: $\\forall n, A,\\, \\text{PairwiseLCMExceeds}(A,n) \\implies \\sum 1/a \\le 31/30$. Two facts are documented only as source comments, with no corresponding Lean declaration: that $\\sum 1/a = 31/30$ for $A = \\{2,3,5\\}$, and that $\\{2,3,5\\}$ satisfies the LCM condition for $n = 5$ (since $\\text{lcm}(2,3) = 6, \\text{lcm}(2,5) = 10, \\text{lcm}(3,5) = 15$, all $> 5$).",
     "significance": "key",
     "mathContext": "**Andrzej Schinzel** and **George Szekeres** proved the bound $31/30$ in their 1959 paper 'Sur un probleme de M. Paul Erdos.' The proof analyzes the prime factorization structure of elements in $A$: if $a, b \\in A$ share a prime factor $p$, then $p | \\gcd(a,b)$, so $\\text{lcm}(a,b) = ab/\\gcd(a,b) \\le ab/p \\le n^2/p$. For this to exceed $n$, we need $ab > np$. The constraint forces elements to have 'spread out' prime factors. The extremal set $\\{2,3,5\\}$ consists of the three smallest primes, and $1/2 + 1/3 + 1/5 = 15/30 + 10/30 + 6/30 = 31/30$ is exactly the bound.",
     "relatedConcepts": [
@@ -77,8 +77,8 @@
     "proofId": "erdos-542",
     "type": "definition",
     "range": {
-      "startLine": 54,
-      "endLine": 62
+      "startLine": 49,
+      "endLine": 61
     },
     "title": "Chen's Stronger Bound (1996)",
     "content": "`ChenBound`: for $n > 172509$, $\\sum 1/a < 1/3 + 1/4 + 1/5 + 1/7 + 1/11 = 4699/4620 \\approx 1.017$. `chen_bound_value` proves $1/3 + 1/4 + 1/5 + 1/7 + 1/11 = 4699/4620$ by `norm_num`.",
@@ -101,11 +101,11 @@
     "proofId": "erdos-542",
     "type": "definition",
     "range": {
-      "startLine": 68,
-      "endLine": 79
+      "startLine": 65,
+      "endLine": 74
     },
     "title": "Maximal Sets Conjecture",
-    "content": "`MaximalSetsConjecture`: if $\\text{PairwiseLCMExceeds}(A,n)$ and $\\sum 1/a > 1$, then $A = \\{2,3,5\\}$ or $A = \\{3,4,5,7,11\\}$. `example_34_5_7_11_sum` and `example_34_5_7_11_valid` establish that $\\{3,4,5,7,11\\}$ is a valid example with sum $> 1$ for $n = 11$.",
+    "content": "`MaximalSetsConjecture`: if $\\text{PairwiseLCMExceeds}(A,n)$ and $\\sum 1/a > 1$, then $A = \\{2,3,5\\}$ or $A = \\{3,4,5,7,11\\}$. That $\\{3,4,5,7,11\\}$ is a valid example with sum $> 1$ for $n = 11$ is documented only as source comments — no corresponding Lean declarations exist.",
     "significance": "key",
     "mathContext": "The Erdos-Schinzel-Szekeres conjecture asserts a remarkably precise classification: among all sets satisfying the pairwise LCM condition, exactly two achieve reciprocal sum exceeding $1$. The set $\\{3,4,5,7,11\\}$ works because all pairwise LCMs exceed $11$: $\\text{lcm}(3,4)=12$, $\\text{lcm}(3,5)=15$, $\\text{lcm}(3,7)=21$, $\\text{lcm}(3,11)=33$, $\\text{lcm}(4,5)=20$, $\\text{lcm}(4,7)=28$, $\\text{lcm}(4,11)=44$, $\\text{lcm}(5,7)=35$, $\\text{lcm}(5,11)=55$, $\\text{lcm}(7,11)=77$. Its reciprocal sum is $1/3 + 1/4 + 1/5 + 1/7 + 1/11 \\approx 1.043$. This conjecture remains open.",
     "relatedConcepts": [
@@ -125,11 +125,11 @@
     "proofId": "erdos-542",
     "type": "concept",
     "range": {
-      "startLine": 84,
-      "endLine": 87
+      "startLine": 78,
+      "endLine": 78
     },
     "title": "No-Divisibility Property",
-    "content": "`lcm_condition_no_divisibility`: if $a \\mid b$ and $a \\ne b$ and both are in $A$ satisfying the LCM condition, then $b > n$ (contradicting $b \\le n$). Axiomatized since $\\text{lcm}(a,b) = b$ when $a \\mid b$.",
+    "content": "A source comment (no Lean declaration) notes: if $a \\mid b$ and $a \\ne b$ and both are in $A$ satisfying the LCM condition, then $b > n$ (contradicting $b \\le n$), since $\\text{lcm}(a,b) = b$ when $a \\mid b$. This is documented only as prose, not proved.",
     "significance": "supporting",
     "mathContext": "When $a \\mid b$, $\\text{lcm}(a,b) = b$. The LCM condition requires $\\text{lcm}(a,b) > n$, so $b > n$. But $b \\in A \\subseteq \\{1,\\ldots,n\\}$ gives $b \\le n$, a contradiction. This shows the LCM condition implies $A$ is an **antichain** under divisibility — no element divides another. Antichains under divisibility are closely related to **Dilworth's theorem** and the theory of **primitive sets** studied by Erdos, Behrend, and others.",
     "relatedConcepts": [
@@ -149,8 +149,8 @@
     "proofId": "erdos-542",
     "type": "concept",
     "range": {
-      "startLine": 90,
-      "endLine": 97
+      "startLine": 80,
+      "endLine": 99
     },
     "title": "Singleton Validity and Reciprocal Sum",
     "content": "`singleton_satisfies_lcm`: any singleton $\\{a\\}$ with $a \\in \\{1,\\ldots,n\\}$ and $a > 0$ satisfies the LCM condition vacuously (no distinct pairs). Proved by `Finset.mem_singleton` + `subst` + `absurd`. `reciprocal_sum_singleton`: $\\sum_{x \\in \\{a\\}} 1/x = 1/a$, proved by `simp`.",
