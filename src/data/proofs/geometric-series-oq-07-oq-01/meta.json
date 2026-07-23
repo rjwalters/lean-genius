@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The General Moment of the Geometric Series",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "States the closed form this file proves — for |r| < 1 and any order m, the m-th moment ∑_{n≥0} nᵐ·rⁿ equals ∑_{k=0}^m S(m,k)·k!·rᵏ/(1-r)^{k+1}, where S(m,k) is the Stirling number of the second kind — answering the first open question of geometric-series-oq-07 by generalizing the moment computation to arbitrary order with an explicit change-of-basis. The proof expands nᵐ over falling factorials via the Stirling recurrence, then sums Mathlib's falling-factorial geometric series termwise; it recovers the gallery's order-0 through order-3 formulas as special cases. 0 axioms, 0 sorries.",
+      "mathContext": "$\\sum_{n\\ge0} n^m r^n = \\sum_{k=0}^m S(m,k)\\,k!\\,r^k/(1-r)^{k+1}$, via $n^m=\\sum_k S(m,k)\\,n^{\\underline{k}}$ and $\\sum_n n^{\\underline{k}} r^n = k! r^k/(1-r)^{k+1}$."
+    },
+    {
       "id": "stirling-expansion",
       "title": "Stirling's Monomial Expansion (a Combinatorial ℕ-Identity)",
       "startLine": 46,
