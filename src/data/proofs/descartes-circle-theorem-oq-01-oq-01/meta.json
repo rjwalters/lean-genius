@@ -54,7 +54,8 @@
       "For any complex square root s of ab+bc+ca, the relation factors as (d − (a+b+c) − 2s)(d − (a+b+c) + 2s) = 0, giving exactly the two Soddy solutions d = (a+b+c) ± 2s.",
       "ℂ is algebraically closed, so ab+bc+ca always has a square root (IsAlgClosed.exists_pow_nat_eq): the fourth Soddy curvature exists unconditionally, unlike the real case.",
       "The two Soddy curvatures are the roots of a single monic quadratic determined symmetrically by a, b, c: by Vieta they satisfy d₊ + d₋ = 2(a+b+c) (soddy_sumC) and d₊·d₋ = (a+b+c)² − 4(ab+bc+ca) (soddy_prodC), so the unordered pair {d₊, d₋} is intrinsic to the triple.",
-      "The complex relation is a faithful generalization of the real one: for real curvatures cast into ℂ, descartesRelC is exactly the parent’s real Descartes relation (descartesRelC_ofReal, by norm_cast). The symmetric instance a = b = c = 1 recovers three mutually tangent unit circles with fourth curvature d = 3 ± 2√3."
+      "The complex relation is a faithful generalization of the real one: for real curvatures cast into ℂ, descartesRelC is exactly the parent’s real Descartes relation (descartesRelC_ofReal, by norm_cast). The symmetric instance a = b = c = 1 recovers three mutually tangent unit circles with fourth curvature d = 3 ± 2√3.",
+      "The proof reduces solving the quadratic (d−(a+b+c))² = 4(ab+bc+ca) to extracting a single complex square root of ab+bc+ca (IsAlgClosed.exists_pow_nat_eq), rather than invoking a general root-existence fact for quadratics: completing the square in descartesRelC_iff_sq is exactly the algebraic step that converts 'find a root of this quadratic' into 'find a square root of this scalar', the two problems being equivalent whenever 2 is invertible."
     ]
   },
   "sections": [
@@ -67,12 +68,28 @@
       "mathContext": "$(w_1+w_2+w_3+w_4)^2 = 2(w_1^2+w_2^2+w_3^2+w_4^2)$ with $w_i = k_i z_i$."
     },
     {
-      "id": "relation-soddy",
-      "title": "The Complex Relation and its Soddy Solutions",
+      "id": "definition",
+      "title": "The Complex Descartes Relation and its Quadratic Form",
       "startLine": 43,
-      "endLine": 89,
-      "summary": "Defines descartesRelC over ℂ, proves its quadratic-in-d perfect-square form descartesRelC_iff_sq (a ring identity), and the Soddy parametrisation descartes_soddy_iff: for any complex square root s of ab+bc+ca, the relation holds iff d = (a+b+c) ± 2s. Then descartes_soddy_exists gives the unconditional existence over ℂ, and descartes_soddy_both records that both Soddy values are solutions.",
-      "mathContext": "$(d-(a+b+c))^2 = 4(ab+bc+ca)$; $d = (a+b+c) \\pm 2s$, $s^2 = ab+bc+ca$."
+      "endLine": 56,
+      "summary": "Defines descartesRelC over ℂ as the symmetric quadratic (a+b+c+d)² = 2(a²+b²+c²+d²), then proves descartesRelC_iff_sq: this is equivalent to the quadratic-in-d perfect square (d−(a+b+c))² = 4(ab+bc+ca), a pure ring identity (linear_combination) valid over any commutative ring.",
+      "mathContext": "$(a+b+c+d)^2 = 2(a^2+b^2+c^2+d^2) \\iff (d-(a+b+c))^2 = 4(ab+bc+ca)$."
+    },
+    {
+      "id": "soddy-parametrization",
+      "title": "The Soddy Parametrisation",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "descartes_soddy_iff: for any complex square root s of the symmetric product ab+bc+ca, the relation descartesRelC a b c d holds iff d = (a+b+c) + 2s or d = (a+b+c) − 2s. Proved by factoring the perfect-square form as a product of two linear terms and applying mul_eq_zero — unlike the real case, no sign hypothesis on s is needed.",
+      "mathContext": "$s^2 = ab+bc+ca \\implies (d = (a+b+c)+2s \\lor d = (a+b+c)-2s)$."
+    },
+    {
+      "id": "existence-both",
+      "title": "Unconditional Existence and Both Solutions",
+      "startLine": 75,
+      "endLine": 88,
+      "summary": "descartes_soddy_exists: every triple a, b, c of complex curvatures admits a fourth d satisfying the relation, via IsAlgClosed.exists_pow_nat_eq extracting a square root of ab+bc+ca — the algebraically-closed phenomenon absent from the real parent. descartes_soddy_both then records that both Soddy values (a+b+c) ± 2s satisfy the relation simultaneously.",
+      "mathContext": "$\\forall a,b,c \\in \\mathbb{C},\\ \\exists d,\\ \\mathrm{descartesRelC}\\ a\\ b\\ c\\ d$."
     },
     {
       "id": "vieta-bridge",
