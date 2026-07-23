@@ -64,18 +64,36 @@
   },
   "sections": [
     {
-      "id": "basel-product",
-      "title": "Euler's Product for the Basel Value π²/6",
-      "startLine": 34,
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring stating the open question (formalize ζ(s) = ∏ₚ(1-p⁻ˢ)⁻¹ as a consequence of the FTA) and Euler's 1737 payoff at s=2,4. Imports Mathlib; opens Real, Complex, Filter, Topology; namespace FundamentalArithmeticOQ03.",
+      "mathContext": "$\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$ for $\\mathrm{Re}\\,s>1$, the FTA-driven Euler product."
+    },
+    {
+      "id": "basel-product-forms",
+      "title": "Euler's Product for π²/6: tprod and HasProd Forms",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "one_lt_re_two supplies the convergence hypothesis. euler_basel_product_tprod instantiates riemannZeta_eulerProduct_tprod at s=2 and rewrites with riemannZeta_two to get ∏ₚ(1-p⁻²)⁻¹ = π²/6. euler_basel_product_hasProd gives the unconditional (order-independent) HasProd form of the same identity.",
+      "mathContext": "$\\prod'_p (1-p^{-2})^{-1} = \\pi^2/6$, both as a `tprod` and as `HasProd`."
+    },
+    {
+      "id": "basel-product-tendsto",
+      "title": "Finite Partial Products: Euler's Original Sieve Form",
+      "startLine": 59,
       "endLine": 67,
-      "summary": "Instantiates the FTA-driven Euler product at s=2 and rewrites with ζ(2)=π²/6 to obtain ∏ₚ(1-p⁻²)⁻¹ = π²/6 in three equivalent forms: the unordered tprod, the HasProd statement (order-independent convergence), and a Tendsto statement for the finite partial products over the primes below n."
+      "summary": "euler_basel_product_tendsto: the finite partial products ∏_{p<n}(1-p⁻²)⁻¹ over the primes below n converge to π²/6 as n → ∞ — the form closest to Euler's original sieve computation, rather than the unordered infinite product.",
+      "mathContext": "$\\prod_{p<n}(1-p^{-2})^{-1} \\to \\pi^2/6$ as $n\\to\\infty$."
     },
     {
       "id": "zeta-four-product",
       "title": "Euler's Product at s = 4 for ζ(4) = π⁴/90",
-      "startLine": 69,
+      "startLine": 68,
       "endLine": 86,
-      "summary": "The same recipe at s=4: combining the Euler product with riemannZeta_four yields ∏ₚ(1-p⁻⁴)⁻¹ = π⁴/90, in tprod and HasProd forms."
+      "summary": "The same recipe at s=4: combining the Euler product with riemannZeta_four yields ∏ₚ(1-p⁻⁴)⁻¹ = π⁴/90, in tprod and HasProd forms.",
+      "mathContext": "$\\prod'_p (1-p^{-4})^{-1} = \\pi^4/90$."
     },
     {
       "id": "structural-consequences",
