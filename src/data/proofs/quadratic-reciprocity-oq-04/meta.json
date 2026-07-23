@@ -85,33 +85,41 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 48,
+      "endLine": 49,
       "summary": "Docstring framing the Jacobi generalization, what is retained (reciprocity, computability) and what is lost (residue-detection); imports Mathlib; namespace QuadraticReciprocityJacobi",
       "mathContext": "J(a | b) extends (a | p) multiplicatively; reciprocity holds for all odd b, but J(a|b)=1 ⇏ square for composite b."
     },
     {
       "id": "evaluation",
       "title": "Evaluating J(2 | 15) and Its Factorization",
-      "startLine": 49,
-      "endLine": 64,
+      "startLine": 50,
+      "endLine": 61,
       "summary": "jacobiSym_two_fifteen (= 1, via the norm_num extension) and jacobiSym_two_fifteen_factor (= J(2|3)·J(2|5)), exhibiting the (-1)(-1) = 1 mechanism",
       "mathContext": "$J(2|15) = 1 = J(2|3)\\,J(2|5) = (-1)(-1)$."
     },
     {
       "id": "nonsquare",
       "title": "2 Is Not a Square mod 15",
-      "startLine": 65,
-      "endLine": 68,
+      "startLine": 62,
+      "endLine": 64,
       "summary": "two_nonsquare_mod_fifteen by kernel decide (squares mod 15 are {0,1,4,6,9,10})",
       "mathContext": "$2 \\notin \\{x^2 : x \\in \\mathbb{Z}/15\\} = \\{0,1,4,6,9,10\\}$."
     },
     {
       "id": "counterexample",
-      "title": "Failure of the Converse and the Surviving Direction",
-      "startLine": 69,
+      "title": "Failure of the Converse (an Euler Liar)",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "jacobi_one_not_isSquare_of_composite: an odd composite b and an a with J(a | b) = 1 yet a not a square mod b, so the prime-only isSquare_of_jacobiSym_eq_one is sharp",
+      "mathContext": "$\\exists a,b:\\ \\neg\\,\\mathrm{Prime}\\,b \\wedge \\mathrm{Odd}\\,b \\wedge J(a|b)=1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,(a:\\mathbb{Z}/b)$."
+    },
+    {
+      "id": "surviving-direction",
+      "title": "The Direction That Survives for All b",
+      "startLine": 78,
       "endLine": 86,
-      "summary": "jacobi_one_not_isSquare_of_composite (J = 1 but non-square for composite b) and jacobiSym_neg_one_imp_nonsquare (J = -1 ⟹ non-square, all b)",
-      "mathContext": "$\\exists a,b:\\ \\neg\\,\\mathrm{Prime}\\,b \\wedge \\mathrm{Odd}\\,b \\wedge J(a|b)=1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,(a:\\mathbb{Z}/b)$; and $J(a|b)=-1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}$."
+      "summary": "jacobiSym_neg_one_imp_nonsquare, re-exported from Mathlib: J(a | b) = -1 always certifies a non-square, even for composite b",
+      "mathContext": "$J(a|b)=-1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}\\,(a:\\mathbb{Z}/b)$, valid for every $b$."
     }
   ],
   "conclusion": {
