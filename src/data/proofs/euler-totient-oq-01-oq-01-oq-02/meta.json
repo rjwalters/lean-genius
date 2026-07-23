@@ -119,10 +119,19 @@
     },
     {
       "id": "part1-carmichael-theorem",
-      "title": "Part I: Carmichael's Theorem and Minimality",
+      "title": "Part I: Carmichael's Theorem",
       "startLine": 44,
+      "endLine": 50,
+      "summary": "unit_pow_carmichael gives a^λ(n)=1 for every unit, specialising Monoid.pow_exponent_eq_one to the unit group — the universal-exponent statement that names Carmichael's function.",
+      "mathContext": "$a^{\\lambda(n)} \\equiv 1 \\pmod n$ for every $a$ coprime to $n$, where $\\lambda(n) = \\exp\\big((\\mathbb{Z}/n\\mathbb{Z})^\\times\\big)$."
+    },
+    {
+      "id": "part1b-minimality",
+      "title": "Part I(b): Minimality of λ(n)",
+      "startLine": 52,
       "endLine": 58,
-      "summary": "unit_pow_carmichael gives a^λ(n)=1 for every unit (specialising Monoid.pow_exponent_eq_one); carmichael_dvd_of_forall_pow_eq_one shows any common exponent of the unit group is a multiple of λ(n), so λ(n) is the least positive universal exponent."
+      "summary": "carmichael_dvd_of_forall_pow_eq_one shows any common exponent of the unit group is a multiple of λ(n) (the (⇐) direction of Monoid.exponent_dvd_iff_forall_pow_eq_one), so with Carmichael's theorem λ(n) is the least positive universal exponent.",
+      "mathContext": "$\\big(\\forall a,\\ a^k = 1\\big) \\implies \\lambda(n) \\mid k$."
     },
     {
       "id": "part2-sharpness",
