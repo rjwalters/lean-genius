@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring states van der Corput's convex-body counting theorem: a convex, centrally symmetric body with vol(s) > k·2ⁿ·covol(L) contains at least k nonzero lattice points (Minkowski's fundamental theorem is k = 1). Sketches the proof: apply the parent entry's Blichfeldt engine to the shrunk body ½s, then pass from the resulting congruent points to genuine lattice points via the convexity/symmetry passage lemma half_diff_mem_of_symmetric_convex. Imports Mathlib and the parent Blichfeldt file, opens MeasureTheory/Module/Set/Filter/Pointwise/ENNReal, declares the MinkowskiVanDerCorput namespace.",
+      "mathContext": "van der Corput: $k\\cdot 2^n\\cdot\\mathrm{covol}(L) < \\mathrm{vol}(s) \\Rightarrow$ at least $k$ nonzero lattice points in $s$; Minkowski's theorem is the case $k=1$."
+    },
+    {
       "id": "sec-passage",
       "title": "The Central-Symmetry / Convexity Passage Lemma",
       "startLine": 57,
@@ -88,10 +96,17 @@
     },
     {
       "id": "sec-vandercorput",
-      "title": "van der Corput's Counting Theorem and Minkowski at k = 1",
+      "title": "van der Corput's Convex-Body Counting Theorem",
       "startLine": 82,
+      "endLine": 141,
+      "summary": "vanDerCorput: rewriting the hypothesis via measure_half_smul reduces k·2ⁿ·covol(L) < vol(s) to k·covol(L) < vol(½s); the parent's Blichfeldt engine yields a common point z and a finite T ⊆ L with k < #T and 2·(z - l) ∈ s for each l ∈ T. Translating by a base point l₀ and applying half_diff_mem_of_symmetric_convex produces #T - 1 ≥ k nonzero lattice points l - l₀ ∈ s."
+    },
+    {
+      "id": "sec-minkowski-corollary",
+      "title": "Minkowski's Fundamental Theorem as the Case k = 1",
+      "startLine": 143,
       "endLine": 157,
-      "summary": "The main result vanDerCorput and its k = 1 corollary minkowski_of_vanDerCorput. Rewriting the hypothesis via measure_half_smul reduces to k·covol(L) < vol(½s); the parent's Blichfeldt engine yields a common point z and a finite T ⊆ L with k < #T and 2·(z - l) ∈ s for each l ∈ T. Translating by a base point l₀ and applying the passage lemma produces #T - 1 ≥ k nonzero lattice points l - l₀ ∈ s. The corollary specializes k = 1 and reads off the antipode from central symmetry."
+      "summary": "minkowski_of_vanDerCorput: specializing vanDerCorput to k = 1 gives Minkowski's fundamental theorem directly — a convex symmetric body of volume > covol(L)·2ⁿ contains a nonzero lattice point v, and its antipode -v also lies in s by central symmetry."
     }
   ],
   "conclusion": {
