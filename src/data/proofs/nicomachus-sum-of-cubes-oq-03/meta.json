@@ -59,12 +59,20 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Overview, imports, and the subtraction-free strategy",
+      "id": "header",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Imports (Mathlib.Algebra.BigOperators.Intervals and Mathlib.Tactic) and the module docstring, which states the odd-cube analogue of Nicomachus's theorem (∑_{k<n} (2k+1)³ = n²(2n²−1)), checks the first three cases (n=1,2,3 → 1, 28, 153), and lays out the proof plan: because the closed form's −1 breaks `ring` over ℕ, prove the subtraction-free equivalent ∑(2k+1)³ + n² = 2n⁴ instead and recover the headline over ℤ. Opens the NicomachusOddCubes namespace and Finset.",
+      "endLine": 42,
+      "summary": "Imports (Mathlib.Algebra.BigOperators.Intervals and Mathlib.Tactic) and the module docstring, which states the odd-cube analogue of Nicomachus's theorem (∑_{k<n} (2k+1)³ = n²(2n²−1)), checks the first three cases (n=1,2,3 → 1, 28, 153), and lays out the proof plan: because the closed form's −1 breaks `ring` over ℕ, prove the subtraction-free equivalent ∑(2k+1)³ + n² = 2n⁴ instead and recover the headline over ℤ.",
       "mathContext": "$\\sum_{k<n}(2k+1)^3 = n^2(2n^2-1)$; strategy: prove $\\sum(2k+1)^3 + n^2 = 2n^4$ in $\\mathbb{N}$ (no truncated subtraction), then cast to $\\mathbb{Z}$."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Open",
+      "startLine": 43,
+      "endLine": 47,
+      "summary": "Opens `namespace NicomachusOddCubes` and `open Finset` so range-sums can be written unqualified for the rest of the file.",
+      "mathContext": "Scope: identities stated over `Finset.range n` inside `namespace NicomachusOddCubes`."
     },
     {
       "id": "subtraction-free",
