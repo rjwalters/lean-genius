@@ -27,7 +27,7 @@
     "proofId": "erdos-1074",
     "range": {
       "startLine": 39,
-      "endLine": 40
+      "endLine": 42
     },
     "type": "definition",
     "title": "EHS Numbers",
@@ -49,12 +49,12 @@
     "id": "ann-e1074-pillai-def",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 42,
-      "endLine": 46
+      "startLine": 44,
+      "endLine": 54
     },
     "type": "definition",
     "title": "Pillai Primes",
-    "content": "**PillaiPrimes: The Dual Perspective**\n\nNamed after S. S. Pillai who first asked whether such primes exist (1930).\n\n**Definition:**\n```lean\ndef PillaiPrimes : Set ℕ :=\n  {p | p.Prime ∧ ∃ m, ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}\n```\n\nA prime p is a Pillai prime if there exists m such that:\n1. p divides m! + 1\n2. p is NOT congruent to 1 modulo m\n\n**First few Pillai primes:** 23, 29, 59, 61, 67, 71, ... (OEIS A063980)",
+    "content": "**PillaiPrimes: The Dual Perspective**\n\nNamed after S. S. Pillai who first asked whether such primes exist (1930).\n\n**Definition:**\n```lean\ndef PillaiPrimes : Set ℕ :=\n  {p | p.Prime ∧ ∃ m, 1 ≤ m ∧ ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}\n```\n\nA prime p is a Pillai prime if there exists m ≥ 1 such that:\n1. p divides m! + 1\n2. p is NOT congruent to 1 modulo m\n\nThe `1 ≤ m` constraint is essential: without it, m = 0 degenerates `≡ [MOD 0]` to plain equality and spuriously admits 2 (since 0! + 1 = 2, 2 ∣ 2, ¬(2 = 1)), contradicting OEIS A063980 (smallest Pillai prime is 23).\n\n**First few Pillai primes:** 23, 29, 59, 61, 67, 71, ... (OEIS A063980)",
     "mathContext": "Pillai's original 1930 question was simply whether ANY such primes exist. Chowla answered by finding 23.",
     "significance": "key",
     "relatedConcepts": [
@@ -71,8 +71,8 @@
     "id": "ann-e1074-chowla-divisibility",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 48,
-      "endLine": 58
+      "startLine": 64,
+      "endLine": 66
     },
     "type": "concept",
     "title": "Chowla's Divisibility",
@@ -93,8 +93,8 @@
     "id": "ann-e1074-chowla-congruence",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 60,
-      "endLine": 66
+      "startLine": 68,
+      "endLine": 70
     },
     "type": "concept",
     "title": "Chowla's Congruence Check",
@@ -115,12 +115,12 @@
     "id": "ann-e1074-pillai-23",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 68,
-      "endLine": 72
+      "startLine": 76,
+      "endLine": 80
     },
     "type": "concept",
     "title": "23 is a Pillai Prime",
-    "content": "**pillai_23: Chowla's Complete Result**\n\nCombining the divisibility and congruence checks proves 23 ∈ PillaiPrimes.\n\n**Proof Structure:**\n```lean\ntheorem pillai_23 : 23 ∈ PillaiPrimes := by\n  refine ⟨twentyThree_prime, 14, twentyThree_not_cong_one_mod_14, ?_⟩\n  exact twentyThree_dvd_factorial_14_plus_one\n```\n\n**The witness:** m = 14 satisfies all conditions:\n- 23 is prime ✓\n- 23 ≢ 1 (mod 14) ✓\n- 23 | 14! + 1 ✓\n\nThis was the first known Pillai prime, answering Pillai's 1930 question.",
+    "content": "**pillai_23: Chowla's Complete Result**\n\nCombining primality, the m ≥ 1 witness bound, the divisibility, and congruence checks proves 23 ∈ PillaiPrimes.\n\n**Proof Structure:**\n```lean\ntheorem pillai_23 : 23 ∈ PillaiPrimes := by\n  refine ⟨twentyThree_prime, 14, by norm_num, twentyThree_not_cong_one_mod_14, ?_⟩\n  exact twentyThree_dvd_factorial_14_plus_one\n```\n\n**The witness:** m = 14 satisfies all conditions:\n- 23 is prime ✓\n- 14 ≥ 1 ✓ (by norm_num)\n- 23 ≢ 1 (mod 14) ✓\n- 23 | 14! + 1 ✓\n\nThis was the first known Pillai prime, answering Pillai's 1930 question.",
     "mathContext": "Chowla also noted that 18! + 1 ≡ 0 (mod 23), providing a second witness for 23 being a Pillai prime.",
     "significance": "key",
     "relatedConcepts": [
@@ -137,8 +137,8 @@
     "id": "ann-e1074-ehs-8",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 76,
-      "endLine": 85
+      "startLine": 84,
+      "endLine": 93
     },
     "type": "concept",
     "title": "8 is the First EHS Number",
@@ -159,8 +159,8 @@
     "id": "ann-e1074-ehs-9",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 87,
-      "endLine": 96
+      "startLine": 95,
+      "endLine": 104
     },
     "type": "concept",
     "title": "9 is an EHS Number",
@@ -181,13 +181,13 @@
     "id": "ann-e1074-infinitude",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 98,
-      "endLine": 115
+      "startLine": 211,
+      "endLine": 227
     },
     "type": "concept",
     "title": "Infinitude Results",
-    "content": "**Both Sets Are Infinite**\n\nErdős, Hardy, and Subbarao proved that both EHSNumbers and PillaiPrimes are infinite sets.\n\n**Axioms:**\n```lean\naxiom EHSNumbers_infinite : EHSNumbers.Infinite\naxiom PillaiPrimes_infinite : PillaiPrimes.Infinite\n```\n\n**Why axioms?**\nThe proofs require sophisticated number-theoretic arguments about:\n- Distribution of prime factors of m! + 1\n- Primes in arithmetic progressions\n- Analytic techniques\n\nThese results are well beyond current Mathlib formalization capabilities.",
-    "mathContext": "The proof uses properties of prime factorizations of factorial values combined with Dirichlet's theorem on primes in arithmetic progressions.",
+    "content": "**Both Sets Are Known Infinite (Documented, Not Asserted)**\n\nErdős, Hardy, and Subbarao proved that both EHSNumbers and PillaiPrimes are infinite sets. This file records that fact in comments only — it does **not** introduce `axiom` declarations for it.\n\n**Why not formalized?**\nThe proofs require sophisticated number-theoretic arguments about:\n- Distribution of prime factors of m! + 1\n- Primes in arithmetic progressions\n- Analytic techniques\n\nThese results are well beyond the elementary scope formalized in this file, so they are deliberately left as unformalized commentary rather than axiomatized.",
+    "mathContext": "The underlying (unformalized) argument uses properties of prime factorizations of factorial values combined with Dirichlet's theorem on primes in arithmetic progressions.",
     "significance": "key",
     "relatedConcepts": [
       "Infinite sets",
@@ -203,8 +203,8 @@
     "id": "ann-e1074-open-density",
     "proofId": "erdos-1074",
     "range": {
-      "startLine": 117,
-      "endLine": 146
+      "startLine": 229,
+      "endLine": 257
     },
     "type": "concept",
     "title": "Open Density Problems",
