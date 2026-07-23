@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, Historical Context, and Resolution",
+      "startLine": 1,
+      "endLine": 88,
+      "summary": "States Hilbert's 13th problem (can degree-7 polynomial roots be expressed via continuous functions of only two variables?) and its negative resolution by the Kolmogorov–Arnold representation theorem (1956-57), which shows every continuous function of $n$ variables decomposes into sums of continuous functions of one variable; notes the caveat that the smooth/analytic version remains partially open (Vitushkin 1954).",
+      "mathContext": "Kolmogorov–Arnold: every continuous $f:[0,1]^n \\to \\mathbb{R}$ can be written $f(x_1,\\dots,x_n) = \\sum_q \\Phi_q\\left(\\sum_p \\lambda_{pq}\\varphi_p(x_p)\\right)$ with continuous $\\Phi_q, \\varphi_p$."
+    },
+    {
       "id": "definitions",
       "title": "Superposition of Functions",
       "startLine": 89,
