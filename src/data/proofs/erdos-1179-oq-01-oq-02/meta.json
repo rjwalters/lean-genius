@@ -49,26 +49,42 @@
   ],
   "sections": [
     {
-      "id": "definitions",
-      "title": "Correction-Term Definitions (restated from the parent)",
-      "startLine": 43,
-      "endLine": 67,
-      "summary": "Restates the three parent definitions verbatim: correctionTerm gEps ε N = g_ε(N) − log₂ N; CorrectionIsSublinearInLog (the o(log₂ N) rate); and CorrectionIsLogLog (the two-sided Θ(log log N) rate, ∃ c₁,c₂ > 0 with c₁·log log N ≤ corr ≤ c₂·log log N eventually). Keeping the definitions local makes the file self-contained, matching the sibling OQ files.",
-      "mathContext": "$\\mathrm{corr}(N) = g_\\varepsilon(N) - \\log_2 N$; the Θ hypothesis is $c_1 \\log\\log N \\le \\mathrm{corr}(N) \\le c_2 \\log\\log N$ for $N \\ge N_0$."
+      "id": "header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Docstring framing the parent's three candidate correction rates (O(1), Θ(log log N), o(log₂ N)), explaining that the O(1) ⟹ Θ(log log N) chain implied by the parent's narrative is actually false (the two are mutually exclusive sharpenings), and stating the single analytic input (log log N = o(log N)) this file needs. Imports Mathlib and opens Real, Filter, Asymptotics.",
+      "mathContext": "$\\mathrm{corr}(N) = g_\\varepsilon(N) - \\log_2 N$; the two candidate sharpenings $O(1)$ and $\\Theta(\\log\\log N)$ each independently imply the known $o(\\log_2 N)$ rate."
+    },
+    {
+      "id": "definitions-baseline",
+      "title": "Definitions: The Correction Term and the Sublinear Rate",
+      "startLine": 47,
+      "endLine": 58,
+      "summary": "Restates two of the parent's definitions verbatim: correctionTerm gEps ε N = g_ε(N) − log₂ N, and CorrectionIsSublinearInLog, the o(log₂ N) rate this file's theorem concludes.",
+      "mathContext": "$\\mathrm{corr}(N) = g_\\varepsilon(N) - \\log_2 N$; sublinear means $\\forall \\delta>0,\\ |\\mathrm{corr}(N)| < \\delta\\log_2 N$ eventually."
+    },
+    {
+      "id": "definitions-loglog",
+      "title": "Definition: The Θ(log log N) Hypothesis",
+      "startLine": 60,
+      "endLine": 64,
+      "summary": "CorrectionIsLogLog: the two-sided Θ(log log N) rate, ∃ c₁, c₂ > 0 with c₁·log log N ≤ corr(N) ≤ c₂·log log N eventually — the hypothesis this file's main theorem consumes.",
+      "mathContext": "$\\exists\\, c_1,c_2>0,\\ c_1\\log\\log N \\le \\mathrm{corr}(N) \\le c_2\\log\\log N$ for $N \\ge N_0$."
     },
     {
       "id": "analytic-core",
       "title": "The Analytic Core: log log x = o(log x)",
-      "startLine": 68,
-      "endLine": 96,
+      "startLine": 66,
+      "endLine": 89,
       "summary": "eventually_loglog_lt: for every ε' > 0, log(log x) < ε'·log x eventually. Proof composes Real.isLittleO_log_id_atTop (log = o(id)) with Real.tendsto_log_atTop via IsLittleO.comp_tendsto to get log ∘ log = o(log), extracts the ≤ (ε'/2)·‖log x‖ bound from isLittleO_iff, and upgrades ≤ to < using log x > 0 (eventually).",
       "mathContext": "$\\log(\\log x) = o(\\log x)$, equivalently $\\log t = o(t)$ under $t = \\log x$."
     },
     {
       "id": "main-implication",
       "title": "Main Implication: Θ(log log N) ⟹ o(log₂ N)",
-      "startLine": 97,
-      "endLine": 140,
+      "startLine": 91,
+      "endLine": 138,
       "summary": "loglog_implies_sublinear: given the Θ(log log N) bounds, for each δ > 0 the scale ε' = δ/(c₂·log 2) turns log log N < ε'·log N into c₂·log log N < δ·log₂ N. Non-negativity of corr(N) for large N (from the lower Θ-bound and log log N ≥ 0) removes the absolute value, and the upper Θ-bound closes |corr(N)| < δ·log₂ N.",
       "mathContext": "$|\\mathrm{corr}(N)| = \\mathrm{corr}(N) \\le c_2 \\log\\log N < \\delta \\log_2 N$ for all large $N$."
     }
