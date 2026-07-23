@@ -24,6 +24,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: the problem and the inversion strategy",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring stating OQ-05: the gallery's PtolemysComplexProof.lean and Mathlib's cospherical equality case both fall short of the general metric statement. States the inversion-distance identity and the two downstream theorems it feeds (ptolemy_origin, ptolemy_dist), then fixes a real inner product space V and opens RealInnerProductSpace for the ⟪·,·⟫ notation."
+    },
+    {
       "id": "inversion-dist",
       "title": "The inversion-distance identity",
       "startLine": 54,
@@ -41,8 +48,15 @@
       "id": "ptolemy-dist",
       "title": "Ptolemy for four arbitrary points of an affine space",
       "startLine": 134,
-      "endLine": 152,
-      "summary": "dist(a,c)·dist(b,d) ≤ dist(a,b)·dist(c,d) + dist(b,c)·dist(a,d) in any NormedAddTorsor over a real inner product space, by translating the fourth point to the origin; instantiated concretely in EuclideanSpace ℝ (Fin 3)."
+      "endLine": 145,
+      "summary": "dist(a,c)·dist(b,d) ≤ dist(a,b)·dist(c,d) + dist(b,c)·dist(a,d) in any NormedAddTorsor over a real inner product space, by translating the fourth point d to the origin (x = a−ᵥd etc.) and applying ptolemy_origin."
+    },
+    {
+      "id": "ptolemy-3d-witness",
+      "title": "A three-dimensional witness",
+      "startLine": 147,
+      "endLine": 153,
+      "summary": "Concrete instantiation of ptolemy_dist in EuclideanSpace ℝ (Fin 3): a one-line application showing the dimension-free proof reaches a configuration the gallery's planar complex-number proof cannot address."
     }
   ],
   "leanFile": {
