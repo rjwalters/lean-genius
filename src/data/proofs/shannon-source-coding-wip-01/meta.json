@@ -131,6 +131,16 @@
       "targetId": "shannon-entropy",
       "relationship": "complements",
       "description": "ShannonEntropy proves subadditivity H(X,Y) ≤ H(X)+H(Y); this file proves the equality case for independent (product) distributions"
+    },
+    {
+      "targetId": "shannon-source-coding-wip-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Follow-up entry: iterates this file's pairwise additivity along the tuple recursion Fin.consEquiv to the n-fold i.i.d. product, proving H(p^⊗n) = n·H(p) — discharges this entry's first open question"
+    },
+    {
+      "targetId": "shannon-source-coding-wip-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Follow-up entry: proves the converse — additivity H(pXY) = H(pX)+H(pY) forces pXY to be the product distribution pX ⊗ pY — discharges this entry's second open question"
     }
   ],
   "mainTheorems": [
