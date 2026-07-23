@@ -103,11 +103,18 @@
       "summary": "Proves gcd(v, n) = ∑_{d∣n} (if d∣v then φ(d) else 0). The divisors of gcd(v, n) are exactly the common divisors of v and n, so Gauss's identity ∑_{e∣g} φ(e) = g rewrites the gcd as a divisor-filtered totient sum."
     },
     {
-      "id": "fibre-count",
-      "title": "The Reduction-to-1 Criterion and the Fibre Count",
+      "id": "reduction-criterion",
+      "title": "The Reduction-to-1 Criterion",
       "startLine": 75,
+      "endLine": 84,
+      "summary": "dvd_val_sub_one_iff: d ∣ (a − 1).val ⟺ unitsMap(a) = 1, via the castHom ring map, identifying the counted residues with the kernel of the reduction homomorphism."
+    },
+    {
+      "id": "fibre-count",
+      "title": "The Fibre Count",
+      "startLine": 86,
       "endLine": 120,
-      "summary": "Shows d ∣ (a − 1).val ⟺ unitsMap(a) = 1 (via the castHom ring map), identifying the counted residues with the kernel of the reduction homomorphism. Surjectivity of unitsMap plus Lagrange and the first isomorphism theorem give φ(d)·#{fibre} = φ(n)."
+      "summary": "totient_mul_fiber_card: the fibre (kernel) has size φ(n)/φ(d), i.e. #{fibre}·φ(d) = φ(n), from surjectivity of unitsMap plus Lagrange's theorem and the first isomorphism theorem."
     },
     {
       "id": "menon",
