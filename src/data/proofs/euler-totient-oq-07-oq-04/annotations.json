@@ -2,7 +2,7 @@
   {
     "id": "ann-two-dvd-totient-of-ne-one-two",
     "proofId": "euler-totient-oq-07-oq-04",
-    "range": { "startLine": 51, "endLine": 63 },
+    "range": { "startLine": 53, "endLine": 63 },
     "type": "theorem",
     "title": "The Parity Engine: a ∉ {1,2} ⟹ 2 ∣ φ a",
     "content": "Packages the totient's parity into a single divisibility usable element-by-element. The proof cases on `a`: if `a = 0` then `φ 0 = 0` is divisible by 2 (`simp`); otherwise `a` is positive and, being ≠ 1 and ≠ 2, satisfies `2 < a` (by `omega`), so `Nat.totient_even` makes `φ a` even and `Even.two_dvd` extracts the factor. The naturals with an odd totient are exactly {1, 2}.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-worked-examples",
     "proofId": "euler-totient-oq-07-oq-04",
-    "range": { "startLine": 121, "endLine": 133 },
+    "range": { "startLine": 123, "endLine": 133 },
     "type": "concept",
     "title": "Worked Fin 3 Families",
     "content": "Three concrete witnesses over Fin 3: the family ![100, 2, 999] is setwise coprime because a₁ = 2 gives φ = 1; the family ![3, 4, 9] is not setwise coprime (all arguments ≥ 3) via `gcd_totient_family_ne_one_of_forall`; and its setwise gcd is exactly gcd(φ3, φ4, φ9) = gcd(2, 2, 6) = 2 by kernel `decide`.",

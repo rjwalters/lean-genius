@@ -112,21 +112,28 @@
       "id": "header-overview",
       "title": "Module Overview, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 54,
+      "endLine": 51,
       "summary": "Module docstring framing the goal — lift the pairwise totient-coprimality criterion to a finite family — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Algebra.GCDMonoid.Finset`, `Mathlib.Tactic`), the contents list, the `EulerTotientOQ07OQ04` namespace, `open Nat` (so `φ` is `Nat.totient`), and the `{ι : Type*}` index variable."
     },
     {
       "id": "parity-engine",
-      "title": "The Parity Engine and the Shared Family Factor",
-      "startLine": 55,
-      "endLine": 78,
-      "summary": "`two_dvd_totient_of_ne_one_two` (a ∉ {1,2} ⟹ 2 ∣ φ a, by casing a = 0 vs a ≥ 3 and `Nat.totient_even`) and `two_dvd_gcd_totient_family` (every argument outside {1,2} ⟹ 2 ∣ s.gcd of the totients, via `Finset.dvd_gcd`)."
+      "title": "The Parity Engine",
+      "startLine": 53,
+      "endLine": 60,
+      "summary": "`two_dvd_totient_of_ne_one_two`: a ∉ {1,2} ⟹ 2 ∣ φ a, by casing a = 0 (φ 0 = 0 is even) vs a ≥ 3 (`Nat.totient_even`)."
+    },
+    {
+      "id": "family-shared-factor",
+      "title": "The Shared Factor of a Totient Family",
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "`two_dvd_gcd_totient_family`: if every argument avoids {1,2}, the totients all share the factor 2, so 2 divides their setwise gcd, via `Finset.dvd_gcd` lifting the pointwise divisibility."
     },
     {
       "id": "headline-criterion",
       "title": "The Finite-Family Coprimality Criterion",
-      "startLine": 79,
-      "endLine": 105,
+      "startLine": 73,
+      "endLine": 104,
       "summary": "`gcd_totient_family_eq_one_iff` — the headline biconditional s.gcd (fun i ↦ φ (a i)) = 1 ↔ ∃ i ∈ s, a i = 1 ∨ a i = 2 (forward: contrapositive via the shared factor 2; reverse: `Finset.gcd_dvd` plus `Nat.dvd_one`) — and `gcd_totient_family_ne_one_of_forall`, its contrapositive stated directly."
     },
     {
