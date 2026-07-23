@@ -37,7 +37,8 @@
       "**The recurrence ratio is a partial fraction.** The step r n = (4n+2)/(n+2) equals 4 − 6/(n+2). This single identity encodes the entire asymptotics: the constant 4 is the limiting ratio, and the −6/(n+2) tail explains both why r n < 4 always and why r is strictly increasing toward 4.",
       "**The ratio limit is the discrete shadow of exponential growth rate 4.** catalan(n+1)/catalan(n) → 4 is the elementary, recurrence-level counterpart of the Stirling asymptotic catalan n ∼ 4^n / (n^{3/2}√π) — proved here directly from the integer recurrence, with no analytic estimate of binomial coefficients.",
       "**Growth bounds fall out without Stirling.** Because (4n+2) < 4(n+2), the recurrence gives catalan(n+1) < 4·catalan(n) by a single cancellation, and induction yields the clean bound catalan(n) ≤ 4^n (strict for n ≥ 1) — the standard upper bound, obtained purely from the recurrence.",
-      "**Mathlib has no `catalan_pos`.** Positivity of the Catalan numbers, needed to cancel catalan n in the growth step, is supplied here from `(n+1)·catalan n = C(2n,n) > 0`."
+      "**Mathlib has no `catalan_pos`.** Positivity of the Catalan numbers, needed to cancel catalan n in the growth step, is supplied here from `(n+1)·catalan n = C(2n,n) > 0`.",
+      "**Constant-minus-decreasing-tail is a reusable monotonicity template.** Because r n = 4 − 6/(n+2) writes r as a constant minus a strictly decreasing tail 6/(n+2), strict monotonicity of r follows immediately from strict monotonicity of the tail (via `strictMono_nat_of_lt_succ` and `div_lt_div_iff₀`) — the same principle applies to any sequence of the form 'constant minus a vanishing decreasing term' converging monotonically to that constant."
     ],
     "prerequisites": [
       "Catalan numbers and the central binomial recurrence",
@@ -54,6 +55,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module docstring and setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the follow-up question — reading the parent's two-term Catalan recurrence as a ratio r n = (4n+2)/(n+2) — previews the partial-fraction identity r n = 4 − 6/(n+2) and the resulting monotonicity/limit/growth-bound theorems, then imports Mathlib and opens the namespace.",
+      "mathContext": "$r(n) = \\dfrac{4n+2}{n+2} = 4 - \\dfrac{6}{n+2}$, the exact multiplicative step of $(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$."
+    },
     {
       "id": "recurrence-self-contained",
       "title": "The two-term Catalan recurrence (re-derived, self-contained)",
