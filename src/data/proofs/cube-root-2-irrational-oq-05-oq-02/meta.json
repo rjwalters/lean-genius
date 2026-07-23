@@ -73,7 +73,8 @@
       "**A rational exponent is still a unit-fraction problem.** Real.rpow_mul collapses p^(a/b) to (p^a)^(1/b), so the only new ingredient over the parent is deciding when the integer p^a is a perfect b-th power.",
       "**Valuation makes the perfect-power test trivial.** Reading p^a = k^b at the prime p gives a = b · v_p(k) directly; coprimality of a and b (the defining property of a reduced fraction) then forbids b ∣ a for b ≥ 2.",
       "**Cubing linearizes a sum of cube roots.** (∛2+∛3)³ expands so that the only surviving radical is the single cross term ∛2·∛3 = ∛6; the sum's rationality is thus equivalent to ∛6's, which is already settled.",
-      "**Composite radicand handled for free.** ∛6 — not reachable by the prime corollary — is exactly the obstruction that powers the ∛2 + ∛3 argument, tying the two parts together."
+      "**Composite radicand handled for free.** ∛6 — not reachable by the prime corollary — is exactly the obstruction that powers the ∛2 + ∛3 argument, tying the two parts together.",
+      "**The exponent's size never enters the argument, only its denominator.** The two worked instances 2^(2/3) (exponent below 1) and 3^(3/2) (exponent above 1) both discharge through the identical lemma, because irrationality hinges solely on q.den ≥ 2 — equivalently q ∉ ℤ — never on whether q is less than or greater than 1."
     ],
     "prerequisites": [
       "The sibling rationality criterion m^(1/n) ∈ ℚ ⟺ m is a perfect n-th power (cube-root-2-irrational-oq-05-oq-01)",
@@ -100,12 +101,20 @@
       "mathContext": "$p^a = k^b \\implies a = b\\,v_p(k) \\implies b \\mid a$."
     },
     {
-      "id": "rational-exponent",
+      "id": "rational-exponent-theorem",
       "title": "Prime to a Non-Integer Rational Power",
       "startLine": 60,
-      "endLine": 103,
-      "summary": "irrational_prime_rpow: for prime p and rational q with q.den ≥ 2, p^q is irrational. Rewrites p^q = (p^a)^(1/b) via Real.rpow_mul, applies the sibling criterion, and uses coprimality of a = q.num.natAbs and b = q.den to rule out b ∣ a. Instances 2^(2/3), 3^(3/2).",
+      "endLine": 93,
+      "summary": "irrational_prime_rpow: for prime p and rational q with q.den ≥ 2, p^q is irrational. Rewrites p^q = (p^a)^(1/b) via Real.rpow_mul, applies the sibling criterion, and uses coprimality of a = q.num.natAbs and b = q.den to rule out b ∣ a.",
       "mathContext": "$p^{a/b} = (p^a)^{1/b} \\notin \\mathbb{Q}$ when $\\gcd(a,b)=1,\\ b \\ge 2$."
+    },
+    {
+      "id": "rational-exponent-instances",
+      "title": "Worked Instances: 2^(2/3) and 3^(3/2)",
+      "startLine": 95,
+      "endLine": 103,
+      "summary": "irrational_two_rpow_two_thirds and irrational_three_rpow_three_halves instantiate the main theorem at exponents below and above 1 respectively, discharging the prime/positivity/denominator side conditions by norm_num — evidence that irrationality depends only on the exponent's denominator, not its size.",
+      "mathContext": "$2^{2/3},\\ 3^{3/2} \\notin \\mathbb{Q}$."
     },
     {
       "id": "sum-of-cube-roots",
