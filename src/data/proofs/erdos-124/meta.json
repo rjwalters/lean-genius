@@ -2,7 +2,7 @@
   "id": "erdos-124",
   "title": "Erdős Problem #124: Complete Sequences from Digit-Restricted Sums",
   "slug": "erdos-124",
-  "description": "For bases 3 ≤ d₁ < ... < dᵣ with Σ1/(dᵢ-1) ≥ 1, can all large integers be written as Σcᵢaᵢ with cᵢ ∈ {0,1} and aᵢ having only digits {0,1} in base dᵢ? Q1 PROVED. Q2 open (proved for {3,4,7}).",
+  "description": "For bases 3 ≤ d₁ < ... < dᵣ with Σ1/(dᵢ-1) ≥ 1, can all large integers be written as Σcᵢaᵢ with cᵢ ∈ {0,1} and aᵢ having only digits {0,1} in base dᵢ? Only the definitional infrastructure is formalized in Lean; Q1, Q2, and the {3,4,7} case are documented in comments only, not proved or axiomatized.",
   "meta": {
     "author": "Burr, Erdős, Graham, Li",
     "sourceUrl": "https://erdosproblems.com/124",
@@ -26,26 +26,16 @@
         "theorem": "Nat.digits",
         "description": "Base-d digit decomposition of natural numbers",
         "module": "Mathlib.Data.Nat.Digits"
-      },
-      {
-        "theorem": "Finset.gcd",
-        "description": "GCD over a finset for the coprimality condition",
-        "module": "Mathlib.Data.Nat.GCD.Basic"
-      },
-      {
-        "theorem": "Filter.atTop",
-        "description": "'For all sufficiently large' quantifier",
-        "module": "Mathlib.Order.Filter.Basic"
       }
     ],
     "axiomCount": 0,
     "lineCount": 78,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "0 axioms, 0 sorries, 0 theorems. Only definitional infrastructure (digit restriction, reciprocal condition, representability predicates) is formalized; Pomerance's necessity, Q1, Q2, and the {3,4,7} case are described in comments only — no axiom or theorem declares any of them.",
     "originalContributions": [
-      "Full formalization of Erdős Problem 124 with precise Lean 4 type signatures for both questions",
+      "Definitional infrastructure for Erdős Problem 124 with precise Lean 4 type signatures for both questions (statements themselves are not formalized as axioms or theorems)",
       "Definitions of digit-restricted sets P(d,k) and binaryDigitsInBase using Mathlib's Nat.digits",
-      "Separation of the reciprocal condition and GCD coprimality as independent Lean predicates",
-      "Concrete {3,4,7} verification axiomatized with Matrix.vecCons notation"
+      "Separation of the reciprocal condition and base-validity as independent Lean predicates (reciprocalCondition, validBases)",
+      "Pomerance's necessity, Q1, Q2, and the {3,4,7} case were axiomatized in an earlier version of this file; those axiom declarations were later stripped to plain comments by a migration commit and never restored"
     ],
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
@@ -54,8 +44,8 @@
   "overview": {
     "historicalContext": "Burr, Erdős, Graham, and Li (1996) [BEGL96] studied when digit-restricted numbers in multiple bases form complete sequences — i.e., represent all sufficiently large integers. A number has 'binary digits in base d' if all its base-d digits are 0 or 1, making it a sum of distinct powers of d. The key threshold is the reciprocal condition Σ1/(d_i - 1) ≥ 1. Pomerance proved this condition is NECESSARY: below the threshold, infinitely many integers are unrepresentable. The sufficiency (Q1) was proved via Alexeev's method and formalized in Lean. The stronger Q2 — using digits only from position k onward, with a coprimality condition — remains open, though verified for bases {3, 4, 7} where Σ1/(d_i - 1) = 1/2 + 1/3 + 1/6 = 1 exactly.",
     "problemStatement": "For integers 3 ≤ d₁ < ... < dᵣ with Σ 1/(dᵢ-1) ≥ 1, can all sufficiently large integers be represented as Σ cᵢaᵢ where cᵢ ∈ {0,1} and aᵢ uses only digits {0,1} in base dᵢ?",
-    "text": "This formalization states both questions of Erdős Problem 124 in Lean 4 with 0 axiom declarations and 0 sorries. It defines digit-restricted sets $P(d,k)$ — natural numbers whose base-$d$ digits from position $k$ onward are only 0 or 1 — using Mathlib's `Nat.digits`, and the critical reciprocal threshold $\\sum 1/(d_i - 1) \\geq 1$ over $\\mathbb{Q}$. The key results captured: Pomerance's necessity theorem (below the threshold, infinitely many integers are unrepresentable), the proved Q1 (the threshold is also sufficient at level 0), the open Q2 (with coprimality, level-$k$ representability for all $k \\geq 1$), and the verified case $\\{3,4,7\\}$ where $1/2 + 1/3 + 1/6 = 1$ exactly.",
-    "proofStrategy": "The formalization takes a definitional approach, building up the problem's structure in three layers:\n\n1. **Digit restriction layer**: `digitRestricted d k` defines $P(d,k)$ via `Nat.digits d n` and membership in $\\{0,1\\}$; `binaryDigitsInBase d` specializes to $k=0$ checking all digits.\n\n2. **Condition layer**: `reciprocalCondition r d` computes $\\sum_{i=1}^{r} 1/(d_i - 1)$ over $\\mathbb{Q}$ for exact arithmetic; `validBases r d` ensures $3 \\leq d_i$ with `StrictMono d`.\n\n3. **Representation layer**: `IsRepresentable` and `IsRepresentableFromLevel` express $n = \\sum c_i a_i$ with $c_i \\in \\{0,1\\}$ and $a_i$ in the appropriate digit-restricted set, using `Finset.univ.sum`.\n\nAll four main results are axiomatized because the proofs (especially Alexeev's method for Q1) involve deep analytic number theory beyond current Lean formalization scope. The `Filter.atTop` quantifier expresses 'for all sufficiently large $n$'.",
+    "text": "This formalization provides the definitional infrastructure for both questions of Erdős Problem 124 in Lean 4, with 0 axiom declarations, 0 theorems, and 0 sorries. It defines digit-restricted sets $P(d,k)$ — natural numbers whose base-$d$ digits from position $k$ onward are only 0 or 1 — using Mathlib's `Nat.digits`, and the critical reciprocal threshold $\\sum 1/(d_i - 1) \\geq 1$ over $\\mathbb{Q}$. Pomerance's necessity theorem, the proved Q1, the open Q2, and the verified case $\\{3,4,7\\}$ (where $1/2 + 1/3 + 1/6 = 1$ exactly) are described in comments for context only — none is captured as a Lean axiom or theorem. An earlier version of this file stated all four as axioms; a later migration commit stripped those declarations to plain comments and the narrative was never updated to match.",
+    "proofStrategy": "The formalization takes a definitional approach, building up the problem's structure in three layers:\n\n1. **Digit restriction layer**: `digitRestricted d k` defines $P(d,k)$ via `Nat.digits d n` and membership in $\\{0,1\\}$; `binaryDigitsInBase d` specializes to $k=0$ checking all digits.\n\n2. **Condition layer**: `reciprocalCondition r d` computes $\\sum_{i=1}^{r} 1/(d_i - 1)$ over $\\mathbb{Q}$ for exact arithmetic; `validBases r d` ensures $3 \\leq d_i$ with `StrictMono d`.\n\n3. **Representation layer**: `IsRepresentable` and `IsRepresentableFromLevel` express $n = \\sum c_i a_i$ with $c_i \\in \\{0,1\\}$ and $a_i$ in the appropriate digit-restricted set, using `Finset.univ.sum`.\n\nAll four main results (Pomerance's necessity, Q1, Q2, and the {3,4,7} verification) are stated only in comments in the current file — no axiom or theorem declares them. They were axiomatized in an earlier version of this file (using the `Filter.atTop` quantifier for 'for all sufficiently large $n$'), but a later mechanical migration commit stripped the `axiom` declarations down to plain doc comments without updating this narrative, and the axioms were never reinstated. The underlying proofs (especially Alexeev's method for Q1) would in any case involve deep analytic number theory beyond current Lean formalization scope.",
     "keyInsights": [
       "The reciprocal condition Σ1/(d_i-1) ≥ 1 is a sharp threshold: necessary (Pomerance) and sufficient (Q1 proved) for completeness at level 0",
       "Numbers with digits {0,1} in base d are exactly sums of distinct powers of d — these are the 'base-d binary numbers,' forming a lacunary set with density ~1/(d-1)",
@@ -107,7 +97,7 @@
       "title": "Pomerance's Necessity",
       "startLine": 65,
       "endLine": 73,
-      "summary": "Axiomatizes Pomerance's result: if eventually all integers are representable, then reciprocalCondition must hold. This gives the lower bound on the threshold.",
+      "summary": "States Pomerance's result in a comment only — not as a Lean axiom or theorem: if eventually all integers are representable, then reciprocalCondition must hold. An axiom for this existed in an earlier version of the file but was stripped to a plain comment by a later migration commit and never restored.",
       "mathContext": "Pomerance: $\\left(\\forall^\\infty n,\\; \\text{IsRepresentable}(n)\\right) \\Rightarrow \\sum 1/(d_i - 1) \\geq 1$. The contrapositive: if $\\sum 1/(d_i - 1) < 1$, then the set of unrepresentable integers is infinite. Combined with Q1, the reciprocal condition is a sharp threshold."
     },
     {
@@ -115,12 +105,12 @@
       "title": "Main Results: Q1 (Proved) and Q2 (Open)",
       "startLine": 74,
       "endLine": 79,
-      "summary": "Q1 (PROVED): reciprocalCondition + validBases implies eventual representability at level 0. Q2 (OPEN): with gcd = 1, eventual representability at any level k ≥ 1. Case {3,4,7} verified for Q2 using Matrix.vecCons notation ![3,4,7].",
-      "mathContext": "Q1: $\\sum 1/(d_i-1) \\geq 1 \\wedge \\text{validBases} \\Rightarrow \\forall^\\infty n,\\; \\text{IsRepresentable}(n)$. Q2: additionally requiring $\\gcd(d_1, \\ldots, d_r) = 1$ and replacing level 0 with level $k \\geq 1$. The {3,4,7} case uses $1/2 + 1/3 + 1/6 = 1$ (an Egyptian fraction decomposition) and $\\gcd(3,4,7) = 1$."
+      "summary": "Documents Q1, Q2, and the {3,4,7} case in comments only — none is declared as a Lean axiom or theorem in the current file. An earlier version of the file axiomatized all three; a later migration commit removed those `axiom` declarations without updating this section.",
+      "mathContext": "Q1 (as previously axiomatized, math statement only): $\\sum 1/(d_i-1) \\geq 1 \\wedge \\text{validBases} \\Rightarrow \\forall^\\infty n,\\; \\text{IsRepresentable}(n)$. Q2: additionally requiring $\\gcd(d_1, \\ldots, d_r) = 1$ and replacing level 0 with level $k \\geq 1$. The {3,4,7} case uses $1/2 + 1/3 + 1/6 = 1$ (an Egyptian fraction decomposition) and $\\gcd(3,4,7) = 1$."
     }
   ],
   "conclusion": {
-    "summary": "Question 1 of Erdős Problem 124 is PROVED: the reciprocal condition Σ1/(d_i-1) ≥ 1 is both necessary (Pomerance) and sufficient for completeness. Question 2 (higher-level digits with coprimality) remains open in general, though verified for {3,4,7}. The formalization uses 0 sorries.",
+    "summary": "This file formalizes only the definitional infrastructure for Erdős Problem 124 — digit-restricted sets, the reciprocal-condition threshold, and representability predicates — with 0 axioms, 0 theorems, and 0 sorries. In the mathematical literature, Question 1 is proved (Pomerance's necessity plus Alexeev's sufficiency argument) and Question 2 is verified for {3,4,7}, but neither result is formalized in this Lean file: both were axiomatized in an earlier version, and those axiom declarations were later stripped to plain comments without being reinstated.",
     "implications": "**Sharp threshold phenomena**: The reciprocal condition $\\sum 1/(d_i - 1) \\geq 1$ is a rare instance of a sharp density threshold in additive combinatorics — Pomerance's necessity and Q1's sufficiency together give an exact characterization, analogous to the Schnirelmann density threshold for additive bases.\n\n**Connection to complete sequences**: This problem belongs to a family of Erdős problems on complete sequences (see #123, #345, #346, #347, #348) — sequences whose subset sums eventually cover all sufficiently large integers. The digit-restricted formulation adds a number-theoretic flavor: membership in $P(d,0)$ depends on the base-$d$ representation, connecting additive combinatorics to digit theory.\n\n**Egyptian fraction structure**: The threshold condition naturally produces Egyptian fraction decompositions of 1 (e.g., $1/2 + 1/3 + 1/6 = 1$ for {3,4,7}). The structure of such decompositions — including the Erdős-Straus conjecture on $4/n$ — connects this problem to the broader theory of unit fractions (see Problem #283).\n\n**Level-k stability**: Q2's assertion that removing finitely many small powers doesn't break completeness is a stability result — it says the representation property is driven by the asymptotic density of digit-restricted numbers, not by their fine arithmetic structure at small scales.",
     "openQuestions": [
       "Does Q2 hold for all valid base sets with gcd 1, or are there counterexamples at high levels k?",
