@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: A Structural Characterization of Form A Primes",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States the research problem — Erdős #1065 asks whether infinitely many primes p = 2^k·q+1 with q prime (\"Form A\" primes) exist; the parent axiomatizes infinitude and checks examples by hand. This file supplies the missing structural criterion those checks were probing: writing p−1 = 2^a·m with m odd, an odd prime p is Form A iff m = 1 (p is Fermat-type, q = 2) or m is prime (q = m); m odd composite means p is not Form A. Fully elementary, 0 axioms and 0 sorries, with a locally redefined Form A predicate so it stays independent of the parent's conjecture axiom.",
+      "mathContext": "Writing $p-1=2^a m$ with $m$ odd: $p$ is Form A $\\iff m=1 \\text{ or } m \\text{ prime}$."
+    },
+    {
       "id": "core",
       "title": "Definitions and the Odd-Part Computation",
       "startLine": 53,
