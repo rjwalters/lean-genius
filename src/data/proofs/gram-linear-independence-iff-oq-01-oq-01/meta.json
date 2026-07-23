@@ -103,6 +103,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-gram-linear-independence-iff-oq-01-oq-01",
+      "title": "Problem Statement: Hadamard's Determinant Inequality for Gram Matrices",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating the two headline results: Hadamard's inequality $\\det(\\mathrm{gram}_{\\Bbbk} v) \\le \\prod_i \\|v_i\\|^2$ for a spanning family in a finite-dimensional inner product space, and its equality case — for a linearly independent family, equality holds iff the vectors are pairwise orthogonal. Describes the proof route through Mathlib's Gram–Schmidt orthonormal basis, the factorization $\\mathrm{gram} = B^H B$ with $B$ upper triangular, and Bessel's identity bounding each diagonal entry. Notes Hadamard's inequality is absent from Mathlib and this extends the sibling entry `gram-linear-independence-iff-oq-01`.",
+      "mathContext": "$\\det(\\mathrm{gram}_{\\Bbbk} v) \\le \\prod_i \\|v_i\\|^2$ (Hadamard), with equality for linearly independent $v$ iff pairwise orthogonal; via Gram–Schmidt $\\mathrm{gram}=B^HB$, $B$ triangular."
+    },
+    {
       "id": "coordinate-matrix",
       "title": "The Coordinate Matrix and the Factorisation gram = BᴴB",
       "startLine": 51,
