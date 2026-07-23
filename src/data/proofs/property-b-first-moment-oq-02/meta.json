@@ -93,12 +93,20 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Edges of K_n, Edge Bundles, Monochromatic Cliques",
+      "id": "header",
+      "title": "Module Docstring and Imports",
       "startLine": 1,
+      "endLine": 40,
+      "mathContext": "$\\binom{n}{k}\\cdot 2^{1-\\binom{k}{2}} < 1 \\iff \\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}}$",
+      "summary": "Frames the Ramsey lower bound as a literal instance of the Property B first-moment template: the edges of K_n are the '2-colored vertices' and each k-clique contributes a C(k,2)-edge hyperedge. Imports Mathlib and the parent PropertyBFirstMoment file, opens Finset/BigOperators and the parent's ProbMethod.PropertyB namespace."
+    },
+    {
+      "id": "definitions",
+      "title": "Edge Bundles and Monochromatic Cliques",
+      "startLine": 41,
       "endLine": 62,
       "mathContext": "$\\text{Edge}(P) := \\{e : \\text{Finset } P \\mid |e| = 2\\}, \\quad \\text{edgesWithin}(S) := \\{e \\mid e \\subseteq S\\}$",
-      "summary": "Module docstring framing the result as an instance of the Property B template. Edge P models the edges of K_n as the 2-element subsets; edgesWithin S is the bundle of edges inside a vertex set S; MonoClique S c := Mono (edgesWithin S) c reuses the parent's monochromaticity predicate on the derived vertex set Edge P, with a Decidable instance for use in Finset.filter."
+      "summary": "Edge P models the edges of K_n as the 2-element subsets; edgesWithin S is the bundle of edges inside a vertex set S; MonoClique S c := Mono (edgesWithin S) c reuses the parent's monochromaticity predicate on the derived vertex set Edge P, with a Decidable instance for use in Finset.filter."
     },
     {
       "id": "clique-edge-count",
@@ -112,9 +120,17 @@
       "id": "ramsey-bound",
       "title": "The Ramsey Lower Bound (Same Template as Property B)",
       "startLine": 92,
+      "endLine": 153,
+      "mathContext": "$\\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}} \\;\\Rightarrow\\; \\exists c,\\ \\forall S \\in \\text{powersetCard } k,\\ \\neg\\,\\text{MonoClique}(S,c)$",
+      "summary": "ramsey_lower_bound: after dispatching the no-clique case vacuously, the per-clique count is the parent's card_mono on the C(k,2)-edge bundle (nonempty since k ≥ 2). The incidence total ∑_c #(mono cliques) = C(n,k)·2·2^(N−C(k,2)) by card_filter + sum_comm; the threshold reduces to C(n,k)·2 < 2^(C(k,2)) using 2^N = 2^(C(k,2))·2^(N−C(k,2)) with C(k,2) ≤ N from edgesWithin S ⊆ univ; exists_zero_of_sum_lt_card then yields a coloring with no monochromatic clique."
+    },
+    {
+      "id": "ramsey-coloring-corollary",
+      "title": "Corollary: R(k,k) > n as a Ramsey Witness",
+      "startLine": 155,
       "endLine": 169,
-      "mathContext": "$\\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}} \\;\\Rightarrow\\; \\exists c,\\ \\forall S,\\ |S|=k \\Rightarrow \\neg\\,\\text{MonoClique}(S,c)$",
-      "summary": "ramsey_lower_bound: after dispatching the no-clique case vacuously, the per-clique count is the parent's card_mono on the C(k,2)-edge bundle (nonempty since k ≥ 2). The incidence total ∑_c #(mono cliques) = C(n,k)·2·2^(N−C(k,2)) by card_filter + sum_comm; the threshold reduces to C(n,k)·2 < 2^(C(k,2)) using 2^N = 2^(C(k,2))·2^(N−C(k,2)) with C(k,2) ≤ N from edgesWithin S ⊆ univ; exists_zero_of_sum_lt_card then yields a coloring with no monochromatic clique. exists_ramsey_coloring restates it as a Ramsey witness over all k-subsets."
+      "mathContext": "$\\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}} \\;\\Rightarrow\\; \\exists c,\\ \\forall S,\\ |S| = k \\Rightarrow \\neg\\,\\text{MonoClique}(S,c)$",
+      "summary": "exists_ramsey_coloring restates ramsey_lower_bound as a Ramsey witness quantified over all k-element subsets of P directly, rather than over the powersetCard k univ Finset, giving the R(k,k) > n reading."
     }
   ],
   "conclusion": {
