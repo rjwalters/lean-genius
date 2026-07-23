@@ -56,7 +56,7 @@
       "title": "Even Cycles and Colorings",
       "startLine": 24,
       "endLine": 35,
-      "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c, 1 sorry for symmetry)."
+      "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c); the symm/loopless obligations are fully discharged, no sorries."
     },
     {
       "id": "section-36",
@@ -70,14 +70,14 @@
       "title": "Ramsey Number Definition",
       "startLine": 48,
       "endLine": 57,
-      "summary": "Defines ramseyEvenCycle n k = R(C_{2n}; k) via Nat.find with a trivial existence witness."
+      "summary": "Defines ramseyEvenCycle n k = R(C_{2n}; k) as sInf of the set of thresholds forcing a monochromatic even cycle."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdos General Bounds",
       "startLine": 58,
       "endLine": 71,
-      "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
+      "summary": "Not formalized: comments only (no axiom declarations) noting the target lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
     }
   ],
   "conclusion": {
