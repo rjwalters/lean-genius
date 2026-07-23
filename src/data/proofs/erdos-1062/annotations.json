@@ -147,7 +147,7 @@
       "endLine": 76
     },
     "title": "Existence of Limiting Density",
-    "content": "Axiomatizes that $\\lim_{n \\to \\infty} f(n)/n$ exists and lies in $[0.6725, 0.6736]$. The existence follows from subadditivity-type arguments for the extremal function, analogous to how densities of other restricted sets are shown to exist via Fekete's lemma.",
+    "content": "Documents in a docstring (not formalized as an axiom or theorem) that $\\lim_{n \\to \\infty} f(n)/n$ exists and lies in $[0.6725, 0.6736]$. The existence follows from subadditivity-type arguments for the extremal function, analogous to how densities of other restricted sets are shown to exist via Fekete's lemma.",
     "mathContext": "$$\\exists\\, \\lambda \\in [0.6725, 0.6736] : \\lim_{n \\to \\infty} \\frac{f(n)}{n} = \\lambda$$\nThe limit exists by Fekete's lemma applied to a suitable superadditive reformulation of $f(n)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -217,7 +217,7 @@
       "endLine": 97
     },
     "title": "Primitive Implies NDTO",
-    "content": "Proves that every primitive set is NDTO: if no element divides any other, then certainly no element divides two others. This is the only fully proved (non-axiomatized) result in the file, demonstrating the logical relationship between the two conditions via a direct proof by contradiction.",
+    "content": "Proves that every primitive set is NDTO: if no element divides any other, then certainly no element divides two others. This is one of nine fully proved theorems in the file (alongside the lower-bound construction, the strict-separation example, and several structural properties of NDTO), demonstrating the logical relationship between the two conditions via a direct proof by contradiction.",
     "mathContext": "$$\\text{IsPrimitive}(A) \\implies \\text{NDTO}(A)$$\nProof: if $a \\mid b$ and $a \\mid c$ with $a, b, c$ distinct, then $a \\mid b$ with $a \\neq b$ contradicts primitivity.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -239,7 +239,7 @@
       "endLine": 104
     },
     "title": "NDTO Is Strictly Weaker: The {2, 6, 9} Example",
-    "content": "Axiomatizes the separation: $\\{2, 6, 9\\}$ satisfies NDTO (2 divides only 6, not 9; 6 and 9 divide nothing else) but is not primitive (since $2 \\mid 6$). This concrete counterexample shows the implication Primitive $\\implies$ NDTO is strict, justifying why NDTO allows much larger sets.",
+    "content": "Proves the separation: $\\{2, 6, 9\\}$ satisfies NDTO (2 divides only 6, not 9; 6 and 9 divide nothing else) but is not primitive (since $2 \\mid 6$). This concrete counterexample shows the implication Primitive $\\implies$ NDTO is strict, justifying why NDTO allows much larger sets.",
     "mathContext": "In $\\{2, 6, 9\\}$: the divisibility graph has one edge $2 \\to 6$. Since $\\deg^+(2) = 1 \\leq 1$, NDTO holds. But $2 \\mid 6$ violates primitivity. Max degree $\\leq 1$ (NDTO) vs max degree $= 0$ (primitive) captures the difference.",
     "significance": "supporting",
     "relatedConcepts": [
