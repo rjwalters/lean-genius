@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Triangle inequality as a corollary of the law of cosines",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Derives the triangle inequality $c\\le a+b$ directly from the law of cosines using only $\\cos C \\ge -1$, in both scalar and coordinate-free inner-product-space form, with equality $c=a+b$ characterized exactly by $\\cos C=-1$ (the degenerate, collinear case).",
+      "mathContext": "$(a+b)^2-c^2 = 2ab(1+\\cos C) \\ge 0$."
+    },
+    {
       "id": "part1-sqrt-bridges",
       "title": "Part I: Monotonicity of Squaring",
       "startLine": 43,
