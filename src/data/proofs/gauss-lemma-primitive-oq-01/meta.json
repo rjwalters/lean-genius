@@ -103,7 +103,8 @@
       "**The irreducibility form is the working version.** Reduction mod p, Eisenstein's criterion, and the rational-root test all establish irreducibility over ℤ; Gauss's Lemma is precisely what upgrades that to irreducibility over ℚ, the field one usually cares about.",
       "**Monic ⟹ primitive makes the lemma hypothesis-free in practice.** Most irreducibility questions are about monic polynomials, and for those the primitivity condition is automatic — gauss_lemma_int_monic states exactly this clean form.",
       "**Primitivity is not decoration.** The polynomial 2X is reducible over ℤ (it is C 2 times X, neither a unit) but its image 2X is irreducible over ℚ (degree one over a field). This single witness shows the biconditional is false without the primitivity hypothesis — the content of primitivity_necessary.",
-      "**Degree is the only invariant needed for the ℚ-side.** Because ℤ ↪ ℚ is injective, the map preserves degree, so the irreducibility of the image reduces to a degree-one computation rather than any genuinely rational reasoning."
+      "**Degree is the only invariant needed for the ℚ-side.** Because ℤ ↪ ℚ is injective, the map preserves degree, so the irreducibility of the image reduces to a degree-one computation rather than any genuinely rational reasoning.",
+      "**The real gap between ℤ and ℚ is exactly which constants are units.** In ℤ only ±1 are units, so a constant factor like 2 is a genuine, non-removable obstruction to irreducibility; in ℚ every nonzero constant is a unit, so that same factor becomes invisible the moment the polynomial is mapped over. Primitivity — no common ℤ-constant factor to strip — is precisely the hypothesis that rules out this kind of obstruction vanishing under the map, which is why dropping it breaks the biconditional."
     ],
     "prerequisites": [
       "Polynomials over ℤ and ℚ",
@@ -144,12 +145,20 @@
       "mathContext": "$2X = (C\\,2)\\cdot X$ over $\\mathbb{Z}$: content $2$, both factors non-units."
     },
     {
-      "id": "counterexample-rat-capstone",
-      "title": "2X irreducible over ℚ, and why primitivity is essential",
+      "id": "counterexample-rat",
+      "title": "2X is irreducible over ℚ",
       "startLine": 77,
+      "endLine": 83,
+      "summary": "two_mul_X_irreducible_over_rat: over the field ℚ the image of 2X has degree one, hence is irreducible (irreducible_of_degree_eq_one, degree preserved by the injective cast, compute_degree!).",
+      "mathContext": "$\\deg_{\\mathbb{Q}}(2X) = 1 \\Rightarrow \\mathrm{Irreducible}(2X\\ \\text{over}\\ \\mathbb{Q}).$"
+    },
+    {
+      "id": "primitivity-necessary-capstone",
+      "title": "The capstone: why primitivity is essential",
+      "startLine": 85,
       "endLine": 95,
-      "summary": "two_mul_X_irreducible_over_rat: over the field ℚ the image of 2X has degree one, hence is irreducible (irreducible_of_degree_eq_one, degree preserved by the injective cast, compute_degree!). primitivity_necessary bundles the three 2X facts into an existential: there is a polynomial reducible over ℤ but irreducible over ℚ and non-primitive, so the primitivity hypothesis in gauss_lemma_int genuinely cannot be dropped.",
-      "mathContext": "$\\deg_{\\mathbb{Q}}(2X) = 1 \\Rightarrow \\mathrm{Irreducible}$; so $\\exists p,\\ \\neg\\mathrm{Irred}_{\\mathbb{Z}}(p) \\wedge \\mathrm{Irred}_{\\mathbb{Q}}(p) \\wedge \\neg\\, p\\ \\text{primitive}.$"
+      "summary": "primitivity_necessary bundles the three 2X facts (non-primitive, reducible over ℤ, irreducible over ℚ) into a single existential: there is a polynomial reducible over ℤ but irreducible over ℚ and non-primitive, so the primitivity hypothesis in gauss_lemma_int genuinely cannot be dropped.",
+      "mathContext": "$\\exists p,\\ \\neg\\mathrm{Irred}_{\\mathbb{Z}}(p) \\wedge \\mathrm{Irred}_{\\mathbb{Q}}(p) \\wedge \\neg\\, p\\ \\text{primitive}.$"
     }
   ],
   "conclusion": {
