@@ -139,25 +139,41 @@
       "id": "header",
       "title": "File Header and the Two Symmetries",
       "startLine": 1,
-      "endLine": 56,
-      "summary": "Module docstring explaining the OQ-02 symmetry program, the two actions on closed tours (the dihedral board group D₄ and time-reversal), the claim that they commute to give an order-16 D₄ × ℤ/2 action, and an honesty note distinguishing this assumption-free file from the native_decide / enumeration-axiom base lineage. Imports the reversal companion file.",
+      "endLine": 55,
+      "summary": "Module docstring explaining the OQ-02 symmetry program, the two actions on closed tours (the dihedral board group D₄ and time-reversal), the claim that they commute to give an order-16 D₄ × ℤ/2 action, and an honesty note distinguishing this assumption-free file from the native_decide / enumeration-axiom base lineage. Imports the reversal companion file and declares the namespace.",
       "mathContext": "$D_4$ permutes board squares; reversal permutes traversal order; the file shows they commute."
     },
     {
       "id": "commute",
       "title": "Reversal commutes with D₄",
-      "startLine": 58,
+      "startLine": 56,
       "endLine": 71,
       "summary": "reverseTour_applyD4Tour: via closedTour_eq_iff the goal reduces to (t.squares.map (applyD4 g)).reverse = (t.squares.reverse).map (applyD4 g), closed by List.map_reverse.",
       "mathContext": "$\\mathrm{reverse}(\\mathrm{map}\\,\\sigma_g\\,L) = \\mathrm{map}\\,\\sigma_g\\,(\\mathrm{reverse}\\,L)$."
     },
     {
-      "id": "inverse-injective",
-      "title": "Invertibility and faithfulness of the composite symmetries",
+      "id": "left-inverse",
+      "title": "The Composite Symmetry Has an Explicit Inverse",
       "startLine": 73,
+      "endLine": 78,
+      "summary": "d4_reverse_leftInverse builds the explicit inverse of t ↦ reverseTour (applyD4Tour g t): t ↦ reverseTour (applyD4Tour (d4Inv g) t), using the commutation lemma, reverseTour_involutive, and applyD4Tour_inv_left.",
+      "mathContext": "Composite symmetry $R \\circ \\sigma_g$ has left inverse $R \\circ \\sigma_{g^{-1}}$."
+    },
+    {
+      "id": "injective",
+      "title": "Faithfulness of the Composite Symmetry",
+      "startLine": 80,
+      "endLine": 87,
+      "summary": "d4_reverse_injective derives injectivity of t ↦ reverseTour (applyD4Tour g t) via Function.LeftInverse.injective, so reversal together with D₄ acts faithfully (order 16 = |D₄ × ℤ/2|).",
+      "mathContext": "A function with a left inverse is injective; here the action of $D_4 \\times \\mathbb{Z}/2$ on closed tours is faithful."
+    },
+    {
+      "id": "orbit",
+      "title": "Reversal Maps D₄-Orbits to D₄-Orbits",
+      "startLine": 89,
       "endLine": 96,
-      "summary": "d4_reverse_leftInverse builds the explicit inverse of t ↦ reverseTour (applyD4Tour g t) (commutation + reverseTour_involutive + applyD4Tour_inv_left); d4_reverse_injective derives injectivity via Function.LeftInverse.injective; reverseTour_applyD4Tour_orbit records the orbit-level commutation.",
-      "mathContext": "Composite symmetry $R \\circ \\sigma_g$ has inverse $R \\circ \\sigma_{g^{-1}}$, so the action of $D_4 \\times \\mathbb{Z}/2$ is faithful."
+      "summary": "reverseTour_applyD4Tour_orbit: reversal maps the D₄-orbit of t onto the D₄-orbit of reverseTour t, witnessed by the same group element g.",
+      "mathContext": "$\\exists h,\\ \\mathrm{reverseTour}(\\sigma_g(t)) = \\sigma_h(\\mathrm{reverseTour}(t))$."
     }
   ],
   "conclusion": {
