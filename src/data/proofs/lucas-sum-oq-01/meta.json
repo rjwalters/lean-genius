@@ -24,6 +24,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: The Lucas Telescoping Sum",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the goal — the Lucas analogue ∑_{k=1}^{n} L_k = L_{n+2} − 3 of the Fibonacci telescoping sum — and outlines the three results proved: the subtraction-free engine lucas_sum_add_three, the headline lucas_sum, and the Fibonacci bridge lucas_succ_eq_fib_add_fib. Imports Mathlib, opens namespace LucasSumOQ01 and Finset.",
+      "mathContext": "The 1-indexed sum $\\sum_{k=1}^{n} L_k$ is encoded as $\\sum_{k \\in \\mathrm{range}\\,n} \\mathrm{lucas}(k+1)$, so the summand runs over $L_1,\\dots,L_n$."
+    },
+    {
       "id": "lucas-def",
       "title": "Section I: The Lucas Numbers and Their Recurrence",
       "startLine": 45,
@@ -49,10 +57,10 @@
     },
     {
       "id": "fib-bridge",
-      "title": "Section IV: The Bridge to Nat.fib",
+      "title": "Section IV: The Bridge to Nat.fib and Sanity Checks",
       "startLine": 85,
-      "endLine": 106,
-      "summary": "lucas_succ_eq_fib_add_fib: L_{n+1} = F_n + F_{n+2}, pinning the local Lucas definition to Mathlib's standard Fibonacci-based one.",
+      "endLine": 114,
+      "summary": "lucas_succ_eq_fib_add_fib: L_{n+1} = F_n + F_{n+2}, pinning the local Lucas definition to Mathlib's standard Fibonacci-based one, followed by two kernel-`decide` sanity checks confirming the headline identity at n = 3 and n = 4.",
       "mathContext": "Two-step induction (Nat.twoStepInduction): both bases agree, and in the step every lucas is rewritten away so only aligned fib atoms remain, which omega closes using Nat.fib_add_two."
     }
   ],
