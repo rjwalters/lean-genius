@@ -138,6 +138,11 @@
       "targetId": "shannon-entropy",
       "relationship": "complements",
       "description": "ShannonEntropy proves subadditivity H(X,Y) ≤ H(X)+H(Y); this file gives the exact additivity for n independent copies of a single source"
+    },
+    {
+      "targetId": "shannon-source-coding-wip-01-oq-02",
+      "relationship": "complements",
+      "description": "Sibling entry proves the converse to the parent's additivity — H(pX ⊗ pY) = H(pX) + H(pY) holds only when p is a product distribution. This file iterates the parent's forward direction to the n-fold i.i.d. product; that one characterises exactly when additivity holds at all."
     }
   ],
   "mainTheorems": [
