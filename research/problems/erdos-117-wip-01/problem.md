@@ -123,3 +123,34 @@ created: 2026-07-09T17:33:20-07:00
 
 **Significance**: 6/10
 **Tractability**: 6/10
+
+## Adversarial Checklist (claim: h(3) = 3, exact and unconditional)
+
+Recorded 2026-07-23 for the SOLVED claim `abelianCoverNumber_three : abelianCoverNumber.{u} 3 = 3`
+in `Erdos117WIP01Exact.lean`. How THIS claim could be wrong:
+
+- **sInf ∅ = 0 degeneracy**: the equality is only meaningful if the covering set is
+  nonempty — confirm `coversWithAbelian_three_three : CoversWithAbelian 3 3` is a
+  genuine membership proof (a uniform 3-cover for EVERY finite group in the universe
+  with the property), not a vacuous or classical trick. `coversWithAbelian_three_nonempty`
+  must be derived from it, not assumed.
+- **Universe quantification**: `abelianCoverNumber.{u}` quantifies over `G : Type u`
+  only. Confirm the cover proof (`exists_three_abelian_cover`) is universe-agnostic
+  (`{G : Type*}`) so the membership holds at EVERY `u`, and the lower bound transports
+  `Q₈` via `ULift` (in `Three.lean`) — no universe mismatch making either bound vacuous.
+- **Wrong property orientation**: `HasNCommutingProperty G 3` = "every subset of card
+  > 3 (i.e. ≥ 4) contains two DISTINCT commuting elements" — confirm the clique
+  argument uses card-4 subsets (`no_four_clique` builds `{w,x,y,z}` with card = 4 > 3),
+  not card-3, and that distinctness is derived (non-commuting ⟹ distinct), not assumed.
+- **Cover but not abelian / abelian but not cover**: the three subgroups must satisfy
+  BOTH conjuncts: `centralizer_abelian_of_three` needs the 5-case analysis to be
+  exhaustive — cases (b~u,b~v), (b~u,¬b~v), (¬b~u,b~v), (¬b~u,¬b~v,b~uv),
+  (¬b~u,¬b~v,¬b~uv) cover all of {T,F}³ restricted to reachable combinations. Confirm
+  the mirror case really is `centralizer_case_left` with u,v swapped (huv symm'd).
+- **Lower-bound circularity**: `three_le_abelianCoverNumber_three` (Q₈, from
+  `Three.lean`) must not depend on any nonemptiness assumption other than the one now
+  proved; confirm `#print axioms abelianCoverNumber_three` = propext/Classical.choice/
+  Quot.sound only (verified in build log 2026-07-23, 8582 jobs).
+- **Not the parent problem**: h(3) = 3 is one exact ladder value; Erdős #117 proper
+  (the exponential growth base, Pyber's c₁ⁿ < h(n) < c₂ⁿ) remains OPEN and is NOT
+  claimed. h(n) for n ≥ 4 remains open (well-definedness included).

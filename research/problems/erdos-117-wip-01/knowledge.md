@@ -89,3 +89,52 @@ universe-polymorphic so `PUnit : Type u` supplies the witness group in any `u`.
 (deep) and the OPEN exact base of the growth stay unformalized. `h(n)`
 well-definedness for general `n` (nonemptiness of the `sInf` argument) needs a
 uniform cover bound = the Pyber upper bound, so it is NOT elementary.
+
+## Session 2026-07-23 (researcher-1) — h(3) = 3 EXACT, unconditional (docker-VERIFIED, 8582 jobs; #print axioms = propext/Classical.choice/Quot.sound)
+
+**Mode**: REVISIT. **Outcome**: the "classification-strength" assessment of `h(3) ≤ 3`
+(in `Erdos117WIP01Three.lean`'s header) was an OVERESTIMATE — the uniform 3-cover is
+elementary. New file `Erdos117WIP01Exact.lean` proves **h(3) = 3**, the first
+nontrivial exact value on the Erdős #117 ladder, and discharges the well-definedness
+hypothesis (`∃ k, CoversWithAbelian k 3`) that every prior h(3) statement carried.
+
+### The mechanism (no classification, no Pyber, no symplectic forms)
+1. **Covering**: a ≁ b ⟹ {a, b, ab} pairwise non-commuting ⟹ every g commutes with
+   one of a, b, ab (else {a,b,ab,g} is a forbidden 4-set) ⟹ G = C(a) ∪ C(b) ∪ C(ab).
+2. **Centralizers abelian**: u,v ∈ C(a) non-commuting ⟹ case-split on which of
+   u, v, uv the witness b commutes with; each of the 5 cases yields an explicit
+   pairwise non-commuting 4-set:
+   (b~u,b~v) → {au, av, b, a(uv)}; (b~u,¬b~v) → {au, b, v, uv} (+ mirror);
+   (¬,¬,b~uv) → {b, u, v, a(uv)}; (¬,¬,¬) → {b, u, v, uv}.
+   Distinctness is FREE: non-commuting elements are automatically distinct, so
+   `no_four_clique` needs only the 6 edges — this collapsed what looked like a
+   distinctness-bookkeeping nightmare.
+3. Combined: `CoversWithAbelian 3 3` (works for ALL groups, finiteness unused) ⟹
+   `h(3) ≤ 3` via `Nat.sInf_le`; with Q₈'s `three_le_abelianCoverNumber_three`
+   (hypothesis now discharged) ⟹ **h(3) = 3**. Ladder exactly: 0, 1, 1, 3, …
+
+### Lean technique notes (v4.31)
+- Commutation kit: 7 cancellation micro-lemmas (`comm_mul_of_comm`,
+  `comm_ab_of_comm_mul`, `comm_of_mul_mul`, `comm_of_self_mul_left/right`,
+  `comm_of_mul_left_right`, `comm_of_left_mul`, `comm_right_of_comm_mul`) — all
+  pure `calc` + `mul_assoc` + `mul_left/right_cancel`; each clique edge becomes a
+  one-liner `fun h => hX (kit ... h)`.
+- `no_four_clique`: Finset `{w,x,y,z}` card-4 via chained
+  `Finset.card_insert_of_not_mem` (distinctness derived from non-commutation);
+  the 16-way `rcases ... <;> rcases ... <;> first | exact ...` dispatch handles
+  both orientations of the commuting pair via `hcomm`/`hcomm.symm`.
+- `Subgroup.mem_centralizer_singleton_iff : k ∈ centralizer {g} ↔ k * g = g * k`
+  (member on the LEFT) — orientation matters; `.symm` where needed.
+- Mirror case (¬b~u, b~v) = apply the (b~u, ¬b~v) lemma with u↔v swapped and
+  `fun h => huv h.symm` — no duplicate proof.
+- `![C₁, C₂, C₃] i` after `fin_cases i` / `⟨0, show g ∈ …⟩` reduces definitionally;
+  `show` makes the defeq explicit and robust.
+
+### Still open / out of scope
+- h(4): S₃ has the 4-commuting property (ω(S₃) = 4) and needs 4 abelian subgroups —
+  h(4) ≥ 4 is a plausible next rung (needs `not_coversWithAbelian_three` via S₃);
+  well-definedness of h(4) (uniform bound for ω ≤ 4 groups) is genuinely harder —
+  the centralizer-cover trick gives a cover by 4 CENTRALIZERS of a max clique, but
+  their abelianness FAILS in general at ω = 4 (S₃: C((12)) = {e,(12)} abelian ✓, but
+  the general argument breaks — the 5-case analysis is specific to ω = 3).
+- Pyber's exponential bounds c₁ⁿ < h(n) < c₂ⁿ: DEEP, untouched (the open problem).

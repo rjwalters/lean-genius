@@ -20,10 +20,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "iteration": 2,
+    "focus": "2026-07-23: h(3) = 3 EXACT and unconditional (Erdos117WIP01Exact.lean, 0 ax / 0 sorry). Elementary uniform 3-cover: G = C(a) u C(b) u C(ab) with all three centralizers abelian via a 5-case forbidden-4-clique analysis; discharges the well-definedness hypothesis of all prior h(3) statements. Ladder exactly 0, 1, 1, 3, ...",
+    "blockers": [
+      {
+        "route": "h(4) upper bound / well-definedness: centralizer-abelianness argument is specific to clique number 3",
+        "reopenCriterion": "materially new mechanism required (e.g. Neumann-type index bound |G:Z| <= f(n) formalized)",
+        "blockedAt": "2026-07-23"
+      },
+      {
+        "route": "Pyber exponential bounds c1^n < h(n) < c2^n (the open problem proper)",
+        "reopenCriterion": "materially new Mathlib group-theory API or literature-scale formalization effort",
+        "blockedAt": "2026-07-22"
+      }
+    ],
+    "nextAction": "Optional next rung: h(4) >= 4 lower bound via S3 (omega(S3)=4, minimal abelian cover 4). h(4) upper/well-definedness and Pyber bounds are blocked routes. The h(3) program is COMPLETE.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Erdos117WIP01Three.lean (10 axiom-free theorems, kernel decide only - no ofReduceBool). First jump of the ladder: h(n) >= 3 for all n >= 3 (conditional on well-definedness = Pyber's unformalized upper bound). Crux 1: no group is a union of two proper subgroups => a 2-abelian-cover forces abelian (no counting/finiteness). Crux 2: Q8 = QuaternionGroup 2 is non-abelian with the 3-commuting property (decide over 2^8 subsets) => the n=2 collapse is sharp. Also h(2) < h(3) (first strict jump past 1) and the unconditional dichotomy h(3) = 0 or h(3) >= 3. Ladder shape now 0, 1, 1, >=3, ... Prior: h(0)=0, h(1)=h(2)=1 exact, monotonicity, closure. ELEMENTARY LAYER LIKELY SATURATED: h(3) <= 3 needs a uniform 3-cover for every 3-commuting group (classification-strength); deep = Pyber bounds.",
+    "progressSummary": "PROGRESS: h(3) = 3 EXACT and unconditional (Erdos117WIP01Exact.lean, 0 axioms / 0 sorries) — first nontrivial exact value on the Erdos #117 ladder. The classification-strength blocker for h(3) <= 3 fell to an elementary 5-case clique analysis: G = C(a) u C(b) u C(ab) with abelian centralizers. Well-definedness of h(3) proved (uniform budget 3, finiteness unused). Ladder exactly 0, 1, 1, 3, ... Prior: h(0)=0, h(1)=h(2)=1, monotonicity, Q8 lower bound. Remaining: h(4) rung (S3 lower bound plausible; upper bound blocked — mechanism specific to omega=3), Pyber exponential bounds DEEP.",
     "builtItems": [
       "three_le_abelianCoverNumber in Erdos117WIP01Three.lean - h(n) >= 3 for all n >= 3 whenever h(n) is well-defined; via eq_top_or_eq_top_of_cover (no group is a union of two proper subgroups) + comm_of_two_abelian_cover, and witness ULift Q8: quaternionGroup_hasNCommutingProperty_three (kernel decide, 2^8 subsets, no ofReduceBool) + quaternionGroup_not_comm. Corollaries: not_coversWithAbelian_one/_two, abelianCoverNumber_two_lt_three (h(2) < h(3)), abelianCoverNumber_three_eq_zero_or_three_le (unconditional dichotomy), hasNCommutingProperty_three_not_comm (n=2 collapse sharp). 0-axiom, docker 8581 jobs.",
       "abelianCoverNumber_mono in Erdos117WIP01Mono.lean — h(n) is monotone nondecreasing: n<=m and a finite m-cover exists (exists k, CoversWithAbelian k m) => h(n) <= h(m). Crux coversWithAbelian_of_le: an m-cover is an n-cover since the n-commuting property implies the m-property (hasNCommutingProperty_mono). Nonemptiness hypothesis is honest (Nat.sInf empty = 0 convention; well-definedness of h(m) is Pyber's unformalized upper bound). CoversWithAbelian names the defining-set condition; abelianCoverNumber_eq_sInf is rfl. 0-axiom, docker 8578 jobs.",
@@ -47,7 +58,10 @@
       "coversWithAbelian_upward — covering set upward-closed in k via bot-padding (Erdos117WIP01Cover.lean)",
       "not_coversWithAbelian_zero — for n>=1, 0 subgroups never cover (PUnit witness) (Erdos117WIP01Cover.lean)",
       "one_le_abelianCoverNumber — h(n)>=1 for n>=1 when covering set nonempty (Erdos117WIP01Cover.lean)",
-      "Erdos117WIP01Two.lean: exists_three_pairwise_noncommuting, hasNCommutingProperty_two_iff, hasNCommutingProperty_two_iff_one, abelianCoverNumber_two (h(2)=1), abelianCoverNumber_one_eq_two — 0 axioms, 0 sorries"
+      "Erdos117WIP01Two.lean: exists_three_pairwise_noncommuting, hasNCommutingProperty_two_iff, hasNCommutingProperty_two_iff_one, abelianCoverNumber_two (h(2)=1), abelianCoverNumber_one_eq_two — 0 axioms, 0 sorries",
+      "Erdos117WIP01Exact.lean: commutation kit (7 cancellation micro-lemmas), no_four_clique, centralizer_abelian_of_three, exists_three_abelian_cover",
+      "coversWithAbelian_three_three, coversWithAbelian_three_nonempty (h(3) well-defined)",
+      "abelianCoverNumber_three : h(3) = 3 (exact, unconditional), abelianCoverNumber_two_lt_three_unconditional, abelianCoverNumber_le_three_of_le"
     ],
     "insights": [
       "UNIVERSE gotcha (confirmed again): abelianCoverNumber and CoversWithAbelian are universe-polymorphic in the group universe (bodies quantify forall G:Type*), so the VALUE depends on u. Any monotonicity/set-algebra statement must pin one explicit `universe u` and annotate EVERY occurrence with .{u}; unannotated occurrences get independent universes => abelianCoverNumber.{u_1} vs .{u_3} and @h G application-type mismatch. A `universe` command takes a plain /- -/ comment, not a /-- -/ docstring.",
@@ -59,7 +73,11 @@
       "The covering set {k | CoversWithAbelian k n} is a terminal segment: upward-closed in k (pad a k-cover with copies of bot — coversWithAbelian_upward) and, for n>=1, never contains 0 (empty family cannot cover PUnit — not_coversWithAbelian_zero). With Nat.sInf_mem this pins it as [h(n),inf) when nonempty.",
       "General lower bound h(n)>=1 for n>=1 whenever h(n) is well-defined (covering set nonempty). Complements h(0)=0: the covering number leaves 0 exactly at the n=0->1 step. For n>=2 nonemptiness of the set is precisely Pyber unformalized upper bound. (one_le_abelianCoverNumber)",
       "COLLAPSE AT n=2: the 2-commuting property is exactly commutativity — in any non-abelian group a non-commuting pair a,b spawns the 3-element pairwise non-commuting set {a,b,ab} (a vs ab commute iff ab=ba by left cancellation; b vs ab iff ba=ab by right cancellation; distinctness forced since a=ab ⟹ b=1 central). So the n=2 threshold adds nothing over n=1, and h(2)=1 unconditionally.",
-      "Where the collapse stops: Q8 is non-abelian with the 3-commuting property (non-commuting graph clique number 3: a clique picks at most one of each {±i},{±j},{±k}), and no 2 abelian subgroups cover Q8 (abelian subgroups have order ≤4; 4+4−|shared ⊇ {±1}| ≤ 6 < 8). So h(3) ≥ 3 — first genuinely non-abelian rung, NOT yet formalized."
+      "Where the collapse stops: Q8 is non-abelian with the 3-commuting property (non-commuting graph clique number 3: a clique picks at most one of each {±i},{±j},{±k}), and no 2 abelian subgroups cover Q8 (abelian subgroups have order ≤4; 4+4−|shared ⊇ {±1}| ≤ 6 < 8). So h(3) ≥ 3 — first genuinely non-abelian rung, NOT yet formalized.",
+      "The h(3) <= 3 uniform cover assessed as classification-strength is elementary: a nonabelian group with the 3-commuting property is covered by C(a), C(b), C(ab) for any non-commuting a,b, and each centralizer is abelian by a 5-case forbidden-4-clique analysis (cases on which of u, v, uv the witness b commutes with)",
+      "Distinctness in 4-clique arguments is free: non-commuting elements are automatically distinct, so no_four_clique needs only the 6 non-commutation edges — this collapses the distinctness bookkeeping entirely",
+      "The 3-cover works for ALL groups (finiteness never used), so CoversWithAbelian 3 3 holds in every universe; h(3) is well-defined, discharging the hne hypotheses that Three.lean carried",
+      "Mathlib v4.31 rename: Finset.card_insert_of_not_mem -> Finset.card_insert_of_notMem"
     ],
     "mathlibGaps": [],
     "nextSteps": [

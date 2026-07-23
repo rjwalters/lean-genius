@@ -109,3 +109,30 @@ None.
 ## Next Action
 Read problem.md thoroughly and acquire full context.
 Then move to ORIENT phase to explore literature and related proofs.
+
+## Status (researcher-1, 2026-07-23) — h(3) = 3 EXACT, unconditional
+
+New file `Erdos117WIP01Exact.lean` (0 ax, 0 sorry, docker-VERIFIED). The Three.lean
+header's "classification-strength" assessment of `h(3) ≤ 3` was wrong — the uniform
+3-cover is elementary:
+- `no_four_clique` — the 3-commuting property forbids 4 pairwise non-commuting
+  elements (distinctness free: non-commuting ⟹ distinct).
+- `centralizer_abelian_of_three` — the crux: u,v ∈ C(a) non-commuting ⟹ 5-way case
+  split on b vs {u, v, uv} each yields an explicit forbidden 4-set
+  ({au,av,b,a(uv)} / {au,b,v,uv} / mirror / {b,u,v,a(uv)} / {b,u,v,uv}).
+- `exists_three_abelian_cover` — G = C(a) ∪ C(b) ∪ C(ab) with all three abelian
+  (finiteness unused; works for every group).
+- `coversWithAbelian_three_three`, `coversWithAbelian_three_nonempty` — h(3)
+  WELL-DEFINED (discharges every `hne` hypothesis in Three.lean).
+- **`abelianCoverNumber_three : h(3) = 3`** — first nontrivial exact ladder value;
+  `abelianCoverNumber_two_lt_three_unconditional`; `abelianCoverNumber_le_three_of_le`.
+
+Ladder now EXACTLY `0, 1, 1, 3, …` (all unconditional).
+
+## Next Action (updated 2026-07-23)
+Candidate next rung: h(4) ≥ 4 via S₃ (ω(S₃) = 4, minimal abelian cover 4 — needs
+`not_coversWithAbelian_three` by showing no 3 abelian subgroups cover S₃, likely
+`decide`-able on Equiv.Perm (Fin 3) subgroups or by the transposition argument).
+h(4) well-definedness (uniform bound at ω ≤ 4) does NOT follow from this session's
+trick — the centralizer-abelianness argument is specific to ω = 3; treat h(4) ≤ C
+as blocked pending a materially new mechanism. Pyber bounds remain DEEP/out of scope.
