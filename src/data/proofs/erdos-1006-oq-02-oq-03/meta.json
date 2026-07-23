@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Direct Proof of the FFLLW Chromatic Number Bound",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Gives a direct, axiom-free proof of the Fisher–Fraughnaugh–Langley–West (1997) theorem that χ(G) < girth(G) implies a robustly acyclic orientation, by observing the coloring orientation (u→v when col(u)<col(v)) is always robustly acyclic under the rank-based formulation — strengthening the result to any properly colorable finite graph, with the girth condition needed only for the classical path-based definition.",
+      "mathContext": "The coloring orientation $u\\to v \\iff \\mathrm{col}(u)<\\mathrm{col}(v)$ from any proper $k$-coloring is robustly acyclic for the rank-based definition; FFLLW's girth hypothesis $\\chi(G)<\\mathrm{girth}(G)$ becomes a trivial corollary."
+    },
+    {
       "id": "framework",
       "title": "GraphOrientation Framework",
       "startLine": 52,
