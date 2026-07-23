@@ -54,6 +54,15 @@
   },
   "sections": [
     {
+      "title": "Header: Two Corrections to the Sketch",
+      "startLine": 1,
+      "endLine": 39,
+      "description": "Module docstring stating the area identity and explaining the two corrections needed to make the problem's original sketch true: the Napoleon triangle uses the centroid offset √3/6 (not the apex offset √3/2), and with a fixed signed-area convention the correct relation is an addition (outer + inner = original), because the inner triangle is oppositely oriented.",
+      "summary": "States the corrected identity and why the naive sketch is false",
+      "id": "header",
+      "mathContext": "The sketch's literal claim used the apex offset $\\sqrt3/2$ and a subtraction; substituting the true centroid offset $\\sqrt3/6$ and accounting for the inner triangle's reversed orientation turns it into $\\operatorname{triArea}(\\text{outer})+\\operatorname{triArea}(\\text{inner})=\\operatorname{triArea}(\\text{original})$, equivalent to the classical unsigned $|\\text{outer}|-|\\text{inner}|=|\\text{original}|$."
+    },
+    {
       "title": "Signed Area and its Real Expansion",
       "startLine": 40,
       "endLine": 50,
