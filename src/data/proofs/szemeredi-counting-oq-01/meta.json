@@ -102,6 +102,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: packing-covering duality bounding the triangle removal number",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the parent open problem — the optimal quantitative bound gamma(delta) for the triangle removal lemma, where the only known lower bounds are super-polynomially small (Ruzsa-Szemeredi via Behrend) — and isolates the triangle removal number rho(G), the minimum edges whose deletion destroys every triangle, proving the two-sided bracket nu(G) <= rho(G) <= tau(G) via weak LP duality and a greedy cover, connecting the lower bracket to the Ruzsa-Szemeredi construction.",
+      "mathContext": "$\\nu(G)\\le\\rho(G)\\le\\tau(G)$: the maximum edge-disjoint triangle packing is at most the minimum triangle-destroying edge set, at most the total triangle count — a K\\H{o}nig-type packing/covering duality."
+    },
+    {
       "id": "definitions",
       "title": "Part I — Triangles, Covers, and Packings",
       "startLine": 52,
