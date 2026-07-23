@@ -136,11 +136,16 @@ noncomputable def countDegenerateQuadruples (S : Finset Point) : ℕ :=
 /--
 **Maximum Degenerate Quadruples:**
 The maximum number of degenerate quadruples over all n-point sets.
+
+Declared `opaque` rather than as a concrete `def`. Computing this supremum is
+intractable, and — crucially — an ordinary `def := 0` placeholder would make
+`maxDegenerateQuadruples n` reduce to `0` by `rfl`, contradicting the
+`erdos_purdy_lower_bound` axiom (which asserts a strictly positive lower bound)
+and rendering the axiom set kernel-inconsistent. `opaque` hides the witness so no
+`rfl` reduction is available, leaving the Erdős–Purdy bounds as genuine,
+consistent unproven assumptions.
 -/
-noncomputable def maxDegenerateQuadruples (n : ℕ) : ℕ :=
-  -- This is the supremum over all n-point configurations
-  -- Formalized as an axiom since computing this is intractable
-  0  -- placeholder
+opaque maxDegenerateQuadruples (n : ℕ) : ℕ := 0
 
 /--
 **The Function f(n):**
@@ -261,8 +266,11 @@ f(n) ≤ C(n,4) ≤ n⁴/24, since at most all quadruples could be degenerate.
 -/
 theorem trivial_upper_bound (n : ℕ) (hn : n ≥ 4) :
     (f n : ℝ) ≤ (n : ℝ)^4 / 24 := by
-  simp only [f, maxDegenerateQuadruples, Nat.cast_zero]
-  positivity
+  -- Genuinely f(n) ≤ C(n,4) = n(n-1)(n-2)(n-3)/24 ≤ n⁴/24, since at most every
+  -- 4-subset is degenerate. With `maxDegenerateQuadruples` now `opaque` (no `rfl`
+  -- reduction to a junk value), this bound is no longer discharged by
+  -- computation and awaits a real proof of `f n ≤ n.choose 4`.
+  sorry
 
 /- 
 **Non-trivial Lower Bound Exists:**
