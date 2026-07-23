@@ -92,32 +92,40 @@
       "id": "header",
       "title": "Imports and Module Docstring",
       "startLine": 1,
-      "endLine": 53,
-      "summary": "Imports (Trigonometric.Basic/Bounds, NumberTheory.Niven, Tactic), the module docstring stating the tangent companion, the double-angle reduction, and the five-case solution table, and `namespace NivenTheoremOQ03` / `open Real`.",
+      "endLine": 49,
+      "summary": "Imports (Trigonometric.Basic/Bounds, NumberTheory.Niven, Tactic) and the module docstring stating the tangent companion, the double-angle reduction, and the five-case solution table.",
       "mathContext": "θ a rational multiple of π and tan θ ∈ ℚ ⇒ tan θ ∈ {0, 1, −1}."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Open",
+      "startLine": 50,
+      "endLine": 54,
+      "summary": "Opens `namespace NivenTheoremOQ03` and `open Real` so the trigonometric functions and π can be written unqualified for the rest of the file.",
+      "mathContext": "Scope: identities stated over `Real.cos`/`Real.tan`/`Real.pi` inside `namespace NivenTheoremOQ03`."
     },
     {
       "id": "cos-helper",
       "title": "Cosine Niven (restated helper)",
-      "startLine": 59,
-      "endLine": 84,
+      "startLine": 55,
+      "endLine": 83,
       "summary": "`cos_niven`: the cosine classification, restated so the tangent corollary is self-contained. Writes θ = q·π (q = m/n : ℚ), invokes `Real.isIntegral_two_mul_cos_rat_mul_pi` and `IsIntegral.exists_int_iff_exists_rat` to get 2·cos θ = k ∈ ℤ, bounds k to {−2,…,2} via the cosine bounds, and closes the five `interval_cases` branches by `linarith`.",
       "mathContext": "θ = (m/n)π, cos θ ∈ ℚ ⇒ cos θ ∈ {0, ±1/2, ±1}."
     },
     {
       "id": "rational-obstruction",
       "title": "No Rational Squares to 3",
-      "startLine": 86,
-      "endLine": 93,
+      "startLine": 84,
+      "endLine": 92,
       "summary": "`no_rat_sq_eq_three`: for every rational s, (s : ℝ)² ≠ 3. If it did, then √3 = √(s²) = |s| would be a rational value, contradicting `Nat.prime_three.irrational_sqrt`. Uses `Real.sqrt_sq_eq_abs`, `Rat.cast_abs`, `Rat.not_irrational`.",
       "mathContext": "√3 ∉ ℚ ⇒ no rational t has t² = 3 (or, rescaling, t² = 1/3)."
     },
     {
       "id": "tangent-corollary",
       "title": "Tangent Companion via the Double-Angle Identity",
-      "startLine": 95,
-      "endLine": 142,
-      "summary": "`tan_niven`: handle cos θ = 0 (then tan θ = 0). Otherwise put t = tan θ; prove cos(2θ) = (1 − t²)/(1 + t²) from `cos_two_mul` and the Pythagorean identity via `field_simp`/`nlinarith`; observe cos(2θ) is rational and 2θ = (2m/n)·π, apply `cos_niven`, and resolve the five branches — value 1 ⇒ t = 0, value 0 ⇒ t = ±1, value −1 impossible, values ±1/2 ⇒ t² ∈ {1/3, 3} excluded by `no_rat_sq_eq_three`.",
+      "startLine": 93,
+      "endLine": 143,
+      "summary": "`tan_niven`: handle cos θ = 0 (then tan θ = 0). Otherwise put t = tan θ; prove cos(2θ) = (1 − t²)/(1 + t²) from `cos_two_mul` and the Pythagorean identity via `field_simp`/`nlinarith`; observe cos(2θ) is rational and 2θ = (2m/n)·π, apply `cos_niven`, and resolve the five branches — value 1 ⇒ t = 0, value 0 ⇒ t = ±1, value −1 impossible, values ±1/2 ⇒ t² ∈ {1/3, 3} excluded by `no_rat_sq_eq_three`. Closes the NivenTheoremOQ03 namespace.",
       "mathContext": "cos 2θ = (1 − tan²θ)/(1 + tan²θ) ∈ {0, ±1/2, ±1} ⇒ tan θ ∈ {0, ±1}."
     }
   ],
