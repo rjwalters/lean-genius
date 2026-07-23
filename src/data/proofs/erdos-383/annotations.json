@@ -4,7 +4,7 @@
     "proofId": "erdos-383",
     "range": {
       "startLine": 1,
-      "endLine": 26
+      "endLine": 36
     },
     "type": "concept",
     "title": "Problem Overview",
@@ -32,8 +32,8 @@
     "id": "ann-383-primediv",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 40,
-      "endLine": 47
+      "startLine": 44,
+      "endLine": 54
     },
     "type": "definition",
     "title": "Prime Divisors",
@@ -59,8 +59,8 @@
     "id": "ann-383-product",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 59,
-      "endLine": 62
+      "startLine": 99,
+      "endLine": 105
     },
     "type": "concept",
     "title": "Consecutive Square Product",
@@ -86,8 +86,8 @@
     "id": "ann-383-special",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 71,
-      "endLine": 81
+      "startLine": 114,
+      "endLine": 121
     },
     "type": "concept",
     "title": "Special Cases",
@@ -113,8 +113,8 @@
     "id": "ann-383-kgood",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 88,
-      "endLine": 97
+      "startLine": 123,
+      "endLine": 129
     },
     "type": "concept",
     "title": "k-Good Primes",
@@ -140,12 +140,12 @@
     "id": "ann-383-kgoodset",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 98,
-      "endLine": 104
+      "startLine": 135,
+      "endLine": 158
     },
     "type": "definition",
     "title": "Set of k-Good Primes",
-    "content": "kGoodPrimes(k) = {p | isKGood(p, k)}. zero_good_iff: every prime is 0-good.",
+    "content": "kGoodPrimes(k) = {p | isKGood(p, k)}. zero_good: every prime is 0-good (proved directly).",
     "mathContext": "The problem asks if kGoodPrimes(k) is infinite for all k.",
     "significance": "key",
     "relatedConcepts": [
@@ -167,12 +167,12 @@
     "id": "ann-383-conjecture",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 111,
-      "endLine": 121
+      "startLine": 164,
+      "endLine": 168
     },
     "type": "concept",
     "title": "The Main Conjecture",
-    "content": "ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite. ErdosConjecture383' uses Nat.maxPrimeFac directly.",
+    "content": "ErdosConjecture383 := ∀k, kGoodPrimes(k) is infinite. ErdosConjecture383' uses this file's own `maxPrimeFac` helper directly (a local definition, not a Mathlib declaration).",
     "mathContext": "The conjecture asserts infinitely many k-good primes for each k.",
     "significance": "key",
     "relatedConcepts": [
@@ -188,20 +188,20 @@
     "prerequisites": [
       "universal quantification over all k",
       "infinitude of a set of primes",
-      "Nat.maxPrimeFac"
+      "the file's local maxPrimeFac helper"
     ]
   },
   {
     "id": "ann-383-partial",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 128,
-      "endLine": 138
+      "startLine": 200,
+      "endLine": 205
     },
     "type": "concept",
     "title": "Partial Results",
-    "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. positive_density_smooth: smooth numbers have positive density.",
-    "mathContext": "The k=0 case is trivial. Smooth number density supports the general conjecture.",
+    "content": "all_primes_zero_good: every prime is 0-good. infinitely_many_zero_good: kGoodPrimes(0) is infinite. (The smooth-number density heuristic motivating the general conjecture is discussed only in this proof's gallery description, not as any Lean declaration.)",
+    "mathContext": "The k=0 case is trivial and fully proved. Smooth-number density is a heuristic motivation for the general conjecture, not formalized here.",
     "significance": "key",
     "relatedConcepts": [
       "partial",
@@ -223,8 +223,8 @@
     "id": "ann-383-problem382",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 145,
-      "endLine": 151
+      "startLine": 212,
+      "endLine": 233
     },
     "type": "lemma",
     "title": "Relation to Problem #382",
@@ -250,8 +250,8 @@
     "id": "ann-383-smooth",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 158,
-      "endLine": 161
+      "startLine": 239,
+      "endLine": 244
     },
     "type": "definition",
     "title": "Smooth Numbers",
@@ -277,13 +277,13 @@
     "id": "ann-383-dickman",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 170,
-      "endLine": 175
+      "startLine": 17,
+      "endLine": 19
     },
     "type": "concept",
-    "title": "Dickman Function",
-    "content": "dickman_asymptotic: Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function. ρ(2) ≈ 0.307.",
-    "mathContext": "The Dickman function describes the density of smooth numbers. ρ(2) > 0 supports the conjecture.",
+    "title": "Dickman Function (Heuristic Only)",
+    "content": "The docstring's heuristic argument (lines 17-19) motivates the conjecture informally. No `dickman_asymptotic` or other Dickman-function identifier is declared anywhere in this Lean file — the asymptotic formula Ψ(x, x^{1/u}) ~ x·ρ(u) and the estimate ρ(2) ≈ 0.307 appear only in this proof's gallery description (meta.json), not in the Lean source.",
+    "mathContext": "The Dickman function describes the density of smooth numbers; it is cited only as motivation, not formalized in this file.",
     "significance": "key",
     "relatedConcepts": [
       "dickman",
@@ -304,12 +304,12 @@
     "id": "ann-383-heuristic",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 182,
-      "endLine": 190
+      "startLine": 17,
+      "endLine": 19
     },
     "type": "concept",
     "title": "Heuristic Argument",
-    "content": "ρ(2) ≈ 0.307 means about 30.7% of numbers have no prime factor > √n. This suggests infinitely many k-good primes exist.",
+    "content": "The docstring argues informally that integers without prime divisors ≥ √n occur with positive density. The gallery description elaborates this as ρ(2) ≈ 0.307, i.e. about 30.7% of numbers have no prime factor > √n — this specific figure is not in the Lean docstring itself, only in the gallery prose.",
     "mathContext": "The probabilistic argument: smooth numbers are common enough.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -331,8 +331,8 @@
     "id": "ann-383-status",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 197,
-      "endLine": 199
+      "startLine": 282,
+      "endLine": 286
     },
     "type": "concept",
     "title": "Problem Status",
@@ -358,12 +358,12 @@
     "id": "ann-383-formal",
     "proofId": "erdos-383",
     "range": {
-      "startLine": 206,
-      "endLine": 211
+      "startLine": 287,
+      "endLine": 291
     },
     "type": "concept",
     "title": "Formal Statement",
-    "content": "erdos_383_statement: The conjecture using Nat.maxPrimeFac and Finset.Icc.",
+    "content": "erdos_383_statement: The conjecture using this file's local maxPrimeFac helper and Finset.Icc.",
     "mathContext": "Precise formal statement adapted from formal-conjectures.",
     "significance": "key",
     "relatedConcepts": [
@@ -377,7 +377,7 @@
       "mathlib"
     ],
     "prerequisites": [
-      "Nat.maxPrimeFac",
+      "the file's local maxPrimeFac helper",
       "Finset.Icc interval",
       "formal Lean statement of a conjecture"
     ]
