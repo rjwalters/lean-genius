@@ -129,11 +129,18 @@
       "summary": "shiftedCyclotomicPrimePowInt p n := (cyclotomic (p^(n+1)) ℤ).comp (X+1); shiftedCyclotomicPrimePowInt_monic (composition of monics, no primality needed) and shiftedCyclotomicPrimePowInt_natDegree = pⁿ(p − 1) (natDegree_comp + Nat.totient_prime_pow_succ) — the monicity and positive-degree Eisenstein inputs."
     },
     {
-      "id": "irreducibility-and-descent",
-      "title": "Irreducibility via Eisenstein and descent to Φ_{pᵏ}",
+      "id": "eisenstein-application",
+      "title": "Applying the grandparent's criterion over ℚ",
       "startLine": 73,
+      "endLine": 100,
+      "summary": "cyclotomic_prime_pow_irreducible_rat's opening half: retrieve the Eisenstein-at-p data hEis from cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt, unpack its .mem/.notMem fields via Ideal.submodule_span_eq / Ideal.mem_span_singleton / Ideal.span_singleton_pow into the plain divisibility hypotheses hlow (p ∣ coeff k, k < deg) and hconst (p² ∤ coeff 0), then feed hpZ, hmonic, hdeg, hlow, hconst into the grandparent's irreducible_rat_of_eisenstein to get hirr_rat."
+    },
+    {
+      "id": "descent",
+      "title": "Descent to Φ_{pᵏ} via the translation automorphism",
+      "startLine": 101,
       "endLine": 113,
-      "summary": "cyclotomic_prime_pow_irreducible_rat: unpack Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt into the divisibility hypotheses of the grandparent's irreducible_rat_of_eisenstein (p ∣ lower coeffs, p² ∤ constant), get irreducibility of the ℚ translate, then descend to Φ_{pᵏ} along algEquivAevalXAddC (1) via MulEquiv.irreducible_iff."
+      "summary": "Rewrites hirr_rat along hmap ((shiftedCyclotomicPrimePowInt p n).map (ℤ→ℚ) = Φ_{p^(n+1)}(X+1) over ℚ), then transports irreducibility back to Φ_{p^(n+1)} itself: key identifies algEquivAevalXAddC (1 : ℚ) applied to the cyclotomic polynomial with its X+1 translate, and MulEquiv.irreducible_iff descends along that automorphism to close the theorem."
     }
   ],
   "mainTheorems": [
