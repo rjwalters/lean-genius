@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Dirichlet's Approximation Theorem and CRT Lattice Connections",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Answers the open question on implications for simultaneous Diophantine approximation by formalizing Dirichlet's 1842 approximation theorem via pigeonhole, plus the Stern–Brocot mediant theorem, a lattice-point covering lemma, golden-ratio identities, and non-coprime CRT solvability examples connecting to lattice geometry.",
+      "mathContext": "Dirichlet's theorem: $\\forall \\alpha\\in\\mathbb R, N\\ge 1,\\ \\exists\\, p,q$ with $1\\le q\\le N$ and $|q\\alpha-p|<1/N$, proved by pigeonholing $N+1$ fractional parts $\\{q\\alpha\\}$ into $N$ intervals of width $1/N$."
+    },
+    {
       "id": "pigeonhole-setup",
       "title": "Pigeonhole Setup for Fractional Part Binning",
       "startLine": 27,
