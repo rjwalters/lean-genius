@@ -109,10 +109,17 @@
   "sections": [
     {
       "id": "context-hilbert-12-stark",
-      "title": "Imports, Module Header & the Rank-One Stark Setting",
+      "title": "Imports & the Rank-One Stark Setting",
       "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports (NumberField.Units.Regulator, Tactic) and the opening of the module docstring, which frames Hilbert's 12th problem (Kronecker's Jugendtraum) — explicit generators of abelian extensions, solved for ℚ (Kronecker–Weber) and imaginary quadratic fields (complex multiplication) — and the Stark conjectures' rank-one instance, where L'(0, χ) is predicted to be a rational multiple of a single log|ε| of a Stark unit. Scopes the file to the provable structural regulator-collapse fact, excluding the open problem of computing Stark units effectively."
+    },
+    {
+      "id": "main-results-and-strategy",
+      "title": "Main Results and Proof Strategy (Docstring)",
+      "startLine": 24,
       "endLine": 49,
-      "summary": "Imports (NumberField.Units.Regulator, Tactic) and the module docstring, which frames Hilbert's 12th problem (Kronecker's Jugendtraum) — explicit generators of abelian extensions, solved for ℚ (Kronecker–Weber) and imaginary quadratic fields (complex multiplication) — and the Stark conjectures' rank-one instance, where L'(0, χ) is predicted to be a rational multiple of a single log|ε| of a Stark unit. Scopes the file to the provable structural regulator-collapse fact, excluding the open problem of computing Stark units effectively, and lists the two main theorems and the proof strategy (Dirichlet rank characterization + Matrix.det_unique). Then opens the NumberField namespaces, enters namespace KroneckersJugendtraumStarkRankOne, and declares the ambient variable (K : Type*) [Field K] [NumberField K]."
+      "summary": "Docstring listing the two main theorems (rank_eq_one_iff_card_infinitePlace_eq_two, regulator_eq_single_log_of_rank_eq_one) and the proof strategy (Dirichlet rank characterization via rank K = #(InfinitePlace K) − 1 plus omega; the regulator collapse via transporting Unique (Fin (rank K)) along equivFinRank and applying Matrix.det_unique). Then opens the NumberField namespaces, enters namespace KroneckersJugendtraumStarkRankOne, and declares the ambient variable (K : Type*) [Field K] [NumberField K]."
     },
     {
       "id": "rank-characterization",
@@ -122,11 +129,18 @@
       "summary": "rank_eq_one_iff_card_infinitePlace_eq_two: since rank K = #(InfinitePlace K) − 1 by Dirichlet's unit theorem, rank K = 1 holds exactly when K has two infinite places — the real quadratic (2,0) and mixed-signature cubic (1,1) fields where the rank-one Stark conjecture lives. Proved by `rw [rank]; omega`."
     },
     {
-      "id": "regulator-collapse",
-      "title": "The Rank-One Regulator is a Single Logarithm",
+      "id": "regulator-statement",
+      "title": "The Rank-One Regulator is a Single Logarithm (Statement)",
       "startLine": 58,
+      "endLine": 65,
+      "summary": "regulator_eq_single_log_of_rank_eq_one docstring and signature: when rank K = 1, there exist an infinite place w and a unit ε (the fundamental Stark unit) with regulator K = mult w · |log (w ε)| — a single archimedean logarithm."
+    },
+    {
+      "id": "regulator-proof",
+      "title": "Collapsing the Determinant (Proof)",
+      "startLine": 66,
       "endLine": 79,
-      "summary": "regulator_eq_single_log_of_rank_eq_one: when rank K = 1, the regulator collapses from a determinant of logarithms to mult(w)·|log(w ε)| for the fundamental (Stark) unit ε. Transports the Unique instance along equivFinRank and applies Matrix.det_unique to read off the single 1×1 entry."
+      "summary": "Transports Unique (Fin (rank K)) along equivFinRank to make the place-index type {w // w ≠ w₀} a singleton, packages the single place and the fundamental unit it indexes, then rewrites regulator_eq_det through Matrix.det_unique, Matrix.of_apply, abs_mul, and Nat.abs_cast to read off the single 1×1 entry. Closes the namespace."
     }
   ],
   "conclusion": {
