@@ -165,6 +165,14 @@
       "startLine": 198,
       "endLine": 247,
       "mathContext": "States `GeneralConjecture`: $P(\\alpha)$ holds for all limit ordinals $\\alpha$. Proves the partial result (limit ordinals below $\\omega_1^{\\omega+2}$) and the knowledge gap between known and conjectured."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 249,
+      "endLine": 273,
+      "summary": "Closing comment (after `end Erdos601`) recapping the problem status (OPEN, $500 prize), the question (which limit ordinals α force an infinite path or an order-type-α independent set in every graph on α), the two known results (Erdős–Hajnal–Milner 1970 below ω₁^{ω+2}; Larson 1990 below 2^ℵ₀ under Martin's Axiom), and the two open prizes (the ω₁^{ω+2} boundary, $250; the general conjecture, $500). Lists 4 of the file's key sorry/axiom sites as illustrative examples, not an exhaustive count — the file has 9 `sorry`s and 4 `axiom`s in total (see `meta.assumptions`).",
+      "mathContext": "Ordinal Ramsey-type statement: $\\forall$ graph $G$ on $\\alpha$ (limit ordinal), $G$ has an infinite path or an independent set of order type $\\alpha$. Proved for $\\alpha < \\omega_1^{\\omega+2}$ (unconditional) and $\\alpha < 2^{\\aleph_0}$ (under Martin's Axiom); open in general and at the $\\omega_1^{\\omega+2}$ boundary specifically."
     }
   ],
   "overview": {
