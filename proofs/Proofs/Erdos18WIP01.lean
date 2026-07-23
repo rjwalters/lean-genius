@@ -2345,4 +2345,155 @@ theorem minimal_hErdos_five :
     have := hErdos_le_four_of_lt_thirtytwo hpr hlt
     omega
 
+/- ## Record-setter at `t = 6`: the threshold crosses `64`
+
+The `t = 6` rung needs `hErdos m ≤ 5` for every practical `m < 64`.  Below `32`
+this is `hErdos_le_four_of_lt_thirtytwo`; the practical numbers in `[32, 64)`
+are exactly `32, 36, 40, 42, 48, 54, 56, 60`.  Five of the seven new numbers
+fall to subadditivity alone — `36 = 6·6`, `40 = 2·20`, `48 = 2·24`,
+`56 = 2·28`, `60 = 2·30`, each factor practical with its index already pinned —
+so only `42 = 2·3·7` and `54 = 2·3³` need the kernel engine: like `18` and
+`30`, neither has a factorisation into two practical parts (`21, 14, 7` and
+`27, 9, 3` all fail), so `hErdos_mul_le` is silent on them.
+
+A structural remark falls out of the bounds: every practical number in
+`[32, 64)` other than `32` itself has index `≤ 4` — within this block the
+power of two is the UNIQUE practical number attaining index `5`.  The
+record-setter is not merely first, it is (locally) alone at its record. -/
+
+/-- `hErdos 36 ≤ 4` — subadditivity at the practical split `36 = 6 · 6`. -/
+theorem hErdos_thirtysix_le : hErdos 36 ≤ 4 := by
+  have h : hErdos (6 * 6) ≤ hErdos 6 + hErdos 6 :=
+    hErdos_mul_le six_practical six_practical
+  rw [hErdos_six] at h
+  calc hErdos 36 = hErdos (6 * 6) := by norm_num
+    _ ≤ 2 + 2 := h
+    _ ≤ 4 := by norm_num
+
+/-- `hErdos 40 ≤ 5` — subadditivity at the practical split `40 = 2 · 20`. -/
+theorem hErdos_forty_le : hErdos 40 ≤ 5 := by
+  have h : hErdos (2 * 20) ≤ hErdos 2 + hErdos 20 :=
+    hErdos_mul_le two_practical twenty_practical
+  rw [hErdos_two, hErdos_twenty] at h
+  calc hErdos 40 = hErdos (2 * 20) := by norm_num
+    _ ≤ 1 + 4 := h
+    _ ≤ 5 := by norm_num
+
+set_option maxRecDepth 20000 in
+/-- `hErdos 42 ≤ 4` — engine-only, like `18` and `30`: `42 = 2·3·7` has no
+factorisation into two practical parts (`21`, `14`, `7` are not practical), so
+`hErdos_mul_le` is silent.  The kernel finds `≤ 4`-divisor representations from
+`{1,2,3,6,7,14,21}` for all `k < 42` (e.g. `40 = 21+14+3+2`, `41 = 21+14+6`). -/
+theorem hErdos_fortytwo_le : hErdos 42 ≤ 4 :=
+  hErdos_le_of_witnesses (by decide)
+
+/-- `hErdos 48 ≤ 4` — subadditivity at the practical split `48 = 2 · 24`. -/
+theorem hErdos_fortyeight_le : hErdos 48 ≤ 4 := by
+  have h : hErdos (2 * 24) ≤ hErdos 2 + hErdos 24 :=
+    hErdos_mul_le two_practical twentyfour_practical
+  rw [hErdos_two, hErdos_twentyfour] at h
+  calc hErdos 48 = hErdos (2 * 24) := by norm_num
+    _ ≤ 1 + 3 := h
+    _ ≤ 4 := by norm_num
+
+set_option maxRecDepth 20000 in
+/-- `hErdos 54 ≤ 4` — engine-only: `54 = 2·3³` has no factorisation into two
+practical parts (`27`, `9`, `3` are not practical).  The kernel finds
+`≤ 4`-divisor representations from `{1,2,3,6,9,18,27}` for all `k < 54`
+(e.g. `53 = 27+18+6+2`, `49 = 27+18+3+1`). -/
+theorem hErdos_fiftyfour_le : hErdos 54 ≤ 4 :=
+  hErdos_le_of_witnesses (by decide)
+
+/-- `hErdos 56 ≤ 5` — subadditivity at the practical split `56 = 2 · 28`. -/
+theorem hErdos_fiftysix_le : hErdos 56 ≤ 5 := by
+  have h : hErdos (2 * 28) ≤ hErdos 2 + hErdos 28 :=
+    hErdos_mul_le two_practical twentyeight_practical
+  rw [hErdos_two, hErdos_twentyeight] at h
+  calc hErdos 56 = hErdos (2 * 28) := by norm_num
+    _ ≤ 1 + 4 := h
+    _ ≤ 5 := by norm_num
+
+/-- `hErdos 60 ≤ 5` — subadditivity at the practical split `60 = 2 · 30`. -/
+theorem hErdos_sixty_le : hErdos 60 ≤ 5 := by
+  have h : hErdos (2 * 30) ≤ hErdos 2 + hErdos 30 :=
+    hErdos_mul_le two_practical thirty_practical
+  rw [hErdos_two, hErdos_thirty] at h
+  calc hErdos 60 = hErdos (2 * 30) := by norm_num
+    _ ≤ 1 + 4 := h
+    _ ≤ 5 := by norm_num
+
+/-- `hErdos 64 = 6` — the power-of-two formula at `k = 6`. -/
+theorem hErdos_sixtyfour : hErdos 64 = 6 := by
+  have h := hErdos_two_pow 6
+  norm_num at h
+  exact h
+
+set_option maxRecDepth 40000 in
+/-- **Every practical number below `64` has index at most `5`.**  Below `32`
+this is `hErdos_le_four_of_lt_thirtytwo`; the practical numbers in `[32, 64)`
+are `32, 36, 40, 42, 48, 54, 56, 60` (each non-practical value excluded by a
+kernel `decide`), bounded by the engine values and subadditive splits above.
+In fact only `32` attains `5` — the other seven are all `≤ 4` (subadditivity
+gives `≤ 4` outright for `36` and `48`; `40, 56, 60` land at `≤ 5` only
+because the crude split through `2 · m'` spends a divisor on the factor `2`). -/
+theorem hErdos_le_five_of_lt_sixtyfour {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 64) : hErdos m ≤ 5 := by
+  by_cases h32 : m < 32
+  · exact (hErdos_le_four_of_lt_thirtytwo hm h32).trans (by omega)
+  · push Not at h32
+    interval_cases m
+    · simp [hErdos_thirtytwo]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_thirtysix_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_forty_le
+    · exact absurd hm (by decide)
+    · exact hErdos_fortytwo_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_fortyeight_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_fiftyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_fiftysix_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_sixty_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **Record-setter at `t = 6`: the least practical number with index `6` is
+`64 = 2⁶`.**  The record-setter sequence for `t = 1, …, 6` is
+`2, 4, 8, 16, 32, 64` — exactly the powers of two, the family where the index
+formula `hErdos (2^k) = k` holds.  This rung is the first where the
+practical numbers strictly between consecutive records split by METHOD:
+subadditive splits handle `36, 40, 48, 56, 60` and the kernel engine is needed
+only for the two practically-unsplittable numbers `42` and `54`.  Whether
+`2^t` remains the record-setter for all `t` is open (see the `t ≤ 5` section
+comment: it would follow from `hErdos m ≤ log₂ m` for practical `m`, which
+resists the greedy argument). -/
+theorem minimal_hErdos_six :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 6 } 64 := by
+  constructor
+  · exact ⟨by decide, hErdos_sixtyfour⟩
+  · rintro m ⟨hpr, h6⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_five_of_lt_sixtyfour hpr hlt
+    omega
+
 end Erdos18

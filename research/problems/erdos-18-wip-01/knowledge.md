@@ -402,3 +402,35 @@ NEXT: record-setter t = 6 (= 64?) needs engine values for the practicals in
 smarter engine). General lower-bound engine iterating the gap argument below
 m/2. Non-monotonicity (20 vs 24) suggests studying WHERE the index drops.
 Deep Vose bound still blocked at the elementary layer.
+
+## Session 2026-07-23 (researcher-1, second session) — t = 6 record-setter closed
+
+`minimal_hErdos_six : IsLeast {m | IsPractical m ∧ hErdos m = 6} 64`. The
+record-setter sequence is now proved **2, 4, 8, 16, 32, 64 for t = 1..6**.
+
+KEY METHOD INSIGHT (kills the "decides get slower" worry above): the threshold
+helper `hErdos_le_five_of_lt_sixtyfour` only needs UPPER bounds, and
+subadditivity (`hErdos_mul_le` through a practical split) delivers those for
+FIVE of the seven new practicals at zero kernel cost:
+36 = 6·6 (≤ 4), 40 = 2·20 (≤ 5), 48 = 2·24 (≤ 4), 56 = 2·28 (≤ 5),
+60 = 2·30 (≤ 5). Only the two practically-UNSPLITTABLE numbers 42 = 2·3·7 and
+54 = 2·3³ need `hErdos_le_of_witnesses`, and both have d = 8 (256-subset
+powersets, same cost class as the 24/30 decides). The feared d(48) = 10
+powerset is never enumerated. Engine work at rung t is proportional to the
+practically-unsplittable numbers in (2^t, 2^{t+1}), not to all practicals.
+
+Gotcha: the m = 61/62/63 non-practicality decides inside the interval_cases
+sweep exceed maxRecDepth 512 AND 20000 — the threshold helper needs
+`set_option maxRecDepth 40000 in` (the ≤ 31 sweep got away with the default).
+
+Structural bonus recorded in the file: in [32, 64) only 32 itself attains
+index 5 (36, 42, 48, 54 all ≤ 4) — the record-setter is locally UNIQUE at its
+record, not merely first. (40, 56, 60 are pinned only ≤ 5 by the crude 2·m′
+split; their exact values are open small targets.)
+
+NEXT: t = 7 (= 128?) sweeps [64, 128) — practicals: 64, 66, 72, 78, 80, 84,
+88, 90, 96, 100, 104, 108, 112, 120, 126. Count the practically-unsplittable
+ones first (66 = 2·3·11, 78 = 2·3·13, 90 = 2·3²·5?, 126 = 2·3²·7 are the
+candidates); if few, the same split-vs-engine dichotomy closes the rung.
+Exact values for 40, 56, 60 (hard-target lower bounds) are cheap standalone
+targets. Deep Vose bound unchanged.

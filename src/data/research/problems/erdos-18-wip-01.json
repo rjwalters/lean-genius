@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified lake env lean exit 0, all new results [propext, Classical.choice, Quot.sound]): decide-powered exact-value ENGINES (upper: hErdos_le_of_witnesses; lower: le_hErdos_of_card) + two new exact values — hErdos 24 = 3 (first STRICT subadditivity: hErdos(4*6) = 3 < 2+2) and hErdos 30 = 4 (first value unreachable by subadditivity since 30 has no practical factorisation; d(24)=d(30)=8 yet indices differ). Known exact values: hErdos 1,2,4,6,12,24,30,2^k = 0,1,2,2,3,3,4,k. Deep/open: hErdos(n!) < n^{o(1)} (Vose); residual mechanic = rename parent h -> hCover.",
+    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..6 (minimal_hErdos_two..six); exact-value table through 32 + upper bounds through 60; decide engines + subadditivity dichotomy make each rung cheap; open: 2^t for all t (needs non-greedy hErdos m <= log2 m), exact 40/56/60, deep Vose bound",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -60,7 +60,10 @@
       "hErdos_eighteen (= 3), hErdos_twenty (= 4), hErdos_twentyeight (= 4) — engine exact values in Erdos18WIP01.lean",
       "hErdos_eight/hErdos_sixteen/hErdos_thirtytwo — power-formula specialisations in Erdos18WIP01.lean",
       "hErdos_le_three_of_lt_sixteen + hErdos_le_four_of_lt_thirtytwo (finite practical-enumeration bounds) in Erdos18WIP01.lean",
-      "minimal_hErdos_two/three/four/five (IsLeast record-setters: least practical m with index t is 2^t, t = 2..5) in Erdos18WIP01.lean"
+      "minimal_hErdos_two/three/four/five (IsLeast record-setters: least practical m with index t is 2^t, t = 2..5) in Erdos18WIP01.lean",
+      "hErdos_thirtysix_le/forty_le/fortyeight_le/fiftysix_le/sixty_le (subadditive splits) in Erdos18WIP01.lean",
+      "hErdos_fortytwo_le, hErdos_fiftyfour_le (engine, d=8 powersets) in Erdos18WIP01.lean",
+      "hErdos_sixtyfour, hErdos_le_five_of_lt_sixtyfour, minimal_hErdos_six in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -87,7 +90,11 @@
       "hErdos 30 = 4 is unreachable by subadditivity (30 = 2*3*5 has no practical factorisation) — the decide engine is strictly stronger than all prior bound tools; d(24) = d(30) = 8 but hErdos differs (3 vs 4), so the index sees divisor structure not divisor count",
       "The index is NOT monotone along practical numbers: hErdos 20 = 4 > 3 = hErdos 24 with 20 < 24 and d(20) < d(24) — the larger index on the smaller divisor count",
       "Record-setter sequence (least practical m with hErdos = t) is 2,4,8,16,32 for t = 1..5 — exactly the powers of two; 2^t for all t would follow from hErdos m <= log2 m (practical m), but greedy halving fails: practical numbers can have consecutive-divisor ratio > 2 (78 = 2*3*13, gap 6 -> 13)",
-      "Finite practical-enumeration goals: interval_cases + 'exact absurd hpr (by decide)' on non-practical values + 'simp [hErdos_<val>]' on pinned values; chain helpers with a by_cases at the previous threshold"
+      "Finite practical-enumeration goals: interval_cases + 'exact absurd hpr (by decide)' on non-practical values + 'simp [hErdos_<val>]' on pinned values; chain helpers with a by_cases at the previous threshold",
+      "Record-setter t=6 closed: minimal_hErdos_six IsLeast {practical, hErdos=6} 64; sequence 2,4,8,16,32,64 proved for t=1..6",
+      "Split-vs-engine dichotomy: threshold helpers need only UPPER bounds, and hErdos_mul_le through a practical split (2*m or 6*6) covers most practicals at zero kernel cost — engine work at rung t scales with the practically-unsplittable numbers in (2^t,2^{t+1}), not all practicals",
+      "In [32,64) only 32 attains index 5 (36,42,48,54 <= 4 proved) — the record-setter is locally unique at its record",
+      "maxRecDepth gotcha: non-practicality decides for m=61..63 need maxRecDepth 40000 (default and 20000 both insufficient)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

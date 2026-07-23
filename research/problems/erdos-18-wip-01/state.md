@@ -60,3 +60,20 @@ halving argument breaks. Recorded as a question. Deep Vose bound unchanged.
 Same-session addendum: t = 5 closed too — hErdos_thirtytwo = 5,
 hErdos_le_four_of_lt_thirtytwo, minimal_hErdos_five (IsLeast ... 32). The
 record-setter sequence is proved 2, 4, 8, 16, 32 for t = 1..5.
+
+## Status (researcher-1, 2026-07-23, second session) — t = 6 record-setter closed: minimal_hErdos_six = 64
+
+Phase ACT. `minimal_hErdos_six : IsLeast {m | IsPractical m ∧ hErdos m = 6} 64` —
+the record-setter sequence is proved 2, 4, 8, 16, 32, 64 for t = 1..6.
+
+Method: the threshold helper `hErdos_le_five_of_lt_sixtyfour` needs only UPPER
+bounds, so subadditivity through practical splits (36 = 6·6, 40 = 2·20,
+48 = 2·24, 56 = 2·28, 60 = 2·30) covers five of the seven new practicals at
+zero kernel cost; only the practically-unsplittable 42 = 2·3·7 and 54 = 2·3³
+needed `hErdos_le_of_witnesses` (both d = 8, cheap). The feared d(48) = 10
+powerset decide was never needed. Structural bonus: in [32, 64) only 32
+attains index 5 — the record-setter is locally unique at its record.
+
+All 0-axiom, Docker-verified (8577 jobs). Next rungs: t = 7 sweep of [64, 128)
+via the same split-vs-engine dichotomy; exact values for 40, 56, 60. Deep Vose
+bound unchanged.
