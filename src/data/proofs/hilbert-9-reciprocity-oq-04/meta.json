@@ -94,28 +94,44 @@
   ],
   "sections": [
     {
+      "id": "docs-imports",
+      "title": "Documentation, Imports, and Shared Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "File header explaining the Hilbert's Ninth Problem context and stating the constant reciprocity law (a/P) = χ_q(a)^{deg P}, followed by `import Mathlib`, `open Finset`, the `Hilbert9ConstantReciprocity` namespace, and the shared `variable` block fixing `F K : Type*` as finite fields with `[Algebra F K]` — the ambient hypotheses used by every theorem below.",
+      "mathContext": "$F, K$ finite fields with $F \\hookrightarrow K$ via `algebraMap`, i.e. $K$ a finite extension of $F$."
+    },
+    {
       "id": "characteristic-and-casts",
       "title": "Characteristic Transfer and {±1}-Cast Injectivity",
-      "startLine": 47,
-      "endLine": 67,
+      "startLine": 45,
+      "endLine": 63,
       "summary": "Two helper lemmas. cast_pm_inj: integers in {1,−1} that agree after casting into a field of characteristic ≠ 2 are equal. ringChar_extension_ne_two: the algebra map preserves characteristic, so odd characteristic of F passes to K (via charP_of_injective_algebraMap).",
       "mathContext": "$\\mathrm{ringChar}\\,K = \\mathrm{ringChar}\\,F \\neq 2.$"
     },
     {
       "id": "constant-reciprocity",
       "title": "The Constant Reciprocity Law",
-      "startLine": 68,
-      "endLine": 156,
+      "startLine": 65,
+      "endLine": 148,
       "summary": "quadraticChar_algebraMap_eq_pow. After the degenerate a = 0 case, Euler's criterion in F and K plus the Nat identity card K / 2 = (q/2)·S (from card K = q^d, (q−1)·S = q^d−1, and q odd) give A^{card K/2} = (A^{q/2})^S; then (A^{q/2})^2 = A^{q−1} = 1 and S ≡ d (mod 2) collapse the exponent to d, and the {±1}-cast injectivity descends the value equality to the integer identity.",
       "mathContext": "$\\chi_K(a) = \\chi_F(a)^{[K:F]},\\quad [K:F] = d.$"
     },
     {
       "id": "square-criterion",
-      "title": "Square Criterion and the Even-Degree Corollary",
-      "startLine": 157,
-      "endLine": 186,
-      "summary": "isSquare_algebraMap_iff reads the reciprocity law through quadraticChar_one_iff_isSquare: a nonsquare a (χ_F(a) = −1) has χ_K(a) = (−1)^d = 1 iff d is even. isSquare_algebraMap_of_even_finrank specializes to even degree, covering all constants (including 0) and in particular the quadratic extension.",
+      "title": "Square Criterion",
+      "startLine": 150,
+      "endLine": 176,
+      "summary": "isSquare_algebraMap_iff reads the reciprocity law through quadraticChar_one_iff_isSquare: a nonsquare a (χ_F(a) = −1) has χ_K(a) = (−1)^d = 1 iff d is even, so a nonzero constant is a square in K iff it is already a square in F or [K:F] is even.",
       "mathContext": "$\\text{nonsquare } a \\text{ becomes a square in } F_{q^d} \\iff 2 \\mid d.$"
+    },
+    {
+      "id": "even-degree-corollary",
+      "title": "Even-Degree Corollary",
+      "startLine": 178,
+      "endLine": 186,
+      "summary": "isSquare_algebraMap_of_even_finrank specializes the square criterion: when [K:F] is even, every constant a ∈ F (including 0) is a square in K — in particular all of F_q is a square in the quadratic extension F_{q^2}. The a = 0 case is immediate (IsSquare.zero); otherwise it invokes isSquare_algebraMap_iff with the even hypothesis.",
+      "mathContext": "$2 \\mid [K:F] \\implies \\mathrm{IsSquare}(\\mathrm{algebraMap}_{F}^{K}\\,a)$ for every $a \\in F$."
     }
   ],
   "references": [
