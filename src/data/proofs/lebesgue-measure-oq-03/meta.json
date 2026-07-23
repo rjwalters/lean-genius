@@ -89,6 +89,14 @@
       "endLine": 112,
       "summary": "Framework section describing Wiener measure as the canonical Gaussian measure on path space.",
       "mathContext": "Wiener measure is the distribution of Brownian motion $W: [0,1] \\to \\mathbb{R}$ with $W(0) = 0$, independent increments, and $W(t) - W(s) \\sim \\mathcal{N}(0, t-s)$. The Wiener measure lives on $C([0,1], \\mathbb{R})$, which is the Banach completion of the Cameron-Martin Hilbert space $H = \\{f: [0,1] \\to \\mathbb{R} \\mid f(0)=0, f' \\in L^2\\}$ with inner product $\\langle f, g \\rangle = \\int_0^1 f'(t)g'(t)dt$."
+    },
+    {
+      "id": "closing-summary",
+      "title": "Concentration of Measure and File Summary",
+      "startLine": 113,
+      "endLine": 137,
+      "summary": "A second, slightly reworded restatement of the concentration-of-measure comment (a Lipschitz function on the sphere $S^{n-1}$ is approximately constant on most of the sphere in high dimensions), followed by the closing Summary comment: a 4-item results ledger (impossibility, Gaussian measures, Wiener measure, vanishing ball volume) and a status line. Note the status line's '3 axioms' claim is prose only — the file has zero `axiom` declarations; meta.json's axiomCount: 0 is the accurate figure, matching only the two proved theorems (orthonormal_dist, orthonormal_balls_disjoint) plus unformalized commentary.",
+      "mathContext": "Concentration of measure on $S^{n-1}$ is the quantitative form of the impossibility argument: as dimension grows, mass concentrates on thin shells rather than spreading translation-invariantly."
     }
   ],
   "conclusion": {
