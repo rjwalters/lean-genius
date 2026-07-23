@@ -199,6 +199,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "The module docstring frames the goal: quantify the PSD/SOS gap for the homogeneous Choi–Lam form, contrasting it with the gallery's existing AFFINE gap members (Motzkin, Robinson). It states the target identity — (x²+y²+z²)·CL as an explicit sum of six squares — up front, then imports all of Mathlib and opens the `Hilbert17OQ02` namespace with `open MvPolynomial` for the trivariate-polynomial repackaging later in the file."
+    },
+    {
       "id": "form-and-certificate",
       "title": "The Choi–Lam Form and the Degree-2 Multiplier Certificate",
       "startLine": 49,
