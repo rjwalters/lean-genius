@@ -42,6 +42,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "General (Non-Coprime) Classification of the Linear Diophantine Solution Set", "startLine": 1, "endLine": 51, "summary": "The parent entry classifies the Bézout solution set of a*x+b*y=c only for coprime a,b. This file drops that hypothesis: for arbitrary a,b (not both zero) with g=gcd(a,b), write a=g*a', b=g*b' with a',b' coprime. Then a*x+b*y=c is solvable iff g divides c, and the full solution set is one coset of the primitive lattice Z*(b',-a'), not the naive Z*(b,-a). Delivers general_homogeneous, general_unique/param, general_solvable_iff, int_admits_decomp, and int_general_unique, with worked non-coprime instance (6,9). 0 axioms, 0 sorries.", "mathContext": "Writing $a=ga',b=gb'$ with $a',b'$ coprime: $ax+by=c$ solvable $\\iff g\\mid c$, and the solution set is one coset of the primitive lattice $\\mathbb{Z}\\cdot(b',-a')$, not the naive $\\mathbb{Z}\\cdot(b,-a)$."},
     {
       "id": "homogeneous",
       "title": "General Homogeneous Solutions",
