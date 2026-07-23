@@ -79,20 +79,34 @@
       "title": "Problem Statement and Setup",
       "summary": "Module docstring framing OQ-02 (the sharp modulus 1 vs the parent's 1/2), the witness xⁿ on [0,1), and the namespace/imports (Mathlib; open Set Filter Topology)",
       "startLine": 1,
-      "endLine": 52
+      "endLine": 50
     },
     {
       "id": "supremum-is-one",
       "title": "The Supremum of xⁿ over [0,1) is Exactly 1",
-      "summary": "pow_image_Ico_isLUB (least upper bound 1 via the approaching sequence x = 1 − 1/(k+1)), pow_image_Ico_nonempty, and pow_sSup_Ico (sSup = 1)",
-      "startLine": 53,
-      "endLine": 105
+      "summary": "pow_image_Ico_isLUB (least upper bound 1 via the approaching sequence x = 1 − 1/(k+1) and le_of_tendsto'), pow_image_Ico_nonempty, and pow_sSup_Ico (sSup = 1 via IsLUB.csSup_eq)",
+      "startLine": 52,
+      "endLine": 94
     },
     {
       "id": "sharp-modulus",
-      "title": "The Sharp Modulus of Non-Uniform Convergence",
-      "summary": "pow_uniform_error_Ico (sup of |xⁿ − 0| = 1), pow_exists_gt_of_lt_one (any c < 1 is exceeded), and pow_not_tendstoUniformlyOn_Ico_sharp (non-uniformity with any threshold c ∈ (0,1))",
-      "startLine": 106,
+      "title": "The Sharp Modulus: sup |xⁿ − 0| = 1",
+      "summary": "pow_uniform_error_Ico rewrites the error-image |xⁿ − 0| to the plain power-image (since xⁿ ≥ 0 on [0,1)) and carries the supremum 1 over from pow_sSup_Ico — the headline answer to OQ-02",
+      "startLine": 96,
+      "endLine": 117
+    },
+    {
+      "id": "lub-unpacked",
+      "title": "The LUB Unpacked: Any c < 1 is Exceeded",
+      "summary": "pow_exists_gt_of_lt_one turns the abstract least-upper-bound fact into an explicit witness point, by contradiction from the leastness of 1",
+      "startLine": 119,
+      "endLine": 130
+    },
+    {
+      "id": "sharpened-nonuniformity",
+      "title": "Sharpened Non-Uniformity at Any Threshold, and Summary",
+      "summary": "pow_not_tendstoUniformlyOn_Ico_sharp shows non-uniformity holds for every threshold c ∈ (0,1), not just the parent's 1/2, via the negated ε-N criterion; closes with the #check block and the module's summary docstring",
+      "startLine": 132,
       "endLine": 172
     }
   ],
