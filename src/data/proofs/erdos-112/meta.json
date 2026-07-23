@@ -68,34 +68,34 @@
     },
     {
       "id": "main-question",
-      "title": "Main Question: Well-Definedness of k(n,m)",
-      "startLine": 53,
+      "title": "Main Question and Known Bounds (Documentation Comments, Not Lean Axioms)",
+      "startLine": 51,
       "endLine": 62,
-      "summary": "States the core axiom $\\texttt{erdos\\_112\\_well\\_defined}$: for all $n,m \\geq 1$, every directed graph on $k \\geq k(n,m)$ vertices contains either an independent set of size $n$ or a transitive tournament of size $m$. This is the Ramsey-type guarantee that $k(n,m)$ is well-defined.",
-      "mathContext": "States the core axiom $\\texttt{erdos\\_112\\_well\\_defined}$: for all $n,m \\geq 1$, every directed graph on $k \\geq k(n,m)$ vertices contains either an independent set of size $n$ or a transitive tournament of size $m$. This is the Ramsey-type guarantee that $k(n,m)$ is well-defined."
+      "summary": "Documents Erdős Problem #112 as plain prose comments (`/- ... -/`), not Lean declarations: the problem statement, the Ramsey lower bound $k(n,m) \\geq R(n,m)$, and Hunter's 3-color upper bound $k(n,m) \\leq R(n,m,m) \\leq C \\cdot 3^{n+2m}$. No identifier such as `erdos_112_well_defined` or `ramsey_lower` exists in the file — these are informal documentation, not formalized axioms or theorems.",
+      "mathContext": "The comments record, without formalizing: the open problem of determining $k(n,m)$; the lower bound $R(n,m) \\leq k(n,m)$ from orienting undirected graphs; and Hunter's upper bound $k(n,m) \\leq R(n,m,m)$ via a 3-coloring reduction. None of this is machine-checked."
     },
     {
       "id": "ramsey-lower-bound",
-      "title": "Ramsey Lower Bound",
-      "startLine": 65,
-      "endLine": 69,
-      "summary": "Axiomatizes the lower bound $k(n,m) \\geq R(n,m)$, where $R(n,m)$ is the ordinary (undirected) Ramsey number. This holds because any undirected graph can be oriented, so the directed problem is at least as hard as the undirected one.",
-      "mathContext": "Axiomatizes the lower bound $k(n,m) \\geq R(n,m)$, where $R(n,m)$ is the ordinary (undirected) Ramsey number."
+      "title": "Larson–Mitchell and Erdős–Rado Bounds (Documentation Comments, Not Lean Axioms)",
+      "startLine": 64,
+      "endLine": 68,
+      "summary": "Documents, as plain comments rather than Lean declarations, the Larson–Mitchell quadratic bound $k(n,3) \\leq n^2$ (1997) and the original Erdős–Rado upper bound $k(n,m) \\leq \\frac{2^{m-1}(n-1)^m + n - 2}{2n-3}$ (1967). Neither is formalized as an axiom or theorem in this file.",
+      "mathContext": "Records the Larson–Mitchell bound for $m=3$ and the general Erdős–Rado bound as literature citations in comments, with no corresponding Lean statement."
     },
     {
       "id": "hunter-upper-bound",
-      "title": "Hunter's 3-Color Ramsey Upper Bound",
-      "startLine": 71,
-      "endLine": 76,
-      "summary": "States Hunter's upper bound $k(n,m) \\leq C \\cdot 3^{n+2m}$ for some constant $C > 0$. This arises from a 3-coloring argument: edges between vertices are colored by direction (forward, backward, or no edge), reducing to the 3-color Ramsey number $R(n,m,m)$.",
-      "mathContext": "States Hunter's upper bound $k(n,m) \\leq C \\cdot 3^{n+2m}$ for some constant $C > 0$. This arises from a 3-coloring argument: edges between vertices are colored by direction (forward, backward, or no edge), reducing to the 3-color Ramsey number $R(n,m,m)$."
+      "title": "Observations: Path Variant and Ramsey Connection (Documentation Comments, Not Lean Axioms)",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "Documents two further observations as plain comments: the directed-path variant of the problem has the exact solution $(n-1)(m-1)+1$, and $k(n,m) \\leq R(n,m)$ follows since an undirected independent set is also directed-independent. Neither is a formalized Lean statement.",
+      "mathContext": "Comment-only observations connecting the directed-path variant and the classical Ramsey number to $k(n,m)$; not represented as Lean declarations."
     }
   ],
   "overview": {
     "historicalContext": "Erdős and Rado posed this problem in their landmark 1967 paper on partition relations, extending classical Ramsey theory into the directed setting. The question arose naturally from studying tournaments — complete directed graphs where every pair of vertices has exactly one directed edge — which had been studied extensively since the 1930s by König, Rédei, and others. Rédei's 1934 theorem that every tournament contains a Hamiltonian path hinted at rich structural properties in directed graphs. The function $k(n,m)$ generalizes the undirected Ramsey number $R(n,m)$ by replacing 'clique' with 'transitive tournament,' introducing the asymmetry of edge directions. Larson and Mitchell's 1997 quadratic bound $k(n,3) \\leq n^2$ for transitive triples was a breakthrough for the special case $m=3$. The problem connects to Dilworth's theorem (1950) on antichains in partial orders, since a transitive tournament on $m$ vertices corresponds to a chain of length $m$ in the partial order induced by the edges. Despite decades of work, the exact growth rate of $k(n,m)$ for general $n$ and $m$ remains open, making this one of the enduring questions in directed Ramsey theory.",
     "problemStatement": "Determine $k(n,m)$, the minimum $k$ such that every directed graph on $k$ vertices contains an independent set of size $n$ or a transitive tournament of size $m$. Known bounds: $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$.",
     "text": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
-    "proofStrategy": "The formalization axiomatizes the directed Ramsey function $k(n,m)$ and states its defining property: every sufficiently large directed graph contains either an independent set of size $n$ or a transitive tournament of size $m$. Rather than attempting to compute $k(n,m)$ (which is open), the Lean file captures the known structural results as axioms — the Ramsey lower bound, Hunter's 3-color upper bound via $R(n,m,m)$, the Larson–Mitchell quadratic bound for $m=3$, and the original Erdős–Rado estimate. Each axiom faithfully represents a theorem from the literature, using Lean's type system to enforce the correct quantifier structure and hypothesis conditions.",
+    "proofStrategy": "The formalization defines the directed Ramsey function $k(n,m)$ as a stub (`directedRamsey := fun _ _ => 0`) since its exact value is open, together with the supporting definitions `IsDirectedGraph`, `IsIndependentSet`, and `IsTransitiveTournament`. Rather than attempting to compute $k(n,m)$, the Lean file records the known structural results — the Ramsey lower bound, Hunter's 3-color upper bound via $R(n,m,m)$, the Larson–Mitchell quadratic bound for $m=3$, and the original Erdős–Rado estimate — as plain prose comments citing the literature. These are documentation only: no axiom or theorem declaration formalizes any of these bounds.",
     "keyInsights": [
       "**Ramsey number sandwich**: The bounds $R(n,m) \\leq k(n,m) \\leq R(n,m,m)$ place the directed Ramsey number between the 2-color and 3-color undirected Ramsey numbers, reflecting how edge orientation adds exactly one 'color' of complexity",
       "**Transitive tournaments as linear orders**: A transitive tournament on $m$ vertices is equivalent to a total order, connecting this combinatorial problem to order theory and Dilworth's theorem on chain decompositions",
@@ -110,7 +110,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #112 — the directed Ramsey problem for independent sets versus transitive tournaments — by axiomatizing the function $k(n,m)$ and its known bounds in Lean 4. The formalization faithfully represents the Ramsey lower bound, Hunter's 3-color upper bound, the Larson–Mitchell quadratic estimate for $m=3$, and the original 1967 Erdős–Rado bound, providing a formal foundation for one of the central open problems in directed Ramsey theory.",
+    "summary": "This formalization sets up Erdős Problem #112 — the directed Ramsey problem for independent sets versus transitive tournaments — by defining the relevant directed-graph structures and a stub function $k(n,m)$ in Lean 4. The Ramsey lower bound, Hunter's 3-color upper bound, the Larson–Mitchell quadratic estimate for $m=3$, and the original 1967 Erdős–Rado bound are recorded as documentation comments citing the literature, not as formalized axioms or theorems, providing groundwork rather than a formal result for this open problem in directed Ramsey theory.",
     "implications": "Resolving the exact growth rate of $k(n,m)$ would bridge the gap between 2-color and 3-color Ramsey theory, with potential implications for tournament decomposition, partial order theory, and the Hales–Jewett theorem in higher dimensions. Progress on this problem could also advance understanding of the Erdős–Hajnal conjecture, which posits that tournaments avoiding a fixed subtournament have polynomial-size transitive subtournaments.",
     "openQuestions": [
       "Is $k(n,m)$ polynomial in $n$ for every fixed $m \\geq 4$, extending the Larson–Mitchell quadratic bound beyond $m=3$?",
