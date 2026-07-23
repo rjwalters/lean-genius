@@ -120,7 +120,7 @@ theorem twentyone_all_prime : HasAllPrimeProperty 21 := by
 /-  The Erdős-Guy conjecture: These are the ONLY numbers with all-prime property.
     Verified up to 2^44 by Mientka-Weitzenkamp (1969).
 
-    We state this as an axiom since it remains unproven in general. -/
+    Noted here for context; not formalized as a Lean declaration. -/
 /- ## Part IV: Main Conjecture and Known Bounds -/
 
 /-- **Erdős Problem #236** (Main Conjecture): f(n) = o(log n)
@@ -163,10 +163,9 @@ theorem no_representation_iff_f_zero (n : ℕ) :
     1. Definition of f(n) = #{k : n - 2^k is prime}
     2. Verified values: f(2)=0, f(3)=1, f(5)=1, f(9)=2, f(15)=3
     3. "All-prime" property and verified examples {4, 7, 15, 21}
-    4. Erdős-Guy conjecture (axiom): exactly 7 all-prime numbers
-    5. Main conjecture: f(n) = o(log n) (OPEN)
-    6. Erdős lower bound: f(n) ≫ log log n infinitely often
-    7. Vaughan upper bound: all-prime numbers are sparse -/
+    4. Main conjecture: f(n) = o(log n), stated formally (OPEN, unproved)
+    5. Erdős-Guy conjecture, Erdős's lower bound, and Vaughan's upper bound
+       are documented in comments above for context; not formalized here -/
 theorem summary :
     f 9 = 2 ∧ HasAllPrimeProperty 15 ∧
     (Erdos236_Conjecture ↔ (fun n => (f n : ℝ)) =o[atTop] (fun n => Real.log n)) :=
