@@ -197,6 +197,11 @@
       "targetId": "matrix-similarity-invariants-oq-01-oq-02",
       "relationship": "extends",
       "description": "Follow-up entry that develops this one: “The Minimal Polynomial Is a Similarity Invariant”. Extends the classical similarity invariants (determinant, trace, characteristic polynomial) with the minimal polynomial: similar matrices B = P·A·P⁻¹ have equal minimal polynomials over any commutative ring."
+    },
+    {
+      "targetId": "spectral-trace-det-eigenvalues-oq-02",
+      "relationship": "related",
+      "description": "Reaches the eigenvalue-multiset invariance of Similar.charpoly_roots_eq by a different route: cyclic invariance of the trace (tr(AB) = tr(BA)) is used to prove similarity invariance of the trace in the determinant-hypothesis form tr(P⁻¹AP) = tr(A) under IsUnit P.det (rather than P a bundled unit), and to derive the vanishing trace of a commutator, before bridging to the same charpoly-conjugation fact used here."
     }
   ],
   "conclusion": {

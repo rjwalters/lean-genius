@@ -117,6 +117,11 @@
       "targetId": "spectral-trace-det-eigenvalues-oq-01",
       "relationship": "related",
       "description": "Companion entry establishing trace = Σλ and det = Πλ as the sum and product of the eigenvalues. This entry supplies the cyclic-invariance side: it shows conjugation preserves the entire eigenvalue multiset, so the oq-01 identities make trace and determinant similarity invariants."
+    },
+    {
+      "targetId": "matrix-similarity-invariants-oq-01",
+      "relationship": "related",
+      "description": "Packages determinant, trace, characteristic polynomial, and (over an integral domain) the eigenvalue multiset into one unified similarity-invariants theorem, with similarity proved to be an equivalence relation. This entry reaches the same eigenvalue-multiset invariance (eigenvalues_units_conj) via a different route — as the bridge from cyclic-invariance-of-the-trace to the spectral picture of oq-01 — and adds the determinant-hypothesis (IsUnit P.det) form of similarity invariance that matrix-similarity-invariants-oq-01 does not state."
     }
   ],
   "conclusion": {
