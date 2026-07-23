@@ -145,8 +145,8 @@
     "summary": "For a ≥ 0 the quadratic truncation of the binomial expansion is a valid Bernoulli-type lower bound, (1+a)ⁿ ≥ 1 + n·a + (n(n−1)/2)·a², with equality iff a = 0 ∨ n ≤ 2 and strictness iff a ≠ 0 ∧ n ≥ 3. This refines the first-order equality case (a = 0 ∨ n ≤ 1) by one step, the increment reflecting that the quadratic truncation is exact through degree two. The hypothesis a ≥ 0 is sharp. Verified: 0 sorries, 0 axioms.",
     "implications": "Mathlib carries only the first-order integer-power Bernoulli inequality (on −2 ≤ a) and rpow forms; the second-order truncation and its equality case were absent. This entry supplies them and exposes the general pattern: the degree-k binomial truncation is a lower bound for a ≥ 0 whose equality threshold is n ≤ k, generalizing the classical n ≤ 1 case.",
     "openQuestions": [
-      "Does the degree-k binomial truncation 1 + Σ_{j≤k} C(n,j)a^j ≤ (1+a)ⁿ hold for all a ≥ 0 with equality iff a = 0 ∨ n ≤ k, by the same Pascal induction?",
-      "On −1 < a < 0 the even and odd truncations bracket (1+a)ⁿ from opposite sides; can the second-order truncation be replaced by a sharp two-sided enclosure there?"
+      "Now discharged by bernoulli-inequality-oq-01-oq-02-oq-01, which proves the degree-k binomial truncation ∑_{i≤k} C(n,i)aⁱ ≤ (1+a)ⁿ for all a ≥ 0 with its sharp equality case, by the same Pascal induction.",
+      "On −1 < a < 0 the even and odd truncations bracket (1+a)ⁿ from opposite sides; can the second-order truncation be replaced by a sharp two-sided enclosure there? (Still open: bernoulli-inequality-oq-01-oq-02-oq-01 restates this at general k without resolving it.)"
     ],
     "crossReferences": []
   },
@@ -165,6 +165,11 @@
       "targetId": "binomial-theorem-oq-05",
       "relationship": "related",
       "description": "binomial-theorem-oq-05 proves the first-order strict Bernoulli inequality for a > 0; the second-order truncation here is the next term of the same expansion"
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-02-oq-01",
+      "relationship": "answered-by",
+      "description": "Answers this entry's first open question: proves the degree-k binomial truncation ∑_{i≤k} C(n,i)aⁱ ≤ (1+a)ⁿ for all a ≥ 0 and every k, with a uniform sharp equality case, generalizing this entry's k = 2 case."
     }
   ],
   "leanFile": {
