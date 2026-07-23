@@ -68,20 +68,36 @@
       "mathContext": "$\\mathrm{hasUnitEmbedding}\\,V\\,\\mathrm{adj}\\,n$ = a map $V \\to \\mathbb{R}^n$ realizing every edge as a unit distance; the graph dimension is the least such $n$."
     },
     {
-      "id": "monotonicity",
-      "title": "Monotonicity of Embeddability",
+      "id": "embedding-mono-construction",
+      "title": "The Padding Construction: embedding_mono",
       "startLine": 44,
-      "endLine": 76,
-      "summary": "embedding_mono (pad an ℝⁿ embedding to ℝᵐ, m≥n) and hasUnitEmbedding_mono.",
-      "mathContext": "Admissible dimensions form an up-set; the dimension is its minimum."
+      "endLine": 69,
+      "summary": "embedding_mono builds the padded ℝᵐ embedding from an ℝⁿ one, sending the new coordinates to 0 and showing the padded squared-distance sum equals the original via a Fin-to-range reindexing plus Finset.sum_subset on the vanishing tail.",
+      "mathContext": "The explicit padding map $v \\mapsto (i < n\\ ?\\ e(v)_i : 0)$ preserves every unit-edge distance."
+    },
+    {
+      "id": "monotonicity-lift",
+      "title": "Monotonicity of hasUnitEmbedding",
+      "startLine": 71,
+      "endLine": 74,
+      "summary": "hasUnitEmbedding_mono lifts embedding_mono from the structure level to the existential Prop hasUnitEmbedding, giving the up-set property the parent's computational approach needs.",
+      "mathContext": "$n \\le m \\to \\mathrm{hasUnitEmbedding}\\,n \\to \\mathrm{hasUnitEmbedding}\\,m$ — the admissible dimensions form an up-set."
     },
     {
       "id": "base-case",
       "title": "The Edgeless Base Case",
-      "startLine": 78,
-      "endLine": 100,
-      "summary": "hasUnitEmbedding_zero_of_edgeless, no_edge_of_hasUnitEmbedding_zero, hasUnitEmbedding_zero_iff_edgeless.",
+      "startLine": 76,
+      "endLine": 94,
+      "summary": "hasUnitEmbedding_zero_of_edgeless, no_edge_of_hasUnitEmbedding_zero, and the combined iff hasUnitEmbedding_zero_iff_edgeless.",
       "mathContext": "A graph embeds in ℝ⁰ iff it has no edges."
+    },
+    {
+      "id": "summary",
+      "title": "Namespace Close and Summary",
+      "startLine": 96,
+      "endLine": 109,
+      "summary": "Closes the namespace and restates the two headline facts (monotonicity, dimension-0-iff-edgeless) as the prerequisite groundwork for a computational dimension check.",
+      "mathContext": "No further results — a recap of embedding_mono/hasUnitEmbedding_mono and hasUnitEmbedding_zero_iff_edgeless."
     }
   ],
   "conclusion": {
