@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-spherical-law-of-cosines",
+      "title": "Module Overview: Spherical Law of Cosines",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "States the spherical analogue of the planar law of cosines: for a spherical triangle on the unit sphere S² with arc-length sides a,b,c and dihedral angle C opposite c, cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C), reducing to the planar law in the small-angle limit. Formalized via unit vectors in ℝ³, using that the arc length between two unit vectors equals the angle between them, i.e. ⟨u,v⟩ = cos(arcLength(u,v)). Cites Todhunter (1886) and Wiedijk's 100 Theorems #94.",
+      "mathContext": "$\\cos c = \\cos a\\cos b + \\sin a \\sin b \\cos C$ for a unit-sphere triangle, via $\\langle u,v\\rangle = \\cos(\\text{arcLength}(u,v))$."
+    },
+    {
       "id": "unit-vectors",
       "title": "Part I: Unit Vectors in ℝ³",
       "startLine": 37,
