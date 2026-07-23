@@ -65,20 +65,36 @@
       "mathContext": "$H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$ for product laws; engine $\\mathrm{negMulLog}(xy) = y\\,\\mathrm{negMulLog}\\,x + x\\,\\mathrm{negMulLog}\\,y$."
     },
     {
-      "id": "definition",
-      "title": "Entropy in negMulLog form and agreement with the standard definition",
+      "id": "entropy-def",
+      "title": "Entropy in negMulLog form",
       "startLine": 39,
+      "endLine": 41,
+      "summary": "entropy p := ∑ₓ negMulLog (p x), the negMulLog-based definition of Shannon entropy that the rest of the file works with.",
+      "mathContext": "$H(p) := \\sum_x \\mathrm{negMulLog}(p_x)$."
+    },
+    {
+      "id": "entropy-agreement",
+      "title": "Agreement with the standard definition",
+      "startLine": 43,
       "endLine": 49,
-      "summary": "entropy p := ∑ₓ negMulLog (p x). entropy_eq_neg_sum: entropy p = -∑ₓ p x · log (p x), agreeing with the standard Shannon entropy (valid for all p).",
+      "summary": "entropy_eq_neg_sum: entropy p = -∑ₓ p x · log (p x), agreeing with the standard Shannon entropy for all p, since negMulLog t = -t·log t and log 0 = 0.",
       "mathContext": "$H(p) = \\sum_x \\mathrm{negMulLog}(p_x) = -\\sum_x p_x \\log p_x$."
     },
     {
-      "id": "additivity",
-      "title": "Additivity for independent (product) sources",
+      "id": "prod-statement",
+      "title": "Statement: entropy is additive for independent sources",
       "startLine": 50,
-      "endLine": 72,
-      "summary": "entropy_prod: H(pX ⊗ pY) = H(pX) + H(pY) for ∑ pX = ∑ pY = 1, via Fintype.sum_prod_type + Real.negMulLog_mul + marginal collapse.",
+      "endLine": 61,
+      "summary": "entropy_prod's statement and docstring: H(pX ⊗ pY) = H(pX) + H(pY) for ∑ pX = ∑ pY = 1, framed as the equality case of subadditivity holding exactly when X and Y are independent. Opens the proof with unfold entropy + Fintype.sum_prod_type.",
       "mathContext": "$H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$."
+    },
+    {
+      "id": "prod-proof",
+      "title": "Proof: linearize and collapse the marginals",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "The `key` lemma applies Real.negMulLog_mul to linearize each product symbol negMulLog(pX x · pY y), then Finset.sum_add_distrib/mul_sum collapse the inner sum using ∑ pY = 1; the outer sum over x is collapsed the same way using ∑ pX = 1 to close the theorem.",
+      "mathContext": "$\\mathrm{negMulLog}(xy) = y\\,\\mathrm{negMulLog}\\,x + x\\,\\mathrm{negMulLog}\\,y$, summed and collapsed via $\\sum p_X = \\sum p_Y = 1$."
     }
   ],
   "conclusion": {
