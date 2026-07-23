@@ -2,7 +2,7 @@
   {
     "id": "ann-fiboq020201-1",
     "proofId": "fibonacci-identities-oq-02-oq-02-oq-01",
-    "range": { "startLine": 3, "endLine": 48 },
+    "range": { "startLine": 4, "endLine": 48 },
     "type": "concept",
     "title": "Naming the Cofactor: the Companion Sequence",
     "content": "**Framing.** The parent entry proves that the first-kind Lucas sequence $U_n(P,Q)$ satisfies $U_n \\mid U_{2n}$, but says nothing about the quotient. Here we name it. Every first-kind sequence has a twin — the *second-kind (companion) sequence* $V_n(P,Q)$ obeying the same recurrence with seed $V_0=2,\\ V_1=P$ — and the two are locked together by the **doubling law** $U_{2n}=U_n\\,V_n$. This is the recurrence analogue of $\\sin 2\\theta = 2\\sin\\theta\\cos\\theta$: the pair $(U,V)$ plays the role of $(\\sin,\\cos)$. For $(P,Q)=(1,-1)$ the companion is the Lucas number sequence $2,1,3,4,7,\\dots$ and the law becomes the classical $F_{2n}=F_n L_n$.",

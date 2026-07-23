@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring stating the open question (explicit cofactor of Uₙ in U_{2n}?), the companion sequence Vₙ and the two doubling identities it answers with, and the honesty note recovering Nat.fib_two_mul as a corollary. Imports Mathlib and the parent file, opens its namespace.",
+      "mathContext": "$V_0=2,\\ V_1=P,\\ V_{n+2}=P\\,V_{n+1}-Q\\,V_n$; goal: $U_{2n}=U_nV_n$ and $U_{2n+1}=U_{n+1}^2-QU_n^2$."
+    },
+    {
       "id": "companion-definition",
       "title": "The Companion Lucas Sequence Vₙ",
       "startLine": 50,
