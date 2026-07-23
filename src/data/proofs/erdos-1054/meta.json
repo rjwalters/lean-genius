@@ -38,16 +38,16 @@
     ],
     "originalContributions": [
       "Formal statement of the OPEN Erdős problem in Lean 4",
-      "Axiomatization of the function f(n) and representability predicate",
-      "Statement of the three open questions (o(n), almost all, limsup)",
+      "Definition of the true (unbounded, noncomputable) function f(n) via Nat.find, alongside the representability predicate and the bounded computable approximation computeF",
+      "Statement of the three open questions (o(n), almost all, limsup) in terms of the unbounded f(n)",
       "Formalization of Tao's partial result disproving Part I",
       "Analysis of exceptional values n = 2 and n = 5"
     ],
     "axiomCount": 1,
-    "lineCount": 612,
-    "assumptions": "1 axiom: tao_disproves_part_i. See Lean source for the complete statement. Trust caveat: the concrete `computeF`/`f_*_eq` value computations (small n) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these finite demonstrations do not feed the axiomatized result `tao_disproves_part_i`.",
+    "lineCount": 628,
+    "assumptions": "1 axiom: tao_disproves_part_i, which asserts Tao's disproof of Part I (¬(f(n) = o(n))) for the true, unbounded, noncomputable f(n) (defined via Nat.find). Stating the open questions in terms of this unbounded f — rather than the bounded computable approximation computeF (default search bound 10000) — is essential: a bounded function is trivially o(n), so an axiom about the bounded version would be inconsistent. See Lean source for the complete statement. Trust caveat: the concrete `computeF`/`f_*_eq` value computations (small n) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom; these finite demonstrations do not feed the axiomatized result `tao_disproves_part_i`.",
     "theoremCount": 52,
-    "definitionCount": 8
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and appears as Problem B2 in Richard Guy's influential book 'Unsolved Problems in Number Theory' (2004). The function f(n) computes the minimal m such that n can be written as a sum of the k smallest divisors of m.\n\nThe function has a curious property: it is undefined for exactly two values, n = 2 and n = 5. These are the only positive integers that cannot be expressed as a partial sum of divisors. This follows from a careful analysis of divisor structure.\n\nTerry Tao made significant progress on this problem by showing that the strong conjecture f(n) = o(n) is FALSE. He proved that the density of {n : f(n) ≤ δn} is at most O(δ²), meaning there are many n where f(n) is at least a constant fraction of n.\n\nHowever, the weaker question—whether f(n) = o(n) for ALMOST ALL n—remains open, as does the question of whether limsup f(n)/n = ∞.",
@@ -206,10 +206,10 @@
       "Finset"
     ],
     "namespace": "Erdos1054",
-    "lineCount": 612,
+    "lineCount": 628,
     "axiomCount": 1,
     "theoremCount": 52,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "path": "Proofs/Erdos1054Problem.lean",
     "sorries": 0
   },
