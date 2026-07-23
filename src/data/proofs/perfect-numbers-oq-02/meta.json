@@ -63,9 +63,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Docstring and Namespace Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring positioning the file against the parent Euclid–Euler theorem, stating the abundancy index I(n) = σ(n)/n = ∑_{d∣n} 1/d and the perfect ⟺ ∑ 1/d = 2 headline, then `open Finset` and `namespace PerfectNumbersOQ02`.",
+      "mathContext": "$I(n) = \\sigma(n)/n = \\sum_{d\\mid n} 1/d;\\quad n\\text{ perfect} \\iff \\sum_{d\\mid n} 1/d = 2.$"
+    },
+    {
       "id": "index",
       "title": "The Abundancy Index as a Reciprocal Sum",
-      "startLine": 36,
+      "startLine": 38,
       "endLine": 56,
       "summary": "abundancyIndex n = ∑_{d∣n} (d:ℚ)⁻¹. abundancyIndex_eq_sigma_div: I(n) = σ(n)/n, via the divisor involution.",
       "mathContext": "Pairing each divisor with its cofactor turns the reciprocal sum into σ(n)/n."
@@ -73,18 +81,26 @@
     {
       "id": "characterization",
       "title": "The Reciprocal-Divisor Characterization",
-      "startLine": 58,
-      "endLine": 78,
-      "summary": "perfect_iff_abundancyIndex_eq_two: n.Perfect ⟺ ∑_{d∣n} 1/d = 2. abundancyIndex_eq_two_of_perfect: the forward direction.",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "perfect_iff_abundancyIndex_eq_two: n.Perfect ⟺ ∑_{d∣n} 1/d = 2, by rewriting perfectness as σ(n) = 2n and clearing denominators. abundancyIndex_eq_two_of_perfect: the forward direction extracted for reuse.",
       "mathContext": "Perfect numbers are exactly those whose divisor reciprocals sum to 2."
     },
     {
       "id": "concrete",
       "title": "Concrete Values at 6 and 28",
-      "startLine": 80,
-      "endLine": 100,
-      "summary": "perfect_six, perfect_twentyEight (kernel decide), and abundancyIndex_six = abundancyIndex_twentyEight = 2.",
+      "startLine": 73,
+      "endLine": 90,
+      "summary": "perfect_six, perfect_twentyEight (kernel decide, not native_decide), and abundancyIndex_six = abundancyIndex_twentyEight = 2 — the smallest witnesses of the reciprocal-sum-equals-2 property.",
       "mathContext": "1/1 + 1/2 + 1/3 + 1/6 = 2 and the analogous sum for 28."
+    },
+    {
+      "id": "closing",
+      "title": "Closing Summary",
+      "startLine": 91,
+      "endLine": 108,
+      "summary": "`end PerfectNumbersOQ02`, followed by a closing docstring recapping abundancyIndex, abundancyIndex_eq_sigma_div, perfect_iff_abundancyIndex_eq_two, and the concrete values, plus the axiom-integrity status line (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "A file-level recap: the reciprocal-divisor characterization rests on `Nat.sum_div_divisors` and `Nat.perfect_iff_sum_divisors_eq_two_mul`."
     }
   ],
   "conclusion": {
