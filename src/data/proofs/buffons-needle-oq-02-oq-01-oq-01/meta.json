@@ -88,6 +88,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Closed Form for the n-Dimensional Buffon Crossing Factor", "startLine": 1, "endLine": 49, "summary": "Solves the parent file's recurrence for \u03b1\u2099 in closed form via Gamma functions, settling the open question of an explicit (non-recursive) expression. Proof strategy: match base cases (n=2,3) and show the Gamma-function form obeys the same recurrence via \u0393(x+1)=x\u0393(x), so the two sequences coincide by induction.", "mathContext": "$\\alpha_n = \\dfrac{\\Gamma(n/2)}{\\sqrt{\\pi}\\,\\Gamma((n+1)/2)}$ for all $n \\ge 2$, the sphere-average identity $\\alpha_n = E_{S^{n-1}}[|u_1|]$ evaluated via the Beta/Gamma integral."},
     {
       "id": "part-i-closed-form",
       "title": "Part I: The Gamma Closed Form",
