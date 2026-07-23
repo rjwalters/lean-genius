@@ -21,12 +21,20 @@
       "mathContext": "$\\sum_i |A_i| < |\\Omega| \\implies \\exists\\,\\omega,\\ \\forall i,\\ \\omega \\notin A_i$"
     },
     {
-      "id": "counting-colourings",
-      "title": "Counting Two-Colourings of a Finite Edge Set",
+      "id": "colouring-model",
+      "title": "Modelling Colourings and Counting the All-True Case",
       "startLine": 65,
+      "endLine": 99,
+      "summary": "Models a 2-colouring as S : Finset E and a block K as monochromatic when K ⊆ S or Disjoint K S (the Mono predicate, @[reducible] so DecidablePred is found by instance search). card_supersets_le bounds the all-true-on-K colourings by 2^(|E|−|K|) via the injection S ↦ S \\ K into the powerset of univ \\ K, injective because (S\\K) ∪ K = S recovers S.",
+      "mathContext": "$|\\{S : K \\subseteq S\\}| \\le |\\mathcal{P}(E\\setminus K)| = 2^{|E|-|K|}$, via $S \\mapsto S \\setminus K$."
+    },
+    {
+      "id": "colouring-count",
+      "title": "Counting the All-False Case and Combining to the Total Bound",
+      "startLine": 101,
       "endLine": 140,
-      "summary": "Models a 2-colouring as S : Finset E and a block K as monochromatic when K ⊆ S or Disjoint K S (the Mono predicate). card_supersets_le and card_disjoint_le each bound their family by 2^(|E|−|K|) (via an injection and an inclusion respectively); card_mono_le unions them to 2^(|E|−|K|+1).",
-      "mathContext": "$|\\{S : \\mathrm{Mono}\\,K\\,S\\}| \\le 2^{|E|-|K|+1}$"
+      "summary": "card_disjoint_le bounds the all-false-on-K colourings by 2^(|E|−|K|) via the simpler inclusion S ⊆ Kᶜ. card_mono_le then unions the two symmetric bounds (filter_or + card_union_le + pow_succ) to the total monochromatic count 2^(|E|−|K|+1), the per-block quantity the Ramsey union bound consumes.",
+      "mathContext": "$|\\{S : \\mathrm{Mono}\\,K\\,S\\}| \\le 2^{|E|-|K|} + 2^{|E|-|K|} = 2^{|E|-|K|+1}$"
     },
     {
       "id": "ramsey-avoidance",
