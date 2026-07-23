@@ -121,17 +121,15 @@
     "id": "ann-e1086-upper-bounds",
     "proofId": "erdos-1086",
     "range": {
-      "startLine": 101,
-      "endLine": 107
+      "startLine": 100,
+      "endLine": 105
     },
     "type": "concept",
-    "title": "Upper Bounds: n^{5/2} to n^{20/9}",
-    "content": "The upper bound improved from $g(n) \\ll n^{5/2}$ (Erdős-Purdy 1971) to $g(n) \\ll n^{20/9}$ (Raz-Sharir 2017). The exponent decreased: $5/2 = 2.5 \\to 20/9 \\approx 2.222$, approaching but not reaching the conjectured quadratic.",
-    "mathContext": "The upper bounds use the reduction to point-curve incidences. For area $\\alpha$ and base $(A,B)$, the third vertex $C$ lies on a line parallel to $AB$ at distance $2\\alpha/|AB|$. This gives $O(n^2)$ lines, and the Szemerédi-Trotter theorem bounds point-line incidences. The Raz-Sharir improvement uses a refined incidence bound for algebraic curves (not just lines).",
+    "title": "Upper Bound: n^{20/9} (Raz-Sharir 2017), axiom",
+    "content": "`upper_bound_raz_sharir_2017`: $\\exists C > 0$ such that $g(n) \\leq C \\cdot n^{20/9}$ for $n \\geq 2$ — the current best known upper bound, taken as an axiom (not re-derived). `bestUpperExponent` names the constant $20/9$. In the literature the bound improved from the original $n^{5/2}$ (Erdős-Purdy 1971) to $n^{20/9}$ (Raz-Sharir 2017) via a sequence of incidence-geometry arguments; only the final Raz-Sharir bound is formalized here.",
+    "mathContext": "The literature's upper bounds use a reduction to point-curve incidences (for area $\\alpha$ and base $(A,B)$, the third vertex $C$ lies on a line parallel to $AB$) together with the Szemerédi-Trotter incidence theorem and, for Raz-Sharir, polynomial partitioning. None of that incidence-geometry machinery is formalized in this file — the bound is taken directly as an axiom.",
     "relatedConcepts": [
-      "Real.rpow",
-      "incidence_reduction",
-      "szemeredi_trotter_bound"
+      "Real.rpow"
     ],
     "significance": "key",
     "prerequisites": [
@@ -141,45 +139,20 @@
     ]
   },
   {
-    "id": "ann-e1086-conjecture",
-    "proofId": "erdos-1086",
-    "range": {
-      "startLine": 112,
-      "endLine": 118
-    },
-    "type": "concept",
-    "title": "Erdős-Purdy Conjecture",
-    "content": "`erdos_purdy_conjecture` states $g(n) = \\Theta(n^2 (\\log n)^\\alpha)$ for some $\\alpha > 0$: the truth is believed to be quadratic with a polylogarithmic correction. This is formalized as the existence of $\\alpha > 0$ with matching upper and lower bounds.",
-    "mathContext": "The conjecture predicts that the lower bound $n^2 \\log \\log n$ is closer to the truth than the upper bound $n^{20/9}$. The polylogarithmic correction $(\\log n)^\\alpha$ generalizes the $\\log \\log n$ in the lower bound. If true, this would be analogous to the Erdős unit distance conjecture, where grid-like constructions are near-extremal.",
-    "relatedConcepts": [
-      "Real.log",
-      "Real.rpow",
-      "Theta notation",
-      "extremal combinatorics"
-    ],
-    "significance": "key",
-    "prerequisites": [
-      "Big-Theta Notation",
-      "Polylogarithmic Factors",
-      "Extremal Combinatorics"
-    ]
-  },
-  {
     "id": "ann-e1086-gdim",
     "proofId": "erdos-1086",
     "range": {
-      "startLine": 126,
-      "endLine": 135
+      "startLine": 112,
+      "endLine": 120
     },
     "type": "concept",
     "title": "Higher-Dimensional Generalization g_d^r(n)",
-    "content": "`g_dim d r n` is the maximum number of $r$-simplices of the same volume from $n$ points in $\\mathbb{R}^d$. Axiomatized since the definition involves a supremum over all point configurations. `g2_is_g` states $g_2^2(n) = g(n)$, connecting to the original problem.",
-    "mathContext": "The generalization to $r$-simplices in $\\mathbb{R}^d$ reveals dimension-dependent behavior. The critical case is $d = 2r$: the Oppenheim-Lenz construction achieves $g_{2r}^r(n) \\geq c \\cdot n^{r+1}$ using a product construction. For $d < 2r$, the bounds are suboptimal; for $d > 2r$, higher-dimensional freedom allows more equal-volume simplices.",
+    "content": "`g_dim d r n` is axiomatized as the maximum number of $r$-simplices of the same volume from $n$ points in $\\mathbb{R}^d$ (no defining equation, no connection back to `g`). `bound_g3_2_dst` then axiomatizes a single instance: $g_3^2(n) \\ll n^{2.4286}$ (Dumitrescu-Sharir-Tóth 2009). No other dimensions or the Oppenheim-Lenz construction are formalized in this file.",
+    "mathContext": "The generalization to $r$-simplices in $\\mathbb{R}^d$ reveals dimension-dependent behavior in the literature (e.g. the Oppenheim-Lenz construction at $d = 2r$), but this file only introduces the abstract `g_dim` axiom and one concrete bound for $(d,r) = (3,2)$.",
     "relatedConcepts": [
       "simplex",
       "volume",
-      "dimension",
-      "g2_is_g"
+      "dimension"
     ],
     "significance": "key",
     "prerequisites": [
@@ -189,27 +162,25 @@
     ]
   },
   {
-    "id": "ann-e1086-higherdim-bounds",
+    "id": "ann-e1086-summary-theorems",
     "proofId": "erdos-1086",
     "range": {
-      "startLine": 137,
+      "startLine": 131,
       "endLine": 150
     },
-    "type": "concept",
-    "title": "Higher-Dimensional Bounds",
-    "content": "Various dimension-specific results:\n- $g_3^2(n) \\ll n^{8/3}$ (Erdős-Purdy) improved to $n^{2.4286}$ (DST 2009)\n- $g_6^2(n) \\gg n^3$ (Erdős-Purdy)\n- $g_4^2(n) \\leq g_5^2(n) \\ll n^{3-c}$ (Purdy 1974)\n- Oppenheim-Lenz: $g_{2k+2}^k(n) \\geq c \\cdot n^{k+1}$\n- Conjecture: $g_{2k+2}^k(n) = \\Theta(n^{k+1})$",
-    "mathContext": "The Oppenheim-Lenz construction places $n$ points on $k+1$ curves in $\\mathbb{R}^{2k+2}$ arranged so that many $(k+1)$-tuples span simplices of the same volume. The conjecture that this is optimal would generalize the 2D Erdős-Purdy conjecture. The Purdy bound $g_5^2(n) \\ll n^{3-c}$ is significant because $3$ is the 'obvious' exponent for 5D.",
+    "type": "theorem",
+    "title": "Summary Theorems Combining the Axiomatized Bounds",
+    "content": "`erdos_1086_statement` packages the lower bound (`lower_bound_erdos_purdy`) and the Raz-Sharir upper bound (`upper_bound_raz_sharir_2017`) into one conjunction. `erdos_1086_summary` adds the higher-dimensional bound (`bound_g3_2_dst`) as a third conjunct. Both are genuine theorems, but their content is entirely a restatement of the three axioms — no additional mathematical content is proved.",
+    "mathContext": "Since the three constituent facts are axioms, these theorems establish nothing beyond what was assumed; they exist to give a single named statement matching the problem's public claim.",
     "relatedConcepts": [
-      "g_dim",
-      "oppenheim_lenz_construction",
-      "erdos_purdy_conjecture_high_dim",
-      "Real.rpow"
+      "lower_bound_erdos_purdy",
+      "upper_bound_raz_sharir_2017",
+      "bound_g3_2_dst"
     ],
     "significance": "key",
     "prerequisites": [
-      "Asymptotic Upper and Lower Bounds",
-      "Simplex Volume in R^d",
-      "Geometric Constructions"
+      "Existential Quantification",
+      "Conjunction"
     ]
   }
 ]
