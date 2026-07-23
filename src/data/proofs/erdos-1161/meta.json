@@ -47,8 +47,6 @@
       "permCountByOrder: f_k(n) counting permutations of order k",
       "maxPermCountByOrder: max_k f_k(n) via Finset.sup",
       "lcmRange: lcm(1,...,m) via Finset.lcm",
-      "Beker characterization: f_k(n) ≥ (n-1)! implies lcm(1,...,n-k) | k",
-      "Beker maximizer: minimal k with lcm(1,...,n-k) | k achieves (n-1)!",
       "Asymptotic: max_k f_k(n) ≥ (n-1)! for n ≥ 2",
       "Prime cycle counting: for prime p, permCountByOrder p p = (p-1)! (proved via cycleType characterization)",
       "Small cases: explicit counts for S_1, S_2, S_3"
@@ -103,7 +101,7 @@
     {
       "id": "beker-results",
       "title": "Beker's Main Results",
-      "summary": "States the three key results resolving the problem: (1) `beker_characterization`—if $f_k(n) \\geq (n-1)!$ then $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$; (2) `beker_maximizer_achieves`—the minimal $k$ with this property achieves exactly $(n-1)!$; (3) `max_permCount_ge_sub_factorial`—there exists $k$ with $f_k(n) \\geq (n-1)!$.",
+      "summary": "Block comments (not Lean declarations) describe Beker's two results: (1) if $f_k(n) \\geq (n-1)!$ then $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$; (2) the minimal $k$ with this property achieves exactly $(n-1)!$. Only the weaker existence bound is actually proved, as the theorem `max_permCount_ge_sub_factorial`—there exists $k$ with $f_k(n) \\geq (n-1)!$.",
       "startLine": 97,
       "endLine": 134
     },
