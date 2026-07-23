@@ -121,6 +121,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Jordan–Chevalley–Dunford Decomposition",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "States the open question — can every linear endomorphism f of a finite-dimensional vector space over a perfect field be written as f = s + n with s semisimple, n nilpotent, s and n commuting, and both polynomials in f, uniquely? Answers yes on both counts: this is the coordinate-free, basis-independent shadow of the parent entry's Jordan canonical form, obtained here fully machine-checked and axiom-free via Mathlib's Newton-iteration existence proof and a perfect-field uniqueness argument built from commuting semisimple elements of K[f].",
+      "mathContext": "Existence comes from Mathlib's $\\mathrm{Module.End.exists\\_isNilpotent\\_isSemisimple}$ (Newton's method); uniqueness from $\\mathrm{IsSemisimple.sub\\_of\\_commute}$, the missing ingredient Mathlib lists as a TODO at the packaged $\\mathrm{ExistsUnique}$ level, supplied here."
+    },
+    {
       "title": "Polynomials in f commute",
       "startLine": 51,
       "endLine": 64,
