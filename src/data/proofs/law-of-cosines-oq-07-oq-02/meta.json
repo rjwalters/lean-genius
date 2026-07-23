@@ -51,16 +51,24 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header, Imports, and Setup",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Imports Mathlib and the parent LawOfCosinesOQ07, then the module docstring stating the goal 4·(mₐ²+m_b²+m_c²)=3·(a²+b²+c²) and its derivation as the three-fold cyclic sum of the parent's median_length formula (net side-square coefficient 2+2−1=3). Opens the parent namespace, declares the LawOfCosinesOQ07OQ02 namespace, and fixes the coordinate-free ambient setting: a real inner-product space V acting on an affine point space P via [NormedAddTorsor V P].",
-      "mathContext": "Ambient setting: points $a,b,c$ of a real inner-product affine space (NormedAddTorsor); medians are $\\operatorname{dist}$ to genuine midpoints, so the identity holds in every Euclidean affine space of any dimension."
+      "endLine": 37,
+      "summary": "Imports Mathlib and the parent LawOfCosinesOQ07, then the module docstring stating the goal 4·(mₐ²+m_b²+m_c²)=3·(a²+b²+c²) and its derivation as the three-fold cyclic sum of the parent's median_length formula (net side-square coefficient 2+2−1=3), distinguishing this global three-median relation from the parent's single-median Apollonius identity and from the scalar Stewart algebra of law-of-cosines-oq-04.",
+      "mathContext": "Ambient setting to be fixed next: points $a,b,c$ of a real inner-product affine space (NormedAddTorsor); medians are $\\operatorname{dist}$ to genuine midpoints, so the identity holds in every Euclidean affine space of any dimension."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Coordinate-Free Setup",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "Opens the parent LawOfCosinesOQ07 namespace, declares the LawOfCosinesOQ07OQ02 namespace, and fixes the coordinate-free ambient setting: a real inner-product space V acting on an affine point space P via [NormedAddTorsor V P]. No scalar side-length parameterisation is introduced anywhere in the file.",
+      "mathContext": "$P$ a NormedAddTorsor over a real inner-product space $V$, matching the parent's ambient types exactly so median_length can be instantiated directly."
     },
     {
       "id": "part1-sum-medians",
       "title": "Part I: Sum of Squared Medians",
-      "startLine": 44,
+      "startLine": 46,
       "endLine": 66,
       "summary": "The identity 4·(mₐ² + m_b² + m_c²) = 3·(ab² + bc² + ca²) obtained by summing the parent's median_length over the three vertices and closing with linear_combination after folding dist-symmetry."
     },
