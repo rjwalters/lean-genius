@@ -23,9 +23,22 @@ from the root factorization, with no axioms and no `sorry`:
 * `isBounded_sublevelSet` — hence `Sₚ` is bounded (`Bornology.IsBounded`).
 
 These give exactly the well-definedness the parent's `sublevelMeasure` needs: `Sₚ`
-is a bounded measurable set, so its 2D Lebesgue measure is finite.  The remaining
-open content — the `c/log n` lower bound and the `1/log n` vs `1/log log n` gap —
-is the genuinely deep KLR input, cleanly isolated.
+is a bounded measurable set, so its 2D Lebesgue measure is finite.  Beyond
+well-definedness the file now also proves the first *quantitative* lower bound:
+
+* `ball_subset_sublevelSet` — `Sₚ` contains the explicit disk
+  `ball z₁ (1/(2·3^{n−1}))` around each root (each far factor is `≤ 3`, the near
+  factor is `< 1/(2·3^{n−1})`, so `‖p‖ < 1/2` on the disk);
+* `sublevelMeasure_ge` / `sublevelMeasure_ge'` — hence
+  `sublevelMeasure P ≥ π/(4·9^{n−1})`, an explicit (exponentially weak) bound;
+* exact areas for two families: `sublevelMeasure_allRootsZero` (`p = zⁿ`, area
+  exactly `π`) and `sublevelMeasure_singleRoot` (degree `1`, area `π`), giving
+  `exists_sublevelMeasure_eq_pi` — the conjectured extremal value `π` is attained
+  at every degree.
+
+The remaining open content — the `c/log n` lower bound (vs the elementary
+`c/9ⁿ` above) and the `1/log n` vs `1/log log n` gap — is the genuinely deep KLR
+input, cleanly isolated.
 
 All results are `0`-axiom / `0`-sorry.
 
@@ -364,7 +377,7 @@ theorem ball_subset_sublevelSet (P : UnitDiskPoly (m + 1)) :
 least that of the contained disk, `π·(1/(2·3^m))²` (`Complex.volume_ball`). -/
 theorem volume_sublevelSet_ge (P : UnitDiskPoly (m + 1)) :
     ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi ≤ volume P.sublevelSet := by
-  calc (ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi : ℝ≥0∞)
+  calc (ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi : ENNReal)
       = volume (Metric.ball (P.roots 0) (1 / (2 * 3 ^ m))) := by
         rw [Complex.volume_ball]
     _ ≤ volume P.sublevelSet := measure_mono (ball_subset_sublevelSet P)
