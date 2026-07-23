@@ -89,7 +89,8 @@
       "The d = 0 base case is genuinely measure-theoretic — over a real IsProbabilityMeasure — unlike the parent gallery file, which works entirely over ℚ as a probability-budget surrogate.",
       "Mathlib has no complement-independence lemma for iIndepSet. The working route is iIndepSet_iff_iIndep → iIndep.meas_iInter on the complements, exploiting that each complement is measurable in the σ-algebra its event generates. This pattern is a natural upstream Mathlib contribution.",
       "IsProbabilityMeasure does not need to be assumed: mutual independence (iIndepSet) already forces the total mass to be 1 (iIndepSet.isProbabilityMeasure).",
-      "Working in ℝ≥0∞ throughout avoids any coercion to ℝ; product positivity reduces cleanly to each survival probability 1 − μ(A i) being nonzero, i.e. μ(A i) < 1."
+      "Working in ℝ≥0∞ throughout avoids any coercion to ℝ; product positivity reduces cleanly to each survival probability 1 − μ(A i) being nonzero, i.e. μ(A i) < 1.",
+      "At d = 0 the symmetric LLL threshold e·p·(d+1) ≤ 1 degenerates to the trivial p < 1, which lll_independent_avoidance_symmetric proves directly — foreshadowing how the base case interfaces with the general symmetric induction once the dependency-degree machinery is in place."
     ],
     "prerequisites": [
       "Mathlib.Probability.Independence.Basic — iIndepSet, iIndep, iIndepSet_iff_iIndep, iIndep.meas_iInter",
@@ -127,9 +128,17 @@
       "id": "sec-positivity",
       "title": "Positive avoidance (base case of the LLL)",
       "startLine": 70,
-      "endLine": 86,
-      "summary": "lll_independent_avoidance and its uniform-bound corollary lll_independent_avoidance_symmetric: strict positivity of the product follows from each 1 − μ(A i) ≠ 0 (μ(A i) < 1).",
+      "endLine": 78,
+      "summary": "lll_independent_avoidance: strict positivity of the product follows from each 1 − μ(A i) ≠ 0 (μ(A i) < 1), via Finset.prod_ne_zero_iff and tsub_pos_iff_lt. This is the d = 0 symmetric LLL over a real probability space.",
       "mathContext": "This is the d = 0 symmetric LLL over a real probability space — the base case that every LLL induction reduces to."
+    },
+    {
+      "id": "sec-symmetric",
+      "title": "Uniform-bound reformulation",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "lll_independent_avoidance_symmetric repackages the pointwise result under a single symmetric bound μ(A i) ≤ p < 1, matching the hypothesis shape used by the rational gallery proof's symmetric LLL.",
+      "mathContext": "Under the d = 0 dependency condition (vacuous), a uniform bound p < 1 alone suffices for positive avoidance."
     }
   ],
   "conclusion": {
