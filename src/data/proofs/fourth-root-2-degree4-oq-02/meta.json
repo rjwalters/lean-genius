@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Packaging Eisenstein-then-Gauss for Xⁿ - p",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Answers the open question by showing the parent file's hand-rolled irreducibility argument for $X^4-2$ generalizes verbatim to $X^n - p$ for every prime $p$ and exponent $n \\ge 1$ via Eisenstein's criterion plus Gauss's lemma, filling the even-exponent/$p=2$ gap left by TODOs in Mathlib's Kummer-extension API.",
+      "mathContext": "Eisenstein at $p$ applies to $X^n - p$ since the leading coefficient is $1 \\notin (p)$, all lower coefficients lie in $(p)$, and $-p \\notin (p^2)$; combined with Gauss's lemma this gives irreducibility over both $\\mathbb{Z}$ and $\\mathbb{Q}$, and $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = n$ whenever $\\alpha^n = p$."
+    },
+    {
       "id": "reusable-eisenstein-int",
       "title": "The reusable irreducibility lemma over ℤ",
       "startLine": 50,
