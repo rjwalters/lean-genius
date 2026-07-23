@@ -37,7 +37,8 @@
       "**Membership of S₁ is elementary**: n ∈ S₁ ⇔ n is prime or n = p + 2ᵃ for a prime p — the multiset-of-≤1-powers definition collapses to a clean disjunction (`mem_sumPrimeAndTwoPows_one_iff`).",
       "**Monotone family**: Sⱼ ⊆ Sₖ whenever j ≤ k (`sumPrimeAndTwoPows_mono`), so d̲(S₁) ≤ d̲(Sₖ) for every k ≥ 1. Gallagher (1975) proved d̲(Sₖ) → 1; d̲(S₁) is the base of this increasing chain.",
       "**Lower density is well-behaved**: it is monotone under set inclusion and always lies in [0,1] (`lowerDensity_mono`, `lowerDensity_nonneg`, `lowerDensity_le_one`), hence d̲(S₁) ∈ [0,1] (`lowerDensity_S1_mem_Icc`).",
-      "**The hard content stays open**: Romanoff's lower bound d̲(S₁) > 0 (a sieve/Cauchy–Schwarz argument) and the exact value are *not* proved — they require machinery beyond what is formalized here and are recorded only as references."
+      "**The hard content stays open**: Romanoff's lower bound d̲(S₁) > 0 (a sieve/Cauchy–Schwarz argument) and the exact value are *not* proved — they require machinery beyond what is formalized here and are recorded only as references.",
+      "**Containing the primes is not enough on its own**: prime_mem_sumPrimeAndTwoPows shows primes ⊆ Sₖ, but the primes themselves have density 0 (prime number theorem), so this containment alone yields no nontrivial lower bound on d̲(S₁). Romanoff's d̲(S₁) > 0 genuinely needs the extra powers-of-2 shifts, which is exactly the content this formalization stops short of."
     ],
     "prerequisites": [
       "Prime numbers (Nat.Prime)",
@@ -64,12 +65,20 @@
       "mathContext": "Sₖ = { n : ∃ p prime, ∃ pows : Multiset ℕ, |pows| ≤ k ∧ n = p + Σ 2^{aᵢ} }; d̲(S) = liminf_{n→∞} |S ∩ [0,n]| / (n+1)."
     },
     {
-      "id": "structure",
-      "title": "Structure of S₁",
+      "id": "membership-characterization",
+      "title": "Membership Characterization of S₁",
       "startLine": 58,
+      "endLine": 78,
+      "summary": "mem_sumPrimeAndTwoPows_one_iff characterizes membership in S₁ as 'prime or p + 2ᵃ', by case-splitting the multiset of ≤1 powers into empty (bare prime) or singleton.",
+      "mathContext": "$n \\in S_1 \\iff n \\text{ prime} \\lor \\exists p\\,a,\\ p \\text{ prime} \\land n = p + 2^a$."
+    },
+    {
+      "id": "monotonicity-and-inclusion",
+      "title": "Monotonicity and Inclusion Facts",
+      "startLine": 80,
       "endLine": 109,
-      "summary": "Characterizes membership in S₁ as 'prime or p + 2ᵃ', proves the family Sₖ is monotone in k, shows every prime lies in every Sₖ and 1 lies in none, and gives concrete witnesses (4 = 2 + 2¹, 9 = 7 + 2¹).",
-      "mathContext": "n ∈ S₁ ⇔ n.Prime ∨ ∃ p a, p.Prime ∧ n = p + 2ᵃ; Monotone Sₖ; p prime ⇒ p ∈ Sₖ; 1 ∉ Sₖ."
+      "summary": "sumPrimeAndTwoPows_mono shows the family Sₖ is monotone in k; prime_mem_sumPrimeAndTwoPows shows every prime lies in every Sₖ; one_not_mem_sumPrimeAndTwoPows shows 1 lies in none; two concrete examples (4 = 2+2¹, 9 = 7+2¹) witness the p + 2ᵃ shape.",
+      "mathContext": "$j \\le k \\Rightarrow S_j \\subseteq S_k$; $p$ prime $\\Rightarrow p \\in S_k$; $1 \\notin S_k$."
     },
     {
       "id": "density",
