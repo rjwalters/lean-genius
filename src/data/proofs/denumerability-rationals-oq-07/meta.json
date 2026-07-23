@@ -111,25 +111,41 @@
       "id": "polynomial-count",
       "title": "The Index Set: #(ℚ[X]) = ℵ₀",
       "startLine": 1,
-      "endLine": 50,
+      "endLine": 42,
       "summary": "File docstring laying out the two-stage Cantor argument and the injection x ↦ (minpoly ℚ x, x). cardinalMk_polynomial_rat reproves #(ℚ[X]) = ℵ₀ inline (the OQ-06 fact) via Polynomial.cardinalMk_eq_max and max_self, so the entry is standalone.",
       "mathContext": "#(ℚ[X]) = ℵ₀ is the ℵ₀-sized index over which the algebraic numbers are organised."
     },
     {
       "id": "sigma-bound",
       "title": "The Σ-over-ℚ[X] of Finite Root Fibers is ≤ ℵ₀",
-      "startLine": 51,
-      "endLine": 67,
+      "startLine": 43,
+      "endLine": 60,
       "summary": "cardinalMk_sigma_rootSet_le: rewrites #(Σ p : ℚ[X], p.rootSet K) as Cardinal.sum of the fiber cardinals via mk_sigma, bounds each finite fiber by ℵ₀ (rootSet_finite), and collapses the constant sum #(ℚ[X]) · ℵ₀ = ℵ₀ · ℵ₀ = ℵ₀.",
       "mathContext": "A countable union (over ℚ[X]) of finite sets (p.rootSet K) is countable: Cardinal.sum ≤ #(ℚ[X]) · ℵ₀ = ℵ₀."
     },
     {
-      "id": "injection-and-count",
-      "title": "Injecting the Algebraic Reals and the ℵ₀ Count",
-      "startLine": 64,
+      "id": "injection",
+      "title": "Injecting the Algebraic Reals into the Σ",
+      "startLine": 61,
+      "endLine": 81,
+      "summary": "algebraicReal_inject_sigma builds x ↦ (minpoly ℚ x, x) and proves membership (x is a root of its own minimal polynomial) and injectivity (the second coordinate recovers x); cardinalMk_algebraic_reals_le_sigma packages this into #{x // IsAlgebraic ℚ x} ≤ #(Σ p, p.rootSet ℝ).",
+      "mathContext": "Injection + Σ bound gives #{x : ℝ // IsAlgebraic ℚ x} ≤ ℵ₀ once combined with cardinalMk_sigma_rootSet_le."
+    },
+    {
+      "id": "reals-count",
+      "title": "Closing the Count for the Reals",
+      "startLine": 82,
+      "endLine": 107,
+      "summary": "aleph0_le_cardinalMk_algebraic gives the reverse bound ℵ₀ ≤ #(algebraic elements) via n ↦ (n : K); cardinalMk_algebraic_reals_le composes the injection with the Σ bound for ≤ ℵ₀; cardinalMk_algebraic_reals closes the equality #{x : ℝ // IsAlgebraic ℚ x} = ℵ₀ by antisymmetry.",
+      "mathContext": "ℵ₀ = #ℕ ≤ #(algebraic elements) since every natural is algebraic (a root of X - n) and Nat.cast is injective in characteristic zero; combined with the ≤ ℵ₀ bound, equality follows by le_antisymm."
+    },
+    {
+      "id": "complex-analogue",
+      "title": "The Same Decomposition for ℂ",
+      "startLine": 108,
       "endLine": 127,
-      "summary": "algebraicReal_inject_sigma builds x ↦ (minpoly ℚ x, x) and proves membership and injectivity; cardinalMk_algebraic_reals_le_sigma and cardinalMk_algebraic_reals_le give ≤ ℵ₀; cardinalMk_algebraic_reals closes the equality with the char-zero lower bound. The ℂ analogues (cardinalMk_algebraic_complex_le, cardinalMk_algebraic_complex) reuse the same decomposition.",
-      "mathContext": "Injection + Σ bound gives #{x : ℝ // IsAlgebraic ℚ x} ≤ ℵ₀; with ℵ₀ ≤ #(algebraic reals) the count is exactly ℵ₀, and identically for ℂ."
+      "summary": "cardinalMk_algebraic_complex_le and cardinalMk_algebraic_complex: the identical injection-into-Σ and finite-fiber argument, run verbatim with ℂ in place of ℝ, gives #{x : ℂ // IsAlgebraic ℚ x} = ℵ₀.",
+      "mathContext": "No new mathematics is needed for ℂ: cardinalMk_sigma_rootSet_le and aleph0_le_cardinalMk_algebraic were already stated for a general CharZero field K."
     }
   ],
   "references": [
