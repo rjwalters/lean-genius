@@ -74,6 +74,22 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header: Goal, Argument Sketch, and Status",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring: states the Rosser–Schoenfeld inequalities and explains why only the UPPER bound is reachable from Mathlib's Chebyshev estimate θ(x) ≤ log4·x; sketches the elementary tail argument (primes in (√x, x] each contribute ≥ ½ log x to θ) and records the status (0 axioms, 0 sorries) plus references.",
+      "mathContext": "x/log x < π(x) < 1.25506·x/log x (Rosser–Schoenfeld); this file proves the axiom-free upper half π(⌊x⌋) ≤ √x + 1 + (log 16)·x/log x."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports and Namespace",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "`import Mathlib`, `open Finset`, `open scoped Nat.Prime`, and `namespace BoundedPrimeGapsOQ02Chebyshev` — the syntactic setup before the θ↔π bridge theorem.",
+      "mathContext": "Standard Mathlib import and namespace opening for the Chebyshev/prime-counting development."
+    },
+    {
       "id": "sec-bridge",
       "title": "The θ↔π Bridge (Mathlib TODO)",
       "startLine": 60,
