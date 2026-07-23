@@ -83,6 +83,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Omega-Fold Origami Algebraic Completeness", "startLine": 1, "endLine": 33, "summary": "States the open question from angle-trisection-oq-05-oq-01 (can multi-fold origami solve ALL polynomial equations), answers YES, and sketches the strategy: eventually_constructible shows any degree d > 0 is solvable using k = d folds since p_{d+1} exceeds every prime factor of d (Bertrand's postulate direction), giving the sharp characterization: omega-fold constructible iff d > 0.", "mathContext": "$\\omega$-fold origami ($\\exists k$, $k$-fold constructible) is algebraically complete: every degree $d>0$ is solvable, since $k=d$ folds gives $p_{d+1}$-smoothness (Bertrand's postulate direction ensures $p_{d+1}$ exceeds every prime factor of $d$)."},
     {
       "id": "definition",
       "title": "Omega-Fold Constructibility Definition",
