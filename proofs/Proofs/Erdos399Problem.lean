@@ -60,7 +60,7 @@ theorem erdos_399_disproved :
 /-- Alternative form: 10! = 48^4 - 36^4 -/
 theorem erdos_399_alt : (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4 := by native_decide
 
-/- ## Historical Results (Axiomatized) -/
+/- ## Historical Results (documented for context, not formalized) -/
 
 /- 
 **Erdős-Obláth Theorem (1937)**: There are no solutions to n! = x^k ± y^k
