@@ -78,6 +78,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Fermat's two-square theorem for primes",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States Fermat's 1640 \"Christmas theorem\" that a prime p is a sum of two squares iff p is not congruent to 3 mod 4, packages Mathlib's hard forward direction (Nat.Prime.sq_add_sq) alongside the elementary converse proved from scratch in this file, and notes the Brahmagupta–Fibonacci identity closing sums of two squares under multiplication.",
+      "mathContext": "Prime $p$ is a sum of two squares $\\iff p=2$ or $p\\equiv 1\\pmod 4$; the converse holds because squares are $0$ or $1\\pmod 4$, so a sum of two never reaches $3\\pmod 4$."
+    },
+    {
       "id": "obstruction",
       "title": "Part I: The elementary mod-4 obstruction",
       "startLine": 33,
