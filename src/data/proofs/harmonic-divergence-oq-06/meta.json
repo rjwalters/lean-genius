@@ -77,22 +77,38 @@
       "id": "sec-header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Module docstring stating the headline (odd reciprocals diverge) and the general arithmetic-progression result, the comparison strategy, and the dependence on harmonic divergence. Imports Mathlib, opens Filter and Topology, namespace HarmonicDivergenceOQ06.",
       "mathContext": "The engine is the divergence of $\\sum 1/n$; everything reduces to it by comparison and an index shift."
     },
     {
-      "id": "sec-main",
-      "title": "Main Theorem: Σ 1/(a·n+b) Diverges",
-      "startLine": 38,
-      "endLine": 64,
-      "summary": "not_summable_one_div_arith (a b : ℝ) (ha : 0 < a) (hb : 0 < b): by contradiction, scale by a+b, establish 1/(n+1) ≤ (a+b)·1/(a·n+b) via le_div_iff₀/div_le_iff₀ and nlinarith, apply Summable.of_nonneg_of_le to get summability of the shifted harmonic series, then contradict not_summable_one_div_natCast through summable_nat_add_iff.",
-      "mathContext": "The crux inequality is $a n + b \\le (a+b)(n+1)$, equivalent to $0 \\le a + b n$, true for $a>0, b>0, n \\ge 0$. Hence $\\frac{1}{n+1} \\le (a+b)\\frac{1}{an+b}$."
+      "id": "sec-main-statement",
+      "title": "Main Theorem Statement and Setup",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "not_summable_one_div_arith (a b : ℝ) (ha : 0 < a) (hb : 0 < b) states the general arithmetic-progression divergence result. The proof opens by contradiction (intro hsum), then scales the assumed-summable series by the constant a+b via Summable.mul_left to obtain hscaled, the series that will be shown to dominate the shifted harmonic series.",
+      "mathContext": "Scaling a summable series by a nonzero constant preserves summability, so from `hsum : Summable (fun n => 1/(a·n+b))` one gets `hscaled : Summable (fun n => (a+b)·(1/(a·n+b)))`, set up to dominate $1/(n+1)$ termwise."
+    },
+    {
+      "id": "sec-crux-inequality",
+      "title": "The Crux Inequality: 1/(n+1) ≤ (a+b)/(a·n+b)",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "Establishes the pointwise comparison 1/(n+1) ≤ (a+b)·(1/(a·n+b)) via Summable.of_nonneg_of_le. The …div_iff₀ rewrites clear both denominators (each guarded by positivity, since a,b > 0), reducing to the polynomial inequality a·n+b ≤ (a+b)·(n+1); push_cast then nlinarith close it from 0 ≤ a + b·n.",
+      "mathContext": "$a n + b \\le (a+b)(n+1) = (a+b)n+(a+b) \\iff 0 \\le a+bn$, true for $a,b>0,\\ n\\ge0$. The hypothesis $b>0$ (not $b\\ge0$) is what keeps $a n+b>0$ at $n=0$, so `positivity` can clear the denominator there."
+    },
+    {
+      "id": "sec-contradiction",
+      "title": "Closing the Contradiction via Index Shift",
+      "startLine": 59,
+      "endLine": 62,
+      "summary": "The comparison yields summability of the shifted harmonic series Σ 1/(n+1); summable_nat_add_iff identifies this with summability of Σ 1/n, which Real.not_summable_one_div_natCast refutes, discharging the intro hsum assumption and completing the contradiction.",
+      "mathContext": "Summability is invariant under dropping finitely many leading terms: $\\sum_n f(n{+}1)$ converges iff $\\sum_n f(n)$ does. So summability of $\\sum 1/(n+1)$ would force summability of $\\sum 1/n$, contradicting harmonic divergence."
     },
     {
       "id": "sec-corollaries",
       "title": "Corollaries: Odd / Even / Partial Sums",
-      "startLine": 65,
+      "startLine": 63,
       "endLine": 84,
       "summary": "not_summable_one_div_odd (a=2,b=1) is the headline; not_summable_one_div_even (a=2,b=2); tendsto_sum_one_div_odd_atTop converts non-summability of the odd series into divergence of its partial sums via not_summable_iff_tendsto_nat_atTop_of_nonneg.",
       "mathContext": "Odd reciprocals $\\sum 1/(2n+1)$ and even reciprocals $\\sum 1/(2n+2)$ are the $a=2$, $b\\in\\{1,2\\}$ instances; both diverge, and together they recover the full harmonic series."
