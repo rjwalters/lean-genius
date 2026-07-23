@@ -63,7 +63,7 @@
     "historicalContext": "This problem was posed by Paul Erdős as a generalization of earlier work on sets of integers defined by divisibility conditions. The foundational result is the Davenport-Erdős theorem (1936), which proved that sets of integers avoiding divisibility by elements of any set A always have a logarithmic density. Davenport and Erdős published their original proof in Acta Arithmetica, and Erdős later gave a simplified elementary proof in the Journal of the London Mathematical Society (1951) that avoided analytic methods entirely.\n\nBesicovitch (1934) demonstrated that natural density is too strong a requirement—there exist sets with logarithmic density but no natural density. His construction uses a carefully chosen sequence of primes with rapidly growing gaps, ensuring the counting function oscillates without converging. This justified the focus on logarithmic density for such problems.\n\nProblem #486 asks whether the Davenport-Erdős result extends to the far more general setting where we forbid arbitrary residue classes modulo each n, not just the class 0 (divisibility). This places the problem squarely in the intersection of additive combinatorics, sieve theory, and analytic number theory. The difficulty lies in the fact that arbitrary forbidden residue classes can create intricate interference patterns between moduli, unlike the structured divisibility condition.\n\nThis problem is part of Erdős's broader research program on densities of integer sequences, which includes Problems #25 (single forbidden residue per modulus) and #1134 (density of sets closed under affine maps). The hierarchy of generalizations reveals how rapidly the difficulty increases as the forbidden sets become more complex.",
     "problemStatement": "For each $n \\in \\mathbb{N}$, choose some $X_n \\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Define the **modular avoidance set**:\n$$B = \\{m \\in \\mathbb{N} : m \\not\\equiv x \\pmod{n} \\text{ for all } n \\in \\mathbb{N}, x \\in X_n\\}$$\n\n**Conjecture**: $B$ must have a **logarithmic density**, i.e.,\n$$\\lim_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{\\substack{m \\in B \\\\ m < x}} \\frac{1}{m}$$\nexists.\n\n**Status**: OPEN",
     "text": "For any choice of forbidden residue classes modulo each n, must the set of integers avoiding all forbidden classes have a logarithmic density?",
-    "proofStrategy": "Since this is an open conjecture, we cannot provide a proof. Our formalization:\n\n1. **Defines logarithmic density** precisely using Mathlib's Filter.Tendsto for limits\n2. **Formalizes the avoidance set** B using ZMod for modular arithmetic\n3. **States the conjecture** as an axiom, making the open status explicit\n4. **Records partial results** (Davenport-Erdős theorem) and context (Besicovitch counterexample)\n\nThe key insight is that logarithmic density is weaker than natural density, and this problem asks whether the Davenport-Erdős result—that divisibility-based avoidance sets have logarithmic density—extends to the much broader class of modular avoidance sets.",
+    "proofStrategy": "Since this is an open conjecture, we cannot provide a proof. Our formalization:\n\n1. **Defines logarithmic density** precisely using Mathlib's Filter.Tendsto for limits\n2. **Formalizes the avoidance set** B using ZMod for modular arithmetic\n3. **Documents the conjecture** in a comment block, making the open status explicit (no axiom is declared)\n4. **Records partial results** (Davenport-Erdős theorem) and context (Besicovitch counterexample) as comments, not formal declarations\n\nThe key insight is that logarithmic density is weaker than natural density, and this problem asks whether the Davenport-Erdős result—that divisibility-based avoidance sets have logarithmic density—extends to the much broader class of modular avoidance sets.",
     "keyInsights": [
       "**Logarithmic vs Natural Density**: Logarithmic density weights smaller integers more heavily (by 1/n), making it more likely to exist. Besicovitch showed natural density can fail even in simple cases.",
       "**Modular Avoidance**: Forbidding residue classes {0} mod n is just divisibility avoidance. The general case allows forbidding any residues, a strictly more complex condition.",
@@ -109,7 +109,7 @@
       "title": "Erdős Conjecture #486",
       "startLine": 57,
       "endLine": 76,
-      "summary": "States the open conjecture as an axiom: for any choice of forbidden residue sets X_n, the modular avoidance set has a logarithmic density.",
+      "summary": "Documents the open conjecture in a comment block (no axiom is declared): for any choice of forbidden residue sets X_n, the modular avoidance set has a logarithmic density.",
       "mathContext": "$\\forall X : (n : \\mathbb{N}) \\to \\mathcal{P}(\\mathbb{Z}/n\\mathbb{Z}),\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{avoidanceSet}(X), d)$."
     },
     {
@@ -117,7 +117,7 @@
       "title": "Davenport-Erdős Theorem (1936)",
       "startLine": 77,
       "endLine": 97,
-      "summary": "Defines the zero-avoidance set (non-divisibility set) and states the Davenport-Erdős theorem: zero-avoidance sets always have logarithmic density. This is the proven X_n = {0} special case of #486.",
+      "summary": "Defines the zero-avoidance set (non-divisibility set) and documents the Davenport-Erdős theorem in a comment block (not a formal declaration): zero-avoidance sets always have logarithmic density. This is the proven X_n = {0} special case of #486.",
       "mathContext": "$\\text{zeroAvoidanceSet}(A) = \\{m : \\forall n \\in A,\\; n \\nmid m\\}$. Davenport-Erdős (1936): $\\forall A \\subseteq \\mathbb{N},\\; \\exists d,\\; \\text{HasLogDensity}(\\text{zeroAvoidanceSet}(A), d)$."
     },
     {
@@ -125,12 +125,12 @@
       "title": "Besicovitch Counterexample and Natural Density",
       "startLine": 98,
       "endLine": 108,
-      "summary": "Defines natural (asymptotic) density and states the Besicovitch counterexample: there exists a set A whose zero-avoidance set has logarithmic density but NOT natural density. This justifies the use of logarithmic density in #486.",
+      "summary": "Defines natural (asymptotic) density and documents the Besicovitch counterexample in a comment block (not a formal declaration): there exists a set A whose zero-avoidance set has logarithmic density but NOT natural density. This justifies the use of logarithmic density in #486.",
       "mathContext": "$\\text{HasNaturalDensity}(A, d) \\iff \\lim_{n \\to \\infty} \\frac{|A \\cap [0,n]|}{n+1} = d$. Besicovitch (1934): $\\exists A$ s.t. $\\text{zeroAvoidanceSet}(A)$ has log density but not natural density, proving logarithmic density is strictly weaker."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #486, an open conjecture in analytic number theory about the existence of logarithmic densities for modular avoidance sets. We define the key concepts precisely and state the conjecture as an axiom, documenting its relationship to the proven Davenport-Erdős theorem and the Besicovitch counterexample that motivates the use of logarithmic density.",
+    "summary": "This formalization captures Erdős Problem #486, an open conjecture in analytic number theory about the existence of logarithmic densities for modular avoidance sets. We define the key concepts precisely and document the conjecture in a comment block (no axiom is declared), noting its relationship to the proven Davenport-Erdős theorem and the Besicovitch counterexample that motivates the use of logarithmic density.",
     "implications": "A positive resolution would unify and extend the theory of integer density under modular constraints. A negative answer would reveal surprising pathological behavior in seemingly natural sets of integers.",
     "openQuestions": [
       "Does the conjecture hold when X_n is finite for all n?",

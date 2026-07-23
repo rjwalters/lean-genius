@@ -127,19 +127,18 @@
     },
     "type": "concept",
     "title": "The Main Conjecture",
-    "content": "**Erdős Problem #486** (OPEN): For ANY choice of forbidden residue sets X_n, the modular avoidance set B has a logarithmic density.\n\nThis is stated as an `axiom` because it's unproven. Using axiom makes the open status explicit in the Lean formalization—we're asserting without proof.",
+    "content": "**Erdős Problem #486** (OPEN): For ANY choice of forbidden residue sets X_n, the modular avoidance set B has a logarithmic density.\n\nThis is documented as a comment (no `axiom` is declared) because it's unproven; the open status is left explicit without asserting anything to the kernel.",
     "mathContext": "$\\forall X : (n : \\mathbb{N}) \\to \\mathcal{P}(\\mathbb{Z}/n\\mathbb{Z}),\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{avoidanceSet}(X), d)$. The conjecture quantifies over ALL possible choices of forbidden sets, making it vastly more general than the Davenport-Erdős special case.",
     "significance": "key",
     "relatedConcepts": [
       "open conjecture",
-      "axiom declaration",
+      "documentation comments",
       "universal quantification",
       "existential density"
     ],
     "prerequisites": [
       "logarithmic density",
-      "modular avoidance sets",
-      "Lean axiom semantics"
+      "modular avoidance sets"
     ]
   },
   {
@@ -176,7 +175,7 @@
     "type": "concept",
     "title": "Davenport-Erdős Theorem (1936)",
     "content": "**Davenport and Erdős proved** that zero-avoidance sets always have logarithmic density. This is the foundational result that Problem #486 seeks to generalize.\n\nThe theorem was proved in 1936 with an elementary re-proof in 1951. It establishes that avoiding divisibility by any set of integers yields a set with well-defined logarithmic density.",
-    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{zeroAvoidanceSet}(A), d)$. Stated as axiom pending Mathlib formalization of the 1936 proof.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{zeroAvoidanceSet}(A), d)$. Documented as a comment pending Mathlib formalization of the 1936 proof (no axiom is declared).",
     "significance": "key",
     "relatedConcepts": [
       "Davenport-Erdős theorem",
