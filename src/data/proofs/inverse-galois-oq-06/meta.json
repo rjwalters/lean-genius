@@ -137,6 +137,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: A₅ Realization via q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States the result that A₅ (the smallest non-solvable simple group, order 60) is realized as a Galois group over ℚ via the quintic $q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$, extending the Inverse Galois Problem formalization beyond Shafarevich's solvable case.",
+      "mathContext": "$q$ is Eisenstein at $p=5$ (irreducible) with discriminant $2^{16}\\cdot 5^6 = (2^8\\cdot 5^3)^2$ a perfect square, so $\\mathrm{Gal}(q/\\mathbb{Q}) \\le A_5$; cycle-type analysis mod small primes forces equality."
+    },
+    {
       "id": "computational-preamble",
       "title": "Computational Preamble: S₅ Element Orders",
       "startLine": 53,
