@@ -74,7 +74,10 @@
      "no abundant proper divisor" notion (OEIS A091191); recovering a *strict*
      (deficient-divisors) primitive part additionally requires excluding perfect
      divisors, and controlling oddness/unboundedness still needs a pigeonhole that
-     a single bounded part could defeat.
+     a single bounded part could defeat.  (Update 2026-07-22: the A091191
+     extraction and the "abundant ⟺ multiple of a weakly primitive abundant"
+     characterization are now PROVED at the end of this file, odd-compatibly;
+     the infinitude of the generators remains open.)
 
   Reference: OEIS A006038 (odd primitive abundant numbers); A091191 (primitive
   abundant numbers).  Sibling gallery entries: `abundant-number-oq-02` (945 is the
@@ -366,5 +369,96 @@ theorem primitive_945_via_engine : IsPrimitiveAbundant 945 := by
     · set_option maxRecDepth 4000 in decide
   norm_num at h
   exact h
+
+/- ## Corrected Route 2: extraction under the weaker primitivity (OEIS A091191)
+
+`not_isPrimitiveAbundant_12` / `no_isPrimitiveAbundant_dvd_12` disproved strict
+extraction: an abundant number need not have a *strictly* primitive abundant
+divisor, because a perfect proper divisor (like `6 ∣ 12`) blocks strict
+primitivity. This section proves that the extraction principle is TRUE for the
+weaker notion **A091191** — abundant with no *abundant* proper divisor — and
+upgrades it to a characterization: a number is abundant **iff** it is a multiple
+of a weakly primitive abundant number, odd-compatibly.
+
+Honesty note: this does NOT resolve the target infinitude. The infinite set of
+odd abundant numbers (Mathlib `Nat.infinite_odd_abundant`) is generated under
+multiples by odd weakly primitive abundant numbers, but extraction alone cannot
+rule out that finitely many generators (e.g. `945` alone) account for all of
+them. Whether infinitely many distinct odd generators occur is exactly the open
+question, now sharpened to the A091191 notion. -/
+
+/-- **Weakly primitive abundant** (OEIS A091191): abundant with no *abundant*
+proper divisor. Perfect proper divisors are tolerated — this is the notion under
+which `12` is primitive and divisor-extraction works, in contrast to the strict
+`IsPrimitiveAbundant` (all proper divisors *deficient*), for which extraction is
+disproven (`no_isPrimitiveAbundant_dvd_12`). -/
+def IsWeakPrimitiveAbundant (n : ℕ) : Prop :=
+  n.Abundant ∧ ∀ d ∈ n.properDivisors, ¬ d.Abundant
+
+instance : DecidablePred IsWeakPrimitiveAbundant := fun n =>
+  decidable_of_iff (n.Abundant ∧ ∀ d ∈ n.properDivisors, ¬ d.Abundant) Iff.rfl
+
+/-- Strict primitivity implies weak primitivity: deficient proper divisors are in
+particular not abundant. So A006038-primitives (like `945`) are A091191-weak
+primitives, and the extraction below extends the strict theory conservatively. -/
+theorem IsPrimitiveAbundant.isWeakPrimitiveAbundant {n : ℕ}
+    (h : IsPrimitiveAbundant n) : IsWeakPrimitiveAbundant n :=
+  ⟨h.1, fun d hd hab => not_deficient_of_abundant hab (h.2 d hd)⟩
+
+/-- **`12` IS weakly primitive abundant** — its strict-primitivity blocker was
+the *perfect* divisor `6`, which A091191 tolerates. Contrast
+`not_isPrimitiveAbundant_12`: the two notions part ways exactly at the smallest
+abundant number. -/
+theorem isWeakPrimitiveAbundant_twelve : IsWeakPrimitiveAbundant 12 := by
+  set_option maxRecDepth 4000 in decide
+
+/-- **Extraction (corrected Route 2): every abundant number has a weakly
+primitive abundant divisor.** Strong induction: either no proper divisor of `n`
+is abundant (then `n` itself qualifies), or descend into an abundant proper
+divisor. The strict analogue of this statement is FALSE
+(`no_isPrimitiveAbundant_dvd_12`). -/
+theorem exists_isWeakPrimitiveAbundant_dvd :
+    ∀ n : ℕ, n.Abundant → ∃ d, d ∣ n ∧ IsWeakPrimitiveAbundant d := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    intro hn
+    by_cases h : ∃ d ∈ n.properDivisors, d.Abundant
+    · obtain ⟨d, hdmem, hdab⟩ := h
+      obtain ⟨hdvd, hdlt⟩ := Nat.mem_properDivisors.mp hdmem
+      obtain ⟨e, hed, hew⟩ := ih d hdlt hdab
+      exact ⟨e, hed.trans hdvd, hew⟩
+    · exact ⟨n, dvd_refl n, hn, fun d hd hdab => h ⟨d, hd, hdab⟩⟩
+
+/-- **Characterization: the abundant numbers are exactly the multiples of weakly
+primitive abundant numbers.** Forward: extraction. Backward: any nonzero
+multiple of an abundant number is abundant (`Nat.Abundant.of_dvd`). -/
+theorem abundant_iff_exists_isWeakPrimitiveAbundant_dvd {n : ℕ} (hn : n ≠ 0) :
+    n.Abundant ↔ ∃ d, d ∣ n ∧ IsWeakPrimitiveAbundant d := by
+  constructor
+  · exact exists_isWeakPrimitiveAbundant_dvd n
+  · rintro ⟨d, hdvd, hdab, -⟩
+    exact hdab.of_dvd hdvd hn
+
+/-- **Odd-compatible extraction**: an odd abundant number has an **odd** weakly
+primitive abundant divisor (divisors of odd numbers are odd,
+`Odd.of_dvd_nat`). -/
+theorem exists_odd_isWeakPrimitiveAbundant_dvd {n : ℕ} (hodd : Odd n)
+    (hn : n.Abundant) : ∃ d, d ∣ n ∧ Odd d ∧ IsWeakPrimitiveAbundant d := by
+  obtain ⟨d, hdvd, hw⟩ := exists_isWeakPrimitiveAbundant_dvd n hn
+  exact ⟨d, hdvd, hodd.of_dvd_nat hdvd, hw⟩
+
+/-- **The odd structure theorem: odd abundant numbers are exactly the odd
+multiples of odd weakly primitive abundant numbers.** With Mathlib's
+`Nat.infinite_odd_abundant`, the infinite set of odd abundant numbers is
+generated under multiples by the odd A091191-primitives; the open infinitude
+question asks whether the generator set itself is infinite. -/
+theorem odd_abundant_iff_exists_odd_isWeakPrimitiveAbundant_dvd {n : ℕ}
+    (hodd : Odd n) :
+    n.Abundant ↔ ∃ d, d ∣ n ∧ Odd d ∧ IsWeakPrimitiveAbundant d := by
+  constructor
+  · exact exists_odd_isWeakPrimitiveAbundant_dvd hodd
+  · rintro ⟨d, hdvd, -, hdab, -⟩
+    exact hdab.of_dvd hdvd hodd.pos.ne'
 
 end AbundantNumberOQ03OQ03
