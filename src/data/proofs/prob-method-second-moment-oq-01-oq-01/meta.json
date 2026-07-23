@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "States the goal — recast the finite-Finset quantitative Paley–Zygmund inequality into Mathlib's measure-theoretic MeasureTheory/Bochner framework — and outlines the four-step second-moment proof. Imports Mathlib, opens MeasureTheory and the ENNReal/NNReal scopes, and fixes a measurable space Ω with measure μ.",
+      "mathContext": "$\\mu(\\{X > \\theta\\,\\mathbb{E}X\\})\\cdot\\mathbb{E}[X^2] \\ge (1-\\theta)^2(\\mathbb{E}X)^2$."
+    },
+    {
       "id": "integral-cauchy-schwarz",
       "title": "Integral Cauchy–Schwarz (Squared Form)",
       "startLine": 42,
@@ -103,11 +111,19 @@
       "summary": "paley_zygmund: for nonnegative X ∈ L²(μ) on a probability space and θ ∈ [0,1], (1−θ)²(𝔼X)² ≤ μ(X > θ𝔼X)·𝔼[X²]. The classical second-moment argument: split 𝔼X = ∫_A X + ∫_{Aᶜ} X with A = {X > θ𝔼X}; on Aᶜ bound X ≤ θ𝔼X to get ∫_A X ≥ (1−θ)𝔼X; then apply the integral Cauchy–Schwarz to (∫_A X)² ≤ 𝔼[X²]·μ(A) via the indicator of A."
     },
     {
-      "id": "probability-and-positivity-forms",
-      "title": "Probability Form and θ = 0 Corollary",
+      "id": "probability-form",
+      "title": "Probability Form (Division by the Second Moment)",
       "startLine": 136,
+      "endLine": 145,
+      "summary": "paley_zygmund_prob: when 𝔼[X²] > 0, the bound rearranges via div_le_iff₀ to μ(X > θ𝔼X) ≥ (1−θ)²(𝔼X)²/𝔼[X²].",
+      "mathContext": "$\\mu(\\{X>\\theta\\mathbb{E}X\\}) \\ge \\frac{(1-\\theta)^2(\\mathbb{E}X)^2}{\\mathbb{E}[X^2]}$ when $\\mathbb{E}[X^2]>0$."
+    },
+    {
+      "id": "positivity-corollary",
+      "title": "θ = 0 Qualitative Corollary",
+      "startLine": 147,
       "endLine": 159,
-      "summary": "paley_zygmund_prob: when 𝔼[X²] > 0, the bound rearranges to μ(X > θ𝔼X) ≥ (1−θ)²(𝔼X)²/𝔼[X²]. paley_zygmund_pos: the θ = 0 specialization (𝔼X)² ≤ μ(X > 0)·𝔼[X²] — so 𝔼X > 0 forces μ(X > 0) > 0, the qualitative 'positive mean ⟹ positive probability of being positive' used in the probabilistic method."
+      "summary": "paley_zygmund_pos: the θ = 0 specialization (𝔼X)² ≤ μ(X > 0)·𝔼[X²] — so 𝔼X > 0 forces μ(X > 0) > 0, the qualitative 'positive mean ⟹ positive probability of being positive' used in the probabilistic method."
     }
   ],
   "crossReferences": [
