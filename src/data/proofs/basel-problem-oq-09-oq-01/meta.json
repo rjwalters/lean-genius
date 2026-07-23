@@ -173,6 +173,11 @@
         "id": "basel-problem-oq-09-oq-01-oq-01",
         "question": "Prove the Dirichlet eta companion η(s) = (1 − 2^{1−s})ζ(s) as a sibling of hasSum_odd_pow by splitting the alternating zeta into its even and odd parts, recovering η(2) = π²/12 and η(4) = 7π⁴/720.",
         "significance": "medium"
+      },
+      {
+        "id": "basel-problem-oq-09-oq-01-oq-02",
+        "question": "hasSum_odd_pow is stated for arbitrary s : ℕ, not just even s — instantiate it at an odd exponent such as s = 3. No closed form for ζ(3) (Apéry's constant) is known, but the lemma still yields the unconditional identity λ(3) = ∑ 1/(2k+1)³ = (7/8)·ζ(3), pinning the odd-index sum to the same fixed fraction of ζ(3) regardless of whether ζ(3) itself has a closed form.",
+        "significance": "low"
       }
     ]
   },
@@ -208,6 +213,11 @@
       "id": "basel-problem-oq-09-oq-01-oq-01",
       "question": "Prove the Dirichlet eta companion η(s) = (1 − 2^{1−s})ζ(s) by an analogous even/odd split of the alternating zeta, recovering η(2) = π²/12 and η(4) = 7π⁴/720.",
       "significance": "medium"
+    },
+    {
+      "id": "basel-problem-oq-09-oq-01-oq-02",
+      "question": "hasSum_odd_pow is stated for arbitrary s : ℕ, not just even s — instantiate it at an odd exponent such as s = 3. No closed form for ζ(3) (Apéry's constant) is known, but the lemma still yields the unconditional identity λ(3) = ∑ 1/(2k+1)³ = (7/8)·ζ(3), pinning the odd-index sum to the same fixed fraction of ζ(3) regardless of whether ζ(3) itself has a closed form.",
+      "significance": "low"
     }
   ],
   "sorries": 0
