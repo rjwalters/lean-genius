@@ -32,20 +32,15 @@
         "theorem": "Nat.Prime",
         "description": "Primality predicate",
         "module": "Mathlib.Data.Nat.Prime.Basic"
-      },
-      {
-        "theorem": "Filter.Tendsto",
-        "description": "Convergence in topological spaces",
-        "module": "Mathlib.Topology.Basic"
       }
     ],
     "originalContributions": [
       "Formalization of squarefree + power of 2 representation",
       "Definition of Wieferich primes in Lean",
-      "Statement of Granville-Soundararajan connection",
-      "Axiomatization of computational verification bounds"
+      "Verified computation of the two known Wieferich primes (1093, 3511) via native_decide",
+      "Code comments (not Lean statements) noting the Granville-Soundararajan connection and computational verification bounds"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 115,
     "assumptions": "No mathematical axioms and 0 sorries; previously cited axiom names were removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Compiler-trust disclosure: the concrete Wieferich-prime facts (known_wieferich_1093, known_wieferich_3511) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 10,
@@ -55,7 +50,7 @@
     "historicalContext": "Erdős posed this problem in his work on additive representations of integers. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$, so heuristically most odd $n - 2^k$ should be squarefree for some $k$. Erdős proved the conjecture holds for almost all odd integers (density 1). The surprise came in 1998 when Andrew Granville and Kannan Soundararajan showed in their paper \"A binary additive problem of Erdős and the order of $2 \\bmod p^2$\" that the conjecture implies infinitely many primes are non-Wieferich — a deep open problem in its own right. Wieferich primes $p$ satisfy $2^{p-1} \\equiv 1 \\pmod{p^2}$; only 1093 (Meissner, 1913) and 3511 (Beeger, 1922) are known despite searches up to $6.7 \\times 10^{15}$. Computational verification has progressed from Odlyzko's $10^7$ bound to Hercher's 2024 verification up to $2^{50} \\approx 1.12 \\times 10^{15}$ using GPU parallelization, finding no counterexample.",
     "problemStatement": "**Conjecture (Erdős):** Every odd integer $n > 1$ can be written as $n = s + 2^k$ where $s$ is squarefree and $k \\geq 0$.\n\n$$\\forall n \\in \\mathbb{N},\\, n \\text{ odd},\\, n > 1 \\implies \\exists s, k \\geq 0: \\text{Squarefree}(s) \\wedge n = s + 2^k$$\n\nExamples: $3 = 1 + 2$, $5 = 1 + 4$, $7 = 5 + 2$, $9 = 1 + 8$.\n\n**Status:** OPEN. Verified computationally up to $2^{50} \\approx 10^{15}$ by Hercher (2024).",
     "text": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
-    "proofStrategy": "The formalization builds up from definitions to the conjecture statement and its connections:\n\n1. **Definitions**: `IsSquarefree n` (via Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{PowerOfTwo}(p) \\wedge n = s + p$)\n2. **Proved examples**: Representations for $n = 3, 5, 7, 9$ using `decide`, `rfl`, and named lemmas\n3. **Wieferich primes**: `IsWieferichPrime p` defined as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$; 1093 and 3511 proved by native_decide\n4. **Conjecture variants**: Main (`Erdos11Conjecture`), weak (not divisible by 4), and two-powers-of-2 version\n5. **Axiomatized results**: Granville-Soundararajan connection, Hercher/Odlyzko verification bounds, Erdős density result",
+    "proofStrategy": "The formalization builds up from definitions to the conjecture statement and its connections:\n\n1. **Definitions**: `IsSquarefree n` (via Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{PowerOfTwo}(p) \\wedge n = s + p$)\n2. **Proved examples**: Representations for $n = 3, 5, 7, 9$ using `decide`, `rfl`, and named lemmas\n3. **Wieferich primes**: `IsWieferichPrime p` defined as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$; 1093 and 3511 proved by native_decide\n4. **Conjecture variants**: Main (`Erdos11Conjecture`), weak (not divisible by 4), and two-powers-of-2 version\n5. **Unformalized notes (comments only)**: the Granville-Soundararajan connection, Hercher/Odlyzko verification bounds, and Erdős's density result are documented in code comments, not stated as Lean axioms, definitions, or theorems",
     "keyInsights": [
       "**Wieferich connection:** Granville-Soundararajan (1998) proved that if the conjecture holds, infinitely many primes are non-Wieferich.",
       "**Only two Wieferich primes known:** 1093 and 3511. No others found up to 2^64 despite massive computation.",
@@ -75,76 +70,76 @@
       "title": "Problem Description and Imports",
       "summary": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$. Imports Mathlib.",
       "startLine": 1,
-      "endLine": 20,
+      "endLine": 22,
       "mathContext": "Documents Erdős Problem #11: is every odd $n > 1$ the sum of a squarefree number and a power of 2? Notes the Wieferich prime connection and Hercher's (2024) computational verification up to $2^{50}$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$).",
-      "startLine": 21,
-      "endLine": 32,
+      "startLine": 23,
+      "endLine": 34,
       "mathContext": "Defines `IsSquarefree n` (wrapping Mathlib's `Squarefree`), `IsPowerOfTwo n` ($\\exists k, n = 2^k$), and `IsSquarefreePlusPow2 n` ($\\exists s, p: \\text{Squarefree}(s) \\wedge \\text{Pow2}(p) \\wedge n = s + p$)."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "summary": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = 2^0$ and $2 = 2^1$ are powers of 2, and every prime is squarefree (`hp.squarefree`).",
-      "startLine": 33,
-      "endLine": 47,
+      "startLine": 35,
+      "endLine": 49,
       "mathContext": "Proves foundational lemmas: $1$ is squarefree (`squarefree_one`), $1 = $2^{0}$$ and $2 = $2^{1}$$ are powers of 2, and every prime is squarefree (`hp.squarefree`)."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + 2^2$, $7 = 5 + 2$, $9 = 1 + 2^3$ using `decide` and `rfl`.",
-      "startLine": 48,
-      "endLine": 65,
+      "startLine": 50,
+      "endLine": 67,
       "mathContext": "Fully proves representations for $3 = 1 + 2$, $5 = 1 + $2^{2}$$, $7 = 5 + 2$, $9 = 1 + $2^{3}$$ using `decide` and `rfl`."
     },
     {
       "id": "wieferich",
       "title": "Wieferich Primes",
       "summary": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge 2^{p-1} \\equiv 1 \\pmod{p^2}$. Proves the two known Wieferich primes (1093, 3511) by native_decide and defines `InfinitelyManyNonWieferich`.",
-      "startLine": 66,
-      "endLine": 79,
+      "startLine": 68,
+      "endLine": 91,
       "mathContext": "Defines `IsWieferichPrime p` as $p$ prime $\\wedge $$2^{{p-1}$}$ \\equiv 1 \\pmod{$p^{2}$}$. Proves the two known Wieferich primes (1093, 3511) by native_decide and defines `InfinitelyManyNonWieferich`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture and Variants",
       "summary": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$. Also states the weak version (not divisible by 4) and the two-powers-of-2 variant.",
-      "startLine": 80,
-      "endLine": 93,
+      "startLine": 92,
+      "endLine": 105,
       "mathContext": "States `Erdos11Conjecture`: $\\forall n$ odd, $n > 1 \\Rightarrow \\exists$ squarefree $s$, power of 2 $p$ with $n = s + p$."
     },
     {
       "id": "connection",
       "title": "Granville-Soundararajan Connection",
-      "summary": "Axiomatizes the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
-      "startLine": 94,
-      "endLine": 99,
-      "mathContext": "Axiomatizes the 1998 result: `Erdos11Conjecture $\\to$ InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients."
+      "summary": "Notes in a comment (not a Lean axiom, definition, or theorem) the 1998 result: `Erdos11Conjecture → InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients.",
+      "startLine": 106,
+      "endLine": 108,
+      "mathContext": "Notes in a comment (not a Lean axiom, definition, or theorem) the 1998 result: `Erdos11Conjecture $\\to$ InfinitelyManyNonWieferich`. This connects additive representation theory to multiplicative number theory via Fermat quotients."
     },
     {
       "id": "verification",
       "title": "Computational Verification",
-      "summary": "Axiomatizes Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges.",
-      "startLine": 100,
-      "endLine": 109,
-      "mathContext": "Axiomatizes Hercher's (2024) verification for all odd $n < $$2^{{50}$}$$ and Odlyzko's earlier bound of $$10^{7}$$, both confirming the conjecture holds in their respective ranges."
+      "summary": "Notes in comments (not Lean axioms or theorems) Hercher's (2024) verification for all odd $n < 2^{50}$ and Odlyzko's earlier bound of $10^7$, both confirming the conjecture holds in their respective ranges — neither bound is formalized in Lean.",
+      "startLine": 109,
+      "endLine": 112,
+      "mathContext": "Notes in comments (not Lean axioms or theorems) Hercher's (2024) verification for all odd $n < $$2^{{50}$}$$ and Odlyzko's earlier bound of $$10^{7}$$, both confirming the conjecture holds in their respective ranges — neither bound is formalized in Lean."
     },
     {
       "id": "density",
       "title": "Density Result",
-      "summary": "Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density.",
-      "startLine": 110,
-      "endLine": 113,
-      "mathContext": "Verified: Axiomatizes Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1, using `Filter.Tendsto` to express the limiting density."
+      "summary": "Notes in a comment (not formalized) Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1; no `Filter.Tendsto` or other density machinery is actually used anywhere in this file.",
+      "startLine": 113,
+      "endLine": 115,
+      "mathContext": "Notes in a comment (not formalized) Erdős's proof that the set of odd $n$ satisfying the conjecture has natural density 1; no `Filter.Tendsto` or other density machinery is actually used anywhere in this file."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #11, an OPEN conjecture asking whether every odd $n > 1$ can be written as $s + 2^k$ with $s$ squarefree. The Lean file defines all key concepts, proves small examples ($n = 3, 5, 7, 9$), defines Wieferich primes, and axiomatizes the Granville-Soundararajan connection, computational verification bounds (up to $2^{50}$), and Erdős's density-1 result.",
+    "summary": "This formalization captures Erdős Problem #11, an OPEN conjecture asking whether every odd $n > 1$ can be written as $s + 2^k$ with $s$ squarefree. The Lean file defines all key concepts, proves small examples ($n = 3, 5, 7, 9$), defines Wieferich primes, and notes (only as code comments, not Lean statements) the Granville-Soundararajan connection, computational verification bounds (up to $2^{50}$), and Erdős's density-1 result.",
     "implications": "**Theoretical Significance**: This problem sits at a remarkable intersection of additive and multiplicative number theory.\n\nThe Granville-Soundararajan connection means resolving Problem #11 would also resolve whether infinitely many primes are non-Wieferich — a question related to Fermat's Last Theorem (Wieferich's criterion shows $x^p + y^p = z^p$ with $p \\nmid xyz$ requires $p$ to be Wieferich). The squarefree density of $6/\\pi^2$ provides the heuristic expectation, while the computational verification up to $2^{50}$ with no counterexamples strongly supports the conjecture.",
     "openQuestions": [
       "Prove the conjecture for all odd $n > 1$ — the main open problem. No theoretical approach has succeeded despite the density-1 result",
