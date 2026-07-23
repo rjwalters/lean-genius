@@ -69,6 +69,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Weitzenböck's Inequality from Heron's Formula",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring statement of Weitzenböck's inequality a² + b² + c² ≥ 4√3·Area with its equality case, a sketch of the squaring-and-SOS proof strategy, and the imports/namespace setup (Mathlib.Analysis.SpecialFunctions.Pow.Real, Mathlib.Tactic; namespace WeitzenbockHeronOQ07, open Real).",
+      "mathContext": "States the target inequality and previews the sum-of-squares certificate (a²+b²+c²)² - 48·heronProduct = 2((a²-b²)²+(b²-c²)²+(c²-a²)²) that drives the entire proof."
+    },
+    {
       "id": "triangle-data",
       "title": "Triangle Data — semi-perimeter, Heron product, area",
       "startLine": 37,
@@ -85,12 +93,20 @@
       "mathContext": "The mathematical heart of Weitzenböck's inequality, independent of any square roots. The SOS identity gives both the inequality (nlinarith on nonnegative squares) and the equality case (each square vanishes)."
     },
     {
-      "id": "weitzenbock",
-      "title": "Weitzenböck's Inequality and its Equality Case",
+      "id": "weitzenbock-main",
+      "title": "Weitzenböck's Inequality (Main Theorem)",
       "startLine": 104,
-      "endLine": 188,
-      "summary": "Upgrades the squared inequality to a² + b² + c² ≥ 4√3·Area via Real.sqrt monotonicity (both sides non-negative), and characterizes equality as the equilateral case a = b = c.",
+      "endLine": 136,
+      "summary": "Upgrades the squared inequality to a² + b² + c² ≥ 4√3·Area via Real.sqrt monotonicity (both sides non-negative): Y = 4√3·Area and X = a²+b²+c² satisfy Y² ≤ X² by weitzenbock_sq, and Real.sqrt_le_sqrt with Real.sqrt_sq recovers Y ≤ X.",
       "mathContext": "The geometric statement. The only analytic input is Real.sqrt_le_sqrt / Real.sqrt_sq applied to the squared inequality; everything else is the polynomial SOS core."
+    },
+    {
+      "id": "weitzenbock-equality",
+      "title": "Equality Case — the Equilateral Triangle",
+      "startLine": 137,
+      "endLine": 188,
+      "summary": "Proves 4√3·Area = a² + b² + c² iff a = b ∧ b = c. The forward direction reduces equality of the linear expressions to equality of squares, invokes weitzenbock_sq_eq_iff to get a² = b² = c², then factors (a-b)(a+b) = 0 with a+b > 0 to conclude a = b (similarly b = c). The converse substitutes a = b = c and checks the squared identity.",
+      "mathContext": "Sharpness of Weitzenböck's inequality: the equilateral triangle is the unique equality case, read off the same SOS identity that proves the inequality itself."
     }
   ],
   "crossReferences": [
