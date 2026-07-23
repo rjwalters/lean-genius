@@ -96,7 +96,7 @@
       "endLine": 69
     },
     "title": "Finiteness Conjecture (Problem #388)",
-    "content": "The main open conjecture: there are only finitely many solutions to the equal-products equation with $k_1, k_2 > 3$ and disjoint blocks. Formalized as $\\exists N, \\forall \\text{sol}, m_2 \\leq N$. This is a strong Diophantine finiteness statement — the $k > 3$ threshold is believed to be sharp.",
+    "content": "The main open conjecture: there are only finitely many solutions to the equal-products equation with $k_1, k_2 > 3$ and disjoint blocks, i.e. $\\exists N, \\forall \\text{sol}, m_2 \\leq N$. This is stated in a comment only — not declared as a Lean axiom or theorem; it existed as `axiom erdos_388_conjecture` in an earlier version of the file, stripped to a plain comment by a later migration commit and never restored. This is a strong Diophantine finiteness statement — the $k > 3$ threshold is believed to be sharp.",
     "mathContext": "**Conjecture (Erdős)**: $|\\{(m_1, m_2, k_1, k_2) : k_i > 3, m_1+k_1 \\leq m_2, \\prod_{i=1}^{k_1}(m_1+i) = \\prod_{j=1}^{k_2}(m_2+j)\\}| < \\infty$. Even the question of whether any non-trivial solutions exist (with $k_1 \\neq k_2$ or $m_1 \\neq m_2$) remains open for $k_i > 3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -140,7 +140,7 @@
       "endLine": 90
     },
     "title": "Generalized Finiteness Conjecture",
-    "content": "For any fixed nonzero $a, b$, the proportional-products equation should have only finitely many solutions with $k_1 > 2$. This is strictly stronger than the main conjecture (which is the case $a = b = 1, k_i > 3$).",
+    "content": "For any fixed nonzero $a, b$, the proportional-products equation should have only finitely many solutions with $k_1 > 2$. This is stated in a comment only — not declared as a Lean axiom or theorem; it existed as `axiom erdos_388_generalized` in an earlier version of the file, stripped to a plain comment by a later migration commit and never restored. This is strictly stronger than the main conjecture (which is the case $a = b = 1, k_i > 3$).",
     "mathContext": "**Generalized conjecture**: $\\forall a, b > 0, \\; |\\{\\text{solutions to } a \\cdot \\prod(m_1+i) = b \\cdot \\prod(m_2+j), k_1 > 2\\}| < \\infty$. The $k_1 > 2$ threshold (instead of $> 3$) is possible because the proportional factor $a/b$ absorbs some small-case families.",
     "significance": "key",
     "relatedConcepts": [
@@ -160,7 +160,7 @@
       "endLine": 99
     },
     "title": "Erdős–Selfridge Theorem (1975)",
-    "content": "A product of two or more consecutive positive integers is never a perfect power: $(m+1)(m+2) \\cdots (m+k) \\neq n^r$ for $k \\geq 2, r \\geq 2, m > 0$. This landmark result of Paul Erdős and John Selfridge settled a long-standing conjecture using the Bertrand postulate and $p$-adic valuations. It implies that consecutive products have 'rich' prime factorizations that prevent perfect-power structure.",
+    "content": "A product of two or more consecutive positive integers is never a perfect power: $(m+1)(m+2) \\cdots (m+k) \\neq n^r$ for $k \\geq 2, r \\geq 2, m > 0$. This landmark result of Paul Erdős and John Selfridge settled a long-standing conjecture using the Bertrand postulate and $p$-adic valuations. It is stated in a comment only — not declared as a Lean axiom or theorem; it existed as `axiom erdos_selfridge` in an earlier version of the file, stripped to a plain comment by a later migration commit and never restored.",
     "mathContext": "**Erdős–Selfridge (1975)**: $\\prod_{i=1}^k (m+i) \\neq n^r$ for $k \\geq 2, r \\geq 2, m \\geq 1$. The proof analyzes the $p$-adic valuation $v_p(\\prod(m+i))$: by Bertrand's postulate, there exists a prime $p$ with $m+1 \\leq p \\leq m+k$ that divides exactly one factor, making $v_p(\\text{product})$ odd — contradicting the $r$-th power condition.",
     "significance": "key",
     "relatedConcepts": [
