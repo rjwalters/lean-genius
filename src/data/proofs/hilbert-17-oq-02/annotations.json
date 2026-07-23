@@ -219,5 +219,26 @@
       "multivariate polynomials",
       "PSD predicate"
     ]
+  },
+  {
+    "id": "h17g-poly-three-psd",
+    "proofId": "hilbert-17-oq-02",
+    "range": {
+      "startLine": 189,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "The Classical Choi–Lam Polynomial Is PSD",
+    "content": "The capstone corollary: `choiLamPoly 3`, the classical Choi–Lam form as a genuine element of MvPolynomial (Fin 3) ℝ, is PSD under IsPSDMv — a direct instantiation of choiLamPoly_psd_iff at c = 3 (using le_refl). This is the polynomial-object counterpart of choiLam_three_nonneg and closes the entry: the canonical homogeneous PSD/SOS gap member is now established, and quantified by its degree-2 denominator certificate, in both the real-function and MvPolynomial formulations.",
+    "mathContext": "$\\mathrm{IsPSDMv}(\\mathrm{choiLamPoly}\\ 3)$, obtained from $\\mathrm{choiLamPoly\\_psd\\_iff}\\ 3$ at the reflexive instance $3 \\le 3$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "choiLamPoly_psd_iff"
+    ],
+    "relatedConcepts": [
+      "Choi–Lam form",
+      "PSD/SOS gap",
+      "MvPolynomial"
+    ]
   }
 ]
