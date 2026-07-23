@@ -124,12 +124,20 @@
       "mathContext": "Mathlib provides the binary `ConcaveOn.add` (sum of two concave functions is concave) but no packaged `Finset`-sum version. `concaveOn_finset_sum` supplies it by `Finset.induction`: the empty sum is the constant $0$ (concave via `concaveOn_const`), and `insert a u` splits as $g_a + \\sum_{i\\in u} g_i$, concave by `ConcaveOn.add` on the head and the inductive hypothesis on the tail. Stating it for a general convex set $s$ in a real vector space makes it reusable beyond entropy."
     },
     {
-      "id": "concavity",
-      "title": "Concavity of Entropy",
-      "summary": "convex_nonneg_orthant; concaveOn_shannonEntropy (concave on {p | ∀ i, 0 ≤ p i}); concaveOn_shannonEntropy_stdSimplex (concave on the probability simplex).",
+      "id": "concavity-orthant",
+      "title": "Concavity on the Non-Negative Orthant",
+      "summary": "convex_nonneg_orthant: {p | ∀ i, 0 ≤ p i} is convex. concaveOn_shannonEntropy (headline): H is concave on the orthant, by rewriting through the negMulLog bridge, composing negMulLog with each coordinate projection, and summing via concaveOn_finset_sum.",
       "startLine": 91,
-      "endLine": 132,
-      "mathContext": "The non-negative orthant $\\{p \\mid \\forall i,\\ 0 \\le p_i\\}$ is convex (`convex_nonneg_orthant`, from pointwise `add_nonneg`/`mul_nonneg`). For each coordinate $i$, the map $p \\mapsto \\operatorname{negMulLog}(p_i)$ is $\\operatorname{negMulLog}$ (concave on $[0,\\infty)$ by `Real.concaveOn_negMulLog`) precomposed with the linear projection `LinearMap.proj i`; `ConcaveOn.comp_linearMap` makes it concave on the preimage half-space $\\{p \\mid 0 \\le p_i\\}$, and `ConcaveOn.subset` restricts it to the orthant. Summing over $i$ with `concaveOn_finset_sum` and rewriting through the bridge yields `concaveOn_shannonEntropy`: $H$ is concave on the orthant. Since $\\operatorname{stdSimplex}\\,\\mathbb R\\,\\alpha = \\{p \\mid (\\forall i,\\ 0 \\le p_i) \\wedge \\sum_i p_i = 1\\}$ is a convex subset of the orthant, `concaveOn_shannonEntropy_stdSimplex` follows in one line via `ConcaveOn.subset` and `convex_stdSimplex` — the standard statement that entropy is concave on the space of probability distributions."
+      "endLine": 125,
+      "mathContext": "The non-negative orthant $\\{p \\mid \\forall i,\\ 0 \\le p_i\\}$ is convex (`convex_nonneg_orthant`, from pointwise `add_nonneg`/`mul_nonneg`). For each coordinate $i$, the map $p \\mapsto \\operatorname{negMulLog}(p_i)$ is $\\operatorname{negMulLog}$ (concave on $[0,\\infty)$ by `Real.concaveOn_negMulLog`) precomposed with the linear projection `LinearMap.proj i`; `ConcaveOn.comp_linearMap` makes it concave on the preimage half-space $\\{p \\mid 0 \\le p_i\\}$, and `ConcaveOn.subset` restricts it to the orthant. Summing over $i$ with `concaveOn_finset_sum` and rewriting through the bridge yields `concaveOn_shannonEntropy`: $H$ is concave on the orthant."
+    },
+    {
+      "id": "concavity-simplex",
+      "title": "Concavity on the Probability Simplex",
+      "summary": "concaveOn_shannonEntropy_stdSimplex: the standard textbook statement, restricting concaveOn_shannonEntropy to stdSimplex ℝ α via ConcaveOn.subset and convex_stdSimplex.",
+      "startLine": 127,
+      "endLine": 134,
+      "mathContext": "Since $\\operatorname{stdSimplex}\\,\\mathbb R\\,\\alpha = \\{p \\mid (\\forall i,\\ 0 \\le p_i) \\wedge \\sum_i p_i = 1\\}$ is a convex subset of the orthant, `concaveOn_shannonEntropy_stdSimplex` follows in one line via `ConcaveOn.subset` and `convex_stdSimplex` — the standard statement that entropy is concave on the space of probability distributions."
     }
   ],
   "conclusion": {
