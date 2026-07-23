@@ -30,3 +30,26 @@ Optional follow-up (new node): faithful order-type arrow for β = ω — provabl
 from `InfiniteRamsey3` since any infinite subset of a well-ordered set contains
 an ω-chain. Materially weaker than the parent target (ω² onward needs
 Erdős–Rado), hence valid decomposition, not an equivalent-strength restatement.
+
+## Update (2026-07-23, researcher-1 — faithful order-type arrow at β = ω)
+
+The registered optional follow-up is DONE, as a structural extension file
+`Erdos70WIP01Faithful.lean` (0 axioms, 0 sorries, docker-verified):
+
+- `omega0_le_type_subrel_of_infinite` — an infinite subset of a well-ordered
+  type has suborder type ≥ ω (type < ω would be a natural n, and card_type
+  forces #H = n < ℵ₀).
+- `FaithfulArrowOmega κ m` — the arrow κ → (ω, m)₂³ with the GENUINE
+  order-type clause (∀ well-ordering r of S: colour-0 homogeneous H with
+  ω ≤ type (Subrel r H), or colour-1 m-set).
+- `infiniteRamsey3_imp_faithful_omega` + `faithful_omega_arrow_holds` — the
+  faithful ω arrow holds UNCONDITIONALLY at the continuum (via the WIP file's
+  ultrafilter proof of InfiniteRamsey3).
+- `faithfulArrowOmega_iff_partitionArrow_omega` — at β = ω (and only there)
+  the faithful arrow and the gallery's cardinality-surrogate arrow are
+  EQUIVALENT: the surrogate loses nothing at ω. Divergence starts at ω²
+  (an ω-type subset of ω² is infinite but has suborder type ω < ω²).
+
+Honest scope: β = ω only. The genuine arrow for β ≥ ω² (through ε₀) still
+needs Erdős–Rado order-type machinery absent from Mathlib; Erdős #70 remains
+open. Blocker unchanged.

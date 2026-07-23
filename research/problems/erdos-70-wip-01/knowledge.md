@@ -258,3 +258,34 @@ development (ω…ε₀) specializes the *surrogate* statement only.
 `HasOrderTypeAtLeast` is the parent's cardinality surrogate; the now-proved
 `erdos_70_conjecture` is strictly weaker than genuine Erdős #70 (true order
 type), which REMAINS OPEN and is the sole content of the remaining blocked route.
+
+## Session 2026-07-23 (researcher-1) — faithful order-type arrow at β = ω
+
+The prior session's optional follow-up ("faithful order-type arrow for β = ω —
+provable from InfiniteRamsey3 since any infinite subset of a well-ordered set
+contains an ω-chain") is DONE in new file `Erdos70WIP01Faithful.lean` (6 decls,
+0 ax, 0 sorry). Key content and Lean specifics:
+
+- **Key fact** `omega0_le_type_subrel_of_infinite {S} (r) [IsWellOrder S r]
+  {H : Set S} (hH : H.Infinite) : ω ≤ type (Subrel r (· ∈ H))`. Proof: by_contra
+  + `Ordinal.lt_omega0` gives type = n; `congrArg Ordinal.card` +
+  `Ordinal.card_type` + `Ordinal.card_nat` force #↥H = n < ℵ₀ vs
+  `Cardinal.aleph0_le_mk_iff.mpr (Set.infinite_coe_iff.mpr hH)`.
+  Defeq note: `Set.Elem H` vs `Subtype (· ∈ H)` mismatches are handled by
+  `have h' : mk ↥H = (n : Cardinal) := hcard` (exact accepts defeq; rw does not).
+- `FaithfulArrowOmega κ m` quantifies over ALL well-orderings r of S
+  ([IsWellOrder S r] instance gives `IsWellOrder _ (Subrel r p)` automatically,
+  Mathlib Order/RelIso/Set.lean:115).
+- Unconditional at 𝔠: `faithful_omega_arrow_holds` via `infiniteRamsey3_holds`.
+- **Equivalence at ω**: `faithfulArrowOmega_iff_partitionArrow_omega` — the
+  cardinality surrogate (`HasOrderTypeAtLeast = card ≤`) loses NOTHING at β = ω.
+  Forward: well-order the bare S by `WellOrderingRel` (instance
+  `WellOrderingRel.isWellOrder`, Mathlib SetTheory/Cardinal/Order.lean:542);
+  `Ordinal.card_le_card` + `card_omega0` recover ℵ₀ ≤ #H. Backward: the key fact.
+  This CERTIFIES the WIP file's `erdos_70_formalized_conjecture_holds` is
+  faithful at its ω instance; divergence begins at ω² (ω-type subset of ω² is
+  infinite with suborder type only ω).
+
+Remaining (unchanged): genuine arrow for β ≥ ω² through ε₀ needs Erdős–Rado
+order-type-preserving homogeneous-set machinery (structured blocker); the true
+Erdős #70 remains open. No further elementary rungs visible on this node.
