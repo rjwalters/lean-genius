@@ -34,28 +34,60 @@
   },
   "sections": [
     {
-      "id": "moment-recurrences",
-      "title": "Part 1: The One-Step Moment Recurrences",
-      "startLine": 53,
+      "id": "header",
+      "title": "Header: Moments From the Eulerian Polynomial's Differential Recurrence",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring: recasts the descent-statistic moments T(m) = E'ₘ(1) and U(m) = E''ₘ(1) as derivatives of the Eulerian polynomial Eₘ(X) at X = 1, and states that differentiating the parent's recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ once/twice and evaluating at 1 gives clean recurrences whose closed forms recover the classical mean (m−1)/2 and variance (m+1)/12.",
+      "mathContext": "$T(m)=E'_m(1)=\\sum_k k\\langle m,k{-}1\\rangle$, $U(m)=E''_m(1)=\\sum_k k(k{-}1)\\langle m,k{-}1\\rangle$."
+    },
+    {
+      "id": "first-recurrence",
+      "title": "Part 1a: The First-Moment Recurrence",
+      "startLine": 60,
+      "endLine": 70,
+      "summary": "deriv_eulerPoly_eval_one_succ: E'_{m+1}(1) = (m+1)Eₘ(1) + m·E'ₘ(1), obtained by differentiating the differential recurrence once and evaluating at X = 1, where the factor X(1−X) vanishes and drops the unwanted higher-derivative term.",
+      "mathContext": "$E'_{m+1}(1)=(m{+}1)E_m(1)+mE'_m(1)$."
+    },
+    {
+      "id": "second-recurrence",
+      "title": "Part 1b: The Second-Moment Recurrence",
+      "startLine": 72,
       "endLine": 82,
-      "summary": "Differentiates the Eulerian differential recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ once (deriv_eulerPoly_eval_one_succ: E'_{m+1}(1) = (m+1)Eₘ(1) + m·E'ₘ(1)) and twice (deriv2_eulerPoly_eval_one_succ: E''_{m+1}(1) = 2m·E'ₘ(1) + (m−1)E''ₘ(1)), evaluating at X = 1. The factor X(1−X) = 0 at X = 1 drops the unwanted higher-derivative term; Mathlib's derivative/eval simp set plus ring close each.",
-      "mathContext": "$E'_{m+1}(1)=(m{+}1)E_m(1)+mE'_m(1)$ and $E''_{m+1}(1)=2mE'_m(1)+(m{-}1)E''_m(1)$, from $\\frac{d}{dX}\\bigl[X(1{-}X)\\bigr]\\big|_{X=1}$ killing higher terms."
+      "summary": "deriv2_eulerPoly_eval_one_succ: E''_{m+1}(1) = 2m·E'ₘ(1) + (m−1)E''ₘ(1), from differentiating the recurrence twice and evaluating at X = 1 — the X(1−X) factor again kills the third-derivative term.",
+      "mathContext": "$E''_{m+1}(1)=2mE'_m(1)+(m{-}1)E''_m(1)$."
     },
     {
-      "id": "closed-forms",
-      "title": "Part 2: Closed Forms (Denominator-Free, Any Ring)",
+      "id": "first-moment-closed-form",
+      "title": "Part 2a: First-Moment Closed Form",
       "startLine": 84,
-      "endLine": 127,
-      "summary": "Lifts the one-step recurrences to closed form by Nat.le_induction over a commutative ring: two_mul_deriv_eulerPoly_eval_one gives 2·E'ₘ(1) = (m+1)! for m ≥ 1, and twelve_mul_deriv2_eulerPoly_eval_one gives 12·E''ₘ(1) = (3m−2)(m+1)! for m ≥ 2 (the latter using the first-moment identity in its step). Factorial algebra via Nat.factorial_succ; each step closed by linear_combination.",
-      "mathContext": "$2E'_m(1)=(m{+}1)!\\ (m\\ge 1)$ and $12E''_m(1)=(3m{-}2)(m{+}1)!\\ (m\\ge 2)$ — integral identities over any commutative ring."
+      "endLine": 103,
+      "summary": "two_mul_deriv_eulerPoly_eval_one: 2·E'ₘ(1) = (m+1)! for m ≥ 1, over an arbitrary commutative ring, lifted from the first-moment recurrence by Nat.le_induction and closed by linear_combination.",
+      "mathContext": "$2E'_m(1)=(m{+}1)!\\ (m\\ge 1)$ — over any commutative ring."
     },
     {
-      "id": "mean-variance",
-      "title": "Part 3: Mean and Variance Over ℚ",
+      "id": "second-moment-closed-form",
+      "title": "Part 2b: Second-Moment Closed Form",
+      "startLine": 105,
+      "endLine": 127,
+      "summary": "twelve_mul_deriv2_eulerPoly_eval_one: 12·E''ₘ(1) = (3m−2)(m+1)! for m ≥ 2, lifted from the second-moment recurrence together with the first-moment identity, closed by linear_combination.",
+      "mathContext": "$12E''_m(1)=(3m{-}2)(m{+}1)!\\ (m\\ge 2)$."
+    },
+    {
+      "id": "mean",
+      "title": "Part 3a: The Mean Over ℚ",
       "startLine": 129,
+      "endLine": 148,
+      "summary": "mean_descents_succ: E'ₘ(1)/Eₘ(1) = (m+1)/2 over ℚ, dividing the first-moment closed form by the row sum Eₘ(1) = m!; so the mean number of descents of a uniformly random permutation of {1,…,m} is (m−1)/2.",
+      "mathContext": "$\\mathbb{E}[k]=\\tfrac{m+1}{2}$ for $k=\\mathrm{des}+1$, i.e. mean descents $=\\tfrac{m-1}{2}$."
+    },
+    {
+      "id": "variance",
+      "title": "Part 3b: The Variance Over ℚ",
+      "startLine": 150,
       "endLine": 175,
-      "summary": "Specializes to ℚ and divides by the row sum Eₘ(1) = m!. mean_descents_succ: E'ₘ(1)/Eₘ(1) = (m+1)/2, so the mean number of descents is (m−1)/2. variance_descents_succ: E''ₘ(1)/Eₘ(1) + E'ₘ(1)/Eₘ(1) − (E'ₘ(1)/Eₘ(1))² = (m+1)/12, the variance via the falling-factorial identity E[k²] − E[k]² = E[k(k−1)] + E[k] − E[k]². Closed by field_simp and ring.",
-      "mathContext": "Mean of descents $=\\frac{m-1}{2}$, variance $=\\frac{m+1}{12}$, via $\\mathrm{Var}(k)=E[k(k{-}1)]+E[k]-E[k]^2$ for $k=\\mathrm{des}+1$."
+      "summary": "variance_descents_succ: E''ₘ(1)/Eₘ(1) + E'ₘ(1)/Eₘ(1) − (E'ₘ(1)/Eₘ(1))² = (m+1)/12, the variance via the falling-factorial identity E[k²] − E[k]² = E[k(k−1)] + E[k] − E[k]², closed by field_simp and ring.",
+      "mathContext": "$\\mathrm{Var}(k)=\\tfrac{m+1}{12}$, via $\\mathrm{Var}(k)=E[k(k{-}1)]+E[k]-E[k]^2$."
     }
   ],
   "meta": {
