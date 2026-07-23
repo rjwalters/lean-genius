@@ -11,17 +11,26 @@
       "**The geometric recursion is one instance.** With $G(k)=r^k$, $G(k+1)-G(k)=r^k(r-1)$, so $\\sum f(k)\\,\\Delta G(k) = (r-1)\\sum f(k)r^k$ and (A) becomes the parent's $(r-1)\\sum f(k)r^k = f(n)r^n - f(0) - \\sum \\Delta f(k)\\,r^{k+1}$ on the nose. The geometric weight was never essential — only that $r^k$ is a closed-form antidifference.",
       "**Antidifference, not partial sum.** Mathlib's `Finset.sum_range_by_parts` states the same principle with the weight $g$ primitive and $G$ forced to be its partial sum $\\sum_{i<j} g(i)$, with awkward $n-1$ indexing. Taking $G$ as an *arbitrary* antidifference with $g=\\Delta G$ gives the cleaner two-sequence form, clean $n$ indexing, and the symmetric boundary $f(n)G(n)-f(0)G(0)$ — the formulation the open question requested.",
       "**Discrete integration by parts.** (A) is the finite-sum shadow of $\\int u\\,dv = uv - \\int v\\,du$: $f$ is $u$, $\\Delta G$ is $dv$, $G$ is $v$, and $\\Delta f$ is $du$. The boundary cocycle $f(n)G(n)-f(0)G(0)$ is the evaluated $[uv]$ term, and the symmetry between differencing $f$ and differencing $G$ is the order-swapped form.",
-      "**The convergence-test engine.** Abel summation is exactly the mechanism behind Dirichlet's and Abel's tests for series $\\sum a_k b_k$: rewriting the partial sum via the antidifference of $a_k$ turns a product of a monotone-null factor and a bounded-partial-sum factor into a telescoping boundary term plus a controllable remainder. The finite identity proved here is the algebraic heart of those analytic convergence criteria, before any limit is taken."
+      "**The convergence-test engine.** Abel summation is exactly the mechanism behind Dirichlet's and Abel's tests for series $\\sum a_k b_k$: rewriting the partial sum via the antidifference of $a_k$ turns a product of a monotone-null factor and a bounded-partial-sum factor into a telescoping boundary term plus a controllable remainder. The finite identity proved here is the algebraic heart of those analytic convergence criteria, before any limit is taken.",
+      "**Free rearrangements via `linear_combination`.** Because (A) is a hypothesis-free polynomial identity, its algebraic consequences — such as the order-swapped form `abel_summation_swap` isolating $\\sum \\Delta f\\cdot G(\\cdot+1)$ — follow from a single `linear_combination` call on (A) rather than a fresh induction. This is a reusable template: once an identity is established with no side conditions, any linear rearrangement of it is free, since `ring` closes the residual algebra."
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Overview, motivation, and imports",
+      "title": "Module docstring: identity (A) and its motivation",
       "startLine": 1,
-      "endLine": 73,
-      "summary": "Docstring stating identity (A), the general discrete Abel summation by parts ∑ f·ΔG = fG| − ∑ Δf·G(·+1) as the discrete analogue of ∫ f dG = fG − ∫ G df, with G an arbitrary antidifference. Explains it answers the parent's open question, subsumes the geometric recursion (G(k)=rᵏ), and is cleaner than Mathlib's Finset.sum_range_by_parts (primitive g, partial-sum G, n−1 indexing). Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic, opens Finset.",
+      "endLine": 68,
+      "summary": "Docstring stating identity (A), the general discrete Abel summation by parts ∑ f·ΔG = fG| − ∑ Δf·G(·+1) as the discrete analogue of ∫ f dG = fG − ∫ G df, with G an arbitrary antidifference. Explains it answers the parent's open question, subsumes the geometric recursion (G(k)=rᵏ), and is cleaner than Mathlib's Finset.sum_range_by_parts (primitive g, partial-sum G, n−1 indexing). Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic.",
       "mathContext": "(A) is hypothesis-free over any commutative ring; the geometric recursion and pure telescoping are its G(k)=rᵏ and f≡1 instances respectively."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Finset opening",
+      "startLine": 70,
+      "endLine": 73,
+      "summary": "Enters namespace SummationByPartsOQ01OQ01OQ01OQ02 and opens Finset, so the range-sum notation used by the theorems below is available unqualified.",
+      "mathContext": "Boilerplate: namespace SummationByPartsOQ01OQ01OQ01OQ02; open Finset."
     },
     {
       "id": "general-abel-transform",
