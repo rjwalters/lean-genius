@@ -61,25 +61,33 @@
       "id": "docs-imports",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 45,
+      "endLine": 42,
       "summary": "Module docstring framing the entry as the axiom-elimination of the Hilbert-3 tetrahedral-angle fact via Mathlib's Niven theorem. Three imports: Mathlib.NumberTheory.Niven, Mathlib.NumberTheory.Real.Irrational, and Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse.",
       "mathContext": "Sets scope: derive ¬ isRationalMultipleOfPi(arccos(1/3)) from niven, eliminating the parent's axiom."
     },
     {
       "id": "cosine-value",
       "title": "The Cosine of the Tetrahedral Angle",
-      "startLine": 47,
-      "endLine": 52,
+      "startLine": 44,
+      "endLine": 46,
       "summary": "cos_arccos_one_third: cos(arccos(1/3)) = 1/3 by Real.cos_arccos with the bounds -1 ≤ 1/3 ≤ 1 discharged by norm_num.",
       "mathContext": "Pins the cosine value that Niven's theorem will reject as a rational multiple-of-π cosine."
     },
     {
       "id": "niven-application",
       "title": "Niven's Theorem Applied",
-      "startLine": 54,
+      "startLine": 48,
+      "endLine": 61,
+      "summary": "arccos_one_third_not_rat_mul_pi: assuming arccos(1/3) = r·π, niven forces cos ∈ {-1,-1/2,0,1/2,1}; rewriting cos = 1/3 yields false numeric equalities closed by norm_num.",
+      "mathContext": "The transcendence core: 1/3 is not a Niven cosine value, so the tetrahedral angle is not a rational multiple of π."
+    },
+    {
+      "id": "irrationality",
+      "title": "Irrationality of the Angle",
+      "startLine": 63,
       "endLine": 72,
-      "summary": "arccos_one_third_not_rat_mul_pi: assuming arccos(1/3) = r·π, niven forces cos ∈ {-1,-1/2,0,1/2,1}; rewriting cos = 1/3 yields false numeric equalities closed by norm_num. irrational_arccos_one_third_div_pi: the quotient form, via pi_ne_zero and div_eq_iff.",
-      "mathContext": "The transcendence core: 1/3 is not a Niven cosine value, so the tetrahedral angle is an irrational multiple of π."
+      "summary": "irrational_arccos_one_third_div_pi: arccos(1/3)/π is irrational, via Real.pi_ne_zero and div_eq_iff applied to arccos_one_third_not_rat_mul_pi.",
+      "mathContext": "Restates the transcendence fact as irrationality of the angle-to-π ratio, the classical Hilbert-3 statement."
     },
     {
       "id": "axiom-elimination",
