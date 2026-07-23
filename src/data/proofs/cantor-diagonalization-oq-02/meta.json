@@ -107,6 +107,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Cardinality of the Set of All Countable Ordinals", "startLine": 1, "endLine": 52, "summary": "Answers that the set of countable ordinals {\u03b1 : \u03b1.card \u2264 \u2135\u2080} equals the initial segment below \u03c9\u2081 (the first uncountable ordinal) and has cardinality exactly \u2135\u2081, proved via \u03c9\u2081.card = \u2135\u2081, \u2135\u2081 = succ \u2135\u2080, and \u2135\u2080 < \u2135\u2081. Explains the diagonal-argument connection (a countable list of countable ordinals has a countable supremum, so cannot enumerate all of them) and links to the Continuum Hypothesis (OQ-01).", "mathContext": "$\\omega_1 = (\\aleph_1).\\mathrm{ord}$ is the least ordinal of cardinality $\\aleph_1$; since a countable union of countable ordinals is countable, any countable sequence of countable ordinals admits a strictly larger countable supremum, showing the countable ordinals cannot be countably enumerated."},
     {
       "id": "omega1-definition",
       "title": "The First Uncountable Ordinal ω₁",
