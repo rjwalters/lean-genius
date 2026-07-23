@@ -23,8 +23,8 @@
       "id": "overview-header",
       "title": "Overview: p* is a fundamental discriminant",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring: extends the parent's field identity ℚ(g) = ℚ(√p*) by classifying p* arithmetically. The first supplement gives p* = ±p; the new point is p* ≡ 1 (mod 4) uniformly, which with squarefreeness (|p*| = p prime) makes p* a fundamental discriminant — the actual discriminant of ℚ(√p*)."
+      "endLine": 53,
+      "summary": "Module docstring: extends the parent's field identity ℚ(g) = ℚ(√p*) by classifying p* arithmetically. The first supplement gives p* = ±p; the new point is p* ≡ 1 (mod 4) uniformly, which with squarefreeness (|p*| = p prime) makes p* a fundamental discriminant — the actual discriminant of ℚ(√p*). Imports Mathlib, opens BigOperators/Polynomial, and fixes an odd prime p via [Fact p.Prime]."
     },
     {
       "id": "character-and-square",
@@ -44,7 +44,7 @@
       "id": "capstone",
       "title": "The Gauss sum squares to a fundamental discriminant",
       "startLine": 162,
-      "endLine": 171,
+      "endLine": 173,
       "summary": "gaussSum_sq_isFundamentalDiscriminant: ∃ D, g² = (D : ℂ) ∧ Squarefree D ∧ D ≡ 1 (mod 4) — g² is the fundamental discriminant p* = disc ℚ(g)."
     }
   ],
