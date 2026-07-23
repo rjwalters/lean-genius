@@ -110,33 +110,41 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and the Horadam Sequence",
+      "title": "Module Docstring, Import, and Namespace",
       "startLine": 1,
-      "endLine": 71,
-      "summary": "Module docstring stating the recurrence H(n+2)=p·H(n+1)+q·H(n), the master d'Ocagne identity, the Cassini specialization, and the companion-matrix determinant interpretation; defines H with its seed lemmas H_zero, H_one and the recurrence lemma H_rec.",
+      "endLine": 42,
+      "summary": "Module docstring stating the recurrence H(n+2)=p·H(n+1)+q·H(n), the master d'Ocagne identity, the Cassini specialization, and the companion-matrix determinant interpretation. Imports Mathlib and opens the FibonacciHoradamCassini namespace.",
       "mathContext": "$H(n+2) = p\\,H(n+1) + q\\,H(n)$, companion matrix $M = \\begin{pmatrix} p & q \\\\ 1 & 0 \\end{pmatrix}$, $\\det M = -q$."
+    },
+    {
+      "id": "definition",
+      "title": "The Horadam Sequence H(p,q,a,b)",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "H p q a b : ℕ → ℤ with H 0 = a, H 1 = b, H(n+2) = p·H(n+1) + q·H n, defined by structural recursion; H_zero, H_one, and the definitional recurrence lemma H_rec.",
+      "mathContext": "$H_0=a,\\ H_1=b,\\ H_{n+2}=p\\,H_{n+1}+q\\,H_n$."
     },
     {
       "id": "docagne",
       "title": "The Two-Index d'Ocagne Identity",
-      "startLine": 73,
-      "endLine": 95,
+      "startLine": 60,
+      "endLine": 77,
       "summary": "horadam_dOcagne: H(n+k+1)·H(n) − H(n+k)·H(n+1) = (−q)ⁿ·(H(k+1)·a − H(k)·b), proved by induction on n. The step normalizes indices with omega, expands two recurrence instances, and closes with linear_combination (−q)·ih.",
       "mathContext": "$H(n{+}k{+}1)H(n) - H(n{+}k)H(n{+}1) = (-q)^n\\,(H(k{+}1)\\,a - H(k)\\,b)$."
     },
     {
       "id": "cassini",
       "title": "Generalized Cassini / Simson",
-      "startLine": 97,
-      "endLine": 110,
+      "startLine": 79,
+      "endLine": 94,
       "summary": "horadam_cassini specializes the master identity at k=1 to H(n+2)·H(n) − H(n+1)² = (−q)ⁿ·(H 2·a − b²); horadam_cassini_const evaluates the constant from the seeds as (p·b+q·a)·a − b².",
       "mathContext": "$H(n+2)H(n) - H(n+1)^2 = (-q)^n\\,(H(2)\\,a - b^2)$."
     },
     {
       "id": "fibonacci",
       "title": "Specialization to the Fibonacci Numbers",
-      "startLine": 112,
-      "endLine": 120,
+      "startLine": 96,
+      "endLine": 119,
       "summary": "H_fib identifies H 1 1 0 1 with Nat.fib by strong induction; fib_cassini_shifted recovers the classical Cassini identity F(n+2)·F(n) − F(n+1)² = (−1)ⁿ⁺¹ as a corollary of the general Horadam result.",
       "mathContext": "$F(n+2)F(n) - F(n+1)^2 = (-1)^{n+1}$."
     }
