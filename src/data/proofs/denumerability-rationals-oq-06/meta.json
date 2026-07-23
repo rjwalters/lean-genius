@@ -91,17 +91,33 @@
       "id": "polynomial-cardinality",
       "title": "Countability of ℚ[X] and ℤ[X]",
       "startLine": 33,
-      "endLine": 45,
-      "summary": "cardinalMk_polynomial_rat and cardinalMk_polynomial_int: each rewrites #(R[X]) via Polynomial.cardinalMk_eq_max to max #R ℵ₀, substitutes #R = ℵ₀, and finishes with max_self. cardinalMk_polynomial_rat_eq_int records #(ℚ[X]) = #(ℤ[X]).",
+      "endLine": 41,
+      "summary": "cardinalMk_polynomial_rat and cardinalMk_polynomial_int: each rewrites #(R[X]) via Polynomial.cardinalMk_eq_max to max #R ℵ₀, substitutes #R = ℵ₀ (mk_rat / Cardinal.mk_int), and finishes with max_self.",
       "mathContext": "#(R[X]) = max #R ℵ₀ and #ℚ = #ℤ = ℵ₀, so #(ℚ[X]) = #(ℤ[X]) = max ℵ₀ ℵ₀ = ℵ₀."
     },
     {
-      "id": "denumerable-witness",
-      "title": "An Explicit Enumeration ℕ ≃ ℚ[X]",
+      "id": "rat-int-equal",
+      "title": "ℚ[X] and ℤ[X] are Equinumerous",
+      "startLine": 43,
+      "endLine": 45,
+      "summary": "cardinalMk_polynomial_rat_eq_int chains the two prior cardinality facts to conclude #(ℚ[X]) = #(ℤ[X]) directly — passing from integer to rational coefficients does not enlarge the polynomial ring's cardinality.",
+      "mathContext": "#(ℚ[X]) = ℵ₀ = #(ℤ[X]), so the two polynomial rings have equal cardinality even though ℚ properly contains ℤ."
+    },
+    {
+      "id": "denumerable-existence",
+      "title": "Existence of a Bijection ℕ ≃ ℚ[X]",
       "startLine": 46,
-      "endLine": 56,
-      "summary": "nonempty_nat_equiv_polynomial_rat uses Cardinal.eq.mp on #ℕ = #(ℚ[X]) (both ℵ₀) to produce Nonempty (ℕ ≃ ℚ[X]); natEquivPolynomialRat extracts a concrete (noncomputable) bijection.",
-      "mathContext": "Since #ℕ = ℵ₀ = #(ℚ[X]), Cardinal.eq gives an equivalence ℕ ≃ ℚ[X], i.e. ℚ[X] is denumerable."
+      "endLine": 50,
+      "summary": "nonempty_nat_equiv_polynomial_rat uses Cardinal.eq.mp on #ℕ = #(ℚ[X]) (both ℵ₀) to produce the existence statement Nonempty (ℕ ≃ ℚ[X]).",
+      "mathContext": "Since #ℕ = ℵ₀ = #(ℚ[X]), Cardinal.eq gives Nonempty (ℕ ≃ ℚ[X]) — a bijection exists, though not yet named."
+    },
+    {
+      "id": "explicit-witness",
+      "title": "Extracting the Explicit Enumeration",
+      "startLine": 52,
+      "endLine": 57,
+      "summary": "natEquivPolynomialRat extracts a concrete (noncomputable) bijection ℕ ≃ ℚ[X] from the existence statement via .some, turning 'ℚ[X] is denumerable' into a usable equivalence object.",
+      "mathContext": "natEquivPolynomialRat : ℕ ≃ ℚ[X] := nonempty_nat_equiv_polynomial_rat.some — a chosen witness, not a canonical enumeration."
     }
   ],
   "mainTheorems": [
