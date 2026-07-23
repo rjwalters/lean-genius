@@ -73,10 +73,17 @@
   "sections": [
     {
       "id": "sec-header",
-      "title": "Overview and Setup",
+      "title": "Docstring: From Strict to Geometric Growth",
       "startLine": 1,
+      "endLine": 39,
+      "summary": "Docstring recalling the parent's Vieta ascent sequence rooted at (1,1,1) — (1,1,1) → (1,1,2) → (1,2,5) → (2,5,29) → ⋯ — built by Vieta-jumping the smallest coordinate (ascent (a,b,c) = (b, c, 3bc − a)) with strictly increasing top coordinate. States the quantitative refinement proved here: each ascent step at least doubles the top coordinate, giving 2ⁿ ≤ (seq n).top and unboundedness, all axiom-free over ℤ."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 40,
       "endLine": 46,
-      "summary": "Docstring recalling the parent's Vieta ascent sequence rooted at (1,1,1) and its ascent map ascent (a,b,c) = (b, c, 3bc − a), and stating the quantitative refinement proved here (each step at least doubles the top coordinate, giving 2ⁿ ≤ (seq n).top). Then imports Mathlib and the parent leaf Proofs.MarkovEquationOQ06, opens both namespaces, so seq, seq_spec and seq_zero are reused directly — this file adds only the growth estimate on top of the parent's infrastructure."
+      "summary": "Imports Mathlib and the parent leaf Proofs.MarkovEquationOQ06, opens the MarkovEquationOQ06 and MarkovEquation namespaces inside a fresh MarkovEquationOQ06OQ01 namespace, so seq, seq_spec and seq_zero are reused directly — this file adds only the growth estimate on top of the parent's infrastructure, contributing no new definitions."
     },
     {
       "id": "sec-doubling",
@@ -87,10 +94,17 @@
     },
     {
       "id": "sec-geometric",
-      "title": "The Geometric Lower Bound and Unboundedness",
+      "title": "The Geometric Lower Bound",
       "startLine": 68,
+      "endLine": 85,
+      "summary": "seq_top_ge_two_pow proves (2 : ℤ)^n ≤ (seq n).2.2 by induction from (seq 0).2.2 = 1, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).2.2 ≤ (seq (n+1)).2.2 through the doubling step and mul_le_mul_of_nonneg_left."
+    },
+    {
+      "id": "sec-unbounded",
+      "title": "Unboundedness of the Top Coordinates",
+      "startLine": 86,
       "endLine": 93,
-      "summary": "seq_top_ge_two_pow proves (2 : ℤ)^n ≤ (seq n).2.2 by induction from (seq 0).2.2 = 1, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).2.2 ≤ (seq (n+1)).2.2 through the doubling step. seq_top_unbounded then uses pow_unbounded_of_one_lt (archimedeanity of ℤ) to show the top coordinates exceed every bound."
+      "summary": "seq_top_unbounded uses pow_unbounded_of_one_lt (archimedeanity of ℤ) together with the geometric bound to show the top coordinates exceed every bound B, closing the namespace. A second, quantitative route to the parent's infinitude conclusion, now phrased about the Markov numbers themselves."
     }
   ],
   "mainTheorems": [
