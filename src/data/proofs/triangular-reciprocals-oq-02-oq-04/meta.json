@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: The Rate-of-Convergence Question and Its Answer",
+      "startLine": 1,
+      "endLine": 49,
+      "mathContext": "$\\left|\\sum_{n=1}^{\\infty}\\tfrac{1}{n(n+k)} - S_N(k)\\right| = \\tfrac{1}{k}(H_{N+k}-H_N) \\le \\tfrac{1}{N+1}$, uniformly in $k$.",
+      "summary": "Module docstring: states the parent's closed form ∑ 1/(n(n+k)) = H_k/k and its partial-sum form, quotes the parent's fourth open question on the rate of convergence verbatim, explains the mathematical content (the error is exactly (1/k)(H_{N+k}-H_N), and the new ingredient is the uniform tail bound H_{N+k}-H_N ≤ k/(N+1) whose k cancels against the 1/k prefactor), and lists all 8 results. Imports Mathlib and the parent TriangularReciprocalsOQ02 file, opens Finset/BigOperators/Filter/Topology/Real and the parent's TriangularReciprocalsHarmonic namespace, and enters the TriangularReciprocalsOQ02OQ04 namespace."
+    },
+    {
       "id": "harmonic-diff",
       "title": "Harmonic Tail Difference: Nonnegativity and the k/(N+1) Bound",
       "startLine": 50,
