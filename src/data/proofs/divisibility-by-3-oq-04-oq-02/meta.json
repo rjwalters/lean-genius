@@ -95,6 +95,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Detection Probability for Casting Out", "startLine": 1, "endLine": 36, "summary": "States the error model (a single-digit substitution changes the value by δ·b^k) and previews the four results: position independence of b^k mod d, the core counting argument that d-1 of d perturbation magnitudes are caught, the 8/9 detection rate for casting out nines, and the 2/3 rate for casting out threes.", "mathContext": "Shows casting out with modulus $d$ (where base $b \\equiv 1 \\pmod d$) detects exactly $(d-1)/d$ of single-digit substitution errors, since a digit-$k$ error of magnitude $\\delta$ is detected iff $\\delta \\not\\equiv 0 \\pmod d$."},
     {
       "id": "position-independence",
       "title": "Part I: Position Independence of Detection",
