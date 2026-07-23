@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-kron-classical-def",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
+    "range": {
+      "startLine": 1270,
+      "endLine": 1282
+    },
+    "type": "insight",
+    "title": "kroneckerClassical: Routing the 2-Adic Part Through kronecker2",
+    "content": "`kronecker` (defined earlier in this file) routes the whole modulus through `jacobiSym a |n|`, so at even moduli it uses Jacobi's value at the prime 2 — the mod-2 character — rather than Kronecker's own mod-8 character. `kroneckerClassical a n` fixes this: it factors `n = ±2^v · m` with `m` odd and defines `(a/n) = (a/-1)^{[n<0]} · (a/2)^v · J(a|m)`, where `(a/2) = kronecker2 a` is the classical mod-8 character. This is a new definition alongside `kronecker`, not a redefinition — every earlier result about `kronecker` at odd moduli still holds unchanged.",
+    "mathContext": "$\\mathrm{kroneckerClassical}(a,n) = (\\pm 1)^{[n<0]} \\cdot \\mathrm{kronecker2}(a)^{v_2(|n|)} \\cdot J\\!\\left(a \\;\\middle|\\; \\dfrac{|n|}{2^{v_2(|n|)}}\\right)$, the genuine Kronecker (1885) symbol, agreeing with the file's `kronecker` at every odd modulus (`kroneckerClassical_eq_kronecker_of_odd`) and proven completely multiplicative in both arguments over all nonzero moduli.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-adic valuation",
+      "Kronecker symbol",
+      "mod-8 character",
+      "Dirichlet character"
+    ],
+    "prerequisites": [
+      "kronecker2",
+      "jacobiSym",
+      "Nat.factorization"
+    ]
+  },
+  {
     "id": "ann-kron-kronecker2-def",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02",
     "range": {

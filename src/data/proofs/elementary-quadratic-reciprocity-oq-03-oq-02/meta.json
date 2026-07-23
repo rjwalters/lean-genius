@@ -18,13 +18,13 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 1,
-    "theoremCount": 81,
+    "theoremCount": 101,
     "defCount": 6,
-    "lineCount": 1254,
+    "lineCount": 1446,
     "dateAdded": "2026-03-28",
-    "assumptions": "No mathematical axioms and 0 sorries — the file is fully machine-verified (no axiom or sorry declaration is used). Complete multiplicativity is now proven in BOTH arguments over all nonzero moduli: kronecker_mul_left and kronecker_mul_right, alongside agreement with the Jacobi symbol and odd-modulus quadratic reciprocity. Status is kept 'wip' because the FORMALIZATION of the classical symbol is still partial, not because anything is assumed: (1) the definition routes even moduli through jacobiSym |n| rather than the classical mod-8 character kronecker2, so kronecker_mul_right is multiplicativity of the symbol as defined (which matches the classical Kronecker symbol at all odd moduli and at n = plus/minus 1); and (2) generalized quadratic reciprocity for arbitrary fundamental discriminants remains open. Both are documented as open work in the source module note; neither is axiomatized. Toward (2), the denominator-side supplementary characters are now shown periodic: kronecker_neg_one_periodic ((-1/.) is periodic mod 4) and kronecker_two_periodic ((2/.) is periodic mod 8), the structural complement of kronecker2_periodic (the numerator character (./2) is a Dirichlet character mod 8) and a Gauss-sum-route input. Compiler-trust disclosure: the concrete Kronecker-symbol value check (kronecker_neg_denominator_neg) is discharged with native_decide, so its axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); this is a finite decidable computation and adds no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
+    "assumptions": "No mathematical axioms and 0 sorries — the file is fully machine-verified (no axiom or sorry declaration is used). Complete multiplicativity is now proven in BOTH arguments over all nonzero moduli: kronecker_mul_left and kronecker_mul_right, alongside agreement with the Jacobi symbol and odd-modulus quadratic reciprocity. Status is kept 'wip' because the FORMALIZATION of the classical symbol is still partial, not because anything is assumed: (1) the definition routes even moduli through jacobiSym |n| rather than the classical mod-8 character kronecker2, so kronecker_mul_right is multiplicativity of the symbol as defined (which matches the classical Kronecker symbol at all odd moduli and at n = plus/minus 1); and (2) generalized quadratic reciprocity for arbitrary fundamental discriminants remains open. Both are documented as open work in the source module note; neither is axiomatized. Toward (2), the denominator-side supplementary characters are now shown periodic: kronecker_neg_one_periodic ((-1/.) is periodic mod 4) and kronecker_two_periodic ((2/.) is periodic mod 8), the structural complement of kronecker2_periodic (the numerator character (./2) is a Dirichlet character mod 8) and a Gauss-sum-route input. Compiler-trust disclosure: the concrete Kronecker-symbol value check (kronecker_neg_denominator_neg) is discharged with native_decide, so its axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); this is a finite decidable computation and adds no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations). A subsequent session (2026-07-22) performs the long-flagged 2-adic refinement as a new definition rather than editing `kronecker` in place: `kroneckerClassical` factors the modulus as sign * 2^v * (odd part) and routes the 2-part through `kronecker2` (the classical mod-8 character), agrees with `kronecker` at odd moduli, satisfies `(a/2) = kronecker2 a` and its prime-power form, and is proven completely multiplicative in both arguments (`kroneckerClassical_mul_left`/`kroneckerClassical_mul_right`) without re-deriving chi_8 multiplicativity. `kronecker` itself is unchanged and still routes even moduli through jacobiSym at 2, not kronecker2 — item (1) above is now resolved for the new definition, not retrofitted onto the old one. Item (2) (generalized reciprocity for arbitrary fundamental discriminants) remains open. theoremCount 81->101, lineCount 1254->1446, still 0 axioms besides the disclosed Lean.ofReduceBool and 0 sorries.",
     "mathlib_version": "4.31.0",
-    "definitionCount": 4
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Carl Friedrich Gauss introduced the Legendre symbol and proved quadratic reciprocity by 1801. Carl Gustav Jacob Jacobi generalized it in 1837 to composite odd moduli, producing the Jacobi symbol. The remaining gap — even moduli, zero, and negative integers — was closed by Leopold Kronecker in 1885, who defined (a/2), (a/-1), and (a/0) via case analysis, then extended multiplicatively to produce a completely multiplicative symbol defined on all of ℤ×ℤ. The Kronecker symbol is now the canonical quadratic character in analytic number theory: for a fundamental discriminant D of a quadratic field ℚ(√D), the map n ↦ (D/n) is a primitive Dirichlet character that encodes splitting behavior of primes in ℚ(√D) via class field theory. It appears in the functional equations of Dedekind zeta functions, in the genus theory of binary quadratic forms, in the theory of modular forms and theta series, and in Hecke's treatment of L-functions attached to quadratic fields. Hardy and Wright (Chapter 6) provide the classical treatment; the modern algebraic context is developed by Neukirch in Algebraic Number Theory.",
@@ -36,7 +36,8 @@
       "The sign character (a/-1) = kroneckerNeg1 a encodes the real embedding: -1 if a < 0, else 1. It is the unique real-valued character of order 2 on ℝ^×, and its inclusion lets the Kronecker symbol serve as a Hecke character at the archimedean place.",
       "Complete multiplicativity in the first argument — (ab/n) = (a/n)(b/n) for ab ≠ 0 — is the structural property that promotes the Kronecker symbol from a set function to a group homomorphism (ℤ/nℤ)^× → {±1}, i.e., a Dirichlet character. For a fundamental discriminant D, the map n ↦ (D/n) is a primitive Dirichlet character of conductor |D|, establishing the link to Dirichlet L-functions.",
       "Multiplicativity in the second argument (kronecker_mul_right) and odd-modulus quadratic reciprocity (kronecker_quadratic_reciprocity) are both fully proven here, with 0 axioms and 0 sorries — the second-argument proof reduces every nonzero modulus to the normal form sign(n)·J(a|‖n‖) and applies jacobiSym.mul_right'. What remains genuinely open (documented, not axiomatized) is generalized quadratic reciprocity for arbitrary fundamental discriminants — equivalent to Artin reciprocity for quadratic extensions of ℚ — which demands Gauss-sum arguments over the 2-adic valuation of n.",
-      "The definition is `noncomputable` in Lean 4 because it builds on `jacobiSym`, which uses integer division in ways Lean's kernel cannot definitionally reduce. This is a type-theoretic artifact, not a mathematical obstruction: the Kronecker symbol is entirely explicit and could be computed on any input by a straightforward algorithm."
+      "The definition is `noncomputable` in Lean 4 because it builds on `jacobiSym`, which uses integer division in ways Lean's kernel cannot definitionally reduce. This is a type-theoretic artifact, not a mathematical obstruction: the Kronecker symbol is entirely explicit and could be computed on any input by a straightforward algorithm.",
+      "The classical mod-8 routing flagged as open work is resolved as a new definition, `kroneckerClassical`, rather than by editing `kronecker` in place: it factors the modulus into sign * 2^v * (odd part) and sends the 2-part through `kronecker2`, agreeing with `kronecker` at every odd modulus while genuinely differing at even ones. Its complete multiplicativity in both arguments imports χ₈ multiplicativity from `kronecker2_mul` rather than re-deriving it — the Gauss-sum-heavy step stays out of scope."
     ]
   },
   "sections": [
@@ -177,8 +178,16 @@
       "id": "boundary-cases-hom",
       "title": "Boundary Cases at n = -1 and the Numerator Homomorphism",
       "startLine": 1193,
-      "endLine": 1254,
+      "endLine": 1252,
       "summary": "Named boundary results and structural packaging: the value at n = -1 as the sign character, complete numerator multiplicativity at odd moduli (kronecker_mul_left_odd), the numerator character as a monoid homomorphism kroneckerNumeratorHom : ℤ →* ℤ, and the numerator power law (aᵏ/n) = (a/n)ᵏ."
+    },
+    {
+      "id": "classical-kronecker-symbol",
+      "title": "The Classical Kronecker Symbol: Routing the 2-Adic Part Through kronecker2",
+      "startLine": 1253,
+      "endLine": 1446,
+      "summary": "Performs the refinement flagged as open work in the module note above: `kronecker` routes the whole modulus through jacobiSym at 2, so at even moduli it uses Jacobi's mod-2 value rather than the classical mod-8 character. `kroneckerClassical a n` factors n as sign * 2^v * (odd part) (v the 2-adic valuation of |n|) and sends the 2-part through kronecker2 — this is the classical Kronecker (1885) symbol. Proves: agreement with kronecker at odd moduli (kroneckerClassical_eq_kronecker_of_odd, so every odd-modulus result elsewhere in the file transfers), the ℕ-typed Jacobi corollary, the defining values (a/2) = kronecker2 a and (a/2ᵏ) = (kronecker2 a)ᵏ, a bridge formula back to kronecker on the odd part, and — the stated target — complete multiplicativity in both arguments over all nonzero moduli (kroneckerClassical_mul_right via additive 2-adic valuation + multiplicative odd part + multiplicative sign; kroneckerClassical_mul_left via kronecker2_mul, imported not re-derived) plus the resulting power law. kronecker itself is left unchanged; this is a new definition, not a redefinition.",
+      "mathContext": "$\\mathrm{kroneckerClassical}(a,n) = \\mathrm{sign}(n)^{[n<0]} \\cdot \\mathrm{kronecker2}(a)^{v_2(|n|)} \\cdot J\\!\\left(a \\mid \\dfrac{|n|}{2^{v_2(|n|)}}\\right)$, agreeing with the file's `kronecker` at odd moduli and with the classical Kronecker (1885) symbol everywhere. Multiplicativity in the modulus uses additivity of the 2-adic valuation $v_2(mn)=v_2(m)+v_2(n)$ and multiplicativity of the odd part (`Nat.ordCompl_mul`); multiplicativity in the numerator imports $\\chi_8$ multiplicativity (`kronecker2_mul`) rather than re-deriving it."
     }
   ],
   "conclusion": {
@@ -195,9 +204,9 @@
       "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
     ],
     "namespace": "KroneckerSymbol",
-    "lineCount": 1254,
+    "lineCount": 1446,
     "axiomCount": 0,
-    "theoremCount": 83,
+    "theoremCount": 101,
     "definitionCount": 6,
     "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean",
     "sorries": 0
