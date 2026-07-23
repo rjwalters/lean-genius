@@ -128,6 +128,16 @@
       "targetId": "stirling-second-kind-oq-01",
       "relationship": "related",
       "description": "Companion entry for the other Stirling triangle: the second-kind two-block column S(n,2) = 2^(n-1) − 1. Same author and recurrence style, distinct combinatorial object (set partitions vs. cycle structure of permutations)."
+    },
+    {
+      "targetId": "stirling-first-kind-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Direct follow-up answering this entry's second open question: the generating identity ∑ₖ c(n,k) xᵏ = ascPochhammer x n (the rising factorial), which reproves the row sum ∑ₖ c(n,k) = n! here as its x = 1 specialization."
+    },
+    {
+      "targetId": "stirling-first-kind-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Direct follow-up answering this entry's first open question: the signed alternating row identity, together with the falling-factorial generating identity for the signed numbers s(n,k) = (−1)^{n−k} c(n,k)."
     }
   ],
   "conclusion": {
