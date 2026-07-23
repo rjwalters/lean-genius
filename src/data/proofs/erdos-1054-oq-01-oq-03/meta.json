@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Divergence of σ(m)/m Needs Only the Harmonic Series",
+      "summary": "Module docstring: recalls the parent axiomatized σ(m)/m → ∞ along a witness sequence by citing Mertens/Gronwall's theorem (absent from Mathlib), and answers the derived open question with a sharper observation — via σ(m)/m = ∑_{d∣m} 1/d, taking mₙ = lcm(1,…,n) makes the ratio dominate the harmonic partial sum Hₙ, so divergence follows from Mathlib's existing harmonic-series divergence with zero axioms, no Mertens/Gronwall needed.",
+      "startLine": 1,
+      "endLine": 53,
+      "mathContext": "$\\sigma(m)/m = \\sum_{d\\mid m} 1/d$; for $m_n=\\mathrm{lcm}(1,\\dots,n)$, every $k\\le n$ divides $m_n$, so $\\sigma(m_n)/m_n \\ge \\sum_{k=1}^n 1/k = H_n \\to \\infty$ by Mathlib's `Real.tendsto_sum_range_one_div_nat_succ_atTop`, replacing the parent's axiomatized Mertens/Gronwall input."
+    },
+    {
       "id": "definitions",
       "title": "Section I: σ and the Divergence Sequence lcm(1,…,n)",
       "startLine": 54,
