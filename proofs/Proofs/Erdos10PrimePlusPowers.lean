@@ -418,22 +418,31 @@ theorem summary_known_insufficient :
 
 /- ## Part V: Density Results (Statements) -/
 
-/-- Romanoff's theorem (1934): A positive proportion of integers are p + 2^k.
-    The lower asymptotic density of {n | IsPrimePlus2Pow n} is positive.
+/-- PLACEHOLDER (not yet formalized). Romanoff's theorem (1934) states that a
+    positive proportion of integers are p + 2^k, i.e. the lower asymptotic
+    density of {n | IsPrimePlus2Pow n} is positive.
 
-    This is a statement only - the proof requires analytic number theory. -/
-theorem romanoff_positive_density :
+    The statement below is a VACUOUS stub: its actual type is `∃ δ, 0 < δ ∧ True`,
+    which is trivially witnessed by δ = 1 and says nothing about the density
+    claim. Formalizing the real result requires analytic number theory (a proper
+    liminf-density statement). Kept only as a named marker for the intended
+    result; the `_STUB` suffix flags that it proves nothing. -/
+theorem romanoff_positive_density_STUB :
     ∃ δ : ℝ, 0 < δ ∧
     -- Informal: lim inf_{N→∞} |{n ≤ N | IsPrimePlus2Pow n}| / N ≥ δ
     True :=
   ⟨1, one_pos, trivial⟩
 
-/-- Gallagher's theorem (1975): For any ε > 0, there exists k such that
-    the density of {n | IsPrimePlusKPowers k n} is at least 1 - ε.
+/-- PLACEHOLDER (not yet formalized). Gallagher's theorem (1975) states that for
+    any ε > 0 there exists k such that the density of
+    {n | IsPrimePlusKPowers k n} is at least 1 - ε.
 
-    This shows we can get arbitrarily close to representing all integers,
-    but doesn't prove a universal k exists. -/
-theorem gallagher_density :
+    The statement below is a VACUOUS stub: its actual type is
+    `∀ ε, 0 < ε → ∃ k, True`, trivially satisfied by k = 0, and says nothing about
+    the density claim. Formalizing the real result requires analytic number
+    theory. Kept only as a named marker; the `_STUB` suffix flags that it proves
+    nothing. -/
+theorem gallagher_density_STUB :
     ∀ ε : ℝ, 0 < ε →
     ∃ k : ℕ,
     -- Informal: density of {n | IsPrimePlusKPowers k n} ≥ 1 - ε
@@ -679,9 +688,15 @@ axiom chen_minimal_modulus :
   ∀ d : ℕ, 0 < d → d < dePolignacModulus →
     ∃ r : ℕ, ∃ n : ℕ, n ≡ r [MOD d] ∧ IsPrimePlus2Pow n
 
-/-- The upper density of {n | IsPrimePlus2Pow n} is at most 0.4904.
-    (Chen et al. 2024 improved this bound to approximately 0.490341) -/
-theorem chen_density_upper_bound :
+/-- PLACEHOLDER (not yet formalized). Chen et al. (2024) showed the upper density
+    of {n | IsPrimePlus2Pow n} is at most ≈ 0.490341 (stated here as 0.4904).
+
+    The statement below is a VACUOUS stub: its actual type is
+    `∃ δ, δ ≤ 0.4904 ∧ True`, trivially witnessed by δ = 0, and says nothing about
+    the actual upper-density bound. Formalizing the real result requires analytic
+    number theory. Kept only as a named marker; the `_STUB` suffix flags that it
+    proves nothing. -/
+theorem chen_density_upper_bound_STUB :
   ∃ δ : ℝ, δ ≤ 0.4904 ∧
     -- Informal: upper density ≤ δ
     True :=
