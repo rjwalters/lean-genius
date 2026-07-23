@@ -37,6 +37,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-konigsberg-oq-04", "title": "Module Header: Counting Eulerian Circuits — The BEST Theorem", "startLine": 1, "endLine": 29, "summary": "Frames the decision-vs-counting complexity gap for Eulerian circuits: deciding existence is O(|V|) in both the directed and undirected case, but counting circuits is polynomial-time for digraphs (the BEST theorem, van Aardenne-Ehrenfest–de Bruijn 1951) while #P-complete for undirected graphs (Brightwell–Winkler 2005). States that this file formalizes the BEST theorem framework, reducing directed Eulerian-circuit counting to arborescence counting via matrix determinants, and verifies it on concrete examples.", "mathContext": "The BEST theorem: the number of Eulerian circuits of a connected digraph equals $t_w(G) \\cdot \\prod_v (\\mathrm{outdeg}(v)-1)!$, where $t_w(G)$ is the number of arborescences rooted at $w$, reducing circuit-counting to a matrix-determinant computation via the matrix-tree theorem."},
     {
       "id": "definitions",
       "title": "Eulerian Circuits and Arborescences",
