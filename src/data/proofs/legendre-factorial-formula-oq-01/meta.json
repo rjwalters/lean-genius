@@ -69,11 +69,18 @@
       "summary": "Docstring stating Legendre's formula in its two classical forms (floor-sum and digit-sum) and announcing the new solved form vₚ(n!) = (n − Sₚ(n))/(p−1). Imports the p-adic valuation basics, opens Nat / Finset, and fixes a prime p (via the Fact p.Prime convention on each theorem)."
     },
     {
-      "id": "sec-floor-digit",
-      "title": "Floor-Sum and Digit-Sum Forms",
+      "id": "sec-floor-sum",
+      "title": "Floor-Sum Form",
       "startLine": 32,
+      "endLine": 38,
+      "summary": "padicValNat_factorial_eq_sum wraps Mathlib's padicValNat_factorial: vₚ(n!) = ∑_{i∈[1,b)} ⌊n/pⁱ⌋ for any bound b above log_p n."
+    },
+    {
+      "id": "sec-digit-sum",
+      "title": "Digit-Sum Form",
+      "startLine": 40,
       "endLine": 45,
-      "summary": "padicValNat_factorial_eq_sum wraps Mathlib's padicValNat_factorial (vₚ(n!) = ∑_{i∈[1,b)} ⌊n/pⁱ⌋ for any bound b above log_p n) and sub_one_mul_padicValNat_factorial_eq wraps sub_one_mul_padicValNat_factorial ((p−1)·vₚ(n!) = n − Sₚ(n))."
+      "summary": "sub_one_mul_padicValNat_factorial_eq wraps sub_one_mul_padicValNat_factorial: (p−1)·vₚ(n!) = n − Sₚ(n), where Sₚ(n) is the base-p digit sum."
     },
     {
       "id": "sec-solved",
