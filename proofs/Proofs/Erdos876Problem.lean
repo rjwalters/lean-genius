@@ -249,9 +249,38 @@ Proof: 2^n ≠ sum of smaller powers of 2 (binary representation).
 -/
 theorem powers_of_two_sumfree :
     IsSumFreeErdos {n | ∃ k : ℕ, n = 2^k} := by
-  intro a ha S hS hlt hcard
-  -- 2^n can only be written as sum of distinct 2^k in one way (itself)
-  sorry
+  intro a ha S hS hlt _hcard
+  obtain ⟨k, rfl⟩ := ha
+  -- Each member of `S` is a power of two strictly below `2^k`, so `S` is
+  -- contained in `{2^0, …, 2^(k-1)}`; that whole set sums to `2^k - 1 < 2^k`.
+  have hsub : S ⊆ (Finset.range k).image (2 ^ ·) := by
+    intro b hb
+    obtain ⟨j, rfl⟩ := hS (Finset.mem_coe.mpr hb)
+    have hj : j < k := by
+      by_contra hjk
+      have hle2 : (2 : ℕ) ^ k ≤ 2 ^ j :=
+        Nat.pow_le_pow_right (by norm_num) (Nat.le_of_not_lt hjk)
+      have hlt2 := hlt _ hb
+      omega
+    exact Finset.mem_image.mpr ⟨j, Finset.mem_range.mpr hj, rfl⟩
+  have hle : S.sum id ≤ ((Finset.range k).image (2 ^ ·)).sum id :=
+    Finset.sum_le_sum_of_subset hsub
+  have himg : ((Finset.range k).image (2 ^ ·)).sum id
+      = ∑ j ∈ Finset.range k, 2 ^ j := by
+    rw [Finset.sum_image fun x _ y _ h => Nat.pow_right_injective le_rfl h]
+    simp
+  have hgeom : ∀ m : ℕ, ∑ j ∈ Finset.range m, 2 ^ j = 2 ^ m - 1 := by
+    intro m
+    induction m with
+    | zero => simp
+    | succ n ih =>
+        rw [Finset.sum_range_succ, ih, pow_succ]
+        have h1 : 0 < (2 : ℕ) ^ n := by positivity
+        omega
+  have hone : 0 < (2 : ℕ) ^ k := by positivity
+  intro hsum
+  have hk := hgeom k
+  omega
 
 /-
 **Powers of 3 that are 1 mod 3:**
