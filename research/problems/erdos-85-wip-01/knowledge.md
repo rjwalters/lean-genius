@@ -508,3 +508,53 @@ on 11 vertices (Petersen + one vertex attached how? adding a vertex adjacent to
 violations — nontrivial, possibly false-free; check literature/OEIS). f(n)
 counting ceiling ≤ 4 holds through n ≤ 20 (C(n,2) < 6n iff n ≤ 12) — careful:
 only n ≤ 12. Deep: KST asymptotics, monotonicity core.
+
+## Session 2026-07-22f (researcher-1) — **f(11) = 4 and f(12) = 4 PROVED** (vertex-surgery witnesses)
+
+**Outcome**: `minDegreeForC4_eleven : minDegreeForC4 11 = 4` and
+`minDegreeForC4_twelve : minDegreeForC4 12 = 4`, axiom-free (kernel `decide`
+only, no `native_decide`). Exact table now COMPLETE for **1 ≤ n ≤ 12:
+f = 1,2,3,2,3,3,3,3,3,4,4,4** — the entire range reachable by the elementary
+cherry count (`n ≤ k(k−1)` with k=4 holds iff n ≤ 12; C(13,2) = 78 = 13·6
+fails the strict inequality, so n = 13 needs new upper-bound input).
+
+**Mechanism — the vertex-adding surgery (materially new, resolves the recorded
+"lower ≥ 4 on 11 vertices — nontrivial, possibly false" next-step)**: no
+11/12-vertex Petersen analogue exists (3-regular girth-5 at odd order is
+parity-impossible), but min degree 3 does not need regularity. Surgery on a
+C₄-free graph with all non-adjacent pairs having ≤1 common neighbour:
+
+  DELETE an edge a–b, ADD a new vertex v adjacent to a, b, and one further
+  neighbour c of b.
+
+Why common-neighbour ≤ 1 survives: within {a,b,c} the pairs (a,b),(b,c) were
+adjacent (0 common nbrs, girth 5) and the unique common neighbour of the
+non-adjacent pair (a,c) was exactly b — deleted edge removes it as v arrives;
+any outside vertex adjacent to two of {a,b,c} would have been a SECOND common
+neighbour of that pair before. Degrees: a,b trade one neighbour for v; c gains
+one. Applied twice: `petersen11` (delete (0,1), add 10~{0,1,6}) and
+`petersen12` (delete (2,3), add 11~{2,3,8}). All verification is the
+common-neighbour-matrix kernel check via `not_containsC4_of_forall_common_le_one`
+(petersen-session extraction pair) — 11×11 and 12×12 `decide`, fast.
+
+### Lean notes
+- Witness graphs are NOT regular (one degree-4 vertex per surgery), so state
+  `∀ v, 3 ≤ degree v := by decide` (not an equality) and feed
+  `le_minDegree_of_forall_le_degree` directly.
+- Upper halves via `minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)`;
+  n = 12 is the exact boundary case 12 = 4·3.
+- Same sInf lower-bound assembly as `four_le_minDegreeForC4_ten` (nonempty via
+  `eq_top_of_minDegree_ge` at k = n−1, then `le_csInf`, contradiction with the
+  witness at k ≤ 3).
+
+### Remaining on this problem
+- f(13): counting needs k = 5 (13 ≤ 20 gives only f(13) ≤ 5); true value is 4
+  (literature: min-deg-3 C₄-free graphs exist on 13 vertices — repeat surgery;
+  but the UPPER bound f(13) ≤ 4 needs a genuinely new mechanism, e.g. a real
+  ex(n; C₄) edge-extremal bound — same blocker as the old f(8) route).
+- The surgery iterates: any n ≥ 10 admits a min-deg-3 C₄-free graph (each
+  surgery needs an edge a–b with b having a third neighbour c s.t. the (a,c)
+  common neighbour is b — plentiful). So f(n) ≥ 4 for ALL n ≥ 10 is a
+  candidate general lemma; formalizing the general induction is real work
+  (the decide route only does fixed n).
+- Deep: KST asymptotics, monotonicity core f(n+1) ≥ f(n) (the actual #85).

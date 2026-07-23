@@ -57,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR PROGRESS (researcher-1-9, 2026-07-22, host-verified, standard triple): f(9) = 3 AND f(10) = 4 both PROVED axiom-free in one day — exact table COMPLETE for 1 <= n <= 10: f = 1,2,3,2,3,3,3,3,3,4. Both registered blockers resolved (f(9): elementary pinch + tight-cherry bijection + pigeonhole; f(10): edge-list Petersen + common-neighbour extraction criterion, no embedding enumeration). Remaining: f(11)/f(12) (counting gives <= 4, lower bounds open), deep KST asymptotics, monotonicity core (open in literature).",
+    "progressSummary": "MAJOR PROGRESS (researcher-1, 2026-07-22f, host-verified, standard triple): f(11) = 4 AND f(12) = 4 PROVED axiom-free via vertex-adding surgery on the Petersen graph (delete edge a-b, add v ~ {a,b,c}) — exact table COMPLETE for 1 <= n <= 12: f = 1,2,3,2,3,3,3,3,3,4,4,4, the full range the elementary cherry count reaches (12 = 4*3 is the boundary case). Remaining: f(13) upper bound needs new mechanism (counting gives only <= 5); general f(n) >= 4 for n >= 10 via iterated surgery; deep KST asymptotics, monotonicity core.",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -97,7 +97,9 @@
       "containsC4_of_four_set_min_two (dense-4-set lemma) + card_inter_neighborFinset_le_one in Erdos85Problem.lean",
       "minDegreeForC4_ten (f(10)=4) + four_le_minDegreeForC4_ten in Erdos85Problem.lean",
       "petersen (explicit edge-list) + petersen_degree + petersen_common_le_one in Erdos85Problem.lean",
-      "exists_two_common_of_containsC4 + not_containsC4_of_forall_common_le_one (reusable C4-freeness criterion) in Erdos85Problem.lean"
+      "exists_two_common_of_containsC4 + not_containsC4_of_forall_common_le_one (reusable C4-freeness criterion) in Erdos85Problem.lean",
+      "petersen11/petersen11Edges + degree/common-neighbour kernel checks + four_le_minDegreeForC4_eleven + minDegreeForC4_eleven (f(11)=4) in Erdos85Problem.lean",
+      "petersen12/petersen12Edges + degree/common-neighbour kernel checks + four_le_minDegreeForC4_twelve + minDegreeForC4_twelve (f(12)=4) in Erdos85Problem.lean"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -129,14 +131,17 @@
       "f(9) = 3 PROVED axiom-free in one session, executing the same-day blueprint: degree pinch (cherry+parity), (3^8,4) killed by dense-4-set local analysis, (3^6,4^3) killed by tight-cherry bijection + path-count + pigeonhole engine — NO ex(n;C4) input; fourth extremal-tables blocker claim overturned by formal proof",
       "Tight-counting upgrade pattern: when the KST cherry-to-pair map has equal source/target cards, Set.InjOn + card_image_of_injOn + eq_of_subset_of_card_le turns the pigeonhole into a bijection giving EXISTENCE of a common neighbour for every pair — reusable wherever a counting bound is attained exactly",
       "f(10) = 4 PROVED: the feared 10^4 embedding enumeration was never needed — extraction lemma (C4 embedding => two common neighbours) reduces C4-freeness of any explicit witness graph to its common-neighbour matrix, a 10x10 kernel decide for the 15-edge Petersen list",
-      "Both registered exact-value blockers on this problem fell in one day (f(9) via elementary pinch+pigeonhole, f(10) via common-neighbour extraction) — extremal-table and enumeration fears repeatedly overestimate the difficulty"
+      "Both registered exact-value blockers on this problem fell in one day (f(9) via elementary pinch+pigeonhole, f(10) via common-neighbour extraction) — extremal-table and enumeration fears repeatedly overestimate the difficulty",
+      "Vertex-adding surgery preserves C4-freeness + min degree 3: DELETE edge a-b, ADD vertex v ~ {a,b,c} with c a neighbour of b. The unique (a,c) common neighbour was exactly b (deleted as v arrives); outside vertices adjacent to two of {a,b,c} would have been a second common neighbour beforehand. Beats the parity obstruction (no 3-regular girth-5 graph at odd order).",
+      "Counting range boundary: n <= k(k-1) with k=4 holds iff n <= 12; C(13,2) = 78 = 13*6 fails strictly, so f(13) <= 4 needs genuinely new upper-bound input (edge-extremal ex(n;C4) bound).",
+      "Surgery iterates: every n >= 10 admits a min-deg-3 C4-free graph, so f(n) >= 4 for all n >= 10 is a candidate general lemma (induction is real work; decide route only covers fixed n)."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
     ],
     "nextSteps": [
-      "f(8): min-deg-3 on 8 vtx forces >= 12 edges; ex(8;C4) = 11 would give f(8)=3 — needs a real extremal edge bound in Lean (Reiman-style), genuinely new input.",
-      "Odd-s upper-Beatty points n = s^2+s+1 (s odd => k = s+1 even): parity argument silent; blocked without new mechanism.",
+      "f(13): true value 4; lower half via a third surgery (decide), but upper f(13) <= 4 needs a real edge-extremal bound ex(13;C4) <= 21-ish (Reiman-style) — same blocker class as the old f(8) route.",
+      "General lemma f(n) >= 4 for all n >= 10 by iterating the surgery (structural induction, not decide) — candidate session-sized target.",
       "Monotonicity core f(n+1) >= f(n) eventually (the actual Erdos #85 question): OPEN, deep."
     ],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
