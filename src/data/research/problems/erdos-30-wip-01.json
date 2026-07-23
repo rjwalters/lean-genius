@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 2,
-    "focus": "h(16)=5 SHIPPED (2026-07-23): the last missing table value below 22. sidonNumber_sixteen via no_sidon_card_six_range_seventeen — span dichotomy: slide the set down by its minimum (translation invariance, injective slide); span<=15 lands in {0..15} and dies on the h(15) mod-3 obstruction no_sidon_card_six_range_sixteen; span=16 pins both endpoints {0,16} and the four interior elements fall to a kernel-checked search (decide +kernel) over the C(15,4)=1365 subsets of {1..15} (SidonCheck = decidable membership-bounded Sidon predicate). Equivalently: every 6-mark Golomb ruler has length >= 17. Exact table h(0..21) now COMPLETE (stacked on PR #42270 h(15) mod-3 + PR #42285 h(17..21)).",
+    "iteration": 3,
+    "focus": "h(22)..h(27) SHIPPED (2026-07-23): table extended to h(0..27). h(22)=h(23)=h(24)=6 via the SCALED span dichotomy chained across three N values: slide down by the minimum; reduced span appeals to the previous N's obstruction (anchored at the merged h(21) parity theorem no_sidon_card_seven_range_twentytwo), span=N pins endpoints {0,N} and the FIVE interior elements fall to decide +kernel over C(N-1,5) subsets (20349 / 26334 / 33649 candidates for N=22,23,24). h(25)=h(26)=h(27)=7: the optimal 7-mark Golomb ruler {0,1,4,10,18,23,25} (span 25, sharp by no_sidon_card_seven_range_twentyfive) gives the witness, certified via the new converse bridge isSidonSet_of_sidonCheck (decide replaces the 7^4=2401-case rcases sweep); counting blocks eight (64 > 2N+8 through N=27).",
     "blockers": [],
-    "nextAction": "Table h(0..21) complete. Next walls: h(22..24) (counting blocks 7 while 42>2N, i.e. through N=20 only — at N=21 parity; N=22-24 need per-N analysis: 7-elt set first fits at span 25 {0,1,4,10,18,23,25}), or pivot to the DEEP targets: Singer/Bose difference-set lower bound h(N)>=(1-o(1))sqrt(N) (finite projective geometry, likely axiomatize), N^{1/4} constant refinement, and the $1000 N^eps conjecture (stays a Prop).",
+    "nextAction": "Table h(0..27) complete. Next wall is N=28: counting goes slack for eight (64 = 2*28+8) and the optimal 8-mark ruler {0,1,4,9,15,22,32,34} has span 34, so h(28..33) need per-N nonexistence of an 8-element Sidon set — span dichotomy would need C(N-1,6) kernel searches (~296k at N=28, likely still feasible but growing). Or pivot to the DEEP targets: Singer/Bose difference-set lower bound h(N)>=(1-o(1))sqrt(N) (finite projective geometry, likely axiomatize), N^{1/4} constant refinement, and the $1000 N^eps conjecture (stays a Prop).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact sidonNumber table now COMPLETE through h(14): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4 (h(10) via perfect-ruler parity); h(11..14)=5 (witness {0,1,4,9,11} + counting bound active again vs 6-element sets). Two-sided elementary bounds stand. NEXT: h(15)=5 needs perfect 6-mark ruler nonexistence (counting slack at 30=2*15, parity silent since 120 even). DEEP unchanged: Singer sqrt(N) lower construction, N^{1/4} refinement, $1000 conjecture.",
+    "progressSummary": "Exact sidonNumber table COMPLETE through h(28): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4; h(11..16)=5; h(17..24)=6; h(25..28)=7 (h(28) via mod-4 class double count against the forced perfect 8-mark ruler — no kernel search). Two-sided elementary bounds stand. NEXT wall: h(29..33) (perfect ruler no longer forced; mod-4 alone insufficient at N=29). DEEP unchanged: Singer sqrt(N) lower construction, N^{1/4} refinement, $1000 conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -50,7 +50,14 @@
       "SidonCheck (decidable membership-bounded Sidon predicate) + sidonCheck_of_isSidonSet in Erdos30WIP01.lean",
       "no_sidon_extension_zero_sixteen (kernel decide: no 4-subset of {1..15} extends {0,16} to a Sidon set) in Erdos30WIP01.lean",
       "no_sidon_card_six_range_seventeen (no 6-elt Sidon set in {0..16} = no 6-mark Golomb ruler of length <=16; span dichotomy) in Erdos30WIP01.lean",
-      "sidonNumber_sixteen (h(16)=5, completing the exact table h(0..21)) in Erdos30WIP01.lean"
+      "sidonNumber_sixteen (h(16)=5, completing the exact table h(0..21)) in Erdos30WIP01.lean",
+      "isSidonSet_of_sidonCheck (converse SidonCheck bridge: decidable witness certification) in Erdos30WIP01.lean",
+      "no_sidon_extension_zero_twentytwo/-three/-four (kernel searches: no 5-subset of {1..N-1} extends {0,N} to a Sidon set, N=22,23,24) in Erdos30WIP01.lean",
+      "no_sidon_card_seven_range_twentythree/-four/-five (no 7-element Sidon set in {0..N}, N=22,23,24 — chained span dichotomy) in Erdos30WIP01.lean",
+      "isSidonSet_0_1_4_10_18_23_25 (optimal 7-mark Golomb ruler witness, decide-certified) in Erdos30WIP01.lean",
+      "sidonNumber_twentytwo..twentyseven (h(22..24)=6, h(25..27)=7 — exact table now h(0..27)) in Erdos30WIP01.lean",
+      "no_sidon_card_eight_range_twentynine in Erdos30WIP01.lean — no 8-element Sidon set in {0..28}, via forced perfect ruler + mod-4 class double count (cross-class fibration T2.filter(p.1%4=r) = A_r ×ˢ A_{(r+2)%4})",
+      "sidonNumber_twentyeight in Erdos30WIP01.lean — h(28)=7; exact table complete h(0..28)"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -64,7 +71,13 @@
       "Next wall precisely characterized: at N=15 the counting bound goes slack (6*5=30=2*15) AND the parity argument is silent (perfect 6-mark ruler of length 15 has difference sum 120, even). h(15)=5 requires nonexistence of a perfect 6-mark ruler — a genuinely finer argument (next session target).",
       "5-way rcases witness pattern scales: 625 omega cases for isSidonSet_0_1_4_9_11 compile fast on host; the isSidonSet_0_1_4_6 template generalizes verbatim.",
       "Shared-cache gotcha: Proofs.Erdos30Problem olean was missing — build parent explicitly with lake env lean -o .lake/build/lib/lean/Proofs/<X>.olean Proofs/<X>.lean, then the WIP file elaborates.",
-      "When counting, parity, and mod-3 all go slack (the h(16) near-perfect ruler), a SPAN DICHOTOMY keeps the residual search kernel-sized: sliding by the minimum reduces span<=N-1 to the previous obstruction, and span=N pins both endpoints, cutting the search from C(17,6)=12376 to C(15,4)=1365 subsets — well inside decide +kernel range (elaborator-side decide times out at default heartbeats; +kernel hands evaluation to GMP-backed kernel numerals). set_option/omit must precede the docstring, not sit between docstring and theorem."
+      "When counting, parity, and mod-3 all go slack (the h(16) near-perfect ruler), a SPAN DICHOTOMY keeps the residual search kernel-sized: sliding by the minimum reduces span<=N-1 to the previous obstruction, and span=N pins both endpoints, cutting the search from C(17,6)=12376 to C(15,4)=1365 subsets — well inside decide +kernel range (elaborator-side decide times out at default heartbeats; +kernel hands evaluation to GMP-backed kernel numerals). set_option/omit must precede the docstring, not sit between docstring and theorem.",
+      "The span dichotomy SCALES and CHAINS: for consecutive slack values N=22,23,24 each proof's reduced-span branch cites the obstruction proved just before it (anchor: h(21) parity), so one anchor + k kernel searches settle k consecutive table values. Kernel decide handles C(23,5)=33649 candidate 5-subsets (each a 7-element SidonCheck) in a single build — an order of magnitude past the h(16) search (1365) with no special handling.",
+      "Converse bridge isSidonSet_of_sidonCheck makes explicit-witness certification O(1) author effort: SidonCheck's bounded quantifiers are decidable, so `isSidonSet_of_sidonCheck (by decide)` replaces the 7^4=2401-case rcases/omega sweep. Retro-applicable to all earlier witnesses (they used manual rcases).",
+      "h(25)=h(26)=h(27)=7 come free once the ruler {0,1,4,10,18,23,25} is certified: 8²=64 > 2N+8 through N=27. The table now ends exactly where counting goes slack for eight: 64 = 2*28+8 at N=28, and the optimal 8-mark ruler has span 34, so h(28..33) is a six-value wall needing C(N-1,6)-scale searches (~296k at N=28).",
+      "h(28)=7 needs NO kernel search: at N=28 the perfect 8-mark ruler is FORCED (C(8,2)=28 distinct positive differences must exhaust {1..28}), and a mod-4 class double count refutes it — same-class Σc_r(c_r−1)=14 with cross-class Σc_r·c_{(r+2)%4}=14 and Σc_r=8 is unsatisfiable (class multiset must be {4,2,1,1} or {3,3,2,0}, giving c0c2+c1c3 ∈ {6,9}, never 7)",
+      "Mod-obstruction ladder at the perfect-ruler walls N=k(k−1)/2: h(10) parity (odd sum), h(15) mod-3 same-class, h(21) parity, h(28) mod-4 same+cross-class — every wall so far falls to a residue count, no exhaustive search",
+      "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search"
     ],
     "mathlibGaps": [],
     "nextSteps": [
