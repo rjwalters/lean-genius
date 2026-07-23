@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-solution-of-cubic-oq-03-oq-03-oq-02",
+      "title": "Module Overview: Ferrari's Four Quartic Roots, Verified by Substitution",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Closes the gap left by the parent (which reduces Ferrari's quartic method to a depressed cubic but never exhibits the roots): given any root m of the resolvent cubic, exhibits all four explicit roots of the depressed quartic x⁴+px²+qx+r=0 over ℂ as (w±d₁)/2, (−w±d₂)/2, and verifies each by substitution via ring/linear_combination from the three defining polynomial relations. 0 axioms, 0 sorries.",
+      "mathContext": "Depressed quartic $x^4+px^2+qx+r=0$ factors as $Q_1\\cdot Q_2$ via a resolvent-cubic root $m$; four explicit roots verified by substitution."
+    },
+    {
       "id": "factorization",
       "title": "The Ferrari Factorization",
       "startLine": 48,
