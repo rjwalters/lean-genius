@@ -67,8 +67,8 @@
       "Conjecture-to-BFL hierarchy (strict weakening chain)",
       "Ratio tightness and bounded ratio characterization"
     ],
-    "axiomCount": 6,
-    "assumptions": "6 axioms inherited from Erdos1155Problem.lean: triangleRemovalEdges (triangle removal edge function), triangleRemovalEdges_nonneg (non-negativity), triangleRemovalEdges_le_complete (bounded by complete graph), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel-type bound). 0 own axioms. 0 sorries.",
+    "axiomCount": 5,
+    "assumptions": "5 axioms inherited from Erdos1155Problem.lean: triangleRemovalEdges (triangle removal edge function), triangleRemovalEdges_nonneg (non-negativity), bfl_upper_bound (BFL 2015 upper bound), bfl_lower_bound (BFL 2015 lower bound), triangleRemoval_mantel_bound (Mantel-type bound). Note: triangleRemovalEdges_le_complete was converted from axiom to a proved theorem and is no longer an assumption. 0 own axioms. 0 sorries.",
     "relatedProblems": [
       {
         "id": "erdos-1155",
