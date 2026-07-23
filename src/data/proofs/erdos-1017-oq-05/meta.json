@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: extending cover ≤ partition to k-uniform hypergraphs",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Module docstring. Poses the open question: does the clique-cover/clique-partition problem (OQ-04, graphs) extend to k-uniform hypergraphs? Defines the k-uniform generalization — hypergraph, complete sub-hypergraph (the clique analog), cover number ccₖ, partition number cpₖ — and states the always-true direction ccₖ(H) ≤ cpₖ(H) lifts verbatim. Lists the eight results proved (0 axioms/sorries) and the honest-scope note: the strict-gap direction (cpₖ can exceed ccₖ, as K₄−e shows for k=2) remains open for general k here, though the disjointness keystone `edge_unique_clique` is proved as a reusable lemma for it.",
+      "mathContext": "A $k$-uniform hypergraph's complete sub-hypergraph generalizes a graph clique: a vertex set $S$ is a complete sub-hypergraph iff every $k$-subset of $S$ is a hyperedge. The cover number $cc_k$ (minimum complete sub-hypergraphs needed so every hyperedge lies in one) is always $\\le$ the partition number $cp_k$ (requiring exactly one), since any partition is in particular a cover."
+    },
+    {
       "id": "structures",
       "title": "Hypergraphs and Complete Sub-hypergraphs",
       "summary": "Hypergraph (k-uniform family), Hypergraph.IsCompleteSub (the clique analog), eq_of_subset_of_card_eq (nested k-sets are equal), and isCompleteSub_of_mem_edges (each hyperedge is its own complete sub-hypergraph).",
