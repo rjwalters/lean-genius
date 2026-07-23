@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Apéry Sets and the Kunz Symmetry Criterion",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Introduces the Apéry set $\\mathrm{Ap}(S,m) = \\{s \\in S : s-m \\notin S\\}$ of a numerical semigroup and proves the Apéry covering theorem plus one direction of Kunz's (1970) symmetry criterion; explicitly notes the converse direction and the full Kunz-coordinate characterization remain open.",
+      "mathContext": "The covering theorem: $n \\in S$ iff $n = w + jm$ for some Apéry element $w$ and $j \\in \\mathbb{N}$; if $S$ is symmetric then $\\mathrm{Ap}(S,m)$ is closed under the involution $w \\mapsto (g+m)-w$ about the Frobenius mirror $g+m$."
+    },
+    {
       "id": "apery-def",
       "title": "The Apéry set",
       "startLine": 58,
