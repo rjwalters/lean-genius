@@ -208,5 +208,77 @@
       "Existential Quantifier",
       "Absolute Constant"
     ]
+  },
+  {
+    "id": "ann-e85-f8-three-regular",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 1364,
+      "endLine": 1376
+    },
+    "type": "insight",
+    "title": "f(8) = 3: Beyond Counting and Parity",
+    "content": "`minDegreeForC4_eight` proves $f(8) = 3$ at a point where both earlier machinery falls silent: cherry counting gives only $f(8) \\le 4$ ($\\binom{8}{2}=28 \\ge 24 = 8\\binom{3}{2}$, no strict excess) and the odd-order handshake-parity boost does not apply (8 is even). The proof instead reduces minimum degree 3 on 8 vertices to the 3-regular case, then shows a 3-regular $C_4$-free graph on 8 vertices is impossible by a local argument: every vertex lies in a *unique* triangle, so the triangles would partition the 8 vertices into disjoint 3-sets — but $3 \\nmid 8$.",
+    "mathContext": "If every vertex of a 3-regular $C_4$-free graph lay in a unique triangle, the triangles would tile $V$ into $|V|/3$ disjoint blocks. At $|V|=8$, $3 \\nmid 8$ — a purely arithmetic obstruction that needs no extremal edge-count table ($\\mathrm{ex}(8;C_4)=11$), unlike the route recorded as blocked in an earlier session.",
+    "significance": "key",
+    "relatedConcepts": [
+      "3-regular graph",
+      "triangle partition",
+      "handshake lemma",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "containsC4_of_two_common",
+      "exists_triangle_of_three_regular",
+      "triangle_pair_unique"
+    ]
+  },
+  {
+    "id": "ann-e85-f9-pigeonhole",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 2042,
+      "endLine": 2055
+    },
+    "type": "insight",
+    "title": "f(9) = 3: Overturning the Recorded Blocker",
+    "content": "`minDegreeForC4_nine` proves $f(9) = 3$ via a pigeonhole common-neighbour engine (`containsC4_of_four_set_min_two` and its supporting lemmas), case-splitting a minimum-degree-3 graph on 9 vertices by how many vertices exceed degree 3. A previous session had recorded this route as blocked pending an $\\mathrm{ex}(9;C_4)$ extremal-table value; this proof obtains the exact value without any such table input.",
+    "mathContext": "The exact-value table now reads $f = 1,2,3,2,3,3,3,3,3$ for $n=1,\\ldots,9$, immediately preceding the Petersen threshold $f(10)=4$ — the first value where the answer strictly exceeds 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "common neighbour count",
+      "case analysis",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "containsC4_of_card_add_two_le_degree_add_degree",
+      "card_inter_neighborFinset_le_one",
+      "containsC4_of_nine_min_degree_three"
+    ]
+  },
+  {
+    "id": "ann-e85-f10-petersen",
+    "proofId": "erdos-85",
+    "range": {
+      "startLine": 2104,
+      "endLine": 2168
+    },
+    "type": "insight",
+    "title": "f(10) = 4: the Petersen Graph, Decide-Free",
+    "content": "`minDegreeForC4_ten` proves the seventh exact value, $f(10) = 4$: plain counting gives the upper half ($\\binom{10}{2}=45 < 60 = 10\\binom{4}{2}$), and the lower half comes from the Petersen graph — 3-regular, girth 5, hence $C_4$-free. A prior session recorded the Petersen witness as blocked on a 'decide-free formalization' (a naive check would enumerate $10^4$ injective maps); this proof avoids it by extracting any `containsC4` witness to a pair of vertices with two common neighbours (`exists_two_common_of_containsC4`), reducing $C_4$-freeness to a $10 \\times 10$ common-neighbour matrix check.",
+    "mathContext": "The Petersen graph is the unique $(3,5)$-Moore graph, the extremal example showing $f(10) \\ge 4$. The exact-value table reads $f = 1,2,3,2,3,3,3,3,3,4$ for $n=1,\\ldots,10$ — the first point where the threshold exceeds 3, witnessing the onset of $\\sqrt{n}$ growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Petersen graph",
+      "Moore graph",
+      "common-neighbour matrix",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "exists_two_common_of_containsC4",
+      "not_containsC4_of_forall_common_le_one",
+      "petersen_common_le_one"
+    ]
   }
 ]
