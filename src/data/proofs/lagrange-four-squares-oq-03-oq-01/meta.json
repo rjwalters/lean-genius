@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Sharpening the Elementary Waring Bound to g(4) ≤ 50",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the open question this answers — the parent proves g(4) ≤ 53 via the classical Liouville route (writing N = 6·(N/6) + N%6, spending 48 fourth powers on the multiple-of-six block and up to 5 on the residue). This file sharpens the constant to 50 by borrowing one small fourth power per residue class mod 6 (e.g. N≡2 uses 6Q+1⁴+1⁴ → 50, N≡4 with N≥16 uses 2⁴+6Q → 49), with the finitely many N < 81 the borrowing can't reach handled by a base-16 representation using ≤ 20 fourth powers. The true value g(4)=19 needs the Hardy–Littlewood circle method and is out of scope; 50 is the standard bound from a self-contained, axiom-free Lagrange-plus-Liouville argument, strictly improving the parent's 53.",
+      "mathContext": "$g(4) \\le 50$: every $N \\equiv r \\pmod 6$ is written as (small fourth power) $+ 6Q$ using at most $48+2=50$ fourth powers, with $N<81$ handled by $N=(N/16)\\cdot2^4+(N\\bmod16)\\cdot1^4$."
+    },
+    {
       "id": "base-machinery",
       "title": "Reused Liouville engine (from the parent)",
       "startLine": 45,
