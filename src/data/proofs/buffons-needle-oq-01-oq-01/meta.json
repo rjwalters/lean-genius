@@ -96,6 +96,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Buffon's Smooth Curve Theorem via Arc Length Theory", "startLine": 1, "endLine": 58, "summary": "Answers whether the axiomatized smooth-curve Buffon theorem can be derived from Mathlib's arc length theory: yes, via angular averaging (\u222b\u2080^\u03c0|a sin\u03b8+b cos\u03b8|d\u03b8 = 2\u221a(a\u00b2+b\u00b2)), rotation invariance, and Fubini. Lists which integral identities are fully proved and identifies the one remaining gap \u2014 a co-area/Banach-indicatrix identity relating crossing counts to the arc-length integral, not directly in Mathlib.", "mathContext": "The angular average identity $\\int_0^\\pi|a\\sin\\theta+b\\cos\\theta|\\,d\\theta = 2\\sqrt{a^2+b^2}$ combined with Fubini gives $E[\\text{crossings}] = \\frac{2L}{\\pi d}$ for the smooth Buffon-Barbier theorem (1860)."},
     {
       "id": "angular-integral",
       "title": "The Fundamental Angular Integral",
