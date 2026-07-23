@@ -83,7 +83,8 @@
       "**The Apéry set turns membership into a single comparison.** Once the least representative w_k = k·b of each residue class mod a is known, n ∈ ⟨a,b⟩ iff n ≡ k·b (mod a) and n ≥ k·b — replacing the existential Representable predicate by one inequality.",
       "**Coprime cancellation is the whole engine.** Every minimality argument reduces b·y ≡ b·k (mod a) to y ≡ k (mod a); gcd(a,b)=1 is exactly what licenses cancelling b, and it is also why the a multiples 0, b, …, (a−1)b hit all residue classes.",
       "**Reflection symmetry encodes the Frobenius involution.** The pairing w_k + w_{a−1−k} = (a−1)b = g + a on the Apéry set is the source of the gap involution n ↦ g − n; symmetric (Gorenstein) numerical semigroups are precisely those whose Apéry set is symmetric under this reflection.",
-      "**Non-representability of g is Apéry minimality, not a separate miracle.** The Frobenius number sits one step a below the maximal Apéry element (a−1)·b of its class; since that element is the least element of S in the class, g cannot be in S — recovering Sylvester's result structurally."
+      "**Non-representability of g is Apéry minimality, not a separate miracle.** The Frobenius number sits one step a below the maximal Apéry element (a−1)·b of its class; since that element is the least element of S in the class, g cannot be in S — recovering Sylvester's result structurally.",
+      "**The two directions of apery_le_iff_representable have wildly different weight.** representable_of_aperyIndex (k·b ≤ n ⟹ representable) is definitional: n − k·b = a·q from the modular hypothesis directly exhibits the representation (q,k). The converse aperyIndex_le_of_representable (representable ⟹ k·b ≤ n) is the substantive half, needing the full coprime-cancellation chain n ≡ b·y ⟹ b·y ≡ b·k ⟹ y ≡ k ⟹ k ≤ y — the biconditional packages a one-line construction against a genuine minimality argument."
     ],
     "prerequisites": [
       "Numerical semigroups and the Representable predicate (parent frobenius-number)",
@@ -102,12 +103,20 @@
       "mathContext": "$\\forall n,\\ \\exists!\\, k<a,\\ n \\equiv k b \\pmod a.$"
     },
     {
-      "id": "apery-characterization",
-      "title": "Apéry Minimality and Characterization",
-      "startLine": 76,
+      "id": "apery-easy-direction",
+      "title": "Apéry Elements Are Representable",
+      "startLine": 78,
+      "endLine": 85,
+      "summary": "representable_of_aperyIndex: if n ≡ k·b (mod a) and k·b ≤ n, then n is representable — a direct construction n = a·q + b·k from the modular hypothesis, the definitional half of the characterization.",
+      "mathContext": "$n \\equiv kb \\pmod a,\\ kb \\le n \\Rightarrow \\mathrm{Representable}\\ a\\ b\\ n.$"
+    },
+    {
+      "id": "apery-minimality",
+      "title": "Apéry Minimality and the Packaged Characterization",
+      "startLine": 87,
       "endLine": 120,
-      "summary": "representable_of_aperyIndex and aperyIndex_le_of_representable establish that w_k = k·b is the least element of ⟨a,b⟩ in its class (coprime cancellation y ≡ k mod a, k ≤ y), packaged as the biconditional apery_le_iff_representable.",
-      "mathContext": "$n \\equiv k b\\ (k<a) \\Rightarrow (k b \\le n \\iff \\mathrm{Representable}\\ n).$"
+      "summary": "aperyIndex_le_of_representable: the substantive converse — a representable n in the class of k·b satisfies k·b ≤ n, by coprime cancellation (n ≡ b·y, b·y ≡ b·k, cancel b to get y ≡ k, then k ≤ y from minimality of k < a). apery_le_iff_representable packages both directions as the biconditional.",
+      "mathContext": "$n \\equiv kb \\pmod a,\\ \\mathrm{Representable}\\ a\\ b\\ n \\Rightarrow kb \\le n.$"
     },
     {
       "id": "reflection",
