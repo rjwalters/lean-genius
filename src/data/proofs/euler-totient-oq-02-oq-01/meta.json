@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-euler-totient-oq-02-oq-01",
+      "title": "Problem Statement: Deriving the Totient Product Formula from Multiplicativity",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module docstring posing the open question inherited from the parent (`EulerTotientOQ02`): can the classical product formula $\\varphi(n) = n\\prod_{p\\mid n}(1-1/p)$ be derived directly from multiplicativity plus the prime-power formula, using Mathlib's factorization infrastructure? Answers YES via a three-step path (factorization into coprime prime powers, multiplicativity over the factorization, the prime-power formula per factor) and lists the Mathlib lemmas used (`Nat.totient_eq_prod_factorization`, `Nat.totient_mul`, `Nat.totient_prime_pow`, `Nat.factorization_prod_pow_eq_self`). States 0 sorries, 0 axioms.",
+      "mathContext": "$\\varphi(n) = \\prod_{p \\mid n} p^{v_p(n)-1}(p-1)$, derived from $n = \\prod_p p^{v_p(n)}$ (fundamental theorem of arithmetic) plus multiplicativity."
+    },
+    {
       "id": "factorization-form",
       "title": "Part I: The Product Formula (Factorization Form)",
       "startLine": 64,
