@@ -62,25 +62,41 @@
       "id": "header",
       "title": "Module Header and Overview",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Frames the n-variable Young product inequality as the general weighted AM–GM, notes Mathlib has only the two-variable Young inequality and none of the equality cases, and lists the three main results.",
+      "endLine": 39,
+      "summary": "Frames the n-variable Young product inequality as the general weighted AM–GM, notes Mathlib has only the two-variable Young inequality and none of the equality cases, and lists the three main results. Followed by the imports (Mathlib, both parent files) and open Finset Real, and the ambient {ι, s, p, a} variables shared by every theorem below.",
       "mathContext": "For $p_i>0$ with $\\sum 1/p_i=1$ and $a_i\\ge0$: $\\prod_i a_i \\le \\sum_i a_i^{p_i}/p_i$, equality iff all $a_i^{p_i}$ equal. Weights $w_i=1/p_i$, data $z_i=a_i^{p_i}$; geometric mean $\\prod (a_i^{p_i})^{1/p_i}=\\prod a_i$."
     },
     {
       "id": "rpow-pow-inv",
       "title": "The telescoping identity (aᵖ)^{1/p} = a",
       "startLine": 41,
-      "endLine": 47,
+      "endLine": 45,
       "summary": "rpow_pow_inv: for a ≥ 0 and p ≠ 0, raising aᵖ to the reciprocal power recovers a, via Real.rpow_mul and p·p⁻¹ = 1. This collapses the weighted geometric mean of the aᵢ^{pᵢ} to the plain product.",
       "mathContext": "$(a^p)^{p^{-1}} = a^{p\\cdot p^{-1}} = a^1 = a$ for $a\\ge0$, $p\\neq0$."
     },
     {
-      "id": "young-prod",
-      "title": "The n-variable Young product inequality and its equality case",
-      "startLine": 48,
+      "id": "young-prod-le",
+      "title": "The n-Variable Young Product Inequality",
+      "startLine": 47,
+      "endLine": 67,
+      "summary": "young_prod_le: ∏ aᵢ ≤ ∑ aᵢ^{pᵢ}/pᵢ, by specializing the grandparent's weighted_amgm_le with weights wᵢ = 1/pᵢ and data zᵢ = aᵢ^{pᵢ}.",
+      "mathContext": "$\\prod_i a_i \\le \\sum_i a_i^{p_i}/p_i$. Apply weighted AM–GM with $w_i=p_i^{-1}$, $z_i=a_i^{p_i}$; rewrite $\\prod z_i^{w_i}=\\prod a_i$ and $\\sum w_i z_i=\\sum a_i^{p_i}/p_i$."
+    },
+    {
+      "id": "young-prod-eq-iff",
+      "title": "The Equality Case",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "young_prod_eq_iff: ∏ aᵢ = ∑ aᵢ^{pᵢ}/pᵢ iff all the aᵢ^{pᵢ} are equal, by the same weighted AM–GM specialization applied to weighted_amgm_eq_iff. Recovers the parent's two-variable young_eq_iff at n = 2.",
+      "mathContext": "$\\prod_i a_i = \\sum_i a_i^{p_i}/p_i \\iff \\forall j,k,\\ a_j^{p_j}=a_k^{p_k}$."
+    },
+    {
+      "id": "young-prod-lt-of-ne",
+      "title": "The Strict Form",
+      "startLine": 88,
       "endLine": 95,
-      "summary": "young_prod_le proves the inequality from the grandparent's weighted_amgm_le; young_prod_eq_iff proves equality ↔ all aᵢ^{pᵢ} equal from weighted_amgm_eq_iff; young_prod_lt_of_ne gives the strict form.",
-      "mathContext": "$\\prod_i a_i = \\sum_i a_i^{p_i}/p_i \\iff \\forall j,k,\\ a_j^{p_j}=a_k^{p_k}$. Apply weighted AM–GM with $w_i=p_i^{-1}$, $z_i=a_i^{p_i}$; rewrite $\\prod z_i^{w_i}=\\prod a_i$ and $\\sum w_i z_i=\\sum a_i^{p_i}/p_i$."
+      "summary": "young_prod_lt_of_ne: if two of the values aᵢ^{pᵢ} differ, the product is strictly less than the Young sum, via lt_of_le_of_ne against the equality case.",
+      "mathContext": "$\\exists j,k,\\ a_j^{p_j} \\ne a_k^{p_k} \\Rightarrow \\prod_i a_i < \\sum_i a_i^{p_i}/p_i$."
     }
   ],
   "references": [
