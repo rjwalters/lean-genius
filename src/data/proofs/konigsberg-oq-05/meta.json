@@ -52,18 +52,36 @@
       "mathContext": "Ambient setting: finite simple graph $G$ on a vertex type $V$ with decidable adjacency; Eulerian trail = a walk using every edge exactly once."
     },
     {
-      "id": "open-trail",
-      "title": "Open Trail: Odd-Degree Vertices Are Exactly the Endpoints",
+      "id": "odd-iff-endpoint",
+      "title": "Part 1a: The Endpoint Biconditional",
       "startLine": 39,
+      "endLine": 65,
+      "summary": "euler_trail_odd_iff_endpoint: for an Eulerian trail u → v with u ≠ v, Odd (G.degree w) ↔ (w = u ∨ w = v) — restating Mathlib's even_degree_iff contrapositive for the forward direction and proving the genuinely new endpoint ⟹ odd converse.",
+      "mathContext": "$\\mathrm{Odd}(\\deg w) \\iff (w = u \\lor w = v)$, obtained from Mathlib's `even_degree_iff` by contraposition plus a new converse."
+    },
+    {
+      "id": "endpoint-corollaries",
+      "title": "Part 1b: Each Endpoint Has Odd Degree",
+      "startLine": 66,
+      "endLine": 84,
+      "summary": "euler_trail_left_odd / euler_trail_right_odd specialize the biconditional to w = u and w = v; euler_trail_odd_set upgrades it to the set equality {w | Odd (G.degree w)} = {u, v}.",
+      "mathContext": "$\\{w \\mid \\mathrm{Odd}(\\deg w)\\} = \\{u, v\\}$ as a `Set.ext` consequence of the biconditional."
+    },
+    {
+      "id": "count-exactly-two",
+      "title": "Part 1c: Exactly Two Odd-Degree Vertices",
+      "startLine": 85,
       "endLine": 100,
-      "summary": "The endpoint biconditional Odd (G.degree w) ↔ (w = u ∨ w = v) for u ≠ v, the two endpoint-odd corollaries, the set equality {w | Odd (G.degree w)} = {u, v}, and the exact count = 2."
+      "summary": "euler_trail_card_odd_eq_two sharpens Mathlib's card_odd_degree (which only gives 0 ∨ 2) to the exact count 2, using the endpoint u as a witness that the odd-degree set is nonempty to rule out the 0 case.",
+      "mathContext": "$|\\{w \\mid \\mathrm{Odd}(\\deg w)\\}| = 2$, sharpening Mathlib's `card_odd_degree : \\ldots = 0 \\lor \\ldots = 2` via a nonemptiness witness."
     },
     {
       "id": "closed-trail",
-      "title": "Closed Trail (Circuit): No Odd-Degree Vertices",
-      "startLine": 102,
+      "title": "Part 2: Closed Trail (Circuit) — No Odd-Degree Vertices",
+      "startLine": 101,
       "endLine": 130,
-      "summary": "For an Eulerian circuit the odd-degree set is empty and its cardinality is 0, the vacuous complement of the open-trail case."
+      "summary": "euler_circuit_no_odd and euler_circuit_card_odd_eq_zero: for an Eulerian circuit every vertex has even degree, so the odd-degree set is empty and its cardinality is 0 — the vacuous complement of the open-trail case, completing the dichotomy.",
+      "mathContext": "Circuit case: $\\{w \\mid \\mathrm{Odd}(\\deg w)\\} = \\emptyset$, count $0$, complementing the open-trail count $2$."
     }
   ],
   "conclusion": {
