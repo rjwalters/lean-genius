@@ -93,6 +93,7 @@
     }
   ],
   "sections": [
+      {"id": "sec-header-konigsberg-oq-02", "title": "Module Header: Directed Euler Paths — In-Degree/Out-Degree Characterization", "startLine": 1, "endLine": 52, "summary": "States the directed analogue of Euler's theorem: a digraph has an Eulerian circuit iff it is connected and every vertex has equal in- and out-degree, and an Eulerian path from u to v iff indeg(u)=outdeg(u)-1, indeg(v)=outdeg(v)+1, and all other vertices balanced. Lists the status of each component (necessity proved, sufficiency/Hierholzer axiomatized, degree-sum lemma proved via a partition bijection) and cites Euler (1736), van Aardenne-Ehrenfest–de Bruijn (1951), and Hierholzer (1873).", "mathContext": "A digraph has an Eulerian circuit iff it is (weakly) connected and $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v)$ for every vertex $v$; it has an Eulerian path from $u$ to $v$ iff connected with $\\mathrm{indeg}(u) = \\mathrm{outdeg}(u) - 1$, $\\mathrm{indeg}(v) = \\mathrm{outdeg}(v) + 1$, and all other vertices balanced."},
     {
       "id": "digraph-definitions",
       "title": "Part I: Directed Graph Definitions",
