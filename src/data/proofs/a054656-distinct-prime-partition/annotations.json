@@ -7,6 +7,7 @@
     "title": "A054656 and what this first iteration machine-checks",
     "content": "OEIS A054656 (created April 2000, still labeled conjectural) counts, for each n, the primes p ≤ n that occur in NO partition of n into distinct primes. The claimed theorem: for every n ≥ 23 that absent set is exactly {n−1, n−4, n−6} ∩ P. The pivot is that a prime p ≤ n occurs in some distinct-prime partition of n iff the residual m = n − p is itself a sum of distinct primes avoiding p, and the only non-representable residuals are m ∈ {1, 4, 6}. This file turns the elementary core of an AI-claimed proof (GPT-5.6 Pro, GitHub issue #41831) into machine-checked Lean and scaffolds the harder representability engine behind clearly-marked `sorry`s. Status is honestly `formalized` — the elementary core is verified, the full theorem is not.",
     "significance": "critical",
+    "mathContext": "$D(n) = \\{p \\le n : p \\text{ prime}, \\lnot\\,\\mathrm{Present}(p,n)\\}$; the conjecture is $D(n) = \\{n-1,n-4,n-6\\}\\cap\\mathbb{P}$ for $n \\ge 23$, so $A054656(n) = |D(n)|$.",
     "relatedConcepts": ["distinct-prime partitions", "additive number theory", "OEIS A054656"]
   },
   {
@@ -39,6 +40,7 @@
     "title": "The reduction lemma — the verified pivot the whole proof turns on",
     "content": "`present_iff_residual_repr`: p occurs in a distinct-prime partition of n ⇔ p is a prime ≤ n AND the residual n − p is a sum of distinct primes avoiding p. Forward direction removes p from a partition containing it (`Finset.add_sum_erase`, so the remaining primes sum to n − p and p is no longer among them); the reverse inserts p back (`Finset.sum_insert`, valid because p was avoided). This fully-elementary equivalence is what converts the whole question into 'which residuals are representable', reducing A054656 to the arithmetic of representable integers. Both directions are proven with zero sorries.",
     "significance": "critical",
+    "mathContext": "$\\mathrm{Present}(p,n) \\iff p \\in \\mathbb{P} \\wedge p \\le n \\wedge \\mathrm{ReprAvoiding}(n-p,\\,p)$, via the identity $p + (S \\setminus \\{p\\}).\\mathrm{sum}\\,\\mathrm{id} = S.\\mathrm{sum}\\,\\mathrm{id} = n$.",
     "prerequisites": ["Finset.add_sum_erase", "Finset.sum_insert"],
     "relatedConcepts": ["reduction to residual representability"]
   },
