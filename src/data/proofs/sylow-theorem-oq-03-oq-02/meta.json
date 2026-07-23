@@ -117,11 +117,27 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Imports, Module Docstring, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports the Sylow, Schur–Zassenhaus, subgroup complement, and cyclic-group libraries. The module docstring states the two-part strategy — counting forces the Sylow q-subgroup normal, then Schur–Zassenhaus splits it — and contrasts the unconditional splitting proved here with the sibling entry's conditional cyclicity result. Opens the SylowTheoremOQ03OQ02 namespace and Subgroup, and fixes a generic finite group G.",
+      "mathContext": "Sets up the ambient group $G$ and names the two Mathlib theorems (Sylow counting, Schur–Zassenhaus) whose combination is this entry's content."
+    },
+    {
+      "id": "setup",
+      "title": "Section I Setup: Order and Index of the Sylow q-Subgroup",
+      "startLine": 52,
+      "endLine": 87,
+      "summary": "card_sylow_q computes |Q| = q from the q-part of pq (via Nat.factorization, since q ∤ p). index_sylow_q then gives [G:Q] = p from Lagrange's |Q| · [G:Q] = |G|. These arithmetic facts feed the counting heart in the next section.",
+      "mathContext": "For primes $p<q$ and $|G|=pq$: $|Q|=q$ (the $q$-part of $pq$ is $q^1$) and $[G:Q]=p$."
+    },
+    {
       "id": "counting",
       "title": "Section I: Counting Forces n_q = 1 and Normality",
-      "startLine": 52,
+      "startLine": 88,
       "endLine": 127,
-      "summary": "card_sylow_q computes |Q| = q from the q-part of pq; index_sylow_q gives [G:Q] = p by Lagrange. card_sylow_q_eq_one is the counting heart: n_q ∣ p and n_q ≡ 1 mod q leave only n_q = 1 (n_q = p ruled out by q ∤ p-1). sylow_q_normal converts uniqueness into normality.",
+      "summary": "card_sylow_q_eq_one is the counting heart: n_q ∣ p and n_q ≡ 1 mod q leave only n_q = 1 (n_q = p ruled out by q ∤ p-1). sylow_q_normal converts uniqueness into normality via Sylow.normal_of_subsingleton.",
       "mathContext": "Sylow III is rigid enough at order pq to pin down n_q = 1, so the larger prime's Sylow subgroup is always normal."
     },
     {
