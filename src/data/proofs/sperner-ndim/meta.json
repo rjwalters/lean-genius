@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sperner-ndim",
+      "title": "Module Overview: n-Dimensional Sperner's Lemma via Abstract Triangulation",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "States Sperner's lemma in arbitrary dimension d for any abstract triangulation of the standard d-simplex satisfying adjacency axioms: the number of fully-colored simplices under a Sperner coloring has the same parity as the number of boundary doors on the last face. Outlines the ten-part proof architecture from grid infrastructure through the final parity theorem.",
+      "mathContext": "Fully-colored (panchromatic) simplex count $\\equiv$ boundary-door count on face $d$ (mod 2), for any `SpernerTriangulation`."
+    },
+    {
       "id": "parity-helpers",
       "title": "ZMod 2 Parity Helpers",
       "startLine": 32,
