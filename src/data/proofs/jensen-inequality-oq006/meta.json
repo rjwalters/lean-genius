@@ -55,7 +55,8 @@
       "Power-mean monotonicity is a one-substitution corollary of the single-exponent Jensen bound: comparing exponents p ≤ q is the same as applying Jensen for t ↦ t^{q/p} to the data x_i^p, because raising the whole inequality to the power q linearizes the two reciprocal exponents 1/p and 1/q.",
       "The exponent bookkeeping is the crux: (x_i^p)^{q/p} = x_i^q and ((∑·)^{1/p})^q = (∑·)^{q/p} are both instances of Real.rpow_mul, and the algebraic identities p·(q/p) = q and (1/q)·q = 1 are what collapse the powered means to the raw Jensen inequality.",
       "Reducing M_p ≤ M_q to M_p^q ≤ M_q^q via Real.rpow_le_rpow_iff (valid because q > 0 and both means are nonnegative) is what lets the proof avoid handling the reciprocal exponents directly — one compares the means after raising to the common power q.",
-      "The result is the head of the classical mean hierarchy on positive exponents: arith_mean_le_powerMean (M_1 ≤ M_p, p ≥ 1) and qm_am_inequality (the root-mean-square inequality, p=1, q=2) are immediate specializations, and the same theorem governs every comparison of power means with positive exponents."
+      "The result is the head of the classical mean hierarchy on positive exponents: arith_mean_le_powerMean (M_1 ≤ M_p, p ≥ 1) and qm_am_inequality (the root-mean-square inequality, p=1, q=2) are immediate specializations, and the same theorem governs every comparison of power means with positive exponents.",
+      "The exponents p, q are real (via Real.rpow), not restricted to naturals or rationals, so the single proof interpolates continuously across the whole hierarchy — comparing M_1.5 to M_2.7 needs no extra work, unlike inductive AM–GM arguments tied to integer exponents."
     ]
   },
   "sections": [
@@ -84,12 +85,20 @@
       "mathContext": "$M_p^q=\\big(\\sum w_i x_i^p\\big)^{q/p}\\le \\sum w_i x_i^q=M_q^q$, hence $M_p\\le M_q$ since $q>0$."
     },
     {
-      "id": "corollaries",
-      "title": "Arithmetic-mean and QM–AM corollaries",
-      "startLine": 121,
+      "id": "arith-mean-corollary",
+      "title": "arith_mean_le_powerMean: AM is the smallest power mean",
+      "startLine": 115,
+      "endLine": 121,
+      "summary": "arith_mean_le_powerMean: ∑ w_i x_i ≤ M_p for p ≥ 1 — the p = 1 slice of the monotonicity theorem, via powerMean_one identifying M_1 as the weighted arithmetic mean.",
+      "mathContext": "$\\sum_i w_i x_i = M_1 \\le M_p$ for $p\\ge1$."
+    },
+    {
+      "id": "qm-am-corollary",
+      "title": "qm_am_inequality: the root-mean-square inequality",
+      "startLine": 123,
       "endLine": 130,
-      "summary": "arith_mean_le_powerMean: ∑ w_i x_i ≤ M_p for p ≥ 1 (the p = 1 slice). qm_am_inequality: ∑ w_i x_i ≤ (∑ w_i x_i²)^{1/2}, the root-mean-square inequality (p = 1, q = 2).",
-      "mathContext": "$\\sum_i w_i x_i \\le M_p$ for $p\\ge1$; QM–AM: $\\sum_i w_i x_i \\le \\big(\\sum_i w_i x_i^2\\big)^{1/2}$."
+      "summary": "qm_am_inequality: ∑ w_i x_i ≤ (∑ w_i x_i²)^{1/2}, the classical QM–AM (root-mean-square) inequality, obtained as the (p, q) = (1, 2) case of arith_mean_le_powerMean.",
+      "mathContext": "QM–AM: $\\sum_i w_i x_i \\le \\big(\\sum_i w_i x_i^2\\big)^{1/2}$."
     }
   ],
   "references": [
