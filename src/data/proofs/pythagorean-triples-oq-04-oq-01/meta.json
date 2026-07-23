@@ -84,11 +84,18 @@
   ],
   "sections": [
     {
-      "id": "header",
-      "title": "Setup: lifting two-factor multiplicativity to arbitrarily many primes",
+      "id": "docstring",
+      "title": "Imports and Module Docstring",
       "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports Mathlib.NumberTheory.SumTwoSquares and Mathlib.Tactic. The module docstring states the goal — the constructive sufficiency direction of the two-square theorem, obtained by strong induction on the least prime factor rather than by citing Mathlib's existence-only Nat.eq_sq_add_sq_iff — with a results table summarizing the three theorems."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Open",
+      "startLine": 44,
       "endLine": 46,
-      "summary": "Module docstring stating the goal — the constructive sufficiency direction of the two-square theorem, obtained by strong induction on the least prime factor rather than by citing Mathlib's existence-only Nat.eq_sq_add_sq_iff — with a results table for the three theorems; imports SumTwoSquares, opens the namespace and Nat."
+      "summary": "Declares namespace PythagoreanTriplesOQ04OQ01 and opens Nat, so minFac, Prime, and the arithmetic lemmas used throughout can be referred to unqualified."
     },
     {
       "id": "constructive-sufficiency",
