@@ -97,22 +97,29 @@
       "id": "counting-core",
       "title": "The abstract counting core: exactly two constant colourings",
       "startLine": 47,
-      "endLine": 76,
-      "summary": "card_constant_colorings proves that among all Bool-colourings of a nonempty finite type α, exactly two are constant. The predicate `∀ x y, c x = c y` is shown to cut out the injective image of `Bool` under `b ↦ (fun _ => b)`, whose cardinality is Fintype.card Bool = 2."
+      "endLine": 77,
+      "summary": "card_constant_colorings proves that among all Bool-colourings of a nonempty finite type α, exactly two are constant. The predicate `∀ x y, c x = c y` is shown to cut out the injective image of `Bool` under `b ↦ (fun _ => b)`, whose cardinality is Fintype.card Bool = 2. Followed by the 'Instantiation for the edges of a k-clique' marker and the ambient `{V : Type*} [Fintype V] [DecidableEq V]` variable used by the rest of the file."
     },
     {
       "id": "clique-edges",
-      "title": "Edges and colourings of a k-clique",
+      "title": "Edges and Colourings of a k-Clique",
       "startLine": 78,
-      "endLine": 101,
+      "endLine": 98,
       "summary": "cliqueEdges S is the 2-subsets of S; cliqueEdges_card shows a k-clique has C(k,2) edges. EdgeColoring S is the type of 2-colourings of those edges, and card_edgeColorings computes the total 2^C(k,2) via Fintype.card_fun and Fintype.card_coe."
     },
     {
+      "id": "monochromatic-count",
+      "title": "Monochromatic-Colouring Count (Main Combinatorial Result)",
+      "startLine": 99,
+      "endLine": 112,
+      "summary": "card_monochromatic_edgeColorings instantiates the abstract counting core at the k-clique's edge type (nonempty for k ≥ 2, since a k-clique with k ≥ 2 has an edge) to get exactly two monochromatic edge-colourings — the numerator of the bad-event probability p."
+    },
+    {
       "id": "bad-event-probability",
-      "title": "The bad-event probability p = 2^(1−C(k,2))",
-      "startLine": 103,
+      "title": "The Bad-Event Probability p = 2^(1−C(k,2))",
+      "startLine": 113,
       "endLine": 140,
-      "summary": "card_monochromatic_edgeColorings instantiates the counting core at the edge type (nonempty for k ≥ 2) to get exactly two monochromatic colourings. clique_monochromatic_probability divides by the total and simplifies to the closed form 2^(1−C(k,2)); triangle_monochromatic_count is the k=3 check giving 2 of 8."
+      "summary": "clique_monochromatic_probability divides the monochromatic count by the total and simplifies to the closed form 2^(1−C(k,2)) via zpow lemmas; triangle_monochromatic_count is the k=3 sanity check giving 2 of 8 (= 2^(1-3) = 1/4)."
     }
   ],
   "conclusion": {
