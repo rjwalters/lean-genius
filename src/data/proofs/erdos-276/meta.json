@@ -46,10 +46,7 @@
       "IsLucasSequence recurrence predicate",
       "IsPrimefree compositeness predicate",
       "HasNoUniversalDivisor condition",
-      "erdos_276_existence axiom (Graham 1964)",
-      "graham_construction axiom with coprimality",
-      "coprime_necessary axiom (GCD propagation)",
-      "covering_system_mechanism axiom"
+      "gcd_propagation theorem (proved: a common divisor of a0, a1 divides every term)"
     ],
     "relatedProblems": [
       {
@@ -67,15 +64,15 @@
     ],
     "axiomCount": 0,
     "lineCount": 82,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The only proved result is gcd_propagation; Graham's existence construction and the covering-system mechanism are described in comments only, not formalized as axioms or theorems. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
     "theoremCount": 1,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #276** belongs to the rich interface between linear recurrences and covering congruences in combinatorial number theory.\n\n**The Original Question:**\nErdős asked whether there exists a Lucas sequence $a_{n+2} = a_{n+1} + a_n$ where every term is composite, yet no single integer greater than 1 divides all terms. The condition that no universal divisor exists is crucial: if $\\gcd(a_0, a_1) = d > 1$, then $d$ divides every term by induction on the recurrence, giving a trivially composite sequence. The interesting case requires $\\gcd(a_0, a_1) = 1$.\n\n**Graham's Resolution (1964):**\nRonald Graham proved the existence of such sequences in his 1964 paper in *Mathematics Magazine*. His construction is elegant: choose initial values $a_0, a_1$ that are coprime and composite, such that a finite set of primes $S$ covers all index positions via the Pisano period structure. The key insight is that the Lucas sequence is periodic modulo each prime $p$, with period $\\pi(p)$ (the Pisano period). If the residue classes $\\{k \\bmod \\pi(p) : p \\mid a_k\\}$ for primes $p \\in S$ form a covering system of the natural numbers, then every term has at least one prime divisor from $S$. Graham's original starting values had 34 digits.\n\n**Subsequent Improvements:**\nDonald Knuth found smaller starting values. Vsemirnov (2004) achieved the current record: $a_0 = 106276436867$, $a_1 = 35256392432$ (12 digits). Ismailescu and Son (2014) studied explicit constructions further.\n\n**The Open Question:**\nWhile Graham showed that covering congruences *suffice* to construct primefree Lucas sequences, Erdős asked whether they are *necessary*. Could there exist a primefree Lucas sequence that is not explained by any covering system? This deeper question connects to fundamental issues about the structure of divisibility in linear recurrences and remains open.",
     "problemStatement": "Does there exist an infinite Lucas sequence $a_0, a_1, a_2, \\ldots$ with $a_{n+2} = a_{n+1} + a_n$ such that every term $a_k$ is composite, yet no integer $d > 1$ divides every term?\n\n**Existence:** YES (Graham 1964, via covering congruences)\n\n**Open:** Are covering congruences the *only* mechanism producing such sequences? Or can primefree Lucas sequences arise from fundamentally different reasons?",
     "text": "Does there exist a Lucas sequence (a_{n+2} = a_{n+1} + a_n) with all terms composite yet no integer dividing every term? Graham (1964) gave a construction via covering congruences. The deeper question of necessity remains open.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Lucas Sequence Predicate:** `IsLucasSequence a` asserts the recurrence $a(n+2) = a(n+1) + a(n)$ for all $n$, working over natural numbers.\n\n2. **Primefree Predicate:** `IsPrimefree a` requires $a(k).\\mathrm{Composite}$ for all $k$, using Mathlib's `Nat.Composite`.\n\n3. **No Universal Divisor:** `HasNoUniversalDivisor a` asserts $\\forall d > 1, \\exists k, d \\nmid a(k)$, excluding trivial common-factor sequences.\n\n4. **Existence Axiom:** Graham's 1964 result is axiomatized as the existence of a sequence satisfying all three conditions simultaneously.\n\n5. **Coprimality Strengthening:** A separate axiom captures Graham's stronger result with $\\gcd(a_0, a_1) = 1$.\n\n6. **GCD Propagation:** The necessity of coprimality is axiomatized: any common divisor of $a_0, a_1$ propagates to all terms.\n\n7. **Covering System Mechanism:** The covering congruence structure is axiomatized: a finite set of primes whose Pisano-period residue classes cover all positions.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Lucas Sequence Predicate:** `IsLucasSequence a` asserts the recurrence $a(n+2) = a(n+1) + a(n)$ for all $n$, working over natural numbers.\n\n2. **Primefree Predicate:** `IsPrimefree a` requires $a(k).\\mathrm{Composite}$ for all $k$, using a local v4.31-compat `Nat.Composite` definition.\n\n3. **No Universal Divisor:** `HasNoUniversalDivisor a` asserts $\\forall d > 1, \\exists k, d \\nmid a(k)$, excluding trivial common-factor sequences.\n\n4. **Existence (Graham 1964):** Described in a comment only — not formalized as a Lean axiom or theorem in this file.\n\n5. **Coprimality Strengthening:** Also described in a comment only, not formalized.\n\n6. **GCD Propagation:** Proved as the theorem `gcd_propagation`: any common divisor of $a_0, a_1$ divides every term, by induction on the Lucas recurrence.\n\n7. **Covering System Mechanism:** Described in a comment only — not formalized as an axiom or theorem in this file.",
     "keyInsights": [
       "**Pisano Periods as Covering Tool:** The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$. The positions where $p \\mid a_k$ form a union of residue classes mod $\\pi(p)$. If finitely many primes' residue classes cover all of $\\mathbb{N}$, every term has a prime divisor from the set.",
       "**Coprimality is Necessary and Sufficient for Non-Triviality:** If $\\gcd(a_0, a_1) = d > 1$, then $d \\mid a_k$ for all $k$ by a simple induction on $a_{n+2} = a_{n+1} + a_n$. So nontrivial primefree sequences require coprime initial terms.",
@@ -116,30 +113,30 @@
     {
       "id": "main-question",
       "title": "Main Question (Existence)",
-      "summary": "Axiomatizes **erdos_276_existence**: there exists a Lucas sequence that is primefree with no universal divisor. This is the resolved part of the problem (Graham 1964).",
+      "summary": "A comment states the existence claim — a Lucas sequence that is primefree with no universal divisor — but does not formalize it as a Lean axiom or theorem. This is the resolved part of the problem (Graham 1964), documented here in prose only.",
       "startLine": 40,
       "endLine": 48,
-      "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\text{HasNoUniversalDivisor}(a)$. Graham (1964) proved existence via covering congruences."
+      "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\text{HasNoUniversalDivisor}(a)$. Graham (1964) proved existence via covering congruences; not formalized in this file."
     },
     {
       "id": "graham-construction",
       "title": "Graham's Construction",
-      "summary": "Axiomatizes **graham_construction** (coprime primefree Lucas sequence exists) and **coprime_necessary** (any common divisor of $a_0, a_1$ divides all terms). Together, these show coprimality is the right condition for nontriviality.",
+      "summary": "A comment describes Graham's coprime primefree Lucas sequence construction (not formalized). The theorem **gcd_propagation** is proved: any common divisor of $a_0, a_1$ divides all terms. Together, these show coprimality is the right condition for nontriviality.",
       "startLine": 49,
       "endLine": 64,
-      "mathContext": "Graham's strengthening: $\\exists a,\\, \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\gcd(a_0, a_1) = 1$. GCD propagation: $d \\mid a_0 \\wedge d \\mid a_1 \\Rightarrow \\forall k,\\, d \\mid a_k$ (by induction on $a_{n+2} = a_{n+1} + a_n$)."
+      "mathContext": "Graham's strengthening: $\\exists a,\\, \\text{IsLucasSequence}(a) \\wedge \\text{IsPrimefree}(a) \\wedge \\gcd(a_0, a_1) = 1$ — described in comments only. GCD propagation is proved: $d \\mid a_0 \\wedge d \\mid a_1 \\Rightarrow \\forall k,\\, d \\mid a_k$ (by induction on $a_{n+2} = a_{n+1} + a_n$)."
     },
     {
       "id": "covering-mechanism",
       "title": "Covering Congruence Mechanism",
-      "summary": "Axiomatizes **covering_system_mechanism**: a finite set of primes covers all index positions via Pisano period residue classes. This captures how Graham's construction works and poses the open question of whether this mechanism is necessary.",
+      "summary": "A comment describes the covering-congruence mechanism (a finite set of primes covering all index positions via Pisano period residue classes) but does not formalize it as a Lean axiom or theorem. This documents how Graham's construction works and poses the open question of whether this mechanism is necessary.",
       "startLine": 65,
       "endLine": 78,
-      "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
+      "mathContext": "$\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\text{IsLucas}(a) \\wedge \\gcd(a_0,a_1)=1 \\wedge \\text{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$ — described in comments only, not formalized. The Lucas sequence is periodic mod $p$ with Pisano period $\\pi(p)$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #276 has a resolved existence component (Graham 1964: primefree coprime Lucas sequences exist via covering congruences) and a deep open component (are covering congruences the only mechanism?). The formalization captures all three predicates (Lucas recurrence, primefree, no universal divisor), axiomatizes Graham's construction with the coprimality strengthening, formalizes GCD propagation, and states the covering system mechanism. The 88-line Lean file has no sorries, cleanly separating definitions from axiomatized results.",
+    "summary": "Erdős Problem #276 has a resolved existence component (Graham 1964: primefree coprime Lucas sequences exist via covering congruences) and a deep open component (are covering congruences the only mechanism?). The formalization captures all three predicates (Lucas recurrence, primefree, no universal divisor) and proves the GCD-propagation theorem; Graham's construction and the covering-system mechanism are documented in comments only, not formalized as axioms or theorems. The 82-line Lean file has no sorries and no axioms.",
     "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Covering Systems Theory:** This problem sits squarely in Erdős's covering systems program (Problems #2, #7, #275–281). Understanding whether covering congruences are necessary for primefree sequences would illuminate the fundamental question of when covering systems are the 'right' explanation for compositeness phenomena.\n\n2. **Sierpinski Numbers Parallel:** Erdős Problem #1113 asks the identical structural question for Sierpinski numbers: must every $k$ where $k \\cdot 2^n + 1$ is always composite be explained by a covering system? Progress on either problem likely implies progress on the other.\n\n3. **Computational Number Theory:** Finding smaller initial values remains an active computational challenge.\n\nThe gap between Graham's 34-digit values (1964) and Vsemirnov's 12-digit record (2004) took 40 years. Whether single-digit initial values are possible is unknown.\n\n4. **Linear Recurrence Divisibility:** The Pisano period structure connecting linear recurrences to covering systems is a deep arithmetic phenomenon. Understanding it fully requires combining algebraic number theory (quadratic fields for the golden ratio) with combinatorial covering theory.\n\n5. **Minimum Modulus Constraints:** The resolution of Erdős's minimum modulus conjecture (#2) by Hough (2015) and Balister et al. (2022) constrains what covering systems are possible, indirectly limiting primefree sequence constructions.",
     "openQuestions": [
       "**Necessity of Covering Systems:** Are covering congruences the only mechanism producing primefree coprime Lucas sequences? Or can such sequences arise from fundamentally different arithmetic structures?",
