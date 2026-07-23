@@ -69,23 +69,37 @@
     {
       "id": "roadmap",
       "title": "Docstring: Step 1 of the three-step Kummer–Dedekind route",
-      "startLine": 3,
-      "endLine": 62,
-      "summary": "Frames OQ-04 and its companion reduction of three_dvd_gal_card to 3 ∣ inertiaDegIn (7); recalls that the sibling entry machine-checked steps (2)–(3) (inertia tower + Galois uniformity) and states that this file packages step (1), the Kummer–Dedekind translation from an irreducible factor mod p to a prime of that inertia degree, with only foundational axioms."
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Frames OQ-04 and its companion reduction of three_dvd_gal_card to 3 ∣ inertiaDegIn (7); recalls that the sibling entry machine-checked steps (2)–(3) (inertia tower + Galois uniformity) and names this file's two theorems (the existence form exists_prime_inertiaDeg_eq_natDegree and the divisibility form exists_prime_dvd_inertiaDeg_of_dvd_natDegree) that package step (1)."
+    },
+    {
+      "id": "implementation-note",
+      "title": "Docstring: repackaging Mathlib's Kummer–Dedekind bijection",
+      "startLine": 42,
+      "endLine": 49,
+      "summary": "Closes the docstring by naming the file's sole mathematical dependency: Mathlib's NumberField.Ideal.primesOverSpanEquivMonicFactorsMod bijection and its residual-degree computation, repackaged here in the divisibility currency the inverse-Galois–via–Frobenius argument needs. Opens Polynomial, NumberField, Ideal, RingOfIntegers."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and ambient variables",
+      "startLine": 50,
+      "endLine": 52,
+      "summary": "Enters the DedekindKummerStep1 namespace and fixes the ambient number field K, algebraic integer θ ∈ 𝓞 K, and rational prime p used by both theorems below."
     },
     {
       "id": "existence",
       "title": "exists_prime_inertiaDeg_eq_natDegree — the splitting datum",
-      "startLine": 64,
-      "endLine": 84,
+      "startLine": 54,
+      "endLine": 77,
       "summary": "For a number field K, algebraic integer θ, and prime p not dividing exponent θ, every monic irreducible factor Q of minpoly ℤ θ mod p is matched by a maximal prime P of 𝓞 K over (p) with inertiaDeg (p) P = Q.natDegree. Proof: the witness is the Kummer–Dedekind bijection's inverse image of Q; primality and lying-over are its primesOver-membership components, maximality is isMaximal_of_mem_primesOver, and the inertia degree is inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply'."
     },
     {
       "id": "divisibility",
       "title": "exists_prime_dvd_inertiaDeg_of_dvd_natDegree — the composable form",
-      "startLine": 86,
+      "startLine": 79,
       "endLine": 95,
-      "summary": "Divisibility restatement consumed by the tower brick: if d ∣ Q.natDegree then some maximal prime P of 𝓞 K over (p) has d ∣ inertiaDeg (p) P. One obtain from the existence theorem plus a rewrite by the extracted degree equality."
+      "summary": "Divisibility restatement consumed by the tower brick: if d ∣ Q.natDegree then some maximal prime P of 𝓞 K over (p) has d ∣ inertiaDeg (p) P. One obtain from the existence theorem plus a rewrite by the extracted degree equality; closes the DedekindKummerStep1 namespace."
     }
   ],
   "conclusion": {
