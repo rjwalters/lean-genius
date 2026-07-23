@@ -55,7 +55,8 @@
       "The defining property is exactly a constraint on residues mod a: among elements of A larger than a, no two are antipodal mod a (sum ≡ 0).",
       "Specializing antipodality to the residue 0 gives the cleanest consequence: at most one larger element of A is a multiple of a.",
       "This is the local reason divisibility-free sets are sparse — each element forbids a positive fraction of residues for its larger neighbours — and is the elementary core beneath the (hard) global density theorems.",
-      "The obstruction is purely a one-line application of dvd_add; the value is in naming and packaging the structure, not in proof depth."
+      "The obstruction is purely a one-line application of dvd_add; the value is in naming and packaging the structure, not in proof depth.",
+      "no_two_larger_multiples and no_antipodal_pair are independent applications of the defining hypothesis, not a derivation chain: despite the residue framing suggesting multiples (residue 0) as a special case of antipodality, both Lean proofs invoke the raw divisibility-free hypothesis h directly (via dvd_add and Nat.dvd_of_mod_eq_zero respectively) rather than one being derived from the other — they are parallel readings of a ∤ (b+c), proved side by side."
     ],
     "prerequisites": [
       "Divisibility on ℕ and dvd_add (a ∣ b, a ∣ c ⟹ a ∣ b+c)",
@@ -82,12 +83,20 @@
       "mathContext": "$A$ is divisibility-free iff $\\forall a,b,c \\in A$ distinct with $a < b, a < c$, $a \\nmid (b+c)$."
     },
     {
-      "id": "obstruction",
-      "title": "The Local Obstruction",
+      "id": "multiplicity-obstruction",
+      "title": "The Multiplicity Obstruction: At Most One Larger Multiple",
       "startLine": 47,
+      "endLine": 70,
+      "summary": "no_two_larger_multiples (two distinct larger multiples of a are impossible, via dvd_add), unique_larger_multiple (the two coincide), and largerMultiples_subsingleton (packaging this as a Set.Subsingleton).",
+      "mathContext": "If $a \\mid b$ and $a \\mid c$ with $b, c > a$ distinct, then $a \\mid (b+c)$ — forbidden. Hence the larger multiples of $a$ in $A$ form a subsingleton."
+    },
+    {
+      "id": "antipodal-obstruction",
+      "title": "The Residue-Level Obstruction",
+      "startLine": 72,
       "endLine": 79,
-      "summary": "no_two_larger_multiples (two distinct larger multiples of a are impossible), unique_larger_multiple, largerMultiples_subsingleton, and the residue form no_antipodal_pair.",
-      "mathContext": "If $a \\mid b$ and $a \\mid c$ with $b, c > a$ distinct, then $a \\mid (b+c)$ — forbidden. Hence the larger multiples of $a$ in $A$ form a subsingleton, and no two larger elements satisfy $b + c \\equiv 0 \\pmod a$."
+      "summary": "no_antipodal_pair: no two distinct larger elements of A satisfy b + c ≡ 0 mod a, proved directly from the hypothesis via Nat.dvd_of_mod_eq_zero, independently of the multiplicity results above.",
+      "mathContext": "No two larger elements $b, c$ satisfy $b + c \\equiv 0 \\pmod a$."
     },
     {
       "id": "witness",
