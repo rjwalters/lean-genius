@@ -143,11 +143,11 @@
     "proofId": "erdos-1101",
     "range": {
       "startLine": 85,
-      "endLine": 90
+      "endLine": 88
     },
     "type": "concept",
     "title": "Conjecture 1: No Polynomial Growth",
-    "content": "Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).\n\nThe intuition is that polynomial-growth sequences don't have enough 'room' between their terms to satisfy the gap bound. This is axiomatized because it remains an **OPEN problem**.",
+    "content": "Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).\n\nThe intuition is that polynomial-growth sequences don't have enough 'room' between their terms to satisfy the gap bound. This is stated here as a comment (not a Lean declaration) because it remains an **OPEN problem**.",
     "significance": "key",
     "relatedConcepts": [
       "polynomial growth",
@@ -165,8 +165,8 @@
     "id": "ann-e1101-yes-subexp",
     "proofId": "erdos-1101",
     "range": {
-      "startLine": 92,
-      "endLine": 98
+      "startLine": 89,
+      "endLine": 93
     },
     "type": "concept",
     "title": "Conjecture 2: Sub-exponential Growth Possible",
@@ -188,8 +188,8 @@
     "id": "ann-e1101-existence",
     "proofId": "erdos-1101",
     "range": {
-      "startLine": 107,
-      "endLine": 111
+      "startLine": 101,
+      "endLine": 104
     },
     "type": "concept",
     "title": "Erdős's Existence Theorem",
@@ -211,8 +211,8 @@
     "id": "ann-e1101-sieve-bound",
     "proofId": "erdos-1101",
     "range": {
-      "startLine": 113,
-      "endLine": 121
+      "startLine": 105,
+      "endLine": 107
     },
     "type": "concept",
     "title": "Sieve Theory Lower Bound",

@@ -49,7 +49,7 @@
     "originalContributions": [
       "Formal statement of the OPEN Erdős problem in Lean 4",
       "Definition of 'good sequence' predicate with all four conditions",
-      "Axiomatization of both conjectures (no polynomial, yes subexponential)",
+      "Documentation of both conjectures (no polynomial, yes subexponential) as comments, not yet formalized as Lean declarations",
       "Statement of Erdős's existence theorem and sieve lower bound",
       "Connection to Problem #208 (prime squares conjecture)"
     ],
@@ -105,25 +105,25 @@
       "id": "conjectures",
       "title": "The Main Conjectures",
       "startLine": 77,
-      "endLine": 99,
-      "summary": "Axioms stating no polynomial good sequence exists but subexponential does.",
-      "mathContext": "Axioms stating no polynomial good sequence exists but subexponential does."
+      "endLine": 93,
+      "summary": "Comments stating the two open conjectures: no polynomial good sequence exists, but a subexponential one does. Not formalized as axioms or declarations.",
+      "mathContext": "Comments stating the two open conjectures: no polynomial good sequence exists, but a subexponential one does. Not formalized as axioms or declarations."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 100,
-      "endLine": 122,
-      "summary": "Erdős's existence theorem and the sieve theory lower bound.",
-      "mathContext": "Erdős's existence theorem and the sieve theory lower bound."
+      "startLine": 94,
+      "endLine": 107,
+      "summary": "Comments describing Erdős's existence theorem and the sieve theory lower bound; not formalized as declarations.",
+      "mathContext": "Comments describing Erdős's existence theorem and the sieve theory lower bound; not formalized as declarations."
     },
     {
       "id": "prime-squares",
       "title": "Related Problem: Prime Squares",
-      "startLine": 123,
+      "startLine": 108,
       "endLine": 123,
-      "summary": "Connection to Problem #208 about the sequence of prime squares.",
-      "mathContext": "Connection to Problem #208 about the sequence of prime squares."
+      "summary": "Defines primeSquares (squares of consecutive primes) and comments connecting it to Problem #208's strong form.",
+      "mathContext": "Defines primeSquares (squares of consecutive primes) and comments connecting it to Problem #208's strong form."
     }
   ],
   "conclusion": {
