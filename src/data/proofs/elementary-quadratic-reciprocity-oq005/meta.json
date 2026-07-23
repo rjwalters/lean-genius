@@ -43,28 +43,44 @@
   },
   "sections": [
     {
-      "id": "left-regular-representation-generic",
-      "title": "The left regular representation of a finite group (generic)",
+      "id": "left-regular-representation-basics",
+      "title": "The left regular representation: basic facts (generic)",
       "startLine": 1,
+      "endLine": 98,
+      "summary": "mulLeftHom : G →* Perm G packages left translation as a monoid hom. mulLeft_no_fixed: translation by a != 1 has no fixed point. mulLeft_generator_isCycle / mulLeft_support_eq_univ: a generator's translation is a single full-support cycle. These hold for any finite group.",
+      "mathContext": "$\\operatorname{mulLeft} g$ is left translation by $g$, viewed as a permutation via the monoid hom into $\\mathrm{Perm}\\,G$."
+    },
+    {
+      "id": "generator-sign-lemmas",
+      "title": "The sign at a generator of an even-order group",
+      "startLine": 99,
       "endLine": 124,
-      "summary": "mulLeftHom : G →* Perm G packages left translation as a monoid hom. mulLeft_no_fixed: translation by a ≠ 1 has no fixed point (mul_right_cancel). mulLeft_generator_isCycle / mulLeft_support_eq_univ: a generator's translation is a single full-support cycle. generator_ne_one: a generator of a group with >1 element is nontrivial. sign_mulLeft_generator: its sign is -1 when |G| is even. sign_mulLeft_pow: sign of translation is multiplicative under powers. These hold for any finite group and isolate the group-theoretic core.",
-      "mathContext": "$\\operatorname{sign}(\\operatorname{mulLeft} g) = -1$ for a generator $g$ of an even-order cyclic group"
+      "summary": "generator_ne_one: a generator of a group with >1 element is nontrivial. sign_mulLeft_generator: its translation's sign is -1 when |G| is even (a single |G|-cycle). sign_mulLeft_pow: sign of translation is multiplicative under powers, so sign at g^k is (-1)^k.",
+      "mathContext": "$\\operatorname{sign}(\\operatorname{mulLeft} g) = -1$ for a generator $g$ of an even-order cyclic group, extended multiplicatively via $\\operatorname{sign}(\\operatorname{mulLeft} g^k) = (-1)^k$."
     },
     {
       "id": "prime-power-unit-group-even",
       "title": "The prime-power unit group has even order",
       "startLine": 125,
       "endLine": 137,
-      "summary": "card_units_prime_pow_even: |(ℤ/pⁿ)ˣ| = pⁿ⁻¹(p-1) via ZMod.card_units_eq_totient and Nat.totient_prime_pow, which is even because p-1 is even for an odd prime p.",
+      "summary": "card_units_prime_pow_even: |(Z/p^n)^x| = p^(n-1)(p-1) via ZMod.card_units_eq_totient and Nat.totient_prime_pow, which is even because p-1 is even for an odd prime p.",
       "mathContext": "$|(\\mathbb{Z}/p^n)^\\times| = p^{n-1}(p-1)$ is even for odd prime $p$"
     },
     {
-      "id": "units-level-prime-power-zolotarev",
-      "title": "The units-level prime-power Zolotarev lemma",
+      "id": "units-level-quadratic-character-form",
+      "title": "The units-level prime-power Zolotarev lemma (quadratic character form)",
       "startLine": 138,
-      "endLine": 202,
-      "summary": "sign_mulLeft_eq_quadraticChar and sign_mulLeft_eq_legendre: for an odd prime p and n ≥ 1, the sign of left multiplication by u on (ℤ/pⁿ)ˣ equals the quadratic character (resp. Legendre symbol mod p) of the reduction ρ u. Proof: instantiate the generic machinery on the cyclic group (ℤ/pⁿ)ˣ (ZMod.isCyclic_units_of_prime_pow); both sides are -1 at a generator g (single even cycle; ρ g a non-residue, ρ surjective), and u = gᵏ makes both (-1)ᵏ.",
-      "mathContext": "$\\operatorname{sign}(x \\mapsto u\\cdot x \\text{ on } (\\mathbb{Z}/p^n)^\\times) = \\left(\\tfrac{\\rho u}{p}\\right)$"
+      "endLine": 188,
+      "summary": "sign_mulLeft_eq_quadraticChar: for an odd prime p and n >= 1, the sign of left multiplication by u on (Z/p^n)^x equals the quadratic character of the reduction rho(u). Proof: instantiate the generic machinery on the cyclic group (Z/p^n)^x (ZMod.isCyclic_units_of_prime_pow); both sides are -1 at a generator g (single even cycle; rho(g) a non-residue, rho surjective), and u = g^k makes both (-1)^k.",
+      "mathContext": "$\\operatorname{sign}(x \\mapsto u\\cdot x \\text{ on } (\\mathbb{Z}/p^n)^\\times) = \\chi(\\rho u)$ where $\\chi$ is the quadratic character on $(\\mathbb{Z}/p)^\\times$."
+    },
+    {
+      "id": "units-level-legendre-form",
+      "title": "The Legendre-symbol restatement",
+      "startLine": 189,
+      "endLine": 203,
+      "summary": "sign_mulLeft_eq_legendre: the same equality restated with the Legendre symbol legendreSym p in place of the quadratic character, via legendreSym_unit_eq. Closing #check lines confirm both headline theorems typecheck.",
+      "mathContext": "$\\operatorname{sign}(x \\mapsto u\\cdot x \\text{ on } (\\mathbb{Z}/p^n)^\\times) = \\left(\\tfrac{\\rho u}{p}\\right)$, the Legendre symbol of the reduction of $u$ mod $p$."
     }
   ],
   "meta": {
