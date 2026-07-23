@@ -1,5 +1,6 @@
 import Proofs.ElementaryQuadraticReciprocityOQ03OQ02
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.Tactic
 
 /-
@@ -73,6 +74,29 @@ structural input the Gauss-sum route to generalized quadratic reciprocity rests 
 * `gaussSumChi8_twisted`          — multiplicative covariance `∑_a χ₈(a)ζ₈^{ca} = χ₈(c)·τ(χ₈)`
                                     for every unit `c ∈ {1,3,5,7}` mod `8` — the twisted Gauss
                                     sums, the engine of the reciprocity argument.
+
+## The Gauss-sum proof of the second supplementary law (Section H)
+
+* `gaussSumK2`                    — the Gauss sum `τ_R(ζ) = ∑_{a=0}^{7} χ₈(a) ζ^a` over an
+                                    *arbitrary* commutative ring `R`, specializing to
+                                    `gaussSumChi8` at `R = ℂ`, `ζ = ζ₈` (`gaussSumK2_complex`).
+* `gaussSumK2_sq`                 — **`τ² = 8` generically**: for any `ζ` with `ζ⁴ = −1`, in any
+                                    commutative ring — the conductor identity freed from `ℂ`.
+* `gaussSumK2_pow_char`           — **Frobenius covariance** `τ^p = χ₈(p)·τ` in odd prime
+                                    characteristic `p`: the freshman's dream turns the `p`-th
+                                    power into the twist `a ↦ pa`, evaluated by the mod-8 fold.
+* `eight_pow_eq_kronecker2`       — cancelling `τ ≠ 0` from the two evaluations of `τ^p`:
+                                    `8^{(p−1)/2} = χ₈(p)` in any such field.
+* `exists_pow_four_eq_neg_one`    — `GF(p²)` contains an eighth root of unity (`ζ⁴ = −1`),
+                                    since its cyclic unit group has order `p² − 1 ≡ 0 (mod 8)`.
+* `legendreSym_two_eq_kronecker2` — **the second supplementary law `(2/p) = (p/2)`, proved by
+                                    the Gauss-sum argument end to end**: Euler's criterion in
+                                    `ℤ/p` descends `8^{(p−1)/2} = χ₈(p)` along `ℤ/p ↪ GF(p²)`
+                                    to `(2/p) = χ₈(p) = kronecker2 p`.  Unlike the parent's
+                                    `kronecker_two_odd` (imported from Mathlib's
+                                    `jacobiSym.at_two`), no reciprocity-adjacent Mathlib result
+                                    is consumed: the chain's first self-contained proof of one
+                                    of the reciprocity laws it formalizes.
 
 All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -665,5 +689,254 @@ theorem gaussSumChi8_twisted (c : ℕ) (hc : c = 1 ∨ c = 3 ∨ c = 5 ∨ c = 7
   · exact gaussSumChi8_twisted_three
   · exact gaussSumChi8_twisted_five
   · exact gaussSumChi8_twisted_seven
+
+-- ============================================================
+-- Section H: The ring-generic Gauss sum and the Gauss-sum proof
+--            of the second supplementary law
+-- ============================================================
+
+/-- **The Gauss sum of `χ₈` over an arbitrary commutative ring.**  For a
+    commutative ring `R` and an element `ζ : R`, the character sum
+    `τ_R(ζ) = ∑_{a=0}^{7} χ₈(a) ζ^a` with `χ₈ = (·/2) = kronecker2`.  At
+    `R = ℂ`, `ζ = ζ₈` this is Section G's `gaussSumChi8` (`gaussSumK2_complex`);
+    at `R = GF(p²)` with `ζ` an eighth root of unity it becomes the engine of
+    the Gauss-sum proof of the second supplementary law
+    (`legendreSym_two_eq_kronecker2` below). -/
+def gaussSumK2 (R : Type*) [CommRing R] (ζ : R) : R :=
+  ∑ a ∈ Finset.range 8, (kronecker2 (a : ℤ) : R) * ζ ^ a
+
+/-- Over `ℂ` with `ζ = ζ₈`, the ring-generic Gauss sum is Section G's Gauss sum:
+    `τ_ℂ(ζ₈) = τ(χ₈)`. -/
+theorem gaussSumK2_complex : gaussSumK2 ℂ zeta8 = gaussSumChi8 := rfl
+
+/-- An element with `ζ⁴ = −1` is an eighth root of unity: `ζ⁸ = (ζ⁴)² = 1`. -/
+theorem pow_eight_of_pow_four_eq_neg_one {R : Type*} [CommRing R] {ζ : R}
+    (hζ : ζ ^ 4 = -1) : ζ ^ 8 = 1 := by
+  have h : ζ ^ 8 = (ζ ^ 4) ^ 2 := by ring
+  rw [h, hζ]
+  ring
+
+/-- Exponent folding: powers of an eighth root of unity reduce modulo `8` — the
+    ring-generic form of `zeta8_pow_mod`. -/
+theorem pow_mod_eight_of_pow_four_eq_neg_one {R : Type*} [CommRing R] {ζ : R}
+    (hζ : ζ ^ 4 = -1) (n : ℕ) : ζ ^ n = ζ ^ (n % 8) := by
+  conv_lhs => rw [← Nat.div_add_mod n 8]
+  rw [pow_add, pow_mul, pow_eight_of_pow_four_eq_neg_one hζ, one_pow, one_mul]
+
+/-- **Closed form of the generic Gauss sum.**  If `ζ⁴ = −1`, only the four odd
+    residues contribute and the sum collapses to
+    `τ = ζ − ζ³ − ζ⁵ + ζ⁷ = 2(ζ − ζ³)` — the ring-generic analogue of the
+    computation inside `gaussSumChi8_eq`. -/
+theorem gaussSumK2_eq {R : Type*} [CommRing R] {ζ : R} (hζ : ζ ^ 4 = -1) :
+    gaussSumK2 R ζ = 2 * (ζ - ζ ^ 3) := by
+  unfold gaussSumK2
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_zero, Nat.cast_one,
+    Nat.cast_ofNat]
+  rw [show kronecker2 0 = 0 from by decide, show kronecker2 1 = 1 from by decide,
+    show kronecker2 2 = 0 from by decide, show kronecker2 3 = -1 from by decide,
+    show kronecker2 4 = 0 from by decide, show kronecker2 5 = -1 from by decide,
+    show kronecker2 6 = 0 from by decide, show kronecker2 7 = 1 from by decide]
+  push_cast
+  linear_combination (ζ ^ 3 - ζ) * hζ
+
+/-- **`τ² = 8` in every commutative ring.**  For `ζ⁴ = −1`,
+    `τ² = 4(ζ² − 2ζ⁴ + ζ⁶) = 4(ζ² + 2 − ζ²) = 8`: the squared Gauss sum equals
+    the conductor *generically*, lifting `gaussSumChi8_sq` (the case `R = ℂ`)
+    to the finite-characteristic setting where the reciprocity argument runs. -/
+theorem gaussSumK2_sq {R : Type*} [CommRing R] {ζ : R} (hζ : ζ ^ 4 = -1) :
+    gaussSumK2 R ζ ^ 2 = 8 := by
+  rw [gaussSumK2_eq hζ]
+  linear_combination (4 * ζ ^ 2 - 8) * hζ
+
+/-- **Frobenius covariance of the Gauss sum: `τ^p = χ₈(p)·τ`.**  In a
+    commutative ring of odd prime characteristic `p` containing an eighth root
+    of unity, the freshman's dream `(x − y)^p = x^p − y^p` turns the `p`-th
+    power of `τ = 2(ζ − ζ³)` into the twist `a ↦ pa` of the additive character,
+    and folding exponents mod `8` evaluates the twist to the character value —
+    the finite-characteristic incarnation of Section G's twisted Gauss sums
+    `gaussSumChi8_twisted`. -/
+theorem gaussSumK2_pow_char {R : Type*} [CommRing R] (p : ℕ) [Fact p.Prime]
+    [CharP R p] (hp : p % 2 = 1) {ζ : R} (hζ : ζ ^ 4 = -1) :
+    gaussSumK2 R ζ ^ p = (kronecker2 (p : ℤ) : R) * gaussSumK2 R ζ := by
+  have h2 : (2 : R) ^ p = 2 := by
+    rw [show (2 : R) = 1 + 1 from by norm_num, add_pow_char, one_pow]
+  have hfrob : gaussSumK2 R ζ ^ p = 2 * (ζ ^ (p % 8) - ζ ^ (3 * p % 8)) := by
+    rw [gaussSumK2_eq hζ, mul_pow, h2, sub_pow_char, ← pow_mul,
+      ← pow_mod_eight_of_pow_four_eq_neg_one hζ p,
+      ← pow_mod_eight_of_pow_four_eq_neg_one hζ (3 * p)]
+  have hcongr : kronecker2 (p : ℤ) = kronecker2 ((p % 8 : ℕ) : ℤ) :=
+    kronecker2_congr (by omega)
+  have hmod : p % 8 = 1 ∨ p % 8 = 3 ∨ p % 8 = 5 ∨ p % 8 = 7 := by omega
+  rw [hfrob, hcongr, gaussSumK2_eq hζ]
+  rcases hmod with h | h | h | h
+  · rw [h, show 3 * p % 8 = 3 from by omega,
+      show kronecker2 ((1 : ℕ) : ℤ) = 1 from by decide]
+    push_cast
+    ring
+  · rw [h, show 3 * p % 8 = 1 from by omega,
+      show kronecker2 ((3 : ℕ) : ℤ) = -1 from by decide]
+    push_cast
+    ring
+  · rw [h, show 3 * p % 8 = 7 from by omega,
+      show kronecker2 ((5 : ℕ) : ℤ) = -1 from by decide]
+    push_cast
+    linear_combination (2 * ζ - 2 * ζ ^ 3) * hζ
+  · rw [h, show 3 * p % 8 = 5 from by omega,
+      show kronecker2 ((7 : ℕ) : ℤ) = 1 from by decide]
+    push_cast
+    linear_combination (2 * ζ ^ 3 - 2 * ζ) * hζ
+
+/-- **`8^{(p−1)/2} = χ₈(p)` in any field of odd prime characteristic containing
+    an eighth root of unity** — the heart of the Gauss-sum argument.  The two
+    evaluations of `τ^p` — the odd-power split `τ^p = τ·(τ²)^{(p−1)/2} =
+    τ·8^{(p−1)/2}` (`gaussSumK2_sq`) and the Frobenius covariance
+    `τ^p = χ₈(p)·τ` (`gaussSumK2_pow_char`) — agree, and `τ ≠ 0`
+    (since `τ² = 8 ≠ 0` when `p ≠ 2`) cancels to give the Euler-criterion
+    value of the conductor `8`. -/
+theorem eight_pow_eq_kronecker2 {F : Type*} [Field F] (p : ℕ) [Fact p.Prime]
+    [CharP F p] (hp : p % 2 = 1) {ζ : F} (hζ : ζ ^ 4 = -1) :
+    (8 : F) ^ ((p - 1) / 2) = (kronecker2 (p : ℤ) : F) := by
+  have hτsq : gaussSumK2 F ζ ^ 2 = 8 := gaussSumK2_sq hζ
+  have hτne : gaussSumK2 F ζ ≠ 0 := by
+    intro h0
+    have h8 : ((8 : ℕ) : F) = 0 := by
+      push_cast
+      rw [← hτsq, h0]
+      ring
+    have hdvd : p ∣ 8 := (CharP.cast_eq_zero_iff F p 8).mp h8
+    have hdvd2 : p ∣ 2 :=
+      (Fact.out : p.Prime).dvd_of_dvd_pow (show p ∣ 2 ^ 3 by simpa using hdvd)
+    have hp2 : p = 2 :=
+      (Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) Nat.prime_two).mp hdvd2
+    omega
+  have hodd : p = 2 * ((p - 1) / 2) + 1 := by
+    have := (Fact.out : p.Prime).two_le
+    omega
+  have hpow : gaussSumK2 F ζ ^ p = gaussSumK2 F ζ * (8 : F) ^ ((p - 1) / 2) := by
+    conv_lhs => rw [hodd]
+    rw [pow_add, pow_mul, hτsq, pow_one, mul_comm]
+  have hfrob := gaussSumK2_pow_char p hp hζ
+  have key : gaussSumK2 F ζ * ((8 : F) ^ ((p - 1) / 2)) =
+      gaussSumK2 F ζ * (kronecker2 (p : ℤ) : F) := by
+    rw [← hpow, hfrob, mul_comm]
+  exact mul_left_cancel₀ hτne key
+
+/-- **A finite field whose order is `1 mod 8` contains an eighth root of unity**,
+    delivered as `ζ⁴ = −1`: the unit group is cyclic of order `Nat.card F − 1`
+    divisible by `8`, so it has an element `ζ` of exact order `8`; then
+    `(ζ⁴)² = 1` with `ζ⁴ ≠ 1`, and in a field the only square root of `1`
+    besides `1` is `−1`. -/
+theorem exists_pow_four_eq_neg_one {F : Type*} [Field F] [Finite F]
+    (h8 : 8 ∣ Nat.card F - 1) : ∃ ζ : F, ζ ^ 4 = -1 := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := Fˣ)
+  have hord : orderOf g = Nat.card Fˣ := orderOf_eq_card_of_forall_mem_zpowers hg
+  have hcardu : Nat.card Fˣ = Nat.card F - 1 := Nat.card_units F
+  obtain ⟨k, hk⟩ : 8 ∣ Nat.card Fˣ := by rw [hcardu]; exact h8
+  have hk0 : 0 < k := by
+    have hpos : 0 < Nat.card Fˣ := Nat.card_pos
+    omega
+  have hord8 : orderOf (g ^ k) = 8 := by
+    rw [orderOf_pow, hord, hk, Nat.gcd_eq_right ⟨8, by ring⟩,
+      Nat.mul_div_cancel _ hk0]
+  refine ⟨((g ^ k : Fˣ) : F), ?_⟩
+  have hu8 : (g ^ k) ^ 8 = 1 := by rw [← hord8]; exact pow_orderOf_eq_one _
+  have hu4 : (g ^ k) ^ 4 ≠ 1 := by
+    intro h
+    have hdvd := orderOf_dvd_of_pow_eq_one h
+    rw [hord8] at hdvd
+    norm_num at hdvd
+  have hf8 : ((g ^ k : Fˣ) : F) ^ 8 = 1 := by
+    rw [← Units.val_pow_eq_pow_val, hu8, Units.val_one]
+  have hf4ne : ((g ^ k : Fˣ) : F) ^ 4 ≠ 1 := by
+    intro h
+    exact hu4 (Units.ext (by push_cast; exact h))
+  have hsq : (((g ^ k : Fˣ) : F) ^ 4) * (((g ^ k : Fˣ) : F) ^ 4) = 1 := by
+    rw [← pow_add]
+    exact hf8
+  rcases mul_self_eq_one_iff.mp hsq with h | h
+  · exact absurd h hf4ne
+  · exact h
+
+/-- The order of a finite field of odd characteristic `p` and degree `2` is
+    `1 mod 8`: every odd square is `1 mod 8`. -/
+theorem eight_dvd_sq_sub_one {p : ℕ} (hp : p % 2 = 1) : 8 ∣ p ^ 2 - 1 := by
+  have h : p ^ 2 % 8 = 1 := by
+    rw [Nat.pow_mod]
+    have h8 : p % 8 = 1 ∨ p % 8 = 3 ∨ p % 8 = 5 ∨ p % 8 = 7 := by omega
+    rcases h8 with h | h | h | h <;> rw [h]
+  obtain ⟨m, hm⟩ : ∃ m, p ^ 2 = m := ⟨p ^ 2, rfl⟩
+  rw [hm] at h ⊢
+  omega
+
+/-- **The second supplementary law, by the Gauss-sum argument.**  For every odd
+    prime `p`, `(2/p) = (p/2)`: the Legendre symbol of `2` equals the Kronecker
+    character `χ₈ = (·/2)` at `p`.  Unlike the parent's `kronecker_two_odd`
+    (imported from Mathlib's `jacobiSym.at_two`), this proof runs the classical
+    Gauss-sum argument end to end inside the chain: in `F = GF(p²)` pick `ζ`
+    with `ζ⁴ = −1` (`exists_pow_four_eq_neg_one`, since `8 ∣ p² − 1`); then
+    `τ = ∑ χ₈(a)ζ^a` satisfies `τ² = 8` and `τ^p = χ₈(p)·τ`, so
+    `8^{(p−1)/2} = χ₈(p)` in `F` (`eight_pow_eq_kronecker2`); the identity
+    descends along the injection `ℤ/p ↪ GF(p²)`, where Euler's criterion reads
+    the left side as `(8/p) = (2/p)³ = (2/p)`.  Both symbols are `±1`, and
+    `1 ≠ −1 (mod p)` for odd `p` upgrades the mod-`p` identity to `ℤ`. -/
+theorem legendreSym_two_eq_kronecker2 (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
+    legendreSym p 2 = kronecker2 (p : ℤ) := by
+  have hpodd : p % 2 = 1 := by
+    rcases Nat.even_or_odd p with he | ho
+    · exact absurd (((Fact.out : p.Prime).even_iff).mp he) hp
+    · exact Nat.odd_iff.mp ho
+  obtain ⟨ζ, hζ⟩ : ∃ ζ : GaloisField p 2, ζ ^ 4 = -1 := by
+    apply exists_pow_four_eq_neg_one
+    rw [GaloisField.card p 2 (by norm_num)]
+    exact eight_dvd_sq_sub_one hpodd
+  have key : (8 : GaloisField p 2) ^ ((p - 1) / 2) =
+      (kronecker2 (p : ℤ) : GaloisField p 2) :=
+    eight_pow_eq_kronecker2 p hpodd hζ
+  have hdesc : (8 : ZMod p) ^ ((p - 1) / 2) = ((kronecker2 (p : ℤ) : ZMod p)) := by
+    apply (algebraMap (ZMod p) (GaloisField p 2)).injective
+    rw [map_pow, map_ofNat, map_intCast]
+    exact key
+  have heuler : (legendreSym p 8 : ZMod p) = (8 : ZMod p) ^ ((p - 1) / 2) := by
+    have hdiv : p / 2 = (p - 1) / 2 := by omega
+    rw [legendreSym.eq_pow, hdiv]
+    norm_num
+  have hcast : (legendreSym p 8 : ZMod p) = ((kronecker2 (p : ℤ) : ZMod p)) := by
+    rw [heuler, hdesc]
+  have hpndvd2 : ¬ p ∣ 2 := by
+    intro hdvd
+    exact hp ((Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) Nat.prime_two).mp hdvd)
+  have h2ne : ((2 : ℤ) : ZMod p) ≠ 0 := by
+    rw [ne_eq, ZMod.intCast_zmod_eq_zero_iff_dvd]
+    exact fun h => hpndvd2 (by exact_mod_cast h)
+  have h8ne : ((8 : ℤ) : ZMod p) ≠ 0 := by
+    rw [ne_eq, ZMod.intCast_zmod_eq_zero_iff_dvd]
+    intro h
+    have h8 : p ∣ 8 := by exact_mod_cast h
+    exact hpndvd2 ((Fact.out : p.Prime).dvd_of_dvd_pow (show p ∣ 2 ^ 3 by simpa using h8))
+  have h8val := legendreSym.eq_one_or_neg_one (p := p) (a := 8) h8ne
+  have h2val := legendreSym.eq_one_or_neg_one (p := p) (a := 2) h2ne
+  have hkval : kronecker2 (p : ℤ) = 1 ∨ kronecker2 (p : ℤ) = -1 := by
+    have hne := (kronecker2_ne_zero_iff (p : ℤ)).mpr (by omega)
+    rcases kronecker2_values (p : ℤ) with h | h | h
+    · exact Or.inr h
+    · exact absurd h hne
+    · exact Or.inl h
+  have h8eq2 : legendreSym p 8 = legendreSym p 2 := by
+    have h842 : (8 : ℤ) = 2 * (2 * 2) := by norm_num
+    rw [h842, legendreSym.mul, legendreSym.mul]
+    rcases h2val with h | h <;> rw [h] <;> norm_num
+  have hcontra : ((1 : ℤ) : ZMod p) ≠ ((-1 : ℤ) : ZMod p) := by
+    intro h
+    apply h2ne
+    push_cast at h ⊢
+    linear_combination h
+  rw [← h8eq2]
+  rcases h8val with h1 | h1 <;> rcases hkval with h2 | h2
+  · rw [h1, h2]
+  · rw [h1, h2] at hcast
+    exact absurd hcast hcontra
+  · rw [h1, h2] at hcast
+    exact absurd hcast.symm hcontra
+  · rw [h1, h2]
 
 end KroneckerSymbol
