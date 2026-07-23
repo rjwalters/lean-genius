@@ -44,27 +44,44 @@
   },
   "sections": [
     {
-      "id": "integer-unit-from-coprimality",
-      "title": "The integer unit from a coprimality hypothesis",
+      "id": "header",
+      "title": "Header, Imports, and Namespace Setup",
       "startLine": 1,
-      "endLine": 82,
-      "summary": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k (where k = 0) to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor. The header sets up the goal: the squarefree-odd Frobenius/Jacobi Zolotarev lemma sign(ringMulPerm a on ℤ/n) = J(a | n).",
+      "endLine": 65,
+      "summary": "Module docstring framing the squarefree-odd Frobenius/Jacobi Zolotarev goal sign(ringMulPerm a on ℤ/n) = J(a | n); imports the parent file, raises maxHeartbeats, opens the namespace and the grandparent's CRT multiplicativity and legendre_eq_jacobi.",
       "mathContext": "$\\operatorname{sign}(x \\mapsto a\\cdot x \\text{ on } \\mathbb{Z}/n) = \\left(\\tfrac{a}{n}\\right)$ for $n$ odd squarefree"
     },
     {
+      "id": "unit-lemma",
+      "title": "The Integer Unit From a Coprimality Hypothesis",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor of the induction.",
+      "mathContext": "$\\mathrm{IsCoprime}\\ c\\ k \\Rightarrow \\mathrm{IsUnit}\\ ((c : \\mathbb{Z}) : \\mathbb{Z}/k)$."
+    },
+    {
       "id": "main-induction",
-      "title": "The main induction",
+      "title": "The Main Induction",
       "startLine": 83,
-      "endLine": 162,
+      "endLine": 161,
       "summary": "main: strong induction on n via its smallest prime factor. The n = 1 base uses the subsingleton structure of ℤ/1; the inductive step splits n = p·m coprimely, applies the grandparent's CRT multiplicativity (sign_ringMulPerm_mul_of_odd), the parent's prime base case (sign = legendreSym), the inductive hypothesis on the cofactor m, and jacobiSym.mul_right to assemble J(a | n).",
       "mathContext": "$\\operatorname{sign}(\\operatorname{ringMulPerm} u) = \\operatorname{sign}(\\operatorname{ringMulPerm} u_1)\\cdot\\operatorname{sign}(\\operatorname{ringMulPerm} u_2) = \\left(\\tfrac{c}{p}\\right)\\left(\\tfrac{c}{m}\\right) = \\left(\\tfrac{c}{pm}\\right)$"
     },
     {
       "id": "clean-statement",
-      "title": "Clean statement",
+      "title": "Clean Statement",
       "startLine": 163,
+      "endLine": 173,
+      "summary": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n), an immediate corollary of main.",
+      "mathContext": "$\\operatorname{sign}(\\operatorname{ringMulPerm} u) = J(c \\mid n)$, packaged for direct citation."
+    },
+    {
+      "id": "closing-summary",
+      "title": "Closing Summary and Sanity Checks",
+      "startLine": 175,
       "endLine": 211,
-      "summary": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n). Followed by the summary docstring recording the honest scope (squarefree odd only; prime-power factors left to a follow-up) and the #check lines."
+      "summary": "Closes the namespace, then a module-level summary docstring recording what's proved, the honest scope (squarefree odd only; prime-power factors left to a follow-up), and the key recursive-structure insight, followed by #check sanity lines on the three public declarations.",
+      "mathContext": "Honest-scope note: prime-power factors $p^e$ ($e \\ge 2$) are not handled by this CRT-based induction."
     }
   ],
   "meta": {
