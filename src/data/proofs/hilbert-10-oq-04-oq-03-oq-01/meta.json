@@ -142,6 +142,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "From a Decision Procedure to a Constructive Solver",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring: the parent hilbert-10-oq-04-oq-03 decides linear-Diophantine solvability via a gcd-divisibility test but only existentially (through the coefficient ideal and Classical.choice); this file upgrades the forward direction into a constructive solver returning an explicit witness, built by folding the extended Euclidean algorithm over the coefficient vector.",
+      "mathContext": "The forward direction of the multivariate Bézout criterion — $\\gcd(a_1,\\dots,a_n)\\mid c \\Rightarrow \\exists x,\\ \\sum_i a_i x_i = c$ — is made computable here via the extended-Euclidean cofactors $\\mathrm{Int.gcdA}$, $\\mathrm{Int.gcdB}$ satisfying $a\\,\\mathrm{gcdA} + b\\,\\mathrm{gcdB} = \\gcd(a,b)$."
+    },
+    {
       "id": "two-variable-solver",
       "title": "Two-Variable Constructive Solver",
       "startLine": 34,
