@@ -67,7 +67,8 @@
       "**Fixing one coordinate is a genuine dimension drop.** The map f ↦ Fin.tail f / g ↦ Fin.cons d g is a bijection, not just an injection: a weak composition with prescribed first part carries exactly the information of its tail. The count therefore reduces cleanly to the parent formula on k − 1 parts with total n − d.",
       "**The linear constraint splits, so no subtraction bookkeeping is needed inside the proof of the bijection.** Fin.sum_univ_succ writes ∑ f = f(0) + ∑ tail; substituting f(0) = d and using d ≤ n lets omega finish both directions without ever reasoning about truncated subtraction inside a Finset.sum.",
       "**Nat.card sidesteps the finiteness obstacle.** The conditioned subtype has no canonical Fintype instance available at statement time, but Nat.card is defined for every type and Nat.card_congr transports it across the bijection with no instance argument; only after landing on the parent's subtype (which does carry a Fintype instance) is the cardinality converted with Nat.card_eq_fintype_card.",
-      "**The summation check is the hockey stick, from the other end.** Summing the marginals over the first part d partitions the master count and must return C(n+k−1, k−1); after the reflection d ↦ n − d this is precisely Mathlib's Nat.sum_range_add_choose, the negative-binomial hockey-stick identity — here obtained by refining on the first coordinate rather than telescoping the last (cf. sibling OQ-04)."
+      "**The summation check is the hockey stick, from the other end.** Summing the marginals over the first part d partitions the master count and must return C(n+k−1, k−1); after the reflection d ↦ n − d this is precisely Mathlib's Nat.sum_range_add_choose, the negative-binomial hockey-stick identity — here obtained by refining on the first coordinate rather than telescoping the last (cf. sibling OQ-04).",
+      "**The formalization catches an arithmetic error the informal sketch missed.** The source problem statement's worked example claims marginals 15,10,6,3,1 summing to 35 for k=3, n=4; the verified theorem forces the true values 5,4,3,2,1 summing to 15 = C(6,2). A Lean proof of a general theorem is a stronger check on a specific numerical claim than re-deriving the example by hand, since the machine-checked instance and the general formula must agree by construction."
     ],
     "prerequisites": [
       "The Fin tuple API: Fin.cons, Fin.tail, Fin.cons_zero, Fin.cons_succ, Fin.tail_cons, Fin.cons_self_tail, and Fin.sum_univ_succ",
@@ -77,6 +78,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: The Marginal Refinement and Its Engine",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "$\\mathrm{Nat.card}\\{f \\mid (\\sum f = n)\\wedge f_0=d\\} = \\binom{(n-d)+(k-1)-1}{n-d}$, summed over $d$ recovers $\\binom{n+k-1}{k-1}$.",
+      "summary": "Imports (Sym.Card, Choose.Sum, Tactic, the parent StarsAndBarsWeakCompositions file); module docstring stating the conditional refinement (fixing the first part to d ≤ n), the drop-the-first-coordinate bijection engine, what Mathlib has versus what this file adds, and the note that the source problem sketch's worked example (15,10,6,3,1 summing to 35) is numerically wrong; open Finset and namespace StarsAndBarsMarginal."
+    },
     {
       "id": "drop-first-bijection",
       "title": "The Drop-the-First-Coordinate Bijection",
