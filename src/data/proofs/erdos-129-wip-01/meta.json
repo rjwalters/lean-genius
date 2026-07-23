@@ -87,12 +87,20 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Setup: the avoidance predicate",
+      "id": "header",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 66,
-      "summary": "File docstring framing Erdős Problem 129 and the deferred monotonicity properties, followed by the definitions mirrored from the parent entry: EdgeColoring N r (functions on ordered edges i < j into Fin r), AvoidsMono (a vertex set has a non-c edge in every k-subset), NoMonoClique (avoidance in all colors), and HasRamseyAvoid N n k r (every coloring admits an n-vertex avoiding set).",
+      "endLine": 40,
+      "summary": "File docstring framing Erdős Problem 129 (the avoidance predicate HasRamseyAvoid and its Erdős-Gyárfás motivation) and the deferred monotonicity properties this leaf proves. Imports Mathlib.Combinatorics.SimpleGraph.Basic, Data.Fin.Basic, and Tactic; opens Finset.",
       "mathContext": "HasRamseyAvoid N n k r captures 'N ≥ R(n;k,r)'; the file proves it is monotone in N and antitone in n."
+    },
+    {
+      "id": "definitions",
+      "title": "The Avoidance Predicate",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "Definitions mirrored from the parent entry: EdgeColoring N r (functions on ordered edges i < j into Fin r), AvoidsMono (a vertex set has a non-c edge in every k-subset), NoMonoClique (avoidance in all colors), and HasRamseyAvoid N n k r (every coloring admits an n-vertex avoiding set).",
+      "mathContext": "$\\mathrm{HasRamseyAvoid}(N,n,k,r)$: every $r$-coloring of $K_N$ has an $n$-vertex $K_k$-free set."
     },
     {
       "id": "antitone-n",
@@ -106,9 +114,17 @@
       "id": "mono-N",
       "title": "Monotonicity in N (embedding argument)",
       "startLine": 91,
-      "endLine": 137,
-      "summary": "hasRamseyAvoid_mono_N pulls an arbitrary coloring of K_{N'} back along Fin.castLE to a coloring of K_N (using castLE_lt_castLE_iff for the i < j edge condition), applies the hypothesis to get an avoiding set S, and pushes it forward by Finset.map (Fin.castLEEmb _). Each k-clique upstairs reflects via Finset.subset_map_iff to a k-clique downstairs whose non-c witness edge lifts back with the same color value. hasRamseyAvoid_mono combines this with antitonicity in n.",
+      "endLine": 129,
+      "summary": "hasRamseyAvoid_mono_N pulls an arbitrary coloring of K_{N'} back along Fin.castLE to a coloring of K_N (using castLE_lt_castLE_iff for the i < j edge condition), applies the hypothesis to get an avoiding set S, and pushes it forward by Finset.map (Fin.castLEEmb _). Each k-clique upstairs reflects via Finset.subset_map_iff to a k-clique downstairs whose non-c witness edge lifts back with the same color value.",
       "mathContext": "Enlarging the host graph preserves avoidance: HasRamseyAvoid N n k r → N ≤ N' → HasRamseyAvoid N' n k r."
+    },
+    {
+      "id": "combined-law",
+      "title": "The Combined Monotonicity Law",
+      "startLine": 131,
+      "endLine": 137,
+      "summary": "hasRamseyAvoid_mono composes hasRamseyAvoid_mono_N with hasRamseyAvoid_antitone_n: avoidance is preserved under simultaneously enlarging the host graph (N ≤ N') and shrinking the required clique-free set (n' ≤ n).",
+      "mathContext": "$N \\le N',\\ n' \\le n \\Rightarrow \\mathrm{HasRamseyAvoid}(N,n,k,r) \\Rightarrow \\mathrm{HasRamseyAvoid}(N',n',k,r)$."
     }
   ],
   "references": [
