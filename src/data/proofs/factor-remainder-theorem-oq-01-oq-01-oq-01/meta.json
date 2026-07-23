@@ -85,29 +85,38 @@
       "**The ordinary-derivative test is not merely weaker — it is vacuous.** Over 𝔽ₚ, derivative(Xᵖ) = 0 identically, so every derivative condition holds and the test certifies no finite multiplicity at all; it would assert Xᵏ ∣ Xᵖ for every k, which is false.",
       "**The coefficient/Taylor test is characteristic-free.** X_pow_dvd_iff (X^k ∣ f ↔ first k coefficients vanish) is exactly the a = 0 Taylor-coefficient criterion and needs no division, so it detects the true multiplicity p in every characteristic.",
       "**The factorial is the precise obstruction.** The bridge derivative^[p] f = p!·hasseDeriv p f makes the discrepancy quantitative: the Hasse derivative is nonzero but the factorial scaling annihilates it because p! ≡ 0 (mod p). This is exactly the input (k! ≠ 0) that the characteristic-zero ordinary-derivative test relies on and the Hasse/Taylor test does not.",
-      "**Xᵖ is the minimal witness.** A pure p-th power is where ordinary and Hasse derivatives first diverge maximally — every ordinary derivative dies while the p-th Hasse derivative is a nonzero unit."
+      "**Xᵖ is the minimal witness.** A pure p-th power is where ordinary and Hasse derivatives first diverge maximally — every ordinary derivative dies while the p-th Hasse derivative is a nonzero unit.",
+      "**The same vanishing derivative marks inseparability.** `derivative(Xᵖ) = 0` is the identical phenomenon behind purely inseparable field extensions: for `a ∈ 𝔽ₚ` not a `p`-th power, the minimal polynomial `Xᵖ − a` also has zero derivative, so `gcd(f, f′) = f` and every root has multiplicity `p`. The multiplicity test's degeneracy and the separability test's degeneracy are the same characteristic-p breakdown of the ordinary derivative."
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Module Docstring and Setup",
+      "title": "Section I: Module Docstring and Setup",
       "startLine": 1,
       "endLine": 50,
       "summary": "Module docstring for this factor–remainder leaf: over 𝔽ₚ the ordinary-derivative multiplicity test collapses on Xᵖ while the Hasse/Taylor coefficient test stays sharp, and the factorial p! ≡ 0 (mod p) is precisely the obstruction. Imports Mathlib; namespace FactorRemainderTheoremOQ01OQ01OQ01, open Polynomial; section variable (p : ℕ) [Fact p.Prime].",
       "mathContext": "Setup over 𝔽ₚ = ZMod p with p prime: comparing the ordinary derivative, the Hasse derivative, and the coefficient/Taylor criterion on the test polynomial Xᵖ."
     },
     {
-      "id": "collapse",
-      "title": "The ordinary-derivative test collapses over 𝔽ₚ",
+      "id": "vanishing",
+      "title": "Section II: Derivatives of Xᵖ Vanish over 𝔽ₚ",
       "startLine": 51,
+      "endLine": 62,
+      "summary": "derivative_X_pow_eq_zero: derivative(Xᵖ)=0 (C(p)=0 in ZMod p). iterate_derivative_X_pow_eq_zero: every positive-order iterated derivative is 0, by induction on the iteration count using derivative_X_pow_eq_zero as the base case.",
+      "mathContext": "$\\mathrm{d}/\\mathrm{d}X(X^p) = pX^{p-1} = 0$ in $\\mathbb{F}_p$ since $p \\equiv 0 \\pmod p$; every higher iterated derivative inherits this vanishing."
+    },
+    {
+      "id": "criterion-vacuous",
+      "title": "Section III: The Ordinary-Derivative Criterion Is Vacuous",
+      "startLine": 64,
       "endLine": 75,
-      "summary": "derivative_X_pow_eq_zero: derivative(Xᵖ)=0 (C(p)=0 in ZMod p). iterate_derivative_X_pow_eq_zero: every positive-order iterated derivative is 0. ordinary_criterion_vacuous: every condition (derivative^[j] Xᵖ).eval 0 = 0 holds.",
-      "mathContext": "$\\mathrm{d}/\\mathrm{d}X(X^p) = pX^{p-1} = 0$ in $\\mathbb{F}_p$; all higher derivatives vanish, so the criterion is uninformative."
+      "summary": "ordinary_criterion_vacuous: every condition (derivative^[j] Xᵖ).eval 0 = 0 holds — j = 0 because Xᵖ evaluates to 0 at 0, j ≥ 1 by the vanishing just established — so the ordinary-derivative multiplicity test certifies no finite bound at all.",
+      "mathContext": "Every ordinary-derivative condition holds vacuously, so the criterion is uninformative: it would (falsely) certify $X^k \\mid X^p$ for every $k$."
     },
     {
       "id": "sharp",
-      "title": "The coefficient / Taylor test stays sharp",
+      "title": "Section IV: The Coefficient / Taylor Test Stays Sharp",
       "startLine": 76,
       "endLine": 101,
       "summary": "coeff_criterion_correct: Xᵏ ∣ Xᵖ ↔ k ≤ p (X_pow_dvd_iff + coeff_X_pow). multiplicity_eq_p: Xᵖ ∣ Xᵖ but X^(p+1) ∤ Xᵖ — the true multiplicity is exactly p.",
@@ -115,7 +124,7 @@
     },
     {
       "id": "obstruction",
-      "title": "The Hasse derivative survives — and the factorial is the obstruction",
+      "title": "Section V: The Hasse Derivative Survives — and the Factorial Is the Obstruction",
       "startLine": 102,
       "endLine": 126,
       "summary": "hasseDeriv_ne_zero: hasseDeriv p (Xᵖ) ≠ 0 (constant coeff C(p,p)=1). factorial_annihilates_hasseDeriv: p! • hasseDeriv p (Xᵖ) = derivative^[p](Xᵖ) = 0, so the factorial p! ≡ 0 (mod p) is exactly where char 0 is needed.",
