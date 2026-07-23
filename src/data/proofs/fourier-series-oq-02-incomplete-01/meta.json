@@ -108,6 +108,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-fourier-series-oq-02-incomplete-01",
+      "title": "Problem Statement: Fourier Coefficient Decay Under Hölder Continuity — Infrastructure",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring stating this file's purpose: supply infrastructure lemmas for the partial converse of the Hölder-Fourier decay theorem — if $\\|\\hat c_n(f)\\| = O(1/|n|^\\beta)$ with $\\beta > \\alpha+1$ then $f$ is $\\alpha$-Hölder. Lists four contributions (a trivial Fourier-mode bound, a Hölder bound via Lipschitz interpolation, weighted summability of coefficients, and the proof of `decay_implies_regularity` resolving a `sorry` in the base file). Imports the Fourier/$L^2$/Hölder analysis API and sets `maxHeartbeats 800000`.",
+      "mathContext": "$\\|\\hat c_n(f)\\| = O(|n|^{-\\beta})$, $\\beta > \\alpha+1$ $\\implies$ $f$ is $\\alpha$-Hölder continuous (partial converse to Fourier coefficient decay)."
+    },
+    {
       "id": "fourier-mode-bounds",
       "title": "Fourier Mode Bounds",
       "startLine": 38,
