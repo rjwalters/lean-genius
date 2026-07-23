@@ -66,6 +66,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Buffon's Needle Problem", "startLine": 1, "endLine": 51, "summary": "States Buffon's Needle Problem (Wiedijk's 100 Theorems #99): a needle of length \u2113 dropped on floor lines spaced d apart (\u2113 \u2264 d) crosses a line with probability 2\u2113/(\u03c0d). Describes the (\u03b8, x) uniform-random-variable model, the crossing condition x \u2264 (\u2113/2)sin(\u03b8), and the historical significance (first geometric-probability problem, Monte Carlo estimation of \u03c0), posed by Buffon in 1777.", "mathContext": "$P = \\dfrac{2\\ell}{\\pi d}$, derived by integrating the crossing condition $x \\le \\tfrac{\\ell}{2}\\sin\\theta$ over the uniform product measure on $\\theta \\in [0,\\pi)$, $x \\in [0, d/2]$."},
     {
       "id": "physical-setup",
       "title": "The Physical Setup",
