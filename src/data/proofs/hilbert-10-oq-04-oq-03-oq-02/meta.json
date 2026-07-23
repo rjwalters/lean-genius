@@ -62,7 +62,8 @@
       "System solvability is a submodule-membership question: ∃ x, A *ᵥ x = b iff b lies in the ℤ-span of the columns of A (the column lattice). This is the reformulation Smith normal form is built to decide.",
       "The bridge is a clean specialization of an existing Mathlib lemma (Matrix.range_mulVecLin), not new deep mathematics — the contribution is identifying and recording the correct reduction so the decidability program has a verified starting point.",
       "The single-equation parent is the m = 1 slice: a one-row system unfolds to the scalar equation Σ aⱼxⱼ = b, so the system criterion and the parent's gcd criterion agree on their overlap.",
-      "The honest scope boundary: reducing to column-lattice membership is verified here; turning that membership into an effective yes/no answer (invariant-factor divisibility from SNF) is the still-open decidability step of parent oq-02."
+      "The honest scope boundary: reducing to column-lattice membership is verified here; turning that membership into an effective yes/no answer (invariant-factor divisibility from SNF) is the still-open decidability step of parent oq-02.",
+      "The worked 2×2 instance is not decorative: exhibiting b = (5,11)ᵀ as the explicit column combination 1·(1,3)ᵀ + 2·(2,4)ᵀ makes the abstract column-lattice-membership criterion concrete, confirming the bridge lemma characterizes a real, checkable notion rather than a vacuously true reformulation."
     ],
     "text": "Linear Diophantine systems A x = b over ℤ are solvable exactly when b lies in the column lattice of A — the ℤ-span of its columns. This entry records that reduction in Lean as a specialization of Mathlib's range-of-mulVecLin lemma, checks it specializes to the parent's single-equation gcd criterion when there is one row, and identifies the resulting finitely generated submodule as the input to Smith-normal-form theory. It is the verified first step of the still-open program to decide linear systems uniformly."
   },
@@ -95,9 +96,17 @@
       "id": "single-row",
       "title": "Single-Row Consistency with the Parent",
       "startLine": 62,
+      "endLine": 80,
+      "summary": "solvable_single_row_iff_sum reduces the one-row matrix system to the scalar equation Σ aⱼxⱼ = b (the parent's hypothesis form), via congrFun / funext + fin_cases on the unique index of Fin 1.",
+      "mathContext": "For $m = 1$, $A x = b$ unfolds to $\\sum_j a_j x_j = b$, the hypothesis of the parent's solvable_iff_gcd_dvd; composing recovers $\\gcd(a) \\mid b$."
+    },
+    {
+      "id": "worked-example",
+      "title": "A Worked 2×2 System",
+      "startLine": 82,
       "endLine": 92,
-      "summary": "solvable_single_row_iff_sum reduces the one-row matrix system to the scalar equation Σ aⱼxⱼ = b (the parent's hypothesis form); a worked 2×2 example exhibits an explicit witness.",
-      "mathContext": "For $m = 1$, $A x = b$ unfolds to $\\sum_j a_j x_j = b$, the hypothesis of the parent's solvable_iff_gcd_dvd; composing recovers $\\gcd(a) \\mid b$. The $2 \\times 2$ example $x+2y=5,\\,3x+4y=11$ has witness $(1,2)$."
+      "summary": "A worked example (x + 2y = 5, 3x + 4y = 11, witness (1,2)) exhibits an explicit lattice point, confirming the system statement and the column-span bridge are non-vacuous.",
+      "mathContext": "$b=(5,11)^\\top = 1\\cdot(1,3)^\\top + 2\\cdot(2,4)^\\top$, an explicit instance of column-lattice membership: $b \\in \\mathrm{span}_{\\mathbb{Z}}\\{(1,3)^\\top,(2,4)^\\top\\}$."
     }
   ],
   "openQuestions": [
