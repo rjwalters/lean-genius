@@ -114,6 +114,11 @@
       "targetId": "erdos-396",
       "relationship": "ancestor",
       "description": "Root problem: descending factorials dividing central binomial coefficients, whose base case rests on the Catalan numbers studied here."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01",
+      "relationship": "child",
+      "description": "Child OQ: studies the deficit δ n = 4 − r n = 6/(n+2) itself, showing it is exactly the tail of a harmonic series — δ n → 0 termwise, yet the cumulative deficit ∑_{k<n} δ k diverges, the precise discrete reason Catalan growth carries a polynomial correction below 4^n."
     }
   ],
   "sorries": 0
