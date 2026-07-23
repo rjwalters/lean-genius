@@ -85,12 +85,20 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Setup: Local-to-Global Framing",
+      "id": "docstring",
+      "title": "Overview: Local-to-Global Framing",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring framing the lift from the parent's per-prime n_p = [G : N_G(P)] criterion to a global nilpotency characterization, imports (Nilpotent, Sylow, Subgroup.Basic, Tactic), namespace SylowNilpotent, and the standing context variable {G : Type*} [Group G] [Finite G].",
+      "endLine": 37,
+      "summary": "Module docstring framing the lift from the parent's per-prime n_p = [G : N_G(P)] criterion to a global nilpotency characterization: nilpotent ⟺ all Sylow normal ⟺ every Sylow count n_p = 1. States the four main results and notes that fusing Mathlib's TFAE headline with Sylow uniqueness supplies the counting form.",
       "mathContext": "Finiteness is essential: nilpotent ⟺ all-Sylow-normal is special to finite groups."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Standing Context",
+      "startLine": 38,
+      "endLine": 49,
+      "summary": "Imports Mathlib.GroupTheory.Nilpotent, Mathlib.GroupTheory.Sylow, Mathlib.Algebra.Group.Subgroup.Basic, and Mathlib.Tactic. Namespace SylowNilpotent, and the standing context variable {G : Type*} [Group G] [Finite G] shared by all four theorems.",
+      "mathContext": "All results below are stated for an arbitrary finite group G."
     },
     {
       "id": "headline",
