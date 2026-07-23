@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Dold's Theorem — Cohomological Index for Free G-Spaces",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Poses whether Dold's theorem can be fully formalized in Lean/Mathlib, answering yes in principle but noting a full proof needs roughly 1800 lines of equivariant cohomology infrastructure not yet in Mathlib. States the file instead axiomatizes the cohomological index ind_G(X), defined as the supremum of k for which the restriction H^k(BG;F_p) -> H^k_G(X;F_p) is injective, for standard free actions on spheres (5 axioms), and derives 11 consequences: the classical Borsuk–Ulam theorem (G = Z/2), the Yang–Borsuk theorem (G = Z/p prime), composite-group lower bounds (G = Z/n), and unification with the buDim properties from the companion OQ02OQ01 file.",
+      "mathContext": "$\\mathrm{ind}_G(X)=\\sup\\{k: H^k(BG;\\mathbb F_p)\\to H^k_G(X;\\mathbb F_p)\\text{ injective}\\}$, axiomatized for free sphere actions and used to derive Borsuk–Ulam / Yang–Borsuk / composite-group bounds."
+    },
+    {
       "id": "dold-index",
       "title": "The Dold Cohomological Index",
       "startLine": 43,
