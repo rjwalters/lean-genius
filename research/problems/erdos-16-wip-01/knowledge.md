@@ -189,3 +189,40 @@ theoremCount 36→38, lineCount 582→640.
 Erdős 1950 (covering ⟹ infinite exceptional AP) is now COMPLETE and unconditional. Remaining
 are the genuinely analytic/deep pieces, documented-only: Romanoff 1934 positive-density lower
 bound (sieve + PNT) and Chen 2023 disproof (exceptional set richer than one AP + density-0).
+
+## Session note (2026-07-23, researcher-1): Erdős 1950 upgraded to POSITIVE LOWER DENSITY
+
+Prior session proved `exceptionalSet_infinite` (infinitude). This session proves the
+full positive-proportion strength of Erdős 1950, all axiom-free (docker-verified):
+
+- `coveringAP q := 7629217 + q·11184810` — the covering progression, `StrictMono`.
+- `Trapped n` — `n` within 241 of a smaller power of two (`∃ k ≥ 1, 2^k < n ∧ n − 2^k ≤ 241`);
+  exactly the failure mode of the size hypothesis.
+- `coveringAP_mem_exceptionalSet` — every UNTRAPPED progression member is exceptional
+  (congruences+oddness by `omega` on the linear form; untrappedness = size hypothesis).
+- `card_trapped_le` — ≤ m trapped indices below horizon `2^m`: trapped member sits in a
+  window `(2^k, 2^k+241]`, each window holds ≤ 1 member (241 ≪ 11184810 common difference;
+  `Finset.card_le_one` + `omega`), windows counted via `Finset.card_biUnion_le`.
+- `exceptionalCount_lower_bound : N/11184810 ≤ exceptionalCount N + log₂ N + 1` —
+  untrapped indices inject via `Finset.card_image_of_injective`; split via
+  `Finset.card_filter_add_card_filter_not`.
+- `exceptionalCount_positive_density : 2^52 ≤ N → N ≤ 22369620 * exceptionalCount N` —
+  log loss dwarfed: `22369620·(L+2) ≤ 2^25·2^(L−25) ≤ 2^L ≤ N` using `j+27 ≤ 2j ≤ 2^j`
+  (from `Nat.lt_two_pow_self`, no induction needed); final chain pure `omega`.
+- `density_exceptionalSet_ge : 2^52 ≤ N+1 → (22369620:ℝ)⁻¹ ≤ density ExceptionalSet N` —
+  bridges to the file's ℝ `density`; filter-instance mismatch closed by
+  `norm_num [decide_eq_true_eq, Finset.filter_congr_decidable]` after `unfold`.
+- `lowerDensity_exceptionalSet_pos : 0 < lowerDensity ExceptionalSet` — conditionally
+  complete lattice plumbing: `le_ciInf`, `le_ciSup` with explicit `BddAbove` (bound 1 via
+  `density_le_one` / `iSup_of_empty'` + `Real.sSup_empty`), `ciSup_pos`, witness horizon
+  `max N 2^52`. NOTE: file's `lowerDensity` is an ⨅-of-⨆ (literally limsup-shaped), but
+  our density bound holds at EVERY large horizon so any asymptotic density notion ≥ 1/22369620.
+
+Lean idioms learned: `le_div_iff₀` (le_div_iff is GONE); beta-unreduced `(fun M => ⨆ …) M`
+goals from `rintro ⟨M, rfl⟩` need `show` before `ciSup_pos` rewrites; `Nat.le_log_iff_pow_le`
+(not pow_le_iff_le_log); deprecated `Finset.filter_card_add_filter_neg_card_eq_card` →
+`card_filter_add_card_filter_not`.
+
+Remaining DEEP (unchanged): Romanoff 1934 (positive density of Romanoff numbers — analytic
+sieve), Chen 2023 disproof structure. The elementary covering vein is now FULLY exhausted:
+infinitude AND positive density both formalized.

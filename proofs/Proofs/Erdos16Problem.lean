@@ -136,7 +136,9 @@ def erdosCovering : List (ℕ × ℕ) :=
 More precise bounds on the density of the exceptional set.
 -/
 
-/-  The exceptional set has positive lower density. -/
+/-  The exceptional set has positive lower density: proved below as
+    `exceptionalCount_positive_density` (counting form, `≥ N / 22369620` below
+    any horizon `N ≥ 2^52`) and `lowerDensity_exceptionalSet_pos`. -/
 
 /-
 ## Related Problems
@@ -610,6 +612,223 @@ theorem exceptionalSet_infinite : ExceptionalSet.Infinite := by
   obtain ⟨n, hn, hmem⟩ := exists_exceptional_gt B
   exact absurd (hB hmem) (by omega)
 
+/-!
+## Erdős (1950), full strength: the exceptional set has positive lower density
+
+`exceptionalSet_infinite` extracts infinitely many exceptional integers from the
+covering progression `n ≡ 7629217 (mod 11184810)`, but Erdős's 1950 theorem is
+stronger: a *positive proportion* of integers lie in the exceptional set.  We
+now prove this by counting progression members below a horizon `N`.
+
+Among `n < N` the progression has `N / 11184810` members `coveringAP q` with
+index `q < N / 11184810`.  A member can fail the size hypothesis of
+`covering_progression_mem_exceptionalSet` only if it is *trapped* within `241`
+of a power of two, and each dyadic window `(2^k, 2^k + 241]` is far shorter
+than the common difference `11184810`, so it traps **at most one** member;
+the relevant powers of two below `N` number at most `log₂ N + 1`.  Hence at
+least `N / 11184810 - (log₂ N + 1)` integers below `N` are exceptional, and
+the logarithmic loss is eventually dwarfed by the linear main term: for
+`N ≥ 2^52` the count is at least `N / 22369620` — a positive proportion
+(`22369620 = 2 · 11184810`).
+-/
+
+/-- The `q`-th member of Erdős's covering progression
+`7629217 + q · 11184810` (`11184810 = 2·3·5·7·13·17·241`). -/
+def coveringAP (q : ℕ) : ℕ := 7629217 + q * 11184810
+
+theorem coveringAP_strictMono : StrictMono coveringAP := by
+  intro a b h
+  unfold coveringAP
+  omega
+
+/-- `n` is *trapped* if it lies within `241` of a smaller power of two `2^k`
+(`k ≥ 1`).  Trapped integers are exactly those that can fail the size
+hypothesis `241 < n - 2^k` of the covering obstruction. -/
+def Trapped (n : ℕ) : Prop := ∃ k, 1 ≤ k ∧ 2 ^ k < n ∧ n - 2 ^ k ≤ 241
+
+/-- Every untrapped member of the covering progression is exceptional: the six
+covering congruences and oddness hold identically along the progression, and
+untrappedness is precisely the missing size hypothesis. -/
+theorem coveringAP_mem_exceptionalSet {q : ℕ} (h : ¬ Trapped (coveringAP q)) :
+    coveringAP q ∈ ExceptionalSet := by
+  have hq : coveringAP q = 7629217 + q * 11184810 := rfl
+  refine covering_progression_mem_exceptionalSet (Nat.odd_iff.mpr (by omega))
+    (by omega) (by omega) (by omega) (by omega) (by omega) (by omega) ?_
+  intro k hk hlt
+  by_contra hc
+  exact h ⟨k, hk, hlt, by omega⟩
+
+open Classical in
+/-- In any index range whose progression members stay below `2 ^ m`, at most
+`m` indices are trapped: a trapped index pins its member inside a window
+`(2^k, 2^k + 241]` with `k < m`, and each such window — being far shorter than
+the common difference `11184810` — holds at most one progression member. -/
+theorem card_trapped_le {Q m : ℕ} (hQm : ∀ q, q < Q → coveringAP q < 2 ^ m) :
+    ((Finset.range Q).filter fun q => Trapped (coveringAP q)).card ≤ m := by
+  have hsub : ((Finset.range Q).filter fun q => Trapped (coveringAP q)) ⊆
+      (Finset.range m).biUnion fun k => (Finset.range Q).filter fun q =>
+        2 ^ k < coveringAP q ∧ coveringAP q - 2 ^ k ≤ 241 := by
+    intro q hq
+    simp only [Finset.mem_filter, Finset.mem_range] at hq
+    obtain ⟨hqQ, k, hk1, hklt, hkle⟩ := hq
+    have hkm : k < m := by
+      by_contra hc
+      have hle : (2 : ℕ) ^ m ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) (not_lt.mp hc)
+      have := hQm q hqQ
+      omega
+    exact Finset.mem_biUnion.mpr ⟨k, Finset.mem_range.mpr hkm,
+      Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hqQ, hklt, hkle⟩⟩
+  calc ((Finset.range Q).filter fun q => Trapped (coveringAP q)).card
+      ≤ ((Finset.range m).biUnion fun k => (Finset.range Q).filter fun q =>
+          2 ^ k < coveringAP q ∧ coveringAP q - 2 ^ k ≤ 241).card :=
+        Finset.card_le_card hsub
+    _ ≤ ∑ k ∈ Finset.range m, ((Finset.range Q).filter fun q =>
+          2 ^ k < coveringAP q ∧ coveringAP q - 2 ^ k ≤ 241).card :=
+        Finset.card_biUnion_le
+    _ ≤ ∑ _k ∈ Finset.range m, 1 := by
+        refine Finset.sum_le_sum fun k _ => ?_
+        refine Finset.card_le_one.mpr fun a ha b hb => ?_
+        simp only [Finset.mem_filter, Finset.mem_range] at ha hb
+        have h1 : coveringAP a = 7629217 + a * 11184810 := rfl
+        have h2 : coveringAP b = 7629217 + b * 11184810 := rfl
+        omega
+    _ = m := by simp
+
+open Classical in
+/-- The number of exceptional integers below `N`. -/
+noncomputable def exceptionalCount (N : ℕ) : ℕ :=
+  ((Finset.range N).filter fun n => n ∈ ExceptionalSet).card
+
+/-- **Counting form of Erdős (1950).**  Up to a logarithmic loss, the
+exceptional integers below `N` are at least as numerous as the covering
+progression members below `N`:
+`N / 11184810 ≤ exceptionalCount N + (log₂ N + 1)`. -/
+theorem exceptionalCount_lower_bound (N : ℕ) :
+    N / 11184810 ≤ exceptionalCount N + (Nat.log 2 N + 1) := by
+  classical
+  set Q := N / 11184810 with hQdef
+  set m := Nat.log 2 N + 1 with hmdef
+  -- every progression member with index below `Q` lies below `N` …
+  have hmem : ∀ q, q < Q → coveringAP q < N := by
+    intro q hq
+    have h1 : (q + 1) * 11184810 ≤ Q * 11184810 :=
+      Nat.mul_le_mul (Nat.succ_le_of_lt hq) le_rfl
+    have h2 : Q * 11184810 ≤ N := Nat.div_mul_le_self N 11184810
+    have h3 : coveringAP q = 7629217 + q * 11184810 := rfl
+    omega
+  -- … hence below the dyadic horizon `2 ^ m`
+  have hpow : N < 2 ^ m := hmdef ▸ Nat.lt_pow_succ_log_self (by norm_num) N
+  have hmem2 : ∀ q, q < Q → coveringAP q < 2 ^ m :=
+    fun q hq => lt_trans (hmem q hq) hpow
+  have htrap := card_trapped_le hmem2
+  -- the untrapped indices inject into the exceptional integers below `N`
+  have hsubset :
+      (((Finset.range Q).filter fun q => ¬ Trapped (coveringAP q)).image coveringAP) ⊆
+        (Finset.range N).filter fun n => n ∈ ExceptionalSet := by
+    intro n hn
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_range] at hn ⊢
+    obtain ⟨q, ⟨hqQ, hqt⟩, rfl⟩ := hn
+    exact ⟨hmem q hqQ, coveringAP_mem_exceptionalSet hqt⟩
+  have hcard :
+      ((Finset.range Q).filter fun q => ¬ Trapped (coveringAP q)).card ≤
+        exceptionalCount N := by
+    unfold exceptionalCount
+    rw [← Finset.card_image_of_injective _ coveringAP_strictMono.injective]
+    exact Finset.card_le_card hsubset
+  have hsplit :
+      ((Finset.range Q).filter fun q => Trapped (coveringAP q)).card +
+        ((Finset.range Q).filter fun q => ¬ Trapped (coveringAP q)).card = Q := by
+    rw [Finset.card_filter_add_card_filter_not, Finset.card_range]
+  omega
+
+/-- **Erdős (1950), positive-proportion form.**  For every `N ≥ 2^52` at least
+`N / 22369620` of the integers below `N` are exceptional
+(`22369620 = 2 · 11184810`): the exceptional set has positive lower density. -/
+theorem exceptionalCount_positive_density {N : ℕ} (hN : 2 ^ 52 ≤ N) :
+    N ≤ 22369620 * exceptionalCount N := by
+  have h52 : (0 : ℕ) < 2 ^ 52 := by norm_num
+  have hN0 : N ≠ 0 := by omega
+  set L := Nat.log 2 N with hL
+  have hlog52 : 52 ≤ L := (Nat.le_log_iff_pow_le (by norm_num) hN0).mpr hN
+  have hpowL : 2 ^ L ≤ N := Nat.pow_log_le_self 2 hN0
+  -- the logarithmic loss is dwarfed by the main term: `22369620 · (L + 2) ≤ N`
+  have hloss : 22369620 * (L + 2) ≤ N := by
+    set j := L - 25 with hjdef
+    have hj : 27 ≤ j := by omega
+    have hjpow : 2 * j ≤ 2 ^ j := by
+      have h1 : j - 1 < 2 ^ (j - 1) := Nat.lt_two_pow_self
+      have h2 : 2 ^ (j - 1 + 1) = 2 ^ (j - 1) * 2 := pow_succ 2 (j - 1)
+      have h3 : j - 1 + 1 = j := by omega
+      rw [h3] at h2
+      omega
+    have hL2 : L + 2 ≤ 2 ^ j := by omega
+    have hsplit : (2 : ℕ) ^ 25 * 2 ^ j = 2 ^ L := by
+      rw [← pow_add]
+      congr 1
+      omega
+    have hmul : 22369620 * (L + 2) ≤ 2 ^ 25 * 2 ^ j :=
+      Nat.mul_le_mul (by norm_num) hL2
+    omega
+  have hcount := exceptionalCount_lower_bound N
+  have hdiv : 11184810 * (N / 11184810) + N % 11184810 = N := Nat.div_add_mod N 11184810
+  have hmod : N % 11184810 < 11184810 := Nat.mod_lt _ (by norm_num)
+  omega
+
+open Classical in
+/-- **The exceptional set has positive lower density** (the bound announced in
+the Density Bounds section above): for every horizon `N` with `2^52 ≤ N + 1`,
+`density ExceptionalSet N ≥ 1 / 22369620`.  Since the bound holds for *all*
+sufficiently large `N`, every asymptotic density notion of `ExceptionalSet`
+(lower or upper) is at least `1 / 22369620 > 0` — Erdős's 1950 theorem at full
+positive-proportion strength. -/
+theorem density_exceptionalSet_ge {N : ℕ} (hN : 2 ^ 52 ≤ N + 1) :
+    (22369620 : ℝ)⁻¹ ≤ density ExceptionalSet N := by
+  have hcount : (N + 1 : ℕ) ≤ 22369620 * exceptionalCount (N + 1) :=
+    exceptionalCount_positive_density hN
+  have hde : density ExceptionalSet N =
+      (exceptionalCount (N + 1) : ℝ) / ((N : ℝ) + 1) := by
+    unfold density exceptionalCount
+    norm_num [decide_eq_true_eq, Finset.filter_congr_decidable]
+  have hcast : ((N : ℝ) + 1) ≤ 22369620 * (exceptionalCount (N + 1) : ℝ) := by
+    exact_mod_cast hcount
+  have hpos : (0 : ℝ) < (N : ℝ) + 1 := by positivity
+  rw [hde, le_div_iff₀ hpos]
+  have hkey : (22369620 : ℝ)⁻¹ * ((N : ℝ) + 1) ≤
+      (22369620 : ℝ)⁻¹ * (22369620 * (exceptionalCount (N + 1) : ℝ)) :=
+    mul_le_mul_of_nonneg_left hcast (by norm_num)
+  have hcancel : (22369620 : ℝ)⁻¹ * (22369620 * (exceptionalCount (N + 1) : ℝ)) =
+      (exceptionalCount (N + 1) : ℝ) := by
+    rw [← mul_assoc, inv_mul_cancel₀ (by norm_num), one_mul]
+  linarith
+
+/-- The `lowerDensity` functional of this file (an `⨅`-of-`⨆`) is positive on
+the exceptional set.  `density_exceptionalSet_ge` bounds the density from below
+at *every* sufficiently large horizon, so this inf-of-sup inherits the bound
+`1 / 22369620`. -/
+theorem lowerDensity_exceptionalSet_pos : 0 < lowerDensity ExceptionalSet := by
+  have hc : (0 : ℝ) < (22369620 : ℝ)⁻¹ := by norm_num
+  refine lt_of_lt_of_le hc ?_
+  unfold lowerDensity
+  refine le_ciInf fun N => ?_
+  have hbdd : BddAbove
+      (Set.range fun M : ℕ => ⨆ (_ : M ≥ N), density ExceptionalSet M) := by
+    refine ⟨1, ?_⟩
+    rintro x ⟨M, rfl⟩
+    by_cases h : M ≥ N
+    · show (⨆ (_ : M ≥ N), density ExceptionalSet M) ≤ 1
+      rw [ciSup_pos h]
+      exact density_le_one _ _
+    · haveI : IsEmpty (M ≥ N) := ⟨h⟩
+      show (⨆ (_ : M ≥ N), density ExceptionalSet M) ≤ 1
+      rw [iSup_of_empty', Real.sSup_empty]
+      norm_num
+  refine le_trans ?_ (le_ciSup hbdd (max N (2 ^ 52)))
+  show (22369620 : ℝ)⁻¹ ≤
+    ⨆ (_ : max N (2 ^ 52) ≥ N), density ExceptionalSet (max N (2 ^ 52))
+  rw [ciSup_pos (le_max_left N (2 ^ 52))]
+  exact density_exceptionalSet_ge
+    (le_trans (le_max_right _ _) (Nat.le_succ _))
+
 /-
 ## Summary
 
@@ -624,6 +843,12 @@ as 2^k + p (exceptional set) is an arithmetic progression plus density-0 set.
 - Romanoff (1934): Positive density of odd integers ARE of this form
 - Erdős (1950): Exceptional set CONTAINS an arithmetic progression
 - Chen (2023): Exceptional set is NOT just one progression + noise
+
+**Formalized here (axiom-free)**: Erdős (1950) at full strength — the covering
+progression puts the exceptional set at positive lower density
+(`exceptionalCount_positive_density`: at least `N / 22369620` members below
+every horizon `N ≥ 2^52`; `lowerDensity_exceptionalSet_pos`), strengthening
+`exceptionalSet_infinite`.
 
 **The exceptional set**:
 - Has positive but small density (~0.09)
