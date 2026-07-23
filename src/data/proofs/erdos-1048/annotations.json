@@ -453,67 +453,6 @@
     ]
   },
   {
-    "id": "ann-1048-small-r",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 162,
-      "endLine": 166
-    },
-    "type": "concept",
-    "title": "Case r ≤ 1/2",
-    "content": "For $r \\le 1/2$, the component containing the origin has diameter $\\ge 2$. Roots tightly clustered near the origin ($r \\le 1/2$) keep the lemniscate close to the unit disk. The bound is sharp: $f(z) = z^n$ achieves exactly diameter 2.",
-    "mathContext": "$r \\le 1/2,\\ 0 \\in L(f,1) \\Rightarrow \\text{diam}(C_0) \\ge 2$",
-    "significance": "key",
-    "relatedConcepts": [
-      "unit disk approximation",
-      "sharp bound"
-    ],
-    "prerequisites": [
-      "BoundedMonicPoly",
-      "connected component diameter"
-    ]
-  },
-  {
-    "id": "ann-1048-medium-r",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 167,
-      "endLine": 171
-    },
-    "type": "concept",
-    "title": "Case 1/2 < r ≤ φ-1",
-    "content": "For $1/2 < r \\le (\\sqrt{5}-1)/2$, the central component has diameter $> 1/r$. The bound transitions at $r = 1/2$; at $r = (\\sqrt{5}-1)/2$ it gives $1/r = \\varphi \\approx 1.618$, matching the third regime.",
-    "mathContext": "$1/2 < r \\le (\\sqrt{5}-1)/2 \\Rightarrow \\text{diam}(C_0) > 1/r$",
-    "significance": "key",
-    "relatedConcepts": [
-      "reciprocal bound",
-      "phase transition"
-    ],
-    "prerequisites": [
-      "golden ratio threshold"
-    ]
-  },
-  {
-    "id": "ann-1048-large-r",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 172,
-      "endLine": 177
-    },
-    "type": "concept",
-    "title": "Case φ-1 ≤ r ≤ 1",
-    "content": "For $(\\sqrt{5}-1)/2 \\le r \\le 1$, the central component has diameter $> 2 - r^2$. At $r = 1$ this gives diameter $> 1$. The three regimes join continuously at the thresholds $r = 1/2$ and $r = (\\sqrt{5}-1)/2$.",
-    "mathContext": "$(\\sqrt{5}-1)/2 \\le r \\le 1 \\Rightarrow \\text{diam}(C_0) > 2 - r^2$",
-    "significance": "key",
-    "relatedConcepts": [
-      "quadratic bound",
-      "bound continuity"
-    ],
-    "prerequisites": [
-      "golden ratio threshold"
-    ]
-  },
-  {
     "id": "ann-1048-zn-diam",
     "proofId": "erdos-1048",
     "range": {
@@ -555,46 +494,6 @@
     ]
   },
   {
-    "id": "ann-1048-r-eq-1",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 193,
-      "endLine": 198
-    },
-    "type": "concept",
-    "title": "r = 1 Case",
-    "content": "At $r = 1$, examples show the maximum component diameter can be less than $1 + \\varepsilon$ for any $\\varepsilon > 0$, matching the guaranteed lower bound $2 - r^2 = 1$.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists f \\in \\text{BoundedMonic}(1): \\text{maxCompDiam}(f, 1) < 1 + \\varepsilon$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "boundary behavior",
-      "tightness"
-    ],
-    "prerequisites": [
-      "pommerenke_case_large_r"
-    ]
-  },
-  {
-    "id": "ann-1048-count-bound",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 204,
-      "endLine": 208
-    },
-    "type": "concept",
-    "title": "Component Count",
-    "content": "A degree-$n$ polynomial's lemniscate has at most $n$ connected components. Pommerenke's counterexample achieves exactly $n$ components.",
-    "mathContext": "$\\deg(f) = n \\Rightarrow L(f, c)$ has $\\le n$ components",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "lemniscate topology",
-      "critical points"
-    ],
-    "prerequisites": [
-      "polynomial degree"
-    ]
-  },
-  {
     "id": "ann-1048-exterior",
     "proofId": "erdos-1048",
     "range": {
@@ -612,70 +511,6 @@
     ],
     "prerequisites": [
       "monic polynomial growth"
-    ]
-  },
-  {
-    "id": "ann-1048-capacity",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 220,
-      "endLine": 223
-    },
-    "type": "definition",
-    "title": "Log Capacity",
-    "content": "The logarithmic capacity (transfinite diameter) of a compact set $S \\subseteq \\mathbb{C}$, a fundamental quantity in potential theory measuring the 'electrostatic size' of $S$. For connected sets, $\\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$.",
-    "mathContext": "$\\text{cap}(S) = \\lim_{n \\to \\infty} \\left(\\max \\prod_{i<j} |z_i - z_j|\\right)^{2/n(n-1)}$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "transfinite diameter",
-      "Chebyshev constant",
-      "potential theory"
-    ],
-    "prerequisites": [
-      "complex analysis",
-      "potential theory"
-    ]
-  },
-  {
-    "id": "ann-1048-cap-lemn",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 225,
-      "endLine": 227
-    },
-    "type": "concept",
-    "title": "Lemniscate Capacity",
-    "content": "Classical result: the logarithmic capacity of $L(f, c)$ for a degree-$n$ monic polynomial is $c^{1/n}$. This connects the level parameter $c$ directly to the potential-theoretic size of the lemniscate.",
-    "mathContext": "$\\text{cap}(L(f, c)) = c^{1/n}$ for monic $f$ of degree $n$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Green's function",
-      "Robin constant"
-    ],
-    "prerequisites": [
-      "logarithmic capacity",
-      "monic polynomial"
-    ]
-  },
-  {
-    "id": "ann-1048-cap-diam",
-    "proofId": "erdos-1048",
-    "range": {
-      "startLine": 229,
-      "endLine": 231
-    },
-    "type": "concept",
-    "title": "Capacity-Diameter",
-    "content": "The capacity-diameter inequality: $\\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$ for connected compact sets. This provides potential-theoretic lower bounds on component diameter.",
-    "mathContext": "$S$ connected $\\Rightarrow \\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "isoperimetric inequality",
-      "geometric function theory"
-    ],
-    "prerequisites": [
-      "logarithmic capacity",
-      "connected sets"
     ]
   }
 ]
