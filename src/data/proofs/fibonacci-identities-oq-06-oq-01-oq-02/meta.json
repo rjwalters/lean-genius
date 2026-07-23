@@ -43,7 +43,8 @@
       "**Alternating transform = signed finite difference**: the weights (−1)ᵏ C(n,k) are the n-th forward-difference coefficients, so the identity is really Δⁿ applied to the Fibonacci window; the recurrence T(n+1,m) = T(n,m) − T(n,m+1) is exactly one difference step.",
       "**Parametrize the shift, not the endpoint**: stating the closed form as (−1)ⁿ F_d with index n + d + k (rather than F₍ₘ₋ₙ₎ with m − n) keeps everything in ℕ and lets the induction hypothesis be instantiated at d+1 and d+2 with no subtraction, avoiding negative-index Fibonacci entirely.",
       "**The signed Pascal convolution is a reusable primitive**: signed_pascal_conv holds for any g : ℕ → ℤ, so it drives the alternating binomial transform of any integer sequence — the Fibonacci recurrence only enters at the very last contraction step.",
-      "**Discrete shadow of φψ = −1**: where the positive transform reflects 1 + φ = φ², the alternating one reflects 1 − φ = ψ together with ψ = −1/φ, which is precisely why the index falls by n and picks up the sign (−1)ⁿ."
+      "**Discrete shadow of φψ = −1**: where the positive transform reflects 1 + φ = φ², the alternating one reflects 1 − φ = ψ together with ψ = −1/φ, which is precisely why the index falls by n and picks up the sign (−1)ⁿ.",
+      "**Generalizing over d before inducting is essential**: proving `fib_alt_binom_transform` with d fixed would not suffice, since the induction step needs the identity at two different shifts, d+1 and d+2. `induction n generalizing d` universally quantifies d first, so a single induction hypothesis `ih` can be instantiated at both `d+1` and `d+2` — the standard 'strengthen the statement to enable the induction' move."
     ],
     "prerequisites": [
       "Parent entry fibonacci-identities-oq-06-oq-01 (the positive binomial transform and pascal_conv)",
@@ -105,12 +106,20 @@
       "mathContext": "$\\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{n+d+k} = (-1)^n F_d$."
     },
     {
-      "id": "sec-corollaries",
-      "title": "Offset and Boundary Forms",
+      "id": "sec-offset",
+      "title": "Offset Form",
       "startLine": 139,
-      "endLine": 155,
-      "summary": "fib_alt_binom_transform_eq (the n ≤ m offset form ∑ (−1)ᵏ C(n,k) F₍ₘ₊ₖ₎ = (−1)ⁿ F₍ₘ₋ₙ₎) and fib_alt_binom_transform_zero (the d = 0 boundary case).",
+      "endLine": 148,
+      "summary": "fib_alt_binom_transform_eq: the n ≤ m offset form ∑ (−1)ᵏ C(n,k) F₍ₘ₊ₖ₎ = (−1)ⁿ F₍ₘ₋ₙ₎, obtained from fib_alt_binom_transform by substituting d = m − n (valid since n ≤ m).",
       "mathContext": "$n \\le m \\implies \\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{m+k} = (-1)^n F_{m-n}$."
+    },
+    {
+      "id": "sec-zero",
+      "title": "Boundary Case d = 0",
+      "startLine": 149,
+      "endLine": 155,
+      "summary": "fib_alt_binom_transform_zero: the d = 0 instance ∑ (−1)ᵏ C(n,k) Fₙ₊ₖ = (−1)ⁿ F₀ = 0 for n ≥ 1, since F₀ = 0.",
+      "mathContext": "$\\sum_{k=0}^n (-1)^k \\binom{n}{k} F_{n+k} = (-1)^n F_0$."
     }
   ],
   "conclusion": {
