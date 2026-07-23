@@ -40,7 +40,8 @@
       "The only analytic input is the polarisation ‖x + y‖² = ‖x‖² + 2⟪x,y⟫ + ‖y‖²; everything else is the algebra of vsub in an affine torsor.",
       "Centring the decomposition at the centroid is what makes the cross term vanish: the inner product is against (g -ᵥ a)+(g -ᵥ b)+(g -ᵥ c) = 0, the defining balance of the barycentre.",
       "The centroid identity ∑ dist(g,vertex)² = ⅓∑ side² needs no median geometry — summing the Leibniz identity over the three vertices and using dist symmetry already forces the ⅓ constant.",
-      "Casting everything coordinate-free (genuine points in a NormedAddTorsor, an explicitly built centroid) makes the identity hold verbatim in every Euclidean affine space of any dimension, and keeps the proof axiom-clean."
+      "Casting everything coordinate-free (genuine points in a NormedAddTorsor, an explicitly built centroid) makes the identity hold verbatim in every Euclidean affine space of any dimension, and keeps the proof axiom-clean.",
+      "The identity is exactly the mathematical content of the parallel-axis theorem from classical mechanics: 3·dist(p,g)² is the parallel-axis shift for a point mass moved from the centroid to p, and ∑ dist(g,vertex)² is the moment of inertia about the centroid, so the geometric identity and the physical theorem share one polarisation proof."
     ],
     "prerequisites": [
       "Inner-product affine spaces (NormedAddTorsor over a real inner product space)",
@@ -54,15 +55,15 @@
       "id": "setup",
       "title": "Setup: Coordinate-Free Affine Framework",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 49,
       "summary": "Imports Mathlib and the module docstring situating this entry as the answer to the parent's (law-of-cosines-oq-07-oq-02) open question. Opens the RealInnerProductSpace scope and fixes the coordinate-free setting: a real inner product space V acting on a point space P as a NormedAddTorsor, so a, b, c, p are genuine points and distances are dist. No dimension or basis is chosen, so every result holds verbatim in every Euclidean affine space.",
       "mathContext": "V a real inner product space, P a NormedAddTorsor over V; points a,b,c,p ∈ P with dist p x = ‖p -ᵥ x‖."
     },
     {
       "id": "part1-centroid",
       "title": "Part I: The Centroid and its Balance",
-      "startLine": 53,
-      "endLine": 63,
+      "startLine": 50,
+      "endLine": 62,
       "summary": "The explicit centroid centroid₃ a b c = ⅓·((b -ᵥ a)+(c -ᵥ a)) +ᵥ a, and its defining balance (a -ᵥ g)+(b -ᵥ g)+(c -ᵥ g) = 0 closed by the module tactic.",
       "mathContext": "g = ⅓·((b -ᵥ a)+(c -ᵥ a)) +ᵥ a; balance: (a -ᵥ g)+(b -ᵥ g)+(c -ᵥ g)=0."
     },
@@ -70,16 +71,24 @@
       "id": "part2-leibniz",
       "title": "Part II: The Leibniz / Lagrange Identity",
       "startLine": 64,
-      "endLine": 97,
+      "endLine": 96,
       "summary": "For any balanced point g, dist(p,a)²+dist(p,b)²+dist(p,c)² = 3·dist(p,g)² + ∑ dist(g,vertex)², by polarising each squared distance about g (p -ᵥ vᵢ = (p -ᵥ g)+(g -ᵥ vᵢ), norm_add_sq_real) and killing the cross term 2⟪p -ᵥ g, ∑(g -ᵥ vᵢ)⟫ with the balance hypothesis.",
       "mathContext": "∑ dist(p,vᵢ)² = 3·dist(p,g)² + ∑ dist(g,vᵢ)²; cross term 2⟪p -ᵥ g, (g -ᵥ a)+(g -ᵥ b)+(g -ᵥ c)⟫ = 0."
     },
     {
-      "id": "part3-centroid-identity",
-      "title": "Part III: The Centroid Moment Identity",
+      "id": "part3-leibniz-centroid",
+      "title": "Part III: Specialisation to the Triangle Centroid",
       "startLine": 98,
+      "endLine": 105,
+      "summary": "leibniz_centroid instantiates the abstract leibniz_identity at g = centroid₃ a b c, discharging the balance hypothesis with centroid₃_balance. The proof term is a single application, not a fresh tactic proof — the payoff of having separated the abstract mechanism from the concrete centroid.",
+      "mathContext": "leibniz_centroid : ∑ dist(p,vertex)² = 3·dist(p,g)² + ∑ dist(g,vertex)² with g := centroid₃ a b c."
+    },
+    {
+      "id": "part4-centroid-moment",
+      "title": "Part IV: The Centroid Moment Identity",
+      "startLine": 107,
       "endLine": 135,
-      "summary": "Instantiation at the explicit centroid (leibniz_centroid) and the moment identity ∑ dist(g,vertex)² = ⅓·∑ side², obtained by feeding the three vertex instances (p = a, b, c) of the Leibniz identity plus the dist symmetries into linarith.",
+      "summary": "The moment identity ∑ dist(g,vertex)² = ⅓·∑ side², obtained by feeding the three vertex instances (p = a, b, c) of leibniz_centroid plus the dist symmetries into linarith, with self-distances dist a a = 0 etc. eliminated first.",
       "mathContext": "∑ dist(g,vertex)² = ⅓·(dist(a,b)²+dist(b,c)²+dist(c,a)²), from leibniz_centroid at p ∈ {a,b,c}."
     }
   ],
