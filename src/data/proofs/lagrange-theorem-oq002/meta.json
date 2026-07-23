@@ -88,12 +88,20 @@
   },
   "sections": [
     {
-      "id": "header-nat-card-family",
-      "title": "From Fintype to a Nat.card Orbit-Stabilizer",
+      "id": "header-motivation",
+      "title": "Imports and Module Docstring: Motivation and Generalisation",
       "startLine": 1,
-      "endLine": 62,
-      "summary": "Imports (GroupAction.Quotient, Cardinal.Finite, Tactic) and module docstring: the parent lifted Burnside off Fintype to Finite via a finiteness-free bijection; this file applies the same recipe to orbit-stabilizer and finds it needs no finiteness at all. Replaces every Fintype.card by the total Nat.card, adds the index form, and recovers the Fintype statement as a corollary. Opens the OrbitStabilizerFinite namespace and MulAction, and fixes a group G acting on a type X.",
+      "endLine": 44,
+      "summary": "Imports (GroupAction.Quotient, Cardinal.Finite, Tactic) and the module docstring's main narrative: the parent lifted Burnside off Fintype to Finite via a finiteness-free bijection; this file applies the same recipe to orbit-stabilizer and finds it needs no finiteness at all — strictly more general than the parent's Finite form, which still needed a Fintype instance to collapse its finsum.",
       "mathContext": "Mathlib: $\\mathrm{Fintype.card}\\,(\\mathrm{orbit}\\,G\\,x)\\cdot\\mathrm{Fintype.card}\\,(\\mathrm{stab}\\,G\\,x)=\\mathrm{Fintype.card}\\,G$. Here, over $\\mathrm{Nat.card}$, with no finiteness instance."
+    },
+    {
+      "id": "header-status-setup",
+      "title": "Status, Mathlib Dependencies, and Namespace Setup",
+      "startLine": 45,
+      "endLine": 62,
+      "summary": "Docstring checklist (Nat.card product, index form, and Fintype recovery all done, 0 sorries/axioms) and the Mathlib-dependency list (orbitProdStabilizerEquivGroup, orbitEquivQuotientStabilizer, Nat.card_congr/Nat.card_prod/Nat.card_eq_fintype_card). Opens namespace OrbitStabilizerFinite and MulAction, and fixes a group G acting on a type X via `variable`.",
+      "mathContext": "Sets up the ambient `variable (G : Type*) (X : Type*) [Group G] [MulAction G X]` shared by all three theorems below."
     },
     {
       "id": "orbit-stabilizer-product",
