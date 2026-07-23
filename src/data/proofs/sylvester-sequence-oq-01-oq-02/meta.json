@@ -96,6 +96,14 @@
       "mathContext": "$a_n \\ge 2^{2^{n-1}}$ for $n \\ge 1$, with $a_{n+1} = a_n^2 - a_n + 1$."
     },
     {
+      "id": "namespace-setup",
+      "title": "Namespace and Parent Open",
+      "startLine": 47,
+      "endLine": 51,
+      "summary": "Declares namespace SylvesterSequenceOQ01OQ02 and opens SylvesterSequenceOQ01, bringing the parent's syl definition, syl_cast_succ recurrence cast, and syl_partial_sum closed form into scope for the three theorems below.",
+      "mathContext": "All three results are stated in terms of the parent's `syl : ℕ → ℕ` (Sylvester's sequence)."
+    },
+    {
       "id": "invariant",
       "title": "The Strengthened Doubly-Exponential Invariant",
       "startLine": 52,
@@ -106,7 +114,7 @@
     {
       "id": "bound",
       "title": "The Doubly-Exponential Lower Bound",
-      "startLine": 82,
+      "startLine": 81,
       "endLine": 86,
       "summary": "syl_doubly_exponential specializes the strengthened invariant to n ≥ 1: writing n = m+1 and dropping the +1 (Nat.le_succ, le_trans) gives 2^(2^(n-1)) ≤ aₙ.",
       "mathContext": "$2^{2^{n-1}} \\le 2^{2^{n-1}} + 1 \\le a_n.$"
@@ -114,7 +122,7 @@
     {
       "id": "rate",
       "title": "Convergence Rate of the Egyptian Fraction",
-      "startLine": 88,
+      "startLine": 87,
       "endLine": 107,
       "summary": "syl_reciprocal_error_bound rewrites the truncation error via the parent's closed form syl_partial_sum to the exact term 1/(a_{n+1}-1), bounds the denominator below by 2^(2ⁿ) using the strengthened invariant, and applies one_div_le_one_div_of_le to conclude the error is at most 1/2^(2ⁿ).",
       "mathContext": "$1 - \\sum_{k\\le n} 1/a_k = \\tfrac{1}{a_{n+1}-1} \\le \\tfrac{1}{2^{2^n}}.$"
