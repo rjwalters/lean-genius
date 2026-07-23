@@ -66,35 +66,43 @@
   },
   "sections": [
     {
+      "id": "problem",
+      "title": "The Problem: Isolating the Per-Step Density-Error Law",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring: the parent oq-03-oq-05-oq-01 telescoped E(N) = E(⌈N/4⌉) + δ(N) inline for one extremal family; this file makes δ a genuine function of N mod 8 and asks whether the maximal per-step cost 5 (residue 7) can drive a faster family than the parent's rate-4 one (residue 6).",
+      "mathContext": "Sets up the four new results: the per-step law error_step, the bounds/residue dictionary, the sustainability obstruction quot_even_of_mod_seven, and the descent inequality gap_step_le."
+    },
+    {
       "id": "delta",
       "title": "The Per-Step Residue Law",
-      "startLine": 52,
-      "endLine": 79,
+      "startLine": 50,
+      "endLine": 69,
       "summary": "delta r = ⌊(r+3)/4⌋ − r, and the per-step law error_step: E(N) = E(⌈N/4⌉) + delta (N mod 8) for every N.",
       "mathContext": "The parent's inline telescoping, isolated; delta depends only on N mod 8."
     },
     {
       "id": "bounds",
       "title": "Per-Step Bounds and the Residue Dictionary",
-      "startLine": 81,
-      "endLine": 107,
+      "startLine": 70,
+      "endLine": 91,
       "summary": "−5 ≤ delta (N mod 8) ≤ 0, with delta = 0 iff r ∈ {0,1}, = −4 iff r = 6, = −5 iff r = 7.",
       "mathContext": "The eight step values, each a one-line omega goal after unfolding delta."
     },
     {
       "id": "sustainability",
       "title": "Why the Maximal Cost Cannot Sustain",
-      "startLine": 109,
-      "endLine": 125,
+      "startLine": 92,
+      "endLine": 106,
       "summary": "quot_even_of_mod_seven: residue 7 forces an even quotient (so −5 cannot chain); mod6_chains: residue 6 chains to itself.",
       "mathContext": "N ≡ 7 (mod 8) ⟹ ⌈N/4⌉ even; the sustainable extremal rate is 4 (residue 6), not 5."
     },
     {
       "id": "descent",
-      "title": "The Descent Inequality",
-      "startLine": 127,
-      "endLine": 150,
-      "summary": "gap_step_le: gap N ≤ gap ⌈N/4⌉ + 5; gap_nonneg_and_step packages nonnegativity (from the parent) with the step bound.",
+      "title": "The Descent Inequality and Summary",
+      "startLine": 107,
+      "endLine": 154,
+      "summary": "gap_step_le: gap N ≤ gap ⌈N/4⌉ + 5; gap_nonneg_and_step packages nonnegativity (from the parent) with the step bound. Closing summary docstring recaps all five results.",
       "mathContext": "The per-step form behind the one-sided O(log N) error bound."
     }
   ],
