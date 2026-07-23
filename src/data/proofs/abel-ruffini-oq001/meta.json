@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the mod-2 route and its honest scope",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring: recaps the parent's failed parity argument (x⁵-x-1 has one real root, so conjugation is an even double transposition), states the Dedekind mod-2 fix — factor as (x²+x+1)(x³+x²+1) over 𝔽₂ to get Frobenius cycle type (2,3) — and lists exactly what is and is not machine-checked (Dedekind's theorem itself, mod-3, and ℚ-irreducibility are explicitly NOT formalized here).",
+      "mathContext": "$x^5-x-1 \\equiv (x^2{+}x{+}1)(x^3{+}x^2{+}1) \\pmod 2$"
+    },
+    {
       "id": "definitions",
       "title": "The Factors and Reduction over 𝔽₂",
       "startLine": 44,
