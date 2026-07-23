@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring: Regularity and Strict Extension",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "States OQ-02 of the parent — regularity (convergence ⟹ Cesàro summability to the same value) and strict extension (a divergent series can still be Cesàro summable) — and previews M1/M2 and the closed form used for Grandi. Imports Mathlib and the parent GeometricSeriesOQ01, opens the namespace and Finset, Filter.",
+      "mathContext": "Regularity: convergence $\\Rightarrow$ $(C,1)$-summable to the same limit. Strictness: Grandi is $(C,1)$-summable to $1/2$ though divergent."
+    },
+    {
       "id": "definitions",
       "title": "Cesàro Mean and Summability",
       "startLine": 59,
@@ -84,11 +92,19 @@
       "mathContext": "Consistency of Cesàro summation with ordinary convergence, via Filter.Tendsto.cesaro."
     },
     {
-      "id": "grandi",
-      "title": "M2: Grandi — (C,1) Summable but Divergent",
+      "id": "grandi-closed-form",
+      "title": "Grandi's Partial Sums: Closed Form and Bound",
       "startLine": 92,
+      "endLine": 124,
+      "summary": "sum_grandiPartial: the closed form ∑_{k<n} Sₖ = (n − Sₙ)/2 by induction on the parent's grandi_double_sum. grandi_partial_abs_le_one: |Sₙ| ≤ 1. grandiCesaroMean_eq: the resulting closed form for the Cesàro mean σₙ = (n − Sₙ)/(2n).",
+      "mathContext": "$\\sum_{k<n} S_k = (n - S_n)/2$, $|S_n|\\le 1$, so $\\sigma_n = (n-S_n)/(2n)$."
+    },
+    {
+      "id": "grandi-convergence-divergence",
+      "title": "M2: Grandi — (C,1) Summable but Divergent",
+      "startLine": 126,
       "endLine": 187,
-      "summary": "sum_grandiPartial closed form; grandiCesaroMean_tendsto (σₙ → 1/2); grandi_partial_not_tendsto (divergent partial sums); cesaro_strictly_extends_convergence.",
+      "summary": "grandiCesaroMean_tendsto: σₙ → 1/2 via the ε–N bound |σₙ − 1/2| = |Sₙ|/(2n) ≤ 1/(2n). grandi_partial_not_tendsto: the partial sums themselves diverge (even subsequence → 0, odd → 1, contradicting uniqueness of limits). cesaro_strictly_extends_convergence packages both into the strict-extension statement.",
       "mathContext": "Grandi's series witnesses that (C,1) summability strictly extends convergence."
     }
   ],
