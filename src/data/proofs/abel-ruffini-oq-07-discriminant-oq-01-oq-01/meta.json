@@ -19,7 +19,7 @@
       "finset-product",
       "abel-ruffini"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "This file records structural properties of the difference product δ = diffProd r and the discriminant disc r = δ² over an arbitrary commutative ring R (the separability criterion additionally assumes R is an integral domain, and uses Matrix.det_vandermonde_ne_zero_iff). No further hypotheses are imposed: symmetry, antisymmetry under transposition, translation invariance, and the discriminant–derivative formula hold for every finite family r : Fin n → R. Every theorem is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; no native_decide, no Lean.ofReduceBool).",

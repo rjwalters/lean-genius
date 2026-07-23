@@ -22,7 +22,7 @@
       "abel-ruffini"
     ],
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ04OQ03.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. `#print axioms` on derivedSeries_two_eq_bot_of_metabelian, isSolvable_of_metacyclic, and derivedSeries_two_eq_bot_of_metacyclic reports only the foundational axioms propext, Classical.choice, Quot.sound (not counted). No `native_decide` and no `decide`, so `Lean.ofReduceBool` is NOT introduced. Built on Mathlib's derived series API (map_derivedSeries_eq, commutator_eq_bot_iff_le_centralizer, QuotientGroup.ker_mk') and IsCyclic.commGroup.",

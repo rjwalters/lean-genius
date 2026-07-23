@@ -53,7 +53,7 @@
     "lineCount": 156,
     "theoremCount": 5,
     "definitionCount": 0,
-    "badge": "verified",
+    "badge": "mathlib",
     "originalContributions": [
       "tendsto_alternating_harmonic_log_two: the ordered partial sums ∑_{i<n} (-1)^i/(i+1) converge to log 2. Because Mathlib has no value for this series (contrast the Leibniz case), this is proved from scratch via Abel's limit theorem applied to the power series of log(1+x) — the substantive analytic content.",
       "not_summable_alternating_harmonic: the family (-1)^n/(n+1) is NOT Summable — its absolute values are the divergent harmonic series 1/(n+1), so convergence is only conditional.",

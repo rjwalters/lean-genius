@@ -39,7 +39,7 @@
     "lineCount": 256,
     "theoremCount": 5,
     "definitionCount": 0,
-    "badge": "verified",
+    "badge": "mathlib",
     "originalContributions": [
       "isOpenMap: the Open Mapping Theorem — a surjective bounded linear map T : E →L[𝕜] F between Banach spaces is an open map. Derived from the gallery Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior), completing the trio of Baire-powered cornerstones of functional analysis alongside the parent's Uniform Boundedness Principle.",
       "exists_approx_preimage_norm_le: the single Baire step of the whole development. The images of the unit balls cover F by a countable union of closed sets closure (T '' ball 0 n); the gallery category theorem hands back one with nonempty interior, and a rescaling shell estimate turns this into: every y is approximated within ‖y‖/2 by the image of an element of norm ≤ C‖y‖. This is the ONLY appeal to Baire — everything downstream is completeness bookkeeping.",

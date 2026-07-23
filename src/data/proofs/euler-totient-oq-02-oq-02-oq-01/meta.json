@@ -15,7 +15,7 @@
       "primitive-root"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ02OQ02OQ01.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide`. The key theorems `carmichael_isLeast_universal`, `carmichael_dvd_iff`, `carmichael_eq_totient_iff_isCyclic`, and `carmichael_eight_lt_totient` were confirmed via `#print axioms` to depend only on the ordinary foundational axioms propext, Classical.choice, Quot.sound; there is no `sorryAx` and no `Lean.ofReduceBool`. The single concrete evaluation λ(8) = 2 is obtained from Mathlib's closed-form `carmichael_two_pow_of_ne_two` (not a decision procedure), and Mathlib's `ZMod.not_isCyclic_units_eight` uses only kernel `decide`, so no `Lean.ofReduceBool` enters.",

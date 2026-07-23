@@ -18,7 +18,7 @@
       "sharpness"
     ],
     "proofRepoPath": "Proofs/TriangleInequalityOQ06.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "packagingNote": "Tier B bundle with an original sharpness layer. The atomic inequalities are one-line re-exports of named Mathlib lemmas (abs_dist_sub_le, dist_dist_dist_le, abs_norm_sub_norm_le, LipschitzWith.dist_right/left) plus the standard glue for the quadrilateral form (Real.dist_eq). The genuinely new content is the three sharpness theorems: reverse_triangle_eq_of_between (the reverse inequality is an equality for collinear reals a ≤ b ≤ c), quadrilateral_sharp (an explicit real configuration attaining the two-endpoint bound), and dist_lipschitz_optimal (the Lipschitz constant 1 is best possible). Status is verified (0 sorries, 0 axioms — only propext/Classical.choice/Quot.sound).",
     "sorries": 0,
     "axiomCount": 0,

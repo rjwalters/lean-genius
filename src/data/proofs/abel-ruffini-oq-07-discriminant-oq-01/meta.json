@@ -19,7 +19,7 @@
       "vandermonde",
       "abel-ruffini"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "This file formalizes the general discriminant criterion 'Gal ⊆ Aₙ ⟺ disc is a square in the base field' for a finite Galois extension E/F whose Galois group permutes a distinguished family r : Fin n → E of distinct elements (a genuine hypothesis hperm, satisfied by the roots of a separable polynomial split by E). The central theorem disc_isSquare_iff_gal_le_alternating takes as hypotheses: injectivity of r (distinct roots), 2 ≠ 0 in E (characteristic ≠ 2, needed so that δ = −δ forces δ = 0), and that the Galois group permutes r. These are structural setup, not axioms. The Galois-descent step invokes Mathlib's IsGalois.mem_range_algebraMap_iff_fixed (requires [FiniteDimensional F E] [IsGalois F E]). Every theorem is fully machine-checked with 0 sorries and 0 axioms (only propext, Classical.choice, Quot.sound; no native_decide, no Lean.ofReduceBool).",

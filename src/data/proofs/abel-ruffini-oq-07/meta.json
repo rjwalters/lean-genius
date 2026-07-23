@@ -18,7 +18,7 @@
       "abel-ruffini",
       "frobenius"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "This file proves the group-theoretic REDUCTION of Gal(X⁵−X−1) ≅ S₅. The order-divisibility input 5 ∣ |Gal| is now fully discharged with NO assumptions: five_dvd_card_gal derives it for the genuine Galois group f.Gal from Irreducible f (via Polynomial.Gal.prime_degree_dvd_card), and f_irreducible supplies Irreducible f directly from Mathlib's Selmer theorem Polynomial.X_pow_sub_X_sub_one_irreducible_rat — so five_dvd_card_gal_unconditional : 5 ∣ Nat.card f.Gal holds unconditionally, axiom-free and sorry-free. The SOLE remaining hypothesis is the existence of a transposition in Gal (from the order-6 Frobenius at p=2), exposed as an explicit hypothesis of gal_eq_top_of_five_dvd_and_swap, NOT an axiom. Supplying it in Lean requires the Dedekind–Frobenius bridge (factor type mod an unramified prime ⟹ a Frobenius element of matching cycle type in f.Gal), which Mathlib v4.26.0 does not provide; it is the same open bridge InverseGaloisA5.lean axiomatises as three_dvd_gal_card. All theorems in this file are fully machine-checked with 0 sorries and 0 axioms.",

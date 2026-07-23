@@ -20,7 +20,7 @@
       "bijection",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. 0 sorries, 0 literal `axiom` declarations, 0 structure-encoded assumptions. The full theorem nonCrossingCount n = catalan n (nonCrossingCount_eq_catalan) is machine-checked and depends only on the foundational axioms propext / Classical.choice / Quot.sound (Classical.choice enters via Fintype.equivOfCardEq and .some on the first-return bijection's Nonempty). No native_decide and no Lean.ofReduceBool — the n ≤ 3 corollary uses kernel `decide`, not native_decide. Confirmed by `#print axioms nonCrossingCount_eq_catalan`. Status verified.",

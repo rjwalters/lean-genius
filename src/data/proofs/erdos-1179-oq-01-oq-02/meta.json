@@ -132,7 +132,7 @@
       "erdos-problem",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Self-contained: imports only Mathlib and restates the three parent correction-term definitions verbatim. The main theorem loglog_implies_sublinear proves the hierarchy implication CorrectionIsLogLog ⟹ CorrectionIsSublinearInLog (Θ(log log N) ⟹ o(log₂ N)) that the parent erdos-1179-oq-01 left unformalized. Machine-checked: `lake env lean Proofs/Erdos1179OQ01OQ02.lean` elaborates the file against prebuilt Mathlib oleans with zero errors and zero sorries, and `#print axioms` reports only [propext, Classical.choice, Quot.sound] — the foundational axioms; no Lean.ofReduceBool (no native_decide) and no sorryAx. This entry proves ONLY the logical implication between candidate rates; it does NOT resolve the open second-order question (which rate actually holds).",

@@ -17,7 +17,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ01OQ03.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 sorries, 0 explicit axiom declarations, 0 structure-encoded assumptions. All four headline theorems (modEq_alternating_digits, dvd_iff_dvd_alternating_digits, dvd_succ_base_iff_alternating, alternating_digit_rules_summary) verified via `#print axioms` to depend only on the standard foundational axioms propext / Classical.choice / Quot.sound — NOT sorryAx and NOT Lean.ofReduceBool. Two illustrative `example` blocks in Part IV use `native_decide` to evaluate concrete alternating digit sums (Nat.digits is well-founded recursion and does not reduce under `decide`), but these examples are not the substantive results and do not appear in any theorem's axiom set.",

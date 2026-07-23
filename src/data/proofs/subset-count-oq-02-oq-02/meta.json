@@ -13,7 +13,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/SubsetCountOQ02OQ02.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide` (the lone numerical sanity check uses kernel `decide`, so no `Lean.ofReduceBool`). The only axioms appearing in `#print axioms` are the ordinary foundational ones (propext, Classical.choice, Quot.sound), which the project policy does not count. Key Mathlib inputs: Multiset.powersetCard_cons, Multiset.card_powersetCard, Finset.powersetCard_succ_insert, Finset.powerset_card_disjiUnion, Finset.card_powerset, Finset.card_image_of_injOn, Finset.card_union_of_disjoint.",
