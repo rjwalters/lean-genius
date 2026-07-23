@@ -30,6 +30,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring framing the excluded family E = {4^a(8b+7)} of Legendre's three-square theorem, noting that the gallery's parent ThreeSquares.lean proves necessity and 4-descent but only supplies a noncomputable Classical decidability instance. Lists what is new here: the 2-adic normal form (isExcludedForm_iff), uniqueness of the (a,b) parametrisation (excludedForm_unique), and a genuinely computable Classical-free decision procedure (isExcludedB, instExcluded). Imports Mathlib and opens the namespace.",
+      "mathContext": "$E = \\{4^a(8b+7) : a,b\\ge 0\\}$ is the excluded family; this file gives its 2-adic normal form, parametrisation uniqueness, and a computable decision procedure."
+    },
+    {
       "id": "valuation",
       "title": "The 2-Adic Valuation Engine and Uniqueness",
       "startLine": 44,
@@ -41,16 +49,24 @@
       "id": "normal-form-section",
       "title": "The 2-Adic Normal Form",
       "startLine": 77,
+      "endLine": 104,
+      "summary": "isExcludedForm_iff: n ∈ E iff v₂(n) is even and the odd part is ≡ 7 (mod 8) — the existential search over (a,b) replaced by two conditions read directly off n. The reverse direction reconstructs n from its valuation and odd part via Nat.ordProj_mul_ordCompl_eq_self.",
+      "mathContext": "n ∈ E ⟺ Even(v₂ n) ∧ (n / 2^{v₂ n}) % 8 = 7."
+    },
+    {
+      "id": "ge-seven",
+      "title": "Every Excluded Number Is at Least 7",
+      "startLine": 106,
       "endLine": 113,
-      "summary": "isExcludedForm_iff: n ∈ E iff v₂(n) is even and the odd part is ≡ 7 (mod 8) — the existential search replaced by two read-off conditions. excludedForm_ge_seven gives the elementary lower bound n ≥ 7.",
-      "mathContext": "n ∈ E ⟺ Even(v₂ n) ∧ (n / 2^{v₂ n}) % 8 = 7; every excluded n ≥ 7."
+      "summary": "excludedForm_ge_seven: every element of the excluded family is ≥ 7, since 4^a ≥ 1 and 8b+7 ≥ 7 — an elementary certificate used to certify small non-excluded numbers (e.g. 6) without invoking factorization.",
+      "mathContext": "$4^a(8b+7) \\ge 1\\cdot 7 = 7$ for all $a,b\\ge 0$."
     },
     {
       "id": "decision",
       "title": "Computable Decision Procedure and Witnesses",
       "startLine": 115,
-      "endLine": 154,
-      "summary": "isExcludedB packages the normal form as a Bool test (isExcludedForm_iff_isExcludedB), giving a Classical-free DecidablePred instance. Concrete witnesses (7, 15, 28, 112 ∈ E; 6 ∉ E; uniqueness of 28) validate it.",
+      "endLine": 156,
+      "summary": "isExcludedB packages the normal form as a Bool test (isExcludedForm_iff_isExcludedB), giving a Classical-free DecidablePred instance. Concrete witnesses (7, 15, 28, 112 ∈ E; 6 ∉ E; uniqueness of 28) validate it. Closes the namespace.",
       "mathContext": "An effective, Classical-free Decidable membership test for the excluded family."
     }
   ],
