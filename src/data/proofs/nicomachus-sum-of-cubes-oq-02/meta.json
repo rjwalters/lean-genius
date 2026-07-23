@@ -43,23 +43,37 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header docstring",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports (`Mathlib.Algebra.BigOperators.Intervals`, `Mathlib.Tactic`) and the module docstring: states the open question (the p=4 Faulhaber closed form), the clear-denominator-and-subtraction strategy, and the novelty claim that Mathlib has the Gauss and cube-sum identities but not this one. 0 sorries, 0 axioms."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and open",
+      "startLine": 47,
+      "endLine": 49,
+      "summary": "Opens `namespace NicomachusFourthPowers` and `open Finset`, so `range` and `∑` below refer to `Finset.range` and `Finset.sum` unqualified."
+    },
+    {
       "id": "subtraction-free",
       "title": "Subtraction-free, division-free core",
-      "startLine": 59,
+      "startLine": 51,
       "endLine": 69,
       "summary": "The core lemma 30·(∑_{k≤n} k⁴) + n = 6n⁵ + 15n⁴ + 10n³, proved by induction. The base case is `simp`. The step peels the top fourth power with sum_range_succ, then a single subtraction-free `ring` identity 6m⁵ + 15m⁴ + 10m³ + 30(m+1)⁴ + 1 = 6(m+1)⁵ + 15(m+1)⁴ + 10(m+1)³ is combined with the inductive hypothesis by `omega` (which atomizes the power terms). No truncated ℕ subtraction and no division ever appears."
     },
     {
       "id": "factored-int",
       "title": "Factored form over ℤ",
-      "startLine": 77,
+      "startLine": 71,
       "endLine": 87,
       "summary": "30·(∑_{k≤n} k⁴) = n(n+1)(2n+1)(3n²+3n−1). Casting the ℕ identity to ℤ with push_cast lets the factor 3n²+3n−1 use honest subtraction; `linarith` isolates 30·∑ = 6n⁵+15n⁴+10n³ − n and a final `ring` recognizes that the product equals 6n⁵+15n⁴+10n³ − n."
     },
     {
       "id": "headline-rat",
       "title": "Headline closed form over ℚ",
-      "startLine": 93,
+      "startLine": 89,
       "endLine": 103,
       "summary": "∑_{k≤n} k⁴ = n(n+1)(2n+1)(3n²+3n−1)/30, the classical divided form. The same ℕ core is cast to ℚ, `linarith` isolates the sum as (6n⁵+15n⁴+10n³ − n)/30, and `ring` clears the product against the /30."
     },
