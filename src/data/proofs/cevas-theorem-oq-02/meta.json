@@ -92,6 +92,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Ceva's Theorem in Non-Euclidean Geometries \u2014 Menelaus Duality and Angle Defect", "startLine": 1, "endLine": 44, "summary": "Extends the non-Euclidean Ceva formalization with four results: non-Euclidean Menelaus's theorem (product of sin/sinh-ratios = \u22121 for collinear points, dual to Ceva's product = 1 for concurrency), a formal Ceva-Menelaus duality via sign reversal of one ratio, spherical excess (Girard's theorem: angle sum exceeds \u03c0 proportionally to area), and hyperbolic defect (angle sum falls short of \u03c0 proportionally to area).", "mathContext": "Using the shared 'measure function' $\\rho$ abstraction ($\\rho=\\mathrm{id}$ Euclidean, $\\sin$ spherical, $\\sinh$ hyperbolic), Ceva's concurrency condition $\\prod \\rho(\\text{ratios})=1$ and Menelaus's collinearity condition $\\prod\\rho(\\text{ratios})=-1$ become algebraic duals differing only by the sign of one ratio."},
     {
       "id": "signed-ratio-framework",
       "title": "Signed Ratio Framework for Menelaus",
