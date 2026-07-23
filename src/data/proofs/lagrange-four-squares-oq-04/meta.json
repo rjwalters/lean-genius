@@ -60,6 +60,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-four-squares-oq-04", "title": "Module Header: Legendre–Gauss Three-Square Theorem (Forward Direction)", "startLine": 1, "endLine": 29, "summary": "States the open question of formalizing the three-square theorem (n is a sum of three squares iff n ≠ 4^a(8b+7)) and proves the forward direction from first principles: numbers of the form 4^a(8b+7) are not sums of three squares, via a mod-8 base case (squares mod 8 lie in {0,1,4}) and a descent step. Notes the backward direction requires Gauss's genus theory for ternary quadratic forms and remains axiomatized (1 axiom), replacing half of the parent file's full biconditional axiomatization with a proof.", "mathContext": "$n = 4^a(8b+7) \\implies n$ is not a sum of three squares, proved via squares $\\equiv 0,1,4 \\pmod 8$ (so a sum of three squares is never $\\equiv 7$) plus a $4 \\mid x^2+y^2+z^2 \\implies 2\\mid x,y,z$ descent; the converse needs Gauss's genus theory and stays axiomatized."},
     {
       "id": "modular-arithmetic",
       "title": "Section I: Squares Modulo 8",
