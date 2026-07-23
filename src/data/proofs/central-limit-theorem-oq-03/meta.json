@@ -54,6 +54,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: The Categorical Structure of Distributions Under Convolution", "startLine": 1, "endLine": 34, "summary": "Poses what algebraic/categorical structure probability distributions carry under convolution and how the CLT fits in. Answers that distributions on R form a commutative monoid under convolution with the Dirac delta at 0 as identity, and the CLT describes the attractor of this monoid: normalized convolution powers converge to the Gaussian. Covers convolution as a binary operation, the monoid axioms (associativity, identity, commutativity), CLT as convergence in the monoid, Gaussian stability under normalized self-convolution, and a normalization 'CLT functor' preserving the convolution structure.", "mathContext": "Viewing probability distributions as a commutative monoid under convolution (identity = Dirac delta at 0), the CLT says normalized convolution powers of any distribution converge to the unique Gaussian fixed point of normalized self-convolution."},
     {
       "id": "prob-measure",
       "title": "Probability Measure Type",
