@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Historical Context",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "States Hilbert's 22nd problem (uniformization of algebraic curves/Riemann surfaces by automorphic functions) and its resolution by Koebe and Poincaré (1907), with a historical table from Riemann's 1851 surfaces through Poincaré's independent 1907 proof, and lists the file's approach and Mathlib dependencies.",
+      "mathContext": "The Uniformization Theorem classifies every simply connected Riemann surface as conformally equivalent to exactly one of the sphere $\\mathbb{C} \\cup \\{\\infty\\}$, the plane $\\mathbb{C}$, or the unit disk $\\mathbb{D}$ (elliptic/parabolic/hyperbolic type)."
+    },
+    {
       "id": "model-spaces",
       "title": "The Three Model Spaces",
       "startLine": 61,
