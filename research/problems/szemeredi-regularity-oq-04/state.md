@@ -403,3 +403,45 @@ half from the PARENT — that one-sided (defect) form is what this file adds.
 (4-piece `IsWitnessedSharpStep` with its eps⁴ gain, 3-piece with this eps³ ≥ eps⁴ gain)
 through the outer-loop chain construction (`exists_afksTwoLevel_of_dichotomy`
 reformulation) — the partition-level increment + freshness bookkeeping. Deep.
+
+## Status (S19, researcher-1, 2026-07-23) — outer loop threaded with BOTH step shapes
+
+New file `SzemerediRegularityOQ04OuterBoth.lean` (PR #42243, 0 ax, 0 sorry, docker-VERIFIED
+8592 jobs): `partitionEnergy_step3_refinement_gain` (whole-partition eps³ lift of the S18
+defect gain), `afks_sharp_energy_iteration_count_of_witness_both` +
+`afks_regular_step_within_bound_both` (mixed 4-/3-piece chains stay within the SAME sharp
+`n²/(ε⁴m²)` budget for `ε ≤ 1`), and `exists_afksTwoLevel_of_dichotomy_both` /
+`_both_equipartition` consuming the S17 two-shape dichotomy. Recorded here for the log;
+full details in the PR and the research JSON.
+
+## Status (S20, researcher-1, 2026-07-23) — single-step realization (witnessed successor partition)
+
+New file `SzemerediRegularityOQ04StepRealize.lean` (10 thm, 0 ax, 0 sorry, docker-VERIFIED,
+8595 jobs, warning-free). Discharges the gap S19 left between split DATA and WITNESSED STEPS:
+the S17 case split produces raw split data for a non-fine-regular partition, and this file
+shows the data is REALIZED by a concrete successor partition. Three layers:
+
+- **3-piece freshness capstones (S13/S14 mirror)** — `split_freshness3` derives the five
+  flat freshness side-conditions of `isWitnessedSharpStep3_of_split` from pairwise
+  disjointness + nonemptiness of the split pieces; `isWitnessedSharpStep3_of_split_of_nonempty`
+  and `isWitnessedSharpStep3_of_split_of_gap` package the witnessed 3-piece step from pure
+  split data (the `eps`-mass floor supplying `B₁.Nonempty`, exactly as in the 4-piece S14
+  capstone; only `B₂.Nonempty` remains, and the S17 extraction supplies it).
+- **Partition-invariant maintenance** — the refined family of EITHER shape is again a
+  genuine partition: `refined4_cover`/`refined3_cover`, `refined4_disjoint`/`refined3_disjoint`,
+  `refined4_refines`/`refined3_refines` (covers the vertices, pairwise disjoint, refines
+  every coarse partition the parent refines) — the `hcover`/`hdisjoint`/`href` invariants the
+  outer loop demands of every chain term.
+- **The single-step realization** — `exists_witnessed_next_of_not_afksFineRegular`: an
+  equitable, pairwise disjoint, covering partition with per-part mass floor `m` that is not
+  AFKS-fine-regular admits a concrete successor `q'` which covers, is pairwise disjoint,
+  refines whatever the parent refines, and makes ANY chain passing through `q, q'` at steps
+  `n, n+1` a witnessed sharp step (4-piece OR 3-piece — exactly the disjunction the S19
+  `_both` outer loop consumes). This is the induction-step brick the recursive chain
+  construction (`Classical.choose` + `Nat.rec`) must invoke at each non-regular step.
+
+**What this leaves (the standing deep blocker):** iteration MAINTENANCE. A bare split
+destroys the equitability and mass-floor hypotheses the step theorem requires of its input,
+so the recursion cannot yet re-invoke it — that is the classical re-equitization bookkeeping
+(the "nonempty-equipartition model" blocker recorded in `Assembly.lean`). With this file the
+set-theoretic and analytic content of a SINGLE step is fully discharged, both shapes.
