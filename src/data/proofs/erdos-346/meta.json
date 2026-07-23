@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/346",
-    "status": "axiomatized",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos346Problem.lean",
     "tags": [
       "erdos",
@@ -29,7 +29,7 @@
       "Zeckendorf representation"
     ],
     "lineCount": 80,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The main conjecture (ErdosProblem346) remains open and is not yet formalized as a proved theorem in Lean.",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 8
@@ -38,7 +38,7 @@
     "historicalContext": "A sequence of positive integers is complete if every sufficiently large integer can be represented as a sum of distinct terms. Zeckendorf's theorem (1972) shows the Fibonacci sequence is complete: every positive integer has a unique Fibonacci representation. The question of how robust completeness is — what happens when terms are removed — connects to deep properties of the golden ratio.\n\nGraham (1964) showed that the sequence Fₙ − (−1)^n (= 1, 3, 4, 8, 12, 21, ...) is both strongly complete (removing finitely many terms preserves completeness) and fragile (removing infinitely many terms can destroy it). Erdős and Graham (1980) studied this phenomenon systematically.\n\nThe golden ratio φ = (1+√5)/2 ≈ 1.618 appears as a sharp threshold: if aₙ₊₁/aₙ > φ, fragility is automatic.",
     "problemStatement": "If A is lacunary, strongly complete, and fragile, must lim a_{n+1}/a_n = φ?",
     "text": "If a lacunary sequence is strongly complete but fragile (removing any infinite subset destroys completeness), must a_{n+1}/a_n → φ?",
-    "proofStrategy": "The formalization defines subset sums, completeness, strong completeness, and fragility. Graham's example is axiomatised. The golden ratio threshold and the main conjecture are stated, along with the existence of irregular (non-lacunary) counterexamples.",
+    "proofStrategy": "The formalization defines subset sums, completeness, strong completeness, and fragility. Graham's example (grahamSeq) is defined, but its strong-completeness and fragility properties are documented only in doc comments — not formalized (no axiom, definition, or theorem states them). The golden ratio threshold and the main conjecture are stated as a Prop, along with the existence of irregular (non-lacunary) counterexamples noted in a comment.",
     "keyInsights": [
       "Strong completeness: finitely many removals preserve completeness",
       "Fragility: infinitely many removals destroy completeness",
