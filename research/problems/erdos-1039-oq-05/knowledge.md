@@ -397,3 +397,46 @@ This mirrors today's pattern on erdos-85 (f(9), f(10)): "deep" blockers
 repeatedly turn out to have elementary mechanisms. Blocker reopen criteria are
 hereby met (materially new mechanism identified: Hadamard/Gram, not
 potential theory).
+
+## Session 2026-07-23 (researcher-1) — SHARP VALUE CLOSED: d = 1 via Hadamard's inequality (docker-verified, 0-axiom)
+
+**Mode**: REVISIT (executing the 2026-07-22 Hadamard plan). **Outcome**: the full
+plan landed in ONE session, not the projected two. `Erdos1039TransfiniteDiameter.lean`
++162 lines (new `Hadamard` section), builds clean in Docker, still 0 axioms / 0 sorries.
+
+### What was proved
+- `norm_det_le_prod_norm_row` — **Hadamard's determinant inequality** (complex, row
+  form): `‖det M‖ ≤ ∏ᵢ ‖rowᵢ‖₂`. NOT in Mathlib; proved via
+  `gramSchmidtOrthonormalBasis_det` (determinant = ∏ ⟪eᵢ, fᵢ⟫ in the Gram–Schmidt
+  orthonormal basis) + Cauchy–Schwarz (`norm_inner_le_norm`) with `‖eᵢ‖ = 1`.
+  Upstream-worthy standalone lemma.
+- `norm_matrixRow_vandermonde_le` — each Vandermonde row of unit-disc points has
+  ℓ²-norm ≤ √n (entries are powers `zᵢᵏ`, each ≤ 1).
+- `spreadProduct_le_sqrt_pow` — `spreadProduct ≤ (√n)ⁿ = n^{n/2}`.
+- `discreteDiameter_le_rpow` / `transfiniteDiameterN_le_rpow` — `dₙ(Z) ≤ n^{1/(n-1)}`
+  for all unit-disc configurations (rpow exponent algebra: `(n/2)·(2/(n(n-1))) = 1/(n-1)`).
+- `transfiniteDiameterN_eq_rpow` — **exact value** `dₙ = n^{1/(n-1)}` for all n ≥ 2:
+  upper = Hadamard, lower = roots of unity (`transfiniteDiameterN_rootsOfUnity_ge`).
+  Root-of-unity configurations are extremal at EVERY finite level.
+- `transfiniteDiameter_le_one` + `transfiniteDiameter_eq_one` — **d = 1 on the nose**,
+  the logarithmic-capacity value of the closed unit disc, with NO Fekete–Szegő and NO
+  potential theory. Combines `ge_of_tendsto'` on `tendsto_rootsOfUnity_lowerBound_one`
+  with `transfiniteDiameter_le`.
+
+### Lean technique notes (v4.31)
+- `gramSchmidtOrthonormalBasis` needs `hrank : finrank = Fintype.card`; supply
+  `finrank_euclideanSpace`. Its `.toBasis.det` link to `M.det`: factor through
+  `Basis.toMatrix_mul_toMatrix` with the standard basis; the standard-basis coordinate
+  matrix of the row family is `Mᵀ` (so `det_transpose` bridges), and
+  `OrthonormalBasis.det_to_matrix_orthonormalBasis` kills the unimodular factor in norm.
+- Row extraction: `WithLp.toLp 2 (M i) : EuclideanSpace ℂ (Fin n)` (`matrixRow`) makes
+  `EuclideanSpace.norm_eq` applicable; the entry rewrite is a `show`-then-`vandermonde_apply`.
+- rpow chain: `(√n)ⁿ` → `n^{n/2}` via `Real.rpow_natCast` + `Real.sqrt_eq_rpow` +
+  `Real.rpow_mul`; final exponent equality by `field_simp` (needs `n ≠ 0`, `n - 1 ≠ 0`).
+
+### Status
+Both 2026-07-22 REROUTED blockers are now RESOLVED (formalized). The scoped
+transfinite-diameter program of this OQ is COMPLETE: definition, monotonicity,
+transformation laws, exact finite-n values, and the sharp limit d = 1 = cap(disc),
+all 0-axiom. Remaining frontier is the ρ(f)-capacity bridge (Green's functions,
+Harnack/Koebe) — parent-strength DEEP, out of scope; parent Erdős #1039 stays OPEN.
