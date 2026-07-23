@@ -96,11 +96,25 @@
       "summary": "Module docstring stating the axiom-elimination goal and scope (existence only, not the asymptotic sorry). Definitions `isEgyptianFraction` (denominators ≥ 1), `unitFractionSum` (∑ 1/n over a Finset with a totalizing guard), and `isEgyptianRepresentation` (a < b, b > 0, positive denominators, sum = a/b), mirroring the parent file."
     },
     {
-      "id": "greedy-aux",
-      "title": "The Strengthened Greedy Existence Lemma",
+      "id": "greedy-setup",
+      "title": "The Greedy Step: n = ⌈b/a⌉ and the Ceiling Estimates",
       "startLine": 61,
+      "endLine": 80,
+      "summary": "Sets up `exists_egyptian_aux` by strong induction on a, strengthened so every denominator is ≥ the greedy choice n = ⌈b/a⌉ = (b+a-1)/a. Derives the two-sided ceiling estimate b ≤ a·n ≤ b+a-1 from Nat.div_add_mod + omega, giving a' = a·n - b < a for the induction to descend on."
+    },
+    {
+      "id": "greedy-basecase",
+      "title": "Base Case: a·n = b Gives a/b = 1/n Exactly",
+      "startLine": 81,
+      "endLine": 93,
+      "summary": "When a' = 0 the greedy fraction is exact: a·n = b means a/b = 1/n, so the singleton {n} represents a/b, closed by Finset.sum_singleton + field_simp. The recursion's terminating case."
+    },
+    {
+      "id": "greedy-recursion",
+      "title": "Recursive Step: Distinctness via Strictly Increasing Denominators",
+      "startLine": 94,
       "endLine": 132,
-      "summary": "`exists_egyptian_aux`: by strong induction on a, every a/b (0 < a < b) has a representation whose denominators are all ≥ ⌈b/a⌉. Ceiling bounds from Nat.div_add_mod + omega; base case {n} when a·n = b; step case inserts n into the IH result on a′/(b·n), with disjointness n ∉ S′ from the next-denominator-exceeds-n estimate and the telescoping sum identity 1/n + a′/(b·n) = a/b via field_simp/ring."
+      "summary": "When 0 < a' < a, recurses on a'/(b·n) and shows every denominator of the recursive support S′ strictly exceeds n (via Nat.lt_of_mul_lt_mul_left), so n ∉ S′ and `insert n S′` is valid. The telescoping sum identity 1/n + a′/(b·n) = a/b is closed by field_simp/ring after Nat.cast_sub."
     },
     {
       "id": "existence-theorem",
