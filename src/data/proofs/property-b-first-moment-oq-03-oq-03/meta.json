@@ -87,10 +87,26 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Independent Recoloring Is Inert",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring framing this as the recoloring companion to the sibling 'asymmetry is worthless' result (oq-03-oq-01): under the naive independent (product-space) recoloring model, the first-moment monochromatic probability and Erdős's threshold m < 2^(k-1) are exactly unchanged for every flip rate p.",
+      "mathContext": "The docstring states the whole result chain: vertexFinalProb p = 1/2, monoIndep k p = monoOneStage k = 2^(1-k), and the invariant threshold m < 2^(k-1)."
+    },
+    {
+      "id": "setup",
+      "title": "The Independent Two-Stage Recoloring Model",
+      "startLine": 56,
+      "endLine": 68,
+      "summary": "Three definitions modeling the naive recoloring: vertexFinalProb p (per-vertex final-color probability after an independent flip), monoIndep k p (k-edge monochromatic probability under that model), and monoOneStage k (the one-round Erdős baseline 2·(1/2)^k).",
+      "mathContext": "vertexFinalProb(p) := (1/2)(1−p) + (1/2)p, monoIndep(k,p) := 2·vertexFinalProb(p)^k, monoOneStage(k) := 2·(1/2)^k."
+    },
+    {
       "id": "uniform-final",
       "title": "The Per-Vertex Final Color Stays Uniform",
-      "startLine": 56,
-      "endLine": 73,
+      "startLine": 69,
+      "endLine": 74,
       "summary": "vertexFinalProb p = (1/2)(1−p) + (1/2)p = 1/2 for all p (vertexFinalProb_eq_half): XOR of a uniform first-round color with an independent flip is uniform.",
       "mathContext": "The single algebraic collapse from which the whole inertness of independent recoloring follows."
     },
@@ -98,7 +114,7 @@
       "id": "mono-invariant",
       "title": "Monochromatic Probability Is the Erdős Value, for Every p",
       "startLine": 75,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "monoIndep_eq_oneStage: monoIndep k p = monoOneStage k = 2·(1/2)^k; monoOneStage_eq_zpow exhibits 2^(1-k); monoIndep_const and expMono_indep_const record constancy in p.",
       "mathContext": "The independent two-stage model reproduces the one-round monochromatic probability identically."
     },
@@ -106,7 +122,7 @@
       "id": "threshold",
       "title": "The First-Moment Threshold Is Unmoved",
       "startLine": 99,
-      "endLine": 109,
+      "endLine": 111,
       "summary": "threshold_indep: m·monoIndep k p < 1 ↔ 2m < 2^k — exactly Erdős's m < 2^(k-1), independent of the flip rate p.",
       "mathContext": "Quantifies inertness: independent recoloring cannot raise the threshold, isolating the conditional recoloring as the sole remaining lever."
     }
