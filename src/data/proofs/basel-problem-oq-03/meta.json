@@ -133,7 +133,7 @@
     "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) closed forms for ζ(6) and ζ(8), the product-reduction relations among even single zeta values, and the double zeta value ζ(2,2) = π⁴/120, exhibiting the relationship between multiple and single zeta values.",
     "implications": "Because each even zeta value is a rational multiple of π^{2k}, the even zeta values are algebraically degenerate and products of them reduce to single values; the double zeta value ζ(2,2) shows the same reduction one level up in the MZV hierarchy. These are the elementary instances of the shuffle/stuffle relations that organize the whole algebra of multiple zeta values.",
     "openQuestions": [
-      "Prove the stuffle relation ζ(2)² = ζ(4) + 2ζ(2,2) directly from the double sum ∑_{m>n} 1/(m²n²) via a Fubini/diagonal split, upgrading ζ(2,2) = π⁴/120 from 'value forced by stuffle' to a fully derived theorem.",
+      "Prove the next stuffle relation ζ(2)·ζ(4) = ζ(6) + ζ(2,4) + ζ(4,2) by the same diagonal-split argument (already carried out for ζ(2)² = ζ(4) + 2ζ(2,2) in basel-problem-oq-03-oq-01), exhibiting the asymmetric weight case where the two off-diagonal triangles are no longer equal.",
       "Formalize Euler's reflection ζ(2,1) = ζ(3), the first MZV relation expressing a weight-3 double value through a single odd zeta value.",
       "State the general even-weight reduction: every monomial ∏ ζ(2k_i) is a rational multiple of π^{2∑k_i}, hence of the single value ζ(2∑k_i)."
     ]
@@ -143,6 +143,16 @@
       "targetId": "basel-problem",
       "relationship": "parent",
       "description": "Parent entry establishing ζ(2) = π²/6; this entry extends to ζ(6), ζ(8) and the relations among even zeta values and the double zeta value ζ(2,2)"
+    },
+    {
+      "targetId": "basel-problem-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: proves the stuffle relation ζ(2)² = ζ(4) + 2ζ(2,2) directly from the double sum via a Fubini/diagonal split, upgrading ζ(2,2) = π⁴/120 from 'value forced by stuffle' to a fully derived theorem"
+    },
+    {
+      "targetId": "basel-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Pushes the product-reduction pattern two weights further to ζ(10) and ζ(12), where the irregular prime 691 (in the numerator of ζ(12)) first forces itself into every weight-12 reduction coefficient — the exact point the tidy-coefficient pattern of this entry degrades"
     }
   ],
   "leanFile": {
