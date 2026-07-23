@@ -76,25 +76,40 @@
   },
   "sections": [
     {
-      "id": "operator-absolute-value",
-      "title": "The operator absolute value |A| = √(AᴴA)",
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
       "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring introducing the operator absolute value |A| = √(AᴴA) as the positive semidefinite factor of the polar decomposition A = U·|A|, and stating its defining property ‖Ax‖ = ‖|A|x‖ (equivalently ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩), which is why the polar phase U can be realised as a genuine isometry. Imports Mathlib's matrix order, continuous functional calculus, and PosDef modules; opens Matrix and the scoped MatrixOrder/ComplexOrder; fixes the ambient RCLike field 𝕜 and finite index type n.",
+      "mathContext": "$\\lVert Ax\\rVert = \\lVert |A|x\\rVert$ where $|A| = \\sqrt{A^{\\mathsf H}A}$, over an arbitrary RCLike field $\\mathbb k$."
+    },
+    {
+      "id": "definition-and-hermitian",
+      "title": "Defining the Modulus |A|",
+      "startLine": 48,
+      "endLine": 62,
+      "summary": "absValue A := CFC.sqrt (Aᴴ·A), the positive semidefinite square root of AᴴA via the continuous functional calculus. absValue_posSemidef and absValue_isHermitian record that |A| is positive semidefinite and Hermitian."
+    },
+    {
+      "id": "modulus-square-and-uniqueness",
+      "title": "The Defining Square and Uniqueness",
+      "startLine": 64,
       "endLine": 80,
-      "summary": "Module docstring, imports, and namespace, then the modulus absValue A = CFC.sqrt (Aᴴ·A) and its structure: positive semidefinite (absValue_posSemidef), Hermitian (absValue_isHermitian), the defining identity |A|² = AᴴA (absValue_mul_self), the form |A|ᴴ·|A| = AᴴA (absValue_conjTranspose_mul_self), and uniqueness as the PSD square root of AᴴA (absValue_unique)."
+      "summary": "absValue_mul_self: |A|·|A| = AᴴA, the defining property of the modulus. absValue_conjTranspose_mul_self restates it as |A|ᴴ·|A| = AᴴA (the form needed for the quadratic-form identity). absValue_unique: |A| is the unique positive semidefinite matrix P with P² = AᴴA."
     },
     {
       "id": "quadratic-form",
-      "title": "The fundamental quadratic-form identity",
+      "title": "The Fundamental Quadratic-Form Identity",
       "startLine": 81,
-      "endLine": 89,
-      "summary": "For any matrix M and vector x, the Hermitian quadratic form of Mx collapses to the form of MᴴM on x: star (M *ᵥ x) ⬝ᵥ (M *ᵥ x) = star x ⬝ᵥ ((Mᴴ·M) *ᵥ x) (star_mulVec_dotProduct_self), a pure matrix-algebra computation."
+      "endLine": 98,
+      "summary": "star_mulVec_dotProduct_self: for any matrix M, the Hermitian quadratic form of Mx collapses to the form of MᴴM on x, star (M *ᵥ x) ⬝ᵥ (M *ᵥ x) = star x ⬝ᵥ ((Mᴴ·M) *ᵥ x), pure matrix algebra. absValue_star_mulVec_dotProduct applies this to both A and |A|, using |A|ᴴ·|A| = AᴴA, to get ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩ — the algebraic heart of why the polar factor is an isometry."
     },
     {
       "id": "norm-preservation",
-      "title": "Norm preservation ‖Ax‖ = ‖|A|x‖",
-      "startLine": 90,
+      "title": "Norm Preservation ‖Ax‖ = ‖|A|x‖",
+      "startLine": 100,
       "endLine": 118,
-      "summary": "A and its modulus induce the same quadratic form ⟨Ax,Ax⟩ = ⟨|A|x,|A|x⟩ (absValue_star_mulVec_dotProduct); via star y ⬝ᵥ y = ∑ᵢ‖yᵢ‖² (dotProduct_star_self) this descends to the Euclidean-norm identity ∑ᵢ‖(Ax)ᵢ‖² = ∑ᵢ‖(|A|x)ᵢ‖² (absValue_normSq_eq)."
+      "summary": "dotProduct_star_self: the unconjugated form star y ⬝ᵥ y equals the real squared Euclidean length ∑ᵢ‖yᵢ‖², transported into 𝕜. absValue_normSq_eq descends the quadratic-form identity to the honest Euclidean-norm identity ∑ᵢ‖(Ax)ᵢ‖² = ∑ᵢ‖(|A|x)ᵢ‖², i.e. ‖Ax‖ = ‖|A|x‖."
     }
   ],
   "openQuestions": [
