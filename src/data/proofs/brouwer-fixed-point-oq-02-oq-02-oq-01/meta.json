@@ -69,6 +69,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: A Priori / A Posteriori Error Estimates for Contraction Iteration", "startLine": 1, "endLine": 26, "summary": "Explains the two computable error estimates this file adds to the parent's a-posteriori-free bound: the a priori estimate (bound in terms of the first step, usable before iterating) and the a posteriori estimate (bound in terms of the latest step, giving a practical stopping criterion), plus the Lipschitz composition law used to combine contractions.", "mathContext": "Both estimates follow from the geometric decay $|x_n-x^*|\\le L^n|x_0-x^*|$ together with the one-step bound $(1-L)|x_0-x^*|\\le|x_1-x_0|$ from the Banach fixed-point setup."},
     {
       "id": "estimates",
       "title": "Geometric decay and the a priori / a posteriori estimates",
