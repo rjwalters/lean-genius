@@ -475,6 +475,7 @@ graph contains a cycle — previously even this weak form of the answer was only
 derivable through the Bondy–Vince axiom.
 -/
 
+omit [Fintype V] [DecidableEq V] [Nonempty V] in
 /-- Every member of `cycleLengths` is at least 3: cycles in a simple graph
 have length at least 3. -/
 theorem three_le_of_mem_cycleLengths {G : SimpleGraph V} [DecidableRel G.Adj]
@@ -482,6 +483,7 @@ theorem three_le_of_mem_cycleLengths {G : SimpleGraph V} [DecidableRel G.Adj]
   obtain ⟨v, c, hc, rfl⟩ := hn
   exact hc.three_le_length
 
+omit [DecidableEq V] [Nonempty V] in
 /-- The degree of a vertex inside its connected-component graph equals its
 degree in `G`: every `G`-neighbour of a vertex lies in the vertex's
 component. -/
@@ -501,6 +503,7 @@ theorem degree_toSimpleGraph_eq (G : SimpleGraph V) [DecidableRel G.Adj]
     have hus : u ∈ C.supp := C.mem_supp_of_adj_mem_supp x.2 hu
     exact ⟨⟨u, hus⟩, by rw [SimpleGraph.mem_neighborFinset]; exact hu, rfl⟩
 
+omit [DecidableEq V] in
 /-- **Minimum degree ≥ 2 forces a cycle** (contrapositive form): a finite
 nonempty graph in which every vertex has at least two neighbours is not
 acyclic. If it were, each connected component would be a tree
@@ -512,7 +515,7 @@ theorem not_isAcyclic_of_two_le_degree (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : ∀ v, 2 ≤ G.degree v) : ¬ G.IsAcyclic := by
   intro hac
   obtain ⟨v⟩ := ‹Nonempty V›
-  have hvdeg : 0 < G.degree v := lt_of_lt_of_le (by norm_num) (h v)
+  have hvdeg : 0 < G.degree v := by have := h v; omega
   obtain ⟨w, hw⟩ := (G.degree_pos_iff_exists_adj v).mp hvdeg
   let C : G.ConnectedComponent := G.connectedComponentMk v
   have hvC : v ∈ C.supp := rfl
@@ -528,6 +531,7 @@ theorem not_isAcyclic_of_two_le_degree (G : SimpleGraph V) [DecidableRel G.Adj]
   have h2 := h x.1
   omega
 
+omit [DecidableEq V] in
 /-- A finite nonempty graph in which every vertex has degree at least 2 has a
 nonempty cycle spectrum. -/
 theorem cycleLengths_nonempty_of_two_le_degree (G : SimpleGraph V)
@@ -538,11 +542,13 @@ theorem cycleLengths_nonempty_of_two_le_degree (G : SimpleGraph V)
   intro v c hc
   exact hempty ⟨c.length, v, c, hc, rfl⟩
 
+omit [DecidableEq V] in
 /-- The file's `minDegree` is a lower bound for every vertex degree. -/
 theorem minDegree_le_degree' (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
     minDegree G ≤ G.degree v :=
   Finset.min'_le _ _ (Finset.mem_image_of_mem _ (Finset.mem_univ v))
 
+omit [DecidableEq V] in
 /-- **Nonvacuity of the Bondy–Vince hypothesis** (axiom-free): minimum degree
 at least 2 — in particular the `minDegree G ≥ 3` hypothesis of
 `bondy_vince_theorem` — already forces the cycle spectrum to be nonempty. -/
