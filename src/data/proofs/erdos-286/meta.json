@@ -138,9 +138,9 @@
       "id": "egyptian",
       "title": "Egyptian Fractions and Greedy Algorithm",
       "startLine": 198,
-      "endLine": 236,
-      "summary": "Defines `IsEgyptianFraction` (definitionally equal to `IsUnitFractionSum`). The Fibonacci–Sylvester greedy algorithm result is referenced in a docstring (lines 208–209) — not declared as an axiom. Summary section recapping the result and references.",
-      "mathContext": "Greedy: take $n = \\lceil 1/q \\rceil$, recurse on $q - 1/n$. Terminates since $q - 1/n < 1/(n(n-1))$."
+      "endLine": 263,
+      "summary": "Defines `IsEgyptianFraction` (definitionally equal to `IsUnitFractionSum`) and proves `egyptian_eq_unit_fraction`. The Fibonacci–Sylvester greedy algorithm result is referenced in a docstring (lines 235–236) — not declared as an axiom. Closes with a `## Summary` comment recapping the problem status (SOLVED for k ≥ 3, k = 2 impossible), Croot's (e-1+ε)k bound, the k=3/k=4 examples, and references (Erdős–Graham 1980, Croot 2001).",
+      "mathContext": "Greedy: take $n = \\lceil 1/q \\rceil$, recurse on $q - 1/n$. Terminates since $q - 1/n < 1/(n(n-1))$. `IsEgyptianFraction S q \\iff IsUnitFractionSum S q$ (`Iff.rfl` — same underlying predicate, different name for the classical framing)."
     }
   ],
   "conclusion": {
