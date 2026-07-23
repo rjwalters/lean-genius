@@ -110,18 +110,36 @@
       "summary": "Module docstring: Φ_p is not visibly Eisenstein, but its translate Φ_p(X+1) = ∑ C(p,k) X^(k−1) is (Eisenstein at p); since X ↦ X+1 is a ring automorphism, Φ_p is irreducible over ℚ. The Eisenstein data feeds the parent's reproved criterion, re-deriving cyclotomic.irreducible_rat for prime indices elementarily."
     },
     {
-      "id": "translate-properties",
-      "title": "The translate Φ_p(X+1) and its basic properties",
+      "id": "translate-def-monic",
+      "title": "The translate Φ_p(X+1) and its monicity",
       "startLine": 42,
-      "endLine": 58,
-      "summary": "shiftedCyclotomicInt p := (cyclotomic p ℤ).comp (X+1); shiftedCyclotomicInt_monic (composition of monics, no primality needed) and shiftedCyclotomicInt_natDegree = p − 1 (natDegree_comp + Nat.totient_prime) — the monicity and positive-degree Eisenstein inputs."
+      "endLine": 52,
+      "summary": "shiftedCyclotomicInt p := (cyclotomic p ℤ).comp (X+1); shiftedCyclotomicInt_monic shows it is monic, from Monic.comp of cyclotomic.monic and monic_X_add_C (no primality of p needed for this step).",
+      "mathContext": "$\\Phi_p(X+1) = \\Phi_p \\circ (X+1)$ is monic since both factors of the composition are."
     },
     {
-      "id": "irreducibility-and-descent",
-      "title": "Irreducibility via Eisenstein and descent to Φ_p",
+      "id": "translate-degree",
+      "title": "The translate's degree is p − 1",
+      "startLine": 54,
+      "endLine": 58,
+      "summary": "shiftedCyclotomicInt_natDegree: natDegree of Φ_p(X+1) equals p − 1, via natDegree_comp, natDegree_cyclotomic, and Nat.totient_prime — the positive-degree Eisenstein input.",
+      "mathContext": "$\\deg \\Phi_p(X+1) = \\deg \\Phi_p \\cdot \\deg(X+1) = (p-1)\\cdot 1$."
+    },
+    {
+      "id": "apply-criterion",
+      "title": "Unpacking Eisenstein data and applying the parent's criterion",
       "startLine": 60,
+      "endLine": 91,
+      "summary": "cyclotomic_prime_irreducible_rat begins by unpacking Mathlib's cyclotomic_comp_X_add_one_isEisensteinAt into the divisibility hypotheses of the parent's irreducible_rat_of_eisenstein (p ∣ lower coeffs, p² ∤ constant), yielding irreducibility of the ℚ translate (Φ_p(X+1)).map(ℤ→ℚ) = Φ_p(X+1) over ℚ.",
+      "mathContext": "Ideal.mem_span_singleton / Ideal.span_singleton_pow convert IsEisensteinAt into $p \\mid c_k$, $p^2 \\nmid c_0$."
+    },
+    {
+      "id": "descend-to-phi-p",
+      "title": "Descent from Φ_p(X+1) to Φ_p",
+      "startLine": 92,
       "endLine": 95,
-      "summary": "cyclotomic_prime_irreducible_rat: unpack Mathlib's cyclotomic_comp_X_add_one_isEisensteinAt into the divisibility hypotheses of the parent's irreducible_rat_of_eisenstein (p ∣ lower coeffs, p² ∤ constant), get irreducibility of the ℚ translate, then descend to Φ_p along algEquivAevalXAddC (1) via MulEquiv.irreducible_iff."
+      "summary": "The translation automorphism algEquivAevalXAddC (1 : ℚ) sends Φ_p to Φ_p(X+1); MulEquiv.irreducible_iff transports the just-established irreducibility of the translate back to Φ_p itself, completing the theorem.",
+      "mathContext": "Irreducibility is invariant under the ring automorphism $X \\mapsto X+1$ of $\\mathbb{Q}[X]$."
     }
   ],
   "mainTheorems": [
