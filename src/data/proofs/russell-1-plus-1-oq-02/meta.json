@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-russell-1-plus-1-oq-02",
+      "title": "Module Overview: Peano ℕ as a Commutative Semiring",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Completes the arithmetic story left open by the parent entry (which builds Peano + and proves it commutative/associative but never defines *): defines multiplication by primitive recursion, proves every commutative-semiring law relating + and *, and bundles them into a single machine-checked CommSemiring witness. Entirely Mathlib-free, matching the parent's from-scratch style.",
+      "mathContext": "Peano recursion $n \\cdot 0 = 0,\\ n\\cdot(\\text{succ } m) = n\\cdot m + n$; proves the full commutative-semiring axiom set for $(\\mathbb{N},+,\\cdot)$."
+    },
+    {
       "id": "peano-recap",
       "title": "Peano naturals and addition (recap)",
       "startLine": 52,
