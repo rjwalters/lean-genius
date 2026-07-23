@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and the Open Question",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring states the classical necessary condition on Mersenne primes — if 2^n − 1 is prime then n is prime — and previews the contrapositive proof: n ≥ 2, a composite n has a proper divisor d lifting to a proper Mersenne divisor 2^d − 1, contradicting primality via the two escape hatches closed by injectivity of d ↦ 2^d. Notes the converse is false (2¹¹ − 1 = 2047 = 23·89). Imports GeomSum and Nat.Prime.Basic, opens the MersennePrimeExponent namespace.",
+      "mathContext": "$\\mathrm{Prime}(2^n-1) \\Rightarrow \\mathrm{Prime}(n)$; necessary but not sufficient (the converse fails at $n=11$)."
+    },
+    {
       "id": "exponent-at-least-two",
       "title": "A prime Mersenne number forces n ≥ 2",
       "startLine": 55,
