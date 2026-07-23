@@ -91,6 +91,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Spectral Consequences of Sylvester's Interpolation Formula", "startLine": 1, "endLine": 37, "summary": "Draws out the spectral consequences of the parent file's Sylvester interpolation formula aeval A p = sum p(mu) Z_mu (Z_mu = Frobenius covariants) for a diagonalizable matrix A: the spectral decomposition A = sum mu Z_mu, the spectral mapping A^k = sum mu^k Z_mu for powers, interpolation uniqueness (aeval A p depends on p only through its values on the spectrum), and that the covariants are two-sided eigen-projections commuting with A. Fully verified: 0 sorries, 0 axioms, no native_decide.", "mathContext": "Sylvester's formula at $p=X$ and $p=X^k$ respectively gives $A=\\sum_\\mu \\mu Z_\\mu$ and $A^k=\\sum_\\mu \\mu^k Z_\\mu$, expressing the matrix and its powers as the same fixed spectral projections re-weighted by the eigenvalues."},
     {
       "id": "setup",
       "title": "Setup: diagonalizable form over a commutative ring",
