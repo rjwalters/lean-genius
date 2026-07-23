@@ -47,6 +47,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Gauss Sum as Third QR Pathway", "startLine": 1, "endLine": 32, "summary": "States the open question of a Gauss-sum-based third QR pathway, answers yes, previews the four results (independence of the three formal proofs, the second supplementary law from Mathlib, the Gauss-sum connection to QR, and concrete instance checks), and situates the file relative to the Eisenstein, Zolotarev, and abstract-Gauss-sum companion files, citing Gauss (1801) and Ireland–Rosen (1990).", "mathContext": "Answers yes to whether a Gauss-sum proof gives a third formal quadratic-reciprocity pathway alongside Eisenstein's lattice-point proof and Zolotarev's permutation proof, using the second supplementary law $(2/p)$ and character theory."},
     {
       "id": "three-pathways",
       "title": "The Three Formal QR Pathways",
