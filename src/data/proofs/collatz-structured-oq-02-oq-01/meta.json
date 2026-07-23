@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Extending Collatz k-Cycle Exclusion via Case Analysis",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Answers OQ-01 (can parity case analysis rule out k-cycles for specific small k ≥ 4?) by proving the j=1 odd-step cycle is uniquely {1,4,2}, extending the halving-count constraints to j=5..8, and noting the case explosion (2^k patterns) that makes Eliahou's analytic bound necessary for large k.",
+      "mathContext": "A cycle with one odd step satisfies $3n+1=2^M n$, forcing $n=1,M=2$; Eliahou (1993) shows any non-trivial cycle has length $>17$ billion, the boundary where case analysis gives way to analytic methods."
+    },
+    {
       "id": "j1-uniqueness",
       "title": "The j=1 Cycle Uniqueness Theorem",
       "startLine": 40,
