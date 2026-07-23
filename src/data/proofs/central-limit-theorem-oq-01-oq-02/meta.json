@@ -66,6 +66,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: L\u00e9vy-Khintchine Representation for Stable Distributions", "startLine": 1, "endLine": 30, "summary": "Formalizes the L\u00e9vy-Khintchine representation characterizing all infinitely divisible probability distributions via a canonical triplet (drift gamma, Gaussian variance sigma^2, L\u00e9vy measure nu): log phi(t) = i gamma t - sigma^2 t^2/2 + integral (e^{itx} - 1 - itx 1_{|x|<=1}) nu(dx). Covers the L\u00e9vy triplet, infinite divisibility, the formula for specific distributions, Gaussian/Poisson/stable components, and the L\u00e9vy-It\u00f4 decomposition into Gaussian, small-jump, and large-jump parts.", "mathContext": "The L\u00e9vy triplet $(\\gamma,\\sigma^2,\\nu)$ decomposes the characteristic exponent of any infinitely divisible law into a drift, a Gaussian component, and a jump part governed by the L\u00e9vy measure $\\nu$; e.g. Poisson($\\lambda$) has $\\psi(t)=\\lambda(e^{it}-1)$."},
     {
       "id": "levy-triplet-inf-div",
       "title": "Lévy Triplet and Infinite Divisibility",
