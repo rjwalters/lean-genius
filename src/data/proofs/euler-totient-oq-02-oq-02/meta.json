@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-euler-totient-oq-02-oq-02",
+      "title": "Problem Statement: Euler's Theorem via the Group Structure of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring motivating the file: the base entry proves Euler's theorem $a^{\\varphi(n)} \\equiv 1 \\pmod n$ by citing `ZMod.pow_totient` as a black box (and its worked examples use `native_decide`, pulling in `Lean.ofReduceBool`). This file makes the group-theoretic mechanism explicit and stays strictly 0-axiom, deriving everything from Lagrange's theorem applied to the finite unit group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of order $\\varphi(n)$. Lists six main results: the order-divides-$\\varphi(n)$ refinement, Euler's theorem re-derived from it, the $\\bmod$ form, exponent reduction, Fermat's little theorem as the prime case, and a converse (a power $\\equiv 1$ forces coprimality). Confirms only the foundational axioms are used.",
+      "mathContext": "$\\mathrm{ord}(a) \\mid \\varphi(n)$ in $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ (Lagrange), hence $a^{\\varphi(n)} \\equiv 1 \\pmod n$ for $\\gcd(a,n)=1$."
+    },
+    {
       "id": "lagrange-refinement",
       "title": "Section I: The Structural Refinement — order divides φ(n)",
       "startLine": 57,
