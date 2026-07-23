@@ -86,8 +86,8 @@
   {
     "id": "ann-complex-real",
     "proofId": "fundamental-theorem-algebra-oq001",
-    "range": { "startLine": 133, "endLine": 140 },
-    "type": "theorem",
+    "range": { "startLine": 136, "endLine": 141 },
+    "type": "definition",
     "title": "Recovering the ℝ/ℂ Base Case",
     "content": "After re-establishing IsAlgClosure ℝ ℂ and IsGalois ℝ ℂ (self-contained), complex_gal_equiv_zmod2 and card_complex_gal_eq_two are obtained purely as the K = ℝ, L = ℂ instances of the general theorems, using Complex.finrank_real_complex ([ℂ:ℝ] = 2). This confirms the generalization subsumes the parent's concrete isomorphism.",
     "mathContext": "$\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R}) \\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/2\\mathbb{Z})$ as the $K=\\mathbb{R}, L=\\mathbb{C}$ instance.",

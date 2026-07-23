@@ -44,7 +44,8 @@
       "The isomorphism type of Gal(L/K) for a quadratic Galois extension is determined entirely by 'degree 2 + Galois' — order structure, real-closedness, and the identity of the base field are irrelevant.",
       "The proof reduces to a cardinality computation: |Gal| = degree = 2, and every group of prime order 2 is uniquely (up to iso) Multiplicative (ZMod 2).",
       "The parent's real-closed-field open question splits into a field-independent group-theoretic part (proved here) and an analytic Artin–Schreier part (R(√-1) is algebraically closed, [R(√-1):R] = 2), which Mathlib does not yet support — no IsRealClosed typeclass exists.",
-      "galEquivZMod2 becomes the correct target for Gal(R(√-1)/R) over any real-closed R the moment 'degree 2 + Galois' is supplied, so the missing content is exactly the Artin–Schreier input, which is isolated rather than hidden."
+      "galEquivZMod2 becomes the correct target for Gal(R(√-1)/R) over any real-closed R the moment 'degree 2 + Galois' is supplied, so the missing content is exactly the Artin–Schreier input, which is isolated rather than hidden.",
+      "The hypothesis is 'finrank K L = 2 and IsGalois K L', not 'L = K(√d)' — a deliberate weakening that matters in characteristic 2: there, adjoining a square root is never Galois (x² − a has a repeated root, so K(√a)/K is purely inseparable), and the actual degree-2 separable extensions are the (unrelated, same-named) Artin–Schreier extensions K(θ)/K with θ² + θ = a. galEquivZMod2 covers both the characteristic-0 square-root case and the characteristic-2 Artin–Schreier case uniformly, since its proof never inspects how L is generated over K."
     ],
     "prerequisites": [
       "Galois extensions and the equality |Aut(L/K)| = [L:K] for Galois L/K",
@@ -69,11 +70,18 @@
       "endLine": 60
     },
     {
-      "id": "general-theorem",
-      "title": "The general theorem: quadratic Galois ⇒ Gal ≃* ZMod 2",
-      "summary": "Over an arbitrary base field K and degree-2 Galois extension L: card_gal_eq_two (|Gal| = 2), isCyclic_gal (cyclic), galEquivZMod2 (the isomorphism to Multiplicative (ZMod 2)), gal_mul_comm (commutative), and galCyclicEquiv (identification with Mathlib's zmodCyclicMulEquiv).",
+      "id": "iso-construction",
+      "title": "Constructing Gal(L/K) ≃* Multiplicative (ZMod 2)",
+      "summary": "Over an arbitrary base field K and degree-2 Galois extension L: card_gal_eq_two (|Gal(L/K)| = [L:K] = 2 via IsGalois.card_aut_eq_finrank), isCyclic_gal (a group of prime order is cyclic), and galEquivZMod2 (mulEquivOfPrimeCardEq builds the isomorphism from the matching cardinality-2 count on both sides).",
       "startLine": 62,
-      "endLine": 109
+      "endLine": 91
+    },
+    {
+      "id": "structural-consequences",
+      "title": "Structural consequences: commutativity and the canonical cyclic identification",
+      "summary": "Two corollaries of galEquivZMod2: gal_mul_comm transports mul_comm across the isomorphism to show Gal(L/K) is abelian, and galCyclicEquiv identifies it with Mathlib's canonical zmodCyclicMulEquiv, answering the parent's second open question at the level of abstract cyclic structure.",
+      "startLine": 93,
+      "endLine": 110
     },
     {
       "id": "complex-real",
