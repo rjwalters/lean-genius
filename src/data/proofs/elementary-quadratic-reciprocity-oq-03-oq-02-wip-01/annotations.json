@@ -111,5 +111,120 @@
       "period vs conductor",
       "kronecker2 tabulated values (parent)"
     ]
+  },
+  {
+    "id": "ann-kron-wip01-character-table",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 169,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "The complete residue-level character table of χ₈ = (·/2)",
+    "content": "`kronecker2_eq_zero_iff` pins the support of χ₈ to the even residues (via squaring: `kronecker2_sq` collapses the two unit classes onto the principal character mod 2, and `mul_self_eq_zero` over ℤ). `kronecker2_ne_zero_iff` is its complement, the odd residues. `kronecker2_eq_one_iff` and `kronecker2_eq_neg_one_iff` split the odd residues into the two unit classes {1,7} (value +1) and {3,5} (value −1) mod 8 by unfolding the definition directly. Together the four lemmas give the full table: 0 on evens, +1 on {1,7}, −1 on {3,5} mod 8. `kronecker2_abs_le_one` then reads off the pointwise bound |χ₈| ≤ 1 from the three-value range, and `kronecker2_sum_period` computes the base-window orthogonality ∑_{a=0}^{7} χ₈(a) = 0 + 1 + 0 − 1 + 0 − 1 + 0 + 1 = 0 directly from the table by `decide` — the defining mean-zero property of a non-principal Dirichlet character.",
+    "mathContext": "$\\chi_8(a) = 0$ iff $2\\mid a$; $\\chi_8(a)=1$ iff $a\\equiv 1,7\\ (8)$; $\\chi_8(a)=-1$ iff $a\\equiv 3,5\\ (8)$. Hence $|\\chi_8|\\le 1$ and $\\sum_{a=0}^{7}\\chi_8(a)=0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "character support and unit classes",
+      "Pólya–Vinogradov pointwise bound",
+      "non-principal character orthogonality"
+    ],
+    "prerequisites": [
+      "kronecker2_sq (parent)",
+      "residue arithmetic mod 8"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-anti-periodicity",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 244,
+      "endLine": 308
+    },
+    "type": "insight",
+    "title": "Anti-periodicity: the sharp structural reason 8 does not descend to 4",
+    "content": "`kronecker2_add_four` upgrades `kronecker2_not_period_four` (Section C: '4 is not a period') to the exact mechanism why: a half-period shift by 4 *negates* χ₈ for every integer a, swapping the unit classes {1,7} ↔ {3,5}. This one identity powers two further orthogonality facts by pure algebra, no new residue casework: `kronecker2_sum_shifted_period` re-derives the mean-zero property `kronecker2_sum_period` (Section D) over *every* length-8 window — the second half of any window cancels the first via anti-periodicity — and `kronecker2_sq_sum_period` computes the L²-norm ∑ χ₈(a)² = φ(8) = 4 by counting the four unit residues, with its translation-invariant form `kronecker2_sq_sum_shifted_period` again following without fresh casework. This pair (mean 0, L²-norm 4) is the ⟨χ_i,χ_j⟩ = φ(8)·δ_ij normalization that fixes |τ(χ₈)|² = 8 ahead of the actual Gauss-sum computation in Section G.",
+    "mathContext": "$\\chi_8(a+4) = -\\chi_8(a)$ for all $a$; consequently $\\sum_{a=0}^{7}\\chi_8(c+a) = 0$ and $\\sum_{a=0}^{7}\\chi_8(c+a)^2 = \\varphi(8) = 4$ for every $c$ — translation-invariant mean-zero and $L^2$-norm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "anti-periodicity",
+      "translation-invariant orthogonality",
+      "L²-norm of a Dirichlet character",
+      "φ(8) = 4"
+    ],
+    "prerequisites": [
+      "kronecker2_mod_eight (parent helper)",
+      "residue case-split mod 8"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-l2norm-and-peak",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 309,
+      "endLine": 365
+    },
+    "type": "technique",
+    "title": "The shift-4 autocorrelation peak, from anti-periodicity alone",
+    "content": "`kronecker2_autocorr_four` computes the first off-diagonal value of the length-8 autocorrelation C(t) := ∑_a χ₈(a)χ₈(a+t): at t = 4, anti-periodicity turns every term (a/2)(a+4/2) into −(a/2)², so the sum collapses to the negative of the diagonal L²-norm, C(4) = −4 = −C(0). `kronecker2_autocorr_four_shifted` is the same one-line argument reduced against the translation-invariant L²-norm instead of the base-window one, giving C(4) = −4 over every window. No new casework is introduced anywhere in this section — both results are algebraic corollaries of `kronecker2_add_four` and the L²-norm lemmas just proved, illustrating how far anti-periodicity alone carries the autocorrelation computation before the harder even/odd case analysis of Section F is needed.",
+    "mathContext": "$C(4) := \\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+4) = -4$, the exact negative of the diagonal $C(0)=4$, for every window: $\\sum_{a=0}^{7}\\chi_8(c+a)\\chi_8(c+a+4) = -4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "autocorrelation function",
+      "anti-diagonal peak",
+      "translation invariance"
+    ],
+    "prerequisites": [
+      "kronecker2_add_four",
+      "kronecker2_sq_sum_period / kronecker2_sq_sum_shifted_period"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-autocorr-spectrum",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 367,
+      "endLine": 451
+    },
+    "type": "theorem",
+    "title": "The remaining off-peak values, and the complete autocorrelation comb",
+    "content": "The two peaks C(0) = 4 and C(4) = −4 are already known; this section rules out every other shift. `kronecker2_mul_shift_odd` is the key parity obstruction: for odd t, exactly one of a, a+t is even, and χ₈ vanishes on evens, so the product is 0 termwise — no cancellation needed. `kronecker2_autocorr_odd` (and its translation-invariant `_shifted` form) turns this into C(t) = 0 for every odd t via `Finset.sum_eq_zero`, covering t = 1, 3 (and by period-8 symmetry, 5, 7). The one genuinely non-termwise case is t = 2, where both a and a+2 can be odd; `kronecker2_autocorr_two` settles C(2) = 0 by exact `decide` cancellation of the residue table (χ₈(1)χ₈(3) + χ₈(3)χ₈(5) + χ₈(5)χ₈(7) + χ₈(7)χ₈(9) = (−1)+(1)+(−1)+(1) = 0). `kronecker2_autocorr_spectrum` bundles C(0), C(1), C(2), C(3), C(4) into one statement, and by the real-character symmetry C(t) = C(8−t) this pins the full sparse comb (4,0,0,0,−4,0,0,0) — the correlation data whose discrete Fourier transform is exactly the power spectrum |τ(χ₈)|² = 8 computed directly in Section G.",
+    "mathContext": "$C(t)=0$ for every odd $t$ (termwise, parity obstruction) and for $t=2$ (exact residue-table cancellation); together with $C(0)=4,\\,C(4)=-4$ this gives the complete comb $(C(0),\\dots,C(7)) = (4,0,0,0,-4,0,0,0)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity obstruction",
+      "discrete autocorrelation spectrum",
+      "discrete Fourier transform of a character",
+      "Finset.sum_eq_zero"
+    ],
+    "prerequisites": [
+      "kronecker2_eq_zero_iff",
+      "kronecker2_add_four / kronecker2_sq_sum_period"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-gauss-sum",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 452,
+      "endLine": 668
+    },
+    "type": "theorem",
+    "title": "The Gauss sum τ(χ₈): closed form, sign, conductor identity, and covariance",
+    "content": "`zeta8 := (1+i)/√2` is the canonical primitive 8th root of unity, kept in this algebraic normal form (rather than `Complex.exp`) so every downstream computation stays inside field arithmetic over ℚ(i,√2), driven by `linear_combination` against the two relations `i² = −1` and `(√2)² = 2`. `zeta8_sq`, `zeta8_pow_four`, `zeta8_pow_eight` chain to `zeta8_orderOf = 8` (order exactly 8, via `orderOf_eq_prime_pow`), and `zeta8_eq_exp` identifies it with `e^{2πi/8}` through Euler's formula and `cos(π/4) = sin(π/4) = √2/2`. `gaussSumChi8 := ∑ χ₈(a) ζ₈^a` is then evaluated in closed form by `gaussSumChi8_eq`: only the odd residues contribute (χ₈ vanishes on evens), collapsing to `ζ₈ − ζ₈³ − ζ₈⁵ + ζ₈⁷ = 2ζ₈(1−i) = 2√2` — a positive real. `gaussSumChi8_sq` recovers `τ² = 8` (the D=8 instance of `τ(χ_D)² = χ_D(−1)·D` for real primitive characters, since χ₈(−1) = 1), matching the modulus already pinned by the Section E–F orthogonality/autocorrelation data — but `gaussSumChi8_eq_sqrt_conductor` goes further and fixes the *sign*, `τ(χ₈) = +√8`, the D=8 instance of Gauss's 1805 sign theorem (conjectured 1801, four years to prove in general). Finally `gaussSumChi8_twisted_three/_five/_seven`, capped by `gaussSumChi8_twisted`, verify the multiplicative covariance `∑ χ₈(a)ζ₈^{ca} = χ₈(c)·τ(χ₈)` exhaustively over the unit group (ℤ/8ℤ)ˣ = {1,3,5,7} by folding exponents mod 8 (`zeta8_pow_mod`) — the identity through which the Gauss sum transports quadratic reciprocity.",
+    "mathContext": "$\\zeta_8=(1+i)/\\sqrt2=e^{2\\pi i/8}$, $\\operatorname{ord}(\\zeta_8)=8$. $\\tau(\\chi_8)=\\sum_{a=0}^{7}\\chi_8(a)\\zeta_8^a = 2\\sqrt2 = +\\sqrt8$, so $\\tau(\\chi_8)^2=8=\\chi_8(-1)\\cdot 8$. Covariance: $\\sum_a\\chi_8(a)\\zeta_8^{ca}=\\chi_8(c)\\,\\tau(\\chi_8)$ for units $c$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Gauss sum",
+      "Gauss's 1805 sign theorem",
+      "primitive 8th root of unity",
+      "multiplicative covariance of a Gauss sum",
+      "quadratic reciprocity via Gauss sums"
+    ],
+    "prerequisites": [
+      "complex arithmetic over ℚ(i,√2)",
+      "orderOf_eq_prime_pow",
+      "Section D–F orthogonality/autocorrelation data"
+    ]
   }
 ]
