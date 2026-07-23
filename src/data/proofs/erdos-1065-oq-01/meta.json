@@ -86,7 +86,8 @@
       "**The 2-adic valuation is the whole story.** Uniqueness of the 2^k · q form is not an induction but a single evaluation: v₂ ignores the odd factor entirely, so it returns the exponent verbatim and the exponents must agree before anything is cancelled.",
       "**Representation uniqueness makes 'the' k and q well-defined.** Because (k, q) is determined by p, the parent's oddPart/twoVal are genuine functions of the prime, and statements like 'q is an odd prime' are unambiguous.",
       "**Self-contained and reusable.** The lemma 2^a·m = 2^b·n (odd) ⟹ a=b ∧ m=n is a general fact about the multiplicative structure of ℕ, useful well beyond Erdős #1065.",
-      "**Elementary foundation for a hard problem.** Erdős #1065's infinitude question is deep (Bateman–Horn), but the structural bookkeeping it needs — this uniqueness — is completely elementary and now verified."
+      "**Elementary foundation for a hard problem.** Erdős #1065's infinitude question is deep (Bateman–Horn), but the structural bookkeeping it needs — this uniqueness — is completely elementary and now verified.",
+      "**Exponent recovery is cheaper than full pair-uniqueness.** formA_exponent_eq is proved directly from factorization_two_pow_mul_odd, not from two_pow_mul_odd_unique — reading off k = v₂(p−1) only needs the valuation formula, not the cancellation step that two_pow_mul_odd_unique also performs to recover q. The exponent is the 'free' half of the representation; the odd part costs an extra cancellation."
     ],
     "prerequisites": [
       "p-adic valuation and Nat.factorization",
@@ -112,12 +113,20 @@
       "mathContext": "$v_2(2^a \\cdot m) = a$ when $m$ is odd, since $m$ contributes no factor of $2$."
     },
     {
-      "id": "uniqueness",
-      "title": "Uniqueness of the 2^k · q Representation",
+      "id": "core-uniqueness",
+      "title": "The Core Uniqueness Lemma",
       "startLine": 49,
-      "endLine": 76,
-      "summary": "two_pow_mul_odd_unique: 2^a·m = 2^b·n with m,n odd ⟹ a=b (equal valuations) ∧ m=n (cancellation). formA_repr_unique and formA_exponent_eq specialise it to Erdős #1065's form.",
-      "mathContext": "$2^a m = 2^b n,\\ m,n\\text{ odd} \\Rightarrow a=b \\wedge m=n$; hence $(k,q)$ in $p = 2^k q + 1$ is determined by $p$."
+      "endLine": 61,
+      "summary": "two_pow_mul_odd_unique: 2^a·m = 2^b·n with m,n odd ⟹ a=b (equal valuations, via factorization_two_pow_mul_odd) ∧ m=n (cancellation via Nat.eq_of_mul_eq_mul_left).",
+      "mathContext": "$2^a m = 2^b n,\\ m,n\\text{ odd} \\Rightarrow a=b \\wedge m=n$."
+    },
+    {
+      "id": "formA-corollaries",
+      "title": "Corollaries for Erdős #1065's Form",
+      "startLine": 63,
+      "endLine": 74,
+      "summary": "formA_repr_unique specialises two_pow_mul_odd_unique to p = 2^k·q + 1, showing (k,q) is determined by p; formA_exponent_eq recovers just the exponent k = v₂(p−1) directly from factorization_two_pow_mul_odd.",
+      "mathContext": "$(k,q)$ in $p = 2^k q + 1$ is determined by $p$; $k = v_2(p-1)$."
     },
     {
       "id": "instance",
