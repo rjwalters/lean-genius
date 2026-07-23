@@ -34,14 +34,15 @@
         "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       },
       {
-        "theorem": "Nat.maxPrimeFac",
-        "description": "Largest prime factor",
-        "module": "Mathlib.Data.Nat.Factorization.Basic"
+        "theorem": "Finset.max'",
+        "description": "Maximum element of a nonempty finite set",
+        "module": "Mathlib.Order.Finset.Lattice"
       }
     ],
     "originalContributions": [
       "primeDivisors definition: set of prime factors",
       "hasLargestPrimeFactor definition: p is max prime factor",
+      "maxPrimeFac definition: largest prime factor of n (0 if none); local helper, not a Mathlib declaration despite its Nat-style name",
       "consecutiveSquareProduct definition: ∏_{i=0}^k (p² + i)",
       "isKGood definition: p is k-good prime",
       "kGoodPrimes definition: set of k-good primes",
@@ -118,18 +119,18 @@
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
-      "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using `maxPrimeFac` directly, and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom).",
+      "summary": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using this file's local `maxPrimeFac` helper directly (not a Mathlib declaration), and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom).",
       "startLine": 161,
       "endLine": 196,
-      "mathContext": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using `maxPrimeFac` directly, and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom)."
+      "mathContext": "States the conjecture in two forms: `ErdosConjecture383` (∀ k, `kGoodPrimes k` is infinite) and `ErdosConjecture383'` using this file's local `maxPrimeFac` helper directly (not a Mathlib declaration), and **proves** their equivalence (`conjecture_equiv`, a fully-proved theorem — not an axiom)."
     },
     {
       "id": "partial",
       "title": "Partial Results",
-      "summary": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density.",
+      "summary": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). The smooth-number density heuristic motivating the general conjecture appears only in the gallery's descriptive prose (this meta.json), not as any Lean declaration or comment in this section.",
       "startLine": 197,
       "endLine": 207,
-      "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). documents in source comments `positive_density_smooth` (no Lean declaration exists): √n-smooth numbers have positive asymptotic density."
+      "mathContext": "Proves the k=0 case: `all_primes_zero_good` (trivial from `zero_good`) and `infinitely_many_zero_good` (from infinitude of primes). The smooth-number density heuristic motivating the general conjecture appears only in the gallery's descriptive prose (this meta.json), not as any Lean declaration or comment in this section."
     },
     {
       "id": "problem382",
@@ -142,18 +143,18 @@
     {
       "id": "smooth",
       "title": "Smooth Numbers",
-      "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307), which motivates a positive answer to the conjecture, is discussed in source comments only — no Dickman asymptotic is asserted as a Lean axiom.",
+      "summary": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307) discussed in this proof's gallery description does not appear anywhere in this file's Lean source or comments — no Dickman asymptotic is asserted as a Lean axiom or declaration here.",
       "startLine": 236,
       "endLine": 281,
-      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307), which motivates a positive answer to the conjecture, is discussed in source comments only — no Dickman asymptotic is asserted as a Lean axiom."
+      "mathContext": "Defines `isSmooth(n, y)` (all prime factors ≤ y), proves the key equivalence `kGood_iff_smooth` (p is k-good ↔ each p²+i is p-smooth for i ≤ k), and defines `countSmooth`. The Dickman heuristic (ρ(2) ≈ 0.307) discussed in this proof's gallery description does not appear anywhere in this file's Lean source or comments — no Dickman asymptotic is asserted as a Lean axiom or declaration here."
     },
     {
       "id": "summary",
       "title": "Summary and Formal Statement",
-      "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
+      "summary": "Status string (OPEN) and `erdos_383_statement`: the formal conjecture using this file's local `maxPrimeFac` helper and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation.",
       "startLine": 282,
       "endLine": 292,
-      "mathContext": "Mathematical content: Status string (OPEN) and `erdos_383_statement`: the formal conjecture using `Nat.maxPrimeFac` and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
+      "mathContext": "Mathematical content: Status string (OPEN) and `erdos_383_statement`: the formal conjecture using this file's local `maxPrimeFac` helper and `Finset.Icc`, proving equivalence with the `ErdosConjecture383'` formulation."
     }
   ],
   "conclusion": {
