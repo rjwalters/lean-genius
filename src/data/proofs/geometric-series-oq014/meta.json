@@ -152,6 +152,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-geometric-series-oq014",
+      "title": "Problem Statement: The Explicit Closed Form for the Eulerian Numbers",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring stating the goal: prove the closed-form alternating binomial sum $\\langle m,k\\rangle = \\sum_{j=0}^{k}(-1)^j\\binom{m+1}{j}(k+1-j)^m$ solving the Eulerian-number triangle recurrence built by the parent entry, with worked examples $\\langle 2,1\\rangle=1$, $\\langle3,1\\rangle=4$. Outlines the induction-on-$m$ method: defining $A(m,k)$ as the same sum and showing it satisfies the Eulerian recurrence and boundary values via Pascal's rule, an absorption identity $j\\binom{m+1}{j}=(m+1)\\binom{m}{j-1}$, and an index shift. States the result is 0-axiom and sorry-free.",
+      "mathContext": "$\\langle m,k\\rangle = \\sum_{j=0}^{k}(-1)^j\\binom{m+1}{j}(k+1-j)^m$ — the explicit closed form for the Eulerian numbers, proved by induction matching the triangle recurrence."
+    },
+    {
       "id": "def-boundary",
       "title": "The Explicit Sum and Boundary Values",
       "startLine": 46,
