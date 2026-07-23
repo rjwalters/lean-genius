@@ -59,15 +59,22 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Statement",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "Docstring stating the open question ∑_{k<n}(2k+1)² = n(2n−1)(2n+1)/3 (the sum of the squares of the first n odd numbers), positioning it as the odd-indexed companion of the square-pyramidal identity ∑_{k≤n}k² = n(n+1)(2n+1)/6 and noting Mathlib lacks this variant. Imports (BigOperators.Intervals, Tactic), the namespace, and open Finset, followed by the docstring of the division-free integer form three_mul_sum_odd_squares — deliberately additive (3·∑ + n = 4n³) so the inductive step avoids ℕ truncated subtraction and closes by ring."
+      "endLine": 35,
+      "summary": "Docstring stating the open question ∑_{k<n}(2k+1)² = n(2n−1)(2n+1)/3 (the sum of the squares of the first n odd numbers), positioning it as the odd-indexed companion of the square-pyramidal identity ∑_{k≤n}k² = n(n+1)(2n+1)/6 and noting Mathlib lacks this variant. States both results to follow: the division-free integer form three_mul_sum_odd_squares (3·∑ + n = 4n³) and the rational closed form sum_odd_squares_rat."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Open",
+      "startLine": 36,
+      "endLine": 38,
+      "summary": "Imports (BigOperators.Intervals, Tactic) precede the docstring; here the file opens `namespace OddSquaresSum` and `open Finset` so range-sums can be written unqualified for both theorems that follow."
     },
     {
       "id": "integer-form",
       "title": "Division-free integer form (subtraction-free step)",
-      "startLine": 46,
+      "startLine": 39,
       "endLine": 59,
       "summary": "The exact ℕ identity 3·∑_{k<n} (2k+1)² + n = 4n³, proved by induction. Phrased additively it contains no truncated subtraction. The step peels the top odd square with sum_range_succ, reassociates so the inductive hypothesis 3·∑ + m = 4m³ appears verbatim, and a single `ring` closes the branch. The whole proof lives in ℕ — no casts to ℤ or ℚ."
     },
@@ -76,7 +83,7 @@
       "title": "Rational closed form n(2n−1)(2n+1)/3",
       "startLine": 60,
       "endLine": 74,
-      "summary": "The classical closed form ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 over ℚ. Base case is `simp` (empty sum). The inductive step peels the top term, rewrites by the hypothesis, and `push_cast; ring` discharges the polynomial identity — verifying (m(2m−1)(2m+1)/3) + (2m+1)² = (m+1)(2m+1)(2m+3)/3 in the field ℚ where division is genuine."
+      "summary": "The classical closed form ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 over ℚ. Base case is `simp` (empty sum). The inductive step peels the top term, rewrites by the hypothesis, and `push_cast; ring` discharges the polynomial identity — verifying (m(2m−1)(2m+1)/3) + (2m+1)² = (m+1)(2m+1)(2m+3)/3 in the field ℚ where division is genuine. Closes the OddSquaresSum namespace."
     }
   ],
   "mainTheorems": [
