@@ -114,12 +114,20 @@
       "mathContext": "$\\#S \\le \\#(R\\times M) = \\#R\\cdot\\#M \\le \\#R\\cdot\\#R = \\#R$ for infinite $R$."
     },
     {
-      "id": "equality",
-      "title": "Equality When the Structure Map Is Injective",
+      "id": "injective-localization-equality",
+      "title": "Equality via an Injective Structure Map",
       "startLine": 62,
+      "endLine": 72,
+      "summary": "mk_localization_eq_of_le_nonZeroDivisors: when the inverted submonoid M lies in the non-zero-divisors, algebraMap R S is injective, upgrading the bound #S <= #R from Part 1 into the equality #S = #R by antisymmetry.",
+      "mathContext": "Injectivity of $\\mathrm{algebraMap}\\,R\\,S$ gives $\\#R \\le \\#S$, so $\\#S = \\#R$ by antisymmetry with the Part 1 bound."
+    },
+    {
+      "id": "fraction-field-equality",
+      "title": "Fraction Fields Have the Domain's Cardinality",
+      "startLine": 73,
       "endLine": 86,
-      "summary": "mk_localization_eq_of_le_nonZeroDivisors (#S = #R when M ≤ R⁰), mk_isFractionRing_eq (#S = #R for any fraction field of an infinite domain), and mk_fractionRing_eq (#(FractionRing R) = #R) — the answer to the parent's open question.",
-      "mathContext": "Injectivity of $\\mathrm{algebraMap}\\,R\\,S$ gives $\\#R \\le \\#S$, so $\\#S = \\#R$ by antisymmetry."
+      "summary": "mk_isFractionRing_eq specializes the injective-structure-map equality to any fraction field S of an infinite integral domain R (algebraMap is automatically injective for a domain); mk_fractionRing_eq instantiates S with the concrete FractionRing R.",
+      "mathContext": "$\\#S = \\#R$ for any field of fractions $S$ of an infinite integral domain $R$, since $\\mathrm{algebraMap}\\,R\\,S$ is injective on a domain."
     },
     {
       "id": "rationals",
