@@ -69,27 +69,43 @@
   "sections": [
     {
       "id": "sec-header",
-      "title": "Module Header and Imports",
+      "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 58,
-      "summary": "Docstring explaining the 2-adic (sign-change) structure of the symmetry multiplier and the honest scope. Imports the parent FourSquareDistribution and Mathlib.Tactic; reopens namespace FourSquareDistribution.",
+      "endLine": 75,
+      "summary": "Docstring explaining the 2-adic (sign-change) structure of the symmetry multiplier, the main results, the honest scope, and references. Imports the parent FourSquareDistribution and Mathlib.Tactic; reopens namespace FourSquareDistribution; fixes the variable n.",
       "mathContext": "contribution(t) = permutations(t)·signFactor(t), signFactor(t) = 2^(nonzeroCount t); B₄ = (ℤ/2)⁴ ⋊ S₄, |B₄| = 384."
     },
     {
-      "id": "sec-divisibility",
-      "title": "Sign-Part Divisibility of the Multiplier",
-      "startLine": 59,
-      "endLine": 123,
-      "summary": "one_le_signFactor; signFactor_dvd_contribution; two_pow_nonzeroCount_dvd_contribution; the tower two_pow_dvd_contribution_of_le; and the corollaries two/four/eight/sixteen_dvd_contribution by nonzeroCount.",
-      "mathContext": "2^k ∣ contribution t for k ≤ nonzeroCount t; the factor of 8 appears once a type has ≥ 3 nonzero entries."
+      "id": "sec-divisibility-basic",
+      "title": "Sign-Part Divisibility: the Core Chain",
+      "startLine": 77,
+      "endLine": 98,
+      "summary": "one_le_signFactor (signFactor t ≥ 1); signFactor_dvd_contribution (signFactor is a factor of contribution); two_pow_nonzeroCount_dvd_contribution (2^(nonzeroCount) ∣ contribution, by unfolding signFactor); and the tower two_pow_dvd_contribution_of_le (2^k ∣ contribution for k ≤ nonzeroCount).",
+      "mathContext": "$2^{\\mathrm{nonzeroCount}(t)} \\mid \\mathrm{contribution}(t)$, and $2^k \\mid \\mathrm{contribution}(t)$ for $k \\le \\mathrm{nonzeroCount}(t)$."
     },
     {
-      "id": "sec-full-eight",
-      "title": "The Full Type-Level Factor of 8",
+      "id": "sec-divisibility-corollaries",
+      "title": "Named Corollaries by Nonzero Count",
+      "startLine": 100,
+      "endLine": 124,
+      "summary": "Specializations of the 2^k tower: two_dvd_contribution_of_pos (nonzeroCount ≥ 1), four_dvd_contribution_of_two_le (≥ 2), eight_dvd_contribution_of_three_le (≥ 3, the sign-part factor of 8), and sixteen_dvd_contribution_of_four (all four entries nonzero).",
+      "mathContext": "$2,4,8,16 \\mid \\mathrm{contribution}(t)$ at nonzeroCount $1,2,3,4$ respectively (sign part only)."
+    },
+    {
+      "id": "sec-permutation-computation",
+      "title": "Zero Pattern and Permutation Count in the Low-Nonzero Cases",
       "startLine": 125,
+      "endLine": 189,
+      "summary": "zero_pattern_one/zero_pattern_two use sortedness to pin the zero pattern ((0,0,0,a₄) resp. (0,0,a₃,a₄)) from the nonzero count. permutations_one_nonzero computes the one-nonzero permutation count as exactly 4; two_dvd_permutations_two_nonzero shows the two-nonzero permutation count (6 or 12, depending on whether a₃ = a₄) is always even — the parity the sign part alone cannot supply.",
+      "mathContext": "$(0,0,0,a_4)$ has $4$ permutations; $(0,0,a_3,a_4)$ has $6$ (if $a_3=a_4$) or $12$ (if $a_3\\ne a_4$), both even."
+    },
+    {
+      "id": "sec-eight-full",
+      "title": "The Full Type-Level Factor of 8",
+      "startLine": 191,
       "endLine": 213,
-      "summary": "Closes the per-type factor of 8 for the low-nonzero cases the sign part cannot reach: zero_pattern_one/two pin the zero pattern from sortedness; permutations_one_nonzero (= 4) and two_dvd_permutations_two_nonzero (even) compute the multinomial permutation count; eight_dvd_contribution_of_pos then gives 8 ∣ contribution t for every type with ≥ 1 nonzero entry.",
-      "mathContext": "1 ≤ nonzeroCount t ⟹ 8 ∣ contribution t; the 1- and 2-nonzero cases use permutations(t) ∈ {4, 6, 12}, all even·signFactor giving 8."
+      "summary": "eight_dvd_contribution_of_pos: combining the sign-part bound (≥ 3 nonzero) with the permutation-parity computation (1 and 2 nonzero cases), 8 ∣ contribution t for EVERY type with ≥ 1 nonzero entry — the complete per-type factor of 8 behind Jacobi's 8 ∣ r₄(n).",
+      "mathContext": "$1 \\le \\mathrm{nonzeroCount}(t) \\implies 8 \\mid \\mathrm{contribution}(t)$, covering all three nonzero-count regimes."
     }
   ],
   "crossReferences": [
