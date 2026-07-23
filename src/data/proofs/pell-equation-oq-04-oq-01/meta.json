@@ -131,12 +131,28 @@
   },
   "sections": [
     {
-      "id": "orbit-machinery",
-      "title": "Norm Form, Composition, and the Orbit",
+      "id": "header",
+      "title": "Module Header: The Finiteness Classification Question",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring states the open question left by the parent entry — for which N is the solution set of x² − Dy² = N finite? — and previews the six results this file proves: solutions_zero, solutions_infinite, empty_or_infinite, infinite_iff, nonempty_finite_iff_zero, and the headline solution_set_trichotomy. Names the two Mathlib engines (Pell.exists_of_not_isSquare, Zsqrtd.norm_eq_zero) and notes the orbit machinery is re-derived locally for self-containment. Imports Mathlib, declares the PellEquationOQ04OQ01 namespace.",
+      "mathContext": "For positive non-square $D$: $S_N = \\{(x,y) : x^2-Dy^2=N\\}$ is empty, $\\{(0,0)\\}$ (iff $N=0$), or infinite."
+    },
+    {
+      "id": "norm-form-basics",
+      "title": "Norm Form and Composition",
       "startLine": 40,
+      "endLine": 61,
+      "summary": "normForm D x y = x² − Dy², the norm of x + y√D in ℤ[√D]. comp is composition (multiplication in ℤ[√D]). normForm_comp is Brahmagupta multiplicativity for comp; normForm_abs shows the norm form is invariant under taking absolute values.",
+      "mathContext": "$\\mathrm{normForm}(D, (comp\\, D\\, p\\, q)) = \\mathrm{normForm}(D,p)\\cdot\\mathrm{normForm}(D,q)$."
+    },
+    {
+      "id": "orbit-machinery",
+      "title": "The Orbit of a Seed Under a Unit",
+      "startLine": 64,
       "endLine": 122,
-      "summary": "normForm, comp, normForm_comp (Brahmagupta multiplicativity), normForm_abs, and the orbit infrastructure (orbit, orbit_sol, orbit_pos, orbit_fst_strictMono, infinite_solutions) re-derived to keep the file self-contained.",
-      "mathContext": "Multiplicativity of the ℤ[√D]-norm and a strictly increasing orbit are the tools for infinitude."
+      "summary": "orbit, orbit_sol (every orbit point is again an N-solution), orbit_pos (positivity preserved along the orbit), orbit_fst_strictMono (the first coordinate strictly increases), and infinite_solutions (a single positive seed pushed around the orbit yields infinitely many solutions) — re-derived locally to keep the file self-contained.",
+      "mathContext": "A strictly increasing orbit of N-solutions under repeated composition with a unit witnesses infinitude."
     },
     {
       "id": "engines",
