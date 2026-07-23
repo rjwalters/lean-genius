@@ -135,10 +135,19 @@
     },
     {
       "id": "ramsey-specialisation",
-      "title": "Specialisation to K_n and the Erdős criterion",
+      "title": "Part II: Specialisation to Sym2 (Fin n) and the Erdős Criterion",
       "startLine": 124,
+      "endLine": 184,
+      "summary": "exists_good_coloring_sym2 instantiates E = Sym2 (Fin n), with `bad` the C(k,2)-element edge sets of the k-cliques; the |E|-factors cancel to the criterion 2·C(n,k) < 2^C(k,2), giving a Sym2-valued colouring avoiding every monochromatic k-clique.",
+      "mathContext": "The abstract counting lemma of Part I, instantiated at the concrete edge type E := Sym2 (Fin n)."
+    },
+    {
+      "id": "classical-statement",
+      "title": "Part III: The Classical Symmetric Colouring Statement",
+      "startLine": 185,
       "endLine": 243,
-      "summary": "exists_good_coloring_sym2 instantiates E = Sym2 (Fin n), with `bad` the C(k,2)-element edge sets of the k-cliques; the |E|-factors cancel to the criterion 2·C(n,k) < 2^C(k,2). erdos_ramsey_criterion repackages this on symmetric, irreflexive Fin n → Fin n → Bool colourings: R(k,k) > n."
+      "summary": "erdos_ramsey_criterion repackages the Sym2 colouring of Part II as a symmetric, irreflexive Fin n → Fin n → Bool colouring with no monochromatic k-clique of either colour, matching the classical statement R(k,k) > n.",
+      "mathContext": "Converts the abstract Sym2 (Fin n) → Bool colouring `c` into `color x y := if x = y then false else c s(x,y)`, verifying symmetry, irreflexivity, and the two no-monochromatic-clique clauses."
     },
     {
       "id": "diagonal-bound",
