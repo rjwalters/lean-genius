@@ -104,8 +104,8 @@
       "title": "Asymptotic Growth",
       "startLine": 52,
       "endLine": 64,
-      "summary": "documents in source comments `maxNonRepr_bigO_bound` (no Lean declaration exists) (existence of a big-O bound) and the plausible $\\Theta(\\sqrt{n})$ growth rate `maxNonRepr_plausible_theta` using Mathlib's `Asymptotics.IsTheta` and `Asymptotics.IsBigO` with `Filter.atTop`.",
-      "mathContext": "Axioms: $\\text{maxNonReprSize}(c, n) = O(f(n))$ for some $f$; conjecture: $\\text{maxNonReprSize}(c, n) = \\Theta(\\sqrt{n})$, formalized via Mathlib's $\\texttt{IsTheta}$."
+      "summary": "Records two open asymptotic questions as prose comments only — no Lean declaration exists for either: whether `maxNonReprSize c n` admits a big-$O$ upper bound, and the plausible $\\Theta(\\sqrt{n})$ growth rate. `Asymptotics.IsBigO`/`IsTheta` are imported but never invoked in the file.",
+      "mathContext": "Open questions (prose only, not formalized as axiom, definition, or theorem): does $\\text{maxNonReprSize}(c, n) = O(f(n))$ for some $f$? Is $\\text{maxNonReprSize}(c, n) = \\Theta(\\sqrt{n})$? No Mathlib $\\texttt{IsBigO}$/$\\texttt{IsTheta}$ declaration is made."
     },
     {
       "id": "basic-properties",
