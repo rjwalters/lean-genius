@@ -107,25 +107,41 @@
       "id": "sec-overview",
       "title": "Overview: the union-bound extreme of the LLL",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 35,
       "summary": "Module docstring positioning this file as the dependency-free companion to the independent base case: μ(⋂ (A i)ᶜ) ≥ 1 − ∑ μ(A i) over an arbitrary measurable family, bracketing the open bounded-dependency-degree LLL together with the product-formula base case.",
       "mathContext": "The union bound needs the global threshold ∑ μ(A i) < 1; the LLL relaxes it to the n-independent local budget e·p·(d+1) ≤ 1."
     },
     {
+      "id": "sec-setup",
+      "title": "Imports and Variable Setup",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Imports Mathlib.Probability.Independence.Basic, opens MeasureTheory/Finset/ENNReal, and fixes a Fintype-indexed measurable family A : ι → Set Ω over an explicit IsProbabilityMeasure μ — unlike the independent base case, IsProbabilityMeasure cannot be derived here since no independence hypothesis is assumed.",
+      "mathContext": "No independence hypothesis is available, so IsProbabilityMeasure μ must be assumed rather than derived."
+    },
+    {
       "id": "sec-lower-bound",
       "title": "First-moment lower bound",
-      "startLine": 45,
-      "endLine": 62,
+      "startLine": 46,
+      "endLine": 58,
       "summary": "lll_union_bound_iInter_compl_ge: rewrite the avoidance event as (⋃ A i)ᶜ, apply finite subadditivity measure_iUnion_fintype_le, and complement via prob_compl_eq_one_sub with the antitone tsub_le_tsub_left to obtain 1 − ∑ μ(A i) ≤ μ(⋂ (A i)ᶜ).",
       "mathContext": "This unconditional lower bound is the complement of the union bound μ(⋃ A i) ≤ ∑ μ(A i)."
     },
     {
       "id": "sec-avoidance",
-      "title": "Positive avoidance and the symmetric threshold",
-      "startLine": 63,
+      "title": "Positive Avoidance from Subcritical Mass",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "lll_union_bound_avoidance: subcritical total mass ∑ μ(A i) < 1 makes the lower bound strictly positive (tsub_pos_iff_lt), with no independence or dependency-degree assumption.",
+      "mathContext": "∑ μ(A i) < 1 ⟹ 0 < μ(⋂ (A i)ᶜ), dependency-free."
+    },
+    {
+      "id": "sec-symmetric",
+      "title": "Symmetric Threshold n·p < 1",
+      "startLine": 69,
       "endLine": 84,
-      "summary": "lll_union_bound_avoidance: subcritical total mass ∑ μ(A i) < 1 makes the lower bound strictly positive (tsub_pos_iff_lt). lll_union_bound_avoidance_symmetric: under μ(A i) ≤ p, Finset.sum_le_sum and Finset.sum_const bound the total mass by n·p, so n·p < 1 suffices.",
-      "mathContext": "The crude symmetric threshold n·p < 1 is exactly what the symmetric LLL improves to e·p·(d+1) ≤ 1."
+      "summary": "lll_union_bound_avoidance_symmetric: under a uniform bound μ(A i) ≤ p, Finset.sum_le_sum and Finset.sum_const bound the total mass by n·p, so n·p < 1 suffices — the crude symmetric threshold the LLL relaxes to e·p·(d+1) ≤ 1.",
+      "mathContext": "n·p < 1 (n = |ι|) is exactly what the symmetric LLL improves to the n-independent budget e·p·(d+1) ≤ 1."
     }
   ],
   "crossReferences": [
