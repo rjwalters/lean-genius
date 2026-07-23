@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Poisson(1) Approximation in Total Variation",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Proves the number of fixed points of a uniformly random permutation converges in total variation distance to the Poisson(1) distribution, bounding the pointwise error via the derangement alternating-series bound and summing a binomial-coefficient tail that vanishes as 2^(n+1)/(n+1)! → 0.",
+      "mathContext": "$X_n=\\#\\{i:\\sigma(i)=i\\}$ for uniform $\\sigma\\in S_n$ satisfies $P(X_n=k)=D(n-k)/((n-k)!k!)$; $\\sum_k |P(X_n=k)-e^{-1}/k!|\\to 0$."
+    },
+    {
       "id": "alt-series-bound",
       "title": "Section I: Alternating Series Bound for Derangements",
       "startLine": 40,
