@@ -34,11 +34,18 @@
       "summary": "chiC p (ℂ-valued quadratic character) with χ(−1) = (−1)^((p−1)/2); pstar p := (−1)^((p−1)/2)·p; gaussSum_sq_eq re-derives g² = (p* : ℂ) from Mathlib's gaussSum_sq so the file stands alone."
     },
     {
-      "id": "arithmetic-of-pstar",
-      "title": "The arithmetic type of p*",
+      "id": "sign-and-magnitude",
+      "title": "The sign and magnitude of p*",
       "startLine": 94,
+      "endLine": 140,
+      "summary": "mod_four_cases (p ≡ 1 or 3 mod 4); pstar_eq_self / pstar_eq_neg (p* = p resp. −p); pstar_natAbs (|p*| = p); pstar_pos_iff / pstar_neg_iff (sign of p* ↔ residue of p mod 4) — the first supplement to quadratic reciprocity repackaged for p*."
+    },
+    {
+      "id": "congruence-and-fundamental",
+      "title": "Uniform congruence and the fundamental-discriminant bundle",
+      "startLine": 142,
       "endLine": 160,
-      "summary": "mod_four_cases (p ≡ 1 or 3 mod 4); pstar_eq_self / pstar_eq_neg (p* = p resp. −p); pstar_natAbs (|p*| = p); pstar_pos_iff / pstar_neg_iff (sign ↔ residue); pstar_one_mod_four (p* ≡ 1 mod 4 in both classes); pstar_squarefree (|p*| = p prime); pstar_isFundamentalDiscriminant bundles squarefree ∧ ≡ 1 (mod 4)."
+      "summary": "pstar_one_mod_four (p* ≡ 1 mod 4 in BOTH residue classes — the new arithmetic point); pstar_squarefree (|p*| = p prime); pstar_isFundamentalDiscriminant bundles squarefree ∧ ≡ 1 (mod 4), the definition of a fundamental discriminant."
     },
     {
       "id": "capstone",
@@ -81,7 +88,8 @@
       "The single new arithmetic fact is uniform: $p^* \\equiv 1 \\pmod 4$ in BOTH residue classes. For $p \\equiv 1 \\pmod 4$ the value is $p \\equiv 1$; for $p \\equiv 3 \\pmod 4$ the value is $-p \\equiv -3 \\equiv 1$. The sign $(-1)^{(p-1)/2}$ is exactly engineered to land $p^*$ in $1 + 4\\mathbb{Z}$ regardless of the class of $p$.",
       "Squarefree plus $\\equiv 1 \\pmod 4$ is the definition of a fundamental discriminant of the first family. So $p^*$ is not just an integer whose square root generates $\\mathbb{Q}(g)$ — it is the genuine field discriminant, with conductor $p$ rather than $4p$.",
       "This is the discriminant-level refinement that the siblings do not reach: oq-04 identifies the minimal polynomial $X^2 - p^*$ and the field degree $2$, and oq-01 identifies the real/imaginary sign of $g$, but neither records that $p^*$ is a fundamental discriminant — the arithmetic content that pins down ramification and the index-$2$ relationship between $\\mathbb{Z}[g]$ and the maximal order.",
-      "The polynomial discriminant of the minimal polynomial $X^2 - p^*$ is $4p^* = 2^2 \\cdot p^*$; since the field discriminant is the fundamental discriminant $p^*$, the factor $2^2$ is exactly the squared index $[\\mathcal{O}_K : \\mathbb{Z}[g]]^2$, exhibiting $\\mathbb{Z}[g]$ as the non-maximal order of index $2$ inside $\\mathbb{Z}[(1+\\sqrt{p^*})/2]$."
+      "The polynomial discriminant of the minimal polynomial $X^2 - p^*$ is $4p^* = 2^2 \\cdot p^*$; since the field discriminant is the fundamental discriminant $p^*$, the factor $2^2$ is exactly the squared index $[\\mathcal{O}_K : \\mathbb{Z}[g]]^2$, exhibiting $\\mathbb{Z}[g]$ as the non-maximal order of index $2$ inside $\\mathbb{Z}[(1+\\sqrt{p^*})/2]$.",
+      "Excluding $p = 2$ is not cosmetic bookkeeping: every lemma from `mod_four_cases` onward carries `hp : p ≠ 2` as a hypothesis (several are stated with `omit [Fact p.Prime]`, relying only on `hp`), because $p^*$ is defined via the odd first-supplement dichotomy $p \\equiv 1$ or $3 \\pmod 4$ — the prime $2$ has no such $\\pm$ sign and sits outside the fundamental-discriminant framework this file develops."
     ]
   },
   "conclusion": {
@@ -92,6 +100,26 @@
       "For the quartic Gauss sum attached to a prime $p \\equiv 1 \\pmod 4$, is the analogous squared quantity a fundamental discriminant (or conductor) of the corresponding subfield of $\\mathbb{Q}(\\zeta_p)$?"
     ]
   },
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "C. F. Gauss",
+      "year": 1801,
+      "note": "Introduces the quadratic Gauss sum and the sign pattern p* = (-1)^((p-1)/2)·p in the course of the Gauss-sum proof of quadratic reciprocity; the first supplement giving p* ≡ 1 (mod 4) in both residue classes is the arithmetic fact this entry verifies."
+    },
+    {
+      "title": "A Course in Computational Algebraic Number Theory",
+      "author": "H. Cohen",
+      "year": 1993,
+      "note": "Definition 5.1.1 characterizes fundamental discriminants as the squarefree D ≡ 1 (mod 4) together with 4m for squarefree m ≡ 2, 3 (mod 4); this entry shows p* falls in the first family, hence is the genuine field discriminant of ℚ(√p*)."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.LegendreSymbol.GaussSum, RingTheory.Int.Basic",
+      "author": "The Mathlib Community",
+      "year": 2024,
+      "note": "Provides the generic `gaussSum_sq` identity re-derived here, plus `Int.squarefree_natAbs` and `Nat.Prime.squarefree` used to establish squarefreeness of p*."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "quadratic-gauss-sum-square-oq-04",
