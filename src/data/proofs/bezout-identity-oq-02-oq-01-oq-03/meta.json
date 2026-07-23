@@ -39,6 +39,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Constructive Bézout Coefficients and Uniqueness Modulo the Lattice", "startLine": 1, "endLine": 37, "summary": "Bézout's identity asserts only the existence of s,t with a*s+b*t=gcd(a,b); Mathlib's extended Euclidean algorithm (Nat.gcdA, Nat.gcdB) produces one such pair, but the coefficients are not unique, since (s+k*(b/g), t-k*(a/g)) works for every integer k. This file settles the converse: those are the ONLY solutions, so the solution set of a*x+b*y=g is exactly one coset of the lattice Z*(b/g,-a/g). Delivers bezout_identity, coprime_homogeneous, coprime_bezout_unique/param, and gcdA_gcdB_unique, all 0 axioms and 0 sorries.", "mathContext": "For coprime $a,b$ (with $b\\ne0$), every solution of $au+bv=0$ is $u=kb,\\ v=-ka$ for some $k\\in\\mathbb{Z}$, so any two solutions of $ax+by=c$ differ by one lattice step $(kb,-ka)$."},
     {
       "id": "existence",
       "title": "Existence: the Extended-Euclid Bézout Identity",
