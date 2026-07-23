@@ -99,6 +99,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: What This Proves and Why It's New",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring: recalls the parent's analytic proof of the Eulerian recurrence (★) over ℝ[X] (agreement at infinitely many points of (−1,1)), and states the analysis-free replacement over an arbitrary commutative ring, built on a new binomial-transform identity for the second-kind Stirling numbers not present in Mathlib."
+    },
+    {
       "id": "binomial-transform",
       "title": "Part 1: The Binomial Transform of the Stirling Numbers",
       "startLine": 61,
@@ -106,18 +113,32 @@
       "summary": "sum_choose_mul_stirlingSecond proves ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1) by induction on n, using only Pascal's rule and the Stirling recurrence; the inductive step hinges on a vanishing-boundary shift lemma (∑ g(i+1) = ∑ g(i) since g(0)=g(n+1)=0). sum_range_choose_mul_stirlingSecond is the half-open corollary ∑_{i<m} C(m,i)·S(i,j) = (j+1)·S(m,j+1). Neither identity is in Mathlib."
     },
     {
-      "id": "polynomial-reduction",
-      "title": "Part 2: Both Sides Collapse to a Common Canonical Sum",
-      "startLine": 123,
-      "endLine": 218,
-      "summary": "After substituting the Frobenius closed form Eₘ = stirlingForm m, one_sub_X_mul_stirlingForm rewrites the left side of (★∞) as ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}, and X_mul_convolution_stirlingForm rewrites the right (convolution) side to the same sum — by extending each inner range to a square, interchanging the double sum, factoring the common monomial, and collapsing the scalar bracket via the binomial transform."
+      "id": "lhs-canonical-form",
+      "title": "Part 2a: The Left Side in Canonical Form",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "After substituting the Frobenius closed form Eₘ = stirlingForm m, one_sub_X_mul_stirlingForm rewrites the left side of (★∞), (1−X)·Eₘ, as the canonical sum ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}, by raising every power of (1−X) and dropping the vanishing k=0 term."
     },
     {
-      "id": "analysis-free-recurrence",
-      "title": "Part 3: The Analysis-Free Eulerian Recurrence",
+      "id": "rhs-canonical-form",
+      "title": "Part 2b: The Right Side in Canonical Form",
+      "startLine": 156,
+      "endLine": 218,
+      "summary": "X_mul_convolution_stirlingForm rewrites the right (convolution) side of (★∞) to the same canonical sum, by extending each inner Stirling sum to a square, interchanging the double sum (Finset.sum_comm), factoring out the common monomial, and collapsing the scalar bracket via the binomial transform of Part 1."
+    },
+    {
+      "id": "eulerPoly-recurrence-alg",
+      "title": "Part 3a: The Analysis-Free Recurrence Over Any Ring",
       "startLine": 220,
+      "endLine": 243,
+      "summary": "eulerPoly_recurrence_alg assembles the two canonical-form reductions into (★∞) over an arbitrary commutative ring: m=0 is the trivial (1−X)·1=(1−X); m=m'+1 chains one_sub_X_mul_stirlingForm and X_mul_convolution_stirlingForm through the shared canonical sum, with no appeal to analysis anywhere."
+    },
+    {
+      "id": "eulerPoly-recurrence-real",
+      "title": "Part 3b: The Parent's ℝ[X] Statement, Re-Derived",
+      "startLine": 245,
       "endLine": 254,
-      "summary": "eulerPoly_recurrence_alg assembles the two reductions into (★∞) over an arbitrary commutative ring (m=0 is (1−X)·1=(1−X); m=m'+1 chains the canonical forms). eulerPoly_recurrence specialises to ℝ[X], reproducing verbatim the parent's analytically-proved statement — now with an analysis-free proof."
+      "summary": "eulerPoly_recurrence specialises eulerPoly_recurrence_alg to R = ℝ, reproducing verbatim the parent's analytically-proved statement — now exhibited as the shadow of a ring-theoretic identity rather than a genuinely analytic fact."
     }
   ],
   "openQuestions": [],
