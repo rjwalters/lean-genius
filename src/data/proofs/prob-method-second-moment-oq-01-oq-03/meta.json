@@ -87,11 +87,27 @@
       "mathContext": "$(x^{1/2})^2 = x$ for $x \\ge 0$, via $x^{(1/2)\\cdot 2} = x^1$."
     },
     {
-      "id": "main-theorem",
-      "title": "Measure-Theoretic Paley-Zygmund Inequality",
+      "id": "main-theorem-truncation",
+      "title": "Statement and the Truncation Bound",
       "startLine": 51,
+      "endLine": 90,
+      "summary": "States paley_zygmund_measure and sets up m = E[Z], A = {Z > θm}, its indicator g, and the everywhere-true pointwise truncation bound Z ω ≤ θm + Z ω·g ω (by cases on whether ω ∈ A).",
+      "mathContext": "$Z(\\omega) \\le \\theta m + Z(\\omega)\\cdot\\mathbb{1}_A(\\omega)$ for every $\\omega$, where $m = \\mathbb{E}[Z]$, $A = \\{Z > \\theta m\\}$."
+    },
+    {
+      "id": "main-theorem-cauchy-schwarz",
+      "title": "Integrating the Bound and Applying Cauchy–Schwarz",
+      "startLine": 91,
+      "endLine": 117,
+      "summary": "Integrates the truncation bound using the probability-measure normalization to get (1-θ)m ≤ E[Z·𝟙_A], then applies Hölder at p = q = 2 (Cauchy–Schwarz) with g = 𝟙_A, rewriting the rpow exponents back to natural powers and evaluating ∫g² = μ(A).toReal.",
+      "mathContext": "$(1-\\theta)m \\le \\int Z\\cdot g\\,d\\mu \\le \\left(\\int Z^2\\right)^{1/2}\\left(\\int g^2\\right)^{1/2}$."
+    },
+    {
+      "id": "main-theorem-conclude",
+      "title": "Squaring and Concluding",
+      "startLine": 118,
       "endLine": 134,
-      "summary": "paley_zygmund_measure: the full proof — everywhere-true truncation bound Z ≤ θE[Z] + Z·𝟙_A, integration using the probability-measure normalization to get (1-θ)E[Z] ≤ E[Z·𝟙_A], Cauchy-Schwarz (Hölder p=q=2) to bound E[Z·𝟙_A] ≤ √(E[Z²])·√(μ A), and squaring the non-negative inequality.",
+      "summary": "Abbreviates S = ∫Z², T = μ(A).toReal, squares the non-negative inequality (1-θ)m ≤ S^(1/2)·T^(1/2) via rpow_half_sq, and concludes (1-θ)²m² ≤ μ(A)·E[Z²] by a final calc chain.",
       "mathContext": "$(1-\\theta)^2(\\int Z)^2 \\le \\mu\\{Z > \\theta\\int Z\\}\\cdot\\int Z^2$."
     }
   ],
