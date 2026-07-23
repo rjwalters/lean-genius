@@ -89,17 +89,25 @@
       "id": "sum-to-product",
       "title": "The Four Sum-to-Product (Prosthaphaeresis) Identities",
       "startLine": 46,
-      "endLine": 99,
+      "endLine": 100,
       "mathContext": "$\\cos x + \\cos y = 2\\cos\\tfrac{x+y}{2}\\cos\\tfrac{x-y}{2}$ and its three companions.",
       "summary": "cos_add_cos, cos_sub_cos, sin_add_sin and sin_sub_sin convert each sum or difference of two sinusoids into a product of two sinusoids, proved by a three-line calc: rewrite x and y through the mean (x+y)/2 and half-difference (x−y)/2, expand with Real.cos_add / Real.cos_sub (resp. Real.sin_add / Real.sin_sub), and close by ring. They coincide with Mathlib's Real.cos_add_cos etc., anchored here from the addition formulas as the building blocks for the triangle corollaries."
     },
     {
-      "id": "half-angle-products",
-      "title": "The Triangle Half-Angle Product Identities",
+      "id": "half-angle-identities",
+      "title": "The General Half-Angle Product Identities (a+b+c=π/2)",
       "startLine": 101,
-      "endLine": 161,
+      "endLine": 140,
+      "mathContext": "$\\sin 2a + \\sin 2b + \\sin 2c = 4\\cos a\\cos b\\cos c$ for $a+b+c=\\pi/2$.",
+      "summary": "half_angle_sin_sum and half_angle_cos_sum establish the general a+b+c=π/2 products sin(2a)+sin(2b)+sin(2c) = 4·cos a·cos b·cos c and cos(2a)+cos(2b)+cos(2c) = 1 + 4·sin a·sin b·sin c by eliminating c via the π-reflections (Real.sin_pi_sub, Real.cos_pi_div_two_sub and their cos/sin counterparts) and closing the residual Pythagorean polynomial identity with linear_combination against Real.sin_sq_add_cos_sq."
+    },
+    {
+      "id": "triangle-identities",
+      "title": "The Triangle Half-Angle Product Corollaries (A+B+C=π)",
+      "startLine": 141,
+      "endLine": 162,
       "mathContext": "$\\sin A + \\sin B + \\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$ for $A+B+C=\\pi$.",
-      "summary": "half_angle_sin_sum and half_angle_cos_sum establish the general a+b+c=π/2 products sin(2a)+sin(2b)+sin(2c) = 4·cos a·cos b·cos c and cos(2a)+cos(2b)+cos(2c) = 1 + 4·sin a·sin b·sin c by eliminating c via the π-reflections and closing the residual Pythagorean polynomial identity with linear_combination. triangle_sin_sum and triangle_cos_sum specialise them to the angles of a triangle (a = A/2, etc.), giving the classical identities not recorded in Mathlib."
+      "summary": "triangle_sin_sum and triangle_cos_sum specialise the half-angle identities to the angles of a triangle by substituting a = A/2, b = B/2, c = C/2 (so a+b+c = (A+B+C)/2 = π/2) and rewriting 2·(A/2) = A, giving the classical identities sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2) and cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2), not recorded in Mathlib."
     },
     {
       "id": "worked-instance",
