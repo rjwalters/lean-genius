@@ -532,7 +532,7 @@ theorem edgesInside_erase_bound (G : SimpleGraph V) [DecidableRel G.Adj]
       refine Finset.mem_image.mpr ⟨Sym2.Mem.other hv, ?_, hother⟩
       rw [Finset.mem_filter]
       constructor
-      · exact hin _ (by rw [← hother]; exact Sym2.mem_mk_right _ _)
+      · exact hin _ (Sym2.other_mem hv)
       · have hadj : s(v, Sym2.Mem.other hv) ∈ G.edgeSet := by
           rw [hother]
           exact SimpleGraph.mem_edgeFinset.mp heE
@@ -594,6 +594,16 @@ theorem exists_min_degree_subset (G : SimpleGraph V) [DecidableRel G.Adj]
         (by rw [hcard]; omega)
       exact ⟨s, hne, hsub.trans (Finset.erase_subset v t), hdegs⟩
 
+omit [DecidableEq V] in
+/-- `edgeCount` agrees with the edge-finset cardinality for any decidability
+instance (`edgeCount` was defined under `Classical`; the two edge finsets are
+extensionally equal). -/
+theorem edgeCount_eq_card_edgeFinset (G : SimpleGraph V)
+    [DecidableRel G.Adj] : edgeCount G = G.edgeFinset.card := by
+  unfold edgeCount
+  refine congrArg Finset.card (Finset.ext fun e => ?_)
+  simp [SimpleGraph.mem_edgeFinset]
+
 /-- **Min-degree extraction from the edge count.** A graph on `V` with at
 least `(k−1)·|V| + 1` edges contains a nonempty vertex set `s` in which every
 vertex has at least `k` neighbours inside `s` — the extraction half of the
@@ -606,8 +616,8 @@ theorem exists_min_degree_subset_of_edgeCount (G : SimpleGraph V)
     ∃ s : Finset V, s.Nonempty ∧
       ∀ v ∈ s, k ≤ (s.filter (fun u => G.Adj v u)).card := by
   obtain ⟨s, hne, _, hdeg⟩ := exists_min_degree_subset G k Finset.univ (by
-    rw [edgesInside_univ]
-    simpa [edgeCount, Finset.card_univ] using h)
+    rw [edgesInside_univ, Finset.card_univ, ← edgeCount_eq_card_edgeFinset G]
+    exact h)
   exact ⟨s, hne, hdeg⟩
 
 end Erdos548
