@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/121",
-    "status": "axiomatized",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos121Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "disproved",
     "axiomCount": 0,
     "lineCount": 77,
-    "assumptions": "0 axioms, 0 sorries. The key asymptotic results (f2_asymptotic, f3_full_density, f4_density_zero, etc.) appear as docstring comments in the Lean source but are not formally stated as axiom declarations.",
+    "assumptions": "0 axioms, 0 sorries. The known asymptotics for k = 2, 3, 4 and Tao's 2024 disproof are described in doc comments as background — they are not formalized as axioms, theorems, or any named declaration (the file has 0 axioms and 0 theorems).",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 4
@@ -31,7 +31,7 @@
     "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N), the maximum size of A ⊆ {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/π² (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erdős conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1−o(1))N for every k ≥ 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) ≤ (1−c_k)N for all k ≥ 4, definitively disproving the odd-k conjecture for k ≥ 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",
     "problemStatement": "Is F_{2k+1}(N) = (1 - o(1))N for all k ≥ 1? Specifically, is F_5(N) = (1 - o(1))N?",
     "text": "Let F_k(N) be the max size of A ⊆ {1,…,N} with no k-element product a perfect square. Conjecture F_{2k+1}(N) = (1-o(1))N. DISPROVED by Tao (2024): F_k(N) ≤ (1-c_k)N for k ≥ 4.",
-    "proofStrategy": "The formalization defines IsSquare, k-square-free sets, and F_k(N) via powerset filtration. Known asymptotics for k = 2, 3, 4 are axiomatised. The conjecture and Tao's disproof are both captured.",
+    "proofStrategy": "The formalization defines IsPerfectSq, IsKSquareFree, and F_k(N) (squareFreeMax) via powerset filtration, and states Erdős's conjecture as ErdosProblem121_Conjecture. The known asymptotics for k = 2, 3, 4 and Tao's 2024 disproof are described in doc comments as background — they are not formalized (0 axioms, 0 theorems).",
     "keyInsights": [
       "F_2(N) ~ 6N/π² (squarefree density), F_3(N) ~ N (full density)",
       "F_4(N) = o(N) (Erdős), showing even-index products force density zero",
@@ -82,13 +82,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 121 on square-free products, including the original conjecture and Tao's 2024 disproof showing F_k(N) ≤ (1-c_k)N for k ≥ 4.",
+    "summary": "The formalization defines square-free product sets (IsKSquareFree, squareFreeMax) and states Erdős's conjecture (ErdosProblem121_Conjecture) on Erdős Problem 121. Tao's 2024 disproof showing F_k(N) ≤ (1-c_k)N for k ≥ 4 is noted in doc comments as background but is not formalized (0 axioms, 0 theorems).",
     "implications": "**Phase Transition in Multiplicative Combinatorics**\n\nTao's result reveals a sharp phase transition at $k = 3$:\n\n1. **$k \\leq 3$**: Full or near-full density. $F_2(N) \\sim 6N/\\pi^2$ (squarefree density), $F_3(N) \\sim N$.\n2. **$k \\geq 4$**: Density bounded away from 1: $F_k(N) \\leq (1-c_k)N$.\n3. **Even/odd dichotomy fails**: Erdős expected odd $k$ to allow full density. Tao showed this fails for $k \\geq 5$.\n4. **Zero-sum theory connection**: Via the squarefree-part map, $k$-square-free sets correspond to $k$-zero-sum-free subsets of $(\\mathbb{Z}/2\\mathbb{Z})^r$, connecting to the Davenport constant and Erdős-Ginzburg-Ziv theorem.",
     "openQuestions": [
       "What are the precise constants $c_k$ in Tao's bound $F_k(N) \\leq (1-c_k)N$? Is $c_k$ monotone increasing in $k$?",
       "What is the exact asymptotic of $F_5(N)/N$? Is there a closed-form limit analogous to $6/\\pi^2$ for $F_2$?",
       "Is $F_k(N)/N$ monotone decreasing in $k$ for $k \\geq 4$?",
-      "Can Tao's polynomial method be formalized in Lean, providing a constructive proof rather than the current axiomatization?"
+      "Can Tao's polynomial method be formalized in Lean, providing a constructive proof rather than the current informal, prose-only treatment?"
     ]
   },
   "leanFile": {
