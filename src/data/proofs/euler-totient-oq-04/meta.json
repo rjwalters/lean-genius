@@ -91,6 +91,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Divisor Sum Identity via GCD Partition",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "States the classical identity $n = \\sum_{d \\mid n} \\varphi(d)$, proved constructively by partitioning $\\{0,\\dots,n-1\\}$ into GCD classes $S_d = \\{k : \\gcd(k,n)=d\\}$ and showing each class has $\\varphi(n/d)$ elements via the bijection $k \\mapsto k/d$, rather than citing Mathlib's `Nat.sum_totient` directly.",
+      "mathContext": "The partition-of-unity argument: $\\{0,\\dots,n-1\\} = \\bigsqcup_{d \\mid n} S_d$ where $|S_d| = \\varphi(n/d)$, so $n = \\sum_{d \\mid n} \\varphi(n/d) = \\sum_{d \\mid n} \\varphi(d)$."
+    },
+    {
       "id": "gcd-classes",
       "title": "GCD Classes",
       "summary": "Defines gcdClass(n,d) = {k < n : gcd(k,n) = d} and mem_gcdClass membership characterization.",
