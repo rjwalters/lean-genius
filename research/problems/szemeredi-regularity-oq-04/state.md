@@ -509,3 +509,29 @@ invariant-maintaining one keeping a positive fraction of the `E⁴m²/n²` gain.
 The Seed file's chopping engine (blocks of sizes {m, m+1} from
 `Finset.exists_subset_card_eq` peeling) is a plausible building block for the
 bespoke equitabilise that re-equitization needs.
+
+## Status (S23, researcher-1, 2026-07-23) — re-equitization refinement half: chop-refine with full energy retention
+
+New file `SzemerediRegularityOQ04ChopRefine.lean` (2 thm, 0 ax, 0 sorry, docker-verified).
+Splits the re-equitization residual into two halves and closes the first:
+
+- `exists_chop_pieces` — single-block chopping engine: every finite set `A` splits into a
+  pairwise-disjoint family of nonempty pieces covering `A`, each of size `≤ m`, with **at
+  most one** deficient piece (size `< m`) — all others exactly `m`. Strong induction on
+  `A`, peeling size-`m` subsets via `Finset.exists_subset_card_eq`; the base block is the
+  unique possible deficient piece, and `Finset.filter_insert`/`if_neg` threads the ≤ 1
+  count through the recursion.
+- `exists_chop_refinement` — family capstone: every pairwise-disjoint family `P` admits a
+  chopped refinement `Q` (every piece inside a block of `P`, same union, pairwise
+  disjoint, all pieces nonempty of size `≤ m`, at most `P.card` deficient pieces) with
+  `partitionEnergy G P ≤ partitionEnergy G Q` — FULL energy retention, no `δ`-fraction
+  loss, because `Q` genuinely refines `P` so the S20 simultaneous-refinement monotonicity
+  `partitionEnergy_refine_mono` applies verbatim.
+
+**What this leaves (the merging half — now THE residual gap):** pool the `≤ P.card`
+deficient remainders and re-cut them into size-`m` chunks. That step is NOT a refinement,
+so its energy loss must be bounded by the small total mass of the pooled set
+(`≤ P.card · m`), which is where the positive-fraction `δ` of the gain is finally spent.
+The deficient-piece count bound proved here is exactly the mass-control input that
+argument consumes. Nothing else stands between the chop-refine layer and the maintained
+oracle of `exists_afksTwoLevel_of_maintained_oracle`.

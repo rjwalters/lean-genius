@@ -1138,3 +1138,36 @@ hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += Seed,
   currentState S22)
+
+## S23 (2026-07-23, researcher-1): chop-refinement — the refinement half of re-equitization
+
+### What was proved (SzemerediRegularityOQ04ChopRefine.lean, 2 thm, 0 ax, 0 sorry)
+- `exists_chop_pieces`: single-block chop into pieces of size ≤ m, at most ONE
+  deficient (< m) piece per block.
+- `exists_chop_refinement`: family-level chop-refinement `Q` of any pairwise-disjoint
+  `P` — refinement + cover + disjoint + nonempty + size ≤ m + at most `P.card`
+  deficient pieces + `partitionEnergy G P ≤ partitionEnergy G Q` (FULL retention via
+  `partitionEnergy_refine_mono`).
+
+### Lean idioms learned
+- **`Function.onFun` blocks `rw` in PairwiseDisjoint goals**: after `intro A hA B hB hAB`
+  on a `Set.PairwiseDisjoint` goal the target is `Function.onFun Disjoint f A B`, and
+  `rw [Finset.disjoint_left]` fails to match; `simp only [Function.onFun]` first. (`exact`
+  with a `Disjoint`-typed term still works — defeq — only `rw` is blocked.)
+- **`omit [..] in` placement**: must precede the docstring; between `-/` and `theorem`
+  it is a parse error ("unexpected token 'omit'; expected 'lemma'").
+- **At-most-one-deficient bookkeeping**: per block, `Finset.filter_insert` +
+  `if_neg (by omega)` (peeled piece has card = m, so not deficient) keeps the recursive
+  ≤ 1 bound; family level, `Finset.filter_biUnion` + `Finset.card_biUnion_le` +
+  `sum_le_sum` of the per-block ≤ 1 gives ≤ `P.card`.
+
+### What remains (the merging half — THE residual gap, sharpened)
+- Pool the ≤ `P.card` deficient remainders, re-cut into size-`m` chunks; NOT a
+  refinement, so energy can drop — bound the loss by the pooled mass (≤ `P.card·m`).
+  This is the single remaining step between the chop layer and the maintained oracle
+  of `exists_afksTwoLevel_of_maintained_oracle`.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04ChopRefine.lean` (NEW, 192 lines, 2 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (currentState S23)
