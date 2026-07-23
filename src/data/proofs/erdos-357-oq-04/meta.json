@@ -109,18 +109,34 @@
     },
     {
       "id": "general-equivalence",
-      "title": "Section 1: The General Equivalence and ε–N Form",
+      "title": "Section 1a: The General Little-o ⇔ Ratio-Limit Equivalence",
       "startLine": 42,
-      "endLine": 92,
-      "summary": "littleO_natCast_iff_ratio_tendsto generalizes conjecture_equiv to any u : ℕ → ℝ via isLittleO_iff_tendsto' with the vacuous side condition. littleO_natCast_iff_eventually_le rewrites sublinear growth of a nonnegative u as the ε–N statement ∀ ε > 0, ∀ᶠ n, u n ≤ ε·n. sublinear_tfae combines them.",
-      "mathContext": "$u =o[atTop] n \\iff \\lim u(n)/n = 0 \\iff \\forall \\varepsilon>0,\\ \\text{eventually } u(n) \\le \\varepsilon n$ (last for $u \\ge 0$)."
+      "endLine": 64,
+      "summary": "littleO_natCast_iff_ratio_tendsto generalizes conjecture_equiv to any u : ℕ → ℝ via isLittleO_iff_tendsto', discharging its side condition once from the eventual nonvanishing of (n:ℝ).",
+      "mathContext": "$u =o[atTop] n \\iff \\lim u(n)/n = 0$, for every sequence $u:\\mathbb{N}\\to\\mathbb{R}$."
     },
     {
-      "id": "density-application",
-      "title": "Section 2: Application to the Density-Zero Conjecture",
+      "id": "eventually-le-and-tfae",
+      "title": "Section 1b: The ε–N Form and the Full Trichotomy",
+      "startLine": 66,
+      "endLine": 92,
+      "summary": "littleO_natCast_iff_eventually_le rewrites sublinear growth of a nonnegative u as the ε–N statement ∀ ε > 0, ∀ᶠ n, u n ≤ ε·n. sublinear_tfae combines both equivalences into the little-o ⇔ ratio-limit ⇔ ε–N trichotomy.",
+      "mathContext": "For $u \\ge 0$: $u =o[atTop] n \\iff \\forall \\varepsilon>0,\\ \\text{eventually } u(n) \\le \\varepsilon n$."
+    },
+    {
+      "id": "countLE-def",
+      "title": "Section 2a: Reconstructing the Density Counting Function",
       "startLine": 94,
+      "endLine": 109,
+      "summary": "Section 2 docstring recalling the parent's OPEN InfiniteDensityZeroConjecture (stated only in ratio-limit form), then countLE A n := Nat.card {k | A k ≤ n}, matching the parent's density statement locally.",
+      "mathContext": "$\\mathrm{countLE}\\,A\\,n := \\#\\{k : A_k \\le n\\}$ — the density counting function the trichotomy will be applied to."
+    },
+    {
+      "id": "density-corollaries",
+      "title": "Section 2b: The Density-Zero Trichotomy",
+      "startLine": 111,
       "endLine": 131,
-      "summary": "countLE A n := Nat.card {k | A k ≤ n} reconstructs the parent's density counting function. density_zero_iff_littleO and density_zero_iff_eventually_le give the parent's OPEN InfiniteDensityZeroConjecture the little-o and ε–N reformulations, in particular that density → 0 is exactly ∀ ε > 0, eventually #{k | A k ≤ n} ≤ ε·n.",
+      "summary": "density_zero_iff_littleO and density_zero_iff_eventually_le instantiate the Section 1 trichotomy at u = countLE A, giving the parent's OPEN conjecture the little-o and ε–N reformulations — density → 0 is exactly ∀ ε > 0, eventually #{k | A k ≤ n} ≤ ε·n.",
       "mathContext": "For $A : \\mathbb{N} \\to \\mathbb{N}$, $\\#\\{k : A_k \\le n\\}/n \\to 0 \\iff \\#\\{k : A_k \\le n\\} =o[atTop] n \\iff \\forall\\varepsilon>0$ eventually $\\#\\{k : A_k \\le n\\} \\le \\varepsilon n$."
     }
   ],
