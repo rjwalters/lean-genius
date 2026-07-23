@@ -16,12 +16,12 @@
     "goal": "Eliminate the 6 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETE",
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
-    "focus": "Initial exploration of the problem.",
+    "focus": "All 6 sorries eliminated; file sorry-free with 8 literature axioms. PR #42136.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - node complete. Remaining depth is proving the 8 literature axioms (deep extremal graph theory).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION + DEF FIX (researcher-1, 2026-07-20): corrected the degenerate local IsTree definition to Mathlib SimpleGraph.IsTree and proved the former tree_edge_count axiom from IsTree.card_edgeFinset, reducing primary-file axioms 9→8. The remaining 8 axioms are deep extremal-graph-theory literature results (Brandt-Dobson, Sacle-Wozniak, Wang-Li-Liu, Komlos-Sos, Turan path formula, Erdos-Gallai matching, path_extremal, trivial_tree_bound). 6 sorries remain (sum_degrees_eq_twice_edges, avg_degree_iff_edges, star_is_tree, etc.).",
+    "progressSummary": "All 6 sorries in Proofs/Erdos548Problem.lean eliminated and Docker-build verified (3001 jobs). Proved: star_is_tree (via new starGraph_edgeFinset_card), sum_degrees_eq_twice_edges (Mathlib handshake), avg_degree_iff_edges (statement repaired with missing 1 <= k hypothesis - false at k=0 as stated), erdos_sos_implies_extremal (Type* -> Type restriction to match ErdosSosConjecture, csSup_le'), star_easier (pigeonhole degree >= k + orderIsoOfFin star embedding), erdos_548_status (Classical.em replacing Or.inl (by sorry) which had sorried the open conjecture itself). The 8 literature axioms are unchanged. PR #42136.",
     "builtItems": [
-      "Erdos548Problem.lean: IsTree now delegates to Mathlib SimpleGraph.IsTree; tree_edge_count proved via IsTree.card_edgeFinset (axiom 9→8). Host-verified v4.31.0 EXIT=0."
+      "Erdos548Problem.lean: IsTree now delegates to Mathlib SimpleGraph.IsTree; tree_edge_count proved via IsTree.card_edgeFinset (axiom 9→8). Host-verified v4.31.0 EXIT=0.",
+      "starGraph_edgeFinset_card: (starGraph k).edgeFinset.card = k via image-of-erase counting with card_image_of_injOn",
+      "star_easier: full proof that average degree > k-1 embeds the star K_{1,k} (easy case of Erdos-Sos)",
+      "erdos_sos_implies_extremal: extremalNumber bound from the conjecture via csSup_le'"
     ],
     "insights": [
-      "The local IsTree def (Connected ∧ ∀ v w, Adj v w → Reachable v w) was degenerate: the second conjunct holds for every graph, so IsTree meant Connected, making tree_edge_count false. Redefining IsTree := G.IsTree (Mathlib SimpleGraph.IsTree) both fixes the conjecture statements and makes tree_edge_count provable."
+      "The local IsTree def (Connected ∧ ∀ v w, Adj v w → Reachable v w) was degenerate: the second conjunct holds for every graph, so IsTree meant Connected, making tree_edge_count false. Redefining IsTree := G.IsTree (Mathlib SimpleGraph.IsTree) both fixes the conjecture statements and makes tree_edge_count provable.",
+      "avg_degree_iff_edges was FALSE at k=0 as originally stated (avgDegree > k-1 over Q is vacuous at k=0 while the edge bound is not); the missing 1 <= k hypothesis is required for provability.",
+      "erdos_548_status previously read Or.inl (by sorry) - i.e. the file sorried the OPEN conjecture itself. Replaced with Classical.em, which is the honest formal content of an open-status disjunction.",
+      "Star embedding recipe: pigeonhole on the degree sum (sum_degrees_eq_twice_edges + Finset.sum_le_card_nsmul) yields a vertex of degree >= k; Finset.orderIsoOfFin on the neighbour set then gives the injective Fin (k+1) embedding, with Fin.cases splitting centre/leaf adjacency."
     ],
     "mathlibGaps": [],
     "nextSteps": []
