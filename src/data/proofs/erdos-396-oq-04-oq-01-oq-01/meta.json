@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Catalan Ratio Deficit is Harmonic",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring: recalls the parent's Catalan ratio r n = (4n+2)/(n+2) = 4 − 6/(n+2) and its convergence r n → 4, then examines the deficit δ n = 4 − r n = 6/(n+2), proving individual deficits tend to 0 but their cumulative sum (a harmonic partial sum) diverges — the precise discrete reason the Catalan asymptotic carries a polynomial correction below 4^n.",
+      "mathContext": "$\\delta_n = 4-r_n = \\dfrac{6}{n+2} \\to 0$, yet $\\sum_{k<n}\\delta_k = 6(H_{n+1}-1) \\to \\infty$ where $H_m=\\sum_{i<m}\\tfrac1{i+1}$; individually vanishing deficits with a divergent cumulative sum."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: the deficit and the harmonic number",
       "startLine": 47,
