@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Multiplicative structure of sums of four squares",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Proves that sums of four integer squares are closed under multiplication via Euler's explicit identity, packages this as a `Submonoid ℤ`, characterizes it exactly as $\\{n\\ge 0\\}$ via Lagrange's theorem, and connects the identity to multiplicativity of the Hamilton quaternion norm.",
+      "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2)=A^2+B^2+C^2+D^2$; over $\\mathbb Z$, sums of four squares $=\\{n\\ge 0\\}$."
+    },
+    {
       "id": "euler-identity-engine",
       "title": "Euler's Four-Square Identity (the engine)",
       "startLine": 32,
