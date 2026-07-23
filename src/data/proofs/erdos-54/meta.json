@@ -51,10 +51,9 @@
       "Colouring2 and monoSubsetSums definitions",
       "IsRamsey2Complete formalization",
       "countingFn via Finset.Icc filtering",
-      "burr_erdos_lower axiom (c(log N)² lower bound)",
-      "conlon_fox_pham axiom (O((log N)²) upper bound)",
-      "ErdosProblem54 conjunction capturing Θ((log N)²)",
-      "burr_erdos_upper axiom ((2 log₂ N)³ historical bound)"
+      "ErdosProblem54 Prop conjunction capturing Θ((log N)²)",
+      "Four axiom-free foundational lemmas: zero_mem_monoSubsetSums, mem_monoSubsetSums_of_mem, countingFn_le, countingFn_mono",
+      "Burr–Erdős lower bound, Burr–Erdős historical (2 log₂ N)³ upper bound, and Conlon–Fox–Pham optimal upper bound are documented in header prose only — not formalized as axioms or theorems"
     ],
     "axiomCount": 0,
     "lineCount": 119,
