@@ -19,7 +19,8 @@
       "The whole geometric inequality collapses, after clearing denominators and applying Heron, to a single symmetric polynomial inequality on the positive Ravi variables.",
       "The product–AM–GM inequality (x+y)(y+z)(z+x) ≥ 8xyz has a one-line sum-of-squares certificate, which simultaneously proves the inequality and pins down the equality case.",
       "Working with Area² (not Area) keeps the proof free of square roots everywhere except the single definitional step Area² = s(s-a)(s-b)(s-c) (Real.sq_sqrt).",
-      "The equality case comes for free from the same certificate: since each summand x(y-z)², y(z-x)², z(x-y)² is nonnegative, the sum vanishes iff x = y = z, i.e. iff the triangle is equilateral — so one SOS identity proves both R ≥ 2r and its sharpness."
+      "The equality case comes for free from the same certificate: since each summand x(y-z)², y(z-x)², z(x-y)² is nonnegative, the sum vanishes iff x = y = z, i.e. iff the triangle is equilateral — so one SOS identity proves both R ≥ 2r and its sharpness.",
+      "The Ravi substitution x = s-a, y = s-b, z = s-c is the same change of variables the sibling herons-formula-oq-04 uses for the isoperimetric inequality, but the two entries need genuinely different AM-GM cores afterward — the pairwise-product form (y+z)(z+x)(x+y) ≥ 8xyz here, versus the three-term xyz ≤ ((x+y+z)/3)³ there — showing the substitution alone does not determine which inequality closes the proof."
     ],
     "prerequisites": [
       "Heron's formula Area² = s(s-a)(s-b)(s-c)",
@@ -55,6 +56,14 @@
     }
   ],
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Docstring deriving Euler's inequality R ≥ 2r algebraically from the radius formulas down to the Ravi-substituted AM-GM consequence (y+z)(z+x)(x+y) ≥ 8xyz, followed by the imports, namespace EulerInequalityHeronOQ06, and open Real.",
+      "mathContext": "The chain R ≥ 2r ⟺ abc·s ≥ 8·Area² ⟺ abc ≥ 8(s-a)(s-b)(s-c) ⟺ (y+z)(z+x)(x+y) ≥ 8xyz is laid out in full before any Lean code."
+    },
     {
       "id": "amgm-core",
       "title": "The Algebraic Core — an SOS form of AM-GM",
