@@ -41,7 +41,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
-set_option autoImplicit true
+set_option autoImplicit false
 
 open Nat Real Finset BigOperators
 
