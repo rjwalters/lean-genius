@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-solution-of-cubic-oq-03-oq-04",
+      "title": "Module Overview: Newton–Girard Identities for the Cubic",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Proves the Newton–Girard identities expressing the power sums p_n = a^n+b^n+c^n of the three Cardano roots of a cubic in terms of its elementary symmetric functions e₁,e₂,e₃, via the linear recurrence p_{n+3} = e₁p_{n+2} − e₂p_{n+1} + e₃p_n. Proved as a polynomial identity by ring/linear_combination over an arbitrary commutative ring (0 axioms); records closed forms for p₁–p₄ and the depressed-cubic specialization giving a³+b³+c³ = −3q.",
+      "mathContext": "$p_{n+3} = e_1 p_{n+2} - e_2 p_{n+1} + e_3 p_n$ since each root satisfies $x^3=e_1x^2-e_2x+e_3$."
+    },
+    {
       "id": "definitions",
       "title": "Section I: Elementary Symmetric Functions and Power Sums",
       "startLine": 42,
