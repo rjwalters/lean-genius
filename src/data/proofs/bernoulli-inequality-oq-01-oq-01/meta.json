@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Extending Strict Bernoulli to Mathlib's Full Weak Domain",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the open question — Mathlib's weak Bernoulli inequality holds on -2≤a, but the parent's strict form 1+n·a<(1+a)ⁿ only covers a>-1 (where the induction multiplies by the positive factor 1+a); can the strict inequality be extended to the full -2≤a domain? Answers yes, previewing the negative-tail argument for -2≤a≤-1: |1+a|≤1 forces (1+a)ⁿ≥-1, while a≤-1 forces 1+n·a<-1 once n≥3, so the power already overshoots; n=2 is the standalone identity (1+a)²-(1+2a)=a²>0.",
+      "mathContext": "Extends Mathlib's `one_add_mul_le_pow` (weak, domain $-2\\le a$) to the strict inequality $1+na<(1+a)^n$ on the same full domain, via a case split at $a=-1$ that is a genuinely different mechanism from the standard positive-factor induction."
+    },
+    {
       "id": "pos-range",
       "title": "Positive-Factor Range a > −1",
       "startLine": 45,
