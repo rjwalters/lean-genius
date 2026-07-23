@@ -58,7 +58,8 @@
       "**The asymmetry of x²+d·y² makes non-uniqueness EASIER, not harder**: for d = 1 the form x²+y² is symmetric, so distinguishing (X,Y) from (X',Y') must rule out the swap (X,Y) ↔ (Y,X) — the parent's proof needs positivity of all four inputs to do this. For d ≠ 1 no swap is available, so distinct x-coordinates alone certify distinct representations, and distinctness holds under the bare hypothesis that the inputs are nonzero.",
       "**One inequality settles every d at once**: `(ac+d·be)² − (ac−d·be)² = 4·d·(ac)(be)` is a single `ring` identity; its right side is a product of nonzero integers whenever d and the four inputs are nonzero. The whole non-uniqueness phenomenon for the entire family x²+d·y² reduces to `mul_ne_zero`.",
       "**Norm-Euclidean witnesses**: after ℤ[i] (d = 1), the ring ℤ[√−2] (d = 2) is the next norm-Euclidean imaginary quadratic ring; 33 = 1²+2·4² = 5²+2·2² is its analogue of the parent's 65 = 1²+8² = 4²+7². The d = 3 witness 28 = 1²+3·3² = 5²+3·1² shows the phenomenon does not require norm-Euclideanness — only the algebraic composition law.",
-      "**Structural vs. arithmetic content**: the composition identity and non-uniqueness are purely algebraic (this entry). WHICH numbers a form x²+d·y² represents — the class-number/genus question, tractable only for the finitely many d of class number one — is the remaining arithmetic layer, deliberately left as a follow-up."
+      "**Structural vs. arithmetic content**: the composition identity and non-uniqueness are purely algebraic (this entry). WHICH numbers a form x²+d·y² represents — the class-number/genus question, tractable only for the finitely many d of class number one — is the remaining arithmetic layer, deliberately left as a follow-up.",
+      "**Bundling amortizes future witnesses**: product_two_representations packages both composition identities together with their x-coordinate distinctness in a single conjunction, so each new concrete witness (33 at d=2, 28 at d=3) needs only one lemma instantiation rather than three separate applications — a reusable template for adding further d-witnesses cheaply."
     ],
     "prerequisites": [
       "Polynomial (ring) identities",
@@ -134,12 +135,20 @@
       "mathContext": "For N ≠ 1 the form x²+N·y² is not symmetric in x,y, so distinct squared x-coordinates certify essentially distinct representations — no positivity needed."
     },
     {
-      "id": "witnesses",
-      "title": "Concrete Witnesses at d = 2 and d = 3",
+      "id": "witness-d2",
+      "title": "Concrete Witness at d = 2",
       "startLine": 121,
+      "endLine": 141,
+      "summary": "thirtyThree_two_ways: 33 = 3·11 = 1²+2·4² = 5²+2·2² in ℤ[√−2], closed by norm_num. thirtyThree_from_composition derives it from product_two_representations at N=2, (a,b,c,e)=(1,1,3,1), composing the representations 3 = 1²+2·1² and 11 = 3²+2·1².",
+      "mathContext": "ℤ[√−2] is the norm-Euclidean ring after ℤ[i]; this is the direct analogue of the parent's 65 = 1²+8² = 4²+7²."
+    },
+    {
+      "id": "witness-d3",
+      "title": "Concrete Witness at d = 3",
+      "startLine": 143,
       "endLine": 152,
-      "summary": "thirtyThree_two_ways and thirtyThree_from_composition: 33 = 3·11 = 1²+2·4² = 5²+2·2² in ℤ[√−2]. twentyEight_two_ways: 28 = 4·7 = 1²+3·3² = 5²+3·1² in ℤ[√−3]. Both closed by `norm_num` / the general identities.",
-      "mathContext": "ℤ[√−2] is the norm-Euclidean ring after ℤ[i]; these are the analogues of the parent's 65 = 1²+8² = 4²+7²."
+      "summary": "twentyEight_two_ways: 28 = 4·7 = 1²+3·3² = 5²+3·1² in ℤ[√−3], closed by norm_num — a second witness showing the phenomenon persists past the norm-Euclidean rings d ∈ {1,2}.",
+      "mathContext": "ℤ[√−3] is not norm-Euclidean, so this witness demonstrates non-uniqueness needs only the algebraic composition law, not Euclidean division."
     }
   ]
 }
