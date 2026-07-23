@@ -53,6 +53,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Proof Strategy: F₂₀ Realization via X⁵-2",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "States that $|\\mathrm{Gal}(X^5-2/\\mathbb{Q})| = 20$, realizing the Frobenius group $F_{20} = \\mathbb{Z}/5\\mathbb{Z} \\rtimes \\mathbb{Z}/4\\mathbb{Z}$, the third file in a series of solvable Inverse Galois realizations (S₃, D₄, F₂₀) via successive quintic/quartic radical extensions.",
+      "mathContext": "Lower bound $20 \\mid |\\mathrm{Gal}|$ from irreducibility (degree 5) and the degree-4 cyclotomic factor $\\Phi_5$ with $\\gcd(4,5)=1$; upper bound from the tower law $[\\mathbb{Q}(\\alpha,\\zeta_5):\\mathbb{Q}] \\le 20$."
+    },
+    {
       "id": "irreducibility",
       "title": "Parts I–II: Irreducibility of X⁵−2 and Lower Bound 5 | |Gal|",
       "startLine": 38,
