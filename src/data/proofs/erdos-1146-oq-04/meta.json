@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: an axiom-free upper bound on the 3-smooth count",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring. States Erdős #1146 (open: is the 3-smooth set B = {2^m·3^n} an essential component?), noting the difficulty is that B's counting function sits right at Ruzsa's (log N)^{1+c} threshold. Records that the parent file axiomatizes the ~C·(log N)² growth (smooth23_counting) and this entry removes that axiom on the upper-bound side: an elementary lattice-point count gives |B ∩ [1,N]| ≤ (log₂N + 1)² with 0 axioms and 0 sorries, leaving the matching Ω((log N)²) lower bound as future work.",
+      "mathContext": "Every $2^m 3^n \\le N$ forces both $2^m \\le N$ and $3^n \\le N$, so $m, n \\le \\log_2 N$; counting lattice points in this $(\\log_2 N + 1) \\times (\\log_2 N+1)$ box gives the elementary bound $|B \\cap [1,N]| \\le (\\log_2 N+1)^2$, matching the conjectural $\\Theta((\\log N)^2)$ growth up to the constant."
+    },
+    {
       "id": "pairbound",
       "title": "The Exponent-Pair Search Box",
       "startLine": 36,
