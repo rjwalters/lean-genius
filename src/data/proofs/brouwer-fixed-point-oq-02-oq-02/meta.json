@@ -82,6 +82,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Query Complexity for Specific Function Classes", "startLine": 1, "endLine": 27, "summary": "Poses the question of optimal query complexity for finding approximate fixed points of Lipschitz/contractive/smooth function classes via an oracle-query model, and lists the eight results proved: contraction uniqueness, error bounds, binary-search and information-theoretic query counts, and a quadratic (Newton-type) convergence rate.", "mathContext": "The oracle model charges one query per evaluation of $f$; the results separate contractions (needing $O(\\log(1/\\varepsilon))$ queries by binary search, matching an $\\Omega(\\log(1/\\varepsilon))$ information-theoretic lower bound) from smooth Newton-type iteration (doubly-logarithmic query count)."},
     {
       "id": "function-classes",
       "title": "Function Class Definitions",
