@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "A Taylor-Bound Squeeze Instead of Three L'Hôpital Passes",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module doc: the classic third-order 0/0 limit lim (x − sin x)/x³ = 1/6, normally requiring three applications of L'Hôpital, is instead read off from Mathlib's cubic Taylor bound Real.sin_bound and a squeeze.",
+      "mathContext": "Degree-4 numerator error over the degree-3 denominator x³ leaves an O(|x|) deviation from 1/6."
+    },
+    {
       "id": "deviation-bound",
       "title": "The Linear Deviation Bound",
       "startLine": 33,
@@ -80,18 +88,26 @@
       "mathContext": "A degree-4 error over a degree-3 denominator yields an O(|x|) estimate."
     },
     {
-      "id": "the-limit",
-      "title": "The Cubic Sine Limit via Squeeze",
+      "id": "the-limit-setup",
+      "title": "Reducing the Limit to a Normed Squeeze",
       "startLine": 49,
+      "endLine": 55,
+      "summary": "tendsto_cubic_sine rewrites the goal as a limit-to-0 of the deviation (tendsto_sub_nhds_zero_iff), then invokes squeeze_zero_norm' with envelope a x = (5/96)·|x|, leaving two obligations: an eventual bound and a vanishing majorant.",
+      "mathContext": "‖deviation‖ ≤ (5/96)|x| eventually, and (5/96)|x| → 0, suffice for squeeze_zero_norm'."
+    },
+    {
+      "id": "squeeze-obligations",
+      "title": "Discharging the Two Squeeze Obligations",
+      "startLine": 56,
       "endLine": 69,
-      "summary": "tendsto_cubic_sine squeezes the deviation between 0 and (5/96)·|x| using squeeze_zero_norm', with |x| ≤ 1 supplied eventually by the closed unit ball.",
-      "mathContext": "(x − sin x)/x³ → 1/6 as x → 0 through nonzero x, no iterated L'Hôpital."
+      "summary": "The eventual bound is assembled from filter-membership facts (x ≠ 0 via self_mem_nhdsWithin, |x| ≤ 1 via the closed unit ball being a neighbourhood of 0); the majorant (5/96)·|x| → 0 follows from continuity of |·|.",
+      "mathContext": "Eventual bound on the punctured closed unit ball; majorant → 0 by continuous_abs."
     },
     {
       "id": "taylor-coefficient",
       "title": "The Value as a Taylor Coefficient",
       "startLine": 71,
-      "endLine": 81,
+      "endLine": 83,
       "summary": "tendsto_cubic_sine_factorial restates the limit value 1/6 as 1/3!, the third Maclaurin coefficient of x − sin x.",
       "mathContext": "1/6 = 1/3! identifies the limit with the leading nonvanishing Taylor term."
     }
