@@ -102,11 +102,11 @@
     "proofId": "spectral-trace-det-eigenvalues-oq-02",
     "range": {
       "startLine": 150,
-      "endLine": 196
+      "endLine": 208
     },
     "type": "concept",
     "title": "Concrete ℤ Witnesses",
-    "content": "Worked integer examples making the phenomena tangible. trace_mul_comm_cross_dim(_value): a 1×2 and a 2×1 matrix whose products A·B (1×1) and B·A (2×2) have different SIZES yet both trace 11 — the rectangular case in action. trace_mul_comm_noncomm_example with mul_comm_noncomm_example_ne and _value: a non-commuting pair (A·B ≠ B·A as matrices) whose two products nonetheless share trace 3 — equal traces do not imply equal products. trace_commutator_example: that pair's commutator A·B − B·A has trace 0, the general vanishing made concrete.",
+    "content": "Worked integer examples making the phenomena tangible. trace_mul_comm_cross_dim(_value): a 1×2 and a 2×1 matrix whose products A·B (1×1) and B·A (2×2) have different SIZES yet both trace 11 — the rectangular case in action. trace_mul_comm_noncomm_example with mul_comm_noncomm_example_ne and _value: a non-commuting pair (A·B ≠ B·A as matrices) whose two products nonetheless share trace 3 — equal traces do not imply equal products. trace_commutator_example: that pair's commutator A·B − B·A has trace 0, applying trace_commutator_eq_zero directly to close the file's proof content. After the namespace closes, six `#print axioms` commands check the five headline theorems plus the cross-dimension witness, machine-verifying the docstring's claim of no `sorry` and no axioms beyond `propext`/`Classical.choice`/`Quot.sound`.",
     "mathContext": "Cross-dim: $\\operatorname{tr}(AB)=\\operatorname{tr}(BA)=11$ with $AB\\in M_1,\\ BA\\in M_2$. Non-commuting: $AB\\neq BA$ but both trace $3$; $\\operatorname{tr}(AB-BA)=0$.",
     "significance": "supporting",
     "relatedConcepts": [
