@@ -43,12 +43,12 @@
     "historicalContext": "Paul Erdős and András Gyárfás introduced R(n;k,r) in their 1997 paper 'A variant of the classical Ramsey problem' [Er97b], proposing that the growth rate is precisely exponential in n^{1/(k-1)}. This generalizes the classical Ramsey number R(n) = R(n;2,2) from Ramsey (1930), where the exponent 1/(k-1) reduces to 1 for k=2. Erdős and Gyárfás proved the lower bound R(n;3,r) > C^{√n} using a probabilistic argument — a random 2-coloring of K_N typically has no large monochromatic-clique-free sets when N is subexponential. The upper bound R(n;3,r) < C^{√n} remains open as of 2025. Girão observed that the original formulation of the problem has an ambiguity regarding whether R(n;k,r) requires the n vertices to avoid all monochromatic K_k or just K_k in a single color, leading to different interpretations in the literature.",
     "problemStatement": "Does there exist C > 1 (depending on r) such that R(n;3,r) < C^{√n}? More generally, are there C₁,C₂ > 1 with C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}?",
     "text": "R(n;k,r) is the smallest N such that every r-coloring of K_N has n vertices with no monochromatic K_k. Erdős–Gyárfás conjecture: C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}.",
-    "proofStrategy": "We define EdgeColoring as functions from ordered pairs (with i < j) to Fin r, avoiding directed-edge redundancy. AvoidsMono checks that no k-subset of a vertex set S is monochromatic in a given color, and NoMonoClique universally quantifies over all r colors. HasRamseyAvoid N n k r is the Ramsey property: every r-coloring of K_N admits an n-vertex set with no monochromatic K_k. The Erdős–Gyárfás conjecture is stated with Filter.atTop for the 'all sufficiently large n' quantifier, and the known lower bound is axiomatized since its proof uses probabilistic methods beyond Lean's current Mathlib.",
+    "proofStrategy": "We define EdgeColoring as functions from ordered pairs (with i < j) to Fin r, avoiding directed-edge redundancy. AvoidsMono checks that no k-subset of a vertex set S is monochromatic in a given color, and NoMonoClique universally quantifies over all r colors. HasRamseyAvoid N n k r is the Ramsey property: every r-coloring of K_N admits an n-vertex set with no monochromatic K_k. The Erdős–Gyárfás conjecture is stated with Filter.atTop for the 'all sufficiently large n' quantifier. The known lower bound is documented only in a header comment (never declared as a Lean axiom, def, or theorem), since its proof uses probabilistic methods beyond Lean's current Mathlib. The five basic structural properties (base cases and anti-monotonicity in colors) are fully proved as Lean theorems — not axiomatized.",
     "keyInsights": [
       "The exponent 1/(k-1) in R(n;k,r) ~ C^{n^{1/(k-1)}} matches the classical Ramsey number growth rate R(n) ~ C^n for k=2 — the generalized Ramsey problem interpolates between vertex-Ramsey (k=2) and edge-Ramsey (k=3) via the clique size parameter",
       "The lower bound proof uses the probabilistic method: a random r-coloring of K_N creates monochromatic K_k in any fixed n-set with probability (1/r)^{C(k,2)}, and union-bounding over all n-subsets shows no large clique-free set exists when N < C^{n^{1/(k-1)}}",
       "The formalization separates the ordered-pair edge representation ({p : Fin N × Fin N // p.1 < p.2}) from the coloring function, making the bijection with undirected edges explicit and avoiding double-counting",
-      "Monotonicity (more vertices help) and anti-monotonicity in colors (more colors make avoidance easier) are structural properties that constrain R(n;k,r) and enable inductive arguments — they are axiomatized here as the proofs require embedding arguments not yet in Mathlib",
+      "Anti-monotonicity in colors (more colors make avoidance easier) is proved by noMonoClique_of_color_embed via Fin.castLE — a real Lean theorem, not an axiom. No monotonicity-in-N property is present in this file (in either axiom or theorem form)",
       "Girão's observation about formulation ambiguity is mathematically significant: the 'all colors simultaneously' vs 'exists a color' interpretations give different Ramsey functions, and the correct interpretation affects which bounds are known"
     ],
     "prerequisites": [
@@ -85,24 +85,24 @@
       "title": "Known Results: Erdős–Gyárfás Lower Bound",
       "startLine": 67,
       "endLine": 71,
-      "summary": "Axiomatizes the Erdős–Gyárfás lower bound: for r ≥ 2, there exists C > 1 such that for large n, no N < C^{√n} satisfies HasRamseyAvoid N n 3 r. This is the contrapositive form — stated as non-existence below the threshold rather than existence above it — which is more natural for the Lean formalization."
+      "summary": "States the Erdős–Gyárfás lower bound in a header comment only (lines 69-70) — it is not declared as a Lean axiom, def, or theorem: for r ≥ 2, there exists C > 1 such that for large n, no N < C^{√n} satisfies HasRamseyAvoid N n 3 r. This is the contrapositive form — stated as non-existence below the threshold rather than existence above it — which is more natural for a future Lean formalization."
     },
     {
       "id": "basic",
       "title": "Basic Structural Properties",
       "startLine": 72,
       "endLine": 140,
-      "summary": "Five axiomatized structural properties: (1) monotonicity in N — larger complete graphs make it easier to find clique-free sets; (2) anti-monotonicity in r — more colors make monochromatic cliques harder to form; (3) vacuity for k ≤ 2 — no 2-element set forms a monochromatic K_2 in the avoidance sense; (4) singleton case — any 1-vertex set trivially avoids K_3; (5) n=0 — the empty set satisfies any clique avoidance condition."
+      "summary": "Five fully proved theorems (0 axioms): (1) hasRamseyAvoid_zero — the n=0 case is vacuously satisfiable by the empty set; (2) hasRamseyAvoid_one_of_k_ge_three — a 1-vertex set trivially avoids monochromatic K_k for k ≥ 3; (3) noMonoClique_of_card_lt — any set with fewer than k elements vacuously avoids monochromatic K_k; (4) hasRamseyAvoid_of_n_le_one — combines the n=0 and n=1 base cases for N ≥ n; (5) noMonoClique_of_color_embed — anti-monotonicity in colors: avoidance for r colors lifts to any r' ≥ r colors via Fin.castLE."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques, encoding the full Erdős–Gyárfás conjecture, the k=3 specialization, the known lower bound, and five structural properties (0 sorries, 0 axiom declarations). The five deep results whose proofs require probabilistic methods or embedding arguments are stated as Lean `def : Prop` conjectures, not formal `axiom` declarations. The formalization provides a clean framework for stating and eventually proving these Ramsey-theoretic bounds.",
+    "summary": "The formalization states Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques as two unproved `def : Prop` conjectures (the general Erdős–Gyárfás conjecture and its k=3 specialization), documents the known lower bound in a header comment only, and separately proves five basic structural properties as complete Lean theorems (0 sorries, 0 axioms). The five structural properties are genuine proved results, not axioms or conjectures — they establish base cases (n=0, n=1, small sets) and anti-monotonicity in the number of colors. The formalization provides a clean framework for stating and eventually proving the still-open exponential bounds.",
     "implications": "Resolution of the upper bound R(n;3,r) < C^{√n} would complete the characterization of the growth rate for anti-Ramsey numbers at clique size 3, establishing a sharp exponential threshold analogous to the Erdős–Szekeres bound for classical Ramsey numbers. The general conjecture would extend this to all clique sizes, potentially unifying probabilistic and algebraic approaches to Ramsey theory.",
     "openQuestions": [
       "Does R(n;3,r) < C^{√n} hold for some C > 1 depending on r?",
       "Is the general conjecture C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} true for all k ≥ 2?",
       "What is the correct interpretation of the problem given Girão's ambiguity observation?",
-      "Can the five axiomatized properties be proved from Mathlib once embedding lemmas are available?"
+      "Can the Erdős–Gyárfás lower bound, currently only documented in a comment, be formalized as a Lean theorem using the probabilistic method?"
     ]
   },
   "crossReferences": [
