@@ -99,6 +99,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the Power-of-a-Point invariant unifying chord/secant products",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring. Introduces the coordinate-free Power of a Point package in an arbitrary real inner-product space: the power of P w.r.t. a sphere is dist(P,center)²−radius², and PA·PB for any line through P meeting the sphere at A,B equals |power|, independent of the chosen line — unifying Intersecting Chords (Freek No. 55), Intersecting Secants, Tangent–Secant, and Equal Tangents. Distinguishes this entry from the gallery's existing Ptolemy (additive relation) and 2D coordinate chord-product proofs: this uses previously-unused Mathlib power-of-a-point lemmas and works in any dimension. Lists the seven Main results. Fully verified, 0 axioms/sorries.",
+      "mathContext": "The power of a point $P$ w.r.t. a sphere of center $O$, radius $r$ is $\\mathrm{pow}(P) = |PO|^2 - r^2$; for any line through $P$ meeting the sphere at $A,B$, $PA \\cdot PB = |\\mathrm{pow}(P)|$ regardless of the line's direction — the single invariant behind the intersecting-chords, intersecting-secants, and tangent-secant theorems."
+    },
+    {
       "id": "classical-products",
       "title": "The Classical Product Theorems",
       "startLine": 56,
