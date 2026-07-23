@@ -75,25 +75,39 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Open Question and Scope",
+      "id": "docstring-scope",
+      "title": "The Zolotarev Headline and Scope",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "States the Milestone-2 capstone goal and is explicit about scope: the arithmetic equality of the ±1 factors is Mathlib's quadratic_reciprocity; the new content is the parent's grid-transpose sign, which this file ties to the Legendre product."
+      "endLine": 34,
+      "summary": "Module docstring: the parent's Milestone-2 grid-transpose sign IS the reciprocity factor. Explicit about scope — the arithmetic equality of the ±1 factors is Mathlib's quadratic_reciprocity, so this is a capstone connecting two known facts, not an independent re-derivation."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 35,
+      "endLine": 40,
+      "summary": "Imports Mathlib (legendreSym, quadratic_reciprocity, Perm.sign) and the parent Milestone-2 file (gridTranspose, sign_gridTranspose); reopens the parent's namespace so both resolve unqualified, and opens Equiv."
     },
     {
       "id": "exponent-bridge",
       "title": "The Odd-Exponent Bridge",
-      "startLine": 44,
-      "endLine": 51,
+      "startLine": 42,
+      "endLine": 47,
       "summary": "odd_div_two_eq: for odd n, n / 2 = (n - 1) / 2, reconciling Mathlib's p/2 exponent with Milestone 2's (p-1)/2; proved by writing n = 2k+1 and discharging with omega."
     },
     {
-      "id": "capstone",
-      "title": "The Zolotarev Reciprocity Headline",
-      "startLine": 52,
+      "id": "capstone-statement",
+      "title": "The Zolotarev Reciprocity Headline: Statement",
+      "startLine": 49,
+      "endLine": 63,
+      "summary": "legendreSym_mul_eq_sign_gridTranspose is stated for distinct odd primes p, q: legendreSym q p · legendreSym p q equals the ℤˣ → ℤ cast of the grid-transpose sign."
+    },
+    {
+      "id": "capstone-proof",
+      "title": "The Zolotarev Reciprocity Headline: Proof",
+      "startLine": 64,
       "endLine": 72,
-      "summary": "legendreSym_mul_eq_sign_gridTranspose: legendreSym q p · legendreSym p q = (sign (gridTranspose p q) : ℤ) for distinct odd primes, assembled from Mathlib's quadratic_reciprocity, the parent's sign_gridTranspose, the exponent bridge, and the ℤˣ → ℤ cast."
+      "summary": "A single rewrite chain: legendreSym.quadratic_reciprocity collapses the left side, sign_gridTranspose the right, odd_div_two_eq aligns the two exponent forms, and Units.val_pow_eq_pow_val plus norm_num close the ℤˣ → ℤ cast."
     }
   ],
   "mainTheorems": [
