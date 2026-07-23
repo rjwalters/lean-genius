@@ -134,6 +134,21 @@
       "proofId": "euler-criterion-squares-oq-01",
       "relationship": "related",
       "description": "Both rest on Fermat's little theorem in ZMod p. Euler's criterion squares the relation (a^((p−1)/2) = ±1) to detect quadratic residues; this entry gives the full Frobenius/Fermat statement a^p = a as the assertion that x ↦ x^p is the identity on ZMod p."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-01",
+      "relationship": "answered-by",
+      "description": "Answers open question 1: exhibits the iterated Frobenius x ↦ x^(p^k) as a generator of Gal(𝔽_{p^n}/𝔽_p) with order exactly n, over the canonical model GaloisField p n."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-02",
+      "relationship": "answered-by",
+      "description": "Answers open question 2: characterizes the fixed field of the Frobenius as exactly the prime subfield 𝔽_p (frobenius F p x = x ↔ x ∈ (⊥ : Subfield F))."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-03",
+      "relationship": "answered-by",
+      "description": "Answers open question 3: proves the Frobenius is injective (a monomorphism) on any domain of characteristic p and, on a finite field, also surjective — hence an automorphism."
     }
   ],
   "leanFile": {
@@ -217,9 +232,10 @@
     "summary": "Packages the Frobenius endomorphism x ↦ x^p of a prime-characteristic ring as a ring homomorphism — the freshman's dream (x+y)^p = x^p + y^p being its key additive property — and gives the two basic characterizations: over ZMod p it is the identity (frobenius_zmod_eq_id), i.e. Fermat's little theorem a^p = a (fermat_little); over a finite field of order q the q-power map and its iterates are the identity (finite_field_pow_card, finite_field_iterate). Concrete ZMod 5 / ZMod 3 checks by decide. All 9 theorems verified with 0 sorries and 0 axioms, no native_decide.",
     "implications": "The Frobenius is the central operator of positive-characteristic algebra and number theory: it generates the Galois groups of finite fields, characterizes perfect and separable fields, and lifts to the Frobenius morphisms driving arithmetic geometry (Weil conjectures, crystalline and p-adic cohomology). The freshman's dream is the elementary shadow of all of this, and Fermat's little theorem is exactly the statement that the Frobenius fixes the prime field.",
     "openQuestions": [
-      "Exhibit the iterated Frobenius x ↦ x^(p^k) as a generator of Gal(𝔽_{p^n} / 𝔽_p), with order exactly n",
-      "Characterize the fixed field of the Frobenius (the prime subfield 𝔽_p) and relate to perfect fields where Frobenius is bijective",
-      "Prove injectivity of the Frobenius on a domain (it is a monomorphism) and surjectivity on a finite field, hence an automorphism"
+      "Now discharged by frobenius-endomorphism-oq-01-oq-01, which exhibits the iterated Frobenius as a generator of Gal(𝔽_{p^n}/𝔽_p) with order exactly n over the canonical model GaloisField p n.",
+      "Now discharged by frobenius-endomorphism-oq-01-oq-02, which characterizes the fixed field of the Frobenius as exactly the prime subfield 𝔽_p.",
+      "Now discharged by frobenius-endomorphism-oq-01-oq-03, which proves the Frobenius is injective on any domain of characteristic p and, on a finite field, also surjective — hence an automorphism.",
+      "The three answering entries each pose the same next step from a different angle: establish the full subfield correspondence of 𝔽_{p^n} — subfields ↔ divisors d ∣ n via the fixed field of frob^d (generalizing oq-01-oq-02's fixed-field characterization) — and exhibit an explicit imperfect field, e.g. 𝔽_p(t), where the Frobenius fails to be surjective, sharpening the perfect-field dichotomy."
     ]
   },
   "sorries": 0
