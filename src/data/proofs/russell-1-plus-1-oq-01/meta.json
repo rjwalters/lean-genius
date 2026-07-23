@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-russell-1-plus-1-oq-01",
+      "title": "Module Overview: ℕ as a Lawvere Natural Numbers Object",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Proves the inductively-defined ℕ satisfies Lawvere's (1964) Natural Numbers Object universal property: for any A with a point a and endomap f, there is a unique u : ℕ → A with u 0 = a, u(succ n) = f(u n). Identifies this single universal property with the type-theoretic recursor, the set-theoretic Dedekind recursion theorem, and the category-theoretic initiality of (ℕ, zero, succ). Recovers +, * from it and proves Lambek's lemma (1 + ℕ ≅ ℕ) in concrete form; imports nothing beyond Lean core.",
+      "mathContext": "$\\exists! u : \\mathbb{N} \\to A,\\ u(0)=a \\wedge u(\\text{succ } n) = f(u(n))$; Lambek: $1 + \\mathbb{N} \\cong \\mathbb{N}$."
+    },
+    {
       "id": "peano-naturals",
       "title": "The Peano naturals",
       "startLine": 55,
