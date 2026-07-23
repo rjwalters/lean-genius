@@ -116,6 +116,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Statement and Formalization Strategy",
+      "summary": "Module docstring: states the level-of-distribution discrepancy sum, the Bombieri–Vinogradov (θ=1/2, unconditional) vs. Elliott–Halberstam (all θ<1, open) distinction, and explains why the file formalizes the conjecture's logical skeleton over an abstract discrepancy functional rather than axiomatizing EH itself.",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "Level-of-distribution discrepancy: $\\sum_{q\\le x^\\theta}\\max_{(a,q)=1}|\\psi(x;q,a)-x/\\varphi(q)| \\ll_A x/(\\log x)^A$, proved unconditionally at $\\theta=1/2$ by Bombieri–Vinogradov and conjectured at every $\\theta<1$ by Elliott–Halberstam."
+    },
+    {
       "id": "eh-bound",
       "title": "The Level-θ Elliott–Halberstam Bound",
       "summary": "EHAtLevel D θ and LevelMonotone D over an abstract discrepancy functional",
