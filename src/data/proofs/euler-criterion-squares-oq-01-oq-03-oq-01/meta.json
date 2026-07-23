@@ -110,6 +110,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Sophie Germain Primes and Mersenne Divisors",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the goal (a Sophie Germain prime p ≡ 3 (mod 4) with q = 2p+1 prime forces q ∣ 2^p − 1), the mechanism (residue lift to q ≡ 7 (mod 8), the second supplement, Fermat's little theorem), and the compositeness corollary; then `import Mathlib`, the `SophieGermainMersenne` namespace, and `open ZMod` used throughout the file.",
+      "mathContext": "$p\\equiv 3\\pmod 4,\\ q=2p+1\\text{ prime}\\ \\Rightarrow\\ q\\mid 2^p-1$, via $q\\equiv 7\\pmod 8$, the second supplement, and Fermat's little theorem."
+    },
+    {
       "id": "residue-setup",
       "title": "Residue-Class Setup",
       "startLine": 47,
