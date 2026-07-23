@@ -102,19 +102,35 @@
     },
     {
       "id": "deficiency",
-      "title": "Deficiency and Almost-Perfect Powers of Two",
+      "title": "Every Prime Power Is Deficient",
       "startLine": 45,
-      "endLine": 85,
-      "summary": "sigma_one_prime_pow_deficient (σ(pᵏ) < 2·pᵏ for every prime power), pow_two_almost_perfect (σ(2ᵏ)+1 = 2·2ᵏ), and prime_pow_not_perfect (no prime power is perfect).",
-      "mathContext": "$\\sigma(p^k) < 2p^k$, $\\sigma(2^k)+1 = 2\\cdot 2^k$, $\\neg\\,\\mathrm{Perfect}(p^k)$."
+      "endLine": 63,
+      "summary": "sigma_one_prime_pow_deficient: σ(pᵏ) < 2·pᵏ for every prime power, by scaling the deficiency gap by the positive factor p−1 to the elementary nonnegativity pᵏ·(p−2)+1 ≥ 1.",
+      "mathContext": "$(2p^k - \\sigma(p^k))(p-1) = p^k(p-2)+1 \\ge 1 > 0$, so $\\sigma(p^k) < 2p^k$."
     },
     {
-      "id": "abundancy",
+      "id": "almost-perfect-and-not-perfect",
+      "title": "Almost-Perfect Powers of Two and Non-Perfection",
+      "startLine": 65,
+      "endLine": 85,
+      "summary": "pow_two_almost_perfect (σ(2ᵏ)+1 = 2·2ᵏ, the minimal possible positive deficiency) and prime_pow_not_perfect (no prime power is perfect, via the deficiency bound and Nat.Perfect's divisor-sum characterisation).",
+      "mathContext": "$\\sigma(2^k)+1 = 2\\cdot 2^k$; $\\neg\\,\\mathrm{Perfect}(p^k)$."
+    },
+    {
+      "id": "abundancy-bound",
       "title": "The Sharp Abundancy Bound",
-      "startLine": 86,
+      "startLine": 87,
+      "endLine": 104,
+      "summary": "abundancy_prime_pow_lt: over ℚ, σ(pᵏ)/pᵏ < p/(p−1) — the sharp bound approached as k → ∞, obtained from the engine identity via div_lt_div_iff₀.",
+      "mathContext": "$\\dfrac{\\sigma(p^k)}{p^k} < \\dfrac{p}{p-1}$, the supremum of the abundancy index over the powers of $p$."
+    },
+    {
+      "id": "abundancy-two-and-divisor-count",
+      "title": "Abundancy Below Two and the Divisor Count",
+      "startLine": 106,
       "endLine": 123,
-      "summary": "abundancy_prime_pow_lt (σ(pᵏ)/pᵏ < p/(p−1)), abundancy_prime_pow_lt_two (σ(pᵏ)/pᵏ < 2), and sigma_zero_prime_pow (τ(pᵏ) = k+1).",
-      "mathContext": "$\\dfrac{\\sigma(p^k)}{p^k} < \\dfrac{p}{p-1} \\le 2$ and $\\tau(p^k) = k+1$."
+      "summary": "abundancy_prime_pow_lt_two (σ(pᵏ)/pᵏ < 2, since p/(p−1) ≤ 2 for p ≥ 2) and the bonus identity sigma_zero_prime_pow (τ(pᵏ) = k+1).",
+      "mathContext": "$\\dfrac{\\sigma(p^k)}{p^k} < 2$ and $\\tau(p^k) = k+1$."
     }
   ],
   "crossReferences": [
