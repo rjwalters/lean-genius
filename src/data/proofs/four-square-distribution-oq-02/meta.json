@@ -59,7 +59,8 @@
       "**A representation type is a group orbit**: identifying the up-to-symmetry classes with B₄-orbits turns a counting question into orbit–stabilizer accounting, fully inside Mathlib's MulAction API.",
       "**The bound depends only on the group order**: every orbit has size at most |G| = 384, so the exact count r₄(n) forces at least r₄(n)/384 distinct types regardless of the fine stabilizer structure — a clean, assumption-free squeeze.",
       "**384 is the symmetry of the 4-cube**: |B₄| = 2⁴·4! counts the 16 sign patterns times the 24 coordinate permutations; this is the maximal orbit size (achieved by vectors with four distinct nonzero coordinates).",
-      "**Finite and analytic-dependency-free**: unlike the underlying Jacobi formula, the orbit-counting bound needs no analytic input — it is a finite statement about a group action, proved with 0 axioms."
+      "**Finite and analytic-dependency-free**: unlike the underlying Jacobi formula, the orbit-counting bound needs no analytic input — it is a finite statement about a group action, proved with 0 axioms.",
+      "**The lower bound is a term-by-term sum bound, not a direct inequality**: card_le_card_group_mul_numOrbits decomposes X into its orbits via MulAction.selfEquivSigmaOrbits, rewrites |X| as ∑_orbits |orbit|, bounds every term pointwise with card_orbit_le via Finset.sum_le_sum, and only then collapses the resulting constant sum ∑|G| into the product |G|·(number of orbits)."
     ],
     "prerequisites": [
       "Group actions, orbits and stabilizers (MulAction)",
@@ -77,12 +78,20 @@
       "mathContext": "r₄(n) = #(ordered signed 4-square representations) by Jacobi; B₄-orbits are representation types, and orbit-counting gives ⌈r₄(n)/384⌉ ≤ t(n) ≤ r₄(n)."
     },
     {
-      "id": "orbit-bounds",
-      "title": "General Orbit-Counting Bounds",
+      "id": "orbit-bounds-basic",
+      "title": "Basic Orbit Bounds",
       "startLine": 56,
+      "endLine": 75,
+      "summary": "card_orbit_le: each orbit has ≤ |G| elements, being the image of G under g ↦ g·a. numOrbits_le_card: the number of orbits is ≤ |X|, since the orbit quotient map X → X/∼ is surjective.",
+      "mathContext": "$|\\mathrm{orbit}(a)| \\le |G|$ and $\\#\\text{orbits} \\le |X|$, both via surjections onto finite types."
+    },
+    {
+      "id": "orbit-bounds-engine",
+      "title": "The Double-Bound Engine",
+      "startLine": 76,
       "endLine": 110,
-      "summary": "For any finite group G acting on a finite type X: each orbit has ≤ |G| elements, the number of orbits is ≤ |X|, and |X| ≤ |G|·(number of orbits). Packaged as a double bound, with positivity of the orbit count for nonempty X.",
-      "mathContext": "Orbit–stabilizer and the orbit decomposition X ≃ Σ_orbits orbit give |X| = ∑|orbit| with each |orbit| ≤ |G|, hence |X|/|G| ≤ #orbits ≤ |X|."
+      "summary": "card_le_card_group_mul_numOrbits: |X| ≤ |G|·(number of orbits), by decomposing X as the disjoint union of its orbits (selfEquivSigmaOrbits) and summing the per-orbit bound card_orbit_le with Finset.sum_le_sum. numOrbits_bounds packages both directions; numOrbits_pos gives positivity of the orbit count for nonempty X.",
+      "mathContext": "$|X| = \\sum_{\\text{orbits}} |\\text{orbit}| \\le |G|\\cdot\\#\\text{orbits}$, hence $|X|/|G| \\le \\#\\text{orbits} \\le |X|$."
     },
     {
       "id": "hyperoctahedral-order",
