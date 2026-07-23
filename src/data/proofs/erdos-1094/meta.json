@@ -19,7 +19,7 @@
     "erdosNumber": 1094,
     "erdosUrl": "https://erdosproblems.com/1094",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 248,
     "assumptions": "No mathematical axioms. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false. Open conjecture; supporting lemmas fully verified. Compiler-trust disclosure: the 14 known exception witnesses (exception_7_3 … exception_284_28, the largest checking C(284,28)≈2.4×10³⁸), the non-exception witnesses (non_exception_4_2 … non_exception_100_2), the bound_* simplifications, erdos384_naive_false, and the choose_gt_one_* facts are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "mathlib_version": "4.31.0",

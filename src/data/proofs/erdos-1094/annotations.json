@@ -77,7 +77,7 @@
       "endLine": 79
     },
     "title": "Computationally Verified Exceptions",
-    "content": "Twelve of the 14 known exceptions are verified computationally using native_decide, which reduces the check to kernel evaluation. Each exception (n,k) satisfies k > 0, n ≥ 2k, and minFac(C(n,k)) > max(n/k, k). Notable cases include C(7,3) = 35 (the smallest exception, shared with Problem 384), C(62,6) (Selfridge's famous exception), and C(95,10) (the largest computationally verified).",
+    "content": "All 14 known exceptions are verified computationally using native_decide, which reduces the check to kernel evaluation. Each exception (n,k) satisfies k > 0, n ≥ 2k, and minFac(C(n,k)) > max(n/k, k). Notable cases include C(7,3) = 35 (the smallest exception, shared with Problem 384), C(62,6) (Selfridge's famous exception), and C(284,28) ≈ 2.4×10³⁸ (the largest, previously an axiom).",
     "mathContext": "Verified: $\\operatorname{lpf}\\binom{7}{3} = \\operatorname{lpf}(35) = 5 > 3 = \\max(2,3)$, $\\operatorname{lpf}\\binom{62}{6} = 11 > 10 = \\max(10,6)$, and 10 others by kernel computation.",
     "significance": "key",
     "relatedConcepts": [
