@@ -68,7 +68,8 @@
       "**The whole argument lives on the integer side.** Factoring a cubic over ℚ directly means ruling out all rational factorizations; instead one reduces mod 2, where the field has two elements and root-freeness is a two-case finite check.",
       "**Mod-2 is enough.** A cubic over a field factors iff it has a linear factor iff it has a root. X³ − X − 1 mod 2 = X³ + X + 1 evaluates to 1 at both 0 and 1, so it has no root and is irreducible — no need to try other primes.",
       "**Monicity is what makes the descent work.** Monic.irreducible_of_irreducible_map needs the polynomial monic so that the leading coefficient cannot absorb a factorization; the same monicity makes Gauss's Lemma hypothesis-free via Monic.isPrimitive.",
-      "**The bridge is reusable.** irreducible_rat_of_irreducible_map_zmod isolates the general step — monic + irreducible mod some prime ⟹ irreducible over ℚ — so future entries can certify irreducibility of any monic integer polynomial by a single finite-field computation."
+      "**The bridge is reusable.** irreducible_rat_of_irreducible_map_zmod isolates the general step — monic + irreducible mod some prime ⟹ irreducible over ℚ — so future entries can certify irreducibility of any monic integer polynomial by a single finite-field computation.",
+      "**Monicity also guarantees the reduction doesn't silently drop degree.** Reducing mod p could shrink a polynomial's degree if its leading coefficient vanished mod p; f_irreducible_zmod_two needs Monic.natDegree_map to know the mod-2 image is still a genuine cubic, and that only holds because f's leading coefficient is 1, which never maps to 0 in any ZMod p."
     ],
     "prerequisites": [
       "Polynomials over ℤ, ℚ, and finite fields",
@@ -102,11 +103,19 @@
       "mathContext": "$g\\ \\text{monic},\\ \\mathrm{Irred}_{\\mathbb{Z}/p}(g \\bmod p) \\Rightarrow \\mathrm{Irred}_{\\mathbb{Q}}(g).$"
     },
     {
-      "id": "mod-two",
-      "title": "The cubic and its rootless mod-2 reduction",
+      "id": "cubic-definition",
+      "title": "The Cubic and Its Monicity",
       "startLine": 67,
+      "endLine": 73,
+      "summary": "Defines f = X³ − X − 1 and proves f_monic via the `monicity!` tactic — the fact that licenses both the mod-p degree preservation and the hypothesis-free use of Gauss's Lemma.",
+      "mathContext": "$f = X^3 - X - 1 \\in \\mathbb{Z}[X]$, monic."
+    },
+    {
+      "id": "mod-two-analysis",
+      "title": "The Rootless Mod-2 Reduction",
+      "startLine": 75,
       "endLine": 98,
-      "summary": "Defines f = X³ − X − 1 and proves f_monic (via `monicity!`). f_map_zmod_two computes the mod-2 reduction as X³ − X − 1 over ℤ/2. f_no_root_zmod_two: the reduction evaluates to 1 at both 0 and 1, so it has no root in ℤ/2 (kernel `decide`). f_irreducible_zmod_two: a degree-3 polynomial over a field with no root is irreducible (irreducible_of_degree_le_three_of_not_isRoot).",
+      "summary": "f_map_zmod_two computes the mod-2 reduction as X³ − X − 1 over ℤ/2. f_no_root_zmod_two: the reduction evaluates to 1 at both 0 and 1, so it has no root in ℤ/2 (kernel `decide`). f_irreducible_zmod_two: a degree-3 polynomial over a field with no root is irreducible (irreducible_of_degree_le_three_of_not_isRoot), using Monic.natDegree_map to confirm the reduction is still a genuine cubic.",
       "mathContext": "$f \\bmod 2 = X^3 + X + 1 \\in (\\mathbb{Z}/2)[X]$, no root $\\Rightarrow$ irreducible cubic."
     },
     {
