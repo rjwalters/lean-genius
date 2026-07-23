@@ -77,8 +77,22 @@
       "id": "roadmap",
       "title": "Docstring: composing the two Kummer–Dedekind bricks",
       "startLine": 5,
+      "endLine": 40,
+      "summary": "Frames OQ-04 and its reduction of three_dvd_gal_card to 3 ∣ inertiaDegIn (7); recalls that Step 1 (Kummer–Dedekind) and Steps 2–3 (tower + Galois uniformity) were verified as separate 0-axiom bricks, and states that this file composes them via going up — the Step-1 prime P of 𝓞 K over (p) sits below some maximal prime Q' of the integral extension T."
+    },
+    {
+      "id": "a5-gap-effect",
+      "title": "Docstring: effect on the A₅ residual gap",
+      "startLine": 41,
       "endLine": 55,
-      "summary": "Frames OQ-04 and its reduction of three_dvd_gal_card to 3 ∣ inertiaDegIn (7); recalls that Step 1 (Kummer–Dedekind) and Steps 2–3 (tower + Galois uniformity) were verified as separate 0-axiom bricks, and states that this file composes them via going up, reducing the residual A₅ gap to purely concrete number-theoretic wiring."
+      "summary": "The docstring's second `##` subsection instantiates the composition at K = ℚ(α), T = 𝓞 q.SplittingField, G = q.Gal, p = 7, d = 3, collapsing the three-step route to one lemma application. Lists exactly what remains purely concrete: the tower/IsGaloisGroup instances, 7 ∤ exponent α, and identifying the cubic factor of q mod 7 as an element of monicFactorsMod α 7 — none of which need further abstract inertia/tower reasoning."
+    },
+    {
+      "id": "namespace-open",
+      "title": "open/namespace — the four-namespace API surface",
+      "startLine": 57,
+      "endLine": 59,
+      "summary": "`open Polynomial NumberField Ideal RingOfIntegers` exposes minpoly/natDegree, 𝓞 K/exponent/monicFactorsMod, and inertiaDeg/inertiaDegIn/IsMaximal/going-up without full qualification; `namespace DedekindKummerToTower` keeps the two local theorem names from colliding with the imported bricks."
     },
     {
       "id": "span-maximal",
