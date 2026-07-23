@@ -121,13 +121,13 @@
     "id": "well-defined",
     "proofId": "erdos-112",
     "range": {
-      "startLine": 55,
-      "endLine": 61
+      "startLine": 53,
+      "endLine": 59
     },
     "type": "concept",
-    "title": "Well-Definedness of k(n,m)",
-    "content": "The core axiom states that k(n,m) achieves its Ramsey-type guarantee: for all n, m ≥ 1, every directed graph on k ≥ k(n,m) vertices contains either an independent set of size n or a transitive tournament of size m. This is the directed analogue of the classical Ramsey theorem.",
-    "mathContext": "For all $n, m \\geq 1$ and every directed graph $G$ on $k \\geq k(n,m)$ vertices: $\\alpha(G) \\geq n \\;\\lor\\; \\text{tt}(G) \\geq m$, where $\\alpha(G)$ is the independence number and $\\text{tt}(G)$ is the maximum transitive tournament size.",
+    "title": "Main Question and Ramsey Lower Bound (Documentation Comment, Not a Lean Axiom)",
+    "content": "A plain prose comment (not a Lean declaration) states the problem and the Ramsey-type guarantee informally: k(n,m) should be the minimum size guaranteeing an independent set of size n or a transitive tournament of size m, with k(n,m) ≥ R(n,m) via the ordinary Ramsey number. No identifier for this exists in the file — it is documentation only, not a formalized axiom or theorem.",
+    "mathContext": "Informal comment recording that $k(n,m)$ is the threshold Ramsey-type function, with $R(n,m) \\leq k(n,m)$ since orienting an undirected clique yields a (not necessarily transitive) tournament. Nothing here is machine-checked.",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey theorem",
@@ -145,13 +145,13 @@
     "id": "ramsey-lower",
     "proofId": "erdos-112",
     "range": {
-      "startLine": 67,
-      "endLine": 69
+      "startLine": 64,
+      "endLine": 65
     },
     "type": "concept",
-    "title": "Ramsey Lower Bound k(n,m) ≥ R(n,m)",
-    "content": "The ordinary Ramsey number R(n,m) provides a lower bound on k(n,m). Any undirected graph can be oriented to create a directed graph, and a clique in the undirected graph becomes a tournament (not necessarily transitive) in the directed version. Since transitive tournaments are more restrictive than cliques, more vertices may be needed.",
-    "mathContext": "Since every clique of size $m$ in an undirected graph contains a transitive tournament of size $m$ when oriented, we have $R(n,m) \\leq k(n,m)$. The axiom states the weaker $k(n,m) \\geq 1$ as a placeholder for the full Ramsey bound.",
+    "title": "Larson–Mitchell Quadratic Bound (Documentation Comment, Not a Lean Axiom)",
+    "content": "A plain prose comment records the Larson–Mitchell (1997) result k(n,3) ≤ n² for transitive triples. This is a literature citation, not a formalized Lean axiom or theorem — no identifier for it exists in the file.",
+    "mathContext": "Comment-only record of the best known bound for $m=3$: $k(n,3) \\leq n^2$ (Larson–Mitchell, 1997).",
     "significance": "key",
     "relatedConcepts": [
       "Ramsey number R(n,m)",
@@ -168,13 +168,13 @@
     "id": "hunter-upper",
     "proofId": "erdos-112",
     "range": {
-      "startLine": 73,
-      "endLine": 76
+      "startLine": 61,
+      "endLine": 62
     },
     "type": "concept",
-    "title": "Hunter's 3-Color Ramsey Upper Bound",
-    "content": "Hunter's bound k(n,m) ≤ C · 3^(n+2m) arises from a 3-coloring reduction. Given a directed graph, color each pair of distinct vertices with one of three colors: 'forward edge,' 'backward edge,' or 'no edge.' A monochromatic set of color 'no edge' gives an independent set; monochromatic 'forward' or 'backward' gives a tournament, which yields the bound via the 3-color Ramsey number R(n,m,m).",
-    "mathContext": "The 3-coloring argument yields $k(n,m) \\leq R_3(n,m,m)$ where $R_3$ is the 3-color Ramsey number. Using the standard bound $R_3(n,m,m) \\leq C \\cdot 3^{n+2m}$, this gives an exponential upper bound in both $n$ and $m$.",
+    "title": "Hunter's 3-Color Ramsey Upper Bound (Documentation Comment, Not a Lean Axiom)",
+    "content": "A plain prose comment records Hunter's bound k(n,m) ≤ C · 3^(n+2m), arising from a 3-coloring reduction: coloring each vertex pair 'forward edge,' 'backward edge,' or 'no edge' reduces the problem to the 3-color Ramsey number R(n,m,m). This is documentation only — no axiom or theorem in the file formalizes it.",
+    "mathContext": "Comment-only record that the 3-coloring argument yields $k(n,m) \\leq R_3(n,m,m) \\leq C \\cdot 3^{n+2m}$, an exponential upper bound in both $n$ and $m$.",
     "significance": "key",
     "relatedConcepts": [
       "multicolor Ramsey number",
