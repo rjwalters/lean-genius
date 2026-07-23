@@ -2149,4 +2149,200 @@ theorem hErdos_thirty : hErdos 30 = 4 := by
   exact le_hErdos_of_card (k := 29) thirty_practical (by omega) (by omega)
     (by decide)
 
+/- ## The record-setter question: least practical `m` with `hErdos m = t`
+
+With the engines the exact-value table extends far enough to answer, for
+`t ≤ 4`, the natural "record-setter" question: what is the LEAST practical `m`
+with `hErdos m = t`?  The answer is `2^t` — the powers of two, exactly the
+family where the index formula `hErdos (2^k) = k` is available — because every
+practical number below `2^t` (there are only finitely many: `1, 2, 4, 6, 8, 12`
+below `16`) has index `≤ t − 1`.
+
+Three new engine values feed this:
+
+* **`hErdos 18 = 3`** — like `30`, the number `18 = 2·3²` has NO factorisation
+  into practical parts (`9`, `3` are odd), so `hErdos_mul_le` is silent and the
+  engine is the only route.  Hard target `k = 17` (two-divisor sums from
+  `{1,2,3,6,9}` reach only `15`).
+* **`hErdos 20 = 4`** — the target `k = 18` is the UNIQUE hard target
+  (`18 = 10+5+2+1` is forced: no three divisors of `20` sum to `18`).  Two
+  theory consequences: `20 < 24` yet `hErdos 20 = 4 > 3 = hErdos 24` — the
+  index is NOT monotone along practical numbers — and `d(20) = 6 < 8 = d(24)`
+  with the larger index on the smaller divisor count, sharpening the
+  structure-not-count moral of the `24`/`30` pair.
+* **`hErdos 28 = 4`** — hard target `k = 27` (`27 = 14+7+4+2` forced; the
+  three-divisor sums from `{1,2,4,7,14}` top out at `25`).
+
+The record-setter results themselves (`IsLeast` statements):
+`minimal_hErdos_two/three/four` — least practical `m` with index `2, 3, 4` is
+`4, 8, 16`.  Whether the pattern `2^t` persists for all `t` is genuinely open
+here: it would follow from the general upper bound `hErdos m ≤ log₂ m` for
+practical `m`, which fails to be greedy-provable (practical numbers can have
+consecutive-divisor ratio `> 2`, e.g. `6 → 13` in `78`), so it is recorded as
+a question, not a theorem. -/
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 18 = 3`** — engine-only, like `30`: `18 = 2·3²` has no
+factorisation into practical parts, so `hErdos_mul_le` gives nothing.  Hard
+target `k = 17`: the two-divisor sums of `{1,2,3,6,9}` reach only `9+6 = 15`. -/
+theorem hErdos_eighteen : hErdos 18 = 3 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 17) eighteen_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 20 = 4`** — unique hard target `k = 18` (`18 = 10+5+2+1` forced;
+no three divisors of `20` sum to `18`).  Note `20 < 24` with
+`hErdos 20 = 4 > 3 = hErdos 24`: the index is not monotone along practical
+numbers, and `d(20) = 6 < 8 = d(24)` puts the LARGER index on the SMALLER
+divisor count. -/
+theorem hErdos_twenty : hErdos 20 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 18) twenty_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 28 = 4`** — hard target `k = 27` (`27 = 14+7+4+2` forced; the
+three-divisor sums of `{1,2,4,7,14}` top out at `14+7+4 = 25`). -/
+theorem hErdos_twentyeight : hErdos 28 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 27) twentyeight_practical (by omega) (by omega)
+    (by decide)
+
+/-- `hErdos 8 = 3` — the power-of-two formula at `k = 3`. -/
+theorem hErdos_eight : hErdos 8 = 3 := by
+  have h := hErdos_two_pow 3
+  norm_num at h
+  exact h
+
+/-- `hErdos 16 = 4` — the power-of-two formula at `k = 4`. -/
+theorem hErdos_sixteen : hErdos 16 = 4 := by
+  have h := hErdos_two_pow 4
+  norm_num at h
+  exact h
+
+/-- **Every practical number below `16` has index at most `3`.**  The practical
+numbers below `16` are exactly `1, 2, 4, 6, 8, 12` (each non-practical value is
+excluded by a kernel `decide`), and their indices `0, 1, 2, 2, 3, 3` are all
+known exactly. -/
+theorem hErdos_le_three_of_lt_sixteen {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 16) : hErdos m ≤ 3 := by
+  interval_cases m
+  · exact absurd hm (by decide)
+  · simp [hErdos_one]
+  · simp [hErdos_two]
+  · exact absurd hm (by decide)
+  · simp [hErdos_four]
+  · exact absurd hm (by decide)
+  · simp [hErdos_six]
+  · exact absurd hm (by decide)
+  · simp [hErdos_eight]
+  · exact absurd hm (by decide)
+  · exact absurd hm (by decide)
+  · exact absurd hm (by decide)
+  · simp [hErdos_twelve]
+  · exact absurd hm (by decide)
+  · exact absurd hm (by decide)
+  · exact absurd hm (by decide)
+
+/-- **Record-setter at `t = 4`: the least practical number with index `4` is
+`16 = 2⁴`.**  Membership is the power-of-two formula; minimality is
+`hErdos_le_three_of_lt_sixteen`. -/
+theorem minimal_hErdos_four :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 4 } 16 := by
+  constructor
+  · exact ⟨by decide, hErdos_sixteen⟩
+  · rintro m ⟨hpr, h4⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_three_of_lt_sixteen hpr hlt
+    omega
+
+/-- **Record-setter at `t = 3`: the least practical number with index `3` is
+`8 = 2³`.**  The practical numbers below `8` are `1, 2, 4, 6` with indices
+`0, 1, 2, 2`. -/
+theorem minimal_hErdos_three :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 3 } 8 := by
+  constructor
+  · exact ⟨by decide, hErdos_eight⟩
+  · rintro m ⟨hpr, h3⟩
+    by_contra hlt
+    push Not at hlt
+    have h : hErdos m ≤ 2 := by
+      interval_cases m
+      · exact absurd hpr (by decide)
+      · simp [hErdos_one]
+      · simp [hErdos_two]
+      · exact absurd hpr (by decide)
+      · simp [hErdos_four]
+      · exact absurd hpr (by decide)
+      · simp [hErdos_six]
+      · exact absurd hpr (by decide)
+    omega
+
+/-- **Record-setter at `t = 2`: the least practical number with index `2` is
+`4 = 2²`.**  The practical numbers below `4` are `1, 2` with indices `0, 1`. -/
+theorem minimal_hErdos_two :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 2 } 4 := by
+  constructor
+  · exact ⟨by decide, hErdos_four⟩
+  · rintro m ⟨hpr, h2⟩
+    by_contra hlt
+    push Not at hlt
+    have h : hErdos m ≤ 1 := by
+      interval_cases m
+      · exact absurd hpr (by decide)
+      · simp [hErdos_one]
+      · simp [hErdos_two]
+      · exact absurd hpr (by decide)
+    omega
+
+/-- `hErdos 32 = 5` — the power-of-two formula at `k = 5`. -/
+theorem hErdos_thirtytwo : hErdos 32 = 5 := by
+  have h := hErdos_two_pow 5
+  norm_num at h
+  exact h
+
+/-- **Every practical number below `32` has index at most `4`.**  The practical
+numbers in `[16, 32)` are `16, 18, 20, 24, 28, 30`, all pinned at index `≤ 4`
+by the engine values; below `16` the bound is
+`hErdos_le_three_of_lt_sixteen`. -/
+theorem hErdos_le_four_of_lt_thirtytwo {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 32) : hErdos m ≤ 4 := by
+  by_cases h16 : m < 16
+  · exact (hErdos_le_three_of_lt_sixteen hm h16).trans (by omega)
+  · push Not at h16
+    interval_cases m
+    · simp [hErdos_sixteen]
+    · exact absurd hm (by decide)
+    · simp [hErdos_eighteen]
+    · exact absurd hm (by decide)
+    · simp [hErdos_twenty]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_twentyfour]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_twentyeight]
+    · exact absurd hm (by decide)
+    · simp [hErdos_thirty]
+    · exact absurd hm (by decide)
+
+/-- **Record-setter at `t = 5`: the least practical number with index `5` is
+`32 = 2⁵`.**  The record-setter sequence for `t = 1, …, 5` is
+`2, 4, 8, 16, 32` — so far exactly the powers of two, the family where the
+index formula `hErdos (2^k) = k` holds.  Whether this persists for all `t`
+is open (see the section comment). -/
+theorem minimal_hErdos_five :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 5 } 32 := by
+  constructor
+  · exact ⟨by decide, hErdos_thirtytwo⟩
+  · rintro m ⟨hpr, h5⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_four_of_lt_thirtytwo hpr hlt
+    omega
+
 end Erdos18

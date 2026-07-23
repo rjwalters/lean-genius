@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "2026-07-23: exact table extended + RECORD-SETTERS proved — hErdos 18 = 3 (engine-only, no practical factorisation), hErdos 20 = 4 (unique hard target 18; NON-MONOTONICITY: 20 < 24 but hErdos 20 = 4 > 3 = hErdos 24, and d(20) = 6 < 8 = d(24)), hErdos 28 = 4 (hard target 27), hErdos 8/16/32 via the power formula, and minimal_hErdos_two/three/four/five (IsLeast): the least practical m with hErdos m = t is 2^t for t = 2..5 — record-setter sequence 2, 4, 8, 16, 32. All 0-axiom, docker-verified. Open question crystallised: is the record-setter 2^t for ALL t? Would follow from hErdos m <= log2 m (practical m), but the greedy proof FAILS (practical 78 has divisor-gap ratio 13/6 > 2), so a non-greedy argument is needed.",
     "blockers": [],
-    "nextAction": "The correct Erdos #18 index is now formalized in Erdos18WIP01.lean: repLength m k (fewest divisors of m summing to k) and hErdos m = max_{k<m} repLength m k, with the axiom-free sandwich 1 <= hErdos m <= h m <= d(m) for practical m>=2 (hErdos_le_h confirms the parent's universal-set h over-counts) and the prize conjectures re-homed onto hErdos (conjecture_part1_erdos, conjecture_part2_weak_erdos). RESIDUAL mechanic follow-up: rename the parent Erdos18Problem.lean h -> hCover and repoint its conjecture_part1/part2_weak/part2_strong (and the Erdos18OQ01 subadditivity) at hErdos. DEEP/open: hErdos(n!) < n^{o(1)} (Vose 1985, ~sqrt log m i.o.) unformalized. Practicality-membership theory saturated.",
+    "nextAction": "Record-setter t = 6 (= 64?) needs engine values for practicals in (32,64): 36, 40, 42, 48, 54, 56, 60 (decides slower: d(48) = 10 => 1024-subset powerset x 48 targets). General lower-bound engine iterating the gap argument below m/2. Study where the index DROPS (20 vs 24 non-monotonicity). The log2 upper bound for practical m (would settle the record-setter question) needs a non-greedy argument. Deep Vose hErdos(n!) < n^{o(1)} still blocked at the elementary layer.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -56,7 +56,11 @@
       "le_repLength_of_card + le_hErdos_of_card in Erdos18WIP01.lean (decide-powered lower-bound engine)",
       "hErdos_twentyfour = 3, hErdos_four = 2, twentyfour_practical in Erdos18WIP01.lean",
       "hErdos_mul_lt_four_six in Erdos18WIP01.lean (first strict subadditivity instance)",
-      "hErdos_thirty = 4, thirty_practical in Erdos18WIP01.lean"
+      "hErdos_thirty = 4, thirty_practical in Erdos18WIP01.lean",
+      "hErdos_eighteen (= 3), hErdos_twenty (= 4), hErdos_twentyeight (= 4) — engine exact values in Erdos18WIP01.lean",
+      "hErdos_eight/hErdos_sixteen/hErdos_thirtytwo — power-formula specialisations in Erdos18WIP01.lean",
+      "hErdos_le_three_of_lt_sixteen + hErdos_le_four_of_lt_thirtytwo (finite practical-enumeration bounds) in Erdos18WIP01.lean",
+      "minimal_hErdos_two/three/four/five (IsLeast record-setters: least practical m with index t is 2^t, t = 2..5) in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -80,7 +84,10 @@
       "hErdos 12 = 3 shows subadditivity hErdos(a*b)<=hErdos a+hErdos b is TIGHT at 12=2*6; the counting bound lt_hErdos_of_pow_lt only gives hErdos 12 >= 2, so the combinatorial gap argument is strictly sharper at small scales",
       "Exact hErdos values reduce to two kernel decides via engines: upper (forall k < m exists small witness subset) + lower (one hard target where every summing subset is large); maxRecDepth 20000 needed for 8-divisor powersets",
       "Subadditivity hErdos(ab) <= hErdos a + hErdos b can be STRICT: hErdos(4*6) = 3 < 4 = hErdos 4 + hErdos 6, while 12 = 2*6 is tight — tightness depends on the factorisation",
-      "hErdos 30 = 4 is unreachable by subadditivity (30 = 2*3*5 has no practical factorisation) — the decide engine is strictly stronger than all prior bound tools; d(24) = d(30) = 8 but hErdos differs (3 vs 4), so the index sees divisor structure not divisor count"
+      "hErdos 30 = 4 is unreachable by subadditivity (30 = 2*3*5 has no practical factorisation) — the decide engine is strictly stronger than all prior bound tools; d(24) = d(30) = 8 but hErdos differs (3 vs 4), so the index sees divisor structure not divisor count",
+      "The index is NOT monotone along practical numbers: hErdos 20 = 4 > 3 = hErdos 24 with 20 < 24 and d(20) < d(24) — the larger index on the smaller divisor count",
+      "Record-setter sequence (least practical m with hErdos = t) is 2,4,8,16,32 for t = 1..5 — exactly the powers of two; 2^t for all t would follow from hErdos m <= log2 m (practical m), but greedy halving fails: practical numbers can have consecutive-divisor ratio > 2 (78 = 2*3*13, gap 6 -> 13)",
+      "Finite practical-enumeration goals: interval_cases + 'exact absurd hpr (by decide)' on non-practical values + 'simp [hErdos_<val>]' on pinned values; chain helpers with a by_cases at the previous threshold"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -108,7 +115,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.780Z",
-  "lastUpdate": "2026-07-22T05:59:07Z",
+  "lastUpdate": "2026-07-23",
   "significance": 7,
   "tractability": 5
 }
