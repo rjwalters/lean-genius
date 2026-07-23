@@ -92,12 +92,20 @@
       "mathContext": "General Jacobson-radical Nakayama for an arbitrary commutative ring."
     },
     {
-      "id": "local-forms",
-      "title": "The Local-Ring Forms",
+      "id": "local-vanishing",
+      "title": "nakayama_local: the Textbook Statement",
       "startLine": 72,
+      "endLine": 79,
+      "summary": "Under [IsLocalRing R]: nakayama_local specializes the Jacobson baseline to I = 𝔪, discharging I ≤ jacobson ⊥ by maximalIdeal_le_jacobson ⊥. This one line — N ≤ 𝔪·N ⟹ N = ⊥ — is the single most-cited form of Nakayama's lemma.",
+      "mathContext": "$N \\text{ f.g.},\\ N \\le \\mathfrak{m}\\cdot N \\implies N = \\bot$, via $\\mathfrak{m} \\le \\mathrm{jacobson}(\\bot)$."
+    },
+    {
+      "id": "subsingleton-bridge",
+      "title": "From ⊤ = ⊥ to Subsingleton M",
+      "startLine": 81,
       "endLine": 97,
-      "summary": "Under [IsLocalRing R]: nakayama_local (N ≤ 𝔪·N ⟹ N = ⊥, via 𝔪 ≤ jacobson ⊥); nakayama_local_top (finite M with M ≤ 𝔪·M is Subsingleton, translating ⊤ = ⊥ to a type-level triviality); nakayama_local_top_ne (the contrapositive: nonzero finite M has 𝔪·M ≠ M).",
-      "mathContext": "Textbook local Nakayama: 𝔪M = M ⟹ M = 0, and M/𝔪M ≠ 0 for M ≠ 0 finitely generated."
+      "summary": "nakayama_local_top upgrades the submodule equation to the type level: a finite M with M ≤ 𝔪·M is Subsingleton, since ⊤ = ⊥ forces every element into ⊥. nakayama_local_top_ne is the contrapositive — a nonzero finite M has 𝔪·M ≠ M — closed via not_subsingleton.",
+      "mathContext": "$\\mathfrak{m}\\cdot M = M \\implies \\mathrm{Subsingleton}(M);\\quad M \\ne 0 \\implies \\mathfrak{m}\\cdot M \\ne M$."
     },
     {
       "id": "generators",
