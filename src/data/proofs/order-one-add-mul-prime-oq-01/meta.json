@@ -136,12 +136,20 @@
       "mathContext": "$\\operatorname{ord}_{p^{n+1}}(1 + p a) = p^{n}$ for $p$ an odd prime, $p \\nmid a$."
     },
     {
-      "id": "structure",
-      "title": "Structural Corollaries",
+      "id": "structure-power",
+      "title": "Power Structure and the a = 1 Specialisation",
       "startLine": 49,
+      "endLine": 61,
+      "summary": "exists_orderOf_eq_prime_pow: the order of 1 + p·a is a power of p, so 1 + p·a is a p-element of the unit group. orderOf_one_add_prime: the textbook specialisation a = 1, re-exporting ZMod.orderOf_one_add_prime.",
+      "mathContext": "$\\exists k,\\ \\operatorname{ord}(1+pa) = p^{k}$; $\\operatorname{ord}_{p^{n+1}}(1+p) = p^{n}$."
+    },
+    {
+      "id": "structure-order-one-iff",
+      "title": "The Order-One Characterisation",
+      "startLine": 63,
       "endLine": 79,
-      "summary": "Independence of the residue a, the order being a power of p, the a = 1 specialisation, and the characterisation order = 1 ↔ n = 0.",
-      "mathContext": "$\\operatorname{ord}(1+pa) = \\operatorname{ord}(1+pb)$; $\\operatorname{ord}(1+pa) = p^{k}$; $\\operatorname{ord}(1+pa)=1 \\iff n=0$."
+      "summary": "orderOf_eq_one_iff: the order of 1 + p·a equals 1 exactly when n = 0, i.e. modulo p itself (where 1 + p·a reduces to 1). The forward direction rules out n ≥ 1 via p ≤ p^n and p ≥ 2 by omega; the reverse direction is rfl at n = 0.",
+      "mathContext": "$\\operatorname{ord}(1+pa)=1 \\iff n=0$."
     },
     {
       "id": "instances",
