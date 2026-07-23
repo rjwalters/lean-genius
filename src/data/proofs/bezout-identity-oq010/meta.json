@@ -97,6 +97,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "ℤ[√-2] as a Euclidean Domain: Inert Prime Classification", "startLine": 1, "endLine": 37, "summary": "Generalizes the inert-prime technique from a prior Bézout entry to the ring Z[sqrt(-2)]. Establishes that Z[sqrt(-2)] is a Euclidean domain under the norm N(a+b*sqrt(-2)) = a^2+2b^2 (the rounding error satisfies delta_1^2 + 2*delta_2^2 <= 3/4 < 1), and classifies inert primes: a rational prime p is prime in Z[sqrt(-2)] iff p = 5 or 7 (mod 8), i.e. the Legendre symbol (-2/p) = -1, since a^2+2b^2 mod 8 never lands in {5,7}.", "mathContext": "Euclidean function $N(a+b\\sqrt{-2})=a^2+2b^2$; rational prime $p$ stays prime in $\\mathbb{Z}[\\sqrt{-2}]$ iff $p\\equiv 5,7\\pmod 8$, since $a^2+2b^2\\bmod 8\\notin\\{5,7\\}$."},
     {
       "id": "sec-norm",
       "title": "Part I: Basic Norm Properties",
