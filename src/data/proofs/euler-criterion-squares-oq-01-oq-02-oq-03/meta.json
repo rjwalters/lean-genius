@@ -92,7 +92,8 @@
       "**Mathlib has the χ₄ power form but not the χ₈ one.** The first supplement is essentially free (χ₄_eq_neg_one_pow already exists); the real work is the second, where the closed exponent form χ₈ n = (-1)^((n²-1)/8) had to be built from the residue-class description.",
       "**The exponent (n²-1)/8 is a parity in disguise.** For odd n, 8 | n²-1, and writing n = 8k+r the quotient is even exactly when r ∈ {1,7} — a periodic, period-8 sign that the proof extracts by a single `ring` identity per residue class feeding omega's division reasoning.",
       "**Composite moduli break the residue interpretation, not the sign formula.** For prime p the value +1 means a is a quadratic residue; for composite n the Jacobi symbol can be +1 with a a non-residue, yet the clean mod-4 / mod-8 sign formulas persist unchanged — the entry states the value dictionaries J = 1 ⟺ n ≡ … without claiming residuacity.",
-      "**Multiplicativity in the top argument is the Jacobi symbol's defining advantage.** J(a·b | n) = J(a | n)·J(b | n) holds for every modulus, prime or not; combined with the supplements and reciprocity it is what powers the factorization-free evaluation algorithm."
+      "**Multiplicativity in the top argument is the Jacobi symbol's defining advantage.** J(a·b | n) = J(a | n)·J(b | n) holds for every modulus, prime or not; combined with the supplements and reciprocity it is what powers the factorization-free evaluation algorithm.",
+      "**χ₈_eq_neg_one_pow is entirely elementary, unlike the Gauss-sum proof of the analogous prime-level second supplement.** Once Mathlib's residue-value description χ₈_nat_eq_if_mod_eight is in hand, every one of the four cases n ≡ 1,3,5,7 (mod 8) is closed by a single `ring` identity for (8k+r)² feeding `omega`'s division reasoning — no character sums or Gauss's lemma are needed at this level, since the analytic content was already paid for when Mathlib built χ₈ itself."
     ]
   },
   "conclusion": {
@@ -108,6 +109,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring framing the lift of the two supplementary laws from the Legendre symbol (prime modulus) to the Jacobi symbol (arbitrary odd modulus), listing what is proved and the method; imports Mathlib, opens ZMod and scoped NumberTheorySymbols, declares namespace EulerCriterionSquaresOQ01OQ02OQ03.",
+      "mathContext": "$J(-1 \\mid n) = (-1)^{(n-1)/2}$ and $J(2 \\mid n) = (-1)^{(n^2-1)/8}$ for all odd $n > 0$, extending the prime-modulus Legendre supplements."
+    },
     {
       "id": "first-supplementary-law",
       "title": "First Supplementary Law: J(−1 | n)",
