@@ -106,11 +106,19 @@
       "mathContext": "$\\sum_{i<m\\cdot n} i^k \\equiv n\\,\\sum_{i<m} i^k \\pmod m$."
     },
     {
-      "id": "crt",
-      "title": "Factor Readings and the CRT Characterization",
+      "id": "factor-readings",
+      "title": "Reading the Composite Sum Modulo Each Factor",
       "startLine": 70,
+      "endLine": 79,
+      "summary": "sum_pow_modEq_left / sum_pow_modEq_right: the composite sum ∑_{i<a·b} iᵏ read modulo each coprime factor, both instances of the replication congruence (at m=a,n=b and m=b,n=a via Nat.mul_comm).",
+      "mathContext": "$\\sum_{i<ab} i^k \\equiv b\\sum_{i<a} i^k \\pmod a, \\qquad \\sum_{i<ab} i^k \\equiv a\\sum_{i<b} i^k \\pmod b$."
+    },
+    {
+      "id": "crt-characterization",
+      "title": "The CRT Characterization",
+      "startLine": 81,
       "endLine": 114,
-      "summary": "sum_pow_modEq_left / sum_pow_modEq_right (the two factor readings) and sum_pow_crt (the complete CRT characterization for coprime a,b), plus sum_pow_crt_two_primes (the explicit distinct-primes formula via the parent dichotomy).",
+      "summary": "sum_pow_crt (the complete CRT characterization for coprime a,b, via Nat.modEq_and_modEq_iff_modEq_mul) and sum_pow_crt_two_primes (the explicit distinct-primes formula, composing the CRT characterization with the parent's prime dichotomy).",
       "mathContext": "$x \\equiv \\sum_{i<a b} i^k \\pmod{ab} \\iff x \\equiv b\\sum_{i<a} i^k \\pmod a \\wedge x \\equiv a\\sum_{i<b} i^k \\pmod b$."
     },
     {
