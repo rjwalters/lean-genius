@@ -66,23 +66,38 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Vieta Jumping and the Question of Uniqueness",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring: the parent shows z ↦ 3xy − z sends Markov triples to Markov triples and is an involution; this file supplies the structural converse — 3xy − z is the *only* alternative, since fixing x, y makes z a root of the monic quadratic t² − 3xy·t + (x²+y²), which has at most two roots over an integral domain.",
+      "mathContext": "$g(t) = t^2 - 3xyt + (x^2+y^2)$; the Markov fiber over fixed $(x,y)$ is exactly $\\{z, 3xy-z\\}$."
+    },
+    {
       "id": "sec-quadratic",
-      "title": "The Monic Quadratic and Vieta's Formulas",
+      "title": "The Monic Quadratic and Vieta's Sum Formula",
       "startLine": 51,
-      "endLine": 82,
-      "summary": "markov_quadratic rearranges the Markov equation into z² − 3xy·z + (x² + y²) = 0, exhibiting z as a root of the monic quadratic g. markov_vieta_sum records Vieta's sum z + (3xy − z) = 3xy (companion to the parent's product formula), and markov_root_diff_sq computes the squared root-gap (2z − 3xy)² = 9x²y² − 4(x² + y²) — the discriminant of g."
+      "endLine": 65,
+      "summary": "markov_quadratic rearranges the Markov equation into z² − 3xy·z + (x² + y²) = 0, exhibiting z as a root of the monic quadratic g. markov_vieta_sum records Vieta's sum z + (3xy − z) = 3xy, the additive companion of the parent's product formula."
+    },
+    {
+      "id": "sec-discriminant",
+      "title": "The Discriminant Controls When the Fiber Degenerates",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "markov_root_diff_sq computes the squared root-gap (2z − 3xy)² = 9x²y² − 4(x² + y²) — the discriminant of g, which vanishes exactly when the two Vieta-conjugate roots coincide."
     },
     {
       "id": "sec-uniqueness",
       "title": "Fiber Uniqueness — the Neighbor Is the Only Alternative",
-      "startLine": 84,
-      "endLine": 120,
+      "startLine": 79,
+      "endLine": 114,
       "summary": "markov_fiber_pair: any two Markov values z, w over the same (x, y) satisfy w = z or w = 3xy − z, proved by factoring g(w) = 0 as (w − z)(w − (3xy − z)) = 0 (using the parent's root-product identity) and applying mul_eq_zero over ℤ. markov_fiber_eq upgrades this to the set equality {w | IsMarkov x y w} = {z, 3xy − z}, and markov_self_neighbor characterizes the repeated-root boundary 2z = 3xy."
     },
     {
       "id": "sec-perm",
       "title": "Vieta Jumping as an Involutive Permutation",
-      "startLine": 122,
+      "startLine": 116,
       "endLine": 151,
       "summary": "vieta_involutive shows z ↦ 3xy − z is a Function.Involutive on ℤ; vietaPerm packages it as an Equiv.Perm ℤ via toPerm, with simp lemmas vietaPerm_apply / vietaPerm_symm, the round-trip vietaPerm_involutive, fiber-preservation vietaPerm_mem (from the parent's markov_vieta), and the fixed-point criterion vietaPerm_fixed ⟺ 2z = 3xy."
     }
