@@ -23,6 +23,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring stating the four theorems (term_telescope, sum_Icc, sum_lt_one, tendsto_one) and the key telescoping insight; imports (Mathlib.Data.Nat.Factorial.Basic, Mathlib.Algebra.BigOperators.Intervals, Mathlib.Analysis.SpecificLimits.Basic, Mathlib.Tactic), open Finset Nat Filter Topology, and the FactorialTelescopingConverges namespace.",
+      "mathContext": "Because (k+1)! = (k+1)·k!, the term k/(k+1)! = 1/k! − 1/(k+1)!, so the sum telescopes to 1 − 1/(n+1)! → 1."
+    },
+    {
       "id": "term-telescope",
       "title": "Section I: Telescoping of Reciprocals",
       "startLine": 35,
