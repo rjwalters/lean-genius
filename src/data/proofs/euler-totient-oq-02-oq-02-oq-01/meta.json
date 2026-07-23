@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-euler-totient-oq-02-oq-02-oq-01",
+      "title": "Problem Statement: The Carmichael Function as the True Universal Exponent",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring framing the refinement over the parent (`euler-totient-oq-02-oq-02`): $\\varphi(n)$ is a universal exponent but not always the least one — the least is the Carmichael function $\\lambda(n)$, the exponent of the group $(\\mathbb{Z}/n\\mathbb{Z})^\\times$. Lists eight main results: the $\\mathrm{ModEq}$ form of $\\lambda$-universality, the exact characterization of universal exponents as multiples of $\\lambda(n)$, that $\\lambda(n)$ is the least universal exponent, a re-derivation of the parent's theorem through $\\lambda$, sharpest modular exponent reduction, and the boundary equivalence $\\lambda(n)=\\varphi(n) \\iff (\\mathbb{Z}/n\\mathbb{Z})^\\times$ cyclic. Confirms only foundational axioms are used.",
+      "mathContext": "$\\lambda(n) \\mid \\varphi(n)$ always; $\\lambda(n) = \\varphi(n)$ iff $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic (a primitive root mod $n$ exists)."
+    },
+    {
       "id": "bridge",
       "title": "Section I: The Arithmetic ⇄ Group Dictionary",
       "startLine": 60,
