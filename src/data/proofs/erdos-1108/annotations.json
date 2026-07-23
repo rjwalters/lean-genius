@@ -26,8 +26,8 @@
     "id": "ann-e1108-factorial-sums",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 43,
-      "endLine": 46
+      "startLine": 39,
+      "endLine": 42
     },
     "type": "definition",
     "title": "Factorial Sums Set",
@@ -49,8 +49,8 @@
     "id": "ann-e1108-factorial-examples",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 50,
-      "endLine": 68
+      "startLine": 46,
+      "endLine": 64
     },
     "type": "concept",
     "title": "Factorial Sum Examples",
@@ -72,8 +72,8 @@
     "id": "ann-e1108-powerful-def",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 76,
-      "endLine": 79
+      "startLine": 72,
+      "endLine": 75
     },
     "type": "definition",
     "title": "Powerful Numbers",
@@ -95,8 +95,8 @@
     "id": "ann-e1108-one-powerful",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 83,
-      "endLine": 86
+      "startLine": 79,
+      "endLine": 82
     },
     "type": "concept",
     "title": "1 is Powerful",
@@ -119,7 +119,7 @@
     "proofId": "erdos-1108",
     "range": {
       "startLine": 96,
-      "endLine": 102
+      "endLine": 104
     },
     "type": "definition",
     "title": "Main Question Sets",
@@ -142,11 +142,11 @@
     "proofId": "erdos-1108",
     "range": {
       "startLine": 106,
-      "endLine": 113
+      "endLine": 111
     },
     "type": "concept",
     "title": "Question 1 (OPEN)",
-    "content": "**erdos_1108_kth_powers_open**: For each k >= 2, does FactorialSums contain only finitely many k-th powers? This is axiomatized as a Prop since the answer is unknown.",
+    "content": "**Question 1**: For each k >= 2, does FactorialSums contain only finitely many k-th powers? This is recorded only as a documentation comment in the source — it is not formalized as a Lean axiom, definition, or theorem.",
     "mathContext": "Even the case k=2 (squares) is open. It's not known if there are infinitely many squares expressible as sums of distinct factorials.",
     "significance": "key",
     "relatedConcepts": [
@@ -156,7 +156,6 @@
     ],
     "prerequisites": [
       "number theory",
-      "Lean 4 axiom declarations",
       "Diophantine analysis"
     ]
   },
@@ -164,12 +163,12 @@
     "id": "ann-e1108-question2",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 115,
-      "endLine": 121
+      "startLine": 106,
+      "endLine": 111
     },
     "type": "concept",
     "title": "Question 2 (OPEN)",
-    "content": "**erdos_1108_powerful_open**: Does FactorialSums contain only finitely many powerful numbers? Also axiomatized as an unknown Prop.",
+    "content": "**Question 2**: Does FactorialSums contain only finitely many powerful numbers? Also recorded only as a documentation comment — not formalized as a Lean declaration.",
     "mathContext": "Powerful numbers are rarer than perfect powers, so this might be easier, but it's still open.",
     "significance": "key",
     "relatedConcepts": [
@@ -179,7 +178,6 @@
     ],
     "prerequisites": [
       "number theory",
-      "Lean 4 axiom declarations",
       "multiplicative number theory"
     ]
   },
@@ -187,12 +185,12 @@
     "id": "ann-e1108-brindza-erdos",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 125,
-      "endLine": 133
+      "startLine": 113,
+      "endLine": 117
     },
     "type": "concept",
     "title": "Brindza-Erdős Bound (1991)",
-    "content": "**brindza_erdos_bound**: For fixed r terms, if n1! + ... + nr! is powerful, then n1 <= C(r). The largest index is bounded.",
+    "content": "**Brindza-Erdős bound**: For fixed r terms, if n1! + ... + nr! is powerful, then n1 <= C(r). The largest index is bounded. This is documented as a comment describing the known result — it is not formalized as a Lean theorem or axiom in this file.",
     "mathContext": "This is a partial result: for any fixed r, only finitely many r-term factorial sums can be powerful. But r is unbounded in the main question.",
     "significance": "key",
     "relatedConcepts": [
@@ -210,8 +208,8 @@
     "id": "ann-e1108-mahler",
     "proofId": "erdos-1108",
     "range": {
-      "startLine": 140,
-      "endLine": 158
+      "startLine": 119,
+      "endLine": 136
     },
     "type": "concept",
     "title": "Mahler's Related Problem",
