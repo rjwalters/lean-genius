@@ -91,24 +91,40 @@
   "sections": [
     {
       "id": "header",
-      "title": "Documentation and Setup",
+      "title": "Documentation",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Header stating the point-side counting identity and contrasting it with the parent's Burnside-based route. Sets up a group α acting on a set β with Ω = X/G the orbit quotient.",
-      "mathContext": "The setup `{α} [Group α] {β} [MulAction α β]` with `Ω = Quotient (orbitRel α β)` is the standard Mathlib group-action context; |X/G| = Fintype.card Ω."
+      "endLine": 36,
+      "summary": "Header stating the point-side counting identity Σ_x |Stab(x)| = |X/G|·|G| and contrasting it with the parent's Burnside-based route: this entry derives it directly from orbit-stabilizer, without Burnside as an intermediate step.",
+      "mathContext": "$\\sum_{x \\in X} |\\mathrm{Stab}(x)| = |X/G| \\cdot |G|$, proved without first establishing Burnside's lemma $\\sum_g |\\mathrm{Fix}(g)| = |X/G|\\cdot|G|$."
     },
     {
-      "id": "stabilizer-bijection",
-      "title": "Stabilizer Half of the Burnside Bijection",
-      "startLine": 42,
-      "endLine": 64,
-      "summary": "sigmaStabilizerEquivOrbitsProdGroup : (Σ b : β, stabilizer α b) ≃ Ω × α, built as the calc chain orbit-decompose → conjugate stabilizers to the representative → recombine as orbit × stabilizer → collapse to G via orbit-stabilizer.",
-      "mathContext": "The disjoint union of stabilizers over all points splits orbit by orbit; on each orbit it is orbit(rep) × Stab(rep) ≃ G, so the whole union is (X/G) × G."
+      "id": "setup",
+      "title": "The G-Action Setup",
+      "startLine": 38,
+      "endLine": 44,
+      "summary": "Opens MulAction and sets up a group α acting on a set β, with Ω = Quotient (orbitRel α β) the orbit space X/G.",
+      "mathContext": "$\\{\\alpha\\}\\ [\\mathrm{Group}\\ \\alpha]\\ \\{\\beta\\}\\ [\\mathrm{MulAction}\\ \\alpha\\ \\beta]$, $\\Omega := X/G$; $|X/G| = \\mathrm{Fintype.card}\\ \\Omega$."
+    },
+    {
+      "id": "stabilizer-bijection-reindex",
+      "title": "Stabilizer Bijection — Orbit Reindexing",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "sigmaStabilizerEquivOrbitsProdGroup, first half: decomposes the disjoint union of stabilizers Σ b : X, Stab(b) over orbits (selfEquivSigmaOrbits) and reassociates it as Σ ω : Ω, Σ b : orbit(ω.out), Stab(b), one nested sum per orbit.",
+      "mathContext": "$X \\cong \\coprod_{\\omega \\in \\Omega} \\mathrm{orbit}(\\omega.\\mathrm{out})$, so $\\coprod_{x} \\mathrm{Stab}(x) \\cong \\coprod_{\\omega} \\coprod_{b \\in \\mathrm{orbit}(\\omega.\\mathrm{out})} \\mathrm{Stab}(b)$."
+    },
+    {
+      "id": "stabilizer-bijection-collapse",
+      "title": "Stabilizer Bijection — Collapsing to Ω × G",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "Second half of the calc chain: conjugates every point's stabilizer to the orbit representative's (stabilizerEquivStabilizerOfOrbitRel), recombines each orbit's contribution as orbit × Stab(rep), then collapses it to G via the orbit-stabilizer equivalence (orbitProdStabilizerEquivGroup), giving Ω × α overall.",
+      "mathContext": "On each orbit, $\\mathrm{orbit}(\\mathrm{rep}) \\times \\mathrm{Stab}(\\mathrm{rep}) \\cong G$ (orbit-stabilizer), so the whole union is $(X/G) \\times G$."
     },
     {
       "id": "counting-identity",
       "title": "The Counting Identity",
-      "startLine": 66,
+      "startLine": 67,
       "endLine": 76,
       "summary": "sum_card_stabilizer_eq_card_orbits_mul_card_group : Σ_b |Stab(b)| = |Ω| · |α|, by taking cardinalities of the equivalence (Fintype.card_sigma / card_prod / card_congr).",
       "mathContext": "Cardinality is multiplicative across the bijection: |Σ_x Stab(x)| = |(X/G) × G| = |X/G| · |G|."
