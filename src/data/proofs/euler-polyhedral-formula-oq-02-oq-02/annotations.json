@@ -82,5 +82,89 @@
     "significance": "key",
     "relatedConcepts": ["integrality", "topological invariants", "quantization"],
     "prerequisites": ["Euler characteristic"]
+  },
+  {
+    "id": "ann-connected-sum-monoid",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 367, "endLine": 477 },
+    "type": "definition",
+    "title": "Connected sum: χ(M # N) = χ(M) + χ(N) − 2, with the sphere as identity",
+    "content": "connectedSumCGB glues two same-dimensional manifolds along a removed boundary sphere, giving χ(M # N) = χ(M) + χ(N) − 2 and correspondingly dropping the total Pfaffian by the sphere's own contribution 2·(2π)^n. The surrounding lemmas verify (2n-manifolds, #) is a commutative monoid on χ with S^{2n} as two-sided identity: connectedSum_sphere_chi/_right show χ(S^{2n} # N) = χ(N # S^{2n}) = χ(N), connectedSumCGB_chi_comm and connectedSumCGB_chi_assoc give commutativity and associativity, and the matching totalPfaffian lemmas lift the whole structure to the Gauss-Bonnet integral. A first concrete instance closes the section: T² # T² is the genus-2 surface, χ = 0 + 0 − 2 = −2.",
+    "mathContext": "$\\chi(M \\# N) = \\chi(M) + \\chi(N) - 2$; $S^{2n}$ is the two-sided identity, so $(2n\\text{-manifolds}, \\#, S^{2n})$ is a commutative monoid and $\\chi - 2$ an additive homomorphism to $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["connected sum", "monoid structure", "Euler characteristic additivity"],
+    "prerequisites": ["Euler characteristic of products", "sphere manifolds"]
+  },
+  {
+    "id": "ann-genus-surface-classification",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 478, "endLine": 657 },
+    "type": "insight",
+    "title": "Σ_g classification: χ(Σ_g) = 2 − 2g and the faithful embedding (surfaces, #) ↪ (ℕ, +)",
+    "content": "genusSurfaceCGB g packages the genus-g closed orientable surface directly as the g-fold connected sum of tori: attaching each handle drops χ by 2 (genusSurfaceCGB_chi_succ), giving the closed form χ(Σ_g) = 2 − 2g, which specializes correctly at g = 0, 1, 2 to the sphere, torus, and T² # T². Part XII shows genus is additive under connected sum (Σ_g # Σ_h = Σ_{g+h}) both on χ and on the total curvature. Part XIII upgrades this to a monoid embedding (closed orientable surfaces, #) ↪ (ℕ, +): genusSurfaceCGB_chi_inj shows χ(Σ_g) = χ(Σ_h) ↔ g = h, so distinct genera are never conflated by χ, and genusSurfaceCGB_genus_of_chi gives the explicit inverse g = (2 − χ)/2.",
+    "mathContext": "$\\chi(\\Sigma_g) = 2 - 2g$; $\\chi(\\Sigma_g \\# \\Sigma_h) = \\chi(\\Sigma_{g+h})$; $\\chi(\\Sigma_g) = \\chi(\\Sigma_h) \\iff g = h$.",
+    "significance": "key",
+    "relatedConcepts": ["genus", "closed orientable surfaces", "monoid embedding", "classification"],
+    "prerequisites": ["connected sum", "Euler characteristic"]
+  },
+  {
+    "id": "ann-sign-trichotomy-products",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 658, "endLine": 744 },
+    "type": "insight",
+    "title": "Gauss-Bonnet sign trichotomy and the Betti number of product surfaces",
+    "content": "Since ∫Pf(Σ_g) = 4π(1 − g), its sign reads off the uniformization type directly from the genus: positive exactly at g = 0 (spherical), zero exactly at g = 1 (flat), negative exactly at g ≥ 2 (hyperbolic) — the full Gauss-Bonnet sign trichotomy. genusSurfaceCGB_chi_strictAnti packages the monotone half (each handle strictly lowers χ). Part XV then computes χ and the total curvature of the product 4-manifold Σ_g × Σ_h: χ = (2−2g)(2−2h) from multiplicativity of χ under products, generalizing the g = h = 0 case χ(S² × S²) = 4.",
+    "mathContext": "$\\int_M \\mathrm{Pf} = 4\\pi(1-g) \\begin{cases} > 0 & g=0 \\\\ = 0 & g=1 \\\\ < 0 & g\\ge 2\\end{cases}$; $\\chi(\\Sigma_g\\times\\Sigma_h) = (2-2g)(2-2h)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniformization", "sign of curvature", "product manifolds"],
+    "prerequisites": ["genus surface classification"]
+  },
+  {
+    "id": "ann-homological-origin-betti",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 745, "endLine": 847 },
+    "type": "context",
+    "title": "Homological origin of χ(Σ_g) = 2 − 2g: Betti numbers and Poincaré duality",
+    "content": "Parts XI–XV obtain χ(Σ_g) = 2 − 2g geometrically, from the connected-sum handle recursion. This section derives it topologically instead: genusSurfaceBetti g records the ranks (b₀,b₁,b₂) = (1, 2g, 1) of H₀,H₁,H₂(Σ_g;ℤ) as data (not computed from a Mathlib singular-homology functor), and genusSurface_euler_poincare verifies the Euler–Poincaré formula χ = b₀ − b₁ + b₂ = 1 − 2g + 1 = 2 − 2g, agreeing with the geometric value. Poincaré duality bᵢ = b_{2−i} forces b₁ = 2g to be even (genusSurface_first_betti_even) — the rank of the symplectic intersection form on H₁ — giving a second, homological proof that χ(Σ_g) is always even.",
+    "mathContext": "$b_0=1,\\ b_1=2g,\\ b_2=1$; $\\chi = b_0 - b_1 + b_2 = 2-2g$; Poincaré duality $b_i = b_{2-i}$ forces $b_1$ even.",
+    "significance": "key",
+    "relatedConcepts": ["Betti numbers", "Poincaré duality", "Euler–Poincaré formula", "singular homology"],
+    "prerequisites": ["genus surface classification"]
+  },
+  {
+    "id": "ann-product-monoid-point",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 848, "endLine": 933 },
+    "type": "definition",
+    "title": "The Cartesian-product monoid: point as identity, χ multiplicative",
+    "content": "Where connected sum # gives the sphere-identity monoid of Part X, the Cartesian product carries the complementary structure: pointCGB (the 0-dimensional single point, χ = 1, ∫Pf = 1) is the two-sided identity for prodCGB, and χ is multiplicative rather than additive. prodCGB_point_chi/_chi_point give the left/right identity laws, prodCGB_chi_comm and prodCGB_chi_assoc give commutativity and associativity, all mirroring the connected-sum monoid laws of Part X with × in place of # and 1 in place of 2. So χ is simultaneously a monoid homomorphism ((CGBManifolds,×) → (ℤ,·)) and, after subtracting 2, one ((·,#) → (ℤ,+)).",
+    "mathContext": "$\\chi(\\mathrm{pt}\\times M)=\\chi(M\\times\\mathrm{pt})=\\chi(M)$; $\\chi(M\\times N)=\\chi(M)\\chi(N)$, i.e. $\\chi:(\\mathrm{CGBManifolds},\\times)\\to(\\mathbb{Z},\\cdot)$ is a monoid homomorphism.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cartesian product", "monoid homomorphism", "identity element"],
+    "prerequisites": ["connected sum monoid"]
+  },
+  {
+    "id": "ann-kunneth-betti-formula",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 934, "endLine": 1235 },
+    "type": "insight",
+    "title": "Künneth formula: Betti numbers convolve, and the convolution is a commutative monoid",
+    "content": "For spaces with free integral homology, the Künneth theorem says the Betti numbers of a product convolve: bₖ(M×N) = Σ_{i+j=k} bᵢ(M)bⱼ(N). kunnethBetti implements this convolution, and prodSurfaceBetti_kunneth verifies the explicit product-surface table (1, 2(g+h), 2+4gh, 2(g+h), 1) — palindromic by Poincaré duality on the 4-manifold Σ_g×Σ_h — really is that convolution of the two factor sequences (1,2g,1). Its Euler–Poincaré sum reproduces (2−2g)(2−2h), so multiplicativity of χ is the homological shadow of Künneth. Part XIX then shows the convolution ⋆ itself is a commutative monoid on Betti sequences: commutative (kunnethBetti_comm, the flip M×N ≅ N×M), associative (kunnethBetti_assoc, via a triangular reindexing bijection), with the point's Betti sequence δ=(1,0,0,…) as two-sided unit — the homological image of the Cartesian-product monoid of Part XVII. Concrete instances: S²×S² has Betti (1,0,2,0,1), χ=4; T⁴=T²×T² has the binomial Betti sequence (1,4,6,4,1), χ=0.",
+    "mathContext": "$b_k(M\\times N)=\\sum_{i+j=k} b_i(M)b_j(N)$; convolution is commutative, associative, with unit $\\delta=(1,0,0,\\dots)$; $\\chi(S^2\\times S^2)=4$, $\\chi(T^4)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["Künneth formula", "Betti numbers", "convolution", "commutative monoid"],
+    "prerequisites": ["homological origin of χ", "Cartesian product monoid"]
+  },
+  {
+    "id": "ann-poincare-polynomial",
+    "proofId": "euler-polyhedral-formula-oq-02-oq-02",
+    "range": { "startLine": 1236, "endLine": 1340 },
+    "type": "insight",
+    "title": "The Poincaré polynomial of Σ_g: P(−1) = χ, P(1) = total Betti number, functional equation",
+    "content": "poincarePoly g t = 1 + 2g·t + t² packages the Betti numbers (b₀,b₁,b₂) = (1,2g,1) as a generating polynomial. Two evaluations recover invariants proved earlier: P(−1) = 2 − 2g = χ(Σ_g) (poincarePoly_neg_one, the Euler–Poincaré formula) and P(1) = 2 + 2g, the total Betti number (poincarePoly_one). The palindromic coefficients — Poincaré duality bᵢ = b_{2−i} — are equivalent to the self-reciprocal functional equation t²·P(1/t) = P(t). Finally, connected sum acts on Poincaré polynomials by addition minus the sphere's polynomial 1 + t² (poincarePoly_connectedSum); evaluating this law at t = −1 returns exactly the χ-additivity law χ(Σ_g # Σ_h) = χ(Σ_g) + χ(Σ_h) − 2, so the Poincaré-polynomial law is a genuine refinement of the earlier connected-sum χ law.",
+    "mathContext": "$P_{\\Sigma_g}(t) = 1 + 2gt + t^2$; $P(-1)=\\chi(\\Sigma_g)$, $P(1)=2+2g$; functional equation $t^2 P(1/t) = P(t)$; $P_{g+h}(t) = P_g(t)+P_h(t)-(1+t^2)$.",
+    "significance": "key",
+    "relatedConcepts": ["Poincaré polynomial", "generating function", "functional equation"],
+    "prerequisites": ["homological origin of χ"]
   }
 ]
