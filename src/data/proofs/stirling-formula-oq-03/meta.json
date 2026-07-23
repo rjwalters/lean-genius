@@ -124,6 +124,16 @@
       "targetId": "stirling-formula-oq-02",
       "relationship": "sibling",
       "description": "Both extend the Stirling family; OQ-03 isolates the underlying Wallis product as an independent π-limit"
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-01",
+      "relationship": "answered-by",
+      "description": "Directly answers this entry's first open question (rate of convergence): exhibits the explicit error bound π/2 − Wₙ ≤ π/(4(n+1)) for the partial Wallis products."
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Uses this entry's Wallis limit to derive the central binomial asymptotic C(2n,n)·√(πn)/4ⁿ → 1, via the identity (4ⁿ/C(2n,n))² = Wₙ·(2n+1)."
     }
   ],
   "conclusion": {
