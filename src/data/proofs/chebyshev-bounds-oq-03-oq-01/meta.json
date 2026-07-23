@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The θ–π Form of the Prime Number Theorem",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "States the parent's open question — complete the equivalence chain by proving θ(x) ∼ x ⟺ π(x) ∼ x/log x via partial summation between the prime-log sum and the prime-counting function. This file closes the gap with Apostol's elementary two-inequality argument instead of Abel summation: θ(x) ≤ π(x)·log x (each prime p ≤ x contributes log p ≤ log x) and π(x) ≤ x^α + θ(x)/(α log x) for 0 < α < 1 (split primes at x^α); dividing by x and letting α → 1 forces θ(x)/x and π(x)·log x/x to share a limit, so θ(x) ∼ x iff π(x) ∼ x/log x, completing the equivalence of all three classical PNT forms from Chebyshev-level tools alone.",
+      "mathContext": "$\\theta(x) \\le \\pi(x)\\log x \\le x^{\\alpha}\\log x + \\tfrac{1}{\\alpha}\\theta(x)$ for $0<\\alpha<1$; letting $\\alpha \\to 1$ gives $\\theta(x)/x \\to 1 \\iff \\pi(x)\\log x/x \\to 1$."
+    },
+    {
       "id": "bridge",
       "title": "Section I: θ's Index Set Is the Prime-Counting Function",
       "startLine": 47,
