@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: the inradius integrality claim",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring stating the three ingredients (parity, positivity, area identity) behind the inradius r=(x+y−z)/2 of an integer right triangle; imports Mathlib, opens PythagoreanTriple, and fixes x y z : ℤ.",
+      "mathContext": "$r=\\tfrac{x+y-z}{2}$; ingredients: $2\\mid x+y-z$, $z\\le x+y$, $(x+y-z)(x+y+z)=2xy$."
+    },
+    {
       "id": "parity",
       "title": "Parity: 2 ∣ (x+y−z)",
       "startLine": 43,
