@@ -49,6 +49,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Quasideterminants for 3×3 Matrices",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Answers whether the 2×2 quasideterminant theory extends recursively to 3×3 and n×n matrices: yes, formalizing the 3×3 case over both commutative fields (qdet₃ = det(A)/det(minor)) and non-commutative division rings via the Schur complement, recovering Cramer's rule and the Gelfand–Retakh (1991) recursive definition.",
+      "mathContext": "The quasideterminant $|A|_{00} = a_{00} - \\mathrm{row}_0\\setminus\\{0\\}\\cdot(A^{00})^{-1}\\cdot\\mathrm{col}_0\\setminus\\{0\\}$ generalizes recursively from $n=1,2,3,\\dots$; over a commutative field it reduces to $\\det(A)/\\det(\\mathrm{minor}(A,i,j))$."
+    },
+    {
       "id": "complementary-submatrix",
       "title": "The Complementary 2×2 Submatrix",
       "startLine": 52,
