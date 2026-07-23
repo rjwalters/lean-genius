@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Does the Bézout Quotient Formula Survive Non-Commutativity?",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "States the open question — generalize the parent's commutative quotient formula (u·a+v·b=1 ∧ b·c=a·k ⟹ a·(u·c+v·k)=c) to non-commutative rings such as matrix rings, where Euclid's lemma fails — and answers PARTIALLY: the formula survives whenever a commutes with the Bézout coefficients u,v (the salvage), but a concrete M₂(ℤ/2) counterexample with non-commuting a shows the commutativity hypothesis is genuinely necessary, not a proof artifact.",
+      "mathContext": "Tracking $c=(ua+vb)c=u(ac)+v(bc)=u(ac)+v(ak)$ in a general ring, factoring $a$ out on the left requires exactly $a$ to commute with $u$ and $v$; a matrix counterexample over $M_2(\\mathbb Z/2)$ shows the conclusion $a(uc+vk)=c$ genuinely fails without that hypothesis."
+    },
+    {
       "id": "salvage",
       "title": "The Salvage: Quotient Formula under Commutativity",
       "startLine": 60,
