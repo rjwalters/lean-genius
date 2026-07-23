@@ -69,8 +69,16 @@
       "id": "factor-identity",
       "title": "Local Euler Factor Identity",
       "startLine": 72,
+      "endLine": 85,
+      "summary": "overline_local_factor: (1-X)·overlineFactor = 1+X as formal power series over ℤ, i.e. overlineFactor = (1+X)/(1-X). Proved coefficientwise by ext + case split on n = 0 / n = m+1, closing each case with coeff_zero_X_mul / coeff_succ_X_mul and simp on coeff_X / coeff_one.",
+      "mathContext": "$(1-X)\\cdot\\mathrm{overlineFactor} = 1+X$ in $\\mathbb{Z}\\llbracket X\\rrbracket$."
+    },
+    {
+      "id": "divisibility-corollary",
+      "title": "Divisibility Corollary",
+      "startLine": 87,
       "endLine": 91,
-      "summary": "Prove (1-X)·overlineFactor = 1+X (the factor (1+X)/(1-X)) and the divisibility corollary"
+      "summary": "oneSubX_dvd_onePlusX: (1 - X) ∣ (1 + X) in ℤ⟦X⟧, with explicit quotient overlineFactor, read directly off overline_local_factor."
     },
     {
       "id": "open-target",
