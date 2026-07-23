@@ -88,8 +88,16 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Section I: Imports, Docstring & Setup",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports FieldDivision and Tactic; the module docstring states OQ-01 (the multiplicity version of the Factor Theorem) and its route through rootMultiplicity; opens the namespace, `open Polynomial`, and fixes a characteristic-zero field K.",
+      "mathContext": "Sets the stage: (X − a)ᵏ ∣ p ↔ ∀ m < k, p^{(m)}(a) = 0, to be proved via k ≤ rootMultiplicity a p and its derivative characterization."
+    },
+    {
       "id": "nonzerodivisor",
-      "title": "Section I: Factorials Are Nonzerodivisors",
+      "title": "Section II: Factorials Are Nonzerodivisors",
       "startLine": 31,
       "endLine": 38,
       "summary": "factorial_mem_nonZeroDivisors: in a characteristic-zero field, (n! : K) is a nonzerodivisor — the hypothesis the derivative characterization requires.",
@@ -97,19 +105,27 @@
     },
     {
       "id": "main",
-      "title": "Section II: The Multiplicity Factor Theorem",
+      "title": "Section III: The Multiplicity Factor Theorem",
       "startLine": 40,
-      "endLine": 55,
+      "endLine": 51,
       "summary": "pow_dvd_iff_iterate_derivative_eval_eq_zero: (X − a)ᵏ ∣ p ↔ ∀ m < k, p^{(m)}(a) = 0, by chaining le_rootMultiplicity_iff and lt_rootMultiplicity_iff_isRoot_iterate_derivative.",
       "mathContext": "The OQ's target — multiplicity as order of vanishing of the Taylor expansion."
     },
     {
-      "id": "cases",
-      "title": "Section III: The k = 1 and k = 2 Cases",
+      "id": "factor-case",
+      "title": "Section IV: The k = 1 Case (Factor Theorem)",
+      "startLine": 53,
+      "endLine": 55,
+      "summary": "factor_theorem: (X − a) ∣ p ↔ p(a) = 0, the parent entry's headline result recovered as the k = 1 instance of the main theorem.",
+      "mathContext": "Zero-th order vanishing (the value alone) detects a simple root — the bottom rung of the multiplicity ladder."
+    },
+    {
+      "id": "double-root-case",
+      "title": "Section V: The k = 2 Case (Double-Root Criterion)",
       "startLine": 57,
       "endLine": 69,
-      "summary": "factor_theorem ((X − a) ∣ p ↔ p(a) = 0) and double_root_iff ((X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0).",
-      "mathContext": "The classical Factor Theorem and the repeated-root criterion as special cases."
+      "summary": "double_root_iff: (X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0, proved by specializing the main theorem to k = 2 and discharging ∀ m < 2 via interval_cases.",
+      "mathContext": "The standard repeated-root test: a is a root of multiplicity ≥ 2 iff both p and its derivative vanish there."
     }
   ],
   "conclusion": {
