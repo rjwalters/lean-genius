@@ -156,11 +156,19 @@
       "mathContext": "Goal: $\\sum_{k\\le n} \\frac{x^k}{k!} \\to e^x$ for all $x \\in \\mathbb{R}$, completing the parent's $x>0$ result."
     },
     {
-      "id": "part1-derivs",
-      "title": "Part I: Derivatives of the Reflected Exponential",
+      "id": "part1-first-derivative",
+      "title": "Part I: The First Derivative of the Reflection",
       "startLine": 49,
+      "endLine": 64,
+      "summary": "deriv_exp_neg: the derivative of t ↦ exp(-t) is t ↦ -exp(-t), via HasDerivAt.comp with the derivative of negation.",
+      "mathContext": "$\\frac{d}{dt} e^{-t} = -e^{-t}$."
+    },
+    {
+      "id": "part1-iterated-derivative",
+      "title": "Part I: Iterated Derivatives of the Reflection",
+      "startLine": 66,
       "endLine": 78,
-      "summary": "deriv_exp_neg (deriv of exp(-t) is -exp(-t), via HasDerivAt.comp with the derivative of negation) and iteratedDeriv_exp_neg (iteratedDeriv n of exp(-t) is (-1)ⁿ exp(-t), by induction using iteratedDeriv_succ, deriv_const_mul, and deriv_exp_neg, closed by ring on the sign).",
+      "summary": "iteratedDeriv_exp_neg: iteratedDeriv n of exp(-t) is (-1)ⁿ exp(-t), by induction using iteratedDeriv_succ, deriv_const_mul, and deriv_exp_neg, closed by ring on the sign. Supplies both the Taylor coefficients at 0 and the uniform derivative bound used in Part II.",
       "mathContext": "$\\frac{d^n}{dt^n} e^{-t} = (-1)^n e^{-t}$."
     },
     {
