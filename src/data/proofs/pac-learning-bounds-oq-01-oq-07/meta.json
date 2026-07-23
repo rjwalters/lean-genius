@@ -127,6 +127,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring generalizes the parent PACLearningOQ01 result (thresholds on ℕ have VC dimension 1) to thresholds on any totally ordered set, using only order axioms instead of ℕ arithmetic. Previews the two phenomena that replace the arithmetic: singleton shattering becomes conditional on non-maximality (Part II), while the no-pair-shattered upper bound holds unconditionally over any linear order (Part III). Imports Mathlib, declares the LearningTheory.VCDimension.LinearOrderThresholds namespace, opens Finset, and fixes the ambient LinearOrder α.",
+      "mathContext": "Threshold classifiers $\\{x \\mid x < t\\}$ over an arbitrary linear order $\\alpha$; VC dimension exactly 1 when $\\alpha$ is nontrivial."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Shatters and Threshold Classifiers over a Linear Order",
       "startLine": 31,
