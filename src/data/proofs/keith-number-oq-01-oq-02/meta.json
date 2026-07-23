@@ -57,31 +57,39 @@
       "id": "header",
       "title": "Generalizing Keith Numbers to Base b",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Module docstring: the Keith recurrence is base-independent, so only the seed digits are reparametrized by base b. Lists the generalized definitions, the recovery bridge `isKeithBase_ten`, the re-derived `smallest_keithBase10`, and the new base-4 minimum.",
+      "endLine": 43,
+      "summary": "Module docstring: the Keith recurrence is base-independent, so only the seed digits are reparametrized by base b. Lists the generalized definitions, the recovery bridge `isKeithBase_ten`, the re-derived `smallest_keithBase10`, and the new base-4 minimum. Followed by the imports (Mathlib, the parent KeithNumberOQ01), namespace, and `open KeithNumberOQ01`.",
       "mathContext": "A base-b Keith number is an ≥2-digit N appearing in the order-(#digits) recurrence seeded by its base-b digits; base 10 specializes to the classical notion."
     },
     {
       "id": "digits-b",
       "title": "Base-b Digits and the Keith Predicate",
-      "startLine": 49,
+      "startLine": 45,
       "endLine": 65,
       "summary": "`lsdDigitsB b fuel n` peels base-b digits by structural recursion on fuel; `msdDigitsB b n = (lsdDigitsB b n n).reverse`. `IsKeithBase b n := b ≤ n ∧ reaches n 40 (msdDigitsB b n) = true`, with a `DecidablePred (IsKeithBase b)` instance.",
       "mathContext": "The base enters only through the seed digit list; the window step `reaches` is inherited unchanged from the parent."
     },
     {
-      "id": "recovery",
-      "title": "Recovering the Decimal Predicate",
+      "id": "digit-agreement",
+      "title": "Base-10 Digit Extraction Agrees with the Parent",
       "startLine": 67,
-      "endLine": 96,
-      "summary": "`lsdDigitsB_ten` proves base-10 extraction equals the parent's `lsdDigits` by induction on fuel; `msdDigitsB_ten` and `isKeithBase_ten : IsKeithBase 10 n ↔ IsKeith n` follow. `keithBase10_setOf_eq` and `smallest_keithBase10 : IsLeast {n | IsKeithBase 10 n} 14` transport the parent's result.",
+      "endLine": 80,
+      "summary": "`lsdDigitsB_ten` proves base-10 extraction equals the parent's `lsdDigits` by induction on fuel; `msdDigitsB_ten` follows by unfolding.",
+      "mathContext": "$\\mathrm{lsdDigitsB}\\,10 = \\mathrm{lsdDigits}$ and $\\mathrm{msdDigitsB}\\,10 = \\mathrm{msdDigits}$, by induction on the fuel parameter."
+    },
+    {
+      "id": "predicate-recovery",
+      "title": "Recovering the Decimal Predicate",
+      "startLine": 82,
+      "endLine": 94,
+      "summary": "`isKeithBase_ten : IsKeithBase 10 n ↔ IsKeith n` follows from the digit-agreement lemmas. `keithBase10_setOf_eq` and `smallest_keithBase10 : IsLeast {n | IsKeithBase 10 n} 14` transport the parent's headline result through the general definition.",
       "mathContext": "Confirms the generalization specializes correctly: the base-10 instance is exactly the classical Keith predicate, smallest element 14."
     },
     {
       "id": "other-bases",
       "title": "Small Keith Numbers in Other Bases",
-      "startLine": 98,
-      "endLine": 116,
+      "startLine": 96,
+      "endLine": 117,
       "summary": "`keithBase4_five : IsKeithBase 4 5` (window 1,1,2,3,5) and `keithBase12_thirteen` by `decide`; `not_keithBase4_below_five` by `decide`; `smallest_keithBase4 : IsLeast {n | IsKeithBase 4 n} 5` assembles the base-4 minimum.",
       "mathContext": "Other bases admit small Keith numbers with base-dependent minima; 5 = (11)_4 is the base-4 analogue of 14 in base 10."
     }
