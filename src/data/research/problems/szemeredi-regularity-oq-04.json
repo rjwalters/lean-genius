@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 5,
-    "focus": "S18 (2026-07-22): one-sided defect energy gain DONE — SzemerediRegularityOQ04DefectGain.lean proves defect_energy_bound (weighted-mean defect, w2=0 allowed), pairEnergy_split_gain_defect(_right) (deviation vs PARENT density, gain |A1||B|/n^2 * delta^2), pairEnergy_step3_gain (eps^3 * |A||B|/n^2 via the eps-mass floor), and the capstone pairEnergy_gain_of_isWitnessedSharpStep3. The S17 3-piece step now carries its quantitative energy increment; eps^3 >= eps^4 so the symmetric outer budget covers both dichotomy branches. [VERIFIED 0 axioms, docker 8588 jobs]",
+    "iteration": 6,
+    "focus": "S19 (2026-07-23): outer loop threaded with BOTH step shapes DONE — SzemerediRegularityOQ04OuterBoth.lean proves partitionEnergy_step3_refinement_gain (whole-partition eps^3 lift of the S18 defect gain over insert A (insert B1 (insert B2 R))), afks_sharp_energy_iteration_count_of_witness_both (mixed 4-piece/3-piece chains stay within the SAME sharp n^2/(eps^4 m^2) budget for eps<=1), afks_regular_step_within_bound_both (termination against the disjunctive witness), and exists_afksTwoLevel_of_dichotomy_both / _equipartition consuming the S17 two-shape dichotomy. [VERIFIED 0 axioms, docker 8592 jobs]",
     "blockers": [],
-    "nextAction": "S17 residual (b), the last layer: thread BOTH step shapes (4-piece IsWitnessedSharpStep with eps^4 gain, 3-piece IsWitnessedSharpStep3 with the new eps^3 gain) through the outer-loop chain construction — partition-level increment over insert A (insert B1 (insert B2 R)) (cf. PartitionGain.lean for the symmetric shape) and the recursive exists_afksTwoLevel_of_dichotomy reformulation. Deep outer-loop assembly; no elementary increment remains at the pair level."
+    "nextAction": "The residual gap is between split DATA and WITNESSED STEPS: exists_proper_or_semitrivial_split_of_not_afksFineRegular (S17) yields the 4-piece/3-piece split data, while the _both dichotomy hypothesis needs the chain parts(n+1) to BE the refined partition with the freshness clauses (split pieces distinct from each other and from R) and coarse mass floors discharged. Constructing the recursive refinement chain that realizes the case split at every non-regular step — the 'nonempty-equipartition model' blocker recorded in Assembly.lean — is the genuine remaining outer-loop content. Deep construction; no elementary increment remains at the pair or partition level."
   },
   "knowledge": {
     "progressSummary": "Item-1 dichotomy: constructive core COMPLETE at the pair level. S12-S15 packaging/freshness/mass-floor/ceiling; S16 gap forbids doubly-trivial splits; S17 asymmetric 3-piece predicate IsWitnessedSharpStep3 + trichotomy (one normalized shape covers both degenerate sides via edgeDensity_symm); S18 (2026-07-22) the one-sided DEFECT energy inequality: deviation of ONE half from the PARENT density gains (|A1||B|/n^2)*delta^2 (defect_energy_bound, multiplicative mean, empty complement allowed), and with the eps-mass floor the 3-piece step gains eps^3*|A||B|/n^2 (pairEnergy_step3_gain, capstone pairEnergy_gain_of_isWitnessedSharpStep3). Remaining: outer-loop chain construction threading both step shapes (deep).",
@@ -94,7 +94,10 @@
       "defect_energy_bound (two-cell weighted-mean defect inequality, w2=0 allowed) in SzemerediRegularityOQ04DefectGain.lean",
       "pairEnergy_split_gain_defect / _right (one-sided gain vs parent density, A-side and B-side) in SzemerediRegularityOQ04DefectGain.lean",
       "pairEnergy_step3_gain (eps^3*|A||B|/n^2 gain of the 3-piece split via the eps-mass floor) in SzemerediRegularityOQ04DefectGain.lean",
-      "pairEnergy_gain_of_isWitnessedSharpStep3 (capstone: witnessed 3-piece step carries the eps^3 pair-energy gain) in SzemerediRegularityOQ04DefectGain.lean"
+      "pairEnergy_gain_of_isWitnessedSharpStep3 (capstone: witnessed 3-piece step carries the eps^3 pair-energy gain) in SzemerediRegularityOQ04DefectGain.lean",
+      "partitionEnergy_step3_refinement_gain (whole-partition eps^3 lift of the 3-piece defect gain) in SzemerediRegularityOQ04OuterBoth.lean",
+      "afks_sharp_energy_iteration_count_of_witness_both + afks_regular_step_within_bound_both (mixed-chain sharp budget and termination) in SzemerediRegularityOQ04OuterBoth.lean",
+      "exists_afksTwoLevel_of_dichotomy_both / _both_equipartition (outer AFKS loop consuming the S17 two-shape dichotomy) in SzemerediRegularityOQ04OuterBoth.lean"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -132,11 +135,13 @@
       "S13: split freshness (the 6 pairwise ≠ + 4 ∉R the S12 packaging took as hypotheses) is fully derivable from partition pairwise-disjointness + nonemptiness of the four 2×2 split pieces. Reduces the item-1 dichotomy obligation to purely: build the chain with parts(n+1) of insert-shape and NONEMPTY split pieces.",
       "Reusable Finset idiom: disjoint + subset ⇒ empty via Finset.inter_eq_left.mpr (X⊆C ⇒ X∩C=X) composed with Finset.disjoint_iff_inter_eq_empty.mp; underlies both cross-block distinctness and ∉R freshness.",
       "The two degenerate sides of the sharp 2x2 split fold onto ONE asymmetric 3-piece shape: when B2 = empty (B1 = B, only A splits), swapping the parents via edgeDensity_symm turns |d(A1,B) - d(A,B)| into |d(B,A1) - d(B,A)|, i.e. the same only-second-block-splits form. One predicate (IsWitnessedSharpStep3) therefore covers both.",
-      "The 3-piece step will carry a STRONGER energy floor than the 4-piece one: splitting only B with deviation >= eps on mass >= eps*|B| gains >= eps^3*|A||B|/n^2 (mean preserved by edge-count additivity e(A,B)=e(A,B1)+e(A,B2), already in SzemerediCoreOQ01) versus the eps^4 sharp floor - so the outer-loop eps^4 budget covers both branches without change."
+      "The 3-piece step will carry a STRONGER energy floor than the 4-piece one: splitting only B with deviation >= eps on mass >= eps*|B| gains >= eps^3*|A||B|/n^2 (mean preserved by edge-count additivity e(A,B)=e(A,B1)+e(A,B2), already in SzemerediCoreOQ01) versus the eps^4 sharp floor - so the outer-loop eps^4 budget covers both branches without change.",
+      "The degenerate branch is CHEAPER for the outer budget: for eps <= 1 the 3-piece eps^3*m^2/n^2 floor dominates the 4-piece eps^4*m^2/n^2 one, so mixed chains terminate within the unchanged sharp bound n^2/(eps^4*m^2) — threading the disjunctive dichotomy costs only the extra hypothesis E(k) <= 1.",
+      "The whole-partition lift of the 3-piece gain needs no new analysis: the A-row/column and (A,A) cell are unchanged, the B-rows/columns, (B,A) cross and B^2 diagonal split by pairEnergy monotonicity, and only the (A,B) cross consumes pairEnergy_step3_gain — Assembly.lean's block-decomposition template transfers verbatim with five instead of eight block inequalities."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Thread both witnessed step shapes (eps^4 symmetric, eps^3 asymmetric) through the outer-loop chain construction (exists_afksTwoLevel_of_dichotomy reformulation) — partition-level increment + freshness bookkeeping."
+      "Construct the recursive refinement chain realizing the S17 case split as witnessed steps (freshness + equitable mass floors discharged) — the remaining input to exists_afksTwoLevel_of_dichotomy_both."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "score": 63
