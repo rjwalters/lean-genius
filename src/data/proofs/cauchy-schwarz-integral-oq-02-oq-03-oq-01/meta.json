@@ -75,6 +75,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Equality Case of the Reverse Minkowski Inequality", "startLine": 1, "endLine": 57, "summary": "Poses the follow-up to the parent's reverse Minkowski inequality |\u2016f\u2016\u2212\u2016g\u2016| \u2264 \u2016f+g\u2016: characterize when equality holds. Answers that equality holds iff the vectors are antiparallel (\u2016v\u2016\u2022u = \u2212(\u2016u\u2016\u2022v)), obtained by showing equality saturates the Cauchy-Schwarz *lower* bound \u27eau,v\u27eb = \u2212\u2016u\u2016\u2016v\u2016, the exact dual of the forward triangle-equality case (which saturates the CS upper bound and gives parallel vectors).", "mathContext": "$|\\|u\\|-\\|v\\|| = \\|u+v\\| \\iff \\langle u,v\\rangle = -\\|u\\|\\|v\\|$, i.e. equality in reverse Minkowski is exactly saturation of the Cauchy\u2013Schwarz lower bound, dual to Mathlib's `norm_add_eq_iff_real` for the forward case."},
     {
       "id": "cs-lower-tight",
       "title": "Equality ⟺ the CS Lower Bound Is Tight",
