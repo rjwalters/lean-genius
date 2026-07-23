@@ -192,6 +192,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: A Constructive SOS Certificate for the Motzkin Polynomial",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "States the gap this file fills — the parent Hilbert-17 entry's Artin theorem (every nonnegative real polynomial is a sum of squares of rational functions) is necessarily axiomatized, and even the companion fact that the Motzkin polynomial M(x,y) = x⁴y²+x²y⁴−3x²y²+1 is not a sum of squares of polynomials is carried as an axiom; missing was an explicit, machine-checked witness that Motzkin is a sum of squares of rational functions. This file supplies exactly that with 0 axioms, via the integer Positivstellensatz certificate (4+4x²+4y²)·M = five explicit squares, closed by ring, then dividing by the sum-of-squares multiplier 4+4x²+4y² = 2²+(2x)²+(2y)² in the field of rational functions — replacing Hilbert's 17th problem's abstract existence axiom with a concrete certificate for this canonical example.",
+      "mathContext": "$(4+4x^2+4y^2)\\cdot M(x,y) = (2xy-x^3y-xy^3)^2{\\times}3 + (x^3y-xy^3)^2 + (2x-2xy^2)^2 + (2y-2x^2y)^2 + (2-2x^2y^2)^2$, an integer SOS certificate closed by \\texttt{ring}."
+    },
+    {
       "id": "definitions",
       "title": "Motzkin, the multiplier, and the SOS predicates",
       "startLine": 60,
