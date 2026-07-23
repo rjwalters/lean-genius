@@ -2,10 +2,10 @@
   {
     "id": "youngn-oq010101-header",
     "proofId": "jensen-inequality-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 39 },
     "type": "concept",
     "title": "The n-variable Young product inequality",
-    "content": "The header generalizes the parent's two-term Young inequality to an arbitrary finite family of exponents. For pᵢ > 0 with ∑ 1/pᵢ = 1 (generalized Hölder conjugacy) and nonnegative data aᵢ, ∏ aᵢ ≤ ∑ aᵢ^{pᵢ}/pᵢ, with equality iff all aᵢ^{pᵢ} are equal. This stands to the parent exactly as the grandparent's general weighted AM–GM stands to its two-variable instance: take weights wᵢ = 1/pᵢ and data zᵢ = aᵢ^{pᵢ}, so the weighted geometric mean ∏(aᵢ^{pᵢ})^{1/pᵢ} collapses to ∏aᵢ and the weighted arithmetic mean is the Young sum. Mathlib has only the two-variable Young inequality and none of the equality cases; this file supplies the full n-variable form, answering the parent's listed open question.",
+    "content": "The header generalizes the parent's two-term Young inequality to an arbitrary finite family of exponents. For pᵢ > 0 with ∑ 1/pᵢ = 1 (generalized Hölder conjugacy) and nonnegative data aᵢ, ∏ aᵢ ≤ ∑ aᵢ^{pᵢ}/pᵢ, with equality iff all aᵢ^{pᵢ} are equal. This stands to the parent exactly as the grandparent's general weighted AM–GM stands to its two-variable instance: take weights wᵢ = 1/pᵢ and data zᵢ = aᵢ^{pᵢ}, so the weighted geometric mean ∏(aᵢ^{pᵢ})^{1/pᵢ} collapses to ∏aᵢ and the weighted arithmetic mean is the Young sum. Mathlib has only the two-variable Young inequality and none of the equality cases; this file supplies the full n-variable form, answering the parent's listed open question. Followed by the imports, open Finset Real, and the ambient {ι, s, p, a} variables shared by every theorem below.",
     "mathContext": "$\\prod_i a_i \\le \\sum_i \\frac{a_i^{p_i}}{p_i},\\quad \\sum_i \\frac{1}{p_i} = 1$",
     "significance": "supporting",
     "relatedConcepts": ["Young's inequality", "weighted AM–GM", "generalized Hölder", "equality case"],
