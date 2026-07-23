@@ -119,32 +119,39 @@
   },
   "sections": [
     {
-      "id": "header-overview",
-      "title": "Module Overview, Imports, and Namespace",
+      "id": "header",
+      "title": "Module Docstring, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 37,
       "summary": "Module docstring deriving the master formula from Euler's product formula and the additivity of the p-adic valuation, with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Factorization.Basic`, `Mathlib.NumberTheory.Padics.PadicVal.Basic`) and the namespace `EulerTotientOQ06OQ01` opening `Nat` and `Finset`."
     },
     {
       "id": "prime-power-blocks",
       "title": "Prime-Power Building Blocks",
-      "startLine": 53,
-      "endLine": 86,
+      "startLine": 39,
+      "endLine": 67,
       "summary": "`v2_totient_two_pow` (v₂(φ(2^k)) = k−1, since φ(2^k) = 2^(k−1)) and `v2_totient_odd_prime_pow` (v₂(φ(p^k)) = v₂(p−1) for odd prime p, since the factor p^(k−1) is odd) — the two regimes that the general formula glues together."
     },
     {
       "id": "master-formula",
       "title": "Master Formula and padicValNat Restatement",
-      "startLine": 87,
-      "endLine": 127,
+      "startLine": 69,
+      "endLine": 104,
       "summary": "`v2_totient_eq_sum`: v₂(φ(n)) = ∑_{p∣n} (kₚ−1)·v₂(p) + v₂(p−1), proved by applying `Nat.factorization · 2` to Euler's product formula and splitting each factor with `factorization_prod`/`_mul`/`_pow`; and `padicValNat_two_totient_eq_sum`, its `padicValNat 2` restatement via `Nat.factorization_def`."
     },
     {
       "id": "clean-split",
       "title": "Clean Split Isolating the Prime 2",
-      "startLine": 128,
-      "endLine": 158,
-      "summary": "`summand_eq` (each summand is k₂−1 at p=2 and v₂(p−1) at odd primes), `v2_totient_split` (for even n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1), by isolating the singleton {2} from the prime factors), and `totient_even_of_two_lt` recovering the parent's parity result."
+      "startLine": 106,
+      "endLine": 148,
+      "summary": "`summand_eq` (each summand is k₂−1 at p=2 and v₂(p−1) at odd primes), `v2_totient_split` (for even n, v₂(φ(n)) = (v₂(n)−1) + ∑_{p∣n, p odd} v₂(p−1), by isolating the singleton {2} from the prime factors)."
+    },
+    {
+      "id": "consistency",
+      "title": "Consistency With the Parent Parity Result",
+      "startLine": 150,
+      "endLine": 156,
+      "summary": "`totient_even_of_two_lt` recovers the parent entry's parity result (φ(n) even for n > 2, i.e. v₂(φ(n)) ≥ 1) directly from Mathlib's `Nat.totient_even`, confirming consistency with `euler-totient-oq-06`."
     }
   ],
   "crossReferences": [
