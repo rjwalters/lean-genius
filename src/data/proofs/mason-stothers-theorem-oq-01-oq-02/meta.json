@@ -106,11 +106,19 @@
       "mathContext": "$\\mathrm{rad}(f^3 g^2 c) \\mid fgc$ because the radical ignores exponents."
     },
     {
-      "id": "sec-davenport",
-      "title": "§2 Davenport's Inequality",
+      "id": "sec-davenport-triple",
+      "title": "§2a Applying Mason–Stothers to the Triple",
       "startLine": 76,
+      "endLine": 102,
+      "summary": "davenport, setup: fixes a = f³, b = −g², c = f³ − g²; establishes a, b, c ≠ 0, lifts coprimality to IsCoprime f³ (−g²) via IsCoprime.pow/neg_right, checks the additive relation a + b = c, and supplies the non-triviality disjunct from f³ non-constant, then calls mason_stothers_charZero.",
+      "mathContext": "$a=f^3,\\ b=-g^2,\\ c=f^3-g^2,\\ a+b=c,\\ \\gcd(f,g)=1\\Rightarrow\\gcd(a,b)=1$."
+    },
+    {
+      "id": "sec-davenport-close",
+      "title": "§2b Aligning the Radical and Closing with omega",
+      "startLine": 103,
       "endLine": 121,
-      "summary": "davenport: applies mason_stothers_charZero to a = f³, b = −g², c = f³ − g²; uses IsCoprime.pow / neg_right for coprimality and f³ non-constant for non-triviality, radical_neg to align rad(f³·(−g²)·c) with rad(f³·g²·c), and the §1 bound, then omega to extract deg f + 2 ≤ 2·deg(f³ − g²).",
+      "summary": "davenport, finish: radical_neg identifies rad(f³·(−g²)·c) with rad(f³·g²·c) so the §1 upper bound applies; natDegree_pow/natDegree_neg give deg(f³) = 3·deg f and deg(−g²) = 2·deg g; omega combines the two Mason–Stothers lower bounds with the radical upper bound to extract deg f + 2 ≤ 2·deg(f³ − g²).",
       "mathContext": "$3\\deg f + 1 \\le R,\\ 2\\deg g + 1 \\le R,\\ R \\le \\deg f + \\deg g + \\deg c \\Rightarrow \\deg f + 2 \\le 2\\deg c$."
     },
     {
