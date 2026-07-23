@@ -49,32 +49,40 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header, Imports, and Statement",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 34,
-      "summary": "Imports `Mathlib.Algebra.BigOperators.Intervals` (for the Gauss identity `sum_range_id_mul_two`) and `Mathlib.Tactic`, then frames the open question: the sum of the first n cubes equals the square of the nth triangular number, ∑_{k<n} k³ = (∑_{k<n} k)². The docstring records the strategy (induction with a case split so `ring` never meets a truncated ℕ subtraction) and the novelty — Mathlib has the triangular-number identity but not this cube identity. Opens `namespace NicomachusSumOfCubes` and `open Finset` so range-sums can be written unqualified.",
+      "endLine": 30,
+      "summary": "Imports `Mathlib.Algebra.BigOperators.Intervals` (for the Gauss identity `sum_range_id_mul_two`) and `Mathlib.Tactic`, then frames the open question: the sum of the first n cubes equals the square of the nth triangular number, ∑_{k<n} k³ = (∑_{k<n} k)². Records the strategy (induction with a case split so `ring` never meets a truncated ℕ subtraction) and the novelty — Mathlib has the triangular-number identity but not this cube identity.",
       "mathContext": "$\\sum_{k<n} k^3 = \\left(\\sum_{k<n} k\\right)^2$; proved in $\\mathbb{N}$ with 0 axioms, 0 sorries."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Open",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "Opens `namespace NicomachusSumOfCubes` and `open Finset` so `range`-sums can be written unqualified for the rest of the file.",
+      "mathContext": "Scope: identities stated over `Finset.range n` inside `namespace NicomachusSumOfCubes`."
     },
     {
       "id": "cube-lemma",
       "title": "The Cube Lemma (subtraction-free step)",
       "startLine": 36,
-      "endLine": 46,
+      "endLine": 42,
       "summary": "The algebraic heart of the induction: m³ = m²·(m−1) + m². A case split on m = 0 / m = p+1 eliminates the truncated ℕ subtraction (m−1 becomes p), after which each branch is closed by `ring`. This keeps the whole proof inside ℕ — no casting to ℤ."
     },
     {
       "id": "main-identity",
       "title": "Nicomachus's Theorem",
-      "startLine": 48,
-      "endLine": 66,
+      "startLine": 43,
+      "endLine": 63,
       "summary": "∑_{k<n} k³ = (∑_{k<n} k)² by induction. The step peels the top cube and the top triangular term with sum_range_succ, expands the square by `ring`, and substitutes the Gauss identity 2·∑k = m·(m−1) together with the cube lemma; a final `ring` (treating m−1 as an atom) closes it."
     },
     {
       "id": "corollaries",
       "title": "First-n-cubes and closed-form corollaries",
-      "startLine": 65,
-      "endLine": 84,
-      "summary": "Two consequences: the 1-indexed 'first n cubes' form over range (n+1) (the k=0 term vanishes), and the division-free closed form 4·∑k³ = (n·(n−1))² obtained by squaring the Gauss identity."
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "Two consequences: the 1-indexed 'first n cubes' form over range (n+1) (the k=0 term vanishes), and the division-free closed form 4·∑k³ = (n·(n−1))² obtained by squaring the Gauss identity. Closes the NicomachusSumOfCubes namespace."
     }
   ],
   "overview": {
