@@ -462,4 +462,128 @@ theorem erdos_751_summary (G : SimpleGraph V) [DecidableRel G.Adj] :
   ⟨erdos_751_chromatic_4 G, min_degree_3_cycle_gap G,
     chromatic_4_implies_subgraph_min_deg_3 G⟩
 
+/-
+## Part VII: Cycle Existence (axiom-free)
+
+The Bondy–Vince axiom asserts *two* cycles with close lengths. This section
+proves, without any axiom, that the cycle spectrum is at least *nonempty*:
+a finite nonempty graph in which every vertex has degree at least 2 contains
+a cycle (each connected component of an acyclic graph is a tree, and a
+nontrivial finite tree has a vertex of degree 1). Chained through the proved
+chromatic–degeneracy lemma this yields `erdos_751_cycle_exists`: a 4-chromatic
+graph contains a cycle — previously even this weak form of the answer was only
+derivable through the Bondy–Vince axiom.
+-/
+
+/-- Every member of `cycleLengths` is at least 3: cycles in a simple graph
+have length at least 3. -/
+theorem three_le_of_mem_cycleLengths {G : SimpleGraph V} [DecidableRel G.Adj]
+    {n : ℕ} (hn : n ∈ cycleLengths G) : 3 ≤ n := by
+  obtain ⟨v, c, hc, rfl⟩ := hn
+  exact hc.three_le_length
+
+/-- The degree of a vertex inside its connected-component graph equals its
+degree in `G`: every `G`-neighbour of a vertex lies in the vertex's
+component. -/
+theorem degree_toSimpleGraph_eq (G : SimpleGraph V) [DecidableRel G.Adj]
+    (C : G.ConnectedComponent) [Fintype C] [DecidableRel C.toSimpleGraph.Adj]
+    (x : C) : C.toSimpleGraph.degree x = G.degree x.1 := by
+  show (C.toSimpleGraph.neighborFinset x).card = (G.neighborFinset x.1).card
+  apply Finset.card_bij (fun y _ => y.1)
+  · intro y hy
+    rw [SimpleGraph.mem_neighborFinset] at hy
+    rw [SimpleGraph.mem_neighborFinset]
+    exact hy
+  · intro y1 h1 y2 h2 heq
+    exact Subtype.ext heq
+  · intro u hu
+    rw [SimpleGraph.mem_neighborFinset] at hu
+    have hus : u ∈ C.supp := C.mem_supp_of_adj_mem_supp x.2 hu
+    exact ⟨⟨u, hus⟩, by rw [SimpleGraph.mem_neighborFinset]; exact hu, rfl⟩
+
+/-- **Minimum degree ≥ 2 forces a cycle** (contrapositive form): a finite
+nonempty graph in which every vertex has at least two neighbours is not
+acyclic. If it were, each connected component would be a tree
+(`IsAcyclic.isTree_connectedComponent`); the component of any vertex is
+nontrivial (the vertex has a neighbour, which lies in the same component), so
+the tree has a vertex of degree 1 (`IsTree.exists_vert_degree_one_of_nontrivial`),
+whose degree in `G` is the same — contradicting the degree bound. -/
+theorem not_isAcyclic_of_two_le_degree (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h : ∀ v, 2 ≤ G.degree v) : ¬ G.IsAcyclic := by
+  intro hac
+  obtain ⟨v⟩ := ‹Nonempty V›
+  have hvdeg : 0 < G.degree v := lt_of_lt_of_le (by norm_num) (h v)
+  obtain ⟨w, hw⟩ := (G.degree_pos_iff_exists_adj v).mp hvdeg
+  let C : G.ConnectedComponent := G.connectedComponentMk v
+  have hvC : v ∈ C.supp := rfl
+  have hwC : w ∈ C.supp := C.mem_supp_of_adj_mem_supp hvC hw
+  haveI : Fintype C := Fintype.ofFinite C
+  haveI : DecidableRel C.toSimpleGraph.Adj := Classical.decRel _
+  haveI : Nontrivial C :=
+    ⟨⟨v, hvC⟩, ⟨w, hwC⟩, fun heq => hw.ne (congrArg Subtype.val heq)⟩
+  have htree : C.toSimpleGraph.IsTree := hac.isTree_connectedComponent C
+  obtain ⟨x, hx⟩ := htree.exists_vert_degree_one_of_nontrivial
+  have hxdeg : C.toSimpleGraph.degree x = G.degree x.1 :=
+    degree_toSimpleGraph_eq G C x
+  have h2 := h x.1
+  omega
+
+/-- A finite nonempty graph in which every vertex has degree at least 2 has a
+nonempty cycle spectrum. -/
+theorem cycleLengths_nonempty_of_two_le_degree (G : SimpleGraph V)
+    [DecidableRel G.Adj] (h : ∀ v, 2 ≤ G.degree v) :
+    (cycleLengths G).Nonempty := by
+  by_contra hempty
+  apply not_isAcyclic_of_two_le_degree G h
+  intro v c hc
+  exact hempty ⟨c.length, v, c, hc, rfl⟩
+
+/-- The file's `minDegree` is a lower bound for every vertex degree. -/
+theorem minDegree_le_degree' (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    minDegree G ≤ G.degree v :=
+  Finset.min'_le _ _ (Finset.mem_image_of_mem _ (Finset.mem_univ v))
+
+/-- **Nonvacuity of the Bondy–Vince hypothesis** (axiom-free): minimum degree
+at least 2 — in particular the `minDegree G ≥ 3` hypothesis of
+`bondy_vince_theorem` — already forces the cycle spectrum to be nonempty. -/
+theorem cycleLengths_nonempty_of_two_le_minDegree (G : SimpleGraph V)
+    [DecidableRel G.Adj] (h : 2 ≤ minDegree G) : (cycleLengths G).Nonempty :=
+  cycleLengths_nonempty_of_two_le_degree G
+    (fun v => le_trans h (minDegree_le_degree' G v))
+
+/-- **Erdős #751, axiom-free component: a 4-chromatic graph contains a
+cycle.** The chromatic–degeneracy lemma extracts a vertex set on which the
+induced subgraph has all degrees ≥ 3 ≥ 2, the cycle-existence engine produces
+a cycle there, and cycles of induced subgraphs are cycles of `G`.
+`#print axioms erdos_751_cycle_exists` reports foundational axioms only — no
+`bondy_vince_theorem`. -/
+theorem erdos_751_cycle_exists (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hchi : chromaticNumber G = 4) : (cycleLengths G).Nonempty := by
+  obtain ⟨s, hne, hdeg⟩ := four_chromatic_subgraph_minDeg G hchi
+  haveI : Nonempty ↥((↑s : Set V)) :=
+    ⟨⟨hne.choose, Finset.mem_coe.mpr hne.choose_spec⟩⟩
+  letI : DecidableRel (G.induce (↑s : Set V)).Adj :=
+    fun a b => decidable_of_iff (G.Adj a.1 b.1) induce_adj.symm
+  have h2 : ∀ x : ↥((↑s : Set V)), 2 ≤ (G.induce (↑s : Set V)).degree x := by
+    intro x
+    rw [degree_induce_eq_filter_card G s x]
+    have := hdeg x.1 (Finset.mem_coe.mp x.2)
+    omega
+  obtain ⟨n, hn⟩ := cycleLengths_nonempty_of_two_le_degree
+    (G.induce (↑s : Set V)) h2
+  exact ⟨n, cycleLengths_induce_subset G _ hn⟩
+
+/-- A 4-chromatic graph is not acyclic (axiom-free corollary of
+`erdos_751_cycle_exists`). -/
+theorem not_isAcyclic_of_four_chromatic (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hchi : chromaticNumber G = 4) : ¬ G.IsAcyclic := by
+  obtain ⟨n, v, c, hc, _⟩ := erdos_751_cycle_exists G hchi
+  exact fun hac => hac c hc
+
+/-- A 4-chromatic graph has girth at least 3 (axiom-free): its cycle spectrum
+is nonempty, so Mathlib's `three_le_girth` applies. -/
+theorem three_le_girth_of_four_chromatic (G : SimpleGraph V)
+    [DecidableRel G.Adj] (hchi : chromaticNumber G = 4) : 3 ≤ girth G :=
+  SimpleGraph.three_le_girth (not_isAcyclic_of_four_chromatic G hchi)
+
 end Erdos751
