@@ -25,7 +25,7 @@
     "lineCount": 513,
     "assumptions": "17 axiom(s) aggregated across files (8 in the primary Erdos548Problem.lean — deep extremal-graph-theory literature results: trivial_tree_bound, brandt_dobson, sacle_wozniak, wang_li_liu, path_extremal, komlos_sos_large_k, erdos_gallai_matching, turan_path_formula — plus 9 in the legacy stub Proofs/Stubs/Erdos548Problem.lean). The primary file now has 0 sorries: all six were proved in July 2026 (star_is_tree, sum_degrees_eq_twice_edges, avg_degree_iff_edges, erdos_sos_implies_extremal, star_easier, erdos_548_status). Two statements required repair to be provable: avg_degree_iff_edges gained the missing k ≥ 1 hypothesis (false at k = 0 as stated), and erdos_sos_implies_extremal restricts its tree vertex type from Type* to Type (ErdosSosConjecture quantifies over Type). erdos_548_status is now Classical.em rather than a sorry that would have asserted the conjecture itself. The former tree_edge_count axiom is a proved theorem, and IsTree delegates to Mathlib genuine SimpleGraph.IsTree. Aristotle companion files retain their own sorry stubs pending proof search.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos548Aristotle.lean",
@@ -159,10 +159,10 @@
       "Finset"
     ],
     "namespace": "Erdos548",
-    "lineCount": 513,
+    "lineCount": 656,
     "axiomCount": 8,
-    "theoremCount": 10,
-    "definitionCount": 16,
+    "theoremCount": 15,
+    "definitionCount": 17,
     "path": "Proofs/Erdos548Problem.lean",
     "sorries": 0,
     "additionalFiles": [
