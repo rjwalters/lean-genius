@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Historical Context: Binary GCD (Stein's Algorithm)",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States and formalizes Stein's 1967 binary GCD algorithm, which computes GCD using only subtraction and division-by-2 (bit shifts) instead of the Euclidean algorithm's division, and proves it equals `Nat.gcd`.",
+      "mathContext": "Uses three identities: $\\gcd(2a,2b) = 2\\gcd(a,b)$, $\\gcd(2a,b) = \\gcd(a,b)$ when $b$ is odd, and $\\gcd(a-b,b) = \\gcd(a,b)$."
+    },
+    {
       "id": "gcd-lemmas",
       "title": "Key GCD Lemmas",
       "startLine": 29,
