@@ -132,8 +132,9 @@
     "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 71 lines and 4 theorems proving the multiplicity factor theorem: over a characteristic-zero field, (X − a)ᵏ ∣ p iff p and its first k − 1 derivatives vanish at a. It chains Mathlib's le_rootMultiplicity_iff and the iterate-derivative characterization of multiplicity, and records the k = 1 (Factor Theorem) and k = 2 (double root) cases.",
     "implications": "This answers the parent's OQ-01, connecting the Factor Theorem to Taylor expansion exactly as requested: multiplicity is the order of vanishing of the polynomial's derivatives. The double-root criterion is a reusable tool for detecting repeated roots (e.g. when the discriminant vanishes, or a polynomial shares a root with its derivative). The characteristic-zero hypothesis is made explicit, clarifying where the derivative characterization holds.",
     "openQuestions": [
-      "Formalize the explicit Taylor-coefficient form: the order-k Taylor coefficient of p at a is p^{(k)}(a)/k!, so (X − a)ᵏ ∣ p iff the first k Taylor coefficients vanish, via Polynomial.taylor.",
-      "Extend to positive characteristic using Hasse derivatives, where the divided-power derivatives correctly characterize multiplicity even when ordinary derivatives fail."
+      "Resolved by factor-remainder-theorem-oq-01-oq-01: the explicit Taylor-coefficient form — the order-k Taylor coefficient of p at a is p^{(k)}(a)/k!, so (X − a)ᵏ ∣ p iff the first k Taylor coefficients vanish, via Polynomial.taylor.",
+      "Resolved by factor-remainder-theorem-oq-01-oq-02: the positive-characteristic extension via Hasse derivatives, where the divided-power derivatives correctly characterize multiplicity even when ordinary derivatives fail.",
+      "The Hasse-derivative extension raises a sharper question, now itself formalized one level deeper: the ordinary-derivative test can fail in positive characteristic without merely losing precision — factor-remainder-theorem-oq-01-oq-01-oq-01 pins down exactly how (e.g. for f = Xᵖ, the ordinary test sees multiplicity 0 while the true multiplicity is p)."
     ]
   },
   "status": "verified",
@@ -159,6 +160,16 @@
       "targetId": "factor-remainder-theorem",
       "relationship": "extends",
       "description": "Parent: the Factor and Remainder theorems. This entry answers its OQ-01 by proving the multiplicity version (X − a)ᵏ ∣ p ↔ vanishing of p and its first k − 1 derivatives, connecting the Factor Theorem to Taylor expansion."
+    },
+    {
+      "targetId": "factor-remainder-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: recasts the multiplicity factor theorem in Taylor-coefficient form, (X − a)ᵏ ∣ p ↔ the first k Taylor coefficients of p at a vanish, via Polynomial.taylor and Hasse derivatives."
+    },
+    {
+      "targetId": "factor-remainder-theorem-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's second open question: extends the multiplicity factor theorem to fields of positive characteristic by replacing ordinary iterated derivatives with Hasse (divided-power) derivatives, which do not require dividing by factorials."
     }
   ],
   "references": [
