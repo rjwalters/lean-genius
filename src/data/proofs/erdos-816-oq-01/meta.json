@@ -41,7 +41,8 @@
       "A path of length 3 has odd length, so in a bipartite graph its endpoints lie in opposite parts — the single fact behind the counterexample.",
       "Distinct part degrees turn 'equal degree' into 'same part', which an odd path can never connect; this is precisely the K_{n,n+1} obstruction.",
       "The degree pigeonhole is not immediate (n vertices, n possible degrees) but follows because degrees 0 and card−1 cannot both occur.",
-      "The obstruction is specific to the ODD path length: a length-2 path (even) would join two vertices of the SAME part, so an equal-degree pair inside one colour class could still be connected at even distance. It is exactly because the required path has length 3 (odd) that same-part equal-degree pairs are unreachable and K_{n,n+1} becomes a counterexample — the parity of the target length, not merely bipartiteness, is what makes the problem delicate."
+      "The obstruction is specific to the ODD path length: a length-2 path (even) would join two vertices of the SAME part, so an equal-degree pair inside one colour class could still be connected at even distance. It is exactly because the required path has length 3 (odd) that same-part equal-degree pairs are unreachable and K_{n,n+1} becomes a counterexample — the parity of the target length, not merely bipartiteness, is what makes the problem delicate.",
+      "The three obstruction theorems form a specialization chain, not three independent proofs: no_equalDegreePath3_of_partDegrees reduces to _of_distinctDegrees (opposite colours have the two fixed, unequal degrees d₀ ≠ d₁), which reduces to _of_bipartition (same-degree pair ⟹ same colour, the contrapositive of 'distinct degrees across colours'). Each later theorem is a two-line corollary of the one before it, so the real mathematical content lives entirely in hasPath3_opposite_color and the final degree bookkeeping."
     ],
     "prerequisites": [
       "Bipartite graphs as proper 2-colourings",
@@ -107,10 +108,16 @@
       "summary": "Self-contained copies of hasPath3, sameDegree, hasEqualDegreePath3Pair (the parent file does not compile on v4.26.0) and the Boolean bipartition predicate IsBipartition."
     },
     {
-      "title": "Parity of length-3 paths and the counterexample",
-      "startLine": 64,
-      "endLine": 114,
-      "summary": "hasPath3_opposite_color (odd path joins opposite parts) and the obstruction theorems no_equalDegreePath3_of_bipartition / _distinctDegrees / _partDegrees — the K_{n,n+1} mechanism."
+      "title": "Parity of length-3 paths and the general obstruction",
+      "startLine": 63,
+      "endLine": 82,
+      "summary": "hasPath3_opposite_color (an odd path joins opposite parts) and no_equalDegreePath3_of_bipartition (the general obstruction: same-degree pairs sharing a colour rule out an equal-degree path-3 pair)."
+    },
+    {
+      "title": "The K_{n,n+1} Counterexample, Specialized",
+      "startLine": 84,
+      "endLine": 110,
+      "summary": "no_equalDegreePath3_of_distinctDegrees and no_equalDegreePath3_of_partDegrees specialize the general obstruction to (respectively) opposite-colour vertices having distinct degrees, and to the two fixed part degrees d₀ ≠ d₁ of K_{n,n+1} (n+1 and n)."
     },
     {
       "title": "Degree pigeonhole",
