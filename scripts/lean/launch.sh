@@ -1080,6 +1080,20 @@ get_agent_status() {
     if [[ -z "$claude_pid" ]]; then
         # No claude process - check if shell is at prompt
         if [[ "$pane_cmd" == "zsh" || "$pane_cmd" == "bash" || "$pane_cmd" == "sh" ]]; then
+            # A non-interactive script never changes the pty's foreground process
+            # group per subcommand, so pane_cmd still reports the wrapper's own
+            # shell name (bash) while it's inside a `sleep` — e.g. CYCLE_MIN_SECONDS'
+            # enforce_cycle_floor, or the wrapper's own retry/backoff delay. That
+            # looks identical to "script truly exited to an idle shell prompt"
+            # unless we also check for a live child process.
+            if has_child_processes "$pane_pid"; then
+                if is_polling_agent "$session"; then
+                    echo "IDLE"
+                else
+                    echo "RUNNING"
+                fi
+                return
+            fi
             echo "COMPLETED"
             return
         fi
