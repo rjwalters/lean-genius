@@ -294,4 +294,115 @@ theorem exists_sublevelMeasure_eq_pi (hn : n ≠ 0) :
     ∃ P : UnitDiskPoly n, sublevelMeasure P = Real.pi :=
   ⟨allRootsZero n, sublevelMeasure_allRootsZero hn⟩
 
+/-! ## An explicit (exponentially weak) quantitative lower bound
+
+Everything so far pins `0 < sublevelMeasure P < ∞` and the exact values of two
+special families.  This section upgrades positivity to an *explicit* bound: the
+lemniscate contains a disk of explicit radius around each root.
+
+For `z` within `r ≤ 1` of a root `z₁`, every factor obeys
+`‖z − zᵢ‖ ≤ ‖z − z₁‖ + ‖z₁‖ + ‖zᵢ‖ ≤ r + 2 ≤ 3`, while the distinguished factor is
+`‖z − z₁‖ < r`.  Hence `‖p(z)‖ < r·3^{n−1}`, and the choice `r = 1/(2·3^{n−1})`
+gives `‖p(z)‖ < 1/2`.  So `ball z₁ r ⊆ Sₚ` and
+
+    `sublevelMeasure P ≥ π r² = π / (4·9^{n−1})`.
+
+This is exponentially far from the deep Krishnapur–Lundberg–Ramachandran truth
+`c / log n` (which stays open here), but it is the development's first
+*quantitative* lower bound, and the containment `ball z₁ r ⊆ Sₚ` is of independent
+use: the lemniscate has nonempty interior around every root, uniformly in the
+configuration. -/
+
+/-- **Near a root the polynomial is small.**  If `z` is within `1/(2·3^m)` of the
+root `z₁ = P.roots 0` of a degree-`(m+1)` polynomial, then `‖p(z)‖ < 1/2`: the
+distinguished factor is `< 1/(2·3^m)` and each of the other `m` factors is `≤ 3`. -/
+theorem norm_eval_lt_half_of_mem_ball (P : UnitDiskPoly (m + 1)) {z : ℂ}
+    (hz : z ∈ Metric.ball (P.roots 0) (1 / (2 * 3 ^ m))) :
+    ‖P.eval z‖ < 1 / 2 := by
+  rw [Metric.mem_ball, dist_eq_norm] at hz
+  have heval : P.eval z = (z - P.roots 0) * ∏ i : Fin m, (z - P.roots i.succ) := by
+    simp only [UnitDiskPoly.eval]
+    exact Fin.prod_univ_succ _
+  have hfac : ∀ i : Fin m, ‖z - P.roots i.succ‖ ≤ 3 := by
+    intro i
+    have h0 : ‖P.roots 0‖ ≤ 1 := P.roots_in_disk 0
+    have hi : ‖P.roots i.succ‖ ≤ 1 := P.roots_in_disk i.succ
+    have hrsmall : (1 : ℝ) / (2 * 3 ^ m) ≤ 1 := by
+      rw [div_le_one (by positivity)]
+      have h1 : (1 : ℝ) ≤ 3 ^ m := one_le_pow₀ (by norm_num)
+      linarith
+    calc ‖z - P.roots i.succ‖
+        = ‖(z - P.roots 0) + (P.roots 0 - P.roots i.succ)‖ := by congr 1; ring
+      _ ≤ ‖z - P.roots 0‖ + ‖P.roots 0 - P.roots i.succ‖ := norm_add_le _ _
+      _ ≤ 1 / (2 * 3 ^ m) + (‖P.roots 0‖ + ‖P.roots i.succ‖) :=
+          add_le_add hz.le (norm_sub_le _ _)
+      _ ≤ 1 + (1 + 1) := add_le_add hrsmall (add_le_add h0 hi)
+      _ = 3 := by norm_num
+  have hprod : ‖∏ i : Fin m, (z - P.roots i.succ)‖ ≤ 3 ^ m := by
+    rw [norm_prod]
+    calc ∏ i : Fin m, ‖z - P.roots i.succ‖
+        ≤ ∏ _i : Fin m, (3 : ℝ) :=
+          Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => hfac i)
+      _ = 3 ^ m := by simp
+  rw [heval, norm_mul]
+  calc ‖z - P.roots 0‖ * ‖∏ i : Fin m, (z - P.roots i.succ)‖
+      ≤ ‖z - P.roots 0‖ * 3 ^ m :=
+        mul_le_mul_of_nonneg_left hprod (norm_nonneg _)
+    _ < (1 / (2 * 3 ^ m)) * 3 ^ m :=
+        mul_lt_mul_of_pos_right hz (by positivity)
+    _ = 1 / 2 := by field_simp
+
+/-- **The lemniscate contains an explicit disk around the first root**:
+`ball z₁ (1/(2·3^m)) ⊆ Sₚ` for every degree-`(m+1)` configuration. -/
+theorem ball_subset_sublevelSet (P : UnitDiskPoly (m + 1)) :
+    Metric.ball (P.roots 0) (1 / (2 * 3 ^ m)) ⊆ P.sublevelSet := by
+  intro z hz
+  show ‖P.eval z‖ < 1
+  exact lt_trans (norm_eval_lt_half_of_mem_ball P hz) (by norm_num)
+
+/-- **Explicit volume lower bound (`ℂ`-side)**: the lemniscate's planar volume is at
+least that of the contained disk, `π·(1/(2·3^m))²` (`Complex.volume_ball`). -/
+theorem volume_sublevelSet_ge (P : UnitDiskPoly (m + 1)) :
+    ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi ≤ volume P.sublevelSet := by
+  calc (ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi : ℝ≥0∞)
+      = volume (Metric.ball (P.roots 0) (1 / (2 * 3 ^ m))) := by
+        rw [Complex.volume_ball]
+    _ ≤ volume P.sublevelSet := measure_mono (ball_subset_sublevelSet P)
+
+/-- The parent's `ℝ × ℝ` volume obeys the same explicit lower bound, transported
+across the volume-preserving equivalence `ℂ ≃ᵐ ℝ × ℝ` (same route as
+`volume_realProd_sublevelSet_lt_top`). -/
+theorem volume_realProd_sublevelSet_ge (P : UnitDiskPoly (m + 1)) :
+    ENNReal.ofReal (1 / (2 * 3 ^ m) : ℝ) ^ 2 * NNReal.pi
+      ≤ volume {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} := by
+  rw [P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+  exact volume_sublevelSet_ge P
+
+/-- **The first quantitative lower bound on the lemniscate area:**
+`sublevelMeasure P ≥ π / (4·9^m)` for every degree-`(m+1)` configuration.
+Exponentially weaker than the deep KLR bound `c / log n`, but fully elementary
+and explicit. -/
+theorem sublevelMeasure_ge (P : UnitDiskPoly (m + 1)) :
+    Real.pi / (4 * 9 ^ m) ≤ sublevelMeasure P := by
+  have h9 : ((3 : ℝ) ^ m) ^ 2 = 9 ^ m := by
+    rw [← pow_mul, mul_comm m 2, pow_mul]; norm_num
+  have hr2 : (1 / (2 * 3 ^ m) : ℝ) ^ 2 = 1 / (4 * 9 ^ m) := by
+    rw [div_pow, one_pow, mul_pow, h9]; norm_num
+  have hle := volume_realProd_sublevelSet_ge P
+  have hfin := P.volume_realProd_sublevelSet_lt_top
+  have h1 := ENNReal.toReal_mono hfin.ne hle
+  rw [sublevelMeasure]
+  refine le_trans (le_of_eq ?_) h1
+  rw [ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal (by positivity),
+    ENNReal.coe_toReal, NNReal.coe_real_pi, hr2]
+  ring
+
+/-- `sublevelMeasure_ge` in `n ≠ 0` form: `sublevelMeasure P ≥ π / (4·9^{n−1})`. -/
+theorem sublevelMeasure_ge' (P : UnitDiskPoly n) (hn : n ≠ 0) :
+    Real.pi / (4 * 9 ^ (n - 1)) ≤ sublevelMeasure P := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
+  simpa using sublevelMeasure_ge P
+
 end UnitDiskPoly
