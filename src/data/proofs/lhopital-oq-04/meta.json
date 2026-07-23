@@ -78,17 +78,33 @@
       "id": "main-rule",
       "title": "L'Hôpital via Dividing Leading Terms",
       "startLine": 55,
-      "endLine": 80,
-      "summary": "lhopital_zero_taylor divides the two leading-order limits; lhopital_zero_taylor_coeff names the value as a ratio of first Taylor coefficients.",
+      "endLine": 67,
+      "summary": "lhopital_zero_taylor divides the two leading-order limits f(x)/(x-a) → f'(a) and g(x)/(x-a) → g'(a), transporting along f(x)/g(x) = (f(x)/(x-a))/(g(x)/(x-a)) for x ≠ a. No Mean Value Theorem appears.",
       "mathContext": "f(x)/g(x) = (f(x)/(x-a))/(g(x)/(x-a)) → f'(a)/g'(a), no MVT."
     },
     {
-      "id": "examples",
-      "title": "Worked Examples",
-      "startLine": 83,
-      "endLine": 99,
-      "summary": "sin x/x → 1 (limit cos 0/1) and (1 - cos x)/x → 0 (vanishing leading term, sin 0/1).",
-      "mathContext": "Instantiating the rule, including the f'(a) = 0 case."
+      "id": "taylor-coeff",
+      "title": "Naming the Limit via First Taylor Coefficients",
+      "startLine": 69,
+      "endLine": 78,
+      "summary": "lhopital_zero_taylor_coeff repackages the same limit as (f'(a)/1!)/(g'(a)/1!), exhibiting order-1 L'Hôpital as the ratio of the first Taylor coefficients of f and g — the shape the order-k generalisation would take.",
+      "mathContext": "Order-1 L'Hôpital as $\\dfrac{f'(a)/1!}{g'(a)/1!} = \\dfrac{c_1[f]}{c_1[g]}$, anticipating $\\dfrac{f^{(k)}(a)/k!}{g^{(k)}(a)/k!}$."
+    },
+    {
+      "id": "example-sin",
+      "title": "Worked Example: sin x / x → 1",
+      "startLine": 80,
+      "endLine": 86,
+      "summary": "Instantiates the rule with f = sin, g = id at a = 0: f'(0) = cos 0 = 1, g'(0) = 1, so the limit is cos 0/1 = 1 — recovering the classic sine limit without circularity.",
+      "mathContext": "$\\dfrac{\\sin x}{x}\\to \\dfrac{\\cos 0}{1}=1.$"
+    },
+    {
+      "id": "example-vanishing",
+      "title": "Worked Example: a Vanishing Leading Coefficient",
+      "startLine": 88,
+      "endLine": 100,
+      "summary": "(1 - cos x)/x → 0: the numerator's leading Taylor coefficient sin 0 = 0 vanishes, so the leading-order picture immediately gives limit 0/1 = 0 where naïve substitution is indeterminate.",
+      "mathContext": "$\\dfrac{1-\\cos x}{x}\\to \\dfrac{\\sin 0}{1}=0.$"
     }
   ],
   "conclusion": {
