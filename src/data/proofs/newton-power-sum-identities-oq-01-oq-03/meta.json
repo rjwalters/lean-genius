@@ -99,11 +99,19 @@
       "mathContext": "$p_1=e_1,\\; p_2=e_1^2-2e_2,\\; p_3=e_1^3-3e_1e_2+3e_3$."
     },
     {
-      "id": "determinants",
-      "title": "Girard–Waring forward determinants",
+      "id": "determinants-low",
+      "title": "Girard–Waring Forward Determinants: Degrees 1 and 2",
       "startLine": 90,
+      "endLine": 107,
+      "summary": "psum_one_det (p₁ = det[e₁]) and psum_two_det (p₂ = det[[e₁,1],[2e₂,e₁]]), proved by det_fin_one_of / det_fin_two_of and linear_combination against the scalar identities.",
+      "mathContext": "$p_2=\\det\\begin{pmatrix}e_1&1\\\\2e_2&e_1\\end{pmatrix}$."
+    },
+    {
+      "id": "determinants-degree3",
+      "title": "Girard–Waring Forward Determinant: Degree 3",
+      "startLine": 109,
       "endLine": 121,
-      "summary": "psum_one_det, psum_two_det, psum_three_det: each power sum expressed as the determinant of the lower-Hessenberg matrix in the eⱼ, proved by det_fin_one_of / det_fin_two_of / det_fin_three (with Matrix.of_apply in the 3×3 simp set) and linear_combination against the scalar identities.",
+      "summary": "psum_three_det: p₃ = det[[e₁,1,0],[2e₂,e₁,1],[3e₃,e₂,e₁]], proved by Matrix.det_fin_three with Matrix.of_apply in the simp set (needed before the cons/head lemmas fire) and linear_combination against psum_three_eq.",
       "mathContext": "$p_3=\\det\\begin{pmatrix} e_1&1&0\\\\ 2e_2&e_1&1\\\\ 3e_3&e_2&e_1\\end{pmatrix}$."
     },
     {
