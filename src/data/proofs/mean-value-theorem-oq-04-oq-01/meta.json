@@ -38,20 +38,34 @@
       "mathContext": "Stokes: $\\int_M d\\omega = \\int_{\\partial M}\\omega$. For a curve $\\gamma:[a,b]\\to E$ as the 1-chain $M$ (boundary $\\{\\gamma b\\}-\\{\\gamma a\\}$) and a 0-form $\\omega = g$ with $d\\omega = Dg$, this reduces to $\\int_a^b Dg(\\gamma t)[\\gamma'(t)]\\,dt = g(\\gamma b)-g(\\gamma a)$."
     },
     {
-      "id": "fderiv-form",
+      "id": "fderiv-form-main",
       "title": "Part I: Gradient Theorem in Fréchet-Derivative Form",
       "startLine": 54,
-      "endLine": 118,
-      "summary": "Three theorems over an arbitrary real normed space E. line_integral_fderiv_eq_sub: ∫_a^b Dg(t)[γ'(t)] = g(γ b)−g(γ a), where the exact 1-form is the Fréchet derivative Dg t : E →L[ℝ] ℝ; proof is HasFDerivAt.comp_hasDerivAt (chain rule) piped into intervalIntegral.integral_eq_sub_of_hasDerivAt (1D FTC). line_integral_fderiv_closed: closed path (γ a = γ b) ⟹ integral = 0. line_integral_fderiv_path_independent: two paths with matching endpoints give equal integrals of the same potential's 1-form.",
+      "endLine": 87,
+      "summary": "line_integral_fderiv_eq_sub: ∫_a^b Dg(t)[γ'(t)] = g(γ b)−g(γ a) over an arbitrary real normed space E, where the exact 1-form is the Fréchet derivative Dg t : E →L[ℝ] ℝ; proof is HasFDerivAt.comp_hasDerivAt (chain rule) piped into intervalIntegral.integral_eq_sub_of_hasDerivAt (1D FTC).",
       "mathContext": "Chain rule $HasFDerivAt\\;g\\;(Dg\\,t)\\;(\\gamma t)$ and $HasDerivAt\\;\\gamma\\;(\\gamma' t)\\;t$ give $HasDerivAt\\;(g\\circ\\gamma)\\;(Dg\\,t[\\gamma' t])\\;t$; the 1D FTC then yields $\\int_a^b Dg\\,t[\\gamma' t] = g(\\gamma b)-g(\\gamma a)$."
     },
     {
-      "id": "inner-form",
+      "id": "fderiv-form-corollaries",
+      "title": "Part I: Closed-Loop and Path-Independence Corollaries",
+      "startLine": 89,
+      "endLine": 118,
+      "summary": "line_integral_fderiv_closed: closed path (γ a = γ b) ⟹ integral = 0. line_integral_fderiv_path_independent: two paths with matching endpoints give equal integrals of the same potential's 1-form. Both are one-line rewrites of line_integral_fderiv_eq_sub."
+    },
+    {
+      "id": "inner-form-main",
       "title": "Part II: Classical Gradient Theorem (Inner-Product Form)",
       "startLine": 120,
+      "endLine": 153,
+      "summary": "gradient_theorem: ∫_a^b ⟪∇g(γ t), γ'(t)⟫ = g(γ b)−g(γ a) over a real Hilbert space F, where the integrand is the genuine inner product ⟪grad t, γ' t⟫; derived from the Fréchet form by identifying HasGradientAt g (grad t) (γ t) with HasFDerivAt g (toDual ℝ F (grad t)) and rewriting toDual ℝ F v w = ⟪v,w⟫ (InnerProductSpace.toDual_apply_apply).",
+      "mathContext": "$HasGradientAt\\;g\\;g'\\;x := HasFDerivAt\\;g\\;(\\mathrm{toDual}_{\\mathbb R}\\,g')\\;x$ and $\\mathrm{toDual}_{\\mathbb R}\\,v\\,(w)=\\langle v,w\\rangle$, so $\\int_a^b \\langle\\nabla g(\\gamma t),\\gamma'(t)\\rangle = g(\\gamma b)-g(\\gamma a)$."
+    },
+    {
+      "id": "inner-form-corollaries",
+      "title": "Part II: Zero Circulation and Path Independence",
+      "startLine": 155,
       "endLine": 182,
-      "summary": "Three theorems over a real Hilbert space F where the integrand is the genuine inner product ⟪grad t, γ' t⟫. gradient_theorem: ∫_a^b ⟪∇g(γ t), γ'(t)⟫ = g(γ b)−g(γ a); derived from the Fréchet form by identifying HasGradientAt g (grad t) (γ t) with HasFDerivAt g (toDual ℝ F (grad t)) and rewriting toDual ℝ F v w = ⟪v,w⟫ (InnerProductSpace.toDual_apply_apply). gradient_theorem_closed: zero circulation of a conservative field around a closed loop. gradient_theorem_path_independent: path independence of ∇g.",
-      "mathContext": "$HasGradientAt\\;g\\;g'\\;x := HasFDerivAt\\;g\\;(\\mathrm{toDual}_{\\mathbb R}\\,g')\\;x$ and $\\mathrm{toDual}_{\\mathbb R}\\,v\\,(w)=\\langle v,w\\rangle$, so $\\int_a^b \\langle\\nabla g(\\gamma t),\\gamma'(t)\\rangle = g(\\gamma b)-g(\\gamma a)$; closed loop $\\Rightarrow 0$, matching endpoints $\\Rightarrow$ equal integrals."
+      "summary": "gradient_theorem_closed: zero circulation of a conservative field around a closed loop. gradient_theorem_path_independent: path independence of ∇g — two paths with matching endpoints give equal line integrals. Both are one-line rewrites of gradient_theorem."
     }
   ],
   "overview": {
