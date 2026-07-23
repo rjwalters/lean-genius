@@ -31,6 +31,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: What This Proves and Why It's Not in Mathlib",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring: states the even/odd split ∑ r^(2n) = 1/(1−r²), ∑ r^(2n+1) = r/(1−r²) and its recombination into ∑ rⁿ = 1/(1−r); explains that Mathlib has the plain geometric series but not its index-parity subsums, and outlines the three-step proof strategy (even subseries, odd subseries, recombination)."
+    },
+    {
       "id": "denominators",
       "title": "Nonvanishing Denominators and the Key Bound",
       "startLine": 49,
@@ -39,20 +46,36 @@
       "mathContext": "$\\|r^2\\|=\\|r\\|^2<1$, and $1-r\\ne 0$, $1-r^2\\ne 0$ for $\\|r\\|<1$."
     },
     {
-      "id": "even-odd-subseries",
-      "title": "The Even and Odd Subseries",
+      "id": "even-subseries",
+      "title": "The Even Subseries",
       "startLine": 65,
+      "endLine": 81,
+      "summary": "hasSum_geometric_even / tsum_geometric_even / summable_geometric_even: ∑ r^(2n) = 1/(1−r²), via the reindexing r^(2n) = (r²)ⁿ (pow_mul) and hasSum_geometric_of_norm_lt_one applied at ratio r².",
+      "mathContext": "$\\sum_n r^{2n} = \\sum_n (r^2)^n = \\frac{1}{1-r^2}$."
+    },
+    {
+      "id": "odd-subseries",
+      "title": "The Odd Subseries",
+      "startLine": 83,
       "endLine": 101,
-      "summary": "Even subseries (hasSum/tsum/summable_geometric_even): ∑ r^(2n) = 1/(1−r²), via r^(2n) = (r²)ⁿ (pow_mul) and hasSum_geometric_of_norm_lt_one at ratio r². Odd subseries (hasSum/tsum/summable_geometric_odd): ∑ r^(2n+1) = r/(1−r²), by factoring r^(2n+1) = r·r^(2n) and HasSum.mul_left r on the even subseries.",
-      "mathContext": "$\\sum_n r^{2n}=\\frac{1}{1-r^2}$, $\\;\\sum_n r^{2n+1}=\\frac{r}{1-r^2}$, each geometric of ratio $r^2$."
+      "summary": "hasSum_geometric_odd / tsum_geometric_odd / summable_geometric_odd: ∑ r^(2n+1) = r/(1−r²), by factoring r^(2n+1) = r·r^(2n) and transporting the even subseries through HasSum.mul_left r — no fresh summation argument needed.",
+      "mathContext": "$\\sum_n r^{2n+1} = r\\sum_n r^{2n} = \\frac{r}{1-r^2}$."
     },
     {
       "id": "recombination",
-      "title": "Recombination and Concrete Values",
+      "title": "Recombination",
       "startLine": 103,
+      "endLine": 113,
+      "summary": "tsum_even_add_odd: ∑ r^(2n) + ∑ r^(2n+1) = ∑ rⁿ = 1/(1−r), the identity 1/(1−r²) + r/(1−r²) = 1/(1−r) closed by field_simp; ring under the factorisation 1−r² = (1−r)(1+r).",
+      "mathContext": "$\\frac{1}{1-r^2}+\\frac{r}{1-r^2}=\\frac{1}{1-r}$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values",
+      "startLine": 115,
       "endLine": 125,
-      "summary": "tsum_even_add_odd: ∑ r^(2n) + ∑ r^(2n+1) = ∑ rⁿ = 1/(1−r), the identity 1/(1−r²) + r/(1−r²) = 1/(1−r) closed by field_simp; ring under 1−r² = (1−r)(1+r). Concrete checks at r = 1/2 confirm ∑ (1/2)^(2n) = 4/3 and ∑ (1/2)^(2n+1) = 2/3.",
-      "mathContext": "$\\frac{1}{1-r^2}+\\frac{r}{1-r^2}=\\frac{1}{1-r}$; e.g. $r=\\tfrac12$: $\\tfrac43+\\tfrac23=2$."
+      "summary": "Numerical sanity checks at r = 1/2: ∑ (1/2)^(2n) = 4/3 and ∑ (1/2)^(2n+1) = 2/3, confirming the closed forms against direct computation.",
+      "mathContext": "$r=\\tfrac12$: $\\sum_n r^{2n} = \\tfrac43$, $\\sum_n r^{2n+1} = \\tfrac23$."
     }
   ],
   "meta": {
