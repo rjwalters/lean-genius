@@ -5,7 +5,7 @@
   "description": "Given an infinite set A ⊆ ℝ² with no 3 collinear and no 4 cocircular points, form the integer distance graph G(A). Can χ(G(A)) be infinite? Anning–Erdős shows the clique number must be finite. Open.",
   "meta": {
     "erdosNumber": 130,
-    "status": "axiomatized",
+    "status": "open",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 103,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Open conjecture. The Anning–Erdős theorem, the chromatic-number question, and the diameter bound are described in doc comments as background — they are not formalized (the file has 0 axioms and 0 theorems).",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 10
@@ -105,7 +105,7 @@
     "historicalContext": "Norman Anning and Paul Erdős proved in 1945 that any infinite set of points in the plane with all pairwise distances integers must have all points collinear — a striking rigidity result for integer distance sets. Decades later, Andrásfai and Erdős (1997) posed the natural graph-theoretic follow-up: given an infinite set $A \\subseteq \\mathbb{R}^2$ in general position (no 3 collinear, no 4 cocircular), form the integer distance graph $G(A)$ connecting pairs at integer distance. By Anning–Erdős, the clique number $\\omega(G(A))$ must be finite, but the chromatic number $\\chi(G(A))$ could conceivably be infinite. The problem connects to the Hadwiger–Nelson problem on the chromatic number of the unit distance graph and to broader questions about rational/integer distance sets studied by Erdős, Ulam, and others. The general position constraints are essential: without them, one can trivially construct infinite integer distance sets on a single line.",
     "problemStatement": "Given an infinite set $A \\subseteq \\mathbb{R}^2$ with no three collinear and no four cocircular points, form the graph $G(A)$ connecting pairs at integer distance. Can the chromatic number $\\chi(G(A))$ be infinite? How large can the clique number $\\omega(G(A))$ be?",
     "text": "Given an infinite set A ⊆ ℝ² with no 3 collinear and no 4 cocircular points, form the integer distance graph G(A). Can χ(G(A)) be infinite? Anning–Erdős shows the clique number must be finite. Open.",
-    "proofStrategy": "The formalization defines Point2, squared Euclidean distance, collinearity (via cross product), cocircularity (via circumscribed circle), and the general position predicate. The integer distance graph is constructed with proper coloring and clique definitions. The open chromatic number question and the Anning–Erdős theorem are axiomatized, along with the quantitative diameter bound.",
+    "proofStrategy": "The formalization defines Point2, squared Euclidean distance, collinearity (via cross product), cocircularity (via circumscribed circle), and the general position predicate. The integer distance graph is constructed with proper coloring and clique definitions. The open chromatic number question, the Anning–Erdős theorem, and the quantitative diameter bound are described in doc comments as background — they are not formalized (the file has 0 axioms and 0 theorems).",
     "keyInsights": [
       "**Anning–Erdős (1945)**: Any infinite set of points with all pairwise integer distances must be collinear — forcing $\\omega(G(A)) < \\infty$ in general position",
       "**Chromatic–clique gap**: For geometric distance graphs, $\\chi$ can vastly exceed $\\omega$ — there is no general $\\chi \\leq f(\\omega)$ bound, unlike in perfect graphs",
