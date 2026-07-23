@@ -61,6 +61,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Non-Free Z/p Actions and the Localization Collapse", "startLine": 1, "endLine": 55, "summary": "States the open question (does the equivariant index still control vanishing for non-free actions?) and the answer: the Fadell-Husseini index degenerates to +infinity for any non-free Z/p-action, so the genuine obstruction collapses onto the (always nonempty) fixed-point set. Recaps the free-case index theory and the Localization Theorem that forces the collapse, and lists the axiom/theorem counts and references.", "mathContext": "The index ideal $\\mathrm{Ind}_{\\mathbb{Z}/p}(X) = \\ker(H^*(BG) \\to H^*_G(X))$ vanishes once $X$ has a fixed point, since restriction to the fixed point splits the structure map and makes it injective (Borel localization)."},
     {
       "id": "carriers",
       "title": "The Index Theory (Carriers)",
