@@ -93,11 +93,19 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header Docstring and the Sophie Germain Predicate",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring frames this file as the complementary half of the mod-4 dichotomy begun in the sibling sophie-germain-oq-01-oq-02: for p ≡ 3 (mod 4) the sibling shows q = 2p+1 ∣ 2^p − 1, and here p ≡ 1 (mod 4) is shown to force q ∣ 2^p + 1. States the proof idea (q ≡ 3 (mod 8) ⇒ 2 a non-residue ⇒ Euler's criterion gives 2^p = −1) and the p mod 4 / q mod 8 / divisibility table. Enters namespace SophieGermainOQ0103 and locally re-declares IsSophieGermainPrime p := p.Prime ∧ (2*p+1).Prime so the file is self-contained.",
+      "mathContext": "$p \\equiv 1 \\pmod 4,\\ q = 2p+1\\text{ prime} \\Rightarrow q \\mid 2^p+1$ (complementary to the sibling's $q\\mid 2^p-1$ for $p\\equiv 3\\pmod 4$)."
+    },
+    {
       "id": "safe-prime-arithmetic",
       "title": "Arithmetic of the Safe Prime q = 2p+1",
-      "startLine": 50,
+      "startLine": 52,
       "endLine": 82,
-      "summary": "Re-declares IsSophieGermainPrime locally and records the modular facts used throughout: q ≡ 3 (mod 8) when p ≡ 1 (mod 4) (safePrime_mod_eight), q ≠ 2 and p ≥ 5 for such primes (safePrime_ne_two, five_le_of_prime_mod_four), and the exponential estimate 2n < 2^n for n ≥ 5 (two_mul_lt_two_pow).",
+      "summary": "Records the modular facts used throughout: q ≡ 3 (mod 8) when p ≡ 1 (mod 4) (safePrime_mod_eight), q ≠ 2 and p ≥ 5 for such primes (safePrime_ne_two, five_le_of_prime_mod_four), and the exponential estimate 2n < 2^n for n ≥ 5 (two_mul_lt_two_pow).",
       "mathContext": "$p \\equiv 1 \\pmod 4 \\Rightarrow q = 2p+1 \\equiv 3 \\pmod 8$."
     },
     {
