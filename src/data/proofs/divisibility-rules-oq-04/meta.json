@@ -79,7 +79,8 @@
       "All digit divisibility rules for 11 are the same theorem at different bases: choosing the base b' in digits b' n selects the residue r = b' mod 11 (r = 1 → block sum, r = -1 → alternating sum).",
       "The two-digit block-sum rule (base 100) and three-digit block-alternating rule (base 1000) are genuine specializations absent from Mathlib and the sibling entries, which treat only single digits.",
       "1001 = 7·11·13 is the arithmetic heart of the three-digit rule and explains why one alternating block test works for all three primes at once — the simultaneous 7-11-13 divisibility test.",
-      "Provenance matters: the sibling oq-01 proves only the congruence form and relies on native_decide (hence the Lean.ofReduceBool axiom); recording the biconditionals straight from the digit machinery yields the same facts with zero axioms beyond the kernel triple."
+      "Provenance matters: the sibling oq-01 proves only the congruence form and relies on native_decide (hence the Lean.ofReduceBool axiom); recording the biconditionals straight from the digit machinery yields the same facts with zero axioms beyond the kernel triple.",
+      "Only two residues actually occur, since ord₁₁(10) = 2: every power of 10 is ≡ -1 mod 11 at odd exponents and ≡ 1 at even exponents. So the single-digit and three-digit block rules are both instances of the same '-1' (alternating) type, and the two-digit block rule is the lone '+1' (plain-sum) type — the three-digit case earns its place not from residue novelty but because its block size (1000) is the one that also factors through 7 and 13."
     ],
     "prerequisites": [
       "Nat.digits in an arbitrary base and Nat.ofDigits",
@@ -117,9 +118,17 @@
       "id": "block-alternating",
       "title": "Three-Digit Block-Alternating Rule (1000 ≡ -1)",
       "startLine": 52,
-      "endLine": 66,
-      "summary": "eleven_dvd_iff_block_alternating: 11 ∣ n ↔ (11:ℤ) ∣ alternatingSum of three-digit blocks, via Nat.dvd_iff_dvd_ofDigits (side condition 11 ∣ 1001 = 7·11·13) and Nat.ofDigits_neg_one. The closing eleven_modEq_alternating records the underlying congruence n ≡ altSum [ZMOD 11].",
+      "endLine": 60,
+      "summary": "eleven_dvd_iff_block_alternating: 11 ∣ n ↔ (11:ℤ) ∣ alternatingSum of three-digit blocks, via Nat.dvd_iff_dvd_ofDigits (side condition 11 ∣ 1001 = 7·11·13) and Nat.ofDigits_neg_one.",
       "mathContext": "$1000 \\equiv -1 \\pmod{11}$ (since $1001 = 7\\cdot11\\cdot13$) $\\Rightarrow$ alternating sum of 3-digit blocks; the same grouping tests 7 and 13."
+    },
+    {
+      "id": "underlying-congruence",
+      "title": "The Underlying Congruence",
+      "startLine": 62,
+      "endLine": 66,
+      "summary": "eleven_modEq_alternating: n ≡ altDigitSum [ZMOD 11], the single congruence fact that powers eleven_dvd_iff_alternating and, via the residue calculus, the other two block rules as well.",
+      "mathContext": "$n \\equiv (d_0 - d_1 + d_2 - \\cdots) \\pmod{11}$, the residue fact underlying all three rules."
     }
   ],
   "openQuestions": [
