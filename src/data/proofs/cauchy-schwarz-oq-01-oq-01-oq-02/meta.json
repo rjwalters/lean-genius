@@ -85,6 +85,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Robertson's Uncertainty Inequality from Cauchy-Schwarz", "startLine": 1, "endLine": 21, "summary": "Answers whether the Heisenberg uncertainty principle can be derived from the complex Cauchy-Schwarz inequality: yes, via Robertson's 1929 result \u0394A\u00b7\u0394B \u2265 (1/2)|\u27e8\u03c8|[A,B]|\u03c8\u27e9| for symmetric operators, obtained by applying Cauchy-Schwarz to the centered vectors (A\u2212\u27e8A\u27e9)\u03c8 and (B\u2212\u27e8B\u27e9)\u03c8; the standard \u0394x\u00b7\u0394p \u2265 \u0127/2 is the special case [x\u0302,p\u0302]=i\u0127.", "mathContext": "$\\Delta A(\\psi)\\,\\Delta B(\\psi) \\ge \\tfrac12|\\langle\\psi|[A,B]|\\psi\\rangle|$, derived by applying $|\\langle u,v\\rangle| \\le \\|u\\|\\|v\\|$ to the centered vectors $u=(A-\\langle A\\rangle)\\psi$, $v=(B-\\langle B\\rangle)\\psi$ and bounding the imaginary part of the commutator expectation."},
     {
       "id": "antisymmetric-bound",
       "title": "Part I: CS Antisymmetric Bound",
