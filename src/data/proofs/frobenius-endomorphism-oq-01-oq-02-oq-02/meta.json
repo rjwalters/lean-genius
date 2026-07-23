@@ -173,20 +173,36 @@
       "mathContext": "A field is perfect iff its Frobenius $x \\mapsto x^p$ is surjective. Finite fields and characteristic-0 fields are perfect; the goal is the simplest explicit imperfect field, $\\mathbb{F}_p(X)$."
     },
     {
-      "id": "part-1-polynomial-ring",
-      "title": "Part 1 - The Polynomial Ring 𝔽ₚ[X] Is an Explicit Imperfect Ring",
+      "id": "part-1a-injective-and-degree-obstruction",
+      "title": "Part 1a - Injectivity and the Degree Obstruction",
       "startLine": 43,
-      "endLine": 79,
-      "summary": "frobenius_injective_polynomial: Frobenius is injective on 𝔽ₚ[X] (a domain, hence reduced), directly from Mathlib's frobenius_inj. X_isNotPthPower: X has no p-th root, by the degree obstruction p·natDegree f = 1 (from natDegree_pow and natDegree_X), forcing p | 1. frobenius_not_surjective_polynomial specializes surjectivity at X through frobenius_def; not_perfectRing_polynomial concludes 𝔽ₚ[X] is not a PerfectRing via surjective_frobenius.",
-      "mathContext": "If $f^p = X$ in $\\mathbb{F}_p[X]$ then $p\\cdot\\deg f = \\deg X = 1$, so $p \\mid 1$ - impossible for prime $p$. Frobenius is injective but not surjective, so $\\mathbb{F}_p[X]$ is an imperfect ring."
+      "endLine": 62,
+      "summary": "frobenius_injective_polynomial: Frobenius is injective on 𝔽ₚ[X] (a domain, hence reduced), directly from Mathlib's frobenius_inj. X_isNotPthPower: X has no p-th root, by the degree obstruction p·natDegree f = 1 (from natDegree_pow and natDegree_X), forcing p | 1, impossible for prime p.",
+      "mathContext": "If $f^p = X$ in $\\mathbb{F}_p[X]$ then $p\\cdot\\deg f = \\deg X = 1$, so $p \\mid 1$ - impossible for prime $p$."
     },
     {
-      "id": "part-2-function-field",
-      "title": "Part 2 - The Rational Function Field 𝔽ₚ(X) Is an Explicit Imperfect Field",
+      "id": "part-1b-imperfect-ring",
+      "title": "Part 1b - 𝔽ₚ[X] Is an Explicit Imperfect Ring",
+      "startLine": 64,
+      "endLine": 79,
+      "summary": "frobenius_not_surjective_polynomial specializes surjectivity at X through frobenius_def, reducing to X_isNotPthPower. not_perfectRing_polynomial concludes 𝔽ₚ[X] is not a PerfectRing: a PerfectRing would make Frobenius surjective (surjective_frobenius), contradicting the previous theorem.",
+      "mathContext": "Frobenius is injective but not surjective on $\\mathbb{F}_p[X]$, so it is an explicit imperfect ring."
+    },
+    {
+      "id": "part-2a-degree-lift-to-function-field",
+      "title": "Part 2a - Lifting the Degree Obstruction to 𝔽ₚ(X)",
       "startLine": 81,
-      "endLine": 136,
-      "summary": "intDegree_pow: intDegree(rⁿ) = n·intDegree r for nonzero r, by induction using RatFunc.intDegree_mul. ratfunc_X_isNotPthPower: X has no p-th root in 𝔽ₚ(X); the same degree argument now lives in ℤ, giving (p:ℤ)·intDegree r = 1, closed by Int.le_of_dvd and omega. frobenius_not_surjective_ratfunc specializes at X; the headline not_perfectField_ratfunc concludes 𝔽ₚ(X) is not a PerfectField via PerfectField.toPerfectRing and surjective_frobenius.",
+      "endLine": 118,
+      "summary": "intDegree_pow: intDegree(rⁿ) = n·intDegree r for nonzero r, by induction using RatFunc.intDegree_mul. ratfunc_X_isNotPthPower: X has no p-th root in 𝔽ₚ(X); the same degree argument now lives in ℤ, giving (p:ℤ)·intDegree r = 1, closed by Int.le_of_dvd and omega.",
       "mathContext": "In $\\mathbb{F}_p(X)$, $r^p = X$ gives $p\\cdot\\operatorname{intDegree} r = 1$ in $\\mathbb{Z}$, again forcing $p \\mid 1$. The $\\mathbb{N}$-degree obstruction of Part 1 lifts verbatim once degree is allowed to be negative."
+    },
+    {
+      "id": "part-2b-imperfect-field",
+      "title": "Part 2b - 𝔽ₚ(X) Is an Explicit Imperfect Field",
+      "startLine": 120,
+      "endLine": 136,
+      "summary": "frobenius_not_surjective_ratfunc specializes at X, reducing to ratfunc_X_isNotPthPower. The headline not_perfectField_ratfunc concludes 𝔽ₚ(X) is not a PerfectField: PerfectField.toPerfectRing would give a PerfectRing, and surjective_frobenius would then contradict frobenius_not_surjective_ratfunc.",
+      "mathContext": "$\\mathbb{F}_p(X)$ is not a PerfectField - the sharp counterpoint to the finite-field case, where every field is perfect."
     }
   ],
   "conclusion": {
