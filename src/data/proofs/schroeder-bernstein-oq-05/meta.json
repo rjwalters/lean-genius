@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Dual Schroeder-Bernstein",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring stating the dual theorem (mutual surjections imply equinumerosity) and its relationship to the classical injective form, plus imports, namespace, the `Function` open, and the ambient `{A B : Type*}` variables.",
+      "mathContext": "Frames the AC-dependence: each surjection is split into an injective right inverse, then the classical (choice-free) Schroeder-Bernstein theorem is applied to the two injections."
+    },
+    {
       "id": "section",
       "title": "Splitting a Surjection into an Injective Section",
       "startLine": 33,
