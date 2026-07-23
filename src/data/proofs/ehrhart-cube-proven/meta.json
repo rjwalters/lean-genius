@@ -65,6 +65,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Ehrhart Polynomial of the Unit Cube from First Principles", "startLine": 1, "endLine": 30, "summary": "States that the existing Ehrhart formalization axiomatizes the counting function for a general polytope, and previews this file's from-first-principles proof for the unit cube: the total lattice point count (n+1)^d, the interior count (n-1)^d, the boundary count as their difference, verified Ehrhart-Macdonald reciprocity, Pick's formula for the unit square, and agreement of the counting function with the Ehrhart polynomial — eliminating the axiom in the unit-cube case.", "mathContext": "Proves $|n\\cdot[0,1]^d \\cap \\mathbb{Z}^d| = (n+1)^d$ from first principles using only Mathlib's Fintype cardinality lemmas, eliminating the axiom the existing Ehrhart formalization needed for this case."},
     {
       "id": "section-i-lattice",
       "title": "Section I: Lattice Point Counting from First Principles",
