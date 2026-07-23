@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: OQ-03 Context and Strategy",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring states OQ-03: any positive-definite symmetric conic C fails to be projectively equivalent to stdConic over ℝ, generalizing the parent's single positive-definite witness diag(1,1,1). Explains the mathematics (a positive-definite form vanishes at no nonzero real point, while stdConic is isotropic) and the proof strategy (pulling stdConic's real point back through an alleged equivalence M would produce a nonzero zero of C). Imports Mathlib, declares the PascalsHexagonIncomplete01OQ03 namespace, opens Finset/Matrix.",
+      "mathContext": "$C$ positive-definite $\\Rightarrow C \\not\\cong \\mathrm{stdConic}$ over $\\mathbb{R}$, since $\\mathrm{stdConic}$ is isotropic (carries $(1,0,1)\\neq 0$) while $C$ vanishes only at $0$."
+    },
+    {
       "id": "api",
       "title": "Minimal Conic API",
       "startLine": 42,
@@ -92,9 +100,16 @@
       "id": "main",
       "title": "No Positive-Definite Conic Equals stdConic",
       "startLine": 106,
-      "endLine": 135,
-      "summary": "posDef_not_projEquiv_stdConic and the corollary one_not_projEquiv_stdConic recovering the parent's identity case.",
+      "endLine": 128,
+      "summary": "posDef_not_projEquiv_stdConic: no determinant-nonzero matrix M can intertwine 'lies on C' with 'lies on stdConic'. Pulling stdConic's isotropic point back through M⁻¹ gives a point p with p on C and M·p = the isotropic point; positive-definiteness of C forces p = 0, but then the isotropic point M·p = 0, contradicting that it is nonzero.",
       "mathContext": "Definite and indefinite non-degenerate conics are not projectively equivalent."
+    },
+    {
+      "id": "corollary-and-summary",
+      "title": "The Identity-Conic Corollary and File Summary",
+      "startLine": 130,
+      "endLine": 153,
+      "summary": "one_not_projEquiv_stdConic recovers the parent's diag(1,1,1) result as the special case C = 1 (via Matrix.posDef_one). Closing summary docstring recaps the four theorems and confirms 0 sorries, 0 axioms, no native_decide."
     }
   ],
   "conclusion": {
