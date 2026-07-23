@@ -87,6 +87,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Norm-Euclidean ℤ[√d] for the Imaginary Quadratic Family — a Uniform Bound", "startLine": 1, "endLine": 49, "summary": "Unifies the ad-hoc Euclidean-domain proofs for Z[i] and Z[sqrt(-2)] into a single parameterized argument: for negative d, nearest-lattice-point division of Zsqrtd d gives a remainder satisfying the uniform inequality 4*N(r)*N(y) <= (1-d)*N(y)^2, so whenever -2<=d<0 (i.e. d in {-1,-2}) the factor (1-d)/4 <= 3/4 < 1 and Z[sqrt(d)] is norm-Euclidean. Honestly scopes why the family stops at d=-2: for d=-3,-7,-11 the ring of integers of Q(sqrt(d)) is Z[(1+sqrt(d))/2], not Z[sqrt(d)], and Z[sqrt(-3)] is not even integrally closed, so the uniform Zsqrtd argument provably cannot extend further. 0 sorries, 0 axioms, no native_decide.", "mathContext": "$4\\,N(r)\\,N(y)\\le(1-d)\\,N(y)^2$ for all negative $d$; norm-Euclidean exactly for $d\\in\\{-1,-2\\}$ since $(1-d)/4\\le 3/4<1$ there, while $d\\le-3$ gives factor $\\ge1$ and the wrong ring $\\mathbb{Z}[\\sqrt d]$ besides."},
     {
       "id": "sec-rounding",
       "title": "Part I: The Rational Rounding Bound",
