@@ -79,7 +79,8 @@
       "**The theorem is one lemma away, the sharpness is the work**: the four EGZ statements are direct re-exports of Mathlib, so the genuine mathematical contribution is the optimality witness, which Mathlib does not provide.",
       "**The extremal configuration is forced by a counting balance**: with exactly n−1 zeros and n−1 ones, any n chosen elements must borrow between 1 and n−1 ones — never 0 (too few zeros) and never n (too few ones) — so the sum lands strictly between 0 and n in ℤ/nℤ.",
       "**0/1 sums become cardinalities**: `Finset.sum_boole` converts the indicator sum into the count of chosen ones, turning the algebraic non-vanishing goal into the elementary arithmetic fact 1 ≤ k ≤ n−1 < n.",
-      "**Why n ≥ 2 is needed**: in ℤ/1ℤ every element is 0, so the optimality statement is only meaningful (and the residue k genuinely nonzero) once n ≥ 2."
+      "**Why n ≥ 2 is needed**: in ℤ/1ℤ every element is 0, so the optimality statement is only meaningful (and the residue k genuinely nonzero) once n ≥ 2.",
+      "**The n−1/n−1 configuration is a template, not an ad hoc trick**: the 'not-quite-enough-of-either-value' construction is the standard tightness certificate for zero-sum thresholds generally — the same pattern (balance two values so no subset of the target size can avoid both extremes) is how sharpness is verified for the Davenport constant and other zero-sum invariants, e.g. the follow-up entry on D(ℤ/nℤ) = n."
     ],
     "prerequisites": [
       "Finite sequences and subsequences (Finsets and their cardinality)",
@@ -99,11 +100,19 @@
     },
     {
       "id": "main-theorem",
-      "title": "The Theorem: ℤ, ZMod n, and Multiset Forms",
+      "title": "The Theorem: Family Forms over ℤ and ZMod n",
       "startLine": 55,
+      "endLine": 67,
+      "summary": "egz_int and egz_zmod restate the integer and modular Erdős–Ginzburg–Ziv theorems for indexed families a : ι → ℤ / a : ι → ZMod n. Both are direct re-exports of the Mathlib headlines.",
+      "mathContext": "Any 2n−1 elements of ℤ (resp. ZMod n), indexed by a family, contain n whose sum is divisible by n (resp. is 0)."
+    },
+    {
+      "id": "multiset-forms",
+      "title": "The Multiset Forms",
+      "startLine": 69,
       "endLine": 79,
-      "summary": "egz_int and egz_zmod restate the integer and modular Erdős–Ginzburg–Ziv theorems; egz_int_multiset and egz_zmod_multiset give the multiset forms. All are direct re-exports of the Mathlib headlines.",
-      "mathContext": "Any 2n−1 elements of ℤ (resp. ZMod n) contain n whose sum is divisible by n (resp. is 0)."
+      "summary": "egz_int_multiset and egz_zmod_multiset restate the theorem for Multiset ℤ / Multiset (ZMod n), the natural setting for sequences with repetitions, where family-indexed and multiset statements are genuinely different formalizations of the same combinatorial content.",
+      "mathContext": "A multiset of at least 2n−1 elements of ℤ (resp. ZMod n) has a length-n submultiset summing to 0 mod n (resp. to 0)."
     },
     {
       "id": "concrete-instance",
