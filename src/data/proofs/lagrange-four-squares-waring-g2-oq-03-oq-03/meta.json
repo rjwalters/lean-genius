@@ -30,6 +30,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: An Elementary, Dirichlet-Free Slice of the Three-Square Sufficiency Direction",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring: Legendre's three-square theorem's sufficiency ('if') direction is open in the gallery; this file carves out a genuinely elementary, Dirichlet-free slice via the two-square theorem's embedding, plus a multiplicative-closure contrast the two-square theory does not share.",
+      "mathContext": "$n = x^2+y^2+z^2$ solvable $\\iff$ $n \\ne 4^a(8b+7)$; this file's slice bridges Mathlib's complete two-square theory into the open sufficiency direction."
+    },
+    {
       "id": "predicates-obstructions",
       "title": "Predicates and Modular Obstructions",
       "startLine": 54,
@@ -38,12 +46,20 @@
       "mathContext": "Squares mod 8 ∈ {0,1,4}, mod 4 ∈ {0,1}; excluded family for three squares is 4^a(8b+7)."
     },
     {
-      "id": "embedding-slice",
-      "title": "Embedding and the Dirichlet-Free Slice",
+      "id": "embedding",
+      "title": "The Embedding: Two Squares ⟹ Three Squares",
       "startLine": 104,
+      "endLine": 121,
+      "summary": "isSumTwoSq_imp_isSumThreeSq: every sum of two squares is a sum of three squares (append 0²). A sum of two squares is also never ≡ 7 (mod 8), so the two-square slice is consistent with the necessity direction.",
+      "mathContext": "$x^2+y^2=n \\Rightarrow x^2+y^2+0^2=n$; two-square numbers $\\subseteq$ three-square numbers."
+    },
+    {
+      "id": "dirichlet-free-slice",
+      "title": "A Dirichlet-Free Infinite Slice of the Open Sufficiency Direction",
+      "startLine": 123,
       "endLine": 141,
-      "summary": "The embedding isSumTwoSq_imp_isSumThreeSq (append 0²) turns the two-square theory into unconditional three-square families: every prime p ≢ 3 (mod 4) (prime_mod_four_ne_three_isSumThreeSq) and every n with even powers of primes ≡ 3 mod 4 (isSumThreeSq_of_forall_threeMod_even) — an explicit infinite Dirichlet-free slice of the open 'if' direction.",
-      "mathContext": "Two-square numbers ⊆ three-square numbers; Fermat + Nat.eq_sq_add_sq_iff give an infinite family with no Dirichlet input."
+      "summary": "Composing the embedding with Fermat's two-square theorem and Mathlib's full characterization gives two unconditional three-square families: every prime p ≢ 3 (mod 4), and every n whose primes ≡ 3 (mod 4) occur to even power — both explicit, infinite, and Dirichlet-free.",
+      "mathContext": "Fermat's two-square theorem + Nat.eq_sq_add_sq_iff, composed with the embedding, give an infinite family with no Dirichlet input."
     },
     {
       "id": "closure-contrast",
