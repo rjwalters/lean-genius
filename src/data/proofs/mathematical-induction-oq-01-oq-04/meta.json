@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Ordinal Induction and the Von Neumann Hierarchy",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring poses the parent's follow-up question — how does Ordinal.induction relate to the von Neumann cumulative hierarchy V_alpha and to Foundation? — and previews the four answers: Foundation from ordinal well-foundedness via rank, rank-stratified strong/epsilon-induction as Ordinal.induction instances, level induction up the hierarchy, and uniqueness of the cumulative recursion. Imports Mathlib, opens Ordinal and (scoped) ZFSet, opens the MathematicalInductionOQ01OQ04 namespace, and fixes the ambient ZFSet/Ordinal variables.",
+      "mathContext": "$\\operatorname{rank} : \\mathrm{ZFSet} \\to \\mathrm{Ordinal}$ embeds $(\\in)$ into $(<)$, so Foundation, $\\in$-induction, and the cumulative recursion $V_o = \\bigcup_{a<o} \\mathcal{P}(V_a)$ are all instances of $\\mathrm{Ordinal.induction}$."
+    },
+    {
       "id": "foundation-from-ordinals",
       "title": "The Rank Drop and Foundation from Ordinal Well-Foundedness",
       "startLine": 55,
