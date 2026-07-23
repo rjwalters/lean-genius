@@ -87,11 +87,19 @@
   },
   "sections": [
     {
-      "id": "header-setup",
-      "title": "Framing and Setup",
+      "id": "docstring",
+      "title": "Module Docstring: Framing the Open Question",
       "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring framing the open question — generalize the concrete quintic Gal(x⁵−4x+2) ≅ S₅ (parent AbelRuffiniOQ04OQ01) and the abstract sibling lemma to the Galois-theoretic fact that supplies the transitivity hypothesis: irreducible ⟹ Gal is a transitive subgroup of S_n, with n | |Gal| in every degree.",
+      "mathContext": "$p \\text{ irreducible} \\implies \\mathrm{Gal}\\,p$ is (isomorphic to) a transitive subgroup of $S_n$, $n = \\deg p$."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports, Opens, and the Ambient Variables",
+      "startLine": 40,
       "endLine": 45,
-      "summary": "Module docstring framing the open question — generalize the concrete quintic Gal(x⁵−4x+2) ≅ S₅ (parent AbelRuffiniOQ04OQ01) and the abstract sibling lemma to the Galois-theoretic fact that supplies the transitivity hypothesis — then `import Mathlib`, `open Polynomial Polynomial.Gal MulAction` with scoped `IntermediateField` notation, `namespace AbelRuffiniOQ04OQ01OQ02`, and the `variable {F} [Field F] (p : F[X]) (E) [Field E] [Algebra F E]` setup. The central object throughout is Mathlib's permutation representation galActionHom p E.",
+      "summary": "`import Mathlib`, `open Polynomial Polynomial.Gal MulAction` with scoped `IntermediateField` notation, `namespace AbelRuffiniOQ04OQ01OQ02`, and the `variable {F} [Field F] (p : F[X]) (E) [Field E] [Algebra F E]` setup shared by all three theorems. The central object throughout is Mathlib's permutation representation galActionHom p E.",
       "mathContext": "$\\mathrm{galActionHom}\\,p\\,E : \\mathrm{Gal}\\,p \\to \\mathrm{Perm}(\\mathrm{rootSet}\\,p\\,E).$"
     },
     {
