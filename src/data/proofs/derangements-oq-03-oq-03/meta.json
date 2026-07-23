@@ -75,7 +75,8 @@
       "**A permutation matrix is a derangement matrix iff its permutation is a derangement.** The single 1 in row i sits in column σ i, so the diagonal entry at (i,i) is 1 precisely when i is a fixed point. Zero diagonal therefore means no fixed points — the geometric '2D' condition is literally the combinatorial one.",
       "**Trace counts fixed points, so derangement matrices are the zero-trace permutation matrices.** Mathlib's trace_permutation states trace (σ.permMatrix R) = #fixedPoints σ. Over a characteristic-zero ring this vanishes exactly when there are no fixed points, giving a clean global (rather than pointwise) characterization.",
       "**The matrix reframing adds no new analytic content — and saying so is the honest result.** The probability that a random permutation matrix is a derangement matrix is identically numDerangements n / n!, so its 1/e limit and 1/(n+1)! rate are exactly those of derangements-oq-03. The contribution here is the formal bridge that makes the matrix language rigorous, not a new limit theorem.",
-      "**numDerangements n ≤ n! falls out of the subtype-cardinality bound.** Because derangements (Fin n) is a subtype of Perm (Fin n), Fintype.card_subtype_le immediately bounds the count by n!, which is what makes the probability lie in [0,1]."
+      "**numDerangements n ≤ n! falls out of the subtype-cardinality bound.** Because derangements (Fin n) is a subtype of Perm (Fin n), Fintype.card_subtype_le immediately bounds the count by n!, which is what makes the probability lie in [0,1].",
+      "**The pointwise and trace routes to the same iff are logically independent, not restatements of one another.** hasZeroDiagonal_iff_mem_derangements unfolds only the definitions of permMatrix and derangements; trace_permMatrix_eq_zero_iff instead goes through Mathlib's combinatorial trace_permutation lemma and a cardinality argument (Set.ncard_eq_zero) on the fixed-point set. Two unrelated proof techniques landing on the same characterization is evidence the bridge captures the right notion, not an artifact of one particular unfolding."
     ],
     "prerequisites": [
       "Mathlib permutation-matrix API (Equiv.Perm.permMatrix, Matrix.trace_permutation)",
@@ -96,22 +97,30 @@
       "id": "entry-formula",
       "title": "Permutation Matrix Entry Formula",
       "startLine": 54,
-      "endLine": 75,
+      "endLine": 70,
       "summary": "Entry formula (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0 and its diagonal specialisation; a diagonal entry vanishes exactly at non-fixed points.",
       "mathContext": "$(P_\\sigma)_{ij} = [\\sigma(i) = j]$, so $(P_\\sigma)_{ii} = [\\sigma(i) = i]$"
     },
     {
-      "id": "derangement-matrices",
-      "title": "Derangement Matrices are Derangements",
-      "startLine": 77,
-      "endLine": 107,
-      "summary": "Pointwise (zero diagonal) and global (zero trace) characterizations of derangement matrices, plus the set identity {zero-diagonal permutation matrices} = derangements (Fin n).",
+      "id": "characterizations",
+      "title": "Two Characterizations: Zero Diagonal and Zero Trace",
+      "startLine": 72,
+      "endLine": 91,
+      "summary": "Pointwise (zero diagonal) and global (zero trace) characterizations of derangement matrices: hasZeroDiagonal_iff_mem_derangements unfolds definitions directly, while trace_permMatrix_eq_zero_iff goes through Mathlib's trace_permutation and a fixed-point cardinality argument.",
       "mathContext": "$(\\forall i,\\ (P_\\sigma)_{ii} = 0) \\iff \\operatorname{tr} P_\\sigma = 0 \\iff \\sigma \\in \\mathrm{Der}(n)$"
+    },
+    {
+      "id": "set-identity",
+      "title": "The Set Identity: Derangement Matrices are Exactly the Derangements",
+      "startLine": 93,
+      "endLine": 98,
+      "summary": "zeroDiagonal_setOf_eq_derangements packages the pointwise characterization as a literal set equality {σ | zero diagonal} = derangements (Fin n), via ext and hasZeroDiagonal_iff_mem_derangements.",
+      "mathContext": "$\\{\\sigma \\mid \\forall i,\\ (P_\\sigma)_{ii} = 0\\} = \\mathrm{Der}(n)$"
     },
     {
       "id": "count-and-probability",
       "title": "Counting and Probability",
-      "startLine": 109,
+      "startLine": 100,
       "endLine": 132,
       "summary": "There are numDerangements n derangement matrices of size n, with numDerangements n ≤ n!, so the derangement-matrix probability numDerangements n / n! lies in [0,1].",
       "mathContext": "$\\#\\{\\text{derangement matrices}\\} = D_n \\le n!,\\quad P_n = D_n/n! \\in [0,1]$"
