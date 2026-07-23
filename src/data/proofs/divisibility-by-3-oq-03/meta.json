@@ -55,6 +55,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Efficient Digital Root Computation", "startLine": 1, "endLine": 30, "summary": "States the open question of efficient digital root algorithms, gives the closed-form formula via modular arithmetic, and previews the file's four parts: iterative digital root via digit summation, the closed-form via modular arithmetic, multiplicativity/fixed-point properties, and the proof that both formulas agree.", "mathContext": "Proves the closed-form digital root formula $\\mathrm{digitalRoot}(n) = 1 + ((n-1) \\bmod 9)$ for $n > 0$, giving $O(1)$ computation without iterative digit summation."},
     {
       "id": "digit-sum",
       "title": "§ 1. Digit Sum and Iterative Digital Root",
