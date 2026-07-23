@@ -210,13 +210,13 @@
     "id": "ann-e1138-maxPrimeGap_le",
     "proofId": "erdos-1138",
     "range": {
-      "startLine": 82,
-      "endLine": 88
+      "startLine": 84,
+      "endLine": 93
     },
     "type": "concept",
     "title": "Trivial Bound on Maximal Prime Gap",
-    "content": "Attempts to prove $d(x) \\le x$: the maximal gap between consecutive primes below $x$ cannot exceed $x$ itself. The proof handles the empty case (no gaps when there are fewer than 2 primes below $x$) but leaves the non-empty case as sorry, requiring a `BddAbove` proof for the gap set and a bound on its `sSup`.",
-    "mathContext": "$d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\} \\le x$ because each gap satisfies $q - p < q \\le x$. The sorry arises from the need to show the set is bounded above (for `sSup` to be meaningful in $\\mathbb{N}$) and then that the supremum respects the pointwise bound.",
+    "content": "Proves $d(x) \\le x$: the maximal gap between consecutive primes below $x$ cannot exceed $x$ itself. The proof case-splits on whether the gap set is empty (`csSup_empty` gives `bot_le`) or nonempty (`csSup_le` reduces to the pointwise bound $q - p \\le q \\le x$). Fully proved — no sorry.",
+    "mathContext": "$d(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\le x\\} \\le x$ because each gap satisfies $q - p \\le q \\le x$.",
     "significance": "key",
     "relatedConcepts": [
       "sSup and BddAbove",
@@ -233,13 +233,13 @@
     "id": "ann-e1138-erdos_1138",
     "proofId": "erdos-1138",
     "range": {
-      "startLine": 90,
-      "endLine": 117
+      "startLine": 195,
+      "endLine": 214
     },
     "type": "concept",
     "title": "Erdős Problem 1138 (Main Conjecture)",
-    "content": "The central conjecture, stated as an axiom: for any constant $C > 1$ and tolerance $\\varepsilon > 0$, there exists $N$ such that for all $x \\ge N$ and all $y$ with $x/2 < y < x$, the number of primes in $(y, y + \\lfloor Cd \\rfloor]$ satisfies $(1 - \\varepsilon) \\cdot Cd/\\log y \\le \\pi(y + \\lfloor Cd \\rfloor) - \\pi(y) \\le (1 + \\varepsilon) \\cdot Cd/\\log y$. The extensive docstring documents the problem's status (OPEN) and why it is out of reach: even under RH, short-interval PNT needs $h > x^{1/2+\\varepsilon}$, while $Cd \\sim C(\\log x)^2$ is far shorter.",
-    "mathContext": "The $\\varepsilon$-sandwich formulation avoids division: $f(x) \\sim g(x)$ is equivalent to $(1-\\varepsilon)g(x) \\le f(x) \\le (1+\\varepsilon)g(x)$ for all $\\varepsilon > 0$ eventually. The use of `Nat.floor (C * d)` converts the real-valued interval length to a natural number endpoint. The universality over $y \\in (x/2, x)$ is the strongest form, implying both average and worst-case control.",
+    "content": "The central conjecture, recorded as a documentation comment — not a Lean axiom or theorem: for any constant $C > 1$, if $d$ is the maximal prime gap below $x$, is $\\pi(y + Cd) - \\pi(y) \\sim Cd / \\log y$ for $x/2 < y < x$ as $x \\to \\infty$? The comment documents the problem's status (OPEN) and why it is out of reach: even under RH, short-interval PNT needs $h > x^{1/2+\\varepsilon}$, while $Cd \\sim C(\\log x)^2$ is far shorter. Because it is only a comment, the file makes no formal claim about this statement.",
+    "mathContext": "An $\\varepsilon$-sandwich formalization would read $(1-\\varepsilon)g(x) \\le f(x) \\le (1+\\varepsilon)g(x)$ for all $\\varepsilon > 0$ eventually, but no such statement is declared in Lean here — this section is prose only.",
     "significance": "key",
     "relatedConcepts": [
       "short interval prime number theorem",
@@ -251,22 +251,20 @@
     "prerequisites": [
       "primesInInterval",
       "maxPrimeGap",
-      "Real.log",
-      "Nat.floor",
-      "filter-based limits"
+      "Real.log"
     ]
   },
   {
     "id": "ann-e1138-bertrand",
     "proofId": "erdos-1138",
     "range": {
-      "startLine": 121,
-      "endLine": 124
+      "startLine": 217,
+      "endLine": 222
     },
     "type": "concept",
     "title": "Bertrand's Postulate",
-    "content": "States Bertrand's postulate as an axiom: for every $n \\ge 1$, there exists a prime $p$ with $n < p \\le 2n$. This was conjectured by Bertrand in 1845 and proved by Chebyshev in 1852. Erdős gave an elegant elementary proof in 1932 at age 19 — his first published paper. The result implies that $d(n) < n$ for all $n$, but this is vastly weaker than Cramér's conjecture $d(x) \\sim (\\log x)^2$.",
-    "mathContext": "$\\forall n \\ge 1, \\, \\exists p \\text{ prime}: n < p \\le 2n$. Equivalently, the prime gap after any prime $p$ is at most $p$: $p_{n+1} - p_n < p_n$. Bertrand's postulate is available in Mathlib as `Nat.bertrand`, but is stated here as an axiom for self-containedness.",
+    "content": "Proves Bertrand's postulate as a genuine theorem (`bertrand_postulate`), not an axiom: for every $n \\ge 1$, there exists a prime $p$ with $n < p \\le 2n$. The proof is a direct call to Mathlib's `Nat.bertrand`. Bertrand's postulate was conjectured in 1845 and proved by Chebyshev in 1852; Erdős gave an elegant elementary proof in 1932 at age 19 — his first published paper. The result implies $d(n) < n$ for all $n$, but this is vastly weaker than Cramér's conjecture $d(x) \\sim (\\log x)^2$.",
+    "mathContext": "$\\forall n \\ge 1, \\, \\exists p \\text{ prime}: n < p \\le 2n$, obtained here via Mathlib's `Nat.bertrand n (by omega)`.",
     "significance": "key",
     "relatedConcepts": [
       "Chebyshev's theorem",
@@ -276,20 +274,20 @@
     ],
     "prerequisites": [
       "Nat.Prime",
-      "basic arithmetic inequalities"
+      "Mathlib's Nat.bertrand"
     ]
   },
   {
     "id": "ann-e1138-cramer",
     "proofId": "erdos-1138",
     "range": {
-      "startLine": 126,
-      "endLine": 132
+      "startLine": 224,
+      "endLine": 227
     },
     "type": "concept",
     "title": "Cramér's Conjecture",
-    "content": "States Cramér's conjecture as an axiom: for every $\\varepsilon > 0$, eventually $d(x) \\le (1 + \\varepsilon)(\\log x)^2$. Harald Cramér proposed this in 1936 based on his probabilistic model of primes, where each integer $n$ is independently 'prime' with probability $1/\\log n$. Under this model, the maximal gap below $x$ is $(\\log x)^2$ with probability 1. The conjecture is OPEN and far stronger than any proven result. If true, Erdős's conjecture would ask for the PNT in intervals of length $\\sim C(\\log x)^2$.",
-    "mathContext": "$\\forall \\varepsilon > 0, \\, \\exists N, \\, \\forall x \\ge N: d(x) \\le (1 + \\varepsilon)(\\log x)^2$. The best unconditional bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001). Under RH, one gets $d(x) \\ll \\sqrt{x} \\log x$ (Cramér, 1920). Granville (1995) suggested the constant may be $2e^{-\\gamma} \\approx 1.1229$ rather than 1.",
+    "content": "Records Cramér's conjecture on maximal prime gaps ($\\limsup d(x)/(\\log x)^2 = 1$) as a trailing documentation comment only — it is not declared as an axiom or theorem in Lean. Harald Cramér proposed this in 1936 based on his probabilistic model of primes, where each integer $n$ is independently 'prime' with probability $1/\\log n$. The conjecture is OPEN and far stronger than any proven result.",
+    "mathContext": "Informally, $\\forall \\varepsilon > 0, \\, \\exists N, \\, \\forall x \\ge N: d(x) \\le (1 + \\varepsilon)(\\log x)^2$ — recorded as prose, not a Lean statement. The best unconditional bound is $d(x) \\ll x^{0.525}$ (Baker–Harman–Pintz, 2001). Under RH, one gets $d(x) \\ll \\sqrt{x} \\log x$ (Cramér, 1920).",
     "significance": "key",
     "relatedConcepts": [
       "Cramér's probabilistic model",
