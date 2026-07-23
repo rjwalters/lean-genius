@@ -72,7 +72,8 @@
       "Multivariate Taylor is one-dimensional Taylor applied to the restriction of f to a line — the reduction is the whole content of the theorem, and Mathlib already has the one-dimensional half",
       "Smoothness and the first derivative transfer through the affine parametrisation t ↦ a + t·v: ContDiff.comp gives smoothness, the chain rule gives deriv g t = Df(a+t·v)(v)",
       "The first-order Lagrange case is the multivariate mean value theorem f(a+v) = f(a) + Df(a+θ·v)(v), with the interior point a+θ·v lying strictly between a and a+v",
-      "Expressing the higher-order remainder as the iterated derivative of the restriction (the iterated directional derivative) avoids the heavy symmetric-multilinear / multi-index machinery while still giving a fully rigorous multivariate statement"
+      "Expressing the higher-order remainder as the iterated derivative of the restriction (the iterated directional derivative) avoids the heavy symmetric-multilinear / multi-index machinery while still giving a fully rigorous multivariate statement",
+      "Symmetrization is not actually needed at first order: a degree-1 multilinear map D f(a) applied once to v is already the same object as the directional derivative Df(a)(v), so multivariate_taylor_first_order is not a stepping stone toward the general multilinear form but is already the complete, final theorem for n = 0 — the honest-scope gap (directional vs. symmetric-multilinear remainder) only bites once n ≥ 1"
     ],
     "prerequisites": [
       "Multivariable calculus and the Fréchet derivative",
@@ -82,12 +83,20 @@
   },
   "sections": [
     {
-      "id": "imports-and-docstring",
+      "id": "header-docstring",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 58,
+      "endLine": 54,
       "summary": "Imports Mathlib's Taylor module and tactics. The module docstring states the open question, the line-restriction reduction strategy, and an explicit honest-scope note distinguishing the directional-derivative remainder proved here from the fully symmetric-multilinear / multi-index packaging left as future work.",
       "mathContext": "Setup for reducing multivariate Taylor to one-dimensional Taylor on the line restriction g(t) = f(a + t·v)."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Ambient Typeclasses",
+      "startLine": 56,
+      "endLine": 58,
+      "summary": "Opens the MultivariateTaylor namespace and the Set/Nat namespaces used by the interval and factorial notation in the statements below.",
+      "mathContext": "Set membership (Ioo, Icc) and Nat notation (the factorial (n+1)!) are used unqualified via `open Set Nat`."
     },
     {
       "id": "restriction-def",
@@ -109,7 +118,7 @@
       "id": "multivariate-taylor",
       "title": "Section III: Multivariate Taylor with Lagrange Remainder",
       "startLine": 101,
-      "endLine": 134,
+      "endLine": 139,
       "summary": "Proves multivariate_taylor_lagrange (degree-n expansion f(a+v) = T_n g(0) + g^{(n+1)}(θ)/(n+1)! for some θ ∈ (0,1), by applying Mathlib's taylor_mean_remainder_lagrange_iteratedDeriv to g on [0,1]) and multivariate_taylor_first_order (the n=0 case: f(a+v) = f(a) + Df(a+θ·v)(v), the multivariate mean value theorem in Lagrange form with explicit gradient).",
       "mathContext": "Multivariate Taylor with Lagrange remainder, and its first-order specialisation, the multivariate mean value theorem f(a+v) = f(a) + Df(a+θ·v)(v) with a + θ·v an interior point of the segment."
     }
