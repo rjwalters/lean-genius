@@ -65,6 +65,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Setup: Euler's Weierstrass-Product Proof of the Basel Problem", "startLine": 1, "endLine": 27, "summary": "States OQ-05: can Euler's original proof of ∑ 1/n² = π²/6 via the Weierstrass factorization sin(πx)/(πx) = ∏(1−x²/n²) be formalized? Outlines the approach (product formula, Taylor-side x² coefficient −π²/6, product-side x² coefficient −∑1/n², conclude); notes the Weierstrass product for sin is not in Mathlib (as of 4.26.0) so it is axiomatized while the remaining steps are proved rigorously (9 theorems, 1 axiom, 0 sorries).", "mathContext": "Euler's original Basel-problem proof compares the $x^2$ Taylor coefficient of $\\sin(\\pi x)/(\\pi x)$ (namely $-\\pi^2/6$) against the $x^2$ coefficient of the Weierstrass product $\\prod_n(1-x^2/n^2)$ (namely $-\\sum 1/n^2$); the product formula itself is axiomatized since it is absent from Mathlib."},
     {
       "id": "weierstrass-product",
       "title": "Weierstrass Product Formula",
