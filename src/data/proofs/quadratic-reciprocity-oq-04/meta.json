@@ -142,6 +142,26 @@
     "path": "Proofs/QuadraticReciprocityOQ04.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "title": "A Fast Monte-Carlo Test for Primality",
+      "author": "R. Solovay and V. Strassen",
+      "year": 1977,
+      "note": "SIAM J. Comput. 6(1), 84–85. Defines the primality test built on the J(a|n)=1 direction failing to certify squares; the a for which the test is fooled on composite n are the 'Euler liars' this entry's counterexample instantiates."
+    },
+    {
+      "title": "A Classical Introduction to Modern Number Theory, Chapter 5",
+      "author": "K. Ireland and M. Rosen",
+      "year": 1990,
+      "note": "Standard graduate reference developing the Jacobi symbol's multiplicativity and reciprocity, and the failure of residue-detection for composite moduli that this entry makes explicit."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.LegendreSymbol.JacobiSymbol",
+      "author": "The Mathlib Community",
+      "year": 2024,
+      "note": "Provides `jacobiSym`, `jacobiSym.mul_right`, and `ZMod.nonsquare_of_jacobiSym_eq_neg_one`, and the reciprocity-based norm_num extension used to evaluate J(2 | 15)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "quadratic-reciprocity",
