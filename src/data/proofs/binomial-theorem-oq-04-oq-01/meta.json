@@ -86,6 +86,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Combinatorial Proof of Vandermonde's Identity via Explicit Bijection", "startLine": 1, "endLine": 31, "summary": "Asks whether Vandermonde's identity can be proved combinatorially via an explicit bijection on Finsets, rather than through the algebraic Nat.add_choose_eq. Answer: yes. Constructs an explicit bijection between r-element subsets of {0,...,m+n-1} and the disjoint union over k of (k-subsets of {0,...,m-1}) x ((r-k)-subsets of {0,...,n-1}), splitting each subset S by threshold m into its low part (elements below m) and shifted high part (elements at or above m, shifted down by m). Gives a purely combinatorial proof with no polynomial algebra or generating functions.", "mathContext": "Forward map $S \\mapsto (S\\cap[0,m),\\ \\mathrm{shift}(S\\cap[m,m+n)))$ and inverse $(A,B)\\mapsto A\\cup\\mathrm{shift}^{-1}(B)$ realize the bijection underlying $\\binom{m+n}{r}=\\sum_k\\binom{m}{k}\\binom{n}{r-k}$."},
     {
       "id": "sec-split-map",
       "title": "Part I–II: Split and Merge Maps",
