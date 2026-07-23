@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Kernel-Decidable Witnesses via Offset Search",
+      "summary": "Module docstring: identifies the gap in the parent's decidability route — searching all Θ(n) prime candidates forces native_decide (not axiom-free) for n≈10⁹ witnesses — and states the fix: reindexing by the offset m=n−p restricts the search to the Θ((log n)^k) offsets with popcount m≤k, yielding a bounded-∀ refutation criterion checkable by kernel decide with no native_decide.",
+      "startLine": 1,
+      "endLine": 59,
+      "mathContext": "Offset reformulation: $\\mathrm{IsPrimePlusKPowers}(k,n) \\iff \\exists m\\le n,\\ \\mathrm{popcount}(m)\\le k \\wedge (n-m).\\mathrm{Prime}$, giving the kernel-decidable refutation $\\neg\\mathrm{IsPrimePlusKPowers}(k,n) \\iff \\forall m\\le n,\\ \\mathrm{popcount}(m)\\le k \\to \\neg(n-m).\\mathrm{Prime}$ — a bounded $\\forall$ over $\\Theta((\\log n)^k)$ candidates instead of $\\Theta(n)$ primality tests."
+    },
+    {
       "id": "offset-reformulation",
       "title": "Part I: The Offset Reformulation",
       "startLine": 62,
