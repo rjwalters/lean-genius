@@ -63,28 +63,44 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Cesàro Summation Answers OQ-02",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring framing the file as the answer to the parent entry's open question OQ-02: define Cesàro summation and show Grandi's series Cesàro-sums to 1/2. Imports, namespace, and the Filter/Topology/Finset opens used throughout.",
+      "mathContext": "States the headline in advance: $\\mathrm{cesaroMean}(\\mathrm{grandi}, n) = \\tfrac12 - (1-(-1)^n)/(4n) \\to \\tfrac12$."
+    },
+    {
       "id": "definitions",
       "title": "Cesàro Summation, Defined",
       "startLine": 40,
-      "endLine": 60,
+      "endLine": 52,
       "summary": "`partialSum a n = ∑_{k<n} a k`, `cesaroMean a n = (∑_{k<n} partialSum a k)/n` (with the junk value 0 at n = 0), and the predicate `CesaroSum a L := Tendsto (cesaroMean a) atTop (𝓝 L)`. `grandi n = (-1)^n` is the series under study.",
       "mathContext": "The infrastructure answering OQ-02: Cesàro summability as convergence of the averaged partial sums, defined from scratch over ℝ."
     },
     {
-      "id": "closed-forms",
-      "title": "Partial-Sum and Cesàro-Mean Closed Forms",
-      "startLine": 61,
-      "endLine": 100,
-      "summary": "`partialSum_grandi`: $s_n = (1-(-1)^n)/2$. `cesaro_partialsum_grandi`: $\\sum_{k<n} s_k = n/2 - (1-(-1)^n)/4$. `cesaroMean_grandi`: for $n \\geq 1$, $\\sigma_n = 1/2 - (1-(-1)^n)/(4n)$. Each is a `Finset.sum_range_succ` induction closed by `ring`/`field_simp`.",
-      "mathContext": "Turns the Cesàro mean into an explicit rational expression in $n$ and $(-1)^n$, isolating the $O(1/n)$ error from the target value $1/2$."
+      "id": "partial-sum-closed-forms",
+      "title": "Partial-Sum Closed Forms",
+      "startLine": 54,
+      "endLine": 76,
+      "summary": "`partialSum_grandi`: $s_n = (1-(-1)^n)/2$, by induction. `cesaro_partialsum_grandi`: the cumulative sum $\\sum_{k<n} s_k = n/2 - (1-(-1)^n)/4$, again by induction using `Finset.sum_range_succ`.",
+      "mathContext": "Two nested inductions reduce the Cesàro mean to an explicit rational expression in $n$ and $(-1)^n$."
     },
     {
-      "id": "limit",
-      "title": "The Limit and the Strict-Extension Corollary",
-      "startLine": 101,
+      "id": "cesaro-mean-and-limit",
+      "title": "Cesàro-Mean Closed Form and the Limit",
+      "startLine": 78,
+      "endLine": 119,
+      "summary": "`cesaroMean_grandi`: for $n \\geq 1$, $\\sigma_n = 1/2 - (1-(-1)^n)/(4n)$. `grandi_cesaroSum_half`: the error term is squeezed between $0$ and $1/n$, so `squeeze_zero` plus `tendsto_congr'` give $\\sigma_n \\to 1/2$.",
+      "mathContext": "Isolates the $O(1/n)$ error from $1/2$ and kills it by a squeeze, giving `CesaroSum grandi (1/2)`."
+    },
+    {
+      "id": "strict-extension-corollary",
+      "title": "The Strict-Extension Corollary",
+      "startLine": 121,
       "endLine": 127,
-      "summary": "`grandi_cesaroSum_half`: the error $(1-(-1)^n)/(4n)$ is squeezed between $0$ and $1/n$, so `squeeze_zero` plus `tendsto_congr'` give $\\sigma_n \\to 1/2$. `grandi_cesaroSummable`: existence of a Cesàro sum, contrasting with the parent's non-ordinary-summability.",
-      "mathContext": "Completes the proof that Grandi's series is Cesàro-summable to $1/2$ and records that Cesàro summation strictly extends ordinary convergence here."
+      "summary": "`grandi_cesaroSummable`: existence of a Cesàro sum for Grandi's series, contrasting with the parent entry's proof that it is not ordinarily summable.",
+      "mathContext": "Cesàro summability holds here while ordinary summability fails — a strict extension of ordinary convergence on this example."
     }
   ],
   "leanFile": {
