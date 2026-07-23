@@ -58,7 +58,7 @@
     "historicalContext": "This problem was asked by Erdős at Oberwolfach in 1988, motivated by discussions with Mahler shortly before Mahler's death that same year. Mahler had posed a related question about finite sums of powers of a base k: for k >= 5, does A_k contain only finitely many squares?\n\nMahler showed that for k <= 4, there are infinitely many squares in A_k. For k >= 5, he found only one square: 1 + 7 + 7² + 7³ = 400 = 20².\n\nBrindza and Erdős (1991) proved a partial result: for any fixed number r of terms, if n₁! + ... + nᵣ! is powerful, then the largest term n₁ is bounded by a constant depending only on r. This doesn't resolve the main question because the number of terms is unbounded.",
     "problemStatement": "**Erdős Problem #1108**: Let $A = \\left\\{ \\sum_{n \\in S} n! : S \\subset \\mathbb{N} \\text{ finite} \\right\\}$ be the set of all finite sums of distinct factorials.\n\n**Question 1 (OPEN)**: For each $k \\geq 2$, does $A$ contain only finitely many $k$-th powers?\n\n**Question 2 (OPEN)**: Does $A$ contain only finitely many powerful numbers?\n\n**Status**: OPEN\n\n**Known Result** (Brindza-Erdős 1991): For any fixed $r$, if $n_1! + \\cdots + n_r!$ is powerful with $n_1 \\geq \\cdots \\geq n_r$, then $n_1 \\leq C(r)$ for some constant depending only on $r$.",
     "text": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
-    "proofStrategy": "We formalize this open problem and its known partial results:\n\n1. **Define FactorialSums**: The set A of all finite sums of distinct factorials.\n\n2. **Define IsPowerful**: A number is powerful if every prime factor appears with exponent >= 2.\n\n3. **Axiomatize the open questions**: Since the answers are unknown, we axiomatize the questions as Props.\n\n4. **State Brindza-Erdős bound**: For fixed number of terms, the largest factorial index is bounded.\n\n5. **State Mahler's related results**: For bases k <= 4, infinitely many squares; for k >= 5, only one known square.\n\n6. **Prove small examples**: We verify that 1 is both a square factorial sum and powerful.",
+    "proofStrategy": "We formalize this open problem and its known partial results:\n\n1. **Define FactorialSums**: The set A of all finite sums of distinct factorials.\n\n2. **Define IsPowerful**: A number is powerful if every prime factor appears with exponent >= 2.\n\n3. **Document the open questions**: Since the answers are unknown, both questions are recorded as prose comments — they are not formalized as Lean axioms, definitions, or theorems.\n\n4. **State Brindza-Erdős bound**: For fixed number of terms, the largest factorial index is bounded (documented in a comment, not formalized).\n\n5. **State Mahler's related results**: For bases k <= 4, infinitely many squares; for k >= 5, only one known square.\n\n6. **Prove small examples**: We verify that 1 is both a square factorial sum and powerful.",
     "keyInsights": [
       "**Factorial sums**: The set A = {0, 1, 2, 3, 6, 7, 8, 9, 24, 25, ...} consists of all numbers expressible as sums of distinct factorials. This is analogous to binary representation but with factorials.",
       "**Powerful numbers**: Numbers like 1, 4, 8, 9, 16, 25, 27, 36 where every prime factor has exponent >= 2. They are products of squares and cubes.",
@@ -83,56 +83,56 @@
     {
       "id": "factorial-sums",
       "title": "Factorial Sums Definition",
-      "startLine": 37,
-      "endLine": 69,
+      "startLine": 33,
+      "endLine": 64,
       "summary": "Definition of FactorialSums set and membership examples.",
       "mathContext": "Formal definition: Definition of FactorialSums set and membership examples."
     },
     {
       "id": "powerful",
       "title": "Powerful Numbers",
-      "startLine": 70,
-      "endLine": 93,
+      "startLine": 66,
+      "endLine": 94,
       "summary": "Definition and examples of powerful numbers.",
       "mathContext": "Formal definition: Definition and examples of powerful numbers."
     },
     {
       "id": "main-sets",
       "title": "Main Question Sets",
-      "startLine": 94,
-      "endLine": 103,
+      "startLine": 96,
+      "endLine": 104,
       "summary": "Definitions of k-th powers and powerful numbers in factorial sums.",
       "mathContext": "Formal definition: Definitions of k-th powers and powerful numbers in factorial sums."
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
-      "startLine": 104,
-      "endLine": 122,
-      "summary": "Axiomatization of both open questions.",
-      "mathContext": "Axiomatized: Axiomatization of both open questions."
+      "startLine": 106,
+      "endLine": 111,
+      "summary": "Statement of both open questions as documentation comments (not formalized as axioms or Lean declarations).",
+      "mathContext": "Documented, not axiomatized: both open questions are recorded in prose; no axiom or Prop encodes either one."
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
-      "startLine": 123,
-      "endLine": 139,
-      "summary": "Brindza-Erdős bound and related open problem #398.",
-      "mathContext": "Bound: Brindza-Erdős bound and related open problem #398."
+      "startLine": 113,
+      "endLine": 117,
+      "summary": "Brindza-Erdős bound and related open problem #398 (documented in a comment, not formalized as a Lean declaration).",
+      "mathContext": "Documented, not formalized: Brindza-Erdős bound and related open problem #398."
     },
     {
       "id": "mahler",
       "title": "Mahler's Related Problem",
-      "startLine": 140,
-      "endLine": 159,
+      "startLine": 119,
+      "endLine": 136,
       "summary": "Mahler's problem on power sums and his example.",
       "mathContext": "Mathematical content: Mahler's problem on power sums and his example."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "startLine": 160,
-      "endLine": 171,
+      "startLine": 138,
+      "endLine": 150,
       "summary": "Proofs that sets are nonempty (1 is in both).",
       "mathContext": "Verified: Proofs that sets are nonempty (1 is in both)."
     }
