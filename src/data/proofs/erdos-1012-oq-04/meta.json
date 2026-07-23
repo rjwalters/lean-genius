@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1012-oq-04",
+      "title": "Problem Statement and Background",
+      "summary": "Motivates the file's identity: decomposing the Woodall long-cycle edge threshold as a deficiency $(k+1)(n-k-2)$ from the complete graph $K_n$'s edge count $\\binom{n}{2}$, relating it to the extremal $K_{k+1,n-k-2}$ construction.",
+      "startLine": 1,
+      "endLine": 46,
+      "mathContext": "Woodall's theorem (1972) states that any graph on $n$ vertices with at least $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ edges contains a cycle on $n-k$ vertices; this file shows the threshold equals $\\binom{n}{2} - (k+1)(n-k-2) + 1$."
+    },
+    {
       "id": "definitions",
       "title": "§0: Definitions",
       "startLine": 47,
