@@ -84,6 +84,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-theorem-oq-02", "title": "Module Header: The Orbit-Stabilizer Theorem as Lagrange's Generalization", "startLine": 1, "endLine": 42, "summary": "Presents the orbit-stabilizer theorem |G| = |Orb_G(x)|·|Stab_G(x)| as the group-action generalization of Lagrange's theorem, obtained by letting G act on the coset space G/H by left multiplication (transitive, with stabilizer H). Lists ten proved results (all 0 sorries/0 axioms from Mathlib): the orbit-stabilizer bijection and theorem, divisibility of orbit/stabilizer sizes, Lagrange as a special case, the index formula, element-order divisibility, and the p-group fixed-point theorem culminating in nontrivial-center-of-a-p-group.", "mathContext": "For a group $G$ acting on a set $X$, $|G| = |\\mathrm{Orb}_G(x)| \\cdot |\\mathrm{Stab}_G(x)|$; applying this to the left-multiplication action on $G/H$ (transitive, stabilizer $H$) recovers Lagrange's theorem $|G| = [G:H]\\cdot|H|$ as the special case of a trivial orbit computation."},
     {
       "id": "basics",
       "title": "Orbit and Stabilizer Basics",
