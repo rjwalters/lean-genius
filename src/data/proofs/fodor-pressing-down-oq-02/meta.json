@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Jensen's Diamond Principle implies CH",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "States $\\Diamond$ (Jensen's diamond, 1972) as a hypothesis (`IsDiamondSeq`), not an axiom -- constructing such a sequence needs $V=L$, a consistency statement, not a ZFC theorem -- and outlines the 5-step proof of $\\Diamond \\Rightarrow \\mathrm{CH}$: the tail of $\\omega_1$ is a club, the guessing set of any $X \\subseteq \\omega$ meets it, this injects $\\mathcal P(\\omega)$ into $\\omega_1$, cardinal bookkeeping gives $\\mathfrak c \\le \\aleph_1$, and combining with the ZFC theorem $\\aleph_1 \\le \\mathfrak c$ yields CH.",
+      "mathContext": "$\\Diamond \\Rightarrow 2^{\\aleph_0} \\le \\aleph_1$; combined with $\\aleph_1 \\le \\mathfrak c$ this gives $\\mathfrak c = \\aleph_1$, i.e. CH."
+    },
+    {
       "id": "diamond-hypothesis",
       "title": "The Diamond principle as a hypothesis",
       "startLine": 51,
