@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1022-oq-01",
+      "title": "Problem Statement and Background",
+      "summary": "Generalizes Property B (2-colorability of a set family with no monochromatic member) to Property $B_k$ ($k$-colorability), noting monotonicity in $k$ and that Erd\u0151s's counting bound $|F| < k^{t-1}/(k-1)$ extends to force Property $B_k$.",
+      "startLine": 1,
+      "endLine": 29,
+      "mathContext": "Property $B_k$ holds for a $t$-uniform family once $k \\ge \\max_f |f|$ by pigeonhole; the open question is how the sparsity threshold $c(t,k)$ (smallest family size forcing failure) depends on $k$."
+    },
+    {
       "id": "definition",
       "title": "Core Definition",
       "startLine": 30,
