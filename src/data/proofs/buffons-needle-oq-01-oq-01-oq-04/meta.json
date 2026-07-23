@@ -112,7 +112,7 @@
       "id": "consistency-check",
       "title": "Part VI: Consistency Check — Recovering 2D from General Formula",
       "startLine": 346,
-      "endLine": 568,
+      "endLine": 596,
       "summary": "angular_constant_dim2 (σ_0/σ_1 recovers the 2D constant), unit_circle_crossings (a unit circle crosses 4 times), cauchyCrofton_le_one_dim2 (c_2 ≤ 1 via π > 3), cauchyCrofton_product/cauchyCrofton_ratio, and cauchyCroftonConst_tendsto_zero (c_n → 0 as n → ∞), proved via the private recurrence and even/odd squared-bound subsequence squeeze.",
       "mathContext": "Recovers $c_2 = 2/\\pi$ as the $n=2$ case; $c_2 \\leq 1$; and $c_n \\to 0$ as $n \\to \\infty$ via the recurrence $c_{n+2} = c_n \\cdot n/(n+1)$ and an even/odd subsequence squeeze."
     }
