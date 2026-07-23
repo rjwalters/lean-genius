@@ -106,5 +106,30 @@
       "Real.Gamma_add_one",
       "Real.rpow_add"
     ]
+  },
+  {
+    "id": "ann-tendsto-zero",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-04",
+    "range": {
+      "startLine": 523,
+      "endLine": 596
+    },
+    "type": "theorem",
+    "title": "cauchyCroftonConst_tendsto_zero: the crossing constant vanishes as dimension grows",
+    "content": "The file's closing result: $c_n \\to 0$ as $n \\to \\infty$, proved directly from the `Metric.tendsto_atTop` $\\varepsilon$-$N$ definition rather than from a general decay lemma. Given $\\varepsilon > 0$, the threshold $N = 2(\\lceil 2/\\varepsilon^2 \\rceil + 1) + 2$ is chosen so both parities clear it: the proof splits $n$ into even ($n=2m$) and odd ($n=2m+1$) cases via `Nat.even_or_odd`, applies the previously-established squared bounds ($c_{2m}^2 \\le (2/\\pi)^2/m$ from the even recurrence chain, $c_{2m+1}^2 \\le (1/2)^2 \\cdot 2/(m+1)$ from the odd one), shows each bound is $< \\varepsilon^2$ once $m$ clears $2/\\varepsilon^2$ (using `pi_gt_three` to bound the even case's $\\pi^2$ factor), and closes with `Real.sqrt_lt_sqrt` plus `Real.sqrt_sq` to pass from the squared bound back to $c_n < \\varepsilon$. Geometrically: a random hyperplane is decreasingly likely to cross a fixed curve as ambient dimension grows, consistent with $c_2 = 2/\\pi \\approx 0.637$ and $c_3 = 1/2$ shrinking further.",
+    "mathContext": "$\\lim_{n\\to\\infty} c_n = 0$, via the even/odd squared bounds $c_{2m}^2 \\le \\frac{(2/\\pi)^2}{m}$ and $c_{2m+1}^2 \\le \\frac{1}{2(m+1)}$ derived earlier from the recurrence $c_{n+2} = c_n \\cdot n/(n+1)$, each forced below $\\varepsilon^2$ once $m > 2/\\varepsilon^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "epsilon-N convergence",
+      "even/odd subsequence squeeze",
+      "dimension-dependent crossing probability"
+    ],
+    "prerequisites": [
+      "Metric.tendsto_atTop",
+      "Real.sqrt_lt_sqrt",
+      "pi_gt_three",
+      "the even/odd squared-bound lemmas proved earlier in Part VI"
+    ]
   }
 ]
