@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "tpi-oq01-header",
+      "title": "Module Header: The Question and the Sharp Answer",
+      "startLine": 1,
+      "endLine": 51,
+      "mathContext": "$D(\\mathrm{mem})\\,y\\,x \\leftrightarrow \\neg(\\mathrm{mem}\\,y\\,x \\leftrightarrow \\mathrm{mem}\\,x\\,x)$, from which sufficiency, necessity, inversion, and self-regularization all follow.",
+      "summary": "Imports the parent ThreePlaceIdentity file and states the module docstring: poses OQ-01 (is Foundation necessary or merely sufficient for the Round-Trip Theorem, and what happens when it fails?), previews the sharp answer D(mem) y x ↔ ¬(mem y x ↔ mem x x) and its four consequences (sufficiency, necessity, inversion, self-regularization), and lists the two references (Etter 2006, the sibling ThreePlaceIdentityOQ02 file). Opens the ThreePlaceIdentity.OQ01 namespace, opens ThreePlaceIdentity, and fixes the ambient type variable {U : Type}."
+    },
+    {
       "id": "tpi-oq01-sharp",
       "title": "Part I: The Sharp Round-Trip Identity",
       "startLine": 52,
