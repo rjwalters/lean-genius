@@ -75,11 +75,18 @@
       "summary": "markov_vieta_fst jumps the first coordinate, x ↦ 3yz − x, by conjugating the parent's markov_vieta with the two transpositions. markov_ascent_isMarkov packages the sorted ascent move (a,b,c) ↦ (b, c, 3bc − a) as landing in the solution set. ascent_spec proves that on a sorted triple 1 ≤ a ≤ b ≤ c the move stays sorted and strictly increases the top coordinate, c < 3bc − a, via the positive product c·(3b − 2) = 3bc − 2c."
     },
     {
-      "id": "sec-sequence",
-      "title": "The Canonical Ascent Sequence",
+      "id": "sec-sequence-def",
+      "title": "Defining the Ascent Sequence",
       "startLine": 86,
+      "endLine": 99,
+      "summary": "ascent and seq define the raw ascent map (a,b,c) ↦ (b,c,3bc−a) and its iteration from the root (1,1,1); seq_zero/seq_one/seq_two/seq_three evaluate (by decide) the first four terms to the classical triples (1,1,1), (1,1,2), (1,2,5), (2,5,29)."
+    },
+    {
+      "id": "sec-sequence-invariant",
+      "title": "The Sequence Invariant and Strict Growth",
+      "startLine": 101,
       "endLine": 131,
-      "summary": "ascent and seq define the raw ascent map and its iteration from (1,1,1); seq_zero/seq_one/seq_two/seq_three evaluate the first four terms to the classical triples (1,1,1), (1,1,2), (1,2,5), (2,5,29). seq_spec establishes by induction (using ascent_spec) that every term is a sorted Markov triple, seq_top_strictMono shows the top coordinate is strictly monotone, and seq_injective concludes the sequence is injective."
+      "summary": "seq_spec establishes by induction (using ascent_spec) that every term of seq is a sorted Markov triple; seq_mem_markov extracts membership in the solution set. seq_top_strictMono shows the top coordinate is strictly monotone, and seq_injective concludes the whole sequence is injective via StrictMono.injective."
     },
     {
       "id": "sec-infinite",
