@@ -2,6 +2,7 @@
   Aristotle targets for Erdős Problem #548 (Erdős-Sós Conjecture)
   Routine supporting lemmas for automated proof search.
   See Erdos548Problem.lean for the main formalization.
+  All 3 targets PROVED directly (2026-07-23, researcher-1) — no sorries remain.
 
   Criteria for inclusion:
   - sum_degrees_eq_twice_edges: handshaking lemma (standard graph theory)
@@ -42,17 +43,34 @@ def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
 -- This is a standard result: SimpleGraph.sum_degrees_eq_twice_card_edges.
 theorem sum_degrees_eq_twice_edges (G : SimpleGraph V) [DecidableRel G.Adj] :
     (Finset.univ.sum fun v => G.degree v) = 2 * edgeCount G := by
-  sorry
+  have h := G.sum_degrees_eq_twice_card_edges
+  unfold edgeCount
+  convert h using 2
+  congr!
 
 -- Routine: The star graph K_{1,k} is connected for k ≥ 1.
 -- Every leaf is adjacent to the center (vertex 0), and 0 reaches all vertices.
 theorem starGraph_connected (k : ℕ) (hk : k ≥ 1) : (starGraph k).Connected := by
-  sorry
+  rw [SimpleGraph.connected_iff]
+  refine ⟨fun i j => ?_, ⟨0⟩⟩
+  have h0 : ∀ a : Fin (k + 1), a.val ≠ 0 → (starGraph k).Adj 0 a :=
+    fun a ha => Or.inl ⟨by simp, ha⟩
+  by_cases hij : i = j
+  · exact hij ▸ SimpleGraph.Reachable.refl i
+  · by_cases hi : i.val = 0
+    · by_cases hj : j.val = 0
+      · exact absurd (Fin.ext (hi.trans hj.symm)) hij
+      · have hi0 : i = (0 : Fin (k + 1)) := Fin.ext (by simpa using hi)
+        exact hi0 ▸ (h0 j hj).reachable
+    · by_cases hj : j.val = 0
+      · have hj0 : j = (0 : Fin (k + 1)) := Fin.ext (by simpa using hj)
+        exact hj0 ▸ ((h0 i hi).symm).reachable
+      · exact ((h0 i hi).symm.reachable).trans (h0 j hj).reachable
 
 -- Routine: Each edge of the star K_{1,k} contributes to reachability.
 -- Adjacent vertices in the star are reachable (trivially: direct adjacency).
 theorem starGraph_adj_reachable (k : ℕ) (i j : Fin (k + 1))
-    (h : (starGraph k).Adj i j) : (starGraph k).Reachable i j := by
-  sorry
+    (h : (starGraph k).Adj i j) : (starGraph k).Reachable i j :=
+  h.reachable
 
 end Erdos548Aristotle
