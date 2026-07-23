@@ -36,7 +36,7 @@
     "historicalContext": "The sum-product conjecture originated in a landmark 1983 paper by Paul Erdős and Endre Szemerédi, \"A combinatorial theorem in group theory,\" where they proved the first super-linear bound $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ with $c = 1/31$ using the Szemerédi–Trotter incidence theorem. The conjecture itself — that the exponent should be $2-\\varepsilon$ for any $\\varepsilon > 0$ — reflects a deep philosophical insight: addition and multiplication are fundamentally incompatible operations on finite sets. An arithmetic progression $\\{1,2,\\ldots,n\\}$ has small sumset ($|A+A| = 2n-1$) but large product set, while a geometric progression $\\{2^0, 2^1, \\ldots, 2^{n-1}\\}$ has small product set but large sumset. The conjecture says these are essentially the only ways to have a small sum-product quantity. The exponent has been improved through a remarkable sequence of breakthroughs: Nathanson–Ford ($c = 1/15$), Elekes (1997, exponent $5/4$ via an elegant geometric argument), Solymosi (2009, exponent $4/3$ using multiplicative energy), Konyagin–Shkredov (2016), Rudnev–Stevens (2022), and Bloom (2025, exponent $1270/951 \\approx 1.335$). Erdős offered a $250 prize for its resolution. The conjecture has deep connections to the Kakeya problem, the discretized ring conjecture of Bourgain, and the finite field analog proved by Bourgain–Katz–Tao (2004). Related gallery entries: erdos-53, erdos-808, erdos-818.",
     "problemStatement": "For every $\\varepsilon > 0$, does there exist $C > 0$ such that for every finite set $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$, $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$?",
     "text": "For a finite set A of integers, is max(|A+A|, |A·A|) ≫ |A|^{2-ε} for every ε > 0? Erdős–Szemerédi proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
-    "proofStrategy": "The formalization defines the core objects — sumset $A+A$, product set $A \\cdot A$, and $\\text{sumProductMax}(A) = \\max(|A+A|, |A \\cdot A|)$ — as computable functions on `Finset ℤ`. The main conjecture `ErdosProblem52` is stated as a `def` producing a `Prop` (since it is open). Known partial results are axiomatized: the Erdős–Szemerédi theorem (super-linear bound) and Bloom's current best bound (exponent $1270/951$). Trivial lower and upper bounds bracket the sum-product quantity between $|A|$ and $|A|^2$. The formalization extends to $m$-fold generalizations via recursive definitions `mfoldSumset` and `mfoldProductset`, and connects to Erdős Problem 53 via an axiomatized implication.",
+    "proofStrategy": "The formalization defines the core objects — sumset $A+A$, product set $A \\cdot A$, and $\\text{sumProductMax}(A) = \\max(|A+A|, |A \\cdot A|)$ — as computable functions on `Finset ℤ`. The main conjecture `ErdosProblem52` is stated as a `def` producing a `Prop` (since it is open). The Erdős–Szemerédi theorem (super-linear bound) and Bloom's current best bound (exponent $1270/951$) are recorded as doc-comment commentary only, not axiomatized. Trivial lower and upper bounds bracket the sum-product quantity between $|A|$ and $|A|^2$ and are fully proved. The formalization extends to $m$-fold generalizations via recursive definitions `mfoldSumset` and `mfoldProductset`, and notes the connection to Erdős Problem 53 as commentary.",
     "keyInsights": [
       "**Additive-multiplicative dichotomy**: A finite set $A$ cannot simultaneously have both small sumset and small product set — this is the core philosophical content of the conjecture, reflecting the incompatibility of addition and multiplication on $\\mathbb{Z}$",
       "**Extremal sets are structured**: Arithmetic progressions minimize $|A+A|$ (giving $2|A|-1$) while geometric progressions minimize $|A \\cdot A|$, but no set can approximate both simultaneously, which is why $\\max(|A+A|, |A \\cdot A|)$ must grow near-quadratically",
@@ -82,7 +82,7 @@
       "startLine": 55,
       "endLine": 61,
       "summary": "States, as commentary, the Erdős–Szemerédi 1983 foundational result — the first super-linear lower bound: $\\exists c>0$ with $\\max(|A+A|,|A\\cdot A|) \\ge |A|^{1+c}$ for all finite $A$ with $|A|\\ge2$. (Recorded as a doc-comment, not axiomatized.)",
-      "mathContext": "Axiomatizes the 1983 foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$."
+      "mathContext": "Recorded as a doc-comment, not axiomatized: the 1983 foundational result $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all $A$ with $|A| \\geq 2$. This was the first super-linear bound, originally with $c = 1/31$."
     },
     {
       "id": "bloom-bound",
@@ -90,7 +90,7 @@
       "startLine": 62,
       "endLine": 69,
       "summary": "States, as commentary, Bloom's 2025 state-of-the-art bound $\\max(|A+A|,|A\\cdot A|) \\ge |A|^{1270/951 - o(1)} \\approx |A|^{1.335}$. (Recorded as a doc-comment, not axiomatized.)",
-      "mathContext": "Axiomatizes Bloom's state-of-the-art result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, stated in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$."
+      "mathContext": "Recorded as a doc-comment, not axiomatized: Bloom's state-of-the-art result $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$, described in the form $\\forall \\varepsilon > 0,\\ \\exists N_0$ such that the bound holds for $|A| \\geq N_0$."
     },
     {
       "id": "trivial-lower-bounds",
@@ -98,7 +98,7 @@
       "startLine": 70,
       "endLine": 111,
       "summary": "Proves the trivial lower bounds: `sumset_card_ge` ($|A| \\le |A+A|$ for nonempty $A$, via the injection $a \\mapsto a+a_0$) and `productset_card_ge` ($|A| \\le |A\\cdot A|$ when $0 \\notin A$ and $|A|\\ge2$, via $a \\mapsto a\\cdot a_0$).",
-      "mathContext": "Axiomatized: Axiomatizes $|A| \\leq |A+A|$ for nonempty $A$ and $|A| \\leq |A \\cdot A|$ when $0 \\notin A$, the elementary bounds showing sumset/product set are at least as large as the original set."
+      "mathContext": "Proved (not axiomatized): `sumset_card_ge` gives $|A| \\leq |A+A|$ for nonempty $A$ via the injection $a \\mapsto a+a_0$, and `productset_card_ge` gives $|A| \\leq |A \\cdot A|$ when $0 \\notin A$ via the injection $a \\mapsto a \\cdot a_0$."
     },
     {
       "id": "trivial-upper-bounds",
@@ -106,7 +106,7 @@
       "startLine": 112,
       "endLine": 126,
       "summary": "Proves the trivial upper bounds: `sumset_card_le` and `productset_card_le` give $|A+A| \\le |A|^2$ and $|A\\cdot A| \\le |A|^2$, since each is the image of $A \\times A$ under a binary operation.",
-      "mathContext": "Axiomatized: Axiomatizes $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ since both are images of $A \\times A$. Together with lower bounds, this gives $|A| \\leq \\text{spMax}(A) \\leq |A|^2$."
+      "mathContext": "Proved (not axiomatized): `sumset_card_le` and `productset_card_le` give $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ via `Finset.card_image_le`, since both are images of $A \\times A$. Together with the lower bounds, this gives $|A| \\leq \\text{spMax}(A) \\leq |A|^2$."
     },
     {
       "id": "generalizations",
@@ -121,8 +121,8 @@
       "title": "Connection to Erdős Problem 53",
       "startLine": 151,
       "endLine": 158,
-      "summary": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$.",
-      "mathContext": "Links to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem): if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products. Axiomatizes the weak bound $(|A+A| + |A \\cdot A|) \\geq |A|$."
+      "summary": "Recorded as a doc-comment, not axiomatized: notes the link to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem) — if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products.",
+      "mathContext": "Recorded as a doc-comment, not axiomatized: notes the link to Problem 53 (resolved by Chang 2003 via the Balog–Szemerédi–Gowers theorem) — if $\\max(|A+A|, |A \\cdot A|)$ is large, then $A$ generates many distinct subset sums and products."
     }
   ],
   "conclusion": {
