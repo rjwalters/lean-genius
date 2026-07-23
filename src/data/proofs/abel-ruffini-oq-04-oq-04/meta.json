@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Imports, the solvable-quintics menu, and the namespace",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib and the sibling entry Proofs.InverseGaloisF20; the header docstring lays out the three-row menu (X⁵−2 irreducible/F₂₀/order 20, X⁵−1 cyclotomic/C₄, (X²−2)(X³−2) reducible/product) and explains the gap this file closes — InverseGaloisF20 computes |Gal(X⁵−2)| = 20 but never states solvability. Opens `namespace AbelRuffiniOQ04OQ04` and `Polynomial` before the headline-example banner comment.",
+      "mathContext": "Galois' criterion: $p\\in\\mathbb{Q}[X]$ solvable by radicals $\\iff \\mathrm{Gal}(p)$ is a solvable group; the general quintic has $\\mathrm{Gal}=S_5$ (unsolvable), motivating this menu of solvable exceptions."
+    },
+    {
       "id": "headline-x5-sub-2",
       "title": "X⁵−2: a solvable irreducible quintic with |Gal| = 20 (F₂₀)",
       "startLine": 48,
