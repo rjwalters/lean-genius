@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring stating the research problem (law-of-cosines-oq-07): Apollonius's theorem in coordinate-free metric form for a real inner-product affine space, distinguished from the scalar Stewart-derived form of law-of-cosines-oq-04. Lists the three packaged results (apollonius, median_length, parallelogram_law). Imports Mathlib, opens EuclideanGeometry, and enters namespace LawOfCosinesOQ07.",
+      "mathContext": "$\\operatorname{dist}(a,b)^2+\\operatorname{dist}(a,c)^2 = 2\\bigl(\\operatorname{dist}(a,\\operatorname{midpoint}(b,c))^2+(\\operatorname{dist}(b,c)/2)^2\\bigr)$ is the coordinate-free Apollonius identity this file packages."
+    },
+    {
       "id": "part1-apollonius",
       "title": "Part I: Apollonius's Theorem (median identity)",
       "startLine": 44,
