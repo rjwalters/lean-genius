@@ -41,7 +41,8 @@
       "The geometric series is not merely a scalar identity but a universal Banach-algebra fact: the same ∑ tⁿ inverts 1 − t for operators, matrices, and any element of norm < 1",
       "Invertibility is an open condition — a perturbation of the identity by anything of norm < 1 remains invertible — which is exactly why the unit group of a Banach algebra is open",
       "The remainder term tᴺ·(1 − t)⁻¹ has norm ≤ ‖t‖ᴺ·‖(1 − t)⁻¹‖, so truncating the series gives an inverse to any accuracy: this is iterative inversion and the engine of stationary solvers",
-      "Summability comes for free from the geometric domination ‖tⁿ‖ ≤ ‖t‖ⁿ < ∞, abstracted in Mathlib by the HasSummableGeomSeries typeclass rather than requiring full completeness in the statement"
+      "Summability comes for free from the geometric domination ‖tⁿ‖ ≤ ‖t‖ⁿ < ∞, abstracted in Mathlib by the HasSummableGeomSeries typeclass rather than requiring full completeness in the statement",
+      "neumann_mul_left and neumann_mul_right are proved as separate theorems even though isUnit_one_sub already yields a two-sided inverse abstractly: R need not be commutative, so the left and right cancellation identities are genuinely different equalities, and spelling both out gives the concrete rewrite lemmas needed downstream instead of just an existence witness"
     ],
     "prerequisites": [
       "Geometric series ∑ rⁿ = 1/(1 − r) for |r| < 1",
@@ -78,6 +79,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the Neumann series over a normed ring",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring: generalizes ∑ rⁿ = 1/(1 − r) to any Banach algebra, stating that ‖t‖ < 1 gives (1 − t)⁻¹ = ∑' n, tⁿ, and listing the five packaged results (neumann_series, hasSum_neumann_series, isUnit_one_sub, neumann_mul_left/right, neumann_partial_remainder) that follow, each a thin wrapper around existing Mathlib lemmas."
+    },
+    {
       "id": "identity",
       "title": "Part I: The Neumann series identity",
       "startLine": 39,
@@ -88,8 +96,15 @@
       "id": "invertibility",
       "title": "Part II: Invertibility of 1 − t",
       "startLine": 63,
+      "endLine": 74,
+      "summary": "isUnit_one_sub: a norm-< 1 perturbation of the identity stays invertible — the qualitative heart of the Neumann series and the reason the unit group of a Banach algebra is open."
+    },
+    {
+      "id": "two-sided-inverse",
+      "title": "Part II continued: the two-sided inverse relations",
+      "startLine": 75,
       "endLine": 86,
-      "summary": "isUnit_one_sub: a norm-< 1 perturbation of the identity stays invertible. neumann_mul_left and neumann_mul_right confirm the series is a genuine two-sided inverse, via Ring.inverse_mul_cancel / mul_inverse_cancel."
+      "summary": "neumann_mul_left and neumann_mul_right confirm the series is a genuine two-sided inverse of 1 − t, via Ring.inverse_mul_cancel / mul_inverse_cancel — proved as separate left/right identities since R need not be commutative."
     },
     {
       "id": "truncation",
