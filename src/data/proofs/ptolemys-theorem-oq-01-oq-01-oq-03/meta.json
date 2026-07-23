@@ -39,12 +39,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Overview",
+      "id": "docstring",
+      "title": "Module Docstring: Equality via Inversion and Betweenness",
       "startLine": 1,
-      "endLine": 59,
-      "summary": "Imports Mathlib, opens EuclideanGeometry, and sets up namespace Ptolemy.EqualityCase over a real inner-product space (NormedAddCommGroup + InnerProductSpace ℝ + NormedAddTorsor). The docstring frames the goal: Mathlib already proves the Ptolemy inequality dist a c · dist b d ≤ dist a b · dist c d + dist b c · dist a d; this file pins down exactly when equality holds, via the inversion centred at a — equality ⇔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). It explains why this is the coordinate-free 'equality ⇔ cyclic quadrilateral' (inversion sends the circle through a,b,c,d to the line through the images) and contrasts it with the parent leaf oq-01-oq-01, whose unit-circle converse is sealed behind an axiom, whereas this general result is 0-axiom/0-sorry.",
+      "endLine": 52,
+      "summary": "The docstring frames the goal: Mathlib already proves the Ptolemy inequality dist a c · dist b d ≤ dist a b · dist c d + dist b c · dist a d; this file pins down exactly when equality holds, via the inversion centred at a — equality ⇔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). It explains why this is the coordinate-free 'equality ⇔ cyclic quadrilateral' (inversion sends the circle through a,b,c,d to the line through the images), sketches how the proof reuses Mathlib's own inversion rewrite through the strict-convexity equality lemma, and contrasts it with the parent leaf oq-01-oq-01, whose unit-circle converse is sealed behind an axiom, whereas this general result is 0-axiom/0-sorry.",
       "mathContext": "$\\operatorname{dist}(a,c)\\,\\operatorname{dist}(b,d) = \\operatorname{dist}(a,b)\\,\\operatorname{dist}(c,d) + \\operatorname{dist}(b,c)\\,\\operatorname{dist}(a,d) \\iff \\mathrm{Wbtw}_{\\mathbb R}(b',c',d')$ for inversion images $x' = \\mathrm{inversion}\\,a\\,1\\,x$."
+    },
+    {
+      "id": "setup",
+      "title": "Imports, Namespace, and the Ambient Space",
+      "startLine": 54,
+      "endLine": 59,
+      "summary": "Opens EuclideanGeometry and declares namespace Ptolemy.EqualityCase over an arbitrary real inner-product space V with metric space P as a NormedAddTorsor over it — the ambient generality (any Euclidean space, not just the unit circle) that the rest of the file operates in.",
+      "mathContext": "$V,\\ P$ with $\\mathrm{InnerProductSpace}\\ \\mathbb{R}\\ V$ and $P$ a $\\mathrm{NormedAddTorsor}$ over $V$."
     },
     {
       "id": "key-algebra",
@@ -66,8 +74,8 @@
       "id": "collinearity-certificate",
       "title": "The Collinearity (Concyclicity) Certificate",
       "startLine": 129,
-      "endLine": 147,
-      "summary": "ptolemy_eq_imp_collinear_inversion: Ptolemy equality forces Collinear ℝ {b', c', d'} (Wbtw.collinear), the order-free, purely-Mathlib shadow of 'a, b, c, d are concyclic'. A degenerate sanity check (c = b) confirms the equality locus and the resulting Wbtw with a repeated point.",
+      "endLine": 148,
+      "summary": "ptolemy_eq_imp_collinear_inversion: Ptolemy equality forces Collinear ℝ {b', c', d'} (Wbtw.collinear), the order-free, purely-Mathlib shadow of 'a, b, c, d are concyclic'. A degenerate sanity check (c = b) confirms the equality locus and the resulting Wbtw with a repeated point, then closes the Ptolemy.EqualityCase namespace.",
       "mathContext": "The weaker collinearity statement is exactly the image, under inversion at a, of the circle through a, b, c, d."
     }
   ],
