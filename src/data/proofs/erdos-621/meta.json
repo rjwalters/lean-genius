@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Header and Background",
+      "summary": "Docstring header: states the Erdős-Gallai-Tuza conjecture $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$, notes the 2016 Norin-Sun resolution via the stronger bipartite-removal bound, and records the 1996 Erdős-Gallai-Tuza remark that the problem 'is probably quite difficult.'",
+      "startLine": 1,
+      "endLine": 19,
+      "mathContext": "Introduces $\\alpha_1(G)$ (maximum triangle-sparse edge set) and $\\tau_1(G)$ (minimum triangle edge cover) — the invariants formalized and related throughout the rest of the file."
+    },
+    {
       "id": "imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib's `SimpleGraph`, `Clique`, `Fintype`, and tactic libraries. Opens the `SimpleGraph`, `Finset`, and `Classical` namespaces and enables classical decidability for propositions.",

@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-621-header",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Statement and Resolution",
+    "content": "States the Erdős-Gallai-Tuza conjecture (1996): for a graph $G$ on $n$ vertices, is $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$, where $\\alpha_1$ is the maximum triangle-sparse edge set and $\\tau_1$ the minimum triangle edge cover? Records that Norin-Sun (2016) resolved it by proving the stronger bound $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$ with $\\tau_B$ the bipartite edge-deletion number, and that $\\tau_1 \\le \\tau_B$ makes the original conjecture immediate.",
+    "mathContext": "Fixes the two invariants used throughout the file: $\\alpha_1(G)$ generalizes the matching-style independence notion to triangles (edges hitting at most one edge per triangle), while $\\tau_1(G)$ generalizes vertex/edge covers to triangle transversals. The $n^2/4$ bound echoes Mantel's theorem, later formalized as the triangle-free special case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle edge cover",
+      "Norin-Sun theorem",
+      "bipartite edge deletion",
+      "Mantel's theorem"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "extremal combinatorics"
+    ]
+  },
+  {
     "id": "ann-621-imports",
     "proofId": "erdos-621",
     "range": {
