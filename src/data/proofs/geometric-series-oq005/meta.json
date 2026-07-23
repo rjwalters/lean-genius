@@ -148,7 +148,8 @@
       "The third moment is one more turn of the same crank. The parent's moment_transfer is a transfer operator on weighted row sums; feeding it the monomial weight k³ (after k⁰,k¹,k² for M₀,M₁,M₂) mechanically yields the third-moment recurrence, with the only new content the polynomial identity i³(i+1)+(i+1)³(n−i) = (n−2)i³+3(n−1)i²+(3n−1)i+n verified by ring.",
       "Zero skewness is a pure symmetry fact, dual to the mean. The mean came from reflecting a LINEAR weight k; the vanishing third central moment comes from reflecting the ODD cubic deviation weight (2k−(n−1))³, which the reflection k ↦ n−1−k negates. Palindromy fixes ⟨n,k⟩, so the centred cube-sum is antisymmetric and collapses to 0 — no recurrence needed.",
       "Working over ℤ keeps everything an exact integer identity. The closed form is stated cleared of denominators as 8·M₃ = (n−1)(n²−n+2)·n!, and the centred moment as ∑ₖ (2k−(n−1))³·⟨n,k⟩ = 0 with the deviation doubled to 2k−(n−1) so no halving of the mean is needed; the closing steps are linear_combination over the recurrence, no field inversion.",
-      "The same reflection argument proves ALL odd central moments vanish. Nothing in eulerian_third_central_moment_zero uses the exponent 3 beyond its oddness: any odd power of 2k−(n−1) is negated by the reflection, so the descent distribution is symmetric to all orders — the exact statement of which is left as an open question."
+      "The same reflection argument proves ALL odd central moments vanish. Nothing in eulerian_third_central_moment_zero uses the exponent 3 beyond its oddness: any odd power of 2k−(n−1) is negated by the reflection, so the descent distribution is symmetric to all orders — the exact statement of which is left as an open question.",
+      "The concrete-row checks use plain `decide` (kernel reduction), not `native_decide`: for the small rows n=3,4 the kernel evaluator is fast enough on its own, so the corroboration stays genuinely axiom-free rather than trading a tiny speed gain for the `Lean.ofReduceBool` dependency that `native_decide` would introduce."
     ]
   },
   "sections": [
@@ -161,12 +162,20 @@
       "mathContext": "$X$ = number of descents; row $(\\langle n,0\\rangle,\\dots,\\langle n,n-1\\rangle)$ with mean $\\tfrac{n-1}{2}$, variance $\\tfrac{n+1}{12}$."
     },
     {
-      "id": "third-moment",
-      "title": "The Third Moment via the Moment Recurrence",
+      "id": "third-moment-recurrence",
+      "title": "The Third-Moment Recurrence",
       "startLine": 43,
+      "endLine": 61,
+      "summary": "eulerian_M3_succ reads the recurrence M₃(n+1) = (n−2)·M₃(n)+3(n−1)·M₂(n)+(3n−1)·M₁(n)+n·M₀(n) off the parent's moment_transfer at weight w(k)=k³, the transfer coefficient i³(i+1)+(i+1)³(n−i) simplifying by ring to (n−2)i³+3(n−1)i²+(3n−1)i+n.",
+      "mathContext": "$M_3(n{+}1) = (n{-}2)M_3(n) + 3(n{-}1)M_2(n) + (3n{-}1)M_1(n) + nM_0(n)$."
+    },
+    {
+      "id": "third-moment-closed-form",
+      "title": "The Third-Moment Closed Form",
+      "startLine": 62,
       "endLine": 78,
-      "summary": "eulerian_M3_succ reads the recurrence M₃(n+1) = (n−2)·M₃(n)+3(n−1)·M₂(n)+(3n−1)·M₁(n)+n·M₀(n) off the parent's moment_transfer at w=k³; eulerian_third_moment closes the closed form 8·∑ₖ k³·⟨n,k⟩ = (n−1)(n²−n+2)·n! by induction from n=2, feeding in M₀, M₁ and M₂.",
-      "mathContext": "$8\\sum_{k} k^3\\langle n,k\\rangle = (n-1)(n^2-n+2)\\,n!$."
+      "summary": "eulerian_third_moment closes the closed form 8·∑ₖ k³·⟨n,k⟩ = (n−1)(n²−n+2)·n! for n ≥ 2, by induction from the base row n=2, feeding the recurrence M₀ (eulerian_M0), M₁ (eulerian_first_moment) and M₂ (eulerian_second_moment) and closing with linear_combination.",
+      "mathContext": "$8\\sum_{k} k^3\\langle n,k\\rangle = (n-1)(n^2-n+2)\\,n!$ for $n\\ge 2$."
     },
     {
       "id": "vanishing-skewness",
