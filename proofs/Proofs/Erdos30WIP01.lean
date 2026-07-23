@@ -1129,6 +1129,7 @@ private theorem isSidonSet_of_sidonCheck {A : Finset ℕ} (hA : SidonCheck A) :
   fun a b c d ha hb hc hd hab hcd heq => hA a ha b hb c hc d hd hab hcd heq
 
 set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
 /-- Kernel search for `h(22)`: no five interior elements `B ⊆ {1,…,21}` extend the
 pinned endpoints `{0, 22}` to a 7-element Sidon set (`C(21,5) = 20349` candidates). -/
 private theorem no_sidon_extension_zero_twentytwo :
@@ -1233,6 +1234,7 @@ theorem sidonNumber_twentytwo : sidonNumber 22 = 6 := by
       _ ≤ sidonNumber 22 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_12_17
 
 set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
 /-- Kernel search for `h(23)`: no five interior elements `B ⊆ {1,…,22}` extend the
 pinned endpoints `{0, 23}` to a 7-element Sidon set (`C(22,5) = 26334` candidates). -/
 private theorem no_sidon_extension_zero_twentythree :
@@ -1332,6 +1334,7 @@ theorem sidonNumber_twentythree : sidonNumber 23 = 6 := by
       _ ≤ sidonNumber 23 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_12_17
 
 set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
 /-- Kernel search for `h(24)`: no five interior elements `B ⊆ {1,…,23}` extend the
 pinned endpoints `{0, 24}` to a 7-element Sidon set (`C(23,5) = 33649` candidates). -/
 private theorem no_sidon_extension_zero_twentyfour :
@@ -1469,5 +1472,198 @@ theorem sidonNumber_twentyseven : sidonNumber 27 = 7 := by
     nlinarith [hm, h8]
   · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
       _ ≤ sidonNumber 27 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
+/-! ### `h(28) = 7` — the third wall falls to a mod-4 class double count
+
+At `N = 28` the counting bound goes slack against an 8-element set for the first
+time (`8·7 = 56 = 2·28`), the `h(10)`/`h(21)` parity trick is silent (a perfect
+8-mark ruler of span `28` has difference sum `1 + ⋯ + 28 = 406`, *even*), and the
+`h(15)` mod-3 count is inconclusive (class sizes `{4,3,1}` satisfy it).  The
+`h(16)`/`h(22..24)` span dichotomy would need a `C(27,6) ≈ 296k`-candidate kernel
+search.  None of that is necessary: counting differences **mod 4** kills the
+configuration outright, with no search at all.
+
+An 8-element Sidon set in `{0,…,28}` has `C(8,2) = 28` distinct positive
+differences inside `{1,…,28}`, hence *exhausting* it — a perfect 8-mark ruler is
+forced automatically (no span dichotomy needed).  Among the `56` signed nonzero
+differences `{±1,…,±28}` exactly `14` are `≡ 0 (mod 4)` and exactly `14` are
+`≡ 2 (mod 4)`.  Writing `c₀,c₁,c₂,c₃` for the sizes of the residue classes of `A`
+mod `4`:
+
+* ordered pairs with `a − b ≡ 0 (mod 4)` are the same-class pairs:
+  `∑ᵣ cᵣ(cᵣ − 1) = 14`, i.e. `∑ᵣ cᵣ² = 22`;
+* ordered pairs with `a − b ≡ 2 (mod 4)` pair class `r` with class `r + 2`:
+  `∑ᵣ cᵣ·c_{r+2 mod 4} = 2(c₀c₂ + c₁c₃) = 14`.
+
+With `c₀ + c₁ + c₂ + c₃ = 8` the first constraint forces the multiset of class
+sizes to be `{4,2,1,1}` or `{3,3,2,0}`, and for every arrangement of either,
+`c₀c₂ + c₁c₃ ∈ {6, 9}` — never `7`.  Contradiction, so `h(28) = 7`. -/
+
+/-- **No 8-element Sidon set fits in `{0,…,28}`** — the perfect-ruler mod-4 double
+count.  Such a set would have `56` signed differences exhausting `{±1,…,±28}`,
+hence exactly `14` ordered pairs with `a − b ≡ 0 (mod 4)` and exactly `14` with
+`a − b ≡ 2 (mod 4)`; but with `c₀ + c₁ + c₂ + c₃ = 8` the class-size counts
+`∑ cᵣ(cᵣ − 1) = 14` and `∑ cᵣ·c_{r+2 mod 4} = 14` are jointly unsatisfiable. -/
+set_option maxHeartbeats 4000000 in
+theorem no_sidon_card_eight_range_twentynine (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 29) (hA : IsSidonSet A) : A.card ≤ 7 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  -- Counting caps the size at 8, so a violating set has exactly 8 elements.
+  have hup : A.card * A.card ≤ 56 + A.card := by
+    have := sidon_card_sq_le 28 hsub hA; omega
+  have hc8 : A.card = 8 := by
+    have h8 : 8 ≤ A.card := hcard
+    by_contra hne
+    have h9 : 9 ≤ A.card := by omega
+    have hmul : 9 * A.card ≤ A.card * A.card := Nat.mul_le_mul h9 (le_refl A.card)
+    omega
+  have hfull : Set.InjOn diffMap ↑A.offDiag := diffMap_injOn hA
+  have hoffcard : A.offDiag.card = 56 := by rw [Finset.offDiag_card, hc8]
+  -- `diffMap` sends the off-diagonal onto the 56 nonzero integers of `[-28, 28]`.
+  have hmapsFull : ∀ p ∈ A.offDiag, diffMap p ∈ (Finset.Icc (-28 : ℤ) 28).erase 0 := by
+    intro p hp
+    rw [Finset.mem_offDiag] at hp
+    obtain ⟨hp1, hp2, hpne⟩ := hp
+    have hb1 := hsub hp1; have hb2 := hsub hp2
+    rw [Finset.mem_range] at hb1 hb2
+    rw [Finset.mem_erase, Finset.mem_Icc]
+    simp only [diffMap]
+    exact ⟨fun h => hpne (by omega), by omega, by omega⟩
+  have hcardErase : ((Finset.Icc (-28 : ℤ) 28).erase 0).card = 56 := by
+    rw [Finset.card_erase_of_mem (by decide), Int.card_Icc]; decide
+  have himageFull : A.offDiag.image diffMap = (Finset.Icc (-28 : ℤ) 28).erase 0 := by
+    refine Finset.eq_of_subset_of_card_le (fun d hd => ?_) ?_
+    · rw [Finset.mem_image] at hd
+      obtain ⟨p, hp, rfl⟩ := hd
+      exact hmapsFull p hp
+    · rw [Finset.card_image_of_injOn hfull, hoffcard]
+      exact le_of_eq hcardErase
+  -- `T0` = the off-diagonal pairs whose difference is divisible by `4`.
+  set T0 := A.offDiag.filter (fun p => diffMap p % 4 = 0) with hT0
+  have hT0sub : T0 ⊆ A.offDiag := Finset.filter_subset _ _
+  have hinjT0 : Set.InjOn diffMap ↑T0 := hfull.mono (Finset.coe_subset.mpr hT0sub)
+  -- Its image is the 14 nonzero multiples of 4 in `[-28, 28]`, so `|T0| = 14`.
+  have hT0img : T0.image diffMap
+      = ((Finset.Icc (-28 : ℤ) 28).erase 0).filter (fun d => d % 4 = 0) := by
+    rw [hT0, ← Finset.filter_image (p := fun d : ℤ => d % 4 = 0), himageFull]
+  have hT0card : T0.card = 14 := by
+    rw [← Finset.card_image_of_injOn hinjT0, hT0img]
+    decide
+  -- `T2` = the off-diagonal pairs whose difference is `≡ 2 (mod 4)`.
+  set T2 := A.offDiag.filter (fun p => diffMap p % 4 = 2) with hT2
+  have hT2sub : T2 ⊆ A.offDiag := Finset.filter_subset _ _
+  have hinjT2 : Set.InjOn diffMap ↑T2 := hfull.mono (Finset.coe_subset.mpr hT2sub)
+  -- Its image is the 14 values `≡ 2 (mod 4)` in `[-28, 28]`, so `|T2| = 14`.
+  have hT2img : T2.image diffMap
+      = ((Finset.Icc (-28 : ℤ) 28).erase 0).filter (fun d => d % 4 = 2) := by
+    rw [hT2, ← Finset.filter_image (p := fun d : ℤ => d % 4 = 2), himageFull]
+  have hT2card : T2.card = 14 := by
+    rw [← Finset.card_image_of_injOn hinjT2, hT2img]
+    decide
+  -- Structurally, `T0` is the set of same-residue pairs, fibered by the class.
+  have hT0eq : T0 = A.offDiag.filter (fun p => p.1 % 4 = p.2 % 4) := by
+    rw [hT0]
+    refine Finset.filter_congr (fun p hp => ?_)
+    simp only [diffMap]
+    omega
+  have hfiber0 : ∀ r : ℕ, T0.filter (fun p => p.1 % 4 = r)
+      = (A.filter (fun a => a % 4 = r)).offDiag := by
+    intro r
+    ext p
+    rw [hT0eq]
+    simp only [Finset.mem_filter, Finset.mem_offDiag]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, heqr⟩, h1r⟩
+      exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+    · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+      exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+  -- `T2` fibers into full class products: first coordinate in class `r`, second
+  -- in class `(r + 2) % 4` (distinct classes, so off-diagonality is automatic).
+  have hfiber2 : ∀ r s : ℕ, s = (r + 2) % 4 → T2.filter (fun p => p.1 % 4 = r)
+      = (A.filter (fun a => a % 4 = r)) ×ˢ (A.filter (fun a => a % 4 = s)) := by
+    intro r s hs
+    ext p
+    rw [hT2]
+    simp only [Finset.mem_filter, Finset.mem_offDiag, Finset.mem_product]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hd2⟩, h1r⟩
+      refine ⟨⟨h1, h1r⟩, h2, ?_⟩
+      simp only [diffMap] at hd2
+      omega
+    · rintro ⟨⟨h1, h1r⟩, h2, h2s⟩
+      refine ⟨⟨⟨h1, h2, ?_⟩, ?_⟩, h1r⟩
+      · omega
+      · simp only [diffMap]
+        omega
+  -- Fiberwise counts: `|A| = ∑ cᵣ`, `|T0| = ∑ cᵣ(cᵣ − 1)`, `|T2| = ∑ cᵣ·c_{r+2 mod 4}`.
+  have hfib : A.card = ∑ r ∈ Finset.range 4, (A.filter (fun a => a % 4 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hT0fib : T0.card = ∑ r ∈ Finset.range 4, (T0.filter (fun p => p.1 % 4 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun p _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hT2fib : T2.card = ∑ r ∈ Finset.range 4, (T2.filter (fun p => p.1 % 4 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun p _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  have hcount0 : (14 : ℕ) = ∑ r ∈ Finset.range 4,
+      ((A.filter (fun a => a % 4 = r)).card * (A.filter (fun a => a % 4 = r)).card
+        - (A.filter (fun a => a % 4 = r)).card) := by
+    rw [← hT0card, hT0fib]
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [hfiber0 r, Finset.offDiag_card]
+  have hcount2 : (14 : ℕ) = ∑ r ∈ Finset.range 4,
+      ((A.filter (fun a => a % 4 = r)).card
+        * (A.filter (fun a => a % 4 = (r + 2) % 4)).card) := by
+    rw [← hT2card, hT2fib]
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [hfiber2 r ((r + 2) % 4) rfl, Finset.card_product]
+  -- Extract the three Diophantine constraints and refute them by finite case analysis.
+  have hsum8 : (A.filter (fun a => a % 4 = 0)).card + (A.filter (fun a => a % 4 = 1)).card
+      + (A.filter (fun a => a % 4 = 2)).card + (A.filter (fun a => a % 4 = 3)).card = 8 := by
+    have h := hfib
+    rw [hc8] at h
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
+    omega
+  have hsame : ((A.filter (fun a => a % 4 = 0)).card * (A.filter (fun a => a % 4 = 0)).card
+        - (A.filter (fun a => a % 4 = 0)).card)
+      + ((A.filter (fun a => a % 4 = 1)).card * (A.filter (fun a => a % 4 = 1)).card
+        - (A.filter (fun a => a % 4 = 1)).card)
+      + ((A.filter (fun a => a % 4 = 2)).card * (A.filter (fun a => a % 4 = 2)).card
+        - (A.filter (fun a => a % 4 = 2)).card)
+      + ((A.filter (fun a => a % 4 = 3)).card * (A.filter (fun a => a % 4 = 3)).card
+        - (A.filter (fun a => a % 4 = 3)).card) = 14 := by
+    have h := hcount0
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add] at h
+    exact h.symm
+  have hcross : (A.filter (fun a => a % 4 = 0)).card * (A.filter (fun a => a % 4 = 2)).card
+      + (A.filter (fun a => a % 4 = 1)).card * (A.filter (fun a => a % 4 = 3)).card
+      + (A.filter (fun a => a % 4 = 2)).card * (A.filter (fun a => a % 4 = 0)).card
+      + (A.filter (fun a => a % 4 = 3)).card * (A.filter (fun a => a % 4 = 1)).card = 14 := by
+    have h := hcount2
+    simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+      Nat.reduceAdd, Nat.reduceMod] at h
+    exact h.symm
+  generalize hg0 : (A.filter (fun a => a % 4 = 0)).card = c0 at hsum8 hsame hcross
+  generalize hg1 : (A.filter (fun a => a % 4 = 1)).card = c1 at hsum8 hsame hcross
+  generalize hg2 : (A.filter (fun a => a % 4 = 2)).card = c2 at hsum8 hsame hcross
+  generalize hg3 : (A.filter (fun a => a % 4 = 3)).card = c3 at hsum8 hsame hcross
+  have hb0 : c0 ≤ 8 := by omega
+  have hb1 : c1 ≤ 8 := by omega
+  have hb2 : c2 ≤ 8 := by omega
+  have hb3 : c3 ≤ 8 := by omega
+  interval_cases c0 <;> interval_cases c1 <;> interval_cases c2 <;>
+    interval_cases c3 <;> omega
+
+/-- `h(28) = 7` — the third wall.  Counting is slack (`56 = 2·28`), parity is silent
+(`1 + ⋯ + 28 = 406` even), and mod-3 is inconclusive; the mod-4 class double count
+(`no_sidon_card_eight_range_twentynine`) rules out the forced perfect 8-mark ruler,
+and the span-25 optimal 7-mark Golomb ruler still attains `7`. -/
+theorem sidonNumber_twentyeight : sidonNumber 28 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_twentynine A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 28 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
 
 end Erdos30

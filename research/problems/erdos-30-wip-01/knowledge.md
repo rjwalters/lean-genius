@@ -158,3 +158,41 @@ the optimal 8-mark ruler `{0,1,4,9,15,22,32,34}` has span 34 — six values need
 per-N nonexistence of an 8-element set; the dichotomy would need `C(N−1,6)`-scale kernel
 searches (~296k at N = 28, growing). DEEP targets unchanged (Singer √N lower bound,
 N^{1/4} refinement, $1000 N^ε conjecture).
+
+## Session 2026-07-23b (researcher-1) — h(28)=7 via mod-4 class double count (NO kernel search)
+
+Added 2 declarations to `Erdos30WIP01.lean` (0 sorries, 0 axioms):
+- `no_sidon_card_eight_range_twentynine`: no 8-element Sidon set in {0,…,28}.
+- `sidonNumber_twentyeight : sidonNumber 28 = 7`. Table now COMPLETE h(0..28).
+
+**Mechanism — the feared ~296k-candidate kernel search was unnecessary.** At N = 28
+an 8-element Sidon set has C(8,2) = 28 distinct positive differences in {1,…,28},
+so the perfect ruler is FORCED (no span dichotomy: 56 signed differences must
+exhaust {±1,…,±28}, the `himageFull` cardinality step from the h(10) template).
+Then a **mod-4 double count**: among {±1,…,±28} exactly 14 values are ≡ 0 (mod 4)
+and 14 are ≡ 2 (mod 4). With c₀..c₃ the mod-4 class sizes of A:
+- same-class ordered pairs: Σ cᵣ(cᵣ−1) = 14 (fiber `T0.filter (p.1%4=r)` =
+  `(A.filter (·%4=r)).offDiag`, exactly the h(15) mod-3 fibration);
+- cross-class ordered pairs (r vs r+2): Σ cᵣ·c_{(r+2)%4} = 14 (NEW fibration:
+  `T2.filter (p.1%4=r) = A_r ×ˢ A_{(r+2)%4}` — off-diagonality is automatic since
+  the classes differ; card via `Finset.card_product`).
+With Σ cᵣ = 8: first constraint forces multiset {4,2,1,1} or {3,3,2,0}; for every
+arrangement c₀c₂+c₁c₃ ∈ {6,9}, never 7. `interval_cases`×4 + omega closes
+(hsum8 linearly prunes the nesting to ~165 leaves).
+
+**Lean notes**: general fibration lemma stated as
+`∀ r s, s = (r+2)%4 → T2.filter … = A_r ×ˢ A_s` and instantiated with `rfl` inside
+the `sum_congr` — avoids `(r+2)%4` literal-normalization headaches; the extraction
+step then needs `Nat.reduceAdd, Nat.reduceMod` simprocs to fold `(0+2)%4 → 2`
+inside the filter lambdas before `generalize` can abstract the class cards.
+Mod-obstruction ladder so far: h(10) parity (sum odd), h(15) mod-3 same-class,
+h(21) parity again, h(28) mod-4 same+cross class. Each perfect-ruler wall
+N = k(k−1)/2 falls to a residue count so far.
+
+**Next wall (h(29..33)):** perfect ruler NO LONGER forced (28 diffs in {1,…,29}
+miss one value); span dichotomy returns: span ≤ 28 slides to the h(28) theorem,
+span = N pins {0,N}. Mod-4 alone is INSUFFICIENT at N = 29 (checked: missing
+value ≡ 2 (mod 4) with class multiset {4,2,1,1} arranged c₀c₂+c₁c₃ = 6 survives
+the double count) — needs either a mod-4+mod-3 combination, endpoint-pinned
+sum-collision pruning (a+b = 29 forbidden pairs), or the C(28,6) ≈ 376k kernel
+search. DEEP targets unchanged.
