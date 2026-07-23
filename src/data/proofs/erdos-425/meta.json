@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Header and Background",
+      "summary": "Docstring header: states the problem, the two open questions (single-constant asymptotics; $r$-fold generalization), Erdős's 1968 bounds, and the real-number version with Alexander's disproof of the $o(x)$ conjecture. Lists the three source references [Er68], [Er73], [ErGr80].",
+      "startLine": 1,
+      "endLine": 30,
+      "mathContext": "Sets up notation used throughout: $F(n)$ for the integer extremal function, the conjectured secondary term $n^{3/4}(\\log n)^{-3/2}$, and the real-valued analogue on $A \\subset [1,x]$ with $|ab-cd|\\ge 1$."
+    },
+    {
       "id": "imports",
       "title": "Imports and Namespace",
       "summary": "Imports `Nat.Prime`, `Finset`, `Primorial`, and `Real.Basic`. Opens `Erdos425` namespace for all definitions and theorems.",
