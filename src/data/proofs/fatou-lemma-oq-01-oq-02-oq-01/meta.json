@@ -158,11 +158,27 @@
       "mathContext": "$|f_n| \\le g$ integrable, $f_n \\to F$ pointwise $\\Rightarrow \\int f_n \\to \\int F$, via Fatou on $g \\pm f_n$."
     },
     {
-      "id": "dct-add-bracket",
-      "title": "DCT via the Upper Bracket g + fₙ",
+      "id": "namespace-setup",
+      "title": "Namespace, Opens, and Shared Variables",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "Opens the MeasureTheory/Filter/Set/Topology namespaces and scoped ENNReal notation, declares the FatouLemmaOQ01OQ02OQ01 namespace, and fixes the ambient measurable space α with measure μ shared by both theorems.",
+      "mathContext": "`variable {α : Type*} [MeasurableSpace α] {μ : Measure α}` — the common ambient space for both `dct_of_dominated` and `dct_of_dominated_sub`."
+    },
+    {
+      "id": "dct-add-setup",
+      "title": "Measurability and Integrability Setup",
       "startLine": 66,
+      "endLine": 100,
+      "summary": "Opens dct_of_dominated: derives measurability and the bound |F| ≤ g for the pointwise limit F from |fₙ| ≤ g and fₙ → F, then integrability of each fₙ and of F via Integrable.mono', and pointwise nonnegativity of the shifts g + fₙ and g + F.",
+      "mathContext": "From $|f_n|\\le g$, $g$ integrable, and $f_n\\to F$: $F$ measurable, $|F|\\le g$, so $f_n,F$ integrable and $g+f_n\\ge0$, $g+F\\ge0$."
+    },
+    {
+      "id": "dct-add-fatou",
+      "title": "DCT via the Upper Bracket g + fₙ",
+      "startLine": 101,
       "endLine": 139,
-      "summary": "dct_of_dominated derives the signed dominated convergence theorem from Fatou applied to g + fₙ. After establishing measurability and integrability of F and fₙ from |fₙ| ≤ g, the nonnegative g + fₙ (dominated by 2g, converging to g + F) is fed to the nonnegative Fatou bracket; ofReal_integral_eq_lintegral_ofReal and ENNReal.toReal transfer the convergence to ∫ (g + fₙ) → ∫ (g + F), and integral_add cancellation of ∫ g gives ∫ fₙ → ∫ F.",
+      "summary": "Feeds the nonnegative g + fₙ (dominated by 2g, converging to g + F) to the nonnegative Fatou bracket tendsto_lintegral_of_dominated_convergence; ofReal_integral_eq_lintegral_ofReal and ENNReal.toReal transfer the convergence to ∫ (g + fₙ) → ∫ (g + F), and integral_add cancellation of ∫ g gives ∫ fₙ → ∫ F.",
       "mathContext": "$g + f_n \\ge 0$, $g + f_n \\le 2g$, $g + f_n \\to g + F$; $\\int(g+f_n)\\to\\int(g+F)$, cancel $\\int g$."
     },
     {
