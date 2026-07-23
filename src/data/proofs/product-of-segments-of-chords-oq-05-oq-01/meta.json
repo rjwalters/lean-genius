@@ -74,11 +74,18 @@
       "summary": "chord_segment_product_eq_abs_power: dist(P,A)·dist(P,B) = |power O r P|, from |t₁|·|t₂| = |t₁·t₂| and the parent's t₁·t₂ = power. chord_segment_product_direction_independent: two directions give the same product of lengths."
     },
     {
-      "id": "branches",
-      "title": "Exterior Secant–Secant and Interior Intersecting-Chords",
+      "id": "exterior",
+      "title": "Exterior Secant–Secant Case (Euclid III.36)",
       "startLine": 96,
+      "endLine": 108,
+      "summary": "secant_secant_exterior: for P strictly outside the sphere (r < ‖P−O‖), dist(P,A)·dist(P,B) = ‖P−O‖²−r², with no absolute value — strict positivity of the power via nlinarith, then abs_of_pos."
+    },
+    {
+      "id": "interior",
+      "title": "Interior Intersecting-Chords Case (Euclid III.35)",
+      "startLine": 109,
       "endLine": 122,
-      "summary": "secant_secant_exterior: for P strictly outside, dist·dist = ‖P−O‖²−r² (abs_of_pos). intersecting_chords_interior: for P strictly inside, dist·dist = r²−‖P−O‖² (abs_of_neg), the classical Euclid III.35 form."
+      "summary": "intersecting_chords_interior: for P strictly inside the sphere (‖P−O‖ < r), dist(P,A)·dist(P,B) = r²−‖P−O‖² — the classical intersecting-chords theorem, via a negative power and abs_of_neg."
     }
   ],
   "conclusion": {
