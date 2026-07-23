@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-fourth-root-2-degree4-oq-02-oq-01",
+      "title": "Problem Statement: The Full Kummer/Vahlen–Capelli Criterion for $X^n - a$",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring posing the further generalization: does the parent's prime-$p$ packaging extend to $X^n - a$ for general (non-prime) $a$, via the full Kummer criterion? States what Mathlib already supplies (the odd-$n$ and odd-prime-power-$n$ regimes of `KummerExtension.lean`) and where the naive extension breaks: once $4 \\mid n$, Vahlen–Capelli adds the exceptional clause $a \\notin -4\\cdot(\\text{fourth powers})$, which Mathlib leaves as a TODO. Formalizes the sharp witness via Sophie Germain's identity $X^4 + 4c^4 = (X^2-2cX+2c^2)(X^2+2cX+2c^2)$, giving $a=-4c^4$ reducible though not a perfect square — proving the naive prime-divisor criterion insufficient for even exponents. States 0 axioms, 0 sorries.",
+      "mathContext": "Sophie Germain: $X^4+4c^4=(X^2-2cX+2c^2)(X^2+2cX+2c^2)$; witnesses that $X^n-a$ irreducibility needs the Vahlen–Capelli exceptional clause when $4 \\mid n$, not just \"$a$ not a $d$-th power\"."
+    },
+    {
       "id": "general-a-covered-regimes",
       "title": "The general-a criterion in the regimes Mathlib covers",
       "startLine": 60,
