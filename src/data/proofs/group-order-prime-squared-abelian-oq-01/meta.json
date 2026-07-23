@@ -70,7 +70,8 @@
       "**Commutativity is only half the story.** The named Mathlib result stops at 'G is abelian'; the mathematically informative statement is the cyclic vs. elementary-abelian dichotomy, which determines G up to isomorphism. This entry supplies that second half.",
       "**The whole dichotomy rides on one trichotomy.** Once Lagrange + the divisor structure of p² pin every element order to {1, p, p²}, the structure theorem is immediate: existence of a p²-order element ⇔ cyclic, its absence ⇔ exponent p.",
       "**Exponent p is the usable form of elementary-abelian.** Phrasing the non-cyclic case as ∀ g, gᵖ = 1 keeps it typeclass-free and order-theoretic, avoiding any commitment to a (ℤ/p)² isomorphism while carrying the same information for downstream use.",
-      "**Sharpness is a one-line divisibility contradiction.** Mutual exclusivity reduces to p² ∤ p: a generator's order p² cannot divide p, so a cyclic group of order p² can never have exponent p."
+      "**Sharpness is a one-line divisibility contradiction.** Mutual exclusivity reduces to p² ∤ p: a generator's order p² cannot divide p, so a cyclic group of order p² can never have exponent p.",
+      "**The proof never needs G finite as a standalone hypothesis.** Finiteness is derived on demand (Nat.finite_of_card_ne_zero from Nat.card G = p² ≠ 0) exactly where isCyclic_of_orderOf_eq_card or isCyclic_iff_exists_orderOf_eq_natCard need it, rather than threaded through every lemma — the order hypothesis alone carries all the finiteness the argument uses."
     ],
     "prerequisites": [
       "Lagrange's theorem in the form orderOf g ∣ Nat.card G",
@@ -80,6 +81,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: The Abelian Theorem and the Dichotomy",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "States the parent open question and the headline: |G| = p² ⟹ G is cyclic (≅ ℤ/p²) XOR has exponent p (≅ (ℤ/p)²), previewing all five theorems. Imports Mathlib, opens the GroupOrderPrimeSq namespace, and fixes the ambient variable {G : Type*} [Group G].",
+      "mathContext": "$|G| = p^2 \\Rightarrow G$ cyclic $\\oplus$ $\\forall g, g^p = 1$."
+    },
     {
       "id": "abelian",
       "title": "The Abelian Theorem",
