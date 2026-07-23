@@ -186,14 +186,9 @@
       "description": "The consecutive integer configuration {0, 1, ..., n-1} achieves exactly n-1 unit-distance pairs"
     },
     {
-      "name": "harborth_exact",
+      "name": "maxUnitDistPairs",
       "type": "axiom",
-      "description": "Harborth's formula: f_2(n) = floor(3n - sqrt(12n-3)) for separated points in R^2, optimal on triangular lattice"
-    },
-    {
-      "name": "erdos_1084_d3_conjecture",
-      "type": "axiom",
-      "description": "The d=3 conjecture: f_3(n) = 6n - Theta(n^{2/3}), with leading coefficient from the kissing number tau(3) = 12"
+      "description": "Uninterpreted function f_d(n) : N -> N -> N for the maximum number of unit-distance pairs; Harborth's formula (d=2) and the d=3 conjecture cited in the docstring are not separately formalized as axioms in this file"
     }
   ],
   "sorries": 0
