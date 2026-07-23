@@ -86,7 +86,7 @@
   {
     "id": "ann-sanity",
     "proofId": "hilbert-10-oq001",
-    "range": { "startLine": 103, "endLine": 111 },
+    "range": { "startLine": 103, "endLine": 113 },
     "type": "concept",
     "title": "Worked Instances Through the Abstract Criterion",
     "content": "Two concrete equations are solved by invoking the biconditional's reverse direction with a `decide`-checked divisibility: $3x + 5y = 1$ fires because $\\gcd\\{3,5\\} = 1 \\mid 1$, and $6x + 4y = 10$ because $\\gcd\\{6,4\\} = 2 \\mid 10$. These exercise the whole chain — the abstract `Finset.gcd` criterion produces an existence proof backed by the parent's constructive solver.",
