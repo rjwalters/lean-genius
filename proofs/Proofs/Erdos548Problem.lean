@@ -253,16 +253,11 @@ def Erdos548Statement : Prop :=
 
 /- ## Part V: Known Results -/
 
-/-- **Trivial Bound**
-
-    n(k-1) + 1 edges suffice to contain any tree on k+1 vertices.
-    (Much weaker than the conjecture.)
--/
-axiom trivial_tree_bound (n k : ℕ) (hn : n ≥ k + 1)
-    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
-    (hG : edgeCount G ≥ n * (k - 1) + 1)
-    (T : SimpleGraph (Fin (k + 1))) (hT : IsTree T) :
-    ContainsSubgraph G T
+/- **Trivial Bound** — n(k-1) + 1 edges suffice to contain any tree on k+1
+   vertices (much weaker than the conjecture).  Formerly an `axiom` declared
+   here; now proved as the theorem `trivial_tree_bound` in Part XII below,
+   combining the Part XI min-degree extraction with a greedy leaf-at-a-time
+   tree embedding. -/
 
 /-- **Girth of a graph**: length of shortest cycle, or ∞ if acyclic.
     (v4.31 migration: `G.Walk` is indexed by vertices, not the carrier type;
@@ -485,13 +480,12 @@ The classical proof of the trivial bound has two halves:
    neighbours *inside `s`* — iteratively delete any vertex with fewer than
    `k` internal neighbours; each deletion destroys at most `k − 1` edges, so
    the edge surplus survives to a nonempty core.
-2. **Greedy tree embedding** (remaining): a set of internal minimum degree
-   `≥ k` contains every tree on `k + 1` vertices — embed the tree one leaf at
-   a time; at most `k` vertices are used, so a fresh neighbour always exists.
-   This needs a leaf-removal induction for trees (Mathlib:
+2. **Greedy tree embedding** (PROVED in Part XII): a set of internal minimum
+   degree `≥ k` contains every tree on `k + 1` vertices — embed the tree one
+   leaf at a time; at most `k` vertices are used, so a fresh neighbour always
+   exists.  Uses the leaf-removal induction for trees (Mathlib:
    `IsTree.exists_vert_degree_one_of_nontrivial`,
-   `Connected.induce_compl_singleton_of_degree_eq_one`) and is left for a
-   future session.
+   `Connected.induce_compl_singleton_of_degree_eq_one`, `IsAcyclic.induce`).
 
 The extraction half is stated over `edgesInside` (edges with both endpoints
 in a `Finset`), mirroring the sound internal-degree formulation used for the
@@ -619,6 +613,149 @@ theorem exists_min_degree_subset_of_edgeCount (G : SimpleGraph V)
     rw [edgesInside_univ, Finset.card_univ, ← edgeCount_eq_card_edgeFinset G]
     exact h)
   exact ⟨s, hne, hdeg⟩
+
+/- ## Part XII: Greedy tree embedding — `trivial_tree_bound` is a theorem
+
+The second half of the classical proof of the trivial bound: a vertex set
+`s` in which every vertex has at least `k` neighbours inside `s` contains
+every tree on at most `k + 1` vertices.  Induction on the vertex count:
+remove a leaf `x` (`IsTree.exists_vert_degree_one_of_nontrivial`), embed the
+smaller tree (`Connected.induce_compl_singleton_of_degree_eq_one` +
+`IsAcyclic.induce` show the rest is still a tree), then attach `x` to a
+fresh internal neighbour of the image of its unique support vertex — the
+image so far occupies at most `k` vertices, one of which is the attachment
+point itself, so at most `k − 1` of its `k` internal neighbours are taken.
+
+Combined with the Part XI extraction this discharges the former
+`trivial_tree_bound` axiom (Part V). -/
+
+/-- **Greedy tree embedding (induction core).**  Every tree `T` on at most
+`k + 1` vertices embeds into a vertex set `s` of internal minimum degree
+`≥ k`, with the whole image inside `s`. -/
+theorem exists_tree_embedding_into_min_degree_set
+    (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) (s : Finset V)
+    (hne : s.Nonempty)
+    (hdeg : ∀ v ∈ s, k ≤ (s.filter (fun u => G.Adj v u)).card) :
+    ∀ (m : ℕ) (W : Type) [Fintype W] [DecidableEq W] (T : SimpleGraph W),
+      Fintype.card W = m → m ≤ k + 1 → T.IsTree →
+      ∃ f : W → V, Function.Injective f ∧ (∀ w, f w ∈ s) ∧
+        ∀ a b, T.Adj a b → G.Adj (f a) (f b) := by
+  intro m
+  induction m with
+  | zero =>
+    intro W _ _ T hcardW _ hT
+    -- a tree is connected, hence nonempty — impossible on 0 vertices
+    haveI hempty : IsEmpty W := Fintype.card_eq_zero_iff.mp hcardW
+    exact absurd hT.connected.nonempty (not_nonempty_iff.mpr hempty)
+  | succ m ih =>
+    intro W _ _ T hcardW hm hT
+    rcases Nat.eq_zero_or_pos m with rfl | hmpos
+    · -- one vertex: map it anywhere in `s`; a tree has no loops
+      obtain ⟨v0, hv0⟩ := hne
+      haveI : Subsingleton W :=
+        Fintype.card_le_one_iff_subsingleton.mp (by omega)
+      refine ⟨fun _ => v0, fun a b _ => Subsingleton.elim a b,
+        fun _ => hv0, fun a b hab => ?_⟩
+      exact absurd (Subsingleton.elim a b ▸ hab) T.irrefl
+    · -- at least two vertices: remove a leaf `x` and recurse
+      haveI : Nontrivial W := Fintype.one_lt_card_iff_nontrivial.mp (by omega)
+      obtain ⟨x, hx⟩ := hT.exists_vert_degree_one_of_nontrivial
+      obtain ⟨y, hxy, hy⟩ := SimpleGraph.degree_eq_one_iff_existsUnique_adj.mp hx
+      -- the tree minus its leaf is a tree on `m` vertices
+      have hT' : (T.induce ({x}ᶜ : Set W)).IsTree :=
+        ⟨hT.connected.induce_compl_singleton_of_degree_eq_one hx,
+          hT.isAcyclic.induce _⟩
+      have hcard' : Fintype.card ↑({x}ᶜ : Set W) = m := by
+        rw [Fintype.card_compl_set, Set.card_singleton, hcardW]
+        omega
+      obtain ⟨f', hinj', hmem', hadj'⟩ :=
+        ih ↑({x}ᶜ : Set W) (T.induce ({x}ᶜ : Set W)) hcard' (by omega) hT'
+      -- the unique neighbour `y` of the leaf survives in the complement
+      have hyx : y ≠ x := hxy.ne'
+      have hyc : y ∈ ({x}ᶜ : Set W) := by simp [hyx]
+      -- a fresh internal neighbour of `f' ⟨y, _⟩` exists:
+      -- the image occupies `m ≤ k` vertices, one of them the attachment point
+      have hfy : f' ⟨y, hyc⟩ ∈ s := hmem' _
+      have hNcard : k ≤ (s.filter (fun u => G.Adj (f' ⟨y, hyc⟩) u)).card :=
+        hdeg _ hfy
+      have hinter : Finset.univ.image f' ∩
+            s.filter (fun u => G.Adj (f' ⟨y, hyc⟩) u) ⊆
+          (Finset.univ.image f').erase (f' ⟨y, hyc⟩) := by
+        intro z hz
+        rw [Finset.mem_inter] at hz
+        refine Finset.mem_erase.mpr ⟨?_, hz.1⟩
+        have hadjz : G.Adj (f' ⟨y, hyc⟩) z := (Finset.mem_filter.mp hz.2).2
+        exact fun h => G.irrefl (h ▸ hadjz)
+      have himgcard : (Finset.univ.image f').card = m := by
+        rw [Finset.card_image_of_injective _ hinj', Finset.card_univ, hcard']
+      have hfresh :
+          0 < ((s.filter (fun u => G.Adj (f' ⟨y, hyc⟩) u)) \
+            Finset.univ.image f').card := by
+        have h1 := Finset.card_sdiff_add_card_inter
+          (s.filter (fun u => G.Adj (f' ⟨y, hyc⟩) u)) (Finset.univ.image f')
+        have h2 := Finset.card_le_card hinter
+        rw [Finset.card_erase_of_mem
+          (Finset.mem_image_of_mem f' (Finset.mem_univ ⟨y, hyc⟩)), himgcard]
+          at h2
+        rw [Finset.inter_comm] at h1
+        omega
+      obtain ⟨z, hz⟩ := Finset.card_pos.mp hfresh
+      rw [Finset.mem_sdiff, Finset.mem_filter] at hz
+      obtain ⟨⟨hzs, hzadj⟩, hzimg⟩ := hz
+      -- assemble: send the leaf to the fresh vertex, keep the rest
+      refine ⟨fun w => if h : w = x then z else f' ⟨w, by simp [h]⟩,
+        ?_, ?_, ?_⟩
+      · -- injectivity
+        intro a b hab
+        by_cases ha : a = x <;> by_cases hb : b = x
+        · rw [ha, hb]
+        · simp only [dif_pos ha, dif_neg hb] at hab
+          refine absurd ?_ hzimg
+          rw [hab]
+          exact Finset.mem_image_of_mem f' (Finset.mem_univ _)
+        · simp only [dif_neg ha, dif_pos hb] at hab
+          refine absurd ?_ hzimg
+          rw [← hab]
+          exact Finset.mem_image_of_mem f' (Finset.mem_univ _)
+        · simp only [dif_neg ha, dif_neg hb] at hab
+          exact Subtype.mk_eq_mk.mp (hinj' hab)
+      · -- the image stays inside `s`
+        intro w
+        by_cases h : w = x
+        · simp only [dif_pos h]; exact hzs
+        · simp only [dif_neg h]; exact hmem' _
+      · -- adjacency is preserved
+        intro a b hab
+        by_cases ha : a = x <;> by_cases hb : b = x
+        · exact absurd (ha ▸ hb ▸ hab) T.irrefl
+        · -- the leaf's only edge goes to `y`; subtype proofs are irrelevant
+          have hby : b = y := hy b (ha ▸ hab)
+          subst hby
+          simp only [dif_pos ha, dif_neg hb]
+          exact hzadj.symm
+        · have hay : a = y := hy a (hb ▸ hab).symm
+          subst hay
+          simp only [dif_neg ha, dif_pos hb]
+          exact hzadj
+        · simp only [dif_neg ha, dif_neg hb]
+          exact hadj' ⟨a, by simp [ha]⟩ ⟨b, by simp [hb]⟩ hab
+
+/-- **Trivial Bound (now a theorem).**  `n·(k−1) + 1` edges force containment
+of every tree on `k + 1` vertices.  Extraction (Part XI) produces a nonempty
+vertex set of internal minimum degree `≥ k`; the greedy embedding above puts
+any `(k+1)`-vertex tree inside it.  (Formerly an `axiom` in Part V.) -/
+theorem trivial_tree_bound (n k : ℕ) (hn : n ≥ k + 1)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hG : edgeCount G ≥ n * (k - 1) + 1)
+    (T : SimpleGraph (Fin (k + 1))) (hT : IsTree T) :
+    ContainsSubgraph G T := by
+  obtain ⟨s, hne, hdeg⟩ := exists_min_degree_subset_of_edgeCount G k (by
+    rw [Fintype.card_fin, Nat.mul_comm]
+    exact hG)
+  obtain ⟨f, hinj, _, hadj⟩ :=
+    exists_tree_embedding_into_min_degree_set G k s hne hdeg (k + 1)
+      (Fin (k + 1)) T (Fintype.card_fin _) (le_refl _) hT
+  exact ⟨f, hinj, hadj⟩
 
 end Erdos548
 
