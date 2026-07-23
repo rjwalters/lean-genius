@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sperner-ndim-mathlib",
+      "title": "Module Overview: Sperner's Lemma via Abstract Cell Complex",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Proves Sperner's lemma for any abstract CellComplex satisfying adjacency axioms, again via the door-counting parity argument: defines panchromatic (IsFC) and door (isDoorAt) predicates, proves the fixed-point-free-involution parity lemma and the per-cell door-parity theorem, and concludes the Sperner Parity Theorem and Sperner's Lemma itself.",
+      "mathContext": "`CellComplex` adjacency axioms $\\Rightarrow$ `sperner_parity` $\\Rightarrow$ `sperner`."
+    },
+    {
       "id": "zmod2-helpers",
       "title": "ZMod 2 Parity Helpers",
       "startLine": 39,
