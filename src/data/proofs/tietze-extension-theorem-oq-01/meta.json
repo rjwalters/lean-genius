@@ -33,6 +33,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Tietze extension re-exports and Urysohn from Tietze",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "States Mathlib's abstract Tietze extension theorems being re-exported (hence the mathlib badge) and previews the file's genuine content: bounded and closed-embedding forms of Tietze, plus deriving Urysohn's lemma from Tietze — the converse of the usual proof direction — via a clopen boundary function on the union of two disjoint closed sets.",
+      "mathContext": "Normal $X$, closed $s\\subseteq X$, continuous $f:s\\to Y$ ($Y$ a TietzeExtension space) $\\Rightarrow\\exists g\\in C(X,Y),\\,g|_s=f$; specializing to $\\{0,1\\}$-valued $f$ on $s\\cup t$ recovers Urysohn's lemma from Tietze."
+    },
+    {
       "id": "extension-on-closed-set",
       "title": "Part (a): The Extension Theorem on a Closed Set",
       "startLine": 45,
