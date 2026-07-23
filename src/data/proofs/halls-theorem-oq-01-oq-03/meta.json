@@ -69,7 +69,8 @@
       "Regularity is exactly the hypothesis that makes Hall's condition free: the same k that bounds each vertex's degree from above bounds the back-degrees from above, and double counting turns 'degree out of s' = 'absorbed in N(s)' into the inequality #s ≤ #(N(s)).",
       "A single identity, sum_card_eq, yields both the balance |ι| = |α| (take B = univ) and Hall's condition (take B = s.biUnion t); choosing the summation range B is the only thing that changes.",
       "Counting incident pairs two ways is the whole proof: ∑ degrees over the left = ∑ back-degrees over the right, made rigorous by Finset.card_filter + Finset.sum_comm.",
-      "Balance plus injectivity is automatically bijectivity for finite types, so the SDR produced by the marriage theorem is already a perfect matching — no separate surjectivity argument is needed."
+      "Balance plus injectivity is automatically bijectivity for finite types, so the SDR produced by the marriage theorem is already a perfect matching — no separate surjectivity argument is needed.",
+      "IsBiregular itself carries no positivity constraint on k — the degenerate k = 0 case (no incidences at all) is a valid instance. Positivity (hk : 1 ≤ k) is threaded through as a separate hypothesis only where cancellation actually needs it (card_eq_of_regular, hall_condition_of_regular), keeping the structure's definition maximally general."
     ],
     "prerequisites": [
       "Hall's marriage theorem and systems of distinct representatives (Finset.all_card_le_biUnion_card_iff_exists_injective)",
@@ -90,10 +91,17 @@
   "sections": [
     {
       "id": "header-imports",
-      "title": "Module Header, Imports and the Biregularity Structure",
+      "title": "Module Header and Imports",
       "startLine": 1,
+      "endLine": 46,
+      "summary": "An expository docstring placing the regular case relative to Mathlib's conditional marriage theorem and previewing the four results, followed by the import, open, namespace, and Fintype/DecidableEq variable setup."
+    },
+    {
+      "id": "biregular-def",
+      "title": "The IsBiregular Structure",
+      "startLine": 48,
       "endLine": 56,
-      "summary": "Imports, an expository docstring placing the regular case relative to Mathlib's conditional marriage theorem, the Fintype/DecidableEq variable setup, and IsBiregular: the structure recording that every left vertex has degree k and every right vertex back-degree k."
+      "summary": "IsBiregular t k: the structure recording that every left vertex i has (t i).card = k (field left) and every right vertex a has exactly k left-neighbours (field right) — the hypothesis every downstream lemma is stated for."
     },
     {
       "id": "sum-card-eq",
