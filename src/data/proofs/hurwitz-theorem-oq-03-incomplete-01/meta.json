@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Hurwitz Square Identities Are Universal Ring Identities",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States what this file adds beyond the parent — Hurwitz's theorem gives bilinear n-square identities (x₁²+...+xₙ²)(y₁²+...+yₙ²) = z₁²+...+zₙ² for n ∈ {1,2,4,8} (the normed division algebras ℝ,ℂ,ℍ,𝕆); the parent proves existence over ℝ via the quaternion norm. This file shows the four identities are not special to ℝ: each zᵢ is an explicit integer-coefficient polynomial in the x's and y's, so the identity holds formally over every commutative ring, provable purely by `ring`. The arithmetic payoff: in any commutative ring, the set of elements expressible as a sum of 1, 2, 4, or 8 squares is closed under multiplication — over ℤ, the multiplicative engine behind the two-square and four-square theorems. 0 axioms beyond Lean's foundations, 0 sorries.",
+      "mathContext": "$(\\sum_{i=1}^n x_i^2)(\\sum_{i=1}^n y_i^2) = \\sum_{i=1}^n z_i^2$ for $n\\in\\{1,2,4,8\\}$, with each $z_i$ an integer-coefficient bilinear polynomial, valid over any \\texttt{CommRing}."
+    },
+    {
       "id": "definitions",
       "title": "Norm and the Four Bilinear Products",
       "summary": "normSq v = ∑ (v i)²; oneMul, twoMul, fourMul, eightMul over a generic CommRing R",
