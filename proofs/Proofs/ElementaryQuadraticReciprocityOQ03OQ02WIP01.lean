@@ -822,18 +822,18 @@ theorem eight_pow_eq_kronecker2 {F : Type*} [Field F] (p : ℕ) [Fact p.Prime]
   exact mul_left_cancel₀ hτne key
 
 /-- **A finite field whose order is `1 mod 8` contains an eighth root of unity**,
-    delivered as `ζ⁴ = −1`: the unit group is cyclic of order divisible by `8`,
-    so it has an element `ζ` of exact order `8`; then `(ζ⁴)² = 1` with `ζ⁴ ≠ 1`,
-    and in a field the only square root of `1` besides `1` is `−1`. -/
-theorem exists_pow_four_eq_neg_one {F : Type*} [Field F] [Fintype F]
-    (h8 : 8 ∣ Fintype.card F - 1) : ∃ ζ : F, ζ ^ 4 = -1 := by
-  classical
+    delivered as `ζ⁴ = −1`: the unit group is cyclic of order `Nat.card F − 1`
+    divisible by `8`, so it has an element `ζ` of exact order `8`; then
+    `(ζ⁴)² = 1` with `ζ⁴ ≠ 1`, and in a field the only square root of `1`
+    besides `1` is `−1`. -/
+theorem exists_pow_four_eq_neg_one {F : Type*} [Field F] [Finite F]
+    (h8 : 8 ∣ Nat.card F - 1) : ∃ ζ : F, ζ ^ 4 = -1 := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := Fˣ)
-  have hord : orderOf g = Fintype.card Fˣ := orderOf_eq_card_of_forall_mem_zpowers hg
-  have hcardu : Fintype.card Fˣ = Fintype.card F - 1 := Fintype.card_units
-  obtain ⟨k, hk⟩ : 8 ∣ Fintype.card Fˣ := by rw [hcardu]; exact h8
+  have hord : orderOf g = Nat.card Fˣ := orderOf_eq_card_of_forall_mem_zpowers hg
+  have hcardu : Nat.card Fˣ = Nat.card F - 1 := Nat.card_units F
+  obtain ⟨k, hk⟩ : 8 ∣ Nat.card Fˣ := by rw [hcardu]; exact h8
   have hk0 : 0 < k := by
-    have hpos : 0 < Fintype.card Fˣ := Fintype.card_pos
+    have hpos : 0 < Nat.card Fˣ := Nat.card_pos
     omega
   have hord8 : orderOf (g ^ k) = 8 := by
     rw [orderOf_pow, hord, hk, Nat.gcd_eq_right ⟨8, by ring⟩,
@@ -846,7 +846,7 @@ theorem exists_pow_four_eq_neg_one {F : Type*} [Field F] [Fintype F]
     rw [hord8] at hdvd
     norm_num at hdvd
   have hf8 : ((g ^ k : Fˣ) : F) ^ 8 = 1 := by
-    exact_mod_cast congrArg Units.val hu8
+    rw [← Units.val_pow_eq_pow_val, hu8, Units.val_one]
   have hf4ne : ((g ^ k : Fˣ) : F) ^ 4 ≠ 1 := by
     intro h
     exact hu4 (Units.ext (by push_cast; exact h))
@@ -863,7 +863,7 @@ theorem eight_dvd_sq_sub_one {p : ℕ} (hp : p % 2 = 1) : 8 ∣ p ^ 2 - 1 := by
   have h : p ^ 2 % 8 = 1 := by
     rw [Nat.pow_mod]
     have h8 : p % 8 = 1 ∨ p % 8 = 3 ∨ p % 8 = 5 ∨ p % 8 = 7 := by omega
-    rcases h8 with h | h | h | h <;> rw [h] <;> norm_num
+    rcases h8 with h | h | h | h <;> rw [h]
   obtain ⟨m, hm⟩ : ∃ m, p ^ 2 = m := ⟨p ^ 2, rfl⟩
   rw [hm] at h ⊢
   omega
@@ -906,10 +906,10 @@ theorem legendreSym_two_eq_kronecker2 (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     intro hdvd
     exact hp ((Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) Nat.prime_two).mp hdvd)
   have h2ne : ((2 : ℤ) : ZMod p) ≠ 0 := by
-    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
+    rw [ne_eq, ZMod.intCast_zmod_eq_zero_iff_dvd]
     exact fun h => hpndvd2 (by exact_mod_cast h)
   have h8ne : ((8 : ℤ) : ZMod p) ≠ 0 := by
-    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
+    rw [ne_eq, ZMod.intCast_zmod_eq_zero_iff_dvd]
     intro h
     have h8 : p ∣ 8 := by exact_mod_cast h
     exact hpndvd2 ((Fact.out : p.Prime).dvd_of_dvd_pow (show p ∣ 2 ^ 3 by simpa using h8))
