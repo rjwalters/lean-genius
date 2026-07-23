@@ -117,7 +117,7 @@
       "id": "classical-witnesses",
       "title": "Classical Witnesses and FFLLW Classical",
       "startLine": 380,
-      "endLine": 449,
+      "endLine": 475,
       "summary": "k3_egirth_eq_3 and k3_chromaticNumber_eq_3 (axioms). girth3_classical_witness: K₃ witnesses girth-3 case. ffllw_classical (axiom): classical lower bound — girth-g non-classically-robust graphs have χ ≥ g. Summary block: 15 proved theorems, 3 axioms, explanation of rank-based vs classical distinction.",
       "mathContext": "Three axioms: $\\text{egirth}(K_3) = 3$, $\\chi(K_3) = 3$, and the classical FFLLW theorem. $K_3$ witnesses girth-3 tightness: $\\chi(K_3) = 3 = \\text{girth}(K_3)$ and $K_3$ has no classical robust orientation. Axiomatizing $\\chi(K_3)$ avoids computing with Mathlib's `chromaticNumber` which uses $\\text{sInf}$ over all colorings."
     }
