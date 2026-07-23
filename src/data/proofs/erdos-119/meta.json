@@ -31,7 +31,7 @@
     "historicalContext": "Erdős posed this three-part problem about the maximum modulus $M_n = \\max_{|z|=1} |\\prod(z - z_i)|$ for sequences of points on the unit circle. The problem asks how large $M_n$ must be, with three progressively stronger formulations.\n\nPart 1 was solved by Georg Wagner in 1980 in the Bulletin of the London Mathematical Society ('On a problem of Erdős in Diophantine approximation'). Wagner proved the quantitative bound $M_n > (\\log n)^c$ infinitely often, implying $\\limsup M_n = \\infty$. His method connected the polynomial maximum to Diophantine approximation properties of the root angles.\n\nPart 2 was solved by József Beck in his influential 1991 paper in the Annals of Mathematics ('The modulus of polynomials with zeros on the unit circle: A problem of Erdős'). Beck established $\\max_{n \\leq N} M_n > N^c$ for some $c > 0$, a major strengthening from logarithmic to polynomial growth. His proof introduced sophisticated techniques combining harmonic analysis with discrepancy theory.\n\nPart 3 remains open and carries a $100 Erdős prize. It asks whether the partial sums $\\sum_{k \\leq n} M_k$ grow like $n^{1+c}$ — a question about cumulative behavior rather than individual peaks. This is fundamentally harder than Parts 1-2 because it requires that $M_k$ is large 'on average', not just infinitely often.",
     "problemStatement": "Given $z_1, \\ldots, z_n$ on the unit circle, let $M_n = \\max_{|z|=1} |\\prod_{i=1}^n(z - z_i)|$. Is it true that $\\sum_{k \\leq n} M_k > n^{1+c}$ for some $c > 0$ and all large $n$?",
     "text": "For points z_i on the unit circle, define M_n = max_{|z|=1} |∏(z - z_i)|. Parts 1-2 (limsup M_n = ∞, M_n > n^c i.o.) are solved. Part 3 (∑M_k > n^{1+c}) remains open.",
-    "proofStrategy": "The formalization defines `unitCirclePoly` as the finite product $\\prod_{i<n}(w - z_i)$ and `maxModulus` as the supremum of its norm over $|w| = 1$. All three parts are stated formally: Parts 1-2 (solved) as axioms referencing Wagner and Beck, Part 3 (open) as `ErdosProblem119` using `Filter.Eventually`. The implication chain Part 3 $\\implies$ Part 2 $\\implies$ Part 1 is stated, along with basic properties ($M_n \\geq 1$, base cases).",
+    "proofStrategy": "The formalization defines `unitCirclePoly` as the finite product $\\prod_{i<n}(w - z_i)$ and `maxModulus` as the supremum of its norm over $|w| = 1$. Part 3 (open) is formalized as `ErdosProblem119` using `Filter.Eventually`. Parts 1-2 (solved by Wagner 1980 and Beck 1991), the implication chain Part 3 $\\implies$ Part 2 $\\implies$ Part 1, and the properties $M_n \\geq 1$ / nonnegativity are documented only in prose comments in the source — none are formalized as an axiom, theorem, or definition. The only proved lemmas are the base cases $p_0 = 1$ and $p_1(w) = w - z_0$.",
     "keyInsights": [
       "The three parts form a strict hierarchy: Part 3 ($\\sum M_k > n^{1+c}$) $\\implies$ Part 2 ($M_n > n^c$ i.o.) $\\implies$ Part 1 ($\\limsup M_n = \\infty$). Each implication is strict — Part 2 does not imply Part 3.",
       "The jump from Wagner's logarithmic bound $(\\log n)^c$ (1980) to Beck's polynomial bound $n^c$ (1991) required 11 years and fundamentally new techniques from harmonic analysis, illustrating how difficult even the 'easier' parts were.",
@@ -74,16 +74,16 @@
       "title": "Part 1: $\\limsup M_n = \\infty$ (Wagner 1980)",
       "startLine": 43,
       "endLine": 55,
-      "summary": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\log n)^c$ infinitely often.",
-      "mathContext": "States $\\limsup M_n = \\top$ in EReal. Wagner proved $M_n > (\\$\\log n$)^c$ infinitely often."
+      "summary": "Documents in a comment (not a formal declaration) that Wagner (1980) proved $M_n > (\\log n)^c$ infinitely often, implying $\\limsup M_n = \\infty$; no axiom or theorem states this in Lean.",
+      "mathContext": "Documents in a comment (not a formal declaration) that Wagner (1980) proved $M_n > (\\log n)^c$ infinitely often; no axiom or theorem states this in Lean."
     },
     {
       "id": "part2",
       "title": "Part 2: $M_n > N^c$ (Beck 1991)",
       "startLine": 56,
       "endLine": 69,
-      "summary": "States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis.",
-      "mathContext": "Mathematical content: States $\\exists c > 0$ with $\\max_{n \\leq N} M_n > N^c$. Solved by Beck with harmonic analysis."
+      "summary": "Documents in a comment (not a formal declaration) that Beck (1991) proved $\\max_{n \\leq N} M_n > N^c$; no axiom or theorem states this in Lean.",
+      "mathContext": "Documents in a comment (not a formal declaration) that Beck (1991) proved $\\max_{n \\leq N} M_n > N^c$; no axiom or theorem states this in Lean."
     },
     {
       "id": "part3",
@@ -98,12 +98,12 @@
       "title": "Basic Properties",
       "startLine": 82,
       "endLine": 97,
-      "summary": "Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$.",
-      "mathContext": "Verified: Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) and states $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$."
+      "summary": "Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) as theorems. $M_n \\geq 1$ for $n \\geq 1$ and nonnegativity of $M_n$ are only noted in comments, not formally stated.",
+      "mathContext": "Verified: Proves base cases ($p_0 = 1$, $p_1 = w - z_0$) as theorems. $M_n \\geq 1$ and nonnegativity are only noted in comments, not formally stated."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures all three parts of Erdős Problem #119 in 116 lines of Lean 4, encoding the maximum modulus $M_n$ of unit-circle polynomials, the solved Parts 1-2 (Wagner 1980, Beck 1991) as axioms, and the open Part 3 using `Filter.Eventually`. The implication chain and basic properties are included. Zero sorries.",
+    "summary": "This formalization defines the maximum modulus $M_n$ of unit-circle polynomials and formalizes the open Part 3 as `ErdosProblem119` using `Filter.Eventually`, with zero axioms and zero sorries. The solved Parts 1-2 (Wagner 1980, Beck 1991), the implication chain, and the properties $M_n \\geq 1$ / nonnegativity are documented only in prose comments, not formalized as axioms, theorems, or definitions. Only two base-case lemmas are proved.",
     "implications": "**Theoretical Significance**: Resolution of Part 3 would establish that the cumulative polynomial extrema grow super-linearly for ANY root configuration on the unit circle.\n\nThis would have deep implications for Diophantine approximation (quantifying how well rational angles approximate irrational ones) and potential theory (relating energy functionals on the circle to polynomial extrema). Beck's technique for Part 2 may serve as a starting point.",
     "openQuestions": [
       "Does $\\sum_{k \\leq n} M_k > n^{1+c}$ hold for some $c > 0$ and all large $n$? This is Part 3, Erdős's $100 prize problem.",
