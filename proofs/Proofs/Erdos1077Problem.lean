@@ -35,7 +35,7 @@ showing the correct answer is Θ(n^α) vertices.
 ## Status
 - [x] Problem statement formalized
 - [x] D-balanced property defined
-- [x] Correct answer stated as axiom
+- [x] Correct answer stated in documentation (no axiom — 0 axioms in this file)
 - [ ] Full constructive proof
 
 ## References
