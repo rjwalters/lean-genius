@@ -59,6 +59,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-four-squares-waring-g2", "title": "Module Header: Waring's Problem for Squares — g(2) = 4", "startLine": 1, "endLine": 38, "summary": "States Waring's problem (the smallest g(k) such that every natural number is a sum of at most g(k) k-th powers) and proves g(2)=4: the upper bound via Lagrange's four-square theorem, the lower bound via 7 requiring exactly 4 squares, a general 4^a(8b+7) descent argument, a computable classification of how many squares each number needs, and that infinitely many numbers need exactly 4. Gives the historical timeline: Lagrange (1770) proved g(2)≤4, Legendre (1798) proved g(2)≥4, Hilbert (1909) solved Waring's problem in general.", "mathContext": "Waring's constant $g(2)=4$: every natural number is a sum of at most 4 squares (Lagrange, 1770) and this is sharp since $7 = 2^2+1^2+1^2+1^2$ needs all four, with the general obstruction $4^a(8b+7)$ never a sum of three squares (Legendre, 1798)."},
     {
       "id": "part1-upper-bound",
       "title": "Part 1: Upper Bound — Lagrange's Theorem",
