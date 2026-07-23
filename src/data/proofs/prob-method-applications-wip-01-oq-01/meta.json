@@ -93,27 +93,43 @@
   "sections": [
     {
       "id": "framing",
-      "title": "Open Question and the Abstract Avoidance Engine",
+      "title": "Open Question: the Abstract Avoidance Engine's Unproven Claim",
       "startLine": 1,
-      "endLine": 58,
+      "endLine": 38,
       "mathContext": "$|\\text{cliques}|\\cdot 2^{|E|-m+1} < 2^{|E|} \\ \\Rightarrow\\ \\exists S,\\ \\forall K,\\ \\neg(K\\subseteq S \\vee K\\cap S = \\varnothing)$",
-      "summary": "Module docstring, imports (the companion ProbMethodApplicationsWIP and RamseyFirstMoment), and the statement of ramsey_avoidance_Kn. Records the open question — instantiate the abstract engine ProbMethod.Core.ramsey_avoidance to K_n and recover Erdős's R(k,k) > n — and explains that the companion file proves the abstract union-bound engine over an arbitrary edge set E but only asserts (never carries out) the K_n instantiation this file supplies. Also notes the omitted-as-redundant 2 ≤ k side condition."
+      "summary": "Module docstring. Records the open question — instantiate the abstract engine ProbMethod.Core.ramsey_avoidance to K_n and recover Erdős's R(k,k) > n — and explains that the companion file proves the abstract union-bound engine over an arbitrary edge set E but only asserts (never carries out) the K_n instantiation this file supplies."
     },
     {
-      "id": "instantiation",
-      "title": "Instantiating the Abstract Engine over K_n",
-      "startLine": 59,
+      "id": "imports-and-setup",
+      "title": "Imports, Namespace, and the Ambient Variables",
+      "startLine": 39,
+      "endLine": 48,
+      "mathContext": "$n, k : \\mathbb{N}$",
+      "summary": "Imports the companion ProbMethodApplicationsWIP (the abstract engine) and RamseyFirstMoment (the concrete edge/clique model), opens Finset, and declares the ProbMethod.ApplicationsWIPOQ01 namespace with the ambient implicit variables n k : ℕ shared by both theorems below."
+    },
+    {
+      "id": "instantiation-setup",
+      "title": "Instantiating the Engine: the Block Family and Counting Hypothesis",
+      "startLine": 49,
+      "endLine": 102,
+      "mathContext": "$2\\binom{n}{k} < 2^{\\binom{k}{2}} \\ \\Rightarrow\\ \\text{blocks.card}\\cdot 2^{\\binom{n}{2}-\\binom{k}{2}+1} < 2^{\\binom{n}{2}}$",
+      "summary": "States ramsey_avoidance_Kn and sets up its instantiation of the abstract engine: E = the C(n,2) edges of K_n, blocks = the induced clique-edge sets EdgesIn n K of the vertex k-subsets. Verifies the engine's uniform block-size hypothesis (each block has exactly C(k,2) edges) and block-count bound (at most C(n,k) blocks via Finset.card_image_le, no injectivity needed), then reduces the abstract counting inequality to the classical Erdős criterion 2·C(n,k) < 2^{C(k,2)} by splitting 2^{C(n,2)} = 2^{C(k,2)}·2^{C(n,2)−C(k,2)}."
+    },
+    {
+      "id": "invoke-and-translate",
+      "title": "Invoking the Engine and Translating to an Edge Colouring",
+      "startLine": 103,
       "endLine": 125,
-      "mathContext": "$2\\binom{n}{k} < 2^{\\binom{k}{2}} \\ \\Rightarrow\\ R(k,k) > n$",
-      "summary": "ramsey_avoidance_Kn sets E = the C(n,2) edges of K_n and blocks = the induced clique-edge sets EdgesIn n K of the vertex k-subsets. It verifies the engine's uniform block-size (C(k,2)) and block-count (≤ C(n,k)) hypotheses, reduces the abstract counting inequality to 2·C(n,k) < 2^{C(k,2)}, invokes ProbMethod.Core.ramsey_avoidance, and translates the avoiding edge set S into the colouring c e = decide (e ∈ S) to obtain a K_n colouring with no monochromatic K_k."
+      "mathContext": "$c(e) := [\\,e \\in S\\,],\\qquad \\neg(B \\subseteq S \\lor B \\cap S = \\varnothing) \\Rightarrow K \\text{ is not monochromatic}$",
+      "summary": "Applies ProbMethod.Core.ramsey_avoidance to obtain the avoiding set S : Finset E, then translates it into an honest edge colouring c e = decide (e ∈ S). For any K-clique block, extracts a false-coloured edge (Finset.not_subset) and a true-coloured edge (Finset.not_disjoint_iff) and shows they cannot share a colour, completing the proof that no K_k is monochromatic — exactly RamseyFirstMoment.first_moment_ramsey's conclusion, now as a corollary of the abstract engine."
     },
     {
       "id": "witness",
       "title": "Concrete Witness R(4,4) > 6",
       "startLine": 127,
-      "endLine": 133,
+      "endLine": 135,
       "mathContext": "$2\\binom{6}{4} = 30 < 64 = 2^{\\binom{4}{2}}$",
-      "summary": "ramsey_four_gt_six_via_avoidance instantiates ramsey_avoidance_Kn at n = 6, k = 4, certifying via the abstract engine that there is a 2-colouring of K_6 with no monochromatic K_4 — the standard R(4,4) > 6 witness, here produced without the bespoke count."
+      "summary": "ramsey_four_gt_six_via_avoidance instantiates ramsey_avoidance_Kn at n = 6, k = 4, certifying via the abstract engine that there is a 2-colouring of K_6 with no monochromatic K_4 — the standard R(4,4) > 6 witness, here produced without the bespoke count. Closes the ProbMethod.ApplicationsWIPOQ01 namespace."
     }
   ],
   "conclusion": {
