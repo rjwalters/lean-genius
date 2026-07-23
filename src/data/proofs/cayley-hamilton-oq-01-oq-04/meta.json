@@ -136,6 +136,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Primary Decomposition from the Minimal Polynomial", "startLine": 1, "endLine": 62, "summary": "Answers the parent file's open question of extending minimal-polynomial reduction to full primary decomposition: given a pairwise-coprime factorization of the minimal polynomial mu_T = prod q_i^{e_i}, the vector space splits as an internal direct sum of the T-invariant generalized eigenspaces V = direct-sum ker(q_i^{e_i}(T)) \u2014 the classical Primary Decomposition Theorem underlying rational canonical and Jordan form. Lists the five main lemmas building up from binary coprime-kernel lemmas via Finset induction to the headline theorem, fully machine-verified with 0 sorries and 0 axioms.", "mathContext": "The argument lifts Mathlib's binary coprime-kernel lemmas ($\\mathrm{sup\\_ker\\_aeval\\_eq\\_ker\\_aeval\\_mul\\_of\\_coprime}$, $\\mathrm{disjoint\\_ker\\_aeval\\_of\\_isCoprime}$) to an arbitrary finite pairwise-coprime family via Finset induction, giving the internal direct sum $V = \\bigoplus_i \\ker(q_i^{e_i}(T))$."},
     {
       "id": "invariance",
       "title": "T-Invariance of the Primary Components",
