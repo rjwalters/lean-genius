@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: even-cycle parity layer proved (2026-07-22). hasMinDegree_three_exists_even_cycle + ContainsCycleLength restatement (even k>=4), axiom-free, via classical longest-path parity argument (three cycles a+1, b+1, b-a+2). This is the parity part of the necessary condition of Problem 64 (2^k-cycles are even), strictly between cycle existence (done) and the open power-of-two core (blocked, Liu-Montgomery scale). Maximal-path engine (Nat.sSup_mem + IsPath.length_lt) now available in-file. 2026-07-22b: Dirac-type rung added — min degree d>=2 forces a cycle of length >= d+1 (hasMinDegree_exists_cycle_length_ge), completing the elementary layer (existence + bridge + parity + quantitative length).",
+    "progressSummary": "PROGRESS: cycle-spectrum counting rung proved (2026-07-23). hasMinDegree_card_cycle_lengths + ContainsCycleLength restatement: min degree d>=2 forces >= d-1 DISTINCT cycle lengths (Finset of lengths, injective +1 image of trapped indices >= 2; at most one index equals 1). Reuses the maximal-path engine; new counting content beyond the Dirac rung (which only extracts the max index). Elementary layer: existence + bridge + parity + Dirac + spectrum count. Open core unchanged: whether the spectrum of a min-degree-3 graph must meet {2^k, k>=2} (Liu-Montgomery scale).",
     "builtItems": [
       "connected_hasMinDegree_two_not_isAcyclic (Erdos64Problem.lean): nontrivial connected graph, HasMinDegree 2 => ¬IsAcyclic. Axiom-free.",
       "connected_hasMinDegree_two_exists_cycle (Erdos64Problem.lean): same hyp => ∃ v (c : Walk v v), c.IsCycle. Axiom-free.",
@@ -48,7 +48,9 @@
       "hasMinDegree_three_exists_even_cycle in Erdos64Problem.lean: min-degree >=3 nonempty finite graph has an even-length Walk.IsCycle (0-axiom)",
       "hasMinDegree_three_exists_even_containsCycleLength in Erdos64Problem.lean: even length k >= 4 in the ContainsCycleLength predicate",
       "hasMinDegree_exists_cycle_length_ge (Dirac-type: min-deg d>=2 => cycle length >= d+1) in Erdos64Problem.lean",
-      "hasMinDegree_containsCycleLength_ge (ContainsCycleLength restatement) in Erdos64Problem.lean"
+      "hasMinDegree_containsCycleLength_ge (ContainsCycleLength restatement) in Erdos64Problem.lean",
+      "hasMinDegree_card_cycle_lengths (Erdos64Problem.lean): min-deg d>=2 => Finset S of cycle lengths, |S| >= d-1, each realized by an explicit IsCycle witness; axiom-free",
+      "hasMinDegree_card_containsCycleLength (Erdos64Problem.lean): same spectrum bound in the ContainsCycleLength predicate the conjecture uses"
     ],
     "insights": [
       "A finite nontrivial TREE has a leaf (degree-1 vertex): Mathlib SimpleGraph.IsTree.minDegree_eq_one_of_nontrivial. Hence a connected graph with min degree >= 2 cannot be a tree, so cannot be acyclic — the elementary base fact under Erdos #64.",
@@ -58,7 +60,8 @@
       "hasMinDegree_two/three_containsCycleLength: min-degree>=2 (resp. 3) finite graph contains a cycle of some CONCRETE length k>=3 in the ContainsCycleLength encoding. This restates the elementary precondition of Problem 64 in the exact predicate the conjecture uses; the open content is that k can be chosen a power of two 2^m.",
       "Parity middle layer between cycle-existence and the deep 2^k core: min-degree-3 forces an EVEN cycle, via the classical longest-path argument. Take a maximum-length path from v0; maximality traps all >=3 neighbours of v0 on the path at distinct positive indices; the two largest indices a<b (a>=2) give three cycles of lengths a+1, b+1, b-a+2 summing to 2b+4 (even), so one is even.",
       "Lean mechanism for maximal paths: Nat.sSup_mem on {n | exists path of length n} (nonempty via Walk.nil, BddAbove via IsPath.length_lt), then le_csSup for maximality. No dedicated Mathlib longest-path API exists.",
-      "Key Mathlib toolkit for index arithmetic on paths: Walk.getVert_length_takeUntil (vertex at index = takeUntil length), Walk.length_takeUntil (= support.idxOf), Walk.dropUntil_eq_drop + Walk.drop_getVert + Walk.getVert_copy (getVert of suffix), IsPath.getVert_injOn (injectivity on indices <= length), IsPath.eq_snd_of_mem_edges (an edge of a path through its start is the first edge - closes the takeUntil prefix into a cycle)."
+      "Key Mathlib toolkit for index arithmetic on paths: Walk.getVert_length_takeUntil (vertex at index = takeUntil length), Walk.length_takeUntil (= support.idxOf), Walk.dropUntil_eq_drop + Walk.drop_getVert + Walk.getVert_copy (getVert of suffix), IsPath.getVert_injOn (injectivity on indices <= length), IsPath.eq_snd_of_mem_edges (an edge of a path through its start is the first edge - closes the takeUntil prefix into a cycle).",
+      "Cycle-spectrum counting rung: the maximal-path engine yields a cycle at EVERY trapped neighbour index >= 2, and distinct indices give distinct lengths — so min degree d forces >= d-1 distinct cycle lengths. Elementary end of the spectrum view: Liu-Montgomery resolves large min-degree via spectrum density hitting a power of two."
     ],
     "mathlibGaps": [
       "No general (disconnected/forest) leaf lemma: Mathlib only has IsTree.minDegree_eq_one_of_nontrivial (connected). A forest edge-count bound #edges <= n-1 is also absent (only IsTree.card_edgeFinset).",

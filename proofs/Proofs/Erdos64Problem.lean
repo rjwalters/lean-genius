@@ -685,6 +685,141 @@ theorem hasMinDegree_containsCycleLength_ge
   obtain ⟨v, c, hc, hlen⟩ := hasMinDegree_exists_cycle_length_ge G hd hdeg
   exact ⟨c.length, hlen, isCycle_containsCycleLength G c hc⟩
 
+/- ## Cycle-Spectrum Counting
+
+The longest-path engine yields more than a single long cycle: every neighbour
+of the start vertex `v₀` trapped at an index `≥ 2` closes into its own cycle,
+and distinct indices give cycles of **distinct lengths**.  Since at most one of
+the `≥ d` trapped indices equals `1`, minimum degree `d` forces at least
+`d - 1` distinct cycle lengths.
+
+This is the elementary end of the *cycle spectrum* view of Problem 64: the
+Liu–Montgomery resolution for large minimum degree works by showing the cycle
+spectrum is dense enough to hit a power of two.  The rung below is the linear
+(in `d`) spectrum-size guarantee; the open core is whether the spectrum of a
+min-degree-`3` graph must meet `{2^k : k ≥ 2}`.
+-/
+
+/-- **Cycle-spectrum rung: minimum degree `d ≥ 2` forces at least `d - 1` distinct
+cycle lengths.**  Each neighbour of the start of a maximum-length path sits at a
+distinct positive index; closing the prefix at any index `≥ 2` (all but at most
+one of them) gives a cycle whose length is that index plus one, so distinct
+indices produce distinct lengths. -/
+theorem hasMinDegree_card_cycle_lengths
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ} (hd : 2 ≤ d)
+    (hdeg : HasMinDegree G d) :
+    ∃ S : Finset ℕ, d - 1 ≤ S.card ∧
+      ∀ k ∈ S, 3 ≤ k ∧ ∃ (v : W) (c : G.Walk v v), c.IsCycle ∧ c.length = k := by
+  classical
+  -- a path of maximum length (the engine of the two preceding sections)
+  have hne : ({n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n}).Nonempty :=
+    ⟨0, Classical.arbitrary W, Classical.arbitrary W, Walk.nil, Walk.IsPath.nil, rfl⟩
+  have hbdd : BddAbove {n : ℕ | ∃ (a : W) (b : W) (q : G.Walk a b), q.IsPath ∧ q.length = n} := by
+    refine ⟨Fintype.card W, ?_⟩
+    rintro n ⟨a, b, q, hq, rfl⟩
+    exact hq.length_lt.le
+  obtain ⟨v₀, u, p, hp, hplen⟩ := Nat.sSup_mem hne hbdd
+  have hmax : ∀ (a b : W) (q : G.Walk a b), q.IsPath → q.length ≤ p.length := by
+    intro a b q hq
+    rw [hplen]
+    exact le_csSup hbdd ⟨a, b, q, hq, rfl⟩
+  -- maximality traps every neighbour of `v₀` on `p`
+  have hnbr : ∀ w : W, G.Adj v₀ w → w ∈ p.support := by
+    intro w hw
+    by_contra hws
+    have hcons : (Walk.cons hw.symm p).IsPath := (Walk.cons_isPath_iff _ _).mpr ⟨hp, hws⟩
+    have := hmax _ _ _ hcons
+    rw [Walk.length_cons] at this
+    omega
+  set idx : W → ℕ := fun w => if hw : w ∈ p.support then (p.takeUntil w hw).length else 0
+    with hidx
+  have hidx_get : ∀ w (hw : w ∈ p.support), p.getVert (idx w) = w := by
+    intro w hw
+    simp only [hidx, dif_pos hw]
+    exact Walk.getVert_length_takeUntil hw
+  set T : Finset ℕ := (G.neighborFinset v₀).image idx with hT
+  have hTcard : d ≤ T.card := by
+    rw [hT, Finset.card_image_of_injOn]
+    · exact hdeg v₀
+    · intro w₁ hw₁ w₂ hw₂ hww
+      have h₁ : G.Adj v₀ w₁ := (G.mem_neighborFinset v₀ w₁).mp (Finset.mem_coe.mp hw₁)
+      have h₂ : G.Adj v₀ w₂ := (G.mem_neighborFinset v₀ w₂).mp (Finset.mem_coe.mp hw₂)
+      calc w₁ = p.getVert (idx w₁) := (hidx_get w₁ (hnbr _ h₁)).symm
+        _ = p.getVert (idx w₂) := by rw [hww]
+        _ = w₂ := hidx_get w₂ (hnbr _ h₂)
+  have hpos : ∀ n ∈ T, 1 ≤ n := by
+    intro n hn
+    rw [hT] at hn
+    obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp hn
+    have hadj : G.Adj v₀ w := (G.mem_neighborFinset v₀ w).mp hw
+    rcases Nat.eq_zero_or_pos (idx w) with h0 | h1
+    · exfalso
+      have hgw := hidx_get w (hnbr _ hadj)
+      rw [h0, Walk.getVert_zero] at hgw
+      exact hadj.ne hgw
+    · exact h1
+  -- at most one trapped index equals `1`, so `≥ d - 1` indices are `≥ 2`
+  have hsub2 : T ⊆ insert 1 (T.filter (fun n => 2 ≤ n)) := by
+    intro n hn
+    have h1 := hpos n hn
+    rcases Nat.lt_or_ge n 2 with h | h
+    · have hn1 : n = 1 := by omega
+      simp [hn1]
+    · exact Finset.mem_insert_of_mem (Finset.mem_filter.mpr ⟨hn, h⟩)
+  have hcard2 : d ≤ (T.filter (fun n => 2 ≤ n)).card + 1 := by
+    have hle := Finset.card_le_card hsub2
+    have hins := Finset.card_insert_le 1 (T.filter (fun n => 2 ≤ n))
+    omega
+  -- the spectrum: each surviving index `n` contributes the length `n + 1`
+  refine ⟨(T.filter (fun n => 2 ≤ n)).image (· + 1), ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ (add_left_injective 1)]
+    omega
+  · intro k hk
+    obtain ⟨n, hnmem, rfl⟩ := Finset.mem_image.mp hk
+    obtain ⟨hnT, hn2⟩ := Finset.mem_filter.mp hnmem
+    refine ⟨by omega, ?_⟩
+    -- the neighbour `y` sitting at index `n`
+    rw [hT] at hnT
+    obtain ⟨y, hyN, hyn⟩ := Finset.mem_image.mp hnT
+    have hay : G.Adj v₀ y := (G.mem_neighborFinset v₀ y).mp hyN
+    have hys : y ∈ p.support := hnbr y hay
+    have hyn' : (p.takeUntil y hys).length = n := by
+      rw [← hyn]; simp only [hidx, dif_pos hys]
+    -- close the prefix at `y` through the edge `y — v₀` (needs only `2 ≤ n`)
+    refine ⟨v₀, Walk.cons hay (p.takeUntil y hys).reverse, ?_, ?_⟩
+    · rw [Walk.cons_isCycle_iff]
+      refine ⟨(hp.takeUntil hys).reverse, ?_⟩
+      intro hmem
+      rw [Walk.edges_reverse, List.mem_reverse] at hmem
+      -- an edge of a path through its start must be the first edge …
+      have hsnd : y = (p.takeUntil y hys).snd := (hp.takeUntil hys).eq_snd_of_mem_edges hmem
+      -- … but `y` is the endpoint of the prefix, at index `n ≥ 2`
+      have h1 : (p.takeUntil y hys).getVert 1 =
+          (p.takeUntil y hys).getVert (p.takeUntil y hys).length := by
+        rw [Walk.getVert_length]
+        exact hsnd.symm
+      have := (hp.takeUntil hys).getVert_injOn
+        (by simp only [Set.mem_setOf_eq]; omega)
+        (by simp only [Set.mem_setOf_eq]; omega) h1
+      omega
+    · rw [Walk.length_cons, Walk.length_reverse, hyn']
+
+/-- Restatement in the `ContainsCycleLength` predicate: minimum degree `d ≥ 2`
+yields at least `d - 1` distinct realized cycle lengths, each `≥ 3`.  Problem 64's
+open core asks whether, at minimum degree `3`, this spectrum must contain a power
+of two `2^k` with `k ≥ 2`; Liu–Montgomery answer YES once the minimum degree
+(hence, by this rung, the spectrum) is large enough. -/
+theorem hasMinDegree_card_containsCycleLength
+    {W : Type*} [Fintype W] [DecidableEq W] [Nonempty W]
+    (G : SimpleGraph W) [DecidableRel G.Adj] {d : ℕ} (hd : 2 ≤ d)
+    (hdeg : HasMinDegree G d) :
+    ∃ S : Finset ℕ, d - 1 ≤ S.card ∧ ∀ k ∈ S, 3 ≤ k ∧ ContainsCycleLength G k := by
+  obtain ⟨S, hcard, hS⟩ := hasMinDegree_card_cycle_lengths G hd hdeg
+  refine ⟨S, hcard, fun k hk => ?_⟩
+  obtain ⟨h3, v, c, hc, hlen⟩ := hS k hk
+  exact ⟨h3, hlen ▸ isCycle_containsCycleLength G c hc⟩
+
 /- ## Known Cycle Results -/
 
 /- 
