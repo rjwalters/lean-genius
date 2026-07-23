@@ -50,6 +50,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1020-oq-02",
+      "title": "Problem Statement and Background",
+      "summary": "Frames open question 2 of the Erd\u0151s Matching Conjecture: pinning down (without resolving) the monotone transition between the small-$n$ regime (Frankl) and large-$n$ regime (Huang\u2013Loh\u2013Sudakov) where the conjectured extremal value switches between two competing constructions.",
+      "startLine": 1,
+      "endLine": 53,
+      "mathContext": "$\\mathrm{conjecturedValue} = \\max(\\binom{rk-1}{r}, \\binom{n}{r} - \\binom{n-k+1}{r})$; the file proves this expression is monotone nondecreasing in $n$ via a Pascal-telescoping identity on the second construction."
+    },
+    {
       "id": "constructions",
       "title": "The Two Extremal Constructions",
       "startLine": 54,
