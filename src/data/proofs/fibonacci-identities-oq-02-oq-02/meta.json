@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Import, and Namespace",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring stating the open question (does divisibility extend to general Uₙ(P,Q)?), the forward-divisibility answer for all P,Q, the index-addition law it rests on, and the honesty note that the converse is out of scope. Imports Mathlib and opens the FibonacciIdentitiesOQ02OQ02 namespace.",
+      "mathContext": "$U_0=0,\\ U_1=1,\\ U_{n+2}=P\\,U_{n+1}-Q\\,U_n$; the goal is $m\\mid n \\Rightarrow U_m\\mid U_n$ for every $P,Q\\in\\mathbb{Z}$."
+    },
+    {
       "id": "definition",
       "title": "The First-Kind Lucas Sequence",
       "startLine": 52,
