@@ -121,5 +121,27 @@
       "induction",
       "inequalities"
     ]
+  },
+  {
+    "id": "ann-e396oq04oq01-sanity",
+    "proofId": "erdos-396-oq-04-oq-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 187
+    },
+    "type": "context",
+    "title": "Sanity checks",
+    "content": "Three closed-form numeric checks anchor the abstract results to concrete Catalan numbers: `catalanRatio 0 = 1` reflects `catalan 1 = catalan 0` (both equal 1); `catalanRatio 2 = 5/2` reflects `catalan 3 = (5/2)·catalan 2`, i.e. $5 = \\frac{5}{2}\\cdot 2$; and `catalan 3 < 4^3` (i.e. $5 < 64$) instantiates `catalan_lt_four_pow` at $n = 3$, showing the bound is far from tight for small $n$ even though the ratio itself is already close to its limiting value.",
+    "mathContext": "$r(0) = 1,\\ r(2) = \\tfrac52,\\ \\mathrm{catalan}\\,3 = 5 < 4^3 = 64$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "numeric verification",
+      "catalanRatio",
+      "growth bound"
+    ],
+    "prerequisites": [
+      "arithmetic"
+    ]
   }
 ]
