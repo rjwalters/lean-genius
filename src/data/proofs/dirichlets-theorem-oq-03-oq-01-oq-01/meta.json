@@ -48,7 +48,8 @@
       "The lower bound L* ≥ 1 is NOT analytic: it rests entirely on the trivial inequality q ≤ p for primes p ≡ 1 (mod q), not on Linnik's theorem, zero-free regions, or Bertrand's postulate. The parent's comment invoking a 'Bertrand variant' overstates what is needed.",
       "The argument is a clean instance of a general principle: a growth function dominating an unbounded base of size ≥ 1 cannot have a sub-linear (exponent < 1) power-law upper bound. Stated abstractly (admissible_ge_one), it is independent of number theory.",
       "The contradiction is localized to a single index i where the base exceeds the explicit threshold c^(1/(1-L)); the threshold identity (c^(1/(1-L)))^(1-L) = c is the only rpow computation required.",
-      "Keeping the growth function abstract and taking nonemptiness of the admissible set as a hypothesis makes the whole file axiom-free: the deep Dirichlet/Linnik existence input survives only as the explicit selector hypothesis hP and the nonemptiness hypothesis hne."
+      "Keeping the growth function abstract and taking nonemptiness of the admissible set as a hypothesis makes the whole file axiom-free: the deep Dirichlet/Linnik existence input survives only as the explicit selector hypothesis hP and the nonemptiness hypothesis hne.",
+      "The existence input is confined to exactly one place: admissible_ge_one proves 1 ≤ L for every admissible L using only domination and unboundedness, with no existence assumption; only criticalExponent_ge_one, which takes an infimum, additionally needs the admissible set to be nonempty (hne). This isolates precisely where a genuine existence theorem — Linnik's, or in the a = 1 case Dirichlet's — is load-bearing"
     ],
     "prerequisites": [
       "Real.rpow: rpow_sub, rpow_mul, rpow_lt_rpow, rpow_pos_of_pos",
@@ -116,11 +117,20 @@
       "mathContext": "The Linnik constant is the critical exponent $L$ with $p(a,q) \\le c\\, q^L$; this file proves $L \\ge 1$ from elementary domination."
     },
     {
-      "id": "abstract-critical-exponent",
-      "title": "The Abstract Critical Exponent and its Lower Bound",
+      "id": "admissible-lower-bound",
+      "title": "Definitions and the Core Contradiction Argument",
       "startLine": 41,
+      "endLine": 86,
+      "summary": "Definitions of `admissible f b` and `criticalExponent f b`, then `admissible_ge_one`: every admissible exponent ≥ 1 when f dominates an unbounded base ≥ 1, proved by contradiction via an explicit rpow threshold.",
+      "mathContext": "$L < 1 \\Rightarrow b_i^{1-L} \\le c$ for all $i$; choosing $i$ with $b_i$ above the threshold $c^{1/(1-L)}$ contradicts this, so every admissible $L$ satisfies $L \\ge 1$."
+    },
+    {
+      "id": "critical-exponent-corollary",
+      "title": "Lifting to the Infimum",
+      "startLine": 88,
       "endLine": 101,
-      "summary": "Definitions of `admissible f b` and `criticalExponent f b`, then `admissible_ge_one` (every admissible exponent ≥ 1 when f dominates an unbounded base ≥ 1) and `criticalExponent_ge_one`."
+      "summary": "`criticalExponent_ge_one`: under the same domination hypotheses plus nonemptiness of the admissible set, the infimum itself is ≥ 1, via `le_csInf` applied pointwise to `admissible_ge_one`.",
+      "mathContext": "$\\mathrm{admissible}\\,f\\,b \\ne \\emptyset \\wedge (\\forall L \\in \\mathrm{admissible}\\,f\\,b,\\ 1 \\le L) \\Rightarrow 1 \\le \\sInf(\\mathrm{admissible}\\,f\\,b)$."
     },
     {
       "id": "prime-domination",
