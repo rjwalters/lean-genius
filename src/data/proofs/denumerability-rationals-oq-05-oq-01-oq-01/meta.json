@@ -82,7 +82,8 @@
       "**Denumerability survives richer algebra.** The parent kept R[X] at ℵ₀; this entry shows countably many variables (MvPolynomial) and arbitrary countable monoid algebras stay at ℵ₀ too. Only 'countable' and 'infinite' are used — the multiplicative structure of σ, M, or R never enters the cardinality count.",
       "**Everything is a Finsupp.** MvPolynomial σ R = ((σ →₀ ℕ) →₀ R) and MonoidAlgebra R M = (M →₀ R) are, definitionally, finitely supported families. The single Mathlib engine `Finsupp.instCountable` does all the work, nested twice for the multivariate exponent space σ →₀ ℕ.",
       "**Infinitude comes from one injected coefficient line.** The constant embedding MvPolynomial.C (resp. r ↦ single m₀ r) injects the infinite ring R, so the algebra is infinite for the cheapest possible reason — no need to count monomials.",
-      "**MonoidAlgebra ℚ ℕ is ℚ[X].** The monoid-algebra route recovers the parent's univariate polynomial result as the special case M = (ℕ, +), confirming the generalization is faithful."
+      "**MonoidAlgebra ℚ ℕ is ℚ[X].** The monoid-algebra route recovers the parent's univariate polynomial result as the special case M = (ℕ, +), confirming the generalization is faithful.",
+      "**No ring axioms beyond what forming the algebra already demands.** `countable_mvPolynomial` needs `[CommRing R]` only because `MvPolynomial σ R` is not defined without it; `countable_monoidAlgebra` needs the strictly weaker `[Semiring R]`, since `MonoidAlgebra` requires no commutativity or additive inverses. Neither countability proof ever touches multiplication — both go through purely on the `Finsupp` type shape — so the same nested-Finsupp argument transfers verbatim to any similarly-shaped construction (group rings, direct sums of countable modules, …), independent of which algebraic axioms happen to be in force."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (ℵ₀, mk_eq_aleph0 for countable infinite types)",
@@ -100,12 +101,20 @@
       "mathContext": "$\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\#(\\mathrm{MonoidAlgebra}\\,R\\,M) = \\aleph_0$ for countable building blocks."
     },
     {
-      "id": "mvpolynomial",
-      "title": "Multivariate Polynomials Stay Denumerable",
+      "id": "mvpolynomial-basics",
+      "title": "Multivariate Polynomials: Countable and Infinite",
       "startLine": 47,
+      "endLine": 64,
+      "summary": "countable_mvPolynomial (Countable (MvPolynomial σ R) via the doubly-nested Finsupp instance) and infinite_mvPolynomial (Infinite via the injective constant embedding MvPolynomial.C_injective).",
+      "mathContext": "$\\mathrm{MvPolynomial}\\,\\sigma\\,R = ((\\sigma \\to_0 \\mathbb{N}) \\to_0 R)$ is countable when $\\sigma, R$ are, and infinite whenever $R$ is, via $C : R \\hookrightarrow \\mathrm{MvPolynomial}\\,\\sigma\\,R$."
+    },
+    {
+      "id": "mvpolynomial-cardinality",
+      "title": "Multivariate Polynomials Stay Denumerable",
+      "startLine": 66,
       "endLine": 83,
-      "summary": "countable_mvPolynomial (Countable (MvPolynomial σ R) via the doubly-nested Finsupp), infinite_mvPolynomial (Infinite via MvPolynomial.C_injective), mk_mvPolynomial (#(MvPolynomial σ R) = ℵ₀) and mk_mvPolynomial_eq_mk (= #R).",
-      "mathContext": "$\\mathrm{MvPolynomial}\\,\\sigma\\,R = ((\\sigma \\to_0 \\mathbb{N}) \\to_0 R)$ is countable and infinite, so $\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\aleph_0 = \\#R$."
+      "summary": "mk_mvPolynomial (#(MvPolynomial σ R) = ℵ₀, combining countability and infinitude via Cardinal.mk_eq_aleph0) and mk_mvPolynomial_eq_mk (= #R).",
+      "mathContext": "$\\mathrm{MvPolynomial}\\,\\sigma\\,R$ is countable and infinite, so $\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\aleph_0 = \\#R$."
     },
     {
       "id": "monoidalgebra",
