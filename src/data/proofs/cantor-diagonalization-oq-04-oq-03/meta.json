@@ -55,6 +55,7 @@
     ]
   },
   "sections": [
+      {"id": "header", "title": "Header: Lawvere Fixed-Point Theorem and Domain-Theoretic Fixed Points", "startLine": 1, "endLine": 43, "summary": "Answers how Lawvere's categorical fixed-point theorem relates to Kleene's domain-theoretic fixed-point theorem: both are diagonal/self-referential constructions, and in Scott's reflexive domain D \u2245 (D \u2192 D) the Lawvere fixed point coincides with the Kleene least fixed point. Formalizes the Kleene chain, its ascending property, the \u03c9-continuous fixed-point theorem, and least-fixed-point uniqueness.", "mathContext": "Lawvere's construction uses a retraction $\\mathrm{decode}\\circ\\mathrm{encode}=\\mathrm{id}$ on $(Y\\to Y)\\twoheadrightarrow Y$ to build $y_0$ with $\\mathrm{decode}(y_0)(y_0) = f(\\mathrm{decode}(y_0)(y_0))$; Kleene's least fixed point is $\\sup_n f^n(\\bot)$ in a complete lattice with $\\omega$-continuous $f$."},
     {
       "id": "lawvere-fpt",
       "title": "PART 1: Lawvere's Fixed-Point Theorem",
