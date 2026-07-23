@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-rh-consequences-oq-02",
+      "title": "Module Overview: Cramér's Conditional Prime Gap Bound",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "States the classical conditional theorem (Cramér 1920): assuming RH, consecutive prime gaps satisfy p_{n+1} - p_n = O(√p_n log p_n). The RH-dependent analytic content is isolated in a single axiom (rh_implies_short_interval_prime); everything downstream, including the unconditional baseline gap bound from Bertrand's postulate, is machine-checked with no further assumptions. Notes the historical gap to unconditional results (Baker–Harman–Pintz 2001, O(p_n^0.525)).",
+      "mathContext": "RH $\\Rightarrow p_{n+1}-p_n = O(\\sqrt{p_n}\\log p_n)$ (one axiom); unconditional baseline $p_{n+1}-p_n \\le p_n$ (0 axioms, via Bertrand)."
+    },
+    {
       "id": "prime-enumeration",
       "title": "Prime enumeration",
       "startLine": 54,
