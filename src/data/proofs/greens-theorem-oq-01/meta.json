@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Proof Strategy: Green's Theorem via intervalIntegral",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Answers the open question of whether the abstract `lineIntegral`/`doubleIntegralCurl` stubs in the parent `GreensTheorem.lean` can be replaced with genuine Mathlib `intervalIntegral` machinery — yes, via `intervalIntegral.integral_eq_sub_of_hasDerivAt` (FTC) applied to each side of the rectangle plus Fubini, giving a non-axiomatic proof for rectangles.",
+      "mathContext": "For a rectangle $[a,b]\\times[c,d]$: $\\oint_{\\partial R}(P\\,dx+Q\\,dy) = \\iint_R\\left(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\right)dA$, with each side of the boundary integral computed by FTC."
+    },
+    {
       "id": "concrete-definitions",
       "title": "Concrete Integral Definitions",
       "startLine": 57,
