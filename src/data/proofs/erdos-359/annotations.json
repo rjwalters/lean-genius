@@ -164,8 +164,8 @@
     "id": "ann-e359-skip-examples",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 117,
-      "endLine": 134
+      "startLine": 113,
+      "endLine": 131
     },
     "type": "concept",
     "title": "Why 3 and 6 are Skipped",
@@ -187,21 +187,20 @@
     "id": "ann-e359-growth-conjectures",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 144,
-      "endLine": 162
+      "startLine": 133,
+      "endLine": 146
     },
     "type": "concept",
     "title": "Growth Rate Conjectures (OPEN)",
-    "content": "**Three open conjectures**: (1) a_k/k -> infinity (superlinear), (2) a_k/k^{1+c} -> 0 for c > 0 (subpolynomial), (3) Andrews' conjecture a_k ~ (k log k)/(log log k).",
-    "mathContext": "These capture the expected intermediate growth rate - faster than linear but slower than any polynomial > 1. All remain OPEN.",
+    "content": "**Three open conjectures**, recorded as prose comments (not Lean declarations): (1) a_k/k -> infinity (superlinear), (2) a_k/k^{1+c} -> 0 for c > 0 (subpolynomial), (3) Andrews' conjecture a_k ~ (k log k)/(log log k).",
+    "mathContext": "These capture the expected intermediate growth rate - faster than linear but slower than any polynomial > 1. All remain OPEN and are not formalized as Lean statements.",
     "significance": "key",
     "relatedConcepts": [
-      "tendsto",
       "asymptotic",
       "open-problem"
     ],
     "prerequisites": [
-      "superlinear and subpolynomial growth via Tendsto limits",
+      "superlinear and subpolynomial growth stated informally, not as Lean Tendsto statements",
       "Andrews' conjecture a_k ~ (k log k)/(log log k)",
       "intermediate asymptotic growth rate"
     ]
@@ -210,12 +209,12 @@
     "id": "ann-e359-porubsky-upper",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 170,
-      "endLine": 176
+      "startLine": 154,
+      "endLine": 155
     },
     "type": "concept",
     "title": "Porubsky's Upper Bound (1977)",
-    "content": "**porubsky_upper** states: for any epsilon > 0, infinitely many k satisfy a_k < (log k)^epsilon * (k log k)/(log log k). This gives partial evidence for Andrews' conjecture.",
+    "content": "A comment records Porubsky's 1977 upper bound: for any epsilon > 0, infinitely many k satisfy a_k < (log k)^epsilon * (k log k)/(log log k). This is not a formalized Lean statement - no theorem or axiom captures it.",
     "mathContext": "The bound shows the sequence doesn't grow too much faster than the conjectured rate, at least infinitely often.",
     "significance": "key",
     "relatedConcepts": [
@@ -232,8 +231,8 @@
     "id": "ann-e359-counting",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 177,
-      "endLine": 184
+      "startLine": 157,
+      "endLine": 163
     },
     "type": "definition",
     "title": "Counting Functions",
@@ -255,12 +254,12 @@
     "id": "ann-e359-porubsky-density",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 186,
-      "endLine": 192
+      "startLine": 164,
+      "endLine": 166
     },
     "type": "concept",
     "title": "Porubsky's Density Bound",
-    "content": "**porubsky_density_bound** states limsup A(x)/pi(x) >= 1/log(2). MacMahon's sequence is denser than primes by at least this factor infinitely often.",
+    "content": "A comment records Porubsky's density bound: limsup A(x)/pi(x) >= 1/log(2). MacMahon's sequence is conjectured to be denser than primes by at least this factor infinitely often. This is not a formalized Lean statement - no theorem or axiom captures it.",
     "mathContext": "Since 1/log(2) ~ 1.44, the sequence has at least 44% more elements than primes (asymptotically, infinitely often).",
     "significance": "key",
     "relatedConcepts": [
@@ -278,12 +277,12 @@
     "id": "ann-e359-general-n",
     "proofId": "erdos-359",
     "range": {
-      "startLine": 199,
-      "endLine": 204
+      "startLine": 168,
+      "endLine": 174
     },
     "type": "concept",
     "title": "General Starting Value",
-    "content": "**general_n_superlinear** conjectures that sequences 'good for n' (starting with any n > 0) also have superlinear growth a_k/k -> infinity.",
+    "content": "A comment conjectures that sequences 'good for n' (starting with any n > 0) also have superlinear growth a_k/k -> infinity. This is not formalized - no Lean definition or theorem states it.",
     "mathContext": "The problem generalizes beyond n = 1. Different starting values create different sequences but with similar growth behavior.",
     "significance": "supporting",
     "relatedConcepts": [
