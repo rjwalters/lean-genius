@@ -351,8 +351,14 @@ launch_agent() {
     # Per-role override: SEEKER_CLAUDE_MODEL > CLAUDE_MODEL > wrapper default.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     local seeker_model="${SEEKER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+    # Enforce the check interval as a floor between cycles. Seeker usually finds
+    # the pool adequate and stands down in under a minute; without a floor the
+    # wrapper busy-loops and re-invokes Claude every ~40s-1m instead of every
+    # INTERVAL minutes, burning quota on no-op cycles (same fix as herald; see
+    # scripts/herald/launch-agent.sh).
+    local cycle_min_seconds=$((INTERVAL * 60))
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
-        "ENHANCER_ID=seeker REPO_ROOT=$WORKTREE_PATH CLAUDE_MODEL=$seeker_model $wrapper_script --daemon --prompt 'You are the seeker agent. Read $prompt_file for your instructions, then start the selection loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=seeker REPO_ROOT=$WORKTREE_PATH CLAUDE_MODEL=$seeker_model CYCLE_MIN_SECONDS=$cycle_min_seconds $wrapper_script --daemon --prompt 'You are the seeker agent. Read $prompt_file for your instructions, then start the selection loop.' --log '$LOG_FILE'"
 
     print_success "Launched seeker agent"
     echo ""
