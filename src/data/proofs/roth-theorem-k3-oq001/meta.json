@@ -68,7 +68,8 @@
       "**The symmetries are reindexings, not algebra:** translation invariance and reflection live in the bijection group of the averaging variables (x,d), orthogonal to the slot-by-slot multilinearity of the parent file.",
       "**Reflection = two commuting reversals:** reverse the index (which function sits where) with Fin.rev, and reverse the progression (base point and common difference) with the involution (x,d)↦(x+(k-1)d,−d); together they fix Λ_k.",
       "**An AP read backwards is an AP:** the set {x, x+d, …, x+(k-1)d} equals {y, y+e, …, y+(k-1)e} with y = x+(k-1)d and e = −d, which is exactly the substitution reflectShift encodes.",
-      "**Translation absorbs into the base point:** a common shift t of all functions is the same as translating x by t, because (x+i·d)+t = (x+t)+i·d for every term simultaneously."
+      "**Translation absorbs into the base point:** a common shift t of all functions is the same as translating x by t, because (x+i·d)+t = (x+t)+i·d for every term simultaneously.",
+      "**Only the symmetries that need no invertibility are proved here.** Translation (x↦x+t) and reflection (d↦−d) are group-theoretically free: they use only addition and negation in ZMod N, so they hold for every N. The natural third affine symmetry, dilation d↦λd for a unit λ ∈ (ZMod N)ˣ, needs λ invertible to stay a bijection — which is why it is left as this entry's open question rather than proved alongside translation and reflection."
     ],
     "prerequisites": [
       "The grandparent operator Λ_k = kAPCount (Proofs.RothTheoremOQ03OQ01) and its multilinearity (Proofs.RothTheoremOQ03OQ01OQ01)",
