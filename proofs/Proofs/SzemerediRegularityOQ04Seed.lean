@@ -65,7 +65,7 @@ open Szemeredi.Core Szemeredi.Regularity Szemeredi.EnergyIncrement
   Szemeredi.RegularityOQ04OuterBoth Szemeredi.RegularityOQ04StepRealize
   Szemeredi.RegularityOQ04Chain
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [DecidableEq V]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART I: THE CHOPPING ENGINE
@@ -297,9 +297,9 @@ theorem exists_equitable_seed (m : ℕ) (hm : 0 < m)
     exact hqref B hB
   · intro B₁ B₂ h₁ h₂
     rcases hqcard B₁ h₁ with h | h <;> rcases hqcard B₂ h₂ with h' | h' <;>
-      rw [h, h'] <;> push_cast <;> omega
+      (rw [h, h']; push_cast; omega)
   · intro B hB
-    rcases hqcard B hB with h | h <;> rw [h] <;> push_cast <;> linarith
+    rcases hqcard B hB with h | h <;> (rw [h]; push_cast; linarith)
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART IV: THE CAPSTONE WITHOUT SEED HYPOTHESES
@@ -311,7 +311,7 @@ theorem exists_equitable_seed (m : ℕ) (hm : 0 < m)
     pairwise disjoint coarse partition with large parts, plus the maintained
     step oracle at integer scale `m`, yield the full two-level conclusion.
     The seed is manufactured by `exists_equitable_seed`. -/
-theorem exists_afksTwoLevel_of_large_parts
+theorem exists_afksTwoLevel_of_large_parts [Fintype V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (ε : ℚ) (E : ℕ → ℚ) (m : ℕ) (hm : 0 < m) (δ : ℚ) (hδ : 0 < δ)
     (Vparts : Finset (Finset V))
@@ -345,7 +345,7 @@ theorem exists_afksTwoLevel_of_large_parts
     at mass scale `1` already yields the two-level conclusion.  This makes
     explicit that seed existence was never an obstruction at unit scale: the
     singleton refinement is a valid seed for every coarse partition. -/
-theorem exists_afksTwoLevel_of_maintained_oracle_unit
+theorem exists_afksTwoLevel_of_maintained_oracle_unit [Fintype V]
     (G : SimpleGraph V) [DecidableRel G.Adj]
     (ε : ℚ) (E : ℕ → ℚ) (δ : ℚ) (hδ : 0 < δ)
     (Vparts : Finset (Finset V))

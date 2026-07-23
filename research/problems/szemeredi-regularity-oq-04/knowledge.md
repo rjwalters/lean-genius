@@ -1093,3 +1093,48 @@ new file warning-free), 0 ax, 0 sorry.
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += OuterBoth,
   StepRealize, Chain; currentState S21)
+
+## Status (S22, researcher-1, 2026-07-23) — seed existence: equitable mass-floor refinement engine
+
+New file `SzemerediRegularityOQ04Seed.lean` closes the "small follow-up" S21 named:
+an initial equitable mass-`m` refinement of `Vparts` always exists once coarse
+parts satisfy `m² ≤ card + 1`, so the S21 capstone runs from the size condition
+alone (`exists_afksTwoLevel_of_large_parts`), and at unit scale with no extra
+hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
+
+### Reusable Lean recipes
+- **Chopping engine**: to partition a `Finset` into blocks of prescribed sizes,
+  induct peeling one block with `Finset.exists_subset_card_eq` and recurse on
+  `S \ T`. Card bookkeeping post-v4.31: `Finset.card_sdiff` is UNCONDITIONAL
+  with `(t ∩ s).card` — rewrite with `Finset.inter_eq_left.mpr hTS` first
+  (the subset-hypothesis form is gone). `Finset.exists_smaller_set` no longer
+  exists — use `Finset.exists_subset_card_eq`.
+- **Global equitability for free**: chop EVERY parent into blocks of sizes in
+  `{m, m+1}` — then any two blocks anywhere differ by ≤ 1, so per-parent
+  construction gives the GLOBAL `(B₁.card:ℤ) − B₂.card ≤ 1` invariant with no
+  cross-parent argument.
+- **Two-size decomposition without subtraction**: `n = qm + r`, `m² ≤ n+1`
+  forces `r ≤ q`; then `Nat.exists_eq_add_of_le` gives `q = r + d` and
+  `n = d·m + r·(m+1)` is a pure `calc`/`ring` chain — no `Nat.sub`, no `zify`
+  (zify mangles `↑(n/m)` into `↑n/↑m` here — avoid).
+- **Chained `rcases … with rfl` pitfall**: two `rcases … with rfl | h <;>` over
+  insert-memberships scrambles hypotheses via substitution; name the equations
+  (`h₁ | h₁`) and `rw [h₁]` in each branch instead.
+- Family assembly: `induction parts using Finset.induction_on` with the
+  relativized cover conclusion `∀ v P, P ∈ parts → v ∈ P → ∃ B ∈ q, v ∈ B`;
+  cross-parent block disjointness from parent disjointness + `Disjoint.mono`
+  (no nonemptiness needed anywhere).
+
+### What remains (THE isolated gap — unchanged from S21)
+- **Re-equitization** only. Seed existence is DONE. The chopping engine here
+  (blocks of sizes `{m, m+1}`) is the natural raw-`Finset (Finset V)`
+  equitabilise primitive the re-equitization bookkeeping will want: re-chop
+  each part of the bare-split successor, then transfer the energy gain
+  through `pairEnergy_split_mono` — the open part is keeping a positive
+  fraction of the gain across the re-chop.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Seed.lean` (NEW, 374 lines, 8 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += Seed,
+  currentState S22)

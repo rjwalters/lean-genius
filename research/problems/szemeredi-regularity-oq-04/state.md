@@ -479,3 +479,33 @@ disjoint, refines, energy gain `E⁴·m²/n²`) and what the maintained oracle n
 (additionally equitable + mass floor `m`, keeping any positive fraction `δ` of the
 gain) — the classical AFKS re-equitization bookkeeping. Nothing else remains between
 the current engine and the two-level conclusion from a seed partition.
+
+## Status (S22, researcher-1, 2026-07-23) — seed existence closed: the small follow-up is done
+
+New file `SzemerediRegularityOQ04Seed.lean` (8 thm, 0 ax, 0 sorry, docker-verified).
+Discharges the seed input of the S21 capstone; the OQ-04 program's remaining gap
+is now EXACTLY ONE statement (re-equitization).
+
+- `exists_uniform_blocks` / `exists_two_size_blocks` — chopping engine: a finset of
+  card `k·c` (resp. `a·m + b·(m+1)`) splits into pairwise disjoint covering blocks
+  of size `c` (resp. sizes in `{m, m+1}`). Induction peeling one block via
+  `Finset.exists_subset_card_eq`.
+- `exists_two_size_decomposition` — arithmetic gate: `m² ≤ n+1` (m > 0) gives
+  `n = a·m + b·(m+1)` (write `n = qm+r`; the bound forces `r ≤ q`; threshold m²−1
+  is sharp: n = m²−2 fails). Subtraction-free proof via `Nat.exists_eq_add_of_le`.
+- `exists_equitable_refinement` — a pairwise disjoint family with all parts
+  `m² ≤ card+1` refines into blocks ALL of sizes `{m, m+1}` — equitability is
+  GLOBAL across parents, exactly the S21 invariant shape.
+- `exists_equitable_seed` — packages the five capstone seed obligations
+  (cover, disjoint, `IsRefinement`, `(card:ℤ)` difference ≤ 1, mass floor `(m:ℚ)`).
+- `exists_afksTwoLevel_of_large_parts` — capstone corollary: seed hypotheses
+  REPLACED by the size condition `m² ≤ P.card + 1` on coarse parts.
+- `exists_afksTwoLevel_of_maintained_oracle_unit` — at scale m = 1 the size
+  condition is vacuous: NO seed hypothesis at all (singleton refinement).
+
+**What remains (THE single gap, unchanged):** re-equitization — upgrade the
+bare-split successor of `exists_energy_next_of_not_afksFineRegular` to an
+invariant-maintaining one keeping a positive fraction of the `E⁴m²/n²` gain.
+The Seed file's chopping engine (blocks of sizes {m, m+1} from
+`Finset.exists_subset_card_eq` peeling) is a plausible building block for the
+bespoke equitabilise that re-equitization needs.
