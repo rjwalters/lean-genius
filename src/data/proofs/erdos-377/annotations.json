@@ -146,7 +146,7 @@
     },
     "type": "concept",
     "title": "EGRS First Moment",
-    "content": "**egrs_first_moment**: (1/x)∑_{n≤x} f(n) → γ₀ as x → ∞. The Cesàro mean of f(n) converges to γ₀.",
+    "content": "This comment (not a Lean declaration) records EGRS75's first-moment result: (1/x)∑_{n≤x} f(n) → γ₀ as x → ∞. The Cesàro mean of f(n) converges to γ₀.",
     "mathContext": "This shows f(n) is 'typically' about γ₀ ≈ 0.794. But average convergence doesn't bound the maximum.",
     "significance": "key",
     "relatedConcepts": [
@@ -169,7 +169,7 @@
     },
     "type": "concept",
     "title": "EGRS Second Moment",
-    "content": "**egrs_second_moment**: (1/x)∑_{n≤x} f(n)² → γ₀² as x → ∞. The Cesàro mean of f(n)² equals the square of the first moment limit.",
+    "content": "This comment (not a Lean declaration) records EGRS75's second-moment result: (1/x)∑_{n≤x} f(n)² → γ₀² as x → ∞. The Cesàro mean of f(n)² equals the square of the first moment limit.",
     "mathContext": "Combined with the first moment, this implies Var(f) = E[f²] - E[f]² → γ₀² - γ₀² = 0. So f(n) concentrates around γ₀.",
     "significance": "key",
     "relatedConcepts": [
@@ -192,7 +192,7 @@
     },
     "type": "concept",
     "title": "Almost Everywhere Result",
-    "content": "**egrs_almost_everywhere**: For almost all n, f(n) = γ₀ + o(1). The function approaches γ₀ for 'most' integers.",
+    "content": "This comment (not a Lean declaration) records EGRS75's almost-everywhere result: for almost all n, f(n) = γ₀ + o(1). The function approaches γ₀ for 'most' integers.",
     "mathContext": "This follows from the variance → 0 argument. The cofinite filter captures 'all but finitely many' integers.",
     "significance": "key",
     "relatedConcepts": [
@@ -215,7 +215,7 @@
     },
     "type": "concept",
     "title": "EGRS Upper Bound",
-    "content": "**egrs_upper_bound**: f(n) ≤ c·log(log(n)) for some c < 1 and all large n. This improves the trivial Mertens bound.",
+    "content": "This comment (not a Lean declaration) records EGRS75's upper-bound result: f(n) ≤ c·log(log(n)) for some c < 1 and all large n. This improves the trivial Mertens bound.",
     "mathContext": "Mertens' theorem gives ∑_{p≤n} 1/p ~ log(log n), so f(n) ≤ log(log n) trivially. EGRS improved the constant to c < 1.",
     "significance": "key",
     "relatedConcepts": [
