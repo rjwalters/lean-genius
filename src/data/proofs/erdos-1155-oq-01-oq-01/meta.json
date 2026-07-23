@@ -22,11 +22,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 6,
+    "axiomCount": 5,
     "assumptions": [
       "triangleRemovalEdges: axiomatized function representing expected remaining edges after the triangle removal process on K_n (inherited)",
       "triangleRemovalEdges_nonneg: remaining edge count is non-negative (inherited)",
-      "triangleRemovalEdges_le_complete: remaining edges bounded by C(n,2) (inherited)",
       "bfl_upper_bound: BFL 2015 upper bound f(n) ≤ n^{3/2+ε} (inherited)",
       "bfl_lower_bound: BFL 2015 lower bound f(n) ≥ n^{3/2-ε} (inherited)",
       "triangleRemoval_mantel_bound: Mantel theorem upper bound (inherited)"
