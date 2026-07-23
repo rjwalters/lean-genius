@@ -9,8 +9,9 @@ Known bounds:
 - Lower: `R(C₄, Kₙ) ≫ n^{3/2} / (log n)^{3/2}` (Spencer)
 
 The Ramsey function R(C₄, Kₙ) is defined (not axiomatized) via `Nat.find`,
-using the finite Ramsey theorem to establish existence. The only axioms are
-the known upper and lower bounds (deep results not in Mathlib).
+using the finite Ramsey theorem to establish existence. The known upper and
+lower bounds (deep results not in Mathlib) are noted in comments only; the
+file has 0 axioms.
 
 *Reference:* [erdosproblems.com/159](https://www.erdosproblems.com/159)
 -/
