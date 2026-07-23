@@ -48,16 +48,16 @@
       "randomPolynomial: f(z) = ∑ εₖ z^k",
       "maxModulus: sup over unit circle",
       "expectedScale: √(n log n) function",
-      "ErdosQuestion523: formal problem statement",
-      "salem_zygmund_order axiom: √(n log n) order",
+      "ErdosQuestion523: vacuous placeholder (∃C>0 ∧ True) — does not encode the quantitative question",
+      "salem_zygmund_order: vacuous placeholder theorem (∃c₁ c₂>0 ∧ True) — no order bound established",
       "halaszConstant = 1",
-      "L2Norm, L2_norm_exact: L² analysis",
+      "L2Norm: L² norm definition (no L2_norm_exact theorem exists)",
       "IsLittlewood, LittlewoodProblem: connections",
       "mahlerMeasure: geometric mean measure"
     ],
     "axiomCount": 0,
     "lineCount": 238,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Note: ErdosQuestion523 and salem_zygmund_order are vacuous placeholders (True substitutes for the actual quantitative content), so no theorem in this file establishes the Salem-Zygmund order bound or Halász's exact constant.",
     "theoremCount": 6,
     "definitionCount": 21
   },
@@ -109,16 +109,16 @@
       "title": "Salem-Zygmund Result (1954)",
       "startLine": 79,
       "endLine": 87,
-      "summary": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the exact constant.",
-      "mathContext": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability."
+      "summary": "`salem_zygmund_order` is a vacuous placeholder theorem: $\\exists c_1, c_2 > 0,\\ c_1 > 0 \\land c_2 > 0 \\land \\text{True}$. The intended bound $c_1\\sqrt{n\\log n} \\le \\max|f(z)| \\le c_2\\sqrt{n\\log n}$ appears only in a source comment, not in the Lean statement, so nothing about the maximum modulus is actually established.",
+      "mathContext": "The Lean statement is `∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ True` — trivially true for any positive $c_1, c_2$ (e.g. $c_1=c_2=1$). The Salem-Zygmund order bound on $\\max|f(z)|$ described in the comment is not part of the formal statement."
     },
     {
       "id": "erdos-question",
       "title": "The Erdos Question (1961)",
       "startLine": 93,
       "endLine": 99,
-      "summary": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?",
-      "mathContext": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\$\\log n$}$ almost surely for some $C > 0$?"
+      "summary": "`ErdosQuestion523` is a vacuous placeholder: $\\exists C > 0, \\text{True}$. The intended quantitative condition ($|\\max|f(z)|/\\sqrt{n\\log n} - C| < \\varepsilon$ with probability $1-o(1)$) is only a source comment, so the definition is trivially satisfied by any $C>0$ and does not capture Erdős's actual question.",
+      "mathContext": "`ErdosQuestion523 := ∃ C : ℝ, C > 0 ∧ True` — the substantive condition is commented out, replaced by `True`. Any positive $C$ (not just $C=1$) witnesses this definition."
     },
     {
       "id": "halasz-theorem",
@@ -173,8 +173,8 @@
       "title": "Summary: SOLVED",
       "startLine": 211,
       "endLine": 238,
-      "summary": "Four concluding theorems: `erdos_523` (the question resolved via `erdos_523_answer`), `erdos_523_constant` (the constant is exactly $C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: completely solved by Halász (1973).**",
-      "mathContext": "The formalized answer: $\\max_{|z|=1}|f(z)| = (1 + o(1))\\sqrt{n \\log n}$ almost surely, i.e. the Erdős constant is $C = 1$. `erdos_523_constant` packages the existential witness $C = 1 \\land \\text{ErdosQuestion523}$, and `erdos_523_solved` closes the file."
+      "summary": "Four theorems restate the vacuous `ErdosQuestion523` existential: `erdos_523` (= `erdos_523_answer`, witnessing $C=1$), `erdos_523_constant` (packages $C=1$ with the same vacuous existential), `erdos_523_main` (a `True`-valued statement for all $\\varepsilon>0$), and `erdos_523_solved` (= `erdos_523`). None of these establish the quantitative claim $\\max|f(z)| = (1+o(1))\\sqrt{n \\log n}$ almost surely — the file does not formalize Halász's theorem.",
+      "mathContext": "Since `ErdosQuestion523 := ∃ C, C > 0 ∧ True`, every theorem in this section is trivially true for any positive witness and carries no information about the actual asymptotic. Halász's exact-constant result ($C=1$, 1973) is not formalized here; only the historical claim is recorded in prose."
     }
   ],
   "conclusion": {
