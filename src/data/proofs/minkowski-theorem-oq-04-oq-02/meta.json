@@ -123,17 +123,25 @@
       "id": "blichfeldt-covolume",
       "title": "Blichfeldt in Covolume Form",
       "startLine": 77,
-      "endLine": 128,
+      "endLine": 123,
       "summary": "blichfeldt_general_lattice_covolume (vol(S) > k·covol(Λ) ⇒ k+1 points with pairwise differences in Λ) and the k=1 corollaries blichfeldt_basic_lattice and blichfeldt_basic_lattice_covolume. Each reduces to the parent's blichfeldt_general_lattice through the covolume bridge.",
       "mathContext": "This is the geometry-of-numbers statement of Blichfeldt's pigeonhole for an arbitrary full-rank lattice: the volume threshold is k times the covolume, the volume of one fundamental cell."
     },
     {
+      "id": "minkowski-basic",
+      "title": "Minkowski's Convex Body Theorem, Fundamental-Domain Form",
+      "startLine": 124,
+      "endLine": 188,
+      "summary": "minkowski_lattice: a measurable, convex, centrally-symmetric S with vol(S) > 2ⁿ·volume(ZSpan.fundamentalDomain b) contains a nonzero lattice point. Proved by half-scaling T = (1/2)·S — measurability via a preimage argument, volume via Measure.addHaar_smul and (2⁻¹)ⁿ·2ⁿ = 1 ENNReal arithmetic — then applying blichfeldt_basic_lattice to T and transferring the resulting pair back to S via convexity/central symmetry.",
+      "mathContext": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > 2^n \\cdot \\mathrm{vol}(F) \\Rightarrow \\exists\\, p \\in S \\cap \\Lambda,\\; p \\ne 0$, via the half-scaled set $T = \\tfrac12 S$."
+    },
+    {
       "id": "minkowski-covolume",
-      "title": "Minkowski's Convex Body Theorem for a General Lattice",
-      "startLine": 129,
+      "title": "Minkowski's Convex Body Theorem, Covolume Form",
+      "startLine": 189,
       "endLine": 211,
-      "summary": "minkowski_lattice (convex, centrally-symmetric S with vol(S) > 2ⁿ·volume F ⇒ nonzero lattice point) via half-scaling T = (1/2)·S and blichfeldt_basic_lattice, and minkowski_lattice_covolume (the covolume-threshold restatement vol(S) > 2ⁿ·covol(Λ)).",
-      "mathContext": "Minkowski's classical convex body theorem in its general-lattice form (Cassels III.2): the sharp volume threshold for forcing a nonzero lattice point in a symmetric convex body is 2ⁿ times the covolume. The half-scaling reduction to Blichfeldt is identical to the ℤⁿ case, with the covolume replacing 1."
+      "summary": "minkowski_lattice_covolume restates minkowski_lattice with the classical covolume threshold vol(S) > 2ⁿ·covol(Λ) (Cassels III.2), converting via the same ℝ≥0∞ ↔ ℝ covolume bridge used for Blichfeldt, and closes the BlichfeldtTheorem namespace.",
+      "mathContext": "Minkowski's classical convex body theorem in its general-lattice, covolume-threshold form: the sharp volume threshold for forcing a nonzero lattice point in a symmetric convex body is $2^n \\cdot \\mathrm{covol}(\\Lambda)$."
     }
   ],
   "conclusion": {
