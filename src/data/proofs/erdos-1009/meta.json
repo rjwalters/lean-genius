@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-erdos-1009",
+      "title": "Problem Statement and Background",
+      "summary": "States Erd\u0151s Problem #1009 (edge-disjoint triangles beyond the Tur\u00e1n threshold, solved by Gy\u0151ri in 1988 with $f(c) \\ll c^2$) and sketches its history from Erd\u0151s's 1971 posing through Sauer's lower bound.",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "The Tur\u00e1n number $\\mathrm{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ is the extremal edge count for triangle-free graphs; the problem asks how many edge-disjoint triangles a graph with $\\lfloor n^2/4\\rfloor + k$ edges must contain, as a function of $k$ and a slack parameter $c$."
+    },
+    {
       "id": "sec-1009-imports",
       "title": "Imports and Setup",
       "summary": "Imports Mathlib, opens `Finset` and `SimpleGraph` namespaces, declares variables $V$ with `[Fintype V] [DecidableEq V]`.",
