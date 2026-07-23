@@ -95,25 +95,41 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header, Overview, and Setup",
+      "id": "overview",
+      "title": "Module Overview: The Conjugacy Half, Abelian Case",
       "startLine": 1,
-      "endLine": 59,
-      "summary": "Imports (SchurZassenhaus, Complement, GroupAction) and the docstring framing: the parent sylow-theorem-oq-03 formalizes the existence half (Mathlib's Subgroup.exists_right_complement'_of_coprime), and this file proves the conjugacy half's abelian base case — if N ⊴ G is abelian, finite, with order coprime to its index, any two complements are N-conjugate — the engine of the full solvable result by induction along a chief series. Sketches the four-step outline (complementTransversal → le_stabilizer_complementPoint → stabilizer = K → conjugacy via exists_smul_eq) over Mathlib's abelian transfer machinery (QuotientDiff, exists_smul_eq), lists the main results, enters namespace SchurZassenhausConjugacy, opens Subgroup/MulAction/MulOpposite/Pointwise, and declares variables {G} [Group G] {N K K₁ K₂}.",
+      "endLine": 27,
+      "summary": "Imports (SchurZassenhaus, Complement, GroupAction) and the docstring framing: the parent sylow-theorem-oq-03 formalizes the existence half (Mathlib's Subgroup.exists_right_complement'_of_coprime), and this file proves the conjugacy half's abelian base case — if N ⊴ G is abelian, finite, with order coprime to its index, any two complements are N-conjugate — the engine of the full solvable result by induction along a chief series. Notes that Mathlib supplies the abelian transfer machinery (QuotientDiff, exists_smul_eq) but not the conjugacy statement itself.",
       "mathContext": "Existence half: N ⊴ G, gcd(|N|,[G:N])=1 ⟹ ∃ complement K (G = N ⋊ K). Conjugacy half (abelian N): any two complements are conjugate by an element of N."
+    },
+    {
+      "id": "proof-outline",
+      "title": "Proof Outline and Main Results",
+      "startLine": 28,
+      "endLine": 51,
+      "summary": "Sketches the four-step outline: complementTransversal (a complement is a left transversal) → le_stabilizer_complementPoint (K ≤ its stabilizer, the only step using subgroup-hood) → stabilizer_complementPoint_eq (equality by a cardinality argument) → the conjugacy conclusion via exists_smul_eq. Lists the three main results by fully-qualified name.",
+      "mathContext": "The bijection complements ↔ point-stabilizers of N.QuotientDiff, plus transitivity of the N-action, is what delivers conjugacy."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Standing Variables",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "Enters namespace SchurZassenhausConjugacy, opens Subgroup/MulAction/MulOpposite/Pointwise, declares the standing variables {G : Type*} [Group G] {N K K₁ K₂ : Subgroup G}, and opens section Transversal.",
+      "mathContext": "All results below are stated for an ambient group G with distinguished subgroups N (the normal subgroup) and K, K₁, K₂ (candidate complements)."
     },
     {
       "id": "transversal",
       "title": "Section I: Complements as Points of QuotientDiff",
       "startLine": 60,
-      "endLine": 92,
+      "endLine": 90,
       "summary": "complementTransversal and complementPoint exhibit a complement K as a left transversal of N and hence a point of N.QuotientDiff. le_stabilizer_complementPoint proves K ≤ stabilizer G (complementPoint K) — the only place subgroup-hood of K is used — by showing each k ∈ K right-fixes the set K, so it fixes the transversal class.",
       "mathContext": "Each complement determines a canonical point of the transfer space N.QuotientDiff and is contained in that point's stabilizer."
     },
     {
       "id": "conjugacy",
       "title": "Section II: Stabilizer = Complement, and Conjugacy",
-      "startLine": 94,
+      "startLine": 91,
       "endLine": 141,
       "summary": "stabilizer_complementPoint_eq upgrades the inclusion to equality by a cardinality argument (the stabilizer is also a complement, so both have order [G:N]). isComplement'_conj_of_isMulCommutative combines transitivity of the N-action (exists_smul_eq) with stabilizer_smul_eq_stabilizer_map_conj to conjugate any two complements by an element of N. exists_and_conj packages this with Mathlib's existence half.",
       "mathContext": "Every complement is a point-stabilizer; transitivity of the orbit makes all complements N-conjugate, so they form a single conjugacy class."
