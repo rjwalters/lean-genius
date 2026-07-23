@@ -146,12 +146,20 @@
       "mathContext": "The number of intermediate fields equals the number of subgroups; degrees of the two tower halves are the order and index of the corresponding subgroup."
     },
     {
-      "id": "normal-and-quintic",
-      "title": "Parts VI–VII: normal refinement and the X⁵ − 4X + 2 instantiation",
+      "id": "normal-refinement",
+      "title": "Part VI: the normal refinement",
       "startLine": 160,
+      "endLine": 173,
+      "summary": "`isGalois_fixedField_of_normal` (normal H ↦ fixedField H is Galois over F) and `normalQuotientEquiv` (Gal(E/F) ⧸ H ≃* Gal(fixedField H / F)) — the correspondence's finest refinement, linking normal subgroups to Galois subextensions with the quotient as their Galois group.",
+      "mathContext": "For normal $H \\trianglelefteq \\mathrm{Gal}(E/F)$: $\\mathrm{fixedField}\\,H / F$ is itself Galois, with $\\mathrm{Gal}(E/F)/H \\simeq \\mathrm{Gal}(\\mathrm{fixedField}\\,H/F)$."
+    },
+    {
+      "id": "quintic",
+      "title": "Part VII: the X⁵ − 4X + 2 instantiation",
+      "startLine": 174,
       "endLine": 201,
-      "summary": "`isGalois_fixedField_of_normal` and `normalQuotientEquiv` (normal H ↦ Galois subextension with quotient Galois group); then the Quintic section: `IsGalois ℚ (X⁵−4X+2).SplittingField` and `quintic_card_intermediateField_eq_card_subgroup`.",
-      "mathContext": "Normal subgroups correspond to Galois subextensions with quotient group as Galois group; instantiated on the concrete Abel–Ruffini witness whose group is S₅."
+      "summary": "Establishes `IsGalois ℚ (X⁵−4X+2).SplittingField` (separable ⟹ splitting field Galois) and instantiates the counting bijection as `quintic_card_intermediateField_eq_card_subgroup`, tying the abstract dictionary to OQ-01's concrete unsolvable quintic with Galois group S₅.",
+      "mathContext": "The splitting field of $X^5-4X+2$ over $\\mathbb{Q}$ is Galois with group $S_5$ (OQ-01); its intermediate fields biject with the subgroups of $S_5$."
     }
   ],
   "theorems": [
