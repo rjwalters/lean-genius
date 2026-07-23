@@ -87,24 +87,40 @@
       "id": "sec-header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 24,
-      "summary": "Docstring defining the Jacobi symbol J(a|n) = ∏_{p∣n}(a|p), stating bimultiplicativity, the {−1,0,1} trichotomy, and the one-sided non-residue obstruction J(a|n) = −1 ⟹ non-residue — emphasizing that the converse fails for composite n (J(2|15) = 1 yet 2 is a non-residue). Fully verified (0 sorries, 0 axioms, no native_decide).",
+      "endLine": 27,
+      "summary": "Docstring defining the Jacobi symbol J(a|n) = ∏_{p∣n}(a|p), stating bimultiplicativity, the {−1,0,1} trichotomy, and the one-sided non-residue obstruction J(a|n) = −1 ⟹ non-residue — emphasizing that the converse fails for composite n (J(2|15) = 1 yet 2 is a non-residue). Fully verified (0 sorries, 0 axioms, no native_decide). Followed by `import Mathlib` and the namespace declaration.",
       "mathContext": "$J(a\\mid n)=\\prod_{p\\mid n}\\left(\\tfrac{a}{p}\\right)$; $-1$ proves non-residue, $1$ does not certify residue."
     },
     {
-      "id": "sec-bimult-trichotomy",
-      "title": "Bimultiplicativity and the Trichotomy",
+      "id": "sec-bimultiplicativity",
+      "title": "Bimultiplicativity",
       "startLine": 29,
+      "endLine": 39,
+      "summary": "jacobi_mul_left and jacobi_mul_right: the Jacobi symbol is multiplicative in both the numerator (J(a₁a₂|n) = J(a₁|n)J(a₂|n)) and the modulus (J(a|mn) = J(a|m)J(a|n)). Direct restatements of Mathlib's jacobiSym.mul_left / jacobiSym.mul_right.",
+      "mathContext": "$J(a_1a_2\\mid n)=J(a_1\\mid n)J(a_2\\mid n)$, $J(a\\mid mn)=J(a\\mid m)J(a\\mid n)$."
+    },
+    {
+      "id": "sec-trichotomy",
+      "title": "The Trichotomy",
+      "startLine": 41,
       "endLine": 49,
-      "summary": "jacobi_mul_left and jacobi_mul_right (multiplicative in numerator and modulus), jacobi_eq_one_or_neg_one (±1 for coprime arguments), and jacobi_eq_zero_iff (0 ⟺ not coprime) — together the {−1,0,1} trichotomy. Restatements of Mathlib's jacobiSym API.",
-      "mathContext": "$J(a_1a_2\\mid n)=J(a_1\\mid n)J(a_2\\mid n)$, $J(a\\mid mn)=J(a\\mid m)J(a\\mid n)$; value in $\\{-1,0,1\\}$."
+      "summary": "jacobi_eq_one_or_neg_one (J(a|n) = ±1 for coprime arguments) and jacobi_eq_zero_iff (J(a|n) = 0 exactly when a, n are not coprime), completing the {−1,0,1} trichotomy. Restatements of Mathlib's jacobiSym API.",
+      "mathContext": "$\\gcd(a,n)=1 \\Rightarrow J(a\\mid n)=\\pm1$; value in $\\{-1,0,1\\}$, with $0$ iff $\\gcd(a,n)\\ne1$."
     },
     {
       "id": "sec-onesided",
-      "title": "The One-Sided Obstruction and Its Failed Converse",
+      "title": "The One-Sided Obstruction",
       "startLine": 51,
-      "endLine": 73,
-      "summary": "not_isSquare_of_jacobi_eq_neg_one (J(a|n) = −1 ⟹ non-residue mod n). Then the converse counterexample: jacobi_two_fifteen (J(2|15) = (−1)(−1) = 1, by norm_num), not_isSquare_two_mod_fifteen (2 a non-residue mod 15, squares = {0,1,4,6,9,10}, by decide), packaged as jacobi_one_not_isSquare — the symbol is a one-sided witness, not a residue test.",
+      "endLine": 57,
+      "summary": "not_isSquare_of_jacobi_eq_neg_one: J(a|n) = −1 forces a to be a quadratic non-residue mod n. Restatement of Mathlib's ZMod.nonsquare_of_jacobiSym_eq_neg_one.",
+      "mathContext": "$J(a\\mid n) = -1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}\\,(a : \\mathbb{Z}/n)$."
+    },
+    {
+      "id": "sec-converse-counterexample",
+      "title": "The Failed Converse: J(2|15) = 1 with 2 a Non-Residue",
+      "startLine": 59,
+      "endLine": 74,
+      "summary": "jacobi_two_fifteen (J(2|15) = (−1)(−1) = 1, by norm_num), not_isSquare_two_mod_fifteen (2 a non-residue mod 15, squares = {0,1,4,6,9,10}, by decide), packaged as jacobi_one_not_isSquare — the symbol is a one-sided witness, not a residue test.",
       "mathContext": "$J(2\\mid15)=1$ but $2\\notin(\\mathbb{Z}/15)^2$; only $J=-1$ is informative for composite $n$."
     }
   ],
