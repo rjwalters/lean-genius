@@ -237,4 +237,195 @@ theorem erdos_227_summary :
 
 /- Erdős Problem #227: SOLVED (DISPROVED). -/
 
+/-
+## Part 11: Elementary Bounds — Maximum Term vs Maximum Modulus
+
+Axiom-free supporting layer. The `EntireFunction` structure records only the
+coefficients; it does not force the power series to converge anywhere.
+`IsEntire` captures genuine entireness (absolute convergence of the coefficient
+series at every radius). In Clunie's setting — non-negative real coefficients —
+we prove the elementary inequality `μ(r) ≤ M(r)` (the maximum term is one term
+of the series that sums to `f(r) ≤ M(r)`), hence the term/modulus ratio is at
+most `1` and any limit `L` of the ratio lies in `[0, 1]`. The deep
+Clunie–Hayman refinement `L ≤ 1/2` remains axiomatized (`ratio_upper_bound`),
+as does Clunie's exact value `L = 0` (`clunie_positive_coeffs`).
+-/
+
+/-- Genuine entireness: absolute convergence of the coefficient series at every
+    non-negative radius. The bare `EntireFunction` structure does not require
+    this; theorems that need convergence take it as an explicit hypothesis. -/
+def IsEntire (f : EntireFunction) : Prop :=
+  ∀ r : ℝ, 0 ≤ r → Summable fun n => ‖f.coeff n‖ * r ^ n
+
+/-- The maximum term is non-negative for `r ≥ 0`. -/
+theorem maxTerm_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r) :
+    0 ≤ maxTerm f r :=
+  Real.iSup_nonneg fun n => mul_nonneg (norm_nonneg _) (pow_nonneg hr n)
+
+/-- The maximum modulus is non-negative. -/
+theorem maxModulus_nonneg (f : EntireFunction) (r : ℝ) :
+    0 ≤ maxModulus f r :=
+  Real.iSup_nonneg fun _ => norm_nonneg _
+
+/-- Norm of the `n`-th series term at the point `r·e^{iθ}`: it equals
+    `‖aₙ‖·rⁿ`, independently of the angle `θ`. -/
+theorem norm_series_term (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r) (θ : ℝ) (n : ℕ) :
+    ‖f.coeff n * (↑r * exp (I * ↑θ)) ^ n‖ = ‖f.coeff n‖ * r ^ n := by
+  have hexp : ‖exp (I * (θ : ℂ))‖ = 1 := by
+    rw [Complex.norm_exp]
+    simp [Complex.mul_re]
+  rw [norm_mul, norm_pow, norm_mul, hexp, mul_one, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_nonneg hr]
+
+/-- Absolute convergence at radius `r` gives convergence at every point of the
+    circle `|z| = r`. -/
+theorem summable_series_term (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) (θ : ℝ) :
+    Summable fun n => f.coeff n * (↑r * exp (I * ↑θ)) ^ n :=
+  Summable.of_norm (hs.congr fun n => (norm_series_term f hr θ n).symm)
+
+/-- Triangle inequality on the circle of radius `r`: `‖f(re^{iθ})‖` is bounded
+    by the absolute sum `Σ ‖aₙ‖ rⁿ`, uniformly in `θ`. -/
+theorem norm_tsum_le_sum_norm (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) (θ : ℝ) :
+    ‖∑' n, f.coeff n * (↑r * exp (I * ↑θ)) ^ n‖ ≤ ∑' n, ‖f.coeff n‖ * r ^ n :=
+  calc ‖∑' n, f.coeff n * (↑r * exp (I * ↑θ)) ^ n‖
+      ≤ ∑' n, ‖f.coeff n * (↑r * exp (I * ↑θ)) ^ n‖ :=
+        norm_tsum_le_tsum_norm (hs.congr fun n => (norm_series_term f hr θ n).symm)
+    _ = ∑' n, ‖f.coeff n‖ * r ^ n := tsum_congr fun n => norm_series_term f hr θ n
+
+/-- The family `θ ↦ ‖f(re^{iθ})‖` is bounded above (by the absolute sum). -/
+theorem bddAbove_range_norm (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    BddAbove (Set.range fun θ : ℝ => ‖∑' n, f.coeff n * (↑r * exp (I * ↑θ)) ^ n‖) := by
+  refine ⟨∑' n, ‖f.coeff n‖ * r ^ n, ?_⟩
+  rintro x ⟨θ, rfl⟩
+  exact norm_tsum_le_sum_norm f hr hs θ
+
+/-- `M(r) ≤ Σ ‖aₙ‖ rⁿ`: the maximum modulus is at most the absolute sum. -/
+theorem maxModulus_le_tsum (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    maxModulus f r ≤ ∑' n, ‖f.coeff n‖ * r ^ n :=
+  ciSup_le fun θ => norm_tsum_le_sum_norm f hr hs θ
+
+/-- For non-negative real coefficients the value at `θ = 0` is exactly the
+    absolute sum: `‖f(r)‖ = Σ aₙ rⁿ = Σ ‖aₙ‖ rⁿ`. -/
+theorem norm_tsum_at_zero_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    ‖∑' n, f.coeff n * (↑r * exp (I * ((0 : ℝ) : ℂ))) ^ n‖
+      = ∑' n, ‖f.coeff n‖ * r ^ n := by
+  have hcoeff : ∀ n, f.coeff n = ((‖f.coeff n‖ : ℝ) : ℂ) := by
+    intro n
+    have h1 : f.coeff n = (((f.coeff n).re : ℝ) : ℂ) :=
+      Complex.ext (by simp) (by simpa using (hpos n).2)
+    have h2 : ‖f.coeff n‖ = (f.coeff n).re := by
+      rw [h1, Complex.norm_real, Complex.ofReal_re, Real.norm_eq_abs]
+      exact abs_of_nonneg (hpos n).1
+    rw [h2]
+    exact h1
+  have h0 : ∀ n : ℕ, f.coeff n * (↑r * exp (I * ((0 : ℝ) : ℂ))) ^ n
+      = ((‖f.coeff n‖ * r ^ n : ℝ) : ℂ) := by
+    intro n
+    have hexp0 : exp (I * ((0 : ℝ) : ℂ)) = 1 := by simp
+    rw [hexp0, mul_one, hcoeff n]
+    push_cast
+    ring
+  calc ‖∑' n, f.coeff n * (↑r * exp (I * ((0 : ℝ) : ℂ))) ^ n‖
+      = ‖((∑' n, ‖f.coeff n‖ * r ^ n : ℝ) : ℂ)‖ := by
+        rw [tsum_congr h0, ← RCLike.ofReal_tsum]
+    _ = ∑' n, ‖f.coeff n‖ * r ^ n := by
+        rw [Complex.norm_real, Real.norm_eq_abs]
+        exact abs_of_nonneg
+          (tsum_nonneg fun n => mul_nonneg (norm_nonneg _) (pow_nonneg hr n))
+
+/-- **Clunie's setting, elementary part**: for non-negative real coefficients
+    the maximum term is at most the maximum modulus, `μ(r) ≤ M(r)` — each term
+    `aₙrⁿ` is one summand of the non-negative series summing to `f(r) ≤ M(r)`. -/
+theorem maxTerm_le_maxModulus_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    maxTerm f r ≤ maxModulus f r := by
+  have hM : (∑' n, ‖f.coeff n‖ * r ^ n) ≤ maxModulus f r := by
+    rw [← norm_tsum_at_zero_of_nonneg f hr hpos hs]
+    exact le_ciSup (bddAbove_range_norm f hr hs) (0 : ℝ)
+  have key : (⨆ n : ℕ, ‖f.coeff n‖ * r ^ n) ≤ maxModulus f r :=
+    ciSup_le fun n =>
+      le_trans (hs.le_tsum n fun j _ => mul_nonneg (norm_nonneg _) (pow_nonneg hr j)) hM
+  exact key
+
+/-- For non-negative real coefficients the term/modulus ratio is at most `1`. -/
+theorem termModulusRatio_le_one_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0)
+    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    termModulusRatio f r ≤ 1 := by
+  rcases (maxModulus_nonneg f r).eq_or_lt with hM | hM
+  · unfold termModulusRatio
+    rw [← hM, div_zero]
+    exact zero_le_one
+  · unfold termModulusRatio
+    rw [div_le_one hM]
+    exact maxTerm_le_maxModulus_of_nonneg f hr hpos hs
+
+/-- Any limit of the term/modulus ratio of a genuinely entire function with
+    non-negative real coefficients lies in `[0, 1]`. This is the elementary
+    companion of the deep axiomatized results: Clunie–Hayman give `L ≤ 1/2`
+    (`ratio_upper_bound`) and Clunie gives the exact value `L = 0`
+    (`clunie_positive_coeffs`); the bound here uses only Mathlib. -/
+theorem limit_mem_Icc_of_nonneg (f : EntireFunction)
+    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0)
+    (hent : IsEntire f) {L : ℝ}
+    (hL : Tendsto (termModulusRatio f) atTop (nhds L)) :
+    L ∈ Set.Icc (0 : ℝ) 1 := by
+  constructor
+  · refine ge_of_tendsto hL ?_
+    filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
+    exact termModulusRatio_nonneg f hr
+  · refine le_of_tendsto hL ?_
+    filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
+    exact termModulusRatio_le_one_of_nonneg f hr hpos (hent r hr)
+
+/-
+### The exponential function
+
+A concrete witness that `IsEntire` is non-vacuous and the hypotheses above are
+satisfiable: `exp` with coefficients `1/n!`.
+-/
+
+/-- The exponential function `Σ zⁿ/n!` as an `EntireFunction`. -/
+noncomputable def expFunction : EntireFunction where
+  coeff n := 1 / (n.factorial : ℂ)
+  not_polynomial N := ⟨N + 1, Nat.lt_succ_self N, by
+    have h : (((N + 1).factorial : ℕ) : ℂ) ≠ 0 :=
+      Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
+    exact one_div_ne_zero h⟩
+
+/-- The coefficients of `exp` are non-negative reals. -/
+theorem expFunction_coeff_nonneg (n : ℕ) :
+    (expFunction.coeff n).re ≥ 0 ∧ (expFunction.coeff n).im = 0 := by
+  have h : expFunction.coeff n = ((1 / (n.factorial : ℝ) : ℝ) : ℂ) := by
+    show (1 : ℂ) / (n.factorial : ℂ) = _
+    push_cast
+    ring
+  constructor
+  · rw [h, Complex.ofReal_re]
+    positivity
+  · rw [h, Complex.ofReal_im]
+
+/-- `exp` is genuinely entire: `Σ ‖1/n!‖ rⁿ` converges for every `r ≥ 0`. -/
+theorem expFunction_isEntire : IsEntire expFunction := by
+  intro r hr
+  refine (Real.summable_pow_div_factorial r).congr fun n => ?_
+  have h : ‖expFunction.coeff n‖ = 1 / (n.factorial : ℝ) := by
+    show ‖(1 : ℂ) / (n.factorial : ℂ)‖ = _
+    rw [norm_div, norm_one, Complex.norm_natCast]
+  rw [h]
+  ring
+
+/-- The term/modulus ratio of `exp` is at most `1` for every `r ≥ 0`. -/
+theorem expFunction_ratio_le_one {r : ℝ} (hr : 0 ≤ r) :
+    termModulusRatio expFunction r ≤ 1 :=
+  termModulusRatio_le_one_of_nonneg expFunction hr expFunction_coeff_nonneg
+    (expFunction_isEntire r hr)
+
 end Erdos227
