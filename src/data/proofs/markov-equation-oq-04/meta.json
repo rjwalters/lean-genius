@@ -76,10 +76,19 @@
     },
     {
       "id": "sec-headline",
-      "title": "Headline Statements and Consequences",
+      "title": "Headline: All Three Pairs Are Coprime",
       "startLine": 108,
+      "endLine": 135,
+      "summary": "markov_coprime + the three projections markov_coprime_12/23/13, and markov_gcd_eq_one restating pairwise coprimality in Int.gcd form.",
+      "mathContext": "$\\gcd(x,y)=\\gcd(y,z)=\\gcd(x,z)=1$ for every positive Markov triple."
+    },
+    {
+      "id": "sec-parity",
+      "title": "The Parity Corollary: At Most One Even Coordinate",
+      "startLine": 137,
       "endLine": 165,
-      "summary": "markov_coprime + the three projections, markov_gcd_eq_one (Int.gcd form), not_two_dvd_both (a coprime pair cannot share the non-unit factor 2), markov_at_most_one_even / markov_not_both_even (no two coordinates simultaneously even), and sanity checks on small triples like (2,5,29)."
+      "summary": "not_two_dvd_both (a coprime pair cannot share the non-unit factor 2), markov_at_most_one_even / markov_not_both_even (no two coordinates are simultaneously even), and sanity checks on small triples like (2,5,29).",
+      "mathContext": "Coprimality forbids a common factor of 2 in any pair, so at most one of $x,y,z$ is even."
     }
   ],
   "conclusion": {
