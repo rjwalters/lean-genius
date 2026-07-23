@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-randomized-maxcut-oq-05",
+      "title": "Module Overview: Rigidity Characterization for Max-Cut",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "States the entry's headline result: the base entry's upper bound maxCutValue G ≤ |E(G)| is attained exactly when G is bipartite, giving a rigidity characterization maxCutValue G = |E(G)| ↔ Nonempty (G.Coloring Bool), plus the corollary computing the max cut of complete bipartite graphs.",
+      "mathContext": "$\\text{maxCutValue } G = |E(G)| \\iff \\text{Nonempty}(G.\\text{Coloring Bool})$; corollary $\\text{maxCutValue}(K_{m,n}) = mn$."
+    },
+    {
       "id": "edge-crossing",
       "title": "Part I: When an Edge Is Crossed",
       "startLine": 37,
