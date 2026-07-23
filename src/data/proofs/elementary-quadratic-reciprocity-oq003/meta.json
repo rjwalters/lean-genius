@@ -46,7 +46,8 @@
       "**The diagonal is the case that matters.** Although Mathlib's lemma is stated for two independent characters, the higher-reciprocity application only ever uses φ = χ — the reciprocity symbol is read off J(χ,χ). Isolating the diagonal gives the exact statement the downstream argument cites.",
       "**Integrality is what makes the reciprocity symbol well-defined.** Reading the symbol off J(χ,χ) modulo a prime of ℤ[ζ_n] presupposes J(χ,χ) ∈ ℤ[ζ_n]; this membership is the structural prerequisite, not an afterthought.",
       "**Order ↔ power-triviality.** Downstream a character usually arrives with a known order n; `pow_orderOf_eq_one` converts `orderOf χ = n` into `χ ^ n = 1`, so the integrality lemma can be applied without restating the power hypothesis by hand.",
-      "**Subring membership is weaker than integrality — and the gap is bridged by finiteness.** Living in `Algebra.adjoin ℤ {μ}` is not by itself `IsIntegral ℤ`; the upgrade hinges on the fact that adjoining a *single integral* element (the root of unity μ) yields a module-finite extension, after which `IsIntegral.of_mem_of_fg` makes every element integral. The same `μ` that names the cyclotomic ring is also what forces it to be finite over ℤ."
+      "**Subring membership is weaker than integrality — and the gap is bridged by finiteness.** Living in `Algebra.adjoin ℤ {μ}` is not by itself `IsIntegral ℤ`; the upgrade hinges on the fact that adjoining a *single integral* element (the root of unity μ) yields a module-finite extension, after which `IsIntegral.of_mem_of_fg` makes every element integral. The same `μ` that names the cyclotomic ring is also what forces it to be finite over ℤ.",
+      "**The five lemmas are deliberately asymmetric.** The `orderOf`-rebased variant is supplied only for the diagonal case (`jacobiSum_self_mem_algebraAdjoin_of_orderOf`, `jacobiSum_self_isIntegral_of_orderOf`) — there is no two-character `jacobiSum_isIntegral_of_orderOf`. This mirrors how the fact is actually consumed downstream: cubic/quartic reciprocity always presents χ by its order (3 or 4) against itself, never as an independent second character φ, so a general-form order-of variant would have no client."
     ],
     "prerequisites": [
       "Multiplicative characters on finite fields (`MulChar`) and their orders",
@@ -103,11 +104,20 @@
       "summary": "`jacobiSum_self_mem_algebraAdjoin` — the φ = χ specialization of Mathlib's two-character lemma, one line — and `jacobiSum_self_mem_algebraAdjoin_of_orderOf`, the same conclusion from `orderOf χ = n` via `pow_orderOf_eq_one`."
     },
     {
-      "id": "integrality-upgrade",
-      "title": "Upgrade to Algebraic Integrality over ℤ",
+      "id": "integrality-upgrade-general",
+      "title": "Upgrade to Algebraic Integrality: General Two-Character Form",
       "startLine": 79,
+      "endLine": 91,
+      "summary": "`jacobiSum_isIntegral` upgrades subring membership to `IsIntegral ℤ (jacobiSum χ φ)`, routing through `IsPrimitiveRoot.isIntegral` → `IsIntegral.fg_adjoin_singleton` → `IsIntegral.of_mem_of_fg`.",
+      "mathContext": "$\\mu$ integral over $\\mathbb{Z} \\Rightarrow \\mathbb{Z}[\\mu]$ module-finite over $\\mathbb{Z} \\Rightarrow$ every element, including $J(\\chi,\\varphi)$, is integral."
+    },
+    {
+      "id": "integrality-upgrade-diagonal",
+      "title": "Diagonal Specialization: J(χ,χ) Is an Algebraic Integer",
+      "startLine": 93,
       "endLine": 100,
-      "summary": "`jacobiSum_isIntegral` and its diagonal `jacobiSum_self_isIntegral` upgrade subring membership to `IsIntegral ℤ`, routing through `IsPrimitiveRoot.isIntegral` → `IsIntegral.fg_adjoin_singleton` → `IsIntegral.of_mem_of_fg`."
+      "summary": "`jacobiSum_self_isIntegral` specializes the general upgrade to φ = χ — the precise sense in which the diagonal Jacobi sum is a cyclotomic integer, the object whose reduction modulo a prime of ℤ[ζ_n] defines the reciprocity symbol.",
+      "mathContext": "$\\mathrm{IsIntegral}\\ \\mathbb{Z}\\ (J(\\chi,\\chi))$."
     },
     {
       "id": "orderof-variant-checks",
