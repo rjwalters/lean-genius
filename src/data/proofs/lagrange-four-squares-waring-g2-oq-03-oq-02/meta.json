@@ -30,6 +30,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring framing the two-summand analogue of the Gauss Eureka companion (three triangular ⟺ 8n+3 three squares), stating the main equivalence (n a sum of two triangular numbers iff 4n+1 a sum of two integer squares), sketching the rotation-identity proof strategy for both directions, and recording that the two-square theorem's availability in Mathlib makes this result unconditional and axiom-free (unlike Eureka). Imports Mathlib and opens namespace TwoTrianglesTwoSquares.",
+      "mathContext": "$4(T(a)+T(b))+1=(a+b+1)^2+(a-b)^2$ is the rotation bridging two-triangular sums to two-square sums of $4n+1$."
+    },
+    {
       "id": "triangular-setup",
       "title": "Triangular Numbers and Index Symmetry",
       "startLine": 41,
@@ -38,19 +46,27 @@
       "mathContext": "T(k)=k(k+1)/2 with 2T(k)=k(k+1) exact, and T(k)=T(−1−k)."
     },
     {
-      "id": "rotation",
-      "title": "The Rotation Identity and Both Directions",
+      "id": "rotation-forward",
+      "title": "Rotation Identity and the Forward Direction",
       "startLine": 74,
+      "endLine": 90,
+      "summary": "sum_tri_identity establishes 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)² via linear_combination on two_mul_tri_int. isSumTwoTriangular_to_sq reads this identity left-to-right at the witnesses X=a+b+1, Y=a−b, giving the forward direction: a sum of two triangular numbers makes 4n+1 a sum of two integer squares.",
+      "mathContext": "Instantiating $4(T(a)+T(b))+1=(a+b+1)^2+(a-b)^2$ at $X=a+b+1,\\,Y=a-b$ gives the forward implication directly."
+    },
+    {
+      "id": "rotation-backward",
+      "title": "Division-Free Backward Direction and the Main Equivalence",
+      "startLine": 92,
       "endLine": 145,
-      "summary": "The identity 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)² (sum_tri_identity) drives the forward direction (isSumTwoTriangular_to_sq) and, via the division-free parity inversion core_pq, the backward direction (sq_to_isSumTwoTriangular), assembled into the main equivalence isSumTwoTriangular_iff.",
-      "mathContext": "n = T(a)+T(b) ⟺ 4n+1 = X²+Y² over ℤ, via the unimodular rotation (a,b)↦(a+b+1,a−b)."
+      "summary": "core_pq packages the division-free arithmetic core: from (2s+1)²+(2t)²=4n+1 it produces p=s+t, q=s−t with 2n=p(p+1)+q(q+1). sq_to_isSumTwoTriangular splits on the parity of X,Y — the both-even and both-odd cases are excluded as 4∣1 contradictions since 4n+1≡1 (mod 4) — applies core_pq to the mixed-parity case, then converts the integer indices back to natural triangular numbers via exists_nat_two_mul_tri. isSumTwoTriangular_iff assembles both directions into the headline equivalence.",
+      "mathContext": "$4n+1\\equiv 1\\pmod 4$ forces exactly one of $X,Y$ odd; writing the even one $2t$ and the odd one $2s+1$, the inverse rotation $p=s+t,\\,q=s-t$ recovers $2n=p(p+1)+q(q+1)$ with no division."
     },
     {
       "id": "characterization",
       "title": "Natural-Number Form and Arithmetic Characterization",
       "startLine": 147,
-      "endLine": 177,
-      "summary": "The int↔nat square bridge (int_sq_iff_nat_sq) gives the ℕ restatement isSumTwoTriangular_iff_nat, and composing with Mathlib's two-square theorem yields the decidable factorization test isSumTwoTriangular_iff_factorization.",
+      "endLine": 178,
+      "summary": "The int↔nat square bridge (int_sq_iff_nat_sq) gives the ℕ restatement isSumTwoTriangular_iff_nat, and composing with Mathlib's two-square theorem yields the decidable factorization test isSumTwoTriangular_iff_factorization. Closes the namespace.",
       "mathContext": "n = T(a)+T(b) ⟺ every prime q ≡ 3 (mod 4) divides 4n+1 to an even power."
     }
   ],
