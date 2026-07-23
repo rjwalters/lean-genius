@@ -81,16 +81,24 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Setup",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Module docstring stating Newton's recurrence, the three low-degree closed forms to be derived, and the validity for any finite σ (with higher eⱼ vanishing when card σ < k). The Mathlib import, the open Finset, the namespace, and the variables (σ finite, R a commutative ring).",
+      "endLine": 30,
+      "summary": "Module docstring stating Newton's recurrence, the three low-degree closed forms to be derived (p₁ = e₁, p₂ = e₁² - 2e₂, p₃ = e₁³ - 3e₁e₂ + 3e₃), and their validity for any finite σ (with higher eⱼ vanishing when card σ < k). Sketches the proof plan: p₁ immediate, p₂/p₃ by feeding the Newton recurrence explicit omega-computed index sets and closing with ring.",
       "mathContext": "$p_k = (-1)^{k+1} k\\,e_k - \\sum_{0<i<k} (-1)^i e_i\\, p_{k-i}$."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Variable Setup",
+      "startLine": 31,
+      "endLine": 37,
+      "summary": "Opens the Finset namespace, enters namespace NewtonPowerSum, and fixes the ambient variables: σ a finite index type and R a commutative ring, the ground data for MvPolynomial σ R throughout the file.",
+      "mathContext": "$\\sigma$ finite, $R$ a commutative ring; identities live in $\\mathrm{MvPolynomial}\\ \\sigma\\ R$."
     },
     {
       "id": "degree-one",
       "title": "Degree 1: p₁ = e₁",
-      "startLine": 40,
+      "startLine": 38,
       "endLine": 42,
       "summary": "psum_one_eq: both the power sum and the first elementary symmetric polynomial equal ∑ᵢ Xᵢ, so the identity is psum_one followed by esymm_one.",
       "mathContext": "$p_1 = e_1 = \\sum_i X_i$."
@@ -98,7 +106,7 @@
     {
       "id": "degree-two",
       "title": "Degree 2: p₂ = e₁² - 2e₂",
-      "startLine": 44,
+      "startLine": 43,
       "endLine": 56,
       "summary": "psum_two_eq: apply the recurrence at k = 2, reduce its inner index set to the singleton {(1,1)} via an omega-proved set equality, evaluate by Finset.sum_singleton, substitute p₁ = e₁, and close with push_cast; ring.",
       "mathContext": "$p_2 = e_1^2 - 2e_2$."
@@ -106,9 +114,9 @@
     {
       "id": "degree-three",
       "title": "Degree 3: p₃ = e₁³ - 3e₁e₂ + 3e₃",
-      "startLine": 58,
+      "startLine": 57,
       "endLine": 73,
-      "summary": "psum_three_eq: apply the recurrence at k = 3, reduce its inner index set to {(1,2),(2,1)} via omega, evaluate by Finset.sum_pair, substitute the degree-2 and degree-1 identities, and close with push_cast; ring.",
+      "summary": "psum_three_eq: apply the recurrence at k = 3, reduce its inner index set to {(1,2),(2,1)} via omega, evaluate by Finset.sum_pair, substitute the degree-2 and degree-1 identities, and close with push_cast; ring. Closes the NewtonPowerSum namespace.",
       "mathContext": "$p_3 = e_1^3 - 3e_1 e_2 + 3e_3$."
     }
   ],
