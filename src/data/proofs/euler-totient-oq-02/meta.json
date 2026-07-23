@@ -44,6 +44,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Multiplicativity of Euler's Totient Function",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "States the multiplicativity property $\\varphi(mn) = \\varphi(m)\\cdot\\varphi(n)$ for coprime $m,n$, which combined with the prime-power formula $\\varphi(p^k) = p^{k-1}(p-1)$ gives the product formula $\\varphi(n) = n \\prod_{p \\mid n}(1-1/p)$; the proof route is via the Chinese Remainder Theorem isomorphism $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$.",
+      "mathContext": "Multiplicativity follows because coprime moduli give a ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ (CRT), which restricts to a bijection on unit groups."
+    },
+    {
       "id": "multiplicativity",
       "title": "Part I: The Multiplicative Property",
       "startLine": 40,
