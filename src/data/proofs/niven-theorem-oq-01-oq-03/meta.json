@@ -115,12 +115,19 @@
       "mathContext": "sin(2π/3) = √3/2 ∉ ℚ."
     },
     {
-      "id": "classification",
-      "title": "The Classification sin(2π/n) ⟺ n ∈ {1,2,4,12}",
+      "id": "classification-forward",
+      "title": "The Classification: Forward Direction",
       "startLine": 134,
+      "endLine": 195,
+      "summary": "sin_two_pi_div_rational_iff, forward direction: rationality of sin(2π/n) forces n ∈ {1,2,4,12}. Splits n < 4 (interval_cases, with n = 3 discharged by the irrationality lemma) and n ≥ 4 (the angle 2π/n lies in (0, π/2]; Niven's theorem plus positivity of sin restrict it to {1/2, 1}; strictMonoOn_sin.injOn then pins 2π/n = π/6, so n = 12, or 2π/n = π/2, so n = 4).",
+      "mathContext": "$\\sin(2\\pi/n) \\in \\mathbb{Q} \\Rightarrow n \\in \\{1,2,4,12\\}$."
+    },
+    {
+      "id": "classification-reverse",
+      "title": "The Classification: Reverse Direction",
+      "startLine": 196,
       "endLine": 210,
-      "summary": "sin_two_pi_div_rational_iff: forward direction splits n < 4 (interval_cases, with n = 3 discharged by the irrationality lemma) and n ≥ 4 (angle in (0, π/2]; Niven + positivity ⇒ sin ∈ {1/2, 1}; strictMonoOn_sin.injOn pins 2π/n = π/6 ⇒ n = 12 or = π/2 ⇒ n = 4). Reverse direction evaluates the five special angles.",
-      "mathContext": "n ≥ 1 ⇒ (sin(2π/n) ∈ ℚ ⟺ n ∈ {1,2,4,12})."
+      "summary": "sin_two_pi_div_rational_iff, reverse direction: five explicit special-angle evaluations confirm sin(2π/n) ∈ ℚ for each n ∈ {1,2,4,12} (sin(2π) = 0, sin(π) = 0, sin(π/2) = 1, sin(π/6) = 1/2)."
     }
   ],
   "conclusion": {
