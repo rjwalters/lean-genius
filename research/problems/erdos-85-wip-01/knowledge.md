@@ -558,3 +558,47 @@ common-neighbour-matrix kernel check via `not_containsC4_of_forall_common_le_one
   candidate general lemma; formalizing the general induction is real work
   (the decide route only does fixed n).
 - Deep: KST asymptotics, monotonicity core f(n+1) ≥ f(n) (the actual #85).
+
+## Session 2026-07-23 (researcher-1) — ABSTRACT SURGERY LEMMA + f(13) ≥ 4 (draft, verify below)
+
+**Target**: the "general induction is real work" item — formalize the vertex-adding
+surgery ABSTRACTLY so future rungs need only a small config check, not a fresh
+whole-graph decide. Applied to petersen12 (config a=4, b=9, c=7) for f(13) ≥ 4 —
+the first rung beyond the counting range (C(13,2) = 78 = 13·6 kills the cherry
+bound at k=4), so f(13) ∈ {4,5} is the honest endpoint (upper f(13) ≤ 4 blocked).
+
+**Key mathematical discovery (correcting the recorded surgery note)**: the
+2026-07-22f session's surgery justification implicitly used girth 5 ("(a,b),(b,c)
+were adjacent (0 common nbrs, girth 5)"). For general C₄-free G (which may have
+triangles!) the correct hypothesis set is:
+  a~b, b~c, a≁c, a≠c, AND edges ab, bc each in NO triangle
+  (common(a,b) = common(b,c) = ∅ in element form: ∀z, ¬(z~a ∧ z~b) etc.)
+common(a,c) = {b} is then AUTOMATIC (b is common; C₄-free caps at 1). The
+preservation proof: common nbrs of a some-some pair inside {a,b,c} are impossible
+(pairs (a,b),(b,c): triangle-freeness; pair (a,c): unique common = b, but the
+DELETED edge a–b means b is no longer adjacent to a — the ¬(x=a∧y=b) conjunct);
+new-vertex pairs reduce to the same key lemma.
+
+### Architecture (in Erdos85Problem.lean, section Surgery)
+- `surgery G a b c : SimpleGraph (Option V)` — some-some = G minus edge ab;
+  none ~ {a,b,c}. Match-defined Adj + Iff.rfl simp lemmas + DecidableRel.
+- Degree lower bounds WITHOUT Finset algebra: uniform injection
+  y ↦ if (x=a∧y=b)∨(x=b∧y=a) then none else some y from old nbhd(x) into new
+  nbhd(some x) (`card_le_card_of_injOn`); new vertex: {some a, some b, some c} ⊆ nbhd.
+- `surgery_common_le_one` — via `Finset.card_le_one` element form; single `hkey`
+  lemma dispatches all 9 {a,b,c}×{a,b,c} cases; both none-involving pair shapes
+  reduce to hkey.
+- `four_le_minDegreeForC4_of_witness` — generic sInf assembly extracted (was
+  inlined 3×), n−1 nonemptiness element.
+- `surgeryFin` = comap along `finSuccEquiv n` (Fin (n+1) ≃ Option (Fin n));
+  degree via symm-injection, containsC4 pullback by composing the embedding.
+- f(13) facts all 12-vertex decides (adjacencies, ≠, two ∀z triangle-freeness
+  checks) — NO 13-vertex decide anywhere.
+
+### Remaining
+- General ∀ n ≥ 10 induction needs CONFIG EXISTENCE in the iterated witnesses
+  (an edge pair ab, bc both triangle-free with a≁c) — not automatic in arbitrary
+  C₄-free min-deg-3 graphs (friendship-type obstructions); route: maintain an
+  invariant or use disjoint unions (base cases 10..19 + G ⊕ Petersen step).
+- Upper halves beyond n = 12 (f(13) ≤ 4) need real ex(n;C₄) input — blocked.
+- Deep: KST asymptotics, monotonicity core (the actual #85) OPEN.

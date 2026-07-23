@@ -2321,4 +2321,328 @@ theorem minDegreeForC4_twelve : minDegreeForC4 12 = 4 := by
   have hge := four_le_minDegreeForC4_twelve
   omega
 
+/-! ## The abstract vertex-adding surgery: `C₄`-free min-degree-3 witnesses grow
+
+The `f(11)` and `f(12)` witnesses were built by hand-picked surgeries on the
+Petersen graph, each verified by a fixed-size kernel `decide`.  This section
+formalizes the surgery **abstractly**, so that every future lower-bound rung
+`f(n+1) ≥ 4` reduces to exhibiting a small *configuration* in the current
+`n`-vertex witness instead of re-verifying an entire graph:
+
+given a `C₄`-free graph `G` (via the common-neighbour criterion) and vertices
+`a, b, c` with `a ~ b`, `b ~ c`, `a ≁ c`, where the edges `ab` and `bc` each
+lie in **no triangle**, the surgery
+
+    delete the edge `a–b`, add a new vertex `v` adjacent to `a`, `b`, `c`
+
+produces a graph on one more vertex that again has min-degree `≥ 3` (if `G`
+did) and all pairwise common neighbourhoods of size `≤ 1`.  The triangle-free
+hypotheses are exactly what the general step needs (they were automatic in the
+girth-5 Petersen but fail for arbitrary `C₄`-free graphs — `G` may have
+triangles elsewhere; only the two surgered edges must avoid them).  Note
+`common(a,c) = {b}` is automatic: `b` is a common neighbour and `C₄`-freeness
+caps the count at one.
+
+Applied to `petersen12` with the configuration `a = 4, b = 9, c = 7` (both
+edges triangle-free by a kernel check), this yields **`f(13) ≥ 4`** — beyond
+the counting range, where the upper bound `f(13) ≤ 4` is genuinely blocked —
+so `f(13) ∈ {4, 5}`. -/
+
+section Surgery
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+/-- The adjacency relation of the surgered graph: old edges minus `a–b`
+(`some`-`some`), plus a new vertex `none` adjacent to exactly `a`, `b`, `c`. -/
+def surgeryAdj (G : SimpleGraph V) (a b c : V) : Option V → Option V → Prop
+  | some x, some y => G.Adj x y ∧ ¬(x = a ∧ y = b) ∧ ¬(x = b ∧ y = a)
+  | some x, none => x = a ∨ x = b ∨ x = c
+  | none, some y => y = a ∨ y = b ∨ y = c
+  | none, none => False
+
+/-- **The vertex-adding surgery**: delete the edge `a–b` of `G`, add a new
+vertex (`none`) adjacent to `a`, `b`, and `c`. -/
+def surgery (G : SimpleGraph V) (a b c : V) : SimpleGraph (Option V) where
+  Adj := surgeryAdj G a b c
+  symm.symm := by
+    intro p q h
+    match p, q with
+    | some x, some y =>
+        exact ⟨h.1.symm, fun hc => h.2.2 ⟨hc.2, hc.1⟩, fun hc => h.2.1 ⟨hc.2, hc.1⟩⟩
+    | some x, none => exact h
+    | none, some y => exact h
+    | none, none => exact h.elim
+  loopless.irrefl := by
+    intro p h
+    match p with
+    | some x => exact G.loopless.irrefl x h.1
+    | none => exact h
+
+instance surgeryDecidableRel (G : SimpleGraph V) [DecidableRel G.Adj] (a b c : V) :
+    DecidableRel (surgery G a b c).Adj := fun p q =>
+  match p, q with
+  | some x, some y =>
+      inferInstanceAs (Decidable (G.Adj x y ∧ ¬(x = a ∧ y = b) ∧ ¬(x = b ∧ y = a)))
+  | some x, none => inferInstanceAs (Decidable (x = a ∨ x = b ∨ x = c))
+  | none, some y => inferInstanceAs (Decidable (y = a ∨ y = b ∨ y = c))
+  | none, none => inferInstanceAs (Decidable False)
+
+@[simp] theorem surgery_adj_some_some {G : SimpleGraph V} {a b c x y : V} :
+    (surgery G a b c).Adj (some x) (some y) ↔
+      G.Adj x y ∧ ¬(x = a ∧ y = b) ∧ ¬(x = b ∧ y = a) := Iff.rfl
+
+@[simp] theorem surgery_adj_some_none {G : SimpleGraph V} {a b c x : V} :
+    (surgery G a b c).Adj (some x) none ↔ (x = a ∨ x = b ∨ x = c) := Iff.rfl
+
+@[simp] theorem surgery_adj_none_some {G : SimpleGraph V} {a b c y : V} :
+    (surgery G a b c).Adj none (some y) ↔ (y = a ∨ y = b ∨ y = c) := Iff.rfl
+
+@[simp] theorem surgery_adj_none_none {G : SimpleGraph V} {a b c : V} :
+    ¬ (surgery G a b c).Adj none none := fun h => h
+
+/-- **Old vertices keep their degree (at least)**: the map sending the deleted
+neighbour `b` of `a` (resp. `a` of `b`) to the new vertex and every other
+neighbour to itself injects the old neighbourhood of `x` into the new one. -/
+theorem surgery_degree_some {G : SimpleGraph V} [DecidableRel G.Adj] {a b c : V}
+    (hne : a ≠ b) (x : V) :
+    G.degree x ≤ (surgery G a b c).degree (some x) := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+      ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn
+    (fun y => if (x = a ∧ y = b) ∨ (x = b ∧ y = a) then none else some y)
+  · intro y hy
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hy ⊢
+    by_cases hcase : (x = a ∧ y = b) ∨ (x = b ∧ y = a)
+    · rw [if_pos hcase]
+      rcases hcase with ⟨hxa, _⟩ | ⟨hxb, _⟩
+      · rw [surgery_adj_some_none]; exact Or.inl hxa
+      · rw [surgery_adj_some_none]; exact Or.inr (Or.inl hxb)
+    · rw [if_neg hcase]
+      rw [surgery_adj_some_some]
+      exact ⟨hy, fun h => hcase (Or.inl h), fun h => hcase (Or.inr h)⟩
+  · intro y₁ h₁ y₂ h₂ heq
+    simp only [] at heq
+    by_cases hc₁ : (x = a ∧ y₁ = b) ∨ (x = b ∧ y₁ = a) <;>
+      by_cases hc₂ : (x = a ∧ y₂ = b) ∨ (x = b ∧ y₂ = a)
+    · rcases hc₁ with ⟨hxa, hy₁⟩ | ⟨hxb, hy₁⟩ <;>
+        rcases hc₂ with ⟨hxa₂, hy₂⟩ | ⟨hxb₂, hy₂⟩
+      · rw [hy₁, hy₂]
+      · exact absurd (hxa ▸ hxb₂ : a = b) hne
+      · exact absurd (hxa₂ ▸ hxb : a = b) hne
+      · rw [hy₁, hy₂]
+    · rw [if_pos hc₁, if_neg hc₂] at heq
+      exact absurd heq (by simp)
+    · rw [if_neg hc₁, if_pos hc₂] at heq
+      exact absurd heq (by simp)
+    · rw [if_neg hc₁, if_neg hc₂] at heq
+      exact Option.some.inj heq
+
+/-- **The new vertex has degree at least `3`**: `a`, `b`, `c` are three
+distinct neighbours. -/
+theorem surgery_degree_none {G : SimpleGraph V} [DecidableRel G.Adj] {a b c : V}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    3 ≤ (surgery G a b c).degree none := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  have hsub : ({some a, some b, some c} : Finset (Option V)) ⊆
+      (surgery G a b c).neighborFinset none := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rw [SimpleGraph.mem_neighborFinset]
+    rcases hw with rfl | rfl | rfl
+    · rw [surgery_adj_none_some]; exact Or.inl rfl
+    · rw [surgery_adj_none_some]; exact Or.inr (Or.inl rfl)
+    · rw [surgery_adj_none_some]; exact Or.inr (Or.inr rfl)
+  calc 3 = ({some a, some b, some c} : Finset (Option V)).card := by
+        rw [Finset.card_insert_of_notMem (by simp [hab, hac]),
+            Finset.card_insert_of_notMem (by simp [hbc]), Finset.card_singleton]
+    _ ≤ _ := Finset.card_le_card hsub
+
+/-- **The surgery preserves the common-neighbour bound.**  If in `G` every pair
+of distinct vertices has at most one common neighbour, the edges `ab` and `bc`
+lie in no triangle, and `a ≁ c`, then every pair of distinct vertices of the
+surgered graph again has at most one common neighbour — so the result stays
+`C₄`-free. -/
+theorem surgery_common_le_one {G : SimpleGraph V} [DecidableRel G.Adj] {a b c : V}
+    (hab : G.Adj a b) (hbc : G.Adj b c) (hac : ¬ G.Adj a c) (hane : a ≠ c)
+    (htriab : ∀ z, G.Adj a z → G.Adj b z → False)
+    (htribc : ∀ z, G.Adj b z → G.Adj c z → False)
+    (hcom : ∀ x y : V, x ≠ y →
+      (G.neighborFinset x ∩ G.neighborFinset y).card ≤ 1) :
+    ∀ p q : Option V, p ≠ q →
+      ((surgery G a b c).neighborFinset p ∩ (surgery G a b c).neighborFinset q).card ≤ 1 := by
+  -- the common-neighbour bound of `G`, in element form
+  have hcom' : ∀ x y z₁ z₂ : V, x ≠ y → G.Adj x z₁ → G.Adj y z₁ →
+      G.Adj x z₂ → G.Adj y z₂ → z₁ = z₂ := by
+    intro x y z₁ z₂ hxy h1 h2 h3 h4
+    refine Finset.card_le_one.mp (hcom x y hxy) z₁ ?_ z₂ ?_
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨h1, h2⟩
+    · rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+        SimpleGraph.mem_neighborFinset]
+      exact ⟨h3, h4⟩
+  -- `b` is the unique common neighbour of the non-adjacent pair `(a, c)`
+  have huniq : ∀ z, G.Adj a z → G.Adj c z → z = b := fun z h1 h2 =>
+    hcom' a c z b hane h1 h2 hab hbc.symm
+  -- a common neighbour of a `some`-`some` pair inside `{a, b, c}` is impossible
+  have hkey : ∀ x y z : V, (x = a ∨ x = b ∨ x = c) → (y = a ∨ y = b ∨ y = c) →
+      x ≠ y → (surgery G a b c).Adj (some x) (some z) →
+      (surgery G a b c).Adj (some y) (some z) → False := by
+    intro x y z hx hy hxy hxz hyz
+    rw [surgery_adj_some_some] at hxz hyz
+    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+    · exact hxy rfl
+    · exact htriab z hxz.1 hyz.1
+    · -- x = a, y = c: z is a common neighbour of (a, c), so z = b; but the
+      -- surgered adjacency `some a ~ some z` forbids z = b (deleted edge)
+      exact hxz.2.1 ⟨rfl, huniq z hxz.1 hyz.1⟩
+    · exact htriab z hyz.1 hxz.1
+    · exact hxy rfl
+    · exact htribc z hxz.1 hyz.1
+    · exact hyz.2.1 ⟨rfl, huniq z hyz.1 hxz.1⟩
+    · exact htribc z hyz.1 hxz.1
+    · exact hxy rfl
+  intro p q hpq
+  rw [Finset.card_le_one]
+  intro w₁ hw₁ w₂ hw₂
+  rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mem_neighborFinset] at hw₁ hw₂
+  obtain ⟨hw₁p, hw₁q⟩ := hw₁
+  obtain ⟨hw₂p, hw₂q⟩ := hw₂
+  rcases p with _ | x <;> rcases q with _ | y
+  · exact absurd rfl hpq
+  · -- p = none, q = some y: all common neighbours are `some z` with
+    -- z ∈ {a, b, c} and z ~ y; two distinct such z collide via `hkey`
+    rcases w₁ with _ | z₁
+    · exact (surgery_adj_none_none hw₁p).elim
+    rcases w₂ with _ | z₂
+    · exact (surgery_adj_none_none hw₂p).elim
+    by_contra hne12
+    have hz₁ : z₁ = a ∨ z₁ = b ∨ z₁ = c := by rwa [surgery_adj_none_some] at hw₁p
+    have hz₂ : z₂ = a ∨ z₂ = b ∨ z₂ = c := by rwa [surgery_adj_none_some] at hw₂p
+    exact hkey z₁ z₂ y hz₁ hz₂ (fun h => hne12 (congrArg some h))
+      hw₁q.symm hw₂q.symm
+  · -- p = some x, q = none: mirror of the previous case
+    rcases w₁ with _ | z₁
+    · exact (surgery_adj_none_none hw₁q).elim
+    rcases w₂ with _ | z₂
+    · exact (surgery_adj_none_none hw₂q).elim
+    by_contra hne12
+    have hz₁ : z₁ = a ∨ z₁ = b ∨ z₁ = c := by rwa [surgery_adj_none_some] at hw₁q
+    have hz₂ : z₂ = a ∨ z₂ = b ∨ z₂ = c := by rwa [surgery_adj_none_some] at hw₂q
+    exact hkey z₁ z₂ x hz₁ hz₂ (fun h => hne12 (congrArg some h))
+      hw₁p.symm hw₂p.symm
+  · -- p = some x, q = some y
+    have hxy : x ≠ y := fun h => hpq (by rw [h])
+    rcases w₁ with _ | z₁ <;> rcases w₂ with _ | z₂
+    · rfl
+    · -- w₁ = none: x, y ∈ {a, b, c}, and z₂ is a `some` common neighbour
+      have hx : x = a ∨ x = b ∨ x = c := by rwa [surgery_adj_some_none] at hw₁p
+      have hy : y = a ∨ y = b ∨ y = c := by rwa [surgery_adj_some_none] at hw₁q
+      exact (hkey x y z₂ hx hy hxy hw₂p hw₂q).elim
+    · have hx : x = a ∨ x = b ∨ x = c := by rwa [surgery_adj_some_none] at hw₂p
+      have hy : y = a ∨ y = b ∨ y = c := by rwa [surgery_adj_some_none] at hw₂q
+      exact (hkey x y z₁ hx hy hxy hw₁p hw₁q).elim
+    · rw [surgery_adj_some_some] at hw₁p hw₁q hw₂p hw₂q
+      exact congrArg some (hcom' x y z₁ z₂ hxy hw₁p.1 hw₁q.1 hw₂p.1 hw₂q.1)
+
+end Surgery
+
+/-! ## Reusable lower-bound assembly, transport to `Fin (n+1)`, and `f(13) ≥ 4` -/
+
+/-- **Generic witness-to-lower-bound assembly**: a `C₄`-free graph of minimum
+degree `≥ 3` on `Fin n` (with `n ≥ 4`) forces `f(n) ≥ 4`.  Extracts the
+`sInf` argument used verbatim for `f(10)`, `f(11)`, `f(12)`. -/
+theorem four_le_minDegreeForC4_of_witness {n : ℕ} (hn : 4 ≤ n)
+    (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
+    (hdeg : 3 ≤ G.minDegree) (hC4 : ¬ containsC4 (Fin n) G) :
+    4 ≤ minDegreeForC4 n := by
+  have hne : {k : ℕ | ∀ (H : SimpleGraph (Fin n)) [DecidableRel H.Adj],
+      H.minDegree ≥ k → containsC4 (Fin n) H}.Nonempty := by
+    refine ⟨n - 1, fun H _ hmin => ?_⟩
+    rw [eq_top_of_minDegree_ge H hmin]
+    exact completeGraph_containsC4 hn
+  unfold minDegreeForC4
+  refine le_csInf hne (fun k hk => ?_)
+  by_contra hk4
+  rw [not_le] at hk4
+  exact hC4 (hk G (le_trans (by omega : k ≤ 3) hdeg))
+
+/-- The surgered graph, transported from `Option (Fin n)` to `Fin (n + 1)`
+along `finSuccEquiv`. -/
+def surgeryFin {n : ℕ} (G : SimpleGraph (Fin n)) (a b c : Fin n) :
+    SimpleGraph (Fin (n + 1)) :=
+  SimpleGraph.comap (⇑(finSuccEquiv n)) (surgery G a b c)
+
+instance surgeryFinDecidableRel {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (a b c : Fin n) :
+    DecidableRel (surgeryFin G a b c).Adj := fun u v =>
+  inferInstanceAs
+    (Decidable ((surgery G a b c).Adj (finSuccEquiv n u) (finSuccEquiv n v)))
+
+/-- Degrees only grow under the `finSuccEquiv` transport (they are in fact
+equal; the inequality is all that is needed). -/
+theorem surgeryFin_degree_ge {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] (a b c : Fin n) (u : Fin (n + 1)) :
+    (surgery G a b c).degree (finSuccEquiv n u) ≤ (surgeryFin G a b c).degree u := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree,
+      ← SimpleGraph.card_neighborFinset_eq_degree]
+  apply Finset.card_le_card_of_injOn (fun w => (finSuccEquiv n).symm w)
+  · intro w hw
+    simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] at hw ⊢
+    show (surgery G a b c).Adj (finSuccEquiv n u)
+      (finSuccEquiv n ((finSuccEquiv n).symm w))
+    rw [Equiv.apply_symm_apply]
+    exact hw
+  · intro w₁ _ w₂ _ h
+    exact (finSuccEquiv n).symm.injective h
+
+/-- `C₄`-freeness transports along the `finSuccEquiv` pullback. -/
+theorem surgeryFin_not_containsC4 {n : ℕ} (G : SimpleGraph (Fin n))
+    (a b c : Fin n) (h : ¬ containsC4 (Option (Fin n)) (surgery G a b c)) :
+    ¬ containsC4 (Fin (n + 1)) (surgeryFin G a b c) := by
+  rintro ⟨f, hinj, hadj⟩
+  exact h ⟨fun i => finSuccEquiv n (f i), (finSuccEquiv n).injective.comp hinj,
+    fun i j hij => hadj i j hij⟩
+
+/-- **`f(13) ≥ 4`** — the first rung beyond the counting range, via the
+abstract surgery applied to `petersen12` with the configuration
+`a = 4, b = 9, c = 7`: the edges `4–9` (spoke) and `9–7` (inner) are
+triangle-free, `4 ≁ 7`, and all remaining hypotheses are `12`-vertex kernel
+checks.  No `13`-vertex graph is ever `decide`d — the surgery lemmas carry
+the verification. -/
+theorem four_le_minDegreeForC4_thirteen : 4 ≤ minDegreeForC4 13 := by
+  have hab : petersen12.Adj 4 9 := by decide
+  have hbc : petersen12.Adj 9 7 := by decide
+  have hac : ¬ petersen12.Adj 4 7 := by decide
+  have hane : (4 : Fin 12) ≠ 7 := by decide
+  have htriab : ∀ z, petersen12.Adj 4 z → petersen12.Adj 9 z → False := by decide
+  have htribc : ∀ z, petersen12.Adj 9 z → petersen12.Adj 7 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen12_common_le_one
+  have hC4 : ¬ containsC4 (Fin 13) (surgeryFin petersen12 4 9 7) :=
+    surgeryFin_not_containsC4 petersen12 4 9 7
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen12 4 9 7).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen12 4 9 7 u)
+    rcases h : finSuccEquiv 12 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen12_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen12 4 9 7) hdeg hC4
+
+/-- **`f(13) ∈ {4, 5}`**: the lower bound is the surgery witness; the upper
+bound is the counting bound at `k = 5` (`13 ≤ 5·4`).  Pinning `f(13) = 4`
+needs an upper-bound mechanism beyond the cherry count (the true value is `4`
+in the literature) — the honest remaining gap. -/
+theorem minDegreeForC4_thirteen_mem :
+    minDegreeForC4 13 = 4 ∨ minDegreeForC4 13 = 5 := by
+  have hle : minDegreeForC4 13 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_thirteen
+  omega
+
 end Erdos85

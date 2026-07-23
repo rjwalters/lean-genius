@@ -18,10 +18,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 6,
-    "focus": "f(8)=3 PROVED (2026-07-22, local triangle-partition argument) — the recorded 'f(8) needs ex(8;C4)=11' blocker was WRONG: min-deg-3 on 8 vertices reduces to the 3-regular case (cherry count + handshake parity kill any degree-4+ vertex), and a 3-regular C4-free graph on 8 vertices is impossible purely locally (every vertex lies in a unique triangle => triangles partition 8 vertices into 3-sets, 3∤8). Exact table complete 1<=n<=8: f = 1,2,3,2,3,3,3,3. Remaining routes (f(9), f(10)=4 Petersen, odd-s Beatty, monotonicity core) are deep; blockers updated.",
+    "iteration": 7,
+    "focus": "2026-07-23: ABSTRACT vertex-adding surgery formalized (section Surgery in Erdos85Problem.lean) — general lemma set replacing per-n whole-graph decides: surgery G a b c on Option V, degree preservation via uniform injection, common-neighbour <= 1 preservation (hypotheses: a~b, b~c, a-not-c, edges ab/bc triangle-free — corrects the girth-5-implicit note), generic four_le_minDegreeForC4_of_witness, finSuccEquiv comap transport. Applied to petersen12 (a=4,b=9,c=7): f(13) >= 4, so f(13) in {4,5} — first rung beyond the counting range. No 13-vertex decide anywhere.",
     "blockers": [
       {
         "route": "RESOLVED 2026-07-22 (was: f(7)=3, then f(8)=3): handshake-parity boost proved f(7)=3; a LOCAL triangle-partition argument (no ex(n;C4) input) proved f(8)=3. Residual blocked part: upper-Beatty points beyond j=1 (n = s^2+s+j, j>=2), odd-s points, and f(9) still need ex(n;C4)-strength input.",
@@ -49,7 +49,7 @@
         "blockedAt": "2026-07-22"
       }
     ],
-    "nextAction": "STAND DOWN on elementary work. Reopen only per a blocker reopenCriterion: an ex(n;C4) edge bound (unlocks f(9)), a decide-free Petersen (f(10)=4), a dense C4-free family (KST lower bound), or the open monotonicity core. Note: the triangle-partition trick is 8-specific. At n=9 the cherry count is silent (9*C(3,2)=27 < 36=C(9,2)) so it cannot reduce min-deg 3 to a regular case; pinning f(9) in {3,4} needs either a C4-free min-deg-3 graph on 9 vertices (would give f(9)>=4) or an ex(9;C4)-strength edge bound.",
+    "nextAction": "Optional: chain surgery for f(14..19) lower rungs (config per step, cheap decides); general all-n>=10 theorem needs config-EXISTENCE argument (blocked route: not automatic in arbitrary C4-free graphs). Upper halves beyond n=12 need real ex(n;C4) input (blocked). Deep: KST asymptotics, monotonicity core.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -57,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR PROGRESS (researcher-1, 2026-07-22f, host-verified, standard triple): f(11) = 4 AND f(12) = 4 PROVED axiom-free via vertex-adding surgery on the Petersen graph (delete edge a-b, add v ~ {a,b,c}) — exact table COMPLETE for 1 <= n <= 12: f = 1,2,3,2,3,3,3,3,3,4,4,4, the full range the elementary cherry count reaches (12 = 4*3 is the boundary case). Remaining: f(13) upper bound needs new mechanism (counting gives only <= 5); general f(n) >= 4 for n >= 10 via iterated surgery; deep KST asymptotics, monotonicity core.",
+    "progressSummary": "PROGRESS: exact table 1..12 complete (f = 1,2,3,2,3,3,3,3,3,4,4,4) + f(13) in {4,5} via the NEW abstract surgery engine (2026-07-23): the vertex-adding surgery is now a general lemma (delete edge ab, add v~{a,b,c}; needs ab, bc triangle-free, a-not-c) with degree and common-neighbour preservation proved abstractly, plus generic witness assembly and finSuccEquiv transport. Future lower rungs reduce to config checks. Blocked: upper bounds beyond n=12 (need ex(n;C4)), general all-n config existence. Deep: KST asymptotics, monotonicity (the actual #85).",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -99,7 +99,11 @@
       "petersen (explicit edge-list) + petersen_degree + petersen_common_le_one in Erdos85Problem.lean",
       "exists_two_common_of_containsC4 + not_containsC4_of_forall_common_le_one (reusable C4-freeness criterion) in Erdos85Problem.lean",
       "petersen11/petersen11Edges + degree/common-neighbour kernel checks + four_le_minDegreeForC4_eleven + minDegreeForC4_eleven (f(11)=4) in Erdos85Problem.lean",
-      "petersen12/petersen12Edges + degree/common-neighbour kernel checks + four_le_minDegreeForC4_twelve + minDegreeForC4_twelve (f(12)=4) in Erdos85Problem.lean"
+      "petersen12/petersen12Edges + degree/common-neighbour kernel checks + four_le_minDegreeForC4_twelve + minDegreeForC4_twelve (f(12)=4) in Erdos85Problem.lean",
+      "surgery/surgeryAdj + simp lemmas + DecidableRel (Erdos85Problem.lean section Surgery)",
+      "surgery_degree_some, surgery_degree_none, surgery_common_le_one (the abstract engine)",
+      "four_le_minDegreeForC4_of_witness (generic sInf assembly), surgeryFin + degree/C4 transport along finSuccEquiv",
+      "four_le_minDegreeForC4_thirteen, minDegreeForC4_thirteen_mem (f(13) in {4,5})"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -134,7 +138,11 @@
       "Both registered exact-value blockers on this problem fell in one day (f(9) via elementary pinch+pigeonhole, f(10) via common-neighbour extraction) — extremal-table and enumeration fears repeatedly overestimate the difficulty",
       "Vertex-adding surgery preserves C4-freeness + min degree 3: DELETE edge a-b, ADD vertex v ~ {a,b,c} with c a neighbour of b. The unique (a,c) common neighbour was exactly b (deleted as v arrives); outside vertices adjacent to two of {a,b,c} would have been a second common neighbour beforehand. Beats the parity obstruction (no 3-regular girth-5 graph at odd order).",
       "Counting range boundary: n <= k(k-1) with k=4 holds iff n <= 12; C(13,2) = 78 = 13*6 fails strictly, so f(13) <= 4 needs genuinely new upper-bound input (edge-extremal ex(n;C4) bound).",
-      "Surgery iterates: every n >= 10 admits a min-deg-3 C4-free graph, so f(n) >= 4 for all n >= 10 is a candidate general lemma (induction is real work; decide route only covers fixed n)."
+      "Surgery iterates: every n >= 10 admits a min-deg-3 C4-free graph, so f(n) >= 4 for all n >= 10 is a candidate general lemma (induction is real work; decide route only covers fixed n).",
+      "The correct abstract surgery hypotheses are NOT girth-5: a~b, b~c, a-not-adjacent-c, a != c, plus edges ab and bc each in no triangle. common(a,c) = {b} is automatic (C4-freeness caps at 1). The deleted a-b edge is what kills the second common neighbour of (a,c) in the surgered graph",
+      "Degree preservation without Finset algebra: the uniform map y -> if (x=a and y=b) or (x=b and y=a) then none else some y injects old neighbourhoods into new ones — one lemma covers a, b, and untouched vertices simultaneously",
+      "Set.MapsTo goals from Finset.card_le_card_of_injOn carry Set-coerced Finset membership: simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] before adjacency reasoning",
+      "f(13) is the first n where the lower bound comes from a transported abstract construction rather than a fixed-n kernel decide — the surgery engine makes every future rung a small config check"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
