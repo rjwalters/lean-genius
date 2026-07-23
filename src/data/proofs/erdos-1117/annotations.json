@@ -30,7 +30,7 @@
     },
     "type": "definition",
     "title": "IsEntire — Entire Function Predicate",
-    "content": "Declares `IsEntire` as an axiom: a predicate asserting that $f : \\mathbb{C} \\to \\mathbb{C}$ is holomorphic on all of $\\mathbb{C}$. Entire functions form the natural domain for this problem — they include polynomials, exponentials, and trigonometric functions. The axiomatization avoids the complexity of formalizing differentiability conditions in Lean while preserving the logical structure.",
+    "content": "Defines `IsEntire` as `Differentiable ℂ f`: a predicate asserting that $f : \\mathbb{C} \\to \\mathbb{C}$ is holomorphic on all of $\\mathbb{C}$. Entire functions form the natural domain for this problem — they include polynomials, exponentials, and trigonometric functions. This was formerly an axiom but is now a concrete definition built directly on Mathlib's `Differentiable`.",
     "mathContext": "$f$ is entire if $f$ is holomorphic on $\\mathbb{C}$, i.e., $f'(z)$ exists for all $z \\in \\mathbb{C}$.",
     "significance": "key",
     "relatedConcepts": [
