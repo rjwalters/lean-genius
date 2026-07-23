@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sqrt2-from-axioms-oq-01",
+      "title": "Module Overview: √p Irrational for Prime p, From Axioms",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Generalizes the from-scratch √2-irrationality proof to √p for any prime p, using only ring/omega/linarith/nlinarith. Identifies the key generalization step: the √2 proof's 'n² even ⇒ n even' step is the p=2 case of Euclid's lemma (p | ab ⇒ p|a ∨ p|b), which is taken as the working definition of prime here (equivalent to, but more directly usable than, the classical divisor definition, whose equivalence needs Bézout's identity).",
+      "mathContext": "Euclid's criterion $p \\mid ab \\Rightarrow p\\mid a \\vee p \\mid b$ generalizes the parity argument to $\\sqrt{p}\\notin\\mathbb{Q}$ for any prime $p$."
+    },
+    {
       "id": "divisibility",
       "title": "Divisibility (Built from Scratch)",
       "startLine": 48,
