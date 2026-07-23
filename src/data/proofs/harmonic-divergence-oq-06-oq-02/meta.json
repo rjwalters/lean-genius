@@ -94,11 +94,27 @@
     },
     {
       "id": "sec-unified",
-      "title": "Unified b ≥ 0 Statement and Corollaries",
+      "title": "The Unified b ≥ 0 Statement",
       "startLine": 63,
-      "endLine": 95,
-      "summary": "not_summable_one_div_arith' (a b : ℝ) (ha : 0 < a) (hb : 0 ≤ b): case split on b, dispatching b > 0 to the parent not_summable_one_div_arith and b = 0 to not_summable_one_div_scaled. Then not_summable_one_div_multiples (index-shifted multiples of a), not_summable_harmonic (a = 1, b = 0 recovers Σ 1/n), and tendsto_sum_one_div_scaled_atTop (partial sums → +∞).",
+      "endLine": 73,
+      "summary": "not_summable_one_div_arith' (a b : ℝ) (ha : 0 < a) (hb : 0 ≤ b): case split on b, dispatching b > 0 to the parent not_summable_one_div_arith and b = 0 to not_summable_one_div_scaled — one theorem covering the full family a > 0, b ≥ 0.",
       "mathContext": "One theorem covers every $a>0,\\ b\\ge 0$; the endpoint $b=0$ is the pure 'multiples of $a$' case closest to the raw harmonic series."
+    },
+    {
+      "id": "sec-multiples-harmonic",
+      "title": "Multiples of a and the Raw Harmonic Series",
+      "startLine": 75,
+      "endLine": 86,
+      "summary": "not_summable_one_div_multiples: an index-shifted restatement, reciprocals of the positive multiples of a diverge. not_summable_harmonic: the a = 1, b = 0 instance recovers the raw harmonic series ¬ Summable (1/n).",
+      "mathContext": "$\\neg\\,\\text{Summable}\\,(n\\mapsto 1/(a(n+1)))$; at $a=1$ this is the harmonic series itself."
+    },
+    {
+      "id": "sec-tendsto",
+      "title": "Explicit Divergence: Partial Sums Tend to +∞",
+      "startLine": 88,
+      "endLine": 95,
+      "summary": "tendsto_sum_one_div_scaled_atTop: since the terms are nonnegative, non-summability converts to the explicit statement that the partial sums Σ_{i<n} 1/(a·(i+1)) tend to +∞ (not_summable_iff_tendsto_nat_atTop_of_nonneg).",
+      "mathContext": "$\\sum_{i<n} \\frac{1}{a(i+1)} \\to +\\infty$ as $n\\to\\infty$."
     }
   ],
   "crossReferences": [
