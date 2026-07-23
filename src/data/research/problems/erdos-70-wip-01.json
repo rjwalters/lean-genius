@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 3,
-    "focus": "Session 4: general closure isCountableOrdinal_opow — countable ordinals closed under α^β for arbitrary countable α,β (transfinite induction on exponent + iSup_lt_omega_one/regularity of ℵ₁). Plus omega0_opow_omega0_opow_omega0_countable (ω^(ω^ω), 2nd tower level) and its conjecture specialization. 0 axioms, host-verified.",
+    "iteration": 4,
+    "focus": "2026-07-23: FAITHFUL order-type arrow at beta = omega DONE — new file Erdos70WIP01Faithful.lean: omega0_le_type_subrel_of_infinite (infinite subset of a well-order has suborder type >= omega), FaithfulArrowOmega (the arrow with GENUINE order type, quantified over all well-orderings), faithful_omega_arrow_holds (unconditional at the continuum via infiniteRamsey3_holds), and faithfulArrowOmega_iff_partitionArrow_omega (at omega — and only there — the cardinality surrogate loses nothing; divergence starts at omega^2). 0 axioms, 0 sorries, docker-verified. Honest scope: beta = omega only; beta >= omega^2 needs Erdos-Rado machinery, Erdos #70 remains open.",
     "blockers": [
       {
         "route": "true order-type partition relation (Erdos-Rado partition calculus)",
@@ -29,7 +29,7 @@
         "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "Frontier: Erdős #70 itself (general countable β) OPEN — Erdős–Rado positive result 𝔠→(ω+n,4)₂³ needs partition-calculus machinery absent from Mathlib. Ordinal-arithmetic countability toolkit now complete (+, ·, ^ all closed; towers below ε₀ free).",
+    "nextAction": "None elementary on this node. The faithful arrow for beta >= omega^2 (through epsilon_0) needs Erdos-Rado order-type-preserving homogeneous-set machinery absent from Mathlib v4.31 (structured blocker; reopen bar: materially new mechanism). The omega-instance surrogate/faithful equivalence is now proved, certifying the formalized conjecture is faithful at omega.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -58,7 +58,9 @@
       "majColor/majColor_mem: U-majority colour of a Fin 2-valued function on NN, attained on a U-large set (hyperfilter)",
       "ramsey3_nat: infinite Ramsey theorem for 2-colourings of 3-subsets of NN (0 axioms) - absent from Mathlib v4.31",
       "infiniteRamsey3_holds: InfiniteRamsey3 is a theorem (transfer to any continuum-sized S via Infinite.natEmbedding)",
-      "erdos_70_formalized_conjecture_holds: the formalized (cardinality-surrogate) conjecture is now an unconditional theorem; no_erdos_70_counterexample; conjecture_omega_holds / conjecture_omega_squared_holds / epsilon0_partitionArrow_holds unconditional"
+      "erdos_70_formalized_conjecture_holds: the formalized (cardinality-surrogate) conjecture is now an unconditional theorem; no_erdos_70_counterexample; conjecture_omega_holds / conjecture_omega_squared_holds / epsilon0_partitionArrow_holds unconditional",
+      "omega0_le_type_subrel_of_infinite + FaithfulArrowOmega (genuine order-type arrow at omega) in Erdos70WIP01Faithful.lean",
+      "faithful_omega_arrow_holds (unconditional at continuum) + faithfulArrowOmega_iff_partitionArrow_omega (surrogate equivalence at omega) in Erdos70WIP01Faithful.lean"
     ],
     "insights": [
       "The parent proved specific instances (omega0_plus_n_countable, omega0_squared_countable); these are corollaries of three general closure lemmas: IsCountableOrdinal is downward-closed (Ordinal.card_le_card), and closed under ordinal + (Cardinal.add_le_aleph0) and * (mul_le_mul + Cardinal.aleph0_mul_aleph0).",
@@ -71,7 +73,9 @@
       "FAITHFULNESS: parent HasOrderTypeAtLeast is the cardinality surrogate (alpha.card <= #H), so the formalized erdos_70_conjecture is strictly WEAKER than the true order-type relation and is a theorem-modulo-infinite-Ramsey; the open content of Erdos #70 lives in the gap between cardinality and true order type",
       "Infinite Ramsey for 3-uniform 2-colourings is ABSENT from Mathlib v4.31 (Combinatorics stops at Hales-Jewett/Hindman/finite pigeonhole); it is the single missing ingredient for the surrogate conjecture",
       "InfiniteRamsey3 is provable in ~370 self-contained lines by iterated ultrafilter majorities over hyperfilter NN: pairMaj/pointMaj/topMaj limit colours, a goodSet of viable next elements (each clause U-large), and an sInf-chosen strictly increasing sequence whose every increasing triple has the top-majority colour. Ordering every clause smaller-point-first eliminates all symmetry lemmas for the unordered triple colour.",
-      "Recursion-with-invariant in Lean without dependent choice plumbing: define ramseyPrefix : NN -> List NN by structural recursion with sInf (total), then prove membership/invariant/goodness afterwards by induction (ramsey_invariant). Nat.sInf_mem + Ultrafilter.nonempty_of_mem discharge nonemptiness."
+      "Recursion-with-invariant in Lean without dependent choice plumbing: define ramseyPrefix : NN -> List NN by structural recursion with sInf (total), then prove membership/invariant/goodness afterwards by induction (ramsey_invariant). Nat.sInf_mem + Ultrafilter.nonempty_of_mem discharge nonemptiness.",
+      "At beta = omega the cardinality surrogate HasOrderTypeAtLeast is EQUIVALENT to the genuine order-type clause (well-order via WellOrderingRel forward; infinite-subset-has-type->=omega backward); divergence begins at omega^2",
+      "Set.Elem H vs Subtype (. in H) defeq mismatches after Ordinal.card_type: route through `have h' : mk H = n := hcard` (exact accepts defeq, rw does not)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -98,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.782Z",
-  "lastUpdate": "2026-07-21",
+  "lastUpdate": "2026-07-23",
   "significance": 8,
   "tractability": 5
 }
