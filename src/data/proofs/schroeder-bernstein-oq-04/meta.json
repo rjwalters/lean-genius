@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-schroeder-bernstein-oq-04",
+      "title": "Module Overview: Constructive Schröder–Bernstein for Finite Types",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Answers OQ-04 — whether effective/constructive versions of CBS exist for specific classes of sets — for Fintype types with DecidableEq: the orbit classification at the heart of CBS (whether an element's backward chain under f, g terminates in 'Type A' or 'Type B') is decidable by pigeonhole, avoiding the classical proof's dependence on excluded middle. Outlines the iterative baseSet construction defining the bijection.",
+      "mathContext": "Given injections $f:\\alpha\\hookrightarrow\\beta$, $g:\\beta\\hookrightarrow\\alpha$ between `Fintype`s, orbit classification is decidable (no `Classical.em`)."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Base Set, Expansion, and Reachable Set",
       "startLine": 42,
