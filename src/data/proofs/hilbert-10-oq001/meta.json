@@ -106,31 +106,39 @@
       "id": "header",
       "title": "Module header and context",
       "startLine": 1,
-      "endLine": 46,
-      "summary": "Recalls the parent's computable solver and its hand-rolled fold vecGcd, contrasts it with Mathlib's abstract normalized Finset.gcd, and states the goal: prove vecGcd = Finset.univ.gcd and deduce solvability ⇔ Finset.gcd divisibility. Imports Mathlib and the parent module.",
+      "endLine": 42,
+      "summary": "Recalls the parent's computable solver and its hand-rolled fold vecGcd, contrasts it with Mathlib's abstract normalized Finset.gcd, and states the goal: prove vecGcd = Finset.univ.gcd and deduce solvability ⇔ Finset.gcd divisibility. Imports Mathlib and the parent module, opens the parent namespace, and declares the entry's own namespace.",
       "mathContext": "vecGcd n a (recursive Int.gcd fold) vs Finset.univ.gcd a (normalized GCDMonoid gcd)."
     },
     {
       "id": "vecgcd-bridge",
       "title": "vecGcd Equals the Abstract Finset.gcd",
-      "startLine": 47,
-      "endLine": 72,
+      "startLine": 44,
+      "endLine": 69,
       "summary": "vecGcd_eq_finset_gcd: by induction on n, the parent's recursive Int.gcd-fold equals Finset.univ.gcd a, matching Fin.univ_succ against the recursion clause.",
       "mathContext": "Fin.univ_succ + Finset.gcd_insert + Finset.gcd_image align the abstract gcd with the fold; Int.coe_gcd identifies the cast Int.gcd with GCDMonoid.gcd."
     },
     {
-      "id": "equivalence",
-      "title": "Solvability ⇔ Finset.gcd Divisibility",
-      "startLine": 74,
-      "endLine": 105,
-      "summary": "finset_gcd_dvd_of_solvable (easy direction via Finset.gcd_dvd / Finset.dvd_sum), solvable_of_finset_gcd_dvd (hard direction via the bridge + parent's exists_vec_combo), and the packaged biconditional solvable_iff_finset_gcd_dvd.",
-      "mathContext": "The gcd divides each coefficient so it divides any combination; conversely if it divides c the explicit witness exists."
+      "id": "easy-direction",
+      "title": "The Easy Direction: Solvable Implies gcd Divides",
+      "startLine": 71,
+      "endLine": 81,
+      "summary": "finset_gcd_dvd_of_solvable: if ∑ aᵢxᵢ = c has a solution, Finset.univ.gcd a ∣ c, via Finset.gcd_dvd (gcd divides each coefficient) and Finset.dvd_sum.",
+      "mathContext": "The gcd divides each aᵢ, hence each summand aᵢxᵢ, hence the sum ∑ aᵢxᵢ = c."
+    },
+    {
+      "id": "hard-direction-and-biconditional",
+      "title": "The Hard Direction and the Packaged Biconditional",
+      "startLine": 83,
+      "endLine": 101,
+      "summary": "solvable_of_finset_gcd_dvd (hard direction, discharged verbatim by the parent's constructive exists_vec_combo via the bridge) and solvable_iff_finset_gcd_dvd, the packaged equivalence (∃ x, ∑ aᵢxᵢ = c) ↔ Finset.univ.gcd a ∣ c.",
+      "mathContext": "If Finset.univ.gcd a ∣ c then rw [vecGcd_eq_finset_gcd] transports the hypothesis to vecGcd n a ∣ c, the parent solver's exact input."
     },
     {
       "id": "sanity-checks",
       "title": "Worked Instances",
       "startLine": 103,
-      "endLine": 111,
+      "endLine": 113,
       "summary": "3x + 5y = 1 and 6x + 4y = 10 solved through the abstract criterion via solvable_iff_finset_gcd_dvd.mpr (by decide).",
       "mathContext": "Finset.gcd of {3,5} is 1 ∣ 1 and of {6,4} is 2 ∣ 10."
     }
