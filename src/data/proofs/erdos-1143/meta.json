@@ -129,9 +129,9 @@
       "id": "jacobsthal-connection",
       "title": "Jacobsthal Connection and Summary",
       "startLine": 241,
-      "endLine": 273,
-      "summary": "Documents the complement relation between covering count and Jacobsthal's function: uncovered $= k - F_k$. The relationship is described in a comment (formally stating it requires defining Jacobsthal's function). Closing summary documents the known results and open status.",
-      "mathContext": "Jacobsthal's function $h(u)$ is the minimal $m$ such that any $m$ consecutive integers contain one coprime to $p_1 \\cdots p_u$. The dual: $F_{h(u)-1} = h(u) - 1$ (all covered). See Erdős #970."
+      "endLine": 297,
+      "summary": "Documents the complement relation between covering count and Jacobsthal's function: uncovered $= k - F_k$. The relationship is described in a comment (formally stating it requires defining Jacobsthal's function, not yet available in this file). Closes with a `## Summary` comment recapping the problem status (OPEN): the density approximation $F_k \\approx k(1 - \\prod(1-1/p_i))$ for large $k$, the exact Erdős–Selfridge formula for $k = \\alpha p_u$ with $2 < \\alpha < 3$, that very little is known for $\\alpha > 3$, the exact single-prime formula $F_k(\\{p\\}) = \\lfloor k/p \\rfloor$, and the relation to Jacobsthal's function (Erdős #970).",
+      "mathContext": "Jacobsthal's function $h(u)$ is the minimal $m$ such that any $m$ consecutive integers contain one coprime to $p_1 \\cdots p_u$. The dual: $F_{h(u)-1} = h(u) - 1$ (all covered). See Erdős #970. Summary recap: $F_k \\approx k(1 - \\prod_i(1-1/p_i))$ (density heuristic, large $k$); exact for $k = \\alpha p_u$, $2 < \\alpha < 3$ (Erdős–Selfridge); open for $\\alpha > 3$; $F_k(\\{p\\}) = \\lfloor k/p \\rfloor$ exactly for a single prime."
     }
   ],
   "conclusion": {
