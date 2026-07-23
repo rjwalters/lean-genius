@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-geometric-series-oq-08",
+      "title": "Problem Statement: Finite Geometric Sums and the Infinite Limit — Bounds and Monotonicity",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring stating the gap this entry fills relative to the base `GeometricSeries` entry: an explicit quantitative bridge, for $0 \\le r < 1$, between the finite partial sum $S_n = \\sum_{k<n} r^k$ and the infinite value $(1-r)^{-1}$. Lists five results — the exact tail defect $(1-r)^{-1}-S_n = r^n/(1-r)$, strict and non-strict upper bounds, monotonicity, and upward convergence — and explains why the error term $r^n/(1-r)$ is the standard truncation estimate used in numerical analysis and the ratio-test remainder. Notes which pieces are Mathlib citations versus newly assembled here.",
+      "mathContext": "$(1-r)^{-1} - S_n = r^n/(1-r)$ for $0 \\le r < 1$; $S_n$ strictly increasing and converging to $(1-r)^{-1}$."
+    },
+    {
       "id": "closed-form",
       "title": "The Closed Form (1−rⁿ)/(1−r)",
       "startLine": 57,
