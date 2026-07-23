@@ -35,10 +35,7 @@
     ],
     "originalContributions": [
       "Axiomatization of f_d(n) as extremal distinct-distance function",
-      "Formalization of Erdős's 1946 sandwich bounds n^{1/d} ≤ f_d(n) ≤ n^{2/d}",
-      "Formalization of Solymosi-Vu 2008 lower bound for d ≥ 4",
-      "ε-δ formalization of the main conjecture f_d(n) = n^{2/d - o(1)}",
-      "Separation of proven bounds from open conjecture in type-safe structure"
+      "Formalization of Erdős's 1946 sandwich bounds n^{1/d} ≤ f_d(n) ≤ n^{2/d}"
     ],
     "relatedProblems": [
       {
@@ -61,7 +58,7 @@
     "historicalContext": "**Distinct Distances in Higher Dimensions**\n\nThe distinct distances problem is one of Erdős's most influential contributions to combinatorial geometry. In 1946, Erdős posed the question: what is the minimum number of distinct distances determined by $n$ points in $\\mathbb{R}^d$? For $d = 2$, he conjectured $f_2(n) = \\Omega(n/\\sqrt{\\log n})$, which stood open for 65 years until Guth and Katz proved it in 2015 using the polynomial partitioning technique introduced by Guth and Katz (2010) and algebraic geometry of lines in $\\mathbb{R}^3$.\n\nFor higher dimensions $d \\geq 3$, Erdős established the basic sandwich $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$. The upper bound comes from the integer lattice $\\mathbb{Z}^d \\cap [0, n^{1/d}]^d$: distances have the form $\\sqrt{a_1^2 + \\cdots + a_d^2}$ with $0 \\leq a_i \\leq n^{1/d}$, giving $O(n^{2/d})$ possible values. The lower bound is a pigeonhole/packing argument.\n\n**Key Contributors:**\n- **Erdős (1946):** Original bounds $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$ for all $d$\n- **Chung, Szemerédi, Trotter (1992):** Improved lower bounds in 3D using cutting methods\n- **Aronov, Pach, Sharir, Tardos (2004):** $f_d(n) \\gg n^{1/(d-90/77)-o(1)}$ via incidence geometry\n- **Solymosi, Vu (2008):** $f_d(n) \\gg n^{2/d - c/d^2}$ for $d \\geq 4$, the current best general bound\n- **Guth, Katz (2015):** Resolved the 2D case, with implications for $d = 3$\n\nThe problem connects to fundamental questions about the algebraic structure of Euclidean distance and the geometry of point configurations.",
     "problemStatement": "Let $d \\geq 3$, and let $f_d(n)$ be the minimum number of distinct Euclidean distances determined by any set of $n$ points in $\\mathbb{R}^d$. Estimate $f_d(n)$. In particular, is it true that $f_d(n) = n^{2/d - o(1)}$?",
     "text": "Let d ≥ 3, and let f_d(n) be the minimal m such that every n-point set in ℝ^d determines at least m distinct distances. Is f_d(n) = n^{2/d - o(1)}?",
-    "proofStrategy": "**Formalization Approach:**\n\nThe Lean formalization takes a clean axiomatic approach appropriate for an open problem:\n\n1. **Axiomatized $f_d$:** The function $f_d(n)$ is introduced as an axiom `f : ℕ → ℕ → ℕ` rather than defined constructively, since its definition requires quantifying over all point configurations in $\\mathbb{R}^d$.\n\n2. **Proven bounds (axiomatized):** Erdős's 1946 result $c_1 n^{1/d} \\leq f_d(n) \\leq c_2 n^{2/d}$ is stated as the axiom `erdos_bounds`. These bounds are well-established but their proofs require geometric arguments beyond current Mathlib infrastructure.\n\n3. **Solymosi-Vu improvement:** The stronger lower bound for $d \\geq 4$ is a separate axiom `solymosi_vu`, cleanly separating the 1946 baseline from the 2008 advance.\n\n4. **Open conjecture:** `erdos_conjecture` formalizes $f_d(n) = n^{2/d - o(1)}$ using the standard $\\varepsilon$-$\\delta$ formulation: for all $\\varepsilon > 0$, there exists $c > 0$ such that $f_d(n) \\geq c \\cdot n^{2/d - \\varepsilon}$.\n\n5. **Main theorem:** `erdos_1083` states the established bounds, proved by direct invocation of `erdos_bounds`.",
+    "proofStrategy": "**Formalization Approach:**\n\nThe Lean formalization takes a clean axiomatic approach appropriate for an open problem:\n\n1. **Axiomatized $f_d$:** The function $f_d(n)$ is introduced as an axiom `f : ℕ → ℕ → ℕ` rather than defined constructively, since its definition requires quantifying over all point configurations in $\\mathbb{R}^d$.\n\n2. **Proven bounds (axiomatized):** Erdős's 1946 result $c_1 n^{1/d} \\leq f_d(n) \\leq c_2 n^{2/d}$ is stated as the axiom `erdos_bounds`. These bounds are well-established but their proofs require geometric arguments beyond current Mathlib infrastructure.\n\n3. **Solymosi-Vu improvement (not formalized):** The stronger lower bound for $d \\geq 4$ is only described in a documentation comment; no `solymosi_vu` axiom or declaration exists in the file.\n\n4. **Open conjecture (not formalized):** The statement $f_d(n) = n^{2/d - o(1)}$ likewise appears only as a documentation comment; there is no `erdos_conjecture` declaration in the file.\n\n5. **Main theorem:** `erdos_1083` states the established bounds, proved by direct invocation of `erdos_bounds`.",
     "keyInsights": [
       "**Lattice extremals:** The integer lattice $\\mathbb{Z}^d \\cap [0, n^{1/d}]^d$ achieves the conjectured upper bound $f_d(n) \\leq n^{2/d + o(1)}$, making it the candidate extremal configuration in all dimensions",
       "**Dimension gap narrows:** The Solymosi-Vu bound $f_d(n) \\geq n^{2/d - c/d^2}$ shows the gap between known lower bound and conjectured value shrinks as $O(1/d^2)$, suggesting the problem becomes 'easier' in high dimensions",
@@ -105,18 +102,18 @@
     {
       "id": "solymosi-vu",
       "title": "Part III: Solymosi-Vu Improvement",
-      "summary": "The 2008 improvement for d ≥ 4: f_d(n) ≥ n^{2/d - c/d²}, bringing the lower bound exponent within O(1/d²) of the conjectured value",
+      "summary": "Documentation-only comment describing the 2008 Solymosi-Vu improvement f_d(n) ≥ n^{2/d - c/d²} for d ≥ 4; not formalized as an axiom or declaration",
       "startLine": 51,
       "endLine": 63,
-      "mathContext": "The 2008 improvement for d ≥ 4: f_d(n) ≥ n^{2/d - c/d²}, bringing the lower bound exponent within O(1/d²) of the conjectured value"
+      "mathContext": "Documentation-only comment describing the 2008 Solymosi-Vu improvement f_d(n) ≥ n^{2/d - c/d²} for d ≥ 4; not formalized as an axiom or declaration"
     },
     {
       "id": "conjecture",
       "title": "Part IV: The Conjecture",
-      "summary": "The open conjecture f_d(n) = n^{2/d - o(1)}, formalized via ε-δ quantification over subpolynomial factors",
+      "summary": "Documentation-only comment stating the open conjecture f_d(n) = n^{2/d - o(1)}; not formalized as any declaration",
       "startLine": 64,
       "endLine": 77,
-      "mathContext": "The open conjecture f_d(n) = n^{2/d - o(1)}, formalized via ε-δ quantification over subpolynomial factors"
+      "mathContext": "Documentation-only comment stating the open conjecture f_d(n) = n^{2/d - o(1)}; not formalized as any declaration"
     },
     {
       "id": "main-theorem",
@@ -128,7 +125,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1083 on distinct distances in higher dimensions. The established bounds $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$ are axiomatized along with Solymosi and Vu's improvement to $n^{2/d - c/d^2}$ for $d \\geq 4$. The central open conjecture $f_d(n) = n^{2/d - o(1)}$ is formalized using the standard $\\varepsilon$-formulation. The clean separation between proven results and open conjectures provides a precise formal statement of the current state of knowledge.",
+    "summary": "This formalization captures Erdős Problem #1083 on distinct distances in higher dimensions. Only the established 1946 bounds $n^{1/d} \\ll f_d(n) \\ll n^{2/d}$ are axiomatized (as `f` and `erdos_bounds`). Solymosi and Vu's 2008 improvement to $n^{2/d - c/d^2}$ for $d \\geq 4$ and the central open conjecture $f_d(n) = n^{2/d - o(1)}$ are discussed only in documentation comments — neither is formalized as an axiom or declaration.",
     "implications": "**Theoretical Significance**: Resolving this conjecture would complete the higher-dimensional picture of the distinct distances problem, generalizing the Guth-Katz theorem from 2D.\n\nProgress on this problem is closely tied to advances in incidence geometry, polynomial methods, and sum-product theory. The duality with Problem #1089 means any improvement to the lower bound for $f_d$ immediately constrains the maximum size of point sets with few distances.",
     "openQuestions": [
       "Is $f_d(n) = n^{2/d - o(1)}$ for all $d \\geq 3$? This is the main conjecture.",
@@ -228,7 +225,7 @@
       "issue": "1",
       "pages": "113–125",
       "doi": "10.1007/s00493-008-2099-1",
-      "note": "Established f_d(n) ≥ n^{2/d − c/d²} for d ≥ 4, the current best general lower bound, axiomatized in this formalization"
+      "note": "Established f_d(n) ≥ n^{2/d − c/d²} for d ≥ 4, the current best general lower bound; discussed in this formalization's documentation but not axiomatized"
     },
     {
       "authors": [
