@@ -149,6 +149,7 @@
     }
   ],
   "sections": [
+    {"id": "header", "title": "Setup: Convergence of Idempotent Towers in ℤ₁₀", "startLine": 1, "endLine": 41, "summary": "Supplies the convergence layer the parent (AutomorphicNumberOQ01OQ03) remarked on but did not formalize: that the k-digit automorphic-number towers (5→25→625→90625→…, 6→76→376→9376→…) converge to the two non-trivial idempotents of the 10-adic integers ℤ₁₀≅ℤ₂×ℤ₅. Models TenAdic := ℤ_[2]×ℤ_[5] and lists the main results: idem_iff (exactly four idempotents), e5/e6 (orthogonal complementary pair), reductions_determine (inverse-limit uniqueness), and tendsto_e5/tendsto_e6 (genuine metric convergence). Fully machine-checked, 0 sorries, 0 axioms.", "mathContext": "$\\mathbb{Z}_{10}\\cong\\mathbb{Z}_2\\times\\mathbb{Z}_5$ has exactly four idempotents $(0,0),(1,0),(0,1),(1,1)$; the automorphic-number towers $5\\to25\\to625\\to\\cdots$ and $6\\to76\\to376\\to\\cdots$ converge $10$-adically to the non-trivial idempotents $e_5=(1,0)$, $e_6=(0,1)$, an orthogonal complementary pair $e_5+e_6=1$, $e_5e_6=0$."},
     {
       "id": "padic-idempotents",
       "title": "Part I: The idempotents of ℤ_[p] and of ℤ₁₀ = ℤ₂ × ℤ₅",
