@@ -41,7 +41,8 @@
       "**The exponential growth rate is exactly 4.** The bare integer recurrence and two row-sum bounds on the central binomial coefficient already force (catalan n)^{1/n} → 4 — the leading-order content of the Stirling asymptotic, obtained with no factorial asymptotics.",
       "**Coarse versus fine structure.** The parent entry pins the polynomial exponent 3/2 (the sub-exponential correction); this entry pins the exponential rate 4 (the leading order). They are independent: the n^{-3/2} factor is invisible to the n-th root because (n^{-3/2})^{1/n} → 1.",
       "**Radius of convergence 1/4, rigorously.** The limit (catalan n)^{1/n} → 4 is precisely the Cauchy–Hadamard computation that the Catalan generating function ∑ catalan n · xⁿ has radius of convergence 1/4 — the reciprocal of the growth rate.",
-      "**A clean two-sided polynomial bracket suffices.** catalan n ≤ 4^n and 4^n ≤ 2n²·catalan n trap the Catalan numbers within a polynomial factor of 4^n; the logarithm converts the polynomial gap into an O((log n)/n) term that vanishes after dividing by n. The squeeze needs nothing sharper than 'polynomial factors are exponentially negligible'."
+      "**A clean two-sided polynomial bracket suffices.** catalan n ≤ 4^n and 4^n ≤ 2n²·catalan n trap the Catalan numbers within a polynomial factor of 4^n; the logarithm converts the polynomial gap into an O((log n)/n) term that vanishes after dividing by n. The squeeze needs nothing sharper than 'polynomial factors are exponentially negligible'.",
+      "**Eventual inequalities are enough for a limit.** The lower bracket only holds for n ≥ 4 (the threshold in Erdős's Nat.four_pow_lt_mul_centralBinom), not for all n — but Mathlib's squeeze theorem tendsto_of_tendsto_of_tendsto_of_le_of_le' only requires the flanking inequalities eventually (via eventually_ge_atTop), so the finitely many small n where the bound fails to hold are simply irrelevant to the limit."
     ],
     "prerequisites": [
       "Bounds on the central binomial coefficient: (2n choose n) ≤ 2^{2n} and Erdős's 4^n < n·centralBinom n",
@@ -58,11 +59,18 @@
       "summary": "Module docstring: the parent pins the sub-exponential exponent 3/2; this entry pins the leading exponential rate 4 via (1/n)·log(catalan n) → log 4 and (catalan n)^{1/n} → 4, i.e. radius of convergence 1/4. Two elementary central-binomial brackets, no Stirling."
     },
     {
-      "id": "positivity-brackets",
-      "title": "Positivity and the Two Brackets",
+      "id": "positivity",
+      "title": "Positivity of the Catalan Numbers",
       "startLine": 49,
+      "endLine": 57,
+      "summary": "catalan_pos: every Catalan number is positive, from (n+1)·catalan n = centralBinom n > 0. The elementary fact both brackets below implicitly rely on."
+    },
+    {
+      "id": "brackets",
+      "title": "The Two Elementary Brackets",
+      "startLine": 59,
       "endLine": 89,
-      "summary": "catalan_pos (Catalan numbers are positive), the upper bracket catalan n ≤ 4ⁿ (via (2n choose n) ≤ 2^{2n}), and the lower bracket 4ⁿ ≤ 2n²·catalan n for n ≥ 4 (via Erdős's 4ⁿ < n·centralBinom n and n(n+1) ≤ 2n²)."
+      "summary": "catalan_le_four_pow: the upper bracket catalan n ≤ 4ⁿ (via (2n choose n) ≤ 2^{2n}). four_pow_le_two_sq_mul_catalan: the lower bracket 4ⁿ ≤ 2n²·catalan n for n ≥ 4 (via Erdős's 4ⁿ < n·centralBinom n and n(n+1) ≤ 2n², closed by nlinarith)."
     },
     {
       "id": "growth-rate",
