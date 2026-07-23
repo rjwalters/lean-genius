@@ -238,7 +238,7 @@
     },
     "type": "concept",
     "title": "Infinite Ramsey Theorem (2 Colors)",
-    "content": "The **infinite Ramsey theorem** for 2 colors states that any symmetric 2-coloring of edges of the complete graph on ℕ yields a monochromatic countably infinite clique. This is axiomatized because the full proof requires König's lemma or an equivalent. It provides crucial context: the complete graph K_ω trivially has the coloring property, but it is not K₄-free.",
+    "content": "The **infinite Ramsey theorem** for 2 colors states that any symmetric 2-coloring of edges of the complete graph on ℕ yields a monochromatic countably infinite clique. This is stated in a comment rather than formalized as a Lean axiom or theorem, since the full proof requires König's lemma or an equivalent. It provides crucial context: the complete graph K_ω trivially has the coloring property, but it is not K₄-free.",
     "mathContext": "This is the infinite version of R(ω,ω) = ω in partition calculus notation. The theorem extends to any finite number of colors, but Problem 1174 asks about countably many colors on restricted graphs.",
     "significance": "key",
     "relatedConcepts": [
@@ -307,7 +307,7 @@
     },
     "type": "concept",
     "title": "Nešetřil-Rödl Theorem",
-    "content": "The **Nešetřil-Rödl theorem** is axiomatized here as context: for each finite number k of colors, there exists a K₄-free graph G with G → (3)²_{k+1}. This means the finite-color version of part (a) is achievable. The deep challenge in Problem 1174 is whether these finite-color solutions can be unified into a single graph that works for all countably many colors simultaneously.",
+    "content": "The **Nešetřil-Rödl theorem** is described here as context in a comment, not formalized as a Lean axiom: for each finite number k of colors, there exists a K₄-free graph G with G → (3)²_{k+1}. This means the finite-color version of part (a) is achievable. The deep challenge in Problem 1174 is whether these finite-color solutions can be unified into a single graph that works for all countably many colors simultaneously.",
     "mathContext": "Nešetřil and Rödl proved this using the amalgamation technique for sparse Ramsey classes. Their result is constructive for fixed k but does not yield a single graph for all k.",
     "significance": "key",
     "relatedConcepts": [
