@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: The Sieve (Dual) Form",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the sieve (dual/complementary) form of inclusion–exclusion, counting elements in none of a family of sets rather than their union, and its bridge identity to the union form via $|\\alpha| - |\\bigcup S_i|$; notes this underlies the sieve of Eratosthenes, Euler's totient product, and derangement/surjection counts.",
+      "mathContext": "For a finite family $\\{S_i\\}_{i \\in s}$ of subsets of a finite type $\\alpha$: $\\#\\{x : x \\notin S_i \\ \\forall i \\in s\\} = \\sum_{t \\subseteq s} (-1)^{|t|} |\\bigcap_{i \\in t} S_i|$, with the empty subset contributing $+|\\alpha|$."
+    },
+    {
       "id": "part-1-avoiding-set",
       "title": "Part I: The Avoiding Set",
       "startLine": 52,
