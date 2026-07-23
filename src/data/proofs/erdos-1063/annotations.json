@@ -185,8 +185,8 @@
       "endLine": 121
     },
     "title": "Cambie's improved LCM bound",
-    "content": "Cambie improved the upper bound to $n_k \\leq k \\cdot \\text{lcm}(2, 3, \\ldots, k-1)$, which by the prime number theorem satisfies $\\text{lcm}(1, \\ldots, m) = e^{(1+o(1))m}$, yielding $n_k \\leq e^{(1+o(1))k}$. This is a dramatic improvement from $k!$ (super-exponential) to single-exponential. The formalization uses $k \\cdot (k-1)!$ as a crude upper bound since $\\text{lcm}(2, \\ldots, k-1) \\leq (k-1)!$. The key insight is that $\\text{lcm}(2, \\ldots, k-1)$ captures the essential arithmetic — it is the smallest number divisible by all integers $2$ through $k-1$.",
-    "mathContext": "$n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$",
+    "content": "Cambie improved the upper bound to $n_k \\leq k \\cdot \\text{lcm}(2, 3, \\ldots, k-1)$, which by PNT satisfies $\\text{lcm}(1,\\ldots,m) = e^{(1+o(1))m}$, yielding $n_k \\leq e^{(1+o(1))k}$. This is a dramatic improvement over $k!$ (super-exponential) in the true mathematical result. **However, the Lean axiom `cambie_lcm_bound` does not formalize this sharper bound**: it states $n_k \\leq k \\cdot (k-1)!$, which by definition of the factorial equals $k!$ — numerically identical to `monier_factorial_bound` and no improvement over it at all. The lcm-based single-exponential bound remains unformalized; the source comments this explicitly as a \"crude bound; true bound uses lcm\".",
+    "mathContext": "$n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$ (true result) — but the Lean axiom only states $n_k \\leq k \\cdot (k-1)! = k!$, identical to Monier's bound",
     "significance": "key",
     "relatedConcepts": [
       "least common multiple",
