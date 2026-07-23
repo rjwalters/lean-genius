@@ -63,6 +63,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Alternating Block Sums and Periodicity (OQ-02)", "startLine": 1, "endLine": 20, "summary": "Lists the five new contributions beyond DivisibilityByThreeOQ01: divisibility by 7 via alternating three-digit groups, a general alternating-k-digit-block framework, a combined 7·11·13 = 1001 rule, the repunit divisibility criterion (d coprime to 10 and n ≡ 0 mod ord_d(10)), and palindrome divisibility by 11.", "mathContext": "Proves divisibility by 7 via alternating three-digit block sums (since $1000 \\equiv -1 \\pmod 7$), generalizes to alternating $k$-digit blocks, and characterizes repunit divisibility via the multiplicative order of 10."},
     {
       "id": "section-altsum-framework",
       "title": "Part I: General Alternating Block Sum Framework",
