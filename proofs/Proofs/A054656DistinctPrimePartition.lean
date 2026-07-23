@@ -13,7 +13,7 @@ This file turns the elementary core into machine-checked Lean and scaffolds the
 harder engine (seed block + interval-extension + Bertrand/Ramanujan induction)
 behind clearly-marked `sorry`s.
 
-## Status of this file (second iteration, 2026-07-23)
+## Status of this file (third iteration, 2026-07-23)
 
 VERIFIED (kernel `decide` only — no `native_decide`):
   * `not_repr_one`, `not_repr_four`, `not_repr_six`
@@ -21,34 +21,29 @@ VERIFIED (kernel `decide` only — no `native_decide`):
   * `present_iff_residual_repr`
       — the reduction: `p` present in `n` ↔ `p` prime, `p ≤ n`, and `n − p`
         is a sum of distinct primes avoiding `p`.
-  * `residual_avoiding_imp_repr` — an avoiding representation is a representation.
-  * `seed_block` (NEW) — the window `[13, 90]` (`B − A = 77 ≥ 64`) is
-    representable avoiding any single prime, via the `canSum` kernel subset-sum
-    checker over the eleven primes `≤ 31` (soundness bridge `canSum_sound`).
-  * `reprAvoiding_add_prime` (NEW) — the top-down fresh-prime extension step,
-    REPLACING the first iteration's `interval_extension`, whose hypotheses
-    (`B < q` and `q ≤ B − A + 1`) were jointly unsatisfiable (they force
-    `A = 0`, and `1` is never representable) — that engine was vacuous.
+  * `seed_block_bdd` / `seed_block` — the window `[13, 90]` is representable
+    avoiding any single prime, with all witness primes `≤ 31`, via the
+    `canSum` kernel subset-sum checker (soundness bridge `canSum_sound`).
+  * `reprAvoidingBdd_add_fresh` — sound fresh-prime extension for *bounded*
+    representations (a prime above the bound is automatically fresh).
+  * **Richert interval induction (NEW, third iteration)**: `EngineInv` /
+    `engineInv_step` / `engineInv_reach` — the interval `[13, B]` with witness
+    bound `Q` and slack `2Q + 12 ≤ B` grows without bound, one Bertrand prime
+    at a time; hence `reprAvoiding_of_thirteen_le` (every `m ≥ 13` is a sum of
+    distinct primes avoiding `p`).
+  * `repr_of_ge_seven_ne` (NEW: PROVED) — every residual `m ≥ 2`,
+    `m ∉ {4, 6}`, with `23 ≤ m + p`, is representable avoiding `p`
+    (small `m ≤ 12` by explicit witnesses, `m ≥ 13` by the engine).
+  * `A054656_main` (NEW: ASSEMBLED) — the main theorem for `n ≥ 23`.
 
-SCAFFOLDED (`sorry`, deferred):
-  * `repr_of_ge_seven_ne` — every residual with `23 ≤ m + p` is representable
-    avoiding `p`.  Statement REPAIRED this iteration: without `23 ≤ m + p` it
-    was FALSE — counterexamples `(m, p)` = `(2,2), (3,3), (8,3), (9,2), (10,3),
-    (11,11), (12,7)`, all with `m + p < 23` (see docstring).
-  * `A054656_main` — the main theorem for `n ≥ 23`.
-
-## Mathlib gap (identified this iteration)
-
-Mathlib HAS Bertrand's postulate:
-  `Nat.exists_prime_lt_and_le_two_mul (n) (hn0 : n ≠ 0) :`
-  `  ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n`
-(`Mathlib/NumberTheory/Bertrand.lean`, alias `Nat.bertrand`).
-
-Mathlib does NOT have any Ramanujan-prime result. The proof sketch needs
-"`(q, 2q]` contains at least TWO primes" (second Ramanujan prime `R₂ = 11`), so
-that after deleting the single forbidden prime `p` an available prime `≤ 2q`
-still remains. That two-primes-in-`(q,2q]` lemma must be BUILT on top of
-`Nat.exists_prime_lt_and_le_two_mul` — it is the key missing ingredient.
+REMAINING `sorry` (exactly one, the identified Mathlib gap):
+  * `exists_second_prime_in_Ioc` — "`(x, 2x]` containing a prime `p` contains
+    a second prime `q ≠ p`" (equivalently: at least TWO primes in `(x, 2x]`
+    for `x ≥ 11`, i.e. the second Ramanujan prime `R₂ = 11`). Mathlib has only
+    Bertrand (`Nat.exists_prime_lt_and_le_two_mul`, ONE prime in `(x, 2x]`);
+    the two-prime version needs a sharper Chebyshev/Erdős binomial analysis.
+    It enters the engine only through `bertrand_avoiding`, and only in the
+    collision case `x < p ≤ 2x` (for `p ∉ (x, 2x]` plain Bertrand suffices).
 -/
 
 import Mathlib
@@ -247,13 +242,72 @@ theorem checkWindow_sound {l : List ℕ} {A B m : ℕ} (h : checkWindow l A B = 
   have hall := List.all_eq_true.mp h _ hi
   simpa [Nat.add_sub_cancel' h1] using hall
 
-/-- Packaged seed case: a duplicate-free list of primes avoiding `p` whose
-`checkWindow` certificate covers `[13, 90]` yields the seed interval. -/
+/-- Bounded avoiding representation (third iteration): a distinct-prime
+representation of `m` avoiding `avoid` whose witness primes are all `≤ bound`.
+The bound is what makes the bottom-up Richert interval induction sound: a
+freshly added prime strictly above the bound can never collide with the
+witness, so no Ramanujan-style "second prime" is needed for *freshness* —
+only for the prime *supply* when the forbidden prime blocks the Bertrand
+window (see `exists_second_prime_in_Ioc`). -/
+def ReprAvoidingBdd (m avoid bound : ℕ) : Prop :=
+  ∃ S : Finset ℕ, (∀ q ∈ S, Nat.Prime q) ∧ avoid ∉ S ∧ (∀ q ∈ S, q ≤ bound) ∧
+    S.sum id = m
+
+/-- Forgetting the bound. -/
+theorem reprAvoiding_of_bdd {m p b : ℕ} (h : ReprAvoidingBdd m p b) :
+    ReprAvoiding m p := by
+  obtain ⟨S, h1, h2, _, h4⟩ := h
+  exact ⟨S, h1, h2, h4⟩
+
+/-- The bound is monotone. -/
+theorem reprAvoidingBdd_mono {m p b b' : ℕ} (hb : b ≤ b')
+    (h : ReprAvoidingBdd m p b) : ReprAvoidingBdd m p b' := by
+  obtain ⟨S, h1, h2, h3, h4⟩ := h
+  exact ⟨S, h1, h2, fun q hq => le_trans (h3 q hq) hb, h4⟩
+
+/-- Fresh-prime extension for bounded representations: a prime `q` strictly
+above the bound is automatically absent from the witness, so it can always be
+added. This is the sound replacement for interval-extension freshness. -/
+theorem reprAvoidingBdd_add_fresh {m p b q : ℕ} (hq : Nat.Prime q)
+    (hqp : q ≠ p) (hbq : b < q) (h : ReprAvoidingBdd m p b) :
+    ReprAvoidingBdd (m + q) p q := by
+  obtain ⟨S, h1, h2, h3, h4⟩ := h
+  have hqS : q ∉ S := fun hmem => absurd (h3 q hmem) (by omega)
+  refine ⟨insert q S, ?_, ?_, ?_, ?_⟩
+  · intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact hq
+    · exact h1 x hx
+  · intro hmem
+    rcases Finset.mem_insert.mp hmem with h | h
+    · exact hqp h.symm
+    · exact h2 h
+  · intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact le_refl q
+    · exact le_trans (h3 x hx) (le_of_lt hbq)
+  · rw [Finset.sum_insert hqS, h4]
+    simp only [id_eq]
+    omega
+
+/-- Lift a `canSum` certificate over a list of primes not containing `p`, all
+`≤ b`, to a bounded `ReprAvoidingBdd` witness. -/
+theorem reprAvoidingBdd_of_canSum {l : List ℕ} {m p b : ℕ} (hnd : l.Nodup)
+    (hprime : ∀ q ∈ l, Nat.Prime q) (hp : p ∉ l) (hb : ∀ q ∈ l, q ≤ b)
+    (h : canSum l m = true) : ReprAvoidingBdd m p b := by
+  obtain ⟨S, hSl, hsum⟩ := canSum_sound hnd h
+  exact ⟨S, fun q hq => hprime q (hSl q hq), fun hpS => hp (hSl p hpS),
+    fun q hq => hb q (hSl q hq), hsum⟩
+
+/-- Packaged seed case: a duplicate-free list of primes avoiding `p`, all
+`≤ 31`, whose `checkWindow` certificate covers `[13, 90]` yields the bounded
+seed interval. -/
 private theorem seed_case {p : ℕ} (l : List ℕ) (hnd : l.Nodup)
-    (hprime : ∀ q ∈ l, Nat.Prime q) (hp : p ∉ l)
+    (hprime : ∀ q ∈ l, Nat.Prime q) (hp : p ∉ l) (hb : ∀ q ∈ l, q ≤ 31)
     (hwin : checkWindow l 13 90 = true) :
-    ∀ m, 13 ≤ m → m ≤ 90 → ReprAvoiding m p :=
-  fun _ h1 h2 => reprAvoiding_of_canSum hnd hprime hp (checkWindow_sound hwin h1 h2)
+    ∀ m, 13 ≤ m → m ≤ 90 → ReprAvoidingBdd m p 31 :=
+  fun _ h1 h2 => reprAvoidingBdd_of_canSum hnd hprime hp hb
+    (checkWindow_sound hwin h1 h2)
 
 /-- **Seed block (PROVED, second iteration).** The single window `[13, 90]`
 (length `78`, so `B − A = 77 ≥ 64`) is representable avoiding any prime `p`:
@@ -261,36 +315,42 @@ if `p` is one of the eleven pool primes, the ten remaining pool primes suffice
 (checked by kernel `decide` through `canSum`); if `p` is outside the pool, the
 full pool works (its elements are `≤ 31`, so none equals `p` — `p ∉ seedPool`
 is exactly the case hypothesis).  Kernel `decide` only — no `native_decide`,
-no `Finset.powerset` blow-up. -/
-theorem seed_block (p : ℕ) (hp : Nat.Prime p) :
-    ∃ A B : ℕ, 64 ≤ B - A ∧ ∀ m, A ≤ m → m ≤ B → ReprAvoiding m p := by
-  refine ⟨13, 90, by norm_num, ?_⟩
+no `Finset.powerset` blow-up.  Third iteration: strengthened to the *bounded*
+form (all witness primes `≤ 31`), which the Richert interval induction
+requires; the original existential form survives as `seed_block` below. -/
+theorem seed_block_bdd (p : ℕ) :
+    ∀ m, 13 ≤ m → m ≤ 90 → ReprAvoidingBdd m p 31 := by
   by_cases hmem : p ∈ seedPool
   · simp only [seedPool, List.mem_cons, List.not_mem_nil, or_false] at hmem
     rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     · exact seed_case [3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 5, 7, 11, 13, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 7, 11, 13, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 11, 13, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 13, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 17, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 13, 19, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 13, 17, 23, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 13, 17, 19, 29, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 13, 17, 19, 23, 31]
-        (by decide) (by decide) (by decide) (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
     · exact seed_case [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
-        (by decide) (by decide) (by decide) (by decide)
-  · exact seed_case seedPool (by decide) (by decide) hmem (by decide)
+        (by decide) (by decide) (by decide) (by decide) (by decide)
+  · exact seed_case seedPool (by decide) (by decide) hmem (by decide) (by decide)
+
+theorem seed_block (p : ℕ) (hp : Nat.Prime p) :
+    ∃ A B : ℕ, 64 ≤ B - A ∧ ∀ m, A ≤ m → m ≤ B → ReprAvoiding m p :=
+  ⟨13, 90, by norm_num,
+    fun m h1 h2 => reprAvoiding_of_bdd (seed_block_bdd p m h1 h2)⟩
 
 /-- **Fresh-prime extension step (REPAIRED + PROVED, second iteration).**
 Replaces the first iteration's `interval_extension`, whose hypotheses were
@@ -318,6 +378,94 @@ theorem reprAvoiding_add_prime {p r q : ℕ} (hq : Nat.Prime q) (hqp : q ≠ p)
     simp only [id_eq]
     omega
 
+/-! ## The Richert interval induction (third iteration)
+
+Bottom-up engine: maintain an interval `[13, B]` of residuals representable
+avoiding `p` with all witness primes `≤ Q`, plus the slack `2Q + 12 ≤ B`.
+Each step adds one fresh prime `q ∈ (Q, 2Q]` with `q ≠ p`, extending the
+interval to `[13, B + q]` (the new segment `(B, B + q]` decomposes as
+`(m − q) + q` with `m − q ∈ [13, B]`, and `q` is fresh because it exceeds the
+old bound `Q`). The slack self-maintains: `2q + 12 ≤ B + q ⇔ q + 12 ≤ B`,
+which follows from `q ≤ 2Q ≤ B − 12`.
+
+The prime supply `q ∈ (Q, 2Q]`, `q ≠ p` is Bertrand **except** when the
+forbidden prime `p` is itself the only Bertrand witness — i.e. when
+`Q < p ≤ 2Q`. Dodging it needs a *second* prime in `(Q, 2Q]`: the
+Ramanujan-type strengthening (second Ramanujan prime `R₂ = 11`) that Mathlib
+does not have. That single statement, in its sharpest needed form, is this
+file's one remaining `sorry`. -/
+
+/-- **Second prime in `(x, 2x]` (Ramanujan-type; the file's single remaining
+gap).** When a prime `p` lies in `(x, 2x]`, the window contains another prime
+`q ≠ p`. Equivalent to "`(x, 2x]` contains at least two primes", true for all
+`x ≥ 11` (second Ramanujan prime `R₂ = 11`); Mathlib has only Bertrand
+(`Nat.exists_prime_lt_and_le_two_mul` — ONE prime in `(x, 2x]`), and the
+two-prime version needs a sharper Chebyshev/Erdős binomial analysis, absent
+from Mathlib. Scoped exactly to the collision case `x < p ≤ 2x`. -/
+theorem exists_second_prime_in_Ioc (x p : ℕ) (hx : 11 ≤ x) (hp : Nat.Prime p)
+    (hpl : x < p) (hpu : p ≤ 2 * x) :
+    ∃ q, Nat.Prime q ∧ q ≠ p ∧ x < q ∧ q ≤ 2 * x := by
+  sorry
+
+/-- **Bertrand avoiding one prime.** For `x ≥ 11` there is a prime
+`q ∈ (x, 2x]` with `q ≠ p`. Proved from plain Bertrand except in the
+collision case `x < p ≤ 2x`, which is delegated to
+`exists_second_prime_in_Ioc`. -/
+theorem bertrand_avoiding (x p : ℕ) (hx : 11 ≤ x) :
+    ∃ q, Nat.Prime q ∧ q ≠ p ∧ x < q ∧ q ≤ 2 * x := by
+  obtain ⟨q, hq, hxq, hq2x⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul x (by omega)
+  by_cases hqp : q = p
+  · subst hqp
+    exact exists_second_prime_in_Ioc x q hx hq hxq hq2x
+  · exact ⟨q, hq, hqp, hxq, hq2x⟩
+
+/-- Engine invariant: every `m ∈ [13, B]` has a `p`-avoiding representation
+by primes `≤ Q`, with slack `2Q + 12 ≤ B` (so the next Bertrand prime
+`q ≤ 2Q` satisfies `q ≤ B − 12` and the extended segment's residuals stay
+`≥ 13`), and `11 ≤ Q` (so Bertrand applies). -/
+def EngineInv (p Q B : ℕ) : Prop :=
+  11 ≤ Q ∧ 2 * Q + 12 ≤ B ∧
+    ∀ m, 13 ≤ m → m ≤ B → ReprAvoidingBdd m p Q
+
+/-- Base state: the kernel-verified seed `[13, 90]` with bound `31`
+(`2·31 + 12 = 74 ≤ 90`). -/
+theorem engineInv_base (p : ℕ) : EngineInv p 31 90 :=
+  ⟨by norm_num, by norm_num, fun m h1 h2 => seed_block_bdd p m h1 h2⟩
+
+/-- Engine step: one fresh prime extends the interval by at least 12. -/
+theorem engineInv_step {p Q B : ℕ} (h : EngineInv p Q B) :
+    ∃ Q' B', B + 12 ≤ B' ∧ EngineInv p Q' B' := by
+  obtain ⟨hQ11, hQB, hcov⟩ := h
+  obtain ⟨q, hqprime, hqp, hQq, hq2Q⟩ := bertrand_avoiding Q p hQ11
+  refine ⟨q, B + q, by omega, by omega, by omega, ?_⟩
+  intro m h13 hm
+  by_cases hmB : m ≤ B
+  · exact reprAvoidingBdd_mono (le_of_lt hQq) (hcov m h13 hmB)
+  · have hr : ReprAvoidingBdd (m - q) p Q :=
+      hcov (m - q) (by omega) (by omega)
+    have hext := reprAvoidingBdd_add_fresh hqprime hqp hQq hr
+    have hmq : m - q + q = m := by omega
+    rwa [hmq] at hext
+
+/-- Iterating the engine reaches arbitrarily large intervals. -/
+theorem engineInv_reach (p : ℕ) :
+    ∀ k : ℕ, ∃ Q B, 90 + 12 * k ≤ B ∧ EngineInv p Q B := by
+  intro k
+  induction k with
+  | zero => exact ⟨31, 90, by norm_num, engineInv_base p⟩
+  | succ n ih =>
+    obtain ⟨Q, B, hB, hinv⟩ := ih
+    obtain ⟨Q', B', hB', hinv'⟩ := engineInv_step hinv
+    exact ⟨Q', B', by omega, hinv'⟩
+
+/-- **Every `m ≥ 13` is a sum of distinct primes avoiding `p`** — the
+engine's headline, modulo the single Ramanujan-type `sorry`. -/
+theorem reprAvoiding_of_thirteen_le (p m : ℕ) (h13 : 13 ≤ m) :
+    ReprAvoiding m p := by
+  obtain ⟨Q, B, hB, hinv⟩ := engineInv_reach p m
+  exact reprAvoiding_of_bdd (hinv.2.2 m h13 (by omega))
+
 /-- **Every large-enough residual is representable avoiding `p` (DEFERRED;
 statement REPAIRED, second iteration).**  The first iteration omitted the
 hypothesis `23 ≤ m + p`, making the statement FALSE: e.g. `¬ReprAvoiding 8 3`
@@ -327,26 +475,98 @@ partition), `¬ReprAvoiding 10 3` (`10 = 2+3+5 = 3+7`), `¬ReprAvoiding 11 11`
 (`11` itself is the only partition), `¬ReprAvoiding 12 7` (`12 = 5+7 = 2+3+7`),
 and the degenerate `(m, p) ∈ {(2,2), (3,3)}`.  All counterexamples have
 `m + p < 23`; in the application `m = n − p` with `n ≥ 23`, so `23 ≤ m + p`
-always holds.  Combines `seed_block`, `reprAvoiding_add_prime`, and the
-Bertrand/Ramanujan induction; the Ramanujan step ("`(q, 2q]` has ≥ 2 primes")
-is the piece not yet in Mathlib — it must be built on
-`Nat.exists_prime_lt_and_le_two_mul`. -/
+always holds.  PROVED (third iteration): `m ≥ 13` is the Richert engine
+(`reprAvoiding_of_thirteen_le`); `m ≤ 12` forces `p ≥ 11`, so the explicit
+small witnesses (`{2}, {3}, {5}, {7}, {3,5}, {2,7}, {3,7}, {11}, {5,7}`)
+avoid `p` outright.  Everything except the engine's single Ramanujan-type
+`sorry` (`exists_second_prime_in_Ioc`) is machine-checked. -/
 theorem repr_of_ge_seven_ne (m p : ℕ) (hp : Nat.Prime p)
     (hm : 2 ≤ m) (hne : m ≠ 4 ∧ m ≠ 6) (hnp : 23 ≤ m + p) :
     ReprAvoiding m p := by
-  sorry
+  rcases le_or_lt 13 m with h13 | h13
+  · exact reprAvoiding_of_thirteen_le p m h13
+  · -- `m ≤ 12`, so `p ≥ 23 − m ≥ 11`; explicit small witnesses avoid `p`.
+    have hp2 : 2 ≤ p := hp.two_le
+    have hpne12 : p ≠ 12 := by rintro rfl; exact absurd hp (by decide)
+    obtain ⟨hne4, hne6⟩ := hne
+    interval_cases m
+    · -- m = 2, p ≥ 21
+      exact ⟨{2}, by decide, by simp only [Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 3, p ≥ 20
+      exact ⟨{3}, by decide, by simp only [Finset.mem_singleton]; omega,
+        by decide⟩
+    · exact absurd rfl hne4
+    · -- m = 5, p ≥ 18
+      exact ⟨{5}, by decide, by simp only [Finset.mem_singleton]; omega,
+        by decide⟩
+    · exact absurd rfl hne6
+    · -- m = 7, p ≥ 16
+      exact ⟨{7}, by decide, by simp only [Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 8 = 3 + 5, p ≥ 15
+      exact ⟨{3, 5}, by decide,
+        by simp only [Finset.mem_insert, Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 9 = 2 + 7, p ≥ 14
+      exact ⟨{2, 7}, by decide,
+        by simp only [Finset.mem_insert, Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 10 = 3 + 7, p ≥ 13
+      exact ⟨{3, 7}, by decide,
+        by simp only [Finset.mem_insert, Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 11, p ≥ 12 and p ≠ 12, so p ≥ 13
+      exact ⟨{11}, by decide, by simp only [Finset.mem_singleton]; omega,
+        by decide⟩
+    · -- m = 12 = 5 + 7, p ≥ 11
+      exact ⟨{5, 7}, by decide,
+        by simp only [Finset.mem_insert, Finset.mem_singleton]; omega,
+        by decide⟩
 
-/-! ## Main theorem (DEFERRED assembly) -/
+/-! ## Main theorem (ASSEMBLED, third iteration) -/
 
-/-- **A054656 main theorem (DEFERRED).** For `n ≥ 23`, the primes absent from
+/-- **A054656 main theorem.** For `n ≥ 23`, the primes absent from
 every distinct-prime partition of `n` are exactly `{n−1, n−4, n−6} ∩ P`.
 
-Once `repr_of_ge_seven_ne` is discharged this follows from the verified
-reduction `present_iff_residual_repr` together with the three verified
-non-representability facts: for a prime `p ≤ n`, `p` is absent iff the residual
-`n − p ∈ {1, 4, 6}`, i.e. `p ∈ {n−1, n−4, n−6}`. -/
+PROVED (third iteration), modulo the engine's single Ramanujan-type `sorry`
+(`exists_second_prime_in_Ioc`): for a prime `p ≤ n`, the reduction
+`present_iff_residual_repr` says `p` is absent iff the residual `n − p` has no
+`p`-avoiding representation; `repr_of_ge_seven_ne` shows this forces
+`n − p ∈ {1, 4, 6}` (the residual `0` is the empty representation), i.e.
+`p ∈ {n−1, n−4, n−6}`; conversely those residuals are never representable
+(`not_reprAvoiding_of_mem_exceptional`). -/
 theorem A054656_main (n : ℕ) (hn : 23 ≤ n) :
     D n = {p | Nat.Prime p ∧ (p = n - 1 ∨ p = n - 4 ∨ p = n - 6)} := by
-  sorry
+  ext p
+  simp only [D, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨hp, hpn, hnpres⟩
+    refine ⟨hp, ?_⟩
+    by_contra hcon
+    push_neg at hcon
+    obtain ⟨h1, h4, h6⟩ := hcon
+    apply hnpres
+    rw [present_iff_residual_repr]
+    refine ⟨hp, hpn, ?_⟩
+    rcases Nat.eq_zero_or_pos (n - p) with hm0 | hmpos
+    · -- residual 0: the empty representation
+      exact ⟨∅, by simp, by simp, by simp [hm0]⟩
+    · -- residual ≥ 1 and ∉ {1, 4, 6}: the engine applies
+      have hm1 : n - p ≠ 1 := fun h => h1 (by omega)
+      have hm4 : n - p ≠ 4 := fun h => h4 (by omega)
+      have hm6 : n - p ≠ 6 := fun h => h6 (by omega)
+      exact repr_of_ge_seven_ne (n - p) p hp (by omega) ⟨hm4, hm6⟩ (by omega)
+  · rintro ⟨hp, hcase⟩
+    have hpn : p ≤ n := by rcases hcase with rfl | rfl | rfl <;> omega
+    refine ⟨hp, hpn, ?_⟩
+    intro hpres
+    rw [present_iff_residual_repr] at hpres
+    obtain ⟨-, -, hrepr⟩ := hpres
+    refine not_reprAvoiding_of_mem_exceptional ?_ hrepr
+    rcases hcase with rfl | rfl | rfl
+    · left; omega
+    · right; left; omega
+    · right; right; omega
 
 end A054656
