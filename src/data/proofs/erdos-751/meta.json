@@ -56,7 +56,7 @@
     "axiomCount": 1,
     "lineCount": 465,
     "assumptions": "1 axiom: bondy_vince_theorem (Bondy–Vince 1998: minDegree ≥ 3 ⟹ two cycle lengths differ by ≤ 2) — a deep graph-theory result with no Mathlib cycle-length-spectrum API. The chromatic–degeneracy lemma four_chromatic_subgraph_minDeg (χ(G)=4 ⟹ a nonempty vertex set s in which every vertex has ≥ 3 neighbours inside s, i.e. the induced subgraph has minimum degree ≥ 3) is now PROVED from Mathlib via a critical-subgraph argument (take a vertex-minimal subset whose induced graph is not 3-colorable; greedy extension shows each of its vertices has ≥ 3 internal neighbours). A previous formulation quantified minDegree over the whole vertex type, which was false as stated (K₄ plus an isolated vertex); the proved statement bounds degrees inside the extracted set. The subgraph's close cycles lift to G via the verified cycleLengths_induce_subset lemma. 0 sorries.",
-    "theoremCount": 16,
+    "theoremCount": 25,
     "definitionCount": 6
   },
   "overview": {
@@ -146,10 +146,10 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos751",
-    "lineCount": 465,
+    "lineCount": 595,
     "axiomCount": 1,
-    "theoremCount": 16,
-    "definitionCount": 3,
+    "theoremCount": 25,
+    "definitionCount": 6,
     "path": "Proofs/Erdos751Problem.lean",
     "sorries": 0
   },

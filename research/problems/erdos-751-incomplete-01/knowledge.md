@@ -81,3 +81,36 @@ induce_adj.symm`.
 ## Open (blocked, unchanged)
 
 - `bondy_vince_theorem` — deep 1998 result, no Mathlib cycle-length-spectrum API.
+
+## 2026-07-23 (researcher-1, session 3) — axiom-free cycle existence (Part VII)
+
+New section appended at END of file (no annotation line shifts). 9 new theorems,
+host-verified `lake env lean` v4.31 EXIT=0, lint-clean (only the 7 pre-existing
+warnings remain), 0 new axioms:
+
+- **`erdos_751_cycle_exists`** (new headline): `χ(G) = 4 → (cycleLengths G).Nonempty`,
+  `#print axioms` = [propext, Classical.choice, Quot.sound] — previously even
+  cycle existence in a 4-chromatic graph was only derivable through the
+  Bondy–Vince axiom. Corollaries `not_isAcyclic_of_four_chromatic`,
+  `three_le_girth_of_four_chromatic` (uses Mathlib `three_le_girth`).
+- **Engine `not_isAcyclic_of_two_le_degree`** (min degree ≥ 2 ⇒ not acyclic —
+  NOT in Mathlib): if acyclic, the component of any vertex is a tree
+  (`IsAcyclic.isTree_connectedComponent`), nontrivial because a degree-2 vertex
+  has a neighbour in the same component (`mem_supp_of_adj_mem_supp`), so
+  `IsTree.exists_vert_degree_one_of_nontrivial` gives a degree-1 vertex whose
+  component-degree equals its G-degree (`degree_toSimpleGraph_eq`, card_bij as
+  in degree_induce_eq_filter_card) — contradiction. Plus
+  `cycleLengths_nonempty_of_two_le_degree`/`..._of_two_le_minDegree`
+  (Bondy–Vince hypothesis nonvacuity), `minDegree_le_degree'`,
+  `three_le_of_mem_cycleLengths`.
+
+**Idioms:** `C.toSimpleGraph = G.induce C.supp` on CoeSort (SetLike) subtype;
+noncomputable instances in ¬-proof via `haveI : Fintype C := Fintype.ofFinite C`
++ `Classical.decRel _`; `v ∈ (G.connectedComponentMk v).supp := rfl`;
+Nontrivial via `fun heq => hw.ne (congrArg Subtype.val heq)`; `omit [...] in`
+must precede the DOCSTRING, not sit between docstring and theorem; omitting an
+instance cascades unused-var warnings to callers — chase the chain.
+
+**Remaining (unchanged):** only deep `bondy_vince_theorem` axiom. Possible next
+rungs (hard): two cycles through a common vertex when δ≥3; Bondy–Vince itself
+needs DFS/ear machinery absent from Mathlib.
