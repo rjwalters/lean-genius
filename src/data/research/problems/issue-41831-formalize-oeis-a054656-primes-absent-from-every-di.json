@@ -6,7 +6,7 @@
   "tier": "B",
   "tractability": 5,
   "started": "2026-07-22",
-  "lastUpdate": "2026-07-22",
+  "lastUpdate": "2026-07-23",
   "path": "proofs/Proofs/A054656DistinctPrimePartition.lean",
   "leanFiles": [
     "proofs/Proofs/A054656DistinctPrimePartition.lean"
@@ -24,16 +24,19 @@
         "reopenCriterion": "build a two-primes-in-(q,2q] lemma on top of Nat.exists_prime_lt_and_le_two_mul (Mathlib has no Ramanujan-prime result)",
         "blockedAt": "2026-07-22"
       }
-    ]
+    ],
+    "nextAction": "Two primes in (q,2q] lemma, then the Bertrand strong induction for repr_of_ge_seven_ne."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (first iteration): machine-checked the elementary core of A054656 in proofs/Proofs/A054656DistinctPrimePartition.lean. VERIFIED with 0 sorries and kernel `decide` only (no native_decide, no ofReduceBool): not_repr_one/four/six (1,4,6 are not sums of distinct primes), le_of_mem_repr, repr_of_reprAvoiding, not_reprAvoiding_of_mem_exceptional, and the pivot reduction present_iff_residual_repr (p present in n ↔ p prime ∧ p ≤ n ∧ n−p is a distinct-prime sum avoiding p). DEFERRED (sorry): seed_block, interval_extension, repr_of_ge_seven_ne, A054656_main. Build passes via docker-build.sh on Lean v4.31.0 / current Mathlib.",
+    "progressSummary": "PROGRESS (iteration 2, 2026-07-23): seed_block PROVED kernel-only — the single window [13,90] (B-A = 77 >= 64) is representable avoiding ANY one prime, via a List-recursion subset-sum checker canSum (no Finset.powerset; default heartbeats!) + soundness bridge canSum_sound + checkWindow, over the 11 primes <= 31. Pool had to grow from primes <= 23: avoiding p=23 the longest run was [7,70], B-A = 63 — one short. TWO defective scaffold statements repaired: interval_extension's hypotheses (B < q AND q <= B-A+1) force A = 0 and are jointly unsatisfiable (vacuous engine) — REPLACED by the proved top-down step reprAvoiding_add_prime (r < q fresh prime => r+q representable); repr_of_ge_seven_ne was FALSE without 23 <= m+p (counterexamples (8,3),(9,2),(10,3),(11,11),(12,7),(2,2),(3,3), all m+p < 23) — hypothesis added, still sorried. Remaining: 2 sorries — the Bertrand/Ramanujan induction (needs 'two primes in (q,2q]', NOT in Mathlib, must be built on Nat.exists_prime_lt_and_le_two_mul) and final assembly A054656_main.",
     "insights": [
       "Encoding 'sum of DISTINCT primes' as `∃ S : Finset ℕ, (∀ q ∈ S, Nat.Prime q) ∧ S.sum id = m` makes distinctness automatic (Finset), and non-representability of a small m reduces to a bounded search: every summand p ≤ m (Finset.single_le_sum), so S ⊆ (primes ≤ m); fin_cases over the powerset + kernel decide closes 1,4,6.",
       "The whole conjecture pivots on one fully-elementary reduction: p occurs in a distinct-prime partition of n iff p is prime, p ≤ n, and n−p is a sum of distinct primes AVOIDING p. Proved both directions with Finset.add_sum_erase (forward: erase p) and Finset.sum_insert (reverse: insert p). This is verified and is the load-bearing lemma.",
       "Because ReprAvoiding m p ⇒ Repr m, the three non-representability facts for 1,4,6 immediately give ¬ReprAvoiding for every forbidden prime — the exceptional residuals need no per-p work.",
       "The exceptional set {1,4,6} maps to absent primes {n−1,n−4,n−6}: p absent ⟺ n−p ∈ {1,4,6} ⟺ p ∈ {n−1,n−4,n−6}, which is exactly the A054656 formula once every other residual is shown representable.",
-      "eta/atom gotcha: `S.sum id` (Finset.sum S id) and `∑ x ∈ S, id x` (Finset.sum S (fun x => id x)) differ syntactically; `rw`/`omega` treat them as distinct atoms. Use a calc chain or `simpa` to bridge, and feed omega a single consistent atom."
+      "eta/atom gotcha: `S.sum id` (Finset.sum S id) and `∑ x ∈ S, id x` (Finset.sum S (fun x => id x)) differ syntactically; `rw`/`omega` treat them as distinct atoms. Use a calc chain or `simpa` to bridge, and feed omega a single consistent atom.",
+      "List-recursion Bool checkers (canSum) beat Finset.powerset decides by orders of magnitude in the kernel: 12 window-decides x 78 values x 2^10 leaves ran at DEFAULT heartbeats.",
+      "Scaffolded sorry statements must be adversarially checked before proving: two of the four A054656 scaffolds were defective (one vacuous — contradictory hypotheses; one false — missing 23 <= m+p)."
     ],
     "builtItems": [
       "proofs/Proofs/A054656DistinctPrimePartition.lean — new file, builds on Lean v4.31.0",
@@ -41,18 +44,19 @@
       "le_of_mem_repr, repr_of_reprAvoiding, not_reprAvoiding_of_mem_exceptional — VERIFIED helpers",
       "present_iff_residual_repr — VERIFIED reduction lemma (the pivot of the whole proof)",
       "Repr / ReprAvoiding / Present / D — definitions matching the OEIS statement",
-      "seed_block, interval_extension, repr_of_ge_seven_ne, A054656_main — stated with sorry (engine + main assembly deferred)"
+      "seed_block, interval_extension, repr_of_ge_seven_ne, A054656_main — stated with sorry (engine + main assembly deferred)",
+      "seedPool (11 primes <= 31), canSum (kernel subset-sum checker), canSum_sound, reprAvoiding_of_canSum, checkWindow(+_sound), seed_case",
+      "seed_block PROVED: window [13,90] representable avoiding any prime (12 kernel decides, default heartbeats)",
+      "reprAvoiding_add_prime PROVED: top-down fresh-prime extension (replaces vacuous interval_extension)"
     ],
     "mathlibGaps": [
       "No Ramanujan-prime result in Mathlib. The proof needs '(q,2q] contains at least TWO primes' (second Ramanujan prime R₂ = 11) so that after deleting the single forbidden prime p an available prime ≤ 2q remains. This must be BUILT on Nat.exists_prime_lt_and_le_two_mul (Bertrand, in Mathlib/NumberTheory/Bertrand.lean, alias Nat.bertrand: ∀ n≠0, ∃ p, Nat.Prime p ∧ n<p ∧ p≤2n). Bertrand gives only ONE prime in (n,2n]; the two-primes strengthening is the key missing ingredient.",
       "No packaged 'sum of distinct primes representability' API; the seed-block enumeration (≤2^9=512 subsets of the nine primes ≤23) and interval-extension engine must be built from Finset.powerset + decide."
     ],
     "nextSteps": [
-      "Prove seed_block by kernel `decide` over the powerset of {2,3,5,7,11,13,17,19,23}\\{p}; measure whether kernel decide handles 512 subsets or whether native_decide (→ disclose Lean.ofReduceBool, mark axiomatized) is needed.",
-      "Prove interval_extension: for m ∈ (B, B+q] write m = q + (m−q) with m−q ∈ [A,B]; q ∉ the seed set because q > B; combine with the covering representation avoiding p.",
-      "Build the two-primes-in-(q,2q] lemma on Nat.exists_prime_lt_and_le_two_mul (apply Bertrand twice / to a shifted interval), then run the induction pushing the representable interval to infinity (repr_of_ge_seven_ne).",
-      "Assemble A054656_main from present_iff_residual_repr + the three non-representability facts + repr_of_ge_seven_ne; handle the n ≥ 23 boundary so the residuals n−1,n−4,n−6 are the only exceptions.",
-      "Cross-check the Lean statement against the proof packet's independent verification for 23 ≤ n ≤ 10,000 (6,554,726 incidences, 640 subset-sum certificates) cited in issue #41831."
+      "Build two_primes_in_Ioc_double: for q >= 11(?), (q,2q] contains >= 2 primes — via Nat.exists_prime_lt_and_le_two_mul applied at q and at (q + p1)/2-ish midpoint, or finite decide + Bertrand chaining; this is the sole Mathlib gap.",
+      "repr_of_ge_seven_ne: strong induction on m — for m > 90 take Bertrand prime q in (m/2, m], r = m - q < q; if q = p or r in {1,4,6} take the SECOND prime in (m/2, m] (needs the two-primes lemma); base m in [13,90] = seed_block, m in [2,12] finite cases with 23 <= m+p forcing p large.",
+      "A054656_main assembly from present_iff_residual_repr + not_repr_{1,4,6} + repr_of_ge_seven_ne."
     ]
   },
   "references": [
@@ -60,5 +64,14 @@
     "GitHub issue #41831 (rjwalters/lean-genius)",
     "Mathlib/NumberTheory/Bertrand.lean — Nat.exists_prime_lt_and_le_two_mul"
   ],
-  "tags": ["oeis", "additive-number-theory", "distinct-primes", "partitions", "bertrand", "ramanujan-prime", "issue-sourced", "research"]
+  "tags": [
+    "oeis",
+    "additive-number-theory",
+    "distinct-primes",
+    "partitions",
+    "bertrand",
+    "ramanujan-prime",
+    "issue-sourced",
+    "research"
+  ]
 }
