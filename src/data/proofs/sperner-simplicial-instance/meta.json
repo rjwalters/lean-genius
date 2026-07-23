@@ -110,6 +110,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sperner-simplicial-instance",
+      "title": "Module Overview: Simplicial-Complex-to-CellComplex Bridge",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Bridges simplicial complexes to the abstract CellComplex structure of SpernerMathlib4: defines a Triangulation structure axiomatizing a finite pure simplicial complex with the pseudomanifold property (matching CellComplex's fields plus vertex injectivity) and shows it yields a CellComplex instance, so Sperner's lemma for CellComplex specializes to triangulations. Also defines AbstractSimplicialData for building a Triangulation from unordered simplices and gives a concrete 1-d interval example with all axioms fully proved.",
+      "mathContext": "`Triangulation V n \\to CellComplex` instance; specializes `Sperner.sperner` to genuine (pseudomanifold) triangulations."
+    },
+    {
       "id": "sec-triangulation-struct",
       "title": "Triangulation Structure and CellComplex Bridge (L64–155)",
       "startLine": 64,
