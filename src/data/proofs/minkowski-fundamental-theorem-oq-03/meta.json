@@ -107,11 +107,26 @@
       "summary": "The combinatorial core: if each term of a family is ≤ 1 and the ℝ≥0∞ tsum exceeds a natural number k, then more than k terms are nonzero. Proved by writing the tsum as a supremum of finite partial sums (tsum_eq_iSup_sum), picking a finite set on which the partial sum exceeds k, and filtering to its nonzero support."
     },
     {
-      "id": "sec-blichfeldt",
-      "title": "Blichfeldt's General-Multiplicity Theorem",
+      "id": "sec-blichfeldt-statement",
+      "title": "Blichfeldt's Theorem: Statement and Null-Measurability Setup",
       "startLine": 90,
+      "endLine": 110,
+      "summary": "States exists_finset_lattice_common_vadd: for k • μF < μs there is a finite T ⊆ L with k < #T and a common point z ∈ l +ᵥ s for every l ∈ T. Begins the proof by establishing that each translate l +ᵥ s is null-measurable (with respect to both μ and its restriction to F), using invariance of the measure."
+    },
+    {
+      "id": "sec-blichfeldt-averaging",
+      "title": "Blichfeldt's Theorem: The Averaging Identity",
+      "startLine": 112,
+      "endLine": 117,
+      "summary": "The key averaging identity: the covering count ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ equals μs exactly, via Tonelli (lintegral_tsum) composed with the fundamental-domain measure decomposition (fund.measure_eq_tsum) and lintegral_indicator_one₀.",
+      "mathContext": "$\\int_F \\sum'_l \\mathbf{1}_{l+\\!s}(z)\\,d\\mu(z) = \\mu(s).$"
+    },
+    {
+      "id": "sec-blichfeldt-pigeonhole",
+      "title": "Blichfeldt's Theorem: Pigeonhole and Extraction",
+      "startLine": 118,
       "endLine": 136,
-      "summary": "The main result. Builds the covering-count identity ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs via Tonelli and the fundamental-domain measure decomposition, runs the pigeonhole to find a point covered more than k times, and extracts the finite over-covering family."
+      "summary": "If the covering count were ≤ k everywhere, integrating would force μs ≤ k·μF, contradicting the hypothesis k • μF < μs; hence some z is covered more than k times. The finite-extraction lemma exists_finset_card_lt_of_lt_tsum then pulls out a finite over-covered subfamily T with k < #T and z ∈ l +ᵥ s for every l ∈ T."
     }
   ],
   "mainTheorems": [
