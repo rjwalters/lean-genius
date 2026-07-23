@@ -1,7 +1,7 @@
 {
   "slug": "erdos-227-wip-01",
   "title": "Completing the Lean Formalization of Erdős #227 (Maximum Term vs Maximum Modulus)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -13,29 +13,49 @@
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "mu(r) <= M(r) for nonneg real coefficients under summability (axiom-free, session 2026-07-22)"
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Elementary maxTerm/maxModulus layer proved axiom-free; deep Clunie/Clunie-Hayman core remains axiomatized",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional: bridge EntireFunction to Mathlib HasFPowerSeriesOnBall to get Cauchy estimate mu(r) <= M(r) unconditionally (not just nonneg coeffs)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: Part 11 added (13 axiom-free theorems, session 2026-07-22). IsEntire predicate fixes the structure gap (EntireFunction never required convergence). Proved mu(r) <= M(r) for nonneg real coefficients (Clunie setting), ratio <= 1, and any ratio limit lies in [0,1] — elementary companion to the deep axiomatized L <= 1/2 (ratio_upper_bound) and L = 0 (clunie_positive_coeffs). expFunction (coeffs 1/n!) is a concrete IsEntire witness. Remaining sorry (positive_coeffs_normal) and all 3 axioms are Clunie/Clunie-Hayman-deep: NOT provable from current Mathlib.",
+    "builtItems": [
+      "IsEntire predicate + maxTerm_nonneg/maxModulus_nonneg (Erdos227Problem.lean Part 11)",
+      "norm_series_term / summable_series_term / norm_tsum_le_sum_norm / bddAbove_range_norm / maxModulus_le_tsum (circle-of-radius-r toolkit)",
+      "norm_tsum_at_zero_of_nonneg + maxTerm_le_maxModulus_of_nonneg (mu(r) <= M(r), Clunie setting)",
+      "termModulusRatio_le_one_of_nonneg + limit_mem_Icc_of_nonneg (ratio limit in [0,1], axiom-free)",
+      "expFunction + expFunction_coeff_nonneg + expFunction_isEntire + expFunction_ratio_le_one (exp witness)"
+    ],
+    "insights": [
+      "EntireFunction structure imposes NO convergence: divergent-coefficient members give junk tsum=0/iSup=0, making ratio identically 0 for large r — so the axioms remain sound over the weak structure (junk regime always yields L=0)",
+      "The lone sorry (positive_coeffs_normal) asserts existence of the limit for nonneg coeffs — that existence IS Clunie s unpublished theorem; do not close it with an axiom or a False-risking strengthening",
+      "mu(r) <= M(r) for nonneg coeffs needs no Cauchy integral: each term a_n r^n is a summand of f(r) = M-candidate at theta=0; general-coefficient mu <= M genuinely needs Cauchy estimates (Mathlib bridge to HasFPowerSeriesOnBall would be ~300-500 lines)",
+      "Complex.ofReal_tsum (not RCLike.ofReal_tsum) is the syntactically-matching rewrite for coercion-through-tsum in goals elaborated with Complex.ofReal"
+    ],
+    "mathlibGaps": [
+      "Wiman-Valiron theory (maximum term, central index) absent from Mathlib",
+      "Clunie 1964 / Clunie-Hayman constructions absent — all 3 axioms stay",
+      "No lemma linking a raw coefficient sequence to HasFPowerSeriesOnBall without building the FormalMultilinearSeries by hand"
+    ],
+    "nextSteps": [
+      "OPTIONAL (300-500 lines): bridge EntireFunction+IsEntire to Mathlib power-series API and prove unconditional mu(r) <= M(r) via Cauchy estimates",
+      "DEEP (do not attempt from Mathlib): eliminate positive_coeffs_normal sorry (needs Clunie limit-existence) or any of the 3 axioms"
+    ],
     "markdown": "# Knowledge Base: erdos-227-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -57,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.780Z",
-  "lastUpdate": "2026-07-10T00:41:25.927Z",
+  "lastUpdate": "2026-07-22T20:00:00Z",
   "significance": 6,
   "tractability": 7
 }

@@ -26,7 +26,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Archimedean
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Order.Filter.Basic
 
 namespace Erdos227
@@ -311,8 +311,7 @@ theorem maxModulus_le_tsum (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
 /-- For non-negative real coefficients the value at `θ = 0` is exactly the
     absolute sum: `‖f(r)‖ = Σ aₙ rⁿ = Σ ‖aₙ‖ rⁿ`. -/
 theorem norm_tsum_at_zero_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
-    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0)
-    (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
+    (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0) :
     ‖∑' n, f.coeff n * (↑r * exp (I * ((0 : ℝ) : ℂ))) ^ n‖
       = ∑' n, ‖f.coeff n‖ * r ^ n := by
   have hcoeff : ∀ n, f.coeff n = ((‖f.coeff n‖ : ℝ) : ℂ) := by
@@ -328,12 +327,13 @@ theorem norm_tsum_at_zero_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r
       = ((‖f.coeff n‖ * r ^ n : ℝ) : ℂ) := by
     intro n
     have hexp0 : exp (I * ((0 : ℝ) : ℂ)) = 1 := by simp
-    rw [hexp0, mul_one, hcoeff n]
+    rw [hexp0, mul_one]
+    conv_lhs => rw [hcoeff n]
     push_cast
     ring
   calc ‖∑' n, f.coeff n * (↑r * exp (I * ((0 : ℝ) : ℂ))) ^ n‖
       = ‖((∑' n, ‖f.coeff n‖ * r ^ n : ℝ) : ℂ)‖ := by
-        rw [tsum_congr h0, ← RCLike.ofReal_tsum]
+        rw [tsum_congr h0, ← Complex.ofReal_tsum]
     _ = ∑' n, ‖f.coeff n‖ * r ^ n := by
         rw [Complex.norm_real, Real.norm_eq_abs]
         exact abs_of_nonneg
@@ -347,7 +347,7 @@ theorem maxTerm_le_maxModulus_of_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 �
     (hs : Summable fun n => ‖f.coeff n‖ * r ^ n) :
     maxTerm f r ≤ maxModulus f r := by
   have hM : (∑' n, ‖f.coeff n‖ * r ^ n) ≤ maxModulus f r := by
-    rw [← norm_tsum_at_zero_of_nonneg f hr hpos hs]
+    rw [← norm_tsum_at_zero_of_nonneg f hr hpos]
     exact le_ciSup (bddAbove_range_norm f hr hs) (0 : ℝ)
   have key : (⨆ n : ℕ, ‖f.coeff n‖ * r ^ n) ≤ maxModulus f r :=
     ciSup_le fun n =>

@@ -1,25 +1,32 @@
 # Research State: erdos-227-wip-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-07-09T17:33:19-07:00
-**Iteration**: 1
+**Since**: 2026-07-22
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Elementary maxTerm/maxModulus layer landed (Part 11, 13 axiom-free theorems,
+session 2026-07-22): IsEntire predicate, μ(r) ≤ M(r) for non-negative
+coefficients, ratio ≤ 1, ratio limits in [0,1], exp witness.
 
 ## Active Approach
-None yet.
+Elementary-layer saturation done. Remaining routes:
+1. OPTIONAL Mathlib bridge to HasFPowerSeriesOnBall for the unconditional
+   Cauchy estimate μ(r) ≤ M(r) (~300–500 lines).
+2. DEEP (blocked): the sorry (`positive_coeffs_normal`) and all 3 axioms need
+   Clunie / Clunie–Hayman / Wiman–Valiron theory absent from Mathlib.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+- Sorry + 3 axioms: "materially new mechanism required" (Mathlib lacks
+  Wiman–Valiron theory and the Clunie–Hayman constructions).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+If re-served: attempt the HasFPowerSeriesOnBall bridge (route 1). Do not
+re-attempt axiom/sorry elimination from current Mathlib.
