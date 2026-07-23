@@ -107,6 +107,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-furstenberg-correspondence-oq-01-incomplete-01",
+      "title": "Problem Statement: Topological Dynamics of the Shift (Devaney Chaos)",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring describing the complementary topological-dynamics side of the shift $T:\\{0,1\\}^{\\mathbb N}\\to\\{0,1\\}^{\\mathbb N}$, $T(x)(n)=x(n+1)$, to the parent files' measure-theoretic Furstenberg correspondence. States the headline result: the shift is chaotic in Devaney's sense — topologically transitive/mixing, has dense periodic points, and exhibits sensitive dependence on initial conditions. Frames this as the symbolic-dynamics foundation underlying Furstenberg's topological multiple recurrence theorem (the topological route to Szemerédi's theorem). States 0 axioms, 0 sorries, and gives references (Devaney 1989; Banks et al. 1992; Furstenberg 1981).",
+      "mathContext": "Devaney chaos for the shift $T$ on $\\{0,1\\}^{\\mathbb N}$: topological transitivity, dense periodic points, sensitive dependence — the topological analogue of Furstenberg's correspondence."
+    },
+    {
       "id": "shift",
       "title": "Cantor Space and the Shift",
       "startLine": 44,
