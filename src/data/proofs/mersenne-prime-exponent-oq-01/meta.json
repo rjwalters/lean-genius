@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and the Open Question",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring states the Fermat analogue of the Mersenne exponent theorem: if 2^n + 1 is prime and n ≥ 1, then n is a power of two. Explains the contrast with the Mersenne case (a composite exponent kills a Mersenne number via a proper-divisor factor 2^d − 1, whereas any odd factor d > 1 of a Fermat exponent kills 2^n + 1 via the proper divisor 2^m + 1), notes n ≥ 1 is genuinely needed (2⁰ + 1 = 2 is prime but 0 is not a power of two), and previews the proof engine d odd ⇒ a + 1 ∣ a^d + 1. Imports Mathlib and opens the FermatPrimeExponent namespace.",
+      "mathContext": "$\\mathrm{Prime}(2^n+1) \\wedge n \\ge 1 \\Rightarrow n = 2^k$; the sole exception is $n=0$ ($2^0+1=2$ prime, $0$ not a power of two)."
+    },
+    {
       "id": "odd-exponent-divisibility",
       "title": "Odd exponents preserve a + 1 divisibility",
       "startLine": 51,
