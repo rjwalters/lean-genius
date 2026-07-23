@@ -56,7 +56,7 @@
     "historicalContext": "Erdős Problem #251 asks a deceptively simple question: is the sum Σ pₙ/2ⁿ irrational? Here pₙ denotes the nth prime: p₁ = 2, p₂ = 3, p₃ = 5, and so on.\n\nThe sum converges absolutely (since pₙ ~ n ln n by the prime number theorem and Σ n ln n / 2ⁿ converges). Its decimal expansion begins 3.59686... and is catalogued as OEIS A098990.\n\nErdős himself proved the related result that Σ pₙᵏ/n! is irrational for all k ≥ 1 (the factorial denominators make the problem tractable). He conjectured that Σ pₙᵏ/2ⁿ is also irrational for all k ≥ 1, which includes Problem #251 as the case k = 1.\n\nErdős also formulated a more general conjecture: if gₙ ≥ 2 for all n and gₙ = o(pₙ), then Σ pₙ/(g₁·g₂·...·gₙ) is irrational.",
     "problemStatement": "Is the sum $\\sum_{n=1}^{\\infty} \\frac{p_n}{2^n}$ irrational, where $p_n$ is the $n$th prime?\n\n**Status**: OPEN\n\n**The Sum**: $\\frac{2}{2} + \\frac{3}{4} + \\frac{5}{8} + \\frac{7}{16} + \\frac{11}{32} + \\cdots \\approx 3.59686...$\n\n**Related Solved Result**: Erdős proved $\\sum \\frac{p_n^k}{n!}$ is irrational for all $k \\geq 1$.",
     "text": "Is the sum Σ pₙ/2ⁿ irrational, where pₙ is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
-    "proofStrategy": "We formalize the problem and related results:\n\n1. **Define the sum**: Using Mathlib's `Nat.nth Nat.Prime` to enumerate primes\n2. **State convergence**: The sum converges by comparison with Σ n ln n / 2ⁿ (axiom)\n3. **State the conjecture**: `erdos_251_conjecture := Irrational erdosSum`\n4. **State related results**: Erdős's factorial irrationality theorem as an axiom\n5. **Verify partial sums**: Prove first 1, 2, 3, 4, 5 terms sum to 1, 7/4, 19/8, 45/16, 101/32\n\nThe actual irrationality proof is unknown and cannot be formalized.",
+    "proofStrategy": "We formalize the problem and related results:\n\n1. **Define the sum**: Using Mathlib's `Nat.nth Nat.Prime` to enumerate primes\n2. **Note convergence**: The sum converges by comparison with Σ n ln n / 2ⁿ, documented in a comment (not stated as an axiom)\n3. **State the conjecture**: `erdos_251_conjecture := Irrational erdosSum`\n4. **Document related results**: Erdős's factorial irrationality theorem, described in a comment (not declared as an axiom or theorem)\n5. **Verify partial sums**: Prove first 1, 2, 3, 4, 5 terms sum to 1, 7/4, 19/8, 45/16, 101/32\n\nThe actual irrationality proof is unknown and cannot be formalized.",
     "keyInsights": [
       "**Why this is hard**: Proving irrationality of explicit series is notoriously difficult. Even whether e + π is irrational remains open! The irregularity of the prime sequence adds further complexity.",
       "**The OEIS constant**: The sum ≈ 3.59686... (OEIS A098990). It's well-defined, but its arithmetic nature is unknown.",
@@ -83,16 +83,16 @@
       "title": "The nth Prime Function",
       "startLine": 37,
       "endLine": 56,
-      "summary": "Definition of nthPrime using Mathlib's Nat.nth and axiom for first few values.",
-      "mathContext": "Formal definition: Definition of nthPrime using Mathlib's Nat.nth and axiom for first few values."
+      "summary": "Definition of nthPrime using Mathlib's Nat.nth, with the first few prime values noted in a comment (not stated as an axiom).",
+      "mathContext": "Formal definition: Definition of nthPrime using Mathlib's Nat.nth, with the first few prime values noted in a comment (not stated as an axiom)."
     },
     {
       "id": "main-sum",
       "title": "The Main Sum",
       "startLine": 57,
       "endLine": 92,
-      "summary": "Definition of erdosTerm, erdosSum, and convergence axiom.",
-      "mathContext": "Formal definition: Definition of erdosTerm, erdosSum, and convergence axiom."
+      "summary": "Definition of erdosTerm, erdosSum, and a comment noting the sum's convergence (not stated as an axiom).",
+      "mathContext": "Formal definition: Definition of erdosTerm, erdosSum, and a comment noting the sum's convergence (not stated as an axiom)."
     },
     {
       "id": "partial-sums",
@@ -116,7 +116,7 @@
       "startLine": 123,
       "endLine": 147,
       "summary": "Erdős's factorial irrationality theorem and the generalized conjecture.",
-      "mathContext": "Verified: Erdős's factorial irrationality theorem and the generalized conjecture."
+      "mathContext": "Mathematical content: Erdős's factorial irrationality theorem (documented in a comment) and the generalized conjecture (a Prop definition), neither proved in this file."
     },
     {
       "id": "difficulty",
@@ -152,7 +152,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #251, which asks whether Σ pₙ/2ⁿ is irrational. The sum converges to approximately 3.59686 (OEIS A098990), but its arithmetic nature remains unknown. We state the conjecture formally, axiomatize related results by Erdős, and verify explicit partial sums.",
+    "summary": "We formalize Erdős Problem #251, which asks whether Σ pₙ/2ⁿ is irrational. The sum converges to approximately 3.59686 (OEIS A098990), but its arithmetic nature remains unknown. We state the conjecture formally, document related results by Erdős in comments (not as axioms), and verify explicit partial sums.",
     "implications": "**Theoretical Significance**: This problem connects several areas of mathematics:\n\n1. **Transcendence theory**: Understanding the arithmetic nature of explicit constants\n**2. Prime distribution**: The irregularity of primes makes irrationality proofs difficult\n3. **Series analysis**: Comparing with factorial denominators where irrationality is provable\n4. **Computational number theory**: The constant is computed to high precision but remains mysterious.",
     "openQuestions": [
       "Is Σ pₙ/2ⁿ irrational? (The main conjecture)",
