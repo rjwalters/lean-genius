@@ -33,20 +33,36 @@
       "mathContext": "Two-parameter Lucas sequences $U_n(P,Q),V_n(P,Q)$; the tripling layer descends algebraically from the degree-2 master identity $V_n^2 - D\\,U_n^2 = 4Q^n$ ($D=P^2-4Q$), uniform in $(P,Q)$."
     },
     {
-      "id": "tripling-formulas",
-      "title": "Section I: The General Tripling Formulas",
+      "id": "u-tripling",
+      "title": "U₃ₙ = Uₙ·(Vₙ² − Qⁿ): Addition Law Meets Doubling",
       "startLine": 49,
+      "endLine": 64,
+      "summary": "U_three_mul: U₃ₙ = Uₙ·(Vₙ² − Qⁿ) from addition law (A) at (2n, n) plus the doubling formulas, closed by ring after cancelling the factor 2.",
+      "mathContext": "$U_{3n}=U_n(V_n^2-Q^n)$, from $2U_{3n}=U_{2n}V_n+V_{2n}U_n$ after substituting the doubling formulas."
+    },
+    {
+      "id": "v-tripling",
+      "title": "V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ): the Master Identity Clears the Residue",
+      "startLine": 66,
       "endLine": 82,
-      "summary": "U_three_mul: U₃ₙ = Uₙ·(Vₙ² − Qⁿ) from addition law (A) at (2n, n) plus the doubling formulas, closed by ring after cancelling 2. V_three_mul: V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) from addition law (B) at (2n, n) plus doubling, eliminating the residual D·Uₙ² by the master identity via linear_combination (−Vₙ), then cancelling 2.",
-      "mathContext": "$U_{3n}=U_n(V_n^2-Q^n)$, $V_{3n}=V_n(V_n^2-3Q^n)$; Fibonacci $F_6=8=F_2(L_2^2-1)=1\\cdot 8$."
+      "summary": "V_three_mul: V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) from addition law (B) at (2n, n) plus doubling, eliminating the residual D·Uₙ² by the master identity via linear_combination (−Vₙ), then cancelling the factor 2.",
+      "mathContext": "$V_{3n}=V_n(V_n^2-3Q^n)$, using the degree-2 master identity $V_n^2-D\\,U_n^2=4Q^n$ to remove $D\\,U_n^2$."
     },
     {
       "id": "specializations",
-      "title": "Section II: Named Specializations and Numeric Checks",
+      "title": "Fibonacci/Lucas and Pell Tripling as Instances",
       "startLine": 84,
-      "endLine": 108,
-      "summary": "fib_tripling F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ) and lucas_tripling L₃ₙ = Lₙ·(Lₙ² − 3·(−1)ⁿ) at (1,−1), pell_tripling U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ) at (2,−1), plus a kernel-decide numeric sanity check (F₆=8, L₆=18 against the tripling formulas at n=2).",
+      "endLine": 99,
+      "summary": "fib_tripling F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ) and lucas_tripling L₃ₙ = Lₙ·(Lₙ² − 3·(−1)ⁿ) at (1,−1), pell_tripling U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ) at (2,−1).",
       "mathContext": "The $(P,Q)=(1,-1)$ and $(2,-1)$ instances of the general tripling laws."
+    },
+    {
+      "id": "numeric-check",
+      "title": "Kernel-Decide Numeric Check Keeps the File Axiom-Free",
+      "startLine": 101,
+      "endLine": 108,
+      "summary": "A kernel-decide numeric sanity check: F₆=8, L₆=18 against the tripling formulas at n=2 (F₂·(L₂²−1)=1·8, L₂·(L₂²−3)=3·6=18).",
+      "mathContext": "decide reduces the finite integer arithmetic by kernel computation, avoiding native_decide and its Lean.ofReduceBool dependency."
     }
   ],
   "mainTheorems": [
