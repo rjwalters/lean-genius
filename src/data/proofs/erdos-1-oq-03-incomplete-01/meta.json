@@ -65,7 +65,8 @@
       "Defining f(n) with Nat.sInf (greatest-lower-bound on a set of naturals) avoids the Decidable instance that a Nat.find definition requires for an existential over all finite sets — a subtle obstruction that the prior OQ-03 definition ran into.",
       "The two classical bounds sandwich f(n) for every n at once, replacing the prior entry's five hardcoded native_decide evaluations with theorems valid for all n.",
       "The superincreasing extension lemma is the combinatorial core of the upper bound: any subset containing the newly appended (large) element has sum exceeding every subset of the old set, so the two cases are sum-disjoint and distinctness reduces to the smaller set.",
-      "The gap between the bounds — (2ⁿ−1)/n versus 2^(n−1) — is exactly the territory of the open Erdős conjecture: Conway-Guy pushes the upper bound down to ≈ 0.22·2ⁿ, but proving a matching f(n) ≥ c·2ⁿ remains open and is NOT claimed here."
+      "The gap between the bounds — (2ⁿ−1)/n versus 2^(n−1) — is exactly the territory of the open Erdős conjecture: Conway-Guy pushes the upper bound down to ≈ 0.22·2ⁿ, but proving a matching f(n) ≥ c·2ⁿ remains open and is NOT claimed here.",
+      "f(n) is a genuinely attained minimiser, not merely an abstract infimum: Nat.sInf_mem needs the target set nonempty, and dssBounds_nonempty supplies exactly the powers-of-two witness already built for the upper bound — so the same construction underwrites both f n ≤ 2^(n−1) and f_spec's attained witness, which the counting-bound lower bound f_ge needs to apply erdos_1_counting_bound to the actual minimiser rather than an arbitrary bound."
     ],
     "prerequisites": [
       "hasDistinctSubsetSums and the pigeonhole counting bound erdos_1_counting_bound (Erdos1Problem.lean)",
@@ -99,12 +100,20 @@
       "mathContext": "Binary representation: subset sums of {2⁰,…,2^(n−1)} are exactly the n-bit numbers, hence distinct."
     },
     {
-      "id": "sec-bounds",
-      "title": "§3 The Erdős Function f(n) and Its Two-Sided Bounds",
+      "id": "sec-def-upper",
+      "title": "§3a Defining f(n) and Its Upper Bound",
       "startLine": 149,
+      "endLine": 193,
+      "summary": "Defines dssBounds (the set of valid bounds), proves the powers-of-two witness is nonempty and card n (powersTwo_card, two_pow_mem_dssBounds, dssBounds_nonempty), defines f = sInf dssBounds, and proves the upper bounds f_le_two_pow and f_le_two_pow_pred, plus f_spec (the minimiser is attained by an actual witness).",
+      "mathContext": "$f(n) = \\inf\\,\\mathrm{dssBounds}(n)$; the powers-of-two set witnesses $f(n) \\le 2^{n-1}$ and shows $\\mathrm{dssBounds}(n) \\ne \\emptyset$."
+    },
+    {
+      "id": "sec-lower-sandwich",
+      "title": "§3b The Lower Bound and the Combined Sandwich",
+      "startLine": 195,
       "endLine": 222,
-      "summary": "Defines dssBounds, f (= sInf), and proves f_le_two_pow, f_le_two_pow_pred (upper bound 2^(n−1)), f_spec (minimiser attained), two_pow_le and f_ge (counting lower bound), the combined f_sandwich, and f_one (f 1 = 1).",
-      "mathContext": "(2ⁿ − 1)/n ≤ f(n) ≤ 2^(n−1); at n = 1 both equal 1, pinning f(1) = 1."
+      "summary": "two_pow_le applies the pigeonhole counting bound to f_spec's attained witness; f_ge derives (2ⁿ−1)/n ≤ f n; f_sandwich packages both bounds together; f_one specialises to f(1) = 1, where the sandwich pinches to a single value.",
+      "mathContext": "$(2^n - 1)/n \\le f(n) \\le 2^{n-1}$; at $n=1$ both sides equal $1$, pinning $f(1)=1$."
     }
   ],
   "crossReferences": [
