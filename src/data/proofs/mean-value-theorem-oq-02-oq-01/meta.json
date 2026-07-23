@@ -188,11 +188,19 @@
       "mathContext": "If $|f^{(n)}| \\le M$ on $(a,b)$ for all $n$, then $T_n(b) \\to f(b)$, since $\\frac{(b-a)^{n+1}}{(n+1)!} \\to 0$."
     },
     {
-      "id": "part3-exp",
-      "title": "Part III: The Exponential Function",
+      "id": "part3-exp-taylor-polynomial",
+      "title": "Part III: The Taylor Polynomial of exp",
       "startLine": 128,
+      "endLine": 146,
+      "summary": "iteratedDeriv_exp: every iterated derivative of Real.exp is Real.exp itself (via iteratedDeriv_eq_iterate + Real.iter_deriv_exp). taylorPolynomial_exp: the Taylor polynomial of exp centered at 0 is exactly the exponential partial sum ∑_{k≤n} xᵏ/k! (via simp + ring).",
+      "mathContext": "$\\mathrm{iteratedDeriv}\\,n\\,\\exp = \\exp;\\quad T_n^{\\exp,0}(x) = \\sum_{k\\le n} \\dfrac{x^k}{k!}.$"
+    },
+    {
+      "id": "part3-exp-convergence",
+      "title": "Part III: Convergence of the Exponential Series",
+      "startLine": 148,
       "endLine": 164,
-      "summary": "iteratedDeriv_exp (= exp via iteratedDeriv_eq_iterate + Real.iter_deriv_exp), taylorPolynomial_exp (= ∑ xᵏ/k! via simp + ring), and exp_taylor_tendsto: for x > 0 the partial sums converge to exp x, applying Part II with M = exp x and rewriting the Taylor polynomial as the exponential partial sum via Tendsto.congr.",
+      "summary": "exp_taylor_tendsto: for x > 0 the partial sums converge to exp x, applying Part II (taylorPolynomial_tendsto) with M = exp x — every derivative of exp on (0,x) equals exp y ≤ exp x — and rewriting the Taylor polynomial as the exponential partial sum via Tendsto.congr.",
       "mathContext": "$\\sum_{k\\le n} \\dfrac{x^k}{k!} \\to e^x$ for $x>0$, since every derivative of $\\exp$ on $(0,x)$ is at most $e^x$."
     }
   ],
