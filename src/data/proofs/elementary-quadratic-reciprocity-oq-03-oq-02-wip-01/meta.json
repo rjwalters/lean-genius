@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
   "title": "The Kronecker Symbol as a Periodic Character",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
-  "description": "Completes the parent Kronecker-symbol file with the Dirichlet-character periodicity that its Section 5 motivates but leaves unproved: the numerator character (a/n) at odd positive n depends only on a mod n and has full period n, and the (a/2) character kronecker2 has full period 8 (generalizing the parent's single-step kronecker2_periodic) and depends only on a mod 8; moreover 8 is the exact conductor — (·/2) is a primitive character mod 8, periodic with no proper divisor of 8 as a period (kronecker2_not_period_four, kronecker2_not_period_two, kronecker2_conductor_eight). All eight results are machine-verified, 0 axioms and 0 sorries, derived from the parent's public API. Section F completes the length-8 autocorrelation function C(t)=∑ (a/2)(a+t/2) of the conductor-8 character χ₈=(·/2) by supplying the off-peak values C(1)=C(2)=C(3)=0 (kronecker2_autocorr_odd via the pointwise parity obstruction kronecker2_mul_shift_odd, and kronecker2_autocorr_two), assembling the full sparse comb (4,0,0,0,-4,0,0,0) in kronecker2_autocorr_spectrum — the correlation datum whose DFT is the power spectrum |τ(χ₈)|²=8. Section G computes the Gauss sum itself: with the canonical primitive 8th root of unity ζ₈ = (1+i)/√2 = e^{2πi/8} (zeta8, zeta8_eq_exp, exact order 8 via zeta8_orderOf), the Gauss sum τ(χ₈) = ∑ χ₈(a)ζ₈^a is evaluated in closed form: τ(χ₈) = 2√2 = +√8 (gaussSumChi8_eq, gaussSumChi8_eq_sqrt_conductor) — the D=8 instance of Gauss's 1805 sign theorem, determining not just the modulus |τ|²=8 pinned by the Section E–F orthogonality data but the sign. The conductor identity τ² = 8 = χ₈(−1)·8 (gaussSumChi8_sq) and the twisted sums ∑ χ₈(a)ζ₈^{ca} = χ₈(c)τ for all units c mod 8 (gaussSumChi8_twisted) — the covariance identity powering the Gauss-sum route to generalized quadratic reciprocity — are verified exhaustively over (ℤ/8ℤ)ˣ = {1,3,5,7}.",
+  "description": "Completes the parent Kronecker-symbol file with the Dirichlet-character periodicity that its Section 5 motivates but leaves unproved: the numerator character (a/n) at odd positive n depends only on a mod n and has full period n, and the (a/2) character kronecker2 has full period 8 (generalizing the parent's single-step kronecker2_periodic) and depends only on a mod 8; moreover 8 is the exact conductor — (·/2) is a primitive character mod 8, periodic with no proper divisor of 8 as a period (kronecker2_not_period_four, kronecker2_not_period_two, kronecker2_conductor_eight). All eight results are machine-verified, 0 axioms and 0 sorries, derived from the parent's public API. Section F completes the length-8 autocorrelation function C(t)=∑ (a/2)(a+t/2) of the conductor-8 character χ₈=(·/2) by supplying the off-peak values C(1)=C(2)=C(3)=0 (kronecker2_autocorr_odd via the pointwise parity obstruction kronecker2_mul_shift_odd, and kronecker2_autocorr_two), assembling the full sparse comb (4,0,0,0,-4,0,0,0) in kronecker2_autocorr_spectrum — the correlation datum whose DFT is the power spectrum |τ(χ₈)|²=8. Section G computes the Gauss sum itself: with the canonical primitive 8th root of unity ζ₈ = (1+i)/√2 = e^{2πi/8} (zeta8, zeta8_eq_exp, exact order 8 via zeta8_orderOf), the Gauss sum τ(χ₈) = ∑ χ₈(a)ζ₈^a is evaluated in closed form: τ(χ₈) = 2√2 = +√8 (gaussSumChi8_eq, gaussSumChi8_eq_sqrt_conductor) — the D=8 instance of Gauss's 1805 sign theorem, determining not just the modulus |τ|²=8 pinned by the Section E–F orthogonality data but the sign. The conductor identity τ² = 8 = χ₈(−1)·8 (gaussSumChi8_sq) and the twisted sums ∑ χ₈(a)ζ₈^{ca} = χ₈(c)τ for all units c mod 8 (gaussSumChi8_twisted) — the covariance identity powering the Gauss-sum route to generalized quadratic reciprocity — are verified exhaustively over (ℤ/8ℤ)ˣ = {1,3,5,7}. Section H turns the engine over: it defines the Gauss sum generically over any commutative ring (gaussSumK2, specializing to gaussSumChi8 at R = ℂ), proves the conductor identity τ² = 8 for any ζ with ζ⁴ = −1 in any commutative ring (gaussSumK2_sq), establishes the Frobenius covariance τ^p = χ₈(p)·τ in odd prime characteristic p via the freshman's dream (gaussSumK2_pow_char), and assembles these in GF(p²) — which contains an eighth root of unity since its cyclic unit group has order p² − 1 ≡ 0 (mod 8) (exists_pow_four_eq_neg_one) — into a complete, self-contained Gauss-sum proof of the second supplementary law: legendreSym p 2 = kronecker2 p for every odd prime p (legendreSym_two_eq_kronecker2), descending 8^{(p−1)/2} = χ₈(p) along ℤ/p ↪ GF(p²) and reading the left side by Euler's criterion. Unlike the parent's kronecker_two_odd (imported from Mathlib's jacobiSym.at_two), no reciprocity result is consumed from Mathlib: this is the chain's first non-imported proof of one of the reciprocity laws it formalizes.",
   "references": [
     {
       "authors": "Leopold Kronecker",
@@ -40,12 +40,12 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 43,
-    "defCount": 2,
-    "definitionCount": 2,
-    "lineCount": 669,
+    "theoremCount": 52,
+    "defCount": 3,
+    "definitionCount": 3,
+    "lineCount": 942,
     "dateAdded": "2026-07-11",
-    "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed. Section E adds three further machine-verified results with no new assumptions: the anti-periodicity kronecker2_add_four ((a+4/2) = -(a/2), the sharp form of 'period 8 does not descend to 4'), the translation-invariant orthogonality kronecker2_sum_shifted_period (the mean of (·/2) over ANY full period vanishes, generalizing the parent-window kronecker2_sum_period), and the self-orthogonality kronecker2_sq_sum_period (∑ (a/2)² = φ(8) = 4 over a period) — all derived from the anti-periodicity and decidable residue arithmetic (propext, Classical.choice, Quot.sound only). Section F adds five further machine-verified results with no new assumptions: kronecker2_mul_shift_odd ((a/2)(a+t/2)=0 for odd t, pointwise via the parity obstruction), kronecker2_autocorr_odd and its translation-invariant _shifted form (C(t)=0 for odd t), kronecker2_autocorr_two (C(2)=0 by exact cancellation of the residue table, the one non-termwise off-peak), and the capstone kronecker2_autocorr_spectrum collecting C(0)=4, C(1)=C(2)=C(3)=0, C(4)=-4 into the full autocorrelation comb (4,0,0,0,-4,0,0,0) — all via decidable residue arithmetic and Finset.sum_eq_zero, kernel decide only (no native_decide, so no Lean.ofReduceBool; propext, Classical.choice, Quot.sound only). Section G adds seventeen further machine-verified results with no new assumptions: the primitive 8th root of unity zeta8 = (1+i)/√2 with zeta8_sq/zeta8_pow_four/zeta8_pow_eight/zeta8_orderOf (order exactly 8) and the exponential identification zeta8_eq_exp (ζ₈ = e^{2πi/8}, via Euler's formula and cos(π/4) = sin(π/4) = √2/2); the Gauss sum gaussSumChi8 = ∑ χ₈(a)ζ₈^a evaluated in closed form gaussSumChi8_eq (τ = 2√2), its sign form gaussSumChi8_eq_sqrt_conductor (τ = +√8), the conductor identity gaussSumChi8_sq (τ² = 8) with its even-character form, and the twisted Gauss sums gaussSumChi8_twisted_three/_five/_seven capped by gaussSumChi8_twisted (∑ χ₈(a)ζ₈^{ca} = χ₈(c)τ for every unit c mod 8). All proofs are field arithmetic over ℚ(i,√2) driven by linear_combination against the two relations i² = −1 and (√2)² = 2, plus kernel decide on the eight kronecker2 values (no native_decide; propext, Classical.choice, Quot.sound only).",
+    "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed. Section E adds three further machine-verified results with no new assumptions: the anti-periodicity kronecker2_add_four ((a+4/2) = -(a/2), the sharp form of 'period 8 does not descend to 4'), the translation-invariant orthogonality kronecker2_sum_shifted_period (the mean of (·/2) over ANY full period vanishes, generalizing the parent-window kronecker2_sum_period), and the self-orthogonality kronecker2_sq_sum_period (∑ (a/2)² = φ(8) = 4 over a period) — all derived from the anti-periodicity and decidable residue arithmetic (propext, Classical.choice, Quot.sound only). Section F adds five further machine-verified results with no new assumptions: kronecker2_mul_shift_odd ((a/2)(a+t/2)=0 for odd t, pointwise via the parity obstruction), kronecker2_autocorr_odd and its translation-invariant _shifted form (C(t)=0 for odd t), kronecker2_autocorr_two (C(2)=0 by exact cancellation of the residue table, the one non-termwise off-peak), and the capstone kronecker2_autocorr_spectrum collecting C(0)=4, C(1)=C(2)=C(3)=0, C(4)=-4 into the full autocorrelation comb (4,0,0,0,-4,0,0,0) — all via decidable residue arithmetic and Finset.sum_eq_zero, kernel decide only (no native_decide, so no Lean.ofReduceBool; propext, Classical.choice, Quot.sound only). Section G adds seventeen further machine-verified results with no new assumptions: the primitive 8th root of unity zeta8 = (1+i)/√2 with zeta8_sq/zeta8_pow_four/zeta8_pow_eight/zeta8_orderOf (order exactly 8) and the exponential identification zeta8_eq_exp (ζ₈ = e^{2πi/8}, via Euler's formula and cos(π/4) = sin(π/4) = √2/2); the Gauss sum gaussSumChi8 = ∑ χ₈(a)ζ₈^a evaluated in closed form gaussSumChi8_eq (τ = 2√2), its sign form gaussSumChi8_eq_sqrt_conductor (τ = +√8), the conductor identity gaussSumChi8_sq (τ² = 8) with its even-character form, and the twisted Gauss sums gaussSumChi8_twisted_three/_five/_seven capped by gaussSumChi8_twisted (∑ χ₈(a)ζ₈^{ca} = χ₈(c)τ for every unit c mod 8). All proofs are field arithmetic over ℚ(i,√2) driven by linear_combination against the two relations i² = −1 and (√2)² = 2, plus kernel decide on the eight kronecker2 values (no native_decide; propext, Classical.choice, Quot.sound only). Section H adds ten further machine-verified results and one definition with no new assumptions: the ring-generic Gauss sum gaussSumK2 with its ℂ-specialization gaussSumK2_complex, eighth-root folding lemmas (pow_eight_of_pow_four_eq_neg_one, pow_mod_eight_of_pow_four_eq_neg_one), the closed form gaussSumK2_eq (τ = 2(ζ − ζ³)) and generic conductor identity gaussSumK2_sq (τ² = 8), the Frobenius covariance gaussSumK2_pow_char (τ^p = χ₈(p)·τ, via add_pow_char/sub_pow_char), the cancellation step eight_pow_eq_kronecker2 (8^{(p−1)/2} = χ₈(p) in any field of odd characteristic p with an eighth root of unity), the existence lemma exists_pow_four_eq_neg_one (cyclic unit group of a finite field of order ≡ 1 mod 8), the arithmetic lemma eight_dvd_sq_sub_one (odd² ≡ 1 mod 8), and the capstone legendreSym_two_eq_kronecker2 — the second supplementary law (2/p) = (p/2) proved by the Gauss-sum argument end to end in GF(p²). The proof consumes Euler's criterion (legendreSym.eq_pow), Legendre-symbol multiplicativity (legendreSym.mul), and the GaloisField construction from Mathlib, but no reciprocity-family result (jacobiSym.at_two, quadraticChar_two, and their relatives are untouched). Kernel decide on kronecker2 values only; no native_decide; propext, Classical.choice, Quot.sound only.",
     "mathlibDependencies": [
       {
         "theorem": "jacobiSym.mod_left'",
@@ -61,6 +61,26 @@
         "theorem": "Int.emod_emod_of_dvd",
         "description": "Collapses a nested modulus (x % m) % d = x % d when d ∣ m. Used in the private helper kronecker2_mod_eight to reduce kronecker2 x to a function of x % 8 (with 2 ∣ 8 and 8 ∣ 8). A Lean-core lemma available transitively through Mathlib (not declared in Mathlib itself).",
         "module": "Init.Data.Int.DivMod.Bootstrap"
+      },
+      {
+        "theorem": "legendreSym.eq_pow",
+        "description": "Euler's criterion: (legendreSym p a : ZMod p) = a ^ (p / 2). Reads 8^{(p−1)/2} in ℤ/p as the Legendre symbol (8/p), converting the Gauss-sum identity of Section H into a statement about (2/p). Together with legendreSym.mul ((8/p) = (2/p)³ = (2/p)) this is the only Legendre-symbol theory consumed — no reciprocity-family result is used.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "GaloisField.card",
+        "description": "Nat.card (GaloisField p n) = p ^ n. Supplies the ambient field GF(p²) of Section H, whose unit-group order p² − 1 ≡ 0 (mod 8) guarantees an eighth root of unity; the algebraMap (ZMod p) → GF(p²) (injective, as a field homomorphism) descends the Gauss-sum identity to ℤ/p.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "add_pow_char / sub_pow_char",
+        "description": "The freshman's dream (x ± y)^p = x^p ± y^p in characteristic p. Powers the Frobenius covariance gaussSumK2_pow_char: raising τ = 2(ζ − ζ³) to the p-th power twists the exponents by p, which the mod-8 fold evaluates to χ₈(p).",
+        "module": "Mathlib.Algebra.CharP.Basic"
+      },
+      {
+        "theorem": "IsCyclic.exists_generator / Nat.card_units / orderOf_pow",
+        "description": "The unit group of a finite field is cyclic of order Nat.card F − 1; a generator raised to (card/8) has exact order 8 (orderOf_pow with gcd(8k, k) = k), and its fourth power is the unique element −1 of order 2 (mul_self_eq_one_iff). Produces the eighth root of unity ζ⁴ = −1 in GF(p²).",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic"
       }
     ],
     "relatedProblems": [
@@ -88,82 +108,90 @@
       "id": "preamble",
       "title": "Preamble: the gap left by the parent",
       "startLine": 1,
-      "endLine": 63,
+      "endLine": 109,
       "summary": "Module docstring and imports. Records that the parent proves complete multiplicativity and motivates (·/n) as a primitive Dirichlet character (Section 5) but never formalizes numerator periodicity, and proves only single-step kronecker2_periodic; this file closes both gaps from the parent's public API with no new axioms. `open Int` brings the residue lemmas into scope.",
       "mathContext": "Goal: formalize the Dirichlet-character axiom $(a/n)=(b/n)$ when $a\\equiv b\\pmod n$, plus full period-8 periodicity of $(\\cdot/2)$."
     },
     {
       "id": "section-a",
       "title": "Section A: the Dirichlet-character property of (·/n)",
-      "startLine": 65,
-      "endLine": 105,
+      "startLine": 110,
+      "endLine": 140,
       "summary": "`kronecker_congr_left` (odd positive n: a ≡ b mod n ⟹ (a/n)=(b/n), via kronecker_eq_jacobi + jacobiSym.mod_left'), `kronecker_add_mul_left` (full period n: (a+n·k/n)=(a/n)), and `kronecker_periodic_left` (the k=1 textbook unit shift).",
       "mathContext": "For odd positive $n$: $(a/n)$ is a function of $a \\bmod n$, and $(a+nk\\,/\\,n)=(a/n)$ for all $k\\in\\mathbb{Z}$."
     },
     {
       "id": "section-b",
       "title": "Section B: full periodicity of the (·/2) character kronecker2",
-      "startLine": 106,
-      "endLine": 123,
+      "startLine": 141,
+      "endLine": 167,
       "summary": "Private helper `kronecker2_mod_eight` (kronecker2 x = kronecker2 (x % 8) via Int.emod_emod_of_dvd), then `kronecker2_congr` (a ≡ b mod 8 ⟹ equal) and `kronecker2_add_mul_eight` (full period 8, generalizing the parent's single-step kronecker2_periodic).",
       "mathContext": "$(\\cdot/2)$ is the even real Dirichlet character $\\chi_8$ modulo $8$: $\\mathrm{kronecker2}(a+8k)=\\mathrm{kronecker2}(a)$."
     },
     {
       "id": "section-c",
       "title": "Section C: 8 is the minimal period — (·/2) is primitive (conductor 8)",
-      "startLine": 124,
-      "endLine": 168,
+      "startLine": 168,
+      "endLine": 203,
       "summary": "`kronecker2_not_period_four` (period 4 fails, witnessed by kronecker2 5 = −1 ≠ 1 = kronecker2 1) and `kronecker2_not_period_two` (period 2 fails, witnessed by kronecker2 3 = −1 ≠ 1 = kronecker2 1), bundled with the full period-8 result in `kronecker2_conductor_eight`: 8 is the exact minimal period, so (·/2) = χ₈ is a *primitive* Dirichlet character mod 8, not induced from any smaller modulus. This upgrades the period-8 statement to the sharp conductor — the input the Gauss-sum route requires, since only primitive characters have nonvanishing Gauss sums.",
       "mathContext": "$\\chi_8=(\\cdot/2)$ has exact conductor $8$: periodic mod $8$ but not mod $4$ or mod $2$, hence primitive with nonvanishing Gauss sum $\\tau(\\chi_8)$."
     },
     {
       "id": "section-d",
       "title": "Section D: the residue-level character table and boundedness of χ₈",
-      "startLine": 169,
-      "endLine": 232,
+      "startLine": 204,
+      "endLine": 267,
       "summary": "The complete character table of (·/2): kronecker2_eq_zero_iff (0 on evens), kronecker2_ne_zero_iff (±1 on odds), kronecker2_eq_one_iff (+1 on {1,7} mod 8), kronecker2_eq_neg_one_iff (−1 on {3,5} mod 8), together with the pointwise bound kronecker2_abs_le_one and the mean-zero orthogonality kronecker2_sum_period over the base window [0,8).",
       "mathContext": "A non-principal Dirichlet character is pinned by its support and its two unit classes; the |χ|≤1 bound and ∑χ = 0 over a period are the elementary inputs the Gauss-sum / Pólya–Vinogradov estimates consume."
     },
     {
       "id": "section-e",
       "title": "Section E: anti-periodicity and the orthogonality normalization of χ₈",
-      "startLine": 233,
-      "endLine": 308,
+      "startLine": 268,
+      "endLine": 332,
       "summary": "Anti-periodicity kronecker2_add_four ((a+4/2) = -(a/2)); translation-invariant orthogonality kronecker2_sum_shifted_period (the mean over ANY full period vanishes, generalizing kronecker2_sum_period); and self-orthogonality kronecker2_sq_sum_period (∑ (a/2)² = φ(8) = 4). The anti-periodicity cancels the two halves of any window and normalizes the second moment.",
       "mathContext": "For the Gauss-sum route to generalized quadratic reciprocity: translation invariance of the character mean lets the Gauss sum ∑ χ₈(a) ζ^a be re-centered freely, and the diagonal norm ⟨χ₈,χ₈⟩ = φ(8) = 4 fixes |τ(χ₈)|² = 8. Anti-periodicity χ₈(a+4) = −χ₈(a) is the primitivity signature (conductor 8, not 4)."
     },
     {
       "id": "section-e-l2norm",
       "title": "Translation-Invariant L²-Norm and the Shift-4 Autocorrelation Peak",
-      "startLine": 309,
-      "endLine": 365,
+      "startLine": 333,
+      "endLine": 390,
       "summary": "Upgrades the base-window self-orthogonality to full translation invariance and reads off the second nonzero autocorrelation peak. kronecker2_sq_sum_shifted_period generalizes kronecker2_sq_sum_period to any length-8 window (∑ χ₈(c+a)² = 4 for every c, via the parity count of units among 8 consecutive integers). kronecker2_autocorr_four evaluates the shift-4 autocorrelation ∑ χ₈(a)χ₈(a+4) = −4, immediate from the anti-periodicity χ₈(a+4) = −χ₈(a); kronecker2_autocorr_four_shifted extends this to every window c. Together with the diagonal C(0) = 4 these are the two nonzero values of the length-8 autocorrelation function.",
       "mathContext": "$\\sum_{a=0}^{7}\\chi_8(c+a)^2 = 4$ for every $c$ (translation-invariant $L^2$-norm); $\\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+4) = -4$, the anti-diagonal peak of the autocorrelation $C(t)$, forced by $\\chi_8(a+4)=-\\chi_8(a)$."
     },
     {
       "id": "section-f",
       "title": "Section F: The Complete Autocorrelation Spectrum of χ₈ = (·/2)",
-      "startLine": 367,
-      "endLine": 452,
+      "startLine": 391,
+      "endLine": 475,
       "summary": "Determines the remaining off-peak values C(1) = C(2) = C(3) = 0 and assembles the full length-8 autocorrelation function. kronecker2_mul_shift_odd shows the pointwise product χ₈(a)·χ₈(a+t) vanishes termwise for every odd t (one of a, a+t is always even, and χ₈ vanishes on evens), giving kronecker2_autocorr_odd and its translation-invariant form (C(t) = 0 for all odd t, all windows) with no cancellation needed. kronecker2_autocorr_two handles the one non-termwise case, C(2) = 0, by exact cancellation of the residue table. kronecker2_autocorr_spectrum assembles all five values into the complete comb C(0,1,2,3,4) = (4,0,0,0,−4) — by the real-character symmetry C(t) = C(8−t) this determines all eight shifts as the sparse pattern (4,0,0,0,−4,0,0,0), the correlation data whose discrete Fourier transform is the power spectrum |τ(χ₈)|² = 8 in the Gauss-sum route to reciprocity.",
       "mathContext": "$C(t) := \\sum_{a=0}^{7}\\chi_8(a)\\chi_8(a+t)$. Odd $t$: termwise $0$ (parity obstruction). $C(2)=0$ by exact residue-table cancellation. Full spectrum: $(C(0),\\dots,C(7)) = (4,0,0,0,-4,0,0,0)$."
     },
     {
       "id": "section-g",
       "title": "Section G: The Gauss Sum τ(χ₈) — Explicit Value and Sign",
-      "startLine": 449,
-      "endLine": 668,
+      "startLine": 476,
+      "endLine": 692,
       "summary": "Computes the Gauss sum of χ₈ in closed form. zeta8 defines the canonical primitive 8th root of unity ζ₈ = (1+i)/√2, identified with e^{2πi/8} (zeta8_eq_exp) and shown to have exact multiplicative order 8 (zeta8_sq: ζ₈² = i, zeta8_pow_four: ζ₈⁴ = −1, zeta8_pow_eight: ζ₈⁸ = 1, zeta8_orderOf). gaussSumChi8_eq evaluates the Gauss sum: τ(χ₈) = ∑ χ₈(a)ζ₈^a = ζ₈ − ζ₈³ − ζ₈⁵ + ζ₈⁷ = 2ζ₈(1−i) = 2√2 — a positive real, so gaussSumChi8_eq_sqrt_conductor records the sign theorem τ(χ₈) = +√8 (Gauss 1805, instance D = 8). gaussSumChi8_sq gives the conductor identity τ² = 8 = χ₈(−1)·8. The twisted sums gaussSumChi8_twisted_three/_five/_seven, capped by gaussSumChi8_twisted, verify the multiplicative covariance ∑ χ₈(a)ζ₈^{ca} = χ₈(c)·τ(χ₈) exhaustively over the unit group (ℤ/8ℤ)ˣ = {1,3,5,7} — the identity through which the Gauss sum transports quadratic reciprocity. All proofs are field arithmetic over ℚ(i,√2) via linear_combination against i² = −1 and (√2)² = 2, with exponents folded mod 8 by zeta8_pow_mod.",
       "mathContext": "$\\tau(\\chi_8) = \\sum_{a=0}^{7}\\chi_8(a)\\zeta_8^a = 2\\sqrt{2} = +\\sqrt{8}$ with $\\zeta_8 = e^{2\\pi i/8}$: the modulus $|\\tau|^2 = 8$ AND the sign. Twisted covariance: $\\sum_a \\chi_8(a)\\zeta_8^{ca} = \\chi_8(c)\\,\\tau(\\chi_8)$ for $c \\in (\\mathbb{Z}/8\\mathbb{Z})^\\times$."
+    },
+    {
+      "id": "section-h",
+      "title": "Section H: The Ring-Generic Gauss Sum and the Gauss-Sum Proof of the Second Supplementary Law",
+      "startLine": 693,
+      "endLine": 942,
+      "summary": "Runs the classical Gauss-sum argument end to end. gaussSumK2 defines τ_R(ζ) = ∑ χ₈(a)ζ^a over an arbitrary commutative ring (gaussSumK2_complex: at R = ℂ, ζ = ζ₈ it is Section G's gaussSumChi8). For any ζ with ζ⁴ = −1 the sum collapses to τ = 2(ζ − ζ³) (gaussSumK2_eq) and satisfies the conductor identity τ² = 8 (gaussSumK2_sq) — pure ring algebra, valid in every commutative ring. In odd prime characteristic p the freshman's dream gives the Frobenius covariance τ^p = χ₈(p)·τ (gaussSumK2_pow_char): (ζ − ζ³)^p twists the exponents by p, and folding mod 8 evaluates the twist to the character value, case by case over p mod 8 ∈ {1,3,5,7}. Comparing with the odd-power split τ^p = τ·(τ²)^{(p−1)/2} = τ·8^{(p−1)/2} and cancelling τ ≠ 0 yields 8^{(p−1)/2} = χ₈(p) in any such field (eight_pow_eq_kronecker2). GF(p²) qualifies: its cyclic unit group has order p² − 1 ≡ 0 (mod 8) (eight_dvd_sq_sub_one), so an element of exact order 8 exists and its fourth power is −1 (exists_pow_four_eq_neg_one). The capstone legendreSym_two_eq_kronecker2 descends the identity along the injection ℤ/p ↪ GF(p²), reads the left side as (8/p) = (2/p)³ = (2/p) by Euler's criterion (legendreSym.eq_pow) and multiplicativity, and upgrades the mod-p equality of ±1-valued symbols to ℤ: the second supplementary law (2/p) = (p/2), proved without consuming any Mathlib reciprocity result.",
+      "mathContext": "$\\tau^2 = 8$ for $\\tau = \\sum_a \\chi_8(a)\\zeta^a$, any $\\zeta^4 = -1$, any commutative ring; $\\tau^p = \\chi_8(p)\\tau$ in characteristic $p$ (freshman's dream); cancelling: $8^{(p-1)/2} = \\chi_8(p)$ in $\\mathbb{F}_{p^2}$, and Euler's criterion descends this to $\\left(\\frac{2}{p}\\right) = \\chi_8(p) = \\left(\\frac{p}{2}\\right)$ — the second supplementary law."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result), and 8 is its exact conductor — (·/2) is primitive, periodic mod 8 but not mod 4 or mod 2. It then goes further and determines the complete length-8 autocorrelation spectrum of χ₈ = (·/2): the diagonal self-orthogonality C(0) = 4 (translation-invariant over any window), the anti-diagonal peak C(4) = −4 (from anti-periodicity χ₈(a+4) = −χ₈(a)), and the three off-peak values C(1) = C(2) = C(3) = 0, assembled into the sparse comb (4,0,0,0,−4,0,0,0). 26 theorems, 0 axioms, 0 sorries, all derived from the parent's public API and kernel `decide`.",
+    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result), and 8 is its exact conductor — (·/2) is primitive, periodic mod 8 but not mod 4 or mod 2. It then goes further and determines the complete length-8 autocorrelation spectrum of χ₈ = (·/2): the diagonal self-orthogonality C(0) = 4 (translation-invariant over any window), the anti-diagonal peak C(4) = −4 (from anti-periodicity χ₈(a+4) = −χ₈(a)), and the three off-peak values C(1) = C(2) = C(3) = 0, assembled into the sparse comb (4,0,0,0,−4,0,0,0). Section G evaluates the Gauss sum itself — τ(χ₈) = 2√2 = +√8, sign included, with the twisted sums ∑ χ₈(a)ζ₈^{ca} = χ₈(c)τ over (ℤ/8ℤ)ˣ — and Section H runs that engine to a reciprocity law: the ring-generic conductor identity τ² = 8, the Frobenius covariance τ^p = χ₈(p)·τ in characteristic p, and their assembly in GF(p²) yield a complete, self-contained Gauss-sum proof of the second supplementary law (2/p) = (p/2) (legendreSym_two_eq_kronecker2) — the chain's first reciprocity statement proved rather than imported. 52 theorems, 0 axioms, 0 sorries, all machine-checked from the parent's public API, kernel decide, and standard Mathlib finite-field theory.",
     "implications": "Periodicity in the argument is the defining axiom of a Dirichlet character, so these lemmas turn the parent's prose identification of (·/n) and (·/2) as characters into machine-checked fact. That periodic-character structure is the exact structural input the Gauss-sum route to generalized quadratic reciprocity (for arbitrary fundamental discriminants, not just odd prime moduli) is built on — this file supplies the character axiom that route assumes. The conductor-8 primitivity (kronecker2_conductor_eight) sharpens this: the Gauss-sum route needs a *primitive* character, and only primitive characters have nonvanishing Gauss sums, so pinning the exact conductor — not merely a period — is what makes (·/2) usable there. The complete autocorrelation spectrum is the concrete correlation data that a Gauss-sum evaluation |τ(χ₈)|² = ∑_t C(t)·(DFT factor) would consume directly, rather than requiring a fresh computation from the character table.",
     "openQuestions": [
       "Package these periodicities as an actual `DirichletCharacter` (or `ZMod n →* ℤ`) instance rather than free-standing periodicity lemmas, so the symbol can be fed directly to Mathlib's Dirichlet-character and L-function machinery.",
       "Extend the numerator periodicity from odd positive n to the full Kronecker symbol at even and negative moduli, wiring kronecker2 into the definition — the broader open target the parent's module note flags as unformalized.",
-      "Use the period-8 structure of (·/2) together with the odd-modulus periodicity to formalize the second supplement and the generalized reciprocity law for fundamental discriminants via Gauss sums."
+      "Extend the Gauss-sum argument of Section H from the prime-2 character χ₈ to the odd-prime characters (·/q): the quadratic Gauss sum g_q = ∑ χ_q(a)ζ_q^a satisfies g_q² = χ_q(−1)q, and the same Frobenius-covariance argument in GF(p^k) would give the full quadratic reciprocity law without importing jacobiSym.quadratic_reciprocity — the remaining step from the second supplement to the general law."
     ]
   },
   "crossReferences": [
@@ -313,6 +341,21 @@
       "name": "kronecker2_autocorr_spectrum",
       "statement": "C(0) = 4 ∧ C(1) = 0 ∧ C(2) = 0 ∧ C(3) = 0 ∧ C(4) = -4, where C(t) := ∑ a ∈ Finset.range 8, kronecker2 a * kronecker2 (a + t)",
       "description": "Assembles the complete length-8 autocorrelation spectrum of χ₈ = (·/2) from the diagonal peak (kronecker2_sq_sum_period), the odd off-peaks (kronecker2_autocorr_odd), the even off-peak (kronecker2_autocorr_two), and the anti-diagonal peak (kronecker2_autocorr_four). By the real-character symmetry C(t) = C(8−t) this pins the full sparse comb (4,0,0,0,−4,0,0,0) — the correlation data whose discrete Fourier transform is the power spectrum |τ(χ₈)|² = 8 used in the Gauss-sum route to generalized quadratic reciprocity."
+    },
+    {
+      "name": "gaussSumK2_sq",
+      "statement": "gaussSumK2 R ζ ^ 2 = 8 for any commutative ring R and ζ : R with ζ⁴ = −1",
+      "description": "The conductor identity τ² = 8 freed from ℂ: with ζ⁴ = −1 the Gauss sum collapses to 2(ζ − ζ³) and squares to 8 by pure ring algebra (linear_combination against ζ⁴ + 1 = 0). This is the identity that must hold generically — in particular in finite characteristic — for the Gauss-sum reciprocity argument to run."
+    },
+    {
+      "name": "gaussSumK2_pow_char",
+      "statement": "gaussSumK2 R ζ ^ p = kronecker2 p * gaussSumK2 R ζ in any CommRing R with CharP R p, p an odd prime, ζ⁴ = −1",
+      "description": "Frobenius covariance τ^p = χ₈(p)·τ: the freshman's dream (x − y)^p = x^p − y^p turns the p-th power of τ = 2(ζ − ζ³) into the twist a ↦ pa of the additive character, and folding exponents mod 8 evaluates the twist to the character value, case by case over p mod 8 ∈ {1,3,5,7} — the finite-characteristic incarnation of Section G's twisted Gauss sums."
+    },
+    {
+      "name": "legendreSym_two_eq_kronecker2",
+      "statement": "legendreSym p 2 = kronecker2 p for every odd prime p",
+      "description": "The second supplementary law (2/p) = (p/2), proved by the classical Gauss-sum argument end to end: in GF(p²) (whose cyclic unit group has order p² − 1 ≡ 0 mod 8) pick ζ with ζ⁴ = −1; then τ² = 8 and τ^p = χ₈(p)·τ give 8^{(p−1)/2} = χ₈(p), which descends along ℤ/p ↪ GF(p²) and reads as (8/p) = (2/p)³ = (2/p) by Euler's criterion. The chain's first reciprocity-law proof that does not import the law (or any relative of it) from Mathlib."
     }
   ]
 }
