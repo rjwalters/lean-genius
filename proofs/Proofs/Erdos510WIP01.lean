@@ -29,7 +29,13 @@ infimum is fully provable from Mathlib.  This file establishes:
   `∫₀^{2π} (cosineSum A)³` vanishes when `A` is sum-free (triple-product
   orthogonality), and a moment bootstrap then gives
   `minCosineSum A ≤ −√(N/2)` — the conjectured `√N` growth rate with explicit
-  constant `1/√2`, on the sum-free subclass.
+  constant `1/√2`, on the sum-free subclass;
+* **linear growth for the interval family**: the Dirichlet-kernel telescoping
+  identity `2 sin(θ/2)·∑_{n=1}^N cos(nθ) = sin((2N+1)θ/2) − sin(θ/2)`, and its
+  evaluation at `θ₀ = 3π/(2N+1)` (the middle of the kernel's first negative
+  lobe), giving `minCosineSum {1,…,N} ≤ −1/2 − (2N+1)/(3π)` — the maximally
+  additively-structured set sits at the opposite extreme (`≍ −N`) from the
+  conjectured general `−c√N`.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
 `−c√N` lower bound for *general* sets (those with additive structure, where
@@ -40,6 +46,7 @@ Reference: <https://erdosproblems.com/510>
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -726,5 +733,117 @@ theorem exists_angle_cosineSum_lt_neg_half_sqrt (A : Finset ℕ) (hne : A.Nonemp
   calc minCosineSum A ≤ -Real.sqrt (N / 2) := hbound
     _ < -((1 / 2) * Real.sqrt N) := by rw [hq]; linarith
     _ = -(1 / 2) * Real.sqrt N := by ring
+
+/-! ## The interval family `{1, …, N}`: linear growth of the minimum
+
+Chowla's conjecture concerns sets with *additive structure* — for Sidon or
+sum-free sets the minimum is only `≍ −√N`.  Here we pin down the opposite
+extreme: the maximally structured set `A = {1, …, N}` has *linearly* negative
+minimum.  The mechanism is the classical Dirichlet-kernel closed form:
+multiplying the cosine sum by `2 sin(θ/2)` telescopes it via product-to-sum,
+and at the angle `θ₀ = 3π/(2N+1)` — the middle of the kernel's first negative
+lobe, where `sin((2N+1)θ₀/2) = sin(3π/2) = −1` — the sum evaluates exactly to
+`−1/2 − 1/(2 sin(θ₀/2))`, which `sin x ≤ x` pushes below
+`−1/2 − (2N+1)/(3π) < −0.21·N`. -/
+
+/-- **Telescoping (Dirichlet-kernel) identity**: for every angle `θ`,
+`2 sin(θ/2) · ∑_{n=1}^N cos(nθ) = sin((2N+1)θ/2) − sin(θ/2)`.
+Each term satisfies the product-to-sum identity
+`2 cos(nθ) sin(θ/2) = sin((2n+1)θ/2) − sin((2n−1)θ/2)`, so the sum
+telescopes. -/
+theorem two_sin_half_mul_cosineSum_Icc (N : ℕ) (θ : ℝ) :
+    2 * Real.sin (θ / 2) * cosineSum (Finset.Icc 1 N) θ
+      = Real.sin ((2 * (N : ℝ) + 1) * θ / 2) - Real.sin (θ / 2) := by
+  induction N with
+  | zero =>
+      have h0 : Finset.Icc 1 0 = (∅ : Finset ℕ) := Finset.Icc_eq_empty (by omega)
+      have e : (2 * ((0 : ℕ) : ℝ) + 1) * θ / 2 = θ / 2 := by push_cast; ring
+      rw [h0, cosineSum_empty, mul_zero, e, sub_self]
+  | succ n ih =>
+      have hnot : n + 1 ∉ Finset.Icc 1 n := by
+        intro h
+        exact absurd (Finset.mem_Icc.mp h).2 (by omega)
+      have hIcc : Finset.Icc 1 (n + 1) = insert (n + 1) (Finset.Icc 1 n) := by
+        ext m
+        simp only [Finset.mem_Icc, Finset.mem_insert]
+        omega
+      rw [hIcc, cosineSum_insert _ hnot, mul_add, ih]
+      push_cast
+      have key : Real.sin ((2 * ((n : ℝ) + 1) + 1) * θ / 2)
+          = Real.sin ((2 * (n : ℝ) + 1) * θ / 2)
+            + 2 * Real.sin (θ / 2) * Real.cos (((n : ℝ) + 1) * θ) := by
+        have e1 : (2 * ((n : ℝ) + 1) + 1) * θ / 2 = ((n : ℝ) + 1) * θ + θ / 2 := by ring
+        have e2 : (2 * (n : ℝ) + 1) * θ / 2 = ((n : ℝ) + 1) * θ - θ / 2 := by ring
+        rw [e1, e2, Real.sin_add, Real.sin_sub]
+        ring
+      linarith [key]
+
+/-- **Linear growth for the interval family**: for `N ≥ 1`,
+`minCosineSum {1, …, N} ≤ −1/2 − (2N+1)/(3π)`.
+
+Evaluate the telescoped sum at `θ₀ = 3π/(2N+1)`: there `(2N+1)θ₀/2 = 3π/2`
+exactly, so `sin((2N+1)θ₀/2) = −1` and
+`cosineSum {1,…,N} θ₀ = −1/2 − 1/(2 sin(θ₀/2))`; since
+`0 < sin(θ₀/2) ≤ θ₀/2 = 3π/(2(2N+1))` this is at most `−1/2 − (2N+1)/(3π)`.
+Together with the trivial floor `−N ≤ minCosineSum` (`neg_card_le_minCosineSum`)
+the interval minimum is pinned to `Θ(N)`: linear, in sharp contrast with the
+`≍ √N` behaviour of Sidon/sum-free sets.  Additive structure genuinely drives
+the minimum down — the quantitative heart of Chowla's problem. -/
+theorem minCosineSum_Icc_le (N : ℕ) (hN : 1 ≤ N) :
+    minCosineSum (Finset.Icc 1 N) ≤ -1 / 2 - (2 * (N : ℝ) + 1) / (3 * π) := by
+  have hπ : 0 < π := Real.pi_pos
+  have hN1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hTpos : (0 : ℝ) < 2 * (N : ℝ) + 1 := by linarith
+  have hTne : (2 * (N : ℝ) + 1) ≠ 0 := ne_of_gt hTpos
+  set θ₀ : ℝ := 3 * π / (2 * (N : ℝ) + 1) with hθ₀
+  have hhalf_pos : 0 < θ₀ / 2 := by rw [hθ₀]; positivity
+  have hhalf_lt : θ₀ / 2 < π := by
+    rw [hθ₀, div_div, div_lt_iff₀ (by positivity)]
+    nlinarith [mul_le_mul_of_nonneg_right hN1 hπ.le]
+  have hspos : 0 < Real.sin (θ₀ / 2) := Real.sin_pos_of_pos_of_lt_pi hhalf_pos hhalf_lt
+  have hsne : Real.sin (θ₀ / 2) ≠ 0 := ne_of_gt hspos
+  have hslt : Real.sin (θ₀ / 2) < θ₀ / 2 := Real.sin_lt hhalf_pos
+  have htel := two_sin_half_mul_cosineSum_Icc N θ₀
+  -- at `θ₀` the leading sine argument is exactly `3π/2 = π/2 + π`
+  have harg : (2 * (N : ℝ) + 1) * θ₀ / 2 = π / 2 + π := by
+    rw [hθ₀]
+    field_simp
+    ring
+  have hsin32 : Real.sin ((2 * (N : ℝ) + 1) * θ₀ / 2) = -1 := by
+    rw [harg, Real.sin_add, Real.sin_pi, Real.cos_pi, Real.sin_pi_div_two,
+        Real.cos_pi_div_two]
+    ring
+  rw [hsin32] at htel
+  -- `htel : 2 sin(θ₀/2) · cosineSum = −1 − sin(θ₀/2)`, so the sum is
+  -- `−1/2 − 1/(2 sin(θ₀/2))`
+  have hC : cosineSum (Finset.Icc 1 N) θ₀ = -1 / 2 - 1 / (2 * Real.sin (θ₀ / 2)) := by
+    field_simp
+    linarith [htel]
+  -- `(2N+1)θ₀ = 3π`, hence `2(2N+1)·sin(θ₀/2) ≤ (2N+1)θ₀ = 3π`
+  have h2 : (2 * (N : ℝ) + 1) * θ₀ = 3 * π := by
+    rw [hθ₀]
+    field_simp
+  have h1 : (2 * (N : ℝ) + 1) / (3 * π) ≤ 1 / (2 * Real.sin (θ₀ / 2)) := by
+    rw [div_le_div_iff₀ (by positivity) (by positivity)]
+    nlinarith [hslt.le, h2, hTpos]
+  calc minCosineSum (Finset.Icc 1 N)
+      ≤ cosineSum (Finset.Icc 1 N) θ₀ := minCosineSum_le _ θ₀
+    _ = -1 / 2 - 1 / (2 * Real.sin (θ₀ / 2)) := hC
+    _ ≤ -1 / 2 - (2 * (N : ℝ) + 1) / (3 * π) := by linarith [h1]
+
+/-- **The interval minimum is `Θ(N)`** — two-sided pinning: for `N ≥ 1`,
+`−N ≤ minCosineSum {1,…,N} ≤ −(2N+1)/(3π) < −N·2/(3π)`.  Packaged as the
+strict comparison against the general `√N` conjecture's scale: the interval
+beats any `−c√N` bound once `N > (3πc/2)²`. -/
+theorem minCosineSum_Icc_lt_neg_frac (N : ℕ) (hN : 1 ≤ N) :
+    minCosineSum (Finset.Icc 1 N) < -(2 / (3 * π)) * (N : ℝ) := by
+  have hπ : 0 < π := Real.pi_pos
+  have h := minCosineSum_Icc_le N hN
+  have e : -(2 / (3 * π)) * (N : ℝ) - (-1 / 2 - (2 * (N : ℝ) + 1) / (3 * π))
+      = 1 / 2 + 1 / (3 * π) := by
+    field_simp
+    ring
+  have hpos : (0 : ℝ) < 1 / 2 + 1 / (3 * π) := by positivity
+  linarith
 
 end Erdos510WIP01

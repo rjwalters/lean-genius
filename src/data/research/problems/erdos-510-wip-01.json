@@ -20,7 +20,8 @@
       "Attained minimum: exists_eq_minCosineSum (infimum realized at a concrete angle via periodicity + compactness of [0,2π]).",
       "Sign: minCosineSum A ≤ 0 (minCosineSum_nonpos) and STRICT minCosineSum A < 0 (minCosineSum_neg) for nonempty positive-frequency A, with an explicit negative-value angle (exists_angle_cosineSum_neg).",
       "Uniform quantitative bound minCosineSum A ≤ −1/2 (minCosineSum_le_neg_half) via a second-moment/L² argument: orthogonality ∫cos(nθ)cos(mθ)=π·[n=m] (integral_cos_mul_cos) and ∫(cosineSum)²=π·N (integral_cosineSum_sq).",
-      "Sharp all-odd extreme minCosineSum A = −card A (minCosineSum_forall_odd), plus minCosineSum A ≤ ∑(−1)ⁿ (minCosineSum_le_alternating). All axiom-free, host-verified v4.31."
+      "Sharp all-odd extreme minCosineSum A = −card A (minCosineSum_forall_odd), plus minCosineSum A ≤ ∑(−1)ⁿ (minCosineSum_le_alternating). All axiom-free, host-verified v4.31.",
+      "LINEAR growth for the interval family: minCosineSum {1,…,N} ≤ −1/2 − (2N+1)/(3π) (minCosineSum_Icc_le) via the Dirichlet-kernel telescoping identity 2sin(θ/2)·∑cos(nθ) = sin((2N+1)θ/2) − sin(θ/2) (two_sin_half_mul_cosineSum_Icc) evaluated at θ₀ = 3π/(2N+1); with the −N floor this pins the interval minimum to Θ(N) (minCosineSum_Icc_lt_neg_frac), the opposite extreme from the √N Sidon/sum-free scale."
     ],
     "open": [
       "The −c√N lower bound (the conjecture itself) — deep, untouched.",
@@ -48,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). NEW: Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) (constant 1/sqrt(2)) via third-moment vanishing (triple-product orthogonality) + three-moment Cauchy-Schwarz bootstrap; existential form with strict < -(1/2)sqrt(N). All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (third moment large positive — the genuinely hard case; Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example.",
+    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) via third-moment bootstrap. NEW (2026-07-23): the interval family {1..N} pinned to Θ(N) — minCosineSum ≤ −1/2 − (2N+1)/(3π) via the Dirichlet-kernel telescoping closed form at θ₀ = 3π/(2N+1); together with the √N sum-free bound this formalizes both extremes of the structure-vs-cancellation dichotomy. All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -69,7 +70,10 @@
       "integral_cos_mul_cos_mul_cos_eq_zero in Erdos510WIP01.lean (triple-product orthogonality)",
       "integral_cosineSum_cube_eq_zero in Erdos510WIP01.lean (third moment = 0 on sum-free sets)",
       "minCosineSum_le_neg_sqrt_half_card in Erdos510WIP01.lean (Chowla sqrt(N) bound, sum-free subclass, c=1/sqrt(2))",
-      "exists_angle_cosineSum_lt_neg_half_sqrt in Erdos510WIP01.lean (existential conjecture-shaped form, c=1/2 strict)"
+      "exists_angle_cosineSum_lt_neg_half_sqrt in Erdos510WIP01.lean (existential conjecture-shaped form, c=1/2 strict)",
+      "two_sin_half_mul_cosineSum_Icc in Erdos510WIP01.lean (Dirichlet-kernel telescoping closed form for intervals {1..N}, all θ)",
+      "minCosineSum_Icc_le in Erdos510WIP01.lean (interval family linear bound ≤ −1/2 − (2N+1)/(3π))",
+      "minCosineSum_Icc_lt_neg_frac in Erdos510WIP01.lean (strict Θ(N) form: < −(2/(3π))·N)"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
@@ -86,7 +90,9 @@
       "Third moment of the Chowla sum vanishes on sum-free sets (a,b in A -> a+b not in A): expanding (cosineSum A)^3 into the triple sum, sum-freeness rules out all three additive relations per triple. In general int f^3 = (3pi/2)#{(a,b) in A^2 : a+b in A} — only the vanishing case formalized.",
       "MECHANISM (new, distinct from second-moment and from blocked elementary-trig route): three-moment Cauchy-Schwarz bootstrap. With m=min, u=f-m>=0, the scaled optimal integrand u((-2m)u-(N+2m^2))^2 >= 0 integrates (via int f=0, int f^2=piN, int f^3=0) to exactly 2 pi m N (N-2m^2), forcing N <= 2m^2, i.e. minCosineSum A <= -sqrt(N/2). Scaling the linear factor by -2m avoids all division — the closed form is a pure ring identity.",
       "Chowla sqrt(N) growth rate ESTABLISHED FOR THE SUM-FREE SUBCLASS with explicit constant 1/sqrt(2) (e.g. every top-half interval {N+1..2N}); sum-freeness implies 0 not in A automatically (0 in A would need 0+0 not in A). The general conjecture untouched: additive structure (large positive third moment) is exactly the hard case.",
-      "Sanity: all-odd sets are sum-free (odd+odd=even), and their exact minimum -N indeed beats -sqrt(N/2) — the two sharp results are consistent."
+      "Sanity: all-odd sets are sum-free (odd+odd=even), and their exact minimum -N indeed beats -sqrt(N/2) — the two sharp results are consistent.",
+      "INTERVAL FAMILY (new mechanism, Dirichlet kernel): multiplying ∑_{n=1}^N cos(nθ) by 2sin(θ/2) telescopes via product-to-sum 2cos(nθ)sin(θ/2) = sin((2n+1)θ/2) − sin((2n−1)θ/2), giving the closed form sin((2N+1)θ/2) − sin(θ/2). At θ₀ = 3π/(2N+1) the argument (2N+1)θ₀/2 = 3π/2 EXACTLY (sin = −1), so the sum equals −1/2 − 1/(2sin(θ₀/2)); sin x ≤ x (Real.sin_lt, needs import Analysis.SpecialFunctions.Trigonometric.Bounds) turns this into ≤ −1/2 − (2N+1)/(3π). Fully additively-structured sets are LINEARLY negative — quantifies why additive structure is the driving force in Chowla's problem (Sidon/sum-free ≍ √N vs interval ≍ N).",
+      "Lean note: cosineSum_insert takes θ explicitly before the membership hypothesis (section variable order) — call as cosineSum_insert _ hnot; v4.31 Mathlib uses div_lt_iff₀ / div_le_div_iff₀ (the un-subscripted names are gone)."
     ],
     "mathlibGaps": [
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
@@ -119,7 +125,7 @@
     "mathlib": []
   },
   "started": "2026-07-20T12:00:00.000Z",
-  "lastUpdate": "2026-07-22T13:00:00.000Z",
+  "lastUpdate": "2026-07-23T17:00:00.000Z",
   "significance": 6,
   "tractability": 5
 }

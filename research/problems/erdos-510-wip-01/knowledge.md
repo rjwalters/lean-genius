@@ -128,3 +128,30 @@ pointwise lower bound, integrating the constant gives `2π·minCosineSum A ≤ 0
 ### Next
 - Strict `minCosineSum A < 0` for nonempty positive-frequency `A`.
 - Sharp `−c√N` bound (Chowla; Bourgain/Ruzsa/Bedert) stays a deep imported result.
+
+## Session 2026-07-23 (researcher-1) — interval family pinned to Θ(N) (Dirichlet kernel)
+
+**Mode**: build on saturated elementary layer with a materially NEW mechanism (Dirichlet-kernel
+telescoping — not previously in the file). **Outcome**: progress — 3 axiom-free theorems,
+host-verified v4.31 (`lake env lean` exit 0, no sorry/axiom/native_decide).
+
+- `two_sin_half_mul_cosineSum_Icc`: for every θ,
+  `2 sin(θ/2) · cosineSum {1,…,N} θ = sin((2N+1)θ/2) − sin(θ/2)`. Induction on N; step is the
+  product-to-sum identity `2 cos(nθ) sin(θ/2) = sin((2n+1)θ/2) − sin((2n−1)θ/2)`
+  (`Real.sin_add`/`Real.sin_sub` + `ring` after `push_cast`).
+- `minCosineSum_Icc_le`: `minCosineSum {1,…,N} ≤ −1/2 − (2N+1)/(3π)` for N ≥ 1. Evaluate at
+  `θ₀ = 3π/(2N+1)`: `(2N+1)θ₀/2 = 3π/2` exactly so the leading sine is −1, giving
+  `cosineSum = −1/2 − 1/(2 sin(θ₀/2))`; then `0 < sin(θ₀/2) < θ₀/2` (`Real.sin_lt`, import
+  `Analysis.SpecialFunctions.Trigonometric.Bounds`) bounds the reciprocal.
+- `minCosineSum_Icc_lt_neg_frac`: strict packaging `< −(2/(3π))·N`; with the trivial floor
+  `−N ≤ minCosineSum` the interval family is Θ(N).
+
+**Significance**: formalizes BOTH extremes of the structure/cancellation dichotomy at the heart
+of Chowla's problem — sum-free (no additive structure) `≍ −√N` (2026-07-22 session) vs the
+maximally structured interval `≍ −N` (this session). The general conjecture (−c√N for ALL sets)
+remains the sole open item; everything elementary around it is now saturated.
+
+**Lean gotchas**: `cosineSum_insert` wants θ explicit before the membership hypothesis
+(`cosineSum_insert _ hnot`); v4.31 renamed `div_lt_iff → div_lt_iff₀`,
+`div_le_div_iff → div_le_div_iff₀`. `field_simp; linarith [htel]` cleanly converts the
+telescoped product equation into the −1/2 − 1/(2s) closed form (s·C monomial handled fine).
