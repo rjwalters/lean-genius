@@ -95,9 +95,70 @@ def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
     | inl h => exact h.2 h.1
     | inr h => exact h.2 h.1
 
-/-- Stars are trees. -/
+/-- The star's edge set: one edge from the centre `0` to each other vertex. -/
+theorem starGraph_edgeFinset (k : ℕ) :
+    (starGraph k).edgeFinset =
+      (Finset.univ.erase (0 : Fin (k + 1))).image
+        (fun j => s((0 : Fin (k + 1)), j)) := by
+  ext e
+  refine Sym2.inductionOn e fun i j => ?_
+  simp only [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet, Finset.mem_image,
+    Finset.mem_erase, Finset.mem_univ, and_true]
+  constructor
+  · rintro (⟨hi, hj⟩ | ⟨hj, hi⟩)
+    · have hi0 : i = (0 : Fin (k + 1)) := Fin.ext (by simpa using hi)
+      refine ⟨j, fun h0 => hj (by simp [h0]), by rw [hi0]⟩
+    · have hj0 : j = (0 : Fin (k + 1)) := Fin.ext (by simpa using hj)
+      refine ⟨i, fun h0 => hi (by simp [h0]), ?_⟩
+      rw [hj0, Sym2.eq_swap]
+  · rintro ⟨a, ha0, hae⟩
+    rw [Sym2.eq_iff] at hae
+    rcases hae with ⟨h0i, haj⟩ | ⟨h0j, hai⟩
+    · exact Or.inl ⟨by simp [← h0i], fun h => ha0 (Fin.ext (by simp [haj, h]))⟩
+    · exact Or.inr ⟨by simp [← h0j], fun h => ha0 (Fin.ext (by simp [hai, h]))⟩
+
+/-- The star on `k+1` vertices has exactly `k` edges. -/
+theorem starGraph_edgeFinset_card (k : ℕ) : (starGraph k).edgeFinset.card = k := by
+  rw [starGraph_edgeFinset]
+  have hinj : Set.InjOn (fun j => s((0 : Fin (k + 1)), j))
+      (Finset.univ.erase (0 : Fin (k + 1))) := by
+    intro a _ b _ hab
+    rw [Sym2.eq_iff] at hab
+    rcases hab with ⟨-, h⟩ | ⟨h0b, ha0⟩
+    · exact h
+    · rw [ha0, h0b]
+  rw [Finset.card_image_of_injOn hinj, Finset.card_erase_of_mem (Finset.mem_univ _),
+    Finset.card_univ, Fintype.card_fin]
+  omega
+
+/-- The star graph is connected: every vertex is adjacent to the centre `0`. -/
+theorem starGraph_connected (k : ℕ) : (starGraph k).Connected := by
+  rw [SimpleGraph.connected_iff]
+  refine ⟨fun i j => ?_, ⟨0⟩⟩
+  have h0 : ∀ a : Fin (k + 1), a.val ≠ 0 → (starGraph k).Adj 0 a :=
+    fun a ha => Or.inl ⟨by simp, ha⟩
+  by_cases hij : i = j
+  · exact hij ▸ SimpleGraph.Reachable.refl i
+  · by_cases hi : i.val = 0
+    · by_cases hj : j.val = 0
+      · exact absurd (Fin.ext (hi.trans hj.symm)) hij
+      · have hi0 : i = (0 : Fin (k + 1)) := Fin.ext (by simpa using hi)
+        exact hi0 ▸ (h0 j hj).reachable
+    · by_cases hj : j.val = 0
+      · have hj0 : j = (0 : Fin (k + 1)) := Fin.ext (by simpa using hj)
+        exact hj0 ▸ ((h0 i hi).symm).reachable
+      · exact ((h0 i hi).symm.reachable).trans (h0 j hj).reachable
+
+/-- Stars are trees.  (Formerly a sorry; proved via
+    `SimpleGraph.isTree_iff_connected_and_card`: the star is connected with
+    exactly `k` edges on `k+1` vertices.  True for every `k`; the original
+    `k ≥ 1` hypothesis is kept for signature stability.) -/
 theorem star_is_tree (k : ℕ) (hk : k ≥ 1) : IsTree (starGraph k) := by
-  sorry
+  show (starGraph k).IsTree
+  rw [SimpleGraph.isTree_iff_connected_and_card]
+  refine ⟨starGraph_connected k, ?_⟩
+  rw [Nat.card_eq_fintype_card, ← SimpleGraph.edgeFinset_card,
+    starGraph_edgeFinset_card, Nat.card_eq_fintype_card, Fintype.card_fin]
 
 /- ## Part II: Subgraph Containment -/
 
@@ -117,17 +178,52 @@ noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
 /-- Sum of degrees equals twice the number of edges. -/
 theorem sum_degrees_eq_twice_edges (G : SimpleGraph V) [DecidableRel G.Adj] :
     (Finset.univ.sum fun v => G.degree v) = 2 * edgeCount G := by
-  sorry
+  have h := G.sum_degrees_eq_twice_card_edges
+  unfold edgeCount
+  convert h using 2
+  congr!
 
 /-- Average degree of a graph. -/
 noncomputable def avgDegree (G : SimpleGraph V) : ℚ :=
   if h : Fintype.card V = 0 then 0
   else (2 * edgeCount G : ℚ) / Fintype.card V
 
-/-- A graph has average degree > k-1 iff it has > (k-1)n/2 edges. -/
-theorem avg_degree_iff_edges (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) :
+/-- A graph has average degree > k-1 iff it has > (k-1)n/2 edges.
+
+    (Statement repair: the original sorried statement omitted `k ≥ 1` and was
+    false at `k = 0` — there the ℚ-side threshold `↑k - 1 = -1` is trivially
+    beaten while the ℕ-side threshold `(k-1) * n / 2` truncates to `0`.) -/
+theorem avg_degree_iff_edges (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) (hk : 1 ≤ k) :
     avgDegree G > k - 1 ↔ edgeCount G > (k - 1) * Fintype.card V / 2 := by
-  sorry
+  have hcast : ((k : ℚ) - 1) = ((k - 1 : ℕ) : ℚ) := by
+    rw [Nat.cast_sub hk, Nat.cast_one]
+  by_cases hn : Fintype.card V = 0
+  · -- no vertices: both sides are false
+    have hV : IsEmpty V := Fintype.card_eq_zero_iff.mp hn
+    have hE : edgeCount G = 0 := by
+      rw [edgeCount, Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+      intro e
+      induction e using Sym2.inductionOn with
+      | hf a b => exact fun _ => hV.elim a
+    rw [avgDegree, dif_pos hn]
+    constructor
+    · intro h
+      exfalso
+      have h1 : (1 : ℚ) ≤ (k : ℚ) := by exact_mod_cast hk
+      rw [gt_iff_lt, hcast] at h
+      have : (0 : ℚ) ≤ ((k - 1 : ℕ) : ℚ) := Nat.cast_nonneg _
+      linarith
+    · intro h
+      rw [hn, Nat.mul_zero, Nat.zero_div, hE] at h
+      exact absurd h (lt_irrefl 0)
+  · have hn' : (0 : ℚ) < (Fintype.card V : ℚ) := by
+      exact_mod_cast Nat.pos_of_ne_zero hn
+    have key : avgDegree G > (k : ℚ) - 1 ↔
+        (k - 1) * Fintype.card V < 2 * edgeCount G := by
+      rw [avgDegree, dif_neg hn, gt_iff_lt, hcast, lt_div_iff₀ hn']
+      exact_mod_cast Iff.rfl
+    rw [key]
+    omega
 
 /- ## Part IV: The Erdős-Sós Conjecture -/
 
@@ -232,11 +328,24 @@ noncomputable def extremalNumber (n : ℕ) {W : Type*} [Fintype W] (T : SimpleGr
   sSup {m : ℕ | ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
     TreeFree G T ∧ edgeCount G = m}
 
-/-- The Erdős-Sós conjecture implies ex(n, T) ≤ (k-1)n/2 for trees T on k+1 vertices. -/
-theorem erdos_sos_implies_extremal {W : Type*} [Fintype W] [DecidableEq W]
+/-- The Erdős-Sós conjecture implies ex(n, T) ≤ (k-1)n/2 for trees T on k+1 vertices.
+
+    (Statement repair: `W` must live in `Type` — `ErdosSosConjecture`
+    quantifies its tree type over `Type`, so the universe-polymorphic
+    `Type*` version is not derivable from it.) -/
+theorem erdos_sos_implies_extremal {W : Type} [Fintype W] [DecidableEq W]
     (T : SimpleGraph W) (hT : IsTree T) (hk : Fintype.card W = k + 1) (n : ℕ) (hn : n ≥ k + 1) :
     ErdosSosConjecture → extremalNumber n T ≤ (k - 1) * n / 2 := by
-  sorry
+  intro hesc
+  refine csSup_le' ?_
+  rintro m ⟨G, instG, hfree, hcount⟩
+  by_contra hm
+  push_neg at hm
+  refine hfree ?_
+  refine hesc k (Fin n) G W T hT hk ?_ ?_
+  · simpa using hn
+  · rw [Fintype.card_fin]
+    omega
 
 /- ## Part VII: Special Trees -/
 
@@ -249,7 +358,75 @@ theorem star_easier (n k : ℕ) (hn : n ≥ k + 1)
     (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (hG : edgeCount G ≥ k * n / 2) :
     ContainsSubgraph G (starGraph k) := by
-  sorry
+  -- Step 1: some vertex has degree ≥ k (pigeonhole on the degree sum).
+  have hne : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+  obtain ⟨v, hv⟩ : ∃ v : Fin n, k ≤ G.degree v := by
+    by_contra hall
+    push_neg at hall
+    -- every degree ≤ k - 1, and k ≥ 1 (a degree is < k), so sum ≤ (k-1) n
+    obtain ⟨w⟩ := hne
+    have hk1 : 1 ≤ k := by have := hall w; omega
+    have hsum : (Finset.univ.sum fun u => G.degree u) ≤ (k - 1) * n := by
+      calc (Finset.univ.sum fun u => G.degree u)
+          ≤ Finset.univ.card • (k - 1) :=
+            Finset.sum_le_card_nsmul _ _ _ (fun u _ => by have := hall u; omega)
+        _ = (k - 1) * n := by
+            rw [Finset.card_univ, Fintype.card_fin, smul_eq_mul, Nat.mul_comm]
+    rw [sum_degrees_eq_twice_edges, Nat.sub_mul, one_mul] at hsum
+    -- omega needs the (nonlinear) fact n ≤ k*n spelled out
+    have hkn : n ≤ k * n := Nat.le_mul_of_pos_left n hk1
+    -- 2 * edgeCount ≥ 2 * (k*n/2) ≥ k*n - 1 and ≤ k*n - n with n ≥ 2
+    omega
+  -- Step 2: pick k distinct neighbours of v and map the star onto them.
+  obtain ⟨S, hS, hScard⟩ :=
+    Finset.exists_subset_card_eq (n := k) (s := G.neighborFinset v) (by rwa [G.card_neighborFinset_eq_degree])
+  let e := S.orderIsoOfFin hScard
+  refine ⟨Fin.cases v (fun i => (e i : Fin n)), ?_, ?_⟩
+  · -- injectivity: v is not its own neighbour, and e is injective
+    have hveS : ∀ i : Fin k, (e i : Fin n) ≠ v := by
+      intro i hvi
+      have : (e i : Fin n) ∈ G.neighborFinset v := hS (e i).2
+      rw [hvi, SimpleGraph.mem_neighborFinset] at this
+      exact G.irrefl this
+    intro a b hab
+    induction a using Fin.cases with
+    | zero =>
+      induction b using Fin.cases with
+      | zero => rfl
+      | succ j =>
+        simp only [Fin.cases_zero, Fin.cases_succ] at hab
+        exact absurd hab.symm (hveS j)
+    | succ i =>
+      induction b using Fin.cases with
+      | zero =>
+        simp only [Fin.cases_zero, Fin.cases_succ] at hab
+        exact absurd hab (hveS i)
+      | succ j =>
+        simp only [Fin.cases_succ] at hab
+        have : e i = e j := Subtype.ext hab
+        rw [e.injective this]
+  · -- adjacency: a star edge joins the centre to a leaf
+    intro a b hab
+    rcases hab with ⟨ha, hb⟩ | ⟨hb, ha⟩
+    · -- a is the centre, b = succ j is a leaf
+      have ha0 : a = 0 := Fin.ext (by simpa using ha)
+      induction b using Fin.cases with
+      | zero => exact absurd (by simp) hb
+      | succ j =>
+        subst ha0
+        simp only [Fin.cases_zero, Fin.cases_succ]
+        have : (e j : Fin n) ∈ G.neighborFinset v := hS (e j).2
+        rwa [SimpleGraph.mem_neighborFinset] at this
+    · -- b is the centre, a = succ i is a leaf
+      have hb0 : b = 0 := Fin.ext (by simpa using hb)
+      induction a using Fin.cases with
+      | zero => exact absurd (by simp) ha
+      | succ i =>
+        subst hb0
+        simp only [Fin.cases_zero, Fin.cases_succ]
+        have : (e i : Fin n) ∈ G.neighborFinset v := hS (e i).2
+        rw [SimpleGraph.mem_neighborFinset] at this
+        exact this.symm
 
 /- ## Part VIII: The Komlós-Sós Bound -/
 
@@ -297,8 +474,8 @@ axiom turan_path_formula (n k : ℕ) (hn : n ≥ k - 1) (hk : k ≥ 2) :
 -/
 def erdos_548_open : Prop := ErdosSosConjecture ∨ ¬ErdosSosConjecture
 
-theorem erdos_548_status : erdos_548_open := by
-  exact Or.inl (by sorry) -- Open problem
+theorem erdos_548_status : erdos_548_open :=
+  Classical.em ErdosSosConjecture
 
 end Erdos548
 
