@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 6,
-    "focus": "S19 (2026-07-23): outer loop threaded with BOTH step shapes DONE — SzemerediRegularityOQ04OuterBoth.lean proves partitionEnergy_step3_refinement_gain (whole-partition eps^3 lift of the S18 defect gain over insert A (insert B1 (insert B2 R))), afks_sharp_energy_iteration_count_of_witness_both (mixed 4-piece/3-piece chains stay within the SAME sharp n^2/(eps^4 m^2) budget for eps<=1), afks_regular_step_within_bound_both (termination against the disjunctive witness), and exists_afksTwoLevel_of_dichotomy_both / _equipartition consuming the S17 two-shape dichotomy. [VERIFIED 0 axioms, docker 8592 jobs]",
+    "iteration": 8,
+    "focus": "S21 (2026-07-23): recursive chain construction DONE in oracle form — SzemerediRegularityOQ04Chain.lean proves exists_fine_of_potential_oracle (abstract invariant/potential chain: choose successor on the subtype {q // Inv q}, iterate, contradict no_infinite_energy_increments), partitionEnergy_gain_of_witnessed_both (per-step eps^4 m^2/n^2 gain of EITHER witness shape, factored from S19), exists_energy_next_of_not_afksFineRegular (S20 single step in energy form), and exists_afksFineRegular/exists_afksTwoLevel_of_maintained_oracle (the two-level AFKS conclusion from a seed + an invariant-MAINTAINING step oracle; no horizon N appears). [VERIFIED 0 axioms, docker 8598 jobs] The single remaining analytic gap is RE-EQUITIZATION: upgrade the bare-split successor (cover/disjoint/refines + gain) to one that is also equitable with mass floor m, keeping a positive fraction of the gain.",
     "blockers": [],
-    "nextAction": "The residual gap is between split DATA and WITNESSED STEPS: exists_proper_or_semitrivial_split_of_not_afksFineRegular (S17) yields the 4-piece/3-piece split data, while the _both dichotomy hypothesis needs the chain parts(n+1) to BE the refined partition with the freshness clauses (split pieces distinct from each other and from R) and coarse mass floors discharged. Constructing the recursive refinement chain that realizes the case split at every non-regular step — the 'nonempty-equipartition model' blocker recorded in Assembly.lean — is the genuine remaining outer-loop content. Deep construction; no elementary increment remains at the pair or partition level."
+    "nextAction": "The ONE remaining gap: re-equitization. Bridge the delta between exists_energy_next_of_not_afksFineRegular (bare split: cover, disjoint, refines, energy gain E^4 m^2/n^2) and the maintained oracle of exists_afksTwoLevel_of_maintained_oracle (additionally equitable + mass floor m, any positive retained gain delta). Classical averaging/re-partition bookkeeping; Mathlib's Finpartition.equitabilise is the natural tool but the engine works with raw Finset (Finset V) families, so a bridge or bespoke equitabilise is needed. Also small: seed existence (initial equitable mass-m refinement of Vparts). Deep but sharply specified."
   },
   "knowledge": {
     "progressSummary": "Item-1 dichotomy: constructive core COMPLETE at the pair level. S12-S15 packaging/freshness/mass-floor/ceiling; S16 gap forbids doubly-trivial splits; S17 asymmetric 3-piece predicate IsWitnessedSharpStep3 + trichotomy (one normalized shape covers both degenerate sides via edgeDensity_symm); S18 (2026-07-22) the one-sided DEFECT energy inequality: deviation of ONE half from the PARENT density gains (|A1||B|/n^2)*delta^2 (defect_energy_bound, multiplicative mean, empty complement allowed), and with the eps-mass floor the 3-piece step gains eps^3*|A||B|/n^2 (pairEnergy_step3_gain, capstone pairEnergy_gain_of_isWitnessedSharpStep3). Remaining: outer-loop chain construction threading both step shapes (deep).",
@@ -97,7 +97,11 @@
       "pairEnergy_gain_of_isWitnessedSharpStep3 (capstone: witnessed 3-piece step carries the eps^3 pair-energy gain) in SzemerediRegularityOQ04DefectGain.lean",
       "partitionEnergy_step3_refinement_gain (whole-partition eps^3 lift of the 3-piece defect gain) in SzemerediRegularityOQ04OuterBoth.lean",
       "afks_sharp_energy_iteration_count_of_witness_both + afks_regular_step_within_bound_both (mixed-chain sharp budget and termination) in SzemerediRegularityOQ04OuterBoth.lean",
-      "exists_afksTwoLevel_of_dichotomy_both / _both_equipartition (outer AFKS loop consuming the S17 two-shape dichotomy) in SzemerediRegularityOQ04OuterBoth.lean"
+      "exists_afksTwoLevel_of_dichotomy_both / _both_equipartition (outer AFKS loop consuming the S17 two-shape dichotomy) in SzemerediRegularityOQ04OuterBoth.lean",
+      "SzemerediRegularityOQ04StepRealize.lean (S20): split_freshness3 + isWitnessedSharpStep3_of_split_of_nonempty/_gap, refined4/refined3 cover/disjoint/refines invariants, exists_witnessed_next_of_not_afksFineRegular (single-step realization)",
+      "exists_fine_of_potential_oracle (abstract invariant/potential chain construction) in SzemerediRegularityOQ04Chain.lean",
+      "partitionEnergy_gain_of_witnessed_both + exists_energy_next_of_not_afksFineRegular (per-step energy form) in SzemerediRegularityOQ04Chain.lean",
+      "exists_afksFineRegular_of_maintained_oracle + exists_afksTwoLevel_of_maintained_oracle (two-level AFKS from a maintained step oracle) in SzemerediRegularityOQ04Chain.lean"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -137,7 +141,10 @@
       "The two degenerate sides of the sharp 2x2 split fold onto ONE asymmetric 3-piece shape: when B2 = empty (B1 = B, only A splits), swapping the parents via edgeDensity_symm turns |d(A1,B) - d(A,B)| into |d(B,A1) - d(B,A)|, i.e. the same only-second-block-splits form. One predicate (IsWitnessedSharpStep3) therefore covers both.",
       "The 3-piece step will carry a STRONGER energy floor than the 4-piece one: splitting only B with deviation >= eps on mass >= eps*|B| gains >= eps^3*|A||B|/n^2 (mean preserved by edge-count additivity e(A,B)=e(A,B1)+e(A,B2), already in SzemerediCoreOQ01) versus the eps^4 sharp floor - so the outer-loop eps^4 budget covers both branches without change.",
       "The degenerate branch is CHEAPER for the outer budget: for eps <= 1 the 3-piece eps^3*m^2/n^2 floor dominates the 4-piece eps^4*m^2/n^2 one, so mixed chains terminate within the unchanged sharp bound n^2/(eps^4*m^2) — threading the disjunctive dichotomy costs only the extra hypothesis E(k) <= 1.",
-      "The whole-partition lift of the 3-piece gain needs no new analysis: the A-row/column and (A,A) cell are unchanged, the B-rows/columns, (B,A) cross and B^2 diagonal split by pairEnergy monotonicity, and only the (A,B) cross consumes pairEnergy_step3_gain — Assembly.lean's block-decomposition template transfers verbatim with five instead of eight block inequalities."
+      "The whole-partition lift of the 3-piece gain needs no new analysis: the A-row/column and (A,A) cell are unchanged, the B-rows/columns, (B,A) cross and B^2 diagonal split by pairEnergy monotonicity, and only the (A,B) cross consumes pairEnergy_step3_gain — Assembly.lean's block-decomposition template transfers verbatim with five instead of eight block inequalities.",
+      "Chain recursion without dependent Nat.rec pain: choose the successor map on the subtype {q // Inv q} and use Function.iterate; iterate_succ_apply' hands the step lemma exactly the form it wants, and the [0,1]-potential engine kills the by_contra branch",
+      "A '∀ chain through (q,q') at (n,n+1)' witness becomes a pair statement by instantiating the chain fun i => if i = 0 then q else q' at n = 0; both side conditions are simp",
+      "The oracle formulation removes the horizon N entirely: exists_afksTwoLevel_of_maintained_oracle has no step count, replacing the S19 dichotomy form that needed hN and a chain given in advance; re-equitization is now THE isolated residual"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -374,7 +381,40 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04DefectGain.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04OuterBoth.lean",
+      "filename": "SzemerediRegularityOQ04OuterBoth.lean",
+      "lineCount": 326,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04OuterBoth.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04StepRealize.lean",
+      "filename": "SzemerediRegularityOQ04StepRealize.lean",
+      "lineCount": 447,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04StepRealize.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Chain.lean",
+      "filename": "SzemerediRegularityOQ04Chain.lean",
+      "lineCount": 310,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Chain.lean"
     }
   ],
-  "lastUpdate": "2026-07-22"
+  "lastUpdate": "2026-07-23"
 }
