@@ -26,20 +26,36 @@
       "mathContext": "$b_n-a_n\\to0\\Rightarrow\\bigcap_n[a_n,b_n]=\\{\\sup_n a_n\\}$."
     },
     {
-      "id": "general",
-      "title": "Nested Intervals Shrinking to a Point",
+      "id": "general-statement",
+      "title": "Statement: Nested Intervals Shrinking to a Point",
       "startLine": 34,
-      "endLine": 75,
-      "summary": "nested_intervals_iInter_singleton: for monotone a, antitone b with a n ≤ b n and b n − a n → 0, the intersection ⋂ₙ [a n, b n] equals {⨆ₙ a n}. The cross bound a m ≤ b n gives BddAbove (range a), then le_ciSup and ciSup_le place the supremum in every interval (existence), while the squeeze |x − ⨆ a| ≤ b n − a n → 0 with ge_of_tendsto' gives uniqueness.",
-      "mathContext": "$a_m\\le b_n\\ \\forall m,n$; existence via $\\sup$, uniqueness via $|x-\\sup a|\\le b_n-a_n\\to0$."
+      "endLine": 50,
+      "summary": "nested_intervals_iInter_singleton's statement: for monotone a, antitone b with a n ≤ b n and lengths b n − a n → 0, the intersection ⋂ₙ [a n, b n] equals {⨆ₙ a n}. Four hypotheses encode 'nested, ordered, shrinking'; no compactness or completeness hypothesis appears explicitly — ℝ supplies it silently, since the proof only ever needs a conditional supremum, which every BddAbove set of reals has.",
+      "mathContext": "$a\\nearrow,\\ b\\searrow,\\ a_n\\le b_n\\ \\forall n,\\ b_n-a_n\\to0 \\;\\Longrightarrow\\; \\bigcap_n[a_n,b_n]=\\{\\sup_n a_n\\}$."
     },
     {
-      "id": "instance",
-      "title": "Sharp Value of the Parent's Concrete Example",
+      "id": "general-proof",
+      "title": "Proof: Cross Bound, Existence, and the Shrinking-Length Squeeze",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "Three moves. First the cross bound a m ≤ b n for ALL m, n (split on m ≤ n vs n ≤ m) bounds the range of a above by b 0, so the conditional supremum ⨆ₙ a n exists. Second, le_ciSup and ciSup_le place that supremum inside every interval (existence). Third, any common point x satisfies |x − ⨆ⱼ a j| ≤ b n − a n for every n, and since the right side tends to 0, ge_of_tendsto' forces x = ⨆ⱼ a j (uniqueness) — exactly where the shrinking-length hypothesis is used.",
+      "mathContext": "$\\forall m,n:\\ a_m\\le b_n \\Rightarrow \\sup_n a_n$ exists and lies in every $[a_n,b_n]$; $|x-\\sup a|\\le b_n-a_n\\to0 \\Rightarrow x=\\sup a$."
+    },
+    {
+      "id": "instance-statement",
+      "title": "Statement: Sharp Value of the Parent's Concrete Example",
       "startLine": 77,
+      "endLine": 85,
+      "summary": "iInter_Icc_zero_one_div_eq_zero states the exact value ⋂ₙ [0, 1/(n+1)] = {0} — the parent entry established only that this intersection is nonempty. Specialises the general lemma with constant left endpoint 0 and right endpoint 1/(n+1).",
+      "mathContext": "$\\bigcap_{n}\\bigl[0,\\tfrac{1}{n+1}\\bigr] = \\{0\\}$ in $\\mathbb{R}$."
+    },
+    {
+      "id": "instance-proof",
+      "title": "Proof: Instantiating the General Lemma",
+      "startLine": 86,
       "endLine": 98,
-      "summary": "iInter_Icc_zero_one_div_eq_zero: ⋂ₙ [0, 1/(n+1)] = {0}, exactly. Instantiates the general lemma with constant left endpoint 0 (monotone_const) and right endpoint 1/(n+1) (antitone via one_div_le_one_div_of_le, tending to 0 by tendsto_one_div_add_atTop_nhds_zero_nat); the supremum of the constant-0 sequence is 0 by ciSup_const.",
-      "mathContext": "$\\bigcap_n[0,\\tfrac1{n+1}]=\\{0\\}$ in $\\mathbb{R}$."
+      "summary": "Discharges the four hypotheses of nested_intervals_iInter_singleton for the constant-0/1-over-(n+1) instance: monotone_const for the left endpoint, one_div_le_one_div_of_le for antitonicity of the right endpoint, positivity for a n ≤ b n, and tendsto_one_div_add_atTop_nhds_zero_nat for the shrinking-length hypothesis. The general lemma's singleton {⨆ₙ 0} is then simplified to {0} via ciSup_const.",
+      "mathContext": "$\\sup_n 0 = 0$ (ciSup\\_const) turns the general singleton $\\{\\sup_n a_n\\}$ into $\\{0\\}$."
     }
   ],
   "conclusion": {
