@@ -111,6 +111,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Proof Strategy: Higher Bonferroni Inequalities",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "States the higher Bonferroni inequalities for an arbitrary finite set family (truncating the inclusion–exclusion sieve sum at level $m$ over- or under-estimates the true count depending on the parity of $m$) and sketches the per-element reindexing proof via the partial alternating binomial sum identity.",
+      "mathContext": "Truncated sieve $\\mathrm{bonf}\\ A\\ m = \\sum_{k=0}^m (-1)^k S_k$ satisfies $\\mathrm{noneCard}\\ A \\le \\mathrm{bonf}\\ A\\ m$ for even $m$ and $\\mathrm{bonf}\\ A\\ m \\le \\mathrm{noneCard}\\ A$ for odd $m$, proved via $\\mathrm{bonf}\\ A\\ m - \\mathrm{noneCard}\\ A = (-1)^m \\sum_{x:\\deg \\ge 1} \\binom{\\deg_A(x)-1}{m}$."
+    },
+    {
       "id": "altpartial",
       "title": "The Partial Alternating Binomial Sum",
       "startLine": 60,
