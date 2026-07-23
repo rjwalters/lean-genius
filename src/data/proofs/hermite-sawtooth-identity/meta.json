@@ -38,7 +38,8 @@
       "The floor identity and the fractional-part identity are two faces of one fact: the exact sum ∑_{k<n}(x + k/n) = n·x + (n-1)/2 partitions into the floor side ⌊n·x⌋ and the sawtooth side {n·x} + (n-1)/2. Proving either one for free gives the other by subtraction.",
       "The (n-1)/2 constant is purely the Gauss sum of the sampling offsets: ∑_{k<n} (k/n) = (1/n)·n(n−1)/2 = (n-1)/2, independent of x. All the x-dependence is carried by the {n·x} term inherited from Hermite.",
       "Working from the definitional Int.fract y = y − ⌊y⌋ keeps the proof a one-line subtraction of the parent theorem from the closed-form arithmetic sum — no fractional-part periodicity or residue counting is needed, unlike a direct attack.",
-      "The identity is the B₁ instance of the Bernoulli multiplication theorem: with B₁(t) = {t} − 1/2 the statement rearranges to ∑_{k<n} B₁(x + k/n) = B₁(n·x), the n-fold distribution relation for the sawtooth."
+      "The identity is the B₁ instance of the Bernoulli multiplication theorem: with B₁(t) = {t} − 1/2 the statement rearranges to ∑_{k<n} B₁(x + k/n) = B₁(n·x), the n-fold distribution relation for the sawtooth.",
+      "Because the proof imports and directly subtracts the parent's hermite_floor_identity rather than re-deriving floor-counting from scratch, the two gallery entries are logically coupled: no independent argument about ⌊x+k/n⌋ is duplicated here, and together they certify the single real-number identity ∑_{k<n}(x+k/n) = ⌊n·x⌋ + {n·x} + (n-1)/2 from one shared piece of floor-counting work."
     ],
     "prerequisites": [
       "The floor function ⌊·⌋ and fractional part {·} = Int.fract on ℝ",
@@ -49,12 +50,20 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "§0: Module Setup and Statement",
+      "id": "docstring",
+      "title": "§0: Module Docstring and Strategy",
       "startLine": 1,
-      "endLine": 35,
-      "summary": "Module docstring stating the companion sawtooth identity ∑_{k<n}{x + k/n} = {n·x} + (n-1)/2, framing it as the fractional-part twin of the parent Hermite floor identity and as the floor + fractional decomposition of the exact sampled sum n·x + (n-1)/2. Imports full Mathlib plus the parent entry Proofs.HermiteFloorIdentity, opens Finset, and enters the namespace.",
+      "endLine": 29,
+      "summary": "Module docstring stating the companion sawtooth identity ∑_{k<n}{x + k/n} = {n·x} + (n-1)/2, framing it as the fractional-part twin of the parent Hermite floor identity and as the floor + fractional decomposition of the exact sampled sum n·x + (n-1)/2. Lays out the three-step strategy: exact arithmetic sum, split fractional parts, apply Hermite.",
       "mathContext": "Targets $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{n x\\} + \\tfrac{n-1}{2}$ for real $x$ and $n \\ge 1$, where $\\{y\\} = y - \\lfloor y\\rfloor$."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "Imports full Mathlib plus the parent entry Proofs.HermiteFloorIdentity (whose hermite_floor_identity is reused verbatim), opens Finset for the range-sum API, and enters the HermiteSawtoothIdentity namespace.",
+      "mathContext": "The only non-Mathlib dependency is the parent module HermiteFloorIdentity, imported to reuse its floor identity directly."
     },
     {
       "id": "sum-sample",
