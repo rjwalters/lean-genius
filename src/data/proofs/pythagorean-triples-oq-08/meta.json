@@ -153,13 +153,18 @@
       "targetId": "pythagorean-triples-oq-06",
       "relationship": "related",
       "description": "oq-06 gives the m,n parametrization of primitive triples; this entry establishes divisibility consequences that hold for all triples without using the parametrization."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-08-oq-01",
+      "relationship": "answered-by",
+      "description": "Answers this entry's first open question: sharpens the product-level divisibilities 3 ∣ xy, 4 ∣ xy to per-leg statements — in a primitive triple exactly one leg is divisible by 4 and exactly one leg by 3."
     }
   ],
   "conclusion": {
     "summary": "Sixty divides the product of the sides of every Pythagorean triple, machine-checked at 0 axioms: a leg is divisible by 3, a leg by 4 (a mod-8 fact), a side by 5, and coprimality combines them into 60 ∣ x·y·z.",
     "implications": "Demonstrates the reduction of integer divisibility statements to finite ZMod checks via ZMod.intCast_zmod_eq_zero_iff_dvd, and isolates the mod-8 sharpening that the naive mod-4 argument cannot reach for the factor of 4.",
     "openQuestions": [
-      "Sharpen the leg-divisibility: in a primitive triple exactly one leg is divisible by 4 and exactly one leg by 3 (not merely the product) — can the per-leg statement be formalised?",
+      "Now discharged by pythagorean-triples-oq-08-oq-01, which proves that in a primitive triple exactly one leg is divisible by 4 and exactly one leg by 3 — the per-leg sharpening of this entry's product-level 3 ∣ xy and 4 ∣ xy. That entry's own next step: re-derive the per-leg statement constructively from oq-06's m,n parametrization (identifying the even leg 2mn as the 4-divisible one) and match it against this prime/coprime proof.",
       "Generalise to other small moduli: which n have the property that n divides the product of the sides of every Pythagorean triple (n ∈ {1,2,3,4,5,6,10,12,15,20,30,60} and divisors thereof)?"
     ]
   },
