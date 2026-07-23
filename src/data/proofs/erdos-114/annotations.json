@@ -56,7 +56,7 @@
     },
     "type": "definition",
     "title": "Lemniscate Length and Extremal Polynomial",
-    "content": "This section contains three stub definitions: the lemniscate arc length `L(p)` (axiomatized, since computing it requires complex line integrals unavailable in Mathlib), the maximum length `f(n) = sup L(p)` over monic degree-$n$ polynomials, and the extremal candidate `znMinus1 n hn` defining $z^n - 1$ via `coeffs i = if i.val = 0 then -1 else 0`. The section headers for upper bounds, lower bound, and main conjecture are empty stubs marking the formalization roadmap.",
+    "content": "This section contains one real definition, `znMinus1 n hn`, the extremal candidate $z^n - 1$ via `coeffs i = if i.val = 0 then -1 else 0`. The lemniscate arc length `L(p)` and the maximum length `f(n) = sup L(p)` are described only in plain comments here — neither is declared as an axiom, def, or any other Lean identifier. The section headers for upper bounds, lower bound, and main conjecture are empty stubs marking the formalization roadmap.",
     "mathContext": "$L(p) = \\oint_{|p(z)|=1} |dz|$. The lemniscate $\\{|p(z)| = 1\\}$ may have multiple connected components, cusps, and self-intersections. For $p(z) = z^n - 1 = \\prod_{k=0}^{n-1}(z - e^{2\\pi ik/n})$, the lemniscate passes through all $n$-th roots of unity and has $n$-fold dihedral symmetry. Exact length: $L(z^n-1) = \\frac{2n \\cdot \\Gamma(1/(2n))^2}{\\sqrt{2\\pi} \\cdot \\Gamma(1/n)} \\to 2n$.",
     "significance": "key",
     "relatedConcepts": [

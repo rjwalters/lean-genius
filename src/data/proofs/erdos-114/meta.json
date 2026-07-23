@@ -22,35 +22,19 @@
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
-        "theorem": "Polynomial",
-        "description": "Polynomial ring structure for monic polynomial definitions",
-        "module": "Mathlib.RingTheory.Polynomial.Basic"
-      },
-      {
         "theorem": "Complex",
-        "description": "Complex number field for polynomial evaluation and lemniscate definition",
-        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
-      },
-      {
-        "theorem": "Real.Gamma",
-        "description": "Gamma function for exact lemniscate length formula",
-        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+        "description": "Complex number field ℂ used as the codomain of MonicPoly's coefficient function",
+        "module": "Mathlib.Analysis.Complex.Basic"
       }
     ],
     "originalContributions": [
       "MonicPoly: structure for monic polynomials via coefficient functions Fin n → ℂ",
-      "lemniscateLength: axiomatized arc length of {z : |p(z)| = 1}",
-      "maxLemniscateLength f(n): supremum over all monic degree-n polynomials",
-      "extremalPoly: the conjectured optimizer z^n - 1",
-      "Three progressively tighter upper bounds (Dolzhenko, Danchenko, Fryntov-Nazarov)",
-      "Tao's large-n theorem and Eremenko-Hayman n=2 result axiomatized",
-      "Dihedral symmetry, exact Gamma-function length formula",
-      "erdos114Conjecture: formal statement of the $250 conjecture"
+      "znMinus1: the conjectured extremal polynomial z^n - 1, defined via coeffs i = if i.val = 0 then -1 else 0"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
     "lineCount": 48,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Only two Lean declarations exist (MonicPoly structure, znMinus1 def); the lemniscate length, upper/lower bounds, Tao/Eremenko-Hayman results, and the conjecture itself are discussed only in the docstring as background/roadmap, not declared (as axioms, defs, or otherwise) anywhere in the file. The 'axiomatized' status reflects that the main result is not yet formalized in Lean.",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 2
@@ -59,7 +43,7 @@
     "historicalContext": "Erdős, Herzog, and Piranian posed this problem in 1958, asking which monic polynomial of degree $n$ produces the longest lemniscate $\\{z : |p(z)| = 1\\}$. The conjectured answer $p(z) = z^n - 1$ has $n$-fold dihedral symmetry and lemniscate length $\\sim 2n$. Dolzhenko (1961) gave the first bound $f(n) \\leq 4\\pi n$ using argument-variation techniques. Danchenko (2007) halved this to $2\\pi n$ via potential theory. The breakthrough came from Fryntov and Nazarov (2009), who proved both local optimality of $z^n - 1$ (negative-definite Hessian of the length functional) and the near-optimal bound $f(n) \\leq 2n + O(n^{7/8})$, showing $f(n)/n \\to 2$. Eremenko and Hayman (1999) resolved the case $n = 2$ using conformal mapping techniques specific to the Bernoulli lemniscate. Terence Tao (2025) achieved the major breakthrough, proving $z^n - 1$ is the unique global maximum for all sufficiently large $n$, reducing the full conjecture to finitely many small cases. The problem carries a $\\$250$ Erdős bounty and remains open for all $n$.",
     "problemStatement": "Let $f(n) = \\sup\\{L(p) : p \\text{ monic, } \\deg p = n\\}$ where $L(p)$ is the arc length of $\\{z \\in \\mathbb{C} : |p(z)| = 1\\}$. Is $f(n) = L(z^n - 1)$ for all $n \\geq 1$?",
     "text": "For monic degree-n polynomials p(z), is the arc length of {|p(z)|=1} maximized by z^n-1? Tao (2025) proved this for large n. Solved for n=2 (Eremenko-Hayman 1999). $250 bounty. Status: OPEN (all n).",
-    "proofStrategy": "The formalization axiomatizes both the geometric objects and the analytic results. Monic polynomials are modeled as coefficient functions $\\text{Fin}(n) \\to \\mathbb{C}$, and the lemniscate length is axiomatized since its computation requires complex line integrals unavailable in Mathlib. The core structure traces 50 years of improving upper bounds: Dolzhenko's $4\\pi n$ (1961) $\\to$ Danchenko's $2\\pi n$ (2007) $\\to$ Fryntov-Nazarov's $2n + O(n^{7/8})$ (2009). The lower bound $f(n) \\geq L(z^n - 1)$ is immediate. Local optimality and Tao's large-$n$ global optimality are axiomatized, as are the geometric properties (dihedral symmetry, exact Gamma-function length formula). The conjecture for all $n$ is stated as a formal proposition.",
+    "proofStrategy": "The formalization is purely definitional: monic polynomials are modeled as coefficient functions $\\text{Fin}(n) \\to \\mathbb{C}$ (`MonicPoly`), and the conjectured extremal candidate $z^n - 1$ is defined explicitly (`znMinus1`). No axioms are declared. The lemniscate length $L(p)$, the supremum $f(n)$, the historical upper bounds (Dolzhenko, Danchenko, Fryntov-Nazarov), Tao's large-$n$ theorem, the Eremenko-Hayman $n=2$ result, and the Gamma-function length formula are discussed only in the file's docstring as historical background and a roadmap for future work — none are formalized as Lean declarations (axioms or otherwise). The 'Upper Bounds', 'Lower Bound', 'Main Conjecture', and 'Lemniscate Geometry' sections are empty comment headers.",
     "keyInsights": [
       "**Monic normalization is essential:** Without fixing the leading coefficient, scaling $p$ by $c$ scales the lemniscate length by $|c|^{1/n}$, making the supremum infinite. The monic constraint $p(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$ creates a well-posed optimization over $\\mathbb{C}^n$.",
       "**50 years of improving bounds:** The upper bound ratio $f(n)/(2n)$ decreased from $2\\pi \\approx 6.28$ (Dolzhenko 1961) to $\\pi \\approx 3.14$ (Danchenko 2007) to $1 + o(1)$ (Fryntov-Nazarov 2009), each improvement requiring fundamentally different techniques.",
@@ -93,14 +77,14 @@
       "title": "Library Imports",
       "startLine": 22,
       "endLine": 25,
-      "summary": "Imports for complex number arithmetic, real numbers, polynomial ring theory, and tactic automation. Complex line integrals needed for `lemniscateLength` are not yet available in Mathlib, motivating the axiomatized approach."
+      "summary": "Imports for complex number arithmetic, real numbers, and tactic automation. Complex line integrals needed to define a lemniscate arc length are not yet available in Mathlib, motivating the current definition-only scaffold (no axioms are declared)."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 27,
       "endLine": 40,
-      "summary": "Defines `MonicPoly n` as a Lean structure holding a coefficient function `Fin n → ℂ`. Comment stubs mark axiomatized definitions for `lemniscateLength` and `maxLemniscateLength`. Constructs `znMinus1 n hn` (the extremal candidate $z^n - 1$) via `coeffs i = if i.val = 0 then -1 else 0`."
+      "summary": "Defines `MonicPoly n` as a Lean structure holding a coefficient function `Fin n → ℂ`. Comment lines describe (but do not define) the lemniscate length `L(p)` and maximum length `f(n)` — no `lemniscateLength` or `maxLemniscateLength` declaration exists in the file. Constructs `znMinus1 n hn` (the extremal candidate $z^n - 1$) via `coeffs i = if i.val = 0 then -1 else 0`."
     },
     {
       "id": "upper-bounds",
@@ -111,13 +95,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #114 asks whether $z^n - 1$ maximizes lemniscate length among all monic degree-$n$ polynomials. The formalization traces the 50-year progression of upper bounds from $4\\pi n$ to $2n + O(n^{7/8})$ and axiomatizes the two major partial resolutions: Eremenko-Hayman for $n = 2$ (1999) and Tao for all sufficiently large $n$ (2025). The full conjecture for all $n \\geq 1$ remains open with a $\\$250$ Erdős bounty.",
+    "summary": "Erdős Problem #114 asks whether $z^n - 1$ maximizes lemniscate length among all monic degree-$n$ polynomials. The Lean file currently provides only structural scaffolding — the `MonicPoly` coefficient structure and the extremal candidate `znMinus1` — with the 50-year progression of upper bounds ($4\\pi n \\to 2n + O(n^{7/8})$) and the two major partial resolutions (Eremenko-Hayman for $n = 2$ (1999), Tao for all sufficiently large $n$ (2025)) documented only in the docstring as historical background, not formalized. The full conjecture for all $n \\geq 1$ remains open with a $\\$250$ Erdős bounty.",
     "implications": "A full resolution would establish a sharp isoperimetric-type inequality for polynomial lemniscates, completing the analogy with classical isoperimetric problems where symmetric extremizers are optimal. The result has applications to potential theory (capacity of lemniscatic domains), approximation theory (polynomial level curves), and conformal mapping (extremal lengths).",
     "openQuestions": [
       "Can Tao's large-$n$ threshold $N_0$ be made explicit? If $N_0$ is small enough, computational verification could close the problem entirely.",
       "Is there a unified proof for all $n$ that avoids the case split between small and large $n$?",
       "What is the second-largest lemniscate length? Are there near-maximizers with different symmetry groups?",
-      "Can any of the axiomatized results (lemniscate length positivity, Danchenko bound, Gamma-function formula) be verified in Lean using Mathlib's complex analysis library?"
+      "Can any of the background results (lemniscate length positivity, Danchenko bound, Gamma-function formula) be formalized in Lean using Mathlib's complex analysis library?"
     ]
   },
   "crossReferences": [
@@ -187,7 +171,7 @@
       "year": "1999",
       "pages": "409–415",
       "doi": "10.1307/mmj/1030132418",
-      "note": "Resolves the n=2 case (Bernoulli lemniscate) and proves arc length bounds using conformal mapping; key partial result axiomatized in the Lean file",
+      "note": "Resolves the n=2 case (Bernoulli lemniscate) and proves arc length bounds using conformal mapping; cited in the Lean file's docstring as background, not formalized",
       "venue": "Michigan Mathematical Journal"
     },
     {
