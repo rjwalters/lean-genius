@@ -38,6 +38,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: Efficient RNS Bases for Computer Arithmetic",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Poses the open question of the most efficient Residue Number System (RNS) bases under dynamic range, channel width, coprimality, and hardware-friendly moduli, and states that consecutive primes maximize the dynamic range M = ∏mᵢ for a fixed maximum modulus.",
+      "mathContext": "For pairwise coprime moduli $m_1,\\dots,m_k$, CRT gives a bijection $[0,M)\\cong\\prod \\mathbb Z/m_i$ where $M=\\prod m_i$; efficiency trades off dynamic range $M$ against channel width $\\max m_i$."
+    },
+    {
       "id": "rns-definitions",
       "title": "RNS Base Definitions and Bounds",
       "startLine": 38,
