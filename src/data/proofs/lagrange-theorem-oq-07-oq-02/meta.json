@@ -117,6 +117,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-lagrange-theorem-oq-07-oq-02", "title": "Module Header: Additive Finite Group Annihilation — n·x = 0", "startLine": 1, "endLine": 40, "summary": "Poses the open question of whether the parent's multiplicative exponent theorem g^|G|=1 transports to the additive setting as n·x=0 for every element of an order-n group, and answers yes via the literal additive image of the parent's chain under Mathlib's to_additive. Outlines the four-step derivation: additive Lagrange (addOrderOf_dvd_card), additive annihilation, the additive-exponent-divides-order descent, and the concrete recovery in ZMod n, plus a structural bridge showing the additive theorem is genuinely the multiplicative one transported through Multiplicative.", "mathContext": "The additive image of the finite-group exponent theorem: for a finite additive group $G$ of order $n$, $n \\cdot x = 0$ for every $x \\in G$, derived from additive Lagrange ($\\mathrm{addOrderOf}(x) \\mid |G|$) exactly as $g^{|G|}=1$ follows from multiplicative Lagrange."},
     {
       "id": "core",
       "title": "The Core Theorem — |G| · x = 0",
