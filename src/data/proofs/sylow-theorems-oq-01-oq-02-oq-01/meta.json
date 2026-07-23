@@ -51,24 +51,38 @@
   },
   "sections": [
     {
-      "id": "sylow-count",
-      "title": "Sylow count is one for every prime",
-      "summary": "card_sylow_eq_one_of_card_pq: the arithmetic core. Case split on whether r divides |G|; modular/divisibility reasoning for r ∈ {p,q}, structural triviality otherwise.",
+      "id": "header",
+      "title": "Header, method summary, and honest scope",
+      "summary": "Module docstring: the biprimal isomorphism-class problem, the q ∤ (p−1) direction this file settles, the Z-group/nilpotency method outline, and the disclosed honest scope (the q ∣ (p−1) case is left open). Opens the SylowOrderPQ namespace with classical logic and fixes an arbitrary group G.",
+      "startLine": 1,
+      "endLine": 48
+    },
+    {
+      "id": "sylow-count-divisors",
+      "title": "Sylow count, divisor case: r = p or r = q",
+      "summary": "card_sylow_eq_one_of_card_pq, first half: for r dividing |G| = p·q, coprimality collapses n_r ∣ p·q to n_r ∣ q (r=p) or n_r ∣ p (r=q); the nontrivial divisor is ruled out by the modular congruence, using q < p for r=p and the hypothesis q ∤ (p−1) for r=q.",
       "startLine": 49,
-      "endLine": 114
+      "endLine": 101
+    },
+    {
+      "id": "sylow-count-trivial",
+      "title": "Sylow count, non-divisor case: r ∤ |G|",
+      "summary": "Closes card_sylow_eq_one_of_card_pq: for a prime r not dividing |G|, every Sylow r-subgroup is forced trivial (order r^k ∣ p·q with r ∤ p·q forces k = 0), so Sylow r G is a Subsingleton and n_r = 1 — needed since the nilpotency criterion quantifies over every prime, not just those dividing |G|.",
+      "startLine": 102,
+      "endLine": 113
     },
     {
       "id": "cyclic",
       "title": "Cyclic case",
       "summary": "isCyclic_of_card_pq: squarefree ⇒ Z-group; all Sylows normal ⇒ nilpotent; finite nilpotent Z-group ⇒ cyclic.",
-      "startLine": 116,
-      "endLine": 140
+      "startLine": 114,
+      "endLine": 137
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness of the isomorphism class",
-      "summary": "unique_isoclass_of_card_pq: any two such groups are isomorphic.",
-      "startLine": 142,
+      "summary": "unique_isoclass_of_card_pq: any two such groups are isomorphic (both cyclic of the same order, so ≅ via mulEquivOfCyclicCardEq).",
+      "startLine": 139,
       "endLine": 151
     }
   ],
