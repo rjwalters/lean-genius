@@ -169,6 +169,16 @@
       "targetId": "leibniz-pi",
       "relationship": "answers-question",
       "description": "Answers OQ-02: 'How do generalized Leibniz-type formulas extend to other constants?'"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "dirichlet_eta_two claims η(2) = π²/12 via η(s) = (1-2^{1-s})ζ(s) at s=2, so the value rests on the Basel-problem evaluation ζ(2) = π²/6 proved in that entry."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Both entries formalize structure around the mod-4 Dirichlet character χ₄; this file identifies β(s) = L(s, χ₄) while Dirichlet's theorem uses the non-vanishing of Dirichlet L-functions at s=1 to prove infinitely many primes in each coprime residue class mod q."
     }
   ],
   "conclusion": {
