@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring stating the parent survey's open question (is Mathlib's disintegration sufficient for ergodic decomposition?) and this file's answer via the three main results. Imports Mathlib.Dynamics.Ergodic.Extreme/Function; opens MeasureTheory, Function, Set, ENNReal; fixes the ambient measure space and map f.",
+      "mathContext": "Ergodic measures are the extreme points of the invariant-probability-measure simplex — the Choquet picture underlying ergodic decomposition."
+    },
+    {
       "id": "extreme-point",
       "title": "Section I: Ergodic ⟺ Extreme Point",
       "startLine": 41,
@@ -91,16 +99,24 @@
       "mathContext": "The structural heart of ergodic decomposition: ergodic measures are the extreme points of the invariant simplex."
     },
     {
-      "id": "rigidity",
+      "id": "ergodic-rigidity",
       "title": "Section II: Ergodic Rigidity",
       "startLine": 51,
+      "endLine": 58,
+      "summary": "ergodic_eq_of_absolutelyContinuous: an f-invariant probability measure ν absolutely continuous w.r.t. an ergodic measure μ must equal μ — distinct ergodic components are mutually singular, so the decomposition partitions into disjoint pieces.",
+      "mathContext": "$\\nu \\ll \\mu,\\ \\mathrm{Ergodic}\\ f\\ \\mu \\Rightarrow \\nu = \\mu.$"
+    },
+    {
+      "id": "invariant-ae-const",
+      "title": "Section III: Invariant Functions Are a.e. Constant",
+      "startLine": 60,
       "endLine": 66,
-      "summary": "ergodic_eq_of_absolutelyContinuous (an invariant prob measure ≪ an ergodic one equals it) and ergodic_invariant_ae_const (invariant functions a.e. constant).",
-      "mathContext": "Distinct ergodic components are mutually singular, and the invariant σ-algebra is a.e. trivial on each — the well-definedness inputs for the decomposition kernel."
+      "summary": "ergodic_invariant_ae_const: under an ergodic measure, every measurable f-invariant function is a.e. constant — the input making the decomposition kernel (point ↦ its ergodic component) well defined.",
+      "mathContext": "$g \\circ f = g,\\ \\mathrm{Ergodic}\\ f\\ \\mu \\Rightarrow \\exists c,\\ g =^{\\text{a.e.}}_\\mu c.$"
     },
     {
       "id": "prerequisites",
-      "title": "Section III: Packaged Prerequisites",
+      "title": "Section IV: Packaged Prerequisites",
       "startLine": 68,
       "endLine": 79,
       "summary": "ergodic_decomposition_prerequisites bundles the extreme-point characterization, rigidity, and invariant-function constancy for an ergodic probability measure.",
