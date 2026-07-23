@@ -1154,4 +1154,166 @@ theorem tendsto_rootsOfUnity_lowerBound_one :
 
 end RootsOfUnity
 
+/-!
+## Hadamard's determinant inequality and the sharp value `d = 1`
+
+Hadamard's inequality — `‖det M‖ ≤ ∏ᵢ ‖rowᵢ M‖₂` — is elementary linear algebra,
+absent from Mathlib as such, but derivable from `gramSchmidtOrthonormalBasis_det`:
+in the orthonormal basis `e` produced by Gram–Schmidt from the row family `f`,
+the coefficient matrix is upper triangular, so `det f = ∏ᵢ ⟪eᵢ, fᵢ⟫`, and
+Cauchy–Schwarz bounds every factor by `‖fᵢ‖`.
+
+Applied to the Vandermonde matrix of `n` unit-disc points, every row has
+`ℓ²`-norm at most `√n`, so `spreadProduct ≤ (√n)ⁿ` and `dₙ ≤ n^{1/(n-1)}` —
+matching the roots-of-unity lower bound `transfiniteDiameterN_rootsOfUnity_ge`
+exactly.  Hence `dₙ = n^{1/(n-1)}` for every `n ≥ 2` and, letting `n → ∞`, the
+transfinite diameter of the closed unit disc is **exactly `1`** — the
+logarithmic-capacity value, obtained here *without* Fekete–Szegő or any
+potential theory.
+-/
+
+section Hadamard
+
+open InnerProductSpace Module
+
+/-- The rows of a square complex matrix as vectors of `EuclideanSpace ℂ (Fin n)`
+(so that `‖matrixRow M i‖` is the `ℓ²`-norm of row `i`). -/
+def matrixRow (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) :
+    EuclideanSpace ℂ (Fin n) := WithLp.toLp 2 (M i)
+
+/-- **Hadamard's determinant inequality** (complex, row form): the determinant of a
+square matrix is bounded in norm by the product of the Euclidean norms of its rows.
+Proof: Gram–Schmidt the rows into an orthonormal basis `e`; the coefficient matrix
+of the rows in `e` is upper triangular (`gramSchmidtOrthonormalBasis_det`), so the
+determinant is `∏ᵢ ⟪eᵢ, rowᵢ⟫` up to a unimodular basis-change factor, and
+Cauchy–Schwarz bounds each factor by `‖rowᵢ‖`. -/
+theorem norm_det_le_prod_norm_row (M : Matrix (Fin n) (Fin n) ℂ) :
+    ‖M.det‖ ≤ ∏ i, ‖matrixRow M i‖ := by
+  classical
+  have hrank : Module.finrank ℂ (EuclideanSpace ℂ (Fin n)) = Fintype.card (Fin n) :=
+    finrank_euclideanSpace
+  -- the standard-basis coordinate matrix of the row family is `Mᵀ`
+  have hmat : (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.toMatrix (matrixRow M)
+      = M.transpose := by
+    ext i j
+    rw [Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply,
+      EuclideanSpace.basisFun_repr]
+    rfl
+  -- the Gram–Schmidt-basis determinant of the rows has the same norm as `det M`
+  have hdet_eq :
+      ‖(gramSchmidtOrthonormalBasis hrank (matrixRow M)).toBasis.det (matrixRow M)‖
+        = ‖M.det‖ := by
+    rw [Basis.det_apply,
+      ← Basis.toMatrix_mul_toMatrix
+        (gramSchmidtOrthonormalBasis hrank (matrixRow M)).toBasis
+        (EuclideanSpace.basisFun (Fin n) ℂ).toBasis (matrixRow M),
+      Matrix.det_mul, norm_mul, hmat, Matrix.det_transpose, ← Basis.det_apply,
+      OrthonormalBasis.coe_toBasis,
+      OrthonormalBasis.det_to_matrix_orthonormalBasis, one_mul]
+  calc ‖M.det‖
+      = ‖(gramSchmidtOrthonormalBasis hrank (matrixRow M)).toBasis.det (matrixRow M)‖ :=
+        hdet_eq.symm
+    _ = ‖∏ i, inner ℂ (gramSchmidtOrthonormalBasis hrank (matrixRow M) i) (matrixRow M i)‖ := by
+        rw [gramSchmidtOrthonormalBasis_det]
+    _ = ∏ i, ‖inner ℂ (gramSchmidtOrthonormalBasis hrank (matrixRow M) i) (matrixRow M i)‖ :=
+        norm_prod _ _
+    _ ≤ ∏ i, ‖matrixRow M i‖ := by
+        refine Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_
+        calc ‖inner ℂ (gramSchmidtOrthonormalBasis hrank (matrixRow M) i) (matrixRow M i)‖
+            ≤ ‖gramSchmidtOrthonormalBasis hrank (matrixRow M) i‖ * ‖matrixRow M i‖ :=
+              norm_inner_le_norm _ _
+          _ = ‖matrixRow M i‖ := by
+              rw [(gramSchmidtOrthonormalBasis hrank (matrixRow M)).orthonormal.1 i, one_mul]
+
+/-- Each row of the Vandermonde matrix of unit-disc points has `ℓ²`-norm at most `√n`:
+the row entries are the powers `zᵢᵏ`, `k < n`, each of norm at most `1`. -/
+theorem norm_matrixRow_vandermonde_le {z : Fin n → ℂ} (hz : ∀ i, ‖z i‖ ≤ 1) (i : Fin n) :
+    ‖matrixRow (Matrix.vandermonde z) i‖ ≤ Real.sqrt n := by
+  rw [EuclideanSpace.norm_eq]
+  refine Real.sqrt_le_sqrt ?_
+  calc ∑ j, ‖matrixRow (Matrix.vandermonde z) i j‖ ^ 2
+      ≤ ∑ _j : Fin n, (1 : ℝ) := by
+        refine Finset.sum_le_sum fun j _ => ?_
+        have hentry : ‖matrixRow (Matrix.vandermonde z) i j‖ = ‖z i‖ ^ (j : ℕ) := by
+          show ‖Matrix.vandermonde z i j‖ = ‖z i‖ ^ (j : ℕ)
+          rw [Matrix.vandermonde_apply, norm_pow]
+        rw [hentry]
+        have h1 : ‖z i‖ ^ (j : ℕ) ≤ 1 := pow_le_one₀ (norm_nonneg _) (hz i)
+        have h0 : (0 : ℝ) ≤ ‖z i‖ ^ (j : ℕ) := pow_nonneg (norm_nonneg _) _
+        exact pow_le_one₀ h0 h1
+    _ = n := by simp
+
+/-- **Hadamard bound for the spread product**: `n` points of the closed unit disc have
+spread product at most `(√n)ⁿ = n^{n/2}`. -/
+theorem spreadProduct_le_sqrt_pow {z : Fin n → ℂ} (hz : ∀ i, ‖z i‖ ≤ 1) :
+    spreadProduct z ≤ Real.sqrt n ^ n := by
+  rw [spreadProduct_eq_norm_det_vandermonde]
+  calc ‖(Matrix.vandermonde z).det‖
+      ≤ ∏ i, ‖matrixRow (Matrix.vandermonde z) i‖ := norm_det_le_prod_norm_row _
+    _ ≤ ∏ _i : Fin n, Real.sqrt n :=
+        Finset.prod_le_prod (fun i _ => norm_nonneg _)
+          (fun i _ => norm_matrixRow_vandermonde_le hz i)
+    _ = Real.sqrt n ^ n := by
+        rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+
+/-- **Sharp discrete-diameter upper bound** (matches the roots-of-unity lower bound):
+`n ≥ 2` points of the closed unit disc have `dₙ(Z) ≤ n^{1/(n-1)}`. -/
+theorem discreteDiameter_le_rpow {z : Fin n → ℂ} (hn : 2 ≤ n) (hz : ∀ i, ‖z i‖ ≤ 1) :
+    discreteDiameter z ≤ (n : ℝ) ^ ((1 : ℝ) / ((n : ℝ) - 1)) := by
+  have hn2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hnpos : (0 : ℝ) < (n : ℝ) := by linarith
+  have hne : (n : ℝ) ≠ 0 := ne_of_gt hnpos
+  have hne1 : (n : ℝ) - 1 ≠ 0 := by intro h; nlinarith
+  have hexp : (0 : ℝ) ≤ 2 / ((n : ℝ) * ((n : ℝ) - 1)) :=
+    div_nonneg (by norm_num) (by nlinarith)
+  unfold discreteDiameter
+  calc spreadProduct z ^ (2 / ((n : ℝ) * ((n : ℝ) - 1)))
+      ≤ (Real.sqrt n ^ n) ^ (2 / ((n : ℝ) * ((n : ℝ) - 1))) :=
+        Real.rpow_le_rpow (spreadProduct_nonneg z) (spreadProduct_le_sqrt_pow hz) hexp
+    _ = (n : ℝ) ^ ((1 / (2 : ℝ) * (n : ℝ)) * (2 / ((n : ℝ) * ((n : ℝ) - 1)))) := by
+        rw [← Real.rpow_natCast (Real.sqrt n) n, Real.sqrt_eq_rpow,
+          ← Real.rpow_mul (le_of_lt hnpos), ← Real.rpow_mul (le_of_lt hnpos)]
+    _ = (n : ℝ) ^ ((1 : ℝ) / ((n : ℝ) - 1)) := by
+        congr 1
+        field_simp
+
+/-- **Sharp `n`-point transfinite diameter (upper half)**: `dₙ ≤ n^{1/(n-1)}` for the
+closed unit disc. -/
+theorem transfiniteDiameterN_le_rpow (hn : 2 ≤ n) :
+    transfiniteDiameterN n ≤ (n : ℝ) ^ ((1 : ℝ) / ((n : ℝ) - 1)) := by
+  refine csSup_le (unitDiscDiameters_nonempty hn) ?_
+  rintro d ⟨z, hz, rfl⟩
+  exact discreteDiameter_le_rpow hn hz
+
+/-- **The `n`-point transfinite diameter of the closed unit disc is exactly
+`n^{1/(n-1)}`.**  Upper bound: Hadamard's inequality applied to the Vandermonde
+matrix.  Lower bound: the `n`-th roots of unity
+(`transfiniteDiameterN_rootsOfUnity_ge`).  The root-of-unity configurations are
+thus extremal at every finite level. -/
+theorem transfiniteDiameterN_eq_rpow (m : ℕ) :
+    transfiniteDiameterN (m + 2) = ((m : ℝ) + 2) ^ ((1 : ℝ) / ((m : ℝ) + 1)) := by
+  refine le_antisymm ?_ (transfiniteDiameterN_rootsOfUnity_ge m)
+  have h := transfiniteDiameterN_le_rpow (n := m + 2) (by omega)
+  have hcast : ((m + 2 : ℕ) : ℝ) = (m : ℝ) + 2 := by push_cast; ring
+  rw [hcast, show (m : ℝ) + 2 - 1 = (m : ℝ) + 1 by ring] at h
+  exact h
+
+/-- **The transfinite diameter of the closed unit disc is at most `1`.**  The exact
+`n`-point values `n^{1/(n-1)}` decrease to `1`
+(`tendsto_rootsOfUnity_lowerBound_one`), and `d` is below every one of them. -/
+theorem transfiniteDiameter_le_one : transfiniteDiameter ≤ 1 := by
+  refine ge_of_tendsto' tendsto_rootsOfUnity_lowerBound_one fun m => ?_
+  rw [← transfiniteDiameterN_eq_rpow m]
+  exact transfiniteDiameter_le m
+
+/-- **The transfinite diameter of the closed unit disc is exactly `1`** — the
+logarithmic capacity of the disc, obtained by entirely elementary means: roots of
+unity from below (`one_le_transfiniteDiameter`) and Hadamard's determinant
+inequality from above (`transfiniteDiameter_le_one`), with no Fekete–Szegő
+theorem and no potential theory. -/
+theorem transfiniteDiameter_eq_one : transfiniteDiameter = 1 :=
+  le_antisymm transfiniteDiameter_le_one one_le_transfiniteDiameter
+
+end Hadamard
+
 end Erdos1039TransfiniteDiameter

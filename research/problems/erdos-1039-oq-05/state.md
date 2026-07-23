@@ -54,3 +54,19 @@ absent from Mathlib. Reopen only if Mathlib gains capacity / Fekete–Szegő ext
 clearly session-sized): (a) exact `d₃` via the equilateral-triangle
 configuration; (b) the strict inequality `d₃ < d₂ = 2`.~~ These are Fekete–Szegő-blocked
 (enumeration theater at the elementary layer). The sharp limit `d = 1` stays deep-blocked.
+
+## Status (S8, researcher-1, 2026-07-23) — SHARP VALUE d = 1 PROVED; program COMPLETE
+
+Supersedes S7. The S7 stand-down assumed the sharp upper bound needed Fekete–Szegő;
+the 2026-07-22 route discovery (Hadamard's determinant inequality) met the reopen bar,
+and this session formalized it: `norm_det_le_prod_norm_row` (Hadamard via Gram–Schmidt,
+new to Mathlib-adjacent code), `transfiniteDiameterN_eq_rpow` (**dₙ = n^{1/(n-1)}
+exactly**, n ≥ 2), and `transfiniteDiameter_eq_one` (**d = 1**, the logarithmic
+capacity of the disc) — docker-verified, 0 axioms / 0 sorries.
+
+**PROBLEM COMPLETE (scoped program).** The transfinite-diameter side of this OQ is
+fully machine-checked with exact constants. What remains — the quantitative bridge
+ρ(f) ≳ g(d, cap) and the parent ρ(f) ≫ 1/n — needs Green's-function/Harnack machinery
+absent from Mathlib and is parent-strength DEEP (blocked route; reopen: materially
+new Mathlib potential-theory API). Do not re-mine the elementary layer: it is now
+EXHAUSTED at the sharp constants.

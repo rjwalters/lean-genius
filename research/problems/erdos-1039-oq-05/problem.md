@@ -120,3 +120,33 @@ difficulty: high
 source: proof-suggestion
 created: 2026-07-09T15:40:19-07:00
 ```
+
+## Adversarial Checklist (claim: transfinite diameter of the closed unit disc = 1, dₙ = n^{1/(n-1)} exactly)
+
+Recorded 2026-07-23 for the SOLVED claim of the scoped transfinite-diameter program
+(`Erdos1039TransfiniteDiameter.lean`, theorems `transfiniteDiameterN_eq_rpow`,
+`transfiniteDiameter_eq_one`). How THIS claim could be wrong:
+
+- **Wrong set**: confirm `discreteDiameter`/`transfiniteDiameterN` quantify over ALL
+  `z : Fin n → ℂ` with `∀ i, ‖z i‖ ≤ 1` (closed unit disc), not merely roots of unity or
+  the boundary circle. The upper bound must hold for every configuration — check
+  `transfiniteDiameterN_le_rpow` takes an arbitrary `hz : ∀ i, ‖z i‖ ≤ 1`.
+- **Sup vs max**: `transfiniteDiameterN n` is a `csSup` over the set of discrete diameters;
+  the upper bound must go through `csSup_le` with the nonemptiness witness
+  (`unitDiscDiameters_nonempty`) — an empty-set `csSup = 0` degenerate would make the
+  "equality" vacuous. Requires `n ≥ 2` (the `m + 2` indexing).
+- **Exponent off-by-one**: `dₙ = (spreadProduct)^{2/(n(n-1))}`, so the Hadamard bound
+  `spreadProduct ≤ n^{n/2}` must convert to exponent `(n/2)·(2/(n(n-1))) = 1/(n-1)` —
+  check the `field_simp` rpow algebra in `discreteDiameter_le_rpow`, not `1/n` or `2/n`.
+- **Hadamard row/column form**: `norm_det_le_prod_norm_row` bounds by ROW norms; the
+  Vandermonde rows must be the power sequences `(1, zᵢ, …, zᵢⁿ⁻¹)` (each of ℓ²-norm ≤ √n),
+  not the columns (whose norms are NOT uniformly √n-bounded in the same way). Check
+  `Matrix.vandermonde_apply` orientation: `vandermonde z i j = z i ^ (j : ℕ)` — rows indexed
+  by points. ✓ matches.
+- **Circularity**: the limit `d = 1` combines `transfiniteDiameter_le m` (monotone/inf
+  structure) with the root-of-unity LOWER bound already on main; neither imports any
+  axiom — `#print axioms transfiniteDiameter_eq_one` should show only
+  propext/Classical.choice/Quot.sound. File has 0 `axiom` declarations.
+- **Not the parent**: this claim is about `d` of the DISC (= cap = 1 normalization), NOT
+  the Erdős–Herzog–Piranian `ρ(f) ≫ 1/n`, which remains OPEN; the ρ-capacity bridge
+  (Green's function machinery) remains deep-blocked and is NOT claimed.

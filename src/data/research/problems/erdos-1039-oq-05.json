@@ -29,23 +29,18 @@
     "goal": "Formalize transfinite diameter of the root multiset and logarithmic capacity of the lemniscate complement in the Erdos1039 framework, and state the quantitative links ρ(f) ≳ g(d, cap) as theorems where provable and axioms where they cite the literature."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 5,
-    "focus": "Iteration 5: elementary lower-bound program COMPLETE. General bound dₙ ≥ n^{1/(n-1)} (roots of unity, #40737) + transformation laws (#40759) + d ∈ [1,2] (transfiniteDiameter_mem_Icc_one_two) all merged, 0-axiom. This session added tendsto_rootsOfUnity_lowerBound_one: (m+2)^{1/(m+1)} → 1, certifying the elementary root-of-unity lower bound is asymptotically sharp (saturates exactly at log-capacity 1). Erdos1039TransfiniteDiameter.lean now ~1150 lines, 0 axioms/sorries.",
+    "iteration": 6,
+    "focus": "Iteration 6 (2026-07-23): SHARP VALUE CLOSED. Hadamard determinant inequality proved from Gram-Schmidt (norm_det_le_prod_norm_row, absent from Mathlib), giving spreadProduct <= n^{n/2}, hence d_n = n^{1/(n-1)} EXACTLY for all n >= 2 (transfiniteDiameterN_eq_rpow) and transfinite diameter d = 1 on the nose (transfiniteDiameter_eq_one) — the logarithmic-capacity value of the disc, with no Fekete-Szego and no potential theory. File ~1320 lines, 0 axioms / 0 sorries, docker-verified. Scoped program COMPLETE.",
     "blockers": [
       {
-        "route": "sharp value d = 1 — REROUTED 2026-07-22: needs only Hadamard determinant inequality (missing from Mathlib), NOT Fekete-Szego; 2-session formalization plan in knowledge.md",
-        "reopenCriterion": "open for formalization — elementary mechanism identified (Hadamard via Gram/Gram-Schmidt)",
-        "blockedAt": "2026-07-20"
-      },
-      {
-        "route": "exact d_n = n^{1/(n-1)} — REROUTED 2026-07-22: same Hadamard route as d = 1 (upper bound spreadProduct <= n^{n/2}); falls with it",
-        "reopenCriterion": "open for formalization — elementary mechanism identified",
-        "blockedAt": "2026-07-21"
+        "route": "rho(f)-capacity bridge: rho(f) >= g(d, cap) via Green functions / Harnack / Koebe distortion",
+        "reopenCriterion": "materially new Mathlib potential-theory API (Green functions, subharmonic functions, logarithmic capacity)",
+        "blockedAt": "2026-07-23"
       }
     ],
-    "nextAction": "Elementary layer SATURATED. Remaining work is DEEP: sharp value d = 1 (matching upper bound d ≤ 1) requires Fekete–Szegő / potential-theory API absent from Mathlib; exact dₙ = n^{1/(n-1)} for n ≥ 3 requires the extremal (upper) bound, same deep obstruction. Both recorded as blocked routes.",
+    "nextAction": "NONE — scoped transfinite-diameter program complete at sharp constants (d_n = n^{1/(n-1)}, d = 1). Remaining rho(f)-capacity bridge is parent-strength deep-blocked; parent Erdos #1039 remains OPEN.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -53,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Elementary transfinite-diameter (Fekete-points) program for the unit-disc capacity is COMPLETE and 0-axiom: discrete spread product, Fekete monotonicity + monotone-limit structure, exact d2=2, lower bounds d3>=sqrt3 / d4>=4^(1/3) / general dn>=n^(1/(n-1)) via roots of unity, d in [1,2], and asymptotic sharpness ->1. Only the DEEP sharp value d=1 (Fekete-Szego / logarithmic capacity) and the parent conjecture rho(f)>>1/n remain, both out of the elementary scope. UPDATE 2026-07-22 (researcher-1-9): both blockers REROUTED — Hadamard determinant inequality (elementary, missing from Mathlib) suffices for spreadProduct <= n^{n/2}, hence exact d_n = n^{1/(n-1)} AND sharp d = 1; Fekete-Szego never needed for the disc. 2-session formalization plan recorded.",
+    "progressSummary": "COMPLETE (scoped program): transfinite diameter of the closed unit disc fully machine-checked at sharp constants — d_n = n^{1/(n-1)} exactly for all n >= 2 and d = 1 (the logarithmic-capacity value), 0 axioms / 0 sorries, via a new Gram-Schmidt proof of Hadamard s determinant inequality. Remaining rho(f)-capacity bridge is parent-strength deep-blocked.",
     "builtItems": [
       "Erdos1039TransfiniteDiameter.spreadProduct: the Vandermonde spread ∏_{i<j}‖zᵢ-zⱼ‖ (finite-n numerator of the transfinite diameter).",
       "Erdos1039TransfiniteDiameter.discreteDiameter: the n-point diameter dₙ(Z) = spreadProduct^{2/(n(n-1))}, the finite-n truncation of the transfinite diameter.",
@@ -85,7 +80,10 @@
       "transfiniteDiameterN_rootsOfUnity_ge, one_le_transfiniteDiameter, transfiniteDiameter_mem_Icc_one_two in Erdos1039TransfiniteDiameter.lean (all 0-axiom)",
       "spreadProduct_smul — V(cZ) = ‖c‖^{pairCount n}·V(Z) (Erdos1039TransfiniteDiameter.lean)",
       "discreteDiameter_smul — scaling covariance dₙ(cZ)=‖c‖·dₙ(Z) for n≥2 (via pairCount_mul_exp normalisation)",
-      "spreadProduct_add_const / discreteDiameter_add_const — translation invariance V(Z+c)=V(Z), dₙ(Z+c)=dₙ(Z)"
+      "spreadProduct_add_const / discreteDiameter_add_const — translation invariance V(Z+c)=V(Z), dₙ(Z+c)=dₙ(Z)",
+      "norm_det_le_prod_norm_row (Hadamard determinant inequality, complex row form) in Erdos1039TransfiniteDiameter.lean",
+      "spreadProduct_le_sqrt_pow, discreteDiameter_le_rpow, transfiniteDiameterN_le_rpow (sharp upper bounds)",
+      "transfiniteDiameterN_eq_rpow (exact n-point value n^{1/(n-1)}), transfiniteDiameter_le_one, transfiniteDiameter_eq_one (d = 1)"
     ],
     "insights": [
       "The finite discrete spread is entirely elementary and needs NO capacity infrastructure: it is a product of pairwise norms, equal to the modulus of the Vandermonde determinant, so it is host-verifiable Mathlib-only (no Docker).",
@@ -106,7 +104,10 @@
       "Vandermonde-discriminant identity spreadProduct(roots of unity)^2 = n^n proved via: (a) per-index prod_{j!=i} ||zeta^i - zeta^j|| = n by translating j->j-i and pulling out the unit zeta^i, reducing to prod_{k=1}^{n-1}||1-zeta^k|| = |prod (1-zeta^k)| = |n| = n (IsPrimitiveRoot.prod_one_sub_pow_eq_order); (b) multiplying over n indices gives the ORDERED off-diagonal product n^n = (spreadProduct)^2 (lower/upper triangles equal by norm_sub_rev + Finset.prod_comm).",
       "The discrete diameter transforms like a length: scaling covariance dₙ(cZ)=‖c‖·dₙ(Z) and translation invariance dₙ(Z+c)=dₙ(Z), general over all n and all configurations, 0-axiom — the finite-n shadows of cap(cK+a)=‖c‖·cap(K), explaining why the transfinite diameter of a disc of radius R (centred anywhere) is R.",
       "Sharp d = 1 for the disc does NOT need Fekete-Szego/potential theory: Hadamard determinant inequality on the Vandermonde matrix gives spreadProduct <= n^{n/2}, matching the proved roots-of-unity lower bound exactly — d_n = n^{1/(n-1)} and d = 1 both follow; only missing Mathlib piece is Hadamard itself (2-session plan recorded)",
-      "Mathlib gap: no Hadamard inequality, no PosSemidef det <= prod diag (checked 2026-07-22); Matrix.det_vandermonde and gramSchmidt exist as building blocks"
+      "Mathlib gap: no Hadamard inequality, no PosSemidef det <= prod diag (checked 2026-07-22); Matrix.det_vandermonde and gramSchmidt exist as building blocks",
+      "Hadamard determinant inequality ‖det M‖ <= prod of row l2-norms is provable in ~40 lines from gramSchmidtOrthonormalBasis_det + Cauchy-Schwarz; the standard-basis coordinate matrix of the row family is M-transpose, and OrthonormalBasis.det_to_matrix_orthonormalBasis kills the basis-change factor in norm",
+      "Root-of-unity configurations are extremal for the n-point transfinite diameter of the disc at EVERY finite n (d_n = n^{1/(n-1)} exactly), not just asymptotically — Hadamard upper bound meets the roots-of-unity lower bound with no gap",
+      "The sharp d = 1 (= log capacity of the disc) needs NO potential theory: Hadamard + Vandermonde row norms <= sqrt(n) suffices. The Fekete-Szego deep-block assessment was wrong for the disc"
     ],
     "mathlibGaps": [
       "Mathlib has no transfinite-diameter / logarithmic-capacity API; the n-point spread and its diameter had to be defined from scratch (done here). The limit d(Z)=limₙ dₙ and Fekete monotonicity are still absent.",
