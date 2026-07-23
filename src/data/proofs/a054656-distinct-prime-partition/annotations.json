@@ -21,6 +21,18 @@
     "relatedConcepts": ["Finset", "sum of distinct primes"]
   },
   {
+    "id": "ann-a054656-basic-facts",
+    "proofId": "a054656-distinct-prime-partition",
+    "range": { "startLine": 71, "endLine": 83 },
+    "type": "lemma",
+    "title": "Two small supporting facts: summands are bounded, avoiding implies representing",
+    "content": "`le_of_mem_repr` says every prime in a representing Finset is at most the sum it represents — immediate from `Finset.single_le_sum` since all summands are nonnegative. `repr_of_reprAvoiding` forgets the avoided-prime side condition, turning a `ReprAvoiding m avoid` witness into a plain `Repr m` witness by discarding the second component of the existential. Neither lemma is deep, but both are load-bearing: `le_of_mem_repr` is exactly what bounds the candidate-prime search to a finite powerset in the three exceptional-residual proofs, and `repr_of_reprAvoiding` lets the reduction lemma freely move between the avoiding and non-avoiding notions of representability.",
+    "significance": "supporting",
+    "mathContext": "$S.\\mathrm{sum}\\ \\mathrm{id} = m \\land p \\in S \\implies p \\le m$, via $p = \\mathrm{id}\\,p \\le S.\\mathrm{sum}\\ \\mathrm{id} = m$",
+    "prerequisites": ["Finset.single_le_sum"],
+    "relatedConcepts": ["Repr", "ReprAvoiding", "finite bounding argument"]
+  },
+  {
     "id": "ann-a054656-exceptional-residuals",
     "proofId": "a054656-distinct-prime-partition",
     "range": { "startLine": 85, "endLine": 136 },
