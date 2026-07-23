@@ -78,26 +78,42 @@
   },
   "sections": [
     {
-      "id": "cos-angle",
+      "id": "header",
+      "title": "Section 0: Setup — Stating the Non-Euclidean Pons Asinorum",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports the trigonometric/hyperbolic function libraries and states the goal: prove Euclid I.5 in spherical and hyperbolic geometry from the laws of cosines alone, with no inner product space, answering the parent entry's OQ-02.",
+      "mathContext": "spherical: $\\cos a = \\cos b\\cos c + \\sin b\\sin c\\cos A$; hyperbolic: $\\cosh a = \\cosh b\\cosh c - \\sinh b\\sinh c\\cos A$."
+    },
+    {
+      "id": "cos-angle-defs",
       "title": "Section I: cos of an Angle from the Law of Cosines",
       "startLine": 38,
+      "endLine": 44,
+      "summary": "sphCosA and hypCosA solve the spherical and hyperbolic laws of cosines for cos of the angle opposite side a — an expression symmetric in the two adjacent sides b, c.",
+      "mathContext": "$\\mathrm{sphCosA}(a,b,c) = \\dfrac{\\cos a - \\cos b\\cos c}{\\sin b\\sin c}$, $\\mathrm{hypCosA}(a,b,c) = \\dfrac{\\cosh b\\cosh c - \\cosh a}{\\sinh b\\sinh c}$."
+    },
+    {
+      "id": "algebraic-core",
+      "title": "Section II: Algebraic Core — Equal Legs Force Equal Cosines",
+      "startLine": 45,
       "endLine": 53,
-      "summary": "sphCosA and hypCosA give cos of the angle opposite a side, solved from the spherical and hyperbolic laws of cosines; sph_isosceles_cos / hyp_isosceles_cos prove equal legs force equal base-angle cosines (subst + rfl).",
-      "mathContext": "The cosine of a base angle is a symmetric function of the two adjacent sides — the algebraic heart of the isosceles theorem."
+      "summary": "sph_isosceles_cos / hyp_isosceles_cos: since sphCosA and hypCosA are symmetric in the adjacent sides, a = b makes the two base-angle cosines definitionally equal — proved by subst + rfl alone, no analysis needed.",
+      "mathContext": "$a = b \\Rightarrow \\mathrm{sphCosA}(a,b,c) = \\mathrm{sphCosA}(b,a,c)$ by symmetry under $a \\leftrightarrow b$."
     },
     {
       "id": "pons-asinorum",
-      "title": "Section II: Pons Asinorum in Both Geometries",
-      "startLine": 55,
+      "title": "Section III: Pons Asinorum in Both Geometries",
+      "startLine": 54,
       "endLine": 68,
       "summary": "spherical_isosceles and hyperbolic_isosceles: equal legs a = b imply equal base angles A = B, via the equal-cosines step and Real.injOn_cos on [0, π]. No inner product space.",
       "mathContext": "The isosceles triangle theorem in spherical and hyperbolic geometry, the parent's OQ-02."
     },
     {
       "id": "equilateral",
-      "title": "Section III: Equilateral ⟹ Equiangular",
-      "startLine": 70,
-      "endLine": 87,
+      "title": "Section IV: Equilateral ⟹ Equiangular",
+      "startLine": 69,
+      "endLine": 89,
       "summary": "spherical_equilateral and hyperbolic_equilateral: all sides equal ⟹ all angles equal, applying the equal-cosines step twice.",
       "mathContext": "The natural corollary: a regular (equilateral) non-Euclidean triangle is equiangular."
     }
