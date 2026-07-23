@@ -146,8 +146,8 @@
     },
     "type": "theorem",
     "title": "The Main Conjecture (OPEN)",
-    "content": "**Erdős Problem #141**: For every k >= 3, do there exist k consecutive primes in arithmetic progression? This is OPEN. We state `Erdos141Conjecture` as a definition, with computational verification for k <= 10 as an axiom.",
-    "mathContext": "The status quo: k = 3-10 are verified computationally. k >= 11 is unknown. We state `small_cases_verified` as an axiom since the verification is computational (too large for formal proof).",
+    "content": "**Erdős Problem #141**: For every k >= 3, do there exist k consecutive primes in arithmetic progression? This is OPEN. We leave `Erdos141Conjecture` as an unproved definition (no axiom); computational verification for k <= 10 is described only in comments.",
+    "mathContext": "The status quo: k = 3 is proved in this file (`exists_3_consecutive_in_ap`); k = 4 through 10 are asserted only as documentation comments, not proved or axiomatized here. k >= 11 is unknown.",
     "significance": "key",
     "relatedConcepts": [
       "erdos",
@@ -193,7 +193,7 @@
     "type": "concept",
     "title": "Green-Tao Theorem (Does NOT Solve This)",
     "content": "The **Green-Tao theorem** (2008) proves primes contain arbitrarily long arithmetic progressions. However, these primes need NOT be consecutive! Example: (7, 13, 19) are primes in AP with d=6, but 11 lies between 7 and 13.",
-    "mathContext": "We state Green-Tao as an axiom and prove a concrete counterexample: 7, 13, 19 are primes forming an AP, but they're not consecutive since 11 (also prime) is between 7 and 13. This shows why Erdős #141 is harder.",
+    "mathContext": "Green-Tao itself is only described in prose (not stated as an axiom or declaration); we prove a concrete counterexample: 7, 13, 19 are primes forming an AP, but they're not consecutive since 11 (also prime) is between 7 and 13. This shows why Erdős #141 is harder.",
     "significance": "key",
     "relatedConcepts": [
       "green-tao",
