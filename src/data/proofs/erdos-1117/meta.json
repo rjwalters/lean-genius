@@ -41,8 +41,8 @@
       "title": "Core Definitions",
       "startLine": 22,
       "endLine": 49,
-      "summary": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`.",
-      "mathContext": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All core definitions are axiomatized except `IsMonomial`."
+      "summary": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All four are concrete definitions (formerly axioms, now discharged as defs).",
+      "mathContext": "Defines the foundational objects: `IsEntire` (entire function predicate), `IsMonomial` ($f(z) = cz^n$), the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$ via `maxModulus`, and the counting function $\\nu(r) = \\#\\{z : |z|=r,\\, |f(z)|=M(r)\\}$ via `nu`. All four are concrete definitions (formerly axioms, now discharged as defs)."
     },
     {
       "id": "basic-properties",
@@ -87,7 +87,7 @@
       "**The lim sup vs lim inf gap**: $\\limsup \\nu(r) = \\infty$ means $\\nu(r)$ is occasionally large (along a subsequence of radii). $\\liminf \\nu(r) = \\infty$ means $\\nu(r)$ is eventually always large. The gap between 'occasionally' and 'always' is the fundamental difficulty — occasional large values can be achieved by engineering the power series to create resonance at specific radii.",
       "**Wiman–Valiron theory connection**: The maximum modulus theory for entire functions is closely linked to Wiman–Valiron theory, which describes the behavior of $f$ near points where $|f|$ is maximal in terms of the **central index** $N(r)$ (the index of the dominant term in the power series). The central index controls the local geometry of maximum modulus points.",
       "**The $(1-\\varepsilon)$ barrier**: Glücksam and Pardo-Simón showed that **near**-maximum points ($|f(z)| \\ge (1-\\varepsilon)M(r)$) can be made plentiful on every circle. But the exact maximum is achieved on a measure-zero subset of the circle, and perturbing from near-maximum to exact maximum requires fundamentally different techniques.",
-      "**No sorry's — pure axiomatization**: Unusually for this gallery, the file has 0 sorry's because all mathematical content is axiomatized rather than proved. This reflects the current state of Lean's complex analysis library — entire function theory is not yet formalized enough for constructive proofs."
+      "**No sorry's, no axioms**: The file has 0 sorry's and 0 axioms — `IsEntire`, `IsMonomial`, `maxModulus`, and `nu` are all concrete definitions (the first three were formerly axioms, now discharged as defs). What remains unformalized is the substantive mathematical content: the Herzog–Piranian theorem, the open Erdős #1117 question, and the Glücksam–Pardo-Simón result appear only in docstring prose, not as theorems or axioms. This reflects the current state of Lean's complex analysis library — entire function theory is not yet formalized enough for constructive proofs of these results."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
