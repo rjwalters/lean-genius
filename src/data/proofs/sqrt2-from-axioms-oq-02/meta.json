@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "sec-header-sqrt2-from-axioms-oq-02",
+      "title": "Module Overview: √2 Irrational by Infinite Descent",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Gives a third, genuinely different proof that √2 is irrational (alongside the parity proof and the Euclid's-criterion generalization to primes): Fermat's method of infinite descent via the map (a,b) ↦ (2b−a, a−b), which sends any positive solution of a²=2b² to a strictly smaller one, contradicting well-ordering of ℕ with no coprimality hypothesis needed. Explains why this map is exactly one step of the continued-fraction algorithm for √2 = [1;2,2,2,…].",
+      "mathContext": "$a^2=2b^2 \\Rightarrow (2b-a)^2 = 2(a-b)^2$ with $0 < a-b < a$ — infinite descent, no lowest-terms hypothesis; the descent map is the continued-fraction step for $\\sqrt2=[1;\\overline{2}]$."
+    },
+    {
       "id": "descent-step",
       "title": "The Descent Step (the Continued-Fraction Tail Map)",
       "startLine": 57,
