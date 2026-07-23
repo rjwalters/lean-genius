@@ -91,6 +91,7 @@
     "complete_characterization: re-export of the main theorem with a docstring summarising the full picture (universal divisibility + degree inequality + iff criterion)"
   ],
   "sections": [
+      {"id": "header", "title": "Header: Characterizing Minpoly Invariance Under Non-Injective Algebra Maps", "startLine": 1, "endLine": 40, "summary": "States the open question of exactly characterizing when the minimal polynomial is preserved under a (possibly non-injective) K-algebra map f, noting Mathlib's minpoly.algHom_eq only covers the injective case. Answers with a complete iff: minpoly K (f a) = minpoly K a iff aeval a (minpoly K (f a)) = 0, proved via mutual divisibility of the two minimal polynomials plus monicity forcing equality.", "mathContext": "Always $\\mathrm{minpoly}(f(a)) \\mid \\mathrm{minpoly}(a)$ via `aeval_algHom`; equality holds additionally iff $\\mathrm{minpoly}(f(a))$ already annihilates $a$, giving the reverse divisibility and, since both are monic, exact equality."},
     {
       "id": "universal-divisibility",
       "title": "Universal Divisibility",
