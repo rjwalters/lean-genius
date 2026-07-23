@@ -36,6 +36,7 @@
     ]
   },
   "sections": [
+    {"id": "header", "title": "Header: Iterative Digital Root and its Closed Form", "startLine": 1, "endLine": 48, "summary": "States the open question (OQ-03-OQ-02-OQ-01) of formalizing the schoolbook iterative digital root and proving it matches the closed form, and previews the termination measure digitSum_lt, the well-founded definition digitalRootIter, and the headline equivalence digitalRootIter_eq_base.", "mathContext": "Formalizes the iterative digital root (repeatedly summing base-$b$ digits until one remains) via well-founded recursion, and proves it equals the parent file's closed form $\\mathrm{dr}_b(n) = 1+((n-1)\\bmod(b-1))$ for every $b \\ge 2$."},
     {
       "id": "part-i",
       "title": "Part I — Strict Digit-Sum Bound",
