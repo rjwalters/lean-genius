@@ -83,12 +83,19 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Overview: the two-way estimate of log(N!)",
+      "id": "header",
+      "title": "Module Docstring",
       "startLine": 1,
-      "endLine": 52,
-      "summary": "Imports (von Mangoldt arithmetic function, Nat factorization, tactics) and the module docstring, which frames the elementary route to the Prime Number Theorem (Chebyshev → Mertens → Selberg–Erdős): the identity ∑_{m≤N} Λ(m)⌊N/m⌋ = log(N!) arises from estimating log(N!) two ways — analytically by Stirling (N log N − N + O(log N)) and arithmetically via log n = ∑_{d∣n} Λ(d) summed over n ≤ N with the order of summation exchanged. Lists the three headline results and the Mathlib inputs (vonMangoldt_sum, Nat.Ioc_filter_dvd_card_eq_div, Finset.sum_comm'), and notes the floor-weighted identity is absent from Mathlib.NumberTheory.Chebyshev. Opens the namespaces.",
+      "endLine": 45,
+      "summary": "Imports (von Mangoldt arithmetic function, Nat factorization, tactics) and the module docstring, which frames the elementary route to the Prime Number Theorem (Chebyshev → Mertens → Selberg–Erdős): the identity ∑_{m≤N} Λ(m)⌊N/m⌋ = log(N!) arises from estimating log(N!) two ways — analytically by Stirling (N log N − N + O(log N)) and arithmetically via log n = ∑_{d∣n} Λ(d) summed over n ≤ N with the order of summation exchanged. Lists the three headline results and the Mathlib inputs (vonMangoldt_sum, Nat.Ioc_filter_dvd_card_eq_div, Finset.sum_comm'), and notes the floor-weighted identity is absent from Mathlib.NumberTheory.Chebyshev.",
       "mathContext": "$\\sum_{m\\le N}\\Lambda(m)\\lfloor N/m\\rfloor = \\log(N!)$: equate Stirling's $N\\log N - N + O(\\log N)$ with the arithmetic expansion of $\\log(N!)=\\sum_{n\\le N}\\sum_{d\\mid n}\\Lambda(d)$."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Open",
+      "startLine": 47,
+      "endLine": 52,
+      "summary": "`open Finset`, `open ArithmeticFunction`, and `open scoped ArithmeticFunction` (for the `Λ` notation), then `namespace PrimeNumberTheoremOQ03`, so the three theorems that follow can be stated with unqualified `Finset.Icc`/`Λ` notation."
     },
     {
       "id": "log-factorial",
