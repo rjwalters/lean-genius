@@ -41,7 +41,8 @@
       "The exact zero is the shared limit of the two monotone endpoint sequences; completeness enters only through monotone bounded convergence.",
       "The vanishing width (b−a)/2ⁿ forces the left limit, right limit, and midpoint limit to coincide, so the algorithm pins down a single point.",
       "Continuity is used exactly once, to move the sign invariant f(left) ≤ 0 ≤ f(right) to the limit; the strict approximate bound of the parent is not needed for the exact statement.",
-      "The two monotone endpoint sequences are a nested-interval (Cantor intersection) argument in disguise: [Lₙ, Rₙ] is a decreasing chain of closed intervals whose lengths (b−a)/2ⁿ → 0, so their intersection is the single point {c}. The bisection IVT and the nested-interval theorem are thus the same completeness content, packaged as monotone bounded convergence here rather than as an intersection of nested compacts."
+      "The two monotone endpoint sequences are a nested-interval (Cantor intersection) argument in disguise: [Lₙ, Rₙ] is a decreasing chain of closed intervals whose lengths (b−a)/2ⁿ → 0, so their intersection is the single point {c}. The bisection IVT and the nested-interval theorem are thus the same completeness content, packaged as monotone bounded convergence here rather than as an intersection of nested compacts.",
+      "The shift x ↦ f(x) − y reduces the general intermediate-value statement exact_ivt to the zero case exact_ivt_zero for free: g = f − y is continuous whenever f is, and f(c) = y is exactly g(c) = 0, so no new convergence or completeness argument is re-run for an arbitrary target value — the entire generalization is one `linarith` away."
     ],
     "prerequisites": [
       "The parent bisection algorithm and its width/sign/containment lemmas",
@@ -101,31 +102,38 @@
   "sections": [
     {
       "id": "header",
-      "title": "Overview, open question, and imports",
+      "title": "Overview and open question",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Docstring stating the inherited open question (recover the exact IVT from the parent's approximate bisection) and the strategy (monotone bounded endpoints with vanishing width → common limit c, continuity gives f c = 0). Imports Mathlib and the parent Proofs.IntermediateValueTheoremOQ02, opens Set / Filter / Topology, and enters the ConstructiveIVT namespace."
+      "endLine": 29,
+      "summary": "Docstring stating the inherited open question (recover the exact IVT from the parent's approximate bisection) and the strategy (monotone bounded endpoints with vanishing width → common limit c, continuity gives f c = 0). Names the three main results: bisect_tendsto_root, exact_ivt_zero, exact_ivt."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and namespace setup",
+      "startLine": 30,
+      "endLine": 37,
+      "summary": "Imports Mathlib and the parent Proofs.IntermediateValueTheoremOQ02 (whose bisect operator and per-step lemmas — bisect_ordered, bisect_contained, bisect_width, bisect_sign — this file builds on), opens Set / Filter / Topology, and enters the ConstructiveIVT namespace."
     },
     {
       "id": "endpoint-monotone",
       "title": "Endpoint sequences are monotone",
-      "startLine": 44,
-      "endLine": 64,
-      "summary": "bisect_left_seq_mono and bisect_right_seq_anti promote the parent's per-step monotonicity to the full sequences of left/right endpoints."
+      "startLine": 38,
+      "endLine": 54,
+      "summary": "bisect_left_seq_mono and bisect_right_seq_anti promote the parent's per-step monotonicity to the full sequences of left/right endpoints: Lₙ non-decreasing, Rₙ non-increasing."
     },
     {
       "id": "convergence-exact-zero",
       "title": "Convergence to an exact zero",
-      "startLine": 66,
-      "endLine": 128,
-      "summary": "bisect_tendsto_root: monotone bounded convergence gives the left limit c; the width (b−a)/2ⁿ → 0 forces the right endpoints and midpoints to c ∈ [a,b]; continuity transports the sign invariant to give f c = 0."
+      "startLine": 56,
+      "endLine": 125,
+      "summary": "bisect_tendsto_root: monotone bounded convergence gives the left limit c; the width (b−a)/2ⁿ → 0 forces the right endpoints and midpoints to c ∈ [a,b]; continuity transports the sign invariant to give f c = 0. exact_ivt_zero repackages this as the plain existence statement ∃ c ∈ [a,b], f c = 0."
     },
     {
       "id": "recovering-classical-ivt",
       "title": "Recovering the classical IVT",
-      "startLine": 130,
+      "startLine": 127,
       "endLine": 137,
-      "summary": "exact_ivt_zero (existence of a zero) and exact_ivt (the full IVT for an arbitrary intermediate value y, via g = f − y)."
+      "summary": "exact_ivt: the full classical IVT for an arbitrary intermediate value y between f a and f b, recovered from exact_ivt_zero by applying it to the shifted function g = f − y."
     }
   ],
   "sorries": []
