@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/289",
-    "status": "axiomatized",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos289Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 136,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source; the Erdős–Graham conjecture and the Hickerson–Montgomery example are documented only in comments (not stated as axioms, defs, or theorems).",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 6
@@ -31,7 +31,7 @@
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' which collected hundreds of open problems from Erdős's vast collaboration network. The question sits at the intersection of Egyptian fraction theory (expressing rationals as sums of unit fractions, a tradition dating to the Rhind Papyrus c. 1650 BCE) and combinatorial constraints on intervals. Hickerson and Montgomery demonstrated feasibility by constructing 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. The non-adjacency constraint is the essential difficulty: without it, one can decompose any unit fraction representation by splitting and merging adjacent intervals. The problem connects to Croot's 2003 resolution of the Erdős–Graham conjecture (that $\\{n+1, \\ldots, 2n\\}$ contains a subset whose reciprocals sum to 1 for large $n$) and to the broader Egyptian fraction tradition studied by Erdős, Straus, and Graham.",
     "problemStatement": "For all sufficiently large k, do there exist k disjoint non-adjacent intervals I₁,...,Iₖ ⊂ ℕ (|Iᵢ| ≥ 2) with ∑ᵢ ∑_{n ∈ Iᵢ} 1/n = 1?",
     "text": "For all sufficiently large k, do there exist k disjoint non-adjacent intervals I₁,...,Iₖ ⊂ ℕ (each of size ≥ 2) with ∑ᵢ ∑_{n ∈ Iᵢ} 1/n = 1? Hickerson–Montgomery found 5 intervals summing to 2.",
-    "proofStrategy": "We formalize interval blocks with size, disjointness, and non-adjacency constraints, the reciprocal sum, valid decompositions, and the main conjecture. We prove basic properties and state structural observations about interval spreading.",
+    "proofStrategy": "We formalize interval blocks with size, disjointness, and non-adjacency constraints, the reciprocal sum, and valid decompositions. We prove basic properties and reciprocal sum bounds; the main conjecture, the Hickerson–Montgomery example, and other structural observations are documented in comments, not formalized.",
     "keyInsights": [
       "Non-adjacency is the critical constraint: without it, one can split and merge adjacent intervals freely, making decompositions easy to construct. The gap requirement forces blocks to be 'isolated,' preventing trivial solutions",
       "Harmonic tail divergence ($\\sum 1/n = \\infty$) is a necessary condition — it guarantees sufficient reciprocal sum is available from any tail of $\\mathbb{N}$, but the exact target $1$ with rational arithmetic makes existence non-obvious",
@@ -65,7 +65,7 @@
       "title": "Main Conjecture",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Axiomatizes Erdős Problem #289: ∃ K, ∀ k ≥ K, there exist k pairwise non-adjacent interval blocks with reciprocal sums totaling 1."
+      "summary": "States Erdős Problem #289 in a comment (not as an axiom or Lean declaration): ∃ K, ∀ k ≥ K, there exist k pairwise non-adjacent interval blocks with reciprocal sums totaling 1."
     },
     {
       "id": "properties",
@@ -79,7 +79,7 @@
       "title": "Hickerson–Montgomery Example",
       "startLine": 88,
       "endLine": 97,
-      "summary": "Axiomatizes the Hickerson–Montgomery construction: 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. Demonstrates feasibility of exact targets under non-adjacency."
+      "summary": "Documents the Hickerson–Montgomery construction in a comment (not formalized): 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. Demonstrates feasibility of exact targets under non-adjacency."
     },
     {
       "id": "structural",
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #289: decomposing 1 as a sum of reciprocals from disjoint non-adjacent interval blocks. The formalization captures the IntervalBlock structure, non-adjacency constraint, rational reciprocal sums, and the existential threshold conjecture. Key supporting results include the Hickerson–Montgomery example (5 blocks summing to 2), harmonic tail divergence, reciprocal sum bounds, and the spreading constraint.",
+    "summary": "Formalizes infrastructure for Erdős Problem #289: decomposing 1 as a sum of reciprocals from disjoint non-adjacent interval blocks. The formalization captures the IntervalBlock structure, non-adjacency constraint, and rational reciprocal sums; the existential threshold conjecture itself is stated only in a comment, not formalized. Proved results are limited to basic block properties and reciprocal sum upper/lower bounds; the Hickerson–Montgomery example, harmonic tail divergence, and spreading constraint are documented in comments, not formalized or proved.",
     "implications": "**Theoretical Significance**: A resolution would advance Egyptian fraction theory by revealing whether the non-adjacency constraint fundamentally limits unit fraction decompositions.\n\nA positive answer would require new constructive techniques for rational approximation with constrained harmonic sums. Connection to Croot's work on the Erdős–Graham conjecture suggests possible approaches via dense subset methods.",
     "openQuestions": [
       "What is the smallest threshold K such that valid k-block decompositions of 1 exist for all k ≥ K?",
