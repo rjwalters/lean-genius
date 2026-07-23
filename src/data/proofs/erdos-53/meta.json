@@ -78,14 +78,14 @@
       "title": "Chang's Theorem (2003)",
       "startLine": 59,
       "endLine": 67,
-      "summary": "Axiom: ErdosProblem53 holds — Chang proved the polynomial lower bound for all k."
+      "summary": "Doc comment only (not an axiom or theorem): Chang (2003) proved ErdosProblem53 holds — the polynomial lower bound for all k."
     },
     {
       "id": "upper-bound",
       "title": "Erdős-Szemerédi Upper Bound",
       "startLine": 68,
       "endLine": 82,
-      "summary": "Axiom: arbitrarily large sets exist with representable count at most exp(c(log|A|)² log log|A|), formalized as |A|^(c·(log₂|A|+1))."
+      "summary": "Doc comment only (not an axiom or theorem): arbitrarily large sets exist with representable count at most exp(c(log|A|)² log log|A|)."
     },
     {
       "id": "sum-product-connection",
@@ -99,7 +99,7 @@
       "title": "Counting Functions",
       "startLine": 108,
       "endLine": 116,
-      "summary": "Defines subsetSumCount and subsetProductCount, with axioms that the union count dominates each individual count."
+      "summary": "Defines subsetSumCount and subsetProductCount as the cardinalities of subsetSums/subsetProducts. The theorems that the union count dominates each individual count (subsetSumCount_le_card, subsetProductCount_le_card) are proved later, in Section 7."
     },
     {
       "id": "foundational-lemmas",
