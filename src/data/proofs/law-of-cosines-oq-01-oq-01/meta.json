@@ -66,6 +66,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-law-of-cosines-oq-01-oq-01", "title": "Module Header: Dual Spherical Law of Cosines", "startLine": 1, "endLine": 37, "summary": "States the dual spherical law of cosines cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c), dual to the side-form cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) proved in the sibling file SphericalLawOfCosines.lean. Outlines the six-step proof: expressing dihedral angles via the inner-product decomposition, forming the Gram determinant Δ² (nonnegative by Cauchy-Schwarz), squaring to sin²(A)sin²(b)sin²(c)=Δ², taking the nonnegative product across all three angles, and closing the resulting polynomial identity by linear_combination/ring. Axiom count: 0.", "mathContext": "Dual spherical law of cosines: for a spherical triangle with sides $a,b,c$ and dihedral angles $A,B,C$, $\\cos C = -\\cos A\\cos B + \\sin A\\sin B\\cos c$, proved dual to the side-form via the Gram determinant $\\Delta^2 = 1-\\cos^2a-\\cos^2b-\\cos^2c+2\\cos a\\cos b\\cos c \\ge 0$ (Cauchy–Schwarz)."},
     {
       "id": "dihedral-angles",
       "title": "Dihedral Angle Definitions",
