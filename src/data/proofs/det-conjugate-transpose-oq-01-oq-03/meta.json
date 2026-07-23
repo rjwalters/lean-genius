@@ -104,6 +104,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Real-Orthogonal Analogue of det U ∈ U(1)",
+      "summary": "Module docstring: recalls the parent's unitary result ‖det U‖=1 for Uᴴ U=1, states open question #3 (what is det O for the real orthogonal condition Oᵀ O=1?), and answers that (det O)²=1 so det O=±1 over an integral domain — the determinant sign character O(n)→{±1} whose kernel is SO(n) — versus the full unit circle U(1) in the unitary case.",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "$O^\\top O = 1 \\Rightarrow (\\det O)^2=1$ (via $\\det O^\\top=\\det O$), so $\\det O=\\pm1$ over an integral domain and $|\\det O|=1$ over $\\mathbb R$ — the sign character $O(n)\\to\\{\\pm1\\}$ with kernel $SO(n)$, contrasting the unitary case where $\\det U$ ranges over all of $U(1)$."
+    },
+    {
       "id": "shared-core",
       "title": "The Shared Core: (det O)² = 1 over any Commutative Ring",
       "startLine": 51,
