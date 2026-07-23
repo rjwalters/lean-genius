@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: the Sharp-Endpoint Question and Its Answer",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "The docstring states the parent's open question — is −2 the true per-exponent left endpoint of strict Bernoulli, or does the admissible range depend on n — and gives the answer up front: −2 is the endpoint of no fixed n, since even exponents have no left endpoint at all while odd exponents (e.g. n = 3, endpoint −3) admit values below −2, yet −2 remains sharp as the n-independent uniform endpoint. Previews the four results (strict_even, cubic_iff, exists_lt_neg_two_strict, sharp_uniform) and explains why parity is the whole story: for even n, (1+a)ⁿ ≥ 0 makes the inequality automatic once 1 + n·a < 0, while for odd n the power eventually outruns the line only past a finite endpoint a_n* < −2 that rises toward −2 as n → ∞, so −2 = sup_n a_n* is approached but attained by no single n. Imports Mathlib and enters namespace BernoulliInequalityOQ01OQ01OQ01 with the ambient variable {a x : ℝ}.",
+      "mathContext": "$-2 = \\sup_n a_n^*$ (the per-exponent strict-Bernoulli endpoint), approached but attained by no fixed $n$; sharp only as the uniform endpoint."
+    },
+    {
       "id": "pos-range",
       "title": "Positive-Factor Range a > −1",
       "startLine": 52,
