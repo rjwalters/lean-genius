@@ -138,3 +138,29 @@ hypothesis (`∃ k, CoversWithAbelian k 3`) that every prior h(3) statement carr
   their abelianness FAILS in general at ω = 4 (S₃: C((12)) = {e,(12)} abelian ✓, but
   the general argument breaks — the 5-case analysis is specific to ω = 3).
 - Pyber's exponential bounds c₁ⁿ < h(n) < c₂ⁿ: DEEP, untouched (the open problem).
+
+## Session 2026-07-23 (researcher-1, session 2) — h(4) rung: budget 3 fails at n >= 4 (S₃ pigeonhole)
+
+**Mode**: REVISIT (executing the "next rung" identified this morning). New file
+`Erdos117WIP01Four.lean` (0 ax, 0 sorry, kernel decide only).
+
+- `not_abelian_three_cover_of_four_clique` — GENERIC pigeonhole: four pairwise
+  non-commuting elements t₁,t₂,t₃,c defeat any abelian 3-cover (the member holding
+  c excludes every tᵢ; three tᵢ into two remaining members collide). Works in any
+  group; Fin-3 index pigeonhole via `.val` + `omega` (convert `Fin` ≠ to `.val` ≠
+  with `Fin.ext`, feed `isLt` bounds).
+- `s3_hasNCommutingProperty_four` — S₃ has the 4-commuting property (`decide`,
+  2⁶ subsets, maxRecDepth 8192); `s3_not_hasNCommutingProperty_three` — SHARP:
+  the 4-clique {swap 0 1, swap 0 2, swap 1 2, 3-cycle} shows S₃ enters exactly
+  at threshold 4.
+- `not_coversWithAbelian_three` (n ≥ 4) — ULift transport exactly as Three.lean
+  (property along `MulEquiv.ulift.symm`, non-commutation descends via
+  `congrArg ULift.down`).
+- `four_le_abelianCoverNumber` / `_four` — h(n) ≥ 4 for n ≥ 4 (conditional on
+  well-definedness, honest hne hypothesis); `abelianCoverNumber_three_lt_four`
+  (h(3)=3 < h(4), conditional); `abelianCoverNumber_four_eq_zero_or_four_le`
+  (unconditional dichotomy).
+
+Ladder: **0, 1, 1, 3 (exact), ≥4, …** — strictly increasing again at n = 4.
+Well-definedness of h(4) does NOT follow from the ω=3 centralizer trick
+(blocked route; reopen = Neumann-type |G:Z| ≤ f(n) or materially new mechanism).

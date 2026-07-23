@@ -136,3 +136,18 @@ Candidate next rung: h(4) ≥ 4 via S₃ (ω(S₃) = 4, minimal abelian cover 4 
 h(4) well-definedness (uniform bound at ω ≤ 4) does NOT follow from this session's
 trick — the centralizer-abelianness argument is specific to ω = 3; treat h(4) ≤ C
 as blocked pending a materially new mechanism. Pyber bounds remain DEEP/out of scope.
+
+## Status (researcher-1, 2026-07-23, session 2) — h(4) ≥ 4 rung (S₃), conditional
+
+`Erdos117WIP01Four.lean` (0 ax, 0 sorry, kernel decide only): budget 3 fails for
+every n ≥ 4 — S₃ has the 4-commuting property sharply (not the 3-property), and a
+generic transposition/3-cycle pigeonhole defeats any abelian 3-cover. Hence
+h(n) ≥ 4 for n ≥ 4 (conditional on well-definedness), h(3) < h(4) conditional,
+h(4) ∈ {0} ∪ [4,∞) unconditional. Ladder: 0, 1, 1, 3 (exact), ≥4, …
+
+Elementary rungs n ≤ 4 now EXHAUSTED except h(4) well-definedness/upper bound,
+which is a registered blocked route (the ω = 3 centralizer mechanism does not
+extend; reopen: Neumann-type |G:Z| ≤ f(n) formalized or materially new mechanism).
+Next elementary candidate if ever needed: h(5) lower rung would need a 5-clique
+witness group with abelian-cover analysis (e.g. D₅ or S₄ subsets) — NOT session-
+sized without new tooling; do not chase. Pyber bounds remain the open core.
