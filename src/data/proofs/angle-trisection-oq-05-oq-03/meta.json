@@ -109,31 +109,31 @@
       "id": "prime-fold-levels",
       "title": "Exact Fold Level for Primes and Concrete Values",
       "startLine": 100,
-      "endLine": 157,
+      "endLine": 183,
       "summary": "Proves minFoldLevel(foldPrimeBound j) = j for j ≥ 1. Computes concrete values: minFoldLevel 1 = 1, minFoldLevel 2 = 1, minFoldLevel 3 = 1, minFoldLevel 5 = 2, minFoldLevel 7 = 3, minFoldLevel 11 = 4.",
       "mathContext": "The $j$-th prime $p_j$ requires exactly $j$ simultaneous folds: it is $j$-fold constructible (since $p_j = p_j$) but not $(j-1)$-fold (since $p_j > p_{j-1}$)."
     },
     {
       "id": "multiplicative-property",
       "title": "Multiplicative Property and Product Computations",
-      "startLine": 158,
-      "endLine": 237,
+      "startLine": 184,
+      "endLine": 262,
       "summary": "Proves minFoldLevel(m*n) = max(minFoldLevel m, minFoldLevel n). Computes: minFoldLevel 6 = 1, minFoldLevel 10 = 2, minFoldLevel 15 = 2, minFoldLevel 14 = 3, minFoldLevel 42 = 3.",
       "mathContext": "The minimum fold level of a product is the max of the individual levels: $\\mathrm{minFoldLevel}(2 \\cdot 3 \\cdot 7) = \\max(1, 1, 3) = 3$."
     },
     {
       "id": "unboundedness",
       "title": "Unboundedness of minFoldLevel",
-      "startLine": 238,
-      "endLine": 249,
+      "startLine": 264,
+      "endLine": 275,
       "summary": "Proves minFoldLevel is unbounded: for any K, there exists d with minFoldLevel(d) > K. The witness is foldPrimeBound(K+1) = p_{K+1}.",
       "mathContext": "No fixed fold count suffices for all degrees: for each $K$, the $(K+1)$-th prime $p_{K+1}$ requires exactly $K+1$ folds. The set of fold levels is $\\{1, 2, 3, \\ldots\\}$, achieved by successive primes."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 250,
-      "endLine": 272,
+      "startLine": 276,
+      "endLine": 298,
       "summary": "Closing summary docstring restating the answer (minFoldLevel(d) = max{ j ≥ 1 : p_j ∣ d }) and listing the eight key results: generalized monotonicity, multiplicativity, the Nat.find definition, the ≤-characterization, exact prime fold levels, the max-multiplicative property, concrete computations (e.g. minFoldLevel 42 = 3), and unboundedness. Records status: 0 axioms, 0 sorries.",
       "mathContext": "The dominant-prime-factor description: minFoldLevel(d) is determined by the largest prime dividing d (e.g. $42 = 2\\cdot3\\cdot7$ has dominant prime $7 = p_3$, so minFoldLevel $= 3$)."
     }
