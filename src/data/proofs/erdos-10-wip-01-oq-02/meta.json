@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: The Equality Case of Binary-Popcount Subadditivity",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Answers when popcount(a+b) = popcount(a) + popcount(b) holds: exactly when a &&& b = 0 (disjoint binary supports, no carries), re-derived by a self-contained binary parity induction; also notes the seeker's proposed lower bound popcount(a+b) ≥ |popcount(a) − popcount(b)| is false via the counterexample (a,b) = (1,7).",
+      "mathContext": "$\\mathrm{popcount}(a+b) = \\mathrm{popcount}(a)+\\mathrm{popcount}(b) \\iff a \\mathbin{\\&\\&\\&} b = 0$, since a carry is born exactly where both operands share a 1-bit; counterexample $(1,7)$ refutes the analogous lower bound."
+    },
+    {
       "title": "Popcount definition and parity recursions",
       "startLine": 39,
       "endLine": 50,
