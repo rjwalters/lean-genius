@@ -58,6 +58,7 @@
     "sorries": 0
   },
   "sections": [
+      {"id": "sec-header-lagrange-four-squares-oq-03", "title": "Module Header: Waring's Problem for Fourth Powers — g(4) ≤ 53 via Liouville's Identity", "startLine": 1, "endLine": 47, "summary": "States the sorry-free, axiom-free upper bound g(4) ≤ 53 (every natural number is a sum of at most 53 fourth powers), proved via the classical Liouville identity expressing 6 times the square of a sum of four squares as a sum of twelve fourth powers over the six pairwise sums/differences. Outlines the five-step proof: the Liouville identity by ring, the closure of IsSumOfFourthPowers under concatenation/padding, the 6m²-is-12-fourth-powers step, the 6Q-is-48-fourth-powers step via Lagrange applied twice, and the final N = 6⌊N/6⌋ + (N mod 6) split giving 53 total.", "mathContext": "Liouville's identity $6(a^2+b^2+c^2+d^2)^2 = \\sum_{i<j}\\left((x_i+x_j)^4+(x_i-x_j)^4\\right)$ over four variables converts Lagrange's four-square theorem into the explicit (non-optimal) Waring bound $g(4) \\le 53$, via $N = 6\\lfloor N/6\\rfloor + (N \\bmod 6)$ with the quotient block supplying 48 fourth powers and the remainder at most 5 more."},
     {
       "id": "liouville-identity",
       "title": "Liouville's identity over ℤ",
