@@ -157,11 +157,19 @@
       "mathContext": "Among any three integers two share parity, so one pairwise sum is even, hence not in the odd numbers."
     },
     {
-      "id": "threshold",
-      "title": "Threshold reformulation g_k(N) ≥ 1",
+      "id": "witness-guarantees",
+      "title": "The Size-N Witness and the Guarantees Predicate",
       "startLine": 81,
+      "endLine": 97,
+      "summary": "exists_large_set_without_config bundles the odd numbers as a size-N witness with no k-configuration. Guarantees N k g then formalizes the threshold semantics: every A of size ≥ N+g contains all pairwise sums of some k-family.",
+      "mathContext": "$\\mathrm{Guarantees}(N,k,g)$: every $A$ with $|A| \\ge N+g$ contains all pairwise sums of some $k$-family; $g_k(N)$ is the least such $g$."
+    },
+    {
+      "id": "threshold-proof",
+      "title": "The Threshold Bound g_k(N) ≥ 1",
+      "startLine": 99,
       "endLine": 113,
-      "summary": "exists_large_set_without_config bundles the size-N odd witness; Guarantees N k g formalizes the threshold semantics; not_guarantees_zero refutes a threshold of 0; g_k_ge_one concludes that every valid threshold is at least 1.",
+      "summary": "not_guarantees_zero refutes a threshold of 0 using the odd-numbers witness; g_k_ge_one concludes that any g satisfying Guarantees N k g must be at least 1 — the elementary lower bound g_k(N) ≥ 1 for all k ≥ 3.",
       "mathContext": "$g = 0$ does not guarantee a configuration, so $g_k(N) \\ge 1$ for all $k \\ge 3$."
     }
   ],
