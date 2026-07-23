@@ -66,14 +66,23 @@
       "**Log-convexity is exactly the multiplicative geometric-mean bound.** Convexity of log Γ says log Γ(t·a+(1−t)·b) ≤ t·log Γ(a)+(1−t)·log Γ(b); exponentiating turns the weighted sum of logs into the weighted product of powers Γ(a)^t·Γ(b)^(1−t). The two statements are literally the same fact read additively vs. multiplicatively.",
       "**Real.log_rpow is the bridge.** The factor t·log Γ(a) on the convexity side is precisely log(Γ(a)^t); without rpow one cannot even state the multiplicative inequality for non-rational t. This is why the result needs Real.rpow rather than monoid powers.",
       "**The n-point form is the honest generalization.** Jensen (ConvexOn.map_sum_le) gives Γ(∑ wᵢ·xᵢ) ≤ ∏ Γ(xᵢ)^(wᵢ) for any finite family with weights summing to 1 — the two-point inequality is just |index| = 2. This is the full content of 'Γ is a geometric mean over its arguments'.",
-      "**The parent is a single point of this family.** Setting t = 1/2 and squaring recovers Γ((a+b)/2)² ≤ Γ(a)·Γ(b) exactly, so the leaf strictly subsumes gamma-log-convexity-oq-01's headline rather than merely paralleling it."
+      "**The parent is a single point of this family.** Setting t = 1/2 and squaring recovers Γ((a+b)/2)² ≤ Γ(a)·Γ(b) exactly, so the leaf strictly subsumes gamma-log-convexity-oq-01's headline rather than merely paralleling it.",
+      "**Positivity bookkeeping, not convexity, is where the length goes.** Every additive-to-multiplicative step needs both sides positive first — the convex combination t·a+(1−t)·b > 0 and the product Γ(a)^t·Γ(b)^(1−t) > 0 — before Real.exp_log and Real.exp_le_exp apply; establishing this (and the analogous Finset.sum_pos'/Finset.prod_pos facts for the n-point form) is the bulk of each proof, not the one-line convexity input itself."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring stating the parent's midpoint-only limitation and this file's full one-parameter and n-point generalization, built on Real.convexOn_log_Gamma. Imports Mathlib; namespace GammaLogConvexityOQ01OQ01; opens Real, Set.",
+      "mathContext": "$\\Gamma(ta+(1-t)b) \\le \\Gamma(a)^t\\Gamma(b)^{1-t}$, $t\\in[0,1]$, generalizing the parent's $t=1/2$ midpoint case."
+    },
+    {
       "id": "additive-bound",
       "title": "Two-point additive bound from log-convexity",
-      "startLine": 33,
+      "startLine": 32,
       "endLine": 44,
       "summary": "logGamma_weighted_le: convexOn_log_Gamma.2 evaluated at the convex combination t·a + (1−t)·b, unfolded to log Γ(t·a+(1−t)·b) ≤ t·log Γ(a) + (1−t)·log Γ(b).",
       "mathContext": "$\\log\\Gamma(t a + (1-t) b) \\le t\\log\\Gamma(a) + (1-t)\\log\\Gamma(b)$."
