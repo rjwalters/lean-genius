@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 164,
-    "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. 2 True-stub documentation markers for disproved claims (Q1, Q2 refuted by Rödl 1982). Main conjectures removed; file is primarily graph coloring infrastructure. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "0 axioms, 0 sorries. 5 structural theorems fully proved. Q1 and Q2 (refuted by Rödl 1982) are documented as plain comments, not Lean declarations. Main conjectures removed; file is primarily graph coloring infrastructure. Open conjecture; supporting lemmas fully verified.",
     "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 6
@@ -84,8 +84,8 @@
       "title": "The Main Conjectures",
       "startLine": 86,
       "endLine": 93,
-      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain.",
-      "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only `True`-valued documentation notes remain."
+      "summary": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only plain-comment documentation notes remain (no Lean declarations).",
+      "mathContext": "Question 1: $f_2(n) \\gg n$ (super-linear growth for $r = 2$). Question 2: $f_r(n) \\gg_r rn$ for general $r \\geq 2$. Both disproved by Rödl (1982) and removed; only plain-comment documentation notes remain (no Lean declarations)."
     },
     {
       "id": "rodl-bounds",
@@ -97,7 +97,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1092, an open question about the threshold for local-to-global chromatic number reduction. The function $f_r(n)$ measures the maximum edge-deletion budget under which local $r$-reducibility forces global $(r+1)$-colorability. Rödl's 1982 upper bound $O(n \\log^2 n)$ is the sole remaining axiom. Two previously axiomatized claims were found to be false: the trivial lower bound $f_r(n) \\geq n-1$ (counterexample: K₃ + isolated for r=1, n=4) and monotonicity in r (sSup pathology for unbounded sets).",
+    "summary": "This formalization captures Erdős Problem #1092, an open question about the threshold for local-to-global chromatic number reduction. The function $f_r(n)$ measures the maximum edge-deletion budget under which local $r$-reducibility forces global $(r+1)$-colorability. The file contains 0 axioms: only definitions and 5 fully proved structural theorems remain. Rödl's 1982 upper bound $O(n \\log^2 n)$ is cited as context (not formalized as an axiom). Two previously axiomatized claims were found to be false and removed: the trivial lower bound $f_r(n) \\geq n-1$ (counterexample: K₃ + isolated for r=1, n=4) and monotonicity in r (sSup pathology for unbounded sets).",
     "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of local-to-global reasoning in graph coloring.\n\nA positive answer would establish that local near-$r$-colorability strongly constrains global chromatic number, extending the philosophy behind Brooks' theorem and the regularity lemma. A negative answer (supported by Rödl's evidence) would show that local chromatic structure is insufficient to control global coloring, delineating a boundary for structural graph theory techniques.",
     "openQuestions": [
       "Is $f_2(n) = \\Theta(n)$, or does it grow as $\\Theta(n \\log^\\alpha n)$ for some $\\alpha \\in (0, 2]$?",
