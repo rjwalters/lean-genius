@@ -77,6 +77,7 @@
     ]
   },
   "sections": [
+      {"id": "sec-header-kummer-theorem-oq-02", "title": "Module Header: q-Kummer Theorem for Gaussian Binomial Coefficients", "startLine": 1, "endLine": 37, "summary": "Introduces the q-binomial (Gaussian binomial) coefficient as a q-polynomial specializing to the ordinary binomial at q=1, and lists the seven results proved: q-number/q-factorial/q-binomial definitions, the cyclotomic factorization of q-numbers, recovery of the classical binomial at q=1, a split identity, the quotient formula, and the q-Kummer theorem itself — that the multiplicity of the d-th cyclotomic polynomial in the q-binomial equals ⌊n/d⌋−⌊k/d⌋−⌊(n−k)/d⌋, generalizing classical Kummer from primes to all d≥2.", "mathContext": "The $q$-Kummer theorem: for any $d \\geq 2$, the multiplicity of the cyclotomic polynomial $\\Phi_d$ in the Gaussian binomial coefficient $\\binom{n}{k}_q$ equals $\\lfloor n/d\\rfloor - \\lfloor k/d\\rfloor - \\lfloor (n-k)/d\\rfloor$; evaluating at $q=1$ recovers the classical $p$-adic Kummer theorem since $\\Phi_p(1)=p$."},
     {
       "id": "definitions",
       "title": "q-Numbers, q-Factorials, and q-Binomials",
