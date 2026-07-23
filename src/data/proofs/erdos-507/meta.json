@@ -7,7 +7,7 @@
     "author": "Heilbronn (original problem, 1940s); Erdős (1/n² lower bound); Komlós–Pintz–Szemerédi (1981, 1982); Cohen–Pohoata–Zakharov (2024)",
     "sourceUrl": "https://erdosproblems.com/507",
     "date": "1940s",
-    "status": "axiomatized",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos507Problem.lean",
     "tags": [
       "erdos",
@@ -49,18 +49,12 @@
       "IsInUnitDisk: predicate for point sets in the closed unit disk",
       "minTriangleArea: infimum of triangle areas over all triples",
       "heilbronn: the Heilbronn function α(n) as supremum of minimum triangle areas",
-      "lower_bound_trivial: Erdős's greedy 1/n² lower bound (axiomatized)",
-      "upper_bound_trivial: pigeonhole 1/n upper bound (axiomatized)",
-      "kps_lower_bound: KPS (log n)/n² lower bound (axiomatized)",
-      "kps_upper_bound: KPS n^{-8/7} upper bound (axiomatized)",
-      "cpz_upper_bound: CPZ n^{-7/6} upper bound (axiomatized)",
-      "heilbronn_exponent_range: exponent bounds 7/6 ≤ β ≤ 2 (axiomatized)",
-      "higher_dimensional_analog: d-dimensional trivial bounds (axiomatized)"
+      "The trivial 1/n² and 1/n bounds, the KPS (log n)/n² and n^{-8/7} bounds, the CPZ n^{-7/6} bound, the exponent range, and the higher-dimensional analog are documented in header comments only — not declared as Lean axioms, defs, or theorems"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
     "lineCount": 83,
-    "assumptions": "0 axioms, 0 sorries. Partial formalization of Heilbronn's Triangle Problem: defines triangle geometry framework. The main bounds (lower_bound_trivial, kps_lower_bound, Heilbronn upper bound) are referenced in comments but not formalized as Lean axioms.",
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of Heilbronn's Triangle Problem: defines the triangle-area/unit-disk/Heilbronn-function framework only. The trivial, KPS, and CPZ bounds are documented in header comments — not declared as Lean axioms, defs, or theorems.",
     "theoremCount": 0,
     "definitionCount": 4
   },
@@ -68,7 +62,7 @@
     "historicalContext": "Hans Heilbronn posed the triangle problem in the 1940s while at the University of Bristol: given $n$ points in a convex region, how small must the smallest triangle area be? Erdős quickly observed the lower bound $\\alpha(n) \\geq c/n^2$ via a greedy placement argument and conjectured that the true order should be closer to $1/n^2$ than to $1/n$. The problem attracted attention from some of the strongest combinatorialists of the 20th century. In 1981, Komlós, Pintz, and Szemerédi [KPS81] achieved the first breakthrough on the upper bound side, proving $\\alpha(n) \\leq C/n^{8/7}$ using Szemerédi's regularity lemma—one of the early geometric applications of this fundamental tool. The following year, the same trio [KPS82] improved the lower bound to $\\alpha(n) \\geq c(\\log n)/n^2$ using a sophisticated probabilistic argument involving the Lovász Local Lemma. Remarkably, both bounds stood essentially unchanged for over 40 years. In 2024, Cohen, Pohoata, and Zakharov [CPZ24] finally improved the upper bound to $\\alpha(n) \\leq C/n^{7/6+o(1)}$ using incidence geometry and the polynomial method of Guth and Katz. The gap between the lower bound exponent 2 and upper bound exponent 7/6 remains enormous, making this one of the most fundamental open problems in combinatorial geometry.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $\\alpha(n)$ be the largest value such that every set of $n$ points in the unit disk contains three points forming a triangle of area $\\leq \\alpha(n)$. Estimate $\\alpha(n)$.\n\n**Best bounds:** $c \\cdot \\frac{\\log n}{n^2} \\leq \\alpha(n) \\leq \\frac{C}{n^{7/6+o(1)}}$.\n\n**Exponent:** Writing $\\alpha(n) = n^{-\\beta+o(1)}$, we have $7/6 \\leq \\beta \\leq 2$.",
     "text": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
-    "proofStrategy": "The formalization defines the triangle area via the determinant formula, point configurations in the unit disk, and the Heilbronn function $\\alpha(n)$ as the supremum of minimum triangle areas. The trivial bounds ($1/n^2$ and $1/n$), the KPS improvements ($(\\log n)/n^2$ and $n^{-8/7}$), and the CPZ breakthrough ($n^{-7/6}$) are axiomatized. The exponent range theorem and a higher-dimensional analog are also stated.",
+    "proofStrategy": "The formalization defines the triangle area via the determinant formula, point configurations in the unit disk, and the Heilbronn function $\\alpha(n)$ as the supremum of minimum triangle areas. The trivial bounds ($1/n^2$ and $1/n$), the KPS improvements ($(\\log n)/n^2$ and $n^{-8/7}$), and the CPZ breakthrough ($n^{-7/6}$) are documented in header comments only — not declared as Lean axioms, defs, or theorems. The exponent range and a higher-dimensional analog are likewise stated only in comments.",
     "keyInsights": [
       "**Minimax formulation:** Heilbronn's function $\\alpha(n)$ is a minimax: maximize (over configurations) the minimum (over triples) triangle area—a natural extremal geometry problem",
       "**Four-decade stagnation:** Both the KPS lower bound $(\\log n)/n^2$ (1982) and upper bound $n^{-8/7}$ (1981) stood for over 40 years before CPZ improved the upper bound to $n^{-7/6}$ in 2024",
@@ -103,44 +97,44 @@
       "title": "Erdős's Lower Bound $\\alpha(n) \\gg 1/n^2$",
       "startLine": 47,
       "endLine": 54,
-      "summary": "Axiomatizes $\\alpha(n) \\geq c/n^2$ from Erdős's greedy placement: each new point avoids $O(n^2)$ thin forbidden strips of total measure $O(1/n)$, leaving room for placement.",
-      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\geq c/$n^{2}$$ from Erdős's greedy placement: each new point avoids $$O($n^{2}$)$$ thin forbidden strips of total measure $$O(1/n)$$, leaving room for placement."
+      "summary": "Documents $\\alpha(n) \\geq c/n^2$ in a comment (not a Lean declaration) from Erdős's greedy placement: each new point avoids $O(n^2)$ thin forbidden strips of total measure $O(1/n)$, leaving room for placement.",
+      "mathContext": "Documents $\\$\\alpha$(n) \\geq c/$n^{2}$$ in a comment (not a Lean declaration) from Erdős's greedy placement: each new point avoids $$O($n^{2}$)$$ thin forbidden strips of total measure $$O(1/n)$$, leaving room for placement."
     },
     {
       "id": "trivial-upper",
       "title": "Trivial Upper Bound $\\alpha(n) \\ll 1/n$",
       "startLine": 55,
       "endLine": 60,
-      "summary": "Axiomatizes $\\alpha(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $O(1/n)$; some strip contains $\\geq 3$ points forming a triangle of area $O(1/n)$.",
-      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $$O(1/n)$$; some strip contains $\\geq 3$ points forming a triangle of area $$O(1/n)$$."
+      "summary": "Documents $\\alpha(n) \\leq C/n$ in a comment (not a Lean declaration) via pigeonhole: partition the disk into $n/3$ strips of width $O(1/n)$; some strip contains $\\geq 3$ points forming a triangle of area $O(1/n)$.",
+      "mathContext": "Documents $\\$\\alpha$(n) \\leq C/n$ in a comment (not a Lean declaration) via pigeonhole: partition the disk into $n/3$ strips of width $$O(1/n)$$; some strip contains $\\geq 3$ points forming a triangle of area $$O(1/n)$$."
     },
     {
       "id": "kps-lower",
       "title": "KPS Lower Bound $(\\log n)/n^2$",
       "startLine": 61,
       "endLine": 69,
-      "summary": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\alpha(n) \\geq c(\\log n)/n^2$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound.",
-      "mathContext": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\$\\alpha$(n) \\geq c(\\$\\log n$)/$n^{2}$$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound."
+      "summary": "Documents the Komlós–Pintz–Szemerédi (1982) improvement in a comment (not a Lean declaration): $\\alpha(n) \\geq c(\\log n)/n^2$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound.",
+      "mathContext": "Documents the Komlós–Pintz–Szemerédi (1982) improvement in a comment (not a Lean declaration): $\\$\\alpha$(n) \\geq c(\\$\\log n$)/$n^{2}$$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound."
     },
     {
       "id": "kps-upper",
       "title": "KPS Upper Bound $n^{-8/7}$",
       "startLine": 70,
       "endLine": 78,
-      "summary": "Axiomatizes the KPS (1981) result $\\alpha(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles.",
-      "mathContext": "Axiomatizes the KPS (1981) result $\\$\\alpha$(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles."
+      "summary": "Documents the KPS (1981) result in a comment (not a Lean declaration): $\\alpha(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles.",
+      "mathContext": "Documents the KPS (1981) result in a comment (not a Lean declaration): $\\$\\alpha$(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles."
     },
     {
       "id": "cpz-upper",
       "title": "CPZ Upper Bound $n^{-7/6}$ (2024)",
       "startLine": 79,
       "endLine": 83,
-      "summary": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\alpha(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method.",
-      "mathContext": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\$\\alpha$(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method."
+      "summary": "Documents the Cohen–Pohoata–Zakharov breakthrough in a comment (not a Lean declaration): $\\alpha(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method.",
+      "mathContext": "Documents the Cohen–Pohoata–Zakharov breakthrough in a comment (not a Lean declaration): $\\$\\alpha$(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method."
     }
   ],
   "conclusion": {
-    "summary": "Heilbronn's triangle problem is one of the most fundamental open problems in combinatorial geometry. The Lean formalization defines the Heilbronn function α(n) as a minimax over point configurations and triangle areas, then axiomatizes the full chain of bounds: Erdős's greedy 1/n² (1940s), the pigeonhole 1/n, the KPS improvements to (log n)/n² and n^{-8/7} (1981–82), and the CPZ breakthrough n^{-7/6} (2024). The true exponent β lies in [7/6, 2].",
+    "summary": "Heilbronn's triangle problem is one of the most fundamental open problems in combinatorial geometry. The Lean formalization defines the Heilbronn function α(n) as a minimax over point configurations and triangle areas; the full chain of bounds — Erdős's greedy 1/n² (1940s), the pigeonhole 1/n, the KPS improvements to (log n)/n² and n^{-8/7} (1981–82), and the CPZ breakthrough n^{-7/6} (2024) — is documented in header comments, not declared as Lean axioms or theorems. The true exponent β lies in [7/6, 2].",
     "implications": "Closing the exponent gap would resolve a question at the intersection of combinatorial geometry, incidence geometry, and the polynomial method. The problem connects to Szemerédi–Trotter type bounds, the Guth–Katz framework, and questions about the structure of extremal point configurations.",
     "openQuestions": [
       "What is the true exponent β in α(n) = n^{−β+o(1)}? Is β = 2 (Erdős's conjecture) or closer to 7/6?",
