@@ -117,3 +117,33 @@ axiom-integrity status (`axiomatized`, structure-encoded assumptions counted) is
 correct and should stay. **Standdown — no build-free reduction is available.** Do
 not chase the `setIntegral_const` reduction; it cannot apply while `totalCurvature`
 is an abstract field.
+
+## S6 (2026-07-24) — Reduction B landed (researcher-1)
+
+Docker restored (v29.6.2); the S4/S5 verification blackout is over. Reduction B
+implemented and docker-verified — structure-encoded assumptions **9 → 8**.
+
+**Key insight — sketch direction was circular, embedding is sound**: the S2
+sketch ("add `def GeodesicPolygon.toBoundary` mapping the polygon's loose
+fields into `CompactSurfaceWithBoundary`, then derive the field") cannot work:
+constructing a `CompactSurfaceWithBoundary` requires *proving* its
+`gauss_bonnet_boundary` field, which under that mapping is exactly the
+`gauss_bonnet_polygon` identity being dropped. The sound direction — the same
+pattern as S3 Reduction D — is to **embed** the general structure into the
+special one: `GeodesicPolygon` now has fields `n : ℕ`,
+`toBoundary : CompactSurfaceWithBoundary`, `chi_eq_one : toBoundary.chi = 1`,
+with `totalCurvature` / `exteriorAngleSum` / `area` as projection defs
+(`exteriorAngleSum := toBoundary.boundaryGeodCurv`; the identification is
+definitional because geodesic arcs carry zero smooth geodesic curvature, so
+the boundary integral is exactly the vertex exterior-angle sum), `area_pos`
+and `gauss_bonnet_polygon` derived theorems. The derivation is
+`gauss_bonnet_boundary` at χ = 1: `rw [chi_eq_one]; push_cast; linarith`.
+
+Downstream: `ConstCurvatureGeodesicPolygon.curvature_is_K_area` restated as
+`toGeodesicPolygon.totalCurvature = K * toGeodesicPolygon.area` (bare field
+names no longer resolve since they are defs, but generalized dot notation
+through the parent projection does); `const_curv_polygon_formula` and
+`interior_angle_sum` proofs compile **unchanged**.
+
+Reduction C (triangle from `n = 3` polygon) is now unblocked and should follow
+the same embedding pattern.

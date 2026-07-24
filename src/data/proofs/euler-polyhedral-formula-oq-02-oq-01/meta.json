@@ -55,12 +55,12 @@
       "Morse theory: critical point counts constrained by Euler characteristic"
     ],
     "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
-    "axiomCount": 9,
-    "lineCount": 810,
-    "assumptions": "0 sorries; 9 structure-encoded assumptions remain after S3 ACT (Reduction D, researcher-1 2026-06-10): Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary, geodesic polygon formula, constant curvature formula, geodesic triangle Gauss-Bonnet, Poincaré-Hopf index theorem, Morse relation. VectorFieldOnSurface.nonvanishing_index was discharged by remodeling the structure with an explicit finite zero set so the identity follows from Finset.sum_empty (Reduction D in research/problems/euler-polyhedral-formula-oq-02-oq-01-wip-01/sessions/2026-06-09-s2-orient-assumption-inventory.md). Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
+    "axiomCount": 8,
+    "lineCount": 838,
+    "assumptions": "0 sorries; 8 structure-encoded assumptions remain after S4 ACT (Reduction B, researcher-1 2026-07-24): Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary (CompactSurfaceWithBoundary.gauss_bonnet_boundary), constant curvature formula (curvature_is_K_area), geodesic triangle Gauss-Bonnet, Poincaré-Hopf index theorem, Morse relation. GeodesicPolygon.gauss_bonnet_polygon was discharged by re-encoding GeodesicPolygon as a chi=1 CompactSurfaceWithBoundary so the polygon identity is derived from gauss_bonnet_boundary (Reduction B); VectorFieldOnSurface.nonvanishing_index was discharged earlier via Finset.sum_empty (Reduction D). Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 61,
-    "definitionCount": 15
+    "theoremCount": 63,
+    "definitionCount": 18
   },
   "sections": [
     {
@@ -180,39 +180,39 @@
       "title": "Gauss-Bonnet with Boundary",
       "summary": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and constant-curvature polygons. Proves the interior angle sum formula $\\sum\\theta_{\\text{int}} = (n-2)\\pi + K \\cdot \\text{Area}$.",
       "startLine": 434,
-      "endLine": 511,
+      "endLine": 539,
       "mathContext": "Extends to compact surfaces with boundary via the generalized formula $\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$. Defines `CompactSurfaceWithBoundary`, geodesic polygons, and constant-curvature polygons. Proves the interior angle sum formula $\\sum\\theta_{\\text{int}} = (n-2)\\pi + K \\cdot \\text{Area}$."
     },
     {
       "id": "girard-formula",
       "title": "Girard's Formula (Spherical Triangles)",
       "summary": "Formalizes Girard's 1629 formula: on a surface of constant curvature $K$, a geodesic triangle has $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi) / K$. Proves the complete trichotomy: $K > 0$ gives angular excess, $K = 0$ gives angle sum $\\pi$, $K < 0$ gives angular deficit.",
-      "startLine": 512,
-      "endLine": 585,
+      "startLine": 540,
+      "endLine": 613,
       "mathContext": "Girard: $\\text{Area} = (\\alpha + \\beta + \\gamma - \\pi)/K$. Sphere ($K>0$): angle sum $> \\pi$. Flat ($K=0$): $= \\pi$. Hyperbolic ($K<0$): $< \\pi$."
     },
     {
       "id": "hyperbolic-triangles",
       "title": "Hyperbolic Triangle Area",
       "summary": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\pi - (\\alpha + \\beta + \\gamma)$, bounded above by $\\pi$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula.",
-      "startLine": 586,
-      "endLine": 612,
+      "startLine": 614,
+      "endLine": 640,
       "mathContext": "On the hyperbolic plane ($K = -1$): $\\text{Area} = \\$\\pi$ - (\\$\\alpha$ + \\$\\beta$ + \\$\\gamma$)$, bounded above by $\\$\\pi$$ (ideal triangle limit). Proves the area bound and the ideal triangle limit formula."
     },
     {
       "id": "poincare-hopf",
       "title": "Poincaré-Hopf Index Theorem",
       "summary": "Axiomatizes the Poincaré-Hopf theorem ($\\sum \\text{index}(V, p_i) = \\chi(M)$) and derives the **hairy ball theorem**: no nowhere-vanishing vector field on $S^2$ ($\\chi = 2 \\neq 0$). Complete classification: only $\\chi = 0$ surfaces (torus) support non-vanishing fields.",
-      "startLine": 613,
-      "endLine": 710,
+      "startLine": 641,
+      "endLine": 738,
       "mathContext": "Poincaré-Hopf: $\\sum_i \\text{ind}(V, p_i) = \\chi(M)$. Hairy ball: $\\chi(S^2) = 2 \\neq 0$, so every vector field on $S^2$ vanishes somewhere."
     },
     {
       "id": "morse-theory",
       "title": "Morse Theory Connection",
       "summary": "Formalizes the Morse relation $\\chi(M) = \\#\\text{min} - \\#\\text{saddles} + \\#\\text{max}$ and derives critical point lower bounds: sphere needs $\\geq 2$ extrema, torus needs $\\geq 2$ saddles, genus-$g$ satisfies $\\#\\text{min} + \\#\\text{max} - \\#\\text{saddles} = 2 - 2g$.",
-      "startLine": 711,
-      "endLine": 810,
+      "startLine": 739,
+      "endLine": 838,
       "mathContext": "Weak Morse: $\\chi(M) = m_0 - m_1 + m_2$ where $m_i$ counts index-$i$ critical points. Sphere: $m_0 + m_2 \\geq 2$."
     }
   ],
@@ -255,10 +255,10 @@
       "Real"
     ],
     "namespace": "SmoothGaussBonnet",
-    "lineCount": 810,
+    "lineCount": 838,
     "axiomCount": 0,
-    "theoremCount": 61,
-    "definitionCount": 15,
+    "theoremCount": 63,
+    "definitionCount": 18,
     "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
     "sorries": 0
   },

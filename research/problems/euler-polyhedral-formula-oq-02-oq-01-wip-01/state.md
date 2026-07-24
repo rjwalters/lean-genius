@@ -1,11 +1,40 @@
 # Research State: euler-polyhedral-formula-oq-02-oq-01-wip-01
 
 ## Current State
-**Phase**: BLOCKED (verification blackout)
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-13 (S4 BLOCKED — researcher-1)
-**Iteration**: 5
-**Last Updated**: 2026-06-14 (S5 GATE-SYNC — propagated the S4 BLOCKED flag to the JSON + pool gates; researcher-1)
+**Since**: 2026-07-24 (S6 ACT — researcher-1)
+**Iteration**: 6
+**Last Updated**: 2026-07-24 (S6 ACT — Docker restored; Reduction B landed and docker-verified; researcher-1)
+
+## S6 ACT (2026-07-24, researcher-1) — Reduction B landed
+
+Docker is back (v29.6.2), lifting the S4/S5 Docker-transient block. Reduction B
+implemented and verified (`./proofs/scripts/docker-build.sh
+Proofs.EulerPolyhedralOQ02OQ01` → "Build completed successfully (8576 jobs)").
+
+**Design correction vs the S2 sketch**: the sketched direction — build
+`def GeodesicPolygon.toBoundary` *from* the polygon's loose fields — is
+circular: constructing a `CompactSurfaceWithBoundary` requires proving its
+`gauss_bonnet_boundary` field, which for that mapping is exactly the
+`gauss_bonnet_polygon` identity being dropped. The sound direction (mirroring
+S3 Reduction D) **embeds** the boundary structure into the polygon:
+
+- `structure GeodesicPolygon` now has fields `n : ℕ`,
+  `toBoundary : CompactSurfaceWithBoundary`, `chi_eq_one : toBoundary.chi = 1`.
+- `totalCurvature` / `exteriorAngleSum` / `area` are projection defs
+  (`exteriorAngleSum := toBoundary.boundaryGeodCurv` — definitional
+  identification, justified because geodesic arcs carry zero smooth κ_g).
+- `area_pos` and `gauss_bonnet_polygon` are derived theorems; the latter is
+  `gauss_bonnet_boundary` at χ = 1 (`rw [chi_eq_one]`, `push_cast`, `linarith`).
+- `ConstCurvatureGeodesicPolygon.curvature_is_K_area` restated as
+  `toGeodesicPolygon.totalCurvature = K * toGeodesicPolygon.area`; downstream
+  `const_curv_polygon_formula` and `interior_angle_sum` compile unchanged.
+
+**Net**: structure-encoded assumptions 9 → 8; lineCount 810 → 838; theoremCount
+61 → 63 (+`area_pos`, +derived `gauss_bonnet_polygon`); definitionCount 15 → 18
+(+3 projection defs). meta.json counts, assumptions string, and section anchors
+(+28 lines after Part XIV) updated in the same commit.
 
 ## S5 GATE-SYNC (2026-06-14, researcher-1)
 
@@ -96,28 +125,38 @@ The discharged assumption is `VectorFieldOnSurface.nonvanishing_index`. The rema
 
 ## Current Focus
 
-S3 ACT complete. Ready for S4 ACT (Reduction B): derive `gauss_bonnet_polygon` from `gauss_bonnet_boundary` via a `GeodesicPolygon.toBoundary` coercion. ~10 LOC + 1 docker build. Brings `axiomCount` from 9 → 8.
+S6 ACT (Reduction B) complete and docker-verified. Next tractable target is
+**Reduction C**: derive `GeodesicTriangle.gauss_bonnet_triangle` from
+`ConstCurvatureGeodesicPolygon` at `n := 3` (embed a polygon, relate interior
+angles α, β, γ to `exteriorAngleSum = 3π − (α+β+γ)`). ~15 LOC + 1 docker
+build. Would bring `axiomCount` 8 → 7. After C, only `curvature_is_K_area`
+(cleaner kept as a definitional field, per S3 assessment) and the 6 DEEP
+Mathlib-blocked assumptions remain.
 
 ## Active Approach
 
-**S4 ACT — Reduction B**: add a `def GeodesicPolygon.toBoundary (P : GeodesicPolygon) : CompactSurfaceWithBoundary` that maps `χ := 1`, `totalCurvature := P.totalCurvature`, `boundaryGeodCurv := P.exteriorAngleSum`, `area := P.area`. Then `P.gauss_bonnet_polygon` follows from `P.toBoundary.gauss_bonnet_boundary`. Drop the field.
-
-**Risk** (per S2 plan): identifying `boundaryGeodCurv` with `exteriorAngleSum` is itself a non-trivial discrete identity. For geodesic arcs, smooth contributions vanish, so the boundary integral reduces to the vertex angle sum — which the `GeodesicPolygon` name already presupposes. The identity should be assertable as part of the `toBoundary` constructor.
+**Reduction C (next)**: restructure `GeodesicTriangle` to carry
+`toPolygon : ConstCurvatureGeodesicPolygon` with `n = 3` plus angle fields and
+an identification `exteriorAngleSum = (π−α)+(π−β)+(π−γ)` — following the same
+embedding pattern as Reductions D and B (embed the general structure, do NOT
+try to construct it from loose fields; that direction is circular).
 
 ## Attempt Count
 
-- Total attempts: 2 (S2 ORIENT doc-only + S3 ACT code change)
-- Current approach attempts: 1 (Reduction D — landed)
-- Approaches tried: 2 (S2 inventory survey + S3 Reduction D)
+- Total attempts: 3 (S2 ORIENT doc-only + S3 ACT Reduction D + S6 ACT Reduction B)
+- Current approach attempts: 1 (Reduction B — landed)
+- Approaches tried: 3 (S2 inventory survey + S3 Reduction D + S6 Reduction B)
 
 ## Blockers
 
-None. Reduction B is the next clean candidate; concrete sketch is in `sessions/2026-06-09-s2-orient-assumption-inventory.md` §Reduction B.
+None. Docker restored 2026-07-24; the S4/S5 verification blackout is over.
 
 ## Next Action
 
-**S4 ACT (Reduction B)** — operate on `Proofs/EulerPolyhedralOQ02OQ01.lean` around lines 463–490:
-1. Add `def GeodesicPolygon.toBoundary` coercion.
-2. Convert `gauss_bonnet_polygon` field to a theorem `theorem gauss_bonnet_polygon (P : GeodesicPolygon) : ... := P.toBoundary.gauss_bonnet_boundary`.
+**Reduction C** — operate on `Proofs/EulerPolyhedralOQ02OQ01.lean` Part XV
+(`GeodesicTriangle`, now ~line 553):
+1. Embed a `ConstCurvatureGeodesicPolygon` with `n = 3` into `GeodesicTriangle`.
+2. Convert `gauss_bonnet_triangle` field to a derived theorem via
+   `const_curv_polygon_formula` + exterior/interior angle arithmetic.
 3. Verify via `./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01`.
-4. Update `meta.json` `axiomCount: 9 → 8`.
+4. Update `meta.json` `axiomCount: 8 → 7`.
