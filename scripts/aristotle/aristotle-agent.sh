@@ -269,6 +269,21 @@ show_status() {
 
     local candidates=$("$SCRIPT_DIR/find-candidates.sh" --count 2>/dev/null || echo "?")
     echo "Candidates remaining: $candidates"
+
+    # Wedge detection (issue #43006): flag a stuck pipeline in the status
+    # block instead of leaving it to a buried submit-batch.sh log line.
+    if [[ -x "$SCRIPT_DIR/wedge-check.sh" ]]; then
+        local wedge_reasons
+        if wedge_reasons=$("$SCRIPT_DIR/wedge-check.sh" 2>/dev/null); then
+            echo -e "Pipeline health: ${GREEN}OK${NC}"
+        else
+            echo -e "Pipeline health: ${RED}WEDGED${NC}"
+            while IFS= read -r reason; do
+                [[ -z "$reason" ]] && continue
+                echo -e "  ${YELLOW}- $reason${NC}"
+            done <<< "$wedge_reasons"
+        fi
+    fi
 }
 
 # Commit integrated proofs and create/update PR

@@ -1,17 +1,922 @@
 {
   "jobs": [
     {
+      "project_id": "01e8fa8b-fba5-4773-9870-c1f5a2da3899",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-aBv0ru, created: 1 week ago."
+    },
+    {
+      "project_id": "030f275a-2aba-45a6-87ec-c1ca51768848",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-zSynFm, created: 1 week ago."
+    },
+    {
+      "project_id": "0476ed9b-eb8a-4223-a191-673513c1c8bb",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Yc4k1c, created: 1 week ago."
+    },
+    {
+      "project_id": "08e3a2d1-42cd-43fc-a6ab-df6d6eb5c4ba",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-iVrJDX, created: 1 week ago."
+    },
+    {
+      "project_id": "09e00bf0-bdec-4b98-893c-3f6e2b81cc86",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "integrated",
+      "outcome": "Solved sum_of_first_n_odds (1 sorry -> 0); integrated into proofs/Proofs/SumOfOddsStatementOnly.lean. v4.31 build gate pending.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-y0C3Yw, created: 1 week ago.",
+      "theorems_proved": 1,
+      "v431_verified": false,
+      "v431_verification": "pending",
+      "results_path": "research/aristotle-runs/recovered-09e00bf0-bdec-4b98-893c-3f6e2b81cc86.lean"
+    },
+    {
+      "project_id": "0f8d76da-efea-45ca-92a5-b3c13d4ca568",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Csh9CF, created: 2 weeks ago."
+    },
+    {
+      "project_id": "1264317e-7790-4359-bc29-d46a2d866b9a",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-WFuDEe, created: 1 week ago."
+    },
+    {
+      "project_id": "129d1e51-2682-43a3-97a9-80c8b0160b9c",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-H8NeM2, created: 1 week ago."
+    },
+    {
+      "project_id": "13005cb0-18f3-450a-b1ec-a75ed59cc84c",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-cLU8qa, created: 1 week ago."
+    },
+    {
+      "project_id": "142e16c8-0c47-44d7-893e-13b773ac915e",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-QNi3uE, created: 2 weeks ago."
+    },
+    {
+      "project_id": "1c6d69ef-21c1-4d5a-884e-aa119b58fd5f",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-2ROBpv, created: 1 week ago."
+    },
+    {
+      "project_id": "1efa3c7d-c807-4d00-b320-049ea0583d24",
+      "file": "unknown",
+      "problem_id": "recovered-1efa3c7d",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'ar-horn'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: ar-horn, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-1efa3c7d-c807-4d00-b320-049ea0583d24.lean"
+    },
+    {
+      "project_id": "212b28eb-7cd1-4dcf-b305-390a295a946c",
+      "file": "unknown",
+      "problem_id": "recovered-212b28eb",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'aristotle-fc'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-fc, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-212b28eb-7cd1-4dcf-b305-390a295a946c.lean"
+    },
+    {
+      "project_id": "22728d5d-59da-41f3-971d-622f5c462930",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-r8yeSn, created: 1 week ago."
+    },
+    {
+      "project_id": "269d70eb-6fae-49c3-a78d-d1c0bfda752d",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-oqWgei, created: 1 week ago."
+    },
+    {
+      "project_id": "290ce182-1691-4996-a666-18f548ce393e",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-e66hw7, created: 2 weeks ago."
+    },
+    {
+      "project_id": "298662ff-c6b5-44bf-94f3-cd9f28eae1cd",
+      "file": "unknown",
+      "problem_id": "recovered-298662ff",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'ar-expr'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: ar-expr, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-298662ff-c6b5-44bf-94f3-cd9f28eae1cd.lean"
+    },
+    {
+      "project_id": "2ca2abed-89e4-4484-9656-ebe277f5ece0",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-COcgcg, created: 1 week ago."
+    },
+    {
+      "project_id": "2d9a6a8b-b896-49be-8eef-bb1660c9f448",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-colZVa, created: 1 week ago."
+    },
+    {
+      "project_id": "30746481-844e-45e7-aecb-0ce5911d5b29",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-swUfbX, created: 1 week ago."
+    },
+    {
+      "project_id": "30ffff46-7f0b-4553-9a91-2a98ec47c95a",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-ztrL0H, created: 1 week ago."
+    },
+    {
+      "project_id": "318ce075-a401-484c-aadb-a2f95f067b1f",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-3TP44l, created: 2 weeks ago."
+    },
+    {
+      "project_id": "3705d2cc-57db-4739-9d6c-bcc8b65541cf",
+      "file": "proofs/Proofs/AmgmInequalityOQ02Aristotle.lean",
+      "problem_id": "amgminequalityoq02aristotle",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Result sorry count equals target (AmgmInequalityOQ02Aristotle.lean); no improvement. Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-vOOlJI, created: 4 days ago.",
+      "results_path": "research/aristotle-runs/recovered-3705d2cc-57db-4739-9d6c-bcc8b65541cf.lean"
+    },
+    {
+      "project_id": "371a5c90-6e1b-4305-b5bc-252bedd4f45c",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-wDmNQB, created: 2 weeks ago."
+    },
+    {
+      "project_id": "3b437a50-355e-4f0f-8d1d-e2b108f0cb32",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-KeCYMw, created: 1 week ago."
+    },
+    {
+      "project_id": "3d521c71-f624-4bdc-acb7-cfc5155e90d2",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-BKhPRJ, created: 1 week ago."
+    },
+    {
+      "project_id": "3de21563-4a4a-45d2-9599-07de57a2dc04",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-KSMFnv, created: 2 weeks ago."
+    },
+    {
+      "project_id": "3e8027f6-1cec-476c-8082-554a5614bc0a",
+      "file": "unknown",
+      "problem_id": "recovered-3e8027f6",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'aristotle-v431-probe'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-v431-probe, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-3e8027f6-1cec-476c-8082-554a5614bc0a.lean"
+    },
+    {
+      "project_id": "3f211eee-bb5d-48aa-a99c-66a2130c6e05",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-tl4alT, created: 1 week ago."
+    },
+    {
+      "project_id": "3f5b933f-c8d3-44d4-8632-2ba97950a1ed",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-AQih2r, created: 1 week ago."
+    },
+    {
+      "project_id": "43a7830e-202e-4186-89a6-ff29010c052a",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Pqzj5Y, created: 2 weeks ago."
+    },
+    {
+      "project_id": "47f3864c-4193-4cba-9500-8ec95bddc8f7",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-y6USC3, created: 1 week ago."
+    },
+    {
+      "project_id": "4c43e809-0d94-4cbf-8086-170189c7ecd6",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-7LDZGs, created: 2 weeks ago."
+    },
+    {
+      "project_id": "53e4fcea-a082-48dd-bf17-ac258c109ab9",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-JysZZA, created: 4 days ago."
+    },
+    {
+      "project_id": "53efe6d2-5f56-42d4-be1d-920e38ee2922",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-SYlwqA, created: 2 weeks ago."
+    },
+    {
+      "project_id": "542fea00-9a60-43ae-b0fe-6a468b3fb73e",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-8A62xF, created: 1 week ago."
+    },
+    {
+      "project_id": "553a45e1-ac88-4a50-b16f-0ba2420cb496",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-GDoeSv, created: 2 weeks ago."
+    },
+    {
+      "project_id": "57df7541-8676-43af-8353-2052e589a822",
+      "file": "unknown",
+      "problem_id": "recovered-57df7541",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'ar-total'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: ar-total, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-57df7541-8676-43af-8353-2052e589a822.lean"
+    },
+    {
+      "project_id": "5d77873e-c1ae-4b54-906a-44a23d8b108e",
+      "file": "unknown",
+      "problem_id": "recovered-5d77873e",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'ar-ngen'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: ar-ngen, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-5d77873e-c1ae-4b54-906a-44a23d8b108e.lean"
+    },
+    {
+      "project_id": "600eb454-e899-4a03-a77f-dc54e21f529f",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-tWT5xC, created: 1 week ago."
+    },
+    {
+      "project_id": "62d4f1f3-5f81-464b-82e2-26516475fc17",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-px4otc, created: 2 weeks ago."
+    },
+    {
+      "project_id": "63196a41-b047-4cb0-8607-033df61791cc",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-dn8T5X, created: 1 week ago."
+    },
+    {
+      "project_id": "637a418a-2db1-41f3-955f-a1ee4494ec41",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Yvh378, created: 1 week ago."
+    },
+    {
+      "project_id": "6667a7c2-e090-420f-ab54-6381b2bb7830",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-hBrCN2, created: 1 week ago."
+    },
+    {
+      "project_id": "67912c1a-5776-40c8-affc-43df312474cd",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-oGNp4G, created: 1 week ago."
+    },
+    {
+      "project_id": "6a707e55-e8f5-4958-8329-da77fda60c72",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-ot87wJ, created: 3 days ago."
+    },
+    {
+      "project_id": "6d12d349-a304-446a-bb70-acac3b4e7ab2",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-oPoQiq, created: 2 weeks ago."
+    },
+    {
+      "project_id": "6e7f4735-18f6-4380-ae3f-29b40728a806",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-MrT4AX, created: 1 week ago."
+    },
+    {
+      "project_id": "6f3c8b22-d8cd-4c14-bfcd-56fe46470339",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-7K8Z7D, created: 1 week ago."
+    },
+    {
+      "project_id": "79dd0229-71e0-4320-84d0-c1a2c0db59ad",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-DvfAIk, created: 1 week ago."
+    },
+    {
+      "project_id": "7b585d47-f168-4574-b133-ac4943c7b709",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-4s8qXr, created: 1 week ago."
+    },
+    {
+      "project_id": "80c197be-12f1-4520-89bf-433b1b2f867c",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Sv91Bv, created: 2 weeks ago."
+    },
+    {
+      "project_id": "83a185d9-0f28-4f97-83d4-45ed96c89cf3",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-kQVVcy, created: 4 days ago."
+    },
+    {
+      "project_id": "8450cf9f-8d24-4bae-9fe2-d40a5714c1b1",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Eptonj, created: 1 week ago."
+    },
+    {
+      "project_id": "848b25ac-0564-4151-ad49-9680659b296a",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-AJ1d5y, created: 1 week ago."
+    },
+    {
+      "project_id": "86b225cc-bed4-40ad-a077-dbeff928adbc",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-03byg0, created: 1 week ago."
+    },
+    {
+      "project_id": "87520531-dfa7-4636-bf7c-a6a78d940529",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-mzq7tC, created: 1 day ago."
+    },
+    {
+      "project_id": "88e61d39-1c55-448f-b621-e68c3fdaee2d",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-QbOHKr, created: 1 week ago."
+    },
+    {
+      "project_id": "8cecfe6c-de03-4dd6-9d24-1676010738e4",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-uq42ae, created: 1 week ago."
+    },
+    {
+      "project_id": "8efc7e1d-63b6-4c1c-827b-fc755c775dbe",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-V4KQWG, created: 1 week ago."
+    },
+    {
+      "project_id": "8f3db95a-8085-4c3a-b5a3-5d5eb0834b8a",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-tsvEIu, created: 1 week ago."
+    },
+    {
+      "project_id": "922891a4-c7f5-4606-a50c-6fc481f9534a",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-TrZMNJ, created: 1 week ago."
+    },
+    {
+      "project_id": "939368a8-c1c9-49de-8acc-2e270b0adbf2",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-xVN849, created: 2 weeks ago."
+    },
+    {
       "project_id": "958405df-8534-4c33-9d40-21529cfa14fa",
       "file": "proofs/Proofs/CubeRoot3IrrationalOQ02OQ03TwoPowerCapelliNegSquareStatementOnly.lean",
       "problem_id": "cube-root-3-irrational-oq-02-oq-03-incomplete-01",
       "submitted": "2026-07-12T07:31:46Z",
-      "status": "submitted",
+      "status": "archived",
       "preprocessed": false,
       "preprocessing_log": null,
       "companion_file": true,
       "tier": "T0",
-      "notes": "StatementOnly submission (T0) — residual open sorry of Vahlen–Capelli (two_power_capelli_neg_square); submitted directly via CLI (submit-batch backlog guard tripped on 100 untracked server projects)",
-      "server_active_at_submit": 0
+      "notes": "StatementOnly submission (T0) \u2014 residual open sorry of Vahlen\u2013Capelli (two_power_capelli_neg_square); submitted directly via CLI (submit-batch backlog guard tripped on 100 untracked server projects) | Result retrieved during #43006 recovery at 2026-07-24T04:45:53Z; saved to research/aristotle-runs/.",
+      "server_active_at_submit": 0,
+      "outcome": "T0 submission of the Vahlen-Capelli residual sorry (two_power_capelli_neg_square). Result retains the sorry (no improvement) but contains proved supporting lemmas (quad_repr, quad_indep, descent, two_power_irred) \u2014 saved for researcher review.",
+      "results_path": "research/aristotle-runs/recovered-958405df-8534-4c33-9d40-21529cfa14fa.lean"
+    },
+    {
+      "project_id": "97ed0efb-e892-4328-949b-3510c23f1d6b",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-eQPi96, created: 1 week ago."
+    },
+    {
+      "project_id": "9b69d80b-9041-407b-aaf9-c5e1898cd799",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-xTlrLC, created: 1 week ago."
+    },
+    {
+      "project_id": "9c70d2c2-dd44-47c8-8fe2-a3688435011e",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-SyiTOA, created: 1 week ago."
+    },
+    {
+      "project_id": "9e37aff8-3b01-496d-87b0-d7538ea538cb",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Vhtb3l, created: 1 week ago."
+    },
+    {
+      "project_id": "9e4f8456-fed2-4070-9d30-313a5d371e0a",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-caP6OJ, created: 1 week ago."
+    },
+    {
+      "project_id": "a5396600-8c26-4539-b343-71c6cfc54a7a",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-SHBsKm, created: 2 weeks ago."
+    },
+    {
+      "project_id": "a89355d2-03f7-4fed-be0b-fc08000719a3",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Aovyub, created: 2 weeks ago."
+    },
+    {
+      "project_id": "aaf29527-d86b-4c39-9af9-104c9e290db4",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-qg3Eki, created: 2 weeks ago."
+    },
+    {
+      "project_id": "ab3d55f8-dbfa-4340-8851-e111fa69c521",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-djrrTA, created: 2 weeks ago."
+    },
+    {
+      "project_id": "ac077d0e-cacb-4630-b9d5-2cbbb6d4294e",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-L6Lrfn, created: 1 week ago."
+    },
+    {
+      "project_id": "ad09bf15-bc42-4bbf-ba70-177b7be0e782",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-u0P2kM, created: 1 week ago."
+    },
+    {
+      "project_id": "ae9047aa-393e-43ea-9c7a-f3959c6a245c",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-RqPeaV, created: 2 weeks ago."
+    },
+    {
+      "project_id": "b31f9c09-fac0-4066-9eae-1fdffb9feb3b",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-ZkSnnl, created: 1 week ago."
+    },
+    {
+      "project_id": "b4c194fb-544d-46f4-b906-530b9c7a0c83",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-ReNS4L, created: 1 week ago."
+    },
+    {
+      "project_id": "b5a43b05-6842-40ba-91ba-cc1673159c53",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-IhHFIL, created: 1 week ago."
+    },
+    {
+      "project_id": "b6a4f559-f8ee-43ae-bf6d-c1de451e19d9",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-6gASTe, created: 2 weeks ago."
+    },
+    {
+      "project_id": "b6f95383-cd0a-46b8-bbf6-4adad35d4894",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-18d7wA, created: 1 week ago."
+    },
+    {
+      "project_id": "b795d351-db12-4fac-b49e-58188aa5880f",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-fcEs57, created: 2 weeks ago."
+    },
+    {
+      "project_id": "ba193751-9788-4d55-8b19-d5e737b26441",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-aARGdP, created: 1 week ago."
+    },
+    {
+      "project_id": "bd0bc845-635b-47f1-8b89-0fd8026c9f57",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-RTKFSL, created: 1 day ago."
+    },
+    {
+      "project_id": "c15df233-5928-4d8d-8870-14d9cbb56a53",
+      "file": "proofs/Proofs/TractatusNOperator.lean",
+      "problem_id": "tractatusnoperator",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target TractatusNOperator.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-nop, created: 1 week ago."
+    },
+    {
+      "project_id": "c60f2102-f2a8-4b59-b19c-d32a86422d78",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-no3MgJ, created: 3 days ago."
+    },
+    {
+      "project_id": "cbb40a74-4021-48fe-87b7-2cd25a359c97",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-e8Esoy, created: 1 week ago."
+    },
+    {
+      "project_id": "ccdd3c2c-77e6-4058-aeed-9b3c57d20f79",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-5VHT7Z, created: 1 week ago."
+    },
+    {
+      "project_id": "cf930705-817e-4aa8-954a-08c16681ee20",
+      "file": "proofs/Proofs/SumOfOddsStatementOnly.lean",
+      "problem_id": "sumofoddsstatementonly",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission of SumOfOddsStatementOnly.lean (28 copies on server); representative 09e00bf0-bdec-4b98-893c-3f6e2b81cc86 integrated instead.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-3VVI4m, created: 1 week ago."
+    },
+    {
+      "project_id": "d7c66ca0-0191-4cee-b332-153c1faf7b39",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-SOjGn4, created: 1 week ago."
+    },
+    {
+      "project_id": "dc98207e-7e2b-40b7-90be-be6da19d4f56",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-l9Luqs, created: 1 week ago."
+    },
+    {
+      "project_id": "df9408c6-ba97-486f-ada5-13eb1cc2b0c4",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-nLjoVQ, created: 1 week ago."
+    },
+    {
+      "project_id": "e203a760-90f0-42a9-a6c1-3e77d147fa9f",
+      "file": "unknown",
+      "problem_id": "recovered-e203a760",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Cannot map result to a local proof file (manual/probe submission: server name 'ar-dec'). Saved for review.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: ar-dec, created: 1 week ago.",
+      "results_path": "research/aristotle-runs/recovered-e203a760-90f0-42a9-a6c1-3e77d147fa9f.lean"
+    },
+    {
+      "project_id": "e249d4b1-90fe-4ddf-bbfd-96667211fde5",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-lYPNlw, created: 1 week ago."
+    },
+    {
+      "project_id": "e54bab27-0ca8-4f56-9267-824981355e75",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-Q7OzNG, created: 2 weeks ago."
+    },
+    {
+      "project_id": "e7686b65-831a-4cf6-a5eb-824848529259",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-KKXEOu, created: 1 day ago."
+    },
+    {
+      "project_id": "e79718ac-6b0a-49fe-af02-74c02159e286",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-SdCXaJ, created: 1 week ago."
+    },
+    {
+      "project_id": "fd4e67a5-0015-4452-a777-d51720dc679e",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-NUxG7W, created: 1 week ago."
+    },
+    {
+      "project_id": "fddb6baa-1cfc-41be-92ce-1e21e4cbe68c",
+      "file": "proofs/Proofs/ChebyshevBounds.lean",
+      "problem_id": "chebyshevbounds",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target ChebyshevBounds.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-jEhsBr, created: 1 week ago."
+    },
+    {
+      "project_id": "ff72e4e7-ed8f-4f86-afca-cb1433f99e92",
+      "file": "proofs/Proofs/SchroederBernstein.lean",
+      "problem_id": "schroederbernstein",
+      "submitted": "unknown",
+      "status": "archived",
+      "outcome": "Duplicate submission; local target SchroederBernstein.lean already has 0 sorries. Nothing to integrate.",
+      "notes": "Recovered from server during #43006 backlog recovery at 2026-07-24T04:45:53Z. Server name: aristotle-preprocess-6J0pJQ, created: 1 week ago."
     }
   ]
 }

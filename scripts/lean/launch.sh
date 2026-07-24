@@ -1150,6 +1150,31 @@ print_missing_agent_rows() {
     done
 }
 
+# Helper: Surface a wedged Aristotle pipeline (issue #43006). The agent
+# session can look RUNNING while the pipeline underneath is stuck (untracked
+# finished server projects blocking submissions, or in-flight jobs that never
+# reach a terminal state). wedge-check.sh evaluates local state only (no API
+# calls). Prints a WARNING row + reasons and sets ARISTOTLE_WEDGE_FOUND=1
+# when wedged.
+ARISTOTLE_WEDGE_FOUND=0
+print_aristotle_wedge_rows() {
+    ARISTOTLE_WEDGE_FOUND=0
+    local wedge_script="$_LAUNCH_SCRIPT_DIR/../aristotle/wedge-check.sh"
+    [[ -x "$wedge_script" ]] || return 0
+
+    local wedge_reasons
+    if wedge_reasons=$("$wedge_script" 2>/dev/null); then
+        return 0
+    fi
+    ARISTOTLE_WEDGE_FOUND=1
+    printf "%-22s %-8s %-10s %-7s %-5s %-6s " "aristotle-pipeline" "-" "-" "-" "-" "-"
+    echo -e "${YELLOW}WARNING${NC} (pipeline wedged)"
+    while IFS= read -r reason; do
+        [[ -z "$reason" ]] && continue
+        echo -e "    ${YELLOW}- $reason${NC}"
+    done <<< "$wedge_reasons"
+}
+
 # Command: health - Show agent process health
 cmd_health() {
     echo -e "${BOLD}Agent Health Check${NC}"
@@ -1162,12 +1187,25 @@ cmd_health() {
         # No live sessions at all -- but configured agents may still be MISSING
         # (e.g. the whole pool died). Surface those before returning (#39652).
         print_missing_agent_rows
-        if [[ "$MISSING_AGENTS_FOUND" -gt 0 ]]; then
+        print_aristotle_wedge_rows
+        if [[ "$MISSING_AGENTS_FOUND" -gt 0 || "$ARISTOTLE_WEDGE_FOUND" -gt 0 ]]; then
             echo ""
-            echo -e "Summary: ${RED}$MISSING_AGENTS_FOUND missing${NC} (configured agents with no live session)"
+            local nosess_summary="Summary:"
+            if [[ "$MISSING_AGENTS_FOUND" -gt 0 ]]; then
+                nosess_summary+=" ${RED}$MISSING_AGENTS_FOUND missing${NC} (configured agents with no live session)"
+            fi
+            if [[ "$ARISTOTLE_WEDGE_FOUND" -gt 0 ]]; then
+                nosess_summary+=" ${YELLOW}aristotle pipeline wedged${NC}"
+            fi
+            echo -e "$nosess_summary"
             echo ""
-            echo -e "${YELLOW}Configured agent(s) have no live session. The launcher may be dying silently (#39649).${NC}"
-            echo -e "${YELLOW}Check the daemon log ($DAEMON_LOG_FILE) and restart the daemon if needed.${NC}"
+            if [[ "$MISSING_AGENTS_FOUND" -gt 0 ]]; then
+                echo -e "${YELLOW}Configured agent(s) have no live session. The launcher may be dying silently (#39649).${NC}"
+                echo -e "${YELLOW}Check the daemon log ($DAEMON_LOG_FILE) and restart the daemon if needed.${NC}"
+            fi
+            if [[ "$ARISTOTLE_WEDGE_FOUND" -gt 0 ]]; then
+                echo -e "${YELLOW}Aristotle pipeline is wedged. See: ./scripts/aristotle/wedge-check.sh and issue #43006.${NC}"
+            fi
             return 0
         fi
         echo "No agent tmux sessions found."
@@ -1309,6 +1347,11 @@ cmd_health() {
     print_missing_agent_rows
     local missing_count=$MISSING_AGENTS_FOUND
 
+    # Surface a wedged Aristotle pipeline (issue #43006) — the session row
+    # above can show RUNNING while submissions are silently blocked.
+    print_aristotle_wedge_rows
+    local wedged_count=$ARISTOTLE_WEDGE_FOUND
+
     echo ""
     local summary="Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed"
     if [[ $idle_count -gt 0 ]]; then
@@ -1322,6 +1365,9 @@ cmd_health() {
     fi
     if [[ $missing_count -gt 0 ]]; then
         summary+=", ${RED}$missing_count missing${NC}"
+    fi
+    if [[ $wedged_count -gt 0 ]]; then
+        summary+=", ${YELLOW}aristotle pipeline wedged${NC}"
     fi
     summary+=", ${RED}$stuck_count stuck${NC}"
     echo -e "$summary"
@@ -1338,6 +1384,11 @@ cmd_health() {
         echo ""
         echo -e "${YELLOW}Configured agent(s) have no live session. The launcher may be dying silently (#39649).${NC}"
         echo -e "${YELLOW}Check the daemon log ($DAEMON_LOG_FILE) and restart the daemon if needed.${NC}"
+    fi
+    if [[ $wedged_count -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}Aristotle pipeline is wedged (submissions blocked or jobs not reaching terminal state).${NC}"
+        echo -e "${YELLOW}Run ./scripts/aristotle/wedge-check.sh for reasons and ./scripts/aristotle/retrieve-integrate.sh to recover. See issue #43006.${NC}"
     fi
 
     return $stuck_count
