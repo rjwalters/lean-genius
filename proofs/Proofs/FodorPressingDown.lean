@@ -974,6 +974,238 @@ theorem stationary_splits_finite_aleph1 {S : Set Ordinal.{0}}
     fun i j hij => hdisj i.1 j.1 (Fin.val_injective.ne hij), fun i => hstat i.1⟩
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part XIII: Solovay's Partition Theorem at ω₁ (Jech 8.10)
+-- ══════════════════════════════════════════════════════════════════
+--
+-- The κ-piece layer over the Part XI production step. The unbounded
+-- index `n` from `exists_omegaSeq_high_fibers_stationary` makes EVERY
+-- high-fiber stationary, so Fodor applied to the high-fiber at `η`
+-- yields a constant `c η ≥ η` with stationary fiber. Fibers of the
+-- single map `omegaSeq · n` at distinct values are automatically
+-- pairwise disjoint, so the value set `{c η | η < κ.ord}` — unbounded
+-- below `κ.ord` since `c η ≥ η` — indexes an unbounded-in-`κ.ord`
+-- (hence, by regularity, `κ`-sized) family of pairwise disjoint
+-- stationary subsets. Absorbing the unused remainder into one piece
+-- turns the family into an exhaustive partition. No transfinite
+-- iteration is needed: the Part XII remainder-chain obstruction (the
+-- countable intersection `⋂ₙ Rₙ` need not be stationary) is bypassed
+-- entirely, because all the pieces are produced simultaneously as
+-- fibers of one regressive map.
+
+/-- **Unboundedly many pairwise disjoint stationary fibers** (ω-cofinal
+    case; the production step for Solovay's partition theorem).
+
+    For a stationary `S ⊆ κ.ord` of ω-cofinal limit ordinals there are
+    an index set `C`, unbounded below `κ.ord` (hence of full cardinality
+    `κ`, since a bounding of `C` by any `|C| < κ = cof κ.ord` sup would
+    contradict unboundedness), and a family `T` with each `T c` (`c ∈ C`)
+    a stationary subset of `S`, pairwise disjoint across distinct
+    indices. -/
+theorem exists_unbounded_disjoint_stationary_fibers {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    (hSsub : ∀ α ∈ S, α < κ.ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0) :
+    ∃ (C : Set Ordinal) (T : Ordinal → Set Ordinal),
+      C ⊆ Set.Iio κ.ord ∧
+      IsUnboundedBelow C κ.ord ∧
+      (∀ c ∈ C, T c ⊆ S ∧ IsStationaryBelow (T c) κ.ord) ∧
+      (∀ c ∈ C, ∀ c' ∈ C, c ≠ c' → Disjoint (T c) (T c')) := by
+  obtain ⟨n, hn⟩ := exists_omegaSeq_high_fibers_stationary hκ hκ_unc hS
+    (fun α hα => (hSsub α hα).2.2)
+  -- regressivity data for the map α ↦ omegaSeq α n on S
+  have hS_pos : ∀ α ∈ S, 0 < α := fun α hα => (hSsub α hα).2.1.bot_lt
+  have hreg : ∀ α ∈ S, omegaSeq α n < α :=
+    fun α hα => omegaSeq_lt (hSsub α hα).2.2 n
+  have hlt : ∀ α ∈ S, omegaSeq α n < κ.ord :=
+    fun α hα => lt_trans (hreg α hα) (hSsub α hα).1
+  -- Fodor on each high-fiber: a constant c ≥ η with stationary fiber in S
+  have hfodor : ∀ η, η < κ.ord → ∃ γ, γ < κ.ord ∧ η ≤ γ ∧
+      IsStationaryBelow (S ∩ (fun α => omegaSeq α n) ⁻¹' {γ}) κ.ord := by
+    intro η hη
+    have hT : IsStationaryBelow {α ∈ S | η ≤ omegaSeq α n} κ.ord := hn η hη
+    have hT_sub : {α ∈ S | η ≤ omegaSeq α n} ⊆ S := Set.sep_subset _ _
+    obtain ⟨γ, hγκ, hfib⟩ := fodor hκ hκ_unc hT
+      (fun α hα => hS_pos α (hT_sub hα)) (f := fun α => omegaSeq α n)
+      (fun α hα => hlt α (hT_sub hα)) (fun α hα => hreg α (hT_sub hα))
+    refine ⟨γ, hγκ, ?_, IsStationaryBelow.mono
+      (Set.inter_subset_inter_left _ hT_sub) hfib⟩
+    -- η ≤ γ from any point of the (nonempty) fiber
+    obtain ⟨x, hxT, hxfib⟩ := hfib.nonempty (isSuccLimit_ord hκ.aleph0_le)
+    rw [Set.mem_preimage, Set.mem_singleton_iff] at hxfib
+    calc η ≤ omegaSeq x n := hxT.2
+    _ = γ := hxfib
+  choose! c hcκ hcge hcstat using hfodor
+  refine ⟨c '' Set.Iio κ.ord,
+    fun γ => S ∩ (fun α => omegaSeq α n) ⁻¹' {γ}, ?_, ?_, ?_, ?_⟩
+  · -- C ⊆ Iio κ.ord
+    rintro γ ⟨η, hη, rfl⟩
+    exact Set.mem_Iio.mpr (hcκ η (Set.mem_Iio.mp hη))
+  · -- C is unbounded below κ.ord: c (α + 1) ≥ α + 1 > α
+    intro α hα
+    have hsucc : α + 1 < κ.ord :=
+      (isSuccLimit_ord hκ.aleph0_le).succ_lt hα
+    exact ⟨c (α + 1), Set.mem_image_of_mem _ (Set.mem_Iio.mpr hsucc),
+      lt_of_lt_of_le (lt_add_one α) (hcge (α + 1) hsucc),
+      hcκ (α + 1) hsucc⟩
+  · -- each fiber is a stationary subset of S
+    rintro γ ⟨η, hη, rfl⟩
+    exact ⟨Set.inter_subset_left, hcstat η (Set.mem_Iio.mp hη)⟩
+  · -- fibers at distinct values are disjoint
+    rintro γ ⟨η, hη, rfl⟩ γ' ⟨η', hη', rfl⟩ hne
+    refine Set.disjoint_left.mpr ?_
+    rintro x ⟨-, hx⟩ ⟨-, hx'⟩
+    rw [Set.mem_preimage, Set.mem_singleton_iff] at hx hx'
+    exact hne (hx.symm.trans hx')
+
+/-- **Partition packaging**: an indexed family of pairwise disjoint
+    stationary subsets of `S` upgrades to an exhaustive partition of `S`
+    by absorbing the unused remainder `S \ ⋃ c ∈ C, T₀ c` into one
+    designated piece (which stays stationary, as a superset of a
+    stationary set). Stated for an arbitrary bound `o` and an arbitrary
+    designated index `c₀ ∈ C`. -/
+theorem exhaustive_partition_of_disjoint_family {o : Ordinal.{0}}
+    {S : Set Ordinal.{0}} {C : Set Ordinal.{0}}
+    {T₀ : Ordinal.{0} → Set Ordinal.{0}}
+    {c₀ : Ordinal.{0}} (hc₀C : c₀ ∈ C)
+    (hTsub : ∀ γ ∈ C, T₀ γ ⊆ S ∧ IsStationaryBelow (T₀ γ) o)
+    (hTdisj : ∀ γ ∈ C, ∀ γ' ∈ C, γ ≠ γ' → Disjoint (T₀ γ) (T₀ γ')) :
+    ∃ T : Ordinal → Set Ordinal,
+      (∀ γ ∈ C, T γ ⊆ S ∧ IsStationaryBelow (T γ) o) ∧
+      (∀ γ ∈ C, ∀ γ' ∈ C, γ ≠ γ' → Disjoint (T γ) (T γ')) ∧
+      (⋃ γ ∈ C, T γ) = S := by
+  classical
+  refine ⟨fun γ => if γ = c₀ then T₀ c₀ ∪ (S \ ⋃ γ' ∈ C, T₀ γ') else T₀ γ,
+    ?_, ?_, ?_⟩
+  · -- each piece is a stationary subset of S
+    intro γ hγ
+    dsimp only
+    by_cases hγc : γ = c₀
+    · subst hγc
+      rw [if_pos rfl]
+      exact ⟨Set.union_subset (hTsub γ hγ).1 Set.diff_subset,
+        IsStationaryBelow.mono Set.subset_union_left (hTsub γ hγ).2⟩
+    · rw [if_neg hγc]
+      exact hTsub γ hγ
+  · -- pairwise disjointness survives the remainder-absorption
+    have hrem : ∀ d ∈ C, Disjoint (S \ ⋃ γ' ∈ C, T₀ γ') (T₀ d) := by
+      intro d hd
+      exact Set.disjoint_left.mpr fun x hx hx' =>
+        hx.2 (Set.mem_biUnion hd hx')
+    intro γ hγ γ' hγ' hne
+    dsimp only
+    by_cases h1 : γ = c₀ <;> by_cases h2 : γ' = c₀
+    · exact absurd (h1.trans h2.symm) hne
+    · subst h1
+      rw [if_pos rfl, if_neg h2]
+      exact Set.disjoint_union_left.mpr
+        ⟨hTdisj γ hγ γ' hγ' hne, hrem γ' hγ'⟩
+    · subst h2
+      rw [if_pos rfl, if_neg h1]
+      exact (Set.disjoint_union_left.mpr
+        ⟨hTdisj γ' hγ' γ hγ (Ne.symm hne), hrem γ hγ⟩).symm
+    · rw [if_neg h1, if_neg h2]
+      exact hTdisj γ hγ γ' hγ' hne
+  · -- the pieces exhaust S exactly
+    apply Set.Subset.antisymm
+    · refine Set.iUnion₂_subset fun γ hγ => ?_
+      dsimp only
+      by_cases hγc : γ = c₀
+      · subst hγc
+        rw [if_pos rfl]
+        exact Set.union_subset (hTsub γ hγ).1 Set.diff_subset
+      · rw [if_neg hγc]
+        exact (hTsub γ hγ).1
+    · intro x hx
+      by_cases hxU : x ∈ ⋃ γ' ∈ C, T₀ γ'
+      · obtain ⟨γ, hγ, hxγ⟩ := Set.mem_iUnion₂.mp hxU
+        refine Set.mem_biUnion hγ ?_
+        by_cases hγc : γ = c₀
+        · subst hγc
+          rw [if_pos rfl]
+          exact Or.inl hxγ
+        · rw [if_neg hγc]
+          exact hxγ
+      · refine Set.mem_biUnion hc₀C ?_
+        rw [if_pos rfl]
+        exact Or.inr ⟨hx, hxU⟩
+
+/-- **Solovay partition, ω-cofinal case**: a stationary set of ω-cofinal
+    limit ordinals below `κ.ord` is the disjoint union of a family of
+    stationary subsets indexed by a set unbounded below `κ.ord` (hence
+    of full cardinality `κ`, by regularity). -/
+theorem solovay_partition_of_cof_omega {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    (hSsub : ∀ α ∈ S, α < κ.ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0) :
+    ∃ (C : Set Ordinal) (T : Ordinal → Set Ordinal),
+      C ⊆ Set.Iio κ.ord ∧
+      IsUnboundedBelow C κ.ord ∧
+      (∀ γ ∈ C, T γ ⊆ S ∧ IsStationaryBelow (T γ) κ.ord) ∧
+      (∀ γ ∈ C, ∀ γ' ∈ C, γ ≠ γ' → Disjoint (T γ) (T γ')) ∧
+      (⋃ γ ∈ C, T γ) = S := by
+  obtain ⟨C, T₀, hCsub, hCunb, hTst, hTdisj⟩ :=
+    exists_unbounded_disjoint_stationary_fibers hκ hκ_unc hS hSsub
+  -- C is nonempty: unboundedness at 0 (κ.ord is a positive limit)
+  have hκpos : (0 : Ordinal) < κ.ord := by
+    have h := (isSuccLimit_ord hκ.aleph0_le).bot_lt
+    rwa [Ordinal.bot_eq_zero] at h
+  obtain ⟨c₀, hc₀C, -, -⟩ := hCunb 0 hκpos
+  obtain ⟨T, hT1, hT2, hT3⟩ :=
+    exhaustive_partition_of_disjoint_family hc₀C hTst hTdisj
+  exact ⟨C, T, hCsub, hCunb, hT1, hT2, hT3⟩
+
+/-- **Solovay's partition theorem at ω₁** (Solovay 1971; Jech, *Set
+    Theory*, Theorem 8.10 at κ = ℵ₁).
+
+    Every stationary `S ⊆ ω₁ = (ℵ₁).ord` is the disjoint union of a
+    family of stationary subsets indexed by a set unbounded below ω₁
+    — hence, by regularity of ℵ₁, a partition into ℵ₁-many pairwise
+    disjoint stationary pieces. (The cardinality reading is standard:
+    an index set of size `< ℵ₁ = cof ω₁` would have bounded supremum.)
+
+    Route: restrict to the limit part of `S` (stationary, and all
+    ω-cofinal below ω₁), produce the unbounded fiber family there, and
+    absorb the entire unused remainder of `S` — including its non-limit
+    points — into one designated piece. -/
+theorem solovay_partition_aleph1 {S : Set Ordinal.{0}}
+    (hS : IsStationaryBelow S (ℵ₁).ord) :
+    ∃ (C : Set Ordinal.{0}) (T : Ordinal.{0} → Set Ordinal.{0}),
+      C ⊆ Set.Iio (ℵ₁).ord ∧
+      IsUnboundedBelow C (ℵ₁).ord ∧
+      (∀ γ ∈ C, T γ ⊆ S ∧ IsStationaryBelow (T γ) (ℵ₁).ord) ∧
+      (∀ γ ∈ C, ∀ γ' ∈ C, γ ≠ γ' → Disjoint (T γ) (T γ')) ∧
+      (⋃ γ ∈ C, T γ) = S := by
+  -- the limit part of S is stationary and consists of ω-cofinal limits
+  have hS' : IsStationaryBelow
+      {α ∈ S | α < (ℵ₁).ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0}
+      (ℵ₁).ord := by
+    have hEq : {α ∈ S | α < (ℵ₁).ord ∧ IsSuccLimit α ∧
+        α.cof.ord = Ordinal.omega0}
+        = S ∩ {α : Ordinal | α < (ℵ₁).ord ∧ IsSuccLimit α} := by
+      ext α
+      constructor
+      · rintro ⟨hαS, hlt, hl, _⟩
+        exact ⟨hαS, hlt, hl⟩
+      · rintro ⟨hαS, hlt, hl⟩
+        exact ⟨hαS, hlt, hl, cof_ord_eq_omega0_of_lt_aleph1 hlt hl⟩
+    rw [hEq]
+    exact IsStationaryBelow.inter_isLimitOrdinals
+      isRegular_aleph_one aleph0_lt_aleph_one hS
+  obtain ⟨C, T₀, hCsub, hCunb, hTst, hTdisj⟩ :=
+    exists_unbounded_disjoint_stationary_fibers isRegular_aleph_one
+      aleph0_lt_aleph_one hS' (fun α hα => hα.2)
+  -- the fibers are subsets of S itself
+  have hTst' : ∀ γ ∈ C, T₀ γ ⊆ S ∧ IsStationaryBelow (T₀ γ) (ℵ₁).ord :=
+    fun γ hγ => ⟨(hTst γ hγ).1.trans (Set.sep_subset _ _), (hTst γ hγ).2⟩
+  have hκpos : (0 : Ordinal) < (ℵ₁).ord := by
+    have h := (isSuccLimit_ord isRegular_aleph_one.aleph0_le).bot_lt
+    rwa [Ordinal.bot_eq_zero] at h
+  obtain ⟨c₀, hc₀C, -, -⟩ := hCunb 0 hκpos
+  obtain ⟨T, hT1, hT2, hT3⟩ :=
+    exhaustive_partition_of_disjoint_family hc₀C hTst' hTdisj
+  exact ⟨C, T, hCsub, hCunb, hT1, hT2, hT3⟩
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -1014,17 +1246,33 @@ Key results:
     of any stationary S ⊆ ω₁ (iterated splitting; not a partition)
   ✓ `stationary_splits_finite_aleph1`: n pairwise disjoint stationary subsets
     for every n : ℕ (restriction along Fin.val)
+  ✓ `exists_unbounded_disjoint_stationary_fibers`: unboundedly-many pairwise
+    disjoint stationary fibers of one regressive map (per-η Fodor constants
+    over the Part XI pigeonhole index; ω-cofinal case)
+  ✓ `exhaustive_partition_of_disjoint_family`: remainder-absorption packaging
+    (disjoint stationary family ⇒ exhaustive partition)
+  ✓ `solovay_partition_of_cof_omega`: exhaustive Solovay partition for
+    ω-cofinal stationary sets below any regular uncountable κ
+  ✓ `solovay_partition_aleph1`: **Solovay's partition theorem at ω₁**
+    (Jech 8.10 at κ = ℵ₁): every stationary S ⊆ ω₁ is the disjoint union
+    of stationary pieces indexed by a set unbounded below ω₁ (0 sorries)
 
 Sorries remaining: 0
 
-Open next step: the full κ-piece Solovay partition (Jech 8.10) — an
-*exhaustive* partition into ℵ₁-many stationary pieces. The iterated binary
-split (Part XII) produces countably many disjoint pieces but neither
-exhausts S nor reaches length ω₁ (the remainder chain has no useful limit
-stage without new ideas: ⋂ₙ Rₙ can be non-stationary). The κ-partition
-needs the counting/bookkeeping layer over the Part XI production step, and
-the general-κ case additionally needs the cf α < α trace analysis (at ω₁
-every limit is ω-cofinal so the theorem there is complete).
+Open next steps. At ω₁ the Solovay partition theorem is COMPLETE (Part
+XIII): the ℵ₁-many pieces are indexed by a set unbounded below ω₁, which
+by regularity has cardinality ℵ₁ — the `Cardinal.mk`-level restatement
+(`#↥C = ℵ₁`, which needs a universe lift since `Ordinal.{0} : Type 1`) is
+deliberately left informal. The remaining mathematical content is the
+general-κ case for stationary sets concentrating on points of
+uncountable cofinality: Jech 8.10's trace analysis on
+`{α ∈ S | cf α = α}` (only relevant for κ with stationarily many
+inaccessibles below, e.g. Mahlo cardinals) and the `cf α = μ > ω` bands
+(fundamental μ-sequences replacing `omegaSeq`). The Part XIII machinery
+(per-η Fodor over a pigeonhole index, fiber disjointness,
+remainder-absorption) is cofinality-agnostic except for `omegaSeq`
+itself, so a μ-indexed generalization of Parts XI's sequence layer is
+the natural route.
 
 Connection to parent (CantorDiagonalizationOQ02OQ03):
   The parent proves that for regular uncountable κ, ordinals below κ.ord cannot
