@@ -446,4 +446,135 @@ theorem jumpPredictor_diagonalized (o : ℕ → Bool) :
       ∀ code : ℕ, jumpPredictor o code code ≠ b code :=
   RelativizedHalting.relativized_halting_undecidable o jumpPredictor
 
+/-! ### Section 7. The positive half: the oracle is computable from its jump
+
+Section 5 proved the jump escapes its oracle (`jump_not_recursiveIn`). This
+section proves the complementary positive direction of Post's theorem on the
+jump: `o` **is** computable from `jumpSet o`, so the jump is *strictly* above
+its oracle in the Turing order (`oracle_lt_jump`).
+
+The reduction is s-m-n-free: to decide `o x`, feed the jump the index of the
+program "compute the constant `x`, query the oracle there, then halt iff the
+answer was `0`" (`queryCode x`). That program ignores its input, so it halts
+on its *own index* iff `o x = false` — exactly a jump membership question.
+The index map `x ↦ encodeCode (queryCode x)` is primitive recursive (an
+iterated-pairing recursion for the constant code, then a fixed pairing
+template), and primitive recursive maps are recursive in every oracle. -/
+
+/-- The jump's characteristic function, packaged as a `ℕ →. ℕ` oracle. -/
+open Classical in
+noncomputable def jumpCharFun (o : ℕ → Bool) : ℕ →. ℕ :=
+  fun e => Part.some (if e ∈ jumpSet o then 1 else 0)
+
+open Classical in
+theorem jumpCharFun_apply (o : ℕ → Bool) (e : ℕ) :
+    jumpCharFun o e = Part.some (if e ∈ jumpSet o then 1 else 0) := rfl
+
+/-- Constant programs: `constCode x` computes `fun _ => x`. -/
+def constCode : ℕ → OracleCode
+  | 0 => .zero
+  | n + 1 => .comp .succ (constCode n)
+
+theorem evalO_constCode (o : ℕ → Bool) (x v : ℕ) :
+    evalO o (constCode x) v = Part.some x := by
+  induction x with
+  | zero => rfl
+  | succ n ih =>
+    show evalO o (.comp .succ (constCode n)) v = _
+    rw [evalO_comp_apply, ih, Part.bind_eq_bind, Part.bind_some]
+    rfl
+
+/-- The query program for input `x`: compute the constant `x`, ask the
+oracle, gate on the answer. On EVERY input it halts iff `o x = false`. -/
+def queryCode (x : ℕ) : OracleCode :=
+  .comp (.rfind .left) (.comp .oracle (constCode x))
+
+theorem evalO_queryCode_dom (o : ℕ → Bool) (x v : ℕ) :
+    (evalO o (queryCode x) v).Dom ↔ o x = false := by
+  show (evalO o (.comp (.rfind .left) (.comp .oracle (constCode x))) v).Dom ↔ _
+  rw [evalO_comp_apply, evalO_comp_apply, evalO_constCode,
+    Part.bind_eq_bind, Part.bind_some, evalO_oracle,
+    show oracleFun o x = Part.some (cond (o x) 1 0) from rfl,
+    Part.bind_eq_bind, Part.bind_some, evalO_rfind_left_dom]
+  cases o x <;> simp
+
+/-- **Self-application collapses to the oracle query**: the query program's
+index is in the jump iff `o x = false`. -/
+theorem queryCode_index_mem_jumpSet (o : ℕ → Bool) (x : ℕ) :
+    encodeCode (queryCode x) ∈ jumpSet o ↔ o x = false := by
+  rw [mem_jumpSet, ofNatCode_encodeCode, evalO_queryCode_dom]
+
+/-- The Gödel number of the constant program, as a function of the constant,
+is primitive recursive (an iterated-pairing `Nat.rec`). -/
+theorem primrec_encode_constCode : Primrec fun x => encodeCode (constCode x) := by
+  have hbody : Primrec fun p : ℕ × ℕ => 4 * Nat.pair 1 p.2 + 6 :=
+    Primrec.nat_add.comp
+      (Primrec.nat_mul.comp (Primrec.const 4)
+        (Primrec₂.natPair.comp (Primrec.const 1) Primrec.snd))
+      (Primrec.const 6)
+  refine (Primrec.nat_rec' Primrec.id (Primrec.const 0)
+    (hbody.comp₂ Primrec₂.right)).of_eq fun x => ?_
+  induction x with
+  | zero => rfl
+  | succ n ih =>
+    rw [show encodeCode (constCode (n + 1)) =
+      4 * Nat.pair 1 (encodeCode (constCode n)) + 6 from rfl, ← ih]
+
+/-- The index map of the reduction, `x ↦ encodeCode (queryCode x)`, is
+primitive recursive: a fixed pairing template around the constant-code
+numbering (`encodeCode (.rfind .left) = 16`, `encodeCode .oracle = 4`). -/
+theorem primrec_encode_queryCode : Primrec fun x => encodeCode (queryCode x) := by
+  have h : Primrec fun x =>
+      4 * Nat.pair 16 (4 * Nat.pair 4 (encodeCode (constCode x)) + 6) + 6 :=
+    Primrec.nat_add.comp
+      (Primrec.nat_mul.comp (Primrec.const 4)
+        (Primrec₂.natPair.comp (Primrec.const 16)
+          (Primrec.nat_add.comp
+            (Primrec.nat_mul.comp (Primrec.const 4)
+              (Primrec₂.natPair.comp (Primrec.const 4) primrec_encode_constCode))
+            (Primrec.const 6))))
+      (Primrec.const 6)
+  exact h.of_eq fun x => rfl
+
+open Classical in
+/-- **The oracle is recursive in its jump** (positive half of Post's jump
+theorem, machine level): `x ↦ 1 − χ_{o'}(encodeCode (queryCode x))` computes
+`oracleFun o`, and every ingredient is available in
+`Nat.RecursiveIn {jumpCharFun o}`. -/
+theorem oracleFun_recursiveIn_jumpCharFun (o : ℕ → Bool) :
+    Nat.RecursiveIn {jumpCharFun o} (oracleFun o) := by
+  have hidx := (Primrec.nat_iff.1 primrec_encode_queryCode).recursiveIn
+    (O := {jumpCharFun o})
+  have hsub := (Primrec.nat_iff.1
+    (Primrec.nat_sub.comp (Primrec.const 1) Primrec.id)).recursiveIn
+    (O := {jumpCharFun o})
+  have horacle : Nat.RecursiveIn {jumpCharFun o} (jumpCharFun o) := .oracle _ rfl
+  refine (hsub.comp (horacle.comp hidx)).of_eq fun x => ?_
+  simp only [PFun.coe_val, Part.bind_eq_bind, Part.bind_some, jumpCharFun_apply,
+    oracleFun]
+  cases hox : o x with
+  | false =>
+    rw [if_pos ((queryCode_index_mem_jumpSet o x).2 hox)]
+  | true =>
+    rw [if_neg fun hmem =>
+      absurd ((queryCode_index_mem_jumpSet o x).1 hmem) (by simp [hox])]
+
+open Classical in
+/-- **Turing-degree form of the positive half**: `o ≤ᵀ o′`. -/
+theorem oracleFun_turingReducible_jumpCharFun (o : ℕ → Bool) :
+    TuringReducible (oracleFun o) (jumpCharFun o) :=
+  RecursiveIn.iff_nat.2 (oracleFun_recursiveIn_jumpCharFun o)
+
+open Classical in
+/-- **Post's strictness of the jump, both halves**: the oracle is computable
+from its jump (`oracleFun_turingReducible_jumpCharFun`, Section 7), but the
+jump is not computable from its oracle (`jumpChar_not_turingReducible`,
+Section 5). So `o <ᵀ o′` — every oracle sits strictly below its jump, the
+engine of the arithmetical hierarchy. -/
+theorem oracle_lt_jump (o : ℕ → Bool) :
+    TuringReducible (oracleFun o) (jumpCharFun o) ∧
+      ¬ TuringReducible (jumpCharFun o) (oracleFun o) :=
+  ⟨oracleFun_turingReducible_jumpCharFun o, fun hred =>
+    jumpChar_not_turingReducible o hred⟩
+
 end RelativizedHaltingCodes
