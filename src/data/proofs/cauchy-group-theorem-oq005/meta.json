@@ -30,6 +30,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: units carry it, the exponent detects group-likeness",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Docstring stating the parent's open question #2 (does the group exponent–gcd image equality survive to a finite commutative monoid?) and previewing the three-part answer: the group-likeness crux (exp M ≠ 0 iff every element is a unit), the positive restriction to the group of units Mˣ, and the two full-monoid readings (vacuous against exp, false against |M|). Declares the ambient variable {M : Type*}.",
+      "mathContext": "exp M ≠ 0 ⇔ ∀ x, IsUnit x on a finite commutative monoid M; the exponent-gcd image equality holds verbatim on Mˣ."
+    },
+    {
       "id": "group-image-inline",
       "title": "The group image theorem (reproved inline from the parent)",
       "startLine": 62,
