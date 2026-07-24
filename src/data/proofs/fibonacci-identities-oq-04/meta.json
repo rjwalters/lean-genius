@@ -67,7 +67,8 @@
       "**One identity, four classical theorems.** Vajda's two free offsets i, j specialize to Catalan (i = j), Cassini (i = j = 1), and d'Ocagne (j = 1, x = n, i = m−n), so a single proof yields the whole elementary hierarchy.",
       "**Cassini is the only arithmetic input.** After the Int.fib_add expansions every Fibonacci-specific fact is gone except the alternating sign; substituting Cassini's identity for (−1)^|x| turns the goal into a pure ring identity — the same reduction Mathlib uses for Catalan, now carried through with two parameters.",
       "**Index normalization is the subtlety.** Int.fib_add emits indices like i+(j+1) and j+1+1; matching the recurrence rewrites to exactly those syntactic forms (rather than the visually simpler j+2) is what makes the final `ring` fire.",
-      "**Genuinely beyond Mathlib.** Mathlib's Int.fib file has Cassini and Catalan but neither Vajda nor d'Ocagne; both are supplied here over the two-sided integer Fibonacci sequence, valid at negative indices."
+      "**Genuinely beyond Mathlib.** Mathlib's Int.fib file has Cassini and Catalan but neither Vajda nor d'Ocagne; both are supplied here over the two-sided integer Fibonacci sequence, valid at negative indices.",
+      "**Corollaries are one-liners, not fresh proofs.** Once fib_vajda is established, fib_dOcagne, fib_catalan, and fib_cassini each follow from a single `linear_combination h` after renaming the compound index by `ring` (plus, where a factor fib 1 appears, one `simp` to collapse it to 1) — no case analysis on the sign and no repeated appeal to Int.fib_add, so the entire classical hierarchy below Vajda is pure linear algebra over one instantiated hypothesis."
     ],
     "prerequisites": [
       "The integer Fibonacci addition formula Int.fib_add and recurrence Int.fib_add_two",
