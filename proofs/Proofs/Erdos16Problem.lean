@@ -830,6 +830,192 @@ theorem lowerDensity_exceptionalSet_pos : 0 < lowerDensity ExceptionalSet := by
     (le_trans (le_max_right _ _) (Nat.le_succ _))
 
 /-
+## Density Infrastructure: Monotonicity and the liminf Functional
+
+The `lowerDensity` functional above is an `⨅`-of-`⨆` — order-theoretically it
+computes the *limsup* of the horizon densities `density A M`, i.e. the upper
+asymptotic density.  This section adds the infrastructure the tracker calls
+for — monotonicity of `density` and `lowerDensity` under set inclusion and the
+`[0, 1]` bounds — and closes the naming gap honestly: it introduces the
+genuine `⨆`-of-`⨅` (liminf) functional `liminfDensity`, proves
+`liminfDensity ≤ lowerDensity` (liminf ≤ limsup), and upgrades the headline to
+`0 < liminfDensity ExceptionalSet` — positive *lower* asymptotic density in
+the strict liminf sense, not merely positive limsup.
+
+A subtlety dictates the shape of the definition: the naive mirror
+`⨆ N, ⨅ (M) (_ : M ≥ N), density A M` is DEGENERATE over `ℝ`, because for
+each `M < N` the empty conditional infimum collapses to the junk value
+`sSup ∅ = 0`, and since `density ≥ 0` the inner infimum would be identically
+`0`.  (The `⨆`-of-`⨆` in `lowerDensity` is immune: the empty conditional
+supremum is also `0`, which a supremum of nonnegative terms absorbs.)  We
+therefore index the tail by a shift, `density A (N + M)`, keeping every index
+live.
+-/
+
+/-- Monotonicity of the horizon density: if `A ⊆ B` then at every horizon `N`
+the density of `A` is at most that of `B`. -/
+theorem density_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
+    density A N ≤ density B N := by
+  classical
+  unfold density
+  gcongr
+  refine Nat.cast_le.mpr (Finset.card_le_card ?_)
+  intro x hx
+  simp only [Finset.mem_filter, decide_eq_true_eq] at hx ⊢
+  exact ⟨hx.1, h hx.2⟩
+
+/-- The conditional tail supremum `⨆ (_ : M ≥ N), density A M` is nonnegative
+(for `M < N` it is the junk value `sSup ∅ = 0`). -/
+theorem tailCondSup_nonneg (A : Set ℕ) (N M : ℕ) :
+    0 ≤ ⨆ (_ : M ≥ N), density A M := by
+  by_cases h : M ≥ N
+  · rw [ciSup_pos h]
+    exact density_nonneg A M
+  · haveI : IsEmpty (M ≥ N) := ⟨h⟩
+    rw [iSup_of_empty', Real.sSup_empty]
+
+/-- The conditional tail supremum never exceeds `1`. -/
+theorem tailCondSup_le_one (A : Set ℕ) (N M : ℕ) :
+    (⨆ (_ : M ≥ N), density A M) ≤ 1 := by
+  by_cases h : M ≥ N
+  · rw [ciSup_pos h]
+    exact density_le_one A M
+  · haveI : IsEmpty (M ≥ N) := ⟨h⟩
+    rw [iSup_of_empty', Real.sSup_empty]
+    norm_num
+
+/-- The conditional tail supremum is monotone under set inclusion. -/
+theorem tailCondSup_mono {A B : Set ℕ} (h : A ⊆ B) (N M : ℕ) :
+    (⨆ (_ : M ≥ N), density A M) ≤ ⨆ (_ : M ≥ N), density B M := by
+  by_cases hM : M ≥ N
+  · rw [ciSup_pos hM, ciSup_pos hM]
+    exact density_mono h M
+  · haveI : IsEmpty (M ≥ N) := ⟨hM⟩
+    rw [iSup_of_empty', Real.sSup_empty]
+    exact tailCondSup_nonneg B N M
+
+/-- `lowerDensity` is nonnegative. -/
+theorem lowerDensity_nonneg (A : Set ℕ) : 0 ≤ lowerDensity A := by
+  unfold lowerDensity
+  refine le_ciInf fun N => ?_
+  exact Real.iSup_nonneg fun M => tailCondSup_nonneg A N M
+
+/-- `lowerDensity` never exceeds `1`. -/
+theorem lowerDensity_le_one (A : Set ℕ) : lowerDensity A ≤ 1 := by
+  unfold lowerDensity
+  have hbdd : BddBelow (Set.range fun N => ⨆ (M : ℕ) (_ : M ≥ N), density A M) := by
+    refine ⟨0, ?_⟩
+    rintro x ⟨N, rfl⟩
+    exact Real.iSup_nonneg fun M => tailCondSup_nonneg A N M
+  refine ciInf_le_of_le hbdd 0 ?_
+  exact ciSup_le fun M => tailCondSup_le_one A 0 M
+
+/-- **`lowerDensity` is monotone under set inclusion** (the containment lemma
+requested by the problem tracker). -/
+theorem lowerDensity_mono {A B : Set ℕ} (h : A ⊆ B) :
+    lowerDensity A ≤ lowerDensity B := by
+  unfold lowerDensity
+  have hbddA : BddBelow (Set.range fun N => ⨆ (M : ℕ) (_ : M ≥ N), density A M) := by
+    refine ⟨0, ?_⟩
+    rintro x ⟨N, rfl⟩
+    exact Real.iSup_nonneg fun M => tailCondSup_nonneg A N M
+  have hbddB : ∀ N : ℕ,
+      BddAbove (Set.range fun M : ℕ => ⨆ (_ : M ≥ N), density B M) := by
+    intro N
+    refine ⟨1, ?_⟩
+    rintro x ⟨M, rfl⟩
+    exact tailCondSup_le_one B N M
+  refine le_ciInf fun N => ?_
+  refine le_trans (ciInf_le hbddA N) ?_
+  exact ciSup_mono (hbddB N) fun M => tailCondSup_mono h N M
+
+/-- The genuine **liminf** asymptotic density: `⨆ N, ⨅ M, density A (N + M)`.
+The inner infimum runs over the shifted horizons `N, N+1, N+2, …`, so this is
+`liminf_{M → ∞} density A M` — the true *lower* asymptotic density.  (See the
+section comment for why the index is shifted rather than bounded by a binder.) -/
+noncomputable def liminfDensity (A : Set ℕ) : ℝ :=
+  ⨆ (N : ℕ), ⨅ (M : ℕ), density A (N + M)
+
+/-- Each shifted tail family is bounded below (by `0`). -/
+theorem liminfTail_bddBelow (A : Set ℕ) (N : ℕ) :
+    BddBelow (Set.range fun M : ℕ => density A (N + M)) := by
+  refine ⟨0, ?_⟩
+  rintro x ⟨M, rfl⟩
+  exact density_nonneg A (N + M)
+
+/-- Each shifted tail infimum is at most `1`. -/
+theorem liminfTail_le_one (A : Set ℕ) (N : ℕ) :
+    (⨅ (M : ℕ), density A (N + M)) ≤ 1 :=
+  ciInf_le_of_le (liminfTail_bddBelow A N) 0 (density_le_one A (N + 0))
+
+/-- `liminfDensity` is nonnegative. -/
+theorem liminfDensity_nonneg (A : Set ℕ) : 0 ≤ liminfDensity A := by
+  unfold liminfDensity
+  exact Real.iSup_nonneg fun N => le_ciInf fun M => density_nonneg A (N + M)
+
+/-- `liminfDensity` never exceeds `1`. -/
+theorem liminfDensity_le_one (A : Set ℕ) : liminfDensity A ≤ 1 := by
+  unfold liminfDensity
+  exact ciSup_le fun N => liminfTail_le_one A N
+
+/-- **`liminfDensity` is monotone under set inclusion.** -/
+theorem liminfDensity_mono {A B : Set ℕ} (h : A ⊆ B) :
+    liminfDensity A ≤ liminfDensity B := by
+  unfold liminfDensity
+  have hbddB : BddAbove (Set.range fun N : ℕ => ⨅ (M : ℕ), density B (N + M)) := by
+    refine ⟨1, ?_⟩
+    rintro x ⟨N, rfl⟩
+    exact liminfTail_le_one B N
+  refine ciSup_mono hbddB fun N => ?_
+  exact ciInf_mono (liminfTail_bddBelow A N) fun M => density_mono h (N + M)
+
+/-- **liminf ≤ limsup**: the genuine lower density is at most the `⨅`-of-`⨆`
+functional `lowerDensity` (which order-theoretically computes the limsup /
+upper density).  Proof: for any tail starts `N, N'`, both tails contain the
+common horizon `max N N'`. -/
+theorem liminfDensity_le_lowerDensity (A : Set ℕ) :
+    liminfDensity A ≤ lowerDensity A := by
+  unfold liminfDensity lowerDensity
+  refine ciSup_le fun N => le_ciInf fun N' => ?_
+  have hbddSup : BddAbove
+      (Set.range fun M : ℕ => ⨆ (_ : M ≥ N'), density A M) := by
+    refine ⟨1, ?_⟩
+    rintro x ⟨M, rfl⟩
+    exact tailCondSup_le_one A N' M
+  have h1 : (⨅ (M : ℕ), density A (N + M)) ≤ density A (max N N') := by
+    have hplus : N + (max N N' - N) = max N N' :=
+      Nat.add_sub_cancel' (le_max_left N N')
+    have hle := ciInf_le (liminfTail_bddBelow A N) (max N N' - N)
+    rwa [hplus] at hle
+  have h2 : density A (max N N') ≤
+      ⨆ (_ : max N N' ≥ N'), density A (max N N') :=
+    (ciSup_pos (le_max_right N N')).ge
+  have h3 : (⨆ (_ : max N N' ≥ N'), density A (max N N')) ≤
+      ⨆ (M : ℕ) (_ : M ≥ N'), density A M :=
+    le_ciSup hbddSup (max N N')
+  exact le_trans h1 (le_trans h2 h3)
+
+/-- **Erdős (1950), strict liminf form.**  The exceptional set has positive
+asymptotic lower density in the genuine liminf sense: `density_exceptionalSet_ge`
+bounds the density at *every* horizon of the tail starting at `2^52`, so the
+tail infimum — hence the liminf — is at least `1 / 22369620 > 0`.  Together
+with `liminfDensity_le_lowerDensity` this pins both asymptotic functionals of
+`ExceptionalSet` strictly above `0`. -/
+theorem liminfDensity_exceptionalSet_pos : 0 < liminfDensity ExceptionalSet := by
+  have hc : (0 : ℝ) < (22369620 : ℝ)⁻¹ := by norm_num
+  refine lt_of_lt_of_le hc ?_
+  unfold liminfDensity
+  have hbdd : BddAbove
+      (Set.range fun N : ℕ => ⨅ (M : ℕ), density ExceptionalSet (N + M)) := by
+    refine ⟨1, ?_⟩
+    rintro x ⟨N, rfl⟩
+    exact liminfTail_le_one ExceptionalSet N
+  refine le_trans ?_ (le_ciSup hbdd (2 ^ 52))
+  refine le_ciInf fun M => ?_
+  exact density_exceptionalSet_ge
+    (le_trans (Nat.le_add_right (2 ^ 52) M) (Nat.le_succ _))
+
+/-
 ## Summary
 
 **Problem Status: SOLVED (Disproved)**
@@ -847,8 +1033,12 @@ as 2^k + p (exceptional set) is an arithmetic progression plus density-0 set.
 **Formalized here (axiom-free)**: Erdős (1950) at full strength — the covering
 progression puts the exceptional set at positive lower density
 (`exceptionalCount_positive_density`: at least `N / 22369620` members below
-every horizon `N ≥ 2^52`; `lowerDensity_exceptionalSet_pos`), strengthening
-`exceptionalSet_infinite`.
+every horizon `N ≥ 2^52`; `lowerDensity_exceptionalSet_pos`; and the strict
+liminf form `liminfDensity_exceptionalSet_pos`), strengthening
+`exceptionalSet_infinite`.  Density infrastructure: `density`, `lowerDensity`
+(an `⨅`-of-`⨆`, i.e. limsup) and the genuine liminf functional `liminfDensity`
+are all monotone under `⊆` and squeezed into `[0, 1]`, with
+`liminfDensity ≤ lowerDensity` (liminf ≤ limsup).
 
 **The exceptional set**:
 - Has positive but small density (~0.09)
