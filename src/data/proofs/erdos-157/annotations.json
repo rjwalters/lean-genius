@@ -163,7 +163,7 @@
     },
     "type": "definition",
     "title": "Pilatte's Existence Theorem (2023)",
-    "content": "**theorem pilatte_existence**: Erdos157Conjecture\n\n**Status**: sorry (existential construction not formalized)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
+    "content": "**axiom pilatte_existence**: Erdos157Conjecture\n\n**Status**: axiomatized (existential construction not formalized; Pilatte's ~1000+ line probabilistic proof is not a Lean `sorry` but a declared `axiom`)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
     "mathContext": "Probabilistic existence proofs are common in combinatorics. They show something exists without constructing it explicitly.",
     "significance": "key",
     "relatedConcepts": [
@@ -186,7 +186,7 @@
     },
     "type": "concept",
     "title": "Sidon Sets Cannot Be Order-2 Bases",
-    "content": "**theorem sidon_not_basis_2 (A : Set ℕ)**:\n  A.Infinite → IsSidon A → ¬IsAsymptoticBasis A 2\n\n**Status**: sorry\n\n**Why it's true**:\n- Sidon sets satisfy |A ∩ [1,N]| ≤ √N + O(N^{1/4})\n- Order-2 bases require |A ∩ [1,N]| ≫ √N (to cover N different sums)\n- These constraints are incompatible!\n\nThis explains why Erdős asked about order 3, not order 2.",
+    "content": "**theorem sidon_not_basis_2 (A : Set ℕ)**:\n  A.Infinite → IsSidon A → ¬IsAsymptoticBasis A 2\n\n**Status**: fully proved (0 sorries) — direct counting argument, no axioms used in the proof itself\n\n**Why it's true**:\n- Sidon sets satisfy |A ∩ [1,N]| ≤ √N + O(N^{1/4})\n- Order-2 bases require |A ∩ [1,N]| ≫ √N (to cover N different sums)\n- These constraints are incompatible!\n\nThis explains why Erdős asked about order 3, not order 2.",
     "mathContext": "The impossibility of order 2 is a density argument. Sidon sets grow too slowly to form pairwise sums covering all integers.",
     "significance": "key",
     "relatedConcepts": [
@@ -275,7 +275,7 @@
     },
     "type": "concept",
     "title": "Finite Sidon Example",
-    "content": "**def exampleSidonSet**: Finset ℕ := {1, 2, 5, 11}\n\n**theorem example_is_sidon**: IsSidon exampleSidonSet\n  Status: sorry\n\n**Verification**: The pairwise sums are:\n- 1+2=3, 1+5=6, 1+11=12, 2+5=7, 2+11=13, 5+11=16\n- All distinct ✓\n\n**Historical note**: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon (1+11 = 2+10 = 12). Aristotle proof search discovered this bug!",
+    "content": "**def exampleSidonSet**: Finset ℕ := {1, 2, 5, 11}\n\n**theorem example_is_sidon**: IsSidon exampleSidonSet\n  Status: fully proved (0 sorries; proved by Aristotle)\n\n**Verification**: The pairwise sums are:\n- 1+2=3, 1+5=6, 1+11=12, 2+5=7, 2+11=13, 5+11=16\n- All distinct ✓\n\n**Historical note**: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon (1+11 = 2+10 = 12). Aristotle proof search discovered this bug!",
     "mathContext": "Small Sidon sets are useful for testing. The bug-finding note shows the value of formal verification even for 'obvious' claims.",
     "significance": "supporting",
     "relatedConcepts": [
