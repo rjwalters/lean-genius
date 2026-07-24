@@ -68,7 +68,8 @@
       "**Forward divisibility is parameter-free.** m ∣ n ⟹ Uₘ ∣ Uₙ needs nothing about P and Q — it is a purely formal consequence of the additive index law, which is why it holds for the entire family while the converse does not.",
       "**The second-order recurrence forces conjunction induction.** Carrying 'A(n) ∧ A(n+1)' through the induction is exactly what supplies the two predecessors the recurrence consumes; a single-instance induction stalls.",
       "**Casing m = m′+1 dodges truncated subtraction.** Splitting U_{(k+1)m} via the addition law with a=k·m, b=m′ keeps every index a genuine ℕ successor, avoiding the m−1 that would appear in the textbook U_{a+b}=U_{a}U_{b+1}−Q·U_{a−1}U_b form.",
-      "**Fibonacci divisibility as a corollary, independently.** Recovering Nat.fib_dvd from the general theorem (never using Mathlib's lemma) is a genuine cross-check that the from-scratch sequence agrees with fib."
+      "**Fibonacci divisibility as a corollary, independently.** Recovering Nat.fib_dvd from the general theorem (never using Mathlib's lemma) is a genuine cross-check that the from-scratch sequence agrees with fib.",
+      "**A matrix-power viewpoint explains the addition law.** Uₙ is the (2,1) entry of Mⁿ for the companion matrix M = [[P,−Q],[1,0]] (with M¹ = [[U₂,−Q·U₁],[U₁,−Q·U₀]]), so lucasU_add is exactly the top-left entry of the multiplicativity identity M^{m+n} = Mᵐ·Mⁿ. This is the same linear-algebra fact behind the classical Fibonacci matrix form [[1,1],[1,0]]ⁿ = [[Fₙ₊₁,Fₙ],[Fₙ,Fₙ₋₁]]; the divisibility-sequence property proved here is its number-theoretic shadow."
     ],
     "prerequisites": [
       "Linear recurrences and the first-kind Lucas sequence Uₙ(P,Q)",
