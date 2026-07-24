@@ -462,7 +462,12 @@ theorem witnessThree_spec (m : ℕ) :
   have hprim : ∀ d ∈ (witnessThree (m + 1)).properDivisors, d.Deficient := by
     intro d hd
     obtain ⟨hdvd, hdlt⟩ := Nat.mem_properDivisors.mp hd
-    have hdpos : 0 < d := Nat.pos_of_dvd_of_pos hdvd hNpos
+    have hdpos : 0 < d := by
+      rcases Nat.eq_zero_or_pos d with rfl | h
+      · obtain ⟨k, hk⟩ := hdvd
+        rw [zero_mul] at hk
+        exact absurd hk hNpos.ne'
+      · exact h
     obtain ⟨k, hk⟩ := hdvd
     have hk2 : 2 ≤ k := by
       rcases Nat.lt_or_ge k 2 with hk1 | hge
@@ -474,16 +479,19 @@ theorem witnessThree_spec (m : ℕ) :
       · exact hge
     have hrprime : k.minFac.Prime := Nat.minFac_prime (by omega)
     obtain ⟨t, ht⟩ := Nat.minFac_dvd k
-    have hNrt : witnessThree (m + 1) = k.minFac * (d * t) := by
-      rw [hk, ht]; ring
-    have hrN : k.minFac ∣ 3 ^ (m + 1)
+    set r := k.minFac with hrdef
+    have hNrt : witnessThree (m + 1) = r * (d * t) := by
+      rw [hk]
+      conv_lhs => rw [ht]
+      ring
+    have hrN : r ∣ 3 ^ (m + 1)
         * ∏ i ∈ Finset.Ico (startIdx (m + 1)) (crossingThree (m + 1)),
             Nat.nth Nat.Prime i := by
       rw [← hNdef, hNrt]
-      exact Dvd.intro _ rfl
+      exact dvd_mul_right r (d * t)
     rcases (Nat.Prime.dvd_mul hrprime).mp hrN with h3 | hPdvd
     · -- the omitted prime is 3: d divides the deficient N/3 = 3^m · P
-      have hr3 : k.minFac = 3 :=
+      have hr3 : r = 3 :=
         (Nat.prime_dvd_prime_iff_eq hrprime Nat.prime_three).mp
           (hrprime.dvd_of_dvd_pow h3)
       have hcancel : 3 ^ m * ∏ i ∈ Finset.Ico (startIdx (m + 1)) (crossingThree (m + 1)),
@@ -498,10 +506,10 @@ theorem witnessThree_spec (m : ℕ) :
             rw [pow_succ]; ring
           rw [← hpow, ← hNdef, hNrt, hr3]
         exact Nat.eq_of_mul_eq_mul_left (by norm_num) h1
-      exact deficient_of_dvd (head_shrink_deficient m) ⟨t, hcancel.symm⟩ hdpos.ne'
+      exact deficient_of_dvd (head_shrink_deficient m) ⟨t, hcancel⟩ hdpos.ne'
     · -- the omitted prime is a tail prime pᵢ: d divides the deficient N/pᵢ
       obtain ⟨i, hi, hdvd'⟩ := (hrprime.prime.dvd_finsetProd_iff _).mp hPdvd
-      have hre : k.minFac = Nat.nth Nat.Prime i :=
+      have hre : r = Nat.nth Nat.Prime i :=
         (Nat.prime_dvd_prime_iff_eq hrprime (Nat.prime_nth_prime i)).mp hdvd'
       have hsplit : Nat.nth Nat.Prime i
           * ∏ w ∈ (Finset.Ico (startIdx (m + 1)) (crossingThree (m + 1))).erase i,
@@ -525,7 +533,7 @@ theorem witnessThree_spec (m : ℕ) :
             _ = witnessThree (m + 1) := by rw [hsplit, ← hNdef]
             _ = Nat.nth Nat.Prime i * (d * t) := by rw [hNrt, hre]
         exact Nat.eq_of_mul_eq_mul_left (Nat.prime_nth_prime i).pos h1
-      exact deficient_of_dvd (witnessThree_erase_deficient hi) ⟨t, hcancel.symm⟩
+      exact deficient_of_dvd (witnessThree_erase_deficient hi) ⟨t, hcancel⟩
         hdpos.ne'
   -- least prime factor is 3
   have h3dvd : 3 ∣ witnessThree (m + 1) := by
@@ -564,8 +572,8 @@ theorem witnessThree_injective :
     show ((3 : ℕ) ^ (m + 1) * ∏ i ∈ Finset.Ico (startIdx (m + 1)) (crossingThree (m + 1)),
         Nat.nth Nat.Prime i).factorization 3 = m + 1
     rw [Nat.factorization_mul (pow_ne_zero _ (by norm_num)) hPpos.ne']
-    simp [Nat.factorization_eq_zero_of_not_dvd h3P,
-      Nat.Prime.factorization_pow Nat.prime_three]
+    simp [Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd h3P,
+      Nat.prime_three.factorization]
   intro m l h
   simp only at h
   have hm := hval m

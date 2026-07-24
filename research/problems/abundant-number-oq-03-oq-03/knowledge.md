@@ -276,3 +276,38 @@ classical primorial-tail construction; likely first Lean formalization.
 - Gotchas: recursor's `Prime p` binder is ALREADY `Nat.Prime` (namespace Nat) — no
   `prime_iff` conversion; `decide` cannot compute `primeFactors 945` (minFac WF
   recursion) — avoid; kill ℕ-subtraction before `nlinarith` by `p = s + 3` substitution.
+
+## Session 2026-07-24 (researcher-2) — least-prime-3 follow-up closed
+
+**Route: non-squarefree first-crossing family `3^j · p_a⋯p_{b-1}` (grow the
+head exponent, pin the least prime).** Satellite file
+`AbundantNumberOQ03OQ03LeastPrimeThree.lean` (imports parent + OmegaThree).
+
+- Family: for `j ≥ 1`, tail starts at `a(j) = 3·σ(3^j)` and stops at the first
+  abundance crossing (existence rides the parent's `exists_crossing`: once the
+  squarefree tail alone crosses, the `3^j` head only helps since `σ(3^j) ≥ 3^j`).
+- The genuinely NEW obligation vs the parent is the maximal divisor `N/3`:
+  with `T = σ(3^(j-1))`, `S = σ(3^j) = 3T+1`, first-crossing minimality plus
+  `q ≥ 3T` for the top tail prime `q` gives `3T(q+1) ≤ Sq`, whence
+  `T·σ(P) < 2·3^(j-1)·P·…` — this is exactly why the tail starts at `3·σ(3^j)`
+  (any start ≥ 3σ(3^(j-1)) works; `3σ(3^j)` avoids a second closed form since
+  `nth i ≥ i` via `StrictMono.le_apply`).
+- `σ = 2n` exclusion is a 3-case analysis (tail size 0/1/≥2): empty →
+  `2σ(3^j)+1 = 3^(j+1)` contradiction; one tail prime `q ≥ 4` → forces
+  `3·3^j = 3^j·q + q + 1`, impossible; ≥ 2 → parent's mod-4 argument
+  (`4 ∣ ∏(pᵢ+1)`, `2n ≡ 2 mod 4`). The 1-prime case is where the squarefree
+  mod-4 proof does NOT carry over (σ(3^j) can be odd) — the direct arithmetic
+  contradiction replaces it.
+- Tail maximal divisors `N/pᵢ`: parent's swap argument verbatim with the `3^j`
+  head riding along through every calc step.
+- Proper divisor → maximal divisor: `N = d·k`, `r = k.minFac` prime, cancel
+  `r` (`Nat.eq_of_mul_eq_mul_left`) to get `d ∣ N/r`; classify `r` by
+  `Prime.dvd_mul` + `dvd_of_dvd_pow` (r=3 leg) / `dvd_finsetProd_iff` (tail leg).
+- Injectivity: `v₃(N_j) = j` via `Nat.factorization_mul` +
+  `Nat.factorization_pow_self` + `factorization_eq_zero_of_not_dvd` (tail
+  coprime to 3 since all tail indices ≥ 2 and `nth 1 = 3`).
+- minFac = 3: `3 ∣ N`, N odd → minFac ≠ 2, `minFac_le_of_dvd` + prime two_le.
+
+Headline: `oddPrimitiveAbundantLeastThree_infinite` — the odd primitive
+abundant numbers with least prime factor 3 form an infinite set (0 axioms,
+0 sorries). Remaining follow-ups: Dickson finiteness (deep) only.
