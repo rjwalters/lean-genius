@@ -1,20 +1,40 @@
 # Current State
 
-**Phase**: S7 COMPLETE (gallery entry created, researcher-3, 2026-07-24) — the slug's
-verified work is now presented: new `src/data/proofs/erdos-735-oq-04/` with meta.json
-(6 sections, 11 mainTheorems, status `axiomatized` / badge `axiom`, 1 axiom / 0 sorries,
-1277 lines / 156 theorems / 38 defs across the five Lean files) and annotations.json
-(6 annotations, 0 build warnings). Primary leanFile `Proofs/Erdos735OQ04.lean` +
-additionalFiles Tetrahedron / Octahedron / Cube / GeneralPosition. Validated:
-gallery:check-size PASS (27 KB ≤ 60 KB cap), gallery:check-verified-companions PASS,
-annotations build PASS (0 errors/warnings for this entry). Earlier this cycle: S6a
-tetrahedron discharge (PR #43107), S6b/c octa/cube refutations (PR #43155), S6e
-general-position uniform-weight theorem (PR #43397). Remaining milestones: S6d
-(dodeca/icosa refutations or witnesses — golden-ratio coordinate arithmetic),
-IsIncenterConfigD tightening, and the honest open frontier (the S5 axiom itself).
-**Since**: 2026-07-24 (S7, researcher-3)
-**Iteration**: 14 (… → S6b/c ACT → S6e ACT → **S7 PRESENT**)
-**Last Updated**: 2026-07-24 (S7 gallery entry, researcher-3)
+**Phase**: S6d COMPLETE — **the Platonic-solid audit is finished** (part ii dodecahedron,
+researcher-2, 2026-07-24). `Proofs/Erdos735OQ04Dodecahedron.lean` (0 axioms / 0 sorries,
+host-verified v4.31, `#print axioms` = foundational only) proves
+`dodeca_not_isKFlatMagic`: the regular dodecahedron at the standard golden-ratio
+coordinates is NOT 2-flat magic. Certificate: EIGHT flats — four pentagonal face planes
+(normals `(±φ, ±1, 0)`, five vertices each, plane identity `φ² = φ+1`), the two
+cube-face planes `x = ±1`, and the coordinate planes `z = 0`, `y = 0` — combine as
+`(G1+G2+G3+G4) − (X1+X2) − Z0 − 2·Y0` with every weight cancelling, forcing the magic
+constant `c = 0` (contradiction with `c > 0`; positivity of individual weights is not
+even needed). Of the five Platonic solids only the tetrahedron (a simplex) is 2-flat
+magic — exactly as the S6e general-position theorem predicts. Earlier this cycle:
+S6a tetrahedron discharge (PR #43107), S6b/c octa/cube (PR #43155), S6e
+general-position (PR #43397), S7 gallery entry (PR #43431), S6d(i) icosahedron
+(PR #43443). Gallery meta updated this session: Dodecahedron added to additionalFiles,
+S6d-part-ii future-work item marked RESOLVED, Platonic prose extended to all five.
+Remaining milestones: IsIncenterConfigD tightening (blocked on Mathlib ℝᵈ
+angle-bisector API), and the honest open frontier (the S5 axiom itself).
+**Since**: 2026-07-24 (S6d part ii, researcher-2)
+**Iteration**: 15 (… → S6e ACT → S7 PRESENT → **S6d(ii) ACT**)
+**Last Updated**: 2026-07-24 (S6d(ii) dodecahedron, researcher-2)
+
+## S6d part ii — dodecahedron refutation (researcher-2, 2026-07-24)
+
+New `Erdos735OQ04Dodecahedron.lean` (~840 lines), namespace `Erdos735OQ04Dodeca`,
+reusing the S6b generic helpers (`coordL`, `mem_mk'_ker_iff`, `rank_ker_two`,
+`ne_of_coord`) and reproducing the icosahedron φ-toolkit (`phi_sq`, `1 < φ < 2`).
+Vertices: cube `c₁…c₈ = (±1,±1,±1)` + cyclic `x/y/z`-families with `1/φ` written as
+`φ−1`. The 8-flat certificate was found by computer search over all 319 maximal
+coplanar subsets (sizes 3:200, 4:75, 5:24, 6:20) and is smaller than the generic
+nullspace certificates (support 14). Lean gotchas (v4.31): `norm_num [defs]` does NOT
+reduce `![a,b,c] 2` — add `Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons`
+explicitly; `Matrix.cons_val_one` now leaves a `![b,c] 0` redex — follow with
+`Matrix.cons_val_zero`, NOT `Matrix.head_cons` (which no longer fires and trips the
+unusedSimpArgs linter); `rw [Finset.filter_...]` chains ending in `if_neg` need a
+trailing `rfl` (chains ending `if_pos` do not).
 
 ## S7 PRESENT — gallery entry created (researcher-3, 2026-07-24)
 
