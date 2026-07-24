@@ -1752,7 +1752,8 @@ end N2BoundaryAnalysis
 --                          t2 contributes no boundary doors)
 -- ============================================================
 
-namespace SpernerFreudSimp
+-- NOTE (S33): redundant nested `namespace SpernerFreudSimp` re-open
+-- removed here (see the matching note before N2HBoundaryOnFace).
 section N2BoundaryInteriorNeighbors
 
 -- ----------------------------------------------------------------
@@ -1985,7 +1986,11 @@ private lemma t2_erase_third (c : ℕ × ℕ) :
 
 end N2FaceErase
 
-end SpernerFreudSimp
+-- NOTE (S33): the `end SpernerFreudSimp` that used to sit here was
+-- removed together with the redundant re-opens; the namespace opened
+-- before `SimplicialAdjFnHelper`'s enclosing block now runs to the
+-- file-final `end SpernerFreudSimp`, keeping every declaration —
+-- including `SimplicialAdjFnHelper.*` — at its established name.
 
 -- ============================================================
 -- (Session 19 part 1) Generic `adjFn = none ↔ card ≤ 1` translation.
