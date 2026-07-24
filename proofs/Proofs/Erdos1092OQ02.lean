@@ -58,6 +58,13 @@ in prose:
   `Fin 4` (a killed pairing costs a distinct edge; three killed pairings exceed the
   budget by disjoint pair-slot counting, `three_slots_le_card`; a surviving pairing
   is an explicit 2-coloring).  So the threshold is *constant* from `n = 3` to `n = 4`.
+* `fThreshold_one_eq_two` — **the complete `r = 1` row: `fThreshold 1 n = 2` for every
+  `n ≥ 3`.** Lower bound: at `S = univ`, budget `2` caps the whole edge set of `G` by
+  two removed ordered pairs, and a graph whose edges lie inside two ordered pairs is
+  2-colorable outright (`coverColoring`). Upper bound: `K₃` plus `n - 3` isolated
+  vertices (`trianglePlus`). The row is *constant* (`fThreshold_one_constant`) — no
+  `n - 1`-style growth at `r = 1`, and every rung `(1, 5), (1, 6), …` is settled at
+  once (`fThreshold_one_five`).
 
 No new axioms; the parent file has 0 axioms and they are untouched (and unused here).
 -/
@@ -741,10 +748,251 @@ theorem fThreshold_constant_three_four : fThreshold 1 3 = fThreshold 1 4 := by
 #check @three_notMem_fThresholdSet_one_four
 #check @fThreshold_one_four_le_two
 #check @trivial_lower_bound_false
+/-
+## The complete `r = 1` row: `fThreshold 1 n = 2` for every `n ≥ 3`
+
+The two exact values above generalize: the `r = 1` threshold is `2` at *every*
+non-degenerate `n`. Both halves of the (1,3)/(1,4) arguments simplify at this
+level of generality:
+
+* **Lower bound, any `n`** — at `S = univ` the reduction hypothesis with budget
+  `2` says the *entire edge set* of `G` is covered by at most two removed
+  ordered pairs (a `1`-coloring tolerates no surviving edge). A graph whose
+  edges live inside two ordered pairs is 2-colorable *outright* — no pairings,
+  no parity: an explicit coloring `coverColoring` reads the two color classes
+  off the pairs, with a three-way case split on how the pairs share endpoints.
+* **Upper bound, any `n ≥ 3`** — `K₃` plus `n - 3` isolated vertices
+  (`trianglePlus`) satisfies the hypothesis with budget `3` (its three edges
+  are killed by three ordered pairs, in every induced subgraph) but contains a
+  triangle, so it is not 2-colorable.
+
+Hence `fThreshold 1 n = 2` for all `n ≥ 3` (`fThreshold_one_eq_two`): the row
+is **constant** — the strongest possible refutation of `n - 1`-style growth at
+`r = 1`, subsuming `fThreshold_one_three`, `fThreshold_one_four`, and settling
+every further rung `(1, 5), (1, 6), …` in one stroke
+(e.g. `fThreshold_one_five`).
+-/
+
+/-- `K₃` on the first three vertices plus `n - 3` isolated vertices. -/
+def trianglePlus (n : ℕ) : SGraph n where
+  adj u v := u.val < 3 ∧ v.val < 3 ∧ u ≠ v
+  symm _ _ h := ⟨h.2.1, h.1, h.2.2.symm⟩
+  irrefl _ h := h.2.2 rfl
+
+/-- The 2-coloring extracted from a two-element cover of the edge set: if all
+edges of a graph lie (in some orientation) inside the ordered pairs `p`, `q`,
+the second components essentially form one color class. The three branches
+handle the ways `p` and `q` can share endpoints head-to-tail. -/
+def coverColoring {n : ℕ} (p q : Fin n × Fin n) : Fin n → Fin 2 :=
+  if p.1 = q.2 then fun w => if w = p.1 then 1 else 0
+  else if p.2 = q.1 then fun w => if w = p.2 then 1 else 0
+  else fun w => if w = p.2 ∨ w = q.2 then 1 else 0
+
+/-- If every edge of `G` shows up (in some orientation) among the two ordered
+pairs `p`, `q`, then `coverColoring p q` is a proper 2-coloring of `G` —
+twelve small cases (four orientations × three coloring branches), each closed
+by evaluating the two `if`s. -/
+lemma coverColoring_proper {n : ℕ} {G : SGraph n} {p q : Fin n × Fin n}
+    (hcov : ∀ u v, G.adj u v →
+      (u, v) = p ∨ (u, v) = q ∨ (v, u) = p ∨ (v, u) = q) :
+    ∀ u v, G.adj u v → coverColoring p q u ≠ coverColoring p q v := by
+  intro u v hadj
+  have hne : u ≠ v := fun h => G.irrefl v (h ▸ hadj)
+  unfold coverColoring
+  rcases hcov u v hadj with h | h | h | h
+  · -- `(u, v) = p` : here `p.1 = u`, `p.2 = v`
+    have hp1 : p.1 = u := by rw [← h]
+    have hp2 : p.2 = v := by rw [← h]
+    rw [hp1, hp2]
+    by_cases hA : u = q.2
+    · simp only [if_pos hA]
+      rw [if_pos trivial, if_neg (show ¬v = u from fun h' => hne h'.symm)]
+      decide
+    · by_cases hB : v = q.1
+      · simp only [if_neg hA, if_pos hB]
+        rw [if_neg hne, if_pos trivial]
+        decide
+      · simp only [if_neg hA, if_neg hB]
+        rw [if_neg (show ¬(u = v ∨ u = q.2) from fun hor => Or.elim hor hne hA),
+          if_pos (Or.inl trivial)]
+        decide
+  · -- `(u, v) = q` : here `q.1 = u`, `q.2 = v`
+    have hq1 : q.1 = u := by rw [← h]
+    have hq2 : q.2 = v := by rw [← h]
+    rw [hq1, hq2]
+    by_cases hA : p.1 = v
+    · simp only [if_pos hA]
+      rw [if_neg (show ¬u = p.1 from fun h' => hne (h'.trans hA)), if_pos hA.symm]
+      decide
+    · by_cases hB : p.2 = u
+      · simp only [if_neg hA, if_pos hB]
+        rw [if_pos hB.symm,
+          if_neg (show ¬v = p.2 from fun h' => hne (h'.trans hB).symm)]
+        decide
+      · simp only [if_neg hA, if_neg hB]
+        rw [if_neg (show ¬(u = p.2 ∨ u = v) from
+            fun hor => Or.elim hor (fun h' => hB h'.symm) hne),
+          if_pos (Or.inr trivial)]
+        decide
+  · -- `(v, u) = p` : here `p.1 = v`, `p.2 = u`
+    have hp1 : p.1 = v := by rw [← h]
+    have hp2 : p.2 = u := by rw [← h]
+    rw [hp1, hp2]
+    by_cases hA : v = q.2
+    · simp only [if_pos hA]
+      rw [if_neg hne, if_pos trivial]
+      decide
+    · by_cases hB : u = q.1
+      · simp only [if_neg hA, if_pos hB]
+        rw [if_pos trivial, if_neg (show ¬v = u from fun h' => hne h'.symm)]
+        decide
+      · simp only [if_neg hA, if_neg hB]
+        rw [if_pos (Or.inl trivial),
+          if_neg (show ¬(v = u ∨ v = q.2) from
+            fun hor => Or.elim hor (fun h' => hne h'.symm) hA)]
+        decide
+  · -- `(v, u) = q` : here `q.1 = v`, `q.2 = u`
+    have hq1 : q.1 = v := by rw [← h]
+    have hq2 : q.2 = u := by rw [← h]
+    rw [hq1, hq2]
+    by_cases hA : p.1 = u
+    · simp only [if_pos hA]
+      rw [if_pos hA.symm,
+        if_neg (show ¬v = p.1 from fun h' => hne (h'.trans hA).symm)]
+      decide
+    · by_cases hB : p.2 = v
+      · simp only [if_neg hA, if_pos hB]
+        rw [if_neg (show ¬u = p.2 from fun h' => hne (h'.trans hB)), if_pos hB.symm]
+        decide
+      · simp only [if_neg hA, if_neg hB]
+        rw [if_pos (Or.inr trivial),
+          if_neg (show ¬(v = p.2 ∨ v = u) from
+            fun hor => Or.elim hor (fun h' => hB h'.symm) (fun h' => hne h'.symm))]
+        decide
+
+/-- Any pair of distinct vertices among the first three is (in one of its two
+orientations) one of the three ordered pairs `(v0,v1), (v0,v2), (v1,v2)`. -/
+lemma mem_killTri {n : ℕ} {v0 v1 v2 u v : Fin n}
+    (h0 : v0.val = 0) (h1 : v1.val = 1) (h2 : v2.val = 2)
+    (hu : u.val < 3) (hv : v.val < 3) (hne : u.val ≠ v.val) :
+    (u, v) ∈ ({(v0, v1), (v0, v2), (v1, v2)} : Finset (Fin n × Fin n)) ∨
+      (v, u) ∈ ({(v0, v1), (v0, v2), (v1, v2)} : Finset (Fin n × Fin n)) := by
+  simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Fin.ext_iff]
+  omega
+
+/-- **Budget `2` forces 2-colorability on any number of vertices.** At
+`S = univ` the reduction hypothesis says the whole edge set of `G` is covered
+by at most two removed ordered pairs; `coverColoring` of those two pairs is
+then a proper 2-coloring. (No pairing combinatorics is needed at this level of
+generality: two ordered pairs cannot hide an odd cycle.) -/
+theorem two_mem_fThresholdSet_one {n : ℕ} (hn : 1 ≤ n) : 2 ∈ fThresholdSet 1 n := by
+  intro G hP
+  obtain ⟨removed, hcard, c₁, hc₁⟩ := hP Finset.univ
+  have hkill : ∀ u v, G.adj u v → (u, v) ∈ removed ∨ (v, u) ∈ removed := by
+    intro u v hadj
+    by_contra hcon
+    exact hc₁ u v ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩,
+      fun hm => hcon (Or.inl hm), fun hm => hcon (Or.inr hm)⟩
+      (Subsingleton.elim _ _)
+  obtain ⟨p, q, hsub⟩ : ∃ p q : Fin n × Fin n, removed ⊆ {p, q} := by
+    have hc : removed.card = 0 ∨ removed.card = 1 ∨ removed.card = 2 := by omega
+    rcases hc with hc | hc | hc
+    · exact ⟨(⟨0, by omega⟩, ⟨0, by omega⟩), (⟨0, by omega⟩, ⟨0, by omega⟩), by
+        simp [Finset.card_eq_zero.mp hc]⟩
+    · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hc
+      exact ⟨a, a, by simp⟩
+    · obtain ⟨a, b, _, rfl⟩ := Finset.card_eq_two.mp hc
+      exact ⟨a, b, subset_rfl⟩
+  refine ⟨coverColoring p q, coverColoring_proper fun u v hadj => ?_⟩
+  rcases hkill u v hadj with h | h <;>
+    · have hm := hsub h
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hm
+      tauto
+
+/-- **Budget `3` never suffices once `n ≥ 3`:** `K₃` plus isolated vertices
+satisfies the reduction hypothesis with budget `3` (three ordered pairs kill
+its three edges, in every induced subgraph) but contains a triangle, so it is
+not 2-colorable. -/
+theorem three_notMem_fThresholdSet_one {n : ℕ} (hn : 3 ≤ n) :
+    3 ∉ fThresholdSet 1 n := by
+  obtain ⟨v0, hv0⟩ : ∃ w : Fin n, w.val = 0 := ⟨⟨0, by omega⟩, rfl⟩
+  obtain ⟨v1, hv1⟩ : ∃ w : Fin n, w.val = 1 := ⟨⟨1, by omega⟩, rfl⟩
+  obtain ⟨v2, hv2⟩ : ∃ w : Fin n, w.val = 2 := ⟨⟨2, by omega⟩, rfl⟩
+  intro hmem
+  have hP : ∀ S : Finset (Fin n), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (trianglePlus n).adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (trianglePlus n).symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => (trianglePlus n).irrefl v h)) 3 1 := by
+    intro S
+    refine ⟨{(v0, v1), (v0, v2), (v1, v2)}, ?_, ⟨fun _ => 0, ?_⟩⟩
+    · calc ({(v0, v1), (v0, v2), (v1, v2)} : Finset (Fin n × Fin n)).card
+          ≤ ({(v0, v2), (v1, v2)} : Finset (Fin n × Fin n)).card + 1 :=
+            Finset.card_insert_le _ _
+        _ ≤ (({(v1, v2)} : Finset (Fin n × Fin n)).card + 1) + 1 :=
+            Nat.add_le_add_right (Finset.card_insert_le _ _) 1
+        _ ≤ 3 := by simp
+    · rintro u v ⟨⟨_, _, hu3, hv3, hne⟩, hnuv, hnvu⟩ _
+      have hcov := mem_killTri hv0 hv1 hv2 hu3 hv3 (fun h => hne (Fin.ext h))
+      tauto
+  obtain ⟨c, hc⟩ := hmem (trianglePlus n) hP
+  have h01 : c v0 ≠ c v1 := hc v0 v1
+    ⟨by omega, by omega, fun h => by have := congrArg Fin.val h; omega⟩
+  have h02 : c v0 ≠ c v2 := hc v0 v2
+    ⟨by omega, by omega, fun h => by have := congrArg Fin.val h; omega⟩
+  have h12 : c v1 ≠ c v2 := hc v1 v2
+    ⟨by omega, by omega, fun h => by have := congrArg Fin.val h; omega⟩
+  have n01 : (c v0).val ≠ (c v1).val := fun h => h01 (Fin.ext h)
+  have n02 : (c v0).val ≠ (c v2).val := fun h => h02 (Fin.ext h)
+  have n12 : (c v1).val ≠ (c v2).val := fun h => h12 (Fin.ext h)
+  have b0 : (c v0).val < 2 := (c v0).isLt
+  have b1 : (c v1).val < 2 := (c v1).isLt
+  have b2 : (c v2).val < 2 := (c v2).isLt
+  omega
+
+/-- Upper bound for the whole row: `fThreshold 1 n ≤ 2` once `n ≥ 3`. -/
+theorem fThreshold_one_le_two {n : ℕ} (hn : 3 ≤ n) : fThreshold 1 n ≤ 2 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  exact three_notMem_fThresholdSet_one hn (fThresholdSet_downClosed (by omega) hk)
+
+/-- Lower bound for the whole row: `2 ≤ fThreshold 1 n` once `n ≥ 3`. -/
+theorem two_le_fThreshold_one {n : ℕ} (hn : 3 ≤ n) : 2 ≤ fThreshold 1 n := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    (two_mem_fThresholdSet_one (by omega))
+
+/-- **The complete `r = 1` row: `fThreshold 1 n = 2` for every `n ≥ 3`.**
+The Erdős–Hajnal–Szemerédi threshold at `r = 1` is the constant `2` on the
+whole non-degenerate regime — subsuming the pointwise values
+`fThreshold_one_three` and `fThreshold_one_four` and settling all further
+rungs `(1, 5), (1, 6), …` at once. -/
+theorem fThreshold_one_eq_two {n : ℕ} (hn : 3 ≤ n) : fThreshold 1 n = 2 :=
+  le_antisymm (fThreshold_one_le_two hn) (two_le_fThreshold_one hn)
+
+/-- The third exact value, now for free: `fThreshold 1 5 = 2`. -/
+theorem fThreshold_one_five : fThreshold 1 5 = 2 :=
+  fThreshold_one_eq_two (by omega)
+
+/-- The `r = 1` threshold row is constant on the non-degenerate regime. -/
+theorem fThreshold_one_constant {m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) :
+    fThreshold 1 m = fThreshold 1 n := by
+  rw [fThreshold_one_eq_two hm, fThreshold_one_eq_two hn]
+
 #check @slot_nonempty
 #check @three_slots_le_card
 #check @two_mem_fThresholdSet_one_four
 #check @fThreshold_one_four
 #check @fThreshold_constant_three_four
+#check @trianglePlus
+#check @coverColoring
+#check @coverColoring_proper
+#check @mem_killTri
+#check @two_mem_fThresholdSet_one
+#check @three_notMem_fThresholdSet_one
+#check @fThreshold_one_eq_two
+#check @fThreshold_one_five
+#check @fThreshold_one_constant
 
 end Erdos1092OQ02
