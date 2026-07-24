@@ -89,12 +89,20 @@
   },
   "sections": [
     {
-      "id": "header-and-setup",
-      "title": "Header: The Lebesgue-Number Route, and Ambient Setup",
+      "id": "header",
+      "title": "Header: The Lebesgue-Number Route",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 48,
       "mathContext": "$X$ compact metric, $Y$ metric, $f:X\\to Y$ continuous; route via the preimage cover $U_z=f^{-1}(B(fz,\\varepsilon/2))$.",
-      "summary": "The module docstring frames Heine–Cantor and deliberately routes the proof through the Lebesgue number lemma rather than Mathlib's packaged CompactSpace.uniformContinuous_of_continuous: cover X by preimages of ε/2-balls, extract a single Lebesgue number δ, and read it off directly as a uniform modulus. It lists the four results proved (the ε–δ engine, the packaged Heine–Cantor, the continuity/uniform-continuity equivalence on compacta, and Cauchy preservation) and notes the mathlib badge, since the one non-trivial ingredient and the headline theorem both already exist in Mathlib. The ambient setup then fixes the hypotheses: [MetricSpace X] [CompactSpace X] for the domain — compactness here is essential and cannot be dropped (e.g. x ↦ x² on ℝ fails to be uniformly continuous) — and only [MetricSpace Y] for the codomain, since distances there are controlled purely by ε/2-balls and the triangle inequality."
+      "summary": "The module docstring frames Heine–Cantor and deliberately routes the proof through the Lebesgue number lemma rather than Mathlib's packaged CompactSpace.uniformContinuous_of_continuous: cover X by preimages of ε/2-balls, extract a single Lebesgue number δ, and read it off directly as a uniform modulus. It lists the four results proved (the ε–δ engine, the packaged Heine–Cantor, the continuity/uniform-continuity equivalence on compacta, and Cauchy preservation) and notes the mathlib badge, since the one non-trivial ingredient and the headline theorem both already exist in Mathlib."
+    },
+    {
+      "id": "setup",
+      "title": "Ambient Setup",
+      "startLine": 50,
+      "endLine": 55,
+      "mathContext": "$[\\mathrm{MetricSpace}\\ X]\\ [\\mathrm{CompactSpace}\\ X]$, $[\\mathrm{MetricSpace}\\ Y]$.",
+      "summary": "Fixes the ambient hypotheses: [MetricSpace X] [CompactSpace X] for the domain — compactness here is essential and cannot be dropped (e.g. x ↦ x² on ℝ fails to be uniformly continuous) — and only [MetricSpace Y] for the codomain, since distances there are controlled purely by ε/2-balls and the triangle inequality."
     },
     {
       "id": "epsilon-delta-engine",
