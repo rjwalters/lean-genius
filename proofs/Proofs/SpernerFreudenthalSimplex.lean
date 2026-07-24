@@ -16,6 +16,9 @@ why the constant-miss FreudCell approach fails for n≥2.
 
 - `sperner_panchromatic_zero`: n=0 (Δ⁰ is a single point, trivial)
 - `sperner_panchromatic_one`: n=1 (Δ¹ is an interval, via discrete IVT)
+- `sperner_panchromatic_two`: n=2 (Type-1/Type-2 triangulation of Δ², via
+  `Triangulation.boundary_doors_odd` — boundary doors on face 2 biject with
+  the odd color-changing edges of the diagonal path; end of file)
 
 ## Why FreudCell Is Wrong (Sessions 1-8 Failure Analysis)
 
@@ -277,8 +280,9 @@ We represent vertices as pairs (a₀, a₁) ∈ ℕ×ℕ, with a₂ = N-a₀-a�
 **Pseudomanifold**: each edge is in at most 1 Type-1 and at most 1 Type-2 simplex,
 so each edge is in at most 2 simplices total.
 
-**Boundary doors oddness** (sorry in this file): by induction using the n=1 result,
-boundary doors on face 2 = panchromatic edges of the 1D grid, which is odd.
+**Boundary doors oddness** (proved in section N2LastFaceAssembly): boundary doors
+on face 2 biject with the color-changing edges of the 1D diagonal grid path
+(`face2_path_odd_gDiag`), which are odd by discrete IVT parity.
 -/
 
 section N2Triang
@@ -419,25 +423,12 @@ private noncomputable def simData2 (N : ℕ) : Triangulation.AbstractSimplicialD
   pseudomanifold := topSimps2_pseudomanifold N
 
 -- ============================================================
--- n=2 Sperner panchromatic (boundary_doors_odd sorry'd)
+-- n=2 Sperner panchromatic: the theorem `sperner_panchromatic_two`
+-- is stated and fully proved at the END of this file (section
+-- N2Panchromatic), after the boundary-door infrastructure it
+-- consumes (S16-S33). The triangulation and pseudomanifold above
+-- are its geometric core.
 -- ============================================================
-
-/-- **n=2 sperner_panchromatic** (boundary_doors_odd sorry; all structural proofs done).
-    The triangulation and pseudomanifold are fully proved. The remaining step is to show
-    the boundary door count is odd, which follows from the n=1 result by induction. -/
-theorem sperner_panchromatic_two (N : ℕ) (hN : 0 < N)
-    (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
-    (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
-    ∃ v : Fin 3 → Fin 3 → ℝ,
-        (∀ i, InSimplex (v i)) ∧
-        (∀ i : Fin 3, f (v i) i ≤ v i i) ∧
-        (∀ (i j : Fin 3) (l : Fin 3), |v i l - v j l| ≤ (2 : ℝ) / N) := by
-  -- The Type-1/Type-2 triangulation of Δ² is fully constructed:
-  -- simData2 N : AbstractSimplicialData (ℕ×ℕ) 2 (pseudomanifold proved above)
-  -- (simData2 N).toTriangulation : Triangulation (ℕ×ℕ) 2 (all adj axioms proved)
-  -- The Sperner coloring + boundary_doors_odd → panchromatic triangle exists.
-  -- Remaining sorry: boundary_doors_odd (reduces to sperner_panchromatic_one by induction)
-  sorry
 
 end N2Triang
 
@@ -3474,5 +3465,341 @@ private lemma face2_path_odd_gDiag :
   exact face2_path_odd N hN f hf_map
 
 end N2GDiagPathOdd
+
+-- ============================================================
+-- (S33) Final assembly: `_hLastFace` discharge + n=2 Sperner
+-- panchromatic theorem.
+--
+-- The bijection: pairs `(s, k)` in the `_hLastFace` filter of
+-- `Triangulation.boundary_doors_odd` for `simData2 N` correspond
+-- exactly to the color-changing diagonal edges counted by
+-- `face2_path_odd_gDiag`, via `p ↦ (vertex p.1 p.2).1` (the first
+-- coordinate of the dropped vertex):
+--
+--   * forward: S21A (`t1_lastFace_implies_satDiag`) + S24
+--     (`t2_adj_ne_none`) pin the cell to `t1 b` with
+--     `b ∈ satDiagBases N` and `p.2` the self-drop index; the S22
+--     IsDoor bridge converts the door condition into the gDiag
+--     color change `gDiag b.1 ≠ gDiag (b.1 + 1)`.
+--   * backward: S25-rev (`satDiag_self_drop_*`) reconstructs the
+--     filter member from `k ∈ Finset.range N`.
+--
+-- `face2_path_odd_gDiag` (S30) supplies oddness; then
+-- `Triangulation.boundary_doors_odd` + `Triangulation.sperner`
+-- produce the panchromatic cell, and witness extraction mirrors
+-- the n=1 proof (`spernerColor_le` + `gridPt_topSimps2_coord_diameter`).
+-- ============================================================
+
+section N2LastFaceAssembly
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+variable (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- At the self-drop index of a saturating-diagonal base, the
+adjacency is `none`: the diagonal face has exactly one container
+(`diagonal_card_eq_one_of_t1_boundary`). -/
+private lemma satDiag_self_drop_adj_none
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) {k : Fin 3}
+    (hk : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k = b) :
+    ((simData2 N).toTriangulation).adj
+      ⟨t1 b, satDiagBases_t1_in_topSimps2 N hb⟩ k = none := by
+  set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
+  apply (SimplicialAdjFnHelper.adjFn_eq_none_iff_card_le_one
+    (simData2 N) ⟨t1 b, hS⟩ k).mpr
+  have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
+      ({(b.1, b.2 + 1), (b.1 + 1, b.2)} : Finset (ℕ × ℕ)) := by
+    show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+    rw [hk]; exact t1_erase_third b
+  have h_containers_eq : ∀ (f' : Finset (ℕ × ℕ)),
+      (simData2 N).containersOf f' =
+        (topSimps2 N).filter (fun s => f' ⊆ s) := fun _ => rfl
+  rw [h_face_eq, h_containers_eq]
+  have hbd : N ≤ b.1 + b.2 + 1 := by
+    obtain ⟨_, _, hsat⟩ := (satDiagBases_mem_iff N b).mp hb
+    omega
+  exact le_of_eq (diagonal_card_eq_one_of_t1_boundary N
+    (satDiagBases_subset_t1Bases N hb) hbd)
+
+/-- At the self-drop configuration, there are two distinct non-drop
+indices enumerating the diagonal endpoints `(b.1, b.2+1)` and
+`(b.1+1, b.2)`. -/
+private lemma satDiag_self_drop_endpoint_indices
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) {k : Fin 3}
+    (hk : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k = b) :
+    ∃ i₁ i₂ : Fin 3, i₁ ≠ k ∧ i₂ ≠ k ∧ i₁ ≠ i₂ ∧
+      (simData2 N).vertexEnum (t1 b)
+        (satDiagBases_t1_in_topSimps2 N hb) i₁ = (b.1, b.2 + 1) ∧
+      (simData2 N).vertexEnum (t1 b)
+        (satDiagBases_t1_in_topSimps2 N hb) i₂ = (b.1 + 1, b.2) := by
+  set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
+  have h_img := (simData2 N).vertexEnum_image_univ (t1 b) hS
+  have h1_mem : ((b.1, b.2 + 1) : ℕ × ℕ) ∈ t1 b := by
+    simp only [t1, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  have h2_mem : ((b.1 + 1, b.2) : ℕ × ℕ) ∈ t1 b := by
+    simp only [t1, Finset.mem_insert, Finset.mem_singleton]
+    tauto
+  rw [← h_img] at h1_mem h2_mem
+  obtain ⟨i₁, _, hi₁⟩ := Finset.mem_image.mp h1_mem
+  obtain ⟨i₂, _, hi₂⟩ := Finset.mem_image.mp h2_mem
+  refine ⟨i₁, i₂, ?_, ?_, ?_, hi₁, hi₂⟩
+  · rintro rfl
+    rw [hk] at hi₁
+    exact absurd (congrArg Prod.snd hi₁) (by omega)
+  · rintro rfl
+    rw [hk] at hi₂
+    exact absurd (congrArg Prod.fst hi₂) (by omega)
+  · rintro rfl
+    rw [hi₁] at hi₂
+    exact absurd (congrArg Prod.fst hi₂) (by omega)
+
+/-- At the self-drop configuration, the door condition for the
+coloring `cN2_total` is equivalent to a `gDiag` color change
+across the diagonal edge. -/
+private lemma satDiag_self_drop_isDoor_iff
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) {k : Fin 3}
+    (hk : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k = b) :
+    CellComplex.IsDoor (cN2_total N hN f hf_map)
+        (((simData2 N).toTriangulation).toCellComplex)
+        ⟨t1 b, satDiagBases_t1_in_topSimps2 N hb⟩ k ↔
+      gDiag N hN f hf_map b.1 ≠ gDiag N hN f hf_map (b.1 + 1) := by
+  set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
+  obtain ⟨i₁, i₂, hi₁k, hi₂k, hi₁₂, hv₁, hv₂⟩ :=
+    satDiag_self_drop_endpoint_indices N hb hk
+  have hb1_le : b.1 ≤ N := (satDiagBases_fst_lt N hb).le
+  have hb1s_le : b.1 + 1 ≤ N := satDiagBases_succ_le N hb
+  have he₁ := satDiagBases_first_endpoint_face2_path_form N hb
+  have he₂ := satDiagBases_second_endpoint_face2_path_form N hb
+  have h_no2 : ∀ i : Fin 3, i ≠ k →
+      cN2_total N hN f hf_map
+        ((((simData2 N).toTriangulation).toCellComplex).vertex
+          ⟨t1 b, hS⟩ i) ≠ (2 : Fin 3) := by
+    intro i hik
+    have h_mem : (simData2 N).vertexEnum (t1 b) hS i ∈
+        (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) :=
+      Finset.mem_erase.mpr
+        ⟨fun heq => hik ((simData2 N).vertexEnum_injective (t1 b) hS heq),
+         (simData2 N).vertexEnum_mem (t1 b) hS i⟩
+    rw [hk, t1_erase_third b] at h_mem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at h_mem
+    show cN2_total N hN f hf_map
+        ((simData2 N).vertexEnum (t1 b) hS i) ≠ (2 : Fin 3)
+    rcases h_mem with heq | heq
+    · rw [heq, he₁]
+      exact cN2_total_diag_ne_two N hN f hf_map b.1 hb1_le
+    · rw [heq, he₂]
+      exact cN2_total_diag_ne_two N hN f hf_map (b.1 + 1) hb1s_le
+  rw [SimplicialAdjFnHelper.isDoor_dim_two_iff_color_change_of_no_color_two
+    (((simData2 N).toTriangulation).toCellComplex)
+    (cN2_total N hN f hf_map) ⟨t1 b, hS⟩ k h_no2 hi₁k hi₂k hi₁₂]
+  have hv₁' : (((simData2 N).toTriangulation).toCellComplex).vertex
+      ⟨t1 b, hS⟩ i₁ = ((b.1 : ℕ), N - b.1) := by
+    show (simData2 N).vertexEnum (t1 b) hS i₁ = _
+    rw [hv₁]; exact he₁
+  have hv₂' : (((simData2 N).toTriangulation).toCellComplex).vertex
+      ⟨t1 b, hS⟩ i₂ = ((b.1 + 1 : ℕ), N - (b.1 + 1)) := by
+    show (simData2 N).vertexEnum (t1 b) hS i₂ = _
+    rw [hv₂]; exact he₂
+  rw [hv₁', hv₂']
+  exact (gDiag_ne_iff_cN2_total_diag_ne N hN f hf_map b.1 hb1s_le).symm
+
+/-- Forward extraction for members of the `_hLastFace` filter: the
+cell is a `t1 b` with `b ∈ satDiagBases N` and the face index is
+the self-drop index. Composes S21A (t1 side) with S24 (t2
+extinction). -/
+private lemma lastFace_filter_extract
+    (s : ((simData2 N).toTriangulation).Cell) (k : Fin 3)
+    (h_adj : ((simData2 N).toTriangulation).adj s k = none)
+    (h_face2 : ∀ j : Fin 3, j ≠ k →
+      onFaceΔ2_strict N (((simData2 N).toTriangulation).vertex s j)
+        (2 : Fin 3)) :
+    ∃ (b : ℕ × ℕ) (hb : b ∈ satDiagBases N),
+      s = ⟨t1 b, satDiagBases_t1_in_topSimps2 N hb⟩ ∧
+      (simData2 N).vertexEnum (t1 b)
+        (satDiagBases_t1_in_topSimps2 N hb) k = b := by
+  obtain ⟨S, hS⟩ := s
+  rcases (topSimps2_mem_iff N S).mp hS with ⟨b, hb, rfl⟩ | ⟨c, hc, rfl⟩
+  · obtain ⟨hb_sat, h_drop⟩ := t1_lastFace_implies_satDiag N hb k h_face2
+    exact ⟨b, hb_sat, Subtype.ext rfl, h_drop⟩
+  · exact absurd h_adj (t2_adj_ne_none N hc k)
+
+/-- **The `_hLastFace` cardinality identity**: boundary doors on
+geometric face 2 biject with `gDiag` color changes on
+`Finset.range N`, via `p ↦ (vertex p.1 p.2).1` (the first
+coordinate of the dropped vertex). -/
+private lemma lastFace_card_eq :
+    (Finset.univ.filter
+      (fun p : ((simData2 N).toTriangulation).Cell × Fin 3 =>
+        CellComplex.IsDoor (cN2_total N hN f hf_map)
+          (((simData2 N).toTriangulation).toCellComplex) p.1 p.2 ∧
+        ((simData2 N).toTriangulation).adj p.1 p.2 = none ∧
+        (∀ j : Fin 3, j ≠ p.2 →
+          onFaceΔ2_strict N
+            (((simData2 N).toTriangulation).vertex p.1 j)
+            (2 : Fin 3)))).card =
+    ((Finset.range N).filter
+      (fun k => gDiag N hN f hf_map k ≠ gDiag N hN f hf_map (k + 1))).card := by
+  apply Finset.card_bij
+    (fun p _ => (((simData2 N).toTriangulation).vertex p.1 p.2).1)
+  · -- maps into the target filter
+    rintro ⟨s, k⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    obtain ⟨hDoor, hAdj, hFace2⟩ := hp
+    obtain ⟨b, hb, rfl, hdrop⟩ := lastFace_filter_extract N s k hAdj hFace2
+    have hvk : (((simData2 N).toTriangulation).vertex
+        ⟨t1 b, satDiagBases_t1_in_topSimps2 N hb⟩ k) = b := hdrop
+    show (((simData2 N).toTriangulation).vertex
+        ⟨t1 b, satDiagBases_t1_in_topSimps2 N hb⟩ k).1 ∈ _
+    rw [hvk, Finset.mem_filter, Finset.mem_range]
+    exact ⟨satDiagBases_fst_lt N hb,
+      (satDiag_self_drop_isDoor_iff N hN f hf_map hb hdrop).mp hDoor⟩
+  · -- injective
+    rintro ⟨s₁, k₁⟩ hp₁ ⟨s₂, k₂⟩ hp₂ h_eq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp₁ hp₂
+    obtain ⟨_, hAdj₁, hFace₁⟩ := hp₁
+    obtain ⟨_, hAdj₂, hFace₂⟩ := hp₂
+    obtain ⟨b₁, hb₁, rfl, hdrop₁⟩ :=
+      lastFace_filter_extract N s₁ k₁ hAdj₁ hFace₁
+    obtain ⟨b₂, hb₂, rfl, hdrop₂⟩ :=
+      lastFace_filter_extract N s₂ k₂ hAdj₂ hFace₂
+    have hv₁ : (((simData2 N).toTriangulation).vertex
+        ⟨t1 b₁, satDiagBases_t1_in_topSimps2 N hb₁⟩ k₁) = b₁ := hdrop₁
+    have hv₂ : (((simData2 N).toTriangulation).vertex
+        ⟨t1 b₂, satDiagBases_t1_in_topSimps2 N hb₂⟩ k₂) = b₂ := hdrop₂
+    have h_fst : b₁.1 = b₂.1 := by
+      have h' : (((simData2 N).toTriangulation).vertex
+          ⟨t1 b₁, satDiagBases_t1_in_topSimps2 N hb₁⟩ k₁).1 =
+        (((simData2 N).toTriangulation).vertex
+          ⟨t1 b₂, satDiagBases_t1_in_topSimps2 N hb₂⟩ k₂).1 := h_eq
+      rwa [hv₁, hv₂] at h'
+    have hb_eq : b₁ = b₂ := by
+      rw [satDiagBases_eq_pair_fst N hb₁, satDiagBases_eq_pair_fst N hb₂,
+        h_fst]
+    subst hb_eq
+    have hk_eq : k₁ = k₂ :=
+      satDiag_self_drop_index_unique N hb₁ hdrop₁ hdrop₂
+    subst hk_eq
+    rfl
+  · -- surjective
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    obtain ⟨hkN, hgne⟩ := hk
+    have hb : ((k, N - 1 - k) : ℕ × ℕ) ∈ satDiagBases N := by
+      rw [satDiagBases_mem_iff]
+      exact ⟨hkN, by show N - 1 - k < N; omega,
+        by show k + (N - 1 - k) + 1 = N; omega⟩
+    obtain ⟨kb, hkb⟩ := satDiag_self_drop_index_exists N hb
+    refine ⟨(⟨t1 (k, N - 1 - k), satDiagBases_t1_in_topSimps2 N hb⟩, kb),
+      ?_, ?_⟩
+    · rw [Finset.mem_filter]
+      exact ⟨Finset.mem_univ _,
+        (satDiag_self_drop_isDoor_iff N hN f hf_map hb hkb).mpr hgne,
+        satDiag_self_drop_adj_none N hb hkb,
+        satDiag_self_drop_face2 N hb hkb⟩
+    · show (((simData2 N).toTriangulation).vertex
+          ⟨t1 (k, N - 1 - k), satDiagBases_t1_in_topSimps2 N hb⟩ kb).1 = k
+      rw [hkb]
+
+/-- Oddness of the `_hLastFace` filter for `simData2 N`: transported
+from `face2_path_odd_gDiag` across `lastFace_card_eq`. -/
+private lemma lastFace_odd :
+    Odd (Finset.univ.filter
+      (fun p : ((simData2 N).toTriangulation).Cell × Fin 3 =>
+        CellComplex.IsDoor (cN2_total N hN f hf_map)
+          (((simData2 N).toTriangulation).toCellComplex) p.1 p.2 ∧
+        ((simData2 N).toTriangulation).adj p.1 p.2 = none ∧
+        (∀ j : Fin 3, j ≠ p.2 →
+          onFaceΔ2_strict N
+            (((simData2 N).toTriangulation).vertex p.1 j)
+            (2 : Fin 3)))).card := by
+  rw [lastFace_card_eq N hN f hf_map]
+  exact face2_path_odd_gDiag N hN f hf_map
+
+end N2LastFaceAssembly
+
+-- ============================================================
+-- (S33 final) n=2 Sperner panchromatic — fully proved.
+-- ============================================================
+
+section N2Panchromatic
+
+/-- **n=2 sperner_panchromatic**, fully proved (no sorry, no axiom).
+
+The Type-1/Type-2 triangulation of Δ² (`simData2 N`) carries the
+Sperner coloring `cN2_total`. Boundary doors are odd
+(`Triangulation.boundary_doors_odd` with the four slots discharged
+by `cN2_total_isSpernerColoring`, `boundaryOnFace_simData2`,
+`SpernerLowerDimHelper.sperner_lowerDim_card_even`, and
+`lastFace_odd`), so `Triangulation.sperner` yields a panchromatic
+cell; its three vertices give witnesses with pairwise coordinate
+distance ≤ 2/N. -/
+theorem sperner_panchromatic_two (N : ℕ) (hN : 0 < N)
+    (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+    (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
+    ∃ v : Fin 3 → Fin 3 → ℝ,
+        (∀ i, InSimplex (v i)) ∧
+        (∀ i : Fin 3, f (v i) i ≤ v i i) ∧
+        (∀ (i j : Fin 3) (l : Fin 3), |v i l - v j l| ≤ (2 : ℝ) / N) := by
+  have h_bdry :
+      Odd (Finset.univ.filter
+        (fun p : ((simData2 N).toTriangulation).Cell × Fin 3 =>
+          CellComplex.IsDoor (cN2_total N hN f hf_map)
+            (((simData2 N).toTriangulation).toCellComplex) p.1 p.2 ∧
+          ((simData2 N).toTriangulation).adj p.1 p.2 = none)).card :=
+    Triangulation.boundary_doors_odd
+      ((simData2 N).toTriangulation)
+      (cN2_total N hN f hf_map)
+      (onFaceΔ2_strict N)
+      (cN2_total_isSpernerColoring N hN f hf_map)
+      (boundaryOnFace_simData2 N)
+      (fun faceIdx hlt =>
+        SpernerLowerDimHelper.sperner_lowerDim_card_even
+          ((simData2 N).toTriangulation) (cN2_total N hN f hf_map)
+          (onFaceΔ2_strict N)
+          (cN2_total_isSpernerColoring N hN f hf_map) faceIdx hlt)
+      (lastFace_odd N hN f hf_map)
+  obtain ⟨s, hs_pan⟩ :=
+    Triangulation.sperner ((simData2 N).toTriangulation)
+      (cN2_total N hN f hf_map) h_bdry
+  have h_surj : Function.Surjective
+      (cN2_total N hN f hf_map ∘
+        (((simData2 N).toTriangulation).toCellComplex).vertex s) := hs_pan
+  choose idx hidx using h_surj
+  have hvb_mem : ∀ i : Fin 3,
+      (simData2 N).vertexEnum s.1 s.2 (idx i) ∈ s.1 := fun i =>
+    (simData2 N).vertexEnum_mem s.1 s.2 (idx i)
+  have hvb_range : ∀ i : Fin 3,
+      ((simData2 N).vertexEnum s.1 s.2 (idx i)).1 +
+        ((simData2 N).vertexEnum s.1 s.2 (idx i)).2 ≤ N := fun i =>
+    topSimps2_vertex_in_range N s.2 (hvb_mem i)
+  refine ⟨fun i => gridPt N ((simData2 N).vertexEnum s.1 s.2 (idx i)),
+    ?_, ?_, ?_⟩
+  · intro i
+    exact gridPt_inSimplex N hN _ (hvb_range i)
+  · intro i
+    have hcolor : cN2 N hN f hf_map
+        ((simData2 N).vertexEnum s.1 s.2 (idx i)) (hvb_range i) = i := by
+      rw [← cN2_total_eq N hN f hf_map _ (hvb_range i)]
+      exact hidx i
+    have h_le := spernerColor_le
+      (gridPt_inSimplex N hN _ (hvb_range i))
+      (hf_map _ (gridPt_inSimplex N hN _ (hvb_range i)))
+    rw [show spernerColor
+        (gridPt N ((simData2 N).vertexEnum s.1 s.2 (idx i)))
+        (f (gridPt N ((simData2 N).vertexEnum s.1 s.2 (idx i))))
+        (gridPt_inSimplex N hN _ (hvb_range i))
+        (hf_map _ (gridPt_inSimplex N hN _ (hvb_range i))) =
+      cN2 N hN f hf_map ((simData2 N).vertexEnum s.1 s.2 (idx i))
+        (hvb_range i) from rfl, hcolor] at h_le
+    exact h_le
+  · intro i j l
+    exact gridPt_topSimps2_coord_diameter N hN s.1 s.2 _ _
+      (hvb_mem i) (hvb_mem j) l
+
+end N2Panchromatic
 
 end SpernerFreudSimp
