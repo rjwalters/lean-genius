@@ -3,8 +3,8 @@
     "id": "ann-bpg-oq02-eh-bound",
     "proofId": "bounded-prime-gaps-oq-02",
     "range": {
-      "startLine": 61,
-      "endLine": 76
+      "startLine": 90,
+      "endLine": 105
     },
     "type": "definition",
     "title": "The Level-θ Elliott–Halberstam Bound and Level-Monotonicity",
@@ -26,8 +26,8 @@
     "id": "ann-bpg-oq02-hierarchy",
     "proofId": "bounded-prime-gaps-oq-02",
     "range": {
-      "startLine": 78,
-      "endLine": 93
+      "startLine": 107,
+      "endLine": 122
     },
     "type": "theorem",
     "title": "The Level Hierarchy (le_trans in one line)",
@@ -47,12 +47,12 @@
     "id": "ann-bpg-oq02-bv-eh",
     "proofId": "bounded-prime-gaps-oq-02",
     "range": {
-      "startLine": 95,
-      "endLine": 133
+      "startLine": 124,
+      "endLine": 162
     },
     "type": "theorem",
     "title": "Bombieri–Vinogradov, Elliott–Halberstam, and EH ⟹ BV",
-    "content": "`BombieriVinogradov D := EHAtLevel D (1/2)` (the level proved unconditionally) and `ElliottHalberstam D := ∀ θ, 0<θ → θ<1 → EHAtLevel D θ` (the open conjecture). `bombieriVinogradov_of_elliottHalberstam` derives BV from EH as the `θ = 1/2` instance. `bombieriVinogradov_of_EHAtLevel` strengthens this: for level-monotone `D`, ANY bound at level `θ ≥ 1/2` already gives BV via the hierarchy. `elliottHalberstam_iff_levels_near_one` shows EH is equivalent to its restriction to `θ ∈ [1/2, 1)` — the sub-1/2 range descends from the BV-strength bound.",
+    "content": "`BombieriVinogradov D := EHAtLevel D (1/2)` (the level proved unconditionally) and `ElliottHalberstam D := ∀ θ, 0<θ → θ<1 → EHAtLevel D θ` (the open conjecture). `eHAtLevel_of_elliottHalberstam` unfolds the conjecture at a single admissible level. `bombieriVinogradov_of_elliottHalberstam` derives BV from EH as the `θ = 1/2` instance. `bombieriVinogradov_of_EHAtLevel` strengthens this: for level-monotone `D`, ANY bound at level `θ ≥ 1/2` already gives BV via the hierarchy. `elliottHalberstam_iff_levels_near_one` shows EH is equivalent to its restriction to `θ ∈ [1/2, 1)` — the sub-1/2 range descends from the BV-strength bound.",
     "mathContext": "$\\mathrm{BV}(D) := \\mathrm{EHAtLevel}(D,\\tfrac12)$, $\\mathrm{EH}(D) := \\forall\\theta\\in(0,1),\\,\\mathrm{EHAtLevel}(D,\\theta)$. Then $\\mathrm{EH}\\Rightarrow\\mathrm{BV}$, and $\\mathrm{EH}(D) \\iff \\big(\\forall\\theta\\in[\\tfrac12,1),\\,\\mathrm{EHAtLevel}(D,\\theta)\\big)$.",
     "significance": "critical",
     "relatedConcepts": [
@@ -70,8 +70,8 @@
     "id": "ann-bpg-oq02-non-vacuity",
     "proofId": "bounded-prime-gaps-oq-02",
     "range": {
-      "startLine": 135,
-      "endLine": 154
+      "startLine": 164,
+      "endLine": 184
     },
     "type": "theorem",
     "title": "Non-Vacuity: the Zero Functional Models the Full Hierarchy",

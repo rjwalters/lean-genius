@@ -118,41 +118,41 @@
     {
       "id": "header",
       "title": "Header: Statement and Formalization Strategy",
-      "summary": "Module docstring: states the level-of-distribution discrepancy sum, the Bombieri–Vinogradov (θ=1/2, unconditional) vs. Elliott–Halberstam (all θ<1, open) distinction, and explains why the file formalizes the conjecture's logical skeleton over an abstract discrepancy functional rather than axiomatizing EH itself.",
+      "summary": "Module docstring: states the level-of-distribution discrepancy sum, the Bombieri–Vinogradov (θ=1/2, unconditional) vs. Elliott–Halberstam (all θ<1, open) distinction, and explains why the file formalizes the conjecture's logical skeleton over an abstract discrepancy functional rather than axiomatizing EH itself. Imports Mathlib and opens the `BoundedPrimeGapsOQ02` namespace.",
       "startLine": 1,
-      "endLine": 60,
+      "endLine": 88,
       "mathContext": "Level-of-distribution discrepancy: $\\sum_{q\\le x^\\theta}\\max_{(a,q)=1}|\\psi(x;q,a)-x/\\varphi(q)| \\ll_A x/(\\log x)^A$, proved unconditionally at $\\theta=1/2$ by Bombieri–Vinogradov and conjectured at every $\\theta<1$ by Elliott–Halberstam."
     },
     {
       "id": "eh-bound",
       "title": "The Level-θ Elliott–Halberstam Bound",
       "summary": "EHAtLevel D θ and LevelMonotone D over an abstract discrepancy functional",
-      "startLine": 61,
-      "endLine": 76,
+      "startLine": 90,
+      "endLine": 105,
       "mathContext": "$\\mathrm{EHAtLevel}(D,\\theta) := \\forall A>0,\\ \\exists C>0,\\ \\forall x\\ge 2,\\ D\\,\\theta\\,x \\le Cx/(\\log x)^A$; level-monotonicity: $\\theta_1\\le\\theta_2 \\Rightarrow D\\,\\theta_1\\,x \\le D\\,\\theta_2\\,x$."
     },
     {
       "id": "level-hierarchy",
       "title": "The Level Hierarchy",
       "summary": "EHAtLevel_of_le and EHAtLevel_of_le_functional — bounds transfer down levels and across dominated functionals",
-      "startLine": 78,
-      "endLine": 93,
+      "startLine": 107,
+      "endLine": 122,
       "mathContext": "For level-monotone $D$: $\\theta_1\\le\\theta_2$ and the bound at $\\theta_2$ give the bound at $\\theta_1$ with the same constant, since $D\\,\\theta_1\\,x \\le D\\,\\theta_2\\,x \\le Cx/(\\log x)^A$."
     },
     {
       "id": "bv-eh",
       "title": "Bombieri–Vinogradov and Elliott–Halberstam",
-      "summary": "BV := EHAtLevel D (1/2), EH := all levels θ<1. The implication block: eHAtLevel_of_elliottHalberstam (EH gives the bound at every level), bombieriVinogradov_of_elliottHalberstam (EH ⟹ BV), bombieriVinogradov_of_EHAtLevel (for level-monotone D, the bound at any θ≥1/2 already gives BV), and elliottHalberstam_iff_levels_near_one (EH is equivalent to its restriction to levels near 1).",
-      "startLine": 95,
-      "endLine": 166,
+      "summary": "BombieriVinogradov D := EHAtLevel D (1/2), ElliottHalberstam D := all levels θ<1. The implication block: eHAtLevel_of_elliottHalberstam (EH gives the bound at every level), bombieriVinogradov_of_elliottHalberstam (EH ⟹ BV), bombieriVinogradov_of_EHAtLevel (for level-monotone D, the bound at any θ≥1/2 already gives BV), and elliottHalberstam_iff_levels_near_one (EH is equivalent to its restriction to levels near 1).",
+      "startLine": 124,
+      "endLine": 162,
       "mathContext": "$\\mathrm{BV}(D) := \\mathrm{EHAtLevel}(D,1/2)$, $\\mathrm{EH}(D) := \\forall \\theta\\in(0,1),\\ \\mathrm{EHAtLevel}(D,\\theta)$; $\\mathrm{EH}\\Rightarrow\\mathrm{BV}$, and EH is equivalent to its restriction to $\\theta\\in[1/2,1)$."
     },
     {
       "id": "non-vacuity",
       "title": "Non-Vacuity: the Zero Functional",
       "summary": "The zero functional satisfies the full hierarchy, certifying the predicates are satisfiable: EHAtLevel_zero (D≡0 meets the level-θ bound at every θ, with C=1), levelMonotone_zero (trivially level-monotone), and elliottHalberstam_zero (D≡0 is a concrete witness that ElliottHalberstam ∧ LevelMonotone is consistent).",
-      "startLine": 167,
-      "endLine": 185,
+      "startLine": 164,
+      "endLine": 184,
       "mathContext": "$D\\equiv 0$ is level-monotone and satisfies $\\mathrm{EHAtLevel}$ at every level (take $C=1$, using $x>0$ and $(\\log x)^A>0$ for $x\\ge 2$), hence models the full Elliott–Halberstam hierarchy."
     },
     {
