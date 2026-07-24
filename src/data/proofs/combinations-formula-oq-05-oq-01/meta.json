@@ -49,7 +49,8 @@
       "Pascal's rule is exactly the telescoping mechanism: it lets the (j+1)-th partial sum absorb the new term and collapse back to one binomial coefficient of the previous row.",
       "Stated with C(n+1,k) instead of C(n,k) the identity needs no natural-number subtraction and holds for all n (including n = 0), making the induction clean; the literal C(n-1,j) form is then a one-line specialisation for n ≥ 1.",
       "The full-row identity is not assumed — it is derived: taking j = n makes the right side (-1)^n C(n-1,n) = 0, so this entry is strictly stronger than the parent anchor and reproves Int.alternating_sum_range_choose_of_ne.",
-      "The partial sums stabilise at 0 the moment j reaches n, because the trailing binomial coefficients C(n,k) with k > n vanish; equivalently the right-hand binomial C(n-1,j) is supported on j < n."
+      "The partial sums stabilise at 0 the moment j reaches n, because the trailing binomial coefficients C(n,k) with k > n vanish; equivalently the right-hand binomial C(n-1,j) is supported on j < n.",
+      "A generating-function reading of the same fact: since (1-x)^n = ∑_k (-1)^k C(n,k) x^k, the partial sums S_j = ∑_{k=0}^{j} (-1)^k C(n,k) are exactly the coefficients of (1-x)^n · 1/(1-x) — dividing a power series by 1-x replaces each coefficient by its running sum. For n ≥ 1 that quotient is the honest polynomial (1-x)^{n-1}, whose degree-j coefficient is (-1)^j C(n-1,j); this reproduces the closed form and gets the stabilisation at j ≥ n for free, since (1-x)^{n-1} has degree exactly n-1."
     ]
   },
   "sections": [
