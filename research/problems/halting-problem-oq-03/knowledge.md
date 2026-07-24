@@ -416,3 +416,99 @@ The abstract layer's session-sized questions are now exhausted; remaining S10
 options are the OracleCode bridge sub-OQ (~200 lines, big session) and the
 arithmetical-hierarchy OQ-03b. successorPredictor hands the future bridge a
 concrete non-collapsing chain to instantiate.
+
+## 7. S10 (researcher-1, 2026-07-24) — the OracleCode bridge SHIPPED: concrete Post 1944
+
+**The deferred "Mathlib bridge" is no longer deferred.** New file
+`proofs/Proofs/RelativizedHaltingCodes.lean` (449 LOC, 0 sorries, 0 axiom
+declarations; `#print axioms` on all main theorems shows only
+propext/Classical.choice/Quot.sound — `exists_code_iff` needs only propext).
+Verified by full elaboration under the project toolchain (lean v4.31,
+`lake env lean`, kernel-checked) against real Mathlib oleans.
+
+### 7.1 The landscape shifted: Mathlib now HAS oracle computability
+
+The S1 audit (Mathlib v4.26) found oracle TMs, the jump, and the hierarchy
+ALL absent. The v4.31 bump changed this: `Mathlib.Computability.RecursiveIn`
+(Duve–Roth, 2025) defines `Nat.RecursiveIn O f` — an inductive Prop with
+NINE closure rules (zero, succ, left, right, oracle, pair, comp, prec,
+plain rfind) — plus `Mathlib.Computability.TuringDegree` (`≤ᵀ`,
+`TuringDegree`). Still absent from Mathlib: any Gödel numbering of oracle
+machines, the Turing jump, and every theorem about it. That gap is exactly
+what S10 fills, and it made the bridge dramatically cheaper than the S2-era
+plan (no need to define `Computable_in` from scratch; no `evaln` machinery
+at all — see 7.3).
+
+### 7.2 What was built
+
+* `OracleCode` — 9-constructor inductive mirroring `Nat.RecursiveIn`'s
+  closure rules 1:1; semantics `evalO (o : ℕ → Bool) : OracleCode → ℕ →. ℕ`
+  whose case bodies are TEXTUALLY the constructors' closure forms.
+* **Enumeration theorem** `exists_code_iff`:
+  `Nat.RecursiveIn {oracleFun o} f ↔ ∃ c, evalO o c = f`. Both directions
+  are structural inductions that close by `rfl` per case — the payoff of
+  exact mirroring (and of choosing plain `rfind` over Mathlib-`Code`'s
+  `rfind'`, which is only needed for step-bounded `evaln` bookkeeping).
+* Gödel numbering `encodeCode`/`ofNatCode` (atoms 0–4; composite
+  `4·payload + tag + 5`) with left-inverse round trip
+  `ofNatCode_encodeCode`. Surjectivity deliberately NOT proved (not needed:
+  the diagonal only requires that the diagonal program's index decode to
+  itself).
+* **Turing jump** `jumpSet o = {e | (evalO o (ofNatCode e) e).Dom}`, with
+  non-vacuity both ways: `0 ∈ jumpSet o` (index of `zero`) and
+  `encodeCode (rfind left) ∉ jumpSet o`.
+* **Post 1944, undecidability half** — `jump_diagonal`: no `h` recursive in
+  `o` outputs 1 on jump members and 0 on non-members; packaged as
+  `jump_not_recursiveIn` (the problem.md formal target
+  `relativized_halting_undecidable`, with `Computable_in A` =
+  `Nat.RecursiveIn {oracleFun A}`) and `jumpChar_not_turingReducible`
+  (Mathlib `TuringReducible` vocabulary). Plus the trivial positive side
+  `oracleFun_recursiveIn_self`, and §6 instantiates the abstract sibling's
+  predictor framework at the classical `jumpPredictor`.
+
+### 7.3 The proof-economy insight
+
+The classical proof builds the diagonal machine via s-m-n/universal-machine
+machinery. Here the ENUMERATION THEOREM substitutes for all of it: from a
+decider `h`, completeness yields a code `c` with `evalO o c = h`; the
+diagonal program is the two-constructor composition
+`d = comp (rfind left) c`, where the **gate** `rfind left` halts on `v` iff
+`v = 0` (its search predicate ignores the search variable — evaluates to
+`some (decide (v = 0))` at every step). So `d` halts on `e` iff
+`h e = some 0`, and running `d` on `e₀ = encodeCode d` (legitimate
+self-reference via the round trip) contradicts either answer. No `evaln`,
+no step counting, no universal machine, no s-m-n.
+
+### 7.4 Lean idioms (v4.31)
+
+* Mirror-the-constructors discipline: copying `Nat.RecursiveIn`'s closure
+  expressions verbatim into `evalO`'s cases makes both enumeration
+  inductions pure `rfl`-per-case.
+* WF-recursive `ofNatCode` (patterns `0..4`, `n+5`; `termination_by n => n`
+  with three `have _hi : _ < n + 5` bounds via
+  `Nat.unpair_left_le/unpair_right_le/div_le_self`). Its equations are NOT
+  definitional: atoms need `simp [ofNatCode]`, the composite case gets one
+  unfolding lemma `ofNatCode_add_five` proved by `rw [ofNatCode]`.
+* Numeral-defeq trap (cost one build round): `(4*m+1)+5` is DEFEQ to
+  `4*m+6`, so `show encodeCode (.comp cf cg) = (4*m+1)+5 from rfl` works
+  directly — and a trailing `omega` after such a `rw` dies with "no goals".
+* `%4`/`/4` facts on `4*m + r` terms: `omega` proves them all; `if_pos`/
+  `if_neg` with omega-`show`s steers the decoder's if-chain.
+* `Part` Functor/Monad syntactic bridges: rewrite `<$>`/`>>=` via
+  `Part.map_eq_map`/`Part.bind_eq_bind` BEFORE `Part.map_some`/
+  `Part.bind_some`; `rfl`-API lemmas (`evalO_comp_apply` etc.) pin the
+  defeqs once and give stable rewrite handles.
+* `Nat.rfind_dom` has an implicit-binder conjunct
+  (`∀ {m}, m < n → (p m).Dom`) — construct with `fun {m} hm => ...`.
+
+### 7.5 State after S10
+
+OQ-03a is now proved in BOTH forms: abstract (sibling file, zero-import)
+and concrete/literature (this file, against Mathlib's `RecursiveIn`).
+Remaining directions: (a) the "jump computes the oracle" positive half
+(`oracleFun o ≤ᵀ jump-char` — needs constructing query codes, session-sized
+and well-scoped now that the code machinery exists); (b) arithmetical
+hierarchy OQ-03b (Σ⁰ₙ strictness via iterated `jumpSet` — the iteration is
+now definable concretely, not just abstractly); (c) upstreaming candidate:
+the enumeration theorem + jump would be a natural Mathlib contribution atop
+`RecursiveIn`.
