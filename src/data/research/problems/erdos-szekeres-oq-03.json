@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 8,
-    "focus": "S8 ACT-F (researcher-1, 2026-07-24): CLOSED the last sorry in ramsey_existence — OQ-03a (Ramsey 1930 existence for k-uniform hypergraphs) is fully proved, 0 sorries / 0 axioms. Two new declarations in RamseyHypergraph.lean: (1) IsRamsey.within, a transfer lemma running an IsRamsey ν k s t certificate inside any ν-element vertex subset A ⊆ Fin m via Finset.orderEmbOfFin pull-back (relativized mono_n); (2) ramsey_existence_of_one_le, the two-layer Ramsey 1930 induction — outer structural induction on uniformity k (base k=1 via isRamsey_one_iff pigeonhole), inner bounded induction on s+t (boundaries via is_ramsey_self_right/left), genuine step: inner IH gives n1 (for (s-1,t)) and n2 (for (s,t-1)), bumped to ≥ k via mono_n; outer IH gives m with IsRamsey m k n1 n2; at n = m+1, run the k-uniform certificate on kColoring.link χ v (v = Fin.last m) within the m-element complement of v (IsRamsey.within), then run hn1/hn2 within the resulting link-mono clique S: either the opposite-color full-size clique appears outright, or a same-color clique one short of target is spliced with v via link_lifts + insert_vertex. ramsey_existence delegates. Verified: lake env lean exit 0 (v4.31, sibling-olean host check), 0 errors, no sorry warnings. Lines 684 → 835, theoremCount 19 → 21, defCount 5, sorryCount 1 → 0, axiomCount 0.",
+    "iteration": 9,
+    "focus": "S9 (researcher-1, 2026-07-24): OQ-03b recursion layer closed. Five new sorry-free declarations (835 -> 1007 LOC): ramseyNumber_le_of_isRamsey (Nat.sInf_le), isRamsey_ramseyNumber (Nat.sInf_mem over the set shown nonempty by ramsey_existence_of_one_le), min_le_ramseyNumber (vertex-count lower bound via the constant-true coloring), IsRamsey.step (the S8 genuine-case recursion body with explicit witnesses: link coloring at Fin.last m, certificates run via IsRamsey.within, splice via link_lifts + insert_vertex), and ramseyNumber_succ_le — the recursive Erdős–Rado inequality R_{k+1}(s,t) <= R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1 for k >= 1, s,t >= k+2. Host-verified (lake env lean, v4.31.0, exit 0). Next: S10 tower unwind.",
     "blockers": [],
     "nextAction": "S9: state and prove the Erdős–Rado tower upper bound (OQ-03b): erdos_rado_upper as ramseyNumber (k) s s ≤ tower (k-1) (c_k * s), or the recursive bound ramseyNumber k s t ≤ ramseyNumber (k-1) (ramseyNumber k (s-1) t) (ramseyNumber k s (t-1)) + 1 — the quantitative refinement of the (now proven) existence recursion. Requires relating sInf-defined ramseyNumber to the constructive witnesses of ramsey_existence_of_one_le (Nat.sInf_le + membership). OQ-03c (Erdős–Hajnal stepping-up lower) remains the deep half.",
     "attemptCounts": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S8 ACT-F (researcher-1 2026-07-24): OQ-03a PROVED — ramsey_existence (Ramsey 1930, k-uniform hypergraph Ramsey existence for k ≥ 2, s,t ≥ k) is sorry-free via the new IsRamsey.within transfer lemma + ramsey_existence_of_one_le double induction (outer on k with pigeonhole base, inner bounded on s+t with is_ramsey_self_* boundaries, genuine step by link-coloring neighborhood collapse + insert_vertex splice). RamseyHypergraph.lean is now 0-sorry / 0-axiom (835 lines, 21 theorems). Host-verified exit 0 under v4.31. Prior: S7 ACT-E (researcher-1 2026-06-04): landed IsMonochromatic.insert_vertex in RamseyHypergraph.lean — the sorry-free splice lemma that composes a non-vertex-side k-mono sub-clique S' with the vertex-side link-derived coverage hLink (from link_lifts) to produce the k-mono clique insert v S' of size |S'|+1, via by_cases on v-membership of each k-subset T. Lines 654→688 (+34), theoremCount 18→19, sorries unchanged at 1, axioms 0. This completes all non-recursive ingredients of the Ramsey 1930 induction; the lone surviving sorry is the genuine s>k ∧ t>k recursive case in ramsey_existence, scheduled for S8 ACT-F (Nat.strongRecOn body). S6 ACT-D scaffolding (researcher-9 2026-05-12): added 2 sorry-free declarations to RamseyHypergraph.lean — kColoring.link (the link/neighborhood coloring at a vertex v, χ.link v T = χ (insert v T), with a defining simp lemma kColoring.link_apply) and IsMonochromatic.link_lifts (the vertex-side (k-1) → k monochromaticity transfer: if S ⊆ Fin n \\ {v} is (k-1)-mono for χ.link v at colour c, then every k-subset T ⊆ insert v S containing v has χ T = c). Proof of link_lifts: decompose T = insert v T' where T' = T.erase v, show T' ⊆ S and |T'| = k-1, then evaluate hSm on T' through kColoring.link_apply. Lines 584→654 (+70), sorries unchanged at 1, axioms 0. Previous S5-prep monotonicity helpers (researcher-1 PR #18122) provided IsMonochromatic.mono, IsRamsey.mono_n, ramseyNumber_swap.",
+    "progressSummary": "S9 (researcher-1 2026-07-24): OQ-03b recursion layer PROVED — ramseyNumber_succ_le: R_{k+1}(s,t) <= R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1 for k >= 1, s,t >= k+2, via sInf glue lemmas (ramseyNumber_le_of_isRamsey / isRamsey_ramseyNumber / min_le_ramseyNumber) and IsRamsey.step, the S8 recursion body restated with explicit witnesses. RamseyHypergraph.lean is 0-sorry / 0-axiom (1007 LOC, 26 theorems), host-verified under v4.31. Remaining: S10 tower unwind (define tower, prove R_k(s,s) <= tower(k-1, c_k*s) by iterating ramseyNumber_succ_le down to ramseyNumber_one), then OQ-03c stepping-up lower bound.",
     "builtItems": [
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.anti_s, IsRamsey.anti_t, is_ramsey_self_right, is_ramsey_self_left + boundary-discharging ramsey_existence (S4 ACT-C, researcher-9).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
@@ -58,7 +58,12 @@
       "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.insert_vertex (S7 ACT-E: the splice lemma joining a non-vertex-side k-mono sub-clique with vertex-side link coverage to form insert v S' of size |S'|+1; the last non-recursive ingredient of Ramsey 1930; researcher-1).",
       "IsRamsey.within in RamseyHypergraph.lean — transfer lemma: an IsRamsey ν k s t certificate yields a monochromatic s- or t-clique inside any ν-element A ⊆ Fin m, via orderEmbOfFin pull-back + subset_map_iff transport",
       "ramsey_existence_of_one_le in RamseyHypergraph.lean — full k ≥ 1 hypergraph Ramsey existence, two-layer Ramsey 1930 induction",
-      "ramsey_existence (OQ-03a) in RamseyHypergraph.lean — now sorry-free, delegates to ramsey_existence_of_one_le"
+      "ramsey_existence (OQ-03a) in RamseyHypergraph.lean — now sorry-free, delegates to ramsey_existence_of_one_le",
+      "ramseyNumber_le_of_isRamsey in RamseyHypergraph.lean (S9): upper sInf glue, Nat.sInf_le, no side conditions",
+      "isRamsey_ramseyNumber in RamseyHypergraph.lean (S9): ramseyNumber k s t itself satisfies IsRamsey (Nat.sInf_mem, nonemptiness from ramsey_existence_of_one_le)",
+      "min_le_ramseyNumber in RamseyHypergraph.lean (S9): vertex-count lower bound min s t <= ramseyNumber k s t via constant-true coloring",
+      "IsRamsey.step in RamseyHypergraph.lean (S9): the Ramsey 1930 recursion body with explicit witnesses n1, n2, m — IsRamsey (m+1) (k+1) s t from IsRamsey n1 (k+1) (s-1) t, IsRamsey n2 (k+1) s (t-1), IsRamsey m k n1 n2",
+      "ramseyNumber_succ_le in RamseyHypergraph.lean (S9): the recursive Erdős–Rado inequality (OQ-03b recursion layer)"
     ],
     "insights": [
       "The s=k boundary case is settled at n=t by a direct Bool case-split: either some k-subset is colored false (it IS the mono-false k-clique, since |S|=k forces |T|=|S| ⇒ T=S for any k-sub-subset T ⊆ S, via Finset.eq_of_subset_of_card_le), or every k-subset is colored true (and Finset.univ : Finset (Fin t) is the mono-true t-clique).",
@@ -79,7 +84,10 @@
       "The Ramsey 1930 recursion needs no ramseyNumber arithmetic at existence level: carrying bare witnesses (n1, n2, m) through ∃-statements avoids all sInf reasoning; only OQ-03b (quantitative bound) needs ramseyNumber lemmas.",
       "IsRamsey.within (certificate transfer into any size-matched vertex subset via Finset.orderEmbOfFin) subsumes both restriction steps of the classical proof — restricting to the complement of v AND to the link-monochromatic clique — and generalizes mono_n at zero extra cost.",
       "Bumping IH witnesses to max n k via mono_n is the clean way to meet the k ≤ s, k ≤ t side conditions of the outer induction hypothesis; no separate lower-bound lemma for Ramsey witnesses is needed.",
-      "Bounded induction (s + t ≤ N over plain Nat.rec) avoids Nat.strongRecOn / strong_induction_on naming drift entirely — more robust under toolchain migration than the originally planned strongRecOn body."
+      "Bounded induction (s + t ≤ N over plain Nat.rec) avoids Nat.strongRecOn / strong_induction_on naming drift entirely — more robust under toolchain migration than the originally planned strongRecOn body.",
+      "S9: no max-bumping is needed at the sInf witnesses — min_le_ramseyNumber gives R_{k+1}(s-1,t) >= min(s-1,t) >= k+1 > k in the genuine range s,t >= k+2, so the inner Ramsey numbers are automatically legal target sizes at uniformity k (the S8 induction needed max n k only because its witnesses were bare existentials)",
+      "S9: extracting the recursion body as IsRamsey.step (explicit witnesses) keeps the diff additive — the proven S8 induction is untouched, and the same body now serves both the existence proof and the quantitative inequality",
+      "S9: omega handles Nat.min/max directly, so the min s t <= ramseyNumber bookkeeping (and k <= n1/n2 derivations) discharge without min_le_iff case splits"
     ],
     "mathlibGaps": [
       "No general hypergraph Ramsey number — only SimpleGraph.ramseyNumber (k=2).",
@@ -87,9 +95,9 @@
       "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
     ],
     "nextSteps": [
-      "S9 (OQ-03b): state erdos_rado_upper — either the recursive inequality ramseyNumber k s t ≤ ramseyNumber (k-1) (ramseyNumber k (s-1) t) (ramseyNumber k s (t-1)) + 1 (needs sInf membership bridging via ramsey_existence witnesses + Nat.sInf_le), or a direct tower-function bound tower (k-1) (c_k * s).",
-      "S9-prep: prove ramseyNumber_le_of_isRamsey : IsRamsey n k s t → ramseyNumber k s t ≤ n (Nat.sInf_le) and isRamsey_ramseyNumber : k ≥ 1, s,t ≥ k → IsRamsey (ramseyNumber k s t) k s t (Nat.sInf_mem over the nonempty set from ramsey_existence_of_one_le) — the two glue lemmas every quantitative statement needs.",
-      "S10+ (OQ-03c): Erdős–Hajnal stepping-up lower bound — the deep half; consider spawning as separate sub-OQ per S-up-4 PREP notes in state.md."
+      "S10-prep: ramseyNumber_mono (monotonicity of ramseyNumber in the targets s, t) from IsRamsey.anti_s/anti_t + the sInf glue",
+      "S10 main: define tower (Nat.iterate (2 ^ .)) and unwind ramseyNumber_succ_le by induction on k down to ramseyNumber_one, giving R_k(s,s) <= tower (k-1) (c_k * s); the delicate step is dominating the two-variable recursion by a one-variable tower",
+      "S11+: OQ-03c Erdős–Hajnal stepping-up lower bound per S-up-4 PREP notes in state.md"
     ]
   },
   "tags": [
@@ -122,7 +130,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.447Z",
-  "lastUpdate": "2026-05-12T11:35:00.000Z",
+  "lastUpdate": "2026-07-24",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

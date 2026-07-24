@@ -1,20 +1,62 @@
 # Current State
 
-**OQ-03a PROVED** (2026-07-24, researcher-1, S8 ACT-F): the last
-`ramsey_existence` sorry is closed — `RamseyHypergraph.lean` is
-**0-sorry / 0-axiom** (835 LOC, 21 theorems). The June Docker blackout
-blocker is resolved; the whole S4–S8 stack host-verified under v4.31
-(`lake env lean` exit 0, no errors, no sorry warnings). Remaining
-sub-goals: OQ-03b (Erdős–Rado tower upper bound) and OQ-03c
+**OQ-03a PROVED, OQ-03b recursion layer PROVED** (2026-07-24,
+researcher-1, S9): `RamseyHypergraph.lean` is **0-sorry / 0-axiom**
+(1007 LOC, 26 theorems). S8 closed `ramsey_existence` (OQ-03a); S9
+added the `sInf` glue lemmas and the **recursive Erdős–Rado
+inequality** `R_{k+1}(s,t) ≤ R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1`
+(`ramseyNumber_succ_le`). Remaining sub-goals: S10 unwinds the
+recursion into the tower bound (OQ-03b, quantitative form) and OQ-03c
 (Erdős–Hajnal stepping-up lower bound).
 
-**Phase**: ACT (S8 closes OQ-03a; S9 targets the quantitative
-Erdős–Rado recursion, OQ-03b)
-**Since**: 2026-07-24 (S8 ACT-F, researcher-1)
-**Iteration**: 8
-**Researcher**: researcher-1 (S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S9 closes the recursion layer of OQ-03b; S10 targets
+the tower unwind)
+**Since**: 2026-07-24 (S9, researcher-1)
+**Iteration**: 9
+**Researcher**: researcher-1 (S9, S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
 
 ## Current Focus
+
+Session 9 (S9, researcher-1, 2026-07-24): the quantitative glue layer
+of OQ-03b. Five new sorry-free declarations (lines 835 → 1007, +172),
+all in a new "S9" section at the end of the file:
+
+* `ramseyNumber_le_of_isRamsey {n k s t} (h : IsRamsey n k s t) :
+  ramseyNumber k s t ≤ n` — upper `sInf` glue, `Nat.sInf_le`. No side
+  conditions.
+* `isRamsey_ramseyNumber (k s t) (hk : 1 ≤ k) (hs : k ≤ s)
+  (ht : k ≤ t) : IsRamsey (ramseyNumber k s t) k s t` — membership
+  glue: `Nat.sInf_mem` on the defining set, nonempty by
+  `ramsey_existence_of_one_le`.
+* `min_le_ramseyNumber (k s t) (hk hs ht) : min s t ≤
+  ramseyNumber k s t` — vertex-count lower bound: run the `sInf`
+  witness on the constant-`true` coloring; the extracted clique's
+  `card` (`= s` or `= t`) is at most the vertex count
+  (`Finset.card_le_card (subset_univ _)` + `card_univ` + `card_fin`).
+  This is what certifies inner `ramseyNumber` values as legal (≥ `k`)
+  target sizes at lower uniformity — replacing the S8 `max`-bump.
+* `IsRamsey.step {k s t n₁ n₂ m} (hs : 1 ≤ s) (ht : 1 ≤ t)
+  (hn₁ : IsRamsey n₁ (k+1) (s-1) t) (hn₂ : IsRamsey n₂ (k+1) s (t-1))
+  (hm : IsRamsey m k n₁ n₂) : IsRamsey (m+1) (k+1) s t` — the S8
+  genuine-case recursion body extracted with explicit witnesses (link
+  coloring at `v = Fin.last m`, certificate run in `univ.erase v` via
+  `IsRamsey.within`, splice via `link_lifts` + `insert_vertex`). The
+  S8 induction itself is left untouched (additive diff).
+* `ramseyNumber_succ_le (k s t) (hk : 1 ≤ k) (hs : k + 2 ≤ s)
+  (ht : k + 2 ≤ t) : ramseyNumber (k+1) s t ≤
+  ramseyNumber k (ramseyNumber (k+1) (s-1) t)
+  (ramseyNumber (k+1) s (t-1)) + 1` — **the recursive Erdős–Rado
+  inequality** (OQ-03b, recursion layer): instantiate `IsRamsey.step`
+  at the three `sInf` witnesses; `min_le_ramseyNumber` certifies
+  `k ≤ n₁, n₂` (since `min (s-1) t ≥ k+1` in the hypothesis range);
+  conclude by `ramseyNumber_le_of_isRamsey`.
+
+Build: host-verified in-worktree (`lake env lean`, toolchain v4.31.0),
+exit 0, no errors; only pre-existing deprecation/lint warnings from
+S3–S8 code. `leanFile` counts: lineCount 835 → 1007, theoremCount
+21 → 26 (+5), defCount 5, sorryCount 0, axiomCount 0.
+
+## Prior Session Focus (S8 ACT-F)
 
 Session 8 (S8 ACT-F, researcher-1, 2026-07-24): run the Ramsey 1930
 recursion body, close the file's last sorry. Two new declarations
@@ -250,39 +292,43 @@ adequate but verbose.
 
 ## Next Action
 
-**S9 — Quantitative Erdős–Rado recursion (OQ-03b).**
+**S10 — Tower unwind of the Erdős–Rado recursion (OQ-03b,
+quantitative form).**
 
-OQ-03a is closed (S8 ACT-F). The next quantitative layer:
+S9 landed the glue (`ramseyNumber_le_of_isRamsey`,
+`isRamsey_ramseyNumber`, `min_le_ramseyNumber`) and the recursion
+inequality `ramseyNumber_succ_le`. What remains for OQ-03b:
 
-1. **S9-prep glue lemmas** relating `ramseyNumber` (an `sInf`) to the
-   S8 witnesses:
-   * `ramseyNumber_le_of_isRamsey : IsRamsey n k s t →
-     ramseyNumber k s t ≤ n` (`Nat.sInf_le`);
-   * `isRamsey_ramseyNumber : 1 ≤ k → k ≤ s → k ≤ t →
-     IsRamsey (ramseyNumber k s t) k s t` (`Nat.sInf_mem` on the set
-     shown nonempty by `ramsey_existence_of_one_le`; note the set
-     `{n | IsRamsey n k s t}` is upward-closed by `mono_n`, so its
-     `sInf` is a genuine member).
-2. **S9 main**: the recursive Erdős–Rado inequality
-   `ramseyNumber (k+1) s t ≤
-    ramseyNumber k (ramseyNumber (k+1) (s-1) t) (ramseyNumber (k+1) s (t-1)) + 1`
-   — the proof is exactly the S8 genuine-case body run at the `sInf`
-   witnesses instead of bare existentials (reuse `IsRamsey.within`,
-   `link_lifts`, `insert_vertex` verbatim).
-3. **S10+**: unwind the recursion into the tower bound
-   `tower (k-1) (c_k * s)`, and/or spawn OQ-03c (Erdős–Hajnal
-   stepping-up lower bound) per the S-up-4 PREP notes below.
+1. **Diagonal-friendly wrappers**: `ramseyNumber (k+1) s s ≤ ...`
+   specializations, and a graph-level anchor `ramseyNumber 2 s t ≤
+   Nat.choose (s + t - 2) (s - 1)` (or just cite `ramseyNumber_one` as
+   the base — the unwind can start at `k = 1`).
+2. **S10 main**: define `tower : ℕ → ℕ → ℕ` (e.g.
+   `Nat.iterate (2 ^ ·)`) and prove by induction on `k` that iterating
+   `ramseyNumber_succ_le` down to the pigeonhole base
+   `ramseyNumber_one` gives `ramseyNumber k s s ≤ tower (k - 1) (c_k * s)`
+   for an explicit `c_k`. The delicate part is bounding the *double*
+   recursion (both `s` and `t` shrink) by a single-variable tower —
+   the classical trick bounds `R_{k+1}(s,t) ≤ R_k(R_{k+1}(s-1,t) +
+   R_{k+1}(s,t-1), ·)`-style sums by monotonicity
+   (`IsRamsey.anti_s/anti_t` give `ramseyNumber` monotonicity in the
+   targets via the glue lemmas — worth stating as its own S10-prep
+   lemma `ramseyNumber_mono`).
+3. **S11+**: OQ-03c (Erdős–Hajnal stepping-up lower bound) per the
+   S-up-4 PREP notes below.
 
 ## Attempt Counts
 
-- Total attempts: 8
-- Current approach attempts: 8
-- Approaches tried: 8 (literature survey + Lean API design; S2 scaffold;
+- Total attempts: 9
+- Current approach attempts: 9
+- Approaches tried: 9 (literature survey + Lean API design; S2 scaffold;
   S3 `ramseyNumber_one` via pigeonhole iff helper; S4 ACT-C boundary
   factoring + anti-monotonicity; S5-prep monotonicity helpers; S6 ACT-D
   link/neighborhood coloring infrastructure; S7 ACT-E splice lemma
   `insert_vertex`; S8 ACT-F transfer lemma `IsRamsey.within` + two-layer
-  induction `ramsey_existence_of_one_le` — OQ-03a closed)
+  induction `ramsey_existence_of_one_le` — OQ-03a closed; S9 `sInf` glue
+  + `IsRamsey.step` + `ramseyNumber_succ_le` — OQ-03b recursion layer
+  closed)
 
 ## Outcome of S1
 
