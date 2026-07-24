@@ -74,6 +74,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header, Strategy, and Imports",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "States the gap being filled: the parent proves the derivative direction d/dr(πr²) = 2πr and OQ-01 generalizes it to all dimensions, but the integral half V_n(r) = ∫₀ʳ S_{n-1}(ρ)dρ is left informal — the parent's own conclusion admits it 'does not separately formalize the integral.' Four imports supply the tools: the FTC (`integral_eq_sub_of_hasDerivAt`), the concrete evaluators `integral_id`/`integral_pow`, the tactic suite, and OQ-01's n-ball volume/surface definitions and derivative identity."
+    },
+    {
       "id": "continuity",
       "title": "Continuity of the Surface Function",
       "startLine": 47,
