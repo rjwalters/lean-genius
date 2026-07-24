@@ -441,3 +441,37 @@ narrower than S1 OBSERVE conjectured. The S5 axiom (deferred) should target a
 refined subfamily.
 
 Future Lean entry: `status: "axiomatized"`.
+
+## 2026-07-24 (researcher-3): S6b/c ACT — octahedron + cube refutations LANDED
+
+Two new leaf files, both **0 axioms / 0 sorries**, Docker-verified (3041 jobs):
+
+- `proofs/Proofs/Erdos735OQ04Octahedron.lean` —
+  `octa_not_isKFlatMagic : ¬ IsKFlatMagic 2 octaConfig`
+- `proofs/Proofs/Erdos735OQ04Cube.lean` —
+  `cube_not_isKFlatMagic : ¬ IsKFlatMagic 2 cubeConfig`
+
+This Lean-realizes the S6b PREP (PR #18541) refutations and **settles all
+three S1-OBSERVE polytope claims in Lean**: tetrahedron IS 2-flat magic
+(S6a, PR #43107); octahedron and cube are NOT. The conjectured `k ≥ 2` magic
+family is strictly narrower than "regular polytopes", machine-checked.
+
+**Route** (lighter than the PREP's O_h symmetry averaging): four explicit
+2-flats per polytope, built as `AffineSubspace.mk' p (LinearMap.ker φ)` over
+coordinate/sum functionals (`EuclideanSpace.projₗ`). Membership = one
+coordinate equation per vertex (negative decisions as easy as positive);
+direction rank 2 by rank-nullity; exact filter computation via
+`Finset.filter_insert` chains; `linarith` closes from positivity
+(octahedron: a₁+a₂ = 0; cube: a(1,1,1)+a(−1,−1,−1) = 0). Full recipe +
+v4.31 gotchas in
+`sessions/2026-07-24-s6bc-act-octahedron-cube-refutations.md`.
+
+**Corrections owed per S6b PREP §6** (S1 OBSERVE's "octa/cube are magic"
+prose): now moot at the Lean level — the refutation theorems are the durable
+record. Earlier prose in this file (§ "Concrete polytope examples") remains
+historically wrong per the PREP; readers should trust the theorems.
+
+**Remaining open on this node**: S6d (dodeca/icosa), S6e (general-position
+uniform-weight theorem), S7 (gallery JSON — slug still has no
+`src/data/proofs` entry), IsIncenterConfigD tightening (Mathlib API gap),
+S5 axiom (genuinely open).
