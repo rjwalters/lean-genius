@@ -11,17 +11,26 @@
       "**Commutativity was never used — only biadditivity.** The parent proof closed its inductive step with `ring`, which silently requires a commutative ring, but the underlying identity $p(a)(b_1) + p(a)(b_2-b_1) = p(a)(b_2)$ and its partner are pure additive-group facts. Isolating biadditivity as the sole hypothesis is the content of the generalisation: the value side $M$ need not even be a ring.",
       "**The mul pairing is biadditive in every ring.** `AddMonoidHom.mul : R →+ R →+ R` exists for any (non-unital, non-associative) ring because multiplication distributes over addition on both sides. Feeding it to (A′) yields Abel summation over an arbitrary ring with the factor order `f * G` fixed — strictly stronger than the parent's `CommRing` statement, with the same proof.",
       "**The module case is the genuine bimodule pairing.** Specialising $p$ to the scalar action $r \\bullet m$ lets $f$ range over a ring of multipliers and $G$ over a left module $M$ — `f` and `G` live in different objects, exactly the bimodule-valued pairing the open question asked for. This is the discrete Abel transform in its natural home for sequences valued in a module (e.g. vector- or operator-valued series).",
-      "**Non-commutative sequences are now in scope.** Because the identity needs only a biadditive pairing $p : A \\to B \\to C$ — never commutativity — it applies verbatim when $f$ and $\\Delta G$ take values in a non-commutative ring or an operator algebra, with $p$ the (order-sensitive) product. Summation by parts thus holds for matrix- and operator-valued series, where the boundary term $p(f(n),G(n)) - p(f(0),G(0))$ keeps the factors in their original order — a setting the `ring`-closed parent proof could not reach."
+      "**Non-commutative sequences are now in scope.** Because the identity needs only a biadditive pairing $p : A \\to B \\to C$ — never commutativity — it applies verbatim when $f$ and $\\Delta G$ take values in a non-commutative ring or an operator algebra, with $p$ the (order-sensitive) product. Summation by parts thus holds for matrix- and operator-valued series, where the boundary term $p(f(n),G(n)) - p(f(0),G(0))$ keeps the factors in their original order — a setting the `ring`-closed parent proof could not reach.",
+      "**Not every specialisation is free.** `abel_summation_ring` is a one-line corollary of the master theorem, obtained by feeding it the bundled pairing `AddMonoidHom.mul`. `abel_summation_smul` instead re-runs the induction from scratch: scalar multiplication is biadditive (`smul_add`, `add_smul`) but Mathlib has no ready-made `AddMonoidHom R →+ M →+ M` packaging it, so the module case pays for its own short proof rather than inheriting the master theorem for free — a reminder that biadditivity-in-principle and biadditivity-bundled-as-`AddMonoidHom` are not the same thing in practice."
     ]
   },
   "sections": [
     {
       "id": "sec-overview",
-      "title": "Overview: the discrete Abel transform is biadditive — summation by parts over any ring or module",
+      "title": "Module docstring: biadditivity replaces commutativity",
       "startLine": 1,
-      "endLine": 68,
-      "summary": "The import of Mathlib, the module docstring, and the namespace/open setup. Answers the parent's second open question: whether Abel summation by parts survives the loss of commutativity, extending to a non-commutative ring or a bimodule-valued pairing where f and G take values in different modules with a fixed multiplication order.",
+      "endLine": 63,
+      "summary": "The import of Mathlib and the module docstring. Answers the parent's second open question: whether Abel summation by parts survives the loss of commutativity, extending to a non-commutative ring or a bimodule-valued pairing where f and G take values in different modules with a fixed multiplication order.",
       "mathContext": "The parent proved (A) ∑_{k<n} f k·(G(k+1)−G k) = f n·G n − f 0·G 0 − ∑_{k<n}(f(k+1)−f k)·G(k+1) over a commutative ring via a ring-closed induction. The sole fact that induction used is biadditivity, so this file replaces the product by an arbitrary biadditive pairing p : A →+ B →+ M between three abelian groups and proves the master identity (A') in the same shape. Three specialisations follow: abel_summation_ring (p = AddMonoidHom.mul) recovers (A) over any ring, dropping commutativity; abel_summation_smul (p = scalar action) gives the module-valued transform with f : ℕ → R and G : ℕ → M; abel_summation_swap_biadditive is the order-swapped form. Method: induction identical to the parent, but the leftover identity lives in the abelian group M, so map_sub (biadditivity) + abel replaces ring — precisely the move that frees the identity from commutativity. 0 sorries, 0 axioms."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Finset opening",
+      "startLine": 65,
+      "endLine": 68,
+      "summary": "Enters namespace SummationByPartsOQ01OQ01OQ01OQ02OQ02 and opens Finset, so the range-sum notation used by the theorems below is available unqualified.",
+      "mathContext": "Boilerplate: namespace SummationByPartsOQ01OQ01OQ01OQ02OQ02; open Finset."
     },
     {
       "id": "biadditive-master",
