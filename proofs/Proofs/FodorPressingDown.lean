@@ -894,6 +894,86 @@ theorem stationary_splits_binary_aleph1 {S : Set Ordinal.{0}}
     isRegular_aleph_one aleph0_lt_aleph_one hS
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part XII: Countably Many Disjoint Stationary Sets
+-- ══════════════════════════════════════════════════════════════════
+--
+-- Iterating the binary split of Part XI on the second piece yields an
+-- ℕ-indexed family of pairwise disjoint stationary subsets of any
+-- stationary S ⊆ ω₁. This is a strict strengthening of the binary case
+-- and a stepping stone toward the full Solovay theorem (Jech 8.10),
+-- which asks for an exhaustive partition into ℵ₁-many pieces; the
+-- family produced here is countable and need not exhaust S.
+
+/-- **ℵ₀-many pairwise disjoint stationary subsets** of any stationary
+    `S ⊆ ω₁`, by iterating `stationary_splits_binary_aleph1`: split `S`
+    into `T 0 ⊔ R 0`, then `R 0` into `T 1 ⊔ R 1`, and so on. Piece `T m`
+    is disjoint from remainder `R m`, which contains every later piece.
+
+    (Not a partition: the union of the `T n` need not exhaust `S`. The
+    full Solovay theorem — an exhaustive ℵ₁-piece partition — remains
+    open here.) -/
+theorem stationary_omega_family_aleph1 {S : Set Ordinal.{0}}
+    (hS : IsStationaryBelow S (ℵ₁).ord) :
+    ∃ T : ℕ → Set Ordinal,
+      (∀ n, T n ⊆ S) ∧ (∀ m n, m ≠ n → Disjoint (T m) (T n)) ∧
+      ∀ n, IsStationaryBelow (T n) (ℵ₁).ord := by
+  -- one splitting step, as a choice function on the subtype of stationary sets
+  have hstep : ∀ p : {X : Set Ordinal.{0} // IsStationaryBelow X (ℵ₁).ord},
+      ∃ pair : Set Ordinal × Set Ordinal,
+        pair.1 ⊆ p.1 ∧ pair.2 ⊆ p.1 ∧ Disjoint pair.1 pair.2 ∧
+        IsStationaryBelow pair.1 (ℵ₁).ord ∧
+        IsStationaryBelow pair.2 (ℵ₁).ord := by
+    rintro ⟨X, hX⟩
+    obtain ⟨S₁, S₂, h1, h2, hd, hs1, hs2⟩ := stationary_splits_binary_aleph1 hX
+    exact ⟨(S₁, S₂), h1, h2, hd, hs1, hs2⟩
+  choose q hq1 hq2 hqd hqs1 hqs2 using hstep
+  -- iterate on the remainder (second component)
+  let step : {X : Set Ordinal.{0} // IsStationaryBelow X (ℵ₁).ord} →
+      {X : Set Ordinal.{0} // IsStationaryBelow X (ℵ₁).ord} :=
+    fun p => ⟨(q p).2, hqs2 p⟩
+  let R : ℕ → {X : Set Ordinal.{0} // IsStationaryBelow X (ℵ₁).ord} :=
+    fun n => step^[n] ⟨S, hS⟩
+  have hRsucc : ∀ n, R (n + 1) = step (R n) :=
+    fun n => Function.iterate_succ_apply' step n ⟨S, hS⟩
+  have hRmono : ∀ n, (R (n + 1)).1 ⊆ (R n).1 := by
+    intro n
+    rw [hRsucc]
+    exact hq2 (R n)
+  have hRchain : ∀ m n, m ≤ n → (R n).1 ⊆ (R m).1 := by
+    intro m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => exact fun x hx => hx
+    | succ k _hk ih => exact fun x hx => ih (hRmono k hx)
+  have hRsub : ∀ n, (R n).1 ⊆ S := fun n => hRchain 0 n (Nat.zero_le n)
+  refine ⟨fun n => (q (R n)).1, fun n => (hq1 (R n)).trans (hRsub n), ?_,
+    fun n => hqs1 (R n)⟩
+  -- pairwise disjointness: piece m is disjoint from remainder m, which
+  -- contains every later piece
+  have key : ∀ m n, m < n → Disjoint (q (R m)).1 (q (R n)).1 := by
+    intro m n hmn
+    have hsub : (q (R n)).1 ⊆ (R (m + 1)).1 :=
+      (hq1 (R n)).trans (hRchain (m + 1) n hmn)
+    have hEq : (R (m + 1)).1 = (q (R m)).2 := by rw [hRsucc]
+    rw [hEq] at hsub
+    exact (hqd (R m)).mono_right hsub
+  intro m n hmn
+  rcases lt_or_gt_of_ne hmn with h | h
+  · exact key m n h
+  · exact (key n m h).symm
+
+/-- **Finite Solovay splitting at ω₁**: every stationary `S ⊆ ω₁` contains
+    `n` pairwise disjoint stationary subsets, for every `n : ℕ` — the
+    restriction of the ω-indexed family along `Fin.val`. -/
+theorem stationary_splits_finite_aleph1 {S : Set Ordinal.{0}}
+    (hS : IsStationaryBelow S (ℵ₁).ord) (n : ℕ) :
+    ∃ T : Fin n → Set Ordinal,
+      (∀ i, T i ⊆ S) ∧ (∀ i j, i ≠ j → Disjoint (T i) (T j)) ∧
+      ∀ i, IsStationaryBelow (T i) (ℵ₁).ord := by
+  obtain ⟨T, hsub, hdisj, hstat⟩ := stationary_omega_family_aleph1 hS
+  exact ⟨fun i => T i.1, fun i => hsub i.1,
+    fun i j hij => hdisj i.1 j.1 (Fin.val_injective.ne hij), fun i => hstat i.1⟩
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -930,14 +1010,21 @@ Key results:
   ✓ `exists_omegaSeq_high_fibers_stationary`: unbounded-index pigeonhole (production step)
   ✓ `stationary_splits_binary_of_cof_omega`: binary Solovay split, ω-cofinal case
   ✓ `stationary_splits_binary_aleph1`: **binary Solovay splitting at ω₁** (0 sorries)
+  ✓ `stationary_omega_family_aleph1`: ℵ₀-many pairwise disjoint stationary subsets
+    of any stationary S ⊆ ω₁ (iterated splitting; not a partition)
+  ✓ `stationary_splits_finite_aleph1`: n pairwise disjoint stationary subsets
+    for every n : ℕ (restriction along Fin.val)
 
 Sorries remaining: 0
 
-Open next step: the full κ-piece Solovay partition (Jech 8.10) — iterate the
-Part XI production step across κ-many target values (the binary case is done;
-the κ-partition needs the counting/bookkeeping layer), and extend past the
-ω-cofinal case to general regular κ (requires the cf α < α trace analysis;
-at ω₁ every limit is ω-cofinal so the theorem there is complete).
+Open next step: the full κ-piece Solovay partition (Jech 8.10) — an
+*exhaustive* partition into ℵ₁-many stationary pieces. The iterated binary
+split (Part XII) produces countably many disjoint pieces but neither
+exhausts S nor reaches length ω₁ (the remainder chain has no useful limit
+stage without new ideas: ⋂ₙ Rₙ can be non-stationary). The κ-partition
+needs the counting/bookkeeping layer over the Part XI production step, and
+the general-κ case additionally needs the cf α < α trace analysis (at ω₁
+every limit is ω-cofinal so the theorem there is complete).
 
 Connection to parent (CantorDiagonalizationOQ02OQ03):
   The parent proves that for regular uncountable κ, ordinals below κ.ord cannot
