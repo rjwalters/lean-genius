@@ -1097,7 +1097,7 @@ theorem legacy_bridge_refuted :
     omega
   have hfalse : engelsmaSearchPrunedLegacy 1 2 = false := h.mpr hvac
   rw [engelsmaSearchPrunedLegacy_1_2_eq_true] at hfalse
-  exact Bool.true_ne_false hfalse
+  exact Bool.noConfusion hfalse
 
 /-- **S26 regression**: the repaired search rejects the legacy
 counterexample `(1, 2)`. -/
