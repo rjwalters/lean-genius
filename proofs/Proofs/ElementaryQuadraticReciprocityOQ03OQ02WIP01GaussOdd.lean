@@ -138,7 +138,7 @@ theorem sum_zetapow_mul_zero (ζ : K) :
 def chiK (a : ZMod q) : K := ((quadraticChar (ZMod q) a : ℤ) : K)
 
 @[simp] theorem chiK_zero : chiK (K := K) (0 : ZMod q) = 0 := by
-  simp [chiK, quadraticChar_zero]
+  simp [chiK]
 
 theorem chiK_mul (a b : ZMod q) :
     chiK (K := K) (a * b) = chiK a * chiK b := by
@@ -174,7 +174,7 @@ term reindexes (`b = a·c`) into `∑_c χ(c)·ζ^{a(1+c)}`: the substitution us
 `zetapow_add`. -/
 theorem term_mul_gaussSumOdd (ζ : K) (hζq : ζ ^ q = 1)
     {a : ZMod q} (ha : a ≠ 0) :
-    chiK a * zetapow ζ a * gaussSumOdd ζ
+    chiK a * zetapow ζ a * gaussSumOdd (q := q) ζ
       = ∑ c : ZMod q, chiK c * zetapow ζ (a * (1 + c)) := by
   have hreindex : gaussSumOdd (q := q) ζ
       = ∑ c : ZMod q, chiK (a * c) * zetapow ζ (a * c) :=
@@ -197,16 +197,19 @@ row vanishes), collapse each row to `∑_c χ(c) ζ^{a(1+c)}`
 frequency `1+c = 0` contributes `χ(−1)(q−1)`, every other frequency
 contributes `−χ(c)`, and `∑ χ = 0` turns the tail into `+χ(−1)`. -/
 theorem gaussSumOdd_sq (hq2 : q ≠ 2) (ζ : K) (hζq : ζ ^ q = 1) (hζ1 : ζ ≠ 1) :
-    gaussSumOdd (q := q) ζ ^ 2 = chiK (-1) * q := by
+    gaussSumOdd (q := q) ζ ^ 2 = chiK (K := K) (-1 : ZMod q) * q := by
   -- Step 1: S² as a sum of rows over a ≠ 0
-  have hrow0 : chiK (K := K) (0 : ZMod q) * zetapow ζ 0 * gaussSumOdd ζ = 0 := by
+  have hrow0 : chiK (K := K) (0 : ZMod q) * zetapow ζ (0 : ZMod q) * gaussSumOdd (q := q) ζ
+      = 0 := by
     rw [chiK_zero, zero_mul, zero_mul]
   have hsq : gaussSumOdd (q := q) ζ ^ 2
       = ∑ a ∈ (univ : Finset (ZMod q)).erase 0,
-          chiK a * zetapow ζ a * gaussSumOdd ζ := by
+          chiK a * zetapow ζ a * gaussSumOdd (q := q) ζ := by
     rw [sq]
     conv_lhs => rw [gaussSumOdd, Finset.sum_mul]
-    exact (Finset.sum_erase _ hrow0).symm
+    exact (Finset.sum_erase
+      (f := fun b : ZMod q => chiK b * zetapow ζ b * gaussSumOdd (q := q) ζ)
+      (a := (0 : ZMod q)) univ hrow0).symm
   -- Step 2: collapse the rows and swap the summation order
   have hswap : gaussSumOdd (q := q) ζ ^ 2
       = ∑ c : ZMod q, chiK c *
