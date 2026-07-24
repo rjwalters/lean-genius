@@ -90,8 +90,15 @@
       "id": "the-open-question",
       "title": "The Open Question",
       "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring. Frames the target: the parent entry recovered Cantor's theorem qualitatively — no e : A → (A → Prop) is surjective — as an instance of Lawvere's fixed-point theorem. Its third open question asks for the quantitative form, the strict cardinality gap #A < #(A → Prop), an inequality between cardinals rather than a statement about the non-existence of a surjection. Closes by recording the file's status: 0 sorries, 0 axiom declarations, gallery status `verified`."
+    },
+    {
+      "id": "imports-and-setup",
+      "title": "Imports and Setup",
+      "startLine": 41,
       "endLine": 51,
-      "summary": "Module docstring, imports, and namespace setup. Frames the target: the parent entry recovered Cantor's theorem qualitatively — no e : A → (A → Prop) is surjective — as an instance of Lawvere's fixed-point theorem. Its third open question asks for the quantitative form, the strict cardinality gap #A < #(A → Prop), an inequality between cardinals rather than a statement about the non-existence of a surjection."
+      "summary": "Imports Mathlib.SetTheory.Cardinal.Order for the cardinal API (Cardinal.cantor, Cardinal.mk_set, Cardinal.mk_le_of_surjective) and Mathlib.Tactic for general automation. Opens the Function namespace (for Surjective) and the scoped Cardinal notation (# for Cardinal.mk), then opens the file's own namespace and fixes a universe variable u shared by all three theorems."
     },
     {
       "id": "power-set-form",
