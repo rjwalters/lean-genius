@@ -104,10 +104,17 @@
     },
     {
       "id": "classical-form",
-      "title": "The Classical Form and Numeric Checks",
-      "startLine": 129,
-      "endLine": 143,
-      "summary": "two_mul_sum_cube_weighted_sq': 2·∑_{k=0}^{n} k³·C(n,k)² = n²·(n+1)·C(2n−2,n−1) for n ≥ 1, obtained by setting n = m+1 in the m-form; with the numeric check ∑_{k=0}^{3} k³·C(3,k)² = 108 and 2·108 = 3²·4·C(4,2)."
+      "title": "The Classical Form",
+      "startLine": 127,
+      "endLine": 135,
+      "summary": "two_mul_sum_cube_weighted_sq': 2·∑_{k=0}^{n} k³·C(n,k)² = n²·(n+1)·C(2n−2,n−1) for n ≥ 1, obtained by setting n = m+1 in the m-form."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 137,
+      "endLine": 145,
+      "summary": "Numeric checks: ∑_{k=0}^{3} k³·C(3,k)² = 0+9+72+27 = 108, and the classical closed form 2·108 = 216 = 3²·4·C(4,2), both closed by kernel decide."
     }
   ],
   "conclusion": {
