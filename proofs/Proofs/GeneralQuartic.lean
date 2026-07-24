@@ -2,6 +2,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Algebra.Polynomial.FieldDivision
 import Mathlib.Analysis.Complex.Polynomial.Basic
+import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
@@ -786,6 +787,41 @@ theorem pan_witness_k1_resolvent_root (t : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1) :
   rw [show ((((s + 1) / 2 : ℝ) : ℂ)) = ((s : ℂ) + 1) / 2 by push_cast; ring]
   simpa using hbridge
 
+/-- **The `Ω(t⁻¹)` amplification theorem (S13, OQ-02.a capstone).**
+
+This formalizes the amplification mechanism that the prose of
+`pan_witness_k1_resolvent_root` only asserted: along the Pan witness,
+Ferrari's intermediate `α = √s` (where `s = α²` is the cleaned-resolvent
+root pinned in `(t²/4, t²)` by `pan_witness_k1_tangency`) satisfies
+
+* `t/2 < α < t` — the cancellation is of order exactly `t¹`, and
+* the square-root extraction step of Ferrari's formula has sensitivity
+  `dα/ds = 1/(2√s) > 1/(2t)` at `s` — an `Ω(t⁻¹)` error-amplification
+  factor that blows up as the Pan family approaches the biquadratic
+  stratum `t → 0`, while the exact root `s` stays well inside `(0, t²)`.
+
+Together with the S4c Newton-polygon bound (no smooth family can achieve
+`k ≥ 2`) this is the complete, quantitative form of OQ-02.a: Ferrari's
+formula is numerically unstable near the biquadratic stratum with
+amplification factor at least `1/(2t)`, and the Pan family attains this
+order exactly. -/
+theorem pan_witness_amplification (t : ℝ) (ht0 : 0 < t) (ht1 : t ≤ 1) :
+    ∃ s : ℝ, panCleanedResolvent t s = 0 ∧
+      t / 2 < Real.sqrt s ∧ Real.sqrt s < t ∧
+      HasDerivAt Real.sqrt (1 / (2 * Real.sqrt s)) s ∧
+      1 / (2 * t) < 1 / (2 * Real.sqrt s) := by
+  obtain ⟨s, hs1, hs2, hs0⟩ := pan_witness_k1_tangency t ht0 ht1
+  have hspos : 0 < s := lt_trans (by positivity) hs1
+  have hsq1 : t / 2 < Real.sqrt s := by
+    have h := Real.sqrt_lt_sqrt (by positivity) hs1
+    rwa [show t ^ 2 / 4 = (t / 2) ^ 2 by ring, Real.sqrt_sq (by positivity)] at h
+  have hsq2 : Real.sqrt s < t := by
+    have h := Real.sqrt_lt_sqrt hspos.le hs2
+    rwa [Real.sqrt_sq ht0.le] at h
+  refine ⟨s, hs0, hsq1, hsq2, Real.hasDerivAt_sqrt (ne_of_gt hspos), ?_⟩
+  have hsqrtpos : 0 < Real.sqrt s := lt_trans (by positivity) hsq1
+  exact one_div_lt_one_div_of_lt (by positivity) (by linarith)
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
@@ -934,3 +970,4 @@ end GeneralQuartic
 #check GeneralQuartic.pan_witness_t_zero_nondegenerate_root
 #check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple
+#check GeneralQuartic.pan_witness_amplification
