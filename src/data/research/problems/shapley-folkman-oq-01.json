@@ -2,7 +2,7 @@
   "slug": "shapley-folkman-oq-01",
   "title": "Shapley–Folkman extension to infinite-dim Hilbert spaces",
   "phase": "ACT",
-  "status": "blocked",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,15 +28,14 @@
     "goal": "Create proofs/Proofs/ShapleyFolkmanOQ01.lean with a formalized negative result (Approach C: ℓ² counter-example to literal Shapley–Folkman extension), documenting the obstruction precisely. Approach A (Aumann/Lyapunov) is deferred to a future sub-OQ given its multi-session upstream prerequisites."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-06-13T00:00:00Z",
     "iteration": 20,
-    "focus": "S2-C ACT — Decomposition.map transport core shipped (researcher-2, 2026-06-13). Added a ShapleyFolkman-namespace block to ShapleyFolkmanOQ01.lean: Decomposition.map (general linear-map transport Decomposition S t x → Decomposition (f  S ·) t (f x)), map_point (rfl simp lemma), map_excessIndices_of_injective (injective f ⟹ excess sets equal), and map_excessIndices_card_of_injective (card form, the transfer lemma). This is the reusable engine for the S2-B₂ lp 2 lift. ~55 LOC, 0 sorries, 0 axioms. BUILD UNVERIFIED LOCALLY: Docker daemon down on host and .lake symlink loop persists; CI/doctor verifies on PR. Bearers pinned via GitHub API at v4.26.0 (LinearMap.image_convexHull Hull.lean:167, Function.Injective.mem_set_image Image.lean:192, Finset.filter_congr Filter.lean:179).",
+    "focus": "S2-D ACT COMPLETE (researcher-3, 2026-07-23). The genuine ℓ² infinite-dimensional negative result is Docker-verified (v4.31.0, 8577 jobs, 0 sorries, 0 axioms). Added ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _:ℕ => ℝ) 2 (injective linear embedding, sum of lp.lsingle), ιN_apply_coord (coordinate-preserving), ιN_injective, and shapley_folkman_excess_unbounded_in_lp (excess card unbounded over ℓ² subsets, lifted from Fin N tightness via Decomposition.map). This ALSO verifies the Session-20 S2-C transport core, previously build-unverified during the 2026-06-13 Docker blackout — the sole reason the problem was marked blocked. OQ-01 negative answer now complete and machine-checked: the FiniteDimensional hypothesis of shapley_folkman cannot be dropped, and no fixed finite bound survives in genuine infinite dimensions (Module.finrank ℝ ℓ² = 0).",
     "blockers": [
-      "Docker daemon down on host (verification blackout 2026-06-13): S2-D ACT is a paste-ready ~60-90 LOC build-dependent extension and cannot be verified locally; CI does not build Lean during the blackout. Flagged blocked 2026-06-13 (researcher-1) - re-open the moment Docker returns; S2-D is ~5-10 min wall-clock from the paste-ready recipe. Slug is otherwise fully synced (origin/main .lean at 399 LOC, 0 sorries, 0 axioms; S2-A + S2-B1 + S2-C lines complete; no open PRs).",
-      "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
+      "Lyapunov/Aumann positive infinite-dim analog (Approach A, OUT OF SCOPE for OQ-01 negative answer): Lyapunov convexity theorem not in Mathlib; multi-session formalization project. Not a blocker on the (completed) negative answer."
     ],
-    "nextAction": "S2-D ACT (next session): paste the S2-B₂ embedding from session 2026-06-13 doc §4 — ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2 (sum of lp.lsingle 2 i.val), ιN_injective (coordinate evaluation via lp.single_apply + Fin.val_injective), and shapley_folkman_excess_unbounded_in_lp = (midpointDecomp (K+1)).map (ιN (K+1)) + map_excessIndices_card_of_injective + tight_excess_count. ~60-90 LOC; only real risk is lp/PiLp coercion friction in ιN_apply_coord. lp bearers re-pinned v4.26.0 in doc §4.4.",
+    "nextAction": "None required for the negative answer — OQ-01 is answered (NO) and machine-verified in EuclideanSpace (tightness) and ℓ² (unboundedness). A distinct, deferred direction is the POSITIVE infinite-dim analog (Aumann 1965 / Lyapunov 1940 convexity), which needs set-valued measure machinery absent from Mathlib (~200-300 LOC) and belongs to a separate problem, not this OQ.",
     "attemptCounts": {
       "total": 20,
       "currentApproach": 19,
@@ -101,7 +100,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge). Session 9 (STATE-SYNC, 2026-05-14, researcher-12): catch-up for merged S5 PREP (#18929) that explicitly scoped itself doc-only and did not touch state.md / JSON. Both surviving sorries in ShapleyFolkmanOQ01.lean now have verbatim Lean recipes (S5 PREP §3 for mem_convexHull_finset_sum, S3 PREP §4 + S4 PREP §3 for tight_excess_count). Remaining ACT-2 uncertainty is build-side only. Session 16 (S2-A ACT-4 PREP, 2026-06-04, researcher-1): doc-only PREP materialising the existence form `exists_tight_decomposition` into a 32-LOC paste-ready Lean recipe across three named results (helper lemma midpoint_mem_convexHull_pair_zero_basis, noncomputable def midpointDecomp, theorem exists_tight_decomposition). All five Mathlib v4.26.0 bearers re-verified at lake SHA; the only new bearer relative to the existing OQ01 file is Finset.smul_sum at Algebra/BigOperators/GroupWithZero/Action.lean:57-59. Four failure-mode fallbacks documented (§5 of session file). Race-safety probes clean: 0 open OQ01 PRs at claim time; OQ01 .lean file unchanged on origin/main since 2026-06-01T02:20Z. ACT deferred to next docker-available session — paste-ready recipe means the next session is ~5-10 min wall-clock. Session 17 (S2-A ACT-4 ACT, 2026-06-04, researcher-1, PR #22322): executed Session 16 recipe verbatim, file 228 → 306 LOC, +2 theorems + 1 def, 0 new sorries/axioms; PR merged 2026-06-05T01:45Z. S2-A line complete: parent bound is both unavoidable (tight_excess_count) and achievable (exists_tight_decomposition). Session 18 (S2-B PREP, 2026-06-09, researcher-1): doc-only PREP designing the truncation-lift line. Split S2-B into S2-B₁ (paste-ready ~15 LOC recipe for no_universal_shapley_folkman_bound, using existing midpointDecomp + tight_excess_count + Nat.lt_succ_self) and S2-B₂ (deferred multi-session lp 2 lift, ~150-250 LOC, requires linear-isometric embedding ι_N + Decomposition.map transport). Preliminary S2-B₂ bearer pins recorded for lp.single/lsingle/isometry_single/singleContinuousLinearMap from Analysis/Normed/Lp/lpSpace.lean (audited via GitHub raw at v4.26.0; researcher worktree .lake symlink loop precluded local audit). Race-safety probes clean: 0 open OQ01 PRs at claim time (2026-06-09 ~17:18Z); .lean file unchanged on origin/main since 2026-06-05T01:45Z. Session 19 (S2-B₁ ACT, 2026-06-10, researcher-10): executed Session 18 §3.1 recipe verbatim — pasted 33 LOC (docstring + theorem no_universal_shapley_folkman_bound) immediately before end ShapleyFolkmanOQ01. File 306 → 339 LOC, +1 theorem (total 7), 0 sorries, 0 axioms. Docker build clean: ✔ Built Proofs.ShapleyFolkmanOQ01 (231s, 7744/7744). The recipe body is three tactics as designed: refine ⟨midpointDecomp (K + 1), ?_⟩; rw [tight_excess_count (K + 1) (midpointDecomp (K + 1))]; exact Nat.lt_succ_self K. No fallbacks fired. S2-A and S2-B₁ lines complete. Race-safety probes clean: 0 open OQ01 PRs at claim time (2026-06-10 ~09:00Z). Session 20 (S2-C ACT, 2026-06-13): shipped the Decomposition.map transport core (general linear-map transport + injective excess-/card-preservation), the reusable engine reducing S2-B₂ to one injective embedding; build unverified locally (Docker down).",
+    "progressSummary": "COMPLETED (S2-D, researcher-3, 2026-07-23, VERIFIED 0-axiom). OQ-01 asked whether the FiniteDimensional hypothesis of shapley_folkman can be dropped by replacing Module.finrank with a suitable infinite-dim notion. Answer: NO, now machine-verified end to end. Finite-dim sharpness (tight_excess_count / exists_tight_decomposition, S2-A) shows the finrank bound is achieved with equality for every N; the truncation lift (no_universal_shapley_folkman_bound, S2-B1) rules out any ambient-dimension-blind bound; the Decomposition.map transport core (S2-C) plus the injective embedding ιN (S2-D) carry the tightness into the genuine infinite-dim Hilbert space ℓ², where shapley_folkman_excess_unbounded_in_lp gives unbounded excess and (finrank ℝ ℓ² = 0) refutes the literal parent bound. Docker build clean at v4.31.0 (8577 jobs, 0 sorries, 0 axioms), which also retro-verifies the S2-C core left unverified during the 2026-06-13 Docker blackout. The only remaining direction is the separate POSITIVE analog (Aumann/Lyapunov), out of scope here.",
     "builtItems": [
       "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
       "research/problems/shapley-folkman-oq-01/state.md: Session 1–8 entries with iteration history table",
@@ -114,14 +113,20 @@
       "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s3b-prep-mathlib-citation-audit.md: S3b v4.26.0 phantom-lemma corrections",
       "research/problems/shapley-folkman-oq-01/sessions/2026-05-13-s4-prep-parent-decomposition-source-audit.md: S4 parent file audit (decidability, sum_close_to_convexHull bridge)",
       "proofs/Proofs/ShapleyFolkmanOQ01.lean: S2-A ACT-1 scaffold (~130 LOC, 0 axioms, 2 sorries) — helper lemma with attempted proof + 2 stubbed theorems",
-      "proofs/Proofs.lean: registered import Proofs.ShapleyFolkmanOQ01 alphabetically"
+      "proofs/Proofs.lean: registered import Proofs.ShapleyFolkmanOQ01 alphabetically",
+      "ιN (N) in ShapleyFolkmanOQ01.lean: injective linear embedding EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _:ℕ => ℝ) 2",
+      "ιN_apply_coord, ιN_injective in ShapleyFolkmanOQ01.lean",
+      "shapley_folkman_excess_unbounded_in_lp in ShapleyFolkmanOQ01.lean: the ℓ² unbounded-excess capstone (S2-D)"
     ],
     "insights": [
       "Module.finrank ℝ E = 0 for any non-finite-dim ℝ-module in Lean's convention; this collapses the Shapley–Folkman bound to '≤ 0' which is vacuously false for any Minkowski sum with non-convex summands.",
       "excess_vertices_affine_dependent at ShapleyFolkman.lean:151 is the only step where [FiniteDimensional ℝ E] is load-bearing; in infinite-dim, AffineIndependent can hold for ω-sized families, so no Nat-valued dimension notion can recover the Carathéodory-style extraction.",
       "The correct infinite-dim analog of Shapley–Folkman is Aumann (1965)'s convexity of set-valued integrals, which is engine'd by Lyapunov (1940)'s vector-measure convexity. Neither theorem is in Mathlib.",
       "An explicit ℓ² (or EuclideanSpace ℝ (Fin n)) counter-example x = (1/2) ∑ᵢ eᵢ ∈ convexHull ℝ (∑ᵢ Sᵢ) with Sᵢ = {0, eᵢ} forces every index to be 'excess' (since each component is constrained to the orthogonal axis), giving excessIndices.card = n unbounded as n → ∞.",
-      "S5 PREP (PR #18929) names the Mathlib v4.26.0 lemma Set.finset_sum_mem_finset_sum (Mathlib/Algebra/Group/Pointwise/Set/BigOperators.lean:142, multiplicative + @[to_additive]) as the n-ary additive Minkowski-membership primitive — this supersedes the Set.add_mem_finset_sum guess in Session 8's Next Action, which is not the actual Mathlib v4.26.0 name at the lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67."
+      "S5 PREP (PR #18929) names the Mathlib v4.26.0 lemma Set.finset_sum_mem_finset_sum (Mathlib/Algebra/Group/Pointwise/Set/BigOperators.lean:142, multiplicative + @[to_additive]) as the n-ary additive Minkowski-membership primitive — this supersedes the Set.add_mem_finset_sum guess in Session 8's Next Action, which is not the actual Mathlib v4.26.0 name at the lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
+      "S2-D VERIFIED (2026-07-23, v4.31.0): shapley_folkman_excess_unbounded_in_lp exhibits, for every K, a finite family of subsets of ℓ² = lp (fun _:ℕ => ℝ) 2 whose every Shapley-Folkman Decomposition has excessIndices.card > K. Honest infinite-dim negative result — no fixed finite bound holds.",
+      "The embedding ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] ℓ² is a sum of single-coordinate injections ∑ i, lp.lsingle 2 i.val (v i); injectivity is a one-coordinate evaluation (Finset.sum_eq_single + lp.single_apply_self/ne + Fin.val_injective).",
+      "v4.31 gotcha: lp.single_apply_self / single_apply_ne need explicit (E := fun _:ℕ => ℝ) — the E family is a higher-order metavariable that cannot be inferred from the value argument v i : ℝ alone. EuclideanSpace coordinate access now displays as v.ofLp i (WithLp refactor); PiLp.add_apply/smul_apply are still rfl."
     ],
     "techniques": [
       "EuclideanSpace ℝ (Fin n) + EuclideanSpace.basisFun for concrete finite-dim counter-example",
@@ -135,7 +140,7 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-06-13T03:10:00Z",
+  "updatedAt": "2026-07-23T00:00:00Z",
   "relatedProofs": [
     "shapley-folkman",
     "shapley-folkman-oq-03",
