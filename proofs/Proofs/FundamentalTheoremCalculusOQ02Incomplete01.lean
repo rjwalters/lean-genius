@@ -571,4 +571,134 @@ theorem iteratedFDerivWithin_comp_perm_of_convex [NormedSpace ℝ E] [NormedSpac
 
 end Within
 
+/-! ### Step 7 (S8): the classical nested form — iterated directional derivatives
+
+Everything above is phrased through `iteratedFDeriv`, the multilinear-map packaging of the
+`n`-th derivative. Classical texts state Clairaut/Schwarz differently: *nested* directional
+derivatives commute,
+
+  `∂_{v₀} (∂_{v₁} (… (∂_{vₙ₋₁} f))) = ∂_{v_{σ(0)}} (∂_{v_{σ(1)}} (… (∂_{v_{σ(n-1)}} f)))`,
+
+where `∂_w g = fun y => fderiv 𝕜 g y w`. Mathlib (v4.31) has the bridge between the two
+forms only at `n = 2` (`iteratedFDeriv_two_apply`); the general-`n` bridge — nested
+directional derivatives of a `C^n` function compute the `n`-th iterated derivative applied
+to the direction vector — is proved here (`nestedFDeriv_eq_iteratedFDeriv`), and the
+classical nested Clairaut theorem follows from `iteratedFDeriv_comp_perm`.
+
+(`Mathlib.Analysis.Distribution.DerivNotation` defines an abstract iterated
+line-derivative operator `∂^{v}` via the `LineDeriv` notation typeclass, but provides no
+instance for plain functions `E → F` and no relation to `iteratedFDeriv` — the concrete
+bridge below is not there.) -/
+
+variable (𝕜) in
+/-- The `n`-fold nested directional derivative:
+`nestedFDeriv 𝕜 n v f = ∂_{v 0} (∂_{v 1} (… (∂_{v (n-1)} f)))` where
+`∂_w g = fun y => fderiv 𝕜 g y w` — direction `v 0` is applied *outermost*, matching the
+left-to-right reading of `∂_{v₀} ∂_{v₁} … f`. -/
+noncomputable def nestedFDeriv : (n : ℕ) → (Fin n → E) → (E → F) → E → F
+  | 0, _, f => f
+  | n + 1, v, f => fun x => fderiv 𝕜 (nestedFDeriv n (Fin.tail v) f) x (v 0)
+
+@[simp]
+theorem nestedFDeriv_zero (v : Fin 0 → E) (f : E → F) : nestedFDeriv 𝕜 0 v f = f :=
+  rfl
+
+theorem nestedFDeriv_succ_apply {n : ℕ} (v : Fin (n + 1) → E) (f : E → F) (x : E) :
+    nestedFDeriv 𝕜 (n + 1) v f x = fderiv 𝕜 (nestedFDeriv 𝕜 n (Fin.tail v) f) x (v 0) :=
+  rfl
+
+@[simp]
+theorem nestedFDeriv_one_apply (v : Fin 1 → E) (f : E → F) (x : E) :
+    nestedFDeriv 𝕜 1 v f x = fderiv 𝕜 f x (v 0) :=
+  rfl
+
+/-- **The general-`n` nested/multilinear bridge.** For a `C^n` function, the `n`-fold
+nested directional derivative along `v 0, …, v (n-1)` equals the `n`-th iterated Fréchet
+derivative applied to `v`. Mathlib (v4.31) has this only at `n = 2`
+(`iteratedFDeriv_two_apply`). Holds over any nontrivially normed field.
+
+Inductive step: by the IH the inner `n`-fold nest is `y ↦ iteratedFDeriv 𝕜 n f y (tail v)`,
+i.e. the multilinear-map-valued function `iteratedFDeriv 𝕜 n f` applied to the *constant*
+tuple `tail v`; `fderiv_continuousMultilinear_apply_const_apply` commutes the constant
+application past `fderiv` (differentiability of `iteratedFDeriv 𝕜 n f` comes from
+`ContDiff.differentiable_iteratedFDeriv`), and `iteratedFDeriv_succ_apply_left` reassembles
+the `(n+1)`-st derivative. -/
+theorem nestedFDeriv_eq_iteratedFDeriv :
+    ∀ {n : ℕ}, ContDiff 𝕜 (n : ℕ) f → ∀ (v : Fin n → E) (x : E),
+      nestedFDeriv 𝕜 n v f x = iteratedFDeriv 𝕜 n f x v := by
+  intro n
+  induction n with
+  | zero =>
+    intro _ v x
+    exact (iteratedFDeriv_zero_apply v).symm
+  | succ n IH =>
+    intro hf v x
+    have hfn : ContDiff 𝕜 (n : ℕ) f := hf.of_le (by exact_mod_cast Nat.le_succ n)
+    have hfun : nestedFDeriv 𝕜 n (Fin.tail v) f =
+        fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v) :=
+      funext fun y => IH hfn (Fin.tail v) y
+    have hdiff : DifferentiableAt 𝕜 (iteratedFDeriv 𝕜 n f) x :=
+      (hf.differentiable_iteratedFDeriv (by norm_cast; omega)).differentiableAt
+    calc nestedFDeriv 𝕜 (n + 1) v f x
+        = fderiv 𝕜 (nestedFDeriv 𝕜 n (Fin.tail v) f) x (v 0) := rfl
+      _ = fderiv 𝕜 (fun y => iteratedFDeriv 𝕜 n f y (Fin.tail v)) x (v 0) := by
+          rw [hfun]
+      _ = fderiv 𝕜 (iteratedFDeriv 𝕜 n f) x (v 0) (Fin.tail v) :=
+          fderiv_continuousMultilinear_apply_const_apply hdiff (Fin.tail v) (v 0)
+      _ = iteratedFDeriv 𝕜 (n + 1) f x v := (iteratedFDeriv_succ_apply_left v).symm
+
+/-- **Classical all-orders Clairaut/Schwarz, nested form.** For a `C^n` function over `ℝ`
+or `ℂ`, nested directional derivatives may be taken in any order:
+
+  `∂_{v_{σ(0)}} (∂_{v_{σ(1)}} (… f)) = ∂_{v_0} (∂_{v_1} (… f))`  at every point. -/
+theorem nestedFDeriv_comp_perm [IsRCLikeNormedField 𝕜] {n : ℕ}
+    (hf : ContDiff 𝕜 (n : ℕ) f) (v : Fin n → E) (σ : Equiv.Perm (Fin n)) (x : E) :
+    nestedFDeriv 𝕜 n (v ∘ σ) f x = nestedFDeriv 𝕜 n v f x := by
+  rw [nestedFDeriv_eq_iteratedFDeriv hf (v ∘ σ) x, nestedFDeriv_eq_iteratedFDeriv hf v x,
+    iteratedFDeriv_comp_perm hf x v σ]
+
+/-- Field-uniform `minSmoothness` form of the nested Clairaut theorem: over `ℝ`/`ℂ` the
+hypothesis is `C^n`; over any other nontrivially normed field it degrades to analyticity.
+The bridge itself only ever needs `C^n`, which `le_minSmoothness` extracts. -/
+theorem nestedFDeriv_comp_perm_of_minSmoothness {n : ℕ}
+    (hf : ContDiff 𝕜 (minSmoothness 𝕜 n) f) (v : Fin n → E) (σ : Equiv.Perm (Fin n))
+    (x : E) :
+    nestedFDeriv 𝕜 n (v ∘ σ) f x = nestedFDeriv 𝕜 n v f x := by
+  have hfn : ContDiff 𝕜 (n : ℕ) f := hf.of_le le_minSmoothness
+  rw [nestedFDeriv_eq_iteratedFDeriv hfn (v ∘ σ) x, nestedFDeriv_eq_iteratedFDeriv hfn v x,
+    iteratedFDeriv_comp_perm_of_minSmoothness hf x v σ]
+
+/-- **Second derivatives commute, nested classical form**: for a `C²` function over `ℝ` or
+`ℂ`,
+
+  `∂_a (∂_b f) = ∂_b (∂_a f)`,  i.e.
+  `fderiv 𝕜 (fun y => fderiv 𝕜 f y b) x a = fderiv 𝕜 (fun y => fderiv 𝕜 f y a) x b`.
+
+This differs from Mathlib's `IsSymmSndFDerivAt` (which swaps the two arguments of
+`fderiv 𝕜 (fderiv 𝕜 f) x`, evaluation *outside* the outer derivative) precisely by the
+bridge `nestedFDeriv_eq_iteratedFDeriv`; the nested spelling is the one in which the
+classical `∂²f/∂x∂y = ∂²f/∂y∂x` is usually written. -/
+theorem fderiv_fderiv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 2 f) (a b x : E) :
+    fderiv 𝕜 (fun y => fderiv 𝕜 f y b) x a = fderiv 𝕜 (fun y => fderiv 𝕜 f y a) x b := by
+  have h2 : ContDiff 𝕜 ((2 : ℕ) : ℕ∞ω) f := by exact_mod_cast hf
+  have hab : (![b, a] : Fin 2 → E) ∘ ⇑(Equiv.swap 0 1) = ![a, b] := by
+    funext i
+    fin_cases i <;> simp
+  have ha : Fin.tail (![a, b] : Fin 2 → E) = ![b] := by
+    funext i
+    fin_cases i <;> rfl
+  have hb : Fin.tail (![b, a] : Fin 2 → E) = ![a] := by
+    funext i
+    fin_cases i <;> rfl
+  have key := nestedFDeriv_comp_perm h2 (![b, a] : Fin 2 → E) (Equiv.swap 0 1) x
+  rw [hab] at key
+  calc fderiv 𝕜 (fun y => fderiv 𝕜 f y b) x a
+      = nestedFDeriv 𝕜 2 ![a, b] f x := by
+        rw [nestedFDeriv_succ_apply, ha]
+        rfl
+    _ = nestedFDeriv 𝕜 2 ![b, a] f x := key
+    _ = fderiv 𝕜 (fun y => fderiv 𝕜 f y a) x b := by
+        rw [nestedFDeriv_succ_apply, hb]
+        rfl
+
 end FTCOQ02Incomplete01
