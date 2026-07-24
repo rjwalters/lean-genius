@@ -3248,4 +3248,201 @@ theorem record_index_seven_locally_unique :
   have := hErdos_le_six_of_lt_twofiftysix_of_ne hm hlt hne
   omega
 
+/-! ### The restricted lower-bound engine: exact values at high divisor counts
+
+The lower-bound engine `le_hErdos_of_card` quantifies over the FULL powerset of
+`divisors m` — `2^{d(m)}` subsets — infeasible already at `d(210) = 16` (65,536
+subsets) and hopeless at `d(240) = 20` (over a million).  The previous session
+therefore left the exact values of every `d > 12` target of the octave
+`[128, 256)` blocked on "a restricted lower engine that does not exist",
+observing that a lower bound cannot be a witness-LIST check: it must rule out
+ALL small subsets of the full divisor set.
+
+This section supplies that engine.  The key observation: ruling out all small
+subsets does not require visiting all subsets.  To certify `t ≤ repLength m k`
+it suffices to rule out witnesses of each cardinality `s < t` — a kernel check
+over the graded slices `(divisors m).powersetCard s`, totalling
+`C(d,0) + C(d,1) + ⋯ + C(d,t-1)` subsets instead of `2^d`.  For `240` at
+`t = 5` that is `6,196` subsets instead of `1,048,576` — a 169-fold saving that
+grows exponentially with `d`.  Soundness is exactly `repLength_spec'`: for
+practical `m` the minimum is ATTAINED, so `repLength m k < t` would place an
+attaining witness inside a searched slice.  (The upper-bound side of the same
+asymmetry went the other way: witnesses may be exhibited from a chosen
+sub-family, but small-witness refutation must grade the full divisor set.)
+
+With the engine, the octave's blocked exact values fall:
+
+* **`hErdos 210 = 5`** and **`hErdos 240 = 5`** — the two flagship blocked
+  cases.  Each has a UNIQUE hard target (`209` resp. `237`; every other `k`
+  is representable by `4` divisors), and both indices equal `5` despite
+  record divisor counts: `240` is the least number of ANY kind with `20`
+  divisors, yet its index matches `32 = 2^5` with its mere `6`.
+* **`hErdos 168 = 4` and `hErdos 180 = 4`** — the index-`4` FLOOR of the
+  octave (Python DP: every other practical in `[128, 256)` has index `≥ 5`).
+  The floor THINS under doubling: the previous octave's floor is the six
+  numbers `72, 84, 90, 96, 120, 126` (all index `4`), but of their doublings
+  `144, 168, 180, 192, 240, 252` only `168 = 2·84` and `180 = 2·90` stay on
+  the floor — the other four rise to `5`, and for `240` and `252` the rise is
+  formalised below.  For `180`, NO sub-family of `≤ 11` divisors covers all
+  targets at `t = 4` (exhaustive search over all `C(17,≤11)` sub-families);
+  the 12-coin chain used below is minimal, and its `2^{12} × 180` kernel
+  witness search is the heaviest decide in the file.
+* **`hErdos 252 = 5`** — the crude subadditive bound `hErdos (2·126) ≤ 1 + 4`
+  is TIGHT here (contrast `200 = 2·100`, where doubling an index-`6` number
+  drops to `5`): doubling a floor member can genuinely cost a full unit.
+-/
+
+/-- **Restricted lower-bound engine (per target)**: to certify
+`t ≤ repLength m k` it suffices that no divisor subset of cardinality `s < t`
+sums to `k` — a kernel check over the graded slices
+`(divisors m).powersetCard s`, i.e. `C(d, 0) + ⋯ + C(d, t-1)` subsets rather
+than the full powerset's `2^d`.  Sound because the minimum is attained
+(`repLength_spec'`): were `repLength m k < t`, an attaining witness would lie
+in a searched slice. -/
+theorem le_repLength_of_no_small_subset {m k t : ℕ} (hm : IsPractical m)
+    (hkm : k < m)
+    (h : ∀ s ∈ Finset.range t, ∀ T ∈ (divisors m).powersetCard s,
+      T.sum id ≠ k) :
+    t ≤ repLength m k := by
+  by_contra hlt
+  push Not at hlt
+  obtain ⟨T, hTsub, hTcard, hTsum⟩ := repLength_spec' hm hkm
+  exact h (repLength m k) (Finset.mem_range.mpr hlt) T
+    (Finset.mem_powersetCard.mpr ⟨hTsub, hTcard⟩) hTsum
+
+/-- **Restricted lower-bound engine (index)**: one hard target `k < m` with no
+small-cardinality representation forces `t ≤ hErdos m`, at graded-slice cost. -/
+theorem le_hErdos_of_no_small_subset {m k t : ℕ} (hm : IsPractical m)
+    (hkm : k < m)
+    (h : ∀ s ∈ Finset.range t, ∀ T ∈ (divisors m).powersetCard s,
+      T.sum id ≠ k) :
+    t ≤ hErdos m := by
+  refine (le_repLength_of_no_small_subset hm hkm h).trans ?_
+  unfold hErdos
+  exact Finset.le_sup (Finset.mem_range.mpr hkm)
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 210` — the restricted engine at the unique hard target
+`k = 209`: no subset of at most `4` of the `16` divisors of `210` sums to
+`209` (`2,517` graded subsets searched; the full powerset's `65,536` made this
+exact value infeasible for the plain engine last session). -/
+theorem five_le_hErdos_twohundredten : 5 ≤ hErdos 210 :=
+  le_hErdos_of_no_small_subset (k := 209) two_hundred_ten_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 210 = 5`** — first exact value at `d > 12`: the primorial
+`210 = 2·3·5·7` needs exactly `5` summands at `k = 209` and nowhere more.
+Its index equals that of `32 = 2^5`, despite carrying `16` divisors. -/
+theorem hErdos_twohundredten : hErdos 210 = 5 :=
+  le_antisymm hErdos_twohundredten_le five_le_hErdos_twohundredten
+
+/-- `120` is practical — doubling `60`. -/
+theorem onetwenty_practical : IsPractical 120 := by
+  simpa using two_mul_practical sixty_practical
+
+/-- `240` is practical — doubling `120`. -/
+theorem twoforty_practical : IsPractical 240 := by
+  simpa using two_mul_practical onetwenty_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 240` — the restricted engine at the unique hard target
+`k = 237`: no subset of at most `4` of the `20` divisors of `240` sums to
+`237` (`6,196` graded subsets, versus the hopeless `2^{20}` full powerset). -/
+theorem five_le_hErdos_twoforty : 5 ≤ hErdos 240 :=
+  le_hErdos_of_no_small_subset (k := 237) twoforty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 240 = 5`** — the extreme divisor-count case of the octave:
+`240` is the least number of any kind with `20` divisors, yet its index is
+`5`, the same as `32 = 2^5` with its `6` divisors.  Together with
+`hErdos 210 = 5` this pins both targets the previous session declared blocked
+on a restricted lower engine. -/
+theorem hErdos_twoforty : hErdos 240 = 5 :=
+  le_antisymm hErdos_twoforty_le five_le_hErdos_twoforty
+
+/-- `84` is practical — doubling `42`. -/
+theorem eightyfour_practical : IsPractical 84 := by
+  simpa using two_mul_practical fortytwo_practical
+
+/-- `168` is practical — doubling `84`. -/
+theorem onesixtyeight_practical : IsPractical 168 := by
+  simpa using two_mul_practical eightyfour_practical
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- `hErdos 168 ≤ 4` — sub-family engine, TIGHTENING the subadditive
+`hErdos_onesixtyeight_le` (`≤ 6` via `2·84`) by two full units.  The kernel
+finds `≤ 4`-divisor representations of every `k < 168` inside the 11-element
+coin chain below (`2^{11} = 2048` subsets searched; heartbeat budget as for
+the other `2^{11}` run at `224`). -/
+theorem hErdos_onesixtyeight_le_four : hErdos 168 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 4, 6, 12, 21, 28, 42, 56, 84}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 168` — the restricted engine at hard target `k = 121`: no
+subset of at most `3` of the `16` divisors of `168` sums to `121` (`697`
+graded subsets). -/
+theorem four_le_hErdos_onesixtyeight : 4 ≤ hErdos 168 :=
+  le_hErdos_of_no_small_subset (k := 121) onesixtyeight_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 168 = 4`** — joint index-`4` floor of the octave `[128, 256)`
+(with `180`; Python DP confirms every other practical in the octave has index
+`≥ 5`). -/
+theorem hErdos_onesixtyeight : hErdos 168 = 4 :=
+  le_antisymm hErdos_onesixtyeight_le_four four_le_hErdos_onesixtyeight
+
+/-- `180` is practical — doubling `90`. -/
+theorem oneeighty_practical : IsPractical 180 := by
+  simpa using two_mul_practical ninety_practical
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 3200000 in
+/-- `hErdos 180 ≤ 4` — sub-family engine, tightening the subadditive
+`hErdos_oneeighty_le` (`≤ 5` via `2·90`) to the floor.  NO sub-family of
+`≤ 11` of the `17` proper divisors covers every target at `t = 4`
+(exhaustively checked offline), so the 12-element coin chain below is
+minimal; its `2^{12} = 4096`-subset search over `180` targets is the heaviest
+kernel decide in the file, hence the quadrupled heartbeat budget. -/
+theorem hErdos_oneeighty_le_four : hErdos 180 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 10, 18, 20, 30, 45, 60, 90}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 180` — the restricted engine at hard target `k = 133`: no
+subset of at most `3` of the `18` divisors of `180` sums to `133` (`988`
+graded subsets). -/
+theorem four_le_hErdos_oneeighty : 4 ≤ hErdos 180 :=
+  le_hErdos_of_no_small_subset (k := 133) oneeighty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 180 = 4`** — the other member of the octave's index-`4` floor:
+`180` is highly composite (`18` divisors, more than any smaller number), yet
+needs only `4` summands for every target, matching `16 = 2^4`. -/
+theorem hErdos_oneeighty : hErdos 180 = 4 :=
+  le_antisymm hErdos_oneeighty_le_four four_le_hErdos_oneeighty
+
+/-- `252` is practical — doubling `126`. -/
+theorem twofiftytwo_practical : IsPractical 252 := by
+  simpa using two_mul_practical onetwentysix_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 252` — the restricted engine at the unique hard target
+`k = 251`: no subset of at most `4` of the `18` divisors of `252` sums to
+`251` (`4,047` graded subsets). -/
+theorem five_le_hErdos_twofiftytwo : 5 ≤ hErdos 252 :=
+  le_hErdos_of_no_small_subset (k := 251) twofiftytwo_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 252 = 5`** — doubling can genuinely cost the full subadditive
+unit: `126` sits on the previous octave's index-`4` floor, and
+`hErdos (2·126) ≤ hErdos 2 + hErdos 126 = 5` is TIGHT.  Of the six floor
+members `72, 84, 90, 96, 120, 126` of `[64, 128)`, the doublings of `84` and
+`90` stay on the floor (`hErdos_onesixtyeight`, `hErdos_oneeighty`) while
+those of `120` and `126` provably rise (`hErdos_twoforty`, this theorem) —
+the floor thins from six members to two. -/
+theorem hErdos_twofiftytwo : hErdos 252 = 5 :=
+  le_antisymm hErdos_twofiftytwo_le five_le_hErdos_twofiftytwo
+
 end Erdos18
