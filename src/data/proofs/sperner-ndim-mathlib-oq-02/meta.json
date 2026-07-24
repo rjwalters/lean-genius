@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 355,
-    "assumptions": "One axiom: sperner_panchromatic — for each N>0, the Nth Freudenthal grid triangulation of Δⁿ with the Sperner coloring yields n+1 simplex vertices v₀,...,vₙ with f(vᵢ)ᵢ ≤ (vᵢ)ᵢ and diameter ≤ n/N. All other steps — Sperner coloring well-definedness, boundary condition, compactness convergence via panchromatic tuples — are fully proved with 0 sorries.",
+    "assumptions": "One axiom: sperner_panchromatic — for each N>0, the Nth Freudenthal grid triangulation of Δⁿ with the Sperner coloring yields n+1 simplex vertices v₀,...,vₙ with f(vᵢ)ᵢ ≤ (vᵢ)ᵢ and diameter ≤ n/N. All other steps — Sperner coloring well-definedness, boundary condition, compactness convergence via panchromatic tuples — are fully proved with 0 sorries. Update (2026-07-24): the axiom now gates only n >= 3 — brouwer_fixed_point_simplex_zero/_one/_two derive the n=0,1,2 instances axiom-free from the fully proved SpernerFreudSimp.sperner_panchromatic_zero/_one/_two.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.31.0",
     "originalContributions": [
