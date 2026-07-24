@@ -57,7 +57,7 @@
     "originalContributions": [
       "Proved aleph_omega_cof_eq_omega from Mathlib (Cardinal.cof_aleph + Ordinal.card_omega0)",
       "Proved bounding_le_dominating from dominating_implies_unbounded via Cardinal infimum reasoning",
-      "Proved easton_regular_consistency (conclusion was trivially True)",
+      "Easton's full consistency theorem is noted in prose only (no `easton_regular_consistency` Lean declaration exists — Con(ZFC + 2^aleph_0 = kappa) is a metamathematical statement outside Lean's type theory); the ZFC-provable spectrum facts are formalized directly (successor_alephs_possible, aleph_one_is_possible, aleph_two_is_possible, aleph_three_is_possible, aleph_omega_not_possible)",
       "Converted MartinsAxiom from axiom to opaque (removes from axiom environment)",
       "Formal proof that aleph_omega is singular (from cofinality + regularity API)",
       "Konig's cofinality constraint on the continuum: cf(2^aleph_0) > aleph_0",
