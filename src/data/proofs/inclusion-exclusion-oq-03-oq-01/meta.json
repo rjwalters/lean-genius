@@ -80,11 +80,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header: Closing the Parent's Open Question",
+      "title": "Module Docstring: Closing the Parent's Open Question",
       "startLine": 1,
-      "endLine": 48,
-      "summary": "Module docstring stating the goal: the parent entry proves the pointwise laws of the single-element SOS update step ζ_a but stops short of showing that folding it over every element reproduces the full zeta transform ζf(S) = ∑_{T⊆S} f(T). This file closes that gap — the correctness theorem of the O(n·2ⁿ) fast subset-sum DP (Yates' algorithm) underlying fast subset convolution and the Björklund–Husfeldt–Kaski–Koivisto 'Fourier meets Möbius' algorithm — and lists the four main results. Imports the parent file and Mathlib.Tactic; opens the IEOQ03 namespace with Finset.",
+      "endLine": 40,
+      "summary": "Module docstring stating the goal: the parent entry proves the pointwise laws of the single-element SOS update step ζ_a but stops short of showing that folding it over every element reproduces the full zeta transform ζf(S) = ∑_{T⊆S} f(T). This file closes that gap — the correctness theorem of the O(n·2ⁿ) fast subset-sum DP (Yates' algorithm) underlying fast subset convolution and the Björklund–Husfeldt–Kaski–Koivisto 'Fourier meets Möbius' algorithm — and lists the four main results, plus references to Yates (1937), Knuth TAOCP 4A, and Björklund–Husfeldt–Kaski–Koivisto (2007). Imports the parent file and Mathlib.Tactic.",
       "mathContext": "Folding $\\zeta_a$ over every $a$ collapses the partial-sweep invariant to the full zeta transform $\\zeta f(S) = \\sum_{T \\subseteq S} f(T)$."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace, Linter Option, and the Ambient Type Variable",
+      "startLine": 42,
+      "endLine": 48,
+      "summary": "Disables the unused-variables linter (needed because several proofs below case-split without using every bound name), opens namespace IEOQ03 with Finset, and fixes the ambient ground type α with [DecidableEq α] [Fintype α] used by every definition and theorem in the file.",
+      "mathContext": "Sets up the fixed finite, decidable-equality type $\\alpha$ shared by $\\zeta_\\bullet$, $\\mathrm{zetaFoldList}$, and $\\mathrm{zetaFold}$."
     },
     {
       "id": "fold-definitions",
