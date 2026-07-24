@@ -26,16 +26,16 @@ namespace Erdos399
 /- ## The Counterexample -/
 
 /-- 10! = 3628800 -/
-theorem factorial_10 : 10! = 3628800 := by native_decide
+theorem factorial_10 : 10! = 3628800 := by decide
 
 /-- 48^4 = 5308416 -/
-theorem pow_48_4 : (48 : ℕ)^4 = 5308416 := by native_decide
+theorem pow_48_4 : (48 : ℕ)^4 = 5308416 := by decide
 
 /-- 36^4 = 1679616 -/
-theorem pow_36_4 : (36 : ℕ)^4 = 1679616 := by native_decide
+theorem pow_36_4 : (36 : ℕ)^4 = 1679616 := by decide
 
 /-- Barfield's counterexample: 10! = 48^4 - 36^4 -/
-theorem barfield_counterexample : 10! + (36 : ℕ)^4 = (48 : ℕ)^4 := by native_decide
+theorem barfield_counterexample : 10! + (36 : ℕ)^4 = (48 : ℕ)^4 := by decide
 
 /-- The condition xy > 1 is satisfied: 48 * 36 = 1728 > 1 -/
 theorem barfield_xy_gt_one : 1 < 48 * 36 := by decide
@@ -58,7 +58,7 @@ theorem erdos_399_disproved :
   exact ⟨10, 48, 36, 4, by decide⟩
 
 /-- Alternative form: 10! = 48^4 - 36^4 -/
-theorem erdos_399_alt : (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4 := by native_decide
+theorem erdos_399_alt : (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4 := by norm_num [Nat.factorial]
 
 /- ## Historical Results (documented for context, not formalized) -/
 
@@ -84,13 +84,13 @@ This follows from considerations modulo 8.
 /- ## Sum of Two Squares -/
 
 /-- Verification: 6! = 720 -/
-theorem factorial_6 : 6! = 720 := by native_decide
+theorem factorial_6 : 6! = 720 := by decide
 
 /-- Verification: 12^2 + 24^2 = 144 + 576 = 720 -/
-theorem sum_squares_720 : (12 : ℕ)^2 + (24 : ℕ)^2 = 720 := by native_decide
+theorem sum_squares_720 : (12 : ℕ)^2 + (24 : ℕ)^2 = 720 := by decide
 
 /-- The equation 6! = 12^2 + 24^2 holds -/
-theorem six_factorial_sum_squares : 6! = (12 : ℕ)^2 + (24 : ℕ)^2 := by native_decide
+theorem six_factorial_sum_squares : 6! = (12 : ℕ)^2 + (24 : ℕ)^2 := by decide
 
 /- 
 **Erdős-Obláth**: The only solution to n! = x^2 + y^2 with xy > 1
@@ -103,7 +103,7 @@ on sums of two squares.
 /- ## Properties of the Solution -/
 
 /-- GCD(48, 36) = 12, so they are NOT coprime -/
-theorem barfield_gcd : Nat.gcd 48 36 = 12 := by native_decide
+theorem barfield_gcd : Nat.gcd 48 36 = 12 := by decide
 
 /-- The counterexample works precisely because gcd(x,y) > 1 -/
 theorem barfield_not_coprime : ¬ Nat.Coprime 48 36 := by
@@ -112,12 +112,12 @@ theorem barfield_not_coprime : ¬ Nat.Coprime 48 36 := by
   simp [barfield_gcd] at this
 
 /-- We can write 48^4 - 36^4 = 12^4 * (4^4 - 3^4) = 12^4 * 175 -/
-theorem barfield_factored : (48 : ℕ)^4 - (36 : ℕ)^4 = (12 : ℕ)^4 * 175 := by native_decide
+theorem barfield_factored : (48 : ℕ)^4 - (36 : ℕ)^4 = (12 : ℕ)^4 * 175 := by decide
 
 /-- 12^4 = 20736 -/
-theorem pow_12_4 : (12 : ℕ)^4 = 20736 := by native_decide
+theorem pow_12_4 : (12 : ℕ)^4 = 20736 := by decide
 
 /-- 4^4 - 3^4 = 256 - 81 = 175 -/
-theorem diff_4_3_pow4 : (4 : ℕ)^4 - (3 : ℕ)^4 = 175 := by native_decide
+theorem diff_4_3_pow4 : (4 : ℕ)^4 - (3 : ℕ)^4 = 175 := by decide
 
 end Erdos399
