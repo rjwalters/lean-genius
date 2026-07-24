@@ -937,12 +937,25 @@ walks the primes `p ≤ k` (via `primesUpTo k`, S10 ACT bearer) and
 branches on forbidden residues; the residue-pruning invariant
 collapses the leaf to a cardinality decision (per `searchAux`).
 
-The candidate set is `List.range w` (= `[0, 1, …, w-1]`) and the
-initial prefix is `[0]` per S10d PREP §3 — pinning `0 ∈ H` lets the
-leaf cardinality check on `chosen.length` start at `1` rather than
-`0`. -/
+The initial prefix is `[0]` per S10d PREP §3 — pinning `0 ∈ H` lets the
+leaf cardinality check on `chosen.length` start at `1` rather than `0`.
+The candidate set is `(List.range w).filter (· ≠ 0)` (S26 repair): it
+must be DISJOINT from `chosen`, because `searchAux`'s leaf test
+`candidates.length ≥ k - chosen.length` counts candidates as *fresh*
+slots on top of the committed prefix.  The legacy initial call passed
+`List.range w` (which contains the committed `0`), double-counting `0`
+and accepting parameters with only `k - 1` distinct elements available
+— see the S26 section at the end of this file for the machine-checked
+refutation (`legacy_bridge_refuted`).
+
+The guard returns `false` for the degenerate parameters `w = 0` (then
+`0 ∉ Finset.range w`, so no witness can contain `0`) and `k = 0` (then
+`0 ∈ H` contradicts `H.card = 0`); in both cases the correct answer is
+`false`, but the legacy leaf accepted spuriously via `Nat` truncation
+(`k - chosen.length = 0` at `k = 0`). -/
 def engelsmaSearchPruned (w k : ℕ) : Bool :=
-  searchAux w k (primesUpTo k) (List.range w) [0]
+  if w = 0 ∨ k = 0 then false
+  else searchAux w k (primesUpTo k) ((List.range w).filter (· ≠ 0)) [0]
 
 /-- **Bool/Prop bridge** for `engelsmaSearchPruned`. Mirror of
 `engelsmaSearch_eq_false_iff` (S9 ACT) for the pruned variant.
@@ -959,7 +972,17 @@ The reverse is completeness: every admissible witness is found.
    `chosen` is found by some branch of `searchAux`.
 3. `engelsmaSearchPruned_eq_iff`: combines the two via the
    residue-pruning invariant evaluated at `primes = primesUpTo k`,
-   `candidates = List.range w`, `chosen = [0]`.
+   `candidates = (List.range w).filter (· ≠ 0)`, `chosen = [0]`.
+
+**S26 status note**: this statement was UNPROVABLE against the legacy
+(pre-S26) definition of `engelsmaSearchPruned` — the legacy initial call
+double-counted `0` and returned `true` at `(w, k) = (1, 2)` where the RHS
+is vacuously true (machine-checked: `legacy_bridge_refuted` below).  The
+S26 repair (disjoint candidates + degenerate-parameter guard) makes the
+statement agree with the naive `engelsmaSearch` on the whole grid
+`w ≤ 12, k ≤ 5` (`engelsmaSearchPruned_agrees_small`), so it is now
+plausibly true.  Sound/complete invariants for the decomposition must be
+stated with `chosen ∩ candidates = ∅` as an explicit hypothesis.
 
 S11b ACT author: discharge the `sorry` below via the three sub-lemmas
 above; estimate +~190-300 LOC for the full decomposition (S18 PREP §2). -/
@@ -987,11 +1010,118 @@ theorem engelsmaSearchPruned_7_3_eq_true :
   native_decide
 
 /-- **Sanity test 2**: `(w, k) = (11, 5)`. Search space
-`Nat.choose 11 5 = 462`; naive `engelsmaSearch` would still be
-feasible but slow. The pruned form prunes via primes `[2, 3, 5]`
-(= `primesUpTo 5`). -/
-theorem engelsmaSearchPruned_11_5_eq_true :
-    engelsmaSearchPruned 11 5 = true := by
+`Nat.choose 11 5 = 462`; the pruned form prunes via primes `[2, 3, 5]`
+(= `primesUpTo 5`).
+
+**S26 correction**: the answer here is `false`, not `true` — Engelsma's
+`H(5) = 12` means the narrowest admissible 5-tuple has diameter 12, so no
+admissible 5-tuple fits in `{0, …, 10}` (diameter ≤ 10).  Concretely: an
+admissible 5-tuple must be monochromatic mod 2 and must miss a residue
+class mod 3, but each of the three classes mod 3 has ≥ 2 representatives
+among the six evens (and among the five odds no class can be emptied), so
+no 5-subset qualifies.  The legacy (pre-S26) definition certified `true`
+here via the double-counted `0` — a second machine-checked manifestation
+of the S26 soundness bug, now fixed (and cross-checked against the naive
+search over the grid in `engelsmaSearchPruned_agrees_small`). -/
+theorem engelsmaSearchPruned_11_5_eq_false :
+    engelsmaSearchPruned 11 5 = false := by
+  native_decide
+
+/-! ## S26 — soundness repair: the legacy pruned initial call double-counts `0`
+
+The S11b-δ bridge `engelsmaSearchPruned_eq_false_iff` was **unprovable as
+stated** against the legacy (pre-S26) definition
+
+    searchAux w k (primesUpTo k) (List.range w) [0]
+
+because the initial candidate list `List.range w` contains `0` while the
+prefix `chosen = [0]` has already committed it.  `searchAux`'s leaf test
+`candidates.length ≥ k - chosen.length` counts every candidate as a fresh
+slot on top of the committed prefix, so the surviving `0` in `candidates`
+is counted twice and parameter pairs with only `k - 1` distinct usable
+elements are accepted.
+
+Minimal machine-checked counterexample, `(w, k) = (1, 2)`: the only
+surviving branch (`p = 2`, forbidden residue `r = 1`) reaches the leaf
+with `candidates = chosen = [0]` and accepts via `1 ≥ 2 - 1`, so the
+legacy search returns `true` — yet `Finset.range 1` has no 2-element
+subset at all, so the bridge RHS is vacuously true and the bridge would
+force `false` (`legacy_bridge_refuted`).  A second, non-vacuous
+manifestation: the legacy search certified `true` at `(11, 5)` although
+`H(5) = 12` (see the corrected sanity test 2 above).
+
+The S26 repair (in `engelsmaSearchPruned`):
+1. initial candidates `(List.range w).filter (· ≠ 0)` — restores the
+   disjointness invariant `chosen ∩ candidates = ∅` the leaf test needs;
+2. a guard returning `false` at `w = 0` or `k = 0`, where pinning
+   `0 ∈ H` is impossible or forbidden and `Nat` truncation made the
+   legacy leaf accept spuriously.
+
+The legacy definition is kept verbatim below (as
+`engelsmaSearchPrunedLegacy`) solely so the refutation stays
+machine-checked; do not consume it in new work. -/
+
+/-- The legacy (pre-S26) pruned-search surface, kept verbatim so the
+soundness refutation `legacy_bridge_refuted` stays machine-checked.
+Do NOT consume this in new work — use `engelsmaSearchPruned`. -/
+def engelsmaSearchPrunedLegacy (w k : ℕ) : Bool :=
+  searchAux w k (primesUpTo k) (List.range w) [0]
+
+/-- The legacy search accepts `(w, k) = (1, 2)`: the sole surviving branch
+reaches the leaf with `candidates = chosen = [0]` and the double-counted
+`0` satisfies `1 ≥ 2 - 1`. -/
+theorem engelsmaSearchPrunedLegacy_1_2_eq_true :
+    engelsmaSearchPrunedLegacy 1 2 = true := by
+  native_decide
+
+/-- The naive search correctly rejects `(w, k) = (1, 2)` — there is no
+2-element subset of `{0}` at all (kernel `decide`; the powerset is empty). -/
+theorem engelsmaSearch_1_2_eq_false : engelsmaSearch 1 2 = false := by
+  decide
+
+/-- **The S11b-δ bridge is FALSE for the legacy definition.**  At
+`(w, k) = (1, 2)` the RHS is vacuously true (no 2-element subsets of
+`Finset.range 1` exist), so the bridge would force the search to return
+`false`; but the legacy search returns `true`.  This is the refutation
+that motivated the S26 repair — any soundness development against the
+legacy initial call was doomed. -/
+theorem legacy_bridge_refuted :
+    ¬ (engelsmaSearchPrunedLegacy 1 2 = false ↔
+        ∀ H ∈ (Finset.range 1).powersetCard 2, 0 ∈ H → ¬ IsAdmissible H) := by
+  intro h
+  have hvac : ∀ H ∈ (Finset.range 1).powersetCard 2, 0 ∈ H → ¬ IsAdmissible H := by
+    intro H hH _ _
+    obtain ⟨hsub, hcard⟩ := Finset.mem_powersetCard.mp hH
+    have h1 : H.card ≤ (Finset.range 1).card := Finset.card_le_card hsub
+    rw [Finset.card_range, hcard] at h1
+    omega
+  have hfalse : engelsmaSearchPrunedLegacy 1 2 = false := h.mpr hvac
+  rw [engelsmaSearchPrunedLegacy_1_2_eq_true] at hfalse
+  exact Bool.true_ne_false hfalse
+
+/-- **S26 regression**: the repaired search rejects the legacy
+counterexample `(1, 2)`. -/
+theorem engelsmaSearchPruned_1_2_eq_false :
+    engelsmaSearchPruned 1 2 = false := by
+  native_decide
+
+/-- **S26 regression**: `(2, 2)` — `{0, 1}` is the only candidate pair and
+is inadmissible mod 2 (both residues hit).  The legacy definition also
+certified `true` here. -/
+theorem engelsmaSearchPruned_2_2_eq_false :
+    engelsmaSearchPruned 2 2 = false := by
+  native_decide
+
+/-- **S26 drop-in agreement grid**: the repaired pruned search agrees with
+the naive `engelsmaSearch` on every `(w, k)` with `w ≤ 12, k ≤ 5` — 78
+parameter pairs covering both refuted legacy points `(1, 2)` and `(11, 5)`,
+all degenerate rows (`w = 0`, `k = 0`), and both positive sanity points
+`(7, 3)` and `(12, 5)`-adjacent cases.  This is the drop-in contract the
+S9 scaffold requires of any pruned replacement, checked exhaustively on
+the tractable grid. -/
+theorem engelsmaSearchPruned_agrees_small :
+    ((List.range 13).all fun w => (List.range 6).all fun k =>
+      engelsmaSearchPruned w k == engelsmaSearch w k) = true := by
   native_decide
 
 end BoundedPrimeGapsOQ03OQ02
