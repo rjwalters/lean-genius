@@ -10,7 +10,7 @@
     "title": "Part I of Erdős #897 — what is proved and what is not",
     "content": "**Part I (OPEN)** of Erdős #897 asks: if an additive `f` satisfies `limsup_{p,k} f(p^k)/log(p^k) = ∞`, must `limsup_n (f(n+1)−f(n))/log n = ∞`? This file does **not** assert Part I. It proves the verified surrounding theory: a non-vacuity witness, selectivity against the classical examples, plain unboundedness, and a strongly-additive reduction. All results are axiom-free with 0 sorries.",
     "mathContext": "$\\displaystyle\\limsup_{p,k}\\frac{f(p^k)}{\\log(p^k)}=\\infty \\;\\overset{?}{\\Longrightarrow}\\; \\limsup_{n}\\frac{f(n+1)-f(n)}{\\log n}=\\infty$ — Part I, OPEN and deliberately not asserted; only the four verified deliverables below are established.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "additive arithmetic functions",
       "Erdős problems",

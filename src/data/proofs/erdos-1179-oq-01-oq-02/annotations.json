@@ -57,7 +57,7 @@
     "title": "The Analytic Core: log log x = o(log x)",
     "content": "eventually_loglog_lt is the single analytic input: for every ε' > 0, log(log x) < ε'·log x for all large x. The proof takes Mathlib's Real.isLittleO_log_id_atTop (log x = o(x)) and composes it on the right with Real.tendsto_log_atTop (log x → ∞) via IsLittleO.comp_tendsto, yielding log ∘ log = o(log). Unpacking with isLittleO_iff at tolerance ε'/2 gives ‖log(log x)‖ ≤ (ε'/2)·‖log x‖ eventually; combined with log x > 0 (eventually) the norms drop and the strict inequality log(log x) < ε'·log x follows (the ½ slack upgrades ≤ to <). This is the log-versus-identity growth gap applied twice: log t = o(t) with t = log x.",
     "mathContext": "$\\log t = o(t)$ with $t = \\log x$ gives $\\log\\log x = o(\\log x)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "little-o composition",
       "IsLittleO.comp_tendsto",
@@ -81,7 +81,7 @@
     "title": "Main Implication: Θ(log log N) ⟹ o(log₂ N)",
     "content": "loglog_implies_sublinear proves CorrectionIsLogLog ⟹ CorrectionIsSublinearInLog. Given the Θ-bounds with constants c₁, c₂ and threshold N₀, and a target δ > 0, set the scale ε' = δ/(c₂·log 2) > 0. A combined eventually fact supplies a real threshold X beyond which log(log N) < ε'·log N and 1 ≤ log N both hold; the latter yields log log N ≥ 0 (Real.log_nonneg). For N ≥ max(N₀, ⌈X⌉₊): the lower bound c₁·log log N ≤ corr(N) with log log N ≥ 0 forces corr(N) ≥ 0, so |corr(N)| = corr(N); the upper bound gives corr(N) ≤ c₂·log log N, and c₂·log log N < c₂·ε'·log N = δ·(log N / log 2) = δ·logb 2 N (using Real.logb 2 N = log N / log 2, closed by field_simp after simp only [Real.logb]). Chaining delivers |corr(N)| < δ·logb 2 N.",
     "mathContext": "$|\\mathrm{corr}(N)| = \\mathrm{corr}(N) \\le c_2\\log\\log N < \\delta\\log_2 N$ for $N \\ge \\max(N_0, \\lceil X\\rceil)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "asymptotic hierarchy",
       "epsilon-delta o(·) proof",
@@ -105,7 +105,7 @@
     "title": "Honesty Note: the Two Sharpenings Are Mutually Exclusive",
     "content": "The parent's narrative loosely writes the hierarchy as a chain 'O(1) ⟹ Θ(log log N) ⟹ o(log)'. Read literally as an implication between the Lean propositions, the first step is FALSE: CorrectionIsBounded (|corr| ≤ C) contradicts CorrectionIsLogLog's growing lower bound c₁·log log N ≤ corr for large N. The correct structural picture — the one this file certifies — is that O(1) and Θ(log log N) are mutually exclusive sharpenings of the correction, and EACH independently implies the coarse known rate o(log₂ N). The parent proved the O(1) branch (bounded_implies_sublinear); this file proves the Θ(log log N) branch. Neither resolves which rate actually holds; that dichotomy is the open content of erdos-1179-oq-01.",
     "mathContext": "Bounded $\\not\\Rightarrow \\Theta(\\log\\log N)$; instead both $\\Rightarrow o(\\log_2 N)$ independently.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "mutually exclusive asymptotic rates",
       "mathematical honesty",

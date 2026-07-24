@@ -127,7 +127,7 @@
     "title": "Brown-Erdős-Sós (1973) — removed as dead code",
     "content": "This section header is now empty. It once held two axioms from the 1973 paper: brown_erdos_sos_k4 (for k=4, ex₃(n, F_4) ~ n²/6) and brown_erdos_sos_general (for k ≥ 4, ex₃(n, F_k) = Θ_k(n²)). Both were removed as dead (unreferenced) axioms in a 2026-03-27 batch cleanup (commit b22da88e49). The 1973 Brown-Erdős-Sós results are not formalized in this file — only the historical narrative in the header comment and overview mentions them.",
     "mathContext": "No declarations remain in this range; see git history at commit b22da88e49 for the removed axiom statements.",
-    "significance": "minor",
+    "significance": "supporting",
     "relatedConcepts": [
       "k=4 base case",
       "Θ_k(n²)",

@@ -7,7 +7,7 @@
     "title": "The Derangement Quotient and OEIS A000255",
     "content": "The parent entry showed (n−1) divides the derangement count D(n) via the additive recurrence D(n) = (n−1)(D(n−2)+D(n−1)). This file identifies the resulting integer quotient q(n) = D(n)/(n−1) = D(n−2)+D(n−1) as OEIS A000255, which counts permutations of an (m+1)-set with exactly one fixed point (divided by m+1), with terms 1, 1, 3, 11, 53, 309, …",
     "mathContext": "$q(n) = \\dfrac{D(n)}{n-1} = D(n-2) + D(n-1), \\qquad \\text{A000255}: 1,1,3,11,53,309,\\dots$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["derangements", "OEIS A000255", "subfactorial"],
     "prerequisites": ["derangement number", "integer divisibility", "OEIS"]
   },
@@ -67,7 +67,7 @@
     "title": "Tabulated Terms and Cross-Checks",
     "content": "The examples verify q 2..5 = 3, 11, 53, 309 by decide (the first A000255 terms), that the recurrence reproduces them (q 4 = 4·q 3 + 3·q 2 = 53), and the quotient identity D(6) = 5·q(4) = 265. These decidable checks certify the closed recurrence and quotient identity against the tabulated integer sequence, guarding against off-by-one indexing errors.",
     "mathContext": "$q(2),\\dots,q(5) = 3, 11, 53, 309; \\quad D(6) = 5\\cdot q(4) = 265$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["numerical verification", "OEIS A000255", "sanity checks"],
     "prerequisites": ["decide tactic", "the recurrence and quotient identity"]
   }

@@ -7,7 +7,7 @@
     "title": "The uniform closed form 6·∑ C_{k,i} = k·n³ + (6−k)·n",
     "content": "The module docstring states the open question inherited from the parent centered-hexagonal-sum-oq-01 (which proved ∑ C_{6,i} = n³): do the centered k-gonal partial sums admit equally clean closed forms, and what reindexing keeps every step inside ℕ? The answer is a single identity covering all families at once — 6·∑_{i=1}^{n} C_{k,i} = k·n³ + (6−k)·n — obtained by two design choices that avoid both division and truncated ℕ-subtraction: (1) multiply through by the denominator 6, and (2) write the linear correction as +(6−k)·n rather than −(k−6)·n. Reading off k = 6 collapses the linear term to 0, recovering the parent's pure cube; k = 3, 4, 5 give the centered triangular, square, and pentagonal families. The file is developed over ℤ for the sum identity so the single coefficient 6−k carries every family, and it imports Mathlib in the namespace CenteredHexagonalSumOQ01OQ01. 0 sorries, 0 axioms.",
     "mathContext": "$6\\sum_{i=1}^{n} C_{k,i} = k\\,n^3 + (6-k)\\,n$, with $C_{k,n} = \\tfrac{k\\,n(n-1)}{2} + 1$; $k=6$ gives $\\sum C_{6,i} = n^3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "centered polygonal numbers",
       "figurate numbers",

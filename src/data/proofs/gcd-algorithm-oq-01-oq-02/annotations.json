@@ -10,7 +10,7 @@
     "title": "The Euclidean Step Count as a Rational Statistic",
     "content": "euclideanSteps a b counts the number of division steps performed by the Euclidean algorithm, defined by well-founded recursion on the second argument b (each step replaces (a,b) by (b, a mod b), and a mod b < b when b ≠ 0 guarantees termination). Restated here so the file is self-contained rather than importing the parent module. stepsQ p = (euclideanSteps p.1 p.2 : ℚ) lifts this integer statistic to the rationals, so that empirical means and variances are exact rational numbers with no rounding; stepsQ_nonneg records that it is non-negative.",
     "mathContext": "$\\mathrm{euclideanSteps}(a,0) = 0$ and $\\mathrm{euclideanSteps}(a,b) = \\mathrm{euclideanSteps}(b, a \\bmod b) + 1$ for $b \\ne 0$. As $(a,b)$ ranges over a bounded region this count behaves like a random variable; Dixon (1970) showed its mean is $\\sim \\frac{12\\ln 2}{\\pi^2}\\ln N$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclidean algorithm",
       "well-founded recursion",
@@ -57,7 +57,7 @@
     "title": "Non-negativity of the Empirical Variance",
     "content": "empVar_nonneg shows 0 ≤ empVar s f. The numerator ∑ (f i − empMean s f)² is a sum of squares, hence non-negative by Finset.sum_nonneg and sq_nonneg; the denominator |s| is a natural number cast to ℚ, hence non-negative. div_nonneg combines the two. A small but necessary sanity fact: a variance is never negative, which the Chebyshev bound implicitly relies on when interpreting Var/t² as a genuine probability bound.",
     "mathContext": "$\\sigma^2 = \\frac{1}{|s|}\\sum_{i \\in s}(f(i)-\\mu)^2 \\ge 0$ because it is a non-negative sum divided by a non-negative cardinality.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "sum of squares",
       "Finset.sum_nonneg",

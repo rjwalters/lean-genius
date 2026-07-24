@@ -7,7 +7,7 @@
     "title": "The p-series and its sharp convergence threshold",
     "content": "The docstring frames the entire entry: the p-series ∑' n, 1/nᵖ converges if and only if 1 < p. It lays out the plan — state the sharp real-exponent threshold as the headline, then specialize to a natural-number exponent and to the two-sided ℤ-indexed series, and finally record the two informative endpoints: the harmonic series (p = 1) on the divergent boundary and the Basel exponent (p = 2) as a convergent instance. All proofs reduce to Mathlib's p-series engine and are machine-checked with no extra axioms.",
     "mathContext": "$\\sum_{n=1}^{\\infty} 1/n^p$ is summable $\\iff p > 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["p-series", "convergence test", "harmonic series", "Basel problem", "Real.rpow"],
     "prerequisites": ["infinite series", "Summable"]
   },
@@ -67,7 +67,7 @@
     "title": "The Basel exponent as a convergent instance",
     "content": "pSeries_basel_summable specializes the natural-exponent iff to p = 2: since 2 lies above the threshold (a `norm_num` fact), the series ∑ 1/n² converges. This is the convergence input to the Basel problem, whose value is π²/6 — placing the celebrated Euler series on the convergent side of the same boundary the harmonic series falls off of.",
     "mathContext": "Summable $(\\lambda n, 1/n^2)$ from $1 < 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Basel problem", "Euler", "norm_num"],
     "prerequisites": ["Summable"]
   }

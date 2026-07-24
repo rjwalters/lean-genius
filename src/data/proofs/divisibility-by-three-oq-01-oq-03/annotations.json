@@ -79,7 +79,7 @@
     "title": "Scope: the alternating dual of casting out nines",
     "content": "The module docstring situates the entry against its parent `DivisibilityByThreeOQ01`, which developed the ADDITIVE theory (base b ≡ 1 mod d, packaged by Mathlib as `Nat.modEq_digits_sum` / `Nat.dvd_iff_dvd_digits_sum`, with casting out nines the case b=10, d=9). This file handles the DUAL regime b ≡ -1 (mod d), where the alternating digit sum a₀-a₁+a₂-⋯ governs divisibility. Mathlib only records the single classical instance `Nat.modEq_eleven_digits_sum` / `Nat.eleven_dvd_iff` (base 10, mod 11); everything here generalizes it to arbitrary (b,d) with d ∣ b+1 by reducing to the master congruence `Nat.zmodeq_ofDigits_digits` at residue c = -1. The imports `import Mathlib.Data.Nat.Digits.Div` and `import Mathlib.Tactic` are gallery conventions.",
     "mathContext": "Additive rule needs $b \\equiv 1 \\pmod d$ ($n \\equiv \\sum a_i$); this entry's alternating rule needs $b \\equiv -1 \\pmod d$ ($n \\equiv \\sum (-1)^i a_i$). Both are the $c = \\pm 1$ specializations of $n \\equiv \\text{ofDigits}_b(c)$-style congruences.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["casting out nines", "casting out elevens", "parent entry DivisibilityByThreeOQ01", "Nat.zmodeq_ofDigits_digits", "positional notation"],
     "prerequisites": ["modular arithmetic", "positional numeral systems", "Nat.digits API"]
   },
@@ -127,7 +127,7 @@
     "title": "Numerical verification of the rules",
     "content": "Concrete sanity checks discharged by `decide`/`native_decide`/`norm_num`. The key witness is 1002001, whose base-1000 digit blocks are [001, 002, 001] with alternating sum 1 - 2 + 1 = 0, so it is simultaneously divisible by 7, 11, 13 and 1001 — a single computation exhibiting the four-in-one base-1000 test. Likewise 1331 has alternating decimal digit sum 1 - 3 + 3 - 1 = 0, confirming 11 ∣ 1331. The arithmetic fact 1001 = 7·11·13 underpinning the base-1000 grouping is checked directly.",
     "mathContext": "$\\text{altDigitSum}_{1000}(1002001) = 1-2+1 = 0 \\Rightarrow 7,11,13,1001 \\mid 1002001$; $\\text{altDigitSum}_{10}(1331) = 1-3+3-1 = 0 \\Rightarrow 11 \\mid 1331$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["decide / native_decide", "1001 = 7·11·13", "worked examples"],
     "prerequisites": ["the alternating divisibility tests"]
   }

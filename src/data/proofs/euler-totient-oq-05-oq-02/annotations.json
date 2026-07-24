@@ -91,7 +91,7 @@
     "title": "Agreement with Mathlib's Carmichael function",
     "content": "The locally-defined λ(n) coincides with Mathlib's official ArithmeticFunction.Carmichael for n ≠ 0, via ArithmeticFunction.carmichael_eq_exponent'. This bridges the exponent-based definition used here to the standard number-theoretic arithmetic function, ensuring results transfer.",
     "mathContext": "$\\lambda(n) = \\mathrm{Carmichael}(n)$ for $n \\neq 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["ArithmeticFunction.Carmichael", "interoperability"],
     "prerequisites": ["Mathlib's ArithmeticFunction.Carmichael"]
   },

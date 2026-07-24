@@ -7,7 +7,7 @@
     "title": "Erdős #1010 and the Minimum K_r Density Problem",
     "content": "Turán's theorem gives the maximum edge count ex(n, K_{r+1}) of a K_{r+1}-free graph; the deeper minimum-density problem asks how many copies of K_r are forced as edge density grows. Erdős #1010 OQ-02 seeks the exact minimum K_r density for r ≥ 5 — known for r = 3 (Razborov) and r = 4 (Reiher) via flag algebras, open beyond. This file de-axiomatizes the parent's forcing step and pins the provable endpoints of the unknown curve.",
     "mathContext": "$g_r(d) = \\min\\{\\rho_r(G) : \\text{edge density}(G) = d\\}, \\quad \\rho_k(G) = \\dfrac{|\\{K_k \\subseteq G\\}|}{\\binom{n}{k}}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Turán's theorem", "clique density", "flag algebras"],
     "prerequisites": ["extremal graph theory", "clique", "edge density"]
   },

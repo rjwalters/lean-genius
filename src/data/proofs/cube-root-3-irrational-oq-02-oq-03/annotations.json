@@ -7,7 +7,7 @@
     "title": "Imports: Kummer extensions and geometric sums",
     "content": "The proof rests on two Mathlib pillars. `Mathlib.FieldTheory.KummerExtension` supplies the odd-exponent half of the criterion (`X_pow_sub_C_irreducible_iff_forall_prime_of_odd`) and is exactly the file whose even-case `TODO` this entry targets. `Mathlib.Algebra.Ring.GeomSum` supplies the factorisation `x − y ∣ xⁿ − yⁿ` (`sub_dvd_pow_sub_pow`) used for the condition-(1) obstruction. Everything lives in the `Polynomial` namespace, so `X` and `C` denote the indeterminate and the constant-coefficient embedding.",
     "mathContext": "$K[X]$ with $X$ the indeterminate and $C : K \\to K[X]$ the constant embedding, $C(a)$ the degree-0 polynomial $a$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Kummer extension", "polynomial ring", "geometric sum factorisation"],
     "prerequisites": ["field theory", "polynomial rings"]
   },

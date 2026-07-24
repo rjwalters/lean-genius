@@ -10,7 +10,7 @@
     "title": "The neighbour peel was proved — but never iterated into a product",
     "content": "The hard half of the Lovász Local Lemma induction step is a lower bound on the neighbour-block survival probability $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$. The sibling **denominator-step** entry proved the SINGLE move behind it: $(1-x)\\cdot l \\le \\mu[A^c \\cap B \\mid C]$ from $l \\le \\mu[B\\mid C]$ and $\\mu[A \\mid B\\cap C] \\le x$ — peeling one neighbour $A = A_k$ deflates the running survival bound $l$ by a factor $(1-x_k)$. Its docstring explicitly deferred the rest: *'a well-founded recursion on $|S_1|$, still to be assembled'*. This entry assembles it. `cond_iInter_compl_ge_prod` is a `Finset.induction` over the neighbour block $S$ that iterates the peel — one insertion, one peel — accumulating the product $\\prod_{j\\in S}(1-x_j)$. The capstone `cond_failure_le_x_prod` then feeds the assembled product into the induction-step entry's abstract invariant, turning its abstract denominator $d$ into the concrete $\\prod(1-x_j)$.",
     "mathContext": "∏_{j∈S}(1 − xⱼ) ≤ μ[⋂_{j∈S} Aⱼᶜ | C], by induction on S iterating (1 − xₖ)·l ≤ μ[Aₖᶜ ∩ B | C].",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "Erdős–Lovász induction",
@@ -58,7 +58,7 @@
     "title": "Statement and base case: the empty block gives μ[univ | C] = 1 = ∏_∅",
     "content": "`cond_iInter_compl_ge_prod` states $\\prod_{j\\in S}(1-x_j) \\le \\mu[\\bigcap_{j\\in S} A_j^c \\mid C]$ with two side conditions carried as hypotheses quantified over **all** sub-blocks $T \\subseteq S$: positivity of every partial history ($\\mu[(\\bigcap_{j\\in T} A_j^c)\\cap C] \\ne 0$) and a per-event failure bound ($\\mu[A_k \\mid (\\bigcap_{j\\in T} A_j^c)\\cap C] \\le x_k$ for $k\\in S$, $T\\subseteq S$, $k\\notin T$). Quantifying over sub-blocks — not just $S$ — is what lets the induction hypothesis inherit exactly the bounds it needs at the smaller block. The proof is `Finset.induction_on S`. **Base $S=\\varnothing$:** `hbi` rewrites $\\bigcap_{j\\in\\varnothing} A_j^c = \\text{univ}$ by `simp`; the positivity hypothesis at $T=\\varnothing$ then yields $\\mu C \\ne 0$ (after `Set.univ_inter`); and `cond_apply hC` unfolds $\\mu[\\text{univ}\\mid C] = (\\mu C)^{-1}\\cdot\\mu(C\\cap\\text{univ})$, which `Set.inter_univ` and `ENNReal.inv_mul_cancel` (using $\\mu C \\ne 0$ and $\\mu C \\ne \\infty$ from `measure_ne_top`) collapse to $1$ — matching `Finset.prod_empty` $= 1$. With no neighbours to avoid, the survival lower bound is vacuously the empty product.",
     "mathContext": "Base: ⋂_{j∈∅} Aⱼᶜ = univ ⇒ goal 1 ≤ μ[univ | C]; cond_apply hC + Set.inter_univ + ENNReal.inv_mul_cancel (μ C ≠ 0, ≠ ∞) give μ[univ | C] = 1 = ∏_∅.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Finset.induction_on",
       "sub-block quantification of side conditions",
@@ -82,7 +82,7 @@
     "title": "The insert step: one peel advances the block by one neighbour",
     "content": "The `insert a s` case ($a \\notin s$) is where the peel is iterated. First the side conditions are **restricted** from $\\text{insert } a\\, s$ down to $s$ via `Finset.subset_insert` (giving `hpos'`, `hbound'`), so the induction hypothesis `ih` fires to yield $\\text{IH} : \\prod_{s}(1-x_j) \\le \\mu[\\bigcap_{s} A_j^c \\mid C]$. Then both sides are factored along the new neighbour $a$: `Finset.prod_insert ha` splits the product as $(1-x_a)\\cdot\\prod_{s}$, and `Finset.set_biInter_insert a s` splits the survival set as $A_a^c \\cap \\bigcap_{s} A_j^c$. The identity $A_a^c \\cap \\bigcap_{s} A_j^c = \\bigcap_{\\text{insert } a\\, s} A_j^c$ is precisely why one peel advances the block by one element. Finally, a single `mul_one_sub_le_cond_compl` — fed measurability of $\\bigcap_s A_j^c$ (`Finset.measurableSet_biInter`), the partial-history positivity `hBC = hpos s`, the per-event bound `hxa` at $a$ over history $s$, and IH — closes the goal to exactly $(1-x_a)\\cdot\\prod_s \\le \\mu[A_a^c \\cap \\bigcap_s A_j^c \\mid C]$. That is the single-neighbour peel, now compounded once per insertion into the full product.",
     "mathContext": "Step: prod_insert ⇒ (1 − xₐ)·∏_s; set_biInter_insert ⇒ (A a)ᶜ ∩ ⋂_s Aⱼᶜ = ⋂_{insert a s} Aⱼᶜ; one mul_one_sub_le_cond_compl on IH closes (1 − xₐ)·∏_s ≤ μ[(A a)ᶜ ∩ ⋂_s Aⱼᶜ | C].",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Finset.set_biInter_insert",
       "Finset.prod_insert",
@@ -106,7 +106,7 @@
     "title": "Threading the product into the invariant: the abstract d becomes ∏(1 − xⱼ)",
     "content": "`cond_failure_le_x_prod` is the payoff. The induction-step entry proved the invariant $\\mu[A_i \\mid N\\cap C] \\le x_i$ closes *once a denominator lower bound $d \\le \\mu[N\\mid C]$ is supplied*, but left $d$ abstract. Here $d$ becomes concrete: set $C = \\bigcap_{j\\in S_2} A_j^c$ (measurable via `Finset.measurableSet_biInter`), obtain $\\prod_{j\\in S_1}(1-x_j) \\le \\mu[\\bigcap_{j\\in S_1} A_j^c \\mid \\bigcap_{j\\in S_2} A_j^c]$ from `cond_iInter_compl_ge_prod`, and hand it to `cond_failure_le_x` as the denominator bound. Under the asymmetric LLL budget $\\mu(A_i) \\le x_i\\cdot\\prod_{j\\in S_1}(1-x_j)$ and the non-neighbour independence $\\text{IndepSet}\\,A_i\\,(\\bigcap_{S_2} A_j^c)\\,\\mu$, the result is $\\mu[A_i \\mid (\\bigcap_{S_1} A_j^c)\\cap(\\bigcap_{S_2} A_j^c)] \\le x_i$ — the maintained invariant, now with the denominator equal to the actual product the textbook proof threads. **Honest scope:** the per-event bounds this consumes are themselves instances of the same invariant at smaller conditioning sets; the two directions form the Erdős–Lovász mutual recursion, and closing that mutual loop into an unconditional LLL is the remaining open OQ-01 target.",
     "mathContext": "cond_failure_le_x with d := ∏_{S₁}(1 − xⱼ) supplied by the recursion ⇒ μ[Aᵢ | (⋂_{S₁} Aⱼᶜ) ∩ (⋂_{S₂} Aⱼᶜ)] ≤ xᵢ.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "induction invariant μ[Aᵢ | history] ≤ xᵢ",
       "abstract vs concrete denominator",

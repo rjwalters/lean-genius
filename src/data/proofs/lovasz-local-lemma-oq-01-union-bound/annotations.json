@@ -10,7 +10,7 @@
     "title": "The two computable extremes of the Lovász Local Lemma",
     "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, with the conclusion $\\mu(\\bigcap_i A_i^c) > 0$. The companion entry `lovasz-local-lemma-oq-01` proved one extreme of the landscape — the **mutually independent** ($d = 0$) case, where the avoidance probability factors *exactly* as $\\prod_i (1 - \\mu(A_i))$. This file proves the opposite extreme: the **dependency-free** case, where *nothing* is assumed about how the events interact. There the best one can say is the crude first-moment (union / Bonferroni) bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$, positive as soon as the total mass $\\sum_i \\mu(A_i) < 1$. The genuine open target — the bounded-dependency-degree symmetric LLL, budget $e\\,p\\,(d+1) \\le 1$ — lives *between* these two extremes: it is exactly the statement that a bounded *local* dependency structure lets one relax the crude *global* threshold $n\\,p < 1$ proved here to a budget independent of the number of events $n$.",
     "mathContext": "Arbitrary measurable family $A : \\iota \\to \\mathrm{Set}\\,\\Omega$ over a `Fintype` index and an `IsProbabilityMeasure` $\\mu$; goal $\\mu\\!\\left(\\bigcap_i A_i^c\\right) \\ge 1 - \\sum_i \\mu(A_i)$, with no independence hypothesis.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "union bound",
@@ -59,7 +59,7 @@
     "title": "First-moment lower bound: μ(⋂ Aᵢᶜ) ≥ 1 − ∑ μ(Aᵢ)",
     "content": "```lean\ntheorem lll_union_bound_iInter_compl_ge (hA : ∀ i, MeasurableSet (A i)) :\n    1 - ∑ i, μ (A i) ≤ μ (⋂ i, (A i)ᶜ) := by\n  have hU : MeasurableSet (⋃ i, A i) := MeasurableSet.iUnion hA\n  calc 1 - ∑ i, μ (A i)\n      ≤ 1 - μ (⋃ i, A i) := tsub_le_tsub_left (measure_iUnion_fintype_le μ A) 1\n    _ = μ ((⋃ i, A i)ᶜ) := (prob_compl_eq_one_sub hU).symm\n    _ = μ (⋂ i, (A i)ᶜ) := by rw [Set.compl_iUnion]\n```\n\nThe whole argument is the union bound, read backwards. The avoidance event $\\bigcap_i A_i^c$ is the complement of the union $\\bigcup_i A_i$ (De Morgan, `Set.compl_iUnion`). Finite subadditivity (`measure_iUnion_fintype_le`) gives $\\mu(\\bigcup_i A_i) \\le \\sum_i \\mu(A_i)$, and in a probability measure `prob_compl_eq_one_sub` rewrites $\\mu((\\bigcup A_i)^c) = 1 - \\mu(\\bigcup A_i)$. Since $x \\mapsto 1 - x$ is antitone for truncated $\\mathbb{R}_{\\ge 0}^\\infty$ subtraction (`tsub_le_tsub_left`), the subadditivity bound flips into the desired lower bound. Note this holds **unconditionally**: when $\\sum_i \\mu(A_i) \\ge 1$ the left side is $0$ and the inequality degenerates to the trivial $0 \\le \\mu(\\bigcap A_i^c)$.",
     "mathContext": "measure_iUnion_fintype_le : μ(⋃ i, A i) ≤ ∑ i, μ(A i) for a Fintype index; prob_compl_eq_one_sub : μ sᶜ = 1 − μ s in an IsProbabilityMeasure.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "union bound",
       "finite subadditivity",
@@ -81,7 +81,7 @@
     "title": "Positive avoidance from a subcritical total mass",
     "content": "```lean\ntheorem lll_union_bound_avoidance\n    (hA : ∀ i, MeasurableSet (A i)) (hsum : ∑ i, μ (A i) < 1) :\n    0 < μ (⋂ i, (A i)ᶜ) :=\n  lt_of_lt_of_le (tsub_pos_iff_lt.2 hsum) (lll_union_bound_iInter_compl_ge hA)\n```\n\nThe qualitative payoff of the lower bound: as soon as the total mass is subcritical ($\\sum_i \\mu(A_i) < 1$), *all* bad events are simultaneously avoided with strictly positive probability — with no independence and no bounded-dependency hypothesis whatsoever. The proof is a one-liner: `tsub_pos_iff_lt` turns $\\sum_i \\mu(A_i) < 1$ into $0 < 1 - \\sum_i \\mu(A_i)$ in $\\mathbb{R}_{\\ge 0}^\\infty$, and chaining that strict inequality through the lower bound `lll_union_bound_iInter_compl_ge` with `lt_of_lt_of_le` gives $0 < \\mu(\\bigcap_i A_i^c)$. This is the honest dependency-free baseline the Lovász Local Lemma is built to beat: it needs the *global* mass small, whereas the LLL needs only *local* dependency controlled.",
     "mathContext": "tsub_pos_iff_lt : 0 < a − b ↔ b < a (here a = 1, b = ∑ μ(A i)); the strict inequality is transported through the lower bound by lt_of_lt_of_le.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "first-moment method",
       "positive probability",

@@ -19,7 +19,7 @@
     "title": "The Typeclass Setup Encodes the Generality",
     "content": "The `variable {ι α : Type*} [DecidableEq α]` line is doing real mathematical work by what it *omits*. The index type $\\iota$ carries **no** `Fintype` or `Finite` instance, and the value type $\\alpha$ carries only `DecidableEq` (needed so that `Finset α`, `biUnion`, and `image` are well-defined). In particular there is no finiteness assumption on the family's index set. This is precisely why the necessity direction (`hall_condition_of_sdr`) generalizes to an arbitrary — possibly infinite — index type: its proof touches only a single finite sub-family $s : \\mathrm{Finset}\\,\\iota$ at a time and never quantifies over all of $\\iota$. The sufficiency direction, by contrast, silently requires the finiteness that Mathlib's `all_card_le_biUnion_card_iff_exists_injective` supplies through Rado's compactness argument. So the section-level split between the cheap and the deep half of Hall's theorem is already visible in which typeclasses each result actually needs — and this shared `variable` block is the widest hypothesis under which any of them holds.",
     "mathContext": "$\\iota, \\alpha : \\mathrm{Type}^*$, only $[\\mathrm{DecidableEq}\\,\\alpha]$ — no $\\mathrm{Fintype}\\,\\iota$; necessity holds for infinite $\\iota$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["DecidableEq", "typeclass hypotheses", "infinite index type", "Rado compactness", "variable declarations"],
     "prerequisites": ["Lean typeclass inference", "Finset requires DecidableEq"]
   },

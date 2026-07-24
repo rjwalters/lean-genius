@@ -7,7 +7,7 @@
     "title": "Translation and half-period on AddCircle T",
     "content": "Two lightweight definitions carry the whole argument. `circleTranslate s x = x + ↑s` shifts a point of the circle group `AddCircle T` by a real amount `s`. `halfPeriod T n` returns `T/(2n)` for `n ≠ 0` (and `0` for `n = 0`) — exactly half the period `T/n` of the `n`-th Fourier mode. Shifting by a half-period is the single geometric operation that flips the sign of `fourier n`, which is the engine of the entire sharpness argument.",
     "mathContext": "$\\text{circleTranslate}_s(x) = x + s \\pmod{T}, \\qquad \\text{halfPeriod}(T,n) = \\dfrac{T}{2n}\\ (n \\neq 0).$ The mode $e_n(x) = e^{2\\pi i n x / T}$ has period $T/n$, so a shift by $T/(2n)$ advances its phase by exactly $\\pi$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["circle group", "quotient group ℝ/Tℤ", "period of a character", "group translation"],
     "prerequisites": ["quotient groups", "Fourier characters on a compact abelian group"]
   },

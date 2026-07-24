@@ -10,7 +10,7 @@
     "title": "Setup: an arbitrary field and a finite-dimensional space",
     "content": "The header states the theorem and the quotient-free proof idea, and the declarations fix the working generality. The variable line `{K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]` assumes only that K is an arbitrary field and V a finite-dimensional K-vector space — no algebraic closure, no perfect-field or characteristic hypothesis, and no Jordan normal form. This is exactly why the concavity comes out as a pure rank inequality valid over ANY field and machine-checked with 0 axioms: everything downstream is built from `LinearMap.ker`, `Submodule.map`, and rank–nullity, all of which live at this level of generality. `open Module LinearMap` brings `Module.End`, `finrank`, and the kernel/range API into scope; `import Mathlib` supplies the rank–nullity theorem and `genEigenspace_nat`.",
     "mathContext": "Working over an arbitrary field $K$ with $\\dim_K V < \\infty$; the endomorphism ring is $\\operatorname{End}_K(V) = \\operatorname{Module.End}\\,K\\,V$, and $a_k = \\dim_K \\ker N^k$ for $N \\in \\operatorname{End}_K(V)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "finite-dimensional vector space",
       "arbitrary field",

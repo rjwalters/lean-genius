@@ -55,7 +55,7 @@
     "title": "Finite Specialization: Recovering the Classical Formula",
     "content": "`card_orbit_mul_card_stabilizer` shows that for `[Finite G]` the cardinal product formula descends to the classical natural-number identity `Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G`, via `Nat.card_prod` and `Nat.card_congr (orbitProdStabilizerEquivGroup G x)`. This confirms that the cardinal formulation strictly generalizes the classical orbit–stabilizer theorem: the familiar finite statement is recovered, not replaced.",
     "mathContext": "For finite $G$: $\\mathrm{Nat.card}(\\mathrm{orbit}\\,G\\,x) \\cdot \\mathrm{Nat.card}(\\mathrm{Stab}\\,G\\,x) = \\mathrm{Nat.card}\\,G$, from the finite bijection $\\mathrm{orbit}\\,G\\,x \\times \\mathrm{Stab}\\,G\\,x \\simeq G$ (`orbitProdStabilizerEquivGroup`). On finite types $\\mathrm{Nat.card}$ and $\\#(-)$ agree, so this is the specialization of the cardinal product to the finite regime.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["MulAction.orbitProdStabilizerEquivGroup", "Nat.card_congr", "Nat.card_prod", "finite specialization"],
     "prerequisites": ["Finite typeclass", "Nat.card vs Cardinal.mk agreement on finite types"]
   },
@@ -67,7 +67,7 @@
     "title": "The Transitive-Action Corollary",
     "content": "`mk_eq_mk_quotient_stabilizer_of_pretransitive` proves that for `[MulAction.IsPretransitive G X]` the orbit of any point is all of `X` (established by `ext` plus `MulAction.exists_smul_eq`, giving `orbit G x = Set.univ`), so the cardinal identity reads `#X = #(G ⧸ stabilizer G x)` after rewriting with `mk_univ`. This is the homogeneous-space statement: the size of the space equals the index of any point stabilizer, with no finiteness assumption.",
     "mathContext": "For a (pre)transitive action every point is reachable, so $\\mathrm{orbit}\\,G\\,x = X$ and $\\#X = \\#(G / \\mathrm{Stab}\\,G\\,x)$. This identifies the homogeneous space $X$ with the coset space $G / \\mathrm{Stab}(x)$ up to cardinality — the cardinal analogue of the classical bijection $X \\cong G / \\mathrm{Stab}(x)$ for transitive actions.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["MulAction.IsPretransitive", "MulAction.exists_smul_eq", "Cardinal.mk_univ", "homogeneous space"],
     "prerequisites": ["pretransitive actions", "mk_orbit_eq_mk_quotient_stabilizer"]
   },

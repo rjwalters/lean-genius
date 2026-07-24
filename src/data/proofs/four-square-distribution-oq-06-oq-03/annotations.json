@@ -7,7 +7,7 @@
     "title": "The Two-Square Analogue of the Parent's r₄ / σ* Programme",
     "content": "The header states OQ-06-OQ-03: whether the sibling sum-of-squares counts admit the same native_decide-free prime-power closed forms the parent OQ-06 gave for the four-square σ*. Here we treat the two-square count r₂, whose arithmetic side is Jacobi's classical formula r₂(n) = 4·Σ_{d∣n} χ₄(d), with χ₄ Mathlib's primitive quadratic character mod 4 (χ₄(d) = 0, 1, −1 as d is even, ≡ 1, ≡ 3 mod 4). Two definitions set the stage: `chiSum n = Σ_{d∣n} χ₄(↑d)` and `jacobiR2 n = 4·chiSum n`. The honest-scope note matters: jacobiR2 is *defined* as 4·Σχ₄(d), so these theorems compute the arithmetic side, not the geometric two-square theorem r₂(n) = #{(a,b) : a²+b²=n}.",
     "mathContext": "$r_2(n) = 4\\sum_{d\\mid n}\\chi_4(d)$, where $\\chi_4$ is the non-principal character mod 4: $\\chi_4(d)=0,1,-1$ as $d\\equiv 0,\\,1,\\,3\\pmod 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["sum of two squares", "Jacobi two-square theorem", "Dirichlet character mod 4", "divisor sums", "arithmetic functions"],
     "prerequisites": ["Dirichlet characters", "divisor functions", "modular arithmetic"]
   },

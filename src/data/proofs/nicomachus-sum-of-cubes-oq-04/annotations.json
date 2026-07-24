@@ -50,7 +50,7 @@
     "title": "Factored form over ℤ: 12·∑k⁵ = n²(n+1)²(2n²+2n−1)",
     "content": "The headline factored identity is stated over $\\mathbb{Z}$ so the factor $2n^2+2n-1$ can use honest subtraction. The $\\mathbb{N}$ core lemma is cast up with `congrArg (Nat.cast : ℕ → ℤ)` and `push_cast`, giving $12\\sum \\uparrow k^5 + \\uparrow n^2 = 2\\uparrow n^6 + 6\\uparrow n^5 + 5\\uparrow n^4$. From there `linarith` isolates $12\\sum k^5 = 2n^6 + 6n^5 + 5n^4 - n^2$, and a single `ring` confirms that the product $n^2(n+1)^2(2n^2+2n-1)$ expands to exactly that. The heavy lifting never leaves $\\mathbb{N}$; the cast is used only to phrase the subtraction honestly.",
     "mathContext": "$12\\sum_{k\\le n} k^5 = n^2(n+1)^2(2n^2+2n-1)$ over $\\mathbb{Z}$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "push_cast",
       "Integer casts",
@@ -68,7 +68,7 @@
     "title": "Headline closed form over ℚ: ∑k⁵ = n²(n+1)²(2n²+2n−1)/12",
     "content": "The classical divided form. The same $\\mathbb{N}$ core is cast to $\\mathbb{Q}$ with `push_cast`; `linarith` isolates the sum as $(2n^6 + 6n^5 + 5n^4 - n^2)/12$, and `ring` clears the explicit $/12$ against the product $n^2(n+1)^2(2n^2+2n-1)$. This is the form a reader recognizes as Faulhaber's $p=5$ polynomial. Together with the $\\mathbb{Z}$ and $\\mathbb{N}$ versions it gives three interoperable phrasings of the identity for downstream use.",
     "mathContext": "$\\sum_{k\\le n} k^5 = \\dfrac{n^2(n+1)^2(2n^2+2n-1)}{12}$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "Rational casts",
       "Faulhaber's formula",

@@ -7,7 +7,7 @@
     "title": "The composite-modulus goal and the CRT strategy",
     "content": "The module docstring frames the objective: Euler's theorem reduces exponents modulo $\\varphi(n)$ only when $\\gcd(a,n)=1$, and Mathlib's `PowModTotient.lean` lists dropping that coprimality as an open TODO. The sibling file `EulerTotientOQ08` solved the non-coprime case for prime-power moduli $p^e$. This file assembles those prime-power periodicities into an arbitrary composite modulus $n$ by writing $n = \\prod_p p^{v_p(n)}$ and gluing the factorwise congruences with the Chinese Remainder Theorem. The imports pull in Mathlib plus the parent module `Proofs.EulerTotientOQ08`, and the namespace fixes $\\varphi = $ `Nat.totient`.",
     "mathContext": "$n = \\prod_{p \\mid n} p^{v_p(n)}, \\qquad a^{k+\\varphi(n)} \\equiv a^k \\pmod n \\text{ once } k \\ge \\max_p v_p(n)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euler's theorem", "Chinese Remainder Theorem", "prime factorization", "totient function", "modular exponentiation"],
     "prerequisites": ["elementary number theory", "modular arithmetic"]
   },
@@ -79,7 +79,7 @@
     "title": "Worked examples on genuinely non-coprime data",
     "content": "The examples exhibit cases outside Euler's coprime theorem. For $2^k \\bmod 12$ with $\\gcd(2,12)=2$, the factorisation-free bound $12 \\le 2^4$ gives periodicity from $k=4$ ($2^8 \\equiv 2^4$, `decide`-checked). The sharp pre-period is actually $k=2$ since $12 = 2^2\\cdot 3$ has $\\max_p v_p(12) = 2$; the example proves $v_p(12) \\le 2$ for every $p$ by ruling out $p^3 \\mid 12$ (`interval_cases` on the only candidate $p=2$), beating the coarser $n \\le 2^k$ bound that needs $k\\ge 4$. Finally $10^{100} \\equiv 10^4 \\pmod{12}$ demonstrates full reduction of a huge exponent of a non-invertible base: $K=2$, $\\varphi(12)=4$, so $10^{100} \\equiv 10^{2 + (100-2)\\bmod 4} = 10^4$. The `decide` calls are kernel reductions over concrete small naturals — not `native_decide` — so the file stays axiom-free.",
     "mathContext": "$2^8 \\equiv 2^4 \\equiv 4, \\quad 2^6 \\equiv 2^2 \\equiv 4, \\quad 10^{100} \\equiv 10^4 \\equiv 4 \\pmod{12}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["decide tactic", "interval_cases", "sharp pre-period", "non-coprime bases"],
     "prerequisites": ["modular arithmetic", "Lean tactics"]
   }

@@ -25,7 +25,7 @@
     "title": "The antipodal labelling model and the directed door indicator",
     "content": "negL = ![2,3,0,1] is label negation on {+1,+2,−1,−2} (Fin 4). V a b c = ![a,b,c,negL a,negL b,negL c] gives the six boundary labels from three free labels a,b,c on v₀,v₁,v₂ with the antipodal condition v_{i+3} = −v_i built in. rot i = i+1 is the cyclic successor. sgn = ![0,0,1,1] is the sign map {+1,+2}↦0, {−1,−2}↦1. dir x y := if x = 0 ∧ y = 1 then 1 else 0 is the directed pos→neg door indicator on ZMod 2 sign bits: an oriented sign edge is a door iff it runs from a +-sign vertex (0) to a −-sign vertex (1). This is the identical encoding to the sibling SpernerTuckerHexagonDirectedSignDoor (oq-07).",
     "mathContext": "Boundary vertices v₀,…,v₅ of the hexagon S¹ with v_{i+3} = −v_i (a free antipodal action i ↦ i+3 on Fin 6), plus one interior centre vertex with free label d. The sign map is antipodal: sgn(negL x) = sgn x + 1, which is why the antipode reverses a directed door 0→1 into a non-door 1→0.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["label negation", "antipodal boundary condition", "hexagon triangulation", "directed door", "sign reduction"],
     "prerequisites": ["Fin n arithmetic", "ZMod 2", "Matrix.of / ![...] vector notation"]
   },
@@ -55,7 +55,7 @@
     "title": "The three degree-1 room counts",
     "content": "interiorDeg1 a b c d := #{i : Fin 6 | roomDoor a b c d i = 1 ∧ intDoor a b c d i = 1} counts the degree-1 rooms whose single door is on an interior spoke; boundaryDeg1 counts those whose door is on the boundary edge (roomDoor = 1 ∧ bdDoor = 1); totalDeg1 counts all degree-1 rooms (roomDoor = 1). These Finset cardinalities are the concrete-room analogues of the abstract engine's interior-endpoint, boundary-endpoint and total-endpoint counts, all with decidable predicates over the finite room index Fin 6.",
     "mathContext": "In the Freund–Todd picture these count, respectively, the path endpoints that are genuine interior pivot-terminal rooms, the endpoints forced on the antipodal boundary by the odd seed, and all path endpoints. The handshaking lemma relates the three.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["endpoint count", "boundary vs interior endpoints", "Finset.card", "decidable predicate"],
     "prerequisites": ["Finset filtering", "degree-1 vertex"]
   },

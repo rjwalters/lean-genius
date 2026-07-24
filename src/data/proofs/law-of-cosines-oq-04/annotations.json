@@ -7,7 +7,7 @@
     "title": "Stewart's Theorem as a Cevian Generalization of the Law of Cosines",
     "content": "The module docstring states the research question and the theorem. Stewart's theorem (1746) concerns a triangle ABC with a cevian AD of length d to side BC, splitting it into segments BD = m and DC = n (so m + n = a): then b²m + c²n = a(d² + mn), equivalently b²m + c²n − a(d² + mn) = 0. The open question `law-of-cosines-oq-04` asks whether this can be derived from the inner-product / law-of-cosines framework — and the file answers yes. Stewart's theorem generalizes the law of cosines (it *is* the law of cosines applied twice to the sub-triangles and combined) and contains the median-length and angle-bisector-length formulas as special cases.",
     "mathContext": "$b^2 m + c^2 n = a(d^2 + mn), \\qquad m + n = a$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Stewart's theorem", "cevian", "law of cosines", "median length formula", "angle bisector length"],
     "prerequisites": ["triangle geometry", "law of cosines", "cevians"]
   },

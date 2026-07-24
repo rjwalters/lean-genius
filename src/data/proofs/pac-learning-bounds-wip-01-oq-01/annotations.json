@@ -10,7 +10,7 @@
     "title": "One import: a monotonicity layer on the parent's VC foundations",
     "content": "The file imports only its parent, Proofs.PACLearningBoundsWIP01 — no fresh Mathlib surface. That parent supplies the primitives this entry reasons about: the trace Π_H(S) = {h ∩ S : h ∈ H}, the shattering relation Shatters H S, the VC dimension VCDim H = sSup {n | ∃ S, |S| = n ∧ Shatters H S}, and the powerset benchmark vcDim_powerset. Everything proved here — vcDim_mono, the union corollaries, and the powerset ceiling — is a thin monotonicity layer assembled from those foundations, each a one- or two-line consequence, so the entry inherits the parent's 0-axiom status without adding any new assumptions.",
     "mathContext": "$H \\subseteq H' \\Rightarrow \\mathrm{VCDim}\\,H \\le \\mathrm{VCDim}\\,H'$; specialised to $H \\subseteq H \\cup H'$ and to $H \\subseteq 2^S$ giving $\\mathrm{VCDim}\\,H \\le |S|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "VC dimension",
       "shattering",
@@ -57,7 +57,7 @@
     "title": "vcDim_mono: H ⊆ H' ⟹ VCDim H ≤ VCDim H'",
     "content": "The main result. VCDim H is the supremum sSup{n | ∃ S, |S| = n ∧ H shatters S}. If that set is empty, VCDim H = sSup ∅ = 0 ≤ VCDim H'. Otherwise csSup_le reduces the goal to bounding each achievable cardinality n = |S|: the parent's shatters_mono upgrades 'H shatters S' to 'H' shatters S', and card_le_vcDim then gives |S| ≤ VCDim H'. The supremum inherits the bound. vcDim_le_of_subset restates the same fact in implication form.",
     "mathContext": "$\\dim_{VC}(H) \\le \\dim_{VC}(H')$ whenever $H \\subseteq H'$; proved by transporting the set-level $\\texttt{shatters\\_mono}$ across the supremum via $\\texttt{csSup\\_le}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "VC dimension",
       "monotonicity",

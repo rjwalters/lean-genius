@@ -56,7 +56,7 @@
     "title": "Exactly k(n−k) Cross Edges via a Bijection",
     "content": "crossEdge maps a pair (u,v) ∈ K × Kᶜ to the edge {u,v}, orienting it as the increasing pair by a case split on u < v. crossEdge_injective shows it is injective (recovering the ordered pair from the edge via crossEdge_fst and using that exactly one endpoint lies in K to rule out the swapped cases), and crossEdge_surjective shows every cross edge is hit — put the in-K endpoint first. Hence crossEdge is a bijection K × Kᶜ ≃ {cross edges}, giving the exact count card_cross_eq: |{e : Edge V // IsCross K e}| = |K × Kᶜ| = k(n−k). The downstream union bound needs only card_cross_ge (≥), now an immediate corollary, but the exact count pins the free-edge exponent and hence the dominating fraction to the classical (1 − 2^{−k})^{n−k}.",
     "mathContext": "$$K \\times K^c \\hookrightarrow \\{e : \\text{cross edge for } K\\},\\qquad k(n-k) \\le |\\{e : \\mathrm{IsCross}\\,K\\,e\\}|$$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "injective functions",
       "Fintype.card_le_of_injective",

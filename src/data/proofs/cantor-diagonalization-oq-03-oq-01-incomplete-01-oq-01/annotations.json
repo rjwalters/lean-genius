@@ -100,7 +100,7 @@
     "title": "General Obstruction and Recovery of Cantor",
     "content": "no_pointSurjection_of_fixedPointFree lifts the argument back to general B: a fixed-point-free f : B → B blocks every point-surjection A → (A → B). The reflexive case is B = A; Cantor is B = Prop with the fixed-point-free negation Not (¬P = P is impossible, proved by casting the equality both ways). cantor_surjective_recovered rederives Mathlib's Function.cantor_surjective from this obstruction, and an example confirms the match on power sets (Set A ≡ A → Prop). One lemma thus unifies reflexive objects, Cantor, Russell, Gödel, and the halting problem.",
     "mathContext": "$B = \\mathrm{Prop}$, $f = \\lnot$: no $e : A \\to (A \\to \\mathrm{Prop})$ is point-surjective, hence $A \\to \\mathcal P(A)$ is never surjective — Cantor's theorem as a Lawvere instance.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Cantor's theorem",
       "Lawvere–Cantor obstruction",

@@ -10,7 +10,7 @@
     "title": "Roadmap: From One Valuation Identity to Four Results",
     "content": "The file docstring lays out the whole strategy, completing the binomial side that the parent entry kummer-theorem left as a remark. The single engine is the elementary factorization C(n,k)·k!·(n-k)! = n! (Nat.choose_mul_factorial_mul_factorial): taking p-adic valuations turns the product into the sum ν_p C(n,k) + ν_p(k!) + ν_p((n-k)!) = ν_p(n!), and substituting Legendre's factorial identity three times (multiplied by p-1) cancels k+(n-k)=n to give the exact untruncated identity S_p(n) + (p-1)·ν_p C(n,k) = S_p(k) + S_p(n-k). From that one equation, linear arithmetic yields all four theorems below: the classical Kummer formula, digit-sum subadditivity, and the carry-free divisibility criterion. The valuation identity itself is already in Mathlib (sub_one_mul_padicValNat_choose_eq_sub_sum_digits); the contribution here is the untruncated ordered form and the two corollaries assembled over the parent's Legendre identity.",
     "mathContext": "$S_p(n) + (p-1)\\,\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k)$, from $\\nu_p$ applied to $\\binom{n}{k}k!(n-k)! = n!$ plus Legendre thrice.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "p-adic valuation",
       "Legendre's formula",

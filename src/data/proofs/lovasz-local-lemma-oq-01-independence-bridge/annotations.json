@@ -7,7 +7,7 @@
     "title": "Discharging the toolkit's standing independence hypothesis",
     "content": "The measure-theoretic OQ-01 program built a modular toolkit whose lemmas each assume, as a hypothesis, that a bad event $A_i$ is independent of the joint avoidance of some other events: $\\mathrm{IndepSet}\\,(A_i)\\,\\bigl(\\bigcap_{j\\in S}(A_j)^c\\bigr)\\,\\mu$. For example `seq_indep_avoidance_eq_prod` assumes $\\forall n,\\ \\mathrm{IndepSet}\\,(A_n)\\,(\\bigcap_{j<n}(A_j)^c)\\,\\mu$ and `cond_failure_eq_measure_of_indep_subset` assumes it for a subset $S$. Those docstrings observe that this is 'a strictly weaker, one-sided condition that mutual independence implies' — but that implication was never actually proved in Lean. This file proves it: from full mutual independence $\\mathrm{iIndepSet}\\,A\\,\\mu$ and $i\\notin S$, it derives $\\mathrm{IndepSet}\\,(A_i)\\,(\\bigcap_{j\\in S}(A_j)^c)\\,\\mu$, so the whole development is grounded in a single hypothesis.",
     "mathContext": "Bridge from family mutual independence iIndepSet A μ to pairwise independence IndepSet (A i) (⋂_{j∈S} (A j)ᶜ) μ, for i ∉ S over an arbitrary index type ι. This is the d=0 (fully-independent) case of the LLL's non-neighbour reduction: every other event is a non-neighbour, so conditioning on their avoidance cannot change A i.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "mutual independence iIndepSet",
@@ -28,7 +28,7 @@
     "title": "Measure factorization via σ-algebra independence of disjoint index sets",
     "content": "`indep_avoidance` proves $\\mu\\bigl(A_i\\cap\\bigcap_{j\\in S}(A_j)^c\\bigr)=\\mu(A_i)\\cdot\\mu\\bigl(\\bigcap_{j\\in S}(A_j)^c\\bigr)$ for $i\\notin S$. The engine is Mathlib's `iIndepSet.indep_generateFrom_of_disjoint`: for disjoint index sets it makes the generated σ-algebras independent. Applied to the singleton $\\{i\\}$ and the finite set $\\uparrow S$ (disjoint since $i\\notin S$), it yields $\\mathrm{Indep}\\,(\\mathrm{generateFrom}\\,\\{A_i\\})\\,(\\mathrm{generateFrom}\\,\\{A_k:k\\in S\\})\\,\\mu$. Then $A_i$ is measurable in the first σ-algebra (`measurableSet_generateFrom` on the singleton), and $\\bigcap_{j\\in S}(A_j)^c$ is measurable in the second (each $(A_j)^c$ is a generator complement, and `Finset.measurableSet_biInter` closes the finite intersection). `Indep_iff` turns the σ-algebra independence into the intersection-measure identity.",
     "mathContext": "The finite avoidance ⋂_{j∈S} (A j)ᶜ lives in generateFrom {A k : k∈S} because it is a finite intersection of complements of generators — this is what lets the two-σ-algebra independence apply to it. Indep_iff : Indep m₁ m₂ μ ↔ ∀ t₁ t₂, MeasurableSet[m₁] t₁ → MeasurableSet[m₂] t₂ → μ(t₁ ∩ t₂) = μ t₁ * μ t₂.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "iIndepSet.indep_generateFrom_of_disjoint",
       "generated σ-algebras of disjoint index sets",
@@ -49,7 +49,7 @@
     "title": "The bridge: mutual independence ⟹ pairwise IndepSet",
     "content": "`indepSet_avoidance` (flagship) repackages the measure factorization as the term the toolkit actually consumes: $\\mathrm{IndepSet}\\,(A_i)\\,\\bigl(\\bigcap_{j\\in S}(A_j)^c\\bigr)\\,\\mu$. Since `iIndepSet A μ` yields `IsProbabilityMeasure μ` (hence `IsZeroOrProbabilityMeasure`), the characterization `indepSet_iff_measure_inter_eq_mul` reduces the `IndepSet` goal to exactly the identity $\\mu(A_i\\cap H)=\\mu(A_i)\\cdot\\mu(H)$ that `indep_avoidance` supplies. This one lemma retroactively grounds every hypothesis-carrying lemma of the OQ-01 program in mutual independence: `seq_indep_avoidance_eq_prod`, `cond_failure_eq_measure_of_indep_subset`, and their downstream consequences can now be instantiated directly from `iIndepSet A μ`.",
     "mathContext": "IndepSet s t μ ↔ μ (s ∩ t) = μ s * μ t requires [IsZeroOrProbabilityMeasure μ]; here μ is a probability measure by iIndepSet.isProbabilityMeasure. The lemma holds for ANY index subset S disjoint from {i} — in the d=0 regime there are no dependency neighbours to exclude, so S can be all other events.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "indepSet_iff_measure_inter_eq_mul",
       "IsZeroOrProbabilityMeasure",
@@ -91,7 +91,7 @@
     "title": "Chain-rule prefix specialization: bₖ collapses to μ(Aₖ)",
     "content": "`cond_prefix_eq_self` specialises the subset $S$ to the strictly-earlier indices $\\{j : j<k\\}$ over a `LinearOrder ι`; then $k\\notin S$ follows from `lt_irrefl`, and `cond_avoidance_eq_self` gives $\\mu[A_k\\mid \\bigcap_{j<k}(A_j)^c]=\\mu(A_k)$. This is exactly the per-event conditional failure probability $b_k$ that the chain-rule scaffold consumes: in the independent regime $b_k=\\mu(A_k)$, so the quantitative avoidance bound $\\prod_k(1-b_k)$ recovers the exact base-case factorization $\\prod_k(1-\\mu(A_k))$ — now derived from `iIndepSet A μ` alone, tying the chain-rule and base-case sub-programs together on their common ground.",
     "mathContext": "Connects to lovasz-local-lemma-oq-01-chain-rule (avoidance_eq_prod_survival_cond) and the base case lovasz-local-lemma-oq-01 (lll_independent_meas_iInter_compl). The full bounded-dependency-degree LLL — deriving bₖ ≤ xₖ across a dependency graph under e·p·(d+1) ≤ 1 — remains the open OQ-01 target.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "chain rule / prefix conditioning",
       "LinearOrder prefix {j : j < k}",

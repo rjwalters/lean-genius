@@ -19,7 +19,7 @@
     "title": "The non-negative ballot number",
     "content": "`reflectBallot a b = C(a+b,b) - C(a+b,b-1)` counts sequences of `a` up-steps and `b` down-steps whose every partial sum is `≥ 0` (weak dominance). These are the entries of the Catalan triangle; the diagonal `a = b` recovers the Catalan numbers. The subtraction is a genuine ℕ subtraction here, shown to be exact in its natural domain `b ≤ a` by `reflectBallot_sub_exact`.",
     "mathContext": "$T(a,b) = \\binom{a+b}{b} - \\binom{a+b}{b-1}$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Catalan triangle", "weakly-ahead sequences", "Dyck paths"],
     "prerequisites": ["Nat.choose"]
   },
@@ -31,7 +31,7 @@
     "title": "The reconciliation: prepend an up-step",
     "content": "The main theorem `reflectBallot_eq` proves `reflectBallot a b = ballotNumber (a+1) b` for `1 ≤ b`. This is the arithmetic shadow of the classical **prepend-an-up-step bijection**: a non-negative `(a,b)`-path becomes a strictly-positive `(a+1,b)`-path by inserting a forced initial `+1`, and conversely. The proof is a single use of binomial symmetry `C(a+b,k) = C(a+b,a+b-k)` (`Nat.choose_symm`): it sends `C(a+b,b) ↦ C(a+b,a)` and `C(a+b,b-1) ↦ C(a+b,a+1)` (the latter needs `1 ≤ b`), which are exactly the two binomials of `ballotNumber (a+1) b` once its reflection indices `a+1+b-1 = a+b` and `a+1-1 = a` simplify.",
     "mathContext": "$\\binom{a+b}{b} - \\binom{a+b}{b-1} = \\binom{a+b}{a} - \\binom{a+b}{a+1} = BN(a+1,b)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["prepend-an-up-step bijection", "binomial symmetry", "reflection principle"],
     "prerequisites": ["Nat.choose_symm", "Nat.add_sub_cancel_left"]
   },
@@ -55,7 +55,7 @@
     "title": "Aggregate, probability, and the Catalan diagonal — all by transport",
     "content": "Once `reflectBallot a b = ballotNumber (a+1) b` is known, the parent's cycle-lemma arithmetic transports along the shift `a ↦ a+1` with no new combinatorics. `reflectBallot_mul` gives the aggregate `reflectBallot a b · (a+1+b) = (a+1-b)·C(a+1+b,a+1)` from `ballotNumber_mul_add`; `reflectBallot_div` gives the probability `(a+1-b)/(a+1+b)` over ℚ from `ballotNumber_div`; and `reflectBallot_catalan` gives the diagonal `reflectBallot n n = catalan n` (`1 ≤ n`) — the number of Dyck paths of semilength `n` — from `ballotNumber_catalan`.",
     "mathContext": "$\\text{reflectBallot}(a,b)\\,(a{+}1{+}b) = (a{+}1{-}b)\\binom{a{+}1{+}b}{a{+}1}, \\qquad \\text{reflectBallot}(n,n) = C_n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["cycle lemma", "Bertrand ballot probability", "Catalan numbers", "Dyck paths"],
     "prerequisites": ["BallotProblemOQ05.ballotNumber_mul_add", "BallotProblemOQ05.ballotNumber_catalan"]
   },

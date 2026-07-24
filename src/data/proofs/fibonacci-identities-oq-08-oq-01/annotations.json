@@ -7,7 +7,7 @@
     "title": "Three Companion Lucas Partial Sums",
     "content": "The parent entry `fibonacci-identities-oq-08` proved the Lucas telescoping sum `∑_{i≤n} Lᵢ = L_{n+2} − 1`; this follow-up answers that entry's open question by proving the three companion partial sums for the Lucas numbers `L₀=2, L₁=1, Lₙ₊₂=Lₙ+Lₙ₊₁`: the alternating sum, and the even- and odd-indexed (bisected) sums. The docstring records both the Binet-series derivation of the closed forms and the actual proof method used here — a one-step induction per identity, kept subtraction-free where possible so `omega` can finish.",
     "mathContext": "$\\sum_{i=0}^n (-1)^i L_i = 3 + (-1)^n(L_{n+1}-L_n)$;\\ $\\sum_{i=0}^n L_{2i}=L_{2n+1}+1$;\\ $\\sum_{i=0}^n L_{2i+1}=L_{2n+2}-2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lucas numbers", "partial sums", "telescoping", "Binet formula"],
     "prerequisites": ["Lucas numbers", "finite sums", "induction"]
   },
@@ -67,7 +67,7 @@
     "title": "Numerical Sanity Checks",
     "content": "Three `decide` checks confirm each closed form on a concrete instance: the alternating sum `L₀−L₁+L₂−L₃+L₄ = 2−1+3−4+7 = 7` matches `3+(−1)⁴(L₅−L₄)=3+(11−7)`; the even sum `L₀+L₂+L₄ = 12 = L₅+1`; and the odd sum `L₁+L₃+L₅ = 16 = L₆−2`. Because `lucas` reduces by `rfl`, these fully evaluate and `decide` discharges them without touching the general theorems.",
     "mathContext": "$2-1+3-4+7=7$;\\ $2+3+7=12=L_5+1$;\\ $1+4+11=16=L_6-2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "decide tactic", "computational reduction"],
     "prerequisites": ["decidable equality", "evaluation of recursive definitions"]
   }

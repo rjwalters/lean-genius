@@ -7,7 +7,7 @@
     "title": "Imports and namespace: reusing the parent's correctness layer",
     "content": "The file imports `Mathlib` (for `EuclideanDomain.gcd`, `Associated`, and the Gaussian integers `GaussianInt = ℤ[i]`) and `Proofs.BinaryGcdOQ04`, the parent entry that established the arithmetic of the ramified prime π = 1+i: the divide-by-π map `divPi`, the parity dichotomy ℤ[i]/(π) ≅ 𝔽₂, and the three reduction identities `gcd_pi_mul`, `gcd_pi_mul_odd`, `gcd_sub`. `open Zsqrtd BinaryGcdOQ04` brings those names into scope. This entry adds no new number theory — it packages the parent's algebra into a running algorithm.",
     "mathContext": "$\\mathbb{Z}[i]$ with the prime $\\pi = 1+i$, $N(\\pi)=2$; the parent supplies $\\gcd$ reductions up to $\\mathrm{Associated}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gaussian integers", "Euclidean domain", "Stein's binary GCD"],
     "prerequisites": ["Lean 4 imports", "Mathlib EuclideanDomain API"]
   },

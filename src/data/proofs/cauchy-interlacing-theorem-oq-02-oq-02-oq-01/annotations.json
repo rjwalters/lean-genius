@@ -19,7 +19,7 @@
     "title": "Ambient setup: arbitrary RCLike field and dimensions",
     "content": "The whole file works over an arbitrary RCLike field 𝕜 (so both ℝ and ℂ, hence real symmetric and complex Hermitian matrices, are covered at once) and arbitrary block sizes n m : ℕ, declared once by the variable line and reused by every result. The open scoped InnerProductSpace Matrix and open Matrix WithLp lines bring the eigenvalues₀ / submatrix / toEuclideanLin notation into scope. Everything lives in namespace CauchyInterlacing.PoincareSubmatrix; note the docstring's remark that this is a research file intentionally NOT registered in Proofs.lean — it is a companion restatement of the parent, not a new gallery-registered proof, so it is type-checked directly with lake env lean rather than through the aggregate Proofs import.",
     "mathContext": "$\\mathbb{K}$ an $\\mathrm{RCLike}$ field, $n,m:\\mathbb{N}$; the ambient matrix is $A\\in\\mathrm{Herm}_{n+m}(\\mathbb{K})$ with principal submatrix indexed by $e:\\mathrm{Fin}\\,n\\hookrightarrow\\mathrm{Fin}(n{+}m)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["RCLike field", "real symmetric vs complex Hermitian", "scoped notation", "research file (not registered in Proofs.lean)"],
     "prerequisites": ["RCLike / inner product spaces over ℝ and ℂ", "Lean variable binders and scoped opens"]
   },

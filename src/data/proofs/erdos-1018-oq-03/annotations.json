@@ -55,7 +55,7 @@
     "title": "K₃,₃ as a Concrete Instance",
     "content": "A sanity check certifying that K₃,₃ is a genuine instance of the general obstruction: 2·6 = 12 < 9 + 4 = 13. Instantiating `bipartite_excess_no_embedding` at V = 6, E = 9 recovers `k33_no_planar_bipartite_embedding`, confirming the general lemma subsumes the specific case.",
     "mathContext": "$2\\cdot 6 = 12 < 13 = 9 + 4$, so $K_{3,3}$ satisfies the excess hypothesis.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["specialization", "instance checking"],
     "prerequisites": ["graph theory basics"]
   },

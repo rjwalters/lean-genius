@@ -79,7 +79,7 @@
     "title": "Concrete three-element identities",
     "content": "The abstract generator is `noncomputable`, so these worked examples exhibit explicit Bézout combinations verified by `norm_num` / `ring`: `1·6 + (-2)·10 + 1·15 = 1` and `1·4 + (-2)·6 + 1·9 = 1` over ℤ (both gcd 1), and `(-1)·X + 1·(X+1) = 1` over ℚ[X] (coprime polynomials with 1 as gcd). They make the multivariate identity tangible past the existence statement.",
     "mathContext": "$\\gcd(6,10,15) = 1 = 1\\cdot 6 - 2\\cdot 10 + 1\\cdot 15$;\\ \\ $-X + (X+1) = 1$ in $\\mathbb{Q}[X]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "coprimality", "extended Euclidean algorithm"],
     "prerequisites": ["gcd of integers"]
   },

@@ -10,7 +10,7 @@
     "title": "The Sharpness Witness for the Converse of Lagrange",
     "content": "Lagrange's theorem is a one-way street: the order of every subgroup divides the order of the group. The tempting converse — *every* divisor $d$ of $|G|$ is the order of some subgroup — is false, and the header names the standard refutation. The alternating group $A_4$ (even permutations of four letters) has order $12$, the number $6$ divides $12$, yet $A_4$ has **no** subgroup of order $6$.\n\nThis entry answers the first open question of the parent Cauchy entry (`lagrange-theorem-oq-08`), which proves the converse *does* hold for prime divisors and asks for the composite counterexample to be certified formally. Together the two entries pin down the sharp boundary: prime divisors always work (Cauchy), prime powers always work (Sylow), but the first genuinely composite divisor $6 = 2\\cdot 3$ can fail.\n\nThe imports are chosen to reuse Mathlib's alternating-group machinery on four letters: `SpecificGroups.Alternating.KleinFour` (which transitively brings the cycle-type cardinality lemmas), `GroupTheory.Index` (index-two facts), and `Perm.Cycle.Type` (the order = lcm-of-cycle-type bridge).",
     "mathContext": "Lagrange: $|H| \\mid |G|$. Naive converse (FALSE): every $d \\mid |G|$ is some subgroup's order. Witness: $A_4$, $|A_4|=12$, $6 \\mid 12$, yet no subgroup of order $6$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lagrange's theorem",
       "converse of Lagrange",

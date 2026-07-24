@@ -278,7 +278,7 @@
     "title": "Identifying a False Containment: Mod-5 Partitions Are Not Necessarily Distinct",
     "content": "Documents a deliberately false containment that is NOT proved: `rr1Mod5Partitions n ⊆ Nat.Partition.distincts n` is false in general, witnessed by $n=3=1+1+1$ — every part is $\\equiv 1 \\pmod 5$, yet the partition is not distinct. Recording rejected containments alongside the proved ones documents the exact boundary of what the gap-vs-mod correspondence implies structurally (only the *gap*-side sets are forced into `distincts`, not the *mod*-side sets).",
     "mathContext": "$1+1+1=3$: all parts $\\equiv 1\\!\\!\\pmod 5$, not distinct",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "counterexample",
       "proof boundary documentation"
@@ -340,7 +340,7 @@
     "title": "Type-Checking Summary and the Full Containment Hierarchy",
     "content": "A `#check`-only section (no new proofs) that catalogs the state of the formalization: 6 partition-set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and the proved structural theorems, all with 0 sorries. It records the complete containment hierarchy established so far: $\\mathrm{SchurGap} \\subseteq \\mathrm{RR2Gap} \\subseteq \\mathrm{RR1Gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$, serving as a checkpoint before the file pivots to decidable reformulations (Part IX) needed for `native_decide`.",
     "mathContext": "$\\mathrm{SchurGap}(n) \\subseteq \\mathrm{RR2Gap}(n) \\subseteq \\mathrm{RR1Gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "containment hierarchy",
       "#check",

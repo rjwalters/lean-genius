@@ -7,7 +7,7 @@
     "title": "Problem Statement: Hypergraph Analogue of Shelah's Theorem",
     "content": "Erdős #1036 oq-03 asks whether Shelah's phenomenon extends to hypergraphs: must a non-Ramsey r-uniform hypergraph — one with no homogeneous (completely full or completely empty) vertex set larger than c·log n — contain 2^{Ω_c(n)} distinct induced sub-hypergraphs? The r=2 case is exactly Shelah (1998); the r ≥ 3 case is OPEN. This file verifies the structural facts needed to state the question and isolates the open lower bound as a single axiom.",
     "mathContext": "For a fixed uniformity $r$, an $r$-uniform hypergraph on $V$ is a family of $r$-element subsets of $V$. It is non-Ramsey at level $c$ if every homogeneous vertex set $S$ (all $r$-subsets of $S$ edges, or none of them edges) satisfies $|S| \\le c \\log |V|$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["Ramsey theory", "hypergraphs", "induced subgraphs"],
     "relatedConcepts": ["Shelah 1998", "non-Ramsey graphs", "induced sub-hypergraph", "graph isomorphism"]
   },
@@ -19,7 +19,7 @@
     "title": "r-Uniform Hypergraph Framework",
     "content": "UnifHypergraph packages a Finset of edges together with a proof that every edge has exactly r vertices. The induced sub-hypergraph on S keeps precisely the edges lying inside S; the complement keeps the r-subsets that are NOT edges. IsHomogeneous S means every r-subset of S is an edge or every r-subset of S is a non-edge. IsNonRamsey bounds every homogeneous set by c·log n. numDistinctInduced counts distinct labelled induced edge-sets over all vertex subsets — an upper proxy for the isomorphism-class count.",
     "mathContext": "$H.\\mathrm{induced}\\,S$ has edge set $\\{e \\in E(H) : e \\subseteq S\\}$. $H^c$ has edge set $\\binom{V}{r} \\setminus E(H)$. $\\mathrm{numDistinctInduced}\\,H = |\\{ E(H.\\mathrm{induced}\\,S) : S \\subseteq V \\}|$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["Finset", "powersetCard", "structures in Lean"],
     "relatedConcepts": ["uniform hypergraph", "induced substructure", "complement"]
   },
@@ -43,7 +43,7 @@
     "title": "Complement Symmetry for All Uniformities",
     "content": "homogeneous_compl proves a vertex set is homogeneous for H exactly when it is homogeneous for the complement Hᶜ: for an r-subset e ⊆ S, membership in Hᶜ is the negation of membership in H, so the 'all edges' and 'no edges' disjuncts swap. nonRamsey_compl deduces that H is non-Ramsey iff Hᶜ is. This generalizes to all r ≥ 2 the clique/independent-set complement symmetry of the base #1036 problem.",
     "mathContext": "For $e \\in \\binom{V}{r}$ with $e \\subseteq S$: $e \\in E(H^c) \\iff e \\notin E(H)$. Hence $H^c$ is homogeneous on $S$ iff $H$ is, and $H^c$ is non-Ramsey iff $H$ is.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["Finset.mem_sdiff", "Finset.mem_powersetCard"],
     "relatedConcepts": ["complement graph", "clique/independent duality"]
   },
@@ -55,7 +55,7 @@
     "title": "Why the Problem is Hard: Numeric Invariants Fail",
     "content": "distinct_edgeCounts_le shows the induced edge-count invariant takes at most |E(H)|+1 distinct values as the vertex set ranges over all subsets. Since |E(H)| ≤ binom(n,r) is polynomial in n, this genuinely isomorphism-invariant statistic cannot possibly witness 2^{Ω(n)} distinct induced sub-hypergraphs. An exponential lower bound must therefore exploit the full combinatorial structure — the exact obstacle Shelah's partition argument overcomes in the graph case.",
     "mathContext": "$|\\{ |E(H.\\mathrm{induced}\\,S)| : S \\subseteq V \\}| \\le |E(H)| + 1$, because induced edge sets are subsets of $E(H)$, so their cardinalities lie in $\\{0, \\dots, |E(H)|\\}$.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["Finset.card_le_card", "Finset.filter_subset", "Finset.range"],
     "relatedConcepts": ["isomorphism invariant", "lower bound obstruction", "polynomial vs exponential"]
   },
@@ -67,7 +67,7 @@
     "title": "The Open Core: shelah_hypergraph",
     "content": "shelah_hypergraph axiomatizes the exponential lower bound: for r ≥ 2 and c > 0 there is c' > 0 so that every non-Ramsey r-uniform hypergraph on n vertices has ≥ 2^{c'·n} distinct induced sub-hypergraphs. The r=2 case is Shelah (1998); the r ≥ 3 case is the open question oq-03. erdos_1036_oq03 repackages the axiom as the headline statement.",
     "mathContext": "$\\forall r \\ge 2,\\ c > 0,\\ \\exists c' > 0,\\ \\forall H \\text{ non-Ramsey}(c):\\ \\mathrm{numDistinctInduced}\\,H \\ge 2^{c' n}$. This is the sole assumption of the file.",
-    "significance": "central",
+    "significance": "critical",
     "prerequisites": ["axiomatization", "Real.rpow"],
     "relatedConcepts": ["Shelah 1998", "open problem", "exponential lower bound"]
   }

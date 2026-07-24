@@ -7,7 +7,7 @@
     "title": "A Closed Form for the Binary Bracelet Numbers",
     "content": "Burnside's lemma counts the orbits of a finite group action as the average number of fixed points. For the dihedral group D_n acting on the 2-colourings of an n-cycle, the orbits are the binary bracelets (necklaces up to rotation AND reflection), OEIS A000029. The grandparent computed b(4), b(5), b(6) one length at a time by kernel decide; the sibling gave the rotation fixed-point count 2^gcd(n, i.val) in closed form. This entry assembles the full closed form b(n) = (rotTerm n + reflTerm n) / (2n), ties the rotation term to the true fixed-point counts, validates the whole formula against the genuine dihedral orbit count for n = 3..6, and then predicts b(7)..b(10) by pure arithmetic — all axiom-free (no native_decide).",
     "mathContext": "$b(n) = \\dfrac{1}{2n}\\Big(\\sum_{i \\in \\mathbb{Z}/n} 2^{\\gcd(n,\\,i)} + R(n)\\Big)$, $R(n) = n\\,2^{(n+1)/2}$ (odd $n$) or $\\tfrac{n}{2}\\,2^{n/2+1} + \\tfrac{n}{2}\\,2^{n/2}$ (even $n$).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["Burnside's lemma", "dihedral group", "bracelet/necklace counting", "closed form", "OEIS A000029"],
     "prerequisites": ["group actions and orbits", "the orbit-counting lemma", "dihedral groups"]
   },
@@ -19,7 +19,7 @@
     "title": "The Rotation and Reflection Terms",
     "content": "rotTerm n = Σ_{i : ZMod n} 2^gcd(n, i.val) is the total number of colourings fixed by all rotations — n times the classical binary necklace count. reflTerm n encodes the reflection dichotomy: for odd n all n reflections fix 2^((n+1)/2) colourings; for even n the n/2 vertex-axis reflections fix 2^(n/2+1) each and the n/2 edge-axis reflections fix 2^(n/2) each. braceletClosed n = (rotTerm n + reflTerm n) / (2n) is their Burnside average over the 2n dihedral symmetries.",
     "mathContext": "$\\mathrm{rotTerm}(n) = \\sum_{i} 2^{\\gcd(n,i)},\\quad \\mathrm{braceletClosed}(n) = \\dfrac{\\mathrm{rotTerm}(n) + \\mathrm{reflTerm}(n)}{2n}.$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["necklace count", "gcd", "reflection axes", "Burnside average"],
     "prerequisites": ["ZMod arithmetic", "gcd and Euler's totient", "reflections in D_n"]
   },
@@ -31,7 +31,7 @@
     "title": "The Rotation Term Is the True Fixed-Point Total",
     "content": "rotTerm_eq proves, uniformly in n and with no computation, that rotTerm n equals the genuine total Σ_{i : ZMod n} |Fix(r i)| of colourings fixed by each rotation. The proof is a single rewrite with the sibling's card_rotFixed (|Fix(r i)| = 2^gcd(n, i.val)). This is the one half of the formula that is anchored to the fixed-point counts for ALL n, not just the checked range.",
     "mathContext": "$\\mathrm{rotTerm}(n) = \\sum_{i \\in \\mathbb{Z}/n} |\\mathrm{Fix}(r_i)| = \\sum_{i} 2^{\\gcd(n,i)}.$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["fixed points of a rotation", "card_rotFixed", "generic proof"],
     "prerequisites": ["orbit of a cyclic subgroup", "the sibling rotation formula"]
   },
@@ -55,7 +55,7 @@
     "title": "The Closed Form Matches the Orbit Counts (n = 3..6)",
     "content": "braceletClosed evaluates (kernel decide) to 4, 6, 8, 13 at n = 3, 4, 5, 6, and braceletClosed_eq_orbitCount_{three,four,five,six} rewrite each of these against the corresponding genuine orbit count Fintype.card (orbitRel.Quotient (DihedralGroup n) (Coloring n)). Both reflection parities (odd n = 3, 5; even n = 4, 6) and both even-length axis types occur, so the formula is validated against Lean-checked ground truth across the full small-n range — not just against an OEIS table.",
     "mathContext": "$\\mathrm{braceletClosed}(n) = |\\,\\mathrm{Coloring}(n)/D_n\\,|\\quad (n = 3,4,5,6).$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["orbit quotient cardinality", "validation against ground truth", "reflection parity"],
     "prerequisites": ["orbit quotients", "decidable equality of natural numbers"]
   },

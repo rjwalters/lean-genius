@@ -7,7 +7,7 @@
     "title": "Module Overview: The Sharp Nearest-Integer Threshold",
     "content": "This module determines the exact domain on which the folklore identity D(n) = round(n!/e) holds. The sibling entry derangements-convergence-oq-03 proves it for n ≥ 2, where the rate bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)! scales to |D(n) − n!/e| ≤ 1/(n+1) ≤ 1/3, comfortably under the ½ threshold that rounding needs. Two things remain: the boundary index n = 1 (where the same bound gives only the non-strict ≤ 1/2) and the failure at n = 0. This module supplies the extra analytic input e⁻¹ < 1/2 to settle n = 1, then proves the identity is genuinely false at n = 0, establishing n ≥ 1 as the optimal threshold. Imports pull in the grandparent DerangementsConvergence (for the rate bound) and all of Mathlib.Tactic.",
     "mathContext": "D(n)/n! = ∑_{k=0}^n (−1)^k/k! → e⁻¹; the rounding identity D(n) = round(n!/e) is standard for n ≥ 1 but false at n = 0 since D(0) = 1 while round(e⁻¹) = 0.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["derangements", "nearest-integer function", "subfactorial", "exponential series", "sharp threshold"],
     "prerequisites": ["combinatorics", "real analysis", "asymptotic estimates"]
   },

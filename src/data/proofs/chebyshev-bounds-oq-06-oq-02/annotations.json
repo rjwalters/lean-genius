@@ -10,7 +10,7 @@
     "title": "θ(n) = log(primorial n): the log-side of the central-binomial sandwich",
     "content": "Chebyshev's first function θ(n) = ∑_{p ≤ n, p prime} log p is the additive prime-counting weight behind the prime number theorem. The single idea driving this entry is that exponentiating θ collapses the sum of logs into a product of primes — the primorial n# = ∏_{p ≤ n} p — so θ(n) = log(n#). Mathlib already proves the arithmetic bound n# ≤ 4ⁿ (primorial_le_4_pow), and its proof is precisely the Erdős central-binomial argument that the parent entry chebyshev-bounds-oq-06 packages. Taking logarithms of n# ≤ 4ⁿ and using that log is increasing on the positive reals gives θ(n) ≤ n·log 4 for free. Nothing arithmetic is new here; the value is bridging Mathlib's primorial bound to the standard analytic statement about θ.",
     "mathContext": "$\\theta(n) = \\sum_{p \\le n} \\log p = \\log\\!\\Big(\\prod_{p \\le n} p\\Big) = \\log(n\\#) \\le \\log(4^n) = n\\log 4$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Chebyshev theta function",
       "primorial",
@@ -78,7 +78,7 @@
     "title": "The upper Chebyshev bound θ(n) ≤ n·log 4",
     "content": "The main result. Rewrite θ(n) = log(n#), then apply Real.log_le_log (log is increasing on the positive reals) to Mathlib's primorial bound n# ≤ 4ⁿ, giving log(n#) ≤ log(4ⁿ); positivity of n# comes from primorial_pos. Finish with Real.log_pow: log(4ⁿ) = n·log 4. The whole estimate is thus a three-line calc: monotone log applied to the arithmetic bound, then the log-of-a-power identity.",
     "mathContext": "$\\theta(n) = \\log(n\\#) \\le \\log(4^n) = n\\log 4$, using $n\\# \\le 4^n$ and monotone $\\log$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "primorial_le_4_pow",
       "Real.log_le_log",

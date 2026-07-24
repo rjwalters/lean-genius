@@ -10,7 +10,7 @@
     "title": "Isolating the Exhaustion Step of the Priority Construction",
     "content": "This file is a child of schroeder-bernstein-oq-03, the formalization of Myhill's isomorphism theorem — the computability-theoretic analogue of Schröder–Bernstein. The parent proves the theorem's hard direction by a back-and-forth priority construction (Rogers, Theory of Recursive Functions, §7.4), which has three logically separable ingredients: (a) each stage terminates, so a fresh domain/range point can always be placed; (b) domain/range exhaustion, so every element is eventually reached; and (c) computability, so the limit permutation is computable. The parent already discharges (a) as its two augment steps augment_domain_step and augment_range_step, but its hard direction remains open, blocked on (b)+(c).\n\nThis entry isolates ingredient (b) and proves it in complete generality, stripped of the matchings and the computability machinery. Exhaustion is not specific to computability: it is the order-theoretic heart of every back-and-forth argument, from Cantor's theorem on countable dense linear orders onward. Making it a stand-alone, reusable engine reduces Myhill's open direction to ingredient (c) alone — the computable read-off of an already-total limit. All results are 0-axiom (no sorry, no axiom declarations, no native_decide); #print axioms reports only the ordinary foundational axioms.",
     "mathContext": "The back-and-forth method interleaves 'ensure the next domain point is covered' and 'ensure the next range point is covered'. Abstractly, states extend along a preorder, coverage is a monotone predicate, and each step is guaranteed to exist; the content of exhaustion is that interleaving the two kinds of step reaches every element in both coordinates.",
-    "significance": "Separates the three ingredients of the priority construction so the parent's remaining open work is pinned down to a single task (the computable read-off), and packages exhaustion as a reusable abstraction independent of computability.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Myhill's isomorphism theorem",
       "back-and-forth / priority construction",
@@ -35,7 +35,7 @@
     "title": "The Back-and-Forth Exhaustion Engine",
     "content": "exhaustion takes a type S of states with a preorder ext (ext_refl, ext_trans), two coverage predicates dcov/rcov monotone under ext (dcov_mono, rcov_mono), and two step hypotheses dstep/rstep asserting that from any state one can extend to cover a given domain (resp. range) point. It returns a chain c : ℕ → S with c 0 = s₀, one-step monotonicity ext (c k) (c (k+1)), transitive monotonicity ext (c j) (c k) for j ≤ k, first coverage dcov (c (n+1)) n ∧ rcov (c (n+1)) n, and persistent coverage dcov (c k) n ∧ rcov (c k) n for all k > n. The chain covers domain point n and range point n together at stage n+1 via c (n+1) = chR (chD (c n) n) n, where chD/chR are the ext-monotone, coverage-achieving witnesses extracted from dstep/rstep by Exists.choose (the sole use of Classical.choice).",
     "mathContext": "Covering both coordinates at a single stage removes the even/odd parity bookkeeping of the textbook schedule. Range coverage is read directly off chR_cov; domain coverage chD_cov is transported across the trailing range step by dcov_mono, so simultaneous coverage needs only monotonicity of dcov. Chain monotonicity is one-step chaining through ext_trans, lifted to arbitrary j ≤ k by induction on the ≤ proof (the refl/step recursor). Persistence uses hextle together with dcov_mono / rcov_mono.",
-    "significance": "The engine's two step hypotheses dstep/rstep are exactly the parent's augment_domain_step / augment_range_step; instantiating them yields a total, surjective limit relation on ℕ, leaving only the computable read-off. It is also a reusable back-and-forth abstraction for other exhaustion arguments.",
+    "significance": "supporting",
     "relatedConcepts": [
       "back-and-forth exhaustion",
       "monotone chains under a preorder",
@@ -60,7 +60,7 @@
     "title": "Eventual Coverage",
     "content": "exhaustion_eventually repackages exhaustion into the form the priority construction consumes: alongside the initial state and one-step monotonicity, for every n there is a stage K (namely n+1) such that for all k ≥ K, dcov (c k) n ∧ rcov (c k) n. This is the precise 'the partial bijection is defined at n from stage n+1 on and is never retracted' statement, which is what guarantees the pointwise limit is a total function of ℕ.",
     "mathContext": "The proof splits k ≥ n+1 into the boundary case k = n+1 (first coverage) and k > n+1 (persistent coverage) obtained from exhaustion.",
-    "significance": "Provides the exact interface a limit-construction needs: a stabilization stage per element, from which coverage in both coordinates holds forever.",
+    "significance": "supporting",
     "relatedConcepts": [
       "eventual stabilization",
       "pointwise limit of a chain",
@@ -82,7 +82,7 @@
     "title": "Non-Vacuity: the Engine Exhausts ℕ",
     "content": "nat_exhausted instantiates the engine with S = List ℕ, ext = subset (l ⊆ l'), coverage = membership (n ∈ l for both dcov and rcov), and steps that simply prepend the requested element (n :: l). All hypotheses are discharged by List.Subset.refl / List.Subset.trans (preorder), pointwise monotonicity of membership under ⊆, and List.subset_cons_self / List.mem_cons_self (the prepend steps). The conclusion is a chain of finite lists starting at [] in which every n : ℕ is a member from some stage on — i.e. the union of the chain is all of ℕ.",
     "mathContext": "This is the enumerability of ℕ recovered as the simplest instance of the exhaustion engine, confirming that the abstract hypotheses are satisfiable and the exhaustion conclusion is non-vacuous rather than vacuously true.",
-    "significance": "A concrete, fully-verified sanity model showing the engine reaches every natural number; it demonstrates the hypotheses can be met without any computability or matching structure.",
+    "significance": "supporting",
     "relatedConcepts": [
       "enumerability of ℕ",
       "finite subsets growing to the whole set",
@@ -105,7 +105,7 @@
     "title": "Witness Selection and the Parity-Free Chain",
     "content": "The proof body opens with `classical` and extracts two state-valued choosers from the step hypotheses: chD s n := (dstep s n).choose and chR s n := (rstep s n).choose, with choose_spec splitting into the extension facts chD_ext / chR_ext (ext s (chD s n)) and the coverage facts chD_cov / chR_cov (dcov (chD s n) n, resp. rcov). Exists.choose here is the *sole* place Classical.choice enters the whole file — everything else is definitional or first-order. The chain is then a bare primitive recursion, c := fun k => Nat.rec s₀ (fun n s => chR (chD s n) n) k, so that c 0 = s₀ and c (n+1) = chR (chD (c n) n) n hold by rfl. Crucially, stage n+1 covers domain point n and range point n *together* — first chD covers n in the domain, then chR covers n in the range — rather than devoting even stages to the domain and odd stages to the range.",
     "mathContext": "Because domain point n and range point n are handled at the same stage n+1, first coverage dcov (c (n+1)) n reads its range half straight off chR_cov, while the domain half chD_cov (c n) n must be pushed across the trailing chR step — this is the one and only use of dcov_mono in establishing first coverage (dcov_mono (chR_ext …) (chD_cov …)). rcov_mono is not needed here at all; it is reserved for the persistence step hcov, where hextle lifts stage-(n+1) coverage to every later stage.",
-    "significance": "Pinpoints the single non-constructive step (Classical.choice via Exists.choose) so the axiom accounting is transparent, and shows concretely how the parity-free schedule collapses the textbook even/odd bookkeeping into one monotonicity transport.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Exists.choose / Exists.choose_spec",
       "primitive recursion (Nat.rec) as a chain constructor",

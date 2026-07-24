@@ -10,7 +10,7 @@
     "title": "Parity of Euler's totient: the full odd/even classification",
     "content": "The imports and header docstring pose OQ-06 — prove φ(n) is even for every n > 2 — and explain the file's strategy. Mathlib already supplies the one-directional `Nat.totient_even` (2 < n → Even φ(n)), proved via the unit -1 ∈ (ZMod n)ˣ having order 2 and Lagrange's `orderOf_dvd_card`. Rather than merely restate that, this file uses it as the seed for the COMPLETE parity classification Mathlib does not package: `totient_odd_iff : Odd (φ n) ↔ n = 1 ∨ n = 2` and `totient_even_iff : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`. So φ takes an odd value at exactly n = 1 and n = 2 (φ 1 = φ 2 = 1) and is even everywhere else, including φ 0 = 0. The two small odd values are the only obstruction to 'the totient is always even', and they are pinned down exactly. Fully machine-checked: 0 sorries, 0 axioms.",
     "mathContext": "$\\varphi(n)$ counts units of $\\mathbb{Z}/n\\mathbb{Z}$. For $n > 2$, $-1 \\ne 1$ is a unit of order $2$, so $2 \\mid |(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$ by Lagrange. The odd values occur only at $\\varphi(1) = \\varphi(2) = 1$; thus $\\mathrm{Odd}\\,\\varphi(n) \\iff n \\in \\{1,2\\}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler's totient function",
       "unit group (ZMod n)ˣ",

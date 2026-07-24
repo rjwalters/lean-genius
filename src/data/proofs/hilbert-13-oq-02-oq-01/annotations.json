@@ -10,7 +10,7 @@
     "title": "Discrete spaces are zero-dimensional — a concrete covering dimension",
     "content": "The header docstring frames the file within Hilbert's 13th problem. The parent `Hilbert13OQ02.lean` defines a universe-safe Lebesgue covering dimension covDimLE X n (every finite open cover admits a finite open refinement of order ≤ n+1) and proves it is a topological invariant, so the Kolmogorov–Arnold superposition term count 2·dim(X)+1 is presentation-independent — but the only space whose dimension it actually computes is a subsingleton. This file supplies the first NONTRIVIAL computation: every discrete space has covering dimension 0. The proof is a clean disjointification — replace each cover set by its 'least-index' part V i = {x | x ∈ cover i ∧ ∀ j, x ∈ cover j → i ≤ j}, so x ∈ V i iff i is the SMALLEST index whose cover set contains x. The V i are pairwise disjoint (order ≤ 1 = 0+1), still cover X (least containing index via Finset.min'), and refine the cover (V i ⊆ cover i). Discreteness enters at exactly one point — openness: V i is a finite intersection of a cover set with complements of cover sets, open only because every subset of a discrete space is open (isOpen_discrete). That is precisely why the statement fails for ℝⁿ. Corollaries recover the parent's covDimLE_of_subsingleton (subsingleton ⟹ discrete) and record monotonicity covDimLE_of_le. 0 axioms, 0 sorries.",
     "mathContext": "$\\dim_{\\mathrm{cov}} X \\le n$: every finite open cover has a finite open refinement of order $\\le n+1$. Headline: $X$ discrete $\\Rightarrow \\dim_{\\mathrm{cov}} X = 0$, via the disjointification $V_i = \\{x : x\\in \\mathrm{cover}_i \\wedge \\forall j,\\ x\\in\\mathrm{cover}_j \\Rightarrow i\\le j\\}$ (order $\\le 1$). Openness of $V_i$ needs $\\mathrm{isOpen\\_discrete}$; fails on $\\mathbb{R}^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lebesgue covering dimension",
       "Hilbert's 13th problem",
@@ -156,7 +156,7 @@
     "title": "Summary and honest scope",
     "content": "The closing summary recaps the three verified results (monotonicity covDimLE_succ/covDimLE_of_le, the headline covDimLE_of_discrete, and the recovered corollary covDimLE_of_subsingleton) and states the honest scope: the genuinely open OQ-02 — the COMPUTATIONAL complexity of producing a Kolmogorov–Arnold superposition for an effectively-presented continuous function — remains untouched. This file only adds verified structural facts about the dimension that controls the 2n+1 term count, not the computational core of the open problem.",
     "mathContext": "Verified: monotonicity, $X$ discrete $\\Rightarrow \\dim = 0$, subsingleton corollary. Untouched: the computational complexity of KA superposition for effectively-presented $f \\in C([0,1]^n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "honest scope",
       "open problem",

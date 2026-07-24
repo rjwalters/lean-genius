@@ -19,7 +19,7 @@
     "title": "Each Summand Is Nonnegative",
     "content": "A trichotomy on gᵢ vs gⱼ: if gᵢ < gⱼ then MonovaryOn gives fᵢ ≤ fⱼ, so both factors (fᵢ−fⱼ), (gᵢ−gⱼ) are ≤ 0 and their product is ≥ 0; the gᵢ = gⱼ branch makes the second factor 0; the gⱼ < gᵢ branch is symmetric. This makes 2G a sum of nonnegative terms — the fact both later bounds exploit.",
     "mathContext": "$g_i < g_j \\Rightarrow f_i \\le f_j \\Rightarrow (f_i-f_j)(g_i-g_j) \\ge 0$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["MonovaryOn", "trichotomy", "sign analysis"],
     "prerequisites": ["mul_nonneg", "order trichotomy"]
   },
@@ -31,7 +31,7 @@
     "title": "One Term ≤ the Whole Double Sum",
     "content": "Because every summand is nonnegative, any single pairwise defect (fᵢ₀−fⱼ₀)(gᵢ₀−gⱼ₀) is at most the full double sum. Formalised by two nested applications of Finset.single_le_sum: first the chosen term is ≤ the inner sum over j (other terms nonneg), then that inner sum is ≤ the outer sum over i (inner sums nonneg). This is the bridge from a single term to 2G.",
     "mathContext": "$(f_{i_0}-f_{j_0})(g_{i_0}-g_{j_0}) \\le \\sum_i\\sum_j (f_i-f_j)(g_i-g_j)$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.single_le_sum", "Finset.sum_nonneg", "nested sums"],
     "prerequisites": ["nonnegativity of every summand"]
   },
@@ -67,7 +67,7 @@
     "title": "Strict Positivity of a Summand",
     "content": "Strengthening term_nonneg: if a pair separates BOTH functions (fᵢ ≠ fⱼ and gᵢ ≠ gⱼ), the summand is strictly positive. The trichotomy on g now has its degenerate middle branch killed by gᵢ ≠ gⱼ, and lt_of_le_of_ne upgrades the monovariance inequality fᵢ ≤ fⱼ to fᵢ < fⱼ, so both factors are strictly signed and mul_pos gives (fᵢ−fⱼ)(gᵢ−gⱼ) > 0.",
     "mathContext": "$f_i \\neq f_j \\wedge g_i \\neq g_j \\Rightarrow (f_i-f_j)(g_i-g_j) > 0$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["mul_pos", "lt_of_le_of_ne", "strict monovariance"],
     "prerequisites": ["term_nonneg trichotomy", "MonovaryOn"]
   },

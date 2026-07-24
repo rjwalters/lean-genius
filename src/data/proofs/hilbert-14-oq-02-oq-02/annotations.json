@@ -40,7 +40,7 @@
     "title": "The Alternating Law via eval + funext",
     "content": "The structural core: rename e Δ = sign(e) • Δ. Classically this is proved by tracking how a permutation reorders the factors of ∏_{i<j}(xⱼ-xᵢ) — a delicate sign bookkeeping. Here it is obtained for free: eval_rename_vandermondePoly combines MvPolynomial.eval_rename (renaming = precomposition of the point) with Matrix.det_permute (a row permutation scales the determinant by the sign) to get eval v (rename e Δ) = sign(e) • eval v Δ for EVERY point v; then MvPolynomial.funext — valid over an infinite integral domain — upgrades this pointwise identity to the polynomial identity. Aₙ-invariance (vandermondePoly_isInvariant_of_sign_eq_one) is the sign = 1 case; Δ²-symmetry (vandermondePoly_sq_isSymmetric) is sign² = 1, presenting the Aₙ-invariants as a degree-two extension of the Sₙ-invariants.",
     "mathContext": "$\\mathrm{rename}_e\\,\\Delta = \\mathrm{sign}(e)\\cdot\\Delta$; hence $e\\in A_n \\Rightarrow \\mathrm{rename}_e\\,\\Delta=\\Delta$ and $\\Delta^2$ is symmetric.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["alternating polynomial", "sign of a permutation", "det_permute", "MvPolynomial.funext", "Aₙ-invariant"],
     "prerequisites": ["eval_rename", "determinant under row permutation", "polynomial funext over infinite domains"]
   },
@@ -55,7 +55,7 @@
     "title": "Δ Is a Genuinely New Generator (2 ≠ 0 Is Essential)",
     "content": "vandermondePoly_ne_zero: Δ ≠ 0, because at an injective tuple v (available since R is infinite) the Vandermonde determinant is nonzero (det_vandermonde_ne_zero_iff). vandermondePoly_not_isSymmetric: a transposition e = swap i0 i1 has sign(e) = -1, so eval v (rename e Δ) = -eval v Δ; if Δ were symmetric this equals eval v Δ, forcing -x = x, i.e. 2x = 0 with x = eval v Δ ≠ 0 — impossible in a domain with 2 ≠ 0. vandermondePoly_not_mem_symmetricSubalgebra then converts non-symmetry to Δ ∉ R[e₁,…,eₙ] via mem_symmetricSubalgebra. The characteristic hypothesis 2 ≠ 0 is necessary: in characteristic 2, alternating collapses to symmetric and Δ IS symmetric.",
     "mathContext": "$\\Delta \\notin R[e_1,\\dots,e_n]$ over an infinite domain with $2\\neq 0$, $n\\ge 2$: a transposition sends $\\Delta\\mapsto-\\Delta\\neq\\Delta$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["symmetric subalgebra", "non-membership", "characteristic 2", "integral domain", "injective evaluation point"],
     "prerequisites": ["det_vandermonde_ne_zero_iff", "sign_swap", "mem_symmetricSubalgebra"]
   },

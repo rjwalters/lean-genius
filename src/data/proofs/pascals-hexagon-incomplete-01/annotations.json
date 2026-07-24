@@ -10,7 +10,7 @@
     "title": "Why this file exists: the essential real-point hypothesis",
     "content": "The parent PascalsHexagon.lean reduces Pascal's theorem (for symmetric non-degenerate conics) to a single remaining `sorry`, the Sylvester reduction `sylvester_stdConic_of_isotropic`: a non-degenerate symmetric real conic carrying a REAL point p\u2080 is projectively equivalent to stdConic = diag(1,1,-1). Its docstring asserts \u2014 informally, without proof \u2014 that this real-point hypothesis is essential and not removable, because a definite conic (signature (3,0)/(0,3)) has only the trivial zero while stdConic has a whole cone of real zeros. This file proves that necessity claim rigorously. Honest scope: it does NOT discharge the `sorry` (the hard Sylvester direction for conics that DO carry a real point); it proves the complementary statement that the hypothesis cannot be dropped. The conic definitions below are reproduced locally because the parent is currently bit-rotted under the 4.26.0 toolchain and cannot be imported.",
     "mathContext": "Necessity of `hp\u2080`: a positive-definite $C$ (signature $(3,0)$) is anisotropic ($p^\\top C p = 0 \\Rightarrow p = 0$), whereas $\\mathrm{stdConic}$ (signature $(2,1)$) is isotropic, so no invertible $M$ can relate them.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pascal's theorem", "Sylvester's law of inertia", "signature of a quadratic form", "necessity of a hypothesis", "bit-rot / toolchain drift"],
     "prerequisites": ["projective conics", "quadratic form signature", "Pascal's hexagon theorem"]
   },

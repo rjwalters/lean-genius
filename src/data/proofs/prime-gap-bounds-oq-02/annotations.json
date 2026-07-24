@@ -33,7 +33,7 @@
     "title": "count_primes_Ioc: the θ↔π Bridge (a Mathlib TODO)",
     "content": "Mathlib's Chebyshev.lean explicitly flags 'relate theta and psi to the prime counting function' as a TODO. count_primes_Ioc supplies exactly this: #{p ∈ (a,b] : prime} = π(b) − π(a). The proof first shows #{p ≤ m : prime} = π(m) via Nat.primesBelow (primes < m+1 = primes ≤ m), then splits Iic b = Iic a ⊔ Ioc a b and uses Finset.card_union_of_disjoint on the prime filters. This is pure finite combinatorics and is reusable for any θ/ψ-to-π transfer.",
     "mathContext": "#{p ∈ Ioc a b : Prime} = π(b) − π(a), from Iic b = Iic a ⊔ Ioc a b.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Nat.primesBelow",
       "primeCounting",
@@ -77,7 +77,7 @@
     "title": "Lower-Bounding θ by the Prime Tail Above √x",
     "content": "primeCounting_floor_le proves π(⌊x⌋) ≤ √x + 1 + (log16)·x/log x for x > 1. The crux — this first phase — is a one-sided tail estimate on Chebyshev's θ. Set b = ⌊x⌋, s = ⌊√x⌋, and let T = {p ∈ (s, b] : prime} be the primes strictly above √x. Every such prime satisfies (p : ℝ) > √x (from p ≥ s+1 > √x via Nat.lt_floor_add_one), hence log p ≥ log √x = ½ log x by Real.log_sqrt and log monotonicity (hlog_lb). Since T is a subset of all primes in (0, b] and every log term is nonnegative (hlog_nonneg), discarding the small primes gives θ(x) = Σ_{p ≤ x} log p ≥ Σ_{p ∈ T} log p ≥ |T|·(½ log x), assembled from Finset.sum_const, Finset.sum_le_sum, and Finset.sum_le_sum_of_subset_of_nonneg. Only the single scale √x is used — no dyadic decomposition.",
     "mathContext": "For $\\sqrt x < p \\le x$, $\\log p \\ge \\log\\sqrt x = \\tfrac12\\log x$, so $\\theta(x) \\ge |T|\\cdot\\tfrac12\\log x$ where $T = \\{p : \\sqrt x < p \\le x,\\ p\\text{ prime}\\}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Chebyshev tail argument",
       "Real.log_sqrt",

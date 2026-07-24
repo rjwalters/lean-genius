@@ -85,7 +85,7 @@
     "title": "dihedral_galois_xPow4_sub_2: Gal(X⁴ − 2 / ℚ) ≅ D₄, fully proved",
     "content": "This is the flagship concrete instance, **now proved with no sorry**. The Galois group acts faithfully on the four roots of $X^4 - 2$ (`Polynomial.Gal.galActionHom`, injective), embedding it as a subgroup of $S_4$; the parent entry gives $|\\mathrm{Gal}| = 8$. Since $8 = 2^3$ is the full 2-part of $|S_4| = 24$, that image is a **Sylow 2-subgroup** of $S_4$. By Sylow's second theorem all Sylow 2-subgroups of $S_4$ are conjugate, hence isomorphic — in particular isomorphic to the explicit dihedral copy $\\langle (0\\,1\\,2\\,3),(1\\,3)\\rangle$ built in §1. This identifies the group as exactly $D_4$, not merely a group of order 8. The discharge is packaged as `order_eight_iso_dihedralFour_of_card` applied to `galActionHom`.",
     "mathContext": "Transitive subgroups of $S_4$ (up to conjugacy): $\\mathbb{Z}/4$ (cyclic, gen. by 4-cycle), $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$, $D_4 = \\langle (1234), (13) \\rangle$, $A_4$, $S_4$. Of these only $D_4$ has order 8, so $|\\mathrm{Gal}| = 8 + \\mathrm{transitive} \\Rightarrow \\mathrm{Gal} \\cong D_4$.",
-    "significance": "Turns the parent's order-8 cardinality result into the full dihedral identification, the classical Galois-theory benchmark.",
+    "significance": "supporting",
     "relatedConcepts": [
       "inverse-galois-d4.d4_realizable (order-8 statement)",
       "Transitive subgroups of S₄ (Klein V₄, D₄, A₄, S₄, ℤ/4)",
@@ -137,7 +137,7 @@
     "title": "The group-theoretic core: order-8 subgroups of S₄ are D₄ (Sylow's theorem)",
     "content": "The (4, 2) discharge rests on a purely group-theoretic fact proved here without any Galois input: **every subgroup of $S_4$ of order 8 is isomorphic to $\\mathrm{DihedralGroup}\\,4$**. Because $8 = 2^3$ is the full 2-part of $|S_4| = 24 = 2^3\\cdot 3$, such a subgroup is a Sylow 2-subgroup; Sylow's second theorem makes all Sylow 2-subgroups conjugate, hence isomorphic to the explicit copy $\\langle(0\\,1\\,2\\,3),(1\\,3)\\rangle$ (`dihedralFourToPerm`, whose homomorphism and injectivity are finite `decide` checks). Formally: `order_eight_iso_dihedralFour` packages `Sylow.ofCard` + `MulAction.exists_smul_eq` (conjugacy) + a conjugation `MulEquiv`. What remains genuinely open is the *general-n* Schinzel–Velez criterion, still gated on Capelli's irreducibility theorem upstream in Mathlib.",
     "mathContext": "Three tracks: A (S3, self-contained), B (Capelli to Mathlib), C (S4 post-Capelli). Generalisation to number fields $K$ is a fourth, open direction.",
-    "significance": "A reusable, Galois-free classification lemma; the mathematical heart of the (4, 2) discharge.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib contribution workflow",
       "Tracked roadmap: S1 OBSERVE → S2 SCAFFOLD → S3 DISCHARGE → S4 CHARACTERIZE",

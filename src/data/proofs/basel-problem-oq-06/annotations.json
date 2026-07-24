@@ -19,7 +19,7 @@
     "title": "ζ(4) = π⁴/90 in Three Equivalent Forms",
     "content": "With the summand `f n = 1/n⁴`, the value is recorded as a `HasSum` (`zeta_four_hasSum := hasSum_zeta_four`), as a `tsum` (`zeta_four_tsum` via `HasSum.tsum_eq`), and as the value of the complex zeta function (`riemannZeta_four_value : riemannZeta 4 = (π:ℂ)^4/90`, from Mathlib's `riemannZeta_four`). Recording all three forms makes the entry usable both by real-analysis consumers (series) and by complex-analytic ones (`riemannZeta`).",
     "mathContext": "$\\sum 1/n^4 = \\pi^4/90$ (real HasSum & tsum); $\\texttt{riemannZeta}\\,4 = \\pi^4/90$ (complex).",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["HasSum", "tsum", "riemannZeta"],
     "prerequisites": ["HasSum.tsum_eq", "Riemann zeta special values"]
   },
@@ -31,7 +31,7 @@
     "title": "Even Fourth Powers: the Series Scaled by 1/16",
     "content": "`hasSum_even_fourth` shows $\\sum_k 1/(2k)^4 = \\pi^4/1440$. The key observation is $1/(2k)^4 = (1/16)\\cdot 1/k^4$, so the even subsequence is the ζ(4) series scaled by $1/16$ (`HasSum.mul_left`), giving $(1/16)(\\pi^4/90)=\\pi^4/1440$. The pointwise identity is closed with `one_div_mul_one_div` — which holds unconditionally, including the $k=0$ term where Lean's convention $1/0=0$ makes both sides vanish — rather than `field_simp`, which would demand $k\\neq 0$.",
     "mathContext": "$1/(2k)^4=(1/16)/k^4 \\Rightarrow \\sum_k 1/(2k)^4=(1/16)\\zeta(4)=\\pi^4/1440$; $1/16=1/2^4$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["HasSum.mul_left", "one_div_mul_one_div", "subseries rescaling"],
     "prerequisites": ["HasSum scaling", "the 1/0 = 0 convention"]
   },

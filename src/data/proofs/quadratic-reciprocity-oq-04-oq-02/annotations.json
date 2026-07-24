@@ -7,7 +7,7 @@
     "title": "Euler Liars Form a Subgroup — the Solovay–Strassen ½-Bound",
     "content": "Where the sibling entry (oq-04-01) counts non-square Jacobi liars, this file proves the STRUCTURAL fact powering the Solovay-Strassen primality test. For odd n > 1, a unit a is an 'Euler liar' if it satisfies the Euler congruence a^((n-1)/2) = J(a | n) in Z/nZ — the identity Euler's criterion makes universal when n is prime. The set E(n) of Euler liars is a SUBGROUP, because the congruence equates two group homomorphisms. Hence one witness (a proper subgroup) forces |E(n)| <= phi(n)/2 by Lagrange, so k independent random trials miss a composite with probability <= 2^{-k}. The file then exhibits an unconditional witness for every n = p*m, covering all squarefree odd composites.",
     "mathContext": "$E(n)=\\{a\\in(\\mathbb{Z}/n)^\\times : a^{(n-1)/2} \\equiv J(a\\mid n)\\}$ is a subgroup; proper $\\Rightarrow [(\\mathbb{Z}/n)^\\times : E(n)]\\ge 2 \\Rightarrow |E(n)|\\le \\varphi(n)/2$.",
-    "significance": "Turns a single Jacobi counterexample into the probabilistic guarantee behind Solovay-Strassen.",
+    "significance": "supporting",
     "relatedConcepts": ["Solovay-Strassen primality test", "Euler's criterion", "Jacobi symbol", "Lagrange's theorem", "subgroup index"],
     "prerequisites": ["group theory", "quadratic reciprocity", "modular arithmetic"]
   },
@@ -19,7 +19,7 @@
     "title": "Fact (1 < n) Supplies NeZero n",
     "content": "A small instance so that the whole development can run from the single hypothesis Fact (1 < n): it derives NeZero n, which unlocks all the ZMod n unit and cast machinery used below.",
     "mathContext": "$1 < n \\Rightarrow n \\ne 0$, enabling $(\\mathbb{Z}/n)^\\times$ machinery.",
-    "significance": "Bookkeeping that lets every result assume only Fact (1 < n).",
+    "significance": "supporting",
     "relatedConcepts": ["NeZero", "typeclass inference"],
     "prerequisites": ["Lean typeclasses"]
   },
@@ -31,7 +31,7 @@
     "title": "The Jacobi Symbol of a Unit",
     "content": "jUnit u = J(rep(u) | n) evaluates the Jacobi symbol on the canonical representative of a unit u. Because u is a unit its representative is coprime to n, so jUnit u is always +1 or -1 (jUnit_eq_one_or), and jUnit 1 = 1 (jUnit_one). These package the Jacobi symbol as a function on the unit group, the first step to viewing it as a homomorphism.",
     "mathContext": "$\\mathrm{jUnit}(u) = J(\\bar u \\mid n) \\in \\{\\pm 1\\}$ since $\\gcd(\\bar u, n)=1$; $\\mathrm{jUnit}(1)=1$.",
-    "significance": "Lifts the Jacobi symbol to a well-defined ±1-valued map on (Z/nZ)ˣ.",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi symbol", "units of Z/nZ", "ZMod.val_coe_unit_coprime"],
     "prerequisites": ["Jacobi symbol", "unit groups"]
   },
@@ -43,7 +43,7 @@
     "title": "Multiplicativity: jUnit Is a Homomorphism to {±1}",
     "content": "jUnit(u·v) = jUnit(u)·jUnit(v). This is multiplicativity of the Jacobi symbol in the numerator, transported through the fact that the symbol depends only on the numerator mod n (jacobiSym.mod_left'). This homomorphism property, paired with a ↦ a^((n-1)/2), is the entire reason the Euler-liar set is closed under the group operations.",
     "mathContext": "$J(uv\\mid n) = J(u\\mid n)\\,J(v\\mid n)$, i.e. $\\mathrm{jUnit}:(\\mathbb{Z}/n)^\\times \\to \\{\\pm 1\\}$ is a homomorphism.",
-    "significance": "The key algebraic fact making E(n) a subgroup rather than a mere set.",
+    "significance": "supporting",
     "relatedConcepts": ["group homomorphism", "multiplicativity", "jacobiSym.mul_left"],
     "prerequisites": ["Jacobi symbol", "homomorphisms"]
   },
@@ -55,7 +55,7 @@
     "title": "The Euler-Liar Subgroup E(n)",
     "content": "eulerLiars n is the subgroup of (Z/nZ)ˣ whose members satisfy the Euler congruence a^((n-1)/2) = J(a | n). Subgroup closure follows because membership equates the two homomorphisms a ↦ a^((n-1)/2) and a ↦ jUnit a: one_mem from 1^k = jUnit 1 = 1, mul_mem from mul_pow and jUnit_mul, and inv_mem from the fact that a^((n-1)/2) is its own inverse (its value squares to 1) together with jUnit a⁻¹ = jUnit a. mem_eulerLiars records that membership is definitionally the Euler congruence.",
     "mathContext": "$u \\in E(n) \\iff \\bar u^{(n-1)/2} = J(u\\mid n)$ in $\\mathbb{Z}/n$; closure = equality of two homomorphisms.",
-    "significance": "The central object: liars are exactly where two homomorphisms agree, automatically a subgroup.",
+    "significance": "supporting",
     "relatedConcepts": ["Subgroup", "Euler's criterion", "homomorphism equalizer", "inv_eq_of_mul_eq_one_right"],
     "prerequisites": ["subgroups", "group homomorphisms"]
   },
@@ -67,7 +67,7 @@
     "title": "Density Bound: a Proper Subgroup Has Index ≥ 2",
     "content": "The structural half of Solovay-Strassen: if E(n) is proper (at least one Euler witness exists) then |E(n)| <= phi(n)/2. Pure finite group theory — a proper subgroup has index at least 2, so index_mul_card gives |E(n)|·2 <= |E(n)|·index = |(Z/nZ)ˣ|. This is why detecting a single witness collapses the liar density to at most one half, the source of the test's exponential error decay.",
     "mathContext": "$E(n)\\ne\\top \\Rightarrow \\mathrm{index}\\ge 2 \\Rightarrow |E(n)| \\le |(\\mathbb{Z}/n)^\\times|/2 = \\varphi(n)/2$.",
-    "significance": "One witness ⇒ half the residues expose compositeness ⇒ 2^{-k} error after k trials.",
+    "significance": "supporting",
     "relatedConcepts": ["Lagrange's theorem", "subgroup index", "Subgroup.index_mul_card"],
     "prerequisites": ["Lagrange's theorem", "finite groups"]
   },
@@ -79,7 +79,7 @@
     "title": "Unconditional CRT Euler Witness for n = p·m",
     "content": "For n = p·m with p an odd prime coprime to an odd m > 1, E(n) is a PROPER subgroup: a concrete Euler witness exists. Via the CRT isomorphism ZMod(p·m) ≃ ZMod p × ZMod m, lift (b, 1) where b is a non-residue mod p. Its Jacobi symbol is (-1)·1 = -1 (jUnit u = -1), but its ((n-1)/2)-th power reduces to 1 mod m, and projecting the Euler congruence to ZMod m would force 1 = -1 — impossible since m >= 3 is odd. This covers every squarefree odd composite, making the ½-bound unconditional there.",
     "mathContext": "CRT preimage of $(b,1)$, $b$ a non-residue mod $p$: $J(a\\mid pm)=-1$ yet $a^{(n-1)/2}\\equiv 1 \\pmod m$, and $1\\ne -1$ in $\\mathbb{Z}/m$ for odd $m\\ge 3$.",
-    "significance": "Guarantees a witness — hence the ½-bound — for all squarefree odd composites, not just isolated examples.",
+    "significance": "supporting",
     "relatedConcepts": ["Chinese remainder theorem", "quadratic non-residue", "ZMod.chineseRemainder", "FiniteField.exists_nonsquare"],
     "prerequisites": ["Chinese remainder theorem", "Legendre symbol", "ring homomorphisms"]
   },
@@ -91,7 +91,7 @@
     "title": "Solovay–Strassen ½-Bound for n = p·m",
     "content": "The payoff: combining the proper-subgroup witness with the density bound, at most half the units of Z/(p·m)Z are Euler liars. Since every squarefree odd composite factors as p·m with the stated hypotheses, its Euler witnesses number at least phi(n)/2 — the quantitative guarantee that Solovay-Strassen is a correct probabilistic primality test on these moduli.",
     "mathContext": "$|E(pm)| \\le \\varphi(pm)/2$ for odd prime $p$ coprime to odd $m>1$.",
-    "significance": "Closes the loop: witness + Lagrange ⇒ the test's ½ soundness bound on squarefree odd composites.",
+    "significance": "supporting",
     "relatedConcepts": ["Solovay-Strassen primality test", "probabilistic primality", "witness density"],
     "prerequisites": ["primality testing", "group theory"]
   }

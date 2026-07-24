@@ -10,7 +10,7 @@
     "title": "Why the LLL needs a *relative* quantitative bound",
     "content": "The flagship quantitative entry `lovasz-local-lemma-oq-01-quantitative` proves $\\prod_k (1 - b_k) \\le \\mu(\\bigcap_i A_i^c)$ over the ambient measure $\\mu$. But the genuine Erdős–Lovász induction never estimates a bare avoidance probability — its **denominator recursion** lower-bounds the survival of one block of events *conditioned on the survival of another*:\n$$\\mu\\!\\left[\\bigcap_{j\\in S_1} A_j^c \\;\\middle|\\; \\bigcap_{j\\in S_2} A_j^c\\right] \\;\\ge\\; \\prod_{j\\in S_1}(1 - x_j).$$\nEvery quantity here is a probability *relative to the background event* $H = \\bigcap_{j\\in S_2} A_j^c$. `lovasz-local-lemma-oq-01-dependency-split` supplied the numerator half of the induction step; this entry supplies the primitive the denominator recursion is built from — the exact analogue of `avoidance_ge_prod_one_sub`, but with every probability taken relative to a fixed background event $H$.",
     "mathContext": "Arbitrary measurable family $A : \\mathbb{N} \\to \\mathrm{Set}\\,\\Omega$ over an `IsProbabilityMeasure` $\\mu$; a background event $H$ with $\\mu H \\ne 0$; background-relative per-event conditional failure bounds $b_k < 1$ are the hypotheses. No independence, no dependency graph.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "conditional avoidance probability",

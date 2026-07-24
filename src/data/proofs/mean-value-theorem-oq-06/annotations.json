@@ -7,7 +7,7 @@
     "title": "Framing: The Signed, Two-Sided Quantitative MVT",
     "content": "The file imports exactly three Mathlib modules — the two mean-value engines (`Deriv.MeanValue`, `MeanValue`) and `Convex.Basic` — and opens `Set` so that `Icc`, `Ioo`, and their lemmas are unqualified. The docstring pins down the contract: from a pointwise two-sided bound $m \\le f'(x) \\le M$ on the open interval $(a,b)$, conclude a linear two-sided bound on the *finite increment* $f(b)-f(a)$.\n\nThe framing deliberately contrasts three relatives. The **parent** `mean-value-theorem` gives the existence form $f'(c) = \\tfrac{f(b)-f(a)}{b-a}$. The **sibling** `mean-value-theorem-oq-03` is vector-valued and keeps only the magnitude $\\|f(b)-f(a)\\| \\le C(b-a)$, discarding sign. This entry stays on $\\mathbb{R}$ and keeps *both* bounds, so direction survives — enabling the strict-monotonicity and Lipschitz corollaries below.",
     "mathContext": "Hypotheses: $f$ continuous on $[a,b]$, differentiable on $(a,b)$, and $m \\le f'(x) \\le M$ for all $x \\in (a,b)$. Conclusion: $m(b-a) \\le f(b)-f(a) \\le M(b-a)$. The average slope $\\frac{f(b)-f(a)}{b-a}$ inherits any two-sided bound on the instantaneous slope $f'$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mean Value Theorem",
       "quantitative estimates",
@@ -185,7 +185,7 @@
     "title": "Worked Numerical Example: 1 ≤ f' ≤ 3 on (0,2) ⟹ 2 ≤ f(2)−f(0) ≤ 6",
     "content": "A concrete instantiation of the main sandwich that does genuine numerical work. For any $f$ continuous on $[0,2]$, differentiable on $(0,2)$, with $1 \\le f'(x) \\le 3$ throughout, the theorem pins the increment to $[2,6]$: $1 \\cdot 2 = 2 \\le f(2)-f(0) \\le 3 \\cdot 2 = 6$.\n\nThe proof calls `deriv_bounds_imply_increment_bounds` with `(by norm_num : (0:ℝ) ≤ 2)`, destructures the resulting conjunction, and lets `linarith` evaluate the two numeric products. It demonstrates the intended use of the packaged lemma: plug in constant slope bounds over a fixed window and read off the guaranteed range of total change — no reference to the interior/convexity machinery required at the call site.",
     "mathContext": "$1 \\le f'(x) \\le 3$ on $(0,2) \\;\\Rightarrow\\; 2 \\le f(2)-f(0) \\le 6$. Illustrates how the abstract sandwich becomes a usable arithmetic bound at concrete data.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked example",
       "norm_num",

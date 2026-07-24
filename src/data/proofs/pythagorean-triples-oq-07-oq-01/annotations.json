@@ -28,7 +28,7 @@
     "title": "The mod-8 Obstruction: odd² ≡ 1 (mod 8)",
     "content": "sq_emod_eight_of_odd is the arithmetic heart. Writing an odd integer as 2k+1, (2k+1)² = 4k(k+1)+1. Because k(k+1) is the product of two consecutive integers it is even (Int.even_mul_succ_self), so 4k(k+1) ≡ 0 mod 8 and the square is 1 mod 8. This one extra factor of 2 over the parent's mod-4 fact is exactly what promotes 'even leg' to 'divisible by 4'.",
     "mathContext": "$(2k+1)^2 = 4k(k+1)+1$ and $2 \\mid k(k+1) \\Rightarrow (2k+1)^2 \\equiv 1 \\pmod 8$. omega closes the goal once k(k+1)=2m is supplied.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Int.even_mul_succ_self",
       "consecutive integers",
@@ -47,7 +47,7 @@
     "title": "Even Square 0 mod 8 ⇒ Divisible by 4",
     "content": "four_dvd_of_even_sq_emod_eight is the converse-flavoured step. If a = 2k and a² = 4k² ≡ 0 mod 8, then k² is even, hence k is even (Int.even_mul), so a = 2k is a multiple of 4. This lemma is stated abstractly (no triple) and is reusable wherever an even square is known to vanish mod 8.",
     "mathContext": "$a=2k,\\ 4k^2 \\equiv 0 \\pmod 8 \\Rightarrow k^2 \\text{ even} \\Rightarrow k \\text{ even} \\Rightarrow 4 \\mid a$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Int.even_mul",
       "Int.even_iff",
@@ -66,7 +66,7 @@
     "title": "The Even Leg's Square is 0 mod 8",
     "content": "even_leg_sq_emod_eight assembles the ingredients. Given the even leg x, coprimality forces the companion leg y odd (even_odd_of_coprime), and a short mod-4 computation forces the hypotenuse z odd. Then both y² and z² are 1 mod 8, so x² = z² − y² ≡ 0 mod 8.",
     "mathContext": "$y,z$ odd $\\Rightarrow y^2 \\equiv z^2 \\equiv 1 \\pmod 8 \\Rightarrow x^2 = z^2 - y^2 \\equiv 0 \\pmod 8$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "PythagoreanTriple.even_odd_of_coprime",
       "hypotenuse is odd",
@@ -85,7 +85,7 @@
     "title": "Main Theorem and the Symmetric-Triple Reduction",
     "content": "four_dvd_of_even_leg combines the two lemmas: the even leg is divisible by 4. The two-sided main theorem four_dvd_even_leg handles both which-leg-is-even cases; the case where y is even is reduced to the case where x is even by passing to the symmetric triple y x z (a Pythagorean triple whenever x y z is, with the same coprimality), so no proof is duplicated. four_dvd_even_leg' repackages in Even/Odd form.",
     "mathContext": "$(4 \\mid x \\wedge y \\text{ odd}) \\vee (x \\text{ odd} \\wedge 4 \\mid y)$; the triple $x^2+y^2=z^2$ is symmetric in the legs, so $y\\,x\\,z$ is again Pythagorean.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "symmetry of Pythagorean triples",
       "Int.gcd_comm",

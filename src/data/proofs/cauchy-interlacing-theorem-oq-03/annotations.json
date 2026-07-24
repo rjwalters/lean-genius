@@ -7,7 +7,7 @@
     "title": "Framing: Weyl's Inequalities as Corollaries of the Courant–Fischer Keystone",
     "content": "The module docstring fixes the file's strategy: derive the two classical Weyl spectral inequalities — monotonicity and the additive (subadditive) inequality — for symmetric operators purely as corollaries of the bound-form Courant–Fischer max–min keystone from CauchyInterlacingKeystone.lean, introducing no new spectral theory. Each operator is presented by an orthonormal eigenbasis with a descending (antitone) eigenvalue enumeration μ : Fin n → ℝ — the spectral-theorem input is taken as given so the file stays purely variational. The whole argument is a pairing game between the keystone's two variational halves: feed the optimal (k+1)-dimensional subspace from the lower half into the upper-tail Rayleigh ceiling, using the Grassmann dimension count to guarantee a common nonzero test vector. This is a research file, intentionally not registered in Proofs.lean.",
     "mathContext": "Weyl monotonicity: $T \\preceq U \\Rightarrow \\mu_k \\le \\nu_k$. Weyl's inequality: $i+j \\le k \\Rightarrow \\rho_k \\le \\mu_i + \\nu_j$ for the eigenvalues $\\rho$ of $T+U$. Grassmann count $(k{+}1)+(n{-}i)+(n{-}j)-2n = k{+}1{-}i{-}j \\ge 1$ forces a common vector.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Weyl's inequalities", "Courant–Fischer min-max", "Rayleigh quotient", "Loewner order", "Grassmann dimension formula", "spectral theorem"],
     "prerequisites": ["symmetric operators on EuclideanSpace", "Courant–Fischer variational characterization", "finrank / Grassmann identity"]
   },

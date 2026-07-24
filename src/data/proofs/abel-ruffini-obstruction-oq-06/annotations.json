@@ -10,7 +10,7 @@
     "title": "The Abel–Ruffini obstruction: solvable-by-radicals ⟺ solvable Galois group",
     "content": "The header and Part I section docstring frame the file. A polynomial is solvable by radicals exactly when its Galois group is a solvable group (Galois' theorem). Abel–Ruffini follows because the generic degree-n equation has Galois group Sₙ, and Sₙ is solvable for n ≤ 4 (giving the linear/quadratic/Cardano/Ferrari formulas) but not for n ≥ 5. This file formalizes the characteristic-independent core: the sharp non-solvability of Sₙ for ALL n ≥ 5 (generalizing Mathlib's Fin-5-only `Equiv.Perm.fin_5_not_solvable`), the easy solvable endpoints S₂/S₃/A₄/S₄, the exact threshold Sₙ solvable ⟺ n ≤ 4, and the radical criterion `not_solvableByRad_of_not_solvable_gal` (contrapositive of Mathlib's `solvableByRad.isSolvable'`). The deep characteristic-p refinements (wild ramification, Abhyankar/Raynaud/Harbater) are explicitly out of scope.",
     "mathContext": "Galois: $q$ solvable by radicals $\\iff \\mathrm{Gal}(q)$ is a solvable group. The derived series $G \\rhd G' \\rhd G'' \\rhd \\cdots$ reaching $\\{e\\}$ defines solvability. $S_n$ is solvable for $n \\le 4$; for $n \\ge 5$ it contains $A_5$, a perfect nonabelian simple group ($A_5' = A_5$), so its derived series stalls.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Abel–Ruffini theorem",
       "solvable group",

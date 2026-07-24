@@ -34,7 +34,7 @@
     "title": "The Two Order-Determining Powers: 3¹⁶ = 1 and 3⁸ = −1",
     "content": "These two decidable facts are the entire input to the primitive-root proof. `three_pow_16` (3¹⁶ ≡ 1) is Fermat's little theorem for p = 17 and forces orderOf(3) ∣ 16. `three_pow_8` (3⁸ ≡ 16 ≡ −1) is the non-vanishing witness at the unique maximal proper divisor 16/2 = 8: because −1 ≠ 1, the order cannot be 8 or any divisor of 8, pinning it at the full 16. Note 3⁸ = −1 also says 3 is a quadratic *non*-residue mod 17, which is why its even/odd powers cleanly separate the residues from the non-residues in Section IV.",
     "mathContext": "$3^{16}\\equiv1$ and $3^{8}\\equiv-1\\pmod{17}$; the latter is the $16/2$ witness.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Fermat's little theorem",
       "Order of an element",
@@ -146,7 +146,7 @@
     "title": "The Halving Order Chain 16 → 8 → 4 → 2 → 1",
     "content": "Repeatedly squaring the primitive root walks down the tower one quadratic step at a time. `square_step_1/2/3` compute the generators 3² = 9, 3⁴ = 13, 3⁸ = 16 = −1, and the three order lemmas certify their orders halve at each stage: `nine_orderOf` (orderOf 9 = 8), `thirteen_orderOf` (orderOf 13 = 4), `sixteen_orderOf` (orderOf 16 = 2, the {±1} of complex conjugation). Each order lemma uses the same 2-only-prime-factor test as `three_orderOf`. The resulting chain of element orders 16 ⊃ 8 ⊃ 4 ⊃ 2 ⊃ 1 is the raw data that Section VI packages as a descending tower of index-2 subgroups.",
     "mathContext": "$\\mathrm{ord}(9)=8,\\ \\mathrm{ord}(13)=4,\\ \\mathrm{ord}(16)=2$; each square halves the order.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Order of an element",
       "Cyclic subgroup",
@@ -170,7 +170,7 @@
     "title": "Lifting the Primitive Root to a Unit, with Order 16/2ⁱ",
     "content": "To speak of genuine *subgroups* rather than bare element orders, the primitive root is lifted to a unit `u3 : (ZMod 17)ˣ` via `ZMod.unitOfCoprime 3`. `u3_coe` confirms it reduces back to 3, and `u3_orderOf` transports orderOf(3) = 16 across `orderOf_units` to give orderOf(u3) = 16. The key uniform lemma `u3_pow_orderOf` then computes orderOf(u3^(2ⁱ)) = 16/2ⁱ for every i ≤ 4, via `orderOf_pow_of_dvd` after showing 2ⁱ ∣ 16 = 2⁴. This single formula is what powers the whole tower in Section VI: the i-th subgroup ⟨u3^(2ⁱ)⟩ has cardinality 16/2ⁱ.",
     "mathContext": "$u_3=\\mathrm{unitOfCoprime}(3)$, $\\mathrm{ord}(u_3^{2^i})=16/2^i$ for $i\\le4$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Unit group",
       "Order of a power",

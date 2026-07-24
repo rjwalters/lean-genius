@@ -58,7 +58,7 @@
     "title": "Strict Decrease When the Old Boundary Value Becomes Representable",
     "content": "`frobeniusNumber_lt_of_mem_closure`: under the same hypotheses, if additionally the old Frobenius value $f$ of $s$ becomes representable in the larger set (i.e. $f \\in \\langle t\\rangle$), then $g < f$ strictly. Proof: monotonicity gives $g \\le f$; equality $g = f$ would make $f$ the Frobenius number of $t$ and therefore **non**-representable in $t$, contradicting $f \\in \\langle t\\rangle$. This theorem quantifies the slack in the bound — it explains *why* the two-generator value is rarely tight once a third generator is present: any added generator that fills the old maximal gap forces a strict drop.",
     "mathContext": "For $\\{3, 5, 7\\}$ the true Frobenius number is $4$, strictly below $g(3, 5) = 7$, because the added generator $7 = 3\\cdot 5 - 3 - 5$ makes the old maximal gap representable — exactly the situation captured here.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "boundary gap of a numerical semigroup",
       "strict monotonicity",
@@ -80,7 +80,7 @@
     "title": "A Coprime Pair Forces the Set-GCD to be 1",
     "content": "`setGcd_eq_one_of_coprime`: if $m, n \\in s$ are coprime then $\\mathrm{setGcd}\\,s = 1$. Because $\\mathrm{setGcd}\\,s$ divides every member (`Nat.setGcd_dvd_of_mem`), it divides both $m$ and $n$, hence divides $\\gcd(m, n) = 1$ (`Nat.dvd_gcd`), so it is $1$. This is the existence hook: combined with $1 \\notin s$, Mathlib's `exists_frobeniusNumber_iff` then guarantees the Frobenius number of the whole set exists, so the bound proved downstream is not vacuous.",
     "mathContext": "The set-gcd is defined in Mathlib as the nonnegative generator of the ℤ-ideal spanned by s. A single coprime pair inside s is enough to collapse it to 1 — no assumption on the other generators is needed.",
-    "significance": "medium",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.setGcd (generator of the spanned ℤ-ideal)",
       "Nat.dvd_gcd",
@@ -126,7 +126,7 @@
     "title": "Explicit Three-Generator Bound and its Strict Case",
     "content": "`frobeniusNumber_triple_le`: for coprime $m, n > 1$ and any $k > 1$, the set $\\{m, n, k\\}$ has Frobenius number $g \\le mn - m - n$ — directly answering the 'three or more generators' open question with a computable bound. `frobeniusNumber_triple_strict`: when $k = mn - m - n$ (which exceeds 1 for coprime $m, n \\ge 3$, e.g. $\\{3, 5\\} \\to 7$), the added generator equals the old maximal gap, so the strictness theorem gives $g < mn - m - n$. Together these show the two-generator formula is a genuine but non-tight *upper* bound for three generators, exactly matching the known mathematical status: no closed form exists for $n \\ge 3$, only bounds.",
     "mathContext": "Coprimality of a *single* pair suffices; the third generator need not be coprime to the others. The membership and 1 ∉ {m, n, k} side-goals are discharged mechanically by simp/omega, leaving the mathematical content entirely in the monotonicity and existence lemmas.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "three-generator Frobenius number",
       "arithmetic-progression generators",

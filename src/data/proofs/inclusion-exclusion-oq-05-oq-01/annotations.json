@@ -7,7 +7,7 @@
     "title": "From the General Sieve to Two Named Corollaries",
     "content": "The docstring recalls the parent's truncated inclusion–exclusion value $\\mathrm{truncIE}\\,s\\,S\\,m = \\sum_{k=1}^{m} (-1)^{k+1} \\sum_{t \\subseteq s,\\,|t|=k} \\#(\\bigcap_{i\\in t} S_i)$ and states the goal: specialise the parent's odd/even Bonferroni inequalities to $m=1$ and $m=2$, and expand the abstract powerset-indexed sums into the indexed forms $\\sum_i \\#(S_i)$ and $\\sum_i \\#(S_i) - \\sum_{i<j} \\#(S_i \\cap S_j)$. This is open question 1 of the parent inclusion-exclusion-oq-05.",
     "mathContext": "$\\mathrm{truncIE}\\,s\\,S\\,m = \\sum_{k=1}^{m} (-1)^{k+1} \\sum_{\\substack{t \\subseteq s \\\\ |t|=k}} \\#\\!\\left(\\bigcap_{i\\in t} S_i\\right)$; the $m$-th partial sum of the inclusion–exclusion series, whose odd truncations over- and even truncations under-estimate $\\#(\\bigcup_{i\\in s} S_i)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["inclusion-exclusion principle", "Bonferroni inequalities", "sieve methods", "union bound"],
     "prerequisites": ["Finset combinatorics", "inclusion–exclusion / sieve principle"]
   },
@@ -67,7 +67,7 @@
     "title": "Casting to ℤ to Match the Signed Sieve",
     "content": "The parent's `truncIE` is an integer-valued alternating sum, so `sum_interCard_one_int` and `sum_interCard_two_int` restate the two expansions with summands cast to `ℤ`, discharged by `exact_mod_cast` from the natural-number versions. This lets the following corollaries rewrite inside `truncIE` directly.",
     "mathContext": "$\\sum_i (\\#(S_i) : \\mathbb{Z})$ and $\\sum_{i<j} (\\#(S_i\\cap S_j):\\mathbb{Z})$; needed because $\\mathrm{truncIE}$ carries the alternating signs $(-1)^{k+1}$ and so lives in $\\mathbb{Z}$, not $\\mathbb{N}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.cast ℕ→ℤ", "exact_mod_cast", "push_cast", "signed / alternating sums"],
     "prerequisites": ["coercions between ℕ and ℤ", "cast lemmas for sums"]
   },

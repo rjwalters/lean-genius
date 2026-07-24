@@ -56,7 +56,7 @@
     "title": "Diagonal Law: Offset 0 ⟺ Prime Midpoint",
     "content": "The innermost partition is the diagonal $2m = m + m$ precisely when the midpoint $m$ is prime: `minimalSymmetricOffset_eq_zero_iff` proves `minimalSymmetricOffset m = 0 ↔ Nat.Prime m` (given some partition exists), and `minimalSymmetricOffset_eq_zero_of_prime` gives the unconditional forward direction. Consequently, at composite midpoints the innermost partition is genuinely off-diagonal (`minimalSymmetricOffset_pos_of_not_prime`). This explains the diagonal ray of the Goldbach comet: prime abscissae always carry the trivial closest pair.",
     "mathContext": "$\\text{minimalSymmetricOffset}(m) = 0 \\iff \\mathbb{P}(m)$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.find_eq_zero",
       "diagonal partition",

@@ -40,7 +40,7 @@
     "title": "Degree p^k(p−1) of the prime-power cyclotomic",
     "content": "`cyclotomic_prime_pow_natDegree`: deg Φ_{p^{k+1}} = φ(p^{k+1}) = p^k(p−1), obtained by rewriting `natDegree_cyclotomic` (deg Φ_n = φ(n)) with the totient formula `totient_prime_pow_succ`.",
     "mathContext": "$\\deg \\Phi_{p^{k+1}} = \\varphi(p^{k+1}) = p^k(p-1)$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["polynomial degree", "totient of a prime power"],
     "prerequisites": ["deg Φ_n = φ(n)", "φ(p^{k+1}) = p^k(p−1)"]
   },
@@ -52,7 +52,7 @@
     "title": "Prime powers evaluate to the prime: Φ_{p^{k+1}}(1) = p",
     "content": "`cyclotomic_prime_pow_eval_one`: evaluating a prime-power cyclotomic at 1 gives the prime p (Mathlib's `eval_one_cyclotomic_prime_pow`). This is the prime-power end of the eval-at-one dichotomy.",
     "mathContext": "$\\Phi_{p^{k+1}}(1) = p$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["polynomial evaluation", "von Mangoldt value"],
     "prerequisites": ["prime-power geometric form"]
   },

@@ -203,7 +203,7 @@
     "title": "PAC sample-complexity target bound",
     "content": "Records the standard (ε,δ)-PAC sample-complexity target m = O((d/ε)·log(1/ε) + (1/ε)·log(1/δ)) with the explicit constant 8d/ε + 4·log(2/δ)/ε. As formalized the theorem is deliberately weak — it merely asserts the existence of an m below the stated ceiling (witnessed by the ceiling itself), so it fixes the intended bound as a landmark rather than deriving it from a uniform-convergence argument. The full derivation (union bound over the growth function together with the Sauer–Shelah bound above) is the natural next step flagged by the Part IV placeholder.",
     "mathContext": "$m = O\\!\\left(\\tfrac{d}{\\varepsilon}\\log\\tfrac1\\varepsilon + \\tfrac1\\varepsilon\\log\\tfrac1\\delta\\right)$; here $m \\le \\lceil 8d/\\varepsilon + 4\\log(2/\\delta)/\\varepsilon\\rceil$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "PAC learning",
       "sample complexity",

@@ -7,7 +7,7 @@
     "title": "Module Header: Why Chern-Gauss-Bonnet Is Axiomatized",
     "content": "The Chern-Gauss-Bonnet theorem generalizes the classical 2-dimensional Gauss-Bonnet identity to any closed oriented Riemannian manifold M of even dimension 2n: ∫_M Pf(Ω) = (2π)ⁿ·χ(M), where Ω is the curvature 2-form and Pf its Pfaffian. Chern proved this in 1944-45 via characteristic classes; at n=1, Pf reduces to Gaussian curvature times the area form and the formula becomes the familiar ∫_M K dA = 2π·χ(M). Since Mathlib (v4.26.0) has none of the Pfaffian of a curvature form, integration of characteristic forms over manifolds, or a manifold Euler characteristic, the file encodes the identity itself as a field of a CGBManifold structure — a structure-encoded assumption (hence axiomatized) — and proves everything that follows from it purely algebraically: sphere Euler characteristics, the normalization constant (2π)ⁿ, the 2×2 Pfaffian/determinant identity underlying n=1, the n=1 recovery of classical Gauss-Bonnet, and functorial constructions (spheres, products, connected sums, genus).",
     "mathContext": "$\\int_M \\mathrm{Pf}(\\Omega) = (2\\pi)^n\\,\\chi(M)$ for closed oriented $M^{2n}$; at $n=1$, $\\mathrm{Pf}(\\Omega) = K\\,dA$ recovers $\\int_M K\\,dA = 2\\pi\\,\\chi(M)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Chern-Gauss-Bonnet theorem", "Pfaffian", "curvature 2-form", "structure-encoded axiom", "classical Gauss-Bonnet"],
     "prerequisites": ["Riemannian curvature", "Euler characteristic", "classical (2D) Gauss-Bonnet"]
   },

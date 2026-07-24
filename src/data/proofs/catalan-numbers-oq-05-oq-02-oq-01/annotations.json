@@ -7,7 +7,7 @@
     "title": "Row sums of Catalan's triangle and the seed correction",
     "content": "The parent entry (catalan-numbers-oq-05-oq-02) formalizes the individual ballot numbers T(n,k) = C(n+k,k) − C(n+k,n+1) — Catalan's triangle A009766, whose diagonal T(n,n) is the Catalan number. This leaf aggregates a whole row: Σ_{k=0}^{n} T(n,k) = catalan (n+1). Combinatorially, summing over all valid endpoints of row n collects every diagonal-bounded lattice path of the next length, so the row total is the next ballot count. The docstring also records a correction: the seed problem stated the closed form as C(2n+1,n), which is FALSE at the first nontrivial row — for n=1 the row T(1,0)+T(1,1)=1+1=2 while C(3,1)=3 — and the true value catalan (n+1) = 1,2,5,14,… (A000108) is what is proved.",
     "mathContext": "$\\sum_{k=0}^{n} T(n,k) = C_{n+1}$, where $T(n,k) = \\binom{n+k}{k} - \\binom{n+k}{n+1}$ and $C_{n+1}$ is the $(n{+}1)$-st Catalan number.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Catalan's triangle",
       "ballot numbers",

@@ -10,7 +10,7 @@
     "title": "OQ-01: the multiplicity version of the Factor Theorem",
     "content": "The docstring states the open question and the strategy. The parent entry proves the ordinary Factor Theorem (X − a) ∣ p ↔ p(a) = 0; OQ-01 asks for its multiplicity refinement — (X − a)ᵏ ∣ p iff p and its first k−1 derivatives all vanish at a — which is exactly the algebraic shadow of Taylor's theorem (a root of order k kills the first k Taylor coefficients). The formalization routes entirely through Mathlib's rootMultiplicity: (X − a)ᵏ ∣ p ↔ k ≤ rootMultiplicity a p (le_rootMultiplicity_iff), and n < rootMultiplicity a p ↔ the first n iterated derivatives vanish at a (lt_rootMultiplicity_iff_isRoot_iterate_derivative_of_mem_nonZeroDivisors). Composing the two yields the multiplicity factor theorem with 0 axioms. The three named results are the general statement, the k = 1 base case (the classical Factor Theorem), and the k = 2 double-root criterion. `open Polynomial` brings X, C, derivative, eval, rootMultiplicity into scope.",
     "mathContext": "$(X-a)^k \\mid p \\iff p(a)=p'(a)=\\cdots=p^{(k-1)}(a)=0.$ Via $\\ (X-a)^k\\mid p \\iff k\\le \\operatorname{mult}_a(p)\\ $ and $\\ n<\\operatorname{mult}_a(p)\\iff \\forall m\\le n,\\ p^{(m)}(a)=0.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "root multiplicity",
       "Taylor expansion of polynomials",

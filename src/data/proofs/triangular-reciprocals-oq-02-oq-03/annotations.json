@@ -10,7 +10,7 @@
     "title": "Scope and the Conditional-Convergence Trap",
     "content": "This entry evaluates ∑_{n≥1} (-1)^{n+1}/(n(n+k)) in closed form for every k ≥ 1. The crucial subtlety is convergence type: the FULL alternating series is absolutely convergent (each term is bounded by 1/n²), so it legitimately HasSum in Mathlib's unconditional sense. But the two pieces it naively splits into — ∑ (-1)^{n+1}/n and its shift — are only CONDITIONALLY convergent and therefore do NOT HasSum. The sibling TriangularReciprocalAlternatingOQ03 postulated `HasSum (fun n => (-1)^{n+1}/n) (log 2)` as an axiom; that statement is unsound in Mathlib because unconditional summation forces absolute convergence. This proof avoids the trap: it splits only the FINITE partial sums, then takes limits, so no ill-defined object ever appears. 0 axioms, 0 sorries (#print axioms: propext, Classical.choice, Quot.sound).",
     "mathContext": "$\\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n(n+k)}$ is absolutely convergent; $\\sum\\frac{(-1)^{n+1}}{n}$ is only conditionally convergent (not `HasSum`).",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["absolute vs conditional convergence", "HasSum", "unconditional summation", "axiom integrity"],
     "prerequisites": ["infinite series", "HasSum / tsum semantics"]
   },
@@ -25,7 +25,7 @@
     "title": "Alternating Harmonic Limit = log 2, Without Axioms",
     "content": "The single transcendental input, proved rather than assumed. Step 1: the alternating series test (Antitone.tendsto_alternating_series_of_tendsto_zero) shows ∑_{i<N} (-1)^i/(i+1) converges to SOME limit l. Step 2: Abel's limit theorem (Real.tendsto_tsum_powerSeries_nhdsWithin_lt) turns l into lim_{x→1⁻} ∑' (-1)^n x^n/(n+1). Step 3: multiplying the tsum by x and matching Real.hasSum_pow_div_log_of_abs_lt_one at argument -x identifies ∑' (-1)^n x^{n+1}/(n+1) = log(1+x), so the tsum equals log(1+x)/x, which → log 2 by continuity at x=1. Uniqueness of limits gives l = log 2. This is exactly the recipe Mathlib uses for Leibniz's π/4 series (Real.tendsto_sum_pi_div_four), transplanted from arctan to log.",
     "mathContext": "$\\sum_{i<N}\\frac{(-1)^i}{i+1}\\to\\log 2$ because $\\sum'\\frac{(-1)^n}{n+1}x^n=\\frac{\\log(1+x)}{x}\\xrightarrow{x\\to1^-}\\log 2$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["Abel's limit theorem", "Mercator series", "alternating series test", "Leibniz series for π", "boundary value of power series"],
     "prerequisites": ["power series convergence", "Abel summation", "continuity of log"]
   },
@@ -55,7 +55,7 @@
     "title": "Assembly: Summability + Finite Closed Form + Limit",
     "content": "hasSum_alternating_gap_k glues the pieces. (1) Summability: ‖(-1)^{n+1}/(n(n+k))‖ ≤ 1/n² (since n(n+k) ≥ n²), so Summable.of_norm_bounded against the p=2 series gives Summable — hence HasSum. (2) Finite closed form: the partial fraction plus altH_Icc_eq and shifted_sum_eq give ∑_{n=1}^N term = (1/k)(altH N - (-1)^k(altH(N+k) - altH k)). (3) Limit: altH N → log 2 and altH(N+k) → log 2, so the finite closed form tends to (1/k)((1-(-1)^k)log 2 + (-1)^k altH k); relating the range partial sums (which tend to the tsum) to the Icc partial sums via a dropped zero-term and invoking tendsto_nhds_unique pins the tsum to this value.",
     "mathContext": "$\\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n(n+k)}=\\frac{1}{k}\\big((1-(-1)^k)\\log 2+(-1)^k A_k\\big)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["comparison test", "p-series", "HasSum.tendsto_sum_nat", "uniqueness of limits"],
     "prerequisites": ["Summable / HasSum", "limits of sequences", "partial sums of a summable series"]
   },

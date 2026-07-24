@@ -89,7 +89,7 @@
     "title": "The Probability-Space Setting Is Not Just Scenery",
     "content": "The ambient assumptions `{μ : Measure Ω} [IsProbabilityMeasure μ]` look like boilerplate but pin down exactly which part of the Lᵖ story is trivial and which is not. `IsProbabilityMeasure` (total mass one) makes the Lᵖ spaces *nested*: `L^q ⊆ L^p` for `p ≤ q`, so in particular `L^p ⊆ L^1` for every `p ≥ 1`. That nesting is precisely what the *unproved* half of the question — the claim that the limit `c` must equal `E[X₀]` — relies on: Lᵖ convergence implies L¹ convergence on a finite-mass space, and expectations are continuous in L¹, so `E[Sₙ/n] → c`; combined with `E[Sₙ/n] = E[X₀]` (identical distribution) this forces `c = E[X₀]`. The *moment* half proved in this file, by contrast, needs none of this: it never integrates and never uses finiteness of the measure, only the membership `MemLp (sampleMean X 1) p μ`. Flagging the setup makes the division of labour explicit — finiteness of μ is the hinge on which the open direction turns.",
     "mathContext": "On a probability space, $p \\le q \\Rightarrow \\|f\\|_p \\le \\|f\\|_q$, so $L^q \\subseteq L^p$ and in particular $L^p \\subseteq L^1$ for $p \\ge 1$. Hence $L^p$ convergence $\\Rightarrow$ $L^1$ convergence $\\Rightarrow$ $E[S_n/n] \\to c$; with $E[S_n/n] = E[X_0]$ this would give $c = E[X_0]$ (the open direction).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "IsProbabilityMeasure",
       "nesting of Lᵖ spaces on finite measures",

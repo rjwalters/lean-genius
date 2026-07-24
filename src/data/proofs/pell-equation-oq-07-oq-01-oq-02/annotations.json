@@ -79,7 +79,7 @@
     "title": "Fibonacci instantiation (p=1, q=−1)",
     "content": "Setting p = 1, q = −1 makes the abstract identity read Fₖ₊₂·Fₖ − Fₖ₊₁² = (−1)ᵏ·(F₂F₀ − F₁²). For the standard seed F₀ = 0, F₁ = 1 the base defect is F₂F₀ − F₁² = −1, so this collapses to (−1)ᵏ⁺¹ — Cassini's classical 1680 identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ. The example feeds the additive recurrence into cassiniDefect_eq and simplifies.",
     "mathContext": "$F_{k+2}F_k - F_{k+1}^2 = (-1)^k(F_2 F_0 - F_1^2) = (-1)^{k+1}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cassini's identity", "Fibonacci numbers"],
     "prerequisites": ["Fibonacci recurrence"]
   },
@@ -115,7 +115,7 @@
     "title": "Numeric check for the fundamental unit 3 + 2√2",
     "content": "A concrete decide-verified instance for the fundamental unit a = 3 + 2√2 of x² − 2y² = 1: the base defect is re(a²)·re(a⁰) − re(a¹)² = 17·1 − 9 = 8 = d·y₁² = 2·2². Because a is a Pell unit (q = N(a) = 1), the defect stays 8 at every index, illustrating the constant-invariant theorem above.",
     "mathContext": "$a = 3 + 2\\sqrt2:\\ 17\\cdot 1 - 9 = 8 = 2\\cdot 2^2.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["fundamental unit", "decidable evaluation"],
     "prerequisites": ["decide tactic"]
   }

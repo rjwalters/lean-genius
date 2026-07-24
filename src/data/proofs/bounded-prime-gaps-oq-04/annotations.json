@@ -163,7 +163,7 @@
     "title": "The Large Sieve: Layer 3's Averaging Tool",
     "content": "`LargeSieveHolds` records the large sieve inequality in simplified form: the total 'energy' of a sequence (aₙ), averaged over exponential sums e(na/q) at reduced residues a mod q and summed over moduli q ≤ Q with weight φ(q)⁻¹, is bounded by (N + Q² − 1)·Σ|aₙ|². Unlike the other definitions in this file, the body is left as `True` — the docstring notes the precise formulation needs exponential sums e(na/q), which are not yet wired up here — so this is a placeholder marking where Layer 3 of the roadmap (the large sieve) enters, not a working statement. Its role in the BV proof is to bound bilinear sums on average across moduli, which is what lets the Type I/II sum decomposition in Vaughan's identity be assembled into the full BV bound.",
     "mathContext": "Large sieve inequality: $\\sum_{q \\le Q} \\varphi(q)^{-1} \\sum_{\\substack{a=1 \\\\ \\gcd(a,q)=1}}^{q} \\left|\\sum_{n \\le N} a_n\\, e(na/q)\\right|^2 \\le (N + Q^2 - 1) \\sum_n |a_n|^2$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "large sieve",
       "exponential sums",

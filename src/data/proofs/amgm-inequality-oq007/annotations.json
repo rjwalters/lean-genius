@@ -10,7 +10,7 @@
     "title": "Why Characteristic 0 is Essential",
     "content": "The module header sets up the goal — the power sums generate the full symmetric subalgebra — over the ground field ℚ. The characteristic-0 hypothesis is not cosmetic: it is exactly what makes the statement true. Newton's identities express each elementary symmetric polynomial eₖ as a ℚ-polynomial in the power sums p₁,…,pₖ, but the recursion divides by k (e.g. e₂ = (p₁² − p₂)/2, e₃ = (p₁³ − 3p₁p₂ + 2p₃)/6). Over a field of characteristic p ≤ n these divisions fail, and the power sums no longer generate: the eₖ can escape the subalgebra they span. Working over ℚ (characteristic 0) all the denominators are invertible, so the reverse Newton identities hold and the two subalgebras coincide.",
     "mathContext": "Newton: $k\\,e_k = \\sum_{i=1}^{k}(-1)^{i-1}e_{k-i}p_i$; solving for $e_k$ needs $k^{-1}$, available iff $\\operatorname{char} = 0$ (or $>n$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's identities", "characteristic 0", "reverse Newton identities", "elementary vs power-sum symmetric functions", "invertibility of integers"],
     "prerequisites": ["Newton's identities relating pₖ and eₖ", "why division by k requires characteristic 0"]
   },

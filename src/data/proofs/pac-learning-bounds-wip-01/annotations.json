@@ -34,7 +34,7 @@
     "title": "Ambient Context: DecidableEq α Powers the Whole Combinatorics",
     "content": "Before any definition, the file fixes a single ambient hypothesis: `variable {α : Type*} [DecidableEq α]`. The type `α` of feature points is left completely general — no finiteness, no order, no cardinality assumption — because every finiteness fact the theory needs is carried by the `Finset` structure itself, not by `α`. The one instance that is load-bearing is `[DecidableEq α]`: it is exactly what makes the core operations computable as finite sets. Intersection `h ∩ S` needs `DecidableEq α`; `H.image (· ∩ S)` (the definition of `trace`) needs a `DecidableEq` on its codomain `Finset α`, which is *derived* from `DecidableEq α`; and `S.powerset` together with the equality `trace H S = S.powerset` that defines `Shatters` again relies on decidable membership in `Finset α`. Drop this instance and none of `trace`, `Shatters`, or a single cardinality bound below would typecheck.",
     "mathContext": "`DecidableEq α ⟹ DecidableEq (Finset α)`, which is what `Finset.image`, `∩`, `Finset.powerset`, and Finset equality require. Generality of `α` (no `Fintype`) is deliberate: the growth quantity $\\Pi_H(S)$ and the shattering relation are statements about *finite subsets*, so finiteness lives in the `Finset (Finset α)` model, not in the ground type.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "DecidableEq typeclass",
       "Finset.image",
@@ -58,7 +58,7 @@
     "title": "trace and Shatters",
     "content": "trace H S := H.image (· ∩ S) is the family of restrictions of H to S — the genuine growth quantity Π_H(S) that replaces the parent's placeholder growthFunction := 0. Shatters H S := (trace H S = S.powerset): H shatters S precisely when its trace realises every subset of S, i.e. the restriction map H → 2^S is surjective.",
     "mathContext": "$\\Pi_H(S) = \\{h \\cap S : h \\in H\\} \\subseteq 2^S$; shattering means $\\Pi_H(S) = 2^S$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "trace / restriction",
       "shattering",
@@ -101,7 +101,7 @@
     "title": "trace_card_le_pow: the Growth Bound ≤ 2^|S|",
     "content": "The trace of H on S has at most 2^|S| members — the correct growth-function bound the parent's placeholder growthFunction H n := 0 could not express. A one-line calc: the trace is contained in S.powerset (trace_subset_powerset), whose cardinality is exactly 2^|S| by Finset.card_powerset.",
     "mathContext": "$|\\Pi_H(S)| \\le |2^S| = 2^{|S|}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "growth function",
       "cardinality bound",
@@ -123,7 +123,7 @@
     "title": "shatters_iff_card: Shattering ⟺ Maximal Trace",
     "content": "H shatters S exactly when its trace attains the maximal possible size 2^|S|. Forward is immediate from the definition; the converse upgrades a size-2^|S| trace to full equality with the powerset via Finset.eq_of_subset_of_card_le (a subset of the powerset whose card reaches |powerset| must be the whole powerset).",
     "mathContext": "$H \\text{ shatters } S \\iff |\\Pi_H(S)| = 2^{|S|}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "shattering criterion",
       "Finset.eq_of_subset_of_card_le",
@@ -145,7 +145,7 @@
     "title": "shatters_card_le: Shattering Needs 2^|S| ≤ |H|",
     "content": "If H shatters S then 2^|S| ≤ |H|: realising all 2^|S| subsets requires at least that many distinct hypotheses. The trace is an image of H, so |trace| ≤ |H| (Finset.card_image_le); combined with shatters_iff_card (|trace| = 2^|S|) this gives the bound.",
     "mathContext": "$H \\text{ shatters } S \\implies 2^{|S|} \\le |H|$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "cardinality lower bound",
       "Finset.card_image_le",
@@ -167,7 +167,7 @@
     "title": "shatters_card_le_log: VC Dimension ≤ log₂|H|",
     "content": "Any set shattered by H has size |S| ≤ log₂|H| — the elementary, finite half of the Sauer–Shelah circle of results, and the genuine VC-dimension bound. From 2^|S| ≤ |H| (shatters_card_le), Nat.le_log_iff_pow_le converts the exponential inequality into |S| ≤ Nat.log 2 |H|; the nonzero-|H| side condition follows since 2^|S| ≥ 1.",
     "mathContext": "$H \\text{ shatters } S \\implies |S| \\le \\log_2 |H|$, hence $\\mathrm{VCdim}(H) \\le \\log_2 |H|$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "VC dimension bound",
       "Nat.log",
@@ -211,7 +211,7 @@
     "title": "The Bounds Are Tight: the Powerset Class Shatters",
     "content": "trace_powerset_self shows the full powerset class 2^S shatters S: each h ⊆ S satisfies h ∩ S = h, so the trace is all of S.powerset. powerset_shatters records this, and shatters_card_le_sharp packages it as a witness that shatters_card_le is sharp — for every S there is a class of size exactly 2^|S| shattering S. So the growth bound (≤ 2^|S|) and the size bound (2^|S| ≤ |H|) are both attained, not merely upper estimates.",
     "mathContext": "Π_{2^S}(S) = 2^S, so |Π_{2^S}(S)| = 2^|S| = |2^S| — equality throughout.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "powerset class",
       "tightness",
@@ -256,7 +256,7 @@
     "title": "The VC Dimension, Defined and Bounded",
     "content": "VCDim H := sSup{|S| : H shatters S} supplies the proper VC-dimension object the parent's placeholder growthFunction := 0 never provided — answering this entry's own first open question. vcDim_bddAbove shows the shattered-cardinality set is bounded by log₂|H|, so the supremum is attained; card_le_vcDim (|S| ≤ VCDim H for shattered S, via le_csSup) and vcDim_le_log (VCDim H ≤ log₂|H|, via csSup_le with the empty case handled by csSup_empty) package the earlier inequalities at the class level. vcDim_powerset then proves VCDim(2^S) = |S| exactly, so the log₂|H| bound is sharp for the extremal powerset class.",
     "mathContext": "|S| ≤ VCDim(H) ≤ log₂|H|, with VCDim(2^S) = |S| showing both inequalities are attained.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "VC dimension",
       "supremum",

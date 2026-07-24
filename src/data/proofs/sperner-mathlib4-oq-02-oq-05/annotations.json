@@ -10,7 +10,7 @@
     "title": "From the hexagon decide to the dimension-free telescoping engine",
     "content": "The header frames the entry against sibling sperner-mathlib4-oq-02-oq-04. That entry identified the odd boundary seed the n ≥ 2 door-counting program needs as the hemisphere SIGN-degree — push the {±1,±2} labelling through the magnitude-collapsing sign map sgn : Fin 4 → ZMod 2 and count sign flips along an antipodal-boundary arc — and proved it odd, but only for the hexagon (n = 2, α = Fin 4) and only by kernel decide over all 4³ = 64 labellings. Its docstring claimed the oddness holds 'by the telescoping (discrete-FTC) argument of n = 1 Tucker' but never ran that argument. This file supplies the missing sign-reduction map and states the telescoping engine once, dimension-free and alphabet-free, then recovers the hexagon result as a corollary. Honest status: a unification / scoping result, 0 sorries and 0 axioms (propext / Classical.choice / Quot.sound only — plain decide only on the finite alphabet, no Lean.ofReduceBool); it is not a full n = 2 Tucker proof.",
     "mathContext": "Tucker's lemma: for an antipodally symmetric triangulation of $B^n$ and a labelling $\\lambda : V \\to \\{\\pm1,\\dots,\\pm n\\}$ antipodal on $\\partial B^n$, some edge is complementary. The door-counting engine forces an interior complementary simplex from an odd count of boundary path endpoints; this entry supplies that odd seed as $\\#\\{i < N : \\mathrm{sgn}(\\mu_{i+1}) \\neq \\mathrm{sgn}(\\mu_i)\\}$ for an antipodal boundary arc $\\mu$, in every dimension.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tucker's lemma",
       "door-counting program",

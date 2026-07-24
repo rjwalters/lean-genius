@@ -35,7 +35,7 @@
     "title": "Coprime cofactors by cancelling the gcd in its own Bézout identity",
     "content": "Mathlib has no ready lemma that u/gcd and v/gcd are coprime for a general Euclidean domain (unlike Nat.coprime_div_gcd_div_gcd), so this is proved by hand in four lines. Take the Bézout identity for the gcd itself, d = u·gcdA + v·gcdB (EuclideanDomain.gcd_eq_gcd_ab). Substitute u = d·u₁, v = d·v₁ to get d = d·(u₁·gcdA + v₁·gcdB), then cancel d — nonzero exactly when (u,v) ≠ (0,0), via gcd_eq_zero_iff and mul_left_cancel₀ — to obtain 1 = u₁·gcdA + v₁·gcdB, a Bézout certificate for IsCoprime u₁ v₁. Implementation note: the gcd, gcdA, gcdB are frozen with `set` (after the Bézout hypothesis is created) so that `rw [hu, hv]` rewrites only the standalone u, v and never descends into `gcd u v`; and the cancellation goal is closed with `linear_combination` rather than `rw` to avoid rewriting every copy of d at once.",
     "mathContext": "From $d = u\\,A + v\\,B$ with $u = d\\,u_1$, $v = d\\,v_1$: $d = d(u_1 A + v_1 B)$. Since $d = \\gcd(u,v) \\neq 0$ when $(u,v)\\neq(0,0)$, cancel it to get $1 = u_1 A + v_1 B$, i.e. $\\operatorname{IsCoprime}(u_1, v_1)$. This is the Euclidean-domain analogue of $\\gcd\\!\\left(\\tfrac{u}{d},\\tfrac{v}{d}\\right)=1$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "greatest common divisor",
       "cofactors / primitive part",

@@ -10,7 +10,7 @@
     "title": "Setup: the small-k Egyptian-fraction picture for 1",
     "content": "This is a child of Erdős Problem #286 (unit fractions in short intervals). The parent asks how narrow an interval of denominators can represent 1 as a sum of k distinct unit fractions; this entry pins down the exact small-k picture with denominator-free statements. Writing 1 = Σ 1/nᵢ with distinct positive integers nᵢ, there is no 2-term representation and a unique 3-term one, {2,3,6}. Working over ℚ (all denominators are ordered a < b < c) keeps every step a linear/reciprocal inequality dischargeable by linarith/omega, so the whole file is 0-axiom: no sorry, no axiom, and crucially no native_decide (which would pull in Lean.ofReduceBool).",
     "mathContext": "Distinct-denominator Egyptian representations of $1$: $\\nexists\\,a<b:\\tfrac1a+\\tfrac1b=1$, and for $a<b<c$ the unique solution of $\\tfrac1a+\\tfrac1b+\\tfrac1c=1$ is $(2,3,6)$. So $k=3$ is minimal.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Egyptian fractions",
       "Erdős problem #286",

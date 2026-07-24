@@ -10,7 +10,7 @@
     "title": "The dependency degree as exact counting",
     "content": "The symmetric Lovász Local Lemma feasibility test for Spencer's improved Ramsey lower bound is e·p·(d+1) ≤ 1, with p the probability that a fixed k-clique is monochromatic and d its dependency degree. This module computes d with no probability theory. The bad event 'clique S is monochromatic' is statistically dependent on 'clique T is monochromatic' exactly when S and T share an edge, i.e. |S∩T| ≥ 2. The number of such dependent cliques is at most C(k,2)·C(n−2,k−2). The companion entry ramsey-r4k-extensions-oq-03-oq-01 supplies the other input p.",
     "mathContext": "Symmetric LLL: if Pr[Aᵢ] ≤ p and each Aᵢ is mutually independent of all but ≤ d others, then e·p·(d+1) ≤ 1 implies Pr[⋂ Āᵢ] > 0. Here the Aᵢ are the monochromatic-k-clique events and two are dependent iff their cliques share an edge.",
-    "significance": "Reduces the dependency-degree input d of the LLL to a finite cardinality bound about overlapping cliques, machine-checkable without any measure theory.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "dependency graph",
@@ -33,7 +33,7 @@
     "title": "cliqueMonoProb, cliqueDependencyBound, RamseyLLLCondition: the LLL inputs",
     "content": "cliqueMonoProb k = 2/2^C(k,2) is the bad-event probability p; cliqueDependencyBound n k = C(k,2)·C(n−2,k−2) is the dependency degree d; RamseyLLLCondition n k asserts the symmetric-LLL test 3·p·(d+1) ≤ 1, using the rational surrogate e ≤ 3 shared with the gallery's other LLL files. cliqueMonoProb_pos and cliqueMonoProb_le_one bound p in (0,1] for k ≥ 2 (a clique has at least one edge, so 2^C(k,2) ≥ 2).",
     "mathContext": "These are the three quantities the symmetric LLL feasibility condition e·p·(d+1) ≤ 1 needs, assembled into a single decidable-shaped rational inequality on (n,k).",
-    "significance": "Packages the Ramsey-specific LLL inputs into one applicability predicate whose validity at (n,k) certifies R(k,k) > n.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma feasibility",
       "binomial coefficient",
@@ -55,7 +55,7 @@
     "title": "containing_card_le: at most C(n−2,k−2) k-cliques through a fixed edge",
     "content": "For a fixed 2-element edge e, the k-cliques of Kₙ containing e number at most C(n−2,k−2). The proof exhibits the map T ↦ T∖e as an injection from these cliques into the (k−2)-subsets of univ∖e (the n−2 vertices outside e): the image has the right cardinality (card_sdiff_of_subset, |T∖e| = k−2), and the map is injective because T = (T∖e) ∪ e is recoverable via Finset.sdiff_union_of_subset. Concludes with Finset.card_le_card_of_injOn and card_powersetCard.",
     "mathContext": "This is the 'cliques through a fixed edge' count, the per-edge factor C(n−2,k−2) in the dependency bound d = C(k,2)·C(n−2,k−2).",
-    "significance": "A reusable finite-combinatorics lemma: choosing the remaining k−2 vertices of a clique once its edge e is fixed is a (k−2)-subset choice from the n−2 other vertices.",
+    "significance": "supporting",
     "relatedConcepts": [
       "injective image cardinality",
       "powersetCard",
@@ -78,7 +78,7 @@
     "title": "cliqueNeighbors_card_le: the dependency-degree bound d ≤ C(k,2)·C(n−2,k−2)",
     "content": "For any fixed k-clique S, the number of other k-cliques meeting S in ≥ 2 vertices (its LLL dependency neighbourhood) is at most C(k,2)·C(n−2,k−2). Each dependent clique T shares a 2-element edge e ⊆ S∩T (Finset.exists_subset_card_eq from |S∩T| ≥ 2), so cliqueNeighbors S k is covered by the biUnion over the C(k,2) edges e of S of the cliques containing e. Applying Finset.card_biUnion_le_card_mul with the per-edge bound containing_card_le and card_powersetCard for |S.powersetCard 2| = C(k,2) gives the product bound.",
     "mathContext": "This is Key Lemma 3 of the LLL-for-Ramsey plan — the dependency degree d that, together with p, feeds the feasibility test e·p·(d+1) ≤ 1. It is the fact stated but not proved in the RamseyR4kExtensions narrative.",
-    "significance": "Delivers the exact dependency-degree input to the symmetric LLL, machine-checked and axiom-free, by an edge-covering argument that turns a two-clique overlap condition into a clean product of binomial coefficients.",
+    "significance": "supporting",
     "relatedConcepts": [
       "dependency graph",
       "biUnion cardinality bound",
@@ -102,7 +102,7 @@
     "title": "SymmetricLLLForRamsey & ramsey_lll_lower_bound: the hypothesis-clean reduction",
     "content": "SymmetricLLLForRamsey is the symmetric-LLL avoidance principle stated in Ramsey form: whenever the numeric condition RamseyLLLCondition n k holds (k ≥ 3), there is a symmetric, irreflexive Bool-colouring of Kₙ's edges with no monochromatic k-clique of either colour. Kept as an explicit Prop hypothesis — not an axiom — it makes ramsey_lll_lower_bound an axiom-free conditional theorem: given hLLL : SymmetricLLLForRamsey and the feasibility condition, R(k,k) > n. The dependency degree feeding that condition is exactly the one bounded by cliqueNeighbors_card_le.",
     "mathContext": "The symmetric LLL avoidance conclusion Pr[⋂ Āᵢ] > 0 translates, for the monochromatic-clique events, into the existence of a colouring avoiding every monochromatic k-clique — i.e. a Ramsey lower bound R(k,k) > n.",
-    "significance": "Isolates the one ingredient not yet in Mathlib (the abstract symmetric LLL) as a single labelled hypothesis, so the reduction to the Ramsey bound is fully machine-checked and axiom-free.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "Ramsey lower bound",
@@ -125,7 +125,7 @@
     "title": "cliqueDependencyBound_mono & RamseyLLLCondition_antitone: the threshold",
     "content": "cliqueDependencyBound_mono shows d = C(k,2)·C(n−2,k−2) is monotone in n (via Nat.choose_le_choose). RamseyLLLCondition_antitone concludes the feasibility test is a genuine threshold: if it holds at m vertices it holds at every n ≤ m, since a larger dependency degree makes e·p·(d+1) ≤ 1 harder to satisfy. So an LLL certificate R(k,k) > m automatically certifies R(k,k) > n for all n ≤ m.",
     "mathContext": "Monotonicity of the binomial coefficient in its upper argument gives monotonicity of the dependency degree, which propagates satisfiability of the LLL condition downward in n.",
-    "significance": "Confirms the LLL condition behaves as an honest lower-bound threshold on the number of vertices, matching the intuition that avoiding monochromatic cliques is easier on fewer vertices.",
+    "significance": "supporting",
     "relatedConcepts": [
       "monotonicity",
       "binomial coefficient",
@@ -147,7 +147,7 @@
     "title": "ramseyLLLCondition_iff & concrete witnesses: a decidable test that provably beats the first moment",
     "content": "ramseyLLLCondition_iff clears the denominator 2^{C(k,2)} of p and the surrogate e ≤ 3 to rewrite the rational feasibility test 3·(2/2^{C(k,2)})·(d+1) ≤ 1 as the exact integer inequality 6·(d+1) ≤ 2^{C(k,2)} with d = cliqueDependencyBound n k. This yields a Decidable instance for RamseyLLLCondition, so any concrete (n,k) is settled by decide. ramseyLLLCondition_13_6 and ramseyLLLCondition_7_5 discharge two witnesses by decide: at k=6 the test holds up to n=13 (6·(C(6,2)·C(11,4)+1)=29706 ≤ 32768=2^{15}), giving R(6,6)>13 under the symmetric-LLL principle versus the first-moment R(6,6)>2^{⌊6/2⌋}=8; at k=5 it holds up to n=7 (606 ≤ 1024=2^{10}), giving R(5,5)>7 versus R(5,5)>4.",
     "mathContext": "Reducing a rational inequality to a decidable ℕ inequality lets Lean certify specific feasibility points by kernel computation (decide, not native_decide — so no ofReduceBool axiom). The witnesses exhibit that the LLL factor is not vacuous: the certified bound strictly exceeds the Erdős first-moment bound already at small k.",
-    "significance": "Turns the abstract feasibility test into something concretely checkable and shows, with 0 axioms and 0 sorries, that the LLL improvement over the first moment is real at explicit parameters, not merely asymptotic.",
+    "significance": "supporting",
     "relatedConcepts": [
       "decidability",
       "first moment method",
@@ -171,7 +171,7 @@
     "title": "cliqueDependency_total_identity & cliqueDependencyBound_le_total: why LLL beats the union bound",
     "content": "cliqueDependency_total_identity is the exact incidence identity C(n,2)·d = C(k,2)²·C(n,k), where d = cliqueDependencyBound n k is the LLL dependency degree and C(n,k) is the total number of monochromatic-clique bad events. It is proved by double-counting (k-clique, edge-inside-it) pairs via Mathlib's subset-of-a-subset identity Nat.choose_mul with s = 2. Equivalently d/C(n,k) = C(k,2)²/C(n,2), so the dependency degree is only a Θ(k⁴/n²) fraction of all events. cliqueDependencyBound_le_total then cancels C(n,2) > 0 to conclude d ≤ C(n,k) whenever C(k,2)² ≤ C(n,2) — i.e. once n is at least quadratic in k, which holds with vast room to spare at n ≈ 2^{k/2}.",
     "mathContext": "The union bound must control all C(n,k) events simultaneously (E[#mono cliques] < 1), whereas the symmetric LLL only needs the local test e·p·(d+1) ≤ 1 with d the true dependency degree. The identity C(n,2)·d = C(k,2)²·C(n,k) makes precise that d is a vanishing fraction of the global event count, which is exactly the source of the Θ(k) improvement in Spencer's lower bound over Erdős's first-moment bound.",
-    "significance": "Quantifies, with 0 axioms and 0 sorries, the structural reason the LLL improves the diagonal Ramsey lower bound: locality. The dependency degree feeding the LLL test is asymptotically negligible against the total number of bad events the union bound must handle.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "union bound",

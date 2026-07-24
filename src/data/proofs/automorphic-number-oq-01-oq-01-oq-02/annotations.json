@@ -91,7 +91,7 @@
     "title": "Degenerate cases: prime powers and n = 1",
     "content": "Two corollaries pin the extremes of the count. `unitaryDivisors_card_prime_pow` shows a prime power $p^k$ ($k \\ge 1$) has exactly $2 = 2^1$ unitary divisors, namely $1$ and $p^k$ — since $\\omega(p^k) = 1$ (`Nat.primeFactors_prime_pow`). `unitaryDivisors_card_eq_one_iff` shows the count is $1$ exactly when $n = 1$, i.e. $2^{\\omega(n)} = 1 \\iff \\omega(n) = 0 \\iff n$ has no prime factors, closed by `omega`. These confirm the count behaves correctly at the multiplicative boundary.",
     "mathContext": "$\\#(\\operatorname{unitaryDivisors}(p^k)) = 2 \\ (k \\ge 1); \\qquad \\#(\\operatorname{unitaryDivisors} n) = 1 \\iff n = 1$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["prime power", "boundary cases", "multiplicativity", "empty product"],
     "prerequisites": ["prime powers", "modular arithmetic"]
   }

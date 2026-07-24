@@ -10,7 +10,7 @@
     "title": "The first correction to the union bound",
     "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma over a real `IsProbabilityMeasure`. Two companion entries pin down the computable extremes: `lovasz-local-lemma-oq-01` handles **mutual independence** (avoidance factors exactly as $\\prod_i (1 - \\mu(A_i))$), and `lovasz-local-lemma-oq-01-union-bound` handles the **dependency-free** case (only the first-moment bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$). Both merely *bound* the avoidance probability once dependence is allowed. This file computes the **exact** value in the smallest genuinely dependent regime — two events — by inclusion–exclusion: $\\mu(A^c \\cap B^c) + \\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, i.e. $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$. The overlap $\\mu(A \\cap B)$ is *exactly* the term the two-event union bound throws away, and it is nonzero precisely when the events are positively correlated — the first quantitative sign that dependency helps avoid all bad events.",
     "mathContext": "Two measurable events $A, B$ over an `IsProbabilityMeasure` $\\mu$; exact identity $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$, no independence hypothesis.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "inclusion–exclusion",
@@ -56,7 +56,7 @@
     "title": "Exact identity: μ(Aᶜ ∩ Bᶜ) + μA + μB = 1 + μ(A ∩ B)",
     "content": "```lean\ntheorem two_event_avoidance_add (hA : MeasurableSet A) (hB : MeasurableSet B) :\n    μ (Aᶜ ∩ Bᶜ) + μ A + μ B = 1 + μ (A ∩ B) := by\n  have hAB : MeasurableSet (A ∪ B) := hA.union hB\n  have hcompl : Aᶜ ∩ Bᶜ = (A ∪ B)ᶜ := (Set.compl_union A B).symm\n  have h1 : μ (Aᶜ ∩ Bᶜ) + μ (A ∪ B) = 1 := by\n    rw [hcompl, add_comm, measure_add_measure_compl hAB, measure_univ]\n  have h2 : μ (A ∪ B) + μ (A ∩ B) = μ A + μ B := measure_union_add_inter A hB\n  calc μ (Aᶜ ∩ Bᶜ) + μ A + μ B\n      = μ (Aᶜ ∩ Bᶜ) + (μ A + μ B) := by rw [add_assoc]\n    _ = μ (Aᶜ ∩ Bᶜ) + (μ (A ∪ B) + μ (A ∩ B)) := by rw [h2]\n    _ = (μ (Aᶜ ∩ Bᶜ) + μ (A ∪ B)) + μ (A ∩ B) := by rw [add_assoc]\n    _ = 1 + μ (A ∩ B) := by rw [h1]\n```\n\nTwo Mathlib facts do all the work. **Complementation**: $A^c \\cap B^c = (A \\cup B)^c$ (De Morgan, `Set.compl_union`), and in a probability measure `measure_add_measure_compl` gives $\\mu(A^c \\cap B^c) + \\mu(A \\cup B) = \\mu(\\Omega) = 1$. **Two-set inclusion–exclusion**: `measure_union_add_inter` gives the subtraction-free identity $\\mu(A \\cup B) + \\mu(A \\cap B) = \\mu(A) + \\mu(B)$. Substituting the second into the goal and regrouping, the union term $\\mu(A \\cup B)$ cancels against the complementation identity, leaving $1 + \\mu(A \\cap B)$. Every line is an $\\mathbb{R}_{\\ge 0}^\\infty$ addition — no finiteness or truncation side-conditions ever appear, even though the probability measure makes all quantities finite.",
     "mathContext": "Equivalent to $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$, the order-two (exact) case of inclusion–exclusion $\\mu(\\bigcap A_i^c) = \\sum_S (-1)^{|S|} \\mu(\\bigcap_{i\\in S} A_i)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "inclusion–exclusion principle",
       "De Morgan's law",
@@ -80,7 +80,7 @@
     "title": "The sharp positive-avoidance threshold",
     "content": "`two_event_avoidance` reads positivity straight off the exact identity: assume $\\mu(A^c \\cap B^c) = 0$; then `two_event_avoidance_add` collapses to $\\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, contradicting the strict hypothesis $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$. So $\\mu(A^c \\cap B^c) \\ne 0$, and `pos_iff_ne_zero` upgrades $\\ne 0$ to $> 0$. The whole proof is four lines because the identity has already done the work — no measure estimates, just a strict inequality refuting an equality. The threshold $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is the *sharp* condition guaranteeing at least one outcome avoids both bad events, and it is exactly the germ of the LLL's dependency gain: the admissible region grows by the overlap $\\mu(A \\cap B)$.",
     "mathContext": "two_event_avoidance: μ A + μ B < 1 + μ(A ∩ B) ⇒ 0 < μ(Aᶜ ∩ Bᶜ). Proof: if μ(Aᶜ∩Bᶜ)=0 the exact identity forces μ A + μ B = 1 + μ(A∩B), contradicting the strict hypothesis; pos_iff_ne_zero finishes.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "positive correlation",
       "sharp avoidance threshold",

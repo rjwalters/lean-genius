@@ -10,7 +10,7 @@
     "title": "Setup: the equality case of Maclaurin's inequality (sufficiency)",
     "content": "The parent formalization amgm-inequality-oq-02-oq-02 proves Newton's log-concavity and the Maclaurin chain Mₖ(x) ≥ Mₖ₊₁(x), where Mⱼ(x) = (eⱼ(x)/C(n,j))^{1/j} and eⱼ is the j-th elementary symmetric polynomial. Its open question OQ-02 asks for the equality case: Mₖ = Mₖ₊₁ iff all nonzero inputs are equal. This file settles the sufficiency (⟸) direction in full generality — if every coordinate equals a common c ≥ 0 then every Maclaurin mean collapses to c, so the whole chain M₁ = ⋯ = Mₙ = c is equalities. The harder necessity (⟹) direction, which must track when the discriminant in the cleared-denominator induction is exactly zero, is left to a further child problem. Built directly on the parent's definitions, 0 axioms / 0 sorries.",
     "mathContext": "$M_j(x)=\\bigl(e_j(x)/\\binom{n}{j}\\bigr)^{1/j}$; sufficiency: $x=(c,\\dots,c),\\,c\\ge0 \\Rightarrow M_1=M_2=\\cdots=M_n=c$. Necessity ($M_k=M_{k+1}\\Rightarrow$ constant up to a zero block) is open.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Maclaurin's inequality",
       "elementary symmetric polynomials",
@@ -34,7 +34,7 @@
     "title": "The constant-input strategy",
     "content": "The entire sufficiency proof rests on evaluating the symmetric machinery at a constant vector `(c,…,c)`. Two elementary observations drive everything: over a `k`-element subset the product of constant entries is `cᵏ`, and there are exactly `C(n,k)` such subsets. This section sets up that computation, which the rest of the file lifts to the Maclaurin means. The file imports the parent `Proofs.AmgmInequalityOQ02` to reuse its exact definitions of `elemSymm` and `maclaurinMean`, so these results are drop-in companions to the parent's chain M₁ ≥ ⋯ ≥ Mₙ.",
     "mathContext": "Goal: show a non-negative constant input forces $M_1 = M_2 = \\cdots = M_n = c$, the $\\Leftarrow$ half of the equality case $M_k = M_{k+1} \\iff$ inputs equal.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "elementary symmetric polynomial",
       "Maclaurin mean",

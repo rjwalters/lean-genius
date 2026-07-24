@@ -28,7 +28,7 @@
     "title": "Scaling = Homogeneity: eₖ(λ·s) = λᵏ·eₖ(s)",
     "content": "`esymm_map_mul_left` states the scaling half of the transformation laws: multiplying every root by $\\lambda$ multiplies the degree-$k$ elementary symmetric function by $\\lambda^k$, because $e_k$ is homogeneous of degree $k$. The proof is a one-line `simpa` off Mathlib's `Multiset.pow_smul_esymm`, converting the `smul` there to multiplication. On the polynomial side this is the rule $x^2 - bx + c \\mapsto x^2 - \\lambda b\\,x + \\lambda^2 c$ under $r,s \\mapsto \\lambda r, \\lambda s$, generalising Mathlib's `esymm_neg` (the $\\lambda = -1$ reflection).",
     "mathContext": "$e_k(\\lambda r_1, \\dots, \\lambda r_n) = \\lambda^k e_k(r_1, \\dots, r_n)$; the coefficient of $X^{n-k}$ is scaled by $\\lambda^k$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["homogeneous polynomial", "Multiset.pow_smul_esymm", "esymm_neg"],
     "prerequisites": ["Homogeneity of elementary symmetric functions"]
   },

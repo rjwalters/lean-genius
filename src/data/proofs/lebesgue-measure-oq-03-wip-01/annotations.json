@@ -34,7 +34,7 @@
     "title": "measure_eq_zero_of_infinite_disjoint: the Core Lemma",
     "content": "The measure-theoretic engine the open question explicitly names. Infinitely many pairwise-disjoint measurable sets Aₙ, all of measure c, all inside a finite-measure set B, force c = 0: countable additivity (measure_iUnion) gives μ(⋃ Aₙ) = ∑ₙ c, which equals ∞ when c ≠ 0 (ENNReal.tsum_const_eq_top_of_ne_zero), contradicting μ(⋃) ≤ μ B < ∞.",
     "mathContext": "μ B ≥ ∑ₙ c = ∞ if c ≠ 0; hence c = 0. 'Infinite disjoint families of sets with the same measure' — the ingredient the question asks for.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "countable additivity",
       "measure_iUnion",
@@ -56,7 +56,7 @@
     "title": "ball_measure_zero_of_separated: the Impossibility Mechanism",
     "content": "For a translation-invariant μ on a normed group, an infinite family of points xₙ pairwise ≥ 2r apart and within M of 0, with μ finite on B(0, M+r), forces μ B(0, r) = 0. The balls B(xᵢ, r) are pairwise disjoint (ball_disjoint_ball, since dist ≥ 2r = r+r), all of measure μ B(0,r) (each is xᵢ +ᵥ B(0,r) via Metric.vadd_ball, so translation invariance equates them), and contained in B(0, M+r) (triangle inequality). The core lemma concludes.",
     "mathContext": "Translation invariance turns a bounded, separated, infinite family of balls into infinitely many disjoint equal-measure sets in a finite-measure region — forcing that measure to 0.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "translation invariance",
       "disjoint balls",
@@ -78,7 +78,7 @@
     "title": "The √2 Separation and the Impossibility Theorem",
     "content": "orthonormal_dist_eq_sqrt_two proves distinct members of an orthonormal family are exactly √2 apart: norm_sub_sq_real gives ‖eᵢ − eⱼ‖² = ‖eᵢ‖² − 2⟪eᵢ,eⱼ⟫ + ‖eⱼ‖² = 1 − 0 + 1 = 2, and Real.sqrt_sq extracts the norm. ball_measure_zero_of_orthonormal instantiates the mechanism with r = √2/2, M = 1: any translation-invariant μ finite on B(0, 1+√2/2) has μ B(0, √2/2) = 0.",
     "mathContext": "An orthonormal sequence is an infinite bounded √2-separated family — it exists in every infinite-dimensional inner product space (e.g. the ℓ² standard basis), making the impossibility non-vacuous.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "orthonormal family",
       "norm of difference",
@@ -100,7 +100,7 @@
     "title": "no_nondegenerate_translation_invariant_measure",
     "content": "The crisp impossibility: given an orthonormal sequence, a translation-invariant measure cannot be simultaneously finite on B(0, 1+√2/2) and positive on B(0, √2/2) — since the latter is forced to measure 0. This is the statement that infinite-dimensional spaces admit no nonzero, locally finite, translation-invariant (Lebesgue-like) measure.",
     "mathContext": "No infinite-dimensional Lebesgue measure exists: local finiteness plus translation invariance plus positivity on a ball is contradictory.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "impossibility theorem",
       "no Lebesgue measure",

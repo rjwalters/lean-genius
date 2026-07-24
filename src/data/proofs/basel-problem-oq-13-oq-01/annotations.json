@@ -106,7 +106,7 @@
     "title": "Results Table and Provenance",
     "content": "The closing summary tabulates the four exported results — hasSum_eta_four_even (∑ (-1)^{2k+1}/(2k)⁴ = −π⁴/1440), hasSum_eta_four_odd (∑ (-1)^{2k+2}/(2k+1)⁴ = π⁴/96), hasSum_eta_four (∑ (-1)^{n+1}/n⁴ = 7π⁴/720, HasSum form), and tsum_eta_four (the ∑' restatement) — and records their provenance: everything is built from the parent BaselProblemOQ13's even/odd fourth-power sums (hasSum_even_zeta_four, hasSum_odd_zeta_four) recombined through HasSum.even_add_odd, with 0 sorries and 0 axioms. It is the s = 4 instance of the Dirichlet eta value η(s) = (1 − 2^{1−s})ζ(s), so η(4) = (1 − 2^{−3})ζ(4) = (7/8)(π⁴/90) = 7π⁴/720.",
     "mathContext": "\\eta(4) = \\Big(1 - 2^{-3}\\Big)\\zeta(4) = \\tfrac{7}{8}\\cdot\\frac{\\pi^4}{90} = \\frac{7\\pi^4}{720}",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dirichlet eta at even integers",
       "ζ(4) = π⁴/90",

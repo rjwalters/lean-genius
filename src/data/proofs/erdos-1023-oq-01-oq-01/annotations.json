@@ -10,7 +10,7 @@
     "title": "Discharging an Axiom with LYM — and Being Honest About the Gap",
     "content": "The header states the open question precisely: the parent entry (erdos-1023-oq-01) proves the union-free extremal value $F(n)=\\binom{n}{\\lfloor n/2\\rfloor}$ but leaves the Erdős–Kleitman upper bound as an `axiom` (`problem_447_solution`), asking whether the LYM inequality discharges it. This file's careful answer: LYM proves the complete *antichain* theorem and the matching *lower* bound for 2-union-free families axiom-free, but does **not** close the upper bound — a 2-union-free family need not be an antichain and can be strictly larger, so that half is the genuinely deeper Erdős–Kleitman content. The transparency about what is and is not proved is a model of honest formalization.",
     "mathContext": "Open question: prove `problem_447_solution` from LYM $\\sum_{A\\in F}\\binom{n}{|A|}^{-1}\\le 1$. Answer: the antichain analogue and lower bound, yes; the 2-union-free upper bound, no.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "LYM inequality",
       "Sperner's theorem",

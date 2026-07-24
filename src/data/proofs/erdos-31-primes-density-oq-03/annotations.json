@@ -34,7 +34,7 @@
     "title": "Step 1 — harmonic partial sum ≤ Euler product",
     "content": "The crux combinatorial step: Σ_{k=1}^{N} 1/k ≤ ∏_{p ≤ N}(1 − 1/p)⁻¹ (harmonic_le_euler_product). The reciprocal map n ↦ (n:ℝ)⁻¹ is packaged as a monoid homomorphism `invHom : ℕ →* ℝ` (multiplicative since (ab)⁻¹ = a⁻¹b⁻¹). Applying Mathlib's `EulerProduct.summable_and_hasSum_smoothNumbers_prod_primesBelow_geometric` — which needs only ‖invHom p‖ = 1/p < 1 per prime, not global summability — the product ∏_{p ≤ N}(1 − 1/p)⁻¹ equals the convergent tsum of 1/m over (N+1)-smooth numbers m. Since every k ∈ [1,N] is (N+1)-smooth (Icc_subset_smoothNumbers) and all terms are nonnegative, `Summable.sum_le_tsum` gives the finite subsum ≤ the total.",
     "mathContext": "This is the formal content of 'unique factorisation expands ∏_{p ≤ N} Σ_{e ≥ 0} p^{-e} into Σ 1/n over all N-smooth n, which covers {1,…,N}'. The key subtlety is that the harmonic series is NOT globally summable, so the standard Euler product theorem (requiring Summable f) does not apply; Mathlib's smooth-number variant, requiring only ‖f p‖ < 1, is exactly what makes the finite product converge to a smooth-number tsum.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Euler product",
       "smooth numbers",
@@ -82,7 +82,7 @@
     "title": "Step 2 — Σ log((1−1/p)⁻¹) ≤ Σ 1/p + 1",
     "content": "Bounds the sum of log-Euler-factors by the reciprocal-prime sum plus a constant (sum_log_euler_factor_le). Per prime, the elementary inequality log x ≤ x − 1 (Mathlib `Real.log_le_sub_one_of_pos`) applied to x = (1 − 1/p)⁻¹ gives log((1−1/p)⁻¹) ≤ (1−1/p)⁻¹ − 1, which equals exactly 1/(p−1) = 1/p + 1/(p(p−1)). Summing and applying the telescoping tail bound Σ 1/(p(p−1)) ≤ 1 completes the estimate.",
     "mathContext": "This replaces the usual power-series manipulation −log(1−x) − x = Σ_{m ≥ 2} x^m/m ≤ x²/(1−x) with the slicker one-line bound log x ≤ x − 1, giving the clean closed form 1/(p−1) and an absolute-constant tail. It is the analytic heart of the Euler-product proof of Mertens' lower bound.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "logarithm inequality",
       "Mertens' theorem",
@@ -105,7 +105,7 @@
     "title": "Mertens' lower bound: Σ 1/p ≥ log log(N+1) − 1",
     "content": "The main theorem mertens_reciprocal_lower_bound assembles the pieces. From Mathlib's `Real.log_add_one_le_harmonic`, log(N+1) ≤ H_N = Σ_{k=1}^{N} 1/k; by Step 1 this is ≤ ∏_{p ≤ N}(1 − 1/p)⁻¹. Taking logarithms (monotone, `Real.log_le_log`, positivity of both sides) and expanding log of the product (`Real.log_prod`) gives log log(N+1) ≤ Σ_{p ≤ N} log((1−1/p)⁻¹), which by Step 2 is ≤ Σ_{p ≤ N} 1/p + 1. Rearranging yields Σ_{p ≤ N} 1/p ≥ log log(N+1) − 1 for all N ≥ 1.",
     "mathContext": "This is the lower half of Mertens' second theorem with an explicit effective constant. It shows the prime reciprocal sum grows at rate log log N — the slowest divergence encountered in elementary number theory — and is a genuine quantitative strengthening of Euler's Σ 1/p = ∞ that Mathlib's qualitative divergence lemma does not provide.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Mertens' second theorem",
       "prime reciprocal sum",

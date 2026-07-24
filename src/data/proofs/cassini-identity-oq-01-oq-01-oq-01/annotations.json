@@ -10,7 +10,7 @@
     "title": "Vajda's Identity: the master identity above Cassini, Catalan, and d'Ocagne",
     "content": "The header positions the entry as the apex of the Fibonacci bilinear family. Vajda's identity F_{n+i}·F_{n+j} − Fₙ·F_{n+i+j} = (−1)ⁿ·Fᵢ·Fⱼ specializes to all three classical laws: Cassini (i = j = 1), Catalan (i = j = r, the parent file's catalan_aux), and the d'Ocagne shift form (j = 1). Its defining formal advantage is that the offsets enter only additively (n+i, n+j, n+i+j), so — unlike the signed Catalan/d'Ocagne statements — no truncated ℕ subtraction ever appears, keeping the whole proof friction-free over ℕ. The docstring also flags that this is an *independent* derivation: the gallery already proves the same identity in the fibonacci-identities lineage (fib_vajda_gap) by a two-step induction on j off d'Ocagne, whereas this Cassini-lineage proof uses no induction beyond the one already inside the imported Cassini core — a single addition-formula expansion collapsing against cassini_sub.",
     "mathContext": "$F_{n+i}F_{n+j} - F_n F_{n+i+j} = (-1)^n F_i F_j$; specializations: Cassini $(i{=}j{=}1)$, Catalan $(i{=}j{=}r)$, d'Ocagne $(j{=}1)$. Fully additive indices $\\Rightarrow$ no $\\mathbb{N}$-subtraction.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Vajda's identity",
       "Cassini / Catalan / d'Ocagne family",

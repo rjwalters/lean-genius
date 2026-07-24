@@ -7,7 +7,7 @@
     "title": "The Problem, the Witness, and Why Enumeration Fails",
     "content": "The header frames the target: the smallest odd abundant number *not divisible by 3* is $5391411025 = 5^2\\cdot 7\\cdot 11\\cdot 13\\cdot 17\\cdot 19\\cdot 23\\cdot 29$. It contrasts with the smallest odd abundant number $945 = 3^3\\cdot 5\\cdot 7$: forbidding the factor 3 pushes the minimum up by six orders of magnitude. The abundance margin is razor-thin — $\\sigma(N) = 10799308800 > 10782822050 = 2N$, a ratio $\\approx 2.00306$. Crucially, this file proves only the **witness/membership** half (that $N$ is odd, coprime to 3, and abundant); the minimality half — no smaller such number is abundant — lives in the eight companion files. The header explains why a `decide`/`native_decide` over the $\\approx 5.4\\cdot 10^9$ divisor range is hopeless, motivating the multiplicative method.",
     "mathContext": "$N = 5^2\\cdot 7\\cdot 11\\cdot 13\\cdot 17\\cdot 19\\cdot 23\\cdot 29 = 5391411025$; $\\sigma(N) = 10799308800 > 2N = 10782822050$, so $\\sigma(N)/N \\approx 2.00306 > 2$ (abundant). Compare the smallest odd abundant $945 = 3^3\\cdot 5\\cdot 7$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["abundant number", "sum-of-divisors function σ", "abundancy index σ(n)/n", "OEIS A047802"],
     "prerequisites": ["divisor-sum function", "abundant / perfect / deficient classification"]
   },
@@ -19,7 +19,7 @@
     "title": "The Witness N = 5391411025",
     "content": "`N` is introduced as an `abbrev` for the ten-digit witness $5391411025$. Using `abbrev` (rather than `def`) keeps it definitionally transparent, so `norm_num` and `decide` can unfold it to the literal when needed. Its intended prime factorization $5^2\\cdot 7\\cdot 11\\cdot 13\\cdot 17\\cdot 19\\cdot 23\\cdot 29$ is what makes the multiplicative computation of $\\sigma(N)$ possible.",
     "mathContext": "$N := 5391411025 = 5^2\\cdot 7\\cdot 11\\cdot 13\\cdot 17\\cdot 19\\cdot 23\\cdot 29$; eight pairwise-coprime prime-power factors (one squared).",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["abbrev vs def transparency", "prime factorization", "prime powers"],
     "prerequisites": ["Lean abbreviations", "unique factorization"]
   },

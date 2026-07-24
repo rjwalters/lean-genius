@@ -10,7 +10,7 @@
     "title": "det Mᴴ = star (det M) and its adjoint/spectral corollaries",
     "content": "The module docstring frames the entry. The base identity det Mᴴ = star (det M) holds over any StarRing R (canonically R = ℂ with star = complex conjugation): the conjugate transpose conjugates the determinant. It is Mathlib's Matrix.det_conjTranspose, distinct from det_mul and det_transpose, and previously had no gallery entry. The substantive content is the two structural corollaries it powers, tying the adjoint structure of complex matrices to the single scalar invariant det: (1) Hermitian ⟹ self-adjoint determinant — Mᴴ = M forces star(det M) = det M, so over ℂ the determinant is real ((det M).im = 0), the scalar shadow of 'Hermitian operators have real spectrum'; (2) Unitary ⟹ determinant on the unit circle — Uᴴ U = 1 gives star(det U)·det U = 1, hence ‖det U‖ = 1, the det : U(n) → U(1) picture. The imports pull in matrix determinants, the Hermitian predicate, and the complex unit circle; verified 0-sorry, 0-axiom.",
     "mathContext": "$\\det(M^{\\mathsf H}) = \\overline{\\det M}$. Corollaries over $\\mathbb{C}$: $M^{\\mathsf H}=M \\Rightarrow \\det M\\in\\mathbb{R}$; $U^{\\mathsf H}U=I \\Rightarrow \\lvert\\det U\\rvert=1$ (so $\\det\\colon U(n)\\to U(1)$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "conjugate transpose (adjoint)",
       "determinant as a homomorphism",

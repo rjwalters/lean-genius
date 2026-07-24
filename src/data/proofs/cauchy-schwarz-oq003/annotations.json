@@ -7,7 +7,7 @@
     "title": "Setup: What Is Provable Without Interpolation, and the Entropy Definition",
     "content": "The parent entry (`cauchy-schwarz-oq-01-oq-03-oq-02`) builds finite Shannon-entropy infrastructure for the Maassen–Uffink (1988) entropic uncertainty principle $H(p)+H(q)\\ge -2\\ln c$, but its *lower* bound is gated on Riesz–Thorin / Hausdorff–Young interpolation that Mathlib lacks. This file isolates exactly the part that is provable elementarily: the **min-entropy bound** $H(p)\\ge -\\log(\\max_i p_i)$ and, from it, the **eigenstate case** of Maassen–Uffink — a genuine special case needing no interpolation theory. The single import `import Mathlib`, `open Finset`, `namespace`, and `variable {ι} [Fintype ι]` (lines 37–43) set the finite-index stage, and `shannonEntropy p = ∑ᵢ negMulLog(pᵢ)` (lines 45–48) defines entropy in nats via Mathlib's `Real.negMulLog`, the object every later theorem bounds. Verified with 0 axioms and 0 sorries.",
     "mathContext": "$H(p)=\\sum_i \\mathrm{negMulLog}(p_i)=-\\sum_i p_i\\log p_i$ (nats). Deliverable: $H(p)\\ge-\\log M$ whenever every $p_i\\le M$, hence the eigenstate EUP $H(p)+H(q)\\ge -2\\log c$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Shannon entropy", "Real.negMulLog", "Entropic uncertainty principle", "Maassen–Uffink relation", "Min-entropy"],
     "prerequisites": ["finite probability distributions", "the natural logarithm", "what an axiom/sorry-free proof means"]
   },

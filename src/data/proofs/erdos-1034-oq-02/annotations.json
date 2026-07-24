@@ -7,7 +7,7 @@
     "title": "Erdős #1034 and Why the Book Lemma Matters",
     "content": "The module docstring states Erdős #1034: a graph on n vertices with more than n²/4 edges was conjectured to always contain a triangle T with more than (1/2 - o(1))n vertices each adjacent to at least two of T's vertices. Ma–Tang disproved this with a construction achieving at most (2 - sqrt(5/2) + o(1))n ≈ 0.419n such good neighbours, leaving the threshold function h(n) sandwiched between (1/6 - o(1))n and that upper bound. The n/6 lower bound comes from the book lemma: a dense graph contains an edge lying in many common-neighbour triangles (a book), and every page of that book is automatically a good neighbour of any triangle built on the spine. OQ-02 asks whether n/6 can be improved beyond the book lemma — a genuinely open question this file does not resolve. Instead it formalizes the book-lemma mechanism exactly: book_le_goodNeighborCount proves the general structural bound, and book_goodNeighborCount_eq shows the pure book graph achieves it exactly, with a decide-verified witness on Fin 5.",
     "mathContext": "$(1/6 - o(1))n \\le h(n) \\le (2 - \\sqrt{5/2} + o(1))n \\approx 0.419n$; a book with spine $\\{a,b\\}$ and page set $P$ gives the spine triangle $\\ge |P| - 1$ good neighbours.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős #1034", "book lemma", "good neighbours", "Ma–Tang construction"],
     "prerequisites": ["the parent open question", "common-neighbourhood books in dense graphs"]
   },

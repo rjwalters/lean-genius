@@ -10,7 +10,7 @@
     "title": "The existence half of Lagrange interpolation",
     "content": "The parent problem factor-remainder-theorem-oq-05 proved the uniqueness half of polynomial interpolation over an integral domain: via the root-count bound Polynomial.card_roots', a degree-< n polynomial vanishing at n distinct points is zero, so two such polynomials agreeing on n points coincide. This file supplies the complementary existence half over a field: an explicit witness, Lagrange's interpolating polynomial, of degree < n taking any prescribed values at n distinct nodes. Existence genuinely needs a field — the denominators v_i − v_j in the Lagrange basis must be invertible — whereas uniqueness needs only an integral domain. Combined, they give the classical Lagrange interpolation theorem in ∃! form.",
     "mathContext": "$$L(x)=\\sum_i r_i\\,\\ell_i(x),\\qquad \\ell_i(x)=\\prod_{j\\neq i}\\frac{x-v_j}{v_i-v_j}.$$ Existence requires the field so that each $v_i-v_j$ is invertible; uniqueness requires only an integral domain.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lagrange interpolation",
       "existence vs uniqueness",

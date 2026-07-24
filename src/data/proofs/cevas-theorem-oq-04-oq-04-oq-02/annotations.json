@@ -7,7 +7,7 @@
     "title": "Framing: excenters, Nagel and Gergonne points via mass points",
     "content": "The module docstring states the open question this leaf answers: extend the parent file's mass-point treatment of the incenter (barycentric $(a:b:c)$) to the three excenters — which require a *signed* mass — and to the Nagel and Gergonne points, locating each as an explicit barycentric combination lying on the corresponding cevian. The key device is tangent-length (Ravi) coordinates $x=s-a,\\,y=s-b,\\,z=s-c$: with $x,y,z>0$ they parametrize exactly the nondegenerate triangles (the triangle inequalities collapse to positivity), and the classical centre barycentrics become polynomials — $I=(y{+}z:z{+}x:x{+}y)$, $I_a=(-(y{+}z):z{+}x:x{+}y)$, Nagel $=(x:y:z)$, Gergonne $=(yz:zx:xy)$. The substantive new content is the excenter: the negative mass $-a$ at $A$ still places $I_a$ on the *internal* $A$-bisector (same foot as the incenter) — the mass-point signature of an excentre. Everything is pure real linear algebra over an arbitrary $\\mathbb{R}$-module, discharged by the parent file's `match_scalars`/`field_simp` idiom.",
     "mathContext": "Ravi coordinates: $a=y+z,\\ b=z+x,\\ c=x+y,\\ s=x+y+z$, valid triangles $\\Leftrightarrow x,y,z>0$. $I=(a:b:c)$, $I_a=(-a:b:c)$ signed, $N=(s{-}a:s{-}b:s{-}c)=(x:y:z)$, $Ge=(yz:zx:xy)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["mass points", "barycentric coordinates", "excenters", "Nagel point", "Gergonne point", "Ravi / tangent-length substitution", "cevians"],
     "prerequisites": ["barycentric coordinates", "mass-point geometry (parent entry)", "affine combinations in an ℝ-module"]
   },

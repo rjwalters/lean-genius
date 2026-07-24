@@ -7,7 +7,7 @@
     "title": "An Honest Fragment of an Open Problem",
     "content": "The parent open question asks whether PSL(2, p) is simple for every prime p ≥ 5 — the first infinite family of finite non-abelian simple groups. The full theorem is genuinely blocked on a large body of missing Mathlib infrastructure: the action of PSL(2, p) on the projective line P¹(𝔽_p), its 2-transitivity, an Iwasawa structure, and perfectness for p ≥ 5. Rather than sorry-out the whole statement, this file isolates and fully verifies reusable building blocks: the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p}, the split diagonal torus T = {[[a,0],[0,a⁻¹]] : a ∈ 𝔽_pˣ}, and the normalizer relation that makes the Borel B = U ⋊ T. Everything here is sorry-free and axiom-free; the deep simplicity theorem remains open.",
     "mathContext": "$\\mathrm{PSL}(2,p) = \\mathrm{SL}(2,\\mathbb{F}_p)/\\{\\pm I\\}$ is simple for every prime $p \\ge 5$; $|\\mathrm{SL}(2,p)| = p(p-1)(p+1)$, so its $p$-part is exactly $p$ and $|U|=p$, $|T|=p-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "projective special linear group PSL(2, p)",
       "finite simple groups",

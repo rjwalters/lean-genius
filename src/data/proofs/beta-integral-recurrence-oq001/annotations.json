@@ -52,7 +52,7 @@
     "title": "Notational Setup: the Asymptotics and Filter Namespaces",
     "content": "The `open Filter Topology Asymptotics` and `open scoped Real Nat` lines fix the vocabulary the whole file speaks in. From `Filter`/`Topology` come `atTop` (the eventually-large filter on ℕ) and the neighborhood notation `𝓝 1`, which together spell the limit `Tendsto _ atTop (𝓝 1)`. From `Asymptotics` comes the `~[l]` notation for `Asymptotics.IsEquivalent`, so the headline statement can be written `f ~[atTop] g`. The scoped `Real`/`Nat` opens bring in `π` and the `Nat.centralBinom` binomial notation without qualification. None of this is mathematical content — but the entire result is phrased in `IsEquivalent`/`Tendsto` language, so these opens are what make the statements read the way they do.",
     "mathContext": "$f \\sim_{\\mathrm{atTop}} g$ abbreviates $\\mathrm{Asymptotics.IsEquivalent}\\;\\mathrm{atTop}\\;f\\;g$; $\\mathrm{Tendsto}\\,h\\,\\mathrm{atTop}\\,(\\mathcal N\\,1)$ means $h(n)\\to 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "atTop filter",
       "neighborhood filter 𝓝",

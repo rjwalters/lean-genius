@@ -28,7 +28,7 @@
     "title": "Uniform-law expectation, covariance, and E[1] = 1",
     "content": "expectUnif a b h = (∫ x in a..b, h x)/(b−a) is the expectation of h(X) for X uniform on [a,b] (the average value of h over the interval); covUnif a b f g = expectUnif a b (fun x => f x * g x) − expectUnif a b f * expectUnif a b g is the covariance. expectUnif_one shows E[1] = 1 via intervalIntegral.integral_const (∫ x in a..b, 1 = (b−a)•1) and div_self, certifying the (1/(b−a))-normalised law is a genuine probability distribution.",
     "mathContext": "$E[h] = \\tfrac{1}{b-a}\\int_a^b h(x)\\,dx,\\quad E[1] = 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "expectation",
       "covariance",
@@ -86,7 +86,7 @@
     "title": "Correlation form: FKG on a chain",
     "content": "expectUnif_mul_ge_of_monotoneOn (E[fg] ≥ E[f]E[g]) and expectUnif_mul_le_of_antitoneOn (E[fg] ≤ E[f]E[g]) restate the covariance bounds by unwinding covUnif with linarith. E[fg] ≥ E[f]E[g] for comonotone f, g is exactly the Harris–FKG correlation inequality specialised to a chain: on the totally ordered interval [a,b] the log-supermodularity hypothesis of FKG is automatic, so FKG collapses to this covariance statement.",
     "mathContext": "$E[fg] \\ge E[f]\\,E[g]$ — the FKG inequality on the chain $[a,b]$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "FKG inequality",
       "Harris inequality",

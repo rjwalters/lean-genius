@@ -7,7 +7,7 @@
     "title": "Two dual determinant forms of Newton's identities",
     "content": "The module docstring frames the result as the dual of sibling oq-01-oq-02. Newton's identities relate the elementary symmetric polynomials eₖ = esymm σ R k and the power sums pₖ = psum σ R k = ∑ᵢ Xᵢᵏ. There are two determinant packagings of the same recurrence: the reverse form expresses k!·eₖ as a determinant in the pᵢ (oq-01-oq-02), while this entry proves the forward Girard–Waring form expressing each pₖ as a determinant of a k×k lower-Hessenberg matrix Mₖ whose entries are the eⱼ. In Mₖ the scaled polynomials 1·e₁, 2·e₂, …, k·eₖ run down the first column, the eⱼ fill the diagonals, and constant 1's sit on the super-diagonal — the constant super-diagonal (versus the increasing integers of the reverse form) mirrors the asymmetric coefficients of the two sides of the Newton recurrence.",
     "mathContext": "$p_k = \\det M_k$ where $M_k$ is lower-Hessenberg in the $e_j$; dually $k!\\,e_k = \\det T_k$ is Toeplitz in the $p_i$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's identities", "elementary symmetric polynomials", "power sums", "lower-Hessenberg matrix", "Girard–Waring formula"],
     "prerequisites": ["symmetric polynomials", "determinants"]
   },
@@ -91,7 +91,7 @@
     "title": "Worked example: two variables over ℤ",
     "content": "The closing example specialises the degree-2 determinant identity to σ = Fin 2 over ℤ, recovering the familiar p₂ = X₀² + X₁² = (X₀+X₁)² − 2X₀X₁ = e₁² − 2e₂ as a 2×2 determinant. It is a one-line application psum_two_det (Fin 2) ℤ, confirming that the abstract MvPolynomial identity instantiates correctly to concrete variable sets. This grounds the universal statement in the smallest nontrivial case a reader can verify by hand.",
     "mathContext": "Over $\\mathbb{Z}$ with $X_0, X_1$: $p_2 = X_0^2 + X_1^2 = e_1^2 - 2e_2 = \\det\\begin{pmatrix} X_0+X_1 & 1 \\\\ 2X_0X_1 & X_0+X_1\\end{pmatrix}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["specialisation", "concrete instances", "Fin 2"],
     "prerequisites": ["MvPolynomial over ℤ"]
   }

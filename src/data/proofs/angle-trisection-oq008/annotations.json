@@ -67,7 +67,7 @@
     "title": "What is left: the Galois-correspondence translation",
     "content": "The summary records the clean factorization of Wantzel–Galois sufficiency: the group-theoretic core (a 2-group is nilpotent/solvable with a descending normal index-2 chain) is proved here with 0 axioms / 0 sorries; the remaining step is field theory, not group theory. Under the Galois correspondence the descending chain `G = G₀ ▷ ⋯ ▷ Gₖ = 1` of index-2 subgroups maps to an ascending tower of fixed fields `ℚ = F₀ ⊂ ⋯ ⊂ Fₖ = K` with each `[Fᵢ₊₁ : Fᵢ] = 2` — a tower of quadratic extensions, i.e. the `IsConstructible` witness in the parent entry. Discharging that translation would close the parent's `wantzel_galois_iff` sufficiency sorry.",
     "mathContext": "$G_i \\trianglelefteq G,\\ [G_i : G_{i+1}] = 2 \\ \\longleftrightarrow\\ [F_{i+1} : F_i] = 2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Galois correspondence", "fixed field", "IntermediateField tower", "quadratic extension", "constructible number"],
     "prerequisites": ["Galois correspondence", "field extensions", "fundamental theorem of Galois theory"]
   }

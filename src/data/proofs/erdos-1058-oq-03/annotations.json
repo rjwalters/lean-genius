@@ -7,7 +7,7 @@
     "title": "Companion to Erdős #1058: Making the Technique Axiom-Free",
     "content": "The parent file `Erdos1058Problem.lean` studies the primes dividing n!+1 for n between consecutive primes (Erdős–Stewart / Luca 2001), but its entire arithmetic content — the prime sequence `prime_seq`, the finiteness conjecture, and Luca's classification — is *axiomatized* (`opaque`/`axiom`), so no genuine divisibility fact is derived there. Open question oq-03 asks whether the underlying *technique* extends to other factorial-based expressions. This companion answers YES with 0 axioms / 0 sorries: the engine behind #1058 is Wilson's theorem, and it yields a complete characterization of when the shift n+1 divides n!+1 and its sibling n!−1. The file imports Mathlib, opens `Nat`, and works in the `Erdos1058OQ03` namespace.",
     "mathContext": "Parent: divisors of $n!+1$ for $p_i < n < p_{i+1}$, axiomatized. This file: $(n+1)\\mid n!+1 \\iff (n+1)\\text{ prime}$, proved.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Wilson's theorem", "factorials", "Erdős problems", "axiom-free formalization"],
     "prerequisites": ["number theory", "modular arithmetic"]
   },

@@ -7,7 +7,7 @@
     "title": "Integer-Distance Graphs and the Anning–Erdős Bound",
     "content": "The integer-distance graph G(A) on a planar set A joins two distinct points iff their Euclidean distance is an integer. The Anning–Erdős theorem (1945) shows a general-position such set is finite, bounding its clique number ω by 4(2D+1)(2E+1). The chromatic number χ(G(A)) is the open main question of Erdős #130, a relative of the Hadwiger–Nelson chromatic-number-of-the-plane problem. This file pins the sandwich ω ≤ χ ≤ |A|.",
     "mathContext": "$G(A): \\; p \\sim q \\iff p \\ne q \\text{ and } \\mathrm{dist}(p,q) \\in \\mathbb{Z}; \\quad \\omega(G(A)) \\le 4(2D+1)(2E+1)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Anning–Erdős theorem", "chromatic number of the plane", "integer distances"],
     "prerequisites": ["Euclidean distance", "graph colouring", "clique number"]
   },
@@ -67,7 +67,7 @@
     "title": "The 3–4–5 Triangle Forces χ ≥ 3",
     "content": "A concrete witness that χ(G(A)) can exceed 2: the right triangle P₀=(0,0), P₁=(3,0), P₂=(0,4) has pairwise distances 3, 4, 5 (all integers, verified by norm_num on the squared distances) and three distinct vertices, so it is a size-3 clique. triangle_345_needs_three_colors feeds this clique into chromatic_ge_clique to force at least three colours in any proper colouring.",
     "mathContext": "$\\{(0,0),(3,0),(0,4)\\}: \\; 3^2, 4^2, 3^2{+}4^2{=}5^2 \\;\\Rightarrow\\; \\text{clique of size } 3 \\Rightarrow \\chi \\ge 3$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pythagorean triple", "concrete clique", "lower-bound witness"],
     "prerequisites": ["3–4–5 right triangle", "norm_num", "chromatic_ge_clique"]
   }

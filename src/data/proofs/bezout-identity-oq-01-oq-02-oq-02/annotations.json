@@ -7,7 +7,7 @@
     "title": "The Goal: SLₙ(ℤ)-Transitivity on Primitive Vectors",
     "content": "Orients the whole file. The parent bezout-identity-oq-01-oq-02 solves n=2: it builds bezoutSL a b ∈ SL₂(ℤ) carrying a coprime pair (a,b) to (1,0). The open question is the n-coordinate generalization: is the SLₙ(ℤ)-action transitive on primitive integer vectors, i.e. does every primitive v admit a unimodular U with U·v = e₁? This file answers it in full. It builds the coordinate-free predicate IsPrimitive v := ∃ w, w ⬝ᵥ v = 1, proves its SLₙ(ℤ)-invariance in both directions, packages the transvection generators transvectionSL that realize the atomic Euclidean-descent moves inside SLₙ(ℤ), and proves orbit_e_isPrimitive — the 'necessity' half (the orbit of eᵢ consists of primitive vectors). Driving a strong induction on the ℓ¹ measure ∑ₖ|vₖ|, it then proves exists_sl_mulVec_single_of_isPrimitive — the 'sufficiency' converse in EVERY dimension: every primitive vector is reachable. For n ≥ 2 this sharpens to full transitivity onto e₁ (with the sign pinned down) and to the classical unimodular completion of a primitive vector to a ℤ-basis; the n = 1 obstruction (the primitive vectors (1) and (-1) lying in distinct SL₁(ℤ)-orbits) is documented and proved genuinely sharp, not a proof artefact.",
     "mathContext": "$\\text{Resolved: }\\mathrm{SL}_n(\\mathbb Z)\\curvearrowright\\{\\text{primitive } v\\}\\text{ is transitive for }n\\ge2\\quad\\big(\\forall v\\text{ prim }\\exists U\\in\\mathrm{SL}_n(\\mathbb Z),\\ Uv=e_1\\big)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "transitivity of a group action",
       "primitive vector",

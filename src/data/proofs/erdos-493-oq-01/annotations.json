@@ -54,7 +54,7 @@
     "title": "C3/C4: Diagonal and Nontrivial Representations",
     "content": "**hasSquareRep_iff (C3):** a *diagonal* representation with $a = b$ exists iff $n+1$ is a perfect square (then $(a-1)^2 = n+1$). **hasNontrivialRep_iff_factor (C4):** a representation with *both* parts $\\geq 3$ exists iff $n+1$ is composite. The 'trivial' representation $(2, n+2)$ corresponds to the unit factor $u = 1$.",
     "mathContext": "These identify which fibers contain the diagonal (squares) and which contain a non-unit factorization (composites), setting up the uniqueness and unordered-count results.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "perfect square",
       "composite number",

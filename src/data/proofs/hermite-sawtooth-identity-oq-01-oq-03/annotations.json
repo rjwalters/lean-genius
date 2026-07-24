@@ -7,7 +7,7 @@
     "title": "Open Question: How Far Does the Elementary Route Reach?",
     "content": "The parent entry proved the Raabe multiplication theorem `∑_{k<n} Bₘ(x + k/n) = n^{1-m} Bₘ(nx)` for `m = 0,1,2` by a generating-function-free route: evaluate `Bₘ` to an explicit polynomial and close with Faulhaber power sums. Its open question asks how far this elementary method reaches. This file answers by proving `m = 3` (coefficient `n⁻²`) and `m = 4` (coefficient `n⁻³`), needing only the two extra power sums `∑k³` and `∑k⁴`. Verdict: the route extends cleanly to every fixed `m` — bounded only by availability of the Faulhaber sums, growing longer but never genuinely unwieldy.",
     "mathContext": "$\\sum_{k=0}^{n-1} B_m\\!\\left(x + \\tfrac{k}{n}\\right) = n^{1-m} B_m(nx)$, proved here for $m = 3$ ($n^{-2}$) and $m = 4$ ($n^{-3}$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Bernoulli polynomials", "Raabe multiplication formula", "Faulhaber sums", "generating functions"],
     "prerequisites": ["Bernoulli polynomials", "finite power sums"]
   },
@@ -67,7 +67,7 @@
     "title": "Sanity Checks at x = 0, n = 2",
     "content": "Two examples instantiate the general theorems at `x = 0, n = 2`: `∑_{k<2} B₃(k/2) = (1/4)B₃(0) = 0` and `∑_{k<2} B₄(k/2) = (1/8)B₄(0) = -1/240`. Each is discharged by specialising `raabe_three`/`raabe_four` and `simpa`, confirming the closed forms compute correctly on a concrete instance rather than re-deriving them.",
     "mathContext": "$\\sum_{k<2} B_3(k/2) = \\tfrac14 B_3(0) = 0$;\\ $\\sum_{k<2} B_4(k/2) = \\tfrac18 B_4(0) = -\\tfrac1{240}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "specialisation", "simpa"],
     "prerequisites": ["Polynomial.eval", "specialising universally quantified theorems"]
   }

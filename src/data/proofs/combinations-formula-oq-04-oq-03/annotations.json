@@ -116,7 +116,7 @@
     "title": "What Is Proved: An Exact Identity Subsuming Its Parent",
     "content": "The closing summary records the four results: choose_mul_choose_mul_eq (the exact identity (★), all n,k), choose_ulc_equality (centered ULC form = Liggett's bound with equality), and choose_mul_choose_le_sq / choose_mul_choose_lt_sq (the parent's weak and strict log-concavity as immediate corollaries). The entry is fully verified: 0 sorries, 0 axioms, importing only Mathlib. Conceptually it answers the parent's open question by refusing to discard the multiplicative factor: the resulting equality is strictly more information than any inequality derived from it, and it pins the Pascal row as the extremal ultra-log-concave sequence.",
     "mathContext": "Verification status: 0 sorries, 0 axioms. The four theorems form a chain equality $(\\star)\\Rightarrow$ centered ULC $\\Rightarrow$ weak log-concavity $\\Rightarrow$ strict log-concavity, each later result a corollary of $(\\star)$ obtained by bounding $(k+1)(n-k-1)$ against $(n-k)(k+2)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "ultra-log-concavity",
       "extremal Pascal row",

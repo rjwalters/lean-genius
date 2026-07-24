@@ -67,7 +67,7 @@
     "title": "The restriction map restrictToLpCLM (the parent's missing companion)",
     "content": "restrictToLpCLM S sends the class of f ∈ Lp(μ) to the class of the same underlying function under the smaller measure μ.restrict S ≤ μ. This is exactly the map the parent's oq-01 identified but never built. Well-definedness and linearity use MemLp.restrict and ae_restrict_of_ae — μ-a.e. equalities descend to μ.restrict S-a.e.. Crucially it needs no measurability hypothesis on S, since μ.restrict S ≤ μ holds for every set. The norm bound is supplied by eLpNorm_restrict_le, giving the bound constant 1.",
     "mathContext": "$R_S : L^p(\\mu)\\to L^p(\\mu\\restriction S)$, $R_S[f] = [f]$; $\\lVert R_S[f]\\rVert = \\lVert f\\rVert_{L^p(\\mu\\restriction S)} \\le \\lVert f\\rVert_{L^p(\\mu)}$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "restriction map",
       "measure monotonicity",
@@ -105,7 +105,7 @@
     "title": "The retraction identity: restriction ∘ extension = id",
     "content": "restrictToLpCLM_extByZeroCLM proves restrictToLpCLM S (extByZeroCLM hS g) = g. The proof reduces (Lp.ext_iff) to a pointwise a.e. statement: ⇑(restrict (ext g)) =ᵐ[μ.restrict S] S.indicator ⇑g, and since μ.restrict S is concentrated on S (ae_restrict_mem), the indicator equals ⇑g almost everywhere. restrictToLpCLM_comp_extByZeroCLM restates this at the operator level as comp = ContinuousLinearMap.id, and extByZeroCLM_injective follows immediately: a map with a left inverse is injective (a split monomorphism). This is the key result answering the parent's oq-01.",
     "mathContext": "$R_S \\circ T_S = \\mathrm{id}_{L^p(\\mu\\restriction S)}$, so $T_S$ is a split isometric embedding and $L^p(\\mu\\restriction S)$ is 1-complemented in $L^p(\\mu)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "retraction",
       "split monomorphism",

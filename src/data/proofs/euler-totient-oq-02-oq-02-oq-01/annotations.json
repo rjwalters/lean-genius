@@ -53,7 +53,7 @@
     "title": "λ(n) Is Positive: the Unit Group Is Finite",
     "content": "For n ≠ 0, the Carmichael function λ(n) is nonzero, and hence strictly positive. The proof routes through carmichael_eq_exponent': λ(n) is the exponent of the finite group (ZMod n)ˣ, and a finite monoid always has nonzero exponent (Monoid.exponent_ne_zero_of_finite). Positivity (carmichael_pos) is then the one-line corollary Nat.pos_of_ne_zero. This basic fact is a silent prerequisite for everything that follows: it is what makes λ(n) a legitimate modulus in the reductions a^k mod λ(n), and what lets the divisibility characterisation λ(n) ∣ m speak about a genuine positive generator rather than a degenerate zero.",
     "mathContext": "The exponent of a finite group is the lcm of all element orders, a positive integer; NeZero n is exactly the hypothesis that makes (ZMod n)ˣ a nonempty finite group.",
-    "significance": "Guarantees λ(n) is a well-defined positive exponent, so the later least-universal-exponent and a^k mod λ(n) results are non-vacuous.",
+    "significance": "supporting",
     "relatedConcepts": [
       "group exponent",
       "finite group",

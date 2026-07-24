@@ -38,7 +38,7 @@
     "title": "Namespace and the open Nat Number-Theory Layer",
     "content": "The `namespace FibonacciIdentitiesOQ02OQ02PrimeIndex` wrapper isolates this child file's lemmas from the parent `FibonacciIdentitiesOQ02.lean`, whose index-divisibility law $F_m \\mid F_n \\iff m \\mid n$ this entry consumes. `open Nat` is what lets the proof name `Nat.Prime`, `Nat.fib`, and the divisor-existence lemmas (`exists_dvd_of_not_prime2`) unqualified — the entire argument lives in $\\mathbb{N}$, reasoning about prime versus composite *indices*, so pulling the `Nat` namespace into scope keeps the primality and divisibility statements readable.",
     "mathContext": "Scope for $\\mathbb{N}$-level reasoning: `Nat.Prime`, `Nat.fib`, and `Nat.exists_dvd_of_not_prime2` become available unqualified.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lean namespaces",
       "open Nat",

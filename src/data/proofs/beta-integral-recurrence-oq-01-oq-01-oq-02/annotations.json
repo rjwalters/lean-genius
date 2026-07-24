@@ -31,7 +31,7 @@
     "title": "Closed-Form Generating Function: Strategy Overview",
     "content": "The bridge from the arithmetic recurrence to the analytic closed form. Using b(n) = ∫₀¹ (t(1−t))ⁿ dt and interchanging the sum with the integral collapses Σₙ b(n)xⁿ into a single geometric series in x·t(1−t), giving y(x) = ∫₀¹ dt/(1 − x·t(1−t)). This kernel integral is then evaluated in closed form (centralBeta_ogf_kernel_integral) by the fundamental theorem of calculus with antiderivative F(t) = (2/√(x(4−x)))·arctan((2xt−x)/√(x(4−x))), whose derivative reduces to the kernel via the collapse √(x(4−x))² + (2xt−x)² = 4x(1 − x·t(1−t)). The boundary evaluation F(1)−F(0) plus the trigonometric bridge arctan(x/√(x(4−x))) = arcsin(√x/2) yields y(x) = 4·arcsin(√x/2)/√(x(4−x)) on 0 < x < 4.",
     "mathContext": "$y(x)=\\sum_n b(n)x^n=\\displaystyle\\int_0^1\\frac{dt}{1-x\\,t(1-t)}=\\frac{4\\arcsin(\\sqrt x/2)}{\\sqrt{x(4-x)}},\\ 0<x<4.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["sum-integral interchange", "geometric series", "fundamental theorem of calculus", "arcsine closed form"],
     "prerequisites": ["interchange of sum and integral", "antiderivatives and the FTC"]
   },
@@ -43,7 +43,7 @@
     "title": "From a Sequence to its Generating Function",
     "content": "The diagonal Beta sequence b(n) = B(n+1,n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)) is the total mass of the symmetric Beta(n+1,n+1) density on [0,1]. This entry treats it as the coefficient sequence of a power series and determines the closed form of its ordinary generating function y(x) = Σₙ b(n)xⁿ = 4·arcsin(√x/2)/√(x(4-x)) on 0 < x < 4 (value π/2 at x=2). Two ingredients are proved: the arithmetic backbone — the contiguous recurrence (4n+6)b(n+1) = (n+1)b(n) that characterizes y as the solution of the ODE x(4-x)y'+(2-x)y=2 — and the analytic core, the closed-form value of the kernel integral the sum reduces to.",
     "mathContext": "$\\sum_n b(n)x^n = \\dfrac{4\\arcsin(\\sqrt x/2)}{\\sqrt{x(4-x)}},\\ 0<x<4.$",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "ordinary generating function",
       "reciprocal central binomial coefficient",
@@ -83,7 +83,7 @@
     "title": "Reciprocal Central-Binomial Form and the Complex-Beta Link",
     "content": "Two identifications tie this sequence to the surrounding gallery. centralBeta_eq_reciprocal proves b(n) = 1/((2n+1)·C(2n,n)) by importing the parent's factorial factorization (2n+1)! = (2n+1)·C(2n,n)·(n!)² (BetaCentralBinomial.factorial_two_mul_succ), rewriting the denominator, and clearing fractions with field_simp once both denominators are shown nonzero (Nat.choose_pos, Nat.factorial_pos). centralBeta_eq_betaIntegral then equates the real cast of b(n) with the complex diagonal Euler Beta integral B(n+1,n+1) = betaIntegral(n+1,n+1), chaining the parent's betaIntegral_diag_central_binom with the reciprocal form. Together these make b(n) simultaneously a combinatorial reciprocal and an honest Beta integral, the bridge the sum↔integral interchange later relies on.",
     "mathContext": "$b(n) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} = B(n+1,n+1) = \\int_0^1 (t(1-t))^n\\,dt.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "central binomial coefficient",
       "Euler Beta integral",
@@ -103,7 +103,7 @@
     "title": "The Recurrence as the ODE in Disguise",
     "content": "centralBeta_recurrence proves (4n+6)·b(n+1) = (n+1)·b(n). The whole content is one factorial identity, centralBeta_factorial_identity: (4n+6)(n+1)!²(2n+1)! = (n+1)n!²(2(n+1)+1)!, which expands both sides via Nat.factorial_succ and finishes by ring; transporting it over ℝ (div_eq_div_iff, linear_combination) gives the recurrence for b(n) = (n!)²/(2n+1)!. Reading it coefficient-by-coefficient, this is exactly the linear ODE x(4-x)y'(x) + (2-x)y(x) = 2 satisfied by the generating function y(x) = Σ b(n)xⁿ — so the recurrence and the closed form 4·arcsin(√x/2)/√(x(4-x)) are two faces of the same object.",
     "mathContext": "$(4n+6)b(n+1)=(n+1)b(n)\\ \\Longleftrightarrow\\ x(4-x)y'+(2-x)y=2.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "contiguous recurrence",
       "holonomic sequence",
@@ -122,7 +122,7 @@
     "title": "Matching Tangents: arctan(x/√(x(4-x))) = arcsin(√x/2)",
     "content": "arctan_div_sqrt_eq_arcsin turns the arctangent that the fundamental theorem of calculus produces into the arcsine that appears in the closed form. The strategy is to match tangents on the branch (-π/2, π/2). Writing s = √x/2 (which lies in [0,1) for 0<x<4), Real.tan_arcsin gives tan(arcsin s) = s/√(1-s²) = (√x/2)/(√(4-x)/2) = √x/√(4-x) = x/√(x(4-x)). Since arcsin s ∈ (-π/2, π/2) (arcsin_lt_pi_div_two with s<1, and neg_pi_div_two_lt_arcsin), Real.arctan_tan identifies arctan of that tangent with arcsin s itself. The only analytic subtlety is the square-root bookkeeping √(1-s²) = √(4-x)/2, handled with Real.sqrt_mul and Real.sqrt_sq.",
     "mathContext": "$\\tan\\!\\big(\\arcsin\\tfrac{\\sqrt x}{2}\\big)=\\dfrac{\\sqrt x}{\\sqrt{4-x}}=\\dfrac{x}{\\sqrt{x(4-x)}}.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "half-angle identity",
       "inverse trigonometric functions",

@@ -7,7 +7,7 @@
     "title": "One Identity Behind Leibniz, British-Flag, and the Rectangle Theorem",
     "content": "The docstring frames the whole file: the British Flag Theorem and its parallelogram-defect sharpening are the four-point instances of a single weighted squared-distance identity for an arbitrary finite family of points — the classical Leibniz relation (generalized parallel-axis / Stewart relation). Given points vᵢ in a real inner product space, real weights wᵢ, an observer p, and ANY reference point g, the weighted sum of squared distances splits into a p-term, a cross term, and a g-term. The strategy is stated too: translate every point through g (p − vᵢ = (p − g) − (vᵢ − g)), expand each ‖p − vᵢ‖² by norm_sub_sq_real, and collect the cross terms into one inner product via bilinearity. No division is used, so the identity holds for ARBITRARY weights, including the balanced W = 0 case that powers the British Flag corollary.",
     "mathContext": "$\\sum_i w_i\\lVert p-v_i\\rVert^2 = W\\lVert p-g\\rVert^2 - 2\\langle p-g,\\ (\\sum_i w_i\\,v_i)-W\\,g\\rangle + \\sum_i w_i\\lVert v_i-g\\rVert^2,\\quad W=\\sum_i w_i.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Leibniz relation",
       "parallel axis / Stewart theorem",

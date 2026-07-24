@@ -7,7 +7,7 @@
     "title": "The ∞-Topos Section Problem and Why Lean ≠ HoTT",
     "content": "The module docstring frames the target: the Borsuk-Ulam covering obstruction, restated via classifying spaces, is the non-existence of a section of the universal ℤ/2-bundle $E\\mathbb{Z}/2 \\to B\\mathbb{Z}/2$. The total space $E\\mathbb{Z}/2$ is contractible while the base $B\\mathbb{Z}/2 = \\mathbb{R}P^\\infty$ has $\\pi_1 = \\mathbb{Z}/2 \\neq 0$; a section would make a contractible space retract onto one with nontrivial $\\pi_1$, a contradiction.\n\nCrucially, Lean 4 is **not** homotopy type theory: definitional proof irrelevance and UIP mean there is no homotopically nontrivial 'contractible' type and no univalence, so a literal synthetic-HoTT proof is unavailable in Mathlib. The file therefore formalizes the obstruction through the fundamental-group functor $\\pi_1(-)$ — the algebraic invariant the classical proof actually uses — which for $\\mathbb{Z}/2$ captures the entire argument.",
     "mathContext": "$E\\mathbb{Z}/2 \\simeq *$ (contractible), $B\\mathbb{Z}/2 = \\mathbb{R}P^\\infty$, $\\pi_1(B\\mathbb{Z}/2) = \\mathbb{Z}/2$. A section $s$ of $p : E\\mathbb{Z}/2 \\to B\\mathbb{Z}/2$ would give $\\mathbb{R}P^\\infty$ as a retract of a contractible space, forcing $\\pi_1(B\\mathbb{Z}/2) = 0$ — contradicting $\\pi_1 = \\mathbb{Z}/2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["classifying space", "universal bundle", "contractibility", "homotopy type theory", "univalence", "proof irrelevance", "fundamental group functor"],
     "prerequisites": ["algebraic topology", "covering spaces", "type theory"]
   },

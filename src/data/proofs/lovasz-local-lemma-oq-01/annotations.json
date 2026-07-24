@@ -10,7 +10,7 @@
     "title": "Measure-theoretic LLL: the honest d = 0 base case",
     "content": "The gallery's main Lovász Local Lemma entry (`LovaszLocalLemma.lean`) develops the *symmetric* LLL entirely over ℚ as a probabilistic-budget **surrogate** — it never touches a real probability space. Open question OQ-01 asks for the genuine **measure-theoretic** statement: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, with the conclusion $\\mu(\\bigcap_i A_i^c) > 0$ (all bad events can be simultaneously avoided with positive probability). The full LLL (bounded dependency degree $d$, budget $e\\,p\\,(d+1) \\le 1$) is a multi-session target with no Mathlib counterpart; this file lands the **$d = 0$ base case** — the mutually independent regime — as a fully verified, axiom-free measure-theoretic theorem. Because every LLL induction bottoms out at the independent case, this is the honest measure-theoretic anchor for the OQ-01 program. The setup is deliberately minimal: an arbitrary `Fintype` index and `IsProbabilityMeasure` is *derived* from mutual independence, not assumed.",
     "mathContext": "Events $A : \\iota \\to \\mathrm{Set}\\,\\Omega$ over a `Fintype` index, mutually independent (`iIndepSet A μ`) with $\\mu(A_i) < 1$; goal $\\mu\\!\\left(\\bigcap_i A_i^c\\right) = \\prod_i (1 - \\mu(A_i)) > 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "measure-theoretic probability",
@@ -57,7 +57,7 @@
     "title": "Exact avoidance factorization: μ(⋂ Aᵢᶜ) = ∏ (1 − μ(Aᵢ))",
     "content": "```lean\ntheorem lll_independent_meas_iInter_compl\n    (hA : ∀ i, MeasurableSet (A i)) (hind : iIndepSet A μ) :\n    μ (⋂ i, (A i)ᶜ) = ∏ i, (1 - μ (A i)) := by\n  haveI : IsProbabilityMeasure μ := hind.isProbabilityMeasure\n  have hiIndep : iIndep (fun i ↦ MeasurableSpace.generateFrom {A i}) μ :=\n    (iIndepSet_iff_iIndep A μ).1 hind\n  have hfac : μ (⋂ i, (A i)ᶜ) = ∏ i, μ (A i)ᶜ :=\n    hiIndep.meas_iInter (fun i ↦ compl_measurable_generateFrom i)\n  rw [hfac]\n  refine Finset.prod_congr rfl (fun i _ ↦ ?_)\n  rw [prob_compl_eq_one_sub (hA i)]\n```\n\nFor a mutually independent family of measurable events, the probability that **none** of them occurs equals the product of the individual survival probabilities $1 - \\mu(A_i)$. This is the exact avoidance probability in the fully independent ($d = 0$) regime.\n\nTwo Mathlib facts do the work: `iIndep.meas_iInter` factors the intersection into a product of measures over the complements, and `prob_compl_eq_one_sub` rewrites each $\\mu((A_i)^c) = 1 - \\mu(A_i)$ in a probability measure. Note that `IsProbabilityMeasure` is **derived** from independence via `iIndepSet.isProbabilityMeasure`, not assumed.",
     "mathContext": "Independent events A_i with survival probabilities q_i = 1 − μ(A_i): the classical product rule P(⋂ A_iᶜ) = ∏ q_i, here over an arbitrary Fintype index and a genuine measure-theoretic probability space.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "iIndep.meas_iInter",
       "prob_compl_eq_one_sub",
@@ -79,7 +79,7 @@
     "title": "The d = 0 base case of the symmetric Lovász Local Lemma",
     "content": "```lean\ntheorem lll_independent_avoidance\n    (hA : ∀ i, MeasurableSet (A i)) (hind : iIndepSet A μ)\n    (hlt : ∀ i, μ (A i) < 1) :\n    0 < μ (⋂ i, (A i)ᶜ) := by\n  rw [lll_independent_meas_iInter_compl hA hind, zero_lt_iff, Finset.prod_ne_zero_iff]\n  intro i _\n  exact (tsub_pos_iff_lt.2 (hlt i)).ne'\n```\n\nThis is the flagship result: for a **mutually independent** family of measurable events, each strictly improbable ($\\mu(A_i) < 1$), all of them can be avoided simultaneously with **strictly positive** probability. It is the dependency-degree $d = 0$ instance of the symmetric LLL, now proved over a real `IsProbabilityMeasure` rather than the ℚ-valued probability-budget surrogate of the parent gallery file.\n\nEvery inductive proof of the general Lovász Local Lemma bottoms out, at the leaves of its recursion, at exactly this independent case — so it is the honest measure-theoretic anchor for the full-LLL program (open question OQ-01).\n\nThe positivity is pure ℝ≥0∞ bookkeeping: a finite product is nonzero iff every factor is (`Finset.prod_ne_zero_iff`), and each $1 - \\mu(A_i) \\neq 0$ because $\\mu(A_i) < 1$ (`tsub_pos_iff_lt`).",
     "mathContext": "Symmetric LLL, degenerate case d = 0: with no dependencies, e·p·(d+1) ≤ 1 becomes e·p ≤ 1, but independence already yields the stronger exact product ∏(1 − μ(A_i)) > 0 under the weaker hypothesis μ(A_i) < 1.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "mutual independence",

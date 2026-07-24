@@ -7,7 +7,7 @@
     "title": "Imports: Euler's zeta formula, irrationality, and π transcendence",
     "content": "Three imports supply the whole proof. `Mathlib.NumberTheory.ZetaValues` provides `hasSum_zeta_nat`, Euler's closed evaluation of ζ(2n) as a rational multiple of π^(2n). `Mathlib.NumberTheory.Real.Irrational` provides the `Irrational` predicate and its closure lemmas (`Transcendental.irrational`, `Irrational.ratCast_mul`). `Proofs.PiTranscendental` is the repository-local module exposing `pi_transcendental_over_rationals`, which rests on the `hermite_lindemann` axiom — the single assumption this entry carries.",
     "mathContext": "$\\zeta(2n) = \\sum_{k\\ge 1} k^{-2n}$; the proof chains Euler's formula with the transcendence of $\\pi$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Riemann zeta function", "transcendence of π", "Lindemann–Weierstrass theorem"],
     "prerequisites": ["Lean 4 imports", "Mathlib number theory library"]
   },
@@ -91,7 +91,7 @@
     "title": "The open odd case (documentation only)",
     "content": "This closing docstring deliberately states NO theorem about ζ(2n+1). The irrationality of any individual odd value past Apéry's ζ(3) — ζ(5), ζ(7), … — is a genuine open problem in mathematics, not merely unformalized: Ball–Rivoal (2001) proved infinitely many ζ(2n+1) are irrational and Rivoal–Zudilin pinned at least one of ζ(5), ζ(7), ζ(9), ζ(11), but no single value with n ≥ 2 is known. The even-case theorem above marks the exact boundary of what is provable today, which is the entry's whole point.",
     "mathContext": "Irrationality of $\\zeta(2n+1)$ for $n \\ge 2$ (e.g. $\\zeta(7)$) is open; only $\\zeta(3)$ (Apéry, 1979) is known among odd values.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Apéry's theorem", "Ball–Rivoal theorem", "open problems in irrationality"],
     "prerequisites": ["odd zeta values", "state of the art in irrationality theory"]
   }

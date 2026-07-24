@@ -10,7 +10,7 @@
     "title": "The hard half of the LLL is a denominator, and it peels neighbours one at a time",
     "content": "The conditional chain rule factors the numerator of the Erdős–Lovász induction step, $\\mu[(A\\cap B)\\mid C] = \\mu[A\\mid B\\cap C]\\cdot\\mu[B\\mid C]$ (reproved inline here), and the sibling dependency-split entry uses such moves to reduce the bounded dependency-degree Lovász Local Lemma to a single named estimate: the neighbour-block survival lower bound $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$. That lower bound is itself a recursion — it peels the neighbours of $A_k$ off one at a time, each peel costing a factor $(1-x_k)$ — and its per-step engine is a **complement** identity, dual to the product identity. This file supplies that engine over an arbitrary probability measure and abstract events $A,B,C$: the additive peel $\\mu[A\\cap B\\mid C] + \\mu[A^c\\cap B\\mid C] = \\mu[B\\mid C]$, the multiplicative peel $(1-x)\\mu[B\\mid C] \\le \\mu[A^c\\cap B\\mid C]$ under a per-event bound $\\mu[A\\mid B\\cap C]\\le x$, and the $\\prod(1-x_j)$-shaped recursion step. No independence is assumed — this is pure conditional-measure bookkeeping.",
     "mathContext": "Denominator half of the LLL induction step: bound the neighbour survival $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C]$ from below by peeling one neighbour $A_k$ at a time, each peel scaling by $(1-x_k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "Erdős–Lovász induction",
@@ -57,7 +57,7 @@
     "title": "The additive peel: survival mass splits on whether the new event also holds",
     "content": "`cond_compl_inter_add`: $\\mu[A\\cap B\\mid C] + \\mu[A^c\\cap B\\mid C] = \\mu[B\\mid C]$. Conditioned on $C$, the survival mass over the block $B$ divides into the part where the new neighbour $A$ *also* occurs and the part where it is avoided too. This is the **complement companion** of the numerator chain rule: where the chain rule factors $\\mu[A\\cap B\\mid C]$, the survival recursion cares about the residual $\\mu[A^c\\cap B\\mid C]$ — the mass that survives $B$ and avoids $A$. The proof is one application of `measure_inter_add_diff` to the conditional measure `cond μ C` at the frame $B$ and split $A$, rewriting $B\\setminus A = A^c\\cap B$ (`Set.diff_eq` + `Set.inter_comm`). No probability-measure hypothesis is needed, so the `IsProbabilityMeasure` instance is `omit`-ted here.",
     "mathContext": "measure_inter_add_diff on cond μ C: (cond μ C)(B ∩ A) + (cond μ C)(B \\ A) = (cond μ C) B, with B \\ A = Aᶜ ∩ B.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "measure_inter_add_diff",
       "conditional measure",
@@ -80,7 +80,7 @@
     "title": "The multiplicative peel: one more avoided neighbour costs a factor (1 − x)",
     "content": "`one_sub_mul_cond_le_cond_compl` (flagship): if the per-event failure probability over the refined history $B\\cap C$ is bounded, $\\mu[A\\mid B\\cap C]\\le x$, then $(1-x)\\cdot\\mu[B\\mid C] \\le \\mu[A^c\\cap B\\mid C]$. Avoiding one more neighbour $A=A_k$ on top of surviving $B$ deflates the survival probability by at most $(1-x)$. Proof: the additive peel plus the chain-rule factoring give $\\mu[A^c\\cap B\\mid C] = \\mu[B\\mid C] - \\mu[A\\mid B\\cap C]\\cdot\\mu[B\\mid C]$ (`ENNReal.eq_sub_of_add_eq`, finiteness from `cond_ne_top`). Then a three-step `calc`: $(1-x)\\mu[B\\mid C] = \\mu[B\\mid C] - x\\,\\mu[B\\mid C]$ (`ENNReal.sub_mul`, valid since $\\mu[B\\mid C]\\ne\\infty$); this is $\\le \\mu[B\\mid C] - \\mu[A\\mid B\\cap C]\\mu[B\\mid C]$ because $\\mu[A\\mid B\\cap C]\\le x$ (`tsub_le_tsub_left` on `mul_le_mul_right' hx`); and that equals the residual. Only $B\\cap C$ needs positive measure — no independence enters.",
     "mathContext": "(1 − x)·μ[B|C] = μ[B|C] − x·μ[B|C] ≤ μ[B|C] − μ[A|B∩C]·μ[B|C] = μ[Aᶜ ∩ B | C], using μ[A|B∩C] ≤ x.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "ENNReal.sub_mul",
       "ENNReal.eq_sub_of_add_eq",
@@ -105,7 +105,7 @@
     "title": "The recursion step, already in ∏(1 − xⱼ) form",
     "content": "`mul_one_sub_le_cond_compl`: from a survival lower bound $l \\le \\mu[B\\mid C]$ and the per-event bound $\\mu[A\\mid B\\cap C]\\le x$, conclude $(1-x)\\cdot l \\le \\mu[A^c\\cap B\\mid C]$ — via `le_trans` of the monotonicity $(1-x)\\,l \\le (1-x)\\,\\mu[B\\mid C]$ (`mul_le_mul_left' hl`) with the flagship peel. This is the transition the LLL strong induction iterates: instantiate $l = \\prod_{j\\in S_1\\setminus\\{k\\}}(1-x_j)$ (the survival bound over the partially-peeled neighbour block) and $x = x_k$; one application extends it to $\\prod_{j\\in S_1}(1-x_j)$ over the block with $A_k$ peeled. What remains genuinely open is only the recursion scaffolding — a well-founded induction on $|S_1|$ threading this step — plus supplying the per-event bounds $x_k$ from a measure-theoretic dependency structure. The analytic work of each step is discharged here.",
     "mathContext": "(1 − x)·l ≤ (1 − x)·μ[B|C] ≤ μ[Aᶜ ∩ B | C]; with l = ∏_{S₁∖{k}}(1 − xⱼ), x = xₖ, extends the survival bound to ∏_{S₁}(1 − xⱼ).",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "well-founded recursion",
       "product lower bound",

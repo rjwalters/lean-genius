@@ -7,7 +7,7 @@
     "title": "Goal: the binomial-inversion companion of the parent convolution",
     "content": "The module docstring frames the entry as the inverse of the parent's fixed-point convolution n! = Σ C(n,k)·D(n−k): binomial (Möbius) inversion recovers the classical inclusion–exclusion count D(n) = Σ (−1)^k C(n,k)(n−k)!. Crucially it flags that Mathlib already has this alternating sum, but only in the ascending-factorial convention (numDerangements_sum), where the summand is (k+1).ascFactorial (n−k) = n!/k! rather than the textbook C(n,k)·(n−k)!. Converting between those two shapes is the real work.",
     "mathContext": "$D(n) = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}(n-k)!$, the inverse binomial transform of $n! = \\sum_{k=0}^{n}\\binom{n}{k}D(n-k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["derangements", "inclusion–exclusion", "binomial inversion", "Möbius transform"],
     "prerequisites": ["derangement numbers numDerangements", "binomial coefficients", "the parent convolution identity"]
   },
@@ -55,7 +55,7 @@
     "title": "Numeric sanity check: D(4) = 9",
     "content": "A worked example instantiates the formula at n = 4: 24 − 24 + 12 − 4 + 1 = 9, matching the known derangement count D(4) = 9. It exercises the integer statement on a concrete value, guarding against sign or index-shift errors in the alternating sum. Dividing by 4! = 24 gives 9/24 = 0.375, the partial sum 1 − 1 + 1/2 − 1/6 + 1/24 of e^{−1} ≈ 0.3679.",
     "mathContext": "$\\sum_{k=0}^{4}(-1)^k\\binom{4}{k}(4-k)! = 24-24+12-4+1 = 9 = D(4)$; and $9/24 = \\sum_{k=0}^{4}(-1)^k/k! \\approx e^{-1}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "derangement count D(4)", "partial sum of 1/e"],
     "prerequisites": ["evaluating factorials and binomials", "the exponential series"]
   }

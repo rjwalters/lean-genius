@@ -56,7 +56,7 @@
     "title": "The exponent is squeezed to the nilpotency class from both sides",
     "content": "`minpoly_eq_X_sub_C_pow` is the core theorem. Set $y = x - \\lambda$, nilpotent with $y^m = 0$ and $m = \\text{nilpotencyClass}\\,y$ minimal. First, $(X - C\\,\\lambda)^m$ annihilates $x$, so $\\text{minpoly}\\,K\\,x \\mid (X - C\\,\\lambda)^m$. Because $X - C\\,\\lambda$ is PRIME in $K[X]$, `dvd_prime_pow` forces the (monic) minimal polynomial to be $(X - C\\,\\lambda)^d$ for a unique $d \\le m$. Finally the minimal polynomial annihilates $x$, giving $y^d = 0$, and the minimality of the nilpotency class ($\\text{nilpotencyClass} = \\inf\\{k : y^k = 0\\}$, via `Nat.sInf_le`) gives $m \\le d$. Hence $d = m$: divisibility bounds the exponent above, minimality bounds it below. No eigenspace decomposition or Jordan form is used — primality alone fixes the SHAPE.",
     "mathContext": "$\\text{minpoly}\\,K\\,x \\mid (X-C\\lambda)^m \\Rightarrow \\text{minpoly} = (X-C\\lambda)^d,\\ d \\le m$; and $y^d = 0 \\Rightarrow m \\le d$. So $\\text{minpoly}\\,K\\,x = (X-C\\lambda)^m$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "prime power divisors",
       "nilpotency class",

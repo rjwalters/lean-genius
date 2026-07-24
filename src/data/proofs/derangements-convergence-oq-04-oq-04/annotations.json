@@ -79,7 +79,7 @@
     "title": "Numerical sanity checks",
     "content": "Kernel-decide checks pin down the sequence D(2..6) = 1, 2, 9, 44, 265 (the subfactorials / OEIS A000166), plus the subtracted recurrence at n = 6 (265 = 5·(44+9)) and the bijective recurrence at n = 5 (265 = 5·(9+44)). Because these use plain decide (not native_decide), they introduce no Lean.ofReduceBool and keep the entry 0-axiom while making the identities concrete.",
     "mathContext": "$D_2,\\dots,D_6 = 1,2,9,44,265;\\quad 265 = 5\\cdot(44+9).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["subfactorial values", "OEIS A000166", "kernel decide", "sanity check"],
     "prerequisites": ["the additive recurrence", "decidable evaluation"]
   }

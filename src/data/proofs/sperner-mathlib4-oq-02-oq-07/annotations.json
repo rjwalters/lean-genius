@@ -40,7 +40,7 @@
     "title": "The antipodal labelling model",
     "content": "negL = ![2,3,0,1] is label negation on {+1,+2,−1,−2} (Fin 4). V a b c = ![a,b,c,negL a,negL b,negL c] gives the six boundary labels from three free labels a,b,c on v₀,v₁,v₂ with the antipodal condition v_{i+3} = −v_i built in. rot i = i+1 is the cyclic successor around the hexagon boundary. sgn = ![0,0,1,1] is the sign map {+1,+2}↦0, {−1,−2}↦1, the ZMod 2 reduction underlying the antipodal action. This is the same encoding as SpernerTuckerHexagonSignDegree, so the model is shared across the n = 2 sign-coordinate entries.",
     "mathContext": "Boundary vertices v₀,…,v₅ of the hexagon S¹ with v_{i+3} = −v_i (a free antipodal action i ↦ i+3 on Fin 6), plus one interior centre vertex with a free label d. The sign map is antipodal: sgn(negL x) = sgn x + 1.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["label negation", "antipodal boundary condition", "hexagon triangulation", "sign reduction"],
     "prerequisites": ["Fin n arithmetic", "Matrix.of / ![...] vector notation"]
   },

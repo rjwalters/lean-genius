@@ -7,7 +7,7 @@
     "title": "Weak compositions and the last-part recurrence",
     "content": "A weak composition of n into k parts is an ordered k-tuple (x₀, …, x_{k−1}) of non-negative integers with x₀ + ⋯ + x_{k−1} = n. Writing C(n,k) for the number of these, conditioning on the value j of one distinguished part leaves a weak composition of n−j into k−1 parts, giving C(n,k) = ∑_{j=0}^n C(n−j, k−1) for k ≥ 1, with base case C(n,0) = [n=0]. The count is modelled definitionally as wc n k = (Finset.Nat.antidiagonalTuple k n).card, whose membership is exactly ∑ᵢ xᵢ = n (mem_antidiagonalTuple). The base cases wc_zero (only the empty tuple, so C(n,0) = [n=0]) and wc_one (the unique 1-tuple ![n], so C(n,1) = 1) fall straight out of Mathlib's antidiagonalTuple simp lemmas.",
     "mathContext": "$C(n,k) = \\#\\{(x_0,\\dots,x_{k-1}) \\in \\mathbb{N}^k : \\textstyle\\sum_i x_i = n\\}, \\qquad C(n,0) = [n=0].$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["weak compositions", "antidiagonalTuple", "stars and bars", "distinguished part conditioning"],
     "prerequisites": ["Finset cardinality", "tuples over Fin k", "Iverson bracket"]
   },

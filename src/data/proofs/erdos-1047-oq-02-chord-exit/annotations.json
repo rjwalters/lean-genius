@@ -7,7 +7,7 @@
     "title": "The Single Remaining Axiom and Its Reduction",
     "content": "The flagship Erdős #1047 file rested on one analytic assumption, goodman_counterexample: the lemniscate {|f| ≤ c} of f = (X²+1)(X−2)² at c = 5^{3/2}/4 has a non-convex component. A companion reduction lemma turns this into a purely elementary task — exhibit a preconnected arc inside the sublevel set whose connecting chord pokes outside. This file supplies that certificate with all data exact and introduces no new axioms.",
     "mathContext": "$f = (X^2+1)(X-2)^2, \\qquad c = 5^{3/2}/4, \\qquad L = \\{z : |f(z)| \\le c\\}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["lemniscate", "Grunsky conjecture", "de-axiomatization"],
     "prerequisites": ["complex polynomials", "sublevel sets", "convexity"]
   },

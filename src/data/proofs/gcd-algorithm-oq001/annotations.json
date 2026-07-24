@@ -7,7 +7,7 @@
     "title": "Lamé's Theorem in Closed Form, and the Elementary φ-Bounds",
     "content": "The header frames OQ-01 of the parent and sets up Part I. The grandparent developed the golden ratio φ = (1+√5)/2, Binet's formula, and φ² = φ+1; the parent proved Lamé sharpness (0 < b < a ∧ euclidSteps a b = n ⟹ fib(n+1) ≤ b). This file translates that exact worst-case count into the closed-form logarithmic bound euclidSteps a b = n ⟹ n ≤ log_φ(b) + 1 — the quantitative content of Lamé's 1844 analysis, the step count growing like log_φ(b) with the bit constant 1/log₂(φ) ≈ 1.4404. Proof outline: (1) φⁿ ≤ fib(n+2) by two-step induction on φ²=φ+1; (2) fib(n+1) ≤ b from the parent's minimality; (3) combine to φ^{n−1} ≤ b; (4) n−1 ≤ log_φ(b) by log monotonicity; (5) log₂(φ) > 2/3 (since φ³ = 2φ+1 > 4), making the Lamé constant explicit and < 3/2. Part I proves the elementary golden-ratio bounds the rest depends on: phi_gt_three_halves (φ > 3/2 from √5 > 2), one_lt_phi (1 < φ), and phi_lt_two (φ < 2 from √5 < 3) — the coarse enclosure 3/2 < φ < 2 that anchors the later logarithmic estimates.",
     "mathContext": "$\\mathrm{euclidSteps}(a,b)=n \\Rightarrow n \\le \\log_\\varphi b + 1$; Part I: $\\tfrac32 < \\varphi < 2$ from $2 < \\sqrt5 < 3$, with $\\varphi=\\tfrac{1+\\sqrt5}2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lamé's theorem", "golden ratio φ", "Euclidean algorithm step count", "Fibonacci worst case", "logarithmic bound"],
     "prerequisites": ["golden ratio and Binet's formula (grandparent)", "Lamé minimality bound (parent)", "√5 bounds"]
   },
@@ -111,7 +111,7 @@
     "title": "Sanity Checks on a Concrete Fibonacci Pair",
     "content": "Part VI validates the machinery on small instances. The first example checks the geometric bound φ³ ≤ fib 5 (φ³ ≈ 4.236 ≤ 5) as the n=3 case of phi_pow_le_fib. The second exercises the full closed-form bound on the worst-case Fibonacci pair (fib 7, fib 6) = (13, 8), which takes exactly 5 Euclidean steps: it reads 5 ≤ log_φ(8) + 1, discharged by feeding euclidSteps_le_logb the identity euclidSteps(fib 7)(fib 6) = 5 — obtained from the parent's worst-case identity euclidSteps(fib(n+2))(fib(n+1)) = n at n=5, NOT native_decide — so the sanity check itself introduces no ofReduceBool dependency. This confirms the bound is tight exactly on consecutive Fibonacci pairs, the extremal case of Lamé's theorem.",
     "mathContext": "$(fib\\,7, fib\\,6)=(13,8)$ takes $5$ steps, and $5 \\le \\log_\\varphi 8 + 1$; the bound is attained on consecutive Fibonacci pairs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "Fibonacci worst case", "tightness of Lamé's bound", "euclidSteps_fib", "decide vs native_decide"],
     "prerequisites": ["phi_pow_le_fib", "euclidSteps_le_logb", "the parent's Fibonacci worst-case identity"]
   }

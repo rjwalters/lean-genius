@@ -58,7 +58,7 @@
     "title": "The parity sign check: over- vs under-estimate",
     "content": "`bonferroni_pointwise_odd` and `bonferroni_pointwise_even` read the sign off the pointwise value. Both apply `Odd.neg_one_pow` / `Even.neg_one_pow` to collapse (-1)^m to ∓1, leaving 1 + C(n, m) ≥ 1 for odd `m` (overestimate) and 1 - C(n, m) ≤ 1 for even `m` (underestimate); `linarith` finishes using C(n, m) ≥ 0. This is where the entire odd/even dichotomy of the Bonferroni inequalities originates — everything downstream is just summing these two elementwise facts over the union.",
     "mathContext": "$m\\text{ odd}\\Rightarrow 1+\\binom{n}{m}\\ge 1;\\quad m\\text{ even}\\Rightarrow 1-\\binom{n}{m}\\le 1$",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "Odd.neg_one_pow / Even.neg_one_pow",
       "nonnegativity of binomial coefficients",
@@ -81,7 +81,7 @@
     "title": "Set-up: interCard, truncIE, and mult",
     "content": "Three definitions set the stage for aggregation. `interCard s S t` counts the union elements lying in every `S i` for `i ∈ t` — for nonempty `t ⊆ s` this equals #(⋂_{i∈t} S i), but phrasing it as a *filter over the union* deliberately avoids the nonemptiness bookkeeping of `Finset.inf'`. `truncIE s S m` is the truncated inclusion–exclusion sum keeping subsets of size 1…m, summed over `s.powersetCard k`. `mult s S a` is the multiplicity of `a`: how many of the `S i` contain it. These three notions turn the set-level statement into a double sum that the counting lemmas can attack.",
     "mathContext": "$T_m = \\sum_{k=1}^{m}(-1)^{k+1}\\sum_{t\\subseteq s,\\,|t|=k}\\#\\!\\left(\\textstyle\\bigcap_{i\\in t}S_i\\right)$",
-    "significance": "medium",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.biUnion",
       "Finset.powersetCard",
@@ -150,7 +150,7 @@
     "title": "Bridging lemmas for the union cardinality",
     "content": "Two small lemmas prepare the final comparison. `card_biUnion_eq_sum_ones` rewrites #(⋃_{i∈s} S i) as ∑_{a∈⋃} 1, so both sides of the target inequality become sums over the same index set and `Finset.sum_le_sum` applies termwise. `one_le_mult` records the obvious but essential fact that every element of the union lies in at least one set (mult a ≥ 1), which lets us write mult a = n + 1 and invoke the `n+1`-indexed pointwise lemmas from Part 1.",
     "mathContext": "$\\#\\!\\left(\\textstyle\\bigcup_i S_i\\right) = \\sum_{a\\in\\bigcup_i S_i} 1,\\qquad a\\in\\textstyle\\bigcup_i S_i \\Rightarrow \\mathrm{mult}(a)\\ge 1$",
-    "significance": "medium",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.mem_biUnion",
       "Finset.card_ne_zero",

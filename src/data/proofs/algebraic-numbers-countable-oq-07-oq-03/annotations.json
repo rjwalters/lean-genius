@@ -10,7 +10,7 @@
     "title": "The n-Dimensional Open Question and Its Two Distinct Smallness Statements",
     "content": "The header docstring frames the entry as the answer to the parent's third open question: generalize `volume {x : ℝ | IsAlgebraic ℚ x} = 0` from ℝ (and ℂ) to ℝⁿ and ℂⁿ. Working in the product space `Fin n → ℝ`, it isolates two genuinely different notions of 'small' that coincide in dimension one but split for n ≥ 2. First, the *measure* statement: the set with **at least one** algebraic coordinate is Lebesgue-null for every n — and this null set is uncountable (in ℝ² it contains every vertical line through an algebraic number). Second, the *cardinality* statement: the set with **all** coordinates algebraic is a finite product of countable sets, hence countable, hence null — but only for n ≥ 1, since ℝ⁰ is a single all-algebraic point of measure 1. The docstring stresses that for n ≥ 2 'measure zero' is strictly weaker than 'countable', and records the conull dual: almost every point of ℝⁿ (and ℂⁿ) is coordinatewise transcendental.",
     "mathContext": "For n ≥ 2: {x | ∃ i, IsAlgebraic ℚ (x i)} is null yet uncountable, while {x | ∀ i, IsAlgebraic ℚ (x i)} is countable (hence null for n ≥ 1). The n = 0 boundary (ℝ⁰ = single point, measure 1, vacuously all-algebraic) is invisible to the one-dimensional parent.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "product Lebesgue measure",
       "null vs countable",

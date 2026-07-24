@@ -10,7 +10,7 @@
     "title": "Roadmap: the separability half of ℚ̄",
     "content": "The module docstring sets this file against its parent (AlgebraicNumbersCountableOQ01OQ01), which realized the algebraic numbers as algebraicNumbersField : IntermediateField ℚ ℂ and proved it algebraically closed. This file supplies the complementary separability picture and answers the parent's open question, in four steps: (1) ℚ is perfect, so its algebraic extensions are separable and minimal polynomials are squarefree; (2) ℚ̄ is perfect for two independent reasons (algebraic closedness, and being algebraic over the perfect field ℚ); (3) consequently ℚ̄ has no inseparable algebraic extension; (4) as an arithmetic payoff, a degree-n number field has exactly n embeddings. The imports pull in FieldTheory.Perfect and FieldTheory.SeparableDegree; everything is developed in the namespace AlgebraicNumbersCountableOQ01OQ01OQ01, reusing the parent's instances through open AlgebraicNumbersCountableOQ01OQ01.",
     "mathContext": "Parent: $\\overline{\\mathbb{Q}}$ is algebraically closed. This file: $\\overline{\\mathbb{Q}}$ is perfect $\\Rightarrow$ every algebraic extension of $\\mathbb{Q}$ (and of $\\overline{\\mathbb{Q}}$) is separable.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "perfect field",
       "separability",
@@ -33,7 +33,7 @@
     "title": "ℚ is perfect, so its algebraic extensions are separable",
     "content": "perfectField_rat records PerfectField ℚ, which holds by PerfectField.ofCharZero: every field of characteristic zero is perfect. Perfectness is defined precisely so that every algebraic extension is separable, and Mathlib packages this as the instance Algebra.IsAlgebraic.isSeparable_of_perfectField — hence isSeparable_of_isAlgebraic_rat: any E with Algebra.IsAlgebraic ℚ E is automatically Algebra.IsSeparable ℚ E. At the polynomial level, minpoly_separable_rat feeds minpoly.irreducible hx into PerfectField.separable_of_irreducible to show the minimal polynomial of any algebraic number is separable; minpoly_squarefree_rat then applies Separable.squarefree. So every algebraic number has a distinct-root minimal polynomial over ℚ.",
     "mathContext": "A field $K$ is perfect iff every algebraic extension of $K$ is separable; in characteristic zero this is automatic. For $\\mathbb{Q}$ it means irreducible polynomials — in particular minimal polynomials of algebraic numbers — have no repeated roots.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "perfect field",
       "separable extension",
@@ -58,7 +58,7 @@
     "title": "The algebraic numbers form a perfect field (two ways)",
     "content": "perfectField_algebraicNumbers derives PerfectField algebraicNumbersField from the parent's IsAlgClosed instance via IsAlgClosed.perfectField: every algebraically closed field is perfect. perfectField_algebraicNumbers_of_algebraic gives a second, independent proof: ℚ̄/ℚ is an algebraic extension (parent instance algebraicIntermediateField_isAlgebraic) of the perfect field ℚ, and Algebra.IsAlgebraic.perfectField shows an algebraic extension of a perfect field is perfect. Neither argument subsumes the other conceptually. Combining perfectness of ℚ with algebraicity of ℚ̄/ℚ, isSeparable_rat_algebraicNumbers records that the algebraic numbers are a separable extension of ℚ.",
     "mathContext": "Perfectness is inherited two ways here: from algebraic closedness (nothing inseparable can be built when everything already splits) and from being algebraic over a perfect base (perfectness transfers up algebraic extensions).",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "perfect field",
       "algebraically closed field",
@@ -82,7 +82,7 @@
     "title": "No inseparable extensions of ℚ̄",
     "content": "isSeparable_of_isAlgebraic_algebraicNumbers states that any algebraic extension L of the field of algebraic numbers is separable: with PerfectField algebraicNumbersField (from §2) and Algebra.IsAlgebraic algebraicNumbersField L in scope, Algebra.IsAlgebraic.isSeparable_of_perfectField supplies Algebra.IsSeparable algebraicNumbersField L. This is the answer to the parent's open question — ℚ̄ has no inseparable algebraic extension — and it is a consequence of perfectness, not of algebraic closedness (algebraic closedness would further make L trivial, but is not needed for separability). perfectField_algebraicClosure_rat_complex restates the perfectness for Mathlib's own algebraicClosure ℚ ℂ, which the parent identified with algebraicNumbersField.",
     "mathContext": "Because $\\overline{\\mathbb{Q}}$ is perfect, every algebraic extension of it is separable — there are no inseparable extensions. The statement holds verbatim for Mathlib's relative algebraic closure $\\mathrm{algebraicClosure}\\,\\mathbb{Q}\\,\\mathbb{C}$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "inseparable extension",
       "perfect field",
@@ -106,7 +106,7 @@
     "title": "A number field of degree n has exactly n embeddings",
     "content": "finSepDegree_eq_finrank_rat: for a finite extension E/ℚ, FiniteDimensional gives Algebra.IsAlgebraic ℚ E (Algebra.IsAlgebraic.of_finite), which — ℚ being perfect — gives separability, so Field.finSepDegree_eq_finrank_of_isSeparable yields finSepDegree ℚ E = finrank ℚ E. Since finSepDegree is defined as Nat.card (Field.Emb ℚ E), the separable degree literally counts the ℚ-algebra embeddings of E into its algebraic closure; card_emb_eq_finrank_rat reads this off as Nat.card (Field.Emb ℚ E) = [E : ℚ]. This is the classical fact that a degree-n number field has exactly n embeddings — the arithmetic payoff of perfectness.",
     "mathContext": "The separable degree $[E : K]_s = \\#\\{K\\text{-embeddings of } E \\text{ into } \\overline{K}\\}$ equals the full degree over a perfect base. For a number field this gives $n$ embeddings for degree $n$, the basis of embedding signatures $(r_1, r_2)$ and the Minkowski embedding.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "separable degree",
       "field embeddings",

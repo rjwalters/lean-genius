@@ -28,7 +28,7 @@
     "title": "Modelling the Pivot: step and orbit",
     "content": "step lifts one pivot to Option V via o.bind f: from a door some v move to f v, and from the terminal none stay at none. orbit f v₀ n = (step f)^[n] (some v₀) is the door reached after n pivots from the start door v₀. The simp lemmas step_none, step_some, orbit_zero and the recurrence orbit_succ give the equational theory used throughout.",
     "mathContext": "Encoding termination as none in Option V turns 'reaching a sink' into 'the orbit hits none', avoiding well-founded recursion and fuel parameters. orbit_succ (n+1) = step f (orbit n) is proved by Function.iterate_succ_apply'.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Option monad", "function iteration"],
     "prerequisites": []
   },

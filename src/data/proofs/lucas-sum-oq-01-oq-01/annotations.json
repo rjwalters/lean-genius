@@ -30,7 +30,7 @@
     "title": "The Lucas Numbers and Their Recurrence",
     "content": "A self-contained copy of the parent entry's Lucas definition: lucas 0 = 2, lucas 1 = 1, and lucas (n+2) = lucas n + lucas (n+1). Mathlib centers on Nat.fib and packages no Lucas sequence, so the sequence is defined locally. The boundary values are recorded as simp lemmas, and lucas_add_two : L_{n+2} = L_n + L_{n+1} is the definitional (rfl) recurrence that drives all three telescoping inductions below.",
     "mathContext": "$L_0=2,\\ L_1=1,\\ L_{n+2}=L_n+L_{n+1}$; sequence $2,1,3,4,7,11,18,\\dots$ (OEIS A000032).",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lucas numbers",
       "recursive definition",
@@ -68,7 +68,7 @@
     "title": "Odd-Indexed Sum via the Same Engine",
     "content": "lucas_odd_sum_add_two proves (∑_{k=1}^{n} L_{2k−1}) + 2 = L_{2n} by the same induction, base 0 + 2 = L_0 = 2. In the step the new term L_{2n+1} combines with the inductive hypothesis via L_{2n+2} = L_{2n} + L_{2n+1} (after rewriting 2*(n+1) to 2*n+2). The headline lucas_odd_sum : ∑ L_{2k−1} = L_{2n} − 2 follows by omega, exact since L_{2n} ≥ 2. The boundary constants 1 (even) and 2 (odd) are precisely the Lucas values L_1 and L_0 that the two partial sums leave behind.",
     "mathContext": "$\\left(\\sum_{k=1}^n L_{2k-1}\\right)+2 = L_{2n}$, hence $\\sum_{k=1}^n L_{2k-1} = L_{2n}-2$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "mathematical induction",
       "Finset.sum_range_succ",
@@ -107,7 +107,7 @@
     "title": "Kernel-Checked Sanity Values",
     "content": "Three example lemmas verify the identities at small indices with kernel decide (not native_decide, keeping the file axiom-free): L_2 + L_4 = 10 = L_5 − 1, L_1 + L_3 = 5 = L_4 − 2, and L_0 − L_1 + L_2 − L_3 + L_4 = 7 = L_3 + 3. These pin the general theorems to concrete arithmetic.",
     "mathContext": "$3+7=10=L_5-1$; $1+4=5=L_4-2$; $2-1+3-4+7=7=L_3+3$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "decidability",
       "kernel computation",

@@ -7,7 +7,7 @@
     "title": "The bad-event probability as exact counting",
     "content": "The symmetric Lovász Local Lemma feasibility test for Spencer's improved Ramsey lower bound is e·p·(d+1) ≤ 1, with p the probability that a fixed k-clique is monochromatic and d its dependency degree. This module computes p with no probability theory. A k-clique has C(k,2) edges, so a uniformly random 2-colouring of its edges is one of 2^C(k,2) equally likely functions, of which exactly two (all-red, all-blue) are monochromatic. Hence p = 2/2^C(k,2) = 2^(1−C(k,2)). The companion entry ramsey-r4k-extensions-oq-03 supplies the other input d.",
     "mathContext": "Symmetric LLL: if Pr[Aᵢ] ≤ p and each Aᵢ is independent of all but ≤ d others, then e·p·(d+1) ≤ 1 implies Pr[⋂ Āᵢ] > 0. Here the Aᵢ are the monochromatic-k-clique events.",
-    "significance": "Reduces the probabilistic input p of the LLL to a finite cardinality ratio, machine-checkable without any measure theory.",
+    "significance": "supporting",
     "relatedConcepts": ["Lovász Local Lemma", "probabilistic method", "first moment", "Ramsey numbers"],
     "prerequisites": ["random 2-colourings of complete graphs", "binomial coefficients"]
   },
@@ -19,7 +19,7 @@
     "title": "card_constant_colorings: exactly two constant colourings",
     "content": "Over any nonempty finite type α, exactly two Bool-colourings are constant. The proof shows the filter `{c | ∀ x y, c x = c y}` equals the image of `Bool` under `b ↦ (fun _ => b)`: a colouring satisfying the predicate equals `fun _ => c x₀` for any fixed x₀, and conversely every `fun _ => b` is constant. That map is injective because α is nonempty, so the count is Finset.card_image_of_injective = Fintype.card Bool = 2.",
     "mathContext": "This is the abstract heart of the bad-event probability: the numerator '2' in p = 2/2^C(k,2) is independent of the number of edges — it is just the two colours.",
-    "significance": "A reusable finite-combinatorics lemma: the constant functions into Bool over a nonempty domain number exactly two.",
+    "significance": "supporting",
     "relatedConcepts": ["constant function", "injective image cardinality", "Fintype.card"],
     "prerequisites": ["Finset.image and Finset.card_image_of_injective", "Fintype.card Bool = 2"]
   },
@@ -31,7 +31,7 @@
     "title": "cliqueEdges_card and card_edgeColorings: C(k,2) edges, 2^C(k,2) colourings",
     "content": "cliqueEdges S is the set of 2-element subsets of S (the edges of the clique), of cardinality C(k,2) by Finset.card_powersetCard. EdgeColoring S is the function type {e // e ∈ cliqueEdges S} → Bool; card_edgeColorings computes its cardinality as 2^C(k,2) using Fintype.card_fun (functions into a 2-element codomain) and Fintype.card_coe (the edge subtype has cardinality equal to the edge Finset).",
     "mathContext": "The exponent C(k,2) is where the clique size k enters the probability; the base 2 is the number of colours.",
-    "significance": "Gives the denominator 2^C(k,2) of the bad-event probability as an exact finite cardinality.",
+    "significance": "supporting",
     "relatedConcepts": ["binomial coefficient", "function type cardinality", "powersetCard"],
     "prerequisites": ["Fintype.card_fun", "Finset.card_powersetCard", "Fintype.card_coe"]
   },
@@ -43,7 +43,7 @@
     "title": "card_monochromatic_edgeColorings & clique_monochromatic_probability: p = 2^(1−C(k,2))",
     "content": "For k ≥ 2 the edge type is nonempty (Finset.powersetCard_nonempty), so card_monochromatic_edgeColorings instantiates the counting core to get exactly two monochromatic edge-colourings. clique_monochromatic_probability then computes the bad-event probability as #monochromatic/#total = 2/2^C(k,2) and simplifies via zpow_sub₀ to the closed form 2^(1−C(k,2)) as a real number.",
     "mathContext": "This is the value p that is plugged into the symmetric LLL condition e·p·(d+1) ≤ 1 to certify Spencer's improved bound R(k,k) ≳ k·2^(k/2)/e.",
-    "significance": "Delivers Key Lemma 2 — the exact bad-event probability — the second of the two combinatorial inputs to the LLL feasibility test.",
+    "significance": "supporting",
     "relatedConcepts": ["Lovász Local Lemma feasibility", "monochromatic clique", "zpow"],
     "prerequisites": ["Finset.powersetCard_nonempty", "real zpow arithmetic (zpow_sub₀)"]
   },
@@ -55,7 +55,7 @@
     "title": "triangle_monochromatic_count: the k=3 sanity check",
     "content": "For triangles (k=3) the module specializes to 2 of 8: a triangle has C(3,2)=3 edges, hence 2^3=8 colourings, of which exactly 2 are monochromatic. This gives the classical per-triangle monochromaticity probability 2/8 = 1/4 = 2^(1−3), matching the value Spencer uses in the triangle case.",
     "mathContext": "The smallest nontrivial clique; the same value appears in the union-bound analysis of triangle-free Ramsey constructions.",
-    "significance": "Concrete confirmation of the general formula p = 2^(1−C(k,2)) at k=3.",
+    "significance": "supporting",
     "relatedConcepts": ["triangle", "R(3,3)", "monochromatic triangle"],
     "prerequisites": ["the general count", "evaluation of C(3,2) = 3"]
   }

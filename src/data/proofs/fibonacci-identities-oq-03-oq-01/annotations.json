@@ -102,7 +102,7 @@
     "title": "Numeric Sanity Checks",
     "content": "Three `decide` examples confirm the $n = 0, 1, 2$ instances by kernel reduction: $F_3 = 2$ (index $4\\cdot0+3$), $F_7 = 13$ (index $4\\cdot1+3$), $F_{11} = 89$ (index $4\\cdot2+3$). Using kernel `decide` rather than `native_decide` means only the foundational propext / Classical.choice / Quot.sound are touched — no `Lean.ofReduceBool` — so the numeric checks do not compromise the entry's 0-axiom status. The decomposition matches: at $n=1$ the witnesses are $a = F_2(2F_1+F_2) = 3$ and $b = F_2^2+F_1^2 = 2$, giving $3^2 + 2^2 = 13 = F_7$.",
     "mathContext": "$F_3 = 2,\\ F_7 = 13 = 3^2+2^2,\\ F_{11} = 89$ for $n = 0, 1, 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "decide vs native_decide",
       "axiom hygiene",

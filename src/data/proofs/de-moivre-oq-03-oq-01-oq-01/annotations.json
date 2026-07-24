@@ -10,7 +10,7 @@
     "title": "Why This File Exists: Replacing a True Stub",
     "content": "The module docstring states the parent entry's (de-moivre-oq-03-oq-01) placeholder — `irrational_exponent_single_valued` proved only `True := trivial` — and quotes its first open question: can the real statement be proved from cpow_def_of_ne_zero and the single-valuedness of Complex.log? It previews the answer: the principal value (e^{iθ})^α = e^{iαθ} is single 'almost definitionally' (cpow is a function once the principal branch is fixed), but the substantive content is why there is no multi-valuedness for irrational α — the branch family k ↦ e^{2πiαk} is injective, because the orbit e^{2πiαn} never returns to 1 for n ≠ 0, unlike the rational p/q case which has exactly q distinct values.",
     "mathContext": "Previews $(e^{i\\theta})^\\alpha = e^{i\\alpha\\theta}$ (single value) and the injectivity of $k \\mapsto e^{2\\pi i\\alpha k}$ for irrational $\\alpha$, contrasting with the $q$-fold ambiguity of rational exponents $p/q$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["True-stub replacement", "principal branch single-valuedness", "rational vs irrational branch structure"],
     "prerequisites": ["the parent entry's open question", "complex power cpow"]
   },

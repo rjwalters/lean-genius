@@ -10,7 +10,7 @@
     "title": "Kittaneh's Numerical-Radius Inequality from Buzano",
     "content": "The numerical radius w(T) = sup_{‖x‖=1} ‖⟪T x, x⟫‖ trivially satisfies w(T) ≤ ‖T‖ by Cauchy-Schwarz. Kittaneh (2003) proved the genuine strengthening w(T)² ≤ ½(‖T‖² + ‖T²‖), which never exceeds ‖T‖² (since ‖T²‖ ≤ ‖T‖²) and is strictly sharper whenever ‖T²‖ < ‖T‖² (e.g. nilpotents). This file derives the pointwise form ‖⟪T x, x⟫‖² ≤ ½(‖T‖² + ‖T²‖) for unit x directly from the parent's Buzano inequality via the adjoint trick — feeding Buzano the vectors T x and T†x, so the two adjoint identities ⟪x,T†x⟫ = ⟪T x,x⟫ and ⟪T x,T†x⟫ = ⟪T²x,x⟫ manufacture the squared left side and the ‖T²‖-controlled cross term. The result is not in Mathlib.",
     "mathContext": "$$w(T)^2 \\le \\tfrac{1}{2}\\big(\\|T\\|^2 + \\|T^2\\|\\big) \\le \\|T\\|^2$$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numerical radius",
       "Kittaneh's inequality",

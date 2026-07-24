@@ -10,7 +10,7 @@
     "title": "Isolating Wallis' 1656 Product from the Stirling Machinery",
     "content": "The header frames the entry. The gallery's Stirling entries (StirlingFormula, StirlingExpansion, …) use the Wallis product only INTERNALLY — as the engine that pins the Stirling constant to √(2π) — but none states Wallis' product in its own classical textbook form. Mathlib likewise proves the limit only in a shifted, index-from-zero form (Real.tendsto_prod_pi_div_two). This file isolates the standalone classical statement ∏_{k=1}^{n} 4k²/(4k²−1) → π/2 (John Wallis, Arithmetica Infinitorum, 1656 — the historical ancestor of the Stirling-constant computation) via three results: the factor identity, the termwise reindexing to Mathlib's shifted product, and the limit itself. Verified, 0 axioms, 0 sorries.",
     "mathContext": "$\\prod_{k=1}^{n} \\frac{4k^2}{4k^2-1} \\longrightarrow \\frac{\\pi}{2}$ (Wallis 1656), stated standalone rather than as an internal Stirling step.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Wallis product",
       "Stirling's constant √(2π)",

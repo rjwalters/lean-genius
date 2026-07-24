@@ -7,7 +7,7 @@
     "title": "Reciprocation exchanges log-convexity and log-concavity",
     "content": "A positive sequence is log-convex when aₙ² ≤ aₙ₋₁·aₙ₊₁ and log-concave when the inequality reverses. The map t ↦ 1/t is an order-reversing multiplicative involution on the positive reals, so it swaps the two properties: the reciprocal of a strictly positive strictly log-convex sequence is strictly log-concave. The Catalan numbers are strictly log-convex (parent entry oq-01-oq-04), hence 1/Cₙ is strictly log-concave. The docstring also records an honest correction: the open question's suggested candidate Cₙ/(n+1) is NOT log-concave.",
     "mathContext": "Parent: $C_{n+1}^2 < C_n C_{n+2}$. Reciprocal: $\\frac{1}{C_n}\\cdot\\frac{1}{C_{n+2}} < \\left(\\frac{1}{C_{n+1}}\\right)^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["log-convex sequence", "log-concave sequence", "Turán inequality", "order-reversing involution", "Catalan numbers"],
     "prerequisites": ["log-concavity", "positive sequences", "Catalan numbers"]
   },

@@ -239,7 +239,7 @@
     "title": "Closing Summary: The Dominant-Prime Answer",
     "content": "The file's closing docstring restates the answer to open question OQ-05-OQ-03 in one line — minFoldLevel(d) = max{ j ≥ 1 : p_j divides d }, the prime-sequence index of d's largest prime factor — then catalogs all 8 results proved earlier (generalized monotonicity, multiplicativity, the `Nat.find`-based definition and its ≤-characterization, exact prime fold levels, the max-multiplicative property, the five concrete computations, and unboundedness) as a numbered ledger. It records the file's status (0 axioms, 0 sorries) and its dependency on the two prior files in the series, `AngleTrisectionOQ05OQ01` and `AngleTrisectionOQ05OQ02`.",
     "mathContext": "$\\mathrm{minFoldLevel}(d) = \\max\\{j \\ge 1 : p_j \\mid d\\}$ — the dominant prime factor's index in the odd-prime sequence determines the fold count exactly.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "minFoldLevel",
       "AngleTrisectionOQ05OQ01",

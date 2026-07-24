@@ -10,7 +10,7 @@
     "title": "From Tabulated Values to a General Formula",
     "content": "The **k=3 birthday count** $\\mathrm{birthdayCount3}\\,n\\,d$ is the number of ways to seat $n$ labelled people on $d$ days with **at most two per day** — the seatings that avoid a triple coincidence. The parent chain computed it case by case: $d$, $d^2$, $d^3-d$, $d^4-4d^2+3d$ for $n=1,2,3,4$. This entry proves the **single formula behind all of them**:\n$$\\mathrm{birthdayCount3}\\,n\\,d = \\sum_{p=0}^{\\lfloor n/2\\rfloor} \\binom{n}{2p}\\,(2p-1)!!\\,(d)_{n-p},$$\nwhere $(2p-1)!! = 1\\cdot 3\\cdots(2p-1)$ counts the perfect matchings on $2p$ points and $(d)_{n-p}=d(d-1)\\cdots(d-n+p+1)$ is the falling factorial. The index $p$ is the number of **doubly-occupied days**: choose which $2p$ people are paired ($\\binom{n}{2p}$), match them into $p$ pairs ($(2p-1)!!$), and place the $n-p$ occupied days among the $d$ available ($(d)_{n-p}$).",
     "mathContext": "$\\mathrm{birthdayCount3}\\,n\\,d = \\sum_{p=0}^{\\lfloor n/2\\rfloor} \\binom{n}{2p}\\,(2p-1)!!\\,(d)_{n-p}$, with $(2p-1)!!$ the perfect-matching count and $(d)_{n-p}$ the falling factorial.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "Double factorial",
       "Perfect matchings",
@@ -123,7 +123,7 @@
     "title": "The Closed Form Satisfies the Recurrence",
     "content": "**`F_rec`:** $F\\,(n{+}2)\\,(d{+}1) = (d{+}1)\\big(F\\,(n{+}1)\\,d + (n{+}1)\\,F\\,n\\,d\\big)$. Each of the three pieces is rewritten as a sum over $p$ of $(\\text{coefficient})\\cdot(d{+}1)_{n+2-p}$ — the same falling-factorial basis — using `descFactorial_pull` to absorb the $(d{+}1)$ prefactor and range extension to align the summation bounds. The $F\\,n$ contribution is reindexed $p\\mapsto p{+}1$ so that its power $(d+1)_{n+1-p}$ lands on the same basis element as the others. Matching the coefficient of each basis element is precisely `choose_absorb_M`, with the $p=0$ term handled separately.",
     "mathContext": "$F\\,(n{+}2)\\,(d{+}1) = (d{+}1)\\big(F\\,(n{+}1)\\,d + (n{+}1)\\,F\\,n\\,d\\big)$, matched coefficient-by-coefficient on the falling-factorial basis $(d+1)_{n+2-p}$.",
-    "significance": "high",
+    "significance": "critical",
     "relatedConcepts": [
       "Falling-factorial basis",
       "Sum reindexing p↦p+1",

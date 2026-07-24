@@ -10,7 +10,7 @@
     "title": "Sharp remainder bound and its bracketing",
     "content": "The header recalls the parent's qualitative convergence of the alternating partial sums altSum a 0 m → L and states the quantitative gap it leaves open. The deliverables: the sharp remainder bound |L − altSum a 0 m| ≤ a_m (error never exceeds the first omitted term), the bracketing (S_m − L)(S_{m+1} − L) ≤ 0 that makes it sharp, and the localization L ∈ [0, a_0]. The strategy splits m by parity over Mathlib's one-sided brackets; nonnegativity of the terms is derived from antitonicity plus a → 0.",
     "mathContext": "$|L - S_m| \\le a_m$, $L$ trapped between $S_m$ and $S_{m+1}$ of gap $a_m$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "alternating series (Leibniz) criterion",
       "remainder / truncation error",
@@ -55,7 +55,7 @@
     "title": "Even/odd one-sided brackets",
     "content": "altSum_eq_range identifies the parent's altSum a 0 m with Mathlib's range-form ∑_{i<m} (-1)^i a i. even_partial_le and le_odd_partial then transport Mathlib's alternating-series brackets: even partial sums lie below the limit (Antitone.alternating_series_le_tendsto: S_{2k} ≤ L) and odd partial sums lie above it (Antitone.tendsto_le_alternating_series: L ≤ S_{2k+1}). These two one-sided inequalities are all Mathlib supplies; the parity split combines them.",
     "mathContext": "$S_{2k} \\le L \\le S_{2k+1}$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Antitone.alternating_series_le_tendsto",
       "Antitone.tendsto_le_alternating_series",
@@ -77,7 +77,7 @@
     "title": "The sharp remainder bound",
     "content": "remainder_bound is the headline estimate |L − altSum a 0 m| ≤ a_m. Casing on m even or odd and using the successor identity altSum_succ with (-1)^{2k} = 1 and (-1)^{2k+1} = -1: the even case gives L − S_m ∈ [0, a_m] and the odd case gives S_m − L ∈ [0, a_m]. term_nonneg supplies a_m ≥ 0, and abs_le + linarith close both branches. No new limit argument is needed beyond the parent's convergence.",
     "mathContext": "$|L - S_m| \\le a_m$ for all $m$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "Leibniz remainder estimate",
       "parity case analysis",
@@ -100,7 +100,7 @@
     "title": "Bracketing sharpness and [0, a₀] localization",
     "content": "partial_bracket packages the sandwich as (altSum a 0 m − L)(altSum a 0 (m+1) − L) ≤ 0 via mul_nonpos_iff, showing consecutive partial sums straddle L — this is the sharpness statement, since the two endpoints differ by exactly a_m. sum_mem_Icc specializes the k = 0 brackets (S_0 = 0, S_1 = a_0) to localize the entire alternating series in the interval [0, a_0].",
     "mathContext": "$(S_m - L)(S_{m+1} - L) \\le 0$; $\\;L \\in [0, a_0]$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "mul_nonpos_iff",
       "interval localization",

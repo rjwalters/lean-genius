@@ -7,7 +7,7 @@
     "title": "The Ambient Setting: RCLike, Finite-Dimensional Inner Product Space",
     "content": "The whole development is stated over an abstract scalar field `𝕜` with `[RCLike 𝕜]`, so a single proof covers both the real (`ℝ`) and complex (`ℂ`) cases at once — Hermitian and real-symmetric interlacing are the same theorem here. `[FiniteDimensional 𝕜 V]` is essential: Mathlib's spectral theorem (`LinearMap.IsSymmetric.eigenvalues` / `eigenvectorBasis`) only produces a full orthonormal eigenbasis and an ordered eigenvalue tuple in finite dimensions. The preceding `open CauchyInterlacing.Assembly` brings the parent file's abstract `cauchy_interlacing` into scope, and `open scoped InnerProductSpace` enables the `⟪·, ·⟫_𝕜` inner-product notation on which every step relies.",
     "mathContext": "`RCLike 𝕜` axiomatizes exactly the fields ℝ and ℂ; finite-dimensionality guarantees the spectral theorem yields a complete eigenbasis with eigenvalues indexed by `Fin (finrank 𝕜 V)`.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["RCLike", "finite-dimensional inner product space", "spectral theorem", "real vs complex symmetry"],
     "prerequisites": ["typeclass assumptions in Lean", "inner product space over ℝ or ℂ"]
   },

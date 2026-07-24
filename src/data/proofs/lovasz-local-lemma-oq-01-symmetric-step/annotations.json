@@ -10,7 +10,7 @@
     "title": "The symmetric LLL is the asymmetric one plus a single order step",
     "content": "The Lovász Local Lemma has two standard shapes. The **asymmetric** form gives each bad event $A_i$ a weight $x_i \\in (0,1)$ and requires $\\Pr[A_i] \\le x_i \\prod_{j\\in\\Gamma(i)}(1-x_j)$, the product over $i$'s neighbours; the **symmetric** corollary — the one used in most applications — takes a single weight $x$ and a single degree bound $d$ (each event depends on at most $d$ others), with hypothesis $\\Pr[A_i] \\le x(1-x)^d$. The measure-theoretic OQ-01 front had assembled the asymmetric induction step (the induction-step entry's `cond_failure_le_x`: from $\\mu(A_i)\\le x\\cdot d$ and a denominator lower bound $d \\le \\mu[N\\mid C]$, conclude $\\mu[A_i\\mid N\\cap C]\\le x$) but stated it per-block, with $d = \\prod_{j\\in S_1}(1-x_j)$. This entry supplies the bridge to the symmetric form. The key is one inequality about extended-nonnegative reals: since the true neighbour block has $|S_1|\\le d$ and $1-x \\le 1$, the product $\\prod_{j\\in S_1}(1-x) = (1-x)^{|S_1|}$ is at least $(1-x)^d$ — more factors each $\\le 1$ only shrink it — so the uniform budget $\\mu(A_i)\\le x(1-x)^d$ implies the per-block budget $\\mu(A_i)\\le x\\prod_{S_1}(1-x)$ the committed invariant consumes.",
     "mathContext": "(1 − x)^d ≤ ∏_{j∈S₁}(1 − x) = (1 − x)^{|S₁|} for |S₁| ≤ d, so μ(Aᵢ) ≤ x·(1 − x)^d ⟹ μ(Aᵢ) ≤ x·∏_{S₁}(1 − x) ⟹ μ[Aᵢ | N ∩ C] ≤ x.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lovász Local Lemma",
       "symmetric vs asymmetric LLL",
@@ -34,7 +34,7 @@
     "title": "The degree-bound reduction is unconditional in ℝ≥0∞",
     "content": "`one_sub_pow_le_prod_of_card_le`: for a neighbour block with $|S_1|\\le d$, $(1-x)^d \\le \\prod_{j\\in S_1}(1-x)$. First `prod_const_one_sub` rewrites the constant product as a power, $\\prod_{j\\in S_1}(1-x) = (1-x)^{|S_1|}$ (`Finset.prod_const`). Then the base satisfies $1-x \\le 1$, so raising it to the **larger** exponent $d \\ge |S_1|$ only shrinks it: `pow_le_pow_of_le_one` gives $(1-x)^d \\le (1-x)^{|S_1|}$. The subtlety is that over $\\mathbb{R}$ one would write $0 \\le 1-x \\le 1$ and need the hypothesis $x \\le 1$ for the upper bound. In $\\mathbb{R}_{\\ge 0}^\\infty$ truncated subtraction makes $1-x \\le 1$ hold for **free** (`tsub_le_self`: $a - b \\le a$ always), so the reduction needs no constraint on $x$ at all. This is a genuine simplification of the ℝ≥0∞ setting, and it is why every downstream lemma here — `symmetric_budget_le`, `cond_failure_le_x_symmetric` — drops the $x \\le 1$ hypothesis one might expect.",
     "mathContext": "1 − x ≤ 1 by tsub_le_self (no x ≤ 1 needed); pow_le_pow_of_le_one (zero_le _) tsub_le_self hcard : (1 − x)^d ≤ (1 − x)^{|S₁|}; prod_const_one_sub closes.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "truncated subtraction in ℝ≥0∞",
       "antitone power at base ≤ 1",
@@ -57,7 +57,7 @@
     "title": "The uniform budget implies the per-block budget",
     "content": "`symmetric_budget_le`: from $p \\le x(1-x)^d$ and $|S_1|\\le d$, conclude $p \\le x\\prod_{j\\in S_1}(1-x)$. Instantiated with $p = \\mu(A_i)$ this is exactly the symmetric-to-asymmetric budget bridge: the symmetric hypothesis $\\mu(A_i)\\le x(1-x)^d$ (degree-bounded, a single power) yields the per-block hypothesis $\\mu(A_i)\\le x\\prod_{S_1}(1-x)$ that `InductionStep.cond_failure_le_x` requires. The proof is a single `gcongr`: monotonicity of $x\\cdot(\\cdot)$ reduces the goal to $(1-x)^d \\le \\prod_{S_1}(1-x)$, discharged by the degree-bound reduction. No new probability enters — the entire asymmetric–symmetric distinction is this one monotone step.",
     "mathContext": "p ≤ x·(1 − x)^d and (1 − x)^d ≤ ∏_{S₁}(1 − x) give p ≤ x·∏_{S₁}(1 − x) by gcongr (monotonicity of x·(·)).",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "gcongr monotonicity",
       "asymmetric vs symmetric budget",
@@ -79,7 +79,7 @@
     "title": "The induction invariant in symmetric form: one x, one d, every event",
     "content": "`cond_failure_le_x_symmetric`: under $|S_1|\\le d$, a denominator lower bound $\\prod_{S_1}(1-x) \\le \\mu[\\bigcap_{S_1}A_j^c \\mid \\bigcap_{S_2}A_j^c]$ (nonzero), independence of $A_i$ from its non-neighbour block, and the **uniform** degree-bounded budget $\\mu(A_i)\\le x(1-x)^d$, conclude $\\mu[A_i \\mid (\\bigcap_{S_1}A_j^c)\\cap(\\bigcap_{S_2}A_j^c)] \\le x$. This is the symmetric-LLL form of the induction invariant: a **single** value $x$ and a **single** degree bound $d$ control every event, whatever its actual neighbour set — precisely the uniformity the symmetric LLL's strong induction needs (the maintained invariant must not depend on which subset $S$ is being conditioned on). The proof reduces the uniform budget to the per-block budget (`symmetric_budget_le hcard hlll`) and feeds it directly to `InductionStep.cond_failure_le_x` with denominator $\\prod_{S_1}(1-x)$.",
     "mathContext": "cond_failure_le_x hA S₁ S₂ i hposC hNC hindep hd hd0 (symmetric_budget_le hcard hlll) : μ[Aᵢ | (⋂_{S₁} Aⱼᶜ) ∩ (⋂_{S₂} Aⱼᶜ)] ≤ x.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "induction invariant",
       "conditional failure probability",
@@ -103,7 +103,7 @@
     "title": "The optimal budget x = 1/(d+1) is admissible, and equals the tight threshold",
     "content": "`symmetric_x_le_one`: the optimal symmetric assignment $x = (d+1)^{-1}$ satisfies $x \\le 1$ (via `ENNReal.inv_le_one`, reducing to $1 \\le d+1$ by `le_add_self`), so `cond_failure_le_x_symmetric` applies to it. This $x$ is the maximizer of $x(1-x)^d$, at which the uniform budget equals $(d+1)^{-1}(d/(d+1))^d = d^d/(d+1)^{d+1} = T(d)$, the tight symmetric threshold of the gallery proof. The real-analysis entry `lovasz-local-lemma-oq-01-euler-threshold` proves the memorable condition $e\\cdot p\\cdot(d+1)\\le 1$ implies $p \\le T(d)$; combined with this fact, an event family satisfying the Euler condition satisfies the ℝ≥0∞ uniform budget at the optimal $x$, and the symmetric induction step here applies. The ℝ≥0∞ induction machinery and the ℝ threshold analysis meet at $x = 1/(d+1)$.",
     "mathContext": "((d : ℝ≥0∞) + 1)⁻¹ ≤ 1 by ENNReal.inv_le_one and le_add_self; at this x, x(1 − x)^d = T(d) = dᵈ/(d+1)^{d+1}.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "optimal LLL weight x = 1/(d+1)",
       "tight threshold T(d)",

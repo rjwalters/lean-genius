@@ -10,7 +10,7 @@
     "title": "The Concrete Permutation Model of F₂₀ = AGL(1, 𝔽₅)",
     "content": "The Galois group of X⁵−2 acts on the five roots α·ζ₅ᵏ; labelling each root by its exponent k ∈ Fin 5 = 𝔽₅ turns that action into the affine group AGL(1,𝔽₅) = {x ↦ a·x + b : a ∈ 𝔽₅ˣ, b ∈ 𝔽₅}, the Frobenius group F₂₀ = C₅ ⋊ C₄. This file makes that abstract description literal: it exhibits two explicit permutations of Fin 5 — the translation σ : x ↦ x+1 and the multiplication τ : x ↦ 2x — and proves entirely by `decide` and elementary group calculation that ⟨σ,τ⟩ has order exactly 20 and acts transitively. It is the concrete counterpart to the sibling entry `inverse-galois-f20`, which computes |Gal(X⁵−2/ℚ)| = 20 abstractly through Galois theory.",
     "mathContext": "\\mathrm{AGL}(1,\\mathbb{F}_5) = \\{x \\mapsto ax+b : a \\in \\mathbb{F}_5^\\times,\\ b \\in \\mathbb{F}_5\\} \\cong C_5 \\rtimes C_4 = F_{20}, \\qquad |F_{20}| = 5 \\cdot 4 = 20.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Frobenius group",
       "affine group AGL(1,q)",

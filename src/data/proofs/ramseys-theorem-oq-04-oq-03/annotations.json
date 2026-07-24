@@ -33,7 +33,7 @@
     "title": "colorClass: the k=1 Monochromatic Set",
     "content": "colorClass c color := univ.filter (fun v => c v = color) collects the vertices a coloring c : V → Fin r assigns to a given color. This is the 1-uniform analog of the parent's monochromatic set: a monochromatic n-set exists precisely when some color class has at least n elements. No DecidableEq V is needed — equality is decided in Fin r.",
     "mathContext": "colorClass(c,color) = {v ∈ V : c(v) = color}.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "color class",
       "vertex coloring",
@@ -55,7 +55,7 @@
     "title": "Sufficiency via Generalized Pigeonhole",
     "content": "exists_large_color_class: if r·(n−1) < |V| then some color class has ≥ n elements. The proof feeds Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to with s = univ : Finset V, t = univ : Finset (Fin r), f = c; the hypothesis becomes card t · (n−1) < card s, so some fiber (color class) exceeds n−1, i.e. reaches n (omega). ramsey1_of_card_lt restates this at the threshold r(n−1)+1 ≤ |V|, the '≥ R₁' half.",
     "mathContext": "card(Fin r)·(n−1) < card V ⟹ ∃ color, n ≤ |colorClass(c,color)|.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "generalized pigeonhole",
       "fiber cardinality",
@@ -78,7 +78,7 @@
     "title": "Sharpness: the Extremal Balanced Coloring",
     "content": "sharp_coloring_card shows the projection coloring Prod.fst on Fin r × Fin (n−1) gives every color class size exactly n−1: the class equals {color} ×ˢ univ, with cardinality 1·(n−1) via Finset.card_product. ramsey1_sharp packages this into a vertex set of exactly r(n−1) elements (Fintype.card_prod) carrying an r-coloring with no monochromatic n-set — so the threshold r(n−1)+1 cannot be lowered.",
     "mathContext": "On Fin r × Fin (n−1): |colorClass(Prod.fst,color)| = n−1 and |Fin r × Fin (n−1)| = r(n−1).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "sharpness",
       "extremal coloring",
@@ -102,7 +102,7 @@
     "title": "The Two Directions Meet: R₁(r,n) = r(n−1)+1",
     "content": "ramsey1_number r n := r(n−1)+1 names the exact Ramsey number; ramsey1_number_spec confirms that many vertices force a monochromatic n-set, and ramsey1_exact bundles sufficiency (any V with r(n−1)+1 ≤ |V| works) together with sharpness (an r(n−1)-vertex counterexample). Because sharpness realizes color classes of size exactly n−1, the two bounds coincide precisely at r(n−1)+1 — the number is determined, not merely bounded.",
     "mathContext": "r(n−1)+1 vertices suffice; r(n−1) vertices do not — so R₁(r,n) = r(n−1)+1 exactly.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "exact Ramsey number",
       "threshold",

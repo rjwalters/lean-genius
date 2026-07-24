@@ -7,7 +7,7 @@
     "title": "From character sums to the structural gcd law",
     "content": "The docstring reframes the parent's quadratic-character count. The parent counts nonzero squares of ZMod p via the quadratic character χ and the vanishing sum ∑χ = 0, showing x ↦ x² is 2-to-1 on the units. This file answers the parent's open question for every exponent k and every finite field F by discarding the per-k character orthogonality and using its structural engine directly: on the cyclic group Fˣ the map x ↦ xᵏ is a monoid endomorphism whose kernel and range sizes are pinned by d = gcd(k, q−1). The whole higher-order theory (cubic, quartic, …) collapses into one gcd formula because Fˣ is cyclic.",
     "mathContext": "With $q=|F|$, $d=\\gcd(k,q-1)$: $\\#\\{x^k=1\\}=d$, $\\#\\{x^k\\}=(q-1)/d$, and $x\\mapsto x^k$ is $d$-to-$1$ onto its image.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["multiplicative characters", "character orthogonality", "cyclic group", "power map", "k-th power residues"],
     "prerequisites": ["finite fields", "group theory"]
   },

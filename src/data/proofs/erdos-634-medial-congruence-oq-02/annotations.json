@@ -50,7 +50,7 @@
     "title": "The barycentric region is exactly the convex hull",
     "content": "triBary_eq_convexHull proves triBary A B C = convexHull ℝ {A,B,C}, certifying that the hand-rolled barycentric region is genuinely THE triangle in Mathlib's sense. The forward inclusion places a·A + b·B + c·C inside the hull using Convex.sum_mem over a Fin 3 index (weights ![a,b,c], points ![A,B,C]); the reverse inclusion uses convexHull_min — the hull is the smallest convex set containing the vertices, and triBary is convex and contains them.",
     "mathContext": "$\\mathrm{triBary}(A,B,C) = \\mathrm{convexHull}_{\\mathbb{R}}\\{A,B,C\\}$, via `Convex.sum_mem` (⊆) and `convexHull_min` (⊇).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "convex hull",
       "Convex.sum_mem",

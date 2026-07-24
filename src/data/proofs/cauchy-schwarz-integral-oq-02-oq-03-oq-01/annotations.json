@@ -10,7 +10,7 @@
     "title": "The Open Question: When Is the Reverse Triangle Inequality Sharp?",
     "content": "The parent problem derived the reverse Minkowski / reverse triangle inequality |‖f‖−‖g‖| ≤ ‖f+g‖ from the Cauchy-Schwarz LOWER bound ⟪f,g⟫ ≥ −‖f‖·‖g‖, exactly mirroring how the forward inequality uses the CS UPPER bound. This file answers the follow-up: characterise the pairs achieving equality. The clean, division-free, zero-tolerant answer is that the vectors are ANTIPARALLEL: |‖u‖−‖v‖| = ‖u+v‖ ⟺ ‖v‖•u = −(‖u‖•v). For nonzero vectors this is v = r•u with r < 0 — they point in genuinely opposite directions. The result is the exact sign-dual of the forward triangle equality ‖u+v‖ = ‖u‖+‖v‖ ⟺ ‖v‖•u = ‖u‖•v (vectors parallel, r ≥ 0).",
     "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| = \\|u+v\\| \\iff \\|v\\|\\cdot u = -(\\|u\\|\\cdot v)$$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "reverse Minkowski inequality",
       "reverse triangle inequality",

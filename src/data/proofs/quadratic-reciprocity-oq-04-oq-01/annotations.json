@@ -7,7 +7,7 @@
     "title": "Euler Liars and the Boundary of Jacobi Residue Detection",
     "content": "The Legendre symbol (a | p) detects quadratic residues exactly: for a prime p it equals +1 iff a is a nonzero square mod p. Its multiplicative extension to composite moduli, the Jacobi symbol J(a | n), loses this: J(a | n) = 1 no longer forces a to be a square mod n. A non-square a with J(a | n) = 1 is an 'Euler liar' for n, and such witnesses are precisely why the Solovay-Strassen primality test can err. This file promotes the parent's single numerical witness J(2 | 15) = 1 to two general existence families and pins the sharp boundary: liars exist iff the squares are a proper subgroup of the Jacobi kernel, i.e. iff n is NOT an odd prime raised to an odd power.",
     "mathContext": "For odd n the squares have index $2^{\\omega(n)}$ in $(\\mathbb{Z}/n)^\\times$ ($\\omega$ = number of distinct primes), while the Jacobi kernel $\\{a : J(a\\mid n)=1\\}$ has index $2$ unless $n$ is a perfect square, in which case index $1$. Liars exist iff these indices differ.",
-    "significance": "Frames the whole file: liars measure the gap between 'square mod n' and 'Jacobi value +1'.",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi symbol", "Legendre symbol", "quadratic residue", "Solovay-Strassen primality test", "Euler liar"],
     "prerequisites": ["quadratic reciprocity", "multiplicative characters", "finite abelian groups"]
   },
@@ -19,7 +19,7 @@
     "title": "Squares Descend Along Divisibility",
     "content": "The single reusable lemma of the file: if m divides n then reduction ZMod n -> ZMod m is a ring homomorphism, and ring homomorphisms send squares to squares, so a square mod n is a square mod m. The proof is two lines: apply IsSquare.map to the cast homomorphism ZMod.castHom, then rewrite map_intCast to identify the image of the integer a. This is used contrapositively in both existence proofs: a non-square mod p can never be a square mod any multiple of p.",
     "mathContext": "$m \\mid n \\Rightarrow$ the projection $\\mathbb{Z}/n \\twoheadrightarrow \\mathbb{Z}/m$ is a ring hom; $\\mathrm{IsSquare}(a \\bmod n) \\Rightarrow \\mathrm{IsSquare}(a \\bmod m)$.",
-    "significance": "The pigeonhole that turns 'non-square mod p' into 'non-square mod pq', driving both liar constructions.",
+    "significance": "supporting",
     "relatedConcepts": ["ring homomorphism", "quotient ring", "IsSquare", "Chinese remainder theorem"],
     "prerequisites": ["modular arithmetic", "ring homomorphisms"]
   },
@@ -31,7 +31,7 @@
     "title": "Liars for Every Odd Squarefree Semiprime (CRT)",
     "content": "For distinct odd primes p != q, a liar is built by the Chinese Remainder Theorem: pick a non-square u mod p and a non-square v mod q (they exist since the squares are index-2 in each prime field), then choose an integer a congruent to u mod p and v mod q. Multiplicativity of the Jacobi symbol gives J(a | pq) = J(a|p) J(a|q) = (-1)(-1) = +1, while a is non-square mod p, hence (by the descent lemma) non-square mod pq. This is the general mechanism behind the classical n = 15 = 3*5 witness.",
     "mathContext": "$J(a \\mid pq) = \\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{a}{q}\\right) = (-1)(-1) = 1$, yet $a$ non-square mod $p$ blocks squareness mod $pq$.",
-    "significance": "First existence family: every product of two distinct odd primes has a liar.",
+    "significance": "supporting",
     "relatedConcepts": ["Chinese remainder theorem", "quadratic non-residue", "multiplicativity of Jacobi symbol", "FiniteField.exists_nonsquare"],
     "prerequisites": ["Chinese remainder theorem", "Legendre symbol", "finite fields"]
   },
@@ -43,7 +43,7 @@
     "title": "Liars for Every Odd Prime Square (a Different Mechanism)",
     "content": "For an odd prime p, the square modulus p^2 also has a liar, but by a distinct route. Here J(. | p^2) = (.|p)^2 is identically +1 on every unit, so the Jacobi symbol carries no information at all. Any non-square unit works: lift a non-square u mod p to a unit mod p^2. It is automatically a liar because J(u | p^2) = (-1)^2 = 1 while non-squareness mod p (descent lemma with p | p^2) forbids squareness mod p^2. This is the second, squarefree-failing family.",
     "mathContext": "$J(a \\mid p^2) = \\left(\\tfrac{a}{p}\\right)^2 = 1$ for every unit $a$, so the Jacobi kernel is all of $(\\mathbb{Z}/p^2)^\\times$ while squares are index $p(p-1)/2 \\cdot \\ldots$ — a proper subgroup.",
-    "significance": "Second existence family: any repeated prime factor (even a single squared prime) produces liars.",
+    "significance": "supporting",
     "relatedConcepts": ["prime power modulus", "Jacobi symbol", "quadratic non-residue", "lifting units"],
     "prerequisites": ["prime power arithmetic", "Jacobi symbol"]
   },
@@ -55,7 +55,7 @@
     "title": "The Sharp Boundary: Odd Exponent Prime Powers Have No Liar",
     "content": "The negative half that makes the classification sharp. For an odd prime power p^k with k ODD, J(a | p^k) = J(a|p)^k = 1 forces J(a|p) = 1 (the trichotomy of the Legendre symbol rules out 0 and -1 once k is odd: 0^k = 0 != 1 and (-1)^k = -1 != 1), hence a is a square mod p. Combined with Hensel lifting (a square mod p lifts to a square mod p^k for odd p) this shows p^k with k odd has NO Euler liar — so 'every odd composite has a liar' is FALSE, with n = 27 the smallest counterexample. Only the mod-p conclusion is formalized; Hensel lifting is the one missing Mathlib piece.",
     "mathContext": "$J(a\\mid p^k)=\\left(\\tfrac{a}{p}\\right)^k=1$ with $k$ odd $\\Rightarrow \\left(\\tfrac{a}{p}\\right)=1 \\Rightarrow a$ is a square mod $p$; smallest liar-free odd composite is $27=3^3$.",
-    "significance": "Corrects the naive over-generalization and delimits exactly which odd n have liars.",
+    "significance": "supporting",
     "relatedConcepts": ["Hensel's lemma", "Legendre symbol trichotomy", "prime power", "quadratic residue lifting"],
     "prerequisites": ["Legendre symbol", "parity arguments", "Hensel lifting"]
   },
@@ -67,7 +67,7 @@
     "title": "Classical Base Case n = 15 Recovered",
     "content": "The historical smallest witness J(2 | 15) = 1 (with 2 a non-square mod 15) is now derived as a corollary of the general semiprime theorem instantiated at p = 3, q = 5, rather than proved by a hand computation. This demonstrates that the general theorem genuinely subsumes the motivating example.",
     "mathContext": "$15 = 3 \\cdot 5$: $J(2\\mid 15) = \\left(\\tfrac{2}{3}\\right)\\left(\\tfrac{2}{5}\\right) = (-1)(-1) = 1$.",
-    "significance": "Sanity check that the abstraction recovers the concrete witness.",
+    "significance": "supporting",
     "relatedConcepts": ["Euler liar", "worked example"],
     "prerequisites": ["Jacobi symbol"]
   },
@@ -79,7 +79,7 @@
     "title": "Prime-Square Base Case n = 9 Recovered",
     "content": "The smallest prime-square instance, n = 9 = 3^2, obtained from the prime-square theorem at p = 3. Together with n = 15 these two corollaries exhibit the two distinct liar-producing mechanisms — coprime distinct primes versus a repeated prime — at their minimal moduli.",
     "mathContext": "$9 = 3^2$: every unit $a$ has $J(a\\mid 9)=\\left(\\tfrac{a}{3}\\right)^2=1$, so any non-square unit (e.g. a lift of a non-square mod 3) is a liar.",
-    "significance": "Minimal witness for the squared-prime mechanism.",
+    "significance": "supporting",
     "relatedConcepts": ["Euler liar", "prime square", "worked example"],
     "prerequisites": ["Jacobi symbol"]
   }

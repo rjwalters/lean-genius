@@ -10,7 +10,7 @@
     "title": "Brahmagupta–Fibonacci identity as Gaussian norm multiplicativity",
     "content": "The docstring frames the entry. Fermat's two-square theorem says which *primes* are sums of two squares (p = 2 or p ≡ 1 mod 4); extending that to composites rests on one structural fact — that 'is a sum of two squares' is closed under multiplication. This file formalizes exactly that building block: the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² in both branches, the resulting closure over ℤ and ℕ, and the conceptual source — the identity *is* the multiplicativity of the Gaussian-integer norm N(a+bi) = a²+b². The two branches correspond to multiplying by w versus its conjugate w̄, explaining why a product generically has two distinct representations.",
     "mathContext": "$(a^2+b^2)(c^2+d^2)=(ac-bd)^2+(ad+bc)^2$; equivalently $N(z)N(w)=N(zw)$ for $z=a+bi$, $w=c+di$ in $\\mathbb{Z}[i]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fermat's two-square theorem",
       "Brahmagupta–Fibonacci identity",
@@ -152,7 +152,7 @@
     "title": "Concrete verifications: 5·13 = 65 = 1²+8² = 4²+7²",
     "content": "Machine-checked instances make the two branches tangible: 5 = 1²+2² and 13 = 2²+3² multiply to 65, which the two identity branches express as 1²+8² and 4²+7². Each is closed by `decide`. These double as regression tests and illustrate the generic 'two distinct representations' phenomenon that the sister identity produces.",
     "mathContext": "$5\\cdot 13=65$; branch 1 $\\to 1^2+8^2$, branch 2 $\\to 4^2+7^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked examples",
       "distinct representations",

@@ -10,7 +10,7 @@
     "title": "One import: the whole chain is elementary",
     "content": "The file's only dependency is Mathlib.Analysis.SpecialFunctions.Pow.Real — real powers and the square root. Nothing about function spaces, Sobolev embeddings, or the Navier–Stokes PDE is imported, and that is the point: this entry isolates the purely algebraic/analytic core of Ladyzhenskaya's 2D interpolation inequality. The AM–GM step cross_le_grad_sq closes by nlinarith [sq_nonneg (d1 - d2)]; the assembly is one more nlinarith; and the square-root form needs only Real.sq_sqrt, Real.sqrt_sq, and monotonicity Real.sqrt_le_sqrt to pass from n4⁴ ≤ 2·n2²·ng² to n4² ≤ √2·n2·ng. The heavy analytic inputs (the integrated pointwise bound and the two Cauchy–Schwarz slicing estimates) enter only as hypotheses, keeping the machine-checked part sharp-constant-exact and axiom-free.",
     "mathContext": "The sharp constant $C = 2^{1/4}$ in $\\|u\\|_4 \\le 2^{1/4}\\|u\\|_2^{1/2}\\|\\nabla u\\|_2^{1/2}$ is recovered from $\\|u\\|_4^2 \\le \\sqrt{2}\\,\\|u\\|_2\\|\\nabla u\\|_2$ using only $\\mathrm{Real.sqrt}$ and its monotonicity.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.sqrt monotonicity",
       "nlinarith",
@@ -34,7 +34,7 @@
     "title": "Scope: the honest algebra/analysis split of Ladyzhenskaya’s proof",
     "content": "The module docstring frames the entry against parent `navier-stokes-oq-01`, which asks whether Ladyzhenskaya's 2D interpolation inequality ‖u‖_{L⁴} ≤ C·‖u‖_{L²}^{1/2}·‖∇u‖_{L²}^{1/2} — the estimate driving 2D Navier–Stokes regularity — can be formalized. As of Mathlib v4.26 there is no Gagliardo–Nirenberg–Sobolev or Ladyzhenskaya inequality, and the weak-derivative/Sobolev API for the analytic half is absent (a >1000-line foundational effort). The classical proof factors into (A) three ANALYTIC facts (an integrated pointwise product bound and two Cauchy–Schwarz slice estimates) and (B) a purely ALGEBRAIC assembly, including the sharp constant. This file verifies part (B) with 0 axioms / 0 sorries and exposes part (A) as explicit hypotheses — so it doubles as a precise specification of the missing Mathlib lemmas. Notation: n2 = ‖u‖_{L²}, n4 = ‖u‖_{L⁴}, d1 = ‖∂₁u‖_{L²}, d2 = ‖∂₂u‖_{L²}, ng² = d1² + d2².",
     "mathContext": "Target: $\\|u\\|_{L^4}\\le C\\,\\|u\\|_{L^2}^{1/2}\\|\\nabla u\\|_{L^2}^{1/2}$ with sharp $C=2^{1/4}$. Verified: the algebraic core (B); assumed: the three analytic inputs (A).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ladyzhenskaya inequality",
       "Gagliardo–Nirenberg–Sobolev",

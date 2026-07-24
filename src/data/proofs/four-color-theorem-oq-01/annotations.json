@@ -295,7 +295,7 @@
     "title": "The Heawood obstruction: chains must cross",
     "content": "Formalizes the shape of Heawood's counterexample to Kempe's argument: when both bichromatic chains for the two color pairs are connected, in a planar drawing they are forced to cross (a Jordan-curve-theorem phenomenon), sharing a vertex whose recoloring under the first swap invalidates the second. The Lean statement (heawood_crossing_forced) is a placeholder capturing the logical shape (both-connected ⇒ crossing) with the topological content stated as a hypothesis (paths_in_plane), honestly signaling that the planar-crossing fact is assumed rather than derived here.",
     "mathContext": "Two connected bichromatic chains linking opposite sides of a cycle must share a vertex (Jordan curve theorem), so simultaneous swaps interfere.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Heawood obstruction",
       "Jordan curve theorem",
@@ -319,7 +319,7 @@
     "title": "Toward a human-readable 4CT: flows and open approaches",
     "content": "Surveys why no case-check-free proof of the Four Color Theorem is known: algebraic reformulations have no reduction; Hadwiger's conjecture for t=5 implies 4CT but its own proof uses 4CT (circular); Tutte's flow–coloring duality reduces 4CT to the nowhere-zero 4-flow theorem for planar graphs, but 4-flow there again follows only from 4CT. The flow_coloring_equivalence statement records the duality reformulation (as k≥2 arithmetic) with the docstring giving the status of Tutte's 6-flow (Seymour 1981) and 5-flow theorems and the still-open 4-flow question.",
     "mathContext": "Planar $k$-colorability $\\Leftrightarrow$ nowhere-zero $k$-flow (Tutte); 6-flow and 5-flow proved, 4-flow $\\Leftrightarrow$ 4CT.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Tutte flow conjectures",
       "nowhere-zero flows",

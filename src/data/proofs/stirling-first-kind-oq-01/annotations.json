@@ -103,7 +103,7 @@
     "title": "Concrete Numerical Checks",
     "content": "Two examples close the file by kernel decide (axiom-free, no native_decide): the fourth row sums to ∑_{k} c(4,k) = 24 = 4!, corroborating the general row-sum theorem at n = 4, and c(4,2) = 11 — the number of permutations of a 4-element set with exactly two cycles. These serve as sanity checks that the Nat.stirlingFirst definition matches the intended unsigned Stirling numbers of the first kind and that the row-sum identity holds on a concrete instance.",
     "mathContext": "$\\sum_{k} c(4,k) = 24 = 4!$ and $c(4,2) = 11$, both by kernel decide.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked numerical checks",
       "kernel decide (axiom-free)",

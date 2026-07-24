@@ -7,7 +7,7 @@
     "title": "The Odd-Square Series via the Even/Odd Split of Basel",
     "content": "The header states the goal — ∑_{k≥0} 1/(2k+1)² = 1 + 1/9 + 1/25 + ⋯ = π²/8 — and the standard route from the Basel value ∑ 1/n² = π²/6. Split the Basel sum by index parity: ∑_{n≥1} 1/n² = ∑_{k≥1} 1/(2k)² + ∑_{k≥0} 1/(2k+1)². The even part is a quarter-scaled copy of the whole sum, ∑ 1/(2k)² = (1/4)∑ 1/k² = (1/4)(π²/6) = π²/24, so uniqueness of sums forces the odd part = π²/6 − π²/24 = π²/8. The proof imports Mathlib's Basel identity hasSum_zeta_two, recombines the even/odd subseries with HasSum.even_add_odd, rescales the even part via HasSum.mul_left, and pins the value with HasSum.unique — carrying out the decomposition explicitly rather than quoting the odd-square value. Status: complete, 0 sorries, 0 axioms.",
     "mathContext": "$\\sum_{k\\ge 0}\\frac{1}{(2k+1)^2} = \\frac{\\pi^2}{8}$, from $\\sum_{n\\ge1}\\frac1{n^2}=\\frac{\\pi^2}{6}$ split as $\\underbrace{\\tfrac14\\cdot\\tfrac{\\pi^2}{6}}_{\\text{even}=\\pi^2/24} + \\text{odd}$, giving odd $= \\tfrac{\\pi^2}{6}-\\tfrac{\\pi^2}{24}=\\tfrac{\\pi^2}{8}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Basel problem ζ(2)=π²/6", "even/odd series decomposition", "HasSum.even_add_odd", "Dirichlet beta / Catalan analog", "quarter-scaling of the even part"],
     "prerequisites": ["the Basel identity ∑ 1/n² = π²/6", "HasSum and uniqueness of sums", "summability and index reindexing"]
   },

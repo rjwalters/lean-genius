@@ -10,7 +10,7 @@
     "title": "A Three-Generation Dependency Stack, No New Definitions",
     "content": "The imports are the reason this file needs no induction of its own: every ingredient is inherited from three ancestor entries, and this file adds only two ring/linear_combination arguments on top. `Proofs.LucasSequenceDegree2Identities` (grandparent) supplies the definitions of Uₙ(P,Q), Vₙ(P,Q) and the master invariant Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ. `Proofs.LucasSequenceDegree2IdentitiesOQ01` (parent OQ-01) supplies the doubling formulas U₂ₙ = Uₙ·Vₙ, V₂ₙ = Vₙ² − 2·Qⁿ. `Proofs.LucasSequenceDegree2IdentitiesOQ02` (parent OQ-02) supplies the bilinear addition laws two_U_add, two_V_add. The `open LucasSequenceDegree2IdentitiesOQ02` (line 47) is what lets those addition-law lemmas be named unqualified. Because U₃ₙ and V₃ₙ are built entirely from lemmas already proved by structural induction upstream, this entry declares 0 definitions — it is pure algebraic descent from the degree-2 toolkit.",
     "mathContext": "Stack: master identity $V_n^2-DU_n^2=4Q^n$ (grandparent) $\\to$ doubling $U_{2n}=U_nV_n,\\ V_{2n}=V_n^2-2Q^n$ (OQ-01) $\\to$ addition laws (OQ-02) $\\to$ tripling here.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "inheriting definitions and lemmas via imports",
       "the master identity / doubling / addition-law ancestor entries",
@@ -123,7 +123,7 @@
     "title": "Kernel-decide Numeric Check Keeps the File Axiom-Free",
     "content": "A concrete sanity check at (P,Q) = (1,−1), n = 2 confirms all four claims by kernel reduction: F₆ = 8 and L₆ = 18, together with F₆ = F₂·(L₂² − 1) = 1·(9 − 1) = 8 and L₆ = L₂·(L₂² − 3) = 3·(9 − 3) = 18. Crucially each conjunct is discharged by `decide`, not `native_decide`: `decide` runs inside Lean's trusted kernel and adds no axioms, whereas `native_decide` would pull in Lean.ofReduceBool. Choosing `decide` is what lets the entry claim status verified / axiomCount 0 even though it verifies a numeric computation.",
     "mathContext": "At $n=2$: $F_2 = 1$, $L_2 = 3$, so $F_2(L_2^2 - (-1)^2) = 1\\cdot(9-1) = 8 = F_6$ and $L_2(L_2^2 - 3(-1)^2) = 3\\cdot(9-3) = 18 = L_6$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "kernel decide vs native_decide",
       "axiom-free verification",

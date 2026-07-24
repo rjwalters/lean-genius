@@ -189,7 +189,7 @@
     "title": "Right Distributivity for Free from Left Distributivity",
     "content": "Left distributivity `a*(b+c) = a*b + a*c` is proved by a short induction on `c`. Right distributivity is then obtained without any new induction: `(a+b)*c = c*(a+b) = c*a + c*b = a*c + b*c`, three rewrites using `mul_comm` and the left version. This is a small but characteristic economy — once commutativity is in hand, one distributive law implies the other, so only one of the two needs an inductive proof.",
     "mathContext": "$(a+b)c \\overset{\\text{comm}}{=} c(a+b) \\overset{\\text{L-distrib}}{=} ca + cb \\overset{\\text{comm}}{=} ac + bc.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "distributive laws",
       "commutativity",
@@ -211,7 +211,7 @@
     "title": "Associativity Spends Distributivity",
     "content": "`mul_assoc` is proved by induction on the last factor `c`. Its successor step is where distributivity is used: `(a*b)*(c+1) = (a*b)*c + a*b = a*(b*c) + a*b = a*(b*c + b) = a*(b*(c+1))`, folding the two summands back together with `left_distrib` (read right-to-left). This dependency — associativity resting on distributivity resting on commutativity resting on succ_mul — is the whole reason the lemmas appear in this order.",
     "mathContext": "$(ab)(c+1) = (ab)c + ab = a(bc) + ab = a(bc+b) = a\\,(b(c+1)).$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "associativity",
       "left distributivity",

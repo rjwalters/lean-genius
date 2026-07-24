@@ -10,7 +10,7 @@
     "title": "Irreducible representations of abelian groups are one-dimensional",
     "content": "Imports and the framing docstring for the foundational character-theory classification: over an algebraically closed field, every finite-dimensional irreducible representation of an abelian group is one-dimensional. The parent `SchursLemma.lean` proves the scalar form of Schur's lemma — every A-linear endomorphism of a finite-dimensional simple module over an algebraically closed field is multiplication by a scalar. This file turns that into a DIMENSION count in the one situation where the algebra itself supplies commuting endomorphisms: when A is commutative. The key observation is that for commutative A, every element a acts as an A-linear endomorphism m ↦ a • m; Schur forces each to be a scalar, so the whole algebra acts by scalars, a single nonzero vector already spans an A-submodule, and simplicity collapses M to a line. Three results follow: the algebraic core (simple module over a commutative algebra is 1-dimensional), the group-representation specialization (k[G] is commutative for abelian G), and the headline complex case k = ℂ.",
     "mathContext": "Setup: $k$ algebraically closed, $A$ a commutative $k$-algebra, $M$ a simple $A$-module finite-dimensional over $k$. Since $A$ is commutative, $\\mathrm{lsmul}\\,a : m \\mapsto a\\bullet m$ is $A$-linear, so Schur gives $a\\bullet m = c_a\\bullet m$. Then $\\mathrm{span}_k\\{v\\}$ is an $A$-submodule, and simplicity forces $\\mathrm{span}_k\\{v\\} = M$, i.e. $\\dim_k M = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Schur's lemma",
       "character theory",
@@ -37,7 +37,7 @@
     "title": "The commutative-algebra setting",
     "content": "The `section Commutative` typeclass context that all three inner results build on: an algebraically closed field k (`[Field k] [IsAlgClosed k]`), a COMMUTATIVE k-algebra A (`[CommRing A] [Algebra k A]`), and a module M that is simultaneously a k-module and an A-module with `[IsScalarTower k A M]`, is `[IsSimpleModule A M]`, and is `[FiniteDimensional k M]`. Commutativity of A is the single hypothesis that makes each `a • ·` an A-linear map (rather than merely additive), which is what lets Schur's scalar lemma apply to every algebra element. The `omit` line drops the unneeded instances for the purely algebraic commutation lemma that follows.",
     "mathContext": "$k$: algebraically closed field; $A$: commutative $k$-algebra; $M$: simple $A$-module, $\\dim_k M < \\infty$, with compatible $k$- and $A$-actions via $\\mathrm{IsScalarTower}\\,k\\,A\\,M$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "IsScalarTower",
       "IsSimpleModule",

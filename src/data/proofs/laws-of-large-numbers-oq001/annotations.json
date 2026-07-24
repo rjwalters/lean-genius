@@ -58,7 +58,7 @@
     "title": "From Null Step to Regularity by Centering",
     "content": "The full theorem `tendsto_toeplitz` needs only one extra idea: centering. Write ∑_{k<n} A n k x k = ∑_{k<n} A n k (x k − L) + (∑_{k<n} A n k)·L. The first term is the null step applied to the null sequence x k − L; the second tends to 1·L = L by the row-sum condition. This is why the null step is the genuine content: the row-sum-to-1 hypothesis enters solely to pin the limit's value.",
     "mathContext": "The decomposition $\\sum_{k<n} A_{n,k} x_k = \\sum_{k<n} A_{n,k}(x_k - L) + \\bigl(\\sum_{k<n} A_{n,k}\\bigr) L$ is an exact pointwise identity (`Finset.sum_add_distrib` and `Finset.sum_mul`). The first summand $\\to 0$ by `tendsto_toeplitz_zero`; the second $\\to 1 \\cdot L = L$ by (row). Necessity of all three conditions (the converse) is left open.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "regular summability",
       "centering a sequence",
@@ -80,7 +80,7 @@
     "title": "Cesàro Mean as a Corollary",
     "content": "Instantiating A n k = 1/n recovers the unweighted Cesàro mean: (∑_{k<n} x k)/n → L whenever x n → L. The three Toeplitz conditions become elementary: columns 1/n → 0, row absolute sums ∑_{k<n} |1/n| = n·(1/n) = 1 ≤ 1, and row sums = 1 → 1. This matches Mathlib's `Filter.Tendsto.cesaro` and witnesses that the general engine subsumes it — exactly the packaging the parent entry's open question asked for.",
     "mathContext": "With $A_{n,k} = 1/n$, the transform $\\sum_{k<n} \\tfrac1n x_k = \\tfrac1n \\sum_{k<n} x_k$ is the Cesàro average. The row sums $\\sum_{k<n} 1/n$ equal $1$ for every $n \\ge 1$ (via `Finset.sum_const` and `mul_inv_cancel₀`), so they tend to $1$; the columns $1/n \\to 0$ come from `tendsto_natCast_atTop_atTop.inv_tendsto_atTop`.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Cesàro mean",
       "special case",

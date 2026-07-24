@@ -19,7 +19,7 @@
     "title": "The CRT merge of companion blocks",
     "content": "The parent file supplies, sorry-free, the two facts about the block sum C(p) ⊕ C(q) = fromBlocks C(p) 0 0 C(q): its characteristic polynomial is the product p·q and its minimal polynomial is lcm p q. In general lcm p q divides p·q strictly, so the block sum is *derogatory* (minpoly ≠ charpoly). This file isolates the case that removes the gap — p, q coprime — where lcm p q = p·q, the two polynomials coincide, and the block sum becomes nonderogatory (cyclic), hence similar to the single companion matrix C(p·q). This is the matrix incarnation of the Chinese Remainder Theorem K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q).",
     "mathContext": "$\\operatorname{charpoly}(C(p)\\oplus C(q)) = pq,\\quad \\operatorname{minpoly}(C(p)\\oplus C(q)) = \\operatorname{lcm}(p,q)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["rational canonical form", "companion matrix", "Chinese Remainder Theorem", "invariant factors", "derogatory matrix"],
     "prerequisites": ["companion matrices", "minimal and characteristic polynomials"]
   },

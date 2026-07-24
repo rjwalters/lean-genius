@@ -7,7 +7,7 @@
     "title": "The rate-of-convergence question for the Cesàro average",
     "content": "The docstring frames OQ-02 of Erdős #1000. The parent studies Cassels' generalized totient φ_A(k) and its new-denominator density ρ_A(k) = φ_A(k)/n_k; Erdős asked whether the Cesàro average C_A(N) = (1/N)Σ_{k<N} ρ_A(k) can tend to 0, and Haight proved that it can. This file answers the quantitative follow-up — how fast? — by assembling the parent's density-ratio theory into a hierarchy of universal lower bounds on C_A(N): an Ω(1/N) floor, a harmonic floor, a large-ratio frequency floor, a prime-density floor, and a prime-sparsity necessary condition. Everything is 0-axiom, 0-sorry; the parent's two axioms (erdos_dichotomy, haight_resolution) are imported but never invoked.",
     "mathContext": "$\\rho_A(k) = \\dfrac{\\varphi_A(k)}{n_k}, \\qquad C_A(N) = \\dfrac{1}{N}\\sum_{k<N}\\rho_A(k).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cassels generalized totient", "new-denominator density", "Cesàro average", "Erdős #1000", "Haight's theorem"],
     "prerequisites": ["Euler totient", "Diophantine approximation", "Cesàro means"]
   },

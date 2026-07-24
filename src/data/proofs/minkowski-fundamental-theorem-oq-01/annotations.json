@@ -98,7 +98,7 @@
     "title": "Summary and Honest Scope: Infrastructure, Not the Full Second Theorem",
     "content": "The closing summary and #check commands make the entry's scope explicit. What is proved (0 sorries, 0 axioms): ConvexBody.scale (scaling preserves symmetric-convex-body structure), IndepLatticePoints + .mono (the 'k independent lattice points' predicate and its antitonicity in k), successiveMinimum (the i-th successive minimum λᵢ as the inf of admissible scalings, with nonnegativity and monotonicity λᵢ ≤ λⱼ), and firstMinimum_le_one_of_volume_gt (λ₀ ≤ 1 under the first-theorem hypothesis, from the parent's minkowski_fundamental). Crucially the entry is honest about what it does NOT do: this is the successive-minima infrastructure plus the first-minimum specialization, not the full Minkowski second theorem. The product bound secondTheorem_upper_statement is stated only as a scaffold Prop — its proof, and the matching lower bound, is the open analytic core (needing a basis realizing the successive minima and a simultaneous reduction argument), explicitly left as the next step and NOT assumed. The #check block lists the six exported items.",
     "mathContext": "Proved: $\\lambda_0 \\le 1$ (first minimum) and $\\lambda_i \\le \\lambda_j$ ($i\\le j$). Open scaffold: the second theorem's product bound $\\prod_i \\lambda_i \\cdot \\mathrm{vol}(S) \\lesssim 2^n$, stated but not proved.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Minkowski's second theorem", "successive minima", "honest scope / open scaffold", "infrastructure vs. full theorem", "#check verification"],
     "prerequisites": ["the successive-minima definitions above", "firstMinimum_le_one_of_volume_gt"]
   }

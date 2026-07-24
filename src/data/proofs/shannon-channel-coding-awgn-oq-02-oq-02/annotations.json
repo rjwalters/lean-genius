@@ -7,7 +7,7 @@
     "title": "Multi-Symbol AWGN Output Power: E[(∑ᵢ Wᵢ)²] = ∑ᵢ E[Wᵢ²]",
     "content": "The module docstring frames the open question. The parent ShannonChannelCodingAWGNOQ02 discharged the two-term output-power relation E[(X+Z)²] = E[X²] + E[Z²] for a single-symbol additive channel Y = X + Z (via IndepFun.variance_add). This entry generalizes it to a block of n symbols: the aggregate output is a finite sum ∑_{i∈s} Wᵢ of per-symbol signal+noise terms, and when the contributions are pairwise independent and zero-mean, the aggregate power is the sum of individual powers, E[(∑_{i∈s} Wᵢ)²] = ∑_{i∈s} E[Wᵢ²]. The mathematical content is the variance-of-a-sum fact for pairwise-independent families (ProbabilityTheory.IndepFun.variance_sum, where vanishing pairwise covariances collapse the double sum to the diagonal), specialized to zero mean via E[W²] = Var[W] (variance_eq_sub). Crucially, PAIRWISE independence — not full/mutual — already suffices, exactly as for the classical Bienaymé identity; the two-term parent result is the s = {X,Z} case. Everything is assembled from Mathlib's probability layer; axiom-free and sorry-free.",
     "mathContext": "$\\mathbb{E}\\big[(\\sum_{i\\in s} W_i)^2\\big] = \\sum_{i\\in s}\\mathbb{E}[W_i^2]$ for pairwise-independent zero-mean $W_i$ (Bienaymé), generalizing the parent's $\\mathbb{E}[(X+Z)^2]=\\mathbb{E}[X^2]+\\mathbb{E}[Z^2]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["AWGN channel", "Bienaymé identity", "variance of a sum", "pairwise vs mutual independence", "Shannon channel coding"],
     "prerequisites": ["variance and second moments", "pairwise independence", "the parent two-term output-power relation"]
   },
@@ -115,7 +115,7 @@
     "title": "Block Power Budget with Named Powers",
     "content": "awgn_multisymbol_output_power restates the core identity with per-contribution powers Pᵢ = E[Wᵢ²]: the aggregate output power is ∑ᵢ Pᵢ. For a signal-plus-noise block this is the total-power budget P_total = ∑ signal powers + ∑ noise powers — the n-symbol analogue of the parent's single-symbol E[Y²] = P + N, recovered as the case s = {signal, noise}. The proof simply rewrites the named powers into awgn_multisymbol_power.",
     "mathContext": "$\\mathbb{E}\\!\\left[\\left(\\sum_{i\\in s} W_i\\right)^2\\right] = \\sum_{i\\in s} P_i, \\qquad P_i := \\mathbb{E}[W_i^2]$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "power budget",
       "AWGN channel capacity",

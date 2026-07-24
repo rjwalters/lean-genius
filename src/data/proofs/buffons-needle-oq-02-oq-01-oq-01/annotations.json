@@ -130,7 +130,7 @@
     "title": "Sanity checks and the n-dimensional Buffon formula in closed form",
     "content": "Part VI recomputes the first four crossing factors directly from the closed form — $\\alpha_2 = 2/\\pi$ (using $\\sqrt\\pi\\cdot\\sqrt\\pi = \\pi$ via `Real.mul_self_sqrt`), $\\alpha_3 = 1/2$, $\\alpha_4 = 4/(3\\pi)$, $\\alpha_5 = 3/8$ — confirming the formula reproduces the parent's per-dimension computations as *instances* rather than separate calculations, and exhibiting the even/odd split ($\\alpha_2, \\alpha_4$ carry $1/\\pi$; $\\alpha_3, \\alpha_5$ are rational). Part VII assembles the payoff `buffonNd_closed_form`: the expected number of hyperplane crossings of a length-$L$ needle against a spacing-$d$ lattice in $\\mathbb{R}^n$ is $\\mathbb{E} = \\tfrac{\\Gamma(n/2)}{\\sqrt\\pi\\,\\Gamma((n+1)/2)}\\cdot\\tfrac{L}{d}$ — the Cauchy–Crofton formula with the crossing factor now fully explicit, recovering the classical 2D $2L/(\\pi d)$ and 3D $L/(2d)$ as the $n = 2, 3$ cases.",
     "mathContext": "α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8 from the formula; buffonNd: E[crossings] = (Γ(n/2)/(√π·Γ((n+1)/2)))·L/d, recovering 2L/(πd) (n=2) and L/(2d) (n=3).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.mul_self_sqrt (√π·√π = π)",
       "even/odd dimension dichotomy",

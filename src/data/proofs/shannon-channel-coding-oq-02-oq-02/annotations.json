@@ -54,7 +54,7 @@
     "title": "Property (2): the Size Bound |A_ε| ≤ 2^{n(H(X,Y)+ε)}",
     "content": "`jointlyTypicalSet_card_le` instantiates the abstract counting bound with δ = 2^{-n(H(X,Y)+ε)}, the definitional lower bound on the joint probability of a typical sequence. Positivity of δ comes from `Real.rpow_pos_of_pos`, and the final rewrite `Real.rpow_neg` + `inv_inv` turns 1/δ = 1/2^{-n(H(X,Y)+ε)} into 2^{n(H(X,Y)+ε)}. Intuitively: since each typical sequence occupies at least a 2^{-n(H(X,Y)+ε)} share of the total probability, there is room for at most 2^{n(H(X,Y)+ε)} of them.",
     "mathContext": "$\\delta = 2^{-n(H(X,Y)+\\varepsilon)} \\;\\Rightarrow\\; |A_\\varepsilon| \\le 1/\\delta = 2^{n(H(X,Y)+\\varepsilon)}.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "typical set size",
       "asymptotic equipartition property"
@@ -98,7 +98,7 @@
     "title": "Proved vs. Deferred: Why the Assumption Count Stays 0",
     "content": "The closing remark draws an honest boundary around what this file establishes. It formalizes the non-asymptotic, combinatorial core — Properties (2) and (3) — by taking the per-sequence probability bounds that *define* the jointly ε-typical set as hypotheses (`hpmem`, `hqmem`). This is faithful rather than circular: those bounds are definitional (a sequence lies in A_ε^{(n)} precisely when its empirical entropies in X, Y, and (X,Y) are all within ε of the true values), so the size and independence bounds are then exact finite-sum inequalities with no hidden analysis. The analytic half — Property (1), P((Xⁿ,Yⁿ) ∈ A_ε) → 1 — is the weak law of large numbers applied to the empirical information density -(1/n)·log p(Xⁿ,Yⁿ), and is deliberately NOT axiomatized: no `axiom` is introduced, so the assumption count stays 0 (consistent with the meta status `verified` and axiomCount 0). Formalizing (1) would require the i.i.d.-product construction plus an L²/Chebyshev concentration argument atop Mathlib's `ProbabilityTheory` law-of-large-numbers infrastructure — the natural next target. The trailing `#check` commands are a lightweight regression guard pinning the four exported names.",
     "mathContext": "$-\\tfrac{1}{n}\\log p(X^n,Y^n) \\xrightarrow{\\;P\\;} H(X,Y) \\;\\Rightarrow\\; P\\big((X^n,Y^n)\\in A_\\varepsilon\\big)\\to 1\\quad\\text{(Property (1), deferred to the WLLN).}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "weak law of large numbers",
       "asymptotic equipartition property",

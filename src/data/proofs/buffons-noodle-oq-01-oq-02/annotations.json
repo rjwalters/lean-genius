@@ -55,7 +55,7 @@
     "title": "Worked Instances: Harmonic Spacings and the Square Grid",
     "content": "Section 4 exercises the general identity on two concrete family sets. The first takes three line families with spacings 1, 2, 3 and evaluates the expected crossings to (2L/π)(1 + 1/2 + 1/3), the harmonic partial sum appearing directly as ∑ⱼ 1/dⱼ — closed by rewriting with buffon_noodle_multi_family and Fin.sum_univ_three. The second recovers the parent's square grid as the k=2 equal-spacing case: two families at common spacing d give (2L/π)(1/d + 1/d) = 4L/(πd), dispatched by buffon_noodle_multi_family_const then push_cast; ring. Together they confirm the general formula degenerates correctly to the known single/double-grid Buffon–Laplace results and shows the reciprocal-spacing sum is the exact object that generalizes the classic 2L/(πd).",
     "mathContext": "Spacings $1,2,3$: $\\frac{2L}{\\pi}\\left(1+\\tfrac12+\\tfrac13\\right)$. Square grid ($k=2$, spacing $d$): $\\frac{2L}{\\pi}\\cdot\\frac2d = \\frac{4L}{\\pi d}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "harmonic sum of spacings", "square grid recovery", "Buffon–Laplace formula", "sanity check"],
     "prerequisites": ["buffon_noodle_multi_family", "buffon_noodle_multi_family_const", "Fin.sum_univ_three"]
   }

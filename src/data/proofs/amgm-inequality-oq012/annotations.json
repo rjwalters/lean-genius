@@ -7,7 +7,7 @@
     "title": "Newton's k = 2 rung, cleared and specialized to n = 3",
     "content": "The docstring states Newton's log-concavity rung S₂² ≥ S₁S₃ for the normalized (Maclaurin) symmetric means Sₖ = eₖ/C(n,k), and clears the binomial denominators to the integer form 2(n-2)·e₂² ≥ 3(n-1)·e₁e₃. It emphasizes that Newton's inequalities hold for ALL real xᵢ (they descend from the real-rootedness of ∏(t−xᵢ) and its derivatives, never from a sign hypothesis), so this all-reals n = 3 statement strictly strengthens the gallery's nonnegative NewtonLC.newton_ineq. At n = 3 the cleared constant is 2(n-2) = 2, 3(n-1) = 6, giving e₂² ≥ 3e₁e₃. Note: the docstring's parenthetical claiming the square-sum vanishes on the diagonal x = y = z is imprecise — the theorem newton_k2_equality_iff establishes the honest locus xy = yz = zx (see the equality-locus annotation).",
     "mathContext": "$S_2^2 \\ge S_1 S_3$ with $S_k = e_k/\\binom{n}{k}$; cleared: $2(n-2)\\,e_2^2 \\ge 3(n-1)\\,e_1 e_3$; at $n=3$: $e_2^2 \\ge 3 e_1 e_3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's inequalities", "Maclaurin's inequality", "log-concavity", "real-rooted polynomials", "elementary symmetric means"],
     "prerequisites": ["elementary symmetric polynomials", "binomial coefficients"]
   },

@@ -7,7 +7,7 @@
     "title": "Framing: Existence-of-Shape vs. Uniqueness",
     "content": "The module docstring positions this entry as the uniqueness companion to the parent (LittleWedderburnOQ01), which records the arithmetic shadow of Wedderburn's little theorem — the order of a finite division ring is a prime power p^n. Existence-of-shape (there IS a field of each prime-power order) and uniqueness (there is at most ONE up to isomorphism) are logically independent statements, and Mathlib records only one direction of uniqueness as a named lemma: FiniteField.ringEquivOfCardEq builds a noncanonical isomorphism from equal cardinality, routed through GaloisField p n. The docstring is explicit that the trivial converse (isomorphic ⟹ equal order) is NOT in Mathlib as a named statement, so the classification iff, its contrapositive, the canonical-representative packaging, and the ZMod corollaries are the genuinely new content that turns a one-directional construction into the standard 'exactly one finite field of each prime-power order'.",
     "mathContext": "Existence of shape: $|D| = p^n$ for a finite division ring $D$ (parent). Uniqueness: for each prime power $q$ there is, up to isomorphism, exactly one field of order $q$ (this entry).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Wedderburn's little theorem", "finite field", "existence and uniqueness", "prime power"],
     "prerequisites": ["finite fields", "division rings"]
   },

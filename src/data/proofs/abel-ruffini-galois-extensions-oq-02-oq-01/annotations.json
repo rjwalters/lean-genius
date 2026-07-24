@@ -28,7 +28,7 @@
     "title": "Ambient Setup: a Finite Galois Extension E/F",
     "content": "Every result in the file is stated relative to the typeclass context on the `variable` line: `[Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [IsGalois F E]`. These four instances are exactly the hypotheses of the Fundamental Theorem — finite dimension makes the Galois group finite and the correspondence a bijection (not merely a Galois connection), while `IsGalois F E` (= normal + separable) is what forces `fixedField ∘ fixingSubgroup = id` and makes both implications of the normal refinement available. Separability of the ambient extension is also what lets the `Normal F K` rephrasing recover `IsGalois F K` for free. The import of `Proofs.AbelRuffiniGaloisExtensionsOQ02` brings the parent's `intermediateFieldEquivSubgroup'` bijection and `IsGalois` instances into scope; `open IntermediateField` exposes `fixedField`/`fixingSubgroup`.",
     "mathContext": "Ambient hypotheses: $E/F$ finite ($[E:F] < \\infty$) and Galois ($\\mathrm{Normal} \\wedge \\mathrm{Separable}$), so $\\mathrm{Gal}(E/F)$ is finite and $K \\mapsto K.\\mathrm{fixingSubgroup}$ is a bijection.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "FiniteDimensional",
       "IsGalois = Normal + Separable",

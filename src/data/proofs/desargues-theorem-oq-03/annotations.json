@@ -33,7 +33,7 @@
     "title": "Incidence as a Determinant Condition",
     "content": "Vec = Fin 3 → ℝ are homogeneous coordinates. rowMatrix p q r stacks three vectors as the rows of a 3×3 matrix, and both Collinear (points) and Concurrent (lines) are the single condition det(rowMatrix …) = 0. That the two predicates are literally identical is projective duality made concrete.",
     "mathContext": "Collinear p q r := det(rowMatrix p q r) = 0; Concurrent l m n is the same determinant condition on line coefficients.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "homogeneous coordinates",
       "projective duality",
@@ -56,7 +56,7 @@
     "title": "The Determinant Transformation Law (the FTPG engine)",
     "content": "det_rowMatrix_mulVec proves det[M·p, M·q, M·r] = det(M)·det[p,q,r]. The key move: the matrix whose rows are M·p, M·q, M·r equals (rowMatrix p q r)·Mᵀ — each output row is M applied to an input row, which in matrix form is right-multiplication by Mᵀ. Then det_mul and det_transpose give det = det(rowMatrix p q r)·det M. This single identity carries all the projective invariance below.",
     "mathContext": "[M·p; M·q; M·r] = (rowMatrix p q r)·Mᵀ, so det = det(rowMatrix p q r)·det M.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Matrix.det_mul",
       "Matrix.det_transpose",
@@ -80,7 +80,7 @@
     "title": "Linear Maps Preserve Incidence; Invertible Maps Are Collineations",
     "content": "collinear_map and concurrent_map: ANY linear map M preserves incidence, since det scales by det M and det M · 0 = 0 — even singular M collapse things onto (still-incident) lower-dimensional sets. collinear_map_iff and concurrent_map_iff: an INVERTIBLE M (det M ≠ 0) also reflects incidence, via mul_eq_zero — the image is incident iff the source is. Reflection is exactly what makes M a collineation, and it needs precisely the GL₃ hypothesis det M ≠ 0.",
     "mathContext": "Preserve: det M·0 = 0 (all M). Reflect: det M·X = 0 ∧ det M ≠ 0 ⟹ X = 0 (invertible M).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "collineation",
       "GL₃",
@@ -124,7 +124,7 @@
     "title": "The Desargues Configuration Is Projectively Invariant",
     "content": "desargues_config_invariant: for an invertible M, both incidence facts that constitute Desargues's theorem — the three joining lines being concurrent, and the three intersection points being collinear — transport in each direction along M. So the entire configuration is invariant under the projective linear group. This is the precise sense in which Desargues's theorem belongs to projective (not affine or metric) geometry, and the reachable, axiom-free core of the FTPG.",
     "mathContext": "det M ≠ 0 ⟹ [Concurrent(M·lines) ↔ Concurrent(lines)] ∧ [Collinear(M·pts) ↔ Collinear(pts)].",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "projective invariance",
       "Desargues configuration",

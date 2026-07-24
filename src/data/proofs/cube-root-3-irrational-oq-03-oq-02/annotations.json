@@ -7,7 +7,7 @@
     "title": "Doubling the Cube: the Algebraic Reduction of Constructibility",
     "content": "The module docstring frames the file as the geometric corollary of the parent's degree computation [ℚ(∛3):ℚ] = 3 (finrank_adjoin_cbrt3): since Mathlib has no development of ruler-and-compass constructibility as a geometric notion, the file adopts the standard algebraic characterization directly as a definition — a real number is constructible iff it lies in a field reached from ℚ by a finite tower of quadratic (degree-2) extensions (IsQuadraticTower). The classical geometry⟺algebra equivalence (each ruler/compass step intersects lines and circles, adjoining at most a square root) is explicitly flagged as the one unformalized, universally-accepted step; everything downstream of the definition is fully verified. It previews the four results: quadratic towers have 2-power degree, hence so do constructible numbers, hence any degree not a power of 2 obstructs constructibility, and ∛3 (degree 3) fails this test — resolving the Delian problem of doubling the cube.",
     "mathContext": "Constructible$(\\alpha)$ $:\\Leftrightarrow$ $\\alpha$ lies in a tower $\\mathbb{Q}=K_0\\subseteq\\cdots\\subseteq K_n$ with each $[K_{i+1}:K_i]=2$ — taken as the *definition*, with the geometric⟺algebraic equivalence itself classical and unformalized.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["ruler-and-compass constructions", "doubling the cube", "Delian problem", "Wantzel's theorem", "algebraic characterization of constructibility"],
     "prerequisites": ["field extensions", "the parent entry's degree computation [ℚ(∛3):ℚ] = 3"]
   },

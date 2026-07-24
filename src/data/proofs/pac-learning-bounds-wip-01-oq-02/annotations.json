@@ -35,7 +35,7 @@
     "title": "shatters_iff_finsetShatters: the definitional bridge",
     "content": "Proves the parent's Shatters H S — defined as H.image (· ∩ S) = S.powerset — coincides with Mathlib's Finset.Shatters H S, whose shatters_iff characterisation uses H.image (S ∩ ·) = S.powerset. Finset.image_congr with Finset.inter_comm identifies the two restriction families, so the two shattering predicates are logically equivalent.",
     "mathContext": "The restriction of h to S is h ∩ S = S ∩ h; the two definitions traverse the same family {h ∩ S : h ∈ H} and are equal.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "shattering",
       "trace",
@@ -58,7 +58,7 @@
     "title": "vcDim_eq: the two VC dimensions are equal",
     "content": "finsetVcDim_le_vcDim bounds Mathlib's Finset.vcDim H (a Finset.sup over the shatterer) by the parent's VCDim H, since every set in the shatterer is parent-shattered (mem_shatterer + the bridge + card_le_vcDim). vcDim_le_finsetVcDim is the reverse via csSup_le: any parent-shattered set is Mathlib-shattered, so its cardinality is ≤ Finset.vcDim H (Shatters.card_le_vcDim). Together they give vcDim_eq : Finset.vcDim H = VCDim H.",
     "mathContext": "VCDim H = sSup{|S| : H shatters S} equals Finset.vcDim H = shatterer.sup card as a single natural number, so no numeric mismatch survives into the final bound.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "VC dimension",
       "supremum",

@@ -10,7 +10,7 @@
     "title": "Edge-Gluing Additivity: The Inductive Step of Pick's Theorem",
     "content": "Pick's theorem A = I + B/2 - 1 is proved by induction: a base case for the primitive triangle, plus an additivity step showing the formula survives gluing two polygons along a shared edge. This file supplies that step for the smallest configuration — two triangles T1 = (v1,v2,v3), T2 = (v1,v3,v4) glued along the diagonal v1-v3 into a quadrilateral Q. The headline result is I(Q) = I(T1) + I(T2) + (diagGCD - 1), where diagGCD is the GCD lattice-point count of the shared diagonal. When the diagonal is primitive (diagGCD = 1) additivity is exact: I(Q) = I(T1) + I(T2).",
     "mathContext": "Every result factors through the parent file's determinant/GCD bridge quantities, so the geometric gluing lemma reduces to algebraic identities.",
-    "significance": "Turns the base-case Pick verification (primitive triangle) into a proof for arbitrary triangulated lattice polygons by induction on the triangle count.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Pick's theorem",
       "lattice polygon",
@@ -34,7 +34,7 @@
     "title": "Triangle and Quadrilateral Bridge Data",
     "content": "LatticeTriangle carries det (signed double area), twiceArea = |det|, edgeGCD (per-edge GCD count), boundaryCount = sum of the three edge GCDs, and pickInterior = twiceArea/2 - boundaryCount/2 + 1. LatticeQuad (v1,v2,v3,v4) splits along the diagonal v1-v3 into T1 = (v1,v2,v3) and T2 = (v1,v3,v4). Its signedDoubleArea is the shoelace sum written as det(T1) + det(T2); diagGCD is the GCD count of the diagonal; twiceArea is the sum of the two triangle areas; boundaryCount runs over the four OUTER edges only; and pickInterior applies Pick's formula.",
     "mathContext": "The quadrilateral boundary deliberately excludes the diagonal — the source of the boundary bookkeeping in Section IV.",
-    "significance": "Restates the parent chain's bridge quantities self-containedly and extends them to the gluing configuration.",
+    "significance": "supporting",
     "relatedConcepts": [
       "shoelace formula",
       "determinant",
@@ -55,7 +55,7 @@
     "title": "Signed-Area Additivity",
     "content": "signedDoubleArea_eq_add_det proves the shoelace double-area of Q is exactly det(T1) + det(T2), a pure polynomial identity closed by simp on the definitions. signedDoubleArea_natAbs_eq_twiceArea adds the orientation hypotheses 0 <= det(T1), 0 <= det(T2) (a convex counter-clockwise quad) to conclude the UNSIGNED areas add: |signedDoubleArea Q| = twiceArea(T1) + twiceArea(T2), discharged by omega once the determinant sum is exposed.",
     "mathContext": "Area is exactly additive under edge-gluing; orientation converts signed additivity into unsigned area additivity.",
-    "significance": "The area half of Pick's inductive step, with no measure theory — just the shoelace identity and integer arithmetic.",
+    "significance": "supporting",
     "relatedConcepts": [
       "signed area",
       "orientation",
@@ -76,7 +76,7 @@
     "title": "Diagonal Symmetry and Boundary Additivity",
     "content": "T1_edgeGCD_two and T2_edgeGCD_zero show the shared diagonal v1-v3 is seen with the SAME GCD count from either triangle — edge 2 of T1 and edge 0 of T2 — using the negation symmetry (a-b).natAbs = (b-a).natAbs via Int.natAbs_neg. boundaryCount_add then gives B(T1) + B(T2) = B(Q) + 2*diagGCD: summing the two triangle boundary counts double-counts exactly the diagonal, which is absent from the quadrilateral boundary.",
     "mathContext": "The single combinatorial identity that separates the pieces' shared edge from the merged boundary.",
-    "significance": "The boundary half of Pick's inductive step, isolating the 2*diagGCD overlap that produces the interior-count correction term.",
+    "significance": "supporting",
     "relatedConcepts": [
       "boundary lattice points",
       "gcd of coordinate differences",
@@ -97,7 +97,7 @@
     "title": "The Additivity Lemma (S4)",
     "content": "pickInterior_add is the headline result: I(Q) = I(T1) + I(T2) + (diagGCD - 1). It substitutes the boundary identity B(T1) + B(T2) = B(Q) + 2*diagGCD into Pick's formula and clears the /2 denominators with linarith over the rationals. pickInterior_add_primitive specializes to diagGCD = 1 for exact additivity I(Q) = I(T1) + I(T2), and pick_functional_additive restates it as additivity of the Pick functional twiceArea/2 - boundaryCount/2 + 1. The correction term diagGCD - 1 is exactly the number of lattice points strictly interior to the shared diagonal — boundary points of the two pieces that become interior points of Q.",
     "mathContext": "Additivity of the Pick functional under primitive edge-gluing is what lets the base-case proof propagate to all triangulated lattice polygons.",
-    "significance": "The deliverable S4 lemma: the algebraic heart of the inductive proof of Pick's theorem, with a clean interpretation of the non-primitive correction.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Pick functional",
       "additivity",
@@ -120,7 +120,7 @@
     "title": "Concrete Verification: Unit Square and 2x2 Square",
     "content": "The unit square (0,0),(1,0),(1,1),(0,1) glues two unit triangles on the primitive diagonal (1,1): diagGCD = 1, twiceArea = 2, boundaryCount = 4, pickInterior = 0 = 0 + 0. The 2x2 square (0,0),(2,0),(2,2),(0,2) has diagonal (2,2) with diagGCD = 2: pickInterior = 1 = 0 + 0 + (2 - 1), exhibiting the correction term as the diagonal midpoint (1,1) becoming the single interior point. All checks use kernel `decide`, so no native_decide and no Lean.ofReduceBool axiom appears.",
     "mathContext": "Small worked examples confirm both exact primitive additivity and the general correction term.",
-    "significance": "Demonstrates the lemma on concrete lattice polygons, including a non-primitive gluing where the correction is nonzero.",
+    "significance": "supporting",
     "relatedConcepts": [
       "unit square",
       "interior point count",

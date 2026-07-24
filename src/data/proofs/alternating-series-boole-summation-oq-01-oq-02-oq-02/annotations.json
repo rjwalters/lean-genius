@@ -10,7 +10,7 @@
     "title": "Carrying the sharp remainder bound across the Boole transform",
     "content": "The header sets up the meeting of two threads: the grandparent's limit-form Boole identity (the forward-difference series altSum (Δa) 0 m converges to T = a_0 − 2S) and the parent's sharp remainder bound |S − altSum a 0 m| ≤ a_m for the original series. The open question is the rate at which the Boole series approaches T. The preview answer: the sharp a_m bound is PRESERVED — obtained from an exact remainder identity plus the sign correlation of the parent's even/odd bracketing, which collapses the naive triangle-inequality estimate 3 a_m to a_m. Both parent entries are imported and opened to reuse altSum, fdiff, boole_first, altSum_succ, fdiff_altSum_tendsto, even_partial_le, and le_odd_partial.",
     "mathContext": "Original: $|S - \\mathrm{altSum}\\,a\\,0\\,m| \\le a_m$; Boole limit $T = a_0 - 2S$; target $|T - \\mathrm{altSum}\\,(\\Delta a)\\,0\\,m| \\le a_m$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "Boole / Euler summation transform",
       "series acceleration",
@@ -34,7 +34,7 @@
     "title": "The exact finite identity and the remainder identity",
     "content": "fdiff_altSum_eq solves the grandparent's finite Boole formula boole_first (at n = 0) for the forward-difference partial sum, altSum (Δa) 0 m = a_0 − (-1)^m a_m − 2·altSum a 0 m, in a single linear_combination — exact for every m, no convergence used. fdiff_remainder_eq subtracts this from the limit value a_0 − 2S (a ring step) to get the exact remainder identity (a_0 − 2S) − altSum (Δa) 0 m = (-1)^m a_m − 2·(S − altSum a 0 m), tying the Boole-series remainder to the original-series remainder r_m = S − altSum a 0 m. These two algebraic identities hold the quantitative content; only the sign of r_m remains to be supplied.",
     "mathContext": "$\\mathrm{altSum}\\,(\\Delta a)\\,0\\,m = a_0 - (-1)^m a_m - 2\\,\\mathrm{altSum}\\,a\\,0\\,m$; remainder $= (-1)^m a_m - 2 r_m$.",
-    "significance": "essential",
+    "significance": "critical",
     "relatedConcepts": [
       "first-order Boole summation formula",
       "linear_combination",

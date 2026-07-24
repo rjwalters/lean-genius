@@ -7,7 +7,7 @@
     "title": "PGL to PΓL: What the Parent Left Open",
     "content": "The parent entry (OQ-03) proved the **linear** half of the algebraic engine behind the Fundamental Theorem of Projective Geometry (FTPG) over $\\mathbb{R}$: an invertible matrix $M$ acts on $PG(2,\\mathbb{R})$ by a collineation because $\\det[Mp, Mq, Mr] = \\det M \\cdot \\det[p,q,r]$. It left two gaps, which this file fills over an **arbitrary field** $K$. (1) The *semilinear* part: the FTPG names $P\\Gamma L(3,K) = PGL(3,K) \\rtimes \\mathrm{Aut}(K)$, not merely $PGL$, and the field-automorphism twist is invisible over $\\mathbb{R}$ because $\\mathrm{Aut}(\\mathbb{R})$ is trivial. (2) *Frame rigidity*: a projective transformation should be determined by its action on a frame. Working over general $K$ is the natural home of the Desargues $\\Rightarrow$ coordinatization (Hilbert) $\\Rightarrow$ FTPG chain, since a Desarguesian plane is exactly one coordinatizable as $PG(2,K)$.",
     "mathContext": "$P\\Gamma L(3,K) = PGL(3,K) \\rtimes \\mathrm{Aut}(K)$; over $\\mathbb{R}$, $\\mathrm{Aut}(\\mathbb{R}) = 1$ so semilinear $=$ linear.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fundamental Theorem of Projective Geometry",
       "Desargues's theorem",
