@@ -31,7 +31,8 @@
       "Countable syntax ⟹ countably many definitions — the single reason every layer of the nameability hierarchy (algebraic, computable, definable) is countable.",
       "Uniqueness makes the map injective: two reals defined by the same formula would each be its sole realiser, hence equal.",
       "Stated for an arbitrary countable language, the theorem subsumes 'algebraic reals are countable' (Tarski's quantifier elimination makes the ∅-definable reals of the ordered field ℝ exactly the real algebraic numbers).",
-      "The undefinable-uncountable corollary is the Skolem/Tarski punchline: a countable language names only ℵ₀ of the continuum-many reals."
+      "The undefinable-uncountable corollary is the Skolem/Tarski punchline: a countable language names only ℵ₀ of the continuum-many reals.",
+      "Robust to enrichment, not tied to a fixed signature: the theorem is stated for an arbitrary countable language L, so enriching L with extra function or relation symbols (exp, sin, an order relation, even an oracle predicate) leaves the conclusion untouched as long as the enlarged language stays countable — the countability bound depends only on the language being countable, never on which particular symbols it contains."
     ],
     "prerequisites": [
       "First-order model theory (FirstOrder.Language: terms, bounded formulas, the satisfaction relation Realize)",
