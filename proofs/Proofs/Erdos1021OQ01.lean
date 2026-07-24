@@ -184,7 +184,8 @@ theorem lower_bound_exponent_tendsto :
     - 2 provable results (big_O ≠ little_o, lower bound exponent approaches 3/2)
     - 1 axiomatic result: KST trivial bound
     - 1 axiomatic result: probabilistic lower bound
-    - 3 sorry results: k3 weak conjecture proof, k3/k independence, and o() bound uniformity
+    - 4 sorry results: k3 weak conjecture proof, k3/k independence, o() bound uniformity,
+      and lower-bound exponent → 3/2 (the 1/(k-1) → 0 limit step)
 
     Status: SURVEY + INFRASTRUCTURE
 -/
