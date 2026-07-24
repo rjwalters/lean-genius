@@ -119,12 +119,20 @@
       "mathContext": "Transports the kernel limits (in the increment t) to limits in the curvature κ."
     },
     {
-      "id": "flat-limit",
-      "title": "One-sided, punctured, and full flat limits, and the Ceva ratio",
+      "id": "one-sided-limits",
+      "title": "One-sided flat limits and their punctured glue",
       "startLine": 101,
+      "endLine": 130,
+      "summary": "tendsto_sinKappa_nhdsGT and tendsto_sinKappa_nhdsLT compose the kernel limits with the √κ / √(−κ) change of variables to give sin_κ(x) → x from the right (spherical, κ → 0⁺) and from the left (hyperbolic, κ → 0⁻). tendsto_sinKappa_punctured glues these two one-sided limits into a single punctured limit at κ ≠ 0 via 𝓝[<] 0 ⊔ 𝓝[>] 0 = 𝓝[≠] 0.",
+      "mathContext": "Each one-sided limit rewrites `sinKappa κ x` to the kernel's difference-quotient form via `if_pos`/`if_neg` before invoking `hcomp.congr'`, so the case split on the sign of κ is purely definitional bookkeeping — the analytic content is entirely in the kernels proved earlier."
+    },
+    {
+      "id": "full-flat-limit",
+      "title": "Full two-sided flat limit and the Ceva-ratio corollary",
+      "startLine": 131,
       "endLine": 151,
-      "summary": "tendsto_sinKappa_nhdsGT/nhdsLT (one-sided), tendsto_sinKappa_punctured (glue via 𝓝[<] ⊔ 𝓝[>] = 𝓝[≠]), tendsto_sinKappa_flat (full 𝓝 0 limit, adjoining sin_0(x) = x via 𝓝[≠] ⊔ pure = 𝓝), and sinKappa_ceva_ratio_tendsto (sin_κ(p)/sin_κ(q) → p/q).",
-      "mathContext": "Assembles the answer to the parent's OQ-01 and its Ceva-degeneration consequence."
+      "summary": "tendsto_sinKappa_flat upgrades the punctured limit to a full 𝓝 0 limit by adjoining the exact value sin_0(x) = x via 𝓝[≠] 0 ⊔ pure 0 = 𝓝 0 — the formal answer to the parent's OQ-01. sinKappa_ceva_ratio_tendsto is the immediate quotient corollary: sin_κ(p)/sin_κ(q) → p/q as κ → 0, so the curvature-κ Ceva product degenerates to the Euclidean one.",
+      "mathContext": "The gluing step needs no new analysis: `tendsto_pure_nhds` at the isolated point `κ = 0` combined with `sinKappa_zero` (the parent's exact value) is exactly what the punctured limit was missing to become a full two-sided limit."
     }
   ],
   "references": [
