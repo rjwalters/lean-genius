@@ -2,7 +2,7 @@
   "id": "erdos-1006-oq-01-oq-02",
   "title": "Cover Graph Recognition",
   "slug": "erdos-1006-oq-01-oq-02",
-  "description": "Investigates the computational complexity of recognizing cover graphs — graphs that are Hasse diagrams of finite posets. Proves NP membership, the shortcut-free characterization, and that cover graphs are STRICTLY contained in comparability graphs (K₃ is comparability but not cover). States the open P-time conjecture. 9 theorems, 2 axioms, 0 sorries.",
+  "description": "Investigates the computational complexity of recognizing cover graphs — graphs that are Hasse diagrams of finite posets. Proves NP membership, the shortcut-free characterization, and that cover graphs are STRICTLY contained in comparability graphs (K₃ is comparability but not cover). The polynomial-time recognition question is OPEN and deliberately not formalized (no complexity model in Mathlib). 12 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1006",
@@ -17,11 +17,11 @@
       "erdos"
     ],
     "proofRepoPath": "Proofs/Erdos1006OQ01OQ02.lean",
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
-    "axiomCount": 2,
-    "theoremCount": 9,
-    "newAxiomCount": 2,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "newAxiomCount": 0,
     "mathlibDependencies": [
       {
         "theorem": "Fintype.decidableForallFintype",
@@ -47,7 +47,7 @@
     ],
     "dateAdded": "2026-05-03",
     "lineCount": 254,
-    "assumptions": "2 axioms: (1) cover_graph_recognition_in_p — the open conjecture that cover recognition is in P; (2) comparability_recognition_in_p — Golumbic's 1977 theorem that comparability graphs are recognized in polynomial time.",
+    "assumptions": "0 axioms. The two former recognition axioms (comparability_recognition_in_p, cover_graph_recognition_in_p) had trivially-true Lean statements — ∃ f : SimpleGraph V → Bool, ∀ G, f G = true ↔ isXGraph G — which hold for ANY predicate under classical logic and captured none of the polynomial-time content their names asserted. Both are now proved theorems (via the classical indicator exists_bool_recognizer); the cover one is renamed exists_bool_cover_recognizer so nothing claims the open problem is resolved. The genuine open question — whether cover graph recognition is in POLYNOMIAL TIME — is deliberately NOT formalized (Mathlib has no complexity model), so this entry stays an open-problem framing (axiomatized, 0 axioms) rather than a resolution.",
     "definitionCount": 4
   },
   "overview": {
@@ -61,7 +61,7 @@
       "**Strict inclusion**: Cover graphs $\\subsetneq$ comparability graphs. Every cover graph edge witnesses comparability ($u \\lessdot v \\Rightarrow u < v$), but not every comparable pair is a covering pair. The $K_3$ proof shows this concretely: the linear order $0 < 1 < 2$ makes $\\{0,2\\}$ a comparability edge (since $0 < 2$) but not a cover edge (since $1$ lies between $0$ and $2$).",
       "**8-case K₃ exhaustion**: The proof that $K_3$ is not a cover graph proceeds by exhausting all $2^3 = 8$ orientations of the 3 edges. Each orientation either creates a directed 3-chain (which forbids the 'long' edge from being a cover by the `no_chain` lemma) or a directed 3-cycle (which gives `lt_irrefl` via transitivity). This case analysis is complete and machine-checked.",
       "**Golumbic barrier**: Comparability recognition (P-time, Golumbic 1977) finds a transitive orientation via implication classes. The additional step for cover recognition — stripping shortcut arcs from the transitive orientation — might create new shortcuts or disconnect the graph, requiring iteration. Whether convergence to a shortcut-free orientation is guaranteed in polynomial time is the open question.",
-      "**Axiom integrity**: The file has 2 axioms with different epistemic status: `comparability_recognition_in_p` is a proved theorem (Golumbic 1977) formalized as an axiom for convenience; `cover_graph_recognition_in_p` is a genuine open conjecture. Both have identical Lean types (`∃ f, ∀ G, f G = true ↔ isXGraph G`), but their mathematical status is fundamentally different."
+      "**Axiom integrity (now 0 axioms)**: The file formerly carried two axioms `comparability_recognition_in_p` and `cover_graph_recognition_in_p` with identical Lean types `∃ f, ∀ G, f G = true ↔ isXGraph G`. That type is trivially true for ANY predicate under classical logic (`f := decide ∘ P`), so both were vacuous axioms — they captured none of the polynomial-time content their names asserted. Both are now proved theorems (`exists_bool_recognizer` supplies the classical indicator); the cover one is renamed `exists_bool_cover_recognizer` so nothing claims the open P-time problem is resolved. The genuine open question needs a complexity model absent from Mathlib and is left informal in the docstrings."
     ],
     "prerequisites": [
       "Partial orders and covering relations (CovBy) from Mathlib.Order.Defs",
@@ -112,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization develops the structural theory of cover graph recognition in 256 lines, 9 theorems, 2 axioms, 0 sorries. The core results: (1) cover orientations are shortcut-free (1-line proof via the covering axiom), (2) cover graphs are in NP, (3) $K_3$ witnesses strict separation between cover and comparability graphs. The two open conjectures are formally stated as `axiom` declarations with clear computational complexity semantics.",
+    "summary": "This formalization develops the structural theory of cover graph recognition in ~280 lines, 12 theorems, 0 axioms, 0 sorries. The core results: (1) cover orientations are shortcut-free (1-line proof via the covering relation), (2) cover graphs are in NP, (3) $K_3$ witnesses strict separation between cover and comparability graphs. The two former recognition `axiom`s had trivially-true Lean types (∃ Boolean recognizer, provable classically for any predicate) and are now proved theorems (the cover one renamed `exists_bool_cover_recognizer`); the genuine open question — polynomial-time cover recognition — is a complexity statement with no Mathlib model and is deliberately left informal.",
     "implications": "**Algorithmic Order Theory**: A positive resolution of `cover_graph_recognition_in_p` would enable polynomial-time Hasse diagram inference from relational data — given a graph $G$, decide whether there exists a poset with $G$ as its Hasse diagram. This has applications in data mining (inferring hierarchical structure), ontology learning (building concept hierarchies), and combinatorial optimization (recognizing lattice structures).\n\n**Connection to Pretzel-Brightwell**: By the parent theorem (erdos-1006-oq-01), cover graph recognition is equivalent to robustly acyclic orientation recognition. A polynomial algorithm for either problem would yield a polynomial algorithm for both.\n\n**Relation to Perfect Graphs**: Comparability graphs are a subclass of perfect graphs (by the Strong Perfect Graph Theorem, proved by Chudnovsky-Robertson-Seymour-Thomas 2006). Cover graphs, being a subclass of comparability graphs, are also perfect. The cover graph recognition problem fits into the broader program of characterizing perfect graph subclasses by their algorithmic complexity.\n\n**Transitive Reduction**: The shortcut-free condition is equivalent to the orientation being its own transitive reduction. Computing the transitive reduction of a DAG is in P (standard algorithm: $O(|V|^3)$). If a transitive orientation can be found in P (Golumbic's step), checking whether its transitive reduction still covers all edges is the algorithmic crux.",
     "openQuestions": [
       "Is cover graph recognition in P or NP-complete? The NP upper bound is established here; no P algorithm or NP-hardness reduction is known as of 2025.",

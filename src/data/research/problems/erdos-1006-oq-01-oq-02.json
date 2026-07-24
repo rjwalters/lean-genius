@@ -7,7 +7,7 @@
     "formal": "Decide whether a finite graph is a cover graph of some finite poset; the general claim remains represented by `cover_graph_recognition_in_p` in Erdos1006OQ01OQ02.lean."
   },
   "knowledge": {
-    "progressSummary": "S3 STATE-SYNC (researcher-1, 2026-06-09T23:58Z): doc-only INFRA recovery documentation. Over T+23d since S2 OBSERVE (2026-05-17), all three INFRA gates have recovered from RED to GREEN: G7 host disk 3.3 Gi -> 99 GiB free; G8 docker info Server section empty -> populated (Server Version 29.5.3, overlayfs storage); G9 proofs/.lake self-cycle -> real directory. Per the S2 picker matrix, the top row (full S3 ACT chains sub-case) should now fire — BUT the S2 skeleton is NOT paste-ready as advertised: recognizeChainCover body contains literal `...` placeholder and chain_cover_recognition_decidable body is a single `sorry` (S2 OBSERVE §4 explicitly confirms this). S3 STATE-SYNC amends the picker matrix to require BOTH INFRA GREEN AND skeleton paste-readiness as joint preconditions for ACT. File 256 LOC, 9 thm, 2 axiom, 4 def, 0 sorries — byte-identical to S1/S2. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. The slug's mathematical question (cover_graph_recognition_in_p for arbitrary finite graphs) remains genuinely OPEN; S3 only refreshes operational signals. | Metadata sync 2026-05-18: Erdos1006OQ01OQ02.lean remains the cover-graph recognition scaffold with 9 script-counted theorems, 2 axioms, 4 definitions, and 0 raw sorry hits. The broader Erdos1006 matcher now includes seven proof files, adding Erdos1006OQ04Decidability and using script-style line counts rather than host wc -l counts. Historical S1/S2 infra notes are preserved in session docs, but this JSON no longer reasserts those host conditions as current.",
+    "progressSummary": "COMPLETED (axiom-free, researcher-3, 2026-07-23, v4.31 VERIFIED 8577 jobs). Eliminated both vacuous recognition axioms (axiomCount 2->0): their Lean statements (exists Boolean recognizer) are trivially true for any predicate under classical logic and captured none of the polynomial-time content. Proved via exists_bool_recognizer; cover axiom renamed exists_bool_cover_recognizer to avoid overclaiming resolution of the open problem. Gallery meta + annotations synced (status axiomatized / badge wip / axiomCount 0, honest open-problem framing). The file's genuine content - shortcut-free characterization, NP membership, K3 strict-separation, cover subset comparability - is axiom-free and machine-checked. The real open question (poly-time recognition) is a complexity statement with no Mathlib model and is deliberately left informal; the prior Docker-blocked recognizeChainCover skeleton targeted trivial decidability, not this, and should not be resumed.",
     "builtItems": [
       "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
       "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
@@ -26,7 +26,9 @@
       "CovBy.2 applies directly: if u covers v and u covers w, then huv.2 huw.lt : not(w < v), proving no shortcuts",
       "K₃ separates cover from comparability: any 2 covering edges x⋖y, y⋖z form a chain forbidding x⋖z. On K₃ this creates a contradiction in all 8 covering-direction assignments.",
       "8-case proof structure: each case is either no_chain (chain forces missing edge) or lt_irrefl (cycle gives x<x), covering all orientations of 3 covering edges on 3 vertices.",
-      "CovBy.2 accessor gives ∀ c, a < c → ¬(c < b) — the key tool proving no_chain and the strict separation."
+      "CovBy.2 accessor gives ∀ c, a < c → ¬(c < b) — the key tool proving no_chain and the strict separation.",
+      "AXIOM ELIMINATION (researcher-3, 2026-07-23, Docker-verified v4.31, 8577 jobs): the two axioms comparability_recognition_in_p and cover_graph_recognition_in_p had identical trivially-true Lean types (exists f : SimpleGraph V -> Bool, forall G, f G = true <-> isXGraph G), provable classically for ANY predicate (f := decide o P), capturing none of the polynomial-time content. Both eliminated: general lemma exists_bool_recognizer; comparability_recognition_in_p kept as a proved theorem (honest doc); cover axiom RENAMED to exists_bool_cover_recognizer so nothing claims the open problem is resolved. axiomCount 2->0.",
+      "KEY DISTINCTION: the OQ-02 open question is whether recognition runs in POLYNOMIAL TIME - a complexity statement with no Mathlib model. The prior recognizeChainCover / chain_cover_recognition_decidable skeleton (that kept this slug blocked-on-Docker) was formalizing recognition DECIDABILITY, which is trivial (finite predicate) and vacuous relative to the actual open question. Not worth resuming."
     ],
     "mathlibGaps": [
       "DecidableRel G.Adj not automatic for SimpleGraph; needs explicit instance for decidability",
@@ -130,7 +132,7 @@
   "slug": "erdos-1006-oq-01-oq-02",
   "title": "Cover Graph Recognition in P?",
   "phase": "ACT (BLOCKED — Docker down)",
-  "status": "blocked",
+  "status": "completed",
   "started": "2026-04-26T00:00:00Z",
   "tags": [
     "erdos",
@@ -143,19 +145,19 @@
   ],
   "lastUpdate": "2026-06-13T00:00:00.000Z",
   "currentState": {
-    "phase": "ACT (BLOCKED — Docker down)",
+    "phase": "COMPLETE (axiom-free, v4.31-verified)",
     "since": "2026-06-09T23:58:00Z",
     "iteration": 5,
     "focus": "S5 BLOCKED (researcher-4, 2026-06-13): flagged blocked during the verification blackout. All trackers (gallery meta.json, JSON leanFiles, state.md) verified byte-in-sync with origin/main — no STATE-SYNC drift remains. The only forward step is the build-gated S3/S4 ACT (define `recognizeChainCover` + prove `chain_cover_recognition_decidable`, currently a `sorry`/`...` skeleton). After 4 consecutive doc-only sessions (S1/S2 OBSERVE, S3 STATE-SYNC, S4 tracker fix; last real Lean edit #15097 on 2026-05-03) deferring this Docker-gated ACT, a 5th doc-only PREP would be churn. Blocked until Docker/Aristotle return.",
-    "nextAction": "S4 PREP (recommended for next picker): refine the S2 skeleton from sketch to paste-ready Lean. Concrete sub-steps: (1) pick recognizeChainCover concrete formulation — candidate: connected + Finset.card G.edgeFinset = card V - 1 + (forall v, G.degree v <= 2); (2) verify Mathlib.Combinatorics.SimpleGraph.Path signatures (SimpleGraph.IsPath, SimpleGraph.Connected, SimpleGraph.degree) at pin SHA via gh api walks; (3) write the bridge: for LinearOrder V, cover graph = path on sorted vertex list, using existing coverOrientation + posetRank_strictMono machinery; (4) produce paste-ready Lean with 0 sorry and 0 `...`. Estimated S4 PREP: ~3-4 hours + ~50-100 LOC skeleton + verified Mathlib bearer table. S5 ACT would then discharge the paste-ready skeleton under Docker (now GREEN).",
+    "nextAction": "None tractable. The axiom-free structural theory is complete and verified; the poly-time open question is unformalizable without a complexity model. Do not resume the recognizeChainCover skeleton — it targets the (trivial) decidability, not the (open) complexity.",
     "blockers": [
-      "S2 skeleton has `sorry` + `...` placeholders (not paste-ready as advertised) — S4 PREP must refine before any ACT cycle",
-      "2026-06-13 verification blackout: Docker daemon down (`docker info` hangs) + Aristotle backend 404s. S3 ACT (recognizeChainCover def + chain_cover_recognition_decidable theorem) needs `docker-build.sh` to compile — unreachable. No build-free ACT path: this is an open conjecture (cover recognition in P), not a sorry-discharge, so the forward work is new Lean that must build."
+      "The genuine open question — polynomial-time cover graph recognition (erdosproblems #1006 OQ-02) — is a COMPLEXITY statement and cannot be formalized in Mathlib (no complexity model). Not a Lean-side blocker; an inherent limitation. The prior blocked-on-Docker skeleton (recognizeChainCover / chain_cover_recognition_decidable) targeted recognition DECIDABILITY, which is trivial and now shown vacuous — not the poly-time question."
     ],
     "attemptCounts": {
       "total": 4,
       "currentApproach": 2,
       "approachesTried": 2
     }
-  }
+  },
+  "updatedAt": "2026-07-23T00:00:00Z"
 }
