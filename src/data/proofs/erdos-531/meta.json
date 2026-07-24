@@ -108,50 +108,50 @@
     {
       "id": "folkman-theorem",
       "title": "Folkman's Theorem",
-      "summary": "Axiomatizes `folkman_theorem`: $F(k)$ is finite for all $k \\geq 1$. Also documents in source comments `folkman_well_defined` (no Lean declaration exists): any coloring of $\\{1,\\ldots,F(k)\\}$ contains a monochromatic $k$-set.",
+      "summary": "`folkman_theorem` is fully PROVED (no longer an axiom): F(k) is finite for all k ≥ 1, derived from Mathlib's Hindman theorem (`Hindman.FS_partition_regular`, the infinite version) plus Rado's selection principle (`Finset.rado_selection`, the compactness step). Includes the supporting block-sum construction (`folkmanBlocks`, `blockSum_strictMono`, …) that turns a monochromatic FS-stream into k distinct positive integers with monochromatic subset sums, and `F_well_defined` deriving `(ValidN k).Nonempty` from it.",
       "startLine": 65,
-      "endLine": 80,
-      "mathContext": "Folkman's theorem (1960s): $\\forall k \\geq 1,\\, F(k) < \\infty$. Equivalently: the system of equations $\\{\\sum_{i \\in S} x_i = y_S : \\emptyset \\neq S \\subseteq [k]\\}$ is partition regular. This follows from Rado's theorem since the coefficient matrix has columns summing to a column of the identity."
+      "endLine": 266,
+      "mathContext": "Folkman's theorem (1960s): $\\forall k \\geq 1,\\, F(k) < \\infty$. Formalized here via the Hindman-Rado route rather than Rado's columns condition directly: Hindman's theorem gives a monochromatic FS-stream, which is chopped into strictly-increasing block sums (k of them form the required set), and Rado's selection principle supplies the compactness step converting the infinite result into the finite `ExistsMonochromaticSet N k` statement."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Axiomatizes `balogh_2017` ($F(k) \\geq 2^{2^{k-1}/k}$, the current best lower bound). Documents `erdos_spencer_1989` ($F(k) \\geq 2^{ck^2/\\log k}$) in a source comment only (no Lean declaration exists).",
-      "startLine": 81,
-      "endLine": 95,
+      "summary": "Axiomatizes `balogh_2017` ($F(k) \\geq 2^{2^{k-1}/k}$, the current best lower bound). Documents Erdős-Spencer (1989, $F(k) \\geq 2^{ck^2/\\log k}$) and the Balogh et al. (2017) result in source comments; only `balogh_2017` has a Lean declaration.",
+      "startLine": 268,
+      "endLine": 281,
       "mathContext": "Erdős-Spencer (1989): $F(k) \\geq 2^{ck^2/\\log k}$ for some $c > 0$. Balogh-Eberhard-Narayanan-Treglown-Wagner (2017): $F(k) \\geq 2^{2^{k-1}/k}$, showing doubly-exponential growth. For large $k$, $2^{k-1}/k \\gg k^2/\\log k$, so the 2017 bound is strictly stronger."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Proves `F_1` ($F(1) = 1$) and `F_2` ($F(2) = 8$) in full. The finite-coloring reduction is a kernel `decide` (`forcedCheck_all`) over all $256$ restrictions to $\\{1,\\ldots,8\\}$; an earlier draft's $F(2) = 3$ was false for the distinct-pair Folkman number defined here. $F(3) \\geq 11$ is documented in a source comment only (no Lean declaration exists).",
-      "startLine": 96,
-      "endLine": 361,
+      "startLine": 283,
+      "endLine": 548,
       "mathContext": "$F(1) = 1$: any single element has its (unique) subset sum trivially monochromatic (fully proven). $F(2) = 8$: for the distinct-pair number defined here ($\\{a,b\\}$ with $a,b,a+b$ mono), $N = 7$ admits a defeating 2-coloring while every 2-coloring of $\\{1,\\ldots,8\\}$ forces such a pair — so $F(2) = 8$, not $3$ (fully machine-checked: kernel `decide` over the $256$ restrictions plus the explicit $N = 7$ witness coloring). $F(3) \\geq 11$: verified by exhaustive search."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "Documents the tower-type upper bound from Folkman's original existence proof and the Hales-Jewett/Rado approach, which gives $F(k) \\leq \\text{tower}(k)$ for an iterated exponential.",
-      "startLine": 362,
-      "endLine": 369,
+      "startLine": 550,
+      "endLine": 556,
       "mathContext": "Upper bounds come from the Rado/Hales-Jewett proof, giving $F(k) \\leq \\text{tower}(O(k))$ (iterated exponential). The gap between lower ($2^{2^{k-1}/k}$) and upper ($\\text{tower}(O(k))$) is enormous — closing it is the core of Problem #531."
     },
     {
       "id": "rado-connection",
       "title": "Connection to Rado's Theorem",
-      "summary": "documents in source comments `folkman_from_rado` (no Lean declaration exists): Folkman's theorem follows from Rado's theorem on partition regularity. The subset sum equations form a partition-regular system because the coefficient matrix satisfies Rado's columns condition.",
-      "startLine": 370,
-      "endLine": 383,
-      "mathContext": "Rado's theorem (1933): a system $Ax = 0$ over $\\mathbb{Z}$ is partition regular iff $A$ satisfies the columns condition. For Folkman: the variables are $x_1, \\ldots, x_k$ and $y_S$ for each $\\emptyset \\neq S \\subseteq [k]$, with equations $\\sum_{i \\in S} x_i = y_S$. The coefficient matrix satisfies Rado's condition."
+      "summary": "Documents in source comments the classical alternative derivation of Folkman's theorem from Rado's theorem on partition regularity (the subset sum equations form a partition-regular system since the coefficient matrix satisfies Rado's columns condition), noting that the formal `folkman_theorem` above instead uses the Hindman + Rado-selection route of the Folkman's Theorem section.",
+      "startLine": 558,
+      "endLine": 574,
+      "mathContext": "Rado's theorem (1933): a system $Ax = 0$ over $\\mathbb{Z}$ is partition regular iff $A$ satisfies the columns condition. For Folkman: the variables are $x_1, \\ldots, x_k$ and $y_S$ for each $\\emptyset \\neq S \\subseteq [k]$, with equations $\\sum_{i \\in S} x_i = y_S$. The coefficient matrix satisfies Rado's condition; this is a classical alternative to the Hindman-Rado-selection proof actually formalized above."
     },
     {
       "id": "main-results",
-      "title": "Main Results",
-      "summary": "Combines all results into `erdos_531`: Folkman's theorem holds, $F(k) \\geq 2^{2^{k-1}/k}$, and exact values for $k \\leq 2$. Asserts the exact growth rate remains open.",
-      "startLine": 384,
-      "endLine": 423,
-      "mathContext": "Summary: $F(k) < \\infty$ (Folkman), $F(k) \\geq 2^{2^{k-1}/k}$ (Balogh et al.), $F(1) = 1$ (proven), $F(2) = 8$ (value corrected from a false $F(2) = 3$; fully proven). The exact growth rate of $F(k)$ — somewhere between doubly exponential and tower-type — remains open."
+      "title": "The Main Question and Final Assembly",
+      "summary": "States the central open question (the precise growth rate of F(k), known only to lie between the doubly-exponential lower bound and Folkman's tower-type upper bound), proves `F_growth_doubly_exponential` and `erdos_531_summary` from the pieces above, documents the proof techniques used throughout, and closes with the main theorem `erdos_531`: (ValidN k).Nonempty for all k ≥ 1.",
+      "startLine": 576,
+      "endLine": 614,
+      "mathContext": "Summary: $F(k) < \\infty$ (Folkman, proved), $F(k) \\geq 2^{2^{k-1}/k}$ (Balogh et al., axiomatized), $F(1) = 1$ and $F(2) = 8$ (both proven). The exact growth rate of $F(k)$ — somewhere between doubly exponential and tower-type — remains open."
     }
   ],
   "conclusion": {
