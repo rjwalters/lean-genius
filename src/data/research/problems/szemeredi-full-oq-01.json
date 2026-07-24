@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
-  "phase": "BLOCKED",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "S",
   "path": "full",
@@ -17,13 +17,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 14,
-    "focus": "S13 ACT complete (2026-07-23): limit_invariant_on_cylinder PROVED (sorry 1->0). File builds clean at v4.31. Next: S14 ACT — discharge the Prokhorov axiom seqCompact_probabilityMeasure_cantor (~150-200 lines), then assemble the Furstenberg.System.",
+    "since": "2026-07-24",
+    "iteration": 15,
+    "focus": "S14 ACT (researcher-1, 2026-07-24): PROKHOROV AXIOM ELIMINATED. seqCompact_probabilityMeasure_cantor converted axiom -> theorem in 3 lines: Mathlib v4.31 Prokhorov (CompactSpace (ProbabilityMeasure E) for compact E) + Levy-Prokhorov metrizability (=> first-countable) + CompactSpace.tendsto_subseq. FurstenbergCorrespondenceOQ01.lean now 0 axioms / 0 sorries, Docker-GREEN (8576 jobs). Gallery meta upgraded to verified/original/0; annotations refreshed.",
     "blockers": [
       "RESOLVED (S13, 2026-07-23): the 28-error v4.26 build regression was repaired by the v4.31 toolchain migration (#39062); baseline and post-fill docker builds are clean."
     ],
-    "nextAction": "S14 ACT: prove seqCompact_probabilityMeasure_cantor (sequential compactness of ProbabilityMeasure on CantorSpace) from Mathlib v4.31 Prokhorov/tightness ingredients (CantorSpace is compact metrizable, so every measure family is tight; check Mathlib.MeasureTheory.Measure.Prokhorov coverage). Then construct the Furstenberg.System and connect to FurstenbergCorrespondence.lean.",
+    "nextAction": "S15 ACT: assemble Furstenberg.System on (CantorSpace, shift, cylinderZero) — all ingredients are now proved (Prokhorov extraction, limit_invariant_on_cylinder T-invariance, density_preserved_at_limit). Then use the assembled system to eliminate the furstenberg_correspondence axiom in the parent FurstenbergCorrespondence.lean, which is the actual szemeredi-full-oq-01 target.",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S13 ACT (2026-07-23, researcher-2): limit_invariant_on_cylinder PROVED — the banked S9-audited Portmanteau proof pasted and docker-verified at v4.31 (the S11 28-error regression was repaired by migration epic #39062; S12/S13 BLOCKED state was stale). FurstenbergCorrespondenceOQ01.lean now has 0 sorries, 1 axiom. The correspondence reduces entirely to the Prokhorov axiom seqCompact_probabilityMeasure_cantor — S14 target.",
+    "progressSummary": "PROGRESS: FurstenbergCorrespondenceOQ01.lean is fully machine-checked — 0 axioms, 0 sorries (S13 killed the last sorry, S14 the last axiom). Gallery entry furstenberg-correspondence-oq-01 upgraded verified/original. Remaining for the OQ target: assemble Furstenberg.System from the proved pieces and eliminate the parent correspondence axiom in FurstenbergCorrespondence.lean.",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -42,7 +42,8 @@
       "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)",
       "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker",
       "PR #14878: 6 Mathlib API drift fixes in FurstenbergCorrespondenceOQ01.lean — restores buildability after 35-error cascade (Session 7, 2026-05-02)",
-      "limit_invariant_on_cylinder PROVED in Proofs/FurstenbergCorrespondenceOQ01.lean:762 (exact T-invariance of weak-* limit of Cesaro measures on clopen sets) — docker-verified 2026-07-23, sorry count 1->0"
+      "limit_invariant_on_cylinder PROVED in Proofs/FurstenbergCorrespondenceOQ01.lean:762 (exact T-invariance of weak-* limit of Cesaro measures on clopen sets) — docker-verified 2026-07-23, sorry count 1->0",
+      "seqCompact_probabilityMeasure_cantor in FurstenbergCorrespondenceOQ01.lean — former local axiom, now a theorem (Prokhorov + Levy-Prokhorov metrization + CompactSpace.tendsto_subseq)"
     ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
@@ -64,7 +65,10 @@
       "shift_iterate original proof had a mathematical bug: induction on n without generalizing k means ih only covers position k, but succ case needs position k+1; proof worked in older Lean by accident (comp_def simp behavior changed)",
       "S13 (2026-07-23): The S11/S12 build-regression block was stale — the v4.31 migration epic (#39062) repaired all 28 errors; baseline docker build passes at HEAD. Re-verify recorded blockers before honoring them.",
       "The banked S9-audited Portmanteau proof compiled essentially as drafted at v4.31: IsClopen.frontier_eq + ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto (prime) + ENNReal.tendsto_inv_nat_nhds_zero.comp (tendsto_add_atTop_nat 1).comp hNs + le_of_tendsto_of_tendsto (prime) + le_antisymm. The convert-using-2 steps anticipated in the draft were unnecessary — rw [hdef k] closes the bound gap exactly.",
-      "File status after S13: 0 sorries, 1 axiom (seqCompact_probabilityMeasure_cantor). The full Furstenberg correspondence now reduces to Prokhorov sequential compactness alone."
+      "File status after S13: 0 sorries, 1 axiom (seqCompact_probabilityMeasure_cantor). The full Furstenberg correspondence now reduces to Prokhorov sequential compactness alone.",
+      "S14: Mathlib v4.31 ships Prokhorov upstream (Mathlib.MeasureTheory.Measure.Prokhorov, Gouezel 2025): CompactSpace (ProbabilityMeasure E) for any compact T2 Borel E, with NO second-countability needed (proof via Riesz-Markov-Kakutani on ultrafilters). Combined with LevyProkhorovMetric metrizability (separable pseudo-metrizable Borel X) sequential compactness is just CompactSpace.tendsto_subseq — the 150-200-line local-axiom estimate from 2026-05 became 3 lines.",
+      "S14: BorelSpace (N -> Bool) is found by typeclass search (Pi.borelSpace, countable index, discrete factors) — no manual instance needed for the Prokhorov instance to fire on CantorSpace.",
+      "S14 meta-lesson: before hand-assembling a stated-as-axiom classical analysis fact, grep the CURRENT Mathlib tree for the exact instance (ls Mathlib/MeasureTheory/Measure/ | grep -i prokhorov) — upstream growth between toolchain bumps retires local axioms wholesale."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -74,10 +78,8 @@
       "FurstenbergCorrespondenceOQ01.lean Mathlib upgrade: ~35 specific errors (see knowledge.md session 5)"
     ],
     "nextSteps": [
-      "S10 ACT (from main checkout, NOT isolated worktree): build-verify current main HEAD via ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01.",
-      "S10 ACT: paste 60-line limit_invariant_on_cylinder proof at FurstenbergCorrespondenceOQ01.lean:779 — template + lemma citations in state.md Next Action section. All 5 Mathlib lemmas verified to exist at pin 2df2f0150c… by S9 API audit.",
-      "After limit_invariant_on_cylinder: prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients (~150-200 lines).",
-      "S9 API audit findings (verified at pin 2df2f0150c…): tendsto_measure_of_null_frontier_of_tendsto' at Portmanteau.lean:333; IsClopen.frontier_eq at Clopen.lean:38; le_of_tendsto_of_tendsto' at OrderClosed.lean:631; ENNReal.tendsto_nat_nhds_top at Lemmas.lean:148; ENNReal.tendsto_inv_nat_nhds_zero at Lemmas.lean:488."
+      "S15: assemble Furstenberg.System on (CantorSpace, shift, cylinderZero) from the proved Prokhorov/T-invariance/density pieces.",
+      "S16+: eliminate the furstenberg_correspondence axiom in the parent FurstenbergCorrespondence.lean using the assembled system."
     ]
   },
   "tags": [
@@ -97,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-06-09T17:55:00.000Z",
+  "lastUpdate": "2026-07-24",
   "significance": 9,
   "tractability": 4,
   "leanFiles": [

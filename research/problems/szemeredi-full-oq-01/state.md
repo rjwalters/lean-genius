@@ -1,5 +1,25 @@
 # Research State: szemeredi-full-oq-01
 
+> **S14 (2026-07-24, researcher-1): PROKHOROV AXIOM ELIMINATED — file now
+> 0 axioms / 0 sorries, Docker-GREEN first try (8576 jobs).** The S13b note's
+> "~150–200 lines" estimate collapsed to a 3-line proof: Mathlib v4.31 ships
+> `Mathlib.MeasureTheory.Measure.Prokhorov` (Gouëzel, 2025) with
+> `instance [CompactSpace E] : CompactSpace (ProbabilityMeasure E)`, and
+> `LevyProkhorovMetric` provides `MetrizableSpace (ProbabilityMeasure X)`
+> for separable pseudo-metrizable Borel `X` — so `ProbabilityMeasure
+> CantorSpace` is compact + first-countable and
+> `CompactSpace.tendsto_subseq f` IS the axiom statement (typeclass search
+> finds `BorelSpace (ℕ → Bool)` via `Pi.borelSpace` on its own).
+> `seqCompact_probabilityMeasure_cantor` converted `axiom → theorem`; 5
+> stale prose sites updated (Part IX header, 2 progress tables, Step-2 note,
+> honest-status block). Gallery `furstenberg-correspondence-oq-01`:
+> meta axiomatized/axiom/1 → **verified/original/0**, assumptions rewritten,
+> annotations 6/11/15 updated (11 retitled "Former Axiom, Now a Theorem").
+> **Next: S15 ACT — assemble `Furstenberg.System`** on (Ω, shift, B₀) from
+> the now-complete pieces (all of: Prokhorov extraction, T-invariance at
+> limit, density preservation), then attack the parent
+> `FurstenbergCorrespondence.lean` correspondence axiom.
+
 > **S13b/S14-note (2026-07-23, researcher-2): S13 ACT EXECUTED — sorry 1→0,
 > BLOCKED state was STALE.** The S11 28-error build regression in
 > `FurstenbergCorrespondenceOQ01.lean` was repaired on main by the v4.31

@@ -159,7 +159,7 @@
     },
     "type": "concept",
     "title": "Compactness of Cantor Space and Gap Analysis",
-    "content": "Records that Cantor space $\\Omega = \\{0,1\\}^{\\mathbb N}$ is a `CompactSpace` and `MetrizableSpace` (from Tychonoff in Mathlib), the topological prerequisites for the measure-theoretic construction. The accompanying gap analysis enumerates exactly what is already proved (shift, cylinders, indicators, return property, orbit-density, compactness — all axiom-free) versus what the full Furstenberg correspondence still needs: Dirac/Cesàro measures, weak-* sequential compactness (Prokhorov), T-invariance of the limit, and the density lower bound. This honest scoping frames the rest of the file.",
+    "content": "Records that Cantor space $\\Omega = \\{0,1\\}^{\\mathbb N}$ is a `CompactSpace` and `MetrizableSpace` (from Tychonoff in Mathlib), the topological prerequisites for the measure-theoretic construction. The accompanying gap analysis enumerates exactly what is already proved (shift, cylinders, indicators, return property, orbit-density, compactness — all axiom-free) versus what the full Furstenberg correspondence still needed at the time: Dirac/Cesàro measures, weak-* sequential compactness (Prokhorov), T-invariance of the limit, and the density lower bound. Every one of these has since been discharged — the Prokhorov step last, in S14 (2026-07-24) — so the scoping list is now fully checked off.",
     "significance": "supporting",
     "relatedConcepts": "Cantor space $\\Omega = \\{0,1\\}^{\\mathbb N}$ is compact (Tychonoff) and metrizable, hence a Polish space — the setting in which probability measures form a weak-* sequentially compact (Prokhorov) family.",
     "mathContext": [
@@ -279,10 +279,15 @@
       "endLine": 637
     },
     "type": "concept",
-    "title": "The Minimal Remaining Axiom: Prokhorov Sequential Compactness",
-    "content": "Isolates the single classical analysis fact not yet assembled in Mathlib: every sequence of probability measures on Cantor space has a weak-* convergent subsequence (`seqCompact_probabilityMeasure_cantor`). Mathematically this is immediate from Prokhorov’s theorem — Cantor space is compact metrizable, so all probability-measure families are tight (`IsTightMeasureSet.of_compactSpace`) and tightness + Polish gives sequential compactness. The file documents that Mathlib v4.26 has the ingredients (`LevyProkhorov`, sequential Banach–Alaoglu) but not the ~150–200-line assembly, and so states it as a clearly-labelled local axiom rather than claiming it.",
+    "title": "Prokhorov Sequential Compactness: Former Axiom, Now a Theorem",
+    "content": "Proves (S14, 2026-07-24) the fact that was this file's single local axiom for fourteen sessions: every sequence of probability measures on Cantor space has a convergent subsequence in the topology of weak convergence (`seqCompact_probabilityMeasure_cantor`). The 2026-05 assessment estimated ~150–200 lines of assembly from tightness (`IsTightMeasureSet.of_compactSpace`) and the Lévy–Prokhorov metric; instead, Mathlib's 2025 Prokhorov development (`Mathlib.MeasureTheory.Measure.Prokhorov`, Gouëzel) supplies `CompactSpace (ProbabilityMeasure E)` for compact `E` outright, and the Lévy–Prokhorov metrization makes `ProbabilityMeasure CantorSpace` metrizable, hence first-countable. Sequential compactness is then pure general topology: `CompactSpace.tendsto_subseq`. The proof is three lines — a case study in how upstream Mathlib growth retires local axioms.",
     "significance": "key",
-    "relatedConcepts": "Prokhorov (axiomatized here): every sequence $(\\mu_n)$ in $\\mathcal P(\\Omega)$ on compact metrizable $\\Omega$ has a subsequence $\\mu_{\\varphi(k)} \\rightharpoonup \\mu$ weakly. Tightness is automatic on compact spaces.",
+    "relatedConcepts": [
+      "Prokhorov's theorem",
+      "compactness of the space of probability measures",
+      "Lévy–Prokhorov metric",
+      "first-countability and sequential compactness"
+    ],
     "mathContext": [
       "Prokhorov theorem",
       "tightness",
@@ -378,7 +383,7 @@
     },
     "type": "concept",
     "title": "Assembling the Correspondence and Honest Status",
-    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved and axiom-free, and with `limit_invariant_on_cylinder` now proved (2026-07-23) the whole correspondence reduces to a single standard analysis fact — the Prokhorov sequential-compactness axiom `seqCompact_probabilityMeasure_cantor` — which is not deep mathematics, just unassembled in Mathlib. This transparent accounting is the entry's open-question framing toward eliminating the correspondence axiom.",
+    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved, and with `limit_invariant_on_cylinder` proved (2026-07-23) and the Prokhorov sequential-compactness statement proved from Mathlib's Prokhorov instances (S14, 2026-07-24), the file is now entirely axiom-free and sorry-free: 0 axioms, 0 sorries. What remains toward eliminating the parent's correspondence axiom is pure assembly — instantiating `Furstenberg.System` from the pieces this file provides.",
     "significance": "supporting",
     "relatedConcepts": "Target: a measure-preserving system $(\\Omega, \\mu, T)$ with $\\mu(B_0)\\ge\\overline d(A)$, recovering multiple recurrence ⟹ Szemerédi. Remaining dependencies: Prokhorov (axiom) + one T-invariance sorry.",
     "mathContext": [
