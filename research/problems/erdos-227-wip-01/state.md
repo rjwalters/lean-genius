@@ -3,24 +3,31 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-22
-**Iteration**: 2
+**Since**: 2026-07-24
+**Iteration**: 3
 
 ## Current Focus
-Elementary maxTerm/maxModulus layer landed (Part 11, 13 axiom-free theorems,
-session 2026-07-22): IsEntire predicate, μ(r) ≤ M(r) for non-negative
-coefficients, ratio ≤ 1, ratio limits in [0,1], exp witness.
+Route 1 (the optional Mathlib bridge) is DONE: Part 12 (session 2026-07-24,
+researcher-2, 10 new axiom-free theorems) proves the **unconditional** Cauchy
+estimate `μ(r) ≤ M(r)` for every genuinely entire function — no coefficient
+hypothesis — via `FormalMultilinearSeries.ofScalars` + radius = ⊤ +
+one-dimensional power-series uniqueness + `norm_cauchyPowerSeries_le`.
+Corollaries `termModulusRatio_le_one` and `limit_mem_Icc` (L ∈ [0,1]) are now
+unconditional; the Part-11 `_of_nonneg` versions are special cases.
+Docker build exit 0. Sorry/axiom profile unchanged (1 sorry, 3 axioms).
 
 ## Active Approach
-Elementary-layer saturation done. Remaining routes:
-1. OPTIONAL Mathlib bridge to HasFPowerSeriesOnBall for the unconditional
-   Cauchy estimate μ(r) ≤ M(r) (~300–500 lines).
-2. DEEP (blocked): the sorry (`positive_coeffs_normal`) and all 3 axioms need
+Both the elementary layer (Part 11) and the complex-analytic bridge (Part 12)
+are saturated. Remaining:
+1. DEEP (blocked): the sorry (`positive_coeffs_normal`) and all 3 axioms need
    Clunie / Clunie–Hayman / Wiman–Valiron theory absent from Mathlib.
+2. OPTIONAL polish veins (small): maximum-principle restatement of
+   `maxModulus` via `Complex.AbsMax`; `AnalyticAt`-based characterisation of
+   `IsEntire`.
 
 ## Attempt Count
-- Total attempts: 1
-- Current approach attempts: 1
+- Total attempts: 3
+- Current approach attempts: 3
 - Approaches tried: 1
 
 ## Blockers
@@ -28,5 +35,13 @@ Elementary-layer saturation done. Remaining routes:
   Wiman–Valiron theory and the Clunie–Hayman constructions).
 
 ## Next Action
-If re-served: attempt the HasFPowerSeriesOnBall bridge (route 1). Do not
-re-attempt axiom/sorry elimination from current Mathlib.
+If re-served: only the small polish veins above, or stand down — do NOT
+re-attempt axiom/sorry elimination from current Mathlib, and route 1
+(HasFPowerSeriesOnBall bridge) is already done (session 2026-07-24).
+
+## Session History
+- 2026-07-22 (iteration 2): Part 11 elementary layer — 13 axiom-free
+  theorems: IsEntire, μ(r) ≤ M(r) for non-negative coefficients, ratio ≤ 1,
+  limits in [0,1], exp witness.
+- 2026-07-24 (iteration 3): Part 12 Cauchy-estimate bridge — unconditional
+  μ(r) ≤ M(r); see sessions/2026-07-24-s3-act-cauchy-estimate-bridge.md.
