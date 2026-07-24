@@ -2,69 +2,115 @@
   {
     "id": "ann-a054656-overview",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 1, "endLine": 45 },
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
     "type": "concept",
-    "title": "A054656 and what this first iteration machine-checks",
-    "content": "OEIS A054656 (created April 2000, still labeled conjectural) counts, for each n, the primes p ≤ n that occur in NO partition of n into distinct primes. The claimed theorem: for every n ≥ 23 that absent set is exactly {n−1, n−4, n−6} ∩ P. The pivot is that a prime p ≤ n occurs in some distinct-prime partition of n iff the residual m = n − p is itself a sum of distinct primes avoiding p, and the only non-representable residuals are m ∈ {1, 4, 6}. This file turns the elementary core of an AI-claimed proof (GPT-5.6 Pro, GitHub issue #41831) into machine-checked Lean and scaffolds the harder representability engine behind clearly-marked `sorry`s. Status is honestly `formalized` — the elementary core is verified, the full theorem is not.",
+    "title": "A054656 fully machine-checked (fourth iteration: 0 sorries, 0 axioms)",
+    "content": "OEIS A054656 (created April 2000, still labeled conjectural) counts, for each n, the primes p ≤ n that occur in NO partition of n into distinct primes. The claimed theorem: for every n ≥ 23 that absent set is exactly {n−1, n−4, n−6} ∩ P. The pivot is that a prime p ≤ n occurs in some distinct-prime partition of n iff the residual m = n − p is itself a sum of distinct primes avoiding p, and the only non-representable residuals are m ∈ {1, 4, 6}. This file, with the imported companion `A054656TwoPrimesInterval.lean`, turns the whole AI-claimed proof (GPT-5.6 Pro, GitHub issue #41831) into machine-checked Lean: elementary core, Richert interval engine, Ramanujan-type two-primes input, and the assembled main theorem. 0 sorries, 0 axioms — `#print axioms A054656_main` = [propext, Classical.choice, Quot.sound]; a closed form left conjectural on OEIS since 2000 is now verified.",
     "significance": "critical",
     "mathContext": "$D(n) = \\{p \\le n : p \\text{ prime}, \\lnot\\,\\mathrm{Present}(p,n)\\}$; the conjecture is $D(n) = \\{n-1,n-4,n-6\\}\\cap\\mathbb{P}$ for $n \\ge 23$, so $A054656(n) = |D(n)|$.",
-    "relatedConcepts": ["distinct-prime partitions", "additive number theory", "OEIS A054656"]
+    "relatedConcepts": [
+      "distinct-prime partitions",
+      "additive number theory",
+      "OEIS A054656"
+    ]
   },
   {
     "id": "ann-a054656-encoding",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 53, "endLine": 69 },
+    "range": {
+      "startLine": 53,
+      "endLine": 74
+    },
     "type": "definition",
     "title": "Encoding distinct-prime sums as Finsets of primes",
     "content": "A distinct-prime representation of m is modelled as a `Finset` of primes summing to m: `Repr m` asserts such a set exists, and `ReprAvoiding m avoid` additionally forbids one prime. Using a `Finset` makes distinctness automatic — elements are unique by construction, so no side condition is needed. `Present p n` says p lies in some distinct-prime partition of n, and `D n = {p | p prime, p ≤ n, ¬ Present p n}` is precisely the set whose cardinality is A054656(n). These four definitions fix the vocabulary the whole development rests on.",
     "significance": "key",
     "mathContext": "Repr m := ∃ S : Finset ℕ, (∀ q ∈ S, Nat.Prime q) ∧ S.sum id = m",
-    "relatedConcepts": ["Finset", "sum of distinct primes"]
+    "relatedConcepts": [
+      "Finset",
+      "sum of distinct primes"
+    ]
   },
   {
     "id": "ann-a054656-basic-facts",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 71, "endLine": 83 },
+    "range": {
+      "startLine": 76,
+      "endLine": 90
+    },
     "type": "lemma",
     "title": "Two small supporting facts: summands are bounded, avoiding implies representing",
     "content": "`le_of_mem_repr` says every prime in a representing Finset is at most the sum it represents — immediate from `Finset.single_le_sum` since all summands are nonnegative. `repr_of_reprAvoiding` forgets the avoided-prime side condition, turning a `ReprAvoiding m avoid` witness into a plain `Repr m` witness by discarding the second component of the existential. Neither lemma is deep, but both are load-bearing: `le_of_mem_repr` is exactly what bounds the candidate-prime search to a finite powerset in the three exceptional-residual proofs, and `repr_of_reprAvoiding` lets the reduction lemma freely move between the avoiding and non-avoiding notions of representability.",
     "significance": "supporting",
     "mathContext": "$S.\\mathrm{sum}\\ \\mathrm{id} = m \\land p \\in S \\implies p \\le m$, via $p = \\mathrm{id}\\,p \\le S.\\mathrm{sum}\\ \\mathrm{id} = m$",
-    "prerequisites": ["Finset.single_le_sum"],
-    "relatedConcepts": ["Repr", "ReprAvoiding", "finite bounding argument"]
+    "prerequisites": [
+      "Finset.single_le_sum"
+    ],
+    "relatedConcepts": [
+      "Repr",
+      "ReprAvoiding",
+      "finite bounding argument"
+    ]
   },
   {
     "id": "ann-a054656-exceptional-residuals",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 85, "endLine": 136 },
+    "range": {
+      "startLine": 92,
+      "endLine": 143
+    },
     "type": "lemma",
     "title": "The three exceptional residuals 1, 4, 6 (fully verified, kernel `decide`)",
     "content": "These are the tractable, machine-checked wins: 1, 4 and 6 admit NO distinct-prime representation. The proof pattern is uniform — every summand p of a set summing to m satisfies p ≤ m (via `Finset.single_le_sum`, since all summands are nonnegative), so the representing set is a subset of the primes ≤ m; `fin_cases` over that finite powerset and kernel `decide` then close each case. Because only `decide` is used (never `native_decide`), these lemmas carry no `Lean.ofReduceBool` dependency and are genuinely axiom-free. `not_reprAvoiding_of_mem_exceptional` packages all three for use in the main assembly.",
     "significance": "critical",
     "mathContext": "1 is below the smallest prime; no subset of {2,3} sums to 4; no subset of {2,3,5} sums to 6.",
-    "prerequisites": ["Finset.single_le_sum", "fin_cases", "decide"]
+    "prerequisites": [
+      "Finset.single_le_sum",
+      "fin_cases",
+      "decide"
+    ]
   },
   {
     "id": "ann-a054656-reduction",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 138, "endLine": 169 },
+    "range": {
+      "startLine": 145,
+      "endLine": 172
+    },
     "type": "theorem",
     "title": "The reduction lemma — the verified pivot the whole proof turns on",
     "content": "`present_iff_residual_repr`: p occurs in a distinct-prime partition of n ⇔ p is a prime ≤ n AND the residual n − p is a sum of distinct primes avoiding p. Forward direction removes p from a partition containing it (`Finset.add_sum_erase`, so the remaining primes sum to n − p and p is no longer among them); the reverse inserts p back (`Finset.sum_insert`, valid because p was avoided). This fully-elementary equivalence is what converts the whole question into 'which residuals are representable', reducing A054656 to the arithmetic of representable integers. Both directions are proven with zero sorries.",
     "significance": "critical",
     "mathContext": "$\\mathrm{Present}(p,n) \\iff p \\in \\mathbb{P} \\wedge p \\le n \\wedge \\mathrm{ReprAvoiding}(n-p,\\,p)$, via the identity $p + (S \\setminus \\{p\\}).\\mathrm{sum}\\,\\mathrm{id} = S.\\mathrm{sum}\\,\\mathrm{id} = n$.",
-    "prerequisites": ["Finset.add_sum_erase", "Finset.sum_insert"],
-    "relatedConcepts": ["reduction to residual representability"]
+    "prerequisites": [
+      "Finset.add_sum_erase",
+      "Finset.sum_insert"
+    ],
+    "relatedConcepts": [
+      "reduction to residual representability"
+    ]
   },
   {
     "id": "ann-a054656-engine-deferred",
     "proofId": "a054656-distinct-prime-partition",
-    "range": { "startLine": 171, "endLine": 226 },
-    "type": "warning",
-    "title": "The representability engine and the Mathlib gap (DEFERRED — 4 sorries)",
-    "content": "The heavy lifting is scaffolded but not yet proven: `seed_block` (a run of ≥ 64 consecutive representable residuals, an enumeration over the ≤ 2⁹ subsets of the nine primes ≤ 23), `interval_extension` (extend a covered interval by an unused prime q ≤ B−A+1), `repr_of_ge_seven_ne` (every non-exceptional residual is representable avoiding one forbidden prime), and `A054656_main` (the final theorem for n ≥ 23). The key missing ingredient is a Ramanujan-prime fact: '(q, 2q] contains at least TWO primes' (R₂ = 11), so that after deleting the single forbidden prime an available prime ≤ 2q still remains. Mathlib HAS Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul`) but NOT this two-primes strengthening — it must be built on top of Bertrand. That is the concrete next lemma for continuing this entry.",
+    "range": {
+      "startLine": 178,
+      "endLine": 529
+    },
+    "type": "concept",
+    "title": "The representability engine: kernel seed, Richert interval induction, imported Ramanujan input",
+    "content": "Third iteration: the engine is now a machine-checked bottom-up Richert interval induction. The kernel `canSum` checker certifies the seed window [13, 90] avoiding any one prime with all witness primes <= 31 (`seed_block_bdd`); the bounded predicate `ReprAvoidingBdd` makes fresh-prime extension sound (`reprAvoidingBdd_add_fresh`: a prime above the witness bound is automatically new); and `EngineInv`/`engineInv_step`/`engineInv_reach` grow the interval one Bertrand prime at a time, with self-maintaining slack 2Q + 12 <= B, giving `reprAvoiding_of_thirteen_le`: every m >= 13 is a sum of distinct primes avoiding p. The last input, `exists_second_prime_in_Ioc` - a second prime in (x, 2x] when the forbidden prime p itself lies there (Ramanujan R2 = 11; Mathlib has only Bertrand's one-prime version) - is proved in the imported `A054656TwoPrimesInterval.lean` (fourth iteration), so the engine is sorry-free. It is invoked only through `bertrand_avoiding` in the collision case x < p <= 2x.",
     "significance": "key",
-    "prerequisites": ["Nat.exists_prime_lt_and_le_two_mul"],
-    "relatedConcepts": ["Bertrand's postulate", "Ramanujan primes", "interval-covering induction"]
+    "prerequisites": [
+      "Nat.exists_prime_lt_and_le_two_mul"
+    ],
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "Ramanujan primes",
+      "interval-covering induction"
+    ]
   }
 ]
