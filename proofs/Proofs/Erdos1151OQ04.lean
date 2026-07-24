@@ -474,7 +474,7 @@ theorem lagrangeBasis_apply_ne (n : ℕ) (nodes : Fin n → ℝ) {j k : Fin n}
 theorem lagrangeBasis_continuous (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) :
     Continuous fun t => lagrangeBasis n nodes k t := by
   simp only [lagrangeBasis]
-  exact continuous_finset_prod _ fun i _ =>
+  exact continuous_finsetProd _ fun i _ =>
     (continuous_id.sub continuous_const).div_const _
 
 /-- **Continuous bounded interpolant through prescribed node values.**
@@ -495,7 +495,7 @@ theorem exists_continuous_bounded_through_nodes (n : ℕ) (nodes : Fin n → ℝ
   classical
   -- The (unclamped) Lagrange interpolation polynomial through the target values.
   have hg_cont : Continuous fun t => ∑ k : Fin n, w k * lagrangeBasis n nodes k t :=
-    continuous_finset_sum _ fun k _ =>
+    continuous_finsetSum _ fun k _ =>
       (lagrangeBasis_continuous n nodes k).const_mul (w k)
   have hg_node : ∀ j : Fin n,
       (∑ k : Fin n, w k * lagrangeBasis n nodes k (nodes j)) = w j := by
