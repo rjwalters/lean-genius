@@ -126,3 +126,70 @@ being import-clean).
 4. Berger, M. (1987). *Geometry I*, Theorem 10.7.6 (Möbius determinant criterion).
 5. Mathlib v4.26.0: `Mathlib.LinearAlgebra.Matrix.Determinant.Basic`,
    `Mathlib.LinearAlgebra.Matrix.NonsingularInverse` (Cramer's rule).
+
+## Must Prove Exactly / Does Not Count
+
+The OQ-03 claim decomposes into four deliverables. What counts, exactly:
+
+1. **Definition** — `concyclicityDet` must be the literal Möbius $4\times4$
+   determinant (first column $x_i^2+y_i^2$), not a proxy (e.g. Ptolemy or
+   cross-ratio). ✓ `concyclicityDetCoords` / `concyclicityDet` (Part 1–2).
+2. **The iff** — $\Delta = 0 \iff$ four points on a common circle of **positive
+   radius**, under non-collinearity of $P_1,P_2,P_3$ only. Does NOT count:
+   the unconditional iff (false — collinear points have $\Delta = 0$, no
+   circle), or a version whose "circle" allows $r = 0$ or lines. ✓ Part 12.
+3. **The bridge** — chord-product equality at a common point ⟹ $\Delta = 0$.
+   **The problem.md statement above (unsigned product) is FALSE** — the S9
+   counterexample `P=0, A=e₀, B=−4e₀, C=e₁, D=4e₁` satisfies the unsigned
+   hypothesis with $\Delta \ne 0$; machine-checked as
+   `unsigned_converse_counterexample` in
+   `Proofs/ProductOfSegmentsOfChordsConverse.lean`. What counts is the
+   **signed** form: $\langle A-P, B-P\rangle = \langle C-P, D-P\rangle$
+   (equivalently $t\|A-P\|^2 = s\|C-P\|^2$ under chord collinearity) plus
+   chord-line distinctness (`LinearIndependent ℝ ![A−P, C−P]`) ⟹ $\Delta=0$.
+   ✓ Part 13 `signed_product_implies_concyclicityDet_zero` (S19).
+4. **Axiom discharge** — the parent's
+   `converse_product_implies_concyclic_axiom` must be gone with the parent
+   axiom-free. Does NOT count: restating the axiom as a structure field or
+   hypothesis. ✓ The axiom was **removed** (its unsigned statement is false)
+   and replaced by the proven `signed_converse_implies_concyclic`; parent
+   file has 0 axioms, gallery meta `verified`/`original`/`axiomCount 0`.
+
+## Adversarial Checklist (S19 completion claim, 2026-07-24)
+
+How THIS completion claim could be wrong — audit these specifically:
+
+- **Signed-vs-unsigned dodge.** The delivered bridge (Part 13) proves the
+  *signed* claim, not the unsigned claim printed in this file's Problem
+  Statement. This is not a silent weakening: the unsigned claim is refuted
+  in-repo (`unsigned_converse_counterexample`, 0 sorries). An auditor must
+  confirm both (a) the refutation really negates the unsigned hypothesis
+  shape, and (b) Part 13's signed hypothesis under `hAB`/`hCD` collinearity
+  is exactly signed power-of-a-point equality (`inner_smul_right` gives
+  $t\|A-P\|^2 = s\|C-P\|^2$ — see `signed_inner_product_to_scalar`).
+- **Circularity.** Part 13 composes
+  `signed_converse_implies_concyclic` (explicit Cramer circumcenter — does
+  NOT mention `concyclicityDet`) with Part 8 (concyclic ⟹ $\Delta=0$,
+  unconditional kernel-vector argument). Neither imports the conclusion;
+  the composition is acyclic. Verify `ProductOfSegmentsOfChordsConverse`
+  contains no axioms/sorries (it contains none as of #39062).
+- **Vacuity of non-degeneracy.** Part 13 requires
+  `LinearIndependent ℝ ![A−P, C−P]`; Part 12 requires
+  `¬ Collinear ℝ {P₁,P₂,P₃}`. Both are satisfiable (unit-circle instance,
+  Part 3 numeric checks) — the theorems are not vacuous.
+- **Degenerate scalars.** $t=0$ forces $B=P$ and (via the hypothesis)
+  $s=0$, $D=P$; the conclusion $\Delta=0$ then holds via repeated points on
+  the constructed circle. No hidden distinctness assumption is needed or
+  claimed for $B, D$.
+- **Deliverable-4 provenance.** The parent axiom was discharged on the
+  OQ-02 line (counterexample + signed converse), NOT by the determinant
+  route this problem originally sketched (Cramer on the implicit-circle
+  system). The determinant route now ALSO yields it
+  (`signed_product_implies_concyclic_via_det`), so the two APIs are
+  interchangeable — but an auditor should credit the axiom removal to the
+  Converse file, and this problem's unique contribution as the determinant
+  criterion + both bridges.
+- **Radius positivity.** Part 12's (⟹) produces $r > 0$ from
+  non-collinearity; Part 13's circle inherits $r > 0$ from
+  `norm_pos_iff` on $A - P \ne$ center offset. Confirm no `r ≥ 0`
+  weakening slipped in (grep: all four conclusions use `0 < r` / `r > 0`).

@@ -1,5 +1,26 @@
 # Research State: product-of-segments-of-chords-oq-03
 
+> **S19 ACT (2026-07-24, researcher-2): SIGNED BRIDGE PROVEN — PROBLEM
+> COMPLETE. File 542 → 617 LOC, 0 sorries / 0 axioms, docker GREEN (8577
+> jobs; only pre-existing `EuclideanSpace.norm_single` deprecation warnings
+> in the Converse file).** New Part 13:
+> `signed_product_implies_concyclicityDet_zero` (equal **signed** chord
+> products through `P` + distinct chord lines ⟹ `concyclicityDet = 0` — the
+> OQ-03 bridge claim, deliverable 3) and
+> `signed_product_implies_concyclic_via_det` (end-to-end round trip through
+> the Part 12 iff). The S12-§3.2 closed-form `linear_combination` witness
+> was NOT needed: the bridge composes Part 6
+> (`signed_inner_product_to_scalar`) → `ProductOfSegmentsOfChordsConverse.
+> signed_converse_implies_concyclic` (explicit Cramer circumcenter) → Part 8
+> (unconditional concyclic ⟹ Δ = 0). **The planned S20 is MOOT**: the OQ-02
+> line already removed the parent's false unsigned axiom, proved the signed
+> converse (Converse file, 0 sorries / 0 axioms, in the lake-globs build),
+> and the parent gallery meta is already `verified`/`original`/`axiomCount 0`
+> (PR #24873). All four problem.md deliverables are now discharged;
+> "Must prove exactly" + adversarial-checklist sections added to problem.md.
+> Pool status → completed. See
+> `sessions/2026-07-24-s19-act-signed-bridge-completion.md`.
+
 > **S18 ACT (2026-07-24, researcher-1): HEADLINE IFF PROVEN — file now
 > 0 sorries / 0 axioms, 265 → 542 LOC, post-change docker build GREEN
 > (3038 jobs, 0 warnings, 2026-07-24).**
