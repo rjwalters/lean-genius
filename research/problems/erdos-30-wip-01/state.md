@@ -3,8 +3,56 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-23T10:45:00-07:00
-**Iteration**: 7
+**Since**: 2026-07-24 (h(29) opening, researcher-3)
+**Iteration**: 8
+
+## Session 2026-07-24b (researcher-3) — h(29) opening: near-perfect ruler + d ≡ 2 (mod 4), and the FULL closure table
+
+**Lean landed** (Erdos30WIP01.lean, appended before `end Erdos30`):
+- `sidon_eight_range_thirty_image`: an 8-element Sidon `A ⊆ {0..29}` has
+  `A.offDiag.image diffMap = ([-29,29] \ {0}) \ {d, -d}` for a single
+  `1 ≤ d ≤ 29` (56 injective ordered diffs in a 58-element window; the
+  2-element complement is negation-symmetric, so it is exactly `{d, -d}`).
+- `sidon_eight_range_thirty_missing_two_mod_four`: the missing `d` satisfies
+  `d % 4 = 2`. Mod-2 same-class count: 28 ordered even diffs unattainable
+  (`Σ eᵣ(eᵣ−1) ∈ {24,26,32,42,56}` for `e₀+e₁ = 8`) so `|S2| = 26`, `d` even,
+  profile `{5,3}`; mod-4 same-class count linked through
+  `card(filter %2=0) = card(filter %4=0) + card(filter %4=2)` rules out
+  `4 ∣ d` (12 unattainable against the `{5,3}` mod-2 profile).
+
+**★ KEY DISCOVERY (Python-verified, 2026-07-24): h(29) = 7 needs NO kernel
+search.** Exhaustive residue-profile analysis (all compositions of 8 into m
+classes, same-class AND cross-class ordered-pair equations against
+`D = {1..29} \ {d}`) shows EVERY candidate missing diff dies to some modulus:
+
+| missing d | killed by (cross-class count) |
+|---|---|
+| odd d (incl. 29) | mod 2 (same-class only) — LEAN DONE |
+| d ≡ 0 (mod 4) | mod 4 (same-class only, linked to mod-2 profile) — LEAN DONE |
+| 10, 18 | mod 7 |
+| 14, 22 | mod 9 |
+| 2, 6, 26 | mod 10 |
+
+(Ground truth double-checked: exhaustive span-29 search, 376740 pinned
+candidates, 0 Sidon sets.) The prior blocker note "span-29 branch needs
+~C(28,6) kernel search beyond decide+kernel" is OVERTURNED — no search at
+any point; also no span dichotomy / h(28) reduction is needed (the missing-d
+argument covers d = 29, i.e. span ≤ 28, uniformly).
+
+**Remaining for h(29) (next session, LAYER 2)**: the seven cases
+`d ∈ {2,6,10,14,18,22,26}` via cross-class counts. Suggested Lean shape per
+modulus m: fiber `T_r := offDiag.filter (diffMap · % m = r)` as
+`(A.filter (· % m = s)) ×ˢ (A.filter (· % m = s'))` products (h(28)'s
+`hfiber2` pattern), then the per-d Diophantine. CAUTION: enumerating m = 10
+class profiles via `interval_cases`×10 blows up (4^10); instead bound
+`c_r ≤ 2` structurally first (three same-class elements would repeat diff 10
+or 20 — Sidon violation), or phrase the profile refutation as a `decide
++kernel` proposition over `Fin 10 → Fin 3` (59049 points, well within the
+#42319 budget). Then `no_sidon_card_eight_range_thirty` +
+`sidonNumber_twentynine = 7` (witness: any 7-mark ruler ⊆ {0..29}, e.g.
+{0,1,4,10,18,23,25} reused from h(28)).
+
+**Session hygiene**: claim released after PR; build docker-verified (see PR).
 
 ## Current Focus
 Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..28) as of the
@@ -25,18 +73,16 @@ values. `SidonCheck` converse bridge certifies witnesses with one `decide`.
 - Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count, Erdős–Turán construction + Bertrand
 
 ## Blockers
-h(29..33) wall: perfect ruler no longer forced (28 diffs in {1,…,N} miss
-N−28 values); span dichotomy returns but the span-N branch needs per-N
-nonexistence with C(N−1,6)-scale kernel searches (~376k at N=29). Mod-4
-alone checked INSUFFICIENT at N=29 (a {4,2,1,1} arrangement with the missing
-value ≡ 2 mod 4 survives). Elementary layer near-saturated.
+NONE for h(29) — the 2026-07-24b analysis shows pure modular counting closes
+it (see the closure table above); the "~376k kernel search" blocker is
+OVERTURNED. Genuine remaining walls: h(30..33) (same near-perfect analysis
+re-run per N — miss-2-values structure at N=30 needs checking) and the DEEP
+targets.
 
 ## Next Action
-DONE 2026-07-24: Erdős–Turán construction landed — √N/4 ≤ h(N) ≤ √(2N)+1
-for N ≥ 49, order h(N) ≍ √N settled elementarily (former DEEP target
-"Singer √N lower bound" achieved via Erdős–Turán instead; no projective
-planes). h(29) narrowed: missing diff d ≡ 2 (mod 4) (prior "d odd" note was
-WRONG — mod-2 class count forces d even). Remaining: fell h(29) via
-mod-6/mod-8 cross counts on the narrowed d-list or the ≈192k span-29
-search; or DEEP: N^{1/4} refinement, Singer (1−o(1))√N constant, $1000
-N^ε conjecture.
+LAYER 2 of h(29): kill `d ∈ {2,6,10,14,18,22,26}` via cross-class counts
+(mod 7 for {10,18}, mod 9 for {14,22}, mod 10 for {2,6,26}) following the
+recipe in the 2026-07-24b session note, then assemble
+`no_sidon_card_eight_range_thirty` and `sidonNumber_twentynine = 7`.
+After that: DEEP targets (N^{1/4} refinement, Singer (1−o(1))√N constant,
+$1000 N^ε conjecture) or h(30..33) by the same near-perfect method.
