@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-erdos103-oq02-header",
+    "proofId": "erdos-103-oq-02",
+    "range": { "startLine": 1, "endLine": 58 },
+    "type": "context",
+    "title": "Formalization Audit: the Raw Count is Degenerate",
+    "content": "The parent file `Erdos103Problem.lean` defines h(n) as the cardinality of the subtype of optimal configurations, with no quotient by congruence — but the file's own `IsOptimal` predicate is invariant under the continuous group of translations of ℝ², so the subtype it counts is either empty or infinite for every n. Hence h(n) is not the 'number of incongruent optimal configurations' Erdős actually asks about; it is identically 0. This file proves that degeneracy, then supplies the corrected count hCong (quotient by congruence) against which the open question should genuinely be stated.",
+    "mathContext": "$h(n) := \\mathrm{Nat.card}\\{P : \\mathrm{IsOptimal}\\,n\\,P\\}$ counts optimal configurations with no congruence quotient; since `IsOptimal` is translation-invariant, this set is empty or infinite, so $\\mathrm{Nat.card}$ of it is always $0$.",
+    "significance": "context",
+    "relatedConcepts": ["formalization audit", "Nat.card of infinite types", "translation invariance", "Erdős Problem #103"],
+    "prerequisites": ["PointConfig and IsOptimal (Erdos103Problem.lean)", "Nat.card"]
+  },
+  {
     "id": "ann-erdos103-oq02-isometry",
     "proofId": "erdos-103-oq-02",
     "range": { "startLine": 63, "endLine": 73 },
@@ -58,6 +70,18 @@
     "significance": "key",
     "relatedConcepts": ["setoid / quotient type", "congruence of point sets", "Quotient.sound", "moduli up to isometry"],
     "prerequisites": ["equivalence relations and quotients", "AreCongruent"]
+  },
+  {
+    "id": "ann-erdos103-oq02-conjecture-hierarchy",
+    "proofId": "erdos-103-oq-02",
+    "range": { "startLine": 204, "endLine": 215 },
+    "type": "theorem",
+    "title": "The Corrected Conjecture Hierarchy: Main ⟹ Weak",
+    "content": "correct_main_implies_weak shows the corrected main conjecture (∀C, ∃N, ∀n≥N, hCong n > C) implies the corrected weak conjecture WeakConjectureCorrect (∃N, ∀n≥N, hCong n ≥ 2), by instantiating C = 1. This mirrors the usual strong-implies-weak hierarchy of Erdős-style conjectures, but now stated for the genuinely meaningful congruence count hCong rather than the degenerate raw count h.",
+    "mathContext": "$(\\forall C,\\exists N,\\forall n\\ge N,\\ h_{\\mathrm{Cong}}(n) > C) \\Rightarrow (\\exists N,\\forall n\\ge N,\\ h_{\\mathrm{Cong}}(n) \\ge 2)$, obtained by taking $C = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["conjecture hierarchy", "main vs. weak conjecture", "universal instantiation", "hCong"],
+    "prerequisites": ["WeakConjectureCorrect", "hCong"]
   },
   {
     "id": "ann-erdos103-oq02-nondegenerate",
