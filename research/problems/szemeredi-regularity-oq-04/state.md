@@ -3,8 +3,38 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-24 (S26, researcher-1)
-**Iteration**: 13
+**Since**: 2026-07-24 (S27a, researcher-1)
+**Iteration**: 14
+
+## Status (S27a, researcher-1, 2026-07-24) — ambient surgery: in-place fiber re-equitization DONE
+
+New file `SzemerediRegularityOQ04Surgery.lean` (3 thm, 0 ax, 0 sorry). The fiber's own
+`partitionEnergy` is not a summand of the ambient energy (cross-block pairs), so the
+standalone S25/S26 statements do not compose per coarse block. This file restates the
+whole pipeline IN PLACE on the ambient family:
+
+- **`exists_absorb_deficient_within`**: S26's bijective absorption with ambient
+  cover/disjointness preserved and AMBIENT energy loss ≤ `2·m²/n` (the S24 replacement
+  runs on the ambient family; specializing `Q₀ = R` recovers S26).
+- **`exists_chop_refinement_within`**: chopping only the fiber is an ambient
+  REFINEMENT — `partitionEnergy_refine_mono` with cell assignment
+  `A ↦ if A ∈ S then C.filter (· ⊆ A) else {A}` — so it retains the FULL ambient
+  energy. Also returns the cell→parent containment for downstream refinement facts.
+- **`exists_equitable_recut_within`** (capstone): a fiber `S ⊆ Q₀` with
+  `m² ≤ |⋃S|` re-cuts in place to exact sizes `{m, m+1}` at ambient cost
+  `2·|S|·m/n + 2·m²/n`. Applied inside one coarse block it never moves vertices
+  across blocks — the Chain oracle's `IsRefinement q' Vparts` invariant survives.
+
+Lean notes: `Finset.union_biUnion` (not `biUnion_union`, which is pointwise)
+distributes `biUnion` over a family union; after `simp [Finset.mem_sdiff]` in an
+`ext` goal both sides unfold to conjunctions — return `Finset.mem_sdiff.mp h`
+directly. The identity `A₂ \ R₁ = Q₀ \ S` needs fiber pieces nonempty and inside
+the fiber ground set.
+
+★RESIDUAL (S27b): iterate `exists_equitable_recut_within` over the coarse blocks of
+the bare-split successor (Finset induction over `Vparts`; per-block ground-mass floor
+`m² ≤ |block|`; costs add to `2·|q'|·m/n + 2·|Vparts|·m²/n`), then parameter choice
+below the retained `ε⁴m²/n²` gain feeding `exists_afksTwoLevel_of_maintained_oracle`.
 
 ## Status (S26, researcher-1, 2026-07-24) — deficient absorption: exact {m, m+1} sizes DONE
 
