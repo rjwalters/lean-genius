@@ -291,3 +291,43 @@ imports only GLSyntax + GLFour; docker green; 0 sorries, 0 axioms).
   rebuild (Hk/Hlob blocked route unchanged).
 - Possible: decidability of box-free GL-provability via
   boxfree_characterization + finite valuation search over atoms φ.
+
+---
+
+## S20 (2026-07-24, researcher-2) — Kripke soundness over genuine GL frames + modal-G2 independence results
+
+**Outcome**: option (b) of the S19 handoff executed. New file
+`GodelSecondIncompletenessOQ02Kripke.lean` (Mathlib-FREE; imports only GLSyntax;
+docker green 3 jobs; 0 sorries, 0 axiom declarations — only `Classical.choice`
+via `byContradiction` in the k3 case, foundational/not counted).
+
+- **`GLFrame`**: worlds + transitive R + `WellFounded (fun x y => R y x)`
+  (converse well-foundedness); `GLFrame.irrefl` derived by Acc induction.
+- **`Forces` / `Valid`**: standard Kripke forcing, □ over R-successors.
+- **`forces_of_GL_proves`** (name promised by the S8 GLSyntax header): full
+  soundness by induction on `GL_proves`. Löb case = `forces_lob`: well-founded
+  induction along converse R, transitivity propagates the box hypothesis.
+- **Independence corollaries** unreachable by S19's boolean semantics (which
+  validates □⊥): `GL_not_proves_box_falsum` (two-world chain frame) and
+  **`GL_not_proves_not_box_falsum`** (dead-end frame) — the latter is the
+  modal mirror of G2: GL ⊬ ¬□⊥ ("the logic of provability cannot prove
+  consistency"). Also `GL_consistent_kripke`, a semantic re-proof of S19's
+  `GL_consistent` independent of the Kalmár route.
+
+### Lean gotchas (v4.31, no Mathlib)
+- `induction h with | taut ht` — IMPLICIT constructor args are NOT bound as
+  alternative variables (writing `| taut t ht` fails with "2 provided, 1
+  expected"); explicit args + IHs only.
+- `induction F.cwf.apply u with | intro x _ ih` works directly on the Acc
+  term and auto-generalizes the goal over u; the IH arrives as
+  `∀ y, R x y → (R w y → Forces v y p)` — exactly Löb's induction shape.
+- `Forces` defined by two-arg pattern match (w varies in the box case)
+  whnf-reduces through `intro`/`exact`/application without any `simp only
+  [Forces]` — defeq unfolding of structural recursion is reliable here.
+- `Classical.byContradiction` is core; k1/k2/K cases are pure λ-terms.
+
+### Next tractable
+- (c) decidability of box-free GL-provability via S19's
+  `boxfree_characterization` + finite valuation search over atoms.
+- Kripke COMPLETENESS (Segerberg finite-model-property) — multi-session.
+- Hk/Hlob arithmetic side still blocked on Σ₁ Provable rebuild (unchanged).

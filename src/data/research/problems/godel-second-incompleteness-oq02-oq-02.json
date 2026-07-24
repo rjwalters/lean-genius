@@ -53,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S19, 2026-07-24): Kalmar completeness for the box-free fragment + machine-checked CONSISTENCY of the S8 GL system (boolean one-world semantics; box |-> true validates K and Lob). New Mathlib-free file with PDeriv hypothesis layer, deduction theorem, dne/case_split, kalmar, boxfree_characterization: GL box-free fragment = classical propositional logic exactly. S18 GLFour toolkit + this = the propositional metatheory is closed. Blocked route (Hk/Hlob via Sigma1 Provable rebuild) unchanged. Next: genuine Kripke soundness (S5 axis) or box-free decidability.",
+    "progressSummary": "PROGRESS S20: Kripke soundness of GL over transitive converse-wellfounded frames (forces_of_GL_proves, Mathlib-free, docker green). New independence metatheorems: GL not-proves box-bot and GL not-proves not-box-bot (modal mirror of G2). S18 GLFour + S19 Kalmar/consistency + S20 Kripke soundness all landed; arithmetic Hk/Hlob still blocked on Sigma1 Provable rebuild.",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
@@ -87,7 +87,10 @@
       "GodelSecondIncompletenessOQ02Kalmar.lean (S19, Mathlib-free): eval + eval_of_GL_proves + GL_consistent + GL_proves_no_atom",
       "PDeriv (hyp/thm/mp) + weaken + deduction theorem + toGL",
       "dne, case_split (classical glue via deduction theorem)",
-      "kalmar_main + elim_atoms + kalmar + boxfree_characterization"
+      "kalmar_main + elim_atoms + kalmar + boxfree_characterization",
+      "GodelSecondIncompletenessOQ02Kripke.lean: GLFrame (transitive + converse-WF), GLFrame.irrefl, Forces, Valid",
+      "forces_of_GL_proves / valid_of_GL_proves: Kripke soundness (Lob case by converse-WF induction, forces_lob)",
+      "GL_not_proves_box_falsum (twoChain frame) + GL_not_proves_not_box_falsum (deadEnd frame; modal G2 mirror) + GL_consistent_kripke"
     ],
     "insights": [
       "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
@@ -106,7 +109,10 @@
       "The box-free fragment of GL is EXACTLY classical propositional logic (Kalmar completeness + boolean soundness): propositional obligations reduce to truth-table checks",
       "Kalmar runs constructively through a PDeriv hypothesis layer + deduction theorem (k1/k2 only); dne and case_split then fall out of natural-deduction-style reasoning instead of combinator gymnastics",
       "Atom elimination is duplicate-tolerant: weakening absorbs repeated atoms, so no Nodup/dedup machinery — the updated-valuation contexts embed into (litAtom-of-a :: untouched tail)",
-      "Lean: PDeriv induction with fixed context gives PRE-APPLIED IHs; lit-of-atom bridges are rfl not simp (hidden Decidable instances); .hyp (by simp) needs the hypothesis formula pinned before elaboration"
+      "Lean: PDeriv induction with fixed context gives PRE-APPLIED IHs; lit-of-atom bridges are rfl not simp (hidden Decidable instances); .hyp (by simp) needs the hypothesis formula pinned before elaboration",
+      "Boolean (S19) vs frame (S20) semantics split the independence work: boolean semantics validates box-bot, so GL not-proves box-bot NEEDS genuine frames with successors; dead-end frame kills not-box-bot (the consistency formula) vacuously",
+      "Lob soundness = well-founded induction along converse R with transitivity propagating the box antecedent; converse well-foundedness is exactly what replaces the arithmetized fixed point",
+      "Lean: implicit constructor args are not bound in induction alternatives; induction on F.cwf.apply u auto-generalizes the goal and yields the Lob-shaped IH directly"
     ],
     "mathlibGaps": [
       "No modal logic / provability logic library in Mathlib.",
@@ -115,14 +121,9 @@
       "GL Kripke completeness (Segerberg) is not in Mathlib — would be its own contribution."
     ],
     "nextSteps": [
-      "S16 ACT — arithmetical soundness of GL (NEW PRIORITY #1, ~150-250 LOC, +0 or +1 axiom): five-case induction `GL_proves φ → ∀ ρ, ⊢ translate ρ φ` dispatching on the 5 `GL_proves` constructors. With `translate` now available (S15), 3 cases (`nec`/`mp`/`k`) discharge by existing axioms + simp-rewrites; `taut` needs Łukasiewicz CPL completeness lift (~80-120 LOC); `lob` blocked on S4 ACT (orthogonal).",
-      "S4 ACT — Löb's theorem (~150 LOC, +1 axiom `lob_henkin_fixed_point`): orthogonal to S15/S16, can proceed in parallel. Fills parent line-213 informal Löb statement.",
-      "S5 ACT — Kripke semantics (~80 LOC, +0 axioms): defines `forces : KripkeModel → World → GLFormula → Prop`. Orthogonal to S15/S16. S5b PREP rename pass pairs with this.",
-      "S2-α ACT OPEN: PR #19037 (researcher-12, 2026-05-14) — GodelSecondIncompletenessOQ02Companion.lean + parent v4.26.0 build-unblocker, 3060 Docker jobs clean, +3 axioms. Awaiting merge.",
-      "S8 ACT DONE: this PR — GodelSecondIncompletenessOQ02GLSyntax.lean per S9 PREP §7 spec, 2 Docker jobs clean, 0 axioms, 0 sorries, ~55 LOC source.",
-      "S4 ACT (gated on PR #19037 merge): Löb's theorem ~150 lines per S4 PREP #18445; fills line-213 informal gap; Wiedijk-100 adjacent. Highest-value next once PR #19037 lands.",
-      "S5 ACT (NOW READY, gated on S5b rename): Kripke semantics + Segerberg per S5 PREP #18473 — ~200–300 lines, 1–3 model-def axioms. Imports GLFormula from this PR.",
-      "S5b PREP (PRIORITY, doc-only): rename ModalFormula → GLFormula in S5 PREP (~15 occurrences) before S5 ACT to avoid duplicate inductive type."
+      "S21 candidate: decidability of box-free GL-provability via boxfree_characterization + finite valuation search",
+      "Kripke completeness (Segerberg FMP) — multi-session project",
+      "Arithmetic Htaut/Hk/Hlob discharge still blocked on Sigma1 Provable rebuild (S6 PREP #18497)"
     ]
   },
   "tags": [
@@ -161,7 +162,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-06-13",
+  "lastUpdate": "2026-07-24",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

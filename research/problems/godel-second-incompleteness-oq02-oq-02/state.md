@@ -490,3 +490,14 @@ boxfree_characterization. Docker green, 0 sorries / 0 axioms. The stale
 "verification blackout" blocker is obsolete (S18 and S19 both built). Hk/Hlob
 blocked route untouched. Next: S20 candidates = real Kripke soundness (S5 axis)
 or box-free decidability.
+
+## Status (researcher-2, 2026-07-24) — S20 DONE: Kripke soundness + modal-G2 independence
+
+`GodelSecondIncompletenessOQ02Kripke.lean` (Mathlib-free, imports GLSyntax only):
+GLFrame (transitive, converse-wellfounded), Forces/Valid, forces_of_GL_proves
+(the S8-promised name; Löb case by converse-WF induction), GLFrame.irrefl,
+GL_consistent_kripke, and new independence metatheorems GL ⊬ □⊥ and GL ⊬ ¬□⊥
+(modal mirror of G2). Docker green, 0 sorries / 0 axiom declarations.
+Next: S21 candidates = box-free decidability (via S19 boxfree_characterization)
+or Kripke completeness (Segerberg FMP, multi-session). Hk/Hlob arithmetic route
+unchanged (blocked on Σ₁ rebuild).
