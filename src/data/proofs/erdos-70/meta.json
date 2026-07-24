@@ -32,7 +32,7 @@
     "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",
     "problemStatement": "Let 𝔠 be the cardinality of the continuum (= 2^ℵ₀), β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type β for color 0 or a homogeneous set of size n for color 1?",
     "text": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
-    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation κ → (α, m)₂³. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic (ω+n, ω²) are proved from Mathlib's ordinal/cardinal API.",
+    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation κ → (α, m)₂³. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result and the finite Ramsey theorem are documented as block comments only, not formal `axiom` declarations — the file contains zero axioms. Monotonicity properties and countability proofs for ordinal arithmetic (ω+n, ω²) are proved from Mathlib's ordinal/cardinal API.",
     "keyInsights": [
       "**Erdős-Rado stepping-up**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for $2 \\le n < \\omega$, proved by converting the 2-dimensional relation $\\mathfrak{c} \\to (\\omega, 3)_2^2$ to dimension 3 via the stepping-up lemma",
       "**Gap at $\\omega^2$**: The Erdős-Rado result covers ordinals $\\omega + n$ but not $\\omega \\cdot 2$ or $\\omega^2$. Whether $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ holds is the first open case beyond their theorem",
@@ -108,8 +108,8 @@
       "title": "Part VII: Erdős-Rado Theorem",
       "startLine": 101,
       "endLine": 113,
-      "summary": "Axiomatizes the Erdős-Rado partial result: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture.",
-      "mathContext": "Erdős-Rado: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all finite $n$ (stepping-up from Erdős-Dushnik-Miller)."
+      "summary": "Documents the Erdős-Rado partial result as a block comment (not a formal `axiom` declaration): $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture.",
+      "mathContext": "Erdős-Rado: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all finite $n$ (stepping-up from Erdős-Dushnik-Miller). Prose comment only, no Lean declaration."
     },
     {
       "id": "main-conjecture",
@@ -132,8 +132,8 @@
       "title": "Part X: Finite Ramsey Theory",
       "startLine": 141,
       "endLine": 161,
-      "summary": "Axiomatizes the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$. Proves the specific case for 3-subsets of a 6-set: any 3-element set is trivially homogeneous for 3-subsets (it has exactly one 3-subset, itself).",
-      "mathContext": "Finite Ramsey: $\\forall r, k, n, \\exists N: N \\to (r)_k^n$ (axiomatized). 3-subset case proved from definitions."
+      "summary": "Documents the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$ as a block comment (not a formal `axiom` declaration). Proves the specific case for 3-subsets of a 6-set: any 3-element set is trivially homogeneous for 3-subsets (it has exactly one 3-subset, itself).",
+      "mathContext": "Finite Ramsey: $\\forall r, k, n, \\exists N: N \\to (r)_k^n$ — prose comment only, no Lean declaration. 3-subset case proved from definitions."
     },
     {
       "id": "negative-results",
@@ -232,7 +232,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 245-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity (proved from definitions), and countability proofs for ordinal arithmetic. Only 2 deep results remain axiomatized (Erdős-Rado, Finite Ramsey).",
+    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 323-line formalization captures colorings, homogeneous sets, partition arrows, monotonicity (proved from definitions), and countability proofs for ordinal arithmetic. The Erdős-Rado partial result and the finite Ramsey theorem are documented as block comments only (leanFile.axiomCount = 0); no result in the file is a formal `axiom` declaration.",
     "implications": "**Theoretical Significance**: This problem connects infinite Ramsey theory to the combinatorial structure of the continuum.\n\nA positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
       "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
