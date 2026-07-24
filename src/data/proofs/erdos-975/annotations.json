@@ -96,7 +96,7 @@
     "type": "concept",
     "title": "Van der Corput's Lower Bound (1939)",
     "content": "**Van der Corput** proved that Σ τ(f(n)) ≫ x log x, i.e., the divisor sum grows at least as fast as x log x.",
-    "mathContext": "This is stated as `(x * log x) =O[atTop] divisorSumPoly f`, meaning x log x is bounded by a constant times divisorSumPoly. This establishes the lower bound.",
+    "mathContext": "This result is discussed only in a prose `/- ... -/` comment in the source; no `axiom`, `def`, or `theorem` formalizes it as a Lean statement.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic bounds",
@@ -117,7 +117,7 @@
     "type": "concept",
     "title": "Erdős's Upper Bound (1952)",
     "content": "**Erdős** proved that Σ τ(f(n)) ≪ x log x using elementary (non-analytic) methods. Combined with van der Corput, this gives Θ(x log x) growth.",
-    "mathContext": "This is stated as `divisorSumPoly f =O[atTop] (x * log x)`. Erdős's proof is notable for avoiding complex analysis, using only elementary number theory.",
+    "mathContext": "This result is discussed only in a prose `/- ... -/` comment in the source; no `axiom`, `def`, or `theorem` formalizes it as a Lean statement. Erdős's proof is notable for avoiding complex analysis, using only elementary number theory.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic bounds",
@@ -137,9 +137,9 @@
       "endLine": 121
     },
     "type": "concept",
-    "title": "Main Conjecture (Axiom)",
+    "title": "Main Conjecture (Open, Discussed in Comments)",
     "content": "**Erdős Problem #975**: For every irreducible polynomial f, does there exist c > 0 such that Σ τ(f(n)) / (x log x) → c? This **remains OPEN** for general polynomials.",
-    "mathContext": "We use `Tendsto` to express that the ratio converges to a constant c. While Θ(x log x) bounds are known, proving a specific limit exists is much harder.",
+    "mathContext": "This conjecture is discussed only in a prose `/- ... -/` comment in the source; no `Tendsto` statement, `axiom`, or other Lean declaration formalizes it. While Θ(x log x) bounds are known, proving a specific limit exists is much harder.",
     "significance": "key",
     "relatedConcepts": [
       "open conjecture",

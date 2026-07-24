@@ -42,14 +42,14 @@
     ],
     "originalContributions": [
       "Formal definition of divisor sum over polynomial values",
-      "Statement of Van der Corput and Erdős bounds as axioms",
-      "Statement of Hooley's theorem for quadratics",
-      "The famous n² + 1 asymptotic with constant 3/π",
+      "Historical discussion, in prose comments only (not formalized as Lean statements), of Van der Corput's and Erdős's bounds",
+      "Historical discussion, in a prose comment only (not formalized), of Hooley's theorem for quadratics",
+      "The famous n² + 1 asymptotic with constant 3/π, discussed in a prose comment only (not formalized)",
       "Verified divisor counts: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(p)=2 for prime p"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 183,
-    "assumptions": "No mathematical axioms and 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms. Compiler-trust disclosure: the concrete divisor-count facts (divisorCount_two, divisorCount_six, divisorCount_twelve) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
+    "assumptions": "No mathematical axioms and 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework, and proves small verified divisor-count facts. Van der Corput's lower bound, Erdős's upper bound, the main open conjecture (Erdős #975), Hooley's theorem for quadratics, and the n² + 1 asymptotic are discussed only in prose `/- ... -/` comments — no `axiom`, `def`, or `theorem` declares any of them anywhere in the file (identifiers like `vanDerCorput_lower_bound`, `erdos_upper_bound`, or `erdos_975` do not exist in the Lean source). Compiler-trust disclosure: the concrete divisor-count facts (divisorCount_two, divisorCount_six, divisorCount_twelve) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 5,
     "definitionCount": 3
   },
@@ -57,7 +57,7 @@
     "historicalContext": "The divisor function τ(n) counts how many positive integers divide n. Erdős Problem #975 asks whether the sum Σ_{n≤x} τ(f(n)) for an irreducible polynomial f has a precise asymptotic formula of the form c·x·log(x) for some constant c > 0.\n\nVan der Corput (1939) established the lower bound, showing the sum grows at least as fast as x log x. Erdős (1952) proved the matching upper bound using elementary methods, establishing that the growth is Θ(x log x).\n\nChristopher Hooley (1963) resolved the problem for irreducible quadratic polynomials, showing that an asymptotic formula exists with an explicit (though complicated) constant. The general case for higher-degree polynomials remains open.",
     "problemStatement": "Let $f \\in \\mathbb{Z}[x]$ be an irreducible non-constant polynomial with $f(n) \\geq 1$ for all sufficiently large $n$. Does there exist a constant $c = c(f) > 0$ such that\n$$\\sum_{n \\leq x} \\tau(f(n)) \\sim c \\cdot x \\cdot \\log x$$\nwhere $\\tau$ is the divisor counting function?\n\n**Status**:\n- **OPEN** for general polynomials\n- **SOLVED** for irreducible quadratics (Hooley, 1963)\n- **Known**: $x \\log x \\ll \\sum \\tau(f(n)) \\ll x \\log x$",
     "text": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
-    "proofStrategy": "We formalize:\n\n1. The divisor sum function over polynomial values\n2. Van der Corput's lower bound (1939) as an axiom\n3. Erdős's upper bound (1952) as an axiom\n4. The main conjecture as an axiom (open problem)\n5. Hooley's theorem for quadratics as an axiom\n6. The famous n² + 1 example with constant 3/π\n\nThe deep analytic methods required for these results are beyond current Mathlib formalization. We verify basic properties of the divisor function computationally.",
+    "proofStrategy": "We formalize:\n\n1. The divisor sum function over polynomial values\n2. Van der Corput's lower bound (1939), discussed in a prose comment (not formalized as a Lean statement)\n3. Erdős's upper bound (1952), discussed in a prose comment (not formalized as a Lean statement)\n4. The main conjecture (open problem), discussed in a prose comment (not formalized as a Lean statement)\n5. Hooley's theorem for quadratics, discussed in a prose comment (not formalized as a Lean statement)\n6. The famous n² + 1 example with constant 3/π, discussed in a prose comment (not formalized as a Lean statement)\n\nThe deep analytic methods required for these results are beyond current Mathlib formalization. We verify basic properties of the divisor function computationally.",
     "keyInsights": [
       "**Divisor function τ(n)**: Counts divisors of n. For prime p, τ(p) = 2. Highly multiplicative: τ(mn) relates to τ(m)τ(n) when gcd(m,n)=1.",
       "**Why x log x?**: The average value of τ(n) for n ≤ x is approximately log x (Dirichlet). Summing over x terms gives x log x growth.",
@@ -90,28 +90,28 @@
       "title": "Known Bounds",
       "startLine": 70,
       "endLine": 99,
-      "summary": "State Van der Corput's lower bound and Erdős's upper bound as axioms."
+      "summary": "Discuss Van der Corput's lower bound and Erdős's upper bound in prose comments (not formalized as Lean statements)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 100,
       "endLine": 122,
-      "summary": "State Erdős Problem #975 as an axiom: existence of asymptotic constant for general irreducible polynomials."
+      "summary": "Discuss Erdős Problem #975 in a prose comment (not formalized as a Lean statement): existence of asymptotic constant for general irreducible polynomials remains open."
     },
     {
       "id": "quadratic-case",
       "title": "Quadratic Case (Hooley)",
       "startLine": 123,
       "endLine": 140,
-      "summary": "State Hooley's theorem resolving the conjecture for irreducible quadratics."
+      "summary": "Discuss Hooley's theorem resolving the conjecture for irreducible quadratics, in a prose comment (not formalized as a Lean statement)."
     },
     {
       "id": "n2-plus-1",
       "title": "The n² + 1 Example",
       "startLine": 141,
       "endLine": 169,
-      "summary": "The famous asymptotic Σ τ(n² + 1) ~ (3/π) x log x."
+      "summary": "The famous asymptotic Σ τ(n² + 1) ~ (3/π) x log x, discussed in a prose comment (not formalized as a Lean statement); only the polynomial n² + 1 itself is formally defined."
     },
     {
       "id": "divisor-properties",
@@ -122,7 +122,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #975 about asymptotic formulas for divisor sums over polynomial values. While the general case remains open, we state known bounds (Van der Corput, Erdős), Hooley's resolution for quadratics, and the beautiful n² + 1 formula with constant 3/π.",
+    "summary": "We formalize basic infrastructure for Erdős Problem #975 about asymptotic formulas for divisor sums over polynomial values: the divisor sum function, the n² + 1 polynomial definition, and small verified divisor-count facts. The general conjecture, along with Van der Corput's bound, Erdős's bound, Hooley's resolution for quadratics, and the n² + 1 formula with constant 3/π, are discussed only in prose comments and are not formalized as Lean statements.",
     "implications": "This problem connects the multiplicative structure of divisors with the additive structure of polynomial values. Understanding these sums reveals deep connections between prime factorization patterns and polynomial arithmetic.",
     "openQuestions": [
       "Does an asymptotic constant exist for cubic and higher-degree irreducible polynomials?",
