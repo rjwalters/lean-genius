@@ -96,11 +96,19 @@
     },
     {
       "id": "closed-form",
-      "title": "The Integer Closed Form and Symmetry",
+      "title": "The Integer Closed Form",
       "startLine": 59,
+      "endLine": 78,
+      "summary": "betaIntegral_nat_nat: B(m+1,n+1) = m!·n!/(m+n+1)!, via betaIntegral_eq_Gamma_mul_div, the argument rewrite (m+1)+(n+1) = (m+n+1)+1, and Gamma_nat_eq_factorial on all three Gamma values.",
+      "mathContext": "$B(m+1,n+1) = \\dfrac{m!\\,n!}{(m+n+1)!}$, derived purely via the Beta–Gamma relation and $\\Gamma(k+1) = k!$, with no integration."
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry on the Integer Lattice",
+      "startLine": 79,
       "endLine": 85,
-      "summary": "betaIntegral_nat_nat: B(m+1,n+1) = m!·n!/(m+n+1)!, via betaIntegral_eq_Gamma_mul_div, the argument rewrite (m+1)+(n+1) = (m+n+1)+1, and Gamma_nat_eq_factorial on all three Gamma values. betaIntegral_nat_nat_symm: B(m+1,n+1) = B(n+1,m+1), the m ↔ n symmetry of the closed form.",
-      "mathContext": "$B(m+1,n+1) = \\dfrac{m!\\,n!}{(m+n+1)!} = B(n+1,m+1)$."
+      "summary": "betaIntegral_nat_nat_symm: B(m+1,n+1) = B(n+1,m+1), the m ↔ n symmetry of the closed form, obtained by rewriting both sides with betaIntegral_nat_nat and Nat.add_comm.",
+      "mathContext": "$B(m+1,n+1) = B(n+1,m+1)$: the analytic substitution symmetry $t \\mapsto 1-t$ becomes the algebraic $m \\leftrightarrow n$ symmetry of $m!\\,n!/(m+n+1)!$ after evaluation."
     },
     {
       "id": "concrete-values",
