@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 4,
     "assumptions": "4 axioms for deep analytic number theory results: helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5 — the central load-bearing assumption), circle_method_asymptotic (circle method asymptotic formula for ternary representations), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (Oliveira e Silva 2013: verified for n ≤ 4·10¹⁸). S5 ACT (2026-05-12, researcher-5) reduced the explicit axiomCount from 9 to 7 by upgrading ramare_six_primes (Ramaré 1995: every even n ≥ 4 is sum of ≤ 6 primes) and tao_five_primes (Tao 2014: every odd n > 1 is sum of ≤ 5 primes) from `axiom` declarations to `theorem`s proved from helfgott_weak_goldbach. S8 ACT (2026-06-10) reduced 7 → 5 by upgrading vinogradov_ternary_goldbach (∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n — Helfgott gives this with N₀ := 5) and helfgott_explicit_bound (∀ n > 5, Odd n → IsSumOfThreePrimes n — literally WeakGoldbachConjecture unfolded) from `axiom` to `theorem` proved from helfgott_weak_goldbach. S-r8 ACT (2026-07-04, researcher-8) reduced 5 → 4 by GENUINELY PROVING schnirelmann_basis_theorem (σ(A)>0 ⟹ ∃ h, A is an additive basis of order h) — not a reduction to another axiom, but a complete machine-checked proof in Proofs/SchnirelmannTheorem.lean assembling the Schnirelmann inequality (SchnirelmannCounting.schnirelmann_inequality) with covering/representation bookkeeping (SchnirelmannBasis); the whole chain is 0-sorry/0-axiom (foundational propext/Classical.choice/Quot.sound only). This same session also repaired pre-existing Mathlib-4.26 bitrot in the circle-method section that had left WeakGoldbach.lean non-compiling on main. The remaining 4 axioms are genuinely deep (Helfgott/circle-method/Chen/binary-Goldbach-verification) and stay axiomatized. Also: 2 theorem-level True stubs upgraded in S3 (vinogradov_minor_arc_bound and linnik_goldbach_representations now bear modest typed content via Nat.primeCounting bounds).",
-    "lineCount": 764,
-    "theoremCount": 32,
+    "lineCount": 1079,
+    "theoremCount": 43,
     "definitionCount": 15,
     "originalContributions": [
       "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
@@ -166,10 +166,16 @@
       "summary": "The tail's open-problem material: the Goldbach-comet heuristic G(n) ~ 2C₂ Π_{p|n,p>2}(p−1)/(p−2)·n/(log n)² and its `twinPrimeConstant` C₂ ≈ 0.6601618; Helfgott's explicit bound `helfgott_explicit_bound` (re-derived from the main axiom, threshold 8.875×10³⁰ being content, not a new assumption); and the formalization of Lévy's conjecture — `LevyConjecture` (n = p + 2q), `levy_implies_weak_goldbach` (p + 2q = p + q + q), and the small-case witnesses `levy_7` / `levy_9` / `levy_11`."
     },
     {
+      "title": "S10: Quantitative Schnirelmann Constant",
+      "startLine": 916,
+      "endLine": 1044,
+      "description": "Makes the S9 bridge quantitative: from a numeric density lower bound δ ≤ σ(G), Bernoulli-estimate lemma pow_deficiency_lt_half gives the explicit exponent ℓ(δ) = ⌊1/δ⌋+1, schnirelmann_basis_explicit the explicit basis order 2ℓ(δ), and schnirelmann_goldbach_explicit the explicit prime-sum constant k(δ) = 6(⌊1/δ⌋+1)+2, instantiated at δ = 1/100 to k = 608 (sum_of_at_most_608_primes_of_density). Conditional bookkeeping only — Schnirelmann's sieve estimate σ(G) > 0 remains unformalized."
+    },
+    {
       "id": "sec-verification-checks",
       "title": "Verification Checks (#check Roster)",
-      "startLine": 916,
-      "endLine": 943,
+      "startLine": 1045,
+      "endLine": 1079,
       "summary": "A closing `#check` roster grouped by part (circle method, Schnirelmann density, strong Goldbach) that pins the public names of the file's key declarations, serving as a compile-time table of contents and guarding against silent renames or removals."
     }
   ],
@@ -185,9 +191,9 @@
   },
   "leanFile": {
     "namespace": "WeakGoldbach",
-    "lineCount": 943,
+    "lineCount": 1079,
     "axiomCount": 4,
-    "theoremCount": 38,
+    "theoremCount": 43,
     "definitionCount": 17,
     "path": "Proofs/WeakGoldbach.lean",
     "sorries": 0
