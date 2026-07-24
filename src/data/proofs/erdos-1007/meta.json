@@ -22,24 +22,24 @@
     "erdosNumber": 1007,
     "erdosUrl": "https://erdosproblems.com/1007",
     "erdosProblemStatus": "solved",
-    "axiomCount": 4,
-    "lineCount": 131,
-    "assumptions": "4 axioms: hasUnitEmbedding_exists, min_edges_dimension_4, k33_unique_minimum, and 1 more. See Lean source for complete statements. Trust caveat: the named theorem `k6_has_15_edges` is closed by `native_decide`, which introduces the `Lean.ofReduceBool` compiler-trust axiom (kernel-external); it verifies the finite computation Nat.choose 6 2 = 15, a finite demonstration, while the headline result rests on the explicit axiom declaration(s) above and stays kernel-checked.",
+    "axiomCount": 3,
+    "lineCount": 177,
+    "assumptions": "3 axioms: min_edges_dimension_4, k33_unique_minimum, min_edges_dimension_5 — the deep extremal results of House (2013) and Chaffee-Noble (2016). See Lean source for complete statements. Note: the former fourth axiom `hasUnitEmbedding_exists` was mathematically inconsistent as originally stated (it quantified over unconstrained adjacency, so a self-loop forces dist(v,v)=0=1, deriving False — issue #43115); it has been replaced by a proved theorem carrying an irreflexivity hypothesis (∀ v, ¬ adj v v), so it is no longer an assumption. Trust caveat: the named theorem `k6_has_15_edges` is closed by `native_decide`, which introduces the `Lean.ofReduceBool` compiler-trust axiom (kernel-external); it verifies the finite computation Nat.choose 6 2 = 15, a finite demonstration, while the headline result rests on the explicit axiom declaration(s) above and stays kernel-checked.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte in their 1965 paper 'On the dimension of a graph,' published in *Mathematika*. They defined the dimension of a graph $G$ as the smallest $d$ such that $G$ can be embedded in $\\mathbb{R}^d$ with every edge realized as a unit-length segment. This concept connects combinatorial graph theory with the classical study of distance geometry, which traces back to Cayley (1841) and Menger (1928), who studied when a set of pairwise distances can be realized in Euclidean space.\n\nThe dimension ladder for complete graphs follows from regular simplex geometry: $K_2$ has dimension 1 (a single edge), $K_3$ has dimension 2 (equilateral triangle), $K_4$ has dimension 3 (regular tetrahedron), and in general $K_{n+1}$ has dimension $n$. But at dimension 4, the minimum-edge graph is *not* $K_5$ (which has 10 edges) but $K_{3,3}$, a bipartite graph with only 9 edges — a surprising break from the simplex pattern.\n\nErdős posed this specific question to Alexander Soifer in January 1992, asking for the minimum number of edges in a 4-dimensional graph. House resolved it in 2013 in 'A 4-dimensional graph has at least 9 edges' (*Discrete Mathematics*), proving the lower bound and showing $K_{3,3}$ is the unique achiever. Chaffee and Noble (2016) gave an alternative proof and extended the analysis to dimension 5, finding the minimum is 15 edges, achieved by both $K_6$ and the tripartite graph $K_{1,3,3}$. The loss of uniqueness at dimension 5 suggests the combinatorial landscape of minimum-edge embeddings grows rapidly with dimension.",
     "problemStatement": "The dimension of a graph G is the minimal n such that G can be embedded in ℝⁿ with every edge as a unit line segment. What is the smallest number of edges in a graph with dimension 4?",
     "text": "What is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3}. Graph dimension is the minimum Euclidean dimension for unit-distance embedding.",
-    "proofStrategy": "The formalization axiomatizes House's (2013) result in four parts:\n\n1. **Framework**: Define `UnitDistanceEmbedding V adj n` as a structure mapping vertices to $\\mathbb{R}^n$ with all edges having Euclidean distance 1. Axiomatize that every finite graph admits such an embedding in some dimension (`hasUnitEmbedding_exists`), then define `graphDimension` via `Nat.find`.\n\n2. **Lower bound** (`min_edges_dimension_4`): Axiomatizes House's theorem that any graph with dimension 4 has at least 9 edges. The mathematical argument proceeds by showing graphs with $\\leq 8$ edges have too few distance constraints to prevent embedding in $\\mathbb{R}^3$.\n\n3. **Uniqueness** (`k33_unique_minimum`): Axiomatizes that $K_{3,3}$ is the unique 9-edge graph with dimension 4, up to graph isomorphism (formalized as an equivalence $V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$).\n\n4. **Extension** (`min_edges_dimension_5`): Axiomatizes Chaffee-Noble's (2016) result for dimension 5 (minimum 15 edges).",
+    "proofStrategy": "The formalization axiomatizes House's (2013) result in three parts, on top of a proved embedding-existence framework:\n\n1. **Framework**: Define `UnitDistanceEmbedding V adj n` as a structure mapping vertices to $\\mathbb{R}^n$ with all edges having Euclidean distance 1. The theorem `hasUnitEmbedding_exists` *proves* (previously axiomatized, then found inconsistent — see #43115) that every finite graph with irreflexive adjacency admits such an embedding, by placing each vertex at $1/\\sqrt{2}$ times a distinct standard basis vector; `graphDimension` is then defined via `Nat.find`. Irreflexivity is essential — a self-loop forces $\\mathrm{dist}(v,v)=0=1$.\n\n2. **Lower bound** (`min_edges_dimension_4`): Axiomatizes House's theorem that any graph with dimension 4 has at least 9 edges. The mathematical argument proceeds by showing graphs with $\\leq 8$ edges have too few distance constraints to prevent embedding in $\\mathbb{R}^3$.\n\n3. **Uniqueness** (`k33_unique_minimum`): Axiomatizes that $K_{3,3}$ is the unique 9-edge graph with dimension 4, up to graph isomorphism (formalized as an equivalence $V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$).\n\n4. **Extension** (`min_edges_dimension_5`): Axiomatizes Chaffee-Noble's (2016) result for dimension 5 (minimum 15 edges).",
     "keyInsights": [
       "**Simplex pattern breaks at dimension 4**: Complete graphs $K_{n+1}$ have dimension $n$ and $\\binom{n+1}{2}$ edges, giving $\\binom{5}{2} = 10$ edges for dimension 4. But $K_{3,3}$ achieves dimension 4 with only 9 edges, showing the minimum-edge graph need not be a simplex.",
       "**$K_{3,3}$ uniqueness**: House (2013) proved not just the lower bound but uniqueness — $K_{3,3}$ is the *only* 9-edge graph with dimension 4. This means the bipartite structure is not merely sufficient but necessary among minimal graphs.",
       "**Bipartite rigidity in high dimensions**: $K_{3,3}$ has 6 vertices in $\\mathbb{R}^4$. The 9 unit-distance constraints (one per edge) determine a rigid configuration — no continuous deformation preserves all edge lengths. The 3+3 bipartite partition creates a system of 9 equations in 24 coordinates (6 vertices × 4 dimensions) that is generically rigid.",
       "**Uniqueness fails at dimension 5**: The minimum 15 edges for dimension 5 is achieved by both $K_6$ (complete, $\\binom{6}{2} = 15$) and $K_{1,3,3}$ (tripartite). The simplex pattern returns at dimension 5 alongside a non-simplex alternative, unlike the pure non-simplex answer at dimension 4.",
-      "**Axiom architecture**: The 4 axioms correspond to the non-formalizable parts: existence of unit embeddings (real analysis), the lower bound (House's combinatorial argument), uniqueness (isomorphism classification), and the dimension-5 extension. The definitions (`UnitDistanceEmbedding`, `graphDimension`, `completeBipartiteAdj`) and the verification theorems (`k33_has_9_edges`, `k6_has_15_edges`, `completeBipartite_edge_count`) are fully proved.",
+      "**Axiom architecture**: The 3 remaining axioms correspond to the deep, non-formalized parts: the lower bound (House's combinatorial argument), uniqueness (isomorphism classification), and the dimension-5 extension. Existence of unit embeddings — originally a fourth axiom that was mathematically inconsistent over unconstrained adjacency (#43115) — is now the *proved* theorem `hasUnitEmbedding_exists` (requiring irreflexivity). The definitions (`UnitDistanceEmbedding`, `graphDimension`, `completeBipartiteAdj`) and the theorems (`hasUnitEmbedding_exists`, `k33_has_9_edges`, `k6_has_15_edges`, `completeBipartite_edge_count`) are fully proved.",
       "**Connection to distance geometry**: Graph dimension is equivalent to asking for the minimum $d$ such that the graph's edge set can be realized as a subset of the unit-distance graph of $\\mathbb{R}^d$. This connects to the Hadwiger-Nelson problem (chromatic number of the unit-distance graph of $\\mathbb{R}^2$) and to rigidity theory."
     ],
     "prerequisites": [
@@ -62,40 +62,40 @@
       "id": "dimension",
       "title": "Graph Dimension",
       "summary": "Unit distance embedding structure and graph dimension definition",
-      "startLine": 49,
-      "endLine": 74,
-      "mathContext": "Defines `UnitDistanceEmbedding V adj n` as a function $f: V \\to \\mathbb{R}^n$ with $\\|f(u) - f(v)\\|_2 = 1$ for all edges $(u,v)$. The axiom `hasUnitEmbedding_exists` guarantees existence of some embedding dimension, enabling `graphDimension` via `Nat.find`."
+      "startLine": 51,
+      "endLine": 121,
+      "mathContext": "Defines `UnitDistanceEmbedding V adj n` as a function $f: V \\to \\mathbb{R}^n$ with $\\|f(u) - f(v)\\|_2 = 1$ for all edges $(u,v)$. The theorem `hasUnitEmbedding_exists` proves (no longer axiomatizes) that every finite graph with irreflexive adjacency admits an embedding in $\\mathbb{R}^{|V|}$, placing each vertex at $1/\\sqrt{2}$ times a distinct standard basis vector; irreflexivity is required since a self-loop would force $\\mathrm{dist}(v,v)=0=1$. This enables `graphDimension` via `Nat.find`."
     },
     {
       "id": "bipartite",
       "title": "Complete Bipartite Graphs",
       "summary": "Definition of K_{m,n} and the K_{3,3} structure",
-      "startLine": 75,
-      "endLine": 88,
+      "startLine": 123,
+      "endLine": 135,
       "mathContext": "$K_{m,n}$ on vertex set $\\text{Fin}\\,m \\oplus \\text{Fin}\\,n$: adjacency holds between different parts ($\\text{inl}$ and $\\text{inr}$), never within a part. $|E(K_{m,n})| = mn$, so $|E(K_{3,3})| = 9$."
     },
     {
       "id": "known",
       "title": "Known Dimensions",
       "summary": "Dimension results for K₃, K₄, and K_{3,3}",
-      "startLine": 89,
-      "endLine": 101,
+      "startLine": 137,
+      "endLine": 145,
       "mathContext": "$\\dim(K_3) = 2$ (equilateral triangle in $\\mathbb{R}^2$), $\\dim(K_4) = 3$ (regular tetrahedron in $\\mathbb{R}^3$). The general fact $\\dim(K_{n+1}) = n$ follows from regular $n$-simplex embeddings. $\\dim(K_{3,3}) = 4$ is the key result enabling the minimum-edge theorem."
     },
     {
       "id": "main",
       "title": "Main Result: 9 Edges Minimum",
       "summary": "House's theorem that K_{3,3} is the unique minimum for dimension 4",
-      "startLine": 102,
-      "endLine": 122,
+      "startLine": 146,
+      "endLine": 161,
       "mathContext": "Two axioms: (1) `min_edges_dimension_4`: $\\dim(G) = 4 \\Rightarrow |E(G)| \\geq 9$. (2) `k33_unique_minimum`: $\\dim(G) = 4 \\land |E(G)| = 9 \\Rightarrow G \\cong K_{3,3}$ (via an equivalence $V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$ preserving adjacency). The proved theorem `k33_has_9_edges : 3 * 3 = 9` verifies the edge count."
     },
     {
       "id": "extension",
       "title": "Dimension 5 Extension",
       "summary": "Chaffee-Noble result on dimension 5 minimum (15 edges)",
-      "startLine": 123,
-      "endLine": 129,
+      "startLine": 162,
+      "endLine": 177,
       "mathContext": "Axiom `min_edges_dimension_5`: $\\dim(G) = 5 \\Rightarrow |E(G)| \\geq 15$. The proved theorem `k6_has_15_edges : \\binom{6}{2} = 15$ (via `native_decide`) shows $K_6$ achieves this bound. Unlike dimension 4, two non-isomorphic graphs ($K_6$ and $K_{1,3,3}$) both achieve the minimum."
     }
   ],
@@ -118,9 +118,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 131,
-    "axiomCount": 4,
-    "theoremCount": 3,
+    "lineCount": 177,
+    "axiomCount": 3,
+    "theoremCount": 5,
     "definitionCount": 4,
     "path": "Proofs/Erdos1007Problem.lean",
     "sorries": 0
