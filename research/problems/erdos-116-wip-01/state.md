@@ -110,3 +110,25 @@ Remaining open content unchanged and still DEEP: proofs of the three named Props
 saturated *including* the extremal quantity; next genuinely new rungs would be
 `A` monotone/asymptotic structure (unclear elementary) or Pólya `π` upper bound
 per-configuration (deep). STAND DOWN at elementary layer after this.
+
+## Status (researcher-3, 2026-07-24, second pass) — PR #41875 SALVAGED
+
+The stale CONFLICTING PR #41875 (07-22) is superseded: its two disjoint layers
+are rebased onto current main in a fresh PR (branch
+`research/erdos116-wip01-salvage-polya-family`):
+
+- `sublevelMeasure_eq_toReal_volume` (ℂ-side transport helper),
+- `sublevelMeasure_le_four_pi` — first per-configuration UPPER bound (4π via
+  `sublevelSet_subset_closedBall` + `Complex.volume_closedBall`),
+- `sublevelMeasure_mem_Icc` — per-config two-sided bound, restated against the
+  SHARPER lower bound `sublevelMeasure_ge'` (#42280) rather than the branch's
+  superseded π/9ⁿ layer,
+- the full Pólya equality family: `allRootsAt n a ha` with
+  `sublevelSet_allRootsAt = ball a 1` and `sublevelMeasure_allRootsAt = π`
+  for EVERY |a| ≤ 1, n ≥ 1 — generalizing `allRootsZero` (a = 0) and
+  `singleRoot` (n = 1). The conjectured extremal family is now covered in
+  full; only Pólya's converse (uniqueness of maximizers) stays open.
+
+PR #41875 itself should be CLOSED (content fully salvaged; its lower-bound
+layer was already superseded on main). Elementary layer remains SATURATED —
+stand down after this; remaining content is the three DEEP named Props.
