@@ -375,7 +375,8 @@ theorem fixedPoints_le_span_reynolds_monomial
         (Set.range fun m : Fin n →₀ ℕ =>
           reynolds G (MvPolynomial.monomial m 1)) := by
   intro p hp
-  rw [eq_sum_reynolds_monomial hG (Subalgebra.mem_toSubmodule.mp hp)]
+  rw [eq_sum_reynolds_monomial hG (show p ∈ FixedPoints.subalgebra k
+    (MvPolynomial (Fin n) k) G from hp)]
   exact Submodule.sum_mem _ fun m _ =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)
 
@@ -387,10 +388,10 @@ theorem totalDegree_reynolds_monomial_le
     (h_graded : ∀ (g : G) (p : MvPolynomial (Fin n) k),
       (g • p).totalDegree ≤ p.totalDegree)
     (m : Fin n →₀ ℕ) :
-    (reynolds G (MvPolynomial.monomial m 1)).totalDegree
-      ≤ m.sum fun _ e => e :=
-  le_trans (totalDegree_reynolds_le h_graded _)
-    (le_of_eq (MvPolynomial.totalDegree_monomial m one_ne_zero))
+    (reynolds G (MvPolynomial.monomial m (1 : k))).totalDegree
+      ≤ m.sum fun _ e => e := by
+  refine le_trans (totalDegree_reynolds_le h_graded _) ?_
+  rw [MvPolynomial.totalDegree_monomial m (one_ne_zero (α := k))]
 
 end ReynoldsSpan
 
