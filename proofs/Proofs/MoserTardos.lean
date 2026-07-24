@@ -552,7 +552,7 @@ def labelOf : WitnessTree P → Fin P.numEvents
 
 /-- The **inclusive neighbourhood** `Γ⁺(i) = {i} ∪ collisionAdj i`: the labels
     permitted for the children of a node labelled `i` in a proper witness tree. -/
-def inclNbhd (i : Fin P.numEvents) : Finset (Fin P.numEvents) :=
+noncomputable def inclNbhd (i : Fin P.numEvents) : Finset (Fin P.numEvents) :=
   insert i (P.collisionAdj i)
 
 @[simp] theorem self_mem_inclNbhd (i : Fin P.numEvents) : i ∈ inclNbhd (P := P) i :=
