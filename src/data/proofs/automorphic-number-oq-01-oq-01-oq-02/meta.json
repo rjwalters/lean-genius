@@ -189,7 +189,8 @@
       "Unitary divisors, squarefree divisors, and idempotents of ℤ/nℤ are all counted by the subsets of the prime-factor set of n — three realizations of the same binary choice at each prime, and all equal to 2^{ω(n)}.",
       "The single new ingredient beyond the squarefree count is factorization_eq_of_unitary: the coprimality gcd(d, n/d)=1 is exactly the condition that prevents a prime power from being split, so a unitary divisor keeps, at each of its primes, the full prime power dividing n.",
       "The 'into' direction is cleanest through the complementary primes: a = ∏_S and b = ∏_{complement} multiply to n and have disjoint prime supports, giving both a ∣ n with n/a = b and the coprimality gcd(a, n/a) = 1 in one stroke — avoiding any explicit computation of n/a.",
-      "Replacing the squarefree count's product ∏_{p∈s} p by the maximal-prime-power product ∏_{p∈s} p^{v_p(n)} reuses the entire powerset-bijection skeleton; only the membership and left-inverse lemmas need the exponent v_p(n)."
+      "Replacing the squarefree count's product ∏_{p∈s} p by the maximal-prime-power product ∏_{p∈s} p^{v_p(n)} reuses the entire powerset-bijection skeleton; only the membership and left-inverse lemmas need the exponent v_p(n).",
+      "Ordered by divisibility, the unitary divisors of n form a Boolean lattice isomorphic to the power set of n.primeFactors — join a=∏_S p^{v_p(n)} and b=∏_T p^{v_p(n)} for disjoint S,T correspond to disjoint union, and complementation S ↦ n.primeFactors\\S realizes d ↦ n/d. This is why the unitary count is always a power of two, in contrast to the full divisor lattice of n (a product of chains of lengths v_p(n)+1, giving d(n) = ∏(v_p(n)+1)), where a unitary divisor is exactly a join of atoms rather than an arbitrary chain element."
     ]
   },
   "conclusion": {
