@@ -206,13 +206,13 @@ instance instFintype (m : ℕ) : Fintype (TriCell m) where
             rw [Option.some.injEq] at hb hb'
             obtain rfl := hb
             injection hb'.symm with hi hj
-            ext
-            · exact Fin.val_injective hi
-            · exact Fin.val_injective hj
+            obtain rfl : i = i' := Fin.val_injective hi
+            obtain rfl : j = j' := Fin.val_injective hj
+            rfl
           · rw [dif_neg hij'] at hb'
-            exact (Option.noConfusion hb').elim
+            cases hb'
         · rw [dif_neg hij] at hb
-          exact (Option.noConfusion hb).elim)
+          cases hb)
     ∪
     (Finset.univ : Finset (Fin m × Fin m)).filterMap
       (fun ij =>
@@ -229,21 +229,21 @@ instance instFintype (m : ℕ) : Fintype (TriCell m) where
             rw [Option.some.injEq] at hb hb'
             obtain rfl := hb
             injection hb'.symm with hi hj
-            ext
-            · exact Fin.val_injective hi
-            · exact Fin.val_injective hj
+            obtain rfl : i = i' := Fin.val_injective hi
+            obtain rfl : j = j' := Fin.val_injective hj
+            rfl
           · rw [dif_neg hij'] at hb'
-            exact (Option.noConfusion hb').elim
+            cases hb'
         · rw [dif_neg hij] at hb
-          exact (Option.noConfusion hb).elim)
+          cases hb)
   complete := fun c => by
     rcases c with ⟨i, j, h⟩ | ⟨i, j, h⟩
     · apply Finset.mem_union_left
-      apply Finset.mem_filterMap.mpr
+      rw [Finset.mem_filterMap]
       refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
       simp [h]
     · apply Finset.mem_union_right
-      apply Finset.mem_filterMap.mpr
+      rw [Finset.mem_filterMap]
       refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
       simp [h]
 
