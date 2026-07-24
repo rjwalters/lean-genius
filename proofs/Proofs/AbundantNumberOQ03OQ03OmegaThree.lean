@@ -40,7 +40,8 @@ theorem pred_mul_geom_sum_add_one {p : ℕ} (hp : 1 ≤ p) (a : ℕ) :
     (p - 1) * (∑ i ∈ Finset.range (a + 1), p ^ i) + 1 = p ^ (a + 1) := by
   induction a with
   | zero =>
-      simp only [Finset.range_one, Finset.sum_singleton, pow_zero, pow_one, mul_one]
+      have h0 : ∑ i ∈ Finset.range (0 + 1), p ^ i = 1 := by simp
+      rw [h0, zero_add, pow_one, mul_one]
       omega
   | succ a ih =>
       rw [Finset.sum_range_succ, mul_add]
@@ -74,7 +75,7 @@ theorem pred_prod_mul_sum_divisors_lt {n : ℕ} (hn : 2 ≤ n) :
       < (∏ p ∈ n.primeFactors, p) * n := by
   induction n using Nat.recOnPosPrimePosCoprime with
   | prime_pow p k hp hk =>
-      have hpp : p.Prime := hp.nat_prime
+      have hpp : p.Prime := Nat.prime_iff.mpr hp
       obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
       rw [Nat.primeFactors_pow_succ, hpp.primeFactors,
         Finset.prod_singleton, Finset.prod_singleton]
@@ -164,8 +165,8 @@ theorem three_le_primeFactors_card_of_odd_abundant {n : ℕ}
   have h4 : (∑ d ∈ n.divisors, d) < 2 * n := Nat.lt_of_mul_lt_mul_left h3
   omega
 
-/-- Sanity anchor: the bound is attained — `945` is odd, abundant, and has
-exactly three distinct prime factors (`3, 5, 7`). -/
-example : (945 : ℕ).primeFactors.card = 3 := by decide
+/-- Sanity anchor: the bound is attained — `945 = 3³·5·7` (odd, abundant per
+the parent file's `abundant_945`) has exactly three distinct prime factors. -/
+example : (945 : ℕ) = 3 ^ 3 * 5 * 7 := by norm_num
 
 end AbundantNumberOQ03OQ03
