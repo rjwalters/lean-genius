@@ -66,7 +66,8 @@
       "The one-sided directional (Gateaux) derivative needs no norm: it lives on any real vector space.",
       "Convexity is exactly what turns the necessary first-order condition into a sufficient one — the tangent line of a convex function lies below the graph.",
       "Strict convexity upgrades existence of a minimizer to uniqueness, the well-posedness half of regularity theory.",
-      "Mathlib's slope-monotonicity machinery (ConvexOn.slope_mono, hasDerivWithinAt_iff_tendsto_slope) is enough to make the limit argument fully rigorous and axiom-free."
+      "Mathlib's slope-monotonicity machinery (ConvexOn.slope_mono, hasDerivWithinAt_iff_tendsto_slope) is enough to make the limit argument fully rigorous and axiom-free.",
+      "Only a one-sided derivative is assumed, not full differentiability: convex functionals need not be smooth (e.g. J y = |y| has a kink at 0), yet slope monotonicity still guarantees the right derivative exists at every point in every direction. Using `HasDerivWithinAt` on `Ici 0` rather than `HasDerivAt` is exactly what lets the theorem reach functionals with corners — the elementary precursor of the subgradient inequality in non-smooth convex analysis, where the one-sided directional derivative is replaced by the subdifferential ∂J."
     ],
     "prerequisites": [
       "Convex analysis (convex and strictly convex functions, slope monotonicity)",
