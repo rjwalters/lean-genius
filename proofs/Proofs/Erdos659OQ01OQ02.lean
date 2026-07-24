@@ -680,4 +680,198 @@ theorem safe_C_2_13_holds :
 theorem safe_2_13_axis_vs_plane : SafePrimePair_AxisVsPlane 2 13 :=
   ⟨safe_A_2_13_holds, safe_B_2_13_holds, safe_C_2_13_holds⟩
 
+/-!
+### S10 ACT — `(5, 7)` axis-vs-plane safety (mixed-modulus discharge)
+
+Fourth member of the S2a safe-pair family
+`{(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)}`.  Unlike the three
+earlier discharges, which reduce every equation modulo the larger prime, the
+`(5, 7)` pair is **mixed-modulus** (S9 PREP, 2026-06-13): `−5 ≡ 2 (mod 7)` is a
+quadratic *residue* mod 7, so equation A cannot be killed mod 7.  Instead
+equations A and C reduce **mod 5** — where `7 ≡ 2` lets them reuse the existing
+`zmod_5_a_sq_eq_two_b_sq_iff` — and only equation B reduces mod 7, needing the
+single new helper `zmod_7_a_sq_eq_five_b_sq_iff`.
+-/
+
+/-- **(S10 ACT, mod-7 step for equation B on the prime pair `(5, 7)`)**
+    `a² ≡ 5 b² (mod 7)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 7`.
+    Equivalent to the assertion that `5` is not a square in `ZMod 7`
+    (squares mod 7 are `{0, 1, 2, 4}`; `5` is not among them).
+    49-case `decide` check. -/
+lemma zmod_7_a_sq_eq_five_b_sq_iff (a b : ZMod 7) :
+    a ^ 2 = 5 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S10 ACT — axis-vs-plane equation A for `(p, q) = (5, 7)`).**
+    `7 c² = a² + 5 b²` has only `(0, 0, 0)`.
+
+    Infinite descent on `c.natAbs`, reducing **mod 5** (not mod 7 — `−5 ≡ 2` is
+    a QR mod 7): since `7 ≡ 2 (mod 5)`, the equation collapses to
+    `a² ≡ 2 c² (mod 5)` and `zmod_5_a_sq_eq_two_b_sq_iff` forces `5 ∣ a`,
+    `5 ∣ c`, then `5 ∣ b`. -/
+theorem safe_A_5_7_holds :
+    ∀ a b c : ℤ, (7 : ℤ) * c ^ 2 = a ^ 2 + 5 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, c.natAbs = n →
+      (7 : ℤ) * c ^ 2 = a ^ 2 + 5 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hc heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hc0 : c = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hc0
+        refine ⟨?_, ?_, rfl⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg b))
+      · have hz : (a : ZMod 5) ^ 2 = 2 * (c : ZMod 5) ^ 2 := by
+          have h : ((7 * c ^ 2 : ℤ) : ZMod 5) = ((a ^ 2 + 5 * b ^ 2 : ℤ) : ZMod 5) := by
+            rw [heq]
+          push_cast at h
+          rw [show (5 : ZMod 5) = 0 from by decide,
+              show (7 : ZMod 5) = 2 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_5_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (5 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 5).mp hz.1
+        have hdc : (5 : ℤ) ∣ c := (ZMod.intCast_zmod_eq_zero_iff_dvd c 5).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨c', rfl⟩ := hdc
+        have h5b : (5 : ℤ) * b ^ 2 = 5 * (5 * (7 * c' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hb2 : b ^ 2 = 5 * (7 * c' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (5 : ℤ) ≠ 0) h5b
+        have hdb : (5 : ℤ) ∣ b := by
+          have hp : Prime (5 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨7 * c' ^ 2 - a' ^ 2, hb2⟩ : (5 : ℤ) ∣ b ^ 2)
+        obtain ⟨b', rfl⟩ := hdb
+        have heq' : (7 : ℤ) * c' ^ 2 = a' ^ 2 + 5 * b' ^ 2 := by
+          have h25 : (5 : ℤ) * (7 * c' ^ 2) = 5 * (a' ^ 2 + 5 * b' ^ 2) := by
+            linear_combination -hb2
+          exact mul_left_cancel₀ (by norm_num : (5 : ℤ) ≠ 0) h25
+        have hmeas : c'.natAbs < n := by
+          have h5nat : (5 : ℤ).natAbs = 5 := by decide
+          rw [Int.natAbs_mul, h5nat] at hc
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih c'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key c.natAbs a b c rfl heq
+
+/-- **(S10 ACT — axis-vs-plane equation B for `(p, q) = (5, 7)`).**
+    `5 b² = a² + 7 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `b.natAbs`: mod 7 (via the new
+    `zmod_7_a_sq_eq_five_b_sq_iff`) forces `7 ∣ a`, `7 ∣ b`, then `7 ∣ c`. -/
+theorem safe_B_5_7_holds :
+    ∀ a b c : ℤ, (5 : ℤ) * b ^ 2 = a ^ 2 + 7 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, b.natAbs = n →
+      (5 : ℤ) * b ^ 2 = a ^ 2 + 7 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hb heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hb0 : b = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hb0
+        refine ⟨?_, rfl, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg c))
+      · have hz : (a : ZMod 7) ^ 2 = 5 * (b : ZMod 7) ^ 2 := by
+          have h : ((5 * b ^ 2 : ℤ) : ZMod 7) = ((a ^ 2 + 7 * c ^ 2 : ℤ) : ZMod 7) := by
+            rw [heq]
+          push_cast at h
+          rw [show (7 : ZMod 7) = 0 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_7_a_sq_eq_five_b_sq_iff] at hz
+        have hda : (7 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 7).mp hz.1
+        have hdb : (7 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 7).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h7c : (7 : ℤ) * c ^ 2 = 7 * (7 * (5 * b' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 7 * (5 * b' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (7 : ℤ) ≠ 0) h7c
+        have hdc : (7 : ℤ) ∣ c := by
+          have hp : Prime (7 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨5 * b' ^ 2 - a' ^ 2, hc2⟩ : (7 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (5 : ℤ) * b' ^ 2 = a' ^ 2 + 7 * c' ^ 2 := by
+          have h49 : (7 : ℤ) * (5 * b' ^ 2) = 7 * (a' ^ 2 + 7 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (7 : ℤ) ≠ 0) h49
+        have hmeas : b'.natAbs < n := by
+          have h7nat : (7 : ℤ).natAbs = 7 := by decide
+          rw [Int.natAbs_mul, h7nat] at hb
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih b'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key b.natAbs a b c rfl heq
+
+/-- **(S10 ACT — axis-vs-plane equation C for `(p, q) = (5, 7)`).**
+    `a² = 5 b² + 7 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `a.natAbs`, reducing **mod 5** (as for equation A):
+    `7 ≡ 2 (mod 5)` collapses the equation to `a² ≡ 2 c² (mod 5)`, and
+    `zmod_5_a_sq_eq_two_b_sq_iff` forces `5 ∣ a`, `5 ∣ c`, then `5 ∣ b`. -/
+theorem safe_C_5_7_holds :
+    ∀ a b c : ℤ, a ^ 2 = (5 : ℤ) * b ^ 2 + 7 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, a.natAbs = n →
+      a ^ 2 = (5 : ℤ) * b ^ 2 + 7 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c ha heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have ha0 : a = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst ha0
+        refine ⟨rfl, ?_, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg b))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg c))
+      · have hz : (a : ZMod 5) ^ 2 = 2 * (c : ZMod 5) ^ 2 := by
+          have h : ((a ^ 2 : ℤ) : ZMod 5) = ((5 * b ^ 2 + 7 * c ^ 2 : ℤ) : ZMod 5) := by
+            rw [heq]
+          push_cast at h
+          rw [show (5 : ZMod 5) = 0 from by decide,
+              show (7 : ZMod 5) = 2 from by decide, zero_mul, zero_add] at h
+          exact h
+        rw [zmod_5_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (5 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 5).mp hz.1
+        have hdc : (5 : ℤ) ∣ c := (ZMod.intCast_zmod_eq_zero_iff_dvd c 5).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨c', rfl⟩ := hdc
+        have h5b : (5 : ℤ) * b ^ 2 = 5 * (5 * (a' ^ 2 - 7 * c' ^ 2)) := by
+          linear_combination -heq
+        have hb2 : b ^ 2 = 5 * (a' ^ 2 - 7 * c' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (5 : ℤ) ≠ 0) h5b
+        have hdb : (5 : ℤ) ∣ b := by
+          have hp : Prime (5 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 - 7 * c' ^ 2, hb2⟩ : (5 : ℤ) ∣ b ^ 2)
+        obtain ⟨b', rfl⟩ := hdb
+        have heq' : a' ^ 2 = (5 : ℤ) * b' ^ 2 + 7 * c' ^ 2 := by
+          have h25 : (5 : ℤ) * a' ^ 2 = 5 * (5 * b' ^ 2 + 7 * c' ^ 2) := by
+            linear_combination -hb2
+          exact mul_left_cancel₀ (by norm_num : (5 : ℤ) ≠ 0) h25
+        have hmeas : a'.natAbs < n := by
+          have h5nat : (5 : ℤ).natAbs = 5 := by decide
+          rw [Int.natAbs_mul, h5nat] at ha
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih a'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key a.natAbs a b c rfl heq
+
+/-- **The main axis-vs-plane safety theorem for the prime pair `(p, q) = (5, 7)`.**
+
+    Fourth discharged member of the S2a safe-pair family, and the first
+    requiring the mixed-modulus route (equations A and C mod 5 reusing
+    `zmod_5_a_sq_eq_two_b_sq_iff`, equation B mod 7 via the new
+    `zmod_7_a_sq_eq_five_b_sq_iff`).  The full-rank half is a separate future
+    axiomatisation per S2c PREP §6.1. -/
+theorem safe_5_7_axis_vs_plane : SafePrimePair_AxisVsPlane 5 7 :=
+  ⟨safe_A_5_7_holds, safe_B_5_7_holds, safe_C_5_7_holds⟩
+
 end Erdos659OQ01OQ02

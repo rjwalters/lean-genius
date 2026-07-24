@@ -1,5 +1,23 @@
 # Current State
 
+**Status**: ACTIVE — S10 ACT LANDED (2026-07-24, researcher-1). The 2026-06-13 BLOCKED flag is cleared: Docker is no longer required (host `lake env lean` verification works), and the S9 PREP `(5, 7)` mixed-modulus recipe has been pasted and verified GREEN on the first try. 4 of 7 safe pairs discharged.
+
+**Phase**: ACT (S10 ACT — `(5, 7)` axis-vs-plane safety DISCHARGED)
+**Since**: 2026-07-24 (S10 ACT)
+**Iteration**: 17
+**Last Update**: 2026-07-24 (researcher-1) — S10 ACT: pasted the S9 PREP `(5, 7)` mixed-modulus recipe into `proofs/Proofs/Erdos659OQ01OQ02.lean` (683 → 886 LOC). +1 helper (`zmod_7_a_sq_eq_five_b_sq_iff`, 49-case decide), +3 descent theorems (`safe_{A,B,C}_5_7_holds`), +1 composite (`safe_5_7_axis_vs_plane`). 0 sorries / 0 axioms delta; host-verified v4.31 (`lake env lean` exit 0, first try; `#print axioms` = propext/Classical.choice/Quot.sound on all 5 new declarations). Every hand-derived S9 sign/coefficient was correct — the failure register (§8) was not needed. The mixed-modulus insight held: eqs A/C reduce mod 5 reusing `zmod_5_a_sq_eq_two_b_sq_iff` (since 7 ≡ 2 mod 5), only eq B needed the new mod-7 helper.
+
+## S10 ACT (researcher-1, 2026-07-24, host-verified GREEN)
+
+Executed §5–§6 of the S9 PREP recipe verbatim (sessions/2026-06-13-s9-prep-5-7-axis-vs-plane-mixed-modulus-recipe.md). Deltas from the S8 `(2,13)` template exactly as designed: modulus/helper per equation (A: mod 5, B: mod 7 NEW, C: mod 5), helper output variable order (A/C hand back (a,c), derive b), descent variable = isolated LHS variable. All `linear_combination` orientations: `-heq` / `-hb2` / `-hc2` (computed at paste time, all correct first try).
+
+**Safe-pair scoreboard**: (2,5) ✓, (3,5) ✓, (2,13) ✓, **(5,7) ✓ (this session)**; remaining: (5,13), (7,13), (11,13).
+
+**Next actions**:
+1. **(5,13) PREP+ACT**: re-audit moduli — `13 ≡ 3 (mod 5)` so A/C candidate reduction mod 5 needs the EXISTING `zmod_5_a_sq_eq_three_b_sq_iff` (3 non-residue mod 5 ✓); eq B (`5b² = a² + 13c²`) reduces mod 13 needing `zmod_13_a_sq_eq_five_b_sq_iff` (5 a non-residue mod 13? squares mod 13 = {0,1,3,4,9,10,12}; 5 ∉ ✓). Likely ONE new helper again — same shape as this session.
+2. **(7,13)**, **(11,13)** analogously (check QR tables first, mixed-modulus where needed).
+3. Blocked (unchanged): full-rank ternary Hasse–Minkowski safety; Θ(n^{2/3}) assembly.
+
 **Status**: BLOCKED (2026-06-13, researcher-2) — the only remaining concrete next action is S10 ACT (paste the S9 PREP `(5, 7)` mixed-modulus recipe into `Erdos659OQ01OQ02.lean` and `docker-build`-verify). That is **Docker-gated** and the daemon is down (`docker info` times out). The math is settled: the `(5, 7)` recipe is paste-ready (`sessions/2026-06-13-s9-prep-5-7-axis-vs-plane-mixed-modulus-recipe.md`), and every other open candidate (`(5,13)`/`(7,13)`/`(11,13)` axis-vs-plane, full-rank Hasse-Minkowski safety, Θ(n^{2/3}) assembly) is likewise either Docker-gated paste-work or blocked on absent Mathlib v4.26.0 infrastructure. PREP/OBSERVE are saturated — a further doc-only memo would be churn. Re-open when Docker returns (paste + verify S9 PREP recipe at S10 ACT).
 
 **Phase**: PREP (S9 PREP — `(5, 7)` axis-vs-plane mixed-modulus recipe; doc-only)
