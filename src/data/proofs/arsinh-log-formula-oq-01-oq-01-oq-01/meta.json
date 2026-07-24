@@ -108,26 +108,34 @@
       "mathContext": "$\\int_0^b \\sqrt{1+t^2}\\,dt = \\tfrac12\\left(b\\sqrt{1+b^2} + \\operatorname{arsinh} b\\right)$ and arc length of $y=\\cosh x$ over $[0,b]$ is $\\sinh b$."
     },
     {
+      "id": "radicand-api",
+      "title": "Radicand Positivity and the √² Identity",
+      "startLine": 39,
+      "endLine": 45,
+      "summary": "sqrt_one_add_sq_pos (the radicand 1 + t² is strictly positive, hence √(1+t²) > 0) and sq_sqrt_one_add_sq (√(1+t²)² = 1+t², since the radicand is nonnegative) — the positivity/squaring facts hasDerivAt_sqrtAntideriv needs to clear denominators.",
+      "mathContext": "$0 < 1+t^2 \\implies \\sqrt{1+t^2} > 0$ and $\\sqrt{1+t^2}^2 = 1+t^2$."
+    },
+    {
       "id": "antiderivative",
-      "title": "The New Antiderivative of √(1 + t²)",
-      "startLine": 40,
-      "endLine": 92,
-      "summary": "sqrt_one_add_sq_pos and sq_sqrt_one_add_sq (radicand positivity and the √² identity), hasDerivAt_sqrtAntideriv (the from-scratch derivative d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) via product + √-chain + arsinh rules), and continuous_sqrt_integrand / intervalIntegrable_sqrt_integrand (the analytic API the FTC consumes).",
+      "title": "The New Antiderivative of √(1 + t²) and Its Integrability",
+      "startLine": 47,
+      "endLine": 86,
+      "summary": "hasDerivAt_sqrtAntideriv (the from-scratch derivative d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) via product + √-chain + arsinh rules), then continuous_sqrt_integrand / intervalIntegrable_sqrt_integrand supplying the interval-integrability the FTC consumes.",
       "mathContext": "$\\dfrac{d}{dt}\\left[\\tfrac12\\left(t\\sqrt{1+t^2} + \\operatorname{arsinh} t\\right)\\right] = \\sqrt{1+t^2}$."
     },
     {
       "id": "ftc-evaluation",
       "title": "FTC Evaluation of ∫ √(1 + t²)",
-      "startLine": 94,
-      "endLine": 110,
+      "startLine": 88,
+      "endLine": 106,
       "summary": "integral_sqrt_one_add_sq (∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a)) and integral_sqrt_one_add_sq_zero_to (the normalised ∫_0^b = ½(b√(1+b²)+arsinh b), using arsinh 0 = 0).",
       "mathContext": "$\\int_0^b \\sqrt{1+t^2}\\,dt = \\tfrac12\\left(b\\sqrt{1+b^2} + \\operatorname{arsinh} b\\right)$."
     },
     {
       "id": "catenary",
       "title": "Catenary Arc Length",
-      "startLine": 112,
-      "endLine": 143,
+      "startLine": 108,
+      "endLine": 141,
       "summary": "sqrt_one_add_sinh_sq (√(1 + sinh²x) = cosh x), integral_cosh_zero_to (∫_0^b cosh x dx = sinh b), catenary_arclength (the arc length of y = cosh x over [0, b] equals sinh b), and integral_sqrt_one_add_sq_zero_to_one (∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1)).",
       "mathContext": "$\\int_0^b \\sqrt{1+\\sinh^2 x}\\,dx = \\int_0^b \\cosh x\\,dx = \\sinh b$."
     }
@@ -176,7 +184,7 @@
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "Answers the parent's open question with the catenary arc-length facts. The core contribution hasDerivAt_sqrtAntideriv builds, from scratch, the antiderivative of √(1+t²): d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) (product rule + √-chain rule + Real.hasDerivAt_arsinh, with the algebra collapsing via (t²+1)/√(1+t²) = √(1+t²)). The FTC then gives ∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a) and its ∫_0^b normalisation. On the geometric side, √(1 + sinh²x) = cosh x (from cosh²x = 1 + sinh²x, cosh x > 0) and ∫_0^b cosh x dx = sinh b assemble the headline catenary_arclength: the arc length of y = cosh x over [0, b] is sinh b. A concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1) closes the file. 143 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "summary": "Answers the parent's open question with the catenary arc-length facts. The core contribution hasDerivAt_sqrtAntideriv builds, from scratch, the antiderivative of √(1+t²): d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) (product rule + √-chain rule + Real.hasDerivAt_arsinh, with the algebra collapsing via (t²+1)/√(1+t²) = √(1+t²)). The FTC then gives ∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a) and its ∫_0^b normalisation. On the geometric side, √(1 + sinh²x) = cosh x (from cosh²x = 1 + sinh²x, cosh x > 0) and ∫_0^b cosh x dx = sinh b assemble the headline catenary_arclength: the arc length of y = cosh x over [0, b] is sinh b. A concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1) closes the file. 141 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "Mathlib differentiates arsinh and sinh and supplies the FTC, but the antiderivative of √(1+t²), the closed-form integral, the Pythagorean integrand simplification, and the catenary arc length are new to the gallery (hence the original badge). Together with the parent (antiderivative of 1/√(1+t²)) this completes the two conjugate arsinh-substitution integrals and connects the arsinh logarithmic theory to its canonical geometric application.",
     "openQuestions": [
       "Generalise the arc-length identity to arbitrary smooth curves via the arsinh substitution, and formalise the catenoid surface-area-of-revolution integral 2π ∫ cosh x √(1+sinh²x) dx."
