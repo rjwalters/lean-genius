@@ -97,12 +97,20 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring: The Half-Integer Beta Diagonal",
-      "startLine": 6,
-      "endLine": 66,
-      "summary": "States the general half-integer diagonal value B(n+1/2,n+1/2) = π·(2n)!/(4^(2n)·(n!)²) = π·C(2n,n)/4^(2n) and frames it as the transcendental mirror of the gallery's rational integer diagonal B(n+1,n+1)=1/((2n+1)·C(2n,n)): the same central binomial coefficient, moved from denominator to numerator and scaled by π. Notes that Mathlib has neither the factorial form of Γ(n+1/2) nor any half-integer Beta value, and outlines the induction-plus-assembly strategy.",
-      "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\pi\\,(2n)!}{4^{2n}(n!)^2} = \\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$."
+      "id": "docstring-statement",
+      "title": "Imports and the Diagonal Value Statement",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports the Gamma/Beta special functions, the Gaussian integral (source of Γ(1/2)=√π), central binomial coefficients, and general tactics. The module docstring then states the closed form B(n+1/2,n+1/2) = π·(2n)!/(4^(2n)·(n!)²) = π·C(2n,n)/4^(2n), notes it subsumes the sibling entry's case-by-case values B(1/2,1/2)=π and B(3/2,3/2)=π/8, and contrasts it with the gallery's rational integer diagonal B(n+1,n+1)=1/((2n+1)·C(2n,n)): the same central binomial coefficient appears, but moved from denominator to numerator and scaled by the transcendental π.",
+      "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\pi\\,(2n)!}{4^{2n}(n!)^2}$ vs. the integer diagonal $B(n+1,n+1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}}$."
+    },
+    {
+      "id": "docstring-approach",
+      "title": "Relation to Mathlib and Proof Approach",
+      "startLine": 39,
+      "endLine": 72,
+      "summary": "Notes that Mathlib supplies the Beta–Gamma division formula, the real/complex Gamma bridge, and the double-factorial half-integer Gamma value Γ(k+1/2)=(2k−1)‼·√π/2^k, but neither the factorial form of Γ(n+1/2) nor any half-integer Beta value — the new content proved here. Outlines the two-step strategy: induct on the Gamma functional equation Γ(s+1)=s·Γ(s) to get the factorial closed form of Γ(n+1/2), then assemble the diagonal value via the Beta–Gamma relation. Opens the `BetaIntegralRecurrenceOQ01OQ02OQ01` namespace and the `Nat`/`Real` scopes used throughout.",
+      "mathContext": "$\\Gamma(n+\\tfrac12)=\\sqrt\\pi\\cdot\\dfrac{(2n)!}{4^n\\,n!}$ via $\\Gamma(s+1)=s\\Gamma(s)$, then $B(u,v)=\\dfrac{\\Gamma u\\,\\Gamma v}{\\Gamma(u+v)}$."
     },
     {
       "id": "gamma-closed-form",
@@ -124,7 +132,7 @@
       "id": "central-binomial",
       "title": "Central Binomial Form and Sanity Checks",
       "startLine": 139,
-      "endLine": 172,
+      "endLine": 173,
       "summary": "betaIntegral_diag_half_centralBinom rewrites (2n)! = C(2n,n)·n!·n! (Nat.choose_mul_factorial_mul_factorial) to express the value as π·C(2n,n)/4^(2n). The two sanity theorems specialize n=0 and n=1, recovering the sibling entry's B(1/2,1/2)=π (C(0,0)=1) and B(3/2,3/2)=π/8 (C(2,1)=2, 4²=16).",
       "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$; $n{=}0\\to\\pi$, $n{=}1\\to\\pi/8$."
     }
