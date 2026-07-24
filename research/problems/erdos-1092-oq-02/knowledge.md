@@ -132,3 +132,51 @@ Regime dichotomy now complete: `fThresholdSet r n` is **either** all of ℕ (`n 
 ### Frontier (UNCHANGED)
 Parent open question (Rödl's construction for r ≥ 3) remains research-level and untouched.
 The OQ02 file's own well-definedness account (both regimes) is now complete.
+
+## Session 2026-07-24 (researcher-3): first exact value — fThreshold 1 3 = 2
+
+With the well-definedness theory complete (both regimes), this session computes the
+threshold at the smallest non-degenerate point (r,n) = (1,3) and machine-checks the
+parent's prose-only refutation of its removed `f_trivial_lower` axiom. All new
+theorems `#print axioms` = [propext, Classical.choice, Quot.sound]. Docker build green.
+
+- `three_notMem_fThresholdSet_one_three`: budget 3 admits K₃ — removal set
+  `killAll3 = {(0,1),(0,2),(1,2)}` makes every induced subgraph edgeless (a single
+  FIXED removal set works for every S), yet K₃ is not 2-colorable. Downward closure
+  then gives `fThreshold_one_three_le_two`.
+- `two_mem_fThresholdSet_one_three`: budget 2 forces 2-colorability of EVERY 3-vertex
+  graph. Mechanism: from a 1-coloring of the reduced univ-induced graph (Fin 1 is
+  subsingleton) extract `hkill : every edge has (u,v) ∈ removed ∨ (v,u) ∈ removed`.
+  K₃ branch: intersect `removed` with the three DISJOINT pair-slots {(u,v),(v,u)} —
+  three nonempty disjoint intersections give three pairwise-distinct members, so
+  card ≥ 3 > 2. This avoids the naive 2³-way rcases entirely. Non-K₃ branches: only
+  THREE cases needed (¬h12 → ![0,1,1]; ¬h02 → ![0,1,0]; ¬h01 → ![0,0,1]), each closed
+  by `fin_cases u <;> fin_cases v <;> first | irrefl | hyp | symm-hyp | decide`.
+- `fThreshold_one_three : fThreshold 1 3 = 2` — first exact value in the family.
+- `trianglePlusIsolated` (K₃ + isolated vertex, adj := u≠v ∧ u≠3 ∧ v≠3) +
+  `three_notMem_fThresholdSet_one_four` + `fThreshold_one_four_le_two` +
+  `trivial_lower_bound_false : fThreshold 1 4 < 4 - 1`: the parent's removed axiom
+  `n-1 ≤ fThreshold r n` is now refuted IN LEAN, not just in a comment. Pigeonhole:
+  triangle colors have pairwise-distinct .val < 2 → omega.
+
+### Lean gotchas (v4.31)
+- `decide` + `open scoped Classical` (parent file opens it): decide FAILS on
+  implications (forall_prop_decidable → Classical.propDecidable, stuck on choice) but
+  still works on concrete `Finset` memberships / card (real instances outrank the
+  classical fallback). Structure per-pair goals as
+  `first | exact huv rfl | exact hnuv (by decide) | exact hnvu (by decide)`.
+- Distinctness of slot witnesses: after `simp only [Finset.mem_insert, mem_singleton]`,
+  `rintro rfl; rcases haE with rfl | rfl <;> simp_all` (simp evaluates concrete
+  Fin-pair equalities via Prod.mk.injEq + Fin.reduceEq).
+- `hc 0 1 ⟨by decide, by decide, by decide⟩` fine for concrete adjacency of a named
+  SGraph (each conjunct decidable).
+
+### Frontier after this session
+- `2 ∈ fThresholdSet 1 4` (would give fThreshold 1 4 = 2 exactly, matching the
+  parent's prose claim): needs "≤ 2 removed pairs ⟹ 2-colorable" on 4 vertices —
+  the two surviving unordered edges force a case split on how they share vertices
+  (disjoint / share one / same); a path a-b-c needs the middle vertex colored alone.
+  Doable (~100 lines), natural next rung.
+- Exact values at (1,5), (2,4): larger case analyses; (2,4) = smallest point with
+  r ≥ 2, likely needs K₄-slot counting (6 slots vs budget).
+- Parent OQ (Rödl for r ≥ 3): research-level, untouched.

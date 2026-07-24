@@ -29,18 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0, researcher-1 2026-07-20): extended Erdos1092OQ02.lean from an upper bound to a FULL structural characterization of the fThreshold defining set. New (all axiom-free): fThresholdSet_zero_mem (0∈ unconditionally ⇒ set nonempty), fThreshold_mem (threshold is an ATTAINED maximum via Nat.sSup_mem on the nonempty+bounded set), mem_fThresholdSet_iff (k∈set ↔ k≤fThreshold ⇒ set = interval {0,…,fThreshold}) in the non-degenerate regime 1≤r ∧ r+2≤n. Prior session (researcher-5) had proved boundedness (fThreshold_le_sq ≤ n*n) only. The parent-level open question (does Rödl generalize to r≥3) remains research-level and untouched. 0 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-24): FIRST EXACT VALUE — fThreshold 1 3 = 2, machine-checked (upper: K3 with 3-pair budget; lower: disjoint pair-slot counting shows budget 2 excludes K3, explicit 2-colorings for the rest). Also formalized the parent's prose-only refutation of its removed f_trivial_lower axiom: fThreshold 1 4 <= 2 < 3 = n-1 via K3+isolated vertex. File 249->509 lines, 13->21 theorems, still 0 axioms/sorries. Parent-level OQ (Rodl for r>=3) untouched — research-level.",
     "builtItems": [
       "fThresholdSet_zero_mem (Erdos1092OQ02.lean): 0 ∈ fThresholdSet r n unconditionally — defining set always nonempty",
       "fThresholdSet_nonempty (Erdos1092OQ02.lean): (fThresholdSet r n).Nonempty",
       "fThreshold_mem (Erdos1092OQ02.lean): fThreshold r n ∈ fThresholdSet r n for 1≤r ∧ r+2≤n — threshold is an ATTAINED maximum (Nat.sSup_mem)",
-      "mem_fThresholdSet_iff (Erdos1092OQ02.lean): k ∈ fThresholdSet r n ↔ k ≤ fThreshold r n in good regime — set = interval {0,…,fThreshold}"
+      "mem_fThresholdSet_iff (Erdos1092OQ02.lean): k ∈ fThresholdSet r n ↔ k ≤ fThreshold r n in good regime — set = interval {0,…,fThreshold}",
+      "killAll3/killAll4 + three_notMem_fThresholdSet_one_three/one_four in Erdos1092OQ02.lean",
+      "two_mem_fThresholdSet_one_three (budget 2 forces 2-colorability on 3 vertices; disjoint-slot counting + 3 explicit colorings)",
+      "fThreshold_one_three : fThreshold 1 3 = 2 (first exact value)",
+      "trianglePlusIsolated + fThreshold_one_four_le_two + trivial_lower_bound_false (parent prose refutation machine-checked)"
     ],
     "insights": [
       "fThreshold has TWO degeneracies: upper r+1≥n (set=ℕ, all graphs (r+1)-colorable) and lower r=0 (set=ℕ, no 0-coloring on n≥1 vertices). Non-degenerate regime is 1≤r ∧ r+2≤n.",
       "Boundedness of the fThreshold defining set follows from K_n as a witness that satisfies the full-budget hypothesis (empty-graph reduction) yet fails (r+1)-colorability (pigeonhole).",
       "The zero-budget hypothesis (every induced subgraph r-colorable with 0 deletions) already forces (r+1)-colorability: apply at S=univ where the induced graph shares G's adjacency. Hence 0 ∈ fThresholdSet UNCONDITIONALLY (no regime needed).",
-      "Combining nonemptiness (0∈) with bddAbove gives Nat.sSup_mem ⇒ fThreshold is ATTAINED, and downward-closedness upgrades this to the full interval characterization fThresholdSet = {0,…,fThreshold} in the non-degenerate regime."
+      "Combining nonemptiness (0∈) with bddAbove gives Nat.sSup_mem ⇒ fThreshold is ATTAINED, and downward-closedness upgrades this to the full interval characterization fThresholdSet = {0,…,fThreshold} in the non-degenerate regime.",
+      "fThreshold 1 3 = 2 EXACTLY: (r,n)=(1,3) is the smallest non-degenerate point (1<=r, r+2<=n), and the threshold there is 2 — first exact value ever computed for this problem family",
+      "Lower-bound mechanism: each removed ordered pair kills at most one undirected edge; formalized by intersecting removed with the three DISJOINT pair-slots {(u,v),(v,u)} of K3 — three nonempty disjoint intersections force card >= 3, beating budget 2 uniformly (no 8-way rcases)",
+      "Upper-bound mechanism at (1,4): trianglePlusIsolated (K3 + isolated vertex) satisfies the budget-3 hypothesis but pigeonholes three colors into Fin 2 — the parent's removed f_trivial_lower axiom (n-1 <= fThreshold r n) is now REFUTED in Lean, not just prose",
+      "decide + open scoped Classical gotcha: decide fails on implications (forall_prop_decidable picks Classical.propDecidable) but still works on concrete Finset memberships; structure fin_cases branches as first | exact huv rfl | exact hnuv (by decide) | ..."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -69,10 +77,10 @@
     {
       "path": "Proofs/Erdos1092OQ02.lean",
       "filename": "Erdos1092OQ02.lean",
-      "lineCount": 220,
-      "theoremCount": 10,
+      "lineCount": 509,
+      "theoremCount": 21,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1092OQ02.lean"
