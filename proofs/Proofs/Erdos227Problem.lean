@@ -740,7 +740,8 @@ theorem maxTerm_mono (f : EntireFunction) (hent : IsEntire f)
       rintro x ⟨n, rfl⟩
       rcases Nat.eq_zero_or_pos n with rfl | hn
       · simp
-      · rw [zero_pow hn.ne', mul_zero]
+      · show ‖f.coeff n‖ * (0 : ℝ) ^ n ≤ ‖f.coeff 0‖
+        rw [zero_pow hn.ne', mul_zero]
         exact norm_nonneg _
     · refine ⟨maxModulus f r₂, ?_⟩
       rintro x ⟨n, rfl⟩
