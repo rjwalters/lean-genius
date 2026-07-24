@@ -190,8 +190,8 @@
       "title": "Bessel's Inequality",
       "startLine": 325,
       "endLine": 351,
-      "summary": "Proves Bessel's inequality: $\\sum_{n \\in S} |c_n|^2 \\leq \\int |f|^2$ for any finite set $S \\subseteq \\mathbb{Z}$. Uses Parseval and `sum_le_tsum` for nonneg terms. Summability of $|c_n|^2$ is axiomatized (`summable_sq_fourierCoeff`).",
-      "mathContext": "Bessel: $\\sum_{n \\in S} |c_n|^2 \\leq \\|f\\|_{L^2}^2$ for any finite $S \\subseteq \\mathbb{Z}$. This is weaker than Parseval (partial sum $\\leq$ total). With completeness (Hilbert basis), Bessel becomes Parseval in the limit $S \\to \\mathbb{Z}$. The axiom `summable_sq_fourierCoeff` states $\\sum |c_n|^2 < \\infty$."
+      "summary": "Proves Bessel's inequality: $\\sum_{n \\in S} |c_n|^2 \\leq \\int |f|^2$ for any finite set $S \\subseteq \\mathbb{Z}$. Uses Parseval and `sum_le_hasSum` for nonneg terms. Summability of $|c_n|^2$ is proved (`summable_sq_fourierCoeff`), not axiomatized.",
+      "mathContext": "Bessel: $\\sum_{n \\in S} |c_n|^2 \\leq \\|f\\|_{L^2}^2$ for any finite $S \\subseteq \\mathbb{Z}$. This is weaker than Parseval (partial sum $\\leq$ total). With completeness (Hilbert basis), Bessel becomes Parseval in the limit $S \\to \\mathbb{Z}$. `summable_sq_fourierCoeff` is a proved theorem (from Mathlib's `hasSum_sq_fourierCoeff`) stating $\\sum |c_n|^2 < \\infty$."
     },
     {
       "id": "uniform-convergence",
@@ -206,8 +206,8 @@
       "title": "Uniqueness and Riemann-Lebesgue",
       "startLine": 394,
       "endLine": 450,
-      "summary": "Proves uniqueness: same Fourier coefficients $\\Rightarrow$ same $L^2$ function (via `HasSum.unique`). States the Riemann-Lebesgue lemma: $c_n \\to 0$ as $|n| \\to \\infty$ (axiomatized).",
-      "mathContext": "Uniqueness: $c_n(f) = c_n(g)\\ \\forall n \\Rightarrow f = g$ in $L^2$. Proof: both have the same Fourier series, which converges to both in $L^2$, so $f = g$ by `HasSum.unique`. Riemann-Lebesgue (axiom): $c_n(f) \\to 0$ as $|n| \\to \\infty$ for all $f \\in L^2$. The classical proof uses density of $C^1$ functions."
+      "summary": "Proves uniqueness: same Fourier coefficients $\\Rightarrow$ same $L^2$ function (via `HasSum.unique`). Proves the Riemann-Lebesgue lemma: $c_n \\to 0$ as $|n| \\to \\infty$, derived from Parseval summability (not axiomatized).",
+      "mathContext": "Uniqueness: $c_n(f) = c_n(g)\\ \\forall n \\Rightarrow f = g$ in $L^2$. Proof: both have the same Fourier series, which converges to both in $L^2$, so $f = g$ by `HasSum.unique`. Riemann-Lebesgue: $c_n(f) \\to 0$ as $|n| \\to \\infty$ for all $f \\in L^2$, proved directly from $\\sum \\|c_n\\|^2 < \\infty$ (Parseval) via `tendsto_cofinite_zero`, with no axiom involved."
     },
     {
       "id": "verification",
@@ -283,16 +283,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "fourier_convergence",
+      "name": "hasSum_fourier_series",
       "type": "core",
       "description": "L2 convergence of Fourier series for square-integrable functions",
-      "leanType": "f in L2 -> Tendsto (fun N => norm(f - S_N f)) atTop (nhds 0)"
+      "leanType": "(f : Lp ℂ 2 (haarAddCircle (T := T))) -> HasSum (fun n => fourierCoeff f n • fourierLp 2 n) f"
     },
     {
-      "name": "parseval_theorem",
+      "name": "parseval_fourier",
       "type": "key",
       "description": "Parseval's theorem: ||f||^2 = sum |c_n|^2",
-      "leanType": "integral |f|^2 = sum n, |fourierCoeff f n|^2"
+      "leanType": "(f : Lp ℂ 2 (haarAddCircle (T := T))) -> ∑' n, ‖fourierCoeff f n‖^2 = ∫ t, ‖f t‖^2 ∂haarAddCircle"
     }
   ],
   "sorries": 0
