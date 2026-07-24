@@ -689,7 +689,7 @@ theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
   -- predecessor is strictly deficient
   have hple : ¬ (2 * ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j
       < ∑ d ∈ (∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j).divisors, d) :=
-    Nat.find_min (exists_crossing a) (by omega)
+    Nat.find_min (exists_crossing a) (show c < crossing a by omega)
   have hpne := sum_divisors_prod_nth_ne_two_mul
     (s := Finset.Ico a c) (fun j hj => le_trans ha (Finset.mem_Ico.mp hj).1)
   rw [sum_divisors_prod_nth] at hple hpne
@@ -697,8 +697,8 @@ theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
       < 2 * ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j := by omega
   -- split on whether the omitted index is the top one
   rw [hc] at hi ⊢
-  have hico : Finset.Ico a (c + 1) = insert c (Finset.Ico a c) := by
-    rw [Finset.Ico_succ_right_eq_insert_Ico hac]
+  have hico : Finset.Ico a (c + 1) = insert c (Finset.Ico a c) :=
+    Nat.Ico_succ_right_eq_insert_Ico hac
   rcases Finset.mem_Ico.mp hi with ⟨hai, hic1⟩
   rcases Nat.lt_or_ge i c with hilt | hige
   · -- i < c: erase i, keep the top prime p_c
@@ -714,10 +714,10 @@ theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
     set pi := Nat.nth Nat.Prime i with hpi
     set pc := Nat.nth Nat.Prime c with hpc
     -- hpred in split form: (pi + 1) * A < 2 * (pi * B)
-    have hsplitσ : (pi + 1) * A = ∏ j ∈ Finset.Ico a c, (Nat.nth Nat.Prime j + 1) :=
-      Finset.mul_prod_erase _ _ himem
-    have hsplitn : pi * B = ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j :=
-      Finset.mul_prod_erase _ _ himem
+    have hsplitσ : (pi + 1) * A = ∏ j ∈ Finset.Ico a c, (Nat.nth Nat.Prime j + 1) := by
+      rw [hpi, hA]; exact Finset.mul_prod_erase _ _ himem
+    have hsplitn : pi * B = ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j := by
+      rw [hpi, hB]; exact Finset.mul_prod_erase _ _ himem
     have hpred' : (pi + 1) * A < 2 * (pi * B) := by
       rw [hsplitσ, hsplitn]; exact hpred
     have hpic : pi ≤ pc :=
@@ -730,10 +730,10 @@ theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
     calc (pi + 1) * ((pc + 1) * A)
         = (pc + 1) * ((pi + 1) * A) := by ring
       _ < (pc + 1) * (2 * (pi * B)) :=
-          Nat.mul_lt_mul_left (by omega) hpred'
+          mul_lt_mul_of_pos_left hpred' (by omega : 0 < pc + 1)
       _ = 2 * B * (pi * (pc + 1)) := by ring
       _ ≤ 2 * B * (pc * (pi + 1)) :=
-          Nat.mul_le_mul_left _ hkey
+          mul_le_mul_left' hkey (2 * B)
       _ = (pi + 1) * (2 * (pc * B)) := by ring
   · -- i = c: the erase IS the predecessor
     have hieq : i = c := by omega
