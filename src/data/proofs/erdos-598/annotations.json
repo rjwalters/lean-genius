@@ -31,7 +31,7 @@
     },
     "type": "definition",
     "title": "The Cardinal κ = (2^ℵ₀)⁺",
-    "content": "Defines κ as Order.succ (2 ^ ℵ₀), the successor of the continuum cardinal. Under CH, κ = ℵ₂; without CH, κ can be much larger. The axiom kappa_gt_aleph0 records that κ exceeds ℵ₀. This cardinal serves a dual role: as the number of colors and as the minimum subset size that must realize all colors.",
+    "content": "Defines κ as Order.succ (2 ^ ℵ₀), the successor of the continuum cardinal. Under CH, κ = ℵ₂; without CH, κ can be much larger. A source comment notes that κ exceeds ℵ₀, but this is not formalized as any axiom or lemma. This cardinal serves a dual role: as the number of colors and as the minimum subset size that must realize all colors.",
     "mathContext": "$\\kappa = (2^{\\aleph_0})^+ = \\mathfrak{c}^+$. Under CH ($\\mathfrak{c} = \\aleph_1$), $\\kappa = \\aleph_2$. Under $\\mathfrak{c} = \\aleph_{\\omega}$, $\\kappa = \\aleph_{\\omega+1}$. The successor operation ensures $\\kappa$ is a regular cardinal (Hausdorff's theorem).",
     "significance": "key",
     "relatedConcepts": [
@@ -170,7 +170,7 @@
     },
     "type": "concept",
     "title": "Monotonicity in Ground Set Size",
-    "content": "If a chromatically complete coloring exists for a ground set of cardinality m', it also exists for any m ≤ m'. The coloring can be restricted to the smaller set. This means the problem is hardest for the minimal case m = κ, and solving that case would settle all larger cases. The axiom formalizes this with an existential witness for the restricted coloring.",
+    "content": "If a chromatically complete coloring exists for a ground set of cardinality m', it also exists for any m ≤ m'. The coloring can be restricted to the smaller set. This means the problem is hardest for the minimal case m = κ, and solving that case would settle all larger cases. This is stated only as a source comment; no axiom or lemma formalizes it.",
     "mathContext": "If $m \\le m'$ and $c: [m']^{\\le\\omega} \\to \\kappa$ is chromatically complete, then the restriction $c|_{[m]^{\\le\\omega}}$ is chromatically complete for $m$. This follows from $[X]^{\\le\\omega} \\cap [m]^{\\le\\omega} \\ne \\emptyset$ for $X \\subseteq m$ with $|X| = \\kappa$.",
     "significance": "supporting",
     "relatedConcepts": [
