@@ -48,6 +48,13 @@ The non-sorry results proved here:
   - `chebyshev_trig_sum_pos`: strict positivity of S(θ,n) per term [Session 20]
   - `chebyshev_quarter_floor_log_asymp_lb`: (1/4)·log(n+1) ≤ (1/2)·log(m+2)−1
     for `n ≥ N₀(θ)` and `(m : ℝ) ≥ n·θ/(4π) − 1` (Step 7a residue) [Session 24]
+  - `lagrangeBasis_apply_self` / `lagrangeBasis_apply_ne`: Lagrange delta
+    property ℓₖ(xⱼ) = δₖⱼ for injective nodes [Session 39]
+  - `lagrangeBasis_continuous`: continuity of ℓₖ in the evaluation point [Session 39]
+  - `exists_continuous_bounded_through_nodes`: continuous ‖f‖_∞ ≤ 1 interpolant
+    through prescribed node values via clamped Lagrange polynomial [Session 39]
+  - `chebyshev_lebesgue_saturated_continuous`: CONTINUOUS saturation witness
+    ‖f‖ ≤ 1, Lₙf(x) = Λₙ(x) — ingredient (a) of Sorry 2 closed [Session 39]
 
 ## Sorry 1: trig_sum_harmonic_lb (was: chebyshev_trig_sum_lb Case 2)
 Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
@@ -58,8 +65,12 @@ Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
 
 ## Sorry 2: divergence_from_lebesgue_growth
 Proof requires:
-  a) For each n, existence of optimizing continuous function with ‖f‖ ≤ 1 and Lₙf(x) = Λₙ(x)
-  b) Lacunary subsequence construction [has known gap: UBP gives lim sup, not lim]
+  a) For each n, existence of optimizing continuous function with ‖f‖ ≤ 1 and
+     Lₙf(x) = Λₙ(x) — DONE (Session 39, `chebyshev_lebesgue_saturated_continuous`)
+  b) Lacunary subsequence construction [has known gap: UBP gives lim sup, not lim;
+     the stated conclusion is the strong full-limit form Lₙf(x) → +∞, which needs
+     polynomial-reproduction (Lₙp = p for deg p < n) + gliding-hump cross-term
+     control, not just Banach–Steinhaus]
 
 Tags: analysis, approximation-theory, chebyshev, lebesgue-function, erdos-problems
 -/
@@ -350,11 +361,11 @@ theorem cos_rational_pi_nonzero_along_multiples (p q m : ℕ) (hp : Odd p)
     `chebyshevInterp n f x` unbounded.
 
     The witness `f` here is *not* continuous (it is `0` off the finite
-    Chebyshev-node set); a future session wiring this through Mathlib's
-    `ContinuousLinearMap` / `BanachSteinhaus` infrastructure will lift the
-    witness to a continuous function via Tietze extension. The discrete
-    saturation proved here is the mathematical content; the topological lift is
-    routine. -/
+    Chebyshev-node set); see `chebyshev_lebesgue_saturated_continuous` (Session 39)
+    for the continuous upgrade via a clamped Lagrange interpolation polynomial —
+    no Tietze extension needed. The discrete saturation proved here is the
+    mathematical content; the continuous version is what the Banach–Steinhaus /
+    lacunary-series closure of Sorry 2 consumes. -/
 private lemma chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ) :
     ∃ f : ℝ → ℝ, (∀ t, |f t| ≤ 1) ∧
       chebyshevInterp n f x = chebyshevLebesgue n x := by
@@ -432,6 +443,123 @@ private lemma chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ) :
             * lagrangeBasis n (chebyshevNode n) k₀ x
             = |lagrangeBasis n (chebyshevNode n) k₀ x|
       rw [hf_eval, hw_sat k₀]
+
+/-! ## Session 39: Lagrange Delta Property and Continuous Saturation Witness -/
+
+/-- **Lagrange basis delta property (diagonal)**: ℓₖ(xₖ) = 1 for injective nodes.
+
+    Each factor (xₖ - xᵢ)/(xₖ - xᵢ) over i ≠ k equals 1; injectivity of the
+    node family makes every denominator nonzero. -/
+theorem lagrangeBasis_apply_self (n : ℕ) (nodes : Fin n → ℝ)
+    (hinj : Function.Injective nodes) (k : Fin n) :
+    lagrangeBasis n nodes k (nodes k) = 1 := by
+  simp only [lagrangeBasis]
+  apply Finset.prod_eq_one
+  intro i hi
+  exact div_self (sub_ne_zero.mpr (hinj.ne (Ne.symm (Finset.mem_erase.mp hi).1)))
+
+/-- **Lagrange basis delta property (off-diagonal)**: ℓₖ(xⱼ) = 0 for j ≠ k.
+
+    The factor at i = j vanishes: (xⱼ - xⱼ)/(xₖ - xⱼ) = 0. No injectivity
+    hypothesis is needed. -/
+theorem lagrangeBasis_apply_ne (n : ℕ) (nodes : Fin n → ℝ) {j k : Fin n}
+    (hjk : j ≠ k) :
+    lagrangeBasis n nodes k (nodes j) = 0 := by
+  simp only [lagrangeBasis]
+  exact Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hjk, Finset.mem_univ j⟩)
+    (by rw [sub_self, zero_div])
+
+/-- The Lagrange basis is continuous in the evaluation point: each factor
+    t ↦ (t - xᵢ)/(xₖ - xᵢ) is affine, and ℓₖ is their finite product. -/
+theorem lagrangeBasis_continuous (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) :
+    Continuous fun t => lagrangeBasis n nodes k t := by
+  simp only [lagrangeBasis]
+  exact continuous_finsetProd _ fun i _ =>
+    (continuous_id.sub continuous_const).div_const _
+
+/-- **Continuous bounded interpolant through prescribed node values.**
+
+    For any injective node family and target values w with |wₖ| ≤ 1, there is a
+    continuous f : ℝ → ℝ with ‖f‖_∞ ≤ 1 and f(xₖ) = wₖ for every k.
+
+    Construction: the Lagrange interpolation polynomial g = Σₖ wₖ·ℓₖ passes
+    through the prescribed values (delta property `lagrangeBasis_apply_self` /
+    `lagrangeBasis_apply_ne`) and is continuous (`lagrangeBasis_continuous`);
+    clamping to [-1, 1] via t ↦ max (-1) (min 1 (g t)) preserves continuity and
+    the node values (which already lie in [-1, 1]) while enforcing the global
+    sup bound. This avoids both Tietze extension and any piecewise-linear
+    construction. -/
+theorem exists_continuous_bounded_through_nodes (n : ℕ) (nodes : Fin n → ℝ)
+    (hinj : Function.Injective nodes) (w : Fin n → ℝ) (hw : ∀ k, |w k| ≤ 1) :
+    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ t, |f t| ≤ 1) ∧ ∀ k, f (nodes k) = w k := by
+  classical
+  -- The (unclamped) Lagrange interpolation polynomial through the target values.
+  have hg_cont : Continuous fun t => ∑ k : Fin n, w k * lagrangeBasis n nodes k t :=
+    continuous_finsetSum _ fun k _ =>
+      (lagrangeBasis_continuous n nodes k).const_mul (w k)
+  have hg_node : ∀ j : Fin n,
+      (∑ k : Fin n, w k * lagrangeBasis n nodes k (nodes j)) = w j := by
+    intro j
+    have hzero : ∀ k ∈ Finset.univ, k ≠ j →
+        w k * lagrangeBasis n nodes k (nodes j) = 0 := fun k _ hkj => by
+      rw [lagrangeBasis_apply_ne n nodes (Ne.symm hkj), mul_zero]
+    rw [Finset.sum_eq_single_of_mem j (Finset.mem_univ j) hzero,
+      lagrangeBasis_apply_self n nodes hinj j, mul_one]
+  -- Clamp to [-1, 1]: preserves continuity and node values, forces the bound.
+  refine ⟨fun t => max (-1) (min 1 (∑ k : Fin n, w k * lagrangeBasis n nodes k t)),
+    continuous_const.max (continuous_const.min hg_cont), fun t => ?_, fun j => ?_⟩
+  · show |max (-1) (min 1 (∑ k : Fin n, w k * lagrangeBasis n nodes k t))| ≤ 1
+    rw [abs_le]
+    exact ⟨le_max_left _ _, max_le (by norm_num) (min_le_left _ _)⟩
+  · show max (-1) (min 1 (∑ k : Fin n, w k * lagrangeBasis n nodes k (nodes j))) = w j
+    obtain ⟨h₁, h₂⟩ := abs_le.mp (hw j)
+    rw [hg_node j, min_eq_right h₂, max_eq_right h₁]
+
+/-- **Continuous operator-norm saturation witness.**
+
+    Upgrades `chebyshev_lebesgue_saturated`: for any `n : ℕ` and `x : ℝ` the
+    saturating function can be taken *continuous* — there is a continuous
+    `f : ℝ → ℝ` with `|f t| ≤ 1` for all `t` and
+    `chebyshevInterp n f x = chebyshevLebesgue n x`.
+
+    Together with `chebyshev_upper_bound`, this pins the exact operator norm of
+    the evaluation functional `f ↦ chebyshevInterp n f x` on `C(ℝ)` with the sup
+    norm: `sup {|Lₙf(x)| : ‖f‖_∞ ≤ 1, f continuous} = Λₙ(x)`, attained. This is
+    ingredient (a) of Sorry 2 (`divergence_from_lebesgue_growth`) as documented
+    in the file header; the remaining gap is only ingredient (b), the lacunary
+    series assembling these witnesses into a single `f` with full-limit
+    divergence `Lₙf(x) → +∞`. -/
+private lemma chebyshev_lebesgue_saturated_continuous (n : ℕ) (x : ℝ) :
+    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ t, |f t| ≤ 1) ∧
+      chebyshevInterp n f x = chebyshevLebesgue n x := by
+  classical
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: both sides are empty sums; the zero function works.
+    exact ⟨fun _ => 0, continuous_const, fun t => by simp,
+      by simp [chebyshevInterp, lagrangeInterp, chebyshevLebesgue]⟩
+  · -- Sign weights at each node so that w k * ℓₖ(x) = |ℓₖ(x)|.
+    let w : Fin n → ℝ := fun k =>
+      if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1
+    have hw_abs : ∀ k, |w k| ≤ 1 := by
+      intro k
+      show |(if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1)| ≤ 1
+      split <;> norm_num
+    have hw_sat : ∀ k, w k * lagrangeBasis n (chebyshevNode n) k x =
+        |lagrangeBasis n (chebyshevNode n) k x| := by
+      intro k
+      show (if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1) *
+          lagrangeBasis n (chebyshevNode n) k x =
+        |lagrangeBasis n (chebyshevNode n) k x|
+      by_cases h : 0 ≤ lagrangeBasis n (chebyshevNode n) k x
+      · rw [if_pos h, one_mul, abs_of_nonneg h]
+      · push_neg at h
+        rw [if_neg (not_le.mpr h), neg_one_mul, abs_of_neg h]
+    obtain ⟨f, hf_cont, hf_bd, hf_node⟩ :=
+      exists_continuous_bounded_through_nodes n (chebyshevNode n)
+        (chebyshevNode_injective n hn) w hw_abs
+    refine ⟨f, hf_cont, hf_bd, ?_⟩
+    simp only [chebyshevInterp, lagrangeInterp, chebyshevLebesgue]
+    exact Finset.sum_congr rfl fun k _ => by rw [hf_node k, hw_sat k]
 
 /-! ## Chebyshev Product Formula and Trig Helpers (Session 5) -/
 
