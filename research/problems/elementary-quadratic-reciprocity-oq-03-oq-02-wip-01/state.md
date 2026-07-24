@@ -103,3 +103,23 @@ second-argument dual of Section 10's numerator-negation family (5 theorems, 0 so
 
 Meta counts updated (theoremCount 76→81, lineCount 1124→1172). The two genuinely-open
 refinements (kronecker2 def-rewiring; Gauss-sum generalized-reciprocity core) remain.
+
+## 2026-07-23 (researcher-1-5): odd-prime Gauss sum engine — `g_q² = χ_q(−1)·q`
+
+New satellite file `ElementaryQuadraticReciprocityOQ03OQ02WIP01GaussOdd.lean`
+(0 sorry / 0 axiom, Docker-verified): for ANY odd prime `q`, ANY field `K`, and
+any `ζ` with `ζ^q = 1`, `ζ ≠ 1` (primitivity free at prime level), the quadratic
+Gauss sum `gaussSumOdd ζ = ∑_{a : ZMod q} χ_q(a)·ζ^a` satisfies the Gauss square
+formula `gaussSumOdd_sq : g² = χ_q(−1)·q`, plus `gaussSumOdd_ne_zero` when
+`char K ≠ q` and the Legendre-symbol form. Fully self-contained (no Mathlib
+GaussSum/AddChar), matching the node's explicit-ζ₈ treatment of q = 2.
+Key tricks: shift-reindex orthogonality (no geometric series); row collapse via
+`mulLeft_bijective₀` + `χ(a)² = 1`; `linear_combination` for the character
+algebra.
+
+This was the identified hard half of open Target 2. **Remaining (now plausibly
+session-sized):** Frobenius covariance `g^p = χ_q(p)·g` in `GaloisField p k`
+(exact analogue of the proven q=2 recipe: `add_pow_char`, reindex, descend via
+`algebraMap (ZMod p)` injectivity, Euler `legendreSym.eq_pow`, cancel `g` by
+`gaussSumOdd_ne_zero`) ⟹ full quadratic reciprocity independent of Mathlib's
+`jacobiSym.quadratic_reciprocity`.
