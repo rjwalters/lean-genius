@@ -29,7 +29,8 @@
       "The three scalar identities T_add, U_add and the Pell identity are not independent facts but the four entries and the determinant of a single matrix equation M(m+n) = M(m)·M(n) with det M = 1 — i.e. the statement that M : (ℤ,+) → SL₂(R[X]) is a monoid homomorphism into the special linear group",
       "The Pell identity T_sq_add is precisely det M(n) = 1, so it is no longer a separate lemma to prove: it is automatic from multiplicativity, det M(n) = (det M(1))ⁿ = 1",
       "M(1) = !![X, −(1−X²); 1, X] is a single fixed matrix whose powers generate the entire Chebyshev family: (M(1)ⁿ) 0 0 = Tₙ and (M(1)ⁿ) 1 0 = U_{n−1}, exactly as the powers of the Fibonacci Q-matrix !![1,1;1,0] generate Fₙ",
-      "Working over an arbitrary commutative ring R and integer indices n : ℤ keeps the statement at the level of the polynomial ring R[X], with the geometric meaning (rotation by nθ at x = cos θ) recovered by specialization"
+      "Working over an arbitrary commutative ring R and integer indices n : ℤ keeps the statement at the level of the polynomial ring R[X], with the geometric meaning (rotation by nθ at x = cos θ) recovered by specialization",
+      "chebMat_pow only exercises the ℕ-power law M(↑n) = M(1)ⁿ, yet det M(n) = 1 already makes every M(n) invertible in Matrix (Fin 2) (Fin 2) R[X] over any commutative ring — a determinant-1 matrix always has a classical adjugate inverse, with no field hypothesis needed. The file stops short of using that to extend the power law to negative n (e.g. M(1)⁻¹ = M(−1)); a bundled Multiplicative ℤ →* GL₂(R[X]) homomorphism, exactly the entry's first open question, would supply this for free"
     ],
     "prerequisites": [
       "The parent's scalar addition formulas T_add, U_add and Pell identity T_sq_add",
