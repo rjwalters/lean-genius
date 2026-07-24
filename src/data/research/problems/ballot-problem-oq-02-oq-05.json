@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-02-oq-05",
   "title": "Donsker's functional CLT — connecting discrete and continuous ballot",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -33,13 +33,11 @@
     "goal": "Formalize in Lean: (1) interpolatedRescaled definition + WeakConvergesInC01 predicate; (2) donsker_fclt as an axiom at the right type; (3) discrete_reflection as a sorry-free theorem (lattice-path bijection); (4) continuous_mapping_sup as a one-line axiom; (5) derive parent's reflection_principle as a theorem from (2)+(3)+(4); (6) downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem; (7) Sparre Andersen as a sorry-free theorem (bijective combinatorics); (8) derive parent's arcsine identity as a theorem from Sparre Andersen + Stirling + continuous-mapping-for-integral."
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-13",
-    "iteration": 11,
-    "focus": "STATE-SYNC (researcher-6, 2026-06-14): propagated state.md's S11 BLOCKED flag (researcher-1, 2026-06-13) into this registry + the candidate pool, which had been left at iteration 10 / phase ACT / status active / empty blockers with the pool stuck at in-progress (so claim-random kept re-serving this Docker-gated slug). Also de-staled the leanFiles[] array, which still read 229 LOC / 4 thm / 6 sorry while the merged source — and this very focus prose — is 357 LOC / 6 col-0 lemmas+theorems / 2 real sorries (synced to 357 / 6 / 2; defCount 7, axiomCount 1 already correct). The 2 remaining sorries (reaches_iff_hits_or_above line 334; discrete_reflection line 353) are paste-ready but build-gated; verification blackout this session (docker info times out; Aristotle MCP \"Resource not found\"). PRIOR FOCUS (S10 ACT, retained): S10 ACT (#22924, 2026-06-13 05:51, Docker-verified 7744 jobs): discharged R5 partialSumBool_reflectAt_endpoint (reflected lattice path's endpoint = 2a - S_n(ω); split both endpoints into full signed sums, terms double below the first-hit time tau and cancel at/above, close via S_tau(omega)=a from min'_mem). The PR touched ONLY proofs/Proofs/BallotProblemOQ02OQ05.lean (1 file) and did NOT advance state.md or this JSON, so trackers had drifted ~4 iterations behind. Source now: 357 LOC, 6 col-0 lemmas/theorems, 7 defs (4 noncomputable), 1 axiom (donsker_fclt), 2 real sorries remaining -- reaches_iff_hits_or_above (LOW, line 334) and discrete_reflection (R6, line 353). R4 (reflectAt_involutive) was discharged in S9 ACT (researcher-1, 2026-06-01) via the partialSumBool_congr_below helper + Helper-1 reflectAt_eq_below_firstHit; R5 now also closed. Sorry trajectory: S6 4 -> S8 4 -> S9 3 -> S10 2. All discharges Docker-verified (Docker daemon flickered green for #22924 at 05:51 today despite the intermittent outage).",
-    "blockers": [
-      "Verification blackout 2026-06-14: Docker build route down (docker info times out) and Aristotle MCP backend returns \"Resource not found\". The 2 remaining sorries (reaches_iff_hits_or_above line 334; discrete_reflection line 353) have paste-ready S5/S10 proof sketches but need a build or Aristotle prove_file to land — must not be blind-shipped."
-    ],
+    "phase": "COMPLETE",
+    "since": "2026-07-24",
+    "iteration": 12,
+    "focus": "S12 ACT (researcher-2, 2026-07-24): THREAD COMPLETE. The S11 verification-blackout blocker cleared (Docker GREEN); both build-gated sorries discharged, Docker 8577 jobs exit 0. (1) reaches_iff_hits_or_above via new discrete intermediate-value lemma hitSet_nonempty_of_ge (any partial sum >= a > 0 forces an exact hit; +1 jumps cannot overshoot) with explicit-Fin-proof recurrence partialSumBool_succ. (2) R6 discrete_reflection |reaches >= a| = 2|ends >= a| - |ends = a| (Andre 1887): two disjoint partitions + Finset.card_nbij with reflectAt both ways (R4 involution, R5 endpoint formula, new firstHit_mem_hitSet_reflectAt) + closing omega. File: 545 LOC, 0 sorries (was 2), 1 axiom (donsker_fclt — intended Donsker FCLT statement axiom, Wiedijk #45). Continuous-side S4-S7 derivations remain out-of-scope DEEP work.",
+    "blockers": [],
     "nextAction": "S11 ACT (any researcher or Aristotle, Docker-gated): discharge the 2 remaining sorries -- (1) reaches_iff_hits_or_above (LOW, line 334, ~8 LOC) via Int.le_iff_exists_eq_succ on the +/-1 partial-sum jumps (S_0=0, S_k>=a>0 forces an exact hit); (2) discrete_reflection (R6, line 353, ~20 LOC) via Finset.card_nbij' with i=j=reflectAt _ a, using R4 (reflectAt_involutive) for left_inv/right_inv and R5 (partialSumBool_reflectAt_endpoint) for the (ending<a, hits a) <-> (ending>a) membership image, then linear arithmetic for 2*card_ge - card_eq. Both are well-scoped Aristotle candidates. Build-verify when Docker is up. Beyond this slug: S8+ parent OQ-02 axiom downgrades (continuous_mapping_sup S8, reflection_principle S9, sparre_andersen S10).",
     "attemptCounts": {
       "total": 8,
@@ -48,12 +46,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S10 ACT (#22924, 2026-06-13, Docker-verified 7744 jobs): proved R5 partialSumBool_reflectAt_endpoint (reflected endpoint = 2a - S_n). Sorries 3 -> 2; remaining: reaches_iff_hits_or_above (LOW) + discrete_reflection (R6). PR touched only the .lean. S9 ACT (researcher-1, 2026-06-01, Docker-verified 7744): added partialSumBool_congr_below helper + inline-discharged the R4-sub htau (firstHitFin(reflectAt omega a) a = firstHitFin omega a via le_antisymm over min' of hitSet); reflectAt_involutive R4 now fully proved. Sorries 4 -> 3, LOC -> 325. S8 ACT (researcher-1, 2026-05-31, Docker-verified 7744): added Helper-1 reflectAt_eq_below_firstHit (if_neg collapse: reflection = identity below first-hit time) + restructured R4 signature to {omega}{a}(h:(hitSet omega a).Nonempty) with sorry-free body modulo one honest sub-sorry; fixed 3 build bugs left by the never-built S6 skeleton (unused if-binder, reflectAt must be noncomputable, R4 unfold/show precedence). LOC -> 266. S6 ACT (researcher-9, 2026-05-16, build pending): pasted S5 PREP §5 paste-ready ~99-LOC skeleton verbatim into proofs/Proofs/BallotProblemOQ02OQ05.lean before `end BallotOQ05` (line 130 → file 229 LOC). File now has 3 defs + 1 noncomputable def + 3 lemmas + 1 theorem + 1 axiom (donsker_fclt) + 4 acknowledged sorries on R4/R5/LOW/R6. Sorry inventory: reflectAt_involutive R4 MEDIUM ~10 LOC, partialSumBool_reflectAt_endpoint R5 HIGH ~25 LOC, reaches_iff_hits_or_above LOW ~8 LOC, discrete_reflection R6 HIGH ~20 LOC — all theorem/lemma sorries (none on defs). 10 bearer pins all GREEN at lake-pinned Mathlib SHA 2df2f0150c (card_bij/card_bij'/card_nbij/card_nbij' Card.lean:341,366,383,398; min'/min'_mem/min'_le/le_min' Max.lean:196,207,210,213; BrownianMotion/iIndepFun unchanged since S2). Build pending — Docker daemon hung (timeout 8 docker info no Server section; disk 100% / 5.4Gi avail). Leaf-only file (0 downstream importers) — sorry add cannot cascade. S5 PREP (researcher-6, 2026-05-16, doc-only): round-tripped S4-published S3 ACT sketch against actual file API on main (cff3fd36c83) and Mathlib v4.26.0 at SHA 2df2f0150c. Surfaced 4 issues, documented 3 design choices (Option C bounded Fin (n+1) index, Option β Finset.min', Option iv card_nbij' inverse-pair), produced paste-ready skeleton w/ 4 acknowledged sorries on R4/R5/LOW/R6. Added 6 new bearer pins not in S4 (card_nbij/card_nbij'/min'/min'_mem/min'_le/le_min'). S4 STATE-SYNC (researcher-6, 2026-05-16): doc-only post-drain catch-up after #19282 (S2 ACT) + #19288 (S3 PREP) merged 2026-05-15. PR #19065 (duplicate S2 ACT, recommended-for-close) still OPEN+CONFLICTING. S2 (researcher-9, 2026-05-15) ACT: shipped statement layer ~95 LOC build-verified 7744 jobs. S1 (researcher-6, 2026-05-12) OBSERVE: established axiomatize-Donsker architecture, 13-ingredient Mathlib gap census, S2-S7 decomposition.",
+    "progressSummary": "COMPLETE: the discrete reflection identity |reaches >= a| = 2|ends >= a| - |ends = a| is fully machine-checked (0 sorries; the sole axiom is the intended donsker_fclt statement axiom). Full chain: partialSumBool/hitSet/firstHitFin/reflectAt defs; R4 involution on the hit branch; R5 endpoint formula S_n(reflect) = 2a - S_n; discrete IVT hitSet_nonempty_of_ge; partition + card_nbij bijection assembly.",
     "builtItems": [
       "proofs/Proofs/BallotProblemOQ02OQ05.lean (S2 ACT, ~95 LOC, build-verified by Docker): partialSum + interpolatedRescaled definitions, WeakConvergesInC01 ad hoc predicate, donsker_fclt axiom (Wiedijk #45). Uses iIndepFun (mutual independence) — strengthened from S1 sketch's Pairwise IndepFun (which is insufficient for classical Donsker).",
       "proofs/Proofs/BallotProblemOQ02OQ05.lean (S8 ACT, Docker-verified 7744): Helper-1 reflectAt_eq_below_firstHit (reflection is identity below the first-hit time) + R4 reflectAt_involutive restructured to take a Nonempty hypothesis.",
       "proofs/Proofs/BallotProblemOQ02OQ05.lean (S9 ACT, Docker-verified 7744): partialSumBool_congr_below helper + full inline discharge of R4 reflectAt_involutive (R4-sub htau closed via min'-of-hitSet antisymmetry).",
-      "proofs/Proofs/BallotProblemOQ02OQ05.lean (S10 ACT #22924, Docker-verified 7744): R5 partialSumBool_reflectAt_endpoint proved (reflected path endpoint = 2a - S_n via signed-sum split + S_tau=a)."
+      "proofs/Proofs/BallotProblemOQ02OQ05.lean (S10 ACT #22924, Docker-verified 7744): R5 partialSumBool_reflectAt_endpoint proved (reflected path endpoint = 2a - S_n via signed-sum split + S_tau=a).",
+      "S12: partialSumBool_zero / partialSumBool_succ (explicit Fin.mk bound-proof args so omega atoms unify) — BallotProblemOQ02OQ05.lean",
+      "S12: hitSet_nonempty_of_ge — discrete intermediate-value: any partial sum >= a > 0 forces an exact hit of a",
+      "S12: firstHit_mem_hitSet_reflectAt — first hit survives reflection (extracted from R4 Step 1)",
+      "S12: reaches_iff_hits_or_above proved (sorry eliminated)",
+      "S12: discrete_reflection proved (sorry eliminated) — card_nbij with reflectAt both directions + two disjoint partitions + omega"
     ],
     "insights": [
       "Axiomatize-Donsker pipeline: a single named axiom for Donsker's FCLT replaces three ad hoc axioms in the parent file. The continuous mapping theorem for the sup-functional is the second axiom needed; an optional third axiom handles the integral functional for Lévy arcsine. Net axiom count is neutral (3 → 2 or 3) but concentrated into named classical statements rather than ad hoc lemmas.",
@@ -70,7 +73,11 @@
       "S2 ACT: partialSum xi k ω is a useful named definition (not inline ∑) because S3 needs Finset.sum_range_succ-style algebraic identities to reason about the random walk one-step-at-a-time. Named definitions enable reusable lemmas across S3-S6.",
       "Duplicate-S2-ACT race resolved by deployer overriding the S3 PREP audit memo's recommendation: PR #19282 (newer, bundled with cross-slug commit) merged instead of PR #19065 (older, scope-clean). PR #19065 left stranded OPEN + CONFLICTING; champion should close-not-rebase (work is byte-equivalent modulo partialSum named helper, which is on main via #19282).",
       "PR #19282's cross-slug-bundled commit b519c2ebeec (erdos-735-oq-04 S2 PREP) was independently merged via PR #19278 at 2026-05-15T18:01:56Z, so the coordination hazard flagged in #19288 § 4 was retroactively resolved: erdos-735-oq-04 went through its own review track at #19278; #19282's bundled copy was a no-op against the post-#19278-merge state.",
-      "Finset.card_bij' (line 366, with explicit inverse j : ∀ a ∈ t, α) is a closer fit for the André-Feller reflection bijection than card_bij (line 341), because the reflect-at-first-hit-a map is its own inverse on the relevant event. State.md L40 names card_bij; S3 implementer should consider card_bij' as the cleaner shape."
+      "Finset.card_bij' (line 366, with explicit inverse j : ∀ a ∈ t, α) is a closer fit for the André-Feller reflection bijection than card_bij (line 341), because the reflect-at-first-hit-a map is its own inverse on the relevant event. State.md L40 names card_bij; S3 implementer should consider card_bij' as the cleaner shape.",
+      "rw [if_pos (by omega)] with an unanchored condition is a trap: the condition metavariable can unify with the WRONG ite (e.g. an inner if-payload). Bind have c : cond := by omega first, then rw [if_pos c].",
+      "State index-recurrence lemmas with EXPLICIT Fin.mk bound-proof arguments; omega treats mk-terms with different proof terms as distinct atoms.",
+      "The discrete IVT (+1 jumps cannot overshoot) is the right replacement for the sketched Int.le_iff_exists_eq_succ route — a 25-line induction.",
+      "card_nbij (v4.31) takes Set.MapsTo/LeftInvOn/RightInvOn on coerced finsets; rw [Finset.mem_coe] bridges to mem_filter; the R4 Nonempty hypothesis is exactly what both class memberships supply."
     ],
     "mathlibGaps": [
       "No Polish-space instance for C([0, 1], ℝ) at v4.26.0 — needs separability of BoundedContinuousFunction proved via Stone-Weierstrass. Polish + Borel-σ-algebra is prerequisite for the canonical weak-convergence development on C([0, 1]).",
@@ -82,13 +89,8 @@
       "No first-class Brownian motion construction — the parent file axiomatizes via a BrownianMotion structure with W : ℝ → Ω → ℝ + properties; this is the existence problem, distinct from but prerequisite to Donsker."
     ],
     "nextSteps": [
-      "S7 discharge: prove reaches_iff_hits_or_above (LOW, ~8 LOC) via ±1-jump IVT — partial sums of ±1 change by exactly 1 each step so S_k ≥ a > 0 with S_0 = 0 ⟹ ∃ j ≤ k, S_j = a.",
-      "S7 discharge: prove discrete_reflection (R6 HIGH, ~20 LOC) via Finset.card_nbij' with i = j = fun ω _ => reflectAt ω a, using R4 for left_inv/right_inv + R5 for membership-image (ending<a, hits a) ↔ (ending>a) + linear arithmetic over ℕ for 2*card_ge - card_eq.",
-      "S8: state continuous_mapping_sup : (X_n ⇒ X in C([0,1])) → (sup X_n ⇒ sup X) as axiom. Combine with donsker_fclt + discrete_reflection (S7) to derive parent's reflection_principle as theorem. Expected ~50 lines, 1 new axiom, 1 new theorem.",
-      "S9: downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem (no Donsker dependency). Expected ~30 lines.",
-      "S10: prove sparre_andersen for ±1 walk via cycle-lemma bijection. State continuous_mapping_integral axiom. Derive parent's arcsine identity. Expected ~150 lines.",
-      "S11: update parent file to depend on BallotProblemOQ02OQ05, downgrading 3 parent axioms to theorems. Update meta.json axiomCount.",
-      "S12+ (deferred, multi-year): downgrade donsker_fclt itself once Mathlib gains Polish-C([0,1]) + Prokhorov + Kolmogorov-Centsov + multivariate CLT. Track as upstream Mathlib contribution."
+      "Thread complete. Continuous-side derivations (parent axioms from donsker_fclt: continuous mapping, reflection principle, arcsine) remain DEEP multi-week work, out of scope for this slug per S11.",
+      "leanFiles sync: 545 LOC, 0 sorries, 1 axiom (donsker_fclt)."
     ]
   },
   "tags": [
@@ -168,7 +170,7 @@
     ]
   },
   "started": "2026-05-12T18:15:00.000Z",
-  "lastUpdate": "2026-06-14T00:00:00.000Z",
+  "lastUpdate": "2026-07-24",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [
@@ -417,11 +419,11 @@
     {
       "path": "Proofs/BallotProblemOQ02OQ05.lean",
       "filename": "BallotProblemOQ02OQ05.lean",
-      "lineCount": 358,
-      "theoremCount": 6,
+      "lineCount": 545,
+      "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 7,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ05.lean"
     },

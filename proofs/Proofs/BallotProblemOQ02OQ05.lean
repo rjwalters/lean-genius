@@ -36,7 +36,7 @@ arcsine identity) as theorems.
 - [x] Interpolated rescaled walk definition
 - [x] Ad hoc weak-convergence predicate on $C([0,1])$
 - [x] Donsker FCLT axiom statement
-- [ ] Discrete reflection identity (S3, sorry-free target)
+- [x] Discrete reflection identity (S12, 2026-07-24: fully proved, 0 sorries)
 - [ ] Continuous-mapping-for-sup axiom (S4)
 - [ ] Reflection-principle theorem deriving parent's axiom (S4)
 - [ ] First-passage-time event theorem (S5)
@@ -129,12 +129,12 @@ axiom donsker_fclt
 
 /-! ## Part IV: Discrete reflection identity (S6 ACT — paste-ready skeleton)
 
-This section is the S6 ACT paste-ready skeleton from S5 PREP §5, dropped
-in here so future researchers (or Aristotle) can discharge the
-acknowledged `sorry`s. R4 (`reflectAt_involutive`) and R5
-(`partialSumBool_reflectAt_endpoint`) are now proved; 2 `sorry`s remain
-(`reaches_iff_hits_or_above`, R6 `discrete_reflection`). The design is
-fully scoped in S5 PREP:
+This section began as the S6 ACT paste-ready skeleton from S5 PREP §5.
+R4 (`reflectAt_involutive`) and R5 (`partialSumBool_reflectAt_endpoint`)
+were proved in S9/S10; S12 (2026-07-24) discharged the final two
+(`reaches_iff_hits_or_above` via a discrete intermediate-value lemma, and
+R6 `discrete_reflection` via the `card_nbij'` reflection bijection) — the
+section is now **fully proved, 0 sorries**. The design followed S5 PREP:
 
 - §3.1 Option C: `partialSumBool : (Fin n → Bool) → Fin (n+1) → ℤ` via
   bounded sum over `Fin n` with `if h : i.val < k.val` guard.
@@ -143,9 +143,8 @@ fully scoped in S5 PREP:
   (non-dependent, inverse-pair form — `Mathlib/Data/Finset/Card.lean:398`),
   with `i = j = reflectAt _ a` (involutive).
 
-Build status: VERIFIED 2026-06-12 (Docker, 7744 jobs successful) with R4
-and R5 proved; the only remaining `sorry` warnings are
-`reaches_iff_hits_or_above` and R6 `discrete_reflection`. Leaf-only file
+Build status: VERIFIED 2026-07-24 (Docker, 8577 jobs successful) with the
+whole section proved — **0 `sorry`s in this file**. Leaf-only file
 (no downstream importers). -/
 
 section DiscreteReflection
