@@ -367,6 +367,119 @@ theorem hlawka_ball_of_discrete {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
     (fun ω => finite_primitive_inter_of_isBounded (latticeOf ω) (hr₀ ω)
       (hdisc ω) Metric.isBounded_ball) hvol
 
+/-! ## The ±-pairing rung (S5)
+
+Primitive vectors come in pairs `{v, -v}`: negation preserves membership,
+nonzeroness, and primitivity, and `-v ≠ v` in a real vector space (no
+2-torsion). Consequently, on a *symmetric* set `S = -S` a lattice either has
+no primitive vector in `S` or at least **two** — so in the averaging argument
+a mean below `2` (not merely below `1`) already forces an avoiding lattice.
+This doubles the volume threshold of the staged Minkowski–Hlawka theorems
+from `ζ(n)` to `2·ζ(n)`, the classical route to the density bound
+`δ_n ≥ ζ(n)/2^(n-1)` (the remaining factor `2^(1-n)` is the ball-volume
+scaling `vol(ball r) = r^n·vol(ball 1)` in the packing-density bookkeeping,
+not part of the averaging engine). -/
+
+/-- Negation preserves primitivity: if `-v = m • w` with `m ≥ 2` then
+`v = m • (-w)` exhibits the same proper-multiple decomposition. -/
+theorem IsPrimitive.neg {L : AddSubgroup E} {v : E} (h : IsPrimitive L v) :
+    IsPrimitive L (-v) := by
+  obtain ⟨hvL, hv0, hprim⟩ := h
+  refine ⟨neg_mem hvL, neg_ne_zero.mpr hv0, fun m w hw hm heq => ?_⟩
+  apply hprim m (-w) (neg_mem hw) hm
+  rw [← neg_neg v, heq, smul_neg]
+
+/-- In a real vector space, `-v ≠ v` for `v ≠ 0` (no 2-torsion): from `-v = v`
+one gets `(2 : ℝ) • v = 0`, forcing `v = 0`. -/
+theorem neg_ne_self_of_ne_zero {v : E} (hv0 : v ≠ 0) : -v ≠ v := by
+  intro hEq
+  apply hv0
+  have h2v : v + v = 0 := by
+    nth_rewrite 1 [← hEq]
+    exact neg_add_cancel v
+  have h2 : (2 : ℝ) • v = 0 := by rw [two_smul]; exact h2v
+  rcases smul_eq_zero.mp h2 with h | h
+  · norm_num at h
+  · exact h
+
+/-- **The pairing bound.** On a symmetric set, one primitive vector in `S`
+forces two: `v` and `-v` are distinct primitive members. -/
+theorem two_le_primCount_of_symm_of_mem (L : AddSubgroup E)
+    (S : Set E) (hSymm : ∀ v ∈ S, -v ∈ S)
+    (hFin : (S ∩ {u | IsPrimitive L u}).Finite)
+    {v : E} (hvp : IsPrimitive L v) (hvS : v ∈ S) : 2 ≤ primCount L S := by
+  have hne : v ≠ -v := (neg_ne_self_of_ne_zero hvp.2.1).symm
+  have hsub : ({v, -v} : Set E) ⊆ S ∩ {u | IsPrimitive L u} := by
+    intro u hu
+    rcases hu with rfl | hu
+    · exact ⟨hvS, hvp⟩
+    · rw [Set.mem_singleton_iff] at hu
+      subst hu
+      exact ⟨hSymm v hvS, hvp.neg⟩
+  calc 2 = ({v, -v} : Set E).ncard := (Set.ncard_pair hne).symm
+    _ ≤ (S ∩ {u | IsPrimitive L u}).ncard := Set.ncard_le_ncard hsub hFin
+
+/-- **Minkowski–Hlawka, avoidance form, symmetric sets (doubled threshold).**
+For `S = -S` the volume threshold improves from `ζ(n)` to `2·ζ(n)`: a lattice
+with any primitive vector in `S` has at least two (pairing), so a mean below
+`2` already forces an avoiding lattice. -/
+theorem hlawka_avoidance_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (latticeOf : Ω → AddSubgroup (EuclideanSpace ℝ (Fin n)))
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (hSymm : ∀ v ∈ S, -v ∈ S)
+    (hMV : ∫ ω, (primCount (latticeOf ω) S : ℝ) ∂μ = (volume S).toReal / zetaSum n)
+    (hInt : Integrable (fun ω => (primCount (latticeOf ω) S : ℝ)) μ)
+    (hFin : ∀ ω, (S ∩ {v | IsPrimitive (latticeOf ω) v}).Finite)
+    (hvol : (volume S).toReal < 2 * zetaSum n) :
+    ∃ ω, ∀ v, IsPrimitive (latticeOf ω) v → v ∉ S := by
+  have hζ : 0 < zetaSum n := zetaSum_pos hn
+  by_contra h
+  push Not at h
+  have h2 : ∀ ω, (2 : ℝ) ≤ (primCount (latticeOf ω) S : ℝ) := by
+    intro ω
+    obtain ⟨v, hvp, hvS⟩ := h ω
+    exact_mod_cast two_le_primCount_of_symm_of_mem (latticeOf ω) S hSymm
+      (hFin ω) hvp hvS
+  have hint2 : ∫ ω, (2 : ℝ) ∂μ ≤ ∫ ω, (primCount (latticeOf ω) S : ℝ) ∂μ :=
+    integral_mono (integrable_const 2) hInt h2
+  rw [hMV] at hint2
+  simp only [integral_const, measure_univ, ENNReal.toReal_one, one_smul,
+    smul_eq_mul, one_mul] at hint2
+  rw [le_div_iff₀ hζ] at hint2
+  linarith
+
+/-- **Minkowski–Hlawka, minimum-distance form, doubled threshold.** Balls are
+symmetric, so the pairing rung applies: `vol(ball r) < 2·ζ(n)` suffices for a
+lattice of minimum distance `≥ r`. Combined with `vol(ball r) = r^n·vol(ball 1)`
+this is the classical `δ_n ≥ ζ(n)/2^(n-1)` averaging input. -/
+theorem hlawka_ball_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (latticeOf : Ω → AddSubgroup (EuclideanSpace ℝ (Fin n)))
+    (r₀ : Ω → ℝ) (hr₀ : ∀ ω, 0 < r₀ ω)
+    (hdisc : ∀ ω, ∀ u ∈ latticeOf ω, u ≠ 0 → r₀ ω ≤ ‖u‖)
+    {r : ℝ}
+    (hMV : ∫ ω, (primCount (latticeOf ω) (Metric.ball 0 r) : ℝ) ∂μ =
+      (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal / zetaSum n)
+    (hInt : Integrable
+      (fun ω => (primCount (latticeOf ω) (Metric.ball 0 r) : ℝ)) μ)
+    (hvol : (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal <
+      2 * zetaSum n) :
+    ∃ ω, ∀ v ∈ latticeOf ω, v ≠ 0 → r ≤ ‖v‖ := by
+  have hSymm : ∀ v ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r,
+      -v ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r := by
+    intro v hv
+    rw [Metric.mem_ball, dist_zero_right] at hv ⊢
+    simpa using hv
+  obtain ⟨ω, hω⟩ := hlawka_avoidance_symm hn μ latticeOf _ hSymm hMV hInt
+    (fun ω => finite_primitive_inter_of_isBounded (latticeOf ω) (hr₀ ω)
+      (hdisc ω) Metric.isBounded_ball) hvol
+  refine ⟨ω, no_nonzero_of_no_primitive_in_ball (latticeOf ω) (hr₀ ω) (hdisc ω) ?_⟩
+  intro w hwp
+  by_contra hlt
+  push Not at hlt
+  exact hω w hwp (Metric.mem_ball.mpr (by simpa using hlt))
+
 #check @zetaSum_summable
 #check @one_le_zetaSum
 #check @minimal_isPrimitive
