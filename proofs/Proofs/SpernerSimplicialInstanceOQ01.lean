@@ -399,42 +399,51 @@ theorem triAdj_vertex (m : ℕ) :
       (Finset.univ.erase k).image (triVtx m s) =
       (Finset.univ.erase k').image (triVtx m s') := by
   intro s k s' k' hadj
+  -- OfNat-literal forms (match the `k'` produced by the `triAdj` table)
   have e0 : (Finset.univ.erase (0 : Fin 3)) = {1, 2} := by decide
   have e1 : (Finset.univ.erase (1 : Fin 3)) = {0, 2} := by decide
   have e2 : (Finset.univ.erase (2 : Fin 3)) = {0, 1} := by decide
+  -- `Fin.mk`-literal forms (match the `k` produced by `fin_cases`;
+  -- simp unifies the membership proofs by proof irrelevance)
+  have e0m : (Finset.univ.erase (⟨0, by omega⟩ : Fin 3)) = {1, 2} := by
+    decide
+  have e1m : (Finset.univ.erase (⟨1, by omega⟩ : Fin 3)) = {0, 2} := by
+    decide
+  have e2m : (Finset.univ.erase (⟨2, by omega⟩ : Fin 3)) = {0, 1} := by
+    decide
   rcases s with ⟨i, j, h⟩ | ⟨i, j, h⟩
   · fin_cases k
     · by_cases hc : i + j + 1 < m
       · simp only [triAdj, dif_pos hc, Option.some.injEq, Prod.mk.injEq]
           at hadj
         obtain ⟨rfl, rfl⟩ := hadj
-        simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+        simp only [e0m, e2, Finset.image_insert, Finset.image_singleton]
         rfl
       · simp [triAdj, hc] at hadj
     · rcases i with _ | i
       · simp [triAdj] at hadj
       · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
         obtain ⟨rfl, rfl⟩ := hadj
-        simp only [e1, Finset.image_insert, Finset.image_singleton]
+        simp only [e1m, e1, Finset.image_insert, Finset.image_singleton]
         rfl
     · rcases j with _ | j
       · simp [triAdj] at hadj
       · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
         obtain ⟨rfl, rfl⟩ := hadj
-        simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+        simp only [e2m, e0, Finset.image_insert, Finset.image_singleton]
         rfl
   · fin_cases k
     · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
       obtain ⟨rfl, rfl⟩ := hadj
-      simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+      simp only [e0m, e2, Finset.image_insert, Finset.image_singleton]
       rfl
     · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
       obtain ⟨rfl, rfl⟩ := hadj
-      simp only [e1, Finset.image_insert, Finset.image_singleton]
+      simp only [e1m, e1, Finset.image_insert, Finset.image_singleton]
       rfl
     · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
       obtain ⟨rfl, rfl⟩ := hadj
-      simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+      simp only [e2m, e0, Finset.image_insert, Finset.image_singleton]
       rfl
 
 /-- **The standard regular triangulation of `Δ²` at resolution `m`**
