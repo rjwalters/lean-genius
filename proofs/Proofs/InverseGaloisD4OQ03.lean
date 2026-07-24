@@ -7,6 +7,8 @@ import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Algebra.Group.End
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.AlgebraMap
+import Mathlib.FieldTheory.KummerPolynomial
+import Mathlib.Analysis.Complex.Polynomial.Basic
 import Proofs.InverseGaloisD4
 
 open scoped Classical
@@ -63,6 +65,37 @@ conjugate — hence isomorphic to the explicit dihedral copy
 this to the faithful action of `Gal(X⁴ − 2)` on its four roots
 (`Polynomial.Gal.galActionHom`, injective, image of order `8`) closes
 the case. Only the general `n` Schinzel–Velez criterion remains open.
+
+## S5 update: the complete `n = 3` case, for every non-cube `a`
+
+S1 (2026-05, Mathlib v4.26) recorded Capelli's irreducibility theorem as
+the blocking gap for any general-`n` statement. The v4.31 toolchain
+migration (#39062) dissolved half of that block: Mathlib now provides
+the odd-degree Capelli criterion
+(`X_pow_sub_C_irreducible_of_prime` / `X_pow_sub_C_irreducible_iff_of_odd`
+in `Mathlib.FieldTheory.KummerPolynomial` / `KummerExtension`; only the
+even-`n` branch with the `a ∉ −4K⁴` condition is still absent).
+
+S5 exploits this to prove the first *general-coefficient* instance of
+the open question — the complete `n = 3` stratum of the Schinzel–Velez
+classification over `ℚ`:
+
+`dihedral_galois_xPow3_sub_a : ∀ a : ℚ, (∀ b : ℚ, b ^ 3 ≠ a) →
+  IsDihedralGaloisOfXnMinusA 3 a`
+
+together with its converse `not_dihedral_galois_xPow3_of_cube` (if `a`
+*is* a cube the Galois group is too small to be dihedral), packaged as
+the iff `dihedral_galois_xPow3_iff : IsDihedralGaloisOfXnMinusA 3 a ↔
+∀ b : ℚ, b ^ 3 ≠ a` — a decidable-in-`a` criterion, exactly the shape
+the open question asks for, on the `n = 3` stratum.
+
+Route for the forward half: Kummer irreducibility → `X³ − a` has at
+most one real root (odd powers are injective on `ℝ`) but three complex
+roots (separability) → Mathlib's Abel–Ruffini engine
+(`Polynomial.Gal.galActionHom_bijective_of_prime_degree'`) forces
+`Gal(X³ − a) ≅ S₃` → a `decide`-checked triangle representation
+identifies `S₃ ≅ D₃` (`permThreeIsoDihedralThree`, mirroring the S4
+square representation `dihedralFourToPerm`).
 
 ## References
 
@@ -359,5 +392,231 @@ theorem schinzel_velez_characterization_exists :
     ∃ P : ℕ → ℚ → Prop,
       ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a :=
   ⟨IsDihedralGaloisOfXnMinusA, fun _ _ => Iff.rfl⟩
+
+/-! ## S5: the complete `n = 3` stratum of the Schinzel–Velez classification
+
+S1 recorded Capelli's irreducibility theorem as the blocking gap for any
+general-`n` statement (Mathlib v4.26). The v4.31 toolchain now provides
+the odd-degree half of Capelli (`X_pow_sub_C_irreducible_of_prime`,
+`Mathlib.FieldTheory.KummerPolynomial`), which unblocks the first
+*general-coefficient* stratum: for **every** `a : ℚ`,
+
+`Gal(X³ − a / ℚ)` is dihedral **iff** `a` is not a rational cube.
+
+Forward direction: Kummer irreducibility → an irreducible rational cubic
+has at most one real root (odd powers are injective on `ℝ`) but three
+complex roots (separability) → Mathlib's Abel–Ruffini engine
+(`Polynomial.Gal.galActionHom_bijective_of_prime_degree'`) forces
+`Gal(X³ − a) ≅ S₃` → the `decide`-checked triangle representation below
+identifies `S₃ ≅ D₃`. Converse: a rational cube gives a rational root,
+fixed by every Galois automorphism, so the faithful Galois action only
+permutes the remaining `≤ 2` roots and `|Gal| ≤ 2 < 4 ≤ |D_m|`. -/
+
+/-- The 3-cycle `(0 1 2)` on `Fin 3`, as a product of adjacent
+transpositions. -/
+def rho3 : Equiv.Perm (Fin 3) := Equiv.swap 0 1 * Equiv.swap 1 2
+
+/-- Underlying function of the triangle representation of `D₃`:
+rotations map to powers of `rho3`, reflections to `(1 2)` composed with
+a rotation. -/
+def dihToPerm3 : DihedralGroup 3 → Equiv.Perm (Fin 3)
+  | DihedralGroup.r i => rho3 ^ i.val
+  | DihedralGroup.sr i => Equiv.swap 1 2 * rho3 ^ i.val
+
+/-- **`D₃` as symmetries of the triangle** — the explicit group
+homomorphism `DihedralGroup 3 →* S₃` on vertices `0,1,2` (the `n = 3`
+analogue of `dihedralFourToPerm`). The homomorphism property is a
+finite check. -/
+def dihedralThreeToPerm : DihedralGroup 3 →* Equiv.Perm (Fin 3) where
+  toFun := dihToPerm3
+  map_one' := by decide
+  map_mul' := by decide
+
+theorem dihedralThreeToPerm_injective :
+    Function.Injective dihedralThreeToPerm := by
+  decide
+
+/-- The triangle representation is onto: `|D₃| = 6 = |S₃|`, so injective
+implies bijective. -/
+theorem dihedralThreeToPerm_bijective :
+    Function.Bijective dihedralThreeToPerm := by
+  rw [Fintype.bijective_iff_injective_and_card]
+  refine ⟨dihedralThreeToPerm_injective, ?_⟩
+  rw [DihedralGroup.card, Fintype.card_perm, Fintype.card_fin]
+  norm_num [Nat.factorial]
+
+/-- **`S₃ ≅ D₃`** — the inverse of the (bijective) triangle
+representation. -/
+noncomputable def permThreeIsoDihedralThree :
+    Equiv.Perm (Fin 3) ≃* DihedralGroup 3 :=
+  (MulEquiv.ofBijective dihedralThreeToPerm dihedralThreeToPerm_bijective).symm
+
+/-- Any group with a bijective permutation representation on a
+`3`-element type is `D₃` (relabel via `Fin 3`, then apply
+`permThreeIsoDihedralThree`). -/
+theorem iso_dihedralThree_of_bijective_perm {α : Type*} [Fintype α]
+    (hα : Fintype.card α = 3) {G : Type*} [Group G]
+    (f : G →* Equiv.Perm α) (hf : Function.Bijective f) :
+    Nonempty (G ≃* DihedralGroup 3) :=
+  let e : α ≃ Fin 3 := Fintype.equivFinOfCardEq hα
+  ⟨(MulEquiv.ofBijective f hf).trans
+    ((Equiv.permCongrHom e).trans permThreeIsoDihedralThree)⟩
+
+/-- A rational cubic `X³ − a` has at most one real root: cubing is
+injective on `ℝ` (`Odd.pow_injective`). This supplies the
+"two non-real roots" input to the Abel–Ruffini engine. -/
+theorem card_rootSet_xPowSub_3_le_one (a : ℚ) :
+    Fintype.card ((xPowSub 3 a).rootSet ℝ) ≤ 1 := by
+  rw [Fintype.card_le_one_iff]
+  rintro ⟨x, hx⟩ ⟨y, hy⟩
+  rw [mem_rootSet] at hx hy
+  have key : ∀ z : ℝ, aeval z (xPowSub 3 a) = 0 → z ^ 3 = algebraMap ℚ ℝ a := by
+    intro z hz
+    rw [xPowSub_def] at hz
+    simp only [map_sub, map_pow, aeval_X, aeval_C] at hz
+    linarith
+  exact Subtype.ext ((by norm_num : Odd 3).pow_injective
+    ((key x hx.2).trans (key y hy.2).symm))
+
+/-- **S5 forward direction — every non-cube `a` gives `D₃`**: if
+`a : ℚ` is not a rational cube then `Gal(X³ − a / ℚ) ≅ D₃`. The first
+general-coefficient (infinite-family) instance of the parent open
+question. -/
+theorem dihedral_galois_xPow3_sub_a (a : ℚ) (ha : ∀ b : ℚ, b ^ 3 ≠ a) :
+    IsDihedralGaloisOfXnMinusA 3 a := by
+  have hirr : Irreducible (xPowSub 3 a) := by
+    rw [xPowSub_def]
+    exact X_pow_sub_C_irreducible_of_prime Nat.prime_three ha
+  have hdeg : (xPowSub 3 a).natDegree = 3 := by
+    rw [xPowSub_def]; exact natDegree_X_pow_sub_C
+  haveI hsplitsC : Fact (((xPowSub 3 a).map (algebraMap ℚ ℂ)).Splits) :=
+    Polynomial.Gal.splits_ℚ_ℂ
+  have hC : Fintype.card ((xPowSub 3 a).rootSet ℂ) = 3 := by
+    rw [card_rootSet_eq_natDegree hirr.separable hsplitsC.out, hdeg]
+  have hR := card_rootSet_xPowSub_3_le_one a
+  have hbij : Function.Bijective (Polynomial.Gal.galActionHom (xPowSub 3 a) ℂ) := by
+    apply Polynomial.Gal.galActionHom_bijective_of_prime_degree' hirr
+    · rw [hdeg]; exact Nat.prime_three
+    · omega
+    · omega
+  refine ⟨3, by norm_num, ?_⟩
+  show Nonempty ((xPowSub 3 a).Gal ≃* DihedralGroup 3)
+  exact iso_dihedralThree_of_bijective_perm hC
+    (Polynomial.Gal.galActionHom (xPowSub 3 a) ℂ) hbij
+
+/-- **S5 converse — cubes never give a dihedral group**: if `a = b³` is
+a rational cube then `Gal(X³ − a / ℚ)` has order at most `2`, hence is
+not isomorphic to any `DihedralGroup m` with `m ≥ 2` (order `2m ≥ 4`).
+The rational root `b` is fixed by every Galois automorphism, so the
+faithful Galois action only permutes the remaining `≤ 2` roots. -/
+theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
+    ¬ IsDihedralGaloisOfXnMinusA 3 (b ^ 3) := by
+  rintro ⟨m, hm, ⟨φ⟩⟩
+  have hcard : Nat.card (xPowSub 3 (b ^ 3)).Gal = 2 * m := by
+    rw [Nat.card_congr φ.toEquiv, DihedralGroup.nat_card]
+  haveI : Fact (((xPowSub 3 (b ^ 3)).map
+      (algebraMap ℚ (xPowSub 3 (b ^ 3)).SplittingField)).Splits) :=
+    ⟨Polynomial.SplittingField.splits _⟩
+  have hp0 : xPowSub 3 (b ^ 3) ≠ 0 := by
+    rw [xPowSub_def]; exact X_pow_sub_C_ne_zero (by norm_num) _
+  have hmem : algebraMap ℚ (xPowSub 3 (b ^ 3)).SplittingField b ∈
+      (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField := by
+    rw [mem_rootSet]
+    refine ⟨hp0, ?_⟩
+    rw [xPowSub_def]
+    simp only [map_sub, map_pow, aeval_X, aeval_C, sub_self]
+  set pt : (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField :=
+    ⟨_, hmem⟩ with hpt
+  -- every Galois element fixes the rational root
+  have hfix : ∀ σ : (xPowSub 3 (b ^ 3)).Gal,
+      Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
+        (xPowSub 3 (b ^ 3)).SplittingField σ pt = pt := by
+    intro σ
+    obtain ⟨ϕ, rfl⟩ := Polynomial.Gal.restrict_surjective (xPowSub 3 (b ^ 3))
+      (xPowSub 3 (b ^ 3)).SplittingField σ
+    apply Subtype.ext
+    rw [show Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
+        (xPowSub 3 (b ^ 3)).SplittingField
+        (Polynomial.Gal.restrict (xPowSub 3 (b ^ 3))
+          (xPowSub 3 (b ^ 3)).SplittingField ϕ) pt
+        = Polynomial.Gal.restrict (xPowSub 3 (b ^ 3))
+          (xPowSub 3 (b ^ 3)).SplittingField ϕ • pt from rfl,
+      Polynomial.Gal.restrict_smul]
+    exact ϕ.commutes b
+  -- the action preserves "not the rational root"
+  have hpres : ∀ (σ : (xPowSub 3 (b ^ 3)).Gal)
+      (x : (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField),
+      Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
+        (xPowSub 3 (b ^ 3)).SplittingField σ x ≠ pt ↔ x ≠ pt := by
+    intro σ x
+    constructor
+    · intro h hx
+      exact h (hx ▸ hfix σ)
+    · intro hx h
+      exact hx ((Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
+        (xPowSub 3 (b ^ 3)).SplittingField σ).injective (h.trans (hfix σ).symm))
+  -- inject the Galois group into the permutations of the other roots
+  have hFinj : Function.Injective
+      (fun σ : (xPowSub 3 (b ^ 3)).Gal =>
+        (Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
+          (xPowSub 3 (b ^ 3)).SplittingField σ).subtypePerm (hpres σ)) := by
+    intro σ τ h
+    apply Polynomial.Gal.galActionHom_injective (xPowSub 3 (b ^ 3))
+      (xPowSub 3 (b ^ 3)).SplittingField
+    apply Equiv.ext
+    intro x
+    by_cases hx : x = pt
+    · rw [hx, hfix σ, hfix τ]
+    · have h2 := congrArg
+        (fun π : Equiv.Perm {y : (xPowSub 3 (b ^ 3)).rootSet
+            (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt} =>
+          ((π ⟨x, hx⟩).val : (xPowSub 3 (b ^ 3)).rootSet
+            (xPowSub 3 (b ^ 3)).SplittingField)) h
+      simpa [Equiv.Perm.subtypePerm_apply] using h2
+  -- root count: at most 3 roots, so at most 2 non-rational ones
+  have hRS : Fintype.card
+      ((xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField) ≤ 3 := by
+    have h1 := ncard_rootSet_le (xPowSub 3 (b ^ 3)) (xPowSub 3 (b ^ 3)).SplittingField
+    rw [← Set.fintypeCard_eq_ncard] at h1
+    have h2 : (xPowSub 3 (b ^ 3)).natDegree = 3 := by
+      rw [xPowSub_def]; exact natDegree_X_pow_sub_C
+    omega
+  have hsub : Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
+      (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt} ≤ 2 := by
+    have h1 := Fintype.card_subtype_compl (· = pt)
+      (α := (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField)
+    have h2 := Fintype.card_subtype_eq pt
+      (α := (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField)
+    omega
+  -- assemble: `2m ≤ 2` contradicts `m ≥ 2`
+  have hle : Nat.card (xPowSub 3 (b ^ 3)).Gal ≤ 2 := by
+    calc Nat.card (xPowSub 3 (b ^ 3)).Gal
+        ≤ Nat.card (Equiv.Perm {y : (xPowSub 3 (b ^ 3)).rootSet
+            (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt}) :=
+          Nat.card_le_card_of_injective _ hFinj
+      _ = (Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
+            (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt})! := by
+          rw [Nat.card_eq_fintype_card, Fintype.card_perm]
+      _ ≤ 2 ! := Nat.factorial_le hsub
+      _ = 2 := rfl
+  omega
+
+/-- **S5 main result — the complete `n = 3` stratum of the
+Schinzel–Velez classification**: over `ℚ`, the Galois group of `X³ − a`
+is dihedral **iff** `a` is not a rational cube. This is exactly the
+shape of criterion the parent open question asks for (decidable in `a`),
+established here for the full `n = 3` stratum; the `n = 4` stratum has
+its `(4, 2)` instance above (S4), and even-`n` strata await the even
+half of Capelli's theorem (the `a ∉ −4K⁴` branch, still absent from
+Mathlib v4.31). -/
+theorem dihedral_galois_xPow3_iff (a : ℚ) :
+    IsDihedralGaloisOfXnMinusA 3 a ↔ ∀ b : ℚ, b ^ 3 ≠ a := by
+  constructor
+  · intro h
+    by_contra hcube
+    push_neg at hcube
+    obtain ⟨b, rfl⟩ := hcube
+    exact not_dihedral_galois_xPow3_of_cube b h
+  · exact dihedral_galois_xPow3_sub_a a
 
 end InverseGaloisD4OQ03
