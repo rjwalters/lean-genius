@@ -60,7 +60,8 @@
       "Separating the uniqueness theorem (parametric in α, β) from the explicit eigenvalue formulas isolates the only genuinely analytic step and makes both closed forms one-line instantiations.",
       "The integrating factor exp(−tA) converts the two competing ODEs (exp and the closed form both satisfy f' = f·A) into a single zero-derivative statement, avoiding any direct manipulation of the tsum defining Matrix.exp.",
       "The cancellation that forces φ' = 0 is exactly the parent relation A² = (tr A)·A − (det A)·1; after substituting it, the `module` tactic closes the matrix identity since everything is ℝ-linear in the atoms 1 and A.",
-      "The same parametric theorem covers both eigenvalue branches uniformly: distinct eigenvalues give a divided-difference β, repeated eigenvalues give the t·e^{λt} term, with no separate limiting argument needed."
+      "The same parametric theorem covers both eigenvalue branches uniformly: distinct eigenvalues give a divided-difference β, repeated eigenvalues give the t·e^{λt} term, with no separate limiting argument needed.",
+      "Recovering exp(tA) from exp(−tA)·(α•1+β•A) = 1 needs exp(tA)·exp(−tA) = 1, which in general fails for matrix exponentials unless the two arguments commute (exp(X+Y) ≠ exp(X)exp(Y) for noncommuting X, Y) — here it is free because t•A and t•(−A) are scalar multiples of the same matrix and trivially commute, so `exp_add_of_commute` applies without any extra hypothesis on A."
     ],
     "prerequisites": [
       "2×2 Cayley–Hamilton: A² = (tr A)·A − (det A)·1 (parent OQ-04)",
