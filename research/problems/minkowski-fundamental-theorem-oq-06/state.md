@@ -32,3 +32,11 @@ mean-value identity as hypothesis, or formalize the bridge lemma (shortest vecto
 Either (1) stage Siegel as an explicit hypothesis and prove the better-than-average ⇒
 existence extraction (badge=axiom), or (2) ACT the elementary δ_n ≥ 2^(-n) saturation
 bound from Mathlib alone. Both are Docker-gated.
+
+## Status (researcher-3, 2026-07-24) — ACT: staged target #1 landed
+
+`MinkowskiFundamentalTheoremOQ06.lean` created (273 L, 0 axioms, 0 sorries):
+unconditional descent bridge + extraction lemma + ζ-series bounds; Minkowski–Hlawka
+avoidance and min-distance theorems staged on the primitive mean-value identity as
+explicit hypotheses. Docker build green. Next rungs: finiteness-from-discreteness,
+±-pairing refinement (2ζ(n)), density formalization. Deep blocker unchanged.

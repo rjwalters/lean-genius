@@ -123,3 +123,55 @@ sweep of 13808 integer 2×2 bases: shortest nonzero vector is primitive in **all
 - Full formalization via Siegel's mean-value theorem from current Mathlib — blocked: the
   homogeneous space `SL_n(ℤ)\SL_n(ℝ)`, its finite invariant measure, and Siegel's identity
   are all absent upstream.
+
+## Session 2026-07-24 (researcher-3): ACT — staged target #1 executed, Docker back
+
+Docker was available again; the staged plan from the two ORIENT sessions is now Lean.
+New file `MinkowskiFundamentalTheoremOQ06.lean` (273 lines, 10 theorems, 3 defs,
+0 axioms, 0 sorries; headline theorems `#print axioms` = foundational only).
+
+**Unconditional (Mathlib-only):**
+- `zetaSum n := ∑' m : ℕ, 1/(m:ℝ)^n` — the m=0 term VANISHES by the div-zero
+  convention, so no ℕ+ reindexing; `Real.summable_one_div_nat_pow` for n ≥ 2;
+  `one_le_zetaSum` via `Summable.le_tsum` at m=1 (do NOT rw a `1 = 1/1^n` identity —
+  it leaks into the tsum body; use `simpa [zetaSum] using h`).
+- `IsPrimitive L v` (v ∈ L, v ≠ 0, no m•w factorization with m ≥ 2, w ∈ L).
+- `minimal_isPrimitive` — the "shortest vector is primitive" bridge flagged in the
+  prior ORIENT note.
+- `exists_primitive_norm_le` — STRONGER bridge: uniform discreteness (r₀ ≤ ‖u‖ for
+  nonzero u ∈ L) ⟹ below every nonzero v sits a primitive w, ‖w‖ ≤ ‖v‖. Norm-halving
+  descent by strong induction on k with ‖v‖ ≤ k·r₀; the uniform step
+  `2‖w‖ ≤ ‖v‖ ≤ (k+1)r₀ ∧ r₀ ≤ ‖w‖ ⟹ ‖w‖ ≤ k·r₀` avoids any case split (nlinarith).
+- `no_nonzero_of_no_primitive_in_ball` — contrapositive bridge form Hlawka needs.
+- `exists_count_zero_of_integral_lt_one` — ℕ-valued RV with mean < 1 vanishes
+  somewhere (integral_mono against const 1; new Mathlib `integral_const` produces
+  `μ.real univ • 1` — close with plain `simp at hint1`, not `rw [measure_univ]`).
+
+**Staged (explicit hypotheses, NOT axioms):**
+- `hlawka_avoidance`: family latticeOf : Ω → AddSubgroup (EuclideanSpace ℝ (Fin n))
+  over a probability space + hMV (primitive mean-value = vol/ζ(n)) + hInt + hFin ⟹
+  vol S < ζ(n) → some lattice has NO primitive vector in S.
+- `hlawka_ball`: + uniform discreteness fields ⟹ min-distance ≥ r conclusion.
+- `hFin` is forced by the `Set.ncard` junk value (infinite set ↦ 0); an honest model
+  must supply finiteness. Next rung: prove hFin from discreteness + boundedness
+  (r₀-separated subset of a bounded set is finite — genuine Mathlib exercise).
+
+**Deliberately NOT staged**: the ±-pairing refinement (threshold 2ζ(n), density
+ζ(n)/2^{n-1}) — the unpaired primitive identity with threshold ζ(n) matches the
+problem.md pinned statement; pairing is a separate arithmetic layer.
+
+**Verification**: typechecked host-side via sibling worktree toolchain
+(researcher-1/proofs, `./bin/lake env lean` on absolute path — works for
+Mathlib-only files); Docker module build green.
+
+**Ops incident**: the researcher-3 worktree was janitor-reaped MID-SESSION (disk was
+fine, 3.3Ti free); recreated via `worktree add -B research/minkowski-oq06-hlawka-skeleton`
++ restored the file from /tmp backup. Commit+push immediately after any file creation.
+
+### Frontier
+- Finiteness rung: `(S ∩ Primitives).Finite` from uniform discreteness + bounded S.
+- Pairing rung: symmetric S ⟹ primitive count is even (±-pairs), threshold 2ζ(n).
+- Density rung: min-distance ≥ r ⟹ packing of radius-r/2 balls (needs a packing-
+  density formalization — assess before attempting).
+- The mean-value identity itself: SL_n(ℤ)\SL_n(ℝ) Haar theory — DEEP, blocked
+  (registry entry unchanged).
