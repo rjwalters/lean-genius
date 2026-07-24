@@ -100,6 +100,14 @@
       "summary": "birthday_kfold_threshold_k3: the general theorem specializes to the parent's (6d²ln2)^(1/3) two-sided bound, confirming the generalization is faithful",
       "startLine": 144,
       "endLine": 170
+    },
+    {
+      "id": "summary-and-axioms",
+      "title": "Summary and Axiom Verification",
+      "summary": "Closing docstring recapping all six results and the falling-factorial-sandwich mechanism, followed by #print axioms on birthday_kfold_threshold and birthday_kfold_threshold_gap. The audit reports only propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx), substantiating the entry's 0-axiom / 0-sorry claim.",
+      "startLine": 172,
+      "endLine": 195,
+      "mathContext": "Generalizes the parent's cube-root sandwich to the falling-factorial sandwich $(n-(k-1))^k \\le \\prod_{i<k}(n-i) \\le n^k$, giving $n = (k!\\,d^{k-1}\\ln 2)^{1/k} + O(1)$ with error at most $k-1$; $\\texttt{\\#print axioms}$ reports only propext / Classical.choice / Quot.sound."
     }
   ],
   "conclusion": {
