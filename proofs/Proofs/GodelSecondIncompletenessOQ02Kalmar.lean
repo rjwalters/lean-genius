@@ -126,7 +126,7 @@ theorem PDeriv.weaken {Γ Γ' : List GLFormula} {φ : GLFormula}
   induction h with
   | hyp h => exact .hyp (hsub _ h)
   | thm h => exact .thm h
-  | mp _ _ ih₁ ih₂ => exact .mp (ih₁ hsub) (ih₂ hsub)
+  | mp _ _ ih₁ ih₂ => exact .mp ih₁ ih₂
 
 /-- **The deduction theorem** for the propositional layer: from `Γ, χ ⊢ φ`
 conclude `Γ ⊢ χ → φ`.  Induction on the derivation, using only k1/k2. -/
@@ -241,8 +241,7 @@ theorem kalmar_main (v : PropAtom → Bool) {φ : GLFormula} :
   | atom p =>
       intro _ Γ hΓ
       have hmem : litAtom v p ∈ Γ := hΓ p (by simp [atoms])
-      have heq : lit v (.atom p) = litAtom v p := by
-        simp only [lit, litAtom, eval]
+      have heq : lit v (.atom p) = litAtom v p := rfl
       rw [heq]
       exact .hyp hmem
   | falsum =>
