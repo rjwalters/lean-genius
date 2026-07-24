@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-24): FIRST EXACT VALUE — fThreshold 1 3 = 2, machine-checked (upper: K3 with 3-pair budget; lower: disjoint pair-slot counting shows budget 2 excludes K3, explicit 2-colorings for the rest). Also formalized the parent's prose-only refutation of its removed f_trivial_lower axiom: fThreshold 1 4 <= 2 < 3 = n-1 via K3+isolated vertex. File 249->509 lines, 13->21 theorems, still 0 axioms/sorries. Parent-level OQ (Rodl for r>=3) untouched — research-level.",
+    "progressSummary": "PROGRESS: well-definedness complete; TWO exact values fThreshold 1 3 = fThreshold 1 4 = 2 (constancy machine-checked); f_trivial_lower refuted in Lean; reusable disjoint pair-slot counting helpers. Next: (1,5) via near-pairings or (2,4); parent Rodl OQ research-level.",
     "builtItems": [
       "fThresholdSet_zero_mem (Erdos1092OQ02.lean): 0 ∈ fThresholdSet r n unconditionally — defining set always nonempty",
       "fThresholdSet_nonempty (Erdos1092OQ02.lean): (fThresholdSet r n).Nonempty",
@@ -38,7 +38,8 @@
       "killAll3/killAll4 + three_notMem_fThresholdSet_one_three/one_four in Erdos1092OQ02.lean",
       "two_mem_fThresholdSet_one_three (budget 2 forces 2-colorability on 3 vertices; disjoint-slot counting + 3 explicit colorings)",
       "fThreshold_one_three : fThreshold 1 3 = 2 (first exact value)",
-      "trianglePlusIsolated + fThreshold_one_four_le_two + trivial_lower_bound_false (parent prose refutation machine-checked)"
+      "trianglePlusIsolated + fThreshold_one_four_le_two + trivial_lower_bound_false (parent prose refutation machine-checked)",
+      "Erdos1092OQ02.lean 509->750 lines: slot_nonempty, three_slots_le_card (generic), two_mem_fThresholdSet_one_four (three-pairings case tree), two_le_fThreshold_one_four, fThreshold_one_four = 2, fThreshold_constant_three_four; 0 axioms 0 sorries docker-verified"
     ],
     "insights": [
       "fThreshold has TWO degeneracies: upper r+1≥n (set=ℕ, all graphs (r+1)-colorable) and lower r=0 (set=ℕ, no 0-coloring on n≥1 vertices). Non-degenerate regime is 1≤r ∧ r+2≤n.",
@@ -48,7 +49,10 @@
       "fThreshold 1 3 = 2 EXACTLY: (r,n)=(1,3) is the smallest non-degenerate point (1<=r, r+2<=n), and the threshold there is 2 — first exact value ever computed for this problem family",
       "Lower-bound mechanism: each removed ordered pair kills at most one undirected edge; formalized by intersecting removed with the three DISJOINT pair-slots {(u,v),(v,u)} of K3 — three nonempty disjoint intersections force card >= 3, beating budget 2 uniformly (no 8-way rcases)",
       "Upper-bound mechanism at (1,4): trianglePlusIsolated (K3 + isolated vertex) satisfies the budget-3 hypothesis but pigeonholes three colors into Fin 2 — the parent's removed f_trivial_lower axiom (n-1 <= fThreshold r n) is now REFUTED in Lean, not just prose",
-      "decide + open scoped Classical gotcha: decide fails on implications (forall_prop_decidable picks Classical.propDecidable) but still works on concrete Finset memberships; structure fin_cases branches as first | exact huv rfl | exact hnuv (by decide) | ..."
+      "decide + open scoped Classical gotcha: decide fails on implications (forall_prop_decidable picks Classical.propDecidable) but still works on concrete Finset memberships; structure fin_cases branches as first | exact huv rfl | exact hnuv (by decide) | ...",
+      "Second exact value: fThreshold 1 4 = 2 — and the threshold is CONSTANT from n=3 to n=4 (fThreshold_constant_three_four), further refuting n-1-style growth beyond the removed f_trivial_lower axiom.",
+      "Perfect-pairing recipe (even n): a perfect pairing of vertices 2-colors G unless an intra-pair edge is present; each edge kills exactly ONE pairing; killing all pairings costs as many distinct edges as pairings. For Fin 4: 3 pairings vs budget 2 => some pairing survives. Generic helpers slot_nonempty + three_slots_le_card (disjoint pair-slot counting) now factored for reuse.",
+      "For odd n (next rung (1,5)): no perfect pairings — need near-pairings (2+2+1) or a different obstruction; compute small models before formalizing. (2,4) is the other natural rung (r=2, K4 obstruction)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
