@@ -573,7 +573,7 @@ theorem legendreSym_neg_one_eq_pow (q : ℕ) [hq : Fact q.Prime] (hq2 : q ≠ 2)
     rcases Nat.even_or_odd ((q - 1) / 2) with h | h
     · exact Or.inl h.neg_one_pow
     · exact Or.inr h.neg_one_pow
-  exact int_pm_one_cast_inj hq2 (legendreSym.eq_one_or_neg_one hne) hpow hcast
+  exact int_pm_one_cast_inj hq2 (legendreSym.eq_one_or_neg_one (p := q) hne) hpow hcast
 
 /-- **Quadratic reciprocity, classical product form** — derived from the
 `q*` form by parity bookkeeping, independent of Mathlib's
