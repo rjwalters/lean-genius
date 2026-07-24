@@ -160,9 +160,17 @@
       "id": "match",
       "title": "The Closed Form Matches the Orbit Counts, n = 3..6",
       "startLine": 130,
-      "endLine": 183,
-      "summary": "braceletClosed evaluates to 4, 6, 8, 13 by kernel decide and equals the genuine orbit count Fintype.card (orbitRel.Quotient (DihedralGroup n) (Coloring n)) for each n = 3,4,5,6; the formula then predicts b(7)=18, b(8)=30, b(9)=46, b(10)=78 by arithmetic alone.",
-      "mathContext": "$\\mathrm{braceletClosed}(n) = |\\,\\mathrm{Coloring}(n)/D_n\\,|\\ (n \\le 6);\\quad b(7,8,9,10) = 18, 30, 46, 78.$"
+      "endLine": 165,
+      "summary": "braceletClosed evaluates to 4, 6, 8, 13 by kernel decide and equals the genuine orbit count Fintype.card (orbitRel.Quotient (DihedralGroup n) (Coloring n)) for each n = 3,4,5,6 (b(3), b(4) freshly proved above; b(5), b(6) imported from the grandparent) — pinning the formula to Lean-checked ground truth rather than an OEIS lookup.",
+      "mathContext": "$\\mathrm{braceletClosed}(n) = |\\,\\mathrm{Coloring}(n)/D_n\\,|\\quad\\text{for } n = 3,4,5,6.$"
+    },
+    {
+      "id": "predictions",
+      "title": "Onward Predictions Beyond the Computational Ceiling, n = 7..10",
+      "startLine": 167,
+      "endLine": 181,
+      "summary": "The closed form now predicts b(7)=18, b(8)=30, b(9)=46, b(10)=78 (A000029(7..10)) by pure arithmetic on braceletClosed, with no orbit quotient built or enumerated — precisely the lengths where decide on the quotient (the parents' method) becomes computationally infeasible.",
+      "mathContext": "$b(7,8,9,10) = 18,\\,30,\\,46,\\,78$ from $\\mathrm{braceletClosed}(n)$ alone, no orbit quotient enumerated."
     }
   ],
   "conclusion": {
