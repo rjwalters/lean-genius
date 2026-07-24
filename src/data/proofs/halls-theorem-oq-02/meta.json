@@ -91,7 +91,8 @@
       "Balance + finiteness turns an injection into a bijection: φ injects p₁ into p₂, and equal finite cardinalities force surjectivity, which is precisely what saturates the second side",
       "The global Hall condition in Mathlib's perfect-matching theorem hides two separate hypotheses — balance and covering — that are cleaner to state explicitly; doing so recovers the familiar one-sided criterion",
       "No new hard analysis is needed: the entire strengthening rides on the parent's hall_marriage plus elementary ncard bookkeeping, illustrating how the necessity direction (the parent's contribution) interacts with cardinality to give saturation of the opposite side",
-      "Separating the matching (verts ⊇ p₁ ∪ p₂) from the covering (p₁ ∪ p₂ = univ) makes the perfect-matching corollary a one-line consequence via Subgraph.isSpanning_iff"
+      "Separating the matching (verts ⊇ p₁ ∪ p₂) from the covering (p₁ ∪ p₂ = univ) makes the perfect-matching corollary a one-line consequence via Subgraph.isSpanning_iff",
+      "Only p₂ is required to be finite, not p₁: the argument works even if p₁ is infinite, because Set.ncard returns the junk value 0 on infinite sets, so Set.ncard_image_of_injOn and the balance hypothesis hold vacuously in that degenerate case and hfin₂ alone suffices to promote the equal-cardinality image inclusion to set equality via Set.eq_of_subset_of_ncard_le."
     ],
     "prerequisites": [
       "Bipartite graphs and matchings (SimpleGraph.Subgraph)",
