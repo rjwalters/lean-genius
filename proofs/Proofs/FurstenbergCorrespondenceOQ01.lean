@@ -768,29 +768,43 @@ theorem limit_invariant_on_cylinder
     (hdef : ∀ k, (μs k : Measure CantorSpace) = cesaroMeasure x (Ns k + 1))
     (S : Set CantorSpace) (hS : MeasurableSet S) (hSclopen : IsClopen S) :
     (μ : Measure CantorSpace) (shift ⁻¹' S) = (μ : Measure CantorSpace) S := by
-  -- Proof structure (drafted session 5, BLOCKED on file-wide Mathlib API drift):
-  --
-  -- set ν := (μ : Measure CantorSpace)
-  -- set νs := fun k => ((μs k) : Measure CantorSpace)
-  -- Step 1 (ENNReal Portmanteau, both directions):
-  --   ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv
-  --     (frontier = ∅ since clopen, so measure of frontier = 0)
-  --   gives μ_k(S) → μ(S) and μ_k(shift⁻¹S) → μ(shift⁻¹S) in ℝ≥0∞.
-  -- Step 2 (error term → 0):
-  --   ENNReal.tendsto_nat_nhds_top.comp (Ns k + 1 → ∞) ⟹ (Ns k + 1 : ℝ≥0∞) → ⊤
-  --   then ENNReal.continuous_inv at ⊤ gives 0, so (Ns k + 1)⁻¹ → 0.
-  -- Step 3 (algebra at limit, both directions):
-  --   ENNReal.Tendsto.add htend_S herr_zero (Or.inl (measure_ne_top μ S))
-  --   gives μ_k S + (Ns k + 1)⁻¹ → ν S + 0 = ν S.
-  --   Then le_of_tendsto_of_tendsto' applied to:
-  --     hbound: νs k (shift⁻¹S) ≤ νs k S + (Ns k + 1)⁻¹  (cesaroMeasure_preimage_le)
-  --   gives ν (shift⁻¹S) ≤ ν S. Symmetric direction via cesaroMeasure_preimage_ge.
-  -- Step 4: le_antisymm.
-  --
-  -- Cannot fill in this proof until the surrounding file's 35 Mathlib API drift
-  -- errors are repaired (see research/problems/szemeredi-full-oq-01/knowledge.md
-  -- session 5). Adding ~60 unvalidated lines here would mask the real blocker.
-  sorry
+  -- Step 1 (ENNReal Portmanteau, both directions): clopen sets have empty
+  -- frontier, hence null frontier, so weak convergence gives convergence of
+  -- measures on S and on shift⁻¹' S.
+  have hS_frontier : (μ : Measure CantorSpace) (frontier S) = 0 := by
+    simp [hSclopen.frontier_eq]
+  have hshiftS_clopen : IsClopen (shift ⁻¹' S) := isClopen_shift_preimage hSclopen
+  have hshiftS_frontier : (μ : Measure CantorSpace) (frontier (shift ⁻¹' S)) = 0 := by
+    simp [hshiftS_clopen.frontier_eq]
+  have htend_S :=
+    ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv hS_frontier
+  have htend_shiftS :=
+    ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv hshiftS_frontier
+  -- Step 2 (error term → 0): (Ns k + 1 : ℝ≥0∞)⁻¹ → 0 since Ns k + 1 → ∞.
+  have hinv_tend : Filter.Tendsto (fun k => (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+      Filter.atTop (nhds 0) :=
+    ENNReal.tendsto_inv_nat_nhds_zero.comp ((Filter.tendsto_add_atTop_nat 1).comp hNs)
+  -- Step 3 (≤ direction): pass cesaroMeasure_preimage_le to the limit.
+  have hle : (μ : Measure CantorSpace) (shift ⁻¹' S) ≤ (μ : Measure CantorSpace) S := by
+    have hsum : Filter.Tendsto
+        (fun k => (μs k : Measure CantorSpace) S + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+        Filter.atTop (nhds ((μ : Measure CantorSpace) S + 0)) := htend_S.add hinv_tend
+    rw [add_zero] at hsum
+    refine le_of_tendsto_of_tendsto' htend_shiftS hsum fun k => ?_
+    rw [hdef k]
+    exact cesaroMeasure_preimage_le x (Ns k) S hS
+  -- Step 3' (≥ direction): symmetric, via cesaroMeasure_preimage_ge.
+  have hge : (μ : Measure CantorSpace) S ≤ (μ : Measure CantorSpace) (shift ⁻¹' S) := by
+    have hsum : Filter.Tendsto
+        (fun k => (μs k : Measure CantorSpace) (shift ⁻¹' S) + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+        Filter.atTop (nhds ((μ : Measure CantorSpace) (shift ⁻¹' S) + 0)) :=
+      htend_shiftS.add hinv_tend
+    rw [add_zero] at hsum
+    refine le_of_tendsto_of_tendsto' htend_S hsum fun k => ?_
+    rw [hdef k]
+    exact cesaroMeasure_preimage_ge x (Ns k) S hS
+  -- Step 4: antisymmetry.
+  exact le_antisymm hle hge
 
 end ShiftInvariance
 
@@ -889,12 +903,13 @@ We now have all the components to prove the Furstenberg correspondence principle
 - `seqCompact_probabilityMeasure_cantor`: Prokhorov compactness (Part IX, axiom)
 - `density_preserved_at_limit`: μ(B₀) ≥ δ at limit (Part X, proved)
 - `cesaroMeasure_preimage_le/ge`: approximate T-invariance (Part VIII-b, proved)
+- `limit_invariant_on_cylinder`: exact T-invariance at the limit on clopen
+  sets (Part XII, proved 2026-07-23 — Portmanteau null-frontier + vanishing
+  1/(N+1) error + le_of_tendsto_of_tendsto')
 - `positive_measure_gives_ap`: positive measure → AP (Part XIII, proved)
 
-**Remaining sorry** (1):
-- `limit_shift_invariant_on_cylinder` → full T-invariance (Part XII)
-  Mathematically clear: telescoping + Portmanteau + π-λ theorem.
-  Requires assembling Portmanteau limit algebra in ENNReal.
+**Remaining sorries**: 0. The sole remaining assumption is the Prokhorov
+axiom `seqCompact_probabilityMeasure_cantor` (Part IX).
 
 **Architecture**: We construct the `Furstenberg.System` directly on Cantor space:
 - X = CantorSpace, T = shift, B = cylinderZero
@@ -931,14 +946,15 @@ We now have all the components to prove the Furstenberg correspondence principle
 | `cesaro_positive_implies_orbit_member` | ✅ Proved | 4 |
 | `positive_measure_gives_ap` | ✅ Proved | 4 |
 | `correspondenceSystem` (System constructor) | ✅ Defined | 4 |
-| `limit_shift_invariant_on_cylinder` | ❌ Sorry | 4 |
+| `limit_invariant_on_cylinder` | ✅ Proved | S13 (2026-07-23) |
 
 **Net result**: The `furstenberg_correspondence` axiom in FurstenbergCorrespondence.lean
 reduces to:
   1. `seqCompact_probabilityMeasure_cantor` (Prokhorov axiom, standard analysis)
-  2. One sorry for T-invariance limit algebra (ENNReal Portmanteau → Measure equality)
 
-Both are standard analysis facts, not deep mathematics.
+The T-invariance limit algebra (formerly a sorry) is now proved
+(`limit_invariant_on_cylinder`, Part XII). The Prokhorov axiom is a
+standard analysis fact, not deep mathematics.
 The combinatorial-dynamical bridge (Parts III-V, XIII) is fully proved.
 -/
 

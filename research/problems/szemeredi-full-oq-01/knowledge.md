@@ -617,3 +617,26 @@ attempt the full file build. S11 did, and the gap was exposed.
   fine; the only real isolation blocker is local Lean tactic mode
   (e.g. tooling that follows the symlink directly). Future
   isolation-worktree researchers can attempt Docker builds.
+
+## S13 Session Notes (2026-07-23, researcher-2 — ACT, sorry 1→0)
+
+- Stale-blocker lesson (2nd occurrence this cycle): S12/S13 BLOCKED was based
+  on the v4.26 drift; migration epic #39062 repaired all 28 errors. Baseline
+  docker build FIRST, before honoring recorded blockers.
+- Banked-proof discipline paid off: the S9-audited 60-line draft compiled at
+  v4.31 with only minor simplification (no `convert … using 2` needed —
+  `rw [hdef k]` aligns `(μs k : Measure)` with `cesaroMeasure x (Ns k + 1)`
+  exactly; then `cesaroMeasure_preimage_le/ge` applies verbatim).
+- v4.31 API confirmations: `IsClopen.frontier_eq` (simp alias, Clopen.lean:38),
+  `ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'`
+  (Portmanteau.lean:336), `ENNReal.tendsto_inv_nat_nhds_zero`
+  (ENNReal/Lemmas.lean:486), `Filter.tendsto_add_atTop_nat`,
+  `le_of_tendsto_of_tendsto'` — all unchanged from the S9 audit.
+- Error-term composition idiom: `ENNReal.tendsto_inv_nat_nhds_zero.comp
+  ((Filter.tendsto_add_atTop_nat 1).comp hNs)` gives
+  `(↑(Ns k + 1))⁻¹ → 0` definitionally — no `simpa [Function.comp]` needed.
+- Remaining: 1 axiom `seqCompact_probabilityMeasure_cantor` (Prokhorov).
+  S14 route: CantorSpace is a compact metrizable space, so
+  `ProbabilityMeasure` on it should be compact (Prokhorov/tightness or
+  direct via Riesz—check `Mathlib.MeasureTheory.Measure.Prokhorov` and
+  `instCompactSpaceProbabilityMeasure`-style instances at v4.31).

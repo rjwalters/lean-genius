@@ -328,8 +328,8 @@
       "endLine": 781
     },
     "type": "concept",
-    "title": "Wrapping as ProbabilityMeasure and Exact Limit Invariance (1 sorry)",
-    "content": "Packages the Cesàro measures as `ProbabilityMeasure CantorSpace` (`cesaroProbabilityMeasure`) so Prokhorov and Portmanteau apply, and works toward exact T-invariance of the limit on cylinders (`limit_invariant_on_cylinder`). The latter is the file’s sole `sorry`: the intended proof combines the $O(1/N)$ approximate invariance with the ENNReal Portmanteau limit algebra and `le_antisymm`, but is deliberately left open pending repair of surrounding Mathlib-API drift — the author notes that filling ~60 unvalidated lines would mask the real blocker. The `sorry` is disclosed honestly rather than papered over.",
+    "title": "Wrapping as ProbabilityMeasure and Exact Limit Invariance (proved)",
+    "content": "Packages the Cesàro measures as `ProbabilityMeasure CantorSpace` (`cesaroProbabilityMeasure`) so Prokhorov and Portmanteau apply, and proves exact T-invariance of the limit on clopen sets (`limit_invariant_on_cylinder`) — formerly the file's sole `sorry`, filled 2026-07-23 once the surrounding Mathlib-API drift was repaired. The proof follows the long-banked plan: clopen sets have empty frontier (`IsClopen.frontier_eq`), so the null-frontier Portmanteau criterion (`ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'`) upgrades weak-* convergence to convergence of measures on both S and shift⁻¹S; the approximate T-invariance bounds `cesaroMeasure_preimage_le/ge` hold at each stage with error 1/(N+1), which tends to 0 in ℝ≥0∞ (`ENNReal.tendsto_inv_nat_nhds_zero`); `le_of_tendsto_of_tendsto'` passes both one-sided bounds to the limit, and `le_antisymm` closes.",
     "significance": "supporting",
     "relatedConcepts": "Goal: $\\mu(T^{-1}S) = \\mu(S)$ for clopen $S$, obtained from $|\\mu_k(T^{-1}S)-\\mu_k(S)|\\le 1/N_k\\to 0$ plus Portmanteau convergence. Currently a disclosed `sorry`.",
     "mathContext": [
@@ -378,7 +378,7 @@
     },
     "type": "concept",
     "title": "Assembling the Correspondence and Honest Status",
-    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The progress summary is candid: the combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved and axiom-free, and the whole correspondence reduces to just two standard analysis facts — the Prokhorov axiom and the one T-invariance `sorry` — neither of which is deep mathematics. This transparent accounting is the entry’s \"open question\" framing toward eliminating the correspondence axiom.",
+    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved and axiom-free, and with `limit_invariant_on_cylinder` now proved (2026-07-23) the whole correspondence reduces to a single standard analysis fact — the Prokhorov sequential-compactness axiom `seqCompact_probabilityMeasure_cantor` — which is not deep mathematics, just unassembled in Mathlib. This transparent accounting is the entry's open-question framing toward eliminating the correspondence axiom.",
     "significance": "supporting",
     "relatedConcepts": "Target: a measure-preserving system $(\\Omega, \\mu, T)$ with $\\mu(B_0)\\ge\\overline d(A)$, recovering multiple recurrence ⟹ Szemerédi. Remaining dependencies: Prokhorov (axiom) + one T-invariance sorry.",
     "mathContext": [

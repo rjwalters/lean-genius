@@ -2,7 +2,7 @@
   "slug": "szemeredi-full-oq-01",
   "title": "Szemerédi Theorem: Furstenberg Ergodic-Theoretic Proof Formalization",
   "phase": "BLOCKED",
-  "status": "blocked",
+  "status": "in-progress",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,14 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 12,
-    "focus": "S11 OBSERVE-BUILD-REGRESSION (researcher-5, this PR, 2026-06-09T17:55Z): Docker baseline build at HEAD 162265bae2c returns 'Build failed exit 1' at job 7743/7743 elaboration of Proofs.FurstenbergCorrespondenceOQ01. S10's 'ACT-ready' claim is falsified. Mathlib pin unchanged from S9/S10 (2df2f0150c v4.26.0); breakage is in the file itself. 28 hard errors + 45 warnings: 5 surface/parse cascade (expected token at L336/L434/L508/L532/L551), 12 type/instance synthesis (L101 IsClopen ctor, L139/L206/L211/L219/L220/L324/L431 etc., L669 Tendsto site), 9 tactic-level (L146/L153 split_ifs, L181/L222 unsolved goals, L214 ext, L246 function expected, L484 invalid notation, L485 omega, L507 calc), 1 Mathlib rename (L674 Filter.eventually_of_forall -> Filter.Eventually.of_forall), 1 cast (L329 mod_cast). S9's 5-lemma audit remains valid but was insufficient: lemma existence at proof-site does not imply file builds. Full inventory in sessions/2026-06-09-s11-observe-build-regression.md. S11 author did NOT attempt Lean edits; 60-line proof draft remains banked for S13 ACT (post-Mechanic repair). Docker symlink-blocker claim from S9/S10 is falsified: docker-build.sh works from isolation worktrees (recent #22680 'Docker-verified' PR + this S11 run both confirm). Real blocker is the file's own breakage.",
+    "iteration": 14,
+    "focus": "S13 ACT complete (2026-07-23): limit_invariant_on_cylinder PROVED (sorry 1->0). File builds clean at v4.31. Next: S14 ACT — discharge the Prokhorov axiom seqCompact_probabilityMeasure_cantor (~150-200 lines), then assemble the Furstenberg.System.",
     "blockers": [
-      "BUILD REGRESSION: Proofs.FurstenbergCorrespondenceOQ01 elaboration fails at HEAD 162265bae2c with 28 hard errors. Mechanic repair required before any Researcher ACT can proceed."
+      "RESOLVED (S13, 2026-07-23): the 28-error v4.26 build regression was repaired by the v4.31 toolchain migration (#39062); baseline and post-fill docker builds are clean."
     ],
-    "nextAction": "S13 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the S12 BLOCKED decision (state.md, researcher-1) was applied to the pool only and got reverted by a sync from this JSON, which still read status=in-progress/phase=OBSERVE — so claim-random kept re-serving the slug (6th+ landing on the same unrepaired surface) during the Docker blackout. Set status=blocked/phase=BLOCKED here so the block sticks across pool re-syncs, and re-set the pool. Build-regression confirmed unrepaired at HEAD: L674 still `Filter.eventually_of_forall` (renamed to Filter.Eventually.of_forall in v4.26.0), L101 IsClopen-ctor site present, no repair commit on FurstenbergCorrespondenceOQ01.lean since 2026-06-09, 3 sorries remain. This is Mechanic-domain Lean repair (28 hard errors), Docker-gated, NOT Researcher work — un-actionable under the blackout. Operator/Mechanic clears to available after repair. PRIOR S12 MECHANIC (Lean repair, isolation-worktree OK): (1) one-liner fixes first to test cascade collapse - L101 IsClopen ctor (likely needs IsClopen.mk or order swap) + L674 Filter.eventually_of_forall -> Filter.Eventually.of_forall rename; (2) re-build, watch 5 'expected token' parse cascades collapse; (3) address residual 12 instance synthesis failures one-by-one; (4) tactic-level (L146/L153 split_ifs - likely use simp only or by_cases; L214 ext - new lemma name; L485 omega - hypothesis context; L507 calc); (5) verify ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01 returns clean; (6) ship Mechanic PR. S13 ACT (Researcher, banked): once main HEAD compiles, paste 60-line limit_invariant_on_cylinder proof at L779 (S9-audited template in state.md S10 Next Action L178-219). Pool transition (advisory): BLOCKED until S12 ships; S11 author does not invoke the transition, recommends an operator do so.",
+    "nextAction": "S14 ACT: prove seqCompact_probabilityMeasure_cantor (sequential compactness of ProbabilityMeasure on CantorSpace) from Mathlib v4.31 Prokhorov/tightness ingredients (CantorSpace is compact metrizable, so every measure family is tight; check Mathlib.MeasureTheory.Measure.Prokhorov coverage). Then construct the Furstenberg.System and connect to FurstenbergCorrespondence.lean.",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "REGRESSION: S11 (2026-06-09) Docker baseline build at HEAD 162265bae2c FAILS with 28 hard errors in FurstenbergCorrespondenceOQ01.lean. Pin unchanged from S9/S10 (v4.26.0). S10's 'ACT-ready' narrative falsified. S9's 5-lemma audit remains valid but insufficient. Mechanic repair (S12) required before Researcher ACT (S13) can paste the banked 60-line limit_invariant_on_cylinder proof at L779.",
+    "progressSummary": "S13 ACT (2026-07-23, researcher-2): limit_invariant_on_cylinder PROVED — the banked S9-audited Portmanteau proof pasted and docker-verified at v4.31 (the S11 28-error regression was repaired by migration epic #39062; S12/S13 BLOCKED state was stale). FurstenbergCorrespondenceOQ01.lean now has 0 sorries, 1 axiom. The correspondence reduces entirely to the Prokhorov axiom seqCompact_probabilityMeasure_cantor — S14 target.",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -41,7 +41,8 @@
       "density_lower_bound: elementary half of Furstenberg correspondence, no compactness needed (OQ01.lean:404)",
       "seqCompact_probabilityMeasure_cantor: local axiom for Prokhorov sequential compactness (OQ01.lean:484)",
       "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker",
-      "PR #14878: 6 Mathlib API drift fixes in FurstenbergCorrespondenceOQ01.lean — restores buildability after 35-error cascade (Session 7, 2026-05-02)"
+      "PR #14878: 6 Mathlib API drift fixes in FurstenbergCorrespondenceOQ01.lean — restores buildability after 35-error cascade (Session 7, 2026-05-02)",
+      "limit_invariant_on_cylinder PROVED in Proofs/FurstenbergCorrespondenceOQ01.lean:762 (exact T-invariance of weak-* limit of Cesaro measures on clopen sets) — docker-verified 2026-07-23, sorry count 1->0"
     ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
@@ -60,7 +61,10 @@
       "Session 6 (2026-04-27, ~5h after Session 5): no Mathlib pin upgrade, no commit to FurstenbergCorrespondenceOQ01.lean. Re-claim via depth-first selector wastes researcher cycles when blocker is unchanged.",
       "Action: pool entry marked status='blocked' (claim-problem.sh:292 excludes both completed and blocked from claim-random selection) so other researchers stop re-discovering the same blocker. Operator must explicitly clear status to 'available' after Mathlib upgrade session.",
       "Mathlib API drift root causes (6 fixes): isOpen_eq_of_isOpen_singleton removed → (isOpen_discrete s).preimage; Finite.instCompactSpace removed → inferInstance; shift_iterate proof wrong without generalizing k (ih too weak); ring_nf left unsolved goals → congr 1; omega; split failed on if-then-else after simp → split_ifs; all 4 cascade to ~35 errors",
-      "shift_iterate original proof had a mathematical bug: induction on n without generalizing k means ih only covers position k, but succ case needs position k+1; proof worked in older Lean by accident (comp_def simp behavior changed)"
+      "shift_iterate original proof had a mathematical bug: induction on n without generalizing k means ih only covers position k, but succ case needs position k+1; proof worked in older Lean by accident (comp_def simp behavior changed)",
+      "S13 (2026-07-23): The S11/S12 build-regression block was stale — the v4.31 migration epic (#39062) repaired all 28 errors; baseline docker build passes at HEAD. Re-verify recorded blockers before honoring them.",
+      "The banked S9-audited Portmanteau proof compiled essentially as drafted at v4.31: IsClopen.frontier_eq + ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto (prime) + ENNReal.tendsto_inv_nat_nhds_zero.comp (tendsto_add_atTop_nat 1).comp hNs + le_of_tendsto_of_tendsto (prime) + le_antisymm. The convert-using-2 steps anticipated in the draft were unnecessary — rw [hdef k] closes the bound gap exactly.",
+      "File status after S13: 0 sorries, 1 axiom (seqCompact_probabilityMeasure_cantor). The full Furstenberg correspondence now reduces to Prokhorov sequential compactness alone."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -108,5 +112,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
     }
-  ]
+  ],
+  "lastUpdated": "2026-07-23"
 }

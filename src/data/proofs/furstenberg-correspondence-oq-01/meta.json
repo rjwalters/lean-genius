@@ -2,7 +2,7 @@
   "id": "furstenberg-correspondence-oq-01",
   "title": "Shift Dynamics on Cantor Space: Toward the Furstenberg Correspondence",
   "slug": "furstenberg-correspondence-oq-01",
-  "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems proved except shift-invariance of the limit measure (1 sorry: T-invariance of Cesàro limit on clopen sets). Also has 1 local axiom: sequential compactness of probability measures on Cantor space, pending full Prokhorov formalization in Mathlib.",
+  "description": "Builds the shift dynamical system on Cantor space {0,1}^ℕ — the infrastructure needed to formalize the Furstenberg correspondence principle. Proves the shift is continuous and measurable, cylinder sets are clopen and measurable, and the k-fold return property connecting dynamical intersections to combinatorial patterns. All theorems are now proved, including shift-invariance of the limit measure (limit_invariant_on_cylinder: T-invariance of the Cesàro limit on clopen sets, via the Portmanteau null-frontier criterion and the vanishing 1/(N+1) telescoping error). 1 local axiom remains: sequential compactness of probability measures on Cantor space, pending full Prokhorov formalization in Mathlib.",
   "meta": {
     "author": "Furstenberg (1977)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Furstenberg%27s_proof_of_the_infinitude_of_primes",
@@ -19,9 +19,9 @@
       "correspondence-principle"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 sorry: limit_shift_invariant_on_cylinder (T-invariance of Cesàro limit measure on clopen sets — mathematically clear via Portmanteau + telescoping, requires ENNReal limit algebra assembly). 1 local axiom: seqCompact_probabilityMeasure_cantor — every sequence of probability measures on Cantor space (ℕ → Bool) has a weak-* convergent subsequence (Prokhorov's theorem). Mathlib v4.26 has the ingredients but they are not yet assembled into this exact statement. All other theorems (shift continuity, cylinder sets, k-fold return property, orbit-density connection, Tychonoff compactness) are proved from Mathlib.",
+    "assumptions": "0 sorries (limit_invariant_on_cylinder proved 2026-07-23: clopen sets have empty frontier, so weak convergence gives measure convergence on S and shift⁻¹S by ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'; the approximate T-invariance bounds cesaroMeasure_preimage_le/ge pass to the limit as the 1/(N+1) error vanishes; le_antisymm closes). 1 local axiom: seqCompact_probabilityMeasure_cantor — every sequence of probability measures on Cantor space (ℕ → Bool) has a weak-* convergent subsequence (Prokhorov's theorem). Mathlib v4.31 has the ingredients but they are not yet assembled into this exact statement. All other theorems (shift continuity, cylinder sets, k-fold return property, orbit-density connection, Tychonoff compactness) are proved from Mathlib.",
     "dateAdded": "2026-03-30",
     "mathlibDependencies": [
       {
@@ -248,7 +248,7 @@
     "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
     "lineCount": 945,
     "axiomCount": 1,
-    "sorries": 1,
+    "sorries": 0,
     "definitionCount": 9,
     "theoremCount": 32
   },
@@ -286,5 +286,5 @@
       "venue": "Princeton University Press"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
