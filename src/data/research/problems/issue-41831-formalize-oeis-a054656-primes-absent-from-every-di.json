@@ -18,13 +18,7 @@
     "since": "2026-07-22T00:00:00Z",
     "iteration": 3,
     "focus": "COMPLETE: A054656_main fully proved, 0 sorries, 0 axioms (foundational only). Ramanujan R2 lemma from companion A054656TwoPrimesInterval.lean wired in (iteration 5).",
-    "blockers": [
-      {
-        "route": "exists_second_prime_in_Ioc — two primes in (x,2x] (Ramanujan R2 = 11)",
-        "reopenCriterion": "adapt the Erdos/Chebyshev binomial analysis of Mathlib's Bertrand proof to the two-prime version, or find any route to 'nextprime(nextprime x) <= 2x for x >= 11'",
-        "blockedAt": "2026-07-23"
-      }
-    ],
+    "blockers": [],
     "nextAction": "None — problem complete. Optional follow-ups: upstream the two-primes-in-(n,2n] theorem to Mathlib; report the Lean verification to OEIS (A054656 is still labeled conjectural upstream)."
   },
   "knowledge": {
@@ -37,7 +31,8 @@
       "eta/atom gotcha: `S.sum id` (Finset.sum S id) and `∑ x ∈ S, id x` (Finset.sum S (fun x => id x)) differ syntactically; `rw`/`omega` treat them as distinct atoms. Use a calc chain or `simpa` to bridge, and feed omega a single consistent atom.",
       "List-recursion Bool checkers (canSum) beat Finset.powerset decides by orders of magnitude in the kernel: 12 window-decides x 78 values x 2^10 leaves ran at DEFAULT heartbeats.",
       "Scaffolded sorry statements must be adversarially checked before proving: two of the four A054656 scaffolds were defective (one vacuous — contradictory hypotheses; one false — missing 23 <= m+p).",
-      "Wiring pattern for standalone-lemma companions: if the companion declares the lemma with the SAME fully-qualified name and signature as the parent's sorried placeholder, the wire-up is pure deletion — remove the placeholder and its call sites resolve to the import with no renaming. Deleting rather than renaming avoids a duplicate-declaration error."
+      "Wiring pattern for standalone-lemma companions: if the companion declares the lemma with the SAME fully-qualified name and signature as the parent's sorried placeholder, the wire-up is pure deletion — remove the placeholder and its call sites resolve to the import with no renaming. Deleting rather than renaming avoids a duplicate-declaration error.",
+      "Tracker-sync 2026-07-24 (researcher-1): PR #42845 MERGED 03:11Z — A054656_main is on main with foundational axioms only, meta verified/original. Cleared stale nextSteps (steps 1-3 were all completed in iterations 3-5) and the exists_second_prime_in_Ioc blocker (PROVED in A054656TwoPrimesInterval.lean, PR #42815). No Lean work remains on this node."
     ],
     "builtItems": [
       "proofs/Proofs/A054656DistinctPrimePartition.lean — new file, builds on Lean v4.31.0",
@@ -56,9 +51,7 @@
       "No packaged 'sum of distinct primes representability' API; the seed-block enumeration (≤2^9=512 subsets of the nine primes ≤23) and interval-extension engine must be built from Finset.powerset + decide."
     ],
     "nextSteps": [
-      "Build two_primes_in_Ioc_double: for q >= 11(?), (q,2q] contains >= 2 primes — via Nat.exists_prime_lt_and_le_two_mul applied at q and at (q + p1)/2-ish midpoint, or finite decide + Bertrand chaining; this is the sole Mathlib gap.",
-      "repr_of_ge_seven_ne: strong induction on m — for m > 90 take Bertrand prime q in (m/2, m], r = m - q < q; if q = p or r in {1,4,6} take the SECOND prime in (m/2, m] (needs the two-primes lemma); base m in [13,90] = seed_block, m in [2,12] finite cases with 23 <= m+p forcing p large.",
-      "A054656_main assembly from present_iff_residual_repr + not_repr_{1,4,6} + repr_of_ge_seven_ne."
+      "External follow-ups only: (a) upstream A054656.exists_two_primes_in_Ioc (two primes in (n,2n], n >= 6 — genuine Mathlib gap) to leanprover-community/mathlib4; (b) report the Lean verification to OEIS (A054656 entry still labeled conjectural); (c) stale stacked PR #42724 should be closed (supersession comment posted; close blocked non-interactive twice — needs operator or deployer)."
     ]
   },
   "references": [
