@@ -485,6 +485,114 @@ theorem non_norms_infinite :
       omega
 
 /-
+## Valuation rigidity at inert primes: v_p(N) ≡ 0 (mod 3) (Session 9)
+
+Session 8's criterion covers p-adic valuation 1 or 2 (p ∣ m, p³ ∤ m). The full local
+obstruction is stronger: at any anisotropic (inert) prime p, the p-adic valuation of a
+*nonzero norm value* is a **multiple of 3**. Proof: descent by strong induction on |N| —
+if p ∣ N then anisotropy forces p to divide all three coordinates, so N = p³·N' with N'
+again a norm value, and the valuation drops by exactly 3.
+
+This rules out every m with v_p(m) ∈ {1, 2, 4, 5, 7, 8, …} — e.g. 2401 = 7⁴, which the
+S8 criterion cannot touch (7³ ∣ 2401). Positive-spectrum instances N = 3 = N(1,1,0)
+and N = 5 = N(1,0,1) complete the two-sided picture for small primes:
+2 ✓, 3 ✓, 5 ✓, 7 ✗ (norm-bearing iff x³ ≡ 2 (mod p) is solvable, for p unramified).
+-/
+
+/-- **Valuation descent (auxiliary strong induction on |N|).** With the norm form
+    anisotropic mod a prime p, every nonzero value N(a,b,c) of absolute value n has
+    p-adic valuation divisible by 3: either p ∤ N (valuation 0), or p divides all three
+    coordinates, N = p³·N', and induction applies to |N'| < n. -/
+theorem three_dvd_factorization_cnorm_aux (p : ℕ) (hp : p.Prime)
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0) :
+    ∀ n : ℕ, ∀ a b c : ℤ, (cnorm a b c).natAbs = n → cnorm a b c ≠ 0 →
+      3 ∣ n.factorization p := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n IH =>
+    intro a b c hn h0
+    haveI : NeZero p := ⟨hp.ne_zero⟩
+    by_cases hdvd : (p : ℤ) ∣ cnorm a b c
+    · obtain ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩ :=
+        (dvd_cnorm_iff_of_anisotropic p haniso a b c).mp hdvd
+      have hfact : cnorm ((p : ℤ) * a') ((p : ℤ) * b') ((p : ℤ) * c')
+          = (p : ℤ) ^ 3 * cnorm a' b' c' := by
+        simp only [cnorm]; ring
+      have h0' : cnorm a' b' c' ≠ 0 := by
+        intro hz
+        rw [hfact, hz, mul_zero] at h0
+        exact h0 rfl
+      have hnabs : n = p ^ 3 * (cnorm a' b' c').natAbs := by
+        rw [← hn, hfact, Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_natCast]
+      have hlt : (cnorm a' b' c').natAbs < n := by
+        have hpos : 0 < (cnorm a' b' c').natAbs := Int.natAbs_pos.mpr h0'
+        have hp3 : 1 < p ^ 3 :=
+          lt_of_lt_of_le (by norm_num) (Nat.pow_le_pow_left hp.two_le 3)
+        calc (cnorm a' b' c').natAbs
+            = 1 * (cnorm a' b' c').natAbs := (one_mul _).symm
+          _ < p ^ 3 * (cnorm a' b' c').natAbs := Nat.mul_lt_mul_right hpos hp3
+          _ = n := hnabs.symm
+      have hIH := IH _ hlt a' b' c' rfl h0'
+      rw [hnabs, Nat.factorization_mul (pow_ne_zero 3 hp.ne_zero)
+        (Int.natAbs_ne_zero.mpr h0'), Finsupp.add_apply,
+        Nat.factorization_pow_self hp]
+      omega
+    · have hpn : ¬ p ∣ n := by
+        intro hpn
+        rw [← hn] at hpn
+        exact hdvd (Int.natCast_dvd.mpr hpn)
+      rw [Nat.factorization_eq_zero_of_not_dvd hpn]
+      exact dvd_zero 3
+
+/-- **Inert-prime valuation rigidity**: at any prime p where the norm form is
+    anisotropic, the p-adic valuation (`Nat.factorization` of the absolute value) of a
+    nonzero norm value is a multiple of 3. This is the full local obstruction at an
+    inert prime, of which S8's `cnorm_ne_of_anisotropic` is the v_p ∈ {1,2} shadow. -/
+theorem three_dvd_factorization_cnorm (p : ℕ) (hp : p.Prime)
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0)
+    (a b c : ℤ) (h0 : cnorm a b c ≠ 0) :
+    3 ∣ (cnorm a b c).natAbs.factorization p :=
+  three_dvd_factorization_cnorm_aux p hp haniso _ a b c rfl h0
+
+/-- **Valuation non-norm criterion**: if 3 ∤ v_p(m) at some anisotropic prime p, then
+    m is not a norm. Strictly stronger than the S8 criterion — it also excludes
+    valuations 4, 5, 7, 8, …. (m = 0 is impossible here: v_p(0) = 0 is divisible
+    by 3, so the hypothesis already forces m ≠ 0.) -/
+theorem cnorm_ne_of_factorization (p : ℕ) (hp : p.Prime)
+    (haniso : ∀ x y z : ZMod p,
+      x ^ 3 + 2 * y ^ 3 + 4 * z ^ 3 - 6 * x * y * z = 0 → x = 0 ∧ y = 0 ∧ z = 0)
+    (m : ℤ) (hv : ¬ 3 ∣ m.natAbs.factorization p)
+    (a b c : ℤ) : cnorm a b c ≠ m := by
+  intro h
+  have hm0 : m ≠ 0 := by
+    rintro rfl
+    simp at hv
+  subst h
+  exact hv (three_dvd_factorization_cnorm p hp haniso a b c hm0)
+
+/-- **2401 = 7⁴ is never a norm**: v₇(2401) = 4 ∉ 3ℤ. The first instance beyond the
+    reach of the S8 criterion (7³ ∣ 2401, so `cnorm_ne_of_anisotropic` does not apply). -/
+theorem cnorm_ne_2401 (a b c : ℤ) : cnorm a b c ≠ 2401 := by
+  refine cnorm_ne_of_factorization 7 (by norm_num) cnorm_anisotropic_mod7 2401 ?_ a b c
+  rw [show (2401 : ℤ).natAbs = 7 ^ 4 by rfl, Nat.factorization_pow_self (by norm_num)]
+  omega
+
+/-- **3 is a norm**: N(1,1,0) = 1 + 2 = 3, so N(ξ) = 3 has infinitely many integral
+    solutions (the unit orbit of 1 + ∛2). -/
+theorem norm_three_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 3}.Infinite :=
+  norm_eq_solutions_infinite 3 (by decide) (1, 1, 0) (by decide)
+
+/-- **5 is a norm**: N(1,0,1) = 1 + 4 = 5, the unit orbit of 1 + ∛4. The prime
+    spectrum so far: 2 ✓ (ramified), 3 ✓, 5 ✓ (split: x³ ≡ 2 solvable mod 5, e.g.
+    3³ = 27 ≡ 2), 7 ✗ (inert). -/
+theorem norm_five_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 5}.Infinite :=
+  norm_eq_solutions_infinite 5 (by decide) (1, 0, 1) (by decide)
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its
@@ -538,6 +646,15 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
    of non-norms is **infinite** (`non_norms_infinite`) — with S6, the value spectrum
    of N splits into two classes (attained infinitely often / never attained), both
    infinite.
+9. (NEW, S9) **Valuation rigidity at inert primes.** The full local obstruction: at
+   any anisotropic prime p, the p-adic valuation of a nonzero norm value is a multiple
+   of 3 (`three_dvd_factorization_cnorm`, strong-induction descent via
+   `three_dvd_factorization_cnorm_aux`), giving the valuation non-norm criterion
+   (`cnorm_ne_of_factorization`) which strictly extends S8 — first new instance
+   2401 = 7⁴ (`cnorm_ne_2401`), untouchable by the p³ ∤ m criterion. Positive
+   spectrum: 3 = N(1,1,0) and 5 = N(1,0,1) are norms with infinitely many solutions
+   (`norm_three_solutions_infinite`, `norm_five_solutions_infinite`); the prime story
+   so far is 2 ✓ 3 ✓ 5 ✓ 7 ✗, decided by solvability of x³ ≡ 2 (mod p).
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
