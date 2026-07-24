@@ -913,6 +913,137 @@ theorem levy_11 : ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ 11 = p + 2 * q 
   refine ⟨?_, Nat.prime_three, by ring⟩
   decide
 
+/-! ## S10: Quantitative Schnirelmann constant
+
+The S9 bridge extracts an *unspecified* basis order `h` from the existential
+`schnirelmann_basis_theorem` (via `exists_pow_deficiency_lt_half`, which only
+asserts that *some* power of the deficiency drops below `1/2`) and concludes
+with `k = 3h + 2`. This section makes the whole chain quantitative: from a
+numeric density lower bound `δ ≤ σ(G)` we compute the explicit exponent
+`ℓ(δ) = ⌊1/δ⌋ + 1`, the explicit basis order `2ℓ(δ)`, and the explicit
+prime-sum constant
+
+    `k(δ) = 3 · (2ℓ(δ)) + 2 = 6(⌊1/δ⌋ + 1) + 2`.
+
+The analytic replacement for the existential step is a Bernoulli estimate:
+`(1+δ)^ℓ ≥ 1 + ℓδ > 2` when `ℓ > 1/δ`, and `(1−δ)^ℓ (1+δ)^ℓ = (1−δ²)^ℓ ≤ 1`,
+so `(1−δ)^ℓ < 1/2`. Feeding this through the machine-checked iterated
+Schnirelmann inequality (`SchnirelmannTheorem.deficiency_sumsetPow_le`) and the
+covering reduction (`isAdditiveBasis_of_sumsetPow_density_ge_half`) gives the
+explicit basis order; the h-parameterized bridge core then produces `k(δ)`.
+This is exactly the classical bookkeeping by which Schnirelmann's argument
+turns a sieve constant into a numeric bound on the number of primes. -/
+
+/-- **Explicit deficiency decay** (Bernoulli step). For `0 < δ ≤ 1` the
+    `(⌊1/δ⌋ + 1)`-th power of the deficiency `1 − δ` is strictly below `1/2`:
+    with `ℓ = ⌊1/δ⌋ + 1 > 1/δ` we have `(1+δ)^ℓ ≥ 1 + ℓδ > 2` (Bernoulli) and
+    `(1−δ)^ℓ (1+δ)^ℓ = (1−δ²)^ℓ ≤ 1`, hence `(1−δ)^ℓ < 1/2`. This replaces the
+    existential `exists_pow_deficiency_lt_half` with an explicit exponent. -/
+lemma pow_deficiency_lt_half {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
+    (1 - δ) ^ (⌊1/δ⌋₊ + 1) < 1 / 2 := by
+  set ℓ : ℕ := ⌊1/δ⌋₊ + 1 with hℓdef
+  have hℓδ : 1 < (ℓ : ℝ) * δ := by
+    have h1 : (1 : ℝ)/δ < (ℓ : ℝ) := by
+      rw [hℓdef]; push_cast; exact Nat.lt_floor_add_one _
+    calc (1 : ℝ) = (1/δ) * δ := by field_simp
+      _ < (ℓ : ℝ) * δ := by exact mul_lt_mul_of_pos_right h1 hδ0
+  have hbern : 1 + (ℓ : ℝ) * δ ≤ (1 + δ) ^ ℓ :=
+    one_add_mul_le_pow (by linarith) ℓ
+  have h2 : (2 : ℝ) < (1 + δ) ^ ℓ := by linarith
+  have hprod : (1 - δ) ^ ℓ * (1 + δ) ^ ℓ ≤ 1 := by
+    rw [← mul_pow]
+    have heq : (1 - δ) * (1 + δ) = 1 - δ ^ 2 := by ring
+    rw [heq]
+    exact pow_le_one₀ (by nlinarith) (by nlinarith)
+  have hnn : (0 : ℝ) ≤ (1 - δ) ^ ℓ := pow_nonneg (by linarith) ℓ
+  by_contra hcon
+  push_neg at hcon
+  have : 1 < (1 - δ) ^ ℓ * (1 + δ) ^ ℓ := by nlinarith
+  linarith
+
+/-- **Explicit Schnirelmann basis order.** If `0 ∈ A` and the Schnirelmann
+    density of `A` is at least `δ > 0`, then `A` is an additive basis of the
+    *explicit* order `2(⌊1/δ⌋ + 1)`: the iterated Schnirelmann inequality
+    bounds the deficiency of the `ℓ`-fold sumset by `(1 − σA)^ℓ ≤ (1 − δ)^ℓ`,
+    which `pow_deficiency_lt_half` pushes below `1/2`, and the covering
+    reduction doubles the exponent. Quantitative refinement of
+    `schnirelmann_basis_theorem`. -/
+theorem schnirelmann_basis_explicit {A : Set ℕ} [DecidablePred (· ∈ A)]
+    {δ : ℝ} (hδ0 : 0 < δ) (hδA : δ ≤ schnirelmannDensity A) (hA0 : 0 ∈ A) :
+    IsAdditiveBasis A (2 * (⌊1/δ⌋₊ + 1)) := by
+  classical
+  set ℓ : ℕ := ⌊1/δ⌋₊ + 1 with hℓdef
+  have hσ1 : schnirelmannDensity A ≤ 1 := schnirelmannDensity_le_one
+  have hσ0 : (0 : ℝ) ≤ schnirelmannDensity A := schnirelmannDensity_nonneg
+  have hδ1 : δ ≤ 1 := hδA.trans hσ1
+  have hdef := SchnirelmannTheorem.deficiency_sumsetPow_le hA0 ℓ
+  have hmono : (1 - schnirelmannDensity A) ^ ℓ ≤ (1 - δ) ^ ℓ := by
+    gcongr
+    · linarith
+    · linarith
+  have hhalf : (1 - δ) ^ ℓ < 1 / 2 := pow_deficiency_lt_half hδ0 hδ1
+  have hdens : 1 / 2 ≤ schnirelmannDensity (SchnirelmannBasis.sumsetPow A ℓ) := by
+    linarith
+  exact fun n =>
+    SchnirelmannBasis.isAdditiveBasis_of_sumsetPow_density_ge_half hdens n
+
+/-- **Bridge core, h-parameterized.** A basis order `h` for the Schnirelmann
+    sumset `G` yields the explicit prime bound `3h + 2` for every `n ≥ 2`:
+    represent `n − 2` by `≤ h` elements of `G`, split into `r` ones and `≤ 2h`
+    primes, and absorb `2 + r ≤ 2 + h` into a multiset of 2s and 3s. This is
+    the S9 bridge argument with the constant made explicit in `h`. -/
+theorem boundedPrimeSums_of_basis {h : ℕ}
+    (hbasis : IsAdditiveBasis goldbachSumset h) :
+    ∀ n : ℕ, 2 ≤ n → ∃ T : Multiset ℕ,
+      (∀ p ∈ T, Nat.Prime p) ∧ T.card ≤ 3 * h + 2 ∧ T.sum = n := by
+  intro n hn
+  obtain ⟨S, hSmem, hScard, hSsum⟩ := hbasis (n - 2)
+  obtain ⟨r, T, hTp, hr, hTc, hdecomp⟩ := goldbachSumset_multiset_decomp S hSmem
+  obtain ⟨U, hUp, hUc, hUs⟩ := exists_two_three_multiset (2 + r) (by omega)
+  refine ⟨U + T, ?_, ?_, ?_⟩
+  · intro p hp
+    rcases Multiset.mem_add.mp hp with hp | hp
+    · exact hUp p hp
+    · exact hTp p hp
+  · simp only [Multiset.card_add]
+    omega
+  · simp only [Multiset.sum_add]
+    omega
+
+/-- **Quantitative Schnirelmann–Goldbach.** From a numeric lower bound
+    `δ ≤ σ(G)` on the density of the Schnirelmann sumset — the shape a
+    formalized sieve estimate would take — every integer `n ≥ 2` is a sum of at
+    most `6(⌊1/δ⌋ + 1) + 2` primes. The S9 bridge produced *some* `k`; this
+    computes it. -/
+theorem schnirelmann_goldbach_explicit {δ : ℝ} (hδ0 : 0 < δ)
+    (hδ : δ ≤ schnirelmannDensity goldbachSumset) :
+    ∀ n : ℕ, 2 ≤ n → ∃ T : Multiset ℕ,
+      (∀ p ∈ T, Nat.Prime p) ∧ T.card ≤ 6 * (⌊1/δ⌋₊ + 1) + 2 ∧ T.sum = n := by
+  have h0 : (0 : ℕ) ∈ goldbachSumset := mem_goldbachSumset.mpr (Or.inl rfl)
+  have hbasis := schnirelmann_basis_explicit hδ0 hδ h0
+  intro n hn
+  obtain ⟨T, hTp, hTc, hTs⟩ := boundedPrimeSums_of_basis hbasis n hn
+  exact ⟨T, hTp, by omega, hTs⟩
+
+/-- **Instantiation check.** If the Schnirelmann sumset had density at least
+    `1/100`, every `n ≥ 2` would be a sum of at most `608` primes:
+    `ℓ = ⌊100⌋ + 1 = 101`, basis order `202`, constant `3·202 + 2 = 608`.
+    (Purely an instantiation of `schnirelmann_goldbach_explicit` — no claim
+    about the true value of `σ(G)` is made; Schnirelmann's sieve estimate
+    remains unformalized.) This confirms the explicit constant genuinely
+    computes to a numeral. -/
+theorem sum_of_at_most_608_primes_of_density
+    (hδ : (1 : ℝ)/100 ≤ schnirelmannDensity goldbachSumset) :
+    ∀ n : ℕ, 2 ≤ n → ∃ T : Multiset ℕ,
+      (∀ p ∈ T, Nat.Prime p) ∧ T.card ≤ 608 ∧ T.sum = n := by
+  have h := schnirelmann_goldbach_explicit (by norm_num) hδ
+  have hfl : ⌊(1 : ℝ)/((1 : ℝ)/100)⌋₊ = 100 := by norm_num
+  intro n hn
+  obtain ⟨T, hTp, hTc, hTs⟩ := h n hn
+  refine ⟨T, hTp, ?_, hTs⟩
+  rw [hfl] at hTc
+  omega
+
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS
 -- ═════════════════════════════════════════════════════════════════════════
@@ -939,5 +1070,12 @@ theorem levy_11 : ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ 11 = p + 2 * q 
 #check binary_goldbach_verified_small
 #check LevyConjecture
 #check levy_implies_weak_goldbach
+
+-- S10: Quantitative Schnirelmann constant
+#check pow_deficiency_lt_half
+#check schnirelmann_basis_explicit
+#check boundedPrimeSums_of_basis
+#check schnirelmann_goldbach_explicit
+#check sum_of_at_most_608_primes_of_density
 
 end WeakGoldbach
