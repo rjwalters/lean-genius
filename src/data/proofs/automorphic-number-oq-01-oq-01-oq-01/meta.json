@@ -166,12 +166,20 @@
       "mathContext": "#{idempotents of ZMod n} = #{squarefree divisors of n} = 2^ω(n); the classical decimal '4' is the case ω(10^k)=2."
     },
     {
-      "id": "local-product-mechanism",
-      "title": "Part III: The product-of-local-rings mechanism (the open question)",
+      "id": "local-ring-lemma",
+      "title": "Part III: Local rings have only the trivial idempotents",
       "startLine": 174,
+      "endLine": 213,
+      "summary": "isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing: a local ring has only the idempotents 0 and 1. For idempotent e, e·(1−e)=0; IsLocalRing.isUnit_or_isUnit_one_sub_self makes one of e, 1−e a unit, and IsUnit.mul_right_eq_zero forces its partner to vanish (no NoZeroDivisors needed — a local ring like ZMod pᵏ can have zero divisors). idempotent_count_local packages this as a cardinality fact: the idempotent subtype is equivalent to the two-element set {0,1}, so Nat.card_coe_set_eq and Set.ncard_pair give exactly 2.",
+      "mathContext": "This is the single local fact every later count leans on: e·(1−e)=0 plus 'one of e, 1−e is a unit' pins e to {0,1}, with no assumption that R is a domain."
+    },
+    {
+      "id": "product-mechanism",
+      "title": "Part IV: The product-of-local-rings mechanism and transport (the open question)",
+      "startLine": 214,
       "endLine": 251,
-      "summary": "isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing: a local ring has only the idempotents 0 and 1 (via IsLocalRing.isUnit_or_isUnit_one_sub_self and e·(1−e)=0, using IsUnit.mul_right_eq_zero — no NoZeroDivisors, since a local ring like ZMod pᵏ has zero divisors). idempotent_count_local: the idempotent subtype is equivalent to the two-element set {0,1}, so Nat.card_coe_set_eq and Set.ncard_pair give 2. isIdempotentElem_pi_iff: idempotents of a product ring are exactly the coordinatewise idempotents. idempotent_count_pi_local: subtypeEquivRight and subtypePiEquivPi give {idempotents of ∏ Rᵢ} ≃ ∀ i, {idempotents of Rᵢ}, so Nat.card_pi turns the count into a product of 2 over the factors, i.e. 2^(card ι). idempotent_count_of_ringEquiv: transports the count across any ring isomorphism S ≃+* ∏ Rᵢ (idempotents correspond under a ring iso via map_mul and injectivity), the form applicable to ZMod n and 𝒪_K/𝔞 via CRT.",
-      "mathContext": "The count is 2^(number of local factors) because each local factor of the CRT decomposition contributes an independent binary idempotent choice."
+      "summary": "isIdempotentElem_pi_iff: idempotents of a product ring are exactly the coordinatewise idempotents. idempotent_count_pi_local: subtypeEquivRight and subtypePiEquivPi give {idempotents of ∏ Rᵢ} ≃ ∀ i, {idempotents of Rᵢ}, so Nat.card_pi turns the count into a product of 2 over the factors, i.e. 2^(card ι) — this is the theorem that directly answers the open question's generalization request. idempotent_count_of_ringEquiv transports the count across any ring isomorphism S ≃+* ∏ Rᵢ (idempotents correspond under a ring iso via map_mul and injectivity), the form applicable to ZMod n and 𝒪_K/𝔞 via CRT.",
+      "mathContext": "The count is 2^(number of local factors) because each local factor of the CRT decomposition contributes an independent binary idempotent choice, and that count is invariant under any ring isomorphism onto the product."
     }
   ],
   "overview": {
