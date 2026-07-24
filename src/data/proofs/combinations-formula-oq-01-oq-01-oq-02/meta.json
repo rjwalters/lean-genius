@@ -42,8 +42,7 @@
       "A single step parameter q (p = q+1) captures the whole p-bonacci family — powers of two, Fibonacci, Narayana's cows, and beyond — in one definition and one recurrence proof.",
       "Pascal's rule on the leading diagonal index n+q+1−q(j+1) splits each term into exactly the contributions of S q (n+q) (slope-preserving) and S q n (one full step down), which is precisely the recurrence a(m) = a(m−1) + a(m−p).",
       "The boundary case of natural-number subtraction is the only obstruction; isolating it in a termwise Pascal lemma (diag_pascal) and a range-extension lemma (pbonacci_extend) keeps the main argument purely linear (omega-dischargeable).",
-      "The recurrence plus the constant base segment S q n = 1 for n ≤ q together characterize the sequence, so no separate Lean definition of the p-bonacci numbers is needed — the diagonal sum is its own generating recurrence.",
-      "The same recurrence proof specializes without change to every step: q=0 degenerates the p-bonacci recurrence to S 0 (n+1) = 2·S 0 n, giving the powers of two ∑_j C(n,j) = 2^n, while q=2 gives Narayana's-cows sequence a(n) = a(n−1) + a(n−3) — so the file proves an entire linear-recurrence family at once, not just Fibonacci."
+      "The recurrence plus the constant base segment S q n = 1 for n ≤ q together characterize the sequence, so no separate Lean definition of the p-bonacci numbers is needed — the diagonal sum is its own generating recurrence."
     ],
     "prerequisites": [
       "Binomial coefficients Nat.choose and Pascal's rule Nat.choose_succ_succ",
