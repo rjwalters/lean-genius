@@ -1,8 +1,8 @@
 {
   "id": "erdos-929",
-  "title": "Smooth Numbers in Short Intervals",
+  "title": "Small Prime Factors in Consecutive Integers",
   "slug": "erdos-929",
-  "description": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
+  "description": "Let S(k) be the minimal x such that a positive density of n have each of n+1,...,n+k divisible by some prime ≤ x (i.e. each has a prime factor ≤ x — not full x-smoothness). Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/929",
@@ -11,7 +11,7 @@
     "tags": [
       "erdos",
       "number theory",
-      "smooth numbers",
+      "small prime factors",
       "sieve methods",
       "prime gaps"
     ],
@@ -28,16 +28,16 @@
     "definitionCount": 7
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1976, motivated by his longstanding interest in the distribution of smooth (or friable) numbers — integers whose prime factors are all bounded. The study of smooth numbers dates back to Ramanujan (1917) who first investigated their counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. The connection to consecutive integers goes deeper: Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having only small prime factors. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
-    "problemStatement": "Let $S(k)$ be the minimal $x$ such that the set $\\{n \\in \\mathbb{N} : n+1, \\ldots, n+k \\text{ are all } x\\text{-smooth}\\}$ has positive upper density. Is $S(k) \\geq k^{1-o(1)}$?",
-    "text": "Let S(k) be the minimal x such that a positive density of n have n+1,...,n+k all x-smooth. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
-    "proofStrategy": "We formalize the core definitions — $x$-smoothness, smooth blocks, upper density, and the threshold function $S(k)$ — then state the main conjecture and prove the trivial upper bound. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds (Rosser sieve lower bound, FGKMT upper bound) appear as docstring comments only — they are not axiomatized as Lean declarations.",
+    "historicalContext": "Erdős posed this problem in 1976, motivated by his interest in the multiplicative structure of consecutive integers. The property studied here is weaker than smoothness: each of the consecutive integers need only have *at least one* prime factor $\\leq x$ (i.e. be divisible by some prime $\\leq x$), not have *all* its prime factors bounded by $x$ (which would be $x$-smoothness — a much stronger condition whose density tends to $0$ for fixed $x$). The problem nonetheless sits near the classical theory of smooth (or friable) numbers: their study dates back to Ramanujan (1917), who first investigated the counting function, later made precise by Dickman (1930) through his function $\\rho(u)$ estimating $\\Psi(x, x^{1/u})/x$. Størmer (1897) had already studied consecutive smooth numbers, and Erdős and others explored how many consecutive integers can share the property of having a small prime factor. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large gaps between primes — settling a conjecture of Erdős on prime gap sizes — unexpectedly provided the best known upper bound on $S(k)$, connecting this problem to one of the central achievements in 21st-century analytic number theory.",
+    "problemStatement": "Let $S(k)$ be the minimal $x$ such that the set $\\{n \\in \\mathbb{N} : \\text{each of } n+1, \\ldots, n+k \\text{ has a prime factor } \\leq x\\}$ has positive upper density. Is $S(k) \\geq k^{1-o(1)}$? (Note: the condition is a *small prime factor*, not $x$-smoothness.)",
+    "text": "Let S(k) be the minimal x such that a positive density of n have each of n+1,...,n+k divisible by some prime ≤ x. Is S(k) ≥ k^{1−o(1)}? Known: k^{1/2−o(1)} ≤ S(k) ≤ k·(log³ k)/(log² k · log⁴ k) by Ford–Green–Konyagin–Maynard–Tao.",
+    "proofStrategy": "We formalize the core definitions — the small-prime-factor property ($\\min\\text{Fac}(n) \\leq x$), blocks of consecutive integers each having a prime factor $\\leq x$, upper density, and the threshold function $S(k)$ — then state the main conjecture and prove the trivial upper bound. The definition of $S(k)$ uses `Nat.find` with the trivial upper bound $S(k) \\leq k+1$ as existence witness. The known bounds (Rosser sieve lower bound, FGKMT upper bound) appear as docstring comments only — they are not axiomatized as Lean declarations.",
     "keyInsights": [
-      "The trivial bound $S(k) \\leq k+1$ uses the elegant observation that $n \\equiv -1 \\pmod{(k+1)!}$ forces each $n+i$ to be divisible by $i$, making all block elements $(k+1)$-smooth",
+      "The trivial bound $S(k) \\leq k+1$ uses the elegant observation that $n \\equiv -1 \\pmod{(k+1)!}$ forces each $n+i$ to be divisible by $i$, giving every block element a prime factor $\\leq k+1$",
       "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$ — the current gap between this and the conjectured $k^{1-o(1)}$ is enormous and represents a fundamental open problem in multiplicative number theory",
-      "The FGKMT upper bound $S(k) \\ll k \\cdot (\\log\\log\\log k)/(\\log\\log k \\cdot \\log\\log\\log\\log k)$ connects smooth numbers to prime gaps via the surprising fact that long prime-free intervals are rich in smooth numbers",
+      "The FGKMT upper bound $S(k) \\ll k \\cdot (\\log\\log\\log k)/(\\log\\log k \\cdot \\log\\log\\log\\log k)$ connects this problem to prime gaps: their construction of long prime-free intervals yields many consecutive integers each having a small prime factor",
       "The formalization uses Lean's filter theory to express asymptotic bounds cleanly — `∀ᶠ (k : ℕ) in atTop` captures \"for all sufficiently large $k$\" without specifying explicit constants",
-      "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of smooth block sets, a structural observation that constrains the growth of $S(k)$",
+      "The monotonicity $S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$ follows from set inclusion of the block sets, a structural observation that constrains the growth of $S(k)$",
       "An elementary bracket $3 \\leq S(k) \\leq k+1$ holds for all $k \\geq 2$ (proved axiom-free): antitonicity in $k$ lifts the $x \\leq 2$ density-zero argument from the exact value $S(2) = 3$ to a general lower bound `smoothThreshold_ge_three`, while the factorial construction gives the trivial upper bound — pinning down $S(k)$ exactly at the smallest scale before the sieve-theoretic bounds take over"
     ],
     "prerequisites": [
@@ -67,7 +67,7 @@
       "title": "Helper Lemmas",
       "startLine": 62,
       "endLine": 73,
-      "summary": "Proves `dvd_factorial_of_pos_le`: every positive $m \\leq n$ divides $n!$. Used in the smooth block existence proof to show factorial arithmetic progressions have the required smoothness.",
+      "summary": "Proves `dvd_factorial_of_pos_le`: every positive $m \\leq n$ divides $n!$. Used in the block-existence proof to show factorial arithmetic progressions give each block element a small prime factor.",
       "mathContext": "$0 < m \\leq n \\Rightarrow m \\mid n!$. Proof by induction on $n$."
     },
     {
@@ -92,7 +92,7 @@
       "startLine": 237,
       "endLine": 244,
       "summary": "Defines `Erdos929Conjecture`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty k,\\; S(k) \\geq k^{1-\\varepsilon}$.",
-      "mathContext": "The conjecture states $S(k) \\geq k^{1-o(1)}$, meaning the smoothness threshold grows nearly linearly."
+      "mathContext": "The conjecture states $S(k) \\geq k^{1-o(1)}$, meaning the small-prime-factor threshold $S(k)$ grows nearly linearly."
     },
     {
       "id": "bounds",
@@ -107,8 +107,8 @@
       "title": "Structural Observations and S(2) = 3",
       "startLine": 269,
       "endLine": 382,
-      "summary": "Proves `smoothBlockSet_antitone` and `smoothThreshold_mono` ($k_1 \\leq k_2 \\Rightarrow S(k_1) \\leq S(k_2)$). Then the substantial `smooth_threshold_2` proof ($S(2) = 3$, ~100 lines): shows $x \\leq 2$ gives density 0 (consecutive integers can't both have all prime factors $\\leq 2$ since one is odd $\\geq 3$), and $x = 3$ gives positive density (AP $n \\equiv 2 \\pmod{6}$). Includes helper proofs `smoothBlockSet_two_empty_of_le_one`, `smoothBlockSet_two_two_sub_zero`, and `upperDensity_singleton_zero`.",
-      "mathContext": "$S(2) = 3$: for $x = 3$, the AP $n \\equiv 2 \\pmod{6}$ gives $3 \\mid (n+1)$ and $2 \\mid (n+2)$, so $\\overline{d} \\geq 1/6 > 0$. For $x = 2$: consecutive integers can't both be 2-smooth (one is odd $\\geq 3$ with $\\min\\text{Fac} \\geq 3 > 2$)."
+      "summary": "Proves `smoothBlockSet_antitone` and `smoothThreshold_mono` ($k_1 \\leq k_2 \\Rightarrow S(k_1) \\leq S(k_2)$). Then the substantial `smooth_threshold_2` proof ($S(2) = 3$, ~100 lines): shows $x \\leq 2$ gives density 0 (consecutive integers can't both have a prime factor $\\leq 2$ — i.e. both be even — since one is odd $\\geq 3$), and $x = 3$ gives positive density (AP $n \\equiv 2 \\pmod{6}$). Includes helper proofs `smoothBlockSet_two_empty_of_le_one`, `smoothBlockSet_two_two_sub_zero`, and `upperDensity_singleton_zero`.",
+      "mathContext": "$S(2) = 3$: for $x = 3$, the AP $n \\equiv 2 \\pmod{6}$ gives $3 \\mid (n+1)$ and $2 \\mid (n+2)$, so $\\overline{d} \\geq 1/6 > 0$. For $x = 2$: consecutive integers can't both have a prime factor $\\leq 2$ (one is odd $\\geq 3$ with $\\min\\text{Fac} \\geq 3 > 2$)."
     },
     {
       "id": "general-lower-bound",
@@ -120,8 +120,8 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #929 on the smoothness threshold for consecutive integers. It builds a clean definitional framework (smooth numbers, smooth blocks, upper density, threshold function) and states the main conjecture alongside three tiers of bounds: the elementary trivial bound, the sieve-theoretic Rosser bound, and the deep FGKMT bound from prime gap theory.",
-    "implications": "**Theoretical Significance**: The problem sits at the intersection of multiplicative number theory (smooth number distribution), sieve theory (Rosser–Iwaniec bounds), and the recent revolution in prime gap research (Maynard–Tao methods).\n\nClosing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how smooth numbers cluster in short intervals. Progress on this problem could also impact computational number theory, where smooth number distribution is central to the complexity of integer factorization algorithms.",
+    "summary": "This formalization captures Erdős Problem #929 on the small-prime-factor threshold for consecutive integers — S(k) is the least x for which a positive density of n have each of n+1,…,n+k divisible by some prime ≤ x (not the stronger x-smoothness condition). It builds a clean definitional framework (the small-prime-factor property, blocks of consecutive integers, upper density, threshold function) and states the main conjecture alongside three tiers of bounds: the elementary trivial bound, the sieve-theoretic Rosser bound, and the deep FGKMT bound from prime gap theory.",
+    "implications": "**Theoretical Significance**: The problem sits at the intersection of multiplicative number theory (distribution of integers by their small prime factors), sieve theory (Rosser–Iwaniec bounds), and the recent revolution in prime gap research (Maynard–Tao methods).\n\nClosing the gap between the known lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ would likely require fundamentally new ideas about how integers with a small prime factor distribute across short blocks of consecutive integers. Progress on this problem could also impact computational number theory, where the distribution of numbers by their small prime factors is central to the complexity of integer factorization algorithms.",
     "openQuestions": [
       "Is the true order of $S(k)$ closer to $k$ (as Erdős conjectured) or to $k^{1/2}$ (the current lower bound)?",
       "Can the Rosser sieve lower bound $k^{1/2-o(1)}$ be improved, perhaps using the Maynard–Tao sieve or other modern techniques?",
