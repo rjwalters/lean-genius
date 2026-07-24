@@ -117,3 +117,48 @@ non-3-colorable graph is K₄, so a single obstruction governs the row entry.
 vertices (multiple embeddings — genuinely harder); (2,n) general row likely
 needs the "K₄ is the only obstruction ⟹ budget caps" story to break. Parent
 OQ (Rödl r ≥ 3) research-level — do not attempt.
+
+## Status (researcher-1, 2026-07-24, fifth session) — ACT: the table closes
+
+**`fThreshold` is completely determined on its good regime** (file 1177 → 1600
+lines, 0 axioms / 0 sorries, docker-verified, axioms
+`[propext, Classical.choice, Quot.sound]`):
+
+    fThreshold r n = if r = 1 then 2 else 1     (1 ≤ r, r + 2 ≤ n)
+
+(`fThreshold_determined`). The session landed in two stages:
+
+* **The `r = 2` row closed** (`fThreshold_two_eq_one`: `fThreshold 2 n = 1`
+  for all `n ≥ 4`; corollaries `fThreshold_two_five`,
+  `fThreshold_two_constant`, `fThreshold_two_lt_fThreshold_one`). The
+  anticipated "multiple K₄ embeddings on 5 vertices" analysis was never
+  needed: membership of budget 1 needs only `S = univ` — one removed pair
+  `p` leaves a 2-colorable graph, and recoloring the single vertex `p.1`
+  with a fresh third color repairs every hidden edge (each is incident to
+  `p.1`). No completeness dichotomy, no obstruction analysis; this subsumes
+  the (2,4) lower-bound proof. Upper bound: `k4Plus n` (K₄ + isolated,
+  the `trianglePlus` recipe one row down), 4-into-3 pigeonhole by `omega`.
+* **Every row `r ≥ 2` closed at once** (`fThreshold_eq_one`). The
+  third-color trick is uniform in `r` (`one_mem_fThresholdSet`:
+  `Fin.last r` for `p.1`, `(c ·).castSucc` elsewhere). Upper bound
+  (`two_notMem_fThresholdSet`): `cliquePlus (r+2) n` — shedding the
+  2-matching `{(v0,v1), (v2,v3)}` drops `K_{r+2}`'s chromatic number to
+  exactly `r` (merged pairs become 2-element color classes: `{0,1} ↦ 0`,
+  `{2,3} ↦ 1`, clique vertex `j ↦ j−2`, `min`-padded for isolated
+  vertices), uniformly in the induced `S`; non-`(r+1)`-colorability via
+  `Fintype.card_le_of_injective` (`Fin (r+2) ↪ Fin (r+1)` refuted). The
+  2-matching needs **four** clique vertices — exactly why `r = 1` sits at
+  threshold 2 (`K₃` has no 2-matching) and every `r ≥ 2` sits at 1.
+
+**Lean v4.31 gotchas**: `rw [if_pos h] at hcuv` fails on beta-unreduced
+`(fun w => …) u = …` hypotheses — `simp only [if_pos h, …] at hcuv`
+beta-reduces first. `congrArg Fin.val` on equations between `Fin.mk`s can
+elaborate against the wrong implicit pair — use `Fin.mk_eq_mk.mp`.
+`by_cases hv1` silently shadows an outer `obtain ⟨v1, hv1⟩` fact.
+
+**Remaining**: nothing computable — every row is constant, every value
+attained, the `r=1 → r=2` drop is the only jump. Parent OQ (Rödl's actual
+construction for `r ≥ 3`) remains research-level. A documentation note on
+the contrast with the true Erdős–Hajnal–Szemerédi `f_r(n)` growth (Rödl:
+`O(n·polylog n)`) — collapsed here by the per-induced-subgraph fresh-budget
+semantics — is a possible enrichment angle.
