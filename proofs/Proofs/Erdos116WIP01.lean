@@ -461,14 +461,22 @@ theorem eval_degree_zero (P : UnitDiskPoly 0) (z : ℂ) : P.eval z = 1 := by
 /-- Degree `0` is degenerate: the lemniscate `{z : |1| < 1}` is empty. -/
 theorem sublevelSet_degree_zero (P : UnitDiskPoly 0) : P.sublevelSet = ∅ := by
   ext z
-  simp [UnitDiskPoly.sublevelSet, eval_degree_zero]
+  simp only [Set.mem_empty_iff_false, iff_false]
+  intro hz
+  have h1 : ‖P.eval z‖ < 1 := hz
+  rw [eval_degree_zero, norm_one] at h1
+  exact lt_irrefl 1 h1
 
 /-- Degree `0` is degenerate: the lemniscate area is `0`. -/
 theorem sublevelMeasure_degree_zero (P : UnitDiskPoly 0) :
     sublevelMeasure P = 0 := by
   have h : {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} = ∅ := by
     ext p
-    simp [eval_degree_zero]
+    simp only [Set.mem_empty_iff_false, iff_false]
+    intro hp
+    have h1 : ‖P.eval ⟨p.1, p.2⟩‖ < 1 := hp
+    rw [eval_degree_zero, norm_one] at h1
+    exact lt_irrefl 1 h1
   rw [sublevelMeasure, h]
   simp
 
@@ -477,7 +485,7 @@ unique root (`Fin.prod_univ_one`) — the constructor-free form of
 `eval_singleRoot`. -/
 theorem eval_degree_one (P : UnitDiskPoly 1) (z : ℂ) :
     P.eval z = z - P.roots 0 := by
-  simp [UnitDiskPoly.eval, Fin.prod_univ_one]
+  simp [UnitDiskPoly.eval]
 
 /-- **Every degree-`1` lemniscate is a unit disk**, for an *arbitrary*
 `P : UnitDiskPoly 1` (not just the `singleRoot` constructor). -/
@@ -529,11 +537,8 @@ about the asymptotics of this function. -/
 noncomputable def minLemniscateArea (n : ℕ) : ℝ :=
   ⨅ P : UnitDiskPoly n, sublevelMeasure P
 
-/-- The lemniscate area is nonnegative (it is a `toReal`). -/
-theorem sublevelMeasure_nonneg (P : UnitDiskPoly n) : 0 ≤ sublevelMeasure P :=
-  ENNReal.toReal_nonneg
-
-/-- The area functional is bounded below (by `0`), so the infimum defining
+/-- The area functional is bounded below (by `0`, the parent's
+`sublevelMeasure_nonneg`), so the infimum defining
 `minLemniscateArea` is well behaved (`Real` conditionally complete lattice). -/
 theorem bddBelow_range_sublevelMeasure (n : ℕ) :
     BddBelow (Set.range fun P : UnitDiskPoly n => sublevelMeasure P) :=
@@ -633,9 +638,8 @@ theorem pommerenkeLowerBound_of_klrLowerBound :
     have hc0 : (0 : ℝ) ≤ c := hc.le
     calc min c Real.pi / (n : ℝ) ^ 4
         ≤ c / Real.log n := by
-          gcongr <;> first
-            | exact min_le_left _ _
-            | exact hlog_le
+          gcongr
+          exact min_le_left _ _
       _ ≤ minLemniscateArea n := hklr n hn2
 
 end UnitDiskPoly
