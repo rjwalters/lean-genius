@@ -151,7 +151,7 @@ This is weaker than the conjectured n^(k-1) / (log n)^c for k ≥ 5.
 axiom bohman_keevash_2010 :
   ∀ k : ℕ, k ≥ 3 →
     (fun n => (RamseyNumber k n : ℝ)) ≫
-    (fun n => (n : ℝ)^((k+1)/2) / (log n)^(1/(k-2 : ℝ) - (k+1)/2))
+    (fun n => (n : ℝ)^(((k : ℝ)+1)/2) / (log n)^(1/(k-2 : ℝ) - (k+1)/2))
 
 /-
 ## Part VII: The Gap for k ≥ 5
@@ -214,7 +214,7 @@ theorem erdos_986_summary :
     -- General bounds exist
     (∀ k : ℕ, k ≥ 3 →
       (fun n => (RamseyNumber k n : ℝ)) ≫
-      (fun n => (n : ℝ)^((k+1)/2) / (log n)^(1/(k-2 : ℝ) - (k+1)/2))) := by
+      (fun n => (n : ℝ)^(((k : ℝ)+1)/2) / (log n)^(1/(k-2 : ℝ) - (k+1)/2))) := by
   constructor
   · exact erdos_986_k3_solved
   constructor
