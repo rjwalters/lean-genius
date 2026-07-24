@@ -1,9 +1,33 @@
 # Current State
 
-**Phase**: BLOCKED (S6a ACT scaffold landed) — tetrahedron `(d=3, k=2)` magic witness landed in a new leaf file `Proofs/Erdos735OQ04Tetrahedron.lean`, Docker build-verified (researcher-2, 2026-06-12); 2 theorem *statements* + concrete config defs typecheck, both proofs isolated as documented `sorry`s. **Flagged blocked 2026-06-13**: the only forward path is discharging those 2 sorries (hand-tractable via the in-file affine-independence route), which is BUILD-GATED — Docker daemon down (verification blackout) and Aristotle backend 404s (probed this session). No build-free path advances the proof.
-**Since**: 2026-06-12 (S6a ACT scaffold — first Lean realization of the concrete higher-flat magic witness); flagged blocked 2026-06-13 (researcher-2)
-**Iteration**: 11 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → **S6a ACT scaffold → BLOCKED**)
-**Last Updated**: 2026-06-13T(STATE-SYNC + blocked flag, researcher-2)Z
+**Phase**: S6a COMPLETE (unblocked + both sorries discharged, Docker build-verified on Lean v4.31.0) — the tetrahedron `(d=3, k=2)` magic witness in `Proofs/Erdos735OQ04Tetrahedron.lean` is now fully proved: `tetra_affineIndependent` and `tetraConfig_isKFlatMagic` both discharged by hand (researcher-3, 2026-07-24), 0 sorries, 0 new axioms. The 2026-06-13 BLOCKED flag (Docker daemon down, Aristotle 404) was stale — Docker restored; hand discharge needed one build iteration. First machine-checked witness that the higher-flat (`k ≥ 2`) magic family is non-empty. Remaining milestones: S6b/c (octa/cube refutations, PREP #18541), S6e (general-position uniform-weight theorem), S7 (gallery JSON), IsIncenterConfigD tightening.
+**Since**: 2026-07-24 (S6a discharge, researcher-3)
+**Iteration**: 12 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → S6a ACT scaffold → BLOCKED → **S6a DISCHARGE (unblock)**)
+**Last Updated**: 2026-07-24 (S6a discharge, researcher-3)
+
+## S6a DISCHARGE — both tetrahedron sorries proved (researcher-3, 2026-07-24)
+
+`proofs/Proofs/Erdos735OQ04Tetrahedron.lean`: sorryCount 2 → 0, axiomCount 0
+(slug total stays 1 — the S5 axiom in `Erdos735OQ04.lean`). Docker
+build-verified clean on Lean v4.31.0 / current pinned Mathlib (3040 jobs, no
+warnings in the file).
+
+* `tetra_affineIndependent`: via `affineIndependent_iff_of_fintype` +
+  `weightedVSub_eq_weightedVSubOfPoint_of_sum_eq_zero` (base point 0), then
+  coordinate extraction with `congrArg (fun v => WithLp.ofLp v j)` and
+  `linarith` on the resulting 3-equation system + `∑ wᵢ = 0`. (Route change:
+  the in-file `affineIndependent_iff_linearIndependent_vsub` + determinant
+  plan needs an awkward subtype reindexing; the weighted-sum route avoids it.)
+* `tetraConfig_isKFlatMagic`: exactly the documented affine-independence
+  route — uniform weight 1, c = 3; card ≤ 3 via `affineSpan_le` →
+  `Submodule.finrank_mono` → 3 ≤ 2 contradiction;
+  sum evaluation via the parent's `dif_pos`/`sum_const`/`Nat.smul_one_eq_cast`
+  idiom.
+* v4.31 gotchas: `fin_cases` produces `w ⟨3,⋯⟩` vs `w 3` (prove `have`s
+  before `fin_cases`, close by `exact`); `push_neg` deprecated (omega
+  consumes `¬ card ≤ 3` directly).
+
+Full memo: `sessions/2026-07-24-s6a-discharge-tetrahedron-sorries.md`.
 
 ## S6a ACT scaffold — tetrahedron magic witness (researcher-2, 2026-06-12)
 
