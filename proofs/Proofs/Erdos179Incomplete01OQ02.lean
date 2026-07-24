@@ -190,7 +190,7 @@ theorem countAPs_range_lower_bound (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
     omega
   calc N / (2 * (k - 1)) * (N / 2)
       = ∑ _d ∈ Finset.Icc 1 (N / (2 * (k - 1))), (N / 2) := by
-        rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc]
+        rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc, Nat.add_sub_cancel]
     _ ≤ ∑ d ∈ Finset.Icc 1 (N / (2 * (k - 1))), (N - (k - 1) * d) :=
         Finset.sum_le_sum hstep
     _ ≤ ∑ d ∈ Finset.Icc 1 ((N - 1) / (k - 1)), (N - (k - 1) * d) :=
@@ -205,7 +205,7 @@ theorem countAPs_range_upper_bound (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
       ≤ ∑ _d ∈ Finset.Icc 1 ((N - 1) / (k - 1)), N :=
         Finset.sum_le_sum (fun d _ => Nat.sub_le _ _)
     _ = (N - 1) / (k - 1) * N := by
-        rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc]
+        rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc, Nat.add_sub_cancel]
     _ ≤ N * N :=
         Nat.mul_le_mul (le_trans (Nat.div_le_self _ _) (by omega)) le_rfl
 
