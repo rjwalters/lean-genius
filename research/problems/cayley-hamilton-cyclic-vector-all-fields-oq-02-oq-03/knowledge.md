@@ -185,3 +185,33 @@ infrastructure ABSENT from Mathlib v4.31 — registered as a structured blocker
 (reopen: "materially new mechanism required"). Natural adjacent results (minpoly degree = n)
 are also gated: `Algebra.adjoin.powerBasis` requires `CommRing S`, which `Module.End K V` is not.
 STAND DOWN at the elementary layer for this node.
+
+## Session 6 (2026-07-24, researcher-2): algebra capstone — C(T) ≃ₐ[K] K[X]/(μ_T), χ_T = μ_T
+
+New file `CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Quotient.lean` (4 theorems, 1 def,
+0 axioms, 0 sorries; `#print axioms` = propext/Classical.choice/Quot.sound on all five).
+
+- **`end_charpoly_eq_minpoly_of_cyclic`**: `T.charpoly = minpoly K T` for cyclic `T` — the
+  nonderogatory EQUALITY, sharpening the degree identity from Session 4. Six lines:
+  `minpoly.dvd` on Cayley–Hamilton (`LinearMap.aeval_self_charpoly`) + both monic +
+  degrees agree ⟹ `Polynomial.eq_of_monic_of_dvd_of_natDegree_le`.
+- **`centralizerQuotientAlgEquiv : K[X] ⧸ span {minpoly K T} ≃ₐ[K] centralizer K {T}`** —
+  the headline: the commutant is the polynomial quotient algebra, not merely a
+  `dim V`-dimensional space. First isomorphism theorem for `aeval T`.
+- `centralizerQuotientAlgEquiv_mk_coe` `@[simp]`: the equiv is induced by evaluation
+  (`mk p ↦ p(T)`), proved by `simp` on the composite.
+- `finrank_quotient_span_minpoly_of_cyclic`: `dim K[X]/(μ_T) = dim V` (Frobenius equality
+  transported through the equiv's `toLinearEquiv.finrank_eq`).
+
+### Reusable Lean recipe (quotient-algebra presentation of a commutant)
+- Mathlib has ALL the glue: `minpoly.ker_aeval_eq_span_minpoly` (kernel of `aeval` is the
+  span of the minpoly, unconditional over a field), `AlgHom.ker_rangeRestrict`,
+  `AlgHom.rangeRestrict_surjective`, `Ideal.quotientKerAlgEquivOfSurjective` (first iso
+  theorem for algebras), `Ideal.quotientEquivAlgOfEq` + `Subalgebra.equivOfEq` for
+  transporting the two endpoint equalities. Note `ker_aeval_eq_span_minpoly` lands in
+  `K[X] ∙ μ` form — bridge to `Ideal.span {μ}` with `Ideal.submodule_span_eq`.
+- The cyclic hypothesis enters ONLY at the final subalgebra equality
+  (`end_centralizer_eq_adjoin`); everything upstream is generic. The Session-5 gate note
+  ("adjoin.powerBasis needs CommRing S") is bypassed entirely — no power basis needed.
+- `LinearMap.charpoly_natDegree` takes the map explicitly (`T.charpoly_natDegree`), not
+  as an instance-implicit trailing argument.
