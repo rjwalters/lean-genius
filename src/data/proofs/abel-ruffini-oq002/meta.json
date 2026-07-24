@@ -43,11 +43,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Overview and Setup",
+      "title": "Overview",
       "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring placing the file in the concrete-quintic branch of Abel–Ruffini: the parent entry's Key Lemma (transitive G ≤ S_p with a transposition ⟹ G = S_p) is combined with the Galois correspondence to give the non-solvability payoff for p ≥ 5. States the three deliverables (the re-proved Key Lemma, the obstruction theorem, and the not_isSolvable_top corollary) and lists the historical sources (Ruffini 1799, Abel 1824, Galois 1831) and the two load-bearing Mathlib lemmas.",
+      "mathContext": "Galois's criterion: $f$ is solvable by radicals $\\iff \\mathrm{Gal}(f)$ is solvable."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and the Abstract Prime-Cardinality Setting",
+      "startLine": 36,
       "endLine": 43,
-      "summary": "Module docstring placing the file in the concrete-quintic branch of Abel–Ruffini (parent Key Lemma → non-solvability payoff via the Galois correspondence, sources Ruffini 1799 / Abel 1824 / Galois 1831). Imports Mathlib, opens Equiv / Equiv.Perm / Subgroup / MulAction, and fixes an abstract finite type α with DecidableEq so the results hold for S_α ≅ S_p on any p-element set.",
-      "mathContext": "Galois's criterion: $f$ is solvable by radicals $\\iff \\mathrm{Gal}(f)$ is solvable. Working over an abstract $\\alpha$ with $|\\alpha|=p$ gives $S_\\alpha \\cong S_p$."
+      "summary": "Imports Mathlib wholesale, opens Equiv / Equiv.Perm / Subgroup / MulAction, and fixes an abstract finite type α with DecidableEq. Working over an abstract α rather than a literal Fin p keeps every downstream theorem generic in the p-element set, so the results transfer verbatim to S_α ≅ S_p for any concrete labelling of the roots.",
+      "mathContext": "$\\alpha$ ranges over any finite type; the theorems below are stated for $S_\\alpha \\cong S_p$ whenever $|\\alpha| = p$, not for a fixed representative like $\\mathrm{Fin}\\,p$."
     },
     {
       "id": "key-lemma",
