@@ -82,12 +82,12 @@
     },
     "type": "insight",
     "title": "Similar Matrices Share Their Entire Eigenvalue Multiset",
-    "content": "The bridge to the eigenvalue picture, strictly stronger than sharing trace and determinant. eigenvalues A := A.charpoly.roots is the multiset of roots of the characteristic polynomial (algebraic multiplicity). eigenvalues_units_conj shows conjugation by a unit P preserves the WHOLE multiset, because conjugation preserves the characteristic polynomial itself (Matrix.charpoly_units_conj'). sum_eigenvalues_units_conj and prod_eigenvalues_units_conj then recover trace and determinant invariance respectively, by routing through the oq-01 identities tr A = Σ eigenvalues, det A = Π eigenvalues — exhibiting trace/det invariance as shadows of the full spectral invariance.",
+    "content": "The bridge to the eigenvalue picture, strictly stronger than sharing trace and determinant. eigenvalues A := A.charpoly.roots is the multiset of roots of the characteristic polynomial (algebraic multiplicity). eigenvalues_units_conj shows conjugation by a unit P preserves the WHOLE multiset, because conjugation preserves the characteristic polynomial itself (Matrix.charpoly_units_conj). sum_eigenvalues_units_conj and prod_eigenvalues_units_conj then recover trace and determinant invariance respectively, by routing through the oq-01 identities tr A = Σ eigenvalues, det A = Π eigenvalues — exhibiting trace/det invariance as shadows of the full spectral invariance.",
     "mathContext": "Conjugation fixes $\\chi_A$, so similar matrices have equal eigenvalue multisets; $\\sum$ recovers $\\operatorname{tr}$, $\\prod$ recovers $\\det$.",
     "significance": "key",
     "relatedConcepts": [
       "characteristic polynomial",
-      "Matrix.charpoly_units_conj'",
+      "Matrix.charpoly_units_conj",
       "eigenvalue multiset",
       "trace = sum of eigenvalues",
       "det = product of eigenvalues"
