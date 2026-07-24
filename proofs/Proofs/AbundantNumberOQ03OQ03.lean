@@ -608,7 +608,7 @@ theorem exists_crossing (a : ℕ) :
     have hmono : ∑ i ∈ Finset.range b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)
         ≤ ∑ i ∈ Finset.range a, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) :=
       Finset.sum_le_sum_of_subset_of_nonneg
-        (Finset.range_subset.mp hab.le) (fun i _ _ => hnn i)
+        (Finset.range_subset_range.mpr hab.le) (fun i _ _ => hnn i)
     linarith
   have htail : (2 : ℝ) < ∑ i ∈ Finset.Ico a b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) := by
     rw [Finset.sum_Ico_eq_sub _ hab]
