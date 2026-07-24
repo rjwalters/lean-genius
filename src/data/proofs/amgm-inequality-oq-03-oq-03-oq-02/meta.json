@@ -43,11 +43,20 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Module Header and Power Mean Definition",
+      "id": "header",
+      "title": "Module Header: Scoping the Finite-Monotonicity Gap",
       "startLine": 1,
+      "endLine": 28,
+      "summary": "Docstring framing the entry as the finite-monotonicity gap between the parent's endpoint identities (M₁ = AM, M₋₁ = HM) and the sibling's r → ±∞ limits, and outlining the three-part proof plan.",
+      "mathContext": "The chain M₋₁(a,b) ≤ M₀(a,b) ≤ M₁(a,b), i.e. HM ≤ GM ≤ AM, as the n=2 instance of power-mean monotonicity."
+    },
+    {
+      "id": "powermean-def",
+      "title": "The Power Mean Definition",
+      "startLine": 30,
       "endLine": 43,
-      "summary": "Docstring framing the entry as the finite-monotonicity gap between the parent's endpoint identities and the sibling's r → ±∞ limits. Re-declares `powerMean` (same definition as the parent) with the r = 0 geometric-mean branch."
+      "summary": "Re-declares `powerMean` (identical to the parent entry's definition): the r-th power mean of a finite indexed family of positive reals, with the r = 0 case set by convention to the geometric mean ∏xᵢ^(1/card).",
+      "mathContext": "powerMean x r = (∏ᵢ xᵢ)^(1/card) if r = 0, else ((∑ᵢ xᵢʳ)/card)^(1/r)."
     },
     {
       "id": "endpoint-evaluations",
