@@ -68,9 +68,17 @@ noncomputable def F (k N ℓ : ℕ) : ℕ :=
   where
     supersaturation_exists (k N ℓ : ℕ) : ∃ M, ∀ A : Finset ℕ,
         A.card = N → countAPs A k ≥ M → ContainsAP A ℓ := by
-      use N^2 + 1  -- Trivial upper bound
+      -- Trivial existence: at most `2 ^ N` subsets of `A` exist, so a set of size
+      -- `N` can never contain `2 ^ N + 1` many k-APs; the hypothesis is vacuous.
+      refine ⟨2 ^ N + 1, ?_⟩
       intro A hN hcount
-      sorry
+      exfalso
+      have hle : countAPs A k ≤ 2 ^ N := by
+        have h1 : countAPs A k ≤ A.powerset.card := by
+          unfold countAPs
+          exact Finset.card_filter_le _ _
+        rwa [Finset.card_powerset, hN] at h1
+      omega
 
 /-- The property that F_k(N, ℓ) captures. -/
 def SupersaturationProperty (k N ℓ M : ℕ) : Prop :=
@@ -205,10 +213,50 @@ axiom behrend_construction :
       ∃ A : Finset (Fin N), ¬ContainsAP (A.map (Fin.valEmbedding)) 3 ∧
         (A.card : ℝ) ≥ N / Real.exp (c * Real.sqrt (Real.log N))
 
-/-- In a 3-AP-free set, every pair of distinct elements forms a 2-AP. -/
-theorem AP_free_has_2APs (A : Finset ℕ) (hA : ¬ContainsAP A 3) :
+/-- A 2-term AP is just the (unordered) pair of its two entries. -/
+theorem arithmeticProgression_two (a d : ℕ) :
+    arithmeticProgression a d 2 = {a, a + d} := by
+  ext x
+  simp only [arithmeticProgression, Finset.mem_image, Finset.mem_range,
+    Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨i, hi, rfl⟩
+    interval_cases i
+    · left; ring
+    · right; ring
+  · rintro (rfl | rfl)
+    · exact ⟨0, by norm_num, by ring⟩
+    · exact ⟨1, by norm_num, by ring⟩
+
+/-- Every pair of distinct elements forms a 2-AP, so the number of 2-term APs in
+    any set is exactly `C(|A|, 2)`. (The 3-AP-free hypothesis is not needed: the
+    identity holds for every finite set.) -/
+theorem AP_free_has_2APs (A : Finset ℕ) (_hA : ¬ContainsAP A 3) :
     countAPs A 2 = A.card.choose 2 := by
-  sorry  -- Every pair {a, b} with a < b is a 2-AP with d = b - a
+  have key : (A.powerset.filter fun S => ∃ a d, d > 0 ∧ S = arithmeticProgression a d 2)
+      = A.powersetCard 2 := by
+    ext S
+    simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hSA, a, d, hd, rfl⟩
+      exact ⟨hSA, by rw [arithmeticProgression_two, Finset.card_pair (by omega)]⟩
+    · rintro ⟨hSA, hcard⟩
+      refine ⟨hSA, ?_⟩
+      rw [Finset.card_eq_two] at hcard
+      obtain ⟨x, y, hxy, rfl⟩ := hcard
+      rcases lt_or_gt_of_ne hxy with hlt | hgt
+      · refine ⟨x, y - x, by omega, ?_⟩
+        rw [arithmeticProgression_two]
+        have : x + (y - x) = y := by omega
+        rw [this]
+      · refine ⟨y, x - y, by omega, ?_⟩
+        rw [arithmeticProgression_two]
+        have : y + (x - y) = x := by omega
+        rw [this, Finset.pair_comm]
+  have hcard : countAPs A 2 = (A.powersetCard 2).card := by
+    unfold countAPs
+    rw [key]
+  rw [hcard, Finset.card_powersetCard]
 
 /-
 ## Part IX: Special Cases and Asymptotics

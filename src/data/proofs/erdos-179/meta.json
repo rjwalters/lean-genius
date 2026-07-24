@@ -17,15 +17,15 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 6,
     "erdosNumber": 179,
     "erdosUrl": "https://erdosproblems.com/179",
     "erdosProblemStatus": "solved",
     "axiomCount": 14,
-    "lineCount": 255,
-    "assumptions": "14 axiom(s) across the chain: 6 in Erdos179Problem.lean (F_lower_bound, fox_pohoata_theorem, leng_sah_sawhney, szemeredi_theorem, roth_theorem, behrend_construction) + 8 in Stubs/Erdos179Problem.lean (6 duplicates of the main-file axioms plus random_set_APs and dense_sets_many_3APs unique to the stub scaffold). 8 sorries in the main proof. See the Lean sources for details.",
+    "lineCount": 303,
+    "assumptions": "14 axiom(s) across the chain: 6 in Erdos179Problem.lean (F_lower_bound, fox_pohoata_theorem, leng_sah_sawhney, szemeredi_theorem, roth_theorem, behrend_construction) + 8 in Stubs/Erdos179Problem.lean (6 duplicates of the main-file axioms plus random_set_APs and dense_sets_many_3APs unique to the stub scaffold). 6 sorries remain in the main proof (the F supersaturation-threshold definition is now complete and arithmeticProgression_two / AP_free_has_2APs are proved). See the Lean sources for details.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos179ProblemAristotle.lean",
@@ -56,10 +56,10 @@
     {
       "id": "sec-header-erdos-179",
       "title": "Problem Statement and Background",
-      "summary": "States Erd\u0151s Problem #179 on arithmetic-progression supersaturation, resolved by Fox\u2013Pohoata (2020) and sharpened by Leng\u2013Sah\u2013Sawhney (2024): the threshold $F_k(N,\\ell)$ for forcing an $\\ell$-term AP from many $k$-term APs satisfies $F_k(N,\\ell) = N^{2-o(1)}$.",
+      "summary": "States Erdős Problem #179 on arithmetic-progression supersaturation, resolved by Fox–Pohoata (2020) and sharpened by Leng–Sah–Sawhney (2024): the threshold $F_k(N,\\ell)$ for forcing an $\\ell$-term AP from many $k$-term APs satisfies $F_k(N,\\ell) = N^{2-o(1)}$.",
       "startLine": 1,
       "endLine": 31,
-      "mathContext": "Builds on Szemer\u00e9di's theorem, Roth's theorem, and Behrend's construction; Fox\u2013Pohoata give $F_k(N,\\ell) \\le N^2/(\\log\\log N)^{C_\\ell}$, improved by Leng\u2013Sah\u2013Sawhney to a doubly-exponential saving."
+      "mathContext": "Builds on Szemerédi's theorem, Roth's theorem, and Behrend's construction; Fox–Pohoata give $F_k(N,\\ell) \\le N^2/(\\log\\log N)^{C_\\ell}$, improved by Leng–Sah–Sawhney to a doubly-exponential saving."
     },
     {
       "id": "imports",
@@ -170,12 +170,12 @@
       "Finset"
     ],
     "namespace": "Erdos179",
-    "lineCount": 255,
+    "lineCount": 303,
     "axiomCount": 6,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 9,
     "path": "Proofs/Erdos179Problem.lean",
-    "sorries": 8,
+    "sorries": 6,
     "additionalFiles": [
       "Proofs/Erdos179ProblemAristotle.lean",
       "Proofs/Erdos179Aristotle.lean",
@@ -208,5 +208,5 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
     }
   ],
-  "sorries": 8
+  "sorries": 6
 }

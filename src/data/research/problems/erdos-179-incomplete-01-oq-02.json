@@ -1,7 +1,7 @@
 {
   "slug": "erdos-179-incomplete-01-oq-02",
   "title": "Can a quantitative lower bound on countAPs for structured sets (e.g.",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -23,19 +23,27 @@
     "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ORIENT",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 0,
-    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+    "iteration": 1,
+    "focus": "researcher-2: axiom-free sorry elimination (F def completed, AP_free_has_2APs proved); remaining sorries deep."
   },
   "knowledge": {
-    "progressSummary": "Seeded stub. No research performed yet.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (researcher-2, 2026-07-23): eliminated 2 of 8 sorries in Erdos179Problem.lean, both axiom-free (#print axioms = propext/Classical.choice/Quot.sound). (1) Completed the F(k,N,ℓ) supersaturation-threshold DEFINITION: its Nat.find existence witness was a def-sorry; replaced witness N²+1 with 2^N+1 and discharged it via countAPs A k ≤ |A.powerset| = 2^N (card_filter_le + card_powerset), so the hypothesis countAPs A k ≥ 2^N+1 is vacuous. (2) Proved AP_free_has_2APs: countAPs A 2 = C(|A|,2) for EVERY finite A (the 3-AP-free hypothesis is unnecessary) — every 2-subset {x,y} is the 2-AP {x, x+(y-x)}; the 2-AP finset filter equals A.powersetCard 2, then card_powersetCard. Added helper arithmeticProgression_two: arithmeticProgression a d 2 = {a, a+d}. Remaining 6 sorries are DEEP (Fox-Pohoata / Leng-Sah-Sawhney asymptotics, exponent_is_2 limit, F_upper_trivial N² bound, F_2_well_defined possibly false-as-stated off-by-one).",
+    "builtItems": [
+      "arithmeticProgression_two (Erdos179Problem.lean): arithmeticProgression a d 2 = {a, a+d}",
+      "Completed def F via 2^N+1 Nat.find witness (Erdos179Problem.lean:66) — F is now sorry-free",
+      "AP_free_has_2APs proved (Erdos179Problem.lean): countAPs A 2 = A.card.choose 2"
+    ],
+    "insights": [
+      "countAPs A k ≤ 2^(|A|) trivially (filter of A.powerset), so the F supersaturation threshold always exists — no density input needed for well-definedness.",
+      "countAPs A 2 = C(|A|,2) identically: every unordered pair is a 2-term AP, so the 3-AP-free hypothesis in AP_free_has_2APs is vacuous.",
+      "F_2_well_defined (F 2 N ℓ ≤ C(N,2)) looks FALSE as stated: since countAPs A 2 = C(N,2) always, the property at M=C(N,2) would force every size-N set to contain an ℓ-AP; only M=C(N,2)+1 is vacuously satisfiable, giving F 2 N ℓ ≤ C(N,2)+1."
+    ],
     "nextSteps": [
-      "Survey the parent gallery entry and its Lean source.",
-      "State the question precisely in Lean 4.",
-      "Identify supporting Mathlib theory."
+      "F_upper_trivial (F k N ℓ ≤ N²): prove reusable countAPs A k ≤ (|A|)² for k≥2 via injection (a,d)↦(min two AP elements) into A×A.",
+      "Reconsider/correct F_2_well_defined (likely off-by-one, ≤ C(N,2)+1).",
+      "Remaining asymptotic sorries depend on the deep Fox-Pohoata / Leng-Sah-Sawhney axioms — not elementary."
     ]
   },
   "tags": [
@@ -47,7 +55,7 @@
     "research"
   ],
   "started": "2026-07-09T00:00:00Z",
-  "lastUpdate": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-23",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
