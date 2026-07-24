@@ -61,12 +61,20 @@
   },
   "sections": [
     {
-      "id": "header-setup",
-      "title": "Module header, imports, and parent scaffold",
+      "id": "module-docstring",
+      "title": "Module Docstring: the Coprime CRT Merge",
       "startLine": 1,
-      "endLine": 54,
-      "summary": "Imports Mathlib and the sorry-free parent CayleyHamiltonReductionOQ02OQ01WIP01, which supplies charpoly (C(p) ⊕ C(q)) = p·q and minpoly (C(p) ⊕ C(q)) = lcm p q. The docstring frames the goal: since lcm p q ∣ p·q strictly in general the block sum is derogatory, and the coprime case (lcm = product) is exactly where it becomes nonderogatory. Opens the parent namespaces and fixes the ambient variable {F : Type*} [Field F] under which the entire merge is generic.",
+      "endLine": 45,
+      "summary": "Imports Mathlib and the sorry-free parent CayleyHamiltonReductionOQ02OQ01WIP01, which supplies charpoly (C(p) ⊕ C(q)) = p·q and minpoly (C(p) ⊕ C(q)) = lcm p q. The docstring frames the goal: since lcm p q ∣ p·q strictly in general the block sum is derogatory, and the coprime case (lcm = product) is exactly where it becomes nonderogatory — the matrix incarnation of the CRT isomorphism K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q). Lists the three theorems proved and records the docker-build verification status (0 sorries, standard axioms only).",
       "mathContext": "Inherited from the parent: $\\chi_{C(p)\\oplus C(q)} = p\\cdot q$ and $\\mu_{C(p)\\oplus C(q)} = \\operatorname{lcm}(p,q)$; a block sum is nonderogatory iff $\\mu = \\chi$, i.e. iff $\\operatorname{lcm}(p,q) = p\\cdot q$."
+    },
+    {
+      "id": "header-setup",
+      "title": "Namespace, Opens, and the Ambient Field Variable",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Declares the CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02OQ05 namespace, opens Matrix/Polynomial notation and the two parent namespaces (CayleyHamiltonReductionOQ02OQ01, CayleyHamiltonReductionOQ02OQ01WIP01), and fixes the ambient variable {F : Type*} [Field F] under which the entire coprime merge is generic.",
+      "mathContext": "No characteristic or algebraic-closure hypothesis on F is imposed anywhere in the file — the coprime CRT merge holds verbatim over every field, which is the point of the entry's title (\"all fields\")."
     },
     {
       "id": "lcm-coprime",
