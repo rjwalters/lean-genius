@@ -217,10 +217,12 @@ variable (G) in
 noncomputable def reynolds (p : MvPolynomial (Fin n) k) : MvPolynomial (Fin n) k :=
   (Fintype.card G : k)⁻¹ • ∑ g : G, g • p
 
+omit [Group G] [MulSemiringAction G (MvPolynomial (Fin n) k)]
+  [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- Non-modularity bridge: if `ringChar k ∤ |G|` then `|G| ≠ 0` in `k`. -/
 theorem card_ne_zero_of_char_not_dvd (h_char : ¬ ringChar k ∣ Fintype.card G) :
     (Fintype.card G : k) ≠ 0 :=
-  fun h => h_char ((ringChar.spec (Fintype.card G)).mp h)
+  fun h => h_char ((ringChar.spec k (Fintype.card G)).mp h)
 
 omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- Orbit sums are invariant under right translation of the argument. -/
@@ -229,6 +231,7 @@ theorem sum_smul_of_smul (g : G) (p : MvPolynomial (Fin n) k) :
   simp_rw [smul_smul]
   exact Fintype.sum_equiv (Equiv.mulRight g) _ (fun h => h • p) (fun h => rfl)
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- The Reynolds operator is constant on `G`-orbits. -/
 theorem reynolds_smul (g : G) (p : MvPolynomial (Fin n) k) :
     reynolds G (g • p) = reynolds G p := by
@@ -262,11 +265,13 @@ theorem reynolds_of_mem_fixedPoints (hG : (Fintype.card G : k) ≠ 0)
   rw [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul k,
     smul_smul, inv_mul_cancel₀ hG, one_smul]
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- The Reynolds operator is additive. -/
 theorem reynolds_add (p q : MvPolynomial (Fin n) k) :
     reynolds G (p + q) = reynolds G p + reynolds G q := by
   unfold reynolds
   simp_rw [smul_add, Finset.sum_add_distrib]
+  exact smul_add _ _ _
 
 omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- The Reynolds operator does not raise total degree (under the graded
