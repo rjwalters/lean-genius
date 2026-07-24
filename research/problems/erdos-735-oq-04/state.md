@@ -1,21 +1,46 @@
 # Current State
 
-**Phase**: S6e COMPLETE (general-position uniform-weight theorem, researcher-3, 2026-07-24)
-— new leaf `Proofs/Erdos735OQ04GeneralPosition.lean` (0 axioms, 0 sorries, host-verified on
-Lean v4.31.0 pinned toolchain): `isKFlatMagic_of_kFlatGeneralPosition` (any configuration in
-k-flat general position is k-flat magic, uniform weight, constant k+1),
-`kFlatGeneralPositionD_of_affineIndependent` + `isKFlatMagic_of_affineIndependent`
-(simplex-type configurations are k-flat magic for EVERY k — the S6a tetrahedron becomes one
-instance of a uniform family), and `isKFlatMagic_one_of_generalPosition` — the
-"general position ⟹ 1-flat magic" implication of the S5 classification axiom, machine-checked
-unconditionally in every dimension (shrinks the genuinely open content of the axiom; the
-axiom itself is untouched and unused by this file). Earlier this cycle: S6a tetrahedron
-discharge (PR #43107), S6b/c octa/cube refutations (PR #43155). Remaining milestones:
-S6d (dodeca/icosa refutations or witnesses), S7 (gallery JSON — slug still has NO
-src/data/proofs entry), IsIncenterConfigD tightening.
-**Since**: 2026-07-24 (S6e, researcher-3)
-**Iteration**: 13 (… → S6a DISCHARGE → S6b/c ACT → **S6e ACT**)
-**Last Updated**: 2026-07-24 (S6e general-position theorem, researcher-3)
+**Phase**: S7 COMPLETE (gallery entry created, researcher-3, 2026-07-24) — the slug's
+verified work is now presented: new `src/data/proofs/erdos-735-oq-04/` with meta.json
+(6 sections, 11 mainTheorems, status `axiomatized` / badge `axiom`, 1 axiom / 0 sorries,
+1277 lines / 156 theorems / 38 defs across the five Lean files) and annotations.json
+(6 annotations, 0 build warnings). Primary leanFile `Proofs/Erdos735OQ04.lean` +
+additionalFiles Tetrahedron / Octahedron / Cube / GeneralPosition. Validated:
+gallery:check-size PASS (27 KB ≤ 60 KB cap), gallery:check-verified-companions PASS,
+annotations build PASS (0 errors/warnings for this entry). Earlier this cycle: S6a
+tetrahedron discharge (PR #43107), S6b/c octa/cube refutations (PR #43155), S6e
+general-position uniform-weight theorem (PR #43397). Remaining milestones: S6d
+(dodeca/icosa refutations or witnesses — golden-ratio coordinate arithmetic),
+IsIncenterConfigD tightening, and the honest open frontier (the S5 axiom itself).
+**Since**: 2026-07-24 (S7, researcher-3)
+**Iteration**: 14 (… → S6b/c ACT → S6e ACT → **S7 PRESENT**)
+**Last Updated**: 2026-07-24 (S7 gallery entry, researcher-3)
+
+## S7 PRESENT — gallery entry created (researcher-3, 2026-07-24)
+
+New `src/data/proofs/erdos-735-oq-04/` (meta.json + annotations.json), discharging the
+"S7 gallery JSON" milestone — the slug previously had NO src/data/proofs entry despite
+five build-verified Lean files. Framing decisions:
+
+* **status `axiomatized` / badge `axiom` / axiomCount 1** — the single S5 axiom
+  `oneflat_classification_higher_dim` is disclosed in `assumptions`, with the note that
+  its class-2 forward implication is proved axiom-free (S6e), so the axiom's open
+  content is strictly smaller than its statement.
+* **Primary + additionalFiles** — Erdos735OQ04.lean is the primary (sections and
+  annotations anchor to its 243 lines); the four leaves are `additionalFiles` (both in
+  `leanFile` and `meta`, following the alternating-series-boole-summation-oq-01-oq-01
+  exemplar from PR #39139). Counts aggregate all five files.
+* **Honest IsIncenterConfigD framing** carried into the classes section/annotation
+  (structural skeleton, not the tight incenter characterisation).
+* **Registry NOT flipped** — the problem is not complete (S6d + axiom remain open);
+  only the gallery presentation milestone is discharged.
+
+Gotcha: annotation `type` must come from the proof.ts enum
+(`theorem|lemma|definition|tactic|concept|insight|warning` — "technique"/"milestone"
+are invalid) and `significance` is required. Annotation startLine must land on a
+non-blank line or the annotations build warns "No Lean construct found".
+
+Memo: `sessions/2026-07-24-s7-gallery-entry.md`.
 
 ## S6e ACT — general-position uniform-weight theorem (researcher-3, 2026-07-24)
 
