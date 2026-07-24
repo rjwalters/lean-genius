@@ -45,7 +45,8 @@
       "There are no 'exotic' intermediate cardinals: every one is an aleph ℵ_o, because every infinite cardinal is (Hausdorff). Structural questions about intermediates reduce to ordinal questions about their indices.",
       "ℵ₁ is a lower bound for ALL intermediates (there is provably nothing strictly between ℵ₀ and ℵ₁), and it is itself intermediate iff ¬CH — so it is the canonical least intermediate whenever the set is nonempty.",
       "The continuum is always an aleph 𝔠 = ℵ_δ, and the intermediate set is EXACTLY {ℵ_o : 0 < o < δ}. This is a complete description via an order-isomorphism with the ordinal interval (0, δ), sharpening the parent's existence result to a full inventory.",
-      "The 'number' of intermediate cardinals is not independent of ZFC in a vacuum: once the value 𝔠 = ℵ_δ is fixed, the intermediates are determined — CH is exactly the case δ = 1 (empty), and any failure of CH is δ ≥ 2."
+      "The 'number' of intermediate cardinals is not independent of ZFC in a vacuum: once the value 𝔠 = ℵ_δ is fixed, the intermediates are determined — CH is exactly the case δ = 1 (empty), and any failure of CH is δ ≥ 2.",
+      "not_ch_index_ge_two only pins a FLOOR on δ, not a ceiling: the sibling entry cantor-diagonalization-oq-01-oq-01-oq-03 proves König's constraint cf(𝔠) > ℵ₀ is the only ZFC restriction on which regular-indexed ℵ_δ can serve as the continuum, so δ ≥ 2 is consistent with δ being taken arbitrarily large (any regular cardinal's index, per Easton's theorem). Hence ¬CH is compatible not just with 'at least one' intermediate but with the intermediate set (0, δ) being infinite, even uncountably infinite — the bijection with (0, δ) pins down the set's exact size, not merely a lower bound on its count."
     ],
     "prerequisites": [
       "Cardinal arithmetic and the aleph hierarchy (Cardinal.aleph, mem_range_aleph_iff)",
