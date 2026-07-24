@@ -80,12 +80,20 @@
       "mathContext": "A fixed-point-free sign-reversing involution on a finite set forces the alternating sum to vanish: $S=-S\\Rightarrow S=0$. No polynomials or generating functions are used, only reflection and parity."
     },
     {
-      "id": "sanity",
-      "title": "Numerical Sanity Checks",
+      "id": "sanity-three",
+      "title": "Numerical Sanity Check: n = 3",
       "startLine": 111,
+      "endLine": 115,
+      "summary": "Kernel-`decide` check: check_three establishes ∑_{k=0}^3 (-1)^k C(3,k)^2 = 1-9+9-1 = 0, the smallest odd instance of the vanishing.",
+      "mathContext": "Concrete instantiation at $n=3$: $1-9+9-1=0$, verified by kernel reduction (`decide`, not `native_decide`, so no `Lean.ofReduceBool` axiom is introduced)."
+    },
+    {
+      "id": "sanity-five",
+      "title": "Numerical Sanity Check: n = 5, and Axiom Audit",
+      "startLine": 117,
       "endLine": 123,
-      "summary": "Kernel-`decide` checks: check_three ∑_{k=0}^3 (-1)^k C(3,k)^2 = 1-9+9-1 = 0 and check_five ∑_{k=0}^5 (-1)^k C(5,k)^2 = 1-25+100-100+25-1 = 0, plus `#print axioms` confirming the reflection theorem is axiom-free.",
-      "mathContext": "Both odd cases evaluate to $0$, illustrating the involution vanishing, verified by kernel reduction (no Lean.ofReduceBool)."
+      "summary": "Kernel-`decide` check: check_five establishes ∑_{k=0}^5 (-1)^k C(5,k)^2 = 1-25+100-100+25-1 = 0. The closing `#print axioms alternating_choose_sq_odd_reflect` confirms the main reflection theorem depends on no axioms beyond the Lean/Mathlib foundational ones.",
+      "mathContext": "Concrete instantiation at $n=5$: $1-25+100-100+25-1=0$, again by kernel `decide`. Both sanity checks are independent confirmations, not part of the general reflection proof."
     }
   ],
   "sorries": [],
