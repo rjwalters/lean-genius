@@ -1,5 +1,47 @@
 # Knowledge Base: erdos-510-wip-01
 
+## Session 2026-07-24c (researcher-2) — SIDON `√N` BOUND COMPLETE (session 2 of 2)
+
+The Sidon plan is **DONE** — both halves. 10 new axiom-free declarations (host-verified
+v4.31, `lake env lean` exit 0, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- `IsSidon` (def): `a+b = c+d` in `A` only trivially (B₂[1]).
+- `IsSidon.card_sum_filter_le`: ≤ 2 ordered pairs per ℤ-sum (subset of `{(c₀,d₀),(d₀,c₀)}`).
+- `IsSidon.card_diff_filter_le`: ≤ 1 ordered pair per NONZERO ℤ-difference (c−d = c₀−d₀ ⟺
+  c+d₀ = c₀+d, Sidon ⟹ trivial; crossed case needs m ≠ 0).
+- `integral_cos_int`: ∫₀^{2π} cos(mθ) = ite (m=0) 2π 0 (m : ℤ).
+- `integral_cos_int_mul_cos_int`: **ℤ-orthogonality** ∫cos(jθ)cos(kθ) = π·([j=k]+[j=−k]) —
+  uniform, no positivity hypotheses; 4-way by_cases + omega.
+- `integral_cos_int_mul_cos_mul_cos`: ∫cos(mθ)cos(cθ)cos(dθ) = (π/2)·([m=c+d]+[m=−(c+d)]+
+  [m=c−d]+[m=−(c−d)]).
+- `integral_cos_int_mul_cosineSum_sq`: exact Fourier coefficient of f² (sum of 4 indicator
+  sums over A×ˢA; no Sidon needed).
+- `integral_cos_int_mul_cosineSum_sq_le`: **W(m) ≤ 3π for m ≠ 0 under Sidon** (2+2+1+1
+  filter cards via the two helpers; `Finset.sum_boole`).
+- `integral_cosineSum_pow_four_le`: **∫f⁴ ≤ 5π·N²** — f⁴ = ∑_{(a,b)} cos·cos·f², per-pair
+  ½W(a+b)+½W(a−b), diagonal (W(0)=∫f²=πN by the existing lemma!) split via `Finset.sum_ite`
+  + card bounds (diag ≤ N via `card_le_card_of_injOn` Prod.fst; rest ≤ N²).
+- `minCosineSum_sidon_le`: **minCosineSum A ≤ −√(N/5)/4 for nonempty Sidon A, 0∉A** —
+  Chowla's conjectured √N rate on the Sidon class (second class after sum-free #42106,
+  independent fourth-moment mechanism). Plus existential form
+  `exists_angle_sidon_cosineSum_le`.
+
+★Lean gotchas (cost one debug cycle): (1) **binop cast leaf-pushing**: writing
+`(((c:ℤ)+(d:ℤ)) : ℝ)` in a lambda elaborates to `↑↑c + ↑↑d` (casts pushed to leaves), which
+does NOT match `((q:ℤ):ℝ)` compound casts from lemmas keyed by `q : ℤ` (not defeq!) —
+`set j : ℤ := (c:ℤ)+(d:ℤ) with hj` and writing `(j:ℝ)` everywhere fixes all matches (also
+folds the statement's ite conditions). (2) `Continuous.mul` of two cos-lambdas then
+`.const_mul` fails to unify with the ascribed pointwise lambda — bind the product continuity
+in its own ascribed `have hcont : Continuous (fun θ => ...)` first. (3) `field_simp` alone
+closes `π³N³/(5πN²) = π²(N/5)` — a trailing `ring` errors "no goals". (4) `dsimp only at hp ⊢`
+after `rintro ⟨c,d⟩` reduces `(c,d).1` projections so `if_pos`/`rw` match.
+
+### Remaining open (unchanged)
+- The GENERAL −c√N (all sets; Bourgain/Ruzsa/Bedert N^{1/7}) stays the registered deep
+  blocker — both structured classes (sum-free, Sidon) are now done at the conjectured rate.
+- Possible small follow-ups: Sidon example sets (e.g. `{1,2,5,11}`-style or Singer/Erdős–Turán
+  constructions) as concrete instances; sharpening constants. Low value vs. effort.
+
 ## Session 2026-07-24b (researcher-2) — L¹–L⁴ analytic engine for the Sidon route (session 1 of 2)
 
 Added 4 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean`

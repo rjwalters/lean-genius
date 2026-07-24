@@ -43,9 +43,15 @@ infimum is fully provable from Mathlib.  This file establishes:
   (`pow_three_second_moment_le`, Cauchy–Schwarz twice through `∫|f|³`), and
   their combination `minCosineSum_le_neg_sqrt_of_fourth_moment`: any
   fourth-moment bound `∫f⁴ ≤ B` yields
-  `minCosineSum A ≤ −√(π³N³/B)/(4π)`.  The remaining *combinatorial* step —
-  the Sidon (`B₂[1]`) quadruple count `∫f⁴ = O(N²)` — will instantiate `B`
-  and give Chowla's `−c√N` on the Sidon class.
+  `minCosineSum A ≤ −√(π³N³/B)/(4π)`;
+* **Chowla's `√N` bound for Sidon sets**: the `ℤ`-frequency orthogonality
+  `∫cos(jθ)cos(kθ) = π([j=k] + [j=−k])`, the exact Fourier expansion of `f²`,
+  the Sidon (`B₂[1]`) counting lemmas (≤ 2 pairs per sum, ≤ 1 per nonzero
+  difference), the fourth-moment count `∫f⁴ ≤ 5π·N²`
+  (`integral_cosineSum_pow_four_le`), and the resulting
+  `minCosineSum A ≤ −√(N/5)/4` (`minCosineSum_sidon_le`) — the conjectured
+  `√N` growth rate on the *second* structured class, by a fourth-moment
+  mechanism independent of the sum-free third-moment argument.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
 `−c√N` lower bound for *general* sets (those with additive structure, where
