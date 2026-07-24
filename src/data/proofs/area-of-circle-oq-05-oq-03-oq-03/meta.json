@@ -35,7 +35,8 @@
       "Translation in space ↦ modulation in frequency: sliding the Gaussian by a multiplies its transform by the pure phase e^{ita}, leaving the magnitude untouched.",
       "Modulation in space ↦ translation in frequency: twisting the Gaussian by e^{iax} simply shifts its transform t ↦ t+a. These are the two halves of the Fourier shift theorem, dual under the inverse transform.",
       "No new analysis is needed beyond the parent: translation is handled by Lebesgue translation-invariance (integral_sub_right_eq_self) after pulling out the constant phase, and modulation by merging exponentials and re-using the parent at a shifted frequency.",
-      "The cast subtlety (x:ℂ)-a vs ↑(x-a) must be bridged with integral_congr_ae before the translation-invariance lemma will fire — a recurring practical point when combining ℝ→ℂ coercions with measure-theoretic rewrites."
+      "The cast subtlety (x:ℂ)-a vs ↑(x-a) must be bridged with integral_congr_ae before the translation-invariance lemma will fire — a recurring practical point when combining ℝ→ℂ coercions with measure-theoretic rewrites.",
+      "Translation and modulation are the Fourier-theoretic shadow of Pontryagin duality for ℝ: the characters of the additive group ℝ are exactly the phases x ↦ e^{iax}, and the shift theorem says the group ℝ acts on itself in physical space (translation) and, dually, on its own character group in frequency space (modulation) — the Fourier transform literally interchanges these two actions. The dilation sibling (area-of-circle-oq-05-oq-03-oq-01) supplies the orthogonal, magnitude-changing symmetry (width inversion, no phase); together the two describe the full symmetry group acting on the Gaussian under the transform."
     ],
     "prerequisites": [
       "area-of-circle-oq-05-oq-03 — the Gaussian Fourier self-duality ∫ e^{itx} e^{-x²/2} = e^{-t²/2}√(2π) (reproved here)",
@@ -99,6 +100,11 @@
       "targetId": "area-of-circle-oq-05-oq-03",
       "relationship": "extends",
       "description": "Parent: the Gaussian is its own Fourier transform. This entry adds the translation/modulation behaviour and recovers the parent as the a=0 case."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Sibling: proves the dilation/width-inversion symmetry of the Gaussian Fourier transform (magnitude-changing, phase-free). Together with this entry's phase symmetry (translation/modulation, magnitude-preserving) the two describe the full affine symmetry group acting on the Gaussian under the transform."
     },
     {
       "targetId": "central-limit-theorem",
