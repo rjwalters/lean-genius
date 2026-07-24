@@ -58,7 +58,7 @@
     "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "In 1955, while still a graduate student, Hillel Furstenberg published a one-paragraph note in the American Mathematical Monthly giving a topological proof of the infinitude of primes. It is one of the most celebrated 'proofs from THE BOOK': it recasts an ancient number-theoretic fact as a statement about a cleverly chosen topology on the integers. The proof does not produce primes (as Euclid's does) but instead shows that finitely many primes are topologically impossible.",
+    "historicalContext": "In May 1955, Hillel Furstenberg — then still an undergraduate at Yeshiva University — published a one-paragraph note titled 'On the Infinitude of Primes' in the American Mathematical Monthly, giving a topological proof of the ancient theorem. It is one of the most celebrated 'proofs from THE BOOK': it recasts a number-theoretic fact as a statement about a cleverly chosen topology on the integers, producing a proof by contradiction rather than Euclid's constructive argument. The proof attracted renewed scrutiny five decades later: Idris Mercer's 2009 Monthly note 'On Furstenberg's Proof of the Infinitude of Primes' rewrote the argument in purely arithmetic terms, without topological language, arguing that the real force behind the proof is a property of arithmetic progressions rather than a genuinely topological phenomenon — a debate this formalization sidesteps by verifying the topology axioms directly rather than assuming them away.",
     "problemStatement": "Theorem (Furstenberg, 1955): There are infinitely many prime numbers, proved topologically.\n\nEquip ℤ with the evenly spaced integer topology, whose basic open sets are the two-sided arithmetic progressions (residue classes) R(a,d) = {x | d ∣ (x − a)} with d > 0. Each residue class is both open and closed, and every nonempty open set is infinite. Then the set A of integers with a prime factor equals ⋃_{p prime} R(0,p), and its complement is {−1, 1}. If there were finitely many primes, A would be closed, forcing {−1, 1} to be a nonempty finite open set — a contradiction.",
     "text": "A 204-line, 0-axiom formalization of Furstenberg's topological proof (a 'Proof from THE BOOK'). Rather than registering an instance of TopologicalSpace ℤ — which would collide with Mathlib's standard one — the entry works with the open-set predicate IsOpenAP directly and verifies the three topology axioms (isOpenAP_univ, isOpenAP_inter, isOpenAP_sUnion). Residue classes R(a,d) are shown clopen (isOpenAP_residue, isClosedAP_residue) from a single shift-stability observation, and nonempty open sets are shown infinite (IsOpenAP.infinite_of_nonempty) by injecting the progression n ↦ x + n·d. The finale infinitude_of_primes identifies ⋃_{p∈P} R(0,p) with {x | x.natAbs ≠ 1}, so its complement {−1, 1} would be open and finite if the prime set P were finite — impossible. The argument deliberately avoids Mathlib's Nat.infinite_setOf_prime, using only Nat.exists_prime_and_dvd, so it is an independent proof of infinitude rather than a repackaging of Euclid's.",
     "proofStrategy": "1. Define IsOpenAP U: every point of U is surrounded by a full residue class contained in U. Verify it is a topology (univ, binary intersection via d = d₁·d₂, arbitrary union).\n2. Show every residue class R(a,d) with d > 0 is open, and closed (its complement is open by the same congruence-stability argument).\n3. Show every nonempty open set is infinite: it contains {x + n·d : n ∈ ℤ}, the injective image of ℤ.\n4. Show finite unions of closed sets are closed (induction over the Finset of primes).\n5. Assume the prime set P is finite. Then A = ⋃_{p∈P} R(0,p) is closed. Identify A = {x | x.natAbs ≠ 1} using Nat.exists_prime_and_dvd, so Aᶜ = {x | x.natAbs = 1} = {−1, 1}.\n6. As the complement of a closed set, Aᶜ is open; being nonempty it must be infinite. But {−1, 1} is finite. Contradiction, so the primes are infinite.",
@@ -156,6 +156,13 @@
       "year": "c. 300 BCE",
       "venue": "Classical geometry",
       "note": "The original (constructive) proof that the primes are infinite"
+    },
+    {
+      "authors": "Mercer, Idris D.",
+      "title": "On Furstenberg's Proof of the Infinitude of Primes",
+      "year": "2009",
+      "venue": "American Mathematical Monthly, 116(4), 355-356",
+      "note": "Recasts the argument in purely arithmetic terms without topological language, questioning how much genuine topology the proof needs"
     }
   ],
   "crossReferences": [
