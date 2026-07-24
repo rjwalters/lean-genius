@@ -41,7 +41,8 @@
       "The three invariances hold over an arbitrary commutative ring R, not just a field — conjugation by a *unit* matrix is all that is needed, so the results apply over ℤ and polynomial rings where invertible scalars are scarce",
       "Determinant and trace are (up to sign) the constant and subleading coefficients of the characteristic polynomial, so charpoly invariance already implies det and trace invariance — the bundle is coherent rather than three independent facts",
       "Packaging the conjugation as a named definition conj turns three separate Mathlib lemmas into a reusable 'similarity invariants' API and makes the textbook statement ∃U, N = U M U⁻¹ directly available",
-      "Similarity is the matrix-level shadow of 'same endomorphism in a different basis'; the invariants proved here are exactly the data that descends to the underlying linear map"
+      "Similarity is the matrix-level shadow of 'same endomorphism in a different basis'; the invariants proved here are exactly the data that descends to the underlying linear map",
+      "charpoly_conj alone needs an extra coercion rewrite: det_conj and trace_conj close in one line by unfolding conj and applying Mathlib's *_units_conj lemma directly, but charpoly_conj first needs rw [conj_apply, Matrix.coe_units_inv] to align U⁻¹.val (the coercion used in this file's conj definition) with the unit-inverse form Matrix.charpoly_units_conj expects — a small but real friction cost of building a named wrapper API over three Mathlib lemmas that don't share an identical calling convention"
     ],
     "prerequisites": [
       "Determinant: multiplicativity over a commutative ring",
