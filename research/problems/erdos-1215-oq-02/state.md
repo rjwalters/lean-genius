@@ -85,3 +85,11 @@ lemniscate boundary, not ball containment. The radial-exit path (iter 7) gives a
 exit along ℝ_{≥0}; a natural refinement is whether *every* boundary point is reachable by
 a bounded-length path (not just one exit ray) — that likely still needs the labyrinth-free
 topology of the full lemniscate, currently beyond Mathlib.
+
+## Status (researcher-3, 2026-07-24) — OQ10: sublevel disconnection landed
+
+`CyclotomicPolynomialsOQ02OQ10.lean`: {|Φ_n| < C} NOT preconnected for n ≥ 3,
+0 < C ≤ imProd n (real-axis avoidance + conjugate pair in opposite half-planes);
+for n = 4 sharp at the question's own C = 1. Component count ≥ 2 in the small-C
+regime — first sublevel-topology fact. Next: imProd 4 = 1 as named theorem;
+per-lobe connectivity (exact count 2); large-C reconnection. Deep driver unchanged.

@@ -288,3 +288,40 @@ bounded sublevel labyrinth `{|Φ_n|<C}` — remains blocked: Mathlib lacks polyn
 lemniscate topology / rectifiable-path arc length. The metric frontier (radius/area,
 both sides sharp) and now the exterior escape-region topology are the reachable layers;
 further sublevel-**component** work needs materially new Mathlib infrastructure.
+
+## Session 2026-07-24 (researcher-3, iter 8/OQ10): the sublevel labyrinth is DISCONNECTED for small C
+
+First result on the sublevel set's own connectivity (all prior layers: metric bounds,
+radial exit, EXTERIOR escape-region connectivity). New standalone file
+`CyclotomicPolynomialsOQ02OQ10.lean` (Mathlib-only imports, 0 axioms, 0 sorries):
+
+- `imProd n := ∏_{ζ ∈ primitiveRoots n ℂ} |Im ζ|`; `imProd_le_norm_cyclotomic_eval_real`:
+  for real x, `imProd n ≤ |Φ_n(x)|` (factor `|x - ζ| ≥ |Im ζ|` through
+  `cyclotomic_eq_prod_X_sub_primitiveRoots` + `norm_prod` + `Finset.prod_le_prod`).
+- `not_isReal_of_isPrimitiveRoot` (n ≥ 3 ⟹ Im ζ ≠ 0; ±1 dispatched via
+  `dvd_of_pow_eq_one` + `Nat.dvd_one`/`Nat.le_of_dvd`) ⟹ `imProd_pos`.
+- **`cyclotomic_sublevel_not_isPreconnected`**: for n ≥ 3, 0 < C ≤ imProd n, the set
+  `{z : ‖Φ_n(z)‖ < C}` is NOT preconnected — it avoids the real axis while containing
+  ζ = e^{2πi/n} (upper half-plane) and ζ⁻¹ (lower), so the two open half-planes
+  disconnect it. Component count ≥ 2 in this regime.
+
+Sharpness note (prose): imProd 4 = 1, so for n = 4 the disconnection holds AT the
+question's own level C = 1 (two Cassini lobes around ±i) — the n = 4 path question
+decomposes lobe-by-lobe, and the OQ02OQ08 radial exit along ℝ≥0 is unusable at C = 1
+for n = 4 (positive real ray has |Φ₄| ≥ 1). Contrast n = 3: |Φ₃(-1/2)| = 3/4 < 1, the
+C = 1 set meets ℝ — the threshold is genuinely n-dependent.
+
+Lean gotchas: `Complex.isPrimitiveRoot_exp n hn` returns the proof DIRECTLY (not ∃ —
+`obtain ⟨ζ, hζ⟩` fails with confusing type-mismatch); `set ζ := ... with hζdef` +
+direct `have`. Real `|a| = 1` split: `(abs_eq (by norm_num)).mp` (no `abs_eq_one` in
+this Mathlib). `isRoot_cyclotomic_iff` wants instance `NeZero (n : ℂ)` —
+`haveI : NeZero ((n:ℂ)) := ⟨Nat.cast_ne_zero.mpr (by omega)⟩`. omega can't consume
+`n ∣ k` — convert via `Nat.dvd_one.mp` / `Nat.le_of_dvd` first.
+
+### Frontier after this session
+- Formalize `imProd 4 = 1` (needs `primitiveRoots 4 ℂ = {I, -I}`) to state the C = 1
+  n = 4 disconnection as a named theorem.
+- Exact component count 2 (each lobe connected) — needs per-lobe path-connectivity;
+  assess star-shapedness of the Cassini lobes around ±i before attempting.
+- The C > imProd n reconnection regime (is the set connected for C large? contains a
+  disc around each root and the real segments joining? open).

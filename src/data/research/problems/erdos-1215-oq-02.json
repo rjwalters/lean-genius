@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED on deep maclane_labyrinth axiom (C>1 lemniscate topology, absent from Mathlib); registered as structured blocker 2026-07-20 (researcher-1). Axiom-free structural periphery actively extended by concurrent PRs #39256/#39332/#39350 (path/escape/symmetry corollaries) — orbiting the axiom, not reducing it. No session-sized axiom-elimination available until polynomial-lemniscate sublevel-set topology lands in Mathlib.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-24): first SUBLEVEL-connectivity result — {|Phi_n| < C} is disconnected (not preconnected, component count >= 2) for n >= 3, 0 < C <= imProd n = prod |Im zeta|; sharp at C = 1 for n = 4 (two Cassini lobes at the question own threshold). Mechanism: real-axis avoidance + conjugate-pair half-plane separation. All prior layers (metric sandwiches, radial exit, exterior escape region) unchanged; deep Mac Lane component-count driver still blocked on Mathlib lemniscate topology.",
     "builtItems": [
       "Erdos1215UnitCircleMonotone.lean (researcher-5, 2026-07-12, 0-axiom VERIFIED): monotone/membership block for the sublevel set as a function of the level C — closedLevelSet_mono (C1<=C2 => closedLevelSet P C1 subset closedLevelSet P C2), volume_closedLevelSet_mono (measure nondecreasing in C via measure_mono), isRoot_mem_closedLevelSet (roots in set for C>=0), zero_mem_closedLevelSet (0 in set for C>=1 via P(0)=1), closedLevelSet_nonempty (C>=1), levelSet_subset_closedLevelSet (open {|P|<C} subset closed {|P|<=C}). 6 thm [propext,Classical.choice,Quot.sound].",
       "eventually_levelSet_subset_closedBall (Erdos1215UnitCircleRadiusLimit.lean): for C>=1, eps>0, one degree threshold K confines the level set of EVERY unit-circle polynomial of degree>=K to closedBall 0 (2+eps) -- uniform confinement of the whole high-degree Mac Lane class (VERIFIED 0/0)",
@@ -60,7 +60,8 @@
       "norm_le_sharp_of_norm_eval_le / closedLevelSet / isClosed_closedLevelSet / isBounded_closedLevelSet / isCompact_closedLevelSet (Erdos1215UnitCircleRadius.lean): the closed sublevel set {z:|P(z)|≤C} of a positive-degree unit-circle polynomial is COMPACT (closed via continuity of |P|, bounded via sharp radius 1+C^{1/deg}, Heine–Borel in ℂ). Realizes the 'sublevel set is compact' nextStep. 0-axiom, verified lake env lean 4.26.0.",
       "Erdos1215UnitCircleRadius.lean inner-confinement (researcher-7, 2026-07-11, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound]): norm_eval_le_pow_add_one (dual upper bound |P(z)|≤(‖z‖+1)^deg from ‖z−r‖≤‖z‖+1 on each unit-circle root, via new multiset_prod_le_pow_card) and closedBall_subset_closedLevelSet (for C≥1, {z:|P(z)|≤C} CONTAINS closedBall(0,C^{1/deg}−1) since (‖z‖+1)^deg≤(C^{1/deg})^deg=C via Real.rpow_inv_natCast_pow). Sandwiches the sublevel set between radii C^{1/deg}∓1 — inner dual to the existing outer closedLevelSet_subset_closedBall. File 16→19 decls.",
       "Erdos1215UnitCircleArea.lean (NEW, 5 theorems, 0-axiom/0-sorry [propext,Classical.choice,Quot.sound]): volume_closedLevelSet_le (outer area ≤π(1+C^{1/deg})²), le_volume_closedLevelSet (inner area ≥π(C^{1/deg}−1)², C≥1), volume_closedLevelSet_lt_top (finite area, reuses isCompact_closedLevelSet via IsCompact.measure_lt_top), volume_closedLevelSet_ne_top, and real-valued toReal_volume_closedLevelSet_le / le_toReal_volume_closedLevelSet giving the same sandwich for area.toReal.",
-      "Erdos1215UnitCircleConjugation.lean: reflection (complex-conjugation) symmetry of sublevel sets. eval_conj (real-coeff P ⟹ P(z̄)=conj P(z) via Polynomial.eval₂_hom), norm_eval_conj, mem_closedLevelSet_conj/mem_levelSet_conj, closedLevelSet_conj_image/levelSet_conj_image (set = its own conj-image), cyclotomic_hasRealCoeffs (via Polynomial.map_cyclotomic), cyclotomic_closedLevelSet_conj_image/cyclotomic_levelSet_conj_image. 9 thm+1 def, 0-axiom [propext,Classical.choice,Quot.sound]."
+      "Erdos1215UnitCircleConjugation.lean: reflection (complex-conjugation) symmetry of sublevel sets. eval_conj (real-coeff P ⟹ P(z̄)=conj P(z) via Polynomial.eval₂_hom), norm_eval_conj, mem_closedLevelSet_conj/mem_levelSet_conj, closedLevelSet_conj_image/levelSet_conj_image (set = its own conj-image), cyclotomic_hasRealCoeffs (via Polynomial.map_cyclotomic), cyclotomic_closedLevelSet_conj_image/cyclotomic_levelSet_conj_image. 9 thm+1 def, 0-axiom [propext,Classical.choice,Quot.sound].",
+      "CyclotomicPolynomialsOQ02OQ10.lean (NEW, 181 lines, 6 theorems, 0 axioms, 0 sorries): imProd, imProd_le_norm_cyclotomic_eval_real, not_isReal_of_isPrimitiveRoot, imProd_pos, sublevel_avoids_real, cyclotomic_sublevel_not_isPreconnected"
     ],
     "insights": [
       "All roots of Phi_n lie on the unit circle (primitive n-th roots), so |Phi_n(z)| = prod_{mu prim} dist(z,mu) >= (|z|-1)^{phi(n)} -> inf: the cyclotomic lemniscate {|Phi_n|<C} is BOUNDED (compact) for EVERY C, explicit radius max 2 (C+1).",
@@ -69,7 +70,10 @@
       "The confinement radius argument is stable under passing from the open level set {|P|<C} to the closed sublevel set {|P|≤C}: the same pow_sub_one_le_norm_eval lower bound gives the ≤-variant of the sharp radius by monotone rpow, and continuity of z↦|P(z)| (P.continuous.norm) makes the sublevel set closed. Closed+bounded in the proper space ℂ ⟹ compact — supplying the compactness the path-geometry programme needs with no new analytic input.",
       "AREA SANDWICH (researcher-11, 2026-07-12): the outer/inner radius sandwich on the closed sublevel set {|P|≤C} of an IsUnitCirclePolynomial converts, via monotonicity of 2D Lebesgue volume on ℂ + Mathlib's Complex.volume_closedBall (= ENNReal.ofReal r^2 · π), into an EXPLICIT PLANAR-AREA sandwich: π·(C^{1/deg}−1)² ≤ area({|P|≤C}) ≤ π·(1+C^{1/deg})² for C≥1. Depends only on C and deg P, not the individual roots — a uniform quantitative bound on the Mac Lane labyrinth region.",
       "Cyclotomic rigidity has a clean geometric shadow: Φ_n has real (integer) coefficients, so its sublevel sets {|Φ_n(z)|≤C} and {|Φ_n(z)|<C} are exactly symmetric under reflection across the real axis (roots come in conjugate pairs). A general Mac Lane labyrinth need not respect this mirror symmetry — an orthogonal constraint to the radius/area/monotonicity sandwiches.",
-      "Deep frontier is the single maclane_labyrinth axiom (C>1 regime): needs polynomial-lemniscate / sublevel-set connected-component topology absent from Mathlib — a BUILD >1000 lines, correctly axiomatized. The axiom-free structural periphery (reflection/conjugation symmetry, radius/area/monotonicity, escape-to-infinity, radial-exit & escape-region path-connectivity) is being actively extended by concurrent PRs (#39256/#39332/#39350); adding further peripheral corollaries orbits the deep axiom without reducing it. Registered the deep route as a structured blocker (reopen: lemniscate topology in Mathlib)."
+      "Deep frontier is the single maclane_labyrinth axiom (C>1 regime): needs polynomial-lemniscate / sublevel-set connected-component topology absent from Mathlib — a BUILD >1000 lines, correctly axiomatized. The axiom-free structural periphery (reflection/conjugation symmetry, radius/area/monotonicity, escape-to-infinity, radial-exit & escape-region path-connectivity) is being actively extended by concurrent PRs (#39256/#39332/#39350); adding further peripheral corollaries orbits the deep axiom without reducing it. Registered the deep route as a structured blocker (reopen: lemniscate topology in Mathlib).",
+      "SUBLEVEL DISCONNECTION (researcher-3 2026-07-24): {|Phi_n| < C} is NOT preconnected for n >= 3 and 0 < C <= imProd n := prod over primitive roots of |Im zeta| — real-axis avoidance (|Phi_n(x)| >= imProd n for real x, per-factor |x - zeta| >= |Im zeta|) + conjugate root pair in opposite open half-planes",
+      "Sharp at the question level for n = 4: imProd 4 = 1, so the C = 1 sublevel set (the Erdos #1215 object itself) is two disjoint Cassini lobes around +-i; n = 3 contrasts (|Phi_3(-1/2)| = 3/4 < 1, set meets the real axis) — the disconnection threshold is genuinely n-dependent",
+      "First component-count fact for the cyclotomic labyrinth: count >= 2 in the small-C regime, complementing OQ02OQ09 (exterior = ONE connected escape region)"
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
@@ -141,6 +145,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215UnitCircleMonotone.lean"
+    },
+    {
+      "path": "Proofs/CyclotomicPolynomialsOQ02OQ10.lean",
+      "filename": "CyclotomicPolynomialsOQ02OQ10.lean",
+      "lineCount": 181,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CyclotomicPolynomialsOQ02OQ10.lean"
     }
   ],
   "lastUpdate": "2026-07-12"
