@@ -858,11 +858,15 @@ theorem density_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
     density A N ≤ density B N := by
   classical
   unfold density
+  have hsub : Finset.filter (fun x => @Decidable.decide (x ∈ A) (Classical.dec _))
+      (Finset.range (N + 1)) ⊆
+      Finset.filter (fun x => @Decidable.decide (x ∈ B) (Classical.dec _))
+      (Finset.range (N + 1)) := by
+    intro x hx
+    simp only [Finset.mem_filter, decide_eq_true_eq] at hx ⊢
+    exact ⟨hx.1, h hx.2⟩
   gcongr
-  refine Nat.cast_le.mpr (Finset.card_le_card ?_)
-  intro x hx
-  simp only [Finset.mem_filter, decide_eq_true_eq] at hx ⊢
-  exact ⟨hx.1, h hx.2⟩
+  exact_mod_cast Finset.card_le_card hsub
 
 /-- The conditional tail supremum `⨆ (_ : M ≥ N), density A M` is nonnegative
 (for `M < N` it is the junk value `sSup ∅ = 0`). -/
@@ -988,8 +992,8 @@ theorem liminfDensity_le_lowerDensity (A : Set ℕ) :
     have hle := ciInf_le (liminfTail_bddBelow A N) (max N N' - N)
     rwa [hplus] at hle
   have h2 : density A (max N N') ≤
-      ⨆ (_ : max N N' ≥ N'), density A (max N N') :=
-    (ciSup_pos (le_max_right N N')).ge
+      ⨆ (_ : max N N' ≥ N'), density A (max N N') := by
+    rw [ciSup_pos (le_max_right N N')]
   have h3 : (⨆ (_ : max N N' ≥ N'), density A (max N N')) ≤
       ⨆ (M : ℕ) (_ : M ≥ N'), density A M :=
     le_ciSup hbddSup (max N N')
