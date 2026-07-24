@@ -88,12 +88,20 @@
   },
   "sections": [
     {
-      "id": "overview",
-      "title": "Overview: closing the last case S₄",
+      "id": "header-docstring",
+      "title": "Header Docstring: Closing the Last Case S₄",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Header docstring and imports. Recalls the parent's solvable-side results (the reduction Aₙ⟹Sₙ and S₂, S₃ via prime-order alternating groups) and frames the two open questions resolved here: A₄ solvable (the one case order 12 leaves open) and the packaged equivalence Sₙ solvable ⟺ n ≤ 4. Imports the parent Proofs.AbelRuffiniOQ06.",
+      "endLine": 45,
+      "summary": "Imports Mathlib and the parent Proofs.AbelRuffiniOQ06. The module docstring recalls the parent's solvable-side results (the reduction Aₙ⟹Sₙ and S₂, S₃ via prime-order alternating groups) and frames the two open questions resolved here: A₄ solvable (the one case order 12 leaves open) and the packaged equivalence Sₙ solvable ⟺ n ≤ 4. Records the axiom status: 0 sorries, 0 axioms, #print axioms reports only the foundational trio.",
       "mathContext": "Abel–Ruffini threshold $S_n$ solvable $\\iff n \\le 4$. This file closes the last solvable case $n = 4$ by proving $A_4$ (order $12$) solvable, then packages the full biconditional."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Notation Setup",
+      "startLine": 47,
+      "endLine": 50,
+      "summary": "Opens namespace AbelRuffiniOQ06OQ01 and `open Equiv`, bringing the permutation-group notation (Equiv.Perm) into scope for the theorems that follow.",
+      "mathContext": "Purely organizational: scopes the three theorems below under the file's namespace and unlocks unqualified `Perm` notation for $\\mathrm{Equiv.Perm}\\,(\\mathrm{Fin}\\ n)$."
     },
     {
       "id": "a4-solvable",
