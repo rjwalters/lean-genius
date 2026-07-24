@@ -532,3 +532,53 @@ default 200000-heartbeat elaboration budget up to 2^10 subsets x ~230 targets;
 the single 2^11 run (224, 11 proper divisors, no 10-coin sub-family covers)
 needs `set_option maxHeartbeats 800000`. Budget scales with 2^|S| x m — plan
 t = 9 coin chains at |S| <= 10 where possible, or expect heartbeat bumps.
+
+## Session 2026-07-24 (researcher-2) — restricted lower engine; exact values at d > 12: 210, 240 (blocked pair), 168/180 (octave floor), 252
+
+The "restricted lower engine that does not exist" (last session's blocker for
+every d > 12 exact value) now exists, and is nearly free: to certify
+`t ≤ repLength m k` one need not search all 2^d divisor subsets — only refute
+witnesses of cardinality BELOW t, i.e. the graded slices
+`(divisors m).powersetCard s` for s < t, at cost C(d,0)+...+C(d,t-1).
+`le_repLength_of_no_small_subset` / `le_hErdos_of_no_small_subset`; soundness
+is exactly `repLength_spec'` (the minimum is attained, so a value < t would
+put an attaining witness in a searched slice). For 240 at t = 5 this is 6,196
+subsets instead of 2^20 = 1,048,576 — the asymmetry with the upper side is
+now symmetric in cost: sub-family chains for uppers, graded slices for lowers.
+
+Exact values pinned (all 0-axiom, le_antisymm of existing upper + new lower):
+
+* `hErdos 210 = 5`, `hErdos 240 = 5` — the two flagship blocked targets.
+  Each has a UNIQUE hard target (209 resp. 237). 240 is the least number of
+  any kind with 20 divisors, yet its index ties 32 = 2^5.
+* `hErdos 168 = 4`, `hErdos 180 = 4` — the index-4 FLOOR of [128,256)
+  (Python DP: every other practical in the octave is ≥ 5). Tight sub-family
+  uppers: 168 via an 11-coin chain {1,2,3,4,6,12,21,28,42,56,84}; 180 has NO
+  ≤11-coin chain at t = 4 (exhaustively checked offline) — the 12-coin chain
+  {1,2,3,6,9,10,18,20,30,45,60,90} is minimal, 2^12 × 180 search,
+  maxHeartbeats 3200000, heaviest decide in the file.
+* `hErdos 252 = 5` — doubling a floor member can cost the full subadditive
+  unit (126 is on the [64,128) floor; hErdos(2·126) ≤ 1+4 is TIGHT).
+
+Structural picture (octave floors under doubling): the [64,128) floor is SIX
+practicals {72, 84, 90, 96, 120, 126} (Python; 72/96/120 exact values not yet
+formalized — only 84 ≤ 5, 90 = 4, 126 = 4 are on file, and 84's tight value 4
+is NOT yet in Lean either). The [128,256) floor is exactly {168, 180} = the
+doublings of 84 and 90; the other four doublings rise to 5 (240, 252 now
+formal; 144, 192 Python-only). The floor thins 6 → 2 under doubling.
+
+Costs (calibration for t = 9): graded-slice lower decides are trivial —
+C(16,≤4) = 2517 (210), C(20,≤4) = 6196 (240), C(18,≤3) = 988 (180) all run at
+maxRecDepth 40000, default heartbeats. Sub-family upper 2^11 × 168 fits
+maxHeartbeats 800000; 2^12 × 180 needs 3200000.
+
+NEXT: (a) octave [128,256) exact-value completion is now unblocked — remaining
+d ≤ 12 targets (140, 150, 156, 160, 162, 176, 196, 198, 200, 204, 208, 220,
+224, 228, 234) are all cheap with the graded-slice engine (lowers) + existing
+uppers; 132, 144, 192, 216 need tight uppers first (144: exact 5 vs upper 6;
+192: exact 5 vs 6; 216: exact 5 vs 6; 132: exact 5 = upper 5 ✓ lower only).
+(b) t = 9 rung [256,512): threshold needs uppers only (splits + sub-family
+chains); the graded-slice engine now covers any hard-target lower bound the
+record proof might want. (c) previous-octave floor completion (72, 84, 96,
+120 exact values) is cheap and would make the 6 → 2 thinning fully formal.
+Deep Vose bound unchanged.

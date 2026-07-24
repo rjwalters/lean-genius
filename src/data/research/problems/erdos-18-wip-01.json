@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..8 (minimal_hErdos_two..eight, all 0-axiom); STRUCTURAL: local uniqueness of the record returns at t=7 (128 alone below 256) after failing at t=6; new sub-family upper engine hErdos_le_of_witnesses_from unblocks d(210)=16/d(240)=20; next rung t=9 needs [256,512) sweep with unsplittable census first",
+    "progressSummary": "PROGRESS: restricted lower engine (graded powersetCard slices, C(d,<t) vs 2^d) closes last session's blocker; exact values hErdos 168=4, 180=4 (octave floor), 210=5, 240=5 (blocked pair), 252=5 all 0-axiom. Record sequence 2^t for t=1..8 unchanged; t=9 rung and octave exact-value completion now fully unblocked.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -79,7 +79,10 @@
       "24 octave upper bounds hErdos_onethirtytwo_le .. hErdos_twofiftytwo_le (7 subadditive splits + 17 tight sub-family engine runs) in Erdos18WIP01.lean",
       "hErdos_le_six_of_lt_twofiftysix_of_ne + hErdos_le_seven_of_lt_twofiftysix (octave thresholds, 128-case interval_cases sweep) in Erdos18WIP01.lean",
       "minimal_hErdos_eight : IsLeast {m | IsPractical m and hErdos m = 8} 256 in Erdos18WIP01.lean",
-      "record_index_seven_locally_unique + twofiftysix_practical + hErdos_twofiftysix in Erdos18WIP01.lean"
+      "record_index_seven_locally_unique + twofiftysix_practical + hErdos_twofiftysix in Erdos18WIP01.lean",
+      "le_repLength_of_no_small_subset / le_hErdos_of_no_small_subset (restricted lower engine, graded powersetCard slices) in Erdos18WIP01.lean",
+      "hErdos_twohundredten (=5), hErdos_twoforty (=5), hErdos_onesixtyeight (=4), hErdos_oneeighty (=4), hErdos_twofiftytwo (=5) exact values + lower bounds + tight uppers hErdos_onesixtyeight_le_four / hErdos_oneeighty_le_four",
+      "Practicality lemmas: onetwenty_practical, twoforty_practical, eightyfour_practical, onesixtyeight_practical, oneeighty_practical, twofiftytwo_practical"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -121,7 +124,12 @@
       "Octave [128,256) census: 25 practicals; 15 fall to the 2*m-prime split, 10 practically-unsplittable (140,150,162,196,198,204,210,220,228,234); 7 splittable ones still need the engine for tight bounds because the crude split lands at 7",
       "Sub-family engine unblocks large divisor counts: d(210)=16 and d(240)=20 make the full-powerset witness decide infeasible, but greedy-pruned coin chains of 8-11 divisors certify the tight bound at 2^8..2^11 subsets; sub-families found by Python min-card DP with random-restart greedy pruning",
       "No restricted LOWER engine is possible by the same trick: an upper bound needs one witness family, a lower bound must search ALL of divisors m, so exact values for d>12 numbers in [128,256) stay open",
-      "Threshold decide depth scales linearly with octave top: maxRecDepth 40000 for (32,64), 80000 for (64,128), 200000 for (128,256)"
+      "Threshold decide depth scales linearly with octave top: maxRecDepth 40000 for (32,64), 80000 for (64,128), 200000 for (128,256)",
+      "Restricted lower engine: t <= repLength m k needs only refutation of witnesses of card < t — graded powersetCard slices cost C(d,<t) not 2^d (240: 6196 vs 1048576 subsets); soundness = repLength_spec' attainment",
+      "hErdos 210 = 5 and hErdos 240 = 5 (unique hard targets 209/237): both previously-blocked d>12 exact values; 240 is the least number with 20 divisors yet ties 32 = 2^5",
+      "Index-4 floor of [128,256) is exactly {168, 180} = doublings of 84, 90; the [64,128) floor {72,84,90,96,120,126} thins 6 -> 2 under doubling; 240/252 rises formalized, 144/192 Python-only",
+      "hErdos 252 = 5: subadditive hErdos(2*126) <= 1+4 is TIGHT — doubling a floor member can cost the full unit (contrast 200 = 2*100 which drops)",
+      "180 tight upper needs a 12-coin chain (no <=11-coin sub-family covers at t=4, exhaustively checked); 2^12 x 180 decide fits maxHeartbeats 3200000"
     ],
     "mathlibGaps": [],
     "nextSteps": [
