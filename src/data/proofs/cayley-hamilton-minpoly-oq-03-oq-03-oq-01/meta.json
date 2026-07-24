@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Docstring: supplies the converse the parent entry takes for granted -- that the companion matrix C(μ_M) really has μ_M as both its minimal and characteristic polynomial. Lists the four results (Krylov sequence = standard basis, p(C) = 0, μ_C = p, χ_C = p) and notes the determinant-free proof route via the cyclic vector and Cayley-Hamilton rather than cofactor expansion of det(X·I - C). Self-contained: imports only Mathlib.LinearAlgebra.Matrix.Charpoly.{Minpoly,Basic} and Mathlib.Tactic.",
+      "mathContext": "The nonderogatory conclusion μ_C = χ_C = p is exactly the fact that makes companion p the canonical target the parent's similarity P⁻¹·M·P = C(μ_M) conjugates into."
+    },
+    {
       "id": "part-i-krylov-infrastructure",
       "title": "Part I: Krylov Infrastructure",
       "startLine": 63,
