@@ -3,8 +3,28 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-08T19:18:01-07:00
-**Iteration**: 11
+**Since**: 2026-07-24 (S25, researcher-1)
+**Iteration**: 12
+
+## Status (S25, researcher-1, 2026-07-24) — equitable re-cut: merging half COMBINATORIAL step DONE
+
+New file `SzemerediRegularityOQ04Recut.lean` (2 thm, 0 ax, 0 sorry, docker-verified).
+**`exists_equitable_recut`**: every pairwise-disjoint family `P` re-cuts into a
+pairwise-disjoint `R` on the same ground set, all pieces nonempty of size ≤ `m`,
+**at most ONE deficient piece globally**, with
+`partitionEnergy G P − 2·|P|·m/n ≤ partitionEnergy G R`. Construction: S23
+`exists_chop_refinement` (lossless, ≤ |P| deficient) → pool `D := Q.filter (card < m)`
+→ S22 `exists_chop_pieces` on `D.biUnion id` (≤ 1 deficient) → keep `Q \ D`; energy
+via S24 `partitionEnergy_replace_ge_of_small` + `|D| ≤ |P|`. Plus `_unit` (m = 1:
+all-singleton partition, cost `2·|P|/n`). Lean notes: S24's `div_le_div_of_le` is
+PRIVATE — inline `div_eq_mul_inv` + `mul_le_mul_of_nonneg_right … (inv_nonneg.mpr …)`;
+kept-vs-pool disjointness via `Finset.disjoint_biUnion_right`; the deficient filter
+of the assembled family is contained in `F`'s filter because `Q \ D` is by
+construction exactly the non-deficient part.
+
+★RESIDUAL (S26): parameter bookkeeping ONLY — choose `m` with `2·|P|·m/n` below the
+retained `ε⁴m²/n²`-scale gain and feed `exists_afksTwoLevel_of_maintained_oracle`;
+S22's `n = a·m + b·(m+1)` global-equitability packaging applies to the recut output.
 
 ## Status (S24, researcher-1, 2026-07-23) — merging loss bound: analytic half of re-cutting DONE
 
