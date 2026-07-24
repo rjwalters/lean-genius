@@ -1870,4 +1870,154 @@ theorem sidonNumber_sqrt_bracket {N : ℕ} (hN : 32 ≤ N) :
     Real.sqrt N / 4 ≤ (sidonNumber N : ℝ) ∧ (sidonNumber N : ℝ) ≤ Real.sqrt (2 * N) + 1 :=
   ⟨sidonNumber_ge_real hN, sidonNumber_le_real N⟩
 
+/- ### The reduction layer: ε-monotone bounds and the shape of the conjecture
+
+`Erdos30Problem.lean` defines the upper-bound family `RequiredUpperBound ε`
+(`h(N) ≤ √N + C·N^ε` for all `N ≥ 1`) and states the $1000 conjecture
+`Erdos30Conjecture` (`|h(N) − √N| ≤ C·N^ε` eventually, for every `ε > 0`),
+but leaves the reduction argument as a comment sketch.  This section
+formalizes that layer:
+
+* `requiredUpperBound_mono` / `requiredLowerBound_mono` — a bound with error
+  exponent `ε₀` propagates to every exponent `ε ≥ ε₀` (for `N ≥ 1` we have
+  `N^{ε₀} ≤ N^ε`), so a single sub-`1/4` improvement upgrades all larger
+  exponents at once.
+* `RequiredLowerBound ε` — the matching lower-bound family
+  (`√N − C·N^ε ≤ h(N)`), the Singer side of the conjecture.
+* `erdos30ConjectureAt_of_bounds` — at any single `ε`, the upper and lower
+  families combine into the conjecture's two-sided eventual bound
+  `Erdos30ConjectureAt ε`; `erdos30Conjecture_of_bounds` assembles the full
+  conjecture from the two families over all `ε > 0`.
+* `erdos30Conjecture_of_stronger` — the `O(1)` conjecture implies the `N^ε`
+  conjecture.
+* `requiredUpperBound_half` / `erdos30ConjectureAt_half` — the proved bracket
+  `√N/4 ≤ h(N) ≤ √(2N) + 1` settles the `ε = 1/2` instance unconditionally
+  (`C = √2` on the upper side; the lower side is trivial at `ε = 1/2` since
+  `√N − N^{1/2} = 0`).  The open content of the conjecture thus lives
+  strictly below `ε = 1/2` — and below `1/4` after Erdős–Turán (1941). -/
+
+/-- The conjecture's two-sided eventual bound at a single exponent `ε`:
+there are `C > 0` and `N₀` with `|h(N) − √N| ≤ C·N^ε` for all `N ≥ N₀`.
+`Erdos30Conjecture` is definitionally `∀ ε > 0, Erdos30ConjectureAt ε`
+(see `erdos30Conjecture_iff_forall`). -/
+def Erdos30ConjectureAt (ε : ℝ) : Prop :=
+  ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N ≥ N₀,
+    |(sidonNumber N : ℝ) - Real.sqrt N| ≤ C * N ^ ε
+
+/-- The `N^ε` conjecture is exactly the family of single-exponent bounds. -/
+theorem erdos30Conjecture_iff_forall :
+    Erdos30Conjecture ↔ ∀ ε : ℝ, ε > 0 → Erdos30ConjectureAt ε :=
+  Iff.rfl
+
+/-- The matching lower-bound family: `√N − C·N^ε ≤ h(N)` for all `N ≥ 1`.
+This is the (Singer) lower side of the conjecture, mirroring
+`RequiredUpperBound`; Singer's projective-plane construction is expected to
+realize it for every `ε > 0`, but only `ε = 1/2` is formalized here
+(trivially — see `erdos30ConjectureAt_half`). -/
+def RequiredLowerBound (ε : ℝ) : Prop :=
+  ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
+    Real.sqrt N - C * (N : ℝ) ^ ε ≤ (sidonNumber N : ℝ)
+
+/-- Error-exponent monotonicity for the upper family: since `N^{ε₀} ≤ N^ε`
+for `N ≥ 1` and `ε₀ ≤ ε`, a `√N + C·N^{ε₀}` upper bound propagates verbatim
+to every larger exponent.  A single sub-`1/4` improvement therefore settles
+the whole range above its exponent. -/
+theorem requiredUpperBound_mono {ε₀ ε : ℝ} (hε : ε₀ ≤ ε)
+    (h : RequiredUpperBound ε₀) : RequiredUpperBound ε := by
+  obtain ⟨C, hC, hbd⟩ := h
+  refine ⟨C, hC, fun N hN => ?_⟩
+  have h1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hpow : (N : ℝ) ^ ε₀ ≤ (N : ℝ) ^ ε :=
+    Real.rpow_le_rpow_of_exponent_le h1 hε
+  have h2 : C * (N : ℝ) ^ ε₀ ≤ C * (N : ℝ) ^ ε :=
+    mul_le_mul_of_nonneg_left hpow hC.le
+  have h3 := hbd N hN
+  linarith
+
+/-- Error-exponent monotonicity for the lower family. -/
+theorem requiredLowerBound_mono {ε₀ ε : ℝ} (hε : ε₀ ≤ ε)
+    (h : RequiredLowerBound ε₀) : RequiredLowerBound ε := by
+  obtain ⟨C, hC, hbd⟩ := h
+  refine ⟨C, hC, fun N hN => ?_⟩
+  have h1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hpow : (N : ℝ) ^ ε₀ ≤ (N : ℝ) ^ ε :=
+    Real.rpow_le_rpow_of_exponent_le h1 hε
+  have h2 : C * (N : ℝ) ^ ε₀ ≤ C * (N : ℝ) ^ ε :=
+    mul_le_mul_of_nonneg_left hpow hC.le
+  have h3 := hbd N hN
+  linarith
+
+/-- Assembly at a single exponent: an upper bound `h(N) ≤ √N + C₁·N^ε` and a
+lower bound `√N − C₂·N^ε ≤ h(N)` combine into the two-sided bound
+`|h(N) − √N| ≤ max C₁ C₂ · N^ε`. -/
+theorem erdos30ConjectureAt_of_bounds {ε : ℝ}
+    (hub : RequiredUpperBound ε) (hlb : RequiredLowerBound ε) :
+    Erdos30ConjectureAt ε := by
+  obtain ⟨C₁, hC₁, h₁⟩ := hub
+  obtain ⟨C₂, hC₂, h₂⟩ := hlb
+  refine ⟨max C₁ C₂, lt_max_iff.mpr (Or.inl hC₁), 1, fun N hN => ?_⟩
+  have hpow : (0 : ℝ) ≤ (N : ℝ) ^ ε := Real.rpow_nonneg (Nat.cast_nonneg N) ε
+  have hm1 : C₁ * (N : ℝ) ^ ε ≤ max C₁ C₂ * (N : ℝ) ^ ε :=
+    mul_le_mul_of_nonneg_right (le_max_left _ _) hpow
+  have hm2 : C₂ * (N : ℝ) ^ ε ≤ max C₁ C₂ * (N : ℝ) ^ ε :=
+    mul_le_mul_of_nonneg_right (le_max_right _ _) hpow
+  rw [abs_sub_le_iff]
+  exact ⟨by linarith [h₁ N hN], by linarith [h₂ N hN]⟩
+
+/-- **The reduction theorem**: the full `N^ε` conjecture follows from the two
+`ε`-families of one-sided bounds.  Combined with the monotonicity lemmas this
+is the precise sense in which the conjecture reduces to small-`ε` one-sided
+improvements — the upper family below `1/4` (open since Erdős–Turán 1941) and
+the lower family below the Singer error exponent. -/
+theorem erdos30Conjecture_of_bounds
+    (hub : ∀ ε : ℝ, ε > 0 → RequiredUpperBound ε)
+    (hlb : ∀ ε : ℝ, ε > 0 → RequiredLowerBound ε) :
+    Erdos30Conjecture :=
+  fun ε hε => erdos30ConjectureAt_of_bounds (hub ε hε) (hlb ε hε)
+
+/-- The stronger `h(N) = √N + O(1)` conjecture implies the `N^ε` conjecture:
+a constant error is dominated by `C·N^ε` as soon as `N ≥ 1` (where
+`N^ε ≥ 1`). -/
+theorem erdos30Conjecture_of_stronger (h : StrongerConjecture) :
+    Erdos30Conjecture := by
+  obtain ⟨C, hC, hbd⟩ := h
+  intro ε hε
+  refine ⟨C, hC, 1, fun N hN => ?_⟩
+  have h1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hpow : (1 : ℝ) ≤ (N : ℝ) ^ ε := by
+    calc (1 : ℝ) = (N : ℝ) ^ (0 : ℝ) := (Real.rpow_zero _).symm
+      _ ≤ (N : ℝ) ^ ε := Real.rpow_le_rpow_of_exponent_le h1 hε.le
+  have h2 : C ≤ C * (N : ℝ) ^ ε := le_mul_of_one_le_right hC.le hpow
+  have h3 := hbd N
+  linarith
+
+/-- The `ε = 1/2` instance of the upper family holds unconditionally, with
+`C = √2`: from the counting bound `h(N) ≤ √(2N) + 1 = √2·√N + 1` and
+`1 ≤ √N` (for `N ≥ 1`) we get `h(N) ≤ √N + √2·N^{1/2}`. -/
+theorem requiredUpperBound_half : RequiredUpperBound (1 / 2) := by
+  refine ⟨Real.sqrt 2, Real.sqrt_pos.mpr (by norm_num), fun N hN => ?_⟩
+  have h1 : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hsq : (1 : ℝ) ≤ Real.sqrt N := by
+    rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
+    exact Real.sqrt_le_sqrt h1
+  have hrp : (N : ℝ) ^ ((1 : ℝ) / 2) = Real.sqrt N := (Real.sqrt_eq_rpow _).symm
+  have hub := sidonNumber_le_real N
+  have h2N : Real.sqrt (2 * N) = Real.sqrt 2 * Real.sqrt N :=
+    Real.sqrt_mul (by norm_num) _
+  rw [hrp]
+  rw [h2N] at hub
+  linarith
+
+/-- The `ε = 1/2` instance of the conjecture's two-sided bound is settled
+unconditionally by the proved bracket: `|h(N) − √N| ≤ √2·N^{1/2}` for
+`N ≥ 1`.  The lower side is trivial at this exponent (`√N − N^{1/2} = 0`),
+so the genuinely open content of `Erdos30Conjecture` lives strictly below
+`ε = 1/2`. -/
+theorem erdos30ConjectureAt_half : Erdos30ConjectureAt (1 / 2) := by
+  refine erdos30ConjectureAt_of_bounds requiredUpperBound_half
+    ⟨1, one_pos, fun N hN => ?_⟩
+  have hrp : (N : ℝ) ^ ((1 : ℝ) / 2) = Real.sqrt N := (Real.sqrt_eq_rpow _).symm
+  rw [hrp, one_mul, sub_self]
+  exact Nat.cast_nonneg _
+
 end Erdos30
