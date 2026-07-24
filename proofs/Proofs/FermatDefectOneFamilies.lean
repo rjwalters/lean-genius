@@ -182,4 +182,50 @@ theorem defect_pos_witnesses_infinite :
     exact ⟨9 * (n + 2) ^ 3 + 1, 9 * (n + 2) ^ 4,
       defect_pos_witness_ge_two (n + 2) (by omega)⟩
 
+/-! ## Positive-sign-pinned infinitude at n = 3
+
+`defect_pos_witnesses_infinite` above shows the *sign-agnostic* witness set is
+infinite: its members come from the positive family, but the statement hides
+the sign inside the `FermatDefectWitness` disjunction. OQ-02 asks about each
+sign separately. The negative side is sign-pinned and infinite in
+`FermatDefectOneNegInfinitude.lean` (`defect_neg_witnesses_infinite`); here we
+add the missing positive-side counterpart, pinning `a³ + b³ = c³ + 1` in the
+set comprehension. (The ℤ sign-flip involution of `FermatDefectOneOQ06.lean`
+does not transport primitive ordered ℕ witnesses, so neither sign-pinned
+statement follows formally from the other.) -/
+
+/-- **Positive-sign infinitude at n = 3.** The set of `c` occurring in a
+primitive witness with defect exactly +1 (`a³ + b³ = c³ + 1`) is infinite —
+upgrading `fermat_defect_three_positive` (existence) to infinitude via the
+positive family. Together with `defect_neg_witnesses_infinite`
+(`FermatDefectOneNegInfinitude.lean`) this settles OQ-02 at n = 3 in its
+strongest form: EACH defect sign is realised by infinitely many primitive
+witnesses, with the sign pinned in the statement. -/
+theorem defect_pos_sign_witnesses_infinite :
+    {c : ℕ | ∃ a b : ℕ, 2 ≤ a ∧ a ≤ b ∧ b < c ∧
+      Nat.gcd (Nat.gcd a b) c = 1 ∧ a ^ 3 + b ^ 3 = c ^ 3 + 1}.Infinite := by
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun n : ℕ => 9 * (n + 2) ^ 4 + 3 * (n + 2))
+  · have hmono : StrictMono (fun n : ℕ => 9 * (n + 2) ^ 4 + 3 * (n + 2)) := by
+      apply strictMono_nat_of_lt_succ
+      intro n
+      show 9 * (n + 2) ^ 4 + 3 * (n + 2) < 9 * (n + 1 + 2) ^ 4 + 3 * (n + 1 + 2)
+      have hp : (n + 2) ^ 4 ≤ (n + 1 + 2) ^ 4 := Nat.pow_le_pow_left (by omega) 4
+      omega
+    exact hmono.injective
+  · intro n
+    set s := n + 2 with hs
+    show ∃ a b : ℕ, 2 ≤ a ∧ a ≤ b ∧ b < 9 * s ^ 4 + 3 * s ∧
+      Nat.gcd (Nat.gcd a b) (9 * s ^ 4 + 3 * s) = 1 ∧
+      a ^ 3 + b ^ 3 = (9 * s ^ 4 + 3 * s) ^ 3 + 1
+    have hx : (8 : ℕ) ≤ s ^ 3 := by
+      calc (8 : ℕ) = 2 ^ 3 := by norm_num
+        _ ≤ s ^ 3 := Nat.pow_le_pow_left (by omega) 3
+    have e2 : 2 * s ^ 3 ≤ s ^ 4 := by
+      calc 2 * s ^ 3 ≤ s * s ^ 3 := mul_le_mul_right' (by omega) (s ^ 3)
+        _ = s ^ 4 := by ring
+    refine ⟨9 * s ^ 3 + 1, 9 * s ^ 4, by omega, by omega, by omega, ?_, by ring⟩
+    rw [pos_family_gcd s]
+    exact Nat.gcd_one_left _
+
 end FermatDefectOne
