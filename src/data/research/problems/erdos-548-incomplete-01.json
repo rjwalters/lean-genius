@@ -2,7 +2,7 @@
   "slug": "erdos-548-incomplete-01",
   "title": "Complete proof of Erdős Problem #548: The Erdős-Sós Conjecture (6 sorries)",
   "phase": "NEW",
-  "status": "available",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "All 6 sorries in Proofs/Erdos548Problem.lean eliminated and Docker-build verified (3001 jobs). Proved: star_is_tree (via new starGraph_edgeFinset_card), sum_degrees_eq_twice_edges (Mathlib handshake), avg_degree_iff_edges (statement repaired with missing 1 <= k hypothesis - false at k=0 as stated), erdos_sos_implies_extremal (Type* -> Type restriction to match ErdosSosConjecture, csSup_le'), star_easier (pigeonhole degree >= k + orderIsoOfFin star embedding), erdos_548_status (Classical.em replacing Or.inl (by sorry) which had sorried the open conjecture itself). The 8 literature axioms are unchanged. PR #42136.",
+    "progressSummary": "COMPLETED / EXHAUSTED (researcher-3, 2026-07-23). The incomplete-01 6-sorry completion is done (PR #42136) and the sole extractable axiom (trivial_tree_bound) was proved earlier (#42732/#42744, axioms 8→7). The remaining 7 axioms are deep extremal-graph-theory literature results (Erdős–Gallai matching, Turán path numbers, and 4 person-named theorems) absent from Mathlib, so no axiom-free or axiom-eliminating work remains. Erdős–Sós itself is an open conjecture; the formalization is honestly axiomatized on the 7 literature results. Marked completed to stop the RICH/depth-first re-serve churn.",
     "builtItems": [
       "Erdos548Problem.lean: IsTree now delegates to Mathlib SimpleGraph.IsTree; tree_edge_count proved via IsTree.card_edgeFinset (axiom 9→8). Host-verified v4.31.0 EXIT=0.",
       "starGraph_edgeFinset_card: (starGraph k).edgeFinset.card = k via image-of-erase counting with card_image_of_injOn",
@@ -40,7 +40,8 @@
       "The local IsTree def (Connected ∧ ∀ v w, Adj v w → Reachable v w) was degenerate: the second conjunct holds for every graph, so IsTree meant Connected, making tree_edge_count false. Redefining IsTree := G.IsTree (Mathlib SimpleGraph.IsTree) both fixes the conjecture statements and makes tree_edge_count provable.",
       "avg_degree_iff_edges was FALSE at k=0 as originally stated (avgDegree > k-1 over Q is vacuous at k=0 while the edge bound is not); the missing 1 <= k hypothesis is required for provability.",
       "erdos_548_status previously read Or.inl (by sorry) - i.e. the file sorried the OPEN conjecture itself. Replaced with Classical.em, which is the honest formal content of an open-status disjunction.",
-      "Star embedding recipe: pigeonhole on the degree sum (sum_degrees_eq_twice_edges + Finset.sum_le_card_nsmul) yields a vertex of degree >= k; Finset.orderIsoOfFin on the neighbour set then gives the injective Fin (k+1) embedding, with Fin.cases splitting centre/leaf adjacency."
+      "Star embedding recipe: pigeonhole on the degree sum (sum_degrees_eq_twice_edges + Finset.sum_le_card_nsmul) yields a vertex of degree >= k; Finset.orderIsoOfFin on the neighbour set then gives the injective Fin (k+1) embedding, with Fin.cases splitting centre/leaf adjacency.",
+      "EXHAUSTION VERIFIED (researcher-3, 2026-07-23): the incomplete-01 target (complete the 6 sorries of Erdos548Problem.lean) is done (PR #42136), and the one extractable axiom trivial_tree_bound was already proved (#42732/#42744, 8→7 axioms). The remaining 7 axioms in Erdos548Problem.lean are all deep extremal-graph-theory literature results NOT in Mathlib: erdos_gallai_matching (Erdős–Gallai matching existence), turan_path_formula / path_extremal (Turán numbers for paths), komlos_sos_large_k, and the person-named brandt_dobson / sacle_wozniak / wang_li_liu. Mathlib Combinatorics/SimpleGraph/Acyclic.lean covers tree/acyclicity basics but none of these extremal bounds. Companion files (Erdos548Aristotle, Erdos548ProblemAristotle) have 0 real sorries. No axiom-free or axiom-eliminating progress remains — adding theorems atop the 7 deep axioms would be scaffolding, not formalization. Status available→completed to stop re-serve churn (parent Erdős–Sós is an open conjecture; the formalization is honestly axiomatized on the 7 literature results)."
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -66,5 +67,6 @@
   "started": "2026-07-09T00:00:00.000Z",
   "lastUpdate": "2026-07-09T00:00:00.000Z",
   "significance": 6,
-  "tractability": 4
+  "tractability": 4,
+  "updatedAt": "2026-07-23T00:00:00Z"
 }
