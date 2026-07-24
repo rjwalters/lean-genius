@@ -139,13 +139,17 @@ theorem legendre_20 : LegendreAt 20 := ⟨401, by native_decide⟩
 theorem square_gap_linear (n : ℕ) : (n + 1)^2 = n^2 + 2 * n + 1 := by ring
 
 /-!
-## The Full Conjecture (Statement)
+## The Full Conjecture (Statement Only)
 
-We state the full Legendre conjecture as an axiom.
+The full conjecture is the `Prop` `LegendreConjecture` defined above. It is
+deliberately NOT assumed as an axiom: conditional results downstream state it
+as an explicit hypothesis or conclusion (see
+`LegendrePrimeGapSqrtBoundSuffices.lean` and `CramerImpliesLegendre.lean`).
+A dead `axiom legendre_conjecture : LegendreConjecture` formerly declared here
+had zero uses anywhere in the repository and was removed (iteration 8), so this
+file — and every file importing it — carries no unproved assumptions beyond
+the `native_decide` (`Lean.ofReduceBool`) dependency of the case checks above.
 -/
-
-/-- Legendre's Conjecture: for all n ≥ 1, there's a prime between n² and (n+1)² -/
-axiom legendre_conjecture : LegendreConjecture
 
 /-!
 ## What We've Proven

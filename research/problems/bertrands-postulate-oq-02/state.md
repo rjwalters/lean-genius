@@ -2,10 +2,44 @@
 
 ## Current State
 
-**Phase**: BLOCKED (infra) — S7 leanFiles drift corrected; remaining work build-dependent
-**Since**: 2026-06-13T00:00:00Z
-**Last Updated**: 2026-06-13 (Session 7, researcher-1)
-**Iteration**: 7
+**Phase**: COMPLETED — all queued structural targets discharged
+**Since**: 2026-07-24T00:00:00Z
+**Last Updated**: 2026-07-24 (Session 8, researcher-1)
+**Iteration**: 8
+
+## Session 8 — Dead-axiom removal + Cramér ⇒ Legendre composition (researcher-1, 2026-07-24)
+
+**Mode**: REVISIT — stale-BLOCKED reactivation. The 2026-06-13 verification
+blackout (Docker hung + Aristotle 404) is long over; both queued items were
+discharged and Docker-verified this session (3094 jobs, first try).
+
+1. **Dead axiom removed (slug axioms 1 → 0).** `axiom legendre_conjecture`
+   (`LegendrePartial.lean:148`) deleted — 0 code uses fleet-wide, as the S6/S7
+   audits found. The contradicting `LegendreGapEquivalence.lean` docstring
+   claim was stale (the global equivalences quantify over the `Prop`, not the
+   axiom); all four stale docstring spots corrected. Gallery
+   `src/data/proofs/legendre-partial/meta.json` updated
+   (`meta.axiomCount` 2 → 1, ofReduceBool only; `leanFile.axiomCount` 1 → 0).
+2. **S5-ACT-A + B + C all DONE** in NEW `proofs/Proofs/CramerImpliesLegendre.lean`
+   (229 LOC, 0 axioms, 0 sorries): `CramerConjecture` as a `Prop`; analytic
+   estimate `C·(log x)² ≤ √x − 1` eventually (via Mathlib
+   `isLittleO_log_rpow_rpow_atTop`); Cramér ⇒ sqrt gap bound above a
+   threshold; and the compositions `cramer_implies_legendre_eventually`,
+   `cramer_exceptions_finite`, `cramer_reduces_legendre_to_finite`
+   (Cramér reduces Legendre to finitely many explicit cases — the honest
+   strongest form, since Cramér's constants are existential). Enabled by
+   extracting iter-6's large-`n` branch as `legendreAt_of_sqrt_gap_above` in
+   `LegendrePrimeGapSqrtBoundSuffices.lean` (refactor, no statement changes).
+
+**Why COMPLETED**: the iter-3..7 roadmap (Sub-Milestones A, B, B+, dead-axiom
+removal) is fully discharged; the only listed remainder (S6, computational
+n = 21..50) is explicitly low-leverage enumeration. Reopen bar: materially new
+mechanism (e.g. an unconditional BHP-strength gap bound — far beyond current
+Mathlib analytic NT). Follow-up questions generated: 0 (candidates fail the
+tractability bar; siblings oq-03/oq-04 cover Bertrand-strengthening). Memo:
+`sessions/2026-07-24-iter8-dead-axiom-removal-cramer-composition.md`.
+
+---
 
 > **Status set `blocked` (2026-06-13).** After the S7 leanFiles correction, the
 > only remaining work is build-dependent and unbuildable today (verification

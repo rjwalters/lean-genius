@@ -367,6 +367,144 @@ theorem cnorm3_not_surjective : ¬ Function.Surjective cnorm3 := by
   exact cnorm_ne_seven p.1 p.2.1 p.2.2 hp
 
 /-
+## Sharpness: 7 is the LEAST positive non-norm, and non-norms are infinite (Session 8)
+
+Session 7 exhibited 7 as a non-norm. This section sharpens that in three ways:
+
+1. **Sharpness**: every integer m with 1 ≤ m ≤ 6 IS a norm, with explicit
+   witnesses — N(1,0,0)=1, N(0,1,0)=2 (ξ=∛2), N(1,1,0)=3, N(0,0,1)=4 (ξ=∛4),
+   N(1,1,−1)=5, N(0,1,1)=6. So 7 is exactly the first positive value the cubic
+   norm form misses (`seven_least_positive_non_norm`), and by the S6 dichotomy
+   each of N = 1..6 has infinitely many solutions (`norm_small_values_infinite`).
+2. **Sign symmetry**: the norm form has odd degree, so N(−ξ) = −N(ξ)
+   (`cnorm_neg`) and the image is symmetric under negation — the negative-side
+   sharpness (`neg_seven_least_negative_non_norm`) is free.
+3. **Valuation obstruction, and infinitely many non-norms**: the inert-prime
+   argument of S7 really shows the 7-adic valuation of any norm is a multiple
+   of 3 in the range {0} ∪ [3,∞): `7 ∣ N ⟹ 343 ∣ N` (`seven_dvd_imp_cube_dvd`).
+   Hence EVERY m with 7 ∣ m but 343 ∤ m is a non-norm — 7, 14, 21, …, 49, …,
+   and the set of non-norms is infinite (`non_norms_infinite`), witnessed by
+   the arithmetic progression 7 + 343k.
+
+The image of `cnorm3` is also closed under multiplication (`norm_values_mul_mem`,
+Brahmagupta composition in degree 3), so the norms form a submonoid of ℤ whose
+complement is nevertheless infinite.
+-/
+
+/-- Odd-degree sign symmetry: N(−ξ) = −N(ξ). The cubic norm form is an odd
+    function of ξ, so its image is symmetric under negation. (Contrast the
+    quadratic Pell form, which is even.) -/
+theorem cnorm_neg (a b c : ℤ) : cnorm (-a) (-b) (-c) = - cnorm a b c := by
+  simp only [cnorm]; ring
+
+/-- m is a norm iff −m is a norm. -/
+theorem norm_solvable_iff_neg (m : ℤ) :
+    (∃ p : ℤ × ℤ × ℤ, cnorm3 p = m) ↔ (∃ p : ℤ × ℤ × ℤ, cnorm3 p = -m) := by
+  constructor <;> rintro ⟨⟨a, b, c⟩, h⟩
+  · exact ⟨(-a, -b, -c), by
+      show cnorm (-a) (-b) (-c) = -m
+      rw [cnorm_neg, show cnorm a b c = m from h]⟩
+  · exact ⟨(-a, -b, -c), by
+      show cnorm (-a) (-b) (-c) = m
+      rw [cnorm_neg, show cnorm a b c = -m from h, neg_neg]⟩
+
+/-- The norms form a multiplicatively closed set (Brahmagupta composition in
+    degree 3): if m and n are norms, so is m·n. With N(1,0,0) = 1 this makes
+    the image of `cnorm3` a submonoid of ℤ. -/
+theorem norm_values_mul_mem {m n : ℤ}
+    (hm : ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m) (hn : ∃ q : ℤ × ℤ × ℤ, cnorm3 q = n) :
+    ∃ r : ℤ × ℤ × ℤ, cnorm3 r = m * n := by
+  obtain ⟨p, hp⟩ := hm
+  obtain ⟨q, hq⟩ := hn
+  exact ⟨cmul p q, by rw [cnorm_cmul, hp, hq]⟩
+
+/-- **Sharpness of the S7 non-norm: 7 is the least positive non-norm.** Every
+    m with 1 ≤ m < 7 is a norm (explicit witnesses); 7 is not. -/
+theorem seven_least_positive_non_norm :
+    (∀ m : ℤ, 1 ≤ m → m < 7 → ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m) ∧
+      ¬ ∃ p : ℤ × ℤ × ℤ, cnorm3 p = 7 := by
+  constructor
+  · intro m h1 h7
+    interval_cases m
+    · exact ⟨(1, 0, 0), by decide⟩
+    · exact ⟨(0, 1, 0), by decide⟩
+    · exact ⟨(1, 1, 0), by decide⟩
+    · exact ⟨(0, 0, 1), by decide⟩
+    · exact ⟨(1, 1, -1), by decide⟩
+    · exact ⟨(0, 1, 1), by decide⟩
+  · rintro ⟨⟨a, b, c⟩, h⟩
+    exact cnorm_ne_seven a b c h
+
+/-- Negative-side sharpness (free by the odd symmetry): every m with
+    −6 ≤ m ≤ −1 is a norm; −7 is not. -/
+theorem neg_seven_least_negative_non_norm :
+    (∀ m : ℤ, -6 ≤ m → m ≤ -1 → ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m) ∧
+      ¬ ∃ p : ℤ × ℤ × ℤ, cnorm3 p = -7 := by
+  constructor
+  · intro m h6 h1
+    obtain ⟨p, hp⟩ := seven_least_positive_non_norm.1 (-m) (by omega) (by omega)
+    obtain ⟨q, hq⟩ := (norm_solvable_iff_neg (-m)).mp ⟨p, hp⟩
+    exact ⟨q, by rwa [neg_neg] at hq⟩
+  · rintro ⟨⟨a, b, c⟩, h⟩
+    exact cnorm_ne_neg_seven a b c h
+
+/-- **The boundary panorama**: for every m with 1 ≤ |m| ≤ 6 the norm equation
+    N(ξ) = m has infinitely many integral solutions (witness + S6 unit-orbit
+    dichotomy), while N(ξ) = ±7 has none. -/
+theorem norm_small_values_infinite (m : ℤ) (h1 : 1 ≤ |m|) (h6 : |m| ≤ 6) :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = m}.Infinite := by
+  have hm0 : m ≠ 0 := by
+    intro h
+    rw [h] at h1
+    simp at h1
+  rcases hm0.lt_or_lt with hneg | hpos
+  · rw [abs_of_neg hneg] at h1 h6
+    obtain ⟨p, hp⟩ := neg_seven_least_negative_non_norm.1 m (by omega) (by omega)
+    exact norm_eq_solutions_infinite m hm0 p hp
+  · rw [abs_of_pos hpos] at h1 h6
+    obtain ⟨p, hp⟩ := seven_least_positive_non_norm.1 m (by omega) (by omega)
+    exact norm_eq_solutions_infinite m hm0 p hp
+
+/-- **Valuation obstruction at the inert prime**: if 7 divides a norm, 7³ = 343
+    divides it. (The 7-adic valuation of a nonzero norm is a multiple of 3 —
+    inert primes enter the image of the norm only through their cube.) -/
+theorem seven_dvd_imp_cube_dvd (a b c : ℤ) (h : (7 : ℤ) ∣ cnorm a b c) :
+    (343 : ℤ) ∣ cnorm a b c := by
+  obtain ⟨⟨a', rfl⟩, ⟨b', rfl⟩, ⟨c', rfl⟩⟩ := (seven_dvd_cnorm_iff _ _ _).mp h
+  exact ⟨cnorm a' b' c', by simp only [cnorm]; ring⟩
+
+/-- Every integer divisible by 7 but not by 343 is a non-norm — 7, 14, 21, …,
+    49, 98, …. Subsumes `cnorm_ne_seven` (m = 7) and `cnorm_ne_neg_seven`
+    (m = −7). -/
+theorem cnorm_ne_of_seven_valuation (m : ℤ) (h7 : (7 : ℤ) ∣ m)
+    (h343 : ¬ (343 : ℤ) ∣ m) (a b c : ℤ) : cnorm a b c ≠ m := by
+  intro h
+  apply h343
+  rw [← h]
+  exact seven_dvd_imp_cube_dvd a b c (by rw [h]; exact h7)
+
+/-- **The set of non-norms is infinite**: the cubic norm form misses infinitely
+    many integers, witnessed by the arithmetic progression 7 + 343k (each term
+    is divisible by 7 but not by 343). The complement of the norm submonoid is
+    infinite even though the submonoid itself contains full unit-orbits. -/
+theorem non_norms_infinite :
+    {m : ℤ | ¬ ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m}.Infinite := by
+  have hinj : Function.Injective (fun k : ℕ => (7 : ℤ) + 343 * k) := by
+    intro j k hjk
+    simp only at hjk
+    omega
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun k : ℕ => (7 : ℤ) + 343 * k) hinj
+  intro k
+  simp only [Set.mem_setOf_eq]
+  rintro ⟨⟨a, b, c⟩, h⟩
+  have h7 : (7 : ℤ) ∣ 7 + 343 * k := ⟨1 + 49 * k, by ring⟩
+  have h343 : ¬ (343 : ℤ) ∣ 7 + 343 * k := by
+    rintro ⟨d, hd⟩
+    omega
+  exact cnorm_ne_of_seven_valuation (7 + 343 * (k : ℤ)) h7 h343 a b c h
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its

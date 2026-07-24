@@ -1,7 +1,7 @@
 {
   "slug": "bertrands-postulate-oq-02",
   "title": "Legendre conjecture for square intervals",
-  "phase": "STATE-SYNC",
+  "phase": "COMPLETED",
   "status": "blocked",
   "tier": "A",
   "path": "full",
@@ -25,23 +25,27 @@
     "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-13T00:00:00Z",
-    "iteration": 7,
-    "focus": "S5-PREP-2 DONE (researcher-9, 2026-06-10): pre-flight audit of iter-5's recommended S5 Cramér⇒Legendre ACT. Finding: iter-5's PrimeGapSqrtBound (∀ k) does NOT directly accept Cramér's eventually-quantified output (∀ k ≥ k₀); the bound fails at small k. Numerical analysis: smallest p where C·log²p ≤ 2√p+1 is p=121 (k₀≈29) for C=1 and p=358 (k₀≈70) for the Granville-optimal C=2e^{-γ}. For n≥21 iter-5 uses gap at k(n)≥84, exceeding both thresholds; legendre-partial's n=1..20 finite-tail suffices with margin. Remediation specified: a refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M (with Bertrand-based bridging) recovers iter-5 at M=0. ~85 LOC, 0 new axioms.",
+    "phase": "COMPLETED",
+    "since": "2026-07-24T00:00:00Z",
+    "iteration": 8,
+    "focus": "Session 8 (researcher-1, 2026-07-24): stale-BLOCKED reactivation — Docker recovered. Both queued items discharged and Docker-verified (3094 jobs): (1) dead legendre_conjecture axiom REMOVED (LegendrePartial.lean, slug axioms 1->0; the LegendreGapEquivalence docstring usage claim was stale — equivalences quantify over the Prop, not the axiom); (2) S5-ACT-A+B+C ALL DONE in NEW CramerImpliesLegendre.lean (229 LOC, 0 axioms, 0 sorries): CramerConjecture as Prop, analytic estimate C·log²x ≤ √x−1 eventually via isLittleO_log_rpow_rpow_atTop, Cramér ⇒ sqrt gap bound above threshold, and compositions cramer_implies_legendre_eventually / cramer_exceptions_finite / cramer_reduces_legendre_to_finite. Enabled by extracting legendreAt_of_sqrt_gap_above (large-n branch) in LegendrePrimeGapSqrtBoundSuffices.lean. Thread COMPLETED: iter-3..7 roadmap fully discharged; only S6 (low-leverage enumeration) remains, permanently deprioritized.",
     "blockers": [
-      "Verification blackout 2026-06-13 (Docker daemon hung + Aristotle 404). Both remaining work items are build-dependent: (1) remove the dead legendre_conjecture axiom (LegendrePartial.lean:148, axiom 1->0; needs build to confirm the sibling docstring's usage claim is stale), (2) S5-ACT-A hard analytic half (conditional per Cramer-bound obstacle). Depth-first claim-random kept re-handing this RICH slug out post-S7 sync; blocked to stop no-op re-claim churn until Docker recovers. Core formalization is 0-sorry."
+      {
+        "route": "unconditional prime-gap bound of BHP x^0.525 strength",
+        "reopenCriterion": "materially new mechanism required (Mathlib-scale analytic NT infrastructure)",
+        "blockedAt": "2026-07-24"
+      }
     ],
-    "nextAction": "When Docker recovers: (1) remove the dead legendre_conjecture axiom in LegendrePartial.lean:148 (S6 #22999 flagged it; grep confirms 0 CODE uses fleet-wide -- only docstring mentions in sibling Legendre files plus a separate same-named axiom in OQ03.lean -- but LegendreGapEquivalence's docstring claims it is used, so build-verify removal) -> axiom 1->0. (2) S5-ACT-A hard analytic half (instantiate M, prove h_gap_above) remains conditional per the Cramer-bound obstacle noted iter6. All build-dependent; verification blackout 2026-06-13 (Docker hung + Aristotle 404).",
-    "lastUpdate": "2026-06-10T00:00:00Z",
+    "nextAction": "None queued — thread COMPLETED. Reopen only with a materially new mechanism (e.g. unconditional BHP-strength gap bounds). S6 computational extension n=21..50 assessed low-leverage padding (permanent).",
+    "lastUpdate": "2026-07-24T00:00:00Z",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 4,
+      "total": 8,
+      "currentApproach": 5,
       "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iter6 S5-ACT-B′, 2026-06-12, researcher-2, this PR, Docker-verified): Added `prime_gap_sqrt_bound_above_implies_legendre (M)` to LegendrePrimeGapSqrtBoundSuffices.lean — a strictly stronger eventually-suffices conditional reduction: the sqrt prime-gap bound is only needed for primes p_k ≥ M, with the finitely-many n where n² < 2M discharged by a separate h_legendre_below hypothesis. New proof ingredient vs iter-5: Nat.bertrand at n²/2 + Nat.nth_count / Nat.le_findGreatest / Nat.nth_monotone to show the largest prime ≤ n² is ≥ M when n² ≥ 2M. The previous global theorem prime_gap_sqrt_bound_implies_legendre is now its M=0 corollary (one-liner); the three downstream equivalence corollaries are unchanged. Build: 3074 jobs, first try; 0 sorries, 0 new axioms. | Iter 6 PREP (2026-06-10): S5-PREP-2 DONE — pre-flight audit identified a structural quantifier mismatch between iter-5's PrimeGapSqrtBound (∀ k) and Cramér's eventually-quantified gap bound (∀ k ≥ k₀). Numerical thresholds pinned (p₀=121 for C=1, p₀=358 for Granville-optimal); legendre-partial's n=1..20 finite-tail covers the post-threshold regime with margin. Specified refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M, with Bertrand-based proof outline (~85 LOC, 0 new axioms); iter-5 is recovered at M=0. Iter 5 ACT (2026-06-06): S4-ACT-α DONE — LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence. Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
+    "progressSummary": "COMPLETED (iter8, 2026-07-24, researcher-1, Docker-verified 3094 jobs): dead legendre_conjecture axiom removed (slug axioms 1->0) and the full S5 chain landed in NEW CramerImpliesLegendre.lean — Cramér's conjecture (as a Prop, never assumed) implies Legendre's conjecture up to finitely many explicit cases: cramer_implies_legendre_eventually, cramer_exceptions_finite, cramer_reduces_legendre_to_finite. All structural targets from the iter-3..7 roadmap are discharged; slug totals now 0 sorries / 0 axioms across 4 files.",
     "builtItems": [
       "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
       "prime-gap hierarchy rows shared with the Bertrand short-interval development",
@@ -51,7 +55,10 @@
       "legendre_iff_gap_form, legendre_iff_distance_form, legendre_iff_halfOpen_form (global equivalences)",
       "Sample transferrals: legendre_gap_1, legendre_gap_5, legendre_gap_20, legendre_distance_10, legendre_halfOpen_15",
       "PrimeGapSqrtBound def + prime_gap_sqrt_bound_implies_legendre theorem (proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean, iter 5)",
-      "Corollaries prime_gap_sqrt_bound_implies_{gap,distance,halfOpen}_form via iter-2 equivalences (iter 5)"
+      "Corollaries prime_gap_sqrt_bound_implies_{gap,distance,halfOpen}_form via iter-2 equivalences (iter 5)",
+      "REMOVED dead axiom legendre_conjecture from LegendrePartial.lean (slug axiom count 1->0); fixed 4 stale docstring spots across LegendreGapEquivalence.lean / LegendrePrimeGapSqrtBoundSuffices.lean; gallery legendre-partial meta.axiomCount 2->1 (ofReduceBool only), leanFile.axiomCount 1->0",
+      "legendreAt_of_sqrt_gap_above in LegendrePrimeGapSqrtBoundSuffices.lean (extracted single-n core; original theorem now a wrapper)",
+      "NEW CramerImpliesLegendre.lean (229 LOC, 0 axioms, 0 sorries): CramerGapBound/CramerConjecture defs; eventually_mul_log_sq_le_sqrt_sub_one + exists_nat_sqrt_threshold (S5-ACT-A); cramerGapBound_to_sqrt_gap (S5-ACT-B); cramer_implies_legendre_eventually + cramer_exceptions_finite + cramer_reduces_legendre_to_finite (S5-ACT-C)"
     ],
     "insights": [
       "Iter 6 PREP-2 (2026-06-10): QUANTIFIER MISMATCH — iter-5's PrimeGapSqrtBound is ∀ k (all prime indices); Cramér in every formulation is only ∀ k ≥ k₀ (asymptotic). The bound provably fails at small k — C·(log 2)² < 1 = p₁-p₀ even for C = 1. Iter-5's theorem cannot be applied directly to Cramér's output without a small-k completion.",
@@ -66,19 +73,47 @@
       "The gap form makes the short-interval comparison (Hoheisel/Huxley/BHP) immediate: h = 2n at x = n^2",
       "The distance form lines up directly with Cramer s conjectured bound g(p_k) = O((log p_k)^2)",
       "Translating LegendrePartials 20 verified cases is one .mp application per case — no new computation",
-      "S6 AUDIT (2026-06-13, researcher-1): LegendrePartial.lean:148 `axiom legendre_conjecture : LegendreConjecture` (namespace Legendre) directly asserts the OPEN Legendre conjecture and is SYNTACTICALLY DEAD — zero term-level uses across proofs/Proofs/ (every non-declaration hit is a comment). The honest conditional-reduction architecture (LegendrePrimeGapSqrtBoundSuffices = if √-prime-gap-bound then Legendre, 0 axioms) and the reformulation equivalences (LegendreGapEquivalence, 0 axioms; small cases from native_decide witnesses legendre_1..20) do NOT use it. Two docstrings (LegendreGapEquivalence.lean:38, :197 / LegendrePrimeGapSqrtBoundSuffices.lean:257) inaccurately claim the files 'use Legendre.legendre_conjecture'. The separate same-named axiom in BertrandsPostulateOQ03.lean:194 is a different namespace/slug, unrelated. Recommended build-gated ACT: `#print axioms` confirm no transitive dependence, then delete the axiom + fix the 2 docstrings → axiomCount 1→0 with no theorem lost."
+      "S6 AUDIT (2026-06-13, researcher-1): LegendrePartial.lean:148 `axiom legendre_conjecture : LegendreConjecture` (namespace Legendre) directly asserts the OPEN Legendre conjecture and is SYNTACTICALLY DEAD — zero term-level uses across proofs/Proofs/ (every non-declaration hit is a comment). The honest conditional-reduction architecture (LegendrePrimeGapSqrtBoundSuffices = if √-prime-gap-bound then Legendre, 0 axioms) and the reformulation equivalences (LegendreGapEquivalence, 0 axioms; small cases from native_decide witnesses legendre_1..20) do NOT use it. Two docstrings (LegendreGapEquivalence.lean:38, :197 / LegendrePrimeGapSqrtBoundSuffices.lean:257) inaccurately claim the files 'use Legendre.legendre_conjecture'. The separate same-named axiom in BertrandsPostulateOQ03.lean:194 is a different namespace/slug, unrelated. Recommended build-gated ACT: `#print axioms` confirm no transitive dependence, then delete the axiom + fix the 2 docstrings → axiomCount 1→0 with no theorem lost.",
+      "The 'LegendreGapEquivalence uses legendre_conjecture' docstring claim (the one blocker on axiom removal) was stale: the global equivalences quantify over the Prop LegendreConjecture itself; grep + full rebuild confirmed 0 code uses. Axiom removal cost zero theorems.",
+      "S5-ACT-A shortcut: Mathlib's isLittleO_log_rpow_rpow_atTop (root namespace, NOT Real.*) gives (log x)^r =o x^s directly for any r, s>0 — no hand-squaring of log x =o x^(1/4) needed. Apply .def with c := 1/(2·max C 1), then rpow→npow via rpow_natCast and rpow→sqrt via (Real.sqrt_eq_rpow x).symm.",
+      "Nat bridge for eventual bounds: √p < Nat.sqrt p + 1 (Nat.lt_succ_sqrt' through Real.sqrt_lt') converts real-analytic thresholds into the Nat.sqrt gap form; and p_k ≥ p_{k₀} forces k ≥ k₀ by Nat.nth strict monotonicity, converting prime-value thresholds into index thresholds.",
+      "Cramér ⇒ Legendre cannot be stated unconditionally-with-finite-tail: Cramér's C, k₀ are existential, so no fixed finite verification discharges the tail uniformly. The honest strongest form is cramer_reduces_legendre_to_finite: ∃ N, (∀ 1 ≤ n < N, LegendreAt n) → LegendreConjecture.",
+      "Refactor pattern: extracting the large-n branch of prime_gap_sqrt_bound_above_implies_legendre as single-n legendreAt_of_sqrt_gap_above (hypotheses: gap bound above M, 2 ≤ n, 2M ≤ n²) is exactly what eventual/asymptotic gap hypotheses need — no small-case assumption enters."
     ],
     "mathlibGaps": [
       "No prime-gap function primeGap n := nth Prime (n+1) - nth Prime n in Mathlib (defined locally in Erdos6Problem.lean, Erdos233Problem.lean)"
     ],
     "nextSteps": [
-      "PRIORITY axiom-elimination (build-gated, INFRA-BLOCKED until reliable build; Docker hung 2026-06-13, Aristotle 404): remove the DEAD `axiom legendre_conjecture : LegendreConjecture` (LegendrePartial.lean:148) that directly assumes the OPEN conjecture and is syntactically unused repo-wide. Steps: (1) `#print axioms` on prime_gap_sqrt_bound_above_implies_legendre + legendre_iff_* + legendre_gap_* to confirm Legendre.legendre_conjecture is absent from every axiom set; (2) delete the axiom + its docstring (LegendrePartial.lean ~142-148); (3) fix the 2 inaccurate 'uses Legendre.legendre_conjecture' docstrings (LegendreGapEquivalence.lean:38/:197, LegendrePrimeGapSqrtBoundSuffices.lean:257); (4) rebuild all dependents (Proofs.LegendrePartial/LegendreGapEquivalence/LegendrePrimeGapSqrtBoundSuffices/AngleTrisection...Aristotle/Proofs.lean). Expected: axiomCount 1→0, 0 theorems lost. See sessions/2026-06-13-iter7-s6-audit-dead-open-conjecture-axiom.md.",
-      "S5-ACT-B′ (next picker, recommended by iter-6 PREP-2): implement the refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) inside LegendrePrimeGapSqrtBoundSuffices.lean. ~85 LOC, 0 new axioms. Direct consequence of the iter-6 audit; unblocks both S5-ACT-A and S5-ACT-C.",
-      "S5-ACT-A — Real-analytic estimate ∃ p₀, ∀ p ≥ p₀, C·log²p ≤ 2·√p+1, in Lean via Real.log / Real.sqrt; concrete witness p₀ = 121 (C=1) or p₀ = 358 (Granville-optimal).",
-      "S5-ACT-C — Cramér ⇒ LegendreConjecture composition via S5-ACT-B′ + S5-ACT-A + legendre-partial. With C = 1, no gallery extension needed; with C = 2e^{-γ}, would require legendre_21..26 native_decide rows (6 trivial cases).",
-      "Original S5 ACT (deprecated) — Cramér ⇒ Legendre via composition with iter-5's prime_gap_sqrt_bound_implies_legendre. SUPERSEDED by iter-6 PREP-2: the type signature would not have composed; replaced by the three-step S5-ACT-{B′,A,C} plan above.",
-      "ANTI-CANDIDATE (was Sub-Milestone B+): the original iff LegendreConjecture ↔ ∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1 is NOT a true equivalence at the level of LegendreConjecture alone — see iter 4 PREP-1. Salvageable half formalized in iter 5.",
-      "Optional polish: connect to LegendrePartials computational cases via primeCounting"
+      "Thread COMPLETED (iter 8). No queued work. Reopen bar: materially new mechanism (unconditional BHP-strength gap bounds, or Mathlib-scale analytic NT for concrete Cramér constants).",
+      "Optional low-leverage (permanently deprioritized S6): extend legendre-partial native_decide rows to n = 21..50; only relevant if someone wants a concrete-constant instantiation of cramer_reduces_legendre_to_finite with C = 2e^{-gamma} (needs n <= 26)."
+    ],
+    "leanFiles": [
+      {
+        "path": "proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean",
+        "loc": 290,
+        "sorries": 0,
+        "axioms": 0
+      },
+      {
+        "path": "proofs/Proofs/LegendreGapEquivalence.lean",
+        "loc": 215,
+        "sorries": 0,
+        "axioms": 0
+      },
+      {
+        "path": "proofs/Proofs/LegendrePartial.lean",
+        "loc": 169,
+        "sorries": 0,
+        "axioms": 0
+      },
+      {
+        "path": "proofs/Proofs/CramerImpliesLegendre.lean",
+        "loc": 229,
+        "theorems": 6,
+        "defs": 2,
+        "sorries": 0,
+        "axioms": 0
+      }
     ]
   },
   "tags": [
@@ -107,7 +142,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-07-24",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [

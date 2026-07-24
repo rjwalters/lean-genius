@@ -35,9 +35,11 @@ requires reasoning about consecutive primes and is left as future work. See
 
 ## Axioms
 
-This file introduces 0 new axioms. It uses `Legendre.legendre_conjecture`
-(declared as an axiom in `LegendrePartial.lean`) only when stating the
-"global" equivalences; the equivalences themselves are unconditional.
+This file introduces 0 new axioms and depends on none: the "global"
+equivalences quantify over the `Prop` `Legendre.LegendreConjecture` itself,
+so all results here are unconditional. (A dead `axiom legendre_conjecture`
+formerly declared in `LegendrePartial.lean` was never used and has been
+removed.)
 -/
 
 import Mathlib.NumberTheory.Bertrand
@@ -193,8 +195,9 @@ This file proves:
 
 ### Axiom delta
 
-This file introduces **0 new axioms**. The pre-existing axiom
-`Legendre.legendre_conjecture` (in `LegendrePartial.lean`) is unchanged.
+This file introduces **0 new axioms** and uses none. (The dead axiom
+`Legendre.legendre_conjecture` formerly in `LegendrePartial.lean` has been
+removed; nothing here ever depended on it.)
 
 ### Future work (Sub-Milestone B+)
 
