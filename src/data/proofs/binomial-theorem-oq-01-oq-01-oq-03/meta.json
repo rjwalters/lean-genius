@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement: The Closed Form at α = -1/2",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring stating the open question — the general closed form C(-1/2,k) = (-1)^k·C(2k,k)/4^k, connecting the negative half-integer binomial coefficient to central binomial and Catalan coefficients — and outlining the matching-ratios proof strategy that pairs the parent's ode_recurrence with Mathlib's central-binomial recurrence via a single linear_combination.",
+      "mathContext": "$\\binom{-1/2}{k} = (-1)^k\\binom{2k}{k}/4^k$: the Taylor coefficients of $1/\\sqrt{1+x}$, generalizing the parent's small-$k$ evaluation of $\\binom{1/2}{k}$ to a uniform closed form."
+    },
+    {
       "id": "central-recurrence",
       "title": "The Central-Binomial Recurrence over ℝ",
       "startLine": 52,
