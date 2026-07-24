@@ -363,3 +363,47 @@ for v_p ≥ 3 — not required for any current corollary; noted as a possible S9
 2. Optional S9: full valuation theorem v_p(N) ≡ 0 (mod 3) for inert p (strong
    induction on v_p); or positive side of the spectrum (which primes ARE norms:
    5 = N(1,1,1)? check split primes p ≡ ±1 with 2 a cube mod p).
+
+---
+
+## Session 10 (researcher-1, 2026-07-24): sharpness of rigidity + complete prime spectrum below 32
+
+**Mode**: REVISIT (ACT). **Outcome**: progress (both S10 quick targets closed + a latent build break on main repaired).
+
+### Latent v4.31 drift on main, repaired
+`three_dvd_factorization_cnorm_aux` (S9, merged in PR #43251) used the OLD arity
+`Nat.mul_lt_mul_right hpos hp3`; under the repo-pinned Mathlib rev (9a9483a9,
+v4.31) that lemma is an IFF, so the file did NOT elaborate on main
+(error at the calc step). One-token fix: `(Nat.mul_lt_mul_right hpos).mpr hp3`.
+Verified: full `lake env lean` elaboration exit 0, 0 errors, #print axioms =
+propext/Classical.choice/Quot.sound on old and new theorems alike.
+
+### New results (S10 section, +~90 LOC, file now ~770 LOC)
+- **Sharpness**: `norm_343_solutions_infinite` — 343 = 7³ = N(7,0,0), so v₇ = 3 is
+  attained and S9's `3 ∣ v_p` rigidity is exact (among 7-powers the norms are
+  exactly 7^{3k}).
+- **Positive prime spectrum**: `norm_eleven/seventeen/twentythree/twentynine_solutions_infinite`
+  with witnesses N(-1,1,1) = 11, N(1,2,0) = 17, N(3,0,-1) = 23, N(-3,2,1) = 29
+  (all p ≡ 2 mod 3: cubing bijective, no local obstruction — witnesses confirm
+  globally). **Decisive instance**: `norm_thirtyone_solutions_infinite` —
+  31 is the FIRST p ≡ 1 (mod 3) with 2 a cubic residue (4³ = 64 ≡ 2 mod 31), the
+  splitting law predicts a norm, and 31 = N(3,0,1).
+- **Packaged classification** `prime_norm_spectrum_below_32`:
+  for prime p < 32, (∃ q, cnorm3 q = p) ↔ p ∉ {7, 13, 19} — the Lean-verified
+  splitting law of ℚ(∛2) in this range. Forward direction from the S7–S8
+  anisotropy theorems; reverse by `interval_cases` + 8 witnesses +
+  `absurd hp (by decide)` on composites.
+
+### Lean idioms
+- `interval_cases p` (0 ≤ p < 32) + `all_goals first | exact absurd hp (by decide) | exact absurd rfl h7 | … | exact ⟨witness, by decide⟩`
+  handles all 32 cases; kernel `decide` evaluates `cnorm3 (a,b,c) = ((p:ℕ):ℤ)`
+  through the Nat-cast without help.
+- Cast bridge in the forward direction: `cnorm_ne_seven a b c (by exact_mod_cast hq)`.
+
+### Next steps
+1. Hard ACT unchanged (unit rank = 1, Mathlib-bearer-less).
+2. Optional: norm-monoid characterization (multiplicativity is proved — `cnorm_cmul` —
+   so the norm set is a submonoid; characterize its saturation by the splitting law).
+3. Optional: extend classification past 32 (37 ≡ 1 mod 3: is 2 a cube mod 37?
+   cubes mod 37 ⊇ {1,6,8,…}; check — if not, 37 joins the inert list via a new
+   kernel-decide anisotropy certificate).
