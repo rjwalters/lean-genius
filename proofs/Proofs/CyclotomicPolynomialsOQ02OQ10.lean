@@ -61,11 +61,12 @@ noncomputable def imProd (n : ℕ) : ℝ := ∏ ζ ∈ primitiveRoots n ℂ, |ζ
 `imProd n ≤ ‖Φ_n(x)‖`. Each root factor `|x - ζ|` is at least `|Im ζ|`. -/
 theorem imProd_le_norm_cyclotomic_eval_real (n : ℕ) (hn : n ≠ 0) (x : ℝ) :
     imProd n ≤ ‖(cyclotomic n ℂ).eval (x : ℂ)‖ := by
-  obtain ⟨ζ₀, hζ₀⟩ := Complex.isPrimitiveRoot_exp n hn
-  rw [cyclotomic_eq_prod_X_sub_primitiveRoots hζ₀, eval_prod]
-  rw [norm_prod]
+  have hζ₀ : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / n)) n :=
+    Complex.isPrimitiveRoot_exp n hn
+  rw [cyclotomic_eq_prod_X_sub_primitiveRoots hζ₀, eval_prod, norm_prod]
   refine Finset.prod_le_prod (fun ζ _ => abs_nonneg _) (fun ζ _ => ?_)
-  simpa using norm_real_sub_ge_abs_im x ζ
+  simp only [eval_sub, eval_X, eval_C]
+  exact norm_real_sub_ge_abs_im x ζ
 
 /-! ## Positivity of the threshold for `n ≥ 3` -/
 
@@ -80,15 +81,17 @@ theorem not_isReal_of_isPrimitiveRoot {n : ℕ} (hn : 3 ≤ n) {ζ : ℂ}
   have habs : |ζ.re| = 1 := by
     rw [hre] at hnorm
     simpa using hnorm
-  rcases abs_eq_one.mp habs with h1 | h1
+  rcases (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp habs with h1 | h1
   · -- `ζ = 1` has order `1`.
     have hζ1 : ζ = 1 := by rw [hre, h1]; norm_num
-    have : n ∣ 1 := hζ.dvd_of_pow_eq_one 1 (by rw [hζ1]; norm_num)
+    have hdvd : n ∣ 1 := hζ.dvd_of_pow_eq_one 1 (by rw [hζ1]; norm_num)
+    have := Nat.dvd_one.mp hdvd
     omega
   · -- `ζ = -1` has order `2`.
     have hζ1 : ζ = -1 := by rw [hre, h1]; norm_num
-    have : n ∣ 2 := hζ.dvd_of_pow_eq_one 2 (by rw [hζ1]; norm_num)
-    interval_cases n <;> omega
+    have hdvd : n ∣ 2 := hζ.dvd_of_pow_eq_one 2 (by rw [hζ1]; norm_num)
+    have := Nat.le_of_dvd (by norm_num) hdvd
+    omega
 
 /-- For `n ≥ 3` the real-axis threshold is strictly positive. -/
 theorem imProd_pos {n : ℕ} (hn : 3 ≤ n) : 0 < imProd n := by
@@ -122,13 +125,16 @@ theorem cyclotomic_sublevel_not_isPreconnected {n : ℕ} (hn : 3 ≤ n) {C : ℝ
   have hupper : IsOpen {z : ℂ | 0 < z.im} := isOpen_lt continuous_const Complex.continuous_im
   have hlower : IsOpen {z : ℂ | z.im < 0} := isOpen_lt Complex.continuous_im continuous_const
   -- The primitive root `ζ = e^{2πi/n}` and its inverse (= conjugate).
-  obtain ⟨ζ, hζ⟩ := Complex.isPrimitiveRoot_exp n (by omega)
+  have hn0 : n ≠ 0 := by omega
+  set ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / n) with hζdef
+  have hζ : IsPrimitiveRoot ζ n := Complex.isPrimitiveRoot_exp n hn0
   have hθpos : 0 < 2 * Real.pi / n := by positivity
   have hθlt : 2 * Real.pi / n < Real.pi := by
     rw [div_lt_iff₀ (by positivity : (0 : ℝ) < (n : ℝ))]
     have h3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
     nlinarith [Real.pi_pos]
   have hζform : ζ = Complex.exp ((2 * Real.pi / n : ℝ) * Complex.I) := by
+    rw [hζdef]
     congr 1
     push_cast
     ring
@@ -143,15 +149,14 @@ theorem cyclotomic_sublevel_not_isPreconnected {n : ℕ} (hn : 3 ≤ n) {C : ℝ
     rw [hζinvform, this, Complex.exp_ofReal_mul_I_im, Real.sin_neg]
   have hsin : 0 < Real.sin (2 * Real.pi / n) := Real.sin_pos_of_pos_of_lt_pi hθpos hθlt
   -- Both roots lie in the sublevel set.
+  haveI hNZ : NeZero ((n : ℂ)) := ⟨Nat.cast_ne_zero.mpr (by omega)⟩
   have hζS : ζ ∈ S := by
-    have : (cyclotomic n ℂ).IsRoot ζ := (isRoot_cyclotomic_iff (n := n)
-      (by exact_mod_cast Nat.pos_of_ne_zero (by omega) : (0 : ℕ) < n) |>.mpr hζ)
-    simpa [hS, Set.mem_setOf_eq, this.eq_zero] using hC0
+    have hroot : (cyclotomic n ℂ).IsRoot ζ := isRoot_cyclotomic_iff.mpr hζ
+    simpa [hS, Set.mem_setOf_eq, hroot.eq_zero] using hC0
   have hζinvS : ζ⁻¹ ∈ S := by
     have hprim : IsPrimitiveRoot ζ⁻¹ n := hζ.inv
-    have : (cyclotomic n ℂ).IsRoot ζ⁻¹ := (isRoot_cyclotomic_iff (n := n)
-      (by exact_mod_cast Nat.pos_of_ne_zero (by omega) : (0 : ℕ) < n) |>.mpr hprim)
-    simpa [hS, Set.mem_setOf_eq, this.eq_zero] using hC0
+    have hroot : (cyclotomic n ℂ).IsRoot ζ⁻¹ := isRoot_cyclotomic_iff.mpr hprim
+    simpa [hS, Set.mem_setOf_eq, hroot.eq_zero] using hC0
   -- The sublevel set avoids the real axis, so the half-planes cover it.
   have hcover : S ⊆ {z : ℂ | 0 < z.im} ∪ {z : ℂ | z.im < 0} := by
     intro z hzS
