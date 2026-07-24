@@ -48,7 +48,8 @@
       "An axiom stated for all k ≥ 3 can be locally redundant: at k = 3 the parent already proves a strictly stronger statement, so the axiom's only genuine content lives at k ≥ 4 where the Gowers inverse theorem is required.",
       "The quantitative-to-qualitative weakening (δ' ≥ δ + δ²/100 ⟹ δ' > δ) is the entire mathematical distance between the proved lemma and the axiom instance — a single positivity argument.",
       "The #print axioms certificate is what makes the discharge meaningful: importing a file that declares an axiom does not taint theorems that never use it, and the kernel verifies exactly which foundations each theorem touches.",
-      "The density ceiling of 1 plus a per-step gain of at least δ₀²/100 bounds the increment iteration at 100/δ₀² steps — the O(δ⁻²) iteration count that drives Roth's original bound N₀ = exp(exp(O(1/δ)))."
+      "The density ceiling of 1 plus a per-step gain of at least δ₀²/100 bounds the increment iteration at 100/δ₀² steps — the O(δ⁻²) iteration count that drives Roth's original bound N₀ = exp(exp(O(1/δ))).",
+      "The bridge proof is a minimal-diff discharge: six of the seven existential witnesses from density_increment_k3_explicit (M, A', δ', the density equation, and 3-AP-freeness of A') pass through refine unchanged, and only the strict-inequality conjunct is re-derived. This is the general shape of discharging an axiom instance from a stronger already-proved lemma — reuse everything, weaken exactly the mismatched piece."
     ],
     "prerequisites": [
       "Roth's theorem and the density increment method",
@@ -59,12 +60,20 @@
   },
   "sections": [
     {
-      "id": "header-and-import",
-      "title": "Header: the gap being closed and the single import",
+      "id": "docstring",
+      "title": "Docstring: the gap being closed",
       "startLine": 1,
-      "endLine": 35,
-      "summary": "The docstring records the discharge target — the k = 3 instance of the parent's axiom density_increment_kAP — and why it is provable at k = 3 (the parent's density_increment_k3_explicit is stronger) but deep at k ≥ 4 (Gowers U^{k-1} inverse theorem). One import pulls in the parent; the file opens the RothTheoremOQ03 namespace to reuse IsKAPFreeZMod and the explicit increment.",
+      "endLine": 30,
+      "summary": "Records the discharge target — the k = 3 instance of the parent's axiom density_increment_kAP — and why it is provable at k = 3 (the parent's density_increment_k3_explicit is stronger) but deep at k ≥ 4 (Gowers U^{k-1} inverse theorem). Notes the supporting iteration lemmas and lists the Roth/Gowers references.",
       "mathContext": "Target: $\\delta' > \\delta$ on a subprogression, from the proved $\\delta' \\geq \\delta + \\delta^2/100$."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: import and namespace",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "One import pulls in the parent RothTheoremOQ03.lean; the file opens its namespace to reuse IsKAPFreeZMod and the explicit increment density_increment_k3_explicit without qualification.",
+      "mathContext": "import Proofs.RothTheoremOQ03; open RothTheoremOQ03."
     },
     {
       "id": "bridge-theorem",
@@ -134,6 +143,13 @@
       "venue": "Geometric and Functional Analysis"
     }
   ],
-  "conclusion": "The k = 3 instance of density_increment_kAP is a theorem, not an assumption: the parent's Fourier-analytic machinery already proves the strictly stronger explicit increment, and a positivity argument bridges the gap. The axiom's genuine content is confined to k ≥ 4, where the Gowers U^{k-1} inverse theorem remains deep and unformalized. The iteration lemmas record why the increment method terminates: a density ceiling of 1 against a per-step gain of δ₀²/100 caps the iteration at 100/δ₀² steps.",
+  "conclusion": {
+    "summary": "The k = 3 instance of density_increment_kAP is a theorem, not an assumption: the parent's Fourier-analytic machinery already proves the strictly stronger explicit increment, and a positivity argument bridges the gap. The axiom's genuine content is confined to k ≥ 4, where the Gowers U^{k-1} inverse theorem remains deep and unformalized. The iteration lemmas record why the increment method terminates: a density ceiling of 1 against a per-step gain of δ₀²/100 caps the iteration at 100/δ₀² steps.",
+    "implications": "Confines the axiom density_increment_kAP's genuine unformalized content to k ≥ 4, where the Gowers U^{k-1} inverse theorem (Green–Tao–Ziegler) is required; at k = 3 the axiom is provably redundant given the gallery's existing Fourier-analytic machinery. The iteration bound quantifies the O(δ₀⁻²) step count that drives the tower-type bound N₀ = exp(exp(O(1/δ))) in Roth's original theorem.",
+    "openQuestions": [
+      "Can density_increment_kAP be similarly discharged at k = 4 using a formalized (even weak) Gowers U³ inverse theorem, or does that remain out of reach of current Lean formalizations?",
+      "Combined with the parent's explicit constant (δ' ≥ δ + δ²/100), does density_increment_iteration_bound yield an explicit, fully quantitative tower-type bound for Roth's theorem at k = 3, rather than the qualitative existence statement proved here?"
+    ]
+  },
   "sorries": []
 }
