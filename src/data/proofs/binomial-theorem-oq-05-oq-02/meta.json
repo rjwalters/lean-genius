@@ -72,7 +72,8 @@
       "**The whole of AM–GM is one Bernoulli step.** The only inequality used is 1 + n(r−1) ≤ rⁿ. Everything else is bookkeeping about how the arithmetic mean updates when one term is appended.",
       "**Mean update = Bernoulli.** Writing r = A_{n+1}/A_n for the ratio of successive arithmetic means, the required A_{n+1}^{n+1} ≥ A_n^n·x_{n+1} is literally Bernoulli at exponent n+1 — the discarded binomial tail is the slack between geometric and arithmetic mean.",
       "**A genuinely different proof from Mathlib's.** Mathlib derives AM–GM from Jensen's inequality for the convex function exp (and the logarithm). The Bernoulli proof here is log-free and exp-free, and is arguably more elementary: it needs only ordered-field arithmetic and one tangent-line estimate.",
-      "**Cons-induction avoids weight renormalization.** Phrasing the induction over a list (append one term) keeps the bookkeeping to a single linear identity (n+1)·A = x + n·Aₜ, sidestepping the explicit weight-normalization that the weighted statement would require."
+      "**Cons-induction avoids weight renormalization.** Phrasing the induction over a list (append one term) keeps the bookkeeping to a single linear identity (n+1)·A = x + n·Aₜ, sidestepping the explicit weight-normalization that the weighted statement would require.",
+      "**Zero terms need no special-casing at the call site.** amgm_step assumes only Aₜ ≥ 0, not Aₜ > 0; the degenerate case Aₜ = 0 (the sample so far was all zeros) is discharged directly inside the lemma rather than excluded by hypothesis, so amgm_list's induction runs uniformly over lists that may contain zeros without a separate positivity branch."
     ],
     "prerequisites": [
       "Bernoulli's inequality in tangent-line form 1 + n·(a−1) ≤ aⁿ (binomial-theorem-oq-05)",
