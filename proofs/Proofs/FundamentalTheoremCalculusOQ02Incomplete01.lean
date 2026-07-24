@@ -884,8 +884,9 @@ theorem lineDeriv_lineDeriv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 
     intro w
     funext y
     exact (hdiff y).lineDeriv_eq_fderiv
-  have hfd : Differentiable 𝕜 (fderiv 𝕜 f) :=
-    (hf.fderiv_right (by norm_num)).differentiable le_rfl
+  have hfd : Differentiable 𝕜 (fderiv 𝕜 f) := by
+    have h1 : ContDiff 𝕜 1 (fderiv 𝕜 f) := hf.fderiv_right (m := 1) (by norm_num)
+    exact h1.differentiable (by norm_num)
   have houter : ∀ (w : E) (y : E), DifferentiableAt 𝕜 (fun z => fderiv 𝕜 f z w) y :=
     fun w y => (hfd y).clm_apply (differentiableAt_const w)
   rw [hinner a, hinner b, (houter b x).lineDeriv_eq_fderiv,
