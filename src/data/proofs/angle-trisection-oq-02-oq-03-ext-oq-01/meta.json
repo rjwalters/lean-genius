@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header-definition",
+      "title": "Header, Imports, and the TotientIsPow2 Definition",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring framing the file as the missing prime-2 case of the parent's coprime multiplicativity, stating the doubling and 2-power invariances and previewing the 7-gon/15-gon consequences. Imports Mathlib, opens the AngleTrisectionOQ02OQ03ExtOQ01 namespace, and re-declares TotientIsPow2 n := ∃ k, φ(n) = 2^k (matching the parent file's predicate).",
+      "mathContext": "TotientIsPow2 n is the Gauss–Wantzel constructibility predicate; this file determines its behavior under multiplication by the prime 2."
+    },
+    {
       "id": "single-step",
       "title": "Section I: The two single-step totient identities for p = 2",
       "startLine": 47,
