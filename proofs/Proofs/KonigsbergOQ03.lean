@@ -459,4 +459,165 @@ theorem lineGraph_arcSet_infinite : (arcSet lineGraph).Infinite := by
   rw [Set.not_infinite] at hfin
   exact not_hasInfiniteEulerPath_of_finite_arcs hfin lineGraph_hasInfiniteEulerPath
 
+/-! ### Incomparability of the two Euler-path notions (S13)
+
+The S12 witnesses show `rayGraph` satisfies `HasOneWayEulerPath` and
+`lineGraph` satisfies `HasInfiniteEulerPath`. This section proves the two
+*negative* halves of the picture:
+
+* `rayGraph` has **no** bi-infinite Euler path — vertex `0` has degree one,
+  but a `ℤ`-indexed walk must both enter and leave every vertex it visits,
+  so the steps into and out of `0` would each traverse the unique edge
+  `{0, 1}`, violating edge-injectivity;
+* `lineGraph` has **no** one-way Euler path — a `ℕ`-indexed Euler walk
+  crosses the cut `{…, -1, 0} | {1, 2, …}` exactly once (the crossing edge
+  `{0, 1}` may only be traversed once), after which it is trapped on one
+  side; the infinitely many edges on the abandoned side would all have to be
+  traversed within the finitely many steps before the crossing.
+
+Hence neither Euler-path predicate implies the other: the one-ended ray and
+the two-ended line separate them in both directions. This is the formal core
+of the classical observation that the *ends* of an infinite graph govern
+which kind of Euler path it can carry (Erdős–Grünwald–Weiszfeld 1936). -/
+
+/-- **The ray graph has no bi-infinite Euler path.** Vertex `0` has degree
+one: its only incident edge is `{0, 1}`. A bi-infinite walk visiting `0` must
+both arrive and depart through that edge, so two distinct steps traverse
+`{0, 1}` — contradicting edge-injectivity. Dual to
+`rayGraph_hasOneWayEulerPath`. -/
+theorem not_hasInfiniteEulerPath_rayGraph : ¬ HasInfiniteEulerPath rayGraph := by
+  rintro ⟨w, hcov, hinj⟩
+  -- the edge {0, 1} is traversed at some integer step t, in one of two directions
+  rcases hcov 0 1 (Or.inl rfl) with ⟨t, ha, hb⟩ | ⟨t, ha, hb⟩
+  · -- step t goes 0 → 1; the step INTO 0 must come from the unique neighbour 1
+    have hprev := w.step_adj (t - 1)
+    rw [show t - 1 + 1 = t from by ring, ha] at hprev
+    rcases hprev with h | h
+    · -- w.vertex (t - 1) + 1 = 0 is impossible in ℕ
+      omega
+    · -- h : 0 + 1 = w.vertex (t - 1), so steps t - 1 and t both traverse {0, 1}
+      refine hinj (t - 1) t (by omega) (Or.inr ⟨by omega, ?_⟩)
+      rw [show t - 1 + 1 = t from by ring]
+  · -- step t goes 1 → 0; the step OUT of 0 must return to the unique neighbour 1
+    have hnext := w.step_adj (t + 1)
+    rw [hb] at hnext
+    rcases hnext with h | h
+    · -- h : 0 + 1 = w.vertex (t + 1 + 1), so steps t and t + 1 both traverse {0, 1}
+      exact hinj t (t + 1) (by omega) (Or.inr ⟨by omega, rfl⟩)
+    · -- w.vertex (t + 1 + 1) + 1 = 0 is impossible in ℕ
+      omega
+
+/-- **The line graph has no one-way Euler path.** A `ℕ`-indexed Euler walk
+traverses the edge `{0, 1}` at a unique step `t`. After step `t` the walk is
+trapped on one side of the cut `{…, -1, 0} | {1, 2, …}`: re-crossing would
+traverse `{0, 1}` a second time. Whichever side is abandoned contains
+infinitely many edges, and each of them must have been traversed at one of
+the `t + 1` steps before the crossing — an injection of an infinite family
+into a finite set. Dual to `lineGraph_hasInfiniteEulerPath`. -/
+theorem not_hasOneWayEulerPath_lineGraph : ¬ HasOneWayEulerPath lineGraph := by
+  rintro ⟨w, hcov, hinj⟩
+  -- the edge {0, 1} is traversed at some step t …
+  obtain ⟨t, hedge⟩ : ∃ n, (w.vertex n = 0 ∧ w.vertex (n + 1) = 1) ∨
+      (w.vertex n = 1 ∧ w.vertex (n + 1) = 0) := by
+    rcases hcov 0 1 (Or.inl rfl) with ⟨n, hn⟩ | ⟨n, hn⟩
+    · exact ⟨n, Or.inl hn⟩
+    · exact ⟨n, Or.inr hn⟩
+  -- … and at no other step (edge-injectivity)
+  have huniq : ∀ i, (w.vertex i = 0 ∧ w.vertex (i + 1) = 1) ∨
+      (w.vertex i = 1 ∧ w.vertex (i + 1) = 0) → i = t := by
+    intro i hi
+    apply hinj
+    rcases hi with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hedge with ⟨h3, h4⟩ | ⟨h3, h4⟩
+    · exact Or.inl ⟨h1.trans h3.symm, h2.trans h4.symm⟩
+    · exact Or.inr ⟨h1.trans h4.symm, h2.trans h3.symm⟩
+    · exact Or.inr ⟨h1.trans h4.symm, h2.trans h3.symm⟩
+    · exact Or.inl ⟨h1.trans h3.symm, h2.trans h4.symm⟩
+  rcases hedge with ⟨ha, hb⟩ | ⟨ha, hb⟩
+  · -- crossed upward at t: from step t + 1 on, the walk stays in {1, 2, …}
+    have hconf : ∀ i, t + 1 ≤ i → 1 ≤ w.vertex i := by
+      intro i hi
+      induction i, hi using Nat.le_induction with
+      | base => omega
+      | succ i hti ih =>
+        by_contra hlt
+        push_neg at hlt
+        rcases w.step_adj i with h | h
+        · omega
+        · exact absurd (huniq i (Or.inr ⟨by omega, by omega⟩)) (by omega)
+    -- every edge {-1 - k, -k} lies in the abandoned side {…, -1, 0} …
+    have hneg : ∀ k : ℕ, ∃ s,
+        (w.vertex s = -1 - (k : ℤ) ∧ w.vertex (s + 1) = -(k : ℤ)) ∨
+        (w.vertex s = -(k : ℤ) ∧ w.vertex (s + 1) = -1 - (k : ℤ)) := by
+      intro k
+      rcases hcov (-1 - (k : ℤ)) (-(k : ℤ)) (Or.inl (by ring)) with ⟨s, hs⟩ | ⟨s, hs⟩
+      · exact ⟨s, Or.inl hs⟩
+      · exact ⟨s, Or.inr hs⟩
+    choose f hf using hneg
+    -- … so its traversal time is at most t: infinitely many edges, t + 1 slots
+    have hmem : ∀ k, f k ∈ Set.Iic t := by
+      intro k
+      rw [Set.mem_Iic]
+      by_contra hgt
+      push_neg at hgt
+      have := hconf (f k) (by omega)
+      rcases hf k with ⟨h1, -⟩ | ⟨h1, -⟩ <;> omega
+    have hfinj : Function.Injective f := by
+      intro j k hjk
+      have hj := hf j
+      have hk := hf k
+      rw [hjk] at hj
+      rcases hj with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hk with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;> omega
+    exact absurd (Set.infinite_of_injective_forall_mem hfinj hmem)
+      (Set.finite_Iic t).not_infinite
+  · -- crossed downward at t: from step t + 1 on, the walk stays in {…, -1, 0}
+    have hconf : ∀ i, t + 1 ≤ i → w.vertex i ≤ 0 := by
+      intro i hi
+      induction i, hi using Nat.le_induction with
+      | base => omega
+      | succ i hti ih =>
+        by_contra hlt
+        push_neg at hlt
+        rcases w.step_adj i with h | h
+        · exact absurd (huniq i (Or.inl ⟨by omega, by omega⟩)) (by omega)
+        · omega
+    -- every edge {k + 1, k + 2} lies in the abandoned side {1, 2, …} …
+    have hpos : ∀ k : ℕ, ∃ s,
+        (w.vertex s = (k : ℤ) + 1 ∧ w.vertex (s + 1) = (k : ℤ) + 2) ∨
+        (w.vertex s = (k : ℤ) + 2 ∧ w.vertex (s + 1) = (k : ℤ) + 1) := by
+      intro k
+      rcases hcov ((k : ℤ) + 1) ((k : ℤ) + 2) (Or.inl (by ring)) with ⟨s, hs⟩ | ⟨s, hs⟩
+      · exact ⟨s, Or.inl hs⟩
+      · exact ⟨s, Or.inr hs⟩
+    choose f hf using hpos
+    have hmem : ∀ k, f k ∈ Set.Iic t := by
+      intro k
+      rw [Set.mem_Iic]
+      by_contra hgt
+      push_neg at hgt
+      have := hconf (f k) (by omega)
+      rcases hf k with ⟨h1, -⟩ | ⟨h1, -⟩ <;> omega
+    have hfinj : Function.Injective f := by
+      intro j k hjk
+      have hj := hf j
+      have hk := hf k
+      rw [hjk] at hj
+      rcases hj with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hk with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;> omega
+    exact absurd (Set.infinite_of_injective_forall_mem hfinj hmem)
+      (Set.finite_Iic t).not_infinite
+
+/-- **One-way does not imply bi-infinite**: the ray graph is a counterexample
+to `HasOneWayEulerPath G → HasInfiniteEulerPath G`. -/
+theorem not_oneWay_imp_biInfinite :
+    ¬ ∀ (V : Type) (G : InfiniteGraph V),
+      HasOneWayEulerPath G → HasInfiniteEulerPath G :=
+  fun h => not_hasInfiniteEulerPath_rayGraph (h ℕ rayGraph rayGraph_hasOneWayEulerPath)
+
+/-- **Bi-infinite does not imply one-way**: the line graph is a counterexample
+to `HasInfiniteEulerPath G → HasOneWayEulerPath G`. Together with
+`not_oneWay_imp_biInfinite`, the two Euler-path predicates are incomparable. -/
+theorem not_biInfinite_imp_oneWay :
+    ¬ ∀ (V : Type) (G : InfiniteGraph V),
+      HasInfiniteEulerPath G → HasOneWayEulerPath G :=
+  fun h => not_hasOneWayEulerPath_lineGraph (h ℤ lineGraph lineGraph_hasInfiniteEulerPath)
+
 end KonigsbergOQ03
