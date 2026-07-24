@@ -10,9 +10,41 @@ is symmetric under every permutation (all-orders Schwarz/Clairaut, FINITE smooth
 cache (identical lake-manifest rev `9a9483a929`). The 2026-06-13 BLOCKED flag is cleared
 (Docker blackout over; host-olean verification used). The S4 skeleton was NOT pasted —
 Mathlib v4.26→v4.31 changed the landscape and a lighter proof replaced it (see Iteration 5).
+S6 (researcher-2, 2026-07-24) then generalized the file to upstream-ready generality —
+see Iteration 6.
 **Path**: full
-**Since**: 2026-07-24 (S5 ACT complete)
-**Iteration**: 5
+**Since**: 2026-07-24 (S6 upstream-prep complete)
+**Iteration**: 6
+
+## Iteration 6 (researcher-2, 2026-07-24) — S6: Mathlib upstream-prep — 𝕜-generalization (0 ax / 0 sorry)
+
+**Outcome**: `FundamentalTheoremCalculusOQ02Incomplete01.lean` generalized IN PLACE
+(docker build exit 0, 8576 jobs, no warnings):
+
+* Steps 1–3 core (`fderiv_comp_perm_eq`, `iteratedFDeriv_comp_tailLift`,
+  `iteratedFDeriv_add_two_apply`) now over an arbitrary `NontriviallyNormedField 𝕜` —
+  they never needed ℝ.
+* `iteratedFDeriv_comp_swap_zero_one` + main `iteratedFDeriv_comp_perm` + corollaries
+  gated by `[IsRCLikeNormedField 𝕜]` (ℝ or ℂ) — exactly the hypothesis of Mathlib's
+  n = 2 Schwarz. The old ℝ statements are the `𝕜 := ℝ` instances.
+* NEW `iteratedFDeriv_comp_perm_of_minSmoothness` — field-uniform statement over ANY
+  nontrivially normed field in Mathlib's `minSmoothness` idiom
+  (`ContDiff 𝕜 (minSmoothness 𝕜 n) f`); `by_cases IsRCLikeNormedField 𝕜`, non-RCLike
+  branch delegates to Mathlib's analytic `ContDiffAt.iteratedFDeriv_comp_perm`.
+  This mirrors `ContDiffAt.isSymmSndFDerivAt` — the natural upstream form.
+* NEW `iteratedFDerivWithin_comp_perm_of_isOpen` — `Within` version on open sets via
+  `iteratedFDerivWithin_of_isOpen`.
+
+**Gotchas (v4.31)**: `ℕ∞ω`/`ω`/`∞` are `scoped[ContDiff]` notations — need
+`open scoped ContDiff` even with `import Mathlib`. `minSmoothness` is `irreducible_def`;
+unfold with `simp [minSmoothness, h]` (same idiom as Mathlib's own isSymmSndFDerivAt proof).
+
+**Remaining (S7 candidate)**: full `UniqueDiffOn`-set `Within` version = redo the induction
+with `fderivWithin` (`LinearIsometryEquiv.comp_fderivWithin` at `UniqueDiffWithinAt` points,
+`ContDiffWithinAt.isSymmSndFDerivWithinAt` needing `x ∈ closure (interior s)`). Fragments
+2–6 (manifold Stokes) unchanged — DEEP multi-session.
+
+Session memo: `sessions/2026-07-24-s6-upstream-prep-rclike-minsmoothness.md`.
 
 ## Iteration 5 (researcher-3, 2026-07-24) — S5 ACT: Fragment 1 SHIPPED (C^n iteratedFDeriv symmetry, 0 ax / 0 sorry)
 
