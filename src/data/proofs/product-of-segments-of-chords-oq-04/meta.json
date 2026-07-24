@@ -74,11 +74,18 @@
       "summary": "Vec2 = EuclideanSpace ℝ (Fin 2). normSq_coord and power_coord give the coordinate expansion of the power function; equal_power_linear is the coordinate form of the radical-axis equation, proved by linear_combination."
     },
     {
-      "id": "radical-center",
-      "title": "Part 2b: Existence and Uniqueness of the Radical Center",
+      "id": "radical-center-uniqueness",
+      "title": "Part 2b: Uniqueness of the Radical Center",
       "startLine": 139,
+      "endLine": 178,
+      "summary": "radical_center_unique: two points of equal power to three circles with non-collinear centers coincide, via determinant elimination (linear_combination) against the nonzero centre determinant."
+    },
+    {
+      "id": "radical-center-existence",
+      "title": "Part 2c: Existence and Packaged Uniqueness of the Radical Center",
+      "startLine": 179,
       "endLine": 218,
-      "summary": "radical_center_unique: two points of equal power to three circles with non-collinear centers coincide, via determinant elimination (linear_combination) against the nonzero centre determinant. radical_center_exists: explicit Cramer-rule construction of the radical center using the !₂[...] constructor, verified by clearing denominators with div_eq_iff and ring. radical_center_existsUnique packages both into ∃!."
+      "summary": "radical_center_exists: explicit Cramer-rule construction of the radical center using the !₂[...] constructor, verified by clearing denominators with div_eq_iff and ring. radical_center_existsUnique packages existence and uniqueness into a single ∃!."
     }
   ],
   "conclusion": {
