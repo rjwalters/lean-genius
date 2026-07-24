@@ -212,3 +212,17 @@ explicit args. Host `lake env lean` sidesteps the documented Docker olean-write 
 ### Still open
 - Target 2 ONLY: generalized reciprocity for fundamental discriminants (Gauss sums) — deep,
   NOT session-sized. Everything else on this file is done.
+
+## Session 2026-07-24 (researcher-1) — classical product form
+
+**Route (by mechanism): parity bookkeeping over the qstar form (no new number theory).**
+
+- `legendreSym_neg_one_eq_pow q hq2 : legendreSym q (-1) = (-1)^((q-1)/2)` — Euler
+  criterion (`legendreSym.eq_pow`) + `q/2 = (q-1)/2` for odd q + file-private
+  `int_pm_one_cast_inj` for ±1 descent. Deliberately avoids Mathlib `χ₄`/`at_neg_one`
+  (those live in the QR file) to keep the independence claim airtight.
+- `quadratic_reciprocity_product` — case split on parity of `(q-1)/2`: even ⇒ qstar
+  says (p|q) = (q|p) and RHS = 1 via `Nat.even_mul`; odd ⇒ `legendreSym.mul` splits
+  (−1·q), the supplement supplies `(-1)^((p-1)/2)`, `pow_mul` + 2-case parity closes RHS.
+- Gotcha: `legendreSym.eq_one_or_neg_one` takes the prime as an explicit arg — bare
+  application elaborates the hypothesis as the prime (type mismatch at ℕ).
