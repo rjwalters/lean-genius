@@ -549,7 +549,14 @@ On the unit sphere (K = 1, R = 1): A = α + β + γ - π
 This is the spherical excess.
 -/
 
-/-- A geodesic triangle on a surface of constant curvature. -/
+/-- A geodesic triangle on a surface of constant curvature, encoded as a
+    3-sided `ConstCurvatureGeodesicPolygon`. Because the sides are geodesic,
+    the boundary integral of the enclosed region is the exterior-angle sum,
+    and each exterior angle is π minus the corresponding interior angle.
+    With this encoding the triangle Gauss-Bonnet identity
+    K · area = α + β + γ - π is *derived* from `const_curv_polygon_formula`
+    (see `GeodesicTriangle.gauss_bonnet_triangle` below) rather than carried
+    as a separate structure-encoded assumption. -/
 structure GeodesicTriangle where
   /-- Interior angles -/
   α : ℝ
@@ -559,15 +566,41 @@ structure GeodesicTriangle where
   α_pos : 0 < α
   β_pos : 0 < β
   γ_pos : 0 < γ
-  /-- Constant Gaussian curvature of the ambient surface -/
-  K : ℝ
-  /-- Area of the triangle -/
-  area : ℝ
-  area_pos : 0 < area
-  /-- The Gauss-Bonnet relation for a geodesic triangle (χ = 1 for disk):
-      K · area + (π - α) + (π - β) + (π - γ) = 2π
-      i.e., K · area = α + β + γ - π (the angular excess) -/
-  gauss_bonnet_triangle : K * area = α + β + γ - π
+  /-- The enclosed region as a geodesic polygon on a constant-curvature
+      surface. -/
+  toPolygon : ConstCurvatureGeodesicPolygon
+  /-- A triangle has three sides. -/
+  n_eq_three : toPolygon.n = 3
+  /-- The exterior angles at the three vertices are π minus the interior
+      angles, so the polygon's exterior-angle sum is
+      (π - α) + (π - β) + (π - γ). This pins the interior-angle data to the
+      underlying polygon; it is the definition of interior angle, not a
+      curvature assumption. -/
+  ext_angle_sum : toPolygon.exteriorAngleSum = (π - α) + (π - β) + (π - γ)
+
+namespace GeodesicTriangle
+
+/-- Constant Gaussian curvature of the ambient surface. -/
+def K (T : GeodesicTriangle) : ℝ := T.toPolygon.K
+
+/-- Area of the triangle. -/
+def area (T : GeodesicTriangle) : ℝ := T.toPolygon.area
+
+theorem area_pos (T : GeodesicTriangle) : 0 < T.area := T.toPolygon.area_pos
+
+/-- The Gauss-Bonnet relation for a geodesic triangle (χ = 1 for disk):
+    K · area + (π - α) + (π - β) + (π - γ) = 2π,
+    i.e., K · area = α + β + γ - π (the angular excess).
+    Derived from `const_curv_polygon_formula` at n = 3 — no longer a
+    structure-encoded assumption (Reduction C). -/
+theorem gauss_bonnet_triangle (T : GeodesicTriangle) :
+    T.K * T.area = T.α + T.β + T.γ - π := by
+  have h := const_curv_polygon_formula T.toPolygon
+  rw [T.ext_angle_sum] at h
+  unfold K area
+  linarith
+
+end GeodesicTriangle
 
 /-- **Girard's formula**: On a surface of constant curvature K > 0,
     the area of a geodesic triangle equals the angular excess divided by K.
@@ -825,8 +858,12 @@ theorem genus_g_morse_bound (f : MorseFunctionOnSurface)
 
 ### Axiomatic vs proved:
   - AXIOMS: Gauss-Bonnet (∫K dA = 2πχ), Gauss-Bonnet with boundary,
-    geodesic polygon/triangle relations, Poincaré-Hopf, Morse relation
-  - PROVED: All consequences (35+ theorems, 0 sorries)
+    constant-curvature formula (∫K dA = K·Area), Poincaré-Hopf,
+    Morse relation
+  - PROVED: All consequences (35+ theorems, 0 sorries); the geodesic
+    polygon relation is derived from Gauss-Bonnet with boundary at χ = 1
+    (Reduction B), and the geodesic triangle relation is derived from the
+    polygon formula at n = 3 (Reduction C)
 
 ### Why axiomatization:
   Mathlib v4.26.0 lacks: Riemannian metrics, Gaussian curvature,
