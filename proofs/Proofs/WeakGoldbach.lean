@@ -979,8 +979,6 @@ theorem schnirelmann_basis_explicit {A : Set ℕ} [DecidablePred (· ∈ A)]
   have hdef := SchnirelmannTheorem.deficiency_sumsetPow_le hA0 ℓ
   have hmono : (1 - schnirelmannDensity A) ^ ℓ ≤ (1 - δ) ^ ℓ := by
     gcongr
-    · linarith
-    · linarith
   have hhalf : (1 - δ) ^ ℓ < 1 / 2 := pow_deficiency_lt_half hδ0 hδ1
   have hdens : 1 / 2 ≤ schnirelmannDensity (SchnirelmannBasis.sumsetPow A ℓ) := by
     linarith
