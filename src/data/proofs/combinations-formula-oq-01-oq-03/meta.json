@@ -140,6 +140,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header: imports, problem statement, and strategy",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports the sibling q-binomial file combinations-formula-oq-03 (namespace QBinomialCoefficients) and Mathlib. States the two remaining gaps in the q-binomial program — subset-of-a-subset in its multiplied and cancelled forms, and the alternating q-row sum — and previews the universal polynomial identity method used to legitimize the cancellation. Opens Nat, Finset, and QBinomialCoefficients, and declares the CombinationsFormulaOQ01OQ03 namespace.",
+      "mathContext": "The subset-of-a-subset target $[n,k]_q\\,[k,j]_q = [n,j]_q\\,[n-j,k-j]_q$ and the alternating sum target $\\sum_k [n,k]_q\\,q^{\\binom{k}{2}}(-1)^k = 0$, both to be proved over an arbitrary commutative ring."
+    },
+    {
       "id": "transport-layer",
       "title": "Part I — q-Quantities Commute with Ring Homomorphisms",
       "startLine": 48,
