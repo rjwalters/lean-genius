@@ -1,11 +1,9 @@
 [
   {
     "id": "ann-kronecker-imports",
-    "line": 17,
     "type": "concept",
     "title": "Mathlib's Jacobi Symbol: The Algebraic Foundation",
-    "body": "This proof imports `Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol`, which provides the Jacobi symbol `jacobiSym a n : \u2124` for odd positive `n`. The Kronecker symbol is not built from scratch \u2014 it delegates the core odd-modulus computation to Mathlib's verified Jacobi implementation, then wraps it with handlers for the special cases (even moduli, sign, zero). This stratified design means the hard number theory (multiplicativity of Jacobi, relation to Legendre for prime moduli) is inherited for free.",
-    "mathContext": "The Jacobi symbol $\\left(\\frac{a}{n}\\right)$ for odd $n = p_1^{e_1} \\cdots p_k^{e_k}$ is defined multiplicatively: $\\prod_i \\left(\\frac{a}{p_i}\\right)^{e_i}$, where each factor is a Legendre symbol. Mathlib proves the key properties: multiplicativity in both arguments, the quadratic reciprocity law, and the supplementary laws for $-1$ and $2$. The Kronecker extension uses `jacobiSym a m` only for odd $m$ \u2014 exactly the domain where Jacobi is well-defined.",
+    "mathContext": "The Jacobi symbol $\\left(\\frac{a}{n}\\right)$ for odd $n = p_1^{e_1} \\cdots p_k^{e_k}$ is defined multiplicatively: $\\prod_i \\left(\\frac{a}{p_i}\\right)^{e_i}$, where each factor is a Legendre symbol. Mathlib proves the key properties: multiplicativity in both arguments, the quadratic reciprocity law, and the supplementary laws for $-1$ and $2$. The Kronecker extension uses `jacobiSym a m` only for odd $m$ — exactly the domain where Jacobi is well-defined.",
     "significance": "supporting",
     "relatedConcepts": [
       "Legendre symbol",
@@ -19,7 +17,7 @@
       "prime factorization",
       "quadratic reciprocity"
     ],
-    "content": "By building on Mathlib's `jacobiSym` rather than reproving multiplicativity, this formalization achieves 0 sorries and 0 axioms while covering the full integer-modulus domain. The design pattern \u2014 extend a well-verified base to new edge cases \u2014 is characteristic of good mathematical library design.",
+    "content": "This proof imports `Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol`, which provides the Jacobi symbol `jacobiSym a n : ℤ` for odd positive `n`. The Kronecker symbol is not built from scratch — it delegates the core odd-modulus computation to Mathlib's verified Jacobi implementation, then wraps it with handlers for the special cases (even moduli, sign, zero). This stratified design means the hard number theory (multiplicativity of Jacobi, relation to Legendre for prime moduli) is inherited for free.\n\nBy building on Mathlib's `jacobiSym` rather than reproving multiplicativity, this formalization achieves 0 sorries and 0 axioms while covering the full integer-modulus domain. The design pattern — extend a well-verified base to new edge cases — is characteristic of good mathematical library design.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 17,
@@ -28,10 +26,8 @@
   },
   {
     "id": "ann-kronecker-two",
-    "line": 34,
     "type": "insight",
-    "title": "\u03c7(a, 2): The Mod-8 Classification and Quadratic Reciprocity for 2",
-    "body": "The definition `kroneckerTwo` encodes the quadratic residue structure modulo 8. Even `a` gives 0 (2 divides the content). Odd `a` gives \u00b11 based on `a % 8`: residues \u00b11 (mod 8) give +1, residues \u00b13 (mod 8) give -1. This is the supplementary law of quadratic reciprocity for the prime 2: whether 2 is a quadratic residue mod an odd prime p depends on p mod 8. The formula `(-1)^((a\u00b2-1)/8)` (equivalent to this definition) is the cleanest closed form.",
+    "title": "χ(a, 2): The Mod-8 Classification and Quadratic Reciprocity for 2",
     "mathContext": "The key identity: for odd $a$, $\\left(\\frac{2}{a}\\right) = (-1)^{(a^2-1)/8}$. This equals $+1$ when $a \\equiv \\pm 1 \\pmod{8}$ (since $1-1=0$, $49-1=48$, both divisible by 8) and $-1$ when $a \\equiv \\pm 3 \\pmod{8}$ (since $9-1=8$, $25-1=24$; wait, $24/8=3$ odd). The mod-8 structure arises because $(\\mathbb{Z}/8\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$, with the two generators being $-1$ and $3$.",
     "significance": "key",
     "relatedConcepts": [
@@ -46,7 +42,7 @@
       "modular arithmetic",
       "prime 2 in number theory"
     ],
-    "content": "The value `kroneckerTwo` is the most mathematically rich of the three base cases. It detects whether an odd integer is a quadratic residue mod 2 \u2014 capturing the 'character at the prime 2' in the factored form of the Kronecker symbol. Without this piece, there is no extension of Jacobi to even moduli.",
+    "content": "The definition `kroneckerTwo` encodes the quadratic residue structure modulo 8. Even `a` gives 0 (2 divides the content). Odd `a` gives ±1 based on `a % 8`: residues ±1 (mod 8) give +1, residues ±3 (mod 8) give -1. This is the supplementary law of quadratic reciprocity for the prime 2: whether 2 is a quadratic residue mod an odd prime p depends on p mod 8. The formula `(-1)^((a²-1)/8)` (equivalent to this definition) is the cleanest closed form.\n\nThe value `kroneckerTwo` is the most mathematically rich of the three base cases. It detects whether an odd integer is a quadratic residue mod 2 — capturing the 'character at the prime 2' in the factored form of the Kronecker symbol. Without this piece, there is no extension of Jacobi to even moduli.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 34,
@@ -55,10 +51,8 @@
   },
   {
     "id": "ann-factor-twos",
-    "line": 49,
     "type": "definition",
     "title": "factorTwos: 2-Adic Valuation via Structural Recursion",
-    "body": "The `factorTwos` function extracts `(v\u2082(n), odd_part(n))` by repeatedly halving `n` until it is odd, counting how many times 2 divides. The termination annotation `termination_by n => n` tells Lean to use `n` as the decreasing measure \u2014 each recursive call passes `(n+1)/2 < n+1`. The case split `| 0 => (0, 0)` handles zero specially (it has infinite 2-adic valuation, but the definition returns 0). The companion theorem `factorTwos_odd_eq` is the linchpin: for odd `n > 0`, `factorTwos n = (0, n)`, which is used directly to prove the extension theorem.",
     "mathContext": "For $n \\geq 1$, the 2-adic valuation $v_2(n)$ is the largest $v$ such that $2^v \\mid n$. The odd part is $n / 2^{v_2(n)}$. So $n = 2^{v_2(n)} \\cdot \\text{odd\\_part}(n)$. For odd $n$: $v_2(n) = 0$ and $\\text{odd\\_part}(n) = n$, which is exactly what `factorTwos_odd_eq` states: $\\text{factorTwos}(n) = (0, n)$ when $n > 0$ and $n \\% 2 = 1$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -73,7 +67,7 @@
       "divisibility",
       "Lean 4 termination"
     ],
-    "content": "This recursive definition is a microcosm of how number-theoretic induction works in Lean 4. The `termination_by` annotation, the structural pattern matching on `\u2115`, and the companion lemma all demonstrate idiomatic Lean. The proof of `factorTwos_odd_eq` uses `omega` to handle the modular arithmetic case check \u2014 a reminder that linear arithmetic automation is indispensable in number theory.",
+    "content": "The `factorTwos` function extracts `(v₂(n), odd_part(n))` by repeatedly halving `n` until it is odd, counting how many times 2 divides. The termination annotation `termination_by n => n` tells Lean to use `n` as the decreasing measure — each recursive call passes `(n+1)/2 < n+1`. The case split `| 0 => (0, 0)` handles zero specially (it has infinite 2-adic valuation, but the definition returns 0). The companion theorem `factorTwos_odd_eq` is the linchpin: for odd `n > 0`, `factorTwos n = (0, n)`, which is used directly to prove the extension theorem.\n\nThis recursive definition is a microcosm of how number-theoretic induction works in Lean 4. The `termination_by` annotation, the structural pattern matching on `ℕ`, and the companion lemma all demonstrate idiomatic Lean. The proof of `factorTwos_odd_eq` uses `omega` to handle the modular arithmetic case check — a reminder that linear arithmetic automation is indispensable in number theory.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 49,
@@ -82,11 +76,9 @@
   },
   {
     "id": "ann-kronecker-sym",
-    "line": 76,
     "type": "definition",
     "title": "kroneckerSym: Assembling the Full Kronecker Symbol",
-    "body": "The `noncomputable` qualifier is required because `jacobiSym` involves classical logic (or decidability instances that aren't computable by default in Lean). The definition `kroneckerSym a n` handles `n = 0` separately, then assembles three factors for `n \u2260 0`: (1) a sign factor `kroneckerNegOne a` if `n < 0`, else 1; (2) a two-adic factor `kroneckerTwo a ^ v` where `(v, m) = factorTwos |n|`; (3) a Jacobi factor `jacobiSym a m` for the odd part `m`. The multiplication of these three factors is the formal content of Kronecker's extension.",
-    "mathContext": "For $n = \\varepsilon \\cdot 2^v \\cdot m$ with $\\varepsilon = \\pm 1$, $m$ odd positive, the Kronecker symbol is: $\\chi(a, n) = \\chi(a, \\varepsilon) \\cdot \\chi(a, 2)^v \\cdot J(a, m)$. This multiplicativity-in-$n$ is the definition, not a theorem: the Kronecker symbol is defined to be multiplicative. The non-trivial content is showing this extends Jacobi \u2014 that for odd positive $n$, the assembly recovers exactly $J(a, n)$.",
+    "mathContext": "For $n = \\varepsilon \\cdot 2^v \\cdot m$ with $\\varepsilon = \\pm 1$, $m$ odd positive, the Kronecker symbol is: $\\chi(a, n) = \\chi(a, \\varepsilon) \\cdot \\chi(a, 2)^v \\cdot J(a, m)$. This multiplicativity-in-$n$ is the definition, not a theorem: the Kronecker symbol is defined to be multiplicative. The non-trivial content is showing this extends Jacobi — that for odd positive $n$, the assembly recovers exactly $J(a, n)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "multiplicative function",
@@ -102,7 +94,7 @@
       "kroneckerTwo",
       "kroneckerNegOne"
     ],
-    "content": "The three-factor product structure makes the definition immediately readable as 'sign factor \u00d7 two-adic factor \u00d7 odd-part factor'. This mirrors how the Kronecker symbol functions as a Dirichlet character: its value at a prime power $p^k$ is $\\chi(a, p)^k$, and these multiply across the factorization of $n$. The `noncomputable` tag is a reminder that pure formalism sometimes requires classical logic.",
+    "content": "The `noncomputable` qualifier is required because `jacobiSym` involves classical logic (or decidability instances that aren't computable by default in Lean). The definition `kroneckerSym a n` handles `n = 0` separately, then assembles three factors for `n ≠ 0`: (1) a sign factor `kroneckerNegOne a` if `n < 0`, else 1; (2) a two-adic factor `kroneckerTwo a ^ v` where `(v, m) = factorTwos |n|`; (3) a Jacobi factor `jacobiSym a m` for the odd part `m`. The multiplication of these three factors is the formal content of Kronecker's extension.\n\nThe three-factor product structure makes the definition immediately readable as 'sign factor × two-adic factor × odd-part factor'. This mirrors how the Kronecker symbol functions as a Dirichlet character: its value at a prime power $p^k$ is $\\chi(a, p)^k$, and these multiply across the factorization of $n$. The `noncomputable` tag is a reminder that pure formalism sometimes requires classical logic.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 76,
@@ -111,11 +103,9 @@
   },
   {
     "id": "ann-extension-theorem",
-    "line": 112,
     "type": "insight",
     "title": "The Extension Theorem: Kronecker Generalizes Jacobi",
-    "body": "This is the central mathematical result: for odd positive `n`, `kroneckerSym a n = jacobiSym a n`. The proof is a one-step unfolding: when `n` is odd, `factorTwos n = (0, n)` (by `factorTwos_odd_eq`), so `v = 0` and `m = n`. The two-adic factor `kroneckerTwo a ^ 0 = 1` vanishes, and the sign factor is 1 (since `n > 0` means `(n : \u2124) \u2265 1 > 0`, so `\u00ac(n < 0)`). The product reduces to `1 * 1 * jacobiSym a n = jacobiSym a n`. The `simp` and `rw` tactics then close the goal.",
-    "mathContext": "The formal statement is: $\\forall a \\in \\mathbb{Z},\\; n \\in \\mathbb{N},\\; n > 0,\\; n \\equiv 1 \\pmod{2} \\implies \\chi(a, n) = J(a, n)$. The proof in Lean has the structure: (1) unfold `kroneckerSym`, (2) dismiss `n = 0` case via `n > 0`, (3) dismiss `n < 0` case since `n : \u2115` cast to `\u2124` is non-negative, (4) apply `factorTwos_odd_eq` to get `(0, n)`, (5) simplify `^0 = 1` and `1 * 1 * x = x`.",
+    "mathContext": "The formal statement is: $\\forall a \\in \\mathbb{Z},\\; n \\in \\mathbb{N},\\; n > 0,\\; n \\equiv 1 \\pmod{2} \\implies \\chi(a, n) = J(a, n)$. The proof in Lean has the structure: (1) unfold `kroneckerSym`, (2) dismiss `n = 0` case via `n > 0`, (3) dismiss `n < 0` case since `n : ℕ` cast to `ℤ` is non-negative, (4) apply `factorTwos_odd_eq` to get `(0, n)`, (5) simplify `^0 = 1` and `1 * 1 * x = x`.",
     "significance": "key",
     "relatedConcepts": [
       "extending Jacobi",
@@ -129,7 +119,7 @@
       "Jacobi symbol",
       "Lean rewriting tactics"
     ],
-    "content": "This theorem validates the entire construction. Without it, `kroneckerSym` would be just a new symbol, unrelated to the classical theory. The extension property is what makes the Kronecker symbol useful: existing results about the Jacobi symbol (quadratic reciprocity, multiplicativity, the Euler criterion for prime moduli) all transfer to the Kronecker symbol on odd inputs.",
+    "content": "This is the central mathematical result: for odd positive `n`, `kroneckerSym a n = jacobiSym a n`. The proof is a one-step unfolding: when `n` is odd, `factorTwos n = (0, n)` (by `factorTwos_odd_eq`), so `v = 0` and `m = n`. The two-adic factor `kroneckerTwo a ^ 0 = 1` vanishes, and the sign factor is 1 (since `n > 0` means `(n : ℤ) ≥ 1 > 0`, so `¬(n < 0)`). The product reduces to `1 * 1 * jacobiSym a n = jacobiSym a n`. The `simp` and `rw` tactics then close the goal.\n\nThis theorem validates the entire construction. Without it, `kroneckerSym` would be just a new symbol, unrelated to the classical theory. The extension property is what makes the Kronecker symbol useful: existing results about the Jacobi symbol (quadratic reciprocity, multiplicativity, the Euler criterion for prime moduli) all transfer to the Kronecker symbol on odd inputs.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 112,
@@ -138,11 +128,9 @@
   },
   {
     "id": "ann-main-result",
-    "line": 156,
     "type": "insight",
     "title": "kronecker_extends_jacobi: The Top-Level API",
-    "body": "The final theorem `kronecker_extends_jacobi` is a restatement of `kroneckerSym_eq_jacobiSym` as a universally quantified statement, serving as the clean public API for the module. Its proof is literally `kroneckerSym_eq_jacobiSym` \u2014 it delegates immediately. The `#check` commands on lines 160\u2013162 verify that the three key definitions are accessible from outside the namespace, demonstrating the module's intended export surface.",
-    "mathContext": "The theorem states: $\\forall a \\in \\mathbb{Z},\\; \\forall n \\in \\mathbb{N},\\; (n > 0 \\wedge n \\equiv 1 \\pmod{2}) \\Rightarrow \\chi(a, n) = J(a, n)$. The subsequent `#check` commands serve as API documentation \u2014 they compile only if the identifiers are valid and have the expected types. In a Lean library, this is standard practice for confirming export correctness without writing redundant unit tests.",
+    "mathContext": "The theorem states: $\\forall a \\in \\mathbb{Z},\\; \\forall n \\in \\mathbb{N},\\; (n > 0 \\wedge n \\equiv 1 \\pmod{2}) \\Rightarrow \\chi(a, n) = J(a, n)$. The subsequent `#check` commands serve as API documentation — they compile only if the identifiers are valid and have the expected types. In a Lean library, this is standard practice for confirming export correctness without writing redundant unit tests.",
     "significance": "key",
     "relatedConcepts": [
       "API design in Lean",
@@ -156,7 +144,7 @@
       "Lean namespace",
       "module exports"
     ],
-    "content": "By exposing a clean top-level theorem, the module makes it easy for downstream formalizations to cite `kronecker_extends_jacobi` without knowing the internal proof structure. This is the final step from implementation to library: define the objects, prove the key properties, expose a clean interface. The module is a complete, self-contained unit suitable for further number-theoretic development.",
+    "content": "The final theorem `kronecker_extends_jacobi` is a restatement of `kroneckerSym_eq_jacobiSym` as a universally quantified statement, serving as the clean public API for the module. Its proof is literally `kroneckerSym_eq_jacobiSym` — it delegates immediately. The `#check` commands on lines 160–162 verify that the three key definitions are accessible from outside the namespace, demonstrating the module's intended export surface.\n\nBy exposing a clean top-level theorem, the module makes it easy for downstream formalizations to cite `kronecker_extends_jacobi` without knowing the internal proof structure. This is the final step from implementation to library: define the objects, prove the key properties, expose a clean interface. The module is a complete, self-contained unit suitable for further number-theoretic development.",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 156,
