@@ -1,4 +1,4 @@
-/-!
+/-
 # GL derives the "4" schema: `□A → □□A` (S17 ACT)
 
   Slug: godel-second-incompleteness-oq02-oq-02
