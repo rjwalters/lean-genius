@@ -370,4 +370,93 @@ theorem not_hasInfiniteEulerPath_of_finite {V : Type*} [Finite V]
     (G : InfiniteGraph V) : ¬ HasInfiniteEulerPath G :=
   not_hasInfiniteEulerPath_of_finite_arcs (Set.toFinite _)
 
+/-! ### Satisfiability witnesses (S12)
+
+Everything above is an *impossibility* theorem. The predicates are only
+meaningful if some graph actually satisfies them, so this section provides the
+two canonical positive witnesses:
+
+* the **ray graph** on `ℕ` (`n ~ n + 1`) has a one-way Euler path — the
+  identity walk `0 → 1 → 2 → ⋯` traverses each edge `{n, n+1}` exactly once;
+* the **line graph** on `ℤ` (`n ~ n + 1`) has a bi-infinite Euler path — the
+  identity `ℤ`-walk.
+
+Combining each witness with the S11 finite-arc impossibility theorems yields
+the (necessarily true) corollaries that both graphs have infinitely many arcs
+— the finiteness obstruction is the *only* thing the S11 theorems rule out,
+and these graphs clear it. -/
+
+/-- The ray graph on `ℕ`: `m` and `n` are adjacent iff they are consecutive.
+The prototypical one-ended infinite graph. -/
+def rayGraph : InfiniteGraph ℕ where
+  adj m n := m + 1 = n ∨ n + 1 = m
+  symm := fun _ _ h => h.symm
+  loopless := fun _ h => by omega
+
+/-- The identity walk `0 → 1 → 2 → ⋯` on the ray graph. -/
+def rayWalk : InfiniteWalk rayGraph where
+  vertex := id
+  step_adj := fun _ => Or.inl rfl
+
+/-- The identity walk is an Euler walk on the ray graph: every edge `{n, n+1}`
+is traversed (at step `n`), and distinct steps traverse distinct edges (step
+`m` traverses `{m, m+1}`, and `{m, m+1} = {n, n+1}` forces `m = n`). -/
+theorem rayWalk_isEulerWalk : IsEulerWalk rayGraph rayWalk := by
+  constructor
+  · intro u v hadj
+    rcases hadj with h | h
+    · exact Or.inl ⟨u, rfl, h⟩
+    · exact Or.inr ⟨v, rfl, h⟩
+  · intro m n hmn
+    rcases hmn with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+      simp only [rayWalk, id] at h1 h2 <;> omega
+
+/-- **The ray graph has a one-way Euler path** — the first satisfiability
+witness for `HasOneWayEulerPath`, complementing the S11 impossibility
+theorems. -/
+theorem rayGraph_hasOneWayEulerPath : HasOneWayEulerPath rayGraph :=
+  ⟨rayWalk, rayWalk_isEulerWalk⟩
+
+/-- The ray graph has infinitely many arcs: it has a one-way Euler path, which
+`not_hasOneWayEulerPath_of_finite_arcs` forbids for finite-arc graphs. -/
+theorem rayGraph_arcSet_infinite : (arcSet rayGraph).Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  exact not_hasOneWayEulerPath_of_finite_arcs hfin rayGraph_hasOneWayEulerPath
+
+/-- The line graph on `ℤ`: `m` and `n` are adjacent iff they are consecutive.
+The prototypical two-ended infinite graph. -/
+def lineGraph : InfiniteGraph ℤ where
+  adj m n := m + 1 = n ∨ n + 1 = m
+  symm := fun _ _ h => h.symm
+  loopless := fun _ h => by omega
+
+/-- The identity `ℤ`-walk `⋯ → -1 → 0 → 1 → ⋯` on the line graph. -/
+def lineWalk : BiInfiniteWalk lineGraph where
+  vertex := id
+  step_adj := fun _ => Or.inl rfl
+
+/-- The identity `ℤ`-walk is a bi-infinite Euler walk on the line graph. -/
+theorem lineWalk_isBiInfiniteEulerWalk : IsBiInfiniteEulerWalk lineGraph lineWalk := by
+  constructor
+  · intro u v hadj
+    rcases hadj with h | h
+    · exact Or.inl ⟨u, rfl, h⟩
+    · exact Or.inr ⟨v, rfl, h⟩
+  · intro m n hne hcon
+    rcases hcon with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+      simp only [lineWalk, id] at h1 h2 <;> omega
+
+/-- **The line graph on `ℤ` has a bi-infinite Euler path** — the first
+satisfiability witness for `HasInfiniteEulerPath`. -/
+theorem lineGraph_hasInfiniteEulerPath : HasInfiniteEulerPath lineGraph :=
+  ⟨lineWalk, lineWalk_isBiInfiniteEulerWalk⟩
+
+/-- The line graph has infinitely many arcs, by the same contrapositive
+pairing of the S12 witness with the S11 impossibility theorem. -/
+theorem lineGraph_arcSet_infinite : (arcSet lineGraph).Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  exact not_hasInfiniteEulerPath_of_finite_arcs hfin lineGraph_hasInfiniteEulerPath
+
 end KonigsbergOQ03
