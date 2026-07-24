@@ -119,8 +119,8 @@
       "id": "examples",
       "title": "Numeric sanity checks",
       "startLine": 118,
-      "endLine": 127,
-      "summary": "Kernel-decidable checks at n=4 (F₂F₃F₅F₆ = 1·2·5·8 = 80 = 3⁴−1) and n=6 (F₄F₅F₇F₈ = 3·5·13·21 = 4095 = 8⁴−1).",
+      "endLine": 131,
+      "summary": "Kernel-decidable checks at n=4 (F₂F₃F₅F₆ = 1·2·5·8 = 80 = 3⁴−1) and n=6 (F₄F₅F₇F₈ = 3·5·13·21 = 4095 = 8⁴−1); the namespace close and the trailing #print axioms audit on fib_gelin_cesaro_gap / fib_gelin_cesaro, confirming only the foundational propext / Classical.choice / Quot.sound.",
       "mathContext": "$F_4F_5F_7F_8=3\\cdot5\\cdot13\\cdot21=4095=8^4-1.$"
     }
   ],

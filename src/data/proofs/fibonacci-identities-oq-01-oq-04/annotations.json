@@ -62,10 +62,10 @@
   {
     "id": "ann-examples",
     "proofId": "fibonacci-identities-oq-01-oq-04",
-    "range": { "startLine": 118, "endLine": 127 },
+    "range": { "startLine": 118, "endLine": 131 },
     "type": "example",
     "title": "Numeric sanity checks",
-    "content": "Two kernel-decidable instances confirm the identity: n=4 gives F₂·F₃·F₅·F₆ = 1·2·5·8 = 80 = 3⁴ − 1, and n=6 gives F₄·F₅·F₇·F₈ = 3·5·13·21 = 4095 = 8⁴ − 1. These use `decide` (kernel reduction), contributing no axioms beyond the foundational set.",
+    "content": "Two kernel-decidable instances confirm the identity: n=4 gives F₂·F₃·F₅·F₆ = 1·2·5·8 = 80 = 3⁴ − 1, and n=6 gives F₄·F₅·F₇·F₈ = 3·5·13·21 = 4095 = 8⁴ − 1. These use `decide` (kernel reduction), contributing no axioms beyond the foundational set. The file closes with a `#print axioms` audit on fib_gelin_cesaro_gap and fib_gelin_cesaro, which is the mechanical check that only propext / Classical.choice / Quot.sound appear — confirming the 0-axiom claim rather than merely asserting it.",
     "mathContext": "$F_4F_5F_7F_8=3\\cdot5\\cdot13\\cdot21=4095=8^4-1.$",
     "significance": "supporting",
     "relatedConcepts": ["decide", "numeric verification"]
