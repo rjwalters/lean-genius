@@ -2,12 +2,12 @@
   "id": "borsuk-ulam-oq-03-oq-01",
   "title": "Tucker's 1D Lemma via Discrete IVT, with Interval and Circle Bounds",
   "slug": "borsuk-ulam-oq-03-oq-01",
-  "description": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. Note: many interval-level BU statements are degenerate because 0 is self-antipodal on [-1,1]; the genuinely nontrivial topology begins on S^1. Tucker 2D and n-D are axiomatized.",
+  "description": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. Note: many interval-level BU statements are degenerate because 0 is self-antipodal on [-1,1]; the genuinely nontrivial topology begins on S^1. The general 2D / n-D Tucker statement is not axiomatized here (the unconstrained-graph form is false); this file is axiom-free, and the properly constrained 2D grid axiom lives in the sibling entry.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BorsukUlamOQ03OQ01.lean",
     "tags": [
       "topology",
@@ -20,7 +20,7 @@
       "circle-bu",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -56,17 +56,17 @@
     ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.31.0",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 1198,
-    "assumptions": "1 axiom (Tucker's lemma in 2D axiomatized). No sorries.",
+    "assumptions": "No axioms, no sorries. The general n-D / unconstrained-graph Tucker statement is NOT axiomatized here: an unconstrained finite-graph formulation is provably false (with the empty adjacency relation the hypotheses hold but no complementary edge exists). The 2D result for +-1 labels is proved via path reduction (tucker_2d_via_path); the properly constrained 2D grid axiom lives in the sibling entry borsuk-ulam-oq-03-oq-03 (tucker_2d_grid).",
     "theoremCount": 46,
     "definitionCount": 4
   },
   "overview": {
-    "historicalContext": "**Tucker's Lemma and the 1D Borsuk-Ulam Theorem**\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\n**Important caveat**: On the interval [-1,1], many Borsuk-Ulam-style statements are degenerate because x = 0 is self-antipodal (0 = -0). Results like \"there exist x, y with f(x) = f(y) and x + y = 0\" are trivially satisfied by x = y = 0, and do not extract hidden structure from any existence theorem. The genuinely nontrivial Borsuk-Ulam topology begins on S^1, where the antipodal map has no fixed points.\n\nThis file's strongest content is the Tucker 1D proof via discrete IVT, the circle BU proof, and the sign-change parity infrastructure. The interval-level quantitative bounds (Lipschitz, oscillation, bisection) are correct but elementary consequences of continuity and compactness, not deep Borsuk-Ulam phenomena.\n\nThe higher-dimensional Tucker's lemma (triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The 2D and n-D cases are axiomatized here.",
-    "problemStatement": "**The Open Question**\n\nCan Tucker's lemma be proved in Lean via discrete IVT? What quantitative bounds arise from the constructive 1D BU proof? Can the Tucker framework extend to higher dimensions?\n\n**Answer**\n\n- Tucker 1D: Fully proved via discrete IVT with integer labels {+-1}\n- Circle BU: Nontrivially proved via IVT on the parametric difference g(theta)\n- Interval bounds: Lipschitz (2L), oscillation, bisection convergence (2^{1-n}) -- correct but elementary since x = 0 is always a witness\n- Sign-change parity: Odd count along complementary-endpoint paths, proved by induction\n- Tucker 2D/nD: Axiomatized (requires simplicial complex infrastructure not yet in Mathlib)",
-    "text": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. On [-1,1], many BU-style statements are degenerate because 0 is self-antipodal; the genuinely nontrivial topology begins on S^1. Tucker 2D and n-D are axiomatized.",
-    "proofStrategy": "**Strategy: Discrete IVT + Sign Parity**\n\n**Tucker 1D (strongest result)**: By contradiction via Fin.induction. If all adjacent pairs agree, the function is constant (equals f(0)). But f(0) = -f(last) and labels are in {+-1}, so f(0) != f(last), contradiction. Then case-split on the four possible {+-1} combinations to show the differing pair sums to 0.\n\n**Circle BU**: Define g(theta) = f(cos theta, sin theta) - f(-cos theta, -sin theta). Then g(pi) = -g(0) by trigonometric identities, so by IVT on [0, pi], g has a zero. This is genuinely nontrivial because the antipodal map on S^1 has no fixed points.\n\n**Lipschitz Bounds**: The antisymmetric difference g(x) = f(x) - f(-x) of an L-Lipschitz function is (L+L)-Lipschitz. Since dist(x, -x) <= 2 on [-1,1], we get |g(x)| <= 2L. (Note: the existence of a zero at x = 0 is trivial; the bound is on the maximum deviation.)\n\n**Sign-Change Parity**: Proved by induction on path length. If endpoints have complementary labels (sum to 0), the number of sign changes along the path is odd.\n\n**Tucker 2D/nD**: Axiomatized using an abstract graph-theoretic formulation.",
+    "historicalContext": "**Tucker's Lemma and the 1D Borsuk-Ulam Theorem**\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\n**Important caveat**: On the interval [-1,1], many Borsuk-Ulam-style statements are degenerate because x = 0 is self-antipodal (0 = -0). Results like \"there exist x, y with f(x) = f(y) and x + y = 0\" are trivially satisfied by x = y = 0, and do not extract hidden structure from any existence theorem. The genuinely nontrivial Borsuk-Ulam topology begins on S^1, where the antipodal map has no fixed points.\n\nThis file's strongest content is the Tucker 1D proof via discrete IVT, the circle BU proof, and the sign-change parity infrastructure. The interval-level quantitative bounds (Lipschitz, oscillation, bisection) are correct but elementary consequences of continuity and compactness, not deep Borsuk-Ulam phenomena.\n\nThe higher-dimensional Tucker's lemma (triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The general 2D and n-D cases are NOT axiomatized in this file: an unconstrained finite-graph formulation is provably false, so the file instead proves the 2D +-1 case (tucker_2d_via_path) and defers the properly constrained 2D grid axiom to the sibling entry borsuk-ulam-oq-03-oq-03.",
+    "problemStatement": "**The Open Question**\n\nCan Tucker's lemma be proved in Lean via discrete IVT? What quantitative bounds arise from the constructive 1D BU proof? Can the Tucker framework extend to higher dimensions?\n\n**Answer**\n\n- Tucker 1D: Fully proved via discrete IVT with integer labels {+-1}\n- Circle BU: Nontrivially proved via IVT on the parametric difference g(theta)\n- Interval bounds: Lipschitz (2L), oscillation, bisection convergence (2^{1-n}) -- correct but elementary since x = 0 is always a witness\n- Sign-change parity: Odd count along complementary-endpoint paths, proved by induction\n- Tucker 2D (+-1 labels): Proved via path reduction (tucker_2d_via_path)\n- General Tucker 2D/nD: Not axiomatized here (an unconstrained-graph formulation is false); a faithful version requires simplicial complex infrastructure not yet in Mathlib. A properly constrained 2D grid axiom lives in the sibling entry.",
+    "text": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. On [-1,1], many BU-style statements are degenerate because 0 is self-antipodal; the genuinely nontrivial topology begins on S^1. The general 2D / n-D Tucker statement is not axiomatized here (the unconstrained-graph form is false); this file is axiom-free, and the properly constrained 2D grid axiom lives in the sibling entry.",
+    "proofStrategy": "**Strategy: Discrete IVT + Sign Parity**\n\n**Tucker 1D (strongest result)**: By contradiction via Fin.induction. If all adjacent pairs agree, the function is constant (equals f(0)). But f(0) = -f(last) and labels are in {+-1}, so f(0) != f(last), contradiction. Then case-split on the four possible {+-1} combinations to show the differing pair sums to 0.\n\n**Circle BU**: Define g(theta) = f(cos theta, sin theta) - f(-cos theta, -sin theta). Then g(pi) = -g(0) by trigonometric identities, so by IVT on [0, pi], g has a zero. This is genuinely nontrivial because the antipodal map on S^1 has no fixed points.\n\n**Lipschitz Bounds**: The antisymmetric difference g(x) = f(x) - f(-x) of an L-Lipschitz function is (L+L)-Lipschitz. Since dist(x, -x) <= 2 on [-1,1], we get |g(x)| <= 2L. (Note: the existence of a zero at x = 0 is trivial; the bound is on the maximum deviation.)\n\n**Sign-Change Parity**: Proved by induction on path length. If endpoints have complementary labels (sum to 0), the number of sign changes along the path is odd.\n\n**Tucker 2D (+-1 labels)**: Proved by reducing an antipodal path to the 1D lemma (tucker_2d_via_path). The general graph-theoretic 2D/nD statement is NOT axiomatized here, because an unconstrained finite-graph formulation is provably false (kernel-inconsistent); a properly constrained 2D grid axiom lives in the sibling entry.",
     "keyInsights": [
       "**Interval BU is degenerate**: On [-1,1], x = 0 is self-antipodal, so many BU-style existence results are trivially satisfied. The genuinely nontrivial topology begins on S^1",
       "**Tucker 1D via discrete IVT**: Clean combinatorial proof -- if all adjacent values agree then the function is constant, contradicting the antipodal boundary condition",
@@ -237,10 +237,10 @@
     {
       "id": "tucker-nd-statements",
       "title": "Section XVIII: Higher-Dimensional Tucker's Lemma (Statements)",
-      "summary": "Statements of the n-dimensional Tucker lemma on antipodally symmetric triangulations, including the axiomatized tucker_2d, as the bridge to higher-dimensional BU.",
+      "summary": "Statements of the n-dimensional Tucker lemma on antipodally symmetric triangulations, as the bridge to higher-dimensional BU. Documents why the general unconstrained-graph 2D statement is NOT axiomatized here (it would be false) and points to the proved +-1 case and the sibling grid axiom.",
       "startLine": 653,
-      "endLine": 692,
-      "mathContext": "n-D Tucker: an antipodally symmetric triangulation labeling has a complementary edge; tucker_2d is stated as an axiom."
+      "endLine": 691,
+      "mathContext": "n-D Tucker: an antipodally symmetric triangulation labeling has a complementary edge. The unconstrained-graph form is false, so it is not axiomatized; see tucker_2d_via_path (proved) and tucker_2d_grid (properly constrained, sibling file)."
     },
     {
       "id": "tucker-bu-equivalence",
@@ -277,10 +277,10 @@
     {
       "id": "tucker-2d-examples",
       "title": "Section XXIII: Tucker 2D — Verified Small Examples",
-      "summary": "Concrete verification that Tucker's lemma holds for small 2D cases, serving as sanity checks for the axiomatized statements.",
+      "summary": "Concrete verification that Tucker's lemma holds for small 2D cases, serving as sanity checks for the proved 2D +-1 result.",
       "startLine": 1050,
       "endLine": 1077,
-      "mathContext": "Small-case verifications supporting the axiomatized tucker_2d statement."
+      "mathContext": "Small-case verifications supporting the proved 2D +-1 Tucker result (tucker_2d_via_path)."
     },
     {
       "id": "tucker-2d-reduction",
@@ -293,15 +293,15 @@
     {
       "id": "tucker-contribution-summary",
       "title": "Section XXV: Summary of Tucker's Lemma Contribution",
-      "summary": "Final summary of what is proved (discrete IVT, Tucker 1D, cycle and parity lemmas) versus what remains axiomatized (full 2D Tucker), and the infrastructure contributed.",
+      "summary": "Final summary of what is proved (discrete IVT, Tucker 1D, cycle and parity lemmas, the 2D +-1 case) versus what remains open (a faithful general 2D Tucker, which needs simplicial-complex infrastructure and is not axiomatized here), and the infrastructure contributed.",
       "startLine": 1128,
       "endLine": 1198,
-      "mathContext": "Recap: discrete IVT and Tucker 1D are fully proved; tucker_2d remains an axiom; parity/sign-change infrastructure is contributed."
+      "mathContext": "Recap: discrete IVT, Tucker 1D, and the 2D +-1 case are fully proved; the general 2D Tucker is not axiomatized here (the unconstrained-graph form is false); parity/sign-change infrastructure is contributed."
     }
   ],
   "conclusion": {
-    "summary": "This formalization has three tiers of content. The strongest tier is Tucker's 1D lemma proved via discrete IVT, with clean combinatorial structure and verified examples. The second tier is the circle BU proof (genuinely nontrivial) and the sign-change parity framework (real infrastructure for Tucker 2D). The third tier is interval-level quantitative bounds (Lipschitz, oscillation, bisection, coincidence set) -- these are correct but often elementary, since many interval BU statements reduce to the trivial witness x = 0. Tucker 2D and n-D are axiomatized, reflecting the gap in Mathlib for simplicial complexes with antipodal structure.",
-    "implications": "**Implications**\n\n1. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n2. **Sign-change parity as 2D foundation**: The odd-count lemma for complementary-endpoint paths is the key structural ingredient for Tucker 2D proofs.\n\n3. **Circle BU**: The IVT proof on g(theta) demonstrates the nontrivial topological content that is absent from interval-level results.\n\n4. **Stability**: The 2*epsilon perturbation bound on antisymmetric differences is a genuine quantitative result, though antipodal pair existence on intervals remains trivial.\n\n5. **Infrastructure roadmap**: The axiomatized Tucker 2D/nD statements specify what Mathlib infrastructure is needed: antipodal triangulations of B^n with labeling conditions.",
+    "summary": "This formalization has three tiers of content. The strongest tier is Tucker's 1D lemma proved via discrete IVT, with clean combinatorial structure and verified examples. The second tier is the circle BU proof (genuinely nontrivial) and the sign-change parity framework (real infrastructure for Tucker 2D). The third tier is interval-level quantitative bounds (Lipschitz, oscillation, bisection, coincidence set) -- these are correct but often elementary, since many interval BU statements reduce to the trivial witness x = 0. The general 2D / n-D Tucker statement is deliberately NOT axiomatized here: an unconstrained finite-graph formulation is provably false (kernel-inconsistent), so instead the file proves the 2D +-1 case via path reduction (tucker_2d_via_path) and defers the properly constrained 2D grid axiom to the sibling entry borsuk-ulam-oq-03-oq-03 (tucker_2d_grid). This file is therefore axiom-free.",
+    "implications": "**Implications**\n\n1. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n2. **Sign-change parity as 2D foundation**: The odd-count lemma for complementary-endpoint paths is the key structural ingredient for Tucker 2D proofs.\n\n3. **Circle BU**: The IVT proof on g(theta) demonstrates the nontrivial topological content that is absent from interval-level results.\n\n4. **Stability**: The 2*epsilon perturbation bound on antisymmetric differences is a genuine quantitative result, though antipodal pair existence on intervals remains trivial.\n\n5. **Infrastructure roadmap**: Rather than assert a false unconstrained-graph axiom, the file documents what Mathlib infrastructure a faithful Tucker 2D/nD would need: antipodal triangulations of B^n with labeling conditions and a boundary condition.",
     "openQuestions": [
       "Can Tucker 2D be proved in Lean using a graph-theoretic path-following argument?",
       "Can the odd counting version (number of complementary edges is odd) be formalized for Tucker 1D?",
@@ -335,7 +335,7 @@
     ],
     "namespace": "BorsukUlamOQ03OQ01",
     "lineCount": 1198,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 46,
     "definitionCount": 4,
     "path": "Proofs/BorsukUlamOQ03OQ01.lean",
