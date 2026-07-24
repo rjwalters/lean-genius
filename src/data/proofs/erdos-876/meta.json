@@ -17,7 +17,7 @@
       "partially-solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 876,
     "erdosUrl": "https://erdosproblems.com/876",
     "erdosProblemStatus": "open",
@@ -42,13 +42,14 @@
       "ErdosQuestion876: the main open question",
       "graham_result axiom: gaps < n^{1+ε} achievable (the only axiom)",
       "cubicGrowthExponent := 3 and reciprocalSum definition (via tsum)",
-      "powers_of_two_sumfree theorem sketch (sorry)",
-      "Density-zero, Łuczak-Schoen, DEM, and Sullivan results appear only as prose comments — they are NOT formalized as axioms or theorems"
+      "powers_of_two_sumfree proved (binary domination argument)",
+      "Density-zero, Łuczak-Schoen, DEM, and Sullivan results appear only as prose comments — they are NOT formalized as axioms or theorems",
+      "Part X structural results: superIncreasing_sumfree generalization, powers_of_two_not_linearGapBound, hasLinearGapBound_quadratic (linear gaps force quadratic growth), erdosQuestion876_implies_quadratic_growth"
     ],
     "axiomCount": 1,
-    "lineCount": 305,
-    "assumptions": "1 axiom: graham_result. 1 sorry (powers_of_two_sumfree).",
-    "theoremCount": 3,
+    "lineCount": 425,
+    "assumptions": "1 axiom: graham_result (Graham's near-linear gap construction, deep external result). 0 sorries.",
+    "theoremCount": 8,
     "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos876ProblemAristotle.lean"
@@ -58,7 +59,7 @@
     "historicalContext": "**Erdős Problem #876: Sum-Free Sets and Gap Growth**\n\nA **sum-free set** in Erdős's sense is an infinite set $A = \\{a_1 < a_2 < \\cdots\\} \\subset \\mathbb{N}$ where no element equals a sum of distinct smaller elements from $A$. This is strictly stronger than the classical sum-free condition (no $a + b = c$), as it forbids all subset sums, not just pairs.\n\nPaul Erdős proved in 1962 that such sets must have asymptotic density zero, establishing a fundamental sparsity constraint. The natural follow-up question — how sparse must they be? — was pursued through several key developments:\n\n- **Erdős (1962):** Proved density zero and the crude reciprocal sum bound $\\sum_{a \\in A} 1/a < 100$.\n- **Ronald Graham (c. 1998):** Showed that for any $\\varepsilon > 0$, there exists a sum-free set with gaps $a_{n+1} - a_n < n^{1+\\varepsilon}$ for large $n$. This is the best positive result toward the linear gap question.\n- **Jean-Marc Deshouillers, Erdős, and Giuseppe Melfi (1999):** Constructed a sum-free set with $a_n \\sim n^{3+o(1)}$, establishing the cubic growth rate as achievable.\n- **Tomasz Łuczak and Tomasz Schoen (2000):** Proved tight bounds on the counting function: $|A \\cap [1,N]| = O(\\sqrt{N \\log N})$ for any sum-free $A$, and there exists $B$ with $|B \\cap [1,N]| \\gg \\sqrt{N/(\\log N)^{1/2+o(1)}}$.\n- **Steven Sullivan:** Improved Erdős's reciprocal sum bound to $\\sum 1/a < 4$ and conjectured the supremum is slightly above 2.\n\nThe central open question remains: **can the gaps be made linear**, i.e., is $a_{n+1} - a_n < n$ achievable? Graham's result shows we can get arbitrarily close to linear ($n^{1+\\varepsilon}$), suggesting the answer might be yes, but the problem has resisted resolution for over two decades.",
     "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet $A = \\{a_1 < a_2 < \\cdots\\} \\subset \\mathbb{N}$ be an infinite sum-free set, meaning no $a \\in A$ equals $b_1 + b_2 + \\cdots + b_r$ for distinct $b_i \\in A$ with $b_i < a$.\n\n**Questions:**\n1. How small can the gaps $a_{n+1} - a_n$ be?\n2. Is it possible that $a_{n+1} - a_n < n$?\n\n**Known:**\n- Graham: Gaps can be $< n^{1+o(1)}$\n- Main question (linear gaps) is OPEN\n\n**Additional Question:**\nWhat is $\\max \\sum_{a \\in A} 1/a$? Sullivan shows $< 4$, conjectures $\\approx 2$.",
     "text": "For an infinite sum-free set A = {a₁ < a₂ < ⋯}, how small can gaps aₙ₊₁ - aₙ be? Graham showed n^{1+o(1)} is achievable; whether gaps < n is possible remains OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\nThe formalization distinguishes two sum-free notions and builds toward the open question:\n\n1. **Two Definitions (Lines 49–76):** `IsSumFreeErdos` forbids any subset sum of distinct predecessors equaling an element; `IsSumFreeClassical` only forbids $a + b = c$. The naive implication `IsSumFreeErdos → IsSumFreeClassical` is **false** (`not_isSumFreeErdos_imp_isSumFreeClassical`: $\\{2,4\\}$ is Erdős-sum-free but $2+2=4\\in A$); the correct `erdos_implies_classical_of_pos` holds only for distinct positive summands. Both are axiom- and sorry-free.\n\n2. **Gap Machinery (Lines 84–109):** Defines `gap a n = a(n+1) - a(n)`, `HasGapBound`, and the critical `HasLinearGapBound` condition $a_{n+1} - a_n < n$.\n\n3. **The Open Question (Lines 117–136):** `ErdosQuestion876` existentially asserts a sum-free set with linear gaps. Graham's axiom shows near-linear ($n^{1+\\varepsilon}$) gaps are achievable.\n\n4. **Density and Growth (Lines 140–169):** Erdős's density-zero result, Łuczak-Schoen's counting bounds $\\Theta(\\sqrt{N \\log N})$, and DEM's cubic growth construction are recorded in prose comments only — none are formalized as axioms or theorems. The only declaration is `def cubicGrowthExponent := 3`.\n\n5. **Reciprocal Sums (Lines 175–193):** Defines `reciprocalSum` via `tsum`; Erdős's bound, Sullivan's improvement, and Sullivan's conjecture are described in comments, not axiomatized.\n\n6. **Examples and Summary (Lines 198–305):** Powers of 2 as a basic sum-free set (sorry in proof), connections to Sidon sets and $B_h$ sequences, and the closing `erdos_876_summary` theorem, which restates Graham's axiom rather than adding new content.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization distinguishes two sum-free notions and builds toward the open question:\n\n1. **Two Definitions (Lines 49–76):** `IsSumFreeErdos` forbids any subset sum of distinct predecessors equaling an element; `IsSumFreeClassical` only forbids $a + b = c$. The naive implication `IsSumFreeErdos → IsSumFreeClassical` is **false** (`not_isSumFreeErdos_imp_isSumFreeClassical`: $\\{2,4\\}$ is Erdős-sum-free but $2+2=4\\in A$); the correct `erdos_implies_classical_of_pos` holds only for distinct positive summands. Both are axiom- and sorry-free.\n\n2. **Gap Machinery (Lines 84–109):** Defines `gap a n = a(n+1) - a(n)`, `HasGapBound`, and the critical `HasLinearGapBound` condition $a_{n+1} - a_n < n$.\n\n3. **The Open Question (Lines 117–136):** `ErdosQuestion876` existentially asserts a sum-free set with linear gaps. Graham's axiom shows near-linear ($n^{1+\\varepsilon}$) gaps are achievable.\n\n4. **Density and Growth (Lines 140–169):** Erdős's density-zero result, Łuczak-Schoen's counting bounds $\\Theta(\\sqrt{N \\log N})$, and DEM's cubic growth construction are recorded in prose comments only — none are formalized as axioms or theorems. The only declaration is `def cubicGrowthExponent := 3`.\n\n5. **Reciprocal Sums (Lines 175–193):** Defines `reciprocalSum` via `tsum`; Erdős's bound, Sullivan's improvement, and Sullivan's conjecture are described in comments, not axiomatized.\n\n6. **Examples and Summary (Lines 198–305):** Powers of 2 proved sum-free via binary domination, connections to Sidon sets and $B_h$ sequences, and the closing `erdos_876_summary` theorem, which restates Graham's axiom rather than adding new content.\n\n7. **Structural Results (Part X, Lines 334–425):** `superIncreasing_sumfree` generalizes the powers-of-two argument (any sequence dominating the sum of its predecessors is Erdős-sum-free); `powers_of_two_not_linearGapBound` shows the canonical example fails Question 876's linear-gap requirement; `hasLinearGapBound_quadratic` proves linear gaps force at-most-quadratic growth ($2a_n + n \\leq 2a_1 + n^2$), so an affirmative answer would beat the DEM $n^{3+o(1)}$ construction (`erdosQuestion876_implies_quadratic_growth`).",
     "keyInsights": [
       "**Erdős vs Classical Sum-Free:** The Erdős condition ($\\nexists$ subset sum of predecessors $= a$) is strictly stronger than classical ($a + b \\neq c$). The set $\\{1, 5, 6\\}$ is classically sum-free ($1+5=6$ violates classical!) but illustrates the distinction — Erdős sum-free sets avoid ALL subset sums, making them much sparser.",
       "**Density-Growth Duality:** The Łuczak-Schoen counting bound $|A \\cap [1,N]| = O(\\sqrt{N \\log N})$ and the DEM growth rate $a_n \\sim n^{3+o(1)}$ are dual perspectives: if $|A \\cap [1,N]| \\sim \\sqrt{N}$, inverting gives $a_n \\sim n^2$. The $\\log N$ correction explains the cubic (rather than quadratic) growth.",
@@ -83,10 +84,10 @@
     {
       "id": "sum-free-sets",
       "title": "Sum-Free Set Definitions",
-      "summary": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Proves (with sorry) that Erdős implies classical.",
+      "summary": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Refutes the naive implication (counterexample $\\{2,4\\}$) and proves the corrected `erdos_implies_classical_of_pos` for distinct positive summands.",
       "startLine": 43,
       "endLine": 77,
-      "mathContext": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Proves (with sorry) that Erdős implies classical."
+      "mathContext": "Defines `IsSumFreeErdos A`: $\\forall a \\in A,\\; \\forall S \\subseteq A$ with $|S| \\geq 2$ and $\\max S < a$, we have $\\sum S \\neq a$. Defines `IsSumFreeClassical A`: $\\forall a,b \\in A,\\; a+b \\notin A$. Refutes the naive implication (counterexample $\\{2,4\\}$) and proves the corrected `erdos_implies_classical_of_pos` for distinct positive summands."
     },
     {
       "id": "gap-sequences",
@@ -131,10 +132,10 @@
     {
       "id": "examples",
       "title": "Examples and Connections",
-      "summary": "States `powers_of_two_sumfree`: $\\{2^n : n \\in \\mathbb{N}\\}$ is sum-free (sorry — the proof uses binary uniqueness). Notes connections to Sidon sets and $B_h$ sequences.",
+      "summary": "Proves `powers_of_two_sumfree`: $\\{2^n : n \\in \\mathbb{N}\\}$ is sum-free (proved via binary domination: $\\sum_{j<k} 2^j = 2^k - 1 < 2^k$). Notes connections to Sidon sets and $B_h$ sequences.",
       "startLine": 227,
       "endLine": 257,
-      "mathContext": "States `powers_of_two_sumfree`: $\\{$2^{n}$ : n \\in \\mathbb{N}\\}$ is sum-free (sorry — the proof uses binary uniqueness). Notes connections to Sidon sets and $B_h$ sequences."
+      "mathContext": "Proves `powers_of_two_sumfree`: $\\{$2^{n}$ : n \\in \\mathbb{N}\\}$ is sum-free (proved via binary domination: $\\sum_{j<k} 2^j = 2^k - 1 < 2^k$). Notes connections to Sidon sets and $B_h$ sequences."
     },
     {
       "id": "sidon-and-summary",
@@ -146,7 +147,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #876 asks how small gaps in infinite sum-free sets can be. Graham showed gaps $< n^{1+\\varepsilon}$ are achievable for any $\\varepsilon > 0$, but whether gaps can be made linear ($< n$) remains open. The counting function is $\\Theta(\\sqrt{N \\log N})$ (Łuczak-Schoen), elements grow as $n^{3+o(1)}$ (DEM), and the reciprocal sum is bounded between 2 and 4 (Sullivan). The formalization has 1 sorry statement, in the `powers_of_two_sumfree` proof; the former `erdos_implies_classical` sorry was resolved by replacing a *false* claim with the correct `erdos_implies_classical_of_pos` plus an explicit counterexample.",
+    "summary": "Erdős Problem #876 asks how small gaps in infinite sum-free sets can be. Graham showed gaps $< n^{1+\\varepsilon}$ are achievable for any $\\varepsilon > 0$, but whether gaps can be made linear ($< n$) remains open. The counting function is $\\Theta(\\sqrt{N \\log N})$ (Łuczak-Schoen), elements grow as $n^{3+o(1)}$ (DEM), and the reciprocal sum is bounded between 2 and 4 (Sullivan). The formalization is sorry-free: `powers_of_two_sumfree` is proved via binary domination, and the former `erdos_implies_classical` sorry was resolved by replacing a *false* claim with the correct `erdos_implies_classical_of_pos` plus an explicit counterexample.",
     "implications": "**Theoretical Significance**: **Broader Mathematical Connections**\n\n1. **Schur's Theorem and Ramsey Theory:** Sum-free subsets of $\\{1,\\ldots,N\\}$ are exactly the independent sets avoiding Schur triples $x + y = z$. Schur's theorem (1916) guarantees any $r$-coloring of $[N]$ contains a monochromatic Schur triple for large $N$, so no single color class can be sum-free and cover all of $[N]$.\n\n2. **Subset Sum Problem:** The Erdős sum-free condition is intimately related to the NP-complete Subset Sum problem.\n\nA sum-free set is one where the subset sum problem has no solutions of a specific form, connecting combinatorics to computational complexity.\n\n3. **Binary Representation and Uniqueness:** The powers-of-2 example connects to number representation theory: uniqueness of binary representation is equivalent to sum-freeness of $\\{2^n\\}$, linking to the theory of numeration systems.\n\n4. **Greedy Algorithms:** Sum-free sets can be constructed greedily (add the smallest number not representable as a subset sum of existing elements). The greedy construction gives cubic growth, matching the DEM bound — suggesting the greedy approach is near-optimal.\n\n5. **Probabilistic Methods:** Random constructions provide lower bounds on counting functions and suggest that most sum-free sets have gaps close to $n^{3+o(1)}$, far from the linear gap frontier.",
     "openQuestions": [
       "Is the linear gap bound $a_{n+1} - a_n < n$ achievable for an infinite sum-free set? This is the central open question of Problem #876.",
@@ -168,12 +169,12 @@
       "BigOperators"
     ],
     "namespace": "Erdos876",
-    "lineCount": 305,
+    "lineCount": 425,
     "axiomCount": 1,
-    "theoremCount": 4,
+    "theoremCount": 8,
     "definitionCount": 9,
     "path": "Proofs/Erdos876Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos876ProblemAristotle.lean"
     ]
@@ -195,5 +196,5 @@
       "description": "Related Erdős problem sharing themes: combinatorics, partially-solved"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

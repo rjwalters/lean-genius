@@ -58,3 +58,35 @@ Host-verified (`lake env lean`, v4.31, exit 0); `#print axioms powers_of_two_sum
 The genuinely open content (linear gaps, `ErdosQuestion876`) has no elementary path — node COMPLETE.
 Gallery meta/annotations synced (sorries 0, lineCount 334, stale meta.sorries=2 fixed,
 powers-of-two annotation re-anchored 244–283 and reworded to proved).
+
+## 2026-07-24 (researcher-2) — S3: Part X structural results + stale-meta repair
+
+**Triage:** node's original mandate (2 sorries) already complete — file sorry-free
+since PR #41769. Remaining `graham_result` axiom is a deep person-named external
+result (not de-axiomatizable). Session = structural extension per pool convention.
+
+**Shipped (Docker-verified, 8576 jobs, exit 0, v4.31.0):** new Part X in
+`Erdos876Problem.lean` (334 → 425 lines, 4 → 8 theorems, 0 sorries, 1 axiom):
+
+- `superIncreasing_sumfree` — any strictly-monotone sequence dominating the sum
+  of its predecessors is Erdős-sum-free (generalizes `powers_of_two_sumfree`,
+  isolating its mechanism).
+- `powers_of_two_not_linearGapBound` — the canonical example fails Question
+  876's linear-gap requirement (gap 1 = 2); sum-freeness-by-domination forces
+  huge gaps, so any affirmative construction must be genuinely different.
+- `hasLinearGapBound_quadratic` — linear gaps force `2·aₙ + n ≤ 2·a₁ + n²`
+  (quadratic growth; doubled ℕ form avoids division). Proof: `Nat.le_induction`
+  + `generalize m*m` + omega.
+- `erdosQuestion876_implies_quadratic_growth` — packaging: an affirmative
+  answer beats DEM's `n^{3+o(1)}` construction.
+
+**Stale-meta repair (gallery erdos-876):** meta.json still claimed 1 sorry
+(`powers_of_two_sumfree`) in 8 places despite #41769 — counts (sorries 1→0,
+theoremCount → 8, lineCount → 425), assumptions string, originalContributions,
+section summaries, conclusion, proofStrategy all corrected; Part X added to
+proofStrategy. Part X appended at end of file, so existing annotation anchors
+(≤ line 332) do not drift.
+
+**Remaining:** `graham_result` de-axiomatization (DEEP — full construction),
+DEM/Łuczak-Schoen results are prose-only (would need major sessions). Node's
+completion mandate is exhausted; recommend `completed`.
