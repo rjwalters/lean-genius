@@ -87,7 +87,8 @@
       "**Freeness is rigidity.** Because only the identity fixes a point, an element of a free permutation group is determined by its value at a single point. This one fact powers both halves: injectivity of the orbit map and uniqueness in sharp transitivity.",
       "**Orbit–stabiliser becomes a bijection.** For a free transitive action the orbit map σ ↦ σ a is literally a bijection H ≃ α — transitivity is surjectivity, freeness is injectivity — so order equals degree with no quotient or counting machinery, just Equiv.ofBijective.",
       "**The converse is self-contained.** Unlike the parent, this entry assumes nothing about the Cayley construction: it characterises ALL regular subgroups of Sₙ, so it pairs with the parent (Cayley images are regular) to give the biconditional 'regular ⟺ free transitive, of order n'.",
-      "**Sharp transitivity is the defining payoff.** 'Unique element mapping i ↦ j' is exactly what makes a permutation group regular and the reason the regular action is universal among transitive actions."
+      "**Sharp transitivity is the defining payoff.** 'Unique element mapping i ↦ j' is exactly what makes a permutation group regular and the reason the regular action is universal among transitive actions.",
+      "**The order argument doesn't need finiteness.** card_eq_of_free_transitive is stated and proved with Nat.card under only [Nonempty α] — no Fintype, no finiteness hypothesis on α at all; Nat.card_congr transports Nat.card along the orbit bijection regardless of whether H or α is finite. The Fintype.card restatement (fintypeCard_eq_of_free_transitive) is added purely because the gallery's target is the finite Sₙ, not because the core argument requires finiteness."
     ],
     "prerequisites": [
       "Subgroups of a permutation group Equiv.Perm α and their elements: membership, products and inverses (Subgroup.mul_mem, Subgroup.inv_mem), and the coercion of a subgroup element to a permutation",
