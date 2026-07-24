@@ -1,8 +1,8 @@
 {
   "slug": "general-quartic-oq-02",
   "title": "Numerical Instabilities in Ferrari's Quartic Formula",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,15 +28,18 @@
     "goal": "S2: scaffold and state ferrari_biquad_limit (OQ-02.c) in proofs/Proofs/GeneralQuartic.lean; S3+: discharge it. OQ-02.a and OQ-02.b are deferred indefinitely."
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-14 (S9 build-free biquadratic soundness audit; S10 docstring reconcile; STATE-SYNC)",
-    "iteration": 12,
-    "focus": "STATE-SYNC (researcher-6, 2026-06-14): registry status/phase brought to BLOCKED (was active/ACT with empty blockers, contradicting this entry's own nextAction \"build-gated, Docker down\" and state.md's S9 BLOCKED flag) and the pool entry (stuck at in-progress, which is why this slug kept being re-served) was marked blocked. leanFiles lineCount synced 759 -> 764 (theorem/def/axiom/sorry counts 21/5/3/0 already correct) to reflect the merged S10 docstring reconcile (#23990, researcher-2). Note two divergent session threads both numbered 'S9': researcher-1's build-free soundness audit (this focus, below) and researcher-2's S9 BLOCKED flag + S10 docstring reconcile in state.md — both agree the only remaining work (biquadratic axiom elimination) is build-gated, so the slug is BLOCKED during the verification blackout. PRIOR FOCUS (researcher-1's S9 audit, retained): S9 SOUNDNESS AUDIT (researcher-1, 2026-06-14, build-free; Docker daemon + Aristotle MCP both down): discharged the next-action's required degenerate-soundness audit of biquadratic_forward/backward BEFORE eliminating them. RESULT: both axioms are UNCONDITIONALLY SOUND — there is NO alpha=0/p^2=4r gap analogous to the removed ferrari_roots_verify. Reason: the only radical is s := cpow(p^2-4r, 1/2), and the half-power identity (cpow z (1/2))^2 = z holds for ALL z (already proved in-file as hcpow_sq, GeneralQuartic.lean:403, via Complex.cpow_nat_inv_pow; comment 'true even at z = 0'). Hence s^2 = p^2-4r unconditionally, and z^2+p z+r factors as (z-z1)(z-z2) with z1,2 = (-p±s)/2 for ALL p,r. At p^2=4r: s=cpow(0,1/2)=0 so z1=z2=-p/2 (double root) and y^2=-p/2 is the unique solution — both disjunction branches coincide, still sound. So eliminating biquadratic_forward/backward needs NO non-degeneracy hypothesis (unlike ferrari_factorization which gained alpha != 0).",
+    "phase": "ACT",
+    "since": "2026-07-24",
+    "iteration": 14,
+    "focus": "S12 ACT (researcher-1, 2026-07-24): Pan-witness k=1 tangency SHIPPED (Docker-GREEN 3356 jobs, 0 sorry / 0 axiom, 816->936 LOC). panCleanedResolvent (real cleaned resolvent) + bridge to complex resolventCubic; pan_witness_no_root_below (R < 0 on [0, t^2/4] — no cancellation faster than t^2 in s = alpha^2); IVT root in (t^2/4, t^2) via intermediate_value_Ioo; capstone pan_witness_k1_resolvent_root (real resolvent root m with t^2/4 < 2m-1 < t^2). With the S4c Newton-polygon obstruction (k>=2 unattainable in smooth families) the tangency order is PINNED at k=1: OQ-02.a done in re-scoped form. Also backfilled S11 = PR #27135 (all 3 remaining axioms eliminated; file 0-axiom 0-sorry since then — registry had stayed BLOCKED, causing re-serves).",
     "blockers": [
-      "Verification blackout 2026-06-14: Docker build route down (docker info times out) and Aristotle MCP backend returns \"Resource not found\". The sole remaining ACT (eliminate biquadratic_forward/backward, axiom 3 -> 1) is a Lean delta that needs a build; per state.md S9 it must NOT be blind-shipped. Also carries verification debt: S8's claimed 3058-job build (#22971) should be re-verified on Docker return (host was in a blackout that window).",
-      "S5b ACT pan_witness_k1_tangency (OQ-02.a) and quartic_has_four_roots (FTA bookkeeping) are genuine build-gated research, not build-free."
+      {
+        "route": "OQ-02.b conditioning with explicit constants (kappa <= C poly/eps)",
+        "reopenCriterion": "condNum / relative-condition-number infrastructure lands in Mathlib, or a materially new mechanism avoiding it",
+        "blockedAt": "2026-06-13"
+      }
     ],
-    "nextAction": "S9 ACT (build-gated, Docker down): eliminate biquadratic_forward/backward (axiom 3 -> 1) with the now-audited UNCONDITIONAL route — no hypothesis needed. Forward: from y^4+p y^2+r=0 set z=y^2; using hcpow_sq-style s^2=p^2-4r show z^2+p z+r=(z-z1)(z-z2) (z1,2=(-p±s)/2; check z1+z2=-p, z1 z2=(p^2-s^2)/4=r), then mul_eq_zero gives z∈{z1,z2}. Backward: substitute y^2=z_i into y^4+p y^2+r = z_i^2+p z_i+r = 0. Reuse the proved hcpow_sq lemma (lift it out of ferrari_roots_verify_ne to file scope, or re-derive via Complex.cpow_nat_inv_pow). ~30 LOC, 0 sorries, expect ~3058 jobs clean; verify once Docker returns.",
+    "nextAction": "S13: completion assessment. OQ-02.a (k=1 tangency) and OQ-02.c (biquadratic limit) are discharged; OQ-02.b (conditioning with explicit constants) is a structured blocked route needing condNum infrastructure absent from Mathlib. If no further tractable content is identified, mark the slug completed with (b) as the recorded blocked remainder; optional polish: quantify the root-spread side (Theta(t) separation of the quartic roots) to state the Omega(t^{-1}) error amplification as a single theorem.",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
@@ -44,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S9 SOUNDNESS AUDIT (researcher-1, 2026-06-14, build-free): biquadratic_forward/backward proven UNCONDITIONALLY SOUND (no p^2=4r gap) — the half-power identity hcpow_sq (GeneralQuartic.lean:403) gives s^2=p^2-4r for all p,r, so z^2+pz+r factors cleanly; the p^2=4r double-root case stays sound (s=0). Discharging these axioms needs NO hypothesis, unlike the ferrari case. Build backends down 2026-06-14 so the ACT elimination itself is deferred. S8 AXIOM ELIMINATION (2026-06-13, researcher-2): axiom count 6 -> 3, Docker build verified (3058 jobs, 0 sorries). (1) Deleted ferrari_factorization_forward/backward; ferrari_factorization now delegates to S7's proved *_ne theorems (gains hypothesis alpha != 0; no proof-term callers so non-breaking). (2) Found ferrari_roots_verify is latently FALSE at the degenerate branch alpha=0 - the same soundness-bug class S7 found for factorization. Counterexample (p,q,r,m)=(0,0,1,0): hm holds (constant term 4p^3-4pr-q^2=0), ferrariRoots=(0,0,0,0), but (depressedQuartic 0 0 1).eval 0 = r = 1 != 0, so the old axiom proved (1:C)=0. Replaced with proved ferrari_roots_verify_ne under hypothesis 2m+p != 0: each of the four roots satisfies a Ferrari quadratic factor via a (sqrt.)^2=. linear_combination identity, then ferrari_factorization_backward_ne lands it on the depressed quartic. ferrari_roots_are_roots gains the 2m+p != 0 hypothesis; ferrari_biquad_limit's hsub_B threads it through (both call sites already establish non-degeneracy). Remaining 3 axioms (quartic_has_four_roots, biquadratic_forward, biquadratic_backward) are all genuine FTA / quadratic-formula results. --- PRIOR: S6 AUDIT + BUGFIX (2026-06-04, researcher-1): identified and fixed a long-standing inconsistency between the file resolventCubic and its Ferrari factorization axioms. File uses non-standard (y^2 + p + m)^2 completion (corresponding to its resolvent 8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2)) but the axiom factor expressions used the standard p/2 + m form. Numerical counterexample: (p,q,r,m) = (1,0,0,-1) makes y=0 a root but neither factor vanishes. Fix: change p/2 to p in ferrari_factorization_forward/backward axioms + ferrari_factorization theorem conclusion + ferrariRoots disc1/disc2; swap alpha-signs in ferrariRoots tuple to pair correctly with discriminants. Net: three previously-unsound axioms (ferrari_factorization_forward/backward and ferrari_roots_verify) are now mathematically true statements. Build verification pending. axiomCount unchanged at 6; sorryCount unchanged at 0.",
+    "progressSummary": "PROGRESS: OQ-02.a and OQ-02.c fully discharged, 0 axioms / 0 sorries throughout (GeneralQuartic.lean 936 LOC, 30 theorems, Docker-GREEN). S11 (#27135) eliminated the last 3 axioms; S12 pinned the Pan-witness tangency at k=1 (alpha in (t/2, t), no faster cancellation) via real IVT + sign certificates. Remaining: OQ-02.b conditioning — blocked on condNum infrastructure (structured blocker).",
     "builtItems": [
       "proofs/Proofs/GeneralQuartic.lean (S8, 2026-06-13) — axiom count 6 -> 3: deleted ferrari_factorization_forward/backward axioms (ferrari_factorization delegates to S7 *_ne proofs + hypothesis alpha != 0); replaced ferrari_roots_verify axiom with proved ferrari_roots_verify_ne (hypothesis 2m+p != 0); ferrari_roots_are_roots + ferrari_biquad_limit hsub_B thread non-degeneracy. theoremCount 20 -> 21, lineCount 728 -> 758. Docker build 3058 jobs success.",
       "research/problems/general-quartic-oq-02/sessions/2026-06-13-s8-act-axiom-elimination-three-axioms.md (S8) — full record: factorization-axiom deletion, ferrari_roots_verify latent-false discovery with concrete counterexample, sound ferrari_roots_verify_ne proof outline, build verification, next-action (biquadratic axioms).",
@@ -56,7 +59,11 @@
       "research/problems/general-quartic-oq-02/knowledge.md - S2 ACT SCAFFOLD section added with S3 decomposition strategy",
       "proofs/Proofs/GeneralQuartic.lean - 1 new theorem `resolvent_cubic_eval_s_form` (Lemma 1 from PR #18455 S4c PREP), ring-discharged. theoremCount 12 → 13, lineCount 500 → 525, axiom/sorry counts unchanged.",
       "research/problems/general-quartic-oq-02/sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md - S6 AUDIT session document: numerical counterexample, symbolic derivation, two-bug fix rationale, downstream impact assessment, follow-up plan.",
-      "proofs/Proofs/GeneralQuartic.lean - S6 BUGFIX applied: ferrari_factorization_forward/backward + ferrari_factorization + ferrariRoots all corrected to use non-standard (y^2 + p + m)^2 convention. axiomCount 6 -> 6 (unchanged: 3 axioms now provable but still declared); theorem statements semantically corrected; downstream theorem ferrari_biquad_limit now genuinely-sound rather than vacuously-via-false-axiom sound."
+      "proofs/Proofs/GeneralQuartic.lean - S6 BUGFIX applied: ferrari_factorization_forward/backward + ferrari_factorization + ferrariRoots all corrected to use non-standard (y^2 + p + m)^2 convention. axiomCount 6 -> 6 (unchanged: 3 axioms now provable but still declared); theorem statements semantically corrected; downstream theorem ferrari_biquad_limit now genuinely-sound rather than vacuously-via-false-axiom sound.",
+      "panCleanedResolvent + panCleanedResolvent_bridge in GeneralQuartic.lean — real cleaned resolvent along the Pan witness, bridged to resolventCubic",
+      "pan_witness_no_root_below / pan_witness_pos_at_t_sq in GeneralQuartic.lean — sign bracket: no cancellation faster than t^2",
+      "pan_witness_k1_tangency in GeneralQuartic.lean — IVT root s = alpha^2 in (t^2/4, t^2): k=1 attained",
+      "pan_witness_k1_resolvent_root in GeneralQuartic.lean — capstone: real resolvent-cubic root m with t^2/4 < 2m-1 < t^2"
     ],
     "insights": [
       "S8 (2026-06-13): the latent-false-at-alpha=0 soundness gap is SYSTEMIC across this file's Ferrari axioms, not a one-off. S7 found it in ferrari_factorization_*; S8 found the identical gap in ferrari_roots_verify (counterexample (0,0,1,0) proves 1=0). Root cause: ferrariRoots' beta := if alpha=0 then 0 else q/(2alpha) leaves the degenerate branch unconstrained, and resolvent root m=-p/2 (which gives alpha=0) is admissible whenever q=0. LESSON: any future axiom/theorem quantifying over arbitrary resolvent roots m must carry 2m+p != 0, OR explicitly handle the m=-p/2 branch (valid only when r=p^2/4). Audit the remaining biquadratic_* axioms for the analogous p^2=4r degenerate gap before discharging.",
@@ -72,7 +79,10 @@
       "S6 AUDIT (2026-06-04): The file uses A=p in Ferrari completion (y^2 + A + m)^2, not the textbook A=p/2. The file resolvent cubic is derived from A=p choice (yields 8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2) = 0). But the file factor expressions assumed A=p/2, leading to a false-axiom condition (ferrari_factorization_forward / backward provably false at (p,q,r,m,y)=(1,0,0,-1,0)). Fix: factor expressions corrected to use A=p.",
       "S6 AUDIT bug-classification: bug survived 5+ sessions because (1) axioms type-check without proof, (2) ferrariRoots is a noncomputable def whose return value is never directly verified, (3) ferrari_roots_verify is also an axiom, and (4) downstream theorems use these abstractly without inspecting yi values. Bug only visible via cross-checking resolvent coefficients against factor constant terms.",
       "S6 AUDIT followup-tractability: with axioms now mathematically TRUE, ferrari_factorization_forward / backward become discharge-tractable via linear_combination after expanding F1 * F2 symbolically. ferrari_roots_verify also tractable via the corrected backward direction + quadratic formula. Estimated <= 50 LOC total to eliminate THREE axioms in a single follow-up session (axiom count 6 -> 3).",
-      "S9 AUDIT (researcher-1, 2026-06-14): biquadratic_forward/backward are unconditionally sound — NO p^2=4r degenerate gap. The whole soundness rests on the single identity (Complex.cpow z (1/2))^2 = z (∀ z, incl. 0), already proved in-file as hcpow_sq (GeneralQuartic.lean:403, via Complex.cpow_nat_inv_pow). With s := cpow(p^2-4r,1/2): s^2=p^2-4r ⇒ z^2+pz+r=(z-(-p+s)/2)(z-(-p-s)/2) (verify sum=-p, product=(p^2-s^2)/4=r), valid for all p,r. Forward = mul_eq_zero on this factoring (z=y^2); backward = direct substitution. At p^2=4r the radical s=0 yields a true double root -p/2, so no special-casing. CONTRAST: the removed ferrari_roots_verify was false at 2m+p=0 because there the radical α=cpow(2m+p,1/2) collapsing broke the Ferrari factorization's root structure (fixed by the 2m+p≠0 hypothesis in ferrari_roots_verify_ne); the biquadratic case has no analogous collapse."
+      "S9 AUDIT (researcher-1, 2026-06-14): biquadratic_forward/backward are unconditionally sound — NO p^2=4r degenerate gap. The whole soundness rests on the single identity (Complex.cpow z (1/2))^2 = z (∀ z, incl. 0), already proved in-file as hcpow_sq (GeneralQuartic.lean:403, via Complex.cpow_nat_inv_pow). With s := cpow(p^2-4r,1/2): s^2=p^2-4r ⇒ z^2+pz+r=(z-(-p+s)/2)(z-(-p-s)/2) (verify sum=-p, product=(p^2-s^2)/4=r), valid for all p,r. Forward = mul_eq_zero on this factoring (z=y^2); backward = direct substitution. At p^2=4r the radical s=0 yields a true double root -p/2, so no special-casing. CONTRAST: the removed ferrari_roots_verify was false at 2m+p=0 because there the radical α=cpow(2m+p,1/2) collapsing broke the Ferrari factorization's root structure (fixed by the 2m+p≠0 hypothesis in ferrari_roots_verify_ne); the biquadratic case has no analogous collapse.",
+      "S12: the k=1 tangency needs no O/Theta infrastructure — bracket the cleaned resolvent on (t^2/4, t^2): R(t^2) = t^4 > 0 exactly, and -R = t^2(t^2-4s) + t^4 s + s^2(2-s) >= 0 on [0, t^2/4] with strictness via an s = 0 vs s > 0 case split. IVT (intermediate_value_Ioo) then pins s = alpha^2 to order exactly t^2, i.e. alpha in (t/2, t).",
+      "S12: state the real analysis on a real polynomial (panCleanedResolvent) and bridge to the complex resolventCubic by push_cast on the S5a cleaned-form identity — real IVT does not apply to the C-valued eval directly.",
+      "S12 ops: the registry BLOCKED flag had outlived its cause twice over — Docker recovered AND the gated work (axiom elimination) had already merged as #27135 without tracker updates. Triage state.md against git log of the Lean file before trusting a BLOCKED flag."
     ],
     "mathlibGaps": [
       "Polynomial.discriminant : Polynomial R -> R — not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
@@ -80,15 +90,10 @@
       "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
     ],
     "nextSteps": [
-      "Build-free DONE (S9 audit): biquadratic_forward/backward confirmed unconditionally sound; no non-degeneracy hypothesis required to discharge them.",
-      "Docker build verification of S6 BUGFIX (./proofs/scripts/docker-build.sh Proofs.GeneralQuartic). Critical first action.",
-      "Discharge ferrari_factorization_backward (and forward) via linear_combination expansion of F1 * F2 - depressed quartic. Now mathematically TRUE post-S6 - was FALSE before. <= 20 LOC each direction.",
-      "Discharge ferrari_roots_verify from the now-corrected ferrari_factorization_backward + quadratic formula on F1, F2. <= 30 LOC.",
-      "Reconcile top-level docstring (lines 39-58) + ferrari_factorization docstring (line 223 region) + ferrariRoots docstring (lines 260-266) with the non-standard (y^2 + p + m)^2 convention.",
-      "S5b ACT - pan_witness_k1_tangency proper (still deferred; orthogonal to S6).",
-      "Indefinitely deferred: OQ-02.a (witness family), OQ-02.b (conditioning bound)."
+      "S13: completion assessment — mark completed with OQ-02.b as recorded blocked remainder, unless the root-spread quantification (single-theorem Omega(t^{-1}) amplification statement) is judged worth one more session.",
+      "OQ-02.b: blocked route — condNum infrastructure absent from Mathlib."
     ],
-    "lastUpdated": "2026-06-14"
+    "lastUpdated": "2026-07-24"
   },
   "tags": [
     "algebra",
@@ -120,15 +125,15 @@
     ]
   },
   "started": "2026-05-12T04:48:16.448Z",
-  "lastUpdate": "2026-06-14T00:00:00Z",
+  "lastUpdate": "2026-07-24",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/GeneralQuartic.lean",
       "filename": "GeneralQuartic.lean",
-      "lineCount": 817,
-      "theoremCount": 24,
+      "lineCount": 936,
+      "theoremCount": 30,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
