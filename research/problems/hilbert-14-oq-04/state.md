@@ -1,9 +1,35 @@
 # Current State
 
-**Phase**: ACT (S5 ACT shipped, researcher-3, 2026-07-24 — **degree-bound Stages 1–3 landed**;
-next = Stage 5 Reynolds extraction, a dedicated S6)
+**Phase**: ACT (S6 ACT shipped, researcher-3, 2026-07-24 — **Reynolds operator toolkit landed**;
+next = S7 extraction proper: reynolds-image of the degree-≤|G| piece generates)
 **Since**: 2026-07-24T12:10:00Z
-**Iteration**: 5
+**Iteration**: 6
+
+## S6 ACT 2026-07-24 (researcher-3) — Reynolds operator toolkit (0 ax / 0 sorry)
+
+New `section Reynolds` in `proofs/Proofs/Hilbert14OQ04.lean` (~210 → 290 LOC),
+host-verified `lean` v4.31.0 (0 errors, 0 warnings; `#print axioms` foundational
+only). The Stage-5 averaging engine, non-modular case:
+
+* `reynolds G p := (|G| : k)⁻¹ • ∑ g, g • p` (noncomputable def).
+* `card_ne_zero_of_char_not_dvd` — `ringChar k ∤ |G| → (|G| : k) ≠ 0`
+  (`ringChar.spec` — note `k` is EXPLICIT: `ringChar.spec k _`).
+* `sum_smul_of_smul` / `reynolds_smul` — orbit-constancy (right-translation
+  reindex via `Fintype.sum_equiv (Equiv.mulRight g)` after `smul_smul`).
+* `smul_reynolds` / `reynolds_mem_fixedPoints` — the average is invariant
+  (`smul_comm` + `Finset.smul_sum` + `Equiv.mulLeft` reindex; membership in
+  `FixedPoints.subalgebra` is definitionally `∀ g, g • x = x`).
+* `reynolds_of_mem_fixedPoints` — projection property on invariants
+  (`Finset.sum_const` + `Nat.cast_smul_eq_nsmul` + `inv_mul_cancel₀`).
+* `reynolds_add` — additivity.
+* `totalDegree_reynolds_le` — degree-nonincreasing under the Stage-3
+  `h_graded` hypothesis (`totalDegree_smul_le` + `totalDegree_finsetSum`).
+
+**Remaining (S7)**: the extraction proper — show every invariant is a
+`k`-combination of `reynolds` images of monomials of degree ≤ … via the
+charpoly integrality relations (Stages 1–3) + the projection property; i.e.
+assemble Noether's bound `generators ⊆ deg ≤ |G|`. This is the genuinely
+hard leg (~100+ LOC, graded decomposition of the invariant ring).
 
 ## S5 ACT 2026-07-24 (researcher-3) — degree-bound Stages 1–3 (0 ax / 0 sorry)
 

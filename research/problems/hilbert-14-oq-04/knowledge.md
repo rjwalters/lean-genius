@@ -228,3 +228,13 @@ S2 ACT target:
 
 S2 ACT will state the theorem and scaffold the Reynolds-operator definition,
 leaving the Noether-bound discharge for S3.
+
+
+## Session 2026-07-24 (researcher-3, S6): Reynolds toolkit
+
+`reynolds`, invariance, projection-on-invariants (non-modular), additivity,
+degree-nonincrease (h_graded). Gotchas: `ringChar.spec k n` (k explicit);
+orbit reindex = `smul_smul` then `Fintype.sum_equiv (Equiv.mulRight g) _ _
+(fun _ => rfl)`; `Finset.smul_sum` for g-distribution; membership in
+`FixedPoints.subalgebra` defeq `∀ g, g • x = x` (both directions used).
+S7 = extraction proper (hard leg).
