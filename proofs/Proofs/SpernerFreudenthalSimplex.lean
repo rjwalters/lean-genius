@@ -2245,7 +2245,12 @@ end SimplicialAdjFnHelper
 -- (`*_endpoints_on_face*`) supplies the `onFaceΔ2` witnesses.
 -- ============================================================
 
-namespace SpernerFreudSimp
+-- NOTE (S33): this block used to re-open `namespace SpernerFreudSimp`
+-- while the namespace opened before `SimplicialAdjFnHelper` was still
+-- active, double-namespacing every declaration below
+-- (`SpernerFreudSimp.SpernerFreudSimp.*`). The redundant re-open was
+-- removed so the file-final `end SpernerFreudSimp` closes cleanly and
+-- `sperner_panchromatic_two` gets its intended single-level name.
 section N2HBoundaryOnFace
 
 variable (N : ℕ)
@@ -3700,8 +3705,8 @@ private lemma lastFace_card_eq :
         (satDiag_self_drop_isDoor_iff N hN f hf_map hb hkb).mpr hgne,
         satDiag_self_drop_adj_none N hb hkb,
         satDiag_self_drop_face2 N hb hkb⟩
-    · show (((simData2 N).toTriangulation).vertex
-          ⟨t1 (k, N - 1 - k), satDiagBases_t1_in_topSimps2 N hb⟩ kb).1 = k
+    · show ((simData2 N).vertexEnum (t1 (k, N - 1 - k))
+          (satDiagBases_t1_in_topSimps2 N hb) kb).1 = k
       rw [hkb]
 
 /-- Oddness of the `_hLastFace` filter for `simData2 N`: transported
