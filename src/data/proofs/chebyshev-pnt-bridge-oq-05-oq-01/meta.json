@@ -70,7 +70,8 @@
       "A single elementary estimate log x ≤ 2√x (from log t ≤ t − 1 applied to t = √x) absorbs BOTH error terms: the additive √N + 1 in the upper bound and the subtractive log(m+1) in the lower bound",
       "Choosing loose constants (c₁ = 2/5, c₂ = 2·log 4 + 4) trades the asymptotically sharp log 2 / 2 log 4 for bounds that hold uniformly with no o(1), making the result a clean drop-in for downstream proofs",
       "The lower bound needs a threshold (m ≥ 65) only because √(m+1) ≤ m/8 fails for small m; the upper bound needs none since √m ≤ m for all m ≥ 1",
-      "The consolidation required first repairing the broken prerequisite chain (Erdos31PrimesDensity, ChebyshevPNTBridgeOQ02) against Mathlib v4.26 — a reminder that 'verified' gallery files can silently rot under toolchain drift"
+      "The consolidation required first repairing the broken prerequisite chain (Erdos31PrimesDensity, ChebyshevPNTBridgeOQ02) against Mathlib v4.26 — a reminder that 'verified' gallery files can silently rot under toolchain drift",
+      "The upper bound's error term √m enters the exact statement as the integer Nat.sqrt m but the absorption argument (log m ≤ 2√m, √m ≤ m) is carried out entirely over Real.sqrt; Nat.sqrt_le' ((Nat.sqrt m)² ≤ m) combined with Real.sqrt_sq bridges the two by showing the integer square root never exceeds the real one — a small but necessary coercion whenever a Nat-valued combinatorial error term feeds into a Real-valued analytic estimate"
     ],
     "prerequisites": [
       "the prime-counting function π and its monotonicity",
