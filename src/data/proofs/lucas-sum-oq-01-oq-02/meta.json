@@ -13,7 +13,8 @@
       "The squared sum telescopes as L_k² = L_k·L_{k+1} − L_{k−1}·L_k, so ∑_{k=0}^{n} L_k² = L_n·L_{n+1} − L_{−1}·L_0; the boundary term evaluates to +2, giving the clean +2 offset that the Fibonacci version (with F_0 = 0) does not carry.",
       "Over ℕ the weighted sum needs truncated subtraction; proving the subtraction-free form (∑ k·L_k)+L_{n+3} = n·L_{n+2}+4 first keeps the induction honest and lets omega discharge the final subtraction.",
       "omega treats lucas(·) and fib(·) as opaque atoms and does not rewrite their arguments or distribute products, so the recurrence must be stated in the goal's exact index form and each (n+1)·L / n·L product supplied as a matching atom.",
-      "The parent bridge L_{m+1} = F_m + F_{m+2} factors the Lucas square-sum into a product of sums of two Fibonacci numbers — the concrete way the two closed forms L_n·L_{n+1}+2 and F_n·F_{n+1} are tied together."
+      "The parent bridge L_{m+1} = F_m + F_{m+2} factors the Lucas square-sum into a product of sums of two Fibonacci numbers — the concrete way the two closed forms L_n·L_{n+1}+2 and F_n·F_{n+1} are tied together.",
+      "This is a genuinely different route from the classical term-level identity L_k² − 5F_k² = 4(−1)^k (Vajda, identity (28)): that identity relates the two square SEQUENCES pointwise, term by term, whereas lucas_sq_sum_fib relates the two square SUMS structurally, by substituting the index bridge into the already-summed closed form — no per-term identity or alternating sign ever enters the proof."
     ],
     "prerequisites": [
       "Second-order linear recurrences and the Lucas/Fibonacci initial data",
