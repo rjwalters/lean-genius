@@ -31,9 +31,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-22T06:00:00-07:00",
-    "iteration": 2,
-    "focus": "Elementary sign/attainment/second-moment layer for the cosine sum is COMPLETE; only the deep −c√N growth bound remains.",
+    "since": "2026-07-24T10:00:00-07:00",
+    "iteration": 3,
+    "focus": "Sidon-class -c*sqrt(N) route IN PROGRESS (session 1 of 2 done): the complete L1-L4 analytic engine is on file; only the combinatorial Sidon fourth-moment count remains.",
     "blockers": [
       {
         "route": "the −c√N lower bound via elementary trigonometric identities",
@@ -41,15 +41,15 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "STAND DOWN at the elementary layer — it is now saturated. The file establishes: attained minimum (exists_eq_minCosineSum), two-sided bounds, minCosineSum{n}=-1, minCosineSum<=0 (minCosineSum_nonpos), STRICT minCosineSum<0 (minCosineSum_neg) + witness angle (exists_angle_cosineSum_neg), the uniform quantitative second-moment bound minCosineSum<=-1/2 (minCosineSum_le_neg_half, via orthogonality integral_cos_mul_cos + ∫cosineSum²=πN), and the SHARP all-odd extreme minCosineSum=-card (minCosineSum_forall_odd) plus minCosineSum_le_alternating. The only open direction is the deep -c*sqrt(N) growth bound (Bourgain/Ruzsa/Bedert N^{1/7} regime), which stays imported/blocked — do not reopen unless attacking that with a materially new mechanism.",
+    "nextAction": "Session 2 of the Sidon plan: define IsSidon (B2[1]) and prove the fourth-moment quadruple count int_0^{2pi} f^4 <= C*N^2 (expand f^2 as a cosine polynomial in frequencies a+b and a-b; Sidon gives bounded multiplicity per frequency; Parseval via the existing integral_cos_mul_cos orthogonality). Then instantiate minCosineSum_le_neg_sqrt_of_fourth_moment (NEW, 2026-07-24, researcher-2) with B = C*N^2 to conclude minCosineSum A <= -c*sqrt(N) on the Sidon class. The analytic engine is DONE: sq_integral_mul_le (Cauchy-Schwarz for interval integrals via discrim_le_zero), integral_abs_cosineSum_le (int|f| <= 4pi*(-m) from int f = 0), pow_three_second_moment_le ((pi*N)^3 <= (int f^4)*(int |f|)^2, CS twice through int|f|^3), minCosineSum_le_neg_sqrt_of_fourth_moment (int f^4 <= B => m <= -sqrt(pi^3 N^3/B)/(4pi)). The GENERAL -c*sqrt(N) (all sets; Bourgain/Ruzsa/Bedert) stays the registered deep blocker.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) via third-moment bootstrap. NEW (2026-07-23): the interval family {1..N} pinned to Θ(N) — minCosineSum ≤ −1/2 − (2N+1)/(3π) via the Dirichlet-kernel telescoping closed form at θ₀ = 3π/(2N+1); together with the √N sum-free bound this formalizes both extremes of the structure-vs-cancellation dichotomy. All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example. UPDATE 2026-07-24: union superadditivity (min A + min B <= min(A∪B), disjoint) rescued from conflicting PR #41939 and landed on current main — negativity is subadditive, -N floor = singleton union bound.",
+    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) via third-moment bootstrap. NEW (2026-07-23): the interval family {1..N} pinned to Θ(N) — minCosineSum ≤ −1/2 − (2N+1)/(3π) via the Dirichlet-kernel telescoping closed form at θ₀ = 3π/(2N+1); together with the √N sum-free bound this formalizes both extremes of the structure-vs-cancellation dichotomy. All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example. UPDATE 2026-07-24: union superadditivity (min A + min B <= min(A∪B), disjoint) rescued from conflicting PR #41939 and landed on current main — negativity is subadditive, -N floor = singleton union bound. 2026-07-24 (researcher-2): L1-L4 analytic engine for the Sidon route added (4 axiom-free theorems: Cauchy-Schwarz for interval integrals, int|f| <= 4pi*(-m), (pi N)^3 <= (int f^4)(int|f|)^2, and the conditional bound int f^4 <= B => minCosineSum <= -sqrt(pi^3 N^3/B)/(4pi)); only the Sidon quadruple count remains for the Sidon-class sqrt(N) rate.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -102,9 +102,9 @@
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
     ],
     "nextSteps": [
-      "Elementary layer SATURATED — strict minCosineSum<0 (minCosineSum_neg), the second-moment minCosineSum<=-1/2 (minCosineSum_le_neg_half), and the sharp all-odd minCosineSum=-card (minCosineSum_forall_odd) are all DONE. Do not re-attempt these.",
-      "The sharp -c*sqrt(N) bound (Chowla) stays a deep imported result (Bourgain/Ruzsa/Bedert N^{1/7} regime); only reopen with a materially new mechanism.",
-      "Sidon-set difference-set example for sqrt(N) optimality (harder; deep, tied to the -c*sqrt(N) route)."
+      "Session 2 (Sidon combinatorial half): IsSidon def + fourth-moment count int f^4 <= C*N^2, then instantiate minCosineSum_le_neg_sqrt_of_fourth_moment for the Sidon-class -c*sqrt(N). Plan details in knowledge.md (session 2026-07-24b).",
+      "Elementary layer + sum-free class + interval family + analytic Sidon engine all DONE - do not re-attempt (see knowledge.md).",
+      "The general -c*sqrt(N) for ALL sets (Bourgain/Ruzsa/Bedert) stays the registered deep blocker."
     ],
     "markdown": "# Knowledge Base: erdos-510-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational cosine-sum scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos510Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos510WIP01.lean` (16 theorems) establishing the elementary structure of the Chowla cosine sum `cosineSum A θ = ∑_{n∈A} cos(nθ)` and its infimum `minCosineSum A = ⨅_θ cosineSum A θ`:\n- **Evaluation**: `cosineSum_empty`, `cosineSum_singleton`, `cosineSum_insert`, `cosineSum_zero_angle` (`= N`), `cosineSum_pi` (`= ∑(−1)ⁿ`).\n- **Symmetry / periodicity**: `cosineSum_neg` (even), `cosineSum_add_two_pi` (2π-periodic).\n- **Continuity**: `continuous_cosineSum`.\n- **Two-sided bound**: `abs_cosineSum_le_card` (`|·| ≤ N`), `cosineSum_le_card`, `neg_card_le_cosineSum`.\n- **Infimum**: `bddBelow_range_cosineSum`, `minCosineSum_le`, `neg_card_le_minCosineSum`, `minCosineSum_le_card`, `minCosineSum_empty`, and the exact value `minCosineSum_singleton` (`= −1` for `n ≥ 1`).\n\n### Key findings\n- The cosine sum lives in `[−N, N]`; the conjectured extremum `−c√N` is strictly interior, so every elementary bound is far from the truth — the mathematics is entirely in the cancellation.\n- `minCosineSum {n} = −1` exactly (attained at `θ = π/n`): single-frequency sets are maximally negative per size, so the `−c√N` difficulty is a genuine many-frequency phenomenon.\n\n### Reusable Lean recipe\n- Periodicity per term: `Real.cos_add_nat_mul_two_pi (n*θ) n` after `ring`-rewriting `n·(θ+2π) = n·θ + n·(2π)`.\n- `θ=π` collapse: `Real.cos_nat_mul_pi n : cos(n·π) = (−1)ⁿ`.\n- Infimum bounds in ℝ: `ciInf_le (bddBelow …) θ` and `le_ciInf (fun θ => …)` (index `ℝ` is `Nonempty`); bound the range below by `−N` via `neg_card_le_cosineSum`.\n- `|cos| ≤ 1` without `Analysis.Complex.Trigonometric`: `abs_le.mpr ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩`.\n- Continuity of a partially-applied `def`: `show Continuous (fun θ => …)` (not `simp only [def]`, which makes no progress under `Continuous`), then `continuous_finsetSum`.\n\n### Next steps\n- Attainment: `∃ θ, cosineSum A θ = minCosineSum A` (continuity on `[0,2π]` + periodicity).\n- `minCosineSum A ≤ 0` for `A ⊂ ℕ⁺` via `∫_0^{2π} cosineSum A = 0`.\n\n### Still open (unchanged)\nThe `−c√N` lower bound (Chowla's conjecture) — deep; Bedert (2025) reached `−cN^{1/7}`, the `N^{1/7}`↔`N^{1/2}` gap is open.\n"
   },

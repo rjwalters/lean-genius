@@ -1,5 +1,43 @@
 # Knowledge Base: erdos-510-wip-01
 
+## Session 2026-07-24b (researcher-2) — L¹–L⁴ analytic engine for the Sidon route (session 1 of 2)
+
+Added 4 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean`
+exit 0; no sorry/axiom/native_decide). This is **session 1 of the 2-session Sidon-class
+−c√N plan** (assessment carried from #41939): the complete *analytic* half. New import:
+`Mathlib.Algebra.QuadraticDiscriminant`.
+
+- `sq_integral_mul_le`: **Cauchy–Schwarz for interval integrals** on `[0,2π]` (continuous
+  integrands): `(∫u·v)² ≤ (∫u²)·(∫v²)`. For each `t` expand `0 ≤ ∫(t·u−v)²` into the
+  quadratic `t²∫u² − 2t∫uv + ∫v²`; conclude via `discrim_le_zero` + `rw [discrim]` +
+  `nlinarith`. Reusable for any moment bootstrap.
+- `integral_abs_cosineSum_le`: `∫₀^{2π}|f| ≤ 4π·(−minCosineSum A)` for `0 ∉ A`. Pointwise
+  `|f| ≤ f − 2m` (via `abs_le.mpr`, cases handled by `m ≤ 0` and `m ≤ f`); integrate with
+  `integral_mono_on`; RHS = `−4πm` since `∫f = 0`. (= "negative part carries half the L¹
+  mass, and is pointwise ≤ −m".)
+- `pow_three_second_moment_le`: **the moment chain `(πN)³ ≤ (∫f⁴)·(∫|f|)²`** — Hölder
+  `‖f‖₂ ≤ ‖f‖₄^{2/3}‖f‖₁^{1/3}` with NO fractional powers: CS twice through `s := √|f|`:
+  `(∫f²)² = (∫s³·s)² ≤ (∫|f|³)(∫|f|)` and `(∫|f|³)² = (∫f²·|f|)² ≤ (∫f⁴)(∫f²)`; combine
+  with `∫f² = πN` and cancel one `πN > 0` (`mul_self_le_mul_self` + one `nlinarith`).
+- `minCosineSum_le_neg_sqrt_of_fourth_moment`: **the conditional Chowla bound**: any
+  fourth-moment estimate `∫f⁴ ≤ B` gives `minCosineSum A ≤ −√(π³N³/B)/(4π)`. (B > 0 comes
+  free from `(πN)³ ≤ B·L²`.)
+
+Idioms: pointwise integrand rewrites as separate `intervalIntegral.integral_congr` equations
+`e1…e6` then `rw [e1,e2,e3] at hCS1` — keeps each `calc` tiny (`(sθ³)² = (sθ²)³` by `ring`,
+then `Real.sq_sqrt (abs_nonneg _)` : `s²=|f|`, `sq_abs`). `set` + `rw [← ha, ← hb, ← hc]`
+re-folds integrals after `integral_add`/`integral_const_mul` splits. `Continuous.sqrt` is
+root-namespace. v4.31: `div_le_iff₀`.
+
+### Remaining for session 2 (the combinatorial half — DO THIS NEXT)
+Define `IsSidon A` (`∀ a b c d ∈ A, a+b = c+d → …trivial…`) and prove the quadruple count
+`∫₀^{2π} f⁴ ≤ C·N²` (expand `f²` as a cosine polynomial with frequencies `a+b` and `a−b`;
+Sidon ⟹ each sum/difference frequency has ≤ bounded multiplicity ⟹ Parseval via existing
+`integral_cos_mul_cos` orthogonality caps `∫(f²)²`; constant C ≈ 5π is fine, sharpness
+irrelevant). Then instantiate `minCosineSum_le_neg_sqrt_of_fourth_moment` with `B = C·N²`
+to get `minCosineSum A ≤ −c·√N` on the Sidon class — the second class (after sum-free)
+achieving Chowla's conjectured rate.
+
 ## Session 2026-07-22b (researcher-1) — Chowla's √N bound PROVED for sum-free sets
 
 Added 4 axiom-free theorems to `Erdos510WIP01.lean` (host-verified v4.31, `lake env lean` exit 0;
