@@ -66,6 +66,21 @@ in prose:
   `n - 1`-style growth at `r = 1`, and every rung `(1, 5), (1, 6), …` is settled at
   once (`fThreshold_one_five`).
 
+The `r = 2` row then opens — and closes:
+
+* `fThreshold_two_four` — **`fThreshold 2 4 = 1`**, the first exact value in the `r = 2`
+  row: on four vertices the only non-3-colorable graph is `K₄`, which passes the budget-2
+  test by shedding two opposite edges (leaving a bipartite 4-cycle), while budget `1`
+  forces 3-colorability (completeness dichotomy).
+* `fThreshold_two_eq_one` — **the complete `r = 2` row: `fThreshold 2 n = 1` for every
+  `n ≥ 4`.** Membership of `1` needs only `S = univ` and *no* case analysis: one removed
+  pair `p` leaves a 2-colorable graph, and recoloring `p.1` with a third color 3-colors
+  `G` outright. Upper bound: `K₄` plus isolated vertices (`k4Plus`, the `trianglePlus`
+  pattern one row up). The row is *constant* (`fThreshold_two_constant`), the `(2, 5)`
+  rung is settled for free (`fThreshold_two_five`), and the strict cross-row drop
+  `fThreshold 2 n < fThreshold 1 n` holds along the whole row
+  (`fThreshold_two_lt_fThreshold_one`).
+
 No new axioms; the parent file has 0 axioms and they are untouched (and unused here).
 -/
 
@@ -1172,5 +1187,208 @@ theorem fThreshold_lt_at_four : fThreshold 2 4 < fThreshold 1 4 := by
 #check @one_mem_fThresholdSet_two_four
 #check @fThreshold_two_four
 #check @fThreshold_lt_at_four
+
+/-
+## The complete `r = 2` row: `fThreshold 2 n = 1` for every `n ≥ 4`
+
+The `(2, 4)` computation above suggested that the next rung `(2, 5)` would
+need a multi-embedding analysis of `K₄` subgraphs on five vertices.  It does
+not: the whole row collapses at once, by two arguments that are *uniform in
+`n`* and simpler than the completeness dichotomy used at `n = 4`.
+
+* **Membership of `1`** (`one_mem_fThresholdSet_two`): only the instance
+  `S = univ` of the hypothesis is needed.  It provides at most one removed
+  pair `p` after whose deletion `G` has a proper 2-coloring `c`; recoloring
+  the single vertex `p.1` with a fresh third color repairs every edge the
+  deletion had hidden (any such edge is incident to `p.1`), so `G` itself is
+  3-colorable outright.  No case analysis on the shape of `G` at all — this
+  subsumes the `n = 4` completeness dichotomy and works for **every** `n`.
+* **Upper bound** (`two_notMem_fThresholdSet_two`): `K₄` on the first four
+  vertices plus `n - 4` isolated vertices (`k4Plus`, the `trianglePlus`
+  pattern one row up).  Budget `2` passes: removing the opposite pairs
+  `{v0,v1}` and `{v2,v3}` leaves the 4-cycle `v0–v2–v1–v3–v0`, 2-colored by
+  the bipartition `{v0,v1} | {v2,v3}` — uniformly in the induced subgraph
+  `S`.  But a 3-coloring of `k4Plus n` would injectively color the four
+  clique vertices with three colors (pigeonhole on `Fin 3`, by `omega`).
+
+Consequences: `fThreshold 2 5 = 1` (the rung flagged as "genuinely harder"
+is settled for free), the row is **constant** (`fThreshold_two_constant`) —
+refuting any growth in `n` at `r = 2` — and the strict cross-row drop
+observed at `n = 4` persists along the entire row
+(`fThreshold_two_lt_fThreshold_one`: `fThreshold 2 n = 1 < 2 =
+fThreshold 1 n` for all `n ≥ 4`).
+-/
+
+/-- `K₄` on the first four vertices plus `n - 4` isolated vertices. -/
+def k4Plus (n : ℕ) : SGraph n where
+  adj u v := u.val < 4 ∧ v.val < 4 ∧ u ≠ v
+  symm _ _ h := ⟨h.2.1, h.1, h.2.2.symm⟩
+  irrefl _ h := h.2.2 rfl
+
+/-- A monochromatic pair under the bipartition `{0,1} | {2,3}` of the first
+four vertices is — in one of its two orientations — one of the two removed
+pairs `(v0, v1)`, `(v2, v3)`. -/
+lemma mem_killMatch {n : ℕ} {v0 v1 v2 v3 u v : Fin n}
+    (h0 : v0.val = 0) (h1 : v1.val = 1) (h2 : v2.val = 2) (h3 : v3.val = 3)
+    (hu : u.val < 4) (hv : v.val < 4) (hne : u.val ≠ v.val)
+    (hsame : (u.val ≤ 1 ∧ v.val ≤ 1) ∨ (2 ≤ u.val ∧ 2 ≤ v.val)) :
+    (u, v) ∈ ({(v0, v1), (v2, v3)} : Finset (Fin n × Fin n)) ∨
+      (v, u) ∈ ({(v0, v1), (v2, v3)} : Finset (Fin n × Fin n)) := by
+  simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Fin.ext_iff]
+  omega
+
+/-- **Budget `2` fails at `(2, n)` for every `n ≥ 4`:** `K₄` plus isolated
+vertices passes the budget-2 reduction test in every induced subgraph
+(shedding the opposite pairs leaves a bipartite 4-cycle), yet its clique
+forces four distinct colors, so it is not 3-colorable. -/
+theorem two_notMem_fThresholdSet_two {n : ℕ} (hn : 4 ≤ n) :
+    2 ∉ fThresholdSet 2 n := by
+  obtain ⟨v0, hv0⟩ : ∃ w : Fin n, w.val = 0 := ⟨⟨0, by omega⟩, rfl⟩
+  obtain ⟨v1, hv1⟩ : ∃ w : Fin n, w.val = 1 := ⟨⟨1, by omega⟩, rfl⟩
+  obtain ⟨v2, hv2⟩ : ∃ w : Fin n, w.val = 2 := ⟨⟨2, by omega⟩, rfl⟩
+  obtain ⟨v3, hv3⟩ : ∃ w : Fin n, w.val = 3 := ⟨⟨3, by omega⟩, rfl⟩
+  intro hmem
+  have hP : ∀ S : Finset (Fin n), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (k4Plus n).adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (k4Plus n).symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => (k4Plus n).irrefl v h)) 2 2 := by
+    intro S
+    refine ⟨{(v0, v1), (v2, v3)}, ?_,
+      ⟨fun w => if w.val ≤ 1 then 0 else 1, ?_⟩⟩
+    · exact le_trans (Finset.card_insert_le _ _) (by simp)
+    · rintro u v ⟨⟨-, -, hu4, hv4, hne⟩, hnuv, hnvu⟩ hcuv
+      -- A monochromatic surviving pair sits on one side of the bipartition,
+      -- hence is one of the two removed pairs — contradiction.
+      have hsame : (u.val ≤ 1 ∧ v.val ≤ 1) ∨ (2 ≤ u.val ∧ 2 ≤ v.val) := by
+        by_cases hu1 : u.val ≤ 1 <;> by_cases hv1 : v.val ≤ 1
+        · exact Or.inl ⟨hu1, hv1⟩
+        · rw [if_pos hu1, if_neg hv1] at hcuv
+          exact absurd hcuv (by decide)
+        · rw [if_neg hu1, if_pos hv1] at hcuv
+          exact absurd hcuv (by decide)
+        · exact Or.inr ⟨by omega, by omega⟩
+      have hval : u.val ≠ v.val := fun h => hne (Fin.ext h)
+      rcases mem_killMatch hv0 hv1 hv2 hv3 hu4 hv4 hval hsame with h | h
+      · exact hnuv h
+      · exact hnvu h
+  -- A 3-coloring of `k4Plus n` would color the clique `{v0, v1, v2, v3}`
+  -- injectively with three colors — pigeonhole.
+  obtain ⟨c, hc⟩ := hmem (k4Plus n) hP
+  have hpair : ∀ a b : Fin n, a.val < 4 → b.val < 4 → a.val ≠ b.val →
+      (c a).val ≠ (c b).val := by
+    intro a b ha hb hab h
+    exact hc a b ⟨ha, hb, fun he => hab (congrArg Fin.val he)⟩ (Fin.ext h)
+  have b0 : (c v0).val < 3 := (c v0).isLt
+  have b1 : (c v1).val < 3 := (c v1).isLt
+  have b2 : (c v2).val < 3 := (c v2).isLt
+  have b3 : (c v3).val < 3 := (c v3).isLt
+  have n01 := hpair v0 v1 (by omega) (by omega) (by omega)
+  have n02 := hpair v0 v2 (by omega) (by omega) (by omega)
+  have n03 := hpair v0 v3 (by omega) (by omega) (by omega)
+  have n12 := hpair v1 v2 (by omega) (by omega) (by omega)
+  have n13 := hpair v1 v3 (by omega) (by omega) (by omega)
+  have n23 := hpair v2 v3 (by omega) (by omega) (by omega)
+  omega
+
+/-- Upper bound for the whole row: `fThreshold 2 n ≤ 1` once `n ≥ 4`. -/
+theorem fThreshold_two_le_one {n : ℕ} (hn : 4 ≤ n) : fThreshold 2 n ≤ 1 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  rw [not_le] at hlt
+  exact two_notMem_fThresholdSet_two hn (fThresholdSet_downClosed (by omega) hk)
+
+/-- **Budget `1` forces 3-colorability on any number of vertices.**  Only
+`S = univ` is needed: the hypothesis provides at most one removed pair `p`
+after whose deletion `G` carries a proper 2-coloring `c`; recoloring the
+single vertex `p.1` with a fresh third color repairs every edge hidden by the
+deletion (each such edge is incident to `p.1`).  This subsumes the `n = 4`
+completeness dichotomy (`one_mem_fThresholdSet_two_four`) with no case
+analysis on the shape of `G`. -/
+theorem one_mem_fThresholdSet_two {n : ℕ} (hn : 1 ≤ n) :
+    1 ∈ fThresholdSet 2 n := by
+  intro G hP
+  obtain ⟨removed, hcard, c, hc⟩ := hP Finset.univ
+  -- Pad the removal to a single pair `p`.
+  obtain ⟨p, hsub⟩ : ∃ p : Fin n × Fin n, removed ⊆ {p} := by
+    have hc01 : removed.card = 0 ∨ removed.card = 1 := by omega
+    rcases hc01 with hc0 | hc1
+    · exact ⟨(⟨0, by omega⟩, ⟨0, by omega⟩), by
+        simp [Finset.card_eq_zero.mp hc0]⟩
+    · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hc1
+      exact ⟨a, subset_rfl⟩
+  -- The 3-coloring: `p.1` gets the fresh color `2`, everyone else keeps `c`.
+  refine ⟨fun w => if w = p.1 then 2 else if c w = 0 then 0 else 1, ?_⟩
+  intro u v hadj
+  have hne : u ≠ v := fun h => G.irrefl v (h ▸ hadj)
+  by_cases hu : u = p.1
+  · by_cases hv : v = p.1
+    · exact absurd (hu.trans hv.symm) hne
+    · simp only [if_pos hu, if_neg hv]
+      by_cases h0 : c v = 0
+      · simp only [if_pos h0]; decide
+      · simp only [if_neg h0]; decide
+  · by_cases hv : v = p.1
+    · simp only [if_neg hu, if_pos hv]
+      by_cases h0 : c u = 0
+      · simp only [if_pos h0]; decide
+      · simp only [if_neg h0]; decide
+    · -- Neither endpoint is `p.1`: the edge survived the deletion, so the
+      -- original 2-coloring already separates it.
+      have hsurv : c u ≠ c v := hc u v
+        ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩,
+          fun hm => hu (congrArg Prod.fst (Finset.mem_singleton.1 (hsub hm))),
+          fun hm => hv (congrArg Prod.fst (Finset.mem_singleton.1 (hsub hm)))⟩
+      simp only [if_neg hu, if_neg hv]
+      have h2 : ∀ x : Fin 2, x = 0 ∨ x = 1 := fun x => by omega
+      rcases h2 (c u) with h | h <;> rcases h2 (c v) with h' | h'
+      · exact absurd (h.trans h'.symm) hsurv
+      · rw [h, h']; decide
+      · rw [h, h']; decide
+      · exact absurd (h.trans h'.symm) hsurv
+
+/-- Lower bound for the whole row: `1 ≤ fThreshold 2 n` once `n ≥ 4`. -/
+theorem one_le_fThreshold_two {n : ℕ} (hn : 4 ≤ n) : 1 ≤ fThreshold 2 n := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    (one_mem_fThresholdSet_two (by omega))
+
+/-- **The complete `r = 2` row: `fThreshold 2 n = 1` for every `n ≥ 4`.**
+A per-subgraph deletion budget of `1` forces 3-colorability of every graph
+on any number of vertices, and `1` is the largest budget that does — `K₄`
+plus isolated vertices passes the budget-2 test by shedding two opposite
+pairs, yet is not 3-colorable. -/
+theorem fThreshold_two_eq_one {n : ℕ} (hn : 4 ≤ n) : fThreshold 2 n = 1 :=
+  le_antisymm (fThreshold_two_le_one hn) (one_le_fThreshold_two hn)
+
+/-- The `(2, 5)` rung, settled for free: `fThreshold 2 5 = 1`.  The
+anticipated multi-embedding analysis of `K₄` subgraphs on five vertices is
+not needed. -/
+theorem fThreshold_two_five : fThreshold 2 5 = 1 :=
+  fThreshold_two_eq_one (by omega)
+
+/-- **The `r = 2` row is constant** — the same refutation of growth in `n`
+that `fThreshold_one_constant` gives one row up. -/
+theorem fThreshold_two_constant {m n : ℕ} (hm : 4 ≤ m) (hn : 4 ≤ n) :
+    fThreshold 2 m = fThreshold 2 n := by
+  rw [fThreshold_two_eq_one hm, fThreshold_two_eq_one hn]
+
+/-- **The strict cross-row drop persists along the entire row:**
+`fThreshold 2 n = 1 < 2 = fThreshold 1 n` for every `n ≥ 4`, generalizing
+`fThreshold_lt_at_four` from `n = 4` to all `n`. -/
+theorem fThreshold_two_lt_fThreshold_one {n : ℕ} (hn : 4 ≤ n) :
+    fThreshold 2 n < fThreshold 1 n := by
+  rw [fThreshold_two_eq_one hn, fThreshold_one_eq_two (by omega)]
+  omega
+
+#check @k4Plus
+#check @mem_killMatch
+#check @two_notMem_fThresholdSet_two
+#check @one_mem_fThresholdSet_two
+#check @fThreshold_two_eq_one
+#check @fThreshold_two_five
+#check @fThreshold_two_constant
+#check @fThreshold_two_lt_fThreshold_one
 
 end Erdos1092OQ02
