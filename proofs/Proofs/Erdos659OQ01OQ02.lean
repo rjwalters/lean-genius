@@ -1066,4 +1066,404 @@ theorem safe_C_5_13_holds :
 theorem safe_5_13_axis_vs_plane : SafePrimePair_AxisVsPlane 5 13 :=
   ⟨safe_A_5_13_holds, safe_B_5_13_holds, safe_C_5_13_holds⟩
 
+/-!
+### S12 ACT — `(7, 13)` axis-vs-plane safety (uniform mod-13 discharge)
+
+Sixth member of the S2a safe-pair family. The mod-7 route fails for equation A
+(`−13 ≡ 1 (mod 7)` is a quadratic residue), so all three equations reduce
+**mod 13**, as in the `(2, 13)` session: `−7 ≡ 6` and `7` are both
+non-residues mod 13, giving the two new helpers
+`zmod_13_a_sq_plus_7_b_sq_eq_zero_iff` (equation A) and
+`zmod_13_a_sq_eq_seven_b_sq_iff` (equations B and C).
+-/
+
+/-- **(S12 ACT, mod-13 step for equation A on the prime pair `(7, 13)`)**
+    `a² + 7 b² ≡ 0 (mod 13)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 13`.
+    Equivalent to the assertion that `−7 ≡ 6` is not a square in `ZMod 13`
+    (squares mod 13 are `{0, 1, 3, 4, 9, 10, 12}`; `6` is not among them).
+    169-case `decide` check. -/
+lemma zmod_13_a_sq_plus_7_b_sq_eq_zero_iff (a b : ZMod 13) :
+    a ^ 2 + 7 * b ^ 2 = 0 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S12 ACT, mod-13 step for equations B and C on the prime pair `(7, 13)`)**
+    `a² ≡ 7 b² (mod 13)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 13`.
+    Equivalent to the assertion that `7` is not a square in `ZMod 13`
+    (squares mod 13 are `{0, 1, 3, 4, 9, 10, 12}`; `7` is not among them).
+    169-case `decide` check. -/
+lemma zmod_13_a_sq_eq_seven_b_sq_iff (a b : ZMod 13) :
+    a ^ 2 = 7 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S12 ACT — axis-vs-plane equation A for `(p, q) = (7, 13)`).**
+    `13 c² = a² + 7 b²` has only `(0, 0, 0)`.
+
+    Infinite descent on `c.natAbs`: mod 13 (via
+    `zmod_13_a_sq_plus_7_b_sq_eq_zero_iff`, i.e. `−7` is not a QR mod 13)
+    forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_A_7_13_holds :
+    ∀ a b c : ℤ, (13 : ℤ) * c ^ 2 = a ^ 2 + 7 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, c.natAbs = n →
+      (13 : ℤ) * c ^ 2 = a ^ 2 + 7 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hc heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hc0 : c = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hc0
+        refine ⟨?_, ?_, rfl⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg b))
+      · have hz : (a : ZMod 13) ^ 2 + 7 * (b : ZMod 13) ^ 2 = 0 := by
+          have h : ((a ^ 2 + 7 * b ^ 2 : ℤ) : ZMod 13) = ((13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul] at h
+          exact h
+        rw [zmod_13_a_sq_plus_7_b_sq_eq_zero_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13 : (13 : ℤ) * c ^ 2 = 13 * (13 * (a' ^ 2 + 7 * b' ^ 2)) := by
+          linear_combination heq
+        have hc2 : c ^ 2 = 13 * (a' ^ 2 + 7 * b' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 + 7 * b' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (13 : ℤ) * c' ^ 2 = a' ^ 2 + 7 * b' ^ 2 := by
+          have h169 : (13 : ℤ) * (13 * c' ^ 2) = 13 * (a' ^ 2 + 7 * b' ^ 2) := by
+            linear_combination hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : c'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at hc
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih c'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key c.natAbs a b c rfl heq
+
+/-- **(S12 ACT — axis-vs-plane equation B for `(p, q) = (7, 13)`).**
+    `7 b² = a² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `b.natAbs`: mod 13 (via `zmod_13_a_sq_eq_seven_b_sq_iff`,
+    i.e. `7` is not a QR mod 13) forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_B_7_13_holds :
+    ∀ a b c : ℤ, (7 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, b.natAbs = n →
+      (7 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hb heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hb0 : b = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hb0
+        refine ⟨?_, rfl, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg c))
+      · have hz : (a : ZMod 13) ^ 2 = 7 * (b : ZMod 13) ^ 2 := by
+          have h : ((7 * b ^ 2 : ℤ) : ZMod 13) = ((a ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_13_a_sq_eq_seven_b_sq_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13c : (13 : ℤ) * c ^ 2 = 13 * (13 * (7 * b' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 13 * (7 * b' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13c
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨7 * b' ^ 2 - a' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (7 : ℤ) * b' ^ 2 = a' ^ 2 + 13 * c' ^ 2 := by
+          have h169 : (13 : ℤ) * (7 * b' ^ 2) = 13 * (a' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : b'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at hb
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih b'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key b.natAbs a b c rfl heq
+
+/-- **(S12 ACT — axis-vs-plane equation C for `(p, q) = (7, 13)`).**
+    `a² = 7 b² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `a.natAbs`: mod 13 (via `zmod_13_a_sq_eq_seven_b_sq_iff`)
+    forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_C_7_13_holds :
+    ∀ a b c : ℤ, a ^ 2 = (7 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, a.natAbs = n →
+      a ^ 2 = (7 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c ha heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have ha0 : a = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst ha0
+        refine ⟨rfl, ?_, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg b))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg c))
+      · have hz : (a : ZMod 13) ^ 2 = 7 * (b : ZMod 13) ^ 2 := by
+          have h : ((a ^ 2 : ℤ) : ZMod 13) = ((7 * b ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul, add_zero] at h
+          exact h
+        rw [zmod_13_a_sq_eq_seven_b_sq_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13 : (13 : ℤ) * c ^ 2 = 13 * (13 * (a' ^ 2 - 7 * b' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 13 * (a' ^ 2 - 7 * b' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 - 7 * b' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : a' ^ 2 = (7 : ℤ) * b' ^ 2 + 13 * c' ^ 2 := by
+          have h169 : (13 : ℤ) * a' ^ 2 = 13 * (7 * b' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : a'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at ha
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih a'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key a.natAbs a b c rfl heq
+
+/-- **The main axis-vs-plane safety theorem for the prime pair `(p, q) = (7, 13)`.**
+
+    Sixth discharged member of the S2a safe-pair family, via the uniform
+    mod-13 route (both `−7` and `7` are non-residues mod 13). The full-rank
+    half is a separate future axiomatisation per S2c PREP §6.1. -/
+theorem safe_7_13_axis_vs_plane : SafePrimePair_AxisVsPlane 7 13 :=
+  ⟨safe_A_7_13_holds, safe_B_7_13_holds, safe_C_7_13_holds⟩
+
+/-!
+### S13 ACT — `(11, 13)` axis-vs-plane safety (mixed-modulus discharge)
+
+Seventh and final member of the S2a safe-pair family — this section completes
+the axis-vs-plane programme. The pair is **mixed-modulus** like `(5, 7)` and
+`(5, 13)`: equations A and C reduce **mod 11** (where `13 ≡ 2` and `2` is not
+a QR mod 11 — squares mod 11 are `{0, 1, 3, 4, 5, 9}`), while equation B must
+go **mod 13** (`−11·c²` reduction mod 11 fails because `−2 ≡ 9 = 3²` is a QR;
+instead `11` is not a QR mod 13). Two new helpers:
+`zmod_11_a_sq_eq_two_b_sq_iff` and `zmod_13_a_sq_eq_eleven_b_sq_iff`.
+-/
+
+/-- **(S13 ACT, mod-11 step for equations A and C on the prime pair `(11, 13)`)**
+    `a² ≡ 2 b² (mod 11)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 11`.
+    Equivalent to the assertion that `2` is not a square in `ZMod 11`
+    (squares mod 11 are `{0, 1, 3, 4, 5, 9}`; `2` is not among them).
+    121-case `decide` check. -/
+lemma zmod_11_a_sq_eq_two_b_sq_iff (a b : ZMod 11) :
+    a ^ 2 = 2 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S13 ACT, mod-13 step for equation B on the prime pair `(11, 13)`)**
+    `a² ≡ 11 b² (mod 13)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 13`.
+    Equivalent to the assertion that `11` is not a square in `ZMod 13`
+    (squares mod 13 are `{0, 1, 3, 4, 9, 10, 12}`; `11` is not among them).
+    169-case `decide` check. -/
+lemma zmod_13_a_sq_eq_eleven_b_sq_iff (a b : ZMod 13) :
+    a ^ 2 = 11 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S13 ACT — axis-vs-plane equation A for `(p, q) = (11, 13)`).**
+    `13 c² = a² + 11 b²` has only `(0, 0, 0)`.
+
+    Infinite descent on `c.natAbs`, reducing **mod 11**: since `13 ≡ 2 (mod 11)`,
+    the equation collapses to `a² ≡ 2 c² (mod 11)` and
+    `zmod_11_a_sq_eq_two_b_sq_iff` forces `11 ∣ a`, `11 ∣ c`, then `11 ∣ b`. -/
+theorem safe_A_11_13_holds :
+    ∀ a b c : ℤ, (13 : ℤ) * c ^ 2 = a ^ 2 + 11 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, c.natAbs = n →
+      (13 : ℤ) * c ^ 2 = a ^ 2 + 11 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hc heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hc0 : c = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hc0
+        refine ⟨?_, ?_, rfl⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg b))
+      · have hz : (a : ZMod 11) ^ 2 = 2 * (c : ZMod 11) ^ 2 := by
+          have h : ((13 * c ^ 2 : ℤ) : ZMod 11) = ((a ^ 2 + 11 * b ^ 2 : ℤ) : ZMod 11) := by
+            rw [heq]
+          push_cast at h
+          rw [show (11 : ZMod 11) = 0 from by decide,
+              show (13 : ZMod 11) = 2 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_11_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (11 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 11).mp hz.1
+        have hdc : (11 : ℤ) ∣ c := (ZMod.intCast_zmod_eq_zero_iff_dvd c 11).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨c', rfl⟩ := hdc
+        have h11b : (11 : ℤ) * b ^ 2 = 11 * (11 * (13 * c' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hb2 : b ^ 2 = 11 * (13 * c' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (11 : ℤ) ≠ 0) h11b
+        have hdb : (11 : ℤ) ∣ b := by
+          have hp : Prime (11 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨13 * c' ^ 2 - a' ^ 2, hb2⟩ : (11 : ℤ) ∣ b ^ 2)
+        obtain ⟨b', rfl⟩ := hdb
+        have heq' : (13 : ℤ) * c' ^ 2 = a' ^ 2 + 11 * b' ^ 2 := by
+          have h121 : (11 : ℤ) * (13 * c' ^ 2) = 11 * (a' ^ 2 + 11 * b' ^ 2) := by
+            linear_combination -hb2
+          exact mul_left_cancel₀ (by norm_num : (11 : ℤ) ≠ 0) h121
+        have hmeas : c'.natAbs < n := by
+          have h11nat : (11 : ℤ).natAbs = 11 := by decide
+          rw [Int.natAbs_mul, h11nat] at hc
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih c'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key c.natAbs a b c rfl heq
+
+/-- **(S13 ACT — axis-vs-plane equation B for `(p, q) = (11, 13)`).**
+    `11 b² = a² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `b.natAbs`: mod 13 (via the new
+    `zmod_13_a_sq_eq_eleven_b_sq_iff` — the mod-11 route fails here because
+    `−2 ≡ 9 = 3²` is a QR mod 11) forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_B_11_13_holds :
+    ∀ a b c : ℤ, (11 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, b.natAbs = n →
+      (11 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hb heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hb0 : b = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hb0
+        refine ⟨?_, rfl, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg c))
+      · have hz : (a : ZMod 13) ^ 2 = 11 * (b : ZMod 13) ^ 2 := by
+          have h : ((11 * b ^ 2 : ℤ) : ZMod 13) = ((a ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_13_a_sq_eq_eleven_b_sq_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13c : (13 : ℤ) * c ^ 2 = 13 * (13 * (11 * b' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 13 * (11 * b' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13c
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨11 * b' ^ 2 - a' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (11 : ℤ) * b' ^ 2 = a' ^ 2 + 13 * c' ^ 2 := by
+          have h169 : (13 : ℤ) * (11 * b' ^ 2) = 13 * (a' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : b'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at hb
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih b'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key b.natAbs a b c rfl heq
+
+/-- **(S13 ACT — axis-vs-plane equation C for `(p, q) = (11, 13)`).**
+    `a² = 11 b² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `a.natAbs`, reducing **mod 11** (as for equation A):
+    `13 ≡ 2 (mod 11)` collapses the equation to `a² ≡ 2 c² (mod 11)`, and
+    `zmod_11_a_sq_eq_two_b_sq_iff` forces `11 ∣ a`, `11 ∣ c`, then `11 ∣ b`. -/
+theorem safe_C_11_13_holds :
+    ∀ a b c : ℤ, a ^ 2 = (11 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, a.natAbs = n →
+      a ^ 2 = (11 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c ha heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have ha0 : a = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst ha0
+        refine ⟨rfl, ?_, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg b))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg c))
+      · have hz : (a : ZMod 11) ^ 2 = 2 * (c : ZMod 11) ^ 2 := by
+          have h : ((a ^ 2 : ℤ) : ZMod 11) = ((11 * b ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 11) := by
+            rw [heq]
+          push_cast at h
+          rw [show (11 : ZMod 11) = 0 from by decide,
+              show (13 : ZMod 11) = 2 from by decide, zero_mul, zero_add] at h
+          exact h
+        rw [zmod_11_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (11 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 11).mp hz.1
+        have hdc : (11 : ℤ) ∣ c := (ZMod.intCast_zmod_eq_zero_iff_dvd c 11).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨c', rfl⟩ := hdc
+        have h11b : (11 : ℤ) * b ^ 2 = 11 * (11 * (a' ^ 2 - 13 * c' ^ 2)) := by
+          linear_combination -heq
+        have hb2 : b ^ 2 = 11 * (a' ^ 2 - 13 * c' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (11 : ℤ) ≠ 0) h11b
+        have hdb : (11 : ℤ) ∣ b := by
+          have hp : Prime (11 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 - 13 * c' ^ 2, hb2⟩ : (11 : ℤ) ∣ b ^ 2)
+        obtain ⟨b', rfl⟩ := hdb
+        have heq' : a' ^ 2 = (11 : ℤ) * b' ^ 2 + 13 * c' ^ 2 := by
+          have h121 : (11 : ℤ) * a' ^ 2 = 11 * (11 * b' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hb2
+          exact mul_left_cancel₀ (by norm_num : (11 : ℤ) ≠ 0) h121
+        have hmeas : a'.natAbs < n := by
+          have h11nat : (11 : ℤ).natAbs = 11 := by decide
+          rw [Int.natAbs_mul, h11nat] at ha
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih a'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key a.natAbs a b c rfl heq
+
+/-- **The main axis-vs-plane safety theorem for the prime pair `(p, q) = (11, 13)`.**
+
+    Seventh and final discharged member of the S2a safe-pair family — with
+    this theorem the axis-vs-plane half of the safety programme is complete
+    for all seven pairs. Mixed-modulus route: equations A and C mod 11
+    (via the new `zmod_11_a_sq_eq_two_b_sq_iff`, since `13 ≡ 2 (mod 11)`),
+    equation B mod 13 (via the new `zmod_13_a_sq_eq_eleven_b_sq_iff`). The
+    full-rank half is a separate future axiomatisation per S2c PREP §6.1. -/
+theorem safe_11_13_axis_vs_plane : SafePrimePair_AxisVsPlane 11 13 :=
+  ⟨safe_A_11_13_holds, safe_B_11_13_holds, safe_C_11_13_holds⟩
+
 end Erdos659OQ01OQ02

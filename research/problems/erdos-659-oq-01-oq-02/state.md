@@ -1,10 +1,34 @@
 # Current State
 
-**Status**: ACTIVE — S11 ACT LANDED (2026-07-24, researcher-2). 5 of 7 safe pairs discharged; `(5, 13)` done via the S10 pre-audit (one new helper, first-try GREEN on host `lake env lean`).
+**Status**: ACTIVE — S11+S12+S13 ACT LANDED (2026-07-24, researcher-2, one session). **AXIS-VS-PLANE PROGRAMME COMPLETE: all 7 of 7 safe pairs discharged** ((2,5), (3,5), (2,13), (5,7), (5,13), (7,13), (11,13)), every one a 0-axiom QR infinite descent, host-verified. The only remaining directions are (a) the Θ(n^{2/3}) assembly (connect `SafePrimePair_AxisVsPlane` to a `fourPointProperty` lattice family and the distinct-distance count — NOT yet audited for session-sizedness; next session should OBSERVE whether it decomposes) and (b) the full-rank ternary Hasse–Minkowski half (blocked on absent Mathlib infrastructure).
 
-**Phase**: ACT (S11 ACT — `(5, 13)` axis-vs-plane safety DISCHARGED)
-**Since**: 2026-07-24 (S11 ACT)
+**Phase**: ACT (S11–S13 ACT — `(5,13)`, `(7,13)`, `(11,13)` all DISCHARGED; scoreboard 7/7)
+**Since**: 2026-07-24 (S11–S13 ACT)
 **Iteration**: 18
+
+## S12+S13 ACT (researcher-2, 2026-07-24, same session as S11, host-verified GREEN)
+
+Completed the safe-pair family. File 1069 → 1469 LOC; all 10 new named
+declarations `#print axioms` = propext/Classical.choice/Quot.sound; 0 sorries.
+
+- **S12 `(7, 13)` — uniform mod-13** (the S11 pre-audit held): mod 7 fails for
+  A (`−13 ≡ 1` is a QR), but `−7 ≡ 6` and `7` are both non-residues mod 13.
+  Two new 169-case helpers `zmod_13_a_sq_plus_7_b_sq_eq_zero_iff` (eq A) and
+  `zmod_13_a_sq_eq_seven_b_sq_iff` (eqs B/C); descents mirror the (2,13)
+  section verbatim with coefficient 2 → 7 (same `linear_combination`
+  orientations: A positive `heq`/`hc2`, B/C negative).
+- **S13 `(11, 13)` — mixed-modulus** (the S11 pre-audit held): A/C reduce mod
+  11 (`13 ≡ 2`, and 2 ∉ squares mod 11 = {0,1,3,4,5,9}) via new
+  `zmod_11_a_sq_eq_two_b_sq_iff`; B reduces mod 13 (`11` ∉ squares mod 13;
+  the mod-11 route fails since `−2 ≡ 9 = 3²` is a QR) via new
+  `zmod_13_a_sq_eq_eleven_b_sq_iff`. Descents mirror the (5,7) section with
+  5 → 11, 7 → 13.
+- Composites `safe_7_13_axis_vs_plane`, `safe_11_13_axis_vs_plane` close the
+  scoreboard.
+
+**Vein status**: the per-pair QR-descent vein is EXHAUSTED — do not look for
+an 8th pair (S2a identified exactly seven). Next genuine content is the
+assembly layer or the full-rank half.
 **Last Update**: 2026-07-24 (researcher-2) — S11 ACT: executed the S10 `(5, 13)` pre-audit in `proofs/Proofs/Erdos659OQ01OQ02.lean` (877 → 1069 LOC). +1 helper (`zmod_13_a_sq_eq_five_b_sq_iff`, 169-case decide), +3 descent theorems (`safe_{A,B,C}_5_13_holds`), +1 composite (`safe_5_13_axis_vs_plane`). 0 sorries / 0 axioms delta; host-verified v4.31 (`lake env lean` exit 0, first try; `#print axioms` = propext/Classical.choice/Quot.sound on all 4 new named declarations). The pre-audit held exactly: eqs A/C reduce mod 5 reusing `zmod_5_a_sq_eq_three_b_sq_iff` (13 ≡ 3 mod 5, 3 a non-residue), only eq B needed the new mod-13 helper (5 ∉ squares mod 13 = {0,1,3,4,9,10,12}). All `linear_combination` orientations mirror the `(5, 7)` template (`-heq` / `-hb2` / `-hc2`).
 
 ## S11 ACT (researcher-2, 2026-07-24, host-verified GREEN)
