@@ -65,7 +65,8 @@
       "**Density-Growth Duality:** The Łuczak-Schoen counting bound $|A \\cap [1,N]| = O(\\sqrt{N \\log N})$ and the DEM growth rate $a_n \\sim n^{3+o(1)}$ are dual perspectives: if $|A \\cap [1,N]| \\sim \\sqrt{N}$, inverting gives $a_n \\sim n^2$. The $\\log N$ correction explains the cubic (rather than quadratic) growth.",
       "**Graham's Near-Linear Gaps:** Graham's construction achieves gaps $< n^{1+\\varepsilon}$ for any $\\varepsilon > 0$ using a careful recursive procedure that balances element selection with sum-avoidance. The gap between $n^{1+\\varepsilon}$ (achievable) and $n$ (open) represents a fundamental barrier in understanding subset-sum structure.",
       "**Reciprocal Sum as Structure Measure:** The convergence $\\sum 1/a < 4$ (Sullivan) quantifies sparsity differently from density: it says elements grow fast enough that their reciprocals converge. Sullivan's conjecture that the supremum is $\\approx 2$ would determine the precise balance between density and growth.",
-      "**Powers of 2 as Base Case:** $\\{1, 2, 4, 8, \\ldots\\}$ is sum-free by uniqueness of binary representation: $2^n$ cannot equal any sum of distinct smaller powers of $2$ since each power contributes to a unique bit. This gives exponential gaps ($2^{n+1} - 2^n = 2^n$), far from linear."
+      "**Powers of 2 as Base Case:** $\\{1, 2, 4, 8, \\ldots\\}$ is sum-free by uniqueness of binary representation: $2^n$ cannot equal any sum of distinct smaller powers of $2$ since each power contributes to a unique bit. This gives exponential gaps ($2^{n+1} - 2^n = 2^n$), far from linear.",
+      "**Why Question 876 is Sharp:** `hasLinearGapBound_quadratic` shows a linear gap bound would force at-most-quadratic growth ($2a_n + n \\le 2a_1 + n^2$) — strictly better than the best known $n^{3+o(1)}$ construction (DEM) and sitting right at the edge of the Łuczak-Schoen counting bound $|A \\cap [1,N]| \\ll (N\\log N)^{1/2}$. This is why the open question, if answered affirmatively, would be a genuine improvement rather than a re-derivation of known bounds."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -144,6 +145,14 @@
       "startLine": 259,
       "endLine": 305,
       "mathContext": "`erdos_876_summary : \\forall \\varepsilon > 0, \\exists a, \\text{IsSumFreeErdos}(\\text{range } a) \\land \\exists N, \\forall n \\ge N, \\text{gap}(a,n) < n^{1+\\varepsilon}$ — obtained by destructuring `graham_result ε hε` and discarding the increasing-enumeration component."
+    },
+    {
+      "id": "part-x-structural",
+      "title": "Part X: Structural Results Around the Open Question",
+      "summary": "`superIncreasing_sumfree` generalizes `powers_of_two_sumfree`: any strictly increasing sequence dominating the sum of its predecessors ($\\sum_{k<n} a_k < a_n$) is Erdős-sum-free. `powers_of_two_not_linearGapBound` shows the canonical domination example fails Question 876's linear-gap requirement (its gaps are exponential, not linear) — any affirmative answer must use a genuinely different construction. `hasLinearGapBound_quadratic` is the sharpest result here: linear gaps would force at-most-quadratic growth ($2a_n + n \\le 2a_1 + n^2$), which would beat the DEM $n^{3+o(1)}$ construction and sit at the edge of the Łuczak-Schoen counting bound. `erdosQuestion876_implies_quadratic_growth` packages this as a direct consequence of the open question.",
+      "startLine": 306,
+      "endLine": 425,
+      "mathContext": "$\\sum_{k<n} a_k < a_n \\Rightarrow$ Erdős-sum-free (superIncreasing_sumfree); powers of 2 fail linear gaps; linear gaps $\\Rightarrow 2a_n + n \\le 2a_1 + n^2$ (hasLinearGapBound_quadratic), sharper than the known $n^{3+o(1)}$ construction."
     }
   ],
   "conclusion": {

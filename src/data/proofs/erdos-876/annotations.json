@@ -279,5 +279,52 @@
       "IsSumFreeErdos",
       "gap"
     ]
+  },
+  {
+    "id": "ann-876-13",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 334,
+      "endLine": 354
+    },
+    "type": "insight",
+    "title": "Super-Increasing Sequences: the Domination Mechanism, Generalized",
+    "content": "`superIncreasing_sumfree` isolates the exact mechanism that made `powers_of_two_sumfree` work: if a strictly increasing sequence $a$ satisfies $\\sum_{k<n} a_k < a_n$ (each term dominates the sum of all its predecessors), its range is Erdős-sum-free. The proof shows any candidate subset $S$ below $a_m$ embeds into $\\{a_0,\\dots,a_{m-1}\\}$ by injectivity of $a$ on the index set, so $\\sum S \\leq \\sum_{k<m} a_k < a_m$, contradicting $\\sum S = a_m$. This single lemma subsumes powers of 2 (and any other geometric-or-faster growing domination sequence) as instances, rather than re-proving the argument each time.",
+    "mathContext": "$a$ strictly increasing with $\\sum_{k<n} a_k < a_n\\ \\forall n \\Rightarrow \\mathrm{IsSumFreeErdos}(\\mathrm{range}\\,a)$. Powers of 2 are the special case $\\sum_{k<n} 2^k = 2^n - 1 < 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "domination sequences",
+      "strict monotonicity",
+      "generalization of powers_of_two_sumfree"
+    ],
+    "prerequisites": [
+      "IsSumFreeErdos",
+      "StrictMono",
+      "Finset.sum_le_sum_of_subset"
+    ]
+  },
+  {
+    "id": "ann-876-14",
+    "proofId": "erdos-876",
+    "range": {
+      "startLine": 380,
+      "endLine": 407
+    },
+    "type": "insight",
+    "title": "Why an Affirmative Answer Would Be a Genuine Improvement",
+    "content": "`hasLinearGapBound_quadratic` proves that if a sum-free set has linear gaps ($a_{n+1}-a_n < n$ for all $n \\geq 1$), its growth is bounded above by a quadratic: $2a_n + n \\leq 2a_1 + n^2$. Combined with `erdosQuestion876_implies_quadratic_growth`, this shows that a 'yes' to Question 876 would not just be a qualitative curiosity — it would immediately produce a sum-free set growing at rate $O(n^2)$, strictly better than the best known explicit construction (DEM, $n^{3+o(1)}$), and landing exactly at the boundary the Łuczak-Schoen counting bound $|A\\cap[1,N]| \\ll (N\\log N)^{1/2}$ permits. This is why the open question is considered sharp rather than merely plausible.",
+    "mathContext": "$\\mathrm{HasLinearGapBound}(a) \\Rightarrow \\forall n \\geq 1,\\ 2a_n + n \\leq 2a_1 + n^2$, proved by induction using $a_{m+1} = a_m + \\mathrm{gap}(a,m) < a_m + m$ and $(m+1)^2 = m^2+2m+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic growth bound",
+      "Deshouillers-Erdős-Melfi construction",
+      "Łuczak-Schoen counting bound",
+      "sharpness of an open question"
+    ],
+    "prerequisites": [
+      "HasLinearGapBound",
+      "Nat.le_induction",
+      "gap"
+    ]
   }
 ]
