@@ -171,11 +171,11 @@
     },
     "type": "concept",
     "title": "Rödl's Linear Case (1982)",
-    "content": "**rodlLinear** states: For any ε > 0, there exists a graph with infinite chromatic number where every n-vertex subgraph needs at most εn edge deletions to become bipartite.\n\nThis shows the conjecture is TRUE for linear f(n) = εn. Rödl's construction uses probabilistic methods.\n\n**Why an axiom?** The construction is complex and not yet formalized in Mathlib.",
+    "content": "This comment documents Rödl's linear-case result: for any ε > 0, there exists a graph with infinite chromatic number where every n-vertex subgraph needs at most εn edge deletions to become bipartite.\n\nThis shows the conjecture is TRUE for linear f(n) = εn. Rödl's construction uses probabilistic methods.\n\n**Not formalized**: this result is documented in a comment only — there is no corresponding Lean declaration (axiom or theorem) in this file.",
     "mathContext": "The bound ⌈εn⌉₊ is linear in n. The construction works for any positive ε, no matter how small.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
+      "unformalized",
       "rodl",
       "probabilistic-method"
     ],
@@ -217,11 +217,11 @@
     },
     "type": "concept",
     "title": "Uncountable Chromatic Number Fails",
-    "content": "**uncountableFails** states: If we require chromatic number ≥ ℵ₁ (uncountable), then NO such graph exists for any unbounded f.\n\nThis is a surprising dichotomy:\n- χ = ℵ₀ (countable infinite): Open question\n- χ = ℵ₁ (uncountable): Impossible!\n\nThe set-theoretic distinction is crucial to the problem.",
+    "content": "This comment documents the uncountable case: if we require chromatic number ≥ ℵ₁ (uncountable), then NO such graph exists for any unbounded f.\n\nThis is a surprising dichotomy:\n- χ = ℵ₀ (countable infinite): Open question\n- χ = ℵ₁ (uncountable): Impossible!\n\nThe set-theoretic distinction is crucial to the problem.\n\n**Not formalized**: this claim is documented in a comment only — there is no corresponding Lean declaration (axiom or theorem) in this file.",
     "mathContext": "The proof uses that uncountably-chromatic graphs must contain certain unavoidable non-bipartite configurations.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
+      "unformalized",
       "set-theory",
       "cardinality",
       "aleph"
