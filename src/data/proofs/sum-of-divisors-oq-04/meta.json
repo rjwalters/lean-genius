@@ -97,25 +97,41 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 29,
       "summary": "Module docstring framing the general structural laws behind the base entry's numerics, the Mathlib import, namespace, and ArithmeticFunction/Finset opens.",
       "mathContext": "$\\sigma(p) = p+1$, $\\sigma(p^i) = \\tfrac{p^{i+1}-1}{p-1}$, $\\sigma(pq) = (p+1)(q+1)$."
     },
     {
-      "id": "primes",
-      "title": "σ and τ on Primes and Prime Powers",
-      "startLine": 36,
-      "endLine": 53,
-      "summary": "sigma_one_prime (σ(p) = p+1), sigma_zero_prime (τ(p) = 2), sigma_one_prime_pow_mul (the closed geometric form σ(pⁱ)·(p−1) = pⁱ⁺¹−1).",
-      "mathContext": "$\\sigma(p) = p+1$, $\\tau(p) = 2$, $(p-1)\\sigma(p^i) = p^{i+1}-1$."
+      "id": "prime-basics",
+      "title": "σ and τ on a Single Prime",
+      "startLine": 31,
+      "endLine": 43,
+      "summary": "sigma_one_prime (σ(p) = p+1) and sigma_zero_prime (τ(p) = 2), both extracted from the prime-power API at exponent 1.",
+      "mathContext": "$\\sigma(p) = p+1$, $\\tau(p) = 2$."
     },
     {
-      "id": "multiplicative",
-      "title": "Multiplicativity and Perfection",
+      "id": "prime-power-geometric",
+      "title": "The Closed Geometric Form on Prime Powers",
+      "startLine": 45,
+      "endLine": 52,
+      "summary": "sigma_one_prime_pow_mul: the closed geometric form σ(pⁱ)·(p−1) = pⁱ⁺¹−1 over ℤ, obtained by writing σ(pⁱ) as the open sum ∑_{k<i+1} pᵏ and collapsing it with geom_sum_mul.",
+      "mathContext": "$(p-1)\\sigma(p^i) = p^{i+1}-1$."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity on Two Distinct Primes",
       "startLine": 54,
+      "endLine": 60,
+      "summary": "sigma_one_two_primes: σ(pq) = (p+1)(q+1) for distinct primes p, q, via coprimality and isMultiplicative_sigma.map_mul_of_coprime, then sigma_one_prime on each factor.",
+      "mathContext": "$\\sigma(pq) = (p+1)(q+1)$."
+    },
+    {
+      "id": "perfection",
+      "title": "Perfection in σ-Form",
+      "startLine": 62,
       "endLine": 69,
-      "summary": "sigma_one_two_primes (σ(pq) = (p+1)(q+1) via multiplicativity) and perfect_iff_sigma_one (Perfect n ↔ σ(n) = 2n).",
-      "mathContext": "$\\sigma(pq) = (p+1)(q+1)$ and $\\mathrm{Perfect}(n) \\iff \\sigma(n) = 2n$."
+      "summary": "perfect_iff_sigma_one: for n > 0, n is perfect iff σ(n) = 2n, rewriting Nat.perfect_iff_sum_divisors_eq_two_mul via sigma_one_apply.",
+      "mathContext": "$\\mathrm{Perfect}(n) \\iff \\sigma(n) = 2n$."
     }
   ],
   "mainTheorems": [
