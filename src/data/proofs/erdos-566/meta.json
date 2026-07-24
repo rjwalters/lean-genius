@@ -19,7 +19,7 @@
     "erdosUrl": "https://erdosproblems.com/566",
     "axiomCount": 0,
     "badge": "wip",
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status label is a holdover from that removal; in fact nothing beyond basic graph infrastructure is formalized — the main conjecture and known results are documented only as comments, and the `sizeRamsey` def is a placeholder that always returns 1.",
     "proofRepoPath": "Proofs/Erdos566Problem.lean",
     "mathlib_version": "4.31.0",
     "lineCount": 74,
@@ -64,16 +64,16 @@
       "title": "Size Ramsey Number",
       "startLine": 49,
       "endLine": 54,
-      "summary": "Defines $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. Axiomatized since the actual construction requires Ramsey theory.",
-      "mathContext": "Defines $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$. Axiomatized since the actual construction requires Ramsey theory."
+      "summary": "The docstring describes $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$, but the Lean `sizeRamsey` def does not implement this — it is a placeholder (`Nat.find` on the trivial predicate $m \\ge 1$) that always evaluates to 1, independent of $G$ and $H$. No axiom exists in the file.",
+      "mathContext": "The docstring describes $\\hat{r}(G,H)$ as the minimum edge count in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic $G$ or $H$, but the Lean `sizeRamsey` def does not implement this — it is a placeholder (`Nat.find` on the trivial predicate $m \\ge 1$) that always evaluates to 1, independent of $G$ and $H$. No axiom exists in the file."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (Problem #566)",
       "startLine": 55,
       "endLine": 62,
-      "summary": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. Formalized as an axiom since the problem is unresolved.",
-      "mathContext": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. Formalized as an axiom since the problem is unresolved."
+      "summary": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. This is a plain `/- ... -/` docstring comment, not a Lean declaration — no axiom, definition, or theorem states the conjecture.",
+      "mathContext": "States the open conjecture: $(2k-3)$-sparse $G$ $\\implies$ $\\exists c > 0$ such that $\\hat{r}(G,H) \\le c \\cdot |E(H)|$ for all $H$ without isolated vertices. This is a plain `/- ... -/` docstring comment, not a Lean declaration — no axiom, definition, or theorem states the conjecture."
     },
     {
       "id": "known-positive",
@@ -88,7 +88,7 @@
     "historicalContext": "The notion of size Ramsey numbers was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as a refinement of classical Ramsey theory: rather than asking for the minimum number of vertices, $\\hat{r}(G,H)$ measures the minimum number of edges in a host graph guaranteeing monochromatic copies. In 1983, József Beck made a breakthrough by proving $\\hat{r}(P_n) = O(n)$ for paths, resolving an Erdős conjecture and earning the Fulkerson Prize. This opened the question of which graphs are 'Ramsey size linear.' In their landmark 1993 paper, Erdős, Faudree, Rousseau, and Schelp proved that graphs with at most $n+1$ edges are Ramsey size linear and conjectured that the $(2k-3)$-sparsity condition characterizes this property. They also showed that graphs with $2n-2$ edges can fail, establishing the threshold's tightness. Recent progress by Bradač, Gishboliner, and Sudakov (2024) proved that $K_4$-subdivisions with at least 6 vertices are Ramsey size linear, advancing specific cases while the general conjecture remains open.",
     "problemStatement": "Let $G$ be a graph such that every subgraph on $k \\ge 2$ vertices has at most $2k - 3$ edges. Is $G$ **Ramsey size linear**? That is, does there exist a constant $c = c(G) > 0$ such that $\\hat{r}(G, H) \\le c \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
     "text": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
-    "proofStrategy": "The formalization defines graphs as symmetric irreflexive adjacency predicates on finite types, then introduces the $(2k-3)$-sparsity condition, the no-isolated-vertices condition, and the size Ramsey number $\\hat{r}(G,H)$. The main conjecture is stated as an axiom (reflecting its open status), alongside three key known results: the EFRS theorem for $\\le n+1$ edges, the counterexample at $2n-2$ edges, and trees being Ramsey size linear. Together these delineate the boundary of current knowledge.",
+    "proofStrategy": "The formalization defines graphs as symmetric irreflexive adjacency predicates on finite types, then introduces the $(2k-3)$-sparsity condition and the no-isolated-vertices condition. The size Ramsey number `sizeRamsey` is declared but not genuinely implemented — its body is a placeholder (`Nat.find` on the trivial predicate $m \\ge 1$) that always evaluates to 1, unrelated to the 2-coloring definition in its docstring. The main conjecture, the EFRS theorem for $\\le n+1$ edges, the counterexample at $2n-2$ edges, and trees being Ramsey size linear are all documented only as `/- ... -/` comments — none is a Lean axiom, definition, or theorem. No axioms exist in the file.",
     "keyInsights": [
       "**Size vs. classical Ramsey**: $\\hat{r}(G,H)$ refines $R(G,H)$ by measuring edge complexity rather than vertex count, capturing finer structural properties of Ramsey phenomena",
       "**Sparsity threshold is tight**: The gap between $n+1$ edges (confirmed linear) and $2n-2$ edges (counterexample exists) brackets the conjectured $(2k-3)$ threshold, which would be a clean density-based characterization",
