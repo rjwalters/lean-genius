@@ -76,12 +76,19 @@
   },
   "sections": [
     {
-      "id": "module-docstring",
-      "title": "Module Docstring: Newton-Girard k=3 Closed Form",
+      "id": "problem-statement",
+      "title": "Problem Statement: the Fully Reduced k=3 Identity",
       "startLine": 1,
-      "endLine": 26,
-      "summary": "States the target identity p₃ = e₁³ − 3e₁e₂ + 3e₃, its lineage from the k=2 identity and the recurrence sibling, and the proof status (PROVED, 0 sorries, 0 axioms).",
+      "endLine": 9,
+      "summary": "States the target identity p₃ = e₁³ − 3e₁e₂ + 3e₃ expressing the third power sum purely in e₁, e₂, e₃, together with its concrete sum-of-cubes instance a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc.",
       "mathContext": "$p_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$; concretely $a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$."
+    },
+    {
+      "id": "lineage-and-status",
+      "title": "Lineage: from the Recurrence Sibling to the Reduced Form",
+      "startLine": 11,
+      "endLine": 26,
+      "summary": "Traces the identity's ancestry: parent amgm-inequality-oq-02-oq-01 supplies the k=2 closed form p₂ = e₁² − 2e₂, sibling amgm-inequality-oq-02-oq-01-oq-02-oq-01 supplies the recurrence p₃ = e₁p₂ − e₂p₁ + 3e₃ via Mathlib's psum_eq_mul_esymm_sub_sum. This file closes the loop by substituting the closed forms into the recurrence, yielding the fully reduced universal identity. Status: PROVED, 0 sorries, 0 axioms."
     },
     {
       "id": "imports-setup",
