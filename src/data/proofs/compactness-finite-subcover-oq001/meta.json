@@ -75,7 +75,8 @@
       "**Nested + nonempty ⟹ finite intersections nonempty.** Antitonicity collapses each prefix intersection ⋂ n ≤ N, s n to the smallest set s N, which is nonempty — converting the textbook hypothesis into the form Mathlib's existence lemma consumes.",
       "**Diameter controls uniqueness.** Two points common to all sets are within diam (s n) for every n; with diam → 0 their distance is squeezed to 0. Existence and uniqueness are powered by two different consequences of diam → 0.",
       "**Completeness is exactly what makes existence hold.** The same nested family in ℚ (e.g. closed sets trapping √2) has empty intersection; completeness is the precise hypothesis that rescues nonemptiness, isolating where the analytic content lives.",
-      "**Singleton beats nonempty.** Mathlib stops at nonemptiness; packaging the result as ⋂ₙ sₙ = {x} and ∃! x captures the full theorem analysts actually use to extract the limit point."
+      "**Singleton beats nonempty.** Mathlib stops at nonemptiness; packaging the result as ⋂ₙ sₙ = {x} and ∃! x captures the full theorem analysts actually use to extract the limit point.",
+      "**Uniqueness needs only a one-sided limit-passing lemma.** subsingleton_iInter turns the pointwise bounds dist x y ≤ diam (s n) into dist x y ≤ 0 via ge_of_tendsto — treating the constant dist x y as (trivially) tending to itself and comparing against the null sequence diam (s n). No two-sided squeeze theorem is invoked; the matching dist x y ≥ 0 needed to conclude x = y comes for free from the metric-space axioms baked into dist_le_zero.mp, not from a second limit argument."
     ],
     "prerequisites": [
       "Metric spaces: distance, diameter of a bounded set, closed sets",
