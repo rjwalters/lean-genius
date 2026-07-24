@@ -465,6 +465,16 @@ integrate_solution() {
     return 0
 }
 
+# Record that a job reached a terminal state. The marker's mtime feeds
+# wedge-check.sh's "no terminal transition in N days" detector (issue
+# #43006). REPO_ROOT resolution matches aristotle-agent.sh so worktree and
+# main checkout agree on the path.
+mark_terminal_transition() {
+    local state_dir="${REPO_ROOT:-$PROJECT_ROOT}/.loom/state"
+    mkdir -p "$state_dir"
+    touch "$state_dir/aristotle-last-terminal"
+}
+
 # Update job status in jobs.json
 update_job_status() {
     local project_id="$1"
@@ -475,6 +485,7 @@ update_job_status() {
     jq --arg pid "$project_id" --arg status "$status" --arg outcome "$outcome" '
         .jobs |= map(if .project_id == $pid then .status = $status | .outcome = $outcome else . end)
     ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+    mark_terminal_transition
 }
 
 # Update job status with theorems_proved count
@@ -491,6 +502,7 @@ update_job_status_with_theorems() {
             .status = $status | .outcome = $outcome | .theorems_proved = $proved
         else . end)
     ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+    mark_terminal_transition
 }
 
 # Recover completed jobs from the Aristotle server that are not tracked locally.
@@ -780,6 +792,7 @@ recover_server_completed() {
                     notes: ("Recovered and integrated from server at " + $now)
                 }]
             ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
+            mark_terminal_transition
 
             ((++recovered))
         else
@@ -801,6 +814,7 @@ recover_server_completed() {
                     notes: ("Recovered from server at " + $now + ". No sorry reduction.")
                 }]
             ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
+            mark_terminal_transition
 
             ((++skipped))
         fi

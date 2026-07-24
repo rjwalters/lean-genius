@@ -28,6 +28,16 @@ NC='\033[0m'
 UPDATE_STATUS=false
 JSON_OUTPUT=false
 
+# Record that a job reached a terminal state (completed/failed/expired).
+# The marker's mtime feeds wedge-check.sh's "no terminal transition in N
+# days" detector (issue #43006). REPO_ROOT resolution matches
+# aristotle-agent.sh so worktree and main checkout agree on the path.
+mark_terminal_transition() {
+    local state_dir="${REPO_ROOT:-$PROJECT_ROOT}/.loom/state"
+    mkdir -p "$state_dir"
+    touch "$state_dir/aristotle-last-terminal"
+}
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         --update) UPDATE_STATUS=true; shift ;;
@@ -311,6 +321,7 @@ update_jobs_file() {
                 else . end)
             ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
+            mark_terminal_transition
             echo -e "  Updated $pid -> $new_status (category: $category, submissions: $sub_count)"
         else
             # Update status only
@@ -319,6 +330,7 @@ update_jobs_file() {
                 .jobs |= map(if .project_id == $pid then .status = $status else . end)
             ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
+            mark_terminal_transition
             echo -e "  Updated $pid -> $new_status"
         fi
     done

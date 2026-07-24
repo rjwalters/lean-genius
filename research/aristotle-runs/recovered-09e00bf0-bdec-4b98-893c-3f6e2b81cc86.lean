@@ -46,7 +46,7 @@ This is a classic identity (Pythagoras' gnomon argument):
 
 Included here as a documented example of the Harmonic
 `StatementOnly_*.lean` file format used for Aristotle submissions:
-- single informal block comment at the top of the file,
+- single informal comment block at the top of the file,
 - standard `set_option` block (verbatim from Harmonic),
 - `noncomputable section` wrapper,
 - exactly one theorem statement (proof body left as a hole),
@@ -54,9 +54,6 @@ Included here as a documented example of the Harmonic
 -/
 theorem sum_of_first_n_odds (n : ℕ) :
     ∑ k ∈ Finset.range n, (2 * k + 1) = n ^ 2 := by
-  -- Proved by Aristotle (project 09e00bf0-bdec-4b98-893c-3f6e2b81cc86),
-  -- recovered during the #43006 server-backlog recovery. v4.31 build gate:
-  -- pending (standard retrieve-integrate.sh convention).
   induction n <;> simpa [Finset.sum_range_succ] using by linarith
 
 -- Proof attempt: a sketch of the expected argument. Aristotle is free to

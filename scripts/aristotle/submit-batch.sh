@@ -41,6 +41,33 @@ PREPROCESS="$SCRIPT_DIR/preprocess-for-aristotle.sh"
 RATE_LIMIT_FILE="$PROJECT_ROOT/.loom/state/aristotle-rate-limit-until"
 RATE_LIMIT_COOLDOWN_SECONDS=300  # 5 minutes
 
+# Wedge-state file (issue #43006). Records the count of finished (IDLE)
+# server projects not tracked in jobs.json, so wedge-check.sh / launch.sh
+# health can surface a WARNING instead of the guard only logging here.
+# Resolved against REPO_ROOT (exported by launch-agent.sh when the agent runs
+# in a worktree) so the health check in the main checkout sees the same file.
+WEDGE_STATE_FILE="${REPO_ROOT:-$PROJECT_ROOT}/.loom/state/aristotle-wedged"
+
+# Record the untracked-IDLE-project count for wedge detection. Count 0 clears
+# the file (pipeline healthy).
+write_wedge_state() {
+    local untracked_count="$1"
+    local blocked="$2"
+    if [[ "$untracked_count" -le 0 ]]; then
+        rm -f "$WEDGE_STATE_FILE" 2>/dev/null || true
+        return 0
+    fi
+    mkdir -p "$(dirname "$WEDGE_STATE_FILE")"
+    cat > "$WEDGE_STATE_FILE" <<EOF
+{
+  "detected_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+  "untracked_idle": $untracked_count,
+  "submissions_blocked": $blocked,
+  "source": "submit-batch.sh backlog guard"
+}
+EOF
+}
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -539,11 +566,20 @@ main() {
                 fi
             done <<< "$server_complete_ids"
             if [[ "$untracked" -gt 10 ]]; then
+                # Persist the wedge so health checks flag it (issue #43006);
+                # previously this state only existed as a log line and the
+                # pipeline stayed silently blocked for 10+ days.
+                write_wedge_state "$untracked" true
                 echo -e "${RED}WARNING: $untracked finished (IDLE) projects on server not tracked locally${NC}"
                 echo -e "${RED}Recovery pipeline may be broken — skipping submissions until resolved${NC}"
                 echo -e "${YELLOW}Run: ./scripts/aristotle/retrieve-integrate.sh to recover results${NC}"
                 return 0
             fi
+            # Under the blocking threshold: still record any nonzero count so
+            # wedge-check.sh can warn early; 0 clears the wedge file.
+            write_wedge_state "$untracked" false
+        else
+            write_wedge_state 0 false
         fi
     fi
 
