@@ -45,7 +45,7 @@
       "Maclaurin's means interpolate between the arithmetic mean M₁ = (∑xᵢ)/n and the geometric mean Mₙ = (∏xᵢ)^{1/n}, so the sufficiency direction proved here simultaneously realizes the 'equality holds when all inputs coincide' half of AM–GM and of every intermediate Newton inequality — one constant-input computation covers the whole chain.",
       "The non-negativity hypothesis c ≥ 0 is essential, not cosmetic: the collapse Mₖ(c,…,c) = c hinges on the rpow identity (cᵏ)^(1/k) = c, which genuinely fails for c < 0 — e.g. ((−1)²)^(1/2) = 1^(1/2) = 1 ≠ −1. So the equality case is intrinsically tied to the same non-negativity that Maclaurin's inequality itself requires; over signed inputs the Maclaurin mean is not even well-defined as a real rpow."
     ],
-    "historicalContext": "Colin Maclaurin stated his mean inequalities in *A Treatise of Algebra* (1748, posthumous), sharpening Newton's inequalities on the elementary symmetric functions of the roots of a polynomial. The equality analysis — that the chain of Maclaurin means is constant exactly when the inputs are equal — is the natural companion to the inequality and mirrors the AM ≥ GM equality case (AM = GM iff all terms equal), which is itself the extreme M₁ = Mₙ instance of this chain."
+    "historicalContext": "Colin Maclaurin first announced his mean inequalities in 1729, in papers communicated to the Royal Society sharpening Newton's inequalities on the elementary symmetric functions of the roots of a polynomial; the result later reappeared in his widely-circulated posthumous textbook *A Treatise of Algebra* (1748), the more commonly cited source. The equality analysis here — that the chain of Maclaurin means is constant exactly when the inputs are equal — is the natural companion to the inequality and mirrors the AM ≥ GM equality case (AM = GM iff all terms equal), which is itself the extreme M₁ = Mₙ instance of this chain."
   },
   "references": [
     {
@@ -60,7 +60,7 @@
       "title": "A Treatise of Algebra",
       "year": "1748",
       "venue": "London (posthumous)",
-      "note": "Source of the Maclaurin mean inequalities M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ, with the classical observation that equality throughout holds exactly when the inputs coincide."
+      "note": "Widely-circulated posthumous restatement of the Maclaurin mean inequalities M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ, first announced in 1729, with the classical observation that equality throughout holds exactly when the inputs coincide."
     },
     {
       "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
