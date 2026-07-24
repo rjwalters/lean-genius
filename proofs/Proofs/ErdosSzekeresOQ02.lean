@@ -335,8 +335,8 @@ theorem ExactIncEnd.le_incDP {f : Sequence α n} {i : Fin n} {len : ℕ}
           have := a.isLt
           omega
         · intro a ha
-          congr 1
-          exact Fin.ext ha
+          show k a.castSucc = k ⟨m - 1, hprevlt⟩
+          exact congrArg k (Fin.ext ha)
       have hrec : m ≤ incDP f (k ⟨m - 1, hprevlt⟩) := ih hchain
       have hmem : k ⟨m - 1, hprevlt⟩ ∈ preds f i := mem_preds.mpr ⟨hj₀i, hfj₀⟩
       have hsup : incDP f (k ⟨m - 1, hprevlt⟩) ≤ (preds f i).sup (fun j => incDP f j) :=
@@ -453,8 +453,7 @@ theorem maxIncLen_le_sup_Iic (f : Sequence α n) (i : Fin n) :
       have := a.isLt
       omega
     · intro a ha
-      congr 1
-      exact Fin.ext ha
+      exact congrArg k (Fin.ext ha)
   calc maxIncLen f i ≤ incDP f (k ⟨maxIncLen f i - 1, h1⟩) := hexact.le_incDP
     _ ≤ (Finset.Iic i).sup (fun j => incDP f j) := Finset.le_sup (Finset.mem_Iic.mpr hjle)
 
@@ -705,6 +704,7 @@ def lisWitness (f : Sequence α n) : IncreasingSubseq f (lisLength f) :=
     have hlen : lisLength f = 0 := by
       haveI := hempty
       rw [lisLength, Finset.univ_eq_empty, Finset.sup_empty]
+      rfl
     hlen.symm ▸
       (⟨Fin.elim0, fun a => a.elim0, fun a => a.elim0⟩ : IncreasingSubseq f 0)
   | some i₀ =>
