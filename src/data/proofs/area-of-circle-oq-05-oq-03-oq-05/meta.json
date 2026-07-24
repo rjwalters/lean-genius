@@ -37,7 +37,8 @@
       "Multiplication by x in physical space is differentiation in frequency space: the factor x·e^{-x²/2} in the integrand is produced (up to i) by differentiating the parent Gaussian Fourier identity once in t. This is the operational content of the position–momentum duality.",
       "The eigenvalue jumps from 1 (Gaussian, i⁰) to i (first Hermite, i¹): each rung of the Hermite ladder multiplies the Fourier eigenvalue by i, and one frequency-derivative is exactly what climbs one rung.",
       "Differentiation under the integral is legitimate here because the t-derivative of the integrand has modulus |x|·e^{-x²/2} INDEPENDENT of t — the phase e^{itx} has modulus one — so a single integrable dominating function works uniformly on a frequency ball.",
-      "Dividing i·J = R by i needs i·(−i)=1, NOT i²=−1: the cast J = −i·R is pure ring algebra plus Complex.I_mul_I, so no completing-the-square machinery is needed for the final step."
+      "Dividing i·J = R by i needs i·(−i)=1, NOT i²=−1: the cast J = −i·R is pure ring algebra plus Complex.I_mul_I, so no completing-the-square machinery is needed for the final step.",
+      "Iterating this single differentiation n times is exactly the analytic content of Rodrigues' formula for Hermite polynomials: differentiating the closed form e^{-t²/2}√(2π) n times in t produces (−1)ⁿHₙ(t)e^{-t²/2}√(2π) (one standard definition of Hₙ is dⁿ/dtⁿ e^{-t²/2} = (−1)ⁿHₙ(t)e^{-t²/2}), matching term-by-term the (ix)ⁿ brought down by differentiating the phase e^{itx} n times — so climbing n rungs of the Fourier eigenvalue ladder iⁿ and applying Rodrigues' formula n times are the same computation viewed from two sides."
     ],
     "prerequisites": [
       "area-of-circle-oq-05-oq-03 — the Gaussian is its own Fourier transform (the n=0 / ground-state case, reproved here)",
