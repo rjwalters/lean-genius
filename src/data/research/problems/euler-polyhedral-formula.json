@@ -17,7 +17,7 @@
     "proven": [
       "`euler_constructible` proves V - E + F = 2 for the constructible polyhedron model without axioms.",
       "`tetrahedron_euler`, `cube_euler`, `octahedron_euler`, `dodecahedron_euler`, and `icosahedron_euler` verify the Platonic-solid examples.",
-      "`edge_bound_planar`, `bipartite_edge_bound_planar`, `k5_not_planar_sg`, `k33_not_planar_sg`, and `planar_six_colorable` give graph-theoretic consequences.",
+      "`edge_bound_planar`, `bipartite_edge_bound_planar`, `k5_not_planar_sg`, `k33_not_planar_sg`, and `planar_min_degree_bound_for_coloring` give graph-theoretic consequences.",
       "`euler_genus`, `genus_zero_euler`, `torus_euler`, and `edge_bound_genus` extend the Euler-characteristic viewpoint to surface embeddings.",
       "`tree_euler`, `tree_vertex_edge`, and `tree_one_face` cover the planar tree special case.",
       "`schlafli_inequality`, `platonic_classification`, and `platonic_all_exist` summarize the regular-polyhedron classification thread."
