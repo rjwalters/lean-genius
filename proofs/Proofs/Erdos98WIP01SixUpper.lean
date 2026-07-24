@@ -10,7 +10,8 @@
   records that pinning the exact value `h 6 = 3` needs a general-position 6-point
   3-distance configuration whose existence is itself open.  This file does what IS
   reachable: an explicit general-position 6-point configuration with exactly FOUR
-  distinct distances, pinning `h 6 ∈ {3, 4}`.
+  distinct distances, pinning `h 6 ∈ {3, 4}` (`h_six_bounds`,
+  `h_six_eq_three_or_four`).
 
   **The configuration** (`sixConfig`): two concentric equilateral triangles,
   inner of circumradius `1` at angles `0°, 120°, 240°`, outer of circumradius `√2`
@@ -22,9 +23,9 @@
   Squared distances: inner side `3`, outer side `6`, and cross distances
   `|B − A|² = 3 − 2√2·cos Δ` for twist angles `Δ ∈ {90°, 210°, 330°}`, i.e.
   `3`, `3 + √6`, `3 − √6`.  The `Δ = 90°` cross orbit MERGES with the inner side
-  (that is the point of the `√2` radius: `R² = 2r²` makes `cos Δ = 0` work), so
-  only four values `{3, 6, 3 + √6, 3 − √6}` occur — distances
-  `{√3, √6, √(3+√6), √(3−√6)}`.
+  (that is the point of the `√2` radius: `R² = 2r²` makes the `cos Δ = 0` cross
+  distance equal the inner side), so only four values `{3, 6, 3 + √6, 3 − √6}`
+  occur — distances `{√3, √6, √(3+√6), √(3−√6)}`.
 
   **General position**:
   * no 3 collinear — all 20 triple determinants are nonzero;
@@ -34,19 +35,18 @@
     ones `{0°, 60°, 120°}` — disjoint.  Formally, all 15 concyclicity
     determinants are nonzero.
 
-  Both conditions are verified by two new GENERAL determinant criteria
+  Both conditions are verified through two new GENERAL determinant criteria
   (`not_collinear_of_det`, `not_concyclic_of_det`) whose proofs are deterministic
   `linear_combination` cofactor identities — no per-case search with unknown
   line/centre coordinates, unlike the `h5Config` treatment.  Each of the 35
   concrete obligations is then a numeric surd inequality.
 
   Within the twisted-triangle two-parameter family `(R, θ)` a THREE-distance
-  merge is impossible in general position: `inner = cross₁ = cross₂` or
-  `inner = cross₁, outer = cross₂` force `R = 2, θ = ±60°` (three points
-  collinear: the config degenerates to alternating hexagonal directions where
-  `(−√3,1), (0,1), (√3,1)` are collinear) or `R = 1` (the two triangles
+  merge is impossible in general position: forcing a third coincidence drives
+  `(R, θ)` to `(2, ±60°)`, whose configuration is degenerate (it contains the
+  collinear triple `(−√3, 1), (0, 1), (√3, 1)`), or to `R = 1` (the triangles
   coincide).  So `h 6 = 3`, if true, needs a construction outside this family —
-  consistent with the blocked-route registry entry.
+  consistent with the blocked-route registry entry for exact `h 6`.
 
   ## Summary: 0 sorries, 0 axioms, no `native_decide`.
 -/
@@ -108,7 +108,9 @@ concrete triple/quadruple then only owes a NUMERIC determinant `≠ 0`. -/
 
 /-- **Line-determinant criterion.**  If the affine determinant
 `(q₀−p₀)(r₁−p₁) − (r₀−p₀)(q₁−p₁)` is nonzero (twice the signed triangle area),
-no line `a·x + b·y + c = 0` with `(a,b,c) ≠ 0` passes through `p, q, r`. -/
+no line `a·x + b·y + c = 0` with `(a,b,c) ≠ 0` passes through `p, q, r`.
+Eliminating `a`, then `b`, is a cofactor `linear_combination` of the two chord
+differences of the line equations. -/
 theorem not_collinear_of_det {p q r : EuclideanSpace ℝ (Fin 2)}
     (hdet : (q 0 - p 0) * (r 1 - p 1) - (r 0 - p 0) * (q 1 - p 1) ≠ 0) :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -167,37 +169,247 @@ noncomputable def sixConfig : PointConfig 6 :=
     !₂[0, Real.sqrt 2], !₂[-(Real.sqrt 6 / 2), -(Real.sqrt 2 / 2)],
     !₂[Real.sqrt 6 / 2, -(Real.sqrt 2 / 2)]]
 
-set_option maxHeartbeats 1600000 in
+private theorem sixConfig_zero : sixConfig 0 = !₂[1, 0] := rfl
+private theorem sixConfig_one : sixConfig 1 = !₂[-(1 / 2), Real.sqrt 3 / 2] := rfl
+private theorem sixConfig_two : sixConfig 2 = !₂[-(1 / 2), -(Real.sqrt 3 / 2)] := rfl
+private theorem sixConfig_three : sixConfig 3 = !₂[0, Real.sqrt 2] := rfl
+private theorem sixConfig_four : sixConfig 4 = !₂[-(Real.sqrt 6 / 2), -(Real.sqrt 2 / 2)] := rfl
+private theorem sixConfig_five : sixConfig 5 = !₂[Real.sqrt 6 / 2, -(Real.sqrt 2 / 2)] := rfl
+
+/-! ## The fifteen pairwise squared distances
+
+One deterministic lemma per unordered pair (no branch search): the value is
+injected into the four-way disjunction up front, and the coordinate computation
+is closed by `norm_num` plus the recorded surd facts. -/
+
+section PairDistances
+
+private theorem six_dist_01 :
+    dist (sixConfig 0) (sixConfig 1) ^ 2 = 3 ∨
+    dist (sixConfig 0) (sixConfig 1) ^ 2 = 6 ∨
+    dist (sixConfig 0) (sixConfig 1) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 0) (sixConfig 1) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_zero, sixConfig_one, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_02 :
+    dist (sixConfig 0) (sixConfig 2) ^ 2 = 3 ∨
+    dist (sixConfig 0) (sixConfig 2) ^ 2 = 6 ∨
+    dist (sixConfig 0) (sixConfig 2) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 0) (sixConfig 2) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_zero, sixConfig_two, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_03 :
+    dist (sixConfig 0) (sixConfig 3) ^ 2 = 3 ∨
+    dist (sixConfig 0) (sixConfig 3) ^ 2 = 6 ∨
+    dist (sixConfig 0) (sixConfig 3) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 0) (sixConfig 3) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_zero, sixConfig_three, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_04 :
+    dist (sixConfig 0) (sixConfig 4) ^ 2 = 3 ∨
+    dist (sixConfig 0) (sixConfig 4) ^ 2 = 6 ∨
+    dist (sixConfig 0) (sixConfig 4) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 0) (sixConfig 4) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_zero, sixConfig_four, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_05 :
+    dist (sixConfig 0) (sixConfig 5) ^ 2 = 3 ∨
+    dist (sixConfig 0) (sixConfig 5) ^ 2 = 6 ∨
+    dist (sixConfig 0) (sixConfig 5) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 0) (sixConfig 5) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; right
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_zero, sixConfig_five, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_12 :
+    dist (sixConfig 1) (sixConfig 2) ^ 2 = 3 ∨
+    dist (sixConfig 1) (sixConfig 2) ^ 2 = 6 ∨
+    dist (sixConfig 1) (sixConfig 2) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 1) (sixConfig 2) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_one, sixConfig_two, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_13 :
+    dist (sixConfig 1) (sixConfig 3) ^ 2 = 3 ∨
+    dist (sixConfig 1) (sixConfig 3) ^ 2 = 6 ∨
+    dist (sixConfig 1) (sixConfig 3) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 1) (sixConfig 3) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; right
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_one, sixConfig_three, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_14 :
+    dist (sixConfig 1) (sixConfig 4) ^ 2 = 3 ∨
+    dist (sixConfig 1) (sixConfig 4) ^ 2 = 6 ∨
+    dist (sixConfig 1) (sixConfig 4) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 1) (sixConfig 4) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_one, sixConfig_four, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_15 :
+    dist (sixConfig 1) (sixConfig 5) ^ 2 = 3 ∨
+    dist (sixConfig 1) (sixConfig 5) ^ 2 = 6 ∨
+    dist (sixConfig 1) (sixConfig 5) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 1) (sixConfig 5) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_one, sixConfig_five, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_23 :
+    dist (sixConfig 2) (sixConfig 3) ^ 2 = 3 ∨
+    dist (sixConfig 2) (sixConfig 3) ^ 2 = 6 ∨
+    dist (sixConfig 2) (sixConfig 3) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 2) (sixConfig 3) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_two, sixConfig_three, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_24 :
+    dist (sixConfig 2) (sixConfig 4) ^ 2 = 3 ∨
+    dist (sixConfig 2) (sixConfig 4) ^ 2 = 6 ∨
+    dist (sixConfig 2) (sixConfig 4) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 2) (sixConfig 4) ^ 2 = 3 - Real.sqrt 6 := by
+  right; right; right
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_two, sixConfig_four, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_25 :
+    dist (sixConfig 2) (sixConfig 5) ^ 2 = 3 ∨
+    dist (sixConfig 2) (sixConfig 5) ^ 2 = 6 ∨
+    dist (sixConfig 2) (sixConfig 5) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 2) (sixConfig 5) ^ 2 = 3 - Real.sqrt 6 := by
+  left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_two, sixConfig_five, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_34 :
+    dist (sixConfig 3) (sixConfig 4) ^ 2 = 3 ∨
+    dist (sixConfig 3) (sixConfig 4) ^ 2 = 6 ∨
+    dist (sixConfig 3) (sixConfig 4) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 3) (sixConfig 4) ^ 2 = 3 - Real.sqrt 6 := by
+  right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_three, sixConfig_four, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_35 :
+    dist (sixConfig 3) (sixConfig 5) ^ 2 = 3 ∨
+    dist (sixConfig 3) (sixConfig 5) ^ 2 = 6 ∨
+    dist (sixConfig 3) (sixConfig 5) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 3) (sixConfig 5) ^ 2 = 3 - Real.sqrt 6 := by
+  right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_three, sixConfig_five, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+private theorem six_dist_45 :
+    dist (sixConfig 4) (sixConfig 5) ^ 2 = 3 ∨
+    dist (sixConfig 4) (sixConfig 5) ^ 2 = 6 ∨
+    dist (sixConfig 4) (sixConfig 5) ^ 2 = 3 + Real.sqrt 6 ∨
+    dist (sixConfig 4) (sixConfig 5) ^ 2 = 3 - Real.sqrt 6 := by
+  right; left
+  rw [EuclideanSpace.dist_sq_eq]
+  simp only [sixConfig_four, sixConfig_five, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+  norm_num
+  all_goals nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
+    sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]
+
+end PairDistances
+
+set_option maxHeartbeats 800000 in
 /-- **Every pairwise squared distance of `sixConfig` is `3`, `6`, `3 + √6`, or
-`3 − √6`.**  A direct coordinate computation over all off-diagonal pairs, using
-`√2² = 2`, `√3² = 3`, `√6² = 6`, and `√2·√3 = √6`. -/
+`3 − √6`.**  Assembled from the fifteen per-pair lemmas; the transposed pairs
+reduce to them by `dist_comm`. -/
 theorem sixConfig_dist_sq {i j : Fin 6} (hij : i ≠ j) :
     dist (sixConfig i) (sixConfig j) ^ 2 = 3 ∨
     dist (sixConfig i) (sixConfig j) ^ 2 = 6 ∨
     dist (sixConfig i) (sixConfig j) ^ 2 = 3 + Real.sqrt 6 ∨
     dist (sixConfig i) (sixConfig j) ^ 2 = 3 - Real.sqrt 6 := by
-  rw [EuclideanSpace.dist_sq_eq]
   fin_cases i <;> fin_cases j <;>
     first
     | exact absurd rfl hij
-    | (simp only [sixConfig, Fin.sum_univ_two, Real.dist_eq, sq_abs]
+    | exact six_dist_01
+    | exact six_dist_02
+    | exact six_dist_03
+    | exact six_dist_04
+    | exact six_dist_05
+    | exact six_dist_12
+    | exact six_dist_13
+    | exact six_dist_14
+    | exact six_dist_15
+    | exact six_dist_23
+    | exact six_dist_24
+    | exact six_dist_25
+    | exact six_dist_34
+    | exact six_dist_35
+    | exact six_dist_45
+    | (rw [dist_comm]
        first
-       | (left
-          norm_num
-          nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
-            sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six])
-       | (right; left
-          norm_num
-          nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
-            sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six])
-       | (right; right; left
-          norm_num
-          nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
-            sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six])
-       | (right; right; right
-          norm_num
-          nlinarith [sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_mul_sqrt_three,
-            sqrt_two_mul_sqrt_six, sqrt_three_mul_sqrt_six]))
+       | exact six_dist_01
+       | exact six_dist_02
+       | exact six_dist_03
+       | exact six_dist_04
+       | exact six_dist_05
+       | exact six_dist_12
+       | exact six_dist_13
+       | exact six_dist_14
+       | exact six_dist_15
+       | exact six_dist_23
+       | exact six_dist_24
+       | exact six_dist_25
+       | exact six_dist_34
+       | exact six_dist_35
+       | exact six_dist_45)
 
 /-- **Every pairwise distance of `sixConfig` lies in
 `{√3, √6, √(3+√6), √(3−√6)}`.**  Nonnegative square roots of
@@ -243,25 +455,622 @@ theorem sixConfig_injective : Function.Injective sixConfig := by
 
 section NoLine
 
-/-- Closing tactic for the 20 line-determinant obligations: reduce the
-coordinates, then refute the vanishing of a `ℚ(√2,√3)`-linear combination using
-the recorded surd facts and rational bracketing bounds. -/
-private def sixLineFacts : Unit := ()  -- (documentation anchor only)
-
 private theorem six_noLine_012 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
       a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
       a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
       a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 := by
   apply not_collinear_of_det
-  simp only [sixConfig]
-  intro heq
-  norm_num at heq
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_two]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_013 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_three]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_014 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_015 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_023 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_three]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_024 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_025 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_034 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_035 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_045 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 0 0) + b * (sixConfig 0 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_zero, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_123 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_three]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_124 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_125 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_134 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_135 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_145 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 1 0) + b * (sixConfig 1 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_one, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_234 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_two, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_235 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_two, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_245 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 2 0) + b * (sixConfig 2 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_two, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noLine_345 :
+    ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
+      a * (sixConfig 3 0) + b * (sixConfig 3 1) + c = 0 ∧
+      a * (sixConfig 4 0) + b * (sixConfig 4 1) + c = 0 ∧
+      a * (sixConfig 5 0) + b * (sixConfig 5 1) + c = 0 := by
+  apply not_collinear_of_det
+  simp only [sixConfig_three, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
   all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
     sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
     sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
     sqrt_six_lt, lt_sqrt_six]
 
 end NoLine
+
+set_option maxHeartbeats 3200000 in
+/-- **No three of the six points are collinear.**  Every genuine index triple
+dispatches (via `assumption`, so in any order) to one of the twenty per-triple
+line-determinant lemmas. -/
+theorem noThreeCollinear_sixConfig : NoThreeCollinear sixConfig := by
+  intro i j k hcard
+  rintro ⟨a, b, c, hne, e1, e2, e3⟩
+  fin_cases i <;> fin_cases j <;> fin_cases k <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noLine_012 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_013 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_014 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_015 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_023 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_024 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_025 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_034 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_035 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_045 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_123 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_124 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_125 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_134 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_135 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_145 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_234 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_235 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_245 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+    | exact six_noLine_345 ⟨a, b, c, hne, by assumption, by assumption, by assumption⟩
+
+/-! ## No four concyclic: 15 numeric circle determinants -/
+
+section NoCircle
+
+private theorem six_noCircle_0123 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 2) = ρ ∧ dist center (sixConfig 3) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_three]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0124 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 2) = ρ ∧ dist center (sixConfig 4) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0125 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 2) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0134 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 4) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0135 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0145 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 1) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_one, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0234 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 4) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0235 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0245 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_two, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_0345 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 0) = ρ ∧ dist center (sixConfig 3) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_zero, sixConfig_three, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_1234 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 1) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 4) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_three, sixConfig_four]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_1235 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 1) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 3) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_three, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_1245 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 1) = ρ ∧ dist center (sixConfig 2) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_one, sixConfig_two, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_1345 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 1) = ρ ∧ dist center (sixConfig 3) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_one, sixConfig_three, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+private theorem six_noCircle_2345 :
+    ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
+      dist center (sixConfig 2) = ρ ∧ dist center (sixConfig 3) = ρ ∧
+      dist center (sixConfig 4) = ρ ∧ dist center (sixConfig 5) = ρ := by
+  apply not_concyclic_of_det
+  simp only [sixConfig_two, sixConfig_three, sixConfig_four, sixConfig_five]
+  norm_num
+  all_goals intro heq
+  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+    sqrt_six_lt, lt_sqrt_six]
+
+end NoCircle
+
+set_option maxHeartbeats 4000000 in
+/-- **No four of the six points are concyclic.**  Every genuine index quadruple
+dispatches (via `assumption`, so in any order) to one of the fifteen per-quadruple
+circle-determinant lemmas. -/
+theorem noFourConcyclic_sixConfig : NoFourConcyclic sixConfig := by
+  intro a b c d hcard
+  rintro ⟨center, ρ, h1, h2, h3, h4⟩
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0123
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0124
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0125
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0134
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0135
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0145
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_2345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+/-- **`sixConfig` is in general position.** -/
+theorem inGeneralPosition_sixConfig : InGeneralPosition sixConfig :=
+  ⟨sixConfig_injective, noThreeCollinear_sixConfig, noFourConcyclic_sixConfig⟩
+
+/-- **`sixConfig` realizes at most four distinct distances.**  Every positive
+pairwise distance lies in the four-element set `{√3, √6, √(3+√6), √(3−√6)}`
+(`sixConfig_dist_mem`), so the distinct-distance count is at most `4`. -/
+theorem numDistinctDistances_sixConfig_le :
+    numDistinctDistances sixConfig ≤ 4 := by
+  unfold numDistinctDistances
+  have hsub :
+      ((univ.product univ).image
+          (fun p : Fin 6 × Fin 6 =>
+            dist (sixConfig p.1) (sixConfig p.2))).filter (· > 0)
+        ⊆ ({Real.sqrt 3, Real.sqrt 6, Real.sqrt (3 + Real.sqrt 6),
+            Real.sqrt (3 - Real.sqrt 6)} : Finset ℝ) := by
+    intro d hd
+    rw [mem_filter, mem_image] at hd
+    obtain ⟨⟨p, -, hpd⟩, hpos⟩ := hd
+    have hne : p.1 ≠ p.2 := by
+      intro he
+      rw [he, dist_self] at hpd
+      rw [← hpd] at hpos
+      exact lt_irrefl 0 hpos
+    rw [← hpd]
+    exact sixConfig_dist_mem hne
+  calc (((univ.product univ).image
+          (fun p : Fin 6 × Fin 6 =>
+            dist (sixConfig p.1) (sixConfig p.2))).filter (· > 0)).card
+      ≤ ({Real.sqrt 3, Real.sqrt 6, Real.sqrt (3 + Real.sqrt 6),
+          Real.sqrt (3 - Real.sqrt 6)} : Finset ℝ).card := card_le_card hsub
+    _ ≤ ({Real.sqrt 6, Real.sqrt (3 + Real.sqrt 6),
+          Real.sqrt (3 - Real.sqrt 6)} : Finset ℝ).card + 1 := card_insert_le _ _
+    _ ≤ (({Real.sqrt (3 + Real.sqrt 6),
+          Real.sqrt (3 - Real.sqrt 6)} : Finset ℝ).card + 1) + 1 :=
+        Nat.add_le_add_right (card_insert_le _ _) 1
+    _ ≤ ((({Real.sqrt (3 - Real.sqrt 6)} : Finset ℝ).card + 1) + 1) + 1 :=
+        Nat.add_le_add_right (Nat.add_le_add_right (card_insert_le _ _) 1) 1
+    _ = 4 := by simp
+
+/-! ## The bounds -/
+
+/-- **`h 6 ≤ 4`.**  The explicit general-position four-distance witness
+`sixConfig` caps the minimum.  Before this theorem the best upper bound was the
+generic `h 6 ≤ 15` from `h_le_choose_two`. -/
+theorem h_six_le_four : h 6 ≤ 4 :=
+  le_trans (h_le_of_inGeneralPosition inGeneralPosition_sixConfig)
+    numDistinctDistances_sixConfig_le
+
+/-- **`3 ≤ h 6 ≤ 4`.**  Lower bound from `h 5 = 3` and monotonicity
+(`three_le_h_six`, in `Erdos98WIP01Thresholds`); upper bound from `sixConfig`. -/
+theorem h_six_bounds : 3 ≤ h 6 ∧ h 6 ≤ 4 :=
+  ⟨three_le_h_six, h_six_le_four⟩
+
+/-- **The six-point dichotomy: `h 6 = 3` or `h 6 = 4`.**  Deciding which is the
+open remainder: `h 6 = 3` iff a general-position 6-point THREE-distance
+configuration exists (a question the blocked-route registry records as open);
+otherwise `h 6 = 4` exactly. -/
+theorem h_six_eq_three_or_four : h 6 = 3 ∨ h 6 = 4 := by
+  have h1 := three_le_h_six
+  have h2 := h_six_le_four
+  omega
 
 end Erdos98WIP01
