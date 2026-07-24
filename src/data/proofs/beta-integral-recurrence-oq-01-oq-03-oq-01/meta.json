@@ -106,11 +106,19 @@
       "mathContext": "↑(∫₀¹ xᵐ(1-x)ⁿ) = Complex.betaIntegral (m+1)(n+1) = m!·n!/(m+n+1)!."
     },
     {
-      "id": "ibp-recurrence",
-      "title": "Route 2 — integration-by-parts recurrence",
+      "id": "ibp-base",
+      "title": "Route 2 header and the base case",
       "startLine": 73,
+      "endLine": 81,
+      "summary": "Opens Route 2 with a module comment marking it as a self-contained real-analysis proof. integral_base specializes n = 0: ∫₀¹ xᵏ(1-x)⁰ = 1/(k+1), reducing to ∫₀¹ xᵏ via pow_zero/mul_one and reading the value off Mathlib's integral_pow. This is the base case the induction in integral_offdiag_via_ibp starts from.",
+      "mathContext": "∫₀¹ xᵏ(1-x)⁰ dx = ∫₀¹ xᵏ dx = 1/(k+1)."
+    },
+    {
+      "id": "ibp-recurrence",
+      "title": "The integration-by-parts recurrence",
+      "startLine": 82,
       "endLine": 131,
-      "summary": "integral_base gives the induction base ∫₀¹ xᵏ(1-x)⁰ = 1/(k+1) from integral_pow. integral_recurrence integrates ∫₀¹ xᵐ(1-x)ⁿ⁺¹ by parts with u = (1-x)ⁿ⁺¹ and v = xᵐ⁺¹/(m+1) (derivatives via HasDerivAt.pow and hasDerivAt_pow.div_const); both boundary terms vanish because (1-1)ⁿ⁺¹ = 0 and 0ᵐ⁺¹ = 0, leaving the pure recurrence ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ after pulling the constant out (integral_const_mul).",
+      "summary": "integral_recurrence integrates ∫₀¹ xᵐ(1-x)ⁿ⁺¹ by parts with u = (1-x)ⁿ⁺¹ and v = xᵐ⁺¹/(m+1) (derivatives via HasDerivAt.pow and hasDerivAt_pow.div_const); both boundary terms vanish because (1-1)ⁿ⁺¹ = 0 and 0ᵐ⁺¹ = 0, leaving the pure recurrence ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ after pulling the constant out (integral_const_mul).",
       "mathContext": "∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ."
     },
     {
