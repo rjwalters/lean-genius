@@ -879,7 +879,7 @@ theorem lineDeriv_lineDeriv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 
     (a b x : E) :
     lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y b) x a
       = lineDeriv 𝕜 (fun y => lineDeriv 𝕜 f y a) x b := by
-  have hdiff : Differentiable 𝕜 f := hf.differentiable one_le_two
+  have hdiff : Differentiable 𝕜 f := hf.differentiable (by norm_num)
   have hinner : ∀ w : E, (fun y => lineDeriv 𝕜 f y w) = fun y => fderiv 𝕜 f y w := by
     intro w
     funext y
