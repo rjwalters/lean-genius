@@ -46,11 +46,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header: From the Closed Form to Two Ring Identities",
+      "title": "Module Docstring: From the Closed Form to Two Ring Identities",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 32,
       "summary": "States the open question (the Catalan generating function C(x) = (1 - sqrt(1-4x))/(2x)) and explains why the literal closed form cannot be written verbatim over a formal power series ring: square root is not an operation on Q[[X]]. Frames the two algebraic identities that carry its exact ring-theoretic content — the functional equation C = 1 + X*C^2 and the square-root form (2XC-1)^2 = 1-4X — and notes that Mathlib records the Catalan convolution recurrence (catalan_succ') but not this generating-function identity, making the power-series packaging here original.",
       "mathContext": "$\\sqrt{1-4x}$ has no formal-power-series analogue, so the closed form $C(x)=\\frac{1-\\sqrt{1-4x}}{2x}$ is replaced by the ring identities $C = 1 + XC^2$ and $(2XC-1)^2 = 1-4X$ over $\\mathbb{Q}\\llbracket X\\rrbracket$."
+    },
+    {
+      "id": "imports",
+      "title": "Imports, Namespace, and PowerSeries Scope",
+      "startLine": 33,
+      "endLine": 38,
+      "summary": "Imports Mathlib and opens PowerSeries and Finset, bringing the formal-power-series API (coeff, mk, coeff_mul, coeff_succ_X_mul) and Finset.antidiagonal into scope, then declares the CombinationsFormulaOQ02OQ01 namespace.",
+      "mathContext": "`open PowerSeries` exposes the ring $\\mathbb{Q}\\llbracket X\\rrbracket$ operations `coeff`, `mk`, and `coeff_mul` (the antidiagonal convolution) used to define $C$ and prove both identities."
     },
     {
       "id": "definition",
