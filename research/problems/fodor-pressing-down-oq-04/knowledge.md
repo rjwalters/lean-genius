@@ -128,3 +128,15 @@ The full theorem statement above. Requires Step 1 (S2-α), Step 2 (cofinality + 
 - Solovay, R. M. (1971), "Real-valued measurable cardinals", *Axiomatic Set Theory* I (the first appearance of the splitting theorem in the form stated above).
 - Jech, T., *Set Theory* (3rd ed.), Theorem 8.10 — the textbook reference for the proof sketched in §2.
 - Kunen, K., *Set Theory: An Introduction to Independence Proofs* — alternative presentation of Solovay splitting via stationary tower forcing.
+
+## 8. S12 update (2026-07-24): binary splitting PROVED at ω₁
+
+S2-β is complete. `stationary_splits_binary_aleph1` (Part XI) proves every
+stationary subset of ω₁ splits into two disjoint stationary subsets — 0
+sorries, 0 axioms. The production step was the **unbounded-index
+pigeonhole** on fundamental ω-sequences (`omegaSeq`, new
+`Ordinal.exists_isFundamentalSeq` API) + two Fodor applications; the
+index-of-first-disagreement / `fodor_anti_constant` / `cofSecond` design
+is obsolete. See `sessions/2026-07-24-s12-act-binary-split-aleph1.md`.
+Remaining: κ-piece partition (§2 Step 3 bookkeeping) and the general-κ
+non-ω-cofinal case (Jech trace analysis; vacuous at ω₁).
