@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2026-07-24: h(29) = 7 landed — first non-forced-ruler wall, via a verified backtracking search engine (searchOK + completeness + decide +kernel; 26651 tests vs 376740 flat). Exact Sidon table complete h(0..29); two-sided bounds sqrt(N)/4 <= h(N) <= sqrt(2N)+1 for N >= 49. Counting route for h(29..33) exhaustively closed (all moduli 2..16 fail). Engine is parametric — h(30..33) are one application each, then h(34) = 8 witness completes the 8-mark story. Two-sided √N bounds COMPLETE: √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 49 (Erdős–Turán construction + Bertrand; 0 axioms) — order of magnitude h(N) ≍ √N settled elementarily. Exact table h(0..28) complete. NEXT wall: h(29..33) (missing diff d ≡ 2 mod 4 now pinned; residue invariants alone insufficient; span-29 search ≈192k after sum-collision pruning). DEEP remaining: N^{1/4} refinement (exact Erdős–Turán form), Singer (1−o(1))√N constant, $1000 N^ε conjecture.",
+    "progressSummary": "2026-07-24: 8-mark plateau COMPLETE — exact table h(0..35). h(30..33)=7 via parametric span-dichotomy step lemma + one kernel searchOK eval each (29k..69k tests); every 8-mark Golomb ruler has length >= 34 (sharp). h(34)=h(35)=8: counting bound resumes (81 > 2N+9 for N<36) + optimal ruler witness {0,1,4,9,15,22,32,34}. Two-sided sqrt(N)/4 <= h(N) <= sqrt(2N)+1 for N>=49 already landed. NEXT elementary: h(36..43)=8 plateau (9-mark ruler span is 44) — counting slack reopens at N=36, each wall needs searchOK with 7 interior unknowns (larger; estimate first). DEEP remaining: N^{1/4} refinement, Singer (1-o(1))sqrt(N), $1000 N^eps conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -77,7 +77,8 @@
       "searchOK_complete (Erdos30WIP01.lean ~1930) — completeness: any true extension is rediscovered smallest-element-first",
       "search_zero_twentynine_eq_false (Erdos30WIP01.lean ~1970) — the kernel-verified span-29 search",
       "no_sidon_card_eight_range_thirty (Erdos30WIP01.lean ~1980) — span dichotomy chaining h(28) + the search",
-      "sidonNumber_twentynine (Erdos30WIP01.lean ~2074) — h(29) = 7"
+      "sidonNumber_twentynine (Erdos30WIP01.lean ~2074) — h(29) = 7",
+      "Erdos30WIP01.lean: no_sidon_card_eight_step (parametric span-dichotomy), search_zero_{thirty..thirtythree}_eq_false (4 kernel searches), no_sidon_card_eight_range_{thirtyone..thirtyfour}, sidonNumber_thirty..thirtyfive (table now h(0..35))"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -104,7 +105,11 @@
       "h(29): single-modulus residue-class double counting provably CANNOT fell the span-29 wall — exhaustive sweep m=2..16 finds surviving class profiles at every modulus (48 at m=8, 42 at m=6, 144 at m=12). The h(28)-style counting argument is special to forced perfect rulers.",
       "Verified pruned search beats flat enumeration in kernel decides: searchOK visits 26651 extension tests vs C(28,6)=376740 flat (14x), and each pruned test short-circuits early; completeness is a clean induction on the residual-set cardinality via min-first rediscovery.",
       "★Finset.sort is defined by well-founded recursion and does NOT reduce under decide +kernel (stuck at instDecidablePairwise) — kernel-facing decidable predicates must stay list-native (List.sublistsLen over List.range gives sorted sublists for free).",
-      "Kernel cost calibration (host v4.31): quartic SidonCheck over powersetCard ~105 ms/candidate; list-native diffList+Nodup ~4.8 ms/candidate at C(27,5) scale (20-100x) — the fallback engine for h(32)/h(33) if searchOK slows."
+      "Kernel cost calibration (host v4.31): quartic SidonCheck over powersetCard ~105 ms/candidate; list-native diffList+Nodup ~4.8 ms/candidate at C(27,5) scale (20-100x) — the fallback engine for h(32)/h(33) if searchOK slows.",
+      "h(30..33)=7 all fall to ONE parametric span-dichotomy lemma (no_sidon_card_eight_step, N symbolic with M+1=N keeping search literals exact-match) + one kernel searchOK eval each: 29072/42618/47842/68680 extension tests for N=30..33 — pruning keeps growth mild (2.6x over h(29)) where flat enumeration would be C(32,6)=906192",
+      "Equivalently: every 8-mark Golomb ruler has length >= 34, sharp via the optimal ruler {0,1,4,9,15,22,32,34}",
+      "h(34)=h(35)=8 need NO search: after ten values of slack the plain counting bound resumes (9^2=81 > 2N+9 for N<36); slack reopens at N=36 (81<=81) where per-N walls resume with 7 interior unknowns",
+      "9-element wall search sizes measured (pruned backtracking, {0,N} pinned, 7 interior): N=36: 119573 tests (~4.5x h(29), feasible), N=40: 275652, N=43: 568743 (~21x h(29), borderline for decide +kernel). All return false (9-mark ruler span is 44) — h(36..43)=8 walls are provable with the existing engine, cost rising per N"
     ],
     "mathlibGaps": [],
     "nextSteps": [
