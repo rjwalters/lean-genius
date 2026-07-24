@@ -3,8 +3,41 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-24 (h(29) opening, researcher-3)
-**Iteration**: 8
+**Since**: 2026-07-24 (h(29) COMPLETE, researcher-3)
+**Iteration**: 9
+
+## Session 2026-07-24c (researcher-3) — h(29) = 7 CLOSED: Layer 2 cross-class counts
+
+**Lean landed** (Erdos30WIP01.lean, appended after the Layer-1 lemmas):
+- `sidon_diff_filter_card`: generic bridge — once `himageEq` pins the
+  difference image to a finset `E`, any decidable difference-count equals
+  `|E.filter p|` (injectivity + `filter_image`); per-`d` counts then close
+  by `decide` on the concrete 58-element window minus `{d, −d}`.
+- `sidon_same_class_count_{ten,seven}` + `sidon_cross_class_count_{ten,seven}`:
+  fiber machinery.  Cross-class lemmas take the residue as a PAIR
+  `(k : ℤ) (j : ℕ)` with `(j:ℤ) = k` — the ℤ copy keeps the filter predicate
+  cast-free, the ℕ copy drives the `(r + m − j) % m` class indices; omega
+  closes the fiber ext goals with variable `j` (constant modulus).
+- `sidon_profile_refute_{seven,ten_A,ten_B}`: kernel `decide` over bounded
+  profiles (`∀ c < 4` ×7, resp. `∀ c < 3` ×10; 16384 / 59049 points).
+  KEY TRICK: the per-class bounds come from the same-class equation itself —
+  `Σ c(c−1) = N₀` gives `c(c−1) ≤ N₀` by omega (atom abstraction), and a
+  decide helper `∀ x < 9, x*x − x ≤ N₀ → x ≤ b` converts; NO structural
+  Sidon argument needed for the bounds.
+- `sidon_eight_missing_mod_{seven,ten_A,ten_B}`: kill lemmas (assembly:
+  fiberwise counts → simp sum-expansion → generalize ×m → bounds → refute).
+- `no_sidon_card_eight_range_thirty` + `sidonNumber_twentynine : h(29) = 7`
+  (witness: span-25 Golomb ruler `{0,1,4,10,18,23,25}` reused).
+
+**Structural discovery beyond the 2026-07-24b plan**: mod 10 kills SIX of the
+seven cases, not three — under mod 10 the deleted classes depend only on
+`{d mod 10, −d mod 10}`, so `d ∈ {2,18,22}` share one count vector (classes
+`{2,8}` deleted; counts 4/6/6/6 at residues 0/1/3/4) and `d ∈ {6,14,26}`
+share another (classes `{4,6}`; counts 4/6/6/6 at 0/1/2/3).  Only `d = 10`
+(where `{10,−10}` sits in class 0 and mod 10 is silent) needs mod 7
+(counts 8/9/8 at 0/1/2).  The planned mod-9 machinery (262144-point domain)
+is NOT needed: three decide lemmas total, all ≤ 59049 points.
+(All three refutations + counts re-verified in Python this session.)
 
 ## Session 2026-07-24b (researcher-3) — h(29) opening: near-perfect ruler + d ≡ 2 (mod 4), and the FULL closure table
 
@@ -55,11 +88,10 @@ or 20 — Sidon violation), or phrase the profile refutation as a `decide
 **Session hygiene**: claim released after PR; build docker-verified (see PR).
 
 ## Current Focus
-Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..28) as of the
-2026-07-23b session (h(28)=7 via a mod-4 class double count — the perfect
-8-mark ruler is forced at N=28 and the residue-class counts
-Σcᵣ(cᵣ−1)=14, Σcᵣ·c_{r+2}=14, Σcᵣ=8 are jointly unsatisfiable; no kernel
-search needed).
+Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..29) as of the
+2026-07-24c session (h(29)=7 via near-perfect ruler extraction + mod-2/4
+narrowing + cross-class counts mod 10 / mod 7; h(28)=7 via the mod-4 class
+double count; no kernel search anywhere).
 
 ## Active Approach
 Residue-class double counting against forced perfect rulers at the wall
@@ -68,21 +100,29 @@ chained span dichotomy + pinned-endpoint kernel search for the in-between
 values. `SidonCheck` converse bridge certifies witnesses with one `decide`.
 
 ## Attempt Count
-- Total attempts: 8 sessions
-- Current approach attempts: 5 (h(16), h(17..21), h(22..27), h(28), Erdős–Turán √N lower bound — all landed)
-- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count, Erdős–Turán construction + Bertrand
+- Total attempts: 9 sessions
+- Current approach attempts: 6 (h(16), h(17..21), h(22..27), h(28), Erdős–Turán √N lower bound, h(29) — all landed)
+- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count, Erdős–Turán construction + Bertrand, near-perfect ruler + cross-class counts
 
 ## Blockers
-NONE for h(29) — the 2026-07-24b analysis shows pure modular counting closes
-it (see the closure table above); the "~376k kernel search" blocker is
-OVERTURNED. Genuine remaining walls: h(30..33) (same near-perfect analysis
-re-run per N — miss-2-values structure at N=30 needs checking) and the DEEP
-targets.
+h(29) CLOSED (2026-07-24c). Remaining walls are genuinely harder:
+- h(30..33): at N=30 the difference window `[-30,30]\{0}` has 60 elements vs
+  56 diffs for 8 elements — the ruler misses TWO positive values, so the
+  single-missing-`d` extraction no longer applies; a 9-element set has 72
+  diffs > 60, so h(N) ≤ 8 there is free, but pinning h(30..33) = 8 vs 7
+  needs a miss-2 analysis (or a 9-cap + explicit 8-witness: h(34) = 8 via
+  the span-34 perfect difference set from Singer would be the cleaner next
+  wall — {0,1,4,9,15,22,32} is span-32 with 7; check literature for the
+  optimal 8-mark Golomb ruler: span 34, {0,1,4,9,15,22,32,34}).
+- DEEP targets: N^{1/4} refinement, Singer (1−o(1))√N constant, $1000 N^ε.
 
 ## Next Action
-LAYER 2 of h(29): kill `d ∈ {2,6,10,14,18,22,26}` via cross-class counts
-(mod 7 for {10,18}, mod 9 for {14,22}, mod 10 for {2,6,26}) following the
-recipe in the 2026-07-24b session note, then assemble
-`no_sidon_card_eight_range_thirty` and `sidonNumber_twentynine = 7`.
-After that: DEEP targets (N^{1/4} refinement, Singer (1−o(1))√N constant,
-$1000 N^ε conjecture) or h(30..33) by the same near-perfect method.
+Options, roughly in order of value:
+1. h(34) = 8: witness {0,1,4,9,15,22,32,34} (optimal 8-mark Golomb ruler,
+   span 34) gives the lower bound via one SidonCheck decide; upper bound
+   9²−9 = 72 > 68 = 2·34 is the free counting cap. Then h(30..33) ∈ {7,8}
+   brackets follow (mono), with exact pinning needing the miss-2 analysis.
+2. Miss-2 analysis at N=30..33 (extend the near-perfect method: complement
+   is a negation-symmetric 2·t-element set, t = 2..5 missing positive
+   values; the mod-2/4 narrowing generalizes but case counts grow).
+3. DEEP targets (multi-quarter).
