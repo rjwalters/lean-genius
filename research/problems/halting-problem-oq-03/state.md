@@ -1,9 +1,50 @@
 # Current State
 
-**Phase**: BLOCKED (verification blackout) — S9 flags the slug `blocked`. The S2–S8 abstract framework is COMPLETE on `origin/main`: `proofs/Proofs/RelativizedHalting.lean` (733 LOC) and `proofs/Proofs/RelativizedHaltingBridge.lean` (237 LOC) both carry 0 sorries, 0 axioms, 0 imports; all 6 Section 12 declarations (`IsAlwaysNonDegenerate`, `chain_strict_succ_of_isAlwaysNonDegenerate`, `identityPredictor`, `nonDegenerateAt_identityPredictor`, `isAlwaysNonDegenerate_identityPredictor`, `chain_strict_succ_identityPredictor`) are present at the recorded line ranges and the JSON registry is in sync (iteration 8, 733 LOC). All three remaining S9 options (OracleCode/Mathlib bridge, arithmetical hierarchy OQ-03b, multi-step strictness lift `chain_strict_of_isAlwaysNonDegenerate`) add **new** Lean code that requires Docker verification before it can ship. Both verification routes are down this session: `docker info` exits 124 (daemon down); Aristotle MCP backend returns `Resource not found` (404, confirmed today). No build-free progress remains — source↔JSON↔state are already consistent — so the slug is flagged blocked rather than churning a doc-only PREP memo. Re-open when Docker recovers.
-**Since**: 2026-06-13 (S9 BLOCKED, researcher-1)
-**Iteration**: 9
-**Researcher**: researcher-1 (S9 BLOCKED, S8-light, S4); researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-6 (S3); researcher-10 (S2)
+**Phase**: S11 COMPLETE (positive half of Post's jump theorem — `o <ᵀ o′`,
+both halves machine-checked, researcher-3, 2026-07-24). The S9 BLOCKED flag
+(2026-06-13, Docker blackout) was infra-only and is long resolved; S10
+(researcher-1, 2026-07-24, PR #43347) shipped the OracleCode bridge.
+**Since**: 2026-07-24 (S11, researcher-3)
+**Iteration**: 11
+**Researcher**: researcher-3 (S11); researcher-1 (S10, S9 BLOCKED, S8-light, S4); researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-6 (S3); researcher-10 (S2)
+
+## Status (S11, researcher-3, 2026-07-24) — the oracle IS computable from its jump
+
+`proofs/Proofs/RelativizedHaltingCodes.lean` gains Section 7 (+130 LOC, still
+0 axioms / 0 sorries): the complementary positive direction of the S10
+diagonal, giving full strictness `o <ᵀ o′`:
+
+* `jumpCharFun o` — the jump's characteristic function as a `ℕ →. ℕ` oracle.
+* `queryCode x := .comp (.rfind .left) (.comp .oracle (constCode x))` — the
+  **s-m-n-free reduction**: the program ignores its input, so self-application
+  collapses to the oracle query (`queryCode_index_mem_jumpSet`:
+  `encodeCode (queryCode x) ∈ jumpSet o ↔ o x = false`). No s-m-n theorem,
+  no evaln, no universal machine needed.
+* `primrec_encode_constCode` (iterated-pairing `Primrec.nat_rec'`) and
+  `primrec_encode_queryCode` (fixed pairing template around it) — the index
+  map is primitive recursive, hence recursive in every oracle
+  (`Nat.Primrec.recursiveIn`).
+* `oracleFun_recursiveIn_jumpCharFun` — `x ↦ 1 − χ_{o′}(index x)` computes
+  `oracleFun o` (`.oracle` constructor + two `.comp`s + pointwise `of_eq`).
+* `oracleFun_turingReducible_jumpCharFun` (`o ≤ᵀ o′`) and **`oracle_lt_jump`**
+  (`o ≤ᵀ o′ ∧ ¬ o′ ≤ᵀ o`) — Post's strictness of the jump, both halves.
+
+This was S11 option (a) from the S10 handoff. Remaining options:
+(b) OQ-03b arithmetical hierarchy via iterated jump — `jumpCharFun` makes the
+iteration concrete (needs a Bool-valued repackaging to iterate, then
+`oracle_lt_jump` gives strict increase at every level);
+(c) Mathlib upstreaming of the enumeration + jump layer.
+
+Lean notes (S11): `open Classical in` must PRECEDE the docstring, not sit
+between docstring and declaration; nested `>>=` chains need
+`simp only [Part.bind_eq_bind, Part.bind_some]` (a single `rw` only converts
+the outermost bind); `Nat.Primrec.recursiveIn`'s statement carries the
+Option→Part coercion — normalize with `Part.coe_some` (not `PFun.coe_val`);
+`Nat.rec`-vs-`id` defeq needs an explicit trailing `rfl` after `rw [← ih]`.
+
+## (Stale) S9 BLOCKED note (2026-06-13) — resolved
+
+The S2–S8 abstract framework is COMPLETE: `proofs/Proofs/RelativizedHalting.lean` (733 LOC) and `proofs/Proofs/RelativizedHaltingBridge.lean` (237 LOC) both carry 0 sorries, 0 axioms, 0 imports. The S9 session found Docker and Aristotle both down and flagged blocked; both routes recovered and S10/S11 have since shipped.
 
 ## Current Focus (S8-light, 2026-06-10, researcher-1)
 
