@@ -37,9 +37,13 @@ monodromy around these singular points is given by ρ?
    Found monodromy representations that cannot be realized by Fuchsian systems.
 
 3. **Positive Cases:**
-   - **Irreducible representations:** If ρ is irreducible, the answer is YES.
+   - **Irreducible representations:** If ρ is irreducible, the answer is YES
+     (formalized below as `plemelj_theorem_irreducible`).
    - **Birkhoff's Theorem:** For regular singular systems (allowing higher-order poles),
-     the answer is always YES.
+     the answer is always YES. Below, `birkhoff_theorem` only records that a
+     `RegularSingularSystem` exists — it does not yet formalize a "realizes"
+     relation for such systems, so the realizability claim itself remains
+     unformalized.
 
 4. **The Full Picture:**
    The problem has a positive answer if and only if certain cohomological conditions
@@ -272,16 +276,19 @@ structure RegularSingularSystem (S : SingularPoints) where
   /-- Solutions have at most polynomial growth near singularities -/
   regular_growth : True
 
-/-- **Birkhoff's Theorem**
+/-- **Birkhoff's Theorem (statement placeholder, not yet formalized)**
 
-    For any monodromy representation, there exists a regular singular
-    (but not necessarily Fuchsian) system realizing it.
-
-    This shows the issue is specifically about the Fuchsian (simple pole)
-    constraint, not about regular singularities in general. -/
+    Birkhoff's theorem asserts that for any monodromy representation, there
+    exists a regular singular (but not necessarily Fuchsian) system realizing
+    it. This declaration currently only proves that `RegularSingularSystem S`
+    is inhabited — `RegularSingularSystem` has no non-trivial fields
+    (`data : Unit`, `regular_growth : True`), so the statement holds vacuously
+    for every `S` regardless of `ρ`. No "realizes" relation is defined for
+    `RegularSingularSystem` (unlike `realizes` for `FuchsianSystem` above), so
+    the actual realizability claim is not formalized here. -/
 theorem birkhoff_theorem
     (S : SingularPoints) (ρ : MonodromyRep n S) :
-    ∃ R : RegularSingularSystem S, True :=  -- R realizes ρ
+    ∃ R : RegularSingularSystem S, True :=
   ⟨⟨(), trivial⟩, trivial⟩
 
 -- ============================================================
