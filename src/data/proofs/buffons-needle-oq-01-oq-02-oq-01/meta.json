@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "A Dimension-Independent Invariant Between Neighbouring Dimensions",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring: extends the parent's higher-dimensional Buffon constant c_n = E[|⟨u,e₁⟩|] by finding the invariant c_{n+1}·c_n = 2/(nπ) between consecutive constants, equivalently n·c_n·c_{n+1} = 2/π — the same value 2/π (the classical planar Cauchy constant c₂) in every dimension. States the four main results and sketches the Gamma-functional-equation proof. Followed by the import and namespace declaration.",
+      "mathContext": "$c_{n+1}c_n = \\dfrac{2}{n\\pi}$, equivalently $n\\,c_n\\,c_{n+1} = \\dfrac{2}{\\pi}$ — a conserved quantity across all dimensions, reflecting the Cauchy-Crofton normalization of the kinematic measure on lines."
+    },
+    {
       "id": "constant",
       "title": "The Buffon Dimensional Constant",
       "startLine": 47,
