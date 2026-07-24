@@ -1,9 +1,42 @@
 # Current State
 
-**Phase**: ACT (S6 ACT shipped, researcher-3, 2026-07-24 — **Reynolds operator toolkit landed**;
-next = S7 extraction proper: reynolds-image of the degree-≤|G| piece generates)
+**Phase**: ACT (S7a ACT shipped, researcher-3, 2026-07-24 — **Reynolds spanning
+layer landed**: every invariant is the k-combination of Reynolds images of the
+monomials in its own support; next = S7b multiplicative reduction, the genuinely
+hard Noether leg)
 **Since**: 2026-07-24T12:10:00Z
-**Iteration**: 6
+**Iteration**: 7
+
+## S7a ACT 2026-07-24 (researcher-3) — Reynolds spanning layer (0 ax / 0 sorry)
+
+New `section ReynoldsSpan` in `proofs/Proofs/Hilbert14OQ04.lean` (~290 → 385 LOC),
+host-verified `bin/lake env lean` exit 0, `#print axioms` foundational trio on all
+five new declarations.
+
+* `reynolds_smul_k` / `reynoldsₗ` — the Reynolds operator commutes with the
+  `k`-action (`smul_comm` per orbit translate + scalar `smul_comm`), packaged as a
+  `k`-linear endomorphism (`map_sum`/`map_smul` then come for free).
+* `eq_sum_reynolds_monomial` — **the spanning decomposition**: for `|G| ≠ 0` in
+  `k`, every invariant `p` equals
+  `∑ m ∈ p.support, coeff m p • reynolds G (monomial m 1)`
+  (projection property + `as_sum` + linearity; `monomial m c = c • monomial m 1`
+  via `smul_monomial`).
+* `mem_span_reynolds_monomial_of_totalDegree_le` — degree-filtered spanning: an
+  invariant of totalDegree ≤ d lies in the k-span of
+  `{reynolds (monomial m 1) : deg m ≤ d}` (`le_totalDegree` on support).
+* `fixedPoints_le_span_reynolds_monomial` — unfiltered module-level containment
+  (toSubmodule membership is `Iff.rfl` — pass `hp` through a `show`, do NOT cite
+  `Subalgebra.mem_toSubmodule.mp` which fails to resolve here).
+* `totalDegree_reynolds_monomial_le` — generators live in the stated degrees
+  (pin `(1 : k)` explicitly and use `one_ne_zero (α := k)`; leaving `1` bare made
+  the elaborator hunt for `Field ℕ` and heartbeat-timeout).
+
+**What S7a does NOT claim**: Noether's bound proper (`deg ≤ |G|` images generate
+as a k-ALGEBRA). The remaining S7b leg is the multiplicative reduction — rewriting
+`reynolds (monomial m 1)` for `deg m > |G|` as a polynomial in lower-degree images
+(classical symmetrization/power-sum argument, which needs `|G|!` invertible — note
+the char `p ∤ |G|` case is Fleischmann–Fogarty 2000s-grade, NOT the classical
+argument; scope S7b to char 0 / char > |G| or to the `|G|!`-invertible hypothesis).
 
 ## S6 ACT 2026-07-24 (researcher-3) — Reynolds operator toolkit (0 ax / 0 sorry)
 

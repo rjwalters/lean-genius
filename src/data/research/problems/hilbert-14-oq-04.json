@@ -45,13 +45,15 @@
     "lastUpdate": "2026-07-24T12:10:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "UNBLOCKED (researcher-3, 2026-07-23): Docker restored, B1 blackout blocker cleared; existing Hilbert14OQ04.lean re-verified clean at v4.31 (8576 jobs, 0 axiom/0 sorry). Next step ready: the paste-ready noether_degree_bound ACT (PREP-3 §4, new file Hilbert14OQ04Bound.lean). | S2-finite ACT shipped (PR pending): hilbert_finiteness theorem verified by Docker build (7743/7743). The qualitative half of Noether 1916 — invariant ring of a finite-group linear action on MvPolynomial is finitely generated as a k-algebra — is now formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Five-step proof chains through Algebra.IsInvariant → Algebra.IsInvariant.isIntegral → Algebra.FiniteType.of_restrictScalars_finiteType → Algebra.IsIntegral.finite → Artin-Tate fg_of_fg_of_fg, all pinned at Mathlib v4.26.0. Two supporting instances (Algebra.IsInvariant and Algebra.IsIntegral) discharged definitionally via FixedPoints.subalgebra membership. The quantitative half (Noether degree bound) is deferred to S3-bound ACT. Predecessor PREP chain: PRs #18248 (S1) + #18435/18501/18562/18589/18667/18714/18750 (S2-S2g).",
+    "progressSummary": "PROGRESS: S7a Reynolds spanning layer done — degree-filtered k-span of invariants by Reynolds monomial images; next S7b = multiplicative Noether reduction (hard leg)",
     "builtItems": [
       "research/problems/hilbert-14-oq-04/problem.md (S1, 5K) — problem statement, sub-problem decomposition, OQ-01 vs OQ-04 differentiation.",
       "research/problems/hilbert-14-oq-04/knowledge.md (S1, 8K) — Reynolds operator and LND background, Noether degree bound proof outline, counterexample summaries, Mathlib API gap inventory.",
       "research/problems/hilbert-14-oq-04/state.md (S1) — phase tracker, S2 next-action plan.",
       "proofs/Proofs/Hilbert14OQ04.lean (S2-finite ACT, 102 LOC) — hilbert_finiteness theorem + Algebra.IsInvariant/IsIntegral instances. Verified by Docker build 7743/7743 jobs.",
-      "proofs/Proofs.lean — added import Proofs.Hilbert14OQ04."
+      "proofs/Proofs.lean — added import Proofs.Hilbert14OQ04.",
+      "reynolds_smul_k + reynoldsₗ (k-linear packaging) in Hilbert14OQ04.lean",
+      "eq_sum_reynolds_monomial / mem_span_reynolds_monomial_of_totalDegree_le / fixedPoints_le_span_reynolds_monomial / totalDegree_reynolds_monomial_le (S7a spanning layer, 0 ax / 0 sorry)"
     ],
     "insights": [
       "OQ-04 is a meta-mathematical conjecture about algorithm existence; it cannot be formalized as a single Lean theorem. Lean progress must instead anchor on specific algorithmic refinements (Noether degree bound, slice theorem, etc.).",
@@ -64,7 +66,8 @@
       "Algebra.FiniteType k ↥(⊤ : Subalgebra k R) does NOT typeclass-synthesize cheaply (heartbeat timeout); use (inferInstance : Algebra.FiniteType k R).out for the direct FG projection.",
       "⟨h_fg⟩ as Algebra.FiniteType constructor: the class is a Prop with one field (out : (⊤ : Subalgebra R A).FG), so anonymous-constructor pack-up suffices.",
       "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function.",
-      "UNBLOCK (researcher-3, 2026-07-23): Docker is back up; all 3 stale infra blockers (B1 Docker-blackout, B2 host-disk-full, B3 .lake self-symlink) are cleared — the successful build proves the environment works. Verified the existing Proofs/Hilbert14OQ04.lean builds clean at leanprover/lean4:v4.31.0 (8576 jobs, 0 axioms / 0 sorries) — no drift from the v4.26 build. The S3-bound ACT (noether_degree_bound, ~150-200 LOC new file Hilbert14OQ04Bound.lean per PREP-3 §4, with the h_graded hypothesis Option A) is now executable and is the ready next step — deferred to a fresh-context session, not a stub. status blocked->active."
+      "UNBLOCK (researcher-3, 2026-07-23): Docker is back up; all 3 stale infra blockers (B1 Docker-blackout, B2 host-disk-full, B3 .lake self-symlink) are cleared — the successful build proves the environment works. Verified the existing Proofs/Hilbert14OQ04.lean builds clean at leanprover/lean4:v4.31.0 (8576 jobs, 0 axioms / 0 sorries) — no drift from the v4.26 build. The S3-bound ACT (noether_degree_bound, ~150-200 LOC new file Hilbert14OQ04Bound.lean per PREP-3 §4, with the h_graded hypothesis Option A) is now executable and is the ready next step — deferred to a fresh-context session, not a stub. status blocked->active.",
+      "S7a: invariants are k-SPANNED by Reynolds images of monomials of their own support degrees (eq_sum_reynolds_monomial); the algebra-generation Noether bound is exactly the remaining multiplicative reduction (S7b), which classically needs |G|! invertible"
     ],
     "mathlibGaps": [
       "No Noether degree bound for finite-group invariants",
