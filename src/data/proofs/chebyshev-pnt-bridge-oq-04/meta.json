@@ -75,7 +75,8 @@
       "The von Mangoldt weight Λ is exactly the device that linearizes Σ log n: because Σ_{d∣n} Λ(d) = log n, the awkward sum of logarithms becomes a divisor sum, and swapping the order of summation converts it into the floor sum Σ_d Λ(d)⌊N/d⌋ — the discrete analogue of integration by parts at the heart of Mertens",
       "The floor identity is exact, not asymptotic: Σ_{d=1}^N Λ(d)·⌊N/d⌋ equals Σ_{n=1}^N log n on the nose. All error in Mertens' first theorem is therefore quarantined into the single fractional-remainder sum E(N), whose size is pinned exactly between 0 and the second Chebyshev function ψ(N)",
       "Only two genuinely analytic facts are needed beyond the elementary identity: Chebyshev's ψ(N) = O(N) (controlling E(N)/N) and Stirling's Σ log n = N log N − N + O(log N) (supplying the main term log N − 1). Isolating them as the two fields of MertensInputs makes the logical dependency explicit and keeps the backbone axiom-free",
-      "The same hyperbola swap proves both the Möbius identity Σ μ(d)⌊N/d⌋ = 1 (sibling file) and this von Mangoldt identity Σ Λ(d)⌊N/d⌋ = Σ log n — a reusable template for Dirichlet-convolution partial sums"
+      "The same hyperbola swap proves both the Möbius identity Σ μ(d)⌊N/d⌋ = 1 (sibling file) and this von Mangoldt identity Σ Λ(d)⌊N/d⌋ = Σ log n — a reusable template for Dirichlet-convolution partial sums",
+      "A one-sided estimate transfers for free once nonnegativity is in hand: because primeLogRecip N = lambdaRecip N − primePowerTail N and the tail is exactly nonnegative (Λ ≥ 0), the UPPER bound on the Λ-weighted sum passes straight through to the honest prime sum with no extra hypotheses — it is only the matching LOWER bound that needs the tail to also be bounded above, which is the one piece of real analytic work (a convergent geometric series) still left open"
     ],
     "prerequisites": [
       "the von Mangoldt function Λ and the identity Σ_{d∣n} Λ(d) = log n",
