@@ -116,3 +116,55 @@ difficulty: medium
 source: abundant-number-oq-03
 created: 2026-07-09T16:43:19-07:00
 ```
+
+## Adversarial Checklist (added 2026-07-24, researcher-2 — audit guide for the SOLVED claim)
+
+The claim: `oddPrimitiveAbundant_infinite : OddPrimitiveAbundant.Infinite` in
+`proofs/Proofs/AbundantNumberOQ03OQ03.lean`, via the consecutive-prime
+first-crossing family. Ways THIS claim could be wrong, and what to check:
+
+- **Weak-vs-strict primitivity substitution.** The file contains BOTH
+  `IsPrimitiveAbundant` (strict A006038: every proper divisor *deficient*) and
+  `IsWeakPrimitiveAbundant` (A091191: no *abundant* proper divisor). The target
+  requires the STRICT notion. Check: `OddPrimitiveAbundant` is defined from
+  `IsPrimitiveAbundant`, and `consecutivePrimeWitness_mem` discharges
+  `∀ d ∈ properDivisors, d.Deficient` via `deficient_of_dvd` — not merely
+  `¬ d.Abundant`. The headline `infinitely_many_odd_primitive_abundant`
+  restates the predicate explicitly to prevent silent aliasing.
+- **Oddness could silently fail at the start index.** `p₀ = 2`; if the family
+  ever included index 0 the witness would be even (and the mod-4 perfectness
+  exclusion would also break, since 2+1 is odd). Check: the injective family is
+  `k ↦ consecutivePrimeWitness (k+1)` and every lemma carries `1 ≤ a`
+  (`odd_prod_nth` needs all indices ≥ 1).
+- **Degenerate empty product.** If `crossing a = a` the witness would be `1`
+  (odd, and `∀ d ∈ properDivisors 1, …` is vacuous) — but `1` is NOT abundant,
+  and `lt_crossing` proves `a < crossing a` (σ(1) = 1 refutes the crossing
+  predicate at `b ≤ a`). Injectivity also uses `a ∈ Ico a (crossing a)`, which
+  needs exactly this.
+- **Perfect-predecessor trap (exactness at σ = 2n).** Minimality of the
+  crossing only gives `σ(P) ≤ 2P` for the predecessor `P`; if `σ(P) = 2P`
+  (P perfect) the maximal-divisor deficiency argument collapses. Check
+  `sum_divisors_prod_nth_ne_two_mul`: squarefree odd `P` with ≥ 2 prime
+  factors has `4 ∣ σ(P)` but `2P ≡ 2 [MOD 4]`; one factor: `p+1 = 2p` forces
+  `p = 1`; zero factors: `1 ≠ 2`. An odd-perfect-number assumption is NOT
+  smuggled in anywhere — the exclusion is unconditional for these squarefree
+  products.
+- **Only the top maximal divisor checked.** Deficiency of `N/p_{last}` alone
+  does not bound divisors omitting a SMALLER prime. Check
+  `erase_prod_deficient` handles ALL `i ∈ Ico a (crossing a)` — the `i < c`
+  branch trades `pᵢ` against `p_c` with the cross-multiplication
+  `pᵢ(p_c+1) ≤ p_c(pᵢ+1)`.
+- **Divisor-coverage gap.** Every proper divisor must divide some `N/pᵢ`.
+  Check the `homit` argument: if every `pᵢ ∣ d` then `N ∣ d`
+  (`Finset.prod_primes_dvd` after an injective reindexing via `Finset.prod_image`),
+  contradicting `d < N`; then coprimality (`pᵢ ∤ d`, `pᵢ` prime) gives
+  `d ∣ N/pᵢ` — not just `d ≤ N/pᵢ`.
+- **Injectivity could be vacuous.** Distinctness relies on the least prime
+  factor: `p_{k+1} ∣ W(k+1)` but every prime factor of `W(l+1)` is `p_i` with
+  `i ≥ l+1 > k+1`, and `nth` is injective. Check `consecutivePrimeWitness_injective`
+  does not assume the crossings are equal or ordered.
+- **Circularity.** The analytic input is `Nat.Primes.not_summable_one_div`
+  (divergence of `∑ 1/p`) — strictly weaker than, and independent of, any
+  abundance statement. No `axiom`, no `sorry`, no `native_decide`; the file
+  header's "genuinely open" claims are superseded by this section (updated in
+  the same PR).

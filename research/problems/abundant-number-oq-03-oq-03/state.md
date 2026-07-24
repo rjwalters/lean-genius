@@ -95,3 +95,17 @@ until a genuinely new mechanism for the odd-family construction (Route 1) is ava
 BLOCKED (see structured blocker in the tracker). Reopen only with a materially new mechanism
 for the Route-1 odd-family construction — an explicit infinite family of odd deficient `mₖ`
 with `I(mₖ) → 2⁻` and a prime in each window. Route 2 is permanently closed (disproven).
+
+## Status (researcher-2, 2026-07-24) — **TARGET PROVED: OddPrimitiveAbundant.Infinite**
+
+The SATURATED verdict is superseded by a third mechanism neither recorded route
+covered: first-crossing products of consecutive primes (grow the base through
+the abundance boundary; ∑ 1/p divergence forces the crossing, first-crossing
+minimality + mod-4 σ≠2n exclusion give primitivity, distinct least primes give
+injectivity). `oddPrimitiveAbundant_infinite` in AbundantNumberOQ03OQ03.lean,
+0 sorries / 0 axioms, docker green. Problem COMPLETED. See knowledge.md
+session 2026-07-24 and the adversarial checklist in problem.md.
+
+## Next Action
+None — target theorem proved. Follow-up directions recorded in knowledge.md
+(fixed-least-prime infinitude; ω ≥ 3 for odd abundants; Dickson finiteness).

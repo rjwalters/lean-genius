@@ -28,10 +28,10 @@
     "goal": "Formalize {n | Odd n and IsPrimitiveAbundant n}.Infinite in Lean 4 / Mathlib, exhibiting a concrete infinite family of odd primitive abundant witnesses with proofs that each is odd, abundant, and has every proper divisor deficient."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-20",
     "iteration": 4,
-    "focus": "Route-1 primitivity reduced to pure divisor-sum arithmetic; infinitude still open",
+    "focus": "COMPLETED 2026-07-24: OddPrimitiveAbundant.Infinite proved via consecutive-prime first-crossing family (researcher-2)",
     "blockers": [
       {
         "route": "Route 1 — odd deficient family mₖ with I(mₖ)→2⁻ + Bertrand-type prime window",
@@ -42,9 +42,14 @@
         "route": "Route 2 — primitive-part extraction from an abundant number",
         "reopenCriterion": "permanently closed: DISPROVEN under strict IsPrimitiveAbundant (A071395) — not_isPrimitiveAbundant_12 / no_isPrimitiveAbundant_dvd_12",
         "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "RESOLVED 2026-07-24 (was: SATURATED — Route 1 needs unknown odd deficient family with I(m)->2-, Route 2 extraction cannot control generators): target PROVED by a third mechanism — first-crossing products of consecutive primes p_a...p_{b-1} (sum 1/p divergence forces crossing; minimality + mod-4 sigma!=2n exclusion give strict primitivity; distinct least primes give injectivity). No Bertrand window, no extraction.",
+        "reopenCriterion": "resolved, nothing to reopen",
+        "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "Exhibit an infinite family of odd deficient m_k with abundancy index I(m_k)->2 and controllable I*(m_k), so the rational prime window (I*/(2-I*), I(m)/(2-I(m))) is nonempty and contains a prime coprime to m_k (Bertrand-type input). Infinitude remains genuinely open.",
+    "nextAction": "None — target proved. Follow-ups: fixed-least-prime infinitude; omega >= 3 for odd abundants; Dickson finiteness.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -52,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1-9, 2026-07-22, host-verified lake env lean exit 0, all new results [propext, Classical.choice, Quot.sound]): corrected Route 2 PROVED at A091191 strength — extraction (every abundant number has a weakly primitive abundant divisor) + characterization (abundant iff multiple of an A091191-primitive), odd-compatible structure theorem included. 12 is weak-primitive but not strict (perfect divisor 6). Infinitude NOT resolved — question sharpens to: infinitely many odd A091191-primitives? Route-1 sigma engine + prime window unchanged; base witness 945 verified in both senses.",
+    "progressSummary": "COMPLETED 2026-07-24: OddPrimitiveAbundant.Infinite (strict A006038) PROVED axiom-free via the consecutive-prime first-crossing family — for each start a>=1 multiply consecutive primes until first abundant; divergence of sum 1/p forces the crossing, first-crossing minimality + mod-4 exclusion of sigma=2n give all-proper-divisors-deficient, distinct least primes give injectivity. Docker build green. The 2026-07-21 SATURATED verdict is resolved: the blocked routes assumed the wrong witness shape. Follow-ups recorded: fixed-least-prime infinitude, omega>=3 for odd abundants, Dickson finiteness.",
     "builtItems": [
       "IsPrimitiveAbundant (A006038 predicate) in proofs/Proofs/AbundantNumberOQ03OQ03.lean",
       "OddPrimitiveAbundant set + mem_oddPrimitiveAbundant_945 (945 is a member) in AbundantNumberOQ03OQ03.lean",
@@ -76,7 +81,12 @@
       "exists_isWeakPrimitiveAbundant_dvd (extraction, strong induction) in AbundantNumberOQ03OQ03.lean",
       "abundant_iff_exists_isWeakPrimitiveAbundant_dvd (characterization) in AbundantNumberOQ03OQ03.lean",
       "odd_abundant_iff_exists_odd_isWeakPrimitiveAbundant_dvd (odd structure theorem) in AbundantNumberOQ03OQ03.lean",
-      "isWeakPrimitiveAbundant_twelve + IsPrimitiveAbundant.isWeakPrimitiveAbundant in AbundantNumberOQ03OQ03.lean"
+      "isWeakPrimitiveAbundant_twelve + IsPrimitiveAbundant.isWeakPrimitiveAbundant in AbundantNumberOQ03OQ03.lean",
+      "sum_divisors_prod_nth: sigma of index-finset products of distinct nth-primes (generalizes sum_divisors_mul_prime)",
+      "sum_divisors_prod_nth_ne_two_mul: squarefree odd products are never perfect (mod-4)",
+      "exists_crossing: the single analytic input (Nat.Primes.not_summable_one_div + hand-rolled Weierstrass 1+sum <= prod(1+.))",
+      "crossing / consecutivePrimeWitness + lt_crossing, erase_prod_deficient, consecutivePrimeWitness_mem, consecutivePrimeWitness_injective",
+      "oddPrimitiveAbundant_infinite + infinitely_many_odd_primitive_abundant: THE TARGET, 0 sorries 0 axioms"
     ],
     "insights": [
       "945 = 3³·5·7 is not just the smallest odd abundant number but is odd PRIMITIVE abundant (OEIS A006038): all 15 proper divisors 1,3,5,7,9,15,21,27,35,45,63,105,135,189,315 are deficient — verified axiom-free.",
@@ -91,16 +101,19 @@
       "Route-2 (primitive-part extraction) as recorded is FALSE under the strict IsPrimitiveAbundant (all proper divisors deficient, A071395): 12 is abundant but no divisor of 12 is strict-primitive-abundant (smallest is 20); a perfect proper divisor (6|12) blocks strict primitivity. Extraction holds only for the weaker A091191 notion (no abundant proper divisor).",
       "Corrected Route 2 PROVED at A091191 strength: every abundant number has a weakly-primitive (no abundant proper divisor) abundant divisor, by strong induction; upgrades to characterization abundant iff multiple of an A091191-primitive, odd-compatibly (Nat.Abundant.of_dvd + Odd.of_dvd_nat)",
       "12 is A091191-weakly-primitive but not A071395-strict-primitive: the two notions part ways exactly at the smallest abundant number, blocked only by its perfect divisor 6",
-      "Extraction does NOT give infinitude: the infinite odd abundant set could in principle be generated by finitely many odd A091191-primitives (e.g. 945 alone for Mathlib witnesses) — the open question sharpens to: are there infinitely many odd A091191-primitives?"
+      "Extraction does NOT give infinitude: the infinite odd abundant set could in principle be generated by finitely many odd A091191-primitives (e.g. 945 alone for Mathlib witnesses) — the open question sharpens to: are there infinitely many odd A091191-primitives?",
+      "The saturation fixated on two SHAPES (base x one appended prime; divisor extraction); the third shape — grow the base through the abundance boundary — needs no odd family with I(m)->2- at all: divergence of sum 1/p supplies the crossing for every start",
+      "First-crossing minimality is exactly the primitivity engine: predecessor sigma<=2n, equality excluded mod 4 for squarefree odd (>=2 factors: 4 | prod(p_i+1) but 2n == 2 mod 4), and swapping the omitted prime only helps (p_i(p_c+1) <= p_c(p_i+1))",
+      "Injectivity for free: distinct starting indices give witnesses with distinct least prime factors — no crossing comparison needed",
+      "Lean: inline anonymous Equiv into Equiv.summable_iff (have-bound equivs are opaque, comp will not reduce); v4.31 Finset.range_subset_range replaces range_subset for the range-subset-range iff; Nat.Ico_succ_right_eq_insert_Ico is Nat-namespaced; mul_prod_erase needs explicit f against set-variables"
     ],
     "mathlibGaps": [
       "No Nat.Coprime.divisors_mul (Finset equality for divisors of a coprime product) in Mathlib v4.31 — only Nat.Coprime.sum_divisors_mul (the sum) and card_divisors_mul (the count). Blocks a clean coprime proper-divisor decomposition."
     ],
     "nextSteps": [
-      "Find infinite odd deficient family m_k with I(m_k)->2 (abundancy index near 2 from below)",
-      "Bound I*(m_k) so the rational prime window is nonempty for infinitely many k",
-      "Bertrand-type prime existence in the window (I*/(2-I*), I(m)/(2-I(m))), coprime to m_k",
-      "Route 2 alternative: primitive-part extraction from Nat.infinite_odd_abundant"
+      "Follow-up (materially weaker than parent, does not yield it back): infinitely many odd primitive abundants with least prime factor 3 — needs non-squarefree exponent-crossings, new proper-divisor analysis",
+      "Follow-up (elementary, session-sized): every odd abundant number has at least 3 distinct prime factors (I(3^a p^b) < (3/2)(5/4) < 2)",
+      "Deep: Dickson 1913 finiteness — for each k, finitely many odd primitive abundants with exactly k prime factors"
     ]
   },
   "tags": [
