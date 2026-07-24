@@ -116,11 +116,19 @@
       "mathContext": "$p\\,L(p) = k^p - k$."
     },
     {
-      "id": "identification-and-fermat",
-      "title": "Identification with the Möbius sum, and Fermat",
+      "id": "identification",
+      "title": "Identification with the Möbius Sum",
       "startLine": 99,
+      "endLine": 106,
+      "summary": "aperiodic_eq_mobius_companion: p·L(p) = ∑_{d∣p} μ(d)·k^{p/d}, ties the combinatorial aperiodic count from the previous section to the Möbius closed form of mobius_companion_prime by a single linear_combination.",
+      "mathContext": "$p\\,L(p) = \\sum_{d\\mid p}\\mu(d)k^{p/d}$."
+    },
+    {
+      "id": "fermat-aperiodic",
+      "title": "Fermat's Little Theorem via the Aperiodic Witness",
+      "startLine": 108,
       "endLine": 129,
-      "summary": "aperiodic_eq_mobius_companion: p·L(p) = ∑_{d∣p} μ(d)·k^{p/d}; fermat_dvd / fermat_dvd_nat: p ∣ k^p − k with witness L(p); fermat_modEq: k^p ≡ k [MOD p].",
+      "summary": "fermat_dvd / fermat_dvd_nat: p ∣ k^p − k, with the aperiodic necklace count L(p) (rather than the parent's total count N) as the explicit witness; fermat_modEq: k^p ≡ k [MOD p], via Nat.modEq_iff_dvd'.",
       "mathContext": "$p \\mid k^p - k,\\qquad k^p \\equiv k \\pmod p$."
     }
   ],
