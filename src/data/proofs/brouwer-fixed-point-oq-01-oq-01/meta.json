@@ -132,9 +132,17 @@
       "id": "sperner",
       "title": "The 1D Sperner Lemma",
       "startLine": 101,
-      "endLine": 136,
-      "summary": "exists_sperner_edge: a false→true path has a bichromatic edge; colorChanges_pos_of_ne: positivity of the count.",
+      "endLine": 123,
+      "summary": "exists_sperner_edge: a false→true path has at least one bichromatic edge {i, i+1} — the discrete intermediate value theorem, obtained by unwrapping the odd count into a nonempty Finset via Finset.card_pos.",
       "mathContext": "Odd ⟹ positive ⟹ the edge set is nonempty (Finset.card_pos)."
+    },
+    {
+      "id": "corollaries-and-checks",
+      "title": "Quantitative Corollary and Sanity Checks",
+      "startLine": 125,
+      "endLine": 136,
+      "summary": "colorChanges_pos_of_ne restates the discrete IVT quantitatively (the count itself, not just an edge, is positive). Closing #check block confirms the three headline statements (even_colorChanges_iff, oddColorChanges_of_ne, exists_sperner_edge) elaborate as stated.",
+      "mathContext": "Positivity of colorChanges c n is the numeric shadow of exists_sperner_edge; both follow from the same oddness fact via Nat.pos_of_ne_zero."
     }
   ],
   "conclusion": {
