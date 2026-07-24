@@ -4,8 +4,8 @@
     "proofId": "erdos-179",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 47
+      "startLine": 46,
+      "endLine": 56
     },
     "title": "Arithmetic Progressions and Counting",
     "content": "arithmeticProgression a d k = Finset.image (i ↦ a + i*d) (Finset.range k). ContainsAP requires d > 0. countAPs counts k-APs via powerset filtering.",
@@ -29,8 +29,8 @@
     "proofId": "erdos-179",
     "type": "definition",
     "range": {
-      "startLine": 55,
-      "endLine": 68
+      "startLine": 64,
+      "endLine": 85
     },
     "title": "Supersaturation Function F_k(N, ℓ)",
     "content": "F k N ℓ = Nat.find of the minimum M such that every N-element set with ≥ M k-APs contains an ℓ-AP. SupersaturationProperty captures this threshold property.",
@@ -54,11 +54,11 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 76,
-      "endLine": 87
+      "startLine": 93,
+      "endLine": 101
     },
     "title": "Trivial Bounds on F",
-    "content": "Lower: F_k(N, ℓ) ≥ N^{1.99} eventually (axiom, from Behrend-type constructions). Upper: F_k(N, ℓ) ≤ N² (sorry). Random set perspective: expected k-APs ~ p^k·N² (sorry).",
+    "content": "Lower: F_k(N, ℓ) ≥ N^{1.99} eventually (axiom, from Behrend-type constructions). Upper: F_k(N, ℓ) ≤ N² (sorry).",
     "significance": "key",
     "mathContext": "The lower bound N^{1.99} comes from large AP-free sets: Behrend's construction gives a 3-AP-free subset of {1,...,N} of size N/exp(c√(log N)), which still contains ~N^{2-o(1)} pairs (hence 2-APs). More generally, ℓ-AP-free sets can have many k-APs (k < ℓ), showing F_k(N, ℓ) must be large. The trivial upper bound N² holds because any set of size N has at most C(N,2) ~ N²/2 pairs, bounding the number of k-APs. The Filter.atTop in the lower bound captures 'for all sufficiently large N'.",
     "relatedConcepts": [
@@ -78,8 +78,8 @@
     "proofId": "erdos-179",
     "type": "concept",
     "range": {
-      "startLine": 95,
-      "endLine": 103
+      "startLine": 109,
+      "endLine": 119
     },
     "title": "Erdős's Two Questions",
     "content": "Question1: F₃(N, 4) = o(N²), formalized as ∀ε > 0, eventually F₃(N,4) ≤ εN². Question2: lim log F₃(N, ℓ)/log N = 2, using Filter.Tendsto to nhds 2.",
@@ -103,8 +103,8 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 111,
-      "endLine": 130
+      "startLine": 127,
+      "endLine": 154
     },
     "title": "Fox-Pohoata Theorem and Corollaries",
     "content": "fox_pohoata_theorem: F_k(N, ℓ) ≤ N²/(log log N)^C for C > 0. Corollaries: question1_solved (1 sorry for final inequality), question2_solved (sorry).",
@@ -128,8 +128,8 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 138,
-      "endLine": 148
+      "startLine": 162,
+      "endLine": 177
     },
     "title": "Leng-Sah-Sawhney Improvement (2024)",
     "content": "leng_sah_sawhney: F_k(N, ℓ) ≤ N²/exp((log log N)^c). This is strictly stronger: exp((log log N)^c) >> (log log N)^C for large N.",
@@ -153,13 +153,13 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 156,
-      "endLine": 168
+      "startLine": 185,
+      "endLine": 196
     },
     "title": "Szemerédi's Theorem and Dense Sets",
-    "content": "szemeredi_theorem: for δ > 0, large sets with density ≥ δ contain ℓ-APs. F_k relates: dense sets have many k-APs, and supersaturation refines the density threshold.",
+    "content": "szemeredi_theorem: for δ > 0, large sets with density ≥ δ contain ℓ-APs. SzemerediImplication restates this in terms of F, connecting the supersaturation threshold back to the classical density formulation.",
     "significance": "key",
-    "mathContext": "Szemerédi's theorem (1975) is one of the most celebrated results in combinatorics. The formalization uses Finset (Fin N) to represent subsets of {0,...,N-1}, with Fin.valEmbedding to map to ℕ for the ContainsAP check. The SzemerediImplication connects F to density: a set of density δ has ~δ^k·N² many k-APs (by counting), so F_k(N, ℓ) relates to the Szemerédi density threshold r_ℓ(N)/N. The dense_sets_many_3APs axiom (with sorry for the bound) captures this counting argument.",
+    "mathContext": "Szemerédi's theorem (1975) is one of the most celebrated results in combinatorics. The formalization uses Finset (Fin N) to represent subsets of {0,...,N-1}, with Fin.valEmbedding to map to ℕ for the ContainsAP check. SzemerediImplication is a Prop (not yet connected to a proof here) asserting that F 3 N ℓ ≤ (δN)²/4 whenever density ≥ δ — a rough bound relating the two formulations of the density-vs-supersaturation phenomenon.",
     "relatedConcepts": [
       "Szemerédi's theorem",
       "Fin.valEmbedding",
@@ -178,25 +178,52 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 176,
-      "endLine": 191
+      "startLine": 204,
+      "endLine": 259
     },
     "title": "Roth's Theorem and Behrend's Construction",
-    "content": "roth_theorem: no 3-AP-free set has positive density. behrend_construction: 3-AP-free sets of size N/exp(c√(log N)). AP_free_has_2APs: pairs in AP-free sets (sorry).",
+    "content": "roth_theorem: no 3-AP-free set has positive density. behrend_construction: 3-AP-free sets of size N/exp(c√(log N)). arithmeticProgression_two and AP_free_has_2APs are fully proved (no axiom, no sorry): every finite set A has exactly A.card.choose 2 many 2-term APs, since every unordered pair {a,b} is itself the 2-AP (min a b, |a-b|) — the 3-AP-free hypothesis in AP_free_has_2APs's statement is not actually needed for the proof.",
     "significance": "supporting",
-    "mathContext": "Roth's theorem (1953) is the k = 3 case of Szemerédi, proved 22 years earlier using Fourier-analytic methods. Behrend's 1946 construction, predating Roth, shows the density bound cannot be much better than 1/exp(c√(log N)). For the supersaturation problem, Behrend's construction is relevant because it shows sets of size ~N/exp(c√(log N)) can avoid 3-APs while having ~N² 2-APs. The AP_free_has_2APs theorem (sorry) formalizes that every pair {a,b} with a ≠ b is a 2-AP, so countAPs(A, 2) = C(|A|, 2).",
+    "mathContext": "Roth's theorem (1953) is the k = 3 case of Szemerédi, proved 22 years earlier using Fourier-analytic methods. Behrend's 1946 construction, predating Roth, shows the density bound cannot be much better than 1/exp(c√(log N)). For the supersaturation problem, Behrend's construction is relevant because it shows sets of size ~N/exp(c√(log N)) can avoid 3-APs while having ~N² 2-APs. AP_free_has_2APs formalizes that every pair {a,b} with a ≠ b is a 2-AP, so countAPs(A, 2) = C(|A|, 2) — proved via `Finset.card_powersetCard` after matching the powerset-filter definition of countAPs against `A.powersetCard 2`.",
     "relatedConcepts": [
       "Roth's theorem",
       "Behrend's construction",
       "Fourier methods",
-      "density bounds"
+      "density bounds",
+      "elementary 2-AP counting"
     ],
     "prerequisites": [
       "roth_theorem",
       "behrend_construction",
       "Real.exp",
       "Real.sqrt",
-      "Real.log"
+      "Real.log",
+      "Finset.card_powersetCard"
+    ]
+  },
+  {
+    "id": "erdos-179-special-cases",
+    "proofId": "erdos-179",
+    "type": "insight",
+    "range": {
+      "startLine": 265,
+      "endLine": 276
+    },
+    "title": "Special Cases and Asymptotics",
+    "content": "F_2_well_defined: F 2 N ℓ ≤ N.choose 2 (sorry — the trivial bound restricted to k = 2, using the C(N,2) count of 2-APs from AP_free_has_2APs). exponent_is_2: the logarithmic ratio log(F k N ℓ)/log N tends to 2 (sorry), combining the Fox-Pohoata upper bound and the F_lower_bound lower bound into the exact exponent claimed by Question 2.",
+    "significance": "supporting",
+    "mathContext": "F_2_well_defined specializes the generic upper bound to k = 2 using the exact 2-AP count from Part VIII rather than the cruder N² bound. exponent_is_2 is the general statement underlying Question2 for arbitrary k, not just k = 3 — both remain sorry, since they require combining the axiomatized asymptotic bounds (fox_pohoata_theorem, F_lower_bound) into a Filter.Tendsto convergence statement.",
+    "relatedConcepts": [
+      "logarithmic exponent",
+      "Filter.Tendsto",
+      "asymptotic bounds",
+      "Nat.choose"
+    ],
+    "prerequisites": [
+      "F_lower_bound",
+      "fox_pohoata_theorem",
+      "AP_free_has_2APs",
+      "Filter.Tendsto"
     ]
   },
   {
@@ -204,8 +231,8 @@
     "proofId": "erdos-179",
     "type": "insight",
     "range": {
-      "startLine": 215,
-      "endLine": 228
+      "startLine": 284,
+      "endLine": 303
     },
     "title": "Main Result: Problem Solved",
     "content": "erdos_179: Question1 ∧ Question2 = ⟨question1_solved, question2_solved⟩. Both questions answered YES. erdos_179_answer is a String summary.",
