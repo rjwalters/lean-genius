@@ -995,4 +995,185 @@ theorem fThreshold_one_constant {m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) :
 #check @fThreshold_one_five
 #check @fThreshold_one_constant
 
+/-
+## The `r = 2` row opens: `fThreshold 2 4 = 1`
+
+At `(r, n) = (2, 4)` the target is 3-colorability, and on four vertices the
+ONLY graph that is not 3-colorable is `K₄`.  So the threshold is governed by a
+single obstruction:
+
+* **Upper bound** (`two_notMem_fThresholdSet_two_four`): with budget `2`,
+  `K₄` itself satisfies the reduction hypothesis — removing the two opposite
+  edges `{0,1}` and `{2,3}` leaves the 4-cycle `0–2–1–3–0`, which is
+  2-colorable by the bipartition `{0,1} | {2,3}` (and every induced subgraph
+  inherits the same removal and coloring).  Since `K₄` is not 3-colorable,
+  `2 ∉ fThresholdSet 2 4`.
+* **Membership of `1`** (`one_mem_fThresholdSet_two_four`): a graph with any
+  non-edge `{u,v}` is explicitly 3-colorable (`u, v` share a color, the other
+  two vertices get fresh colors).  And the complete graph cannot satisfy the
+  budget-1 hypothesis at `S = univ`: one removed pair kills at most one edge,
+  so a triangle avoiding the removed edge survives, and its three vertices
+  cannot be 2-colored (pigeonhole on `Fin 2`).
+
+Note the contrast with the `r = 1` row: `fThreshold 1 4 = 2` but
+`fThreshold 2 4 = 1` — at `n = 4` the threshold strictly DROPS as `r` grows
+(`fThreshold_lt_at_four`), because the weaker target (3-colorability) has a
+rarer obstruction (`K₄` alone) whose own reducibility is cheap to satisfy.
+-/
+
+/-- The two removed pairs turning `K₄` into the 4-cycle `0–2–1–3–0`. -/
+def killC4 : Finset (Fin 4 × Fin 4) := {(0, 1), (2, 3)}
+
+/-- **Budget `2` fails at `(r, n) = (2, 4)`**: `K₄` becomes bipartite after
+removing the two opposite edges `{0,1}`, `{2,3}` (so every induced subgraph
+passes the reduction test with budget `2`), yet `K₄` is not 3-colorable. -/
+theorem two_notMem_fThresholdSet_two_four : 2 ∉ fThresholdSet 2 4 := by
+  intro hmem
+  have hP : ∀ S : Finset (Fin 4), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (SGraph.completeGraph 4).adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (SGraph.completeGraph 4).symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => (SGraph.completeGraph 4).irrefl v h)) 2 2 := by
+    intro S
+    refine ⟨killC4, by decide,
+      ⟨fun u => if u.val ≤ 1 then 0 else 1, ?_⟩⟩
+    rintro u v ⟨⟨-, -, huv⟩, hnuv, hnvu⟩ hcuv
+    -- The bipartition `{0,1} | {2,3}`: a monochromatic pair is either the
+    -- diagonal (contradicting `K₄`-adjacency) or one of the removed edges.
+    fin_cases u <;> fin_cases v <;>
+      first
+        | exact huv rfl
+        | exact hnuv (by decide)
+        | exact hnvu (by decide)
+        | exact absurd hcuv (by decide)
+  exact completeGraph_not_hasColoring (by omega)
+    (hmem (SGraph.completeGraph 4) hP)
+
+/-- Upper bound: `fThreshold 2 4 ≤ 1`. -/
+theorem fThreshold_two_four_le_one : fThreshold 2 4 ≤ 1 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  rw [not_le] at hlt
+  exact two_notMem_fThresholdSet_two_four
+    (fThresholdSet_downClosed (by omega) hk)
+
+/-- **Budget `1` forces 4-vertex graphs to be 3-colorable.**  If some pair is
+non-adjacent, an explicit 3-coloring exists outright.  Otherwise the graph is
+complete, and the budget-1 hypothesis at `S = univ` is absurd: one removed
+pair kills at most one edge, a triangle avoiding it survives, and `Fin 2`
+pigeonhole forces a monochromatic surviving edge. -/
+theorem one_mem_fThresholdSet_two_four : 1 ∈ fThresholdSet 2 4 := by
+  intro G hP
+  by_cases hfull : ∀ u v : Fin 4, u ≠ v → G.adj u v
+  · -- `G` is complete: refute the `S = univ` budget-1 hypothesis.
+    exfalso
+    obtain ⟨removed, hcard, c, hc⟩ := hP Finset.univ
+    obtain ⟨p, hsub⟩ := Finset.card_le_one_iff_subset_singleton.1 hcard
+    -- Two vertices clear of both endpoints of the removed pair.
+    have hcard2 : 1 < (Finset.univ \ ({p.1, p.2} : Finset (Fin 4))).card := by
+      have h2 : ({p.1, p.2} : Finset (Fin 4)).card ≤ 2 :=
+        le_trans (Finset.card_insert_le _ _) (by simp)
+      rw [Finset.card_sdiff (Finset.subset_univ _)]
+      have h4 : (Finset.univ : Finset (Fin 4)).card = 4 := by simp
+      omega
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.1 hcard2
+    simp only [Finset.mem_sdiff, Finset.mem_univ, Finset.mem_insert,
+      Finset.mem_singleton, true_and] at ha hb
+    have ha1 : a ≠ p.1 := fun h => ha (Or.inl h)
+    have ha2 : a ≠ p.2 := fun h => ha (Or.inr h)
+    have hb1 : b ≠ p.1 := fun h => hb (Or.inl h)
+    -- Surviving edges keep their endpoints differently colored.
+    have hsurv : ∀ x y : Fin 4, (x, y) ≠ p → (y, x) ≠ p → x ≠ y →
+        c x ≠ c y := by
+      intro x y h1 h2 hxy
+      exact hc x y ⟨⟨Finset.mem_univ x, Finset.mem_univ y, hfull x y hxy⟩,
+        fun hm => h1 (Finset.mem_singleton.1 (hsub hm)),
+        fun hm => h2 (Finset.mem_singleton.1 (hsub hm))⟩
+    -- `Fin 2` pigeonhole on the triangle `{a, b, p.1}`.
+    have h2 : ∀ x : Fin 2, x = 0 ∨ x = 1 := fun x => by omega
+    have hpigeon : c a = c b ∨ c a = c p.1 ∨ c b = c p.1 := by
+      rcases h2 (c a) with h1 | h1 <;> rcases h2 (c b) with h2' | h2' <;>
+        rcases h2 (c p.1) with h3 | h3 <;> simp [h1, h2', h3]
+    rcases hpigeon with h | h | h
+    · exact hsurv a b (fun he => ha1 (congrArg Prod.fst he))
+        (fun he => hb1 (congrArg Prod.fst he)) hab h
+    · exact hsurv a p.1 (fun he => ha1 (congrArg Prod.fst he))
+        (fun he => ha2 (congrArg Prod.snd he)) ha1 h
+    · exact hsurv b p.1 (fun he => hb1 (congrArg Prod.fst he))
+        (fun he => hb (Or.inr (congrArg Prod.snd he))) hb1 h
+  · -- Some non-edge `{u, v}`: color `u, v` together, the rest fresh.
+    push Not at hfull
+    obtain ⟨u, v, hne, hnadj⟩ := hfull
+    obtain ⟨a, b, hab, hset⟩ := Finset.card_eq_two.1
+      (show (Finset.univ \ ({u, v} : Finset (Fin 4))).card = 2 by
+        rw [Finset.card_sdiff (Finset.subset_univ _)]
+        have h4 : (Finset.univ : Finset (Fin 4)).card = 4 := by simp
+        have h2 : ({u, v} : Finset (Fin 4)).card = 2 := Finset.card_pair hne
+        omega)
+    have hcover : ∀ x : Fin 4, x ≠ a → x ≠ b → x = u ∨ x = v := by
+      intro x hxa hxb
+      by_contra hx
+      push Not at hx
+      have hxin : x ∈ Finset.univ \ ({u, v} : Finset (Fin 4)) := by
+        simp [hx.1, hx.2]
+      rw [hset] at hxin
+      simp [hxa, hxb] at hxin
+    refine ⟨fun x => if x = a then 1 else if x = b then 2 else 0, ?_⟩
+    intro x y hadj hcxy
+    have hxy : x ≠ y := fun h => G.irrefl y (h ▸ hadj)
+    by_cases hxa : x = a
+    · subst hxa
+      by_cases hya : y = a
+      · exact hxy hya.symm
+      · by_cases hyb : y = b
+        · subst hyb
+          simp [hab.symm] at hcxy
+        · simp [hya, hyb] at hcxy
+    · by_cases hxb : x = b
+      · subst hxb
+        by_cases hyb : y = b
+        · exact hxy hyb.symm
+        · by_cases hya : y = a
+          · subst hya
+            simp [hab.symm] at hcxy
+          · simp [hab.symm, hya, hyb] at hcxy
+      · by_cases hya : y = a
+        · simp [hxa, hxb, hya] at hcxy
+        · by_cases hyb : y = b
+          · simp [hxa, hxb, hyb] at hcxy
+          · rcases hcover x hxa hxb with rfl | rfl <;>
+              rcases hcover y hya hyb with rfl | rfl
+            · exact hxy rfl
+            · exact hnadj hadj
+            · exact hnadj (G.symm _ _ hadj)
+            · exact hxy rfl
+
+/-- Lower bound: `1 ≤ fThreshold 2 4`, via membership and boundedness. -/
+theorem one_le_fThreshold_two_four : 1 ≤ fThreshold 2 4 := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    one_mem_fThresholdSet_two_four
+
+/-- **The first exact value in the `r = 2` row: `fThreshold 2 4 = 1`.**  A
+per-subgraph deletion budget of `1` forces 3-colorability of every 4-vertex
+graph, and `1` is the largest budget that does (`K₄` passes the budget-2 test
+by shedding two opposite edges, yet is not 3-colorable). -/
+theorem fThreshold_two_four : fThreshold 2 4 = 1 :=
+  le_antisymm fThreshold_two_four_le_one one_le_fThreshold_two_four
+
+/-- **The threshold strictly drops as `r` grows at `n = 4`**:
+`fThreshold 2 4 = 1 < 2 = fThreshold 1 4`.  The weaker target
+(3-colorability) has a rarer obstruction (`K₄` alone), and that obstruction's
+own reducibility is cheap — so the largest "safe" budget shrinks. -/
+theorem fThreshold_lt_at_four : fThreshold 2 4 < fThreshold 1 4 := by
+  rw [fThreshold_two_four, fThreshold_one_four]
+  omega
+
+#check @killC4
+#check @two_notMem_fThresholdSet_two_four
+#check @one_mem_fThresholdSet_two_four
+#check @fThreshold_two_four
+#check @fThreshold_lt_at_four
+
 end Erdos1092OQ02
