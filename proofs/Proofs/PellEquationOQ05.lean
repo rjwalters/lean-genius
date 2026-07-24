@@ -531,7 +531,7 @@ theorem three_dvd_factorization_cnorm_aux (p : ℕ) (hp : p.Prime)
           lt_of_lt_of_le (by norm_num) (Nat.pow_le_pow_left hp.two_le 3)
         calc (cnorm a' b' c').natAbs
             = 1 * (cnorm a' b' c').natAbs := (one_mul _).symm
-          _ < p ^ 3 * (cnorm a' b' c').natAbs := Nat.mul_lt_mul_right hpos hp3
+          _ < p ^ 3 * (cnorm a' b' c').natAbs := (Nat.mul_lt_mul_right hpos).mpr hp3
           _ = n := hnabs.symm
       have hIH := IH _ hlt a' b' c' rfl h0'
       rw [hnabs, Nat.factorization_mul (pow_ne_zero 3 hp.ne_zero)
