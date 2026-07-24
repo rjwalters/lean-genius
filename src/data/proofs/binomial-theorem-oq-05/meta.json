@@ -72,7 +72,8 @@
       "**Bernoulli = first-order binomial truncation.** $(1+a)^n = 1 + na + \\binom{n}{2}a^2 + \\cdots$. Bernoulli's inequality is precisely the statement that the tail $\\binom{n}{2}a^2 + \\cdots$ is nonnegative — immediate when $a \\ge 0$, and still true down to $a \\ge -2$ by a more careful argument captured in Mathlib's `one_add_mul_le_pow`.",
       "**Strictness is the quadratic term.** The gap between $(1+a)^n$ and $1 + na$ is at least $\\binom{n}{2}a^2$, positive once $n \\ge 2$ and $a \\ne 0$. The induction makes this concrete: each step adds a positive $m a^2$.",
       "**Tangent-line viewpoint.** The $a^n$ form $1 + n(a-1) \\le a^n$ says the graph of $t \\mapsto t^n$ lies above its tangent line at $t = 1$ — a convexity statement provable without calculus.",
-      "**From estimate to limit.** Bernoulli turns a qualitative fact ($(1+a)^n \\to \\infty$ for $a > 0$) into a quantitative one: the $n$-th power is at least the line $1 + na$, so it diverges at least linearly."
+      "**From estimate to limit.** Bernoulli turns a qualitative fact ($(1+a)^n \\to \\infty$ for $a > 0$) into a quantitative one: the $n$-th power is at least the line $1 + na$, so it diverges at least linearly.",
+      "**Two of the named results are deliberate aliases, not new facts.** `one_add_pow_ge_one_add_nmul` is a literal restatement of `bernoulli_nonneg` (named to sit next to the divergence theorem it supports), and `pow_ge_linear_of_one_le` restates `bernoulli_pow` specialized to $a \\ge 1$. The file trades a slightly inflated theorem count for discoverability under both the $(1+a)^n$ and $a^n$ naming conventions."
     ],
     "prerequisites": [
       "Binomial theorem: (1+a)ⁿ = Σ C(n,k) aᵏ",
