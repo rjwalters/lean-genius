@@ -31,19 +31,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 6,
-    "focus": "Iteration 6 (researcher-2, 2026-07-24, S6 upstream-prep COMPLETE): Fragment 1 generalized in place to upstream-ready generality (docker exit 0, 8576 jobs, 0 ax / 0 sorry). Steps 1-3 core now over arbitrary NontriviallyNormedField; main theorem + swap-0-1 step gated by IsRCLikeNormedField (exactly Mathlib n=2 Schwarz hypothesis). NEW: iteratedFDeriv_comp_perm_of_minSmoothness — field-uniform statement in Mathlib minSmoothness idiom (non-RCLike branch delegates to analytic ContDiffAt.iteratedFDeriv_comp_perm), mirroring ContDiffAt.isSymmSndFDerivAt; iteratedFDerivWithin_comp_perm_of_isOpen (Within on open sets). Remaining S7 candidate: full UniqueDiffOn Within induction via fderivWithin. Fragments 2-6 (manifold Stokes) DEEP multi-session, unchanged.",
+    "iteration": 8,
+    "focus": "Iteration 8 (researcher-3, 2026-07-24, S8 COMPLETE): classical nested directional-derivative layer added to FundamentalTheoremCalculusOQ02Incomplete01.lean (0 ax / 0 sorry, host-verified lake env lean exit 0). nestedFDeriv (n-fold nested ∂_{v0}∂_{v1}…f operator), nestedFDeriv_eq_iteratedFDeriv (general-n nested/multilinear bridge — Mathlib v4.31 has only n=2 iteratedFDeriv_two_apply), nestedFDeriv_comp_perm(_of_minSmoothness) (classical all-orders Clairaut in nested form), fderiv_fderiv_comm (C² nested ∂_a∂_b f = ∂_b∂_a f — distinct from IsSymmSndFDerivAt, evaluation inside vs outside the outer derivative).",
     "blockers": [],
-    "nextAction": "Fragment 1 done (the S4-planned `IteratedFDerivSymmetric.lean` target is superseded by `FundamentalTheoremCalculusOQ02Incomplete01.lean`). Honest next options: (i) S6 Mathlib upstream-prep of `iteratedFDeriv_comp_perm` (natural home: near `Mathlib.Analysis.Analytic.IteratedFDeriv`; generalize R to IsRCLikeNormedField via `minSmoothness`); (ii) Fragments 2-6 (differential-form integration on manifolds with boundary) remain DEEP and are NOT session-sized — do not chase without a dedicated multi-session plan. Within-versions (iteratedFDerivWithin on UniqueDiffOn sets) are a plausible medium extension.",
+    "nextAction": "Fragment 1 feature-complete incl. classical nested API. Honest next options: (i) actual Mathlib upstream PR — needs a mathlib4 clone + cache + port to current master (none on this host); (ii) S9 session-sized: Within nested bridge via fderivWithin_continuousMultilinear_apply_const_apply, or lineDeriv corollaries via DifferentiableAt.lineDeriv_eq_fderiv; (iii) Fragments 2-6 (manifold Stokes) DEEP multi-session — do not chase without a dedicated plan.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 0,
       "approachesTried": 0
     },
-    "lastUpdate": "2026-07-24T10:20:00.000Z"
+    "lastUpdate": "2026-07-24T17:55:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "Fragment 1 (all-orders Schwarz/Clairaut for iteratedFDeriv) is COMPLETE and upstream-ready: S5 proved the C^n global theorem over ℝ, S6 generalized to IsRCLikeNormedField/minSmoothness, S7 added the full Within/UniqueDiffOn version (boundary points of convex Stokes domains included). 0 axioms, 0 sorries throughout. Remaining work: an actual Mathlib PR, and the DEEP Fragments 2-6 (manifold Stokes).",
+    "progressSummary": "Fragment 1 (all-orders Schwarz/Clairaut for iteratedFDeriv) is COMPLETE and upstream-ready: S5 global C^n theorem over ℝ, S6 IsRCLikeNormedField/minSmoothness generalization, S7 full Within/UniqueDiffOn version, S8 classical nested directional-derivative layer (general-n nested/multilinear bridge + nested Clairaut + fderiv_fderiv_comm). 0 axioms, 0 sorries throughout. Remaining: an actual Mathlib PR (no mathlib4 checkout on this host), optional S9 Within/lineDeriv nested corollaries, and the DEEP Fragments 2-6 (manifold Stokes).",
     "builtItems": [
       "S7 (researcher-3, 2026-07-24): full `Within`/`UniqueDiffOn` version added to `FundamentalTheoremCalculusOQ02Incomplete01.lean` — `iteratedFDerivWithin_comp_perm` (UniqueDiffOn s + s ⊆ closure (interior s), C^n on s, symmetry at every point of s incl. boundary), `iteratedFDerivWithin_comp_perm_of_convex` (convex sets w/ nonempty interior over ℝ: closed balls, Icc, simplices), `iteratedFDerivWithin_comp_perm_of_minSmoothness` (field-uniform), `iteratedFDerivWithin_domDomCongr`; whole induction redone with fderivWithin. 0 axioms, 0 sorries; host-verified on pinned v4.31.0 (rev 9a9483a929).",
       "S5 ACT (researcher-3 PR, 2026-07-24): `proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` — `iteratedFDeriv_comp_perm` (C^n, finite smoothness, over R), plus `iteratedFDeriv_domDomCongr` and a C^infty specialization; 0 axioms, 0 sorries.",
@@ -55,7 +55,11 @@
       "S6: fderiv_comp_perm_eq / iteratedFDeriv_comp_tailLift / iteratedFDeriv_add_two_apply generalized to arbitrary NontriviallyNormedField (FundamentalTheoremCalculusOQ02Incomplete01.lean)",
       "S6: iteratedFDeriv_comp_perm + corollaries now over IsRCLikeNormedField (R or C), not just R",
       "S6: iteratedFDeriv_comp_perm_of_minSmoothness — field-uniform minSmoothness statement over any nontrivially normed field",
-      "S6: iteratedFDerivWithin_comp_perm_of_isOpen — Within version on open sets"
+      "S6: iteratedFDerivWithin_comp_perm_of_isOpen — Within version on open sets",
+      "nestedFDeriv + rfl-lemmas (zero/succ_apply/one_apply) in FundamentalTheoremCalculusOQ02Incomplete01.lean (S8)",
+      "nestedFDeriv_eq_iteratedFDeriv: general-n nested/multilinear bridge, any NontriviallyNormedField (S8)",
+      "nestedFDeriv_comp_perm + nestedFDeriv_comp_perm_of_minSmoothness: classical all-orders Clairaut, nested form (S8)",
+      "fderiv_fderiv_comm: C² nested second-derivative commutation (S8)"
     ],
     "insights": [
       "FTC is represented as the 1D Stokes theorem with M=[a,b], omega=F, and d omega=F' dx.",
@@ -65,7 +69,10 @@
       "v4.31 Mathlib gained the analytic-case n-th-derivative symmetry (Gouezel, Mathlib.Analysis.Analytic.IteratedFDeriv) and the n=2 IsSymmSndFDeriv API; the finite-smoothness C^n general-n case was the surviving gap and is exactly what Fragment 1 needed. Peel-left + decomposeFin + conjugated swaps avoids Subgroup.closure entirely; the S4 fear about case i=0 currying (65-100 LOC) shrank to ~30 LOC because `iteratedFDeriv_succ_apply_left`/`iteratedFDeriv_succ_eq_comp_left` are rfl and `LinearIsometryEquiv.comp_fderiv` (with EXPLICIT type args — implicit unification times out at whnf on CMM instance paths) gives the currying step in one line.",
       "The ONLY R/C-specific input to the C^n Schwarz induction is the n=2 base (ContDiffAt.isSymmSndFDerivAt); everything else (domDomCongr isometry transport, tail lifts, decomposeFin conjugation) is field-generic.",
       "Mathlib minSmoothness idiom unifies the C^n (RCLike) and C^omega (general field) versions into one statement — the natural upstream form; by_cases IsRCLikeNormedField with the non-RCLike branch delegating to the analytic version, exactly like isSymmSndFDerivAt itself.",
-      "v4.31: smoothness-exponent notations (nat-infty-omega, omega, infty) are scoped[ContDiff]; files using minSmoothness need open scoped ContDiff even with import Mathlib. minSmoothness is irreducible_def — unfold via simp [minSmoothness, h]."
+      "v4.31: smoothness-exponent notations (nat-infty-omega, omega, infty) are scoped[ContDiff]; files using minSmoothness need open scoped ContDiff even with import Mathlib. minSmoothness is irreducible_def — unfold via simp [minSmoothness, h].",
+      "The general-n bridge between nested directional derivatives and iteratedFDeriv is a one-induction proof once fderiv_continuousMultilinear_apply_const_apply is known: the IH turns the inner nest into a CONSTANT CMM-application of D^n f, which commutes past fderiv; Mathlib had the bridge only at n=2 (iteratedFDeriv_two_apply).",
+      "Mathlib Analysis/Distribution/DerivNotation.lean defines an abstract iterated line-derivative operator (LineDeriv.iteratedLineDerivOp, notation ∂^{v}) but provides NO instance for plain functions E → F and NO relation to iteratedFDeriv — the concrete nested/multilinear bridge was genuinely missing.",
+      "fderiv_fderiv_comm (nested C² Clairaut, evaluation INSIDE the outer derivative) is not IsSymmSndFDerivAt (evaluation OUTSIDE): the two differ exactly by the constant-application commutation step, and Mathlib has no lemma of the nested shape."
     ],
     "mathlibGaps": [
       "`iteratedFDeriv_comp_perm` for C^n (finite smoothness) functions is still absent from Mathlib v4.31 (only n=2 and the analytic case exist) — now proved in this slug's file; upstream candidate.",

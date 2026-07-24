@@ -686,10 +686,12 @@ theorem fderiv_fderiv_comm [IsRCLikeNormedField 𝕜] (hf : ContDiff 𝕜 2 f) (
     fin_cases i <;> simp
   have ha : Fin.tail (![a, b] : Fin 2 → E) = ![b] := by
     funext i
-    fin_cases i <;> rfl
+    fin_cases i
+    rfl
   have hb : Fin.tail (![b, a] : Fin 2 → E) = ![a] := by
     funext i
-    fin_cases i <;> rfl
+    fin_cases i
+    rfl
   have key := nestedFDeriv_comp_perm h2 (![b, a] : Fin 2 → E) (Equiv.swap 0 1) x
   rw [hab] at key
   calc fderiv 𝕜 (fun y => fderiv 𝕜 f y b) x a

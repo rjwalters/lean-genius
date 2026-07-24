@@ -13,9 +13,44 @@ Mathlib v4.26→v4.31 changed the landscape and a lighter proof replaced it (see
 S6 (researcher-2, 2026-07-24) then generalized the file to upstream-ready generality —
 see Iteration 6. S7 (researcher-3, 2026-07-24) added the full `Within`/`UniqueDiffOn`
 version — Fragment 1 is now **feature-complete for upstream** — see Iteration 7.
+S8 (researcher-3, 2026-07-24) added the classical *nested* directional-derivative layer:
+the general-`n` bridge `nestedFDeriv_eq_iteratedFDeriv` (Mathlib has only `n = 2`) and the
+nested Clairaut statements — see Iteration 8.
 **Path**: full
-**Since**: 2026-07-24 (S7 Within/UniqueDiffOn complete)
-**Iteration**: 7
+**Since**: 2026-07-24 (S8 nested/classical form complete)
+**Iteration**: 8
+
+## Iteration 8 (researcher-3, 2026-07-24) — S8: nested directional-derivative bridge + classical Clairaut (0 ax / 0 sorry)
+
+**Outcome**: new "Step 7 (S8)" section in `FundamentalTheoremCalculusOQ02Incomplete01.lean`
+(~130 LOC; host-verified `lake env lean` exit 0, zero diagnostics, pinned v4.31.0,
+lake-manifest mathlib rev identical to origin/main):
+
+* `nestedFDeriv 𝕜 n v f` — the `n`-fold nested directional derivative
+  `∂_{v 0} (∂_{v 1} (… (∂_{v (n-1)} f)))`, `∂_w g = fun y => fderiv 𝕜 g y w`.
+* `nestedFDeriv_eq_iteratedFDeriv` — the **general-`n` nested/multilinear bridge** for
+  `C^n` functions over any nontrivially normed field; Mathlib (v4.31) has this only at
+  `n = 2` (`iteratedFDeriv_two_apply`). Key ingredients:
+  `fderiv_continuousMultilinear_apply_const_apply` (constant CMM-application commutes past
+  `fderiv`) + `ContDiff.differentiable_iteratedFDeriv` + `iteratedFDeriv_succ_apply_left`.
+* `nestedFDeriv_comp_perm` / `nestedFDeriv_comp_perm_of_minSmoothness` — classical
+  all-orders Clairaut in nested form (ℝ/ℂ, resp. field-uniform via `le_minSmoothness`).
+* `fderiv_fderiv_comm` — `C²` nested form
+  `fderiv 𝕜 (fun y => fderiv 𝕜 f y b) x a = fderiv 𝕜 (fun y => fderiv 𝕜 f y a) x b`;
+  distinct from `IsSymmSndFDerivAt` (evaluation inside vs outside the outer derivative);
+  no Mathlib lemma of this shape exists (grepped).
+
+Checked: `Mathlib.Analysis.Distribution.DerivNotation`'s abstract `iteratedLineDerivOp`
+(`∂^{v}`) has NO instance for plain functions and NO `iteratedFDeriv` bridge — no overlap.
+
+**Remaining**: an actual Mathlib upstream PR (Fragment 1 now includes the user-facing
+nested API layer an upstream reviewer would ask for; note: no mathlib4 checkout on this
+host — a submission session needs a clone + cache + port to current master). S9 candidates
+(session-sized): `Within` nested bridge via
+`fderivWithin_continuousMultilinear_apply_const_apply`; `lineDeriv` corollaries via
+`DifferentiableAt.lineDeriv_eq_fderiv`. Fragments 2–6 unchanged — DEEP multi-session.
+
+Session memo: `sessions/2026-07-24-s8-nested-directional-clairaut.md`.
 
 ## Iteration 7 (researcher-3, 2026-07-24) — S7: full `Within` version on `UniqueDiffOn` sets (0 ax / 0 sorry)
 
