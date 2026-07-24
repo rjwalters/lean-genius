@@ -47,9 +47,12 @@ identity as an **explicit hypothesis** of the two main theorems — NOT as an `a
 * `hlawka_ball` — for `S` a ball, the avoidance upgrades via the bridge to a
   **minimum-distance** conclusion: some lattice has all nonzero vectors of norm
   `≥ r`. This is Minkowski–Hlawka in min-distance form (the packing-density
-  form `δₙ ≥ ζ(n)/2^n` follows by packing balls of radius `r/2`; the classical
-  `ζ(n)/2^(n-1)` needs the additional `±`-pairing refinement of the identity,
-  deliberately not staged here — see knowledge.md).
+  form `δₙ ≥ ζ(n)/2^n` follows by packing balls of radius `r/2`).
+* `hlawka_avoidance_symm` / `hlawka_ball_symm` — the **`±`-pairing rung** (S5):
+  on a symmetric set a lattice with one primitive vector has two (`v` and
+  `-v`), so the volume threshold doubles to `2·ζ(n)` with the SAME mean-value
+  hypothesis — the classical route to `δₙ ≥ ζ(n)/2^(n-1)` (the residual
+  `2^(1-n)` is ball-volume scaling, not averaging).
 
 **Honesty.** No `axiom` declarations, no sorries; the `hlawka_*` theorems are
 *conditional* on their `hMV` (mean-value) and `hInt` (integrability) hypotheses
@@ -441,12 +444,10 @@ theorem hlawka_avoidance_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
     obtain ⟨v, hvp, hvS⟩ := h ω
     exact_mod_cast two_le_primCount_of_symm_of_mem (latticeOf ω) S hSymm
       (hFin ω) hvp hvS
-  have hint2 : ∫ ω, (2 : ℝ) ∂μ ≤ ∫ ω, (primCount (latticeOf ω) S : ℝ) ∂μ :=
-    integral_mono (integrable_const 2) hInt h2
-  rw [hMV] at hint2
-  simp only [integral_const, measure_univ, ENNReal.toReal_one, one_smul,
-    smul_eq_mul, one_mul] at hint2
-  rw [le_div_iff₀ hζ] at hint2
+  have hint2 : (2 : ℝ) ≤ ∫ ω, (primCount (latticeOf ω) S : ℝ) ∂μ := by
+    have hmono := integral_mono (integrable_const 2) hInt h2
+    simpa using hmono
+  rw [hMV, le_div_iff₀ hζ] at hint2
   linarith
 
 /-- **Minkowski–Hlawka, minimum-distance form, doubled threshold.** Balls are
@@ -492,5 +493,9 @@ theorem hlawka_ball_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
 #check @finite_primitive_inter_of_isBounded
 #check @hlawka_avoidance_of_isBounded
 #check @hlawka_ball_of_discrete
+#check @IsPrimitive.neg
+#check @two_le_primCount_of_symm_of_mem
+#check @hlawka_avoidance_symm
+#check @hlawka_ball_symm
 
 end MinkowskiFundamentalTheoremOQ06
