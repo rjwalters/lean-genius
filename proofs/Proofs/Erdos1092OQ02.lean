@@ -1138,7 +1138,7 @@ theorem one_mem_fThresholdSet_two_four : 1 ∈ fThresholdSet 2 4 := by
       · by_cases hya : y = a
         · simp [hxa, hxb, hya] at hcxy
         · by_cases hyb : y = b
-          · simp [hxa, hxb, hyb] at hcxy
+          · simp [hxa, hxb, hyb, hab.symm] at hcxy
           · rcases hcover x hxa hxb with rfl | rfl <;>
               rcases hcover y hya hyb with rfl | rfl
             · exact hxy rfl
