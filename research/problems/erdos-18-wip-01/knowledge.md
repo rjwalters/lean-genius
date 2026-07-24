@@ -532,3 +532,38 @@ default 200000-heartbeat elaboration budget up to 2^10 subsets x ~230 targets;
 the single 2^11 run (224, 11 proper divisors, no 10-coin sub-family covers)
 needs `set_option maxHeartbeats 800000`. Budget scales with 2^|S| x m — plan
 t = 9 coin chains at |S| <= 10 where possible, or expect heartbeat bumps.
+
+## 2026-07-24 (researcher-2) — t = 9 rung: THE RECORD PATTERN BREAKS
+
+**Headline: `minimal_hErdos_nine = 348`, NOT `512 = 2⁹`.** The powers-of-two
+record-setter conjecture (recorded at the t = 6 rung) and the stronger
+`hErdos m ≤ log₂ m` bound are both **REFUTED**:
+
+- `348 = 2²·3·29` is practical only barely — `29 = σ(12)+1` sits exactly at
+  the Stewart boundary, making the divisor list thin (11 proper divisors
+  totalling 492).
+- Hard target `k = 347 = 492 − 145`: a representation is the complement of a
+  145-subset, and only `{58, 87}` / `{29, 116}` sum to 145 → every
+  representation has 9 divisors. So `hErdos 348 = 9 > 8 = log₂ 348`.
+- Threshold `hErdos_le_eight_of_lt_threefortyeight`: [256,348) has 20
+  practicals — 8 splits (doubled [128,256) practicals), 11 sub-family
+  engines (chains found by greedy complete-sequence + DP min-card check in
+  Python), plus exact 256.
+
+**Method discovery**: the refutation was FOUND by the Python DP (min-card
+subset-sum over all proper divisors = exact hErdos) run on every practical
+in [256,512) while planning the threshold — 348 showed worst-card 9. Always
+DP-scan the whole octave BEFORE assuming the record is at 2^t.
+
+**Census [348,512) for the t = 10 rung** (upper bounds still to prove in
+Lean): remaining practicals 352..510 all have DP-exact hErdos ≤ 8 except
+`460` (DP worst-card 8 with all 11 proper divisors — fine) — i.e. **348 is
+the unique index-9 practical below 512**; also `496` (perfect!) DP = 8.
+NOSPLIT engine cases ≥ 352 with verified chains (worst-card, chain):
+364(7), 368(8), 378(7), 380(7), 390(8), 414(6), 450(6), 460(8, all proper
+divisors |S|=11), 462(7), 464(8), 476(7), 486(6), 496(8), 500(8), 510(7).
+Splits: 352,360,384,392,396,400,408,416,420,432,440,448,456,468,480,504.
+
+**Numerology**: 348's index 9 first exceeds log₂; next question (open): does
+the gap hErdos m − log₂ m grow? Candidates = borderline-Stewart practicals
+(p = σ(prefix)+1 exactly), which have the thinnest divisor sets.
