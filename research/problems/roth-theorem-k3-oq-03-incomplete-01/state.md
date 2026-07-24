@@ -1,10 +1,50 @@
 # Research State: roth-theorem-k3-oq-03-incomplete-01
 
 ## Current State
-**Phase**: BLOCKED (S5, 2026-06-13 — status flipped active→blocked: no researcher-actionable build-free path remains; parent build blocker is Docker-gated doctor/mechanic scope; verification blackout in effect)
-**Path**: Approach A preferred (k=3 bridge code drafted in S3 PREP §1.3, ~30 LOC); Approach B (full k=3 Fourier discharge) blocked by the same parent build issue; Approach C (Gowers norms) out of scope
-**Since**: 2026-06-13 (S5 BLOCKED, researcher-4); 2026-06-10T04:43:00Z (S3 PREP, researcher-1); 2026-05-31T07:50:00Z (S2 ORIENT, researcher-1); 2026-04-03T02:25:35-07:00 (scaffold creation, never advanced)
-**Iteration**: 3 (research-JSON currentState advanced to iter 4 in open PR #23005)
+**Phase**: COMPLETED (S6 ACT, 2026-07-23, researcher-2 — Approach A executed and docker-verified; k=3 axiom instance discharged)
+**Path**: Approach A shipped (`Proofs/RothTheoremK3OQ03Incomplete01.lean`); Approach B unnecessary (A suffices for the node's scope); Approach C (general-k Gowers) remains out of scope — recorded as a blocked route on the tracker
+**Since**: 2026-07-23 (S6 COMPLETED, researcher-2); prior: 2026-06-13 (S5 BLOCKED), 2026-06-10 (S3 PREP), 2026-05-31 (S2 ORIENT), 2026-04-03 (scaffold)
+**Iteration**: 5
+
+## Session 6 (S6 ACT → COMPLETED, 2026-07-23, researcher-2)
+
+The S5 BLOCKED state was **stale**: the parent's v4.26.0 build deltas were
+repaired on main by PR #37676 (`Complex.abs`, docstring markers, deprecation)
+and the toolchain migrated to v4.31 by PR #39062. Verified on origin/main
+before working: zero grep hits for `Complex.abs` / the deprecated ZMod lemma.
+
+Executed the S3 PREP §1.3 plan (S5 ACT step) plus two iteration-support
+lemmas, in `proofs/Proofs/RothTheoremK3OQ03Incomplete01.lean` (86 lines):
+
+- `density_increment_kAP_k3` (line 44) — the **exact k=3 instance of the
+  parent axiom `density_increment_kAP`**, proved from the parent's
+  `density_increment_k3_explicit`; the only bridging step weakens
+  `δ' ≥ δ + δ²/100` to `δ' > δ` via `positivity` + `linarith`.
+- `density_le_one` (line 60) — density ceiling |A|/N ≤ 1 in ZMod N.
+- `density_increment_iteration_bound` (line 77) — n ≤ 100/δ₀² step bound.
+
+**Verification**: `./proofs/scripts/docker-build.sh
+Proofs.RothTheoremK3OQ03Incomplete01` clean (8579 jobs, 2026-07-23);
+`#print axioms density_increment_kAP_k3` → `[propext, Classical.choice,
+Quot.sound]` only — no dependence on `density_increment_kAP` or
+`szemeredi_k_ge_4`. No import registration needed (Proofs.lean auto-globs).
+
+Gallery entry created: `src/data/proofs/roth-theorem-k3-oq-03-incomplete-01/`
+(meta.json: verified/original, 0 axioms/0 sorries; 5 annotations). Adversarial
+checklist + "Must prove exactly" pinning added to problem.md.
+
+**Scope honesty**: only the k=3 instance is discharged. The parent axiom
+remains load-bearing for k ≥ 4 (Gowers U^{k-1} inverse theorem — no Mathlib
+machinery at v4.31); parent entry stays `axiomatized`.
+
+**Follow-up (1, strong)**: formalize the *iteration* of
+`density_increment_k3_explicit` to an explicit quantitative Roth bound in
+ZMod N (N₀ as an explicit function of δ) — the parent's
+`szemeredi_from_density_increment` routes k=3 through Mathlib's corners
+theorem instead, so a quantitative bound would add genuinely new content.
+Equivalent-strength note: materially weaker than the parent axiom (k=3 only,
+already-proved increment; the iteration bookkeeping is the new content) —
+does NOT yield the general-k axiom.
 
 ## Session 5 (S5 BLOCKED, 2026-06-13, researcher-4)
 

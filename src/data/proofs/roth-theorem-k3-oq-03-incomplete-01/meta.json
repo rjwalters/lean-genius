@@ -1,0 +1,139 @@
+{
+  "id": "roth-theorem-k3-oq-03-incomplete-01",
+  "slug": "roth-theorem-k3-oq-03-incomplete-01",
+  "title": "The k = 3 Density Increment: Discharging the Axiom Instance from Roth Infrastructure",
+  "description": "Closes the k = 3 gap in the parent's axiomatized density increment. The parent roth-theorem-k3-oq-03 axiomatizes density_increment_kAP for all k ≥ 3 (the general case needs the Gowers U^{k-1} inverse theorem, which is deep), but it also proves an explicit k = 3 form — density_increment_k3_explicit, with quantitative increment δ' ≥ δ + δ²/100 — from the Fourier-analytic machinery of RothTheorem.lean (0 axioms, 0 sorries). This entry derives the exact k = 3 instance of the axiom's statement as a theorem (density_increment_kAP_k3), certifying via #print axioms that it depends only on propext, Classical.choice, and Quot.sound — not on the axiom. Two supporting lemmas quantify why the increment iterates to Roth's theorem: densities are capped at 1 (density_le_one), so the explicit increment can fire at most 100/δ₀² times from initial density δ₀ (density_increment_iteration_bound). 3 theorems, 0 sorries, 0 axioms.",
+  "leanFile": {
+    "path": "Proofs/RothTheoremK3OQ03Incomplete01.lean",
+    "lineCount": 86,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "meta": {
+    "author": "Roth (1953), density increment method — k = 3 axiom instance discharged in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
+    "date": "1953",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/RothTheoremK3OQ03Incomplete01.lean",
+    "tags": [
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "density-increment",
+      "axiom-elimination",
+      "roth-theorem"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 86,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "dateAdded": "2026-07-23",
+    "assumptions": "None. The file imports Proofs.RothTheoremOQ03 (which declares the axiom density_increment_kAP for general k), but #print axioms density_increment_kAP_k3 — run in-file at line 84 and confirmed in the build log — reports only [propext, Classical.choice, Quot.sound]: the theorem does not depend on that axiom or on szemeredi_k_ge_4. The proof chain runs through the parent's proved density_increment_k3_explicit into RothTheorem.lean (0 axioms, 0 sorries). No native_decide, no sorries, no axiom declarations in this file.",
+    "originalContributions": [
+      "density_increment_kAP_k3: the verbatim k = 3 instance of the parent's axiom density_increment_kAP, proved rather than assumed — same hypotheses (N ≥ 2, δ = |A|/N > 0, A 3-AP-free in ZMod N), same conclusion shape (∃ M < N, 0 < M, and A' ⊆ ZMod M of density δ' > δ still 3-AP-free)",
+      "The bridge weakens the parent's explicit bound δ' ≥ δ + δ²/100 to the axiom's qualitative δ' > δ via positivity of δ²/100 — making precise that at k = 3 the axiom carries no content beyond what is already proved",
+      "density_le_one: the density ceiling |A|/N ≤ 1 in ZMod N that terminates the increment iteration",
+      "density_increment_iteration_bound: the O(1/δ₀²) iteration-depth bound — if n steps of size δ₀²/100 fit below the ceiling then n ≤ 100/δ₀², the classical iteration count of Roth's argument"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Roth's 1953 theorem — every set of integers with positive upper density contains a 3-term arithmetic progression — introduced the density increment method: if a dense set has no 3-AP, Fourier analysis produces a subprogression on which the set is strictly denser, and iterating against the density ceiling of 1 forces a contradiction. Gowers's 2001 generalization to k-term progressions replaces Fourier analysis with U^{k-1} uniformity norms, whose inverse theorem is deep (Green–Tao–Ziegler, 2012). The parent gallery entry formalizes this landscape with the general-k increment as an axiom; this entry shows the axiom is redundant at k = 3, where the increment is a theorem of the already-formalized Fourier machinery.",
+    "problemStatement": "Derive, without assuming the axiom, the exact k = 3 instance of density_increment_kAP: for N ≥ 2 and a 3-AP-free A ⊆ ZMod N of density δ > 0, there exist M < N (M > 0) and a 3-AP-free A' ⊆ ZMod M of density δ' > δ.",
+    "text": "The parent file proves density_increment_k3_explicit, which under identical hypotheses yields the stronger quantitative conclusion δ' ≥ δ + δ²/100, by translating IsKAPFreeZMod A 3 to the APFree predicate of RothTheorem.lean and invoking Szemeredi.Roth.density_increment_lemma. The bridge theorem destructures that result and weakens the bound: since δ > 0, positivity gives δ²/100 > 0, and linarith concludes δ' ≥ δ + δ²/100 > δ. The #print axioms certificate confirms the derivation is axiom-free (only the three standard Lean foundations appear). The supporting lemmas formalize the iteration's termination logic: density_le_one bounds any density by 1 via card_le_card and ZMod.card, and density_increment_iteration_bound converts the ceiling into the explicit step bound n ≤ 100/δ₀² by clearing the divisor with le_div_iff₀ and closing with nlinarith.",
+    "proofStrategy": "Bridge, don't re-prove: obtain the explicit-increment witnesses from density_increment_k3_explicit, re-emit them for the axiom-shaped statement, and discharge the single differing conjunct (δ' > δ from δ' ≥ δ + δ²/100) by positivity + linarith. The iteration lemmas are elementary: a cardinality cap cast to ℝ, and one nlinarith inequality.",
+    "keyInsights": [
+      "An axiom stated for all k ≥ 3 can be locally redundant: at k = 3 the parent already proves a strictly stronger statement, so the axiom's only genuine content lives at k ≥ 4 where the Gowers inverse theorem is required.",
+      "The quantitative-to-qualitative weakening (δ' ≥ δ + δ²/100 ⟹ δ' > δ) is the entire mathematical distance between the proved lemma and the axiom instance — a single positivity argument.",
+      "The #print axioms certificate is what makes the discharge meaningful: importing a file that declares an axiom does not taint theorems that never use it, and the kernel verifies exactly which foundations each theorem touches.",
+      "The density ceiling of 1 plus a per-step gain of at least δ₀²/100 bounds the increment iteration at 100/δ₀² steps — the O(δ⁻²) iteration count that drives Roth's original bound N₀ = exp(exp(O(1/δ)))."
+    ],
+    "prerequisites": [
+      "Roth's theorem and the density increment method",
+      "The parent entry roth-theorem-k3-oq-03 (Gowers-norm framework, the axiom density_increment_kAP, and the proved density_increment_k3_explicit)",
+      "Densities of subsets of ZMod N as |A|/N",
+      "Elementary real inequalities (positivity, division bounds)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-import",
+      "title": "Header: the gap being closed and the single import",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "The docstring records the discharge target — the k = 3 instance of the parent's axiom density_increment_kAP — and why it is provable at k = 3 (the parent's density_increment_k3_explicit is stronger) but deep at k ≥ 4 (Gowers U^{k-1} inverse theorem). One import pulls in the parent; the file opens the RothTheoremOQ03 namespace to reuse IsKAPFreeZMod and the explicit increment.",
+      "mathContext": "Target: $\\delta' > \\delta$ on a subprogression, from the proved $\\delta' \\geq \\delta + \\delta^2/100$."
+    },
+    {
+      "id": "bridge-theorem",
+      "title": "density_increment_kAP_k3: the axiom instance, proved",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "The bridge theorem states verbatim the k = 3 instance of the axiom — same hypotheses, same existential conclusion shape — and proves it by destructuring density_increment_k3_explicit and weakening the quantitative bound: positivity gives 0 < δ²/100, and linarith turns δ' ≥ δ + δ²/100 into δ' > δ. All other witnesses (M, A', the density equation, 3-AP-freeness of A') pass through unchanged.",
+      "mathContext": "$A \\subseteq \\mathbb{Z}/N$ 3-AP-free, $\\delta = |A|/N > 0$ $\\Rightarrow$ $\\exists\\, 0 < M < N,\\ A' \\subseteq \\mathbb{Z}/M$ 3-AP-free with $\\delta' > \\delta$."
+    },
+    {
+      "id": "density-ceiling",
+      "title": "density_le_one: the ceiling that terminates the iteration",
+      "startLine": 57,
+      "endLine": 68,
+      "summary": "For N > 0, any A ⊆ ZMod N has density |A|/N ≤ 1: card_le_card against univ plus ZMod.card N = N, cast to ℝ through div_le_one. This is the ceiling the density increment climbs toward — since each increment step strictly raises the density, the process cannot continue forever.",
+      "mathContext": "$|A|/N \\leq 1$ for $A \\subseteq \\mathbb{Z}/N$."
+    },
+    {
+      "id": "iteration-bound",
+      "title": "density_increment_iteration_bound: the O(1/δ₀²) step count",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "If n increments of the explicit size δ₀²/100 still fit below the ceiling (δ₀ + n·δ₀²/100 ≤ 1), then n ≤ 100/δ₀²: clear the divisor with le_div_iff₀ and close with nlinarith. This is the classical iteration count of Roth's argument. The file ends with the #print axioms certificate showing the bridge theorem depends only on propext, Classical.choice, and Quot.sound.",
+      "mathContext": "$\\delta_0 + n\\,\\delta_0^2/100 \\leq 1 \\Rightarrow n \\leq 100/\\delta_0^2$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "density_increment_kAP_k3",
+      "statement": "For N ≥ 2 and a 3-AP-free A ⊆ ZMod N of density δ > 0, there exist 0 < M < N and a 3-AP-free A' ⊆ ZMod M of density δ' > δ — the k = 3 instance of the parent's axiom density_increment_kAP, proved axiom-free.",
+      "line": 44
+    },
+    {
+      "name": "density_le_one",
+      "statement": "For N > 0 and any A ⊆ ZMod N, the density |A|/N is at most 1.",
+      "line": 60
+    },
+    {
+      "name": "density_increment_iteration_bound",
+      "statement": "If δ₀ > 0 and δ₀ + n·(δ₀²/100) ≤ 1, then n ≤ 100/δ₀² — the increment fires at most O(1/δ₀²) times.",
+      "line": 77
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3-oq-03",
+      "relationship": "completes",
+      "description": "Discharges the k = 3 instance of the parent's axiom density_increment_kAP from its own proved density_increment_k3_explicit, certifying redundancy of the axiom at k = 3 via #print axioms"
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "builds-on",
+      "description": "The proof chain runs through Szemeredi.Roth.density_increment_lemma in RothTheorem.lean, the Fourier-analytic density increment formalized for Roth's theorem"
+    }
+  ],
+  "references": [
+    {
+      "title": "On certain sets of integers",
+      "authors": "K. F. Roth",
+      "year": 1953,
+      "venue": "Journal of the London Mathematical Society"
+    },
+    {
+      "title": "A new proof of Szemerédi's theorem",
+      "authors": "W. T. Gowers",
+      "year": 2001,
+      "venue": "Geometric and Functional Analysis"
+    }
+  ],
+  "conclusion": "The k = 3 instance of density_increment_kAP is a theorem, not an assumption: the parent's Fourier-analytic machinery already proves the strictly stronger explicit increment, and a positivity argument bridges the gap. The axiom's genuine content is confined to k ≥ 4, where the Gowers U^{k-1} inverse theorem remains deep and unformalized. The iteration lemmas record why the increment method terminates: a density ceiling of 1 against a per-step gain of δ₀²/100 caps the iteration at 100/δ₀² steps.",
+  "sorries": []
+}
