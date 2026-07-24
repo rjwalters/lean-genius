@@ -581,12 +581,14 @@ theorem exists_vertex_degree_le_five (emb : PlanarEmbedding G)
   -- Contradiction: 3V ≤ E ≤ 3V - 6
   linarith
 
-/-- **Five Color Theorem prerequisite**: Every planar graph is 6-colorable.
+/-- **Degree bound as a stepping stone toward the Six Color Theorem**.
 
-    This follows from the minimum degree bound by induction (greedy coloring).
-    We state the consequence: any planar graph has chromatic number ≤ 6.
-    (The actual Five Color Theorem gives ≤ 5; the Four Color Theorem gives ≤ 4.) -/
-theorem planar_six_colorable (emb : PlanarEmbedding G)
+    This is a restatement of `exists_vertex_degree_le_five` (not a new result):
+    every planar graph has a vertex of degree ≤ 5. This bound is the base case
+    a greedy-coloring induction would use to show every planar graph is
+    6-colorable, but that induction itself is NOT formalized here — only the
+    degree bound is. -/
+theorem planar_min_degree_bound_for_coloring (emb : PlanarEmbedding G)
     (hV : 3 ≤ Fintype.card V)
     (h_faces : 3 * (emb.faceCount : ℤ) ≤ 2 * G.edgeFinset.card) :
     ∃ v : V, G.degree v ≤ 5 :=
