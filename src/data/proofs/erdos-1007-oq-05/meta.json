@@ -37,10 +37,10 @@
       "Proved completeBipartiteAdj is irreflexive, enabling corollary for K_{m,n}"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 4,
+    "axiomCount": 3,
     "lineCount": 127,
     "mathlib_version": "4.31.0",
-    "assumptions": "4 axioms inherited from Erdos1007Problem.lean: hasUnitEmbedding_exists (unit-distance graph embeddability), min_edges_dimension_4 (minimum edges in 4D unit-distance graph), k33_unique_minimum (K₃,₃ is unique minimum in dimension 3), min_edges_dimension_5 (minimum edges in 5D). 0 own axioms. 0 sorries.",
+    "assumptions": "3 axioms inherited from Erdos1007Problem.lean: min_edges_dimension_4 (minimum edges in 4D unit-distance graph), k33_unique_minimum (K₃,₃ is unique minimum in dimension 3), min_edges_dimension_5 (minimum edges in 5D). The former fourth axiom hasUnitEmbedding_exists is no longer an assumption: it was replaced in the parent by a proved theorem (issue #43115, PR #43124) and is re-proved here as hasUnitEmbedding_exists_irr with an added irreflexivity hypothesis (∀ v, ¬adj v v) correcting the original's logical error (self-loops force dist(v,v)=0≠1). 0 own axioms. 0 sorries.",
     "theoremCount": 4,
     "definitionCount": 0
   },
