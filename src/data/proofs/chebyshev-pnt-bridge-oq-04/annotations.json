@@ -73,5 +73,20 @@
     "significance": "key",
     "relatedConcepts": ["conditional theorem", "Chebyshev bound ψ = O(N)", "Stirling's approximation", "Real.log_le_sub_one_of_pos"],
     "prerequisites": ["Steps A–C", "Chebyshev's ψ = O(N)", "Stirling's estimate", "log N ≤ N"]
+  },
+  {
+    "id": "ann-prime-power-strip",
+    "proofId": "chebyshev-pnt-bridge-oq-04",
+    "range": {
+      "startLine": 261,
+      "endLine": 323
+    },
+    "type": "insight",
+    "title": "Prime-Power Strip: Transferring the Upper Bound to the Honest Prime Sum",
+    "content": "The Λ-weighted sum lambdaRecip N counts every prime power, not just primes, so the conditional estimate above is not yet Mertens' first theorem. lambdaRecip_prime_split splits it exactly: Σ_{d≤N} Λ(d)/d = primeLogRecip N + primePowerTail N, where primeLogRecip N = Σ_{p≤N} (log p)/p is the honest prime sum and primePowerTail N := Σ_{d≤N, ¬prime} Λ(d)/d collects the higher prime powers p^k (k≥2). The split is proved by Finset.sum_filter_add_sum_filter_not on the primality predicate, then rewriting the prime block with vonMangoldt_apply_prime (Λ(p) = log p). primePowerTail_nonneg shows R(N) ≥ 0 termwise (Λ ≥ 0, 1/d ≥ 0). Since primeLogRecip N = lambdaRecip N − R(N) and R(N) ≥ 0, the prime sum is dominated by the Λ-sum, so primeLogRecip_le transfers the UPPER half of the conditional estimate directly: Σ_{p≤N} (log p)/p ≤ log N + (1 + c_S + c_ψ), with no new assumptions beyond the existing MertensInputs pair. The matching LOWER bound needs the tail bound R(N) = O(1), still open (see the companion Tail file for the convergence engine that would close it).",
+    "mathContext": "$\\sum_{d\\le N}\\frac{\\Lambda(d)}{d}=\\sum_{p\\le N}\\frac{\\log p}{p}+R(N),\\ R(N)\\ge 0 \\implies \\sum_{p\\le N}\\frac{\\log p}{p}\\le \\log N+(1+c_S+c_\\psi).$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_filter_add_sum_filter_not", "vonMangoldt_apply_prime", "prime-power tail", "one-sided estimate transfer"],
+    "prerequisites": ["the conditional Λ-weighted estimate", "Λ(p) = log p for prime p", "nonnegativity of the tail"]
   }
 ]
