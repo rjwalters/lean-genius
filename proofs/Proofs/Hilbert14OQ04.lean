@@ -433,6 +433,7 @@ noncomputable def noetherCandidate : Subalgebra k (MvPolynomial (Fin n) k) :=
     ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m (1 : k))) ''
       {m : Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ Fintype.card G})
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- Low-degree Reynolds images are generators of the candidate. -/
 theorem reynolds_monomial_mem_noetherCandidate_of_le
     {m : Fin n →₀ ℕ} (hm : (m.sum fun _ e => e) ≤ Fintype.card G) :
@@ -482,6 +483,7 @@ theorem finite_degreeBounded_exponents (D : ℕ) :
     · simp [Finsupp.notMem_support_iff.mp hi]
   exact (((Set.Finite.pi fun _ => Set.finite_Iic D).image _).subset hsub)
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- The candidate's generating set is finite. -/
 theorem finite_noetherGenerators :
     ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m (1 : k))) ''
