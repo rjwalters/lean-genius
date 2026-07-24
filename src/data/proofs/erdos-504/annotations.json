@@ -27,11 +27,11 @@
     "type": "definition",
     "range": {
       "startLine": 45,
-      "endLine": 66
+      "endLine": 62
     },
     "title": "Angle Between Three Points",
-    "content": "The angle ∠xyz at vertex y is computed via the dot product formula: arccos((v1·v2)/(|v1||v2|)) where v1 = x−y and v2 = z−y. Returns 0 when either vector is zero. Axioms establish the range [0, π] and symmetry angle(x,y,z) = angle(z,y,x).",
-    "mathContext": "The standard inner product angle formula: $\\angle(x,y,z) = \\arccos\\!\\left(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\,\\|z-y\\|}\\right)$. The $\\arccos$ function maps $[-1,1]$ to $[0,\\pi]$, ensuring the angle lies in the correct range. Symmetry follows from commutativity of the dot product.",
+    "content": "The angle ∠xyz at vertex y is computed via the dot product formula: arccos((v1·v2)/(|v1||v2|)) where v1 = x−y and v2 = z−y. Returns 0 when either vector is zero. This is a plain `def`, not an axiom; no separate range or symmetry lemma is declared in this file.",
+    "mathContext": "The standard inner product angle formula: $\\angle(x,y,z) = \\arccos\\!\\left(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\,\\|z-y\\|}\\right)$. Since $\\arccos$ maps $[-1,1]$ to $[0,\\pi]$, the value is mathematically in $[0,\\pi]$, and symmetry would follow from commutativity of the dot product — but neither fact is separately stated or proved as a lemma here.",
     "significance": "key",
     "relatedConcepts": [
       "dot product",
@@ -50,12 +50,12 @@
     "proofId": "erdos-504",
     "type": "definition",
     "range": {
-      "startLine": 68,
-      "endLine": 83
+      "startLine": 64,
+      "endLine": 72
     },
     "title": "Maximum Angle in a Point Set",
-    "content": "maxAngleInSet is axiomatized as a function from finite point sets to ℝ, giving the maximum angle formed by any triple of distinct points. Axioms: positive for sets of size ≥ 3 (maxAngleInSet_pos) and bounded by π (maxAngleInSet_le_pi). Axiomatized to avoid a sorry in the Finset.sup' nonempty proof.",
-    "mathContext": "$\\operatorname{maxAngle}(A) = \\max_{x,y,z \\in A,\\, \\text{distinct}} \\angle(x,y,z)$. The positivity axiom ensures that any set of $\\ge 3$ non-collinear points has a positive maximum angle. The upper bound $\\le \\pi$ follows from the range of $\\arccos$.",
+    "content": "maxAngleInSet is a single `noncomputable axiom`: an opaque function from finite point sets to ℝ, intended to give the maximum angle formed by any triple of distinct points. It carries no accompanying positivity or upper-bound axioms — it is axiomatized only to avoid a sorry in the Finset.sup' nonemptiness proof.",
+    "mathContext": "$\\operatorname{maxAngle}(A) = \\max_{x,y,z \\in A,\\, \\text{distinct}} \\angle(x,y,z)$ is the intended meaning, but nothing in the file constrains `maxAngleInSet` to actually equal this maximum, be positive, or be bounded by $\\pi$ — those properties are mathematically true of the intended function but are not asserted as axioms here.",
     "significance": "key",
     "relatedConcepts": [
       "supremum over finite sets",
@@ -73,12 +73,12 @@
     "proofId": "erdos-504",
     "type": "definition",
     "range": {
-      "startLine": 85,
-      "endLine": 111
+      "startLine": 74,
+      "endLine": 86
     },
-    "title": "The α_n Function and Small Cases",
-    "content": "α_n = ⨅ { maxAngleInSet(A) : A.card = n } is the infimum of maximum angles over all n-point configurations. Well-defined for n ≥ 3 with 0 < α_n ≤ π. Monotonically non-increasing: more points means a potentially smaller guaranteed angle. Small cases: α_3 = α_4 = π.",
-    "mathContext": "$\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : A \\subset \\mathbb{R}^2,\\, |A| = n\\}$. Monotonicity: $m \\le n \\implies \\alpha_n \\le \\alpha_m$ because any $n$-point set contains $\\binom{n}{m}$ subsets of size $m$, and the infimum over a larger collection can only decrease. For $n = 3$: every triangle has an angle $\\ge 60°$ and maximum angle $\\ge \\pi/3$, but in fact $\\alpha_3 = \\pi$ since collinear points yield angle $\\pi$.",
+    "title": "The α_n Function",
+    "content": "α_n = ⨅ { maxAngleInSet(A) : A.card = n } is defined as the infimum of maximum angles over all n-point configurations. No lemma in this file establishes it is well-defined, bounded, or monotone in n, and no small-case values (e.g. α_3, α_4) are computed — those are true mathematical facts about the intended quantity but are not formalized here.",
+    "mathContext": "$\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : A \\subset \\mathbb{R}^2,\\, |A| = n\\}$. Monotonicity ($m \\le n \\implies \\alpha_n \\le \\alpha_m$) and small cases like $\\alpha_3 = \\pi$ are standard facts about this quantity, included here for context, but the Lean file does not state or prove them.",
     "significance": "key",
     "relatedConcepts": [
       "infimum",
@@ -97,11 +97,11 @@
     "proofId": "erdos-504",
     "type": "concept",
     "range": {
-      "startLine": 113,
-      "endLine": 127
+      "startLine": 88,
+      "endLine": 100
     },
     "title": "Erdős-Szekeres Formula for Powers of 2",
-    "content": "The 1960 result of Erdős and Szekeres: α_{2^n} = π(1 − 1/n) for n ≥ 2. The erdosSzekeresFormula function encodes this, and the axiom erdos_szekeres states it holds at every power-of-2 point count. For example, α_4 = π/2, α_8 = 2π/3, α_16 = 3π/4.",
+    "content": "The 1960 result of Erdős and Szekeres: α_{2^n} = π(1 − 1/n) for n ≥ 2. `erdosSzekeresFormula` is only a `def` encoding the right-hand side π(1 − 1/n); no axiom in this file asserts that α_{2^n} actually equals it. The formula is used only as a comparison target inside `erdos_szekeres_conjecture_false` and `erdos_504_summary`. For example, the formula gives π/2 at n=2, 2π/3 at n=3, 3π/4 at n=4.",
     "mathContext": "The formula $\\alpha_{2^n} = \\pi\\bigl(1 - \\frac{1}{n}\\bigr)$ is achieved by the regular $2^n$-gon: the maximum inscribed angle in a regular $m$-gon equals $\\pi(1 - 1/\\lfloor\\log_2 m\\rfloor)$ by the inscribed angle theorem. Erdős and Szekeres proved this is optimal among all $2^n$-point configurations.",
     "significance": "key",
     "relatedConcepts": [
@@ -120,8 +120,8 @@
     "proofId": "erdos-504",
     "type": "concept",
     "range": {
-      "startLine": 129,
-      "endLine": 167
+      "startLine": 102,
+      "endLine": 140
     },
     "title": "Sendov's Complete Solution (1993)",
     "content": "The full determination of α_N via two formulas: (1) For 2^{n-1} + 2^{n-3} < N ≤ 2^n: α_N = π(1 − 1/n), matching the Erdős-Szekeres formula. (2) For 2^{n-1} < N ≤ 2^{n-1} + 2^{n-3}: α_N = π(1 − 1/(2n−1)), a new formula that Erdős and Szekeres missed. The threshold 2^{n-1} + 2^{n-3} = 5·2^{n-3} divides each range into upper and lower parts.",
@@ -144,11 +144,11 @@
     "proofId": "erdos-504",
     "type": "concept",
     "range": {
-      "startLine": 169,
-      "endLine": 182
+      "startLine": 142,
+      "endLine": 167
     },
     "title": "Sendov's Counterexample (1992)",
-    "content": "Axiomatized: there exist n ≥ 3 and N with 2^{n-1} < N ≤ 2^n such that α_N ≠ π(1−1/n). For example, N = 5 lies in (4, 5] = (2², 2² + 2⁰], so α_5 = π(1−1/5) ≠ π(1−1/3). This disproved the Erdős-Szekeres conjecture that α_N = π(1−1/n) for all N in (2^{n-1}, 2^n].",
+    "content": "`erdos_szekeres_conjecture_false` is a proved *theorem* (not an axiom): there exist n ≥ 3 and N with 2^{n-1} < N ≤ 2^n such that α_N ≠ π(1−1/n). It is derived by instantiating `sendov_lower` at n=3, N=5 (so 4 < 5 ≤ 5), giving α₅ = π(1−1/5) ≠ π(1−1/3) = the Erdős-Szekeres formula's prediction. This disproved the Erdős-Szekeres conjecture that α_N = π(1−1/n) for all N in (2^{n-1}, 2^n].",
     "mathContext": "The smallest counterexample: $N = 5$ lies in the lower range $(2^2, 2^2 + 2^0] = (4, 5]$ with $n = 3$, giving $\\alpha_5 = \\pi(1 - 1/5) = 4\\pi/5 \\ne \\pi(1 - 1/3) = 2\\pi/3$. This existential statement $\\exists\\, n, N$ such that $\\alpha_N \\ne \\pi(1-1/n)$ refutes the conjecture.",
     "significance": "key",
     "relatedConcepts": [
@@ -166,12 +166,12 @@
     "proofId": "erdos-504",
     "type": "concept",
     "range": {
-      "startLine": 184,
-      "endLine": 217
+      "startLine": 169,
+      "endLine": 200
     },
     "title": "Optimal Configurations and Convex Position",
-    "content": "Regular n-gon vertices are defined via cos/sin on the unit circle. For N = 2^k, the regular polygon achieves the optimal (minimum) maximum angle (regularNGon_optimal). The isConvexPosition predicate (axiomatized) captures when all points are on the convex hull. Optimal configurations achieving α_N are always in convex position (optimal_is_convex).",
-    "mathContext": "The regular $n$-gon vertices $\\bigl(\\cos(2\\pi k/n),\\, \\sin(2\\pi k/n)\\bigr)$ for $k = 0, \\ldots, n-1$ inscribe a unit circle. For $N = 2^k$, the maximum angle among triples of these vertices equals $\\pi(1-1/k)$ by the inscribed angle theorem. The convexity result is geometrically natural: adding an interior point always creates angles closer to $\\pi$ by the exterior angle inequality.",
+    "content": "`regularNGonVertices` defines the regular n-gon vertices via cos/sin on the unit circle, but no lemma in this file proves that these vertices achieve the optimal (minimum) maximum angle for N = 2^k — that optimality claim is not formalized. `isConvexPosition` is a genuine `def` (a real Prop-valued predicate), not an axiom. No lemma in this file proves that optimal configurations achieving α_N are always in convex position; that connection is discussed only as prose.",
+    "mathContext": "The regular $n$-gon vertices $\\bigl(\\cos(2\\pi k/n),\\, \\sin(2\\pi k/n)\\bigr)$ for $k = 0, \\ldots, n-1$ inscribe a unit circle. For $N = 2^k$, the maximum angle among triples of these vertices is claimed to equal $\\pi(1-1/k)$ by the inscribed angle theorem, and optimal configurations are conjectured to lie in convex position by the exterior angle inequality — both plausible facts about the underlying mathematics, but neither is proved or axiomatized in this file.",
     "significance": "key",
     "relatedConcepts": [
       "inscribed angle theorem",
