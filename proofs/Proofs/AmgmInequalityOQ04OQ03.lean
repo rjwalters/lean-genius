@@ -495,10 +495,11 @@ theorem hasSum_integral_ellipticIntegrand (k : ℝ) (hk : k ^ 2 < 1) :
   · -- the θ-independent bound
     filter_upwards with θ _
     rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
-    have hsin : Real.sin θ ^ 2 ≤ 1 := Real.sin_sq_le_one θ
-    gcongr
-    · exact div_nonneg (Nat.cast_nonneg _) (by positivity)
-    · nlinarith [sq_nonneg k]
+    have hbase : k ^ 2 * Real.sin θ ^ 2 ≤ k ^ 2 := by
+      nlinarith [Real.sin_sq_le_one θ, sq_nonneg k]
+    have hpow : (k ^ 2 * Real.sin θ ^ 2) ^ n ≤ (k ^ 2) ^ n :=
+      pow_le_pow_left₀ (by positivity) hbase n
+    exact mul_le_mul_of_nonneg_left hpow (by positivity)
   · -- summability of the bound
     filter_upwards with θ _
     exact (hasSum_inv_sqrt_one_sub hk2).summable
