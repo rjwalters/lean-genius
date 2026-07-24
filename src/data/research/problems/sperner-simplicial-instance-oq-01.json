@@ -2,7 +2,7 @@
   "slug": "sperner-simplicial-instance-oq-01",
   "title": "Standard 2-simplex triangulation as a concrete Triangulation instance",
   "phase": "ACT",
-  "status": "in-progress",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,9 +28,9 @@
     "goal": "Add ~300 LOC namespace Triangle section into proofs/Proofs/SpernerSimplicialInstance.lean (between line 994 and end Triangulation) shipping the 2-d instance and the triangle_sperner corollary; preserve all existing content unchanged."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-24",
-    "iteration": 8,
+    "iteration": 9,
     "focus": "S4 ACT COMPLETE (researcher-3, 2026-07-24, same session as S3): triVtx (m-parametric vertex map, match-pattern form per S4 PREP #18719 §9 risk-note 3) + vertex_injective_triVtx shipped into the leaf file (254→296 LOC), 0 sorries, 0 axioms, Docker-verified 1117 jobs. The vertex_injective obligation of the eventual Triangulation (LatticePoint m) 2 instance is now discharged m-parametrically (no decide). v4.31 note: subtype-membership `by omega` fails on unreduced pair projections — use `show i + j ≤ m by omega` defeq forms; `first | rfl | omega` fallback dead (simp closes off-diagonals) → plain rfl.",
     "blockers": [],
     "nextAction": "S5 ACT: triAdj adjacency case-table (~60 LOC, 12 sub-cases, design in S6-era PREPs); then S6+ adj_symm/adj_vertex/adj_ne + instance assembly — the genuine open core.",
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S5+S6 ACT (researcher-2, 2026-07-24): triAdj adjacency case-table + triAdj_ne + triAdj_symm shipped m-parametrically, docker-verified (leaf 296->392 LOC, 0 sorries, 0 axioms). Three of four Triangulation obligations closed (vertex_injective S4, adj_ne+adj_symm S5/S6). Remaining: S7 adj_vertex (Finset-image edge equality, the open core) + S8 instance assembly standardTriangleTriangulation m.",
+    "progressSummary": "COMPLETED (researcher-2, 2026-07-24): standardTriangleTriangulation m : Triangulation (LatticePoint m) 2 assembled with all four obligations proved m-parametrically (S4 vertex_injective, S5 adj_ne, S6 adj_symm, S7 adj_vertex), plus general-m Sperner corollary. Leaf file 531 LOC, 0 sorries, 0 axioms, docker-verified. OQ answered at m=2 (decide-based standardTriangle2) AND general m. Adversarial checklist in problem.md. 0 new follow-ups (oq-03/oq-04/oq-06 consume this).",
     "builtItems": [
       "research/problems/sperner-simplicial-instance-oq-01/problem.md (formal scope, signature targets, sub-OQ index)",
       "research/problems/sperner-simplicial-instance-oq-01/knowledge.md (1-d template recap, 2-d design with adjacency table, axiom proof outlines, Mathlib alignment, detailed LOC estimate)",
@@ -50,7 +50,10 @@
       "research/problems/sperner-simplicial-instance-oq-01/sessions/2026-05-13-s02-act-trivialTriangle.md — S2 ACT session note with patch traces, axiom-discharge audit, build-posture caveat.",
       "triAdj m : TriCell m -> Fin 3 -> Option (TriCell m x Fin 3) in SpernerSimplicialInstanceOQ01.lean (S5, docker-verified)",
       "triAdj_ne (adj_ne obligation) — constructor disjointness via simp/reduceCtorEq (S5)",
-      "triAdj_symm (adj_symm obligation) — six interior-edge round-trips (S6)"
+      "triAdj_symm (adj_symm obligation) — six interior-edge round-trips (S6)",
+      "triAdj_vertex (adj_vertex obligation) — six interior edge-set equalities (S7, docker-verified)",
+      "standardTriangleTriangulation m : Triangulation (LatticePoint m) 2 — general-m instance, OQ-01 core answered (S8)",
+      "standardTriangleTriangulation_sperner — 2-d Sperner at every resolution m (S8)"
     ],
     "insights": [
       "The 1-d intervalTriangulation template generalises cleanly to 2-d via lattice-point indexing plus an up/down inductive cell type.",
@@ -59,15 +62,15 @@
       "Down-triangles are entirely interior — boundary 1-faces are all on up-triangles.",
       "adj_vertex is the strategic case-heavy axiom (12 cases × ~6 LOC); strategic sorry there ships S2 build-pending and closes in S3.",
       "S5: triAdj derived from triVtx geometry — up-cell edges interior iff i+j+1<m (hypotenuse), 0<i (vertical), 0<j (horizontal); all down-cell edges interior. Successor patterns (up (i+1) j -> down i j) instead of subtraction keep adj_symm round-trips rfl-shaped.",
-      "S6: adj_symm was cheap once the table is subtraction-free — simp only [triAdj, Option.some.injEq, Prod.mk.injEq] extraction + obtain rfl + simp [triAdj] closes all six interior round-trips; proof irrelevance silently identifies regenerated constructor bound proofs (no Fin.mk friction, no v4.31 drift)."
+      "S6: adj_symm was cheap once the table is subtraction-free — simp only [triAdj, Option.some.injEq, Prod.mk.injEq] extraction + obtain rfl + simp [triAdj] closes all six interior round-trips; proof irrelevance silently identifies regenerated constructor bound proofs (no Fin.mk friction, no v4.31 drift).",
+      "S7: every some-row of triAdj lists the shared edge in the SAME order on both sides, so adj_vertex closes by erase-set computation + image_insert/image_singleton + rfl. v4.31 gotcha: fin_cases yields Fin.mk literals but table k-primes are OfNat literals — state erase lemmas in BOTH forms (simp unifies mk proof args by proof irrelevance).",
+      "S8: instance assembly is a pure where-block — S3 instances + S4-S7 theorems slot into the four Triangulation obligations; general-m Sperner corollary is a one-line application of Triangulation.sperner."
     ],
     "mathlibGaps": [
       "Mathlib.Combinatorics.SimpleGraph.Triangulation does not exist; the local Triangulation structure in the parent file is the working substitute. No new gap introduced."
     ],
     "nextSteps": [
-      "S7 adj_vertex — (univ.erase k).image (triVtx m s) = (univ.erase k, ).image (triVtx m s, ) for the six interior pairings; expect Finset.ext + explicit two-element image computation.",
-      "S8 — assemble standardTriangleTriangulation m : Triangulation (LatticePoint m) 2 (Cell := TriCell m; all four obligations exist after S7).",
-      "S9 (optional) — boundary-door characterization for the general-m instance, feeding oq-03 boundary_doors_odd."
+      "None for this node - COMPLETED. Consumers: oq-03 (boundary-door parity: characterize triAdj = none <-> geometric boundary + standard-coloring odd door count), oq-04 (Brouwer), oq-06 (Hex)."
     ]
   },
   "tags": [

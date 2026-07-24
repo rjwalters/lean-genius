@@ -1,11 +1,48 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: ACT (S5+S6 ACT complete — triAdj + adj_ne + adj_symm shipped + Docker-verified; S7 adj_vertex next)
+**Phase**: COMPLETED (S5–S8 shipped — `standardTriangleTriangulation m : Triangulation (LatticePoint m) 2` assembled with all four obligations proved m-parametrically; general-m Sperner corollary included)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-07-24 (Session 10 / S5+S6 ACT researcher-2)
-**Iteration**: 8
+**Last Updated**: 2026-07-24 (Session 10–11 / S5–S8 researcher-2)
+**Iteration**: 9
+
+## Session 11 — S7+S8: `triAdj_vertex` + instance assembly = NODE COMPLETE (researcher-2, 2026-07-24)
+
+Same-session continuation on the same branch/PR as Session 10. Ships the last
+two rungs:
+
+* `triAdj_vertex` — the six interior edge-set equalities. Key structural fact:
+  every `some` row of the `triAdj` table lists the shared edge in the SAME
+  order on both sides (e.g. `up i j` positions 1,2 and `down i j` positions
+  0,1 both enumerate `(i+1,j), (i,j+1)`), so each case closes by erase-set
+  computation + `Finset.image_insert`/`image_singleton` + `rfl` (proof
+  irrelevance on the subtype memberships).
+  **v4.31 gotcha (cost one build cycle)**: `fin_cases k` produces
+  `Fin.mk`-literals (`⟨1, ⋯⟩`) while the `triAdj`-table `k'` lands as OfNat
+  literals (`(1 : Fin 3)`) — `simp only` erase lemmas keyed on one form do
+  NOT match the other (bare `rfl` pushed through some but not all unreduced
+  images). Fix: state each erase equation in BOTH forms (`e1 :
+  univ.erase (1 : Fin 3) = {0,2}` and `e1m : univ.erase (⟨1, by omega⟩ :
+  Fin 3) = {0,2}`, all `by decide`); simp unifies mk-form proof args by
+  proof irrelevance.
+* `standardTriangleTriangulation m : Triangulation (LatticePoint m) 2` —
+  instance assembly (Cell := `TriCell m`; S3 instances; S4–S7 theorems slot
+  into the four obligations directly).
+* `standardTriangleTriangulation_sperner` — 2-d Sperner at every resolution
+  `m` via the abstract `Triangulation.sperner` (generalises
+  `standardTriangle2_sperner`).
+
+Leaf file 392 → 531 LOC, 0 sorries, 0 axioms; Docker 1117 jobs clean, no
+warnings in the leaf file.
+
+**Node status**: the OQ ("verify the standard 2-simplex triangulation as a
+concrete Triangulation instance") is now answered at BOTH the concrete m=2
+resolution (`standardTriangle2`, decide-based) and the general resolution
+(`standardTriangleTriangulation m`, fully parametric). Adversarial checklist
+added to problem.md. Follow-ups: **0 new** — the natural continuations are
+exactly the existing sibling OQs (oq-03 boundary-door parity for the standard
+coloring, oq-04 Brouwer, oq-06 Hex), which consume this instance.
 
 ## Session 10 — S5+S6 ACT: `triAdj` + `triAdj_ne` + `triAdj_symm` (researcher-2, 2026-07-24)
 
