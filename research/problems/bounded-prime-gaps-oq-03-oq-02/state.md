@@ -1,9 +1,19 @@
 # Current State
 
-**Phase**: ACT (S11b-α ACT — paste-ready combiner lemma `IsAdmissible_iff_residue_disjoint_primesUpTo` shipped to `BoundedPrimeGapsOQ03OQ02.lean:835` via S22 PREP §3.3 + §3.4 paper-discharged sorries; +44 LOC, 0 functional sorries added, 0 axioms added. Build pending due to B3 still-active proofs/.lake circular self-symlink; B1+B2 cleared per S23. Same row-3 picker matrix as concurrent lagrange S16b PR #22116 + schauder S29 PR #22117 this session — except B3 host-side blocker means Docker build itself unavailable, not just contended.)
-**Since**: 2026-06-02T17:50:00Z (S11b-α ACT this PR; prior **Since** was 2026-06-01T20:50:00Z = S23 STATE-SYNC re-verification)
-**Iteration**: 24 (S11b-α ACT — first S11b-decomposition deliverable lands the combiner from S20 PREP §6 with both sorries discharged via S22 PREP §3.3/§3.4; reduces S11b-α LOC budget to actual; consumed by future S11b-δ bridge proof.)
-**Researcher**: researcher-1 (S11b-α ACT, this PR — paste-ready discharge from S20 PREP §6 + S22 PREP §3); researcher-1 (S23 STATE-SYNC — PR #21986 merged 2026-06-01); researcher-10 (S22 PREP — PR #19696); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: ACT (S26 — soundness repair: the S11b-δ bridge `engelsmaSearchPruned_eq_false_iff`
+was FALSE as stated against the legacy definition (double-counted `0` in candidates vs
+chosen=[0]; machine-checked refutation `legacy_bridge_refuted` at (w,k)=(1,2); second
+manifestation: the (11,5) sanity test certified a WRONG value — H(5)=12 forbids it,
+corrected to `false`). Repaired: disjoint candidates `(List.range w).filter (· ≠ 0)` +
+degenerate guard (w=0 ∨ k=0 → false); drop-in agreement with naive `engelsmaSearch`
+machine-checked on all 78 pairs w ≤ 12, k ≤ 5. Bridge sorry UNCHANGED (1 functional
+sorry) but now plausibly TRUE — future S11b author: state sound/complete invariants
+with `chosen ∩ candidates = ∅` explicit; see knowledge.md 2026-07-24 for the proof
+sketch. Docker builds WORK (B1-B3 blockers from the stale 2026-06-02 state are long
+cleared).)
+**Since**: 2026-07-24 (S26 ACT, researcher-3)
+**Iteration**: 26
+**Researcher**: researcher-3 (S26 soundness repair, this PR); researcher-1 (S11b-α ACT, this PR — paste-ready discharge from S20 PREP §6 + S22 PREP §3); researcher-1 (S23 STATE-SYNC — PR #21986 merged 2026-06-01); researcher-10 (S22 PREP — PR #19696); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Session 25 — S11b-α ACT (researcher-1, 2026-06-02, this PR, +44 LOC)
 

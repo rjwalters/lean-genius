@@ -421,3 +421,66 @@ For Lean infrastructure:
   `native_decide`-style admissibility proof
 - `Mathlib.Data.Finset.Powerset` — `Finset.powersetCard` for §2.3 finitary form
 - `Mathlib.Tactic.NormNum.Prime` — `Nat.Prime` decision procedure pattern
+
+## Session 2026-07-24 (researcher-3) — S26: SOUNDNESS REPAIR of the pruned search (bridge was FALSE as stated)
+
+**Mode**: REVISIT (claimed via depth-first RICH tier). **Outcome**: progress — critical
+repair; VERIFIED docker build succeeded, 1 intended sorry unchanged (the S11b-δ bridge).
+
+### The finding (adversarial pre-work check, not new theorems-on-top)
+
+Before attempting the planned S11b sound/complete decomposition (~190-300 LOC), I
+hand-evaluated `searchAux` on degenerate parameters and found the sorried bridge
+`engelsmaSearchPruned_eq_false_iff` was **FALSE as stated** — the planned development
+was doomed:
+
+- **Bug**: the legacy initial call `searchAux w k (primesUpTo k) (List.range w) [0]`
+  passes candidates CONTAINING the committed `0` (chosen = [0]). The leaf test
+  `candidates.length ≥ k - chosen.length` counts candidates as FRESH slots on top of
+  chosen, so the surviving `0` is double-counted.
+- **Minimal counterexample** `(w,k) = (1,2)`: sole surviving branch (p=2, r=1) reaches
+  the leaf with candidates = chosen = [0] and accepts via `1 ≥ 2-1`; but `range 1` has
+  no 2-element subset (bridge RHS vacuously true, forcing `false`). Machine-checked:
+  `legacy_bridge_refuted`.
+- **Second, non-vacuous manifestation**: the S11b-era sanity test asserted
+  `engelsmaSearchPruned 11 5 = true` — but H(5) = 12 (Engelsma), so NO admissible
+  5-tuple fits in {0..10}. The naive `engelsmaSearch 11 5` disagrees (false). The
+  "sanity test" was certifying a WRONG value; its docstring claim ("verifies the pruned
+  search agrees with the naive search") was never actually checked against the naive.
+
+### The repair (S26)
+
+1. `engelsmaSearchPruned` candidates are now `(List.range w).filter (· ≠ 0)` —
+   restores the disjointness invariant `chosen ∩ candidates = ∅` the leaf needs.
+2. Degenerate guard: `w = 0 ∨ k = 0 → false` (pinning 0 ∈ H impossible/forbidden;
+   Nat truncation `k - 1 = 0` at `k = 0` made the legacy leaf accept spuriously).
+3. Sanity test corrected: `engelsmaSearchPruned_11_5_eq_false` (with the H(5)=12
+   mathematical justification in the docstring).
+4. Legacy def kept verbatim as `engelsmaSearchPrunedLegacy` SOLELY so
+   `legacy_bridge_refuted` stays machine-checked; not for consumption.
+5. **Drop-in agreement grid**: `engelsmaSearchPruned_agrees_small` — repaired pruned
+   == naive on ALL 78 pairs w ≤ 12, k ≤ 5 (covers both refuted points, all degenerate
+   rows, and the positive (7,3) case). native_decide.
+
+### Axiom/sorry accounting
+- Bridge sorry (line ~989) UNCHANGED — 1 functional sorry before and after.
+- New theorems: naive-side `engelsmaSearch_1_2_eq_false` is kernel-`decide`
+  ([propext, Classical.choice, Quot.sound]); the searchAux-valued equations and grid
+  use `native_decide` (ofReduceBool), consistent with the file's established S4+
+  accounting. No new `axiom` declarations.
+- Gallery meta bounded-prime-gaps-oq-03: additionalFile lineCount 997→1127; aggregate
+  sorries 0→1 (the additionalFiles entry already disclosed sorries:1 — top-level was
+  inconsistent with it).
+
+### Guidance for the future S11b author (IMPORTANT)
+- The bridge statement is now plausibly TRUE. State the sound/complete invariants with
+  `chosen ∩ candidates = ∅` (or `0 ∉ candidates` at top level) as an EXPLICIT
+  hypothesis — filtering preserves it through `tryBranch`.
+- Leaf soundness sketch: on surviving paths chosen stays [0]; candidates avoid the
+  branch residues r_p for every p ∈ primesUpTo k AND avoid 0; any (k-1)-subset S of
+  candidates gives H = {0} ∪ S with card k, image mod p missing r_p (p ≤ k) and
+  card k < p (p > k) — admissible. Completeness: admissible H ∋ 0 misses some r_p ≢ 0
+  (mod p) per p ≤ k (0 ∈ H puts 0 in every image); the branch choosing those r_p
+  retains H \ {0} ⊆ candidates at the leaf.
+- Session-numbering note: prior state.md was stale (dated 2026-06-02, blockers B1-B3
+  since cleared; the S11b-α combiner IS merged at line ~853; docker builds work fine).
