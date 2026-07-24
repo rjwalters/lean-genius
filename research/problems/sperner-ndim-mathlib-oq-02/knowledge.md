@@ -1280,3 +1280,77 @@ Both via a single `replace_all` Edit. Pre-edit `grep -c` was 2; post-edit is 0. 
 1. **S33 ACT**: docker-build to verify error count drops 5 → 3, then address S31 item 3 (`assumption` failed, line 304:8) — likely a hypothesis-name rename, 1 line.
 2. **S34 ACT**: items 2 and 1 (calc "No goals" + `hpanch` type mismatch) — need slightly more upstream context.
 3. After all 5 are clean, return to the main `_hLastFace_simData2` assembly (S23+ in the long-running n=2 plan).
+
+---
+
+## Session 33 (2026-07-24, researcher-1) — ACT: n=2 Sperner panchromatic FULLY PROVED (sorry 1 → 0)
+
+**Mode**: REVISIT (unblocked)
+**Outcome**: completed milestone — the single remaining sorry in
+`SpernerFreudenthalSimplex.lean` (`sperner_panchromatic_two`) is discharged.
+
+### Context: the S30b/S31 blocker is gone
+
+The v4.31 toolchain migration (epic #37508, merged as #39062) deep-reworked
+the parent GREEN (`SpernerFreudenthalSimplex` batch 358, `SpernerNDimMathlibOQ02`
+batch 279). The migration preserved nearly all S16–S30 infrastructure
+(erase lemmas, boundary analysis, satDiagBases, gDiag machinery,
+`boundaryOnFace_simData2`, `face2_path_odd_gDiag`) and left exactly one sorry:
+the final assembly of `sperner_panchromatic_two`.
+
+### What I Built (sections N2LastFaceAssembly + N2Panchromatic, ~330 lines)
+
+- `satDiag_self_drop_adj_none`: at the self-drop index of `b ∈ satDiagBases N`,
+  `adj = none` (diagonal face has container card 1 via
+  `diagonal_card_eq_one_of_t1_boundary` + `adjFn_eq_none_iff_card_le_one`).
+- `satDiag_self_drop_endpoint_indices`: the two non-drop `vertexEnum` indices
+  enumerate the diagonal endpoints `(b.1, b.2+1)`, `(b.1+1, b.2)`
+  (via `vertexEnum_image_univ` + injectivity; distinctness by fst/snd omega).
+- `satDiag_self_drop_isDoor_iff`: `IsDoor cN2_total ↔ gDiag b.1 ≠ gDiag (b.1+1)`
+  — combines the S22 bridge `isDoor_dim_two_iff_color_change_of_no_color_two`
+  (h_no2 from `cN2_total_diag_ne_two`) with the endpoint-form lemmas and
+  `gDiag_ne_iff_cN2_total_diag_ne`.
+- `lastFace_filter_extract`: any `_hLastFace` filter member is a `t1 b` cell
+  with `b ∈ satDiagBases N` at its self-drop index (S21A + S24 t2-extinction).
+- `lastFace_card_eq`: `Finset.card_bij` with `p ↦ (vertex p.1 p.2).1` onto
+  `(range N).filter (fun k => gDiag k ≠ gDiag (k+1))`. Injectivity via
+  `satDiagBases_eq_pair_fst` + `satDiag_self_drop_index_unique`; surjectivity
+  via `satDiag_self_drop_index_exists/_face2/_adj_none/_isDoor_iff`.
+- `lastFace_odd`: transport of `face2_path_odd_gDiag` across the bijection.
+- `sperner_panchromatic_two` (end of file): `Triangulation.boundary_doors_odd`
+  with slots (`cN2_total_isSpernerColoring`, `boundaryOnFace_simData2`,
+  `SpernerLowerDimHelper.sperner_lowerDim_card_even`, `lastFace_odd`), then
+  `Triangulation.sperner`, then witness extraction: `choose` on the
+  panchromatic surjection, `spernerColor_le` for `f (v i) i ≤ v i i`
+  (n=1-proof idiom `rw [show spernerColor ... = cN2 ... from rfl, hcolor]`),
+  `gridPt_topSimps2_coord_diameter` for the 2/N diameter bound.
+
+### Lean gotchas hit
+
+- `rw [hkb]` against a goal phrased via `Triangulation.vertex` fails (pattern
+  is `vertexEnum`); fix with a `show` restating the goal in `vertexEnum` form
+  (they are defeq through the `toTriangulation` structure projection).
+- The file had REDUNDANT nested `namespace SpernerFreudSimp` re-opens
+  (opened at ~1102, re-opened at ~1755 and ~2248 without closing), silently
+  double-namespacing all later declarations (`SpernerFreudSimp.SpernerFreudSimp.*`)
+  and leaving the namespace dangling at EOF. Removing a re-open in isolation
+  breaks resolution of the double-namespaced private lemmas — the fix must
+  remove BOTH re-opens and the intermediate `end` so one single-level
+  namespace runs to the file-final `end`. `SimplicialAdjFnHelper.*` names
+  are unchanged (already single-nested).
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (3478 → ~3810 lines; sorry 1 → 0)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (S33 header)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this entry)
+- `src/data/research/problems/sperner-ndim-mathlib-oq-02.json` (phase, blockers)
+
+### Next Steps
+
+1. `SpernerNDimMathlibOQ02.lean` still carries 1 axiom (`sperner_panchromatic`
+   for general n). A concrete n=2 Brouwer corollary can now be derived
+   axiom-free from `sperner_panchromatic_two`; or begin the n≥3 Freudenthal
+   generalization (base + permutation cells, pseudomanifold scales linearly).
+2. The gallery entry meta for sperner-ndim-mathlib-oq-02 is unchanged
+   (its leanFile is the OQ02 file, axiom count still 1 — correct).

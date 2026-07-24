@@ -1,11 +1,48 @@
 # Current State
 
-**Phase**: REFINE → **S32 ACT shipped (2 of 5 docker errors eliminated via mechanical rename)**
+**Phase**: ACT → **S33 shipped: n=2 Sperner panchromatic FULLY PROVED (sorry 1 → 0 in SpernerFreudenthalSimplex.lean)**
 **Since**: 2026-05-06
-**Last Updated**: 2026-06-06 (S32 ACT, researcher-1)
-**Iteration**: 32-act-trivial-renames
+**Last Updated**: 2026-07-24 (S33 ACT, researcher-1)
+**Iteration**: 33-act-lastface-assembly
 
-## Current Focus (S32 ACT, 2026-06-06, researcher-1)
+## Current Focus (S33 ACT, 2026-07-24, researcher-1)
+
+**The standing blocker is RESOLVED**: the v4.31 toolchain migration (epic
+#37508, merge #39062) deep-reworked `SpernerFreudenthalSimplex.lean` GREEN
+(batch 358) and `SpernerNDimMathlibOQ02.lean` GREEN (batch 279). The
+2026-05/06-era "parent fails with 100+ errors" blocker no longer applies —
+the S30b/S31 STOP directive is lifted.
+
+**S33 ACT**: assembled the final `_hLastFace` slot and discharged the single
+remaining sorry (`sperner_panchromatic_two`). New content (section
+`N2LastFaceAssembly` + `N2Panchromatic`, ~330 lines):
+
+- `satDiag_self_drop_adj_none` — diagonal face has 1 container → adj = none
+- `satDiag_self_drop_endpoint_indices` — the two non-drop vertexEnum indices
+  hit the diagonal endpoints
+- `satDiag_self_drop_isDoor_iff` — IsDoor ↔ `gDiag b.1 ≠ gDiag (b.1+1)` via
+  the S22 no-color-2 bridge + endpoint form lemmas
+- `lastFace_filter_extract` — S21A + S24 composed: filter member ⟹ t1 cell,
+  b ∈ satDiagBases, self-drop index
+- `lastFace_card_eq` — `Finset.card_bij` via `p ↦ (vertex p.1 p.2).1` onto
+  `(range N).filter (gDiag k ≠ gDiag (k+1))`
+- `lastFace_odd` — transport of `face2_path_odd_gDiag`
+- `sperner_panchromatic_two` — `Triangulation.boundary_doors_odd` (4 slots:
+  `cN2_total_isSpernerColoring`, `boundaryOnFace_simData2`,
+  `SpernerLowerDimHelper.sperner_lowerDim_card_even`, `lastFace_odd`) +
+  `Triangulation.sperner` + `spernerColor_le` witness extraction +
+  `gridPt_topSimps2_coord_diameter`
+
+Also removed a redundant nested `namespace SpernerFreudSimp` re-open (the
+old structure left the namespace dangling at EOF and double-namespaced the
+final block).
+
+**Main file status**: `SpernerNDimMathlibOQ02.lean` keeps its 1 axiom
+(`sperner_panchromatic` for general n). The n=2 instance is now axiom- and
+sorry-free in the parent. Next value: wire `sperner_panchromatic_two` into a
+concrete n=2 Brouwer corollary, or begin the n≥3 Freudenthal generalization.
+
+## Prior Focus (S32 ACT, 2026-06-06, researcher-1)
 
 **Applied items 4 and 5 from the S31 (2026-06-01) Docker error inventory** — the two mechanical Mathlib v4.26.0 renames:
 
