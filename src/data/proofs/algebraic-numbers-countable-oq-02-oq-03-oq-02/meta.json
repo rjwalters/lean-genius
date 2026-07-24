@@ -134,12 +134,20 @@
       "mathContext": "If $s$ countable then $s^c$ is Gδ and (in a perfect Baire space) dense; and two disjoint dense Gδ sets force a dense empty intersection, impossible."
     },
     {
-      "id": "concrete",
-      "title": "Concrete Layer: Algebraic and Transcendental Reals",
+      "id": "transcendentals-gdelta",
+      "title": "The Transcendental Reals are a Dense Gδ",
       "startLine": 84,
+      "endLine": 104,
+      "summary": "transcendentalReals_isGδ instantiates the abstract complement-of-countable lemma at ℝ (the algebraic reals are countable, so their complement — the transcendentals — is Gδ). transcendentalReals_isDenseGδ pairs this with density inherited from the parent's residuality result, upgrading the mem_residual witness to the set itself.",
+      "mathContext": "$\\{x : \\mathbb{R} \\mid \\neg\\,\\text{IsAlgebraic}\\ \\mathbb{Q}\\ x\\}$ is Gδ (complement of the countable algebraic reals) and dense (inherited from residuality)."
+    },
+    {
+      "id": "algebraics-not-gdelta",
+      "title": "The Algebraic Reals are Dense but NOT Gδ",
+      "startLine": 105,
       "endLine": 131,
-      "summary": "transcendentalReals_isGδ and transcendentalReals_isDenseGδ instantiate the abstract result at ℝ. algebraicReals_dense shows the algebraic reals contain the dense rationals. algebraicReals_not_isGδ is the headline: the algebraic reals are not Gδ, derived from the abstract obstruction applied to the dense algebraics and the dense Gδ transcendentals.",
-      "mathContext": "Transcendentals $= \\{x : \\mathbb{R} \\mid \\neg\\,\\text{IsAlgebraic}\\ \\mathbb{Q}\\ x\\}$ is a dense Gδ; the algebraic reals are dense, hence not Gδ."
+      "summary": "algebraicReals_dense shows the algebraic reals contain the dense rationals, hence are dense. algebraicReals_not_isGδ is the headline: applying the abstract obstruction to the dense algebraics and the dense Gδ transcendentals shows the algebraic reals cannot be Gδ — they are Fσ but not Gδ, dual to the transcendentals being Gδ but not Fσ.",
+      "mathContext": "The algebraic reals are dense (they contain $\\mathbb{Q}$) yet disjoint from the dense Gδ transcendentals, so by the abstract obstruction they cannot themselves be Gδ."
     },
     {
       "id": "axiom-audit",
