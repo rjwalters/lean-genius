@@ -21,7 +21,7 @@
     "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
     "iteration": 7,
-    "focus": "2026-07-23: ABSTRACT vertex-adding surgery formalized (section Surgery in Erdos85Problem.lean) — general lemma set replacing per-n whole-graph decides: surgery G a b c on Option V, degree preservation via uniform injection, common-neighbour <= 1 preservation (hypotheses: a~b, b~c, a-not-c, edges ab/bc triangle-free — corrects the girth-5-implicit note), generic four_le_minDegreeForC4_of_witness, finSuccEquiv comap transport. Applied to petersen12 (a=4,b=9,c=7): f(13) >= 4, so f(13) in {4,5} — first rung beyond the counting range. No 13-vertex decide anywhere.",
+    "focus": "S-f15f16 (researcher-2, 2026-07-24): fifth+sixth surgery rungs — f(15), f(16) both in {4,5} (petersen14/petersen15 edge lists materialised, kernel decides, configs 0-5-7 and 6-8-5; docker GREEN first try). Exact table 1..13, membership {4,5} for 14,15,16.",
     "blockers": [
       {
         "route": "RESOLVED 2026-07-22 (was: f(7)=3, then f(8)=3): handshake-parity boost proved f(7)=3; a LOCAL triangle-partition argument (no ex(n;C4) input) proved f(8)=3. Residual blocked part: upper-Beatty points beyond j=1 (n = s^2+s+j, j>=2), odd-s points, and f(9) still need ex(n;C4)-strength input.",
@@ -54,7 +54,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "Optional: chain surgery for f(15..19) lower rungs (materialise petersen14 edge list from the a=0,b=4,c=3 surgery, pick next config avoiding triangles 10-1-6, 11-3-8, 12-9-7, 13-4-3(new); cheap decides). Upper halves beyond n=13 need real ex(n;C4) input (blocked). Deep: KST asymptotics, monotonicity conjecture.",
+    "nextAction": "Optional: f(17)..f(20) rungs by the same recipe — materialise petersen16 (= petersen15Edges - (6,8) + vertex 15 ~ {6,8,5}), valid 16->17 configs already enumerated: (10,0,13),(10,0,14),(13,0,14),(1,2,11),(1,2,7),(7,2,11),(9,6,15). Upper halves for 14..20 blocked on ex(n;C4). Deep: monotonicity conjecture (the actual Erdos 85 question).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -112,7 +112,8 @@
       "common_le_one_of_not_containsC4 (converse criterion: no C4 => common neighbours <= 1) in Erdos85Problem.lean section Thirteen",
       "containsC4_of_thirteen_minDegree_four: 13 vertices, min degree >= 4, C4-free is impossible (cherry tightness + friendship theorem)",
       "minDegreeForC4_le_four_thirteen + minDegreeForC4_thirteen: f(13) = 4, the fourth exact value, first beyond the counting range",
-      "petersen13/petersen13_degree/petersen13_common_le_one + four_le_minDegreeForC4_fourteen + minDegreeForC4_fourteen_mem (section Fourteen, Erdos85Problem.lean)"
+      "petersen13/petersen13_degree/petersen13_common_le_one + four_le_minDegreeForC4_fourteen + minDegreeForC4_fourteen_mem (section Fourteen, Erdos85Problem.lean)",
+      "Sections Fifteen+Sixteen in Erdos85Problem.lean: petersen14/petersen15 edge-list witnesses + four_le_minDegreeForC4_fifteen/sixteen + fifteen_mem/sixteen_mem (both in {4,5})"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -156,7 +157,9 @@
       "Tight cherry count + injectivity = the friendship condition; Mathlib Archive friendship_theorem (Wiedijk #83) then produces a politician of degree n-1, contradicting regularity — a C4-free upper bound with NO edge-extremal (Reiman) input",
       "import Archive.Wiedijk100Theorems.FriendshipGraphs builds in this toolchain — the whole Mathlib Archive is usable as INPUT for gallery proofs",
       "Classical-instance-baked defs (Archive Friendship): prove the statement with the synthesized instance in a have, then convert h using 2 — Subsingleton.elim closes the Fintype instance mismatch; refine/rw/@-hole all fail on kernel defeq",
-      "f(14) rung landed: materialise the previous surgery result as an explicit edge list (petersen13), then apply the abstract surgery again — config a=0,b=4,c=3 (edges 0-4, 4-3 triangle-free; triangles of petersen13 are exactly 10-1-6, 11-3-8, 12-9-7, one per surgery vertex). Only 13-vertex kernel decides; no 14-vertex graph decided. f(14) ∈ {4,5}; pinning 4 blocked (14 not a tight point, friendship argument inapplicable)."
+      "f(14) rung landed: materialise the previous surgery result as an explicit edge list (petersen13), then apply the abstract surgery again — config a=0,b=4,c=3 (edges 0-4, 4-3 triangle-free; triangles of petersen13 are exactly 10-1-6, 11-3-8, 12-9-7, one per surgery vertex). Only 13-vertex kernel decides; no 14-vertex graph decided. f(14) ∈ {4,5}; pinning 4 blocked (14 not a tight point, friendship argument inapplicable).",
+      "Surgery-rung chaining is fully mechanical: python-verify edge list + config (min degree, common<=1, triangle-free path edges, a not~ c) before writing Lean — both new rungs compiled first try",
+      "petersen16 construction + seven valid 16->17 configs pre-enumerated (see knowledge.md) — f(17)..f(20) are cheap future rungs"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
@@ -189,5 +192,6 @@
   "started": "2026-07-10T00:41:25.783Z",
   "lastUpdate": "2026-07-22",
   "significance": 7,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdatedAt": "2026-07-24"
 }
