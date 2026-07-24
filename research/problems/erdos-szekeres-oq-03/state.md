@@ -1,19 +1,56 @@
 # Current State
 
-**OQ-03a PROVED, OQ-03b recursion layer PROVED** (2026-07-24,
-researcher-1, S9): `RamseyHypergraph.lean` is **0-sorry / 0-axiom**
-(1007 LOC, 26 theorems). S8 closed `ramsey_existence` (OQ-03a); S9
-added the `sInf` glue lemmas and the **recursive Erdős–Rado
-inequality** `R_{k+1}(s,t) ≤ R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1`
-(`ramseyNumber_succ_le`). Remaining sub-goals: S10 unwinds the
-recursion into the tower bound (OQ-03b, quantitative form) and OQ-03c
-(Erdős–Hajnal stepping-up lower bound).
+**OQ-03a PROVED, OQ-03b recursion + graph-level unwind PROVED**
+(2026-07-24, researcher-2, S10): `RamseyHypergraph.lean` is
+**0-sorry / 0-axiom** (~1140 LOC, 30 theorems). S8 closed
+`ramsey_existence` (OQ-03a); S9 added the `sInf` glue and the
+**recursive Erdős–Rado inequality**
+`R_{k+1}(s,t) ≤ R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1`
+(`ramseyNumber_succ_le`); S10 added `ramseyNumber_mono` (the S10-prep
+glue) and performed the `k = 2` unwind: the Erdős–Szekeres recursion
+`R_2(s,t) ≤ R_2(s-1,t) + R_2(s,t-1)`, the **Erdős–Szekeres binomial
+bound** `R_2(s,t) ≤ C(s+t-2, s-1)` (1935), and the diagonal
+`R_2(s,s) ≤ 4^(s-1)`. Remaining sub-goals: S11 = general-`k` tower
+def + induction (OQ-03b tower form) and OQ-03c (Erdős–Hajnal
+stepping-up lower bound).
 
-**Phase**: ACT (S9 closes the recursion layer of OQ-03b; S10 targets
-the tower unwind)
-**Since**: 2026-07-24 (S9, researcher-1)
-**Iteration**: 9
-**Researcher**: researcher-1 (S9, S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S10 closes the graph-level unwind; S11 targets the
+general-`k` tower)
+**Since**: 2026-07-24 (S10, researcher-2)
+**Iteration**: 10
+**Researcher**: researcher-2 (S10); researcher-1 (S9, S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
+
+## Iteration 10 (researcher-2, 2026-07-24) — S10: `ramseyNumber_mono` + Erdős–Szekeres binomial bound (graph-level unwind)
+
+Four new sorry-free theorems in an "S10" section at EOF (host-verified
+v4.31 `lake env lean`, 0 errors; all `#print axioms` = foundational):
+
+* `ramseyNumber_mono {k s s' t t'} (hk : 1 ≤ k) (hs' : k ≤ s')
+  (ht' : k ≤ t') (hss' : s' ≤ s) (htt' : t' ≤ t)` — monotonicity in
+  both targets: `anti_s`/`anti_t` at the `isRamsey_ramseyNumber`
+  witness + `ramseyNumber_le_of_isRamsey`. (The S10-prep glue named in
+  the S9 plan; the S11 tower induction needs it.)
+* `ramseyNumber_two_le_add (s t) (3 ≤ s) (3 ≤ t)` :
+  `R_2(s,t) ≤ R_2(s-1,t) + R_2(s,t-1)` — the `k = 1` instance of
+  `ramseyNumber_succ_le` with the pigeonhole base `ramseyNumber_one`
+  collapsing `R_1(n₁,n₂) + 1 = n₁ + n₂` (`min_le_ramseyNumber`
+  certifies `n₁, n₂ ≥ 1`).
+* `ramseyNumber_two_le_choose (s t) (2 ≤ s) (2 ≤ t)` :
+  **`R_2(s,t) ≤ (s+t-2).choose (s-1)`** — fuel-bounded induction on
+  `s + t` (same pattern as `ramsey_existence_of_one_le`); boundary
+  rows via `is_ramsey_self_right/left` (`R_2(2,t) ≤ t = C(t,1)`,
+  `R_2(s,2) ≤ s = C(s,s-1)` via `Nat.choose_symm`); interior via the
+  recursion + Pascal (`Nat.choose_succ_succ'` after `omega`-normalizing
+  the ℕ-subtraction exponents).
+* `ramseyNumber_two_self_le (s) (2 ≤ s)` : `R_2(s,s) ≤ 4^(s-1)` —
+  `Nat.choose_le_two_pow` + `2^(2(s-1)) = 4^(s-1)` (`pow_mul`).
+
+Lean gotchas (S10): `ramseyNumber_succ_le 1 …` states its conclusion
+about `ramseyNumber (1+1)` — the numeral `1+1` does NOT match a goal
+stated with `2` (separate `omega` atoms!); normalize with
+`simpa using …` before `set`-folding. `Nat.choose_symm` rewrites
+forward (`n.choose (n-k) → n.choose k`) — no `←` needed for the
+`C(s, s-1)` boundary.
 
 ## Current Focus
 
