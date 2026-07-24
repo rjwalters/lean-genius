@@ -119,7 +119,8 @@
       "**One formula for all families.** Scaling by $6$ turns the family-dependent cubic into the single linear-in-$k$ identity $6\\sum C_{k,i} = k\\,n^3 + (6-k)\\,n$; centered triangular, square, pentagonal, hexagonal are just $k = 3,4,5,6$.",
       "**Hexagonal is special because $6-k$ vanishes.** The partial sums are a pure power $n^3$ exactly when $k = 6$; for other $k$ a genuine linear term $(6-k)\\,n$ remains, so no other centered-polygonal family sums to a perfect power.",
       "**Staying in ℕ is a phrasing choice.** Multiplying through by the denominator $6$ and moving the linear part to the right as $+(6-k)\\,n$ (rather than subtracting $(k-6)\\,n$) removes every division and every truncated subtraction.",
-      "**The $/2$ dies from parity.** $n(n+1)$ is always even, so the centered $k$-gonal number's division is exact and `omega` clears it once and for all."
+      "**The $/2$ dies from parity.** $n(n+1)$ is always even, so the centered $k$-gonal number's division is exact and `omega` clears it once and for all.",
+      "**The proof needs no geometric restriction on $k$.** `six_mul_sum_cgon` quantifies over every `k : ℕ`, not just $k \\ge 3$ where `cgon k n` has a genuine centered-$k$-gon reading (a central dot plus $k$ triangular arms). $k = 0, 1, 2$ satisfy the identical closed form via the identical one-step induction — 'centered $k$-gonal number' is a combinatorial reading of the algebraic definition `cgon`, not a hypothesis the induction ever consults."
     ],
     "prerequisites": [
       "Centered polygonal (figurate) numbers",
