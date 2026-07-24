@@ -111,8 +111,15 @@
       "id": "gap-strictly-stronger",
       "title": "The Gap Is Strictly Stronger",
       "startLine": 66,
-      "endLine": 85,
-      "summary": "not_surjective_of_cardinality_gap re-derives the parent's non-surjectivity from the gap: a surjection A ↠ (A → Prop) would force #(A → Prop) ≤ #A (Cardinal.mk_le_of_surjective), contradicting #A < #(A → Prop). A definitional-equality sanity-check example and #check lines close the file. Thus the quantitative statement subsumes the qualitative one."
+      "endLine": 74,
+      "summary": "not_surjective_of_cardinality_gap re-derives the parent's non-surjectivity from the gap: a surjection A ↠ (A → Prop) would force #(A → Prop) ≤ #A (Cardinal.mk_le_of_surjective), contradicting #A < #(A → Prop). Thus the quantitative statement subsumes the qualitative one."
+    },
+    {
+      "id": "sanity-check",
+      "title": "Definitional-Equality Sanity Check",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "A closing example confirms #A < #(A → Prop) and #A < #(Set A) are the same proposition by rfl (Set A ≡ A → Prop, no transport lemma needed), followed by #check lines auditing the three headline theorems."
     }
   ],
   "conclusion": {
