@@ -63,20 +63,36 @@
   },
   "sections": [
     {
+      "id": "setup-and-positivity",
+      "title": "Setup: the Gaussian import and the normalization-constant positivity lemma",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "The docstring situates this entry as the missing normal-distribution-normalization strand of the area-of-circle Gaussian lineage. Imports Mathlib's Gaussian-integral API and opens Real/MeasureTheory. sqrt_two_pi_pos proves 0 < √(2π) by positivity — the nonvanishing side condition every later normalization theorem needs to legally cancel the constant 1/√(2π) or 1/(σ√(2π)) against the integral value.",
+      "mathContext": "$\\sqrt{2\\pi} > 0$, proved by \\texttt{positivity}; the nonvanishing constant every reciprocal-normalization theorem below depends on."
+    },
+    {
       "id": "base-and-area",
       "title": "Base case and the area identity",
-      "startLine": 1,
+      "startLine": 39,
       "endLine": 51,
-      "summary": "sqrt_two_pi_pos (positivity of the normalization constant), gaussian_unit (∫ e^{-x²} = √π, the parent's result re-derived), and gaussian_unit_sq ((∫ e^{-x²})² = π, the area-of-circle identity).",
+      "summary": "gaussian_unit (∫ e^{-x²} = √π, the parent's result re-derived from integral_gaussian at rate b=1) and gaussian_unit_sq ((∫ e^{-x²})² = π, the area-of-circle identity that the polar-coordinate proof computes as a 2D integral).",
       "mathContext": "$\\int e^{-x^2} = \\sqrt\\pi$; $\\left(\\int e^{-x^2}\\right)^2 = \\pi$."
     },
     {
-      "id": "normalizations",
-      "title": "The normal-distribution normalizations",
+      "id": "unit-variance-normalization",
+      "title": "Unit-variance normalization (the σ = 1 case)",
       "startLine": 53,
+      "endLine": 66,
+      "summary": "gaussian_half (∫ e^{-x²/2} = √(2π), integral_gaussian at rate b=1/2) and std_normal_normalization (∫ (1/√(2π))e^{-x²/2} = 1) — the standard-normal density integrates to 1.",
+      "mathContext": "$\\int e^{-x^2/2} = \\sqrt{2\\pi}$; $\\frac{1}{\\sqrt{2\\pi}}\\cdot\\sqrt{2\\pi} = 1$."
+    },
+    {
+      "id": "general-variance-normalization",
+      "title": "General-variance normalization (σ > 0)",
+      "startLine": 68,
       "endLine": 85,
-      "summary": "gaussian_half (∫ e^{-x²/2} = √(2π)), std_normal_normalization (∫ (1/√(2π))e^{-x²/2} = 1), gaussian_variance (∫ e^{-x²/(2σ²)} = σ√(2π)), and gaussian_variance_normalization (∫ (1/(σ√(2π)))e^{-x²/(2σ²)} = 1).",
-      "mathContext": "$\\int e^{-x^2/2} = \\sqrt{2\\pi}$; $\\int \\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-x^2/(2\\sigma^2)} = 1$."
+      "summary": "gaussian_variance (∫ e^{-x²/(2σ²)} = σ√(2π), via √(σ²·2π) = σ√(2π)) and gaussian_variance_normalization (∫ (1/(σ√(2π)))e^{-x²/(2σ²)} = 1) — the N(0,σ²) density integrates to 1 for every σ > 0.",
+      "mathContext": "$\\int e^{-x^2/(2\\sigma^2)} = \\sigma\\sqrt{2\\pi}$; $\\int \\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-x^2/(2\\sigma^2)} = 1$."
     },
     {
       "id": "mean-shift",
