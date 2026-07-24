@@ -573,6 +573,147 @@ def isProper : WitnessTree P → Prop
     isProper (P := P) (.node i []) := by
   simp [isProper]
 
+/-! ### S17 — deepest-attachment extraction and `witness_valid` (OQ-01-B)
+
+The Moser–Tardos §4 extraction walks an execution-log segment backwards from
+a root event and, for each earlier log entry `k`, attaches a new leaf labelled
+`k` as a child of a **deepest** vertex whose label's inclusive neighbourhood
+contains `k` (skipping entries with no such vertex). We formalize the
+attachment step *relationally* (`Attach` / `AttachDeepest`) rather than as a
+program: the propriety proof needs only the two facts the relation records —
+the attachment site matches, and no match sits strictly deeper. The headline
+theorem `witness_valid` is Moser–Tardos' propriety observation: every tree so
+extracted is proper. The distinct-siblings condition is the interesting part:
+if the attachment target already had a child with the incoming label `k`, that
+child would itself be a *strictly deeper* match for `k` (since
+`k ∈ Γ⁺(k)`), contradicting depth-maximality.
+
+The probabilistic content (a fixed proper tree *appears* in the random
+execution with probability at most `∏ uniformDrawProb`) is the S18+
+deliverable `witness_prob_bd`; nothing here touches the `PMF` layer. -/
+
+/-- `HasMatchAt j τ d`: some vertex of `τ` at depth `d` has a label whose
+    inclusive neighbourhood contains `j` — i.e. depth `d` offers a legal
+    attachment site for a new leaf labelled `j`. -/
+def HasMatchAt (j : Fin P.numEvents) : WitnessTree P → ℕ → Prop
+  | .node i _, 0 => j ∈ inclNbhd (P := P) i
+  | .node _ ch, d + 1 => ∃ t ∈ ch, HasMatchAt j t d
+
+/-- `Attach j τ d τ'`: `τ'` results from `τ` by adding a new leaf labelled `j`
+    as a child of some vertex at depth `d` whose label's inclusive
+    neighbourhood contains `j`. -/
+inductive Attach (j : Fin P.numEvents) : WitnessTree P → ℕ → WitnessTree P → Prop
+  | here (i : Fin P.numEvents) (ch : List (WitnessTree P))
+      (hj : j ∈ inclNbhd (P := P) i) :
+      Attach j (.node i ch) 0 (.node i (.node j [] :: ch))
+  | child (i : Fin P.numEvents) (pre post : List (WitnessTree P))
+      (t t' : WitnessTree P) (d : ℕ) (h : Attach j t d t') :
+      Attach j (.node i (pre ++ t :: post)) (d + 1) (.node i (pre ++ t' :: post))
+
+/-- The **deepest-vertex rule** (Moser–Tardos §4): the new leaf is attached at
+    a depth `d` that is maximal among all matching depths. -/
+def AttachDeepest (j : Fin P.numEvents) (τ τ' : WitnessTree P) : Prop :=
+  ∃ d, Attach j τ d τ' ∧ ∀ d', HasMatchAt j τ d' → d' ≤ d
+
+/-- An attachment site is in particular a match at the same depth. -/
+theorem Attach.hasMatchAt {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
+    (h : Attach j τ d τ') : HasMatchAt j τ d := by
+  induction h with
+  | here i ch hj => exact hj
+  | child i pre post t t' d h ih =>
+      exact ⟨t, List.mem_append_right _ (List.mem_cons_self ..), ih⟩
+
+/-- Attachment below the root does not change the root label. -/
+theorem Attach.labelOf_eq {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
+    (h : Attach j τ d τ') : labelOf τ' = labelOf τ := by
+  cases h <;> rfl
+
+/-- **Propriety is preserved by depth-maximal attachment.** The heart of
+    Moser–Tardos' witness-tree propriety: attaching `j` at a deepest matching
+    vertex keeps sibling labels distinct, because a same-labelled sibling would
+    itself be a strictly deeper match for `j` (as `j ∈ Γ⁺(j)`). -/
+theorem isProper_attach {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
+    (hatt : Attach j τ d τ') :
+    isProper τ → (∀ d', HasMatchAt j τ d' → d' ≤ d) → isProper τ' := by
+  induction hatt with
+  | here i ch hj =>
+      intro hp hmax
+      obtain ⟨hnodup, hlabels, hproper⟩ := hp
+      refine ⟨?_, ?_, ?_⟩
+      · -- sibling labels stay distinct: a same-labelled child would be a
+        -- depth-1 match, contradicting maximality at depth 0
+        rw [List.map_cons, List.nodup_cons]
+        refine ⟨fun hmem => ?_, hnodup⟩
+        obtain ⟨u, humem, hulabel⟩ := List.mem_map.mp hmem
+        have humatch : HasMatchAt j u 0 := by
+          cases u with
+          | node l chu =>
+              have : l = j := hulabel
+              subst this
+              exact self_mem_inclNbhd (P := P) j
+        have h1 : HasMatchAt j (WitnessTree.node i ch) 1 := ⟨u, humem, humatch⟩
+        exact absurd (hmax 1 h1) (by omega)
+      · intro t ht
+        rcases List.mem_cons.mp ht with rfl | ht'
+        · exact hj
+        · exact hlabels t ht'
+      · intro t ht
+        rcases List.mem_cons.mp ht with rfl | ht'
+        · exact isProper_leaf j
+        · exact hproper t ht'
+  | child i pre post t t' d h ih =>
+      intro hp hmax
+      obtain ⟨hnodup, hlabels, hproper⟩ := hp
+      have htmem : t ∈ pre ++ t :: post :=
+        List.mem_append_right _ (List.mem_cons_self ..)
+      have ht' : isProper t' :=
+        ih (hproper t htmem)
+          (fun d' hm => Nat.le_of_succ_le_succ (hmax (d' + 1) ⟨t, htmem, hm⟩))
+      have hlab : labelOf t' = labelOf t := h.labelOf_eq
+      refine ⟨?_, ?_, ?_⟩
+      · rwa [List.map_append, List.map_cons, hlab,
+          ← List.map_cons, ← List.map_append]
+      · intro u hu
+        rcases List.mem_append.mp hu with hu' | hu'
+        · exact hlabels u (List.mem_append_left _ hu')
+        · rcases List.mem_cons.mp hu' with rfl | hu''
+          · rw [hlab]; exact hlabels t htmem
+          · exact hlabels u (List.mem_append_right _ (List.mem_cons_of_mem _ hu''))
+      · intro u hu
+        rcases List.mem_append.mp hu with hu' | hu'
+        · exact hproper u (List.mem_append_left _ hu')
+        · rcases List.mem_cons.mp hu' with rfl | hu''
+          · exact ht'
+          · exact hproper u (List.mem_append_right _ (List.mem_cons_of_mem _ hu''))
+
+/-- Relational form of the Moser–Tardos §4 extraction over a log segment
+    (entries processed head-first, i.e. backwards in execution time): start
+    from a bare root labelled `j`, attach each entry by the deepest-vertex
+    rule when a match exists, and skip entries with no matching vertex. -/
+inductive ExtractsFrom (j : Fin P.numEvents) :
+    List (Fin P.numEvents) → WitnessTree P → Prop
+  | nil : ExtractsFrom j [] (.node j [])
+  | attach (l : List (Fin P.numEvents)) (k : Fin P.numEvents)
+      (τ τ' : WitnessTree P) (hex : ExtractsFrom j l τ)
+      (hatt : AttachDeepest k τ τ') : ExtractsFrom j (k :: l) τ'
+  | skip (l : List (Fin P.numEvents)) (k : Fin P.numEvents)
+      (τ : WitnessTree P) (hex : ExtractsFrom j l τ)
+      (hnm : ∀ d, ¬HasMatchAt k τ d) : ExtractsFrom j (k :: l) τ
+
+/-- **`witness_valid` (Moser–Tardos 2010, §4 propriety):** every witness tree
+    extracted from a log segment by the deepest-attachment rule is proper.
+    This discharges step 2 of the `mt_expected_step_bound` proof skeleton;
+    the probability bound over a fixed proper tree (`witness_prob_bd`) is the
+    remaining S18+ deliverable. -/
+theorem witness_valid {j : Fin P.numEvents} {l : List (Fin P.numEvents)}
+    {τ : WitnessTree P} (h : ExtractsFrom j l τ) : isProper τ := by
+  induction h with
+  | nil => exact isProper_leaf j
+  | attach l k τ τ' hex hatt ih =>
+      obtain ⟨d, ha, hmax⟩ := hatt
+      exact isProper_attach ha ih hmax
+  | skip l k τ hex hnm ih => exact ih
+
 end WitnessTree
 
 end MTProblem
