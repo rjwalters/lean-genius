@@ -92,7 +92,14 @@
     Desarguesian.
   * The *intra-plane* implication "a projective plane satisfying (D) also
     satisfies (D\*)" is a genuine geometric theorem (apply (D) to a derived
-    configuration); it is NOT purely formal duality and is left open here.
+    configuration); it is NOT purely formal duality.  It is now proved here
+    as `isDesarguesian_implies_converse` (with the mirror
+    `isConverseDesarguesian_implies_desargues` recovered by duality), for
+    configurations satisfying eight explicit extra nondegeneracy hypotheses
+    — the derived configuration must itself be nondegenerate, and a
+    degenerate labelling can escape the raw `IsConverseDesarguesian`
+    schema, so the single-property upgrade is stated at exactly the
+    nondegeneracy it needs.
   * The parent's Moulton model is affine, and affine planes are not self-dual
     (parallels have no point-dual); this file therefore lives at the abstract
     incidence layer, one level above its parent, as recorded in the survey.
@@ -314,6 +321,121 @@ theorem desargues_package_self_dual :
 a projective plane (with the point/line type order swapped), so all the
 statements above genuinely live on projective planes and their duals. -/
 example [ProjectivePlane P L] : ProjectivePlane (Dual L) (Dual P) := inferInstance
+
+/-- **Desargues implies its own converse, intra-plane** — the classical
+derived-configuration argument, and the geometric half of "Desargues is its
+own converse" that `isDesarguesian_dual_iff` (a pure statement swap between
+a plane and its dual) deliberately leaves open.
+
+Given an axially perspective labelled pair of triangles in a projective
+plane satisfying `IsDesarguesian`, apply Desargues **inside the same plane**
+to the *derived* configuration: center `p`, triangles `(q, B, B')` and
+`(r, A, A')`.  Its three perspectivity lines through `p` are `ℓ` (through
+`q, r`), `ab` (through `B, A`) and `ab'` (through `B', A'`); the three pairs
+of corresponding sides meet in `C = bc·ca`, `X = la·lb` (which exists
+because any two lines of a projective plane meet) and `C' = bc'·ca'`.
+Desargues makes `C`, `X`, `C'` collinear, and the line carrying them shares
+the two distinct points `C ≠ C'` with `lc`, so it *is* `lc`; hence
+`X ∈ la ∩ lb ∩ lc` and the three joins concur.
+
+The derived configuration must itself be nondegenerate, which costs eight
+hypotheses beyond the `IsConverseDesarguesian` schema: honest triangles
+(`A ≠ B`, `A' ≠ B'`, `C ∉ ab`, `C' ∉ ab'`), vertices `A`, `A'` off the axis
+`ℓ`, and `C`, `C'` off the perspectivity line `la`.  Conversely it only
+consumes four of the schema's twelve inequalities (`C ≠ C'`, `q ≠ r`,
+`la ≠ lb`, `ab ≠ ab'`), so the statement below lists exactly the hypotheses
+used. -/
+theorem isDesarguesian_implies_converse [ProjectivePlane P L]
+    (hD : IsDesarguesian P L)
+    (A B C A' B' C' p q r : P) (ℓ la lb lc ab ab' bc bc' ca ca' : L)
+    (hCC' : C ≠ C') (hqr : q ≠ r) (hlab : la ≠ lb) (hab' : ab ≠ ab')
+    (hAB : A ≠ B) (hA'B' : A' ≠ B') (hCab : C ∉ ab) (hC'ab' : C' ∉ ab')
+    (hAell : A ∉ ℓ) (hA'ell : A' ∉ ℓ) (hCla : C ∉ la) (hC'la : C' ∉ la)
+    (hpl : p ∈ ℓ) (hql : q ∈ ℓ) (hrl : r ∈ ℓ)
+    (hAla : A ∈ la) (hA'la : A' ∈ la) (hBlb : B ∈ lb) (hB'lb : B' ∈ lb)
+    (hClc : C ∈ lc) (hC'lc : C' ∈ lc)
+    (hAab : A ∈ ab) (hBab : B ∈ ab) (hpab : p ∈ ab)
+    (hA'ab' : A' ∈ ab') (hB'ab' : B' ∈ ab') (hpab' : p ∈ ab')
+    (hBbc : B ∈ bc) (hCbc : C ∈ bc) (hqbc : q ∈ bc)
+    (hB'bc' : B' ∈ bc') (hC'bc' : C' ∈ bc') (hqbc' : q ∈ bc')
+    (hCca : C ∈ ca) (hAca : A ∈ ca) (hrca : r ∈ ca)
+    (hC'ca' : C' ∈ ca') (hA'ca' : A' ∈ ca') (hrca' : r ∈ ca') :
+    LinesConcurrent P L la lb lc := by
+  -- the meet of the two joins `la`, `lb`: the candidate center
+  obtain ⟨X, hXla, hXlb⟩ : ∃ X : P, X ∈ la ∧ X ∈ lb :=
+    ⟨HasPoints.mkPoint (P := P) hlab, HasPoints.mkPoint_ax (P := P) hlab⟩
+  -- nondegeneracy of the derived configuration
+  have hCX : C ≠ X := fun h => hCla (h ▸ hXla)
+  have hXC' : X ≠ C' := fun h => hC'la (h ▸ hXla)
+  have hellab : ℓ ≠ ab := fun h => hAell (h ▸ hAab)
+  have hellab' : ℓ ≠ ab' := fun h => hA'ell (h ▸ hA'ab')
+  have hbcca : bc ≠ ca := by
+    intro h
+    rcases Nondegenerate.eq_or_eq hAab hBab (h.symm ▸ hAca) hBbc with h' | h'
+    · exact hAB h'
+    · exact hCab (h'.symm ▸ hCbc)
+  have hbc'ca' : bc' ≠ ca' := by
+    intro h
+    rcases Nondegenerate.eq_or_eq hA'ab' hB'ab' (h.symm ▸ hA'ca') hB'bc' with h' | h'
+    · exact hA'B' h'
+    · exact hC'ab' (h'.symm ▸ hC'bc')
+  -- Desargues on the derived configuration: center `p`, triangles
+  -- `(q, B, B')` and `(r, A, A')`, perspectivity lines `ℓ`, `ab`, `ab'`,
+  -- side pairs `(bc, ca)`, `(lb, la)`, `(bc', ca')` with axis candidates
+  -- `C`, `X`, `C'`
+  obtain ⟨m, hCm, hXm, hC'm⟩ :=
+    hD p q B B' r A A' C X C' ℓ ab ab' bc ca lb la bc' ca'
+      hqr hAB.symm hA'B'.symm hCX hCC' hXC'
+      hellab hellab' hab' hbcca hlab.symm hbc'ca'
+      hpl hpab hpab'
+      hql hrl hBab hAab hB'ab' hA'ab'
+      hqbc hBbc hCbc hrca hAca hCca
+      hBlb hB'lb hXlb hAla hA'la hXla
+      hB'bc' hqbc' hC'bc' hA'ca' hrca' hC'ca'
+  -- the axis of the derived configuration is `lc` (it shares `C ≠ C'` with it)
+  rcases Nondegenerate.eq_or_eq hCm hC'm hClc hC'lc with h | h
+  · exact absurd h hCC'
+  · exact ⟨X, hXla, hXlb, h ▸ hXm⟩
+
+/-- **Converse Desargues implies Desargues, intra-plane** — the mirror
+implication, for free by plane duality: `IsConverseDesarguesian P L` is
+`IsDesarguesian` of the dual plane (`isDesarguesian_dual_iff`), so running
+`isDesarguesian_implies_converse` in the dual plane and reading the result
+back through the polarity dictionary turns a nondegenerate centrally
+perspective pair of triangles into an axially perspective one.  The eight
+extra nondegeneracy hypotheses are the duals of the previous theorem's:
+honest dual triangles (`bc' ≠ ca'`, `bc ≠ ca`, `C' ∉ ab'`, `C ∉ ab`), dual
+vertices off the dual axis (`o ∉ bc'`, `o ∉ bc`), and dual points off the
+dual perspectivity line (`q ∉ ab'`, `q ∉ ab`). -/
+theorem isConverseDesarguesian_implies_desargues [ProjectivePlane P L]
+    (hC : IsConverseDesarguesian P L)
+    (o A B C A' B' C' p q r : P) (la lb lc ab ab' bc bc' ca ca' : L)
+    (hCC' : C ≠ C') (hqr : q ≠ r) (hlab : la ≠ lb) (hab' : ab ≠ ab')
+    (hbc'ca' : bc' ≠ ca') (hbcca : bc ≠ ca) (hC'ab' : C' ∉ ab') (hCab : C ∉ ab)
+    (hobc' : o ∉ bc') (hobc : o ∉ bc) (hqab' : q ∉ ab') (hqab : q ∉ ab)
+    (hola : o ∈ la) (holb : o ∈ lb) (holc : o ∈ lc)
+    (hAla : A ∈ la) (hA'la : A' ∈ la) (hBlb : B ∈ lb) (hB'lb : B' ∈ lb)
+    (hClc : C ∈ lc) (hC'lc : C' ∈ lc)
+    (hAab : A ∈ ab) (hBab : B ∈ ab) (hpab : p ∈ ab)
+    (hA'ab' : A' ∈ ab') (hB'ab' : B' ∈ ab') (hpab' : p ∈ ab')
+    (hBbc : B ∈ bc) (hCbc : C ∈ bc) (hqbc : q ∈ bc)
+    (hB'bc' : B' ∈ bc') (hC'bc' : C' ∈ bc') (hqbc' : q ∈ bc')
+    (hCca : C ∈ ca) (hAca : A ∈ ca) (hrca : r ∈ ca)
+    (hC'ca' : C' ∈ ca') (hA'ca' : A' ∈ ca') (hrca' : r ∈ ca') :
+    PointsCollinear P L p q r := by
+  obtain ⟨x, hx1, hx2, hx3⟩ :=
+    isDesarguesian_implies_converse (Dual L) (Dual P)
+      ((isDesarguesian_dual_iff P L).mpr hC)
+      bc' ca' ab' bc ca ab lc la lb o q r p C' C A' A B' B
+      hab'.symm hlab hqr hCC'.symm
+      hbc'ca' hbcca hC'ab' hCab
+      hobc' hobc hqab' hqab
+      holc hola holb
+      hqbc' hqbc hrca' hrca hpab' hpab
+      hC'bc' hC'ca' hC'lc hCbc hCca hClc
+      hA'ca' hA'ab' hA'la hAca hAab hAla
+      hB'ab' hB'bc' hB'lb hBab hBbc hBlb
+  exact ⟨x, hx3, hx1, hx2⟩
 
 end Abstract
 
