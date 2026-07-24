@@ -21,6 +21,7 @@
 -/
 
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Complex.AbsMax
 import Mathlib.Analysis.Complex.CauchyIntegral
 import Mathlib.Analysis.Analytic.OfScalars
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
@@ -623,5 +624,128 @@ theorem limit_mem_Icc (f : EntireFunction) (hent : IsEntire f) {L : ℝ}
   · refine le_of_tendsto hL ?_
     filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
     exact termModulusRatio_le_one f hr hent
+
+/-
+## Part 13: The Maximum Principle and the Radius Characterisation
+
+Two structural refinements of the Part-12 bridge, both axiom-free.
+
+First, `IsEntire` — defined "by hand" as absolute convergence of the
+coefficient series at every radius — is shown to be *equivalent* to the
+Mathlib-native condition that the formal scalar series has infinite radius of
+convergence. Part 12 proved the forward implication
+(`ofScalars_radius_eq_top`); here `FormalMultilinearSeries.summable_norm_mul_pow`
+supplies the converse, closing the loop between the ad-hoc and library notions
+of entireness.
+
+Second, the name "maximum modulus" is justified: `maxModulus f r` was defined
+as a supremum over the *circle* `|z| = r`, and the maximum modulus principle
+(`Complex.norm_le_of_forall_mem_frontier_norm_le`, applied to the ball of
+radius `r`) upgrades this to a bound over the entire closed *disk*
+`‖z‖ ≤ r`. Monotonicity of both `M(r)` and `μ(r)` in `r` — the first
+standing assumptions of Wiman–Valiron theory — follow as corollaries.
+-/
+
+/-- **Radius characterisation of entireness**: the hand-rolled `IsEntire`
+predicate (absolute convergence at every non-negative radius) is equivalent
+to the Mathlib condition that the formal scalar power series has radius `⊤`.
+The forward direction is Part 12's `ofScalars_radius_eq_top`; the converse is
+`FormalMultilinearSeries.summable_norm_mul_pow` inside the radius. -/
+theorem isEntire_iff_radius_eq_top (f : EntireFunction) :
+    IsEntire f ↔ (ofScalars ℂ f.coeff).radius = ⊤ := by
+  constructor
+  · exact ofScalars_radius_eq_top f
+  · intro hrad r hr
+    set R : NNReal := ⟨r, hr⟩ with hR
+    have hRr : (R : ℝ) = r := rfl
+    have hlt : (R : ENNReal) < (ofScalars ℂ f.coeff).radius := by
+      rw [hrad]
+      exact ENNReal.coe_lt_top
+    have hs := (ofScalars ℂ f.coeff).summable_norm_mul_pow hlt
+    refine hs.congr fun n => ?_
+    rw [ofScalars_norm, hRr]
+
+/-- Every point of the sphere `|z| = r` is `circleMap 0 r θ` for some angle,
+so the circle bound `norm_seriesSum_circleMap_le` transfers to arbitrary
+sphere points. -/
+theorem norm_seriesSum_le_maxModulus_of_mem_sphere (f : EntireFunction)
+    {r : ℝ} (hr : 0 ≤ r) (hent : IsEntire f) {z : ℂ}
+    (hz : z ∈ Metric.sphere (0 : ℂ) r) :
+    ‖seriesSum f z‖ ≤ maxModulus f r := by
+  have hrange : z ∈ Set.range (circleMap 0 r) := by
+    rw [range_circleMap, abs_of_nonneg hr]
+    exact hz
+  obtain ⟨θ, rfl⟩ := hrange
+  exact norm_seriesSum_circleMap_le f hr hent θ
+
+/-- **Maximum modulus principle for the disk**: for a genuinely entire
+function, `M(r)` bounds `‖f‖` on the whole closed disk `‖z‖ ≤ r`, not just on
+its boundary circle. For `r > 0` this is
+`Complex.norm_le_of_forall_mem_frontier_norm_le` on the ball of radius `r`
+(the sum function is differentiable by Part 12, and the frontier is the
+sphere); at `r = 0` the disk degenerates to `{0}` and the value `‖a₀‖` is the
+`θ = 0` member of the defining supremum. -/
+theorem norm_seriesSum_le_maxModulus (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hent : IsEntire f) {z : ℂ} (hz : ‖z‖ ≤ r) :
+    ‖seriesSum f z‖ ≤ maxModulus f r := by
+  rcases hr.eq_or_lt with rfl | hrpos
+  · -- r = 0: the disk is the single point z = 0
+    have hz0 : z = 0 := norm_le_zero_iff.mp hz
+    subst hz0
+    rw [seriesSum_apply]
+    have h0 : ‖∑' m, f.coeff m * ((0 : ℝ) * exp (I * ((0 : ℝ) : ℂ))) ^ m‖
+        = ‖∑' m, f.coeff m * (0 : ℂ) ^ m‖ := by
+      have hzz : ((0 : ℝ) : ℂ) * exp (I * ((0 : ℝ) : ℂ)) = 0 := by simp
+      rw [hzz]
+    rw [← h0]
+    exact le_ciSup (bddAbove_range_norm f le_rfl (hent 0 le_rfl)) (0 : ℝ)
+  · -- r > 0: maximum modulus principle on the ball of radius r
+    have hd : DiffContOnCl ℂ (seriesSum f) (Metric.ball 0 r) :=
+      (differentiable_seriesSum f hent).diffContOnCl
+    refine Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball hd
+      (fun w hw => ?_) ?_
+    · rw [frontier_ball (0 : ℂ) hrpos.ne'] at hw
+      exact norm_seriesSum_le_maxModulus_of_mem_sphere f hrpos.le hent hw
+    · rw [closure_ball (0 : ℂ) hrpos.ne']
+      exact mem_closedBall_zero_iff.mpr hz
+
+/-- **`M(r)` is monotone** for genuinely entire functions: each circle point
+at radius `r₁` lies inside the closed disk of radius `r₂`, so the maximum
+principle bounds its value by `M(r₂)`. -/
+theorem maxModulus_mono (f : EntireFunction) (hent : IsEntire f)
+    {r₁ r₂ : ℝ} (h1 : 0 ≤ r₁) (h12 : r₁ ≤ r₂) :
+    maxModulus f r₁ ≤ maxModulus f r₂ := by
+  apply ciSup_le
+  intro θ
+  have hexp : ‖exp (I * (θ : ℂ))‖ = 1 := by
+    rw [Complex.norm_exp]
+    simp [Complex.mul_re]
+  have hz : ‖(r₁ : ℂ) * exp (I * (θ : ℂ))‖ ≤ r₂ := by
+    rw [norm_mul, hexp, mul_one, Complex.norm_real, Real.norm_eq_abs,
+      abs_of_nonneg h1]
+    exact h12
+  have h := norm_seriesSum_le_maxModulus f (h1.trans h12) hent hz
+  rwa [seriesSum_apply] at h
+
+/-- **`μ(r)` is monotone** for genuinely entire functions: termwise
+`‖aₙ‖r₁ⁿ ≤ ‖aₙ‖r₂ⁿ`, and the `r₂`-family is bounded above (by Cauchy's
+estimate for `r₂ > 0`, trivially at `r₂ = 0`), so the suprema compare. -/
+theorem maxTerm_mono (f : EntireFunction) (hent : IsEntire f)
+    {r₁ r₂ : ℝ} (h1 : 0 ≤ r₁) (h12 : r₁ ≤ r₂) :
+    maxTerm f r₁ ≤ maxTerm f r₂ := by
+  have h2 : 0 ≤ r₂ := h1.trans h12
+  have hb : BddAbove (Set.range fun n : ℕ => ‖f.coeff n‖ * r₂ ^ n) := by
+    rcases h2.eq_or_lt with rfl | h2pos
+    · refine ⟨‖f.coeff 0‖, ?_⟩
+      rintro x ⟨n, rfl⟩
+      rcases Nat.eq_zero_or_pos n with rfl | hn
+      · simp
+      · rw [zero_pow hn.ne', mul_zero]
+        exact norm_nonneg _
+    · refine ⟨maxModulus f r₂, ?_⟩
+      rintro x ⟨n, rfl⟩
+      exact norm_coeff_mul_pow_le_maxModulus f h2pos hent n
+  refine ciSup_le fun n => le_ciSup_of_le hb n ?_
+  gcongr
 
 end Erdos227
