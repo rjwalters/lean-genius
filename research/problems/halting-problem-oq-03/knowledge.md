@@ -336,3 +336,83 @@ future bridge will have to instantiate. Specifically:
   enough?)**: Strictly redundant by definitional equality, but useful for
   downstream consumers that wish to refer to "the level-`n` witness" by a
   stable name independent of the `jumpIter` definition. Cheap to include.
+
+## 6. S9-light (researcher-1, 2026-07-24) — pairwise distinctness SETTLED
+
+**Question (from the S8 memo):** does `IsAlwaysNonDegenerate` (every level, every
+code non-degenerate — hence consecutive levels always differ) imply *pairwise*
+distinctness `jumpIter m ≠ jumpIter n` for `m ≠ n`? The memo warned the chain
+could be periodic. Section 13 of `RelativizedHalting.lean` (733 → 986 LOC, still
+0 sorries / 0 axioms / 0 imports, docker-verified) answers both ways.
+
+### 6.1 Negative: the periodicity obstruction
+
+The identity predictor's jump step is *pointwise negation*
+(`jumpIter_identityPredictor_succ_apply : jumpIter (n+1) c = !(jumpIter n c)`,
+a `rfl`), so two steps are a double negation:
+
+* `jumpIter_identityPredictor_add_two : jumpIter (n+2) = jumpIter n` —
+  the chain has period exactly 2.
+* `isAlwaysNonDegenerate_not_sufficient_for_pairwise` — the S8 conjectured
+  theorem `chain_strict_of_isAlwaysNonDegenerate` (pairwise form) is **FALSE**:
+  identityPredictor + falseOracle is always-non-degenerate yet
+  `jumpIter 2 = jumpIter 0`.
+
+Consecutive strictness at every code coexists with global collapse: universal
+non-degeneracy measures the *width* of each step, not non-recurrence.
+
+### 6.2 Positive: the rank criterion
+
+The missing structural hypothesis is a **rank** — any
+`r : (Nat → Bool) → Nat` with `r (jumpIter n) < r (jumpIter (n+1))` for all `n`
+(`HasRank`). Iterated transitivity (`rank_lt_of_hasRank`, induction on the upper
+level) gives strict growth across any `m < n`, hence:
+
+* `jumpIter_injective_of_hasRank` — the chain is injective;
+* `chain_pairwise_strict_of_hasRank` — pairwise distinctness.
+
+This is the abstract shadow of "the Turing jump strictly increases Turing
+degree". Caveat recorded honestly: classically `HasRank` is *equivalent* to
+injectivity (an injective chain admits the level-index rank), so the criterion
+is a transfer device (like `StrictMono.injective`), not a weaker hypothesis.
+
+### 6.3 Non-vacuity and non-necessity: the successor predictor
+
+`successorPredictor o c _ := if c = 0 then false else !(o (c-1))` is engineered
+so the jump's diagonal negation cancels the built-in negation and shifts the
+index: `jumpOracle` sends `unaryOracle k := fun i => decide (i < k)` to
+`unaryOracle (k+1)`.
+
+* `jumpIter_successorPredictor : jumpIter successorPredictor falseOracle n =
+  unaryOracle n` — the chain counts in unary (induction; per-code case split,
+  code 0 enters the block, code m+1 copies via `Bool.not_not`).
+* `unaryOracle_inj` + `jumpIter_successorPredictor_injective` — fully concrete
+  pairwise-distinct (never-revisiting) jump chain.
+* `not_isAlwaysNonDegenerate_successorPredictor` — it flips exactly ONE code
+  per step (witness level 1, code 0), so universal non-degeneracy is **not
+  necessary** either.
+* `pairwise_strict_without_isAlwaysNonDegenerate` — packaged synthesis.
+
+**Structural conclusion:** step-width (every code flips at every step) and
+non-recurrence (no level revisited) are orthogonal properties of a jump chain;
+the classical jump hierarchy's strictness lives entirely on the non-recurrence
+axis, certified abstractly by a rank.
+
+### 6.4 Lean idioms
+
+* Zero-import discipline held: only core `decide_eq_true` / `decide_eq_false` /
+  `Bool.not_not` / `Bool.noConfusion` / `Nat.lt_or_ge` / `Nat.le_antisymm` +
+  `by_cases` (Nat props decidable) needed; no `omega`, no Mathlib.
+* `decide (m < k) = decide (m+1 < k+1)` closed by `by_cases` + explicit
+  `decide_eq_true/false` rewrites (no `decide_congr` in core).
+* Closed-Bool contradictions (`false = true` after defeq reduction) close with
+  `Bool.noConfusion h` directly — `decide` not needed, avoids the
+  Decidable-instance-through-def issue on `NonDegenerateAt`.
+
+### 6.5 State
+
+The stale 2026-06-13 verification-blackout blocker is CLEARED (Docker healthy).
+The abstract layer's session-sized questions are now exhausted; remaining S10
+options are the OracleCode bridge sub-OQ (~200 lines, big session) and the
+arithmetical-hierarchy OQ-03b. successorPredictor hands the future bridge a
+concrete non-collapsing chain to instantiate.
