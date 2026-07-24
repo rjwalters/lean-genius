@@ -126,17 +126,22 @@ theorem countAPs_range_eq_sum (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
     unfold countAPs
     congr 1
     ext S
-    simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_image, Finset.mem_sigma,
-      Finset.mem_Icc, Finset.mem_range]
+    rw [Finset.mem_filter, Finset.mem_powerset, Finset.mem_image]
     constructor
     · rintro ⟨hsub, a, d, hd, rfl⟩
       rw [arithmeticProgression_subset_range hk0] at hsub
-      refine ⟨⟨d, a⟩, ⟨⟨hd, ?_⟩, ?_⟩, rfl⟩
-      · rw [Nat.le_div_iff_mul_le hk1, mul_comm]
+      have hdle : d ≤ (N - 1) / (k - 1) := by
+        rw [Nat.le_div_iff_mul_le hk1, mul_comm]
         omega
-      · omega
-    · rintro ⟨⟨d, a⟩, ⟨⟨hd1, _⟩, ha⟩, rfl⟩
+      refine ⟨⟨d, a⟩, ?_, rfl⟩
+      rw [Finset.mem_sigma, Finset.mem_Icc, Finset.mem_range]
+      exact ⟨⟨hd, hdle⟩, show a < N - (k - 1) * d by omega⟩
+    · rintro ⟨⟨d, a⟩, hp, rfl⟩
+      rw [Finset.mem_sigma, Finset.mem_Icc, Finset.mem_range] at hp
+      have hd1 : 1 ≤ d := hp.1.1
+      have ha : a < N - (k - 1) * d := hp.2
       refine ⟨?_, a, d, by omega, rfl⟩
+      show arithmeticProgression a d k ⊆ Finset.range N
       rw [arithmeticProgression_subset_range hk0]
       omega
   -- Rigidity makes the parameterization injective, so counting APs is
@@ -146,8 +151,10 @@ theorem countAPs_range_eq_sum (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
         (fun d => Finset.range (N - (k - 1) * d))) : Finset ((_ : ℕ) × ℕ)) := by
     rintro ⟨d, a⟩ hp ⟨d', a'⟩ hq h
     simp only [Finset.mem_coe, Finset.mem_sigma, Finset.mem_Icc, Finset.mem_range] at hp hq
-    dsimp only at h
-    obtain ⟨ha, hd⟩ := arithmeticProgression_inj hk (by omega) (by omega) h
+    have hd0 : 0 < d := by have h1 : 1 ≤ d := hp.1.1; omega
+    have hd0' : 0 < d' := by have h1 : 1 ≤ d' := hq.1.1; omega
+    have h' : arithmeticProgression a d k = arithmeticProgression a' d' k := h
+    obtain ⟨ha, hd⟩ := arithmeticProgression_inj hk hd0 hd0' h'
     subst ha
     subst hd
     rfl
@@ -184,8 +191,6 @@ theorem countAPs_range_lower_bound (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
   calc N / (2 * (k - 1)) * (N / 2)
       = ∑ _d ∈ Finset.Icc 1 (N / (2 * (k - 1))), (N / 2) := by
         rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc]
-        congr 1
-        omega
     _ ≤ ∑ d ∈ Finset.Icc 1 (N / (2 * (k - 1))), (N - (k - 1) * d) :=
         Finset.sum_le_sum hstep
     _ ≤ ∑ d ∈ Finset.Icc 1 ((N - 1) / (k - 1)), (N - (k - 1) * d) :=
@@ -201,8 +206,6 @@ theorem countAPs_range_upper_bound (N : ℕ) {k : ℕ} (hk : 2 ≤ k) :
         Finset.sum_le_sum (fun d _ => Nat.sub_le _ _)
     _ = (N - 1) / (k - 1) * N := by
         rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc]
-        congr 1
-        omega
     _ ≤ N * N :=
         Nat.mul_le_mul (le_trans (Nat.div_le_self _ _) (by omega)) le_rfl
 
@@ -225,7 +228,9 @@ theorem containsAP_range_iff {N k : ℕ} : ContainsAP (Finset.range N) k ↔ k �
   · intro h
     exact ⟨0, 1, one_pos, by
       rw [arithmeticProgression_zero_one]
-      exact Finset.range_subset.mpr h⟩
+      intro x hx
+      rw [Finset.mem_range] at hx ⊢
+      omega⟩
 
 /-- Consistency with the parent's exact 2-AP count: intervals have C(N,2)
     two-term APs. -/
@@ -238,10 +243,6 @@ theorem countAPs_range_sum_two (N : ℕ) :
     ∑ d ∈ Finset.Icc 1 (N - 1), (N - d) = N.choose 2 := by
   have h := countAPs_range_eq_sum N (k := 2) le_rfl
   rw [countAPs_range_two] at h
-  rw [← h]
-  apply Finset.sum_congr
-  · norm_num
-  · intro d _
-    norm_num
+  simpa using h.symm
 
 end Erdos179Combinatorics
