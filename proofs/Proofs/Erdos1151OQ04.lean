@@ -376,7 +376,7 @@ private lemma chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ) :
       |lagrangeBasis n (chebyshevNode n) k x|
     by_cases h : 0 ≤ lagrangeBasis n (chebyshevNode n) k x
     · rw [if_pos h, one_mul, abs_of_nonneg h]
-    · push_neg at h
+    · push Not at h
       rw [if_neg (not_le.mpr h), neg_one_mul, abs_of_neg h]
   -- f is the sum-of-indicators with sign weights at each Chebyshev node.
   refine ⟨fun t => ∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0),
@@ -400,7 +400,7 @@ private lemma chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ) :
             rw [if_neg hne_t, mul_zero]
         rw [hsum_eq]; exact (hw_abs k₀).le
       · -- t is not a Chebyshev node: every term vanishes.
-        push_neg at ht
+        push Not at ht
         have hsum_zero :
             (∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0)) = 0 := by
           apply Finset.sum_eq_zero
@@ -1062,7 +1062,7 @@ private lemma sin_ge_sin_of_mem_Icc {d θ : ℝ} (hd_pos : 0 < d) (hd_le : d ≤
     · exact Set.mem_Icc.mpr ⟨by linarith, hθ_le_half⟩
     · exact hθ_ge
   · -- θ ∈ (π/2, π-d]: sin θ = sin(π-θ) and π-θ ∈ [d, π/2]
-    push_neg at hθ_le_half
+    push Not at hθ_le_half
     have hπθ_le : Real.pi - θ ≤ Real.pi / 2 := by linarith
     have hπθ_nonneg : 0 ≤ Real.pi - θ := by linarith [hθ_le]
     rw [← Real.sin_pi_sub θ]
@@ -1415,7 +1415,7 @@ private lemma sin_lb_of_in_interior
   by_cases hx : x ≤ Real.pi / 2
   · -- Case: d/2 ≤ x ≤ π/2 — use monotonicity of sin on [-π/2, π/2]
     exact Real.sin_le_sin_of_le_of_le_pi_div_two hneg_pi_half_le hx h_lower
-  · push_neg at hx
+  · push Not at hx
     -- Case: x > π/2. Use sin(x) = sin(π - x) with π - x ∈ [d/2, π/2)
     have h_pi_x_lower : d / 2 ≤ Real.pi - x := by linarith
     have h_pi_x_upper : Real.pi - x ≤ Real.pi / 2 := by linarith
@@ -2450,7 +2450,7 @@ private lemma trig_sum_harmonic_lb_asymp
   · -- Branch 1: `θ ≤ π/2`. Direct application of S26.
     exact trig_sum_harmonic_lb_asymp_le_half_pi θ hθ_pos hcase hne
   · -- Branch 2: `θ > π/2`. WLOG bridge via `θ' := π − θ ∈ (0, π/2)`.
-    push_neg at hcase
+    push Not at hcase
     -- Build the hypotheses for S26 at `θ' := π − θ`.
     have hθ'_pos : 0 < Real.pi - θ := by linarith
     have hθ'_le : Real.pi - θ ≤ Real.pi / 2 := by linarith
@@ -2514,7 +2514,7 @@ private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < 
           mul_le_mul_of_nonneg_right (min_le_right _ _) hg_nn
       _ ≤ _ := hsmall n hn₁ hcase
   · -- Large-n branch: `n > N ≥ N₀` ⇒ apply `hlarge`; `min ≤ C₁` by `min_le_left`.
-    push_neg at hcase
+    push Not at hcase
     have hN₀_le_n : N₀ ≤ n := by
       have hN₀_le_N : N₀ ≤ N := le_max_left N₀ 1
       omega
@@ -2572,10 +2572,10 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
   · -- Case 2: x = cos(πp/q) ∈ (-1, 1), Lipschitz + harmonic sum
     -- Step 1: cos(πp/q) ∈ (-1, 1)
     have hx_gt : -1 < Real.cos ((↑p : ℝ) * Real.pi / ↑q) := by
-      by_contra h; push_neg at h
+      by_contra h; push Not at h
       exact hx_neg1 (le_antisymm h (neg_one_le_cos _))
     have hx_lt : Real.cos ((↑p : ℝ) * Real.pi / ↑q) < 1 := by
-      by_contra h; push_neg at h
+      by_contra h; push Not at h
       have heq : Real.cos ((↑p : ℝ) * Real.pi / ↑q) = 1 :=
         le_antisymm (Real.cos_le_one _) h
       rw [Real.cos_eq_one_iff] at heq
@@ -2683,6 +2683,197 @@ theorem chebyshev_lebesgue_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     simp [chebyshevLebesgue, Real.log_one]
   · -- n ≥ 1: apply the analytic lower bound
     exact hC_lb n hn
+
+/-! ## The Lebesgue Function Is Attained (extremal peak function) [Session 39]
+
+`lebesgue_upper_bound` gives the upper half of the classical fact that `Λₙ(x)` is
+the norm of the evaluation functional `f ↦ Lₙf(x)` on the unit sup-norm ball.
+This section proves the LOWER half constructively: for every `x` there is a
+continuous `f` with `|f| ≤ 1` everywhere and `Lₙf(x) = Λₙ(x)` **exactly** — the
+sign pattern `f(xₖ) = sgn ℓₖ(x)` realized by a sum of disjoint tent functions
+centred at the nodes.  This is the norm-lower-bound ingredient the remaining
+`divergence_from_lebesgue_growth` sorry needs (Banach–Steinhaus / gliding hump
+both consume exactly this attainment). -/
+
+/-- Tent (hat) function of half-width `δ` centred at `c`: `max 0 (1 − |t − c|/δ)`.
+Continuous, `[0,1]`-valued, equals `1` at `c`, vanishes outside `(c−δ, c+δ)`. -/
+noncomputable def tentFn (c δ t : ℝ) : ℝ := max 0 (1 - |t - c| / δ)
+
+lemma tentFn_continuous (c δ : ℝ) : Continuous (tentFn c δ) := by
+  unfold tentFn
+  exact continuous_const.max
+    (continuous_const.sub (((continuous_id.sub continuous_const).abs).div_const δ))
+
+lemma tentFn_nonneg (c δ t : ℝ) : 0 ≤ tentFn c δ t := le_max_left _ _
+
+lemma tentFn_le_one (c δ : ℝ) (hδ : 0 < δ) (t : ℝ) : tentFn c δ t ≤ 1 := by
+  have h : 0 ≤ |t - c| / δ := div_nonneg (abs_nonneg _) hδ.le
+  simp only [tentFn, max_le_iff]
+  constructor <;> linarith
+
+lemma tentFn_self (c δ : ℝ) : tentFn c δ c = 1 := by
+  simp [tentFn]
+
+lemma tentFn_eq_zero_of_far (c δ t : ℝ) (hδ : 0 < δ) (hfar : δ ≤ |t - c|) :
+    tentFn c δ t = 0 := by
+  have hq : |t - c| / δ * δ = |t - c| := div_mul_cancel₀ _ hδ.ne'
+  have h1 : (1 : ℝ) ≤ |t - c| / δ := by nlinarith [hq, hδ, hfar]
+  exact max_eq_left (by linarith)
+
+lemma abs_lt_of_tentFn_pos {c δ t : ℝ} (hδ : 0 < δ) (hpos : 0 < tentFn c δ t) :
+    |t - c| < δ := by
+  by_contra hfar
+  push Not at hfar
+  rw [tentFn_eq_zero_of_far c δ t hδ hfar] at hpos
+  exact lt_irrefl 0 hpos
+
+/-- **Positive minimum gap** for an injective node family: there is `δ > 0` with
+`2δ ≤ |nodes j − nodes k|` for all `j ≠ k` (so the open `δ`-tents at the nodes
+have pairwise disjoint supports). -/
+lemma exists_pos_gap (n : ℕ) (nodes : Fin n → ℝ) (hinj : Function.Injective nodes) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ j k : Fin n, j ≠ k → 2 * δ ≤ |nodes j - nodes k| := by
+  by_cases hs : ((Finset.univ : Finset (Fin n)).offDiag).Nonempty
+  · set s : Finset ℝ := Finset.univ.offDiag.image fun p : Fin n × Fin n =>
+      |nodes p.1 - nodes p.2| with hs_def
+    have hs_ne : s.Nonempty := hs.image _
+    refine ⟨s.min' hs_ne / 2, ?_, ?_⟩
+    · have hpos : ∀ y ∈ s, 0 < y := by
+        intro y hy
+        rw [hs_def, Finset.mem_image] at hy
+        obtain ⟨p, hp, rfl⟩ := hy
+        rw [Finset.mem_offDiag] at hp
+        exact abs_pos.mpr (sub_ne_zero.mpr fun h => hp.2.2 (hinj h))
+      have := hpos _ (s.min'_mem hs_ne)
+      linarith
+    · intro j k hjk
+      have hmem : |nodes j - nodes k| ∈ s := by
+        rw [hs_def, Finset.mem_image]
+        exact ⟨(j, k), Finset.mem_offDiag.mpr ⟨Finset.mem_univ _, Finset.mem_univ _, hjk⟩, rfl⟩
+      have := s.min'_le _ hmem
+      linarith
+  · refine ⟨1, one_pos, fun j k hjk => absurd ?_ hs⟩
+    exact ⟨(j, k), Finset.mem_offDiag.mpr ⟨Finset.mem_univ _, Finset.mem_univ _, hjk⟩⟩
+
+/-- The sign of the `k`-th Lagrange basis value at `x` (`±1`-valued). -/
+noncomputable def lagrangeSign (n : ℕ) (nodes : Fin n → ℝ) (x : ℝ) (k : Fin n) : ℝ :=
+  if 0 ≤ lagrangeBasis n nodes k x then 1 else -1
+
+lemma abs_lagrangeSign_le_one (n : ℕ) (nodes : Fin n → ℝ) (x : ℝ) (k : Fin n) :
+    |lagrangeSign n nodes x k| ≤ 1 := by
+  unfold lagrangeSign
+  split <;> simp
+
+lemma lagrangeSign_mul (n : ℕ) (nodes : Fin n → ℝ) (x : ℝ) (k : Fin n) :
+    lagrangeSign n nodes x k * lagrangeBasis n nodes k x =
+      |lagrangeBasis n nodes k x| := by
+  unfold lagrangeSign
+  split_ifs with h
+  · rw [one_mul, abs_of_nonneg h]
+  · push Not at h
+    rw [neg_one_mul, abs_of_neg h]
+
+/-- The extremal **peak function**: signed tents of half-width `δ` at the nodes,
+`peakFn(t) = Σₖ sgn(ℓₖ(x)) · tent(xₖ, δ)(t)`. -/
+noncomputable def peakFn (n : ℕ) (nodes : Fin n → ℝ) (x δ t : ℝ) : ℝ :=
+  ∑ k : Fin n, lagrangeSign n nodes x k * tentFn (nodes k) δ t
+
+lemma peakFn_continuous (n : ℕ) (nodes : Fin n → ℝ) (x δ : ℝ) :
+    Continuous (peakFn n nodes x δ) := by
+  unfold peakFn
+  exact continuous_finset_sum _ fun k _ =>
+    continuous_const.mul (tentFn_continuous _ _)
+
+/-- At the node `xⱼ` the peak function takes exactly the sign value `sgn ℓⱼ(x)`:
+the `j`-th tent is `1` there and all others vanish (disjoint supports). -/
+lemma peakFn_apply_node (n : ℕ) (nodes : Fin n → ℝ) (x δ : ℝ) (hδ : 0 < δ)
+    (hgap : ∀ j k : Fin n, j ≠ k → 2 * δ ≤ |nodes j - nodes k|) (j : Fin n) :
+    peakFn n nodes x δ (nodes j) = lagrangeSign n nodes x j := by
+  unfold peakFn
+  rw [Finset.sum_eq_single j]
+  · rw [tentFn_self, mul_one]
+  · intro k _ hkj
+    have hfar : δ ≤ |nodes j - nodes k| := by
+      have := hgap j k (Ne.symm hkj)
+      linarith
+    rw [tentFn_eq_zero_of_far _ _ _ hδ hfar, mul_zero]
+  · intro h
+    exact absurd (Finset.mem_univ j) h
+
+/-- The peak function is bounded by `1` in absolute value everywhere: at any `t`
+at most one tent is positive (supports are pairwise disjoint), and each signed
+tent has absolute value at most `1`. -/
+lemma abs_peakFn_le_one (n : ℕ) (nodes : Fin n → ℝ) (x δ : ℝ) (hδ : 0 < δ)
+    (hgap : ∀ j k : Fin n, j ≠ k → 2 * δ ≤ |nodes j - nodes k|) (t : ℝ) :
+    |peakFn n nodes x δ t| ≤ 1 := by
+  by_cases hex : ∃ j : Fin n, 0 < tentFn (nodes j) δ t
+  · obtain ⟨j, hj⟩ := hex
+    have hnear_j : |t - nodes j| < δ := abs_lt_of_tentFn_pos hδ hj
+    have hzero : ∀ k ∈ Finset.univ, k ≠ j →
+        lagrangeSign n nodes x k * tentFn (nodes k) δ t = 0 := by
+      intro k _ hkj
+      by_cases hk : 0 < tentFn (nodes k) δ t
+      · exfalso
+        have hnear_k : |t - nodes k| < δ := abs_lt_of_tentFn_pos hδ hk
+        have htri : |nodes j - nodes k| ≤ |t - nodes j| + |t - nodes k| := by
+          calc |nodes j - nodes k| ≤ |nodes j - t| + |t - nodes k| := abs_sub_le _ _ _
+            _ = |t - nodes j| + |t - nodes k| := by rw [abs_sub_comm (nodes j) t]
+        have := hgap j k (Ne.symm hkj)
+        linarith
+      · push Not at hk
+        have : tentFn (nodes k) δ t = 0 := le_antisymm hk (tentFn_nonneg _ _ _)
+        rw [this, mul_zero]
+    unfold peakFn
+    rw [Finset.sum_eq_single_of_mem j (Finset.mem_univ j) hzero]
+    rw [abs_mul]
+    calc |lagrangeSign n nodes x j| * |tentFn (nodes j) δ t|
+        ≤ 1 * 1 := by
+          apply mul_le_mul (abs_lagrangeSign_le_one n nodes x j) _ (abs_nonneg _) zero_le_one
+          rw [abs_of_nonneg (tentFn_nonneg _ _ _)]
+          exact tentFn_le_one _ _ hδ t
+      _ = 1 := one_mul 1
+  · push Not at hex
+    have hall : ∀ k : Fin n, tentFn (nodes k) δ t = 0 := fun k =>
+      le_antisymm (hex k) (tentFn_nonneg _ _ _)
+    unfold peakFn
+    have : ∑ k : Fin n, lagrangeSign n nodes x k * tentFn (nodes k) δ t = 0 :=
+      Finset.sum_eq_zero fun k _ => by rw [hall k, mul_zero]
+    rw [this, abs_zero]
+    exact zero_le_one
+
+/-- **The Lebesgue function is attained** (general injective nodes): for every `x`
+there is a continuous `f` with `|f| ≤ 1` everywhere and
+`Lₙf(x) = Σₖ |ℓₖ(x)|` exactly.  Together with `lebesgue_upper_bound` this
+identifies `Σₖ |ℓₖ(x)|` as the true norm of the evaluation functional
+`f ↦ Lₙf(x)` over the unit sup-norm ball. -/
+theorem exists_extremal_function (n : ℕ) (nodes : Fin n → ℝ)
+    (hinj : Function.Injective nodes) (x : ℝ) :
+    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ t, |f t| ≤ 1) ∧
+      lagrangeInterp n nodes f x = ∑ k : Fin n, |lagrangeBasis n nodes k x| := by
+  obtain ⟨δ, hδ, hgap⟩ := exists_pos_gap n nodes hinj
+  refine ⟨peakFn n nodes x δ, peakFn_continuous n nodes x δ,
+    abs_peakFn_le_one n nodes x δ hδ hgap, ?_⟩
+  unfold lagrangeInterp
+  calc ∑ k : Fin n, peakFn n nodes x δ (nodes k) * lagrangeBasis n nodes k x
+      = ∑ k : Fin n, lagrangeSign n nodes x k * lagrangeBasis n nodes k x :=
+        Finset.sum_congr rfl fun k _ => by
+          rw [peakFn_apply_node n nodes x δ hδ hgap k]
+    _ = ∑ k : Fin n, |lagrangeBasis n nodes k x| :=
+        Finset.sum_congr rfl fun k _ => lagrangeSign_mul n nodes x k
+
+/-- Chebyshev nodes are injective for every `n` (vacuous for `n = 0`). -/
+lemma chebyshevNode_injective' (n : ℕ) : Function.Injective (chebyshevNode n) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · exact fun a => a.elim0
+  · exact chebyshevNode_injective n hn
+
+/-- **The Chebyshev Lebesgue function is attained**: for every `n` and `x` there
+is a continuous `f`, `|f| ≤ 1` everywhere, with `Lₙf(x) = Λₙ(x)` exactly — the
+converse half of `lebesgue_upper_bound`, and the norm-lower-bound ingredient for
+the Banach–Steinhaus / gliding-hump route to `divergence_from_lebesgue_growth`. -/
+theorem exists_extremal_function_chebyshev (n : ℕ) (x : ℝ) :
+    ∃ f : ℝ → ℝ, Continuous f ∧ (∀ t, |f t| ≤ 1) ∧
+      chebyshevInterp n f x = chebyshevLebesgue n x :=
+  exists_extremal_function n (chebyshevNode n) (chebyshevNode_injective' n) x
 
 /-- **[SORRY] Divergence from Lebesgue growth.**
 
