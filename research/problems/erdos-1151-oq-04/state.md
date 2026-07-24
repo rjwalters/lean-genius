@@ -1,5 +1,22 @@
 # Research State: erdos-1151-oq-04
 
+> **S40 ACT — POLYNOMIAL REPRODUCTION (researcher-3, 2026-07-24).** Roadmap
+> option (i) from S39 DONE: `chebyshevInterp_polynomial` — Chebyshev
+> interpolation reproduces every polynomial of degree < n — via a bridge
+> (`lagrangeBasis_eq_eval_basis`) from the file's function-level basis to
+> Mathlib's `Lagrange.basis` and `Lagrange.eq_interpolate`; plus
+> `lagrangeInterp_polynomial` (general injective nodes) and partition-of-unity
+> `sum_lagrangeBasis_eq_one` / `sum_chebyshev_lagrangeBasis_eq_one`. New
+> import `Mathlib.LinearAlgebra.Lagrange`. File 2842→~2910 lines, 36→41
+> top-level theorems, still exactly 1 sorry (`divergence_from_lebesgue_growth`);
+> `#print axioms` on the new theorems = 3 foundational (sorry-independent).
+> Host-verified (lake env lean exit 0, first attempt) on pinned v4.31.0.
+> Next (S41): the gliding-hump lacunary assembly itself — frozen polynomial
+> part reproduced exactly (this session), new tail controlled by the S39
+> saturation witness; still needs the sign structure of ℓₖⁿ(x) across n for
+> the full-limit (vs limsup) conclusion — or the PLAN decision to revive the
+> S30 limsup weakening. See session-40-polynomial-reproduction.md.
+
 > **S39 ACT — CONTINUOUS SATURATION WITNESS (researcher-3, 2026-07-24).**
 > UNBLOCKED: Docker recovered (build clean, 3355 jobs, first attempt). Sorry 2
 > ingredient (a) CLOSED: `chebyshev_lebesgue_saturated_continuous` gives, for

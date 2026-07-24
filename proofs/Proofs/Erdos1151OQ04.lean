@@ -80,6 +80,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
+import Mathlib.LinearAlgebra.Lagrange
 import Mathlib.NumberTheory.Harmonic.Bounds
 import Mathlib.Order.Filter.AtTopBot.Archimedean
 import Mathlib.RingTheory.Polynomial.Chebyshev
@@ -2837,5 +2838,66 @@ theorem erdos_1941_divergence_from_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
       ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x :=
   divergence_from_lebesgue_growth _
     (chebyshev_lebesgue_growth p q hp hq hq_pos)
+
+/-! ## Session 40: Polynomial reproduction — Lₙp = p for deg p < n
+
+The missing "lacunary-assembly" ingredient of Sorry 2's strong (full-limit)
+form: Chebyshev interpolation reproduces every polynomial of degree < n
+exactly. Proved by bridging this file's function-level `lagrangeBasis` to
+Mathlib's polynomial-level `Lagrange.basis` and invoking the interpolation
+characterization `Lagrange.eq_interpolate`. The partition-of-unity corollary
+`sum_lagrangeBasis_eq_one` (Σₖ ℓₖ(x) = 1) is the p = 1 instance. -/
+
+/-- Bridge: the function-level Lagrange basis of this file is the evaluation of
+    Mathlib's polynomial-level `Lagrange.basis` (no injectivity needed — both
+    sides are the same formal product of affine ratios). -/
+theorem lagrangeBasis_eq_eval_basis (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) (x : ℝ) :
+    lagrangeBasis n nodes k x = (Lagrange.basis Finset.univ nodes k).eval x := by
+  simp only [lagrangeBasis, Lagrange.basis, Lagrange.basisDivisor,
+    Polynomial.eval_prod, Polynomial.eval_mul, Polynomial.eval_C,
+    Polynomial.eval_sub, Polynomial.eval_X]
+  exact Finset.prod_congr rfl fun i _ => div_eq_inv_mul _ _
+
+/-- **Polynomial reproduction for Lagrange interpolation at injective nodes**:
+    for a polynomial `p` with `p.degree < n`, the `n`-node Lagrange interpolant
+    of `p` reproduces `p` at every point — the interpolation problem on `n`
+    nodes has the unique solution `p` itself (`Lagrange.eq_interpolate`). -/
+theorem lagrangeInterp_polynomial (n : ℕ) (nodes : Fin n → ℝ)
+    (hinj : Function.Injective nodes) (p : Polynomial ℝ)
+    (hdeg : p.degree < (n : WithBot ℕ)) (x : ℝ) :
+    lagrangeInterp n nodes (fun t => p.eval t) x = p.eval x := by
+  have hvs : Set.InjOn nodes ↑(Finset.univ : Finset (Fin n)) := hinj.injOn
+  have hdeg' : p.degree < (Finset.univ : Finset (Fin n)).card := by simpa using hdeg
+  have hrep : p = Lagrange.interpolate Finset.univ nodes fun i => p.eval (nodes i) :=
+    Lagrange.eq_interpolate hvs hdeg'
+  calc lagrangeInterp n nodes (fun t => p.eval t) x
+      = (Lagrange.interpolate Finset.univ nodes fun i => p.eval (nodes i)).eval x := by
+        rw [Lagrange.interpolate_apply, Polynomial.eval_finsetSum]
+        simp only [lagrangeInterp, Polynomial.eval_mul, Polynomial.eval_C,
+          lagrangeBasis_eq_eval_basis]
+    _ = p.eval x := by rw [← hrep]
+
+/-- **Chebyshev interpolation reproduces polynomials of degree < n** — the
+    polynomial-reproduction ingredient of the Sorry 2 strong-form roadmap
+    (state.md S39/S40): together with the S39 continuous saturation witness it
+    feeds the gliding-hump construction for the full-limit divergence. -/
+theorem chebyshevInterp_polynomial (n : ℕ) (hn : 0 < n) (p : Polynomial ℝ)
+    (hdeg : p.degree < (n : WithBot ℕ)) (x : ℝ) :
+    chebyshevInterp n (fun t => p.eval t) x = p.eval x :=
+  lagrangeInterp_polynomial n (chebyshevNode n) (chebyshevNode_injective n hn) p hdeg x
+
+/-- **Partition of unity**: the Lagrange basis functions at injective nodes sum
+    to 1 pointwise (reproduction of the constant polynomial `1`). -/
+theorem sum_lagrangeBasis_eq_one (n : ℕ) (hn : 0 < n) (nodes : Fin n → ℝ)
+    (hinj : Function.Injective nodes) (x : ℝ) :
+    ∑ k : Fin n, lagrangeBasis n nodes k x = 1 := by
+  have h := lagrangeInterp_polynomial n nodes hinj 1
+    (by rw [Polynomial.degree_one]; exact_mod_cast hn) x
+  simpa [lagrangeInterp] using h
+
+/-- Partition of unity at the Chebyshev nodes. -/
+theorem sum_chebyshev_lagrangeBasis_eq_one (n : ℕ) (hn : 0 < n) (x : ℝ) :
+    ∑ k : Fin n, lagrangeBasis n (chebyshevNode n) k x = 1 :=
+  sum_lagrangeBasis_eq_one n hn (chebyshevNode n) (chebyshevNode_injective n hn) x
 
 end Erdos1151OQ04
