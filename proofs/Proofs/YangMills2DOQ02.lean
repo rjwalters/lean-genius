@@ -13,10 +13,12 @@
   This file proves:
   - Part I: In 2D, the potential ratio exactly equals the Casimir ratio for all r > 0
   - Part II: String breaking implies the potential ratio decreases after r_break
-  - Part III: The 4D approximate Casimir scaling conjecture (axiomatized as open)
+  - Part III: The 4D approximate Casimir scaling predicate (with a formalization caveat)
 
-  Parts I and II: 0 axioms, 0 sorries.
-  Part III: 1 axiom (the open 4D conjecture).
+  Parts I, II, and III: 0 axioms, 0 sorries.
+  Part III note: the free-existential predicate is a tautology of real analysis and is
+  stated as a proved theorem, NOT an axiom. It does not capture the (still open) physical
+  small-ε conjecture, which needs an explicit bound on ε (see the caveat before Part III).
 
   References:
   - Migdal, "Recursion equations in gauge theories" (1975)
@@ -180,7 +182,7 @@ theorem exact_casimir_scaling_fails_4d
   exact ⟨h_ratio, h_post, h_post.trans_eq h_ratio.symm⟩
 
 -- ============================================================
--- PART III: 4D Approximate Casimir Scaling (Axiomatized as Open)
+-- PART III: 4D Approximate Casimir Scaling (a formalization caveat)
 -- ============================================================
 
 /-
@@ -189,27 +191,40 @@ approximate Casimir scaling at intermediate distances (r < r_break):
 
   |σ_R/σ_fund - C₂(R)/C₂(fund)| < ε  for small ε > 0
 
-The deviation arises from non-perturbative QCD effects. Proving this analytically
-requires constructive QFT methods beyond current Mathlib infrastructure.
+The genuine physics conjecture asserts this holds for a SMALL, physically-motivated
+ε tied to measured lattice deviations. That statement is genuinely open and would
+require constructive QFT methods beyond current Mathlib.
 
 Key lattice measurements (Bali et al. 2000):
   SU(2): σ_adj/σ_fund = C₂(adj)/C₂(fund) = 8/3 ≈ 2.67, measured ≈ 2.5 ± 0.2
   SU(3): σ_adj/σ_fund = C₂(adj)/C₂(fund) = 9/4 = 2.25, measured ≈ 2.2 ± 0.1
+
+CAVEAT (formalization honesty): the predicate below, with ε a *free, unbounded*
+existential, does NOT capture that physics. Any two reals are within |x - y| + 1
+of each other, so `∃ ε, ApproximateCasimirScaling4D ...` is a tautology of real
+analysis — it holds unconditionally, needs no positivity hypotheses, and encodes
+zero physical content. We therefore state it as an ordinary `theorem` (proved
+trivially), NOT an axiom, so the entry makes no false "open conjecture" claim.
+Formalizing the real conjecture requires an explicit, physically-grounded bound
+on ε (e.g. ε ≤ 0.2 for SU(2)); that remains future work.
 -/
 
 /-- Approximate Casimir scaling: the string tension ratio is within ε of the Casimir ratio. -/
 def ApproximateCasimirScaling4D (sigma_R sigma_fund casimir_R casimir_fund ε : ℝ) : Prop :=
   ε > 0 ∧ |sigma_R / sigma_fund - casimir_R / casimir_fund| < ε
 
-/-- **Conjecture (OPEN)**: 4D Yang-Mills exhibits approximate Casimir scaling at intermediate
-    distances. The approximation error ε is small but nonzero due to non-perturbative effects.
-
-    Status: Supported by lattice QCD (Bali et al. 2000) but not analytically proved.
-    Proving this requires non-perturbative QFT methods beyond current Mathlib. -/
-axiom casimir_scaling_4d_approximate :
+/-- The free-existential form of approximate Casimir scaling is a **tautology**, not an
+    open conjecture: for any reals it holds with `ε := |σ_R/σ_fund - C₂(R)/C₂(fund)| + 1`,
+    without any positivity hypotheses. This makes explicit that the predicate as written
+    does not encode the physical (small-ε) conjecture — see the caveat above. -/
+theorem casimir_scaling_4d_approximate :
     ∀ (sigma_R sigma_fund casimir_R casimir_fund : ℝ),
     sigma_R > 0 → sigma_fund > 0 → casimir_R > 0 → casimir_fund > 0 →
-    ∃ ε : ℝ, ApproximateCasimirScaling4D sigma_R sigma_fund casimir_R casimir_fund ε
+    ∃ ε : ℝ, ApproximateCasimirScaling4D sigma_R sigma_fund casimir_R casimir_fund ε := by
+  intro sR sf cR cf _ _ _ _
+  refine ⟨|sR / sf - cR / cf| + 1, ?_, ?_⟩
+  · positivity
+  · linarith [abs_nonneg (sR / sf - cR / cf)]
 
 -- ============================================================
 -- SUMMARY
