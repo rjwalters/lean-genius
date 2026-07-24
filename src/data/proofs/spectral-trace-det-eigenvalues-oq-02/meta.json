@@ -116,8 +116,8 @@
       "id": "examples",
       "title": "Concrete Illustrations over ℤ",
       "startLine": 150,
-      "endLine": 196,
-      "summary": "trace_mul_comm_cross_dim(_value): a 1×2 / 2×1 pair with products of different sizes both of trace 11; trace_mul_comm_noncomm_example(_ne/_value): a non-commuting pair with A·B ≠ B·A but equal product-traces 3; trace_commutator_example: that pair's commutator has trace 0.",
+      "endLine": 208,
+      "summary": "trace_mul_comm_cross_dim(_value): a 1×2 / 2×1 pair with products of different sizes both of trace 11; trace_mul_comm_noncomm_example(_ne/_value): a non-commuting pair with A·B ≠ B·A but equal product-traces 3; trace_commutator_example: that pair's commutator has trace 0, applying trace_commutator_eq_zero directly. Closes the namespace, then six #print axioms commands on the five original theorems plus the cross-dimension witness confirm the file's opening claim — no sorry, no extra axioms beyond propext/Classical.choice/Quot.sound.",
       "mathContext": "$\\operatorname{tr}([1\\,2][3;4]) = \\operatorname{tr}([3;4][1\\,2]) = 11$."
     }
   ],
