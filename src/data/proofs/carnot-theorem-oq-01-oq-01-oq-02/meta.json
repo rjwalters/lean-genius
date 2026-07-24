@@ -84,7 +84,8 @@
       "**One sum-of-squares identity does everything**: 1 - 8 cos A cos B cos C = (2 cos C - cos(A-B))² + sin²(A-B), so the bound cos A cos B cos C ≤ 1/8 is a single nonnegativity statement",
       "**The bound is sign-agnostic**: it holds for every real triple summing to π, never splitting on whether the triangle is acute or obtuse — positivity of the angles enters only to pin the equality case",
       "**The genuine lower extremum of the squared cosine sum is 3/4**: where the sibling entry compares cos²A + cos²B + cos²C only to the threshold 1, this entry gives its sharp minimum, attained at the equilateral triangle",
-      "**Equality is rigid**: vanishing of the two squares forces A = B (from sin(A-B) = 0) and C = π/3 (from 2 cos C = cos(A-B) = 1), i.e. the equilateral triangle"
+      "**Equality is rigid**: vanishing of the two squares forces A = B (from sin(A-B) = 0) and C = π/3 (from 2 cos C = cos(A-B) = 1), i.e. the equilateral triangle",
+      "**The identity's asymmetry is a presentation choice, not a mathematical necessity**: cos A cos B cos C ≤ 1/8 is fully symmetric in A, B, C, yet eight_cos_prod_identity singles out C — pairing cos A cos B via A + B = π − C and isolating 2 cos C in the square. Pairing instead around A (using B + C = π − A) would give the equally valid identity 1 − 8 cos A cos B cos C = (2 cos A − cos(B−C))² + sin²(B−C); the file's choice of C is arbitrary, fixed only by which product-to-sum expansion is written down first"
     ],
     "prerequisites": [
       "Real trigonometric functions cos, sin, the addition formulas, and the pythagorean identity",
