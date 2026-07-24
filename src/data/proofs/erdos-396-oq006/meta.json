@@ -41,7 +41,8 @@
       "**The recurrence is a telescoping product.** C(2n,n) = ∏_{k<n} (4k+2)/(k+1): each application of Mathlib's recurrence multiplies by one ratio, so the whole coefficient is a finite product of recurrence ratios — the multiplicative counterpart of the parent's additive log-sum.",
       "**The normalised coefficient is the Wallis partial product.** C(2n,n)/4^n = ∏_{k<n} (2k+1)/(2k+2) = (2n−1)!!/(2n)!!. This is the truncation of Wallis' product for 2/π, exhibited here purely from the integer recurrence with no analytic input.",
       "**Strict monotonicity is immediate from the product.** Every factor (2k+1)/(2k+2) lies strictly in (0,1), so multiplying by the next factor strictly decreases the (positive) normalised sequence; C(2n,n)/4^n is strictly decreasing in n.",
-      "**The 4^n bound falls out of monotonicity.** Because the normalised sequence starts at 1 (n = 0) and strictly decreases, C(2n,n)/4^n < 1 for every n ≥ 1, giving C(2n,n) < 4^n with no appeal to the row-sum bound (2n choose n) ≤ 2^{2n}."
+      "**The 4^n bound falls out of monotonicity.** Because the normalised sequence starts at 1 (n = 0) and strictly decreases, C(2n,n)/4^n < 1 for every n ≥ 1, giving C(2n,n) < 4^n with no appeal to the row-sum bound (2n choose n) ≤ 2^{2n}.",
+      "**Strict decrease is not the same as the sharp rate.** This entry certifies only C(2n,n)/4^n < 1; the precise asymptotic decay C(2n,n)/4^n ~ 1/√(πn) — equivalently the infinite Wallis product ∏ (2k)²/((2k−1)(2k+1)) → π/2 — needs genuinely analytic input (e.g. Stirling or the Wallis integral) beyond any finite truncation of the same product. The elementary bound formalized here is exactly the boundary before that limit is taken."
     ],
     "prerequisites": [
       "Mathlib's central-binomial recurrence Nat.succ_mul_centralBinom_succ",
