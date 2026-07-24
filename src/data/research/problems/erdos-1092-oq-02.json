@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-07-04T18:35:43-07:00",
     "iteration": 1,
     "focus": "Regime dichotomy completed: fThresholdSet_eq_univ_of_card_le (degenerate n<=r+1 => Set.univ), fThresholdSet_eq_Iic (non-degenerate => Set.Iic), hasColoring_of_card_le. Erdos1092OQ02.lean now well-definedness-complete for both regimes, 0 axioms.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Well-definedness theory complete AND the whole r=1 row closed: fThreshold 1 n = 2 for every n ≥ 3 (constant row — definitive refutation of n-1-style growth at r=1; settles (1,5),(1,6),… in one stroke). Key simplification: at S=univ a budget-k hypothesis at r=1 caps the total edge count by k, and ≤2 ordered pairs of edges are 2-colorable outright via an explicit coverColoring. Remaining: r ≥ 2 rungs ((2,4) next: K₄ obstruction, 3-colorings); parent OQ (Rödl r ≥ 3) research-level.",
+    "progressSummary": "Well-definedness theory complete, r=1 row closed (fThreshold 1 n = 2 for n >= 3), and the r=2 row OPENED: fThreshold 2 4 = 1 — first exact value at r=2 and first cross-row comparison (threshold strictly drops at n=4, fThreshold_lt_at_four). Single-obstruction mechanism: K4 is the only non-3-colorable 4-vertex graph. Remaining: (2,5) needs K4-subgraph analysis on 5 vertices (multiple embeddings, genuinely harder); parent OQ (Rödl r >= 3) research-level.",
     "builtItems": [
       "Third session (researcher-3, 2026-07-24): COMPLETE r=1 row — fThreshold_one_eq_two (fThreshold 1 n = 2 for ALL n ≥ 3), fThreshold_one_five, fThreshold_one_constant, plus generic coverColoring/coverColoring_proper (2-coloring from a 2-element edge cover, symbolic n), mem_killTri (omega-based membership at symbolic n), trianglePlus. Host-verified v4.31.0; axioms = [propext, Classical.choice, Quot.sound]; 0 sorries.",
       "fThresholdSet_zero_mem (Erdos1092OQ02.lean): 0 ∈ fThresholdSet r n unconditionally — defining set always nonempty",
@@ -40,7 +40,8 @@
       "two_mem_fThresholdSet_one_three (budget 2 forces 2-colorability on 3 vertices; disjoint-slot counting + 3 explicit colorings)",
       "fThreshold_one_three : fThreshold 1 3 = 2 (first exact value)",
       "trianglePlusIsolated + fThreshold_one_four_le_two + trivial_lower_bound_false (parent prose refutation machine-checked)",
-      "Erdos1092OQ02.lean 509->750 lines: slot_nonempty, three_slots_le_card (generic), two_mem_fThresholdSet_one_four (three-pairings case tree), two_le_fThreshold_one_four, fThreshold_one_four = 2, fThreshold_constant_three_four; 0 axioms 0 sorries docker-verified"
+      "Erdos1092OQ02.lean 509->750 lines: slot_nonempty, three_slots_le_card (generic), two_mem_fThresholdSet_one_four (three-pairings case tree), two_le_fThreshold_one_four, fThreshold_one_four = 2, fThreshold_constant_three_four; 0 axioms 0 sorries docker-verified",
+      "killC4, two_notMem_fThresholdSet_two_four, fThreshold_two_four_le_one, one_mem_fThresholdSet_two_four, one_le_fThreshold_two_four, fThreshold_two_four (= 1), fThreshold_lt_at_four in Erdos1092OQ02.lean (998->1177 lines, 0 axioms, 0 sorries, host-verified v4.31.0)"
     ],
     "insights": [
       "fThreshold has TWO degeneracies: upper r+1≥n (set=ℕ, all graphs (r+1)-colorable) and lower r=0 (set=ℕ, no 0-coloring on n≥1 vertices). Non-degenerate regime is 1≤r ∧ r+2≤n.",
@@ -53,13 +54,16 @@
       "decide + open scoped Classical gotcha: decide fails on implications (forall_prop_decidable picks Classical.propDecidable) but still works on concrete Finset memberships; structure fin_cases branches as first | exact huv rfl | exact hnuv (by decide) | ...",
       "Second exact value: fThreshold 1 4 = 2 — and the threshold is CONSTANT from n=3 to n=4 (fThreshold_constant_three_four), further refuting n-1-style growth beyond the removed f_trivial_lower axiom.",
       "Perfect-pairing recipe (even n): a perfect pairing of vertices 2-colors G unless an intra-pair edge is present; each edge kills exactly ONE pairing; killing all pairings costs as many distinct edges as pairings. For Fin 4: 3 pairings vs budget 2 => some pairing survives. Generic helpers slot_nonempty + three_slots_le_card (disjoint pair-slot counting) now factored for reuse.",
-      "For odd n (next rung (1,5)): no perfect pairings — need near-pairings (2+2+1) or a different obstruction; compute small models before formalizing. (2,4) is the other natural rung (r=2, K4 obstruction)."
+      "For odd n (next rung (1,5)): no perfect pairings — need near-pairings (2+2+1) or a different obstruction; compute small models before formalizing. (2,4) is the other natural rung (r=2, K4 obstruction).",
+      "(2,4) rung: pairing-style casework was NOT needed — on 4 vertices the only non-3-colorable graph is K4, so a single obstruction governs the row entry. Upper bound: K4 passes the budget-2 test by shedding the two opposite edges {0,1},{2,3}, leaving the bipartite C4 0-2-1-3-0; the same removal+bipartition works for every induced S (subgraphs of bipartite are bipartite).",
+      "Membership of 1 at (2,4): dichotomy on completeness. Non-complete -> explicit 3-coloring (non-edge pair shares a color, other two vertices fresh). Complete -> S=univ budget-1 hypothesis absurd: one removed pair kills at most one edge, a triangle on {a,b,p.1} clear of the removed pair survives, Fin 2 pigeonhole forces a monochromatic surviving edge.",
+      "fThreshold_lt_at_four: fThreshold 2 4 = 1 < 2 = fThreshold 1 4 — the threshold strictly DROPS as r grows at n=4. First cross-row comparison: weaker target (3-colorability) has a rarer obstruction whose own reducibility is cheap, so the largest safe budget shrinks."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(2,4) rung: fThreshold 2 4 exact value — K₄ obstruction, budget vs 6 edges, 3-colorings; the r=1 'budget caps edges' trick does NOT transfer (a 2-coloring tolerates edges), expect pairing-style casework.",
-      "General r-row conjecture from data: is fThreshold r n constant in n for fixed r? Only r=1 known (=2).",
-      "Parent OQ (Rödl r ≥ 3 polylog) — research-level, do not attempt."
+      "(2,5) rung: K4-subgraph obstruction analysis on 5 vertices — multiple K4 embeddings, budget interplay; genuinely harder than (2,4).",
+      "(2,n) general row: needs the \"K4 is the only obstruction => budget caps\" story to break; is fThreshold 2 n constant in n like the r=1 row?",
+      "Parent OQ (Rödl r >= 3 polylog) — research-level, do not attempt."
     ],
     "markdown": "# Knowledge Base: erdos-1092-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
