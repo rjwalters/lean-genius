@@ -145,6 +145,14 @@
       "summary": "Module docstring. Recalls the parent (vecAnnIdeal / IsCyclicVector framework) and grandparent (reverse direction minpoly = charpoly ⟹ ∃ cyclic vector), states the four main results, and lays out the forward direction as a degree squeeze: deg(minpoly) ≤ n from Cayley–Hamilton, deg(minpoly) ≥ n from cyclicity."
     },
     {
+      "id": "imports-setup",
+      "title": "Imports and Ambient Setup",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Imports the grandparent file `CayleyHamiltonOQ01OQ01OQ01` (the bridge lemma and reverse-direction existence theorem), opens `Matrix Polynomial Module BigOperators` plus the two ancestor namespaces, and fixes the ambient `variable {K : Type*} [Field K] {n : ℕ}` shared by every theorem below.",
+      "mathContext": "Everything downstream is stated for an n × n matrix over an arbitrary field K, reusing the ancestor files' vecAnnIdeal / IsCyclicVector API rather than redefining it."
+    },
+    {
       "id": "forward-degree",
       "title": "Part I — A cyclic vector forces full-degree minimal polynomial",
       "startLine": 66,
