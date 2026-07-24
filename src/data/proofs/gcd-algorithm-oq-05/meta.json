@@ -165,8 +165,15 @@
     {
       "id": "partial-sums",
       "title": "Closed Form of the Partial Sums",
-      "summary": "gaussKuzmin_partial (∑_{n<N} P(n) = G(0) − G(N)), G_zero (G(0) = 1), G_nonneg, and G_tendsto_zero (G(N) → 0 via (n+2)/(n+1) → 1 and continuity of log₂ at 1)",
+      "summary": "gaussKuzmin_partial: ∑_{n<N} P(n) = G(0) − G(N), obtained by telescoping gaussKuzmin_eq_sub across the range via Finset.sum_range_sub'.",
       "startLine": 82,
+      "endLine": 87
+    },
+    {
+      "id": "G-asymptotics",
+      "title": "Properties of the Antiderivative G Needed for Convergence",
+      "summary": "G_zero (G(0) = log₂(2/1) = 1, anchoring the closed-form partial sum), G_nonneg (G(n) ≥ 0 since (n+2)/(n+1) ≥ 1), and G_tendsto_zero (G(n) → 0, via (n+2)/(n+1) → 1 and continuity of log₂ at 1) — the three facts about G that turn the closed-form partial sum G(0) − G(N) into a convergent, normalized series.",
+      "startLine": 89,
       "endLine": 121
     },
     {
