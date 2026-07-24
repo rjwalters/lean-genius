@@ -1,4 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
@@ -14,14 +15,20 @@ S2 SCAFFOLD for `product-of-segments-of-chords-oq-03`:
    concyclicity determinant (Möbius / Berger, *Geometry I*, Theorem 10.7.6).
 2. `Vec2`-level wrapper `concyclicityDet` accessing the two coordinates of each
    `EuclideanSpace ℝ (Fin 2)` point.
-3. Statement of the main bidirectional criterion
-   `concyclicityDet_eq_zero_iff_concyclic`, with `sorry` (closed in S3 + S4).
+3. The main bidirectional criterion `concyclicityDet_eq_zero_iff_concyclic`,
+   **fully proven** (S18 ACT, Part 12) under the genuine non-degeneracy
+   hypothesis `¬ Collinear ℝ {P₁, P₂, P₃}` — the `(hNonCollinear : True)`
+   placeholder from S2 is gone. The file now has **0 sorries and 0 axioms**.
 4. (S7 BUILD-VERIFY note) The two numerical sanity-check examples shipped in
    S2 SCAFFOLD on `Matrix.det_fin_four` have been removed — the lemma never
    existed in Mathlib v4.26.0. See the comment in Part 3 below.
+5. (S18 ACT) Parts 9–12: the collinearity determinant and its bridge to
+   `Collinear ℝ`, the explicit Cramer-rule circumcircle of three non-collinear
+   points, the cofactor decomposition of Δ relative to a candidate circle, and
+   the assembled iff.
 
-Subsequent sessions (S3, S4, S5, S6) discharge the sorry and bridge the result
-back to `Proofs/ProductOfSegmentsOfChords.lean` line 468
+The remaining programme (state.md S5/S6) bridges this result back to
+`Proofs/ProductOfSegmentsOfChords.lean` line 468
 (`converse_product_implies_concyclic_axiom`).
 
 See `research/problems/product-of-segments-of-chords-oq-03/state.md` for the
@@ -105,24 +112,16 @@ theorem concyclicityDetCoords_off_circle :
   simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_zero, Fin.succAbove]
   norm_num
 
-/-! ## Part 4: Main theorem (statement only) -/
+/-! ## Part 4: Main theorem (moved)
 
-/-- **Concyclicity criterion** (statement, proof deferred to S3 + S4).
-
-Assume $P_1, P_2, P_3$ are non-collinear (placeholder hypothesis `True` until
-S3 supplies the correct non-degeneracy condition). Then four points have
-$\Delta = 0$ iff they lie on a common circle.
-
-The ($\Leftarrow$) direction (S4) follows by row reduction; ($\Rightarrow$)
-(S3) uses Cramer's rule on the implicit-circle equation
-$x^2 + y^2 + Dx + Ey + F = 0$. -/
-theorem concyclicityDet_eq_zero_iff_concyclic
-    (P₁ P₂ P₃ P₄ : Vec2)
-    (hNonCollinear : True) :
-    concyclicityDet P₁ P₂ P₃ P₄ = 0 ↔
-      ∃ (O : Vec2) (r : ℝ), 0 < r ∧
-        ‖P₁ - O‖ = r ∧ ‖P₂ - O‖ = r ∧ ‖P₃ - O‖ = r ∧ ‖P₄ - O‖ = r := by
-  sorry
+The headline criterion `concyclicityDet_eq_zero_iff_concyclic` is stated and
+**proven** in Part 12 at the end of this file (S18 ACT) — its proof consumes
+the helper lemmas of Parts 5–11, so the declaration must come after them.
+Relative to the S2 stub that used to live here, the placeholder hypothesis
+`(hNonCollinear : True)` has been replaced by the genuine non-degeneracy
+condition `¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)`; with the placeholder the
+($\Rightarrow$) direction is *false* (four distinct collinear points have
+$\Delta = 0$ but lie on no common circle). -/
 
 /-! ## Part 5: Coordinate-form norm-squared helper (S15 ACT) -/
 
@@ -261,5 +260,266 @@ theorem concyclic_implies_concyclicityDet_zero
     fin_cases i <;>
       simp [Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;>
       nlinarith [e P₁ h₁, e P₂ h₂, e P₃ h₃, e P₄ h₄]
+
+/-! ## Part 9: The collinearity determinant and non-collinearity (S18 ACT)
+
+The genuine non-degeneracy hypothesis for the concyclicity criterion is that
+`P₁, P₂, P₃` are not collinear. Algebraically this is the non-vanishing of the
+$2\times 2$ determinant $d = (x_2-x_1)(y_3-y_1) - (x_3-x_1)(y_2-y_1)$ (twice
+the signed triangle area, and also the bottom cofactor $M_4$ of the
+concyclicity matrix). This part defines `collinearityDet` and proves the
+direction of the bridge needed downstream: vanishing determinant ⟹
+`Collinear ℝ`, hence ¬collinear ⟹ nonzero determinant. -/
+
+/-- The planar collinearity determinant of three points in raw coordinates:
+$(x_2-x_1)(y_3-y_1) - (x_3-x_1)(y_2-y_1)$, i.e. twice the signed area of the
+triangle `P₁P₂P₃`. The three points are collinear iff it vanishes. -/
+def collinearityDetCoords (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ) : ℝ :=
+  (x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁)
+
+/-- `Vec2`-level wrapper for `collinearityDetCoords`. -/
+def collinearityDet (P₁ P₂ P₃ : Vec2) : ℝ :=
+  collinearityDetCoords (P₁ 0) (P₁ 1) (P₂ 0) (P₂ 1) (P₃ 0) (P₃ 1)
+
+/-- If the collinearity determinant of three planar points vanishes, the
+points are collinear in the affine sense. Case split: if `P₂ = P₁` the
+direction `P₃ - P₁` works; otherwise `P₂ - P₁` is a nonzero direction and the
+vanishing determinant supplies the scalar for `P₃` (parametrising by whichever
+coordinate of `P₂ - P₁` is nonzero). -/
+theorem collinear_of_collinearityDet_eq_zero
+    (P₁ P₂ P₃ : Vec2) (h : collinearityDet P₁ P₂ P₃ = 0) :
+    Collinear ℝ ({P₁, P₂, P₃} : Set Vec2) := by
+  have h' : (P₂ 0 - P₁ 0) * (P₃ 1 - P₁ 1) - (P₃ 0 - P₁ 0) * (P₂ 1 - P₁ 1) = 0 := h
+  rw [collinear_iff_of_mem (Set.mem_insert P₁ {P₂, P₃})]
+  by_cases hx : P₂ 0 - P₁ 0 = 0
+  · by_cases hy : P₂ 1 - P₁ 1 = 0
+    · -- both coordinates agree: `P₂ = P₁`, direction `P₃ - P₁`
+      have h21 : P₂ = P₁ := by
+        apply PiLp.ext
+        intro i
+        fin_cases i
+        · exact sub_eq_zero.mp hx
+        · exact sub_eq_zero.mp hy
+      refine ⟨P₃ - P₁, ?_⟩
+      intro p hp
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
+      rcases hp with rfl | rfl | rfl
+      · exact ⟨0, by simp⟩
+      · exact ⟨0, by simp [h21]⟩
+      · exact ⟨1, by simp [vadd_eq_add]⟩
+    · -- `P₂ 1 ≠ P₁ 1`: parametrise `P₃` by its `y`-coordinate
+      refine ⟨P₂ - P₁, ?_⟩
+      intro p hp
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
+      rcases hp with rfl | rfl | rfl
+      · exact ⟨0, by simp⟩
+      · exact ⟨1, by simp [vadd_eq_add]⟩
+      · refine ⟨(P₃ 1 - P₁ 1) / (P₂ 1 - P₁ 1), ?_⟩
+        apply PiLp.ext
+        intro i
+        simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+          smul_eq_mul]
+        fin_cases i
+        · -- the `x`-coordinate needs the vanishing determinant
+          field_simp [hy]
+          first
+          | linear_combination h'
+          | linear_combination -h'
+        · field_simp [hy]
+  · -- `P₂ 0 ≠ P₁ 0`: parametrise `P₃` by its `x`-coordinate
+    refine ⟨P₂ - P₁, ?_⟩
+    intro p hp
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
+    rcases hp with rfl | rfl | rfl
+    · exact ⟨0, by simp⟩
+    · exact ⟨1, by simp [vadd_eq_add]⟩
+    · refine ⟨(P₃ 0 - P₁ 0) / (P₂ 0 - P₁ 0), ?_⟩
+      apply PiLp.ext
+      intro i
+      simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+        smul_eq_mul]
+      fin_cases i
+      · field_simp [hx]
+      · -- the `y`-coordinate needs the vanishing determinant
+        field_simp [hx]
+        first
+        | linear_combination h'
+        | linear_combination -h'
+
+/-- Contrapositive form used by the main theorem: non-collinear triples have
+nonzero collinearity determinant. -/
+theorem collinearityDet_ne_zero_of_not_collinear
+    (P₁ P₂ P₃ : Vec2)
+    (h : ¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)) :
+    collinearityDet P₁ P₂ P₃ ≠ 0 :=
+  fun h0 => h (collinear_of_collinearityDet_eq_zero P₁ P₂ P₃ h0)
+
+/-! ## Part 10: The circumcircle of a non-collinear triple (S18 ACT)
+
+Cramer's rule on the two perpendicular-bisector equations
+
+  `2(x₂-x₁)·O₀ + 2(y₂-y₁)·O₁ = (x₂²+y₂²) - (x₁²+y₁²)`
+  `2(x₃-x₁)·O₀ + 2(y₃-y₁)·O₁ = (x₃²+y₃²) - (x₁²+y₁²)`
+
+whose coefficient determinant is `4·collinearityDet ≠ 0`, gives the explicit
+circumcenter; the common radius `r = ‖P₁ - O‖` is positive because `r = 0`
+would force `P₂ = P₁` and hence a vanishing collinearity determinant. -/
+
+/-- Core Cramer computation, pure coordinates: the explicit circumcenter
+equalises the three squared distances. -/
+private lemma circumcenter_spec
+    (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ)
+    (hd : (x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁) ≠ 0) :
+    ∃ O₀ O₁ : ℝ,
+      (x₂ - O₀) ^ 2 + (y₂ - O₁) ^ 2 = (x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 ∧
+      (x₃ - O₀) ^ 2 + (y₃ - O₁) ^ 2 = (x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 := by
+  refine ⟨((x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (y₃ - y₁)
+          - (x₃ ^ 2 + y₃ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (y₂ - y₁))
+          / (2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁))),
+         ((x₃ ^ 2 + y₃ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (x₂ - x₁)
+          - (x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (x₃ - x₁))
+          / (2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁))),
+         ?_, ?_⟩
+  · field_simp [hd]
+    ring
+  · field_simp [hd]
+    ring
+
+/-- Every non-collinear triple in the plane lies on a genuine circle
+(positive radius). -/
+theorem exists_circumcircle
+    (P₁ P₂ P₃ : Vec2) (hd : collinearityDet P₁ P₂ P₃ ≠ 0) :
+    ∃ (O : Vec2) (r : ℝ), 0 < r ∧
+      ‖P₁ - O‖ = r ∧ ‖P₂ - O‖ = r ∧ ‖P₃ - O‖ = r := by
+  have hdc : (P₂ 0 - P₁ 0) * (P₃ 1 - P₁ 1) - (P₃ 0 - P₁ 0) * (P₂ 1 - P₁ 1) ≠ 0 := hd
+  obtain ⟨O₀, O₁, h2, h3⟩ :=
+    circumcenter_spec (P₁ 0) (P₁ 1) (P₂ 0) (P₂ 1) (P₃ 0) (P₃ 1) hdc
+  set O : Vec2 := WithLp.toLp 2 ![O₀, O₁] with hO
+  have hO0 : O 0 = O₀ := rfl
+  have hO1 : O 1 = O₁ := rfl
+  have hsq2 : ‖P₂ - O‖ ^ 2 = ‖P₁ - O‖ ^ 2 := by
+    rw [norm_sub_sq_coord, norm_sub_sq_coord, hO0, hO1]
+    exact h2
+  have hsq3 : ‖P₃ - O‖ ^ 2 = ‖P₁ - O‖ ^ 2 := by
+    rw [norm_sub_sq_coord, norm_sub_sq_coord, hO0, hO1]
+    exact h3
+  have h₂ : ‖P₂ - O‖ = ‖P₁ - O‖ :=
+    (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) (by norm_num : (2 : ℕ) ≠ 0)).mp hsq2
+  have h₃ : ‖P₃ - O‖ = ‖P₁ - O‖ :=
+    (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) (by norm_num : (2 : ℕ) ≠ 0)).mp hsq3
+  refine ⟨O, ‖P₁ - O‖, ?_, rfl, h₂, h₃⟩
+  rcases (norm_nonneg (P₁ - O)).lt_or_eq with hlt | heq
+  · exact hlt
+  · -- radius `0` would force `P₂ = P₁`, contradicting `hd`
+    exfalso
+    have e₁ : P₁ = O := sub_eq_zero.mp (norm_eq_zero.mp heq.symm)
+    have e₂ : P₂ = O := by
+      have h0 : ‖P₂ - O‖ = 0 := by rw [h₂, ← heq]
+      exact sub_eq_zero.mp (norm_eq_zero.mp h0)
+    have h21 : P₂ = P₁ := e₂.trans e₁.symm
+    apply hdc
+    have c0 : P₂ 0 = P₁ 0 := by rw [h21]
+    have c1 : P₂ 1 = P₁ 1 := by rw [h21]
+    rw [c0, c1]
+    ring
+
+/-! ## Part 11: Cofactor decomposition and the forced fourth point (S18 ACT)
+
+Column multilinearity gives the *exact polynomial identity*
+
+  `Δ = e₁·M₁ - e₂·M₂ + e₃·M₃ - e₄·M₄`,
+
+where `eᵢ = (xᵢ-O₀)² + (yᵢ-O₁)² - r²` is the circle defect of `Pᵢ` and `Mᵢ`
+is the 3×3 minor of the `(x, y, 1)` columns omitting row `i` (in particular
+`M₄ = collinearityDet P₁ P₂ P₃`): substituting
+`xᵢ²+yᵢ² = eᵢ + 2O₀xᵢ + 2O₁yᵢ + (r²-O₀²-O₁²)` in the first column, the three
+non-`e` summands each produce a repeated column, so only `det(e-col, x, y, 1)`
+survives. With `P₁, P₂, P₃` on the circle (`e₁ = e₂ = e₃ = 0`) and `Δ = 0`,
+the identity collapses to `e₄ · M₄ = 0`, and `M₄ ≠ 0` forces `e₄ = 0`. -/
+
+/-- Exact cofactor decomposition of the concyclicity determinant relative to
+an arbitrary candidate circle (center `(O₀, O₁)`, radius `r`). This is a pure
+polynomial identity — no hypotheses. -/
+lemma concyclicityDetCoords_circle_decomp
+    (O₀ O₁ r x₁ y₁ x₂ y₂ x₃ y₃ x₄ y₄ : ℝ) :
+    concyclicityDetCoords x₁ y₁ x₂ y₂ x₃ y₃ x₄ y₄ =
+      ((x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 - r ^ 2)
+          * (x₂ * (y₃ - y₄) - x₃ * (y₂ - y₄) + x₄ * (y₂ - y₃))
+        - ((x₂ - O₀) ^ 2 + (y₂ - O₁) ^ 2 - r ^ 2)
+          * (x₁ * (y₃ - y₄) - x₃ * (y₁ - y₄) + x₄ * (y₁ - y₃))
+        + ((x₃ - O₀) ^ 2 + (y₃ - O₁) ^ 2 - r ^ 2)
+          * (x₁ * (y₂ - y₄) - x₂ * (y₁ - y₄) + x₄ * (y₁ - y₂))
+        - ((x₄ - O₀) ^ 2 + (y₄ - O₁) ^ 2 - r ^ 2)
+          * (x₁ * (y₂ - y₃) - x₂ * (y₁ - y₃) + x₃ * (y₁ - y₂)) := by
+  unfold concyclicityDetCoords
+  simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_zero,
+    Fin.succAbove]
+  ring
+
+/-- If `P₁, P₂, P₃` lie on the circle of center `O` and radius `r`, are not
+collinear, and the concyclicity determinant of `P₁, P₂, P₃, P₄` vanishes,
+then `P₄` lies on the same circle. -/
+theorem fourth_point_on_circle
+    (P₁ P₂ P₃ P₄ O : Vec2) (r : ℝ) (hr : 0 ≤ r)
+    (hd : collinearityDet P₁ P₂ P₃ ≠ 0)
+    (h₁ : ‖P₁ - O‖ = r) (h₂ : ‖P₂ - O‖ = r) (h₃ : ‖P₃ - O‖ = r)
+    (hΔ : concyclicityDet P₁ P₂ P₃ P₄ = 0) :
+    ‖P₄ - O‖ = r := by
+  have e₁ : (P₁ 0 - O 0) ^ 2 + (P₁ 1 - O 1) ^ 2 = r ^ 2 := by
+    have h := norm_sub_sq_coord P₁ O
+    rw [h₁] at h
+    linarith
+  have e₂ : (P₂ 0 - O 0) ^ 2 + (P₂ 1 - O 1) ^ 2 = r ^ 2 := by
+    have h := norm_sub_sq_coord P₂ O
+    rw [h₂] at h
+    linarith
+  have e₃ : (P₃ 0 - O 0) ^ 2 + (P₃ 1 - O 1) ^ 2 = r ^ 2 := by
+    have h := norm_sub_sq_coord P₃ O
+    rw [h₃] at h
+    linarith
+  have hdc : (P₂ 0 - P₁ 0) * (P₃ 1 - P₁ 1) - (P₃ 0 - P₁ 0) * (P₂ 1 - P₁ 1) ≠ 0 := hd
+  have hΔ' : concyclicityDetCoords (P₁ 0) (P₁ 1) (P₂ 0) (P₂ 1) (P₃ 0) (P₃ 1)
+      (P₄ 0) (P₄ 1) = 0 := hΔ
+  rw [concyclicityDetCoords_circle_decomp (O 0) (O 1) r] at hΔ'
+  have key : ((P₄ 0 - O 0) ^ 2 + (P₄ 1 - O 1) ^ 2 - r ^ 2)
+      * ((P₂ 0 - P₁ 0) * (P₃ 1 - P₁ 1) - (P₃ 0 - P₁ 0) * (P₂ 1 - P₁ 1)) = 0 := by
+    linear_combination (-1 : ℝ) * hΔ'
+      + (P₂ 0 * (P₃ 1 - P₄ 1) - P₃ 0 * (P₂ 1 - P₄ 1) + P₄ 0 * (P₂ 1 - P₃ 1)) * e₁
+      - (P₁ 0 * (P₃ 1 - P₄ 1) - P₃ 0 * (P₁ 1 - P₄ 1) + P₄ 0 * (P₁ 1 - P₃ 1)) * e₂
+      + (P₁ 0 * (P₂ 1 - P₄ 1) - P₂ 0 * (P₁ 1 - P₄ 1) + P₄ 0 * (P₁ 1 - P₂ 1)) * e₃
+  have h4 : (P₄ 0 - O 0) ^ 2 + (P₄ 1 - O 1) ^ 2 = r ^ 2 := by
+    rcases mul_eq_zero.mp key with h | h
+    · linarith
+    · exact absurd h hdc
+  have hsq : ‖P₄ - O‖ ^ 2 = r ^ 2 := by
+    rw [norm_sub_sq_coord]
+    exact h4
+  exact (pow_left_inj₀ (norm_nonneg _) hr (by norm_num : (2 : ℕ) ≠ 0)).mp hsq
+
+/-! ## Part 12: Main theorem (S18 ACT) -/
+
+/-- **Concyclicity criterion.** For `P₁, P₂, P₃` non-collinear, the four
+points `P₁, P₂, P₃, P₄` have vanishing concyclicity determinant iff they lie
+on a common circle of positive radius.
+
+(⟹): the circumcircle of `P₁P₂P₃` exists by `exists_circumcircle`, and the
+cofactor decomposition forces `P₄` onto it (`fourth_point_on_circle`).
+(⟸): `concyclic_implies_concyclicityDet_zero`, which needs no non-degeneracy
+hypothesis at all. -/
+theorem concyclicityDet_eq_zero_iff_concyclic
+    (P₁ P₂ P₃ P₄ : Vec2)
+    (hNonCollinear : ¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)) :
+    concyclicityDet P₁ P₂ P₃ P₄ = 0 ↔
+      ∃ (O : Vec2) (r : ℝ), 0 < r ∧
+        ‖P₁ - O‖ = r ∧ ‖P₂ - O‖ = r ∧ ‖P₃ - O‖ = r ∧ ‖P₄ - O‖ = r := by
+  have hd : collinearityDet P₁ P₂ P₃ ≠ 0 :=
+    collinearityDet_ne_zero_of_not_collinear P₁ P₂ P₃ hNonCollinear
+  constructor
+  · intro hΔ
+    obtain ⟨O, r, hr, h₁, h₂, h₃⟩ := exists_circumcircle P₁ P₂ P₃ hd
+    exact ⟨O, r, hr, h₁, h₂, h₃,
+      fourth_point_on_circle P₁ P₂ P₃ P₄ O r hr.le hd h₁ h₂ h₃ hΔ⟩
+  · rintro ⟨O, r, _, h₁, h₂, h₃, h₄⟩
+    exact concyclic_implies_concyclicityDet_zero P₁ P₂ P₃ P₄ O r h₁ h₂ h₃ h₄
 
 end ProductOfSegmentsOfChordsOQ03
