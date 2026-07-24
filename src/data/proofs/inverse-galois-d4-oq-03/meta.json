@@ -2,7 +2,7 @@
   "id": "inverse-galois-d4-oq-03",
   "title": "Dihedral Galois Group of X⁴ − 2 ≅ D₄ (proved) + General X^n − a Criterion Scaffold",
   "slug": "inverse-galois-d4-oq-03",
-  "description": "The parent's third open question: 'Is there a general criterion for when Gal(X^n − a / ℚ) is dihedral?' Defines `IsDihedralGaloisOfXnMinusA n a` abstractly via Mathlib's Polynomial.SplittingField and DihedralGroup. **The (4, 2) case is now fully proved (0 sorries): `Gal(X⁴ − 2 / ℚ) ≅ D₄`.** The discharge factors through a self-contained group-theoretic classification — *every order-8 subgroup of S₄ is ≅ D₄* — since 8 = 2³ is the full 2-part of |S₄| = 24, so such a subgroup is a Sylow 2-subgroup and all of them are conjugate (Sylow's theorem), hence isomorphic to the explicit dihedral copy ⟨(0 1 2 3),(1 3)⟩ built here. Applied to the faithful action of the Galois group on the four roots (galActionHom, injective, image order 8) it identifies the group exactly. The general-n Schinzel–Velez criterion remains a scaffold, blocked upstream by Capelli's irreducibility theorem (absent from Mathlib v4.26.0).",
+  "description": "The parent's third open question: 'Is there a general criterion for when Gal(X^n − a / ℚ) is dihedral?' Defines `IsDihedralGaloisOfXnMinusA n a` abstractly via Mathlib's Polynomial.SplittingField and DihedralGroup. **The (4, 2) case is now fully proved (0 sorries): `Gal(X⁴ − 2 / ℚ) ≅ D₄`.** The discharge factors through a self-contained group-theoretic classification — *every order-8 subgroup of S₄ is ≅ D₄* — since 8 = 2³ is the full 2-part of |S₄| = 24, so such a subgroup is a Sylow 2-subgroup and all of them are conjugate (Sylow's theorem), hence isomorphic to the explicit dihedral copy ⟨(0 1 2 3),(1 3)⟩ built here. Applied to the faithful action of the Galois group on the four roots (galActionHom, injective, image order 8) it identifies the group exactly. **S5 closes the complete n = 3 stratum for every coefficient: Gal(X³ − a / ℚ) is dihedral iff a is not a rational cube (`dihedral_galois_xPow3_iff`)** — the first general-coefficient instance of the criterion the open question asks for. Forward direction: the odd-degree half of Capelli's theorem landed in Mathlib v4.31 (`X_pow_sub_C_irreducible_of_prime`), and an irreducible rational cubic has exactly one real root, so Mathlib's Abel–Ruffini engine (`galActionHom_bijective_of_prime_degree'`) forces Gal ≅ S₃, identified with D₃ by a decide-checked triangle representation. Converse: a rational cube gives a rational root fixed by every automorphism, so the faithful Galois action permutes only the ≤ 2 remaining roots and |Gal| ≤ 2 < 4 ≤ |D_m|. Even-n strata remain blocked on the even half of Capelli (the a ∉ −4K⁴ branch, absent from Mathlib v4.31).",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Inverse_Galois_problem",
@@ -21,12 +21,12 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 363,
+    "lineCount": 625,
     "assumptions": "0 axioms, 0 sorries — fully machine-verified (no `native_decide`; the finite homomorphism/injectivity checks on `dihedralFourToPerm` use ordinary kernel `decide`). `dihedral_galois_xPow4_sub_2 : IsDihedralGaloisOfXnMinusA 4 2` is discharged via the new self-contained group-theoretic lemma `order_eight_iso_dihedralFour` (any order-8 subgroup of S₄ is ≅ DihedralGroup 4, by Sylow.ofCard + MulAction.exists_smul_eq conjugacy + conjugation MulEquiv), transported by `order_eight_iso_dihedralFour_of_card` and applied to `Polynomial.Gal.galActionHom` on the four roots (|Gal| = 8 from the parent's x4_sub_2_gal_card). The only remaining open content is the *general-n* Schinzel–Velez predicate (`schinzel_velez_characterization_exists` is a vacuous existential), blocked by Capelli's irreducibility theorem upstream. Imports: Mathlib FieldTheory.Galois.Basic, GroupTheory.Sylow, GroupTheory.SpecificGroups.Dihedral, GroupTheory.Perm.Fin, Data.Nat.Factorization.Basic, Data.Fintype.EquivFin, Algebra.Group.End, Algebra.Polynomial.{Basic,AlgebraMap}, Proofs.InverseGaloisD4.",
     "mathlib_version": "4.31.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 14,
-    "definitionCount": 5,
+    "theoremCount": 21,
+    "definitionCount": 9,
     "originalContributions": [
       "rho: the 4-cycle (0 1 2 3) on Fin 4 as a product of adjacent transpositions — the rotation generator of the explicit D₄ ≤ S₄.",
       "dihedralFourToPerm: explicit injective group homomorphism DihedralGroup 4 →* Equiv.Perm (Fin 4) realising D₄ as the square's symmetry group ⟨(0 1 2 3),(1 3)⟩; homomorphism and injectivity discharged by kernel `decide`.",
@@ -185,7 +185,7 @@
     "namespace": "InverseGaloisD4OQ03",
     "lineCount": 363,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 21,
     "definitionCount": 5,
     "path": "Proofs/InverseGaloisD4OQ03.lean",
     "sorries": 0
