@@ -3605,6 +3605,10 @@ theorem index_four_floor_sixtyfour_octave :
         hErdos_onehundred, hErdos_onehundredfour, hErdos_onehundredeight,
         hErdos_onehundredtwelve, hErdos_onetwenty, hErdos_onetwentysix]
 
+-- The engine decides below search 2^10–2^12 subset spaces; the default 200000-
+-- heartbeat budget is insufficient for their elaboration, so raise it for the
+-- remainder of the file (kernel evaluation is unaffected and deterministic).
+set_option maxHeartbeats 1600000
 /-! ### The record-setter at `t = 9`: the powers-of-two pattern BREAKS at `348`
 
 Every previous rung extended the record-setter sequence `2, 4, 8, 16, 32, 64,
