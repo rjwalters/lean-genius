@@ -55,12 +55,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Statement and Counting Function",
+      "id": "problem-statement",
+      "title": "Statement: From Infinitude to a Counting Bound",
       "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring stating the target bound #{n ≤ N : odd, abundant} ≥ N/1890 and its reading as positive lower density ≥ 1/1890, derived from the witness spacing 2·945 = 1890. Notes the bound is not sharp (the family 945·(2k+1) misses odd abundant numbers not divisible by 945) and that the proof rests only on the parent's odd_abundant_945_mul and odd_mul_succ_injective, axiom-free throughout.",
+      "mathContext": "The witness spacing 2·945 = 1890 fixes the density constant; the target is #{n ≤ N : odd, abundant} ≥ N/1890."
+    },
+    {
+      "id": "counting-function-def",
+      "title": "Setup and the Counting Function",
+      "startLine": 28,
       "endLine": 43,
-      "summary": "Module docstring stating the target bound #{n ≤ N : odd, abundant} ≥ N/1890 and its reading as positive lower density ≥ 1/1890. Imports Mathlib and Proofs.AbundantOddInfiniteOQ03, installs Classical.propDecidable as a local instance (matching the base files) so Finset.filter may range over 'Odd n ∧ n.Abundant', and defines the (noncomputable) counting function oddAbundantCount N.",
-      "mathContext": "The witness spacing 2·945 = 1890 fixes the density constant; oddAbundantCount N = #{n ∈ [1,N] : Odd n ∧ Nat.Abundant n} is the object to be bounded below."
+      "summary": "Imports Mathlib and Proofs.AbundantOddInfiniteOQ03, installs Classical.propDecidable as a local instance (matching the base files) so Finset.filter may range over 'Odd n ∧ n.Abundant', and defines the (noncomputable) counting function oddAbundantCount N.",
+      "mathContext": "oddAbundantCount N = #{n ∈ [1,N] : Odd n ∧ Nat.Abundant n} is the object to be bounded below."
     },
     {
       "id": "core-estimate",
