@@ -101,17 +101,25 @@
       "mathContext": "$B_6 = 1/42$ and $B_8 = -1/30$, computed from $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$; Mathlib packages only $B_2, B_4$."
     },
     {
-      "id": "zeta-eight",
-      "title": "The Value ζ(8) = π⁸/9450",
+      "id": "zeta-eight-real",
+      "title": "The Real Value ∑' 1/n⁸ = π⁸/9450",
       "startLine": 63,
-      "endLine": 88,
-      "summary": "hasSum_one_div_nat_pow_eight (HasSum form), tsum_one_div_nat_pow_eight (the headline tsum value ∑' n, 1/n⁸ = π⁸/9450), and riemannZeta_eight_eq (the riemannZeta 8 value over ℂ).",
-      "mathContext": "$\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$ and $\\zeta(8) = \\pi^8/9450$, from Mathlib's `hasSum_zeta_nat` and `riemannZeta_two_mul_nat` at k = 4."
+      "endLine": 74,
+      "summary": "hasSum_one_div_nat_pow_eight (HasSum form, the k=4 instance of hasSum_zeta_nat) and tsum_one_div_nat_pow_eight (the headline real tsum value ∑' n, 1/n⁸ = π⁸/9450).",
+      "mathContext": "$\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$, from Mathlib's `hasSum_zeta_nat` at k = 4."
+    },
+    {
+      "id": "zeta-eight-complex",
+      "title": "The Complex Value riemannZeta 8 = π⁸/9450",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "riemannZeta_eight_eq transports the same k=4 Bernoulli computation through Mathlib's riemannZeta_two_mul_nat to give the analytically-continued riemannZeta 8 over ℂ, independently of the real tsum route.",
+      "mathContext": "$\\zeta(8) = \\pi^8/9450$ as a value of the analytically-continued Riemann zeta function, via `riemannZeta_two_mul_nat` at k = 4."
     },
     {
       "id": "ratio",
       "title": "Euler's π-free Ratio ζ(8)/ζ(2)⁴ = 24/175",
-      "startLine": 89,
+      "startLine": 86,
       "endLine": 98,
       "summary": "tsum_eight_div_tsum_two_pow_four divides ζ(8) by ζ(2)⁴, cancelling π to leave the rational 24/175.",
       "mathContext": "$\\zeta(8)/\\zeta(2)^4 = (\\pi^8/9450)/(\\pi^2/6)^4 = (\\pi^8/9450)/(\\pi^8/1296) = 1296/9450 = 24/175$."
