@@ -52,7 +52,7 @@
       "startLine": 60,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Positivity of the Three Binomials",
     "content": "Three one-line helpers establishing C(n+m+2, m+2), C(n+m+1, m+1) and C(n+m+2, m+1) are all positive (each C(a, b) > 0 since a >= b). Positivity is needed to invert the binomials as real numbers and to justify the field_simp / division steps in the telescoping identity.",
     "mathContext": "$\\binom{a}{b} > 0 \\iff a \\ge b$; here all three indices satisfy $a \\ge b$.",
@@ -72,7 +72,7 @@
       "startLine": 73,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Two Absorption Identities (R1, R2)",
     "content": "The arithmetic engine of the telescoping, stated as natural-number equalities. R1: (n+m+2)·C(n+m+1, m+1) = (m+2)·C(n+m+2, m+2), from Nat.add_one_mul_choose_eq. R2: (n+1)·C(n+m+2, m+1) = (m+2)·C(n+m+2, m+2), from Nat.choose_succ_right_eq. Both re-express the same target binomial C(n+m+2, m+2) times (m+2), so dividing them yields the difference of reciprocals used in the telescoping.",
     "mathContext": "$(n+m+2)\\binom{n+m+1}{m+1}=(m+2)\\binom{n+m+2}{m+2}$ and $(n+1)\\binom{n+m+2}{m+1}=(m+2)\\binom{n+m+2}{m+2}$.",
@@ -138,7 +138,7 @@
       "startLine": 175,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Binomial Lower Bound C(N+m+1, m+1) ≥ N+1",
     "content": "A clean induction on N (using Pascal's rule Nat.choose_succ_succ' and C(K+m+1, m) >= 1) showing the relevant binomial grows at least linearly. This is exactly the estimate needed to squeeze the tail 1/C(N+m+1, m+1) below 1/(N+1), forcing G(N) -> 0.",
     "mathContext": "$\\binom{N+m+1}{m+1} \\ge N+1$, hence $\\binom{N+m+1}{m+1}^{-1} \\le \\frac{1}{N+1} \\to 0$.",
@@ -182,7 +182,7 @@
       "startLine": 217,
       "endLine": 240
     },
-    "type": "main-result",
+    "type": "theorem",
     "title": "Main Theorem: HasSum = (m+2)/(m+1)",
     "content": "Assembles the pieces: nonnegativity lets HasSum reduce to the limit of partial sums (hasSum_iff_tendsto_nat_of_nonneg), the partial sums equal (m+2)/(m+1) - G(N), and G(N) -> 0, so the series converges to (m+2)/(m+1) = d/(d-1). The companion simplicial_reciprocals_tsum restates this in tsum form. This is the general-depth answer to the parent's open question.",
     "mathContext": "$\\mathrm{HasSum}\\ \\big(n \\mapsto \\binom{n+d}{d}^{-1}\\big)\\ \\frac{d}{d-1}$, i.e. $\\sum_{n\\ge 1}\\binom{n+d-1}{d}^{-1} = \\frac{d}{d-1}$.",
@@ -205,7 +205,7 @@
       "startLine": 246,
       "endLine": 261
     },
-    "type": "context",
+    "type": "concept",
     "title": "Classical Special Cases Recovered",
     "content": "Instantiating m = 0 recovers the classical triangular-reciprocal sum ∑ 1/C(n+2,2) = 2, and m = 1 recovers the parent's tetrahedral sum ∑ 1/C(n+3,3) = 3/2. A final example checks the summand's first term 1/C(m+2, m+2) = 1 at every depth. These confirm the general theorem specializes correctly to the known cases.",
     "mathContext": "$m=0$: $\\sum 1/\\binom{n+2}{2} = 2$; $\\ m=1$: $\\sum 1/\\binom{n+3}{3} = 3/2$; first term $=1$.",

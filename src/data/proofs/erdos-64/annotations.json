@@ -426,7 +426,7 @@
       "startLine": 355,
       "endLine": 546
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Longest-Path Trapped-Neighbours Argument",
     "content": "`hasMinDegree_three_exists_even_cycle` is machine-checked and axiom-free: it takes a path $p$ of maximum length in $G$, starting at $v_0$. Maximality traps every neighbour of $v_0$ at a distinct positive index along $p$ (otherwise $p$ could be extended). With $\\delta(G) \\ge 3$, at least three such indices exist; let $a < b$ be the two largest. Closing the prefix of $p$ at index $a$ back through the edge to $v_0$ gives a cycle of length $a+1$; closing at $b$ gives length $b+1$; and the segment of $p$ strictly between indices $a$ and $b$, closed through $v_0$ via both endpoint edges, gives a third cycle of length $b-a+2$. These three lengths sum to $2b+4$, which is even, so they cannot all be odd — one of the three cycles is even.",
     "mathContext": "On a maximum-length path $p$ with start $v_0$, every neighbour $w$ of $v_0$ satisfies $w \\in p.\\mathrm{support}$ (else $\\mathrm{cons}\\,w\\,p$ is a longer path), so the set $T$ of neighbour indices $\\mathrm{idx}(w) = |p.\\mathrm{takeUntil}\\,w|$ has $|T| \\geq 3$ and every element $\\geq 1$. Taking $b = \\max T$ and $a = \\max(T \\setminus \\{b\\})$ gives $2 \\leq a < b$. Three explicit cycles of lengths $a+1$, $b+1$, $b-a+2$ then exist (via `Walk.cons` closures), and $(a+1)+(b+1)+(b-a+2) = 2b+4$ is even, forcing at least one summand even.",
@@ -472,7 +472,7 @@
       "startLine": 578,
       "endLine": 673
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Dirac-Type Rung: Cycle Length ≥ d + 1",
     "content": "`hasMinDegree_exists_cycle_length_ge` is machine-checked and axiom-free: reusing the trapped-neighbour set-up from the even-cycle argument, if $\\delta(G) \\ge d$ (with $d \\ge 2$) then the $\\ge d$ neighbours of a maximum-length path's start vertex $v_0$ occupy $\\ge d$ distinct positive indices. Since $d$ distinct positive integers cannot all be less than $d$, the largest index $b$ satisfies $b \\geq d$; closing the path's prefix at $b$ back through the edge to $v_0$ yields an explicit cycle of length $b+1 \\geq d+1$. This is the classical quantitative rung underlying Dirac-type results, proved here directly rather than via Dirac's Hamiltonicity theorem (which needs $\\delta \\geq n/2$, far stronger than this hypothesis).",
     "mathContext": "$d \\geq 2$, $\\delta(G) \\geq d$: the neighbour-index set $T$ (as in the parity argument) satisfies $|T| \\geq d$ and $T \\subseteq \\mathrm{Icc}\\,1\\,b$ where $b = \\max T$, so $d \\leq |\\mathrm{Icc}\\,1\\,b| = b$ (`Finset.card_le_card`). Closing $p$'s prefix of length $b$ through $v_0$'s edge to the neighbour at index $b$ gives a cycle of length $b + 1 \\geq d + 1$.",

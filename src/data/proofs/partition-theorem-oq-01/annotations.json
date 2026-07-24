@@ -190,7 +190,7 @@
       "startLine": 223,
       "endLine": 246
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Corrected Schur Gap Implies the Simplified Gap Condition",
     "content": "`schurGapFullPartitions_subset_schurGapPartitions`: the corrected gap-$\\geq 3$-or-$4$ predicate implies the simplified uniform gap-$\\geq 3$ predicate, since $4 \\geq 3$ in the mod-3-exception case. The proof case-splits on whether either part is divisible by 3 and closes both branches with `omega`. This connects the mathematically-correct `schurGapFullPartitions` (used from Part V-B onward) back to the original `schurGapPartitions` so earlier lemmas about the latter still apply to the former.",
     "mathContext": "$\\mathrm{hasSchurGapFull}(l) \\Rightarrow \\mathrm{hasMinGap}(l,3)$, hence $\\mathrm{schurGapFullPartitions}(n) \\subseteq \\mathrm{schurGapPartitions}(n)$",
@@ -314,7 +314,7 @@
       "startLine": 304,
       "endLine": 364
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Gap Monotonicity and the Schur-to-RR1 Containment",
     "content": "Proves `hasMinGap_mono` (a list with gap $d$ also has any smaller gap $d' \\le d$), its consequences `hasMinGap_ge_one_pairwise_gt`/`hasMinGap_ge_one_nodup` (gap $\\geq 1$ already forces strict ordering and hence Nodup), then `schur_gap_subset_rr1_gap` (gap $\\geq 3$ implies gap $\\geq 2$ via monotonicity with $3\\geq 2$), `schur_gap_implies_distinct` (composing with `rr1_gap_implies_distinct`), and `schur_nodup_redundant` (the explicit `Nodup` conjunct in `schurGapPartitions`'s definition is provably redundant once gap $\\geq 3$ holds, since $3 \\geq 1$).",
     "mathContext": "$d' \\leq d \\wedge \\mathrm{hasMinGap}(l,d) \\Rightarrow \\mathrm{hasMinGap}(l,d')$; $\\mathrm{SchurGap}(n) \\subseteq \\mathrm{RR1Gap}(n)$",
@@ -336,7 +336,7 @@
       "startLine": 367,
       "endLine": 414
     },
-    "type": "context",
+    "type": "concept",
     "title": "Type-Checking Summary and the Full Containment Hierarchy",
     "content": "A `#check`-only section (no new proofs) that catalogs the state of the formalization: 6 partition-set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and the proved structural theorems, all with 0 sorries. It records the complete containment hierarchy established so far: $\\mathrm{SchurGap} \\subseteq \\mathrm{RR2Gap} \\subseteq \\mathrm{RR1Gap} \\subseteq \\mathcal{D} \\subseteq \\mathcal{P}$, serving as a checkpoint before the file pivots to decidable reformulations (Part IX) needed for `native_decide`.",
     "mathContext": "$\\mathrm{SchurGap}(n) \\subseteq \\mathrm{RR2Gap}(n) \\subseteq \\mathrm{RR1Gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$",
@@ -357,7 +357,7 @@
       "startLine": 415,
       "endLine": 466
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Decidable Reformulation via Direct Pairwise Separation",
     "content": "The noncomputable definitions rely on `Multiset.sort`, which blocks `native_decide`. `PartitionDecidable` reformulates each set directly on the multiset: 'sorted list has gap $\\geq d$' becomes 'multiset is `Nodup` and every pair of distinct elements is separated by $\\geq d$' — mathematically equivalent (Part XXI proves the bridge) but avoiding sorting entirely, so Lean can evaluate the predicate and `native_decide` becomes available. Defines decidable `rr1Gap`, `rr1Mod5`, `rr2Gap`, `rr2Mod5`, `schurGap`, `schurMod`.",
     "mathContext": "$\\mathrm{Nodup}(p) \\wedge \\forall a\\neq b \\in p,\\, a+d\\leq b \\vee b+d \\leq a$",
@@ -442,7 +442,7 @@
       "startLine": 718,
       "endLine": 922
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Corrected Schur Set and the hasMinGap/Decidable-Gap Bridge",
     "content": "Introduces `schurGapFull` (the corrected, mod-3-aware gap set) with its own structural theorems: `schurGapFull_subset_schurGap`, `schurGapFull_implies_distinct`, cardinality bounds against `schurGap`/`rr1Gap`, and `schurGapFull_ne_schurGap_9` (an explicit witness at $n=9$ separating the corrected and naive Schur sets — the same value that broke the removed axiom). Then proves the two-way equivalence between the recursive `hasMinGap` predicate and the direct pairwise-separation predicate used in `PartitionDecidable`: `hasMinGap_implies_decidable_gap` and `decidable_gap_sorted_implies_hasMinGap`.",
     "mathContext": "$\\mathrm{schurGapFull}(n) \\neq \\mathrm{schurGap}(n)$ at $n=9$ (explicit witness)",
@@ -463,7 +463,7 @@
       "startLine": 923,
       "endLine": 1058
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Decidable ↔ Noncomputable Bridge Theorems (RR1 Side)",
     "content": "Proves the decidable `PartitionDecidable` predicates agree exactly with the earlier `Multiset.sort`-based ones: `rr1Gap_eq_rr1GapPartitions`, `rr1Mod5_eq_rr1Mod5Partitions`, `rr2Mod5_eq_rr2Mod5Partitions`. Combined with these set-equalities, the axiomatized `rogers_ramanujan_first` transports directly to a decidable-predicate restatement, `rogers_ramanujan_first_decidable` — giving the same identity in the form that `native_decide` can check instance-by-instance.",
     "mathContext": "$\\mathrm{rr1Gap}(n) = \\mathrm{rr1GapPartitions}(n)$ as `Finset`s (extensional equality)",
@@ -484,7 +484,7 @@
       "startLine": 1059,
       "endLine": 1426
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Completing the Decidable ↔ Noncomputable Dictionary",
     "content": "Finishes the bridge for the remaining sets: `rr2Gap_eq_rr2GapPartitions`, `schurGapFull_eq_schurGapFullPartitions`, `schurMod_eq_schurModPartitions` — the longest bridge proofs in the file, since they must carefully transport `Multiset.sort`/`List.Pairwise` facts across the sort. Derives the fully decidable identity restatements `rogers_ramanujan_second_decidable` and `schur_partition_identity_corrected_decidable`, completing decidable forms of all three axiomatized identities.",
     "mathContext": "$\\mathrm{schurGapFull}(n) = \\mathrm{schurGapFullPartitions}(n)$; decidable restatement of the corrected Schur identity",
@@ -548,7 +548,7 @@
       "startLine": 2162,
       "endLine": 2476
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Generating Functions with Repetition and Verification to n=15",
     "content": "Extends `native_decide` verification to $n=13,14,15$, then develops the generating-function analogue for partitions WITH repetition (needed for `rr1Mod`/`rr2Mod`, whose parts may repeat, unlike the distinct-part sets of Part XXX): `geomPow` ($=\\sum_j X^{jk}$, geometric series in a single part size $k$) with a telescoping identity `one_sub_X_pow_mul_geomPow` ($(1-X^k)\\cdot\\mathrm{geomPow}(k) = 1$), the product `partGF` over allowed part sizes, and `partitionsFrom` (multisets of allowed sizes summing to $n$), connecting it to `rr1Mod5`/`rr2Mod5` via `_eq_partitionsFrom` lemmas.",
     "mathContext": "$\\mathrm{geomPow}(k) = \\sum_{j\\geq0} X^{jk} = \\dfrac{1}{1-X^k}$ (formal power series)",
@@ -569,7 +569,7 @@
       "startLine": 2477,
       "endLine": 2863
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bounded Schur Counting Functions and the Unrestricted Generating Series",
     "content": "Defines `schurGapBounded`/`schurModBounded` (counts restricted to parts $\\leq$ some bound) with monotonicity and a mod-3 split/decomposition (`schurGapBounded_split`, `schurModBounded_div3`), plus the recurrences `schurGapRec`/`schurModRec` these bounded counts satisfy. Introduces the fully unrestricted partition generating series `geomSeries` ($=1/(1-X^k)$ over ALL $k$, not just an allowed subset) with its own coefficient/constant-term lemmas, feeding `partGF'`, `rr1ModGFUnrestricted`, `rr2ModGFUnrestricted`.",
     "mathContext": "$\\mathrm{geomSeries}(k) = \\dfrac{1}{1-X^k}$; recurrence $\\mathrm{schurModRec}(n) = \\mathrm{schurModBounded}(n) - \\mathrm{schurModBounded}_{n\\equiv0(3)}(n)$",
@@ -590,7 +590,7 @@
       "startLine": 2864,
       "endLine": 3139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convolution Identities and the partGF Coefficient Recursion",
     "content": "Establishes the functional equation `geomSeries_functional_eq` ($(1-X^k)\\cdot\\mathrm{geomSeries}(k)=1$ restated for the unrestricted series) and the convolution lemmas `geomSeries_mul_coeff_rec`/`geomSeries_mul_coeff_sum` describing how coefficients of a product power series combine. Uses these to derive the `partGF` coefficient recursion (`partGF_coeff_empty`, `partGF_insert'`, `partGF_coeff_insert`) — the standard 'include or exclude the next part size' recursion for partition-counting generating functions — and bridges it back to `subsetsWithSum` cardinalities.",
     "mathContext": "$[\\!X^n]\\,(fg) = \\sum_{i=0}^n [\\!X^i]f \\cdot [\\!X^{n-i}]g$ (Cauchy product coefficient formula)",

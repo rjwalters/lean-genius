@@ -78,7 +78,7 @@
       "startLine": 85,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Semi-stability of Frey Curves",
     "content": "An elliptic curve is **semi-stable** if at every prime of bad reduction, the reduction is multiplicative (nodes, not cusps). Frey curves are semi-stable, which is crucial because Wiles' modularity theorem applies specifically to semi-stable curves.",
     "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
@@ -197,7 +197,7 @@
       "startLine": 158,
       "endLine": 170
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",

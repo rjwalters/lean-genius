@@ -64,7 +64,7 @@
     "id": "fodoroq03-ann-trace",
     "proofId": "fodor-pressing-down-oq-03",
     "range": { "startLine": 96, "endLine": 110 },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Trace containment, reflection points, monotonicity",
     "content": "Three corollaries of the base case and closedness. `trace_subset : Trace C o ⊆ C` — a club contains its whole trace, because every accumulation point below o already lies in C (IsClubBelow.mem_of_isAcc); reflection here happens at members of C, not at external ordinals. `reflects_of_mem_trace : α ∈ Trace C o → Reflects C α` — C reflects at every point of its trace, obtained by feeding clubReflects the bound α < o (weakened to α ≤ o). `Trace_mono : C ⊆ D → Trace C o ⊆ Trace D o` — the trace grows with the set, since accumulation points are monotone (IsAcc.mono).",
     "mathContext": "$\\mathrm{Trace}(C,o) \\subseteq C$; $\\alpha \\in \\mathrm{Trace}(C,o) \\Rightarrow \\mathrm{Reflects}(C,\\alpha)$; $C \\subseteq D \\Rightarrow \\mathrm{Trace}(C,o) \\subseteq \\mathrm{Trace}(D,o)$.",

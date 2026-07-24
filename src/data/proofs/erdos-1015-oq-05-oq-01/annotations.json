@@ -52,7 +52,7 @@
       "startLine": 100,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging Index-Disjointness to List.Pairwise Disjoint",
     "content": "areDisjoint_pairwise converts the CliquePartition's index-based disjointness predicate — `areDisjoint sets`, which asserts `Disjoint (sets.get i) (sets.get j)` for all i ≠ j — into the structural `List.Pairwise Disjoint` that the fold induction of §2 consumes. The proof rewrites with `List.pairwise_iff_get`, which characterizes `Pairwise R` as `R (get i) (get j)` for every i < j, then discharges the goal by supplying the strict inequality's `i ≠ j` (via `Nat.ne_of_lt`) to the index-based hypothesis. The i < j direction suffices because Disjoint is symmetric, so Pairwise need only be checked in one order.",
     "mathContext": "`List.pairwise_iff_get : l.Pairwise R ↔ ∀ i j, i < j → R (l.get i) (l.get j)`. The index predicate quantifies over all i ≠ j; restricting to i < j loses nothing here since the underlying relation Disjoint is symmetric.",
@@ -75,7 +75,7 @@
       "startLine": 112,
       "endLine": 138
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Fold-Cardinality Induction",
     "content": "card_foldl_union_aux is the technical core: folding ∪ over a list of pairwise-disjoint Finsets, each of card t, starting from an init disjoint from all of them, produces exactly init.card + (length)·t. The proof inducts on the list with the init GENERALIZED, so the cons step can recurse with init ⊔ a. It maintains two invariants across the step: (i) init ⊔ a is disjoint from every tail element (via Finset.disjoint_union_left, combining hinit and the Pairwise head), and (ii) card (init ⊔ a) = init.card + t (via Finset.card_union_of_disjoint). `ring` closes the arithmetic.",
     "mathContext": "Generalizing the accumulator is essential: foldl threads init ⊔ a into the recursive call, so a fixed-init statement would not carry through the induction. The equal-size and disjointness hypotheses are exactly what upgrades the trivial bound card(⋃) ≤ Σcard to an equality.",
@@ -99,7 +99,7 @@
       "startLine": 139,
       "endLine": 160
     },
-    "type": "result",
+    "type": "theorem",
     "title": "Covered Vertices = (Number of Cliques)·t",
     "content": "coveredVertices_card instantiates the fold lemma at init=∅ to prove the exact count: a clique partition covers precisely cliques.length · t vertices. This needs all_size_t (each clique has card t, extracted via List.mem_iff_get) and the areDisjoint ⟹ Pairwise bridge. The immediate corollary coveredVertices_card_mod gives covered.card % t = 0 via Nat.mul_mod_left.",
     "mathContext": "Because the cliques are disjoint and equal-sized, the union's cardinality is the sum k·t, not merely bounded by it. This is the exact quantitative fact the residue argument rests on.",
@@ -122,7 +122,7 @@
       "startLine": 161,
       "endLine": 186
     },
-    "type": "result",
+    "type": "theorem",
     "title": "Leftover ≡ n (mod t), Independent of the Coloring",
     "content": "Since coveredVertices ⊆ univ, covered.card ≤ n (coveredVertices_card_le). Combining with the exact count gives leftover = n − (length)·t (leftover_eq) and (n − leftover) % t = 0 (leftover_mod). Equivalently leftover ≡ n (mod t): the leftover residue is determined by n alone, no matter which 2-coloring is chosen. This is a genuine, coloring-independent constraint that any exact value of f(t) must obey.",
     "mathContext": "coveredVertices_card_le uses Finset.card_le_univ and Fintype.card_fin. The residue statement is the elementary reason leftover counts occupy fixed congruence classes — the structural skeleton underneath Moon's and BES's exact determinations.",
@@ -144,7 +144,7 @@
       "startLine": 187,
       "endLine": 223
     },
-    "type": "result",
+    "type": "theorem",
     "title": "Triangles: Leftover ≡ n (mod 3) and No Perfect Packing when 3 ∤ n",
     "content": "Specializing to t=3 (Moon's setting): triangle_covered_mod3 and triangle_leftover_mod3 state that every triangle partition covers a multiple of 3 vertices and leaves a count congruent to n mod 3. triangle_leftover_pos_of_mod3 then shows that when n ≡ 1 (mod 3) the leftover is strictly positive — a perfect triangle packing is impossible. These are the exact residue obstructions f(3)=4 must be consistent with; they do not by themselves pin the value 4, which needs Moon's extremal case analysis.",
     "mathContext": "The value f(3)=4 exceeds the crude mod-3 lower bound (which only forces leftover ∈ {0,1,2} depending on n mod 3). The extra content — that the worst case is 4, not smaller — is precisely the part beyond current Mathlib and is left as the entry's open question.",

@@ -57,7 +57,7 @@
       "startLine": 79,
       "endLine": 129
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Master Bound by Strong Induction",
     "content": "`cost_le` proves $T(n) \\le (\\lfloor\\log_2 n\\rfloor + 1)\\cdot M(n)$ for **any** $T$ satisfying the recurrence, by strong induction on $n$. The engine is the identity $\\log_2 n = \\log_2\\lfloor n/2\\rfloor + 1$ (`Nat.log_of_one_lt_of_le` at $b=2$): the depth factor decreases by exactly one per halving. In the step, the recurrence gives $T(n)\\le 2T(\\lfloor n/2\\rfloor)+M(n)$; the induction hypothesis bounds $T(\\lfloor n/2\\rfloor)$; and the crucial inequality\n\n$$(\\log_2\\lfloor n/2\\rfloor + 1)\\cdot\\bigl(2\\,M(\\lfloor n/2\\rfloor)\\bigr) \\le (\\log_2\\lfloor n/2\\rfloor + 1)\\cdot M(n)$$\n\nis just halving-regularity scaled by the (nonnegative) depth, discharged by `gcongr`. Rewriting the depth recurrence closes the `calc`.",
     "mathContext": "Why superlinearity matters: iterating $2M(\\lfloor n/2\\rfloor)\\le M(n)$ makes each of the $\\lfloor\\log_2 n\\rfloor + 1$ recursion levels contribute at most $M(n)$, so the total telescopes to depth·$M(n)$. Without the hypothesis the sum of the level costs can exceed $O(M(n)\\log n)$. Strong induction (`Nat.strong_induction_on`) is required because the recursion descends to $n/2$, not $n-1$.",

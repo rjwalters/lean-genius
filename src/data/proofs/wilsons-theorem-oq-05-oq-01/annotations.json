@@ -39,7 +39,7 @@
     "id": "wilson-tri-ann-prime",
     "proofId": "wilsons-theorem-oq-05-oq-01",
     "range": { "startLine": 124, "endLine": 133 },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Prime Branch, Transported from Mathlib's ZMod Wilson",
     "content": "factorial_pred_mod_of_prime re-derives the classical prime side self-contained: for prime n, (n−1)! % n = n−1. The bridge is the cast identity ((n−1 : ℕ) : ZMod n) = −1 (assembled from Nat.cast_sub, ZMod.natCast_self, zero_sub), which turns Mathlib's ZMod-valued Wilson biconditional Nat.prime_iff_fac_equiv_neg_one into a natural-number congruence (n−1)! ≡ n−1 [MOD n]. Because n−1 < n, Nat.mod_eq_of_lt collapses that congruence to the exact remainder n−1. This keeps the entry independent of the parent wilsons-theorem-oq-05 while still reusing Mathlib's hard direction of Wilson.",
     "mathContext": "For prime $n$: $((n-1:\\mathbb{N}):\\mathbb{Z}/n)=-1$, so $(n-1)!\\equiv -1\\equiv n-1 \\pmod n$; and $n-1<n$ gives $(n-1)!\\bmod n = n-1$.",

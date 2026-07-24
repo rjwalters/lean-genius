@@ -30,7 +30,7 @@
       "startLine": 45,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Notation and the Parent Dependency",
     "content": "Three setup lines carry real weight. `open Real MeasureTheory` brings `Real.exp`/`Real.sqrt`/`Real.pi` into scope and, crucially, makes the bare `∫ x : ℝ, ...` default to the volume (Lebesgue) measure — the very measure whose negation-invariance drives the odd-moment vanishing. `open scoped Nat` activates the double-factorial notation `‼`, so `(m - 1)‼` in gaussian_moment parses as the odd/even double factorial that indexes the even moments. And `import Proofs.AreaOfCircleOQ07OQ05OQ01` pulls in the parent's even-moment theorem `gaussian_even_moment`, which the full sequence reuses verbatim on its even branch: this file adds only the odd half and the parity-indexed packaging, standing on the parent's integration-by-parts recursion for the even half.",
     "mathContext": "$(m-1)!! = \\prod_{j\\ge 0,\\, m-1-2j > 0}(m-1-2j)$",

@@ -30,7 +30,7 @@
       "startLine": 67,
       "endLine": 80
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Nilpotency Index ≤ Dimension via the Kernel Chain",
     "content": "nilpotent_pow_finrank_eq_zero proves that a nilpotent endomorphism satisfies φ^(finrank K V) = 0 — the quantitative form of 'nilpotency index ≤ dimension'. The proof is CH-free: if φ^k = 0 then ker(φ^k) = ⊤, and Module.End.ker_pow_le_ker_pow_finrank (the stabilisation of the increasing kernel chain ker φ ⊆ ker φ² ⊆ …) pushes ⊤ into ker(φ^(finrank)); LinearMap.ker_eq_top then converts a full kernel back to the zero map. No characteristic polynomial and no Cayley–Hamilton are used here.",
     "mathContext": "The chain $\\ker\\varphi \\subseteq \\ker\\varphi^2 \\subseteq \\cdots$ is strictly increasing until it stabilises; each strict step adds at least one dimension, so it stabilises by step $n = \\dim V$. Thus $\\ker\\varphi^k = \\top$ for some $k$ forces $\\ker\\varphi^{n} = \\top$, i.e. $\\varphi^{n} = 0$.",
@@ -52,7 +52,7 @@
       "startLine": 85,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Independent Cayley–Hamilton for Nilpotent Operators and Matrices",
     "content": "nilpotent_aeval_charpoly assembles the two ingredients — charpoly = X^n (IsNilpotent.charpoly_eq_X_pow_finrank) and φ^n = 0 (Part I) — into charpoly(φ)(φ) = 0. The matrix track mirrors this: matrix_isNilpotent_pow_card_eq_zero transports φ^n = 0 to M^(card n) = 0 along the algebra equivalence Matrix.toLinAlgEquiv' (nilpotency travels via IsNilpotent.map, vanishing returns via injectivity); matrix_nilpotent_charpoly gets charpoly(M) = X^(card n) from Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent (a nilpotent polynomial over a reduced ring is zero); matrix_nilpotent_aeval_charpoly combines them. Crucially, neither input theorem uses aeval_self_charpoly, so this is a genuinely independent proof on the nilpotent case.",
     "mathContext": "$\\operatorname{charpoly}(N) = X^n$ comes from the reverse polynomial $\\operatorname{charpolyRev}$: for nilpotent $N$, $\\operatorname{charpoly}(N) - X^n$ is a nilpotent element of $K[X]$, hence $0$ since $K[X]$ is reduced. Evaluating: $\\operatorname{charpoly}(N)(N) = N^n = 0$.",
@@ -75,7 +75,7 @@
       "startLine": 128,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Single-Eigenvalue Case by Affine Translation",
     "content": "matrix_single_eigenvalue_charpoly handles the first genuinely non-nilpotent case: if M - λ·I is nilpotent then charpoly(M) = (X - λ)^(card n). The nilpotent case gives charpoly(M - λ·I) = X^n, and Matrix.charpoly_sub_scalar states charpoly(M - λ·I)(X) = charpoly(M)(X + λ); substituting X ↦ X - λ (via the polynomial composition lemmas comp_assoc, add_comp, X_comp, C_comp, pow_comp) recovers charpoly(M) = (X - λ)^n. The translation costs nothing beyond the nilpotent result — it simply relocates the single eigenvalue to 0.",
     "mathContext": "Writing $N = M - \\lambda I$: $\\det(tI - M) = \\det((t-\\lambda)I - N) = \\operatorname{charpoly}(N)(t - \\lambda) = (t-\\lambda)^n$. Formally this is the substitution $X \\mapsto X - \\lambda$ applied to $\\operatorname{charpoly}(N)(X) = \\operatorname{charpoly}(M)(X + \\lambda) = X^n$.",

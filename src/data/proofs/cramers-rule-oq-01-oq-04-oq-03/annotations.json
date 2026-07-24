@@ -79,7 +79,7 @@
       "startLine": 129,
       "endLine": 158
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Termination via Cayley-Hamilton",
     "content": "`flAux_card_eq_aeval` shows the n-th auxiliary matrix equals (aeval M) M.charpoly. The proof rewrites the Horner sum against Polynomial.aeval_eq_sum_range and the identity charpoly_natDegree_eq_dim (degree = card n), then applies Finset.sum_range_reflect: the reflection k ↦ card n − k turns charCoeff M k • M^{card n − k} into charpoly.coeff i • M^i, exactly aeval's expansion. `flAux_card_eq_zero` then closes termination with Matrix.aeval_self_charpoly (Cayley-Hamilton), and `flAux_terminal` reads off the final algorithmic step A·M_{n−1} + cₙ·I = 0 by peeling one layer of the recursion at index (card n − 1)+1.",
     "mathContext": "Cayley-Hamilton states $\\chi_A(A) = 0$. Because $M_n = \\sum_{k=0}^n c_k A^{n-k} = \\chi_A(A)$, the recursion self-terminates: the step that would compute $M_n$ instead certifies $A M_{n-1} + c_n I = 0$. This is why Faddeev-LeVerrier needs exactly $n$ iterations.",

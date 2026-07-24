@@ -216,7 +216,7 @@
       "startLine": 133,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Conditional result via 8p²−1",
     "content": "The core conditional theorem. The hypothesis `infinite_8p_sq_minus_1_primes` (a Bunyakovsky-type assumption, stated as an `axiom`) posits infinitely many primes $p$ with $8p^2-1$ prime. For such $p \\neq 2$, taking $n = 8p^2-1$ gives $n(n+1) = (8p^2-1)\\cdot 8p^2 = 2^3 \\cdot p^2 \\cdot (8p^2-1)^1$, an exponent structure $\\{3,2,1\\}$ of distinct values. Since $p \\mapsto 8p^2-1$ is injective, infinitely many primes yield infinitely many distinct $n$, so `erdos_913_conditional` derives `ErdosProblem913` from the hypothesis.",
     "mathContext": "For prime $p\\neq 2$ with $8p^2-1$ prime: $n(n+1) = 2^3\\cdot p^2\\cdot(8p^2-1)$, exponents $\\{3,2,1\\}$ distinct. Injectivity of $p\\mapsto 8p^2-1$ lifts infinitude of primes to infinitude of witnesses.",
@@ -260,7 +260,7 @@
       "startLine": 269,
       "endLine": 344
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Mersenne-prime route",
     "content": "A second conditional path uses Mersenne primes. For a Mersenne prime $2^k-1$ with $k\\ge 2$, taking $n = 2^k-1$ gives $n(n+1) = (2^k-1)\\cdot 2^k = 2^k\\cdot(2^k-1)^1$, exponents $\\{k,1\\}$ which are distinct for $k\\ge 2$. Since $k\\mapsto 2^k-1$ is injective, infinitely many Mersenne primes would imply Erdős #913 (`erdos_913_conditional_mersenne`). Both the Mersenne infinitude and the $8p^2-1$ infinitude remain open, so the main problem stays conditional; the distinct-exponent set is unconditionally nonempty (witnessed by $n=3$).",
     "mathContext": "For a Mersenne prime $2^k-1$, $k\\ge 2$: $n(n+1) = 2^k\\cdot(2^k-1)$, exponents $\\{k,1\\}$ distinct. Injectivity of $k\\mapsto 2^k-1$ gives the conditional implication.",

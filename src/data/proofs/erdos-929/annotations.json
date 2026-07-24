@@ -299,7 +299,7 @@
       "startLine": 100,
       "endLine": 127
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Upper-density machinery",
     "content": "The threshold is defined via *upper density*, so the file first establishes the order-theoretic plumbing: the density ratio $|S\\cap[0,N)|/(N+1)$ is bounded and cobounded (needed for `limsup` to be well-behaved), and upper density is monotone under inclusion ($A\\subseteq B \\Rightarrow \\overline{d}(A)\\le\\overline{d}(B)$). Monotonicity is the workhorse: positive density of a subset forces positive density of the whole block set.",
     "mathContext": "$\\overline{d}(A) = \\limsup_{N\\to\\infty} \\frac{|A\\cap[0,N)|}{N+1}$; $A\\subseteq B \\Rightarrow \\overline{d}(A) \\le \\overline{d}(B)$; $0 \\le \\frac{|S\\cap[0,N)|}{N+1} \\le 1$.",
@@ -322,7 +322,7 @@
       "startLine": 128,
       "endLine": 226
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Factorial arithmetic-progression construction",
     "content": "The trivial upper bound $S(k)\\le k+1$ is realized constructively. For $n \\equiv 1 \\pmod{(k+1)!}$ each $n+i$ ($1\\le i\\le k$) is divisible by $i+1 \\le k+1$, so the whole arithmetic progression $\\{(k+1)!\\,t + 1\\}$ lies in `smoothBlockSet k (k+1)`. An AP with common difference $M$ contributes $\\ge t+1$ elements in every window, giving it positive upper density; hence `smoothBlockSet k (k+1)` has positive upper density.",
     "mathContext": "If $n \\equiv 1 \\pmod{(k+1)!}$ then $(i+1)\\mid(n+i)$ for $1\\le i\\le k$. The AP $\\{Mt+1\\}$ has upper density $1/M > 0$, so $\\overline{d}(\\mathrm{smoothBlockSet}\\ k\\ (k+1)) > 0$.",

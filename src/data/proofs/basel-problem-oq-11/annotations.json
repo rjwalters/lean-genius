@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 34
     },
-    "type": "context",
+    "type": "concept",
     "title": "Dirichlet η(2) = π²/12 via the Even/Odd Parity Split",
     "content": "The module docstring frames the open question basel-problem-oq-11: formalize the alternating companion of the Basel sum, the Dirichlet eta value η(2) = ∑_{n≥1} (-1)^{n+1}/n² = π²/12. It derives the classical functional relation η(s) = (1 − 2^{1−s})ζ(s), which at s = 2 reads η(2) = (1/2)ζ(2) = π²/12. The proof splits the alternating series into even- and odd-indexed parts via Mathlib's HasSum.even_add_odd: the even part ∑ (-1)^{2k+1}/(2k)² = −(1/4)ζ(2) = −π²/24 (all signs negative), the odd part ∑ (-1)^{2k+2}/(2k+1)² = ∑ 1/(2k+1)² = π²/8 (all signs positive), and −π²/24 + π²/8 = π²/12. The odd-square value π²/8 is itself extracted from hasSum_zeta_two by the same even/odd split. The imports pull in NumberTheory.ZetaValues (the Basel foundation ζ(2) = π²/6); namespace BaselEtaTwo, open Real. Fully verified: 0 sorries, 0 axioms.",
     "mathContext": "\\eta(2) = \\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n^2} = \\underbrace{-\\frac{\\pi^2}{24}}_{\\text{even}} + \\underbrace{\\frac{\\pi^2}{8}}_{\\text{odd}} = \\frac{\\pi^2}{12} = \\tfrac12\\zeta(2)",
@@ -192,7 +192,7 @@
       "startLine": 97,
       "endLine": 114
     },
-    "type": "context",
+    "type": "concept",
     "title": "Result Table: The Four Exported Lemmas",
     "content": "Closing the BaselEtaTwo namespace, the trailing comment tabulates the four public results and their provenance. Two are non-alternating Basel building blocks — hasSum_even_zeta_two (∑ 1/(2k)² = π²/24) and hasSum_odd_zeta_two (∑ 1/(2k+1)² = π²/8) — and two are the target eta value in complementary forms: hasSum_eta_two (the HasSum statement) and tsum_eta_two (the ∑' form for downstream citation). The provenance line records the entire development as a specialization of Mathlib's hasSum_zeta_two (ζ(2) = π²/6) through the HasSum.even_add_odd split, with 0 sorries and 0 axioms. This makes explicit that no new analytic input beyond the Basel value is used — only reindexing, scaling, and sign bookkeeping.",
     "mathContext": "$\\begin{array}{ll}\\text{even Basel} & \\sum 1/(2k)^2 = \\pi^2/24\\\\ \\text{odd Basel} & \\sum 1/(2k+1)^2 = \\pi^2/8\\\\ \\text{eta value} & \\sum (-1)^{n+1}/n^2 = \\pi^2/12\\end{array}$",

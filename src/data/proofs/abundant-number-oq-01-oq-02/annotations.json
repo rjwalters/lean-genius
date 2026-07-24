@@ -88,7 +88,7 @@
       "startLine": 69,
       "endLine": 82
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Two native_decide Computations (Lean.ofReduceBool)",
     "content": "**Where the axiom enters.** `abundant_945`: `Nat.Abundant 945`, unfolded and rewritten through `pdSum_eq` to $945 < \\mathtt{pdSum}\\,945$, closed by `native_decide` (line 73). `check_odd_below`: $\\forall n < 945,\\ \\mathrm{Odd}\\,n \\to \\mathtt{pdSum}\\,n \\le n$, closed by `native_decide` (line 82), with the `Odd n` hypothesis evaluated first so the ~472 even cases short-circuit without computing `pdSum`. `odd_945` ($\\mathrm{Odd}\\,945$) is by ordinary kernel `decide`. These two `native_decide` calls trust the compiler's reduction and so introduce the `Lean.ofReduceBool` axiom — the reason the entry is **axiomatized** ($\\mathtt{meta.axiomCount} = 1$), even though there are 0 literal `axiom` declarations ($\\mathtt{leanFile.axiomCount} = 0$).",
     "mathContext": "`native_decide` compiles the decidable Boolean and certifies its value via `Lean.ofReduceBool`; the ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted, but `Lean.ofReduceBool` is.",

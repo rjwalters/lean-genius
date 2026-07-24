@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 58
     },
-    "type": "context",
+    "type": "concept",
     "title": "The hard half of the LLL is a denominator, and it peels neighbours one at a time",
     "content": "The conditional chain rule factors the numerator of the Erdős–Lovász induction step, $\\mu[(A\\cap B)\\mid C] = \\mu[A\\mid B\\cap C]\\cdot\\mu[B\\mid C]$ (reproved inline here), and the sibling dependency-split entry uses such moves to reduce the bounded dependency-degree Lovász Local Lemma to a single named estimate: the neighbour-block survival lower bound $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$. That lower bound is itself a recursion — it peels the neighbours of $A_k$ off one at a time, each peel costing a factor $(1-x_k)$ — and its per-step engine is a **complement** identity, dual to the product identity. This file supplies that engine over an arbitrary probability measure and abstract events $A,B,C$: the additive peel $\\mu[A\\cap B\\mid C] + \\mu[A^c\\cap B\\mid C] = \\mu[B\\mid C]$, the multiplicative peel $(1-x)\\mu[B\\mid C] \\le \\mu[A^c\\cap B\\mid C]$ under a per-event bound $\\mu[A\\mid B\\cap C]\\le x$, and the $\\prod(1-x_j)$-shaped recursion step. No independence is assumed — this is pure conditional-measure bookkeeping.",
     "mathContext": "Denominator half of the LLL induction step: bound the neighbour survival $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C]$ from below by peeling one neighbour $A_k$ at a time, each peel scaling by $(1-x_k)$.",
@@ -30,7 +30,7 @@
       "startLine": 89,
       "endLine": 102
     },
-    "type": "technical",
+    "type": "concept",
     "title": "Conditionals are finite — the quiet obstruction to peeling",
     "content": "`cond_ne_top`: $\\mu[t\\mid s] \\ne \\infty$ for any measurable conditioning set $s$. This looks trivial but is exactly what the peel needs. Because $\\mathbb{R}_{\\ge 0}^\\infty$ subtraction is truncated and its addition is **not** cancellative, rewriting $\\mu[A^c\\cap B\\mid C] = \\mu[B\\mid C] - \\mu[A\\cap B\\mid C]$ requires $\\mu[A\\cap B\\mid C] \\ne \\infty$. Mathlib only certifies finiteness of `cond` via an `IsProbabilityMeasure` instance that presupposes $\\mu s \\notin \\{0,\\infty\\}$. Here the null case is handled explicitly: `cond_apply` unfolds $\\mu[t\\mid s] = (\\mu s)^{-1}\\mu(s\\cap t)$, and when $\\mu s = 0$ the numerator $\\mu(s\\cap t)\\le\\mu s$ vanishes, giving $0\\ne\\infty$; otherwise $(\\mu s)^{-1}$ and $\\mu(s\\cap t)$ are both finite (`ENNReal.mul_ne_top`). So the peel holds for ANY measurable conditioning set.",
     "mathContext": "μ[t|s] = (μ s)⁻¹ · μ(s ∩ t) ≠ ∞: case split on μ s = 0 (numerator null) vs μ s ≠ 0 (both factors finite).",

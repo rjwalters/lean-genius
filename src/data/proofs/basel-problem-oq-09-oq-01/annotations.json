@@ -27,7 +27,7 @@
     "id": "ann-tsum-forms",
     "proofId": "basel-problem-oq-09-oq-01",
     "range": { "startLine": 108, "endLine": 111 },
-    "type": "technique",
+    "type": "tactic",
     "title": "tsum Companions: From HasSum to an Equation of Values",
     "content": "`tsum_odd_pow` restates the parity split as a plain equation ∑' k, 1/(2k+1)ˢ = (1 − 1/2ˢ)·Z by applying `.tsum_eq` to `hasSum_odd_pow`. This is the pattern repeated throughout the file: each `HasSum`-valued theorem has a `tsum_`-prefixed corollary (`tsum_lambda_two`, `tsum_lambda_four`) giving the value as an ordinary `∑'` identity, plus `summable_lambda_four` and `lambda_four_pos` as convenience corollaries. The `HasSum` form is the stronger primitive (it packages summability *and* the value); `.tsum_eq` projects out just the value once summability is settled, which is the shape most consumers cite.",
     "mathContext": "$\\text{HasSum } f\\ Z \\;\\Rightarrow\\; \\sum' f = Z$ via \\texttt{HasSum.tsum\\_eq}",

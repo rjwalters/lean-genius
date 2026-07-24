@@ -29,7 +29,7 @@
       "startLine": 39,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ambient setup: classical counting filter",
     "content": "Opens the parent namespace AbundantOddInfiniteOQ03 to reuse its witnesses. Nat.Abundant carries no registered Decidable instance, so the counting filter is defined classically (open Classical). This affects only computability, not logical content: #print axioms still lists only the standard foundational axioms (propext, Classical.choice, Quot.sound) and never sorryAx or Lean.ofReduceBool.",
     "mathContext": "Classical decidability of the predicate $\\mathrm{Odd}\\,n\\wedge n.\\mathrm{Abundant}$ is used only to form the Finset.filter.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 58
     },
-    "type": "context",
+    "type": "concept",
     "title": "Scope: the decidable, finitely-searchable core of OQ-05",
     "content": "The module docstring is unusually careful about what is and is not claimed. Erdős #1012's fifth open question asks for the computational complexity of detecting an (n−k)-cycle in a graph with T(n,k)−1 edges — a question whose full answer (a polynomial algorithm, or an NP-hardness reduction) is out of reach of current Mathlib. This file instead pins down the honest computational core the question presupposes: for a fixed finite graph, cycle detection is Decidable (a decision procedure provably exists), it is realised by an explicit finite brute-force search, and that search space has exactly |V|^ℓ candidates. The docstring's explicit 'What This File Does NOT Claim' section stresses that the |V|^ℓ bound is exponential and no hardness result is proved — the file delimits the decidable skeleton on which any future complexity analysis rests. Setup: import Mathlib and the parent Erdos1012Problem, namespace Erdos1012OQ05, open Erdos1012, and a fixed finite decidable-eq vertex type V.",
     "mathContext": "For fixed finite $G$: 'contains an $\\ell$-cycle' is $\\mathrm{Decidable}$, equivalent to a search over $\\{c : \\mathrm{Fin}\\,\\ell \\to V\\}$ of size $|V|^{\\ell}$.",

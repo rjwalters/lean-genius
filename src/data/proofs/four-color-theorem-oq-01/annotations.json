@@ -198,7 +198,7 @@
       "startLine": 80,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Counting lemma: #neighbor-colors ≤ degree",
     "content": "The elementary counting fact underpinning every greedy/Kempe argument: the neighbors of v use at most deg(v) distinct colors, because neighborColors is the image of the neighbor finset under the coloring f, and an image never grows a set (Finset.card_image_le). This is the hypothesis that feeds the degree-based pigeonhole in the next lemma.",
     "mathContext": "$|\\{f(u): u \\sim v\\}| \\le |\\{u : u \\sim v\\}| = \\deg(v)$.",
@@ -291,7 +291,7 @@
       "startLine": 265,
       "endLine": 286
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Heawood obstruction: chains must cross",
     "content": "Formalizes the shape of Heawood's counterexample to Kempe's argument: when both bichromatic chains for the two color pairs are connected, in a planar drawing they are forced to cross (a Jordan-curve-theorem phenomenon), sharing a vertex whose recoloring under the first swap invalidates the second. The Lean statement (heawood_crossing_forced) is a placeholder capturing the logical shape (both-connected ⇒ crossing) with the topological content stated as a hypothesis (paths_in_plane), honestly signaling that the planar-crossing fact is assumed rather than derived here.",
     "mathContext": "Two connected bichromatic chains linking opposite sides of a cycle must share a vertex (Jordan curve theorem), so simultaneous swaps interfere.",
@@ -315,7 +315,7 @@
       "startLine": 288,
       "endLine": 323
     },
-    "type": "context",
+    "type": "concept",
     "title": "Toward a human-readable 4CT: flows and open approaches",
     "content": "Surveys why no case-check-free proof of the Four Color Theorem is known: algebraic reformulations have no reduction; Hadwiger's conjecture for t=5 implies 4CT but its own proof uses 4CT (circular); Tutte's flow–coloring duality reduces 4CT to the nowhere-zero 4-flow theorem for planar graphs, but 4-flow there again follows only from 4CT. The flow_coloring_equivalence statement records the duality reformulation (as k≥2 arithmetic) with the docstring giving the status of Tutte's 6-flow (Seymour 1981) and 5-flow theorems and the still-open 4-flow question.",
     "mathContext": "Planar $k$-colorability $\\Leftrightarrow$ nowhere-zero $k$-flow (Tutte); 6-flow and 5-flow proved, 4-flow $\\Leftrightarrow$ 4CT.",
@@ -338,7 +338,7 @@
       "startLine": 373,
       "endLine": 378
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Minimum counterexample has minimum degree ≥ 4",
     "content": "The first discharging step of the classical reduction: in a minimal non-4-colorable planar graph no vertex has degree ≤ 3, since deleting such a vertex leaves a smaller graph 4-colorable by minimality, and a degree-≤3 vertex sees fewer than 4 colors so the coloring extends (the degree<k free-color lemma). Formally min_counterexample_degree reduces to d < 4 for d ≤ 3; combined with the planar edge bound E ≤ 3V−6 it forces a vertex of degree exactly 4 or 5, the configurations analyzed above.",
     "mathContext": "$\\deg(v)\\le3 < 4 \\Rightarrow$ a free color exists on deletion, so a minimum counterexample has $\\delta \\ge 4$; with $E\\le 3V-6$ some vertex has degree 4 or 5.",

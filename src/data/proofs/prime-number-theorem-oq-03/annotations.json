@@ -97,7 +97,7 @@
       "startLine": 67,
       "endLine": 73
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Identity in Concrete Numbers (N = 4)",
     "content": "Checking the identity on N = 4 makes the double-counting tangible. The von Mangoldt values are Λ(1) = 0, Λ(2) = log 2, Λ(3) = log 3, Λ(4) = log 2 (Λ(m) = log p when m is a power of a prime p, else 0). The floor weights are ⌊4/1⌋ = 4, ⌊4/2⌋ = 2, ⌊4/3⌋ = 1, ⌊4/4⌋ = 1. So the left side is 0·4 + (log 2)·2 + (log 3)·1 + (log 2)·1 = 3 log 2 + log 3 = log(2³·3) = log 24. And the right side is log(4!) = log 24 — they match. The weight ⌊N/m⌋ counts exactly how many of 1, …, N are divisible by m, which is why each Λ(m) is tallied once for every n ≤ N it divides: this is the Dirichlet double-count log(N!) = ∑_{n≤N} log n = ∑_{n≤N} ∑_{d∣n} Λ(d) read column-by-column.",
     "mathContext": "$N=4$: $\\sum_m \\Lambda(m)\\lfloor 4/m\\rfloor = 2\\log 2 + \\log 3 + \\log 2 = \\log(2^3\\cdot 3) = \\log 24 = \\log(4!)$.",

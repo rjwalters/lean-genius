@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 59
     },
-    "type": "context",
+    "type": "concept",
     "title": "Euler's converse for even perfect numbers: the six-step skeleton",
     "content": "The docstring lays out the goal and strategy. Euler (1747) proved the converse of Euclid's construction: every even perfect number n has the form 2^k·(2^(k+1)−1) with 2^(k+1)−1 a Mersenne prime. Mathlib's Archive proves this in one block; the gallery value here is a named six-step decomposition exposing the algebraic skeleton — σ-multiplicativity, σ(2^k)=M_{k+1}, the perfect equation M_{k+1}·σ(m)=2^(k+1)·m, the divisibility M_{k+1}∣m, the identity σ(m)=m+c, and a two-divisor argument forcing c=1 and m prime. The Archive is used only for the 2-adic split and σ(2^k); Step 6 and the capstone's bound-chasing are self-contained.",
     "mathContext": "Perfect: $\\sigma(n)=2n$. Euclid–Euler: $n$ even perfect $\\iff n=2^k(2^{k+1}-1)$ with $2^{k+1}-1$ (a Mersenne number $M_{k+1}$) prime.",
@@ -31,7 +31,7 @@
       "startLine": 68,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 1: σ is multiplicative on the coprime split 2^k · m",
     "content": "Because m is odd, gcd(2^k, m) = 1, so the multiplicativity of σ gives σ(2^k·m) = σ(2^k)·σ(m). The proof is term-mode: `isMultiplicative_sigma.map_mul_of_coprime` needs a coprimality proof, built from `Odd.coprime_two_right hm_odd : Coprime m 2`, symmetrized to `Coprime 2 m`, then raised by `.pow_left k` to `Coprime (2^k) m`. σ being multiplicative (not completely multiplicative) is exactly why the coprime hypothesis is required.",
     "mathContext": "$\\gcd(2^k,m)=1\\Rightarrow \\sigma(2^k m)=\\sigma(2^k)\\sigma(m)$; multiplicativity of $\\sigma$ over coprime arguments.",
@@ -97,7 +97,7 @@
       "startLine": 100,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 4: the Mersenne factor divides the odd part, M_{k+1} ∣ m",
     "content": "Since M_{k+1} = 2^(k+1) − 1 is odd, it is coprime to 2^(k+1). From M_{k+1}·σ(m) = 2^(k+1)·m we read off M_{k+1} ∣ 2^(k+1)·m, and coprimality lets us cancel the 2-power: M_{k+1} ∣ m. Term-mode: `mersenne_odd` (via simp) gives oddness, `Odd.coprime_two_right` then `.pow_right (k+1)` builds `Coprime (M_{k+1}) (2^(k+1))`, `Dvd.intro` packages the divisibility, and `.dvd_of_dvd_mul_left` finishes.",
     "mathContext": "$M_{k+1}$ odd $\\Rightarrow \\gcd(M_{k+1},2^{k+1})=1$; with $M_{k+1}\\mid 2^{k+1}m$ this forces $M_{k+1}\\mid m$.",
@@ -120,7 +120,7 @@
       "startLine": 124,
       "endLine": 150
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Step 5: substituting m = M_{k+1}·c gives σ(m) = m + c",
     "content": "Writing m = M_{k+1}·c (from Step 4) and using 2^(k+1) = M_{k+1} + 1, the right side 2^(k+1)·m = (M_{k+1}+1)·m = M_{k+1}·m + m, where the trailing m equals M_{k+1}·c. So the Step-3 equation reads M_{k+1}·σ(m) = M_{k+1}·(m + c); cancelling the positive factor M_{k+1} (`Nat.eq_of_mul_eq_mul_left`, positivity from `mersenne_pos`) yields σ(m) = m + c. The cofactor c is the seed of the two-divisor endgame.",
     "mathContext": "$m=M_{k+1}c$, $2^{k+1}=M_{k+1}+1$; then $M_{k+1}\\sigma(m)=M_{k+1}(m+c)$, so $\\sigma(m)=m+c$.",

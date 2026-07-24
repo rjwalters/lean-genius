@@ -219,7 +219,7 @@
       "startLine": 78,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bipartite graphs have no odd cycle",
     "content": "The engine is a clean parity argument. `IsBipartite` gives a 2-colouring with no monochromatic edge; walking along a cycle flips the colour bit at each step, so after $\\ell$ steps the bit has flipped $\\ell$ times. A cycle returns to its start, forcing the bit to be unchanged, which happens iff $\\ell$ is even (iterating Boolean negation $m$ times flips the bit exactly when $m$ is odd). Hence `bipartite_not_hasCycle_odd`: a bipartite graph contains no cycle of odd length.",
     "mathContext": "A closed walk of length $\\ell$ in a bipartite graph flips its endpoint colour $\\ell$ times; returning to start requires $\\ell$ even. So bipartite $\\Rightarrow$ no $C_{2k-1}$.",

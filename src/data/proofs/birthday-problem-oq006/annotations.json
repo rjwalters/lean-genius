@@ -87,7 +87,7 @@
     "id": "ann-summary-axiomcheck",
     "proofId": "birthday-problem-oq006",
     "range": { "startLine": 141, "endLine": 162 },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and Inline Axiom Verification",
     "content": "The file closes with a summary and two verification commands. #check confirms the signatures of the two headline theorems, and #print axioms birthday_triple_threshold_sharp / birthday_triple_threshold_const_one report their axiom dependencies inline — both resolve to only the standard foundational triple propext / Classical.choice / Quot.sound, an in-source confirmation of the entry's 0-axiom claim (no sorryAx, no Lean.ofReduceBool). The summary recaps the sharpening: the centered-cube identity n(n−1)(n−2) = (n−1)³ − (n−1) turns the threshold balance into the depressed cubic m³ − m = c³ (m = n−1), whose lower bound m³ ≥ c³ and upper bound collapsing to (m−c)² ≥ 0 tighten the parent's additive-error-2 band c ≤ n ≤ c+2 to the asymptotically exact n = (6d²ln2)^{1/3} + 1 + O(d^{−2/3}).",
     "mathContext": "$\\#\\text{print axioms} \\Rightarrow \\{\\text{propext},\\ \\text{Classical.choice},\\ \\text{Quot.sound}\\}$ only; result $n = (6d^2\\ln 2)^{1/3} + 1 + O(d^{-2/3})$.",

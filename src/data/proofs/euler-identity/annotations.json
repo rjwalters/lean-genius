@@ -69,7 +69,7 @@
       "startLine": 87,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Key Values at π",
     "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180°):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
     "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$; Lean: `Real.cos_pi : cos π = -1`, `Real.sin_pi : sin π = 0` from `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`",
@@ -160,7 +160,7 @@
       "startLine": 184,
       "endLine": 185
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Taylor Series Proof",
     "content": "The classical proof of Euler's formula compares Taylor series:\n\n$$e^{ix} = 1 + ix + \\frac{(ix)^2}{2!} + \\frac{(ix)^3}{3!} + ...$$\n\nUsing $i^2 = -1$, $i^3 = -i$, $i^4 = 1$, etc.:\n\n$$= \\underbrace{1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - ...}_{\\cos x} + i\\underbrace{\\left(x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - ...\\right)}_{\\sin x}$$\n\nThe series magically separate into the Taylor series for cosine (even powers) and sine (odd powers)!\n\nThis 'coincidence' reflects deep structural connections between $e$, $\\sin$, and $\\cos$.",
     "mathContext": "$e^{ix} = \\sum_{n=0}^\\infty \\frac{(ix)^n}{n!}$; even-power terms give $\\cos x = \\sum \\frac{(-1)^n x^{2n}}{(2n)!}$, odd-power terms give $\\sin x = \\sum \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$",
@@ -207,7 +207,7 @@
       "startLine": 233,
       "endLine": 251
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Quarter Turn: e^(iπ/2) = i",
     "content": "At $\\theta = \\pi/2$ (90°), we get:\n\n$$e^{i\\pi/2} = \\cos(\\pi/2) + i\\sin(\\pi/2) = 0 + i \\cdot 1 = i$$\n\nThis confirms the geometric interpretation: rotating 1 by 90° gives $i$ (the 'up' direction in the complex plane).\n\nSimilarly:\n- $e^{i\\pi} = -1$ (180° rotation)\n- $e^{i \\cdot 3\\pi/2} = -i$ (270° rotation)\n- $e^{2\\pi i} = 1$ (360° = back to start)",
     "mathContext": "$e^{i\\pi/2} = i$; Lean: `theorem quarter_rotation : Complex.exp (Real.pi / 2 * Complex.I) = Complex.I` proved with `Real.cos_pi_div_two` and `Real.sin_pi_div_two`",

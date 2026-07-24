@@ -92,7 +92,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Same Status Characterization",
     "content": "We prove Id∈(x, y, z) ↔ (y ∈ x ↔ z ∈ x). This elegant characterization shows that D2-identity is exactly biconditional membership: y and z are identified by x iff they have logically equivalent membership in x.",
     "mathContext": "The proof uses case analysis on whether y ∈ x. This characterization makes the connection to Quine explicit and simplifies later reasoning.",
@@ -112,7 +112,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Transitivity by Case Analysis",
     "content": "The transitivity proof is the most intricate. Given Id∈(x, y, z) and Id∈(x, z, w), we case-split on which disjunct holds for each. Two cases lead to contradictions (z is both member and non-member), and two cases give the result directly.",
     "mathContext": "The four cases: (both,both), (both,neither), (neither,both), (neither,neither). The middle two are impossible by consistency. This is a nice example of exhaustive case analysis in Lean.",
@@ -196,7 +196,7 @@
       "startLine": 266,
       "endLine": 282
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Power of tauto",
     "content": "The alternative proof using 'tauto' is remarkably short: just unfold definitions, introduce the Foundation hypothesis, and let the tautology checker handle the rest. This demonstrates that the core logic is purely propositional.",
     "mathContext": "The 'tauto' tactic in Lean handles classical propositional logic automatically. Once we have ¬(x ∈ x) as a hypothesis, the equivalence MemFromId ↔ mem is a propositional tautology.",

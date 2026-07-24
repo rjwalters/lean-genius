@@ -3,7 +3,7 @@
     "id": "bern-oq0102-header",
     "proofId": "bernoulli-inequality-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 58 },
-    "type": "context",
+    "type": "concept",
     "title": "Second-Order Bernoulli and Its Equality Characterization",
     "content": "The header frames the open question — characterize equality in Bernoulli's inequality (1+a)ⁿ ≥ 1 + n·a — and states this entry's new content, the second-order refinement. The first-order equality (a = 0 ∨ n ≤ 1) is settled by the parent/sibling entries and recorded here as a one-line corollary; the fresh result is the sharper quadratic-truncation bound for a ≥ 0: (1+a)ⁿ ≥ 1 + n·a + C(n,2)·a² with C(n,2) = n(n−1)/2, together with its own sharp equality characterization a = 0 ∨ n ≤ 2. The threshold shifts from n ≤ 1 (first order) to n ≤ 2 (second order): the quadratic truncation is exact through n = 2 (since (1+a)² = 1 + 2a + a² is the full expansion) and becomes strict exactly once the cubic term a³ can appear, i.e. n ≥ 3, a > 0. Mechanism: a one-line induction multiplying the inductive bound by 1+a ≥ 0 and using Pascal C(n,2) + n = C(n+1,2), discarding the nonnegative tail C(n,2)·a³. The restriction a ≥ 0 is sharp — for −1 < a < 0 the quadratic truncation overshoots (n=3, a=−1/2 gives 1/4 > 1/8), unlike the first-order form which holds down to a = −2. Mathlib has only first-order integer-power Bernoulli, so the second-order version with equality characterization is original.",
     "mathContext": "$(1+a)^n \\ge 1 + na + \\binom{n}{2}a^2$ for $a\\ge 0$, with equality $\\iff a=0 \\lor n\\le 2$; strict for $a>0,\\ n\\ge3$. First order: equality $\\iff a=0 \\lor n\\le1$.",

@@ -6,7 +6,7 @@
       "startLine": 6,
       "endLine": 40
     },
-    "type": "context",
+    "type": "concept",
     "title": "Degree of a Polynomial",
     "content": "The **degree** of a polynomial is the highest power of the variable with a non-zero coefficient.\n\nFor $z^2 + 1$, the degree is 2. The polynomial $z^3 - 2z + 5$ has degree 3.\n\nDegree 0 means a constant polynomial. The fundamental theorem requires degree at least 1 (non-constant).",
     "mathContext": "$\\deg(z^n + \\text{lower terms}) = n$\n\n$\\deg(c) = 0$ for constant $c \\neq 0$\n\n$\\deg(0) = -\\infty$ (by convention)",
@@ -145,7 +145,7 @@
       "startLine": 174,
       "endLine": 208
     },
-    "type": "context",
+    "type": "concept",
     "title": "Quadratics Always Have Roots",
     "content": "As a special case: **every quadratic $az^2 + bz + c$ (with $a \\neq 0$) has roots.**\n\nThe famous quadratic formula gives them explicitly:\n$z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nIn the complex numbers, $\\sqrt{b^2 - 4ac}$ always exists (complex square roots exist), so roots always exist.\n\nThe proof here derives this from the general FTA.",
     "mathContext": "Quadratic formula: $z = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$\n\nDiscriminant $\\Delta = b^2 - 4ac$:\n- $\\Delta > 0$: two real roots\n- $\\Delta = 0$: one repeated root\n- $\\Delta < 0$: two complex conjugate roots",

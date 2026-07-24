@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "What This File Discharges, and the Symmetric-Function Setup",
     "content": "The header fixes notation and the goal. The parent entry `amgm-inequality-oq-02` proves Newton's k=1 inequality from scratch but takes the general log-concavity `pₖ² ≥ pₖ₋₁pₖ₊₁` as an axiom (`newton_log_concavity`), and derives the whole Maclaurin chain from it. This file removes that assumption entirely for n=3. It works with the three elementary symmetric polynomials e₁ = x+y+z, e₂ = xy+yz+zx, e₃ = xyz and the normalized Maclaurin means M₁ = e₁/3, M₂ = √(e₂/3), M₃ = (e₃)^(1/3), where the normalization is pₖ = eₖ/C(3,k). The two Newton inequalities become e₁² ≥ 3e₂ and e₂² ≥ 3e₁e₃, and the two chain steps M₁ ≥ M₂, M₂ ≥ M₃ become the radical-free e₁² ≥ 3e₂ and e₂³ ≥ 27e₃². The single `import Mathlib` is deliberate for a gallery file; the real content is elementary and self-contained.",
     "mathContext": "For a real-rooted monic cubic with roots $x,y,z$, $p_k = e_k/\\binom{3}{k}$ are the normalized coefficients: $p_0=1,\\ p_1=e_1/3,\\ p_2=e_2/3,\\ p_3=e_3$. Newton's log-concavity $p_k^2 \\ge p_{k-1}p_{k+1}$ specializes to $e_1^2\\ge 3e_2$ and $e_2^2\\ge 3e_1e_3$.",
@@ -234,7 +234,7 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Symmetric Functions, Means, and the Axiom Being Discharged",
     "content": "The module docstring fixes notation and states the goal precisely. The elementary symmetric polynomials of x, y, z are e1 = x+y+z, e2 = xy+yz+zx, e3 = xyz, and the normalized Maclaurin means are M1 = e1/3, M2 = sqrt(e2/3), M3 = e3^(1/3). Newton's inequalities in normalized form p_k^2 >= p_{k-1} p_{k+1} (with p_k = e_k / C(3,k)) unwind to e1^2 >= 3e2 (N1) and e2^2 >= 3 e1 e3 (N2). The header's key claim -- and the reason this file needs no axiom -- is that for three variables each Newton gap is an exact sum of squares (half of sum (x-y)^2 and half of sum (xy-yz)^2), so log-concavity is unconditional rather than a consequence of the real-rootedness/Rolle machinery the parent amgm-inequality-oq-02 had to assume as newton_log_concavity. The single import Mathlib and open Real bring in nlinarith, Real.sqrt, and Real.rpow.",
     "mathContext": "$e_1=x+y+z,\\ e_2=xy+yz+zx,\\ e_3=xyz$; $M_1=\\tfrac{e_1}{3},\\ M_2=\\sqrt{\\tfrac{e_2}{3}},\\ M_3=e_3^{1/3}$. Newton: $p_k^2\\ge p_{k-1}p_{k+1}$ with $p_k=e_k/\\binom{3}{k}$.",
@@ -263,7 +263,7 @@
       "startLine": 83,
       "endLine": 90
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cubed AM-GM Base Lemma via a Schur-Type SOS Certificate",
     "content": "amgm3_cubed proves (a+b+c)^3 >= 27abc for non-negative a, b, c -- the radical-free heart of the M2 >= M3 step. The proof is a single nlinarith fed a carefully chosen positivity basis: the three weighted squares a*(b-c)^2, b*(a-c)^2, c*(a-b)^2 (a Schur-degree-1 certificate, each non-negative because a variable multiplies a square), together with the pairwise and triple products ab, bc, ac, abc. Non-negativity is genuinely needed here (unlike the two Newton inequalities): the weighted squares are only non-negative when the multiplying variable is >= 0. Applying this at a = xy, b = yz, c = zx -- whose product abc = (xyz)^2 -- yields the polynomial chain step e2^3 >= 27 e3^2.",
     "mathContext": "$(a+b+c)^3 - 27abc = a(b-c)^2 + b(a-c)^2 + c(a-b)^2 + (\\text{non-negative cross terms})$ for $a,b,c\\ge 0$; equality iff $a=b=c$.",

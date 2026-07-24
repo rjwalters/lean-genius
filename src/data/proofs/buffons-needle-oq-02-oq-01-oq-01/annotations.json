@@ -30,7 +30,7 @@
       "startLine": 60,
       "endLine": 73
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The two base Gamma values: Γ(3/2) = √π/2 and Γ(2) = 1",
     "content": "The two-step induction needs the closed form at $n = 2$ and $n = 3$, which in turn needs $\\Gamma$ at the four points $1/2, 1, 3/2, 2$. `gamma_three_half` derives $\\Gamma(3/2) = \\tfrac12\\Gamma(1/2) = \\tfrac{\\sqrt\\pi}{2}$ from the functional equation `Real.Gamma_add_one` (rewriting $3/2 = 1/2 + 1$) and the Gaussian special value $\\Gamma(1/2) = \\sqrt\\pi$ (`Real.Gamma_one_half_eq`). `gamma_two` derives $\\Gamma(2) = 1\\cdot\\Gamma(1) = 1$ the same way from $\\Gamma(1) = 1$ (`Real.Gamma_one`). These are the only 'transcendental' inputs in the whole file: $\\sqrt\\pi$ enters exactly once, through $\\Gamma(1/2)$, and it is precisely this half-integer value that makes even-dimensional $\\alpha_n$ rational multiples of $1/\\pi$ while odd-dimensional $\\alpha_n$ stay rational.",
     "mathContext": "Γ(3/2) = ½·Γ(1/2) = √π/2 and Γ(2) = 1·Γ(1) = 1, each one application of Γ(x+1) = x·Γ(x) plus the special values Γ(1/2) = √π, Γ(1) = 1.",
@@ -54,7 +54,7 @@
       "startLine": 75,
       "endLine": 98
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The heart: the closed form satisfies the SAME recurrence (one field_simp)",
     "content": "`gammaForm_rec` is the entire mathematical content of the entry: $\\text{gammaForm}(k+2) = \\tfrac{k}{k+1}\\cdot\\text{gammaForm}(k)$ for $k \\ne 0$. Expanding, $\\text{gammaForm}(k+2) = \\Gamma((k+2)/2)/(\\sqrt\\pi\\,\\Gamma((k+3)/2))$; rewrite $\\Gamma((k+2)/2) = \\Gamma(k/2 + 1) = (k/2)\\,\\Gamma(k/2)$ and $\\Gamma((k+3)/2) = \\Gamma((k+1)/2 + 1) = ((k+1)/2)\\,\\Gamma((k+1)/2)$, both by the functional equation `Real.Gamma_add_one`. The two half factors collapse to the ratio $\\tfrac{k/2}{(k+1)/2} = \\tfrac{k}{k+1}$ and the remaining $\\Gamma(k/2)/(\\sqrt\\pi\\,\\Gamma((k+1)/2))$ is exactly $\\text{gammaForm}(k)$. The identity then closes with a single `field_simp`, whose only obligation — nonzero Gamma denominators — is discharged by `Real.Gamma_pos_of_pos` ($\\Gamma > 0$ on $(0,\\infty)$). No integral, no induction here: pure algebra of the functional equation.",
     "mathContext": "gammaForm(k+2) = Γ((k+2)/2)/(√π·Γ((k+3)/2)); Γ((k+2)/2)=(k/2)Γ(k/2), Γ((k+3)/2)=((k+1)/2)Γ((k+1)/2) ⇒ ratio = (k/(k+1))·gammaForm(k). Denominators nonzero by Γ>0.",
@@ -78,7 +78,7 @@
       "startLine": 100,
       "endLine": 138
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Uniqueness by recurrence: crossingFactor n = gammaForm n for all n ≥ 2",
     "content": "`crossingFactor_eq_gammaForm` is the main theorem, and it uses no new analysis — only that two sequences agreeing on two consecutive base values and obeying the same two-step recurrence must coincide. The induction matches the recurrence's own shape: base cases $n = 2$ ($\\text{crossingFactor}\\,2 = 2/\\pi = \\text{gammaForm}\\,2$, via `gamma_two`/`gamma_three_half`) and $n = 3$ ($=1/2$), then a strong-induction step that peels $n+4$ back to $n+2$. For the recursive case the parent's defining equation $\\text{crossingFactor}(k+2) = \\tfrac{k}{k+1}\\,\\text{crossingFactor}(k)$ and this entry's `gammaForm_rec` give the *same* multiplier $\\tfrac{k}{k+1}$; the induction hypothesis equates the two at $k$, so multiplying through equates them at $k+2$. This is the 'fixed point of the recurrence' principle: identifying a recursively-defined sequence with a candidate closed form needs only finitely many base checks plus the recurrence match.",
     "mathContext": "Two-step induction: base crossingFactor 2 = 2/π, crossingFactor 3 = 1/2 (both = gammaForm); step both obey α_{k+2} = (k/(k+1))·α_k (parent def & gammaForm_rec), so IH at k ⇒ equality at k+2.",
@@ -103,7 +103,7 @@
       "startLine": 140,
       "endLine": 152
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The recursion eliminated: αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) stated cleanly",
     "content": "`crossingFactor_closed_form` restates the main theorem in its most usable form — the crossing factor as one explicit Gamma expression, with the auxiliary `gammaForm` unfolded away: $\\alpha_n = \\Gamma(n/2)/(\\sqrt\\pi\\,\\Gamma((n+1)/2))$ for $n \\ge 2$. This is the answer to the parent's open question: every per-dimension value is now a single $\\Gamma$ evaluation rather than an unrolling of the recurrence. The statement is what downstream results (asymptotics, monotonicity, the full Buffon expectation) reference, since it needs neither the recursive definition nor the `gammaForm` abbreviation.",
     "mathContext": "αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) for n ≥ 2 — the non-recursive closed form, obtained by unfolding gammaForm in crossingFactor_eq_gammaForm.",
@@ -126,7 +126,7 @@
       "startLine": 154,
       "endLine": 188
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sanity checks and the n-dimensional Buffon formula in closed form",
     "content": "Part VI recomputes the first four crossing factors directly from the closed form — $\\alpha_2 = 2/\\pi$ (using $\\sqrt\\pi\\cdot\\sqrt\\pi = \\pi$ via `Real.mul_self_sqrt`), $\\alpha_3 = 1/2$, $\\alpha_4 = 4/(3\\pi)$, $\\alpha_5 = 3/8$ — confirming the formula reproduces the parent's per-dimension computations as *instances* rather than separate calculations, and exhibiting the even/odd split ($\\alpha_2, \\alpha_4$ carry $1/\\pi$; $\\alpha_3, \\alpha_5$ are rational). Part VII assembles the payoff `buffonNd_closed_form`: the expected number of hyperplane crossings of a length-$L$ needle against a spacing-$d$ lattice in $\\mathbb{R}^n$ is $\\mathbb{E} = \\tfrac{\\Gamma(n/2)}{\\sqrt\\pi\\,\\Gamma((n+1)/2)}\\cdot\\tfrac{L}{d}$ — the Cauchy–Crofton formula with the crossing factor now fully explicit, recovering the classical 2D $2L/(\\pi d)$ and 3D $L/(2d)$ as the $n = 2, 3$ cases.",
     "mathContext": "α₂ = 2/π, α₃ = 1/2, α₄ = 4/(3π), α₅ = 3/8 from the formula; buffonNd: E[crossings] = (Γ(n/2)/(√π·Γ((n+1)/2)))·L/d, recovering 2L/(πd) (n=2) and L/(2d) (n=3).",

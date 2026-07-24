@@ -50,7 +50,7 @@
       "startLine": 63,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Equilateral ⟹ affinely independent, by polarisation",
     "content": "The extremal theorem, valid in ANY real inner product space. Using the module characterisation $\\texttt{affineIndependent\\_iff}$, assume weights $w$ on a finite set $t$ with $\\sum_i w_i = 0$ and $\\sum_i w_i \\cdot p_i = 0$. For each $j$, polarisation $\\lVert p_i - p_j\\rVert^2 = \\lVert p_i\\rVert^2 - 2\\langle p_i, p_j\\rangle + \\lVert p_j\\rVert^2$ gives $\\sum_i w_i \\lVert p_i - p_j\\rVert^2 = \\sum_i w_i\\lVert p_i\\rVert^2 =: Q$, because the cross term $\\sum_i w_i\\langle p_i, p_j\\rangle = \\langle \\sum_i w_i p_i, p_j\\rangle = \\langle 0, p_j\\rangle = 0$ and $\\lVert p_j\\rVert^2 \\sum_i w_i = 0$. But the equilateral hypothesis makes $\\lVert p_i - p_j\\rVert^2 = s^2$ for $i \\ne j$ and $0$ for $i = j$, so the same sum equals $s^2(\\sum_i w_i - w_j) = -s^2 w_j$. Hence $-s^2 w_j = Q$ for every $j \\in t$. Summing over $t$: $-s^2\\sum_j w_j = |t|\\,Q$, i.e. $0 = |t|\\,Q$, so $Q = 0$; then $-s^2 w_j = 0$ with $s \\ne 0$ forces every $w_j = 0$. No Gram-matrix positive-definiteness is needed.",
     "mathContext": "$\\langle \\cdot, \\cdot\\rangle$-argument discharging $\\texttt{affineIndependent\\_iff}$.",
@@ -96,7 +96,7 @@
       "startLine": 169,
       "endLine": 203
     },
-    "type": "construction",
+    "type": "definition",
     "title": "The standard basis: equilateral sets grow with dimension",
     "content": "The $n$ standard basis vectors $\\texttt{single}\\,i\\,1$ of $\\texttt{EuclideanSpace}\\,\\mathbb{R}\\,(\\texttt{Fin}\\,n)$ are pairwise at distance $\\sqrt 2$: for $i \\ne j$, $\\lVert \\texttt{single}\\,i\\,1 - \\texttt{single}\\,j\\,1\\rVert^2 = \\langle \\cdot, \\cdot\\rangle = 1 - 0 - 0 + 1 = 2$ using $\\texttt{inner\\_single\\_left}$ and $(\\texttt{single}\\,j\\,1)_i = [i = j]$. Affine independence then follows for FREE from the equilateral criterion above. So $\\texttt{exists\\_large\\_equilateral}$ packages, for every $n$, an equilateral affinely independent $n$-point set in $\\mathbb{R}^n$. Combined with the $d+1$ upper bound, the maximum equilateral-set size in $\\mathbb{R}^d$ lies in $\\{d, d+1\\}$ — unbounded in the dimension, the decisive qualitative contrast with the plane's bound of $3$. (The tight value $d+1$, realised by a regular $d$-simplex, is left as a stated open follow-up.)",
     "mathContext": "$\\operatorname{dist}(\\texttt{single}\\,i\\,1, \\texttt{single}\\,j\\,1) = \\sqrt 2$; $n$ points in $\\mathbb{R}^n$.",

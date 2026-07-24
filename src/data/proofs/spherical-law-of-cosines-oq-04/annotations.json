@@ -67,7 +67,7 @@
     "id": "ann-reverse-cs",
     "proofId": "spherical-law-of-cosines-oq-04",
     "range": { "startLine": 268, "endLine": 298 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reverse Cauchy–Schwarz for K < 0 (rhs_ge_one_neg)",
     "content": "For K<0 and a,b≥0, rhs_ge_one_neg shows the law's right-hand side is ≥ cosh(√(−K)(a−b)) ≥ 1, so the opposite side c=arcosh(RHS)/√(−K) is a genuine distance. The proof rewrites the cross term K·sn_K(a)·sn_K(b) to −sinh(√(−K)a)·sinh(√(−K)b) (K_curvatureSin_mul_neg), then applies cosh_sub, Real.one_le_cosh and nlinarith. This mirrors mink_geo_ge_one in the Minkowski-model entry.",
     "mathContext": "$\\text{cs}_K(a)\\text{cs}_K(b)+K\\,\\text{sn}_K(a)\\text{sn}_K(b)\\cos C \\ge \\cosh(\\sqrt{-K}(a-b)) \\ge 1$.",

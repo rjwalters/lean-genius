@@ -3,7 +3,7 @@
     "id": "module-framing",
     "proofId": "bernoulli-inequality-oq-01",
     "range": { "startLine": 1, "endLine": 35 },
-    "type": "context",
+    "type": "concept",
     "title": "Module Framing: the Sharp Strict Bernoulli Inequality",
     "content": "Bernoulli's inequality is 1 + n·a ≤ (1+a)ⁿ for a ≥ -1; the weak integer-power form is Mathlib's one_add_mul_le_pow. The discarded quadratic term C(n,2)·a² is strictly positive exactly when a ≠ 0 and n ≥ 2, which is what makes the STRICT form sharper. This file proves the complete sharp picture over the full domain a > -1: the strict inequality one_add_mul_lt_pow (including the harder negative subrange -1 < a < 0, where 1 + n·a can be negative), and the two-sided characterizations one_add_mul_lt_pow_iff (strict ⟺ a ≠ 0 ∧ 2 ≤ n) and one_add_mul_eq_pow_iff (equality ⟺ a = 0 ∨ n ≤ 1). Mathlib has only the weak integer form and an rpow strict form; the gallery's binomial-theorem-oq-05 covers only a > 0 — the extension to a > -1 with the iff characterizations is new.",
     "mathContext": "$1 + na < (1+a)^n$ for $a>-1,\\ a\\ne 0,\\ n\\ge 2$; equality $\\iff a=0 \\vee n\\le 1$. The gap is the binomial remainder $\\binom{n}{2}a^2 + \\cdots > 0$.",

@@ -6,7 +6,7 @@
       "startLine": 33,
       "endLine": 41
     },
-    "type": "context",
+    "type": "concept",
     "title": "Wiring in the transfer engine, the moments, and palindromy",
     "content": "The four imports and the `open` line bring in exactly the machinery reused below, so this entry adds no new combinatorics of its own. From the parent `GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01` come the transfer operator `moment_transfer` (the engine) together with the zeroth, first and second moments `eulerian_M0`, `eulerian_first_moment`, `eulerian_second_moment`; from the sibling `...OQ05` comes the palindromy `eulerian_palindrome'` ($\\langle n,k\\rangle=\\langle n,n{-}1{-}k\\rangle$); and the grandparent `...OQ01OQ01OQ01OQ01` supplies the Eulerian numbers `eulerian n k` themselves. The third moment is then obtained by specialising `moment_transfer` to $w(k)=k^3$, and the vanishing skewness by feeding an odd weight through `eulerian_palindrome'` — nothing else is imported.",
     "mathContext": "Reused: $\\texttt{moment\\_transfer}$, $M_0,M_1,M_2$, and palindromy $\\langle n,k\\rangle=\\langle n,n{-}1{-}k\\rangle$.",
@@ -98,7 +98,7 @@
       "startLine": 110,
       "endLine": 119
     },
-    "type": "example",
+    "type": "concept",
     "title": "Corroboration on small rows",
     "content": "Three `decide` checks pin the results to concrete Eulerian rows. Row $3 = (1,4,1)$: $\\sum_k k^3\\langle 3,k\\rangle = 0+4+8 = 12$ and $8\\cdot 12 = 96 = (3-1)(9-3+2)\\cdot 3!$. Row $4 = (1,11,11,1)$: $\\sum_k k^3\\langle 4,k\\rangle = 11+88+27 = 126$ and $8\\cdot 126 = 1008 = 3\\cdot 14\\cdot 24$; and $\\sum_k (2k-3)^3\\langle 4,k\\rangle = (-3)^3+(-1)^3\\cdot 11+1^3\\cdot 11+3^3 = -27-11+11+27 = 0$. These use kernel `decide` (not `native_decide`), so the file remains axiom-free.",
     "mathContext": "Row $4$: third moment $126$, centred cube-sum $0$.",

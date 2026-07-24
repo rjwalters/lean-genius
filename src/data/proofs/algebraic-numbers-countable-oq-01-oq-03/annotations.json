@@ -76,7 +76,7 @@
       "startLine": 97,
       "endLine": 102
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The identification is canonical over ℚ, not just an abstract bijection",
     "content": "Steinitz uniqueness is famously non-canonical — the isomorphism of two algebraic closures depends on a choice of lift and is not unique. What `algebraicNumbersEquivAlgebraicClosure_commutes` records is the one piece of canonicity that survives: because the map is a `ℚ`-algebra equivalence (`≃ₐ[ℚ]`), it necessarily fixes the base field pointwise, sending `algebraMap ℚ algebraicNumbersField q` to `algebraMap ℚ (AlgebraicClosure ℚ) q` for every rational `q`. This is exactly `AlgEquiv.commutes`, and it is what makes the identification a bridge *over* `ℚ` rather than a bare bijection of sets — the transported structure (and later the cardinality) is compatible with the rational subfield common to both.",
     "mathContext": "For an $R$-algebra isomorphism $\\varphi : A \\simeq_{\\mathrm{alg}[R]} B$, the defining triangle $\\varphi \\circ \\mathrm{algebraMap}_R^A = \\mathrm{algebraMap}_R^B$ holds; here $R = \\mathbb{Q}$, so $\\varphi$ restricts to the identity on the rationals despite the non-canonical choice underlying Steinitz uniqueness.",

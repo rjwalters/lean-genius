@@ -29,7 +29,7 @@
       "startLine": 72,
       "endLine": 91
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The parity dichotomy π ∣ z ⟺ 2 ∣ (re + im)",
     "content": "This is the base-specific heart of the whole algorithm: the residue ring ℤ[i]/(π) is the two-element field 𝔽₂. Concretely, 1 − i = −i·(1+i) = −i·π, so π ∣ (1−i), i.e. i ≡ 1 (mod π); hence a+bi ≡ a+b (mod π). Since π ∣ 2 as well, the class of a+b depends only on its parity, and the map a+bi ↦ (a+b mod 2) is a ring homomorphism onto 𝔽₂ with kernel exactly (π). The Lean proof is elementary: forward, if z = π·w then (π·w).re + (π·w).im = (w.re − w.im) + (w.im + w.re) = 2·w.re; backward, given re+im = 2k the element ⟨k, k − re⟩ multiplies by π back to z (checked componentwise by omega). 'π-even' is thus decided by a single parity test on re+im — the Gaussian analogue of testing the last bit of an integer. **Why it matters:** Every branch of the algorithm (even/odd tests, the both-odd subtraction, the divide-by-π) is a corollary of this single dichotomy.",
     "mathContext": "ℤ[i]/(1+i) ≅ 𝔽₂. The isomorphism sends a+bi to a+b mod 2; well-definedness uses i ≡ 1 and 2 ≡ 0 modulo (1+i).",
@@ -52,7 +52,7 @@
       "startLine": 93,
       "endLine": 127
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "π is prime, from its norm",
     "content": "Primality of π is read straight off its norm. If π = a·b then multiplicativity of the norm gives 2 = N(π) = N(a)·N(b), and passing to natural absolute values, 2 = |N a|·|N b| in ℕ. Since 2 is a rational prime, one factor's norm has natAbs 1, and Zsqrtd.norm_eq_one_iff turns that into IsUnit — so π is irreducible. Because ℤ[i] is a Euclidean domain, hence a UFD (a DecompositionMonoid), irreducible ⟹ prime, giving pi_prime. This norm argument is self-contained: it does not go through Mathlib's quadratic-reciprocity classification of rational primes in ℤ[i], which addresses the inert/split primes p (with p ≡ 3 or 1 mod 4) rather than the ramified π above 2. **Why it matters:** Primality of π is what makes 'π coprime to an odd v' available — the engine of the one-even reduction gcd(πa,v) ~ gcd(a,v).",
     "mathContext": "For a multiplicative norm N : ℤ[i] → ℤ, if N(x) is a rational prime then x is irreducible; in a UFD irreducible and prime coincide.",
@@ -76,7 +76,7 @@
       "startLine": 129,
       "endLine": 133
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Two π-odds subtract to a π-even",
     "content": "pi_dvd_sub_of_not_dvd: if neither u nor v is divisible by π, then π ∣ (u − v). In 𝔽₂ there is only one nonzero element, so two π-odd elements share the same residue and their difference is 0 in the quotient, i.e. divisible by π. Via the parity dichotomy this is pure parity bookkeeping: both re+im sums are odd, so their difference is even, and omega closes it after rewriting by pi_dvd_iff. This is the exact analogue of 'odd − odd = even' that powers Stein's both-odd branch, and it guarantees the subtraction step makes progress: the result is π-even and can then be divided by π. **Why it matters:** Guarantees the both-odd branch produces a π-even element, so a divide-by-π (norm-halving) step always follows a subtraction.",
     "mathContext": "In 𝔽₂, x ≠ 0 and y ≠ 0 imply x = y = 1, so x − y = 0. Pulled back, π ∤ u and π ∤ v imply π ∣ (u−v).",
@@ -98,7 +98,7 @@
       "startLine": 135,
       "endLine": 158
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Exact division by π and the norm-halving measure",
     "content": "divPi z := ⟨(z.re + z.im)/2, (z.im − z.re)/2⟩ is the Gaussian right-shift, the analogue of n ↦ n/2. When π ∣ z the integer divisions are exact and pi_mul_divPi shows π·divPi z = z (verified componentwise by omega using the parity witness). The payoff is norm_divPi: N(z) = 2·N(z/π), immediate from N(π·w) = N(π)·N(w) = 2·N(w). This is the strictly decreasing termination measure of the whole algorithm — every divide-by-π step exactly halves the (nonnegative, integer) norm, so no infinite descent is possible. **Why it matters:** Provides the well-founded measure: combined with the reductions, each step strictly lowers N, so the algorithm terminates.",
     "mathContext": "The field norm N(a+bi) = a²+b² is a Euclidean function on ℤ[i]; N(π) = 2, so division by π scales N by 1/2 on π-multiples.",
@@ -122,7 +122,7 @@
       "startLine": 160,
       "endLine": 225
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The three reduction identities (up to units)",
     "content": "These are the transplanted Stein reductions, each stated up to Associated (equality up to a unit — the natural notion since ℤ[i] has no canonical gcd representative). gcd_pi_mul (both even): gcd(πa, πb) ~ π·gcd(a,b); proved by cancelling the common π under the Euclidean gcd's universal property, using mul_dvd_mul_iff_left (π ≠ 0) to descend divisibilities. gcd_pi_mul_odd (one even, π ∤ v): gcd(πa, v) ~ gcd(a,v); a common divisor d of (πa, v) also divides the π-odd v, so π ∤ d, hence IsCoprime π d (from primality of π), which lets d be pushed off π onto a — the factor π simply drops. gcd_sub (both odd): gcd(u, v) ~ gcd(u−v, v), the Euclidean subtraction step, from dvd_sub / dvd_add. Each identity is antisymmetry of divisibility (associated_of_dvd_dvd) applied to gcd_dvd_left/right and dvd_gcd. Together with pi_dvd_sub_of_not_dvd and norm_divPi they justify a complete, terminating binary GCD for ℤ[i]. **Why it matters:** These are the correctness statements of the algorithm's three branches; every reduction step preserves the gcd (up to units) while lowering the norm.",
     "mathContext": "For the Euclidean-domain gcd, d ∣ gcd a b ↔ d ∣ a ∧ d ∣ b, and Associated x y ↔ x ∣ y ∧ y ∣ x. Coprimality of a prime p with n is equivalent to p ∤ n in a PID.",

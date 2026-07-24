@@ -126,7 +126,7 @@
       "startLine": 98,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The [0,1]-Valued Specialisation for Partitions of Unity",
     "content": "`tietze_extension_unitInterval` is the `a = 0, b = 1` instance of `tietze_extension_Icc`, obtained by a one-line application (`by norm_num` discharges `0 ≤ 1`). Although trivial as a corollary, it is the operationally important shape: a continuous `[0,1]`-valued function on a closed set extends to a continuous `[0,1]`-valued function on all of `X`. This is exactly the building block used to construct partitions of unity subordinate to an open cover — the standard route from Urysohn/Tietze to smooth-manifold and integration machinery — because a partition of unity is a family of `[0,1]`-valued bump functions that must first be extended off their supports while staying in `[0,1]`.",
     "mathContext": "$0 \\le f \\le 1 \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ 0 \\le G \\le 1$; the $[0,1]$-valued shape underlying partitions of unity.",

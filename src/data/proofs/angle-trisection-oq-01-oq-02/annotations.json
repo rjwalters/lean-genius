@@ -36,7 +36,7 @@
       "startLine": 94,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Euler's Totient Product Over Prime Factors",
     "content": "`totient_eq_prod_primeFactors` rewrites Mathlib's factorization-indexed totient formula into a clean product over the finite set of prime factors: φ(n) = ∏_{p ∣ n} p^(eₚ−1)·(p−1), where eₚ = n.factorization p. This is the multiplicative bridge that lets the global 'φ(n) is a power of two' question be decided factor-by-factor: a product of naturals is a power of two iff each factor is, so the analysis reduces to each p^(eₚ−1)·(p−1).",
     "mathContext": "$\\varphi(n) = \\prod_{p\\mid n} p^{e_p-1}(p-1)$ where $e_p = v_p(n)$ is the $p$-adic valuation. A product is a power of $2$ iff every factor's only prime divisor is $2$.",

@@ -6,7 +6,7 @@
       "startLine": 4,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "File roadmap: the division-free design constraint and the three public theorems",
     "content": "The module docstring states the goal and the guiding design constraint before any proof: prove $\\sum_{k=1}^{n} T_k = \\binom{n+2}{3} = n(n+1)(n+2)/6$ with $T_k = \\binom{k+1}{2}$, *phrased so no division ever appears*. It lays out the three headline results the file will deliver — `sum_triangular_choose` (the clean hockey-stick statement in binomial form), `six_mul_sum_triangular` (the cleared-denominator polynomial identity), and `six_mul_choose_three` (the tetrahedral closed form) — and names the entire toolkit used to reach them: `Finset.sum_range_succ`, Pascal's rule (`Nat.choose_succ_succ`), and `ring`/`omega`. The novelty note records that Mathlib has `Nat.choose_two_right` and Pascal's rule but neither the tetrahedral closed form nor the $d=3$ hockey-stick identity as named lemmas. The single import of `Mathlib.Tactic` (plus `Mathlib.Algebra.BigOperators.Intervals` for range-sums) is routine for a gallery proof; `namespace TetrahedralNumberFormula` and `open Finset` scope the range-sum notation.",
     "mathContext": "$\\sum_{k=1}^{n} \\binom{k+1}{2} = \\binom{n+2}{3} = \\tfrac{n(n+1)(n+2)}{6}$, proved with $\\binom{\\cdot}{\\cdot}$ so the $/6$ and $/2$ never enter the core inductions.",

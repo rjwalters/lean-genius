@@ -102,7 +102,7 @@
       "startLine": 116,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Axiom Audit: Confirming the 0-Axiom Claim",
     "content": "The two `#print axioms` directives are not decoration — they are the machine-checked evidence for the entry's `status: \"verified\"` / `axiomCount: 0` claim. Running them on line_count_sandwich and card_le_choose_two reports only the three foundational axioms propext, Classical.choice, and Quot.sound, none of which counts as a mathematical assumption under the project's axiom-integrity policy. Crucially, no sorry (sorryAx) and no native_decide (Lean.ofReduceBool) appear, so the sandwich is fully kernel-checked. The only genuine mathematical hypotheses are the *typeclass* assumptions [HasLines P L] and the htwo premise ('every line meets ≥ 2 points') — these are stated as explicit binders, not hidden axioms, so they travel with the theorem statement rather than weakening its trust base. Auditing both the top result and the original lemma (not just the headline) guards against a delegated sub-proof smuggling in an axiom.",
     "mathContext": "$\\#\\text{axioms} = \\{\\texttt{propext},\\ \\texttt{Classical.choice},\\ \\texttt{Quot.sound}\\}$; no $\\texttt{sorryAx}$, no $\\texttt{Lean.ofReduceBool}$.",

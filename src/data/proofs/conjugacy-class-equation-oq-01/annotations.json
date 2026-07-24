@@ -51,7 +51,7 @@
     "id": "conjclass-oq01-ann-s3",
     "proofId": "conjugacy-class-equation-oq-01",
     "range": { "startLine": 71, "endLine": 79 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Witness: Classes of S₃ Divide 6",
     "content": "The closing `example` grounds the abstract identity in S₃ = Equiv.Perm (Fin 3): every conjugacy class of S₃ has size dividing |S₃| = 6. The order is computed by reducing Nat.card to Fintype.card and then Fintype.card_perm/Fintype.card_fin to 3!, discharged by kernel `decide` (not native_decide, so no Lean.ofReduceBool axiom enters), and the general theorem `conjClass_card_dvd_card` is specialized via `simpa`. Concretely the three classes of S₃ — the identity (size 1), the three transpositions (size 2), and the two 3-cycles (size 3) — have sizes 1, 2, 3, each dividing 6.",
     "mathContext": "$|S_3| = 3! = 6$; class sizes $1 + 2 + 3 = 6$, each dividing $6$.",

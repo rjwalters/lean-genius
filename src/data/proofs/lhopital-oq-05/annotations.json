@@ -77,7 +77,7 @@
       "startLine": 56,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Discharging the Two Squeeze Obligations via Filter Membership",
     "content": "The normed squeeze leaves two goals. (1) **Eventual bound.** abs_sub_le needs both x ≠ 0 and |x| ≤ 1; both are produced as *filter membership* facts on 𝓝[≠] 0: self_mem_nhdsWithin gives x ≠ 0, and the closed unit ball is a neighbourhood of 0 (Metric.closedBall_mem_nhds), pulled into the punctured filter by nhdsWithin_le_nhds — so |x| ≤ 1 holds eventually; filter_upwards conjoins them and hands both hypotheses to abs_sub_le, after unfolding closed-ball membership to |x| ≤ 1 (Real.dist_eq). This is how an analytic 'for x near 0' is discharged in Mathlib's filter idiom without ever choosing an explicit δ. (2) **Vanishing majorant.** (5/96)·|x| → 0 because |x| → 0 (continuity of absolute value, continuous_abs.tendsto) restricted to the punctured filter and scaled by the constant 5/96.",
     "mathContext": "Eventual bound holds on $\\overline{B}(0,1)\\cap\\{x\\neq 0\\}\\in\\mathcal{N}_{\\neq}(0)$; majorant $\\tfrac{5}{96}|x|\\xrightarrow[x\\to0]{}\\tfrac{5}{96}\\cdot 0=0$.",

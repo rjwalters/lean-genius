@@ -68,7 +68,7 @@
     "id": "ann-oq08-s3",
     "proofId": "lagrange-theorem-oq-08",
     "range": { "startLine": 164, "endLine": 178 },
-    "type": "example",
+    "type": "concept",
     "title": "Cauchy in S₃: a 3-Cycle and a Transposition",
     "content": "The symmetric group S₃ = Perm (Fin 3) has order 3! = 6 (Nat.card_perm). Since 2 and 3 both divide 6, Cauchy guarantees an element of order 2 (a transposition, via the involution corollary) and an element of order 3 (a 3-cycle, via cauchy directly). This concretely exhibits the abstract existence statements.",
     "mathContext": "$|S_3| = 3! = 6 = 2 \\cdot 3$, so Cauchy yields elements of orders $2$ and $3$.",

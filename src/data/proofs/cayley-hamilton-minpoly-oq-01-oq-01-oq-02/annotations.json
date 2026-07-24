@@ -33,7 +33,7 @@
       "startLine": 76,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Nullity Tower and Its Monotonicity",
     "content": "nullity N k = dim ker(N^k) packages the dimension tower abstractly, so it can be instantiated at N = f − μ•1 for each eigenvalue. ker_pow_mono proves the kernels of the powers form an increasing chain by the one-line argument: if N^a x = 0 then N^b x = N^{b−a}(N^a x) = 0 for b ≥ a (via pow_add and Module.End.mul_apply). Monotonicity of the dimensions (nullity_mono) is then finrank_mono of that inclusion, and nullity_zero (d_0 = 0) comes from N^0 = 1, ker(id) = ⊥, finrank ⊥ = 0. These are the FiniteDimensional-free structural facts the rest of the file rests on.",
     "mathContext": "The chain $\\ker N \\subseteq \\ker N^2 \\subseteq \\cdots$ is the backbone of the Jordan structure: its successive quotients have dimensions $w_k = d_k - d_{k-1}$, and the eventual stabilization at $\\ker N^{e}$ (the maximal generalized eigenspace) gives the largest block size $e$ studied in the parent entry.",
@@ -107,7 +107,7 @@
       "startLine": 174,
       "endLine": 284
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Block-Count Functions and the Eigenvalue Interface",
     "content": "blocksAtLeast N j = d_j − d_{j-1} (the Weyr characteristic, blocks of size ≥ j) and blocksExact N j = blocksAtLeast N j − blocksAtLeast N (j+1) (blocks of exact size j) are read straight off the tower. blocksAtLeast_succ identifies the count with dim(jordanImage N k); blocksAtLeast_antitone is the size-monotonicity; sum_blocksAtLeast telescopes ∑_{j<m} blocksAtLeast N (j+1) = d_m (the algebraic multiplicity); blocksAtLeast_one gives the total block count = dim ker N (geometric multiplicity); blocksExact_succ_tower states #{size = k+1} = 2 d_{k+1} − d_k − d_{k+2} additively (no truncated subtraction). Finally nullity_sub_eq_finrank_genEigenspace uses genEigenspace_nat to identify the abstract tower of f − μ•1 with dim(genEigenspace f μ k), so eigenvalue_blocksAtLeast, eigenvalue_blocks_total, and genEigenspace_finrank_concave transport every formula and the concavity to each eigenvalue of f.",
     "mathContext": "With $d_k(\\mu) = \\dim\\mathrm{genEigenspace}\\,f\\,\\mu\\,k$: the number of Jordan blocks for $\\mu$ of size $\\ge j$ is $d_j(\\mu) - d_{j-1}(\\mu)$, of exact size $j$ is $2 d_j(\\mu) - d_{j-1}(\\mu) - d_{j+1}(\\mu)$, the total number of blocks is $d_1(\\mu) = \\dim\\ker(f-\\mu)$ (geometric multiplicity), and $\\sum_j (d_j - d_{j-1}) = d_m$ recovers the algebraic multiplicity at the stabilization index.",

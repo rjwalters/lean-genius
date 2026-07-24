@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Measure-theoretic LLL: the honest d = 0 base case",
     "content": "The gallery's main Lovász Local Lemma entry (`LovaszLocalLemma.lean`) develops the *symmetric* LLL entirely over ℚ as a probabilistic-budget **surrogate** — it never touches a real probability space. Open question OQ-01 asks for the genuine **measure-theoretic** statement: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, with the conclusion $\\mu(\\bigcap_i A_i^c) > 0$ (all bad events can be simultaneously avoided with positive probability). The full LLL (bounded dependency degree $d$, budget $e\\,p\\,(d+1) \\le 1$) is a multi-session target with no Mathlib counterpart; this file lands the **$d = 0$ base case** — the mutually independent regime — as a fully verified, axiom-free measure-theoretic theorem. Because every LLL induction bottoms out at the independent case, this is the honest measure-theoretic anchor for the OQ-01 program. The setup is deliberately minimal: an arbitrary `Fintype` index and `IsProbabilityMeasure` is *derived* from mutual independence, not assumed.",
     "mathContext": "Events $A : \\iota \\to \\mathrm{Set}\\,\\Omega$ over a `Fintype` index, mutually independent (`iIndepSet A μ`) with $\\mu(A_i) < 1$; goal $\\mu\\!\\left(\\bigcap_i A_i^c\\right) = \\prod_i (1 - \\mu(A_i)) > 0$.",

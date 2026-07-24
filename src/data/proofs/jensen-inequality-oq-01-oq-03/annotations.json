@@ -23,7 +23,7 @@
     "id": "ann-sum-uniform",
     "proofId": "jensen-inequality-oq-01-oq-03",
     "range": { "startLine": 38, "endLine": 44 },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Uniform weights sum to one",
     "content": "sum_uniform is the private arithmetic lemma powering every specialization: the constant weight family (|s|)⁻¹ sums to 1 over a nonempty finite set s. Finset.sum_const turns ∑_{i∈s} (|s|)⁻¹ into |s| • (|s|)⁻¹; nsmul_eq_mul rewrites the natural-number scalar multiplication as (↑|s|) * (|s|)⁻¹; and mul_inv_cancel₀ finishes, using that (↑|s|) ≠ 0 — which follows from Finset.card_pos.mpr hs (nonemptiness gives |s| > 0). This is the sole hypothesis needed to hand the parent theorems a valid weight vector.",
     "mathContext": "$\\sum_{i \\in s} |s|^{-1} = |s|\\cdot|s|^{-1} = 1$ for $s$ nonempty.",

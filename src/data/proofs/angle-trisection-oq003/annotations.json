@@ -51,7 +51,7 @@
     "id": "angtri-oq05-ann-eq-one",
     "proofId": "angle-trisection-oq003",
     "range": { "startLine": 97, "endLine": 105 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sharpening the boundary case to an equality",
     "content": "card_algEquiv_eq_one_of_isPurelyInseparable upgrades the subsingleton statement to the exact count Nat.card (K ≃ₐ[F] K) = 1. Where Subsingleton only says 'at most one', the equality also records that the group is nonempty — its single element being the identity automorphism. The proof feeds the subsingleton instance together with the inhabitant 1 : K ≃ₐ[F] K to Nat.card_eq_one_iff_unique, which characterises cardinality-one types as exactly the inhabited subsingletons (the types with a unique element). This is the crisp 'exactly the identity' form the parent's gal_card_one_of_purelyInseparable_splitting ultimately wants.",
     "mathContext": "Nat.card_eq_one_iff_unique : Nat.card α = 1 ↔ Nonempty (Unique α); here uniqueness comes from the subsingleton instance and the identity 1 : K ≃ₐ[F] K as the inhabitant.",

@@ -188,7 +188,7 @@
       "startLine": 60,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Prime-factor lemmas",
     "content": "Supporting arithmetic on smallest/largest prime factors: $\\mathrm{minFac}(pq) = p$ for primes $p \\le q$, every prime divisor of $n$ is at most the largest prime factor $P(n)$, and the binomial absorption identity $n \\mid k\\binom{n}{k}$ (for $1\\le k\\le n$). These feed the gcd estimates: the absorption identity forces divisibility relations between $n$ and $\\binom{n}{k}$ that control the gcd from both sides.",
     "mathContext": "$\\mathrm{minFac}(pq)=p$ ($p\\le q$ prime); $r\\mid n,\\ r$ prime $\\Rightarrow r\\le P(n)$; $n \\mid k\\binom{n}{k}$.",
@@ -299,7 +299,7 @@
       "startLine": 129,
       "endLine": 272
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "gcd structure and non-divisibility",
     "content": "The technical heart controls $\\gcd(n, \\binom{n}{k})$ prime-power by prime-power. Key inputs: the non-divisibility $p \\nmid \\binom{p^a m - 1}{p^a - 1}$ (a Kummer/Lucas-type carry computation); the absorption identity $\\binom{n}{k} = (n/k)\\binom{n-1}{k-1}$ when $k\\mid n$; and, for a prime power $p^a$ with $p\\nmid x$, that $\\gcd(p^a, x)=1$. Together these give the exact evaluation $\\gcd(p^a m, \\binom{p^a m}{p^a}) = m$ at the distinguished index $k=p^a$, which pins down $f$ on prime-power-times-$m$ shapes.",
     "mathContext": "$p\\nmid\\binom{p^a m-1}{p^a-1}$; $\\binom{n}{k}=(n/k)\\binom{n-1}{k-1}$ for $k\\mid n$; $\\gcd(p^a m,\\binom{p^a m}{p^a})=m$.",
@@ -344,7 +344,7 @@
       "startLine": 412,
       "endLine": 427
     },
-    "type": "context",
+    "type": "concept",
     "title": "The open questions (Q2, Q3)",
     "content": "The two hard questions are recorded as axioms marking them open. Question 2 asks whether infinitely many composite $n$ satisfy $f(n) > \\sqrt{n}$ (strictly beyond the prime-square lower bound). Question 3 asks whether $f(n) \\ll_A n/(\\log n)^A$ for every $A>0$ — an upper bound far stronger than the trivial $n/P(n)$ when $P(n)$ is small. Both remain unresolved.",
     "mathContext": "Q2: $|\\{n$ composite$: f(n)>\\sqrt n\\}| = \\infty$? Q3: $\\forall A>0,\\ f(n)\\ll_A n/(\\log n)^A$?",

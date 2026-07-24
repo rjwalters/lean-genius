@@ -30,7 +30,7 @@
       "startLine": 80,
       "endLine": 97
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Degrees and Arc Count as Filter Cardinalities",
     "content": "outDegree_eq_card_filter, inDegree_eq_card_filter, and arcCount_eq_card_filter rewrite each subtype-cardinality as the cardinality of a Finset.filter over univ (resp. univ ×ˢ univ). This bridges the definitional Fintype.card {u // arc v u} with the Finset world where Fubini-style sum manipulations (sum_product, sum_comm) are available — the technical move that makes the handshake counting go through.",
     "mathContext": "$d^+(v) = |\\{u \\in V : v \\to u\\}|,\\quad |A| = |\\{(u,v) : u \\to v\\}|$",
@@ -127,7 +127,7 @@
       "startLine": 175,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Averaging / Pigeonhole: Some Vertex Beats the Average",
     "content": "exists_outDegree_ge_average: some vertex v has n·d⁺(v) ≥ |A|, i.e. d⁺(v) is at least the average out-degree |A|/n. Take the vertex of maximum out-degree (univ.exists_max_image); then ∑_u d⁺(u) ≤ ∑_u d⁺(v) = n·d⁺(v), and the left side is |A| by the handshake lemma. This elementary averaging step is exactly what opens degree-threshold Hamiltonicity arguments (Ghouila–Houri, Moon–Moser) in the companion file.",
     "mathContext": "$\\exists v,\\ n \\cdot d^+(v) \\ge |A| \\quad (\\text{i.e. } d^+(v) \\ge \\text{average})$",

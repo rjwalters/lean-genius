@@ -15,7 +15,7 @@
     "id": "cheb-strict-ann-rigidity-pattern",
     "proofId": "chebyshev-sum-inequality-oq-01-oq-02",
     "range": { "startLine": 26, "endLine": 38 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Unifying Pattern: Strict = Bound + Equality Excluded",
     "content": "All three strict statements share one proof skeleton, made explicit in the docstring: each is `lt_of_le_of_ne (chebyshev_sum …) (negation of equality)`. The parent's ≤ inequality supplies the ≤ half; the parent's equality characterisation (chebyshev_sum_eq_iff, or its constant form), contradicted by a doubly-varying witness, supplies the ≠ half. This is the general recipe for upgrading any inequality that has a *known equality case* to a strict inequality — you never re-prove the bound, you only rule out its rigid extremal configuration. The import of the parent companion (Proofs.RearrangementChebyshevEqOQ01) with `open RearrangementChebyshevEq` makes both halves available, and because nothing beyond them is used, the strict results inherit the parent's foundational-only (0 new axioms) status.",
     "mathContext": "$a \\le b \\ \\wedge\\ a \\neq b \\Rightarrow a < b$: strictness $=$ (non-strict bound) $+$ (equality case excluded).",

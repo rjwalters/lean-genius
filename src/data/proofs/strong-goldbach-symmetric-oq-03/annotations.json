@@ -118,7 +118,7 @@
       "startLine": 244,
       "endLine": 289
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pinning Exact Values with Nat.find_eq_iff",
     "content": "Concrete minimal offsets are verified by kernel `decide` (not `native_decide`, keeping the file axiom-free). Rather than reducing `Nat.find` in the kernel — which is heavy — each exact value is pinned via `Nat.find_eq_iff`, splitting the claim into 'the predicate holds at the target offset' plus 'it fails at every smaller one', both of which are small concrete primality checks dispatched by `decide` after `interval_cases`. Verified values: 0 at the prime midpoint 5; 1 at 4 and 6; 2 at 9; and 3 at 34, where the nearer reflections $33,35$ and $32,36$ are all composite.",
     "mathContext": "$\\text{minimalSymmetricOffset}(34) = 3 \\quad (68 = 31 + 37,\\ \\text{with } 33,35,32,36 \\text{ composite})$",

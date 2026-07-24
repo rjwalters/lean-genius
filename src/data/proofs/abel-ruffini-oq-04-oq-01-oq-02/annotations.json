@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Motivation: Closing the Gap in the Abel–Ruffini Chain",
     "content": "The header records exactly which link this entry supplies in the concrete-quintic chain. The parent AbelRuffiniOQ04OQ01 computes one Galois group by hand — Gal(x⁵ − 4x + 2) ≅ S₅ — and its sibling AbelRuffiniOQ04OQ01OQ04 proves the abstract group lemma 'a transitive subgroup of S_p (p prime) containing a transposition is all of S_p', but that lemma takes transitivity as a bare hypothesis [IsPretransitive G α]. Neither file justifies the transitivity from anything mathematical. This entry closes that gap over an arbitrary field and arbitrary degree by establishing the classical fact that supplies the hypothesis: the Galois group of an irreducible polynomial genuinely is a transitive subgroup of the symmetric group on its roots. The single import Mathlib pulls in the entire PolynomialGaloisGroup and IntermediateField machinery the three results rest on; gallery proofs may import Mathlib wholesale (unlike Mathlib-bound files).",
     "mathContext": "Chain: irreducible $p$ $\\implies$ $\\mathrm{Gal}\\,p$ transitive on roots $\\implies$ (with a transposition, prime degree) $\\mathrm{Gal}\\,p = S_p$.",

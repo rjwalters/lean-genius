@@ -123,7 +123,7 @@
     "id": "ann-sanity-checks",
     "proofId": "euler-totient-oq-06-oq-02",
     "range": { "startLine": 327, "endLine": 332 },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity Checks against Small Values",
     "content": "Concrete confirmations. Via the main theorem: n = 3 (= 3^1), n = 4, and n = 6 (= 2·3^1) all give v₂(φ(n)) = 1 (each has φ = 2). Via kernel `decide`: n = 5, 8, 15 fail φ ≡ 2 (mod 4) (their totients are 4, 4, 8, with v₂ = 2, 2, 3). These exercise all three solution families and their nearest non-solutions.",
     "mathContext": "$\\varphi(3)=\\varphi(4)=\\varphi(6)=2$; $\\varphi(5)=\\varphi(8)=4$, $\\varphi(15)=8$.",

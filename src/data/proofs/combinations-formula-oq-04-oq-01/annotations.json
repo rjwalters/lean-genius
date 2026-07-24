@@ -87,7 +87,7 @@
     "id": "ann-cf0401-summary",
     "proofId": "combinations-formula-oq-04-oq-01",
     "range": { "startLine": 202, "endLine": 213 },
-    "type": "context",
+    "type": "concept",
     "title": "Signature Checks and the Exact-Defect Summary",
     "content": "The file closes with #check commands listing the seven theorems, then a summary of what the entry adds over the parent. Where the parent proves only that the Pascal row is log-concave (a qualitative inequality), this entry upgrades it to the EXACT defect identity (C(n,k+1)² − C(n,k)·C(n,k+2))·(k+1)(n−k−1) = (n+1)·C(n,k)·C(n,k+2), equivalently the rational ratio C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)). Both the parent's ≤ and its strict interior < are then one-line corollaries: the excess (n+1)/((k+1)(n−k−1)) is ≥ 0 always and > 0 on the interior k+2 ≤ n. The whole development rests only on Mathlib's Nat.choose_succ_right_eq — no new axioms.",
     "mathContext": "$\\frac{\\binom{n}{k+1}^2}{\\binom{n}{k}\\binom{n}{k+2}} = 1 + \\frac{n+1}{(k+1)(n-k-1)}$; excess $>0$ iff $k+2\\le n$, giving the strict interior log-concavity.",

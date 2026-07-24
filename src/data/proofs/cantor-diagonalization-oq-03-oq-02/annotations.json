@@ -39,7 +39,7 @@
     "id": "ann-bool-neg",
     "proofId": "cantor-diagonalization-oq-03-oq-02",
     "range": { "startLine": 113, "endLine": 121 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Boolean negation as the predicative fixed-point-free map",
     "content": "`not_fixedPointFree` proves boolean negation `(!·)` has no fixed point by `cases b <;> decide` — a pure two-case computation, no axiom. `no_surjection_to_bool` then instantiates the engine: no surjection `A → (A → Bool)`. Because `A → Bool : Type u` lives in the same universe as `A`, this is the predicative Cantor no-surjection direction with no impredicative `Prop` and no `propext`.",
     "mathContext": "$!\\,b \\neq b$ for $b \\in \\{\\texttt{true}, \\texttt{false}\\}$, so negation is fixed-point-free and rules out any surjection onto $A \\to \\mathrm{Bool}$. Bool replaces Prop as the two-valued alphabet, keeping everything in $\\mathrm{Type}\\,u$.",

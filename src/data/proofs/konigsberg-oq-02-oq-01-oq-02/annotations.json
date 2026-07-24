@@ -30,7 +30,7 @@
       "startLine": 49,
       "endLine": 57
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Circuit Necessity via a Vacuous Implication",
     "content": "`eulerian_circuit_forall_even` shows that a closed Eulerian trail forces every vertex to have even degree. The proof is a clean specialization of Mathlib's `IsEulerian.even_degree_iff`, which states\n\n    Even (G.degree x) ↔ (u ≠ v → x ≠ u ∧ x ≠ v)\n\nfor an Eulerian trail `p : G.Walk u v`. For a **circuit** the endpoints coincide (`u = v`), so the hypothesis `u ≠ u` on the right is false and the implication is vacuously true. Hence `Even (G.degree x)` holds for every `x`. Notably this needs no connectivity assumption — parity necessity is unconditional.",
     "mathContext": "With $u = v$, the biconditional's right side is $(u \\neq u \\to \\ldots)$, whose premise is false, so it is trivially true; therefore $\\mathrm{Even}(\\deg x)$ for all $x$.",
@@ -52,7 +52,7 @@
       "startLine": 59,
       "endLine": 85
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "The Odd-Degree Vertices Are Exactly the Endpoints",
     "content": "Mathlib's `IsEulerian.card_odd_degree` only tells us *how many* vertices have odd degree (0 or 2). `eulerian_trail_odd_iff_endpoint` says *which* ones: for an open Eulerian trail from `u` to `v` with `u ≠ v`, a vertex has odd degree **iff** it is `u` or `v`. Instantiating `even_degree_iff` at `u ≠ v` collapses the right-hand side to `x ≠ u ∧ x ≠ v`; negating this biconditional (a short `by_contra` / `push_neg` argument) yields `Odd (G.degree x) ↔ x = u ∨ x = v`. `eulerian_trail_oddFinset_eq` repackages this as the Finset identity `filter Odd univ = {u, v}`.",
     "mathContext": "For $u \\neq v$: $\\mathrm{Odd}(\\deg x) \\iff x = u \\lor x = v$, hence $\\{x : \\mathrm{Odd}(\\deg x)\\} = \\{u, v\\}$. This sharpens the cardinality statement $|\\{x : \\mathrm{Odd}(\\deg x)\\}| \\in \\{0, 2\\}$.",
@@ -98,7 +98,7 @@
       "startLine": 101,
       "endLine": 109
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "One Odd Vertex Already Kills Every Eulerian Circuit",
     "content": "no_eulerian_circuit_of_odd_degree isolates the closed-trail case: if even a single vertex x has odd degree, no Eulerian circuit can exist. It is the exact contrapositive of eulerian_circuit_forall_even (a circuit forces every degree even), so the proof is a two-line rintro-and-apply. This is strictly stronger than the general trail obstruction no_eulerian_trail_of_card_odd_ne, which needs the odd-vertex count to avoid both 0 and 2: for a *circuit* the endpoints coincide, so the only admissible parity profile is all-even, and any lone odd vertex is fatal. For the Königsberg graph, where all four landmasses have odd degree, either obstruction already closes the problem.",
     "mathContext": "$\\exists x,\\ \\mathrm{Odd}(\\deg x)\\ \\Rightarrow\\ \\nexists\\ \\text{closed Eulerian trail}$; contrapositive of $\\text{circuit}\\Rightarrow\\forall v,\\ \\mathrm{Even}(\\deg v)$.",

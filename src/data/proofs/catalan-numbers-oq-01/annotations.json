@@ -3,7 +3,7 @@
     "id": "ann-cat-oq01-header",
     "proofId": "catalan-numbers-oq-01",
     "range": { "startLine": 1, "endLine": 24 },
-    "type": "context",
+    "type": "concept",
     "title": "Framing: the gap in Mathlib and the derivation route",
     "content": "The module docstring pins down exactly what this entry contributes. Mathlib's `Mathlib/Combinatorics/Enumerative/Catalan.lean` supplies the Catalan numbers with the quadratic Segner convolution `catalan_succ'` and the closed form `catalan_eq_centralBinom_div`, but it does *not* state the first-order (holonomic) linear recurrence $(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$. The proof deliberately avoids induction: it multiplies the target by $n+1$ and rewrites through two Mathlib bridges — `succ_mul_catalan_eq_centralBinom` ($(n+1)C_n = B_n$) and `Nat.succ_mul_centralBinom_succ` ($(n+1)B_{n+1} = 2(2n+1)B_n$) — collapsing the goal to a ring identity in the central binomials, after which the positive factor $n+1$ cancels. Everything stays over $\\mathbb{N}$, 0-axiom and 0-sorry.",
     "mathContext": "Have: $C_{n+1}=\\sum_i C_i C_{n-i}$ (Segner, $O(n)$) and $C_n=\\binom{2n}{n}/(n+1)$. Missing (this entry): $(n+2)\\,C_{n+1}=2(2n+1)\\,C_n$, first-order and $O(1)$.",

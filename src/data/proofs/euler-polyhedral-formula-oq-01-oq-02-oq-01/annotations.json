@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Descartes’ 4π theorem = discrete Gauss–Bonnet = Euler’s formula",
     "content": "Around 1630 Descartes observed (in the manuscript 'De solidorum elementis', lost until an 1860 rediscovery via a Leibniz copy) that for any convex polyhedron the total angular defect — the sum over vertices of 2π minus the face angles meeting there — is always 4π (720°), independent of shape. The angular defect at a vertex is the discrete analogue of Gaussian curvature concentrated at a cone point, so Descartes' theorem is the polyhedral form of Gauss–Bonnet (∫K dA = 2π·χ) and is logically equivalent to Euler's polyhedral formula V−E+F=2. This file formalizes it self-containedly with 0 axioms: it models only the combinatorial/angle data of a polyhedral surface (vertex/edge/face counts and the multiset of face sizes), takes the planar polygon angle sum (n−2)π for an n-gon as the definition of how faces enter, and proves totalDefect = 2π·(V−E+F) (discrete Gauss–Bonnet) and its χ=2 corollary 4π. Because everything is linear in the symbol π, no analytic fact about π is needed — the proofs close by `ring` / `linear_combination` over ℝ.",
     "mathContext": "Total angular defect $\\sum_v\\!\\big(2\\pi - \\sum_{f\\ni v}\\theta_{f,v}\\big) = 2\\pi\\,\\chi = 2\\pi(V-E+F)$; for a sphere $\\chi=2$ so the defect is $4\\pi$. Polyhedral Gauss–Bonnet with curvature concentrated at the vertices.",

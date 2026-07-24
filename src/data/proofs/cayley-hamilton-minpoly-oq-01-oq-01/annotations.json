@@ -33,7 +33,7 @@
       "startLine": 73,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Evaluating the Linear Factor as an Endomorphism Power",
     "content": "Two setup lemmas. maxGenEigenspace_eq_bot_of_not_hasEigenvalue: if ν is not an eigenvalue then f.maxGenEigenspace ν = ⊥ (contrapositive: a nonzero generalized eigenvector forces an eigenvalue), which lets the forward-divisibility proof discard off-spectrum summands. aeval_linear_factor_pow: aeval f ((X − C ν)^k) = (f − ν • 1)^k, obtained by pushing aeval through map_pow/map_sub and rewriting the scalar via Algebra.algebraMap_eq_smul_one. This bridge is used throughout: it converts polynomial factors into the endomorphism powers whose kernels are exactly the generalized eigenspaces (genEigenspace_nat).",
     "mathContext": "The identity $\\mathrm{aeval}_f((X-\\nu)^k) = (f - \\nu\\,\\mathrm{id})^k$ is what ties the polynomial side to the operator side: $\\ker (f-\\nu\\,\\mathrm{id})^k = \\mathrm{genEigenspace}\\,\\nu\\,k$, so vanishing of a polynomial factor on a vector is membership in a generalized eigenspace.",

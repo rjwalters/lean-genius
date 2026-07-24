@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 58
     },
-    "type": "context",
+    "type": "concept",
     "title": "Roadmap: From One Valuation Identity to Four Results",
     "content": "The file docstring lays out the whole strategy, completing the binomial side that the parent entry kummer-theorem left as a remark. The single engine is the elementary factorization C(n,k)·k!·(n-k)! = n! (Nat.choose_mul_factorial_mul_factorial): taking p-adic valuations turns the product into the sum ν_p C(n,k) + ν_p(k!) + ν_p((n-k)!) = ν_p(n!), and substituting Legendre's factorial identity three times (multiplied by p-1) cancels k+(n-k)=n to give the exact untruncated identity S_p(n) + (p-1)·ν_p C(n,k) = S_p(k) + S_p(n-k). From that one equation, linear arithmetic yields all four theorems below: the classical Kummer formula, digit-sum subadditivity, and the carry-free divisibility criterion. The valuation identity itself is already in Mathlib (sub_one_mul_padicValNat_choose_eq_sub_sum_digits); the contribution here is the untruncated ordered form and the two corollaries assembled over the parent's Legendre identity.",
     "mathContext": "$S_p(n) + (p-1)\\,\\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k)$, from $\\nu_p$ applied to $\\binom{n}{k}k!(n-k)! = n!$ plus Legendre thrice.",
@@ -55,7 +55,7 @@
       "startLine": 101,
       "endLine": 112
     },
-    "type": "observation",
+    "type": "concept",
     "title": "The Classical Digit-Sum Formula",
     "content": "`sub_one_mul_padicValNat_choose` recovers the usual (truncated) statement $(p-1)\\,v_p\\binom{n}{k} = s_p(k) + s_p(n-k) - s_p(n)$ as a one-line `omega` consequence of the untruncated identity. This matches Mathlib's `sub_one_mul_padicValNat_choose_eq_sub_sum_digits`; here it is presented as a corollary of the ordered form so the divisibility criterion below can be read off without truncation artifacts.",
     "mathContext": "$v_p\\binom{n}{k}$ is the number of carries when adding $k$ and $n-k$ in base $p$; each carry decreases the total digit sum by exactly $p-1$, which is precisely what this formula measures.",

@@ -96,7 +96,7 @@
       "startLine": 160,
       "endLine": 194
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Assembling the Explicit Bound",
     "content": "The second phase turns the tail lower bound |T|·(½ log x) ≤ θ(x) into the headline inequality. Chebyshev's upper bound θ(x) ≤ log4·x (theta_le_log4_mul_x) gives |T|·(½ log x) ≤ log4·x. The θ↔π bridge count_primes_Ioc rewrites |T| = π(b) − π(s) (valid since s ≤ b, itself from √x ≤ x and floor monotonicity), so dividing by ½ log x > 0 (le_div_iff₀ + nlinarith) yields π(b) − π(s) ≤ (2 log4)·x/log x. Finally the small primes are controlled by π(s) ≤ √x + 1 (primeCounting_le_succ composed with Nat.floor_le), and one `linarith` combines the two to reach π(⌊x⌋) ≤ √x + 1 + (log16)·x/log x. The constant 2 log4 = log16 ≈ 2.77 is non-sharp but the result is unconditional and axiom-free.",
     "mathContext": "$|T| = \\pi(b) - \\pi(s) \\le \\frac{2\\log 4\\,x}{\\log x}$, and $\\pi(s) \\le \\sqrt x + 1 \\Rightarrow \\pi(\\lfloor x\\rfloor) \\le \\sqrt x + 1 + \\frac{\\log 16\\,x}{\\log x}$.",

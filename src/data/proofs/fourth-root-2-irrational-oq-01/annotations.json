@@ -28,7 +28,7 @@
       "startLine": 49,
       "endLine": 82
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The degree-4 base field ℚ(⁴√2) inside ℂ",
     "content": "The parent works with the real number ⁴√2 = √√2, but the Galois closure needs i, so everything moves into ℂ. Here a = (⁴√2 : ℂ) is the real root coerced to ℂ; a_pow_four lifts (⁴√2)⁴ = 2 across the coercion, and a_im records that a is real (Im a = 0). Since X⁴ − 2 is irreducible over ℚ (the parent's Eisenstein + Gauss result) and a is a root of the monic X⁴ − 2, minpoly_a gives minpoly ℚ a = X⁴ − 2 and finrank_adjoin_a gives [ℚ(⁴√2):ℚ] = 4 via IntermediateField.adjoin.finrank.",
     "mathContext": "The bottom step of the tower, transported from the parent's real computation to the complex embedding.",
@@ -72,7 +72,7 @@
       "startLine": 137,
       "endLine": 179
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Adjoining i: the degree-2 second step",
     "content": "i is integral over ℚ(⁴√2), a root of the monic X² + 1 (I_isIntegral). To pin its minimal polynomial, X2_add_one_no_root shows X² + 1 has no root in ℚ(⁴√2): a root x would satisfy x² = −1, but every element of ℚ(⁴√2) is real (via realIF), and a real number's square is nonnegative. A degree-2 polynomial over a field with no root is irreducible (irreducible_of_degree_le_three_of_not_isRoot), so minpoly_I gives minpoly = X² + 1 and finrank_step_two gives [ℚ(⁴√2, i):ℚ(⁴√2)] = 2.",
     "mathContext": "The strict top step of the tower comes from irreducibility of X² + 1 over the real base field.",
@@ -94,7 +94,7 @@
       "startLine": 181,
       "endLine": 204
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The tower law: [ℚ(⁴√2, i) : ℚ] = 8",
     "content": "With both steps in hand, the tower law Module.finrank_mul_finrank multiplies them: finrank_tower gives [ℚ(⁴√2)(i):ℚ] = [ℚ(⁴√2):ℚ]·[ℚ(⁴√2, i):ℚ(⁴√2)] = 4·2 = 8 (an explicit FiniteDimensional instance and a raised synthInstance budget are needed for the tower's typeclass search). galois_closure_eq_adjoin_pair uses adjoin_simple_adjoin_simple to identify the two-step ℚ(⁴√2)(i) with the pair adjunction ℚ(⁴√2, i), so finrank_galois_closure states the headline: [ℚ(⁴√2, i):ℚ] = 8.",
     "mathContext": "8 = |D₄| is the order of the Galois group; the degree computation secures it without naming the group.",
@@ -116,7 +116,7 @@
       "startLine": 206,
       "endLine": 228
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The four roots and the splitting-field property",
     "content": "Finally the entry certifies that ℚ(⁴√2, i) really is the splitting field. I_mul_a_pow_four shows the non-real root i·⁴√2 satisfies (i·⁴√2)⁴ = 2 (since i⁴ = 1), and roots_mem_closure shows all four roots ±⁴√2, ±i·⁴√2 lie in ℚ(⁴√2, i) (from a, i ∈ the closure and closure under negation and product). So X⁴ − 2 splits over ℚ(⁴√2, i), the defining property of the splitting field.",
     "mathContext": "The four roots form a square in ℂ; the Galois group D₄ is its symmetry group.",

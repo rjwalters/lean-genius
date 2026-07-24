@@ -80,7 +80,7 @@
     "id": "ann-degree-obstruction",
     "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
     "range": { "startLine": 52, "endLine": 60 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Degree Obstruction: p·deg = 1 Is Impossible",
     "content": "A single arithmetic observation drives both halves of the file. If X were a p-th power, X = fᵖ, then taking degrees and using multiplicativity of degree under powers gives p · deg(f) = deg(X) = 1, so p ∣ 1 — impossible for a prime p ≥ 2. The elegance is that the *same* argument runs in two different degree rings: over the polynomial ring 𝔽ₚ[X] the degree is ℕ-valued (Polynomial.natDegree, natDegree_pow), while over the fraction field 𝔽ₚ(X) it becomes ℤ-valued (RatFunc.intDegree, the in-file intDegree_pow), yet both collapse to the divisibility p ∣ 1. This is why imperfectness is not an accident of one construction but a robust degree phenomenon: any characteristic-p field carrying a nonzero-degree element whose degree is coprime-obstructed cannot have that element as a p-th power. Note the contrast with Frobenius *injectivity*, which holds automatically on any reduced ring — so the entire obstruction to perfectness is concentrated in surjectivity, and surjectivity fails for exactly this degree reason.",
     "mathContext": "$f^p = X \\Rightarrow p\\cdot\\deg f = \\deg X = 1 \\Rightarrow p \\mid 1$, contradicting $p \\ge 2$. Same argument over $\\mathbb{N}$ (\\texttt{natDegree}) and $\\mathbb{Z}$ (\\texttt{intDegree}).",

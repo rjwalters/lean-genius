@@ -15,7 +15,7 @@
     "id": "ann-erdos191inc-vocabulary",
     "proofId": "erdos-191-incomplete-01",
     "range": { "startLine": 33, "endLine": 35 },
-    "type": "context",
+    "type": "concept",
     "title": "The Filter/Real vocabulary of the proof",
     "content": "namespace Erdos191Incomplete01 mirrors the parent's namespace so the discharged result plugs back in, and `open Filter Real` brings the atTop filter and Real.log into scope unqualified. This tiny setup is what makes the rest of the file read as a one-line composition: the entire 'axiom elimination' is really the recognition that the divergence log(log(log n)) → ∞ is already assembled from Mathlib's atTop-preservation lemmas (Real.tendsto_log_atTop, tendsto_natCast_atTop_atTop), so no genuine analysis is re-proved — only the right library lemmas are wired together in the right vocabulary.",
     "mathContext": "$\\texttt{open Filter Real}$ exposes $\\mathrm{atTop}$ and $\\mathrm{Real.log}$; the proof is a composition of atTop-preservation lemmas.",

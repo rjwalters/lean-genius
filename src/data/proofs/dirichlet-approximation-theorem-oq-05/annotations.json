@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Dual of Dirichlet: Sharpness Instead of Existence",
     "content": "The header frames what makes this entry distinctive within the gallery. The parent `dirichlet-approximation-theorem` and its siblings all prove EXISTENCE — every real α has infinitely many p/q with |α − p/q| < 1/q² (oq-01 counts them, oq-03 re-derives via Minkowski). This file proves the opposite, SHARPNESS direction, which appears nowhere else in the gallery: the exponent 2 cannot be improved for the golden ratio φ = (1+√5)/2. φ is the prototypical badly approximable number — the worst-approximable real, together with its GL₂(ℤ)-orbit — the bottom of the Lagrange/Markov spectrum. The proof is deliberately elementary (norm form of ℤ[φ], no continued fractions), and it is built on Mathlib's `Real.goldenRatio` API: goldenRatio_add_goldenConj (φ+ψ=1), goldenRatio_mul_goldenConj (φψ=−1), goldenRatio_sub_goldenConj (φ−ψ=√5), and the irrationality lemmas goldenRatio_irrational / goldenConj_irrational — the four inputs the three theorems below consume.",
     "mathContext": "Dirichlet (existence): $\\exists^\\infty\\, p/q,\\ |\\alpha - p/q| < 1/q^2$. Here (sharpness): $\\exists c>0,\\ \\forall p,q>0,\\ c/q^2 \\le |\\varphi - p/q|$.",

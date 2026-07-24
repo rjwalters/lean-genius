@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 53
     },
-    "type": "context",
+    "type": "concept",
     "title": "WIP framing: isolating the elementary engine of Hurwitz–Radon",
     "content": "The module docstring positions this file as a *building block*, not a closure of the parent's open even case. Hurwitz–Radon reduces the existence of an n-square identity to a family of anticommuting complex structures M₁,…,M_{n-1} on ℝⁿ (skew-symmetric, orthogonal, Mᵢ²=−I, mutually anticommuting). The parent `hurwitz-theorem-oq-03` kills the odd non-admissible dimensions elementarily but leaves the even case blocked on Clifford representation theory absent from Mathlib. Rather than tackle that, this file extracts the reusable determinant obstruction and states it once over a generic field. The setup `variable {K : Type*} [Field K] {m : ℕ}` (line 52) is deliberately field-agnostic so the single theorem can be replayed over both ℝ (odd case) and ℂ (the n≡2 mod 4 reduction). Despite the 'WIP' label the file is fully verified: 0 sorries, 0 axioms.",
     "mathContext": "Anticommuting complex structures: $M_i^\\top = -M_i,\\ M_i^\\top M_i = I,\\ M_i^2 = -I,\\ M_iM_j + M_jM_i = 0\\ (i\\neq j)$ — a real representation of $\\mathrm{Cl}(0,n-1)$.",
@@ -36,7 +36,7 @@
       "startLine": 64,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Tactic-Level Anatomy of the Determinant Computation",
     "content": "The Lean proof turns the one-line math argument into five explicit moves. (1) `congrArg Matrix.det hanti` applies det to both sides of the anticommuting relation; `Matrix.det_mul` on the left gives det A · det B, while `Matrix.det_neg` combined with `Fintype.card_fin` on the right produces the sign (-1)^m (the exponent is literally `card (Fin m) = m`). (2) `mul_comm` normalizes det B · det A to det A · det B so both sides share the factor x := det A · det B. (3) Invertibility is converted to nonzeroness through `IsUnit.mul` then `IsUnit.ne_zero`, giving x ≠ 0. (4) The crux is `mul_right_cancel₀ hne`: from (-1)^m · x = 1 · x with x ≠ 0 it cancels x to yield (-1)^m = 1 — this is where invertibility is indispensable, since over a ring with zero divisors the cancellation fails. (5) `-1 ≠ 1` is discharged by `linear_combination -h` (were -1 = 1 then 2 = 0, contradicting hchar), and `neg_one_pow_eq_one_iff_even` converts (-1)^m = 1 into `Even m`. No `decide`, `native_decide`, or `sorry` — the argument is a short chain of named Mathlib lemmas, which is why `#print axioms` reports only the foundational three.",
     "mathContext": "Reads $\\det A\\cdot\\det B=(-1)^m(\\det A\\cdot\\det B)$ as $(-1)^m\\cdot x=1\\cdot x$ with $x=\\det A\\det B\\neq 0$; right-cancellation gives $(-1)^m=1$, and $\\mathrm{char}\\,K\\neq 2$ turns this into $2\\mid m$.",
@@ -81,7 +81,7 @@
       "startLine": 139,
       "endLine": 203
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Product Engine: Moving an Element Through P = M₁⋯M_{n-1}",
     "content": "The ℂ specialization above invokes a product complex structure P = M₁⋯M_{n-1} without proving it exists; this section supplies the one algebraic fact that construction needs, stated over an arbitrary ring R (not just fields), so it applies verbatim to the real crossMat family and its complexification. mul_prod_anticomm shows that if a anticommutes with every entry of a list t, then moving a across the whole product t.prod picks up the sign (-1)^(t.length): a * t.prod = (-1)^(t.length) * (t.prod * a). The Lean proof is a list induction: the nil case is `simp`; the cons case pulls the head b off with `List.prod_cons`, uses the anticommuting hypothesis on b together with the inductive hypothesis on the tail s, and closes the sign bookkeeping between (-1)^s.length and b with `Commute.neg_one_left` before a final `noncomm_ring` normalizes the equation (the ring R need not be commutative, so this is not `ring`). Two immediate corollaries specialize by parity: commute_prod_of_anticomm_of_even (even length ⇒ a commutes with the product) and anticommute_prod_of_anticomm_of_odd (odd length ⇒ a anticommutes with it) — exactly the dichotomy that decides, for n-1 factors M₁,…,M_{n-1}, whether a fresh Mᵢ commutes with P (needed for P to be a genuine complex structure on the whole space) or anticommutes with it.",
     "mathContext": "$a\\,\\prod t=(-1)^{|t|}(\\prod t)\\,a$ when $a$ anticommutes with every factor of the list $t$; taking $t=[M_1,\\dots,M_{n-1}]$ (length $n-1$) makes the parity of $n-1$ — equivalently of $n$ — decide whether a further $M_i$ commutes or anticommutes with $P=\\prod t$.",

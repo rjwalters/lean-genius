@@ -6,7 +6,7 @@
       "startLine": 4,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "What Survives the Loss of Commutativity",
     "content": "The docstring frames the whole file against its parent. For a finite abelian group, ∏ x : G, x is a single well-defined element (Finset.prod requires a commutative monoid). Drop commutativity and that expression stops type-checking: there is no order-free product of all elements. Rather than abandon the question, this file locates the largest quotient on which the product still makes sense — the abelianization Gᵃᵇ = G/[G,G], the universal commutative quotient of G. The main theorem states that the image of any ordered product there is canonical, and the four supporting results (permutation lemmas, order-independence corollary, abelian contrast, two-element witness) triangulate exactly why that quotient is both necessary and sufficient.",
     "mathContext": "The universal property of abelianization: $\\mathrm{of} : G \\to G^{\\mathrm{ab}}$ is initial among homomorphisms from $G$ to a commutative group. Any construction that only becomes canonical after killing commutators factors through $G^{\\mathrm{ab}}$, which is precisely why the order-dependent $l.\\mathrm{prod}$ acquires a well-defined value there.",
@@ -79,7 +79,7 @@
       "startLine": 92,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Order-Independence as a One-Line Corollary",
     "content": "abelianization_prod_order_independent is the payoff, and it costs nothing beyond the main theorem: rewriting both sides with abelianization_prod_enum collapses each enumeration's abelianized product to the same canonical target ∏ x : G, of x, so they are equal by rfl. This is the standard 'factor through a canonical value' pattern — rather than comparing two orderings directly (which would require tracking a specific permutation between them), each is independently identified with an ordering-free normal form. The G-level products l₁.prod and l₂.prod may genuinely differ; only their images in Gᵃᵇ are forced to coincide.",
     "mathContext": "For enumerations $l_1, l_2$ of $G$, $\\mathrm{of}(l_1.\\mathrm{prod}) = \\prod_{x:G}\\mathrm{of}(x) = \\mathrm{of}(l_2.\\mathrm{prod})$. Equality is obtained by transitivity through the common normal form, not by exhibiting the permutation $l_1 \\sim l_2$ explicitly.",

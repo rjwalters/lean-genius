@@ -224,7 +224,7 @@
       "startLine": 309,
       "endLine": 335
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete examples: helix and great circle",
     "content": "Part VIII instantiates the formula on two curves. A single helix turn of radius r and pitch h has arc length L = 2π√(r²+h²), giving expected crossings π√(r²+h²)/d — depending only on the total length, not the shape ratio r/h (a hallmark of the noodle theorem). A great circle of circumference 2πR on a sphere of radius R gives πR/d; compared with the planar Buffon circle's 4R/d, the ratio is exactly 4/π ≈ 1.273, the universal 2D-vs-3D crossing factor. Both are one-line field_simp/ring simplifications of L/(2d).",
     "mathContext": "Helix: $E=\\dfrac{2\\pi\\sqrt{r^2+h^2}}{2d}=\\dfrac{\\pi\\sqrt{r^2+h^2}}{d}$. Great circle: $E=\\dfrac{2\\pi R}{2d}=\\dfrac{\\pi R}{d}$; vs. 2D $\\dfrac{4R}{d}$, ratio $\\dfrac{4}{\\pi}$.",
@@ -247,7 +247,7 @@
       "startLine": 337,
       "endLine": 358
     },
-    "type": "context",
+    "type": "concept",
     "title": "Connection to the Cauchy–Crofton formula",
     "content": "Part IX situates the result in integral geometry: the smooth 3D Buffon noodle theorem is the parallel-plane specialization of the Cauchy–Crofton formula in ℝ³, ∫_{Gr(2,3)} n(C,H) dμ(H) = ½·length(C), where n(C,H) counts intersections of the curve C with the plane H and the integral is over oriented planes with their invariant measure. The factor ½ is exactly the sphere average α₃ = E_{S²}[|cos φ|] established in the parent BuffonsNeedleOQ02.lean. A full formalization would need the Grassmannian Gr(2,3) ≅ S² as a measure space, its Haar measure, and the counting function — infrastructure beyond current Mathlib, which is why E = L/(2d) is axiomatized rather than derived.",
     "mathContext": "$\\displaystyle\\int_{\\mathrm{Gr}(2,3)} n(C,H)\\,d\\mu(H) = \\tfrac12\\,\\mathrm{length}(C)$; parallel planes of spacing $d$ specialize this to $E=\\dfrac{L}{2d}$, with $\\tfrac12=\\alpha_3=\\mathbb{E}_{S^2}[\\,|\\cos\\varphi|\\,]$.",
@@ -271,7 +271,7 @@
       "startLine": 360,
       "endLine": 374
     },
-    "type": "context",
+    "type": "concept",
     "title": "Conclusion: what is axiomatized and the key insight",
     "content": "The concluding docstring records the honest scope: the smooth 3D noodle formula E = L/(2d) rests on 2 axioms (the definition smooth3DExpectedCrossings and the identity smooth3D_buffon_eq), 0 sorries, with a suite of fully verified consequences — shape independence, monotonicity, nonnegativity, approximation convergence, dimension comparison, and Lipschitz stability. The axiomatization parallels the 2D smooth case (BuffonsNoodle.lean) and rests on the fully verified 3D polygonal theory in BuffonsNeedleOQ02.lean. The unifying insight: the crossing constant α₃ = ½ (sphere average of |cos φ|) plays in 3D the role α₂ = 2/π plays in 2D, and the smooth formula follows from the polygonal one by approximation and continuity.",
     "mathContext": "$\\alpha_3=\\tfrac12$ (3D) mirrors $\\alpha_2=\\tfrac2\\pi$ (2D); status: axiomatized (2 axioms, 0 sorries), consequences verified.",

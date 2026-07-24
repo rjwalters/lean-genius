@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "From One Surd to All: the Norm-Form Argument, Decoupled from φ",
     "content": "The header answers the explicit open question left by the parent oq-05 (φ is badly approximable): does the same elementary norm-form argument extend to other quadratic irrationals? The insight is that φ used the golden-ratio Vieta relations only incidentally — for a bare square root x = √d the Galois conjugate is simply −x (the two roots of X² − d), so the norm form q²(p/q − x)(p/q + x) = p² − d·q² has no middle term and no need for any goldenRatio API. The whole analytic core is developed over an ABSTRACT positive irrational x with x² = d, so the concrete surds √2, √3, √5 (and any √n with n non-square) are one-line specializations differing only in which Mathlib irrationality lemma is cited.",
     "mathContext": "Parent (φ): norm form $p^2 - pq - q^2$ from $\\varphi+\\psi=1,\\varphi\\psi=-1$. Here (√d): norm form $p^2 - d\\,q^2$ from conjugate $-x$, $x^2=d$.",

@@ -86,7 +86,7 @@
     "id": "ann-fiboq06-5",
     "proofId": "fibonacci-identities-oq-06",
     "range": { "startLine": 38, "endLine": 39 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Base Case Uses decide on Ground Values — Not native_decide",
     "content": "**Why the 0-axiom claim survives the `decide`.** Both theorems open their induction with `simp only [..., Finset.sum_range_one]; decide` (line 39 here, and identically at line 54 for `fib_weighted_sum`). After `sum_range_one` collapses the singleton sum, the residual goal is a *fully ground* arithmetic equation — `Nat.fib 0 + 1 = Nat.fib 2` for `fib_sum`, and `0 + Nat.fib 3 = 0 * Nat.fib 2 + 2` for `fib_weighted_sum`. These contain no free variables, so `decide` discharges them by *kernel* evaluation of the `Decidable` instance for `Nat` equality: the kernel unfolds `Nat.fib` on the concrete inputs and checks the resulting numerals. Crucially this is `decide`, **not** `native_decide` — it does not compile to native code and therefore does not invoke `Lean.ofReduceBool`. That is exactly why the entry can honestly claim `axiomCount: 0` and depend only on `propext`/`Classical.choice`/`Quot.sound`; a `native_decide` on a substantive goal would have forced `status: axiomatized` under the project's axiom-integrity policy. The subtle inductive arithmetic is instead carried by `omega` and `linear_combination`, both of which produce genuine kernel-checkable proof terms.",
     "mathContext": "Base cases: $F_0 + 1 = F_2$ (i.e. $0 + 1 = 1$) and $0\\cdot F_0 + F_3 = 0\\cdot F_2 + 2$ (i.e. $2 = 2$). Ground equalities decided by kernel reduction of $\\mathtt{Nat.fib}$, contributing no trusted-compiler axiom.",

@@ -99,7 +99,7 @@
       "startLine": 84,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Eventual Equality via Tendsto.congr'",
     "content": "The limit is not proved by manipulating the quotient (n+1)/(2n) directly, but by showing it is *eventually* equal to the manifestly convergent sequence 1/2 + (1/2)(1/n). Filter.Tendsto.congr' only requires the two sequences to agree on a set that lies in the filter — here the tail {n ≥ 1} supplied by Filter.eventually_ge_atTop 1 — because a limit at atTop ignores any finite prefix. filter_upwards introduces that tail hypothesis n ≥ 1, giving n ≠ 0 so field_simp can clear denominators and reduce both sides to a common numerator. This sidesteps the need for a quotient-limit lemma entirely.",
     "mathContext": "$\\texttt{Tendsto.congr'}$ upgrades $f =^{\\mathcal F} g$ (equality on a set in the filter $\\mathcal F$) plus $g \\to L$ to $f \\to L$. The at-infinity filter $\\texttt{atTop}$ makes any cofinite condition — such as $n \\ge 1$, which is needed only so that $\\frac{n+1}{2n} = \\frac12 + \\frac{1}{2n}$ is well defined — free, because the limit depends only on the tail of the sequence.",

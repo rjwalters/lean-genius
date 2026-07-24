@@ -29,7 +29,7 @@
       "startLine": 68,
       "endLine": 85
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "concaveOn_finset_sum: Finite Sum of Concave Functions",
     "content": "Mathlib has ConcaveOn.add (binary) but no Finset-sum version. This lemma folds it by Finset.induction: the empty sum is the constant 0 (concaveOn_const), and insert a u splits as g a + ∑_{i∈u} g i, concave by ConcaveOn.add of the head with the inductive hypothesis on the tail. Stated for a general convex set s in a real vector space, it is reusable beyond entropy.",
     "mathContext": "If each $g_i$ is concave on a convex set $s$, then $\\sum_{i\\in t} g_i$ is concave on $s$. Proof by induction on the finite index set $t$, base case the constant $0$.",

@@ -128,7 +128,7 @@
       "startLine": 243,
       "endLine": 384
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Collision Chase Is a Bounded Forward-Orbit Walk",
     "content": "When a fresh domain point a's naive image f a is already used (a collision), the scheduler 'chases' the forward orbit a, g(f a), g(f(g(f a))), … until it finds a range-fresh point. This section proves the chase is genuinely bounded: fwdOrbit_succ gives the chase-step recurrence g(f x), fwdOrbit_prefix_distinct shows a fresh-anchored colliding prefix cannot repeat (injectivity of g∘f would force the anchor back into the occupied set), and fwdOrbit_chase_length_le turns this into the quantitative bound N ≤ D.length. fwdOrbit_corr and chase_target_corr then show the p-value is invariant along the whole orbit, so wherever the chase lands, the resulting pair still respects the p ↔ q correspondence.",
     "mathContext": "If $a\\notin D$ and every chase point $\\mathrm{fwdOrbit}(f,g,a,k)\\in D$ for $1\\le k\\le N$, injectivity of $g\\circ f$ forces the prefix $\\mathrm{fwdOrbit}(f,g,a,0),\\dots,N$ to be pairwise distinct (a repeat would put $a$ back in $D$), hence $N\\le |D|$ via `Finset.card_le_card_of_injOn`. Correspondence invariance: $p(x)\\leftrightarrow q(fx)\\leftrightarrow p(gfx)$ makes $p$ constant along the orbit, so $p(a)\\leftrightarrow q(f(\\mathrm{fwdOrbit}(f,g,a,N)))$ for every $N$.",
@@ -201,7 +201,7 @@
       "startLine": 618,
       "endLine": 729
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "firstMissing: The Computable Least-Fresh-Element Targeting Primitive",
     "content": "To guarantee the back-and-forth eventually covers every natural number, the scheduler must target the least uncovered element at each stage rather than an arbitrary one. firstMissing L (built from firstMissingPart via Nat.rfind, terminating by exists_not_mem_list since ℕ is infinite) returns exactly that value, with firstMissing_not_mem certifying it is genuinely absent and firstMissing_lt_mem certifying minimality (every smaller number already occurs in L). firstMissing_computable shows the whole search is Computable (List.idxOf/List.length are primitive recursive). firstMissing_le_length bounds it by L.length, the quantitative exhaustion guarantee: repeatedly targeting the least-fresh element covers an ever-larger initial segment of ℕ.",
     "mathContext": "$\\mathrm{firstMissing}(L) := \\mu n[\\mathrm{idxOf}(n,L) = |L|]$ (the index of $n$ in $L$ equals $L$'s length iff $n\\notin L$). Minimality: $m<\\mathrm{firstMissing}(L)\\Rightarrow m\\in L$, so $\\{0,\\dots,\\mathrm{firstMissing}(L)-1\\}\\subseteq L$, giving $\\mathrm{firstMissing}(L)\\le |L|$ via a cardinality/pigeonhole bound (`Finset.card_le_card`).",
@@ -297,7 +297,7 @@
       "startLine": 1101,
       "endLine": 1188
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "chaseTarget and the General (Any-Depth) Domain Step",
     "content": "fwdOrbit_pred_iff shows p's value is constant along the whole forward orbit (one step crosses to q via the f-reduction and back to p via the g-reduction). chaseTarget f g a k := f (fwdOrbit f g a k) packages the k-th green candidate the chase inspects, with chaseTarget_succ confirming the 'apply f; on collision apply g then f repeatedly' recurrence, chaseTarget_corr giving correspondence p a ↔ q (chaseTarget f g a k) at every depth, and chaseTarget_computable showing the whole two-argument function is Computable₂. matching_step_chase then generalizes matching_step_f from collision-free depth 0 to any chase depth k: whenever the anchor is domain-fresh and the k-th chase target is range-fresh, prepending (a, chaseTarget f g a k) is a valid, correspondence-preserving extension.",
     "mathContext": "$\\mathrm{chaseTarget}(f,g,a,k) := f(\\mathrm{fwdOrbit}(f,g,a,k))$, satisfying $\\mathrm{chaseTarget}(f,g,a,k+1) = f(g(\\mathrm{chaseTarget}(f,g,a,k)))$. Correspondence: $p(a)\\leftrightarrow q(\\mathrm{chaseTarget}(f,g,a,k))$ for every $k$, since $p$ is orbit-invariant (`fwdOrbit_pred_iff`). This is `matching_step_f` generalized past the $k=0$ collision-free case.",
@@ -346,7 +346,7 @@
       "startLine": 1572,
       "endLine": 1982
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Preserving Balanced Across Both Step Directions, and Totality of the Domain Step",
     "content": "This block first develops the orbit arithmetic needed to reason about cycles: fwdOrbit_add (additivity), fwdOrbit_add_mul_period/fwdOrbit_mod_period (period wrap-around), and the reach/back/closure characterizations of orbitCycle (mem_orbitCycle_of_reach, exists_fwdOrbit_eq_anchor, mem_orbitCycle_of_fwdOrbit_mem). These power balanced_cons_domain (a domain cons preserves Balanced f g L: the placed anchor's own cycle gains one fresh point on each side, every other cycle is inert) and its dual balanced_cons_range. Because the scheduler must carry BOTH the un-swapped and swapped balance simultaneously, balanced_swap_cons_domain and balanced_swap_cons_range close the remaining 'cross' cases (a domain step also preserves the swapped balance, and vice versa) via fwdOrbit_swap_apply (conjugating the forward orbit under coordinate swap) and onCycle_of_onCycle_apply. The section culminates in escape_exists (the BuiltFrom-hypothesised bounded-escape theorem) and domain_step_exists, making the even-stage domain move genuinely total.",
     "mathContext": "The 2×2 matrix of preservation lemmas — (domain step | range step) × (un-swapped $\\mathrm{Balanced}(f,g,L)$ | swapped $\\mathrm{Balanced}(g,f,L^{\\mathrm{swap}})$) — is exactly what the extension-only scheduler needs to maintain across every stage, since the domain escape (`escape_exists'`) consumes the un-swapped balance while the range escape (via the swapped problem) consumes the swapped one. Conjugation: $\\mathrm{fwdOrbit}(g,f,fx,j) = f(\\mathrm{fwdOrbit}(f,g,x,j))$ transports periodicity and cycle membership across the swap.",
@@ -370,7 +370,7 @@
       "startLine": 1983,
       "endLine": 2085
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Augmenting Path: Re-labelling the Chase to Restore BuiltFrom",
     "content": "domain_step_exists places a fresh anchor a at the escaped chase target but does NOT preserve BuiltFrom when the escape depth N > 0 (the added pair is neither a pure f-edge nor g-edge). The fix is the classical augmenting path: augPath f g a N := the list of f-edges (oₖ, f oₖ) for k = 0,…,N (where oₖ = fwdOrbit f g a k), re-labelling the stale g-edges the chase walked through. mem_augPath_iff, mDom_augPath, mRan_augPath characterize its membership and projections; augPath_builtFrom, augPath_matchingCorr show every relabelled pair is a genuine f-edge respecting the correspondence; and augPath_isMatching (with the collision-context specialization augPath_isMatching_of_chase) shows the block is itself a valid matching whenever the underlying orbit prefix is distinct — which holds automatically for a fresh anchor's collision chase.",
     "mathContext": "$\\mathrm{augPath}(f,g,a,N) := [(o_k, f\\,o_k) : k=0,\\dots,N]$ where $o_k=\\mathrm{fwdOrbit}(f,g,a,k)$. Every pair is an $f$-edge, so splicing this block into a matching restores `BuiltFrom` — the invariant `domain_step_exists`'s naive single-pair placement destroys — while still anchoring $a=o_0$ and terminating at the escaped fresh range point $f\\,o_N$.",
@@ -492,7 +492,7 @@
       "startLine": 3055,
       "endLine": 3268
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "escScan and stageListC: A Genuinely Computable Scheduler",
     "content": "This section rebuilds stageSeqB as a plain, Classical.choose-free def. escScan performs the bounded escape search as a manifestly computable Nat.rec (rather than firstEscapeB's List.findIdx, whose scan predicate calls the merely-Computable chaseTarget, or escapeDepth's Nat.find, which carries a Prop witness): escScan_computable assembles it from Computable.nat_rec/Computable.cond plus the primitive-recursive membership test computable_mem_bool, and escScan_eq_of_least / escScan_eq_escapeDepth certify it reproduces the exact least-depth pairing of the earlier (noncomputable) construction. stageStepC and stageListC then define the extension-only scheduler as ordinary defs (no Classical.choose anywhere), with stageStepC_pair_subset/stageListC_pair_subset giving pair-monotonicity and stageListC_covers_dom/_covers_ran giving domain/range exhaustion exactly as in Path B. sigmaC f g n := mLookup (stageListC f g (2n+1)) n is the resulting read-off — a plain lookup into a computable list at a fixed, computable stage index.",
     "mathContext": "$\\mathrm{escScan}(f,g,\\mathrm{prev},a)$ is a `Nat.rec` over the window $0,\\dots,|\\mathrm{mRan}(\\mathrm{prev})|$ that keeps a found answer once discovered and returns the sentinel $|\\mathrm{mRan}(\\mathrm{prev})|+1$ if none escapes; `escScan_eq_of_least` shows it equals the true least escaping stage $m$ whenever one exists in the window. $\\mathrm{stageListC}(0)=[]$, $\\mathrm{stageListC}(s+1) = \\mathrm{stageStepC}(s,\\mathrm{stageListC}(s))$, entirely via plain pattern-matching recursion — no proof terms appear in the *computational* content, only in the correctness lemmas proved alongside.",
@@ -588,7 +588,7 @@
       "startLine": 3512,
       "endLine": 3536
     },
-    "type": "context",
+    "type": "concept",
     "title": "Bridging to the OneOneEquiv Structure",
     "content": "This section restates the main theorem at the level of Mathlib's/the gallery's structured OneOneEquiv predicate rather than the raw existential. exists_computable_perm_of_one_one_equiv is the existence form of the hard direction, obtained directly from (myhill_isomorphism p q).mp. one_one_equiv_of_computable_iso is the easy direction restated with explicit computable-permutation hypotheses, delegating to myhill_easy. computable_iso_is_equivalence (restated here as the structural capstone) packages reflexivity/symmetry/transitivity into a single Equivalence value, confirming that OneOneEquiv A B holds exactly when A and B lie in the same computable-isomorphism class.",
     "mathContext": "$\\mathrm{OneOneEquiv}(p,q) \\iff \\exists e:\\mathbb N\\simeq\\mathbb N,\\ e.\\mathrm{Computable} \\wedge \\forall n,\\ p(n)\\leftrightarrow q(en)$ — the theorem re-expressed as a statement purely about the `OneOneEquiv` relation, so downstream users of the gallery's one-one-reducibility API can invoke Myhill's theorem without unfolding the existential by hand.",

@@ -192,7 +192,7 @@
       "startLine": 116,
       "endLine": 173
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Decidability and Computational Checks for Q_1, Q_2, Q_3",
     "content": "`hypercubeAdj` is `Decidable` (it unfolds to a decidable proposition), giving `DecidableRel (hypercubeGraph n).Adj` and enabling `decide`/`native_decide`. These power a battery of concrete verifications: $Q_2$ is the 4-cycle with its six specific adjacencies (`hypercube_two_edges`), and $Q_1,Q_2,Q_3$ are $1$-, $2$-, $3$-regular with $4,8,24$ directed edges respectively — all discharged by `fin_cases`+`native_decide`. **Note (axiom honesty):** `native_decide` trusts kernel compilation and so relies on `Lean.ofReduceBool`; here it only certifies these small *supporting* checks, each of which is subsumed by the general theorems proved below for all $n$.",
     "significance": "supporting",
@@ -210,7 +210,7 @@
       "startLine": 175,
       "endLine": 191
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Adjacency via XOR and the Bit-Flip Obstruction",
     "content": "`hypercube_adj_iff` restates adjacency in explicit bit terms: $u\\sim v$ iff $u\\ne v$ and $u\\oplus v = 2^k$ for some bit position $k$ (`Iff.rfl` — it is the definition). `xor_pow2_ne_self` proves $v\\oplus 2^k\\ne v$: if they were equal then $2^k=0$ (cancel $v$ by `Nat.xor_assoc`/`Nat.xor_self`), contradicting $2^k>0$. This is the key arithmetic fact that flipping a bit genuinely moves to a different vertex.",
     "mathContext": "$u\\sim v \\iff u\\ne v \\wedge \\exists k,\\ u\\oplus v = 2^k$",
@@ -228,7 +228,7 @@
       "startLine": 193,
       "endLine": 242
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Bit-Flip Map: Neighbors of v Are Exactly Its n Bit-Flips",
     "content": "The neighbor structure of $Q_n$ is captured by `hypercubeFlip n v k = v \\oplus 2^k` (well-defined: `hypercube_flip_lt` shows $v\\oplus 2^k<2^n$ via `Nat.xor_lt_two_pow`). Three lemmas make it a clean bijection onto the neighborhood: `hypercube_flip_adj` (each flip is a neighbor), `hypercube_adj_of_flip` (every neighbor is *some* flip), and `hypercube_flip_injective` (distinct bit positions give distinct neighbors, since $2^i=2^j\\Rightarrow i=j$). Together they identify $N(v)$ with $\\mathrm{Fin}\\,n$ via bit position — the combinatorial engine for the counting results that follow.",
     "significance": "critical",

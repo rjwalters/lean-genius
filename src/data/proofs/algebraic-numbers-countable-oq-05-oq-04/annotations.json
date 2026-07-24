@@ -63,7 +63,7 @@
     "id": "algcount-ann-examples",
     "proofId": "algebraic-numbers-countable-oq-05-oq-04",
     "range": { "startLine": 111, "endLine": 138 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Instances on Both Sides",
     "content": "Three one-line instances exercise the characterization. Over $\\mathbb{Q}$: the classical case, recovered without Cantor's height function. Over a finite field $\\mathbb{Z}/p\\mathbb{Z}$: countable because `ZMod p` is finite (the function-field analogue of the number-field case). Over $\\mathbb{R}$ inside $\\mathbb{C}$: **un**countable, since $\\mathbb{R}$ is uncountable and every complex number is algebraic over $\\mathbb{R}$ (degree $\\le 2$) — a concrete cautionary example that stands in for the $p$-adic case yet needs no $p$-adic imports. The three instances land on opposite sides of the boundary purely by the countability of the base.",
     "mathContext": "$\\{x \\mid \\text{IsAlgebraic } \\mathbb{Q}\\ x\\},\\ \\{x \\mid \\text{IsAlgebraic } (\\mathbb{Z}/p)\\ x\\}$ countable; $\\{x \\in \\mathbb{C} \\mid \\text{IsAlgebraic } \\mathbb{R}\\ x\\} = \\mathbb{C}$ uncountable.",

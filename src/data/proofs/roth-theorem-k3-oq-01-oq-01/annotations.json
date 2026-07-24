@@ -30,7 +30,7 @@
       "startLine": 45,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The compounded modulus decay bound N^((2/3)^k) ≤ M k",
     "content": "modulus_ge_rpow: by induction on k, any modulus sequence with M 0 = N ≥ 1 and Mᵢ^(2/3) ≤ Mᵢ₊₁ satisfies N^((2/3)^k) ≤ M k. The base case is N^((2/3)^0) = N^1 = N = M 0 via Real.rpow_one. The step rewrites N^((2/3)^(n+1)) = (N^((2/3)^n))^(2/3) using pow_succ and Real.rpow_mul, lifts the induction hypothesis through rpow monotonicity (Real.rpow_le_rpow), and closes with the decay hypothesis Mₙ^(2/3) ≤ Mₙ₊₁. modulus_pos: since N > 0 the lower bound N^((2/3)^k) > 0 (Real.rpow_pos_of_pos), hence M k > 0.",
     "mathContext": "The exponent $(2/3)^k \\to 0$, so $N^{(2/3)^k} \\to 1$: the modulus may shrink, but no faster than the $k$-fold $2/3$-power of $N$ compounds. This is the quantitative heart of Roth's argument.",
@@ -53,7 +53,7 @@
       "startLine": 79,
       "endLine": 126
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Logarithmic form and how many iterations the modulus survives",
     "content": "log_modulus_ge: taking logs of the decay bound (Real.log_rpow, Real.log_le_log) gives (2/3)^k · log N ≤ log(M k). modulus_ge_threshold: the modulus stays at least a threshold T ≥ 1 as long as (3/2)^k · log T ≤ log N. The proof multiplies that hypothesis by (2/3)^k > 0; the product (2/3)^k·(3/2)^k = 1 collapses (mul_pow, norm_num) to log T ≤ (2/3)^k·log N ≤ log(M k), then exponentiates via Real.exp_log (both sides positive). Rearranged, the condition is k ≤ log_{3/2}(log N / log T): the modulus sustains ≈ log_{3/2}(log N) iterations before dropping below T — this is where the double logarithm enters.",
     "mathContext": "Solving $N^{(2/3)^k} = T$ gives $k = \\log_{3/2}(\\log N / \\log T)$; the number of usable density-increment steps is logarithmic in $\\log N$, i.e. $\\log\\log N$.",
@@ -76,7 +76,7 @@
       "startLine": 128,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Turning the iteration count into a density bound δ ≤ 10/√k",
     "content": "density_sq_le_of_iterations: repackaging the parent's iterations_before_contradiction, a density δ > 0 admitting k ≥ 1 valid increment steps without δ + k·δ²/100 exceeding 1 satisfies δ² ≤ 100/k (nlinarith on k·δ² ≤ 100). density_le_of_iterations: taking square roots — bounding (δ·√k)² = δ²·k ≤ 100 = 10² via Real.sq_sqrt and finishing with nlinarith — gives δ ≤ 10/√k. More guaranteed iterations force a smaller density.",
     "mathContext": "$k \\leq 100/\\delta^2 \\iff \\delta^2 \\leq 100/k \\iff \\delta \\leq 10/\\sqrt{k}$. The modulus decay supplies $k \\asymp \\log_{3/2}(\\log N)$, converting this into a double-logarithmic bound on the density.",

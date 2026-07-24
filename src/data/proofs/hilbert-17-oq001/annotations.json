@@ -29,7 +29,7 @@
       "startLine": 75,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Local factorisation u = (X−r)^a·u₁ with u₁(r) ≠ 0",
     "content": "factor_at_root extracts the exact local structure at a root. The factor (X − C r)^(rootMultiplicity r u) ∣ u comes for free from pow_rootMultiplicity_dvd. The point is the cofactor u₁ does NOT vanish at r: if it did, dvd_iff_isRoot would give (X − C r) ∣ u₁, and then u = (X−r)^a·u₁ would be divisible by (X − C r)^(a+1), contradicting pow_rootMultiplicity_not_dvd (which says a is the LARGEST such power). A subtle Lean point: when proving (X−r)^(a+1) ∣ u one must avoid rewriting the bare u, because u also appears inside the index rootMultiplicity r u; the proof builds the witness equation u = (X−r)^(a+1)·w by pow_succ, mul_assoc and ← hw without touching the exponent.",
     "mathContext": "$u = (X - r)^{\\mathrm{rootMult}_r u}\\cdot u_1, \\quad u_1(r) \\ne 0$",

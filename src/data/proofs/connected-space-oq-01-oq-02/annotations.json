@@ -55,7 +55,7 @@
       "startLine": 50,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Graph Is a Connected Skeleton",
     "content": "**Continuous image of a ray.** The oscillating graph $G = \\{(x, \\sin x^{-1}) : x > 0\\}$ is the image of the connected ray $(0,\\infty)$ (`isConnected_Ioi`) under the parametrization $x \\mapsto (x, \\sin x^{-1})$, which is continuous on $(0,\\infty)$ — there $x^{-1}$ is continuous (`ContinuousOn.inv₀`, since $x \\neq 0$), $\\sin$ is continuous, and the pairing is `ContinuousOn.prodMk`. By `IsConnected.image`, $G$ is connected. This is the dense skeleton the rest of the argument hangs on.",
     "mathContext": "$G = (x \\mapsto (x,\\sin x^{-1}))(\\,(0,\\infty)\\,)$ is connected.",

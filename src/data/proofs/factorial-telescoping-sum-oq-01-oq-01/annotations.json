@@ -29,7 +29,7 @@
       "startLine": 35,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Telescoping of Reciprocals",
     "content": "term_telescope establishes k/(k+1)! = 1/k! − 1/(k+1)! over ℝ. The proof expands (k+1)! = (k+1)·k! (Nat.factorial_succ, pushed through the cast), records that k! and k+1 are nonzero, and then clears denominators with field_simp before ring finishes. This is the analytic counterpart of the parent's integer collapse k·k! = (k+1)! − k!: dividing that identity by (k+1)! is exactly what produces a difference of consecutive reciprocals, the shape that makes an infinite sum — not merely a finite one — telescope.",
     "mathContext": "$\\frac{k}{(k+1)!} = \\frac{(k+1)-1}{(k+1)!} = \\frac{1}{k!} - \\frac{1}{(k+1)!}$.",
@@ -51,7 +51,7 @@
       "startLine": 49,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Closed Form and Its Exact Error Term",
     "content": "sum_Icc proves ∑_{k=1}^{n} k/(k+1)! = 1 − 1/(n+1)! by induction on n. Finset.sum_Icc_succ_top peels the top term, the inductive hypothesis rewrites the head, and term_telescope rewrites the new term into 1/(m+1)! − 1/(m+2)!; the consecutive boundary reciprocals cancel and ring closes (1 − 1/(m+1)!) + (1/(m+1)! − 1/(m+2)!) = 1 − 1/(m+2)!. The remaining term 1/(n+1)! is the exact truncation error after n terms — super-geometrically small.",
     "mathContext": "$\\sum_{k=1}^{n} \\frac{k}{(k+1)!} = \\frac{1}{1!} - \\frac{1}{(n+1)!} = 1 - \\frac{1}{(n+1)!}$.",
@@ -73,7 +73,7 @@
       "startLine": 58,
       "endLine": 64
     },
-    "type": "observation",
+    "type": "concept",
     "title": "Every Partial Sum Stays Below 1",
     "content": "sum_lt_one records that ∑_{k=1}^{n} k/(k+1)! < 1 for all n. It is immediate from the closed form: the sum equals 1 minus the strictly positive tail 1/(n+1)!, so it never reaches 1. positivity supplies 0 < 1/(n+1)! and linarith finishes. This monotone approach-from-below is the qualitative picture behind the limit.",
     "mathContext": "$1 - \\frac{1}{(n+1)!} < 1$ since $\\frac{1}{(n+1)!} > 0$.",
@@ -93,7 +93,7 @@
       "startLine": 66,
       "endLine": 83
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Convergence to 1 by a Factorial Squeeze",
     "content": "tendsto_one proves that the partial sums converge to 1, i.e. ∑_{k≥1} k/(k+1)! = 1. After rewriting the partial sums to their closed form 1 − 1/(n+1)!, the only work is showing the tail 1/(n+1)! → 0. This uses only the crude bound n+1 ≤ (n+1)! (Nat.self_le_factorial), which gives 0 ≤ 1/(n+1)! ≤ 1/(n+1); squeeze_zero against tendsto_one_div_add_atTop_nhds_zero_nat (1/(n+1) → 0) forces the tail to 0. Then 1 − 1/(n+1)! → 1 − 0 = 1. No sharp factorial growth estimate is needed.",
     "mathContext": "$0 \\le \\frac{1}{(n+1)!} \\le \\frac{1}{n+1} \\to 0$, so $1 - \\frac{1}{(n+1)!} \\to 1$.",

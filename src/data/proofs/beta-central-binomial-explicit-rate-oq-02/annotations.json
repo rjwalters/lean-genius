@@ -6,7 +6,7 @@
       "startLine": 83,
       "endLine": 144
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Exact Upper Per-Step Bound via Geometric Majorant",
     "content": "diff_upper is the sharp replacement for the parent entry's crude per-step estimate. Mathlib's exact per-step series Stirling.log_stirlingSeq_diff_hasSum expresses the drop log stirlingSeq(m+1) − log stirlingSeq(m+2) as a positive series Σ_{k≥0} (1/(2k+3))·y^{k+1} with y = x² = 1/(2m+3)². Dominating each coefficient 1/(2k+3) by its k=0 value 1/3 turns the tail into a geometric series (1/3)·y·Σ y^k = (y/3)/(1−y), which evaluates in closed form to exactly 1/(12(m+1)(m+2)). Because that closed form telescopes, the per-step bound is written as the difference 1/(12(m+1)) − 1/(12(m+2)) — the form that later sums to the sharp 1/(12j) envelope.",
     "mathContext": "$\\log s_{m+1}-\\log s_{m+2}=\\sum_{k\\ge0}\\frac{1}{2k+3}\\,y^{k+1}\\le \\frac{y/3}{1-y}=\\frac{1}{12(m+1)(m+2)}=\\frac{1}{12(m+1)}-\\frac{1}{12(m+2)},\\quad y=\\tfrac{1}{(2m+3)^2}$",
@@ -30,7 +30,7 @@
       "startLine": 145,
       "endLine": 208
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Lower Per-Step Bound: Leading Term Plus Quadratic Deficit",
     "content": "diff_lower_leading keeps only the single leading term x²/3 = 1/(3(2m+3)²) of the exact series, which is a valid lower bound since every dropped term is positive. diff_lower then repackages this lower drop in telescoping form: it undershoots the exact upper model 1/(12 i(i+1)) by a per-step deficit 1/(12 i(i+1)) − 1/(3(2i+1)²) = 1/(12 i(i+1)(2i+1)²) = O(1/i⁴). Bounding that deficit by the quadratic telescoping term (1/12)(1/i² − 1/(i+1)²) gives a lower per-step bound in a form that will sum to an O(1/j²) correction — enough to pin the second-order coefficient but not yet the vanishing of c₂.",
     "mathContext": "$\\log s_{m+1}-\\log s_{m+2}\\ge \\frac{x^2}{3}=\\frac{1}{3(2m+3)^2},\\qquad \\frac{1}{12\\,i(i+1)}-\\frac{1}{3(2i+1)^2}=\\frac{1}{12\\,i(i+1)(2i+1)^2}=O(i^{-4})$",
@@ -52,7 +52,7 @@
       "startLine": 241,
       "endLine": 359
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Sharp Stirling Deviation Bracket",
     "content": "stirlingLogDev_upper and stirlingLogDev_lower telescope the per-step bounds over m ≥ j and pass to the limit stirlingSeq → √π (the qualitative Mathlib fact, used only to close the telescoped partial sums). The capstone stirlingLogDev_bracket assembles them into the two-sided envelope 1/(12j) − 1/(12j²) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j) for j ≥ 1. The upper side is exact to leading order and identifies the true leading coefficient 1/12 — a factor-of-three improvement over Mathlib's and the parent entry's 1/(4j), which is the crux that makes an exact asymptotic coefficient extractable.",
     "mathContext": "$\\frac{1}{12j}-\\frac{1}{12j^2}\\ \\le\\ \\log s_j-\\log\\sqrt{\\pi}\\ \\le\\ \\frac{1}{12j}\\qquad(j\\ge1)$",
@@ -99,7 +99,7 @@
       "startLine": 424,
       "endLine": 527
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cubic Refinement of the Lower Bracket",
     "content": "To reach the vanishing of c₂ the lower side of the bracket must match the exact upper 1/(12j) to one order deeper. diff_lower_cubic sharpens the lower per-step bound with a cubic telescoping correction (1/144)(1/i³ − 1/(i+1)³) in place of the quadratic one; the required inequality reduces, after clearing denominators, to the manifestly true 0 ≤ 7·t(t+1) + 1. tel_cubic telescopes it and stirlingLogDev_lower_cubic / stirlingLogDev_bracket_cubic produce the refined deviation bracket 1/(12j) − 1/(144 j³) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j), now sharp to order 1/j³ on both sides.",
     "mathContext": "$\\frac{1}{12j}-\\frac{1}{144\\,j^3}\\ \\le\\ \\log s_j-\\log\\sqrt{\\pi}\\ \\le\\ \\frac{1}{12j};\\qquad\\text{key inequality }0\\le 7t(t+1)+1$",

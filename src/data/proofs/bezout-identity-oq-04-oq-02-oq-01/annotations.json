@@ -28,7 +28,7 @@
       "startLine": 48,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Abstract gcd as an Ideal Generator",
     "content": "The whole proof pivots on Mathlib's IsBezout.gcd a b, defined as a *generator of the principal ideal span{a,b}* — not via any Euclidean algorithm. Its universal property is packaged as gcd_dvd_left, gcd_dvd_right (it divides a and b) and dvd_gcd (any common divisor divides it).\n\ngcd_dvd_linear_combination uses gcd_dvd_left/right to show gcd divides a·x + b·y. gcd_achievable_Bezout uses the ideal-theoretic Bézout witness IsBezout.gcd_eq_sum (∃ u v, u·a + v·b = gcd), reoriented by `ring` into the a·x + b·y convention.",
     "mathContext": "IsBezout.gcd a b := generator (span{a,b}). Since span{a,b} is principal (span_pair_isPrincipal instance from [IsBezout R]), the generator exists; it is unique only up to a unit, hence noncomputable.",
@@ -50,7 +50,7 @@
       "startLine": 72,
       "endLine": 95
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Characterization and Its Backward Direction",
     "content": "linear_combination_iff_gcd_dvd is the headline result: ∃ x y, a·x + b·y = c ↔ gcd(a,b) ∣ c. Forward is gcd_dvd_linear_combination. Backward: from gcd ∣ c obtain k with c = gcd·k; from gcd_eq_sum obtain u, v with u·a + v·b = gcd; then c = (u·a + v·b)·k = a·(k·u) + b·(k·v), closed by `ring` after rewriting. gcd_complete_characterization_Bezout then follows verbatim from the parent via simp_rw with the divisibility equivalence.",
     "mathContext": "The argument uses no Euclidean structure — only that gcd divides a, b and is a linear combination of them. This is exactly the content of IsBezout, which is why it is the minimal hypothesis.",

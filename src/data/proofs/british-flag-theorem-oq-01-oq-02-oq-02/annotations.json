@@ -36,7 +36,7 @@
       "startLine": 90,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Optional-Coordinate Model of the Displacement",
     "content": "The crux that makes the arbitrary moment tractable: write the displacement X − vertex t as a single weighted sum ∑_{a : Option (Fin n)} indᵗ(a) • e(a) over optional coordinates, where e(none) = X − c, e(some i) = −uᵢ (def evec), and indᵗ(none) = 1, indᵗ(some i) = [i ∈ t] (def ind). Then displacement_eq_sum verifies this identity, and sqDist_eq_sum expands ‖X − vertex t‖² = ⟪·,·⟫ by bilinearity into a single sum over pairs p : Option(Fin n)² of term X c u t p = indᵗ(p.1)·indᵗ(p.2)·⟪e p.1, e p.2⟫. All t-dependence now lives in the two indicator factors; the inner product ⟪e p.1, e p.2⟫ is a fixed coefficient.",
     "mathContext": "Encoding the base point as an extra 'coordinate' none unifies the constant, linear, and quadratic pieces of the squared distance into one indexed sum, so raising to the m-th power is a single application of Fintype.sum_pow rather than a case-by-case binomial expansion.",
@@ -94,7 +94,7 @@
       "startLine": 167,
       "endLine": 190
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Each Product Factors Through t ∩ touched π",
     "content": "ind_inter shows an indicator weight indᵗ(a) equals ind_{t∩A}(a) once a's coordinate lies in A. term_inter lifts this to a whole term factor: term X c u t (π j) = term X c u (t ∩ touched π) (π j), because each factor's coordinate pair sits inside touched π (Finset.subset_biUnion_of_mem, then subset_union_left/right). Consequently the product ∏_j term X c u t (π j) depends on t only through t ∩ touched π.",
     "mathContext": "This is the hypothesis alt_sum_zero_of_inter needs: the summand for a fixed multi-index π is a function of t ∩ (proper subset), so its signed powerset sum vanishes.",

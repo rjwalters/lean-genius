@@ -63,7 +63,7 @@
     "id": "ann-cf0802-verification",
     "proofId": "combinations-formula-oq-08-oq-02",
     "range": { "startLine": 193, "endLine": 207 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Verifications",
     "content": "Kernel `decide` sanity checks pin down the specializations concretely: D 0 5 = 32 = 2^5; D 1 6 = 13 = fib 7; the Padovan value D 2 6 = 6; and the stride-2 recurrence instance D 2 6 = D 2 5 + D 2 3 (6 = 4 + 2). These use kernel decidability, not native_decide, so they add no axioms.",
     "mathContext": "$D_0(5)=32$, $D_1(6)=13$, $D_2(6)=6$, and $D_2(6)=D_2(5)+D_2(3)$.",

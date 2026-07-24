@@ -119,7 +119,7 @@
       "startLine": 121,
       "endLine": 129
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "succ_mul: the Crux Lemma that Unlocks Commutativity",
     "content": "The definition gives `mul_succ` (recursion on the right); its left-recursive mirror `(n+1)*m = n*m + m` is not definitional and must be proved by induction on `m`. The successor step is the one genuinely fiddly computation in the file: expanding both sides via `mul_succ` and the induction hypothesis leaves `succ (n*m + (m + n)) = succ (n*m + (n + m))`, closed by `add_comm m n` after two uses of `add_assoc` to line up the parenthesisation. Once `succ_mul` is available, `mul_comm` is a two-line induction — this lemma is precisely what the commutativity proof needs.",
     "mathContext": "$(n+1)\\cdot m = n\\cdot m + m$, proved by induction on $m$; the step reduces to $n m + (m+n) = n m + (n+m)$, i.e. $m+n = n+m$.",
@@ -185,7 +185,7 @@
       "startLine": 146,
       "endLine": 155
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Right Distributivity for Free from Left Distributivity",
     "content": "Left distributivity `a*(b+c) = a*b + a*c` is proved by a short induction on `c`. Right distributivity is then obtained without any new induction: `(a+b)*c = c*(a+b) = c*a + c*b = a*c + b*c`, three rewrites using `mul_comm` and the left version. This is a small but characteristic economy — once commutativity is in hand, one distributive law implies the other, so only one of the two needs an inductive proof.",
     "mathContext": "$(a+b)c \\overset{\\text{comm}}{=} c(a+b) \\overset{\\text{L-distrib}}{=} ca + cb \\overset{\\text{comm}}{=} ac + bc.$",
@@ -207,7 +207,7 @@
       "startLine": 157,
       "endLine": 160
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Associativity Spends Distributivity",
     "content": "`mul_assoc` is proved by induction on the last factor `c`. Its successor step is where distributivity is used: `(a*b)*(c+1) = (a*b)*c + a*b = a*(b*c) + a*b = a*(b*c + b) = a*(b*(c+1))`, folding the two summands back together with `left_distrib` (read right-to-left). This dependency — associativity resting on distributivity resting on commutativity resting on succ_mul — is the whole reason the lemmas appear in this order.",
     "mathContext": "$(ab)(c+1) = (ab)c + ab = a(bc) + ab = a(bc+b) = a\\,(b(c+1)).$",

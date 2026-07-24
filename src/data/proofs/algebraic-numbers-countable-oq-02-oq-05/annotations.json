@@ -30,7 +30,7 @@
       "startLine": 107,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Countable Language ⟹ Countably Many One-Variable Formulas",
     "content": "The load-bearing fact is that a countable first-order language has only countably many one-variable formulas. Mathlib supplies `BoundedFormula.encoding : Encoding (Σ n, L.BoundedFormula α n)`, an injective encoding of every bounded formula (of every nesting depth) into a finite list over the alphabet\n\n  Γ = (Σ k, L.Term (α ⊕ Fin k)) ⊕ ((Σ n, L.Relations n) ⊕ ℕ).\n\nWhen the language's function- and relation-symbol sigmas are countable, Γ is countable (Terms over a countable variable set are countable, and a countable sum/sigma of countables stays countable), hence so is `List Γ`. Injectivity of the encoding then transports countability back: `encode_injective.countable` gives `Countable (Σ n, L.BoundedFormula (Fin 1) n)`.\n\nOne subtlety: instance resolution will not unfold the projection `BoundedFormula.encoding.Γ` to the explicit sum, so the file registers `Countable BoundedFormula.encoding.Γ` at the projected type (using that it is DEFINITIONALLY the explicit sum) before invoking the encoding's countability. Finally `L.Formula (Fin 1) = L.BoundedFormula (Fin 1) 0` injects into the sigma via `φ ↦ ⟨0, φ⟩`, yielding `instCountableFormulaFinOne`.",
     "mathContext": "This is the reusable 'countable syntax' infrastructure. Every countability-of-definable-objects theorem reduces to it: countably many names ⟹ countably many named objects.",
@@ -54,7 +54,7 @@
       "startLine": 135,
       "endLine": 159
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Definable Reals Inject into the Countable Formulas",
     "content": "`FODefinable r := ∃ φ : L.Formula (Fin 1), ∀ x, φ.Realize ![x] ↔ x = r` says r is the UNIQUE realiser of some one-variable formula. The main theorem `foDefinable_reals_countable` shows `{r : ℝ | FODefinable L r}` is countable by a pure counting argument:\n\n- Map each definable real (as a subtype element) to a formula it uniquely satisfies, chosen by `Exists.choose`.\n- Injectivity: suppose two definable reals a, b choose the SAME formula φ. From a's specification, `∀ x, φ.Realize ![x] ↔ x = a`; from b's (after rewriting b's chosen formula to φ), `∀ x, φ.Realize ![x] ↔ x = b`. Instantiating both at x = a gives `(a = a) ↔ (a = b)`, whence a = b.\n\nSo the definable reals inject into `L.Formula (Fin 1)`, which §2 proved countable; `Set.countable_coe_iff` and `Function.Injective.countable` finish. Stated for an ARBITRARY countable language and structure, this single argument is the uniform reason every layer of the nameability hierarchy is countable.",
     "mathContext": "At the language of ordered rings, Tarski's quantifier elimination makes the ∅-definable reals exactly the real algebraic numbers, so this theorem subsumes the grandparent 'algebraic reals are countable'. Any countable expansion of the language is handled by the identical injection.",

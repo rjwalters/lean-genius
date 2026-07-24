@@ -23,7 +23,7 @@
     "id": "ann-paired-induction",
     "proofId": "lucas-sequence-degree2-identities-oq-02",
     "range": { "startLine": 54, "endLine": 97 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Strengthened-Pair Induction for a Second-Order Recurrence",
     "content": "Because U and V satisfy an order-2 recurrence in the running index, the value of an addition law at k+2 depends on its values at BOTH k+1 and k. A single ordinary induction, which only hands back the statement at the immediate predecessor, cannot supply this. The fix is to induct on the conjunction (A(k) ∧ B(k)) ∧ (A(k+1) ∧ B(k+1)): the step receives both predecessors and produces the shifted pair. The two base cases n=0 and n=1 are the price — n=0 is a ring identity after V₀=2, U₀=0, and n=1 reduces to the parent companion relation V_eq (V_m = 2·U_{m+1} − P·U_m). Each inductive step is exactly linear_combination (P · law_{j+1} − Q · law_j), mirroring the recurrence coefficients.",
     "mathContext": "Step: $2U_{m+(j+2)} = P\\,(2U_{m+(j+1)}) - Q\\,(2U_{m+j})$, expand each factor by the law at $j{+}1$ and $j$.",

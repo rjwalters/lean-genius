@@ -125,7 +125,7 @@
       "startLine": 75,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "(⟹) The enlarged family t′ satisfies ordinary Hall",
     "content": "Forward direction, first half: the relaxed Hall condition for t (slack d) is upgraded to the EXACT Hall condition for the dummy-augmented family t′. For nonempty s, the enlarged neighbourhood s.biUnion t′ equals (s.biUnion t).image Sum.inl ∪ D — the original neighbourhood embedded via inl, disjointly union'd with all d dummies. Because inl is injective and the two pieces are disjoint, its cardinality is #(s.biUnion t) + d, so #s ≤ #(s.biUnion t) + d (the hypothesis) becomes #s ≤ #(s.biUnion t′). Feeding that into Mathlib's classical marriage theorem `Finset.all_card_le_biUnion_card_iff_exists_injective` yields a genuine injective SDR f for t′.",
     "mathContext": "$s.\\mathrm{biUnion}\\,t' = \\big(s.\\mathrm{biUnion}\\,t\\big).\\mathrm{image}\\,\\mathrm{inl} \\sqcup D$, so $\\#(s.\\mathrm{biUnion}\\,t') = \\#(s.\\mathrm{biUnion}\\,t) + d$. Hall for $t'$: $\\#s \\le \\#(s.\\mathrm{biUnion}\\,t')$ follows from the deficiency hypothesis, and Hall's theorem produces an injective $f$ with $f\\,i \\in t'\\,i$.",
@@ -150,7 +150,7 @@
       "startLine": 117,
       "endLine": 157
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "(⟹) Extract the representative and reject the dummies",
     "content": "Forward direction, second half: convert the SDR f : ι → α ⊕ Fin d into a partial SDR into α. The `rejected` set is exactly the indices f sends to a dummy (f i).isRight; the representative e i extracts the α-component (Sum.elim id …), arbitrary on rejected indices. Three obligations close the goal: (1) #rejected ≤ d because f restricted to rejected injects into the d dummies D (`card_le_card_of_injOn`); (2) e is injective off rejected because there f i = inl (e i) and f is globally injective; (3) every non-rejected i is represented since f i = inl (e i) ∈ t′ i must land in the inl-image of t i (it cannot be a dummy).",
     "mathContext": "$\\mathrm{rejected} = \\{i : (f\\,i).\\mathrm{isRight}\\}$, $e\\,i = \\mathrm{Sum.elim}\\,\\mathrm{id}\\,(\\ast)\\,(f\\,i)$. Off rejected, $f\\,i = \\mathrm{inl}(e\\,i)$, so injectivity of $f$ gives $\\mathrm{InjOn}\\,e\\,\\mathrm{rejected}^c$ and membership $f\\,i \\in t'\\,i$ forces $e\\,i \\in t\\,i$.",
@@ -175,7 +175,7 @@
       "startLine": 158,
       "endLine": 176
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "(⟸) A partial SDR forces the deficiency condition (counting split)",
     "content": "Converse, an elementary counting argument. Given a partial SDR (e, rejected) with #rejected ≤ d, split any s as (s ∩ rejected) ⊎ (s \\ rejected). The intersection has ≤ d elements (it sits inside rejected). On the difference s \\ rejected, e is injective (it lies in rejectedᶜ) and lands in s.biUnion t, so #(s \\ rejected) ≤ #(s.biUnion t) by `card_le_card_of_injOn`. Adding the two bounds, #s = #(s ∩ rejected) + #(s \\ rejected) ≤ d + #(s.biUnion t) — the relaxed Hall condition — closed by `omega`.",
     "mathContext": "$\\#s = \\#(s\\cap R) + \\#(s\\setminus R) \\le d + \\#(s.\\mathrm{biUnion}\\,t)$, using $\\#(s\\cap R)\\le \\#R \\le d$ and the injection $e : s\\setminus R \\hookrightarrow s.\\mathrm{biUnion}\\,t$.",

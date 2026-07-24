@@ -34,7 +34,7 @@
       "startLine": 33,
       "endLine": 59
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Converse: from fib_gcd to Injectivity on [2, ∞)",
     "content": "**The mathematical heart of the entry.** For $m \\ge 3$, assume $F_m \\mid F_n$. By $\\mathtt{fib\\_gcd}$, $\\gcd(F_m, F_n) = F_{\\gcd(m,n)}$, and $\\mathtt{gcd\\_eq\\_left}$ collapses the left side to $F_m$ under the hypothesis, giving $F_{\\gcd(m,n)} = F_m$. Now $F_m \\ge F_3 = 2$ (monotonicity), so $\\gcd(m,n)$ is neither $0$ (where $F = 0$) nor $1$ (where $F = 1$); hence $\\gcd(m,n) \\ge 2$. On $[2,\\infty)$ the sequence $F$ is strictly monotone, so **injective**, and $F_{\\gcd(m,n)} = F_m$ upgrades to $\\gcd(m,n) = m$. Therefore $m = \\gcd(m,n) \\mid n$.",
     "mathContext": "$F_m \\mid F_n \\Rightarrow F_{\\gcd(m,n)} = F_m \\xRightarrow{\\text{inj on }[2,\\infty)} \\gcd(m,n) = m \\Rightarrow m \\mid n$.",

@@ -60,7 +60,7 @@
       "startLine": 84,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Isolating the Polylog: (log l)⁴/l → 0",
     "content": "**Step 2.** Three private lemmas quarantine every logarithm into a single decay fact. `rpow_quarter_pow_four`: $(x^{1/4})^4 = x$ for $x \\ge 0$ (via `Real.rpow_natCast` / `Real.rpow_mul`). `tendsto_log_pow_four_div_atTop`: $(\\log x)^4/x \\to 0$ — take $\\log x = o(x^{1/4})$ (`isLittleO_log_rpow_atTop` at exponent $1/4$), raise to the 4th power (`.pow`), so $(\\log x)^4 = o((x^{1/4})^4) = o(x)$, then `.tendsto_div_nhds_zero` and `congr'` through the quarter-power identity. `eventually_log4_div_small`: for every $\\varepsilon > 0$, eventually $(\\log l)^4/l < \\varepsilon$ over natural $l$, composing with `tendsto_natCast_atTop_atTop`.",
     "mathContext": "$(\\log l)^4 = o(l)$: the polylog factors of both Ramsey bounds are negligible against the linear factor $l = l^3/l^2$ separating the cubic denominator from the quadratic increment.",
@@ -87,7 +87,7 @@
       "startLine": 116,
       "endLine": 154
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Reducing the ratio to the increment (R'−R)/R",
     "content": "**Main theorem, setup.** `erdos_1014_k4_ratio_convergence`: for every $\\varepsilon > 0$, eventually $|R(4,l+1)/R(4,l) - 1| < \\varepsilon$. First the constants $C, c$ are extracted from the two axioms `R3_upper_bound_aks` and `R4_lower_bound_mv`, and a threshold from `eventually_log4_div_small(εc/(4C))`; the working threshold is the max of the three plus 3. Then the ratio is tamed structurally: `ramsey_pos` gives the denominator $R = R(4,l) > 0$, and monotonicity `ramsey_monotone_right` gives $R \\le R' = R(4,l+1)$, so $|R'/R - 1| = (R' - R)/R$ (`abs_of_nonneg` on a nonnegative quotient). Finally the increment is bounded by the off-diagonal Ramsey recurrence: $R' - R \\le R(3, l+1)$ (`increment_bound_k4`), converting the ratio question into a comparison of $R(3,l+1)$ against $R(4,l)$.",
     "mathContext": "$R>0,\\ R\\le R' \\Rightarrow |R'/R-1| = (R'-R)/R$, and $R'-R \\le R(3,l+1)$ by the Ramsey recurrence $R(4,l+1) \\le R(4,l) + R(3,l+1)$.",
@@ -115,7 +115,7 @@
       "startLine": 155,
       "endLine": 208
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Cubic Denominator Dominates: Ratio → 1",
     "content": "**Main theorem, the quantitative squeeze.** With $(R'-R)/R \\le R(3,l+1)/R$ in hand, both ends are estimated. Numerator: the AKS bound $R(3,l+1) \\le C(l+1)^2/\\log(l+1)$ is loosened to $4Cl^2$ by dropping the $1/\\log$ factor (`div_le_self`, using $\\log(l+1) \\ge 1$ for $l+1 \\ge e$) and absorbing the $+1$ via $(l+1)^2 \\le 4l^2$ (an `nlinarith` from $l \\ge 3$). Denominator: the Mattheus–Verstraëte bound gives $R = R(4,l) \\ge c\\,l^3/(\\log l)^4 > 0$. The `calc` then chains $(R'-R)/R \\le 4Cl^2/R \\le 4Cl^2/(c\\,l^3/(\\log l)^4) = (4C/c)\\,(\\log l)^4/l$, and the decay lemma `eventually_log4_div_small` forces $(\\log l)^4/l < \\varepsilon c/(4C)$, so the product is $< \\varepsilon$. The heart is the exponent gap: the cubic $l^3$ in the denominator beats the quadratic $l^2$ increment, and the leftover polylog $(\\log l)^4$ is swept to $0$.",
     "mathContext": "$\\dfrac{R'-R}{R} \\le \\dfrac{4C l^2}{c\\, l^3/(\\log l)^4} = \\dfrac{4C}{c}\\cdot\\dfrac{(\\log l)^4}{l} \\to 0$: the $l^3$ denominator dominates the $l^2$ increment; the polylog is swept up by the decay lemma.",

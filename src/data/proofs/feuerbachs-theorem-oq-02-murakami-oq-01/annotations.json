@@ -64,7 +64,7 @@
       "startLine": 94,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The −1 vs −2σ field_simp Coefficient",
     "content": "The product goal ρin·ρex = abc/(2σ) has denominators (2σ)·(2σ) on the left and 2σ on the right. field_simp cancels the shared 2σ BEFORE forming the residual, so the goal it leaves is (ab+bc+ca)² − t² = 2σ·abc, whose residual is exactly −(t² − (a²b²+b²c²+c²a²)) = −(ht.lhs − ht.rhs). The correct linear_combination coefficient is therefore −1. An explicit cross-multiplication via div_eq_div_iff (which does NOT cancel the common factor) would instead require coefficient −2σ. Guessing −2σ here fails with a leftover (2σ−1)·t² term.",
     "mathContext": "This is a reusable gotcha for surd-cancellation proofs: field_simp's denominator-cancellation changes the scale of the residual, so the linear_combination coefficient must be read off the cleared goal, not the naive cross-multiplied one.",
@@ -89,7 +89,7 @@
       "startLine": 100,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Both Root Branches Close with +ht, Not −ht",
     "content": "The final two goals verify that ρin and ρex each satisfy the rational quadratic 2σ·x² − 2(ab+bc+ca)·x + abc = 0. After field_simp, each residual collapses to t² − (a²b²+b²c²+c²a²) = ht.lhs − ht.rhs, so both close by `linear_combination ht` (coefficient +1) — the OPPOSITE sign from the product identity's −ht. The two branches are otherwise identical because the t ↦ −t involution that swaps ρin ↔ ρex leaves each root equation fixed: a root equation is invariant under the conjugation, whereas the product residual (which mixes the ± signs) picks up the opposite orientation. Reading the sign off the cleared goal — not the source expression — is what makes the two adjacent branches use +ht here and −ht just above.",
     "mathContext": "For a root r of A·x²+B·x+C with r = (−B ± √Δ)/(2A), substituting back gives Ar²+Br+C = 0 identically once √Δ² is replaced by Δ; the ± sign of the surd is immaterial, so both conjugate roots satisfy the same equation with the same certificate orientation.",

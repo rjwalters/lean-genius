@@ -102,7 +102,7 @@
       "startLine": 136,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "oq-04's hexagon arc, re-derived from the engine (not decide)",
     "content": "HexagonInstance re-supplies oq-04's concrete Fin-4 data: negL = [2,3,0,1] (label negation on {+1,+2,-1,-2}), sgn = [0,0,1,1] (magnitude collapse), and the hemisphere fundamental-domain arc v₀,v₁,v₂,v₃ = negL v₀ from three free labels. sgn_negL (the sign map is antipodal) and arc_bdry (the arc endpoints are antipodal) are the ONLY decides here — finite facts about the Fin-4 alphabet, not about the count. hexagon_arc_signDegree_odd then obtains oq-04's arc_sign_changes_odd as a one-line corollary of the dimension-free antipodal_signDegree_odd: the oddness is inherited from the telescoping engine rather than re-decided over all 64 labellings. This concretely realizes in Lean the '= n = 1 Tucker count of the sign-reduced labelling' connection that oq-04 asserted only in prose.",
     "mathContext": "Applying $\\mathtt{antipodal\\_signDegree\\_odd}$ with $\\alpha = \\mathrm{Fin}\\,4$, $\\mathrm{neg} = \\mathrm{negL}$, and the arc $\\mu = [a,b,c,\\mathrm{negL}\\,a]$ (so $\\mu_3 = \\mathrm{negL}\\,\\mu_0$) yields $\\mathrm{Odd}\\,(\\mathtt{signDegree}\\;\\mathrm{sgn}\\,\\mu\\,3)$, oq-04's hemisphere-arc oddness, with only $\\mathrm{sgn}(\\mathrm{negL}\\,x)=\\mathrm{sgn}\\,x+1$ and $\\mu_3=\\mathrm{negL}\\,\\mu_0$ decided.",

@@ -295,7 +295,7 @@
       "startLine": 159,
       "endLine": 211
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bondy's quadratic threshold",
     "content": "A genuinely proved structural fact: for $n \\ge 7$, the Bondy density threshold $n^2/4$ dwarfs the pancyclic edge budget $n + \\log_2 n$, so a graph dense enough to trigger Bondy's `pancyclic-or-bipartite` dichotomy has far more edges than a minimal pancyclic graph needs. The proof splits at $n=15$: the small cases $7 \\le n \\le 15$ are settled by `native_decide` (kernel computation), while for $n \\ge 16$ one shows $2n \\le n^2/4$ (via $4\\cdot 2n \\le n^2$) and $\\log_2 n \\le n$, then closes with `omega`. Note the `native_decide` step makes this theorem depend on `Lean.ofReduceBool`.",
     "mathContext": "For $n \\ge 7$: $\\lfloor n^2/4\\rfloor \\ge n + \\lfloor\\log_2 n\\rfloor$. For $n \\ge 16$, $n^2/4 \\ge 2n \\ge n + \\log_2 n$ since $\\log_2 n \\le n$.",

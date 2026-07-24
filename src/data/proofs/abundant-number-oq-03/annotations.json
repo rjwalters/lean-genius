@@ -85,7 +85,7 @@
     "id": "abundant03-ann-axiom-audit",
     "proofId": "abundant-number-oq-03",
     "range": { "startLine": 70, "endLine": 75 },
-    "type": "context",
+    "type": "concept",
     "title": "Axiom Audit: Genuinely Axiom-Free",
     "content": "The file closes with `#print axioms infinitely_many_odd_abundant`, whose output lists only the three ordinary foundational axioms of Lean/Mathlib — `propext`, `Classical.choice`, and `Quot.sound` — and crucially **not** `Lean.ofReduceBool` or `sorryAx`. This is the concrete check backing the entry's 'axiom-free' claim. `Lean.ofReduceBool` is the axiom that `native_decide` introduces by trusting compiled kernel reduction; its absence certifies that the abundance of the seed $945$ was discharged by ordinary kernel-checked `decide`/`norm_num` (in `abundant_945`), not by native compilation. Under the project's axiom-integrity policy the three foundational axioms do not count as assumptions, so `status: verified` and `axiomCount: 0` are honest here — the result is fully machine-checked with no escape hatches.",
     "mathContext": "`#print axioms f` prints the axiom closure of `f`. Verified iff the closure ⊆ {propext, Classical.choice, Quot.sound}; the presence of `Lean.ofReduceBool` or `sorryAx` would force `axiomatized`/`formalized` respectively.",

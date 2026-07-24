@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the LLL needs a *relative* quantitative bound",
     "content": "The flagship quantitative entry `lovasz-local-lemma-oq-01-quantitative` proves $\\prod_k (1 - b_k) \\le \\mu(\\bigcap_i A_i^c)$ over the ambient measure $\\mu$. But the genuine Erdős–Lovász induction never estimates a bare avoidance probability — its **denominator recursion** lower-bounds the survival of one block of events *conditioned on the survival of another*:\n$$\\mu\\!\\left[\\bigcap_{j\\in S_1} A_j^c \\;\\middle|\\; \\bigcap_{j\\in S_2} A_j^c\\right] \\;\\ge\\; \\prod_{j\\in S_1}(1 - x_j).$$\nEvery quantity here is a probability *relative to the background event* $H = \\bigcap_{j\\in S_2} A_j^c$. `lovasz-local-lemma-oq-01-dependency-split` supplied the numerator half of the induction step; this entry supplies the primitive the denominator recursion is built from — the exact analogue of `avoidance_ge_prod_one_sub`, but with every probability taken relative to a fixed background event $H$.",
     "mathContext": "Arbitrary measurable family $A : \\mathbb{N} \\to \\mathrm{Set}\\,\\Omega$ over an `IsProbabilityMeasure` $\\mu$; a background event $H$ with $\\mu H \\ne 0$; background-relative per-event conditional failure bounds $b_k < 1$ are the hypotheses. No independence, no dependency graph.",
@@ -31,7 +31,7 @@
       "startLine": 51,
       "endLine": 62
     },
-    "type": "context",
+    "type": "concept",
     "title": "Frame: transport, don't re-prove",
     "content": "```lean\nimport Proofs.LovaszLocalLemmaOQ01Quantitative\nopen MeasureTheory ProbabilityTheory Finset\nopen scoped ENNReal\nopen LovaszLocalLemmaOQ01ChainRule\nopen LovaszLocalLemmaOQ01Quantitative\nnamespace LovaszLocalLemmaOQ01ConditionalAvoidance\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A : ℕ → Set Ω}\n```\n\nThe file imports the quantitative entry and adds **no new probabilistic input**. The whole strategy is a *change of measure*: conditioning on the background event $H$ produces a genuine probability measure $\\mu[\\cdot|H]$, and the ambient quantitative bound — being polymorphic in the probability measure — applies to it directly. The only new ingredient is the Mathlib tower property `cond_cond_eq_cond_inter`, which certifies that the internal conditionals of $\\mu[\\cdot|H]$ are the background-relative conditionals of $\\mu$.",
     "mathContext": "`μ[t|s]` is `ProbabilityTheory.cond μ s t`; `μ[|s]` is the conditioned measure `cond μ s`. The tower property is `cond_cond_eq_cond_inter : μ[·|s][·|t] = μ[·|s ∩ t]` (for a finite measure).",
@@ -54,7 +54,7 @@
       "startLine": 63,
       "endLine": 102
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The relative quantitative avoidance bound",
     "content": "```lean\ntheorem cond_avoidance_ge_prod_one_sub (hA : ∀ i, MeasurableSet (A i))\n    (H : Set Ω) (hH : MeasurableSet H) (hHne : μ H ≠ 0) (n : ℕ)\n    (b : ℕ → ℝ≥0∞) (hb : ∀ k ∈ Finset.range n, b k < 1)\n    (hfail : ∀ k ∈ Finset.range n,\n      μ[A k | (⋂ j ∈ Finset.range k, (A j)ᶜ) ∩ H] ≤ b k) :\n    ∏ k ∈ Finset.range n, (1 - b k) ≤ μ[(⋂ i ∈ Finset.range n, (A i)ᶜ) | H] := by\n  haveI : IsProbabilityMeasure (μ[|H]) := cond_isProbabilityMeasure hHne\n  have hfail' : ∀ k ∈ Finset.range n,\n      (μ[|H])[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] ≤ b k := by\n    intro k hk\n    have hGk : MeasurableSet (⋂ j ∈ Finset.range k, (A j)ᶜ) :=\n      measurableSet_hist (fun i => (hA i).compl) k\n    rw [cond_cond_eq_cond_inter hH hGk μ, Set.inter_comm H]\n    exact hfail k hk\n  calc ∏ k ∈ Finset.range n, (1 - b k)\n      ≤ (μ[|H]) (⋂ i ∈ Finset.range n, (A i)ᶜ) :=\n        avoidance_ge_prod_one_sub hA n b hb hfail'\n    _ = μ[(⋂ i ∈ Finset.range n, (A i)ᶜ) | H] := rfl\n```\n\nThree structural moves, no new probability. **(1)** `cond_isProbabilityMeasure hHne` registers $\\mu[\\cdot|H]$ as an `IsProbabilityMeasure` (valid because $\\mu H \\ne 0$ and $\\mu$ is finite), so the flagship `avoidance_ge_prod_one_sub` can be applied to it. **(2)** Its hypotheses need the *internal* conditionals of $\\mu[\\cdot|H]$ bounded: for each $k$, the tower property `cond_cond_eq_cond_inter hH hGk μ` rewrites $\\mu[\\cdot|H][A_k \\mid G] = \\mu[A_k \\mid H \\cap G]$ (with $G = \\bigcap_{j<k}(A_j)^c$, measurable via `measurableSet_hist` on the complements), and a single `Set.inter_comm H` matches it to the hypothesis $\\mu[A_k \\mid G \\cap H] \\le b_k$. **(3)** `avoidance_ge_prod_one_sub` then yields $\\prod(1 - b_k) \\le (\\mu[\\cdot|H])(\\bigcap A_i^c)$, and $(\\mu[\\cdot|H])(\\bigcap A_i^c) = \\mu[\\bigcap A_i^c \\mid H]$ holds by `rfl` — the H-relative avoidance probability *is* the value of the conditioned measure at the avoidance event.",
     "mathContext": "The `rfl` closing the calc is the crux: `μ[t|H]` unfolds to `cond μ H t = (μ[|H]) t`, so the ambient conclusion of avoidance_ge_prod_one_sub applied at measure `μ[|H]` is definitionally the relative bound. No coercion or rewrite needed.",
@@ -78,7 +78,7 @@
       "startLine": 103,
       "endLine": 124
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Symmetric specialisation",
     "content": "```lean\ntheorem cond_avoidance_ge_one_sub_pow (hA : ∀ i, MeasurableSet (A i))\n    (H : Set Ω) (hH : MeasurableSet H) (hHne : μ H ≠ 0) (n : ℕ) (p : ℝ≥0∞)\n    (hp : p < 1)\n    (hfail : ∀ k ∈ Finset.range n,\n      μ[A k | (⋂ j ∈ Finset.range k, (A j)ᶜ) ∩ H] ≤ p) :\n    (1 - p) ^ n ≤ μ[(⋂ i ∈ Finset.range n, (A i)ᶜ) | H] := by\n  have h := cond_avoidance_ge_prod_one_sub hA H hH hHne n (fun _ => p)\n    (fun _ _ => hp) hfail\n  simpa [Finset.prod_const, Finset.card_range] using h\n```\n\nInstantiating the per-event budgets at a single uniform $p$ collapses $\\prod_k (1 - p)$ to $(1 - p)^n$ via `Finset.prod_const` and `Finset.card_range`. This is the relative-avoidance shape the *symmetric* LLL produces inside the denominator recursion: under $e\\,p\\,(d+1) \\le 1$ the induction certifies each relative conditional failure $\\le 2p$, and the denominator survival is bounded below by $(1 - 2p)^{|S_1|}$.",
     "mathContext": "The symmetric bound is the multiplicative relative counterpart of the union-bound extreme's additive estimate; here it lives relative to a background event H.",
@@ -99,7 +99,7 @@
       "startLine": 125,
       "endLine": 140
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Positivity of the relative avoidance probability",
     "content": "```lean\ntheorem cond_avoidance_pos_of_prod_one_sub_pos (hA : ∀ i, MeasurableSet (A i))\n    (H : Set Ω) (hH : MeasurableSet H) (hHne : μ H ≠ 0) (n : ℕ)\n    (b : ℕ → ℝ≥0∞) (hb : ∀ k ∈ Finset.range n, b k < 1)\n    (hfail : ∀ k ∈ Finset.range n,\n      μ[A k | (⋂ j ∈ Finset.range k, (A j)ᶜ) ∩ H] ≤ b k) :\n    0 < μ[(⋂ i ∈ Finset.range n, (A i)ᶜ) | H] := by\n  refine lt_of_lt_of_le ?_ (cond_avoidance_ge_prod_one_sub hA H hH hHne n b hb hfail)\n  rw [zero_lt_iff, Finset.prod_ne_zero_iff]\n  intro k hk\n  rw [Ne, tsub_eq_zero_iff_le, not_le]\n  exact hb k hk\n```\n\nEach survival budget $1 - b_k$ is strictly positive (since $b_k < 1$, via `tsub_eq_zero_iff_le`), so the finite $\\mathbb{R}_{\\ge 0}^\\infty$ product $\\prod(1 - b_k)$ is nonzero (`Finset.prod_ne_zero_iff`) and hence positive, giving $0 < \\mu[\\bigcap A_i^c \\mid H]$. This is the conditional analogue of `avoidance_pos_of_prod_one_sub_pos`, and it is precisely what the denominator recursion needs to keep every conditioning set of positive measure as it descends to strictly smaller index sets — a running side condition the whole induction depends on.",
     "mathContext": "Positivity of the relative avoidance probability is what guarantees the next conditioning step in the recursion is well-defined (the conditioning event has positive measure).",

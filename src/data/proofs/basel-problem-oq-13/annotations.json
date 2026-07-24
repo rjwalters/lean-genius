@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "λ(4): the odd-indexed companion of ζ(4)",
     "content": "Mathlib supplies ζ(4) = ∑ 1/n⁴ = π⁴/90 (`hasSum_zeta_four`) but not its odd-indexed sibling, the lambda value λ(4) = ∑_{k≥0} 1/(2k+1)⁴. The header records the classical identity λ(s) = (1 − 2^(−s)) ζ(s); at s = 4 this gives λ(4) = (15/16)(π⁴/90) = π⁴/96. The entire file adds no new analytic input — it only splits ζ(4) into even- and odd-indexed parts and solves for the odd one, making it a clean showcase of deriving a new closed form purely from an existing Mathlib zeta value.",
     "mathContext": "$\\lambda(s)=\\sum_{k\\ge 0}\\frac{1}{(2k+1)^s}=(1-2^{-s})\\zeta(s)$; at $s=4$: $\\lambda(4)=\\tfrac{15}{16}\\cdot\\tfrac{\\pi^4}{90}=\\tfrac{\\pi^4}{96}$.",
@@ -29,7 +29,7 @@
       "startLine": 34,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Even Part: ∑ 1/(2k)⁴ = π⁴/1440 (a Sixteenth of ζ(4))",
     "content": "hasSum_even_zeta_four computes the even-indexed fourth-power sum. The scaling factor is 1/16, not 1/4 as in the second-power case: pulling 2 out of (2k)⁴ gives 2⁴ = 16 in the denominator, so 1/(2k)⁴ = (1/16)(1/k⁴). The pointwise identity is closed by `funext; push_cast; ring`, then HasSum.mul_left scales Mathlib's hasSum_zeta_four (ζ(4)=π⁴/90) by 1/16, yielding π⁴/1440. This sixteenth-scaling is the fourth-power analogue of the quarter-scaling used for ζ(2).",
     "mathContext": "$\\displaystyle\\sum_{k\\ge 1}\\frac{1}{(2k)^4} = \\frac{1}{16}\\sum_{k\\ge 1}\\frac{1}{k^4} = \\frac{1}{16}\\cdot\\frac{\\pi^4}{90} = \\frac{\\pi^4}{1440}.$",

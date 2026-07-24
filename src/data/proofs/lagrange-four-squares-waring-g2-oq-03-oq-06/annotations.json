@@ -3,7 +3,7 @@
     "id": "module-framing",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
     "range": { "startLine": 1, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "Module Framing: the Unconditional Half of the Rational Characterization",
     "content": "The docstring situates the file against three gallery pillars it imports: Proofs.ThreeSquares (Legendre necessity axiom-free — 4^a(8b+7) is never a sum of three INTEGER squares — with sufficiency isolated as one axiom), Proofs.ThreeSquaresDavenportCassels (the axiom-free descent: rational representability ⟹ integral), and Proofs.ThreeSquaresRationalBridge (the still-open Hasse–Minkowski solvability hypothesis). This file records exactly what the first two give UNCONDITIONALLY once combined — the rational=integral Iff, rational necessity, and square-class invariance — deferring only the genuinely open sufficiency over ℚ, so that the closing full characterization is conditional on a single named hypothesis. No axiom, no sorry, no native_decide.",
     "mathContext": "The three-square problem over $\\mathbb Q$ splits into a necessity half (2-adic obstruction, proved here unconditionally) and a sufficiency half (Hasse–Minkowski, the one remaining hypothesis).",

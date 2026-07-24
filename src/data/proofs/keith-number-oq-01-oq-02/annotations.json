@@ -96,7 +96,7 @@
     "id": "keithb-ann-history-context",
     "proofId": "keith-number-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 47 },
-    "type": "context",
+    "type": "concept",
     "title": "Context: Keith Numbers — Rarity and the Infinitude Question",
     "content": "Keith numbers were introduced by Mike Keith in 1987, who also called them 'repfigit numbers' (short for repetitive Fibonacci-like digits): starting a Fibonacci-style recurrence from a number's own digits and asking whether it regenerates itself. In base 10 the sequence begins 14, 19, 28, 47, 61, 75, 197, 742, 1104, ...; they are strikingly rare — only about a hundred are known below 10^19, far sparser than primes. Their most tantalising feature is an open problem: it is unknown whether infinitely many Keith numbers exist, in base 10 or in any fixed base. This makes them a genuine parallel to the Erdős-style questions elsewhere in the gallery, where a simple digit-recurrence definition hides a hard density question. The base-b generalization formalized here reframes that infinitude question across all radices at once, and the observation that the base-b repunit (11)_b = b+1 is Keith exactly when b+1 is Fibonacci hints that Fibonacci arithmetic controls the small solutions in every base. What this file settles rigorously is modest by comparison — the smallest Keith numbers in bases 4, 10, 12 — but it fixes the definitional bedrock on which any attack on the infinitude question must stand.",
     "mathContext": "Base-10 Keith numbers: $14, 19, 28, 47, 61, 75, 197, \\dots$ — only $\\sim 100$ known below $10^{19}$; whether infinitely many exist is open in every base.",

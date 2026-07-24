@@ -30,7 +30,7 @@
       "startLine": 56,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "idemPi: idempotents of a product ring are families of idempotents",
     "content": "The equivalence idemPi says an idempotent of a dependent product ring Π i, R i is exactly a family assigning to each index an idempotent of that factor. Idempotency in a Π-ring is pointwise — (e·e) i = e i · e i by Pi.mul_apply — so e²=e holds iff every component is idempotent. This is the Π-type analogue of the parent sibling's binary idemProd, and it is the combinatorial hinge of the whole count: composed with the CRT isomorphism it lets Fintype.card_pi turn the idempotent count of ZMod (m^k) into the product of the per-factor counts.",
     "mathContext": "For a product ring $\\prod_i R_i$, the idempotents are exactly $\\prod_i \\{\\text{idempotents of }R_i\\}$; cardinality is therefore multiplicative across the factors.",
@@ -53,7 +53,7 @@
       "startLine": 65,
       "endLine": 95
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The count 2^ω(m): CRT decomposition, then multiply the local factors",
     "content": "The main theorem chains three moves. First, idemCongr (ZMod.equivPi hn).toMulEquiv transports the idempotent subtype of ZMod (m^k) across the finite-product CRT isomorphism into the idempotent subtype of ∏ p ∈ (m^k).primeFactors, ZMod (p^v_p(m^k)); idemPi then splits that into ∏ p, (idempotents of the factor). Fintype.card_pi turns the cardinality into a product over the primes. Each factor exponent is positive — p ∈ (m^k).primeFactors means (m^k).factorization p ≠ 0 via Nat.support_factorization — so the verified sibling's idem_card_prime_pow gives exactly 2 idempotents per prime. Finally Finset.prod_const collapses ∏ 2 to 2^(#primeFactors), Fintype.card_coe converts the coe-Fintype card to the Finset card, and Nat.primeFactors_pow rewrites (m^k).primeFactors = m.primeFactors, dropping the exponent k to land on 2^ω(m).",
     "mathContext": "$\\mathbb{Z}/m^k\\cong\\prod_{p\\mid m}\\mathbb{Z}/p^{k\\,v_p(m)}$, each factor local with two idempotents, so the count is $\\prod_{p\\mid m}2 = 2^{\\omega(m)}$, independent of $k$.",
@@ -100,7 +100,7 @@
       "startLine": 107,
       "endLine": 142
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity checks: 10 → 4, 9 → 2, 30 → 8",
     "content": "Three examples instantiate the general count and reproduce the known cases. For m = 10 = 2·5 (two primes, ω = 2) the count is 2² = 4 — exactly the parent's four automorphic residues mod 10^k. For m = 9 = 3² (one prime, ω = 1) it is 2¹ = 2, only the trivial idempotents 0 and 1. For m = 30 = 2·3·5 (three primes, ω = 3) it is 2³ = 8. Each example computes m.primeFactors.card by rewriting the modulus as a product of primes (Nat.primeFactors_mul, Nat.Prime.primeFactors) and finishing with a decide on the resulting concrete finite set — deliberately avoiding any reduction of the well-founded primeFactors recursion.",
     "mathContext": "The formula $2^{\\omega(m)}$ recovers four for a two-prime modulus, two for a prime power, and eight for a three-prime modulus.",

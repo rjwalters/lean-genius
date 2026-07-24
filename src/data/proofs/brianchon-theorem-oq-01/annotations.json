@@ -98,7 +98,7 @@
       "startLine": 146,
       "endLine": 168
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Circumscribed Hexagon = Inscribed Hexagon in the Dual Conic",
     "content": "PART 3, the duality bridge. `toInscribedDual` exhibits a `CircumscribedHexagon C` as an `InscribedHexagon (dualConic C)` by simply relabeling the data: the six tangent lines `a…f` become the six inscribed points `A…F`, and each tangency proof `hex.ha : lineTangentToConic a C` is *definitionally* an incidence proof `pointOnConic a (dualConic C)` — so the same term type-checks in both roles with no rewriting. This is the point↔line duality made concrete: the two hexagon structures carry identical underlying data.",
     "mathContext": "Tangency to $C$ is, by the definition of `lineTangentToConic`, incidence with $\\text{dualConic}(C)$; so a circumscribed hexagon *is* an inscribed hexagon in the dual conic, definitionally.",

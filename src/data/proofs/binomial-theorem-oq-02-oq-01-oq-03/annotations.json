@@ -107,7 +107,7 @@
       "startLine": 167,
       "endLine": 332
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bivariate MGF Differentiation: the Cross-Moment Machinery",
     "content": "The mathematical heart of the file — the body of multinomial_cross_moment, previously uncovered. It realizes the mixed second derivative of the joint MGF entirely inside Lean's HasDerivAt calculus, with no measure theory. (1) hmgf proves the bivariate identity ∑_k P(k)(1+a)^{k(i)}(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n by rewriting each term with the erase-based product factorization hprod (∏_l g_l^{k_l} = (1+a)^{k(i)}(1+b)^{k(j)}) and the weight-sum identity hsum_g (∑_l p_l g_l = 1+pᵢa+pⱼb), then invoking multinomial_mgf_real. (2) hstep1 differentiates both sides in a at 0 via HasDerivAt.sum + deriv_add_pow and the uniqueness of derivatives (hd_lhs.unique hd_rhs), giving ∑_k P(k)k(i)(1+b)^{k(j)} = n·pᵢ(1+pⱼb)^{n-1}. (3) hstep2 differentiates that in b at 0 to reach ∑_k P(k)k(i)k(j) = n(n-1)pᵢpⱼ. The Nat.cast_pred hn step reconciles ↑(n-1) with (n:ℝ)-1, splitting the n=0 case. The technique is a fully formalized, elementary substitute for 'differentiate the MGF twice and set the arguments to zero'.",
     "mathContext": "$\\partial_a\\partial_b\\big|_{0}\\,(1+p_i a+p_j b)^n = n(n-1)p_ip_j$, obtained termwise as $\\sum_k P(k)\\,\\partial_a\\partial_b\\big|_0 (1+a)^{k_i}(1+b)^{k_j} = \\sum_k P(k)\\,k_i k_j = E[X_iX_j]$.",

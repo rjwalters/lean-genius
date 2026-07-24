@@ -51,7 +51,7 @@
     "id": "ann-bezoutoq010101oq02-examples",
     "proofId": "bezout-identity-oq001",
     "range": { "startLine": 134, "endLine": 146 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked examples: a concrete step and product signs",
     "content": "Axiom-free instances discharged by the proven theorems. One step on (252, 198) with quotient 1: (Q 1).mulVec ![252, 198] = ![198, 54] (since 252 − 1·198 = 54). Determinant signs: (Rprod [1, 3, 1]).det = (−1)³ = −1 and (Rprod [2, 1, 3, 1]).det = (−1)⁴ = 1 (unimodular, orientation preserved). The determinants use kernel `decide` on concrete integers — no native_decide, so no Lean.ofReduceBool dependency.",
     "mathContext": "$252 = 1\\cdot 198 + 54$; a 3-step product has $\\det = -1$, a 4-step product has $\\det = +1$.",

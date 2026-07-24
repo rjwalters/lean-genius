@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 62
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Erdős–Lovász induction step is a ratio, and nobody had assembled it",
     "content": "The Lovász Local Lemma is proved by a strong induction that maintains the invariant $\\mu[A_i \\mid \\bigcap_{j\\in S} A_j^c] \\le x_i$ for every subset $S$ of the other events. The induction step splits $S = S_1 \\sqcup S_2$ into the **neighbours** $S_1$ and **non-neighbours** $S_2$ of $A_i$, writes $N = \\bigcap_{j\\in S_1} A_j^c$ (neighbour survival) and $C = \\bigcap_{j\\in S_2} A_j^c$ (non-neighbour survival), and expands the conditional as a ratio $\\mu[A_i \\mid N\\cap C] = \\mu[A_i \\cap N \\mid C] / \\mu[N \\mid C]$. Earlier OQ-01 entries verified the two halves separately — the numerator bound $\\mu[A_i \\cap N \\mid C] \\le \\mu(A_i)$ (dependency-split) and the per-neighbour survival peel that builds $\\mu[N \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$ (denominator-step) — but never the **division** that joins them. This entry supplies it: the abstract ratio bound `cond_le_div`, its LLL specialisation `cond_failure_le_measure_div`, and the closed invariant `cond_failure_le_x`.",
     "mathContext": "μ[Aᵢ | N ∩ C] = μ[Aᵢ ∩ N | C] / μ[N | C], with numerator ≤ μ(Aᵢ) and denominator ≥ ∏(1 − xⱼ), closing to μ[Aᵢ | N ∩ C] ≤ xᵢ under μ(Aᵢ) ≤ xᵢ·∏(1 − xⱼ).",

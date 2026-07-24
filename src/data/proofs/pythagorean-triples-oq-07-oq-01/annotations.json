@@ -62,7 +62,7 @@
     "id": "ann-pythag-oq07-oq01-even-leg-sq",
     "proofId": "pythagorean-triples-oq-07-oq-01",
     "range": { "startLine": 67, "endLine": 102 },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Even Leg's Square is 0 mod 8",
     "content": "even_leg_sq_emod_eight assembles the ingredients. Given the even leg x, coprimality forces the companion leg y odd (even_odd_of_coprime), and a short mod-4 computation forces the hypotenuse z odd. Then both y² and z² are 1 mod 8, so x² = z² − y² ≡ 0 mod 8.",
     "mathContext": "$y,z$ odd $\\Rightarrow y^2 \\equiv z^2 \\equiv 1 \\pmod 8 \\Rightarrow x^2 = z^2 - y^2 \\equiv 0 \\pmod 8$.",

@@ -30,7 +30,7 @@
       "startLine": 82,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The sign map is the antipodal ZMod-2 reduction",
     "content": "Reuses the hexagon encoding of the sibling entries — negL is label negation on {+1,+2,-1,-2} = Fin 4, V a b c produces the six antipodal boundary labels from three free labels a,b,c, and rot is the cyclic successor around the boundary. The new ingredient is the sign map sgn : Fin 4 → ZMod 2 that collapses magnitude ({+1,+2} ↦ 0, {-1,-2} ↦ 1). sgn_negL proves sgn (negL x) = sgn x + 1 by decide: label negation flips the sign bit, so sgn is the ZMod 2 reduction underlying the antipodal action. The immediate consequence — used implicitly by the next section — is that a hemisphere arc v₀ → ⋯ → v₃ = -v₀ has sign-distinct endpoints sgn v₀ and sgn v₃ = sgn v₀ + 1, exactly the boundary condition of the one-dimensional Tucker lemma.",
     "mathContext": "$\\mathrm{sgn}(\\mathrm{negL}\\,x) = \\mathrm{sgn}\\,x + 1$ in $\\mathbb{Z}/2$ for every $x \\in \\mathrm{Fin}\\,4$; hence for the arc endpoints $\\mathrm{sgn}\\,v_3 = \\mathrm{sgn}(\\mathrm{negL}\\,a) = \\mathrm{sgn}\\,a + 1 = \\mathrm{sgn}\\,v_0 + 1 \\neq \\mathrm{sgn}\\,v_0$.",

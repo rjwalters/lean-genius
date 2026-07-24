@@ -48,7 +48,7 @@
       "startLine": 73,
       "endLine": 112
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Correctness of the Dual Pivot",
     "content": "`ncSolve'_row0` follows by direct left cancellation $a_{00}a_{00}^{-1} = 1$. `ncSolve'_row1` factors out $|A|_{11}$ using `sub_mul` and cancels $|A|_{11}·|A|_{11}^{-1} = 1$, giving `nc_cramers_rule'`: $A · \\text{ncSolve'}(A,b) = b$.",
     "mathContext": "Compared to OQ-03 the difficulty moves from row 0 to row 1: the nontrivial non-commutative factoring $a_{11}x_1 - a_{10}a_{00}^{-1}a_{01}x_1 = |A|_{11}x_1$ now appears in row 1.",
@@ -68,7 +68,7 @@
       "startLine": 114,
       "endLine": 162
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Kernel Triviality and Uniqueness",
     "content": "`nc_kernel_trivial'`: if $Ax = 0$ and $|A|_{11}$ is invertible then $x = 0$, by extracting $x_0$ from row 0, substituting into row 1 to get $|A|_{11}x_1 = 0$, and using the no-zero-divisor property. `nc_cramers_unique'` then gives uniqueness of the dual solution.",
     "mathContext": "Reverse Gaussian elimination on the dual pivot. The absence of zero divisors in a division ring is exactly what forces $x_1 = 0$ from $|A|_{11}x_1 = 0$.",
@@ -88,7 +88,7 @@
       "startLine": 164,
       "endLine": 193
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Pivot-Independence",
     "content": "`solutions_agree`: any two solutions of $Ax = b$ (with $a_{00} \\neq 0$, $|A|_{11} \\neq 0$) are equal. Hence the $a_{11}$-pivot solution of OQ-03 and the $a_{00}$-pivot solution here coincide whenever both pivots are admissible — resolving the asymmetry OQ-03 flagged as open.",
     "mathContext": "No new computation is needed: pivot-independence is a corollary of uniqueness. This is the non-commutative analogue of the row/column symmetry of classical Cramer's Rule.",
@@ -108,7 +108,7 @@
       "startLine": 195,
       "endLine": 212
     },
-    "type": "proof",
+    "type": "insight",
     "title": "Dual Commutative Reduction",
     "content": "`quasidet₁₁_mul_eq_det`: over a field, $|A|_{11}·a_{00} = \\det(A)$, dual to OQ-03's $|A|_{00}·a_{11} = \\det(A)$. Both quasideterminants equal $\\det(A)/a_{jj}$ in the commutative case.",
     "mathContext": "This identity is the concrete reason the two pivots give the same answer over a field: $|A|_{00}·a_{11} = |A|_{11}·a_{00} = \\det(A)$.",

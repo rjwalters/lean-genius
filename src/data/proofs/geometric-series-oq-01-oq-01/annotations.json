@@ -98,7 +98,7 @@
       "startLine": 66,
       "endLine": 79
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why Abel Agreement Confirms the Cesàro Value",
     "content": "The summary frames the file as an independent confirmation of Grandi's Cesàro value 1/2. This is not circular: Frobenius's theorem says Cesàro (C,1) summability implies Abel summability to the *same* value, so once the series is known Cesàro-summable to 1/2 its Abel sum is forced to be 1/2. Computing the Abel sum directly here (via the closed form 1/(1+x) and its boundary value) and getting 1/2 is therefore a consistency check on the whole regularization framework. The converse fails — Abel summability is strictly stronger, so an Abel value alone would not recover the Cesàro one — which is exactly why matching values across the two methods is meaningful rather than automatic.",
     "mathContext": "Frobenius: $\\lim_{n}\\frac{s_0+\\cdots+s_n}{n+1}=L \\ \\Rightarrow\\ \\lim_{x\\to1^-}\\sum a_k x^k = L$. Here $L=\\tfrac12$ for $1-1+1-\\cdots$.",

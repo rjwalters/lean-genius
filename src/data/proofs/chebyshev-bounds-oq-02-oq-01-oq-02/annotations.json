@@ -29,7 +29,7 @@
       "startLine": 37,
       "endLine": 45
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "log x / √x → 0 via a Mathlib little-o Fact",
     "content": "log_div_sqrt_tendsto_zero establishes the single analytic input behind the negligible gap: $\\log x / \\sqrt{x} \\to 0$. It is derived from Mathlib's isLittleO_log_rpow_atTop — $\\log x = o(x^r)$ for every $r > 0$ — specialized to $r = 1/2$, then converted to a limit of the quotient via tendsto_div_nhds_zero. The rewrite $\\sqrt{x} = x^{1/2}$ (Real.sqrt_eq_rpow) reconciles the square-root notation with the real-power form Mathlib's lemma is stated in. This is inlined here so the file's only build dependencies are Mathlib and the parent.",
     "mathContext": "$\\displaystyle\\lim_{x\\to\\infty}\\frac{\\log x}{\\sqrt{x}} = 0$, i.e. $\\log x = o(x^{1/2})$; logarithms grow slower than any positive power.",
@@ -74,7 +74,7 @@
       "startLine": 52,
       "endLine": 58
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Floor Bridge: ψ(x) = chebyshevPsi ⌊x⌋₊",
     "content": "psi_eq_chebyshevPsi_floor is the connective tissue between the parent's natural-number world and this file's real-variable world. Mathlib's real $\\psi(x)$ and the parent's chebyshevPsi are both the sum $\\sum_{n \\le \\lfloor x\\rfloor} \\Lambda(n)$ of the von Mangoldt function, so they agree once the real argument is replaced by its floor. The proof simply rewrites both sides to the shared Icc-sum form (psi_eq_sum_Icc) and cancels via Nat.floor_natCast. This identity lets the parent's discrete lower bound be quoted verbatim.",
     "mathContext": "$\\psi(x) = \\sum_{n \\le \\lfloor x\\rfloor_+} \\Lambda(n) = \\mathrm{chebyshevPsi}(\\lfloor x\\rfloor_+)$, where $\\Lambda$ is the von Mangoldt function.",
@@ -96,7 +96,7 @@
       "startLine": 59,
       "endLine": 75
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Real ψ Lower Bound: (log 2 / 6)·x ≤ ψ(x)",
     "content": "psi_ge_linear lifts the parent's discrete bound $\\frac{\\log 2}{3}n \\le \\psi(n)$ to a statement about real $x \\ge 2$. Setting $n = \\lfloor x\\rfloor_+$, we have $n \\ge 2$ and, crucially, $n \\ge x - 1 \\ge x/2$ (from Nat.lt_floor_add_one). The floor loss is absorbed into the constant, halving it from $\\log 2/3$ to $\\log 2/6$. The calc block chains $\\frac{\\log 2}{6}x = \\frac{\\log 2}{3}\\cdot\\frac{x}{2} \\le \\frac{\\log 2}{3}n \\le \\mathrm{chebyshevPsi}(n) = \\psi(x)$, using $\\log 2 \\ge 0$ for the monotonicity step.",
     "mathContext": "For $x \\ge 2$: $\\dfrac{\\log 2}{6}\\,x = \\dfrac{\\log 2}{3}\\cdot\\dfrac{x}{2} \\le \\dfrac{\\log 2}{3}\\,\\lfloor x\\rfloor_+ \\le \\psi(x)$, since $\\lfloor x\\rfloor_+ \\ge x - 1 \\ge x/2$.",
@@ -118,7 +118,7 @@
       "startLine": 77,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ψ − θ Correction is o(x)",
     "content": "two_sqrt_mul_log_isLittleO proves $2\\sqrt{x}\\,\\log x = o(x)$, the fact that makes the prime-power gap negligible. Unwinding isLittleO_iff to an $\\varepsilon$-$N$ statement, the goal $2\\sqrt{x}\\,\\log x \\le c\\,x$ is reduced by dividing through by $\\sqrt{x} > 0$: from $2\\log x/\\sqrt{x} \\le c$ (which holds eventually because $2\\log x/\\sqrt{x} \\to 0$ by the earlier limit) multiply back by $\\sqrt{x}$ and use $\\sqrt{x}\\cdot\\sqrt{x} = x$ (Real.mul_self_sqrt). So the whole $o(x)$ claim is just $\\log = o(\\sqrt{x})$ in disguise — no bespoke prime-power counting is needed.",
     "mathContext": "$2\\sqrt{x}\\,\\log x = o(x) \\iff \\dfrac{2\\sqrt{x}\\,\\log x}{x} = \\dfrac{2\\log x}{\\sqrt{x}} \\to 0$, using $\\sqrt{x}\\cdot\\sqrt{x} = x$.",
@@ -140,7 +140,7 @@
       "startLine": 102,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bounding the Gap by (log 2 / 12)·x",
     "content": "two_sqrt_mul_log_le_eventually turns the qualitative $o(x)$ statement into the quantitative bound eventually needed for the lower bound: since the gap is $o(x)$, for the specific positive constant $c = \\log 2/12$ we have $2\\sqrt{x}\\,\\log x \\le \\frac{\\log 2}{12}x$ for all large $x$. It applies isLittleO_iff at $c = \\log 2/12 > 0$ and strips the absolute value using $x \\ge 0$. This is exactly half of the parent's real $\\psi$-constant $\\log 2/6$, leaving the other half as the surviving $\\theta$ bound.",
     "mathContext": "Eventually $2\\sqrt{x}\\,\\log x \\le \\dfrac{\\log 2}{12}\\,x$, chosen so that $\\dfrac{\\log 2}{6}x - \\dfrac{\\log 2}{12}x = \\dfrac{\\log 2}{12}x$.",
@@ -161,7 +161,7 @@
       "startLine": 113,
       "endLine": 121
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The New Content: (log 2 / 12)·x ≤ θ(x)",
     "content": "theta_ge_eventually assembles the lower bound on $\\theta$, the result absent from both Mathlib and the $\\psi$-chain. On the region where all three inputs hold, write $\\theta(x) = \\psi(x) - (\\psi(x) - \\theta(x))$. The one-sided gap bound $\\psi(x) - \\theta(x) \\le |\\psi(x) - \\theta(x)| \\le 2\\sqrt{x}\\,\\log x$ (Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log) combined with the real $\\psi$ lower bound and the eventual gap bound gives $\\theta(x) \\ge \\frac{\\log 2}{6}x - \\frac{\\log 2}{12}x = \\frac{\\log 2}{12}x$, closed by linarith.",
     "mathContext": "$\\theta(x) \\ge \\psi(x) - 2\\sqrt{x}\\,\\log x \\ge \\dfrac{\\log 2}{6}x - \\dfrac{\\log 2}{12}x = \\dfrac{\\log 2}{12}\\,x$ eventually.",
@@ -183,7 +183,7 @@
       "startLine": 123,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "θ = O(x)",
     "content": "theta_isBigO_id repackages the upper bound theta_le_linear as an Asymptotics.IsBigO statement with explicit constant $\\log 4 + 4$. After isBigO_iff, the norms are removed using $x \\ge 0$ and $\\theta(x) \\ge 0$ (Chebyshev.theta_nonneg), leaving exactly the pointwise inequality theta_le_linear supplies.",
     "mathContext": "$\\theta =_O[\\mathrm{atTop}] (x \\mapsto x)$ with witness constant $\\log 4 + 4$: $\\theta(x) \\le (\\log 4 + 4)|x|$.",
@@ -203,7 +203,7 @@
       "startLine": 132,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "x = O(θ)",
     "content": "id_isBigO_theta is the reverse domination, encoding the lower bound as an IsBigO with constant $12/\\log 2$. From the eventual bound $\\frac{\\log 2}{12}x \\le \\theta(x)$, dividing by $\\log 2 > 0$ gives $x \\le \\frac{12}{\\log 2}\\theta(x)$; nlinarith discharges the arithmetic after clearing the norms via nonnegativity. Together with the previous lemma this pins $\\theta$ between two positive multiples of the identity.",
     "mathContext": "$(x \\mapsto x) =_O[\\mathrm{atTop}] \\theta$ with witness $12/\\log 2$: $x \\le \\dfrac{12}{\\log 2}\\,\\theta(x)$ eventually.",
@@ -224,7 +224,7 @@
       "startLine": 143,
       "endLine": 146
     },
-    "type": "main-result",
+    "type": "theorem",
     "title": "Main Result: θ(x) = Θ(x)",
     "content": "theta_isTheta_id is the headline: $\\theta =_\\Theta[\\mathrm{atTop}] (x \\mapsto x)$, the first Chebyshev function has the exact linear growth rate of the identity. It is the anonymous constructor pairing the two IsBigO bounds. By partial summation this is equivalent to $\\pi(x) = \\Theta(x/\\log x)$ — Chebyshev's 1852 approximation to the Prime Number Theorem — and $\\theta(x) \\sim x$ is the standard analytic form of PNT itself. This completes the gallery's Chebyshev thread from the $\\psi$ estimate through to $\\theta$.",
     "mathContext": "$\\theta(x) = \\Theta(x)$: $\\exists\\, c_1, c_2 > 0$ with $c_1 x \\le \\theta(x) \\le c_2 x$ eventually; here $c_1 = \\log 2/12$, $c_2 = \\log 4 + 4$.",

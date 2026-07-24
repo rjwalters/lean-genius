@@ -61,7 +61,7 @@
       "startLine": 92,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From Square-Divisibility to Root Multiplicity over a Field",
     "content": "Moving to a field lets the divisibility criterion of Section I be read in the language of roots. sq_dvd_iff_one_lt_rootMultiplicity proves that for a nonzero p over a field, (X − a)² ∣ p exactly when a is a root of multiplicity greater than one — a genuine repeated root. roots_nodup_iff_forall_not_sq_dvd then globalizes this: the multiset p.roots has no duplicates iff there is no a with (X − a)² ∣ p. This is the technical hinge of the entry, converting the characteristic-free 'no repeated linear factor' statement into 'all roots distinct' — the form Mathlib's separability machinery for split polynomials consumes — without ever invoking the ordinary derivative in positive characteristic. Both lemmas hold over any field, so the bridge is itself characteristic-free.",
     "mathContext": "$(X-a)^2 \\mid p \\iff \\operatorname{rootMultiplicity}_a(p) > 1$;\\quad $p.\\mathrm{roots}.\\mathrm{Nodup} \\iff \\forall a,\\ \\neg\\,(X-a)^2 \\mid p$.",

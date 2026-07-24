@@ -3,7 +3,7 @@
     "id": "ann-compression-setup",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
     "range": { "startLine": 4, "endLine": 57 },
-    "type": "context",
+    "type": "concept",
     "title": "The Abstract Orthogonal-Compression Framework Inherited from the Parent",
     "content": "The entire variable block sets up the Poincaré separation hypotheses at the operator level, not the matrix level: `T` is a symmetric operator on an `(n+m)`-dimensional inner product space over any `RCLike` field `𝕜` (real OR complex), with an orthonormal eigenbasis `b` and descending eigenvalues `lam` (`Antitone lam`); `H` is a codimension-`m` subspace of dimension `n` carrying its own symmetric operator `TH` with eigenbasis `bH` and descending eigenvalues `mu`. The crucial link is `hRayleigh`: the Rayleigh quotient of `TH` on `H` agrees with that of `T` — this is exactly what makes `TH` the *orthogonal compression* `P_H T|_H` without ever writing a projection. Carrying the eigenvalues as free functions `lam`, `mu` (rather than extracting them from a matrix) is what lets the summed bounds be stated over an arbitrary index set.",
     "mathContext": "$T = T^*$ on $V$, $\\dim V = n+m$; $H \\le V$, $\\dim H = n$; compression means $\\dfrac{\\langle TH\\,y, y\\rangle}{\\|y\\|^2} = \\dfrac{\\langle T y, y\\rangle}{\\|y\\|^2}$ for all $0 \\ne y \\in H$.",

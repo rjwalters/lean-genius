@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 2
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Two Imports: Mathlib and the Parent Deficiency File",
     "content": "Line 1 pulls in all of Mathlib, which supplies the marriage-theorem infrastructure this file leans on: Finset.all_card_le_biUnion_card_iff_exists_injective (Hall's condition ⟹ an injective system of distinct representatives) together with the Finset double-counting lemmas (bipartiteAbove, sum over incidence pairs) used to verify that condition. Line 2 imports the parent entry's Lean file, HallMarriageTheoremOQ01OQ01OQ01, rather than re-deriving its results: this endpoint reuses that file's deficiency calculus — deficiency_eq_zero_iff and maxTransversal_eq_card_of_deficiency_zero — to upgrade the SDR produced here into the statement that the maximum partial transversal of a k-regular family has full size #ι. The import is what makes this a genuine leaf of the oq-01 chain rather than a standalone lemma.",
     "mathContext": "Depends on Hall's theorem $\\bigl(\\forall S,\\ \\#\\!\\bigcup_{i\\in S} t_i \\ge \\#S\\bigr) \\Rightarrow \\exists\\,f\\ \\text{injective},\\ f(i)\\in t_i$, and on the parent's deficiency identity $\\mathrm{def}(t)=0 \\iff \\max\\#(\\text{partial transversal}) = \\#\\iota$.",
@@ -53,7 +53,7 @@
       "startLine": 41,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Ambient Context: the HallRegular Namespace and Its Fixed Family",
     "content": "Between the header and the first definition the file fixes its working environment. `open Finset Function` brings the combinatorial vocabulary into scope unqualified — `card`, `biUnion`, `filter` (used throughout the double-counting argument) and `Function.Injective` (the target property of the system of distinct representatives). `namespace HallRegular` scopes every following name. The `variable` line then declares the data the whole development shares: index type `ι` and element type `α`, with `[Fintype ι]` making the family finite (so `univ`, `Fintype.card ι`, and finite sums/counts are available) and `[DecidableEq α]` making `Finset α` operations — membership, `biUnion`, `filter`, cardinality — computable. Crucially `{t : ι → Finset α}` is itself a section variable, so it is *not* re-declared in each theorem; every result below silently ranges over the same fixed family `t`.",
     "mathContext": "`ι` = left vertices, `α` = right vertices of the bipartite graph; `[Fintype ι]` supplies $\\#\\iota$ and `univ.biUnion t`, `[DecidableEq α]` supplies decidable membership in `Finset α`. Making `t` a `variable` is what lets `IsKRegular t k` and every theorem statement share one implicit family rather than re-quantifying it.",
@@ -193,7 +193,7 @@
       "startLine": 103,
       "endLine": 108
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Deficiency Section: Scoped Hypotheses and the omit Idiom",
     "content": "`section Deficiency` opens a local scope that adds two hypotheses via `variable [DecidableEq ι] [Nonempty α]`. These are needed only by the section's *last* theorem, `isGreatest_transversal_of_regular`, which reaches into the parent entry's deficiency calculus (`HallDefect.maxTransversal_eq_card_of_deficiency_zero`). The very next theorem, `deficiency_eq_zero_of_regular`, does **not** need them, so it is prefixed with `omit [DecidableEq ι] [Nonempty α] in` — Lean 4's per-declaration hypothesis pruning, which removes the two instances from *that one* signature while leaving them in force for the rest of the section. The idiom keeps each theorem's statement minimal (no spurious `[DecidableEq ι]`/`[Nonempty α]` on a result that is independent of them) without splitting the section or duplicating the `variable` block.",
     "mathContext": "Section-scoped `variable` + targeted `omit ... in` is the standard Lean 4 pattern for a group of lemmas that mostly share hypotheses but where one member is strictly more general. Here `[Nonempty α]` and `[DecidableEq ι]` are artefacts of the parent's `IsGreatest`/`transversalSizes` API, irrelevant to the pure statement `deficiency t = 0`.",

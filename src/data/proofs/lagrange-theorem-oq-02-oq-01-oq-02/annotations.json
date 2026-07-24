@@ -30,7 +30,7 @@
       "startLine": 40,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "The G-action setup and the orbit-space notation Ω = X/G",
     "content": "Before either declaration, a compact setup block fixes the acting group and the orbit space. `open MulAction` brings Mathlib's group-action API (orbit, stabilizer, orbitRel, orbitProdStabilizerEquivGroup) into scope; the `variable {α : Type*} [Group α] {β : Type*} [MulAction α β]` line declares a group α acting on a set β once, so both the equivalence and the counting theorem inherit the same context. The load-bearing line is `local notation \"Ω\" => Quotient (orbitRel α β)`: it names the quotient of β by the orbit relation — the orbit space X/G — as Ω. Every subsequent occurrence of Ω (the codomain Ω × α of the bijection, `Fintype.card Ω` as the orbit count |X/G|, and each representative `ω.out` for `ω : Ω`) reads through this abbreviation, which is why the whole file can state Σ_x |Stab(x)| = |X/G|·|G| so tersely.",
     "mathContext": "$\\Omega := \\mathrm{Quotient}(\\mathrm{orbitRel}\\ \\alpha\\ \\beta) = X/G$, the set of orbits; $|\\Omega| = \\mathrm{Fintype.card}\\ \\Omega$ is the orbit count.",
@@ -101,7 +101,7 @@
       "startLine": 51,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Why the equivalence is noncomputable: choosing orbit representatives",
     "content": "The equivalence is marked `noncomputable` for a structural reason worth highlighting: it indexes each orbit by a chosen representative `ω.out`, where `ω : Ω = Quotient (orbitRel α β)` and `Quotient.out` selects a preimage of the quotient class. That choice is justified by `Classical.choice`, so the construction is non-constructive even though both sides are finite. The orbit-level steps then all reduce to the representative: `stabilizerEquivStabilizerOfOrbitRel hb` transports a point's stabilizer to `Stab(ω.out)` along the orbit relation `hb`, and `orbitProdStabilizerEquivGroup α ω.out` is the orbit-stabilizer equivalence anchored at `ω.out`. The cardinality identity is unaffected — `Fintype.card_congr` only needs the bijection to exist, not to compute — which is exactly why a noncomputable equivalence still yields a clean, axiom-free counting theorem (only the foundational `Classical.choice`).",
     "mathContext": "$\\omega \\in \\Omega = X/G$, $\\ \\omega.\\mathrm{out} \\in X$ a representative; $\\mathrm{Stab}(x) \\cong \\mathrm{Stab}(\\omega.\\mathrm{out})$ for $x$ in the orbit of $\\omega.\\mathrm{out}$.",

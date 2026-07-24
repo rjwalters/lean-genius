@@ -14,7 +14,7 @@
     "id": "ann-negmul-norm",
     "proofId": "pell-equation-oq-06-oq-01-oq-02",
     "range": { "startLine": 54, "endLine": 63 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Brahmagupta composition for d = 2",
     "content": "`negMul_norm` is Brahmagupta's identity specialized to `d = 2`: the product of two norm `−1` solutions satisfies the norm `+1` Pell equation. The proof is a single `ring` rewrite of the left side into `(x₁²−2y₁²)(x₂²−2y₂²)`, then substituting the two hypotheses and computing `(−1)·(−1) = 1`. This is the multiplicativity of the `ℤ√2`-norm made completely elementary.",
     "mathContext": "$(x_1x_2+2y_1y_2)^2-2(x_1y_2+y_1x_2)^2=(x_1^2-2y_1^2)(x_2^2-2y_2^2)$.",

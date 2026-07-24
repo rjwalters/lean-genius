@@ -135,7 +135,7 @@
     "id": "erdos1017oq03oq01-ann-significance",
     "proofId": "erdos-1017-oq-03-oq-01",
     "range": { "startLine": 123, "endLine": 146 },
-    "type": "context",
+    "type": "concept",
     "title": "Significance: the additive/telescoping structure of the quarter-squares",
     "content": "The closing docstring ties the file's three results together: the central identity T(n) + T(n+1) = C(n+1,2) = n(n+1)/2 (two consecutive quarter-squares tile the edges of K_{n+1}); the exact, parity-blind two-step increment T(n+2) = T(n) + (n+1); and the accumulation formula T(n) = ∑_{k<n} ⌈k/2⌉ expressing T as the running sum of its own increments. Together these pin the additive/telescoping structure of the quarter-square sequence, complementing the sibling file's multiplicative identity T(m+n) − T(m−n) = m·n and its discrete convexity.",
     "mathContext": "$T(n)+T(n+1)=\\binom{n+1}{2},\\quad T(n+2)=T(n)+(n+1),\\quad T(n)=\\textstyle\\sum_{k<n}\\lceil k/2\\rceil$",

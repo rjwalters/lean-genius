@@ -3,7 +3,7 @@
     "id": "wipoq02-framing",
     "proofId": "prob-method-applications-wip-01-oq-02",
     "range": { "startLine": 1, "endLine": 59 },
-    "type": "context",
+    "type": "concept",
     "title": "The Other Face of the Engine: Property B",
     "content": "The module docstring frames the entry. The companion file ProbMethodApplicationsWIP.lean proves an abstract first-moment / union-bound avoidance engine ProbMethod.Core.ramsey_avoidance over an arbitrary finite ground set E: if a family of bad blocks is few enough relative to 2^{|E|}, some subset S avoids every block (no block is entirely inside S or entirely outside it). The sibling entry read E as the edges of K_n to recover Erdős's Ramsey bound R(k,k) > n. This file supplies the engine's other advertised consequence — Property B — by reading E as the vertex set V of a hypergraph and the blocks as the hyperedges. The engine's counting hypothesis then becomes the classical criterion edges.card < 2^{k−1}, and its output is a proper 2-colouring.",
     "mathContext": "$\\text{engine: } |\\text{cliques}|\\cdot 2^{|E|-m+1} < 2^{|E|} \\Rightarrow \\exists S \\text{ avoiding all blocks};\\quad \\text{here } E = V,\\ m = k,\\ \\text{blocks} = \\text{hyperedges}.$",

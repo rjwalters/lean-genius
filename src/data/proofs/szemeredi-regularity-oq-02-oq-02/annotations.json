@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "The open question: is the factor of 2 tight?",
     "content": "The module docstring states the open question inherited from the parent: `szemeredi_implies_fk` shows every ε-regular partition is a 2ε-cut-approximation, and the parent recorded the constant 2 as sharp under this strategy. This file refutes that. The imports (lines 49–52) pull in the parent's machinery — `IsEpsilonRegular`, `edgeDensity`, `IsCutApproximation`, and the partition-decomposition lemmas — all reused verbatim; only the per-pair estimate changes. The `variable {V} [Fintype V] [DecidableEq V]` (line 58) fixes a finite vertex type, and `open ... Classical` provides decidability for the graph adjacency filters.",
     "mathContext": "Question: in $|\\mathrm{Gal}|$-free terms, is the $2$ in `IsCutApproximation G (2ε) parts` optimal, or is `IsCutApproximation G ε parts` already true?",
@@ -52,7 +52,7 @@
       "startLine": 92,
       "endLine": 134
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Large case: normalising by |A||B| to invoke ε-regularity",
     "content": "When both A and B are large, the proof must convert ε-regularity's *density* statement into a *count* bound. After dispatching the degenerate |A|=0 or |B|=0 subcases (where e=0 and the goal is a positivity fact), it uses $d(A,B) = e/(|A||B|)$ (line 109, valid since |A||B| ≠ 0) to rewrite the regularity hypothesis $|d(A,B) - d| \\le \\varepsilon$. Dividing the target error by the positive $|A||B|$ (via `abs_div` and `abs_of_pos`) matches it against ε, then `div_mul_cancel₀` multiplies back through. The final `calc` climbs $\\varepsilon|A||B| \\le \\varepsilon|P||Q|$ using $|A|\\le|P|$, $|B|\\le|Q|$. This case already achieves the ε rate — which is why 1 is optimal.",
     "mathContext": "$\\left|\\dfrac{e}{|A||B|} - d\\right| \\le \\varepsilon \\Rightarrow |e - d|A||B|| \\le \\varepsilon|A||B| \\le \\varepsilon|P||Q|.$",
@@ -121,7 +121,7 @@
       "startLine": 226,
       "endLine": 233
     },
-    "type": "context",
+    "type": "concept",
     "title": "Axiom audit: foundational axioms only",
     "content": "The closing `#print axioms` on all three theorems substantiates the entry's `verified` badge and `axiomCount: 0`. Each result depends only on $\\{$`propext`, `Classical.choice`, `Quot.sound`$\\}$ — the ordinary foundational axioms carried in via Mathlib and the `open Classical` decidability — with no `sorryAx`, no `axiom` declarations, no `native_decide`, and no structure-encoded assumptions. All reused parent lemmas are themselves 0-axiom, so the sharpening introduces no new mathematical assumption.",
     "mathContext": "Dependency set $= \\{\\text{propext}, \\text{Classical.choice}, \\text{Quot.sound}\\}$ for all three theorems.",

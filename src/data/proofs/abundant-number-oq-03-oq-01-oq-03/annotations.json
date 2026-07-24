@@ -30,7 +30,7 @@
    "startLine": 61,
    "endLine": 70
   },
-  "type": "proof-technique",
+  "type": "tactic",
   "title": "The Second Seed 1575, Abundance by Kernel decide",
   "content": "abundant_1575 : Nat.Abundant 1575 is proved by $(\\text{abundant\\_iff\\_sigmaFast}\\; \\_).\\text{mpr}\\;(\\text{by decide})$, reducing the structurally-recursive sigmaFast in the Lean kernel to verify $\\sigma(1575) = 3224 > 3150 = 2\\cdot 1575$. Because this is a kernel decide (not native_decide), the result depends only on the standard foundational axioms — no Lean.ofReduceBool. Raised maxRecDepth / maxHeartbeats accommodate the deeper structural recursion at $1575$. This is the one genuinely new arithmetic input of the entry; everything else is counting.",
   "mathContext": "$\\sigma(1575) = \\sigma(3^2)\\sigma(5^2)\\sigma(7) = 13\\cdot 31\\cdot 8 = 3224 > 3150 = 2\\cdot 1575$.",
@@ -52,7 +52,7 @@
    "startLine": 91,
    "endLine": 126
   },
-  "type": "key-insight",
+  "type": "insight",
   "title": "Inclusion–Exclusion Folded into a Residue List",
   "content": "Rather than manipulate $|A\\cup B| = |A|+|B|-|A\\cap B|$ over Finsets, the seven values the union occupies in one length-$9450$ window are enumerated once: $R = \\{945, 1575, 2835, 4725, 6615, 7875, 8505\\}$ (the shared $4725 = 945\\cdot 5 = 1575\\cdot 3$ listed a single time). tile_odd_abundant then shows each $r + 9450\\cdot w$ is odd and abundant by rewriting it as $945\\cdot(\\text{odd})$ or $1575\\cdot(\\text{odd})$ — possible because $9450 = 945\\cdot 10 = 1575\\cdot 6$, so adding $9450\\cdot w$ preserves the 'odd multiple of a seed' structure. The overlap bookkeeping of inclusion–exclusion is thereby absorbed into building the list correctly.",
   "mathContext": "In $(0, 9450]$: odd multiples of 945 are $\\{945\\cdot 1,3,5,7,9\\}$ (5), of 1575 are $\\{1575\\cdot 1,3,5\\}$ (3), of 4725 is $\\{4725\\}$ (1); union $= 5+3-1 = 7$.",
@@ -75,7 +75,7 @@
    "startLine": 128,
    "endLine": 167
   },
-  "type": "proof-technique",
+  "type": "tactic",
   "title": "One Injective Tiling Map, Base-9450 Digits",
   "content": "count_lower_bound_1350 embeds the $7\\cdot m$ values $r + 9450\\cdot w$ ($r \\in R$, $w < m$) into the counting set. Membership: each is odd and abundant (tile_odd_abundant) and lies in $[1,N]$ since $r < 9450$ and $w < m$ give $r + 9450\\cdot w < 9450\\cdot(w+1) \\le 9450\\cdot m \\le N$. Injectivity is free from positional notation: every residue is $< 9450$, so the value determines its quotient $w$ and remainder $r$ — a one-line omega argument. Finset.card_image_of_injOn and Finset.card_le_card then give $7\\cdot m \\le \\mathrm{oddAbundantCount}(N)$; instantiating $m = \\lfloor N/9450\\rfloor$ via Nat.div_mul_le_self yields the headline $7\\lfloor N/9450\\rfloor \\le \\mathrm{oddAbundantCount}(N)$.",
   "mathContext": "$r + 9450 w = r' + 9450 w'$ with $r, r' < 9450 \\Rightarrow w = w' \\wedge r = r'$ (uniqueness of base-9450 digits), so the tiling map is injective on $R \\times \\{0,\\dots,m-1\\}$.",

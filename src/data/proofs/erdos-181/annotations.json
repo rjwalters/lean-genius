@@ -297,7 +297,7 @@
       "startLine": 259,
       "endLine": 310
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Unconditional Structural Lemmas: Pigeonhole, Monotonicity, Conditional Lower Bound",
     "content": "Part VI proves — with no axioms — the combinatorial backbone of $R(Q_n)$. `no_embedding_small`: if $N<2^n$ there is no injection $\\mathrm{Fin}(2^n)\\hookrightarrow\\mathrm{Fin}(N)$ (`Fintype.card_le_of_injective` + `omega`), the pigeonhole obstruction forcing $R(Q_n)\\ge 2^n$. `ramsey_property_mono`: the Ramsey property is upward monotone in the host size — restrict a colouring of $K_M$ to the first $N$ vertices via `Fin.castLE` and lift the embedding back (`Fin.castLE_injective`). `lower_bound_conditional`: whenever the Ramsey set is non-empty, $R(Q_n)\\ge 2^n$, obtained by `le_csInf` and applying the pigeonhole lemma to the all-zero colouring. Together these turn the axiomatic `lower_bound` into a genuinely proved fact under a mild non-emptiness hypothesis.",
     "mathContext": "$N<2^n \\Rightarrow \\nexists\\, \\mathrm{Fin}(2^n)\\hookrightarrow \\mathrm{Fin}(N)$",

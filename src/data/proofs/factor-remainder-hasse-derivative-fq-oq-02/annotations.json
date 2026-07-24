@@ -119,7 +119,7 @@
     "id": "ann-realization",
     "proofId": "factor-remainder-hasse-derivative-fq-oq-02",
     "range": { "startLine": 158, "endLine": 169 },
-    "type": "example",
+    "type": "concept",
     "title": "The contrast realised on f = X^p",
     "content": "hasse_oracle_X_pow makes the head-to-head concrete on the canonical witness. Over a characteristic-p field the ordinary test certifies every multiplicity of X^p at 0, yet the Hasse oracle reads off the exact value: the least nonvanishing Hasse-derivative order of X^p at 0 is its true multiplicity p (via the parent's rootMultiplicity_X_pow). The same polynomial on which -oq-01's overcount_X_pow demonstrates unbounded ordinary overcount is pinned to exactly p by the Hasse test.",
     "mathContext": "$\\mathrm{IsLeast}\\,\\{n : (\\mathrm{hasseDeriv}\\,n\\,X^p)(0) \\neq 0\\}\\,p$ while the ordinary test certifies every $n$.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "The first correction to the union bound",
     "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma over a real `IsProbabilityMeasure`. Two companion entries pin down the computable extremes: `lovasz-local-lemma-oq-01` handles **mutual independence** (avoidance factors exactly as $\\prod_i (1 - \\mu(A_i))$), and `lovasz-local-lemma-oq-01-union-bound` handles the **dependency-free** case (only the first-moment bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$). Both merely *bound* the avoidance probability once dependence is allowed. This file computes the **exact** value in the smallest genuinely dependent regime — two events — by inclusion–exclusion: $\\mu(A^c \\cap B^c) + \\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, i.e. $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$. The overlap $\\mu(A \\cap B)$ is *exactly* the term the two-event union bound throws away, and it is nonzero precisely when the events are positively correlated — the first quantitative sign that dependency helps avoid all bad events.",
     "mathContext": "Two measurable events $A, B$ over an `IsProbabilityMeasure` $\\mu$; exact identity $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$, no independence hypothesis.",
@@ -31,7 +31,7 @@
       "startLine": 36,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "The probability-space frame",
     "content": "```lean\nimport Mathlib.Probability.Independence.Basic\nopen MeasureTheory\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01InclusionExclusion\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A B : Set Ω}\n```\n\nUnlike the independent base case, which derives `IsProbabilityMeasure` from mutual independence, here there is no independence hypothesis, so `[IsProbabilityMeasure μ]` is assumed outright — it is what supplies $\\mu(\\Omega) = 1$ and hence the complementation identity $\\mu(s^c) + \\mu(s) = 1$. Only two events are needed, so the index is not a `Fintype` family but a bare pair $A, B : \\mathrm{Set}\\,\\Omega$. All measures live in $\\mathbb{R}_{\\ge 0}^\\infty$; the identity is stated **additively** ($\\mu(A^c \\cap B^c) + \\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$) precisely so the proof never invokes truncated subtraction.",
     "mathContext": "`IsProbabilityMeasure μ` gives $\\mu(\\Omega) = 1$ and $\\mu(s^c) + \\mu(s) = 1$; the additive statement keeps all arithmetic inside $\\mathbb{R}_{\\ge 0}^\\infty$ addition.",
@@ -100,7 +100,7 @@
       "startLine": 84,
       "endLine": 93
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Union-bound recovery: the overlap is exactly what is thrown away",
     "content": "`two_event_avoidance_of_union_lt` recovers the crude first-moment condition $\\mu(A) + \\mu(B) < 1$ as a *corollary* of the sharp threshold, by discarding the overlap: since $\\mu(A \\cap B) \\ge 0$, one has $1 \\le 1 + \\mu(A \\cap B)$, so $\\mu(A) + \\mu(B) < 1$ implies $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ (`lt_of_lt_of_le` with `le_add_right`). Feeding that into `two_event_avoidance` gives positivity. The one-line derivation makes the improvement precise and directional: the sharp threshold is *strictly* weaker than the union-bound threshold exactly when $\\mu(A \\cap B) > 0$ — when the events are positively correlated. This is the two-event shadow of why the LLL beats the union bound in general: dependency (overlap) enlarges the region where global avoidance is still forced.",
     "mathContext": "two_event_avoidance_of_union_lt: μ A + μ B < 1 ⇒ 0 < μ(Aᶜ ∩ Bᶜ), via lt_of_lt_of_le hlt (le_add_right le_rfl) feeding two_event_avoidance. Strictly weaker gain = μ(A ∩ B).",

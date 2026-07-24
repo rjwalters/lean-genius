@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 41
     },
-    "type": "context",
+    "type": "concept",
     "title": "From avoidance positivity to the quantitative LLL lower bound",
     "content": "The Lovász Local Lemma is a **quantitative** statement: under its hypotheses one gets not merely $\\mu(\\bigcap_i A_i^c) > 0$ but the lower bound $\\mu(\\bigcap_i A_i^c) \\ge \\prod_i (1 - x_i)$, of which positivity is only a corollary. The gallery's chain-rule scaffold `lovasz-local-lemma-oq-01-chain-rule` reduced the LLL to per-event conditional bounds and proved exactly the qualitative half — `avoidance_pos_of_failure_cond_lt_one'`: if every conditional failure probability $\\mu[A_k \\mid \\bigcap_{j<k} A_j^c] < 1$, avoidance is positive. This file lands the quantitative bound the theorem is really about:\n$$\\prod_k (1 - b_k) \\;\\le\\; \\mu\\!\\left(\\bigcap_i A_i^c\\right) \\qquad\\text{whenever } \\mu[A_k \\mid \\text{history}] \\le b_k < 1.$$\nRead against the parent proof `lovasz-local-lemma` (whose `general_lll` only records the rational surrogate $\\prod(1 - x_i) > 0$ over $\\mathbb{Q}$), the point is that $\\prod(1 - b_k)$ is a *genuine lower bound on the real avoidance probability* over an arbitrary probability space — the surrogate is not merely analogous to the true measure, it bounds it.",
     "mathContext": "Arbitrary measurable family $A : \\mathbb{N} \\to \\mathrm{Set}\\,\\Omega$ over an `IsProbabilityMeasure` $\\mu$; per-event conditional failure bounds $b_k < 1$ are the only hypotheses (history positivity is derived). No independence, no dependency graph.",
@@ -31,7 +31,7 @@
       "startLine": 42,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Frame: reuse the chain-rule scaffold",
     "content": "```lean\nimport Proofs.LovaszLocalLemmaOQ01ChainRule\nopen MeasureTheory ProbabilityTheory Finset\nopen scoped ENNReal\nopen LovaszLocalLemmaOQ01ChainRule\nnamespace LovaszLocalLemmaOQ01Quantitative\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A : ℕ → Set Ω}\n```\n\nThe file imports the chain-rule entry directly and adds **no new probabilistic input**. Everything downstream is assembled from three lemmas proved there: the survival-product identity `avoidance_eq_prod_survival_cond` ($\\mu(\\bigcap (A_i)^c) = \\prod_k \\mu[(A_k)^c \\mid \\text{history}]$), the factorwise bridge `survival_cond_eq_one_sub` ($\\mu[(A_k)^c \\mid \\text{history}] = 1 - \\mu[A_k \\mid \\text{history}]$ on a positive history), and the automatic history positivity `hist_pos_of_failure_cond_lt_one`. The same $\\mathbb{N}$-prefix ordering (`Finset.range`) is inherited, since the chain rule needs a total order on the events.",
     "mathContext": "`μ[t|s]` is `ProbabilityTheory.cond μ s t`; all quantities live in `ℝ≥0∞`, where truncated subtraction `1 - c` and finite products are the working algebra.",
@@ -54,7 +54,7 @@
       "startLine": 52,
       "endLine": 89
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The quantitative avoidance lower bound",
     "content": "```lean\ntheorem avoidance_ge_prod_one_sub (hA : ∀ i, MeasurableSet (A i)) (n : ℕ)\n    (b : ℕ → ℝ≥0∞) (hb : ∀ k ∈ Finset.range n, b k < 1)\n    (hfail : ∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] ≤ b k) :\n    ∏ k ∈ Finset.range n, (1 - b k) ≤ μ (⋂ i ∈ Finset.range n, (A i)ᶜ) := by\n  rw [avoidance_eq_prod_survival_cond hA]\n  refine Finset.prod_le_prod' fun k hk => ?_\n  ...\n  rw [survival_cond_eq_one_sub hA k hposk]\n  exact tsub_le_tsub_left (hfail k hk) 1\n```\n\nThe entire quantitative content is one order-theoretic step on top of the chain-rule scaffold. First `avoidance_eq_prod_survival_cond` rewrites the goal's right-hand side as the finite $\\mathbb{R}_{\\ge 0}^\\infty$ product $\\prod_k \\mu[(A_k)^c \\mid \\text{history}]$. Then `Finset.prod_le_prod'` (monotonicity of a finite product in a canonically ordered commutative monoid) reduces the inequality to a **factorwise** bound $1 - b_k \\le \\mu[(A_k)^c \\mid \\text{history}]$ for each $k \\in \\mathrm{range}\\,n$. For that factor: the history $\\bigcap_{j<k}(A_j)^c$ has positive measure automatically — `hist_pos_of_failure_cond_lt_one` derives it from the failure bounds, since $b_k < 1$ forces each $\\mu[A_k \\mid \\text{history}] \\le b_k < 1$ — so `survival_cond_eq_one_sub` turns the survival factor into $1 - \\mu[A_k \\mid \\text{history}]$, and antitonicity of truncated subtraction `tsub_le_tsub_left` converts $\\mu[A_k \\mid \\text{history}] \\le b_k$ into $1 - b_k \\le 1 - \\mu[A_k \\mid \\text{history}]$.",
     "mathContext": "The membership propagation `m < k < n ⟹ m ∈ range n` (via `lt_trans`) is what lets the per-index history positivity call reuse the global failure/upper bounds. No factor needs a uniform bound — each is handled locally in ℝ≥0∞.",
@@ -79,7 +79,7 @@
       "startLine": 90,
       "endLine": 102
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Symmetric specialisation: (1 − p)ⁿ",
     "content": "```lean\ntheorem avoidance_ge_one_sub_pow (hA : ∀ i, MeasurableSet (A i)) (n : ℕ) (p : ℝ≥0∞)\n    (hp : p < 1)\n    (hfail : ∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] ≤ p) :\n    (1 - p) ^ n ≤ μ (⋂ i ∈ Finset.range n, (A i)ᶜ) := by\n  have h := avoidance_ge_prod_one_sub hA n (fun _ => p) (fun _ _ => hp) hfail\n  simpa [Finset.prod_const, Finset.card_range] using h\n```\n\nInstantiating the general bound at the constant budget $b_k \\equiv p$ collapses the product $\\prod_{k \\in \\mathrm{range}\\,n}(1 - p)$ to $(1 - p)^n$ via `Finset.prod_const` and `Finset.card_range`. This is the **symmetric-regime** quantitative LLL bound: a single uniform conditional failure bound $p < 1$ yields an avoidance probability at least exponentially small in $n$ — precisely the shape the symmetric LLL delivers (under $e \\cdot p \\cdot (d+1) \\le 1$ the induction certifies each conditional failure $\\le p$).",
     "mathContext": "The exponential lower bound $(1-p)^n$ is the quantitative counterpart of the union-bound extreme's additive $1 - np$; both bound the same avoidance probability from below under different hypotheses.",
@@ -100,7 +100,7 @@
       "startLine": 103,
       "endLine": 114
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Positivity is the quantitative bound at coarsest resolution",
     "content": "```lean\ntheorem avoidance_pos_of_prod_one_sub_pos (hA : ∀ i, MeasurableSet (A i)) (n : ℕ)\n    (b : ℕ → ℝ≥0∞) (hb : ∀ k ∈ Finset.range n, b k < 1)\n    (hfail : ∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] ≤ b k) :\n    0 < μ (⋂ i ∈ Finset.range n, (A i)ᶜ) := by\n  refine lt_of_lt_of_le ?_ (avoidance_ge_prod_one_sub hA n b hb hfail)\n  rw [zero_lt_iff, Finset.prod_ne_zero_iff]\n  intro k hk\n  rw [Ne, tsub_eq_zero_iff_le, not_le]\n  exact hb k hk\n```\n\nThe qualitative Lovász Local Lemma is recovered as a corollary: since every $b_k < 1$ makes the survival budget $1 - b_k$ strictly positive (`tsub_eq_zero_iff_le`), the finite product $\\prod_k(1 - b_k)$ is nonzero (`Finset.prod_ne_zero_iff`), hence strictly positive, and it lower-bounds the avoidance probability. So $0 < \\mu(\\bigcap(A_i)^c)$ — reproving `avoidance_pos_of_failure_cond_lt_one'` from the strictly stronger quantitative estimate. Positivity is the quantitative bound read at its coarsest resolution: it forgets *how large* $\\prod(1 - b_k)$ is and keeps only that it is nonzero.",
     "mathContext": "This makes explicit that the chain-rule entry's positivity result is not lost but subsumed — the gallery's OQ-01 landscape now states the LLL conclusion quantitatively, with qualitative positivity as a derived special case.",

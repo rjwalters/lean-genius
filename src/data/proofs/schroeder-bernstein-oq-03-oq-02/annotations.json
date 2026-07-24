@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 54
     },
-    "type": "context",
+    "type": "concept",
     "title": "Isolating the Exhaustion Step of the Priority Construction",
     "content": "This file is a child of schroeder-bernstein-oq-03, the formalization of Myhill's isomorphism theorem — the computability-theoretic analogue of Schröder–Bernstein. The parent proves the theorem's hard direction by a back-and-forth priority construction (Rogers, Theory of Recursive Functions, §7.4), which has three logically separable ingredients: (a) each stage terminates, so a fresh domain/range point can always be placed; (b) domain/range exhaustion, so every element is eventually reached; and (c) computability, so the limit permutation is computable. The parent already discharges (a) as its two augment steps augment_domain_step and augment_range_step, but its hard direction remains open, blocked on (b)+(c).\n\nThis entry isolates ingredient (b) and proves it in complete generality, stripped of the matchings and the computability machinery. Exhaustion is not specific to computability: it is the order-theoretic heart of every back-and-forth argument, from Cantor's theorem on countable dense linear orders onward. Making it a stand-alone, reusable engine reduces Myhill's open direction to ingredient (c) alone — the computable read-off of an already-total limit. All results are 0-axiom (no sorry, no axiom declarations, no native_decide); #print axioms reports only the ordinary foundational axioms.",
     "mathContext": "The back-and-forth method interleaves 'ensure the next domain point is covered' and 'ensure the next range point is covered'. Abstractly, states extend along a preorder, coverage is a monotone predicate, and each step is guaranteed to exist; the content of exhaustion is that interleaving the two kinds of step reaches every element in both coordinates.",
@@ -101,7 +101,7 @@
       "startLine": 88,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Witness Selection and the Parity-Free Chain",
     "content": "The proof body opens with `classical` and extracts two state-valued choosers from the step hypotheses: chD s n := (dstep s n).choose and chR s n := (rstep s n).choose, with choose_spec splitting into the extension facts chD_ext / chR_ext (ext s (chD s n)) and the coverage facts chD_cov / chR_cov (dcov (chD s n) n, resp. rcov). Exists.choose here is the *sole* place Classical.choice enters the whole file — everything else is definitional or first-order. The chain is then a bare primitive recursion, c := fun k => Nat.rec s₀ (fun n s => chR (chD s n) n) k, so that c 0 = s₀ and c (n+1) = chR (chD (c n) n) n hold by rfl. Crucially, stage n+1 covers domain point n and range point n *together* — first chD covers n in the domain, then chR covers n in the range — rather than devoting even stages to the domain and odd stages to the range.",
     "mathContext": "Because domain point n and range point n are handled at the same stage n+1, first coverage dcov (c (n+1)) n reads its range half straight off chR_cov, while the domain half chD_cov (c n) n must be pushed across the trailing chR step — this is the one and only use of dcov_mono in establishing first coverage (dcov_mono (chR_ext …) (chD_cov …)). rcov_mono is not needed here at all; it is reserved for the persistence step hcov, where hextle lifts stage-(n+1) coverage to every later stage.",

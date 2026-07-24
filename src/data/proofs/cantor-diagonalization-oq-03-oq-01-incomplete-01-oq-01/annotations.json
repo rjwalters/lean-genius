@@ -29,7 +29,7 @@
       "startLine": 58,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Abstract Lawvere Lemma (One Diagonal Argument)",
     "content": "EvalStructure bundles codes Ob, values Val, and eval : Ob → Ob → Val; IsPointSurjective asks that every g : Ob → Val be represented by some code. lawvere_abstract is the whole engine: given point-surjectivity, take the code a₀ representing a ↦ f (eval a a), then eval a₀ a₀ is a fixed point of f. Every later result — the reflexive fixed-point property, the subsingleton collapse, and Cantor — is an instantiation of this single lemma.",
     "mathContext": "If $\\forall g\\, \\exists a\\, \\forall x,\\ \\mathrm{eval}\\,a\\,x = g\\,x$, apply it to $g = \\lambda a.\\ f(\\mathrm{eval}\\,a\\,a)$ to get $a_0$ with $\\mathrm{eval}\\,a_0\\,a_0 = f(\\mathrm{eval}\\,a_0\\,a_0)$.",
@@ -51,7 +51,7 @@
       "startLine": 80,
       "endLine": 148
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reflexive ⟹ Fixed-Point Property ⟹ Subsingleton",
     "content": "reflexive_hasFixedPointProperty packages e into an EvalStructure with Ob = Val = A and applies lawvere_abstract, so every self-map has a fixed point. The converse direction is the collapse: exists_fixedPointFree_of_ne builds the fixed-point-free swap x ↦ if x = a then b else a from any two distinct points, and subsingleton_of_hasFixedPointProperty contraposes it — the fixed-point property forbids two distinct points. reflexive_of_subsingleton_nonempty supplies the easy converse for one-point types.",
     "mathContext": "Swap map: for $a \\neq b$, $s(x) = b$ if $x = a$ else $a$ is fixed-point-free. Hence 'every self-map has a fixed point' $\\Rightarrow$ $A$ is a subsingleton.",

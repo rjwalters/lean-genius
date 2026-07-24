@@ -45,7 +45,7 @@
     "id": "ann-greedy-core",
     "proofId": "erdos-1018-oq001",
     "range": { "startLine": 67, "endLine": 131 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The greedy list-colouring core by strong induction",
     "content": "`exists_list_coloring_on` is the engine: for a palette with $|L(v)|\\ge k+1$ everywhere and any vertex set $T$, it builds a global $c : V\\to\\alpha$ proper on $T$ and palette-respecting on $T$. The proof is `Finset.strongInduction` on $T$. Empty $T$: both requirements are vacuous. Nonempty $T$: `IsKDegenerate` extracts a vertex $v\\in T$ with within-$T$ degree $\\le k$; the inductive hypothesis colours $T.\\text{erase}\\ v$. The colours used by $v$'s neighbours form `forbidden` $= N.\\text{image}\\ c'$ with $|\\text{forbidden}| \\le k$ (via `card_image_le` then the degree bound). Since $|L(v)| \\ge k+1 > k \\ge |\\text{forbidden}|$, the set $L(v)\\setminus\\text{forbidden}$ is nonempty (`sdiff_nonempty` plus a cardinality contradiction closed by `omega`), yielding a free colour `col` $\\in L(v)$. The colouring is extended by `fun x => if x = v then col else c' x`, and properness is verified by the same three-way case split as the parent ($u=v$, $w=v$, or both $\\ne v$). Crucially, only the *size* $\\ge k+1$ of the palette is ever used — never the identity of its colours — which is why the adversarial palette costs nothing.",
     "mathContext": "$|\\text{forbidden}| \\le k < k+1 \\le |L(v)| \\ \\Rightarrow\\ L(v)\\setminus\\text{forbidden} \\ne \\varnothing$, giving a free colour inside $L(v)$.",

@@ -6,7 +6,7 @@
       "startLine": 44,
       "endLine": 50
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "log_prod_rpow: log(∏ xᵢ^{wᵢ}) = ∑ wᵢ·log xᵢ",
     "content": "The logarithmic bridge. For strictly positive xᵢ, the logarithm of the weighted geometric mean equals the weighted sum of logarithms. The proof applies Real.log_prod (each factor xᵢ^{wᵢ} is positive, hence nonzero, by Real.rpow_pos_of_pos) and then Real.log_rpow on each term to turn log(xᵢ^{wᵢ}) into wᵢ·log xᵢ. This is what linearises the multiplicative geometric mean into the additive form on which Jensen's inequality acts.",
     "mathContext": "$\\log\\!\\left(\\prod_i x_i^{w_i}\\right) = \\sum_i w_i \\log x_i$.",
@@ -29,7 +29,7 @@
       "startLine": 52,
       "endLine": 55
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "prod_rpow_pos: positivity of the geometric mean",
     "content": "The weighted geometric mean ∏ xᵢ^{wᵢ} of positive reals is positive, since it is a finite product of positive rpows (Finset.prod_pos with Real.rpow_pos_of_pos). Needed so that the geometric mean lies in the domain (0,∞) where log is injective.",
     "mathContext": "$\\prod_i x_i^{w_i} > 0$ when each $x_i > 0$.",
@@ -49,7 +49,7 @@
       "startLine": 58,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "mean_pos: positivity of the arithmetic mean",
     "content": "The weighted arithmetic mean ∑ wᵢxᵢ is positive: each summand wᵢxᵢ is a product of positive numbers, and the index set is nonempty, so Finset.sum_pos applies. Positivity places the arithmetic mean in the domain of log, the other endpoint of the bridge.",
     "mathContext": "$\\sum_i w_i x_i > 0$ over a nonempty index set with $w_i, x_i > 0$.",

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 2
     },
-    "type": "context",
+    "type": "concept",
     "title": "One import: a monotonicity layer on the parent's VC foundations",
     "content": "The file imports only its parent, Proofs.PACLearningBoundsWIP01 — no fresh Mathlib surface. That parent supplies the primitives this entry reasons about: the trace Π_H(S) = {h ∩ S : h ∈ H}, the shattering relation Shatters H S, the VC dimension VCDim H = sSup {n | ∃ S, |S| = n ∧ Shatters H S}, and the powerset benchmark vcDim_powerset. Everything proved here — vcDim_mono, the union corollaries, and the powerset ceiling — is a thin monotonicity layer assembled from those foundations, each a one- or two-line consequence, so the entry inherits the parent's 0-axiom status without adding any new assumptions.",
     "mathContext": "$H \\subseteq H' \\Rightarrow \\mathrm{VCDim}\\,H \\le \\mathrm{VCDim}\\,H'$; specialised to $H \\subseteq H \\cup H'$ and to $H \\subseteq 2^S$ giving $\\mathrm{VCDim}\\,H \\le |S|$.",

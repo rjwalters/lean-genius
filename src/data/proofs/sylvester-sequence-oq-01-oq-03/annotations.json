@@ -39,7 +39,7 @@
     "id": "ann-engine",
     "proofId": "sylvester-sequence-oq-01-oq-03",
     "range": { "startLine": 61, "endLine": 72 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Multiplicative Engine (Consecutive-Integer Factorization)",
     "content": "`syl_succ_sub_one` proves the identity that drives everything: $a_{n+1} - 1 = a_n(a_n - 1)$, a product of two *consecutive* integers. The proof sidesteps $\\mathbb{N}$'s truncated subtraction entirely by the change of variable $a_n = p + 2$ (legitimate because $a_n \\ge 2$), after which both sides become honest polynomials in $p$ and `ring`/`omega` finish. This one lemma is reused verbatim in the product identity, the parity argument, and the $\\bmod\\,6$ induction — the single point from which the arithmetic skeleton radiates.",
     "mathContext": "$a_{n+1}-1 = (a_n^2 - a_n + 1) - 1 = a_n^2 - a_n = a_n(a_n - 1).$",

@@ -15,7 +15,7 @@
     "id": "ann-unit-pm-one",
     "proofId": "quadratic-gauss-sum-square-oq-05",
     "range": { "startLine": 61, "endLine": 79 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Character values on units are ±1",
     "content": "These four lemmas establish the algebraic fact that powers the whole file: on a unit, the quadratic character takes the value +1 or −1 (never 0), and therefore squares to 1. Nonvanishing comes from $\\chi(a)\\chi(a^{-1}) = \\chi(1) = 1$, which is impossible if $\\chi(a) = 0$. Ruling out the 0 branch of the `IsQuadratic` trichotomy leaves exactly $\\pm1$. The involution property $\\chi(a)^2 = 1$ is what later lets the twisting law be inverted and the sign annihilated by squaring.",
     "mathContext": "For a unit $a$: $\\chi(a)\\,\\chi(a^{-1}) = \\chi(1) = 1 \\Rightarrow \\chi(a) \\neq 0$, hence $\\chi(a) \\in \\{1, -1\\}$ and $\\chi(a)^2 = 1$.",

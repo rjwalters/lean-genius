@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 3
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Non-Obvious Import: Product-Measure Fubini",
     "content": "Three imports carry the proof. `Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral` supplies the one-dimensional closed form `integral_gaussian : ∫_ℝ e^{-b x²} = √(π/b)`. The load-bearing but non-obvious one is `Mathlib.MeasureTheory.Integral.Pi`, which provides `integral_fintype_prod_volume_eq_pow` — the lemma stating that the integral of a product `∏ᵢ f(xᵢ)` over `Fin n → ℝ` (with the product Lebesgue measure) equals `(∫ f)^{card}`. That single lemma is the `n`-dimensional Fubini engine; without it the separable-integrand argument could not collapse to a power. `Mathlib.Tactic` brings `ring`, `positivity`, and `simp`.",
     "mathContext": "$\\int_{\\mathbb R^n} \\prod_{i=1}^n f(x_i)\\,dx = \\left(\\int_{\\mathbb R} f\\right)^n$ — Fubini/Tonelli for the product measure on $\\mathbb R^n = \\mathrm{Fin}\\,n \\to \\mathbb R$.",

@@ -30,7 +30,7 @@
       "startLine": 73,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Collapsing the Constant to n!/k!",
     "content": "The prefactor of the closed form is `C(n,k)·(n-k)!`, and the entire arithmetic content is that this equals `n!/k!`. The identity comes from `Nat.choose_mul_factorial_mul_factorial hk : C(n,k)·k!·(n-k)! = n!`, cast into `𝕜` as `hchoose`. Dividing by the nonzero `k!` (needing only `CharZero 𝕜`) turns `C(n,k)·(n-k)!` into `n!/k!`. This is why the final answer has the clean shape `n!/k!` and not a three-factorial expression.",
     "mathContext": "\\binom{n}{k}(n-k)! = \\frac{n!}{k!}",
@@ -116,7 +116,7 @@
       "startLine": 153,
       "endLine": 158
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity Check: S(4,1) = 8",
     "content": "The `example` verifies the closed form for `S(4,1)` over ℚ. Combinatorially, a permutation of 4 elements with exactly one fixed point chooses that point (`C(4,1)=4` ways) and deranges the other 3 (`D_3 = 2` ways), so `S(4,1) = 8`. The closed form gives `(4!/1!)·(1 - 1 + 1/2 - 1/6) = 24·(1/3) = 8`, matching. This anchors the abstract theorem against a concrete small value.",
     "mathContext": "S(4,1) = \\binom{4}{1}D_3 = 8 = \\frac{4!}{1!}\\left(1-1+\\tfrac12-\\tfrac16\\right)",

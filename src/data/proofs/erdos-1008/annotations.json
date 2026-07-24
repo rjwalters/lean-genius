@@ -214,7 +214,7 @@
       "startLine": 302,
       "endLine": 335
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Kővári–Sós–Turán via cherry counting + Cauchy–Schwarz",
     "content": "The proved KST bound turns the ≤1-common-neighbor constraint into a quantitative edge bound. Step 1 (cherry count): ∑_v d(v)(d(v)−1) ≤ n(n−1), since each ordered pair of neighbors of v is a distinct cherry and each endpoint-pair occurs ≤ once. Step 2: rewriting d² = d(d−1) + d and using handshaking ∑d = 2m gives ∑ d(v)² ≤ n(n−1) + 2m. Step 3 (Cauchy–Schwarz): (2m)² = (∑d)² ≤ n·∑d². Combining yields 4m² ≤ n²(n−1) + 2nm, i.e. m = O(n^{3/2}) — the classical extremal count for C₄-free graphs.",
     "mathContext": "$4m^2 \\le n^2(n-1) + 2nm$, from $\\sum_v d(d-1)\\le n(n-1)$, $\\sum d = 2m$, and $(\\,\\sum d\\,)^2 \\le n\\sum d^2$ (Cauchy–Schwarz). Hence $m=O(n^{3/2})$.",
@@ -286,7 +286,7 @@
       "startLine": 687,
       "endLine": 698
     },
-    "type": "context",
+    "type": "concept",
     "title": "Derived results",
     "content": "c4free_subgraph_exists records the trivial existence statement — every graph has a C₄-free subgraph, witnessed by the empty graph ⊥ — the qualitative shadow of the axiom erdos_1008's quantitative Ω(m^{2/3}). The closing #check block confirms the final API surface: the axiom erdos_1008, the verified exponent_optimal, and kovari_sos_turan (noted as 'now proved' — it was formerly an axiom).",
     "mathContext": "Every $G$ has a C₄-free subgraph ($\\bot \\le G$); the content is the quantitative $\\Omega(m^{2/3})$ bound.",

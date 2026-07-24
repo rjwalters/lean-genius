@@ -39,7 +39,7 @@
     "id": "ann-all-odd-degree",
     "proofId": "handshake-lemma",
     "range": { "startLine": 62, "endLine": 69 },
-    "type": "technique",
+    "type": "tactic",
     "title": "All Vertices Odd ⟹ Even Order",
     "content": "When every vertex has odd degree, the filtered set {v | Odd (deg v)} is all of V — proved by `ext v; simp [h v]`. The handshake parity corollary then says this set (now the whole vertex set) has even cardinality, so `Fintype.card V` is even. This is the first structural leap: a global hypothesis on degrees constrains the *number* of vertices.",
     "mathContext": "If $\\deg(v)$ is odd for all $v$, then $\\{v : \\deg(v)\\text{ odd}\\} = V$, so $|V| = \\bigl|\\{v : \\deg(v)\\text{ odd}\\}\\bigr|$ is even.",

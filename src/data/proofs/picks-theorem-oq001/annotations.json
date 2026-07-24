@@ -116,7 +116,7 @@
       "startLine": 258,
       "endLine": 296
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Verification: Unit Square and 2x2 Square",
     "content": "The unit square (0,0),(1,0),(1,1),(0,1) glues two unit triangles on the primitive diagonal (1,1): diagGCD = 1, twiceArea = 2, boundaryCount = 4, pickInterior = 0 = 0 + 0. The 2x2 square (0,0),(2,0),(2,2),(0,2) has diagonal (2,2) with diagGCD = 2: pickInterior = 1 = 0 + 0 + (2 - 1), exhibiting the correction term as the diagonal midpoint (1,1) becoming the single interior point. All checks use kernel `decide`, so no native_decide and no Lean.ofReduceBool axiom appears.",
     "mathContext": "Small worked examples confirm both exact primitive additivity and the general correction term.",

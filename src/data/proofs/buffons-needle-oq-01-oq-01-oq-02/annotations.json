@@ -98,7 +98,7 @@
       "startLine": 155,
       "endLine": 177
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Removing hInnerInt from the Statement",
     "content": "`buffon_smooth_of_continuousOn` and its global-continuity twin `buffon_smooth_of_continuous` strip `hInnerInt` out of the parent's `buffon_smooth_full` by supplying it internally through `hInnerInt_of_continuousOn`/`hInnerInt_of_continuous`. What survives in the signature is only honest analytic data: pointwise differentiability (`HasDerivAt` for both coordinate functions on `uIcc a b`) plus continuity of the derivatives. The conclusion is the exact Buffon–Barbier identity `concreteSmoothExpectedCrossings γ a b d = 2·planarArcLength γ a b/(π·d)`. These are the intermediate forms of the theorem; the final section collapses both the differentiability and the continuity requirements into the single, natural hypothesis `ContDiff ℝ 1`.",
     "mathContext": "$\\text{concreteSmoothExpectedCrossings}\\,\\gamma\\,a\\,b\\,d = \\dfrac{2\\,\\text{planarArcLength}\\,\\gamma\\,a\\,b}{\\pi d},$ assuming only that each coordinate is differentiable with a continuous derivative on $[a,b]$ — the integrability side-condition is discharged internally rather than assumed.",

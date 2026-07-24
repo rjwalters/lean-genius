@@ -31,7 +31,7 @@
       "startLine": 87,
       "endLine": 93
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Computational Core: Upper Preimage = Ordinary Preimage",
     "content": "`upperPreimage_singletonMap` proves the single identity on which the entire bridge rests: {x | singletonMap f x ⊆ U} = f⁻¹' U. The proof is one `ext` followed by `simp` with `singleton_subset_iff` (the fact that {a} ⊆ U ↔ a ∈ U). This is the reason the embedding of single-valued into set-valued theory is faithful: the upper-hemicontinuity preimage of the correspondence carries exactly the same information as the ordinary preimage of the function, so no continuity data is gained or lost.",
     "mathContext": "$\\{x \\mid \\{f(x)\\} \\subseteq U\\} = \\{x \\mid f(x) \\in U\\} = f^{-1}(U)$, using $\\{a\\} \\subseteq U \\iff a \\in U$. Because the UHC preimage of $F_f$ literally is $f^{-1}(U)$, openness of one is openness of the other.",
@@ -53,7 +53,7 @@
       "startLine": 99,
       "endLine": 114
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "UHC of the Singleton Correspondence ⟺ Continuity of f",
     "content": "`singleton_uhc_iff_continuous` upgrades the preimage identity into a full equivalence: `IsUpperHemicontinuous (singletonMap f) ↔ Continuous f`. After rewriting with `continuous_def` (continuity = openness of preimages of opens), both directions are immediate rewrites by the core identity. That this is an *iff*, not merely 'continuity ⟹ UHC', is the precise justification for why Kakutani's upper-hemicontinuity hypothesis is the correct set-valued analogue of Brouwer's continuity hypothesis — they coincide exactly on singleton correspondences.",
     "mathContext": "By $\\text{continuous } f \\iff \\forall U \\text{ open}, f^{-1}(U) \\text{ open}$ and the identity $\\{x \\mid F_f(x)\\subseteq U\\}=f^{-1}(U)$, upper hemicontinuity of $F_f$ and continuity of $f$ are the same statement. UHC is thus the faithful generalization of continuity to correspondences.",
@@ -74,7 +74,7 @@
       "startLine": 120,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Singletons Satisfy the Remaining Kakutani Value-Conditions",
     "content": "Part IV discharges the other three Kakutani hypotheses for singleton correspondences, each pointwise and each under the minimal ambient typeclass: values are nonempty always (`⟨f x, rfl⟩`), closed in a T1 space (`isClosed_singleton`), and convex in a real vector space (`convex_singleton`). Making the hypotheses explicit — T1 for closedness, a real module for convexity — is part of the contribution: it names exactly what ambient structure the transfer of each Kakutani condition requires.",
     "mathContext": "A singleton $\\{f(x)\\}$ is always nonempty; it is closed precisely because points are closed in a $T_1$ space ($\\texttt{isClosed\\_singleton}$); and it is convex in any real vector space ($\\texttt{convex\\_singleton}$). These are the three non-continuity Kakutani hypotheses, so $F_f$ satisfies all four whenever $f$ is continuous.",
@@ -97,7 +97,7 @@
       "startLine": 139,
       "endLine": 145
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Fixed Points Transfer Exactly",
     "content": "`singleton_isFixedPoint_iff` shows the set-valued fixed-point equation specializes exactly to the scalar one: `IsFixedPoint (singletonMap f) x ↔ f x = x`. After unfolding, `mem_singleton_iff` turns `x ∈ {f x}` into `x = f x`, and `eq_comm` flips it to `f x = x`. The embedding therefore neither invents nor destroys fixed points — the correspondence has exactly the fixed points of the original map.",
     "mathContext": "$x \\in F_f(x) = \\{f(x)\\} \\iff x = f(x) \\iff f(x) = x$. The conclusion of Kakutani's theorem (a set-valued fixed point) specializes to the conclusion of Brouwer's theorem (an ordinary fixed point) with no loss.",
@@ -117,7 +117,7 @@
       "startLine": 151,
       "endLine": 183
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Axiom-Free Reduction: Kakutani-Type Principle ⟹ Brouwer-Type Theorem",
     "content": "`brouwer_from_kakutani_principle` assembles the whole file into one reduction. It takes, as an explicit hypothesis `kakutani`, any set-valued fixed point principle on a domain K (every UHC self-correspondence with nonempty/closed/convex values mapping K into itself has a fixed point in K), and concludes that every continuous self-map f of K has an ordinary fixed point in K. The proof feeds `singletonMap f` to the principle, discharging its five obligations with the earlier lemmas, then reads off `f x = x` via `singleton_isFixedPoint_iff`. Because the deep theorem is a *hypothesis*, not an `axiom`, the whole result is unconditionally verified and 0-axiom; instantiating `kakutani` with the actual Kakutani/Fan-Glicksberg theorem recovers classical Brouwer/Schauder on K.",
     "mathContext": "Statement: for $K \\subseteq Y$ (with $Y$ a $T_1$ real vector space), if every UHC, nonempty/closed/convex-valued self-correspondence $F$ with $F(K) \\subseteq K$ has a fixed point in $K$, then every continuous $f : Y \\to Y$ with $f(K) \\subseteq K$ has $x \\in K$ with $f(x) = x$. Quantifying over the principle keeps the theorem axiom-free while faithfully encoding 'Kakutani $\\Rightarrow$ Brouwer'.",

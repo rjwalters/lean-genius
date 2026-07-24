@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "Abel's Theorem (Regular Direction) and the Packaging Strategy",
     "content": "Abel's theorem has two directions. The REGULAR direction proved here says every convergent series is Abel summable to its own sum: if ∑ₙ aₙ = L then A(x)=∑ₙ aₙxⁿ → L as x→1⁻. (The converse — a Tauberian theorem — needs an extra hypothesis such as aₙ=o(1/n) and is NOT claimed.) The parent entry proved only the geometric instance aₙ=rⁿ by hand; this entry generalises to ALL convergent series, answering the parent's open question oq-01. The header is explicit that this is a PACKAGING result: the hard analytic core (left-continuity of A at 1, proved in Mathlib by summation-by-parts on a Stolz sector) is imported, and the four-step contribution is (1) dominated-convergence summability on [0,1), (2) the left-limit, (3) synthesis into the parent's AbelSummableTo predicate, (4) reduction of the geometric boundary case to the general theorem.",
     "mathContext": "Regular direction: $\\sum_n a_n = L \\Rightarrow \\lim_{x\\to 1^-}\\sum_n a_n x^n = L$. The proportional Tauberian converse requires $a_n=o(1/n)$.",

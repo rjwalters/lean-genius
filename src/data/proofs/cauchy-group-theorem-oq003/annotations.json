@@ -30,7 +30,7 @@
       "startLine": 55,
       "endLine": 58
     },
-    "type": "context",
+    "type": "concept",
     "title": "Namespace and the Parent-File Dependency",
     "content": "The file opens the namespace CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02 and `open Finset` (for the `card`/`image`/`card_eq_sum_card_image` API that assembles the fibre partition). The lone research import is the parent leaf `Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03`, whose count `card_pow_eq_cyclic` (each non-empty fibre has exactly gcd(n,m) elements) is the single external fact this file builds on — everything about the kernel is derived here from scratch, needing only Mathlib's element-order API. So the division of labour is sharp: the parent supplies the *cardinality* of a fibre, this file supplies the *structure* (kernel = image = gcd-power map, then the partition).",
     "mathContext": "Only the cyclic fibre count $\\#\\,\\text{fibre} = \\gcd(n,m)$ is imported; the kernel equality is proved for an arbitrary finite group with no imported group-theoretic input beyond the order-divides-group-order fact.",

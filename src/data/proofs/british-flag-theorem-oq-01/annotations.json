@@ -94,7 +94,7 @@
       "startLine": 44,
       "endLine": 46
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "subst · simp · linear_combination",
     "content": "The entire proof is three tactic lines. `subst hpar` eliminates `C` by replacing it everywhere with the parallelogram closure `B + D − A`, turning a four-point statement into one about `A, B, D, P` only. `simp only [sqDist]` unfolds the squared-distance definition so the goal becomes a raw polynomial equation in the eight coordinates. Finally `linear_combination (2 : ℝ) * hperp` certifies the goal: it asks Lean to verify that goal-minus-`2·hperp` is the zero polynomial (discharged internally by `ring`). The coefficient `2` is exactly the factor by which the orthogonality form appears in the squared-distance difference — making explicit that the theorem is `2·(u ⬝ v) = 0` in disguise.",
     "mathContext": "Goal $-\\,2\\cdot\\mathrm{hperp}$ reduces to $0$ by `ring`; equivalently $(PA^2+PC^2)-(PB^2+PD^2) - 2(u\\cdot v) \\equiv 0$.",

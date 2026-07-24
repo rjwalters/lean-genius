@@ -148,7 +148,7 @@
       "startLine": 117,
       "endLine": 125
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The two routes provably agree: shell-FTC = Gamma recurrence",
     "content": "`shell_surface_agrees` is the capstone equality certifying that the two *independent* derivations of the surface–volume proportionality land on the same value: the FTC route `surface_eq_n_mul_shellVolume` (constant $n$ from the antiderivative of $r^{n-1}$) and the parent's Gamma route `surface_eq_n_mul_volume` (constant $n$ from the functional-equation shift $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$) both give $S_n = n\\cdot V_n$. Because `shellVolume_eq_unitBallVolume` already identified $\\text{shellVolume}\\,n = V_n$, the two right-hand sides are definitionally equal and the theorem closes by rewriting one into the other. The mathematical point is a cross-check: an analytic identity (half-integer Gamma recurrence) and a geometric one (integrate spherical shells) are forced to coincide, so neither derivation is an artifact of its method. Together with the earlier `shellVolume_two = π` and `shellVolume_three = 4π/3` sanity values, this closes the geometric-derivation open question the parent flagged.",
     "mathContext": "shell_surface_agrees: n·shellVolume n = n·unitBallVolume n = S_n, so the FTC-derived and Gamma-derived forms of S_n = n·V_n coincide (via shellVolume n = V_n).",

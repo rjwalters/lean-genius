@@ -101,7 +101,7 @@
       "startLine": 155,
       "endLine": 157
     },
-    "type": "context",
+    "type": "concept",
     "title": "Verification: type-signature sanity checks",
     "content": "Two #check commands record the two exported results at the type level, serving as a compile-time contract for readers: primeCounting_nth_prime has type π(nth Prime n) = n + 1 (the bridge identity of Part I), and nth_prime_lower_bound states (n+1)·(½·log(n+2) − log 2) ≤ 2·log 4·pₙ (the n·log n lower bound of Part II). Because #check elaborates the statements without proving anything new, the fact that the file compiles confirms both theorems have exactly the claimed signatures — a lightweight guard against silent statement drift, and a quick index of the file's two deliverables.",
     "mathContext": "$\\pi(p_n) = n+1$ and $(n+1)\\left(\\tfrac12\\log(n+2) - \\log 2\\right) \\le 2\\log 4 \\cdot p_n$.",

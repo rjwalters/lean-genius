@@ -29,7 +29,7 @@
       "startLine": 44,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Telescoping the Half-Integer Sine Sum",
     "content": "The engine of the closed form is a single product-to-sum step. `two_sin_half_mul_sin_odd` proves $2\\sin(\\theta/2)\\sin((m+\\tfrac12)\\theta)=\\cos(m\\theta)-\\cos((m+1)\\theta)$ — the identity $\\cos(X-Y)-\\cos(X+Y)=2\\sin X\\sin Y$ with $X=(m+\\tfrac12)\\theta$, $Y=\\theta/2$ (so $X-Y=m\\theta$, $X+Y=(m+1)\\theta$), reduced by `Real.cos_sub`/`Real.cos_add` and `ring`. Distributing $2\\sin(\\theta/2)$ across $\\sum_{m=0}^{N}\\sin((m+\\tfrac12)\\theta)$ and applying this term-by-term makes consecutive cosines cancel; `sum_sin_half_odd` runs the induction (`Finset.sum_range_succ` + `linear_combination`) to collapse the sum to its endpoints $\\cos(0)-\\cos((N+1)\\theta)=1-\\cos((N+1)\\theta)$. This is the same telescoping technique the grandparent used for the Dirichlet closed forms, here applied to the half-integer frequencies $(m+\\tfrac12)$ that appear in the Cesàro sum.",
     "mathContext": "$2\\sin(\\theta/2)\\sum_{m=0}^{N}\\sin((m+\\tfrac12)\\theta)=\\sum_{m=0}^{N}\\big(\\cos(m\\theta)-\\cos((m+1)\\theta)\\big)=1-\\cos((N+1)\\theta)$.",
@@ -72,7 +72,7 @@
       "startLine": 94,
       "endLine": 139
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Fejér Closed Form: a Perfect Square",
     "content": "`fejerKernel N θ` is the Cesàro average $\\frac{1}{N+1}\\sum_{n=0}^{N}D_n(\\theta)$. `sum_dirichletKernel` computes the sum: rewriting each $D_n$ by its closed form and factoring $1/\\sin(\\theta/2)$ gives $\\sum_{n=0}^{N}D_n=\\tfrac{1}{\\sin(\\theta/2)}\\sum_{n=0}^{N}\\sin((n+\\tfrac12)\\theta)$; the telescoping `sum_sin_half_odd` supplies $\\sum\\sin((n+\\tfrac12)\\theta)=\\tfrac{1-\\cos((N+1)\\theta)}{2\\sin(\\theta/2)}$, and the double-angle identity $1-\\cos((N+1)\\theta)=2\\sin^2((N+1)\\theta/2)$ — proved locally with `Real.cos_two_mul` and `Real.sin_sq_add_cos_sq` after a `set` to protect the half-angle from the rewrite — turns it into $\\sin^2((N+1)\\theta/2)/\\sin^2(\\theta/2)$. Dividing by $N+1$ (`fejerKernel_closed_form`, via `div_div`) yields the celebrated $F_N(\\theta)=\\dfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}$. The kernel is now manifestly a square over a positive quantity.",
     "mathContext": "$\\sum_{n=0}^{N}D_n=\\tfrac{\\sin^2((N+1)\\theta/2)}{\\sin^2(\\theta/2)}\\ \\Rightarrow\\ F_N(\\theta)=\\tfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}$.",

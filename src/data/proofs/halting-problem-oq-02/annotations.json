@@ -6,7 +6,7 @@
       "startLine": 5,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "Rice's Theorem and the Totality Problem",
     "content": "The header states the open question and its answer: the totality set $\\mathrm{TOT}=\\{c \\mid \\forall n,\\ \\text{program } c \\text{ halts on } n\\}$ is not computable. It is the archetypal application of Rice's theorem (1953): *every* nontrivial semantic (extensional) property of the partial function computed by a program is undecidable. Totality qualifies because it depends only on $\\mathrm{eval}\\,c$ (not on the code) and is nontrivial (some programs are total, some are not). The file works in Mathlib's standard model `Nat.Partrec.Code` with universal evaluator `Code.eval`, where \"halts on $n$\" is `(eval c n).Dom`. The honesty note records what is *not* proved: totality is $\\Pi_2$-complete (neither c.e. nor co-c.e.), a sharper classification left open here.",
     "mathContext": "$\\mathrm{TOT}=\\{c \\mid \\forall n,\\ (\\mathrm{eval}\\,c\\,n).\\mathrm{Dom}\\}$ is undecidable; it is in fact $\\Pi_2$-complete.",
@@ -96,7 +96,7 @@
       "startLine": 87,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Code-Level Extensionality and Nontriviality",
     "content": "To apply `rice₂` (the code-set form of Rice's theorem) the file must show `TotalCodes` is extensional and nontrivial. Extensionality (`totalCodes_extensional`) is immediate: membership is defined through `eval c`, so equal evaluators give equal membership — a one-line `simp` rewriting by the hypothesis `eval cf = eval cg`. Nontriviality (`totalCodes_nontrivial`) is the substantive step: it must exhibit an actual total *code* and an actual non-total *code*, which it does by pulling the two function-level witnesses (`Nat.Partrec.some`, `Nat.Partrec.none`) back through `exists_code`, the theorem that every partial recursive function has an index. This is where the abstract function-level property is grounded in the concrete indexing.",
     "mathContext": "$\\mathrm{eval}\\,cf=\\mathrm{eval}\\,cg \\Rightarrow (cf\\in\\mathrm{TotalCodes}\\iff cg\\in\\mathrm{TotalCodes})$; and $\\mathrm{TotalCodes}\\ne\\varnothing,\\ \\ne\\mathrm{univ}$ via `exists_code`.",

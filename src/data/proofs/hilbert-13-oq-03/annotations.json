@@ -52,7 +52,7 @@
       "startLine": 93,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Descending Injectivity to Each Inner Function",
     "content": "kaFeature φ coeff x q = Σ_p coeff_{p,q} · φ_p(x_p) is the concrete inner feature map on the product domain Fin n → ℝ. inner_injective_of_feature_injective shows injectivity of the bundled map descends to each φ_p: given φ_p(a) = φ_p(b), the two cube points that agree everywhere except coordinate p (values a vs b, zeros elsewhere) have identical feature tuples. The key step builds this equality of feature tuples via Finset.sum_congr, splitting on p' = p (where the perturbed values collapse by hab) versus p' ≠ p (where the if-branches agree); hinj then forces the two cube points equal, and evaluating at coordinate p gives a = b.",
     "mathContext": "Coordinatewise descent: an injective bundled map $\\Psi$ cannot merge two points differing only in coordinate $p$, so $\\varphi_p$ must itself be injective.",

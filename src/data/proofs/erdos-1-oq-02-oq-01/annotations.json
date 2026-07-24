@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #1 (distinct subset sums) and the elementary counting bound",
     "content": "Erdős's distinct-subset-sums problem (#1) asks how large the elements of a set A ⊆ ℕ with pairwise-distinct subset sums must be — conjecturally max A ≥ c·2^{|A|}. The parent erdos-1-oq-02 proves the sharp analytic second-moment bound 2^{|A|} ≤ 3√(Σaᵢ²) + 2. This entry records the elementary counterpart that predates and motivates it and needs no square roots: 2^{|A|} ≤ ΣA + 1, whence the classical Erdős–Moser bound max A ≥ (2^{|A|}−1)/|A|. That trivial lower bound is exactly what Erdős's conjecture seeks to improve from 1/|A| to a constant c.",
     "mathContext": "Distinct subset sums $\\Rightarrow 2^{|A|}\\le \\sum A + 1$; with $\\sum A\\le|A|\\max A$, $\\max A\\ge(2^{|A|}-1)/|A|$. Conjecture: $\\max A\\ge c\\,2^{|A|}$.",

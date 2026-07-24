@@ -3,7 +3,7 @@
     "id": "ann-erdos103-oq02-header",
     "proofId": "erdos-103-oq-02",
     "range": { "startLine": 1, "endLine": 58 },
-    "type": "context",
+    "type": "concept",
     "title": "Formalization Audit: the Raw Count is Degenerate",
     "content": "The parent file `Erdos103Problem.lean` defines h(n) as the cardinality of the subtype of optimal configurations, with no quotient by congruence — but the file's own `IsOptimal` predicate is invariant under the continuous group of translations of ℝ², so the subtype it counts is either empty or infinite for every n. Hence h(n) is not the 'number of incongruent optimal configurations' Erdős actually asks about; it is identically 0. This file proves that degeneracy, then supplies the corrected count hCong (quotient by congruence) against which the open question should genuinely be stated.",
     "mathContext": "$h(n) := \\mathrm{Nat.card}\\{P : \\mathrm{IsOptimal}\\,n\\,P\\}$ counts optimal configurations with no congruence quotient; since `IsOptimal` is translation-invariant, this set is empty or infinite, so $\\mathrm{Nat.card}$ of it is always $0$.",

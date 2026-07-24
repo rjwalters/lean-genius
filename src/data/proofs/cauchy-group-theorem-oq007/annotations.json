@@ -3,7 +3,7 @@
     "id": "ann-overview",
     "proofId": "cauchy-group-theorem-oq007",
     "range": { "startLine": 8, "endLine": 72 },
-    "type": "context",
+    "type": "concept",
     "title": "From the group iff to a monoid threshold",
     "content": "The parent established the sharp group dichotomy Bijective (·^n : G → G) ↔ (Nat.card G).Coprime n, whose hard direction rests on Cauchy's theorem — a statement about groups that needs every element invertible. This file asks what survives over a finite monoid M, where non-invertible elements exist and Cauchy is unavailable. The answer: coprimality to |Mˣ| stays necessary but is no longer sufficient, with the gap governed exactly by the non-unit (nilpotent/idempotent) part of M.",
     "mathContext": "$\\mathrm{Bijective}\\,(x \\mapsto x^n : M \\to M) \\Rightarrow \\gcd(|M^\\times|, n) = 1$, but not conversely.",

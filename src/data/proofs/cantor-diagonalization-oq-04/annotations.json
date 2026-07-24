@@ -6,7 +6,7 @@
       "startLine": 4,
       "endLine": 36
     },
-    "type": "context",
+    "type": "concept",
     "title": "Lawvere's Theorem: One Diagonal Behind Them All",
     "content": "The header frames the unifying thesis of the file: Lawvere's 1969 fixed-point theorem is the single categorical fact behind Cantor's theorem, Gödel's incompleteness, Turing's halting problem, and Russell's paradox. Its slogan — if the exponential $Y^Y$ retracts onto $Y$ (every endomorphism can be named by an element of $Y$ and faithfully recovered), then every endomorphism of $Y$ has a fixed point — turns each classical impossibility into the contrapositive: a type admitting a fixed-point-free endomorphism (successor on $\\mathbb{N}$, negation on Prop) cannot code its own endomorphisms. This entry gives the retraction formulation, complementing the surjection version in CantorDiagonalizationOQ03.",
     "mathContext": "Lawvere (CCC form): if $Y^Y$ is a retract of $Y$ then every $f\\colon Y\\to Y$ has a fixed point; contrapositively, a fixed-point-free $f$ obstructs any retraction $Y^Y \\to Y$.",
@@ -73,7 +73,7 @@
       "startLine": 105,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Impossibility Direction (Contrapositive)",
     "content": "`no_coding_if_fixpoint_free` is the logical pivot of the whole file: it simply contraposes `lawvere_fixpoint`. If some $f\\colon Y\\to Y$ has no fixed point, then a `CodesEndomorphisms Y` instance would (via the theorem) manufacture one — contradiction. Every concrete impossibility result below (ℕ, Bool, Prop cannot code themselves; the Cantor non-surjection theorems) is obtained by feeding this lemma a specific fixed-point-free endomorphism. Isolating the contrapositive once keeps each application a one-liner.",
     "mathContext": "$(\\exists\\,\\text{fixed-point-free } f\\colon Y\\to Y) \\Rightarrow \\lnot\\,\\mathrm{CodesEndomorphisms}(Y).$",

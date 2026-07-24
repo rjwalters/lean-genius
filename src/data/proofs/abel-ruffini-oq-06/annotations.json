@@ -3,7 +3,7 @@
     "id": "ann-module-framing",
     "proofId": "abel-ruffini-oq-06",
     "range": { "startLine": 1, "endLine": 56 },
-    "type": "context",
+    "type": "concept",
     "title": "Module Framing: the Solvable Side of the Sₙ Threshold",
     "content": "The group-theoretic core of Abel–Ruffini is the dichotomy Sₙ is solvable ⟺ n ≤ 4. Mathlib supplies the non-solvable half (Equiv.Perm.fin_5_not_solvable, generalized to n ≥ 5 in the sibling AbelRuffiniObstructionOQ06), but not the POSITIVE half — there is no Mathlib lemma giving IsSolvable (Equiv.Perm (Fin n)) for the small cases. This file provides it via a reusable reduction (Aₙ solvable ⟹ Sₙ solvable) plus the base cases S₂, S₃ (whose alternating groups have prime order, hence are cyclic⇒abelian⇒solvable). Together with n ≥ 5 this settles every n except S₄, isolated in the companion Aristotle file. Scope note: the characteristic-p / Abhyankar angle in the title is deliberately out of scope — this is the characteristic-independent core.",
     "mathContext": "Threshold: $S_n$ solvable $\\iff n \\le 4$. This file supplies the $n \\in \\{2,3\\}$ solvable cases and the reduction from $A_n$ to $S_n$.",

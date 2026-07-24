@@ -6,7 +6,7 @@
       "startLine": 6,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: When Is the Reverse Triangle Inequality Sharp?",
     "content": "The parent problem derived the reverse Minkowski / reverse triangle inequality |‖f‖−‖g‖| ≤ ‖f+g‖ from the Cauchy-Schwarz LOWER bound ⟪f,g⟫ ≥ −‖f‖·‖g‖, exactly mirroring how the forward inequality uses the CS UPPER bound. This file answers the follow-up: characterise the pairs achieving equality. The clean, division-free, zero-tolerant answer is that the vectors are ANTIPARALLEL: |‖u‖−‖v‖| = ‖u+v‖ ⟺ ‖v‖•u = −(‖u‖•v). For nonzero vectors this is v = r•u with r < 0 — they point in genuinely opposite directions. The result is the exact sign-dual of the forward triangle equality ‖u+v‖ = ‖u‖+‖v‖ ⟺ ‖v‖•u = ‖u‖•v (vectors parallel, r ≥ 0).",
     "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| = \\|u+v\\| \\iff \\|v\\|\\cdot u = -(\\|u\\|\\cdot v)$$",
@@ -76,7 +76,7 @@
       "startLine": 96,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Unconditional Bound, Re-derived from |⟪u,v⟫| ≤ ‖u‖‖v‖",
     "content": "The reverse Minkowski inequality itself is proven here as a private helper so the strict-inequality form becomes a clean dichotomy. From abs_real_inner_le_norm we read off −‖u‖‖v‖ ≤ ⟪u,v⟫ (the lower half of |⟪u,v⟫| ≤ ‖u‖‖v‖); norm_add_sq_real plus nlinarith give (‖u‖−‖v‖)² ≤ ‖u+v‖²; taking square roots via Real.sqrt_le_sqrt, then Real.sqrt_sq_eq_abs and Real.sqrt_sq (both sides nonnegative) restores the absolute-value form |‖u‖−‖v‖| ≤ ‖u+v‖. Kept private because the ≤-direction is subsumed by the equality/strict characterisations, yet it is exactly what turns 'not equality' into 'strict inequality'.",
     "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| \\le \\|u+v\\|$$",
@@ -168,7 +168,7 @@
       "startLine": 163,
       "endLine": 167
     },
-    "type": "context",
+    "type": "concept",
     "title": "Answering the Question in L²(μ): the Motivating Setting",
     "content": "Lp ℝ 2 μ carries a real inner-product-space structure, so the abstract equality case applies verbatim — the L² statement is definitionally the general theorem specialised to f, g ∈ L²(μ) (the proof term is literally reverse_minkowski_eq_iff f g). This closes the loop with the parent problem, which posed the reverse Minkowski inequality for square-integrable functions: equality |‖f‖−‖g‖| = ‖f+g‖ holds iff ‖g‖•f = −(‖f‖•g), i.e. f and g are antiparallel as L² elements (proportional with a nonpositive ratio a.e.).",
     "mathContext": "$$\\big|\\|f\\|-\\|g\\|\\big| = \\|f+g\\| \\iff \\|g\\|\\cdot f = -(\\|f\\|\\cdot g)\\quad (f,g\\in L^2(\\mu))$$",

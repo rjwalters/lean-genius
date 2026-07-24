@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 42
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Header: Generalizing the Companion's Single p = 7 Check",
     "content": "The docstring states this entry's exact purpose: the companion erdos-220-incomplete-01 verifies ∑(a_{k+1}−a_k)² = p − 2 only for p = 7 (by decide on a fixed list), while the sibling erdos-220-oq-01 proves the general Cauchy–Schwarz lower bound (n−2)² ≤ (φ(n)−1)·∑gaps² for every modulus n. This file closes that gap by proving the prime identity for EVERY prime p, over the sibling's real strictly-increasing enumeration E rather than a hard-coded list, and identifies it as the equality case of the Cauchy–Schwarz bound: primes are exactly where the gap sequence is constant. The three-step argument previewed here — gaps ≥ 1 by monotonicity, telescoping to p − 2, zero-sum-of-nonnegatives forcing every gap to be 1 — is proved with 0 axioms, 0 sorries, and no native_decide.",
     "mathContext": "$\\sum_k (a_{k+1}-a_k)^2 = p - 2\\ \\forall\\, p \\text{ prime}$, the equality case of $(n-2)^2 \\le (\\varphi(n)-1)\\sum(a_{k+1}-a_k)^2$.",
@@ -122,7 +122,7 @@
       "startLine": 156,
       "endLine": 160
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity Check: p = 7 Reproduces the Companion's Value 5",
     "content": "The closing example specializes sumSq_gaps_prime to p = 7, obtaining ∑ (gap 7 _ k)² = 7 − 2 = 5 — the exact value the companion entry erdos-220-incomplete-01 verified by decide on the explicit gap list [1,1,1,1,1]. This confirms the general theorem agrees with the hand-checked instance while being proved uniformly for all primes, not by enumeration.",
     "mathContext": "$\\varphi(7) - 1 = 5$ gaps, all equal $1$, so $\\sum g_k^2 = 5 = 7 - 2$.",

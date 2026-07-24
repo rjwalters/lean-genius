@@ -51,7 +51,7 @@
       "startLine": 63,
       "endLine": 79
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "isCoprime_list_prod: Coprimality Folds over Products",
     "content": "This is the lemma the open question singled out. `isCoprime_list_prod a l` proves that if `a` is coprime to every entry of `l`, then `a` is coprime to `l.prod`. The proof is a two-case list induction: the empty list gives `IsCoprime a 1` via `isCoprime_one_right` (after `List.prod_nil`), and the cons case rewrites `List.prod_cons` and applies `IsCoprime.mul_right` to the head coprimality and the recursively-obtained tail coprimality. This is precisely the iterated form of the `IsCoprime.mul_right` step named in parent OQ #1, and it is what lets the head modulus be shown coprime to the entire tail product in one call.",
     "mathContext": "By induction: $\\mathrm{IsCoprime}(a,1)$ holds, and $\\mathrm{IsCoprime}(a,b) \\wedge \\mathrm{IsCoprime}(a, \\textstyle\\prod t) \\Rightarrow \\mathrm{IsCoprime}(a, b\\cdot \\prod t)$ is exactly `IsCoprime.mul_right`. Hence $\\mathrm{IsCoprime}(a, \\prod_{b \\in l} b)$ whenever $a$ is coprime to each $b$.",
@@ -73,7 +73,7 @@
       "startLine": 80,
       "endLine": 119
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "crtRing_list_exists: the Folding Construction",
     "content": "The main existence theorem. The system is a list of `(residue, modulus)` pairs, with pairwise coprimality encoded as `List.Pairwise (fun p q => IsCoprime p.2 q.2)`. The proof inducts on the list. `List.pairwise_cons` splits the hypothesis into (a) the head modulus is coprime to every tail modulus and (b) the tail is itself pairwise coprime. The induction hypothesis solves the tail, giving `x` and the tail product `M`. `isCoprime_list_prod` upgrades (a) to `IsCoprime p.2 M`, so a single `crtRing_exists` call produces `y` with `p.2 ∣ y - p.1` and `M ∣ y - x`. For any tail modulus `q.2`, `List.dvd_prod` gives `q.2 ∣ M`, hence `q.2 ∣ y - x`; combined with `q.2 ∣ x - q.1` from the IH, `dvd_add` yields `q.2 ∣ y - q.1`. No ring-specific arithmetic appears — only divisibility bookkeeping over a general `CommRing`.",
     "mathContext": "Folding: to solve $\\{x \\equiv a_i \\pmod{m_i}\\}_{i}$, solve the tail to get $x_0$ with $m_i \\mid x_0 - a_i$ for $i \\ge 2$, set $M = \\prod_{i\\ge 2} m_i$, and CRT-combine $(a_1, m_1)$ with $(x_0, M)$ (legal since $m_1$ is coprime to $M$). The result $y$ satisfies $m_1 \\mid y - a_1$ directly and $m_i \\mid M \\mid y - x_0$, so $m_i \\mid (y - x_0) + (x_0 - a_i) = y - a_i$.",
@@ -97,7 +97,7 @@
       "startLine": 120,
       "endLine": 153
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Uniqueness: Product of Pairwise-Coprime Divisors",
     "content": "Uniqueness mirrors existence. `prod_dvd_of_pairwise_coprime d l` shows that if the entries of a pairwise-coprime list `l` each divide `d`, then `l.prod ∣ d`; it folds `IsCoprime.mul_dvd` (using `isCoprime_list_prod` to see the head is coprime to the tail product) exactly as existence folded `IsCoprime.mul_right`. `crtRing_list_unique` then concludes that two solutions `x`, `y` of the same pairwise-coprime system satisfy `(l.map Prod.snd).prod ∣ (x - y)`: every modulus divides `x - y`, and `List.pairwise_map` transports pairwise coprimality from the pairs to their moduli so the fold applies.",
     "mathContext": "If $m_1, \\dots, m_k$ are pairwise coprime and each $m_i \\mid d$, then $\\prod m_i \\mid d$, because $\\mathrm{IsCoprime}(m_1, \\prod_{i\\ge 2} m_i)$ lets `IsCoprime.mul_dvd` combine $m_1 \\mid d$ and $\\prod_{i \\ge 2} m_i \\mid d$ into $\\prod_i m_i \\mid d$. Applied to $d = x - y$ this is CRT uniqueness modulo the product.",

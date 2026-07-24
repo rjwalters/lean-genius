@@ -24,7 +24,7 @@
     "id": "ann-oq03-setup",
     "proofId": "abel-ruffini-galois-extensions-oq-03",
     "range": { "startLine": 46, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "Environment: the Mathlib API Surface and the General-`α` Setup",
     "content": "The proof needs only the public alternating-group API: `import Mathlib.GroupTheory.SpecificGroups.Alternating` brings in `alternatingGroup`, `IsThreeCycle.alternating_normalClosure`, `isThreeCycle_isConj`, and `nontrivial_of_three_le_card`, while `import Mathlib.Tactic` supplies `omega` (used to derive `3 ≤ card α` from `5 ≤ card α`). Opening `Equiv Equiv.Perm Subgroup` and `alternatingGroup` lets 3-cycles, permutations, and `normalClosure`/`Normal` be written without qualification. Crucially the type is left general — `variable {α : Type*} [Fintype α] [DecidableEq α]` — rather than fixed to `Fin n`; `[DecidableEq α]` is what the alternating group and its cycle-type API require, and generality over `α` is exactly what makes the reduction reusable for any concrete alternating group, including the `Fin 5` instance Mathlib already proves.",
     "mathContext": "Works over an arbitrary finite $\\alpha$ with decidable equality, matching Mathlib's `alternating_normalClosure` API rather than specializing to $\\mathrm{Fin}\\,n$.",

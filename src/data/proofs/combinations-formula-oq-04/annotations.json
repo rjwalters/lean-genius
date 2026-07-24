@@ -60,7 +60,7 @@
     "id": "ann-ratio-rewrite",
     "proofId": "combinations-formula-oq-04",
     "range": { "startLine": 61, "endLine": 66 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Rewriting choose_succ_right_eq to Kill Truncated Subtraction",
     "content": "The two `have R1`/`R2` blocks are the technical linchpin. Mathlib's `Nat.choose_succ_right_eq n k` states C(n,k+1)·(k+1) = C(n,k)·(n−k), where the factor n−k is ℕ *truncated* subtraction. Specializing at n = k+2+t, the proof needs n−k to appear as the honest t+2 so the downstream algebra (ring, nlinarith) can see it. The idiom `simpa [show (k + 2 + t) - k = t + 2 by omega] using this` does exactly that: `omega` discharges the arithmetic identity (k+2+t)−k = t+2, and `simpa` rewrites the hypothesis with it before closing the goal. R2 applies the same relation one index higher (at k+1), giving c·(k+2) = b·(t+1). These are the two equalities that multiply into the log-concavity bound.",
     "mathContext": "$C(n,k{+}1)(k{+}1)=C(n,k)(n{-}k)$; at $n=k{+}2{+}t$, $n-k = t+2$ (by `omega`), so $b(k{+}1)=a(t{+}2)$.",

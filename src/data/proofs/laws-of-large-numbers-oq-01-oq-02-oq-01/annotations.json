@@ -53,7 +53,7 @@
       "startLine": 69,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ε/2 Split: Fixed Head, Vanishing Tail",
     "content": "The Toeplitz step is proved by the archetypal ε/2 argument. Choose N past which |e_i| < ε/2. Split the sum at N. The head ∑_{i<N} c_i e_i is a fixed constant H; since A_n → ∞ it eventually exceeds 2H/ε, so H/A_n < ε/2. The tail ∑_{Ico N n} c_i e_i is bounded in absolute value by (ε/2)·∑_{i<n} c_i ≤ (ε/2)·A_n, using c_i ≥ 0 to pull the uniform bound |e_i| < ε/2 through the sum. Adding the two halves gives < ε.",
     "mathContext": "The tail estimate is $\\left|\\sum_{N \\le i < n} c_i e_i\\right| \\le \\sum_{N \\le i < n} c_i |e_i| \\le \\tfrac{\\varepsilon}{2}\\sum_{i<n} c_i \\le \\tfrac{\\varepsilon}{2} A_n$. Nonnegativity of $c_i$ is essential at the middle inequality — it is what lets $|e_i| < \\varepsilon/2$ factor out as a uniform bound. In Lean the domination `∑ c_i ≤ A_n` and `abs_add_le` combine to close `|∑_{i<n} c_i e_i| < ε · A_n`.",
@@ -75,7 +75,7 @@
       "startLine": 122,
       "endLine": 164
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Abel Summation Reduces Kronecker to the Toeplitz Step",
     "content": "With S_n = ∑_{i<n} x_i/a_i the convergent partial sums (S_n → s), summation by parts (`Finset.sum_range_by_parts`) rewrites ∑_{i<m+1} x_i = a_m S_{m+1} − ∑_{i<m}(a_{i+1}−a_i) S_{i+1}. A telescoping identity for the weights and a small algebraic rearrangement recast this as ∑_{i<m+1} x_i = ∑_{i<m}(a_{i+1}−a_i)(S_{m+1}−S_{i+1}) + a_0 S_{m+1}. The proof shifts the whole statement to index m+1 (via `tendsto_add_atTop_iff_nat`) so that every range sum stays in the clean (m+1) form Abel summation expects — sidestepping the n−1 of the textbook statement.",
     "mathContext": "Summation by parts: $\\sum_{i<m+1} a_i b_i = a_m \\sum_{i<m+1} b_i - \\sum_{i<m}(a_{i+1}-a_i)\\sum_{j<i+1} b_j$ with $b_i = x_i / a_i$, so $a_i b_i = x_i$. The telescoping $\\sum_{i<m}(a_{i+1}-a_i) = a_m - a_0$ (`Finset.sum_range_sub`) supplies both the coefficient $a_m - a_0$ and the domination $\\sum_{i<m} c_i \\le a_{m+1}$ needed downstream.",
@@ -146,7 +146,7 @@
       "startLine": 382,
       "endLine": 405
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reducing Kolmogorov's Criterion to an L¹ Bound",
     "content": "With the partial-sum martingale in hand, a.s. convergence follows from Mathlib's a.e. martingale-convergence theorem Submartingale.exists_ae_tendsto_of_bdd, which needs only a uniform L¹ bound on the process. A martingale is a submartingale, so once the shifted sums are bounded in L¹ the engine yields a.e. convergence of f n = ∑_{i≤n} X_i; a one-step index shift (tendsto_add_atTop_iff_nat) transfers this to the target ∑_{i<n} X_i. This isolates the entire remaining probabilistic content of Kolmogorov's criterion into a single deterministic hypothesis — the uniform L¹ bound — which on a probability space follows from ∑ Var(X_i) < ∞.",
     "mathContext": "On a probability measure $\\|S_n\\|_{L^1} \\le \\|S_n\\|_{L^2} = \\sqrt{\\mathrm{Var}[S_n]} = \\sqrt{\\sum_{i \\le n} \\mathrm{Var}[X_i]} \\le \\sqrt{\\sum_i \\mathrm{Var}[X_i]}$, using orthogonality of independent mean-zero increments (`IndepFun.variance_sum`) and `eLpNorm` monotonicity in the exponent. The theorem takes that bound $R : \\mathbb{R}_{\\ge 0}$ as a hypothesis, deferring the variance computation; supplying it completes the standalone criterion. Composed with `ae_tendsto_kronecker_average_zero`, this delivers the almost-sure normalisation at the heart of the Marcinkiewicz–Zygmund strong law.",

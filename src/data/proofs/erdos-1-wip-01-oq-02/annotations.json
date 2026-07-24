@@ -49,7 +49,7 @@
     "id": "ann-monotone",
     "proofId": "erdos-1-wip-01-oq-02",
     "range": { "startLine": 103, "endLine": 157 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Part III: Monotone Enumeration and the Gap Bound",
     "content": "Three lemmas. `reindex` transports a sum over Y ⊆ ℤ to a sum over Fin M through the increasing enumeration `Finset.orderEmbOfFin` (image-of-univ = Y by injectivity + cardinality, then `Finset.sum_image`). `strictMono_displacement` proves the crux: a strictly monotone e : Fin M → ℤ satisfies e j − e i ≥ j − i for j = i + k, by induction on k — each integer step is ≥ 1 (`Int.add_one_le_iff`). `termwise` concludes (i − j)² ≤ (e i − e j)² by casing on i ≤ j or j ≤ i and squaring the gap bound (`nlinarith`).",
     "mathContext": "A strictly monotone integer-valued map cannot move slower than the identity: distinct integers are spaced ≥ 1 apart, so over an index gap of k they spread by ≥ k. Hence every pairwise gap of Y dominates the corresponding consecutive-block gap, termwise.",

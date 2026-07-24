@@ -31,7 +31,7 @@
       "startLine": 38,
       "endLine": 40
     },
-    "type": "technical",
+    "type": "concept",
     "title": "σ: The Translation x ↦ x+1 as an Explicit 5-Cycle",
     "content": "σ is built directly as an `Equiv.Perm (Fin 5)` from its one-line table ![1,2,3,4,0] and inverse ![4,0,1,2,3], with the two round-trip identities discharged by `decide`. As a permutation it is the 5-cycle (0 1 2 3 4). On the roots of X⁵−2 this is multiplication by the primitive 5th root of unity ζ₅ (it sends α·ζ₅ᵏ to α·ζ₅ᵏ⁺¹), the generator of the normal cyclic subgroup C₅ of the Frobenius group. Encoding the map by its explicit array is what makes every downstream relation decidable.",
     "mathContext": "\\sigma : x \\mapsto x + 1 \\pmod 5, \\qquad \\sigma = (0\\ 1\\ 2\\ 3\\ 4), \\qquad \\text{on roots: } \\alpha\\zeta_5^k \\mapsto \\alpha\\zeta_5^{k+1}.",
@@ -55,7 +55,7 @@
       "startLine": 42,
       "endLine": 44
     },
-    "type": "technical",
+    "type": "concept",
     "title": "τ: Multiplication by 2 as an Explicit 4-Cycle",
     "content": "τ is the permutation x ↦ 2x on Fin 5 = 𝔽₅, with table ![0,2,4,1,3]: it fixes 0 and cycles the four nonzero residues as (1 2 4 3), since 2 is a primitive root modulo 5 (its powers 2,4,3,1 run through 𝔽₅ˣ). This is the Frobenius/Galois automorphism ζ₅ ↦ ζ₅² acting on the exponents, and it generates the complementary cyclic group C₄ acting on C₅. The choice of the multiplier 2 (rather than 3) is exactly the choice of a generator of the cyclic group 𝔽₅ˣ ≅ C₄.",
     "mathContext": "\\tau : x \\mapsto 2x \\pmod 5, \\qquad \\tau = (1\\ 2\\ 4\\ 3), \\qquad \\langle 2 \\rangle = \\mathbb{F}_5^\\times \\cong C_4.",
@@ -104,7 +104,7 @@
       "startLine": 60,
       "endLine": 71
     },
-    "type": "technical",
+    "type": "concept",
     "title": "orderOf σ = 5 and orderOf τ = 4 from Prime-Power Order Lemmas",
     "content": "Rather than compute orders by brute enumeration, the proof upgrades the `decide` facts through Mathlib's prime-order machinery. `orderOf_eq_prime` turns σ⁵ = 1 together with σ ≠ 1 into orderOf σ = 5 (a nonidentity element whose p-th power is 1 has order exactly the prime p). For τ, `orderOf_eq_prime_pow` uses τ^(2²) = 1 with τ^(2¹) ≠ 1 to conclude orderOf τ = 2² = 4. These two coprime orders 5 and 4 are precisely what forces |⟨σ,τ⟩| to be divisible by 20.",
     "mathContext": "\\text{orderOf }\\sigma = 5 \\text{ (prime, } \\sigma^5=1,\\ \\sigma\\neq 1), \\qquad \\text{orderOf }\\tau = 4 = 2^2 \\text{ (prime power, } \\tau^{4}=1,\\ \\tau^{2}\\neq 1).",
@@ -152,7 +152,7 @@
       "startLine": 107,
       "endLine": 149
     },
-    "type": "technical",
+    "type": "concept",
     "title": "F20 as the Explicit Set {σⁱτʲ} and Its Closure Property",
     "content": "F20 is defined as a genuine `Subgroup (Perm (Fin 5))` whose carrier is {g | ∃ i j, g = σⁱτʲ}. Verifying it is a subgroup is where the commutation law pays off: closure under multiplication reduces (σⁱτʲ)(σᵏτˡ) = σ^(i+2ʲk) τ^(j+l) via `tau_pow_sigma_pow`, and closure under inverses uses σ⁻¹ = σ⁴ and τ⁻¹ = τ³ (from σ⁵ = 1, τ⁴ = 1) to write the inverse again in σⁱτʲ form. The lemma `closure_eq` then proves F20 = Subgroup.closure {σ,τ}: every generator lies in F20, and every σⁱτʲ lies in the abstract closure, so the concrete set and the generated subgroup coincide.",
     "mathContext": "F_{20} = \\{\\sigma^i\\tau^j : i,j \\in \\mathbb{N}\\} = \\langle \\sigma, \\tau\\rangle, \\qquad \\sigma^{-1} = \\sigma^4,\\ \\tau^{-1} = \\tau^3.",

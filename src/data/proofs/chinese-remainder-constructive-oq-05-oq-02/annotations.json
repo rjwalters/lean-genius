@@ -98,7 +98,7 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "An Inductive CRT Certificate for Arbitrary Pairwise-Coprime Moduli",
     "content": "The sibling chinese-remainder-constructive-oq-05-oq-01 proved CRT uniqueness certificates for two moduli (crt_pair_iff) and three (crt_triple_iff), and explicitly stopped there. This entry answers that entry's open question: generalise to an arbitrary list ms of pairwise-coprime moduli by list induction, connecting to the list thread of oq-04. The file develops the combination engine prod_dvd_of_forall_dvd (pairwise-coprime moduli dividing a common d force their product to divide d), then both halves of the Chinese Remainder Theorem for a list: crt_list_unique (a solution below ms.prod is THE solution) and crt_list_exists (a simultaneous solution always exists), each exercised on the concrete [3,4,5] example. Existence plus uniqueness is the full CRT bijection ℤ/(∏mᵢ) ≃ ∏ ℤ/mᵢ. 0 sorries, 0 axioms.",
     "mathContext": "For pairwise-coprime $m_1,\\dots,m_k$ with product $M=\\prod m_i$: the map $\\mathbb{Z}/M \\to \\prod_i \\mathbb{Z}/m_i$, $x \\mapsto (x \\bmod m_i)_i$, is a bijection. This file proves both directions — injectivity (uniqueness below $M$) and surjectivity (existence) — for an arbitrary list.",

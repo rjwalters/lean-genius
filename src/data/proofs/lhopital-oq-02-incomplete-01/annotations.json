@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 4
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: the parent rule is the load-bearing dependency",
     "content": "Four imports set up the leaf. The three Mathlib modules supply only the elementary ingredients: `Log.Deriv` gives `Real.hasDerivAt_log` (derivative x⁻¹), and `Exp` / `Exponential` give `Real.hasDerivAt_exp` and `Real.tendsto_exp_atTop`. The decisive fourth import is `Proofs.LHopitalOQ02` — the sibling project file that proves `LHopitalInfty.lhopital_infty_atTop`, the ∞/∞ form of L'Hôpital's rule that Mathlib does not provide. Every theorem here ends with a single application of that imported rule, so the leaf is deliberately thin: it imports the hard theorem and feeds it routine hypotheses. This intra-project dependency (rather than a Mathlib one) is what makes the entry a genuine corollary demonstration of the parent's contribution.",
     "mathContext": "The load-bearing lemma is $\\texttt{lhopital\\_infty\\_atTop}$: if $g\\to\\infty$, $g'\\ne 0$, and $f'/g'\\to c$, then $f/g\\to c$. The Mathlib imports only supply $(\\ln)'=x^{-1}$, $(\\exp)'=\\exp$, and $\\exp\\to\\infty$.",

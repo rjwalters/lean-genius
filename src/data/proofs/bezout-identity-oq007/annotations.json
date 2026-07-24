@@ -42,7 +42,7 @@
     "id": "ann-bezout-fp-zmod",
     "proofId": "bezout-identity-oq007",
     "range": { "startLine": 74, "endLine": 90 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Specializing to 𝔽_p in One Rewrite",
     "content": "fermat_factorization_zmod is the concrete-prime form X^p − X = ∏_{a:ZMod p}(X − a) the parent explicitly advertised, and it costs a single rewrite: instantiate the general finite-field theorem at K = ZMod p and replace the abstract cardinality Fintype.card (ZMod p) by p via ZMod.card p. The `Fact p.Prime` instance is what makes ZMod p a field (so the [Field K] hypothesis of fermat_factorization is discharged automatically) — for composite n, ZMod n is only a ring and the statement fails. This is the model for how an abstract finite-field result is turned into the usable 𝔽_p statement, and it sets up the Section II Frobenius theorems that follow, which live specifically over ZMod p.",
     "mathContext": "$X^p - X = \\prod_{a \\in \\mathbb{F}_p}(X - a)$, from the general form at $K = \\mathbb{Z}/p$ with $|\\mathbb{Z}/p| = p$; needs $p$ prime for $\\mathbb{Z}/p$ to be a field.",

@@ -122,7 +122,7 @@
       "startLine": 126,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ε–N proof that Grandi's Cesàro mean tends to 1/2",
     "content": "grandiCesaroMean_tendsto proves convergence of the Grandi Cesàro mean to 1/2 by an explicit ε–N argument rather than by appealing to regularity (which does not apply, since the partial sums diverge). Using the closed form σₙ = (1/n)·(n − Sₙ)/2, the key algebraic step field_simp/ring reduces σₙ − 1/2 to −Sₙ/(2n); then |σₙ − 1/2| = |Sₙ|/(2n) ≤ 1/(2n) by the bound |Sₙ| ≤ 1, and 1/(2n) < ε once n exceeds 1/(2ε) (via exists_nat_gt and div_lt_iff₀). This is the quantitative heart of the strict-extension result.",
     "mathContext": "$\\big|\\sigma_n - \\tfrac12\\big| = \\dfrac{|S_n|}{2n} \\le \\dfrac{1}{2n} < \\varepsilon \\text{ for } n > \\dfrac{1}{2\\varepsilon}.$",

@@ -84,7 +84,7 @@
       "startLine": 98,
       "endLine": 104
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sanity Check on the Standard Euclidean Plane",
     "content": "A closing `example` instantiates the abstract `apollonius` theorem at the concrete model `EuclideanSpace ℝ (Fin 2)` — the standard Cartesian plane. Because the main theorem is stated over an arbitrary real inner-product space (a torsor `P` over a real inner-product space `V`), no new proof is needed: the term `apollonius a b c` *is* the witness, and typeclass resolution simply supplies the EuclideanSpace instances. This documents that the coordinate-free generalization genuinely subsumes the classical plane statement, and serves as a regression guard — if the abstract hypotheses were ever too weak to cover the motivating example, this line would fail to typecheck.",
     "mathContext": "On $\\mathrm{EuclideanSpace}\\ \\mathbb{R}\\ (\\mathrm{Fin}\\ 2)$: $\\operatorname{dist}(a,b)^2 + \\operatorname{dist}(a,c)^2 = 2\\big(\\operatorname{dist}(a,\\operatorname{midpoint}(b,c))^2 + (\\operatorname{dist}(b,c)/2)^2\\big)$, witnessed verbatim by $\\mathtt{apollonius}\\ a\\ b\\ c$.",

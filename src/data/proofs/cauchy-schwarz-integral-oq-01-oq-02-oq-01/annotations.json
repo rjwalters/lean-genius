@@ -3,7 +3,7 @@
     "id": "ann-cs-framing-axiom-discharge",
     "proofId": "cauchy-schwarz-integral-oq-01-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 50 },
-    "type": "context",
+    "type": "concept",
     "title": "What This File Discharges: an Axiom, Not a Conjecture",
     "content": "The parent entry *Riesz–Thorin Interpolation from Hölder's Inequality* (`cauchy-schwarz-integral-oq-01-oq-02`) reaches the interpolation theorem but leaves two links stated as `axiom`s: `hadamard_three_lines` (the analytic maximum-principle heart) and `riesz_thorin` itself. This file answers the open question 'is the three-lines lemma actually available in Lean, or must it be assumed?' by **discharging the first axiom** — proving it as a genuine theorem from Mathlib's complete `Complex.HadamardThreeLines` formalization. The single import `import Mathlib` and `open ... Complex.HadamardThreeLines` (line 48) expose that API; the `namespace` (line 50) scopes local copies of the strip definitions so the proved statement is *syntactically identical* to the parent's axiom and can replace it verbatim. Crucially, nothing new is assumed: the file inherits only the standard Mathlib axiom triple (`propext`, `Classical.choice`, `Quot.sound`), so this is a strict reduction in the parent's assumption count.",
     "mathContext": "Axiom $\\Rightarrow$ theorem: $\\|F(t+iy)\\|\\le M_0^{1-t}M_1^{t}$ is *derived*, not assumed. Assumption count for the Riesz–Thorin development drops by one.",

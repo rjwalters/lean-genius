@@ -51,7 +51,7 @@
       "startLine": 84,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sharpness: the sup norm fails the parallelogram law",
     "content": "A characterization is only meaningful if its hypothesis can fail. `supNorm_not_parallelogram` proves the supremum ($\\ell^\\infty$) norm on $\\mathbb{R}\\times\\mathbb{R}$ violates the parallelogram law, witnessed at $x=(1,0)$, $y=(0,1)$: the diagonals $x+y=(1,1)$ and $x-y=(1,-1)$ both have sup-norm $1$, so the left side is $1+1=2$ while the right side is $2(1+1)=4$. The proof feeds the witness into the assumed law and closes with `norm_num` unfolding `Prod.norm_def` and `Real.norm_eq_abs`.",
     "mathContext": "$x=(1,0),\\ y=(0,1)$: $\\|x\\pm y\\|_\\infty = 1$, so $\\|x+y\\|^2+\\|x-y\\|^2 = 2 \\ne 4 = 2\\|x\\|^2+2\\|y\\|^2$.",

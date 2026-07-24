@@ -78,7 +78,7 @@
       "startLine": 92,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Subordination Is the Contrapositive of infDist_zero_of_mem",
     "content": "bump_subordinate is the precise support guarantee: bump U i x ≠ 0 ⟹ x ∈ U i. The proof is a clean case split on whether (U i)ᶜ is empty. In the degenerate case (U i = univ) every x lies in U i automatically. Otherwise it argues by contradiction: if x ∉ U i then x ∈ (U i)ᶜ, so infDist_zero_of_mem forces bump U i x = infDist x (U i)ᶜ = 0, contradicting the hypothesis. This is exactly the contrapositive of the metric fact that distance to a set vanishes on the set, and it is what makes ψ subordinate to the cover.",
     "mathContext": "$\\mathrm{bump}_i(x)\\neq 0 \\implies x\\in U_i,\\qquad x\\in (U_i)^c \\implies d(x,(U_i)^c)=0.$",

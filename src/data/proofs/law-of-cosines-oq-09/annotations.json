@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Euclid II.12/II.13 as the Signed Converse of Pythagoras",
     "content": "The header fixes the classical context. Euclid's Elements Book II, Propositions 12 (obtuse) and 13 (acute), quantify how far a triangle departs from right-angled — centuries before trigonometry existed. In modern form both, together with Pythagoras (the right-angle boundary), are the single Law-of-Cosines relation c² = a² + b² − 2ab·cos C. This entry takes that relation as a hypothesis (hlc) and proves the full trichotomy: with a, b > 0 and C ∈ [0, π], the classification of C against π/2 is exactly the comparison of a² + b² against c². The proof needs no synthetic geometry — only the sign of cos C on [0, π], since 2ab > 0 makes a² + b² − c² = 2ab·cos C sign-equal to cos C.",
     "mathContext": "Law of Cosines: $c^2 = a^2 + b^2 - 2ab\\cos C$. With $2ab>0$, $\\operatorname{sign}(a^2+b^2-c^2)=\\operatorname{sign}(\\cos C)$.",
@@ -29,7 +29,7 @@
       "startLine": 37,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sign of cos C on [0, π] Pins the Angle Relative to π/2",
     "content": "Three private helpers isolate all the trigonometry. cos_pos_iff_lt: cos C > 0 ↔ C < π/2 (forward from Real.cos_pos_of_mem_Ioo since C ≥ 0 > -π/2; reverse by contraposition via Real.cos_nonpos_of_pi_div_two_le_of_le). cos_eq_zero_iff_eq: cos C = 0 ↔ C = π/2 (injectivity of cos on [0,π] from Real.strictAntiOn_cos.injOn, with cos(π/2) = 0). cos_neg_iff_gt: cos C < 0 ↔ C > π/2 (Real.cos_neg_of_pi_div_two_lt_of_lt). After these, the trichotomy is pure ordered-field algebra.",
     "mathContext": "$\\cos$ is strictly antitone on $[0,\\pi]$ with $\\cos(\\pi/2)=0$, so its sign against $0$ records $C$ against $\\pi/2$: positive below, zero at, negative above.",

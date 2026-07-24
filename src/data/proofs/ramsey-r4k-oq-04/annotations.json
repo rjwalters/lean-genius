@@ -30,7 +30,7 @@
       "startLine": 108,
       "endLine": 133
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Two-colour existence by strong induction on r + s",
     "content": "ramseyProp_exists packages the classical Ramsey existence theorem for RamseyProp: for all r, s there is n with RamseyProp n r s. The gallery already had the recursive bound ramsey_recursion (R(r,s) <= R(r-1,s) + R(r,s-1)) and the base cases, but not the packaged existence. The proof uses a helper 'key : forall N r s, r + s <= N -> exists n, RamseyProp n r s' proved by induction on the bound N; base cases r <= 1 or s <= 1 discharge via ramseyProp_zero_left/right and ramseyProp_one_left/right, and the r >= 2, s >= 2 case combines two induction-hypothesis witnesses through ramsey_recursion.",
     "mathContext": "Strong induction on $r + s$ is the standard route to Ramsey existence: the recursion $R(r,s) \\le R(r-1,s) + R(r,s-1)$ strictly decreases $r + s$, and the boundary $\\min(r,s) \\le 1$ is trivial. Bounding the recursion depth by an explicit parameter $N$ avoids well-founded-recursion boilerplate.",
@@ -54,7 +54,7 @@
       "startLine": 145,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Subset transfer via orderIsoOfFin",
     "content": "ramseyMulti_transfer lets the c-colour property on K_m be applied to any m-element vertex subset W of a larger K_N. It extracts an exactly-m-element W0 subset of W (Finset.exists_subset_card_eq), identifies W0 with Fin m through W0.orderIsoOfFin, pulls the colouring back to a g : Fin m -> Fin m -> Fin c, applies RamseyMulti m, and pushes the resulting clique forward along the (injective) embedding, preserving both cardinality (Finset.card_map) and monochromaticity. This mirrors the embed_from_finset helper the gallery already uses inside ramsey_recursion.",
     "mathContext": "Ramsey properties are really about the isomorphism type of the induced complete graph, so a large subset behaves like a smaller complete graph. The order isomorphism $W_0 \\cong \\mathrm{Fin}\\,m$ makes this precise and lets the abstract $\\mathrm{Fin}\\,m$ statement act on a concrete subset - the crucial plumbing that lets the multicolour induction recurse inside a monochromatic clique.",
@@ -78,7 +78,7 @@
       "startLine": 185,
       "endLine": 230
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The colour-merging reduction (inductive engine)",
     "content": "ramseyMulti_succ reduces a (c+1)-colouring to a 2-colouring by merging: g x y = true iff colour 0 (off the diagonal). Applying RamseyProp N (t 0) M yields either a red clique - directly a monochromatic colour-0 clique of size >= t 0 - or a blue clique W of size >= M, where every internal edge has colour /= 0. On W the colours 1..c are relabelled to 0..c-1 by decrementing the Fin value (f' x y = (f x y).val - 1, total but only used where f x y /= 0), the c-colour property is applied via subset transfer, and the returned clique of colour i lifts back to colour i.succ since f x y = i.succ exactly when f' x y = i.",
     "mathContext": "This is the classical grouping argument behind $R(t_0, \\dots, t_c) \\le R(t_0, R(t_1, \\dots, t_c))$: split the palette into 'colour 0' versus 'the rest', let two-colour Ramsey find either a colour-0 clique or a large sub-clique using only the remaining $c$ colours, and recurse on the latter. The decrement bijection $\\{1,\\dots,c\\} \\to \\{0,\\dots,c-1\\}$ is what makes 'the rest' a genuine $c$-colour instance.",

@@ -82,7 +82,7 @@
       "startLine": 109,
       "endLine": 113
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete sanity checks by decide",
     "content": "Two closed-universe verifications pin the abstract identity to concrete arithmetic. The first checks the raw sum $\\sum_{k\\le 3} k^5 = 1 + 32 + 243 = 276$; the second checks the factored $\\mathbb{Z}$ form at the same point, $12\\cdot\\sum_{k\\le 3} k^5 = 9\\cdot 16\\cdot 23 = 3312$. Both are discharged by `decide`, which evaluates the finite `range 4` sum kernel-side — no `native_decide`, so the proofs stay axiom-free (they rest only on `propext`/`Classical.choice`/`Quot.sound`, not `Lean.ofReduceBool`). These guard against an off-by-one in the indexing or a sign error in $2n^2+2n-1$: at $n=3$ the factor is $2\\cdot 9 + 6 - 1 = 23$, matching $276\\cdot 12 = 3312$.",
     "mathContext": "$\\sum_{k\\le 3} k^5 = 276$ and $12\\cdot 276 = 9\\cdot 16\\cdot 23 = 3312$.",

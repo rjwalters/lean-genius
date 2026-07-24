@@ -36,7 +36,7 @@
       "startLine": 50,
       "endLine": 63
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The closed form by induction",
     "content": "sum_range_mul_geom proves the identity by induction on n over an arbitrary field K (r ≠ 1 gives r − 1 ≠ 0). The base case is the empty sum (0 = 0/(r−1)²). The step uses Finset.sum_range_succ to add the new term m·rᵐ to the closed form at m; push_cast handles the ℕ→K casts of the index, field_simp clears the (r−1)² denominator (legal since r−1 ≠ 0), and ring discharges the resulting polynomial identity n·rⁿ(r−1)² = n·rⁿ⁺² − 2n·rⁿ⁺¹ + n·rⁿ.",
     "mathContext": "Inductive step: $\\frac{r - m r^m + (m-1)r^{m+1}}{(r-1)^2} + m r^m = \\frac{r - (m{+}1)r^{m+1} + m\\,r^{m+2}}{(r-1)^2}$, reduced to a $\\texttt{ring}$ identity after clearing denominators.",

@@ -614,7 +614,7 @@
       "startLine": 1861,
       "endLine": 1882
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Poincaré Homology Sphere as a Non-Example",
     "content": "PoincareHomologySphere is introduced axiomatically as a closed 3-manifold with the homology of S³ but a nontrivial fundamental group (the binary icosahedral group of order 120, formalized just above). poincare_hs_not_S3 then derives, purely from these axioms plus S³'s simple connectivity, that it cannot be homeomorphic to S³ — demonstrating why homology alone cannot detect S³ and why simple connectivity is the right hypothesis.",
     "mathContext": "The Poincaré homology sphere $\\Sigma(2,3,5) = S^3/I^*$ (quotient by the binary icosahedral group) has $H_*(\\Sigma;\\mathbb{Z}) \\cong H_*(S^3;\\mathbb{Z})$ but $\\pi_1(\\Sigma) \\cong I^*$ of order 120, which historically motivated Poincaré to replace his original homology-based conjecture with the simply-connected formulation.",
@@ -768,7 +768,7 @@
       "startLine": 3413,
       "endLine": 3452
     },
-    "type": "context",
+    "type": "concept",
     "title": "Property P and S³'s Rigidity Under Surgery",
     "content": "property_P axiomatizes the Property P conjecture (proved by Kronheimer–Mrowka in 2004 using instanton Floer homology): nontrivial Dehn surgery on a nontrivial knot in S³ never produces a simply-connected manifold. S3_surgery_rigidity packages this together with the Poincaré conjecture into the statement that S³ is 'rigid' under surgery — no nontrivial surgery on any knot in S³ can return S³.",
     "mathContext": "Property P was one of several deep gauge-theoretic inputs (alongside the Poincaré conjecture itself) needed to fully understand which Dehn surgeries on $S^3$ can yield simply-connected — hence, by Perelman, $S^3$-homeomorphic — 3-manifolds.",
@@ -902,7 +902,7 @@
       "startLine": 5153,
       "endLine": 5207
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Cyclic ℤ/p Rotation Action on S³",
     "content": "cyclicRotation writes out, in real coordinates on EuclideanSpace ℝ (Fin 4), the explicit block-rotation formula for the ℤ/p action ζ·(z₁,z₂) = (ζz₁, ζ^q z₂) whose quotient is the lens space L(p,q). cyclicRotation_norm_sq and cyclicRotation_preserves_sphere then prove directly from the sin²+cos²=1 identity that this map is genuinely an isometry sending S³ to itself.",
     "mathContext": "Lens spaces $L(p,q) = S^3/(\\mathbb{Z}/p)$ are the prototypical family of manifolds with finite non-trivial $\\pi_1 \\cong \\mathbb{Z}/p\\mathbb{Z}$, giving concrete counterexamples if the trivial-$\\pi_1$ hypothesis of the Poincaré conjecture were dropped.",
@@ -1013,7 +1013,7 @@
       "startLine": 6966,
       "endLine": 6996
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Classifying Seifert Fibered Spaces by Thurston Geometry",
     "content": "classifySeifertGeometry determines which of the six Seifert-supporting Thurston geometries (spherical, S²×ℝ, Nil, Euclidean, SL₂(ℝ), H²×ℝ) a Seifert fibered space carries, purely from the sign of its orbifold Euler characteristic and whether its Euler number vanishes. classify_S3 checks that S³, presented as the Hopf fibration, is correctly classified as spherical.",
     "mathContext": "This is the concrete, case-by-case analogue of Thurston's geometrization program restricted to the Seifert-fibered pieces of a 3-manifold's JSJ decomposition.",
@@ -1221,7 +1221,7 @@
       "startLine": 9086,
       "endLine": 9106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Perelman's 7-Step Surgery Algorithm",
     "content": "The `SurgeryAlgorithm` structure lays out Perelman's surgery pipeline as seven propositional fields: run Ricci flow, detect the forming singularity, classify canonical neighborhoods, find the connecting \"horns,\" cut them at a neck cross-section, cap the result with a copy of the standard solution, and resume the flow. `surgery_algorithm_steps` merely records that there are 7 named steps, standing in for the actual surgery construction.",
     "mathContext": "Surgery replaces high-curvature necks with a standard rotationally symmetric cap, allowing Ricci flow to be continued past a singular time; Perelman showed only finitely many surgeries occur in any bounded time interval, and for simply connected manifolds the flow-with-surgery becomes extinct in finite time, forcing the manifold to be a connected sum of $S^3$'s.",
@@ -1458,7 +1458,7 @@
       "startLine": 12248,
       "endLine": 12253
     },
-    "type": "context",
+    "type": "concept",
     "title": "Volume Conjecture: figure-eight is the (rare) proved case",
     "content": "This theorem records two hard-coded facts about the figure-eight knot's table entry: its `isVerified` flag is true and its volume field equals 2029 (i.e. 2.029). This reflects that the Volume Conjecture is analytically proved for the figure-eight knot (Kashaev 1997, Murakami-Murakami 2001), unlike almost all other hyperbolic knots where it remains open.",
     "mathContext": "The Volume Conjecture asserts $\\lim_{N\\to\\infty}(2\\pi/N)\\log|J_N(K;e^{2\\pi i/N})| = \\mathrm{vol}(S^3\\setminus K)$, linking the growth rate of colored Jones polynomials to hyperbolic volume; it is one of the deepest open bridges between quantum topology and hyperbolic geometry.",
@@ -1594,7 +1594,7 @@
       "startLine": 14162,
       "endLine": 14190
     },
-    "type": "context",
+    "type": "concept",
     "title": "Freedman's 4-manifold classification: elaborate comment, trivial proof",
     "content": "The doc-comment describes Freedman's 1982 classification of simply-connected topological 4-manifolds by intersection form and Kirby-Siebenmann invariant, including the fact that the E8 lattice is not the intersection form of any smooth 4-manifold (Donaldson). But the Lean statement actually discharged by `freedman_classification` is only `(8 : Nat) = 8 := rfl` -- a check that the literal 8 (quoted in a comment as the rank of E8) equals itself. No intersection-form classification, Kirby-Siebenmann invariant, or Donaldson diagonalizability theorem is formalized.",
     "mathContext": "This lies in a block of the file flagged as duplicate-numbered content (Parts LXXXIII-LXXXV recur with the same numbering used earlier), where several named theorems carry rich topological commentary about Chern-Simons theory, exotic 4-manifolds, and Thurston geometry, but their actual proved type is an unrelated trivial numeral identity.",
@@ -1617,7 +1617,7 @@
       "startLine": 14224,
       "endLine": 14256
     },
-    "type": "context",
+    "type": "concept",
     "title": "Thurston's eight geometries recap: prose table, arithmetic proof",
     "content": "The doc-comment restates the isometry-group dimensions of Thurston's 8 model geometries (three at dimension 6, four at dimension 4, one at dimension 3) in a markdown table. The theorem `thurston_geometry_dimensions` that follows proves only `(3 : Nat) + 4 + 1 = 8`, an arithmetic identity about counts mentioned in the comment -- it does not verify the dimension table itself or any classification of geometric pieces.",
     "mathContext": "This duplicates material already formalized earlier in the file with a genuine `ThurstonGeometry` inductive type and real `isometryGroupDim`/`isIsotropic` definitions (see the `unique_compact_model` lemma); here the same content is only restated as prose alongside an unrelated arithmetic identity.",
@@ -1848,7 +1848,7 @@
       "startLine": 16692,
       "endLine": 16710
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reducing Poincaré to the Prime, Simply-Connected Case",
     "content": "poincare_via_prime_decomposition lays out the five-step logical chain that reduces the Poincaré conjecture to its prime case: Kneser's prime decomposition, van Kampen's free-product formula forcing each summand to be simply connected, ruling out S²×S¹ (π₁ = Z ≠ 1), and finally invoking Perelman's theorem that a simply connected irreducible 3-manifold is S³, so the connected sum collapses to S³ # ... # S³ = S³.",
     "mathContext": "This chain shows how the Kneser-Milnor prime decomposition theorem (existence 1929, uniqueness 1962) turns Poincaré's global statement about all simply connected 3-manifolds into a statement purely about *irreducible* ones — directly analogous to how unique factorization reduces integer-arithmetic questions to primes.",
@@ -2061,7 +2061,7 @@
       "startLine": 1833,
       "endLine": 2098
     },
-    "type": "context",
+    "type": "concept",
     "title": "Non-Examples (Homology Sphere, Whitehead Manifold) and Thurston Geometry Classification",
     "content": "Introduces two axiomatized non-examples showing the Poincaré conjecture's hypotheses are both necessary: the Poincaré homology sphere (closed 3-manifold, same homology as S³, but π₁ nontrivial — here modeled abstractly via axioms, with π₁ nontriviality witnessed concretely by the order-120 binary icosahedral group `Multiplicative (ZMod 120)`) shows simple connectivity is essential, and the axiomatized Whitehead manifold (contractible but non-compact) shows closedness is essential. The section then defines Boolean-valued classifiers on the 8 Thurston geometries (`hasCompactModel`, `isIsotropic`, `curvatureType`, `isometryGroupDim`) and proves by case analysis / `native_decide` that spherical geometry is the unique one with a compact model and that exactly 3 of the 8 are isotropic.",
     "mathContext": "The Poincaré homology sphere $\\Sigma(2,3,5) = SU(2)/I^*$ (quotient of $S^3$ by the binary icosahedral group $I^*$, $|I^*|=120$) has the homology of $S^3$ but fundamental group $I^*$, historically Poincaré's own counterexample to his first (homology-based) conjecture, motivating the corrected simply-connected formulation. The Whitehead manifold is a contractible open 3-manifold not homeomorphic to $\\mathbb{R}^3$, showing compactness cannot be dropped. Thurston's geometrization assigns each of 8 model geometries (spherical $S^3$, Euclidean $\\mathbb{R}^3$, hyperbolic $\\mathbb{H}^3$, $S^2\\times\\mathbb{R}$, $\\mathbb{H}^2\\times\\mathbb{R}$, Nil, Sol, $\\widetilde{SL_2\\mathbb{R}}$); only the spherical geometry has a compact simply-connected model, which is the structural reason geometrization implies the Poincaré conjecture. `geometrization_implies_poincare` packages this as a direct explicit one-piece witness rather than deriving it from a real decomposition theorem.",
@@ -2266,7 +2266,7 @@
       "startLine": 4506,
       "endLine": 4806
     },
-    "type": "context",
+    "type": "concept",
     "title": "Perelman's Ricci Flow Proof Outline, Thurston's Eight Geometries, and Post-Perelman Results",
     "content": "A narrative/tabular sketch of Perelman's actual proof strategy rather than a formalization of it: `HamiltonRicciFlowDetails`, `KappaNoncollapsing`, `WEntropyFunctional`, `SingularityType`, `CanonicalNeighborhood`, `SurgeryProcedure`, and `RicciFlowWithSurgeryDetail` are all structures whose fields are bare `Prop`s (uninstantiated placeholders, not proved facts), documenting the shape of Hamilton/Perelman's argument in comments. The one substantive theorem, `finite_extinction_time`, just restates the already-proved `poincare_conjecture_holds` under a different name, and `perelman_proof_outline` proves only that the four `CanonicalNeighborhood` constructors are pairwise distinct — a trivial enum fact standing in for Perelman's actual classification theorem. The following sections encode Thurston's eight model geometries (`ThurstonGeometryDetailed`) with a `geometryData` lookup table of isometry-group dimension and quotient counts (the latter as free-text `String`s, not verified classifications), then close with `OpenProblem3Manifold` and the generalized-Poincaré timeline; theorems like `mostow_rigidity`, `agol_virtual_haken`, and `perelman_declined_prize` are `rfl`/`decide` facts about these hand-entered enum/table values, not independent derivations.",
     "mathContext": "Perelman's actual proof (2002–2003) establishes short-time existence of Ricci flow $\\partial_t g = -2\\,\\mathrm{Ric}(g)$, $\\kappa$-noncollapsing via monotonicity of the $\\mathcal{W}$-entropy $\\mathcal{W}(g,f,\\tau)=\\int[\\tau(|\\nabla f|^2+R)+f-n](4\\pi\\tau)^{-n/2}e^{-f}\\,dV$, a canonical-neighborhood classification of high-curvature regions (necks, caps, round components), and surgery through singularities with finite extinction time for simply connected manifolds. Thurston's eight geometries $S^3, E^3, H^3, S^2\\times\\mathbb{R}, H^2\\times\\mathbb{R}, \\mathrm{Nil}, \\mathrm{Sol}, \\widetilde{SL_2\\mathbb{R}}$ classify the possible geometric structures on JSJ pieces, with $S^3$ (isometry group dimension 6, isotropic) being the unique geometry realized by a simply connected compact quotient. Mostow rigidity states hyperbolic structures on closed 3-manifolds are unique up to isometry, so $\\pi_1$ determines the geometry; Agol's 2012 virtual Haken/fibering theorem resolved two long-standing conjectures about hyperbolic 3-manifolds.",
@@ -2292,7 +2292,7 @@
       "startLine": 4808,
       "endLine": 5121
     },
-    "type": "context",
+    "type": "concept",
     "title": "Poincaré Homology Sphere, Higher-Dimensional Generalizations, Dehn Surgery, and Knots",
     "content": "A tour of the classical counterexamples and generalizations surrounding the conjecture, mostly encoded as enums/structures with `Prop`-typed fields plus a handful of arithmetic facts. `PHSConstruction` lists the five equivalent descriptions of the Poincaré homology sphere $\\Sigma(2,3,5)$ (as $S^3/I^*$, a Brieskorn sphere, $+1$-surgery on the trefoil, dodecahedral space, and $E_8$-plumbing boundary), with `binary_icosahedral_order` proving only the numeric fact $120 = 2\\cdot 60$. `poincareResolution`/`exoticSphereCounts` are hand-built lookup tables recording the known status (topological/smooth, prover) of the generalized Poincaré conjecture and exotic-sphere counts by dimension, with theorems like `smale_h_cobordism`, `freedman_topological_4d`, and `exotic_4_open` simply reading off entries by `rfl`. `DehnSurgeryData`/`KirbyCalculus` model Dehn surgery and Kirby moves as `Prop`-field structures; `lickorish_wallace_general` and `gordon_luecke` only verify that specific `SurgerySlope` numerators/denominators equal the claimed constants, not the underlying surgery theorems. `knot_surgery_poincare` again just re-invokes `poincare_conjecture_holds`.",
     "mathContext": "The Poincaré homology sphere $\\Sigma(2,3,5) = \\{z_1^2+z_2^3+z_3^5=0\\}\\cap S^5$ has $H_*(\\Sigma;\\mathbb{Z}) \\cong H_*(S^3;\\mathbb{Z})$ but $\\pi_1(\\Sigma) \\cong I^*$, the binary icosahedral group of order $120$ (double cover of $A_5$), showing homology alone cannot detect $S^3$ — motivating Poincaré's reformulation using $\\pi_1$. The generalized Poincaré conjecture is now fully resolved: trivial in dimensions $1,2$; Perelman (2003) in dimension 3; Freedman (1982) topologically in dimension 4 (smooth case open, tied to the existence of exotic $\\mathbb{R}^4$s); Smale's h-cobordism theorem (1961) for dimension $\\geq 5$. Lickorish–Wallace (1962) shows every closed orientable 3-manifold arises from Dehn surgery on a link in $S^3$; Gordon–Luecke (1989) shows knots are determined by their complements (except for lens-space-type surgeries); Kronheimer–Mrowka's Property P (2004) rules out 0-surgery on a nontrivial knot yielding a homotopy sphere.",
@@ -2318,7 +2318,7 @@
       "startLine": 5123,
       "endLine": 5322
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Cyclic Group Actions on S³ and Lens Space Geometry",
     "content": "Unlike the surrounding sections, this is a genuinely worked-out analytic construction: `cyclicRotation p q` explicitly writes the $\\mathbb{Z}/p$ action $\\zeta\\cdot(z_1,z_2)=(\\zeta z_1,\\zeta^q z_2)$ on $S^3\\subset\\mathbb{C}^2\\cong\\mathbb{R}^4$ as a pair of 2D rotation blocks on `EuclideanSpace ℝ (Fin 4)`. It proves the action preserves the squared norm (`cyclicRotation_norm_sq`, via the identity $(\\cos\\theta\\,a-\\sin\\theta\\,b)^2+(\\sin\\theta\\,a+\\cos\\theta\\,b)^2=a^2+b^2$), hence maps $S^3$ to itself (`cyclicRotation_preserves_sphere`) and is continuous (`cyclicRotation_continuous`), and that applying the rotation $p$ times returns the identity angle $2\\pi$ (`cyclicRotation_period_identity`). These facts back concrete instances `rp3CyclicAction`, `l31CyclicAction`, `l52CyclicAction` realizing $L(2,1)=\\mathbb{RP}^3$, $L(3,1)$, and $L(5,2)$ as literal quotient actions rather than abstract axioms.",
     "mathContext": "Lens spaces $L(p,q) = S^3/(\\mathbb{Z}/p)$ are defined via the free action $\\zeta\\cdot(z_1,z_2)=(\\zeta z_1,\\zeta^q z_2)$ for $\\zeta=e^{2\\pi i/p}$ a primitive $p$-th root of unity, giving $\\pi_1(L(p,q))\\cong\\mathbb{Z}/p\\mathbb{Z}$ (deck group of the universal cover $S^3\\to L(p,q)$). Freeness of the action for $p\\geq 2$ follows because a fixed point would force $z_1=z_2=0$, contradicting $|z_1|^2+|z_2|^2=1$; the case $q=1,p=2$ recovers the antipodal map and $\\mathbb{RP}^3$. Writing the action in real coordinates as two independent $2\\times2$ rotation matrices with angles $\\alpha=2\\pi/p$ and $\\beta=2\\pi q/p$ makes norm-preservation an elementary consequence of $\\cos^2\\theta+\\sin^2\\theta=1$.",
@@ -2367,7 +2367,7 @@
       "startLine": 5606,
       "endLine": 5841
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Circle-Doubling Map as an Explicit Covering",
     "content": "Constructs the map $z\\mapsto z^2$ on $S^1$ concretely in real coordinates as `circleSquareE (a,b) = (a²-b², 2ab)` on `EuclideanSpace ℝ (Fin 2)`, then proves from scratch that it preserves norm-squared up to the fourth power (`circleSquareE_norm_sq`: $\\|z^2\\|^2=\\|z\\|^4$), restricts to a continuous self-map `circleDouble` of $S^1$, is not injective (both $(1,0)$ and $(-1,0)$ map to $(1,0)$, via `circleDouble_north`/`circleDouble_south`), and is surjective (`circleDouble_surjective`, using an explicit half-angle-formula construction of a square root on the circle). Packaging this as `s1_double_cover : CoveringSpace (↥Sphere1)` and applying `not_sc_of_nontrivial_covering` yields `sphere1_not_simply_connected` as an actual proof rather than an axiom.",
     "mathContext": "The squaring map $z\\mapsto z^2$ on the unit circle is the prototypical connected 2-sheeted covering $S^1 \\to S^1$, exhibiting $\\pi_1(S^1)\\cong\\mathbb{Z}$ concretely: its failure to be injective (antipodal points $z,-z$ share an image) witnesses a nontrivial deck transformation. In real coordinates this is $(a,b)\\mapsto(a^2-b^2,2ab)$, and norm-squared doubling follows from $(a^2-b^2)^2+(2ab)^2=(a^2+b^2)^2$; surjectivity is the elementary fact that every complex number of modulus 1 has a square root of modulus 1, constructed here via $a=\\sqrt{(1+c)/2}$, $b=\\pm\\sqrt{(1-c)/2}$ matching the sign of the target's imaginary part.",
@@ -2513,7 +2513,7 @@
       "startLine": 7243,
       "endLine": 7520
     },
-    "type": "context",
+    "type": "concept",
     "title": "h-Cobordism Theorem (Statement Removed) and Kirby Calculus for Framed Links",
     "content": "Introduces `Cobordism'`/`HCobordism'`/`WhiteheadTorsion` structures and states, in comments only, Smale's h-cobordism theorem and the Barden-Mazur-Stallings s-cobordism theorem — the code comments explicitly note the theorem statements were 'removed - unused downstream'. What remains, `h_cobordism_proves_gen_poincare` and `gen_schoenflies`, are `rfl` lookups into a hardcoded `genPoincareStatus` table rather than proofs derived from h-cobordism. The section then defines `FramedLink` (components, framings, symmetric linking matrix) and states the Lickorish-Wallace and Kirby completeness theorems in comments, but `lickorish_wallace_kirby` only exhibits a trivial witness (the empty link) and `kirby_theorem` only unpacks a structure field — neither proves the actual surgery-presentation completeness results.",
     "mathContext": "The h-cobordism theorem (Smale 1962): a simply connected h-cobordism $W^n$ ($n\\ge5$) between $M,N$ satisfies $W\\cong M\\times[0,1]$, via the Whitney trick for cancelling algebraically-cancelling handle pairs — this is exactly what fails in dimension 3 (two 2-disks generically intersect), motivating Perelman's Ricci-flow approach instead. Kirby calculus represents every closed orientable 3-manifold as $\\partial$ of a 4-manifold built from 2-handles on a framed link in $S^3$ (Lickorish-Wallace 1962), with two diagrams representing the same manifold iff related by handle slides and $\\pm1$-blowups/blowdowns (Kirby 1978). None of these deep theorems are actually proved by the surrounding Lean code; this stretch is best read as a structured commentary/scaffold layer with a handful of small definitional lemmas about `FramedLink`, not a formalization of h-cobordism or Kirby's completeness theorem.",
@@ -2588,7 +2588,7 @@
       "startLine": 8154,
       "endLine": 8409
     },
-    "type": "context",
+    "type": "concept",
     "title": "Hamilton's pre-Perelman Ricci flow program (1982-1999)",
     "content": "Documents Hamilton's chain of Ricci flow results (positive-Ricci convergence 1982, surface uniformization 1986, Harnack inequality 1993, compactness theorem 1995, Hamilton-Ivey pinching, singularity classification) largely as prose in doc-comments, with the accompanying Lean theorems (`einstein_pinching_dim3`, `hamilton_ode_coefficient_dim3`, `pinching_improvement_rate`, `hamilton_surface_chi`, `harnack_ancient_consequence`, `hamilton_compactness_conditions`, `hamilton_ivey_constant`, `singularity_blowup_models_dim3`, `hamilton_years_of_work`, `part_lxxi_hamilton_program_size`) proving only trivial numeric identities such as `4 * Nat.succ 1 = 8`, `(3:ℕ)-1=2`, `2002-1982=20`, and `(0:ℕ)≤0`, via `rfl`/`omega`/`le_refl`. None of these theorems formalize the differential-geometric content (pinching improvement, Harnack inequality, compactness) described in the comments — they are numeric stand-ins tagging the associated year/dimension/constant.",
     "mathContext": "Hamilton's 1982 theorem shows a closed 3-manifold with ${\\rm Ric}>0$ converges under normalized Ricci flow $\\partial_t g=-2{\\rm Ric}(g)$ to a round metric, giving $M\\cong S^3/\\Gamma$; the curvature pinching ratio approaches the Einstein value $1/n=1/3$ in dimension 3. Hamilton-Ivey pinching bounds the most negative curvature eigenvalue $\\nu$ by $R\\ge(-\\nu)(\\log(-\\nu)+\\log(1+t)-3)$, a dimension-3-specific estimate that forces curvature operators to become asymptotically non-negative near singularities, and underlies Hamilton's partial singularity classification into Type I/II/III blow-up rates.",
@@ -2611,7 +2611,7 @@
       "startLine": 8410,
       "endLine": 8690
     },
-    "type": "context",
+    "type": "concept",
     "title": "Exotic spheres, Kervaire-Milnor, and the smooth Poincaré conjecture",
     "content": "Records facts about exotic differentiable structures on spheres (`exotic_spheres_dim7`, `exotic_spheres_dim3`, `exotic_spheres_dim11`, `kervaire_milnor_dim7_check`, `j_homomorphism_dim3`), the status table of the smooth Poincaré conjecture by dimension (`smooth_poincare_dim4_status`, dimension 4 flagged OPEN), Moisé's TOP=DIFF theorem in dimension 3 (`moise_dimension`), and exotic $\\mathbb{R}^4$ (`exotic_r4_uniqueness`). As elsewhere, the Lean theorems only certify small arithmetic facts (e.g. `28=28`, `2^{2}=4`, `2^3-1=7`, `4*7=28`) rather than the underlying algebraic-topology arguments; `part_lxxii_exotic_sphere_facts` closes with `native_decide` on `28 = 4*7 ∧ 24 = Nat.factorial 4`, which — per this project's axiom-integrity policy — depends on `Lean.ofReduceBool` even though the statement itself is elementary.",
     "mathContext": "Milnor (1956) showed $S^7$ admits $28$ pairwise non-diffeomorphic smooth structures, detected by the $\\mu$-invariant $\\mu(\\Sigma)=\\mathrm{sig}(W)-p_1^2/45 \\bmod 7$ for a bounding $8$-manifold $W$. Kervaire-Milnor (1963) fit the group of exotic $n$-spheres $\\Theta_n$ into an exact sequence $0\\to bP_{n+1}\\to\\Theta_n\\to \\mathrm{coker}(J_n)$ with $|bP_{4k}|$ expressible via Bernoulli numbers, e.g. $|bP_8| = 2^{2\\cdot2-2}(2^{2\\cdot2-1}-1)=4\\cdot 7=28$. Dimension 4 remains the only open case of the smooth Poincaré conjecture; Moisé's theorem gives TOP $=$ DIFF for $n\\le 3$, so Perelman's topological result implies the smooth statement in dimension 3.",
@@ -2658,7 +2658,7 @@
       "startLine": 8975,
       "endLine": 9313
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Standard solution, 7-step surgery, and finite extinction as opaque pipelines",
     "content": "Formalizes the standard solution (`StandardSolution`), surgery parameters (`SurgeryParameters`), horn regions (`Horn`), and the 7-step surgery pipeline as a `SurgeryAlgorithm` structure whose 7 fields are typed `Prop` with no supplied proofs or definitions connecting them — it names the steps (run flow, detect singularity, classify neighborhoods, find horns, cut, cap, resume) without formalizing what any step actually does. `surgery_algorithm_steps` merely proves `7=7`. `surgery_preserves_sc`'s extensive comment invokes van Kampen and Grushko's theorem, but the Lean proof obligation is just `0+0=0` by `omega` — the group-theoretic argument is not formalized. `sc_prime_decomposition_trivial` and `proof_chain_complete` close by citing the external `genPoincareStatus 3 = .proved` via `rfl`, i.e. they assert the conjecture is proved rather than deriving it from the surgery/extinction machinery described above.",
     "mathContext": "Perelman's surgery replaces high-curvature necks (regions modeled on $S^2\\times\\mathbb{R}$) with copies of a rotationally symmetric standard solution that becomes extinct at time $T=1$, controlled by accuracy $\\delta$ and curvature threshold $\\Omega$; finiteness of the surgery times follows because each surgery removes volume $\\ge c\\delta^3$ while total volume is bounded. Finite extinction for simply connected manifolds uses the sweepout width $W(t)=\\min_{\\rm sweepout}\\max_s {\\rm Area}(\\Sigma_s)$ satisfying $dW/dt \\le -4\\pi + C\\sqrt{W(t)}$ (Perelman 2003; simplified by Colding-Minicozzi 2005 via min-max theory), which forces $W\\to 0$ in finite time and hence extinction of all simply-connected components, completing the chain from $W$-entropy monotonicity to the Poincaré conjecture.",
@@ -2779,7 +2779,7 @@
       "startLine": 10737,
       "endLine": 10956
     },
-    "type": "context",
+    "type": "concept",
     "title": "The L-Space Conjecture (Boyer-Gordon-Watson)",
     "content": "Models the (open) L-space conjecture via `LeftOrderability` and `LSpaceConjectureData` (line 10789), whose three Boolean/inductive fields (`isLSpace`, `pi1LO`, `hasTautFoliation`) are hand-entered per manifold (`bgwS3`, `bgwPHS`, `bgwT3`, `bgwBrieskorn237`, etc.) to match known facts. `bgwConsistent` is an iff-statement checked by `simp`/`decide` on data that was constructed to already satisfy it, so the 'proofs' (`bgw_S3_consistent`, etc.) verify internal consistency of hand-picked examples, not the conjecture itself, which remains open in general (only the graph-manifold case, cited as `graph_manifold_bgw_proved`, is a genuine theorem in the literature, represented here by the vacuous fact `(2:ℕ)=2`).",
     "mathContext": "The L-space conjecture (Boyer–Gordon–Watson, 2013) proposes that for an irreducible rational homology sphere $Y$, three properties are equivalent: (A) $Y$ is not an L-space, (B) $\\pi_1(Y)$ is left-orderable, (C) $Y$ admits a co-orientable taut foliation. The implications (C)$\\Rightarrow$(A) (Ozsváth–Szabó, via the contact invariant) and (C)$\\Rightarrow$(B) (Calegari–Dunfield, for many cases) are known, while (A)$\\Rightarrow$(C) remains the hardest open direction; the conjecture is fully proved for graph manifolds (Boyer–Clay 2017). For the Poincaré conjecture itself, $S^3$ sits on the 'rigid' side of all three properties simultaneously — trivial (hence non-left-orderable) $\\pi_1$, an L-space, and no taut foliation — three mutually consistent signatures of its topological simplicity.",
@@ -3008,7 +3008,7 @@
       "startLine": 13839,
       "endLine": 14041
     },
-    "type": "context",
+    "type": "concept",
     "title": "Property P, Property R, and the L-Space Conjecture",
     "content": "Catalogs Property P (Kronheimer-Mrowka 2004: no nontrivial surgery on a nontrivial knot yields S³), Property R (Gabai 1987: no surgery yields S¹×S²), and the L-space conjecture (Boyer-Gordon-Watson) as hardcoded example lists (`propertyPExamples`, `propertyRExamples`, `lspaceExamples`) with boolean fields for each of the three conjecturally-equivalent conditions (is-L-space, has-taut-foliation, has-left-orderable-π₁). The theorems (e.g. `lspace_conjecture_verified`, `non_lspace_has_properties`) check that the hand-entered boolean triples are mutually consistent on these 4-7 examples by case splitting; this confirms the data was entered consistently, not that the L-space conjecture (still open in general) holds.",
     "mathContext": "Property P, proved via Seiberg-Witten/instanton gauge theory, was historically important because it eliminates surgery on knots as a source of counterexamples to the Poincaré conjecture. The L-space conjecture proposes that for an irreducible rational homology sphere $M$, the following are equivalent: (1) $M$ is not a Heegaard Floer L-space (i.e. $\\mathrm{rk}\\,\\widehat{HF}(M) > |H_1(M;\\mathbb{Z})|$), (2) $M$ admits a taut foliation, (3) $\\pi_1(M)$ is left-orderable. $S^3$ itself is an L-space with no taut foliation (Novikov) and trivial (hence non-left-orderable) $\\pi_1$, consistent with — but not a proof of — the conjecture.",
@@ -3034,7 +3034,7 @@
       "startLine": 14042,
       "endLine": 14293
     },
-    "type": "context",
+    "type": "concept",
     "title": "Duplicate-Numbered \"Chern-Simons / Smooth 4-Manifolds / Geometrization\" Block — Trivial Arithmetic Restatements",
     "content": "This block re-uses part numbers already used earlier in the file (banner comments duplicate roman-numeral labels already assigned to the Reidemeister Torsion and Seifert Fibered Spaces sections seen earlier — a pure historical copy-paste artifact, not a semantic re-derivation) and covers Chern-Simons theory/quantum invariants, Freedman's 4-manifold classification and exotic spheres, and a second pass on Thurston's eight geometries. In every one of its eleven named theorems (`cs_level_parameter`, `jones_polynomial_properties`, `rt_invariant_kirby`, `part_lxxxiii_summary`, `generalized_poincare_status`, `freedman_classification`, `exotic_spheres_theta_7`, `part_lxxxiv_summary`, `thurston_geometry_dimensions`, `hyperbolic_volume_ordering`, `part_lxxxv_summary`) the actual Lean-checked proposition is a trivial closed-form arithmetic identity on small naturals — e.g. `(3:ℕ)+1=4 := by omega`, `(8:ℕ)=8 := rfl` (\"rank of E₈ lattice\"), `(28:ℕ)=4*7 := by omega` (|Θ₇|), `(3:ℕ)+4+1=8 := by omega` (isometry-dimension tally), `(1:ℕ)+2=3 := by omega`, and bare restatements like `(3:ℕ)=3 := rfl` / `(2:ℕ)=2 := rfl`. All of the substantive mathematics — the Chern-Simons level/representation count, the Jones polynomial and volume conjecture, Freedman's intersection-form classification, the open status of the smooth 4D Poincaré conjecture, and the Thurston geometry isometry-dimension table — is written only as prose in `--` comments inside each theorem body; none of it is encoded in, or established by, the actual formal statement. These theorems should be read as documentation blocks with a placeholder arithmetic check attached, not as formalizations of the named results.",
     "mathContext": "The commented-out mathematics is real and correctly stated: Chern-Simons theory at level $k$ for $SU(2)$ has $k+1$ admissible representations and partition function $Z(S^3) = \\sqrt{2/(k+2)}\\sin(\\pi/(k+2))$; the Jones polynomial $V(K,t)$ is recovered from Wilson-loop expectation values and its detection of the unknot is open; Freedman's theorem classifies simply-connected closed topological 4-manifolds by intersection form and Kirby-Siebenmann invariant, while the *smooth* 4-dimensional Poincaré conjecture remains the one open case among all dimensions; $\\Theta_7 \\cong \\mathbb{Z}_{28}$ (Milnor's exotic 7-spheres) via Milnor-Kervaire; and the isometry groups of Thurston's 8 model geometries have dimension 6 (three isotropic geometries $S^3,E^3,\\mathbb{H}^3$), 4 (four geometries), or 3 (Sol alone). None of this, however, is what the Lean kernel actually verifies here — the kernel only checks the trivial numerical identity written after the comment block. This range overlaps content covered by prior sections in the file (Reidemeister torsion, Seifert fibered spaces), so its `sections[]` label 'Duplicate-Numbered Content' reflects real duplication in the source, not an artifact of this annotation.",
@@ -3060,7 +3060,7 @@
       "startLine": 14295,
       "endLine": 14416
     },
-    "type": "context",
+    "type": "concept",
     "title": "Heegaard Floer Homology, the L-Space Conjecture, and Perelman's Entropy Functionals (Recap)",
     "content": "The three theorems here (hf_euler_characteristic, l_space_conjecture_status, perelman_entropy_chain) are trivial numeric equalities like `(4:ℕ)=4 := rfl`; the real content is entirely in the attached doc-comments, which describe Heegaard Floer flavors and the d-invariant, the L-space conjecture's three conjecturally-equivalent conditions, and Perelman's F/W/reduced-volume functionals. No Heegaard Floer group, taut foliation, or entropy functional is actually formalized.",
     "mathContext": "Heegaard Floer homology assigns groups $HF^-(Y), HF^+(Y), HF^\\infty(Y), \\widehat{HF}(Y)$ to a 3-manifold $Y$, with $\\chi(\\widehat{HF})=\\pm\\lambda(Y)$ recovering the Casson invariant. The L-space conjecture asserts that for irreducible rational homology spheres, $Y$ failing to be an L-space, $\\pi_1(Y)$ being left-orderable, and $Y$ admitting a co-oriented taut foliation are all equivalent. Perelman's proof rests on the $\\mathcal{F}$-functional $\\int_M(R+|\\nabla f|^2)e^{-f}d\\mu$, the scale-invariant $\\mathcal{W}$-functional, and the reduced volume $\\tilde V(\\tau)=\\int_M(4\\pi\\tau)^{-n/2}e^{-\\ell}dq$, whose monotonicity under Ricci flow drives $\\kappa$-non-collapsing and the canonical neighborhood theorem.",
@@ -3180,7 +3180,7 @@
       "startLine": 15316,
       "endLine": 15472
     },
-    "type": "context",
+    "type": "concept",
     "title": "Weinstein Conjecture, BGW L-Space Data, Giroux Open Books, and the Thurston Norm",
     "content": "A sequence of small example tables (`ReebDynamicsData`, `BGWConjectureData2`, `OpenBookData`, `ThurstonNormBallData`, `McMullenNormData`) record hardcoded orbit counts, L-space/taut-foliation/left-orderable flags, open-book invariants, and Thurston-norm values for named 3-manifolds and knots. The accompanying theorems (`weinstein_verified`, `bgw2_lspace_no_taut`, `planar_open_books`, `norm_two_genus_minus_one`) only check consistency properties across these fixed lists by `decide`/`native_decide`/case-split, not general results about Reeb dynamics, the L-space conjecture, or the Thurston norm.",
     "mathContext": "The Weinstein conjecture asserts every Reeb vector field on a closed contact manifold has a closed orbit (proved for 3-manifolds by Taubes via Seiberg–Witten theory). The L-space conjecture links L-spaces, taut foliations, and left-orderability. Giroux's correspondence identifies contact structures up to isotopy with open book decompositions up to stabilization; the support genus measures the minimal page genus. McMullen's Alexander-norm bound relates the Thurston norm of a fibered knot complement to $2\\,\\mathrm{genus}(K)-1$.",
@@ -3204,7 +3204,7 @@
       "startLine": 15474,
       "endLine": 15616
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "h-Cobordism Theorem and the Dimension-5 Threshold for the Whitney Trick",
     "content": "A documentation-heavy block explaining why Smale's h-cobordism theorem needs ambient dimension ≥ 5: the Whitney trick requires an embedded 2-disk of codimension ≥ 3. The only Lean content is trivial arithmetic (`omega` proofs like `5-2=3 ∧ 4-2=2 ∧ 3-2=1`, and `2003-1961=42`) attached to prose narrating the handle-cancellation argument and the historical chronology of the generalized Poincaré conjecture (dim ≥5 in 1961, dim 4 in 1982, dim 3 in 2003); no handle decomposition, transversality argument, or embedding is actually formalized.",
     "mathContext": "If $W$ is an h-cobordism between simply connected closed $n$-manifolds $M,N$ with $n\\geq 5$, then $W\\cong M\\times[0,1]$ (Smale, 1961), proved by cancelling handles in pairs using the Whitney trick: two transverse intersection points of opposite sign on complementary submanifolds are removed via an ambient isotopy guided by an embedded Whitney disk. Embedding this 2-disk needs codimension $n-2\\geq 3$, i.e. $n\\geq 5$; it fails in dimension 4, where Freedman's Casson-handle construction (1982) gives only the topological h-cobordism theorem, and fails completely in dimension 3, which is why Perelman needed Ricci flow with surgery instead.",
@@ -3255,7 +3255,7 @@
       "startLine": 16114,
       "endLine": 16313
     },
-    "type": "context",
+    "type": "concept",
     "title": "h-Cobordism Theorem and Why Dimension 3 Fails",
     "content": "This section is expository commentary (in doc comments) on Smale's h-cobordism theorem and why it fails in dimension 3, paired with 'theorems' that are mostly trivial numeric restatements (e.g. `whitney_trick_dimension'` just checks `n+2+2 ≥ n+1` via `omega`, and `poincare_by_dimension` checks `7-1=6`) rather than formalizations of the actual geometric arguments (Whitney trick, Casson handles, Whitehead torsion). It records, as prose plus arithmetic placeholders, why Smale's approach needs dimension ≥ 5 and why Perelman had to use Ricci flow instead.",
     "mathContext": "Smale's h-cobordism theorem says a simply-connected compact h-cobordism $W$ between closed simply-connected manifolds $M,N$ of dimension $\\ge 5$ is a product $M\\times[0,1]$, via handle cancellation using the Whitney trick to remove excess intersections of embedded 2-disks — a move that needs codimension $\\ge 3$ to work. In dimension 4 Freedman gave a topological (not smooth) analogue using infinite Casson handles; in dimension 3 the Whitney trick has no room at all, forcing Perelman's Ricci-flow approach. Kervaire–Milnor's finite group $\\Theta_n$ of exotic smooth structures on $S^n$ (e.g. $|\\Theta_7|=28$) is also tabulated, with $|\\Theta_3|=1$ standing in for the fact (established via Perelman + Moise) that $S^3$ has no exotic smooth structure.",
@@ -3280,7 +3280,7 @@
       "startLine": 16314,
       "endLine": 16547
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sphere Theorems: 1/4-Pinching, Hamilton 1982, and Perelman as the Strongest Case",
     "content": "Documents the classical Berger–Klingenberg sphere theorem (1/4 < K ≤ 1 implies homeomorphic to S^n), its sharpness via CP² (which is exactly 1/4-pinched but not a sphere), the Brendle–Schoen differentiable sphere theorem, and Hamilton's 1982 result that positive Ricci curvature on a closed 3-manifold forces convergence under Ricci flow to a spherical space form S³/Γ. As before, the 'theorems' (`sphere_theorem_dimension_constraints`, `hamilton_1982_positive_ricci`, `brendle_schoen_dimensions`) are trivial numeric facts (`omega`/`norm_num` on integers) standing in for the cited results; only `classicalPinching_pos`, `cp2_curvature_range`, `groveShiohama_bound_pos`, and `cheng_diameter_is_pi` are genuine (if easy) real-number lemmas about the defined constants.",
     "mathContext": "For a complete simply-connected Riemannian $M^n$ with sectional curvature $\\delta \\le K \\le 1$, the classical sphere theorem needs $\\delta > 1/4$ to conclude $M \\cong_{\\text{top}} S^n$; $\\mathbb{CP}^2$ shows $\\delta=1/4$ is sharp since its holomorphic/anti-holomorphic curvatures are exactly $1$ and $1/4$. Brendle–Schoen (2009) upgraded the conclusion to diffeomorphism using Ricci flow with a pointwise-pinching condition. Hamilton's theorem $\\mathrm{Ric}>0 \\Rightarrow M^3 \\cong_{\\text{diff}} S^3/\\Gamma$ was the first Ricci-flow convergence result and the direct ancestor of Perelman's program; the section frames Perelman's $\\pi_1=1 \\Rightarrow S^3$ as the weakest-hypothesis (purely topological, no curvature assumption) member of this hierarchy of sphere theorems.",
@@ -3329,7 +3329,7 @@
       "startLine": 16763,
       "endLine": 17013
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Finite Extinction Time via the Width Functional",
     "content": "Formalizes small real-valued models of quantities from Perelman's third paper: `widthFunctional`, `widthDerivativeBound` (the bound dW/dt ≤ -4π + (3/4)R_min·W), `scalarCurvatureBlowup`, `maxSurgeries`, and the exact extinction time `s3ExtinctionTime r = r²/4` for a round S³ of radius r under Ricci flow. Unlike the surrounding sections, several lemmas here are genuine (if elementary) inequalities about these real functions — e.g. `blowup_faster_with_more_curvature` and `s3_larger_takes_longer` are proved with real `div_lt_div_of_pos_*` lemmas, not just `rfl`/`omega` placeholders — though they model the PDE behavior rather than proving it from the Ricci flow equation itself. Page-count 'theorems' (`perelman_page_count`, `verification_ratio`) are just trivia arithmetic.",
     "mathContext": "Perelman's finite-extinction argument tracks a min-max width $W(t)=\\inf_{\\text{sweepouts}}\\max_s \\mathrm{Area}(\\Sigma_s)$ satisfying $dW/dt \\le -4\\pi + \\tfrac34 R_{\\min}(t)W$, while the maximum principle gives $R_{\\min}(t)\\ge R_{\\min}(0)/(1-\\tfrac23 R_{\\min}(0)t)$, which blows up in finite time when $R_{\\min}(0)>0$; combined, $W\\to 0$ in finite time, so a simply-connected $M^3$ under Ricci flow with surgery becomes extinct, and since it never fissions (simple connectivity), the terminal geometry must be the round $S^3$. The exact model computation $g(t) = (r^2-4t)g_0$ on the round $S^3(r)$, extinct at $t=r^2/4$, illustrates the rate at which volume $V(t)=2\\pi^2(r^2-4t)^{3/2}\\to 0$.",
@@ -3354,7 +3354,7 @@
       "startLine": 17014,
       "endLine": 17512
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Contractibility Obstructions, the Hopf Map's Antipodal Descent, and the Covering-Space Galois Correspondence",
     "content": "Three related pieces on the covering-space structure of S³/RP³. First, genuine (non-trivial) proofs that RP³ is not contractible (`rp3_not_contractible`, by contradiction from `rp3_pi1_nontrivial`) and that the antipodal map on S³ is fixed-point-free, framed as partial obstructions to a not-yet-proved `¬ContractibleSpace S³`. Second, a real computation that the Hopf map π: S³→S² is antipodal-invariant (`hopf_antipodal_invariant`, proved by unfolding the quadratic formula and case-splitting on coordinates) and hence descends via `Quotient.lift` to a genuine map `hopfMapRP3 : RP3 → S²`. Third, a large 'Galois correspondence' catalog (`CoveringSpaceData3`, `GaloisCorrespondence`, `UniversalCoverType`) encoding covering-space/subgroup facts for the 8 Thurston geometries and 3-manifold groups (residual finiteness, virtual Haken/fibered/special, profinite completions) as literal `List` data with only shallow `simp`/`native_decide` checks over those lists — descriptive tables, not formalizations of the cited theorems (Agol, Wise, Wilton–Zalesskii, Hempel).",
     "mathContext": "The Galois correspondence for covering spaces says connected coverings of $X$ correspond bijectively to conjugacy classes of subgroups of $\\pi_1(X)$, with degree equal to subgroup index and normal coverings corresponding to normal subgroups; for spherical space forms $S^3/\\Gamma$ the universal cover is always $S^3$ with $\\Gamma=\\pi_1$. The Hopf map $\\pi(a,b,c,d)=(a^2+b^2-c^2-d^2,\\,2(ac+bd),\\,2(bc-ad))$ is quadratic in each coordinate, hence invariant under $x\\mapsto -x$, so it factors through $\\mathbb{RP}^3 = S^3/\\{\\pm1\\}$, linking the Hopf fibration $S^3\\to S^2$ to the double cover $S^3\\to \\mathbb{RP}^3$. Hempel's residual finiteness and Agol–Wise's virtual Haken/fibered/special theorems (used here only as data, not proved) describe how finite covers detect structure in all compact 3-manifold groups.",
@@ -3379,7 +3379,7 @@
       "startLine": 17513,
       "endLine": 17683
     },
-    "type": "context",
+    "type": "concept",
     "title": "Closing Panorama: Sphere Theorems and the Generalized Poincaré Conjecture by Dimension",
     "content": "The file's final section, closing the PoincareConjecture namespace. It tabulates seven sphere theorems (Rauch through Perelman) as a `sphereTheoremHierarchy : List SphereTheoremData`, tabulates the generalized Poincaré conjecture's solved status per dimension 1 through 7 (`genPoincareDimStatus`), and records that ℂP², ℍP², CaP² are the three simply-connected 1/4-pinched spaces at the sharp boundary that are not spheres. As elsewhere, the 'theorems' mostly just check lengths/filters of these hard-coded lists (several via `native_decide`) rather than proving the underlying geometric facts; `smooth_poincare_open_only_dim4` correctly reflects that smooth Poincaré in dimension 4 remains open as of this writing.",
     "mathContext": "The sphere-theorem hierarchy runs from Rauch's $\\delta\\approx 0.74$ pinching (1951) through Berger–Klingenberg's $\\delta>1/4$ (1961), Grove–Shiohama's diameter condition (1977), Hamilton's Ricci-curvature result (1982), Micallef–Moore and Brendle–Schoen's pointwise pinching (1988, 2009), down to Perelman's purely topological $\\pi_1=1$ hypothesis (2003) — each successive theorem strictly weakening its hypothesis while still concluding a diffeomorphism to (a quotient of) $S^n$. The generalized Poincaré conjecture (a homotopy $n$-sphere is homeomorphic to $S^n$) is solved topologically in every dimension $n\\ge 1$ (Zeeman/Stallings/Smale for $n\\ge5$ via h-cobordism, Freedman for $n=4$, Perelman for $n=3$, classically for $n\\le2$), but the *smooth* generalized Poincaré conjecture remains open specifically in dimension 4 (whether exotic smooth 4-spheres exist).",

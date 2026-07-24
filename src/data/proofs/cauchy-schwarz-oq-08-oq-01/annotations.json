@@ -36,7 +36,7 @@
       "startLine": 81,
       "endLine": 95
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Orthogonality preservation and injectivity",
     "content": "Two immediate corollaries. `inner_map_eq_zero_iff` rewrites through `inner_map_eq` to show such maps preserve orthogonality: $f x \\perp f y \\iff x \\perp y$. `injective_of_norm_preserving` needs *only* the norm hypothesis (the inner-product structure is `omit`ted): if $\\|f a\\| = \\|a\\|$ then $f a = 0$ forces $\\|a\\| = 0$, hence $a = 0$, so $f$ is injective. This separates the two consequences — orthogonality rigidity needs the full inner-product-preservation, injectivity does not.",
     "mathContext": "$f x \\perp f y \\iff x \\perp y$; and $\\|f\\,\\cdot\\| = \\|\\cdot\\| \\Rightarrow f$ injective (via $\\|a\\|=0 \\Rightarrow a=0$).",

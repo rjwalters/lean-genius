@@ -86,7 +86,7 @@
       "startLine": 74,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Pushing the Commutator into N along the Quotient Map",
     "content": "Step 1 of the metabelian theorem proves `derivedSeries G 1 ≤ N` without touching a single element. Since `G ⧸ N` is abelian, its first derived subgroup vanishes; the surjection `mk' : G → G ⧸ N` carries `derivedSeries G 1` onto `derivedSeries (G ⧸ N) 1` by `map_derivedSeries_eq` (valid because `mk'` is surjective, `QuotientGroup.mk'_surjective`). The chain `← QuotientGroup.ker_mk' N`, `← Subgroup.map_eq_bot_iff`, `map_derivedSeries_eq …`, `derivedSeries_succ`, `derivedSeries_zero`, `commutator_eq_bot_iff_le_centralizer` reduces the goal to `⊤ ≤ centralizer ⊤`, discharged by the quotient-commutativity hypothesis `hQ`. The key translation is `map H f = ⊥ ↔ H ≤ ker f`, turning 'the commutator dies in the quotient' into 'the commutator sits inside N'.",
     "mathContext": "$G/N$ abelian $\\Rightarrow [G,G]=\\ker(\\mathrm{mk}')\\text{-trivial image}\\Rightarrow [G,G]\\le N$.",
@@ -111,7 +111,7 @@
       "startLine": 85,
       "endLine": 94
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Abelian Kernel Annihilates the Second Commutator",
     "content": "Step 2 finishes the class-2 bound. Because `N` is abelian, `N ≤ centralizer N`, so `⁅N, N⁆ = ⊥` by `commutator_eq_bot_iff_le_centralizer`. Combining with Step 1 through `commutator_mono h1 h1 : ⁅derivedSeries G 1, derivedSeries G 1⁆ ≤ ⁅N, N⁆` and rewriting by `hNN : ⁅N,N⁆ = ⊥` gives `derivedSeries G 2 ≤ ⊥`, hence `= ⊥` via `le_bot_iff`. This is the exact statement that the second derived subgroup `[[G,G],[G,G]]` is trivial — the definition of a metabelian group and the sharp meaning of 'derived length ≤ 2', which Mathlib's `solvable_of_ker_le_range` never surfaces as a subgroup equality.",
     "mathContext": "$N$ abelian $\\Rightarrow [N,N]=1$; monotonicity gives $G^{(2)}=[[G,G],[G,G]]\\le[N,N]=1$.",

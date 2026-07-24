@@ -255,7 +255,7 @@
       "startLine": 122,
       "endLine": 201
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Reciprocal-log comparison and the analytic inputs",
     "content": "The necessity proof hinges on transferring a divergent lower series to a contradiction. The multiplicative bound `product_log_comparison` and its `reciprocal_log_comparison` division form give $1/(b\\log b)\\le 2C/(a\\log a)$ when $a\\le C b$. Two analytic facts are taken as axioms: the Erdős (1935) convergence $\\sum 1/(a_n\\log a_n)<\\infty$ for any primitive sequence, and the divergence $\\sum 1/((n+2)\\log(n+2)) = +\\infty$ (Cauchy condensation). These bracket the comparison from both ends.",
     "mathContext": "If $a\\le Cb$, $a,b\\ge 2$, $b\\ge C$: $\\frac{1}{b\\log b}\\le\\frac{2C}{a\\log a}$. Axioms: $\\sum\\frac{1}{a_n\\log a_n}<\\infty$ (primitive); $\\sum\\frac{1}{(n+2)\\log(n+2)}=\\infty$.",

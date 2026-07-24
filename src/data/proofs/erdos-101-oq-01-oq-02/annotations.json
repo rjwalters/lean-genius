@@ -102,7 +102,7 @@
       "startLine": 99,
       "endLine": 122
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The witness realises exactly one four-point line",
     "content": "witness_fourPointLineCount proves fourPointLineCount witness = 1 by showing the filtered family of collinear 4-subsets is the singleton {witness.points}. Existence uses the anchors (0,0),(1,0) with witness_all_collinear; uniqueness uses that any 4-element subset of a 4-element set must be the whole set (Finset.eq_of_subset_of_card_le), so Finset.card_singleton finishes.",
     "mathContext": "This is the constructive lower bound maxCountAtSize 4 ≥ 1: an explicit no-five-collinear configuration attaining one four-point line. Paired with the improved_upper_bound (≤ 4·3/12 = 1) it pins maxCountAtSize 4 = 1, the first non-trivial value of the extremal function in Erdős #101's four-point-line thread.",

@@ -49,7 +49,7 @@
       "startLine": 105,
       "endLine": 138
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Pythagorean Coefficient Identity and Bessel by Dropping the Residual",
     "content": "The heart of the proof. `norm_besselSum_sq` computes `‖besselSum e s u‖² = ∑ i ∈ s, ⟪e i, u⟫²`: `Orthonormal.inner_sum` collapses the double sum `⟪∑ cᵢ eᵢ, ∑ cⱼ eⱼ⟫` — whose off-diagonal terms vanish by orthonormality — to `∑ cᵢ²`. So the sum of squared Fourier coefficients is literally a squared norm.\n\n`norm_add_besselSum` then splits `‖u‖² = ‖besselSum e s u‖² + ‖u − besselSum e s u‖²` (Pythagoras via `norm_add_sq_real` and the projection–residual orthogonality). Finally `bessel_inequality` obtains `∑ i ∈ s, ⟪e i, u⟫² ≤ ‖u‖²` simply by **dropping the nonnegative residual term** `‖u − besselSum e s u‖² ≥ 0` — not by algebraic expansion. Bessel is 'the projection never lengthens the vector'.",
     "mathContext": "$\\|u\\|^2 = \\|Pu\\|^2 + \\|u - Pu\\|^2$ with $\\|Pu\\|^2 = \\sum_{i\\in s}\\langle e_i,u\\rangle^2$. Discarding the nonnegative residual gives Bessel: $\\sum_{i\\in s}\\langle e_i,u\\rangle^2 \\le \\|u\\|^2$, with equality iff $u\\in\\operatorname{span}\\{e_i\\}$.",
@@ -72,7 +72,7 @@
       "startLine": 144,
       "endLine": 186
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "The Bridge: besselSum IS Mathlib's Orthogonal Projection onto the Span",
     "content": "The central result `besselSum_eq_starProjection` proves `besselSum e s u = (span ℝ (e '' s)).starProjection u` — the hand-built summed rank-one map is Mathlib's genuine orthogonal projection onto the span of the family. It follows from `eq_starProjection_of_mem_orthogonal` applied to two facts: `besselSum_mem_span` (the projection lands in `span ℝ (e '' s)`, each summand being a scalar multiple of a generator) and `sub_besselSum_mem_orthogonal` (the residual lies in the orthogonal complement, lifting orthogonality from each generator to the whole span by `span_induction`).\n\nCrucially, `HasOrthogonalProjection` for the span is **automatic**: `FiniteDimensional.span_of_finite` makes the span finite-dimensional, hence complete, so no completeness hypothesis on the ambient `E` is required. `norm_besselSum_le` then reads Bessel off directly as `norm_starProjection_apply_le` for the span.",
     "mathContext": "The orthogonal projection onto a complete subspace $K$ is characterized by $Pu\\in K$ and $u - Pu\\in K^\\perp$. Here $K = \\operatorname{span}\\{e_i : i\\in s\\}$ is finite-dimensional (a finite family), so it is complete and $P_K$ exists in any inner product space, complete or not.",
@@ -139,7 +139,7 @@
       "startLine": 225,
       "endLine": 234
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Empty Family and Monotonicity toward the Infinite Bessel Sum",
     "content": "Part VI supplies the base case and the monotonicity step that lift the finite result to the countable one. `besselSum_empty` records that projecting over `∅` gives `0`, so Bessel degenerates to the trivial `0 ≤ ‖u‖²`.\n\n`bessel_sum_mono` proves that enlarging the finite index set never decreases the coefficient sum: for `s ⊆ t`, `∑_{s} ⟪e i, u⟫² ≤ ∑_{t} ⟪e i, u⟫²`, since each newly included term `⟪e i, u⟫²` is nonnegative (`Finset.sum_le_sum_of_subset_of_nonneg` with `sq_nonneg`). The finite Bessel sums thus form a monotone net bounded above by `‖u‖²`; passing to the supremum over finite `s` yields the countable Bessel inequality `∑' i, ⟪e i, u⟫² ≤ ‖u‖²`, which becomes Parseval's identity when the orthonormal family is a complete basis.",
     "mathContext": "The finite Bessel sums $s \\mapsto \\sum_{i\\in s}\\langle e_i,u\\rangle^2$ form a monotone net bounded by $\\|u\\|^2$; its supremum $\\sum_i' \\langle e_i,u\\rangle^2 \\le \\|u\\|^2$ is the countable Bessel inequality, with equality (Parseval) for a complete basis.",

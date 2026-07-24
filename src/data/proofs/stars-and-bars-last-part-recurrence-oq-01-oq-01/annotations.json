@@ -15,7 +15,7 @@
     "id": "ann-fibre",
     "proofId": "stars-and-bars-last-part-recurrence-oq-01-oq-01",
     "range": { "startLine": 74, "endLine": 102 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The first-coordinate fibre bijection",
     "content": "fiber_card is the combinatorial core: among the weak compositions of n into k+1 parts, those with first coordinate equal to j (for j ≤ n) biject with the weak compositions of n−j into k parts. The bijection drops the first part (Fin.tail) with inverse prepending j (Fin.cons j), discharged by Finset.card_nbij'. The four side conditions are pure sum bookkeeping: Fin.sum_univ_succ splits the total as x₀ + ∑(tail x), so ∑(tail) = n − j; Fin.cons_zero and Fin.cons_succ evaluate the restored tuple (first part j, rest y) to give j + ∑ y = n; and Fin.cons_self_tail / Fin.tail_cons close the two round trips.",
     "mathContext": "$\\#\\{x \\in \\mathbb{N}^{k+1} : \\textstyle\\sum x = n,\\ x_0 = j\\} \\;\\cong\\; \\#\\{y \\in \\mathbb{N}^{k} : \\textstyle\\sum y = n-j\\}, \\quad y = \\mathrm{tail}(x).$",

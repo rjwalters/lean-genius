@@ -69,7 +69,7 @@
     "id": "ann-dedup",
     "proofId": "inverse-galois-d4-oq001",
     "range": { "startLine": 55, "endLine": 63 },
-    "type": "context",
+    "type": "concept",
     "title": "Why this file proves only one of its three theorems",
     "content": "This namespace-hygiene note explains an apparent mismatch: the docstring above narrates three results (the ceiling gal_card_le_n_mul_totient, the coprime pin gal_card_eq_n_mul_totient_of_coprime, and the quintic witness gal_card_quintic_eq_twenty), yet the file below declares only the last. The two general lemmas were originally proved here but were later merged verbatim into the ancestor InverseGaloisD4OQ02.lean (PR #31630) and deleted from this file to keep a single canonical home and avoid duplicate declarations poisoning the build. They remain in scope through the transitive import (line 50), so the quintic instance can still invoke gal_card_eq_n_mul_totient_of_coprime directly. This is why meta.theoremCount is 1 even though the entry's mathematical content is the full three-theorem story: the counts track this file's own declarations, while the assumptions field documents the merge and confirms all three results remain 0-axiom in the ancestor.",
     "mathContext": "The file's contribution reduces to a single instantiation $n = 5$ of an imported general theorem; the ceiling $|\\mathrm{Gal}| \\le n\\varphi(n)$ and coprime pin $|\\mathrm{Gal}| = n\\varphi(n)$ live upstream in $\\texttt{InverseGaloisD4OQ02}$, imported transitively.",

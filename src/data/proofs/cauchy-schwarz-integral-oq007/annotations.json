@@ -3,7 +3,7 @@
     "id": "wpme-ann-header",
     "proofId": "cauchy-schwarz-integral-oq007",
     "range": { "startLine": 1, "endLine": 51 },
-    "type": "context",
+    "type": "concept",
     "title": "Module header: the equality-case open question",
     "content": "The module docstring frames the file as answering open question #2 of the parent `CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean`, which proved the weighted power mean chain WHM ≤ WGM ≤ WAM ≤ WQM for positive a, b and weights w₁, w₂ > 0 with w₁ + w₂ = 1: does the equality case WHM = WGM = WAM = WQM ⇔ a = b extend to the weighted setting? It answers YES, previews the three individual link lemmas (wam_eq_wqm_iff, wgm_eq_wam_iff, whm_eq_wgm_iff) and the headline chain_eq_iff, and sketches the three techniques used below — the weighted-variance identity, Mathlib's weighted AM-GM equality condition, and reciprocal duality. The file then opens the `WeightedPowerMeanEquality` namespace, opens `Real` for unqualified `sqrt`/`rpow` notation, and fixes `a b w₁ w₂ : ℝ` as section variables shared by every declaration below.",
     "mathContext": "Open question: does $\\mathrm{WHM}=\\mathrm{WGM}=\\mathrm{WAM}=\\mathrm{WQM} \\iff a=b$ extend the parent's non-strict chain $\\mathrm{WHM}\\le\\mathrm{WGM}\\le\\mathrm{WAM}\\le\\mathrm{WQM}$? Answered YES via three links and the headline `chain_eq_iff`.",

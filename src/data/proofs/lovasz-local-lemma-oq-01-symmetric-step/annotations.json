@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "The symmetric LLL is the asymmetric one plus a single order step",
     "content": "The Lovász Local Lemma has two standard shapes. The **asymmetric** form gives each bad event $A_i$ a weight $x_i \\in (0,1)$ and requires $\\Pr[A_i] \\le x_i \\prod_{j\\in\\Gamma(i)}(1-x_j)$, the product over $i$'s neighbours; the **symmetric** corollary — the one used in most applications — takes a single weight $x$ and a single degree bound $d$ (each event depends on at most $d$ others), with hypothesis $\\Pr[A_i] \\le x(1-x)^d$. The measure-theoretic OQ-01 front had assembled the asymmetric induction step (the induction-step entry's `cond_failure_le_x`: from $\\mu(A_i)\\le x\\cdot d$ and a denominator lower bound $d \\le \\mu[N\\mid C]$, conclude $\\mu[A_i\\mid N\\cap C]\\le x$) but stated it per-block, with $d = \\prod_{j\\in S_1}(1-x_j)$. This entry supplies the bridge to the symmetric form. The key is one inequality about extended-nonnegative reals: since the true neighbour block has $|S_1|\\le d$ and $1-x \\le 1$, the product $\\prod_{j\\in S_1}(1-x) = (1-x)^{|S_1|}$ is at least $(1-x)^d$ — more factors each $\\le 1$ only shrink it — so the uniform budget $\\mu(A_i)\\le x(1-x)^d$ implies the per-block budget $\\mu(A_i)\\le x\\prod_{S_1}(1-x)$ the committed invariant consumes.",
     "mathContext": "(1 − x)^d ≤ ∏_{j∈S₁}(1 − x) = (1 − x)^{|S₁|} for |S₁| ≤ d, so μ(Aᵢ) ≤ x·(1 − x)^d ⟹ μ(Aᵢ) ≤ x·∏_{S₁}(1 − x) ⟹ μ[Aᵢ | N ∩ C] ≤ x.",
@@ -99,7 +99,7 @@
       "startLine": 123,
       "endLine": 132
     },
-    "type": "context",
+    "type": "concept",
     "title": "The optimal budget x = 1/(d+1) is admissible, and equals the tight threshold",
     "content": "`symmetric_x_le_one`: the optimal symmetric assignment $x = (d+1)^{-1}$ satisfies $x \\le 1$ (via `ENNReal.inv_le_one`, reducing to $1 \\le d+1$ by `le_add_self`), so `cond_failure_le_x_symmetric` applies to it. This $x$ is the maximizer of $x(1-x)^d$, at which the uniform budget equals $(d+1)^{-1}(d/(d+1))^d = d^d/(d+1)^{d+1} = T(d)$, the tight symmetric threshold of the gallery proof. The real-analysis entry `lovasz-local-lemma-oq-01-euler-threshold` proves the memorable condition $e\\cdot p\\cdot(d+1)\\le 1$ implies $p \\le T(d)$; combined with this fact, an event family satisfying the Euler condition satisfies the ℝ≥0∞ uniform budget at the optimal $x$, and the symmetric induction step here applies. The ℝ≥0∞ induction machinery and the ℝ threshold analysis meet at $x = 1/(d+1)$.",
     "mathContext": "((d : ℝ≥0∞) + 1)⁻¹ ≤ 1 by ENNReal.inv_le_one and le_add_self; at this x, x(1 − x)^d = T(d) = dᵈ/(d+1)^{d+1}.",

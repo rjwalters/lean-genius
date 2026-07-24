@@ -123,7 +123,7 @@
       "startLine": 87,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The easy seminorm axioms: nonnegativity, square, zero, homogeneity",
     "content": "Three of the four seminorm properties are elementary and need little of T's structure. energyNorm_nonneg is immediate from √ ≥ 0 (no hypotheses at all). energyNorm_sq recovers the diagonal form ‖x‖_T² = ⟪Tx,x⟫, valid because positivity lets √ and squaring be mutual inverses (Real.sq_sqrt). energyNorm_zero follows from map_zero + inner_zero_left. energyNorm_smul is absolute homogeneity ‖c•x‖_T = |c|·‖x‖_T: bilinearity gives ⟪T(c•x),c•x⟫ = c²⟪Tx,x⟫, and Real.sqrt_mul with Real.sqrt_sq_eq_abs extracts |c|. Only the triangle inequality below actually consumes Cauchy-Schwarz.",
     "mathContext": "$\\|x\\|_T^2 = \\langle Tx,x\\rangle,\\quad \\|c\\bullet x\\|_T = |c|\\,\\|x\\|_T,\\quad \\|0\\|_T = 0.$",
@@ -145,7 +145,7 @@
       "startLine": 111,
       "endLine": 122
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Square-root form of Cauchy-Schwarz: |⟪Tx,y⟫| ≤ ‖x‖_T ‖y‖_T",
     "content": "energyNorm_cauchy_schwarz repackages the squared inequality ⟪Tx,y⟫² ≤ ⟪Tx,x⟫·⟪Ty,y⟫ into the √-form |⟪Tx,y⟫| ≤ ‖x‖_T·‖y‖_T that the triangle inequality actually uses. The proof monotonicity of √ (Real.sqrt_le_sqrt): write the right side as √(⟪Tx,x⟫·⟪Ty,y⟫) via Real.sqrt_mul, write |⟪Tx,y⟫| as √(⟪Tx,y⟫²) via Real.sqrt_sq + sq_abs, then reduce to the squared inequality. This is the bridge lemma feeding the cross-term bound in energyNorm_triangle.",
     "mathContext": "$|\\langle Tx,y\\rangle| \\le \\|x\\|_T\\,\\|y\\|_T$, from $\\langle Tx,y\\rangle^2 \\le \\langle Tx,x\\rangle\\langle Ty,y\\rangle$ by monotonicity of $\\sqrt{\\cdot}$.",

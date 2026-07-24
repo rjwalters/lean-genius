@@ -19,7 +19,7 @@
     "id": "ann-examples-c2-c3",
     "proofId": "niven-theorem-oq-01-oq-02",
     "range": { "startLine": 60, "endLine": 66 },
-    "type": "example",
+    "type": "concept",
     "title": "First Cases: C₂ = X² − 2 and C₃ = X³ − 3X",
     "content": "Two examples unfold the recurrence at small indices: C₂ = X·C₁ − C₀ = X² − 2 and C₃ = X·C₂ − C₁ = X³ − 3X, each closed by rewriting with C_succ_succ / C_one / C_zero and ring. These are exactly the polynomials behind the familiar identities 2cos(2θ) = (2cosθ)² − 2 and 2cos(3θ) = (2cosθ)³ − 3(2cosθ), making the abstract recurrence concrete.",
     "mathContext": "$C_2(x) = x^2 - 2,\\qquad C_3(x) = x^3 - 3x$",

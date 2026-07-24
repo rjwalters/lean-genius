@@ -28,7 +28,7 @@
       "startLine": 52,
       "endLine": 76
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Two Information-Theory-Free Finite-Sum Lemmas",
     "content": "All the content lives in two abstract inequalities with no information-theoretic input. `typicalSet_card_le` is a pigeonhole bound: if p is a sub-probability (p ≥ 0, ∑p ≤ 1) and every element of a finite set A carries mass at least δ > 0, then |A|·δ ≤ ∑_A p ≤ ∑_Ω p ≤ 1, hence |A| ≤ 1/δ — typical sequences are individually 'not too likely', so there cannot be too many of them. `prob_le_card_mul` is a dual mass bound: if every element of A has q-mass at most M, then ∑_A q ≤ |A|·M by termwise comparison against the constant M. These two facts convert the definitional typicality bounds into the size and independence bounds respectively.",
     "mathContext": "$|A|\\,\\delta \\le \\sum_{A} p \\le \\sum_{\\Omega} p \\le 1 \\;\\Rightarrow\\; |A|\\le 1/\\delta;\\qquad \\sum_{A} q \\le |A|\\cdot M.$",
@@ -94,7 +94,7 @@
       "startLine": 125,
       "endLine": 146
     },
-    "type": "context",
+    "type": "concept",
     "title": "Proved vs. Deferred: Why the Assumption Count Stays 0",
     "content": "The closing remark draws an honest boundary around what this file establishes. It formalizes the non-asymptotic, combinatorial core — Properties (2) and (3) — by taking the per-sequence probability bounds that *define* the jointly ε-typical set as hypotheses (`hpmem`, `hqmem`). This is faithful rather than circular: those bounds are definitional (a sequence lies in A_ε^{(n)} precisely when its empirical entropies in X, Y, and (X,Y) are all within ε of the true values), so the size and independence bounds are then exact finite-sum inequalities with no hidden analysis. The analytic half — Property (1), P((Xⁿ,Yⁿ) ∈ A_ε) → 1 — is the weak law of large numbers applied to the empirical information density -(1/n)·log p(Xⁿ,Yⁿ), and is deliberately NOT axiomatized: no `axiom` is introduced, so the assumption count stays 0 (consistent with the meta status `verified` and axiomCount 0). Formalizing (1) would require the i.i.d.-product construction plus an L²/Chebyshev concentration argument atop Mathlib's `ProbabilityTheory` law-of-large-numbers infrastructure — the natural next target. The trailing `#check` commands are a lightweight regression guard pinning the four exported names.",
     "mathContext": "$-\\tfrac{1}{n}\\log p(X^n,Y^n) \\xrightarrow{\\;P\\;} H(X,Y) \\;\\Rightarrow\\; P\\big((X^n,Y^n)\\in A_\\varepsilon\\big)\\to 1\\quad\\text{(Property (1), deferred to the WLLN).}$",

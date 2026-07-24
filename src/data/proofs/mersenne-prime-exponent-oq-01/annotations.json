@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "File roadmap: the Fermat/Mersenne mirror and the n ≥ 1 exception",
     "content": "The module docstring frames the result and its place beside the Mersenne condition. A **Fermat number** is $2^n + 1$; the known Fermat primes $3, 5, 17, 257, 65537$ have exponents $1, 2, 4, 8, 16$ — all powers of two — and the theorem shows this is forced: $\\text{Prime}(2^n+1) \\wedge n \\ge 1 \\Rightarrow n = 2^k$. The docstring draws the exact mirror with `MersennePrimeExponent.lean`: a *composite* exponent kills $2^n - 1$ through a **proper-divisor** factor $2^d - 1$, whereas $2^n + 1$ is killed by any **odd** factor $d > 1$ of the exponent (via the proper divisor $2^{n/d} + 1$). Hence the surviving exponents are exactly those with no odd factor $> 1$ — the powers of two. It also flags the sole exception $2^0 + 1 = 2$ (prime, but $0$ is not a power of two), which is why the hypothesis $n \\ge 1$ is genuinely needed. `import Mathlib` pulls in the full library; `namespace FermatPrimeExponent` scopes the five theorems that follow.",
     "mathContext": "$\\text{Prime}(2^n+1) \\wedge n \\ge 1 \\implies \\exists k,\\ n = 2^k$; the $+1$ mirror of $2^n-1$ prime $\\Rightarrow n$ prime.",
@@ -28,7 +28,7 @@
       "startLine": 51,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The arithmetic engine: d odd ⇒ a + 1 ∣ aᵈ + 1 (via ℤ and sub_dvd_pow_sub_pow)",
     "content": "`add_one_dvd_pow_add_one_of_odd` is the lemma the whole proof turns on: for odd $d$, $a + 1$ divides $a^d + 1$. The trick is to leave $\\mathbb{N}$ (where $+1$ is awkward) and work in $\\mathbb{Z}$, where $a + 1 = a - (-1)$ (`ring`) and, crucially for *odd* $d$, $a^d + 1 = a^d - (-1)^d$ because $(-1)^d = -1$ (`Odd.neg_one_pow`, `hd.neg_one_pow`). With both sides rewritten as differences, Mathlib's `sub_dvd_pow_sub_pow` — the ring identity $x - y \\mid x^n - y^n$ instantiated at $x = a$, $y = -1$ — delivers the divisibility directly. `push_cast` and `exact_mod_cast` then transfer $(\\mathbb{Z})$-divisibility of the cast naturals back to $\\mathbb{N}$. This is the $+1$ counterpart of the $2^d - 1 \\mid 2^n - 1$ lift used on the Mersenne side; the parity of $d$ is exactly what makes the minus-sign flip land on $+1$.",
     "mathContext": "In $\\mathbb{Z}$: $a+1 = a-(-1)$, $a^d+1 = a^d-(-1)^d$ (as $(-1)^d=-1$), so $x-y \\mid x^n-y^n$ gives $a+1 \\mid a^d+1$.",
@@ -74,7 +74,7 @@
       "startLine": 102,
       "endLine": 125
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Odd part 1 ⇒ power of two, by self-contained strong induction",
     "content": "`isPowerOfTwo_of_odd_divisor_eq_one` closes the gap between 'no odd divisor $> 1$' and 'is a power of two', deliberately avoiding `Nat.factorization` / `ord_compl`. Strong induction (`Nat.strong_induction_on`) on the value splits on parity. If $n$ is **odd**, then $n$ divides itself and is odd, so the hypothesis forces $n = 1 = 2^0$. If $n$ is **even**, write $n = 2m$ with $0 < m < n$; every odd divisor of $m$ also divides $n$ (`hd.trans hmdvd`), so $m$ inherits the hypothesis, the induction gives $m = 2^k$, and hence $n = 2^{k+1}$. Four short lines, entirely elementary — the factorization API is never touched.",
     "mathContext": "Strong induction: $n$ odd $\\Rightarrow n=1=2^0$; $n=2m \\Rightarrow m=2^k \\Rightarrow n=2^{k+1}$.",

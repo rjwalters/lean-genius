@@ -27,7 +27,7 @@
     "id": "fib-lucas-deg2-cross",
     "proofId": "fibonacci-identities-oq002",
     "range": { "startLine": 64, "endLine": 82 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cross Identity (✦) and the Doubling Machinery",
     "content": "The headline cross / doubling identity lucas_mul_fib — Lₙ·Fₙ = F₂ₙ — falls out in one line: rewrite Lₙ = 2Fₙ₊₁ − Fₙ (lucas_eq_int) and F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ) (fib_two_mul_int), then `ring`. It is the second of the two new degree-2 results and the multiplicative counterpart of the additive sum/difference identities. Two supporting casts feed the later doubling formulas: fib_two_mul_add_one_int gives the sign-free odd doubling F₂ₙ₊₁ = Fₙ₊₁² + Fₙ² (a clean cast of Nat.fib_two_mul_add_one, no subtraction), and lucas_two_mul_eq expands L₂ₙ = 2F₂ₙ₊₁ − F₂ₙ into the Fₙ, Fₙ₊₁ form 2Fₙ₊₁² + 3Fₙ² − 2FₙFₙ₊₁, the shape both quadratic identities (★) and the Lucas doubling reduce against.",
     "mathContext": "$L_n F_n = F_{2n}$ via $L_n = 2F_{n+1}-F_n$ and $F_{2n}=F_n(2F_{n+1}-F_n)$. Helpers: $F_{2n+1} = F_{n+1}^2 + F_n^2$ and $L_{2n} = 2F_{n+1}^2 + 3F_n^2 - 2F_nF_{n+1}$ (from $L_{2n}=2F_{2n+1}-F_{2n}$).",

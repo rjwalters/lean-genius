@@ -75,7 +75,7 @@
     "id": "bday-oq03010103-ann-summary",
     "proofId": "birthday-problem-oq005",
     "range": { "startLine": 95, "endLine": 119 },
-    "type": "context",
+    "type": "concept",
     "title": "Summary and axiom-free verification",
     "content": "The closing block records the file's three results — cubeRoot_cube ((x³)^(1/3) = x for x ≥ 0), birthday_triple_threshold (the two-sided sandwich (6d²ln2)^(1/3) ≤ n ≤ (6d²ln2)^(1/3) + 2), and birthday_triple_threshold_gap (the packaged |n − (6d²ln2)^(1/3)| ≤ 2) — and answers the parent's OQ-03: the k = 3 (triple-coincidence) threshold is (6d²ln2)^(1/3) to leading order with a bounded, d-independent additive error at most 2, proved by the cube-root sandwich (n−2)³ ≤ n(n−1)(n−2) ≤ n³. The trailing #print axioms commands are the machine-checked confirmation of the 0-axiom claim: both main theorems reduce to the foundational axioms alone, with no sorry and no native_decide.",
     "mathContext": "$n \\approx (6 d^2 \\ln 2)^{1/3}$, rigorously $\\bigl|n-(6d^2\\ln 2)^{1/3}\\bigr|\\le 2$; verified axiom-free via $(n-2)^3 \\le n(n-1)(n-2) \\le n^3$.",

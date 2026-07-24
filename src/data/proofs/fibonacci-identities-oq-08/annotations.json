@@ -27,7 +27,7 @@
     "id": "ann-bridge",
     "proofId": "fibonacci-identities-oq-08",
     "range": { "startLine": 97, "endLine": 110 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Subtraction-Free Bridge 2·Fₙ₊₁ = Lₙ + Fₙ",
     "content": "`two_mul_fib_succ` proves 2·Fₙ₊₁ = Lₙ + Fₙ by two-step induction (`Nat.twoStepInduction`, cases zero/one/more). This is the ℕ-safe encoding of the classical bridge Lₙ = 2·Fₙ₊₁ − Fₙ between the Fibonacci and Lucas sequences; stating it additively keeps everything inside ℕ so the inductive step closes by `omega` from the two recurrences.",
     "mathContext": "$2F_{n+1} = L_n + F_n$, i.e. $L_n = 2F_{n+1} - F_n$ — the linear bridge relating the Lucas and Fibonacci sequences, proved by two-step induction.",

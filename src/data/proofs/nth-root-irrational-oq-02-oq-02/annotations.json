@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 45
     },
-    "type": "context",
+    "type": "concept",
     "title": "Motivation: the Exponent-1 Gap in the Parent Criterion",
     "content": "The module docstring frames the problem this entry solves. The parent file proves the raw valuation criterion `¬ n ∣ m.factorization p → ¬ ∃ k, k^n = m`, but its user-facing helper `not_perfect_pow_of_sq_not_dvd` only fires when a prime divides the radicand *exactly once* (exponent 1). That misses every radicand whose prime exponents are all `≥ 2` yet not all divisible by `n`.\n\nThe canonical missed case is `72 = 2³·3²`: the odd exponent 3 of the prime 2 makes `√72` irrational, but `2² ∣ 72` disables the exponent-1 lemma while `3` (exponent 2) is benign for `n = 2`. This file builds the ergonomic bridge to the raw criterion for exactly these mixed-exponent radicands.",
     "mathContext": "$\\big(\\exists\\,p\\text{ prime},\\ n\\nmid v_p(m)\\big)\\Rightarrow\\sqrt[n]{m}\\notin\\mathbb{Q}$, where $v_p(m)$ is the $p$-adic valuation. Missed by exponent-1: $72=2^3\\cdot 3^2$ with $v_2=3,\\ v_3=2$.",
@@ -36,7 +36,7 @@
       "startLine": 89,
       "endLine": 97
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Certifying the Exact Valuation by a Divisibility Window",
     "content": "Proves `not_perfect_pow_of_factorization_eq`: a prime `p` of exponent exactly `e` in `m` (witnessed by `p^e ∣ m` and `¬ p^(e+1) ∣ m`) with `n ∤ e` shows `m` is not a perfect `n`-th power.\n\n**Proof.** `Nat.Prime.pow_dvd_iff_le_factorization` turns `p^e ∣ m` into `e ≤ v_p(m)` and `¬ p^(e+1) ∣ m` into `¬(e+1 ≤ v_p(m))`, so `omega` pins `v_p(m) = e`. Rewriting reduces the goal to the parent's raw criterion with the hypothesis `n ∤ e`.\n\nThe divisibility window is the ergonomic bridge: both halves are `decide`s whose cost is independent of the magnitude of `m`, and taking `e = 1` recovers the parent's exponent-1 corollary `not_perfect_pow_of_sq_not_dvd`.",
     "mathContext": "The two-sided window $p^e \\mid m \\wedge p^{e+1} \\nmid m$ is equivalent to $v_p(m) = e$. Formally $p^k \\mid m \\iff k \\le v_p(m)$ (`pow_dvd_iff_le_factorization`), so $e \\le v_p(m)$ and $\\neg(e+1 \\le v_p(m))$ force $v_p(m)=e$.",
