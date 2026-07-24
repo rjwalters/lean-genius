@@ -183,7 +183,8 @@ nonempty subset sums are monochromatic. -/
 theorem exists_monochromatic_of_coloring (c : Coloring) (k : ℕ) :
     ∃ A : Finset ℕ, A.card = k ∧ (∀ a ∈ A, 1 ≤ a) ∧ MonochromaticSubsetSums c A := by
   -- the stream 1, 2, 3, … of positive integers
-  have ha : ∀ i, 1 ≤ (fun n => n + 1 : Stream' ℕ).get i := fun i => Nat.le_add_left 1 i
+  have ha : ∀ i, 1 ≤ Stream'.get (fun n => n + 1 : Stream' ℕ) i :=
+    fun i => Nat.le_add_left 1 i
   -- cover the finite sums of that stream by the two color classes,
   -- intersected with the positive integers
   have scov : FS (fun n => n + 1 : Stream' ℕ) ⊆
@@ -191,8 +192,8 @@ theorem exists_monochromatic_of_coloring (c : Coloring) (k : ℕ) :
     intro x hx
     have hx1 : 1 ≤ x := fs_pos hx ha
     rcases Bool.eq_false_or_eq_true (c x) with h | h
-    · exact Set.mem_sUnion.mpr ⟨_, Set.mem_insert_of_mem _ rfl, hx1, h⟩
     · exact Set.mem_sUnion.mpr ⟨_, Set.mem_insert _ _, hx1, h⟩
+    · exact Set.mem_sUnion.mpr ⟨_, Set.mem_insert_of_mem _ rfl, hx1, h⟩
   obtain ⟨cl, hcl, b, hb⟩ := FS_partition_regular (fun n => n + 1 : Stream' ℕ) _
     ((Set.finite_singleton _).insert _) scov
   obtain ⟨col, rfl⟩ : ∃ col : Bool, cl = {x : ℕ | 1 ≤ x ∧ c x = col} := by
@@ -240,7 +241,7 @@ theorem folkman_theorem :
     ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k := by
   intro k _
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   -- for every `N` pick a coloring with no monochromatic `k`-set inside `{1, …, N}`
   have hbad : ∀ N : ℕ, ∃ cb : Coloring, ∀ A : Finset ℕ,
       ¬(A.card = k ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ MonochromaticSubsetSums cb A) := by
@@ -256,7 +257,7 @@ theorem folkman_theorem :
   · intro x hx
     exact ⟨hpos x hx, Finset.le_sup (f := id) (hst (self_mem_subsetSums hx))⟩
   · intro s hs
-    rw [← hagree s (hst hs)]
+    rw [← hagree s hs]
     exact hcol s hs
 
 /-- F(k) is well-defined (the set ValidN k is non-empty). -/
