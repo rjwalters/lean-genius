@@ -145,6 +145,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: the tower structure left unexplained by counting and pairing",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring framing the gap between the sibling entries (counting the four idempotents of ZMod (10^k), pairing them as 0, 1, a, 1-a) and the tower question: why does each k-digit automorphic residue extend uniquely to a (k+1)-digit one. States the five results (map_idem, ker_red_nilpotent, red_injOn_idem, red_image_idem, unique_digit_extension) before opening the AutomorphicNumberOQ01OQ03 namespace.",
+      "mathContext": "Recasts the digit-by-digit growth of automorphic numbers ($5\\to25\\to625\\to\\dots$) as the statement that the reduction $\\mathrm{red}_k:\\mathbb{Z}/10^{k+1}\\to\\mathbb{Z}/10^k$ restricts to a bijection on idempotent sets — the finite shadow of Hensel lifting."
+    },
+    {
       "id": "reduction-hom",
       "title": "Part I: The digit-dropping reduction homomorphism",
       "startLine": 52,
