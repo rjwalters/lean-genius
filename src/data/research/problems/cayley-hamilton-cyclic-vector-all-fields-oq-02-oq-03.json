@@ -36,7 +36,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (2026-07-22, researcher-1, Docker verified 0-axiom): MASA capstone added — the commutant of a cyclic endomorphism is a maximal abelian subalgebra of End_K(V) of minimal dimension (commutative + maximal + dim = dim V), lifting the matrix OQ02OQ02Masa file coordinate-free. The Module.End lift (this node objective) is now fully complete: both inclusions, C(T)=K[T] subalgebra equality, commutativity (both forms), Frobenius equality, evaluation isomorphism, minpoly degree, MASA. Only remaining direction is the deep converse (dim C(T)=n ⟹ cyclic), a structured blocker pending rational-canonical-form infra in Mathlib.",
+    "progressSummary": "COMPLETED+ (2026-07-24, researcher-2, host-verified 0-axiom): algebra capstone added — C(T) ≃ₐ[K] K[X]/(μ_T) (centralizerQuotientAlgEquiv, induced by evaluation) and the nonderogatory equality χ_T = μ_T (end_charpoly_eq_minpoly_of_cyclic), plus dim K[X]/(μ_T) = dim V. The Module.End lift now has the full algebraic picture: both inclusions, C(T)=K[T], commutativity, Frobenius equality, evaluation isomorphism, minpoly degree, MASA, quotient-algebra presentation. Only remaining direction is the deep converse (dim C(T)=n ⟹ cyclic), a structured blocker pending rational-canonical-form infra.",
     "builtItems": [
       "IsEndCyclicVector (def) + endKrylov_linearIndependent + commuting_end_is_polynomial + end_commutant_commutative + aeval_end_commute in Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03.lean (5 thm/lemma, 1 def, 197 L). VERIFIED 0-axiom/0-sorry (host lake env lean; #print axioms = propext/Classical.choice/Quot.sound). Imports only Mathlib.",
       "Gallery entry src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03/ (meta.json + annotations.json), status verified, badge original.",
@@ -46,7 +46,8 @@
       "centralizerEval_injective (evaluation at a cyclic vector is injective on C(T))",
       "centralizerEvalEquiv : C(T) ≃ₗ[K] V via LinearMap.linearEquivOfInjective + finrank_centralizer_eq_of_cyclic",
       "centralizerEvalEquiv_apply @[simp]: e A = (A:End) v",
-      "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Masa.lean: end_self_mem_centralizer, end_centralizer_isMaximalCommutative, end_centralizer_mul_comm_of_cyclic, end_centralizer_isMasa_of_cyclic (all 0-axiom, #print-verified)"
+      "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Masa.lean: end_self_mem_centralizer, end_centralizer_isMaximalCommutative, end_centralizer_mul_comm_of_cyclic, end_centralizer_isMasa_of_cyclic (all 0-axiom, #print-verified)",
+      "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ03Quotient.lean: end_charpoly_eq_minpoly_of_cyclic, span_minpoly_eq_ker_rangeRestrict, centralizerQuotientAlgEquiv (K[X]/(minpoly) ≃ₐ[K] centralizer), centralizerQuotientAlgEquiv_mk_coe, finrank_quotient_span_minpoly_of_cyclic (all 0-axiom, #print-verified)"
     ],
     "insights": [
       "The matrix commutant proof (oq-02, CyclicCommutant.commuting_matrix_is_polynomial) lifts one-to-one to Module.End K V: Matrix.mulVec becomes endomorphism application, matrix product becomes composition in Module.End, and the cyclic-vector annihilator predicate transfers verbatim with n = finrank K V.",
@@ -58,7 +59,9 @@
       "Gotcha: subst hg with hg : g = T eliminates T (not g), breaking later references to T; use rw [hg] to rewrite g→T instead.",
       "Evaluation isomorphism: for a cyclic vector v, the map A ↦ A·v is a K-linear ISOMORPHISM centralizerEvalEquiv : C(T) ≃ₗ[K] V (injective by rigidity + equal finrank ⟹ bijective). Strengthens the Frobenius dimension EQUALITY to a canonical equivalence — the K-linear shadow of V being a free rank-1 K[T]-module.",
       "The masa maximality leg (commutative subalgebra containing C(T) equals C(T)) needs NO hypothesis on T and no finite-dimensionality — it is purely formal from T ∈ C(T).",
-      "Membership-form commutativity of C(T) routes cleanly through end_centralizer_eq_adjoin + Algebra.adjoin_singleton_eq_range_aeval + AlgHom.mem_range, then obtain ⟨p, rfl⟩ and map_mul/mul_comm — same recipe as the matrix Masa file."
+      "Membership-form commutativity of C(T) routes cleanly through end_centralizer_eq_adjoin + Algebra.adjoin_singleton_eq_range_aeval + AlgHom.mem_range, then obtain ⟨p, rfl⟩ and map_mul/mul_comm — same recipe as the matrix Masa file.",
+      "Nonderogatory EQUALITY charpoly = minpoly for cyclic T closes in 6 lines: minpoly.dvd on Cayley-Hamilton + both monic + equal degree (minpoly_natDegree_eq_finrank_of_cyclic) via Polynomial.eq_of_monic_of_dvd_of_natDegree_le.",
+      "Algebra-level capstone C(T) ≃ₐ[K] K[X]/(μ_T): Mathlib supplies the whole chain — minpoly.ker_aeval_eq_span_minpoly, AlgHom.ker_rangeRestrict, Ideal.quotientKerAlgEquivOfSurjective on (aeval T).rangeRestrict, endpoints transported by Ideal.quotientEquivAlgOfEq / Subalgebra.equivOfEq. The cyclic vector enters only via end_centralizer_eq_adjoin; the adjoin.powerBasis CommRing gate never arises."
     ],
     "nextSteps": [
       "The hard converse: dim C(T)=n (or centralizer=K[T]) IMPLIES T has a cyclic vector — completes nonderogatory⟺cyclic⟺C(T)=K[T]. Requires rational canonical form / structure theory; not session-sized.",
@@ -78,7 +81,7 @@
     "open-question"
   ],
   "started": "2026-07-09T00:00:00Z",
-  "lastUpdate": "2026-07-20",
+  "lastUpdate": "2026-07-24",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

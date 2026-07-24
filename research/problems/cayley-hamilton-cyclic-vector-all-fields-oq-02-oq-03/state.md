@@ -3,14 +3,15 @@
 ## Current State
 **Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-22
-**Iteration**: 5
+**Since**: 2026-07-24
+**Iteration**: 6
 
 ## Current Focus
 Node objective (lift the commutant characterization to Module.End) is COMPLETE:
 both inclusions, C(T) = K[T] subalgebra equality, commutativity (both forms),
 Frobenius dimension equality, evaluation isomorphism C(T) ≃ₗ[K] V, minpoly
-degree = dim V, and the MASA capstone (commutative + maximal + minimal dimension).
+degree = dim V, the MASA capstone, and (Session 6) the algebra-level capstone
+C(T) ≃ₐ[K] K[X]/(μ_T) with the nonderogatory equality χ_T = μ_T.
 
 ## Active Approach
 None — completed. See knowledge.md session log.
