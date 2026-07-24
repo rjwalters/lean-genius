@@ -48,11 +48,36 @@ this toolchain!) yields a degree-12 politician — contradiction with 4-regulari
 `minDegreeForC4_thirteen : minDegreeForC4 13 = 4` — exact table now 1..13.
 0 sorries, 0 axioms. See knowledge.md session 2026-07-24.
 
+## Status (researcher-3, 2026-07-24) — **tight-point theorem: f(k(k−1)+1) ≤ k ∀ k ≥ 3**
+
+The "generalization f(k²−k+1) ≤ k is a candidate target" blocker item is DONE:
+new section `TightPoints` in `Erdos85Problem.lean` (+208 LOC, 0 sorries,
+0 axioms, docker-verified) parameterises the entire `Thirteen` argument over k:
+
+- `choose_two_tight : C(k(k−1)+1, 2) = (k(k−1)+1)·C(k,2)` — exact tightness at
+  every projective-plane parameter (two-line proof reusing `two_dvd_mul_pred`).
+- `containsC4_of_tight_minDegree (hk : 3 ≤ k)` — every graph on k(k−1)+1
+  vertices with δ ≥ k contains C₄. Same skeleton as `Thirteen`: cherry count
+  exactly tight ⟹ k-regular + cherry→pair surjective ⟹ `Theorems100.Friendship`
+  ⟹ politician degree k(k−1) ≠ k (needs k ≥ 3). Literal constants (78, 6, 72,
+  10, 12) replaced by atom-level arithmetic omega handles: Pascal
+  `(k+1).choose 2 = k.choose 2 + k` for the regularity pinch, `Nat.succ_mul`
+  for the sum split, `Nat.mul_le_mul_left` (2 ≤ k−1) for the final clash.
+- `minDegreeForC4_le_tight (hk : 3 ≤ k) : minDegreeForC4 (k*(k-1)+1) ≤ k` —
+  infinitely many upper bounds one vertex beyond the counting range.
+- NEW concrete values beyond the exact table: `minDegreeForC4_twentyone_le :
+  f(21) ≤ 5`, `minDegreeForC4_thirtyone_le : f(31) ≤ 6` (k = 5, 6 instances,
+  `simpa` numerals); the k = 4 instance re-derives f(13) ≤ 4 as an `example`.
+
+Session memo: `sessions/2026-07-24-tight-points-generalization.md`.
+
 ## Blockers
-- Upper bounds beyond n = 13: the friendship mechanism is SPECIFIC to the tight
-  points n = k²−k+1 (generalization f(k²−k+1) ≤ k is a candidate target); other
-  n still need real ex(n;C₄) edge-extremal input. Reopen: formalize a
-  Reiman-type bound.
+- Upper bounds at NON-tight n > 13: the friendship mechanism only covers
+  n = k(k−1)+1 exactly (now formalized ∀ k ≥ 3); other n still need real
+  ex(n;C₄) edge-extremal input. Reopen: formalize a Reiman-type bound.
+- Matching lower bounds at tight points: f(21) ≥ 5 would need a C₄-free
+  4-regular-ish witness on 21 vertices (incidence graph route) — the surgery
+  engine gives f(14) ≥ 4 as the next accessible rung instead.
 - General ∀ n ≥ 10 f(n) ≥ 4: needs config EXISTENCE (edge pair ab, bc both
   triangle-free, a≁c) in iterated witnesses — not automatic in arbitrary
   C₄-free min-deg-3 graphs. Reopen: invariant-maintaining induction or
