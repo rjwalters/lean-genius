@@ -1,8 +1,8 @@
 {
   "slug": "roth-theorem-oq-02",
   "title": "Formalize the Bloom-Sisask bound r_3(N) = O(N / (log N)^{1+c})",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -32,32 +32,31 @@
     "goal": "Provide a Lean statement of the Bloom-Sisask bound matching the Mathlib `rothNumberNat` docstring goal, and establish a roadmap for the Bohr-set / quantitative Bogolyubov / density-increment infrastructure required for a full proof."
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-05-13T01:10:00.000Z",
-    "iteration": 10,
-    "focus": "S5-a ACT (researcher-6, 2026-06-10, claim researcher-23844): paste-in of the S5b PREP (PR #18605) verbatim discharge of K–M analytic_envelope_conditional. +114 LOC (236 → 350): +2 imports (`Mathlib.Analysis.SpecialFunctions.Pow.Real`, `Mathlib.Analysis.Complex.ExponentialBounds`), +1 `def analytic_envelope_kelley_meka : Prop` recording the bare envelope as an API target, +1 theorem `analytic_envelope_conditional` proving the negated exponents satisfy the K–M-dominates-Behrend analytic inequality under the hypothesis `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)` (≈ 4.165). Docker-verified clean: `Built Proofs.RothTheoremOQ02 (32s)`. All 11 cited Mathlib lemmas re-verified at the *pinned* sha `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (matched against S5b PREP's audit sha `1c1dadbc28517bb148fc05b9abc8659ce110d217` — both labelled v4.26.0; the line numbers match verbatim). Two micro-fixes vs S5b PREP §5 paste-ready Lean: `lt_of_lt_of_lt` → `.trans` (the former is not a Mathlib name), and `congr 2; ring_nf; norm_num` → explicit `have h_exp_eq : 5/12 + 1/12 = 1/2` followed by `rw [..., h_exp_eq]` (the original collapsed too early under the `congr 2` peeling and left `norm_num` with no goals). Net axiom impact: 2 → 2 (unchanged). Net sorry impact: 0 → 0 (unchanged). S7 STATE-SYNC (researcher-6, 2026-06-09, PR #22719): doc-only catch-up of canonical state.md + JSON after the 4-PREP series anti-target-skipped state surfaces. S5 PREP (researcher-5): identified transitivity-vs-analytic-envelope obstruction. S5b PREP (researcher-6): verbatim Mathlib v4.26.0 discharge for K–M (now consumed by this S5-a ACT). S6 PREP (researcher-11, PR #18685): parallel verbatim B–S discharge (pending S6-a ACT). S6c PREP (researcher-12, PR #18709): K–M vs B–S head-to-head asymptotic comparison (pending S6-d ACT). S4-a ACT (PR #18443): K–M axiom + kelleyMekaConst API + transitive Behrend bracket + le_min envelope. S3-B ACT (PR #18238): bloom_sisask_consistent_with_Behrend transitive. S2 ACT-A (PR #18094): rothNumberNat_bloom_sisask axiom-form companion file. S1 OBSERVE (PRs #18031 + #18033): literature + Mathlib snapshot.",
+    "iteration": 11,
+    "focus": "S9 joint ACT (researcher-1, 2026-07-24): S6-a + S6-d shipped in one session after Docker recovery. +223 LOC: analytic_envelope_bloom_sisask (def) + bloom_sisask_analytic_envelope_conditional (B-S dominates Behrend under blasiConst <= 2e-1) + kelley_meka_envelope_le_bloom_sisask_envelope_conditional (K-M envelope <= B-S envelope under constant bounds + threshold) + min_blasi_kelley_meka_eq_kelley_meka_eventually (joint min collapses to K-M term). 2 axioms / 0 sorries unchanged; Docker Built Proofs.RothTheoremOQ02 (2495 jobs).",
     "blockers": [
       "No Mathlib Bohr-set library (BohrSet T rho not defined).",
       "No quantitative Bogolyubov on Bohr sets in Mathlib.",
       "No density-increment iteration framework in Mathlib.",
       "No AP3-specific Fourier level-set / energy lemmas in Mathlib.",
       {
-        "id": "BLACKOUT",
-        "kind": "verification-blackout",
-        "severity": "high",
-        "since": "2026-06-13",
-        "description": "Docker daemon hung + Aristotle backend 404 — no verification route. The next step S6-a ACT (paste the verbatim Bloom-Sisask bloom_sisask_analytic_envelope_conditional discharge, ~50-60 LOC, paste-ready per S6 PREP #18685 §3) is build-dependent; CI does not build Lean. Flagged blocked to stop depth-first re-claim churn on this RICH (score 34) slug until Docker recovers. File is 0-sorry, 2 conditional axioms; S5-a just shipped (#22769, Docker clean)."
+        "route": "constant audit (S5-b/S6-b): strengthen K-M/B-S axioms to bounded-existential via literature numerals",
+        "reopenCriterion": "a published source states a numerical constant c for K-M or B-S",
+        "blockedAt": "2026-06-13"
       }
     ],
-    "nextAction": "S6-a ACT (paste-ready per S6 PREP PR #18685 §3, ~50-60 LOC): paste the verbatim B–S `bloom_sisask_analytic_envelope_conditional` discharge into RothTheoremOQ02.lean as a parallel conditional theorem. Same shape as S5-a (just shipped this PR): expect ~50 LOC body, `linarith` close, possibly the same micro-fixes (`lt_of_lt_of_lt` → `.trans`, `congr 2; ring_nf; norm_num` → explicit exponent rewrite). S6-d alternative: ship the K–M vs B–S head-to-head asymptotic-dominance theorem per S6c PREP (PR #18709 §4) — now that BOTH `analytic_envelope_conditional` (K–M, this PR) and the planned B–S analogue exist, the head-to-head is a one-step composition. S5-b alternative: strengthen the K–M axiom to `∃ c ≤ K, ...` for explicit `K` from a literature audit of Kelley–Meka 2023; this would convert the new `analytic_envelope_conditional` (which currently requires a hypothesis on `kelleyMekaConst`) into an unconditional theorem. S4-b alternative: BohrSet T ρ scaffold (~200 LOC, multi-quarter starter).",
+    "nextAction": "All paste-ready PREP work is drained (S5-a, S6-a, S6-d all shipped). Remaining: S4-b BohrSet scaffold (~200 LOC starter, multi-quarter) tracking YaelDillies/LeanAPAP as the realistic non-axiomatic path. Do NOT re-attempt S5-b/S6-b constant audits (closed INFEASIBLE 2026-06-13).",
     "attemptCounts": {
-      "total": 10,
+      "total": 11,
       "currentApproach": 9,
       "approachesTried": 1
-    }
+    },
+    "lastUpdate": "2026-07-24T11:15:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "S5-a ACT (2026-06-10, researcher-6): paste-in of S5b PREP (PR #18605) verbatim K-M analytic_envelope_conditional discharge, Docker-verified clean. +114 LOC (236 → 350): +2 imports, +1 def analytic_envelope_kelley_meka (bare envelope Prop), +1 theorem analytic_envelope_conditional discharging the negated-exponent inequality `-(4) * √(log N) ≤ -kelleyMekaConst * (log N)^(1/12)` under the hypothesis `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)` (≈ 4.165). All 11 cited Mathlib lemmas re-verified at the current pinned sha. Two micro-fixes vs S5b PREP §5 verbatim Lean: `lt_of_lt_of_lt` → `.trans` (former is not a Mathlib name) and `congr 2; ring_nf; norm_num` → explicit `have h_exp_eq : 5/12 + 1/12 = 1/2 := by norm_num` followed by `rw [..., h_exp_eq]` (the original collapsed early under `congr 2` leaving `norm_num` with no goals). Net: 2 → 2 axioms, 0 → 0 sorries. The conditional analytic envelope is the first *strictly stronger* consistency result in the file: it cannot be replicated by transitivity through rothNumberNat, and records mathematical content that pure transitivity cannot. S7 STATE-SYNC (2026-06-09, researcher-6): doc-only catch-up after the 4-PREP series anti-target-skipped state surfaces. S6c PREP (PR #18709, researcher-12): K-M vs B-S envelope head-to-head asymptotic comparison. S6 PREP (PR #18685, researcher-11): parallel verbatim B-S discharge (pending S6-a ACT). S5b PREP (PR #18605, researcher-6): verbatim Mathlib v4.26.0 K-M discharge (now consumed by this S5-a ACT). S5 PREP (PR #18509, researcher-5): identified transitivity-vs-analytic-envelope obstruction. S4-a ACT (PR #18443): +86 LOC adding rothNumberNat_kelley_meka axiom + kelleyMekaConst API + kelley_meka_consistent_with_Behrend + rothNumberNat_le_min_blasi_kelley_meka. S3-B ACT (PR #18238): bloom_sisask_consistent_with_Behrend via transitivity through `rothNumberNat N`. S2 ACT-A (PR #18094): axiom-form companion file (~95 lines). S1 (PRs #18031 + #18033): literature chronology + Mathlib v4.26.0 snapshot.",
+    "progressSummary": "S9 joint ACT (2026-07-24, researcher-1): S6-a + S6-d shipped after Docker recovery cleared the 2026-06-13 blackout. RothTheoremOQ02.lean 351->574 LOC, 12 thm / 4 def / 2 axioms / 0 sorries. The full S5/S5b/S6/S6c PREP cache is now drained; the file carries conditional analytic envelopes for K-M vs Behrend, B-S vs Behrend, and the K-M vs B-S head-to-head with the min-collapse corollary. Only multi-quarter work (S4-b Bohr sets / LeanAPAP) remains.",
     "builtItems": [
       "research/problems/roth-theorem-oq-02/problem.md (enriched: formal statement, classification, historical chronology, references).",
       "research/problems/roth-theorem-oq-02/knowledge.md (Mathlib v4.26.0 API snapshot at pin 2df2f0150c275ad, gap-ranking, S2 candidates).",
@@ -72,7 +71,9 @@
       "research/problems/roth-theorem-oq-02/sessions/2026-05-13-s6c-prep-km-vs-bs-envelope-comparison.md S6c PREP (researcher-12, PR #18709): K-M vs B-S envelope head-to-head asymptotic comparison; K-M strictly tighter than B-S for all positive constants past N* threshold; suggests S6-d ACT shipping a single-axiom strongest envelope statement. Doc-only.",
       "research/problems/roth-theorem-oq-02/sessions/2026-06-09-s7-state-sync-prep-series-catchup.md S7 STATE-SYNC (researcher-6, PR #22719 cycle): doc-only JSON + state.md catch-up after 4 PREPs anti-target-skipped state surfaces; on-disk verification of 2 axioms / 0 sorries / 236 lines; reaffirms S5-a / S6-a / S6-d paste-ready ACT plans cached in sessions/.",
       "proofs/Proofs/RothTheoremOQ02.lean S5-a ACT: +114 LOC (236 → 350) — `def analytic_envelope_kelley_meka : Prop` (bare envelope as Prop-valued function) + `theorem analytic_envelope_conditional` (negated-exponent inequality `-(4) * √(log N) ≤ -kelleyMekaConst * (log N)^(1/12)` under `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)` hypothesis) + 2 imports (`Pow.Real`, `ExponentialBounds`). Net: 2 → 2 axioms, 0 → 0 sorries. Theorem count: 9 → 10. Def count: 1 → 2. Two micro-fixes vs S5b PREP §5 verbatim Lean (`lt_of_lt_of_lt` → `.trans`; `congr 2; ring_nf; norm_num` → explicit `h_exp_eq` rewrite). Docker-verified: `Built Proofs.RothTheoremOQ02 (32s)`. (this PR)",
-      "research/problems/roth-theorem-oq-02/sessions/2026-06-10-s5a-act-analytic-envelope-conditional.md S5-a ACT (researcher-6, this PR): session log documenting the paste-in, micro-fixes vs S5b PREP, Mathlib pin re-verification, risk register, and mathematical content delivered (the first *strictly stronger* consistency result in the file, beyond transitivity)."
+      "research/problems/roth-theorem-oq-02/sessions/2026-06-10-s5a-act-analytic-envelope-conditional.md S5-a ACT (researcher-6, this PR): session log documenting the paste-in, micro-fixes vs S5b PREP, Mathlib pin re-verification, risk register, and mathematical content delivered (the first *strictly stronger* consistency result in the file, beyond transitivity).",
+      "S9 (2026-07-24): def analytic_envelope_bloom_sisask + theorem bloom_sisask_analytic_envelope_conditional (S6-a paste from S6 PREP #18685) in RothTheoremOQ02.lean",
+      "S9 (2026-07-24): theorem kelley_meka_envelope_le_bloom_sisask_envelope_conditional + theorem min_blasi_kelley_meka_eq_kelley_meka_eventually (S6-d discharge of S6c PREP #18709 skeleton) in RothTheoremOQ02.lean"
     ],
     "insights": [
       "Mathlib v4.26.0 already names the Bloom-Sisask bound verbatim in the `rothNumberNat` module docstring; no Lean theorem implements it.",
@@ -81,7 +82,10 @@
       "Sibling roth-theorem-k3-oq-01 already lists Bloom-Sisask as one of four landmark bounds (Roth/Behrend/Bloom-Sisask/Kelley-Meka) with the proof left as a sorry. This slug refines the focus to Bloom-Sisask alone.",
       "Realistic single-iteration target: S2-A axiom-form statement file (~80 lines Lean) gives the gallery a typed landmark immediately; the infrastructure build-out is a multi-quarter epic.",
       "Consistency between an axiomatized upper bound and a *proved* lower bound is automatic by transitivity through the bounded quantity (`rothNumberNat N` here). One does not need to prove the underlying analytic inequality `(1 + c) * log log N ≤ 4 * √(log N)` separately; the consistency follows because both bounds simultaneously hold of the same numerical sequence.",
-      "Pattern (companion-file consistency checks): when both bounds in a gallery slug exist as theorems / axioms on the same Mathlib quantity, a one-line transitive `.trans` proof yields a meaningful sanity-check theorem. This generalises: any future Kelley-Meka or refined Bloom-Sisask axiom for `rothNumberNat` admits an analogous one-liner against Behrend."
+      "Pattern (companion-file consistency checks): when both bounds in a gallery slug exist as theorems / axioms on the same Mathlib quantity, a one-line transitive `.trans` proof yields a meaningful sanity-check theorem. This generalises: any future Kelley-Meka or refined Bloom-Sisask axiom for `rothNumberNat` admits an analogous one-liner against Behrend.",
+      "The 2026-05-13 v4.26-audited PREP Lean survived the v4.31 toolchain migration essentially verbatim: all 12 cited Mathlib lemmas kept their names/signatures; only the already-predicted lt_of_lt_of_lt -> .trans micro-fix was needed (S6-a).",
+      "v4.31 gotcha (S6-d): rw [Real.rpow_def_of_pos ...] rewrites the FIRST rpow occurrence, which can be inside the LHS exponential rather than the intended RHS denominator - prove the RHS bridge as a standalone have (unique pattern) and rewrite with that. Also Real.rpow_def_of_pos unfolds to exp(log x * y), argument order matters for rfl-closure.",
+      "v4.31 gotcha (S6-d): field_simp can fully close a divide-and-cancel equality goal, making a trailing ring fail with No-goals; the robust idiom is div_mul_eq_mul_div + div_le_iff0 + calc with explicit mul_comm steps (linarith cannot identify commuted nonlinear atoms)."
     ],
     "mathlibGaps": [
       "BohrSet T rho definition over ZMod N (~200 lines).",
@@ -92,13 +96,12 @@
       "Quantitative upper bound on rothNumberNat (no theorem stating r_3(N) = o(N) currently exists in Mathlib)."
     ],
     "nextSteps": [
-      "S6-a ACT (paste-ready, ~50-60 LOC, Docker-verifiable): paste the verbatim B-S `bloom_sisask_analytic_envelope_conditional` discharge from S6 PREP §3 (PR #18685) into RothTheoremOQ02.lean as a parallel conditional theorem. Same shape as S5-a (just shipped this PR). Expected micro-fixes: same as S5-a (`lt_of_lt_of_lt` → `.trans`; explicit exponent rewrite instead of `congr 2; ring_nf; norm_num`).",
-      "S6-d ACT (recommended after S6-a): ship the K-M vs B-S head-to-head asymptotic-dominance theorem per S6c PREP §4 (PR #18709). Now that the K-M `analytic_envelope_conditional` exists (this PR) and the B-S analogue is paste-ready, the head-to-head is a one-step composition. ~30-50 LOC.",
-      "S5-b alternative (axiom strengthening): strengthen `rothNumberNat_kelley_meka` to bounded-existential form `∃ c ≤ K, 0 < c ∧ ∀ N ≥ 3, ...` for explicit numerical `K` from a literature audit of Kelley–Meka 2023. This would make the new `analytic_envelope_conditional` (currently requires `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)` hypothesis) into an *unconditional* analytic envelope theorem.",
-      "S4-b (Bohr-set scaffold, ~200 LOC): define `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and `B(T, 1) = univ`. First step of the multi-quarter infrastructure build-out. Higher build risk.",
-      "Completed (S5-a ACT, this PR): +114 LOC adding `def analytic_envelope_kelley_meka` + `theorem analytic_envelope_conditional`. Net: 2 → 2 axioms, 0 → 0 sorries. Docker-verified clean.",
-      "Completed (S4-a ACT, PR #18443) — `axiom rothNumberNat_kelley_meka` + `kelleyMekaConst` API + `kelley_meka_consistent_with_Behrend` + `rothNumberNat_le_min_blasi_kelley_meka` joint min envelope; +86 LOC.",
-      "Completed (S5 + S5b + S6 + S6c PREPs, PRs #18509 + #18605 + #18685 + #18709) — full analytic envelope verbatim discharge cache for both K-M and B-S, plus K-M vs B-S head-to-head comparison."
+      "S4-b (only remaining tractable-in-principle direction, multi-quarter): BohrSet T rho scaffold over ZMod N (~200 LOC starter); track/reuse YaelDillies/LeanAPAP rather than rebuilding - its Fourier/Lp/almost-periodicity stack is the realistic prerequisite for a non-axiomatic Bloom-Sisask.",
+      "Do NOT re-attempt: S5-b/S6-b constant audits (INFEASIBLE, no published numeral for c - 2026-06-13 audit); further transitive consistency theorems (analytically vacuous, S5 PREP obstruction).",
+      "Completed (S9, 2026-07-24): S6-a B-S analytic envelope + S6-d K-M vs B-S head-to-head + min-collapse corollary. PREP cache fully drained.",
+      "Completed (S5-a ACT, #22769): analytic_envelope_kelley_meka + analytic_envelope_conditional.",
+      "Completed (S4-a ACT, PR #18443): Kelley-Meka axiom + kelleyMekaConst API + joint min envelope.",
+      "Completed (S5 + S5b + S6 + S6c PREPs, PRs #18509 + #18605 + #18685 + #18709): full verbatim discharge cache - now entirely landed."
     ]
   },
   "tags": [
@@ -155,7 +158,7 @@
     ]
   },
   "started": "2026-05-12T09:30:00.000Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-07-24T11:15:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -239,11 +242,11 @@
     {
       "path": "Proofs/RothTheoremOQ02.lean",
       "filename": "RothTheoremOQ02.lean",
-      "lineCount": 351,
-      "theoremCount": 9,
+      "lineCount": 574,
+      "theoremCount": 12,
       "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ02.lean"
     },
