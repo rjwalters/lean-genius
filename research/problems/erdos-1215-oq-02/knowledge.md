@@ -383,3 +383,53 @@ the required point of `S ∩ (B_a ∩ B_b)` lands in the empty intersection. Foc
   needs lemniscate topology beyond Mathlib (blocked, unchanged).
 - Small-n follow-ups: sharpness (connectivity for `C ≥ (|a−b|/2)²`), exact component
   count 2 (per-petal connectivity), quartic cases `n = 5, 8, 10, 12` (`φ(n) = 4`).
+
+## Session 2026-07-24 (researcher-1) — OQ12: EXACT two-path-component count (quadratic case closed sub-threshold)
+
+### What I did
+Executed the Iter 10 (researcher-2) design: `CyclotomicPolynomialsOQ02OQ12.lean`
+(283 lines, 9 decls, 0 sorries, 0 axioms; `#print axioms` = foundational trio on all
+headline theorems). Upgrades OQ11's "at least two pieces" to **exactly two**:
+
+- `cassini_certificate`: in the separated regime `2W ≤ D`, the squared Cassini-product
+  difference factors as `W²[(1−s)(D−W(1+s))(D(1+s)−W(1+s²)) + 2(1−s³)(WD−x)]`, all
+  factors nonneg from `s ∈ [0,1]`, `2W ≤ D`, Cauchy–Schwarz `x ≤ WD`. `nlinarith`
+  closes it with exactly two product hints; `Real.sqrt_sq` descends to unsquared form.
+- `starConvex_petal` → `isPathConnected_petal`: each petal
+  `{|(z−a)(z−b)|<C} ∩ B(a,√C)` is star-shaped about its focus;
+  `StarConvex.isPathConnected` exists in v4.31 (route A of the design — no fallback
+  needed).
+- `quadratic_lemniscate_two_path_components`: every point joins to focus `a` or `b`
+  inside the set, foci not joined (preconnected path-range vs the disjoint √C-ball
+  cover from OQ11), `joined_focus_unique` (components genuinely distinct).
+- Specializations: exactly two path components for `{|Φ₃|<C}`, `{|Φ₆|<C}` (`0<C<3/4`)
+  and `{|Φ₄|<C}` (`0<C<1`) — component structure of the complete quadratic case
+  `φ(n)=2` now EXACT sub-threshold.
+
+### Key API / gotchas
+- `(re_le_norm _).trans` + `norm_mul`/`norm_conj` is the clean Cauchy–Schwarz route
+  for `(w * conj c).re ≤ ‖w‖‖c‖` in v4.31.
+- `normSq_sub` + `normSq_eq_norm_sq` + `ring` expands `‖w−c‖²` painlessly; scalar
+  pull-out via `real_smul` + `re_ofReal_mul` and `normSq_mul`/`normSq_ofReal`.
+- `Real.sqrt_lt' hab` turns `√(4C) < ‖a−b‖` into the squared hypothesis; `√(4C)=2√C`
+  by rewriting `4C = (2√C)²`.
+- Swap trick for the b-petal: `{z | ‖(z−b)(z−a)‖<C} = {z | ‖(z−a)(z−b)‖<C}` by
+  `mul_comm` inside the norm — one `Set.ext` + `rw`, then reuse the a-petal lemma
+  with `hsep'` from `norm_sub_rev`.
+- Dep-chain rebuild needed on host: stale v4.26 oleans under
+  `.lake/build/lib/lean/Proofs/` give "incompatible header" — rebuild
+  `Erdos1215Problem` → `OQ11` → `OQ12` with `LAKE_UNSAFE=1 lake env lean <file> -o
+  <olean>` (Mathlib olean is v4.31, only Proofs-level oleans were stale).
+
+### Files Modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ12.lean` (new)
+- `research/problems/erdos-1215-oq-02/state.md`, `knowledge.md`,
+  `src/data/research/problems/erdos-1215-oq-02.json`
+
+### Still open
+- Sharpness: connectivity for `C ≥ (|a−b|/2)²` (through-the-neck path) — next natural
+  rung, genuinely harder (no monotonicity certificate).
+- Quartic `φ(n)=4` cases `n = 5, 8, 10, 12`: 4-focus cover + 4-ball disjointness +
+  per-petal star-shapedness — the OQ12 template generalizes.
+- The deep `C > 1` labyrinth driver: blocked, unchanged ("materially new mechanism
+  required").
