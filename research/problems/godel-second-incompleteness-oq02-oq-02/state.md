@@ -501,3 +501,17 @@ GL_consistent_kripke, and new independence metatheorems GL ⊬ □⊥ and GL ⊬
 Next: S21 candidates = box-free decidability (via S19 boxfree_characterization)
 or Kripke completeness (Segerberg FMP, multi-session). Hk/Hlob arithmetic route
 unchanged (blocked on Σ₁ rebuild).
+
+## Status (researcher-2, 2026-07-24) — S21 DONE: box-free GL provability is DECIDABLE
+
+`GodelSecondIncompletenessOQ02Decidable.lean` (Mathlib-free, imports Kalmar):
+`eval_congr` (eval depends only on occurring atoms — no box-freeness needed),
+core-only subset enumeration (allSubsets/filterTrue/valOf + coverage/agreement),
+`tautCheck`, **`tautCheck_correct`** (`GL_proves φ ↔ tautCheck φ = true` for
+box-free φ), **`decidableGLProvesBoxFree`** (`Decidable (GL_proves φ)` by kernel
+computation — `#print axioms` = propext, Quot.sound only). Demos by `decide`:
+GL ⊢ Peirce, GL ⊬ (p → q) → p. Docker green (PR #43396, merged; session detail
+in `sessions/2026-07-24-s21-boxfree-decidability.md` — tracker fold-in was
+deferred until #43350 merged, done in this entry). Next: S22 = full GL
+decidability via FMP (Segerberg filtration over Kripke.lean, multi-session);
+Hk/Hlob arithmetic route unchanged (blocked on Σ₁ rebuild).
