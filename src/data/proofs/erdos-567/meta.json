@@ -18,7 +18,7 @@
     "erdosUrl": "https://erdosproblems.com/567",
     "axiomCount": 1,
     "badge": "axiom",
-    "assumptions": "1 axiom: sizeRamsey (general size-Ramsey theorem). Other open questions (Q3, K33 linearity) are stated as open Lean propositions, not axioms.",
+    "assumptions": "1 axiom: sizeRamsey (general size-Ramsey theorem). The three open questions (Q3, K33, H5 linearity) are documented in comments only — not formalized as Lean axioms or propositions.",
     "proofRepoPath": "Proofs/Erdos567Problem.lean",
     "mathlib_version": "4.31.0",
     "lineCount": 91,
@@ -87,15 +87,15 @@
       "title": "Three Open Questions",
       "startLine": 80,
       "endLine": 89,
-      "summary": "States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status.",
-      "mathContext": "Axiomatized: States the three axioms: $Q_3$, $K_{3,3}$, and $H_5$ are Ramsey size linear. Each is open — axiom form reflects the conjectural status."
+      "summary": "Documents the three open questions in comments: are $Q_3$, $K_{3,3}$, and $H_5$ Ramsey size linear? These are not formalized as Lean axioms or propositions — no Lean declaration commits to their truth.",
+      "mathContext": "Not formalized: the three open questions appear only as plain-text comments, not as Lean axioms or propositions."
     }
   ],
   "overview": {
     "historicalContext": "Problem #567 was posed by Erdős, Faudree, Rousseau, and Schelp in their 1993 paper on Ramsey size linear graphs. Having proved that graphs with at most $n+1$ edges are Ramsey size linear, they identified three natural test cases that exceed this threshold: the 3-cube $Q_3$ (12 edges, threshold 9), the complete bipartite $K_{3,3}$ (9 edges, threshold 7), and $H_5 = K_4^*$ (7 edges, threshold 6). These were chosen to represent distinct structural families — hypercubes, bipartite graphs, and graph subdivisions — that might require different proof techniques. The problem is a concrete special case of Problem #566, which conjectures that all $(2k-3)$-sparse graphs are Ramsey size linear. In 2024, Bradač, Gishboliner, and Sudakov made significant progress by proving that all $K_4$-subdivisions with at least 6 vertices are Ramsey size linear, nearly resolving the $H_5$ case (which has only 5 vertices). The $Q_3$ and $K_{3,3}$ cases remain completely open. The problem connects to a broader program initiated by Beck's 1983 Fulkerson Prize–winning proof that paths have linear size Ramsey numbers.",
     "problemStatement": "Are the three graphs $Q_3$ (3-dimensional hypercube), $K_{3,3}$ (complete bipartite graph), and $H_5 = K_4^*$ (5-cycle with two vertex-disjoint chords) **Ramsey size linear**? That is, for each $G \\in \\{Q_3, K_{3,3}, H_5\\}$, does there exist $C = C(G) > 0$ such that $\\hat{r}(G, H) \\le C \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
     "text": "Are Q₃ (3-cube), K₃,₃ (complete bipartite), and H₅ (C₅ + two chords) Ramsey size linear? Special case of #566. Bradač–Gishboliner–Sudakov: K₄ subdivisions with ≥ 6 vertices are linear. Open.",
-    "proofStrategy": "The formalization constructs each of the three concrete graphs using appropriate Lean types: $Q_3$ on $\\text{Fin}\\;2^3$ with Hamming adjacency, $K_{3,3}$ on $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ with cross-part adjacency, and $H_5$ on $\\text{Fin}\\;5$ with modular-arithmetic cycle edges plus chords. The size Ramsey number and Ramsey size linearity are then axiomatized, and the three open questions are stated as axioms. Two partial results are recorded: the Bradač–Gishboliner–Sudakov theorem on $K_4$-subdivisions and the EFRS sparse linearity result.",
+    "proofStrategy": "The formalization constructs each of the three concrete graphs using appropriate Lean types: $Q_3$ on $\\text{Fin}\\;2^3$ with Hamming adjacency, $K_{3,3}$ on $\\text{Fin}\\;3 \\oplus \\text{Fin}\\;3$ with cross-part adjacency, and $H_5$ on $\\text{Fin}\\;5$ with modular-arithmetic cycle edges plus chords. The size Ramsey number is axiomatized as a primitive and Ramsey size linearity is defined; the three open questions are documented in comments only, not formalized as Lean axioms or propositions. Two partial results are recorded: the Bradač–Gishboliner–Sudakov theorem on $K_4$-subdivisions and the EFRS sparse linearity result.",
     "keyInsights": [
       "**Three structural families**: $Q_3$ (hypercube), $K_{3,3}$ (bipartite), and $H_5$ ($K_4$-subdivision) represent fundamentally different graph structures, suggesting that resolving all three may require distinct techniques",
       "**Edge threshold gap**: All three exceed the EFRS bound of $n+1$ edges — $Q_3$ by 3, $K_{3,3}$ by 2, and $H_5$ by 1 — making them the simplest open cases in their respective families",
