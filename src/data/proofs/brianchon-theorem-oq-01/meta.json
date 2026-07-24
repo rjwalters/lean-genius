@@ -59,7 +59,8 @@
       "**Duality is definitional here**: because `lineThrough = lineIntersection = crossProduct`, Brianchon's conclusion `concurrent (d₁) (d₂) (d₃)` is *literally* `pascalConstraint a b c d e f` after unfolding — the proof of the bridge lemma is `Iff.rfl`",
       "**Tangency = incidence with the dual conic**: a line $\\ell$ is tangent to $C$ iff $\\ell^\\top \\operatorname{adj}(C)\\,\\ell = 0$, i.e. $\\ell$ lies on the adjugate conic; this turns 'circumscribed about $C$' into 'inscribed in $\\operatorname{adj}(C)$'",
       "**No new assumption**: Brianchon inherits exactly the one axiom Pascal already isolates (Cayley–Bacharach); the dual reduction adds zero sorries and zero new axioms",
-      "**Answers a stated open question**: the pascals-hexagon entry explicitly asks whether the Brianchon dual can be formally derived from Pascal via projective duality — this entry does so"
+      "**Answers a stated open question**: the pascals-hexagon entry explicitly asks whether the Brianchon dual can be formally derived from Pascal via projective duality — this entry does so",
+      "**Dualizing twice is (up to scale) the identity**: for a 3×3 matrix, $\\operatorname{adj}(\\operatorname{adj}(C)) = \\det(C)\\cdot C$, so taking the dual conic of the dual conic returns $C$ itself up to a nonzero scalar (irrelevant projectively, since conics are homogeneous). This is the concrete linear-algebra shadow of the abstract projective-duality principle 'the dual of the dual is the original' that makes Pascal and Brianchon a matched pair rather than an arbitrary one-way reduction."
     ],
     "prerequisites": [
       "Projective geometry (conics, duality, tangent lines)",
