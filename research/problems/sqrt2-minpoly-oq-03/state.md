@@ -2,10 +2,42 @@
 
 > **RE-OPENED 2026-07-24 (researcher-2, S9)** — The 2026-06-13 blackout premise no longer holds: Docker is up, and S9 ran a full green build (`[8577/8577]`, Mathlib **v4.31** pin). Status `blocked → active`.
 
-**Phase**: ACT (S10 — integral-basis bricks landed: `root_isIntegral` + arithmetic crux `int_pair_of_double_and_norm` (2a, a²−2b² ∈ ℤ ⟹ a, b ∈ ℤ; ZMod-4 obstruction). Sole strategic sorry unchanged: `Q_sqrt2_discr_eq_eight`. Next S11: power-basis trace/norm formulas → 𝓞 = ℤ[√2] → Basis (Fin 2) ℤ → `NumberField.discr_eq_discr` + det [[2,0],[0,4]] = 8.)
+**Phase**: ACT (S11 — element-level integral basis COMPLETE: `isIntegral_elt_iff` — `a + b·root` is an algebraic integer iff `a, b ∈ ℤ`. Route change: MINPOLY descent (`minpoly.isIntegrallyClosed_eq_field_fractions'`) instead of trace/norm formulas — for `b ≠ 0`, `minpoly ℚ (a + b·root) = X² − 2aX + (a² − 2b²)` (`minpoly_elt`), whose ℤ-descent hands exactly `2a ∈ ℤ` and `a² − 2b² ∈ ℤ` to the S10 crux `int_pair_of_double_and_norm`; no `leftMulMatrix` needed. Sole strategic sorry unchanged: `Q_sqrt2_discr_eq_eight`. Next S12: package `{1, root}` as `Basis (Fin 2) ℤ (𝓞 Q_sqrt2)` from `isIntegral_elt_iff` (needs the coordinate-surjectivity `∀ x : Q_sqrt2, ∃ a b, x = elt a b` via the power basis), then trace form `det [[2,0],[0,4]] = 8` via `NumberField.discr_eq_discr`.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-07-24 (Iteration 18 S10 ACT, researcher-2)
-**Iteration**: 18
+**Last Updated**: 2026-07-24 (Iteration 19 S11 ACT, researcher-3)
+**Iteration**: 19
+
+## Iteration 19 (researcher-3, 2026-07-24) — S11 ACT: element-level integral basis [HOST-VERIFIED]
+
+`isIntegral_elt_iff : IsIntegral ℤ (elt a b) ↔ a, b ∈ ℤ` — the complete
+membership description of `𝓞 Q(√2)` (sorries unchanged at 1; `#print axioms`
+on the iff = 3 foundational, sorry-independent; `lake env lean` exit 0 on the
+pinned v4.31.0 toolchain, only the expected strategic-sorry warning).
+
+New bricks (all in `Sqrt2MinpolyOQ03.lean`, after the S10 section):
+`elt` (the element `a + b·√2`), `root_not_mem_range` (√2 irrational — via
+`rat_int_of_sq_int` + `interval_cases`), `elt_not_mem_range`,
+`aeval_elt_quadratic` (annihilator, closed by `linear_combination
+(map b)² * root_sq`), `quadratic_monic` (`monic_X_pow_add`), `minpoly_elt`
+(minpoly = the quadratic, via `minpoly.dvd` + `minpoly.two_le_natDegree_iff`
++ monic-quotient-is-1), `coords_int_of_isIntegral` (minpoly ℤ-descent
+`minpoly.isIntegrallyClosed_eq_field_fractions'` + coefficient extraction +
+S10 crux), `isIntegral_elt_of_coords` (reverse inclusion, tower
+`IsScalarTower.algebraMap_apply ℤ ℚ Q_sqrt2`).
+
+**Design note**: the trace/norm formulas sketched at S10 are NOT needed —
+the minpoly of `a + b·root` (b ≠ 0) *is* `X² − (tr x)·X + N x`, so the
+ℤ-descent of its coefficients delivers the trace and norm integrality
+without any power-basis matrix computation.
+
+**v4.31 gotchas**: `Polynomial.degree_C_mul_le` does not exist — use
+`degree_C_mul_X_le`; `Monic.natDegree_eq_zero_iff_eq_one` does not exist —
+use `eq_C_of_natDegree_eq_zero` + `leadingCoeff` unfolding; coefficient
+extraction from a `map`-equality needs `simp only` with the precise
+`coeff_*` set (plain `simpa` normalizes `C (a²−2b²)` through `map_sub` and
+strands `(C a ^ 2).coeff 1`); `↑(-c)` needs `Int.cast_neg` before `linarith`.
+
+Full record: `sessions/2026-07-24-s11-act-element-level-integral-basis.md`.
 
 ## Iteration 18 (researcher-2, 2026-07-24) — S10 ACT: integral-basis bricks [BUILD-VERIFIED]
 

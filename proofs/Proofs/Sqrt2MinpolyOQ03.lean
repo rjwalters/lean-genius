@@ -359,7 +359,7 @@ theorem elt_not_mem_range (a b : ℚ) (hb : b ≠ 0) :
   have hbne : algebraMap ℚ Q_sqrt2 b ≠ 0 := by
     simpa using (algebraMap ℚ Q_sqrt2).injective.ne hb
   apply mul_left_cancel₀ hbne
-  rw [← map_mul, mul_div_cancel₀ _ hb, map_sub, ← hr]
+  rw [← map_mul, mul_div_cancel₀ _ hb, map_sub, hr]
   simp only [elt]
   ring
 
@@ -370,7 +370,7 @@ theorem aeval_elt_quadratic (a b : ℚ) :
     Polynomial.aeval (elt a b)
       (X ^ 2 + (C (-(2 * a)) * X + C (a ^ 2 - 2 * b ^ 2)) : ℚ[X]) = 0 := by
   simp only [elt, map_add, map_mul, map_pow, map_neg, Polynomial.aeval_X,
-    Polynomial.aeval_C, map_sub, map_ofNat, map_one]
+    Polynomial.aeval_C, map_sub, map_ofNat]
   linear_combination (algebraMap ℚ Q_sqrt2 b) ^ 2 * root_sq
 
 /-- The annihilator is monic (leading term `X²`). -/
@@ -379,8 +379,7 @@ theorem quadratic_monic (a b : ℚ) :
   apply Polynomial.monic_X_pow_add
   apply lt_of_le_of_lt (Polynomial.degree_add_le _ _)
   apply max_lt
-  · exact lt_of_le_of_lt (Polynomial.degree_C_mul_le _ _)
-      (lt_of_le_of_lt Polynomial.degree_X_le (by decide))
+  · exact lt_of_le_of_lt (Polynomial.degree_C_mul_X_le _) (by decide)
   · exact lt_of_le_of_lt Polynomial.degree_C_le (by decide)
 
 /-- **The minimal polynomial of `a + b·root` for `b ≠ 0`** is exactly the
@@ -411,7 +410,11 @@ theorem minpoly_elt (a b : ℚ) (hb : b ≠ 0) :
     rw [hc, Polynomial.natDegree_mul (minpoly.ne_zero hx_int) hc_ne]
   have hc0 : c.natDegree = 0 := by omega
   have hc_monic : c.Monic := hmp_monic.of_mul_monic_left (hc ▸ hq_monic)
-  rw [hc, hc_monic.natDegree_eq_zero_iff_eq_one.mp hc0, mul_one]
+  have hcC : c = C (c.coeff 0) := Polynomial.eq_C_of_natDegree_eq_zero hc0
+  have hlead : c.coeff 0 = 1 := by
+    have hl := hc_monic
+    rwa [Polynomial.Monic, Polynomial.leadingCoeff, hc0] at hl
+  rw [hc, hcC, hlead, Polynomial.C_1, mul_one]
 
 /-- **Forward direction of `𝓞 = ℤ[√2]`**: an integral `a + b·root` has
 `a, b ∈ ℤ`. For `b ≠ 0` the minimal polynomial over ℚ descends to ℤ
@@ -433,13 +436,19 @@ theorem coords_int_of_isIntegral {a b : ℚ} (hint : IsIntegral ℤ (elt a b)) :
     rw [minpoly_elt a b hb] at hmap
     have hcoeff1 : -(2 * a) = ((minpoly ℤ (elt a b)).coeff 1 : ℚ) := by
       have h := congrArg (fun p : ℚ[X] => p.coeff 1) hmap
-      simpa [Polynomial.coeff_map, Polynomial.coeff_X_pow, eq_intCast] using h
+      simp only [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C_mul,
+        Polynomial.coeff_X_one, Polynomial.coeff_C, Polynomial.coeff_map, eq_intCast,
+        mul_one, add_zero, one_ne_zero, ite_false] at h
+      simpa using h
     have hcoeff0 : a ^ 2 - 2 * b ^ 2 = ((minpoly ℤ (elt a b)).coeff 0 : ℚ) := by
       have h := congrArg (fun p : ℚ[X] => p.coeff 0) hmap
-      simpa [Polynomial.coeff_map, Polynomial.coeff_X_pow, eq_intCast] using h
+      simp only [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C_mul,
+        Polynomial.coeff_X_zero, Polynomial.coeff_C, Polynomial.coeff_map, eq_intCast,
+        mul_zero, zero_add] at h
+      simpa using h
     exact int_pair_of_double_and_norm a b (-(minpoly ℤ (elt a b)).coeff 1)
       ((minpoly ℤ (elt a b)).coeff 0)
-      (by push_cast; linarith [hcoeff1]) (by push_cast; linarith [hcoeff0])
+      (by rw [Int.cast_neg]; linarith [hcoeff1]) (by linarith [hcoeff0])
 
 /-- **Reverse direction**: integer coordinates give an algebraic integer
 (`ℤ[√2] ⊆ 𝓞`). -/
