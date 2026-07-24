@@ -1262,9 +1262,9 @@ theorem two_notMem_fThresholdSet_two {n : ℕ} (hn : 4 ≤ n) :
       have hsame : (u.val ≤ 1 ∧ v.val ≤ 1) ∨ (2 ≤ u.val ∧ 2 ≤ v.val) := by
         by_cases hu1 : u.val ≤ 1 <;> by_cases hv1 : v.val ≤ 1
         · exact Or.inl ⟨hu1, hv1⟩
-        · rw [if_pos hu1, if_neg hv1] at hcuv
+        · simp only [if_pos hu1, if_neg hv1] at hcuv
           exact absurd hcuv (by decide)
-        · rw [if_neg hu1, if_pos hv1] at hcuv
+        · simp only [if_neg hu1, if_pos hv1] at hcuv
           exact absurd hcuv (by decide)
         · exact Or.inr ⟨by omega, by omega⟩
       have hval : u.val ≠ v.val := fun h => hne (Fin.ext h)
@@ -1390,5 +1390,199 @@ theorem fThreshold_two_lt_fThreshold_one {n : ℕ} (hn : 4 ≤ n) :
 #check @fThreshold_two_five
 #check @fThreshold_two_constant
 #check @fThreshold_two_lt_fThreshold_one
+
+/-
+## The entire table: `fThreshold r n = 1` for every `r ≥ 2` in the good regime
+
+Both halves of the `r = 2` argument are in fact uniform in `r`:
+
+* **Membership of `1`** (`one_mem_fThresholdSet`): the third-color trick
+  needs nothing about `r`.  At `S = univ` the budget-1 hypothesis provides at
+  most one removed pair `p` and a proper `r`-coloring `c` of `G` minus `p`;
+  sending `p.1` to the fresh color `Fin.last r` and everything else to
+  `(c ·).castSucc` is a proper `(r+1)`-coloring of `G` itself.  So
+  `1 ∈ fThresholdSet r n` for **every** `r` and every `n ≥ 1`.
+* **Upper bound** (`two_notMem_fThresholdSet`): the clique `K_{r+2}` plus
+  isolated vertices (`cliquePlus (r+2) n`).  Shedding the same two opposite
+  pairs `(v0,v1)`, `(v2,v3)` merges those two pairs into single color
+  classes, dropping the chromatic number from `r + 2` to exactly `r` — the
+  explicit `r`-coloring sends `{v0,v1} ↦ 0`, `{v2,v3} ↦ 1`, and each
+  remaining clique vertex `j` to `j - 2` — uniformly in the induced
+  subgraph `S`.  But `K_{r+2}` itself admits no `(r+1)`-coloring: a proper
+  coloring is injective on the clique, and `Fin (r+2) ↪ Fin (r+1)` is
+  impossible (`Fintype.card_le_of_injective`).  This needs `r ≥ 2`: a
+  2-matching requires four clique vertices, which is exactly why the
+  `r = 1` row can (and does) sit at threshold `2` instead.
+
+Hence `fThreshold r n = 1` whenever `2 ≤ r` and `r + 2 ≤ n`
+(`fThreshold_eq_one`), and — combined with `fThreshold_one_eq_two` — the
+threshold function of this formalization is **completely determined on its
+entire good regime** (`fThreshold_determined`):
+
+  `fThreshold r n = if r = 1 then 2 else 1`   for `1 ≤ r`, `r + 2 ≤ n`.
+
+There is nothing left to compute: every row is constant, every value is
+attained, and the strict drop from row 1 to row 2 is the only jump the
+function ever makes.
+-/
+
+/-- `K_m` on the first `m` vertices plus `n - m` isolated vertices. -/
+def cliquePlus (m n : ℕ) : SGraph n where
+  adj u v := u.val < m ∧ v.val < m ∧ u ≠ v
+  symm _ _ h := ⟨h.2.1, h.1, h.2.2.symm⟩
+  irrefl _ h := h.2.2 rfl
+
+/-- **Budget `1` forces `(r+1)`-colorability for every `r`, on any number of
+vertices.**  Only `S = univ` is needed: one removed pair `p` leaves a proper
+`r`-coloring, and recoloring the single vertex `p.1` with the fresh color
+`Fin.last r` repairs every edge the deletion had hidden. -/
+theorem one_mem_fThresholdSet {r n : ℕ} (hn : 1 ≤ n) :
+    1 ∈ fThresholdSet r n := by
+  intro G hP
+  obtain ⟨removed, hcard, c, hc⟩ := hP Finset.univ
+  -- Pad the removal to a single pair `p`.
+  obtain ⟨p, hsub⟩ : ∃ p : Fin n × Fin n, removed ⊆ {p} := by
+    have hc01 : removed.card = 0 ∨ removed.card = 1 := by omega
+    rcases hc01 with hc0 | hc1
+    · exact ⟨(⟨0, by omega⟩, ⟨0, by omega⟩), by
+        simp [Finset.card_eq_zero.mp hc0]⟩
+    · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp hc1
+      exact ⟨a, subset_rfl⟩
+  -- `p.1` gets the fresh color `Fin.last r`; everyone else keeps `c`.
+  refine ⟨fun w => if w = p.1 then Fin.last r else (c w).castSucc, ?_⟩
+  intro u v hadj
+  have hne : u ≠ v := fun h => G.irrefl v (h ▸ hadj)
+  by_cases hu : u = p.1
+  · by_cases hv : v = p.1
+    · exact absurd (hu.trans hv.symm) hne
+    · simp only [if_pos hu, if_neg hv]
+      exact (Fin.castSucc_lt_last (c v)).ne'
+  · by_cases hv : v = p.1
+    · simp only [if_neg hu, if_pos hv]
+      exact (Fin.castSucc_lt_last (c u)).ne
+    · -- Neither endpoint is `p.1`: the edge survived the deletion.
+      have hsurv : c u ≠ c v := hc u v
+        ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩,
+          fun hm => hu (congrArg Prod.fst (Finset.mem_singleton.1 (hsub hm))),
+          fun hm => hv (congrArg Prod.fst (Finset.mem_singleton.1 (hsub hm)))⟩
+      simp only [if_neg hu, if_neg hv]
+      exact fun h => hsurv (Fin.castSucc_injective r h)
+
+/-- **Budget `2` fails at every `(r, n)` with `2 ≤ r`, `r + 2 ≤ n`:**
+`K_{r+2}` plus isolated vertices passes the budget-2 reduction test in every
+induced subgraph (shedding a 2-matching merges two pairs of clique vertices
+into shared color classes, dropping the chromatic number to `r`), yet the
+clique forces `r + 2` distinct colors. -/
+theorem two_notMem_fThresholdSet {r n : ℕ} (hr : 2 ≤ r) (hn : r + 2 ≤ n) :
+    2 ∉ fThresholdSet r n := by
+  obtain ⟨v0, hv0⟩ : ∃ w : Fin n, w.val = 0 := ⟨⟨0, by omega⟩, rfl⟩
+  obtain ⟨v1, hv1⟩ : ∃ w : Fin n, w.val = 1 := ⟨⟨1, by omega⟩, rfl⟩
+  obtain ⟨v2, hv2⟩ : ∃ w : Fin n, w.val = 2 := ⟨⟨2, by omega⟩, rfl⟩
+  obtain ⟨v3, hv3⟩ : ∃ w : Fin n, w.val = 3 := ⟨⟨3, by omega⟩, rfl⟩
+  intro hmem
+  have hP : ∀ S : Finset (Fin n), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (cliquePlus (r + 2) n).adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (cliquePlus (r + 2) n).symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => (cliquePlus (r + 2) n).irrefl v h)) 2 r := by
+    intro S
+    -- Color classes after the 2-matching: `{v0,v1} ↦ 0`, `{v2,v3} ↦ 1`,
+    -- clique vertex `j ≥ 4` to `j - 2`, isolated vertices anywhere.
+    refine ⟨{(v0, v1), (v2, v3)}, le_trans (Finset.card_insert_le _ _) (by simp),
+      ⟨fun w => if w.val ≤ 1 then ⟨0, by omega⟩
+        else if w.val ≤ 3 then ⟨1, by omega⟩
+        else ⟨min (w.val - 2) (r - 1), by omega⟩, ?_⟩⟩
+    rintro u v ⟨⟨-, -, hum, hvm, hne⟩, hnuv, hnvu⟩ hcuv
+    have hval : u.val ≠ v.val := fun h => hne (Fin.ext h)
+    -- A monochromatic surviving pair must share a merged class, hence be one
+    -- of the two removed pairs.
+    by_cases hua : u.val ≤ 1 <;> by_cases hva : v.val ≤ 1
+    · -- both in `{v0, v1}`: the pair is removed
+      rcases mem_killMatch hv0 hv1 hv2 hv3 (by omega) (by omega) hval
+          (Or.inl ⟨hua, hva⟩) with h | h
+      · exact hnuv h
+      · exact hnvu h
+    · by_cases hv3' : v.val ≤ 3
+      · simp only [if_pos hua, if_neg hva, if_pos hv3', Fin.mk.injEq] at hcuv
+        omega
+      · simp only [if_pos hua, if_neg hva, if_neg hv3', Fin.mk.injEq] at hcuv
+        omega
+    · by_cases hu3 : u.val ≤ 3
+      · simp only [if_neg hua, if_pos hu3, if_pos hva, Fin.mk.injEq] at hcuv
+        omega
+      · simp only [if_neg hua, if_neg hu3, if_pos hva, Fin.mk.injEq] at hcuv
+        omega
+    · by_cases hu3 : u.val ≤ 3 <;> by_cases hv3' : v.val ≤ 3
+      · -- both in `{v2, v3}`: the pair is removed
+        rcases mem_killMatch hv0 hv1 hv2 hv3 (by omega) (by omega) hval
+            (Or.inr ⟨by omega, by omega⟩) with h | h
+        · exact hnuv h
+        · exact hnvu h
+      · simp only [if_neg hua, if_pos hu3, if_neg hva, if_neg hv3',
+          Fin.mk.injEq] at hcuv
+        omega
+      · simp only [if_neg hua, if_neg hu3, if_neg hva, if_pos hv3',
+          Fin.mk.injEq] at hcuv
+        omega
+      · simp only [if_neg hua, if_neg hu3, if_neg hva, if_neg hv3',
+          Fin.mk.injEq] at hcuv
+        omega
+  -- A proper `(r+1)`-coloring of the clique would inject `Fin (r+2)` into
+  -- `Fin (r+1)` — pigeonhole.
+  obtain ⟨c, hc⟩ := hmem (cliquePlus (r + 2) n) hP
+  have hinj : Function.Injective
+      (fun i : Fin (r + 2) => c ⟨i.val, lt_of_lt_of_le i.isLt hn⟩) := by
+    intro a b hab
+    by_contra hne
+    have hval : a.val ≠ b.val := fun h => hne (Fin.ext h)
+    exact hc ⟨a.val, lt_of_lt_of_le a.isLt hn⟩ ⟨b.val, lt_of_lt_of_le b.isLt hn⟩
+      ⟨a.isLt, b.isLt, fun h => hval (Fin.mk_eq_mk.mp h)⟩ hab
+  have := Fintype.card_le_of_injective _ hinj
+  simp only [Fintype.card_fin] at this
+  omega
+
+/-- Upper bound for the entire table: `fThreshold r n ≤ 1` once `2 ≤ r` and
+`r + 2 ≤ n`. -/
+theorem fThreshold_le_one {r n : ℕ} (hr : 2 ≤ r) (hn : r + 2 ≤ n) :
+    fThreshold r n ≤ 1 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  rw [not_le] at hlt
+  exact two_notMem_fThresholdSet hr hn (fThresholdSet_downClosed (by omega) hk)
+
+/-- Lower bound for the entire table: `1 ≤ fThreshold r n` in the good
+regime. -/
+theorem one_le_fThreshold {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
+    1 ≤ fThreshold r n := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    (one_mem_fThresholdSet (by omega))
+
+/-- **Every row above the first: `fThreshold r n = 1` whenever `2 ≤ r` and
+`r + 2 ≤ n`.**  One removed pair per induced subgraph always suffices for
+`(r+1)`-colorability, and two never do (`K_{r+2}` plus isolated vertices). -/
+theorem fThreshold_eq_one {r n : ℕ} (hr : 2 ≤ r) (hn : r + 2 ≤ n) :
+    fThreshold r n = 1 :=
+  le_antisymm (fThreshold_le_one hr hn) (one_le_fThreshold (by omega) hn)
+
+/-- **The threshold function is completely determined on its good regime:**
+`fThreshold r n = 2` if `r = 1` and `1` for every `r ≥ 2`.  Every row is
+constant, every value is attained, and the drop from row 1 to row 2 is the
+only jump the function ever makes. -/
+theorem fThreshold_determined {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
+    fThreshold r n = if r = 1 then 2 else 1 := by
+  by_cases h1 : r = 1
+  · subst h1
+    rw [if_pos rfl]
+    exact fThreshold_one_eq_two (by omega)
+  · rw [if_neg h1]
+    exact fThreshold_eq_one (by omega) hn
+
+#check @cliquePlus
+#check @one_mem_fThresholdSet
+#check @two_notMem_fThresholdSet
+#check @fThreshold_eq_one
+#check @fThreshold_determined
 
 end Erdos1092OQ02
