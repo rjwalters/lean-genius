@@ -162,11 +162,19 @@
       "mathContext": "$b_n\\le\\binom{2n}{n}^3\\le(4^n)^3=64^n$, bracketing the growth base in $[4,64]$."
     },
     {
-      "id": "parity",
-      "title": "Section III: Every Apéry number is odd",
+      "id": "parity-lemmas",
+      "title": "Section III: Every Even-k Term Is Even",
       "startLine": 109,
+      "endLine": 140,
+      "summary": "two_dvd_choose_mul: the revision identity C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k) makes the product even for k ≥ 1, via the even central-binomial factor C(2k,k). two_dvd_aperyB_term: each k ≥ 1 summand of bₙ is the square of that even product, hence itself even.",
+      "mathContext": "For $k\\ge1$, $\\binom{2k}{k}$ is even, so $\\binom{n}{k}\\binom{n+k}{k}$ — and its square, the $k\\ge1$ summand of $b_n$ — is even."
+    },
+    {
+      "id": "parity-main",
+      "title": "Section III Continued: Every Apéry Number Is Odd",
+      "startLine": 141,
       "endLine": 156,
-      "summary": "two_dvd_choose_mul: the revision identity C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k) makes the product even for k ≥ 1. two_dvd_aperyB_term: each k ≥ 1 summand is its square, hence even. aperyB_odd: peel the k = 0 term (= 1) with Finset.sum_range_succ' and absorb the even remainder.",
+      "summary": "aperyB_odd: peel the k = 0 term of bₙ's defining sum (Finset.sum_range_succ'), which equals 1, then absorb the remaining k ≥ 1 terms as an even sum (each even by two_dvd_aperyB_term) to conclude bₙ = 1 + (even), hence odd.",
       "mathContext": "Modulo 2, $b_n\\equiv\\binom{n}{0}^2\\binom{n}{0}^2=1$, so $b_n$ is odd."
     }
   ],
