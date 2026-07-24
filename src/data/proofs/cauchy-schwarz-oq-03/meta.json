@@ -97,7 +97,7 @@
     {
       "id": "cauchy-schwarz-lagrange",
       "title": "Cauchy-Schwarz via Lagrange's Identity",
-      "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. The Hölder bridge (cauchy_schwarz_from_holder) shows CS = Hölder at p=q=2.",
+      "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. cauchy_schwarz_finite' is a hypothesis-free alias of cauchy_schwarz_finite, not a Hölder-based derivation; the actual Hölder bridge is cauchy_schwarz_holder_bridge (see below).",
       "startLine": 83,
       "endLine": 133,
       "mathContext": "Lagrange's identity (1773): $2[(\\sum f_i^2)(\\sum g_j^2) - (\\sum f_i g_i)^2] = \\sum_i \\sum_j (f_i g_j - f_j g_i)^2 \\geq 0$. The RHS is a sum of squares, giving Cauchy-Schwarz directly. The proof expands $(a-b)^2$, computes three sub-sums via `Finset.mul_sum` and `Finset.sum_comm`, and combines with `linarith`."
