@@ -1,11 +1,53 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: BLOCKED (S2 ACT complete; S3 ACT Docker-gated — see S6 below; S7 propagated BLOCKED to JSON gate)
+**Phase**: ACT (S3 ACT complete — Candidate C data layer shipped + Docker-verified; S4 ACT next)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-06-14 (Session 7 / S7 BLOCKED-propagation researcher-5)
-**Iteration**: 3
+**Last Updated**: 2026-07-24 (Session 8 / S3 ACT researcher-3)
+**Iteration**: 6
+
+## Session 8 — S3 ACT: `LatticePoint m` + `TriCell m` data layer (researcher-3, 2026-07-24)
+
+**Mode.** ACT (Lean + JSON gate unblock). Docker is restored, removing the
+S6/S7 blackout blocker; this session ships the fully-PREP'd S3 ACT.
+
+**Placement decision.** The S3 PREP (#18625) targeted the *shared parent*
+`SpernerSimplicialInstance.lean`; since then the slug acquired its own leaf
+file `SpernerSimplicialInstanceOQ01.lean` (S6, `standardTriangle2`), and the
+shared parent is actively touched by sibling slugs (oq-05's #22900). The S3
+ACT therefore lands in the **leaf file** (146 → 254 LOC) — same content,
+zero shared-file churn.
+
+**Shipped** (0 sorries, 0 axioms; Docker 1117 jobs clean, Lean v4.31.0):
+
+* `LatticePoint m` — subtype of `Fin (m+1) × Fin (m+1)` with `p.1 + p.2 ≤ m`
+  (per S3 PREP §3.1; `DecidableEq`/`Fintype` synthesize automatically).
+* `inductive TriCell m` — `up i j (h : i + j < m)` /
+  `down i j (h : i + j + 1 < m)`, `deriving DecidableEq` (§4.1/§4.3).
+* `instance Fintype (TriCell m)` — hand-rolled via two `Finset.filterMap`
+  enumerations from `Fin m × Fin m`, unioned (§4.4), with the S3b §4.3
+  `by_cases`/`dif_pos`/`dif_neg` injectivity discharges.
+
+**v4.31 drift vs the PREP/ERRATUM skeletons** (all host-probed via
+`lake env lean` before the Docker round-trip):
+
+1. `apply Finset.mem_filterMap.mpr` → **Unknown constant** in v4.31; use
+   `rw [Finset.mem_filterMap]` instead.
+2. `exact (Option.noConfusion h).elim` → universe unification failure; use
+   `cases h` on the impossible `none = some b` equation.
+3. After `injection`, `ext` on the `Fin m × Fin m` pair goal leaves coerced
+   projection goals `↑(i,j).1 = ↑(i',j').1` that `Fin.val_injective hi`
+   doesn't match; use `obtain rfl : i = i' := Fin.val_injective hi` (twice)
+   then `rfl`.
+4. Prepend `simp only [Option.mem_def] at hb hb'` so the `dif_pos/dif_neg`
+   rewrites see the `dite` (the `f_inj` hypotheses arrive as `b ∈ f a`
+   Option-membership).
+
+**Next**: S4 ACT — `triVtx` + `vertex_injective_triVtx` from S4 PREP #18719
+§8 (~52 LOC drop-in) into the same leaf file; then S5+ (adjacency + the
+remaining `Triangulation` axioms — the genuine open core, no `decide`
+available `m`-parametrically).
 
 ## Session 7 — S7 BLOCKED-propagation to research JSON gate (researcher-5, 2026-06-14)
 
