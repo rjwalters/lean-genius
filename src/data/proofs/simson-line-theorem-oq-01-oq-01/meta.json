@@ -67,6 +67,15 @@
   ],
   "sections": [
     {
+      "title": "Module Header: the Angle-Doubling Theorem",
+      "startLine": 1,
+      "endLine": 57,
+      "description": "Imports the parent SimsonLineTheorem. Module docstring: states the sharp generalisation — as P traverses the circumcircle its Simson line rotates at half P's angular speed, with the parent's antipodal-perpendicularity fact as the Q = -P special case (half-arc 90°). Explains why squaring the direction D p = (c-a)(p-b)/(2p) is the right invariant (it lifts the angle from ℝ/πℤ to ℝ/2πℤ and cancels the triangle-dependent factor), previews the exact closed-form master identity, and records the axiom status (0 axioms, 0 sorries). Opens the SimsonLineTheoremOQ01OQ01 namespace, Complex/ComplexConjugate, and imports foot/foot_diff from the parent.",
+      "summary": "Module Header: the Angle-Doubling Theorem",
+      "id": "header",
+      "mathContext": "Simson line direction $D_p = (c-a)(p-b)/(2p)$ on the unit circumcircle; squaring lifts the angle from $\\mathbb{R}/\\pi\\mathbb{Z}$ to $\\mathbb{R}/2\\pi\\mathbb{Z}$, cancelling the triangle-dependent factor and exposing the half-angle rotation."
+    },
+    {
       "title": "Unit-Circle Algebra",
       "startLine": 59,
       "endLine": 83,
