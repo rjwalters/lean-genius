@@ -4,12 +4,14 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 8
+**Iteration**: 9
 
 ## Current Focus
-Directional exit geometry: after OQ02OQ08's single radial exit ray, extend boundary
-reachability to every direction (done, OQ02OQ10) and — still open — to every boundary
-point (needs lemniscate component topology).
+Component topology of the lemniscate. Iter 9 (OQ02OQ11) delivered the first
+disconnection result: the quadratic cyclotomic lemniscates (n = 3, 4, 6 — the complete
+φ(n) = 2 case, Cassini ovals) split into two petals for small C. Still open: component
+count in the C > 1 regime (every-boundary-point reachability driver), and sharpness
+(connectivity above the Cassini threshold).
 
 ## Active Approach
 Approach A/B hybrid: elementary two-sided factor bounds `‖z‖-1 ≤ ‖z-μ‖ ≤ ‖z‖+1`
@@ -85,12 +87,26 @@ rectifiable-path arc length not yet in Mathlib.
   iter-7 refinement question is now closed; the every-boundary-point half still needs
   lemniscate component topology (blocked, unchanged).
 
+- Iter 9 (researcher-3, 2026-07-24): **FIRST COMPONENT-TOPOLOGY RESULT** — the small-n
+  tractable layer delivered for the complete quadratic case. `n = 3, 4, 6` are exactly
+  the indices with `φ(n) = 2`; their lemniscates are Cassini ovals with foci at the two
+  primitive roots. General Cassini disconnection engine (`{|z−a||z−b| < C}` covered by
+  the two focal `√C`-balls; disjoint when `4C < |a−b|²`; each contains a focus, so
+  `IsPreconnected` fails on the cover): `{|Φ₃| < C}` and `{|Φ₆| < C}` are DISCONNECTED
+  (not preconnected/connected/path-connected) for `0 < C < 3/4` (foci `√3` apart),
+  `{|Φ₄| < C}` for `0 < C < 1` (foci `2` apart). Byproduct: `cyclotomic 4 ℂ = X² + 1`,
+  absent from Mathlib, proved via `cyclotomic_expand_eq_cyclotomic`.
+  (`CyclotomicPolynomialsOQ02OQ11.lean`, VERIFIED docker `[8577/8577]`, 0-sorry/0-axiom.)
+
 ## Next Action
 The every-boundary-point half of the reachability question: is EVERY point of the level
 curve `{|Φ_n|=C}` reachable from 0 by a bounded-length path inside the set? The first
 crossing along each ray reaches one boundary point per direction (iter 8); boundary
 points that are NOT first crossings (behind folds of the lemniscate, if any exist) are
 untouched. Deciding whether such points exist at all needs the connected-component /
-fold structure of the cyclotomic lemniscate — polynomial-lemniscate topology Mathlib
-still lacks (blocked, unchanged). Alternative tractable layer: small-n (n=3,4,6)
-explicit lemniscate geometry.
+fold structure of the cyclotomic lemniscate in the relevant regime `C > 1` —
+polynomial-lemniscate topology Mathlib still lacks (blocked, unchanged for `C > 1`).
+The small-C half is now settled for the quadratic case (iter 9): remaining small-n
+follow-ups are (a) sharpness — connectivity for `C` above the Cassini threshold
+`(|a−b|/2)²`; (b) exact component count 2 (per-petal connectivity); (c) the quartic
+`φ(n) = 4` cases `n = 5, 8, 10, 12` (multi-focus, multi-petal).

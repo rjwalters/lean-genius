@@ -335,3 +335,51 @@ The remaining half of the reachability refinement: whether every BOUNDARY POINT 
 just every direction's first crossing) is reachable by a bounded-length path inside the
 set — that needs the labyrinth-free topology of the full lemniscate (connected-component
 count of `{|Φ_n| < C}`), still beyond Mathlib. The directional question is now closed.
+
+## Session 2026-07-24 (researcher-3) — OQ11: quadratic lemniscates DISCONNECT for small C
+
+**Mode**: REVISIT (the recorded tractable layer: explicit small-n geometry, n = 3, 4, 6).
+**Outcome**: progress — 1 new file, 26 thm + 4 def, VERIFIED 0-sorry/0-axiom (docker
+`[8577/8577]`, clean build, no native_decide).
+
+### What I did
+New file `proofs/Proofs/CyclotomicPolynomialsOQ02OQ11.lean` — the FIRST component-topology
+result for the family (all prior layers were shape sandwiches or positive path results):
+
+- **General Cassini disconnection engine**: for foci `a, b` and `4C < ‖a−b‖²`, the
+  quadratic lemniscate `{z : ‖(z−a)(z−b)‖ < C}` is not preconnected
+  (`not_isPreconnected_quadratic_lemniscate`), hence not connected and not path-connected.
+- **Instantiations** — `n = 3, 4, 6` are exactly the indices with `φ(n) = 2`:
+  `{|Φ₃| < C}`, `{|Φ₆| < C}` disconnected for `0 < C < 3/4` (foci `√3` apart);
+  `{|Φ₄| < C}` disconnected for `0 < C < 1` (foci `2` apart).
+- **Mathlib-gap byproduct**: `cyclotomic_four : cyclotomic 4 ℂ = X² + 1` (Mathlib has
+  `cyclotomic_one/_two/_three/_six` but not `_four`) via
+  `cyclotomic_expand_eq_cyclotomic Nat.prime_two` from `Φ₂ = X + 1`.
+
+### Mechanism (reusable)
+Covering: a point at distance `≥ √C` from BOTH foci has factor product `≥ C`, so the
+lemniscate sits inside `B(a,√C) ∪ B(b,√C)`. Separation: triangle inequality + squaring
+makes the balls disjoint when `4C < ‖a−b‖²`. Each ball meets the set at its focus (a
+root: `‖(a−a)(a−b)‖ = 0 < C`). Feed this open cover to the `IsPreconnected` definition —
+the required point of `S ∩ (B_a ∩ B_b)` lands in the empty intersection. Foci algebra by
+`linear_combination` off `a + b` / `a·b` (e.g. `z²+z+1 = (z−ω)(z−ω̄)` is
+`linear_combination z*h_add − h_mul`), with `(√3:ℂ)² = 3` by `norm_cast; Real.sq_sqrt`.
+
+### Perspective
+- For `n = 1, 2` (`φ = 1`) the sets are exact disks (OQ01) — always connected;
+  disconnection first appears exactly at degree `φ(n) = 2`, and OQ11 pins the regime.
+- Disconnection regime (`C < 3/4` resp. `1`) and origin-interior regime (`C > 1`, OQ07)
+  are disjoint — consistent with the classical Cassini threshold `(|a−b|/2)²`.
+- v4.31 renames hit: `Set.eq_empty_iff_forall_not_mem` → `…_notMem`,
+  `Set.not_mem_empty` → `Set.notMem_empty`. Also `cyclotomic_expand_eq_cyclotomic` is
+  simp-tagged, so `norm_num at h` self-normalizes `expand 2 Φ₂` to `X²+1`.
+
+### Files Modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ11.lean` (new)
+- `research/problems/erdos-1215-oq-02/state.md`, `src/data/research/problems/erdos-1215-oq-02.json`
+
+### Still open
+- `C > 1` regime component count (the every-boundary-point reachability driver) — still
+  needs lemniscate topology beyond Mathlib (blocked, unchanged).
+- Small-n follow-ups: sharpness (connectivity for `C ≥ (|a−b|/2)²`), exact component
+  count 2 (per-petal connectivity), quartic cases `n = 5, 8, 10, 12` (`φ(n) = 4`).
