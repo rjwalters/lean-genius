@@ -77,7 +77,8 @@
       "Summation by parts is the right tool once monotonicity is dropped: it expresses the alternating sum through the coefficient DIFFERENCES (total variation) rather than the coefficients themselves",
       "The sign sequence (-1)^i has partial sums in {0,1}, so the Dirichlet boundedness constant is exactly 1 — this is what turns Abel summation into a clean one-line bound",
       "The bounded-variation bound CONTAINS the Leibniz bound: for antitone coefficients the variation telescopes and the boundary term cancels, recovering a_N exactly",
-      "Passing to the limit replaces the first omitted term a_N by a controlling tail total variation V, giving a remainder estimate |S_N − l| ≤ V for non-monotone series"
+      "Passing to the limit replaces the first omitted term a_N by a controlling tail total variation V, giving a remainder estimate |S_N − l| ≤ V for non-monotone series",
+      "The limit theorem decouples convergence from rate control: abs_partialSum_sub_limit_le_tail_variation takes convergence S_n → l as a separate hypothesis rather than deriving it from a_i → 0 (as the classical Leibniz test does for antitone a). It only needs an eventual uniform bound V on the boundary-plus-variation quantity, so it is purely a remainder/rate estimate — applicable even to series whose convergence was established by other means and whose coefficients need not tend to 0."
     ],
     "prerequisites": [
       "Convergence of sequences and series in ℝ",
