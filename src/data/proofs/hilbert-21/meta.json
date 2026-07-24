@@ -50,7 +50,7 @@
     "proofStrategy": "The proof strategy involves:\n\n1. Define Fuchsian systems (ODEs with simple poles)\n2. Define monodromy representations (fundamental group to GL(n))\n3. Prove existence for irreducible case (Plemelj's theorem)\n4. Exhibit counterexamples for reducible case (Bolibrukh)\n5. State complete characterization via vector bundle conditions",
     "keyInsights": [
       "Irreducibility is the key condition for a positive answer: an irreducible monodromy representation ρ : π₁(ℂ \\ {singularities}) → GL(n, ℂ) is always Fuchsian-realizable (Plemelj's theorem)",
-      "Regular singular (vs Fuchsian) systems always suffice (Birkhoff): allowing higher-order poles — while keeping polynomial-growth solutions — lifts the obstruction and every monodromy becomes realizable",
+      "Regular singular (vs Fuchsian) systems always suffice (Birkhoff): allowing higher-order poles — while keeping polynomial-growth solutions — lifts the obstruction. This file's birkhoff_theorem only proves a RegularSingularSystem exists (vacuously, since its fields carry no data); it does not formalize a realizes relation for such systems, so the realizability claim itself is not yet proved here",
       "The obstruction is cohomological: it lives in the splitting type of an associated holomorphic vector bundle over ℂP¹, with the Fuchs relation as the key arithmetic constraint",
       "Modern formulation: the Riemann-Hilbert correspondence establishes an equivalence between flat connections with regular singularities and local systems (representations of π₁), forming a cornerstone of the geometric Langlands program",
       "The 89-year gap between Plemelj's claim (1908) and Bolibrukh's counterexample (1989) is one of the longest delayed corrections in 20th-century mathematics, illustrating how subtle the reducible case is"
@@ -117,7 +117,7 @@
       "title": "Part 7: Regular Singular Systems (Birkhoff)",
       "startLine": 256,
       "endLine": 286,
-      "summary": "RegularSingularSystem structure (higher-order poles with polynomial-growth solutions) and birkhoff_theorem: every monodromy representation is realizable once the Fuchsian (simple-pole) constraint is relaxed to regular singular."
+      "summary": "RegularSingularSystem structure (higher-order poles with polynomial-growth solutions) and birkhoff_theorem, which currently only proves RegularSingularSystem is inhabited (its fields are Unit and True, so this holds vacuously for any S regardless of ρ) — no 'realizes' relation is defined for RegularSingularSystem, so Birkhoff's actual realizability claim is not yet formalized."
     },
     {
       "id": "characterization",
@@ -239,10 +239,16 @@
   ],
   "mainTheorems": [
     {
-      "name": "hilbert21_monodromy",
+      "name": "riemann_hilbert_irreducible",
       "type": "core",
-      "description": "Existence of Fuchsian systems with prescribed monodromy",
-      "leanType": "MonodromyRep rho -> exists system, Fuchsian system and monodromy system = rho"
+      "description": "Existence of Fuchsian systems with prescribed monodromy, for irreducible representations (Plemelj)",
+      "leanType": "MonodromyRep.isIrreducible n S rho -> exists F : FuchsianSystem n S, realizes n S F rho"
+    },
+    {
+      "name": "hilbert21_negative_in_general",
+      "type": "core",
+      "description": "Existence of a reducible monodromy representation not realized by any Fuchsian system (Bolibrukh)",
+      "leanType": "exists S n _ rho, not exists F : FuchsianSystem n S, realizes n S F rho"
     }
   ],
   "sorries": 0
