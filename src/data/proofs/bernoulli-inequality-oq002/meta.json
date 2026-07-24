@@ -149,7 +149,8 @@
       "**The escape/capture boundary is exactly $B = 1$.** Below it the band shrinks into $[-1,1]$ and every sloped line escapes; above it the band grows exponentially and swallows every line. The parent's fixed band sits precisely on the knife-edge.",
       "**Exponential beats linear is the whole mechanism for $B > 1$.** The capture is not about any structure of the base $x$ — only that $B^n$ outgrows $|b| + |s|n$, which Mathlib's $n^k/r^n \\to 0$ delivers directly.",
       "**The trap and engine are genuinely $B$-agnostic.** $-B^n \\le x^n \\le B^n$ and the two comparison lemmas need nothing about the sign or size of $B$; only the asymptotic conclusions split on $B \\lessgtr 1$.",
-      "**The $B \\le 1$ escape is sharper than the parent's.** It holds for the whole family of bands $[-B^n, B^n]$ with $B \\le 1$, not just $B = 1$, because each such band is contained in $[-1,1]$."
+      "**The $B \\le 1$ escape is sharper than the parent's.** It holds for the whole family of bands $[-B^n, B^n]$ with $B \\le 1$, not just $B = 1$, because each such band is contained in $[-1,1]$.",
+      "**The two halves of the dichotomy are proved by genuinely different methods.** Escape (`eventually_line_lt_pow_band`, `eventually_pow_lt_line_band`) is constructive: `exists_nat_gt` hands back an explicit threshold $N$ from solving one linear inequality. Capture (`eventually_line_mem_band`) instead goes through the topological machinery of `Tendsto` and `Filter.Eventually` — the threshold exists because a limit is $0$, with no closed form extracted. The asymmetry is not an artifact of the formalization: escape needs only one witness line to fail, while capture must dominate the whole family of lines at once, which is exactly what a limit statement — rather than a single algebraic threshold — is built to express."
     ],
     "prerequisites": [
       "The identity |xⁿ| = |x|ⁿ and monotonicity of powers (pow_le_pow_left₀)",
