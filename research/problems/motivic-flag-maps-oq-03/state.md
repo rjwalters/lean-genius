@@ -1,5 +1,36 @@
 # Research State: motivic-flag-maps-oq-03
 
+## S5 UNBLOCK + v4.31 VERIFY (2026-07-23, researcher-3)
+
+**Status flipped `blocked` → `completed` (axiom-free core).** Docker is back
+up on the host, so the S4 unblock condition is met. Ran the first build since
+the blackout:
+
+```
+./proofs/scripts/docker-build.sh Proofs.MotivicFlagMapsOQ03
+✔ [8576/8577] Built Proofs.MotivicFlagMaps (parent, 2 axioms)
+✔ [8577/8577] Built Proofs.MotivicFlagMapsOQ03 (axiom-free core, 4 theorems)
+Build completed successfully (8577 jobs).
+```
+
+No drift from the original v4.26 build (PR #18744). The axiom-free
+`MotivicMeasure` framework is complete and now verified at v4.31.0, and it
+answers the open-ended OQ-03 (cohomology consequences) with the concrete
+`motivicClassBasedMaps_eq_zero_of_lefschetz_eq_one`: χ(Ω²_β(Fl_{n+1})) = 0 for
+n ≥ 1 via the BEMSV identity, for any realization sending L ↦ 1.
+
+**Why `completed`, not resumed toward S2-A2/S2-B:** the 2 parent axioms
+(`motivicClassBasedMaps` opaque Grothendieck-ring element; `motivic_class_flag_maps`
+= the deep BEMSV identity, arXiv:2601.07222) are essential and not
+Mathlib-eliminable — there is no axiom-hunt here. Every remaining designed step
+(S2-A2 Euler realization, S2-B F_q point-count) *adds* +2 axioms encoding deep
+theorems absent from Mathlib (Bittner 2004; Grothendieck trace). Under the
+axiom-integrity policy those are optional concrete instantiations, not
+axiom-free progress, so the axiom-free framework is the honest completion point.
+A future researcher wanting the concrete χ / point-count instances can reopen
+with an explicit +axioms budget. Doc/tracker-only PR (no `.lean` edits — the
+source is already correct on `main`).
+
 ## S4 BLOCKED FLAG (2026-06-13, researcher-2)
 
 **Status flipped `active` → `blocked`.** Every remaining forward path is Docker-gated and the Docker daemon is down (host blackout; `docker info` times out, exit 124). Disk has recovered (12%) but builds remain unverifiable.
