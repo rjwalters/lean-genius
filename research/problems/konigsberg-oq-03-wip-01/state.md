@@ -2,10 +2,63 @@
 
 ## Current State
 
-**Phase**: BLOCKED (S9 — flag blocked under verification blackout; all forward steps Docker-gated or multi-week open infrastructure)
+**Phase**: ACT (S11 — unblocked, finite-edge Euler-path impossibility shipped, Docker-GREEN)
 **Path**: full
-**Since**: 2026-06-13 (S9 flag BLOCKED, researcher-1)
-**Iteration**: 9
+**Since**: 2026-07-24 (S11 ACT, researcher-1)
+**Iteration**: 11
+
+## S11 ACT Summary (2026-07-24, researcher-1)
+
+**Mode**: ACT (Lean + tracker sync; Docker-verified GREEN).
+
+**Unblock condition met**: `docker info` OK this session — the S9/S10
+verification-blackout blocker is lifted. Shipped S8 candidate menu item (b),
+the `_of_finite_edges` generalization, as a new "Finite-edge generalization"
+section:
+
+- **`arcSet`** — the directed-arc set `{p : V × V | G.adj p.1 p.2}`.
+  Directed arcs beat `Sym2` here: the step map lands in `arcSet`
+  definitionally (`w.step_adj n` *is* the membership proof), and arc-set
+  finiteness is equivalent to undirected-edge finiteness (2-to-1).
+- **`InfiniteWalk.not_isEdgeInjective_of_finite_arcs`** (core, walk-level):
+  the step map `n ↦ (vertex n, vertex (n+1))` of an edge-injective walk is
+  injective (equal directed arcs at distinct steps hit the `Or.inl` branch of
+  `sameEdge`), so it would inject ℕ into the finite arc set —
+  `Set.infinite_of_injective_forall_mem` + `Set.Finite.not_infinite`.
+  Only the edge-*injectivity* half of the Eulerian condition is needed.
+- **`not_hasOneWayEulerPath_of_finite_arcs`** /
+  **`not_hasInfiniteEulerPath_of_finite_arcs`** — Euler-path corollaries
+  (the ℤ-indexed case extracts injectivity `by_contra` on the index equality,
+  since `IsBiInfiniteEulerWalk` states `m ≠ n → ¬sameEdge`).
+- **`not_hasOneWayEulerPath_of_finite`** /
+  **`not_hasInfiniteEulerPath_of_finite`** — `[Finite V]` corollaries via
+  `Set.toFinite`.
+
+These strictly generalize the S5 no-edge and S7 single-edge sanity theorems.
+
+### Net file deltas
+
+| Metric | Before (S7, `origin/main`) | After (S11) | Δ |
+|--------|---------------------------|-------------|---|
+| LOC | 302 | 373 | +71 |
+| theorems | 11 | 16 | +5 |
+| defs | 13 | 14 | +1 (`arcSet`) |
+| sorries / axioms | 0 / 0 | 0 / 0 | 0 |
+
+Build: `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` →
+`✔ [8576/8576] Built Proofs.KonigsbergOQ03 (2.8s)` under the v4.31 toolchain
+(first build of this slug since the v4.26 → v4.31 migration — also confirms
+the migrated file is GREEN).
+
+**S12 menu**: (a) EGW necessity direction for locally finite graphs
+(Euler path ⇒ ≤ 2 odd-degree vertices; needs degree counting over
+`infiniteDegree`); (b) satisfiability witness — the ray graph on ℕ
+(`adj n (n+1)`) has a one-way Euler path (recommended: small, concrete,
+shows `HasOneWayEulerPath` is non-vacuous); (c) cross-slug DRY refactor
+(separate claim of `konigsberg-oq-03-oq-02`); (d) EGW proof (multi-week,
+blocked route).
+
+---
 
 ## S9 flag BLOCKED (2026-06-13, researcher-1)
 
@@ -385,3 +438,4 @@ separate claim.
 | S8 | 2026-06-13 | researcher-1 | STATE-SYNC | Corrected stale JSON `leanFiles` (S4-era 202/2/14 → canonical 303/11/13) and re-aligned state.md head (was at S6) to the merged S7 state. No Lean touched; verification blackout (Docker hung, Aristotle 404). |
 | S9 | 2026-06-13 | researcher-1 | BLOCKED | Flag BLOCKED: Docker still hung (`docker info` rc=124); S8 candidate menu is all new sorry-free Lean (unverifiable today) and the core OQ (EGW characterization / r≥3 NP-completeness) is multi-week open infrastructure. File already 0-sorry / 0-axiom; no urgency. Back-filled S6–S9 iteration rows. (this PR) |
 | S10 | 2026-06-14 | researcher-3 | STATE-SYNC | Propagated the S9 BLOCKED decision into the canonical JSON: it was still `status:"active"` / `phase:"STATE-SYNC"` / iter 8, so claim-random kept re-serving the slug during the blackout. Set `status:"blocked"` / `phase:"BLOCKED"` / iter 9, populated `blockers`, rewrote `nextAction` as the unblock plan, fixed `leanFiles.lineCount` 303→302 (`wc -l`=302), and back-filled `progressHistory` rows S5–S9 (canonical array had stopped at S4). Docker still down (`docker info` rc=124, confirmed). No Lean touched. (this PR) |
+| S11 | 2026-07-24 | researcher-1 | ACT | Docker recovered — unblocked. Shipped S8 menu item (b): `arcSet` def + 5 sorry-free finite-edge impossibility theorems (`InfiniteWalk.not_isEdgeInjective_of_finite_arcs` core + finite-arc and `[Finite V]` Euler-path corollaries), strictly generalizing the S5 no-edge and S7 single-edge results. 302 → 373 LOC, 11 → 16 theorems, 0 sorry / 0 axiom. Docker-GREEN under v4.31 (8576 jobs, 2.8s — first post-migration build of this slug). JSON un-blocked (`status:"active"`, EGW / r≥3 routes recorded as structured blockers). (this PR) |

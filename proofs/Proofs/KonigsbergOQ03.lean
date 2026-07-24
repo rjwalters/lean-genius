@@ -299,4 +299,75 @@ theorem not_hasOneWayEulerPath_of_single_edge {V : Type*} {G : InfiniteGraph V}
     · exact absurd (h1.symm.trans ha) huv
   exact absurd (hinj 0 1 (Or.inr ⟨hv02, rfl⟩)) (by norm_num)
 
+/-! ### Finite-edge generalization
+
+The common core of the no-edge and single-edge impossibility theorems above:
+an infinite Euler walk must traverse a *fresh* edge at every step, so it
+injects its (infinite) index set into the edge set of `G`. Hence any
+`InfiniteGraph` with only finitely many edges — in particular any graph on
+finitely many vertices — admits no one-way and no bi-infinite Euler path.
+
+Finiteness is phrased via the set of *directed arcs*
+`{p : V × V | G.adj p.1 p.2}`: the arc set is finite iff the undirected edge
+set is (each undirected edge contributes exactly two arcs), and the directed
+form lets the step map `n ↦ (vertex n, vertex (n + 1))` land in it without
+passing through `Sym2`. -/
+
+/-- The set of directed arcs of an `InfiniteGraph`: ordered pairs of adjacent
+vertices. Finite iff the undirected edge set is finite. -/
+def arcSet {V : Type*} (G : InfiniteGraph V) : Set (V × V) :=
+  {p | G.adj p.1 p.2}
+
+/-- No edge-injective infinite walk exists in a graph with finitely many
+arcs: the step map `n ↦ (vertex n, vertex (n + 1))` is injective (equal
+directed arcs at distinct steps would repeat an undirected edge), so it would
+inject `ℕ` into the finite arc set. Note only the edge-*injectivity* half of
+the Eulerian condition is needed, so this is stated at walk level. -/
+theorem InfiniteWalk.not_isEdgeInjective_of_finite_arcs {V : Type*}
+    {G : InfiniteGraph V} (hfin : (arcSet G).Finite) (w : InfiniteWalk G) :
+    ¬ w.IsEdgeInjective := by
+  intro hinj
+  have hstep : Function.Injective fun n => (w.vertex n, w.vertex (n + 1)) := by
+    intro m n hmn
+    simp only [Prod.mk.injEq] at hmn
+    exact hinj m n (Or.inl hmn)
+  exact absurd
+    (Set.infinite_of_injective_forall_mem hstep fun n => w.step_adj n)
+    hfin.not_infinite
+
+/-- A finite-arc `InfiniteGraph` has no one-way Euler path. Strictly
+generalizes `not_hasOneWayEulerPath_of_no_edges` and
+`not_hasOneWayEulerPath_of_single_edge`. -/
+theorem not_hasOneWayEulerPath_of_finite_arcs {V : Type*} {G : InfiniteGraph V}
+    (hfin : (arcSet G).Finite) : ¬ HasOneWayEulerPath G := by
+  rintro ⟨w, hEuler⟩
+  exact InfiniteWalk.not_isEdgeInjective_of_finite_arcs hfin w hEuler.2
+
+/-- A finite-arc `InfiniteGraph` has no bi-infinite Euler path: the ℤ-indexed
+step map would inject `ℤ` into the finite arc set. Strictly generalizes
+`not_hasInfiniteEulerPath_of_no_edges` and
+`not_hasInfiniteEulerPath_of_single_edge`. -/
+theorem not_hasInfiniteEulerPath_of_finite_arcs {V : Type*} {G : InfiniteGraph V}
+    (hfin : (arcSet G).Finite) : ¬ HasInfiniteEulerPath G := by
+  rintro ⟨w, -, hinj⟩
+  have hstep : Function.Injective fun n : ℤ => (w.vertex n, w.vertex (n + 1)) := by
+    intro m n hmn
+    by_contra hne
+    simp only [Prod.mk.injEq] at hmn
+    exact hinj m n hne (Or.inl hmn)
+  exact absurd
+    (Set.infinite_of_injective_forall_mem hstep fun n => w.step_adj n)
+    hfin.not_infinite
+
+/-- A graph on finitely many vertices has no one-way Euler path: infinite
+Euler walks need infinitely many edges, hence infinitely many vertices. -/
+theorem not_hasOneWayEulerPath_of_finite {V : Type*} [Finite V]
+    (G : InfiniteGraph V) : ¬ HasOneWayEulerPath G :=
+  not_hasOneWayEulerPath_of_finite_arcs (Set.toFinite _)
+
+/-- A graph on finitely many vertices has no bi-infinite Euler path. -/
+theorem not_hasInfiniteEulerPath_of_finite {V : Type*} [Finite V]
+    (G : InfiniteGraph V) : ¬ HasInfiniteEulerPath G :=
+  not_hasInfiniteEulerPath_of_finite_arcs (Set.toFinite _)
+
 end KonigsbergOQ03
