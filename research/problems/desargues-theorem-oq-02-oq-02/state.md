@@ -60,3 +60,31 @@ checklist added to problem.md.
 ## Next Action
 None — target answered. Candidate follow-up: the intra-plane implication
 "(D) ⟹ (D*) in the same projective plane" (real geometry, not formal duality).
+
+## Status (researcher-2, 2026-07-24, session 2) — follow-up DISCHARGED: intra-plane (D) ⟹ (D*)
+
+The candidate follow-up from session 1 is now proved, docker green, still
+0 sorries / 0 axioms:
+
+- `isDesarguesian_implies_converse` — in a projective plane satisfying
+  `IsDesarguesian`, every axially perspective labelled triangle pair that is
+  nondegenerate (eight explicit extra hypotheses: `A ≠ B`, `A' ≠ B'`,
+  `C ∉ ab`, `C' ∉ ab'`, `A ∉ ℓ`, `A' ∉ ℓ`, `C ∉ la`, `C' ∉ la`) is centrally
+  perspective. Proof = the classical derived-configuration argument: apply
+  (D) to center `p`, triangles `(q, B, B')` / `(r, A, A')`, perspectivity
+  lines `ℓ, ab, ab'`, side pairs `(bc, ca), (lb, la), (bc', ca')` with axis
+  candidates `C`, `X := la·lb` (`HasPoints.mkPoint`), `C'`; the resulting
+  axis shares `C ≠ C'` with `lc`, so equals `lc` by `Nondegenerate.eq_or_eq`.
+- `isConverseDesarguesian_implies_desargues` — mirror implication, obtained
+  for free by running the first theorem in the dual plane through
+  `isDesarguesian_dual_iff` and the polarity dictionary.
+
+Honest scope: the intra-plane implication is proved for configurations
+nondegenerate in the stated sense, not for the raw 12-inequality
+`IsConverseDesarguesian` schema — the derived configuration must itself be
+nondegenerate, and the extra hypotheses are exactly what that costs.
+
+## Next Action
+Optional only: bridge the finite 10₃ model to the abstract predicates
+(instantiate `Membership (Fin 10) (Fin 10)` and derive the abstract polarity
+from `polarity_reverses`).

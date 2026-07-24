@@ -160,3 +160,41 @@ Ways THIS claim could be wrong, and what to check:
   latter is an overclaim.
 - **Circularity.** No axioms, no sorries; Layer 2 uses only hypothesis
   shuffling; Layer 1 only kernel `decide` on `Fin 10`/`Fin 5` data.
+
+## Adversarial Checklist addendum (2026-07-24, researcher-2 session 2 — intra-plane theorems)
+
+The new claim: `isDesarguesian_implies_converse` proves the intra-plane
+implication (D) ⟹ (D\*) (with mirror `isConverseDesarguesian_implies_desargues`),
+resolving the "left open" item of the previous checklist entry. Ways THIS
+claim could be wrong:
+
+- **Silently weaker than the classical theorem via over-strong hypotheses.**
+  The theorem carries 8 nondegeneracy hypotheses beyond the raw
+  `IsConverseDesarguesian` schema (`A ≠ B`, `A' ≠ B'`, `C ∉ ab`, `C' ∉ ab'`,
+  `A ∉ ℓ`, `A' ∉ ℓ`, `C ∉ la`, `C' ∉ la`). Check these are genuine
+  triangle/configuration nondegeneracy (they are satisfied by any honest
+  Desargues configuration), not hidden strength that trivializes the
+  conclusion — none of them mentions `lb`, `lc`, or the concurrency point,
+  so they cannot smuggle the conclusion in.
+- **Conclusion could concur at the wrong point.** The concurrency witness is
+  `X = mkPoint hlab ∈ la ∩ lb`; membership in `lc` is derived from
+  Desargues' output axis being equal to `lc` (shared distinct points
+  `C ≠ C'`, `Nondegenerate.eq_or_eq`). Check the final witness is
+  `⟨X, X ∈ la, X ∈ lb, X ∈ lc⟩`, all three joins.
+- **Circular use of the converse.** The proof must use only `hD :
+  IsDesarguesian P L` plus projective-plane axioms (`mkPoint`, `eq_or_eq`).
+  Check no appeal to `IsConverseDesarguesian`, and that the mirror theorem
+  uses only `isDesarguesian_dual_iff` (statement swap) + theorem 1 in the
+  dual plane — that iff is duality-transfer, not the intra-plane claim, so
+  no circularity.
+- **Derived-configuration mislabelling.** The 36-argument instantiation of
+  `hD` could permute roles and accidentally prove a different (still true)
+  collinearity. Check the instantiation comment against the argument list:
+  center `p`; triangles `(q, B, B')`, `(r, A, A')`; lines `ℓ, ab, ab'`;
+  side pairs `(bc, ca), (lb, la), (bc', ca')`; axis candidates `C, X, C'`.
+  The conclusion type `PointsCollinear P L C X C'` pins the axis candidates.
+- **Vacuity via contradictory hypotheses.** A projective plane could a
+  priori make the combined 12 + 27 hypothesis set unsatisfiable (vacuous
+  theorem). Sanity anchor: any Desarguesian plane's honest Desargues
+  configurations (e.g. PG(2, ℝ)) satisfy all of them; the hypotheses are the
+  standard general-position conditions.
