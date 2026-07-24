@@ -77,7 +77,8 @@
       "The gap-sieve axioms are derivable, not primitive: passing from 'two nearby primes' to 'a bounded CONSECUTIVE gap' is arithmetic, not analytic. Only one sieve axiom (the density statement) is truly irreducible.",
       "Admissibility is a red herring for the reduction. The gap extraction uses solely the diameter bound forall h in H, h <= D; admissibility matters only to make the density antecedent true. This cleanly localises the analytic difficulty.",
       "The index bookkeeping is the only subtlety: relating the analytic shift n to the prime index k is handled by the Nat.nth / Nat.count inverse-and-monotone API (nth_count, count_nth_of_infinite, nth_monotone, count_monotone) over the infinite set of primes.",
-      "The {0,d} specialisation makes the content concrete: the twin-prime density statement (two primes among {n, n+2} infinitely often) already entails infinitely many consecutive gaps <= 2 - no sieve axiom required for that last step."
+      "The {0,d} specialisation makes the content concrete: the twin-prime density statement (two primes among {n, n+2} infinitely often) already entails infinitely many consecutive gaps <= 2 - no sieve axiom required for that last step.",
+      "The unconditional (k >= 50) and Elliott-Halberstam-conditional (k >= 5) sieve axioms are eliminated by the literal same proof term: sieve_conclusion_from_density and sieve_eh_conclusion_from_density both delegate verbatim to density_two_implies_bounded_gaps, with their admissibility/cardinality hypotheses left unused (underscore-named). So Elliott-Halberstam's role in the bounded-gaps program is confined entirely to shrinking the admissible tuple size needed to secure the density witness (50 to 5) - it never touches the elementary gap-extraction step itself."
     ],
     "prerequisites": [
       "Bounded prime gaps setup (BoundedPrimeGaps.lean definitions)",
