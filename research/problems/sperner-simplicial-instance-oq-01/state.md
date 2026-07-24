@@ -1,11 +1,88 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: ACT (S4 ACT complete — triVtx + vertex_injective shipped + Docker-verified; S5 triAdj next)
+**Phase**: COMPLETED (S5–S8 shipped — `standardTriangleTriangulation m : Triangulation (LatticePoint m) 2` assembled with all four obligations proved m-parametrically; general-m Sperner corollary included)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-07-24 (Session 9 / S4 ACT researcher-3)
-**Iteration**: 7
+**Last Updated**: 2026-07-24 (Session 10–11 / S5–S8 researcher-2)
+**Iteration**: 9
+
+## Session 11 — S7+S8: `triAdj_vertex` + instance assembly = NODE COMPLETE (researcher-2, 2026-07-24)
+
+Same-session continuation on the same branch/PR as Session 10. Ships the last
+two rungs:
+
+* `triAdj_vertex` — the six interior edge-set equalities. Key structural fact:
+  every `some` row of the `triAdj` table lists the shared edge in the SAME
+  order on both sides (e.g. `up i j` positions 1,2 and `down i j` positions
+  0,1 both enumerate `(i+1,j), (i,j+1)`), so each case closes by erase-set
+  computation + `Finset.image_insert`/`image_singleton` + `rfl` (proof
+  irrelevance on the subtype memberships).
+  **v4.31 gotcha (cost one build cycle)**: `fin_cases k` produces
+  `Fin.mk`-literals (`⟨1, ⋯⟩`) while the `triAdj`-table `k'` lands as OfNat
+  literals (`(1 : Fin 3)`) — `simp only` erase lemmas keyed on one form do
+  NOT match the other (bare `rfl` pushed through some but not all unreduced
+  images). Fix: state each erase equation in BOTH forms (`e1 :
+  univ.erase (1 : Fin 3) = {0,2}` and `e1m : univ.erase (⟨1, by omega⟩ :
+  Fin 3) = {0,2}`, all `by decide`); simp unifies mk-form proof args by
+  proof irrelevance.
+* `standardTriangleTriangulation m : Triangulation (LatticePoint m) 2` —
+  instance assembly (Cell := `TriCell m`; S3 instances; S4–S7 theorems slot
+  into the four obligations directly).
+* `standardTriangleTriangulation_sperner` — 2-d Sperner at every resolution
+  `m` via the abstract `Triangulation.sperner` (generalises
+  `standardTriangle2_sperner`).
+
+Leaf file 392 → 531 LOC, 0 sorries, 0 axioms; Docker 1117 jobs clean, no
+warnings in the leaf file.
+
+**Node status**: the OQ ("verify the standard 2-simplex triangulation as a
+concrete Triangulation instance") is now answered at BOTH the concrete m=2
+resolution (`standardTriangle2`, decide-based) and the general resolution
+(`standardTriangleTriangulation m`, fully parametric). Adversarial checklist
+added to problem.md. Follow-ups: **0 new** — the natural continuations are
+exactly the existing sibling OQs (oq-03 boundary-door parity for the standard
+coloring, oq-04 Brouwer, oq-06 Hex), which consume this instance.
+
+## Session 10 — S5+S6 ACT: `triAdj` + `triAdj_ne` + `triAdj_symm` (researcher-2, 2026-07-24)
+
+Same-day follow-up to Session 9 (fresh branch off origin/main). Ships the S5
+adjacency case-table plus, as a stretch, the S6 symmetry proof — three of the
+four `Triangulation` obligations for the general-`m` instance are now closed
+`m`-parametrically (`vertex_injective` S4, `adj_ne` + `adj_symm` this session).
+
+**Shipped** (leaf file 296 → 392 LOC, 0 sorries, 0 axioms; two Docker builds,
+1117 jobs each, both first-try clean, Lean v4.31.0):
+
+* `triAdj m : TriCell m → Fin 3 → Option (TriCell m × Fin 3)` — derived from
+  the `triVtx` geometry: `up i j` edges are interior iff `i + j + 1 < m`
+  (hypotenuse, ↔ `down i j @ 2`), `0 < i` (vertical, ↔ `down (i-1) j @ 1`),
+  `0 < j` (horizontal, ↔ `down i (j-1) @ 0`); all three `down` edges are
+  interior. **Successor patterns** (`up (i+1) j @ 1 ↦ down i j` instead of
+  `i - 1` subtraction) keep the table subtraction-free — this is what made
+  the `adj_symm` round-trips reduce cleanly. Generalises the m=2 `tadj`
+  table (`c0 0 ↔ c3 2`, `c1 1 ↔ c3 1`, `c2 2 ↔ c3 0`).
+* `triAdj_ne` — every `some` entry pairs `up` with `down`, so `s ≠ s'` by
+  constructor disjointness: `rintro rfl`, case split (`fin_cases k`; nested
+  `rcases i/j with _ | _` where the table matches on successor patterns;
+  `by_cases` on the hypotenuse dite), then `simp [triAdj, hc] at hadj`
+  closes every branch (reduceCtorEq handles both `none = some` and
+  `down = up` mismatches).
+* `triAdj_symm` — six interior round-trips: extract the neighbour equation
+  with `simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj`
+  (+ `dif_pos hc` on the hypotenuse arm), `obtain ⟨rfl, rfl⟩`, then
+  `simp [triAdj]` (with `h` feeding the dite condition on the
+  `down @ 2 → up @ 0` leg); proof irrelevance identifies the regenerated
+  constructor bound proofs — no drift issues, no `Fin.mk` friction.
+
+**Remaining for the full `Triangulation (LatticePoint m) 2` instance** (the
+genuine open core): S7 `adj_vertex` — the Finset-image equality
+`(univ.erase k).image (triVtx m s) = (univ.erase k').image (triVtx m s')`
+for the six interior pairings (2-element edge sets; expect `Finset.ext` +
+`fin_cases`/`decide`-free membership chasing, or precompute both images as
+explicit pair-insertions) — then S8 instance assembly
+(`standardTriangleTriangulation m : Triangulation (LatticePoint m) 2` — all
+four obligations then exist; `Cell := TriCell m`, instances from S3).
 
 ## Session 9 — S4 ACT: `triVtx` + `vertex_injective_triVtx` (researcher-3, 2026-07-24)
 
