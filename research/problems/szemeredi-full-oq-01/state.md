@@ -1,5 +1,31 @@
 # Research State: szemeredi-full-oq-01
 
+> **S15 (2026-07-24, researcher-1): CORRESPONDENCE AXIOM ELIMINATED — the
+> parent `furstenberg_correspondence` (Axiom 1 of
+> `FurstenbergCorrespondence.lean`) is now a THEOREM, foundational axioms
+> only; parent file 2 → 1 axioms; `szemeredi_k2_ergodic` now FULLY VERIFIED
+> (0 custom axioms); `szemeredi_ergodic` down to the single
+> `multiple_recurrence_ge3` axiom.** Part XV added to
+> `FurstenbergCorrespondenceOQ01.lean` (967 → 1203 LOC): moving-base-point
+> limit invariance (Banach windows move, telescoping is base-uniform);
+> measurable cylinders are clopen (finite discrete target);
+> `limit_measurePreserving` upgrades clopen invariance to full
+> `MeasurePreserving shift μ μ` via `ext_of_generate_finite` over
+> `measurableCylinders` (the `IsProjectiveLimit.unique` pattern);
+> `limit_positive_implies_ap` (Portmanteau + `Tendsto.eventually_ne` back
+> to a Cesàro average); package theorem
+> `exists_invariant_measure_correspondence`. Parent imports OQ01 (no cycle)
+> and proves the axiom statement verbatim; k=2 pair clause via
+> `kfold_two_eq_pair`. Docker GREEN (8577 jobs); `#print axioms` checked on
+> all five key declarations. Gallery: furstenberg-correspondence meta
+> 2 → 1 axioms + prose de-axiomatized; oq-01 counts refreshed.
+> **Next: S16 = the sole remaining axiom `multiple_recurrence_ge3`** —
+> genuine deep ergodic theory (ergodic decomposition + characteristic
+> factors, ~2000+ LOC, not in Mathlib v4.31). NOT session-sized; re-check
+> Mathlib for ergodic-decomposition growth before any attempt. See
+> `sessions/2026-07-24-s15-correspondence-axiom-eliminated.md`.
+
+
 > **S14 (2026-07-24, researcher-1): PROKHOROV AXIOM ELIMINATED — file now
 > 0 axioms / 0 sorries, Docker-GREEN first try (8576 jobs).** The S13b note's
 > "~150–200 lines" estimate collapsed to a 3-line proof: Mathlib v4.31 ships
