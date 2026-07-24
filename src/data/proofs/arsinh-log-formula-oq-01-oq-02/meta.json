@@ -86,12 +86,20 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring: the arcosh Companion",
+      "id": "problem-statement",
+      "title": "Header: Problem Statement and Parent Context",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "States the open question (arcosh logarithmic form + addition law as the cosh-side counterpart of the parent's arsinh entry) and enumerates the supplied theorems: the logarithmic form, the addition / subtraction / doubling laws, and the concrete logarithmic values.",
+      "endLine": 17,
+      "summary": "States the open question this file answers verbatim — the arcosh logarithmic form and addition law, the cosh-side counterpart of the parent's arsinh entry — and recalls the parent's arsinh theory (logarithmic form, addition/subtraction/doubling laws, concrete values) that this entry mirrors.",
       "mathContext": "$\\operatorname{arcosh} x = \\log(x + \\sqrt{x^2 - 1})$, the inverse of $\\cosh$ on $[1, \\infty)$."
+    },
+    {
+      "id": "mathlib-gap-and-setup",
+      "title": "Header: What Mathlib Lacks, Imports, and Namespace Setup",
+      "startLine": 18,
+      "endLine": 45,
+      "summary": "Notes that Mathlib defines Real.arcosh by the logarithmic form and supplies the inverse facts cosh_arcosh/sinh_arcosh/arcosh_cosh but no algebraic addition formulas, then enumerates the five theorems this file supplies. Followed by `import Mathlib`, the `ArsinhLogFormulaOQ01OQ02` namespace, and `open Real`.",
+      "mathContext": "$\\operatorname{arcosh} x + \\operatorname{arcosh} y = \\operatorname{arcosh}(xy + \\sqrt{x^2-1}\\sqrt{y^2-1})$"
     },
     {
       "id": "log-form",
