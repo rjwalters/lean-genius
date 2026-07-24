@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: RJ Walters
 -/
 import Mathlib
+import Proofs.SpernerFreudenthalSimplex
 
 /-!
 # Brouwer's Fixed-Point Theorem via Sperner's Lemma (OQ-02)
@@ -53,6 +54,10 @@ Since Σᵢ f(x*)ᵢ = 1 = Σᵢ x*ᵢ, all inequalities are equalities: f(x*) =
 * `SpernerBrouwer.sperner_panchromatic`: panchromatic tuple from Sperner (axiom)
 * `SpernerBrouwer.brouwer_from_panchromatic`: exact fixed point from panchromatic tuples
 * `SpernerBrouwer.brouwer_fixed_point_simplex`: **Brouwer's theorem for `Δⁿ`**
+* `SpernerBrouwer.brouwer_fixed_point_simplex_zero/_one/_two`: **axiom-free** Brouwer
+  for `Δ⁰`, `Δ¹`, `Δ²` — the `sperner_panchromatic` axiom is replaced by the fully
+  machine-checked instances `SpernerFreudSimp.sperner_panchromatic_zero/_one/_two`
+  (the n=2 case via the Type-1/Type-2 Freudenthal triangulation of `Δ²`)
 
 ## Tags
 
@@ -351,5 +356,59 @@ theorem brouwer_fixed_point_simplex {n : ℕ}
     ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧ f x = x :=
   brouwer_from_panchromatic f hf_cont hf_map
     (fun N hN => sperner_panchromatic N hN f hf_map)
+
+-- ============================================================
+-- SECTION VI: Axiom-Free Instances (n = 0, 1, 2)
+-- ============================================================
+
+/-- The simplex-membership predicate used by `SpernerFreudenthalSimplex` agrees
+    definitionally with the one used here. -/
+lemma inSimplex_iff_freud {n : ℕ} (v : Fin (n + 1) → ℝ) :
+    SpernerFreudSimp.InSimplex v ↔ InSimplex v := Iff.rfl
+
+/-- **Brouwer's fixed-point theorem for `Δ⁰`, axiom-free**: the panchromatic input
+    is the fully proved `SpernerFreudSimp.sperner_panchromatic_zero`, so this
+    instance does not use the `sperner_panchromatic` axiom. -/
+theorem brouwer_fixed_point_simplex_zero
+    (f : (Fin 1 → ℝ) → Fin 1 → ℝ)
+    (hf_cont : Continuous f)
+    (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
+    ∃ x : Fin 1 → ℝ, InSimplex x ∧ f x = x :=
+  brouwer_from_panchromatic (n := 0) f hf_cont hf_map (fun N hN => by
+    obtain ⟨v, h1, h2, h3⟩ :=
+      SpernerFreudSimp.sperner_panchromatic_zero N hN f hf_map
+    exact ⟨v, h1, h2, fun i j l => by simpa using h3 i j l⟩)
+
+/-- **Brouwer's fixed-point theorem for `Δ¹`, axiom-free**: the panchromatic input
+    is the fully proved `SpernerFreudSimp.sperner_panchromatic_one` (discrete IVT
+    on the 1-dimensional grid), so this instance does not use the
+    `sperner_panchromatic` axiom. -/
+theorem brouwer_fixed_point_simplex_one
+    (f : (Fin 2 → ℝ) → Fin 2 → ℝ)
+    (hf_cont : Continuous f)
+    (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
+    ∃ x : Fin 2 → ℝ, InSimplex x ∧ f x = x :=
+  brouwer_from_panchromatic (n := 1) f hf_cont hf_map (fun N hN => by
+    obtain ⟨v, h1, h2, h3⟩ :=
+      SpernerFreudSimp.sperner_panchromatic_one N hN f hf_map
+    exact ⟨v, h1, h2, fun i j l => by simpa using h3 i j l⟩)
+
+/-- **Brouwer's fixed-point theorem for `Δ²`, axiom-free**: the panchromatic input
+    is the fully proved `SpernerFreudSimp.sperner_panchromatic_two` (Type-1/Type-2
+    Freudenthal triangulation of `Δ²` with odd boundary-door parity), so this
+    instance does not use the `sperner_panchromatic` axiom.
+
+    This upgrades the n=2 case of `brouwer_fixed_point_simplex` from
+    axiom-conditional to fully machine-checked:
+    `#print axioms` = `[propext, Classical.choice, Quot.sound]`. -/
+theorem brouwer_fixed_point_simplex_two
+    (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+    (hf_cont : Continuous f)
+    (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
+    ∃ x : Fin 3 → ℝ, InSimplex x ∧ f x = x :=
+  brouwer_from_panchromatic (n := 2) f hf_cont hf_map (fun N hN => by
+    obtain ⟨v, h1, h2, h3⟩ :=
+      SpernerFreudSimp.sperner_panchromatic_two N hN f hf_map
+    exact ⟨v, h1, h2, fun i j l => by simpa using h3 i j l⟩)
 
 end SpernerBrouwer
