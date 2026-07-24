@@ -41,7 +41,8 @@
       "Iterated power sets of ℝ march up the beth tower one rung at a time: |ℝ| = ℶ₁, |𝒫(ℝ)| = ℶ₂, |𝒫(𝒫(ℝ))| = ℶ₃, because each power set doubles the exponent and the beth function is defined by exactly that doubling, ℶ_{α+1} = 2^{ℶ_α}.",
       "The beth-index is absolute where the aleph-index is not. Whether |𝒫(𝒫(ℝ))| equals ℵ₃ (or any particular aleph) is independent of ZFC, but that it equals ℶ₃ is a definitional certainty — this is the cleanest illustration of why set theorists use the beth scale to name 2^κ-style cardinals.",
       "Pinning the beth successor to a concrete numeral requires only the tiny ordinal fact 3 = succ 2 (and 2 = succ 1); once Cardinal.beth_succ is applied the cardinal computation is purely formal.",
-      "Cantor's strict inequality κ < 2^κ, applied at κ = #ℝ and κ = #(Set ℝ), gives the strict containment chain |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| for free, matching the strict monotonicity of the beth function."
+      "Cantor's strict inequality κ < 2^κ, applied at κ = #ℝ and κ = #(Set ℝ), gives the strict containment chain |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| for free, matching the strict monotonicity of the beth function.",
+      "A nested-Set goal makes a blind `rw [mk_set]` ambiguous: proving |ℝ| < |𝒫(ℝ)| the goal #ℝ < #(Set ℝ) has only one `#(Set _)` pattern, so `rw [mk_set]` unambiguously targets it. But for |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| the goal #(Set ℝ) < #(Set (Set ℝ)) contains two matching patterns (#(Set ℝ) and #(Set (Set ℝ))), so `card_powerSet_real_lt_powerSet_powerSet` first pins down `mk_set` at the intended instance via an explicit `have h : #(Set (Set ℝ)) = 2 ^ #(Set ℝ) := mk_set` before rewriting — a small but necessary disambiguation forced by climbing to the next level of the iterated power set."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib: #, the cardinality of a type, and cardinal exponentiation 2^κ",
