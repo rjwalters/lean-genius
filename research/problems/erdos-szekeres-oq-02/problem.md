@@ -137,12 +137,26 @@ formalizable core (see knowledge.md). The pinned Lean targets:
 3. **Exact comparison count.** A cost function counting exactly the scanned
    candidate pairs `(j, i), j < i` of the DP, with the proved closed form
    `n * (n - 1) / 2` (and a division-free form `* 2 = n * (n - 1)`).
-4. **Full correctness (milestone 2, later session).**
-   `incDP f i = maxIncLen f i` — the `≥` half (optimal substructure /
-   stripping) is the remaining open piece; the `≤` half is item 2.
-5. **Actual data (milestone 3, later session).** An executable
+4. **Full correctness (milestone 2 — CLOSED 2026-07-24 in corrected form).**
+   ~~`incDP f i = maxIncLen f i`~~ — **the pointwise equality as originally
+   pinned here is FALSE** (found and formalized 2026-07-24, S6): the parent's
+   `HasIncreasingEndingAt` disjunction `k j < i ∨ (j.val = len-1 ∧ k j = i)`
+   never *forces* the chain to touch `i`, so chains lying entirely below `i`
+   qualify and `maxIncLen` is a *running maximum*, not the ending-at-`i`
+   maximum its docstring describes. Refutation: `f = ![1,2,0]`, `i = 2` has
+   `maxIncLen = 2` (chain at positions 0,1) but `incDP = 1`
+   (`incDP_lt_maxIncLen_counterexample`). The corrected full-correctness pair,
+   both proved:
+   - `exactIncEnd_iff_le_incDP` : `ExactIncEnd f i len ↔ len ≤ incDP f i`
+     (the DP is exactly the max length ending exactly at `i` — via the
+     stripping lemma `ExactIncEnd.le_incDP`), and
+   - `maxIncLen_eq_sup_Iic` : `maxIncLen f i = (Iic i).sup (incDP f)`
+     (the parent's measure is the prefix maximum of the DP table).
+5. **Actual data (milestone 3 — CLOSED 2026-07-24).** An executable
    `incWitness f i : IncreasingSubseq f (incDP f i)` (computable, i.e. via
-   `List.argmax`-style selection, not `Classical.choice`).
+   `List.argmax`-style selection, not `Classical.choice`), plus the global
+   `lisWitness f : IncreasingSubseq f (lisLength f)`; `#eval` prints the
+   actual indices.
 
 ### Does not count
 
@@ -157,3 +171,35 @@ formalizable core (see knowledge.md). The pinned Lean targets:
   pigeonhole) without the DP — that is sibling oq-01's territory.
 - **`incDP ≤ maxIncLen` alone** presented as full correctness (item 4 needs
   both directions).
+
+## Adversarial checklist (2026-07-24, S6 — for the milestone 2+3 closure claim)
+
+How THIS closure claim could be wrong; auditors should check each:
+
+1. **The counterexample could be miscomputed.** Verify `HasIncreasingEndingAt
+   (![1,2,0]) 2 2` really holds: the chain `k = (0,1)` must satisfy the
+   disjunction `k j < 2 ∨ (last ∧ k j = 2)` — both positions use the FIRST
+   disjunct (0 < 2, 1 < 2); nothing requires the second. If the parent's
+   definition is ever strengthened (forcing `k (last) = i`), the counterexample
+   collapses and `incDP = maxIncLen` becomes true — re-audit
+   `incDP_lt_maxIncLen_counterexample` after any parent edit.
+2. **`ExactIncEnd f i 0` is vacuously true** (empty chain via `Fin.elim0`), so
+   `exactIncEnd_iff_le_incDP` at `len = 0` reads "True ↔ 0 ≤ incDP" — correct,
+   but do not cite the iff as "chains of every length ≤ incDP are nonempty
+   data"; length-0 is the degenerate case.
+3. **The bridge could silently prove the wrong near-miss.** `maxIncLen_eq_sup_Iic`
+   uses `Finset.Iic i` (closed interval, INCLUDES `i`). With `Iio` it would be
+   false at positions where the maximum ends exactly at `i`. Check `Iic` not
+   `Iio`.
+4. **Window bound in `incDP_le_maxIncLen_of_le`**: `Nat.le_findGreatest`
+   requires `incDP f j ≤ i.val + 1`; this comes from `incDP_le_index_succ`
+   plus `j ≤ i` — check the `j = i` boundary case (equality allowed).
+5. **Computability near-miss (the pinned one)**: `incChain`/`incWitness`/
+   `lisWitness` must carry NO `noncomputable` marker and `#eval` must run
+   (smoke tests at file end). `Classical.choice` may appear in the *Prop*
+   fields' proofs (erased at runtime) — the claim is about the data, i.e. the
+   positions map, selected via `List.argmax` only.
+6. **Circularity check**: nothing here uses the parent's
+   `erdos_szekeres_existence_axiom` or `erdos_szekeres_tight_axiom` — the file
+   imports parent *definitions* only; `#print axioms` on the capstones must
+   show only propext/Classical.choice/Quot.sound.

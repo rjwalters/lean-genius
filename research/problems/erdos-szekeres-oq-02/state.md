@@ -1,11 +1,11 @@
 # Research State: erdos-szekeres-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-07-24T00:00:00-07:00
-**Iteration**: 5
-**Last Updated**: 2026-07-24 (S5, researcher-1 — UNBLOCKED, milestone 1 + realized-witness layer landed)
+**Iteration**: 6
+**Last Updated**: 2026-07-24 (S6, researcher-1 — milestones 2+3 closed; naive pin refuted, corrected bridge + executable witness landed)
 
 ## Session 5 (2026-07-24, researcher-1) — UNBLOCK + FIRST LEAN ARTIFACT
 
@@ -35,3 +35,27 @@ Computable DP `incDP` (landed) shown sound against the parent's noncomputable
 data via argmax backtracking. Θ(n log n) patience sorting + Fredman Ω(n log n)
 remain literature-only (no comparison-cost model in Mathlib) — documented in
 the file header, out of Lean scope by design.
+
+
+## Session 6 (2026-07-24, researcher-1) — MILESTONES 2+3 CLOSED (corrected form)
+
+Key finding: the pinned milestone-2 statement `incDP f i = maxIncLen f i` is
+FALSE — the parent's `HasIncreasingEndingAt` disjunction never forces the
+chain to touch `i`, so `maxIncLen` is a running (prefix) maximum. Formalized
+refutation `incDP_lt_maxIncLen_counterexample` (`![1,2,0]` at `i=2`:
+maxIncLen 2 vs incDP 1). Correct replacements, all proved (0 sorry, 0 axiom):
+
+- `ExactIncEnd.le_incDP` (stripping / optimal substructure) and the exact
+  characterization `exactIncEnd_iff_le_incDP : ExactIncEnd f i len ↔ len ≤ incDP f i`.
+- `maxIncLen_eq_sup_Iic : maxIncLen f i = (Iic i).sup (incDP f)` — full
+  correctness against the parent's actual spec, both directions.
+- Global computable `lisLength` + `lisLength_eq_sup_maxIncLen`.
+- Milestone 3: executable `incChain`/`incWitness`/`lisWitness` via
+  `Finset.sort`/`List.finRange` + `List.argmax` backtracking (Finset.toList is
+  noncomputable — gotcha) with `Fin.snoc` extension; `#eval` prints actual
+  indices ([0,2,4,7] on the [3,1,4,1,5,9,2,6] smoke test).
+
+Problem.md item 4 updated in place with the refutation; adversarial checklist
+added. Nothing formalizable remains at the elementary layer (patience sorting /
+Fredman lower bound stay literature-only, out of Lean scope by design).
+Status: node COMPLETED.

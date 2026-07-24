@@ -292,3 +292,62 @@ and Docker is back)
 - `proofs/Proofs/ErdosSzekeresOQ02.lean` (NEW, 319 LOC)
 - `research/problems/erdos-szekeres-oq-02/problem.md` (pinning section)
 - `research/problems/erdos-szekeres-oq-02/state.md`, tracker JSON (unblocked)
+
+---
+
+## Session 6 (2026-07-24, researcher-1) — Milestones 2+3 CLOSED; the naive pin was FALSE
+
+### The finding: `incDP f i = maxIncLen f i` is false
+
+The parent's `HasIncreasingEndingAt f i len` requires each chain position to
+satisfy `k j < i ∨ (j.val = len - 1 ∧ k j = i)`. The second disjunct is
+*available* to the last element but never *forced* — chains lying entirely
+strictly below `i` qualify. So `maxIncLen` is a **running (prefix) maximum**
+of ending-at lengths, not the ending-at-`i` length its docstring describes.
+Counterexample (formalized, `incDP_lt_maxIncLen_counterexample`):
+`f = ![1,2,0]`, `i = 2`: chain `1 < 2` at positions `(0,1)` gives
+`maxIncLen f 2 = 2`, while `incDP f 2 = 1` (nothing below value `0`).
+
+### What replaced it (all proved, 0 sorry / 0 axiom)
+
+- `ExactIncEnd.le_incDP` — stripping/optimal substructure by induction on
+  length: strip the last element, recurse at the second-to-last position
+  (an admissible predecessor), `sup` bounds the rest.
+- `exactIncEnd_iff_le_incDP` — `ExactIncEnd f i len ↔ len ≤ incDP f i`
+  (with `ExactIncEnd.of_le` suffix-truncation for the ← direction). incDP is
+  EXACTLY the max exact-ending length.
+- `maxIncLen_eq_sup_Iic` — `maxIncLen f i = (Iic i).sup (incDP f)`, the
+  corrected full-correctness bridge, both directions
+  (`incDP_le_maxIncLen_of_le` uses `Nat.le_findGreatest`;
+  `maxIncLen_le_sup_Iic` uses `Nat.findGreatest_spec` seeded with the
+  singleton chain, then strips at the actual last position).
+- `lisLength` (computable global LIS length) +
+  `lisLength_eq_sup_maxIncLen`.
+- Milestone 3: `IncChain` (Type-level `ExactIncEnd` with data),
+  `IncChain.single/extend/cast`, `incArgmax` via
+  `((preds f i).sort (· ≤ ·)).argmax`, `incChain` (WF recursion on `i.val`),
+  `incWitness : IncreasingSubseq f (incDP f i)`, `incWitness_positions_last`,
+  `lisArgmax` via `(List.finRange n).argmax`, and the global
+  `lisWitness : IncreasingSubseq f (lisLength f)`. All computable; `#eval`
+  smoke tests print the actual indices.
+
+### Lean gotchas hit
+
+- **`Finset.toList` is NONCOMPUTABLE** (`Quotient.out`-based) — a
+  `List.argmax` selection over a Finset must go through `Finset.sort (· ≤ ·)`
+  (computable merge sort; `Finset.mem_sort`, `Finset.length_sort`) or
+  `List.finRange` for `univ`. First build failed exactly here.
+- `rw [Finset.sup_insert, …, h0, h1, h2]` leaves a `1 ⊔ (2 ⊔ 1) = 2` goal —
+  close with `decide` (and use `simp only` so beta-reduction happens before
+  the pointwise rewrites).
+- `Nat.findGreatest_spec (hmb : m ≤ n) (hm : P m)` needs any positive seed
+  witness (use the singleton chain at `m = 1`), not the findGreatest value
+  itself.
+
+### Status after S6
+
+All three pinned milestones are closed (milestone 2 in corrected form, with
+the original pin refuted and the refutation formalized). Remaining open on
+this OQ: nothing formalizable at the elementary layer — Θ(n log n) patience
+sorting and Fredman's Ω(n log n) stay literature-only (no comparison-cost
+model in Mathlib). Node is a candidate for COMPLETED.
