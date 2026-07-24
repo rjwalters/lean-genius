@@ -94,10 +94,16 @@
       "summary": "fib_catalan_int: F(n+1)² − F(n)·F(n+2) = (−1)^n over ℤ, proved by a one-step induction whose step substitutes both Fibonacci recurrences and collapses to the negation of the inductive hypothesis (linear_combination -ih)."
     },
     {
-      "title": "The Lucas analogue of Cassini's identity",
+      "title": "Reindexed Lucas Cassini identity",
       "startLine": 67,
+      "endLine": 84,
+      "summary": "lucas_cassini_int: the subtraction-free reindexed form L(n)·L(n+2) − L(n+1)² = (−1)^n·5, by the same sign-flipping induction as fib_catalan_int, using the parent's Lucas recurrence lucas_add_two in place of Nat.fib_add_two. This is the mathematical heart of the result — the literal open-question form below is pure reindexing."
+    },
+    {
+      "title": "Literal open-question form",
+      "startLine": 86,
       "endLine": 96,
-      "summary": "lucas_cassini_int: the subtraction-free reindexed form L(n)·L(n+2) − L(n+1)² = (−1)^n·5, by the same sign-flipping induction using the parent's lucas_add_two. lucas_cassini: the literal n−1 open-question form for n ≥ 1, obtained by writing n = 1 + m and normalising indices with omega."
+      "summary": "lucas_cassini: the literal n−1 open-question form L(n−1)·L(n+1) − L(n)² = (−1)^{n−1}·5 for n ≥ 1, obtained from lucas_cassini_int by writing n = 1 + m (Nat.exists_eq_add_of_le) and normalising the three shifted indices with omega before applying the reindexed identity at m."
     },
     {
       "title": "Structural consequence: the discriminant identity",
