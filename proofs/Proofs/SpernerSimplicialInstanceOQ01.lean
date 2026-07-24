@@ -249,6 +249,47 @@ instance instFintype (m : ℕ) : Fintype (TriCell m) where
 
 end TriCell
 
+/-- Vertex map for the standard subdivision of Δ² at resolution `m`
+(S4 ACT, per PREP #18719 §8, match-pattern form per its §9 risk-note 3).
+
+For `up i j h`, positions `k = 0, 1, 2` give `(i, j)`, `(i+1, j)`,
+`(i, j+1)` (SW → SE → N corner).
+
+For `down i j h`, positions `k = 0, 1, 2` give `(i+1, j)`, `(i, j+1)`,
+`(i+1, j+1)` (W → N → NE corner). All six subtype-membership proofs are
+`omega`-discharged from the constructor bound (`i + j < m` resp.
+`i + j + 1 < m`). -/
+def triVtx (m : ℕ) : TriCell m → Fin 3 → LatticePoint m
+  | TriCell.up i j h, ⟨0, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), show i + j ≤ m by omega⟩
+  | TriCell.up i j h, ⟨1, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j, by omega⟩), show i + 1 + j ≤ m by omega⟩
+  | TriCell.up i j h, ⟨_ + 2, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j + 1, by omega⟩), show i + (j + 1) ≤ m by omega⟩
+  | TriCell.down i j h, ⟨0, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j, by omega⟩), show i + 1 + j ≤ m by omega⟩
+  | TriCell.down i j h, ⟨1, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j + 1, by omega⟩), show i + (j + 1) ≤ m by omega⟩
+  | TriCell.down i j h, ⟨_ + 2, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j + 1, by omega⟩), show i + 1 + (j + 1) ≤ m by omega⟩
+
+/-- The three vertices of each cell are pairwise distinct (the
+`vertex_injective` obligation of the eventual
+`Triangulation (LatticePoint m) 2` instance). Each off-diagonal case
+reduces to an impossible `Nat` equation (`i = i + 1` or `j = j + 1`)
+after projecting to the underlying `Fin (m+1) × Fin (m+1)` pair. -/
+theorem vertex_injective_triVtx (m : ℕ) :
+    ∀ c : TriCell m, Function.Injective (triVtx m c) := by
+  intro c k k' hkk'
+  have hpair := congrArg (fun p : LatticePoint m => p.1) hkk'
+  cases c with
+  | up i j h =>
+    fin_cases k <;> fin_cases k' <;>
+      simp [triVtx, Prod.mk.injEq, Fin.mk.injEq] at hpair <;> rfl
+  | down i j h =>
+    fin_cases k <;> fin_cases k' <;>
+      simp [triVtx, Prod.mk.injEq, Fin.mk.injEq] at hpair <;> rfl
+
 end Triangle
 
 end Triangulation
