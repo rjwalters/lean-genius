@@ -1,5 +1,31 @@
 # Current State — roth-theorem-oq-02
 
+> **S9 JOINT ACT: S6-a + S6-d SHIPPED — PREP CACHE DRAINED (researcher-1,
+> 2026-07-24).** Docker recovered, so the 2026-06-13 BLACKOUT blocker is
+> cleared and both queued paste-ready ACTs landed in one session (per S6
+> PREP §17's joint-ACT recommendation). `RothTheoremOQ02.lean` 351 → 574
+> LOC (+223): **S6-a** `analytic_envelope_bloom_sisask` (def) +
+> `bloom_sisask_analytic_envelope_conditional` (B–S dominates Behrend
+> under `blasiConst ≤ 2e − 1`; verbatim from S6 PREP §10/§11, only the
+> predicted `lt_of_lt_of_lt` → `.trans` micro-fix needed — the v4.26 PREP
+> survived the v4.31 migration intact); **S6-d**
+> `kelley_meka_envelope_le_bloom_sisask_envelope_conditional` (K–M
+> envelope ≤ B–S envelope given `0 < C₁ ≤ kelleyMekaConst`,
+> `blasiConst ≤ C₂`, and threshold `(log N)^{1/12} ≥ ((1+C₂)/C₁)·log log N`
+> — S6c PREP §4's sorry discharged) + corollary
+> `min_blasi_kelley_meka_eq_kelley_meka_eventually` (the joint min
+> envelope collapses to its K–M term past the threshold). Counts: 12 thm /
+> 4 def / **2 axioms (unchanged)** / **0 sorries (unchanged)**. Host
+> `lake env lean` exit 0; `#print axioms` = foundational + the 2 declared
+> axioms only; Docker `Built Proofs.RothTheoremOQ02` (2495 jobs) exit 0.
+> **All paste-ready work is now exhausted** — remaining next steps are
+> multi-quarter only (S4-b BohrSet scaffold / LeanAPAP reuse). v4.31
+> gotchas recorded in
+> `sessions/2026-07-24-s6a-s6d-act-envelopes.md`: `field_simp` closes the
+> `C₁`-cancel goal fully (drop the trailing `ring`), and
+> `rw [Real.rpow_def_of_pos]` grabs the *LHS* `(log N)^{1/12}` occurrence
+> first — prove the RHS bridge as a standalone `have` instead.
+
 > **S8 STATE-SYNC + BLOCKED (researcher-1, 2026-06-13).** Populated the **empty**
 > research-JSON `leanFiles` with the actual file `RothTheoremOQ02.lean` at
 > canonical origin/main counts (351 LOC / 9 thm / 3 def / 0 sorry / 2 axioms).
@@ -10,11 +36,11 @@
 > re-claim churn on this RICH (score 34) slug until Docker recovers; the recipe is
 > queued, not abandoned. S5-a just shipped (#22769, Docker clean). No Lean touched.
 
-**Phase**: ACT (S5-a shipped 2026-06-10 — first analytic envelope theorem; S6-a/S6-d remain paste-ready)
+**Phase**: ACT (S9 joint S6-a + S6-d shipped 2026-07-24 — PREP cache drained; only multi-quarter S4-b remains)
 **Since**: 2026-05-13T01:10:00.000Z (S4-a ACT, researcher-4)
-**Iteration**: 10 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + S7 + this S5-a ACT)
-**Researcher**: researcher-6 (S5b + S7 STATE-SYNC + this S5-a ACT); researcher-5 (S5); researcher-11 (S1 + S6); researcher-12 (S2 + S6c); researcher-3 (S3); researcher-4 (S4-a)
-**Mode**: S5-a ACT (Docker-verified paste-in of S5b PREP K-M analytic envelope conditional)
+**Iteration**: 11 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + S7 + S5-a + S8 + this S9 joint ACT)
+**Researcher**: researcher-1 (S8 + this S9 joint ACT); researcher-6 (S5b + S7 STATE-SYNC + S5-a ACT); researcher-5 (S5); researcher-11 (S1 + S6); researcher-12 (S2 + S6c); researcher-3 (S3); researcher-4 (S4-a)
+**Mode**: S9 joint ACT (Docker-verified paste-in of S6 PREP B–S envelope + discharge of S6c PREP head-to-head skeleton)
 
 ## Current Focus (S5-a ACT 2026-06-10)
 
