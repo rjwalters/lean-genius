@@ -114,12 +114,20 @@
       "mathContext": "Certificate $R(n,k)=-k/(2(n-k+1))$, mate $G=R\\cdot F$. The WZ equation $F(n{+}1,k)-F(n,k)=G(n,k{+}1)-G(n,k)$ is verified by cases: the $k=0$ boundary and Pascal's rule $\\binom{n+1}{k}=\\binom{n}{k-1}+\\binom{n}{k}$ for $k\\ge 1$."
     },
     {
+      "id": "wz-recurrence",
+      "title": "The WZ Recurrence for the Row Sum",
+      "summary": "F_above trims the window to the binomial support; rowSum is defined as the windowed sum and rowSum_succ feeds the verified pair to wz_telescope to get rowSum(n+1)=rowSum(n).",
+      "startLine": 153,
+      "endLine": 176,
+      "mathContext": "$F(n,n{+}1)=0$ trims window $N=n{+}2$ to the support $[0,n]$. Applying wz_telescope to the verified $(F,G)$ with this window gives $s(n{+}1)=s(n)$ for $s(n)=\\sum_{k\\le n}F(n,k)$ — the recurrence is purely a specialization of the abstract engine, no new arithmetic."
+    },
+    {
       "id": "identity-from-recurrence",
       "title": "The Identity from the WZ Recurrence",
-      "summary": "Feeding the verified pair to wz_telescope gives rowSum(n+1)=rowSum(n); induction from rowSum(0)=1 yields ∑_{k≤n} C(n,k)=2ⁿ.",
-      "startLine": 153,
+      "summary": "Base case rowSum(0)=1 plus induction on rowSum_succ gives rowSum(n)=1 for all n; unwinding the definition and clearing the 2ⁿ denominator yields ∑_{k≤n} C(n,k)=2ⁿ, cross-checked against Mathlib's Nat.sum_range_choose.",
+      "startLine": 177,
       "endLine": 215,
-      "mathContext": "With window $N=n+2$ trimmed by $F(n,n+1)=0$, the engine yields $s(n{+}1)=s(n)$ for $s(n)=\\sum_{k\\le n}\\binom{n}{k}/2^n$. Base $s(0)=1$ gives $s\\equiv 1$, hence $\\sum_{k\\le n}\\binom{n}{k}=2^n$, reproved without Nat.sum_range_choose."
+      "mathContext": "$s(0)=1$ and $s(n{+}1)=s(n)$ give $s\\equiv 1$ by induction. Since $s(n)=\\left(\\sum_{k\\le n}\\binom{n}{k}\\right)/2^n$, clearing the denominator (field_simp) and casting back to $\\mathbb{N}$ (exact_mod_cast) gives $\\sum_{k\\le n}\\binom{n}{k}=2^n$."
     }
   ],
   "conclusion": {
