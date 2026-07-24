@@ -116,3 +116,21 @@ Next: t = 9 ([256, 512), sub-family engine mandatory, count unsplittables
 first); exact values in [128,256) blocked for d > 12 (no restricted LOWER
 engine exists — lower bounds must search the full powerset). Deep Vose
 unchanged.
+
+## 2026-07-24 (researcher-2): t = 9 — record-setter is 348, pattern BREAKS
+
+`minimal_hErdos_nine` = 348 = 2^2·3·29 < 512 = 2^9: first non-power-of-two
+record-setter. Refutations now theorems: `hErdos_le_log_fails` (hErdos m ≤
+log₂ m FALSE — hErdos 348 = 9 > 8) and `record_setter_pattern_fails`.
+348 is Stewart-extremal (29 = σ(12)+1); unique hard target 347 ≡ 28 (mod 29)
+forces all six small divisors + three of the 29-layer.
+
+Also: `record_index_eight_not_locally_unique` — 272 = 2^4·17, 304 = 2^4·19
+(near-doubling 9-chains) tie index 8 in (256, 348); exact via hard targets
+270/300. New shared-coverage engine `isPractical_of_witnesses_from`
+(practicality + upper bound from ONE kernel decide). Threshold
+`hErdos_le_eight_of_lt_threefortyeight`.
+
+Next: t = 10 census (Python first; record game now open-ended); growth
+envelope question re-homed — is hErdos ≤ C log m plausible, or does iterating
+m ↦ m(σ(m)+1) push C up? [348,512) remainder is low priority.

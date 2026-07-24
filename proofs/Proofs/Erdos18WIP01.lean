@@ -3248,4 +3248,824 @@ theorem record_index_seven_locally_unique :
   have := hErdos_le_six_of_lt_twofiftysix_of_ne hm hlt hne
   omega
 
+/-! ### The restricted lower-bound engine: exact values at high divisor counts
+
+The lower-bound engine `le_hErdos_of_card` quantifies over the FULL powerset of
+`divisors m` — `2^{d(m)}` subsets — infeasible already at `d(210) = 16` (65,536
+subsets) and hopeless at `d(240) = 20` (over a million).  The previous session
+therefore left the exact values of every `d > 12` target of the octave
+`[128, 256)` blocked on "a restricted lower engine that does not exist",
+observing that a lower bound cannot be a witness-LIST check: it must rule out
+ALL small subsets of the full divisor set.
+
+This section supplies that engine.  The key observation: ruling out all small
+subsets does not require visiting all subsets.  To certify `t ≤ repLength m k`
+it suffices to rule out witnesses of each cardinality `s < t` — a kernel check
+over the graded slices `(divisors m).powersetCard s`, totalling
+`C(d,0) + C(d,1) + ⋯ + C(d,t-1)` subsets instead of `2^d`.  For `240` at
+`t = 5` that is `6,196` subsets instead of `1,048,576` — a 169-fold saving that
+grows exponentially with `d`.  Soundness is exactly `repLength_spec'`: for
+practical `m` the minimum is ATTAINED, so `repLength m k < t` would place an
+attaining witness inside a searched slice.  (The upper-bound side of the same
+asymmetry went the other way: witnesses may be exhibited from a chosen
+sub-family, but small-witness refutation must grade the full divisor set.)
+
+With the engine, the octave's blocked exact values fall:
+
+* **`hErdos 210 = 5`** and **`hErdos 240 = 5`** — the two flagship blocked
+  cases.  Each has a UNIQUE hard target (`209` resp. `237`; every other `k`
+  is representable by `4` divisors), and both indices equal `5` despite
+  record divisor counts: `240` is the least number of ANY kind with `20`
+  divisors, yet its index matches `32 = 2^5` with its mere `6`.
+* **`hErdos 168 = 4` and `hErdos 180 = 4`** — the index-`4` FLOOR of the
+  octave (Python DP: every other practical in `[128, 256)` has index `≥ 5`).
+  The floor THINS under doubling: the previous octave's floor is the six
+  numbers `72, 84, 90, 96, 120, 126` (all index `4`), but of their doublings
+  `144, 168, 180, 192, 240, 252` only `168 = 2·84` and `180 = 2·90` stay on
+  the floor — the other four rise to `5`, and for `240` and `252` the rise is
+  formalised below.  For `180`, NO sub-family of `≤ 11` divisors covers all
+  targets at `t = 4` (exhaustive search over all `C(17,≤11)` sub-families);
+  the 12-coin chain used below is minimal, and its `2^{12} × 180` kernel
+  witness search is the heaviest decide in the file.
+* **`hErdos 252 = 5`** — the crude subadditive bound `hErdos (2·126) ≤ 1 + 4`
+  is TIGHT here (contrast `200 = 2·100`, where doubling an index-`6` number
+  drops to `5`): doubling a floor member can genuinely cost a full unit.
+-/
+
+/-- **Restricted lower-bound engine (per target)**: to certify
+`t ≤ repLength m k` it suffices that no divisor subset of cardinality `s < t`
+sums to `k` — a kernel check over the graded slices
+`(divisors m).powersetCard s`, i.e. `C(d, 0) + ⋯ + C(d, t-1)` subsets rather
+than the full powerset's `2^d`.  Sound because the minimum is attained
+(`repLength_spec'`): were `repLength m k < t`, an attaining witness would lie
+in a searched slice. -/
+theorem le_repLength_of_no_small_subset {m k t : ℕ} (hm : IsPractical m)
+    (hkm : k < m)
+    (h : ∀ s ∈ Finset.range t, ∀ T ∈ (divisors m).powersetCard s,
+      T.sum id ≠ k) :
+    t ≤ repLength m k := by
+  by_contra hlt
+  push Not at hlt
+  obtain ⟨T, hTsub, hTcard, hTsum⟩ := repLength_spec' hm hkm
+  exact h (repLength m k) (Finset.mem_range.mpr hlt) T
+    (Finset.mem_powersetCard.mpr ⟨hTsub, hTcard⟩) hTsum
+
+/-- **Restricted lower-bound engine (index)**: one hard target `k < m` with no
+small-cardinality representation forces `t ≤ hErdos m`, at graded-slice cost. -/
+theorem le_hErdos_of_no_small_subset {m k t : ℕ} (hm : IsPractical m)
+    (hkm : k < m)
+    (h : ∀ s ∈ Finset.range t, ∀ T ∈ (divisors m).powersetCard s,
+      T.sum id ≠ k) :
+    t ≤ hErdos m := by
+  refine (le_repLength_of_no_small_subset hm hkm h).trans ?_
+  unfold hErdos
+  exact Finset.le_sup (Finset.mem_range.mpr hkm)
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 210` — the restricted engine at the unique hard target
+`k = 209`: no subset of at most `4` of the `16` divisors of `210` sums to
+`209` (`2,517` graded subsets searched; the full powerset's `65,536` made this
+exact value infeasible for the plain engine last session). -/
+theorem five_le_hErdos_twohundredten : 5 ≤ hErdos 210 :=
+  le_hErdos_of_no_small_subset (k := 209) two_hundred_ten_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 210 = 5`** — first exact value at `d > 12`: the primorial
+`210 = 2·3·5·7` needs exactly `5` summands at `k = 209` and nowhere more.
+Its index equals that of `32 = 2^5`, despite carrying `16` divisors. -/
+theorem hErdos_twohundredten : hErdos 210 = 5 :=
+  le_antisymm hErdos_twohundredten_le five_le_hErdos_twohundredten
+
+/-- `120` is practical — doubling `60`. -/
+theorem onetwenty_practical : IsPractical 120 := by
+  simpa using two_mul_practical sixty_practical
+
+/-- `240` is practical — doubling `120`. -/
+theorem twoforty_practical : IsPractical 240 := by
+  simpa using two_mul_practical onetwenty_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 240` — the restricted engine at the unique hard target
+`k = 237`: no subset of at most `4` of the `20` divisors of `240` sums to
+`237` (`6,196` graded subsets, versus the hopeless `2^{20}` full powerset). -/
+theorem five_le_hErdos_twoforty : 5 ≤ hErdos 240 :=
+  le_hErdos_of_no_small_subset (k := 237) twoforty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 240 = 5`** — the extreme divisor-count case of the octave:
+`240` is the least number of any kind with `20` divisors, yet its index is
+`5`, the same as `32 = 2^5` with its `6` divisors.  Together with
+`hErdos 210 = 5` this pins both targets the previous session declared blocked
+on a restricted lower engine. -/
+theorem hErdos_twoforty : hErdos 240 = 5 :=
+  le_antisymm hErdos_twoforty_le five_le_hErdos_twoforty
+
+/-- `84` is practical — doubling `42`. -/
+theorem eightyfour_practical : IsPractical 84 := by
+  simpa using two_mul_practical fortytwo_practical
+
+/-- `168` is practical — doubling `84`. -/
+theorem onesixtyeight_practical : IsPractical 168 := by
+  simpa using two_mul_practical eightyfour_practical
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- `hErdos 168 ≤ 4` — sub-family engine, TIGHTENING the subadditive
+`hErdos_onesixtyeight_le` (`≤ 6` via `2·84`) by two full units.  The kernel
+finds `≤ 4`-divisor representations of every `k < 168` inside the 11-element
+coin chain below (`2^{11} = 2048` subsets searched; heartbeat budget as for
+the other `2^{11}` run at `224`). -/
+theorem hErdos_onesixtyeight_le_four : hErdos 168 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 4, 6, 12, 21, 28, 42, 56, 84}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 168` — the restricted engine at hard target `k = 121`: no
+subset of at most `3` of the `16` divisors of `168` sums to `121` (`697`
+graded subsets). -/
+theorem four_le_hErdos_onesixtyeight : 4 ≤ hErdos 168 :=
+  le_hErdos_of_no_small_subset (k := 121) onesixtyeight_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 168 = 4`** — joint index-`4` floor of the octave `[128, 256)`
+(with `180`; Python DP confirms every other practical in the octave has index
+`≥ 5`). -/
+theorem hErdos_onesixtyeight : hErdos 168 = 4 :=
+  le_antisymm hErdos_onesixtyeight_le_four four_le_hErdos_onesixtyeight
+
+/-- `180` is practical — doubling `90`. -/
+theorem oneeighty_practical : IsPractical 180 := by
+  simpa using two_mul_practical ninety_practical
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 3200000 in
+/-- `hErdos 180 ≤ 4` — sub-family engine, tightening the subadditive
+`hErdos_oneeighty_le` (`≤ 5` via `2·90`) to the floor.  NO sub-family of
+`≤ 11` of the `17` proper divisors covers every target at `t = 4`
+(exhaustively checked offline), so the 12-element coin chain below is
+minimal; its `2^{12} = 4096`-subset search over `180` targets is the heaviest
+kernel decide in the file, hence the quadrupled heartbeat budget. -/
+theorem hErdos_oneeighty_le_four : hErdos 180 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 10, 18, 20, 30, 45, 60, 90}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 180` — the restricted engine at hard target `k = 133`: no
+subset of at most `3` of the `18` divisors of `180` sums to `133` (`988`
+graded subsets). -/
+theorem four_le_hErdos_oneeighty : 4 ≤ hErdos 180 :=
+  le_hErdos_of_no_small_subset (k := 133) oneeighty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 180 = 4`** — the other member of the octave's index-`4` floor:
+`180` is highly composite (`18` divisors, more than any smaller number), yet
+needs only `4` summands for every target, matching `16 = 2^4`. -/
+theorem hErdos_oneeighty : hErdos 180 = 4 :=
+  le_antisymm hErdos_oneeighty_le_four four_le_hErdos_oneeighty
+
+/-- `252` is practical — doubling `126`. -/
+theorem twofiftytwo_practical : IsPractical 252 := by
+  simpa using two_mul_practical onetwentysix_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 252` — the restricted engine at the unique hard target
+`k = 251`: no subset of at most `4` of the `18` divisors of `252` sums to
+`251` (`4,047` graded subsets). -/
+theorem five_le_hErdos_twofiftytwo : 5 ≤ hErdos 252 :=
+  le_hErdos_of_no_small_subset (k := 251) twofiftytwo_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 252 = 5`** — doubling can genuinely cost the full subadditive
+unit: `126` sits on the previous octave's index-`4` floor, and
+`hErdos (2·126) ≤ hErdos 2 + hErdos 126 = 5` is TIGHT.  Of the six floor
+members `72, 84, 90, 96, 120, 126` of `[64, 128)`, the doublings of `84` and
+`90` stay on the floor (`hErdos_onesixtyeight`, `hErdos_oneeighty`) while
+those of `120` and `126` provably rise (`hErdos_twoforty`, this theorem) —
+the floor thins from six members to two. -/
+theorem hErdos_twofiftytwo : hErdos 252 = 5 :=
+  le_antisymm hErdos_twofiftytwo_le five_le_hErdos_twofiftytwo
+
+/-! ### Closing out the octave `[64, 128)`: every exact value, and the index-`4` floor
+
+The octave `[64, 128)` contains fifteen practical numbers.  Previous sessions
+pinned eight exact values (`64, 66, 78, 88, 90, 100, 104, 126`); the remaining
+seven (`72, 80, 84, 96, 108, 112, 120`) fall here, completing the table:
+
+| `m`      | 64 | 66 | 72 | 78 | 80 | 84 | 88 | 90 | 96 | 100 | 104 | 108 | 112 | 120 | 126 |
+|----------|----|----|----|----|----|----|----|----|----|-----|-----|-----|-----|-----|-----|
+| `hErdos` |  6 |  5 |  4 |  6 |  5 |  4 |  6 |  4 |  4 |   6 |   6 |   5 |   5 |   4 |   4 |
+
+Method: uppers by the full witness engine for `d(m) = 12` targets
+(`2^{12} = 4096` subsets, known affordable) and by a `9`-coin sub-family chain
+for `120` (whose `d(120) = 16` makes the full powerset infeasible — the same
+obstruction the sub-family engine removed at `168`); lowers uniformly by the
+graded-slice engine at one hard target each (`299`–`794` subsets).  `80` and
+`108` have UNIQUE hard targets (`79` resp. `107`), like `210` and `240`.
+
+The payoff is the octave's index-`4` floor as a THEOREM
+(`index_four_floor_sixtyfour_octave`): among the fifteen practicals of
+`[64, 128)` exactly `72, 84, 90, 96, 120, 126` attain the octave minimum `4`.
+Combined with `hErdos_onesixtyeight`/`hErdos_oneeighty` (the doublings `2·84`,
+`2·90` stay at `4`) and `hErdos_twoforty`/`hErdos_twofiftytwo` (the doublings
+`2·120`, `2·126` rise to `5`), four of the six floor members now have their
+doubling behaviour formal — the remaining two, `144 = 2·72` and `192 = 2·96`,
+rise to `5` by Python DP but await tight uppers. -/
+
+/-- `72` is practical — doubling `36`. -/
+theorem seventytwo_practical : IsPractical 72 := by
+  simpa using two_mul_practical thirtysix_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 72 = 4`** — upper by the full witness engine (`d(72) = 12`,
+`4096` subsets); lower by the graded-slice engine at hard target `k = 59`
+(no `≤ 3` of the twelve divisors sum to `59`; `299` graded subsets).  The
+first of the four remaining floor members pinned this session. -/
+theorem hErdos_seventytwo : hErdos 72 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 59) seventytwo_practical
+    (by norm_num) (by decide)
+
+/-- `80` is practical — doubling `40`. -/
+theorem eighty_practical : IsPractical 80 := by
+  simpa using two_mul_practical forty_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 80 = 5`** — upper by the full witness engine (`d(80) = 10`,
+`1024` subsets); lower at the UNIQUE hard target `k = 79 = m − 1` (no `≤ 4`
+of the ten divisors sum to `79`; `386` graded subsets).  The divisor gap
+`5 → 8 → 10` in `{1,2,4,5,8,10,16,20,40}` keeps `79` five-divisor-hard. -/
+theorem hErdos_eighty : hErdos 80 = 5 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 79) eighty_practical
+    (by norm_num) (by decide)
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 84 = 4`** — upper by the full witness engine (`d(84) = 12`);
+lower at hard target `k = 83` (`299` graded subsets).  `84`'s doubling `168`
+was already shown to STAY on the floor (`hErdos_onesixtyeight`); this pins
+the base point of that doubling. -/
+theorem hErdos_eightyfour : hErdos 84 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 83) eightyfour_practical
+    (by norm_num) (by decide)
+
+/-- `96` is practical — doubling `48`. -/
+theorem ninetysix_practical : IsPractical 96 := by
+  simpa using two_mul_practical fortyeight_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 96 = 4`** — upper by the full witness engine (`d(96) = 12`);
+lower at hard target `k = 87` (`299` graded subsets).  Like `72`, a
+`2^a · 3`-smooth number sitting on the floor; its doubling `192` rises to
+`5` (Python DP — tight upper not yet formal). -/
+theorem hErdos_ninetysix : hErdos 96 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 87) ninetysix_practical
+    (by norm_num) (by decide)
+
+/-- `108` is practical — doubling `54`. -/
+theorem onehundredeight_practical : IsPractical 108 := by
+  simpa using two_mul_practical fiftyfour_practical
+
+set_option maxRecDepth 40000 in
+/-- `5 ≤ hErdos 108` — the graded-slice engine at the UNIQUE hard target
+`k = 107 = m − 1` (no `≤ 4` of the twelve divisors sum to `107`; `794` graded
+subsets). -/
+theorem five_le_hErdos_onehundredeight : 5 ≤ hErdos 108 :=
+  le_hErdos_of_no_small_subset (k := 107) onehundredeight_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 108 = 5`** — the subadditive upper `hErdos (2·54) ≤ 1 + 4`
+(`hErdos_onehundredeight_le`, from a previous session) is TIGHT: like `80`
+(and `64`), doubling a practical half costs the full subadditive unit here
+(`54` has index `4`).  Unique hard target `107`. -/
+theorem hErdos_onehundredeight : hErdos 108 = 5 :=
+  le_antisymm hErdos_onehundredeight_le five_le_hErdos_onehundredeight
+
+/-- `112` is practical — doubling `56`. -/
+theorem onehundredtwelve_practical : IsPractical 112 := by
+  simpa using two_mul_practical fiftysix_practical
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 112 = 5`** — upper by the full witness engine (`d(112) = 10`,
+tightening the subadditive `≤ 6` of `hErdos_onehundredtwelve_le` by one);
+lower at hard target `k = 111` (`386` graded subsets).  Doubling `56` (index
+`5`, Python) is FREE here — the octave's only zero-cost doubling OFF the
+index-`4` floor (`72, 84, 96, 120` are zero-cost too, but along the floor). -/
+theorem hErdos_onehundredtwelve : hErdos 112 = 5 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_no_small_subset (k := 111) onehundredtwelve_practical
+    (by norm_num) (by decide)
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 120 ≤ 4` — sub-family engine on the `9`-coin chain
+`{1, 2, 4, 8, 15, 20, 30, 40, 60}` (`2^9 = 512` subsets, versus the
+infeasible `2^{16}` full powerset: `d(120) = 16` was exactly the obstruction
+that blocked this value before the sub-family engine existed).  Tightens the
+subadditive `≤ 6` of `hErdos_onetwenty_le` by two full units. -/
+theorem hErdos_onetwenty_le_four : hErdos 120 ≤ 4 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 8, 15, 20, 30, 40, 60}
+    ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `4 ≤ hErdos 120` — the graded-slice engine at hard target `k = 97`: no
+subset of at most `3` of the `16` divisors of `120` sums to `97` (`697`
+graded subsets). -/
+theorem four_le_hErdos_onetwenty : 4 ≤ hErdos 120 :=
+  le_hErdos_of_no_small_subset (k := 97) onetwenty_practical
+    (by norm_num) (by decide)
+
+/-- **`hErdos 120 = 4`** — the highest-divisor-count member of the octave's
+floor: `d(120) = 16` (a record among numbers `< 128`), yet the index equals
+`4 = hErdos 16`.  Both engines at work: neither bound was feasible with the
+plain full-powerset engines. -/
+theorem hErdos_onetwenty : hErdos 120 = 4 :=
+  le_antisymm hErdos_onetwenty_le_four four_le_hErdos_onetwenty
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- **The index-`4` floor of the octave `[64, 128)`, characterised**: a
+practical number in `[64, 128)` has `hErdos m = 4` exactly when
+`m ∈ {72, 84, 90, 96, 120, 126}`.  Previously a Python observation, now a
+theorem — the fifteen practicals of the octave each have a pinned exact value
+(`4` for the six floor members; `5` for `66, 80, 108, 112`; `6` for
+`64, 78, 88, 100, 104`), and the forty-nine non-practical `m` are refuted by
+kernel evaluation.  This is the octave-level input to the floor-thinning
+phenomenon: the `[128, 256)` floor is exactly `{168, 180} = {2·84, 2·90}`. -/
+theorem index_four_floor_sixtyfour_octave :
+    ∀ m, IsPractical m → 64 ≤ m → m < 128 →
+      (hErdos m = 4 ↔ m = 72 ∨ m = 84 ∨ m = 90 ∨ m = 96 ∨ m = 120 ∨ m = 126) := by
+  intro m hm h64 h128
+  interval_cases m <;>
+    first
+    | exact absurd hm (by decide)
+    | simp [hErdos_sixtyfour, hErdos_sixtysix, hErdos_seventytwo,
+        hErdos_seventyeight, hErdos_eighty, hErdos_eightyfour,
+        hErdos_eightyeight, hErdos_ninety, hErdos_ninetysix,
+        hErdos_onehundred, hErdos_onehundredfour, hErdos_onehundredeight,
+        hErdos_onehundredtwelve, hErdos_onetwenty, hErdos_onetwentysix]
+
+-- The engine decides below search 2^10–2^12 subset spaces; the default 200000-
+-- heartbeat budget is insufficient for their elaboration, so raise it for the
+-- remainder of the file (kernel evaluation is unaffected and deterministic).
+set_option maxHeartbeats 1600000
+/-! ### The record-setter at `t = 9`: the powers-of-two pattern BREAKS at `348`
+
+Every previous rung extended the record-setter sequence `2, 4, 8, 16, 32, 64,
+128, 256 = 2^t`, and the section comments repeatedly recorded the open
+question of whether `2^t` persists — noting it would follow from the
+conjectured bound `hErdos m ≤ log₂ m` for practical `m`, which resisted the
+greedy argument (`t ≤ 5` section comment).  This rung settles the question,
+NEGATIVELY: the least practical number with index `9` is
+
+  `348 = 2² · 3 · 29`,   with `348 < 512 = 2⁹`.
+
+`348` is *extremally* practical: `29 = σ(2² · 3) + 1 = 28 + 1` is the largest
+prime admissible over the prefix `2² · 3` (Stewart's structure theorem), so
+its divisor list `1, 2, 3, 4, 6, 12, 29, 58, 87, 116, 174` jumps by the ratio
+`29/12 ≈ 2.42` right after the six-element prefix.  The unique hard target is
+`k = 347 = 348 - 1`: writing `347 = 174 + 116 + 29 + (28)` forces the ENTIRE
+prefix `28 = 12 + 6 + 4 + 3 + 2 + 1`, nine divisors in all — the kernel
+verifies (`2¹² = 4096` subsets) that no eight divisors of `348` sum to `347`.
+Hence `hErdos 348 = 9 > 8 = ⌊log₂ 348⌋`:
+
+* `hErdos_le_log_fails` — the conjectured `hErdos m ≤ log₂ m` is FALSE;
+* `record_setter_pattern_fails` — `2^t` is NOT the record-setter for all `t`;
+* `minimal_hErdos_nine` — the true `t = 9` record-setter is `348`.
+
+The supporting threshold (`hErdos_le_eight_of_lt_threefortyeight`) pins every
+practical number below `348` at index `≤ 8` by the established split-vs-engine
+dichotomy: eight of the nineteen practicals in `(256, 348)` double a practical
+half (`264, 280, 288, 300, 312, 320, 324, 336` — five splits are kernel-free,
+three fall back to the engine because the half — `140, 150, 162` — is itself
+practically-unsplittable and carries no practicality lemma), and the engine
+pins the rest.  Two structural bonuses:
+
+* **Local uniqueness fails again at `t = 8`**
+  (`record_index_eight_not_locally_unique`): `272 = 2⁴ · 17` and
+  `304 = 2⁴ · 19` tie the record `hErdos 256 = 8` strictly inside
+  `(256, 348)`.  Their divisor lists `1, 2, 4, 8, 16, 17, 34, 68, 136` and
+  `1, 2, 4, 8, 16, 19, 38, 76, 152` are NEAR-DOUBLING chains of length `9`
+  (`17, 19 ≈ 16`), so both behave like `256 = 2⁸` — nine-term doubling —
+  rather than like their divisor-rich neighbours.
+* **A new practicality engine** (`isPractical_of_witnesses_from`): the same
+  coin-chain kernel search that certifies the index upper bound also certifies
+  practicality, so `272`, `304`, `348` never pay the full `2^d(m)` powerset
+  practicality `decide`. -/
+
+/-- **Practicality from a coin chain**: if a sub-family `S ⊆ divisors m`
+reaches every `1 ≤ k < m` as a distinct-subset sum, then `m` is practical.
+Companion to `hErdos_le_of_witnesses_from`: one shared kernel coverage search
+certifies BOTH practicality and the index upper bound (the cardinality bound
+`t` is simply discarded here). -/
+theorem isPractical_of_witnesses_from (S : Finset ℕ) {m t : ℕ} (hm : 1 ≤ m)
+    (hS : S ⊆ divisors m)
+    (h : ∀ k ∈ Finset.range m, ∃ T ∈ S.powerset, T.card ≤ t ∧ T.sum id = k) :
+    IsPractical m := by
+  refine ⟨hm, fun k _ hkm => ?_⟩
+  obtain ⟨T, hTpow, -, hTsum⟩ := h k (Finset.mem_range.mpr hkm)
+  exact ⟨T, (Finset.mem_powerset.mp hTpow).trans hS, hTsum⟩
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 260 ≤ 6` — sub-family engine: `260 = 2²·5·13` has no practical
+split (`130, 65, 52, 26` non-practical or odd).  The kernel finds `≤ 6`-divisor
+representations of every `k < 260` inside the 10-element coin chain below
+(`2¹⁰ = 1024` subsets searched). -/
+theorem hErdos_twosixty_le : hErdos 260 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 10, 20, 26, 52, 65, 130} ?_ ?_ <;> decide
+
+/-- `hErdos 264 ≤ 7` — subadditivity at the practical split `264 = 2 · 132`. -/
+theorem hErdos_twosixtyfour_le : hErdos 264 ≤ 7 := by
+  have h132p : IsPractical 132 := by
+    simpa using two_mul_practical sixtysix_practical
+  have h : hErdos (2 * 132) ≤ hErdos 2 + hErdos 132 :=
+    hErdos_mul_le two_practical h132p
+  have hhalf := hErdos_onethirtytwo_le
+  rw [hErdos_two] at h
+  have hm : hErdos 264 = hErdos (2 * 132) := by norm_num
+  omega
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 270 ≤ 6` — sub-family engine: `270 = 2·3³·5` is practically
+unsplittable (`135, 45, 27` odd; `54·5, 90·3, 10·27` all involve a
+non-practical factor).  10-element coin chain, `2¹⁰` subsets. -/
+theorem hErdos_twoseventy_le : hErdos 270 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 5, 6, 15, 27, 45, 90, 135} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- Shared kernel coverage for `272`: every `k < 272` is a `≤ 8`-divisor
+subset sum of the nine proper divisors of `272 = 2⁴ · 17`.  Feeds both
+`twoseventytwo_practical` and the upper half of `hErdos_twoseventytwo`. -/
+theorem twoseventytwo_cover :
+    ∀ k ∈ Finset.range 272, ∃ T ∈ ({1, 2, 4, 8, 16, 17, 34, 68, 136} : Finset ℕ).powerset,
+      T.card ≤ 8 ∧ T.sum id = k := by decide
+
+/-- `272 = 2⁴ · 17` is practical — via the shared coverage search, not a
+`2^d(272)` powerset `decide`. -/
+theorem twoseventytwo_practical : IsPractical 272 :=
+  isPractical_of_witnesses_from _ (by norm_num) (by decide) twoseventytwo_cover
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- **`hErdos 272 = 8` — the record index `8` is TIED strictly inside the
+octave.**  The divisor list of `272 = 2⁴ · 17` is the near-doubling chain
+`1, 2, 4, 8, 16, 17, 34, 68, 136` (`17 ≈ 16`), so `272` behaves like the
+nine-term doubling chain of `256 = 2⁸`.  Hard target `k = 270 = 272 - 2`:
+reaching it needs the whole `17`-chain (`255 = 17 + 34 + 68 + 136`) plus
+`15 = 1 + 2 + 4 + 8` from the `2`-chain.  The kernel checks (`2¹⁰` subsets) that
+no seven divisors of `272` sum to `270` — the representation
+`270 = 136 + 68 + 34 + 17 + 8 + 4 + 2 + 1` (eight divisors) is optimal. -/
+theorem hErdos_twoseventytwo : hErdos 272 = 8 := by
+  refine le_antisymm (hErdos_le_of_witnesses_from _ (by decide) twoseventytwo_cover) ?_
+  exact le_hErdos_of_card (k := 270) twoseventytwo_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 276 ≤ 6` — sub-family engine: `276 = 2²·3·23` has no practical
+split (`138, 69, 46, 23` non-practical or odd).  10-element coin chain. -/
+theorem hErdos_twoseventysix_le : hErdos 276 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 4, 6, 12, 23, 46, 69, 138} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 280 ≤ 6` — sub-family engine: the only candidate half `140` is
+practically-unsplittable and carries no practicality lemma, so the split route
+is closed; the 9-element coin chain (`2⁹` subsets) certifies `≤ 6` directly
+(the true index is `5`). -/
+theorem hErdos_twoeighty_le : hErdos 280 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 7, 10, 20, 40, 70, 140} ?_ ?_ <;> decide
+
+/-- `hErdos 288 ≤ 7` — subadditivity at the practical split `288 = 2 · 144`. -/
+theorem hErdos_twoeightyeight_le : hErdos 288 ≤ 7 := by
+  have h72p : IsPractical 72 := by
+    simpa using two_mul_practical thirtysix_practical
+  have h144p : IsPractical 144 := by
+    simpa using two_mul_practical h72p
+  have h : hErdos (2 * 144) ≤ hErdos 2 + hErdos 144 :=
+    hErdos_mul_le two_practical h144p
+  have hhalf := hErdos_onefortyfour_le
+  rw [hErdos_two] at h
+  have hm : hErdos 288 = hErdos (2 * 144) := by norm_num
+  omega
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 294 ≤ 7` — sub-family engine: `294 = 2·3·7²` is practically
+unsplittable (`147, 49, 21` odd; `6·49, 14·21, 42·7` involve non-practical
+factors).  10-element coin chain. -/
+theorem hErdos_twoninetyfour_le : hErdos 294 ≤ 7 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 7, 14, 21, 49, 98, 147} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 300 ≤ 6` — sub-family engine: the only practical-candidate half
+`150` is itself practically-unsplittable (`75` odd) and carries no
+practicality lemma, so the split route is closed.  10-element coin chain. -/
+theorem hErdos_threehundred_le : hErdos 300 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 4, 10, 12, 30, 50, 100, 150} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- Shared kernel coverage for `304`: every `k < 304` is a `≤ 8`-divisor
+subset sum of the nine proper divisors of `304 = 2⁴ · 19`.  Feeds both
+`threehundredfour_practical` and the upper half of `hErdos_threehundredfour`. -/
+theorem threehundredfour_cover :
+    ∀ k ∈ Finset.range 304, ∃ T ∈ ({1, 2, 4, 8, 16, 19, 38, 76, 152} : Finset ℕ).powerset,
+      T.card ≤ 8 ∧ T.sum id = k := by decide
+
+/-- `304 = 2⁴ · 19` is practical — via the shared coverage search. -/
+theorem threehundredfour_practical : IsPractical 304 :=
+  isPractical_of_witnesses_from _ (by norm_num) (by decide) threehundredfour_cover
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- **`hErdos 304 = 8` — a SECOND tie of the record index `8` inside
+`(256, 348)`.**  `304 = 2⁴ · 19` is the second near-doubling chain
+(`1, 2, 4, 8, 16, 19, 38, 76, 152`; `19 ≤ 32 = σ(2⁴) + 1` keeps it practical).
+Hard target `k = 300`: the kernel checks (`2¹⁰` subsets) that no seven
+divisors of `304` sum to `300` — `300 = 152 + 76 + 38 + 19 + 8 + 4 + 2 + 1`
+(eight divisors) is optimal. -/
+theorem hErdos_threehundredfour : hErdos 304 = 8 := by
+  refine le_antisymm (hErdos_le_of_witnesses_from _ (by decide) threehundredfour_cover) ?_
+  exact le_hErdos_of_card (k := 300) threehundredfour_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- `hErdos 306 ≤ 6` — sub-family engine: `306 = 2·3²·17` is practically
+unsplittable (`153, 51, 17` odd; `18·17, 6·51` involve non-practical factors).
+10-element coin chain. -/
+theorem hErdos_threehundredsix_le : hErdos 306 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 17, 34, 51, 102, 153} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 308 ≤ 6` — sub-family engine: `308 = 2²·7·11` has no practical
+split (`154, 77, 44-cofactor 7, 28-cofactor 11` all blocked).  10-element coin
+chain. -/
+theorem hErdos_threehundredeight_le : hErdos 308 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 7, 11, 14, 22, 44, 77, 154} ?_ ?_ <;> decide
+
+/-- `hErdos 312 ≤ 7` — subadditivity at the practical split `312 = 2 · 156`. -/
+theorem hErdos_threetwelve_le : hErdos 312 ≤ 7 := by
+  have h156p : IsPractical 156 := by
+    simpa using two_mul_practical seventyeight_practical
+  have h : hErdos (2 * 156) ≤ hErdos 2 + hErdos 156 :=
+    hErdos_mul_le two_practical h156p
+  have hhalf := hErdos_onefiftysix_le
+  rw [hErdos_two] at h
+  have hm : hErdos 312 = hErdos (2 * 156) := by norm_num
+  omega
+
+/-- `hErdos 320 ≤ 6` — subadditivity at the practical split `320 = 2 · 160`. -/
+theorem hErdos_threetwenty_le : hErdos 320 ≤ 6 := by
+  have h80p : IsPractical 80 := by
+    simpa using two_mul_practical forty_practical
+  have h160p : IsPractical 160 := by
+    simpa using two_mul_practical h80p
+  have h : hErdos (2 * 160) ≤ hErdos 2 + hErdos 160 :=
+    hErdos_mul_le two_practical h160p
+  have hhalf := hErdos_onesixty_le
+  rw [hErdos_two] at h
+  have hm : hErdos 320 = hErdos (2 * 160) := by norm_num
+  omega
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 324 ≤ 6` — sub-family engine: `324 = 2²·3⁴` — the half `162`
+is practically-unsplittable (`81` odd) with no practicality lemma, closing
+the split route.  10-element coin chain certifies the TIGHT bound `6`. -/
+theorem hErdos_threetwentyfour_le : hErdos 324 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 18, 27, 54, 81, 162} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 330 ≤ 6` — sub-family engine: `330 = 2·3·5·11` is practically
+unsplittable (`165, 55, 33, 11` odd; `6·55, 10·33, 30·11, 66·5, 110·3` all
+involve a non-practical factor).  10-element coin chain. -/
+theorem hErdos_threethirty_le : hErdos 330 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 5, 6, 15, 30, 55, 110, 165} ?_ ?_ <;> decide
+
+/-- `hErdos 336 ≤ 7` — subadditivity at the practical split `336 = 2 · 168`. -/
+theorem hErdos_threethirtysix_le : hErdos 336 ≤ 7 := by
+  have h84p : IsPractical 84 := by
+    simpa using two_mul_practical fortytwo_practical
+  have h168p : IsPractical 168 := by
+    simpa using two_mul_practical h84p
+  have h : hErdos (2 * 168) ≤ hErdos 2 + hErdos 168 :=
+    hErdos_mul_le two_practical h168p
+  have hhalf := hErdos_onesixtyeight_le
+  rw [hErdos_two] at h
+  have hm : hErdos 336 = hErdos (2 * 168) := by norm_num
+  omega
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 340 ≤ 7` — sub-family engine: `340 = 2²·5·17` has no practical
+split (`170, 85, 68-cofactor 5, 20-cofactor 17` all blocked).  10-element
+coin chain certifies the TIGHT bound `7` — one shy of the record `8`. -/
+theorem hErdos_threeforty_le : hErdos 340 ≤ 7 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 10, 17, 34, 68, 85, 170} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 342 ≤ 6` — sub-family engine: `342 = 2·3²·19` is practically
+unsplittable (`171, 57, 19` odd; `18·19, 6·57` involve non-practical factors).
+10-element coin chain. -/
+theorem hErdos_threefortytwo_le : hErdos 342 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 19, 38, 57, 114, 171} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
+/-- Shared kernel coverage for `348`: every `k < 348` is a `≤ 9`-divisor
+subset sum of the 10-element coin chain `{1, 2, 3, 4, 6, 12, 29, 58, 87, 174}`
+(the proper divisors of `348` minus `116`; `2¹⁰ = 1024` subsets).  Feeds both
+`threefortyeight_practical` and the upper half of `hErdos_threefortyeight`. -/
+theorem threefortyeight_cover :
+    ∀ k ∈ Finset.range 348, ∃ T ∈ ({1, 2, 3, 4, 6, 12, 29, 58, 87, 174} : Finset ℕ).powerset,
+      T.card ≤ 9 ∧ T.sum id = k := by decide
+
+/-- **`348 = 2² · 3 · 29` is practical — extremally so.**  `29 = σ(2² · 3) + 1
+= 28 + 1` is the LARGEST prime admissible over the prefix `2² · 3` (Stewart's
+structure theorem), so the divisor list jumps `12 → 29`, ratio `≈ 2.42` — the
+same shape (`78 = 2·3·13`, gap `6 → 13`) that defeated the greedy argument for
+the conjectured `hErdos m ≤ log₂ m` bound.  Here the shape finally BREAKS the
+bound itself (`hErdos_le_log_fails`). -/
+theorem threefortyeight_practical : IsPractical 348 :=
+  isPractical_of_witnesses_from _ (by norm_num) (by decide) threefortyeight_cover
+
+set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
+/-- **`hErdos 348 = 9` — an index-`9` practical number BELOW `2⁹ = 512`.**
+Upper: the shared coverage search.  Lower: the unique hard target is
+`k = 347 = 348 - 1`.  The divisors of `348` split into the prefix
+`D(12) = {1, 2, 3, 4, 6, 12}` (sum `28`) and the layer `29 · D(12)`; since
+`347 ≡ 28 (mod 29)` and `28` needs ALL SIX prefix divisors, every
+representation of `347` spends six divisors on the prefix and still needs
+three from the `29`-layer (`319 = 174 + 116 + 29 = 174 + 87 + 58`).  The
+kernel checks ALL `2¹² = 4096` divisor subsets and finds none of cardinality
+`≤ 8` summing to `347`:
+`347 = 174 + 116 + 29 + 12 + 6 + 4 + 3 + 2 + 1` (nine divisors) is optimal. -/
+theorem hErdos_threefortyeight : hErdos 348 = 9 := by
+  refine le_antisymm (hErdos_le_of_witnesses_from _ (by decide) threefortyeight_cover) ?_
+  exact le_hErdos_of_card (k := 347) threefortyeight_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 200000 in
+/-- **Every practical number below `348` has index at most `8`.**  Below `256`
+this is `hErdos_le_seven_of_lt_twofiftysix`; in `[256, 348)` the twenty
+practical numbers are bounded by the engine values and subadditive splits
+above (each non-practical value excluded by a kernel `decide`).  This is the
+threshold feeding the `t = 9` record-setter — and unlike every previous rung,
+the record it certifies is NOT the next power of two. -/
+theorem hErdos_le_eight_of_lt_threefortyeight {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 348) : hErdos m ≤ 8 := by
+  by_cases h256 : m < 256
+  · exact (hErdos_le_seven_of_lt_twofiftysix hm h256).trans (by norm_num)
+  · push Not at h256
+    interval_cases m
+    · exact hErdos_twofiftysix.le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twosixty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twosixtyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoseventy_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoseventytwo.le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoseventysix_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoeighty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoeightyeight_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoninetyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threehundred_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threehundredfour.le
+    · exact absurd hm (by decide)
+    · exact hErdos_threehundredsix_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_threehundredeight_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threetwelve_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threetwenty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threetwentyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threethirty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threethirtysix_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_threeforty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_threefortytwo_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+
+/-- **Record-setter at `t = 9`: the least practical number with index `9` is
+`348` — NOT `512 = 2⁹`.  The powers-of-two pattern BREAKS.**  The record-setter
+sequence, which ran `2, 4, 8, 16, 32, 64, 128, 256` through `t = 8`, continues
+`…, 348`: the first non-power-of-two record-setter, and the answer (negative)
+to the question left open since the `t ≤ 5` section.  `348 = 2² · 3 · 29` sits
+`164` below the power of two, so the conjectured bound `hErdos m ≤ log₂ m` for
+practical `m` fails with it (`hErdos_le_log_fails`). -/
+theorem minimal_hErdos_nine :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 9 } 348 := by
+  constructor
+  · exact ⟨threefortyeight_practical, hErdos_threefortyeight⟩
+  · rintro m ⟨hpr, h9⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_eight_of_lt_threefortyeight hpr hlt
+    omega
+
+/-- **The conjectured logarithmic bound is FALSE**: it is not the case that
+`hErdos m ≤ log₂ m` for every practical `m`.  The `t ≤ 5` section comment
+recorded this bound as the natural route to `2^t` remaining the record-setter
+forever, noting only that the greedy argument fails on divisor gaps of ratio
+`> 2` (like `6 → 13` in `78`).  The gap `12 → 29` of `348` (ratio `≈ 2.42`,
+extremal by Stewart's criterion: `29 = σ(2² · 3) + 1`) turns the greedy
+obstruction into an actual counterexample: `hErdos 348 = 9 > 8 = log₂ 348`. -/
+theorem hErdos_le_log_fails : ¬ ∀ m : ℕ, IsPractical m → hErdos m ≤ Nat.log 2 m := by
+  intro h
+  have h348 := h 348 threefortyeight_practical
+  rw [hErdos_threefortyeight] at h348
+  have hlog : Nat.log 2 348 = 8 :=
+    Nat.log_eq_of_pow_le_of_lt_pow (by norm_num) (by norm_num)
+  omega
+
+/-- **The powers of two do NOT stay the record-setters**: `2^t` fails to be
+the least practical number of index `t` at `t = 9` (where `348 < 512` takes
+the record).  This settles — negatively — the question recorded at the
+`t ≤ 5, 6, 7, 8` rungs. -/
+theorem record_setter_pattern_fails :
+    ¬ ∀ t : ℕ, IsLeast { m : ℕ | IsPractical m ∧ hErdos m = t } (2 ^ t) := by
+  intro h
+  have h9 := (h 9).2 ⟨threefortyeight_practical, hErdos_threefortyeight⟩
+  norm_num at h9
+
+/-- **Local uniqueness of the record fails at `t = 8`** — for the second time
+(after `t = 6`): practical numbers strictly between `256` and `348` attain
+index `8`.  Witness `272 = 2⁴ · 17` (in fact `304 = 2⁴ · 19` does too — see
+`hErdos_threehundredfour`); both are near-doubling divisor chains of length
+`9`, structurally the closest neighbours of `256 = 2⁸` in the octave.
+Contrast `t = 7`, where `128` was locally alone
+(`record_index_seven_locally_unique`). -/
+theorem record_index_eight_not_locally_unique :
+    ∃ m, IsPractical m ∧ 256 < m ∧ m < 348 ∧ hErdos m = 8 :=
+  ⟨272, twoseventytwo_practical, by norm_num, by norm_num, hErdos_twoseventytwo⟩
+
 end Erdos18

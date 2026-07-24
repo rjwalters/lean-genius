@@ -532,3 +532,144 @@ default 200000-heartbeat elaboration budget up to 2^10 subsets x ~230 targets;
 the single 2^11 run (224, 11 proper divisors, no 10-coin sub-family covers)
 needs `set_option maxHeartbeats 800000`. Budget scales with 2^|S| x m — plan
 t = 9 coin chains at |S| <= 10 where possible, or expect heartbeat bumps.
+
+## Session 2026-07-24 (researcher-2) — restricted lower engine; exact values at d > 12: 210, 240 (blocked pair), 168/180 (octave floor), 252
+
+The "restricted lower engine that does not exist" (last session's blocker for
+every d > 12 exact value) now exists, and is nearly free: to certify
+`t ≤ repLength m k` one need not search all 2^d divisor subsets — only refute
+witnesses of cardinality BELOW t, i.e. the graded slices
+`(divisors m).powersetCard s` for s < t, at cost C(d,0)+...+C(d,t-1).
+`le_repLength_of_no_small_subset` / `le_hErdos_of_no_small_subset`; soundness
+is exactly `repLength_spec'` (the minimum is attained, so a value < t would
+put an attaining witness in a searched slice). For 240 at t = 5 this is 6,196
+subsets instead of 2^20 = 1,048,576 — the asymmetry with the upper side is
+now symmetric in cost: sub-family chains for uppers, graded slices for lowers.
+
+Exact values pinned (all 0-axiom, le_antisymm of existing upper + new lower):
+
+* `hErdos 210 = 5`, `hErdos 240 = 5` — the two flagship blocked targets.
+  Each has a UNIQUE hard target (209 resp. 237). 240 is the least number of
+  any kind with 20 divisors, yet its index ties 32 = 2^5.
+* `hErdos 168 = 4`, `hErdos 180 = 4` — the index-4 FLOOR of [128,256)
+  (Python DP: every other practical in the octave is ≥ 5). Tight sub-family
+  uppers: 168 via an 11-coin chain {1,2,3,4,6,12,21,28,42,56,84}; 180 has NO
+  ≤11-coin chain at t = 4 (exhaustively checked offline) — the 12-coin chain
+  {1,2,3,6,9,10,18,20,30,45,60,90} is minimal, 2^12 × 180 search,
+  maxHeartbeats 3200000, heaviest decide in the file.
+* `hErdos 252 = 5` — doubling a floor member can cost the full subadditive
+  unit (126 is on the [64,128) floor; hErdos(2·126) ≤ 1+4 is TIGHT).
+
+Structural picture (octave floors under doubling): the [64,128) floor is SIX
+practicals {72, 84, 90, 96, 120, 126} (Python; 72/96/120 exact values not yet
+formalized — only 84 ≤ 5, 90 = 4, 126 = 4 are on file, and 84's tight value 4
+is NOT yet in Lean either). The [128,256) floor is exactly {168, 180} = the
+doublings of 84 and 90; the other four doublings rise to 5 (240, 252 now
+formal; 144, 192 Python-only). The floor thins 6 → 2 under doubling.
+
+Costs (calibration for t = 9): graded-slice lower decides are trivial —
+C(16,≤4) = 2517 (210), C(20,≤4) = 6196 (240), C(18,≤3) = 988 (180) all run at
+maxRecDepth 40000, default heartbeats. Sub-family upper 2^11 × 168 fits
+maxHeartbeats 800000; 2^12 × 180 needs 3200000.
+
+NEXT: (a) octave [128,256) exact-value completion is now unblocked — remaining
+d ≤ 12 targets (140, 150, 156, 160, 162, 176, 196, 198, 200, 204, 208, 220,
+224, 228, 234) are all cheap with the graded-slice engine (lowers) + existing
+uppers; 132, 144, 192, 216 need tight uppers first (144: exact 5 vs upper 6;
+192: exact 5 vs 6; 216: exact 5 vs 6; 132: exact 5 = upper 5 ✓ lower only).
+(b) t = 9 rung [256,512): threshold needs uppers only (splits + sub-family
+chains); the graded-slice engine now covers any hard-target lower bound the
+record proof might want. (c) previous-octave floor completion (72, 84, 96,
+120 exact values) is cheap and would make the 6 → 2 thinning fully formal.
+Deep Vose bound unchanged.
+
+## Session 2026-07-24b (researcher-2) — octave [64,128) closed out: 7 exact values + floor theorem
+
+Same branch (research/erdos18-lower-engine), stacked on the engine session.
+All fifteen practicals of [64,128) now have pinned exact values (0-axiom):
+
+| m      | 64 | 66 | 72 | 78 | 80 | 84 | 88 | 90 | 96 | 100 | 104 | 108 | 112 | 120 | 126 |
+| hErdos |  6 |  5 |  4 |  6 |  5 |  4 |  6 |  4 |  4 |   6 |   6 |   5 |   5 |   4 |   4 |
+
+New this session: 72, 80, 84, 96, 108, 112, 120. Method fully symmetric now:
+
+* Uppers: full witness engine at d = 12 (72/84/96, 4096 subsets) and d = 10
+  (80/112, 1024 subsets); 120 needs the SUB-FAMILY engine (d(120) = 16) — the
+  9-coin chain {1,2,4,8,15,20,30,40,60} is minimal (Python: no 8-coin chain
+  covers at t = 4), 2^9 × 120 trivially cheap. 108's tight upper was already
+  on file (subadditive 2·54 ≤ 1+4, TIGHT).
+* Lowers: graded-slice engine at one hard target each — 72@59, 84@83, 96@87,
+  120@97 (t=4, C(d,≤3) = 299/697); 80@79, 108@107, 112@111 (t=5, C(d,≤4) =
+  386/794). 80 and 108 have UNIQUE hard targets (79 = m−1, 107 = m−1).
+
+`index_four_floor_sixtyfour_octave`: for practical m ∈ [64,128),
+hErdos m = 4 ↔ m ∈ {72,84,90,96,120,126}. interval_cases over 64 cases;
+non-practicals refuted by decide; practicals closed by simp with the 15 value
+lemmas. maxHeartbeats 1600000 budgeted (64 branches × decide attempts).
+
+Structural corrections to prior notes (Python, worth formalizing later):
+* hErdos 40 = 4 (NOT 5 — the t=6 session only recorded the ≤5 subadditive
+  upper). The [32,64) floor is {36,40,42,48,54,60} — SIX members again, with
+  32 and 56 at index 5. Floor sizes: [32,64): 6 → [64,128): 6 → [128,256): 2.
+* The [64,128) floor members are exactly: doublings of [32,64) floor members
+  that stay (72=2·36, 84=2·42, 96=2·48, 120=2·60 stay; 80=2·40, 108=2·54
+  RISE) plus the practically-unsplittable 90, 126. Unit-cost doublings from
+  practical halves: 64, 80, 108; zero-cost off-floor doubling: 112=2·56.
+
+NEXT: (a) [32,64) exact-value completion (36/40/42/48/54/56/60 — all d ≤ 10,
+both engines trivial) would make the 6→6→2 floor cascade fully formal at the
+[32,64)→[64,128) step and expose the false ≤5 pin at 40. (b) [128,256) octave
+completion: remaining d ≤ 12 targets all cheap; 132/144/192/216 need tight
+uppers (sub-family chains). (c) t = 9 rung [256,512): record + threshold —
+both engines ready; unsplittable census first. Deep Vose bound unchanged.
+
+## Session 2026-07-24 (researcher-2): t = 9 — THE POWERS-OF-TWO PATTERN BREAKS
+
+**Headline: `minimal_hErdos_nine` = 348, not 512 = 2^9.** The record-setter
+sequence 2, 4, 8, 16, 32, 64, 128, 256 continues …, 348 = 2^2·3·29 — the first
+non-power-of-two record-setter. This settles (negatively) the open question
+recorded since the t ≤ 5 section: `hErdos_le_log_fails` (hErdos m ≤ log₂ m is
+FALSE for practical m: hErdos 348 = 9 > 8 = log₂ 348) and
+`record_setter_pattern_fails` (¬∀ t, IsLeast {…} (2^t)).
+
+Mechanism: 348 = 12 · 29 with 29 = σ(12) + 1 EXACTLY (Stewart-extremal), so
+divisors = D(12) ∪ 29·D(12) with gap 12 → 29 (ratio 2.42). Unique hard target
+k = 347 ≡ 28 (mod 29): the prefix contribution must be ≡ 28, and 28 = sum of
+ALL SIX prefix divisors, leaving 319 = 29·11 to the 29-layer (min 3 divisors)
+— 9 total. The same gap shape (6 → 13 in 78) that defeated greedy halving now
+breaks the conjecture itself.
+
+Bonuses: local uniqueness fails AGAIN at t = 8
+(`record_index_eight_not_locally_unique`): 272 = 2^4·17 and 304 = 2^4·19 tie
+index 8 — their divisor lists are NEAR-DOUBLING 9-chains (17, 19 ≈ 16), i.e.
+the structural neighbours of 256 = 2^8. Exact values via hard targets 270
+(272−2, needs whole 17-chain + 15) and 300.
+
+New engine: `isPractical_of_witnesses_from` — the SAME coin-chain coverage
+decide (∀ k ∈ range m, ∃ T ∈ S.powerset, card ≤ t ∧ sum = k, stated as a
+shared standalone theorem `<m>_cover`) certifies practicality AND the index
+upper bound; 272/304/348 never pay the full 2^d practicality decide. Pattern:
+one `by decide` theorem, two consumers.
+
+Octave census (256, 348): 19 practicals. Kernel-free splits: 264, 288, 312,
+320, 336 (half practical with existing lemma chain). Engine (half practical
+but lemma-less: 280/150-cofactor, 300, 324; or unsplittable: 260, 270, 276,
+294, 306, 308, 330, 340, 342 + exact 272, 304, 348). All coin chains |S| ≤ 10
+(2^10 worst); threshold `hErdos_le_eight_of_lt_threefortyeight` at
+maxRecDepth 200000, 92 interval cases, non-practicals all fail by k = 16.
+Full-octave values: 260:6 264:≤7 270:≤6 272:8 276:≤6 280:≤6 288:≤7 294:≤7
+300:≤6 304:8 306:≤6 308:≤6 312:≤7 320:≤6 324:≤6 330:≤6 336:≤7 340:≤7 342:≤6.
+
+NEXT: (a) t = 10 rung: where is the least index-10 practical? Python census
+FIRST — after 348 the record game changes qualitatively (next Stewart-extremal
+shapes: 2·p at p = 3 = σ(2)+1 gave 6; 12·29 = 348; next layer 348·(σ(348)+1)?
+= 348·1009?? — no: candidates are m = q·(σ(q)+1) for practical q; check
+28·29? (29 = σ(28)+1? σ(28) = 56 no). Compute, don't guess.) (b) The
+[348, 512) remainder of the old octave is now LOW priority (the threshold to
+512 no longer feeds a record-setter; 360/420/480 have d = 24 — engine-only).
+(c) The conjecture layer needs re-homing: with hErdos m ≤ log₂ m dead, what is
+the true growth envelope? Vose says lim inf hErdos ≪ √log m; 348 shows single
+values can EXCEED log₂ m. Is hErdos m ≤ C·log m still plausible? (348 gives
+C ≥ 9/8.44 ≈ 1.07 at one point; iterating the Stewart-extremal construction
+m ↦ m·(σ(m)+1) may push C — each step roughly doubles log while adding
+d(m)-ish to the index. Worth a targeted Python sweep to 10^5.)
