@@ -3,6 +3,7 @@ import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
+import Proofs.ProductOfSegmentsOfChordsConverse
 
 /-!
 # Concyclicity Determinant — Scaffold (OQ-03 / S2)
@@ -26,10 +27,16 @@ S2 SCAFFOLD for `product-of-segments-of-chords-oq-03`:
    `Collinear ℝ`, the explicit Cramer-rule circumcircle of three non-collinear
    points, the cofactor decomposition of Δ relative to a candidate circle, and
    the assembled iff.
-
-The remaining programme (state.md S5/S6) bridges this result back to
-`Proofs/ProductOfSegmentsOfChords.lean` line 468
-(`converse_product_implies_concyclic_axiom`).
+6. (S19 ACT) Part 13: the signed chord-product bridge
+   `signed_product_implies_concyclicityDet_zero` (equal signed products through
+   a common point ⟹ Δ = 0) and the end-to-end round trip
+   `signed_product_implies_concyclic_via_det`. This completes the OQ-03
+   "bridge claim": power-of-a-point and the Möbius determinant are
+   interchangeable concyclicity APIs. The parent's former
+   `converse_product_implies_concyclic_axiom` was already removed (the
+   unsigned form is FALSE; see `Proofs/ProductOfSegmentsOfChordsConverse.lean`
+   for the counterexample and the proven signed converse) — the parent file is
+   axiom-free and its gallery entry `verified`.
 
 See `research/problems/product-of-segments-of-chords-oq-03/state.md` for the
 multi-session plan.
@@ -538,5 +545,73 @@ theorem concyclicityDet_eq_zero_iff_concyclic
       fourth_point_on_circle P₁ P₂ P₃ P₄ O r hr.le hd h₁ h₂ h₃ hΔ⟩
   · rintro ⟨O, r, _, h₁, h₂, h₃, h₄⟩
     exact concyclic_implies_concyclicityDet_zero P₁ P₂ P₃ P₄ O r h₁ h₂ h₃ h₄
+
+/-! ## Part 13: The signed chord-product bridge (S19 ACT)
+
+This is the OQ-03 "bridge claim" from `problem.md`: equal **signed**
+chord-products through a common point force the concyclicity determinant of
+the four endpoints to vanish.
+
+The hypothesis is the *signed* inner-product equality
+`⟪A−P, B−P⟫ = ⟪C−P, D−P⟫` — the unsigned form
+`‖P−A‖·‖P−B‖ = ‖P−C‖·‖P−D‖` is FALSE as a concyclicity criterion
+(S9 PREP; machine-checked refutation
+`ProductOfSegmentsOfChordsConverse.unsigned_converse_counterexample`).
+Non-degeneracy is `LinearIndependent ℝ ![A−P, C−P]`: the two chords lie on
+genuinely distinct lines through `P` (this subsumes `A ≠ P` and `C ≠ P`).
+
+The proof composes three merged results rather than re-running the
+S12-§3.2 closed-form `linear_combination` witness:
+
+1. `signed_inner_product_to_scalar` (Part 6): the signed hypothesis
+   collapses to the scalar power equality `t·‖A−P‖² = s·‖C−P‖²`.
+2. `ProductOfSegmentsOfChordsConverse.signed_converse_implies_concyclic`:
+   the scalar equality plus chord non-degeneracy yields an explicit
+   circumcircle through all four points (Cramer-rule center).
+3. `concyclic_implies_concyclicityDet_zero` (Part 8): concyclic ⟹ Δ = 0,
+   unconditionally.
+-/
+
+/-- **Signed chord-product equality forces the concyclicity determinant to
+vanish** (the OQ-03 bridge claim). If chords `AB` and `CD` meet at `P` (with
+collinearity scalars `t, s`), lie on distinct lines, and have equal signed
+products `⟪A−P, B−P⟫ = ⟪C−P, D−P⟫`, then `Δ(A, B, C, D) = 0`. -/
+theorem signed_product_implies_concyclicityDet_zero
+    (P A B C D : Vec2) (t s : ℝ)
+    (hAB : B - P = t • (A - P)) (hCD : D - P = s • (C - P))
+    (hindep : LinearIndependent ℝ ![A - P, C - P])
+    (hSignedProduct : ⟪A - P, B - P⟫ = ⟪C - P, D - P⟫) :
+    concyclicityDet A B C D = 0 := by
+  have hAneP : A ≠ P := by
+    have h0 : A - P ≠ 0 := by simpa using hindep.ne_zero 0
+    exact sub_ne_zero.mp h0
+  have hCneP : C ≠ P := by
+    have h1 : C - P ≠ 0 := by simpa using hindep.ne_zero 1
+    exact sub_ne_zero.mp h1
+  have hscalar : t * ‖A - P‖ ^ 2 = s * ‖C - P‖ ^ 2 :=
+    signed_inner_product_to_scalar P A B C D t s hAB hCD hSignedProduct
+  obtain ⟨O, r, hr, hA, hB, hC, hD⟩ :=
+    ProductOfSegmentsOfChordsConverse.signed_converse_implies_concyclic
+      P A B C D t s hAB hCD hindep hscalar hAneP hCneP
+  exact concyclic_implies_concyclicityDet_zero A B C D O r hA hB hC hD
+
+/-- **End-to-end round trip through the determinant.** Under the chord
+configuration with equal signed products, if additionally `A, B, C` are not
+collinear, the determinant criterion (Part 12) recovers an explicit
+circumcircle of all four points: signed power-of-a-point ⟹ Δ = 0 ⟹
+concyclic. This exhibits the power-of-a-point and Möbius-determinant
+concyclicity criteria as interchangeable APIs, which is the stated goal of
+OQ-03. -/
+theorem signed_product_implies_concyclic_via_det
+    (P A B C D : Vec2) (t s : ℝ)
+    (hAB : B - P = t • (A - P)) (hCD : D - P = s • (C - P))
+    (hindep : LinearIndependent ℝ ![A - P, C - P])
+    (hSignedProduct : ⟪A - P, B - P⟫ = ⟪C - P, D - P⟫)
+    (hNonCollinear : ¬ Collinear ℝ ({A, B, C} : Set Vec2)) :
+    ∃ (O : Vec2) (r : ℝ), 0 < r ∧
+      ‖A - O‖ = r ∧ ‖B - O‖ = r ∧ ‖C - O‖ = r ∧ ‖D - O‖ = r :=
+  (concyclicityDet_eq_zero_iff_concyclic A B C D hNonCollinear).mp
+    (signed_product_implies_concyclicityDet_zero P A B C D t s hAB hCD
+      hindep hSignedProduct)
 
 end ProductOfSegmentsOfChordsOQ03
