@@ -230,7 +230,7 @@ theorem minDistinctDistances_le_half (n : ℕ) :
           (fun k : ℕ => 2 * Real.sin (π * k / n))).card :=
         Finset.card_le_card (ngonSet_distinctDistances_subset n)
     _ ≤ (Finset.Icc 1 (n / 2)).card := Finset.card_image_le
-    _ = n / 2 := by rw [Nat.card_Icc]
+    _ = n / 2 := by rw [Nat.card_Icc]; omega
 
 /-- **`g(7) ≤ 3`** — the first ladder entry beyond the parent's table: the
 regular heptagon realises only the three chord lengths `2·sin(kπ/7)`,
