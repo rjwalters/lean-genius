@@ -38,7 +38,12 @@
     "blockers": [
       "Verification blackout (2026-06-13): Docker daemon DOWN — Lean builds unverifiable. All remaining next-steps (S17 Hk-discharge, S4 Löb, S7 arith-soundness taut-lift) add Lean code that requires a Docker build to ship. No build-free ACT remains; trackers (state.md, JSON, knowledge.md) all in sync at iteration 16 (9-axiom floor, 0 real sorries). Re-open when Docker recovers.",
       "taut/k/lob remain hypotheses, not theorems: k needs an internal deduction theorem to lift meta-level internal_K to object level; lob needs S4 ACT (Löb, lob_henkin_fixed_point); taut needs a Łukasiewicz/Kalmár CPL-completeness lift. All three are PA-provable derivability facts but undischarge-able under the opaque Provable.",
-      "Architectural: completeness direction still blocked by opaque Provable axiom (S6 PREP #18497)."
+      "Architectural: completeness direction still blocked by opaque Provable axiom (S6 PREP #18497).",
+      {
+        "route": "discharge Hk (object-level formalized D2) from meta internal_K",
+        "reopenCriterion": "materially new mechanism required: concrete Sigma1 Provable rebuild (S6 PREP #18497) providing an object-level deduction theorem",
+        "blockedAt": "2026-07-24"
+      }
     ],
     "nextAction": "BLOCKED on verification blackout. Resume S17 (discharge Hk via internal deduction theorem) once Docker is back; this is the most tractable +0/+1-axiom ACT. See state.md S17 block.",
     "attemptCounts": {
@@ -48,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S16 ACT COMPLETE (Docker-verified 3063 jobs, 0 sorries, 0 NEW axioms). Shipped GodelSecondIncompletenessOQ02Soundness.lean: arithmetical soundness of GL in conditional/rule-verified form. The genuine mathematical content — that the mp and nec inference rules preserve PA-provability — is proved unconditionally (impl_mp, d1_representability) and exported as arith_sound_mp/arith_sound_nec. The three axiom-schema cases (taut/k/lob) are isolated as explicit hypotheses Htaut/Hk/Hlob rather than new axioms, because under the gallery's opaque Provable predicate PA-provability of those object formulas cannot be derived. This closes the soundness induction with 0 new axioms and pinpoints exactly the three derivability facts future stages must discharge (k: internal deduction theorem; lob: S4 Löb; taut: CPL completeness lift).",
+    "progressSummary": "PROGRESS: GL syntax (S8) + translate (S10) + conditional arithmetical soundness (S16) + FIRST DERIVED GL THEOREM: the 4 schema, axiom-free (S18), with a reusable Lukasiewicz-schema propositional toolkit. Hk/Hlob hypotheses confirmed blocked on the Sigma1 Provable rebuild (S16 internal_K route refuted — meta/object level confusion). Next: Htaut instances or full Kalmar completeness for the ->/bottom fragment; S5 Kripke semantics remains an independent unblocked axis.",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
@@ -77,7 +82,8 @@
         "buildSeconds": 9,
         "description": "Realization function bridging GL syntax to PA syntax. 4 recursive cases + 5 simp-equation theorems all rfl-discharged."
       },
-      "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)"
+      "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)",
+      "GodelSecondIncompletenessOQ02GLFour.lean: four (GL |- box A -> box box A), box_iterate, box_mono, propositional toolkit (12 decls) — 0 axioms, 0 sorries, no Mathlib imports, docker-verified"
     ],
     "insights": [
       "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
@@ -88,7 +94,10 @@
       "Completeness direction has a fundamental architectural mismatch: the opaque Provable predicate in GodelFirstIncompletenessOQ01 is incompatible with Solovay's concrete Σ_1-construction.",
       "Löb's theorem (currently informal at line 213 of parent) becomes a stepping stone: a side-product of S2-α + D2/D3 with a Henkin fixed-point axiom.",
       "GL Kripke completeness (Segerberg 1971) is itself a substantial modal-logic theorem and a prerequisite for Solovay's completeness — not currently in Mathlib.",
-      "S15 ACT (2026-06-01, researcher-1): shipped `translate : (PropAtom → Formula) → GLFormula → Formula` per S10 PREP #18678 §3.3 — new companion file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (132 LOC) with 4 recursive cases (`atom`/`falsum`/`impl`/`box`) + 5 `rfl`-discharged simp-equation theorems. **0 new axioms** (clean structural-theorem-add per CLAUDE.md §Axiom Integrity). Docker 3062 jobs clean at HEAD; target built 9.0s on cached Mathlib pin `2df2f0150c`. The S10 PREP design implemented verbatim with no API surprises at v4.26.0. Unblocks S16 arithmetical soundness induction (5-case dispatch over `GL_proves`)."
+      "S15 ACT (2026-06-01, researcher-1): shipped `translate : (PropAtom → Formula) → GLFormula → Formula` per S10 PREP #18678 §3.3 — new companion file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (132 LOC) with 4 recursive cases (`atom`/`falsum`/`impl`/`box`) + 5 `rfl`-discharged simp-equation theorems. **0 new axioms** (clean structural-theorem-add per CLAUDE.md §Axiom Integrity). Docker 3062 jobs clean at HEAD; target built 9.0s on cached Mathlib pin `2df2f0150c`. The S10 PREP design implemented verbatim with no API surprises at v4.26.0. Unblocks S16 arithmetical soundness induction (5-case dispatch over `GL_proves`).",
+      "S18: GL derives the 4 schema box A -> box box A axiom-free (GL extends K4) — first derived theorem in the S8 GL Hilbert system; Boolos argument with B := A and-def box A, Lob constructor closing the loop. #print axioms four: does not depend on ANY axioms (fully constructive, no Mathlib).",
+      "BLOCKED ROUTE (S16 recommendation not viable): discharging Hk from internal_K confuses meta and object levels — internal_K is the META rule (|- phi->psi) -> (|- Prov phi ->f Prov psi); Hk needs the OBJECT theorem |- Prov(a->b) ->f (Prov a ->f Prov b) (formalized D2). No object-level deduction theorem exists under the opaque Provable; Hk/Hlob genuinely blocked on the Sigma1 rebuild (S6 PREP #18497).",
+      "Reusable propositional toolkit from the 3 Lukasiewicz schemas: imp_id, imp_trans, flip (rule form = imp_trans(ax1) . mp(ax2)), imp_swap (theorem), efq (via k3 against not-bottom), dni (flip of id), conj := not(p -> not q) with intro/elims. Enables Htaut instance discharges; full Htaut = Kalmar completeness (~300-500 LOC constructive, next big tractable target)."
     ],
     "mathlibGaps": [
       "No modal logic / provability logic library in Mathlib.",
