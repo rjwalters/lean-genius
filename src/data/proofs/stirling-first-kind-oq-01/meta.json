@@ -80,30 +80,30 @@
       "id": "imports-docstring",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 60,
+      "endLine": 51,
       "summary": "File-level docstring stating ∑ₖ c(n,k) = n!, its combinatorial meaning (cycle-count statistic on permutations), and the recurrence-to-factorial collapse used. Imports Mathlib and opens Nat and Finset.",
       "mathContext": "Nat.stirlingFirst n k counts permutations of an n-set with k cycles; Mathlib supplies the recurrence and edge values but not the row sum."
     },
     {
       "id": "column-zero",
       "title": "The Leftmost Column Collapse n·c(n,0) = 0",
-      "startLine": 61,
-      "endLine": 73,
+      "startLine": 52,
+      "endLine": 60,
       "summary": "stirlingFirst_mul_zero_left: by cases on n. For n = 0 the prefactor is 0; for n = m+1, c(n,0) = 0 by stirlingFirst_succ_zero. This is the fact that makes the row-sum recursion match the factorial recursion exactly.",
       "mathContext": "c(n,0) = 0 for n ≥ 1 (a nonempty permutation has at least one cycle) and the n = 0 term is annihilated by its prefactor."
     },
     {
       "id": "row-sum",
       "title": "The Row Sum ∑ₖ c(n,k) = n!",
-      "startLine": 74,
-      "endLine": 108,
+      "startLine": 61,
+      "endLine": 102,
       "summary": "stirlingFirst_row_sum: induction on n. Base by decide. Step peels k=0 (sum_range_succ'), applies the recurrence termwise, splits into n·A + R(n), uses the additive shift A + c(n,0) = R(n) and n·c(n,0) = 0 to get n·A = n·R(n), then folds (n+1)·R(n) = (n+1)! via Nat.factorial_succ.",
       "mathContext": "R(n+1) = n·R(n) + R(n) = (n+1)·R(n) with R(0) = 1, the factorial recursion."
     },
     {
       "id": "positivity",
       "title": "Positivity of the Row Sum",
-      "startLine": 109,
+      "startLine": 103,
       "endLine": 115,
       "summary": "stirlingFirst_row_sum_pos: rewrite by the row-sum identity and apply Nat.factorial_pos. Two concrete checks (row 4 sums to 24, c(4,2) = 11) close the file by decide.",
       "mathContext": "n! > 0, so there is always at least one permutation of an n-element set."
