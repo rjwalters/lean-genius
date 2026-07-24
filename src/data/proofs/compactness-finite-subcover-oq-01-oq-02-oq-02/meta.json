@@ -106,6 +106,14 @@
       "mathContext": "Compact $s$, $F$ a filter with $F.\\mathrm{NeBot}$ and $F\\le\\mathcal P\\,s$ $\\Rightarrow\\exists x\\in s,\\ \\mathrm{ClusterPt}\\,x\\,F$."
     },
     {
+      "id": "setup",
+      "title": "Namespace and Ambient Hypotheses",
+      "startLine": 53,
+      "endLine": 58,
+      "summary": "Opens the namespace CompactnessFiniteSubcoverOq01Oq02Oq02, brings Set/Filter/Topology notation into scope, and fixes the ambient topological space X shared by all four theorems below.",
+      "mathContext": "Ambient $X$ with a $\\mathrm{TopologicalSpace}$ instance; no further hypotheses on $X$ are assumed."
+    },
+    {
       "id": "filter-form",
       "title": "The Cluster-Point Form, via the Finite-Intersection Dual",
       "startLine": 59,
