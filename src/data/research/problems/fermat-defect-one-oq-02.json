@@ -19,9 +19,15 @@
     "phase": "ACT",
     "since": "2026-06-15T06:15:07.078468+00:00",
     "iteration": 2,
-    "focus": "n=3 fully characterised (both signs, infinite families); n>=4 reframed via heuristic + empty search.",
-    "blockers": [],
-    "nextAction": "Build FermatDefectOneFamilies.lean; optionally formalize infinitude; tackle bounded-nonexistence at n=4.",
+    "focus": "n=3 fully settled with both signs pinned and infinite. Slug saturated; n>=4 is abc-hard.",
+    "blockers": [
+      {
+        "route": "n>=4 both-signs via abc/Fermat-Catalan finiteness",
+        "reopenCriterion": "Mathlib gains abc/Fermat-Catalan or Pillai-type finiteness machinery",
+        "blockedAt": "2026-07-24"
+      }
+    ],
+    "nextAction": "None tractable. Keep completed; n>=4 blocked on abc/Fermat-Catalan machinery.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: n=3 strengthened from existence to INFINITUDE — proved (build-pending) that the positive Mahler family gives a primitive FermatDefectWitness for every s>=2 and that the set of attainable c is Set.Infinite. Primitivity reduced to a single all-s coprimality kernel gcd(9s^3+1,9s^4)=1. n>=4 remains OPEN (Fermat-Catalan/abc, no Mathlib bearer); headline sorry empirically false for 4<=n<=12.",
+    "progressSummary": "COMPLETE at n=3 in strongest form: BOTH defect signs sign-pinned AND infinite (defect_neg_witnesses_infinite in NegInfinitude file; defect_pos_sign_witnesses_infinite in Families file, added 2026-07-24; 0 axioms, 0 sorries, build-verified). n>=4 remains the genuine open core (abc/Fermat-Catalan-hard, no Mathlib bearer).",
     "builtItems": [
       "defect_neg_family (t:Z): (9t^4-3t)^3+(9t^3-1)^3+1=(9t^4)^3 [ring] in proofs/Proofs/FermatDefectOneFamilies.lean",
       "defect_pos_family (s:N): (9s^4)^3+(9s^3+1)^3=(9s^4+3s)^3+1 [ring, subtraction-free over N]",
@@ -38,7 +44,8 @@
       "research/problems/fermat-defect-one-oq-02/verify_defect_search.py: exact both-sign search + family verifier (identity+primitivity+bounds, t,s=1..200)",
       "pos_family_gcd (s): Nat.gcd (9s^3+1) (9s^4) = 1 [dvd-chain, no subtraction] in proofs/Proofs/FermatDefectOneFamilies.lean",
       "defect_pos_witness_ge_two (s) (hs:2<=s): FermatDefectWitness 3 (9s^3+1) (9s^4) (9s^4+3s) [generic family witness; bounds via omega+Nat.pow_le_pow_left/mul_le_mul_right, gcd via pos_family_gcd, identity by ring]",
-      "defect_pos_witnesses_infinite: {c | exists a b, FermatDefectWitness 3 a b c}.Infinite [Set.infinite_of_injective_forall_mem + strictMono_nat_of_lt_succ]"
+      "defect_pos_witnesses_infinite: {c | exists a b, FermatDefectWitness 3 a b c}.Infinite [Set.infinite_of_injective_forall_mem + strictMono_nat_of_lt_succ]",
+      "defect_pos_sign_witnesses_infinite: {c | exists a b, primitive witness with a^3+b^3=c^3+1}.Infinite [injection s->9(s+2)^4+3(s+2), pos_family_gcd] in proofs/Proofs/FermatDefectOneFamilies.lean"
     ],
     "insights": [
       "Both n=3 defect signs lie on infinite polynomial families, both descending from Mahler's parametrization of x^3+y^3+z^3=1 at parameter t (neg) and -t (pos); t=1/s=1 recover the gallery benchmarks (6,8,9) and (9,10,12).",
@@ -48,7 +55,10 @@
       "Reframing: 'both signs for every n>=3' is heuristically hard/false for n>=4; the n=3 abundance is a critical-exponent artifact, and n>=4 is governed by Fermat-Catalan-type finiteness. Confirms the existing no_witness_n_eq_4_below_20 target is TRUE.",
       "The families are not exhaustive: positive witness (64,94,103) is off-family (other rational curves on the same cubic surface).",
       "INFINITUDE at n=3 (Lean, build-pending): proved defect_pos_witnesses_infinite — the set {c | exists a b, FermatDefectWitness 3 a b c} is Set.Infinite. Strict strengthening of FermatDefectExists 3 (exists -> infinitely many primitive witnesses). Injection s -> 9(s+2)^4+3(s+2), strictly monotone, each value witnessed.",
-      "Primitivity kernel: gcd(9s^3+1, 9s^4)=1 for ALL s (pos_family_gcd), so the full primitive gcd reduces to Nat.gcd_one_left. Proof is subtraction-free via Nat.dvd_add_right (d | s*(9s^3+1)=9s^4+s and d | 9s^4 => d|s => d|9s^3 => d|1). Restricting to s>=2 fixes the a<=b ordering (a=9s^3+1<=b=9s^4 for s>=2; the roles flip at s=1)."
+      "Primitivity kernel: gcd(9s^3+1, 9s^4)=1 for ALL s (pos_family_gcd), so the full primitive gcd reduces to Nat.gcd_one_left. Proof is subtraction-free via Nat.dvd_add_right (d | s*(9s^3+1)=9s^4+s and d | 9s^4 => d|s => d|9s^3 => d|1). Restricting to s>=2 fixes the a<=b ordering (a=9s^3+1<=b=9s^4 for s>=2; the roles flip at s=1).",
+      "Sign-pinned coverage was asymmetric: FermatDefectOneNegInfinitude.lean pins the NEGATIVE sign (defect_neg_witnesses_infinite) but the positive side had only the sign-agnostic defect_pos_witnesses_infinite (sign hidden in the FermatDefectWitness disjunction). defect_pos_sign_witnesses_infinite closes the asymmetry; now both signs are pinned+infinite.",
+      "The OQ06 sign-flip involution (Z, unconstrained) cannot transport primitive ordered N witnesses between signs, so neither sign-pinned infinitude follows formally from the other.",
+      "Triage trap: the negative-side engine (kernel gcd(9t^3-1,9t^4)=1, defect_neg_data, defect_neg_witness_ge_two) ALREADY EXISTS in FermatDefectOneNegInfinitude.lean — grep ALL FermatDefectOne*.lean files, not just Families, before adding negative-side content. Re-adding defect_neg_witness_ge_two in another file would shadow-collide in the shared FermatDefectOne namespace."
     ],
     "mathlibGaps": [
       "No abc-conjecture / Fermat-Catalan finiteness machinery in Mathlib to attack the n>=4 case (the open part).",
@@ -73,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-06-15T06:29:35.219Z",
-  "lastUpdate": "2026-06-15T06:29:35.257Z",
+  "lastUpdate": "2026-07-24T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

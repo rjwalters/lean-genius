@@ -182,118 +182,25 @@ theorem defect_pos_witnesses_infinite :
     exact ⟨9 * (n + 2) ^ 3 + 1, 9 * (n + 2) ^ 4,
       defect_pos_witness_ge_two (n + 2) (by omega)⟩
 
-/-! ## Sign-specific infinitude at n = 3
+/-! ## Positive-sign-pinned infinitude at n = 3
 
 `defect_pos_witnesses_infinite` above shows the *sign-agnostic* witness set is
-infinite (its members happen to come from the positive family). OQ-02 asks
-about each sign separately, so we now upgrade BOTH `fermat_defect_three_negative`
-and `fermat_defect_three_positive` (existence, in `FermatDefectOne.lean`) to
-infinitude, with the defect sign pinned in the set comprehension rather than
-hidden inside the `FermatDefectWitness` disjunction.
+infinite: its members come from the positive family, but the statement hides
+the sign inside the `FermatDefectWitness` disjunction. OQ-02 asks about each
+sign separately. The negative side is sign-pinned and infinite in
+`FermatDefectOneNegInfinitude.lean` (`defect_neg_witnesses_infinite`); here we
+add the missing positive-side counterpart, pinning `a³ + b³ = c³ + 1` in the
+set comprehension. (The ℤ sign-flip involution of `FermatDefectOneOQ06.lean`
+does not transport primitive ordered ℕ witnesses, so neither sign-pinned
+statement follows formally from the other.) -/
 
-The negative family `(9t³−1, 9t⁴−3t, 9t⁴)` needs `ℕ`-subtraction care that the
-positive family avoided: the primitivity kernel goes through
-`t·(9t³−1) + t = 9t⁴` (subtraction eliminated by regrouping), and the cubic
-identity is transported from `ℤ` via `zify`. As with the positive family, the
-ordering `a ≤ b` holds from parameter `2` on (at `t = 1` the family gives
-`(8, 6, 9)`, base terms flipped), so witnesses are indexed by `t ≥ 2`. -/
-
-/-- **Negative-family primitivity kernel.** `9t³ − 1` and `9t⁴` are coprime for
-every `t ≥ 1`. Proof: a common divisor `d` divides `t·(9t³−1) + t = 9t⁴`, hence
-divides `t`, hence divides `9t³ = (9t³−1) + 1`, hence divides `1`. Truncated
-subtraction never bites: the only fact used about `9t³ − 1` is
-`(9t³ − 1) + 1 = 9t³`, valid since `t ≥ 1`. -/
-lemma neg_family_gcd (t : ℕ) (ht : 1 ≤ t) :
-    Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4) = 1 := by
-  have hcube : 1 ≤ 9 * t ^ 3 := by
-    have h1 : 1 ≤ t ^ 3 := Nat.one_le_pow 3 t ht
-    omega
-  have hA : (9 * t ^ 3 - 1) + 1 = 9 * t ^ 3 := by omega
-  set d := Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4) with hd
-  have h1 : d ∣ 9 * t ^ 3 - 1 := Nat.gcd_dvd_left _ _
-  have h2 : d ∣ 9 * t ^ 4 := Nat.gcd_dvd_right _ _
-  have h3 : d ∣ t := by
-    have hds : t * (9 * t ^ 3 - 1) + t = 9 * t ^ 4 := by
-      calc t * (9 * t ^ 3 - 1) + t = t * ((9 * t ^ 3 - 1) + 1) := by ring
-        _ = t * (9 * t ^ 3) := by rw [hA]
-        _ = 9 * t ^ 4 := by ring
-    have hdt : d ∣ t * (9 * t ^ 3 - 1) + t := by rw [hds]; exact h2
-    exact (Nat.dvd_add_right (h1.mul_left t)).mp hdt
-  have h4 : d ∣ (9 * t ^ 3 - 1) + 1 := by
-    rw [hA]
-    have he : 9 * t ^ 3 = 9 * t ^ 2 * t := by ring
-    rw [he]; exact h3.mul_left (9 * t ^ 2)
-  have h6 : d ∣ 1 := (Nat.dvd_add_right h1).mp h4
-  exact Nat.dvd_one.mp h6
-
-/-- **Generic negative-defect primitive witness.** For every `t ≥ 2`,
-`(9t³−1, 9t⁴−3t, 9t⁴)` satisfies all witness conditions with the defect sign
-pinned to −1 (`a³ + b³ + 1 = c³`, no disjunction). At `t = 2` this is
-`(71, 138, 144)` (`fermat_defect_three_neg_t2`). -/
-theorem defect_neg_witness_parts (t : ℕ) (ht : 2 ≤ t) :
-    2 ≤ 9 * t ^ 3 - 1 ∧ 9 * t ^ 3 - 1 ≤ 9 * t ^ 4 - 3 * t ∧
-    9 * t ^ 4 - 3 * t < 9 * t ^ 4 ∧
-    Nat.gcd (Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4 - 3 * t)) (9 * t ^ 4) = 1 ∧
-    (9 * t ^ 3 - 1) ^ 3 + (9 * t ^ 4 - 3 * t) ^ 3 + 1 = (9 * t ^ 4) ^ 3 := by
-  have hx : (8 : ℕ) ≤ t ^ 3 := by
-    calc (8 : ℕ) = 2 ^ 3 := by norm_num
-      _ ≤ t ^ 3 := Nat.pow_le_pow_left ht 3
-  have e2 : 2 * t ^ 3 ≤ t ^ 4 := by
-    calc 2 * t ^ 3 ≤ t * t ^ 3 := mul_le_mul_right' ht (t ^ 3)
-      _ = t ^ 4 := by ring
-  have ht3 : t ≤ t ^ 3 := Nat.le_self_pow (by norm_num) t
-  refine ⟨by omega, by omega, by omega, ?_, ?_⟩
-  · -- primitivity: any divisor of the full gcd divides both a and c,
-    -- hence divides gcd(a, c) = 1 by the kernel.
-    have hdvd : Nat.gcd (Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4 - 3 * t)) (9 * t ^ 4) ∣
-        Nat.gcd (9 * t ^ 3 - 1) (9 * t ^ 4) :=
-      Nat.dvd_gcd ((Nat.gcd_dvd_left _ _).trans (Nat.gcd_dvd_left _ _))
-        (Nat.gcd_dvd_right _ _)
-    rw [neg_family_gcd t (by omega)] at hdvd
-    exact Nat.dvd_one.mp hdvd
-  · -- the cubic identity, transported from ℤ (`defect_neg_family`) via zify
-    have h1 : 1 ≤ 9 * t ^ 3 := by omega
-    have h2 : 3 * t ≤ 9 * t ^ 4 := by omega
-    zify [h1, h2]
-    ring
-
-/-- The generic negative witness, packaged as `FermatDefectWitness` (left
-disjunct). -/
-theorem defect_neg_witness_ge_two (t : ℕ) (ht : 2 ≤ t) :
-    FermatDefectWitness 3 (9 * t ^ 3 - 1) (9 * t ^ 4 - 3 * t) (9 * t ^ 4) := by
-  obtain ⟨ha, hab, hbc, hgcd, hid⟩ := defect_neg_witness_parts t ht
-  exact ⟨ha, hab, hbc, hgcd, Or.inl hid⟩
-
-/-- **Negative-sign infinitude at n = 3.** The set of `c` occurring in a
-primitive witness with defect exactly −1 (`a³ + b³ + 1 = c³`) is infinite —
-a strict strengthening of `fermat_defect_three_negative` (existence), and
-sign-pinned where `defect_pos_witnesses_infinite` is sign-agnostic. Injection
-`t ↦ 9(t+2)⁴`, strictly monotone, witnessed by `defect_neg_witness_parts`. -/
-theorem defect_neg_sign_witnesses_infinite :
-    {c : ℕ | ∃ a b : ℕ, 2 ≤ a ∧ a ≤ b ∧ b < c ∧
-      Nat.gcd (Nat.gcd a b) c = 1 ∧ a ^ 3 + b ^ 3 + 1 = c ^ 3}.Infinite := by
-  apply Set.infinite_of_injective_forall_mem
-    (f := fun n : ℕ => 9 * (n + 2) ^ 4)
-  · have hmono : StrictMono (fun n : ℕ => 9 * (n + 2) ^ 4) := by
-      apply strictMono_nat_of_lt_succ
-      intro n
-      show 9 * (n + 2) ^ 4 < 9 * (n + 1 + 2) ^ 4
-      have hp : (n + 2) ^ 4 < (n + 1 + 2) ^ 4 :=
-        Nat.pow_lt_pow_left (by omega) (by norm_num)
-      omega
-    exact hmono.injective
-  · intro n
-    show ∃ a b : ℕ, 2 ≤ a ∧ a ≤ b ∧ b < 9 * (n + 2) ^ 4 ∧
-      Nat.gcd (Nat.gcd a b) (9 * (n + 2) ^ 4) = 1 ∧
-      a ^ 3 + b ^ 3 + 1 = (9 * (n + 2) ^ 4) ^ 3
-    exact ⟨9 * (n + 2) ^ 3 - 1, 9 * (n + 2) ^ 4 - 3 * (n + 2),
-      defect_neg_witness_parts (n + 2) (by omega)⟩
-
-/-- **Positive-sign infinitude at n = 3.** The sign-pinned (`a³ + b³ = c³ + 1`)
-counterpart, upgrading `fermat_defect_three_positive` to infinitude via the
-positive family. Together with `defect_neg_sign_witnesses_infinite` this
-settles OQ-02 at n = 3 in its strongest form: EACH defect sign is realised by
-infinitely many primitive witnesses. -/
+/-- **Positive-sign infinitude at n = 3.** The set of `c` occurring in a
+primitive witness with defect exactly +1 (`a³ + b³ = c³ + 1`) is infinite —
+upgrading `fermat_defect_three_positive` (existence) to infinitude via the
+positive family. Together with `defect_neg_witnesses_infinite`
+(`FermatDefectOneNegInfinitude.lean`) this settles OQ-02 at n = 3 in its
+strongest form: EACH defect sign is realised by infinitely many primitive
+witnesses, with the sign pinned in the statement. -/
 theorem defect_pos_sign_witnesses_infinite :
     {c : ℕ | ∃ a b : ℕ, 2 ≤ a ∧ a ≤ b ∧ b < c ∧
       Nat.gcd (Nat.gcd a b) c = 1 ∧ a ^ 3 + b ^ 3 = c ^ 3 + 1}.Infinite := by

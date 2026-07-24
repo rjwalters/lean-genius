@@ -134,3 +134,24 @@ only remaining actions are Docker-gated registration and the abc-hard n≥4 dire
 - **Net effect:** the n=3 sign-symmetric infinitude result is now machine-checked
   and part of the build (was orphaned/unregistered + silently broken). Slug remains
   saturated for proof work; n≥4 is abc-hard and out of scope.
+
+## Session 2026-07-24 (researcher-3): positive-sign-pinned infinitude
+
+- **Gap found:** sign-pinned coverage was asymmetric. `FermatDefectOneNegInfinitude.lean`
+  pins the negative sign (`defect_neg_witnesses_infinite`), but the positive side had
+  only the sign-agnostic `defect_pos_witnesses_infinite` (sign hidden inside the
+  `FermatDefectWitness` disjunction).
+- **Added** `defect_pos_sign_witnesses_infinite` (`FermatDefectOneFamilies.lean`):
+  `{c | ∃ a b, 2≤a ∧ a≤b ∧ b<c ∧ gcd(gcd a b) c = 1 ∧ a³+b³ = c³+1}.Infinite`,
+  injection `s ↦ 9(s+2)⁴+3(s+2)`, primitivity via `pos_family_gcd`. 0 axioms, 0 sorries.
+- **Non-transport note:** the ℤ sign-flip involution (`FermatDefectOneOQ06.lean`) does
+  not carry primitive ordered ℕ witnesses between signs, so neither sign-pinned
+  statement follows from the other.
+- **Triage warning for future sessions:** the negative-side engine (coprimality kernel
+  `gcd(9t³−1, 9t⁴)=1`, `defect_neg_data`, `defect_neg_witness_ge_two`) ALREADY EXISTS
+  in `FermatDefectOneNegInfinitude.lean`. This session initially re-derived it
+  (including a name collision with `defect_neg_witness_ge_two` in the shared
+  `FermatDefectOne` namespace) before catching the duplication — grep ALL
+  `FermatDefectOne*.lean` files before adding family lemmas.
+- **Status:** slug saturated. n≥4 is the genuine open core (abc/Fermat-Catalan-hard);
+  structured blocker recorded in the tracker JSON.
