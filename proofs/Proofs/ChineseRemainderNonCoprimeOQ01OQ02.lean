@@ -89,7 +89,7 @@ theorem modInv_zmod (a : ℕ) {m : ℕ} (hm : 0 < m) (h : Nat.Coprime a m) :
     unfold modInv
     rw [← Int.cast_natCast, Int.toNat_of_nonneg hnn, Int.emod_def]
     push_cast
-    simp [ZMod.natCast_self]
+    simp
   have hz := congrArg (fun z : ℤ => (z : ZMod m)) hbez
   push_cast at hz
   simp only [ZMod.natCast_self, zero_mul, add_zero] at hz
@@ -286,8 +286,8 @@ theorem garnerRec_spec (l : List (ℕ × ℕ)) :
       have hposr : ∀ q ∈ rest, 0 < q.1 := fun q hq => hpos q (by simp [hq])
       have hcopr : ∀ q ∈ rest, Nat.Coprime (P * m) q.1 := by
         intro q hq
-        exact Nat.Coprime.mul (hcop q (by simp [hq]))
-          (hhead q.1 (List.mem_map_of_mem Prod.fst hq))
+        exact Nat.Coprime.mul_left (hcop q (by simp [hq]))
+          (hhead q.1 (List.mem_map_of_mem hq))
       obtain ⟨ihlt, ihself, ihmod⟩ :=
         ih (x + nextDigit x P m r * P) (P * m) hx' hposr hcopr htail
       refine ⟨?_, ?_, ?_⟩
@@ -328,7 +328,7 @@ theorem coprime_list_prod {k : ℕ} :
     ∀ {ms : List ℕ}, (∀ m ∈ ms, Nat.Coprime k m) → Nat.Coprime k ms.prod := by
   intro ms
   induction ms with
-  | nil => intro _; simpa using Nat.coprime_one_right k
+  | nil => intro _; exact Nat.coprime_one_right k
   | cons m ms ih =>
       intro h
       rw [List.prod_cons]
@@ -483,7 +483,7 @@ theorem hornerMod_modEq (n : ℕ) :
       hornerMod n l ≡ ofDigits (l.map Prod.fst) (l.map Prod.snd) [MOD n] := by
   intro l
   induction l with
-  | nil => simp [hornerMod]
+  | nil => exact Nat.ModEq.refl 0
   | cons p rest ih =>
       obtain ⟨m, v⟩ := p
       show (v + m * hornerMod n rest) % n ≡ _ [MOD n]
