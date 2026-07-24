@@ -461,4 +461,381 @@ theorem odd_abundant_iff_exists_odd_isWeakPrimitiveAbundant_dvd {n : ℕ}
   · rintro ⟨d, hdvd, -, hdab, -⟩
     exact hdab.of_dvd hdvd hodd.pos.ne'
 
+/- ## INFINITUDE RESOLVED: products of consecutive primes — the first-crossing family
+
+This section settles the target question **positively**: there are infinitely
+many odd primitive abundant numbers (in the strict A006038 sense).
+
+**The mechanism** (materially new versus both recorded routes): for a starting
+index `a ≥ 1`, multiply consecutive primes `p_a, p_{a+1}, …` (nth-indexed, so
+`p_a` is odd) until the product first becomes abundant. Divergence of `∑ 1/p`
+(Mathlib's `not_summable_one_div_on_primes`) forces a first crossing `b`:
+
+* the crossing product `N = p_a ⋯ p_{b-1}` is **abundant** (definition of
+  crossing), and
+* its predecessor `N/p_{b-1}` is **not** abundant; equality `σ = 2n` is
+  impossible for a squarefree odd `n` (with `≥ 2` prime factors, `4 ∣ σ(n)`
+  but `2n ≡ 2 [MOD 4]`), so the predecessor is strictly **deficient**, and so
+  is every maximal divisor `N/p_i` (the computation only improves when the
+  omitted prime is smaller: `p_i ≤ p_{b-1}`). Deficiency is divisor-inherited
+  (`deficient_of_dvd`), so *every* proper divisor of `N` is deficient: `N` is
+  **primitive abundant** — and odd, since all its prime factors are odd.
+
+Distinct starting indices give witnesses with distinct least prime factors, so
+the family is injective and the set is infinite. Unlike Route 1 (append ONE
+prime to an odd deficient base with `σ(m)/m → 2⁻`, which needs an unknown odd
+family), the base here *grows through* the boundary, and unlike Route 2
+(extraction), no divisor of an existing family is taken — the witnesses are
+built from scratch. No Bertrand window is needed anywhere. -/
+
+open Finset
+
+/-- **σ of a product of distinct `nth`-indexed primes** is the product of
+`pᵢ + 1` — the squarefree closed form, generalizing `sum_divisors_mul_prime`
+from one appended prime to any finite index set. -/
+theorem sum_divisors_prod_nth (s : Finset ℕ) :
+    ∑ d ∈ (∏ i ∈ s, Nat.nth Nat.Prime i).divisors, d
+      = ∏ i ∈ s, (Nat.nth Nat.Prime i + 1) := by
+  induction s using Finset.cons_induction with
+  | empty => simp
+  | cons j s hj ih =>
+    rw [Finset.prod_cons, Finset.prod_cons, mul_comm (Nat.nth Nat.Prime j)]
+    have hnd : ¬ Nat.nth Nat.Prime j ∣ ∏ i ∈ s, Nat.nth Nat.Prime i := by
+      intro hdvd
+      obtain ⟨i, hi, hdvd'⟩ :=
+        ((Nat.prime_nth_prime j).prime.dvd_finsetProd_iff _).mp hdvd
+      have heq : Nat.nth Nat.Prime j = Nat.nth Nat.Prime i :=
+        (Nat.prime_dvd_prime_iff_eq (Nat.prime_nth_prime j)
+          (Nat.prime_nth_prime i)).mp hdvd'
+      exact hj (Nat.nth_injective Nat.infinite_setOf_prime heq ▸ hi)
+    rw [sum_divisors_mul_prime (Nat.prime_nth_prime j) hnd, ih,
+      mul_comm (∏ i ∈ s, (Nat.nth Nat.Prime i + 1))]
+
+/-- A product of `nth`-indexed primes with all indices `≥ 1` is **odd**:
+`2 = p₀` is the only even prime, and it is excluded by the index bound. -/
+theorem odd_prod_nth {s : Finset ℕ} (hs : ∀ i ∈ s, 1 ≤ i) :
+    Odd (∏ i ∈ s, Nat.nth Nat.Prime i) := by
+  have h2 : ¬ 2 ∣ ∏ i ∈ s, Nat.nth Nat.Prime i := by
+    intro h
+    obtain ⟨i, hi, h2i⟩ := (Nat.prime_two.prime.dvd_finsetProd_iff _).mp h
+    have heq : (2 : ℕ) = Nat.nth Nat.Prime i :=
+      (Nat.prime_dvd_prime_iff_eq Nat.prime_two (Nat.prime_nth_prime i)).mp h2i
+    have h0 : Nat.nth Nat.Prime 0 = Nat.nth Nat.Prime i := by
+      rw [Nat.nth_prime_zero_eq_two]; exact heq
+    have := Nat.nth_injective Nat.infinite_setOf_prime h0
+    have := hs i hi
+    omega
+  rcases Nat.even_or_odd (∏ i ∈ s, Nat.nth Nat.Prime i) with he | ho
+  · exact absurd he.two_dvd h2
+  · exact ho
+
+/-- A product of `nth`-indexed primes is positive. -/
+theorem prod_nth_pos (s : Finset ℕ) : 0 < ∏ i ∈ s, Nat.nth Nat.Prime i :=
+  Finset.prod_pos fun i _ => (Nat.prime_nth_prime i).pos
+
+/-- **No squarefree odd number with indices `≥ 1` is perfect**: for such a
+product, `σ = 2·n` is impossible.  Zero factors: `σ(1) = 1 ≠ 2`.  One factor:
+`p + 1 = 2p` forces `p = 1`, not prime.  Two or more factors: each `pᵢ + 1` is
+even, so `4 ∣ σ(n)`, while `2·n ≡ 2 [MOD 4]` since `n` is odd. -/
+theorem sum_divisors_prod_nth_ne_two_mul {s : Finset ℕ} (hs : ∀ i ∈ s, 1 ≤ i) :
+    ∑ d ∈ (∏ i ∈ s, Nat.nth Nat.Prime i).divisors, d
+      ≠ 2 * ∏ i ∈ s, Nat.nth Nat.Prime i := by
+  rw [sum_divisors_prod_nth]
+  intro h
+  rcases Nat.lt_or_ge s.card 2 with hcard | hcard
+  · interval_cases hc : s.card
+    · rw [Finset.card_eq_zero] at hc
+      subst hc
+      simp at h
+    · obtain ⟨j, rfl⟩ := Finset.card_eq_one.mp hc
+      have hp := (Nat.prime_nth_prime j).two_le
+      simp only [Finset.prod_singleton] at h
+      omega
+  · -- ≥ 2 factors: 4 ∣ ∏ (pᵢ + 1) but 2·(odd) ≢ 0 [MOD 4]
+    obtain ⟨j, hj, k, hk, hjk⟩ := Finset.one_lt_card.mp hcard
+    have hoddj : Odd (Nat.nth Nat.Prime j) := by
+      have := odd_prod_nth (s := {j}) (fun i hi => by
+        simp only [Finset.mem_singleton] at hi; exact hi ▸ hs j hj)
+      simpa using this
+    have hoddk : Odd (Nat.nth Nat.Prime k) := by
+      have := odd_prod_nth (s := {k}) (fun i hi => by
+        simp only [Finset.mem_singleton] at hi; exact hi ▸ hs k hk)
+      simpa using this
+    have h4 : 4 ∣ ∏ i ∈ s, (Nat.nth Nat.Prime i + 1) := by
+      have hsub : ({j, k} : Finset ℕ) ⊆ s := by
+        intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx
+        · exact hj
+        · exact Finset.mem_singleton.mp hx ▸ hk
+      have hpair : ∏ i ∈ ({j, k} : Finset ℕ), (Nat.nth Nat.Prime i + 1)
+          = (Nat.nth Nat.Prime j + 1) * (Nat.nth Nat.Prime k + 1) :=
+        Finset.prod_pair hjk
+      have hdvd4 : 4 ∣ (Nat.nth Nat.Prime j + 1) * (Nat.nth Nat.Prime k + 1) := by
+        obtain ⟨x, hx⟩ := hoddj
+        obtain ⟨y, hy⟩ := hoddk
+        exact ⟨(x + 1) * (y + 1), by rw [hx, hy]; ring⟩
+      exact dvd_trans (hpair ▸ hdvd4)
+        (Finset.prod_dvd_prod_of_subset _ _ _ hsub)
+    rw [h] at h4
+    obtain ⟨w, hw⟩ := odd_prod_nth hs
+    omega
+
+/-- **The crossing exists**: for every starting index `a` there is a `b` such
+that the product of the consecutive primes `p_a ⋯ p_{b-1}` is abundant.  This
+is the single analytic input, powered by the divergence of `∑ 1/p`
+(`Nat.Primes.not_summable_one_div`): the partial sums of `1/pᵢ` over `[a, b)`
+exceed `2`, so `σ(N)/N = ∏ (1 + 1/pᵢ) ≥ 1 + ∑ 1/pᵢ > 2` (Weierstrass). -/
+theorem exists_crossing (a : ℕ) :
+    ∃ b, 2 * ∏ i ∈ Finset.Ico a b, Nat.nth Nat.Prime i
+      < ∑ d ∈ (∏ i ∈ Finset.Ico a b, Nat.nth Nat.Prime i).divisors, d := by
+  -- Step 1: ∑ 1/pᵢ diverges (transport prime-reciprocal divergence along `nth`)
+  have hnth : ¬ Summable (fun i : ℕ => (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)) := by
+    intro hsum
+    apply Nat.Primes.not_summable_one_div
+    have e : ℕ ≃ Nat.Primes :=
+      { toFun := fun i => ⟨Nat.nth Nat.Prime i, Nat.prime_nth_prime i⟩
+        invFun := fun p => Nat.count Nat.Prime (p : ℕ)
+        left_inv := fun i => Nat.count_nth_of_infinite Nat.infinite_setOf_prime i
+        right_inv := fun p => Subtype.ext (Nat.nth_count p.2) }
+    exact e.summable_iff.mp hsum
+  have hnn : ∀ i, (0 : ℝ) ≤ 1 / (Nat.nth Nat.Prime i : ℝ) := fun i => by positivity
+  have htend := (not_summable_iff_tendsto_nat_atTop_of_nonneg hnn).mp hnth
+  -- Step 2: pick b with the tail sum over [a, b) exceeding 2
+  obtain ⟨b, hb⟩ := (htend.eventually_ge_atTop
+    ((∑ i ∈ Finset.range a, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)) + 3)).exists
+  have hab : a ≤ b := by
+    by_contra hab
+    push_neg at hab
+    have hmono : ∑ i ∈ Finset.range b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)
+        ≤ ∑ i ∈ Finset.range a, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) :=
+      Finset.sum_le_sum_of_subset_of_nonneg
+        (Finset.range_subset.mpr hab.le) (fun i _ _ => hnn i)
+    linarith
+  have htail : (2 : ℝ) < ∑ i ∈ Finset.Ico a b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) := by
+    rw [Finset.sum_Ico_eq_sub _ hab]
+    linarith
+  -- Step 3: Weierstrass ∏(1 + xᵢ) ≥ 1 + ∑ xᵢ
+  have hweier : ∀ (t : Finset ℕ),
+      1 + ∑ i ∈ t, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)
+        ≤ ∏ i ∈ t, (1 + 1 / (Nat.nth Nat.Prime i : ℝ)) := by
+    intro t
+    induction t using Finset.cons_induction with
+    | empty => simp
+    | cons j t hjt ih =>
+      rw [Finset.sum_cons, Finset.prod_cons]
+      have hfj := hnn j
+      have hsum : (0 : ℝ) ≤ ∑ i ∈ t, 1 / (Nat.nth Nat.Prime i : ℝ) :=
+        Finset.sum_nonneg fun i _ => hnn i
+      nlinarith [ih, mul_le_mul_of_nonneg_left ih
+        (by linarith : (0 : ℝ) ≤ 1 + 1 / (Nat.nth Nat.Prime j : ℝ))]
+  -- Step 4: convert the index product to σ-arithmetic and descend to ℕ
+  refine ⟨b, ?_⟩
+  rw [sum_divisors_prod_nth]
+  have hposℝ : ∀ i, (0 : ℝ) < (Nat.nth Nat.Prime i : ℝ) := fun i => by
+    exact_mod_cast (Nat.prime_nth_prime i).pos
+  have hfactor : ∀ i ∈ Finset.Ico a b,
+      (1 : ℝ) + 1 / (Nat.nth Nat.Prime i : ℝ)
+        = ((Nat.nth Nat.Prime i : ℝ) + 1) / (Nat.nth Nat.Prime i : ℝ) := by
+    intro i _
+    rw [add_div, div_self (hposℝ i).ne']
+  have hprodpos : (0 : ℝ) < ∏ i ∈ Finset.Ico a b, (Nat.nth Nat.Prime i : ℝ) :=
+    Finset.prod_pos fun i _ => hposℝ i
+  have hgt2 : (2 : ℝ) < (∏ i ∈ Finset.Ico a b, ((Nat.nth Nat.Prime i : ℝ) + 1))
+      / ∏ i ∈ Finset.Ico a b, (Nat.nth Nat.Prime i : ℝ) := by
+    rw [← Finset.prod_div_distrib]
+    calc (2 : ℝ) < 1 + ∑ i ∈ Finset.Ico a b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) := by
+          linarith
+      _ ≤ ∏ i ∈ Finset.Ico a b, (1 + 1 / (Nat.nth Nat.Prime i : ℝ)) := hweier _
+      _ = ∏ i ∈ Finset.Ico a b,
+            ((Nat.nth Nat.Prime i : ℝ) + 1) / (Nat.nth Nat.Prime i : ℝ) :=
+          Finset.prod_congr rfl hfactor
+  have hR : 2 * ∏ i ∈ Finset.Ico a b, (Nat.nth Nat.Prime i : ℝ)
+      < ∏ i ∈ Finset.Ico a b, ((Nat.nth Nat.Prime i : ℝ) + 1) :=
+    (lt_div_iff₀ hprodpos).mp hgt2
+  exact_mod_cast hR
+
+/-- The first index `b` at which the product of consecutive primes
+`p_a ⋯ p_{b-1}` becomes abundant.  Noncomputable only through `Nat.nth`. -/
+noncomputable def crossing (a : ℕ) : ℕ := Nat.find (exists_crossing a)
+
+/-- **The odd primitive abundant witness for starting index `a`**: the product
+of the consecutive primes `p_a, …, p_{crossing a − 1}`. -/
+noncomputable def consecutivePrimeWitness (a : ℕ) : ℕ :=
+  ∏ i ∈ Finset.Ico a (crossing a), Nat.nth Nat.Prime i
+
+/-- The crossing lies strictly beyond the start: empty products are not
+abundant (`σ(1) = 1`). -/
+theorem lt_crossing (a : ℕ) : a < crossing a := by
+  by_contra h
+  push_neg at h
+  have hspec := Nat.find_spec (exists_crossing a)
+  rw [show crossing a = Nat.find (exists_crossing a) from rfl] at h
+  rw [Finset.Ico_eq_empty (by omega : ¬ a < Nat.find (exists_crossing a))] at hspec
+  simp [Nat.divisors_one] at hspec
+
+/-- **Every maximal divisor `N / pᵢ` of the crossing product is deficient.**
+For the omitted index `i = crossing − 1` this is exactly minimality of the
+crossing (sharpened from `≤` to `<` by `sum_divisors_prod_nth_ne_two_mul`);
+for smaller `i` the inequality only improves, because trading the omitted
+prime `pᵢ` back in for `p_{crossing−1}` multiplies the σ-side by
+`(p_c + 1)/(p_i + 1)` but the `2n`-side by `p_c/p_i ≥ (p_c+1)/(p_i+1)`. -/
+theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
+    (hi : i ∈ Finset.Ico a (crossing a)) :
+    (∏ j ∈ (Finset.Ico a (crossing a)).erase i, Nat.nth Nat.Prime j).Deficient := by
+  rw [deficient_iff_sum_divisors, sum_divisors_prod_nth]
+  obtain ⟨c, hc⟩ : ∃ c, crossing a = c + 1 :=
+    ⟨crossing a - 1, by have := lt_crossing a; omega⟩
+  have hac : a ≤ c := by have := lt_crossing a; omega
+  -- predecessor is strictly deficient
+  have hple : ¬ (2 * ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j
+      < ∑ d ∈ (∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j).divisors, d) :=
+    Nat.find_min (exists_crossing a) (by omega)
+  have hpne := sum_divisors_prod_nth_ne_two_mul
+    (s := Finset.Ico a c) (fun j hj => le_trans ha (Finset.mem_Ico.mp hj).1)
+  rw [sum_divisors_prod_nth] at hple hpne
+  have hpred : ∏ j ∈ Finset.Ico a c, (Nat.nth Nat.Prime j + 1)
+      < 2 * ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j := by omega
+  -- split on whether the omitted index is the top one
+  rw [hc] at hi ⊢
+  have hico : Finset.Ico a (c + 1) = insert c (Finset.Ico a c) := by
+    rw [Finset.Ico_succ_right_eq_insert_Ico hac]
+  rcases Finset.mem_Ico.mp hi with ⟨hai, hic1⟩
+  rcases Nat.lt_or_ge i c with hilt | hige
+  · -- i < c: erase i, keep the top prime p_c
+    have herase : (Finset.Ico a (c + 1)).erase i
+        = insert c ((Finset.Ico a c).erase i) := by
+      rw [hico, Finset.erase_insert_of_ne (by omega : c ≠ i)]
+    have hcnot : c ∉ (Finset.Ico a c).erase i := fun hmem =>
+      absurd (Finset.mem_Ico.mp (Finset.mem_of_mem_erase hmem)).2 (lt_irrefl c)
+    have himem : i ∈ Finset.Ico a c := Finset.mem_Ico.mpr ⟨hai, hilt⟩
+    rw [herase, Finset.prod_insert hcnot, Finset.prod_insert hcnot]
+    set A := ∏ j ∈ (Finset.Ico a c).erase i, (Nat.nth Nat.Prime j + 1) with hA
+    set B := ∏ j ∈ (Finset.Ico a c).erase i, Nat.nth Nat.Prime j with hB
+    set pi := Nat.nth Nat.Prime i with hpi
+    set pc := Nat.nth Nat.Prime c with hpc
+    -- hpred in split form: (pi + 1) * A < 2 * (pi * B)
+    have hsplitσ : (pi + 1) * A = ∏ j ∈ Finset.Ico a c, (Nat.nth Nat.Prime j + 1) :=
+      Finset.mul_prod_erase _ _ himem
+    have hsplitn : pi * B = ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j :=
+      Finset.mul_prod_erase _ _ himem
+    have hpred' : (pi + 1) * A < 2 * (pi * B) := by
+      rw [hsplitσ, hsplitn]; exact hpred
+    have hpic : pi ≤ pc :=
+      le_of_lt ((Nat.nth_lt_nth Nat.infinite_setOf_prime).mpr hilt)
+    -- goal: (pc + 1) * A < 2 * (pc * B)
+    have hkey : pi * (pc + 1) ≤ pc * (pi + 1) := by
+      rw [Nat.mul_add, Nat.mul_add, Nat.mul_one, Nat.mul_one, Nat.mul_comm pc pi]
+      exact Nat.add_le_add_left hpic _
+    refine Nat.lt_of_mul_lt_mul_left (a := pi + 1) ?_
+    calc (pi + 1) * ((pc + 1) * A)
+        = (pc + 1) * ((pi + 1) * A) := by ring
+      _ < (pc + 1) * (2 * (pi * B)) :=
+          Nat.mul_lt_mul_left (by omega) hpred'
+      _ = 2 * B * (pi * (pc + 1)) := by ring
+      _ ≤ 2 * B * (pc * (pi + 1)) :=
+          Nat.mul_le_mul_left _ hkey
+      _ = (pi + 1) * (2 * (pc * B)) := by ring
+  · -- i = c: the erase IS the predecessor
+    have hieq : i = c := by omega
+    subst hieq
+    have herase : (Finset.Ico a (i + 1)).erase i = Finset.Ico a i := by
+      rw [hico, Finset.erase_insert (fun hmem =>
+        absurd (Finset.mem_Ico.mp hmem).2 (lt_irrefl i))]
+    rw [herase]
+    exact hpred
+
+/-- **The crossing product is odd primitive abundant** (for start `a ≥ 1`):
+abundant by the crossing, odd because all its prime factors are odd, and every
+proper divisor omits some prime `pᵢ`, hence divides the deficient maximal
+divisor `N / pᵢ` and is deficient itself. -/
+theorem consecutivePrimeWitness_mem {a : ℕ} (ha : 1 ≤ a) :
+    consecutivePrimeWitness a ∈ OddPrimitiveAbundant := by
+  have hodd : Odd (consecutivePrimeWitness a) :=
+    odd_prod_nth fun i hi => le_trans ha (Finset.mem_Ico.mp hi).1
+  refine ⟨hodd, ?_, ?_⟩
+  · rw [Nat.abundant_iff_sum_divisors]
+    exact Nat.find_spec (exists_crossing a)
+  · intro d hd
+    obtain ⟨hdvd, hdlt⟩ := Nat.mem_properDivisors.mp hd
+    have hNpos : 0 < consecutivePrimeWitness a := prod_nth_pos _
+    have hdpos : 0 < d := by
+      rcases Nat.eq_zero_or_pos d with rfl | h
+      · exact absurd (Nat.eq_zero_of_zero_dvd hdvd) hNpos.ne'
+      · exact h
+    -- d omits some prime index i
+    have homit : ∃ i ∈ Finset.Ico a (crossing a), ¬ Nat.nth Nat.Prime i ∣ d := by
+      by_contra hall
+      push_neg at hall
+      have himg : ∏ p ∈ (Finset.Ico a (crossing a)).image (Nat.nth Nat.Prime), p
+          = consecutivePrimeWitness a :=
+        Finset.prod_image fun i _ j _ h =>
+          Nat.nth_injective Nat.infinite_setOf_prime h
+      have hNd : consecutivePrimeWitness a ∣ d := by
+        rw [← himg]
+        refine Finset.prod_primes_dvd d ?_ ?_
+        · intro p hp
+          obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hp
+          exact (Nat.prime_nth_prime i).prime
+        · intro p hp
+          obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hp
+          exact hall i hi
+      exact absurd hdlt (not_lt.mpr (Nat.le_of_dvd hdpos hNd))
+    obtain ⟨i, hi, hnd⟩ := homit
+    -- d divides the deficient maximal divisor N / pᵢ
+    have hsplit : Nat.nth Nat.Prime i
+        * ∏ j ∈ (Finset.Ico a (crossing a)).erase i, Nat.nth Nat.Prime j
+        = consecutivePrimeWitness a :=
+      Finset.mul_prod_erase _ _ hi
+    have hcop : Nat.Coprime d (Nat.nth Nat.Prime i) :=
+      ((Nat.prime_nth_prime i).coprime_iff_not_dvd.mpr hnd).symm
+    have hdM : d ∣ ∏ j ∈ (Finset.Ico a (crossing a)).erase i, Nat.nth Nat.Prime j := by
+      refine hcop.dvd_of_dvd_mul_left ?_
+      rw [hsplit]
+      exact hdvd
+    exact deficient_of_dvd (erase_prod_deficient ha hi) hdM hdpos.ne'
+
+/-- **Distinct starts give distinct witnesses**: `p_a` divides the witness for
+`a` but no witness for a later start (whose prime factors are all larger), and
+`nth` is injective, so the family `k ↦ consecutivePrimeWitness (k + 1)` is
+injective. -/
+theorem consecutivePrimeWitness_injective :
+    Function.Injective fun k : ℕ => consecutivePrimeWitness (k + 1) := by
+  have key : ∀ {k l : ℕ}, k < l →
+      consecutivePrimeWitness (k + 1) ≠ consecutivePrimeWitness (l + 1) := by
+    intro k l hkl heq
+    have hmem : k + 1 ∈ Finset.Ico (k + 1) (crossing (k + 1)) :=
+      Finset.mem_Ico.mpr ⟨le_refl _, lt_crossing _⟩
+    have hdvd : Nat.nth Nat.Prime (k + 1) ∣ consecutivePrimeWitness (k + 1) :=
+      Finset.dvd_prod_of_mem _ hmem
+    rw [heq] at hdvd
+    obtain ⟨i, hi, hdvd'⟩ :=
+      ((Nat.prime_nth_prime (k + 1)).prime.dvd_finsetProd_iff _).mp hdvd
+    have heqp : Nat.nth Nat.Prime (k + 1) = Nat.nth Nat.Prime i :=
+      (Nat.prime_dvd_prime_iff_eq (Nat.prime_nth_prime (k + 1))
+        (Nat.prime_nth_prime i)).mp hdvd'
+    have : k + 1 = i := Nat.nth_injective Nat.infinite_setOf_prime heqp
+    have := (Finset.mem_Ico.mp hi).1
+    omega
+  intro k l h
+  rcases lt_trichotomy k l with hlt | heq | hgt
+  · exact absurd h (key hlt)
+  · exact heq
+  · exact absurd h.symm (key hgt)
+
+/-- **MAIN RESULT — there are infinitely many odd primitive abundant numbers**
+(OEIS A006038 is infinite).  This settles the target question of this entry
+positively: the injective family `k ↦ p_{k+1} p_{k+2} ⋯ p_{crossing−1}` of
+first-crossing consecutive-prime products consists entirely of odd primitive
+abundant numbers. -/
+theorem oddPrimitiveAbundant_infinite : OddPrimitiveAbundant.Infinite :=
+  Set.infinite_of_injective_forall_mem consecutivePrimeWitness_injective
+    fun k => consecutivePrimeWitness_mem (Nat.le_add_left 1 k)
+
+/-- The headline restated without the named set: the odd primitive abundant
+numbers — odd, abundant, every proper divisor deficient — form an infinite
+set. -/
+theorem infinitely_many_odd_primitive_abundant :
+    {n : ℕ | Odd n ∧ n.Abundant ∧ ∀ d ∈ n.properDivisors, d.Deficient}.Infinite :=
+  oddPrimitiveAbundant_infinite
+
 end AbundantNumberOQ03OQ03
