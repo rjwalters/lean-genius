@@ -137,7 +137,7 @@
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of cyclic invariance of the trace tr(A·B) = tr(B·A) (including the rectangular case), the vanishing of the trace of a commutator written with an explicit subtraction, similarity invariance of the trace in the practically-checkable determinant form, and the bridge to oq-01: similar matrices share their entire eigenvalue multiset over any field, with the trace and determinant invariance recovered as its sum/product shadows.",
     "implications": "Packages Mathlib's cyclic-trace identities with the commutator and conjugacy-class statements that matrix calculations actually use, and upgrades 'similar matrices have equal trace and determinant' to the strictly stronger 'similar matrices have equal eigenvalue multisets', tying the present entry to the spectral viewpoint of oq-01.",
     "openQuestions": [
-      "Prove the trace form tr(A·Bᵀ) = Σ Aᵢⱼ Bᵢⱼ is a genuine inner product (the Frobenius/Hilbert–Schmidt inner product) and relate its induced norm to the singular values.",
+      "Partially discharged by spectral-trace-det-eigenvalues-oq-02-oq-01: the trace form tr(Aᵀ·B) = Σ Aᵢⱼ Bᵢⱼ is proved a genuine inner product (packaged as InnerProductSpace.Core ℝ (Matrix m n ℝ)), but relating the induced norm to the singular values (‖A‖_F² = Σ σᵢ²) is explicitly left out of scope there and remains open.",
       "Formalize that the characteristic polynomial — not just the trace and determinant — is a complete set of similarity invariants exactly for diagonalisable matrices with distinct eigenvalues, sharpening eigenvalues_units_conj to a classification."
     ]
   },
