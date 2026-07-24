@@ -430,13 +430,13 @@ variable (G) in
 the monomials of total degree at most `|G|`. -/
 noncomputable def noetherCandidate : Subalgebra k (MvPolynomial (Fin n) k) :=
   Algebra.adjoin k
-    ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m 1)) ''
+    ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m (1 : k))) ''
       {m : Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ Fintype.card G})
 
 /-- Low-degree Reynolds images are generators of the candidate. -/
 theorem reynolds_monomial_mem_noetherCandidate_of_le
     {m : Fin n →₀ ℕ} (hm : (m.sum fun _ e => e) ≤ Fintype.card G) :
-    reynolds G (MvPolynomial.monomial m 1) ∈ noetherCandidate G :=
+    reynolds G (MvPolynomial.monomial m (1 : k)) ∈ noetherCandidate G :=
   Algebra.subset_adjoin ⟨m, hm, rfl⟩
 
 /-- **Unconditional inclusion**: the candidate subalgebra consists of
@@ -455,15 +455,15 @@ candidate — by generation when `deg m ≤ |G|`, by the kernel otherwise. -/
 theorem fixedPoints_eq_noetherCandidate_of_kernel
     (hG : (Fintype.card G : k) ≠ 0)
     (hker : ∀ m : Fin n →₀ ℕ, Fintype.card G < (m.sum fun _ e => e) →
-      reynolds G (MvPolynomial.monomial m 1) ∈ noetherCandidate G) :
+      reynolds G (MvPolynomial.monomial m (1 : k)) ∈ noetherCandidate G) :
     FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G = noetherCandidate G := by
   refine le_antisymm ?_ noetherCandidate_le_fixedPoints
   intro p hp
   rw [eq_sum_reynolds_monomial hG hp]
   refine Subalgebra.sum_mem _ fun m _ => Subalgebra.smul_mem _ ?_ _
-  rcases le_or_lt (m.sum fun _ e => e) (Fintype.card G) with hm | hm
-  · exact reynolds_monomial_mem_noetherCandidate_of_le hm
+  rcases Nat.lt_or_ge (Fintype.card G) (m.sum fun _ e => e) with hm | hm
   · exact hker m hm
+  · exact reynolds_monomial_mem_noetherCandidate_of_le hm
 
 /-- There are only finitely many exponent vectors of bounded total degree:
 the map `m ↦ ⇑m` embeds them into the finite product `Π i, [0, D]`. -/
@@ -479,12 +479,12 @@ theorem finite_degreeBounded_exponents (D : ℕ) :
     · exact le_trans
         (Finset.single_le_sum (f := fun j => m j) (fun _ _ => Nat.zero_le _) hi)
         hm'
-    · simpa [Finsupp.notMem_support_iff.mp hi] using Nat.zero_le D
+    · simp [Finsupp.notMem_support_iff.mp hi]
   exact (((Set.Finite.pi fun _ => Set.finite_Iic D).image _).subset hsub)
 
 /-- The candidate's generating set is finite. -/
 theorem finite_noetherGenerators :
-    ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m 1)) ''
+    ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m (1 : k))) ''
       {m : Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ Fintype.card G}).Finite :=
   (finite_degreeBounded_exponents _).image _
 
@@ -496,7 +496,7 @@ in the non-modular case, reduced to the S7b ACT kernel. -/
 theorem fg_of_kernel
     (hG : (Fintype.card G : k) ≠ 0)
     (hker : ∀ m : Fin n →₀ ℕ, Fintype.card G < (m.sum fun _ e => e) →
-      reynolds G (MvPolynomial.monomial m 1) ∈ noetherCandidate G) :
+      reynolds G (MvPolynomial.monomial m (1 : k)) ∈ noetherCandidate G) :
     (FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G).FG := by
   rw [fixedPoints_eq_noetherCandidate_of_kernel hG hker]
   exact Subalgebra.fg_def.mpr ⟨_, finite_noetherGenerators, rfl⟩
