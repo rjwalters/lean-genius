@@ -69,7 +69,8 @@
       "**The squared cosine sum is 1 minus twice the product of cosines**: cos²A + cos²B + cos²C = 1 - 2 cos A cos B cos C, so everything about its position relative to 1 is encoded in the sign of cos A cos B cos C",
       "**Sign of the product = triangle type**: at most one angle can reach π/2, so the product of cosines is positive (acute), zero (right), or negative (obtuse) — exactly tracking the classical classification",
       "**A classification theorem with no metric input**: the acute/right/obtuse split is recovered from only A, B, C > 0, the angle sum, and the sign of cos on (0, π/2) and (π/2, π)",
-      "**Complements the linear cosine-sum range**: where the sibling entry pins the range (1, 3/2] of cos A + cos B + cos C, this one reads the *squared* sum against the single threshold 1"
+      "**Complements the linear cosine-sum range**: where the sibling entry pins the range (1, 3/2] of cos A + cos B + cos C, this one reads the *squared* sum against the single threshold 1",
+      "**The right case is the Pythagorean identity in disguise**: when C = π/2 the angle sum forces B = π/2 - A, so cos B = sin A; the equality cos²A + cos²B + cos²C = 1 then collapses to cos²A + sin²A = 1 — the trichotomy's borderline case is not a new fact but the ordinary Pythagorean identity seen through the triangle's angle constraint"
     ],
     "prerequisites": [
       "Real trigonometric function cos and its sign on (0, π/2), at π/2, and on (π/2, π)",
