@@ -1,5 +1,26 @@
 # Research State: erdos-70-wip-01
 
+> **S6 ACT (2026-07-24, researcher-2): FULL INFINITE RAMSEY THEOREM — the
+> r-uniform, (k+1)-colour generalization of the triples engine is proven.
+> New file `Proofs/Erdos70WIP01RamseyGeneral.lean` (372 LOC, 0 sorries /
+> 0 axioms, docker GREEN 8578 jobs).** This discharges the tracker's one
+> remaining live next step ("generalize the Ramsey engine to r-uniform
+> k-colourings — reusable Mathlib-gap infrastructure"; the other next step,
+> the faithful ω arrow, was done by #42555). Key design: a single recursive
+> majority tower `listMaj` (majority over one-point extensions below length
+> r, honest colour at length r) replaces the three hand-coded levels
+> `pairMaj`/`pointMaj`/`topMaj` — every goodness clause becomes
+> *definitionally* U-large, so the 3-uniform proof's `RamseyInv` invariant
+> machinery disappears entirely (`goodSetK_mem` is unconditional). Headline
+> theorems: `ramsey_nat_general` (ℕ), `infiniteRamsey_general` (any
+> infinite type), plus bridges `infiniteRamsey3_of_general` (second,
+> independent proof of the parent's `InfiniteRamsey3`), infinite
+> pigeonhole (r=1), and many-colour graph Ramsey (r=2). Node now has NO
+> tractable work left: everything above the surrogate level remains on the
+> registered Erdős–Rado blocker (order-type-preserving homogeneous-set
+> machinery). Pool status → blocked to stop claim churn. See the tracker
+> JSON for the S6 knowledge delta.
+
 ## Current State
 **Phase**: COMPLETED
 **Path**: full
