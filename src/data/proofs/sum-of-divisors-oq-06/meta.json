@@ -78,7 +78,8 @@
       "**Parity from the exponents.** Writing τ(n) = ∏ (vₚ(n) + 1), oddness of the product is oddness of every factor, i.e. evenness of every prime exponent — which is exactly the perfect-square condition.",
       "**Square detection by exponent parity.** isSquare_iff_factorization_even is the engine: a positive integer is a square iff every exponent in its factorisation is even, with the square root reassembled as ∏ p^{vₚ(n)/2}.",
       "**The off-support primes are free.** The product criterion ranges over the prime factors of n, while the square criterion quantifies over all primes; the two agree because vₚ(n) = 0 (even) and vₚ(n)+1 = 1 (odd) for every prime not dividing n.",
-      "**A theorem, not a table.** The classical fact 'squares have an odd number of divisors' is proved here for the universally quantified n, routed entirely through Mathlib's factorisation API with no axioms or sorries."
+      "**A theorem, not a table.** The classical fact 'squares have an odd number of divisors' is proved here for the universally quantified n, routed entirely through Mathlib's factorisation API with no axioms or sorries.",
+      "**An algebraic route, not the combinatorial one.** The textbook proof pairs divisors as d ↔ n/d and observes that √n is the unique fixed point when it exists; this file instead proves the criterion purely from the multiplicative structure of the factorisation exponents, never constructing the pairing involution at all. The exponent-parity route is the one that generalises — e.g. to counting divisors ≡ r (mod k) via ∏(vₚ(n)+1) mod k — where the pairing argument does not."
     ],
     "prerequisites": [
       "Mathlib's Nat.card_divisors and the arithmetic function σ₀",
@@ -115,9 +116,17 @@
       "id": "main",
       "title": "The Parity Criterion",
       "startLine": 76,
-      "endLine": 100,
-      "summary": "card_divisors_odd_iff_isSquare (Odd (#n.divisors) ↔ IsSquare n) and its σ₀ restatement sigma_zero_odd_iff_isSquare.",
+      "endLine": 93,
+      "summary": "card_divisors_odd_iff_isSquare: Odd (#n.divisors) ↔ IsSquare n, assembled from Nat.card_divisors, odd_prod_iff, and isSquare_iff_factorization_even, with the p ∤ n case handled via Nat.support_factorization.",
       "mathContext": "$\\mathrm{Odd}(\\#n.\\mathrm{divisors}) \\iff \\mathrm{IsSquare}(n)$."
+    },
+    {
+      "id": "sigma-zero-form",
+      "title": "The σ₀ Restatement",
+      "startLine": 95,
+      "endLine": 100,
+      "summary": "sigma_zero_odd_iff_isSquare: the same criterion restated through Mathlib's arithmetic function σ₀ = τ via sigma_zero_apply, connecting to the base entry's σₖ vocabulary.",
+      "mathContext": "$\\mathrm{Odd}(\\sigma_0(n)) \\iff \\mathrm{IsSquare}(n)$."
     }
   ],
   "crossReferences": [
