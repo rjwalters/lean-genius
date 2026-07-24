@@ -200,4 +200,91 @@ theorem totalDegree_coeff_charpoly_le
 
 end DegreeBound
 
+section Reynolds
+
+/-! ### S6 — the Reynolds operator (non-modular averaging projection)
+
+The engine of the Stage-5 Noether-bound extraction: the averaging map
+`p ↦ |G|⁻¹ • Σ_g g • p`. Whenever `|G| ≠ 0` in `k` (the non-modular case,
+supplied by `card_ne_zero_of_char_not_dvd` from `ringChar k ∤ |G|`) it is an
+additive projection of `MvPolynomial (Fin n) k` onto the invariant
+subalgebra that does not raise total degree. The remaining S7 leg is the
+extraction proper: applying `reynolds` to a monomial generating set of the
+degree-`≤ |G|` piece and showing the images generate the invariant ring. -/
+
+variable (G) in
+/-- The **Reynolds operator**: the average of the `G`-orbit of `p`. -/
+noncomputable def reynolds (p : MvPolynomial (Fin n) k) : MvPolynomial (Fin n) k :=
+  (Fintype.card G : k)⁻¹ • ∑ g : G, g • p
+
+omit [Group G] [MulSemiringAction G (MvPolynomial (Fin n) k)]
+  [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- Non-modularity bridge: if `ringChar k ∤ |G|` then `|G| ≠ 0` in `k`. -/
+theorem card_ne_zero_of_char_not_dvd (h_char : ¬ ringChar k ∣ Fintype.card G) :
+    (Fintype.card G : k) ≠ 0 :=
+  fun h => h_char ((ringChar.spec k (Fintype.card G)).mp h)
+
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- Orbit sums are invariant under right translation of the argument. -/
+theorem sum_smul_of_smul (g : G) (p : MvPolynomial (Fin n) k) :
+    ∑ h : G, h • (g • p) = ∑ h : G, h • p := by
+  simp_rw [smul_smul]
+  exact Fintype.sum_equiv (Equiv.mulRight g) _ (fun h => h • p) (fun h => rfl)
+
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- The Reynolds operator is constant on `G`-orbits. -/
+theorem reynolds_smul (g : G) (p : MvPolynomial (Fin n) k) :
+    reynolds G (g • p) = reynolds G p := by
+  unfold reynolds
+  rw [sum_smul_of_smul]
+
+/-- The Reynolds average is a fixed point of the action. -/
+theorem smul_reynolds (g : G) (p : MvPolynomial (Fin n) k) :
+    g • reynolds G p = reynolds G p := by
+  unfold reynolds
+  rw [smul_comm]
+  congr 1
+  rw [Finset.smul_sum]
+  simp_rw [smul_smul]
+  exact Fintype.sum_equiv (Equiv.mulLeft g) _ (fun h => h • p) (fun h => rfl)
+
+/-- The Reynolds average lies in the invariant subalgebra. -/
+theorem reynolds_mem_fixedPoints (p : MvPolynomial (Fin n) k) :
+    reynolds G p ∈ FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G :=
+  fun g => smul_reynolds g p
+
+/-- On invariants the Reynolds operator is the identity (non-modular case) —
+the projection property. -/
+theorem reynolds_of_mem_fixedPoints (hG : (Fintype.card G : k) ≠ 0)
+    {p : MvPolynomial (Fin n) k}
+    (hp : p ∈ FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G) :
+    reynolds G p = p := by
+  unfold reynolds
+  have hfix : ∀ g : G, g • p = p := hp
+  simp_rw [hfix]
+  rw [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul k,
+    smul_smul, inv_mul_cancel₀ hG, one_smul]
+
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- The Reynolds operator is additive. -/
+theorem reynolds_add (p q : MvPolynomial (Fin n) k) :
+    reynolds G (p + q) = reynolds G p + reynolds G q := by
+  unfold reynolds
+  simp_rw [smul_add, Finset.sum_add_distrib]
+  exact smul_add _ _ _
+
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- The Reynolds operator does not raise total degree (under the graded
+hypothesis `h_graded` of the Stage-3 coefficient bound). -/
+theorem totalDegree_reynolds_le
+    (h_graded : ∀ (g : G) (p : MvPolynomial (Fin n) k),
+      (g • p).totalDegree ≤ p.totalDegree)
+    (p : MvPolynomial (Fin n) k) :
+    (reynolds G p).totalDegree ≤ p.totalDegree := by
+  refine le_trans (MvPolynomial.totalDegree_smul_le _ _) ?_
+  refine le_trans (MvPolynomial.totalDegree_finsetSum _ _) ?_
+  exact Finset.sup_le fun g _ => h_graded g p
+
+end Reynolds
+
 end Hilbert14OQ04
