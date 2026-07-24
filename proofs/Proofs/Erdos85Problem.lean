@@ -2794,17 +2794,23 @@ theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
     have hvy : G.Adj y v := ((G.mem_neighborFinset v y).mp (hsub (by simp))).symm
     -- `commonNeighbors` membership is definitionally the pair of adjacencies.
     have hvmemS : v ∈ G.commonNeighbors x y := ⟨hvx, hvy⟩
-    refine Fintype.card_eq_one_iff.mpr ⟨⟨v, hvmemS⟩, ?_⟩
-    rintro ⟨w, hw⟩
-    obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
-    have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
-    have hwmem : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
-      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
-      exact ⟨hwx, hwy⟩
-    have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
-      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
-      exact ⟨hvx, hvy⟩
-    exact Subtype.ext (Finset.card_le_one.mp hcom w hwmem v hvmem)
+    -- The goal's `Fintype` instance (Classical, baked into the Archive's
+    -- `Friendship` def) differs definitionally from the one synthesized from
+    -- `[DecidableRel G.Adj]`; prove the count with the synthesized instance
+    -- and bridge with `Fintype.card_congr (Equiv.refl _)`.
+    have hone : Fintype.card {w : Fin 13 // w ∈ G.commonNeighbors x y} = 1 := by
+      refine Fintype.card_eq_one_iff.mpr ⟨⟨v, hvmemS⟩, ?_⟩
+      rintro ⟨w, hw⟩
+      obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
+      have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
+      have hwmem : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hwx, hwy⟩
+      have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hvx, hvy⟩
+      exact Subtype.ext (Finset.card_le_one.mp hcom w hwmem v hvmem)
+    exact (Fintype.card_congr (Equiv.refl _)).trans hone
   -- The friendship theorem: a politician exists — degree `12`, not `4`.
   obtain ⟨v, hv⟩ := Theorems100.friendship_theorem hfriend
   have h12 : G.degree v = 12 := by
