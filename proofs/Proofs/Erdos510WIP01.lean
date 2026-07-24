@@ -1224,33 +1224,36 @@ theorem integral_cos_int_mul_cos_mul_cos (m : ℤ) (c d : ℕ) :
           + (if m = -((c : ℤ) + (d : ℤ)) then (1 : ℝ) else 0))
           + ((if m = (c : ℤ) - (d : ℤ) then (1 : ℝ) else 0)
           + (if m = -((c : ℤ) - (d : ℤ)) then (1 : ℝ) else 0))) := by
-  have hfun : (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
-        * (Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ)))
-      = fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ)
-            * Real.cos ((((c : ℤ) + (d : ℤ)) : ℝ) * θ))
-          + (1 / 2) * (Real.cos ((m : ℝ) * θ)
-            * Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ)) := by
-    funext θ
-    have h1 : (((c : ℤ) + (d : ℤ)) : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
-      push_cast; ring
-    have h2 : (((c : ℤ) - (d : ℤ)) : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
-      push_cast; ring
-    rw [h1, h2, Real.cos_add, Real.cos_sub]
-    ring
+  set j : ℤ := (c : ℤ) + (d : ℤ) with hj
+  set l : ℤ := (c : ℤ) - (d : ℤ) with hl
   have hcos : ∀ q : ℤ, Continuous (fun θ : ℝ => Real.cos ((q : ℝ) * θ)) :=
     fun q => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hfun : (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+        * (Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ)))
+      = fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ) * Real.cos ((j : ℝ) * θ))
+          + (1 / 2) * (Real.cos ((m : ℝ) * θ) * Real.cos ((l : ℝ) * θ)) := by
+    funext θ
+    have h1 : (j : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
+      rw [hj]; push_cast; ring
+    have h2 : (l : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
+      rw [hl]; push_cast; ring
+    rw [h1, h2, Real.cos_add, Real.cos_sub]
+    ring
+  have hcont1 : Continuous (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+      * Real.cos ((j : ℝ) * θ)) := (hcos m).mul (hcos j)
+  have hcont2 : Continuous (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+      * Real.cos ((l : ℝ) * θ)) := (hcos m).mul (hcos l)
   have hi1 : IntervalIntegrable (fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ)
-        * Real.cos ((((c : ℤ) + (d : ℤ)) : ℝ) * θ)))
+        * Real.cos ((j : ℝ) * θ)))
       MeasureTheory.volume 0 (2 * π) :=
-    (((hcos m).mul (hcos ((c : ℤ) + (d : ℤ)))).const_mul _).intervalIntegrable _ _
+    (hcont1.const_mul _).intervalIntegrable _ _
   have hi2 : IntervalIntegrable (fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ)
-        * Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ)))
+        * Real.cos ((l : ℝ) * θ)))
       MeasureTheory.volume 0 (2 * π) :=
-    (((hcos m).mul (hcos ((c : ℤ) - (d : ℤ)))).const_mul _).intervalIntegrable _ _
+    (hcont2.const_mul _).intervalIntegrable _ _
   rw [hfun, intervalIntegral.integral_add hi1 hi2,
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
-      integral_cos_int_mul_cos_int m ((c : ℤ) + (d : ℤ)),
-      integral_cos_int_mul_cos_int m ((c : ℤ) - (d : ℤ))]
+      integral_cos_int_mul_cos_int m j, integral_cos_int_mul_cos_int m l]
   ring
 
 /-- **Fourier expansion of the squared cosine sum**:
@@ -1361,40 +1364,44 @@ theorem integral_cosineSum_pow_four_le (A : Finset ℕ) (hA : 0 ∉ A)
         * (cosineSum A θ) ^ 2)
       ≤ (if p.1 = p.2 then 3 * π / 2 + π * (A.card : ℝ) / 2 else 3 * π) := by
     rintro ⟨c, d⟩ hp
+    dsimp only at hp ⊢
     obtain ⟨hc, hd⟩ := Finset.mem_product.mp hp
     have hc1 : 1 ≤ c := Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hc))
     have hd1 : 1 ≤ d := Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hd))
+    set j : ℤ := (c : ℤ) + (d : ℤ) with hj
+    set l : ℤ := (c : ℤ) - (d : ℤ) with hl
     have hfun : (fun θ : ℝ => Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ)
           * (cosineSum A θ) ^ 2)
-        = fun θ : ℝ => (1 / 2) * (Real.cos ((((c : ℤ) + (d : ℤ)) : ℝ) * θ)
-              * (cosineSum A θ) ^ 2)
-            + (1 / 2) * (Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ)
-              * (cosineSum A θ) ^ 2) := by
+        = fun θ : ℝ => (1 / 2) * (Real.cos ((j : ℝ) * θ) * (cosineSum A θ) ^ 2)
+            + (1 / 2) * (Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2) := by
       funext θ
-      have h1 : (((c : ℤ) + (d : ℤ)) : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
-        push_cast; ring
-      have h2 : (((c : ℤ) - (d : ℤ)) : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
-        push_cast; ring
+      have h1 : (j : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
+        rw [hj]; push_cast; ring
+      have h2 : (l : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
+        rw [hl]; push_cast; ring
       rw [h1, h2, Real.cos_add, Real.cos_sub]
       ring
+    have hcontW : ∀ q : ℤ, Continuous
+        (fun θ : ℝ => Real.cos ((q : ℝ) * θ) * (cosineSum A θ) ^ 2) :=
+      fun q => (Real.continuous_cos.comp (continuous_const.mul continuous_id)).mul
+        ((continuous_cosineSum A).pow 2)
     have hiW : ∀ q : ℤ, IntervalIntegrable
         (fun θ : ℝ => (1 / 2) * (Real.cos ((q : ℝ) * θ) * (cosineSum A θ) ^ 2))
         MeasureTheory.volume 0 (2 * π) :=
-      fun q => (((Real.continuous_cos.comp (continuous_const.mul continuous_id)).mul
-        ((continuous_cosineSum A).pow 2)).const_mul _).intervalIntegrable _ _
-    rw [hfun, intervalIntegral.integral_add (hiW _) (hiW _),
+      fun q => ((hcontW q).const_mul _).intervalIntegrable _ _
+    rw [hfun, intervalIntegral.integral_add (hiW j) (hiW l),
         intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+    have hjne : j ≠ 0 := by rw [hj]; omega
     have hWsum : (∫ θ in (0 : ℝ)..(2 * π),
-          Real.cos ((((c : ℤ) + (d : ℤ)) : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
-      integral_cos_int_mul_cosineSum_sq_le A hS (by omega : (c : ℤ) + (d : ℤ) ≠ 0)
+          Real.cos ((j : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
+      integral_cos_int_mul_cosineSum_sq_le A hS hjne
     by_cases hcd : c = d
     · rw [if_pos hcd]
-      have hzero : (c : ℤ) - (d : ℤ) = 0 := by omega
+      have hzero : l = 0 := by rw [hl]; omega
       have hW0 : (∫ θ in (0 : ℝ)..(2 * π),
-            Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ) * (cosineSum A θ) ^ 2)
+            Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2)
           = π * (A.card : ℝ) := by
-        have hfun0 : (fun θ : ℝ => Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ)
-              * (cosineSum A θ) ^ 2)
+        have hfun0 : (fun θ : ℝ => Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2)
             = fun θ : ℝ => (cosineSum A θ) ^ 2 := by
           funext θ
           rw [hzero]
@@ -1404,10 +1411,10 @@ theorem integral_cosineSum_pow_four_le (A : Finset ℕ) (hA : 0 ∉ A)
       rw [hW0]
       linarith [hWsum]
     · rw [if_neg hcd]
+      have hlne : l ≠ 0 := by rw [hl]; omega
       have hWdiff : (∫ θ in (0 : ℝ)..(2 * π),
-            Real.cos ((((c : ℤ) - (d : ℤ)) : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
-        integral_cos_int_mul_cosineSum_sq_le A hS
-          (by omega : (c : ℤ) - (d : ℤ) ≠ 0)
+            Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
+        integral_cos_int_mul_cosineSum_sq_le A hS hlne
       linarith [hWsum, hWdiff]
   -- Sum the bounds: `≤ N` diagonal terms and `≤ N²` off-diagonal terms.
   have hD : (((A ×ˢ A).filter (fun p => p.1 = p.2)).card : ℝ) ≤ (A.card : ℝ) := by
@@ -1473,12 +1480,10 @@ theorem minCosineSum_sidon_le (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty)
   have harg : π ^ 3 * (A.card : ℝ) ^ 3 / (5 * π * (A.card : ℝ) ^ 2)
       = π ^ 2 * ((A.card : ℝ) / 5) := by
     field_simp
-    ring
   rw [harg, Real.sqrt_mul (sq_nonneg π) _, Real.sqrt_sq Real.pi_pos.le] at hmain
   have hsimp : π * Real.sqrt ((A.card : ℝ) / 5) / (4 * π)
       = Real.sqrt ((A.card : ℝ) / 5) / 4 := by
     field_simp
-    ring
   rw [hsimp] at hmain
   exact hmain
 
