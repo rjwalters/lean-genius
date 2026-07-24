@@ -70,7 +70,8 @@
       "**One term carries the bound**: in the full convolution ∑_{i≤n} L(i)·L(n−i) only the i=0 term L(0)·L(n) is needed for monotonicity — it already equals L(n), so the sequence at least doubles each step without any finer analysis of the remaining summands.",
       "**Doubling is the engine**: every growth statement here (strict monotonicity, the 2^n lower bound, divergence to infinity) is a corollary of the single inequality 2·L(n) ≤ L(n+1).",
       "**Filling a real Mathlib gap**: Mathlib proves the recurrence and parity for Schröder numbers but no positivity, monotonicity, or growth — this is the founding order-theoretic entry for the sequence.",
-      "**Positivity for free downstream**: combining 0 < L(n) with Mathlib's parity (L(n) even) and bridge (2·S(n+1) = L(n)) immediately yields positivity of the small Schröder numbers, with no separate recurrence analysis."
+      "**Positivity for free downstream**: combining 0 < L(n) with Mathlib's parity (L(n) even) and bridge (2·S(n+1) = L(n)) immediately yields positivity of the small Schröder numbers, with no separate recurrence analysis.",
+      "**The 2^n bound is deliberately loose**: `two_pow_le_largeSchroder` captures only the doubling step's contribution and is far from sharp — the large Schröder numbers actually grow like (3+2√2)^n / n^{3/2} (3+2√2 ≈ 5.828 is the reciprocal of the dominant singularity of the generating function (1−x−√(1−6x+x²))/(2x)). The elementary 2^n bound trades a factor of ~2.9 in the growth rate for a proof that needs no generating-function machinery at all."
     ],
     "prerequisites": [
       "The large and small Schröder numbers and their convolution recurrence",
