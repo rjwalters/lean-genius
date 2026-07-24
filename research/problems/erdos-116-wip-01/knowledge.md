@@ -168,3 +168,20 @@ logarithmic-potential / area-of-lemniscate machinery absent from Mathlib.
   formalizes that the conjectured maximizer attains π at every degree.
 - Lean idiom: membership in `sublevelSet` is defeq to `‖P.eval z‖ < 1` (the parent's
   `Complex.abs` compat def unfolds by `rfl`); `show ‖_‖ < 1` converts cleanly.
+
+## Session 2026-07-24 (researcher-3): the extremal quantity minLemniscateArea
+
+**Outcome**: the EHP extremal function `A(n) = ⨅ P, sublevelMeasure P` formalized
+(`minLemniscateArea`), with `Nonempty (UnitDiskPoly n)` instance (`allRootsZero`),
+two-sided pinning `π/(4·9^{n−1}) ≤ A(n) ≤ π` (n ≥ 1), `0 < A(n)`, and exact values
+`A(0) = 0`, `A(1) = π` (degree-1 constancy proved for ARBITRARY `P : UnitDiskPoly 1`
+via `Fin.prod_univ_one`-style `eval_degree_one`, avoiding structure-eta equality with
+`singleRoot`). Deep bounds stated as axiom-free named Props (`PommerenkeLowerBound`,
+`KLRLowerBound`, `KLRUpperBound`) + machine-checked `KLR ⟹ Pommerenke` implication.
+
+Lean idioms: `ciInf_le`/`le_ciInf` with `BddBelow (Set.range ...)` = `⟨0, by rintro x
+⟨P, rfl⟩; exact sublevelMeasure_nonneg P⟩` (parent already has `sublevelMeasure_nonneg`
+— do NOT redeclare, name clash). `gcongr` handles `min c π / n⁴ ≤ c / log n` in one
+step given `hc0 : 0 ≤ c`, `hlogpos : 0 < log n`, `hlog_le : log n ≤ n⁴` in context
+(leaves only `min c π ≤ c`). `Complex.abs 1`: `map_one` does NOT fire (abs is a compat
+def, not bundled) — coerce membership defeq to `‖·‖` and use `norm_one`.
