@@ -38,7 +38,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The parent entry (sylow-theorems-oq-01, 'Classification of Groups of Order pq') classifies groups of order n = pq by hand using the Sylow counting arguments. Its second open question asks whether the full squarefree-order classification — every group of squarefree order is a semidirect product of cyclic groups — can be formalized for an arbitrary number of prime factors. This entry does so by routing through Mathlib's Z-group theory.",
+    "historicalContext": "The parent entry (sylow-theorems-oq-01, 'Classification of Groups of Order pq') classifies groups of order n = pq by hand using the Sylow counting arguments. Its second open question asks whether the full squarefree-order classification — every group of squarefree order is a semidirect product of cyclic groups — can be formalized for an arbitrary number of prime factors. This entry does so by routing through Mathlib's Z-group theory. The underlying classical result predates Sylow-style bare-hands counting: Otto Hölder proved in 1895 ('Die Gruppen mit quadratfreier Ordnungszahl', Nachrichten von der Königl. Gesellschaft der Wissenschaften zu Göttingen) that every group of squarefree order is metacyclic — a cyclic normal subgroup with cyclic quotient — the same conclusion this file derives via the modern Z-group route (a Z-group being a finite group all of whose Sylow subgroups are cyclic, a notion later central to Zassenhaus's work on sharply 2-transitive permutation groups and to the classification of Frobenius complements). The order-pq case handled by the parent entry is the smallest nontrivial instance of Hölder's theorem; this file supplies the general squarefree case as a byproduct of Mathlib's abstract Z-group machinery rather than Hölder's original direct counting argument.",
     "problemStatement": "Formalize that every finite group of squarefree order n = p₁p₂···pₖ is a semidirect product of cyclic groups, generalizing the order-pq case to multiple primes.",
     "proofStrategy": "Squarefree order `n = p₁p₂⋯pₖ` forces every Sylow `pᵢ`-subgroup to have order exactly `pᵢ`, hence to be cyclic, so the group is a Z-group (`IsZGroup.of_squarefree`). A finite Z-group is solvable with cyclic commutator subgroup and cyclic abelianization, and `isZGroup_iff_exists_mulEquiv` supplies the semidirect decomposition `N ⋊ H` into two cyclic subgroups of coprime order — concretely `N` the commutator subgroup and `H` a complement isomorphic to the abelianization, the extension splitting by Schur–Zassenhaus. Specializing to `k = 2` recovers the parent entry's order-`pq` classification. (The exact count of isomorphism classes, governed by the divisibility relations among the `pᵢ`, remains open.)",
     "keyInsights": [
@@ -119,6 +119,14 @@
     }
   ],
   "references": [
+    {
+      "key": "Hoelder1895",
+      "authors": ["O. Hölder"],
+      "title": "Die Gruppen mit quadratfreier Ordnungszahl",
+      "venue": "Nachrichten von der Königl. Gesellschaft der Wissenschaften zu Göttingen",
+      "year": "1895",
+      "note": "The classical result this entry re-derives via Z-group theory: every group of squarefree order is metacyclic."
+    },
     {
       "key": "Hall1959",
       "authors": ["M. Hall"],
