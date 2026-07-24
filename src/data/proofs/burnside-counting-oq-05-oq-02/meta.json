@@ -63,7 +63,8 @@
       "Necklaces (rotation orbits) become bracelets (dihedral orbits) by averaging in the reflection fixed-point counts: dihedralTotal = rotationTotal + reflectionTotal, and for odd n every reflection contributes the same k^((n+1)/2)",
       "The general assembled total has a clean divisor-sum closed form ∑_{d|n} φ(n/d) k^d + n·k^(m+1), inherited directly from the oq-03 Pólya identity — no new number theory is needed for the fixed-point total",
       "Integrality of the bracelet count (that |D_n| divides the total) is a finite residue check: the count polynomial vanishes identically on ZMod 6 (n=3) and ZMod 10 (n=5), which decide settles and ZMod.natCast_eq_zero_iff lifts to ℕ",
-      "The triangle bracelet count is the tetrahedral number C(k+2,3) — three consecutive integers over 3! — linking dihedral necklace enumeration to the figurate-number tower"
+      "The triangle bracelet count is the tetrahedral number C(k+2,3) — three consecutive integers over 3! — linking dihedral necklace enumeration to the figurate-number tower",
+      "The reflection contribution is exactly the sub-leading term of the bracelet polynomial. Since m+1 = (n+1)/2 < n for n > 1, dihedralTotal's identity-rotation term k^n dominates for large k, and the reflection total n·k^{(n+1)/2}, divided by 2n, contributes exactly k^{(n+1)/2}/2 — visible directly in the worked expansions k(k+1)(k+2)/6 = k^3/6 + k^2/2 + k/3 and k(k²+1)(k²+4)/10 = k^5/10 + k^3/2 + 2k/5, where the middle term in each is precisely the reflection correction."
     ],
     "prerequisites": [
       "Group actions and the Burnside/Cauchy–Frobenius counting philosophy",
