@@ -111,6 +111,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header: removing the base 10 from the idempotent count",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring stating the headline theorem card_idempotents_eq_two_pow_omega and the three-piece strategy (local prime-power factors have two idempotents, ZMod.equivPi gives the CRT product decomposition, idemPi turns product-ring idempotents into families) before opening the AutomorphicNumberOQ01OQ02OQ01 namespace.",
+      "mathContext": "States what is being generalized: the parent's count of four idempotents mod $10^k$ becomes $2^{\\omega(m)}$ for arbitrary $m$, with $\\omega(m)$ the number of distinct prime divisors and the exponent $k$ dropping out entirely."
+    },
+    {
       "id": "product-idempotents",
       "title": "Part I: Idempotents of a product ring",
       "startLine": 56,
