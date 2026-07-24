@@ -91,15 +91,23 @@
     },
     {
       "id": "gap-identity",
-      "title": "Section I: The One-Step Gap Squares",
+      "title": "Section I: The One-Step Gap Identity",
       "startLine": 36,
+      "endLine": 44,
+      "summary": "agm_gap_eq: (a+b)/2 − √(ab) = (√a − √b)²/2, by expanding √(ab) = √a·√b and (√a)² = a, (√b)² = b.",
+      "mathContext": "$(a+b)/2 - \\sqrt{ab} = (\\sqrt a - \\sqrt b)^2/2$."
+    },
+    {
+      "id": "gap-quadratic",
+      "title": "Section II: The Quadratic Form of the Gap",
+      "startLine": 45,
       "endLine": 57,
-      "summary": "agm_gap_eq: (a+b)/2 − √(ab) = (√a − √b)²/2. agm_gap_quadratic: = (a − b)²/(2(√a + √b)²), exhibiting the new gap as proportional to the square of the old.",
-      "mathContext": "The algebraic engine of quadratic convergence: each AGM step replaces the gap by (a constant times) its square."
+      "summary": "agm_gap_quadratic: (a+b)/2 − √(ab) = (a − b)²/(2(√a + √b)²), by factoring √a − √b = (a−b)/(√a+√b) into agm_gap_eq — exhibiting the new gap as proportional to the square of the old.",
+      "mathContext": "$(a+b)/2 - \\sqrt{ab} = (a-b)^2 / (2(\\sqrt a + \\sqrt b)^2)$ — quadratic convergence's algebraic engine."
     },
     {
       "id": "squaring-bound",
-      "title": "Section II: The Squaring Bound",
+      "title": "Section III: The Squaring Bound",
       "startLine": 59,
       "endLine": 76,
       "summary": "agm_gap_le: for 0 < b ≤ a, (a+b)/2 − √(ab) ≤ (a − b)²/(8b), using (√a + √b)² ≥ 4b.",
@@ -107,7 +115,7 @@
     },
     {
       "id": "doubly-exponential",
-      "title": "Section III: Quadratic Recursion ⟹ Doubly Exponential",
+      "title": "Section IV: Quadratic Recursion ⟹ Doubly Exponential",
       "startLine": 78,
       "endLine": 98,
       "summary": "quadratic_iteration: gₙ₊₁ ≤ gₙ²/C ⟹ gₙ ≤ C·(g₀/C)^{2ⁿ}, by induction (squaring the inductive bound and using 2^(n+1) = 2^n·2).",
