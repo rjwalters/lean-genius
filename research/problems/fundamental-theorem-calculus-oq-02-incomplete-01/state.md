@@ -2,10 +2,73 @@
 
 ## Current State
 
-**Phase**: PREP — **BLOCKED** (researcher-1, 2026-06-13). S4 Fragment-1 paste-ready skeleton banked; S5 ACT is Docker-gated and Docker is DOWN (verification blackout). The S4 INFRA table "G8 Docker GREEN" below is STALE. No own Lean file exists yet, so the ~165 LOC skeleton cannot be soundly shipped without a build. 3 doc-only sessions already banked (S2/S3/S4) → further PREP is churn. Top-level JSON synced to `status:blocked`/`phase:PREP`. Unblock when Docker returns: paste skeleton, verify sorried shell, discharge sorries.
+**Phase**: ACT — **Fragment 1 COMPLETE** (researcher-3, 2026-07-24). S5 ACT shipped:
+`proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` proves
+`iteratedFDeriv_comp_perm` — the n-th iterated Fréchet derivative of a `C^n` function over ℝ
+is symmetric under every permutation (all-orders Schwarz/Clairaut, FINITE smoothness).
+0 axioms, 0 sorries; verified with the v4.31.0 toolchain against the pinned Mathlib olean
+cache (identical lake-manifest rev `9a9483a929`). The 2026-06-13 BLOCKED flag is cleared
+(Docker blackout over; host-olean verification used). The S4 skeleton was NOT pasted —
+Mathlib v4.26→v4.31 changed the landscape and a lighter proof replaced it (see Iteration 5).
 **Path**: full
-**Since**: 2026-06-13 (BLOCKED flag, this session); 2026-06-06T07:50:00Z (S4 PREP Fragment-1 skeleton iteration)
-**Iteration**: 4
+**Since**: 2026-07-24 (S5 ACT complete)
+**Iteration**: 5
+
+## Iteration 5 (researcher-3, 2026-07-24) — S5 ACT: Fragment 1 SHIPPED (C^n iteratedFDeriv symmetry, 0 ax / 0 sorry)
+
+**Outcome**: `FundamentalTheoremCalculusOQ02Incomplete01.lean` (~250 LOC incl. docs), namespace
+`FTCOQ02Incomplete01`. Main results:
+
+* `iteratedFDeriv_comp_perm` : `ContDiff ℝ n f → iteratedFDeriv ℝ n f x (v ∘ σ) = iteratedFDeriv ℝ n f x v`
+  for every `σ : Perm (Fin n)` — the finite-smoothness all-orders Schwarz theorem.
+* `iteratedFDeriv_domDomCongr` : the multilinear-map form (`domDomCongr σ` fixes `D^n f x`).
+* `iteratedFDeriv_comp_perm_of_contDiff_infty` : `C^∞` specialization.
+
+**Landscape shift found at re-triage (v4.26 → v4.31)**: Mathlib now has
+(a) `ContDiffAt.iteratedFDeriv_comp_perm` — general `n` but **analytic functions only**
+(`Mathlib.Analysis.Analytic.IteratedFDeriv`, Gouëzel 2024), and (b) the `IsSymmSndFDerivAt` API
+with `ContDiffAt.isSymmSndFDerivAt` (`n = 2`, `C²` over ℝ/ℂ). The **finite-smoothness general-n
+case was still missing** — precisely Fragment 1. So the fragment survived Mathlib drift, but the
+S4 skeleton (adjacent transpositions + `Subgroup.closure` + B10 pretransitivity hand-roll) was
+superseded by a lighter design:
+
+1. `fderiv_comp_perm_eq` — pointwise `τ`-symmetric CMM-valued `g` has `τ`-symmetric `fderiv`:
+   `g = domDomCongrₗᵢ τ ∘ g` + `LinearIsometryEquiv.comp_fderiv`.
+2. `iteratedFDeriv_comp_tailLift` — perms fixing 0 lift via `iteratedFDeriv_succ_apply_left` (rfl!).
+3. `iteratedFDeriv_add_two_apply` — `D^{n+2} f x w = fderiv (fderiv (D^n f)) x (w 0) (w 1) (tail² w)`
+   (the S4 "case (d) i=0, 65-100 LOC HIGH-risk" step collapsed to ~30 LOC: `succ_eq_comp_left` is rfl
+   and `comp_fderiv` does the currying — see gotchas below).
+4. `iteratedFDeriv_comp_swap_zero_one` — `IsSymmSndFDerivAt` of `g := D^n f`
+   (`C²` via `ContDiff.iteratedFDeriv_right`).
+5. Main induction: `Equiv.Perm.decomposeFin` factors `σ = swap 0 p * tailLift τ`;
+   `swap 0 p = ρ̂ * swap 0 1 * ρ̂⁻¹` with `ρ̂ := tailLift (swap 0 j)`
+   (`Equiv.symm_trans_swap_trans`). **No group-closure machinery at all.**
+
+**Lean gotchas hit (v4.31)**:
+* `LinearIsometryEquiv.comp_fderiv` with implicit args hits a deterministic `whnf` timeout
+  unifying `ContinuousMultilinearMap` instance paths — pass `(𝕜 := ℝ) (G := E) (iso := …) (f := …) (x := …)`
+  explicitly and it elaborates instantly.
+* `Equiv.swap 0 1 i.succ.succ` reduces definitionally (Nat.decEq on `+2` computes), so after
+  `congr 1` there is NO residual goal — a trailing `exact swap_apply_of_ne_of_ne …` dies with
+  "No goals to be solved".
+* Worktree was janitor-reaped mid-session (pre-commit) — file restored from context, fresh branch
+  `research/ftc-oq02-inc01-cn-schwarz` off origin/main, committed+pushed BEFORE verification;
+  verification borrowed sibling researcher-1 oleans via LEAN_PATH (pins identical).
+
+### Next Action (S6+)
+
+* S6 (optional, high value): Mathlib upstream-prep of `iteratedFDeriv_comp_perm`
+  (generalize ℝ → `IsRCLikeNormedField 𝕜` via `minSmoothness`; add `Within` versions on
+  `UniqueDiffOn` sets; natural home near `Mathlib.Analysis.Analytic.IteratedFDeriv`).
+* Fragments 2-6 (differential-form integration / manifold Stokes) remain DEEP multi-session
+  work — do not chase in a single session.
+
+### Files modified (S5)
+
+* `proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` (new).
+* `research/problems/fundamental-theorem-calculus-oq-02-incomplete-01/state.md` — this entry.
+* `src/data/research/problems/fundamental-theorem-calculus-oq-02-incomplete-01.json` —
+  phase PREP→ACT, status blocked→active, iteration 5, blockers cleared, knowledge updated.
 
 ## Iteration 4 (researcher-1, 2026-06-06) — S4 PREP: Fragment 1 paste-ready Lean skeleton (~165 LOC, doc-only)
 

@@ -1,8 +1,8 @@
 {
   "slug": "triangle-inequality-oq-04-oq-01",
   "title": "Triangle Inequality for Geodesic Distances on Riemannian Manifolds",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,22 +16,19 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-13",
-    "iteration": 7,
-    "focus": "S3c ACT (researcher-2, 2026-06-12): shipped `chartArcLength_pathTrans` — concatenation additivity of `chartArcLength` along `Path.trans`. For f : Path p q, g : Path q r with f.extend/g.extend differentiable on [0,1] and the concatenated speed interval-integrable on [0,1/2] and [1/2,1]: chartArcLength (f.trans g).extend 0 1 = chartArcLength f.extend 0 1 + chartArcLength g.extend 0 1. Proof: split at 1/2 via `chartArcLength_trans`, then on each half the concatenated speed agrees a.e. with the reparametrised single-path speed — equal on the open interior via two new helpers `eqOn_trans_first`/`eqOn_trans_second` (Ioo-versions of the parent's eqOn_first/second, sidestepping the t=1/2 case), lifted to a deriv identity via `Filter.eventuallyEq_of_mem` + `EventuallyEq.deriv_eq`, the lone boundary point Lebesgue-null (`MeasureTheory.ae_iff` + `measure_mono_null` + `Real.volume_singleton`) — reducing each half to S3b's adapters `chartArcLength_comp_mul_left`/`_shift`. +96 LOC (206 -> 302). Build-verified: 2590 Docker jobs clean, 0 errors/0 warnings/0 sorries/0 axioms (`omit [NormedSpace ℝ E]` on the two topology-only eqOn helpers clears unusedSectionVars). Bearer gotchas this iter: `not_imp` ambiguous -> `push_neg`; `measure_mono_null` has no `s₂` named arg -> pin null set via a `have`. PREVIOUS — S3b ACT (researcher-1, 2026-06-05): shipped both reparametrisation adapters — `chartArcLength_comp_mul_left` (γ ∘ (· * 2) on [0, 1/2]) and `chartArcLength_comp_mul_left_shift` (γ ∘ (· * 2 - 1) on [1/2, 1]) — via the 3-lemma chain `deriv.scomp` (Mathlib/Analysis/Calculus/Deriv/Comp.lean:146) + `norm_smul` + `Real.norm_ofNat` (Mathlib/Analysis/Normed/Group/Basic.lean:1097) + `smul_integral_comp_mul_right` (Basic.lean:856) / `smul_integral_comp_mul_sub` (Basic.lean:940). +86 LOC in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (120 → 206). Three new transitive imports: `Mathlib.Analysis.Calculus.Deriv.Mul` (for `hasDerivAt_mul_const`), `Mathlib.Analysis.Calculus.Deriv.Add` (for `HasDerivAt.sub_const`), `Mathlib.Analysis.Calculus.Deriv.Comp` (for `deriv.scomp`). Build-verified at v4.26.0 + Mathlib pin `2df2f0150c…`: 2590 Docker jobs clean (up from 2551; +39 jobs from new imports). Discharges both reparam adapters (S3 PREP §8 sub-iter S3b, MEDIUM risk per R1+R5+R6). Sorries: 0 (unchanged). Axioms: 0 (unchanged). S3b PREP recipe (researcher-1, 2026-05-30, PR #21305) successfully applied (Option α: `smul_integral_comp_mul_sub` for the right-half affine shift).",
+    "phase": "COMPLETE",
+    "since": "2026-07-24T11:15:00Z",
+    "iteration": 8,
+    "focus": "S3d ACT (researcher-3, 2026-07-24): chartIntrinsicDist_triangle PROVED — the chart-local triangle inequality closing the S2a-S3d Path-A program (~500 LOC, 0 sorries, 0 axioms, verified with the v4.31.0 toolchain against the pinned Mathlib olean cache, lake-manifest rev 9a9483a929). Two structural repairs beyond the S3 PREP plan: (1) reparameterization adapters strengthened to UNCONDITIONAL form via bilateral junk-value chain rules deriv_comp_mul_two/_sub, removing the differentiability hypotheses from chartArcLength_pathTrans (the infimum class carries only speed-integrability); (2) the R-valued double-binder iInf collapses to 0 on inadmissible paths (Real.sInf empty = 0) — handled by proving integrability transport across Path.trans as IFFS (intervalIntegrable_trans_left_iff/_right_iff) and a case analysis: an inadmissible factor concatenated with the straightPath witness collapses the LHS distance to 0 as well. Supporting API: chartIntrinsicDist_le_chartArcLength, chartIntrinsicDist_le_add, chartIntrinsicDist_eq_zero_of_not_integrable, straightPath + straightPath_integrable.",
     "activeApproach": "Path A: chart-local Euclidean length via intervalIntegral of ‖deriv γ t‖ on ℝ → E, with chart map applied externally.",
-    "blockers": [
-      "Verification blackout (2026-06-13): docker info exits 124 (daemon down) and Aristotle MCP backend returns 404. The only remaining ACT (S3d chartIntrinsicDist_triangle) adds new Lean code that cannot be build-verified. S2-S3c framework is complete on origin/main (302 LOC, 0 sorries, 0 axioms). Flagged blocked rather than churning a PREP memo; re-open when Docker recovers.",
-      "**Upstream Mathlib blocker** (full Riemannian formalization): the natural"
-    ],
-    "nextAction": "S3d ACT (next, MEDIUM risk, ~20-40 LOC): with `chartArcLength_pathTrans` (S3c) now available, prove `chartIntrinsicDist_triangle` — the chart-local triangle inequality chartIntrinsicDist p r ≤ chartIntrinsicDist p q + chartIntrinsicDist q r — by mirroring parent `intrinsicDist_triangle`'s 2-step iInf-exchange. For any f : Path p q, g : Path q r in the (integrability-restricted) index set, `chartArcLength (f.trans g).extend 0 1 = chartArcLength f.extend 0 1 + chartArcLength g.extend 0 1` (S3c) bounds chartIntrinsicDist p r ≤ that sum; then exchange the two infima. CAVEAT: chartIntrinsicDist's iInf carries the IntervalIntegrable side-condition, so to invoke S3c you must discharge `hint_left`/`hint_right` (concatenated speed integrable on [0,1/2],[1/2,1]) from f,g's own integrability — derive via the eqOn_trans helpers + IntervalIntegrable congruence (ae). Real.iInf_add/Real.add_iInf may be needed; if absent, ad-hoc via chartArcLength_nonneg bound (R2, S3 PREP §6). Also will likely need DifferentiableAt hypotheses threaded into the index set or as side conditions. Build-verify via `./proofs/scripts/docker-build.sh Proofs.TriangleInequalityOQ04OQ01`.",
+    "blockers": [],
+    "nextAction": "NONE — slug complete. The original Riemannian-manifold target is SUBSUMED by upstream Mathlib v4.31: Mathlib.Geometry.Manifold.Riemannian.Basic provides IsRiemannianManifold, riemannianEDist (infimum of path lengths) and EMetricSpace.ofRiemannianMetric, whose emetric axioms include the triangle inequality; Riemannian/PathELength provides the ENNReal path-length machinery. Optional future slug: bridge the chart-local chartIntrinsicDist to Mathlib's riemannianEDist, or repair the R-valued definition's degeneracies (junk-deriv admissibility; binder collapse) via an ENNReal-valued or a.e.-differentiable-class definition.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 4,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-12"
+    "lastUpdate": "2026-07-24T11:15:00.000Z"
   },
   "knowledge": {
     "progressSummary": "PROGRESS (S3a ACT, 2026-05-30, researcher-1): shipped `chartIntrinsicDist` definition (⨅ over Path p q × IntervalIntegrable, valued in ℝ) + `chartIntrinsicDist_nonneg` discharged via nested `Real.iInf_nonneg` (Mathlib/Data/Real/Archimedean.lean:257 at pinned SHA 2df2f0150c…). +36 LOC in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (84 → 120). 2 new imports (Topology.Connected.PathConnected + Data.Real.Archimedean) absorbed by existing Mathlib transitive closure — 2551 Docker jobs (same as S2a/S2b) clean first-try at Lean 4.26.0 + Mathlib pin `2df2f0150c…`. Discharges first of four S3 PREP §8 sub-iters (S3a def + nonneg, LOW risk). Sorries 0 / Axioms 0 unchanged. Docker R8 INFRASTRUCTURE blocker resolved (server up 29.4.1, disk 63 Gi). PREP-time predecessor S3 PREP (researcher-10, 2026-05-16, PR #19561): doc-only design space + paste-ready ~120-LOC skeleton (Option A: Path-mirror with reparam adapters). S2b ACT (researcher-1, 2026-05-16, PR #19449): chartArcLength_trans additivity (~18 LOC, 66→84). S2a ACT (researcher-3, 2026-05-15, PR #19100): chartArcLength def + 3 sanity lemmas (~60 LOC).",

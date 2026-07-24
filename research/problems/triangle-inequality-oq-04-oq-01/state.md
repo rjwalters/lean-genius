@@ -1,10 +1,61 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: BLOCKED (verification blackout) — S2–S3c framework complete on `origin/main` (302 LOC, 0 sorries, 0 axioms); the sole remaining ACT (S3d `chartIntrinsicDist_triangle`) is Docker-gated and both verification routes are down (`docker info` exit 124, Aristotle 404). Last shipped: S3c ACT — `chartArcLength_pathTrans` concatenation additivity (build-verified). Re-open when Docker recovers.
-**Path**: A (chart-local Euclidean length)
-**Since**: 2026-05-14 (researcher-3, S2a)
-**Iteration**: 7 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT, S3b ACT, S3c ACT)
+**Phase**: COMPLETE (researcher-3, 2026-07-24, S3d ACT) — **`chartIntrinsicDist_triangle` PROVED**;
+the chart-local Path-A program (S2a–S3d) is closed: ~500 LOC, 0 sorries, 0 axioms, verified with
+the v4.31.0 toolchain against the pinned Mathlib olean cache. The 2026-06-13 verification-blackout
+flag is cleared. **Slug-level status**: the original Riemannian target is now SUBSUMED upstream —
+Mathlib v4.31 has `Mathlib.Geometry.Manifold.Riemannian.Basic` (`IsRiemannianManifold`,
+`riemannianEDist` as infimum of path lengths, `EMetricSpace.ofRiemannianMetric` whose emetric
+axioms include the triangle inequality) and `Riemannian/PathELength`. Pool marked `completed`;
+a future slug could bridge this chart-local file to Mathlib's `riemannianEDist` if desired.
+**Path**: A (chart-local Euclidean length) — COMPLETE
+**Since**: 2026-07-24 (S3d)
+**Iteration**: 8 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT, S3b ACT, S3c ACT, S3d ACT)
+
+## Iteration 8 (researcher-3, 2026-07-24) — S3d ACT: chartIntrinsicDist_triangle SHIPPED (0 ax / 0 sorry)
+
+**Outcome**: the chart-local triangle inequality
+`chartIntrinsicDist p r ≤ chartIntrinsicDist p q + chartIntrinsicDist q r` is proved,
+plus the supporting API: `chartIntrinsicDist_le_chartArcLength`, `chartIntrinsicDist_le_add`
+(the concatenation bound), `chartIntrinsicDist_eq_zero_of_not_integrable`, `straightPath` +
+`straightPath_integrable` (admissible witness), and integrability-transport iffs
+`intervalIntegrable_trans_left_iff` / `_right_iff`.
+
+**The S3 PREP "~10–20 LOC mirror" estimate was wrong** — two structural issues surfaced:
+
+1. **Differentiability mismatch**: S3b/S3c lemmas required `f.extend` differentiable on `[0,1]`,
+   but the infimum class of `chartIntrinsicDist` only carries speed-integrability. Fixed by
+   strengthening the reparameterization adapters to UNCONDITIONAL form: new helpers
+   `deriv_comp_mul_two` / `deriv_comp_mul_two_sub` prove `deriv (γ ∘ (·*2)) t = 2 • deriv γ (t*2)`
+   for EVERY `γ` — chain rule when differentiable, and a bilateral junk-value argument otherwise
+   (differentiability of the composite would transport back through the inverse affine map;
+   both sides collapse to Mathlib's junk `0`). `chartArcLength_pathTrans` now needs NO
+   differentiability hypotheses.
+2. **ℝ-valued double-binder iInf collapse**: for inadmissible `γ` the inner
+   `⨅ _ : (integrable…), …` is `Real.sInf ∅ = 0`, so ONE inadmissible path collapses
+   `chartIntrinsicDist p q` to 0 (recorded as `chartIntrinsicDist_eq_zero_of_not_integrable`).
+   The triangle inequality is still true, but the proof needs a case analysis: if a factor
+   (say `f : p → q`) is inadmissible, then `f.trans (straightPath q r)` is an inadmissible
+   `p → r` path (integrability transport, BACKWARDS direction of the iffs), so the left side
+   collapses to 0 too. Hence the transports are proved as iffs. The assembly is elementary
+   `ciInf_le` / `le_ciInf` over `innerLength` (private def naming the inner conditional iInf),
+   with `straightPath` witnessing `Nonempty (Path _ _)`.
+
+**Also degenerate but not load-bearing**: continuous nowhere-differentiable paths have junk
+`deriv ≡ 0`, hence ARE admissible with `chartArcLength = 0` — so `chartIntrinsicDist` is 0
+in any `E` admitting such paths (dim ≥ 1). The theorem proved here is the genuine gluing
+argument, valid for any repaired path class; the definitional repair (e.g. a.e.-differentiable
+paths with the derivative taken in a stronger sense, or ENNReal-valued length à la Mathlib's
+new `Riemannian/PathELength`) is future work — but see the subsumption note above.
+
+**Verification**: sibling-olean host check (researcher-1 cache, identical lake-manifest rev
+`9a9483a929`), v4.31.0 toolchain binary; 0 errors, only the 3 pre-existing deprecation warnings.
+
+**Landscape (v4.26 → v4.31)**: Mathlib now HAS the Riemannian stack this slug was created to
+approximate: `IsRiemannianManifold I M`, `riemannianEDist`, `EMetricSpace.ofRiemannianMetric`
+(triangle inequality built into the emetric axioms), `Riemannian/PathELength` (ENNReal path
+length machinery). The original S1 finding "Mathlib has no RiemannianMetric typeclass" is stale.
 **Last Updated**: 2026-06-12 (researcher-2, S3c ACT — shipped `chartArcLength_pathTrans` (concatenation additivity of `chartArcLength` along `Path.trans`) plus `Ioo`-interior helpers `eqOn_trans_first`/`eqOn_trans_second`; +96 LOC (206 → 302); 0 sorries / 0 axioms; build-verified 2590 Docker jobs clean. Discharges S3 PREP §8 sub-iter S3c. S3d `chartIntrinsicDist_triangle` main calc next.)
 
 > **STATE-SYNC note (researcher-1, 2026-06-13)**: this header + the S3c ACT

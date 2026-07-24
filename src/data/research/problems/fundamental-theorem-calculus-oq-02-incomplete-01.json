@@ -1,8 +1,8 @@
 {
   "slug": "fundamental-theorem-calculus-oq-02-incomplete-01",
   "title": "Generalized Stokes theorem: concrete mixed-partial bridge",
-  "phase": "PREP",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,24 +29,23 @@
     "goal": "Reconcile this gallery-gap research slug with the current parent Stokes formalization, then either close it as subsumed by the proved concrete bridge or retarget it to the genuinely open general-manifold Stokes statement."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-06T07:50:00Z",
-    "iteration": 4,
-    "focus": "Iteration 4 (researcher-1, 2026-06-06, S4 PREP Fragment-1 skeleton, doc-only PR pending): paste-ready ~165 LOC Lean skeleton for `iteratedFDeriv_symmetric_of_contDiff` drafted in `sessions/2026-06-06-s4-prep-frag1-skeleton.md`. Three declarations: (1) private `Fin.adjacentSwap_set_isPretransitive` (B10 hand-roll, ~25 LOC), (2) private `iteratedFDeriv_swap_adjacent_of_contDiff` (analytic-core helper; case-split on `i.castSucc = 0`), (3) main `iteratedFDeriv_symmetric_of_contDiff` (base n=0/1 + inductive closure decomposition for n=k+2). Mathlib pin SHA `2df2f0150c…` re-confirmed unchanged (T+4d since S3); bearer audit B1-B10 stays valid. Design decisions committed: reduce arbitrary σ to adjacent transpositions as separate lemma; **B6 does NOT help for case i=0** (it extracts the *last* argument, not the *first*) — committed to B4-twice + B1 + `continuousMultilinearCurryLeftEquiv` unfolding instead. Skeleton file location: `proofs/Proofs/IteratedFDerivSymmetric.lean` (new). Honesty update: case-(d) upper bound raised 50-80 → 65-100 LOC; total post-ACT estimate **~145-200 LOC** (mid ~170). Sorry sequencing by ascending difficulty: n=0/1 base → adjacency-pretransitivity → case i≥1 → closure decomposition → case i=0. S4 PREP is doc-only: 0 Lean edits, 0 leanFiles[] edits, 0 gallery meta.json edits. Phase flips ORIENT → PREP.",
-    "blockers": [
-      "BLOCKED (researcher-1, 2026-06-13): S5 ACT requires creating proofs/Proofs/IteratedFDerivSymmetric.lean (~165 LOC skeleton with sorries) and Docker-verifying it type-checks. Docker daemon is DOWN (verification blackout) — the S4 INFRA note 'G8 Docker 29.4.1 GREEN' is stale. No own Lean file exists yet, so the skeleton cannot be soundly shipped without a build (blind-shipping unverified ~165 LOC risks breaking the build for the fleet). 3 doc-only sessions already banked (S2 OBSERVE, S3 ORIENT, S4 PREP); further PREP is churn. Unblock when Docker returns: paste the S4 skeleton, verify the sorried shell, then discharge sorries."
-    ],
-    "nextAction": "S5 ACT (next iteration): create `proofs/Proofs/IteratedFDerivSymmetric.lean` from the S4 PREP skeleton (sorries kept). Docker-verify the type-checked-with-sorries shell first (~12 min cold start; subsequent ~3-5 min if ccache keeps Mathlib precompiled). Then discharge sorries in ascending-difficulty order: (1) n=0/1 base cases (5-10 LOC, no risk); (2) `Fin.adjacentSwap_set_isPretransitive` (20-25 LOC, low risk — pure combinatorics on `Equiv.swap_apply_*`); (3) case (c) i≥1 (20-40 LOC, medium risk — `Fin.tail` re-indexing); (4) inductive closure decomposition (20-30 LOC, medium risk — B9 + `Subgroup.closure_induction`); (5) case (d) i=0 (65-100 LOC, HIGH risk — `continuousMultilinearCurryLeftEquiv` unfolding; budget 2-3 Docker round-trips). Aristotle MCP candidate for sorries 2-4; case (d) likely needs hand-tactics. S6 PR-prep after S5 ACT: upstream-prep to `Mathlib/Analysis/Calculus/IteratedDeriv/Symmetric.lean` (new file) per [[mathlib-contribution]] skill. Anti-scope: no `meta.json` edit (gallery integration deferred to post-ACT landing); no Fragment 2-6 design.",
+    "phase": "ACT",
+    "since": "2026-07-24T10:20:00Z",
+    "iteration": 5,
+    "focus": "Iteration 5 (researcher-3, 2026-07-24, S5 ACT COMPLETE): Fragment 1 SHIPPED. New file `proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` (~250 LOC, 0 axioms, 0 sorries, verified with the v4.31.0 toolchain against the pinned Mathlib olean cache — identical lake-manifest rev 9a9483a92959) proves `iteratedFDeriv_comp_perm`: the n-th iterated Frechet derivative of a C^n function over R is symmetric under every permutation of its arguments (all-orders Schwarz/Clairaut, finite smoothness). KEY RE-DESIGN vs the S4 skeleton: Mathlib moved v4.26 -> v4.31 and now has (a) `ContDiffAt.iteratedFDeriv_comp_perm` for ANALYTIC functions only, and (b) `ContDiffAt.isSymmSndFDerivAt` (n=2, C^2 over R/C). The C^n finite-smoothness general-n statement was STILL missing — this file fills it. The S4 adjacent-transposition/Subgroup.closure plan was replaced by a lighter argument: `Equiv.Perm.decomposeFin` factors sigma = swap 0 p * tailLift tau; tail lifts are handled by postcomposing with `ContinuousMultilinearMap.domDomCongrLI` (fderiv commutes with linear isometries), swap 0 1 by the Mathlib n=2 Schwarz applied to g := iteratedFDeriv R n f (C^2 via `ContDiff.iteratedFDeriv_right`), and swap 0 p by conjugation `Equiv.symm_trans_swap_trans` — no group-closure machinery at all.",
+    "blockers": [],
+    "nextAction": "Fragment 1 done (the S4-planned `IteratedFDerivSymmetric.lean` target is superseded by `FundamentalTheoremCalculusOQ02Incomplete01.lean`). Honest next options: (i) S6 Mathlib upstream-prep of `iteratedFDeriv_comp_perm` (natural home: near `Mathlib.Analysis.Analytic.IteratedFDeriv`; generalize R to IsRCLikeNormedField via `minSmoothness`); (ii) Fragments 2-6 (differential-form integration on manifolds with boundary) remain DEEP and are NOT session-sized — do not chase without a dedicated multi-session plan. Within-versions (iteratedFDerivWithin on UniqueDiffOn sets) are a plausible medium extension.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 0,
       "approachesTried": 0
     },
-    "lastUpdate": "2026-06-06T07:50:00.000Z"
+    "lastUpdate": "2026-07-24T10:20:00.000Z"
   },
   "knowledge": {
     "progressSummary": "Local evidence shows this slug was created for the generalized Stokes gallery gap around the concrete Clairaut/mixed-partial bridge. The current parent proof metadata and `Proofs/FundamentalTheoremCalculusStokes.lean` indicate the main concrete bridge is now proved with 0 axioms and 0 sorries, while the fully abstract manifold Stokes theorem remains documented future work.",
     "builtItems": [
+      "S5 ACT (researcher-3 PR, 2026-07-24): `proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` — `iteratedFDeriv_comp_perm` (C^n, finite smoothness, over R), plus `iteratedFDeriv_domDomCongr` and a C^infty specialization; 0 axioms, 0 sorries.",
       "S2 OBSERVE substantive (researcher-1 PR, 2026-06-01, doc-only): first substantive iteration on this slug after T+59d template-stub iter 1. Mathlib v4.26.0 surveyed; parent slug coverage mapped; n-dim Stokes gap identified; 6-fragment decomposition with total ~800-1500 LOC across 15-30 sessions estimated. Key finding: problem.md target `ContDiff.isSymmetric_iteratedFDeriv` does NOT exist in Mathlib v4.26.0 — this is a Mathlib gap, not a re-statement task. Fragment 1 (iteratedFDeriv_symmetric, 30-60 LOC) recommended for S3 ORIENT as Mathlib upstream-prep candidate. INFRA fully GREEN per S50 cross-slug propagation.",
       "`Proofs/FundamentalTheoremCalculusStokes.lean`: concrete 1D and 2D Stokes framework.",
       "`dd_eq_zero_2D`: proves d_1(d_0 f)=0 for C^2 functions on R x R using second Frechet-derivative symmetry.",
@@ -57,16 +56,18 @@
       "FTC is represented as the 1D Stokes theorem with M=[a,b], omega=F, and d omega=F' dx.",
       "The original bridge problem is to turn Mathlib's coordinate-free second-derivative symmetry into equality of the concrete partial derivatives used by `extDeriv1_2D (extDeriv0_2D f)`.",
       "The current Lean proof performs that bridge with `HasFDerivAt.comp_hasDerivAt`, coordinate embeddings, `HasDerivAt.clm_apply`, and `ContDiffAt.isSymmSndFDerivAt`.",
-      "The remaining honest open scope is not the concrete 1D/2D Stokes hierarchy, but the full theorem for differential forms on manifolds with boundary."
+      "The remaining honest open scope is not the concrete 1D/2D Stokes hierarchy, but the full theorem for differential forms on manifolds with boundary.",
+      "v4.31 Mathlib gained the analytic-case n-th-derivative symmetry (Gouezel, Mathlib.Analysis.Analytic.IteratedFDeriv) and the n=2 IsSymmSndFDeriv API; the finite-smoothness C^n general-n case was the surviving gap and is exactly what Fragment 1 needed. Peel-left + decomposeFin + conjugated swaps avoids Subgroup.closure entirely; the S4 fear about case i=0 currying (65-100 LOC) shrank to ~30 LOC because `iteratedFDeriv_succ_apply_left`/`iteratedFDeriv_succ_eq_comp_left` are rfl and `LinearIsometryEquiv.comp_fderiv` (with EXPLICIT type args — implicit unification times out at whnf on CMM instance paths) gives the currying step in one line."
     ],
     "mathlibGaps": [
+      "`iteratedFDeriv_comp_perm` for C^n (finite smoothness) functions is still absent from Mathlib v4.31 (only n=2 and the analytic case exist) — now proved in this slug's file; upstream candidate.",
       "Reusable API from iterated or Frechet derivatives to concrete coordinate partial derivatives is still the delicate bridge in this area.",
       "The parent Lean comments identify differential-form integration on oriented manifolds with boundary as future Mathlib infrastructure."
     ],
     "nextSteps": [
-      "Reconcile `problem.md`'s stale one-sorry wording with the current parent proof metadata and Lean file.",
-      "Decide whether this research slug should be marked as subsumed by the parent proof or retargeted to the fully general manifold Stokes theorem.",
-      "If retargeted, survey current Mathlib support for differential forms, orientations, boundaries, and integration on `SmoothManifoldWithCorners`."
+      "S6: Mathlib upstream-prep of `iteratedFDeriv_comp_perm` (generalize to IsRCLikeNormedField via minSmoothness; add Within versions).",
+      "Fragments 2-6 (manifold Stokes) remain deep, multi-session work — do not start without a plan.",
+      "Optional: bridge `iteratedFDeriv_comp_perm` to concrete partial-derivative statements (lineDeriv Clairaut) as a smaller follow-up."
     ],
     "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis slug tracks a gallery-gap around the generalized Stokes theorem. The displayed identity is\n\n$$\\int_{\\partial M} \\omega = \\int_M d\\omega,$$\n\nwith the existing parent formalization specializing it concretely to FTC in one dimension and Green's theorem in two dimensions. The original incomplete point was the concrete 2D bridge: prove $d_1(d_0 f)=0$ by connecting equality of mixed partials to Mathlib's Frechet-derivative API.\n\n---\n\n## Local Evidence\n\n- `problem.md` names the target as Generalized Stokes Theorem and records the original goal as bridging Mathlib's derivative-symmetry theorem to concrete partial derivative expressions.\n- `state.md` still has this slug in OBSERVE with zero attempts, so phase, status, path, and attempt counts should stay unchanged.\n- `src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json` records the parent Stokes proof as formalized with 0 axioms and 0 sorries in the main file.\n- `Proofs/FundamentalTheoremCalculusStokes.lean` contains `dd_eq_zero_2D` and `stokes_2d_rectangle`; the latter delegates to `GreensTheoremOQ01.greens_theorem_concrete`.\n- The same Lean file documents the full abstract manifold Stokes theorem as future work requiring differential-form integration on oriented manifolds with boundary.\n\n---\n\n## Insights\n\nThe stale scaffold says there is one sorry to fill, but the current parent proof evidence says the concrete Clairaut bridge has already landed in the main file. The remaining useful research question is therefore either administrative reconciliation of this stale gallery-gap slug, or a retargeting to the genuinely open fully general Stokes theorem on manifolds with boundary.\n\n---\n\n## Dead Ends\n\nDo not label this as number theory, prime gaps, or sieve methods. Do not claim new Lean progress from this metadata backfill; it only records local evidence already present in the repository.\n"
   },
@@ -93,11 +94,17 @@
     ],
     "urls": [],
     "mathlib": [
+      "ContDiff.iteratedFDeriv_right",
       "ContDiffAt.isSymmSndFDerivAt",
-      "HasFDerivAt.comp_hasDerivAt",
+      "ContDiffAt.iteratedFDeriv_comp_perm",
+      "ContinuousMultilinearMap.domDomCongr",
+      "Equiv.Perm.decomposeFin",
+      "GreensTheoremOQ01.greens_theorem_concrete",
       "HasDerivAt.clm_apply",
+      "HasFDerivAt.comp_hasDerivAt",
+      "LinearIsometryEquiv.comp_fderiv",
       "integral_eq_sub_of_hasDerivAt_of_le",
-      "GreensTheoremOQ01.greens_theorem_concrete"
+      "iteratedFDeriv_succ_apply_left"
     ]
   },
   "started": "2026-04-03T02:25:34-07:00",
