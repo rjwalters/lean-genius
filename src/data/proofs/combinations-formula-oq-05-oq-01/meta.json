@@ -49,7 +49,8 @@
       "Pascal's rule is exactly the telescoping mechanism: it lets the (j+1)-th partial sum absorb the new term and collapse back to one binomial coefficient of the previous row.",
       "Stated with C(n+1,k) instead of C(n,k) the identity needs no natural-number subtraction and holds for all n (including n = 0), making the induction clean; the literal C(n-1,j) form is then a one-line specialisation for n ≥ 1.",
       "The full-row identity is not assumed — it is derived: taking j = n makes the right side (-1)^n C(n-1,n) = 0, so this entry is strictly stronger than the parent anchor and reproves Int.alternating_sum_range_choose_of_ne.",
-      "The partial sums stabilise at 0 the moment j reaches n, because the trailing binomial coefficients C(n,k) with k > n vanish; equivalently the right-hand binomial C(n-1,j) is supported on j < n."
+      "The partial sums stabilise at 0 the moment j reaches n, because the trailing binomial coefficients C(n,k) with k > n vanish; equivalently the right-hand binomial C(n-1,j) is supported on j < n.",
+      "Generating-function reading: since 1/(1-x) = ∑_{i≥0} x^i as a formal power series, (1-x)^n · 1/(1-x) = (1-x)^{n-1}, and reading off the coefficient of x^j on the left via the Cauchy product gives exactly ∑_{k=0}^{j} (-1)^k C(n,k) — so the partial sum is precisely the j-th Taylor coefficient of the polynomial (1-x)^{n-1}, which the binomial theorem evaluates to (-1)^j C(n-1,j), and which vanishes past that polynomial's degree n-1, exactly matching the stabilisation theorem."
     ]
   },
   "sections": [
