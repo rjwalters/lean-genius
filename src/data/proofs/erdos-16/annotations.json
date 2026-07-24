@@ -314,5 +314,146 @@
       "Romanoff's theorem",
       "covering congruences"
     ]
+  },
+  {
+    "id": "ann-e16-foundational-lemmas",
+    "proofId": "erdos-16",
+    "range": {
+      "startLine": 190,
+      "endLine": 368
+    },
+    "type": "technique",
+    "title": "Foundational Lemmas (Axiom-Free)",
+    "content": "The machine-checked core: `mem_exceptionalSet_iff` unfolds membership; `isRomanoff_four_le` gives the structural floor n ≥ 4 for Romanoff n; `not_isRomanoff_one`/`not_isRomanoff_three` place 1 and 3 in the exceptional set; `isRomanoff_five`/`isRomanoff_seven` give concrete witnesses; `density_nonneg`/`density_le_one` bound the density functional to [0,1]; `erdosCovering_isCoveringSystem` proves the {2,3,4,6,8,12,24} system genuinely covers ℤ, by `decide`; `isRomanoff_iff_mem_range` bounds the witness exponent to a finite range, giving a `Decidable (IsRomanoff n)` instance; and 127, 149, 251, 331 are verified exceptional by `decide` using that instance.",
+    "mathContext": "Everything here depends only on $\\text{propext}/\\text{Classical.choice}/\\text{Quot.sound}$. The key device, `isRomanoff_iff_mem_range`, bounds the witness exponent $k$ (since $2^k < n$ forces $k < 2^k < n$), making `IsRomanoff` decidable and the exceptionality of specific OEIS A006285 terms machine-checkable.",
+    "significance": "key",
+    "tags": [
+      "axiom-free",
+      "decidability",
+      "kernel-decide",
+      "structural-lemmas"
+    ],
+    "relatedConcepts": [
+      "Decidable instance",
+      "finite-range bound",
+      "OEIS A006285"
+    ],
+    "prerequisites": [
+      "IsRomanoff",
+      "ExceptionalSet",
+      "erdosCovering"
+    ]
+  },
+  {
+    "id": "ann-e16-covering-obstruction",
+    "proofId": "erdos-16",
+    "range": {
+      "startLine": 384,
+      "endLine": 452
+    },
+    "type": "technique",
+    "title": "The Covering-Congruence Obstruction Mechanism (Axiom-Free)",
+    "content": "The verified gear behind the covering construction: `two_pow_mod_three` (2^k mod 3 has period 2), `two_pow_modEq_of_dvd` (order-periodicity of 2 mod a prime p with 2^d ≡ 1 mod p), the general obstruction `covering_prime_not_prime_sub` (if p ∣ n − 2^k on the residue class where k ≡ r mod d, and n − 2^k > p, then n − 2^k is composite), and the concrete gears `not_prime_sub_even_mod_three` (prime 3 kills even exponents) and `not_prime_sub_mod_seven` (prime 7 kills exponents divisible by 3). All axiom-free.",
+    "mathContext": "Fixing a prime $p$ with $\\text{ord}_p(2) = d$, on the residue class $k \\equiv r \\pmod d$ the value $n - 2^k$ is divisible by $p$; if it also exceeds $p$ it cannot be prime. This is the mechanism, applied one prime/residue-class at a time, that eventually eliminates every exponent class and produces an arithmetic progression of exceptional $n$.",
+    "significance": "key",
+    "tags": [
+      "axiom-free",
+      "covering-congruences",
+      "modular-arithmetic",
+      "order-of-an-element"
+    ],
+    "relatedConcepts": [
+      "order of 2 mod p",
+      "composite forcing",
+      "residue classes"
+    ],
+    "prerequisites": [
+      "erdosCovering",
+      "modular arithmetic",
+      "order of an element"
+    ]
+  },
+  {
+    "id": "ann-e16-assembling-gears",
+    "proofId": "erdos-16",
+    "range": {
+      "startLine": 481,
+      "endLine": 554
+    },
+    "type": "technique",
+    "title": "Assembling the Gears: The Full Covering Obstruction (Axiom-Free)",
+    "content": "Runs the full covering system on the *exponent*: the six classes k ≡ 0 (2), 0 (3), 1 (4), 3 (8), 7 (12), 23 (24) cover ℤ, each closed by a prime whose order of 2 equals that modulus — 3, 7, 5, 17, 13, 241 (order gears proved by `decide`/`norm_num`). The assembled theorem `covering_obstruction_not_isRomanoff` shows any n meeting six explicit CRT residues plus a size hypothesis (n − 2^k > 241 for every valid k) is not Romanoff, and `covering_progression_mem_exceptionalSet` packages the odd such n as members of `ExceptionalSet` — the membership form of Erdős's 1950 theorem. All axiom-free.",
+    "mathContext": "Six primes with $\\text{ord}_p(2) = d$ close a covering system of the exponent $k$; by CRT, the progression $n \\equiv a \\pmod{3\\cdot5\\cdot7\\cdot13\\cdot17\\cdot241}$ makes every $n - 2^k$ composite once it exceeds 241, so the whole progression (subject to that one size hypothesis) lies in `ExceptionalSet` — Erdős (1950), assembled unconditionally.",
+    "significance": "key",
+    "tags": [
+      "axiom-free",
+      "chinese-remainder-theorem",
+      "covering-congruences",
+      "arithmetic-progressions"
+    ],
+    "relatedConcepts": [
+      "covering_prime_not_prime_sub",
+      "CRT progression",
+      "order of 2 gears"
+    ],
+    "prerequisites": [
+      "covering_prime_not_prime_sub",
+      "Chinese Remainder Theorem",
+      "Nat.ModEq"
+    ]
+  },
+  {
+    "id": "ann-e16-infinite-progression",
+    "proofId": "erdos-16",
+    "range": {
+      "startLine": 573,
+      "endLine": 615
+    },
+    "type": "insight",
+    "title": "Erdős's Infinite Arithmetic Progression: The Exceptional Set is Infinite",
+    "content": "Promotes the CRT membership form into an unconditional infinitude result. `exists_exceptional_gt`: for every bound B there is an exceptional n > B, obtained by picking a progression member large enough that the size hypothesis holds automatically. `exceptionalSet_infinite`: `ExceptionalSet.Infinite` follows immediately — the full Erdős (1950) theorem that infinitely many odd numbers are not of the form 2^k + p, proved axiom-free.",
+    "mathContext": "From the covering progression modulo $3\\cdot5\\cdot7\\cdot13\\cdot17\\cdot241$ one extracts, above any bound $B$, an odd $n$ with every $n-2^k$ composite; hence $\\text{ExceptionalSet}$ is unbounded and therefore infinite, with no axioms.",
+    "significance": "key",
+    "tags": [
+      "axiom-free",
+      "infinitude",
+      "arithmetic-progressions"
+    ],
+    "relatedConcepts": [
+      "covering_progression_mem_exceptionalSet",
+      "unboundedness"
+    ],
+    "prerequisites": [
+      "covering_progression_mem_exceptionalSet",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-e16-full-strength-density",
+    "proofId": "erdos-16",
+    "range": {
+      "startLine": 635,
+      "endLine": 832
+    },
+    "type": "insight",
+    "title": "Erdős (1950), Full Strength: The Exceptional Set Has Positive Lower Density",
+    "content": "Strengthens infinitude to positive lower density, all axiom-free. `coveringAP`/`Trapped` feed `coveringAP_mem_exceptionalSet` (every untrapped progression member is exceptional); `card_trapped_le` bounds trapped members below a horizon N to at most log₂ N + 1 (each dyadic window traps at most one member, since it is far shorter than the common difference); `exceptionalCount_lower_bound`/`exceptionalCount_positive_density` combine these into at least N/11184810 − (log₂ N + 1) exceptional integers below N, exceeding N/22369620 once N ≥ 2^52; `density_exceptionalSet_ge`/`lowerDensity_exceptionalSet_pos` package this as `0 < lowerDensity ExceptionalSet`.",
+    "mathContext": "The linear main term $N/11184810$ (one progression member per period) dwarfs the logarithmic trapped-member loss $\\log_2 N + 1$ once $N$ is large, giving a genuine positive-density lower bound rather than mere infinitude — Erdős's 1950 result at full strength, proved unconditionally and axiom-free.",
+    "significance": "key",
+    "tags": [
+      "axiom-free",
+      "positive-density",
+      "counting-argument"
+    ],
+    "relatedConcepts": [
+      "lowerDensity",
+      "dyadic windows",
+      "trapped integers"
+    ],
+    "prerequisites": [
+      "exceptionalSet_infinite",
+      "card_trapped_le",
+      "lowerDensity"
+    ]
   }
 ]
