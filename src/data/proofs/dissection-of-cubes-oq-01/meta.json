@@ -124,9 +124,9 @@
     "summary": "The key result is that every nonempty cube dissection has collidingCubes.card ≥ 2: at least two cubes must share a size. This strengthens Wiedijk #82 from 'there exists a collision' to 'at least 2 cubes participate'. The proof relies on extracting both cubes from the collision pair promised by the impossibility theorem.",
     "implications": "**Theoretical Significance**: **Connection to the base theorem**: Wiedijk #82 says cube dissections can't be perfect (all-different sizes). This OQ studies how far from perfect they must be. A dissection with HasMinimalCollision would be 'almost perfect': only one repeated size, with all other cubes distinct.\n\n**Why 2 might not be achievable**: Littlewood's floor argument creates a geometric cascade.\n\nThe smallest cube on any floor forces even smaller cubes above it, and those force still smaller cubes, and so on. This cascade typically produces many size repetitions. Whether the cascade can be arranged to produce only one repeated size is the heart of the open question.\n\n**Formal limitation**: Our formalization uses covers_unit_cube : True as a placeholder for the actual geometric covering constraint. Resolving the open question would require formalizing the full 3D tiling geometry.",
     "openQuestions": [
-      "Is HasMinimalCollision achievable? (Can collidingCubes.card = 2 for a valid dissection?)",
-      "What is the actual minimum of collidingCubes.card over all valid dissections?",
-      "Can the volume constraint (∑ c.side³ = 1) be combined with disjointness to derive a better lower bound?",
+      "Is HasMinimalCollision achievable? (Can collidingCubes.card = 2 for a valid dissection?) Answered within this combinatorial formalization by dissection-of-cubes-oq-01-oq-01, which exhibits an explicit 3-cube dissection with exactly 2 colliding cubes — but only relative to the covers_unit_cube : True placeholder; dissection-of-cubes-oq-01-oq-01-oq-01 shows that same witness fails a genuine volumetric coverage test, so the geometric version of this question is still open.",
+      "What is the actual minimum of collidingCubes.card over all valid dissections? Now discharged by dissection-of-cubes-oq-01-oq-02, which proves the minimum is exactly 2 (IsLeast).",
+      "Can the volume constraint (∑ c.side³ = 1) be combined with disjointness to derive a better lower bound? Progressed by dissection-of-cubes-oq-01-oq-01-oq-01: two interior-disjoint cubes in [0,1]³ have combined volume strictly under 1, so no genuine (volume-filling) dissection can have exactly 2 cubes — any real minimal-collision dissection needs ≥ 3. Whether the bound can be pushed further remains open.",
       "Does Littlewood's cascade imply a super-constant lower bound (e.g., ≥ log n for n-cube dissections)?"
     ]
   },
@@ -170,9 +170,19 @@
       "description": "Hilbert's third problem (Dehn-Sydler theorem) provides the theoretical foundation: the Dehn invariant determines when polyhedra are scissors-congruent"
     },
     {
+      "targetId": "dissection-of-cubes-oq-01-oq-01",
+      "relationship": "answered-by",
+      "description": "Child answering this entry's first open question — 'is HasMinimalCollision achievable?' — by exhibiting an explicit 3-cube dissection with exactly 2 colliding cubes, within the covers_unit_cube : True placeholder formalization used here."
+    },
+    {
       "targetId": "dissection-of-cubes-oq-01-oq-02",
       "relationship": "answered-by",
       "description": "Child answering this entry's second open question — 'what is the actual minimum of collidingCubes.card over all valid dissections?'. It proves the minimum is exactly 2: the collision spectrum has least element 2 (IsLeast), packaging OQ-01's lower bound together with an achievability witness."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-01-oq-01",
+      "relationship": "answered-by",
+      "description": "Grandchild progressing this entry's third open question (combining the volume constraint with disjointness). It replaces the True placeholder with genuine volumetric coverage ∑ c.side³ = 1, shows the OQ-01-01 witness fails that test, and derives a new cardinality bound: any genuine (volume-filling) minimal-collision dissection needs ≥ 3 cubes, not just the ≥ 2 proved here."
     }
   ],
   "references": [
