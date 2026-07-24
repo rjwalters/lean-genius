@@ -1044,7 +1044,9 @@ The `R_1(n₁, n₂) + 1 = n₁ + n₂ - 1 + 1 = n₁ + n₂` collapse uses
 `min_le_ramseyNumber` to certify `n₁, n₂ ≥ 1`. -/
 theorem ramseyNumber_two_le_add (s t : ℕ) (hs : 3 ≤ s) (ht : 3 ≤ t) :
     ramseyNumber 2 s t ≤ ramseyNumber 2 (s - 1) t + ramseyNumber 2 s (t - 1) := by
-  have hrec := ramseyNumber_succ_le 1 s t (by omega) (by omega) (by omega)
+  have hrec : ramseyNumber 2 s t ≤
+      ramseyNumber 1 (ramseyNumber 2 (s - 1) t) (ramseyNumber 2 s (t - 1)) + 1 := by
+    simpa using ramseyNumber_succ_le 1 s t (by omega) (by omega) (by omega)
   set n₁ := ramseyNumber 2 (s - 1) t with hn₁_def
   set n₂ := ramseyNumber 2 s (t - 1) with hn₂_def
   have h₁ : 1 ≤ n₁ := by
@@ -1094,8 +1096,7 @@ theorem ramseyNumber_two_le_choose (s t : ℕ) (hs : 2 ≤ s) (ht : 2 ≤ t) :
       have h1 : ramseyNumber 2 s 2 ≤ s :=
         ramseyNumber_le_of_isRamsey (is_ramsey_self_left 2 s (by omega) hs)
       have h2 : (s + 2 - 2).choose (s - 1) = s := by
-        rw [show s + 2 - 2 = s by omega,
-            show s - 1 = s - 1 from rfl, ← Nat.choose_symm (by omega : 1 ≤ s),
+        rw [show s + 2 - 2 = s by omega, Nat.choose_symm (by omega : 1 ≤ s),
             Nat.choose_one_right]
       omega
     -- Interior: `s, t ≥ 3` — recursion + IH + Pascal.
