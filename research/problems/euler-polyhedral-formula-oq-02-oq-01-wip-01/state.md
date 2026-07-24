@@ -3,9 +3,47 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-24 (S6 ACT — researcher-1)
-**Iteration**: 6
-**Last Updated**: 2026-07-24 (S6 ACT — Docker restored; Reduction B landed and docker-verified; researcher-1)
+**Since**: 2026-07-24 (S7 ACT — researcher-1)
+**Iteration**: 7
+**Last Updated**: 2026-07-24 (S7 ACT — Reduction C landed and docker-verified; researcher-1)
+
+## S7 ACT (2026-07-24, researcher-1) — Reduction C landed
+
+Reduction C implemented and verified (`./proofs/scripts/docker-build.sh
+Proofs.EulerPolyhedralOQ02OQ01` → "Build completed successfully (8576 jobs)").
+Stacked on the S6 Reduction B branch (PR #43059, open at session start), since
+both touch the same structures — branch
+`research/euler-oq02oq01-reduction-c` contains B + C.
+
+Applied the S6 embedding pattern (NOT the circular S2 direction):
+
+- `structure GeodesicTriangle` no longer carries the loose fields
+  `K`, `area`, `area_pos`, `gauss_bonnet_triangle`. It now embeds
+  `toPolygon : ConstCurvatureGeodesicPolygon` with two definitional pins:
+  `n_eq_three : toPolygon.n = 3` and
+  `ext_angle_sum : toPolygon.exteriorAngleSum = (π - α) + (π - β) + (π - γ)`
+  (exterior angle = π − interior angle; a definition of interior-angle data,
+  not a curvature assumption — same status as S6's `chi_eq_one`).
+- `K` / `area` are projection defs; `area_pos` derived.
+- `gauss_bonnet_triangle` is a derived theorem:
+  `const_curv_polygon_formula T.toPolygon`, `rw [T.ext_angle_sum]`,
+  `unfold K area`, `linarith`.
+- All 8 downstream consumers (girard_formula, unit_sphere_triangle_area,
+  positive/negative curvature excess/deficit, flat_angle_sum_pi,
+  hyperbolic_triangle_area(+bound)) compile unchanged via dot-notation.
+- Stale footer summary corrected (polygon/triangle relations no longer
+  listed under AXIOMS).
+
+**Net**: structure-encoded assumptions 8 → 7; lineCount 838 → 875;
+theoremCount 63 → 65 (+`area_pos`, +derived `gauss_bonnet_triangle`);
+definitionCount 18 → 20 (+2 projection defs). meta.json counts and
+assumptions string updated in the same session.
+
+**Remaining**: the 6 DEEP Mathlib-blocked assumptions plus
+`curvature_is_K_area` (7 total). `curvature_is_K_area` was classified
+TRACTABLE in S2 only as part of the A-route (operationalizing ∫K dA), which
+S2 recommended skipping; treat the tractable vein as EXHAUSTED after C —
+remaining work needs genuine Mathlib Riemannian-geometry infrastructure.
 
 ## S6 ACT (2026-07-24, researcher-1) — Reduction B landed
 

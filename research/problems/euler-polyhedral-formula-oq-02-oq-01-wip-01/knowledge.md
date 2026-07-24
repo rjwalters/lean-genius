@@ -147,3 +147,26 @@ through the parent projection does); `const_curv_polygon_formula` and
 
 Reduction C (triangle from `n = 3` polygon) is now unblocked and should follow
 the same embedding pattern.
+
+## S7 (2026-07-24) — Reduction C landed; tractable vein EXHAUSTED (researcher-1)
+
+Reduction C implemented and docker-verified — structure-encoded assumptions
+**8 → 7**. `GeodesicTriangle` now embeds
+`toPolygon : ConstCurvatureGeodesicPolygon` with definitional pins
+`n_eq_three : toPolygon.n = 3` and
+`ext_angle_sum : toPolygon.exteriorAngleSum = (π - α) + (π - β) + (π - γ)`
+(exterior = π − interior; interior-angle-data definition, same status as
+`chi_eq_one`). `K`/`area` are projection defs, `area_pos` derived, and
+`gauss_bonnet_triangle` is a theorem via `const_curv_polygon_formula` at
+n = 3 (`rw [ext_angle_sum]`, `unfold K area`, `linarith`). All 8 downstream
+triangle theorems compile unchanged.
+
+Branch note: stacked on the open Reduction B branch (PR #43059) because both
+rewrite Part XIV/XV structures — basing on origin/main would have silently
+reverted B on merge.
+
+**Vein status: EXHAUSTED.** Remaining 7 assumptions = 6 DEEP Mathlib-blocked
+(S2 table) + `curvature_is_K_area` (route A only, assessed not viable without
+integration on manifolds). Future sessions on this slug should NOT look for
+further build-free or embedding reductions — none remain; progress now
+requires genuine Riemannian-geometry infrastructure in Mathlib.

@@ -55,12 +55,12 @@
       "Morse theory: critical point counts constrained by Euler characteristic"
     ],
     "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem.",
-    "axiomCount": 8,
-    "lineCount": 838,
-    "assumptions": "0 sorries; 8 structure-encoded assumptions remain after S4 ACT (Reduction B, researcher-1 2026-07-24): Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary (CompactSurfaceWithBoundary.gauss_bonnet_boundary), constant curvature formula (curvature_is_K_area), geodesic triangle Gauss-Bonnet, Poincaré-Hopf index theorem, Morse relation. GeodesicPolygon.gauss_bonnet_polygon was discharged by re-encoding GeodesicPolygon as a chi=1 CompactSurfaceWithBoundary so the polygon identity is derived from gauss_bonnet_boundary (Reduction B); VectorFieldOnSurface.nonvanishing_index was discharged earlier via Finset.sum_empty (Reduction D). Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
+    "axiomCount": 7,
+    "lineCount": 875,
+    "assumptions": "0 sorries; 7 structure-encoded assumptions remain after S7 ACT (Reduction C, researcher-1 2026-07-24): Gauss-Bonnet theorem (CompactRiemannianSurface.gauss_bonnet), chi-genus formula (OrientableClosedSurface.chi_genus), Chern-Gauss-Bonnet (ChernGaussBonnetManifold), Gauss-Bonnet with boundary (CompactSurfaceWithBoundary.gauss_bonnet_boundary), constant curvature formula (curvature_is_K_area), Poincare-Hopf index theorem, Morse relation. GeodesicTriangle.gauss_bonnet_triangle was discharged by re-encoding GeodesicTriangle as a 3-sided ConstCurvatureGeodesicPolygon so the triangle identity is derived from const_curv_polygon_formula (Reduction C); GeodesicPolygon.gauss_bonnet_polygon was discharged via gauss_bonnet_boundary at chi=1 (Reduction B); VectorFieldOnSurface.nonvanishing_index was discharged via Finset.sum_empty (Reduction D). Core differential geometry axiomatized due to Mathlib lacking Riemannian geometry.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 63,
-    "definitionCount": 18
+    "theoremCount": 65,
+    "definitionCount": 20
   },
   "sections": [
     {
@@ -255,10 +255,10 @@
       "Real"
     ],
     "namespace": "SmoothGaussBonnet",
-    "lineCount": 838,
+    "lineCount": 875,
     "axiomCount": 0,
-    "theoremCount": 63,
-    "definitionCount": 18,
+    "theoremCount": 65,
+    "definitionCount": 20,
     "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
     "sorries": 0
   },
