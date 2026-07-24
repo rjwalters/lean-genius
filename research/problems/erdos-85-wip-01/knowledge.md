@@ -602,3 +602,43 @@ new-vertex pairs reduce to the same key lemma.
   invariant or use disjoint unions (base cases 10..19 + G ⊕ Petersen step).
 - Upper halves beyond n = 12 (f(13) ≤ 4) need real ex(n;C₄) input — blocked.
 - Deep: KST asymptotics, monotonicity core (the actual #85) OPEN.
+
+## Session 2026-07-24 (researcher-2) — **f(13) = 4 PROVED** via cherry tightness + friendship theorem
+
+**Mode**: REVISIT (ACT). **Outcome**: the fourth exact value, first pinned BEYOND the
+counting range n ≤ k(k−1). 0 sorries, 0 axioms, no native_decide (kernel decides only for
+Nat.choose literals). Docker build green (8577 jobs).
+
+`minDegreeForC4_thirteen : minDegreeForC4 13 = 4`, from
+`containsC4_of_thirteen_minDegree_four` (upper) + the prior surgery witness (lower).
+
+### The new mechanism (reopens the "needs ex(n;C₄)" blocked route WITHOUT a Reiman bound)
+n = 13 = 4·3+1 sits at the projective-plane parameter point: `13·C(4,2) = C(13,2) = 78`
+EXACTLY. So the cherry double-count gives equality, and equality gives rigidity:
+1. `common_le_one_of_not_containsC4` — no C₄ ⇒ every pair has ≤ 1 common neighbour
+   (converse extraction from the pigeonhole engine).
+2. Cherry finset `C = Σ_v powersetCard 2 (N(v))` → endpoint pairs `T = powersetCard 2 univ`
+   injective when C₄-free; `78 = 13·C(4,2) ≤ |C| ≤ |T| = 78` forces equality.
+3. Equality ⇒ 4-REGULAR (a degree-5 vertex alone pushes the sum to 82 > 78:
+   `Finset.add_sum_erase` + per-term `Nat.choose_le_choose` + omega).
+4. Equality + injectivity ⇒ SURJECTIVE (`Finset.surj_on_of_inj_on_of_card_le`):
+   every pair has ≥ 1, hence EXACTLY 1, common neighbour = `Theorems100.Friendship G`.
+5. **Mathlib Archive friendship theorem** (Wiedijk #83) ⇒ politician of degree 12 ≠ 4. ∎
+
+### Lean gotchas burned down (four build rounds)
+- `import Archive.Wiedijk100Theorems.FriendshipGraphs` WORKS in this toolchain — the
+  Archive is a usable input for gallery proofs (new infrastructure discovery).
+- The Archive's `Friendship` bakes in `Classical.propDecidable` Fintype instances. Neither
+  `refine card_eq_one_iff.mpr` (synthesizes its own instance, kernel defeq rejection), nor
+  `@card_eq_one_iff _ ?_` (⟨...⟩ type undetermined), nor `rw [card_eq_one_iff]` (same
+  defeq rejection) works. **The fix: prove the count with the synthesized instance in a
+  `have hone`, then `convert hone using 2`** — convert closes the instance mismatch by
+  `Subsingleton.elim` (Fintype is a subsingleton).
+- `w ∈ G.commonNeighbors x y` is defeq to `G.Adj x w ∧ G.Adj y w` — `obtain ⟨hwx, hwy⟩ : _ ∧ _ := hw`.
+- `Nat.choose` literal facts (`C(4,2)=6`, `C(13,2)=78`, monotonicity at 5): plain `decide`.
+
+### Next
+- Generalize: same argument at k ≥ 3 gives f(k²−k+1) ≤ k (politician degree k(k−1) ≠ k).
+  Needs the numeric identities parameterized; friendship application unchanged.
+- f(14) ≥ 4 via surgery on a 13-vertex witness (lower-bound frontier continues);
+  f(14) ≤ 5 from counting (14 ≤ 5·4).

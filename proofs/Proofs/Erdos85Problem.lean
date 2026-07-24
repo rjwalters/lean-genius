@@ -18,6 +18,7 @@ Reference: https://erdosproblems.com/85
 -/
 
 import Mathlib
+import Archive.Wiedijk100Theorems.FriendshipGraphs
 
 open SimpleGraph Finset Filter
 open scoped Topology
@@ -2644,5 +2645,204 @@ theorem minDegreeForC4_thirteen_mem :
     minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
   have hge := four_le_minDegreeForC4_thirteen
   omega
+
+/-! ## The projective-plane threshold: `f(13) = 4` via the friendship theorem
+
+`n = 13 = 4·3 + 1` sits exactly ONE vertex beyond the reach of the crude cherry
+count (`minDegreeForC4_le_of_le_mul_pred` needs `n ≤ k(k−1) = 12`): at `n = 13`
+the count `13·C(4,2) = C(13,2) = 78` is EXACTLY tight, so pigeonhole no longer
+produces a collision.  What tightness does give is rigidity: a hypothetical
+`C₄`-free graph on `13` vertices with minimum degree `4` must be `4`-regular
+with every pair of distinct vertices having **exactly one** common neighbour —
+the *friendship condition*.  The friendship theorem (Mathlib Archive,
+Wiedijk #83: every finite friendship graph has a politician) then produces a
+vertex of degree `12`, contradicting `4`-regularity.  Hence `f(13) ≤ 4`, and
+with the surgery witness `f(13) ≥ 4` the fourth exact value **`f(13) = 4`** —
+the first one pinned beyond the counting range, and precisely the parameter
+point of the (nonexistent) friendship configuration attached to a projective
+plane of order `3`. -/
+
+section Thirteen
+
+/-- **Converse of the common-neighbour criterion**: a `C₄`-free graph has at
+most one common neighbour per pair of distinct vertices (two common
+neighbours of `x ≠ y` form the rim `x–v–y–v'–x`). -/
+theorem common_le_one_of_not_containsC4 {V : Type*} [Fintype V] [DecidableEq V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (h : ¬ containsC4 V G)
+    (x y : V) (hxy : x ≠ y) :
+    (G.neighborFinset x ∩ G.neighborFinset y).card ≤ 1 := by
+  by_contra hlt
+  rw [not_le] at hlt
+  obtain ⟨v, hv, v', hv', hne⟩ := Finset.one_lt_card.mp hlt
+  rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset,
+    SimpleGraph.mem_neighborFinset] at hv hv'
+  exact h (containsC4_of_rim hv.1 hv.2.symm hv'.2 hv'.1.symm hxy hne
+    (G.ne_of_adj hv.1).symm (G.ne_of_adj hv.2).symm
+    (G.ne_of_adj hv'.1).symm (G.ne_of_adj hv'.2).symm)
+
+/-- **The projective-plane threshold.**  Every graph on `13` vertices with
+minimum degree `≥ 4` contains a `4`-cycle.  Cherry-counting is exactly tight
+(`13·C(4,2) = C(13,2) = 78`), so a `C₄`-free such graph would be `4`-regular
+with every vertex pair having exactly one common neighbour — a friendship
+graph; the friendship theorem's politician has degree `12 ≠ 4`. -/
+theorem containsC4_of_thirteen_minDegree_four (G : SimpleGraph (Fin 13))
+    [DecidableRel G.Adj] (hmin : 4 ≤ G.minDegree) : containsC4 (Fin 13) G := by
+  classical
+  by_contra hC4
+  -- The cherry Finset and the endpoint-pair target, as in
+  -- `containsC4_of_card_choose_two_lt`.
+  set C : Finset (Σ _ : Fin 13, Finset (Fin 13)) :=
+    univ.sigma (fun v => (G.neighborFinset v).powersetCard 2) with hC
+  set T : Finset (Finset (Fin 13)) := (univ : Finset (Fin 13)).powersetCard 2 with hT
+  have hCcard : C.card = ∑ v : Fin 13, (G.degree v).choose 2 := by
+    rw [hC, Finset.card_sigma]
+    exact Finset.sum_congr rfl fun v _ => by
+      rw [Finset.card_powersetCard, G.card_neighborFinset_eq_degree]
+  have hTcard : T.card = 78 := by
+    rw [hT, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+    decide
+  have hmaps : ∀ p ∈ C, p.2 ∈ T := by
+    intro p hp
+    rw [hC, Finset.mem_sigma] at hp
+    rw [hT, Finset.mem_powersetCard]
+    exact ⟨Finset.subset_univ _, (Finset.mem_powersetCard.mp hp.2).2⟩
+  -- With no `C₄`, the endpoint pair DETERMINES the centre (two centres over
+  -- the same pair are two common neighbours).
+  have hcentre : ∀ (v v' : Fin 13) (e : Finset (Fin 13)), (⟨v, e⟩ : Σ _ : Fin 13,
+      Finset (Fin 13)) ∈ C → (⟨v', e⟩ : Σ _ : Fin 13, Finset (Fin 13)) ∈ C → v = v' := by
+    intro v v' e hp hq
+    by_contra hne
+    rw [hC, Finset.mem_sigma] at hp hq
+    obtain ⟨hsubv, hcard⟩ := Finset.mem_powersetCard.mp hp.2
+    obtain ⟨hsubv', -⟩ := Finset.mem_powersetCard.mp hq.2
+    obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp hcard
+    have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+      exact ⟨((G.mem_neighborFinset v x).mp (hsubv (by simp))).symm,
+             ((G.mem_neighborFinset v y).mp (hsubv (by simp))).symm⟩
+    have hv'mem : v' ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+      rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+      exact ⟨((G.mem_neighborFinset v' x).mp (hsubv' (by simp))).symm,
+             ((G.mem_neighborFinset v' y).mp (hsubv' (by simp))).symm⟩
+    have h2 : 1 < (G.neighborFinset x ∩ G.neighborFinset y).card :=
+      Finset.one_lt_card.mpr ⟨v, hvmem, v', hv'mem, hne⟩
+    have h1 := common_le_one_of_not_containsC4 hC4 x y hxy
+    omega
+  -- Injectivity ⟹ `|C| ≤ 78`.
+  have hinj : ∀ p₁ p₂ : Σ _ : Fin 13, Finset (Fin 13), p₁ ∈ C → p₂ ∈ C →
+      p₁.2 = p₂.2 → p₁ = p₂ := by
+    rintro ⟨v, e⟩ ⟨v', e'⟩ hp hq (heq : e = e')
+    subst heq
+    obtain rfl := hcentre v v' e hp hq
+    rfl
+  have hCle : C.card ≤ 78 := by
+    rw [← hTcard]
+    exact Finset.card_le_card_of_injOn (fun p => p.2) hmaps
+      (fun p₁ h₁ p₂ h₂ h => hinj p₁ p₂ h₁ h₂ h)
+  -- Minimum degree ⟹ `|C| ≥ 78`.
+  have hterm : ∀ v : Fin 13, 6 ≤ (G.degree v).choose 2 := by
+    intro v
+    have h4 : 4 ≤ G.degree v := le_trans hmin (G.minDegree_le_degree v)
+    calc 6 = (4 : ℕ).choose 2 := by decide
+      _ ≤ (G.degree v).choose 2 := Nat.choose_le_choose 2 h4
+  have hCge : 78 ≤ C.card := by
+    rw [hCcard]
+    calc (78 : ℕ) = ∑ _v : Fin 13, 6 := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+      _ ≤ ∑ v : Fin 13, (G.degree v).choose 2 := Finset.sum_le_sum fun v _ => hterm v
+  -- Exact tightness ⟹ `4`-regularity.
+  have hsum78 : ∑ v : Fin 13, (G.degree v).choose 2 = 78 := by
+    rw [← hCcard]; omega
+  have hdeg4 : ∀ v : Fin 13, G.degree v = 4 := by
+    intro v
+    have h4 : 4 ≤ G.degree v := le_trans hmin (G.minDegree_le_degree v)
+    by_contra hne
+    have h5 : 5 ≤ G.degree v := by omega
+    have h10 : 10 ≤ (G.degree v).choose 2 := by
+      calc (10 : ℕ) = (5 : ℕ).choose 2 := by decide
+        _ ≤ (G.degree v).choose 2 := Nat.choose_le_choose 2 h5
+    have hsplit : (G.degree v).choose 2 +
+        ∑ u ∈ univ.erase v, (G.degree u).choose 2
+          = ∑ u : Fin 13, (G.degree u).choose 2 :=
+      Finset.add_sum_erase univ (fun u => (G.degree u).choose 2) (Finset.mem_univ v)
+    have hrest : 72 ≤ ∑ u ∈ univ.erase v, (G.degree u).choose 2 := by
+      calc (72 : ℕ) = ∑ _u ∈ univ.erase v, 6 := by
+            rw [Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ v),
+              Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+        _ ≤ ∑ u ∈ univ.erase v, (G.degree u).choose 2 :=
+            Finset.sum_le_sum fun u _ => hterm u
+    omega
+  -- Exact tightness ⟹ surjectivity: every vertex pair is a cherry's endpoint
+  -- pair, i.e. has a common neighbour.
+  have hsurj := Finset.surj_on_of_inj_on_of_card_le
+    (s := C) (t := T) (fun p _ => p.2) (fun p hp => hmaps p hp)
+    (fun p₁ p₂ h₁ h₂ h => hinj p₁ p₂ h₁ h₂ h) (by omega)
+  -- The friendship condition: every pair of distinct vertices has exactly one
+  -- common neighbour.
+  have hfriend : Theorems100.Friendship G := by
+    intro x y hxy
+    have hxyT : ({x, y} : Finset (Fin 13)) ∈ T := by
+      rw [hT, Finset.mem_powersetCard]
+      exact ⟨Finset.subset_univ _, Finset.card_pair_eq_two_iff.mpr hxy⟩
+    obtain ⟨⟨v, e⟩, hpC, hpe⟩ := hsurj _ hxyT
+    have he : e = ({x, y} : Finset (Fin 13)) := hpe.symm
+    subst he
+    rw [hC, Finset.mem_sigma] at hpC
+    obtain ⟨-, hpow⟩ := hpC
+    have hsub := (Finset.mem_powersetCard.mp hpow).1
+    have hvx : G.Adj x v := ((G.mem_neighborFinset v x).mp (hsub (by simp))).symm
+    have hvy : G.Adj y v := ((G.mem_neighborFinset v y).mp (hsub (by simp))).symm
+    -- `commonNeighbors` membership is definitionally the pair of adjacencies.
+    have hvmemS : v ∈ G.commonNeighbors x y := ⟨hvx, hvy⟩
+    -- The goal's `Fintype` instance (Classical, baked into the Archive's
+    -- `Friendship` def) differs definitionally from the one synthesized from
+    -- `[DecidableRel G.Adj]`.  Prove the count with the synthesized instance,
+    -- then bridge with `convert`, which closes the instance mismatch by
+    -- `Subsingleton.elim` (Fintype is a subsingleton).
+    have hone : Fintype.card {w : Fin 13 // w ∈ G.commonNeighbors x y} = 1 := by
+      refine Fintype.card_eq_one_iff.mpr ⟨⟨v, hvmemS⟩, ?_⟩
+      rintro ⟨w, hw⟩
+      obtain ⟨hwx, hwy⟩ : G.Adj x w ∧ G.Adj y w := hw
+      have hcom := common_le_one_of_not_containsC4 hC4 x y hxy
+      have hwmem : w ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hwx, hwy⟩
+      have hvmem : v ∈ G.neighborFinset x ∩ G.neighborFinset y := by
+        rw [Finset.mem_inter, SimpleGraph.mem_neighborFinset, SimpleGraph.mem_neighborFinset]
+        exact ⟨hvx, hvy⟩
+      exact Subtype.ext (Finset.card_le_one.mp hcom w hwmem v hvmem)
+    convert hone using 2
+  -- The friendship theorem: a politician exists — degree `12`, not `4`.
+  obtain ⟨v, hv⟩ := Theorems100.friendship_theorem hfriend
+  have h12 : G.degree v = 12 := by
+    rw [← SimpleGraph.card_neighborFinset_eq_degree]
+    have huniv : G.neighborFinset v = univ.erase v := by
+      ext w
+      rw [SimpleGraph.mem_neighborFinset, Finset.mem_erase]
+      constructor
+      · intro h
+        exact ⟨(G.ne_of_adj h).symm, Finset.mem_univ _⟩
+      · rintro ⟨hne, -⟩
+        exact hv w (Ne.symm hne)
+    rw [huniv, Finset.card_erase_of_mem (Finset.mem_univ v),
+      Finset.card_univ, Fintype.card_fin]
+  have := hdeg4 v
+  omega
+
+/-- **`f(13) ≤ 4`** — the upper half of the fourth exact value, one vertex
+beyond the crude counting range. -/
+theorem minDegreeForC4_le_four_thirteen : minDegreeForC4 13 ≤ 4 := by
+  apply Nat.sInf_le
+  intro G _ hmin
+  exact containsC4_of_thirteen_minDegree_four G hmin
+
+/-- **The fourth exact value: `f(13) = 4`** — the surgery witness gives
+`f(13) ≥ 4`, and the friendship-theorem tightness argument gives
+`f(13) ≤ 4`.  This closes the gap flagged in `minDegreeForC4_thirteen_mem`:
+the first exact value pinned beyond the counting range `n ≤ k(k−1)`. -/
+theorem minDegreeForC4_thirteen : minDegreeForC4 13 = 4 :=
+  le_antisymm minDegreeForC4_le_four_thirteen four_le_minDegreeForC4_thirteen
+
+end Thirteen
 
 end Erdos85
