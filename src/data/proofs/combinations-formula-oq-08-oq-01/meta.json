@@ -78,7 +78,8 @@
       "The Fibonacci recurrence is literally a shadow of Pascal's rule: applying C(a+1,b+1) = C(a,b) + C(a,b+1) to each shallow-diagonal entry of row n+1 splits it into the two entries of row n that lie on the two adjacent diagonals, which sum to D(n+1) and D(n).",
       "Index bookkeeping is the whole difficulty in Lean: the natural-number subtraction n+1-k is exact only for k ≤ n, exactly the range guaranteed by membership in range(n+1), so omega discharges every index identity from the membership bound.",
       "Peeling with sum_range_succ' (first term) and sum_range_succ (last term) reduces both D(n+2) and D(n+1) to a common shape — a single sum over range(n+1) plus 1 — so the recurrence becomes a single term-by-term comparison.",
-      "The companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 transports to the diagonals as ∑_{i<n} D(i) = fib(n+2) - 1, telescoping the diagonal totals; together the two results give the fully combinatorial picture the open question requested."
+      "The companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 transports to the diagonals as ∑_{i<n} D(i) = fib(n+2) - 1, telescoping the diagonal totals; together the two results give the fully combinatorial picture the open question requested.",
+      "The algebraic Pascal step has a tiling meaning that makes the recurrence transparent: C(n-k,k) counts the tilings of a 1×n strip by squares and dominoes using exactly k dominoes (arrange k dominoes among n-k total tiles), so D(n) sums to the total tiling count fib(n+1). Pascal's rule C(a+1,b+1)=C(a,b)+C(a,b+1) applied here is exactly conditioning on the last tile of a 1×(n+1) strip — a trailing square (leaving an n-strip with k dominoes) or a trailing domino (leaving an (n-1)-strip with k-1 dominoes) — the standard bijective proof of the Fibonacci recurrence, now literally reproduced by the Lean-verified sum manipulation."
     ]
   },
   "sections": [
