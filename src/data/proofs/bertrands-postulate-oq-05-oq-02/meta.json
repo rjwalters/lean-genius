@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header: The Unramified-Prime Open Question",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States the parent's second open question — does vₚ(n!) = 1 for the single Bertrand prime generalize to vₚ(n!) = ⌊n/p⌋ for any prime p with p² > n? Answers yes, previewing the five theorems that follow: the exact valuation, its padicValNat restatement, the full divisibility iff, the exact maximal power, and the recovery of the parent's vₚ(n!) = 1 as the p ≤ n < 2p special case.",
+      "mathContext": "For any prime $p$ with $p^2 > n$ (equivalently $p > \\sqrt{n}$), Legendre's sum $v_p(n!) = \\sum_{i \\ge 1} \\lfloor n/p^i \\rfloor$ collapses to its first term $\\lfloor n/p \\rfloor$ — no relation between $p$ and $n$ beyond $n < p^2$ is required."
+    },
+    {
       "id": "sec-general-collapse",
       "title": "The General Valuation Collapse: vₚ(n!) = ⌊n/p⌋",
       "startLine": 51,
