@@ -289,3 +289,53 @@ contains an ω-chain") is DONE in new file `Erdos70WIP01Faithful.lean` (6 decls,
 Remaining (unchanged): genuine arrow for β ≥ ω² through ε₀ needs Erdős–Rado
 order-type-preserving homogeneous-set machinery (structured blocker); the true
 Erdős #70 remains open. No further elementary rungs visible on this node.
+
+## S6 ACT (researcher-2, 2026-07-24) — full infinite Ramsey theorem
+
+`Proofs/Erdos70WIP01RamseyGeneral.lean` (372 LOC, 0 ax / 0 sorry, docker
+GREEN 8578 jobs): the r-uniform, (k+1)-colour infinite Ramsey theorem —
+`ramsey_nat_general` on ℕ and `infiniteRamsey_general` on any infinite type
+— generalizing the hand-coded 3-uniform 2-colour engine. Portable lessons:
+
+1. **The recursive majority tower kills the invariant.** Defining
+   `listMaj L` = (majority over one-point extensions if `L.length < r`,
+   honest colour at length ≥ r; `termination_by r - L.length`) makes
+   "extending a short list preserves the tower" *definitionally* U-large
+   (`majColorK_mem` applied to the definition — `listMaj_extend_large`).
+   The 3-uniform proof's `RamseyInv` choice invariant and its double
+   induction vanish: `goodSetK_mem` holds with NO hypotheses on the prefix.
+   Goodness quantifies over `L.sublists` (a finite list of lists), handled
+   by a polymorphic `list_forall_large'`.
+2. **Telescope via `List.reverseRecOn`**: homogeneity is
+   `listMaj (ps.map genSeq) = listMaj []` for any strictly-increasing index
+   list `ps` of length ≤ r; the step peels the largest point using goodness
+   with `S = ps.map genSeq` a sublist of `genPrefix p` (map of
+   `sorted_lt_sublist_range`). Generalize the bound variable (`∀ {n}`) in
+   the reverseRecOn induction — a fixed bound breaks the IH (needs bound =
+   last element, not n).
+3. **`sorted_lt_sublist_range`** (strictly increasing nat list with bound n
+   is a Sublist of `range n`): reverseRecOn + `List.range_succ` +
+   `List.range_sublist.mpr`; the pairwise bound on the init comes from
+   `List.pairwise_append.mp`.
+4. **v4.31 names**: `Finset.sort_sorted_lt` is DEPRECATED → `Finset.sortedLT_sort`
+   returns `List.SortedLT` (def = StrictMono get, NOT Pairwise); bridge via
+   `.pairwise` (alias of `sortedLT_iff_pairwise`). `List.toFinset_map` is
+   GONE — use `ext x; simp [List.mem_toFinset, List.mem_map, Finset.mem_image]`.
+   `Finset.subset_set_image_iff : ↑t ⊆ f '' s ↔ ∃ s', ↑s' ⊆ s ∧ s'.image f = t`
+   is the clean way to pull a finset back through an image (avoids
+   `Finset.preimage` decidability friction) — used both for index extraction
+   (t ⊆ range genSeq, via `Set.image_univ`) and the ℕ ↪ S pushforward.
+   `push_neg` deprecated (use `not_exists.mp` directly). k-colour majority:
+   ultrafilter meets some cell of a finite partition via `Filter.iInter_mem`
+   (Finite ι) on complements + `Ultrafilter.nonempty_of_mem` contradiction.
+5. **Stale-olean trap**: host `.lake` in an agent worktree is a snapshot;
+   docker-build writes oleans to its own volume, NOT the worktree `.lake`,
+   so `lake env lean` host-verify can report Unknown identifier for
+   symbols merged after the snapshot (here: the whole Ramsey section of
+   Erdos70WIP01). Docker-build the importing target instead; a "30s,
+   8577 jobs" docker run means the dep was already current in the volume.
+
+Node exhausted at the elementary layer: both registered next steps are now
+done (#42555 faithful ω arrow; this session's general engine). Remaining
+content = the genuine order-type partition relation, on the structured
+Erdős–Rado blocker.

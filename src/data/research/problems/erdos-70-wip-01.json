@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 4,
-    "focus": "2026-07-23: FAITHFUL order-type arrow at beta = omega DONE — new file Erdos70WIP01Faithful.lean: omega0_le_type_subrel_of_infinite (infinite subset of a well-order has suborder type >= omega), FaithfulArrowOmega (the arrow with GENUINE order type, quantified over all well-orderings), faithful_omega_arrow_holds (unconditional at the continuum via infiniteRamsey3_holds), and faithfulArrowOmega_iff_partitionArrow_omega (at omega — and only there — the cardinality surrogate loses nothing; divergence starts at omega^2). 0 axioms, 0 sorries, docker-verified. Honest scope: beta = omega only; beta >= omega^2 needs Erdos-Rado machinery, Erdos #70 remains open.",
+    "iteration": 6,
+    "focus": "S6 ACT (researcher-2, 2026-07-24): full infinite Ramsey theorem — r-uniform (k+1)-colour generalization proved in Erdos70WIP01RamseyGeneral.lean (372 LOC, 0 ax/0 sorry, docker GREEN). Both registered next steps now done (#42555 faithful omega arrow; this session). No tractable work remains; everything further sits on the Erdos-Rado order-type blocker.",
     "blockers": [
       {
         "route": "true order-type partition relation (Erdos-Rado partition calculus)",
@@ -29,7 +29,7 @@
         "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "None elementary on this node. The faithful arrow for beta >= omega^2 (through epsilon_0) needs Erdos-Rado order-type-preserving homogeneous-set machinery absent from Mathlib v4.31 (structured blocker; reopen bar: materially new mechanism). The omega-instance surrogate/faithful equivalence is now proved, certifying the formalized conjecture is faithful at omega.",
+    "nextAction": "None — stand down. Reopen only if Mathlib gains order-type-preserving homogeneous-set (Erdos-Rado) machinery, per the registered blocker.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED at the surrogate level: InfiniteRamsey3 (infinite Ramsey for 3-uniform 2-colourings) proved from scratch via iterated ultrafilter majorities (0 axioms, 0 sorries), so erdos_70_conjecture — the cardinality-surrogate formalization — is an unconditional theorem, as are all its specializations (omega, omega^2, tower, epsilon_0). The ONLY remaining gap is faithfulness: HasOrderTypeAtLeast is a cardinality proxy, so genuine Erdős #70 (true order type) remains open and blocked on Erdős–Rado partition-calculus machinery.",
+    "progressSummary": "SATURATED at surrogate level (S6, 2026-07-24): formalized conjecture is an unconditional theorem (InfiniteRamsey3 proved S4, faithful omega arrow S5 #42555), and the Ramsey engine is now fully general — r-uniform, k-colour, arbitrary infinite ground type (Erdos70WIP01RamseyGeneral.lean, 0 ax/0 sorry). Only the genuine order-type relation (beta >= omega^2, Erdos-Rado) remains, blocked.",
     "builtItems": [
       "Erdos70.IsCountableOrdinal.of_le in Erdos70WIP01.lean",
       "Erdos70.isCountableOrdinal_add in Erdos70WIP01.lean",
@@ -60,7 +60,10 @@
       "infiniteRamsey3_holds: InfiniteRamsey3 is a theorem (transfer to any continuum-sized S via Infinite.natEmbedding)",
       "erdos_70_formalized_conjecture_holds: the formalized (cardinality-surrogate) conjecture is now an unconditional theorem; no_erdos_70_counterexample; conjecture_omega_holds / conjecture_omega_squared_holds / epsilon0_partitionArrow_holds unconditional",
       "omega0_le_type_subrel_of_infinite + FaithfulArrowOmega (genuine order-type arrow at omega) in Erdos70WIP01Faithful.lean",
-      "faithful_omega_arrow_holds (unconditional at continuum) + faithfulArrowOmega_iff_partitionArrow_omega (surrogate equivalence at omega) in Erdos70WIP01Faithful.lean"
+      "faithful_omega_arrow_holds (unconditional at continuum) + faithfulArrowOmega_iff_partitionArrow_omega (surrogate equivalence at omega) in Erdos70WIP01Faithful.lean",
+      "Erdos70WIP01RamseyGeneral.lean (S6): ramsey_nat_general — infinite Ramsey on NN for every uniformity r and every k+1 colours (recursive majority tower listMaj, no invariant needed)",
+      "Erdos70WIP01RamseyGeneral.lean (S6): infiniteRamsey_general — infinite Ramsey over any infinite type via NN-embedding pushforward (Finset.subset_set_image_iff)",
+      "Erdos70WIP01RamseyGeneral.lean (S6): infiniteRamsey3_of_general — second independent proof of InfiniteRamsey3; infinite pigeonhole (r=1) and many-colour graph Ramsey (r=2) corollaries"
     ],
     "insights": [
       "The parent proved specific instances (omega0_plus_n_countable, omega0_squared_countable); these are corollaries of three general closure lemmas: IsCountableOrdinal is downward-closed (Ordinal.card_le_card), and closed under ordinal + (Cardinal.add_le_aleph0) and * (mul_le_mul + Cardinal.aleph0_mul_aleph0).",
@@ -75,12 +78,15 @@
       "InfiniteRamsey3 is provable in ~370 self-contained lines by iterated ultrafilter majorities over hyperfilter NN: pairMaj/pointMaj/topMaj limit colours, a goodSet of viable next elements (each clause U-large), and an sInf-chosen strictly increasing sequence whose every increasing triple has the top-majority colour. Ordering every clause smaller-point-first eliminates all symmetry lemmas for the unordered triple colour.",
       "Recursion-with-invariant in Lean without dependent choice plumbing: define ramseyPrefix : NN -> List NN by structural recursion with sInf (total), then prove membership/invariant/goodness afterwards by induction (ramsey_invariant). Nat.sInf_mem + Ultrafilter.nonempty_of_mem discharge nonemptiness.",
       "At beta = omega the cardinality surrogate HasOrderTypeAtLeast is EQUIVALENT to the genuine order-type clause (well-order via WellOrderingRel forward; infinite-subset-has-type->=omega backward); divergence begins at omega^2",
-      "Set.Elem H vs Subtype (. in H) defeq mismatches after Ordinal.card_type: route through `have h' : mk H = n := hcard` (exact accepts defeq, rw does not)"
+      "Set.Elem H vs Subtype (. in H) defeq mismatches after Ordinal.card_type: route through `have h' : mk H = n := hcard` (exact accepts defeq, rw does not)",
+      "The recursive majority tower (listMaj: majority over one-point extensions below length r, honest colour at r) makes every goodness clause definitionally U-large, eliminating the RamseyInv invariant of the 3-uniform proof — goodSetK_mem holds with no hypotheses on the prefix",
+      "Homogeneity = telescope listMaj (map genSeq ps) down to listMaj [] by List.reverseRecOn over strictly increasing index lists; the index-bookkeeping reduces to sorted_lt_sublist_range (strict nat list bounded by n is Sublist of range n)",
+      "v4.31: Finset.sort_sorted_lt deprecated -> Finset.sortedLT_sort returning SortedLT (bridge .pairwise); List.toFinset_map gone (ext+simp); Finset.subset_set_image_iff is the friction-free finset-through-image pullback",
+      "Host .lake in agent worktrees is a stale snapshot — docker-build outputs live in a docker volume, so lake env lean can miss recently merged symbols; docker-build the importing target instead"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Faithful order-type upgrade for beta = omega: define order-type-true HasOrderTypeAtLeast (order embedding of beta under a fixed well-order) and prove the omega case genuinely — an infinite homogeneous set contains an omega-chain, so InfiniteRamsey3 already suffices; materially weaker than the parent target (omega^2 onward needs Erdős–Rado), so a valid decomposition step.",
-      "Generalize the Ramsey engine to r-uniform k-colourings on NN (same majority-iteration, r nested levels) — reusable Mathlib-gap infrastructure."
+      "STAND DOWN: no tractable work remains on this node. Both prior next steps are done (faithful omega arrow #42555; r-uniform k-colour engine S6 2026-07-24). Remaining content is the genuine order-type partition relation c -> (beta, n)_2^3 for beta >= omega^2, on the registered Erdos-Rado structured blocker (reopen: materially new mechanism / Mathlib gains order-type-preserving homogeneous-set machinery)."
     ],
     "markdown": "# Knowledge Base: erdos-70-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -104,5 +110,6 @@
   "started": "2026-07-10T00:41:25.782Z",
   "lastUpdate": "2026-07-23",
   "significance": 8,
-  "tractability": 5
+  "tractability": 5,
+  "lastUpdatedAt": "2026-07-24"
 }
