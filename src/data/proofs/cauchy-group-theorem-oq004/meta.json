@@ -139,6 +139,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header: The Exponent Replaces the Order",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports Mathlib.Tactic and gives the module docstring: the parent's image equality range(x ↦ xⁿ) = range(x ↦ x^gcd(n,m)) was only established in the cyclic case via the group order m; this file proves it in every group by replacing m with the exponent exp G, since the hard inclusion is a single Bézout identity. Declares the ambient type variable {α}.",
+      "mathContext": "range(x ↦ xⁿ) = range(x ↦ x^gcd(n, exp G)) holds in every group — no commutativity, no finiteness — because gcd(n,e) = n·A + e·B and x^e = 1."
+    },
+    {
       "id": "zpow-exponent",
       "title": "A ℤ-power form of x ^ exponent = 1",
       "startLine": 50,
