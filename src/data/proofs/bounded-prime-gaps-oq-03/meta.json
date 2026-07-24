@@ -22,7 +22,7 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axioms": 1,
     "mathlibDependencies": [
       {
@@ -55,7 +55,7 @@
     "dateAdded": "2026-02-25",
     "axiomCount": 1,
     "lineCount": 279,
-    "assumptions": "1 axiom: engelsma_lower_bound (Engelsma's lower bound on diameter of optimal 50-tuple). Main file: 0 sorries. Trust caveat: the concrete admissible-tuple facts (engelsma50Tuple_card/nonempty/zero_mem/246_mem/le_246/admissible/max/min, plus the engelsma_analogue_*, engelsmaSearch(Pruned)_*, primesUpTo_*, and minAdmissibleDiameter_* companion checks — 36 theorems across the main file and the BoundedPrimeGapsOQ03OQ02/OQ03 companions) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite verifications of specific admissible tuples, not the headline diameter bound, which rests on the stated axiom engelsma_lower_bound. Companion note: BoundedPrimeGapsOQ03OQ02.lean carries 1 sorry (engelsmaSearchPruned_eq_false_iff — a WIP Path-B scaffold intended to eventually discharge engelsma_lower_bound via a verified pruned search); it is not invoked by any theorem in this cluster and does not weaken the headline result, which still rests solely on the stated axiom.",
+    "assumptions": "1 axiom: engelsma_lower_bound (Engelsma's lower bound on diameter of optimal 50-tuple). Main file: 0 sorries. Trust caveat: the concrete admissible-tuple facts (engelsma50Tuple_card/nonempty/zero_mem/246_mem/le_246/admissible/max/min, plus the engelsma_analogue_*, engelsmaSearch(Pruned)_*, primesUpTo_*, and minAdmissibleDiameter_* companion checks — 36 theorems across the main file and the BoundedPrimeGapsOQ03OQ02/OQ03 companions) are closed by `native_decide`, which adds the `Lean.ofReduceBool` compiler-trust axiom (visible in `#print axioms`). These are finite verifications of specific admissible tuples, not the headline diameter bound, which rests on the stated axiom engelsma_lower_bound. Companion note: BoundedPrimeGapsOQ03OQ02.lean's Path-B scaffold (engelsmaSearchPruned_eq_false_iff, a verified pruned-search route toward eventually discharging engelsma_lower_bound) is now sorry-free (0 sorries; the S11b bridge was discharged); it is not yet invoked by any theorem in this cluster and does not itself change the headline result, which still rests solely on the stated axiom.",
     "mathlib_version": "4.31.0",
     "theoremCount": 21,
     "definitionCount": 1,
@@ -247,8 +247,8 @@
         "theorems": 29,
         "definitions": 7,
         "axioms": 0,
-        "sorries": 1,
-        "description": "OQ-02 (Decidability infrastructure for IsAdmissible): bounded reformulation IsAdmissibleBdd restricts the prime quantifier to p ∈ Finset.range (H.card + 1), yielding Decidable (IsAdmissible H) via decidable_of_iff (key fact: |H.image (· % p)| ≤ H.card < p for p > H.card by Finset.card_image_le). Includes small-case admissibility witnesses (twin/triple/quadruple), Engelsma 'D(k) ≥ d' analogue lemmas for (k,d) ∈ {(6,16),(8,22),(3,7),(4,9),(5,13),(6,17)}, and a finitary engelsma_lower_bound bridge: engelsmaSearch and engelsmaSearchPruned search procedures whose `eq_false` outcome implies the unbounded lower bound (1 sorry: pruned-search soundness modulo the unbounded axiom). Hard prerequisite for the Path-B verified-backtracking work targeting elimination of the engelsma_lower_bound axiom in BoundedPrimeGapsOQ03.lean."
+        "sorries": 0,
+        "description": "OQ-02 (Decidability infrastructure for IsAdmissible): bounded reformulation IsAdmissibleBdd restricts the prime quantifier to p ∈ Finset.range (H.card + 1), yielding Decidable (IsAdmissible H) via decidable_of_iff (key fact: |H.image (· % p)| ≤ H.card < p for p > H.card by Finset.card_image_le). Includes small-case admissibility witnesses (twin/triple/quadruple), Engelsma 'D(k) ≥ d' analogue lemmas for (k,d) ∈ {(6,16),(8,22),(3,7),(4,9),(5,13),(6,17)}, and a finitary engelsma_lower_bound bridge: engelsmaSearch and engelsmaSearchPruned search procedures whose `eq_false` outcome implies the unbounded lower bound (S27: pruned-search soundness bridge engelsmaSearchPruned_eq_false_iff now fully discharged, 0 sorries). Hard prerequisite for the Path-B verified-backtracking work targeting elimination of the engelsma_lower_bound axiom in BoundedPrimeGapsOQ03.lean."
       },
       {
         "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
@@ -261,5 +261,5 @@
       }
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }
