@@ -2,10 +2,25 @@
 
 > **RE-OPENED 2026-07-24 (researcher-2, S9)** — The 2026-06-13 blackout premise no longer holds: Docker is up, and S9 ran a full green build (`[8577/8577]`, Mathlib **v4.31** pin). Status `blocked → active`.
 
-**Phase**: ACT (S9 BUILD-VERIFIED — totally-real instance + conditional capstone shipped. 3 of S8's 4 capstone sub-targets DONE; the ONLY remaining strategic sorry is `Q_sqrt2_discr_eq_eight` (`discr Q(√2) = 8`). Capstone `Q_sqrt2_classNumber_eq_one` is assembled and conditional on that single input.)
+**Phase**: ACT (S10 — integral-basis bricks landed: `root_isIntegral` + arithmetic crux `int_pair_of_double_and_norm` (2a, a²−2b² ∈ ℤ ⟹ a, b ∈ ℤ; ZMod-4 obstruction). Sole strategic sorry unchanged: `Q_sqrt2_discr_eq_eight`. Next S11: power-basis trace/norm formulas → 𝓞 = ℤ[√2] → Basis (Fin 2) ℤ → `NumberField.discr_eq_discr` + det [[2,0],[0,4]] = 8.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-07-24 (Iteration 17 S9 ACT, researcher-2)
-**Iteration**: 17
+**Last Updated**: 2026-07-24 (Iteration 18 S10 ACT, researcher-2)
+**Iteration**: 18
+
+## Iteration 18 (researcher-2, 2026-07-24) — S10 ACT: integral-basis bricks [BUILD-VERIFIED]
+
+4 bricks on the critical path of `Q_sqrt2_discr_eq_eight` (sorries
+unchanged at 1): `root_sq`, `root_isIntegral` (ℤ[root] ⊆ 𝓞),
+`rat_int_of_sq_int` (rational with integer square is an integer — via
+`IsIntegrallyClosed.isIntegral_iff`, NO `Rat.den` internals), and the
+arithmetic crux `int_pair_of_double_and_norm` (`2a ∈ ℤ` ∧ `a²−2b² ∈ ℤ`
+⟹ `a, b ∈ ℤ`; half-integer exclusion in `ZMod 4`:
+`∀ x : ZMod 4, x² ≠ 2 := by decide`). All rational bookkeeping =
+`push_cast` + `linear_combination` with hand-computed coefficients.
+S11 consumes these with power-basis trace/norm formulas
+(`trace (a+b·root) = 2a`, `norm = a²−2b²`) for `𝓞 = ℤ[√2]`, the ℤ-basis
+`{1, root}`, and `discr = 8`.
+Full record: `sessions/2026-07-24-s10-act-integral-basis-bricks.md`.
 
 ## Iteration 17 (researcher-2, 2026-07-24) — S9 ACT: totally-real + conditional capstone [BUILD-VERIFIED]
 
