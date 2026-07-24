@@ -47,6 +47,11 @@
         "route": "RESOLVED 2026-07-22 (was: f(9) needs ex(9;C4)-strength input): f(9)=3 PROVED axiom-free same day (minDegreeForC4_nine) via degree pinch + dense-4-set + tight-cherry bijection + pigeonhole — no extremal tables needed.",
         "reopenCriterion": "resolved, nothing to reopen",
         "blockedAt": "2026-07-22"
+      },
+      {
+        "route": "RESOLVED 2026-07-24 (was: upper bound beyond n=12 needs real ex(n;C4) input; cherry count provably stuck): f(13)<=4 PROVED via cherry-count equality at the tight point 13=4*3+1 => 4-regularity + friendship condition => Archive friendship theorem politician contradiction. Residual blocked part: upper bounds at NON-TIGHT n > 13 still need ex(n;C4)-strength input.",
+        "reopenCriterion": "resolved at tight points n=k*k-k+1; non-tight n: materially new mechanism required",
+        "blockedAt": "2026-07-24"
       }
     ],
     "nextAction": "Optional: chain surgery for f(14..19) lower rungs (config per step, cheap decides); general all-n>=10 theorem needs config-EXISTENCE argument (blocked route: not automatic in arbitrary C4-free graphs). Upper halves beyond n=12 need real ex(n;C4) input (blocked). Deep: KST asymptotics, monotonicity core.",
@@ -57,7 +62,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: exact table 1..12 complete (f = 1,2,3,2,3,3,3,3,3,4,4,4) + f(13) in {4,5} via the NEW abstract surgery engine (2026-07-23): the vertex-adding surgery is now a general lemma (delete edge ab, add v~{a,b,c}; needs ab, bc triangle-free, a-not-c) with degree and common-neighbour preservation proved abstractly, plus generic witness assembly and finSuccEquiv transport. Future lower rungs reduce to config checks. Blocked: upper bounds beyond n=12 (need ex(n;C4)), general all-n config existence. Deep: KST asymptotics, monotonicity (the actual #85).",
+    "progressSummary": "PROGRESS: exact table 1..13 complete (f = 1,2,3,2,3,3,3,3,3,4,4,4,4). f(13)=4 closed 2026-07-24 by a materially new upper-bound mechanism: cherry-count EQUALITY at the projective-plane point 13=4*3+1 forces 4-regularity + the friendship condition, and the Mathlib Archive friendship theorem (politician) gives the contradiction — no ex(n;C4) input. Blocked: upper bounds at non-tight n>13 (need ex(n;C4)); tight points n=k*k-k+1 generalize the friendship route (candidate). Next lower rung: f(14)>=4 via surgery. Deep: KST asymptotics, monotonicity (the actual #85).",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -103,7 +108,10 @@
       "surgery/surgeryAdj + simp lemmas + DecidableRel (Erdos85Problem.lean section Surgery)",
       "surgery_degree_some, surgery_degree_none, surgery_common_le_one (the abstract engine)",
       "four_le_minDegreeForC4_of_witness (generic sInf assembly), surgeryFin + degree/C4 transport along finSuccEquiv",
-      "four_le_minDegreeForC4_thirteen, minDegreeForC4_thirteen_mem (f(13) in {4,5})"
+      "four_le_minDegreeForC4_thirteen, minDegreeForC4_thirteen_mem (f(13) in {4,5})",
+      "common_le_one_of_not_containsC4 (converse criterion: no C4 => common neighbours <= 1) in Erdos85Problem.lean section Thirteen",
+      "containsC4_of_thirteen_minDegree_four: 13 vertices, min degree >= 4, C4-free is impossible (cherry tightness + friendship theorem)",
+      "minDegreeForC4_le_four_thirteen + minDegreeForC4_thirteen: f(13) = 4, the fourth exact value, first beyond the counting range"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -142,15 +150,19 @@
       "The correct abstract surgery hypotheses are NOT girth-5: a~b, b~c, a-not-adjacent-c, a != c, plus edges ab and bc each in no triangle. common(a,c) = {b} is automatic (C4-freeness caps at 1). The deleted a-b edge is what kills the second common neighbour of (a,c) in the surgered graph",
       "Degree preservation without Finset algebra: the uniform map y -> if (x=a and y=b) or (x=b and y=a) then none else some y injects old neighbourhoods into new ones — one lemma covers a, b, and untouched vertices simultaneously",
       "Set.MapsTo goals from Finset.card_le_card_of_injOn carry Set-coerced Finset membership: simp only [Finset.mem_coe, SimpleGraph.mem_neighborFinset] before adjacency reasoning",
-      "f(13) is the first n where the lower bound comes from a transported abstract construction rather than a fixed-n kernel decide — the surgery engine makes every future rung a small config check"
+      "f(13) is the first n where the lower bound comes from a transported abstract construction rather than a fixed-n kernel decide — the surgery engine makes every future rung a small config check",
+      "n=13=4*3+1 is the projective-plane parameter point: 13*C(4,2)=C(13,2)=78 exactly, so the cherry double-count is TIGHT and tightness gives rigidity (4-regularity + every pair covered) instead of a pigeonhole collision",
+      "Tight cherry count + injectivity = the friendship condition; Mathlib Archive friendship_theorem (Wiedijk #83) then produces a politician of degree n-1, contradicting regularity — a C4-free upper bound with NO edge-extremal (Reiman) input",
+      "import Archive.Wiedijk100Theorems.FriendshipGraphs builds in this toolchain — the whole Mathlib Archive is usable as INPUT for gallery proofs",
+      "Classical-instance-baked defs (Archive Friendship): prove the statement with the synthesized instance in a have, then convert h using 2 — Subsingleton.elim closes the Fintype instance mismatch; refine/rw/@-hole all fail on kernel defeq"
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"
     ],
     "nextSteps": [
-      "f(13): true value 4; lower half via a third surgery (decide), but upper f(13) <= 4 needs a real edge-extremal bound ex(13;C4) <= 21-ish (Reiman-style) — same blocker class as the old f(8) route.",
-      "General lemma f(n) >= 4 for all n >= 10 by iterating the surgery (structural induction, not decide) — candidate session-sized target.",
-      "Monotonicity core f(n+1) >= f(n) eventually (the actual Erdos #85 question): OPEN, deep."
+      "Generalize the friendship route: f(k*k-k+1) <= k for all k >= 3 (politician degree k(k-1) != k); numeric identities parameterized, friendship application unchanged",
+      "f(14) >= 4 via a 13->14 surgery config on the now-complete 13-vertex side; f(14) <= 5 from counting — pins f(14) in {4,5}",
+      "Monotonicity core f(n+1) >= f(n) eventually (the actual Erdos #85 question): OPEN, deep"
     ],
     "markdown": "# Knowledge Base: erdos-85-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

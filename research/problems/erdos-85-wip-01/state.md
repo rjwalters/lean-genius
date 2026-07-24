@@ -37,9 +37,21 @@ and `finSuccEquiv` transport. Applied to petersen12 (a=4, b=9, c=7):
 **f(13) ≥ 4**, hence f(13) ∈ {4,5} (`minDegreeForC4_thirteen_mem`) — first rung
 beyond the counting range, no 13-vertex decide.
 
+## Status (researcher-2, 2026-07-24) — **f(13) = 4 PROVED** (friendship theorem)
+
+The f(13) ≤ 4 blocker is RESOLVED by a materially new mechanism — not a Reiman
+edge bound, but equality analysis of the cherry count at the projective-plane
+parameter point 13 = 4·3+1 (`13·C(4,2) = C(13,2) = 78` exactly): tightness forces
+4-regularity + surjectivity of the cherry→endpoint-pair map, i.e. the friendship
+condition, and `Theorems100.friendship_theorem` (Mathlib Archive, importable in
+this toolchain!) yields a degree-12 politician — contradiction with 4-regularity.
+`minDegreeForC4_thirteen : minDegreeForC4 13 = 4` — exact table now 1..13.
+0 sorries, 0 axioms. See knowledge.md session 2026-07-24.
+
 ## Blockers
-- Upper bound f(13) ≤ 4 (and beyond n=12 generally): needs real ex(n;C₄)
-  edge-extremal input; cherry count provably stuck. Reopen: formalize a
+- Upper bounds beyond n = 13: the friendship mechanism is SPECIFIC to the tight
+  points n = k²−k+1 (generalization f(k²−k+1) ≤ k is a candidate target); other
+  n still need real ex(n;C₄) edge-extremal input. Reopen: formalize a
   Reiman-type bound.
 - General ∀ n ≥ 10 f(n) ≥ 4: needs config EXISTENCE (edge pair ab, bc both
   triangle-free, a≁c) in iterated witnesses — not automatic in arbitrary
