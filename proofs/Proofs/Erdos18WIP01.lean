@@ -3663,6 +3663,7 @@ theorem isPractical_of_witnesses_from (S : Finset ℕ) {m t : ℕ} (hm : 1 ≤ m
   exact ⟨T, (Finset.mem_powerset.mp hTpow).trans hS, hTsum⟩
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 260 ≤ 6` — sub-family engine: `260 = 2²·5·13` has no practical
 split (`130, 65, 52, 26` non-practical or odd).  The kernel finds `≤ 6`-divisor
 representations of every `k < 260` inside the 10-element coin chain below
@@ -3682,6 +3683,7 @@ theorem hErdos_twosixtyfour_le : hErdos 264 ≤ 7 := by
   omega
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 270 ≤ 6` — sub-family engine: `270 = 2·3³·5` is practically
 unsplittable (`135, 45, 27` odd; `54·5, 90·3, 10·27` all involve a
 non-practical factor).  10-element coin chain, `2¹⁰` subsets. -/
@@ -3718,6 +3720,7 @@ theorem hErdos_twoseventytwo : hErdos 272 = 8 := by
     (by decide)
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 276 ≤ 6` — sub-family engine: `276 = 2²·3·23` has no practical
 split (`138, 69, 46, 23` non-practical or odd).  10-element coin chain. -/
 theorem hErdos_twoseventysix_le : hErdos 276 ≤ 6 := by
@@ -3745,6 +3748,7 @@ theorem hErdos_twoeightyeight_le : hErdos 288 ≤ 7 := by
   omega
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 294 ≤ 7` — sub-family engine: `294 = 2·3·7²` is practically
 unsplittable (`147, 49, 21` odd; `6·49, 14·21, 42·7` involve non-practical
 factors).  10-element coin chain. -/
@@ -3752,6 +3756,7 @@ theorem hErdos_twoninetyfour_le : hErdos 294 ≤ 7 := by
   refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 7, 14, 21, 49, 98, 147} ?_ ?_ <;> decide
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 300 ≤ 6` — sub-family engine: the only practical-candidate half
 `150` is itself practically-unsplittable (`75` odd) and carries no
 practicality lemma, so the split route is closed.  10-element coin chain. -/
@@ -3785,6 +3790,7 @@ theorem hErdos_threehundredfour : hErdos 304 = 8 := by
     (by decide)
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 1600000 in
 /-- `hErdos 306 ≤ 6` — sub-family engine: `306 = 2·3²·17` is practically
 unsplittable (`153, 51, 17` odd; `18·17, 6·51` involve non-practical factors).
 10-element coin chain. -/
