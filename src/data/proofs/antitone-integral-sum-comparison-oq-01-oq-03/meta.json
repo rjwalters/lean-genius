@@ -79,11 +79,19 @@
       "mathContext": "$\\sum_n f(n+1) < \\infty \\iff \\Big\\{\\int_1^{1+n} f\\Big\\}_n \\text{ is bounded above}.$"
     },
     {
-      "id": "harmonic-divergence",
-      "title": "Application: Divergence of the Harmonic Series (Part IV)",
+      "id": "harmonic-lemmas",
+      "title": "Instantiating at f = 1/x (Part IV, setup)",
       "startLine": 103,
+      "endLine": 118,
+      "summary": "oneDiv_antitone establishes that 1/x is antitone on [1,∞); log_integral evaluates the definite integral ∫₁^{1+n} 1/x dx = log(n+1) in closed form. These two facts are exactly the hypotheses integral_test needs to be applied to f = 1/x.",
+      "mathContext": "$x\\mapsto 1/x$ antitone on $[1,\\infty)$; $\\int_1^{1+n}\\tfrac1x\\,dx = \\log(n+1)$."
+    },
+    {
+      "id": "harmonic-divergence",
+      "title": "Application: Divergence of the Harmonic Series (Part IV, conclusion)",
+      "startLine": 120,
       "endLine": 141,
-      "summary": "Computes the logarithmic integral ∫₁^{1+n} 1/x dx = log(n+1), which is unbounded, so by the integral test not_summable_one_div_harmonic concludes the harmonic series ∑ 1/n diverges — the showcase application of the framework.",
+      "summary": "not_summable_one_div_harmonic feeds oneDiv_antitone and log_integral into integral_test: since log(n+1) → ∞ the integrals cannot be bounded above, so the harmonic series ∑ 1/(n+1) is not summable — the showcase application of the general dichotomy.",
       "mathContext": "$\\int_1^{1+n}\\tfrac1x\\,dx = \\log(n+1) \\to \\infty \\;\\Rightarrow\\; \\sum_n \\tfrac1n = \\infty.$"
     }
   ],
