@@ -49,6 +49,7 @@ All results are `0`-axiom / `0`-sorry.
 -/
 
 import Mathlib.NumberTheory.LegendreSymbol.Basic
+import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
@@ -378,5 +379,168 @@ theorem chi_neg_one_mul_q_pow_eq_chi (hq2 : q ≠ 2) (hodd : Odd p) (ζ : K)
   exact mul_left_cancel₀ hS hcancel
 
 end Frobenius
+
+/-! ## Full quadratic reciprocity, independent of Mathlib's QR
+
+Instantiating the engine in `GaloisField p k` — where `k` is the
+multiplicative order of `p` mod `q`, so that `q ∣ p^k − 1` and the cyclic unit
+group contains an element of order exactly `q` — and descending the
+Euler-criterion identity along the prime subfield `ZMod p` yields **quadratic
+reciprocity in Euler's `q*` form**:
+
+    `(q* | p) = (p | q)`  where  `q* = χ_q(−1)·q`,
+
+for distinct odd primes `p, q`.  Nothing below invokes
+`jacobiSym.quadratic_reciprocity` or Mathlib's Gauss-sum library; the inputs
+are the self-contained engine above, Euler's criterion (`legendreSym.eq_pow`),
+and finite-field generalities. -/
+
+section Reciprocity
+
+/-- **Existence of a `q`-th root of unity in a Galois field of characteristic
+`p`.**  Take `k` to be the multiplicative order of `p` mod `q`; then
+`q ∣ p^k − 1`, and a generator `g` of the cyclic group
+`(GaloisField p k)ˣ` (order `p^k − 1`) yields `ζ = g^{(p^k−1)/q}` of order
+exactly `q`. -/
+private theorem exists_qth_root (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p ≠ q) :
+    ∃ (k : ℕ) (ζ : GaloisField p k), ζ ^ q = 1 ∧ ζ ≠ 1 := by
+  have hcop : Nat.Coprime p q := (Nat.coprime_primes hp.out hq.out).mpr hpq
+  -- k := order of p mod q gives q ∣ p^k − 1
+  have hkey : ∃ k, k ≠ 0 ∧ q ∣ p ^ k - 1 := by
+    refine ⟨orderOf (ZMod.unitOfCoprime p hcop), (orderOf_pos _).ne', ?_⟩
+    have h2 : ((p : ZMod q)) ^ orderOf (ZMod.unitOfCoprime p hcop) = 1 := by
+      have h1 := congrArg (Units.val) (pow_orderOf_eq_one (ZMod.unitOfCoprime p hcop))
+      rwa [Units.val_pow_eq_pow_val, Units.val_one, ZMod.coe_unitOfCoprime] at h1
+    have hple : 1 ≤ p ^ orderOf (ZMod.unitOfCoprime p hcop) :=
+      Nat.one_le_pow _ _ hp.out.pos
+    have h3 : ((p ^ orderOf (ZMod.unitOfCoprime p hcop) - 1 : ℕ) : ZMod q) = 0 := by
+      rw [Nat.cast_sub hple, Nat.cast_pow, h2, Nat.cast_one, sub_self]
+    exact (ZMod.natCast_eq_zero_iff _ _).mp h3
+  obtain ⟨k, hk0, hdvd⟩ := hkey
+  obtain ⟨m, hm⟩ := hdvd
+  have hpk1 : 1 < p ^ k := Nat.one_lt_pow hk0 hp.out.one_lt
+  have hm0 : m ≠ 0 := by
+    intro h0
+    rw [h0, mul_zero] at hm
+    omega
+  -- a generator of the cyclic unit group
+  haveI : Fintype (GaloisField p k)ˣ := Fintype.ofFinite _
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (GaloisField p k)ˣ)
+  have horder : orderOf g = p ^ k - 1 := by
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, ← Nat.card_eq_fintype_card,
+      Nat.card_units, GaloisField.card p k hk0]
+  have hζorder : orderOf (g ^ m) = q := by
+    rw [orderOf_pow, horder, hm, Nat.gcd_eq_right (dvd_mul_left m q),
+      Nat.mul_div_cancel _ (Nat.pos_of_ne_zero hm0)]
+  refine ⟨k, ((g ^ m : (GaloisField p k)ˣ) : GaloisField p k), ?_, ?_⟩
+  · have h1 : (g ^ m) ^ q = 1 := by rw [← hζorder]; exact pow_orderOf_eq_one _
+    have h2 := congrArg Units.val h1
+    rwa [Units.val_pow_eq_pow_val, Units.val_one] at h2
+  · intro h1
+    have h2 : (g ^ m) = (1 : (GaloisField p k)ˣ) :=
+      Units.ext (by rw [Units.val_one]; exact h1)
+    have h3 : orderOf (g ^ m) = 1 := by rw [h2, orderOf_one]
+    rw [hζorder] at h3
+    exact hq.out.one_lt.ne' h3
+
+/-- Casts of `±1` into `ZMod p` are injective for `p > 2`. -/
+private theorem int_pm_one_cast_inj {p : ℕ} [hp : Fact p.Prime] (hp2 : p ≠ 2)
+    {a b : ℤ} (ha : a = 1 ∨ a = -1) (hb : b = 1 ∨ b = -1)
+    (h : (a : ZMod p) = (b : ZMod p)) : a = b := by
+  haveI : Fact (2 < p) := ⟨by have := hp.out.two_le; omega⟩
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+  · rfl
+  · exfalso; push_cast at h; exact ZMod.neg_one_ne_one h.symm
+  · exfalso; push_cast at h; exact ZMod.neg_one_ne_one h
+  · rfl
+
+/-- **Quadratic reciprocity (Euler's `q*` form), independent of Mathlib's
+QR.**  For distinct odd primes `p ≠ q`,
+
+    `(χ_q(−1)·q | p) = (p | q)`,
+
+i.e. `legendreSym p (legendreSym q (−1) * q) = legendreSym q p`.  Proof: the
+Euler-criterion identity `(χ(−1)q)^{(p−1)/2} = χ(p̄)` holds in
+`GaloisField p k` (Gauss square formula + Frobenius covariance + cancellation
+of `g ≠ 0`); both sides are integer casts, so the identity descends along the
+injective `algebraMap (ZMod p) → GaloisField p k` to `ZMod p`, where the left
+side is `legendreSym p (χ(−1)q)` by Euler's criterion; finally `±1` values are
+distinguished mod `p > 2`. -/
+theorem quadratic_reciprocity_qstar (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) :
+    legendreSym p (legendreSym q (-1) * q) = legendreSym q p := by
+  obtain ⟨k, ζ, hζq, hζ1⟩ := exists_qth_root p q hpq
+  have hoddp : Odd p := hp.out.odd_of_ne_two hp2
+  have hqK : ((q : GaloisField p k)) ≠ 0 := by
+    intro h0
+    exact (Nat.Prime.coprime_iff_not_dvd hp.out).mp
+      ((Nat.coprime_primes hp.out hq.out).mpr hpq)
+      ((CharP.cast_eq_zero_iff (GaloisField p k) p q).mp h0)
+  have hpZ : ((p : ZMod q)) ≠ 0 := by
+    intro h0
+    exact (Nat.Prime.coprime_iff_not_dvd hq.out).mp
+      ((Nat.coprime_primes hq.out hp.out).mpr hpq.symm)
+      ((ZMod.natCast_eq_zero_iff p q).mp h0)
+  -- the K-identity from the engine
+  have hK := chi_neg_one_mul_q_pow_eq_chi (p := p) hq2 hoddp ζ hζq hζ1 hqK hpZ
+  unfold chiK at hK
+  -- both sides as integer casts
+  set A : ℤ := (quadraticChar (ZMod q) (-1) * q) ^ ((p - 1) / 2) with hA
+  set B : ℤ := quadraticChar (ZMod q) ((p : ZMod q)) with hB
+  have hKAB : ((A : GaloisField p k)) = (B : GaloisField p k) := by
+    rw [hA, hB]
+    push_cast
+    push_cast at hK
+    exact hK
+  -- descend to the prime subfield
+  have hZp : ((A : ZMod p)) = (B : ZMod p) := by
+    apply (algebraMap (ZMod p) (GaloisField p k)).injective
+    rw [map_intCast, map_intCast]
+    exact hKAB
+  -- Euler's criterion on the left
+  have hdiv : p / 2 = (p - 1) / 2 := by rcases hoddp with ⟨t, ht⟩; omega
+  have hlhs : ((legendreSym p ((quadraticChar (ZMod q) (-1)) * q) : ℤ) : ZMod p)
+      = (A : ZMod p) := by
+    rw [legendreSym.eq_pow, hdiv, hA]
+    push_cast
+    ring
+  have hB' : B = legendreSym q p := by
+    rw [hB]
+    unfold legendreSym
+    norm_num
+  have hcong : ((legendreSym p ((quadraticChar (ZMod q) (-1)) * q) : ℤ) : ZMod p)
+      = ((legendreSym q p : ℤ) : ZMod p) := by
+    rw [hlhs, hZp, hB']
+  -- the ±1 values are distinguished mod p
+  have hchi_pm : quadraticChar (ZMod q) (-1) = 1 ∨ quadraticChar (ZMod q) (-1) = -1 := by
+    rcases quadraticChar_isQuadratic (ZMod q) (-1) with h | h | h
+    · exfalso
+      rw [quadraticChar_eq_zero_iff] at h
+      exact (neg_ne_zero.mpr one_ne_zero) h
+    · exact Or.inl h
+    · exact Or.inr h
+  have hXne : (((quadraticChar (ZMod q) (-1)) * (q : ℤ) : ℤ) : ZMod p) ≠ 0 := by
+    push_cast
+    apply mul_ne_zero
+    · rcases hchi_pm with h | h <;> rw [h] <;> push_cast
+      · exact one_ne_zero
+      · exact neg_ne_zero.mpr one_ne_zero
+    · intro h0
+      exact (Nat.Prime.coprime_iff_not_dvd hp.out).mp
+        ((Nat.coprime_primes hp.out hq.out).mpr hpq)
+        ((ZMod.natCast_eq_zero_iff q p).mp (by exact_mod_cast h0))
+  have hL1 := legendreSym.eq_one_or_neg_one (p := p) hXne
+  have hL2 : legendreSym q p = 1 ∨ legendreSym q p = -1 :=
+    legendreSym.eq_one_or_neg_one (p := q) (by exact_mod_cast hpZ)
+  have hmain : legendreSym p ((quadraticChar (ZMod q) (-1)) * q) = legendreSym q p :=
+    int_pm_one_cast_inj hp2 hL1 hL2 hcong
+  have hbridge : legendreSym q (-1) = quadraticChar (ZMod q) (-1) := by
+    unfold legendreSym
+    norm_num
+  rw [hbridge]
+  exact hmain
+
+end Reciprocity
 
 end KroneckerSymbol
