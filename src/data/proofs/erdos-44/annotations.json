@@ -101,7 +101,7 @@
     "type": "concept",
     "title": "Formal Upper Bound (2sqrt(N))",
     "content": "The formal statement: |A| <= 2*sqrt(N) for any Sidon A in [1,N]. This requires converting from the weaker sqrt(2N)+1 bound to the nicer 2sqrt(N) form.",
-    "mathContext": "The proof needs sqrt(2N)+1 <= 2sqrt(N) for N >= 3, which involves Real.sqrt inequalities. Currently has sorry.",
+    "mathContext": "The proof needs sqrt(2N)+1 <= 2sqrt(N) for N >= 3, which involves Real.sqrt inequalities. Fully proved (case split on N < 3 vs N >= 3); no sorry.",
     "significance": "key",
     "relatedConcepts": [
       "real analysis",
@@ -170,7 +170,7 @@
     "type": "concept",
     "title": "Main Conjecture (OPEN)",
     "content": "**Erdős Problem #44**: Given any Sidon set A in [1,N] and eps > 0, there exists M > N and B in [N+1,M] such that A U B is Sidon with size >= (1-eps)*sqrt(M). This conjecture remains OPEN.",
-    "mathContext": "Stated with sorry since it's an unsolved mathematical problem. No known counterexamples exist, but no proof either.",
+    "mathContext": "Stated as an axiom (erdos_44) since it's an unsolved mathematical problem. No known counterexamples exist, but no proof either.",
     "significance": "key",
     "relatedConcepts": [
       "extension problem",
