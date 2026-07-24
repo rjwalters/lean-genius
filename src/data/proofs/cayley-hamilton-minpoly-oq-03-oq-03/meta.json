@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring, Import, and Setup",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring: the structural follow-up to CayleyHamiltonMinpolyOQ03 (the Krylov sequence goes dependent exactly at deg μ_M). States the two headline identities — the conjugation M·P = P·C(μ_M) for any v once M is nonderogatory, and the similarity P⁻¹·M·P = C(μ_M) once v is cyclic — and lists the five main results. Imports CayleyHamiltonMinpolyOQ03; opens the MinpolyComplexity namespace, Matrix/Polynomial/Finset notation; fixes the ambient variables {K : Type*} [Field K] {n : ℕ}.",
+      "mathContext": "The companion matrix C(μ_M) realizes multiplication-by-X on K[X]/(μ_M) in the basis 1, X, …, X^{n-1}; the Krylov matrix P intertwining M with it is the constructive bridge from the O(n³) Krylov iteration to the module-theoretic rational canonical form."
+    },
+    {
       "id": "part-i-companion-krylov-matrix",
       "title": "Part I: The Companion Matrix and the Krylov Change-of-Basis",
       "startLine": 53,
