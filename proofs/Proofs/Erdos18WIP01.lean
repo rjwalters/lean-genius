@@ -3024,9 +3024,12 @@ theorem hErdos_twotwenty_le : hErdos 220 ≤ 6 := by
   refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 10, 11, 20, 44, 55, 110} ?_ ?_ <;> decide
 
 set_option maxRecDepth 40000 in
+set_option maxHeartbeats 800000 in
 /-- `hErdos 224 ≤ 5` — sub-family engine: the split 224 = 2*112 only gives <= 1+6 = 7; the engine recovers the tight 5.
 The kernel finds `≤ 5`-divisor representations of every `k < 224` inside the
-11-element coin chain below (`2^11 = 2048` subsets searched). -/
+11-element coin chain below (`2^11 = 2048` subsets searched — the heaviest
+decide in the octave, hence the raised heartbeat budget; no 10-element
+sub-family of the 11 proper divisors covers every target). -/
 theorem hErdos_twotwentyfour_le : hErdos 224 ≤ 5 := by
   refine hErdos_le_of_witnesses_from {1, 2, 4, 7, 8, 14, 16, 28, 32, 56, 112} ?_ ?_ <;> decide
 
