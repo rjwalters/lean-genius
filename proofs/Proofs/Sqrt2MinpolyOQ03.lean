@@ -25,9 +25,14 @@ S4+ deliverable.
 
 ## Status
 
-Strategic sorries: 1 (capstone `classNumber = 1`).
+Strategic sorries: 1 — narrowed to the single input `Q_sqrt2_discr_eq_eight`
+(`discr Q(√2) = 8`); the capstone `classNumber = 1` is otherwise FULLY
+proved via `Q_sqrt2_classNumber_eq_one_of_discr` (S9, Mathlib v4.31's
+`isPrincipalIdealRing_of_abs_discr_lt`).
 Axioms: 0.
-Build-verified sub-targets: `X_sq_sub_two_ne_zero`, `Q_sqrt2_finrank = 2`.
+Build-verified sub-targets: `X_sq_sub_two_ne_zero`, `Q_sqrt2_finrank = 2`,
+`Q_sqrt2_nrComplexPlaces = 0` (via the totally-real instance),
+`Q_sqrt2_classNumber_eq_one_of_discr` (conditional capstone).
 -/
 
 namespace Sqrt2MinpolyOQ03
@@ -78,30 +83,114 @@ theorem Q_sqrt2_finrank : Module.finrank ℚ Q_sqrt2 = 2 := by
       AdjoinRoot.powerBasis_dim]
   simp [X_sq_sub_two]
 
-/-- **Main theorem (strategic sorry, capstone):** the class number of Q(√2) is 1.
+/-- **The square of any complex-embedding image of `root` is 2**: the
+generator of `Q_sqrt2` satisfies `root² = 2`, and ring homomorphisms
+preserve that relation. -/
+theorem embedding_root_sq (φ : Q_sqrt2 →+* ℂ) :
+    φ (AdjoinRoot.root X_sq_sub_two) ^ 2 = 2 := by
+  have hroot : (AdjoinRoot.root X_sq_sub_two) ^ 2 = (2 : Q_sqrt2) := by
+    have h0 := AdjoinRoot.eval₂_root X_sq_sub_two
+    simp only [X_sq_sub_two, Polynomial.eval₂_sub, Polynomial.eval₂_pow,
+      Polynomial.eval₂_X, Polynomial.eval₂_C, sub_eq_zero] at h0
+    rw [h0]
+    exact map_ofNat (AdjoinRoot.of X_sq_sub_two) 2
+  rw [← map_pow, hroot]
+  exact map_ofNat φ 2
 
-Proof route (real Mathlib v4.26.0 API, verified against
-`Mathlib/NumberTheory/NumberField/ClassNumber.lean` at pin `2df2f015…`):
+/-- **A complex number with square 2 is real** (fixed by conjugation):
+`re·im = 0` from the imaginary part of `z² = 2`, and `re = 0` is impossible
+since it would force `−im² = 2`. -/
+theorem conj_eq_self_of_sq_eq_two {z : ℂ} (hz : z ^ 2 = 2) :
+    (starRingEnd ℂ) z = z := by
+  rw [Complex.conj_eq_iff_im]
+  have h1 : (z ^ 2).im = 0 := by rw [hz]; simp
+  have h2 : (z ^ 2).re = 2 := by rw [hz]; simp
+  rw [pow_two, Complex.mul_im] at h1
+  rw [pow_two, Complex.mul_re] at h2
+  have hri : z.re * z.im = 0 := by linarith
+  rcases mul_eq_zero.mp hri with h | h
+  · exfalso
+    rw [h] at h2
+    nlinarith [sq_nonneg z.im]
+  · exact h
+
+/-- **Every complex embedding of Q(√2) is real**: it sends the generator
+`root` to a solution of `z² = 2` (hence a real number, `±√2`), so the
+embedding agrees with its conjugate on the generator and therefore
+everywhere (`AdjoinRoot.algHom_ext` over ℚ). -/
+theorem complexEmbedding_isReal (φ : Q_sqrt2 →+* ℂ) :
+    NumberField.ComplexEmbedding.IsReal φ := by
+  rw [NumberField.ComplexEmbedding.isReal_iff]
+  have hroot : (NumberField.ComplexEmbedding.conjugate φ)
+      (AdjoinRoot.root X_sq_sub_two) = φ (AdjoinRoot.root X_sq_sub_two) := by
+    rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
+    exact conj_eq_self_of_sq_eq_two (embedding_root_sq φ)
+  have halg : (NumberField.ComplexEmbedding.conjugate φ).toRatAlgHom
+      = φ.toRatAlgHom :=
+    AdjoinRoot.algHom_ext (by
+      rw [RingHom.toRatAlgHom_apply, RingHom.toRatAlgHom_apply]
+      exact hroot)
+  calc NumberField.ComplexEmbedding.conjugate φ
+      = ((NumberField.ComplexEmbedding.conjugate φ).toRatAlgHom :
+          Q_sqrt2 →+* ℂ) := (RingHom.toRatAlgHom_toRingHom _).symm
+    _ = (φ.toRatAlgHom : Q_sqrt2 →+* ℂ) := by rw [halg]
+    _ = φ := RingHom.toRatAlgHom_toRingHom φ
+
+/-- **Q(√2) is totally real** (every infinite place is real). -/
+instance : NumberField.IsTotallyReal Q_sqrt2 where
+  isReal v := NumberField.InfinitePlace.isReal_iff.mpr
+    (complexEmbedding_isReal _)
+
+/-- **Sub-target (build-verified): Q(√2) has no complex places.**
+This is the `nrComplexPlaces K = 0` input to the Minkowski-bound
+arithmetic in the capstone reduction below. -/
+theorem Q_sqrt2_nrComplexPlaces :
+    NumberField.nrComplexPlaces Q_sqrt2 = 0 :=
+  NumberField.IsTotallyReal.nrComplexPlaces_eq_zero Q_sqrt2
+
+/-- **Conditional capstone (fully proved):** `classNumber Q(√2) = 1`
+GIVEN the discriminant computation `discr Q_sqrt2 = 8`.
+
+Route (Mathlib v4.31 pin — `isPrincipalIdealRing_of_abs_discr_lt` EXISTS
+at this pin, unlike the v4.26 pin of the S8 record):
 
 1. `classNumber_eq_one_iff : classNumber K = 1 ↔ IsPrincipalIdealRing (𝓞 K)`.
-2. `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc`
-   reduces a PID proof to checking, for each prime `p ∈ Finset.Icc 1 ⌊M K⌋₊`,
-   the ideals above `p`. (Mathlib's standard "compute `⌊M K⌋₊` then `fin_cases`"
-   technique — Marcus 1977, discussion after Theorem 37.)
-3. Compute `⌊M K⌋₊`: with `finrank ℚ K = 2` (`Q_sqrt2_finrank` above),
-   `nrComplexPlaces K = 0` (Q(√2) totally real), and `discr K = 8`, the bound is
-   `M K = 2!/2² · √8 = √2 ≈ 1.414`, so `⌊M K⌋₊ = 1`.
-4. `Finset.Icc 1 1` contains no primes (1 is not prime), so the per-prime
-   hypothesis is vacuous and `𝓞 K` is a PID; hence `classNumber K = 1`.
+2. `RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt`: it suffices that
+   `|discr K| < (2 · (π/4)^r₂ · (nⁿ/n!))²`.
+3. With `discr = 8`, `r₂ = nrComplexPlaces = 0` (`Q_sqrt2_nrComplexPlaces`),
+   `n = finrank = 2` (`Q_sqrt2_finrank`): the bound is
+   `(2 · 1 · (4/2))² = 16` and `|8| = 8 < 16`. `norm_num` closes it.
 
-Remaining open sub-targets (each a separate Lean deliverable): `discr Q_sqrt2 = 8`
-(quadratic trace-form / `Algebra.discr` computation), `nrComplexPlaces Q_sqrt2 = 0`,
-and the `⌊M K⌋₊ = 1` real-arithmetic reduction.
-
-NOTE: the prior state record's assumed bearer `isPrincipalIdealRing_of_abs_discr_lt`
-does NOT exist in Mathlib v4.26.0; the route above is the actual available API. -/
-theorem Q_sqrt2_classNumber_eq_one :
+This discharges the former sub-targets (2)–(4) of the S8 plan; the ONLY
+remaining input is sub-target (1), `discr Q_sqrt2 = 8`, isolated as
+`Q_sqrt2_discr_eq_eight` below. -/
+theorem Q_sqrt2_classNumber_eq_one_of_discr
+    (hd : NumberField.discr Q_sqrt2 = 8) :
     NumberField.classNumber Q_sqrt2 = 1 := by
+  rw [NumberField.classNumber_eq_one_iff]
+  apply NumberField.RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt
+  rw [hd, Q_sqrt2_nrComplexPlaces, Q_sqrt2_finrank]
+  norm_num [Nat.factorial]
+
+/-- **Remaining sub-target (strategic sorry): `discr Q(√2) = 8`.**
+
+The one open input to the capstone. Route (S10+ deliverable):
+prove `𝓞 K = ℤ[√2]` — i.e. `a + b·root` is integral iff `a, b ∈ ℤ`
+(elementary trace/norm argument: `2a ∈ ℤ` and `a² − 2b² ∈ ℤ` force
+`a, b ∈ ℤ` via a mod-4 case analysis) — then exhibit `{1, root}` as a
+`Basis (Fin 2) ℤ (𝓞 K)` and compute
+`discr K = Algebra.discr ℤ b = det [[tr 1, tr √2], [tr √2, tr 2]]
+= det [[2, 0], [0, 4]] = 8` via `NumberField.discr_eq_discr`.
+No Mathlib bearer computes quadratic-field discriminants directly at the
+pin (checked: no `Zsqrtd` ↔ `RingOfIntegers` bridge exists). -/
+theorem Q_sqrt2_discr_eq_eight : NumberField.discr Q_sqrt2 = 8 := by
   sorry
+
+/-- **Main theorem (capstone):** the class number of Q(√2) is 1 — i.e.
+`ℤ[√2]` is a PID. Assembled from the fully-proved conditional reduction
+and the (open) discriminant computation. -/
+theorem Q_sqrt2_classNumber_eq_one :
+    NumberField.classNumber Q_sqrt2 = 1 :=
+  Q_sqrt2_classNumber_eq_one_of_discr Q_sqrt2_discr_eq_eight
 
 end Sqrt2MinpolyOQ03
