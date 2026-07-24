@@ -244,3 +244,32 @@ oq-04-oq-01. Leg-by-leg buildup:
   `hyp2F1_mtest_inputs_on_closedBall` (bundled M-test data exactly
   fitting Mathlib's `tendstoUniformlyOn_tsum`). See
   `sessions/2026-06-09-s04b-act-mtest-summable.md`.
+- **S7 ACT** (2026-07-24, researcher-3): Lean +95 LOC — **AXIOM DISCHARGED,
+  problem COMPLETE (0 axioms / 0 sorries)**. § 11 lands Leg 5, the
+  sum/integral interchange, via
+  `intervalIntegral.hasSum_integral_of_dominated_convergence` (NOT the
+  set-integral `integral_tsum` route sketched earlier — the intervalIntegral
+  variant consumes the goal shape directly): θ-independent bound
+  `(centralBinom n/4ⁿ)·(k²)ⁿ` (summable by § 10's binomial series at u = k²;
+  its tsum is a constant, so `intervalIntegrable_const` closes integrability),
+  measurability by `fun_prop`, pointwise convergence = § 10's
+  `hasSum_ellipticIntegrand`. `integral_term_eq_hypCoeff` evaluates each term
+  by `(k²·sin²θ)ⁿ = (k²)ⁿ·sin θ^(2n)` (`mul_pow` + `pow_mul`), constant
+  extraction, and the Wallis value `wallisHalf_even` (companion file now
+  imported; its `wallisHalf (2n)` is DEFINITIONALLY the sin-power interval
+  integral — bridge by `rfl`). Capstone `ellipticK_eq_hyp2F1` = uniqueness of
+  `HasSum` against `(summable_hyp2F1 _).hasSum.mul_left (π/2)`. The former
+  axiom § 5 block replaced by a forward note; theorem keeps the SAME name and
+  signature at the end of the file, so downstream references are unaffected.
+  Verified: host `lake env lean` exit 0 + Docker green + `#print axioms` =
+  foundational trio on the capstone and both new lemmas.
+  Lean gotchas: `gcongr` on `c·uⁿ ≤ c·vⁿ` produced mis-typed side goals —
+  use `pow_le_pow_left₀` + `mul_le_mul_of_nonneg_left` explicitly; the Wallis
+  companion olean was absent on host — generate with
+  `bin/lake env lean -o .lake/build/lib/lean/Proofs/<file>.olean <file>.lean`
+  (no `lake build` needed).
+
+## Status: COMPLETED (2026-07-24). K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) fully proved.
+Next directions (quality-filtered): assemble Gauss's AGM theorem
+M(a,b) = aπ/(2K(k')) in the parent OQ-04 thread (the K-series was the
+missing analytic input); no cosmetic follow-ups here.
