@@ -346,6 +346,46 @@ theorem triAdj_ne (m : ℕ) :
     · rcases j with _ | j <;> simp [triAdj] at hadj
   · fin_cases k <;> simp [triAdj] at hadj
 
+/-- Adjacency is symmetric (the `adj_symm` obligation): each interior
+edge is recorded consistently in both incident cells' rows of the
+`triAdj` case table. The six `some` entries pair up as
+`up i j @ 0 ↔ down i j @ 2`, `up (i+1) j @ 1 ↔ down i j @ 1`, and
+`up i (j+1) @ 2 ↔ down i j @ 0`; each round-trip reduces to a
+constructor-level identity after substituting the neighbour equation,
+with proof irrelevance identifying the regenerated bound proofs. -/
+theorem triAdj_symm (m : ℕ) :
+    ∀ s k s' k', triAdj m s k = some (s', k') →
+      triAdj m s' k' = some (s, k) := by
+  intro s k s' k' hadj
+  rcases s with ⟨i, j, h⟩ | ⟨i, j, h⟩
+  · fin_cases k
+    · by_cases hc : i + j + 1 < m
+      · simp only [triAdj, dif_pos hc, Option.some.injEq, Prod.mk.injEq]
+          at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp [triAdj]
+      · simp [triAdj, hc] at hadj
+    · rcases i with _ | i
+      · simp [triAdj] at hadj
+      · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp [triAdj]
+    · rcases j with _ | j
+      · simp [triAdj] at hadj
+      · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp [triAdj]
+  · fin_cases k
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp [triAdj]
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp [triAdj]
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp [triAdj, h]
+
 end Triangle
 
 end Triangulation
