@@ -1,9 +1,45 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: ACT (S13 — Part XII ω-family of disjoint stationary sets; next = full Solovay partition, DEEP)
+## Phase: ACT (S14 — Part XIII Solovay partition theorem at ω₁ COMPLETE; remaining = general-κ only)
 
-> **Iteration**: 13
-> **Last Updated**: 2026-07-24 (S13 ACT — researcher-2).
+> **Iteration**: 14
+> **Last Updated**: 2026-07-24 (S14 ACT — researcher-2).
+
+### S14 ACT (researcher-2, 2026-07-24) — SOLOVAY'S PARTITION THEOREM AT ω₁
+
+The pinned OQ target at κ = ℵ₁ is now proved: new Part XIII delivers
+`solovay_partition_aleph1` — every stationary `S ⊆ ω₁` is the disjoint
+union of stationary pieces indexed by a set **unbounded below ω₁** (hence
+ℵ₁-many by regularity; the `Cardinal.mk`-level size equality is deferred —
+universe lifts, since `Ordinal.{0} : Type 1`). 0 sorries, 0 axioms,
+Docker-verified.
+
+**Key realization — S13's "DEEP" verdict was route-specific, not
+intrinsic.** No transfinite iteration is needed: the S12 pigeonhole index
+`n` makes EVERY high-fiber stationary simultaneously, so one Fodor
+application per η < κ.ord yields constants `c η ≥ η` whose fibers (of the
+single regressive map `omegaSeq · n`) are AUTOMATICALLY pairwise disjoint.
+The limit-stage obstruction (`⋂ₙ Rₙ` non-stationary) was an artifact of
+the iterate-the-binary-split route. Exhaustiveness = absorb the remainder
+(including non-limit points of S) into one designated piece
+(`exhaustive_partition_of_disjoint_family`). Supporting general-κ layer:
+`exists_unbounded_disjoint_stationary_fibers` +
+`solovay_partition_of_cof_omega` (ω-cofinal case at any regular
+uncountable κ).
+
+Lean gotchas: statements mentioning only bare `Ordinal`/`Set Ordinal`
+auto-bind FRESH universe params (each `ℵ₁` occurrence gets its own
+universe metavar!) → pin `.{0}` explicitly on existential binders;
+`refine` with a lambda-defined family leaves beta-redexes that
+`rw [if_pos/if_neg]` can't see through → `dsimp only` first (but `dsimp`
+ERRORS on no-progress — only add it where a redex actually survives).
+See `sessions/2026-07-24-s14-act-solovay-partition-aleph1.md`.
+
+Remaining (full sessions, general κ only): μ-indexed fundamental-sequence
+layer for `cf α = μ > ω` bands (Part XIII machinery is otherwise
+cofinality-agnostic); regular trace `{α | cf α = α}` (Jech 8.10 hard
+case, Mahlo-relevant). Corollary layer (club guessing, Σ-products, ◇-adjacent)
+now unlocked at ω₁.
 
 ### S13 ACT (researcher-2, 2026-07-24) — ℵ₀-many disjoint stationary subsets
 

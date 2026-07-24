@@ -31,9 +31,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-24T06:10:00Z",
-    "iteration": 12,
-    "focus": "S12 ACT (researcher-2, 2026-07-24): BLOCKER DISCHARGED — binary Solovay splitting PROVED at omega_1. New Part XI (+~300 LOC, 653->955; 24 theorems, 2 defs, 0 sorries, 0 axioms; Docker 2974 jobs CLEAN): stationary_splits_binary_aleph1 (every stationary subset of omega_1 splits into two disjoint stationary subsets) via stationary_splits_binary_of_cof_omega (general regular uncountable kappa, S of omega-cofinal limits). Production step solved by the UNBOUNDED-INDEX PIGEONHOLE, not the index-of-first-disagreement design: omegaSeq (fundamental omega-sequence via NEW Mathlib API Ordinal.exists_isFundamentalSeq), exists_omegaSeq_high_fibers_stationary (some index n has ALL high-fibers stationary — else a diagonal point above sup of the bounds contradicts cofinality), then TWO Fodor applications at eta=0 and eta=c1+1 give distinct constants c1<c2 feeding Part X's stationary_splits_of_two_fibers. Supporting infra: isClubBelow_Ioo, IsStationaryBelow.exists_gt, isClubBelow_iInter_nat (countable club intersections via diagInter + lt_omega0 decoding).",
+    "since": "2026-07-24T12:45:00Z",
+    "iteration": 14,
+    "focus": "S14 ACT (researcher-2, 2026-07-24): SOLOVAY PARTITION THEOREM PROVED AT OMEGA_1 (Jech 8.10 at kappa=aleph_1). New Part XIII (4 theorems, 0 sorries, 0 axioms): solovay_partition_aleph1 — every stationary S in omega_1 is the disjoint union of stationary pieces indexed by a set UNBOUNDED below omega_1 (hence aleph_1-many by regularity). No transfinite iteration needed: the S12 pigeonhole index n makes ALL high-fibers stationary simultaneously, so per-eta Fodor gives constants c(eta) >= eta with stationary fibers of the single map omegaSeq . n — fibers at distinct values are automatically pairwise disjoint, and the value set is unbounded. Exhaustiveness by absorbing the remainder (incl. non-limit points) into one piece. Also general-kappa: exists_unbounded_disjoint_stationary_fibers + solovay_partition_of_cof_omega (omega-cofinal case).",
     "blockers": [],
     "nextAction": "S2-gamma: full kappa-piece Solovay partition (Jech 8.10) — iterate the Part XI production step transfinitely to collect kappa-many distinct constant values (transfinite recursion / Classical.skolem over kappa-indexed choices) + exhaustive-partition packaging. Separately: extend past the omega-cofinal case to general regular kappa (Jech trace analysis for S concentrated on regulars; vacuous at omega_1). The old fodor_anti_constant / cofSecond two-index design is OBSOLETE — do not resume it; the unbounded-index pigeonhole supersedes it.",
     "attemptCounts": {
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S12 ACT (2026-07-24, researcher-2): BINARY SOLOVAY SPLITTING PROVED AT omega_1 (stationary_splits_binary_aleph1, 0 sorries, 0 axioms, Docker 2974 jobs CLEAN; file 653->955 LOC, 14->24 theorems). The long-blocked production step fell to the unbounded-index pigeonhole on fundamental omega-sequences (new exists_isFundamentalSeq API) + two Fodor applications; Part X packaging consumed the two distinct-value stationary fibers as designed. Remaining for full Solovay: kappa-piece partition (transfinite iteration + Skolem choice) and the general-kappa non-omega-cofinal case (Jech trace analysis). | Prior: S-audit leanFiles sync (2026-06-13, researcher-6, build-free): corrected leanFiles[FodorPressingDown.lean] theoremCount 20→14 and defCount 4→1 to match origin/main HEAD. Ground truth verified via `git show origin/main:proofs/Proofs/FodorPressingDown.lean`: 653 wc (lineCount 654 = wc+1, already correct), 14 `^(theorem|lemma) ` decls + 1 `noncomputable def` (cofHead), 0 sorries, 0 axioms — file is internally consistent with all §Part I–X present (Part X +73 LOC confirmed via `git show --stat e8f79be62aa`). The stale 20/4 (and the prose '727 LOC, 22 theorems, 4 defs' in session notes) predate the S4 oq-01 trim commit 4850beb8dbe, which moved the club/stationary defs to Proofs.Club.Basic — dropping 3 defs and several helper lemmas from this file. Metrics-only sync; no Lean change; slug stays in-progress. | S2-β-γ ACT shipped (2026-06-12): binary-split packaging in new §Part X — `stationary_splits_of_fiber_compl` (stationary fiber + stationary complement ⇒ two disjoint stationary subsets) and `stationary_splits_of_two_fibers` (two distinct-value stationary fibers ⇒ two disjoint stationary subsets). +73 LOC (654→727), 0 sorries, 0 axioms, Docker 3062 jobs CLEAN. These reduce binary Solovay splitting to producing two complementary/distinct stationary pieces; the production step (fodor_anti_constant) remains open and under-specified in the S3b design. Prior: S2-β-β ACT — cofinal-sequence head infrastructure in §Part IX — `cofHead` (noncomputable def, picks 0-th element of a chosen fundamental sequence via Classical.choose on Ordinal.exists_fundamental_sequence; junk fallback when cof α.ord = 0), `cofHead_lt` (regressivity on positive limits), `exists_cofHead_constant_stationary` (Fodor's first application via cofHead on stationary set of limits), `exists_cofHead_constant_stationary_of_stationary` (ready-to-use form composing Part VIII's inter_isLimitOrdinals). +86 LOC clean Docker build (3062 jobs). 0 sorries, 0 axioms. Previously: S2-α (limit ordinals form a club) + S2-β-α (club ∩ club, stationary ∩ club). Step 1 + Step 2 foundations + Step 2 first Fodor application now in place; remaining S2-β work is fodor_anti_constant + stationary_splits_binary.",
+    "progressSummary": "S14 (researcher-2, 2026-07-24): SOLOVAY PARTITION THEOREM AT OMEGA_1 COMPLETE — solovay_partition_aleph1 (Part XIII): every stationary S in omega_1 is the disjoint union of stationary pieces indexed by a set unbounded below omega_1 (= aleph_1-many by regularity). Mechanism: per-eta Fodor constants over the S12 pigeonhole index; fibers of one regressive map are automatically disjoint; remainder absorbed into one piece for exhaustiveness. 0 sorries, 0 axioms. Remaining open content is general-kappa only: mu>omega cofinality bands (mu-indexed fundamental sequences) and the regular trace (Jech 8.10 hard case, Mahlo-relevant); plus an optional Cardinal.mk-level size restatement (universe lifts).",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
       "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
@@ -56,7 +56,11 @@
       "omegaSeq + omegaSeq_lt + omegaSeq_cofinal: chosen fundamental omega-sequence for omega-cofinal ordinals (new IsFundamentalSeq API)",
       "exists_omegaSeq_high_fibers_stationary: the unbounded-index pigeonhole (production step for binary splitting)",
       "stationary_splits_binary_of_cof_omega + stationary_splits_binary_of_omega_cofinal_part: binary Solovay split for omega-cofinal stationary sets, any regular uncountable kappa",
-      "cof_ord_eq_omega0_of_lt_aleph1 + stationary_splits_binary_aleph1: FULL binary Solovay splitting at omega_1 (0 sorries, 0 axioms)"
+      "cof_ord_eq_omega0_of_lt_aleph1 + stationary_splits_binary_aleph1: FULL binary Solovay splitting at omega_1 (0 sorries, 0 axioms)",
+      "exists_unbounded_disjoint_stationary_fibers (FodorPressingDown.lean Part XIII): unbounded-below-kappa.ord index set of pairwise disjoint stationary fibers, omega-cofinal case",
+      "exhaustive_partition_of_disjoint_family (Part XIII): remainder-absorption packaging lemma",
+      "solovay_partition_of_cof_omega (Part XIII): exhaustive Solovay partition, general regular uncountable kappa, omega-cofinal stationary sets",
+      "solovay_partition_aleph1 (Part XIII): Solovay partition theorem at omega_1 — pinned OQ target at kappa=aleph_1"
     ],
     "insights": [
       "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
@@ -86,9 +90,310 @@
       "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
     ],
     "nextSteps": [
-      "S2-gamma ACT: kappa-piece Solovay partition — transfinitely iterate exists_omegaSeq_high_fibers_stationary + fodor to collect kappa-many distinct constants (Classical.skolem over kappa-indexed choices), then exhaustive-partition packaging (~300+ LOC, decompose).",
-      "General-kappa binary split beyond the omega-cofinal part: Jech 8.10 trace analysis for {alpha in S | cf alpha = alpha} (only matters for kappa with stationarily many regulars below, e.g. Mahlo).",
-      "S5+: Corollaries — club guessing, diamond at omega_1, Sigma-products of omega_1 (now unblocked for the binary layer)."
+      "General-kappa: mu-indexed fundamental-sequence layer (generalize omegaSeq to cf alpha = mu > omega) — Part XIII pigeonhole/fiber/packaging machinery is cofinality-agnostic and reusable as-is.",
+      "General-kappa: regular trace {alpha in S | cf alpha = alpha} (Jech 8.10 trace analysis; only matters for kappa with stationarily many regulars below, e.g. Mahlo).",
+      "Optional cosmetic: Cardinal.mk-level size statement (#C = aleph_1 with universe lift) for solovay_partition_aleph1.",
+      "S5+: Corollaries — club guessing, diamond at omega_1, Sigma-products (binary + full partition layers now both available)."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "ordinals",
+    "cardinals",
+    "clubs",
+    "stationary",
+    "fodor",
+    "seeker-selected",
+    "solovay-splitting"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "fodor-pressing-down"
+  ],
+  "references": {
+    "papers": [
+      "Fodor, G. (1956), 'Eine Bemerkung zur Theorie der regressiven Funktionen', Acta Sci. Math. — the original Fodor paper.",
+      "Solovay, R. M. (1971), 'Real-valued measurable cardinals', Axiomatic Set Theory I — original appearance of the splitting theorem.",
+      "Jech, T., Set Theory (3rd ed.), Theorem 8.10 — the textbook reference for the three-step proof structure.",
+      "Kunen, K., Set Theory: An Introduction to Independence Proofs — alternative presentation."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Ordinal/Cofinality.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Ordinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Logic.Equiv.Defs"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.231Z",
+  "lastUpdate": "2026-06-14T19:30:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FodorPressingDown.lean",
+      "filename": "FodorPressingDown.lean",
+      "lineCount": 654,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FodorPressingDown.lean"
+    }
+  ]
+}
+{
+  "slug": "fodor-pressing-down-oq-04",
+  "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
+  "phase": "BLOCKED",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\kappa\\,\\text{regular uncountable},\\,\\forall S \\subseteq \\kappa\\,\\text{stationary},\\,\\exists \\langle S_\\beta : \\beta < \\kappa \\rangle\\,\\text{pairwise disjoint}\\;\\text{with each}\\;S_\\beta \\subseteq S\\;\\text{stationary}.",
+    "plain": "Formalize Solovay's 1971 splitting theorem in the framework of Proofs/FodorPressingDown.lean: every stationary subset of a regular uncountable cardinal can be partitioned into κ pairwise-disjoint stationary subsets, using the existing Fodor pressing-down infrastructure.",
+    "whyMatters": [
+      "Canonical demonstration that stationarity is genuinely κ-fat, not merely nonempty.",
+      "First non-trivial corollary of Fodor — the paradigm pressing-down application.",
+      "Foundation for ω₁-combinatorics (club guessing, ◇, Σ-products) and forcing-theoretic results.",
+      "Mathlib currently has no stationary-set theory beyond the OQ-file's own infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Fodor's pressing-down lemma (FodorPressingDown.lean:259) is the load-bearing hammer for the regressive auxiliary step.",
+      "diagInter_isClubBelow (line 240) provides closure of clubs under κ-indexed intersection.",
+      "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1.",
+      "S2-α (merged #19052): isLimitOrdinals_isClubBelow — limit ordinals below κ.ord form a club (line 366); corollary nonLimitOrdinals_not_isStationaryBelow (line 408).",
+      "S2-β-α (this session, PR pending): IsClubBelow.inter (binary intersection of clubs is a club) + IsStationaryBelow.inter_isClubBelow (stationary ∩ club preserves stationary) + IsStationaryBelow.inter_isLimitOrdinals (WLOG-restrict to limits) — three foundational companions for Solovay Step 2 in new § Part VIII (+115 LOC, build-verified, 3062 jobs)."
+    ],
+    "open": [
+      "S2-β: binary Solovay splitting — any stationary S splits into 2 disjoint stationary subsets.",
+      "S2-γ: full Solovay splitting — κ pairwise-disjoint stationary subsets, requiring Classical.skolem for κ-indexed regressive choices."
+    ],
+    "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α, DONE), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T12:45:00Z",
+    "iteration": 14,
+    "focus": "S12 ACT (researcher-2, 2026-07-24): BLOCKER DISCHARGED — binary Solovay splitting PROVED at omega_1. New Part XI (+~300 LOC, 653->955; 24 theorems, 2 defs, 0 sorries, 0 axioms; Docker 2974 jobs CLEAN): stationary_splits_binary_aleph1 (every stationary subset of omega_1 splits into two disjoint stationary subsets) via stationary_splits_binary_of_cof_omega (general regular uncountable kappa, S of omega-cofinal limits). Production step solved by the UNBOUNDED-INDEX PIGEONHOLE, not the index-of-first-disagreement design: omegaSeq (fundamental omega-sequence via NEW Mathlib API Ordinal.exists_isFundamentalSeq), exists_omegaSeq_high_fibers_stationary (some index n has ALL high-fibers stationary — else a diagonal point above sup of the bounds contradicts cofinality), then TWO Fodor applications at eta=0 and eta=c1+1 give distinct constants c1<c2 feeding Part X's stationary_splits_of_two_fibers. Supporting infra: isClubBelow_Ioo, IsStationaryBelow.exists_gt, isClubBelow_iInter_nat (countable club intersections via diagInter + lt_omega0 decoding).",
+    "blockers": [],
+    "nextAction": "General-kappa completion: mu-indexed fundamental-sequence layer for cf alpha = mu > omega bands (Part XIII machinery is cofinality-agnostic except omegaSeq), plus the regular trace {alpha | cf alpha = alpha} (Jech 8.10 hard case, only relevant at Mahlo-like kappa). Optional cosmetic: Cardinal.mk-level size statement #C = aleph_1 (needs universe lift, Ordinal.{0} : Type 1). Corollaries now unlocked: club guessing skeletons, Sigma-products, diamond-adjacent combinatorics.",
+    "attemptCounts": {
+      "total": 11,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S14 (researcher-2, 2026-07-24): SOLOVAY PARTITION THEOREM AT OMEGA_1 COMPLETE — solovay_partition_aleph1 (Part XIII): every stationary S in omega_1 is the disjoint union of stationary pieces indexed by a set unbounded below omega_1 (= aleph_1-many by regularity). Mechanism: per-eta Fodor constants over the S12 pigeonhole index; fibers of one regressive map are automatically disjoint; remainder absorbed into one piece for exhaustiveness. 0 sorries, 0 axioms. Remaining open content is general-kappa only: mu>omega cofinality bands (mu-indexed fundamental sequences) and the regular trace (Jech 8.10 hard case, Mahlo-relevant); plus an optional Cardinal.mk-level size restatement (universe lifts).",
+    "builtItems": [
+      "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
+      "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
+      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log + S2-α sketch + S2-β-α append)",
+      "S2-α (#19052): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)",
+      "S2-β-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VIII — IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals (+115 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md)",
+      "S2-β-β (this session, PR pending): proofs/Proofs/FodorPressingDown.lean §Part IX — cofHead (noncomputable def, FodorPressingDown.lean:541) + cofHead_lt (theorem, FodorPressingDown.lean:559) + exists_cofHead_constant_stationary (theorem, FodorPressingDown.lean:580) + exists_cofHead_constant_stationary_of_stationary (theorem, FodorPressingDown.lean:603) (+86 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-24-s2b-beta-act-cofhead-infrastructure.md)",
+      "isClubBelow_Ioo, IsStationaryBelow.exists_gt (stationary sets unbounded) in FodorPressingDown.lean Part XI",
+      "isClubBelow_iInter_nat: countable intersections of clubs are clubs (diagInter encoding)",
+      "omegaSeq + omegaSeq_lt + omegaSeq_cofinal: chosen fundamental omega-sequence for omega-cofinal ordinals (new IsFundamentalSeq API)",
+      "exists_omegaSeq_high_fibers_stationary: the unbounded-index pigeonhole (production step for binary splitting)",
+      "stationary_splits_binary_of_cof_omega + stationary_splits_binary_of_omega_cofinal_part: binary Solovay split for omega-cofinal stationary sets, any regular uncountable kappa",
+      "cof_ord_eq_omega0_of_lt_aleph1 + stationary_splits_binary_aleph1: FULL binary Solovay splitting at omega_1 (0 sorries, 0 axioms)",
+      "exists_unbounded_disjoint_stationary_fibers (FodorPressingDown.lean Part XIII): unbounded-below-kappa.ord index set of pairwise disjoint stationary fibers, omega-cofinal case",
+      "exhaustive_partition_of_disjoint_family (Part XIII): remainder-absorption packaging lemma",
+      "solovay_partition_of_cof_omega (Part XIII): exhaustive Solovay partition, general regular uncountable kappa, omega-cofinal stationary sets",
+      "solovay_partition_aleph1 (Part XIII): Solovay partition theorem at omega_1 — pinned OQ target at kappa=aleph_1"
+    ],
+    "insights": [
+      "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
+      "Step 2 (regressive auxiliary) is a single direct application of fodor (line 259) once a cofinal-sequence assignment is fixed.",
+      "Step 3 (κ-tuple bookkeeping) is the only step requiring iterated choice (Classical.skolem) — this is the hard one and best deferred to S4+.",
+      "All required Mathlib API (Ordinal.cof, Cardinal.IsRegular, IsSuccLimit) is already imported by FodorPressingDown.lean.",
+      "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient.",
+      "S2-α surface: Mathlib v4.26.0 has no Cardinal.isPrincipal_add_ord; the cardinality-bridge α + ω₀ < κ.ord works via card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord (3 lines instead of the projected 1-line citation).",
+      "S2-α surface: generic add_lt_add_left fails to synthesize AddRightStrictMono on Ordinal; the IsNormal-based path ((Ordinal.isNormal_add_right α).strictMono) gives α + 0 < α + ω₀ in one term.",
+      "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order.",
+      "S2-β-α surface (3 v4.26.0 naming deltas): Ordinal.zero_lt_one is not present at that name (use one_pos, instance-resolved); Ordinal.succ_pos shows as `0 < succ 0` not `0 < 0 + 1` (pattern miss for rwa [zero_add]); `have h1ne0 : (1 : Ordinal) ≠ 0 := one_ne_zero` fails universe inference (use `simpa [f] using h` to let simp resolve `1 ≠ 0` in unfolded `if`-context).",
+      "S2-β-α architecture: binary intersection of clubs reduces to diagInter unboundedness with 2-element family `f β = if β = 0 then C else D`; starting point `max α 1` ensures the witness γ satisfies both 0 < γ (for β=0 → γ ∈ C) and 1 < γ (for β=1 → γ ∈ D). This avoids an explicit zipper construction.",
+      "S2-β-β technique: Ordinal.exists_fundamental_sequence + .choose gives a noncomputable cofinal sequence whose 0-th element is < α for any α with cof α.ord > 0. Wrapping this in `cofHead` with a junk-fallback `if h : 0 < α.cof.ord then ... else 0` keeps the def total without `WellFoundedRecursion` or `OrderBot` machinery.",
+      "S2-β-β bridge: `IsSuccLimit α → 0 < α.cof.ord` factors as aleph0_le_cof.mpr (ℵ₀ ≤ cof α) → Cardinal.ord_le_ord.mpr (ℵ₀.ord ≤ cof α.ord) → Cardinal.ord_aleph0 rewrite (ω₀ ≤ cof α.ord) → Ordinal.omega0_pos. Same bridge pattern as the S2-α `hω_lt` proof at line 390-392 — reusable idiom.",
+      "S2-β-β IsFundamentalSequence.lt usage: `(exists_fundamental_sequence α).choose_spec.lt h_cof_pos` directly gives `(choose 0 h_cof_pos) < α` — no need to unfold blsub or invoke strict_mono separately. The .lt projection is the cleanest API for 'k-th element < α' facts.",
+      "S2-β-β API design: the convenience form `exists_cofHead_constant_stationary_of_stationary` swallows the inter_isLimitOrdinals reduction inside Part IX's signature, so the future stationary_splits_binary writer can compose Part IX → Part X (fodor_anti_constant) → main without re-doing the WLOG-restrict-to-limits step.",
+      "Unbounded-index pigeonhole beats index-of-first-disagreement for binary Solovay: if every index n of the fundamental omega-sequences were bounded by eta_n on a club D_n, a point of S in the countable club intersection above sup eta_n has its entire omega-sequence bounded below itself — contradicting cofinal range. Some n therefore has ALL high-fibers {alpha in S | eta <= omegaSeq alpha n} stationary, and two Fodor applications (eta=0, eta=c1+1) produce two distinct-value stationary fibers directly.",
+      "New Mathlib API (pin v4.31): Ordinal.exists_isFundamentalSeq (o.cof.ord = a -> exists f : Iio a -> Iio o, IsFundamentalSeq f) gives regressivity ((f _).2) and cofinality (isCofinal_range field) with no blsub bookkeeping; the old exists_fundamental_sequence used by cofHead is deprecated (warnings only).",
+      "Countable club intersections below kappa.ord reduce to diagInter: encode D : Nat -> Set Ordinal as F gamma = D (lt_omega0-decode gamma) for gamma < omega, default Iio kappa.ord above; a diagonal point gamma > omega lies in every D n since n < omega < gamma. Nat.cast injectivity discharges the decode round-trip.",
+      "Ordinal.zero_le does not exist at the pin; positivity from IsAcc uses root pos_iff_ne_zero (same as Mathlib Ordinal/Topology.lean:198).",
+      "At omega_1 the WLOG-to-limits reduction lands entirely in the omega-cofinal case (cof <= card <= aleph0 via Cardinal.lt_aleph_one_iff), so binary splitting there is COMPLETE; general kappa still needs the Jech trace analysis for the cf alpha = alpha part."
+    ],
+    "mathlibGaps": [
+      "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
+      "Mathlib.Logic.Equiv.Defs / Classical.skolem provides the κ-indexed choice needed for Step 3.",
+      "Cardinal.isPrincipal_add_ord does NOT exist at this name in Mathlib v4.26.0 commit 2df2f0150... — use card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord instead.",
+      "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
+    ],
+    "nextSteps": [
+      "General-kappa: mu-indexed fundamental-sequence layer (generalize omegaSeq to cf alpha = mu > omega) — Part XIII pigeonhole/fiber/packaging machinery is cofinality-agnostic and reusable as-is.",
+      "General-kappa: regular trace {alpha in S | cf alpha = alpha} (Jech 8.10 trace analysis; only matters for kappa with stationarily many regulars below, e.g. Mahlo).",
+      "Optional cosmetic: Cardinal.mk-level size statement (#C = aleph_1 with universe lift) for solovay_partition_aleph1.",
+      "S5+: Corollaries — club guessing, diamond at omega_1, Sigma-products (binary + full partition layers now both available)."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "ordinals",
+    "cardinals",
+    "clubs",
+    "stationary",
+    "fodor",
+    "seeker-selected",
+    "solovay-splitting"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "fodor-pressing-down"
+  ],
+  "references": {
+    "papers": [
+      "Fodor, G. (1956), 'Eine Bemerkung zur Theorie der regressiven Funktionen', Acta Sci. Math. — the original Fodor paper.",
+      "Solovay, R. M. (1971), 'Real-valued measurable cardinals', Axiomatic Set Theory I — original appearance of the splitting theorem.",
+      "Jech, T., Set Theory (3rd ed.), Theorem 8.10 — the textbook reference for the three-step proof structure.",
+      "Kunen, K., Set Theory: An Introduction to Independence Proofs — alternative presentation."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Ordinal/Cofinality.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Ordinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Logic.Equiv.Defs"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.231Z",
+  "lastUpdate": "2026-06-14T19:30:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FodorPressingDown.lean",
+      "filename": "FodorPressingDown.lean",
+      "lineCount": 654,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FodorPressingDown.lean"
+    }
+  ]
+}
+{
+  "slug": "fodor-pressing-down-oq-04",
+  "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
+  "phase": "BLOCKED",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\kappa\\,\\text{regular uncountable},\\,\\forall S \\subseteq \\kappa\\,\\text{stationary},\\,\\exists \\langle S_\\beta : \\beta < \\kappa \\rangle\\,\\text{pairwise disjoint}\\;\\text{with each}\\;S_\\beta \\subseteq S\\;\\text{stationary}.",
+    "plain": "Formalize Solovay's 1971 splitting theorem in the framework of Proofs/FodorPressingDown.lean: every stationary subset of a regular uncountable cardinal can be partitioned into κ pairwise-disjoint stationary subsets, using the existing Fodor pressing-down infrastructure.",
+    "whyMatters": [
+      "Canonical demonstration that stationarity is genuinely κ-fat, not merely nonempty.",
+      "First non-trivial corollary of Fodor — the paradigm pressing-down application.",
+      "Foundation for ω₁-combinatorics (club guessing, ◇, Σ-products) and forcing-theoretic results.",
+      "Mathlib currently has no stationary-set theory beyond the OQ-file's own infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Fodor's pressing-down lemma (FodorPressingDown.lean:259) is the load-bearing hammer for the regressive auxiliary step.",
+      "diagInter_isClubBelow (line 240) provides closure of clubs under κ-indexed intersection.",
+      "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1.",
+      "S2-α (merged #19052): isLimitOrdinals_isClubBelow — limit ordinals below κ.ord form a club (line 366); corollary nonLimitOrdinals_not_isStationaryBelow (line 408).",
+      "S2-β-α (this session, PR pending): IsClubBelow.inter (binary intersection of clubs is a club) + IsStationaryBelow.inter_isClubBelow (stationary ∩ club preserves stationary) + IsStationaryBelow.inter_isLimitOrdinals (WLOG-restrict to limits) — three foundational companions for Solovay Step 2 in new § Part VIII (+115 LOC, build-verified, 3062 jobs)."
+    ],
+    "open": [
+      "S2-β: binary Solovay splitting — any stationary S splits into 2 disjoint stationary subsets.",
+      "S2-γ: full Solovay splitting — κ pairwise-disjoint stationary subsets, requiring Classical.skolem for κ-indexed regressive choices."
+    ],
+    "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α, DONE), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T12:45:00Z",
+    "iteration": 14,
+    "focus": "S12 ACT (researcher-2, 2026-07-24): BLOCKER DISCHARGED — binary Solovay splitting PROVED at omega_1. New Part XI (+~300 LOC, 653->955; 24 theorems, 2 defs, 0 sorries, 0 axioms; Docker 2974 jobs CLEAN): stationary_splits_binary_aleph1 (every stationary subset of omega_1 splits into two disjoint stationary subsets) via stationary_splits_binary_of_cof_omega (general regular uncountable kappa, S of omega-cofinal limits). Production step solved by the UNBOUNDED-INDEX PIGEONHOLE, not the index-of-first-disagreement design: omegaSeq (fundamental omega-sequence via NEW Mathlib API Ordinal.exists_isFundamentalSeq), exists_omegaSeq_high_fibers_stationary (some index n has ALL high-fibers stationary — else a diagonal point above sup of the bounds contradicts cofinality), then TWO Fodor applications at eta=0 and eta=c1+1 give distinct constants c1<c2 feeding Part X's stationary_splits_of_two_fibers. Supporting infra: isClubBelow_Ioo, IsStationaryBelow.exists_gt, isClubBelow_iInter_nat (countable club intersections via diagInter + lt_omega0 decoding).",
+    "blockers": [],
+    "nextAction": "S2-gamma: full kappa-piece Solovay partition (Jech 8.10) — iterate the Part XI production step transfinitely to collect kappa-many distinct constant values (transfinite recursion / Classical.skolem over kappa-indexed choices) + exhaustive-partition packaging. Separately: extend past the omega-cofinal case to general regular kappa (Jech trace analysis for S concentrated on regulars; vacuous at omega_1). The old fodor_anti_constant / cofSecond two-index design is OBSOLETE — do not resume it; the unbounded-index pigeonhole supersedes it.",
+    "attemptCounts": {
+      "total": 11,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S14 (researcher-2, 2026-07-24): SOLOVAY PARTITION THEOREM AT OMEGA_1 COMPLETE — solovay_partition_aleph1 (Part XIII): every stationary S in omega_1 is the disjoint union of stationary pieces indexed by a set unbounded below omega_1 (= aleph_1-many by regularity). Mechanism: per-eta Fodor constants over the S12 pigeonhole index; fibers of one regressive map are automatically disjoint; remainder absorbed into one piece for exhaustiveness. 0 sorries, 0 axioms. Remaining open content is general-kappa only: mu>omega cofinality bands (mu-indexed fundamental sequences) and the regular trace (Jech 8.10 hard case, Mahlo-relevant); plus an optional Cardinal.mk-level size restatement (universe lifts).",
+    "builtItems": [
+      "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
+      "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
+      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log + S2-α sketch + S2-β-α append)",
+      "S2-α (#19052): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)",
+      "S2-β-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VIII — IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals (+115 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md)",
+      "S2-β-β (this session, PR pending): proofs/Proofs/FodorPressingDown.lean §Part IX — cofHead (noncomputable def, FodorPressingDown.lean:541) + cofHead_lt (theorem, FodorPressingDown.lean:559) + exists_cofHead_constant_stationary (theorem, FodorPressingDown.lean:580) + exists_cofHead_constant_stationary_of_stationary (theorem, FodorPressingDown.lean:603) (+86 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-24-s2b-beta-act-cofhead-infrastructure.md)",
+      "isClubBelow_Ioo, IsStationaryBelow.exists_gt (stationary sets unbounded) in FodorPressingDown.lean Part XI",
+      "isClubBelow_iInter_nat: countable intersections of clubs are clubs (diagInter encoding)",
+      "omegaSeq + omegaSeq_lt + omegaSeq_cofinal: chosen fundamental omega-sequence for omega-cofinal ordinals (new IsFundamentalSeq API)",
+      "exists_omegaSeq_high_fibers_stationary: the unbounded-index pigeonhole (production step for binary splitting)",
+      "stationary_splits_binary_of_cof_omega + stationary_splits_binary_of_omega_cofinal_part: binary Solovay split for omega-cofinal stationary sets, any regular uncountable kappa",
+      "cof_ord_eq_omega0_of_lt_aleph1 + stationary_splits_binary_aleph1: FULL binary Solovay splitting at omega_1 (0 sorries, 0 axioms)",
+      "exists_unbounded_disjoint_stationary_fibers (FodorPressingDown.lean Part XIII): unbounded-below-kappa.ord index set of pairwise disjoint stationary fibers, omega-cofinal case",
+      "exhaustive_partition_of_disjoint_family (Part XIII): remainder-absorption packaging lemma",
+      "solovay_partition_of_cof_omega (Part XIII): exhaustive Solovay partition, general regular uncountable kappa, omega-cofinal stationary sets",
+      "solovay_partition_aleph1 (Part XIII): Solovay partition theorem at omega_1 — pinned OQ target at kappa=aleph_1"
+    ],
+    "insights": [
+      "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
+      "Step 2 (regressive auxiliary) is a single direct application of fodor (line 259) once a cofinal-sequence assignment is fixed.",
+      "Step 3 (κ-tuple bookkeeping) is the only step requiring iterated choice (Classical.skolem) — this is the hard one and best deferred to S4+.",
+      "All required Mathlib API (Ordinal.cof, Cardinal.IsRegular, IsSuccLimit) is already imported by FodorPressingDown.lean.",
+      "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient.",
+      "S2-α surface: Mathlib v4.26.0 has no Cardinal.isPrincipal_add_ord; the cardinality-bridge α + ω₀ < κ.ord works via card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord (3 lines instead of the projected 1-line citation).",
+      "S2-α surface: generic add_lt_add_left fails to synthesize AddRightStrictMono on Ordinal; the IsNormal-based path ((Ordinal.isNormal_add_right α).strictMono) gives α + 0 < α + ω₀ in one term.",
+      "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order.",
+      "S2-β-α surface (3 v4.26.0 naming deltas): Ordinal.zero_lt_one is not present at that name (use one_pos, instance-resolved); Ordinal.succ_pos shows as `0 < succ 0` not `0 < 0 + 1` (pattern miss for rwa [zero_add]); `have h1ne0 : (1 : Ordinal) ≠ 0 := one_ne_zero` fails universe inference (use `simpa [f] using h` to let simp resolve `1 ≠ 0` in unfolded `if`-context).",
+      "S2-β-α architecture: binary intersection of clubs reduces to diagInter unboundedness with 2-element family `f β = if β = 0 then C else D`; starting point `max α 1` ensures the witness γ satisfies both 0 < γ (for β=0 → γ ∈ C) and 1 < γ (for β=1 → γ ∈ D). This avoids an explicit zipper construction.",
+      "S2-β-β technique: Ordinal.exists_fundamental_sequence + .choose gives a noncomputable cofinal sequence whose 0-th element is < α for any α with cof α.ord > 0. Wrapping this in `cofHead` with a junk-fallback `if h : 0 < α.cof.ord then ... else 0` keeps the def total without `WellFoundedRecursion` or `OrderBot` machinery.",
+      "S2-β-β bridge: `IsSuccLimit α → 0 < α.cof.ord` factors as aleph0_le_cof.mpr (ℵ₀ ≤ cof α) → Cardinal.ord_le_ord.mpr (ℵ₀.ord ≤ cof α.ord) → Cardinal.ord_aleph0 rewrite (ω₀ ≤ cof α.ord) → Ordinal.omega0_pos. Same bridge pattern as the S2-α `hω_lt` proof at line 390-392 — reusable idiom.",
+      "S2-β-β IsFundamentalSequence.lt usage: `(exists_fundamental_sequence α).choose_spec.lt h_cof_pos` directly gives `(choose 0 h_cof_pos) < α` — no need to unfold blsub or invoke strict_mono separately. The .lt projection is the cleanest API for 'k-th element < α' facts.",
+      "S2-β-β API design: the convenience form `exists_cofHead_constant_stationary_of_stationary` swallows the inter_isLimitOrdinals reduction inside Part IX's signature, so the future stationary_splits_binary writer can compose Part IX → Part X (fodor_anti_constant) → main without re-doing the WLOG-restrict-to-limits step.",
+      "Unbounded-index pigeonhole beats index-of-first-disagreement for binary Solovay: if every index n of the fundamental omega-sequences were bounded by eta_n on a club D_n, a point of S in the countable club intersection above sup eta_n has its entire omega-sequence bounded below itself — contradicting cofinal range. Some n therefore has ALL high-fibers {alpha in S | eta <= omegaSeq alpha n} stationary, and two Fodor applications (eta=0, eta=c1+1) produce two distinct-value stationary fibers directly.",
+      "New Mathlib API (pin v4.31): Ordinal.exists_isFundamentalSeq (o.cof.ord = a -> exists f : Iio a -> Iio o, IsFundamentalSeq f) gives regressivity ((f _).2) and cofinality (isCofinal_range field) with no blsub bookkeeping; the old exists_fundamental_sequence used by cofHead is deprecated (warnings only).",
+      "Countable club intersections below kappa.ord reduce to diagInter: encode D : Nat -> Set Ordinal as F gamma = D (lt_omega0-decode gamma) for gamma < omega, default Iio kappa.ord above; a diagonal point gamma > omega lies in every D n since n < omega < gamma. Nat.cast injectivity discharges the decode round-trip.",
+      "Ordinal.zero_le does not exist at the pin; positivity from IsAcc uses root pos_iff_ne_zero (same as Mathlib Ordinal/Topology.lean:198).",
+      "At omega_1 the WLOG-to-limits reduction lands entirely in the omega-cofinal case (cof <= card <= aleph0 via Cardinal.lt_aleph_one_iff), so binary splitting there is COMPLETE; general kappa still needs the Jech trace analysis for the cf alpha = alpha part.",
+      "S14: The kappa-piece Solovay partition does NOT need transfinite iteration of the binary split: the pigeonhole index n makes every high-fiber stationary simultaneously, so one Fodor application per eta < kappa.ord yields constants c(eta) >= eta whose fibers (of the single regressive map omegaSeq . n) are automatically pairwise disjoint. The S13 limit-stage obstruction (non-stationary intersection of remainder chains) is an artifact of the iteration route, not of the theorem.",
+      "S14: Exhaustiveness is trivial once disjointness is free: absorb S minus the fiber union (including all successor/zero points of S) into one designated piece — a superset of a stationary set is stationary, and disjointness survives because the remainder avoids every other fiber by construction.",
+      "S14: IsUnboundedBelow C kappa.ord is the right file-native size witness for aleph_1-many pieces: strictness comes from c(alpha+1) >= alpha+1 > alpha via (isSuccLimit_ord hkappa.aleph0_le).succ_lt; the Cardinal.mk equality would need universe lifts (Ordinal.{0} : Type 1) and is deliberately deferred.",
+      "S14 Lean gotchas: (1) an auxiliary lemma whose statement mentions only bare Ordinal/Set Ordinal auto-binds FRESH universe params (u_1, u_2 — even two different ones) and then fails to apply at concrete Ordinal.{0} instances — pin {o : Ordinal.{0}} etc. explicitly, matching file convention; (2) refine with a lambda-defined family leaves beta-redexes (fun gamma => ite ...) gamma that rw [if_pos/if_neg] cannot see through — dsimp only first."
+    ],
+    "mathlibGaps": [
+      "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
+      "Mathlib.Logic.Equiv.Defs / Classical.skolem provides the κ-indexed choice needed for Step 3.",
+      "Cardinal.isPrincipal_add_ord does NOT exist at this name in Mathlib v4.26.0 commit 2df2f0150... — use card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord instead.",
+      "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
+    ],
+    "nextSteps": [
+      "General-kappa: mu-indexed fundamental-sequence layer (generalize omegaSeq to cf alpha = mu > omega) — Part XIII pigeonhole/fiber/packaging machinery is cofinality-agnostic and reusable as-is.",
+      "General-kappa: regular trace {alpha in S | cf alpha = alpha} (Jech 8.10 trace analysis; only matters for kappa with stationarily many regulars below, e.g. Mahlo).",
+      "Optional cosmetic: Cardinal.mk-level size statement (#C = aleph_1 with universe lift) for solovay_partition_aleph1.",
+      "S5+: Corollaries — club guessing, diamond at omega_1, Sigma-products (binary + full partition layers now both available)."
     ]
   },
   "tags": [
