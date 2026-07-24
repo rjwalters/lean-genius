@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Exact sidonNumber table COMPLETE through h(28): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4; h(11..16)=5; h(17..24)=6; h(25..28)=7 (h(28) via mod-4 class double count against the forced perfect 8-mark ruler — no kernel search). Two-sided elementary bounds stand. NEXT wall: h(29..33) (perfect ruler no longer forced; mod-4 alone insufficient at N=29). DEEP unchanged: Singer sqrt(N) lower construction, N^{1/4} refinement, $1000 conjecture.",
+    "progressSummary": "Two-sided √N bounds COMPLETE: √N/4 ≤ h(N) ≤ √(2N)+1 for N ≥ 49 (Erdős–Turán construction + Bertrand; 0 axioms) — order of magnitude h(N) ≍ √N settled elementarily. Exact table h(0..28) complete. NEXT wall: h(29..33) (missing diff d ≡ 2 mod 4 now pinned; residue invariants alone insufficient; span-29 search ≈192k after sum-collision pruning). DEEP remaining: N^{1/4} refinement (exact Erdős–Turán form), Singer (1−o(1))√N constant, $1000 N^ε conjecture.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -57,7 +57,11 @@
       "isSidonSet_0_1_4_10_18_23_25 (optimal 7-mark Golomb ruler witness, decide-certified) in Erdos30WIP01.lean",
       "sidonNumber_twentytwo..twentyseven (h(22..24)=6, h(25..27)=7 — exact table now h(0..27)) in Erdos30WIP01.lean",
       "no_sidon_card_eight_range_twentynine in Erdos30WIP01.lean — no 8-element Sidon set in {0..28}, via forced perfect ruler + mod-4 class double count (cross-class fibration T2.filter(p.1%4=r) = A_r ×ˢ A_{(r+2)%4})",
-      "sidonNumber_twentyeight in Erdos30WIP01.lean — h(28)=7; exact table complete h(0..28)"
+      "sidonNumber_twentyeight in Erdos30WIP01.lean — h(28)=7; exact table complete h(0..28)",
+      "etMap/etSet + base_two_p_eq + et_quadratic (private) in Erdos30WIP01.lean",
+      "sidonNumber_ge_of_odd_prime: p ≤ sidonNumber (2p²−1)",
+      "sidonNumber_sqrt_lower: Nat.sqrt((N+1)/2)/2 < sidonNumber N for N ≥ 49",
+      "sidonNumber_ge_real_sqrt: √N/4 ≤ h(N) for N ≥ 49 (0 axioms)"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -77,7 +81,10 @@
       "h(25)=h(26)=h(27)=7 come free once the ruler {0,1,4,10,18,23,25} is certified: 8²=64 > 2N+8 through N=27. The table now ends exactly where counting goes slack for eight: 64 = 2*28+8 at N=28, and the optimal 8-mark ruler has span 34, so h(28..33) is a six-value wall needing C(N-1,6)-scale searches (~296k at N=28).",
       "h(28)=7 needs NO kernel search: at N=28 the perfect 8-mark ruler is FORCED (C(8,2)=28 distinct positive differences must exhaust {1..28}), and a mod-4 class double count refutes it — same-class Σc_r(c_r−1)=14 with cross-class Σc_r·c_{(r+2)%4}=14 and Σc_r=8 is unsatisfiable (class multiset must be {4,2,1,1} or {3,3,2,0}, giving c0c2+c1c3 ∈ {6,9}, never 7)",
       "Mod-obstruction ladder at the perfect-ruler walls N=k(k−1)/2: h(10) parity (odd sum), h(15) mod-3 same-class, h(21) parity, h(28) mod-4 same+cross-class — every wall so far falls to a residue count, no exhaustive search",
-      "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search"
+      "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search",
+      "Erdős–Turán construction {2pi + (i² mod p) : i < p} formalized: base-2p digit extraction + ZMod p quadratic-roots argument gives Sidon property; p ≤ h(2p²−1) for odd primes p",
+      "Bertrand postulate converts the single-prime bound to uniform √N/4 ≤ h(N) for N ≥ 49 — with the √(2N)+1 upper bound the file settles h(N) ≍ √N elementarily, no projective planes needed",
+      "h(29) wall correction: mod-2 class count forces missing diff d EVEN (not odd as previously recorded), mod-4 then forces d ≡ 2 (mod 4); mod-3 allows both (4,3,1) with 3∤d and (4,2,2) with d ∈ {6,18}; residue invariants alone still insufficient"
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -20,9 +20,9 @@ chained span dichotomy + pinned-endpoint kernel search for the in-between
 values. `SidonCheck` converse bridge certifies witnesses with one `decide`.
 
 ## Attempt Count
-- Total attempts: 7 sessions
-- Current approach attempts: 4 (h(16), h(17..21), h(22..27), h(28) — all landed)
-- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count
+- Total attempts: 8 sessions
+- Current approach attempts: 5 (h(16), h(17..21), h(22..27), h(28), Erdős–Turán √N lower bound — all landed)
+- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count, Erdős–Turán construction + Bertrand
 
 ## Blockers
 h(29..33) wall: perfect ruler no longer forced (28 diffs in {1,…,N} miss
@@ -32,6 +32,11 @@ alone checked INSUFFICIENT at N=29 (a {4,2,1,1} arrangement with the missing
 value ≡ 2 mod 4 survives). Elementary layer near-saturated.
 
 ## Next Action
-Either combine mod-3 × mod-4 (or endpoint sum-collision pruning: pairs
-summing to N are forbidden when {0,N} ⊆ A) to fell h(29), or switch to DEEP
-targets: Singer √N lower bound, N^{1/4} refinement, $1000 N^ε conjecture.
+DONE 2026-07-24: Erdős–Turán construction landed — √N/4 ≤ h(N) ≤ √(2N)+1
+for N ≥ 49, order h(N) ≍ √N settled elementarily (former DEEP target
+"Singer √N lower bound" achieved via Erdős–Turán instead; no projective
+planes). h(29) narrowed: missing diff d ≡ 2 (mod 4) (prior "d odd" note was
+WRONG — mod-2 class count forces d even). Remaining: fell h(29) via
+mod-6/mod-8 cross counts on the narrowed d-list or the ≈192k span-29
+search; or DEEP: N^{1/4} refinement, Singer (1−o(1))√N constant, $1000
+N^ε conjecture.
