@@ -51,7 +51,14 @@ namespace so all lemmas interoperate).
 
 ## Build
 
-`./proofs/scripts/docker-build.sh Proofs.Erdos179Incomplete01OQ02` — see PR for result.
+`./proofs/scripts/docker-build.sh Proofs.Erdos179Incomplete01OQ02` — **exit 0**
+(8577 jobs). One repair needed vs. the first draft: `Nat.card_Icc` leaves
+`m + 1 - 1` un-normalized inside the `sum_const` calc steps; follow the rewrite
+with `Nat.add_sub_cancel` (omega cannot reach under the multiplication).
+0 axioms, 0 sorries; only cosmetic unused-variable warnings (hd/hd' in
+`arithmeticProgression_inj` — the min/max argument turns out not to need
+positivity, but the hypotheses are retained since the callers have them and
+the statement reads as the standard rigidity lemma).
 
 ## Status
 
