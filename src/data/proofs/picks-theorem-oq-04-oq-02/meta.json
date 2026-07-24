@@ -56,7 +56,8 @@
       "The distinguished basepoint of shoelace (its head serves as both start and loop-close) is exactly what couples reversal and rotation; factoring through the basepoint-agnostic edgeSum decouples them.",
       "Orientation reversal is, at bottom, the single algebraic fact cross a b = -cross b a lifted along a structural induction.",
       "Cyclic rotation invariance is not an analytic statement but a re-association: the reversed/rotated loop sums the same edges in a different order.",
-      "Reversing the whole polygon changes the basepoint, so the reversal law genuinely needs rotation invariance as a lemma — the two symmetries are proved together, not independently."
+      "Reversing the whole polygon changes the basepoint, so the reversal law genuinely needs rotation invariance as a lemma — the two symmetries are proved together, not independently.",
+      "shoelace_rotl_iterate lifts single-step invariance to the full ⟨rotl⟩ orbit via Function.iterate_succ_apply, so the sum is shown constant not just under one generator but under the entire cyclic group of rotations — formally exhibiting the vertex list as a necklace (a cyclic sequence up to relabelling of the start) rather than a linear list with a privileged first entry."
     ],
     "prerequisites": [
       "PicksTheoremOQ04 (the general shoelace sum and its cross/shoelace primitives)",
