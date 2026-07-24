@@ -67,7 +67,8 @@
       "**The sign change of $1 + a$ is the real obstruction, not the sign of $a$.** The parent's induction needs $1 + a > 0$; it has nothing to say once $a \\le -1$. The extension is therefore not a cosmetic widening — it requires a genuinely different argument on $-2 \\le a \\le -1$.",
       "**On the negative tail the power is trapped in $[-1,1]$ while the line escapes.** Because $|1+a| \\le 1$, the power $(1+a)^n$ never leaves $[-1,1]$; but the linear lower bound $1 + na$ falls to $1 - n$, which is below $-1$ as soon as $n \\ge 3$. The inequality then holds for the blunt reason that the line has dropped beneath the entire range of the power.",
       "**Only $n = 2$ resists the size argument, and it needs none.** At $n = 2$ the gap is exactly $a^2$, positive for every $a \\ne 0$ — so the boundary case is the most elementary one, valid even at $a = -2$.",
-      "**Matching Mathlib's reach.** The result now holds precisely on $-2 \\le a$, the domain of `one_add_mul_le_pow`, so the strict integer-power Bernoulli is available wherever the weak one is."
+      "**Matching Mathlib's reach.** The result now holds precisely on $-2 \\le a$, the domain of `one_add_mul_le_pow`, so the strict integer-power Bernoulli is available wherever the weak one is.",
+      "**The two `iff` lemmas are corollaries, not new theorems.** Once `one_add_mul_lt_pow_full` is in hand, both sharp characterizations fall out mechanically: the failure direction of `one_add_mul_lt_pow_full_iff` only needs `interval_cases n` on the finitely many $n \\le 1$ (checked by `simp`) plus the trivial $a = 0$ case, and the forward direction of `one_add_mul_eq_pow_full_iff` is exactly the strict inequality read as $\\neg(=)$ by contradiction. No independent argument is needed for either boundary — the hard work was entirely in extending the strict inequality itself."
     ],
     "prerequisites": [
       "The weak Bernoulli inequality one_add_mul_le_pow on −2 ≤ a",
