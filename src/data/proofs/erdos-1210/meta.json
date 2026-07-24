@@ -2,11 +2,11 @@
   "id": "erdos-1210",
   "title": "Pairwise Coprime Subset Sum Inequality",
   "slug": "erdos-1210",
-  "description": "Let A ⊆ {1,...,n-1} be pairwise coprime. Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p prime, p<n} 1/(n-p)? Erdős conjectured the primes maximize this weighted harmonic sum. The literal transcription is FALSE: this entry proves a machine-checked counterexample at n=5, A={4} (1 > 5/6) and refutes the literal statement (not_Erdos1210Statement). The correctly-stated Erdős problem (with the intended, unrecovered hypotheses on A) remains open.",
+  "description": "Let A ⊆ {1,...,n-1} be pairwise coprime. Erdős asked ([Er77c], corrected in [Er80]) whether ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/p + O(1), the RHS being the Mertens sum ~ log log n. This entry (i) refutes the literal mis-transcription (RHS ∑ 1/(n-p), no O(1)) via a machine-checked counterexample at n=5, A={4} (not_Erdos1210Statement); (ii) axiomatizes the corrected O(1)-form conjecture (axiom erdos_1210), machine-checking that the counterexample imposes only C ≥ 1/6; and (iii) proves the unconditional harmonic baseline ∑_{a∈A} 1/(n-a) ≤ H_{n-1} ≤ 1 + log(n-1) for ANY A ⊆ [1,n) — the log n → log log n gap is exactly where coprimality must do work, blocked on Mertens' second theorem in Mathlib.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1210",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1210Problem.lean",
     "tags": [
       "erdos",
@@ -16,13 +16,13 @@
       "harmonic-sums",
       "extremal-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1210,
     "erdosUrl": "https://erdosproblems.com/1210",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries: fully machine-checked. The literal Erdős-1210 transcription (Erdos1210Statement, a plain def — NOT assumed) is disproven by the verified theorem not_Erdos1210Statement, via the counterexample n=5, A={4} (A-sum 1 > prime-sum 5/6). A prior revision unsoundly declared this statement as an axiom; that has been removed. The correctly-stated Erdős problem remains open.",
+    "axiomCount": 1,
+    "assumptions": "Erdős #1210, corrected form per [Er80] (axiom erdos_1210): there is an absolute constant C such that for all n ≥ 3 and every pairwise coprime A ⊆ [1,n), ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/p + C. Open conjecture; the Mertens-sum RHS (~ log log n) is not yet expressible asymptotically in Mathlib (no Mertens' second theorem). All other results in the entry are axiom-free: the refutation of the literal transcription and the unconditional harmonic baseline ∑ 1/(n-a) ≤ 1 + log(n-1).",
     "lineCount": 244,
     "mathlib_version": "4.31.0",
     "theoremCount": 14,
@@ -50,58 +50,75 @@
       "id": "preamble",
       "title": "Problem Statement and Module Header",
       "startLine": 1,
-      "endLine": 49,
+      "endLine": 58,
       "summary": "Module docstring states Erdős Problem #1210: does the prime set maximize ∑ 1/(n-a) among all pairwise coprime A ⊆ [1,n)? Lists key observations: primes are pairwise coprime, the prime sum is positive for n≥3, coprime sets have ≤1 even element, and the bound is tight at A = {primes}. References Er77c and Er80.",
       "mathContext": "$\\sum_{a \\in A} \\frac{1}{n-a} \\le \\sum_{p < n,\\, p \\text{ prime}} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 50,
-      "endLine": 64,
+      "startLine": 59,
+      "endLine": 69,
       "summary": "Defines primesBelow, PairwiseCoprime, ValidSubset.",
       "mathContext": "$\\text{primesBelow}(n) = \\{p < n : p \\text{ prime}\\}$. $\\text{PairwiseCoprime}(A)$: $\\gcd(a,b)=1$ for distinct $a,b\\in A$."
     },
     {
       "id": "prime-properties",
       "title": "Properties of Primes and Coprimality",
-      "startLine": 66,
-      "endLine": 102,
+      "startLine": 70,
+      "endLine": 108,
       "summary": "Proves primes are pairwise coprime, primesBelow is valid and nonempty for n≥3, and pairwise coprime sets have ≤1 even element.",
       "mathContext": "Distinct primes are coprime. $|\\text{primesBelow}(n)| \\geq 1$ for $n \\geq 3$ (since $2 \\in \\text{primesBelow}(n)$). $|\\{a \\in A : 2 \\mid a\\}| \\leq 1$ for pairwise coprime $A$."
     },
     {
       "id": "sum-bounds",
       "title": "Sum Bounds",
-      "startLine": 104,
-      "endLine": 130,
+      "startLine": 109,
+      "endLine": 131,
       "summary": "Proves the prime sum is nonneg and strictly positive.",
       "mathContext": "$0 < \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for $n \\geq 3$."
     },
     {
       "id": "conjecture",
       "title": "Literal Conjecture (Packaged, Not Assumed) and Consequences",
-      "startLine": 131,
-      "endLine": 162,
+      "startLine": 132,
+      "endLine": 172,
       "summary": "Packages the literal Erdős-1210 inequality as a proposition (Erdos1210Statement) — deliberately a def, NOT an axiom, since it is false and assuming it would make the development inconsistent. Records two genuine consequences that hold unconditionally: the empty-set bound (erdos_1210_empty) and the prime-singleton bound (erdos_1210_prime_singleton, {p} ≤ full prime sum via sum_le_sum_of_subset_of_nonneg).",
       "mathContext": "$\\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{n-p}$ for all pairwise coprime $A \\subseteq [1,n)$."
     },
     {
       "id": "counterexample",
       "title": "Counterexample: The Literal Statement Is False (n = 5, A = {4})",
-      "startLine": 164,
-      "endLine": 244,
+      "startLine": 173,
+      "endLine": 252,
       "summary": "Machine-checks the concrete refutation. Computes primesBelow 5 = {2,3} (primesBelow_five, decide) and its weighted sum 5/6 (primesBelow_five_sum); verifies {4} satisfies ValidSubset 5 and PairwiseCoprime (singleton_four_valid_at_five); shows the A-sum 1/(5−4) = 1 strictly exceeds 5/6 (erdos_1210_literal_counterexample); and concludes ¬ Erdos1210Statement (not_Erdos1210Statement). A prior revision unsoundly declared the statement as an axiom, which combined with this counterexample derives False — the docstring records the fix.",
       "mathContext": "At $n=5,\\ A=\\{4\\}$: $\\sum_{a\\in A}\\frac{1}{5-a} = 1 > \\tfrac{5}{6} = \\frac{1}{3}+\\frac{1}{2} = \\sum_{p<5,\\,p\\text{ prime}}\\frac{1}{5-p}$, so the literal inequality fails."
+    },
+    {
+      "id": "corrected-conjecture-restored",
+      "title": "The Corrected Conjecture ([Er80]) — Restored Axiomatization",
+      "startLine": 253,
+      "endLine": 336,
+      "summary": "Restores the S3 (PR #22965) recovery of the genuine Erdős statement, accidentally clobbered on 2026-06-30 by the stale sibling PR #22935: the corrected RHS primeReciprocalSum n = ∑_{p<n} 1/p (Mertens sum), its positivity, the open conjecture as axiom erdos_1210 (∃ C, ∀ n ≥ 3, ∀ pairwise-coprime valid A, ∑ 1/(n-a) ≤ primeReciprocalSum n + C), and the machine-checked consistency analysis at n = 5: the naive C = 0 form still fails (naive_statement_fails_at_five), while any C ≥ 1/6 absorbs the gap (corrected_statement_consistent_at_five).",
+      "mathContext": "Erdős noted in [Er80] that the [Er77c] statement was 'not quite correct'. The corrected inequality bounds the weighted harmonic sum by the Mertens sum ∑_{p<n} 1/p ~ log log n plus an absolute constant. The O(1) term is essential: the same n = 5, A = {4} witness that kills the literal transcription shows C = 0 is impossible, but imposes only C ≥ 1/6 on the corrected form."
+    },
+    {
+      "id": "s5-unconditional-harmonic-bound",
+      "title": "S5: Unconditional Harmonic Upper Bound (axiom-free)",
+      "startLine": 337,
+      "endLine": 392,
+      "summary": "The trivial baseline instantiating the conjecture's shape with f(n) = H_{n-1}: for ANY A ⊆ [1,n) — no coprimality needed — the values {n-a} are distinct integers in [1, n-1], so ∑_{a∈A} 1/(n-a) ≤ H_{n-1} (sum_reciprocal_le_harmonic, via an injective reindex a ↦ n-a and Mathlib's harmonic_eq_sum_Icc), hence ≤ 1 + log(n-1) (erdos_1210_trivial_upper_bound, via harmonic_le_one_add_log). Fully proved, no axioms.",
+      "mathContext": "The bound log n is exponentially weaker than the conjectured log log n + O(1): closing that gap is precisely where pairwise coprimality (at most one element per prime) must enter, via a sieve/Mertens comparison. Mathlib currently lacks Mertens' second theorem, so even stating the asymptotic RHS is out of reach — the axiom erdos_1210 quantifies it with an explicit existential constant instead."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 1210. The literal transcription is REFUTED by a machine-checked counterexample (n=5, A={4}); 14 theorems proved, 0 axioms, 0 sorries. The correctly-stated Erdős problem (with the intended, unrecovered hypotheses on A) remains open.",
+    "summary": "The formalization captures Erdős Problem 1210 in its corrected [Er80] form. The literal transcription is REFUTED by a machine-checked counterexample (n=5, A={4}); the corrected O(1)-form conjecture is axiomatized (1 axiom, shown consistent with the counterexample for C ≥ 1/6); and the unconditional harmonic baseline ∑ 1/(n-a) ≤ 1 + log(n-1) is fully proved. 21 theorems, 1 axiom (the open conjecture), 0 sorries.",
     "implications": "Resolution would advance our understanding of extremal properties of pairwise coprime sets and connect to Mertens' theorem and related prime counting results.",
     "openQuestions": [
-      "Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/(n-p) for all pairwise coprime A?",
-      "What is the growth rate of ∑_{p<n} 1/(n-p) as n → ∞?",
-      "Do other 'optimal' pairwise coprime sets exist for related sums?"
+      "Is ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/p + O(1) for all pairwise coprime A ⊆ [1,n) (the corrected [Er80] form, axiom erdos_1210)?",
+      "Can the unconditional H_{n-1} ~ log n baseline be improved toward log log n using pairwise coprimality, short of the full conjecture?",
+      "What is the optimal constant C in the corrected inequality (the n=5 witness forces C ≥ 1/6)?",
+      "Formalize Mertens' second theorem in Mathlib so the RHS asymptotic log log n + O(1) becomes expressible."
     ]
   },
   "leanFile": {
@@ -109,8 +126,10 @@
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.Nat.GCD.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Data.Real.Basic",
+      "Mathlib.NumberTheory.Harmonic.Defs",
+      "Mathlib.NumberTheory.Harmonic.Bounds",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -118,10 +137,10 @@
       "BigOperators"
     ],
     "namespace": "Erdos1210",
-    "lineCount": 244,
-    "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 4,
+    "lineCount": 392,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 5,
     "path": "Proofs/Erdos1210Problem.lean",
     "sorries": 0
   },
