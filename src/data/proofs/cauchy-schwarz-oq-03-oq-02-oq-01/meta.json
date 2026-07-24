@@ -81,11 +81,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Docstring and Setup",
-      "summary": "States the open question from the parent forward-Minkowski entry, explains why 0 < p < 1 reverses the triangle inequality (the p-functional is a concave quasi-norm, hence superadditive), and records that Mathlib has no 0 < p < 1 Holder/Minkowski lemma (all gated on HolderConjugate forcing p, q > 1). Lists the three results and the durable Python numerical certificate. Imports Mathlib and opens Finset, NNReal under namespace ReverseMinkowski.",
+      "title": "Module Docstring",
+      "summary": "States the open question from the parent forward-Minkowski entry, explains why 0 < p < 1 reverses the triangle inequality (the p-functional is a concave quasi-norm, hence superadditive), and records that Mathlib has no 0 < p < 1 Holder/Minkowski lemma (all gated on HolderConjugate forcing p, q > 1). Sketches the reverse-Holder and Riesz reverse-Minkowski proofs, lists the three results, the durable Python numerical certificate, and the Hardy-Littlewood-Polya / Riesz references.",
       "startLine": 1,
-      "endLine": 64,
+      "endLine": 58,
       "mathContext": "Engine is reverse Holder with negative conjugate $q = p/(p-1) < 0$; $1/p + 1/q = 1$."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "summary": "Imports Mathlib wholesale and opens Finset, NNReal under the ReverseMinkowski namespace, preparing the ambient scope for the three theorems below.",
+      "startLine": 60,
+      "endLine": 64,
+      "mathContext": "The whole-Mathlib import is needed for both Real.HolderConjugate/NNReal.inner_le_Lp_mul_Lq (the forward-Holder engine driving the reverse direction) and the Finset sum manipulations."
     },
     {
       "id": "reverse-holder",
