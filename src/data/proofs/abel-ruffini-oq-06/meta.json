@@ -70,7 +70,8 @@
       "The single short exact sequence 1 → Aₙ → Sₙ → ℤˣ → 1, with abelian right term, transfers solvability uniformly in n: every solvable symmetric group below the threshold is solvable for the *same* structural reason, not by case-specific computation.",
       "The Mathlib gap is precise: Equiv.Perm.fin_5_not_solvable and Equiv.Perm.not_solvable give the negative side, but there is no lemma IsSolvable (Equiv.Perm (Fin n)) for n ∈ {3,4}; the reduction lemma is exactly the missing tool that makes those cases one-liners modulo solvability of Aₙ.",
       "For A₃, solvability is forced by arithmetic alone: order 3 is prime, so the group is cyclic and therefore abelian — no permutation-specific reasoning is needed once the order is computed.",
-      "The reduction makes the remaining open case sharp: S₄ solvable ⟺ A₄ solvable, collapsing the whole 'complete the threshold' task to the single Klein-four fact A₄ ⊳ V₄ ⊳ 1."
+      "The reduction makes the remaining open case sharp: S₄ solvable ⟺ A₄ solvable, collapsing the whole 'complete the threshold' task to the single Klein-four fact A₄ ⊳ V₄ ⊳ 1.",
+      "**Uniformity replaces case-by-case ad hoc proofs.** Before this file, S₂'s solvability was established by a standalone commutativity `decide` in the companion obstruction file — an argument specific to n = 2 with no path to n = 3. permSolvable_of_alternatingSolvable subsumes it: S₂ solvable now falls out of the very same one-line reduction as S₃, from the same abstract sign-kernel fact, rather than from a bespoke finite check that would need re-deriving for every new n."
     ]
   },
   "sections": [
