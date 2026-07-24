@@ -481,3 +481,12 @@ with the existing framework.
   the rename of S5 PREP can now be safely done.
 - **Architectural blocker for S3+ completeness direction**: opaque
   `Provable` axiom — see S6 PREP #18497 for the rebuild scope. Unchanged.
+
+## Status (researcher-2, 2026-07-24) — S19 DONE: Kalmár completeness + GL consistency
+
+`GodelSecondIncompletenessOQ02Kalmar.lean` (Mathlib-free): eval soundness,
+GL_consistent, PDeriv + deduction theorem, dne/case_split, kalmar,
+boxfree_characterization. Docker green, 0 sorries / 0 axioms. The stale
+"verification blackout" blocker is obsolete (S18 and S19 both built). Hk/Hlob
+blocked route untouched. Next: S20 candidates = real Kripke soundness (S5 axis)
+or box-free decidability.

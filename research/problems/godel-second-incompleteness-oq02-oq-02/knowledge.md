@@ -244,3 +244,50 @@ derivations; defined `conj` unfolds by defeq in expected types.
    ~300-500 LOC): would discharge Htaut wholesale.
 3. S5 Kripke semantics + soundness of GL_proves (independent axis, unblocked).
 4. Hk/Hlob remain blocked on the Σ₁ rebuild (see negative finding above).
+
+---
+
+## S19 (2026-07-24, researcher-2) — Kalmár completeness for box-free GL + GL CONSISTENCY
+
+**Outcome**: option (a) of the S18 handoff executed, plus a bonus metatheorem.
+New file `GodelSecondIncompletenessOQ02Kalmar.lean` (Mathlib-FREE like S8/S18 —
+imports only GLSyntax + GLFour; docker green; 0 sorries, 0 axioms).
+
+- **Boolean semantics** `eval` (□ ↦ true = one-world successor-free Kripke
+  model): `eval_of_GL_proves` validates all five constructors (K and Löb are
+  trivially true when □ is constantly true).
+- **`GL_consistent : ¬ GL_proves ⊥`** — first machine-checked consistency of
+  the S8 system — and `GL_proves_no_atom`.
+- **Hypothesis layer** `PDeriv Γ φ` (hyp/thm/mp) with `weaken` and the
+  **deduction theorem** (k1/k2 only, induction over derivations).
+- **Classical glue** derived inside the system via the deduction theorem:
+  `dne` (¬¬p→p from k3), `case_split : ⊢ (χ→φ) → ((χ→⊥)→φ) → φ`.
+- **`kalmar`**: box-free boolean tautologies are GL theorems (Kalmár main
+  lemma + duplicate-tolerant atom elimination — weakening absorbs repeated
+  atoms, so no Nodup/dedup needed).
+- **`boxfree_characterization`**: GL's box-free fragment = classical
+  propositional logic exactly. Propositional (Htaut-style) obligations on the
+  GL side now reduce to truth-table checks.
+
+### Lean gotchas (no-Mathlib file, v4.31)
+- rcases/rintro/obtain/simpa/by_cases ALL work without Mathlib (core tactics
+  now) — only `omega`-style automation is absent.
+- `induction h` on `PDeriv Γ φ` with fixed Γ and hsub in scope: the IHs come
+  PRE-APPLIED (motive `fun φ => PDeriv Γ' φ`) — write `.mp ih₁ ih₂`, not
+  `.mp (ih₁ hsub) (ih₂ hsub)`.
+- `lit v (.atom p) = litAtom v p` is `rfl` (ite instances defeq); `simp only`
+  can leave a syntactically-identical-looking `X = X` open when the hidden
+  Decidable instances differ — use `rfl`, not simp, for such bridges.
+- `.hyp (by simp)` FAILS when the hypothesis formula is still a metavariable
+  (e.g. as h₁ of an `mp` whose φ isn't pinned): name every hypothesis with an
+  explicit `have hX : PDeriv Δ (concrete formula) := .hyp (by simp)` first.
+- Deduction theorem via `have key : ∀ {Δ ψ}, PDeriv Δ ψ → Δ = χ :: Γ → …` +
+  `induction` + `rintro rfl` (the equation-generalization trick).
+
+### Next tractable (unchanged + new)
+- (b) S5 Kripke semantics soundness over genuine transitive converse-wf
+  frames (the boolean model here is the 1-world degenerate case).
+- Per-instance Htaut on the ARITHMETIC side still waits on the Σ₁ Provable
+  rebuild (Hk/Hlob blocked route unchanged).
+- Possible: decidability of box-free GL-provability via
+  boxfree_characterization + finite valuation search over atoms φ.
