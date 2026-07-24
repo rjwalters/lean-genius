@@ -110,11 +110,18 @@
       "summary": "comp_matrix: H(W₁∘W₂)=H(W₁)·H(W₂) via Matrix.mul_apply + Fintype.sum_sigma + Fintype.sum_mul_sum (the distributive law over the intermediate layer). det_comp: det H(W₁∘W₂)=det H(W₁)·det H(W₂) via Matrix.det_mul (Cauchy–Binet). det_comp_comm: determinant-level commutativity of composition."
     },
     {
-      "id": "iterated-and-bridges",
-      "title": "Iterated Stack Law, Unweighted Specialisation, and Family-Sum Bridge",
+      "id": "iterated-stack-law",
+      "title": "Iterated Stack Law for a List of Layers",
       "startLine": 115,
+      "endLine": 130,
+      "summary": "det_comp_list: folding composition over a list Ws of weighted path systems with base layer W₀ gives det H(W₁∘⋯∘Wₙ∘W₀)=(∏ᵢ det H(Wᵢ))·det H(W₀), proved by List.foldr induction using det_comp at each cons step."
+    },
+    {
+      "id": "unweighted-and-bridge",
+      "title": "Unweighted Specialisation and the Family-Sum Bridge",
+      "startLine": 132,
       "endLine": 154,
-      "summary": "det_comp_list: the iterated product law det H(W₁∘⋯∘Wₙ∘W₀)=(∏ᵢ det H(Wᵢ))·det H(W₀) by List.foldr induction. comp_card_matrix: the unweighted (weight-1) entry counts length-two concatenated paths. det_comp_signed_family_sum: the composite determinant as a product of two signed family sums, bridging to the sibling's det_matrix_eq_signed_family_sum."
+      "summary": "comp_card_matrix: the unweighted (weight-1) entry counts length-two concatenated paths, H(W₁∘W₂) i j = #(Σ k, Path₁ i k × Path₂ k j). det_comp_signed_family_sum: the composite determinant as a product of two signed family sums, bridging to the sibling's det_matrix_eq_signed_family_sum."
     }
   ],
   "conclusion": {
