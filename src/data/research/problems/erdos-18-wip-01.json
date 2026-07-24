@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BREAKTHROUGH: the powers-of-two record pattern BREAKS at t = 9 - minimal_hErdos_nine = 348 < 512 = 2^9 (first record-setter with an odd prime factor), refuting both the record-setter-=-2^t conjecture and the hErdos <= log2 bound (not_hErdos_le_log_two); record-setter = 2^t stands for t = 1..8; t=8 record ties at 272 and 304 inside (256,512); next rung t = 10 with the [348,512) DP census already recorded",
+    "progressSummary": "PROGRESS (refutation): the powers-of-two record pattern BREAKS at t = 9 - minimal_hErdos_nine = 348 < 512 = 2^9 (first record-setter with an odd prime factor), refuting both the record-setter-=-2^t conjecture and the hErdos <= log2 bound (not_hErdos_le_log_two); record-setter = 2^t stands for t = 1..8; t=8 record ties at 272 and 304 inside (256,512); next rung t = 10 with the [348,512) DP census already recorded",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",

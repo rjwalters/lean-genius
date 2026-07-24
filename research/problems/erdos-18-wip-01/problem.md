@@ -100,6 +100,38 @@ Complete the WIP Lean file `Proofs/Erdos18Problem.lean`: extend the verified bas
 - `Mathlib.Data.Nat.Divisors` — `Nat.divisors` and divisor-sum lemmas underpinning practicality.
 - `Mathlib.NumberTheory.Divisors` — the `sigma` function used in the Stewart–Sierpiński criterion.
 
+## Adversarial Checklist (t = 9 record-setter claim, 2026-07-24)
+
+For the claim `minimal_hErdos_nine : IsLeast {m | IsPractical m ∧ hErdos m = 9} 348`
+(and its corollaries `record_setter_nine_lt_two_pow`, `not_hErdos_le_log_two`):
+
+- **Wrong-h near-miss**: the claim must be about `hErdos m = (Finset.range m).sup (repLength m)`
+  (max over targets `k < m` of the minimum representation size), NOT the universal-set
+  `h` of the parent file. Confirm the theorem statement uses `hErdos`, and that
+  `repLength` is a true minimum (`repLength_spec` + `repLength_le_of_witness`).
+- **Lower-bound scope**: `IsLeast` needs `hErdos m ≠ 9` for EVERY practical `m < 348`,
+  not just `m ∈ [256, 348)`. Confirm `hErdos_le_eight_of_lt_threefortyeight` chains
+  through `hErdos_le_seven_of_lt_twofiftysix` for `m < 256` (which itself chains all
+  prior thresholds down to `m = 1`), and that `interval_cases` covers all of `[256, 348)`
+  with every non-practical value excluded by kernel `decide`, not skipped.
+- **Exactness at 348**: `hErdos 348 = 9` needs both directions. Upper: sub-family
+  engine on 10 of the 11 proper divisors (`116` droppable since `116 = 29 + 87`).
+  Lower: `le_hErdos_of_card` at the single hard target `k = 347` quantifies over the
+  FULL powerset of `divisors 348` (2¹² subsets, kernel `decide`) — confirm no restricted
+  sub-family is used on the lower side (a restricted lower search would be unsound).
+- **sInf/sup degeneracy**: `hErdos` is a `Finset.sup` over `range m`, so it is total
+  (no `sInf ∅ = 0` trap); but for NON-practical `m` some `repLength m k` values sit on
+  an empty attainment set — confirm the `IsLeast` membership component carries
+  `IsPractical 348` explicitly and the lower-bound component only ever evaluates
+  `hErdos` under an `IsPractical` hypothesis.
+- **Kernel trust**: all decides are kernel `decide` (with `maxRecDepth`/`maxHeartbeats`
+  bumps), never `native_decide` — `#print axioms minimal_hErdos_nine` must show only
+  `propext`/`Classical.choice`/`Quot.sound`, no `Lean.ofReduceBool`.
+- **Circularity**: no axiom or hypothesis as strong as the claim — the file is 0-axiom;
+  confirm `grep -c "^axiom "` is 0 and no structure-encoded assumptions exist.
+- **Scope honesty**: this settles a session-internal record-setter question only; the
+  prize conjecture `h(n!) < n^{o(1)}` is untouched and must remain open.
+
 ## Metadata
 
 ```yaml
