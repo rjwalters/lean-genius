@@ -481,6 +481,7 @@ This closes the last strategic sorry; the capstone
 `Q_sqrt2_classNumber_eq_one` is unconditional. -/
 
 open scoped NumberField
+open Module
 
 /-- **Coordinate surjectivity**: every element of `Q(√2)` is `a + b·√2`
 for some rationals `a, b` — read off the degree-2 `AdjoinRoot` power basis. -/
@@ -503,6 +504,7 @@ theorem exists_elt_eq (x : Q_sqrt2) : ∃ a b : ℚ, x = elt a b := by
             + b'.repr x 1 • AdjoinRoot.root X_sq_sub_two := hsum.symm
     _ = elt (b'.repr x 0) (b'.repr x 1) := by
         simp only [elt, Algebra.smul_def, mul_one]
+        rfl
 
 /-- **Coordinate uniqueness at 0**: `a + b·√2 = 0` forces `a = b = 0`
 (irrationality for `b ≠ 0`, injectivity of the ℚ-algebra map for `b = 0`). -/
@@ -542,7 +544,7 @@ theorem intBasisFun_linearIndependent :
   have hgK : elt ((g 0 : ℤ) : ℚ) ((g 1 : ℤ) : ℚ) = 0 := by
     have hcoe := congrArg (algebraMap (𝓞 Q_sqrt2) Q_sqrt2) hg
     rw [Fin.sum_univ_two] at hcoe
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at hcoe
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hcoe
     rw [map_add, map_zsmul, map_zsmul, map_one, map_zero, sqrt2Int_coe] at hcoe
     simp only [elt, map_intCast, zsmul_eq_mul, mul_one] at hcoe ⊢
     exact hcoe
@@ -575,10 +577,10 @@ noncomputable def intBasis : Basis (Fin 2) ℤ (𝓞 Q_sqrt2) :=
   Basis.mk intBasisFun_linearIndependent intBasisFun_span
 
 @[simp] theorem intBasis_apply_zero : intBasis 0 = 1 := by
-  simp only [intBasis, Basis.mk_apply, Matrix.cons_val_zero]
+  simp [intBasis, Basis.mk_apply]
 
 @[simp] theorem intBasis_apply_one : intBasis 1 = sqrt2Int := by
-  simp only [intBasis, Basis.mk_apply, Matrix.cons_val_one, Matrix.head_cons]
+  simp [intBasis, Basis.mk_apply]
 
 /-- The ℤ-trace of an integer constant in `𝓞 Q(√2)` is twice the integer
 (the field degree is 2). -/
@@ -612,8 +614,9 @@ theorem trace_sqrt2Int : Algebra.trace ℤ (𝓞 Q_sqrt2) sqrt2Int = 0 := by
       rw [intBasis_apply_zero, intBasis_apply_one, sqrt2Int_mul_self]
       simp
     rw [hmul, map_smul, Basis.repr_self]
-    simp [Finsupp.single_apply]
+    simp
   rw [h00, h11]
+  norm_num
 
 /-- **`discr Q(√2) = 8`** — the trace matrix of the integral basis `{1, √2}`
 is `[[2, 0], [0, 4]]`, with determinant `8`. Formerly the file's one
