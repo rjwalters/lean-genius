@@ -70,7 +70,8 @@
       "**Cyclic invariance is not a permutation of diagonal entries.** The cross-dimension witness makes this unmissable: A·B is a 1×1 matrix and B·A is a 2×2 matrix, computed in different matrix algebras, yet both traces equal 11. The identity is about the bilinear pairing tr(A·B) = Σ Aᵢⱼ Bⱼᵢ, which is manifestly symmetric in A and B.",
       "**The commutator identity is the obstruction to AB − BA = I.** Because tr(A·B − B·A) = 0 always, while tr(I) = n ≠ 0, no finite-dimensional matrices can satisfy the canonical commutation relation — a one-line consequence of cyclic invariance phrased here with an honest subtraction.",
       "**Determinant hypothesis, not matrix-unit hypothesis.** Similarity invariance is stated with IsUnit P.det and the nonsingular inverse P⁻¹, the form actually verified in computation, rather than Mathlib's IsUnit P in the matrix ring — and it ties singularity (det = 0) back to the spectral criterion of oq-01.",
-      "**Same eigenvalues is strictly stronger than same trace and determinant.** Conjugation preserves the whole characteristic polynomial, so similar matrices agree on every elementary symmetric function of the spectrum, not merely the first (trace) and last (determinant). The sum/product invariance recovered here are just the two extreme shadows of that multiset equality."
+      "**Same eigenvalues is strictly stronger than same trace and determinant.** Conjugation preserves the whole characteristic polynomial, so similar matrices agree on every elementary symmetric function of the spectrum, not merely the first (trace) and last (determinant). The sum/product invariance recovered here are just the two extreme shadows of that multiset equality.",
+      "**Elaboration cost flagged in the source.** `eigenvalues_units_conj` carries `set_option maxHeartbeats 1000000`, five times Lean's default 200000-heartbeat budget — an explicit signal that its `simpa`-driven rewrite of `charpoly_units_conj` over an arbitrary field `K` is elaboration-heavier than the one-line mathematical content (equal characteristic polynomials force equal root multisets) would suggest."
     ],
     "prerequisites": [
       "The trace of a matrix and the product/diagonal-sum formula tr(A·B) = Σ Aᵢⱼ Bⱼᵢ",
@@ -81,10 +82,18 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and the Headline Identities",
+      "title": "Module Header",
       "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring laying out cyclic invariance, the value added over Mathlib (commutator subtraction form, determinant-form similarity, eigenvalue-multiset bridge), and the witnesses; import of Mathlib, namespace, open Matrix, and the ambient variables {n} [Fintype n] [DecidableEq n], {R} [CommRing R].",
+      "mathContext": "$\\operatorname{tr}(AB) = \\operatorname{tr}(BA)$ over a commutative ring $R$."
+    },
+    {
+      "id": "headline-identities",
+      "title": "The Headline Identities (Re-exported from Mathlib)",
+      "startLine": 63,
       "endLine": 78,
-      "summary": "Module docstring laying out cyclic invariance, the value added over Mathlib (commutator subtraction form, determinant-form similarity, eigenvalue-multiset bridge), and the witnesses; import of Mathlib, open Matrix, and the re-exports trace_mul_comm (rectangular) and trace_mul_cycle.",
+      "summary": "trace_mul_comm and trace_mul_cycle re-export Matrix.trace_mul_comm and Matrix.trace_mul_cycle under self-documenting names, preserving the rectangular generality (A, B need not be square, and A·B, B·A need not even share a size).",
       "mathContext": "$\\operatorname{tr}(AB) = \\operatorname{tr}(BA),\\quad \\operatorname{tr}(ABC) = \\operatorname{tr}(CAB)$."
     },
     {
