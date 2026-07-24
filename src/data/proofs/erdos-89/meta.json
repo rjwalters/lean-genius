@@ -50,8 +50,8 @@
       "Definition of distinct distances for point sets",
       "Minimum distinct distances function g(n)",
       "Erdos89Conjecture as Ω(n/√(log n)) lower bound",
-      "Axiom for Guth-Katz Ω(n/log n) result",
-      "Axiom for grid upper bound O(n/√(log n))",
+      "Historical note (comment, not a Lean declaration) on Guth-Katz's Ω(n/log n) result",
+      "Historical note (comment, not a Lean declaration) on the grid upper bound O(n/√(log n))",
       "Theorem showing conjecture implies Guth-Katz",
       "Historical bounds from Chung and Tardos"
     ],
@@ -65,7 +65,7 @@
     "historicalContext": "The distinct distances problem is one of Erdős's most famous problems in combinatorial geometry, posed in 1946. Given n points in the plane, how many distinct pairwise distances must exist?\n\nThe √n × √n integer grid has only O(n/√(log n)) distinct distances, showing this bound would be tight if true. Erdős offered $500 for a proof.\n\nAfter decades of progress (Chung 1992, Solymosi-Tóth 2001, Tardos 2004), Guth and Katz made a breakthrough in 2015, proving Ω(n/log n) distinct distances using algebraic methods. This is tantalizingly close to Erdős's conjecture, differing only by a factor of √(log n).",
     "problemStatement": "**Erdős Problem #89 (OPEN)**\n\nDoes every set of $n$ distinct points in $\\mathbb{R}^2$ determine at least $\\Omega(n/\\sqrt{\\log n})$ distinct distances?\n\n**Known Results**:\n- Guth-Katz (2015): $\\Omega(n/\\log n)$ distinct distances\n- Grid construction: $O(n/\\sqrt{\\log n})$ is achievable\n\n**Prize**: $500",
     "text": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
-    "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **distinctDistances**: Set of pairwise distances for a point set\n\n2. **minDistinctDistances**: Minimum over all n-point sets\n\n3. **Erdos89Conjecture**: The Ω(n/√(log n)) lower bound\n\n4. **guthKatz** (axiom): The Ω(n/log n) partial result\n\n5. **gridUpperBound** (axiom): The O(n/√(log n)) construction\n\n6. **conjecture_implies_guthKatz**: Conjecture implies Guth-Katz",
+    "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **distinctDistances**: Set of pairwise distances for a point set\n\n2. **minDistinctDistances**: Minimum over all n-point sets\n\n3. **Erdos89Conjecture**: The Ω(n/√(log n)) lower bound\n\n4. Guth-Katz's Ω(n/log n) partial result is described in a comment, not formalized as a Lean declaration\n\n5. The O(n/√(log n)) grid upper bound is described in a comment, not formalized as a Lean declaration\n\n6. **conjecture_implies_guthKatz**: Conjecture implies Guth-Katz",
     "keyInsights": [
       "**The grid construction**: A √n × √n integer grid achieves O(n/√(log n)) distinct distances, showing the conjecture would be tight.",
       "**Guth-Katz breakthrough**: Their 2015 proof used polynomial partitioning and incidence geometry, achieving Ω(n/log n).",
