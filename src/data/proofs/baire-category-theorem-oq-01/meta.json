@@ -155,11 +155,19 @@
     },
     {
       "id": "abstract-baire",
-      "title": "Part (a): The Abstract Baire Category Theorem",
+      "title": "Part (a.1): The Two Mathlib Re-exports",
       "startLine": 39,
+      "endLine": 54,
+      "summary": "baire_dense_iInter (countable intersection of dense open sets is dense) and baire_nonempty_interior (a countable closed cover has a piece with nonempty interior) re-export Mathlib's dense_iInter_of_isOpen and nonempty_interior_of_iUnion_of_closed unchanged.",
+      "mathContext": "Dense-$G_\\delta$ form: $\\forall i,\\ f_i$ open dense $\\Rightarrow \\bigcap_i f_i$ dense. Category form: $\\bigcup_i F_i = X$ with $F_i$ closed $\\Rightarrow \\exists i,\\ \\mathrm{int}(F_i) \\ne \\emptyset$."
+    },
+    {
+      "id": "contrapositive-baire",
+      "title": "Part (a.2): The Contrapositive and Non-Meagre Forms",
+      "startLine": 56,
       "endLine": 72,
-      "summary": "baire_dense_iInter (countable intersection of dense open sets is dense) and baire_nonempty_interior (a countable closed cover has a piece with nonempty interior) re-export Mathlib. baire_not_iUnion_empty_interior is the new contrapositive — a nonempty Baire space is not a countable union of empty-interior closed sets — and baire_univ_not_meagre states the whole space is non-meagre.",
-      "mathContext": "Category form: $\\bigcup_i F_i = X$ with $F_i$ closed $\\Rightarrow \\exists i,\\ \\mathrm{int}(F_i) \\ne \\emptyset$. Contrapositive: all $\\mathrm{int}(F_i) = \\emptyset \\Rightarrow \\bigcup_i F_i \\ne X$."
+      "summary": "baire_not_iUnion_empty_interior is the new contrapositive — a nonempty Baire space is not a countable union of empty-interior closed sets — proved by negating baire_nonempty_interior; baire_univ_not_meagre specializes not_isMeagre_of_isOpen to the universal set.",
+      "mathContext": "Contrapositive: all $\\mathrm{int}(F_i) = \\emptyset \\Rightarrow \\bigcup_i F_i \\ne X$. Equivalently the whole space $X$ is never $\\mathrm{IsMeagre}$."
     },
     {
       "id": "real-baire-instance",
