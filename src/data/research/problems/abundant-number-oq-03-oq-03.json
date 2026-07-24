@@ -57,7 +57,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED 2026-07-24: OddPrimitiveAbundant.Infinite (strict A006038) PROVED axiom-free via the consecutive-prime first-crossing family — for each start a>=1 multiply consecutive primes until first abundant; divergence of sum 1/p forces the crossing, first-crossing minimality + mod-4 exclusion of sigma=2n give all-proper-divisors-deficient, distinct least primes give injectivity. Docker build green. The 2026-07-21 SATURATED verdict is resolved: the blocked routes assumed the wrong witness shape. Follow-ups recorded: fixed-least-prime infinitude, omega>=3 for odd abundants, Dickson finiteness.",
+    "progressSummary": "COMPLETED 2026-07-24: OddPrimitiveAbundant.Infinite (strict A006038) proved axiom-free (PR #43297); omega>=3 satellite closed (PR #43439); least-prime-3 satellite closed (researcher-2): infinitely many odd primitive abundants with minFac = 3 via the non-squarefree family 3^j * (first-crossing tail started at 3*sigma(3^j)). Remaining follow-up: Dickson 1913 finiteness (deep). Gallery wiring of both satellite files into additionalFiles still enricher-sized.",
     "builtItems": [
       "IsPrimitiveAbundant (A006038 predicate) in proofs/Proofs/AbundantNumberOQ03OQ03.lean",
       "OddPrimitiveAbundant set + mem_oddPrimitiveAbundant_945 (945 is a member) in AbundantNumberOQ03OQ03.lean",
@@ -87,7 +87,8 @@
       "exists_crossing: the single analytic input (Nat.Primes.not_summable_one_div + hand-rolled Weierstrass 1+sum <= prod(1+.))",
       "crossing / consecutivePrimeWitness + lt_crossing, erase_prod_deficient, consecutivePrimeWitness_mem, consecutivePrimeWitness_injective",
       "oddPrimitiveAbundant_infinite + infinitely_many_odd_primitive_abundant: THE TARGET, 0 sorries 0 axioms",
-      "AbundantNumberOQ03OQ03OmegaThree.lean: pred_mul_geom_sum_add_one, pred_mul_sum_divisors_prime_pow_lt, pred_prod_mul_sum_divisors_lt, three_le_primeFactors_card_of_odd_abundant (4 thm, 0 axioms, 0 sorries, docker 8576 jobs)"
+      "AbundantNumberOQ03OQ03OmegaThree.lean: pred_mul_geom_sum_add_one, pred_mul_sum_divisors_prime_pow_lt, pred_prod_mul_sum_divisors_lt, three_le_primeFactors_card_of_odd_abundant (4 thm, 0 axioms, 0 sorries, docker 8576 jobs)",
+      "AbundantNumberOQ03OQ03LeastPrimeThree.lean: two_mul_sum_divisors_pow_three, sum_divisors_pow_three_mul_prod(_ne_two_mul), startIdx/crossingThree/witnessThree, head_shrink_deficient, witnessThree_erase_deficient, witnessThree_spec, witnessThree_injective, oddPrimitiveAbundantLeastThree_infinite (0 axioms, 0 sorries)"
     ],
     "insights": [
       "945 = 3³·5·7 is not just the smallest odd abundant number but is odd PRIMITIVE abundant (OEIS A006038): all 15 proper divisors 1,3,5,7,9,15,21,27,35,45,63,105,135,189,315 are deficient — verified axiom-free.",
@@ -107,15 +108,17 @@
       "First-crossing minimality is exactly the primitivity engine: predecessor sigma<=2n, equality excluded mod 4 for squarefree odd (>=2 factors: 4 | prod(p_i+1) but 2n == 2 mod 4), and swapping the omitted prime only helps (p_i(p_c+1) <= p_c(p_i+1))",
       "Injectivity for free: distinct starting indices give witnesses with distinct least prime factors — no crossing comparison needed",
       "Lean: inline anonymous Equiv into Equiv.summable_iff (have-bound equivs are opaque, comp will not reduce); v4.31 Finset.range_subset_range replaces range_subset for the range-subset-range iff; Nat.Ico_succ_right_eq_insert_Ico is Nat-namespaced; mul_prod_erase needs explicit f against set-variables",
-      "Follow-up omega>=3 CLOSED (researcher-1, 2026-07-24): three_le_primeFactors_card_of_odd_abundant in new satellite AbundantNumberOQ03OQ03OmegaThree.lean. Engine: strict N-arithmetic abundancy bound pred_prod_mul_sum_divisors_lt ((prod (p-1))·σ(n) < (prod p)·n for n≥2) via Nat.recOnPosPrimePosCoprime — NOTE the recursor binder Prime resolves to Nat.Prime already (no conversion needed). Coprime step: Coprime.primeFactors_mul + prod_union disjoint_primeFactors + ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime + mul_lt_mul (alias of Left.mul_lt_mul_of_nonneg). Card<=2 case: prod p <= 2 prod (p-1) reduces to (p-2)(q-2)>=2 for distinct odd primes — substitute p=s+3,q=t+3 to kill Nat subtraction before nlinarith."
+      "Follow-up omega>=3 CLOSED (researcher-1, 2026-07-24): three_le_primeFactors_card_of_odd_abundant in new satellite AbundantNumberOQ03OQ03OmegaThree.lean. Engine: strict N-arithmetic abundancy bound pred_prod_mul_sum_divisors_lt ((prod (p-1))·σ(n) < (prod p)·n for n≥2) via Nat.recOnPosPrimePosCoprime — NOTE the recursor binder Prime resolves to Nat.Prime already (no conversion needed). Coprime step: Coprime.primeFactors_mul + prod_union disjoint_primeFactors + ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime + mul_lt_mul (alias of Left.mul_lt_mul_of_nonneg). Card<=2 case: prod p <= 2 prod (p-1) reduces to (p-2)(q-2)>=2 for distinct odd primes — substitute p=s+3,q=t+3 to kill Nat subtraction before nlinarith.",
+      "Least-prime-3 follow-up SOLVED (2026-07-24, researcher-2): non-squarefree family 3^j * p_a...p_{b-1} with tail start a(j)=3*sigma(3^j) and first-crossing stop; head exponent j is the family parameter (v_3 = j pins injectivity with minFac fixed at 3).",
+      "The N/3 maximal divisor is the genuinely new obligation vs the squarefree parent: with T=sigma(3^(j-1)), S=sigma(3^j)=3T+1, minimality + q >= 3T for the top tail prime gives 3T(q+1) <= Sq, so N/3 stays deficient. Starting the tail at 3*sigma(3^j) buys q >= 3T for free via nth i >= i.",
+      "sigma=2n exclusion needs a 3-case split for the 3^j head: the parent's mod-4 argument only covers >=2 tail primes (sigma(3^j) can be odd); the 1-prime case falls to the direct contradiction 3*3^j = 3^j*q + q + 1 (impossible for q >= 4), empty case to 2*sigma(3^j)+1 = 3^(j+1)."
     ],
     "mathlibGaps": [
       "No Nat.Coprime.divisors_mul (Finset equality for divisors of a coprime product) in Mathlib v4.31 — only Nat.Coprime.sum_divisors_mul (the sum) and card_divisors_mul (the count). Blocks a clean coprime proper-divisor decomposition."
     ],
     "nextSteps": [
-      "Follow-up (materially weaker than parent): infinitely many odd primitive abundants with least prime factor 3 — needs non-squarefree exponent-crossings, new proper-divisor analysis",
       "Deep: Dickson 1913 finiteness — for each k, finitely many odd primitive abundants with exactly k prime factors",
-      "Gallery wiring: add AbundantNumberOQ03OQ03OmegaThree.lean to the entry additionalFiles (enricher-sized)"
+      "Gallery wiring: add AbundantNumberOQ03OQ03OmegaThree.lean and AbundantNumberOQ03OQ03LeastPrimeThree.lean to the entry additionalFiles (enricher-sized)"
     ]
   },
   "tags": [
