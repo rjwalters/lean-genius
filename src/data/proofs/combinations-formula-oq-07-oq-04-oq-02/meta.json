@@ -109,11 +109,18 @@
       "summary": "variance_eq: (∑_{k=0}^{n} (k − n/2)²·C(n,k)²)/C(2n,n) = n²/(4(2n−1)) for n ≥ 1, over ℚ. Pushes the integer identity into ℚ, rewrites (k − n/2)² = (2k − n)²/4 inside the sum, and clears denominators using C(2n,n) ≠ 0 and 2n−1 ≠ 0."
     },
     {
-      "id": "checks",
-      "title": "Numeric Checks",
+      "id": "checks-n3",
+      "title": "Numeric Check (n = 3)",
       "startLine": 141,
-      "endLine": 153,
-      "summary": "Kernel-decide checks of the cleared identity at n = 3 (5·36 = 180 = 3²·C(6,3)) and n = 2 (3·8 = 24 = 2²·C(4,2))."
+      "endLine": 146,
+      "summary": "Kernel-decide check of the cleared identity (★) at n = 3: 5·∑(2k−3)²·C(3,k)² = 5·36 = 180 = 3²·C(6,3)."
+    },
+    {
+      "id": "checks-n2",
+      "title": "Numeric Check (n = 2)",
+      "startLine": 148,
+      "endLine": 154,
+      "summary": "Kernel-decide check of the cleared identity (★) at n = 2: 3·(4+0+4) = 24 = 2²·C(4,2)."
     }
   ],
   "conclusion": {
