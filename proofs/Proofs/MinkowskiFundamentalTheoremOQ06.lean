@@ -53,6 +53,12 @@ identity as an **explicit hypothesis** of the two main theorems — NOT as an `a
   `-v`), so the volume threshold doubles to `2·ζ(n)` with the SAME mean-value
   hypothesis — the classical route to `δₙ ≥ ζ(n)/2^(n-1)` (the residual
   `2^(1-n)` is ball-volume scaling, not averaging).
+* `hlawka_density_symm` — the **density rung** (S6): combining the doubled
+  threshold with the unconditional ball-volume bookkeeping
+  (`volume_ball_toReal`, `volume_ball_half_toReal`, `exists_radius_of_density`
+  — all pure Mathlib measure theory via `Measure.addHaar_ball`), every packing
+  density `d < ζ(n)/2^(n-1)` is realized by a lattice of the family: this is
+  the classical `δₙ ≥ ζ(n)/2^(n-1)` statement, staged only on `hMV`/`hInt`.
 
 **Honesty.** No `axiom` declarations, no sorries; the `hlawka_*` theorems are
 *conditional* on their `hMV` (mean-value) and `hInt` (integrability) hypotheses
@@ -481,6 +487,112 @@ theorem hlawka_ball_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
   push Not at hlt
   exact hω w hwp (Metric.mem_ball.mpr (by simpa using hlt))
 
+/-! ## Density bookkeeping: ball-volume scaling (S6)
+
+The scaling law `vol(ball r) = rⁿ·vol(ball 1)` converts the doubled threshold
+`2·ζ(n)` of `hlawka_ball_symm` into the classical **packing-density** form of
+Minkowski–Hlawka: a covolume-1 lattice of minimum distance `≥ r` packs balls of
+radius `r/2` at density `vol(ball (r/2)) = vol(ball r)/2ⁿ` per unit covolume,
+so every density `d < ζ(n)/2^(n-1)` is realized by some lattice in the family.
+All new lemmas in this section are unconditional Mathlib measure theory
+(`Measure.addHaar_ball`); the headline `hlawka_density_symm` carries only the
+same `hMV`/`hInt` staging hypotheses as before, now quantified over radii. -/
+
+/-- The volume of the unit ball of `EuclideanSpace ℝ (Fin n)`, as a real. -/
+noncomputable def unitBallVol (n : ℕ) : ℝ :=
+  (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) 1)).toReal
+
+/-- Ball-volume scaling in real form: `vol(ball 0 r) = rⁿ · vol(ball 0 1)`.
+(The Haar-scaling identity `Measure.addHaar_ball`, pushed through `toReal`;
+the ball has finite volume, so nothing is lost.) -/
+theorem volume_ball_toReal {n : ℕ} (hn : 1 ≤ n) {r : ℝ} (hr : 0 ≤ r) :
+    (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal
+      = r ^ n * unitBallVol n := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  rw [Measure.addHaar_ball volume 0 hr, ENNReal.toReal_mul,
+    ENNReal.toReal_ofReal (by positivity), finrank_euclideanSpace_fin]
+  rfl
+
+/-- The unit ball has positive volume (`volume` is an open-positive Haar
+measure and the ball is finite by properness). -/
+theorem unitBallVol_pos {n : ℕ} (hn : 1 ≤ n) : 0 < unitBallVol n := by
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  exact ENNReal.toReal_pos
+    (Metric.measure_ball_pos volume (0 : EuclideanSpace ℝ (Fin n)) one_pos).ne'
+    measure_ball_lt_top.ne
+
+/-- Half-radius scaling: `vol(ball (r/2)) = vol(ball r) / 2ⁿ` — the exact
+`2^(1-n)` bookkeeping factor between the doubled avoidance threshold and the
+packing-density bound. -/
+theorem volume_ball_half_toReal {n : ℕ} (hn : 1 ≤ n) {r : ℝ} (hr : 0 ≤ r) :
+    (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) (r / 2))).toReal
+      = (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal / 2 ^ n := by
+  rw [volume_ball_toReal hn (by positivity), volume_ball_toReal hn hr, div_pow]
+  ring
+
+/-- Radius realization: every positive real `c` is the volume of some ball
+(`r = (c/vol(B₁))^(1/n)`, inverted through `Real.rpow`). -/
+theorem exists_radius_volume_eq {n : ℕ} (hn : 1 ≤ n) {c : ℝ} (hc : 0 < c) :
+    ∃ r : ℝ, 0 < r ∧
+      (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal = c := by
+  have hv := unitBallVol_pos (n := n) hn
+  have hbase : (0 : ℝ) < c / unitBallVol n := by positivity
+  refine ⟨(c / unitBallVol n) ^ ((n : ℝ)⁻¹), by positivity, ?_⟩
+  rw [volume_ball_toReal hn (by positivity),
+    Real.rpow_inv_natCast_pow hbase.le (by omega)]
+  field_simp
+
+/-- **Density bookkeeping (unconditional).** Every target density
+`0 < d < ζ(n)/2^(n-1)` arises as `vol(ball (r/2))` for a radius `r` whose ball
+clears the doubled avoidance threshold: `vol(ball r) < 2·ζ(n)`. -/
+theorem exists_radius_of_density {n : ℕ} (hn : 2 ≤ n) {d : ℝ} (hd : 0 < d)
+    (hdlt : d < zetaSum n / 2 ^ (n - 1)) :
+    ∃ r : ℝ, 0 < r ∧
+      (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) (r / 2))).toReal = d ∧
+      (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal
+        < 2 * zetaSum n := by
+  have hn1 : 1 ≤ n := le_trans one_le_two hn
+  obtain ⟨r, hr, hvol⟩ :=
+    exists_radius_volume_eq hn1 (c := 2 ^ n * d) (by positivity)
+  have h2 : (2 : ℝ) ^ n = 2 * 2 ^ (n - 1) := by
+    conv_lhs => rw [show n = (n - 1) + 1 by omega, pow_succ]
+    ring
+  refine ⟨r, hr, ?_, ?_⟩
+  · rw [volume_ball_half_toReal hn1 hr.le, hvol]
+    field_simp
+  · rw [hvol, h2, mul_assoc]
+    have := mul_lt_mul_of_pos_left hdlt
+      (show (0 : ℝ) < 2 ^ (n - 1) * 2 by positivity)
+    calc 2 * (2 ^ (n - 1) * d) = 2 ^ (n - 1) * 2 * d := by ring
+      _ < 2 ^ (n - 1) * 2 * (zetaSum n / 2 ^ (n - 1)) := this
+      _ = 2 * zetaSum n := by field_simp; ring
+
+/-- **Minkowski–Hlawka, packing-density form (staged, S6).** Under the
+primitive Siegel–Rogers staging hypotheses (`hMV`, `hInt` — quantified over
+all radii, as the true identity holds for every Borel set), every density
+`d < ζ(n)/2^(n-1)` is realized: there is a radius `r` with
+`vol(ball (r/2)) = d` and a lattice in the family of minimum distance `≥ r`,
+i.e. whose balls of radius `r/2` pack at density `d` per unit covolume. This
+is the classical density statement `δₙ ≥ ζ(n)/2^(n-1)`, with the sole missing
+input the Siegel–Rogers identity itself (the node's registry blocker). -/
+theorem hlawka_density_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (latticeOf : Ω → AddSubgroup (EuclideanSpace ℝ (Fin n)))
+    (r₀ : Ω → ℝ) (hr₀ : ∀ ω, 0 < r₀ ω)
+    (hdisc : ∀ ω, ∀ u ∈ latticeOf ω, u ≠ 0 → r₀ ω ≤ ‖u‖)
+    (hMV : ∀ r : ℝ, 0 < r →
+      ∫ ω, (primCount (latticeOf ω) (Metric.ball 0 r) : ℝ) ∂μ =
+        (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) r)).toReal / zetaSum n)
+    (hInt : ∀ r : ℝ, 0 < r →
+      Integrable (fun ω => (primCount (latticeOf ω) (Metric.ball 0 r) : ℝ)) μ)
+    {d : ℝ} (hd : 0 < d) (hdlt : d < zetaSum n / 2 ^ (n - 1)) :
+    ∃ r : ℝ, 0 < r ∧
+      (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) (r / 2))).toReal = d ∧
+      ∃ ω, ∀ v ∈ latticeOf ω, v ≠ 0 → r ≤ ‖v‖ := by
+  obtain ⟨r, hr, hhalf, hvol⟩ := exists_radius_of_density hn hd hdlt
+  exact ⟨r, hr, hhalf,
+    hlawka_ball_symm hn μ latticeOf r₀ hr₀ hdisc (hMV r hr) (hInt r hr) hvol⟩
+
 #check @zetaSum_summable
 #check @one_le_zetaSum
 #check @minimal_isPrimitive
@@ -497,5 +609,11 @@ theorem hlawka_ball_symm {n : ℕ} (hn : 2 ≤ n) {Ω : Type*}
 #check @two_le_primCount_of_symm_of_mem
 #check @hlawka_avoidance_symm
 #check @hlawka_ball_symm
+#check @volume_ball_toReal
+#check @unitBallVol_pos
+#check @volume_ball_half_toReal
+#check @exists_radius_volume_eq
+#check @exists_radius_of_density
+#check @hlawka_density_symm
 
 end MinkowskiFundamentalTheoremOQ06
