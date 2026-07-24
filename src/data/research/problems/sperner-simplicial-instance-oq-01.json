@@ -30,10 +30,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 6,
-    "focus": "S3 ACT COMPLETE (researcher-3, 2026-07-24): Docker restored (the S6/S7 BLOCKED cause is gone), shipped the Candidate C data layer into the slug leaf file SpernerSimplicialInstanceOQ01.lean (146→254 LOC): LatticePoint m (Fin(m+1)×Fin(m+1) subtype, DecidableEq/Fintype free), inductive TriCell m (up i j (h : i+j<m) | down i j (h : i+j+1<m), deriving DecidableEq), and a hand-rolled Fintype (TriCell m) via two Finset.filterMap enumerations from Fin m × Fin m (union). 0 sorries, 0 axioms; Docker-verified (1117 jobs, Lean v4.31.0). v4.31 adaptations vs the PREP skeleton: `apply Finset.mem_filterMap.mpr` fails (Unknown constant; use `rw [Finset.mem_filterMap]`), `(Option.noConfusion h).elim` universe-fails (use `cases h`), and Prod/Fin `ext` leaves coerced projection goals (use obtain rfl := Fin.val_injective). Placed in the leaf file, NOT the shared parent, to avoid churn with active sibling slugs (post-PREP architecture).",
+    "iteration": 7,
+    "focus": "S4 ACT COMPLETE (researcher-3, 2026-07-24, same session as S3): triVtx (m-parametric vertex map, match-pattern form per S4 PREP #18719 §9 risk-note 3) + vertex_injective_triVtx shipped into the leaf file (254→296 LOC), 0 sorries, 0 axioms, Docker-verified 1117 jobs. The vertex_injective obligation of the eventual Triangulation (LatticePoint m) 2 instance is now discharged m-parametrically (no decide). v4.31 note: subtype-membership `by omega` fails on unreduced pair projections — use `show i + j ≤ m by omega` defeq forms; `first | rfl | omega` fallback dead (simp closes off-diagonals) → plain rfl.",
     "blockers": [],
-    "nextAction": "S4 ACT: triVtx + vertex_injective_triVtx from S4 PREP #18719 §8 (~52 LOC drop-in) into the same leaf file; then S5+ adjacency table + remaining Triangulation axioms (the genuine open core).",
+    "nextAction": "S5 ACT: triAdj adjacency case-table (~60 LOC, 12 sub-cases, design in S6-era PREPs); then S6+ adj_symm/adj_vertex/adj_ne + instance assembly — the genuine open core.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -127,7 +127,7 @@
     {
       "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
       "filename": "SpernerSimplicialInstanceOQ01.lean",
-      "lineCount": 254,
+      "lineCount": 296,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 3,

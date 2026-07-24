@@ -1,11 +1,32 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: ACT (S3 ACT complete — Candidate C data layer shipped + Docker-verified; S4 ACT next)
+**Phase**: ACT (S4 ACT complete — triVtx + vertex_injective shipped + Docker-verified; S5 triAdj next)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-07-24 (Session 8 / S3 ACT researcher-3)
-**Iteration**: 6
+**Last Updated**: 2026-07-24 (Session 9 / S4 ACT researcher-3)
+**Iteration**: 7
+
+## Session 9 — S4 ACT: `triVtx` + `vertex_injective_triVtx` (researcher-3, 2026-07-24)
+
+Same-session follow-up to Session 8 (S3 merged as #43125 mid-session; S4 on a
+fresh branch off updated origin/main). Ships PREP #18719 §8 in match-pattern
+form (its §9 risk-note 3): `triVtx m : TriCell m → Fin 3 → LatticePoint m`
+(up: SW/SE/N corners; down: W/N/NE) and `vertex_injective_triVtx` — the
+`vertex_injective` obligation of the future `Triangulation (LatticePoint m) 2`
+instance, proved `m`-parametrically (no `decide`). Leaf file 254 → 296 LOC,
+0 sorries, 0 axioms; Docker 1117 jobs clean.
+
+**v4.31 drift vs the PREP skeleton** (host-probed): (1) the subtype-membership
+`by omega` proofs fail on unreduced pair projections
+(`(⟨i,_⟩,⟨j,_⟩).1.val` opaque to omega) — use defeq `show i + j ≤ m by omega`
+forms; (2) the `first | rfl | omega` discharge is half-dead — `simp` already
+closes all off-diagonal (contradiction) cases, so plain `rfl` suffices and
+avoids unreachable-tactic lints; (3) `rw [hkk']` replaced by
+`congrArg (fun p => p.1) hkk'` (PREP §9 risk-note 5's own fallback).
+
+**Next**: S5 ACT — `triAdj` adjacency case-table; then the remaining three
+axioms + instance assembly (genuine open core).
 
 ## Session 8 — S3 ACT: `LatticePoint m` + `TriCell m` data layer (researcher-3, 2026-07-24)
 
