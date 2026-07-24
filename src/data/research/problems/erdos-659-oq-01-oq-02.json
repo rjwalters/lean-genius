@@ -1,8 +1,8 @@
 {
   "slug": "erdos-659-oq-01-oq-02",
   "title": "4-point-property distance bound in ℝ^d for d ≥ 3",
-  "phase": "PREP",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "parent": "erdos-659-oq-01",
@@ -59,7 +59,8 @@
       "S4 ACT: this completes only the axis-vs-plane half of L_{2,5} safety; full-rank (genuinely ternary) safety remains a future obligation (Mathlib lacks ternary Hasse-Minkowski at v4.26.0). The d≥3 distinct-distance OQ is NOT solved.",
       "(5,7) mixed-modulus discharge VERIFIED: eqs A/C reduce mod 5 (7 = 2 mod 5, reusing zmod_5_a_sq_eq_two_b_sq_iff), only eq B needs the new mod-7 helper. The S9 hand-derived recipe was correct in every sign/coefficient - it compiled first try, six weeks after being written blind (Docker down).",
       "Docker is NOT required for this file: host lake env lean verifies it (imports Mathlib only); the 2026-06-13 BLOCKED flag was stale. The 49-case ZMod 7 decide is instant.",
-      "(5,13) pre-audit for the next session: A/C reduce mod 5 via the EXISTING zmod_5_a_sq_eq_three_b_sq_iff (13 = 3 mod 5, 3 nonresidue); eq B reduces mod 13 needing new zmod_13_a_sq_eq_five_b_sq_iff (squares mod 13 = {0,1,3,4,9,10,12}, 5 not among). Again exactly ONE new helper."
+      "(5,13) pre-audit for the next session: A/C reduce mod 5 via the EXISTING zmod_5_a_sq_eq_three_b_sq_iff (13 = 3 mod 5, 3 nonresidue); eq B reduces mod 13 needing new zmod_13_a_sq_eq_five_b_sq_iff (squares mod 13 = {0,1,3,4,9,10,12}, 5 not among). Again exactly ONE new helper.",
+      "S11 (2026-07-24): (5,13) confirmed mixed-modulus like (5,7) — 13 = 3 mod 5 with 3 a non-residue kills A/C mod 5 via the EXISTING three-form helper; only B needs mod 13 (5 not in squares mod 13 = {0,1,3,4,9,10,12}). Pre-audits for the last two pairs: (7,13) is uniform mod-13 (mod 7 fails: -13 = 1 is a QR; needs plus-7 and eq-7 helpers), (11,13) is mixed (A/C mod 11 via 13 = 2, 2 not a square mod 11; B mod 13 via 11 not a square)."
     ],
     "builtItems": [
       "Wrote research/problems/erdos-659-oq-01-oq-02/problem.md (formal problem + Lean targets + S2-S6 plan).",
@@ -70,14 +71,15 @@
       "Erdos659OQ01OQ02.lean: 3 strategic sorries → 0, axioms 0, Docker build GREEN.",
       "zmod_7_a_sq_eq_five_b_sq_iff in Erdos659OQ01OQ02.lean",
       "safe_A_5_7_holds, safe_B_5_7_holds, safe_C_5_7_holds (mixed-modulus QR descent) in Erdos659OQ01OQ02.lean",
-      "safe_5_7_axis_vs_plane (4th of 7 safe pairs) in Erdos659OQ01OQ02.lean"
+      "safe_5_7_axis_vs_plane (4th of 7 safe pairs) in Erdos659OQ01OQ02.lean",
+      "S11 ACT (Erdos659OQ01OQ02.lean 877->1069 L): zmod_13_a_sq_eq_five_b_sq_iff (169-case decide), safe_A_5_13_holds, safe_B_5_13_holds, safe_C_5_13_holds (QR infinite descents), safe_5_13_axis_vs_plane (composite). #print axioms = propext/Classical.choice/Quot.sound on all."
     ],
-    "progressSummary": "PROGRESS: 4 of 7 axis-vs-plane safe pairs discharged ((2,5), (3,5), (2,13), (5,7)) - all 0-axiom QR infinite descents. (5,7) was the first mixed-modulus case. Remaining: (5,13) (pre-audited, one new helper), (7,13), (11,13); then the deep full-rank Hasse-Minkowski half and the Theta(n^{2/3}) assembly. UNBLOCKED: host lake env lean suffices, no Docker needed.",
+    "progressSummary": "PROGRESS: 5 of 7 axis-vs-plane safe pairs discharged ((2,5), (3,5), (2,13), (5,7), (5,13)) - all 0-axiom QR infinite descents, host lake env lean verified (no Docker needed). (5,13) was the second mixed-modulus case: A/C mod 5 reusing zmod_5_a_sq_eq_three_b_sq_iff (13 = 3 mod 5), B mod 13 via the one new helper zmod_13_a_sq_eq_five_b_sq_iff. Remaining pairs both pre-audited in state.md: (7,13) uniform mod-13 (two new helpers), (11,13) mixed mod-11/mod-13 (two new helpers). Then the deep full-rank Hasse-Minkowski half and the Theta(n^{2/3}) assembly.",
     "nextSteps": [
-      "Full-rank safety for (2,5): elementary descent for the genuinely-ternary equidistant configurations, or an honest documented axiomatisation.",
-      "Generalise the descent template to the other safe prime pairs (S2a: 15 candidates, R≤22): applies whenever p and ±q are QR-non-residues mod a common small prime.",
-      "Assemble the Θ(n^{2/3}) rate: connect SafePrimePair_* to a fourPointProperty lattice family and the distinct-distance count.",
-      "Deferred (OPEN): the headline d≥3 distinct-distance 4-point-property rate question."
+      "(7,13) ACT: uniform mod-13 discharge — two new 169-case helpers zmod_13_a_sq_plus_7_b_sq_eq_zero_iff (eq A) and zmod_13_a_sq_eq_seven_b_sq_iff (eqs B/C), descent prime 13 throughout; shape of the (2,13) session. Pre-audited in state.md S11.",
+      "(11,13) ACT: mixed-modulus discharge — two new helpers zmod_11_a_sq_eq_two_b_sq_iff (eqs A/C mod 11, since 13 = 2 mod 11) and zmod_13_a_sq_eq_eleven_b_sq_iff (eq B mod 13). Pre-audited in state.md S11.",
+      "Full-rank safety for the discharged pairs: elementary descent for genuinely-ternary equidistant configurations, or an honest documented axiomatisation (blocked: ternary Hasse-Minkowski absent from Mathlib).",
+      "Assemble the Theta(n^{2/3}) rate: connect SafePrimePair_* to a fourPointProperty lattice family and the distinct-distance count."
     ]
   },
   "tags": [
