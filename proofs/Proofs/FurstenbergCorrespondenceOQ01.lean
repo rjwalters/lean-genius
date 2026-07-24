@@ -295,7 +295,7 @@ This satisfies μ_{a,N}(B₀) = |A ∩ [a,a+N)| / N ≥ δ. **Proved below.**
 
 **Step 2**: Extract a convergent subsequence from these measures
   (Prokhorov's theorem: compact space → tight → convergent subsequence).
-  Stated as a local axiom (Mathlib v4.26 has ingredients but not assembled).
+  Proved (S14) via Mathlib v4.31's `Mathlib.MeasureTheory.Measure.Prokhorov`.
 
 **Step 3**: Any limit point is T-invariant with μ(B₀) ≥ δ.
   T-invariance: |∫f d(T_*(μ_{a,N})) - ∫f dμ_{a,N}| ≤ 2‖f‖/N → 0.
@@ -578,7 +578,7 @@ theorem cesaroMeasure_preimage_ge (x : CantorSpace) (N : ℕ)
 end TInvariance
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
-PART IX: THE MINIMAL REMAINING AXIOM (PROKHOROV)
+PART IX: PROKHOROV SEQUENTIAL COMPACTNESS (former axiom, proved in S14)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-!
@@ -597,28 +597,33 @@ What remains:
    So any limit μ is T-invariant.
 3. **Density at limit**: μ(B₀) ≥ δ (by lower semi-continuity + density lower bound).
 
-Mathlib v4.26.0 has the ingredients:
-- `IsTightMeasureSet.of_compactSpace` (all measures tight on compact spaces)
-- `LevyProkhorov.eq_convergenceInDistribution` (metrizes weak convergence)
-- `WeakDual.isSeqCompact_closedBall` (sequential Banach-Alaoglu)
-
-The gap is ~150–200 lines assembling these into sequential compactness for
-`ProbabilityMeasure CantorSpace`.
+Mathlib v4.31 closed this gap upstream: `Mathlib.MeasureTheory.Measure.Prokhorov`
+(Gouëzel, 2025) provides `CompactSpace (ProbabilityMeasure E)` for any compact
+`E`, and `Mathlib.MeasureTheory.Measure.LevyProkhorovMetric` provides
+`MetrizableSpace (ProbabilityMeasure X)` for separable pseudo-metrizable Borel
+`X` — so sequential compactness follows from general topology
+(`CompactSpace.tendsto_subseq`), with no hand-assembly needed.
 -/
 
-/-- **Local Axiom (Prokhorov)**: Sequential compactness of probability measures
-    on Cantor space ℕ → Bool in the weak-* topology.
+/-- **Prokhorov (S14: former local axiom, now a theorem)**: Sequential
+    compactness of probability measures on Cantor space ℕ → Bool in the
+    topology of weak convergence.
 
-    Mathematical status: This is a standard consequence of Prokhorov's theorem.
-    Cantor space is compact metrizable separable. All sets of probability measures
-    on a compact space are tight (Mathlib: `IsTightMeasureSet.of_compactSpace`).
-    Prokhorov's theorem (tight + compact metrizable → sequentially compact)
-    then applies. Estimated formalization: ~150–200 lines. -/
-axiom seqCompact_probabilityMeasure_cantor :
+    Cantor space is compact, T2, second-countable and Borel, so Mathlib's
+    Prokhorov instance (`Mathlib.MeasureTheory.Measure.Prokhorov`, 2025) makes
+    `ProbabilityMeasure CantorSpace` a **compact** space; the Lévy–Prokhorov
+    metrization makes it **metrizable**, hence first-countable. A sequence in
+    a compact first-countable space has a convergent subsequence
+    (`CompactSpace.tendsto_subseq`). The 2026-05 estimate of "~150–200 lines
+    of assembly" is now three lines of instance plumbing. -/
+theorem seqCompact_probabilityMeasure_cantor :
     ∀ (f : ℕ → ProbabilityMeasure CantorSpace),
     ∃ (φ : ℕ → ℕ), StrictMono φ ∧
     ∃ μ : ProbabilityMeasure CantorSpace,
-    Filter.Tendsto (fun k => f (φ k)) Filter.atTop (nhds μ)
+    Filter.Tendsto (fun k => f (φ k)) Filter.atTop (nhds μ) := by
+  intro f
+  obtain ⟨μ, φ, hφ, hconv⟩ := CompactSpace.tendsto_subseq f
+  exact ⟨φ, hφ, μ, hconv⟩
 
 /-!
 ### Progress Summary
@@ -635,7 +640,7 @@ axiom seqCompact_probabilityMeasure_cantor :
 | `mem_cylinderZero_shifted` | ✅ Proved | This session |
 | `cesaroMeasure_cylinderZero` (orbit-density formula) | ✅ Proved | This session |
 | `density_lower_bound` (elementary half) | ✅ Proved | This session |
-| Prokhorov sequential compactness | ⚠ Local axiom | Session 2 |
+| Prokhorov sequential compactness | ✅ Proved (S14) | Session 2 → S14 |
 | T-invariance telescoping bound | ✅ Proved | Session 3 |
 | Density preservation at limit | ❌ Remaining | ~30 lines |
 
@@ -900,7 +905,7 @@ We now have all the components to prove the Furstenberg correspondence principle
 
 **Components (all proved except Prokhorov)**:
 - `density_lower_bound`: Cesàro measures have μ(B₀) ≥ δ (Part VIII)
-- `seqCompact_probabilityMeasure_cantor`: Prokhorov compactness (Part IX, axiom)
+- `seqCompact_probabilityMeasure_cantor`: Prokhorov compactness (Part IX, proved S14)
 - `density_preserved_at_limit`: μ(B₀) ≥ δ at limit (Part X, proved)
 - `cesaroMeasure_preimage_le/ge`: approximate T-invariance (Part VIII-b, proved)
 - `limit_invariant_on_cylinder`: exact T-invariance at the limit on clopen
@@ -908,8 +913,9 @@ We now have all the components to prove the Furstenberg correspondence principle
   1/(N+1) error + le_of_tendsto_of_tendsto')
 - `positive_measure_gives_ap`: positive measure → AP (Part XIII, proved)
 
-**Remaining sorries**: 0. The sole remaining assumption is the Prokhorov
-axiom `seqCompact_probabilityMeasure_cantor` (Part IX).
+**Remaining sorries**: 0. **Remaining axioms**: 0 — the former Prokhorov
+local axiom `seqCompact_probabilityMeasure_cantor` (Part IX) was proved in
+S14 from Mathlib v4.31's Prokhorov + Lévy–Prokhorov metrization instances.
 
 **Architecture**: We construct the `Furstenberg.System` directly on Cantor space:
 - X = CantorSpace, T = shift, B = cylinderZero
@@ -937,7 +943,7 @@ axiom `seqCompact_probabilityMeasure_cantor` (Part IX).
 | `cesaroMeasure` + `cesaroMeasure_isProbability` | ✅ Proved | 2 |
 | `cesaroMeasure_cylinderZero` (orbit-density formula) | ✅ Proved | 2 |
 | `density_lower_bound` (elementary half) | ✅ Proved | 2 |
-| Prokhorov sequential compactness | ⚠ Axiom | 2 |
+| Prokhorov sequential compactness | ✅ Proved (S14) | 2 → S14 |
 | T-invariance telescoping bounds | ✅ Proved | 3 |
 | `density_preserved_at_limit` (Portmanteau) | ✅ Proved | 4 |
 | `cylinder_measure_tendsto_of_tendsto` | ✅ Proved | 4 |
