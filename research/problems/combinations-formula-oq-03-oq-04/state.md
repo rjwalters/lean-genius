@@ -4,7 +4,39 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T16:03:14-07:00
-**Iteration**: 2
+**Iteration**: 8
+
+## Status (S8, researcher-1, 2026-07-24) — k = 4 CLOSED: exact solution of the two-point band recursion
+
+`qBinomCoeff_unimodal_four (n) : Unimodal (coeff [n,4]_q)` and
+`qBinomCoeff_unimodal_of_codim_le_four (hk : k ≤ n) (hnk : n−4 ≤ k)` — 5 new thms
+(`qBinom_X_four_coeff_succ'`, `qBinom_X_four_band`,
+`qBinom_X_four_coeff_first_half_mono`, + the two above), 0 ax, 0 sorry,
+host-verified v4.31 first try (`lake env lean` exit 0; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` on all 5). Sylvester unimodality now
+covers `k ≤ 4 ∨ k ≥ n−4`; the open interior is `5 ≤ k ≤ n−5` (first instance
+`[10,5]_q`).
+
+**Mechanism (the k=4 surprise — cleaner than k=3):** dual-Pascal recurrence
+`coeff j [N+5,4] = coeff j [N+4,4] + [N+1 ≤ j]·coeff (j−(N+1)) [N+4,3]`. Growing
+the box adds exactly TWO first-half indices (the band). With `u_N, v_N` the last
+two first-half increments of the `4×N` array and `δ(N)` the k=3 box-free prefix
+increment (`p₃(N)−p₃(N−1)`, = #partitions of N into 2s and 3s, closed form never
+needed), palindromy reflects the just-past-half increments onto `−u_N, −v_N`,
+giving the linear band recursion `u_{N+1} = δ(N+1) − v_N`, `v_{N+1} = δ(N) − u_N`
+with EXACT closed solution `v ≡ 0`, `u = δ` (verified base `[5,4]=[5,1]` flat).
+Band nonnegativity is then literally the k=3 first-half monotonicity — no new
+analytic input. Below the band: IH + k=3 first-half increment ≥ 0 (the shifted
+index always lands in the k=3 first half: `j−(N+1) ≤ N−2 < ⌈3(N+1)/2⌉`).
+δ box-independence = k=3 prefix stability, inlined via `qBinom_X_three_coeff_succ'`
+if_neg (no new lemma).
+
+**Why k=5 does NOT follow the same way (recorded honestly):** the box step adds
+5/2 indices — the band alternates 2/3 points across parity classes, the
+compensating term is a k=4 increment that is itself only implicitly known
+(`u = δ` gives the LAST band increment but not the interior near-center ones the
+reflection would hit), and no analogue of the exact `v ≡ 0` solution is evident.
+The general interior needs sl₂/O'Hara (existing blocked-route entry stands).
 
 ## Status (S4, researcher-1, 2026-07-21) — high-codimension cases k ≥ n−2 closed via symmetry
 
@@ -64,12 +96,15 @@ removed the last *structural* obstacle for all remaining k:
 Both 0-axiom / 0-sorry, host-verified (`lake env lean` exit 0, axioms
 `[propext, Classical.choice, Quot.sound]`).
 
-## Next Action (item toward k = 3)
-`[n,3]_q` = generating function of partitions in a `3×(n-3)` box. Derive the first-half
-coefficient behaviour (`coeff` weakly increasing up to `⌊3(n-3)/2⌋`) and feed it to
-`qBinomCoeff_unimodal_of_first_half_mono`. The degree `3(n-3)` is odd exactly when `n` is
-even, so this is the first case that genuinely exercises the new odd-degree branch. The
-first-half monotonicity itself remains the open crux (sl₂ / O'Hara).
+## Next Action
+The elementary per-k ladder has now closed k ∈ {0,1,2,3,4} and codim ≤ 4. A k=5
+session should FIRST check whether the band analysis extends: derive the 2/3-point
+band structure for `5×N` boxes, express the reflected increments via the k=4 band
+solution (`u = δ`, `v = 0`), and see whether the resulting linear recursion again
+has a closed solution. If the interior near-center k=4 increments (not covered by
+`u = δ`) are needed, that is the wall — record it as the blocked-route extension
+and stop. The general interior `5 ≤ k ≤ n−5` remains sl₂/O'Hara territory
+(existing blocked-route entry: "materially new mechanism required").
 
 ## --- S1 template (never filled) below ---
 

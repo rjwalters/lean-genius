@@ -52,18 +52,28 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
       increments `qBinom_X_three_band`), with no `𝔰𝔩₂`/O'Hara input
 - [x] High-codimension cases `k ≥ n − 3` via `[n,k]_q = [n,n−k]_q`
       (`qBinomCoeff_unimodal_of_codim_le_three`)
-- [ ] OPEN: coefficient unimodality for the interior range `4 ≤ k ≤ n − 4`
-      (Sylvester/Proctor) — the substantive crux; first open instance `[8,4]_q`
+- [x] Coefficient unimodality, `k = 4` case (`qBinomCoeff_unimodal_four`) — the two-point
+      center-band recursion `u_{N+1} = δ(N+1) − v_N`, `v_{N+1} = δ(N) − u_N` (with `δ` the
+      `k = 3` box-free prefix increment) admits the exact closed solution `v ≡ 0`,
+      `u = δ` (`qBinom_X_four_band`); nonnegativity of the band increments is then the
+      already-proved `k = 3` first-half monotonicity
+- [x] High-codimension cases `k ≥ n − 4` via symmetry
+      (`qBinomCoeff_unimodal_of_codim_le_four`)
+- [ ] OPEN: coefficient unimodality for the interior range `5 ≤ k ≤ n − 5`
+      (Sylvester/Proctor) — the substantive crux; first open instance `[10,5]_q`
 
 ## Honesty Note
 This is the palindromy/symmetry ingredient plus the structural scaffolding
 (degree, monicity, coefficient nonnegativity, pinned extreme coefficients) AND the first
-unimodality content: the `Unimodal` predicate/API, the `k ≤ 3` cases (`k = 2` the first
-rise-then-fall array, `k = 3` the first box-crossing first half), and their `k ↦ n − k`
-mirrors. It does NOT prove unimodality in the interior range `4 ≤ k ≤ n − 4`, which is the
-remaining substantive content of the open question: there the center band of the recursion
-widens with `k` and the elementary bookkeeping no longer closes; the general case requires
-either an sl₂-action argument or O'Hara's combinatorial decomposition, not attempted here.
+unimodality content: the `Unimodal` predicate/API, the `k ≤ 4` cases (`k = 2` the first
+rise-then-fall array, `k = 3` the first box-crossing first half, `k = 4` the exactly
+solvable two-point band recursion), and their `k ↦ n − k` mirrors. It does NOT prove
+unimodality in the interior range `5 ≤ k ≤ n − 5`, which is the remaining substantive
+content of the open question. At `k = 5` the box growth step adds `5/2` indices per box —
+the band alternates between 2 and 3 points across parity classes, the compensating term is
+a `k = 4` increment that is itself only implicitly known, and the clean closed solution of
+the `k = 4` band has no evident analogue; the general case requires either an sl₂-action
+argument or O'Hara's combinatorial decomposition, not attempted here.
 
 ## Gaussian polynomial layer (over `ℤ[X]`)
 The palindromy above lives over a field (it uses `q⁻¹`). To reason about the actual
@@ -1148,6 +1158,209 @@ theorem qBinomCoeff_unimodal_of_codim_le_three {n k : ℕ} (hk : k ≤ n) (hnk :
   · exact qBinomCoeff_unimodal_of_codim_le_two hk (by omega)
   · rw [qBinom_symm (X : ℤ[X]) n k hk, show n - k = 3 from by omega]
     exact qBinomCoeff_unimodal_three n
+
+/-! ### `k = 4`: first-half monotonicity via the two-point center-band recursion
+
+The `k = 3` template extends to `k = 4` — with a *different, and strikingly clean*, band
+solution.  Write the box as `4×N` (`n = N + 4`, degree `4N`, midpoint `2N`).  The dual
+`q`-Pascal form gives the recurrence
+
+  `coeff j [N+5,4] = coeff j [N+4,4] + [N+1 ≤ j]·coeff (j-(N+1)) [N+4,3]`,
+
+whose correction term is a **`k = 3` coefficient** — exactly known on its box-free prefix
+(indices `≤ N+1`), which is the only range the first-half argument ever touches.  Growing
+the box `N → N+1` extends the first half by exactly **two** indices `j = 2N, 2N+1` (the
+center band); everywhere below the band, monotonicity is (IH) + (`k = 3` first-half
+increment `≥ 0`, `qBinom_X_three_coeff_first_half_mono`).
+
+For the band itself, let `u_N, v_N` denote the last two first-half increments of the
+`4×N` array and `δ(N) = p₃(N) − p₃(N-1)` the `k = 3` box-free prefix increment (the
+number of partitions of `N` into parts `2` and `3`, though the closed form is never
+needed).  Palindromy reflects the just-past-half increments onto `−u_N, −v_N`, so the
+recurrence collapses the band to the two-term linear recursion
+
+  `u_{N+1} = δ(N+1) − v_N`,   `v_{N+1} = δ(N) − u_N`,
+
+which has the exact closed solution **`v_N = 0` and `u_N = δ(N)`** — the pattern visible
+in the data (`[8,4]_q = 1,1,2,3,5,5,7,7,8,…`: increments `…,0,2,0,1` end in `v = 0`,
+`u = 1 = δ(4)`).  Nonnegativity of the band increments is then exactly the already-proved
+`k = 3` first-half monotonicity.  No `𝔰𝔩₂`/O'Hara input: the quantitative compensation
+those tools provide is, at `k = 4`, the identity `v ≡ 0`. -/
+
+open Polynomial in
+/-- **The second-form `k = 4` coefficient recurrence.**  From the dual `q`-Pascal identity
+`[N+5,4]_q = q^{N+1}·[N+4,3]_q + [N+4,4]_q` (`qBinom_pascal'` at `k = 3`), the coefficient
+array of the `4×(N+1)` box is the `4×N` array plus the `q^{N+1}`-shifted `k = 3` array:
+
+  `(qBinom X (N+5) 4).coeff j = (qBinom X (N+4) 4).coeff j + [N+1 ≤ j]·(qBinom X (N+4) 3).coeff (j-(N+1))`.
+
+The correction term is a `k = 3` coefficient — fully understood on its box-free prefix,
+which is the only range the `k = 4` first-half argument needs. -/
+theorem qBinom_X_four_coeff_succ' (N j : ℕ) :
+    (qBinom (X : ℤ[X]) (N + 5) 4).coeff j
+      = (qBinom (X : ℤ[X]) (N + 4) 4).coeff j
+        + (if N + 1 ≤ j then (qBinom (X : ℤ[X]) (N + 4) 3).coeff (j - (N + 1)) else 0) := by
+  have hp := qBinom_pascal' (X : ℤ[X]) (N + 4) 3 (by omega)
+  rw [show N + 4 + 1 = N + 5 from by omega, show N + 4 - 3 = N + 1 from by omega,
+      show (3 : ℕ) + 1 = 4 from by omega] at hp
+  rw [hp, coeff_add, mul_comm (X ^ (N + 1)) (qBinom (X : ℤ[X]) (N + 4) 3),
+      coeff_mul_X_pow']
+  ring
+
+open Polynomial in
+/-- **The `k = 4` center-band recursion — exact solution.**  For every `N`, in the
+`4×(N+1)` box array (the polynomial `[N+5,4]_q`, degree `4N+4`, midpoint `2N+2`):
+
+* (`v` band point) `coeff (2N+1) = coeff (2N)` — the first band increment is exactly `0`;
+* (`u` band point) `coeff (2N+2) = coeff (2N+1) + (coeff (N+1) [N+4,3] − coeff N [N+4,3])`
+  — the second band increment is exactly the `k = 3` box-free prefix increment `δ(N+1)`.
+
+Joint induction on `N`.  The step writes both band coefficients of the `4×(N+2)` box over
+the `4×(N+1)` box via `qBinom_X_four_coeff_succ'`; palindromy of the `4×(N+1)` array
+reflects the just-past-half indices back onto the band, where the `u`/`v` values from the
+induction hypothesis cancel the reflected terms exactly; the `k = 3` prefix stability
+(second-form `k = 3` recurrence, correction absent below the shift) identifies the two
+`δ` normalisations.  Base case: `[5,4]_q = [5,1]_q` and `[4,3]_q = [4,1]_q` are flat
+`1`-sequences. -/
+theorem qBinom_X_four_band :
+    ∀ N : ℕ,
+      ((qBinom (X : ℤ[X]) (N + 5) 4).coeff (2 * N + 1)
+          = (qBinom (X : ℤ[X]) (N + 5) 4).coeff (2 * N))
+      ∧ ((qBinom (X : ℤ[X]) (N + 5) 4).coeff (2 * N + 2)
+          = (qBinom (X : ℤ[X]) (N + 5) 4).coeff (2 * N + 1)
+            + ((qBinom (X : ℤ[X]) (N + 4) 3).coeff (N + 1)
+                - (qBinom (X : ℤ[X]) (N + 4) 3).coeff N))
+  | 0 => by
+      have h54 : qBinom (X : ℤ[X]) 5 4 = qBinom (X : ℤ[X]) 5 1 := by
+        rw [qBinom_symm (X : ℤ[X]) 5 4 (by omega)]
+      have h43 : qBinom (X : ℤ[X]) 4 3 = qBinom (X : ℤ[X]) 4 1 := by
+        rw [qBinom_symm (X : ℤ[X]) 4 3 (by omega)]
+      refine ⟨?_, ?_⟩ <;> norm_num [h54, h43, qBinom_X_coeff_one_seq]
+  | N + 1 => by
+      obtain ⟨hv, hu⟩ := qBinom_X_four_band N
+      have h2 := qBinom_X_four_coeff_succ' (N + 1) (2 * N + 2)
+      have h3 := qBinom_X_four_coeff_succ' (N + 1) (2 * N + 3)
+      have h4 := qBinom_X_four_coeff_succ' (N + 1) (2 * N + 4)
+      rw [show N + 1 + 5 = N + 6 from by omega, show N + 1 + 4 = N + 5 from by omega,
+          show N + 1 + 1 = N + 2 from by omega] at h2 h3 h4
+      rw [if_pos (show N + 2 ≤ 2 * N + 2 from by omega),
+          show 2 * N + 2 - (N + 2) = N from by omega] at h2
+      rw [if_pos (show N + 2 ≤ 2 * N + 3 from by omega),
+          show 2 * N + 3 - (N + 2) = N + 1 from by omega] at h3
+      rw [if_pos (show N + 2 ≤ 2 * N + 4 from by omega),
+          show 2 * N + 4 - (N + 2) = N + 2 from by omega] at h4
+      -- palindromy of the `4×(N+1)` array: reflect the just-past-half indices
+      have hp3 := qBinom_X_coeff_symm' (n := N + 5) (k := 4) (by omega)
+        (j := 2 * N + 1) (by omega)
+      rw [show 4 * (N + 5 - 4) - (2 * N + 1) = 2 * N + 3 from by omega] at hp3
+      have hp4 := qBinom_X_coeff_symm' (n := N + 5) (k := 4) (by omega)
+        (j := 2 * N) (by omega)
+      rw [show 4 * (N + 5 - 4) - (2 * N) = 2 * N + 4 from by omega] at hp4
+      -- `k = 3` prefix stability: the two `δ` normalisations agree below the shift
+      have hs0 := qBinom_X_three_coeff_succ' (N + 1) N
+      have hs1 := qBinom_X_three_coeff_succ' (N + 1) (N + 1)
+      rw [show N + 1 + 4 = N + 5 from by omega, show N + 1 + 3 = N + 4 from by omega,
+          show N + 1 + 1 = N + 2 from by omega,
+          if_neg (show ¬ (N + 2 ≤ N) from by omega), add_zero] at hs0
+      rw [show N + 1 + 4 = N + 5 from by omega, show N + 1 + 3 = N + 4 from by omega,
+          show N + 1 + 1 = N + 2 from by omega,
+          if_neg (show ¬ (N + 2 ≤ N + 1) from by omega), add_zero] at hs1
+      rw [show N + 1 + 5 = N + 6 from by omega, show N + 1 + 4 = N + 5 from by omega,
+          show 2 * (N + 1) + 1 = 2 * N + 3 from by omega,
+          show 2 * (N + 1) + 2 = 2 * N + 4 from by omega,
+          show 2 * (N + 1) = 2 * N + 2 from by omega,
+          show N + 1 + 1 = N + 2 from by omega]
+      constructor
+      · linarith [h2, h3, hp3, hu, hs0, hs1]
+      · linarith [h3, h4, hp3, hp4, hv, hs1]
+
+open Polynomial in
+/-- **First-half monotonicity for `k = 4` — the full inequality.**  For every `N` and every
+`j` in the first half (`2j + 2 ≤ 4N`), the coefficient array of the `4×N` box satisfies
+`coeff j ≤ coeff (j+1)`.  Induction on `N` via the second-form recurrence
+`qBinom_X_four_coeff_succ'`:
+
+* below the previous box's first half the increment is (IH) + (`k = 3` first-half
+  increment `≥ 0`, `qBinom_X_three_coeff_first_half_mono` — the shifted index always lands
+  in the `k = 3` first half);
+* at the two center-band indices `j = 2N, 2N+1` the increment is the exact value from
+  `qBinom_X_four_band` (`0`, resp. the `k = 3` prefix increment `δ(N+1) ≥ 0`).
+
+This settles the genuinely box-binding range of Sylvester's first-half inequality at
+`k = 4` elementarily. -/
+theorem qBinom_X_four_coeff_first_half_mono :
+    ∀ (N j : ℕ), 2 * j + 2 ≤ 4 * N →
+      (qBinom (X : ℤ[X]) (N + 4) 4).coeff j
+        ≤ (qBinom (X : ℤ[X]) (N + 4) 4).coeff (j + 1)
+  | 0, j, hj => by omega
+  | N + 1, j, hj => by
+      rcases Nat.lt_or_ge (2 * j + 2) (4 * N + 1) with hin' | hband'
+      · -- interior: previous box's first half; recurrence + IH + `k = 3` increment
+        have hin : 2 * j + 2 ≤ 4 * N := by omega
+        have hIH := qBinom_X_four_coeff_first_half_mono N j hin
+        have h1 := qBinom_X_four_coeff_succ' N j
+        have h2 := qBinom_X_four_coeff_succ' N (j + 1)
+        rw [show N + 1 + 4 = N + 5 from by omega, h1, h2]
+        rcases Nat.lt_or_ge (j + 1) (N + 1) with hlt | hge
+        · -- both correction terms vanish
+          rw [if_neg (show ¬ (N + 1 ≤ j) from by omega),
+              if_neg (show ¬ (N + 1 ≤ j + 1) from by omega)]
+          simpa using hIH
+        · rcases eq_or_lt_of_le hge with heq | hgt
+          · -- `j + 1 = N + 1`: right correction is `coeff 0 ≥ 0`
+            rw [if_neg (show ¬ (N + 1 ≤ j) from by omega),
+                if_pos (show N + 1 ≤ j + 1 from by omega),
+                show j + 1 - (N + 1) = 0 from by omega]
+            have h0 := qBinom_X_coeff_nonneg (N + 4) 3 0
+            linarith
+          · -- `N + 1 ≤ j`: both corrections are `k = 3` coefficients in its first half
+            rw [if_pos (show N + 1 ≤ j from by omega),
+                if_pos (show N + 1 ≤ j + 1 from by omega)]
+            have hd := qBinom_X_three_coeff_first_half_mono (N + 1) (j - (N + 1))
+              (by omega)
+            rw [show N + 1 + 3 = N + 4 from by omega,
+                show j - (N + 1) + 1 = j + 1 - (N + 1) from by omega] at hd
+            linarith
+      · -- center band of the `4×(N+1)` box: exact increments from the band recursion
+        rw [show N + 1 + 4 = N + 5 from by omega]
+        obtain ⟨hv, hu⟩ := qBinom_X_four_band N
+        have hj' : j = 2 * N ∨ j = 2 * N + 1 := by omega
+        rcases hj' with rfl | rfl
+        · exact hv.ge
+        · have hd := qBinom_X_three_coeff_first_half_mono (N + 1) N (by omega)
+          rw [show N + 1 + 3 = N + 4 from by omega] at hd
+          rw [show 2 * N + 1 + 1 = 2 * N + 2 from by omega]
+          linarith [hu]
+
+open Polynomial in
+/-- **Sylvester's unimodality theorem, `k = 4`.**  The coefficient sequence of
+`[n choose 4]_q` is unimodal for every `n` — settled elementarily by the exact solution
+`v ≡ 0`, `u = δ` of the two-point center-band recursion (no `𝔰𝔩₂`-representation theory
+or O'Hara decomposition).  For `n < 4` the polynomial is `0`; otherwise feed
+`qBinom_X_four_coeff_first_half_mono` to the general reduction
+`qBinomCoeff_unimodal_of_first_half_mono`. -/
+theorem qBinomCoeff_unimodal_four (n : ℕ) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n 4).coeff j) := by
+  rcases Nat.lt_or_ge n 4 with hn | hn
+  · have hz : qBinom (X : ℤ[X]) n 4 = 0 := qBinom_eq_zero_of_lt (X : ℤ[X]) n 4 (by omega)
+    simpa [hz] using unimodal_const (0 : ℤ)
+  · obtain ⟨N, rfl⟩ : ∃ N, n = N + 4 := ⟨n - 4, by omega⟩
+    apply qBinomCoeff_unimodal_of_first_half_mono (show 4 ≤ N + 4 from by omega)
+    intro j hj
+    exact qBinom_X_four_coeff_first_half_mono N j (by omega)
+
+open Polynomial in
+/-- **Sylvester unimodality for `k ≤ 4` and for codimension `≤ 4`.**  Combining the closed
+cases with `qBinomCoeff_unimodal_four` and the symmetry `[n,k]_q = [n,n−k]_q`: the
+coefficient sequence of `[n choose k]_q` is unimodal whenever `k ≤ 4` or `k ≥ n − 4`.
+The open range of Sylvester's theorem in this development is now the interior
+`5 ≤ k ≤ n − 5` (first genuinely open instance: `[10,5]_q`). -/
+theorem qBinomCoeff_unimodal_of_codim_le_four {n k : ℕ} (hk : k ≤ n) (hnk : n - 4 ≤ k) :
+    Unimodal (fun j => (qBinom (X : ℤ[X]) n k).coeff j) := by
+  rcases Nat.lt_or_ge (n - k) 4 with h3 | h4
+  · exact qBinomCoeff_unimodal_of_codim_le_three hk (by omega)
+  · rw [qBinom_symm (X : ℤ[X]) n k hk, show n - k = 4 from by omega]
+    exact qBinomCoeff_unimodal_four n
 
 end QBinomialCoefficients
 
