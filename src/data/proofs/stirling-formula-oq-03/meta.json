@@ -57,7 +57,8 @@
       "**The product was hiding in plain sight**: the Stirling proofs depend on Wallis' product but only as an unnamed intermediate. Stating it standalone makes the classical π-product a first-class gallery result.",
       "**Two textbook forms, one identity**: 4k²/(4k²−1) and (2k)²/((2k−1)(2k+1)) are the two ways the Wallis factor is usually written; wallis_factor records that they are literally equal via the difference of squares 4k²−1 = (2k−1)(2k+1).",
       "**Reindexing, not reproving**: Mathlib's Real.tendsto_prod_pi_div_two uses an index-from-zero shifted factor (2i+2)/(2i+1)·(2i+2)/(2i+3). The substitution k = i+1 turns it into the classical k-from-1 form; the limit transfers verbatim via Tendsto.congr.",
-      "**Field identity needs no hypotheses**: because numerator and denominator match as rational functions after factoring, wallis_factor holds unconditionally — ring proves it even where the denominators vanish."
+      "**Field identity needs no hypotheses**: because numerator and denominator match as rational functions after factoring, wallis_factor holds unconditionally — ring proves it even where the denominators vanish.",
+      "**No new hard analysis, only a change of coordinates**: every step in this file — the difference-of-squares factorization, the field_simp/ring reindexing, and Filter.Tendsto.congr — is elementary algebra and rewriting. The only nontrivial analytic fact used is Mathlib's own Real.tendsto_prod_pi_div_two; this entry contributes no new convergence argument, just the coordinate change onto the classical textbook statement."
     ],
     "prerequisites": [
       "Finite and infinite products",
@@ -67,11 +68,19 @@
   },
   "sections": [
     {
-      "id": "imports-definition",
-      "title": "Imports and the Classical Partial Product",
+      "id": "imports-docstring",
+      "title": "Imports and File-Level Docstring",
       "startLine": 1,
+      "endLine": 30,
+      "summary": "File-level docstring stating Wallis' product in its classical and shifted forms, noting the gallery's Stirling entries use it internally without stating it standalone. Imports Mathlib and opens Finset, Filter, Topology, Real.",
+      "mathContext": "∏_{k=1}^{n} 4k²/(4k²−1) → π/2, obtained by reindexing Mathlib's Real.tendsto_prod_pi_div_two."
+    },
+    {
+      "id": "definition",
+      "title": "The Classical Partial Product",
+      "startLine": 32,
       "endLine": 35,
-      "summary": "File-level docstring stating Wallis' product, imports Mathlib, opens Finset/Filter/Topology/Real. Defines wallisProduct n = ∏_{i<n} 4(i+1)²/(4(i+1)²−1), the classical k-from-1 product with k = i+1.",
+      "summary": "wallisProduct n = ∏_{i<n} 4(i+1)²/(4(i+1)²−1), the classical k-from-1 product with k = i+1, phrased directly over the natural-number range.",
       "mathContext": "wallisProduct n = ∏_{k=1}^{n} 4k²/(4k²−1), the n-th partial product of Wallis' formula."
     },
     {
