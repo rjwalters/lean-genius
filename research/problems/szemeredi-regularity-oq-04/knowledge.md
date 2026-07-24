@@ -1298,3 +1298,43 @@ import chain — IsEpsilonRegular/IsRegularPartition/partitionEnergy all live in
 + `simp at hcard; linarith` beats card_pos/by_contra (push_neg now deprecated
 in v4.31 — "Prefer using push Not"). `structure ... extends` for Prop
 structures works fine for the bounded variant.
+
+## S28b (2026-07-24, researcher-3): summed amplification — analytic assembly DONE
+
+`SzemerediRegularityOQ04Amplify.lean` (6 thm, 0 ax / 0 sorry, host-verified
+v4.31, `#print axioms` = foundational trio on all six):
+
+- `filter_split_covers` — cells of a cover of `A` each inside `A′` or `A∖A′`
+  ⟹ the two filtered subfamilies cover exactly `A′` and `A∖A′`.
+- `grid_le_cells_sum` (QUADRANT GROUPING) — disjoint cell families of `A`,`B`
+  splitting along `A′⊆A`, `B′⊆B` dominate the 4-term 2×2 grid energy. This is
+  why a COMMON refinement (which shatters witness sets; no single cell keeps
+  the witness density) still collects each pair's full grid gain.
+- `partitionEnergy_refine_gain_marked` — marked-pair upgrade of
+  `partitionEnergy_refine_mono`: per-pair cell-level gains on `M ⊆ P ×ˢ P`
+  ADD; unmarked pairs by monotonicity. `pe(P) + Σ_{p∈M} g p ≤ pe(refined)`.
+- `partitionEnergy_refine_gain_of_grid_splits` (CAPSTONE) — pieces splitting
+  along each marked pair's witness sets + grid gains ⟹ summed gain.
+- `partitionEnergy_refine_gain_marked_card` — uniform floor: gain `≥ |M|·γ`.
+- `exists_grid_witnesses_of_irregular` — CHOICE PACKAGING: total functions
+  `wA, wB` with the sharp `ε⁴|A||B|/n²` grid gain for every pair of a marked
+  irregular set (from `pairEnergy_prod_gain_of_irregular_eps4` + dependent
+  choice + junk-value totalization). The S28c atomiser must be built AGAINST
+  these functions — choice first, construction second.
+
+**Lean notes:** `Finset.sum_product'` (v4.31) takes `s t f` EXPLICIT and its
+`?f x.1 x.2` pattern fails HO-unification under `rw` when `f`'s body nests
+`x.1/x.2` under further binders — apply it as a term with `f` spelled out and
+close by `Finset.sum_congr rfl (fun _ _ => Finset.sum_comm)` (sum_comm is now
+all-implicit). `Finset.sum_sdiff hM` splits `Σ_{P×ˢP}` into marked/unmarked.
+
+**Remaining for n-independent `L(ε,k)` (target `IsAFKSTwoLevelBounded`):**
+- S28c witness atomiser: per part `A`, common refinement of `A` along the
+  ≤ 2(k−1) chosen witness sets touching `A`; cells ⊆-or-disjoint w.r.t. each
+  witness (model: Mathlib `Finpartition.atomise`; or induction splitting every
+  cell into `c ∩ W` / `c ∖ W`, stripping empties).
+- S28d counting: `¬IsAFKSFineRegular` ⟹ `|M| > ε·k(k−1)` irregular ordered
+  pairs; mass floors give `γ = ε⁴m²/n²`; `_card` capstone ⟹ total gain
+  `> ε⁵·k(k−1)·m²/n²` ≈ `ε⁵/8`-scale (n-independent, `km ≤ n ≤ 2km`); then
+  `exists_invariant_restore` costs `2|q₁|m/n + 2|Vparts|m²/n` are dominated
+  for small `m` and the maintained oracle closes the bounded target.
