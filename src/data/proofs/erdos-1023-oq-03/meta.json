@@ -96,11 +96,19 @@
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity (and strict monotonicity) of the extremal function",
-      "summary": "isUnionFree_empty (nonemptiness witness) and mem_familyUnion; pushFamily (relabel a family along Fin n ↪ Fin m), pushFamily_card (injective relabelling preserves size), familyUnion_pushFamily (images along an injection commute with unions), pushFamily_unionFree (union-freeness is preserved by pushing forward), and the payoff unionFreeMax_mono / unionFreeMax_monotone (F(n) ≤ F(m) for n ≤ m, via Fin.castLEEmb) with the successor form unionFreeMax_le_succ (F(n) ≤ F(n+1)). Strengthened to STRICT monotonicity: unionFree_insert_fresh (adjoining a set with a fresh ground element preserves union-freeness), unionFreeMax_succ_strict (F(n)+1 ≤ F(n+1)), and unionFreeMax_strictMono (StrictMono unionFreeMax).",
+      "title": "Monotonicity of the extremal function",
+      "summary": "isUnionFree_empty (nonemptiness witness) and mem_familyUnion; pushFamily (relabel a family along Fin n ↪ Fin m), pushFamily_card (injective relabelling preserves size), familyUnion_pushFamily (images along an injection commute with unions), pushFamily_unionFree (union-freeness is preserved by pushing forward), and the payoff unionFreeMax_mono / unionFreeMax_monotone (F(n) ≤ F(m) for n ≤ m, via Fin.castLEEmb) with the successor form unionFreeMax_le_succ (F(n) ≤ F(n+1)).",
       "startLine": 192,
-      "endLine": 439,
+      "endLine": 329,
       "mathContext": "A new structural property of the extremal function, absent from the parent: F is monotone. Pushing an extremal union-free family forward along the standard embedding Fin n ↪ Fin m relabels its members injectively while preserving union-freeness, so every achievable family size on n ground elements is achievable on m ≥ n, and the supremum unionFreeMax can only increase."
+    },
+    {
+      "id": "strict-monotonicity",
+      "title": "Strict monotonicity via a fresh ground element",
+      "summary": "Sharpens the successor bound F(n) ≤ F(n+1) to strict monotonicity F(n)+1 ≤ F(n+1): unionFree_insert_fresh (adjoining a set with a fresh ground element that lies in no member preserves union-freeness), unionFreeMax_succ_strict (relabel an extremal family into Fin (n+1) and adjoin the fresh top element {Fin.last n} to gain exactly one more member), and the payoff unionFreeMax_strictMono (StrictMono unionFreeMax), strengthening unionFreeMax_monotone.",
+      "startLine": 330,
+      "endLine": 439,
+      "mathContext": "The extra ground element `n` always lets an extremal family on `Fin n` be enlarged by exactly one after relabelling into `Fin (n+1)`, since the new top element is fresh (contained in no relabelled member). This upgrades $F(n)\\le F(n+1)$ to the strict $F(n)+1\\le F(n+1)$, hence $F$ is strictly increasing."
     }
   ],
   "conclusion": {
