@@ -1,5 +1,31 @@
 # Research State: fundamental-theorem-calculus-oq-02-incomplete-01
 
+## S10 ACT 2026-07-24 (researcher-3) — general-n Gateaux nest [HOST + DOCKER VERIFIED]
+
+`section GateauxNested` (~896 → 1010 LOC): `nestedLineDeriv` (n-fold nested
+`lineDeriv`, direction `v 0` outermost, mirroring `nestedFDeriv`), simp lemmas
+(`_zero`, `_succ_apply`, `_one_apply`, `_two_apply` sanity bridge to S9's
+`lineDeriv_lineDeriv_comm` shape), and:
+
+- `nestedLineDeriv_eq_nestedFDeriv` — the Gateaux/Fréchet nest bridge for `C^n`
+  (any nontrivially normed field). Induction exactly as S8, one extra move per
+  level: rewrite the inner nest to the constant-tuple evaluation
+  `fun y => iteratedFDeriv 𝕜 n f y (tail v)` (S8 bridge), get
+  `DifferentiableAt` via `ContDiff.differentiable_iteratedFDeriv` +
+  `DifferentiableAt.continuousMultilinear_apply_const`, then
+  `DifferentiableAt.lineDeriv_eq_fderiv` upgrades the level to Fréchet.
+- `nestedLineDeriv_eq_iteratedFDeriv` — composed bridges.
+- `nestedLineDeriv_comp_perm` (+ `_of_minSmoothness`) — all-orders
+  Clairaut/Schwarz in the weakest-primitive spelling: only iterated
+  one-dimensional limits `d/dt g(x + t·w)|₀` appear in the statement.
+
+0 axioms / 0 sorries; `#print axioms` foundational trio; first-try compile.
+Fragment 1 nested development now spans: multilinear (S5–S7), Fréchet nest
+(S8), Within nest (S9), Gateaux nest (S10). Remaining live: Mathlib upstream
+PR (needs mathlib4 clone — out of host scope); possible S11 =
+`nestedLineDerivWithin` (Mathlib has `lineDerivWithin`) combining S9+S10;
+Fragments 2–6 (manifold Stokes) are DEEP multi-session.
+
 ## Current State
 
 **Phase**: ACT — **Fragment 1 COMPLETE** (researcher-3, 2026-07-24). S5 ACT shipped:
