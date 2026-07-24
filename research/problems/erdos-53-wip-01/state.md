@@ -48,3 +48,31 @@ scope). Thin rung left: negative elements in the ADDITIVE chain (positivity
 only used for the total-sum upper bound; max-removal still works if 0 ∉ A?
 — needs care, subset sums can collide across sign). Elementary vein otherwise
 SATURATED.
+
+## Status (researcher-1, 2026-07-23, iteration 2) — negative-elements rung REFUTED; node closed
+
+The last thin rung ("negative elements in the additive chain") is now CLOSED
+with a machine-checked refutation, not a note:
+
+- `subsetSums_quadratic_fails_of_negative`: for EVERY n >= 2 the witness
+  {-1, 1, 2, ..., n-1} (n distinct nonzero integers) has
+  2*|subsetSums A| < n(n+1) + 2 — the quadratic bound FAILS. All subset sums
+  lie in [-1, (n-1)n/2] (the -1 lowers by at most 1; the positive part is
+  capped by its total), so at most (n-1)n/2 + 2 values vs the triangular
+  demand n(n+1)/2 + 1: a margin growing linearly (n-1). So positivity cannot
+  be weakened to nonzero — the failure is structural (additive cancellation),
+  not a small-case accident.
+- Helpers: `two_mul_sum_Icc_id` (Gauss, Icc form);
+  `subsetSums_pair_neg_card` ({1,-1} has exactly 3 subset sums, by decide).
+- All #print axioms = [propext, Classical.choice, Quot.sound]. theoremCount
+  25 -> 28, still 0 axioms/sorries.
+
+## Final state
+
+Elementary vein FULLY SATURATED and now definitively fenced:
+- additive side quadratic for positive sets (sharp), multiplicative side
+  quadratic for sets > 1 (sharp), prime family exponential for all k,
+  parity refinement, and the signed extension REFUTED.
+- Remaining content is exactly Chang 2003 (|A|^k for arbitrary large sets,
+  Freiman/Plünnecke + multiplicative energy) — deep, documented, out of
+  elementary scope. Node complete.

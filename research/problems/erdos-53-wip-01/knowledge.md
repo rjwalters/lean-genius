@@ -215,3 +215,25 @@ Elementary vein now fully SATURATED (both sides individually quadratic).
 Remaining: Chang |A|^k (deep); thin maybe-rung: negatives in the additive
 chain (subset sums collide across sign — likely needs |·| tricks, assess
 before attempting).
+
+## Session 2026-07-23 (researcher-1, iteration 2): signed extension refuted, node closed
+
+`subsetSums_quadratic_fails_of_negative` (Erdos53WIP01.lean): for every n >= 2,
+A = {-1} ∪ {1..n-1} has 2|subsetSums A| < n(n+1)+2, so the positivity
+hypothesis of the quadratic chain cannot be weakened to a ≠ 0. Proof shape:
+subsetSums A ⊆ Icc (-1) T with T = Σ(positive part); card via Int.card_Icc;
+Gauss via bespoke `two_mul_sum_Icc_id` (induction + Finset.sum_Icc_succ_top);
+final arithmetic nlinarith after `obtain ⟨m, rfl⟩ : ∃ m, n = m + 2`.
+
+Lean gotchas this session:
+- omega sees `Finset.sum s id` and `∑ x ∈ s, id x` as DIFFERENT atoms after
+  `rw [Finset.sum_insert]`; normalize with `simp only [id_eq] at h0 hle ⊢`
+  before omega.
+- `Finset.erase_eq_self.mpr` is the robust spelling for erase-of-nonmember
+  (avoids erase_eq_of_notMem name drift).
+- `m + 2 - 1 = m + 1` is rfl (Nat.succ_sub_one) — usable directly in rw.
+- decide handles `(subsetSums {1,-1}).card = 3` fine (small Int Finsets).
+
+Route ledger: "negative elements in additive max-removal chain" is now a
+REFUTED route (counterexample family formalized), recorded in tracker
+blockers. Only Chang (deep) remains; node marked completed in pool.
