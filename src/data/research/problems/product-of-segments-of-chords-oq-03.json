@@ -1,8 +1,8 @@
 {
   "slug": "product-of-segments-of-chords-oq-03",
   "title": "Power-of-a-point ↔ four-point concyclicity determinant",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "significance": 6,
@@ -32,12 +32,12 @@
     "goal": "Build companion file Proofs/ProductOfSegmentsOfChordsOQ03.lean (~210 lines, 4 main theorems + 1 def) that discharges the parent axiom. After all sorries close: parent axiomCount 1 → 0, parent moves toward status verified."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-07-24T00:00:00.000Z",
-    "iteration": 18,
-    "focus": "S18 ACT (researcher-1, 2026-07-24): HEADLINE IFF PROVEN. concyclicityDet_eq_zero_iff_concyclic fully discharged — file 542 LOC, 0 sorries, 0 axioms, docker build GREEN (3038 jobs, 0 warnings). The S2 placeholder (hNonCollinear : True) was replaced by the genuine hypothesis ¬ Collinear ℝ {P₁, P₂, P₃} (with the placeholder the (⟹) direction is FALSE: distinct collinear points give Δ = 0 with no circle); bridge collinear_of_collinearityDet_eq_zero proves ¬Collinear ⟹ collinearityDet ≠ 0. (⟹) via explicit Cramer circumcenter (circumcenter_spec + exists_circumcircle) + exact cofactor decomposition Δ = e₁M₁ − e₂M₂ + e₃M₃ − e₄M₄ (concyclicityDetCoords_circle_decomp) forcing e₄ = 0 (fourth_point_on_circle). Declaration moved to Part 12 (end of file).",
+    "phase": "COMPLETED",
+    "since": "2026-07-24",
+    "iteration": 19,
+    "focus": "S19 ACT (researcher-2, 2026-07-24): Part 13 signed chord-product bridge proven; all four problem.md deliverables discharged. Problem COMPLETE.",
     "blockers": [],
-    "nextAction": "S19 (= old S5 bridge): signed chord-product hypothesis ⟹ Δ = 0, consuming Parts 6–7 helpers (signed_inner_product_to_scalar_coord, coord_of_smul_diff) + S12-§3.2 closed-form witness. Then S20 (= old S6): replace converse_product_implies_concyclic_axiom in parent Proofs/ProductOfSegmentsOfChords.lean (hypothesis must become the SIGNED product per the S9 counterexample, plus a non-collinearity side condition) and move parent gallery meta axiomatized → verified.",
+    "nextAction": "None — complete. Optional follow-up recorded: five-point conic (Veronese rank) determinant criterion.",
     "attemptCounts": {
       "total": 18,
       "currentApproach": 18,
@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S18 ACT (researcher-1, 2026-07-24): headline iff concyclicityDet_eq_zero_iff_concyclic PROVEN — file 542 LOC, 0 sorries, 0 axioms, docker GREEN. Genuine non-collinearity hypothesis (¬ Collinear ℝ) installed in place of the True placeholder (which made (⟹) false). Remaining scope: S19 signed chord-product → Δ = 0 bridge, S20 parent-axiom discharge (signed restatement) + gallery meta flip.",
+    "progressSummary": "COMPLETE (S19, 2026-07-24): concyclicityDet defined (S2); headline iff concyclicityDet_eq_zero_iff_concyclic proven under genuine non-collinearity (S18); signed chord-product bridge signed_product_implies_concyclicityDet_zero + end-to-end signed_product_implies_concyclic_via_det proven (S19, Part 13, composition of Part 6 scalar bridge, Converse-file Cramer circumcenter, Part 8). Parent axiom already removed on the OQ-02 line (unsigned form false, machine-checked counterexample; signed converse proven; parent meta verified/original/axiomCount 0). File 617 LOC, 0 sorries, 0 axioms, docker GREEN 8577 jobs.",
     "builtItems": [
       "norm_sub_sq_coord (ProductOfSegmentsOfChordsOQ03.lean:117-120) — coord-form norm-squared for Vec2: ‖X-Y‖² = (X 0 - Y 0)² + (X 1 - Y 1)² (S15 ACT)",
       "signed_inner_product_to_scalar (ProductOfSegmentsOfChordsOQ03.lean:155-166) — abstract scalar bridge under chord-collinearity (S15 ACT)",
@@ -53,7 +53,9 @@
       "collinearityDet / collinearityDetCoords + collinear_of_collinearityDet_eq_zero + collinearityDet_ne_zero_of_not_collinear (ProductOfSegmentsOfChordsOQ03.lean Part 9, S18)",
       "bisector_to_dist + circumcenter_spec (explicit Cramer circumcenter, private) + exists_circumcircle (Part 10, S18)",
       "concyclicityDetCoords_circle_decomp (exact cofactor decomposition Δ = e₁M₁ − e₂M₂ + e₃M₃ − e₄M₄) + fourth_point_on_circle (Part 11, S18)",
-      "concyclicityDet_eq_zero_iff_concyclic PROVEN with ¬ Collinear ℝ hypothesis (Part 12, S18)"
+      "concyclicityDet_eq_zero_iff_concyclic PROVEN with ¬ Collinear ℝ hypothesis (Part 12, S18)",
+      "Part 13 signed_product_implies_concyclicityDet_zero in ProductOfSegmentsOfChordsOQ03.lean (S19): signed chord-product equality + LinearIndependent chord directions => concyclicityDet = 0",
+      "Part 13 signed_product_implies_concyclic_via_det (S19): signed power-of-a-point => Delta = 0 => explicit circumcircle via the Part 12 iff"
     ],
     "insights": [
       "The implicit-circle equation x^2 + y^2 + Dx + Ey + F = 0 gives an immediate translation between power-of-a-point and concyclicity: power(P) = x_P^2 + y_P^2 + D x_P + E y_P + F evaluated against any circle through three reference points.",
@@ -66,7 +68,11 @@
       "S15 gotcha: notation3:max form ⟪x, y⟫_ℝ FAILS in binder position (unexpected identifier; expected ´)´). Use scoped RealInnerProductSpace notation ⟪x, y⟫ instead — scoped notation parses cleanly in binders",
       "S18: the True-placeholder form of the iff is mathematically FALSE in the (⟹) direction — four distinct collinear points have Δ = 0 (the (x,y,1) columns are dependent) but no circumscribing circle of positive radius. The genuine hypothesis is ¬ Collinear ℝ {P₁,P₂,P₃}.",
       "S18: explicit quotient formulas for the circumcenter beat the Matrix.cramer API route — the two perpendicular-bisector equations are linear in (O₀,O₁), so bisector_to_dist keeps everything division-free until a single deterministic div_eq_iff clearing.",
-      "S18 v4.31 gotchas: div_add_div_same is absent (use ← add_div); field_simp on squared quotients loops (clear denominators first via mul_div_assoc/add_div/div_eq_iff chain); Fin.forall_fin_two beats fin_cases for keeping ring atoms literal; WithLp.toLp 2 ![a,b] gives rfl coordinate projections on EuclideanSpace ℝ (Fin 2)."
+      "S18 v4.31 gotchas: div_add_div_same is absent (use ← add_div); field_simp on squared quotients loops (clear denominators first via mul_div_assoc/add_div/div_eq_iff chain); Fin.forall_fin_two beats fin_cases for keeping ring atoms literal; WithLp.toLp 2 ![a,b] gives rfl coordinate projections on EuclideanSpace ℝ (Fin 2).",
+      "S20 parent integration was already satisfied by the OQ-02 line: the false unsigned axiom was REMOVED (not restated), the signed converse proven in ProductOfSegmentsOfChordsConverse.lean, and parent meta flipped to verified in PR #24873 — always check sibling-OQ artifacts before executing a stale multi-session plan",
+      "The S12-3.2 closed-form linear_combination witness became obsolete: composing signed_inner_product_to_scalar -> signed_converse_implies_concyclic -> concyclic_implies_concyclicityDet_zero proves the bridge in ~20 lines with no polynomial expansion",
+      "LinearIndependent R ![u,v] yields u,v nonzero via simpa using hindep.ne_zero 0/1; sub_ne_zero.mp converts to point distinctness",
+      "Duplicate abbrev Vec2 across namespaces unifies definitionally — cross-file composition needs no casts"
     ],
     "mathlibGaps": [
       "No specialised concyclicity-determinant lemma in Mathlib v4.26.0. Matrix.det_fin_four handles the expansion but there is no `Matrix.concyclicityDet_eq_zero_iff` or equivalent. Candidate for upstream contribution.",
@@ -74,8 +80,7 @@
       "No bridge between power-of-a-point and the implicit-circle equation. The identity ‖P − A‖ · ‖P − B‖ = |D · x_P + E · y_P + F + x_P^2 + y_P^2| is implicit in chord_product_algebraic but not named in either parent or Mathlib."
     ],
     "nextSteps": [
-      "S19 bridge: signed chord-product hypothesis ⟪A−P,B−P⟫ = ⟪C−P,D−P⟫ with chord-collinearity ⟹ concyclicityDet A B C D = 0, via signed_inner_product_to_scalar_coord + coord_of_smul_diff + the S12-§3.2 closed-form linear_combination witness.",
-      "S20 parent integration: restate converse_product_implies_concyclic_axiom in Proofs/ProductOfSegmentsOfChords.lean under the signed hypothesis + non-collinearity side condition, discharge it from concyclicityDet_eq_zero_iff_concyclic + S19 bridge, update parent gallery meta axiomCount 1 → 0 (axiomatized → verified)."
+      "Optional follow-up (depth 1 < cap 3): five-point conic criterion — five planar points lie on a common conic iff the Veronese 5x6 matrix [x^2, xy, y^2, x, y, 1] has rank <= 5; strictly generalizes the concyclicity determinant (materially new machinery: general conic forms / rank conditions, NOT an equivalent restatement)"
     ]
   },
   "relatedGalleryProofs": [
@@ -111,7 +116,7 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T15:12:46Z",
-  "lastUpdatedAt": "2026-06-13T00:00:00Z",
+  "lastUpdatedAt": "2026-07-24",
   "leanFiles": [
     {
       "path": "Proofs/ProductOfSegmentsOfChords.lean",

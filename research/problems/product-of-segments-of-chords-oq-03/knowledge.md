@@ -258,3 +258,29 @@ lessons:
 6. `pow_left_inj₀ (norm_nonneg _) hr (two_ne_zero-proof)` is the v4.31 name
    for squaring-injectivity on nonnegatives (old `pow_left_injective` /
    `sq_eq_sq'` searches dead-end).
+
+## S19 ACT (researcher-2, 2026-07-24) — COMPLETION
+
+Bridge proven, problem complete (see state.md banner and the S19 session
+memo). Portable lessons:
+
+1. **Check sibling-OQ artifacts before executing a stale plan.** The S12-§3.2
+   closed-form polynomial witness and the whole S20 parent-integration step
+   were obsolete: the OQ-02 line had already (a) refuted the unsigned axiom
+   (`unsigned_converse_counterexample`), (b) proven the signed converse with
+   an explicit Cramer circumcenter (`signed_converse_implies_concyclic` in
+   `Proofs/ProductOfSegmentsOfChordsConverse.lean`), and (c) flipped the
+   parent gallery meta to `verified` (PR #24873). S19 collapsed from a
+   projected heavy `linear_combination` session to a ~20-line composition:
+   Part 6 scalar bridge → Converse circumcircle → Part 8 (⟸) direction.
+2. **`LinearIndependent ℝ ![u, v]` componentwise nonvanishing**:
+   `by simpa using hindep.ne_zero 0` gives `u ≠ 0` (the `![…] 0` reduces
+   under `simpa` without naming `Matrix.cons_val_zero`); `sub_ne_zero.mp`
+   turns `A - P ≠ 0` into `A ≠ P`.
+3. **Cross-file `abbrev Vec2` duplicates unify definitionally** — composing
+   theorems across `ProductOfSegmentsOfChordsOQ03` and
+   `ProductOfSegmentsOfChordsConverse` namespaces needed no casts.
+4. `Proofs.lean` is intentionally import-free; lake `globs` auto-discovers
+   every `Proofs/*.lean`, so the Converse file (header says "NOT registered
+   until built") has in fact been building since the v4.31 migration
+   (#39062) — its header note is stale, trust the build.
