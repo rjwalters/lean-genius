@@ -233,7 +233,7 @@ theorem sqrt2_is_critical :
       isUnitVector z → probSmallSum z ≥ c / n) ∧
     -- But fails for some configuration at threshold 1
     (∃ n : ℕ, n > 0 ∧ ¬erdos_original_question n) :=
-  ⟨hjns_2024, erdos_original_is_false⟩
+  ⟨hjns_2024, erdos_original_is_false_proved⟩
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 5. Optimality of the 1/n Rate
