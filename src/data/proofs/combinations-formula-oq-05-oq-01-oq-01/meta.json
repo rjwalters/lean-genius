@@ -50,7 +50,8 @@
       "Two classical one-step mechanisms compose exactly: absorption k C(n,k) = n C(n-1,k-1) turns the weighted row-n sum into n times an unweighted row-(n-1) sum, and the parent's telescoping then collapses that to a single binomial of row n-2.",
       "Stated with C(n+2,k) and cut-off j+1 the identity needs no natural-number subtraction and holds for all n, making the induction clean; the literal n (-1)^j C(n-2,j-1) form is a one-line specialisation for n ≥ 2.",
       "linear_combination is the right finisher for the inductive step: rather than rewriting under the (-1)^{j+2} factor (which fails on associativity), the absorption and Pascal equalities are supplied as linear hypotheses and ring handles the signed-power algebra.",
-      "The grandparent's full weighted-row vanishing is not assumed but derived: at j = n the coefficient C(n-2,n-1) = 0, so this entry is strictly stronger than the CombinationsFormulaOQ05 anchor."
+      "The grandparent's full weighted-row vanishing is not assumed but derived: at j = n the coefficient C(n-2,n-1) = 0, so this entry is strictly stronger than the CombinationsFormulaOQ05 anchor.",
+      "A generating-function view explains the n ≥ 2 hypothesis: differentiating ∑_k C(n,k)(-1)^k x^k = (1-x)^n gives ∑_k C(n,k)(-1)^k k x^{k-1} = -n(1-x)^{n-1}, so the full-row weighted sum (the j = n endpoint) is this derivative evaluated at x = 1 — it vanishes exactly when n ≥ 2, i.e. when (1-x)^{n-1} still has a root at x = 1, matching the hypothesis this entry (and its grandparent) carries."
     ]
   },
   "sections": [
