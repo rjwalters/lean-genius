@@ -434,3 +434,50 @@ ones first (66 = 2·3·11, 78 = 2·3·13, 90 = 2·3²·5?, 126 = 2·3²·7 are t
 candidates); if few, the same split-vs-engine dichotomy closes the rung.
 Exact values for 40, 56, 60 (hard-target lower bounds) are cheap standalone
 targets. Deep Vose bound unchanged.
+
+## Session 2026-07-23 (researcher-1, third session) — t = 7 closed; local uniqueness of the record FAILS at t = 6
+
+`minimal_hErdos_seven : IsLeast {m | IsPractical m ∧ hErdos m = 7} 128`. The
+record-setter sequence is now proved **2, 4, 8, 16, 32, 64, 128 for t = 1..7**.
+
+HEADLINE STRUCTURAL FINDING: at t = 6 the record is NOT locally unique. Four
+practical numbers in (64, 128) tie the record index:
+hErdos 78 = hErdos 88 = hErdos 100 = hErdos 104 = 6 = hErdos 64
+(all exact engine values, plus `record_index_six_not_locally_unique`). This is
+the first octave where the power of two shares its record — at t = 5, 32 was
+alone. All four ties are practically-unsplittable with a divisor-ratio gap > 2
+after a short prefix (78: 6→13, 88: 8→11, 100: 5→10 after {1,2,4,5}, 104: 8→13);
+the gap forces a unique maximal-length representation of the hard target (e.g.
+77 = 1+2+3+6+26+39 is the ONLY subset-sum rep of 77 in divisors(78), card 6).
+78 = 2·3·13 is precisely the greedy-halving counterexample — the same gap that
+breaks the greedy proof of hErdos m ≤ log₂ m produces record-tying indices.
+Note ties probe but do not breach the conjectured log bound: 6 ≤ log₂ 78.
+
+Counterpoint: unsplittable does NOT imply high index — 90 = 2·3²·5 and
+126 = 2·3²·7 have ELEVEN proper divisors each but index only 4 (hErdos_ninety,
+hErdos_onetwentysix). Index tracks divisor structure (gaps), not divisor count.
+The unsplittables split into gap-type (78, 88, 100, 104 → index 6; 66 → 5) vs
+dense-type (90, 126 → index 4).
+
+Method scaling (dichotomy holds at rung 3): 7 of 14 new practicals in [64,128)
+fall to the 2·m′ split (72, 80, 84, 96, 108, 112, 120), 7 need engines
+(66, 78, 88, 90, 100, 104, 126 — exact values for all 7, both halves). Kernel
+cost stayed modest: the biggest decides are the d = 12 numbers 90 and 126
+(2¹¹-subset powersets), ~15s host each at maxRecDepth 40000. Non-practicality
+decides for m in (64, 128) need maxRecDepth 80000 in the threshold sweep
+(vs 40000 for (32, 64) — depth scales with m).
+
+Host pre-validation trick (saves Docker cycles): replicate divisors/
+IsRepresentable/IsPractical + their Decidable instances verbatim in a scratch
+file importing only Mathlib, and time every new decide there first. All 14
+engine decides + 12 practicality decides validated in ~45s total before
+touching the real file.
+
+NEXT: t = 8 sweeps [128, 256) — ~21 practicals; unsplittable candidates to
+count first (132 = 4·3·11, 140 = 4·5·7, 156 = 4·3·13, 198, 204, 220, 228, ...).
+Octave index-6 census completion (are 78/88/100/104 the ONLY ties?) needs
+engine uppers for 80, 112 (cheap, d = 10) and 120 (d(120) = 16 → 2¹⁵ subsets ×
+120 targets, first genuinely expensive decide — try witness-list engine
+instead: pass an explicit List of per-target witness subsets and decide a
+linear check, O(m) not O(m·2^d)). Exact 40/56/60 still cheap standalones.
+Deep Vose bound unchanged.

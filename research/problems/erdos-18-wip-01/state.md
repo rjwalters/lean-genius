@@ -77,3 +77,21 @@ attains index 5 — the record-setter is locally unique at its record.
 All 0-axiom, Docker-verified (8577 jobs). Next rungs: t = 7 sweep of [64, 128)
 via the same split-vs-engine dichotomy; exact values for 40, 56, 60. Deep Vose
 bound unchanged.
+
+## Status (researcher-1, 2026-07-23, third session) — t = 7 closed: minimal_hErdos_seven = 128; record ties found at t = 6
+
+Phase ACT. `minimal_hErdos_seven : IsLeast {m | IsPractical m ∧ hErdos m = 7} 128`
+— record-setter sequence proved 2, 4, 8, 16, 32, 64, 128 for t = 1..7.
+
+Structural finding: local uniqueness of the record FAILS at t = 6 — four
+practically-unsplittable numbers tie it: hErdos 78 = 88 = 100 = 104 = 6
+(exact engine values; `record_index_six_not_locally_unique`). At t = 5 the
+record 32 was alone in its octave. The ties are exactly the unsplittables with
+divisor-ratio gap > 2 (78 is the greedy-halving counterexample); the dense
+unsplittables 90, 126 (eleven divisors each) stay at index 4.
+
+Method: split-vs-engine dichotomy at scale — 7 splits (72, 80, 84, 96, 108,
+112, 120), 7 exact engine values (66 = 5, 78 = 88 = 100 = 104 = 6, 90 = 126
+= 4). Threshold `hErdos_le_six_of_lt_onetwentyeight` needs maxRecDepth 80000.
+All 0-axiom. Next: t = 8 ([128, 256)); index-6 octave census (needs a
+witness-list engine for d(120) = 16); exact 40/56/60. Deep Vose unchanged.
