@@ -4,11 +4,11 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 28,
-      "endLine": 33
+      "startLine": 35,
+      "endLine": 44
     },
     "title": "Imports and Namespace",
-    "content": "Imports `Nat.Prime.Basic` for the `Nat.Prime` predicate and `Nat.Totient` for Euler's totient function $\\varphi(n)$. Opens `Nat` namespace. The formalization needs only these two Mathlib modules — the core definitions use `sInf` (available from the prelude) and `Finset.filter` (imported transitively).",
+    "content": "Imports `Nat.Prime.Basic` for the `Nat.Prime` predicate, `Nat.Totient` for Euler's totient function $\\varphi(n)$, `ConditionallyCompleteLattice.Basic` and `Finset.Card` for the `sInf`/density machinery, and `Mathlib.NumberTheory.LSeries.PrimesInAP` for Dirichlet's theorem on primes in arithmetic progressions. Opens `Nat` and `Set`.",
     "significance": "supporting",
     "mathContext": "The minimal import footprint reflects the problem's elementary statement: comparing two functions defined by infima over natural numbers. The `Nat.totient` module provides the key function $\\varphi(m)$ and its basic properties (multiplicativity, $\\varphi(p) = p - 1$ for primes). The `sInf` for $\\mathbb{N}$ is well-defined since $\\mathbb{N}$ is well-ordered — every nonempty subset has a minimum.",
     "relatedConcepts": [
@@ -19,7 +19,8 @@
     ],
     "prerequisites": [
       "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.Totient"
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.LSeries.PrimesInAP"
     ]
   },
   {
@@ -27,8 +28,8 @@
     "proofId": "erdos-456",
     "type": "definition",
     "range": {
-      "startLine": 43,
-      "endLine": 44
+      "startLine": 55,
+      "endLine": 56
     },
     "title": "Smallest Prime $\\equiv 1 \\pmod{n}$",
     "content": "`smallestPrimeMod1 n` $= \\inf\\{p \\in \\mathbb{N} : p$ prime $\\wedge n \\mid p - 1\\}$. By Dirichlet's theorem on primes in arithmetic progressions (1837), this set is nonempty for all $n \\ge 1$, so the infimum is a minimum.",
@@ -51,8 +52,8 @@
     "proofId": "erdos-456",
     "type": "definition",
     "range": {
-      "startLine": 47,
-      "endLine": 48
+      "startLine": 59,
+      "endLine": 60
     },
     "title": "Smallest Totient Divisor",
     "content": "`smallestTotientDiv n` $= \\inf\\{m \\in \\mathbb{N} : m > 0 \\wedge n \\mid \\varphi(m)\\}$. The set is nonempty because $p_n$ is always a valid candidate (since $\\varphi(p_n) = p_n - 1$ and $n \\mid p_n - 1$).",
@@ -75,13 +76,13 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 55,
-      "endLine": 56
+      "startLine": 69,
+      "endLine": 75
     },
     "title": "Dirichlet's Theorem",
-    "content": "`dirichlet_primes_mod1` (axiom): $\\forall n \\ge 1,\\, \\forall N,\\, \\exists p \\ge N$ with $p$ prime and $n \\mid p - 1$. This is Dirichlet's theorem specialized to the progression $1, 1 + n, 1 + 2n, \\ldots$, asserting infinitely many primes $\\equiv 1 \\pmod{n}$.",
+    "content": "`dirichlet_primes_mod1` (theorem, proved): $\\forall n \\ge 1,\\, \\forall N,\\, \\exists p \\ge N$ with $p$ prime and $n \\mid p - 1$. This is Dirichlet's theorem specialized to the progression $1, 1 + n, 1 + 2n, \\ldots$, asserting infinitely many primes $\\equiv 1 \\pmod{n}$. Proved directly from Mathlib's `Nat.forall_exists_prime_gt_and_modEq` (module `PrimesInAP`) — no axiom.",
     "significance": "key",
-    "mathContext": "Dirichlet's theorem (1837) is one of the deepest results in analytic number theory, requiring $L$-functions $L(s, \\chi)$ for Dirichlet characters $\\chi \\bmod n$ and the non-vanishing $L(1, \\chi) \\ne 0$. The formalization axiomatizes this because a full proof would require Mathlib's $L$-function machinery. The specific case $a = 1$ corresponds to primes splitting completely in the cyclotomic field $\\mathbb{Q}(\\zeta_n)$.",
+    "mathContext": "Dirichlet's theorem (1837) is one of the deepest results in analytic number theory, requiring $L$-functions $L(s, \\chi)$ for Dirichlet characters $\\chi \\bmod n$ and the non-vanishing $L(1, \\chi) \\ne 0$. Earlier versions of this file axiomatized this result; it is now proved by directly invoking Mathlib's own formalization of Dirichlet's theorem (`Nat.forall_exists_prime_gt_and_modEq`), which internally carries out the $L$-function argument. The specific case $a = 1$ corresponds to primes splitting completely in the cyclotomic field $\\mathbb{Q}(\\zeta_n)$.",
     "relatedConcepts": [
       "Dirichlet L-functions",
       "Dirichlet characters",
@@ -98,13 +99,13 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 59,
-      "endLine": 69
+      "startLine": 97,
+      "endLine": 112
     },
     "title": "Properties of $p_n$",
-    "content": "Three axioms: `smallestPrimeMod1_prime` ($p_n$ is prime), `smallestPrimeMod1_cong` ($n \\mid p_n - 1$), `smallestPrimeMod1_minimal` ($p_n \\le p$ for any prime $p$ with $n \\mid p - 1$). These are the defining properties of $\\inf$ applied to a nonempty set in $\\mathbb{N}$.",
+    "content": "Three theorems (formerly axioms, now proved): `smallestPrimeMod1_prime` ($p_n$ is prime), `smallestPrimeMod1_cong` ($n \\mid p_n - 1$), `smallestPrimeMod1_minimal` ($p_n \\le p$ for any prime $p$ with $n \\mid p - 1$). These are the defining properties of $\\inf$ applied to a nonempty set in $\\mathbb{N}$, proved via `csInf_mem`/`csInf_le`.",
     "significance": "key",
-    "mathContext": "These three properties fully characterize $p_n$: it is the unique natural number that (1) belongs to the set $\\{p : p$ prime, $n \\mid p - 1\\}$ and (2) is $\\le$ every other element of this set. In a well-ordered set like $\\mathbb{N}$, the infimum of a nonempty set is its minimum. The axiomatization avoids needing to prove that `sInf` behaves correctly for this particular set, which would require establishing nonemptiness (Dirichlet) and boundedness below (trivial for $\\mathbb{N}$).",
+    "mathContext": "These three properties fully characterize $p_n$: it is the unique natural number that (1) belongs to the set $\\{p : p$ prime, $n \\mid p - 1\\}$ and (2) is $\\le$ every other element of this set. In a well-ordered set like $\\mathbb{N}$, the infimum of a nonempty set is its minimum. Rather than being axiomatized, `sInf`'s behavior here is proved directly: nonemptiness comes from `primes_mod1_nonempty` (via Dirichlet), membership from `csInf_mem`, and minimality from `csInf_le` (boundedness below is trivial for $\\mathbb{N}$).",
     "relatedConcepts": [
       "sInf properties",
       "well-ordering",
@@ -122,13 +123,13 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 76,
-      "endLine": 86
+      "startLine": 115,
+      "endLine": 130
     },
     "title": "Properties of $m_n$",
-    "content": "Three axioms: `smallestTotientDiv_pos` ($m_n > 0$), `smallestTotientDiv_divides` ($n \\mid \\varphi(m_n)$), `smallestTotientDiv_minimal` ($m_n \\le m$ for any $m > 0$ with $n \\mid \\varphi(m)$). Parallel structure to the $p_n$ properties.",
+    "content": "Three theorems (formerly axioms, now proved): `smallestTotientDiv_pos` ($m_n > 0$), `smallestTotientDiv_divides` ($n \\mid \\varphi(m_n)$), `smallestTotientDiv_minimal` ($m_n \\le m$ for any $m > 0$ with $n \\mid \\varphi(m)$). Parallel structure to the $p_n$ properties, proved via `csInf_mem`/`csInf_le`.",
     "significance": "key",
-    "mathContext": "The nonemptiness of $\\{m > 0 : n \\mid \\varphi(m)\\}$ follows from the fact that $p_n$ belongs to this set (since $\\varphi(p_n) = p_n - 1$ and $n \\mid p_n - 1$). This is the key link between the two functions: the existence of $m_n$ depends on the existence of $p_n$, which depends on Dirichlet's theorem. The minimality axiom is what gives the trivial inequality $m_n \\le p_n$.",
+    "mathContext": "The nonemptiness of $\\{m > 0 : n \\mid \\varphi(m)\\}$ follows from the fact that $p_n$ belongs to this set (since $\\varphi(p_n) = p_n - 1$ and $n \\mid p_n - 1$), proved in `totient_div_set_nonempty`. This is the key link between the two functions: the existence of $m_n$ depends on the existence of $p_n$, which depends on Dirichlet's theorem. The minimality property (`csInf_le`) is what gives the trivial inequality $m_n \\le p_n$.",
     "relatedConcepts": [
       "Nat.totient",
       "sInf",
@@ -146,11 +147,11 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 95,
-      "endLine": 96
+      "startLine": 135,
+      "endLine": 140
     },
     "title": "Trivial Inequality $m_n \\le p_n$",
-    "content": "`m_le_p` (axiom): $m_n \\le p_n$ for all $n \\ge 1$. Since $p_n$ is prime with $n \\mid p_n - 1$, we have $\\varphi(p_n) = p_n - 1$ divisible by $n$, so $p_n \\in \\{m > 0 : n \\mid \\varphi(m)\\}$, and $m_n \\le p_n$ by minimality.",
+    "content": "`m_le_p` (theorem, proved): $m_n \\le p_n$ for all $n \\ge 1$. Since $p_n$ is prime with $n \\mid p_n - 1$, we have $\\varphi(p_n) = p_n - 1$ divisible by $n$, so $p_n \\in \\{m > 0 : n \\mid \\varphi(m)\\}$, and $m_n \\le p_n$ by minimality (`smallestTotientDiv_minimal`).",
     "significance": "key",
     "mathContext": "This simple but fundamental inequality establishes that $m_n$ is always at most $p_n$. The entire problem asks about the gap: when is this inequality strict, and by how much? The proof sketch uses two facts: (1) $\\varphi(p) = p - 1$ for primes $p$, and (2) $p_n \\equiv 1 \\pmod{n}$, hence $n \\mid p_n - 1 = \\varphi(p_n)$.",
     "relatedConcepts": [
@@ -165,40 +166,17 @@
     ]
   },
   {
-    "id": "ann-456-linnik",
-    "proofId": "erdos-456",
-    "type": "concept",
-    "range": {
-      "startLine": 99,
-      "endLine": 101
-    },
-    "title": "Linnik's Theorem",
-    "content": "`linnik_bound` (axiom): $\\exists L,\\, \\forall n \\ge 1,\\, p_n \\le n^L$. The smallest prime $\\equiv 1 \\pmod{n}$ is bounded polynomially in $n$. The best known value of Linnik's constant is $L \\le 5.18$ (Xylouris 2011).",
-    "significance": "key",
-    "mathContext": "Linnik's theorem (1944) is a deep result in analytic number theory, requiring bounds on zeros of Dirichlet $L$-functions near $\\text{Re}(s) = 1$. The progression of bounds: Pan (1957, $L \\le 5448$), Jutila (1977, $L \\le 168$), Heath-Brown (1992, $L \\le 5.5$), Xylouris (2011, $L \\le 5.18$). Under GRH, $L = 2 + \\varepsilon$ suffices. The formalization uses $L \\in \\mathbb{N}$ (rounding up), which is a simplification.",
-    "relatedConcepts": [
-      "Linnik's constant",
-      "zero-free regions",
-      "Siegel zeros",
-      "L-functions"
-    ],
-    "prerequisites": [
-      "smallestPrimeMod1",
-      "Nat.pow"
-    ]
-  },
-  {
     "id": "ann-456-van-doorn",
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 116,
-      "endLine": 118
+      "startLine": 149,
+      "endLine": 163
     },
     "title": "Van Doorn's Observation",
-    "content": "`van_doorn_power_of_two` (axiom): for $n = 2^{2k+1}$, $m_n \\le 2n$. Since $\\varphi(2n) = \\varphi(2^{2k+2}) = 2^{2k+1} = n$, the number $2n$ witnesses $n \\mid \\varphi(2n)$, giving $m_n \\le 2n$. Combined with Linnik's polynomial lower bound on $p_n$, this gives explicit strict inequality.",
+    "content": "`van_doorn_power_of_two` (theorem, proved): for $n = 2^{2k+1}$, $m_n \\le 2n$. Since $\\varphi(2n) = \\varphi(2^{2k+2}) = 2^{2k+1} = n$, the number $2n$ witnesses $n \\mid \\varphi(2n)$, giving $m_n \\le 2n$ by minimality. Proved via `Nat.totient_prime_pow_succ`, not axiomatized.",
     "significance": "key",
-    "mathContext": "This observation exploits the simple structure of $\\varphi$ at powers of $2$: $\\varphi(2^k) = 2^{k-1}$. For odd powers $n = 2^{2k+1}$, taking $m = 2n = 2^{2k+2}$ gives $\\varphi(m) = 2^{2k+1} = n$. Meanwhile, $p_n$ (the smallest prime $\\equiv 1 \\pmod{2^{2k+1}}$) must be at least $2^{2k+1} + 1$ and grows like $n^L$ by Linnik's theorem, so $m_n \\le 2n \\ll n^L \\le p_n$ for large $k$.",
+    "mathContext": "This observation exploits the simple structure of $\\varphi$ at powers of $2$: $\\varphi(2^k) = 2^{k-1}$. For odd powers $n = 2^{2k+1}$, taking $m = 2n = 2^{2k+2}$ gives $\\varphi(m) = 2^{2k+1} = n$. Meanwhile $p_n$ (the smallest prime $\\equiv 1 \\pmod{2^{2k+1}}$) grows at least linearly and, per Linnik's theorem (stated informally in this file's header comment, not formalized here), at most polynomially, so $m_n \\le 2n \\ll p_n$ for large $k$.",
     "relatedConcepts": [
       "totient at powers of 2",
       "explicit witnesses",
@@ -215,8 +193,8 @@
     "proofId": "erdos-456",
     "type": "definition",
     "range": {
-      "startLine": 126,
-      "endLine": 128
+      "startLine": 174,
+      "endLine": 176
     },
     "title": "Natural Density Definition",
     "content": "`AlmostAll P`: $\\forall \\varepsilon > 0$ (rational), $\\exists N$ such that for all $M \\ge N$, $|\\{n < M : \\neg P(n)\\}| < M$. This encodes 'the exceptional set has vanishing density' as $M \\to \\infty$.",
@@ -239,8 +217,8 @@
     "proofId": "erdos-456",
     "type": "theorem",
     "range": {
-      "startLine": 135,
-      "endLine": 148
+      "startLine": 198,
+      "endLine": 212
     },
     "title": "The Three Erdős Conjectures",
     "content": "`ErdosProblem456_Part1`: $m_n < p_n$ for almost all $n$. `Part2`: $\\forall C,\\, C \\cdot m_n \\le p_n$ for a.a. $n$ (formalization of $p_n/m_n \\to \\infty$). `Part3`: $\\forall N,\\, \\exists p \\ge N$ prime with $m_{p-1} = p$ and $\\forall n,\\, m_n = p \\Rightarrow n = p - 1$ (infinitely many 'rigid' primes).",
@@ -263,13 +241,13 @@
     "proofId": "erdos-456",
     "type": "concept",
     "range": {
-      "startLine": 155,
-      "endLine": 166
+      "startLine": 222,
+      "endLine": 267
     },
     "title": "Implications Between Parts",
-    "content": "`part2_implies_part1` (sorry): Part 2 $\\Rightarrow$ Part 1. `part1_implies_infinitely_many` (sorry): Part 1 $\\Rightarrow$ infinitely many $n$ with $m_n < p_n$. Both are intuitively clear but require careful handling of the `AlmostAll` quantifiers.",
+    "content": "`part2_implies_part1` (theorem, proved): Part 2 $\\Rightarrow$ Part 1, via `almostAll_mono` at $C=2$. `part1_implies_infinitely_many` (theorem, proved): Part 1 $\\Rightarrow$ infinitely many $n$ with $m_n < p_n$, via the pigeonhole lemma `almostAll_infinitely_often`. Neither relies on a sorry or an axiom.",
     "significance": "supporting",
-    "mathContext": "The implication Part 2 $\\Rightarrow$ Part 1 should follow by taking $C = 2$ in Part 2: $2m_n \\le p_n$ implies $m_n < p_n$ (since $m_n > 0$). The sorry reflects the gap between this sketch and the formal proof, which needs to carefully manage the $\\varepsilon$ and $N$ quantifiers in the `AlmostAll` definition. The second implication (a.a. $\\Rightarrow$ infinitely many) is a standard argument: if $P$ holds for all but a vanishing density of $n$, it holds for infinitely many.",
+    "mathContext": "Part 2 $\\Rightarrow$ Part 1 follows by taking $C = 2$ in Part 2: $2m_n \\le p_n$ implies $m_n < p_n$ (since $m_n > 0$), formalized via `almostAll_mono`. The second implication (a.a. $\\Rightarrow$ infinitely many) is proved by the general lemma `almostAll_infinitely_often`: a contradiction/pigeonhole argument showing that if $P$ holds for all but a vanishing density of $n$, it holds for infinitely many — both formerly `sorry`, now fully proved.",
     "relatedConcepts": [
       "logical implication",
       "density-1 implies infinite",
