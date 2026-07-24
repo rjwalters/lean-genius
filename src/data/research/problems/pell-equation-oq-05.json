@@ -41,13 +41,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S7): proved 7 is a non-norm and the cubic norm form is not surjective (anisotropy mod 7, 0-axiom); also repaired a det_fin_three_of Mathlib-rename regression that had broken the file on main. Unit rank=1 (signature) still the deferred hard ACT.",
+    "progressSummary": "PROGRESS (S8): generalized the mod-7 anisotropy to a generic inert-prime descent lemma, added kernel-decide anisotropy at 13 and 19, and proved the set of non-norms is infinite (non_norms_infinite) — with S6, both spectrum classes are infinite. Still 0 axioms / 0 sorries, docker-verified (8576 jobs). Unit rank=1 via signature remains the deferred hard ACT.",
     "builtItems": [
       "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass).",
       "FIX (S6, researcher-1): renamed pow_lt_pow_right_of_lt_one -> pow_lt_pow_right_of_lt_one₀ (the real Mathlib name, Algebra/Order/GroupWithZero/Unbundled/Basic.lean:577) at both call sites in PellEquationOQ05.lean:upow_injective. The non-₀ name does not exist in Mathlib master (no alias). Was a confirmed compile blocker flagged by S5.",
       "cnorm_anisotropic_mod7 (kernel decide over 343 ZMod-7 triples) in PellEquationOQ05.lean",
       "seven_dvd_cnorm_iff: 7∣N(a,b,c) ↔ 7∣a∧7∣b∧7∣c (anisotropy + homogeneity)",
-      "cnorm_ne_seven / cnorm_ne_neg_seven / norm_eq_seven_no_solution / cnorm3_not_surjective (7 is a non-norm; N not surjective)"
+      "cnorm_ne_seven / cnorm_ne_neg_seven / norm_eq_seven_no_solution / cnorm3_not_surjective (7 is a non-norm; N not surjective)",
+      "dvd_cnorm_iff_of_anisotropic, cube_dvd_cnorm_of_dvd, cnorm_ne_of_anisotropic (generic inert-prime descent) in PellEquationOQ05.lean",
+      "cnorm_anisotropic_mod13, cnorm_anisotropic_mod19 (kernel decide), cnorm_ne_thirteen/nineteen/ninety_one, norm_eq_thirteen_no_solution",
+      "non_norms_infinite: the set of non-norm integers is infinite (capstone S8)"
     ],
     "insights": [
       "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
@@ -57,18 +60,20 @@
       "N(xi)=m has finitely many solution CLASSES mod units: each class corresponds to an ideal of norm |m| (finitely many), and within a class solutions form one O_K^x-coset (S-unit/class-group finiteness).",
       "Re-verified the file`s other external Mathlib deps against master: Real.rpow_natCast (Pow/Real.lean:62), Real.rpow_mul (Pow/Real.lean:405), Set.infinite_of_injective_forall_mem (Data/Set/Finite/Basic.lean:894). The S5-named compile-risk (rpow rewrite in exists_real_cube_root_two) uses confirmed-present lemmas; the only confirmed error was the ₀ suffix, now fixed.",
       "S7: x³-2 is irreducible over 𝔽₇ (2 is a cubic non-residue mod 7; cubes mod 7 = {0,1,6}), so 7 is inert and the cubic norm form is anisotropic mod 7 — only zero is (0,0,0).",
-      "S7: 7 is a NON-NORM. Anisotropy mod 7 ⟹ 7∣N forces 7∣a,b,c ⟹ 343∣N, so N(ξ)=±7 is impossible; the norm form N_{K/ℚ} is NOT surjective. Empty counterpart to S6 N=2 being infinite."
+      "S7: 7 is a NON-NORM. Anisotropy mod 7 ⟹ 7∣N forces 7∣a,b,c ⟹ 343∣N, so N(ξ)=±7 is impossible; the norm form N_{K/ℚ} is NOT surjective. Empty counterpart to S6 N=2 being infinite.",
+      "S8: The right generalization axis for the S7 non-norm argument is the modulus, not the valuation: one descent step (p|m, p^3∤m => m not a norm) needs no induction and yields infinitely many non-norms per anisotropy certificate.",
+      "S8: 13 and 19 are also inert in Q(cbrt2) (2 a cubic non-residue: cubes mod 13 = {0,1,5,8,12}, mod 19 = {0,1,7,8,11,12,18}); kernel decide over 2197 resp. 6859 triples verifies anisotropy.",
+      "S8: The value spectrum of the cubic norm form splits Z\\{0} into two classes, attained-infinitely-often vs never-attained, and BOTH are now proved infinite (norm_eq_solutions_infinite / non_norms_infinite via the family 7(1+49k))."
     ],
     "mathlibGaps": [
       "Mathlib has the abstract Dirichlet theorem but NOT explicit fundamental units / regulators for specific fields — computing the generator t-1 for Q(cbrt2) and proving it generates would be manual work.",
       "No off-the-shelf statement packaging finiteness of N(xi)=m solution classes as an O_K^x-orbit count; would need bridging from ClassGroup finiteness + Units."
     ],
     "nextSteps": [
-      "Docker-verify PellEquationOQ05.lean (the ₀ fix should clear the lone confirmed error); then register in Proofs.lean and close #24277 as superseded.",
-      "Optional: extend norm_one_solutions_infinite to N(ξ)=m for norm values m.",
-      "Hard ACT: unit rank=1 via signature (1,1) — still no Mathlib bearer for InfinitePlace count.",
-      "Generalize 7-anisotropy to all primes p where 2 is a cubic non-residue mod p (each gives a family of non-norms).",
-      "Characterize the full image of cnorm: the multiplicative monoid generated by split/ramified primes."
+      "Hard ACT: unit rank=1 via signature (1,1) — still no Mathlib bearer for card (InfinitePlace (AdjoinRoot (X^3-2))) = 2.",
+      "Optional S9: full valuation theorem v_p(N) ≡ 0 (mod 3) for inert p (strong induction on v_p).",
+      "Optional S9: positive side of the spectrum — which primes ARE norms (split primes; e.g. 3 = N(1,1,0), 5 = N(1,0,1)) — characterize the norm monoid.",
+      "Docker-verify was done S8; file registered via lake globs (no Proofs.lean edit needed)."
     ]
   },
   "tags": [
