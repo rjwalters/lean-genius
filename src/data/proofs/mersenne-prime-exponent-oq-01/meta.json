@@ -107,7 +107,8 @@
       "**Odd exponents lift $a + 1$ divisibility.** The whole proof turns on $d$ odd $\\Rightarrow a + 1 \\mid a^d + 1$, a special case of $x - y \\mid x^k - y^k$ with $y = -1$. Where the Mersenne argument uses $x - y \\mid x^k - y^k$ directly (even/odd irrelevant), the Fermat argument needs the *odd* exponent so that $(-1)^d = -1$ turns the subtraction into the desired $+1$.",
       "**Only odd factors of the exponent are dangerous.** An even factor of $n$ does nothing; it is precisely the odd factors $> 1$ that yield proper divisors $2^{n/d} + 1$. Ruling them all out is equivalent to saying $n$ has no odd part beyond $1$, i.e. $n$ is a power of two.",
       "**The $n = 0$ exception is real.** $2^0 + 1 = 2$ is prime but $0$ is not a power of two, so the theorem genuinely needs $n \\ge 1$. The hypothesis-free packaging honestly records this as the dichotomy $n = 0 \\vee \\exists k,\\ n = 2^k$.",
-      "**Elementary throughout.** 'Odd part $1$ $\\Rightarrow$ power of two' is discharged by a four-line strong induction on the value, sidestepping `Nat.factorization`/`ord_compl`; the rest is `omega`, `ring`, `push_cast`, and two named Mathlib lemmas."
+      "**Elementary throughout.** 'Odd part $1$ $\\Rightarrow$ power of two' is discharged by a four-line strong induction on the value, sidestepping `Nat.factorization`/`ord_compl`; the rest is `omega`, `ring`, `push_cast`, and two named Mathlib lemmas.",
+      "**A structure theorem doubles as a search filter.** `not_prime_of_odd_factor` restates the same argument as a contrapositive pruning rule: to hunt for Fermat primes among candidate exponents $n$, this lemma lets a search discard on sight any $n$ carrying an odd factor $> 1$, since only $n = 2^k$ can possibly survive — turning the necessary condition into a computational sieve, not merely an abstract classification."
     ],
     "prerequisites": [
       "Divisibility and prime numbers in ℕ",
