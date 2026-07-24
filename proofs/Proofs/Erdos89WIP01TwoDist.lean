@@ -245,7 +245,8 @@ theorem blokhuis_augmented_linearIndependent (α β : ℝ) (hα : 0 < α) (hβ :
     have h := congrArg (coeff (Finsupp.single 0 4)) hg
     simp only [coeff_add, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul,
       smul_eq_mul, coeff_zero, coeff_x4_blokhuis, coeff_X', coeff_one, mul_one] at h
-    simpa [Finsupp.single_eq_single_iff, Finsupp.single_eq_zero] using h
+    simpa [Finsupp.single_eq_single_iff, Finsupp.ext_iff, Fin.forall_fin_two,
+        Finsupp.single_apply] using h
   -- Step 2: coefficients of x³ and y³ ⟹ ∑ c_p · p = 0.
   have hsx : ∑ p : {x // x ∈ S},
       g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 0 = 0 := by
@@ -254,7 +255,8 @@ theorem blokhuis_augmented_linearIndependent (α β : ℝ) (hα : 0 < α) (hβ :
       smul_eq_mul, coeff_zero, coeff_x3_blokhuis, coeff_X', coeff_one] at h
     have hclean : ∑ p : {x // x ∈ S},
         g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 0) = 0 := by
-      simpa [Finsupp.single_eq_single_iff, Finsupp.single_eq_zero] using h
+      simpa [Finsupp.single_eq_single_iff, Finsupp.ext_iff, Fin.forall_fin_two,
+        Finsupp.single_apply] using h
     have hneg : (-4 : ℝ) * ∑ p : {x // x ∈ S},
         g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 0
         = ∑ p : {x // x ∈ S},
@@ -271,7 +273,8 @@ theorem blokhuis_augmented_linearIndependent (α β : ℝ) (hα : 0 < α) (hβ :
       smul_eq_mul, coeff_zero, coeff_y3_blokhuis, coeff_X', coeff_one] at h
     have hclean : ∑ p : {x // x ∈ S},
         g (Sum.inl p) * (-4 * (p : EuclideanSpace ℝ (Fin 2)) 1) = 0 := by
-      simpa [Finsupp.single_eq_single_iff, Finsupp.single_eq_zero] using h
+      simpa [Finsupp.single_eq_single_iff, Finsupp.ext_iff, Fin.forall_fin_two,
+        Finsupp.single_apply] using h
     have hneg : (-4 : ℝ) * ∑ p : {x // x ∈ S},
         g (Sum.inl p) * (p : EuclideanSpace ℝ (Fin 2)) 1
         = ∑ p : {x // x ∈ S},
