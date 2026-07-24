@@ -642,4 +642,119 @@ theorem pommerenkeLowerBound_of_klrLowerBound :
           exact min_le_left _ _
       _ ≤ minLemniscateArea n := hklr n hn2
 
+/-! ## Salvaged from PR #41875: the weak Pólya upper bound and the full
+Pólya equality family
+
+Two disjoint layers originally developed on a since-diverged branch, rebased
+here onto the current file (the branch's lower-bound layer was superseded by
+the sharper `sublevelMeasure_ge'` above and is not reproduced).
+
+`allRootsZero` treated the extremal candidate `zⁿ`.  Pólya's (deep, unproved
+here) equality statement says the area bound `π` is attained **exactly** when
+all roots coincide — at *any* point `a` of the closed disk, not just `0`.
+This section formalizes the attainment half in full generality: for every
+`‖a‖ ≤ 1` and `n ≥ 1`, the polynomial `(z − a)ⁿ` has lemniscate exactly
+`ball a 1` and area exactly `π`.  So the area functional is constant (`= π`)
+on the whole conjectured extremal family, and `exists_sublevelMeasure_eq_pi`
+holds with the witness placed anywhere in the disk. -/
+
+/-- **`sublevelMeasure` is the `toReal` of the `ℂ`-side lemniscate volume.**
+The parent's `ℝ × ℝ` sublevel set is the volume-preserving image of `Sₚ` under
+`ℂ ≃ᵐ ℝ × ℝ`, so its measure agrees with `volume Sₚ`.  Deduplicates the
+transport used in the exact-area computations above and lets quantitative
+bounds work entirely on the `ℂ` side. -/
+theorem sublevelMeasure_eq_toReal_volume (P : UnitDiskPoly n) :
+    sublevelMeasure P = (volume P.sublevelSet).toReal := by
+  rw [sublevelMeasure, P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+
+/-- **Weak Pólya upper bound: `sublevelMeasure P ≤ 4π`.**  The lemniscate sits
+inside `closedBall 0 2` (`sublevelSet_subset_closedBall`), whose area is `4π`.
+This is the first per-configuration quantitative upper bound valid for every
+`P`; Pólya's sharp constant `π` (attained on the family below) is the deep
+open content. -/
+theorem sublevelMeasure_le_four_pi (P : UnitDiskPoly n) :
+    sublevelMeasure P ≤ 4 * Real.pi := by
+  rw [P.sublevelMeasure_eq_toReal_volume]
+  have hfin : volume (Metric.closedBall (0 : ℂ) 2) ≠ ⊤ :=
+    (isCompact_closedBall (0 : ℂ) 2).measure_lt_top.ne
+  have hmono : volume P.sublevelSet ≤ volume (Metric.closedBall (0 : ℂ) 2) :=
+    measure_mono P.sublevelSet_subset_closedBall
+  calc (volume P.sublevelSet).toReal
+      ≤ (volume (Metric.closedBall (0 : ℂ) 2)).toReal := ENNReal.toReal_mono hfin hmono
+    _ = 4 * Real.pi := by
+        rw [Complex.volume_closedBall, ENNReal.toReal_mul, ENNReal.toReal_pow,
+          ENNReal.toReal_ofReal (by norm_num : (0:ℝ) ≤ 2), ENNReal.coe_toReal,
+          NNReal.coe_real_pi]
+        ring
+
+/-- **Per-configuration two-sided bound**: for `n ≠ 0`, every lemniscate area
+lies in `[π/(4·9^{n−1}), 4π]` — the sharp lower bound of `sublevelMeasure_ge'`
+paired with the weak Pólya upper bound. -/
+theorem sublevelMeasure_mem_Icc (P : UnitDiskPoly n) (hn : n ≠ 0) :
+    sublevelMeasure P ∈ Set.Icc (Real.pi / (4 * 9 ^ (n - 1))) (4 * Real.pi) :=
+  ⟨P.sublevelMeasure_ge' hn, P.sublevelMeasure_le_four_pi⟩
+
+/-- All `n` roots at a common point `a` of the closed unit disk. -/
+noncomputable def allRootsAt (n : ℕ) (a : ℂ) (ha : Complex.abs a ≤ 1) :
+    UnitDiskPoly n :=
+  ⟨fun _ => a, fun _ => ha⟩
+
+/-- The repeated-root polynomial evaluates to `(z − a)ⁿ`. -/
+theorem eval_allRootsAt (n : ℕ) (a : ℂ) (ha : Complex.abs a ≤ 1) (z : ℂ) :
+    (allRootsAt n a ha).eval z = (z - a) ^ n := by
+  simp [UnitDiskPoly.eval, allRootsAt, Finset.prod_const]
+
+/-- **The repeated-root lemniscate is exactly the unit ball at `a`.**  For
+`n ≠ 0`, `{z : ‖(z − a)ⁿ‖ < 1} = ball a 1`. -/
+theorem sublevelSet_allRootsAt {n : ℕ} (hn : n ≠ 0) (a : ℂ)
+    (ha : Complex.abs a ≤ 1) :
+    (allRootsAt n a ha).sublevelSet = Metric.ball a 1 := by
+  ext z
+  constructor
+  · intro hz
+    have h1 : ‖(allRootsAt n a ha).eval z‖ < 1 := hz
+    rw [eval_allRootsAt, norm_pow] at h1
+    rw [Metric.mem_ball, dist_eq_norm]
+    exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hn).mp h1
+  · intro hz
+    rw [Metric.mem_ball, dist_eq_norm] at hz
+    show ‖(allRootsAt n a ha).eval z‖ < 1
+    rw [eval_allRootsAt, norm_pow]
+    exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hn).mpr hz
+
+/-- `volume` of the repeated-root lemniscate is `π` (`ℂ`-side), wherever the
+root sits. -/
+theorem volume_sublevelSet_allRootsAt {n : ℕ} (hn : n ≠ 0) (a : ℂ)
+    (ha : Complex.abs a ≤ 1) :
+    volume ((allRootsAt n a ha).sublevelSet) = NNReal.pi := by
+  rw [sublevelSet_allRootsAt hn a ha, Complex.volume_ball]
+  simp
+
+/-- The parent's `ℝ × ℝ` volume of the repeated-root lemniscate is `π`,
+transported across `ℂ ≃ᵐ ℝ × ℝ` as usual. -/
+theorem volume_realProd_sublevelSet_allRootsAt {n : ℕ} (hn : n ≠ 0) (a : ℂ)
+    (ha : Complex.abs a ≤ 1) :
+    volume {p : ℝ × ℝ | Complex.abs ((allRootsAt n a ha).eval ⟨p.1, p.2⟩) < 1}
+      = NNReal.pi := by
+  rw [(allRootsAt n a ha).realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm
+    Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage
+    (allRootsAt n a ha).measurableSet_sublevelSet.nullMeasurableSet]
+  exact volume_sublevelSet_allRootsAt hn a ha
+
+/-- **The area functional is identically `π` on the whole Pólya equality
+family**: every repeated-root polynomial `(z − a)ⁿ` (`‖a‖ ≤ 1`, `n ≥ 1`) has
+`sublevelMeasure = π` exactly.  Generalizes `sublevelMeasure_allRootsZero`
+(`a = 0`) and `sublevelMeasure_singleRoot` (`n = 1`); the deep converse — that
+these are the *only* maximizers — is Pólya's equality case and stays open
+here. -/
+theorem sublevelMeasure_allRootsAt {n : ℕ} (hn : n ≠ 0) (a : ℂ)
+    (ha : Complex.abs a ≤ 1) :
+    sublevelMeasure (allRootsAt n a ha) = Real.pi := by
+  rw [sublevelMeasure, volume_realProd_sublevelSet_allRootsAt hn a ha]
+  simp [NNReal.coe_real_pi]
+
 end UnitDiskPoly
