@@ -2,8 +2,8 @@
   "id": "basel-problem-oq-01-oq-05",
   "slug": "basel-problem-oq-01-oq-05",
   "title": "Algebraic Independence of Odd Zeta Values — The Implication Hierarchy",
-  "status": null,
-  "badge": null,
+  "status": "verified",
+  "badge": "mathlib",
   "description": "Open Question OQ-05 from the ζ(5) investigation asks: are there infinitely many algebraically independent odd zeta values ζ(3), ζ(5), ζ(7), …? This is the strongest standard conjecture about odd zeta values and is wide open (we do not even know ζ(5) is irrational). Rather than attempt it, this file makes precise the logical hierarchy into which OQ-05 fits and proves every implication axiom-free from Mathlib's AlgebraicIndependent machinery: algebraic independence ⟹ each value transcendental ⟹ each value irrational ⟹ linearly independent over ℚ ⟹ pairwise distinct. It also shows the hierarchy is strict and specializes the framing to the odd zeta values, deriving that OQ-05 implies (and is strictly stronger than) the Ball–Rivoal theorem on infinitely many irrational odd zeta values.",
   "leanFile": {
     "imports": [
