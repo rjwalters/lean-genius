@@ -428,8 +428,8 @@ private theorem exists_qth_root (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q.Pri
   haveI : Fintype (GaloisField p k)ˣ := Fintype.ofFinite _
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (GaloisField p k)ˣ)
   have horder : orderOf g = p ^ k - 1 := by
-    rw [orderOf_eq_card_of_forall_mem_zpowers hg, ← Nat.card_eq_fintype_card,
-      Nat.card_units, GaloisField.card p k hk0]
+    rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_units,
+      GaloisField.card p k hk0]
   have hζorder : orderOf (g ^ m) = q := by
     rw [orderOf_pow, horder, hm, Nat.gcd_eq_right (dvd_mul_left m q),
       Nat.mul_div_cancel _ (Nat.pos_of_ne_zero hm0)]
