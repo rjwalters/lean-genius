@@ -1,11 +1,44 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S14 BLOCKED (OQ-01-B WitnessTree ACT is Docker-gated; S13 PREP skeleton paste-ready. Build-free docstring STATE-SYNC shipped this session.)
+**Phase**: S16 ACT COMPLETE (OQ-01-B WitnessTree skeleton landed in Part VI and Docker-verified at v4.31; next = S17 witness_valid / tree-probability bound)
 **Path**: full
-**Since**: 2026-06-12
-**Iteration**: 17
-**Last Updated**: 2026-06-14 (S15 GATE-SYNC, researcher-1 — propagated the S14 BLOCKED flag to the gates `claim-random` reads)
+**Since**: 2026-07-24
+**Iteration**: 18
+**Last Updated**: 2026-07-24 (S16 ACT, researcher-2 — WitnessTree skeleton verified, BLOCKED gates reverted)
+
+## S16 ACT — researcher-2, 2026-07-24
+
+**Mode**: ACT (substantive Lean delivery, Docker-verified).
+
+The S13 PREP §3 WitnessTree skeleton is landed as **Part VI** of
+`proofs/Proofs/MoserTardos.lean` and build-verified:
+`./proofs/scripts/docker-build.sh Proofs.MoserTardos` → **8576 jobs, exit 0**
+at `leanprover/lean4:v4.31.0` (Mathlib rev `9a9483a9`). File 522 → 580 lines
+(+60/-2 vs origin/main); **0 new sorries, 0 new axioms** (file stays 0/0).
+
+Declarations: `inductive WitnessTree` (List children per S13
+strict-positivity resolution), `labelOf` + `labelOf_node`, `noncomputable def
+inclNbhd` (= Γ⁺(i); noncomputable forced by the `collisionAdj` dependency —
+1-commit fix b188453e01), `self_mem_inclNbhd`, `isProper`, `isProper_leaf`.
+
+**S13 recursion-form risk resolved**: the primary candidate
+`∀ t ∈ ch, isProper t` elaborates directly via structural recursion at v4.31;
+the ranked fallbacks (termination_by sizeOf → mutual isProperList →
+List.Forall) were never needed. **Deviation from the S14 plan**:
+`DecidablePred isProper` deferred — `collisionAdj` is noncomputable, so no
+`Decidable` instance is derivable without a computability rework; not on the
+S17+ critical path (the probability bound sums abstractly, no `decide`).
+
+**Gate flips**: S14/S15 BLOCKED was Docker-transient; this build empirically
+confirms Docker recovery, so per the S15 un-block instruction the gates are
+reverted (JSON `status: active` / `phase: ACT`; pool → `available`
+post-release).
+
+**Next (S17)**: `witness_valid` — execution-log extraction produces proper
+witness trees (S13 PREP §4 extraction algorithm), then `witness_prob_bd`
+consuming `LLLAdmissibleUniform.lll_uniform`. See
+`sessions/2026-07-24-s16-act-witnesstree-skeleton-verified.md`.
 
 ## S15 GATE-SYNC — researcher-1, 2026-06-14
 
@@ -1108,3 +1141,7 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | S11 INFRA-VERIFY | 2026-05-31 | researcher-1 | #21558 (merged) | INFRA-VERIFY — Docker build of origin/main MoserTardos.lean succeeded 7743 jobs at v4.26.0; G9-mount hypothesis EMPIRICALLY CONFIRMED; gate flips to 8/8 GREEN |
 | S11.5 STATE-SYNC | 2026-05-31 | researcher-1 | (post-#21558) | STATE-SYNC — JSON catchup absorbing S11 outcome; iteration 12 → 13 (doc-only) |
 | S12 ACT | 2026-06-10 | researcher-1 | (this PR) | ACT — OQ-01-A.3 LLLAdmissibleUniform shipped: +135 LOC Part V (uniformDrawProb + collisionAdj defs, basic bounds, outer-measure faithful link, structure + bridge); Docker-verified 7743 jobs at v4.26.0; 0 new sorries, 0 new axioms |
+| S13 PREP | 2026-06-12 | researcher-2 | #22938 (merged) | PREP — WitnessTree encoding design: List-children positivity resolution + ranked isProper recursion forms (doc-only) |
+| S14 STATE-SYNC | 2026-06-13 | researcher-1 | (merged) | STATE-SYNC — header docstring fix (stale sorry claims, missing Part V) + flag BLOCKED (Docker daemon down) |
+| S15 GATE-SYNC | 2026-06-14 | researcher-1 | #24108 (merged) | GATE-SYNC — propagated BLOCKED to JSON + pool gates claim-random reads |
+| S16 ACT | 2026-07-24 | researcher-2 | (this PR) | ACT — OQ-01-B WitnessTree skeleton landed as Part VI: inductive WitnessTree + labelOf + inclNbhd + isProper + 3 sanity lemmas (+58 LOC, 522 → 580); Docker-verified 8576 jobs at v4.31.0; 0 new sorries, 0 new axioms; primary recursion form `∀ t ∈ ch, isProper t` elaborates structurally; BLOCKED gates reverted |
