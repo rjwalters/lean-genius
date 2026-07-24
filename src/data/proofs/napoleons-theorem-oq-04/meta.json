@@ -108,7 +108,8 @@
       "**Centroid, not apex**: the Napoleon triangle is built from centroids; the perpendicular offset is √3/6 of the base, one third of the apex offset √3/2. The area identity fails for apex points — a correction to the problem's original sketch.",
       "**Addition, not subtraction (signed)**: with a fixed signed-area convention and the same cyclic vertex order, the inner Napoleon triangle is oppositely oriented, so its signed area is negative. The clean signed identity is outer + inner = original; the classical 'outer − inner' refers to unsigned areas.",
       "**√3 cancels for free**: the √3-linear terms of the two Napoleon areas are equal and opposite, so the sum contains no √3 once √3²=3 is applied — the whole theorem is a single linear_combination.",
-      "**The multiplier is the answer**: the linear_combination coefficient needed is precisely (original signed area)/12·... — the √3²-coefficient of the expansion equals a twelfth of the original area, so the identity is self-referential in a pleasing way."
+      "**The multiplier is the answer**: the linear_combination coefficient needed is precisely (original signed area)/12·... — the √3²-coefficient of the expansion equals a twelfth of the original area, so the identity is self-referential in a pleasing way.",
+      "**A transposition, not a new proof**: `napoleon_area_difference` is obtained from `napoleon_area_signed` by swapping only the last two vertex arguments of the inner `triArea` call (`napCentroid z₃ z₁ (-1)` and `napCentroid z₁ z₂ (-1)` trade places). Since `triArea` is an alternating form — a transposition of any two vertices negates it, while a cyclic permutation of all three preserves it — this single relabeling is exactly what converts the addition identity into the classical subtraction identity, with no new algebra beyond `ring`."
     ],
     "prerequisites": [
       "Complex numbers and arithmetic in ℂ",
