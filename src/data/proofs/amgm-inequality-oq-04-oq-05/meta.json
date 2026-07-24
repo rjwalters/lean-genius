@@ -75,6 +75,11 @@
       "targetId": "leibniz-pi",
       "relationship": "contrast",
       "description": "Leibniz's series π/4 = 1 - 1/3 + 1/5 - ⋯ converges polynomially. The Brent-Salamin algorithm converges quadratically — each iteration doubles the digits. This makes it among the fastest known algorithms for computing π."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-04",
+      "relationship": "related",
+      "description": "Proves with 0 axioms the per-step quadratic contraction $(a+b)/2-\\sqrt{ab} \\le (a-b)^2/(8b)$ and the abstract lemma turning any recursion $g_{n+1}\\le g_n^2/C$ into the doubly exponential bound $g_n\\le C(g_0/C)^{2^n}$ — precisely the ingredient this entry's `bs_summable` axiom (summability of $\\sum 2^n(a_n^2-b_n^2)$, this file's first open question) needs; assembling it into the explicit $|a_n-b_n|=O(r^{2^n})$ rate at $a_0=1,b_0=1/\\sqrt2$ is not yet done."
     }
   ],
   "sections": [
