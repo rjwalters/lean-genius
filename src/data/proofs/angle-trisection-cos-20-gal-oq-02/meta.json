@@ -95,12 +95,20 @@
   },
   "sections": [
     {
-      "id": "scope-setup",
-      "title": "Scope: The Question and Imports",
+      "id": "scope",
+      "title": "Scope: The Open Question and What Is (Not) Provable",
       "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring: imports the trigonometric/Chebyshev analysis libraries and Nat.Totient, then frames the entry as the two algebraic facts underlying [ℚ(cos 2π/n):ℚ] = φ(n)/2 — the index-2 quadratic and the Chebyshev witness — while stating plainly that Kronecker–Weber and the real-subfield degree are absent from Mathlib, so the field-degree equality itself is out of scope.",
+      "mathContext": "Target: $[\\mathbb{Q}(\\cos 2\\pi/n):\\mathbb{Q}] = \\varphi(n)/2$; this file supplies the algebraic ingredients, not the field-degree theorem."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Open Declarations",
+      "startLine": 39,
       "endLine": 42,
-      "summary": "Module docstring framing the entry as the algebraic core of [ℚ(cos 2π/n):ℚ] = φ(n)/2 and the Kronecker–Weber classification question it isolates. Imports the trigonometric and Chebyshev analysis libraries and Nat.Totient, opens Complex Polynomial in namespace AngleTrisectionCos20GalOQ02 — fixing the two ingredients the proof composes: the exp/Chebyshev description of cos and the totient arithmetic.",
-      "mathContext": "Target: $[\\mathbb{Q}(\\cos 2\\pi/n):\\mathbb{Q}] = \\varphi(n)/2$."
+      "summary": "Opens the AngleTrisectionCos20GalOQ02 namespace and the Complex, Polynomial namespaces used by the exp/Chebyshev computations that follow.",
+      "mathContext": "Fixes the ambient notation (Complex.exp, Polynomial.Chebyshev.T) for the two algebraic sections below."
     },
     {
       "id": "index-two",
