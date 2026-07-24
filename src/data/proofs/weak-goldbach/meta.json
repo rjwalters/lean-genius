@@ -134,28 +134,42 @@
       "id": "sec-schnirelmann",
       "title": "Part III: Schnirelmann Density and Additive Bases",
       "startLine": 443,
-      "endLine": 606,
-      "summary": "Schnirelmann density and the `IsAdditiveBasis` predicate; `schnirelmann_basis_theorem` (σ(A) > 0 ⟹ A is an additive basis) is now PROVED outright via `SchnirelmannTheorem.schnirelmann_basis` (S-r8 axiom elimination), not axiomatized; `schnirelmannDensity_primes_eq_zero` exercises the genuine Mathlib density; and the cascade of bounds `ramare_six_primes` (≤6), `tao_five_primes` (≤5), `helfgott_improves_tao` (exactly 3), all theorems derived from `helfgott_weak_goldbach`."
+      "endLine": 497,
+      "summary": "Schnirelmann density and the `IsAdditiveBasis` predicate; `schnirelmann_basis_theorem` (σ(A) > 0 ⟹ A is an additive basis) is now PROVED outright via `SchnirelmannTheorem.schnirelmann_basis` (S-r8 axiom elimination), not axiomatized; `schnirelmannDensity_primes_eq_zero` exercises the genuine Mathlib density."
+    },
+    {
+      "id": "sec-schnirelmann-goldbach-bridge",
+      "title": "Part III(b): The Schnirelmann–Goldbach Bridge",
+      "startLine": 498,
+      "endLine": 675,
+      "summary": "S9: with the basis theorem machine-checked, Schnirelmann's classical route to Goldbach is formalized end-to-end modulo one density input taken as a hypothesis (not an axiom): `schnirelmann_goldbach_bridge` shows σ({0,1} ∪ (P+P)) > 0 implies every n ≥ 2 is a sum of at most 3h+2 primes, via `goldbachSumset_multiset_decomp` (basis representations split into ones and prime pairs) and `exists_two_three_multiset` (absorbing the ones into 2s and 3s). `sum_of_at_most_four_primes` / `boundedPrimeSums_of_helfgott` cross-validate the conclusion unconditionally (k = 4) through the axiomatized Helfgott result."
+    },
+    {
+      "id": "sec-prime-bound-cascade",
+      "title": "Part III(c): Cascade of Prime-Count Bounds",
+      "startLine": 676,
+      "endLine": 785,
+      "summary": "The cascade of bounds `ramare_six_primes` (≤6), `tao_five_primes` (≤5), `helfgott_improves_tao` (exactly 3 for odd n > 5), all theorems derived from `helfgott_weak_goldbach` (S5/S8 axiom eliminations)."
     },
     {
       "id": "sec-strong-goldbach",
       "title": "Part IV: Connections to Strong Goldbach and Open Problems",
-      "startLine": 607,
-      "endLine": 686,
+      "startLine": 786,
+      "endLine": 865,
       "summary": "Relates the weak conjecture to the still-open strong (binary) Goldbach and known partial results: `binary_stronger_than_ternary`, Chen's theorem via the `IsP2` (almost-prime) predicate (`chen_theorem` axiom), Oliveira e Silva's computational verification (`binary_goldbach_verified` axiom to 4×10¹⁸, `binary_goldbach_verified_small`), and the trivial-input Goldbach-representation bound `linnik_goldbach_representations`."
     },
     {
       "id": "sec-comet-levy",
       "title": "Goldbach Comet, Twin-Prime Constant & Lévy's Conjecture",
-      "startLine": 687,
-      "endLine": 736,
+      "startLine": 866,
+      "endLine": 915,
       "summary": "The tail's open-problem material: the Goldbach-comet heuristic G(n) ~ 2C₂ Π_{p|n,p>2}(p−1)/(p−2)·n/(log n)² and its `twinPrimeConstant` C₂ ≈ 0.6601618; Helfgott's explicit bound `helfgott_explicit_bound` (re-derived from the main axiom, threshold 8.875×10³⁰ being content, not a new assumption); and the formalization of Lévy's conjecture — `LevyConjecture` (n = p + 2q), `levy_implies_weak_goldbach` (p + 2q = p + q + q), and the small-case witnesses `levy_7` / `levy_9` / `levy_11`."
     },
     {
       "id": "sec-verification-checks",
       "title": "Verification Checks (#check Roster)",
-      "startLine": 737,
-      "endLine": 764,
+      "startLine": 916,
+      "endLine": 943,
       "summary": "A closing `#check` roster grouped by part (circle method, Schnirelmann density, strong Goldbach) that pins the public names of the file's key declarations, serving as a compile-time table of contents and guarding against silent renames or removals."
     }
   ],
@@ -171,10 +185,10 @@
   },
   "leanFile": {
     "namespace": "WeakGoldbach",
-    "lineCount": 764,
+    "lineCount": 943,
     "axiomCount": 4,
-    "theoremCount": 32,
-    "definitionCount": 15,
+    "theoremCount": 38,
+    "definitionCount": 17,
     "path": "Proofs/WeakGoldbach.lean",
     "sorries": 0
   },

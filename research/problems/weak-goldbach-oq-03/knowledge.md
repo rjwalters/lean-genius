@@ -490,3 +490,99 @@ in meta.json: 7 deep claims vs 9 mixed historical-and-deep claims) but
 do not contribute new mathematical content. Per `researcher.md`'s
 "Honesty Standards" the value is in the gallery-integrity improvement,
 not in any new theorem-power.
+
+---
+
+## S9 ACT Session (researcher-1, 2026-07-24)
+
+### Situation on arrival
+
+- Tracker had been BLOCKED since 2026-06-13 (Docker blackout). Docker is
+  back (`docker info` OK); flag lifted.
+- **Census drift**: sibling weak-goldbach-oq-01 (PR #34353, 2026-07-03)
+  proved `schnirelmann_basis_theorem` outright
+  (`SchnirelmannTheorem.schnirelmann_basis`, assembled from
+  `SchnirelmannCounting.schnirelmann_inequality` +
+  `SchnirelmannBasis` covering bookkeeping). The axiom floor is **4**,
+  not the 5 recorded by S7/S8 PREP, and the planned S9 Approach D
+  (density-to-basis machinery) was consumed wholesale by the sibling.
+- Gallery meta (`src/data/proofs/weak-goldbach/meta.json`) was already
+  synced to 4 axioms / 764 LOC by the sibling's PR; only this tracker's
+  state.md was stale.
+
+### What S9 built (the bridge)
+
+With the basis theorem now genuine, Schnirelmann's classical 1930
+argument for "every n ≥ 2 is a sum of a bounded number of primes"
+becomes formalizable end-to-end **modulo one input**: σ({0,1} ∪ (P+P)) > 0
+(Brun sieve, unformalized HEROIC). S9 formalizes exactly that
+implication, keeping the density input a *hypothesis* — axiom count
+unchanged.
+
+Pieces (all in `WeakGoldbach.lean`, lines 498–675):
+
+1. `goldbachSumset := {0, 1} ∪ {n | IsSumOfTwoPrimes n}` +
+   `mem_goldbachSumset` + decidable membership via the file's existing
+   `decidableIsSumOfTwoPrimes` (needed because both the local
+   `schnirelmannDensity` abbrev and Mathlib's definition demand
+   `[DecidablePred (· ∈ A)]`).
+2. `exists_two_three_multiset (m ≥ 2)`: multiset of primes from {2,3}
+   with card ≤ m and sum m. **No strong induction needed**: parity
+   split with `Multiset.replicate` witnesses (`k` copies of 2, or
+   `3 ::ₘ replicate (k-1) 2`). `Multiset.sum_replicate` produces `n • a`;
+   add `smul_eq_mul` to the simp set so `omega` can finish.
+3. `goldbachSumset_multiset_decomp`: ∀ S with elements in G,
+   ∃ r ≤ S.card and prime multiset T with T.card ≤ 2·S.card and
+   S.sum = r + T.sum. `Multiset.induction_on` (case names
+   `empty`/`cons`); each cons case closes with
+   `simp only [Multiset.card_cons / sum_cons]; omega`.
+4. `BoundedPrimeSums` (Prop) and `schnirelmann_goldbach_bridge`:
+   σ(G) > 0 → BoundedPrimeSums with k = 3h+2. Apply basis at n−2,
+   decompose, absorb 2+r (≤ h+2) into 2s and 3s, `U + T` via
+   `Multiset.card_add`/`sum_add` + omega.
+5. `sum_of_at_most_four_primes` (unconditional, k = 4, via the
+   axiomatized Helfgott): odd n > 5 → {p,q,r}; even n ≥ 10 → Helfgott
+   at n−3 (Odd (k+k−3) witness `⟨k−2, by omega⟩`) plus a 3 → 4 primes;
+   n ∈ [2,9] by `interval_cases` + literal multiset witnesses, each
+   closed by three `by decide`s (`Multiset.decidableDforallMultiset`
+   makes `∀ p ∈ {2,7}, Nat.Prime p` decidable).
+   `boundedPrimeSums_of_helfgott := ⟨4, sum_of_at_most_four_primes⟩`.
+
+### Lean idioms that worked first-try (docker-verified, 8579 jobs)
+
+- `decidable_of_iff` + existing sound/complete pair for set-membership
+  instances: `decidable_of_iff (n = 0 ∨ n = 1 ∨ IsSumOfTwoPrimes n)
+  mem_goldbachSumset.symm`.
+- `Multiset.eq_of_mem_replicate` to prove all-elements-prime for
+  replicate witnesses.
+- Multiset literals `{3, p, q, s}` with variables: normalize with
+  `Multiset.insert_eq_cons` before `Multiset.mem_cons`/`sum_cons` simp.
+- `Even n` destructures to `n = k + k` (not `2*k`); omega copes.
+
+### Counts delta
+
+| Field | Before S9 | After S9 |
+|-------|-----------|----------|
+| lineCount | 764 | 943 |
+| axiomCount | 4 | 4 (unchanged) |
+| theoremCount (meta) | 32 | 38 |
+| definitionCount | 15 | 17 |
+| sorries | 0 | 0 |
+
+Gallery meta: sections re-anchored (Part III split into III/III(b)
+bridge/III(c) cascade; Parts IV+ shifted +179). NOTE: annotations.json
+ranges were already stale before S9 (anchored to a ~481-line ancestor,
+max endLine 451) — left untouched; that is enricher re-anchoring work,
+not researcher scope.
+
+### S10+ options
+
+- (a) Any piece of σ(G) > 0: Brun/Selberg sieve — multi-quarter HEROIC;
+  Mathlib has no sieve infrastructure as of v4.31.
+- (b) Quantitative bookkeeping: from a hypothesized explicit lower bound
+  σ(G) ≥ δ, extract an explicit basis order h(δ) and hence explicit k —
+  requires making `SchnirelmannTheorem.schnirelmann_basis` quantitative
+  (inspect whether its h is already computable from the proof).
+  Moderate, ~150–250 LOC.
+- (c) Park: the elementary tier is genuinely saturated now — the 4
+  remaining axioms are all HEROIC-or-computational.

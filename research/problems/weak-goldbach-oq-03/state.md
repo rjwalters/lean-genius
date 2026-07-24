@@ -1,10 +1,41 @@
 # Current State
 
-**Phase**: BLOCKED (verification blackout, 2026-06-13) — slug is at its axiom floor (5 irreducible deep axioms per S7/S8 PREP); the only forward path (S9 Approach D — Schnirelmann sumset inequality, ~250–350 LOC) adds new Lean code that requires Docker verification, and both routes are down this session (`docker info` exit 124; Aristotle 404). Source / gallery meta / research JSON / state.md are all in sync (axiomCount 5, sorries 0, 680 LOC, status `axiomatized`). Re-open when Docker recovers. Last shipped: S8 ACT (axiom elimination 7→5).
-**Since**: 2026-06-13 (S9 BLOCKED; S8 was 2026-06-10)
-**Iteration**: 8
+**Phase**: ACTIVE — S9 ACT shipped (Schnirelmann–Goldbach bridge). Docker recovered; the 2026-06-13 BLOCKED flag is lifted. **Census correction**: the axiom floor is now **4**, not 5 — sibling weak-goldbach-oq-01 (PR #34353, merged 2026-07-03) *proved* `schnirelmann_basis_theorem` outright in `Proofs/SchnirelmannTheorem.lean`, consuming this tracker's planned S9 Approach D (Schnirelmann sumset inequality) wholesale. S9 here instead formalized the classical **bridge**: `schnirelmann_goldbach_bridge` derives "every n ≥ 2 is a sum of ≤ 3h+2 primes" from the single hypothesis σ({0,1} ∪ (P+P)) > 0 (Schnirelmann's Brun-sieve estimate, unformalized HEROIC — kept as a hypothesis, NOT a new axiom), plus unconditional cross-validation `sum_of_at_most_four_primes` (k = 4 via Helfgott). File: 943 LOC, 4 axioms (`helfgott_weak_goldbach`, `circle_method_asymptotic`, `chen_theorem`, `binary_goldbach_verified`), 0 sorries, docker-verified.
+**Since**: 2026-07-24 (S9 ACT; S8 was 2026-06-10)
+**Iteration**: 9
 
 ## Current Focus
+
+S9 (researcher-1, 2026-07-24): ACT — Schnirelmann–Goldbach bridge.
+New in `WeakGoldbach.lean` (all docker-verified, no new axioms):
+
+- `goldbachSumset : Set ℕ` = {0,1} ∪ {n | IsSumOfTwoPrimes n}, with a
+  decidable-membership instance riding the existing verified decision
+  procedure.
+- `exists_two_three_multiset`: every m ≥ 2 is a sum of ≤ m primes from
+  {2,3} (parity split; replicate-multiset witnesses).
+- `goldbachSumset_multiset_decomp`: a multiset of G-elements splits into
+  r ones (r ≤ card) and a prime multiset (card ≤ 2·card) preserving sums
+  (Multiset.induction_on).
+- `schnirelmann_goldbach_bridge`: σ(G) > 0 → BoundedPrimeSums (every
+  n ≥ 2 is a sum of ≤ 3h+2 primes, h the basis order). Applies the
+  now-genuine `schnirelmann_basis_theorem` at n−2, decomposes, absorbs
+  2+r into 2s and 3s.
+- `sum_of_at_most_four_primes` / `boundedPrimeSums_of_helfgott`:
+  unconditional k = 4 via `helfgott_weak_goldbach` (odd n>5 → 3 primes;
+  even n≥10 → Helfgott at n−3 plus a 3; n∈[2,9] kernel-checked
+  witnesses).
+
+**Remaining axiom set (4, all deep)**: `helfgott_weak_goldbach` (HEROIC
+central), `circle_method_asymptotic` (HEROIC), `chen_theorem` (HEROIC
+sieve), `binary_goldbach_verified` (computational, 4·10¹⁸ — inherently
+axiomatic at this scale). **Next candidates (S10+)**: (a) formalize any
+piece of σ(G) > 0 (Brun sieve / Selberg sieve — multi-quarter HEROIC);
+(b) quantitative Schnirelmann constant bookkeeping (extract explicit k
+from an assumed density lower bound σ(G) ≥ δ — moderate, ~150 LOC);
+(c) park the slug — the elementary tier is now genuinely saturated.
+
+## Previous Focus (S8)
 
 S8 (researcher-1, 2026-06-10): ACT — Axiom elimination, second pass.
 Discharged the two remaining historical-attribution axioms that are
@@ -63,11 +94,22 @@ lines, +27 theorem+docstring lines); `theoremCount` 29 → 31; `sorries`
   4-step discharge roadmap. Merged #18552.
 - S8 PREP-2 (researcher-4): doc-only — Mathlib v4.26.0 bearer audit
   revealing Step C is already a Mathlib theorem. Merged #18670.
-- S8 ACT (researcher-1, this iteration): Axiom elimination —
+- S8 ACT (researcher-1): Axiom elimination —
   `vinogradov_ternary_goldbach` and `helfgott_explicit_bound` upgraded
   from `axiom` to `theorem` proved from `helfgott_weak_goldbach`.
   axiomCount 7 → 5. Build pending under the documented parent-drift
-  precedent.
+  precedent. Merged #22808.
+- (external) Sibling weak-goldbach-oq-01 proved
+  `schnirelmann_basis_theorem` (axiom → theorem via
+  `Proofs/SchnirelmannTheorem.lean`), axiomCount 5 → 4. Merged #34353,
+  2026-07-03. Consumed this tracker's planned S9 Approach D.
+- S9 ACT (researcher-1, 2026-07-24, this iteration): unblocked (Docker
+  recovered); Schnirelmann–Goldbach bridge —
+  `schnirelmann_goldbach_bridge` (σ(G)>0 hypothesis ⟹ bounded prime
+  sums, k = 3h+2) + unconditional cross-validation
+  `sum_of_at_most_four_primes` (k = 4 via Helfgott). +179 LOC
+  (764 → 943), +6 theorems, +2 defs, axioms unchanged at 4, 0 sorries,
+  docker-verified.
 
 ## Earlier Plan (S1, kept for context)
 
