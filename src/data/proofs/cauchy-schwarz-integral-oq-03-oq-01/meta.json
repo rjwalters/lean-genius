@@ -53,7 +53,8 @@
       "The 'bridge' of the L² case was self-duality (an inner product); the general bridge is Lᵖ–Lᵍ duality, and Hölder's inequality is the pairing bound that makes it explicit — Cauchy–Schwarz is precisely the self-dual fixed point p = q = 2",
       "Signedness is the only real content beyond Mathlib: the library bounds ∫ ‖f‖·‖g‖ or assumes f, g ≥ 0, but the parent bridge is about the signed pairing ∫ f·g, recovered here by |∫ f·g| ≤ ∫ |f·g| before applying the norm-form inequality",
       "The parent's two headline theorems (absolute-value and squared Bunyakovsky–Schwarz) are not separate results but the p = q = 2 slice of a one-parameter family; the sqrt-form bound literally is ‖f‖_{L²}·‖g‖_{L²} once (∫ f²)^{1/2} is read as the L² norm",
-      "The bound is symmetric under (f, p) ↔ (g, q) because conjugacy is symmetric — the same reason ∫ f·g pairs Lᵖ with Lᵍ rather than distinguishing a preferred factor"
+      "The bound is symmetric under (f, p) ↔ (g, q) because conjugacy is symmetric — the same reason ∫ f·g pairs Lᵖ with Lᵍ rather than distinguishing a preferred factor",
+      "The signed-reduction step |∫ f·g| ≤ ∫ |f·g| (abs_integral_le_integral_abs) costs nothing extra in hypotheses: Mathlib's Bochner integral defaults to 0 on non-integrable functions, so the inequality holds unconditionally, before f·g ∈ L¹ is ever established — the MemLp f p / MemLp g q hypotheses only need to feed the norm-form Hölder step that follows"
     ],
     "prerequisites": [
       "The L² Bunyakovsky–Schwarz inequality and its inner-product proof (parent entry cauchy-schwarz-integral)",
