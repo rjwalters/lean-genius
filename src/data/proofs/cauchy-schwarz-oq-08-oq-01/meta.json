@@ -81,11 +81,19 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Setup",
+      "id": "module-docstring",
+      "title": "Module Docstring: Real vs. Complex Rigidity",
       "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring contrasting the real parent theorem (norm alone determines the inner product via the real polarization identity) with the complex case: over ℂ the two real-axis diagonals ‖x±y‖ no longer suffice, so the complex polarization identity inner_eq_sum_norm_sq_div_four also needs the rotated diagonals ‖x±i·y‖. States the two hypotheses this file adds (hnorm, hI), notes the ℝ = 0 collapse recovering the parent, and lists the six main results.",
+      "mathContext": "The rotated-diagonal hypothesis hI is exactly the extra data the complex polarization identity consumes beyond the real one; only hI at −y (not a separate hypothesis) is needed for the minus-diagonal, by additivity of f."
+    },
+    {
+      "id": "header",
+      "title": "Imports, Opens, and RCLike Variables",
+      "startLine": 49,
       "endLine": 58,
-      "summary": "Module docstring contrasting the real parent with the complex case, explaining why the norm alone is not rigid over ℂ and stating the complex polarization identity. Mathlib import; opens InnerProductSpace and RCLike (so I = RCLike.I); the CauchySchwarzOQ08OQ01 namespace; and the RCLike-field variables 𝕜, E, E'.",
+      "summary": "Imports Mathlib; opens InnerProductSpace notation, ComplexConjugate, and RCLike (so I resolves to RCLike.I); declares the CauchySchwarzOQ08OQ01 namespace and the ambient RCLike-field variables 𝕜, E, E'.",
       "mathContext": "Work over an arbitrary RCLike field 𝕜 (ℝ or ℂ) with 𝕜-inner-product spaces (E, ⟪·,·⟫) and (E', ⟪·,·⟫); i = RCLike.I."
     },
     {
