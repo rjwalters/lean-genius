@@ -138,12 +138,20 @@
       "mathContext": "Lebesgue measure on ℝ is atomless, so every countable set — in particular the computable reals — is null."
     },
     {
-      "id": "measure-layer",
-      "title": "The Measure Layer: Computable Reals are Null",
+      "id": "computable-null-ae",
+      "title": "Computable Reals are Null, Hence Almost-Everywhere Non-Computable",
       "startLine": 85,
+      "endLine": 116,
+      "summary": "computable_reals_null proves volume {r | IsComputable r} = 0 from atomlessness of Lebesgue measure and countability of the computable reals. ae_not_isComputable and ae_mem_nonComputableReals convert this nullity into the almost-everywhere statement: for almost every real r, r is non-computable — the sharp measure form of Turing's negative existence result.",
+      "mathContext": "μ(computable) = 0 (atomless + countable) $\\Rightarrow$ $\\forall^{\\mathrm{ae}}\\,r,\\ \\lnot\\,\\text{IsComputable}\\,r$."
+    },
+    {
+      "id": "nonComputable-full-measure",
+      "title": "The Non-Computable Reals Carry the Full Measure",
+      "startLine": 118,
       "endLine": 133,
-      "summary": "computable_reals_null proves volume {r | IsComputable r} = 0 from atomlessness and countability. ae_not_isComputable and ae_mem_nonComputableReals give the almost-everywhere non-computability. volume_restrict_nonComputableReals shows the non-computable reals carry the full Lebesgue measure of the line.",
-      "mathContext": "μ(computable) = 0, ∀ᵐ r ¬IsComputable r, and μ.restrict(nonComputable) = μ."
+      "summary": "volume_restrict_nonComputableReals shows restricting Lebesgue measure to the non-computable reals changes nothing: volume.restrict nonComputableReals = volume. This is the measure-theoretic dual of the parent's cardinality (𝔠) and Baire-category (residual) facts about the same complement.",
+      "mathContext": "$\\mu|_{\\text{nonComputable}} = \\mu$ — the complement of a null set carries the whole measure, dual to it carrying the whole cardinality and Baire category."
     },
     {
       "id": "interval-filling",
