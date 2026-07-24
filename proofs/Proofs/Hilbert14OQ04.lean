@@ -131,14 +131,16 @@ theorem coeff_charpoly_mem_fixedPoints (b : MvPolynomial (Fin n) k) (j : ℕ) :
       FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G :=
   fun g => smul_coeff_charpoly b j g
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- **Stage 2**: the orbit characteristic polynomial has `natDegree` exactly
 `|G|` — it is a product of `|G|` monic linear factors. -/
 theorem natDegree_charpoly (b : MvPolynomial (Fin n) k) :
     (charpoly G b).natDegree = Fintype.card G := by
   rw [charpoly_eq,
     Polynomial.natDegree_prod_of_monic _ _ (fun g _ => Polynomial.monic_X_sub_C _)]
-  simp [Polynomial.natDegree_X_sub_C]
+  simp
 
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
 /-- **Stage 3**: under a degree-nonincreasing (graded) action — the standard
 Noether-1916 setting of a linear action on the variables, stated as the explicit
 hypothesis `h_graded` per PREP-3 §2 (it is NOT implied by `MulSemiringAction`
