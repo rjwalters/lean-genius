@@ -29,14 +29,21 @@
     "goal": "S1 OBSERVE survey deliverable: classify the (n, a) cases for which dihedral arises, audit Mathlib API gaps, and propose an S2 scaffold structure."
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "COMPLETED (n=3 and (4,2) strata; deeper strata blocked)",
     "since": "2026-06-13",
     "iteration": 5,
     "focus": "S4 PREP (researcher-1, 2026-06-10, claim researcher-79710): JSON STATE-SYNC absorbing 3 sessions of drift (S2 SCAFFOLD → S3a → S3b, all merged 2026-05-12 via PRs #17999, #18063, #18154; JSON tracker never updated past S1 OBSERVE). Mathlib `DihedralGroup` API audit at pinned SHA `2df2f0150c…`: confirmed `DihedralGroup.lift` is ABSENT from Mathlib v4.26.0 — S3b §Next action's \"(d) apply DihedralGroup.lift (if in Mathlib) or hand-construct\" collapses to hand-construct only. Sharpened S5 decomposition into 3-PR series: S5a Generators ~40-60 LOC, S5b Forward map ~30-50 LOC, S5c Bijectivity+MulEquiv ~30-50 LOC. Optional S5∗ combined single-PR alternative ~120-160 LOC. NO Lean changes at S4 — pure doc-only PREP. Build status carried-forward from S3b PR #18154 verified-merge (~29 days, Mathlib SHA unchanged, low drift risk; BUILD-VERIFY recommended before S5 actual code commits).",
     "blockers": [
-      "Verification blackout (2026-06-13): Docker daemon DOWN — Lean builds unverifiable. The sole remaining sorry (dihedral_galois_xPow4_sub_2, InverseGaloisD4OQ03.lean:111) is discharged only by hand-constructing MulEquiv ((xPowSub 4 2).Gal ≃* DihedralGroup 4) (S5a/b/c series), all of which add Lean code requiring a Docker build to verify. No build-free ACT remains; gallery meta and JSON tracker are in sync (axiomCount 0, 1 sorry, theoremCount 11, lineCount 235, status=formalized). Re-open when Docker recovers; resume at S5a (generators).",
-      "Capelli's theorem (full n) not present in Mathlib v4.26.0.",
-      "Generic Galois order |G| = n·φ(n) not packaged as a single Mathlib lemma."
+      {
+        "route": "even-half Capelli (a not in -4K^4) for the n=4 iff criterion",
+        "reopenCriterion": "materially new mechanism required — even half of Capelli absent from Mathlib v4.31 (only odd/prime halves exist: X_pow_sub_C_irreducible_iff_of_odd/_of_prime/_of_prime_pow); upstream-quality formalization needed",
+        "blockedAt": "2026-07-24"
+      },
+      {
+        "route": "p >= 5 negative direction via cyclotomic degree control",
+        "reopenCriterion": "materially new mechanism required",
+        "blockedAt": "2026-07-24"
+      }
     ],
     "nextAction": "BLOCKED on verification blackout. Resume S5a (define σ,τ generators of (xPowSub 4 2).Gal) once Docker is back; see prior nextAction for full S5a/b/c decomposition.",
     "attemptCounts": {
@@ -46,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Through S4 PREP: file `InverseGaloisD4OQ03.lean` is at 235 LOC, 11 theorems, 2 definitions, 1 sorry (down from 2 sorries at S2 SCAFFOLD via S3a's false-iff-True fix). Sole remaining sorry on `dihedral_galois_xPow4_sub_2`. Reductions completed: cardinality match ✅ (S3a `gal_card_xPowSub_4_2: Fintype.card (xPowSub 4 2).Gal = 8`), polynomial setup ✅ (S3b 4 thin-alias helpers for natDegree/irreducible/separable/monic), existential reduction ✅ (S3b `dihedral_galois_xPow4_sub_2_of_mulEquiv: (Gal ≃* DihedralGroup 4) → IsDihedralGaloisOfXnMinusA 4 2`). Remaining for S5: construct concrete `MulEquiv (xPowSub 4 2).Gal ≃* DihedralGroup 4`. S4 PREP's Mathlib audit narrows the construction route: no `DihedralGroup.lift` exists, so hand-construction is the only path. Estimated S5 total: 100-160 LOC across 1-3 PRs.",
+    "progressSummary": "COMPLETED through S5 (2026-07-24): InverseGaloisD4OQ03.lean on main has 0 sorries, 0 axioms (meta verified). S4 (merged #33039) discharged dihedral_galois_xPow4_sub_2 via the Sylow route (Gal embeds in S4, order-8 subgroup is D4 — order_eight_iso_dihedralFour_of_card); S5 (merged #43390) added the complete n=3 stratum dihedral_galois_xPow3_iff : IsDihedralGaloisOfXnMinusA 3 a iff forall b, b^3 != a, using the odd-degree Capelli half X_pow_sub_C_irreducible_iff_of_prime which IS in Mathlib v4.31. The old Docker-blackout blocker (2026-06-13) is long resolved. Remaining strata are genuinely deep: even-n iff criterion needs the even half of Capelli (a not in -4K^4, absent from Mathlib), p>=5 negative direction needs cyclotomic degree control.",
     "builtItems": [
       "work/inverse-galois-d4-oq-03/problem.md — formal restatement and case analysis (n odd, n=2k k odd, n=4, n=8, n=p^k).",
       "work/inverse-galois-d4-oq-03/knowledge.md — annotated bibliography and Mathlib API audit.",
@@ -65,7 +72,8 @@
       "S3a (researcher-12, 2026-05-12): S1/S2 sorry statements are themselves auditable. The `↔ True` formulation hid a non-theorem (right-to-left direction fails for any non-dihedral (n,a)). Fixing a false sorry-statement is a higher-value contribution than a partial discharge. Per `feedback_researcher_s1_deferred_can_be_false` memory pattern: always check that placeholder sorries are at least *true* as stated before deferring their discharge to a future session.",
       "S3b (researcher-4, 2026-05-12): The \"isolate the hard step\" strategy is more valuable than partial discharge. By landing 7 no-sorry thin-alias bridge helpers (cardinality, polynomial setup, existential reduction), the S4 work is precisely characterised as \"construct one `MulEquiv`\" rather than a chain of sub-lemmas. This makes the remaining work modular and gives the next researcher a clear, atomic target. Pattern: when a sorry has many sub-prerequisites, land the sub-prerequisites as no-sorry helpers FIRST so the sole remaining sorry is the irreducibly-hard step.",
       "S4 PREP Mathlib API audit (researcher-1, 2026-06-10): At pin `2df2f0150c…` (Mathlib v4.26.0), `Mathlib/GroupTheory/SpecificGroups/Dihedral.lean` (303 LOC) provides the inductive `DihedralGroup n`, group instance, multiplication table simp lemmas, fintype + cardinality, and `r_one_pow_n / sr_mul_self` order witnesses — but does NOT provide any `DihedralGroup.lift` presentation-by-generators-and-relations constructor. For ANY Lean formalisation that needs `G ≃* DihedralGroup n` from a generator-pair `(σ, τ)` with relations `σ^n = 1`, `τ^2 = 1`, `τστ⁻¹ = σ⁻¹`, the MulEquiv must be hand-constructed via `MulEquiv.ofBijective` + `Fintype.card_eq_of_bijective`. This is a recurring need in classical Galois formalisations and would benefit from a focused upstream Mathlib contribution adding `DihedralGroup.lift`.",
-      "S4 PREP drift detection pattern (researcher-1, 2026-06-10): When a slug's JSON tracker (`src/data/research/problems/<slug>.json`) and work-dir state.md (`src/data/research/work/<slug>/state.md`) diverge by ≥3 sessions of state-history, a PREP STATE-SYNC iteration is the right call before attempting any substantive ACT work. The drift here was 3 sessions (S2/S3a/S3b) over 29 days, all visible in `gh pr list --search slug` history but invisible in `jq .currentState.iteration tracker.json`. Pattern: claim → diff state.md vs JSON → if ≥3 session drift, do PREP STATE-SYNC; if 0-1 session drift, proceed with ACT."
+      "S4 PREP drift detection pattern (researcher-1, 2026-06-10): When a slug's JSON tracker (`src/data/research/problems/<slug>.json`) and work-dir state.md (`src/data/research/work/<slug>/state.md`) diverge by ≥3 sessions of state-history, a PREP STATE-SYNC iteration is the right call before attempting any substantive ACT work. The drift here was 3 sessions (S2/S3a/S3b) over 29 days, all visible in `gh pr list --search slug` history but invisible in `jq .currentState.iteration tracker.json`. Pattern: claim → diff state.md vs JSON → if ≥3 session drift, do PREP STATE-SYNC; if 0-1 session drift, proceed with ACT.",
+      "Tracker-sync 2026-07-24 (researcher-1): cleared the stale 2026-06-13 Docker-blackout blocker and pre-S4 nextSteps (S2 scaffold / Capelli upstream / Kappe-Warren all overtaken by merged #33039 + #43390). File on main: 625 lines, 0 real sorries (14 grep hits are all docstrings). Stale-blocker vein confirmed again: notes citing missing-from-Mathlib must be re-audited against v4.31 (odd Capelli IS present)."
     ],
     "mathlibGaps": [
       "Capelli's full theorem (4 | n and -4b^4 exception): ~200 lines of new infrastructure.",
@@ -74,9 +82,9 @@
       "Kappe–Warren discriminant-based dihedral test for n=4 (low-hanging fruit, ~50 lines)."
     ],
     "nextSteps": [
-      "S2 scaffold: Proofs/InverseGaloisD4OQ03.lean with isDihedralCriterion definition and sorry-bearing main theorem.",
-      "S3 (longer-term): Lean proof of Capelli's theorem upstream-quality, possibly as Mathlib contribution.",
-      "S4 (longer-term): formalize Kappe–Warren n=4 test as a concrete special case."
+      "Even-n stratum (n=4 iff criterion): requires the even half of Capelli irreducibility (X^4 - a irreducible iff a not a square and a not in -4K^4) — ABSENT from Mathlib v4.31; formalizing it is a Mathlib-quality project (~300+ LOC), not a single-session add.",
+      "p >= 5 negative stratum (Gal(X^p - a) is F_{p(p-1)} not dihedral for generic a): needs cyclotomic-degree control — DEEP.",
+      "Both routes blocked at materially-new-mechanism bar; no cheap ACT remains on this node."
     ]
   },
   "tags": [
