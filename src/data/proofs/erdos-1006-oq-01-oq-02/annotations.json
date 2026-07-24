@@ -101,24 +101,24 @@
     "id": "ann-axioms",
     "proofId": "erdos-1006-oq-01-oq-02",
     "range": {
-      "startLine": 141,
-      "endLine": 195
+      "startLine": 155,
+      "endLine": 210
     },
     "type": "concept",
-    "title": "Two Axioms: Golumbic's Theorem and the Open Conjecture",
-    "content": "Two `axiom` declarations formalize mathematical claims that are not proved in this file:\n\n**`comparability_recognition_in_p`** (Golumbic 1977): There exists a polynomial-time Boolean function that correctly recognizes comparability graphs. This is a **proved theorem** in the literature — Golumbic's algorithm uses modular decomposition to check for transitive orientability in $O(|V| + |E|)$ time. It is axiomatized here because formalizing the full Golumbic algorithm would require significant effort.\n\n**`cover_graph_recognition_in_p`**: There exists a polynomial-time Boolean function correctly recognizing cover graphs. This is the **open conjecture** of Erdős #1006 OQ-02. It is axiomatized to state the open problem formally.\n\nBoth axioms have the same type: $\\exists (f : \\text{SimpleGraph}\\;V \\to \\text{Bool}), \\forall G, f\\;G = \\text{true} \\leftrightarrow \\text{[property]}$. The comment in the Lean file describes a plausible algorithm for cover recognition: (1) find a transitive orientation (P-time), then (2) check shortcut-freeness.",
+    "title": "Two Recognition Statements — Now Proved, 0 Axioms",
+    "content": "This block formerly held two `axiom` declarations, `comparability_recognition_in_p` and `cover_graph_recognition_in_p`, both with the identical Lean type $\\exists (f : \\text{SimpleGraph}\\;V \\to \\text{Bool}), \\forall G, f\\;G = \\text{true} \\leftrightarrow \\text{[property]}$. That type is **trivially true for any predicate** under classical logic ($f := \\text{decide}\\circ P$), so it captures none of the polynomial-time content the axiom names asserted — they were vacuous axioms.\n\nThey are now **proved theorems** (axiomCount 2 \\to 0):\n- `exists_bool_recognizer` — the general classical-indicator lemma.\n- `comparability_recognition_in_p` — kept name (Golumbic 1977 is a known result), proved via the lemma; docstring clarifies the statement only asserts recognizer *existence*, not the $O(|V|+|E|)$ bound.\n- `exists_bool_cover_recognizer` — the former `cover_graph_recognition_in_p`, **renamed** so nothing claims the open problem is resolved. The genuine open question (erdosproblems #1006 OQ-02: is cover recognition in **polynomial time**?) is a complexity statement with no Mathlib model and is deliberately left informal in the docstrings.",
     "mathContext": "Golumbic (1977): a graph is a comparability graph iff it has a transitive orientation, and transitive orientability can be checked in $O(|V| + |E|)$ using implication classes (a variant of 2-SAT). The shortcut-checking step for cover recognition — given a transitive orientation, remove all 'shortcut' arcs and check if the remaining graph still covers the original — is the suspected bottleneck. Whether this can be done in polynomial time is the open question.",
     "significance": "key",
     "relatedConcepts": [
       "Golumbic's comparability recognition",
-      "modular decomposition",
-      "transitive orientation",
-      "open conjecture formalization"
+      "classical decidability / Boolean indicator",
+      "vacuous axiom elimination",
+      "open conjecture (poly-time recognition) — not formalized"
     ],
     "prerequisites": [
-      "isComparabilityGraph definition",
-      "axiom declarations in Lean 4",
-      "P vs NP complexity"
+      "isComparabilityGraph / isCoverGraph definitions",
+      "classical logic & decidability (decide, Classical.propDecidable)",
+      "distinction: recognizer existence vs polynomial-time recognition"
     ]
   },
   {

@@ -155,27 +155,59 @@ theorem cover_search_space_bound [Fintype V] [DecidableEq V] :
 def isComparabilityGraph (G : SimpleGraph V) : Prop :=
   ∃ (_ : PartialOrder V), ∀ u v, G.Adj u v ↔ (u < v ∨ v < u)
 
-/-- KNOWN (Golumbic 1977): Comparability graph recognition is in polynomial time. -/
-axiom comparability_recognition_in_p [Fintype V] [DecidableEq V] :
-  ∃ (f : SimpleGraph V → Bool),
-    (∀ G : SimpleGraph V, f G = true ↔ isComparabilityGraph G)
+/-- For **any** predicate on graphs a Boolean recognizer exists — trivially,
+    under classical logic (`f := fun G => decide (P G)`). This captures NONE of
+    the algorithmic (polynomial-time) content: it is pure decidability
+    packaging, true even for undecidable-in-practice `P`. Used below to
+    discharge the two former "recognition_in_p" axioms, whose Lean statements
+    were of exactly this trivial shape (and therefore vacuous). -/
+theorem exists_bool_recognizer (P : SimpleGraph V → Prop) :
+    ∃ f : SimpleGraph V → Bool, ∀ G : SimpleGraph V, f G = true ↔ P G := by
+  classical
+  refine ⟨fun G => decide (P G), fun G => ?_⟩
+  simp only [decide_eq_true_eq]
+
+/-- **Boolean recognizer for comparability graphs exists** (formerly an axiom).
+
+    NOTE — honest scope: this statement only asserts that *some* Boolean
+    function recognizes comparability graphs, which is trivially true under
+    classical logic (`exists_bool_recognizer`). It does **not** formalize the
+    polynomial-time bound its name suggests. Golumbic (1977) supplies the actual
+    poly-time algorithm; formalizing "in P" would require a complexity model
+    absent from Mathlib. Retained (proved) rather than left as a vacuous
+    axiom. -/
+theorem comparability_recognition_in_p [Fintype V] [DecidableEq V] :
+    ∃ (f : SimpleGraph V → Bool),
+      (∀ G : SimpleGraph V, f G = true ↔ isComparabilityGraph G) :=
+  exists_bool_recognizer isComparabilityGraph
 
 /-
 ## Algorithmic Complexity of Cover Recognition
 -/
 
-/-- OPEN CONJECTURE: Cover graph recognition is in polynomial time.
-    Status: in NP (certificate = the poset). Whether P or NP-hard: open.
-    A positive resolution would likely proceed via:
-    (1) Find a transitive orientation (polynomial, reduces to 2-SAT or modular
-        decomposition), then
-    (2) Check that no shortcuts exist (remove transitive arcs — polynomial).
-    Current barrier: step (1) finds a comparability orientation, but step (2)
-    requires checking the resulting acyclic orientation has no shortcut, which
-    may require additional structure. -/
-axiom cover_graph_recognition_in_p [Fintype V] [DecidableEq V] :
-  ∃ (f : SimpleGraph V → Bool),
-    (∀ G : SimpleGraph V, f G = true ↔ isCoverGraph G)
+/-- **Boolean recognizer for cover graphs exists** (formerly the axiom
+    `cover_graph_recognition_in_p`; renamed to avoid overclaiming).
+
+    ⚠ The genuine open question (erdosproblems.com/1006 OQ-02) is whether cover
+    graphs can be recognized in **polynomial time**. That is a *complexity*
+    statement and is **NOT** formalized here — Mathlib has no complexity model.
+    The former axiom `cover_graph_recognition_in_p` had exactly this Lean
+    statement (`∃ f : SimpleGraph V → Bool, …`), which is trivially true for any
+    predicate under classical logic and so captured none of the poly-time
+    content: it was a vacuous axiom mislabeled as encoding the open conjecture.
+    We prove the trivial content and rename, so nothing claims the open problem
+    is resolved.
+
+    Known context (unchanged, informal): cover recognition is in NP (the poset
+    is a poly-time-verifiable certificate); whether it is in P or NP-hard is
+    open. A positive resolution would plausibly (1) find a transitive
+    orientation (polynomial: 2-SAT / modular decomposition), then (2) check no
+    shortcuts remain (polynomial) — with the shortcut check the current
+    barrier. -/
+theorem exists_bool_cover_recognizer [Fintype V] [DecidableEq V] :
+    ∃ (f : SimpleGraph V → Bool),
+      (∀ G : SimpleGraph V, f G = true ↔ isCoverGraph G) :=
+  exists_bool_recognizer isCoverGraph
 
 /-
 ## Consequence: Cover Graphs ⊆ Comparability Graphs as Classes
