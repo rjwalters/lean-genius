@@ -113,7 +113,7 @@
       "id": "real-polynomial",
       "title": "The Real Polynomial X³ − 3 and Its Unique Real Root",
       "startLine": 49,
-      "endLine": 63,
+      "endLine": 64,
       "summary": "map_X_cubed_sub_three records that (X³ − 3 : ℚ[X]) maps to X³ − 3 : ℝ[X] under algebraMap ℚ ℝ. real_root_eq_cbrt3 proves the key arithmetic fact: any real r with r³ = 3 equals ∛3, since r³ = (∛3)³ and x ↦ x³ is injective on ℝ (Odd.strictMono_pow with Odd 3).",
       "mathContext": "$x\\mapsto x^3$ is strictly monotone on $\\mathbb{R}$, so $r^3=3=(\\sqrt[3]{3})^3\\Rightarrow r=\\sqrt[3]{3}$."
     },
@@ -126,11 +126,19 @@
       "mathContext": "Over $\\mathbb{R}$, $X^3-3=(X-\\sqrt[3]{3})(X^2+\\sqrt[3]{3}\\,X+\\sqrt[3]{9})$ with an irreducible quadratic factor, so it does not split."
     },
     {
+      "id": "obstruction",
+      "title": "The Splitting Obstruction inside ℚ(∛3)",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "minpoly_not_splits_adjoin transports a hypothetical splitting of X³ − 3 over ℚ(∛3) to ℝ via splits_of_algHom and the embedding IntermediateField.val, contradicting not_splits_real. This is the direct obstruction: the two complex-conjugate roots of X³ − 3 lie outside the real field ℚ(∛3).",
+      "mathContext": "If $X^3-3$ split in $\\mathbb{Q}(\\sqrt[3]{3})$, embedding into $\\mathbb{R}$ would force it to split over $\\mathbb{R}$ too — contradicting not_splits_real."
+    },
+    {
       "id": "not-normal",
       "title": "ℚ(∛3)/ℚ Is Not Normal — and Not Galois",
-      "startLine": 89,
-      "endLine": 116,
-      "summary": "minpoly_not_splits_adjoin transports a hypothetical splitting of X³ − 3 over ℚ(∛3) to ℝ via splits_of_algHom and the embedding IntermediateField.val, contradicting not_splits_real. not_normal_adjoin_cbrt3 then applies Normal.splits to AdjoinSimple.gen ℚ ∛3 (whose minpoly is X³ − 3 via minpoly_gen ▸ minpoly_cbrt3). not_isGalois_adjoin_cbrt3 follows since IsGalois ⇒ Normal.",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "not_normal_adjoin_cbrt3 applies Normal.splits to AdjoinSimple.gen ℚ ∛3 (whose minpoly is X³ − 3 via minpoly_gen ▸ minpoly_cbrt3), deriving a contradiction from minpoly_not_splits_adjoin. not_isGalois_adjoin_cbrt3 follows since IsGalois ⇒ Normal — the classical first example of a finite, non-normal field extension.",
       "mathContext": "$\\mathbb{Q}(\\sqrt[3]{3})/\\mathbb{Q}$ is not normal: $\\min(\\sqrt[3]{3})=X^3-3$ has a root here but does not split, as $\\omega\\sqrt[3]{3},\\omega^2\\sqrt[3]{3}\\notin\\mathbb{R}$."
     }
   ]
