@@ -924,11 +924,247 @@ S14 from Mathlib v4.31's Prokhorov + Lévy–Prokhorov metrization instances.
 - μ(B) ≥ δ from Part X
 -/
 
--- The correspondence System can be constructed by importing
--- Proofs.FurstenbergCorrespondence and building:
---   Furstenberg.System.mk CantorSpace inferInstance μ shift cylinderZero
---     (probability) (measure_preserving) (cylinderZero_measurableSet)
--- This is left for a future assembly session to avoid circular imports.
+-- The correspondence System is now assembled: Part XV below packages the
+-- invariant limit measure as `exists_invariant_measure_correspondence`, and
+-- `Proofs/FurstenbergCorrespondence.lean` (which imports this file) uses it
+-- to prove the former `furstenberg_correspondence` axiom as a theorem.
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART XV: FULL SHIFT-INVARIANCE AND THE INVARIANT LIMIT MEASURE (S15)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### From Clopen Invariance to `MeasurePreserving`
+
+Part XII proved `μ(shift⁻¹ S) = μ(S)` for clopen `S` at any weak-* limit of
+Cesàro measures. Three upgrades complete the correspondence:
+
+1. **Moving base points**: the upper *Banach* density windows `[aₖ, aₖ+Nₖ)`
+   move, so the Cesàro measures in the extraction are taken at *varying*
+   orbit points `shift^[aₖ](1_A)`. The telescoping bounds (Part VIII-b) are
+   uniform in the base point, so the Part XII argument goes through verbatim.
+2. **π-system extension**: Mathlib's `measurableCylinders` form a π-system
+   generating the product σ-algebra (`generateFrom_measurableCylinders`), and
+   every measurable cylinder over `ℕ → Bool` is clopen (finite-coordinate
+   condition into a finite discrete space). `ext_of_generate_finite` then
+   upgrades clopen-set invariance to `Measure.map shift μ = μ`, i.e. full
+   `MeasurePreserving shift μ μ`.
+3. **Return property at the limit**: positive limit measure on the (clopen)
+   k-fold intersection forces positive Cesàro measure along the subsequence
+   (Portmanteau), which Part XIII converts into a k-AP in `A`.
+
+The final package `exists_invariant_measure_correspondence` is exactly the
+content of the Furstenberg correspondence principle on Cantor space.
+-/
+
+section FullInvariance
+
+open MeasureTheory Classical
+
+/-- **Moving-base-point T-invariance at the limit** (generalizes Part XII's
+    `limit_invariant_on_cylinder` from a fixed base point to a sequence of
+    base points, as required by the Banach-density extraction where the
+    windows move): if `μₖ = cesaroMeasure (xs k) (Ns k + 1)` with `Ns → ∞`
+    and `μₖ → μ` weakly, then `μ(shift⁻¹ S) = μ(S)` for every clopen `S`.
+
+    The proof is verbatim Part XII — the approximate-invariance bounds
+    `cesaroMeasure_preimage_le/ge` hold uniformly in the base point. -/
+theorem limit_invariant_on_clopen_moving
+    (μs : ℕ → ProbabilityMeasure CantorSpace)
+    (μ : ProbabilityMeasure CantorSpace)
+    (hconv : Filter.Tendsto μs Filter.atTop (nhds μ))
+    (xs : ℕ → CantorSpace) (Ns : ℕ → ℕ)
+    (hNs : Filter.Tendsto Ns Filter.atTop Filter.atTop)
+    (hdef : ∀ k, (μs k : Measure CantorSpace) = cesaroMeasure (xs k) (Ns k + 1))
+    (S : Set CantorSpace) (hS : MeasurableSet S) (hSclopen : IsClopen S) :
+    (μ : Measure CantorSpace) (shift ⁻¹' S) = (μ : Measure CantorSpace) S := by
+  have hS_frontier : (μ : Measure CantorSpace) (frontier S) = 0 := by
+    simp [hSclopen.frontier_eq]
+  have hshiftS_clopen : IsClopen (shift ⁻¹' S) := isClopen_shift_preimage hSclopen
+  have hshiftS_frontier : (μ : Measure CantorSpace) (frontier (shift ⁻¹' S)) = 0 := by
+    simp [hshiftS_clopen.frontier_eq]
+  have htend_S :=
+    ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv hS_frontier
+  have htend_shiftS :=
+    ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv hshiftS_frontier
+  have hinv_tend : Filter.Tendsto (fun k => (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+      Filter.atTop (nhds 0) :=
+    ENNReal.tendsto_inv_nat_nhds_zero.comp ((Filter.tendsto_add_atTop_nat 1).comp hNs)
+  have hle : (μ : Measure CantorSpace) (shift ⁻¹' S) ≤ (μ : Measure CantorSpace) S := by
+    have hsum : Filter.Tendsto
+        (fun k => (μs k : Measure CantorSpace) S + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+        Filter.atTop (nhds ((μ : Measure CantorSpace) S + 0)) := htend_S.add hinv_tend
+    rw [add_zero] at hsum
+    refine le_of_tendsto_of_tendsto' htend_shiftS hsum fun k => ?_
+    rw [hdef k]
+    exact cesaroMeasure_preimage_le (xs k) (Ns k) S hS
+  have hge : (μ : Measure CantorSpace) S ≤ (μ : Measure CantorSpace) (shift ⁻¹' S) := by
+    have hsum : Filter.Tendsto
+        (fun k => (μs k : Measure CantorSpace) (shift ⁻¹' S) + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+        Filter.atTop (nhds ((μ : Measure CantorSpace) (shift ⁻¹' S) + 0)) :=
+      htend_shiftS.add hinv_tend
+    rw [add_zero] at hsum
+    refine le_of_tendsto_of_tendsto' htend_S hsum fun k => ?_
+    rw [hdef k]
+    exact cesaroMeasure_preimage_ge (xs k) (Ns k) S hS
+  exact le_antisymm hle hge
+
+/-- Every measurable cylinder over `ℕ → Bool` is clopen: it is the preimage of
+    a subset of the *finite discrete* space `(i : I) → Bool` (where every set
+    is clopen) under the continuous restriction map. -/
+theorem isClopen_of_mem_measurableCylinders {S : Set CantorSpace}
+    (hS : S ∈ MeasureTheory.measurableCylinders (fun _ : ℕ => Bool)) :
+    IsClopen S := by
+  obtain ⟨I, B, _hB, rfl⟩ := (MeasureTheory.mem_measurableCylinders S).mp hS
+  have hcont : Continuous (I.restrict : CantorSpace → ((i : I) → Bool)) :=
+    continuous_pi fun i => continuous_apply (i : ℕ)
+  exact (isClopen_discrete B).preimage hcont
+
+/-- **Full shift-invariance of the limit measure**: any weak-* limit of Cesàro
+    measures (with lengths `→ ∞`, arbitrary moving base points) is invariant
+    under the shift, as a bona fide `MeasurePreserving`.
+
+    Proof: clopen invariance (`limit_invariant_on_clopen_moving`) covers all
+    measurable cylinders, which form a π-system generating the product
+    σ-algebra; `ext_of_generate_finite` extends the equality
+    `Measure.map shift μ = μ` to all Borel sets. -/
+theorem limit_measurePreserving
+    (μs : ℕ → ProbabilityMeasure CantorSpace)
+    (μ : ProbabilityMeasure CantorSpace)
+    (hconv : Filter.Tendsto μs Filter.atTop (nhds μ))
+    (xs : ℕ → CantorSpace) (Ns : ℕ → ℕ)
+    (hNs : Filter.Tendsto Ns Filter.atTop Filter.atTop)
+    (hdef : ∀ k, (μs k : Measure CantorSpace) = cesaroMeasure (xs k) (Ns k + 1)) :
+    MeasurePreserving shift (μ : Measure CantorSpace) (μ : Measure CantorSpace) := by
+  refine ⟨shift_measurable, ?_⟩
+  haveI : IsProbabilityMeasure ((μ : Measure CantorSpace).map shift) :=
+    Measure.isProbabilityMeasure_map shift_measurable.aemeasurable
+  refine ext_of_generate_finite (MeasureTheory.measurableCylinders (fun _ : ℕ => Bool))
+    MeasureTheory.generateFrom_measurableCylinders.symm
+    MeasureTheory.isPiSystem_measurableCylinders (fun S hSmem => ?_) ?_
+  · have hSmeas : MeasurableSet S := MeasurableSet.of_mem_measurableCylinders hSmem
+    rw [Measure.map_apply shift_measurable hSmeas]
+    exact limit_invariant_on_clopen_moving μs μ hconv xs Ns hNs hdef S hSmeas
+      (isClopen_of_mem_measurableCylinders hSmem)
+  · rw [Measure.map_apply shift_measurable MeasurableSet.univ]
+    simp
+
+/-- **Return property at the limit**: if the limit measure charges the k-fold
+    intersection `⋂ᵢ shift^[i·d]⁻¹(B₀)`, then — because that set is clopen and
+    Portmanteau upgrades weak convergence to convergence of measures on it —
+    some Cesàro measure along the sequence charges it too, and Part XIII
+    extracts a k-term AP in `A`. -/
+theorem limit_positive_implies_ap (A : Set ℕ)
+    (μs : ℕ → ProbabilityMeasure CantorSpace)
+    (μ : ProbabilityMeasure CantorSpace)
+    (hconv : Filter.Tendsto μs Filter.atTop (nhds μ))
+    (as : ℕ → ℕ) (Ns : ℕ → ℕ)
+    (hdef : ∀ k, (μs k : Measure CantorSpace) =
+      cesaroMeasure (shift^[as k] (setIndicator A)) (Ns k + 1))
+    (k d : ℕ) (hk : 1 ≤ k)
+    (hpos : (μ : Measure CantorSpace)
+      (⋂ (i : Fin k), shift^[↑i * d] ⁻¹' cylinderZero) ≠ 0) :
+    ∃ b : ℕ, ∀ j < k, b + j * d ∈ A := by
+  set S := ⋂ (i : Fin k), shift^[↑i * d] ⁻¹' cylinderZero with hS_def
+  have hSclopen : IsClopen S := kfold_intersection_isClopen k d
+  have hS_frontier : (μ : Measure CantorSpace) (frontier S) = 0 := by
+    simp [hSclopen.frontier_eq]
+  have htend :=
+    ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' hconv hS_frontier
+  have hev : ∀ᶠ j in Filter.atTop, (μs j : Measure CantorSpace) S ≠ 0 :=
+    htend.eventually_ne hpos
+  obtain ⟨j, hj⟩ := hev.exists
+  rw [hdef j] at hj
+  exact positive_measure_gives_ap A (as j) (Ns j + 1) (Nat.succ_pos _) k d hk hj
+
+/-- The `Fin 2` k-fold intersection is the binary return set `B₀ ∩ shift^[n]⁻¹(B₀)`.
+    Used to derive the pair-return clause of the correspondence from the k-fold one. -/
+theorem kfold_two_eq_pair (n : ℕ) :
+    (⋂ (i : Fin 2), shift^[↑i * n] ⁻¹' cylinderZero) =
+      cylinderZero ∩ shift^[n] ⁻¹' cylinderZero := by
+  ext x
+  simp only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage]
+  constructor
+  · intro h
+    have h0 := h 0
+    have h1 := h 1
+    simp only [Fin.val_zero, Nat.zero_mul, Function.iterate_zero_apply] at h0
+    simp only [Fin.val_one, Nat.one_mul] at h1
+    exact ⟨h0, h1⟩
+  · rintro ⟨h0, h1⟩ i
+    fin_cases i
+    · simpa using h0
+    · simpa using h1
+
+/-- **The Furstenberg correspondence on Cantor space (full package)**:
+    for any `A ⊆ ℕ` of upper Banach density `≥ δ > 0` there is a
+    shift-invariant probability measure `μ` on `{0,1}^ℕ` with
+    `μ(B₀) ≥ δ` such that positive `μ`-measure of any k-fold return set
+    produces a k-term arithmetic progression in `A`.
+
+    This is precisely the mathematical content of the
+    `furstenberg_correspondence` axiom of `Proofs/FurstenbergCorrespondence.lean`
+    (which now derives it from this theorem), assembled from:
+    `density_lower_bound` (Part VIII) + `seqCompact_probabilityMeasure_cantor`
+    (Part IX, Prokhorov) + Portmanteau density preservation (Part X) +
+    `limit_measurePreserving` (Part XV) + `limit_positive_implies_ap`
+    (Parts XIII+XV). -/
+theorem exists_invariant_measure_correspondence (A : Set ℕ) {δ : ℝ} (hδ : 0 < δ)
+    (hd : HasUpperDensityGe A δ) :
+    ∃ μ : ProbabilityMeasure CantorSpace,
+      MeasurePreserving shift (μ : Measure CantorSpace) (μ : Measure CantorSpace) ∧
+      ENNReal.ofReal δ ≤ (μ : Measure CantorSpace) cylinderZero ∧
+      ∀ k d : ℕ, 1 ≤ k →
+        (μ : Measure CantorSpace)
+          (⋂ (i : Fin k), shift^[↑i * d] ⁻¹' cylinderZero) ≠ 0 →
+        ∃ b : ℕ, ∀ j < k, b + j * d ∈ A := by
+  -- Step 1: density windows of every length, via the Banach density hypothesis.
+  have hex : ∀ m : ℕ, ∃ a N : ℕ, N ≥ m + 1 ∧
+      ENNReal.ofReal δ ≤ cesaroMeasure (shift^[a] (setIndicator A)) N cylinderZero :=
+    fun m => density_lower_bound A hδ hd (m + 1)
+  choose a N hN hbound using hex
+  have hNpos : ∀ m, 0 < N m := fun m => lt_of_lt_of_le (Nat.succ_pos m) (hN m)
+  -- Step 2: package the Cesàro measures (lengths in successor form).
+  let xs : ℕ → CantorSpace := fun m => shift^[a m] (setIndicator A)
+  let Ns : ℕ → ℕ := fun m => N m - 1
+  have hNs_succ : ∀ m, Ns m + 1 = N m := fun m => Nat.succ_pred_eq_of_pos (hNpos m)
+  have hNs_ge : ∀ m, m ≤ Ns m := fun m => by
+    have h1 := hN m
+    show m ≤ N m - 1
+    omega
+  have hNs_tend : Filter.Tendsto Ns Filter.atTop Filter.atTop :=
+    Filter.tendsto_atTop_mono hNs_ge Filter.tendsto_id
+  let μs : ℕ → ProbabilityMeasure CantorSpace :=
+    fun m => cesaroProbabilityMeasure (xs m) (Ns m + 1) (Nat.succ_pos _)
+  have hdef : ∀ m, (μs m : Measure CantorSpace) = cesaroMeasure (xs m) (Ns m + 1) :=
+    fun m => rfl
+  -- Step 3: Prokhorov extraction (Part IX).
+  obtain ⟨φ, hφ, μ, hconv⟩ := seqCompact_probabilityMeasure_cantor μs
+  have hNs_tend' : Filter.Tendsto (fun j => Ns (φ j)) Filter.atTop Filter.atTop :=
+    hNs_tend.comp hφ.tendsto_atTop
+  refine ⟨μ, ?_, ?_, ?_⟩
+  -- Step 4: full shift-invariance (Part XV π-system upgrade).
+  · exact limit_measurePreserving (fun j => μs (φ j)) μ hconv (fun j => xs (φ j))
+      (fun j => Ns (φ j)) hNs_tend' (fun j => hdef (φ j))
+  -- Step 5: density preservation at the limit (Portmanteau on the clopen B₀).
+  · have hclopen : IsClopen cylinderZero := cylinder_isClopen 0 true
+    have hfr : (μ : Measure CantorSpace) (frontier cylinderZero) = 0 := by
+      simp [hclopen.frontier_eq]
+    have htendB := ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'
+      hconv hfr
+    refine ge_of_tendsto htendB (Filter.Eventually.of_forall fun j => ?_)
+    have h1 : ((μs (φ j) : ProbabilityMeasure CantorSpace) : Measure CantorSpace) =
+        cesaroMeasure (xs (φ j)) (N (φ j)) := by
+      rw [hdef (φ j), hNs_succ (φ j)]
+    calc ENNReal.ofReal δ
+        ≤ cesaroMeasure (xs (φ j)) (N (φ j)) cylinderZero := hbound (φ j)
+      _ = (μs (φ j) : Measure CantorSpace) cylinderZero := by rw [h1]
+  -- Step 6: k-fold return property at the limit.
+  · intro k d hk hpos
+    exact limit_positive_implies_ap A (fun j => μs (φ j)) μ hconv
+      (fun j => a (φ j)) (fun j => Ns (φ j)) (fun j => hdef (φ j)) k d hk hpos
+
+end FullInvariance
 
 /-!
 ### Progress Summary (Session 4)

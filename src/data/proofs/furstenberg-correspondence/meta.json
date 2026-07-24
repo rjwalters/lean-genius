@@ -42,16 +42,16 @@
     "originalContributions": [
       "Upper Banach density definition for ℕ subsets",
       "Poincaré recurrence wrapped from Mathlib's Conservative theory",
-      "Furstenberg Correspondence Principle (axiomatized with construction sketch)",
+      "Furstenberg Correspondence Principle (PROVED 2026-07-24 via the OQ-01 Cantor-space construction; formerly axiomatized)",
       "Szemerédi k=2 proved via the ergodic route (correspondence + Poincaré)",
       "Multiple recurrence for k≥3 (axiomatized with gap analysis)",
-      "Full infinite Szemerédi via Furstenberg (proved from 2 axioms)",
+      "Full infinite Szemerédi via Furstenberg (proved from 1 axiom: multiple recurrence k≥3)",
       "Detailed feasibility analysis: what Mathlib provides vs what's missing"
     ],
     "dateAdded": "2026-03-29",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 253,
-    "assumptions": "2 axiom(s): (1) Furstenberg Correspondence Principle — construction needs weak-* compactness not in Mathlib, (2) Multiple Recurrence for k≥3 — needs ergodic decomposition not in Mathlib. Both are well-defined mathematical constructions.",
+    "assumptions": "1 axiom: Multiple Recurrence for k≥3 (Furstenberg 1977) — needs ergodic decomposition not in Mathlib. The former second axiom, the Furstenberg Correspondence Principle, was PROVED on 2026-07-24 from the Cantor-space construction in Proofs/FurstenbergCorrespondenceOQ01.lean (Cesàro averages of Dirac measures, Prokhorov extraction via Mathlib v4.31, π-system upgrade of clopen invariance to MeasurePreserving, Portmanteau return). szemeredi_k2_ergodic and furstenberg_correspondence itself now depend only on foundational axioms (propext, Classical.choice, Quot.sound); szemeredi_ergodic depends only on the multiple-recurrence axiom.",
     "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
@@ -59,7 +59,7 @@
   "overview": {
     "historicalContext": "Szemerédi's 1975 theorem on arithmetic progressions in dense integer sets was proved by an extraordinarily intricate combinatorial argument that introduced the regularity lemma. In 1977, Hillel Furstenberg (J. Analyse Math. 31, 204–256) gave a revolutionary alternative proof using ergodic theory, establishing a deep connection between combinatorial number theory and dynamical systems. This proof introduced the Furstenberg Correspondence Principle (translating density of integer sets into measure of dynamical sets) and the Multiple Recurrence Theorem (generalizing Poincaré's 1890 recurrence theorem from one to k-fold intersections). Unlike Szemerédi's combinatorial proof, Furstenberg's approach gives no quantitative bounds but is far more flexible: it generalizes immediately to give the Furstenberg-Katznelson (1978) multidimensional Szemerédi theorem, the Bergelson-Leibman (1996) polynomial Szemerédi theorem (arithmetic progressions with polynomial common differences p(n) = n^2, n^3, …), and the density Hales-Jewett theorem (Furstenberg-Katznelson 1991). The 2012 work of Green-Tao on primes in arithmetic progressions ultimately combines both routes — Szemerédi's quantitative regularity bounds with Furstenberg-style transference principles. Furstenberg's program also launched the field now called *ergodic Ramsey theory*, in which combinatorial statements about integers are systematically translated into recurrence questions for measure-preserving systems and answered using the structural theory of dynamical systems (Furstenberg structure theorem, Host-Kra factors).",
     "problemStatement": "**Furstenberg's Approach**: For any A ⊆ ℕ with positive upper Banach density d*(A) > 0 and any k ≥ 1, A contains a k-term arithmetic progression.\n\n**Method**: (1) Correspondence Principle translates d*(A) > 0 to a measure-preserving system with μ(B) > 0. (2) Multiple Recurrence Theorem gives ∃ n > 0, μ(B ∩ T^{-n}B ∩ ... ∩ T^{-(k-1)n}B) > 0. (3) Correspondence lifts this back to a k-AP in A.",
-    "text": "Demonstrates Furstenberg's 1977 ergodic approach to Szemerédi's theorem in Lean 4. The k=2 case is proved using Mathlib's Poincaré recurrence; the full theorem uses 2 axioms.",
+    "text": "Demonstrates Furstenberg's 1977 ergodic approach to Szemerédi's theorem in Lean 4. The Furstenberg Correspondence Principle is fully proved (2026-07-24, via the Cantor-space construction of Proofs/FurstenbergCorrespondenceOQ01.lean), so the k=2 case is now proved with no custom axioms; the full theorem uses 1 axiom (multiple recurrence for k≥3).",
     "proofStrategy": "**Architecture**:\n1. Define upper Banach density for ℕ subsets\n2. Bundle probability measure-preserving systems as `System` structure\n3. Prove Poincaré recurrence from Mathlib's `Conservative` theory\n4. Axiomatize the Furstenberg Correspondence Principle\n5. Prove Szemerédi k=2: Correspondence + Poincaré\n6. Axiomatize Multiple Recurrence for k ≥ 3\n7. Prove full Szemerédi by case split: k≤2 (Poincaré) vs k≥3 (axiom)",
     "keyInsights": [
       "Mathlib's Dynamics.Ergodic library provides the full Poincaré recurrence theorem, which is exactly the k=2 case of Furstenberg's Multiple Recurrence",
@@ -105,23 +105,23 @@
     },
     {
       "id": "correspondence",
-      "title": "Furstenberg Correspondence (Axiom 1)",
+      "title": "Furstenberg Correspondence (former Axiom 1 — proved)",
       "startLine": 110,
       "endLine": 142,
-      "summary": "**Axiomatized.** States the Furstenberg Correspondence Principle: sets with positive upper Banach density correspond to measure-preserving systems where positive-measure intersections give combinatorial patterns. Includes detailed construction sketch.",
-      "mathContext": "Axiom: $d^*(A) \\geq \\delta > 0 \\Rightarrow \\exists (X, \\mu, T, B)$: $\\mu(B) \\geq \\delta$, and positive-measure $k$-fold intersections lift to $k$-APs in $A$."
+      "summary": "**Proved (2026-07-24).** The Furstenberg Correspondence Principle: sets with positive upper Banach density correspond to measure-preserving systems where positive-measure intersections give combinatorial patterns. Derived from FurstenbergOQ01.exists_invariant_measure_correspondence: the system is the Cantor-space shift with a weak-* subsequential limit of Cesàro averages of Dirac measures along density windows; shift-invariance via telescoping + π-system extension over measurable cylinders; density and return properties via Portmanteau on clopen sets.",
+      "mathContext": "Theorem: $d^*(A) \\geq \\delta > 0 \\Rightarrow \\exists (X, \\mu, T, B)$: $\\mu(B) \\geq \\delta$, and positive-measure $k$-fold intersections lift to $k$-APs in $A$."
     },
     {
       "id": "szemeredi-k2",
       "title": "Szemerédi k=2 via Ergodic Route (Proved)",
       "startLine": 144,
       "endLine": 172,
-      "summary": "**Proved.** Derives Szemerédi k=2 from the Furstenberg correspondence (Axiom 1) combined with Mathlib's Poincaré recurrence. The 4-step proof: correspondence → positive measure → Poincaré return → combinatorial pattern.",
+      "summary": "**Proved.** Derives Szemerédi k=2 from the Furstenberg correspondence (now itself a theorem) combined with Mathlib's Poincaré recurrence. The 4-step proof: correspondence → positive measure → Poincaré return → combinatorial pattern. Depends only on foundational axioms.",
       "mathContext": "$d^*(A) > 0 \\Rightarrow \\exists a, n > 0: \\{a, a+n\\} \\subseteq A$. Via: correspondence $\\to$ $\\mu(B) > 0$ $\\to$ Poincaré $\\to$ 2-AP."
     },
     {
       "id": "multiple-recurrence",
-      "title": "Multiple Recurrence k ≥ 3 (Axiom 2)",
+      "title": "Multiple Recurrence k ≥ 3 (the sole remaining axiom)",
       "startLine": 174,
       "endLine": 200,
       "summary": "**Axiomatized.** States the Multiple Recurrence Theorem for $k \\geq 3$: deep part of Furstenberg's proof requiring ergodic decomposition and structural analysis.",
@@ -132,7 +132,7 @@
       "title": "Full Szemerédi via Ergodic Route",
       "startLine": 202,
       "endLine": 230,
-      "summary": "**Proved from axioms.** Assembles the infinite Szemerédi theorem for all $k \\geq 1$ by case split: $k \\leq 2$ uses Poincaré (Mathlib), $k \\geq 3$ uses the multiple recurrence axiom.",
+      "summary": "**Proved from 1 axiom.** Assembles the infinite Szemerédi theorem for all $k \\geq 1$ by case split: $k \\leq 2$ uses Poincaré (Mathlib), $k \\geq 3$ uses the multiple recurrence axiom (the only remaining assumption).",
       "mathContext": "$d^*(A) > 0 \\Rightarrow \\forall k \\geq 1, \\exists a, n > 0: \\{a, a+n, \\ldots, a+(k-1)n\\} \\subseteq A$"
     }
   ],
@@ -169,7 +169,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates that Furstenberg's ergodic approach to Szemerédi's theorem can be formalized in Lean 4 using Mathlib. The k=2 case is fully proved using Mathlib's Poincaré recurrence; the full theorem requires only 2 well-defined axioms (correspondence principle + k≥3 multiple recurrence).",
+    "summary": "This formalization demonstrates that Furstenberg's ergodic approach to Szemerédi's theorem can be formalized in Lean 4 using Mathlib. The Correspondence Principle is fully machine-checked (2026-07-24) via the Cantor-space construction of the OQ-01 companion file, making the k=2 case axiom-free; the full theorem rests on the single multiple-recurrence axiom (k≥3), whose elimination needs ergodic decomposition (~2000+ lines, not yet in Mathlib).",
     "implications": "The ergodic approach to combinatorics is within reach of current Lean 4 + Mathlib infrastructure. The main bottleneck is the ~2000+ lines needed for ergodic decomposition and multiple recurrence, not any foundational limitation. This opens a path to formalizing:\n- Polynomial Szemerédi theorem (Bergelson-Leibman)\n- IP Szemerédi theorem\n- Furstenberg-Katznelson multidimensional Szemerédi",
     "openQuestions": [
       "Can the Furstenberg correspondence construction be fully formalized using Mathlib's ultrafilter/compactness tools?",
@@ -186,9 +186,9 @@
       "Set"
     ],
     "namespace": "Furstenberg",
-    "lineCount": 253,
-    "axiomCount": 2,
-    "theoremCount": 4,
+    "lineCount": 284,
+    "axiomCount": 1,
+    "theoremCount": 5,
     "definitionCount": 2,
     "path": "Proofs/FurstenbergCorrespondence.lean",
     "sorries": 0

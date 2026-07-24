@@ -12,22 +12,22 @@ quantitative bounds but proves more general results) be formalized in Lean 4?
 
 This file demonstrates the architecture of the proof:
   - Poincaré recurrence (k=2 multiple recurrence) from Mathlib (**proved**)
-  - Szemerédi k=2 via the ergodic route (**proved**)
-  - Full Szemerédi for all k (**proved** from 2 axioms)
+  - Furstenberg Correspondence Principle (**proved** 2026-07-24, former Axiom 1,
+    via Proofs/FurstenbergCorrespondenceOQ01.lean: Cesàro averages of Dirac
+    measures on Cantor-space shift orbits, Prokhorov extraction from Mathlib
+    v4.31, π-system upgrade of clopen invariance to MeasurePreserving)
+  - Szemerédi k=2 via the ergodic route (**proved**, now axiom-free)
+  - Full Szemerédi for all k (**proved** from 1 axiom)
 
-**Axioms** (2):
-  1. Furstenberg Correspondence Principle — needs ultrafilter/compactness
-  2. Multiple Recurrence for k ≥ 3 — needs ergodic decomposition
+**Axioms** (1):
+  1. Multiple Recurrence for k ≥ 3 — needs ergodic decomposition
 
 **What Mathlib is missing** (gap analysis):
-  - Cesàro averages of measures and weak-* compactness
-  - Shift dynamics on Cantor space {0,1}^ℕ
   - Ergodic decomposition theorem
   - Multiple recurrence theorem (Furstenberg 1977)
 
-**Estimated effort** to eliminate axioms:
-  - Axiom 1 (correspondence): ~500 lines (ultrafilter construction on product space)
-  - Axiom 2 (multiple recurrence): ~2000+ lines (ergodic decomposition + structure theory)
+**Estimated effort** to eliminate the remaining axiom:
+  - Multiple recurrence: ~2000+ lines (ergodic decomposition + structure theory)
 
 References:
   - Furstenberg, "Ergodic behavior of diagonal measures" (1977)
@@ -35,6 +35,7 @@ References:
   - Bergelson, "Ergodic Ramsey theory — an update" (1996)
 -/
 import Mathlib
+import Proofs.FurstenbergCorrespondenceOQ01
 
 open scoped Classical
 
@@ -110,28 +111,38 @@ theorem poincare_frequently (sys : System) (hpos : sys.μ sys.B ≠ 0) :
     sys.hB.nullMeasurableSet hpos
 
 /-!
-## Furstenberg Correspondence Principle (Axiom 1)
+## Furstenberg Correspondence Principle (former Axiom 1 — PROVED 2026-07-24)
 
 The correspondence translates combinatorial density into measure theory:
 
-**Construction** (Furstenberg 1977):
+**Construction** (Furstenberg 1977), as formalized in
+`Proofs/FurstenbergCorrespondenceOQ01.lean`:
 1. Let X = {0,1}^ℕ with product topology and Borel σ-algebra
 2. Define shift T : X → X by (Tx)(n) = x(n+1)
 3. The indicator 1_A ∈ X represents the set A
-4. Form Cesàro averages μ_N = (1/N) Σ_{n<N} δ_{T^n(1_A)}
-5. A weak-* subsequential limit μ is T-invariant
-6. For B = {x ∈ X : x(0) = 1}: μ(B) ≥ d*(A)
-7. Positive-measure k-fold intersections lift to k-APs in A
-
-**What Mathlib provides**: Product measurable spaces, probability measures.
-**What's missing**: Cesàro averages of measures, weak-* compactness.
-Estimated: ~500 lines to formalize the construction.
+4. Form Cesàro averages μ_N = (1/N) Σ_{n<N} δ_{T^n(shift^a(1_A))} over
+   density windows [a, a+N)
+5. A weak-* subsequential limit μ (Prokhorov, Mathlib v4.31) is T-invariant
+   (telescoping bound + π-system extension over measurable cylinders)
+6. For B = {x ∈ X : x(0) = 1}: μ(B) ≥ δ (Portmanteau on the clopen B)
+7. Positive-measure k-fold intersections lift to k-APs in A (Portmanteau
+   back to a Cesàro average + orbit counting)
 -/
 
-/-- **Axiom 1**: Furstenberg Correspondence Principle.
+/-- **Furstenberg Correspondence Principle** (former Axiom 1, now a THEOREM).
     A set with positive upper Banach density corresponds to a measure-preserving
-    system where positive-measure intersections give combinatorial patterns. -/
-axiom furstenberg_correspondence (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
+    system where positive-measure intersections give combinatorial patterns.
+
+    Proved (2026-07-24) from the Cantor-space construction in
+    `Proofs/FurstenbergCorrespondenceOQ01.lean`: the system is
+    `(({0,1}^ℕ, Borel), μ, shift, B₀)` where `μ` is a weak-* subsequential
+    limit (Prokhorov, Mathlib v4.31) of the Cesàro averages
+    `(1/N) Σ_{n<N} δ_{shift^n(shift^a(1_A))}` along density windows, shift-
+    invariance comes from the telescoping bound + a π-system extension over
+    the measurable cylinders, and positive limit measure on (clopen) return
+    sets passes back to some Cesàro average by Portmanteau, where it exhibits
+    an AP in `A`. -/
+theorem furstenberg_correspondence (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
     (hd : HasUpperDensityGe A δ) :
     ∃ (sys : System),
       sys.μ sys.B ≥ ENNReal.ofReal δ ∧
@@ -141,7 +152,26 @@ axiom furstenberg_correspondence (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
       -- General return: positive measure k-fold intersection gives k-AP
       (∀ k n : ℕ, k ≥ 1 → n > 0 →
         sys.μ (⋂ (i : Fin k), sys.T^[↑i * n] ⁻¹' sys.B) ≠ 0 →
-          ∃ a : ℕ, ∀ j < k, a + j * n ∈ A)
+          ∃ a : ℕ, ∀ j < k, a + j * n ∈ A) := by
+  obtain ⟨μ, hMP, hδμ, hret⟩ :=
+    FurstenbergOQ01.exists_invariant_measure_correspondence A hδ hd
+  refine ⟨⟨FurstenbergOQ01.CantorSpace, inferInstance,
+    (μ : MeasureTheory.Measure FurstenbergOQ01.CantorSpace),
+    FurstenbergOQ01.shift, FurstenbergOQ01.cylinderZero, μ.2, hMP,
+    FurstenbergOQ01.cylinderZero_measurableSet⟩, hδμ, ?_, ?_⟩
+  · -- Pair return: specialize the k-fold clause to k = 2.
+    intro n hn hpos
+    have hpos' : (μ : MeasureTheory.Measure FurstenbergOQ01.CantorSpace)
+        (FurstenbergOQ01.cylinderZero ∩
+          FurstenbergOQ01.shift^[n] ⁻¹' FurstenbergOQ01.cylinderZero) ≠ 0 := hpos
+    rw [← FurstenbergOQ01.kfold_two_eq_pair n] at hpos'
+    obtain ⟨b, hb⟩ := hret 2 n (by norm_num) hpos'
+    refine ⟨b, ?_, ?_⟩
+    · simpa using hb 0 (by norm_num)
+    · simpa using hb 1 (by norm_num)
+  · -- k-fold return, verbatim from the package.
+    intro k n hk _hn hpos
+    exact hret k n hk hpos
 
 /-!
 ## Szemerédi k=2 via the Ergodic Route (PROVED)
@@ -158,7 +188,8 @@ Furstenberg correspondence:
 
 /-- **Szemerédi k=2 via Furstenberg**: Sets with positive upper Banach density
     contain 2-term arithmetic progressions.
-    Uses: Furstenberg correspondence (Axiom 1) + Poincaré recurrence (Mathlib). -/
+    Uses: Furstenberg correspondence (proved, Part above) + Poincaré recurrence
+    (Mathlib). Fully verified: no custom axioms. -/
 theorem szemeredi_k2_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
     (hd : HasUpperDensityGe A δ) :
     ∃ a n : ℕ, n > 0 ∧ a ∈ A ∧ a + n ∈ A := by
@@ -173,7 +204,7 @@ theorem szemeredi_k2_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
   exact ⟨a, n, hn_pos, ha, han⟩
 
 /-!
-## Multiple Recurrence for k ≥ 3 (Axiom 2)
+## Multiple Recurrence for k ≥ 3 (the sole remaining Axiom)
 
 The Multiple Recurrence Theorem (Furstenberg 1977): For (X, μ, T)
 measure-preserving on a probability space, and B with μ(B) > 0:
@@ -192,7 +223,7 @@ The proof for k ≥ 3 requires (none in Mathlib):
   4. Induction on k using characteristic factors
 -/
 
-/-- **Axiom 2**: Multiple Recurrence for k ≥ 3.
+/-- **Axiom (the only one left)**: Multiple Recurrence for k ≥ 3.
     The deep part of Furstenberg's proof: ergodic decomposition combined
     with structural analysis of measure-preserving systems. -/
 axiom multiple_recurrence_ge3 (sys : System) (hpos : sys.μ sys.B ≠ 0)
@@ -206,13 +237,13 @@ axiom multiple_recurrence_ge3 (sys : System) (hpos : sys.μ sys.B ≠ 0)
 Assembling the infinite Szemerédi theorem for all k ≥ 1:
   d*(A) > 0 → A contains k-APs for all k
 
-Uses: Axiom 1 (correspondence) + Poincaré (Mathlib, k≤2) + Axiom 2 (k≥3).
+Uses: correspondence (proved) + Poincaré (Mathlib, k≤2) + the multiple-recurrence axiom (k≥3).
 -/
 
 /-- **Infinite Szemerédi via Furstenberg**: Sets with positive upper Banach
     density contain k-term APs for all k ≥ 1.
-    Combines correspondence (Axiom 1), Poincaré (Mathlib), and
-    multiple recurrence (Axiom 2). -/
+    Combines correspondence (proved), Poincaré (Mathlib), and
+    multiple recurrence (the sole remaining axiom). -/
 theorem szemeredi_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
     (hd : HasUpperDensityGe A δ) (k : ℕ) (hk : k ≥ 1) :
     ∃ a n : ℕ, n > 0 ∧ ∀ j < k, a + j * n ∈ A := by
@@ -240,7 +271,7 @@ theorem szemeredi_ergodic (A : Set ℕ) (δ : ℝ) (hδ : δ > 0)
 | Conservative systems | ✅ Available | Mathlib.Dynamics.Ergodic.Conservative |
 | Poincaré recurrence | ✅ Available | Conservative.exists_gt_measure_inter_ne_zero |
 | Probability measures | ✅ Available | Mathlib.MeasureTheory.Measure |
-| Correspondence principle | ❌ Axiomatized | Needs weak-* compactness (~500 lines) |
+| Correspondence principle | ✅ Proved (2026-07-24) | Proofs/FurstenbergCorrespondenceOQ01.lean |
 | Multiple recurrence k≥3 | ❌ Axiomatized | Needs ergodic decomposition (~2000+ lines) |
 
 **Conclusion**: Furstenberg's proof CAN be formalized in Lean 4.

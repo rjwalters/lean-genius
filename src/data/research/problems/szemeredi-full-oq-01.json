@@ -18,20 +18,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 15,
-    "focus": "S14 ACT (researcher-1, 2026-07-24): PROKHOROV AXIOM ELIMINATED. seqCompact_probabilityMeasure_cantor converted axiom -> theorem in 3 lines: Mathlib v4.31 Prokhorov (CompactSpace (ProbabilityMeasure E) for compact E) + Levy-Prokhorov metrizability (=> first-countable) + CompactSpace.tendsto_subseq. FurstenbergCorrespondenceOQ01.lean now 0 axioms / 0 sorries, Docker-GREEN (8576 jobs). Gallery meta upgraded to verified/original/0; annotations refreshed.",
+    "iteration": 16,
+    "focus": "S15 (researcher-1, 2026-07-24): CORRESPONDENCE AXIOM ELIMINATED. Part XV added to FurstenbergCorrespondenceOQ01.lean (967->1203 LOC): moving-base limit invariance, clopen measurable cylinders, limit_measurePreserving (pi-system upgrade via ext_of_generate_finite over measurableCylinders), limit_positive_implies_ap, package theorem exists_invariant_measure_correspondence. Parent FurstenbergCorrespondence.lean: axiom furstenberg_correspondence -> theorem (foundational axioms only), file 2 -> 1 axioms. szemeredi_k2_ergodic now fully verified; szemeredi_ergodic depends only on multiple_recurrence_ge3. Docker GREEN 8577 jobs.",
     "blockers": [
       "RESOLVED (S13, 2026-07-23): the 28-error v4.26 build regression was repaired by the v4.31 toolchain migration (#39062); baseline and post-fill docker builds are clean."
     ],
-    "nextAction": "S15 ACT: assemble Furstenberg.System on (CantorSpace, shift, cylinderZero) — all ingredients are now proved (Prokhorov extraction, limit_invariant_on_cylinder T-invariance, density_preserved_at_limit). Then use the assembled system to eliminate the furstenberg_correspondence axiom in the parent FurstenbergCorrespondence.lean, which is the actual szemeredi-full-oq-01 target.",
+    "nextAction": "S16: the sole remaining axiom multiple_recurrence_ge3 (Furstenberg multiple recurrence, k>=3) — deep ergodic theory (ergodic decomposition + characteristic factors, ~2000+ LOC, not in Mathlib v4.31). NOT session-sized. Before any attempt, grep current Mathlib for ergodic decomposition (S14 meta-lesson: upstream growth retires local axioms wholesale).",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
       "approachesTried": 4
-    }
+    },
+    "lastUpdate": "2026-07-24T11:50:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: FurstenbergCorrespondenceOQ01.lean is fully machine-checked — 0 axioms, 0 sorries (S13 killed the last sorry, S14 the last axiom). Gallery entry furstenberg-correspondence-oq-01 upgraded verified/original. Remaining for the OQ target: assemble Furstenberg.System from the proved pieces and eliminate the parent correspondence axiom in FurstenbergCorrespondence.lean.",
+    "progressSummary": "S15 (2026-07-24): Furstenberg Correspondence Principle PROVED end-to-end — parent axiom eliminated (2->1 axioms), szemeredi_k2_ergodic fully machine-verified with zero custom axioms, szemeredi_ergodic down to the single multiple-recurrence axiom. The OQ-01 Cantor-space construction is complete: Cesaro averages + Prokhorov (S14) + moving-base T-invariance + pi-system MeasurePreserving upgrade + Portmanteau return (S15).",
     "builtItems": [
       "finsetDirac_apply: sum of Dirac measures on measurable set = filter cardinality (OQ01.lean:316)",
       "cesaroMeasure: N-step Cesaro probability measure definition (OQ01.lean:334)",
@@ -43,7 +44,9 @@
       "limit_invariant_on_cylinder: complete proof structure (~60 lines) replacing T-invariance sorry at FurstenbergCorrespondenceOQ01.lean:748 — uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + telescoping bounds; not locally validated due to file-wide build blocker",
       "PR #14878: 6 Mathlib API drift fixes in FurstenbergCorrespondenceOQ01.lean — restores buildability after 35-error cascade (Session 7, 2026-05-02)",
       "limit_invariant_on_cylinder PROVED in Proofs/FurstenbergCorrespondenceOQ01.lean:762 (exact T-invariance of weak-* limit of Cesaro measures on clopen sets) — docker-verified 2026-07-23, sorry count 1->0",
-      "seqCompact_probabilityMeasure_cantor in FurstenbergCorrespondenceOQ01.lean — former local axiom, now a theorem (Prokhorov + Levy-Prokhorov metrization + CompactSpace.tendsto_subseq)"
+      "seqCompact_probabilityMeasure_cantor in FurstenbergCorrespondenceOQ01.lean — former local axiom, now a theorem (Prokhorov + Levy-Prokhorov metrization + CompactSpace.tendsto_subseq)",
+      "S15: Part XV of FurstenbergCorrespondenceOQ01.lean — limit_invariant_on_clopen_moving, isClopen_of_mem_measurableCylinders, limit_measurePreserving, limit_positive_implies_ap, kfold_two_eq_pair, exists_invariant_measure_correspondence",
+      "S15: FurstenbergCorrespondence.lean furstenberg_correspondence axiom -> theorem (foundational only); szemeredi_k2_ergodic now axiom-free; gallery furstenberg-correspondence meta 2 -> 1 axioms"
     ],
     "insights": [
       "FurstenbergCorrespondence.lean already exists with szemeredi_k2_ergodic proved via Poincaré recurrence",
@@ -68,7 +71,10 @@
       "File status after S13: 0 sorries, 1 axiom (seqCompact_probabilityMeasure_cantor). The full Furstenberg correspondence now reduces to Prokhorov sequential compactness alone.",
       "S14: Mathlib v4.31 ships Prokhorov upstream (Mathlib.MeasureTheory.Measure.Prokhorov, Gouezel 2025): CompactSpace (ProbabilityMeasure E) for any compact T2 Borel E, with NO second-countability needed (proof via Riesz-Markov-Kakutani on ultrafilters). Combined with LevyProkhorovMetric metrizability (separable pseudo-metrizable Borel X) sequential compactness is just CompactSpace.tendsto_subseq — the 150-200-line local-axiom estimate from 2026-05 became 3 lines.",
       "S14: BorelSpace (N -> Bool) is found by typeclass search (Pi.borelSpace, countable index, discrete factors) — no manual instance needed for the Prokhorov instance to fire on CantorSpace.",
-      "S14 meta-lesson: before hand-assembling a stated-as-axiom classical analysis fact, grep the CURRENT Mathlib tree for the exact instance (ls Mathlib/MeasureTheory/Measure/ | grep -i prokhorov) — upstream growth between toolchain bumps retires local axioms wholesale."
+      "S14 meta-lesson: before hand-assembling a stated-as-axiom classical analysis fact, grep the CURRENT Mathlib tree for the exact instance (ls Mathlib/MeasureTheory/Measure/ | grep -i prokhorov) — upstream growth between toolchain bumps retires local axioms wholesale.",
+      "pi-system upgrade recipe (S15, reusable): clopen-set measure equality extends to all Borel sets via ext_of_generate_finite (measurableCylinders alpha) generateFrom_measurableCylinders.symm isPiSystem_measurableCylinders — the exact IsProjectiveLimit.unique invocation pattern; measurable cylinders over (nat -> Bool) are clopen because the finite discrete target makes every base set clopen (Pi.discreteTopology + isClopen_discrete).",
+      "Moving base points are REQUIRED for upper Banach density: the windows [a_k, a_k+N_k) move, so Cesaro measures sit at varying orbit points shift^[a_k](1_A); the telescoping approximate-invariance bounds are uniform in the base point, so the fixed-base limit argument generalizes verbatim.",
+      "v4.31 gotchas (S15): omega cannot see through tactic-let bindings (show-unfold first); simp with an IsClopen fact stated at (cylinder 0 true) fails against a goal at cylinderZero (regular def) — restate the fact at cylinderZero via defeq have; structure-literal projection goals need an explicit defeq have before rw."
     ],
     "mathlibGaps": [
       "Prokhorov theorem: sequential compactness of ProbabilityMeasure on compact metrizable space (~150-200 lines to assemble from Mathlib v4.26 ingredients)",
@@ -99,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-07-24",
+  "lastUpdate": "2026-07-24T11:50:00.000Z",
   "significance": 9,
   "tractability": 4,
   "leanFiles": [
@@ -113,6 +119,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
+      "filename": "FurstenbergCorrespondenceOQ01.lean",
+      "lineCount": 1203,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondence.lean",
+      "filename": "FurstenbergCorrespondence.lean",
+      "lineCount": 284,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondence.lean"
     }
   ],
   "lastUpdated": "2026-07-23"
