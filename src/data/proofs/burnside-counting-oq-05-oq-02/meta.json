@@ -138,6 +138,11 @@
       "targetId": "burnside-counting-oq-03",
       "relationship": "related",
       "description": "Reuses the oq-03 Pólya rotation identity ∑_{r} k^gcd(r,n) = ∑_{d|n} φ(n/d) k^d as the rotation half of the assembled dihedral total."
+    },
+    {
+      "targetId": "burnside-counting-oq-05-oq-01",
+      "relationship": "sibling",
+      "description": "The even-n counterpart: already supplies both reflection counts needed for openQuestions[1] here (vertex-axis k^(n/2+1), edge-axis k^(n/2)), but does not yet assemble them with the rotation total into an even bracelet count. This file's odd-case assembly (dihedralTotal, braceletCount) is the direct template for that remaining step."
     }
   ],
   "conclusion": {
@@ -145,7 +150,7 @@
     "implications": "Completes the dihedral half of the Burnside/Pólya necklace program for odd cycles in verified form, reusing the rotation and reflection counts rather than re-deriving them, and exhibits the tetrahedral-number identity B(3,k) = C(k+2,3) as a dihedral bracelet count.",
     "openQuestions": [
       "Can braceletCount be identified with the literal orbit count of DihedralGroup n acting on colorings, via Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group, giving the general integral count for all odd n rather than case by case?",
-      "What is the even-n bracelet count, where reflections split into vertex-axis and edge-axis types with different fixed-point counts?"
+      "What is the even-n bracelet count, where reflections split into vertex-axis and edge-axis types with different fixed-point counts? `burnside-counting-oq-05-oq-01` already supplies both counts (k^(n/2+1) and k^(n/2)); only the assembly into a Burnside-average bracelet count, following the odd-case pattern here, remains."
     ]
   },
   "leanFile": {
