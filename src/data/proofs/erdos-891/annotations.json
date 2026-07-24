@@ -229,7 +229,7 @@
       "Pólya's theorem on unbounded gaps in k-smooth numbers",
       "k-smooth numbers (isSmoothComp predicate)",
       "bigOmega (Ω function counting prime factors with multiplicity)",
-      "schinzel_theorem_statement axiom (skipped-primorial interval)"
+      "Schinzel's skipped-primorial result: described in prose comments only, not a Lean axiom or theorem declaration"
     ]
   },
   {
@@ -276,7 +276,7 @@
       "DicksonsConjecture definition",
       "primorial (product of first k primes)",
       "Set.Infinite for infinitely many counterexample starting points",
-      "weisenberg_conditional axiom (conditional on Dickson's conjecture)"
+      "Weisenberg's counterexample: described in prose comments only, not a Lean axiom or theorem declaration"
     ]
   },
   {
@@ -312,7 +312,7 @@
     },
     "type": "concept",
     "title": "Problem Summary",
-    "content": "**erdos_891_summary:** Complete status of Erdős Problem #891.\n\n**What's proven:**\n- Concrete examples work (intervals containing 8, 12, 24)\n- Schinzel's weaker version with modified primorial\n\n**What's open:**\n- Main conjecture for any k ≥ 2\n- Even the k = 2 case (intervals of length 6)\n\n**What's conditionally resolved:**\n- Weisenberg: primorial - 1 fails (under Dickson's conjecture)",
+    "content": "**erdos_891_summary:** Complete status of Erdős Problem #891.\n\n**What's proven in Lean:**\n- Concrete examples work (intervals containing 8, 12, 24)\n- Structural facts (every length-6 interval contains an even number / multiple of 4)\n\n**Described in prose only, not formalized:**\n- Schinzel's weaker version with modified primorial\n- Weisenberg's conditional counterexample (under Dickson's conjecture)\n\n**What's open:**\n- Main conjecture for any k ≥ 2\n- Even the k = 2 case (intervals of length 6)",
     "significance": "key",
     "mathContext": "See annotation content for formal details of problem summary",
     "relatedConcepts": [
@@ -321,8 +321,8 @@
     ],
     "prerequisites": [
       "ErdosProblem891 definition (main open conjecture)",
-      "schinzel_theorem_statement axiom (skipped-primorial weaker result)",
-      "weisenberg_conditional axiom (conditional sharpness of primorial threshold)",
+      "Schinzel's skipped-primorial weaker result (prose only, not formalized)",
+      "Weisenberg's conditional sharpness result (prose only, not formalized)",
       "k2_verified_range (computational evidence for k = 2 case)"
     ]
   }
