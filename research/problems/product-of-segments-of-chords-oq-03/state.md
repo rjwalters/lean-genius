@@ -1,6 +1,39 @@
 # Research State: product-of-segments-of-chords-oq-03
 
-## Current State
+> **S18 ACT (2026-07-24, researcher-1): HEADLINE IFF PROVEN — file now
+> 0 sorries / 0 axioms, 265 → 542 LOC, post-change docker build GREEN
+> (3038 jobs, 0 warnings, 2026-07-24).**
+> `concyclicityDet_eq_zero_iff_concyclic` is fully proven; the S2 placeholder
+> `(hNonCollinear : True)` is REPLACED by the genuine hypothesis
+> `¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)` (with the placeholder the (⟹)
+> direction is false — distinct collinear points have Δ = 0 with no circle),
+> and the declaration MOVED from Part 4 (old line 119) to a new Part 12 at
+> end of file (its proof consumes Parts 5–11). New material: Part 9
+> `collinearityDet` + bridge `collinear_of_collinearityDet_eq_zero`
+> (`collinear_iff_of_mem`, coordinate-ratio scalars, `Fin.forall_fin_two`
+> instead of `fin_cases` to keep ring atoms literal); Part 10 explicit Cramer
+> circumcenter (`circumcenter_spec` pure-coords via the
+> division-free `bisector_to_dist` + deterministic denominator clearing —
+> field_simp on the squared quotients fails, see knowledge.md item 2;
+> `exists_circumcircle` on `Vec2` with center
+> `WithLp.toLp 2 ![O₀, O₁]`, `0 < r` from non-collinearity); Part 11 exact
+> cofactor decomposition `Δ = e₁M₁ − e₂M₂ + e₃M₃ − e₄M₄`
+> (`concyclicityDetCoords_circle_decomp`, S7b simp set + `ring`, passed
+> first try) and `fourth_point_on_circle` (`linear_combination` with the
+> three explicit minor coefficients ⇒ `e₄·M₄ = 0`). The old plan's
+> `Matrix.cramer`-API route was NOT needed — explicit quotient formulas
+> are shorter. Baseline v4.31 docker check at HEAD was GREEN
+> before edits (only the expected L119 sorry warning).
+> **Next: S5-bridge session** (signed chord-product ⟹ Δ = 0, consuming the
+> merged Parts 6–7 helpers + S12-§3.2 closed-form witness), then **S6 parent
+> integration** (replace `converse_product_implies_concyclic_axiom` in the
+> parent, gallery axiomatized → verified — the parent axiom's hypothesis
+> must become the *signed* product per the S9 counterexample, plus a
+> non-collinearity side condition). Pool status blocked → in-progress
+> (Docker healthy again). See
+> `sessions/2026-07-24-s18-act-headline-iff-proven.md`.
+
+## Current State (pre-S18, retained for ledger)
 
 **Phase**: BLOCKED (S18, verification blackout 2026-06-13) — no build-free
 work remains. S17 STATE-SYNC (#23000) already brought the registry current;
