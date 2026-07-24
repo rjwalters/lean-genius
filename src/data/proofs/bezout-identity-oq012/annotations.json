@@ -14,7 +14,7 @@
   {
     "id": "ann-zsqrtd-pidufd-structure",
     "proofId": "bezout-identity-oq012",
-    "range": { "startLine": 48, "endLine": 63 },
+    "range": { "startLine": 48, "endLine": 70 },
     "type": "tactic",
     "title": "PID and UFD by Typeclass Inference",
     "content": "isPrincipalIdealRing and uniqueFactorizationMonoid show ℤ[√d] is a PID and a UFD for every −2 ≤ d < 0. The mechanism is elegant: the parent's euclideanDomain d value is introduced as a local instance via letI, and then inferInstance lets Lean's typeclass resolution build IsPrincipalIdealRing (through EuclideanDomain.to_principal_ideal_domain) and UniqueFactorizationMonoid (through PrincipalIdealRing.to_uniqueFactorizationMonoid) automatically. The UFD statement must carry the letI instance in its very type, because UniqueFactorizationMonoid (ℤ√d) requires the CancelCommMonoidWithZero structure that the EuclideanDomain instance supplies. One derivation covers the whole family.",
@@ -24,21 +24,33 @@
     "prerequisites": ["Lean typeclass resolution", "EuclideanDomain ⟹ PID ⟹ UFD"]
   },
   {
-    "id": "ann-zsqrtd-pidufd-classical",
+    "id": "ann-zsqrtd-pidufd-gaussian",
     "proofId": "bezout-identity-oq012",
-    "range": { "startLine": 65, "endLine": 87 },
+    "range": { "startLine": 72, "endLine": 85 },
     "type": "theorem",
-    "title": "The Two Classical Rings: ℤ[i] and ℤ[√-2]",
-    "content": "Four corollaries specialise the uniform family to its two named members. gaussianInt_isPrincipalIdealRing and gaussianInt_uniqueFactorizationMonoid give the Gaussian integers ℤ[i] = ℤ[√-1] (d = −1); negTwo_isPrincipalIdealRing and negTwo_uniqueFactorizationMonoid give ℤ[√-2] (d = −2). The PID statements just discharge the −2 ≤ d < 0 side goals with norm_num; the UFD statements reuse the parent's specialised euclideanDomainNegOne / euclideanDomainNegTwo instances. These are the classical rings underlying sum-of-two-squares (Gaussian) and the arithmetic of ℤ[√-2].",
-    "mathContext": "$\\mathbb{Z}[i] = \\mathbb{Z}[\\sqrt{-1}] \\text{ and } \\mathbb{Z}[\\sqrt{-2}] \\text{ are PIDs and UFDs.}$",
+    "title": "The Gaussian Integers ℤ[i] = ℤ[√-1]",
+    "content": "gaussianInt_isPrincipalIdealRing and gaussianInt_uniqueFactorizationMonoid specialise the uniform family to d = −1, the classical Gaussian integers underlying sum-of-two-squares theorems. The PID corollary discharges the −2 ≤ d < 0 side goals with norm_num; the UFD corollary reuses the parent's euclideanDomainNegOne specialisation.",
+    "mathContext": "$\\mathbb{Z}[i] = \\mathbb{Z}[\\sqrt{-1}]$ is a PID and a UFD.",
     "significance": "supporting",
     "relatedConcepts": ["Gaussian integers", "sum of two squares", "norm_num", "specialisation"],
     "prerequisites": ["quadratic integer rings"]
   },
   {
+    "id": "ann-zsqrtd-pidufd-negtwo",
+    "proofId": "bezout-identity-oq012",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "theorem",
+    "title": "The Ring ℤ[√-2]",
+    "content": "negTwo_isPrincipalIdealRing and negTwo_uniqueFactorizationMonoid specialise the uniform family to d = −2, mirroring the Gaussian-integer corollaries with the parent's euclideanDomainNegTwo specialisation. Together with the Gaussian case, these are the two classical rings the uniform Euclidean family was built to recover.",
+    "mathContext": "$\\mathbb{Z}[\\sqrt{-2}]$ is a PID and a UFD.",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic integer ring ℤ[√-2]", "norm_num", "specialisation"],
+    "prerequisites": ["quadratic integer rings"]
+  },
+  {
     "id": "ann-zsqrtd-pidufd-prime-norm",
     "proofId": "bezout-identity-oq012",
-    "range": { "startLine": 89, "endLine": 111 },
+    "range": { "startLine": 100, "endLine": 123 },
     "type": "insight",
     "title": "Prime Norm ⟹ Irreducible, Unconditionally in d",
     "content": "irreducible_of_prime_norm is the genuinely arithmetic contribution. If |N(z)| is a prime natural number, then z is irreducible in ℤ[√d] — for ANY d, with no Euclidean or sign hypothesis. The proof has two parts. (1) z is not a unit: a unit would give |N(z)| = 1 (Zsqrtd.norm_eq_one_iff), contradicting primality. (2) Any factorization z = a·b splits the prime: norm multiplicativity (Zsqrtd.norm_mul) and Int.natAbs_mul give |N(z)| = |N(a)|·|N(b)|, and Prime.irreducible.isUnit_or_isUnit forces one of |N(a)|, |N(b)| to be 1, i.e. that factor is a unit. Both norm lemmas are unconditional in d, so the criterion holds far outside the Euclidean range −2 ≤ d < 0.",
@@ -50,7 +62,7 @@
   {
     "id": "ann-zsqrtd-pidufd-prime",
     "proofId": "bezout-identity-oq012",
-    "range": { "startLine": 113, "endLine": 118 },
+    "range": { "startLine": 124, "endLine": 132 },
     "type": "theorem",
     "title": "Upgrading Irreducible to Prime in the UFD Range",
     "content": "prime_of_prime_norm closes the loop: in the UFD range −2 ≤ d < 0, a prime-norm element is not merely irreducible but prime. The proof reinstates the parent's euclideanDomain instance (so ℤ[√d] is known to be a UFD), then applies UniqueFactorizationMonoid.irreducible_iff_prime — in a UFD, irreducible and prime coincide — to the previous theorem. This is exactly where the structural UFD result and the arithmetic prime-norm criterion combine: the unconditional irreducibility plus the conditional UFD structure yields primality.",
