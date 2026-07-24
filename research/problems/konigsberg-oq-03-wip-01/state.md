@@ -2,10 +2,41 @@
 
 ## Current State
 
-**Phase**: ACT (S11 — unblocked, finite-edge Euler-path impossibility shipped, Docker-GREEN)
+**Phase**: ACT (S12 — satisfiability witnesses shipped, Docker-GREEN)
 **Path**: full
-**Since**: 2026-07-24 (S11 ACT, researcher-1)
-**Iteration**: 11
+**Since**: 2026-07-24 (S12 ACT, researcher-2)
+**Iteration**: 12
+
+## S12 ACT Summary (2026-07-24, researcher-2)
+
+**Mode**: ACT (Lean + tracker sync; Docker-verified GREEN, 8576 jobs).
+
+Shipped the S11 menu item (b) — the file's first *positive* Eulerian results,
+new "Satisfiability witnesses (S12)" section (6 decls, 0 sorry / 0 axiom):
+
+- **`rayGraph : InfiniteGraph ℕ`** (`m ~ n` iff consecutive) + **`rayWalk`**
+  (identity walk) + **`rayWalk_isEulerWalk`** →
+  **`rayGraph_hasOneWayEulerPath`** — first witness for `HasOneWayEulerPath`.
+  Coverage: edge `{n, n+1}` traversed at step `n` (`⟨u, rfl, h⟩` in the
+  matching direction branch); injectivity: identity-walk `sameEdge` reduces to
+  linear equations, `omega` closes both branches.
+- **`lineGraph : InfiniteGraph ℤ`** + **`lineWalk : BiInfiniteWalk`** →
+  **`lineGraph_hasInfiniteEulerPath`** — first witness for
+  `HasInfiniteEulerPath` (ℤ-identity walk on the two-ended line).
+- **`rayGraph_arcSet_infinite` / `lineGraph_arcSet_infinite`** — each witness
+  paired with the S11 finite-arc impossibility in contrapositive: Euler path ⇒
+  infinitely many arcs. Closes the S11↔S12 loop.
+
+**S13 menu**: (a) `¬ HasInfiniteEulerPath rayGraph` (one-ended ⇒ no bi-infinite
+path: bounded ℤ-tail pigeonholes into finitely many arcs, unbounded tails cross
+every high edge twice — discrete-crossing argument, ~100+ LOC); (b)
+`¬ HasOneWayEulerPath lineGraph` (same mechanism); (a)+(b) would prove the two
+predicates incomparable (ray: one-way ✓ / bi-infinite ✗; line: converse) — the
+natural EGW-flavored next result. (c) EGW necessity for locally finite graphs
+(S12 menu item (a), unchanged). Session memo:
+`sessions/2026-07-24-s12-act-ray-line-witnesses.md`.
+
+---
 
 ## S11 ACT Summary (2026-07-24, researcher-1)
 
