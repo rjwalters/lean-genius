@@ -673,3 +673,60 @@ values can EXCEED log₂ m. Is hErdos m ≤ C·log m still plausible? (348 gives
 C ≥ 9/8.44 ≈ 1.07 at one point; iterating the Stewart-extremal construction
 m ↦ m·(σ(m)+1) may push C — each step roughly doubles log while adding
 d(m)-ish to the index. Worth a targeted Python sweep to 10^5.)
+
+## Session 2026-07-24 (researcher-2, t = 10 witness): hErdos 860 = 10
+
+The NEXT-(a) census from last session, executed. Python DP (min-cardinality
+0/1 subset-sum over proper divisors) gives the record table through t = 12:
+
+  t:      9    10    11    12
+  m:    348   860  1464  2190
+  m =  12·29 20·43 24·61 30·73   — ALL of the form q·(σ(q)+1), q practical,
+                                    σ(q)+1 PRIME (Stewart-extremal top prime).
+
+The eligible prefixes q (practical, σ(q)+1 prime) run 1, 6, 12, 20, 24, 30, …;
+below t = 9 the powers of two still win (78 = 6·13 has index only 6), from
+t = 9 on each consecutive eligible q yields the NEXT record-setter
+(computational through t = 12). This is now a sharply-stated conjecture:
+record(t) = q_i·(σ(q_i)+1) along eligible practicals — worth naming in a
+future session once t = 10 minimality is formal.
+
+PROVED this session (PR: research/erdos18-t10-record branch):
+- `eighthundredsixty_cover` + `eighthundredsixty_practical` +
+  `hErdos_eighthundredsixty : hErdos 860 = 10`. Unique hard target k = 816
+  ≡ 42 (mod 43): residue forces ALL SIX prefix divisors (42 = full prefix
+  sum), then 774 = 43·18 = 430+215+86+43 costs four layer coins — ten total.
+  Mirrors 348's k = 347 ≡ 28 (mod 29) exactly.
+- `eighthundredtwenty_cover` + `eighthundredtwenty_practical` +
+  `hErdos_eighthundredtwenty : hErdos 820 = 9` — 820 = 2²·5·41 is the
+  NON-extremal sibling (41 one prime step short of 43); hard target 776
+  ≡ 38 (mod 41), 38 = 20+10+5+2+1 unique prefix subset. Banked as the
+  hardest single case of the future (348,860) threshold.
+- `record_index_nine_not_locally_unique` (witness 820; 512 = 2⁹ also ties),
+  `index_ten_below_two_pow_ten` (860 < 1024 — pattern break persists),
+  `hErdos_gt_log_at_eighthundredsixty` (log bound fails at a second rung).
+
+Engine notes: NEITHER 860 nor 820 admits a proper sub-family cover — dropping
+ANY single proper divisor pushes some target over the bound (checked
+exhaustively in Python); both covers run the full 11-coin set, 2^11 = 2048
+subsets × ~860 targets (≈ 5× the 348 cover's kernel work). Options used:
+maxRecDepth 100000 + maxHeartbeats 6400000 per cover theorem.
+
+REMAINING for `minimal_hErdos_ten` (the IsLeast rung): threshold "every
+practical m < 860 has hErdos ≤ 9". Census of (348, 860): 91 practicals.
+- 22 are 2·(practical < 348) → kernel-free via threshold-8 + subadditivity
+  IF stated as hErdos m ≤ 1 + 8; note 696 = 2·348 needs its own engine run
+  (half has index 9, bound 10 too weak) — Python says hE(696) = 6, engine ok.
+- 18 double a practical half in [348, 430) — chain through that half's bound.
+- ~35 ENGINE cases (values + d(m) in census table, session log 2026-07-24):
+  364,368,378,380,390,414,450,460,462,464,476,486,496,500,510,522,532,546,
+  558,570,580,594,620,630,644,666,690,700,702,714,726,740,744,750,798,810,
+  812,820(DONE),858. All hE ≤ 9; worst d(m) = 24 (630) but sub-family
+  coin sets will cut those. Suggest 2-3 sessions: octave (348,512], (512,720],
+  (720,860) + the interval_cases threshold assembly (~512 cases,
+  maxRecDepth 200000+, mirror hErdos_le_eight_of_lt_threefortyeight).
+
+t = 11/12 formalization warning: d(1464) = d(2190) = 16 → full-coin covers
+are 2^15 × ~2000 targets — likely BEYOND kernel decide budgets; needs either
+a genuinely smaller certified cover engine (per-k witness lists?) or a new
+idea. Do not attempt naively.

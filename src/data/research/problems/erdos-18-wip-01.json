@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: record-setter sequence settled for t=1..9 — 2,4,8,16,32,64,128,256,348: the powers-of-two pattern BREAKS at t=9 (348 = 2^2*3*29 < 2^9, Stewart-extremal 29 = sigma(12)+1); conjectured hErdos <= log2 bound REFUTED as a theorem (hErdos_le_log_fails); local uniqueness fails at t=8 (272/304 tie); new shared-coverage practicality engine. Same day: restricted lower engine (graded powersetCard slices, C(d,<t) vs 2^d); octave [64,128) fully closed out (15/15 exact values) with index-4 floor theorem; [128,256) exacts 168/180/210/240/252 pinned. Next: t=10 census + growth-envelope sweep",
+    "progressSummary": "PROGRESS: records t=1..9 fully formal (2,4,...,256,348 = minimal_hErdos_nine); t=10 EXACT WITNESS proved: hErdos 860 = 10 with 860 = 20*43 = q*(sigma(q)+1) — second Stewart-extremal data point; index 10 occurs below 2^10 (pattern break persists), log bound fails at second rung, record index 9 not locally unique (820, 512). Computational: record chain q*(sigma(q)+1) verified through t=12 (1464, 2190). Remaining for minimal_hErdos_ten: threshold sweep of 91 practicals in (348,860) — ~35 engine cases (820 done), 2-3 sessions.",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -89,7 +89,10 @@
       "14 octave upper bounds hErdos_twosixty_le..hErdos_threefortytwo_le (5 kernel-free splits + 9 sub-family engine runs, |S| <= 10)",
       "hErdos_le_eight_of_lt_threefortyeight (92-case threshold); minimal_hErdos_nine; hErdos_le_log_fails; record_setter_pattern_fails; record_index_eight_not_locally_unique",
       "hErdos_seventytwo/eighty/eightyfour/ninetysix/onehundredeight/onehundredtwelve/onetwenty exact values in Erdos18WIP01.lean (with 5 new practicality lemmas + hErdos_onetwenty_le_four 9-coin sub-family chain)",
-      "index_four_floor_sixtyfour_octave theorem in Erdos18WIP01.lean"
+      "index_four_floor_sixtyfour_octave theorem in Erdos18WIP01.lean",
+      "eighthundredsixty_cover + eighthundredsixty_practical + hErdos_eighthundredsixty (hErdos 860 = 10) in Erdos18WIP01.lean",
+      "eighthundredtwenty_cover + eighthundredtwenty_practical + hErdos_eighthundredtwenty (hErdos 820 = 9) — hardest case of the future (348,860) threshold, banked",
+      "record_index_nine_not_locally_unique, index_ten_below_two_pow_ten, hErdos_gt_log_at_eighthundredsixty in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -146,15 +149,19 @@
       "Octave [64,128) fully pinned: all 15 practicals have exact hErdos values (6 floor members at 4; 66/80/108/112 at 5; 64/78/88/100/104 at 6); 80 and 108 have unique hard targets 79 and 107 (both m-1)",
       "index_four_floor_sixtyfour_octave: the index-4 floor {72,84,90,96,120,126} of [64,128) is now a theorem (interval_cases + decide refutation of non-practicals + 15 value lemmas)",
       "Python correction: hErdos 40 = 4, not 5 (t=6 session only pinned the subadditive upper). [32,64) floor = {36,40,42,48,54,60}, six members; floor cascade 6 -> 6 -> 2 across three octaves",
-      "[64,128) floor structure: doublings of [32,64) floor members that stay (72,84,96,120) plus practically-unsplittable 90,126; risers 80=2*40, 108=2*54; unique zero-cost off-floor doubling 112=2*56"
+      "[64,128) floor structure: doublings of [32,64) floor members that stay (72,84,96,120) plus practically-unsplittable 90,126; risers 80=2*40, 108=2*54; unique zero-cost off-floor doubling 112=2*56",
+      "Record-setter chain confirmed computationally through t=12: 348=12*29, 860=20*43, 1464=24*61, 2190=30*73 — all q*(sigma(q)+1) with q practical and sigma(q)+1 prime (Stewart-extremal top prime); consecutive eligible prefixes q=12,20,24,30 give consecutive records from t=9 on",
+      "hErdos 860 = 10 PROVED: unique hard target k=816 ≡ 42 (mod 43) forces all six prefix divisors of 2^2*5 then four 43-layer coins — exact mirror of 348's k=347 ≡ 28 (mod 29) mechanism",
+      "hErdos 820 = 9 PROVED: 820 = 2^2*5*41 is the non-extremal sibling of 860 (41 one prime step short of 43=sigma(20)+1) and ties record index 9 — local uniqueness fails at t=9 (third failure after t=6, t=8); tie now structurally resembles the record-setter, not the power of two",
+      "Neither 860 nor 820 admits a proper sub-family cover: dropping ANY single proper divisor breaks the index bound (exhaustive Python check) — first record-setters whose covers must run the full 2^11 coin powerset",
+      "t=11/12 formalization blocked at engine level: d(1464)=d(2190)=16 gives 2^15 x ~2000-target covers, beyond kernel decide budgets — needs a per-k witness-list cover engine or new idea before attempting"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "t = 10 rung: Python census first — where is the least index-10 practical? Candidates: Stewart-extremal m = q*(sigma(q)+1) for practical q; compute, do not guess",
-      "Growth envelope: with hErdos <= log2 m refuted, probe hErdos <= C*log m by iterating the Stewart-extremal construction (Python sweep to 1e5) before formalizing",
-      "[32,64) floor-cascade completion (exact values already there; floor theorem for {36,40,42,48,54,60} would make the 6->6->2 cascade fully formal)",
-      "[128,256) octave exact-value completion: remaining d<=12 targets cheap via graded-slice lowers; 132/144/192/216 need tight uppers first",
-      "Investigate gap-type vs dense-type dichotomy as a theorem: does a divisor-ratio gap > 2 above the prefix force index >= prefix-length-based bound?"
+      "Threshold sweep toward minimal_hErdos_ten, part 1: octave (348,512] engine cases (364,368,378,380,390,414,450,460,462,464,476,486,496,500,510) — coin sets in knowledge.md census",
+      "Threshold sweep part 2: (512,860) engine cases + big-half split chains (696 needs own engine run, hE=6)",
+      "Assemble hErdos_le_nine_of_lt_eighthundredsixty (~512 interval_cases, mirror threshold-8) then minimal_hErdos_ten",
+      "Name the greedy Stewart-chain record conjecture as a Prop once t=10 minimality is formal (record(t) = q_t*(sigma(q_t)+1))"
     ],
     "markdown": "# Knowledge Base: erdos-18-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
