@@ -1,6 +1,6 @@
 /-
 # Erdős #1215 (cyclotomic sub-question, OQ02) — small-C DISCONNECTION of the
-# QUARTIC cyclotomic lemniscates: the `φ(n) = 4` layer opens (n = 8, 12)
+# QUARTIC cyclotomic lemniscates: the `φ(n) = 4` layer CLOSES (n = 5, 8, 10, 12)
 
   Slug: erdos-1215-oq-02
   Prior work (this OQ family):
@@ -31,19 +31,23 @@
   > the set `{z : ‖(z−a)(z−b)(z−c)(z−d)‖ < C}` is not preconnected.
 
   > **Cyclotomic specializations.**  `n = 5, 8, 10, 12` are exactly the indices
-  > with `φ(n) = 4`.  Here the two with quadratic-surd roots are delivered:
-  > * `{|Φ₈| < C}` is DISCONNECTED for `0 < C < 1/4`
-  >   (roots `(±√2 ± √2·i)/2`, minimal root gap `√2`, `2·C^{1/4} < √2`);
-  > * `{|Φ₁₂| < C}` is DISCONNECTED for `0 < C < 1/16`
-  >   (roots `(±√3 ± i)/2`, minimal root gap `1`).
-  > Byproducts: `cyclotomic 8 ℂ = X⁴ + 1` and `cyclotomic 12 ℂ = X⁴ − X² + 1`,
-  > both absent from Mathlib, via `cyclotomic_expand_eq_cyclotomic` from
-  > `Φ₄ = X² + 1` (OQ11) and `Φ₆ = X² − X + 1`.
+  > with `φ(n) = 4`, and ALL FOUR are delivered:
+  > * `{|Φ₈| < C}` DISCONNECTED for `0 < C < 1/4`
+  >   (roots `(±√2 ± √2·i)/2`, minimal root gap `√2`);
+  > * `{|Φ₁₂| < C}` DISCONNECTED for `0 < C < 1/16`
+  >   (roots `(±√3 ± i)/2`, minimal root gap `1`);
+  > * `{|Φ₅| < C}` and `{|Φ₁₀| < C}` DISCONNECTED for `0 < C < 1/16`
+  >   (nested-radical roots; the gap bounds need only real parts, clean in
+  >   `√5`, plus `2·sin 72° ≥ 1` from its square — no unnesting);
+  > * uniformly: `not_isPreconnected_levelSet_quartic` — every `φ(n) = 4`
+  >   lemniscate is disconnected for `0 < C < 1/16`.
+  > Byproducts: `cyclotomic 5/8/10/12 ℂ` in explicit polynomial form (8, 10,
+  > 12 absent from Mathlib), via `cyclotomic_prime`,
+  > `cyclotomic_expand_eq_cyclotomic(_mul)` from `Φ₄ = X² + 1` (OQ11) and `Φ₆`.
 
-  The remaining quartic indices `n = 5, 10` have roots with NESTED radicals
-  (`sin 72°`); their disconnection thresholds are recorded as a follow-up.
   Exact component counts (four petals) need the OQ12 star-shaped template at
-  four foci — also a follow-up, not attempted here.
+  four foci — a follow-up, not attempted here. Sextic layer `φ(n) = 6` is
+  engine-ready.
 
   Result status: 0 sorries, 0 axioms, no `native_decide` — axiom-free relative
   to Mathlib.  The deep `maclane_labyrinth` axiom of the parent is untouched.
@@ -521,6 +525,363 @@ theorem not_isPathConnected_levelSet_twelve {C : ℝ} (hC : 0 < C) (hC' : C < 1 
   fun h => not_isPreconnected_levelSet_twelve hC hC'
     h.isConnected.isPreconnected
 
+/-! ## `n = 5, 10`: the nested-radical quartics — the `φ(n) = 4` layer CLOSES
+
+`Φ₅ = X⁴+X³+X²+X+1` has roots `cos(2πk/5) ± i·sin(2πk/5)` (`k = 1, 2`), with
+`cos 72° = (√5−1)/4`, `cos 144° = −(√5+1)/4` and the NESTED radicals
+`sin 72° = √(10+2√5)/4`, `sin 36° = √(10−2√5)/4`. The key observation that
+keeps this session-sized: the root-GAP lower bounds need only the *real
+parts* of the differences (clean in `√5`) and the conjugate-pair gap
+`2·sin 72° ≥ 1` (from its square `(10+2√5)/4 ≥ 1`) — the nested radicals
+never need to be unnested. `Φ₁₀(X) = Φ₅(−X)`, so its roots are the negatives
+and every bound mirrors. Uniform regime: `0 < C < 1/16` disconnects BOTH
+(gaps `≥ 1 > 2·C^{1/4}`), matching the `Φ₁₂` threshold. -/
+
+/-- `(√5 : ℂ)² = 5`. -/
+private lemma ofReal_sqrt_five_sq : (Real.sqrt 5 : ℂ) ^ 2 = 5 := by
+  norm_cast
+  exact Real.sq_sqrt (by norm_num)
+
+private lemma sqrt_five_pos : (0 : ℝ) < Real.sqrt 5 := Real.sqrt_pos.mpr (by norm_num)
+
+private lemma sqrt_five_lt_five : Real.sqrt 5 < 5 := by
+  nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 5 by norm_num), Real.sqrt_nonneg 5]
+
+private lemma two_le_sqrt_five : (2 : ℝ) ≤ Real.sqrt 5 := by
+  nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 5 by norm_num), Real.sqrt_nonneg 5]
+
+/-- `4·sin 72°` as a real surd. -/
+noncomputable def sin72x4 : ℝ := Real.sqrt (10 + 2 * Real.sqrt 5)
+
+/-- `4·sin 36°` as a real surd. -/
+noncomputable def sin36x4 : ℝ := Real.sqrt (10 - 2 * Real.sqrt 5)
+
+private lemma sin72x4_sq : sin72x4 ^ 2 = 10 + 2 * Real.sqrt 5 :=
+  Real.sq_sqrt (by positivity)
+
+private lemma sin36x4_sq : sin36x4 ^ 2 = 10 - 2 * Real.sqrt 5 :=
+  Real.sq_sqrt (by nlinarith [sqrt_five_lt_five])
+
+private lemma sin72x4_pos : 0 < sin72x4 :=
+  Real.sqrt_pos.mpr (by positivity)
+
+private lemma sin36x4_pos : 0 < sin36x4 :=
+  Real.sqrt_pos.mpr (by nlinarith [sqrt_five_lt_five])
+
+/-- The conjugate-pair gap of `Φ₅` is at least `2`: `(4·sin 72°)² ≥ 10 > 4`. -/
+private lemma two_le_sin72x4 : (2 : ℝ) ≤ sin72x4 := by
+  nlinarith [sin72x4_sq, sin72x4_pos.le, Real.sqrt_nonneg 5]
+
+/-- Complexified square identity for `4·sin 72°`. -/
+private lemma ofReal_sin72x4_sq :
+    (sin72x4 : ℂ) ^ 2 = 10 + 2 * (Real.sqrt 5 : ℂ) := by
+  rw [show ((sin72x4 : ℝ) : ℂ) ^ 2 = ((sin72x4 ^ 2 : ℝ) : ℂ) by push_cast; ring,
+    sin72x4_sq]
+  push_cast
+  ring
+
+/-- Complexified square identity for `4·sin 36°`. -/
+private lemma ofReal_sin36x4_sq :
+    (sin36x4 : ℂ) ^ 2 = 10 - 2 * (Real.sqrt 5 : ℂ) := by
+  rw [show ((sin36x4 : ℝ) : ℂ) ^ 2 = ((sin36x4 ^ 2 : ℝ) : ℂ) by push_cast; ring,
+    sin36x4_sq]
+  push_cast
+  ring
+
+/-- The primitive fifth root of unity `e^{2πi/5} = (√5−1)/4 + i·sin 72°`. -/
+noncomputable def w5a : ℂ := ((Real.sqrt 5 : ℂ) - 1) / 4 + (sin72x4 : ℂ) / 4 * Complex.I
+
+/-- The primitive fifth root `e^{-2πi/5}`. -/
+noncomputable def w5b : ℂ := ((Real.sqrt 5 : ℂ) - 1) / 4 - (sin72x4 : ℂ) / 4 * Complex.I
+
+/-- The primitive fifth root `e^{4πi/5} = −(√5+1)/4 + i·sin 36°`. -/
+noncomputable def w5c : ℂ := -((Real.sqrt 5 : ℂ) + 1) / 4 + (sin36x4 : ℂ) / 4 * Complex.I
+
+/-- The primitive fifth root `e^{-4πi/5}`. -/
+noncomputable def w5d : ℂ := -((Real.sqrt 5 : ℂ) + 1) / 4 - (sin36x4 : ℂ) / 4 * Complex.I
+
+/-- `Φ₅ = X⁴+X³+X²+X+1` in explicit form (`cyclotomic_prime` for `p = 5`). -/
+theorem cyclotomic_five : cyclotomic 5 ℂ = X ^ 4 + X ^ 3 + X ^ 2 + X + 1 := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  rw [Polynomial.cyclotomic_prime]
+  simp [Finset.sum_range_succ]
+  ring
+
+/-- The outer conjugate pair of `Φ₅` multiplies to `z² − ((√5−1)/2)z + 1`. -/
+private lemma pair5_outer (z : ℂ) :
+    (z - w5a) * (z - w5b) =
+      z ^ 2 - ((Real.sqrt 5 : ℂ) - 1) / 2 * z + 1 := by
+  simp only [w5a, w5b]
+  linear_combination (1 / 16 : ℂ) * ofReal_sqrt_five_sq
+    + (1 / 16 : ℂ) * ofReal_sin72x4_sq
+    - ((sin72x4 : ℂ) / 4) ^ 2 * Complex.I_sq
+
+/-- The inner conjugate pair of `Φ₅` multiplies to `z² + ((√5+1)/2)z + 1`. -/
+private lemma pair5_inner (z : ℂ) :
+    (z - w5c) * (z - w5d) =
+      z ^ 2 + ((Real.sqrt 5 : ℂ) + 1) / 2 * z + 1 := by
+  simp only [w5c, w5d]
+  linear_combination (1 / 16 : ℂ) * ofReal_sqrt_five_sq
+    + (1 / 16 : ℂ) * ofReal_sin36x4_sq
+    - ((sin36x4 : ℂ) / 4) ^ 2 * Complex.I_sq
+
+/-- The two quadratic factors multiply to `Φ₅`. -/
+private lemma quad5 (z : ℂ) :
+    (z ^ 2 - ((Real.sqrt 5 : ℂ) - 1) / 2 * z + 1) *
+      (z ^ 2 + ((Real.sqrt 5 : ℂ) + 1) / 2 * z + 1) =
+      z ^ 4 + z ^ 3 + z ^ 2 + z + 1 := by
+  linear_combination (-(z ^ 2) / 4) * ofReal_sqrt_five_sq
+
+/-- `Φ₅` factors over its four roots. -/
+theorem cyclotomic_five_eval_factor (z : ℂ) :
+    (cyclotomic 5 ℂ).eval z = (z - w5a) * (z - w5b) * (z - w5c) * (z - w5d) := by
+  rw [cyclotomic_five]
+  simp only [eval_add, eval_pow, eval_X, eval_one]
+  linear_combination (-1 : ℂ) * quad5 z
+    - ((z - w5c) * (z - w5d)) * pair5_outer z
+    - (z ^ 2 - ((Real.sqrt 5 : ℂ) - 1) / 2 * z + 1) * pair5_inner z
+
+/-- The `Φ₅` sublevel set in factored form. -/
+theorem levelSet_cyclotomic_five_eq (C : ℝ) :
+    Erdos1215.levelSet (cyclotomic 5 ℂ) C =
+      {z : ℂ | ‖(z - w5a) * (z - w5b) * (z - w5c) * (z - w5d)‖ < C} := by
+  ext z
+  simp only [Erdos1215.levelSet, Set.mem_setOf_eq, cyclotomic_five_eval_factor]
+
+/-! Gap lemmas for `Φ₅`: the three gaps from `w5a` are the vertical conjugate
+gap `2·sin 72° ≥ 2·C^{1/4}⁻¹-free bound `≥ 1`` and the two cross-pair gaps
+with real part `√5/2 ≥ 1`. -/
+
+private lemma w5_sub_ab :
+    w5a - w5b = ((sin72x4 / 2 : ℝ) : ℂ) * Complex.I := by
+  simp only [w5a, w5b]
+  push_cast
+  ring
+
+private lemma w5_sub_ac :
+    w5a - w5c = ((Real.sqrt 5 / 2 : ℝ) : ℂ) +
+      (((sin72x4 - sin36x4) / 4 : ℝ) : ℂ) * Complex.I := by
+  simp only [w5a, w5c]
+  push_cast
+  ring
+
+private lemma w5_sub_ad :
+    w5a - w5d = ((Real.sqrt 5 / 2 : ℝ) : ℂ) +
+      (((sin72x4 + sin36x4) / 4 : ℝ) : ℂ) * Complex.I := by
+  simp only [w5a, w5d]
+  push_cast
+  ring
+
+private lemma norm_w5_sub_ab : ‖w5a - w5b‖ = sin72x4 / 2 := by
+  rw [w5_sub_ab, norm_mul, Complex.norm_I, mul_one, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_nonneg (by linarith [sin72x4_pos] : (0:ℝ) ≤ sin72x4 / 2)]
+
+/-- Real part of a `(a : ℂ) + (b : ℂ)·I` combination. -/
+private lemma re_ofReal_add_ofReal_mul_I (a b : ℝ) :
+    (((a : ℝ) : ℂ) + ((b : ℝ) : ℂ) * Complex.I).re = a := by
+  simp [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
+    Complex.I_re, Complex.I_im]
+
+private lemma norm_w5_sub_ac : Real.sqrt 5 / 2 ≤ ‖w5a - w5c‖ := by
+  calc Real.sqrt 5 / 2
+      = (w5a - w5c).re := by rw [w5_sub_ac, re_ofReal_add_ofReal_mul_I]
+    _ ≤ |(w5a - w5c).re| := le_abs_self _
+    _ ≤ ‖w5a - w5c‖ := Complex.abs_re_le_norm _
+
+private lemma norm_w5_sub_ad : Real.sqrt 5 / 2 ≤ ‖w5a - w5d‖ := by
+  calc Real.sqrt 5 / 2
+      = (w5a - w5d).re := by rw [w5_sub_ad, re_ofReal_add_ofReal_mul_I]
+    _ ≤ |(w5a - w5d).re| := le_abs_self _
+    _ ≤ ‖w5a - w5d‖ := Complex.abs_re_le_norm _
+
+/-- Distinctness of the four `Φ₅` roots, via imaginary or real parts. -/
+private lemma w5_ab_ne : w5a ≠ w5b := by
+  intro h
+  have h0 := w5_sub_ab
+  rw [h, sub_self] at h0
+  exact mul_ne_zero
+    (Complex.ofReal_ne_zero.mpr (div_pos sin72x4_pos (by norm_num)).ne')
+    Complex.I_ne_zero h0.symm
+
+private lemma re_ne_of_sub {u v : ℂ} (a b : ℝ) (ha : 0 < a)
+    (h0 : u - v = ((a : ℝ) : ℂ) + ((b : ℝ) : ℂ) * Complex.I) : u ≠ v := by
+  intro h
+  rw [h, sub_self] at h0
+  have hre := congrArg Complex.re h0.symm
+  rw [re_ofReal_add_ofReal_mul_I, Complex.zero_re] at hre
+  exact absurd hre (ne_of_gt ha)
+
+private lemma w5_ac_ne : w5a ≠ w5c :=
+  re_ne_of_sub _ _ (by positivity) w5_sub_ac
+
+private lemma w5_ad_ne : w5a ≠ w5d :=
+  re_ne_of_sub _ _ (by positivity) w5_sub_ad
+
+private lemma w5_bc_ne : w5b ≠ w5c := by
+  refine re_ne_of_sub (Real.sqrt 5 / 2) (-(sin72x4 + sin36x4) / 4)
+    (by positivity) ?_
+  simp only [w5b, w5c]
+  push_cast
+  ring
+
+private lemma w5_bd_ne : w5b ≠ w5d := by
+  refine re_ne_of_sub (Real.sqrt 5 / 2) (-(sin72x4 - sin36x4) / 4)
+    (by positivity) ?_
+  simp only [w5b, w5d]
+  push_cast
+  ring
+
+private lemma w5_cd_ne : w5c ≠ w5d := by
+  intro h
+  have h0 : w5c - w5d = ((sin36x4 / 2 : ℝ) : ℂ) * Complex.I := by
+    simp only [w5c, w5d]
+    push_cast
+    ring
+  rw [h, sub_self] at h0
+  exact mul_ne_zero
+    (Complex.ofReal_ne_zero.mpr (div_pos sin36x4_pos (by norm_num)).ne')
+    Complex.I_ne_zero h0.symm
+
+/-- **`{|Φ₅| < C}` is DISCONNECTED for `0 < C < 1/16`** — the first
+nested-radical quartic. All three gaps from `e^{2πi/5}` are `≥ 1`:
+the conjugate gap is `2·sin 72° ≥ 1` and the cross-pair gaps have real part
+`√5/2 ≥ 1`. -/
+theorem not_isPreconnected_levelSet_five {C : ℝ} (hC : 0 < C) (hC' : C < 1 / 16) :
+    ¬ IsPreconnected (Erdos1215.levelSet (cyclotomic 5 ℂ) C) := by
+  rw [levelSet_cyclotomic_five_eq]
+  set r := Real.sqrt (Real.sqrt C) with hrdef
+  have hsep1 : 2 * r < 1 := by
+    apply two_sqrt_sqrt_lt hC.le zero_le_one
+    nlinarith [hC']
+  have hgap_ab : (1 : ℝ) ≤ sin72x4 / 2 := by
+    nlinarith [two_le_sin72x4]
+  have hgap_cross : (1 : ℝ) ≤ Real.sqrt 5 / 2 := by
+    nlinarith [two_le_sqrt_five]
+  refine not_isPreconnected_quartic_lemniscate hC (Real.sqrt_nonneg _)
+    (le_of_eq (sqrt_sqrt_pow_four hC.le).symm)
+    w5_ab_ne w5_ac_ne w5_ad_ne w5_bc_ne w5_bd_ne w5_cd_ne ?_ ?_ ?_
+  · rw [dist_eq_norm, norm_w5_sub_ab]
+    linarith
+  · rw [dist_eq_norm]
+    have := norm_w5_sub_ac
+    linarith
+  · rw [dist_eq_norm]
+    have := norm_w5_sub_ad
+    linarith
+
+/-- `{|Φ₅| < C}` is not path-connected for `0 < C < 1/16`. -/
+theorem not_isPathConnected_levelSet_five {C : ℝ} (hC : 0 < C) (hC' : C < 1 / 16) :
+    ¬ IsPathConnected (Erdos1215.levelSet (cyclotomic 5 ℂ) C) :=
+  fun h => not_isPreconnected_levelSet_five hC hC' h.isConnected.isPreconnected
+
+/-! ### `n = 10`: `Φ₁₀(X) = Φ₅(−X)`, roots the negatives of the `Φ₅` roots -/
+
+/-- `Φ₁₀ = X⁴−X³+X²−X+1`: from `expand ℂ 2 Φ₅ = Φ₁₀·Φ₅` (`2 ∤ 5`) by
+cancelling the (nonzero) factor `Φ₅`. -/
+theorem cyclotomic_ten : cyclotomic 10 ℂ = X ^ 4 - X ^ 3 + X ^ 2 - X + 1 := by
+  have key := cyclotomic_expand_eq_cyclotomic_mul Nat.prime_two
+    (show ¬ (2 ∣ 5) by norm_num) ℂ (n := 5)
+  have h5ne : cyclotomic 5 ℂ ≠ 0 := cyclotomic_ne_zero 5 ℂ
+  apply mul_right_cancel₀ h5ne
+  rw [← key, cyclotomic_five]
+  simp only [map_add, map_pow, Polynomial.expand_X, map_one]
+  ring
+
+/-- The primitive tenth root `−e^{2πi/5} = e^{7πi/5}`… the four roots of
+`Φ₁₀` are exactly the negatives of the `Φ₅` roots. -/
+noncomputable def w10a : ℂ := -w5a
+
+/-- Negated `Φ₅` root. -/
+noncomputable def w10b : ℂ := -w5b
+
+/-- Negated `Φ₅` root. -/
+noncomputable def w10c : ℂ := -w5c
+
+/-- Negated `Φ₅` root. -/
+noncomputable def w10d : ℂ := -w5d
+
+/-- `Φ₁₀` factors over the negated `Φ₅` roots: `Φ₁₀(z) = Φ₅(−z)`. -/
+theorem cyclotomic_ten_eval_factor (z : ℂ) :
+    (cyclotomic 10 ℂ).eval z =
+      (z - w10a) * (z - w10b) * (z - w10c) * (z - w10d) := by
+  rw [cyclotomic_ten]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one,
+    w10a, w10b, w10c, w10d]
+  have h := cyclotomic_five_eval_factor (-z)
+  rw [cyclotomic_five] at h
+  simp only [eval_add, eval_pow, eval_X, eval_one] at h
+  linear_combination h
+
+/-- The `Φ₁₀` sublevel set in factored form. -/
+theorem levelSet_cyclotomic_ten_eq (C : ℝ) :
+    Erdos1215.levelSet (cyclotomic 10 ℂ) C =
+      {z : ℂ | ‖(z - w10a) * (z - w10b) * (z - w10c) * (z - w10d)‖ < C} := by
+  ext z
+  simp only [Erdos1215.levelSet, Set.mem_setOf_eq, cyclotomic_ten_eval_factor]
+
+/-- Negation is an isometry: all `Φ₁₀` gap bounds mirror the `Φ₅` ones. -/
+private lemma norm_neg_sub_neg (u v : ℂ) : ‖-u - -v‖ = ‖u - v‖ := by
+  rw [show -u - -v = -(u - v) by ring, norm_neg]
+
+/-- **`{|Φ₁₀| < C}` is DISCONNECTED for `0 < C < 1/16`** — with this the
+quartic layer `φ(n) = 4` (`n = 5, 8, 10, 12`) is complete. -/
+theorem not_isPreconnected_levelSet_ten {C : ℝ} (hC : 0 < C) (hC' : C < 1 / 16) :
+    ¬ IsPreconnected (Erdos1215.levelSet (cyclotomic 10 ℂ) C) := by
+  rw [levelSet_cyclotomic_ten_eq]
+  set r := Real.sqrt (Real.sqrt C) with hrdef
+  have hsep1 : 2 * r < 1 := by
+    apply two_sqrt_sqrt_lt hC.le zero_le_one
+    nlinarith [hC']
+  have hgap_ab : (1 : ℝ) ≤ sin72x4 / 2 := by
+    nlinarith [two_le_sin72x4]
+  have hgap_cross : (1 : ℝ) ≤ Real.sqrt 5 / 2 := by
+    nlinarith [two_le_sqrt_five]
+  have hnorm_ab : ‖w10a - w10b‖ = sin72x4 / 2 := by
+    rw [w10a, w10b, norm_neg_sub_neg, norm_w5_sub_ab]
+  have hnorm_ac : Real.sqrt 5 / 2 ≤ ‖w10a - w10c‖ := by
+    rw [w10a, w10c, norm_neg_sub_neg]
+    exact norm_w5_sub_ac
+  have hnorm_ad : Real.sqrt 5 / 2 ≤ ‖w10a - w10d‖ := by
+    rw [w10a, w10d, norm_neg_sub_neg]
+    exact norm_w5_sub_ad
+  refine not_isPreconnected_quartic_lemniscate hC (Real.sqrt_nonneg _)
+    (le_of_eq (sqrt_sqrt_pow_four hC.le).symm)
+    (fun h => w5_ab_ne (neg_injective h))
+    (fun h => w5_ac_ne (neg_injective h))
+    (fun h => w5_ad_ne (neg_injective h))
+    (fun h => w5_bc_ne (neg_injective h))
+    (fun h => w5_bd_ne (neg_injective h))
+    (fun h => w5_cd_ne (neg_injective h)) ?_ ?_ ?_
+  · rw [dist_eq_norm, hnorm_ab]
+    linarith
+  · rw [dist_eq_norm]
+    linarith
+  · rw [dist_eq_norm]
+    linarith
+
+/-- `{|Φ₁₀| < C}` is not path-connected for `0 < C < 1/16`. -/
+theorem not_isPathConnected_levelSet_ten {C : ℝ} (hC : 0 < C) (hC' : C < 1 / 16) :
+    ¬ IsPathConnected (Erdos1215.levelSet (cyclotomic 10 ℂ) C) :=
+  fun h => not_isPreconnected_levelSet_ten hC hC' h.isConnected.isPreconnected
+
+/-! ### The uniform quartic statement -/
+
+/-- **The quartic layer, uniformly**: for every `n` with `φ(n) = 4` — that is
+`n ∈ {5, 8, 10, 12}` — the cyclotomic lemniscate `{|Φₙ| < C}` is disconnected
+for all `0 < C < 1/16`. (For `n = 8` the individual threshold `1/4` is wider;
+`1/16` is the uniform one, tight at `n = 12`, whose minimal root gap `1` is
+the smallest in the layer.) -/
+theorem not_isPreconnected_levelSet_quartic {C : ℝ} (hC : 0 < C)
+    (hC' : C < 1 / 16) :
+    ∀ n ∈ ({5, 8, 10, 12} : Finset ℕ),
+      ¬ IsPreconnected (Erdos1215.levelSet (cyclotomic n ℂ) C) := by
+  intro n hn
+  fin_cases hn
+  · exact not_isPreconnected_levelSet_five hC hC'
+  · exact not_isPreconnected_levelSet_eight hC (by linarith)
+  · exact not_isPreconnected_levelSet_ten hC hC'
+  · exact not_isPreconnected_levelSet_twelve hC hC'
+
 #check @lemniscate_subset_biUnion
 #check @not_isPreconnected_lemniscate
 #check @not_isPreconnected_quartic_lemniscate
@@ -528,5 +889,10 @@ theorem not_isPathConnected_levelSet_twelve {C : ℝ} (hC : 0 < C) (hC' : C < 1 
 #check @cyclotomic_twelve
 #check @not_isPreconnected_levelSet_eight
 #check @not_isPreconnected_levelSet_twelve
+#check @cyclotomic_five
+#check @cyclotomic_ten
+#check @not_isPreconnected_levelSet_five
+#check @not_isPreconnected_levelSet_ten
+#check @not_isPreconnected_levelSet_quartic
 
 end CyclotomicPolynomialsOQ02OQ13
