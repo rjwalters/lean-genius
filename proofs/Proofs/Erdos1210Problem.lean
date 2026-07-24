@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.NumberTheory.Harmonic.Defs
+import Mathlib.NumberTheory.Harmonic.Bounds
 import Mathlib.Tactic
 
 namespace Erdos1210
@@ -240,5 +242,60 @@ theorem not_Erdos1210Statement : ¬ Erdos1210Statement := by
   simp only [Nat.cast_ofNat] at hle
   rw [primesBelow_five_sum] at hle
   norm_num at hle
+
+/-
+## S5: Unconditional Harmonic Upper Bound (verified, axiom-free)
+
+While the literal transcription is refuted above and the corrected O(1)-form
+of the conjecture (RHS `∑_{p<n} 1/p + O(1) ~ log log n`, per [Er80]) is
+blocked on Mathlib lacking Mertens' second theorem, the following *trivial
+baseline* is fully provable today: for ANY `A ⊆ [1,n)` the values
+`{n - a : a ∈ A}` are distinct integers in `[1, n-1]`, hence
+
+  ∑_{a ∈ A} 1/(n-a)  ≤  H_{n-1}  ≤  1 + log(n-1).
+
+This instantiates the conjecture's shape with `f(n) = H_{n-1} ~ log n`
+unconditionally. **Honest framing**: the pairwise-coprimality hypothesis is
+NOT used — closing the gap from `log n` to the conjectured `log log n` is
+exactly where coprimality (at most one element per prime factor) must enter,
+via a sieve/Mertens comparison unavailable in current Mathlib.
+-/
+
+/-- **Reindexing bound**: for any `A ⊆ [1,n)` (no coprimality needed), the sum
+`∑_{a∈A} 1/(n-a)` is at most the harmonic number `H_{n-1}`. The map
+`a ↦ n - a` is injective on `A` with image inside `[1, n-1]`. -/
+theorem sum_reciprocal_le_harmonic {n : ℕ} {A : Finset ℕ} (hA : ValidSubset n A) :
+    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ (harmonic (n - 1) : ℝ) := by
+  have hcast : (harmonic (n - 1) : ℝ) = ∑ m ∈ Finset.Icc 1 (n - 1), ((m : ℝ))⁻¹ := by
+    simp_rw [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]
+  rw [hcast]
+  have hstep : ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a)
+      = ∑ m ∈ A.image (fun a => n - a), ((m : ℝ))⁻¹ := by
+    rw [Finset.sum_image (fun a ha b hb hab => by
+      have h1 := hA a ha
+      have h2 := hA b hb
+      omega)]
+    refine Finset.sum_congr rfl fun a ha => ?_
+    have h := hA a ha
+    rw [Nat.cast_sub (le_of_lt h.2), one_div]
+  rw [hstep]
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro m hm
+    obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp hm
+    have h := hA a ha
+    simp only [Finset.mem_Icc]
+    omega
+  · intro m _ _
+    positivity
+
+/-- **S5 unconditional upper bound** (the `f(n) = H_{n-1} ≤ 1 + log(n-1)`
+baseline for Erdős #1210): under the full hypotheses of the conjecture, the
+weighted sum is at most `1 + log (n-1)`. The coprimality hypothesis is
+deliberately displayed but unused (`_hcop`) — see the section header: the
+conjectured strengthening to `log log n + O(1)` is where it must do work. -/
+theorem erdos_1210_trivial_upper_bound (n : ℕ) (A : Finset ℕ)
+    (hA : ValidSubset n A) (_hcop : PairwiseCoprime A) :
+    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ 1 + Real.log ((n - 1 : ℕ) : ℝ) :=
+  (sum_reciprocal_le_harmonic hA).trans (harmonic_le_one_add_log (n - 1))
 
 end Erdos1210
