@@ -136,11 +136,20 @@
   ],
   "sections": [
     {
-      "id": "sec-01-imports",
-      "title": "Imports and Setup",
+      "id": "sec-01-module-docstring",
+      "title": "Module Docstring: Kittaneh's Inequality",
       "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports Mathlib's adjoint theory and the parent Buzano file. Docstring states the numerical radius w(T), Kittaneh's genuine strengthening w(T)² ≤ ½(‖T‖² + ‖T²‖) of the elementary w(T) ≤ ‖T‖ bound, the pointwise form this file proves, the adjoint-trick proof idea (Buzano applied to Tx and T†x), and the list of six main results.",
+      "mathContext": "Cites Kittaneh, Studia Math. 158 (2003), 11-17; notes the result is absent from Mathlib and that the refinement over the trivial bound is strict for nilpotent T (T² = 0)."
+    },
+    {
+      "id": "sec-01-setup",
+      "title": "Section Setup and Notation",
+      "startLine": 47,
       "endLine": 60,
-      "summary": "Imports Mathlib's adjoint theory and the parent Buzano file. Docstring states Kittaneh's inequality, the Buzano-via-adjoint proof idea, and the refinement of w(T) ≤ ‖T‖. Namespace CauchySchwarzKittaneh over an RCLike Hilbert space (CompleteSpace), with a local ⟪·,·⟫ notation and open ContinuousLinearMap."
+      "summary": "Opens a noncomputable section; opens RCLike, ComplexConjugate, ContinuousLinearMap; declares the CauchySchwarzKittaneh namespace over an RCLike Hilbert space (CompleteSpace E); introduces a local ⟪·,·⟫ notation; and begins the doc-comment for the first theorem, opNorm_sq_le.",
+      "mathContext": "CompleteSpace E is needed for the adjoint (ContinuousLinearMap.adjoint) to exist; omit [CompleteSpace E] in on opNorm_sq_le records that submultiplicativity alone does not need completeness."
     },
     {
       "id": "sec-02-submultiplicativity",
