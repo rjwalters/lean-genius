@@ -72,7 +72,8 @@
       "All three Pythagorean means are values of one power-mean object: HM = M₋₁, GM = M₀, AM = M₁",
       "Uniform weights wᵢ = 1/n turn the general weighted AM-GM and HM-GM lemmas into the unweighted classical chain",
       "M₋₁ = n/(Σ xᵢ⁻¹): the outer exponent 1/(-1) = -1 plus rpow_neg gives the harmonic-mean closed form",
-      "∏ xᵢ^{1/n} = (∏ xᵢ)^{1/n} (Real.finset_prod_rpow) is the only nontrivial rewrite needed to match the geometric-mean form"
+      "∏ xᵢ^{1/n} = (∏ xᵢ)^{1/n} (Real.finset_prod_rpow) is the only nontrivial rewrite needed to match the geometric-mean form",
+      "**The three means sit in a reciprocal-duality pattern around GM.** Replacing each xᵢ by its reciprocal swaps AM and HM while fixing GM: HM(x) = 1/AM(1/x) and AM(x) = 1/HM(1/x), while GM(1/x) = 1/GM(x). At the power-mean level this is the exponent-negation symmetry M₋ᵣ(x) = 1/Mᵣ(1/x), so the chain HM ≤ GM ≤ AM at r = -1, 0, 1 is literally its own image under r ↦ -r composed with x ↦ 1/x — GM is the unique self-dual mean of the three."
     ],
     "prerequisites": [
       "powerMean definition M_r(x) = (Σ xᵢ^r / n)^{1/r} (r ≠ 0), M₀ = (∏ xᵢ)^{1/n}",
