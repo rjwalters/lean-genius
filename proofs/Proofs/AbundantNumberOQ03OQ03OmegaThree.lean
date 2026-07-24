@@ -75,7 +75,7 @@ theorem pred_prod_mul_sum_divisors_lt {n : ℕ} (hn : 2 ≤ n) :
       < (∏ p ∈ n.primeFactors, p) * n := by
   induction n using Nat.recOnPosPrimePosCoprime with
   | prime_pow p k hp hk =>
-      have hpp : p.Prime := Nat.prime_iff.mpr hp
+      have hpp : p.Prime := hp
       obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
       rw [Nat.primeFactors_pow_succ, hpp.primeFactors,
         Finset.prod_singleton, Finset.prod_singleton]
