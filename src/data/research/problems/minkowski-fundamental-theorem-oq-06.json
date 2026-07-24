@@ -1,13 +1,13 @@
 {
   "slug": "minkowski-fundamental-theorem-oq-06",
-  "title": "The Minkowski–Hlawka Theorem",
+  "title": "The Minkowski\u2013Hlawka Theorem",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: The Minkowski–Hlawka Theorem.",
+    "plain": "Formal mathematical investigation: The Minkowski\u2013Hlawka Theorem.",
     "whyMatters": [
       "Research value"
     ]
@@ -23,7 +23,7 @@
     "iteration": 4,
     "focus": "S4 ACT (researcher-1, 2026-07-24): hFin staging hypothesis DISCHARGED (Docker-GREEN 8576 jobs, 0 sorry / 0 axiom). finite_inter_of_isBounded_of_uniform_discrete [ProperSpace E]: a bounded set meets a uniformly discrete subgroup finitely often (IsBounded.isCompact_closure -> IsCompact.totallyBounded -> Metric.totallyBounded_iff with eps = r0/3 -> Set.Finite.biUnion of per-ball subsingletons; no choose needed). Properness essential: Z-span of the orthonormal basis in l2 is uniformly discrete yet meets the 3/2-ball infinitely often (counterexample documented in file). New hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete carry only the analytic staging hypotheses hMV (Siegel-Rogers primitive mean-value) + hInt.",
     "blockers": [],
-    "nextAction": "S5 menu: (1) +-/- pairing rung: for symmetric S the primitive count is even, so the avoidance threshold improves to 2*zeta(n) — the route to the classical zeta(n)/2^(n-1) packing constant. (2) Density-form assessment: from hlawka_ball_of_discrete min-distance r, pack balls of radius r/2 and formalize a packing-density statement. DEEP (blocked route): Siegel-Rogers primitive mean-value identity itself — Haar probability measure on SL_n(Z)\\SL_n(R) absent from Mathlib (>1000 LOC).",
+    "nextAction": "S5 menu: (1) +-/- pairing rung: for symmetric S the primitive count is even, so the avoidance threshold improves to 2*zeta(n) \u2014 the route to the classical zeta(n)/2^(n-1) packing constant. (2) Density-form assessment: from hlawka_ball_of_discrete min-distance r, pack balls of radius r/2 and formalize a packing-density statement. DEEP (blocked route): Siegel-Rogers primitive mean-value identity itself \u2014 Haar probability measure on SL_n(Z)\\SL_n(R) absent from Mathlib (>1000 LOC).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,32 +31,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: staged Minkowski-Hlawka skeleton complete with the finiteness hypothesis discharged. MinkowskiFundamentalTheoremOQ06.lean: 383 LOC, 18 theorems, 0 sorry / 0 axiom, Docker-GREEN. Unconditional: zeta-series bounds, primitivity descent bridge, better-than-average extraction, bounded-discrete finiteness. Staged on exactly two analytic hypotheses (hMV Siegel-Rogers primitive mean-value + hInt integrability); deep blocker unchanged (Haar measure on SL_n(Z)\\SL_n(R)).",
+    "progressSummary": "PROGRESS: S6 density rung complete. MinkowskiFundamentalTheoremOQ06.lean: 619 LOC, 0 sorry / 0 axiom, host-verified. Unconditional: zeta-series, primitivity descent bridge, extraction, hFin finiteness (S4), \u00b1-pairing 2*zeta(n) threshold (S5), ball-volume scaling bookkeeping (S6). hlawka_density_symm gives the classical packing-density form delta_n >= zeta(n)/2^(n-1) staged on exactly hMV (primitive Siegel-Rogers mean value, all radii) + hInt. Deep blocker unchanged: Haar measure on SL_n(Z)\\SL_n(R).",
     "builtItems": [
       "research/problems/minkowski-fundamental-theorem-oq-06/verify_minkowski_hlawka.py - durable sympy verification: (A) symmetric threshold 2*zeta(n) <-> density zeta(n)/2^(n-1); (B) hierarchy 2^-n <= MH <= delta_known; (C) improvement factor = 2*zeta(n). All pass.",
       "MinkowskiFundamentalTheoremOQ06.lean (NEW, 273 lines, 0 axioms, 0 sorries): zetaSum + summability/bounds, IsPrimitive, minimal_isPrimitive, exists_primitive_norm_le (descent bridge), no_nonzero_of_no_primitive_in_ball, exists_count_zero_of_integral_lt_one (better-than-average extraction), hlawka_avoidance + hlawka_ball (staged on Siegel-Rogers primitive mean-value hypothesis)",
-      "subsingleton_ball_inter_of_uniform_discrete in MinkowskiFundamentalTheoremOQ06.lean — r0/3-ball meets a uniformly discrete subgroup in at most one point",
-      "finite_inter_of_isBounded_of_uniform_discrete in MinkowskiFundamentalTheoremOQ06.lean — [ProperSpace] bounded set meets uniformly discrete subgroup finitely often",
-      "finite_primitive_inter_of_isBounded in MinkowskiFundamentalTheoremOQ06.lean — primitive-vector specialization discharging hFin",
-      "hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete in MinkowskiFundamentalTheoremOQ06.lean — staged Minkowski-Hlawka with hFin discharged (only hMV + hInt remain)"
+      "subsingleton_ball_inter_of_uniform_discrete in MinkowskiFundamentalTheoremOQ06.lean \u2014 r0/3-ball meets a uniformly discrete subgroup in at most one point",
+      "finite_inter_of_isBounded_of_uniform_discrete in MinkowskiFundamentalTheoremOQ06.lean \u2014 [ProperSpace] bounded set meets uniformly discrete subgroup finitely often",
+      "finite_primitive_inter_of_isBounded in MinkowskiFundamentalTheoremOQ06.lean \u2014 primitive-vector specialization discharging hFin",
+      "hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete in MinkowskiFundamentalTheoremOQ06.lean \u2014 staged Minkowski-Hlawka with hFin discharged (only hMV + hInt remain)",
+      "unitBallVol, volume_ball_toReal, unitBallVol_pos, volume_ball_half_toReal, exists_radius_volume_eq, exists_radius_of_density (all unconditional) in MinkowskiFundamentalTheoremOQ06.lean",
+      "hlawka_density_symm (staged S6 headline) in MinkowskiFundamentalTheoremOQ06.lean"
     ],
     "insights": [
       "Minkowski-Hlawka is the EXISTENCE complement to the gallery parent (which proves only the Minkowski convex-body OBSTRUCTION). Parent MinkowskiFundamentalTheorem.lean is sorry-free but proves a different theorem; Hlawka is absent from proofs/ (grep -i hlawka hits only Erdos997Problem.lean, unrelated).",
       "Correct symmetric normalization: if symmetric S has vol(S) < 2*zeta(n) then some unimodular lattice avoids S minus {0}; taking S = ball(radius 2r) gives lattice packing density delta_n >= zeta(n)/2^(n-1). The seed problem.md threshold vol(S) < zeta(n) is the star-body / plus-minus-identified convention; the symmetric-body threshold is 2*zeta(n). Statement<->density chain verified numerically (verify_minkowski_hlawka.py check A).",
       "Bound hierarchy verified for n in {2..8,24}: trivial saturation 2^-n <= zeta(n)/2^(n-1) <= delta_n^known (A2,D3,D4,D5,E6,E7,E8,Leech). MH is a VALID but very weak lower bound vs known optima (n=8: MH 0.00784 vs E8 0.2537).",
       "MH improves the elementary maximal-packing bound delta_n >= 2^-n by exactly a factor 2*zeta(n), which decreases to 2 as n grows. So the celebrated Hlawka improvement over the trivial saturation argument is asymptotically only a factor of 2; both bounds decay like 2^-n and the exponential gap to the (also exponential) Kabatiansky-Levenshtein upper bound is untouched by MH.",
-      "The zeta(n) factor in delta_n >= zeta(n)/2^(n-1) is the PRIMITIVE-vector (Siegel-Rogers) restriction, NOT the +/- pairing. ±-pairing gives only the factor 2; zeta(n) = sum_{m>=1} m^{-n} is the primitivity normalizer.",
+      "The zeta(n) factor in delta_n >= zeta(n)/2^(n-1) is the PRIMITIVE-vector (Siegel-Rogers) restriction, NOT the +/- pairing. \u00b1-pairing gives only the factor 2; zeta(n) = sum_{m>=1} m^{-n} is the primitivity normalizer.",
       "Two distinct mean-value identities on X_n=SL_n(Z)\\SL_n(R): Siegel (all nonzero v): integral = vol; Siegel-Rogers (primitive w only): integral = vol/zeta(n). The primitive one follows from Siegel by v=m*w factorization + scaling integral f(m.)=m^{-n} integral f, giving coefficient 1/sum_m m^{-n}=1/zeta(n).",
-      "CORRECTION for staged formalization (target #1): the hypothesis to assume is the PRIMITIVE mean-value identity, not the all-vectors Siegel identity. Assuming all-vectors + ±-pairing alone only reaches delta_n >= 1/2^(n-1), missing the zeta(n).",
+      "CORRECTION for staged formalization (target #1): the hypothesis to assume is the PRIMITIVE mean-value identity, not the all-vectors Siegel identity. Assuming all-vectors + \u00b1-pairing alone only reaches delta_n >= 1/2^(n-1), missing the zeta(n).",
       "Bridge lemma (Mathlib-tractable, unlike the mean-value identity): the shortest nonzero lattice vector is always primitive (v=m*w, m>=2 => ||w||<||v||). This lets 'no primitive vector in ball(2r)' imply 'min distance >= 2r' for the packing/ball case.",
       "Durable numeric witness (verify_primitive_mechanism.py, stdlib-only, all pass): Z^2 origin-visible (gcd=1) point fraction -> 6/pi^2 = 1/zeta(2); Z^3 -> 1/zeta(3); 13808/13808 integer 2x2 bases have a primitive shortest vector.",
       "Staged target #1 EXECUTED (researcher-3 2026-07-24): hlawka_avoidance + hlawka_ball take the PRIMITIVE mean-value identity as explicit hypothesis hMV (per the corrected mechanism note: primitive form, threshold zeta(n), NOT the all-vectors identity)",
-      "The bridge lemma is stronger than shortest-vector-primitive: exists_primitive_norm_le shows in a UNIFORMLY discrete subgroup, below every nonzero v sits a primitive w with |w| <= |v| — norm-halving descent, strong induction on ceil(|v|/r0); key step: 2|w| <= |v| <= (k+1)r0 and |w| >= r0 give |w| <= k*r0 (no case split)",
+      "The bridge lemma is stronger than shortest-vector-primitive: exists_primitive_norm_le shows in a UNIFORMLY discrete subgroup, below every nonzero v sits a primitive w with |w| <= |v| \u2014 norm-halving descent, strong induction on ceil(|v|/r0); key step: 2|w| <= |v| <= (k+1)r0 and |w| >= r0 give |w| <= k*r0 (no case split)",
       "Set.ncard junk-value trap: ncard of an infinite set is 0, so the staged theorems carry hFin explicitly; proving finiteness from uniform discreteness + boundedness is a real next rung (separated set in bounded region is finite)",
       "zetaSum over ALL of N works: the m=0 term is 1/0^n = 0 by div-zero convention, so no PNat reindexing needed; Real.summable_one_div_nat_pow gives summability for n >= 2",
       "S4: the hFin finiteness hypothesis of the staged Hlawka theorems is a THEOREM for bounded S: in a proper space a bounded set meets a uniformly discrete subgroup finitely often. Cover by r0/3-balls (totally bounded via compact closure); each ball holds at most one subgroup point (difference has norm < 2r0/3 < r0).",
-      "S4: properness is essential, not decorative — in l2 the subgroup generated by the orthonormal basis is uniformly discrete (nonzero elements have norm >= 1) yet the 3/2-ball contains all infinitely many basis vectors. The finite-dimensionality of EuclideanSpace R (Fin n) is doing real work in Minkowski-Hlawka.",
-      "S4 Lean: Set.Finite.biUnion over ball centers + Set.Subsingleton.finite avoids any choice-function pigeonhole; Bornology.IsBounded.isCompact_closure + TotallyBounded.subset subset_closure + Metric.totallyBounded_iff is the clean route from bounded to a finite eps-cover. Gotcha: r0 <= ||a-b|| < 2r0/3 alone only forces r0 < 0 — linarith additionally needs norm_nonneg."
+      "S4: properness is essential, not decorative \u2014 in l2 the subgroup generated by the orthonormal basis is uniformly discrete (nonzero elements have norm >= 1) yet the 3/2-ball contains all infinitely many basis vectors. The finite-dimensionality of EuclideanSpace R (Fin n) is doing real work in Minkowski-Hlawka.",
+      "S4 Lean: Set.Finite.biUnion over ball centers + Set.Subsingleton.finite avoids any choice-function pigeonhole; Bornology.IsBounded.isCompact_closure + TotallyBounded.subset subset_closure + Metric.totallyBounded_iff is the clean route from bounded to a finite eps-cover. Gotcha: r0 <= ||a-b|| < 2r0/3 alone only forces r0 < 0 \u2014 linarith additionally needs norm_nonneg.",
+      "S6 (density bookkeeping) DONE: the residual 2^(1-n) factor between the doubled avoidance threshold 2*zeta(n) and the classical density bound is pure ball-volume scaling \u2014 formalized unconditionally via Measure.addHaar_ball (vol(ball r)=r^n*vol(ball 1)), with radius realization through Real.rpow_inv_natCast_pow.",
+      "hlawka_density_symm states the classical delta_n >= zeta(n)/2^(n-1) as: every density d < zeta(n)/2^(n-1) equals vol(ball(r/2)) for a radius r at which the family contains a lattice of minimum distance >= r. hMV/hInt staging now quantified over all radii (the true Siegel-Rogers identity holds for every Borel set, so this is not a strengthening of the assumption)."
     ],
     "mathlibGaps": [
       "Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: GeometryOfNumbers.lean has ONLY Blichfeldt (exists_pair_mem_lattice_not_disjoint_vadd) + Minkowski convex-body (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt/le_measure). No Hlawka.",
@@ -65,9 +69,8 @@
       "No packing-density notion (gh search packingDensity = 0). 'Minkowski-Hlawka theorem' appears in Mathlib docs/1000.yaml as a TITLE-ONLY entry (no decl:/author:), i.e. an UNMET target in the 1000-theorems project -> confirms not formalized upstream."
     ],
     "nextSteps": [
-      "Docker-up: stage target #1 with the PRIMITIVE Siegel-Rogers identity as the hypothesis (axiom/structure field), then prove better-than-average => existence => delta_n >= zeta(n)/2^(n-1). Badge=axiom.",
-      "Mathlib-only: formalize the 'shortest nonzero lattice vector is primitive' bridge lemma (Docker-gated but no missing upstream theory).",
-      "Elementary stepping stone: delta_n >= 2^(-n) via maximal packing + radius-doubling cover."
+      "Assess a packingDensity definition rung: with hlawka_density_symm in place the remaining gap to a literal 'delta_n >= zeta(n)/2^(n-1)' statement is only a definition of packing density for covolume-1 lattices (needs fundamental domain / covolume, ~Zspan API); assess Mathlib's Zspan/fundamentalDomain before attempting.",
+      "DEEP (registry blocker, stand down unless new Mathlib): the Siegel-Rogers primitive mean-value identity itself (finite Haar measure on SL_n(Z)\\SL_n(R))."
     ],
     "progressHistory": [
       {
@@ -75,7 +78,7 @@
         "date": "2026-07-24",
         "researcher": "researcher-1",
         "mode": "ACT",
-        "summary": "Discharged hFin: subsingleton_ball_inter_of_uniform_discrete + finite_inter_of_isBounded_of_uniform_discrete (ProperSpace; totally-bounded r0/3-cover, biUnion of subsingletons) + finite_primitive_inter_of_isBounded + hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete. 273→383 LOC, 14→18 theorems (grep ^theorem), 0 sorry / 0 axiom, Docker-GREEN (8576 jobs). One repair: norm_nonneg needed by final linarith."
+        "summary": "Discharged hFin: subsingleton_ball_inter_of_uniform_discrete + finite_inter_of_isBounded_of_uniform_discrete (ProperSpace; totally-bounded r0/3-cover, biUnion of subsingletons) + finite_primitive_inter_of_isBounded + hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete. 273\u2192383 LOC, 14\u219218 theorems (grep ^theorem), 0 sorry / 0 axiom, Docker-GREEN (8576 jobs). One repair: norm_nonneg needed by final linarith."
       }
     ]
   },
