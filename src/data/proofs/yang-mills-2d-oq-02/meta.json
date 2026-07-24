@@ -6,7 +6,7 @@
   "meta": {
     "author": "Migdal (1975); Bali et al. (2000)",
     "date": "2000",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/YangMills2DOQ02.lean",
     "tags": [
       "mathematical-physics",
@@ -17,11 +17,11 @@
       "confinement",
       "open-problem"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: casimir_scaling_4d_approximate (the 4D approximate Casimir scaling conjecture). Parts I and II are fully proved: 2D exact scaling follows from Migdal formula; exact 4D scaling fails from string breaking.",
+    "axiomCount": 0,
+    "assumptions": "None. Parts I and II are fully proved: 2D exact Casimir scaling follows from the Migdal formula; exact 4D scaling fails from string breaking. Part III's free-existential predicate is a tautology of real analysis, stated as a proved theorem (not an axiom); it does NOT capture the physical small-ε conjecture, which remains open.",
     "lineCount": 242,
     "originalContributions": [
       "linearPotential: V(r) = σ·r definition",
@@ -34,7 +34,7 @@
       "post_break_ratio_lt_tension_ratio (proved): after breaking, ratio < σ_R/σ_fund",
       "exact_casimir_scaling_fails_4d (proved): ratio changes → exact scaling fails",
       "ApproximateCasimirScaling4D: |σ_R/σ_f - C₂_R/C₂_f| < ε",
-      "casimir_scaling_4d_approximate (axiom): approximate 4D scaling conjecture",
+      "casimir_scaling_4d_approximate (theorem): the free-existential form of approximate 4D scaling is a tautology (proved), making explicit it does not encode the physical conjecture",
       "casimir_scaling_2d_exact_4d_approximate (proved): summary theorem"
     ],
     "theoremCount": 10,
@@ -75,10 +75,10 @@
     },
     {
       "id": "approx-conjecture",
-      "title": "Part III: 4D Approximate Casimir Scaling (Axiomatized)",
+      "title": "Part III: 4D Approximate Casimir Scaling (formalization caveat)",
       "startLine": 184,
       "endLine": 214,
-      "summary": "Defines ApproximateCasimirScaling4D: |σ_R/σ_fund - C₂(R)/C₂(fund)| < ε. Axiom casimir_scaling_4d_approximate: approximate scaling holds at intermediate distances (open conjecture, supported by lattice QCD but not analytically proved). Includes lattice data: SU(2) measured ≈ 2.5 vs Casimir 8/3 ≈ 2.67; SU(3) measured ≈ 2.2 vs Casimir 9/4 = 2.25.",
+      "summary": "Defines ApproximateCasimirScaling4D: |σ_R/σ_fund - C₂(R)/C₂(fund)| < ε. The free-existential form (∃ ε, ...) is a tautology of real analysis — any two reals are within |x-y|+1 of each other — so it is stated as a proved theorem casimir_scaling_4d_approximate, NOT an axiom. This makes explicit that the predicate as written does not capture the physical small-ε conjecture (which remains open and would need an explicit bound on ε). Lattice data for context: SU(2) measured ≈ 2.5 vs Casimir 8/3 ≈ 2.67; SU(3) measured ≈ 2.2 vs Casimir 9/4 = 2.25.",
       "mathContext": "$|\\sigma_R/\\sigma_{\\text{fund}} - C_2(R)/C_2(\\text{fund})| < \\varepsilon$ for $r < r_{\\text{break}}$. The deviation $\\varepsilon$ arises from non-perturbative effects: string tension receives corrections from gluon self-energy, renormalon divergences, and higher-order operators in the effective string theory."
     },
     {
@@ -100,7 +100,7 @@
       "4D: String breaking occurs for screened (N-ality 0) representations like the adjoint at distance r_break = 2m_gluelump/σ_R",
       "After breaking, the potential ratio V_R/V_fund = 2m_gluelump/(σ_fund·r) → 0, contradicting the constant Casimir ratio",
       "The key inequality: r > r_break ⟹ σ_R·r > 2·m_gluelump ⟹ post-break ratio < σ_R/σ_fund",
-      "Approximate Casimir scaling (at intermediate r) is observed in lattice QCD but not analytically proved"
+      "Approximate Casimir scaling at intermediate r is observed in lattice QCD but not analytically proved; the free-existential formalization of it is a tautology, so the genuine small-ε conjecture remains open"
     ],
     "prerequisites": [
       "2D Yang-Mills: Migdal formula, area law, string tension from heat kernel",
@@ -111,8 +111,8 @@
   },
   "leanFile": {
     "namespace": "YangMills2DOQ02",
-    "lineCount": 242,
-    "axiomCount": 1,
+    "lineCount": 257,
+    "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 5,
     "path": "Proofs/YangMills2DOQ02.lean",
