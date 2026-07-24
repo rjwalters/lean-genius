@@ -96,6 +96,11 @@
       "targetId": "pi-transcendental",
       "relationship": "related",
       "description": "The AGM limit $M(1, 1/\\sqrt{2})$ is related to $\\pi$ via the Brent-Salamin formula and Gauss's identity with complete elliptic integrals. The transcendence of $\\pi$ (Lindemann-Weierstrass, 1882) then implies that the AGM limit $M(1, 1/\\sqrt{2})$ is transcendental — a consequence of the axiomatized elliptic integral connection in this entry's `agm_elliptic_integral` axiom."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-04",
+      "relationship": "related",
+      "description": "Child answering this entry's OQ-04 on quadratic convergence: proves with 0 axioms that one AGM step squares the gap, $(a+b)/2 - \\sqrt{ab} = (a-b)^2/(2(\\sqrt a+\\sqrt b)^2) \\le (a-b)^2/(8b)$, and the abstract lemma that a recursion $g_{n+1}\\le g_n^2/C$ unwinds to the doubly exponential bound $g_n \\le C(g_0/C)^{2^n}$. Assembling these into the explicit $O(M(a,b)(b/a)^{2^n})$ rate at the concrete AGM sequence remains open."
     }
   ],
   "sections": [
