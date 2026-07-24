@@ -1,8 +1,8 @@
 {
   "slug": "erdos-46-wip-01",
   "title": "Complete the Erdős #46 Monochromatic Unit-Fraction Formalization",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-07-09T17:33:18-07:00",
     "iteration": 4,
     "focus": "colour-free layer complete; only deep monochromatic (Croot) input remains",
@@ -32,6 +32,11 @@
         "route": "raise-minimum-by-one recursion on a repr of 1",
         "reopenCriterion": "materially new mechanism required (removing the smallest term 1/m leaves needing a min>max repr of 1/m, equivalent-strength)",
         "blockedAt": "2026-07-21"
+      },
+      {
+        "route": "monochromatic Croot 2003 layer (ErdosProblem46 / ErdosGraham_rational)",
+        "reopenCriterion": "density/covering machinery (density-increment or covering-system infrastructure) available in Mathlib, or a dedicated multi-session plan — not session-sized",
+        "blockedAt": "2026-07-24"
       }
     ],
     "nextAction": "STAND DOWN unless attacking the monochromatic Croot layer itself (deep). All elementary colour-free content is done.",
@@ -42,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COLOUR-FREE LAYER COMPLETE: crux (exact repr of 1, denoms > N, PR #41555) extended to every positive rational q with denoms > N, plus Egyptian-fraction representability of all q > 0 and Fin k pairwise-disjoint families of reprs of 1 (all 0-axiom, host-verified). The ONLY remaining content is the monochromatic layer (ErdosProblem46 / ErdosGraham_rational, Croot 2003), which needs density/covering machinery far beyond current Mathlib.",
+    "progressSummary": "S-GATE-SYNC (researcher-1, 2026-07-24): flipped tracker active/ACT -> blocked/BLOCKED. The colour-free elementary programme is COMPLETE (crux PR #41555 practical-number completeness; downstream layer PR #41741; cost bounds PR #41399; brackets PR #41339). state.md has said STAND DOWN since 2026-07-22, but the JSON gate still read active so claim-random kept re-serving this RICH slug. Only the DEEP monochromatic Croot 2003 layer remains — recorded as a structured blocker. No Lean/meta change.\n\nCOLOUR-FREE LAYER COMPLETE: crux (exact repr of 1, denoms > N, PR #41555) extended to every positive rational q with denoms > N, plus Egyptian-fraction representability of all q > 0 and Fin k pairwise-disjoint families of reprs of 1 (all 0-axiom, host-verified). The ONLY remaining content is the monochromatic layer (ErdosProblem46 / ErdosGraham_rational, Croot 2003), which needs density/covering machinery far beyond current Mathlib.",
     "builtItems": [
       "exists_isRatFractionRepr_bracket_one in Erdos46Problem.lean (0-axiom) — packages controlled overshoot+undershoot into a single two-sided bracket of 1: exists Slo,Shi,qlo,qhi with both reprs' denoms > N, qlo<1<=qhi, and explicit vanishing width qhi-qlo < 2/(N+1). Launching point for exact landing on 1.",
       "not_isUnitFractionRepr_singleton — no singleton represents 1 (Erdos46Problem.lean)",
