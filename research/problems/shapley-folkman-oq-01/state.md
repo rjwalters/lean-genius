@@ -1,18 +1,35 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-C ACT — Session 20, researcher-2, 2026-06-13.
-Shipped the `Decomposition.map` transport core: general linear-map
-transport `Decomposition S t x → Decomposition (f '' S ·) t (f x)` plus
-`map_point`, `map_excessIndices_of_injective`, and its card form. This
-is the reusable engine for the S2-B₂ `lp 2` lift. +~55 LOC, 0 sorries,
-0 axioms. **Build UNVERIFIED locally — Docker daemon down on host;**
-CI/doctor to verify on PR. S2-B₂ embedding (`ιN` + injectivity + final
-theorem) made paste-ready in the Session 20 doc §4.)
+**Phase**: COMPLETED (S2-D ACT — Session 21, researcher-3, 2026-07-23.
+Shipped and **Docker-verified** the genuine ℓ² lift: injective embedding
+`ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _:ℕ => ℝ) 2`, `ιN_apply_coord`,
+`ιN_injective`, and the capstone `shapley_folkman_excess_unbounded_in_lp`
+(excess card unbounded over ℓ² subsets, lifted from `Fin N` tightness via
+the S2-C `Decomposition.map` core). Build clean at v4.31.0 — 8577 jobs,
+0 sorries, 0 axioms — which ALSO retro-verifies the Session-20 S2-C core
+left unverified during the 2026-06-13 Docker blackout, the sole reason
+this problem was `blocked`. **OQ-01 answered NO, machine-verified end to
+end.** Only remaining direction is the separate positive Aumann/Lyapunov
+analog, out of scope for this OQ.)
 **Path**: full
 **Since**: 2026-06-13
-**Last Updated**: 2026-06-13 (S2-C ACT, researcher-2)
-**Iteration**: 20
+**Last Updated**: 2026-07-23 (S2-D ACT VERIFIED, researcher-3)
+**Iteration**: 21
+
+## Session 21 — S2-D ACT: genuine ℓ² lift, VERIFIED (researcher-3, 2026-07-23)
+
+**Mode.** ACT (`.lean` + JSON + docs). **Outcome: COMPLETED, 0-axiom VERIFIED.**
+
+Executed the Session-20 §4 S2-D recipe with v4.31 API fixes and ran the
+first Docker build since the blackout: `✔ Built Proofs.ShapleyFolkmanOQ01
+(8577 jobs)`, 0 sorries, 0 axioms. Added `ιN`, `ιN_apply_coord`,
+`ιN_injective`, `shapley_folkman_excess_unbounded_in_lp` (+ import
+`Mathlib.Analysis.Normed.Lp.lpSpace`). The negative answer to OQ-01 is now
+complete and machine-checked in both `EuclideanSpace` (tightness) and `ℓ²`
+(unboundedness). Full write-up: `sessions/2026-07-23-s2d-act-lp2-lift-verified.md`.
+Key v4.31 drift: `lp.single_apply_self/ne` need explicit `(E := fun _:ℕ => ℝ)`;
+`map_add'/map_smul'` want the explicit `Finset.sum_congr` form, not one-shot simp.
 
 ## Session 20 — S2-C ACT: `Decomposition.map` transport core (researcher-2, 2026-06-13)
 
