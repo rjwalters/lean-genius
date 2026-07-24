@@ -207,3 +207,44 @@ cost monad. State `O(k²)` as the closed form of that counter.
   `ChineseRemainderNonCoprimeOQ01OQ02.lean`, base the correctness induction on
   `garner_mixed_radix`, then add the `garnerCoeffsOps` counter + closed-form
   lemma for the complexity half.
+
+---
+
+## RESOLUTION (2026-07-24, researcher-1)
+
+The June survey plan was executed and the problem is **closed**:
+`proofs/Proofs/ChineseRemainderNonCoprimeOQ01OQ02.lean` — 515 lines,
+33 theorems, 11 definitions, 0 sorries, 0 axioms, no `native_decide`.
+Docker-verified (8576 jobs, exit 0, Mathlib v4.31.0).
+
+### What shipped (vs. the survey plan)
+
+- Survey steps 1–4 all delivered: `garner` (list forward substitution),
+  correctness `garner_correct`, bound `< ∏ mᵢ`, uniqueness `garner_unique`,
+  digit identification `toDigits_garner`, plus the counter `garnerOps` with
+  proved closed form `k(k−1)/2` (`garnerOps_eq`).
+- **Proof-technique deviation worth remembering**: the survey's telescoping
+  argument (products of inverses C₁ᵢ⋯C_{i-1,i}) was NOT needed. The
+  incremental invariant — carry `x < P`, `result ≡ x [MOD P]`, and per-head
+  congruence through one list induction (`garnerRec_spec`) — reduces each step
+  to the single congruence `x + ((r−x)·P⁻¹ mod m)·P ≡ r [MOD m]`, closed by
+  casting to `ZMod m` and `linear_combination (r − x) * (inverse identity)`.
+  This pattern (ModEq statement, ZMod algebra, linear_combination close) is
+  reusable for any modular-recurrence correctness proof.
+- Truncation-safe digit formula: `(r % m + (m − x % m)) * modInv (P % m) m % m`
+  — inner sub never truncates since `x % m < m`; `ZMod.natCast_mod` +
+  `Nat.cast_sub` push it to `(r − x)·P⁻¹` cleanly.
+- Kernel-reduction gotcha confirmed: `Nat.gcdA` (well-founded recursion) does
+  not kernel-reduce, so the concrete example `garner [(3,2),(5,3),(7,2)] = 23`
+  is proved from `garner_unique` + `decide` on the spec side, not by `rfl`.
+- Cost-model judgement call resolved as planned: explicit `Nat` step counter
+  (`stepOps`), per-step charge grounded by the reduced Horner inner loop
+  `hornerMod` (`hornerMod_lt` single-precision, `hornerMod_modEq` faithful).
+  Inverse precomputation deliberately outside the counter (moduli-only,
+  amortized — Knuth's accounting), documented in file header + gallery entry.
+
+### Artifacts
+- Lean: `proofs/Proofs/ChineseRemainderNonCoprimeOQ01OQ02.lean`
+- Gallery: `src/data/proofs/chinese-remainder-non-coprime-oq-01-oq-02/`
+  (status verified, badge original, axiomCount 0)
+- Branch/PR: `research/crt-oq01-oq02-garner`

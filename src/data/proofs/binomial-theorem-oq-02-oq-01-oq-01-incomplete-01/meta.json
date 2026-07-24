@@ -39,7 +39,8 @@
       "The singularity has a one-line cause: on the support of the multinomial every composition k satisfies ∑ⱼkⱼ=n, so the centered partner sum ∑ⱼ(kⱼ−n·pⱼ) collapses to n−n·1=0. No cancellation between distinct covariance entries is required — the row sum vanishes term by term.",
       "This is the linear-algebra dual of the negative-correlation fact: Cov(Xᵢ,Xⱼ)=−n·pᵢ·pⱼ<0 for i≠j is exactly what is needed for the rows npᵢ(1−pᵢ) − ∑_{j≠i}npᵢpⱼ = 0 to vanish.",
       "Var(Xᵢ)=−∑_{j≠i}Cov(Xᵢ,Xⱼ): the diagonal of Σ is determined by its off-diagonals. This gives a third, purely structural derivation of the variance npᵢ(1−pᵢ) — complementary to the MGF route (BinomialTheoremOQ02OQ01) and the binomial-marginal route (BinomialTheoremOQ02OQ01OQ04).",
-      "Rank Σ ≤ |s|−1 is the formal content behind dropping a baseline category in multinomial logistic regression: the full covariance/information matrix is never invertible."
+      "Rank Σ ≤ |s|−1 is the formal content behind dropping a baseline category in multinomial logistic regression: the full covariance/information matrix is never invertible.",
+      "multinomial_cov_total_sum_zero (∑ᵢⱼCov(Xᵢ,Xⱼ)=0) is not a separate argument but a one-line corollary of the row-sum theorem — summing the already-zero rows over i — and it reads directly as Var(∑ᵢXᵢ)=0, the variance-level statement that the total count n is deterministic."
     ],
     "prerequisites": [
       "Multinomial distribution and its covariance Cov(Xᵢ,Xⱼ)=−n·pᵢ·pⱼ (parent file)",

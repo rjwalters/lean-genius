@@ -36,6 +36,18 @@ well-definedness the file now also proves the first *quantitative* lower bound:
   `exists_sublevelMeasure_eq_pi` — the conjectured extremal value `π` is attained
   at every degree.
 
+Finally the file formalizes the *extremal quantity itself* — everything above is
+per-configuration — as `minLemniscateArea n = ⨅ P, sublevelMeasure P`, the
+function `A(n)` the EHP problem is actually about, and pins it two-sidedly:
+
+* `π/(4·9^{n−1}) ≤ A(n) ≤ π` for `n ≥ 1` (hence `0 < A(n) ≤ π`);
+* exact values `A(0) = 0` and `A(1) = π` (the area functional is *constant* at
+  degree `1`, proved for arbitrary `P`, not just the `singleRoot` constructor);
+* the deep asymptotics (Pommerenke `c/n⁴`, KLR `c/log n` lower, KLR
+  `C/log log n` upper) stated as named `Prop`s about `A(n)` — no axioms — with
+  the one elementary implication `KLRLowerBound → PommerenkeLowerBound`
+  machine-checked (`log n ≤ n ≤ n⁴`).
+
 The remaining open content — the `c/log n` lower bound (vs the elementary
 `c/9ⁿ` above) and the `1/log n` vs `1/log log n` gap — is the genuinely deep KLR
 input, cleanly isolated.
@@ -417,5 +429,217 @@ theorem sublevelMeasure_ge' (P : UnitDiskPoly n) (hn : n ≠ 0) :
     Real.pi / (4 * 9 ^ (n - 1)) ≤ sublevelMeasure P := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
   simpa using sublevelMeasure_ge P
+
+/-! ## The extremal quantity: the minimal lemniscate area
+
+Everything above is *per-configuration*: bounds and exact values of
+`sublevelMeasure P` for a fixed `P`.  The Erdős–Herzog–Piranian problem is about
+the *extremal function*
+
+    `A(n) = inf { area Sₚ : p monic of degree n, all roots in the unit disk }`,
+
+which had not yet been formalized.  This section defines it
+(`minLemniscateArea`), pins it two-sidedly with the results above,
+
+    `π / (4·9^{n−1}) ≤ A(n) ≤ π`  for `n ≥ 1`,
+
+hence `0 < A(n) ≤ π`, and computes its first exact values: `A(0) = 0`
+(degenerate empty product — the lemniscate `{|1| < 1}` is empty) and `A(1) = π`
+(the area functional is *constant* at degree one — proved here for an arbitrary
+`P : UnitDiskPoly 1`, not just the `singleRoot` constructor).  The deep
+asymptotic content — Pommerenke's `c/n⁴`, the Krishnapur–Lundberg–Ramachandran
+`c/log n` lower bound (which resolved the EHP conjecture) and their
+`C/log log n` upper construction — is stated as named `Prop`s about
+`minLemniscateArea`, with no axioms: the file records exactly what remains
+open here, and proves the one elementary implication between the statements
+(a `c/log n` lower bound implies a `c/n⁴` one, since `log n ≤ n ≤ n⁴`). -/
+
+/-- Degree `0` is degenerate: the empty product evaluates to `1`. -/
+theorem eval_degree_zero (P : UnitDiskPoly 0) (z : ℂ) : P.eval z = 1 := by
+  simp [UnitDiskPoly.eval]
+
+/-- Degree `0` is degenerate: the lemniscate `{z : |1| < 1}` is empty. -/
+theorem sublevelSet_degree_zero (P : UnitDiskPoly 0) : P.sublevelSet = ∅ := by
+  ext z
+  simp only [Set.mem_empty_iff_false, iff_false]
+  intro hz
+  have h1 : ‖P.eval z‖ < 1 := hz
+  rw [eval_degree_zero, norm_one] at h1
+  exact lt_irrefl 1 h1
+
+/-- Degree `0` is degenerate: the lemniscate area is `0`. -/
+theorem sublevelMeasure_degree_zero (P : UnitDiskPoly 0) :
+    sublevelMeasure P = 0 := by
+  have h : {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} = ∅ := by
+    ext p
+    simp only [Set.mem_empty_iff_false, iff_false]
+    intro hp
+    have h1 : ‖P.eval ⟨p.1, p.2⟩‖ < 1 := hp
+    rw [eval_degree_zero, norm_one] at h1
+    exact lt_irrefl 1 h1
+  rw [sublevelMeasure, h]
+  simp
+
+/-- An *arbitrary* degree-`1` polynomial evaluates to `z - z₀` where `z₀` is its
+unique root (`Fin.prod_univ_one`) — the constructor-free form of
+`eval_singleRoot`. -/
+theorem eval_degree_one (P : UnitDiskPoly 1) (z : ℂ) :
+    P.eval z = z - P.roots 0 := by
+  simp [UnitDiskPoly.eval]
+
+/-- **Every degree-`1` lemniscate is a unit disk**, for an *arbitrary*
+`P : UnitDiskPoly 1` (not just the `singleRoot` constructor). -/
+theorem sublevelSet_degree_one (P : UnitDiskPoly 1) :
+    P.sublevelSet = Metric.ball (P.roots 0) 1 := by
+  ext z
+  constructor
+  · intro hz
+    have h1 : ‖P.eval z‖ < 1 := hz
+    rw [eval_degree_one] at h1
+    rw [Metric.mem_ball, dist_eq_norm]
+    exact h1
+  · intro hz
+    rw [Metric.mem_ball, dist_eq_norm] at hz
+    show ‖P.eval z‖ < 1
+    rw [eval_degree_one]
+    exact hz
+
+/-- `volume Sₚ = π` for an arbitrary degree-`1` configuration (`ℂ`-side). -/
+theorem volume_sublevelSet_degree_one (P : UnitDiskPoly 1) :
+    volume P.sublevelSet = NNReal.pi := by
+  rw [sublevelSet_degree_one, Complex.volume_ball]
+  simp
+
+/-- The parent's `ℝ × ℝ` volume of an arbitrary degree-`1` lemniscate is `π`,
+transported across `ℂ ≃ᵐ ℝ × ℝ` as above. -/
+theorem volume_realProd_sublevelSet_degree_one (P : UnitDiskPoly 1) :
+    volume {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1} = NNReal.pi := by
+  rw [P.realProd_sublevelSet_eq_preimage]
+  have hmp := Complex.volume_preserving_equiv_real_prod.symm Complex.measurableEquivRealProd
+  rw [hmp.measure_preimage P.measurableSet_sublevelSet.nullMeasurableSet]
+  exact volume_sublevelSet_degree_one P
+
+/-- **The area functional is constant (`≡ π`) on all of `UnitDiskPoly 1`** —
+the constructor-free strengthening of `sublevelMeasure_singleRoot`. -/
+theorem sublevelMeasure_degree_one (P : UnitDiskPoly 1) :
+    sublevelMeasure P = Real.pi := by
+  rw [sublevelMeasure, volume_realProd_sublevelSet_degree_one P]
+  simp [NNReal.coe_real_pi]
+
+/-- Every degree has a configuration (all roots at the origin), so the infimum
+below is over a nonempty index type. -/
+instance : Nonempty (UnitDiskPoly n) := ⟨allRootsZero n⟩
+
+/-- **The extremal quantity of the Erdős–Herzog–Piranian problem**: the infimum
+`A(n)` of the lemniscate area over all monic degree-`n` polynomials with all
+roots in the closed unit disk.  The EHP conjecture (now the KLR theorem) is
+about the asymptotics of this function. -/
+noncomputable def minLemniscateArea (n : ℕ) : ℝ :=
+  ⨅ P : UnitDiskPoly n, sublevelMeasure P
+
+/-- The area functional is bounded below (by `0`, the parent's
+`sublevelMeasure_nonneg`), so the infimum defining
+`minLemniscateArea` is well behaved (`Real` conditionally complete lattice). -/
+theorem bddBelow_range_sublevelMeasure (n : ℕ) :
+    BddBelow (Set.range fun P : UnitDiskPoly n => sublevelMeasure P) :=
+  ⟨0, by rintro x ⟨P, rfl⟩; exact sublevelMeasure_nonneg P⟩
+
+/-- The extremal quantity is a lower bound: `A(n) ≤ area Sₚ` for every
+configuration `P`. -/
+theorem minLemniscateArea_le (P : UnitDiskPoly n) :
+    minLemniscateArea n ≤ sublevelMeasure P :=
+  ciInf_le (bddBelow_range_sublevelMeasure n) P
+
+/-- `0 ≤ A(n)`. -/
+theorem minLemniscateArea_nonneg (n : ℕ) : 0 ≤ minLemniscateArea n :=
+  le_ciInf fun P => sublevelMeasure_nonneg P
+
+/-- **Upper bound `A(n) ≤ π`** for every `n ≥ 1`, witnessed by `p(z) = zⁿ`.
+(Pólya's sharp result is that `π` is the *maximum*, not the minimum, of the
+area functional; for the infimum this witness just gives finiteness of the
+extremal problem below the disk value.) -/
+theorem minLemniscateArea_le_pi (hn : n ≠ 0) : minLemniscateArea n ≤ Real.pi :=
+  (minLemniscateArea_le (allRootsZero n)).trans_eq (sublevelMeasure_allRootsZero hn)
+
+/-- **Explicit lower bound `π/(4·9^{n−1}) ≤ A(n)`** for every `n ≥ 1`: the
+per-configuration disk bound `sublevelMeasure_ge'` passes to the infimum. -/
+theorem le_minLemniscateArea (hn : n ≠ 0) :
+    Real.pi / (4 * 9 ^ (n - 1)) ≤ minLemniscateArea n :=
+  le_ciInf fun P => sublevelMeasure_ge' P hn
+
+/-- **The extremal area is strictly positive at every degree `n ≥ 1`** — the
+qualitative content of the EHP problem, immediate from the explicit bound. -/
+theorem minLemniscateArea_pos (hn : n ≠ 0) : 0 < minLemniscateArea n :=
+  lt_of_lt_of_le (by positivity) (le_minLemniscateArea hn)
+
+/-- First exact value: `A(0) = 0` (the degree-`0` lemniscate is empty). -/
+theorem minLemniscateArea_zero : minLemniscateArea 0 = 0 :=
+  le_antisymm
+    ((minLemniscateArea_le (allRootsZero 0)).trans_eq
+      (sublevelMeasure_degree_zero (allRootsZero 0)))
+    (minLemniscateArea_nonneg 0)
+
+/-- **Second exact value: `A(1) = π`** — at degree one the area functional is
+identically `π`, so the extremal problem is degenerate there and only becomes
+nontrivial from degree `2` on. -/
+theorem minLemniscateArea_one : minLemniscateArea 1 = Real.pi :=
+  le_antisymm (minLemniscateArea_le_pi one_ne_zero)
+    (le_ciInf fun P => (sublevelMeasure_degree_one P).ge)
+
+/-! ### The deep asymptotic statements, isolated as named `Prop`s
+
+None of these is assumed (no axioms): they are *statements* about
+`minLemniscateArea`, recording exactly which deep results remain unformalized.
+Their proofs need logarithmic potential theory absent from Mathlib. -/
+
+/-- **Pommerenke's 1961 lower bound**: `A(n) ≥ c/n⁴` for some absolute `c > 0`. -/
+def PommerenkeLowerBound : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ n : ℕ, n ≠ 0 → c / (n : ℝ) ^ 4 ≤ minLemniscateArea n
+
+/-- **The Krishnapur–Lundberg–Ramachandran lower bound** `A(n) ≥ c/log n`
+(`n ≥ 2`) — the resolution of the Erdős–Herzog–Piranian conjecture. -/
+def KLRLowerBound : Prop :=
+  ∃ c : ℝ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n → c / Real.log n ≤ minLemniscateArea n
+
+/-- **The KLR upper construction** `A(n) ≤ C/log log n` (`n ≥ 3`), showing the
+lower bound is within one logarithm of the truth; whether `1/log n` or
+`1/log log n` is the correct order remains open. -/
+def KLRUpperBound : Prop :=
+  ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 3 ≤ n → minLemniscateArea n ≤ C / Real.log (Real.log n)
+
+/-- **The KLR lower bound implies Pommerenke's**: for `n ≥ 1`,
+`log n ≤ n ≤ n⁴`, so `c/n⁴ ≤ c/log n` — the only elementary implication among
+the deep statements, proved here so the hierarchy is machine-checked.  (For
+`n = 1`: `A(1) = π > c'` needs care, so we shrink the constant to
+`min c (π/2)` and use positivity of `A(1)` directly.) -/
+theorem pommerenkeLowerBound_of_klrLowerBound :
+    KLRLowerBound → PommerenkeLowerBound := by
+  rintro ⟨c, hc, hklr⟩
+  refine ⟨min c Real.pi, lt_min hc Real.pi_pos, ?_⟩
+  intro n hn
+  rcases eq_or_lt_of_le (Nat.one_le_iff_ne_zero.mpr hn) with h1 | h2
+  · -- `n = 1`: `A(1) = π` and `min c π / 1⁴ ≤ π`.
+    rw [← h1]
+    simp only [Nat.cast_one, one_pow, div_one, minLemniscateArea_one]
+    exact min_le_right _ _
+  · -- `n ≥ 2`: chain `min c π / n⁴ ≤ c / n⁴ ≤ c / log n ≤ A(n)`.
+    have hn2 : 2 ≤ n := h2
+    have hnpos : (0 : ℝ) < (n : ℝ) := by positivity
+    have hlogpos : 0 < Real.log n := by
+      apply Real.log_pos
+      exact_mod_cast Nat.lt_of_lt_of_le Nat.one_lt_two hn2
+    have hlog_le : Real.log n ≤ (n : ℝ) ^ 4 := by
+      calc Real.log n ≤ (n : ℝ) := Real.log_le_self hnpos.le
+        _ ≤ (n : ℝ) ^ 4 := by
+            calc (n : ℝ) = (n : ℝ) ^ 1 := (pow_one _).symm
+              _ ≤ (n : ℝ) ^ 4 := by
+                  apply pow_le_pow_right₀ _ (by norm_num)
+                  exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn
+    have hc0 : (0 : ℝ) ≤ c := hc.le
+    calc min c Real.pi / (n : ℝ) ^ 4
+        ≤ c / Real.log n := by
+          gcongr
+          exact min_le_left _ _
+      _ ≤ minLemniscateArea n := hklr n hn2
 
 end UnitDiskPoly

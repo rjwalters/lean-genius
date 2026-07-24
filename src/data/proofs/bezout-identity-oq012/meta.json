@@ -84,28 +84,35 @@
       "id": "module-header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "States the open question (ℤ[√d] is a PID/UFD for d ∈ {-1,-2} from the uniform norm bound) and the plan: harvest PID/UFD from the parent's Euclidean structure and add the prime-norm irreducibility criterion. Imports the parent file, opens Zsqrtd, fixes a variable d : ℤ.",
+      "endLine": 46,
+      "summary": "States the open question (ℤ[√d] is a PID/UFD for d ∈ {-1,-2} from the uniform norm bound) and the plan: harvest PID/UFD from the parent's Euclidean structure and add the prime-norm irreducibility criterion. Imports the parent file, opens Zsqrtd, enters the namespace, and fixes a variable d : ℤ.",
       "mathContext": "ℤ[√d] Euclidean for −2 ≤ d < 0 ⟹ PID ⟹ UFD; prime norm ⟹ irreducible (any d)."
     },
     {
       "id": "sec-pid-ufd",
       "title": "PID and UFD, uniformly for −2 ≤ d < 0",
-      "startLine": 44,
-      "endLine": 64,
+      "startLine": 48,
+      "endLine": 70,
       "summary": "isPrincipalIdealRing and uniqueFactorizationMonoid: the parent's EuclideanDomain value introduced as a local instance, with IsPrincipalIdealRing and UniqueFactorizationMonoid produced by typeclass inference. The UFD statements carry that instance in their type, since UniqueFactorizationMonoid (ℤ√d) requires the CancelCommMonoidWithZero structure the EuclideanDomain supplies."
     },
     {
-      "id": "sec-classical",
-      "title": "The two classical rings",
-      "startLine": 65,
-      "endLine": 88,
-      "summary": "gaussianInt_ and negTwo_ corollaries: ℤ[i] = ℤ[√-1] and ℤ[√-2] as the d = −1 and d = −2 members of the PID/UFD family, the UFD ones reusing the parent's euclideanDomainNegOne / euclideanDomainNegTwo specializations."
+      "id": "sec-classical-gaussian",
+      "title": "The Gaussian integers ℤ[i] = ℤ[√-1]",
+      "startLine": 72,
+      "endLine": 85,
+      "summary": "gaussianInt_isPrincipalIdealRing and gaussianInt_uniqueFactorizationMonoid specialize the uniform family to d = −1, the classical Gaussian integers underlying sum-of-two-squares theorems. The PID corollary just discharges the −2 ≤ d < 0 side goals with norm_num; the UFD corollary reuses the parent's euclideanDomainNegOne specialization."
+    },
+    {
+      "id": "sec-classical-negtwo",
+      "title": "The ring ℤ[√-2]",
+      "startLine": 87,
+      "endLine": 98,
+      "summary": "negTwo_isPrincipalIdealRing and negTwo_uniqueFactorizationMonoid specialize the uniform family to d = −2, mirroring the Gaussian-integer corollaries with the parent's euclideanDomainNegTwo specialization."
     },
     {
       "id": "sec-prime-norm",
       "title": "Prime norm ⟹ irreducible (and prime)",
-      "startLine": 89,
+      "startLine": 100,
       "endLine": 134,
       "summary": "irreducible_of_prime_norm: |N(z)| prime ⟹ z irreducible for any d, via norm multiplicativity and |N(·)| = 1 ⟺ unit (both unconditional). prime_of_prime_norm upgrades to primality in the UFD range −2 ≤ d < 0 using irreducible_iff_prime."
     }

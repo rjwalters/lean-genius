@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Problem Statement: Two Arithmetic Facts Bertrand Buys You",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports and module docstring. States the open question: applying Bertrand's postulate to ⌊n/2⌋ yields a prime n/2 < p ≤ n; the docstring previews both consequences — p divides n! (a large prime factor) and p is unramified in n! (v_p(n!) = 1), the latter forcing n! to never be a perfect square for n ≥ 2.",
+      "mathContext": "Bertrand gives a prime $p$ with $n/2 < p \\leq n$. Since $p \\leq n$, $p \\mid n!$; since $p \\leq n < 2p$ and $p^2 > n$, Legendre's formula collapses to $v_p(n!) = 1$, so $p^2 \\nmid n!$ and $n!$ cannot be a perfect square."
+    },
+    {
       "id": "sec-bertrand-half",
       "title": "Bertrand in the Lower Half: a Prime in (n/2, n]",
       "startLine": 41,

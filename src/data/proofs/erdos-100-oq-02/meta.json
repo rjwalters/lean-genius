@@ -95,7 +95,7 @@
       "The proof of `strong_implies_half_linear` uses only `linarith` after extracting the conjecture: from $n-1 \\ge n/2$ (which holds for $n \\ge 2$), one gets $\\text{diam} \\ge n-1 \\ge n/2$. This shows the implication is purely arithmetic, not geometric.",
       "The `∀ᶠ n in atTop` formalization uses Mathlib's filter library: `filter_upwards [n_over_log_sublinear 1 ...]` instantiates a pre-proved asymptotic result from the parent file with the specific parameter 1, then `with n hn` extracts the hypothesis for a specific n.",
       "The gap factor log n is made explicit: `gk_bound_strictly_sublinear` shows $cn/\\log n < cn$ for all sufficiently large n and all $c > 0$. This is the quantitative statement that Guth-Katz provably loses a log factor versus the linear conjecture.",
-      "The `kanold_bound` axiom in the parent file is logically redundant: it states diam $\\ge cn/\\log n$, which is exactly the content of `diam_ge_n_over_log_n` proved from the Guth-Katz axiom. This suggests a cleanup opportunity in the parent file's axiom system."
+      "Kanold's classical bound (diam $\\ge c\\cdot n^{3/4}$) is not axiomatized anywhere in this chain: the parent file's Kanold-bound comment explicitly attaches no Lean declaration, and the sibling entry `erdos-100-oq-02-oq-02` proves it outright as the theorem `kanold_bound_from_gk`, a corollary of the Guth-Katz-derived bound `diam_ge_n_over_log_n` used here."
     ]
   },
   "conclusion": {
@@ -103,7 +103,6 @@
     "implications": "If the linear conjecture is proved (closing the log gap), it would provide a tight characterization of integer distance sets' extremal behavior. The formalization infrastructure (hasIntegerDistances, diam, Erdos100StrongConjecture) provides a reusable framework for formalizing further results in combinatorial geometry. The explicit asymptotic formalization via Mathlib's filter library (`atTop`, `∀ᶠ`) demonstrates how to state and prove growth-rate results rigorously.",
     "openQuestions": [
       "Can the log n gap be removed from the Guth-Katz lower bound to achieve linear diameter growth? This would settle the main open question, but requires new combinatorial geometry ideas beyond the current algebraic-geometric approach.",
-      "Is `kanold_bound` in the parent file provable from the other axioms? The claim is that it follows from `diam_ge_n_over_log_n` — formalizing this would eliminate a redundant axiom and tighten the formalization.",
       "Piepmeyer's construction achieves diameter Θ(n) — can this be fully formalized in Lean 4, giving a complete picture of the upper bound side?"
     ]
   },

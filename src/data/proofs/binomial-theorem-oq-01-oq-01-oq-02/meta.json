@@ -71,7 +71,8 @@
       "Term-by-term differentiation is a single Mathlib lemma away once analyticity is in hand: HasFPowerSeriesOnBall.fderiv turns binomial_series_analytic into the derivSeries statement directly.",
       "The absorption identity (k+1)·C(α,k+1) = α·C(α-1,k) is literally the coefficient of x^k that term-by-term differentiation yields: the left side is the k-th coefficient of d/dx Σ C(α,j) x^j, the right side is α times the k-th coefficient of (1+x)^(α-1).",
       "The closed-form derivative and the series-derivative agree by fderiv_deriv: evaluating the Fréchet derivative at the tangent vector 1 recovers the one-dimensional derivative α(1+x)^(α-1).",
-      "Everything stays on the same unit ball of convergence, so no separate radius bookkeeping is needed for the differentiated series."
+      "Everything stays on the same unit ball of convergence, so no separate radius bookkeeping is needed for the differentiated series.",
+      "The k = 0 case of the differentiated series is a free sanity check: hasDerivAt_one_add_rpow_zero specializes the pointwise derivative to x = 0, giving derivative α, which is exactly genBinom α 1 — the linear coefficient of the original binomial series read off as the constant term of its derivative."
     ],
     "prerequisites": [
       "Generalized binomial coefficients and the binomial power series (parent proof)",

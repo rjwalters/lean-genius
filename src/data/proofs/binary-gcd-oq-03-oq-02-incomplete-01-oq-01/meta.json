@@ -132,10 +132,18 @@
   "sections": [
     {
       "id": "module-header",
-      "title": "Module Header and the Halving-Regularity Condition",
+      "title": "Module Header: the Size-Reduction Recurrence",
       "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring situating the entry as the deferred complexity strand of the Schönhage HGCD family: the recurrence T(n) ≤ 2·T(⌊n/2⌋) + M(n) with T(n) ≤ M(n) for n ≤ 1, the classical solution T(n) = O(M(n)·log n) under the halving-regularity hypothesis, and why floor division is used (the standard divide-and-conquer normalization, ceiling differing only by ±1 rounding)."
+    },
+    {
+      "id": "halving-regular",
+      "title": "The Halving-Regularity Condition",
+      "startLine": 55,
       "endLine": 78,
-      "summary": "Module docstring situating the entry as the deferred complexity strand of the Schönhage HGCD family and fixing the floor-division normalization of the recurrence. Imports Nat.Log, Nat.Size, and Tactic. Defines HalvingRegular M := ∀ n ≥ 2, 2·M(⌊n/2⌋) ≤ M(n) — the master-theorem regularity (superlinear-multiplication) hypothesis — and proves halvingRegular_of_superadditive: every super-additive monotone M is halving-regular."
+      "summary": "Imports Nat.Log, Nat.Size, Tactic. Defines HalvingRegular M := ∀ n ≥ 2, 2·M(⌊n/2⌋) ≤ M(n) — the master-theorem regularity (superlinear-multiplication) hypothesis satisfied by schoolbook, Karatsuba, and quasi-linear multiplication — and proves halvingRegular_of_superadditive: every super-additive monotone M is halving-regular, via M(⌊n/2⌋)+M(⌊n/2⌋) ≤ M(⌊n/2⌋+⌊n/2⌋) ≤ M(n).",
+      "mathContext": "$\\mathrm{HalvingRegular}(M) :\\iff \\forall n \\ge 2,\\ 2M(\\lfloor n/2\\rfloor) \\le M(n)$; super-additive monotone $M$ automatically satisfies this."
     },
     {
       "id": "master-bound",

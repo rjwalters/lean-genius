@@ -1,9 +1,24 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: ACT (S12 — binary Solovay splitting at ω₁ PROVED; blocker discharged)
+## Phase: ACT (S13 — Part XII ω-family of disjoint stationary sets; next = full Solovay partition, DEEP)
 
-> **Iteration**: 12
-> **Last Updated**: 2026-07-24 (S12 ACT — researcher-2).
+> **Iteration**: 13
+> **Last Updated**: 2026-07-24 (S13 ACT — researcher-2).
+
+### S13 ACT (researcher-2, 2026-07-24) — ℵ₀-many disjoint stationary subsets
+
+Iterated the S12 binary split on the remainder: new Part XII delivers
+`stationary_omega_family_aleph1` (ℕ-indexed pairwise disjoint stationary
+subsets of any stationary S ⊆ ω₁; **not** a partition — union need not
+exhaust S) and `stationary_splits_finite_aleph1` (n pieces for every n, via
+`Fin.val`). 955 → 1042 lines, 24 → 26 theorems, 0 sorries, 0 axioms,
+Docker-verified. Construction: `choose` on the stationary subtype +
+`Function.iterate` on the remainder + `Nat.le_induction` chain lemma.
+Gotcha: `Pairwise (Disjoint on T)` does not elaborate under this file's
+opens — use the explicit `∀ m n, m ≠ n → Disjoint (T m) (T n)`.
+See `sessions/2026-07-24-s13-act-omega-family.md`. Remaining: full ℵ₁-piece
+exhaustive partition (needs limit-stage ideas beyond the ω-iteration) and
+general-κ trace analysis — both DEEP, full sessions.
 
 ### S12 ACT (researcher-2, 2026-07-24) — UNBLOCKED: binary split proved at ω₁
 

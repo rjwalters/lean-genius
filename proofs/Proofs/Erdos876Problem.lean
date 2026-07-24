@@ -331,4 +331,95 @@ theorem erdos_876_summary :
   obtain ⟨a, hincr, hsum, N, hgap⟩ := graham_result ε hε
   exact ⟨a, hsum, N, hgap⟩
 
+/-
+## Part X: Structural Results Around the Open Question
+-/
+
+/--
+**Super-increasing sequences are sum-free (Erdős sense).**
+
+If a strictly increasing sequence dominates the sum of all its predecessors
+(`∑_{k<n} a k < a n`), then its range is Erdős-sum-free: any finite set of
+distinct terms lying below `a m` is contained in `{a 0, …, a (m-1)}`, whose
+*total* sum is already `< a m`. This generalizes `powers_of_two_sumfree`
+(where `∑_{k<n} 2^k = 2^n - 1`), and isolates exactly the mechanism that
+proof used.
+-/
+theorem superIncreasing_sumfree {a : ℕ → ℕ} (hmono : StrictMono a)
+    (hsup : ∀ n, ∑ k ∈ Finset.range n, a k < a n) :
+    IsSumFreeErdos (Set.range a) := by
+  intro x hx S hS hlt _hcard
+  obtain ⟨m, rfl⟩ := hx
+  have hsub : S ⊆ (Finset.range m).image a := by
+    intro b hb
+    obtain ⟨j, rfl⟩ := hS (Finset.mem_coe.mpr hb)
+    have hj : j < m := by
+      by_contra hjm
+      have hmle : a m ≤ a j := hmono.monotone (Nat.le_of_not_lt hjm)
+      have hblt := hlt _ hb
+      omega
+    exact Finset.mem_image.mpr ⟨j, Finset.mem_range.mpr hj, rfl⟩
+  have hle : S.sum id ≤ ((Finset.range m).image a).sum id :=
+    Finset.sum_le_sum_of_subset hsub
+  have himg : ((Finset.range m).image a).sum id = ∑ j ∈ Finset.range m, a j := by
+    rw [Finset.sum_image fun x _ y _ h => hmono.injective h]
+    simp
+  intro hsum
+  have hs := hsup m
+  omega
+
+/--
+**The canonical example fails the linear-gap requirement.**
+
+The powers of two are sum-free by *domination* (each term exceeds the sum of
+all predecessors), but domination forces exponential gaps: already
+`gap 1 = 2² - 2¹ = 2 ≥ 1`. Any construction answering Question 876
+affirmatively must therefore be genuinely different from the super-increasing
+examples of Part VII.
+-/
+theorem powers_of_two_not_linearGapBound :
+    ¬ HasLinearGapBound (2 ^ ·) := by
+  intro h
+  have h1 := h 1 le_rfl
+  norm_num [gap] at h1
+
+/--
+**Linear gaps force at-most-quadratic growth.**
+
+If `aₙ₊₁ - aₙ < n` for all `n ≥ 1` then `2·aₙ + n ≤ 2·a₁ + n²` (equivalently
+`aₙ ≤ a₁ + n(n-1)/2`; stated over `ℕ` in doubled form to avoid division).
+This is why Question 876 is sharp: an affirmative answer would give a
+sum-free set growing like `n²`, strictly better than the
+Deshouillers–Erdős–Melfi `n^{3+o(1)}` construction, and sitting right at the
+`|A ∩ [1,N]| ≫ N^{1/2}` edge of the Łuczak–Schoen counting bound
+`|A ∩ [1,N]| ≪ (N log N)^{1/2}`.
+-/
+theorem hasLinearGapBound_quadratic {a : ℕ → ℕ} (h : HasLinearGapBound a) :
+    ∀ n, 1 ≤ n → 2 * a n + n ≤ 2 * a 1 + n * n := by
+  intro n hn
+  induction n, hn using Nat.le_induction with
+  | base => omega
+  | succ m hm ih =>
+      have hgap := h m hm
+      have hg : gap a m = a (m + 1) - a m := rfl
+      have hsq : (m + 1) * (m + 1) = m * m + 2 * m + 1 := by ring
+      rw [hsq]
+      generalize m * m = q at ih ⊢
+      omega
+
+/--
+**An affirmative answer to Question 876 yields a quadratically-growing
+sum-free set.**
+
+Packaging of `hasLinearGapBound_quadratic` against the question statement:
+the witness enumeration of `ErdosQuestion876` would have at-most-quadratic
+growth — better than every known construction.
+-/
+theorem erdosQuestion876_implies_quadratic_growth :
+    ErdosQuestion876 →
+      ∃ a : ℕ → ℕ, IsIncreasingEnumeration a ∧ IsSumFreeErdos (Set.range a) ∧
+        ∀ n, 1 ≤ n → 2 * a n + n ≤ 2 * a 1 + n * n := by
+  rintro ⟨a, hinc, hsf, hgap⟩
+  exact ⟨a, hinc, hsf, hasLinearGapBound_quadratic hgap⟩
+
 end Erdos876

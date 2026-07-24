@@ -143,4 +143,153 @@ theorem standardTriangle2_sperner
       CellComplex.IsPanchromatic c standardTriangle2.toCellComplex s :=
   Triangulation.sperner standardTriangle2 c hbdry
 
+/-!
+## Candidate C data layer: `LatticePoint m` and `TriCell m` (S3 ACT)
+
+The general-`m` construction (S3 ACT, per PREPs #18625/#18654/#18719):
+the vertex carrier `LatticePoint m` (lattice points of Δ² at resolution
+`m`) and the cell type `TriCell m` (`T(m)` up-triangles + `T(m-1)`
+down-triangles = `m²` cells), with `DecidableEq` and `Fintype` instances —
+the data prerequisites for the eventual
+`Triangulation (LatticePoint m) 2` instance. The vertex map (`triVtx`,
+S4), the adjacency table, and the four `Triangulation` axioms are the
+S4+ continuation; they are the genuine open core of OQ-01 (the
+`decide`-based discharge used by `standardTriangle2` above cannot work
+`m`-parametrically).
+-/
+
+section Triangle
+
+/-- A lattice point in the size-`m` standard 2-simplex Δ²: `(i, j)` with
+`i + j ≤ m`. Carried by `Fin (m+1) × Fin (m+1)` so `DecidableEq` and
+`Fintype` synthesize for free (`Subtype.instDecidableEq`,
+`Subtype.fintype`); the subtype predicate `p.1 + p.2 ≤ m` is the only
+load-bearing constraint. `#(LatticePoint m) = (m+1)(m+2)/2`. -/
+abbrev LatticePoint (m : ℕ) : Type :=
+  {p : Fin (m + 1) × Fin (m + 1) // p.1.val + p.2.val ≤ m}
+
+/-- A cell in the standard subdivision of Δ² at resolution `m`.
+
+`up i j h` is the up-triangle with lower-left corner `(i, j)`; its
+vertices are `(i, j)`, `(i+1, j)`, `(i, j+1)`. Requires `i + j < m`.
+
+`down i j h` is the down-triangle with hypotenuse on `x + y = i + j + 1`;
+its vertices are `(i+1, j)`, `(i, j+1)`, `(i+1, j+1)`. Requires
+`i + j + 1 < m`.
+
+Cardinality: `T(m)` up-cells + `T(m-1)` down-cells = `m²` total. -/
+inductive TriCell (m : ℕ) : Type
+  | up (i j : ℕ) (h : i + j < m) : TriCell m
+  | down (i j : ℕ) (h : i + j + 1 < m) : TriCell m
+  deriving DecidableEq
+
+namespace TriCell
+
+/-- `TriCell m` is a `Fintype`: up-cells and down-cells are enumerated
+from `Fin m × Fin m` via `Finset.filterMap` (the strict bounds
+`i + j < m` and `i + j + 1 < m` each force `i < m` and `j < m`, so the
+square carrier covers all cells). -/
+instance instFintype (m : ℕ) : Fintype (TriCell m) where
+  elems :=
+    (Finset.univ : Finset (Fin m × Fin m)).filterMap
+      (fun ij =>
+        if h : (ij.1 : ℕ) + (ij.2 : ℕ) < m then
+          some (TriCell.up ij.1.val ij.2.val h)
+        else none)
+      (by
+        rintro ⟨i, j⟩ ⟨i', j'⟩ b hb hb'
+        simp only [Option.mem_def] at hb hb'
+        by_cases hij : (i : ℕ) + (j : ℕ) < m
+        · rw [dif_pos hij] at hb
+          by_cases hij' : (i' : ℕ) + (j' : ℕ) < m
+          · rw [dif_pos hij'] at hb'
+            rw [Option.some.injEq] at hb hb'
+            obtain rfl := hb
+            injection hb'.symm with hi hj
+            obtain rfl : i = i' := Fin.val_injective hi
+            obtain rfl : j = j' := Fin.val_injective hj
+            rfl
+          · rw [dif_neg hij'] at hb'
+            cases hb'
+        · rw [dif_neg hij] at hb
+          cases hb)
+    ∪
+    (Finset.univ : Finset (Fin m × Fin m)).filterMap
+      (fun ij =>
+        if h : (ij.1 : ℕ) + (ij.2 : ℕ) + 1 < m then
+          some (TriCell.down ij.1.val ij.2.val h)
+        else none)
+      (by
+        rintro ⟨i, j⟩ ⟨i', j'⟩ b hb hb'
+        simp only [Option.mem_def] at hb hb'
+        by_cases hij : (i : ℕ) + (j : ℕ) + 1 < m
+        · rw [dif_pos hij] at hb
+          by_cases hij' : (i' : ℕ) + (j' : ℕ) + 1 < m
+          · rw [dif_pos hij'] at hb'
+            rw [Option.some.injEq] at hb hb'
+            obtain rfl := hb
+            injection hb'.symm with hi hj
+            obtain rfl : i = i' := Fin.val_injective hi
+            obtain rfl : j = j' := Fin.val_injective hj
+            rfl
+          · rw [dif_neg hij'] at hb'
+            cases hb'
+        · rw [dif_neg hij] at hb
+          cases hb)
+  complete := fun c => by
+    rcases c with ⟨i, j, h⟩ | ⟨i, j, h⟩
+    · apply Finset.mem_union_left
+      rw [Finset.mem_filterMap]
+      refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
+      simp [h]
+    · apply Finset.mem_union_right
+      rw [Finset.mem_filterMap]
+      refine ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), Finset.mem_univ _, ?_⟩
+      simp [h]
+
+end TriCell
+
+/-- Vertex map for the standard subdivision of Δ² at resolution `m`
+(S4 ACT, per PREP #18719 §8, match-pattern form per its §9 risk-note 3).
+
+For `up i j h`, positions `k = 0, 1, 2` give `(i, j)`, `(i+1, j)`,
+`(i, j+1)` (SW → SE → N corner).
+
+For `down i j h`, positions `k = 0, 1, 2` give `(i+1, j)`, `(i, j+1)`,
+`(i+1, j+1)` (W → N → NE corner). All six subtype-membership proofs are
+`omega`-discharged from the constructor bound (`i + j < m` resp.
+`i + j + 1 < m`). -/
+def triVtx (m : ℕ) : TriCell m → Fin 3 → LatticePoint m
+  | TriCell.up i j h, ⟨0, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j, by omega⟩), show i + j ≤ m by omega⟩
+  | TriCell.up i j h, ⟨1, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j, by omega⟩), show i + 1 + j ≤ m by omega⟩
+  | TriCell.up i j h, ⟨_ + 2, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j + 1, by omega⟩), show i + (j + 1) ≤ m by omega⟩
+  | TriCell.down i j h, ⟨0, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j, by omega⟩), show i + 1 + j ≤ m by omega⟩
+  | TriCell.down i j h, ⟨1, _⟩ =>
+      ⟨(⟨i, by omega⟩, ⟨j + 1, by omega⟩), show i + (j + 1) ≤ m by omega⟩
+  | TriCell.down i j h, ⟨_ + 2, _⟩ =>
+      ⟨(⟨i + 1, by omega⟩, ⟨j + 1, by omega⟩), show i + 1 + (j + 1) ≤ m by omega⟩
+
+/-- The three vertices of each cell are pairwise distinct (the
+`vertex_injective` obligation of the eventual
+`Triangulation (LatticePoint m) 2` instance). Each off-diagonal case
+reduces to an impossible `Nat` equation (`i = i + 1` or `j = j + 1`)
+after projecting to the underlying `Fin (m+1) × Fin (m+1)` pair. -/
+theorem vertex_injective_triVtx (m : ℕ) :
+    ∀ c : TriCell m, Function.Injective (triVtx m c) := by
+  intro c k k' hkk'
+  have hpair := congrArg (fun p : LatticePoint m => p.1) hkk'
+  cases c with
+  | up i j h =>
+    fin_cases k <;> fin_cases k' <;>
+      simp [triVtx, Prod.mk.injEq, Fin.mk.injEq] at hpair <;> rfl
+  | down i j h =>
+    fin_cases k <;> fin_cases k' <;>
+      simp [triVtx, Prod.mk.injEq, Fin.mk.injEq] at hpair <;> rfl
+
+end Triangle
+
 end Triangulation

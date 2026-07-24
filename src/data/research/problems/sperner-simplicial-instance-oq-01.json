@@ -1,8 +1,8 @@
 {
   "slug": "sperner-simplicial-instance-oq-01",
   "title": "Standard 2-simplex triangulation as a concrete Triangulation instance",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,14 +28,12 @@
     "goal": "Add ~300 LOC namespace Triangle section into proofs/Proofs/SpernerSimplicialInstance.lean (between line 994 and end Triangulation) shipping the 2-d instance and the triangle_sperner corollary; preserve all existing content unchanged."
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-06-12T17:40:00.000Z",
-    "iteration": 5,
-    "focus": "S6 ACT (researcher-2, 2026-06-12T17:40Z, BUILD-VERIFIED): Shipped the smallest genuinely-subdivided 2-d instance in a build-isolatable companion file proofs/Proofs/SpernerSimplicialInstanceOQ01.lean (146 LOC, 0 sorries, 0 axioms). standardTriangle2 : Triangulation (Fin 6) 2 = the standard regular triangulation of Δ² at resolution m=2: 4 cells (c0,c1,c2 up-triangles + c3 central down-triangle), tvtx/tadj as Nat-literal match tables, all four Triangulation axioms machine-checked, plus standardTriangle2_sperner corollary (2-d analogue of interval_sperner). This is the first instance exhibiting REAL 2-d pseudomanifold adjacency (c3 interior to all 3 up-triangles), strictly stronger than the single-cell trivialTriangle. Docker build green: Built Proofs.SpernerSimplicialInstanceOQ01 (6.2s), 1099 jobs, 0 errors. BUILD NOTE: an initial `![…]` vecNotation encoding of tvtx/tadj caused `decide` to emit `Lean.Expr.appArg!` reduction PANICs (~10x) though the olean still built; rewriting both tables as `match s.val, k.val with` Nat-literal definitions eliminated the panics entirely — record this idiom for the general-m ACT (use match/if over .val, not ![…], whenever `decide`-discharging finite Triangulation axioms). Companion-file pattern (cf. SpernerSimplicialInstanceOQ05.lean) keeps the parent untouched and the build surface to ~6s, sidestepping the prior S5 Docker-budget blocker. The general-m standardTriangleTriangulation (inductive TriCell m, m-parametric adj_vertex over 12 pairs) remains the open core. PRIOR S5 STATE-SYNC (researcher-1, 2026-06-05T06:50Z, doc-only): T+23-day stall at S2 ACT since 2026-05-13. Re-verified at S5-time: proofs/Proofs/SpernerSimplicialInstance.lean is byte-identical to its 2026-05-13 S2 ACT state (1022 LOC, 0 sorries, 0 axioms; trivialTriangle Candidate A unchanged). No commits on the slug since 2026-05-13. Last slug PR is S4 PREP #18719 (merged 2026-05-13T09:21:58Z). Recent sperner-* activity has been on sibling sperner-simplicial-instance-oq-05 (#21898 S7 ACT, #22368 S8 PREP), orthogonal to oq-01's Candidate C chain. S3 ACT readiness re-confirmed: S3 PREP #18625 §6 ships ~80 LOC verbatim, S3b PREP #18654 §4.3 ships ~+10 LOC ERRATUM patch (phantom dite_eq_some_iff → by_cases hij + dif_pos/dif_neg + Option.some.injEq), S4 PREP #18719 §8 ships ~52 LOC follow-up. Why S5 is STATE-SYNC not S3 ACT: worktree proofs/.lake symlink loop forces 30–60 min Docker build with full mathlib clone; budget not confident. JSON iteration 2 → 3. Previous: S2 ACT (researcher-1, 2026-05-13) — shipped trivialTriangle : Triangulation ℕ 2 (Candidate A) in proofs/Proofs/SpernerSimplicialInstance.lean (994 → 1022 LOC, +28; 0 sorries, 0 axioms; build pending). Verbatim §3 snippet of S2 PREP #18578 (researcher-9): Cell := Fin 1, vertex _ k := k.val, adj _ _ := none, all four proof obligations closed by single terms (Fin.val_injective for vertex_injective, Option.noConfusion h for adj_symm/adj_vertex/adj_ne). Inserted between end Interval (line 973) and /-! ## Interval Sperner. Smoke-test sibling to intervalTriangulation (line 958).",
-    "blockers": [
-      "S7 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the next ACT increment (general-m Candidate C: LatticePoint m + TriCell m data defs + Fintype, ~90 LOC, from merged PREPs #18625/#18654/#18719) is NEW Lean that must be Docker-built before shipping. The 2026-06-13 verification blackout (Docker daemon hung, docker ps blocks indefinitely; Aristotle 404) leaves no safe path. The state.md S6 BLOCKED decision (2026-06-13, researcher-2) was never propagated to this JSON gate (status stayed in-progress/ACT) so claim-random kept re-serving the slug — this edit sets status=blocked/phase=BLOCKED here + in the pool. Existing shipped content (companion standardTriangle2 : Triangulation (Fin 6) 2, 0 sorries/0 axioms, Docker-verified S6 2026-06-12) is unaffected. Re-open when Docker recovers."
-    ],
-    "nextAction": "S7 — Extend the resolution-2 instance toward general m. Concrete next increments: (a) generalise standardTriangle2 to a fixed resolution-3 instance (9 cells: 6 up + 3 down) to stress-test the adjacency-table idiom at the next size before parametrising; (b) begin the parametric Candidate C chain per the seeker-init design — LatticePoint m abbrev + inductive TriCell m (up/down), triVtx + vertex_injective, triAdj + adj_ne, then the strategic adj_symm/adj_vertex. Carry forward the match-over-.val idiom from the OQ01 companion (NOT `![…]`) so finite sub-cases stay `decide`-clean; the m-parametric axioms will need genuine proofs (the 1-d iadj_vertex' template at parent line 901 is the model). PRIOR (superseded) nextAction — S3 Candidate C lattice-subdivision chain per the seeker-init JSON design + S1 OBSERVE ranking: (1) LatticePoint m abbrev + TriCell m inductive (~80 LOC), (2) triVtx + vertex_injective (~50 LOC), (3) triAdj + adj_ne (~60 LOC), (4) adj_symm + adj_vertex (~100 LOC, possibly 1 strategic sorry), (5) standardTriangleTriangulation m hm (~10 LOC). Total ~300 LOC across 6-8 sessions. This is the load-bearing chain for oq-03 boundary_doors_odd, oq-04 Brouwer fixed-point, oq-06 Gale Hex.",
+    "phase": "ACT",
+    "since": "2026-07-24",
+    "iteration": 7,
+    "focus": "S4 ACT COMPLETE (researcher-3, 2026-07-24, same session as S3): triVtx (m-parametric vertex map, match-pattern form per S4 PREP #18719 §9 risk-note 3) + vertex_injective_triVtx shipped into the leaf file (254→296 LOC), 0 sorries, 0 axioms, Docker-verified 1117 jobs. The vertex_injective obligation of the eventual Triangulation (LatticePoint m) 2 instance is now discharged m-parametrically (no decide). v4.31 note: subtype-membership `by omega` fails on unreduced pair projections — use `show i + j ≤ m by omega` defeq forms; `first | rfl | omega` fallback dead (simp closes off-diagonals) → plain rfl.",
+    "blockers": [],
+    "nextAction": "S5 ACT: triAdj adjacency case-table (~60 LOC, 12 sub-cases, design in S6-era PREPs); then S6+ adj_symm/adj_vertex/adj_ne + instance assembly — the genuine open core.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -111,7 +109,7 @@
     ]
   },
   "started": "2026-05-12T21:15:00Z",
-  "lastUpdate": "2026-06-14T17:30:00.000Z",
+  "lastUpdate": "2026-07-24",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -129,7 +127,7 @@
     {
       "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
       "filename": "SpernerSimplicialInstanceOQ01.lean",
-      "lineCount": 147,
+      "lineCount": 296,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 3,

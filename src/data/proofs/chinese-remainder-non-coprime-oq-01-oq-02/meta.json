@@ -1,0 +1,212 @@
+{
+  "id": "chinese-remainder-non-coprime-oq-01-oq-02",
+  "title": "The Full Garner Algorithm with Operation-Count Bound",
+  "slug": "chinese-remainder-non-coprime-oq-01-oq-02",
+  "description": "Formalizes the complete k-modulus Garner algorithm (Garner 1959; Knuth TAOCP §4.3.2 Alg. C), not just the mixed-radix decomposition: an executable forward-substitution CRT solver over lists of (modulus, residue) pairs, with full correctness (the output is below the product and satisfies every congruence), uniqueness, identification of its digit stream with the mixed-radix digits of the solution, and a proved closed-form operation count of exactly k(k−1)/2 single-precision modular operations — the classical O(k²) bound.",
+  "meta": {
+    "author": "Formalized here (extending Garner 1959)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Garner%27s_algorithm",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderNonCoprimeOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "crt",
+      "garner",
+      "mixed-radix",
+      "computational",
+      "complexity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd_eq_gcd_ab",
+        "description": "Bézout identity gcd(a,m) = a·gcdA + m·gcdB — correctness of the executable modular inverse",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(a : ZMod n) = b ↔ a ≡ b [MOD n] — bridge between ring algebra in ZMod m and Nat.ModEq statements",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",
+        "description": "Congruence mod two coprime moduli combines to congruence mod their product — the uniqueness half of CRT",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Finset.sum_range_id",
+        "description": "Gauss sum ∑_{j<k} j = k(k−1)/2 — the closed form of the operation counter",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "List.Forall₂",
+        "description": "Pointwise relation between digit lists and modulus lists — clean statement of 'every digit is below its radix'",
+        "module": "Mathlib.Data.List.Forall2"
+      }
+    ],
+    "originalContributions": [
+      "modInv: executable extended-Euclidean modular inverse with ZMod-level correctness proof (modInv_zmod)",
+      "toDigits/ofDigits: k-modulus mixed-radix representation with round-trip (ofDigits_toDigits), bounds (Forall₂), and uniqueness (digits_unique) — the k-fold generalization of the parent's garner_mixed_radix",
+      "garner: the full forward-substitution Garner algorithm over (modulus, residue) lists, in truncation-safe ℕ arithmetic",
+      "garnerRec_spec: master induction proving simultaneously the size bound, persistence of prior congruences, and every new congruence",
+      "garner_correct / garner_unique: the output is THE unique CRT solution below ∏mᵢ",
+      "toDigits_garner: the digit stream produced by the algorithm IS the mixed-radix decomposition of the solution",
+      "garnerOps_eq: proved closed form — exactly k(k−1)/2 single-precision modular operations (the classical O(k²) bound), grounded by the reduced Horner inner loop hornerMod (hornerMod_modEq, hornerMod_lt)"
+    ],
+    "dateAdded": "2026-07-24",
+    "axiomCount": 0,
+    "lineCount": 515,
+    "assumptions": "None. 0 axiom declarations, 0 sorries, no structure-encoded hypotheses, and no native_decide — all executable spot checks use kernel decide.",
+    "mathlib_version": "4.31.0",
+    "theoremCount": 33,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Garner (1959) observed that residue number systems support multi-precision arithmetic via single-precision operations: to reconstruct x from its residues r₁,…,rₖ modulo pairwise-coprime m₁,…,mₖ, one computes mixed-radix digits v₁,…,vₖ with vᵢ < mᵢ by forward substitution, each step using only arithmetic modulo one small modulus. Knuth presents this as Algorithm 4.3.2C in The Art of Computer Programming.\n\nThe parent entry (OQ01) formalized only the k = 2 mixed-radix existence fact (garner_mixed_radix), and its sibling list-CRT entry proves existence/uniqueness without any constructive coefficient algorithm. The open question asked for the full algorithm with runtime complexity bounds — both halves are delivered here.",
+    "problemStatement": "**Open Question**: Formalize the full Garner algorithm (not just the mixed-radix decomposition) with runtime complexity bounds.\n\n**Answer**: DONE, in both halves:\n\n1. **Algorithm + correctness**: `garner` computes, by forward substitution with an executable extended-gcd modular inverse, the unique x < ∏mᵢ with x ≡ rᵢ (mod mᵢ) for all i (garner_correct, garner_unique), and its digit stream is exactly the mixed-radix decomposition of x (toDigits_garner).\n\n2. **Complexity bound**: Mathlib has no machine cost model, so the bound is formalized as a theorem about an explicit operation counter: garnerOps counts the single-precision modular multiply-add-reduce operations of the forward substitution, and garnerOps_eq proves garnerOps l = k(k−1)/2 exactly — the classical O(k²) single-precision count.",
+    "text": "The complete k-modulus Garner algorithm: executable forward-substitution CRT reconstruction with digit-level bounds, full correctness and uniqueness proofs, identification of the algorithm's digit stream with the mixed-radix representation, and a proved k(k−1)/2 closed form for its single-precision operation count.",
+    "proofStrategy": "**Part I (modInv)**: an executable modular inverse (Nat.gcdA … % m).toNat with correctness proved in ZMod m from the Bézout identity Nat.gcd_eq_gcd_ab.\n\n**Part II (mixed radix)**: toDigits (repeated %-and-/) and ofDigits (Horner) with round-trip, digit bounds stated via List.Forall₂ (· < ·), and uniqueness — the k-fold generalization of the parent's garner_mixed_radix and garner_mixed_radix_unique.\n\n**Part III (the algorithm)**: garnerRec threads the partial solution x and processed-modulus product P; each step computes nextDigit = (rᵢ − x)·P⁻¹ mod mᵢ in truncation-safe ℕ arithmetic. The step congruence (nextDigit_step) is proved by casting to ZMod mᵢ and closing with linear_combination against the inverse identity. The master induction (garnerRec_spec) carries three invariants simultaneously: x + vP < P·mᵢ (size), congruence to the incoming x mod P (persistence of prior congruences, since each prior modulus divides P), and the new congruence. Correctness (garner_correct) and uniqueness (garner_unique, via pairwise-coprime lifting modEq_prod) follow.\n\n**Part IV (complexity)**: stepOps charges step i exactly i operations; stepOps_eq_sum rewrites the recursion as ∑_{j<k}(i+j) and the Gauss sum Finset.sum_range_id gives garnerOps = k(k−1)/2.\n\n**Part V (cost-model grounding)**: hornerMod is the reduced Horner loop that evaluates the partial solution mod mᵢ using one multiply-add-reduce per previous digit, with all intermediates below mᵢ after reduction (hornerMod_lt) and the correct value mod mᵢ (hornerMod_modEq) — this is why step i costs exactly i single-precision operations.\n\n**Part VI**: kernel-decide worked examples, including garner [(3,2),(5,3),(7,2)] = 23 derived from the uniqueness theorem rather than by evaluating the extended gcd in the kernel.",
+    "keyInsights": [
+      "The incremental invariant beats the telescoping-inverse proof: instead of proving the Horner form of the coefficients equals the substitution formula by telescoping products of inverses (the textbook route), the master induction carries 'x < P, x correct mod every processed modulus' and each step only needs the single congruence x + ((r−x)·P⁻¹ mod m)·P ≡ r (mod m), closed by linear_combination in ZMod m",
+      "Truncated ℕ subtraction is handled once and locally: nextDigit uses r % m + (m − x % m), which is truncation-safe because x % m < m, and casts to the intended r − x in ZMod m via Nat.cast_sub",
+      "The digit stream of the algorithm and the mixed-radix decomposition of its output are identified (toDigits_garner) by a purely structural induction (garnerRec_eq_ofDigits) plus the round-trip theorem — no arithmetic needed",
+      "With no cost model in Mathlib, the honest formalization of 'O(k²) runtime' is a theorem about an explicit step counter whose per-step charge is grounded by a verified single-precision inner loop (hornerMod), not an axiomatized machine model",
+      "The executable inverse (Nat.gcdA) does not kernel-reduce well, so the worked example garner [(3,2),(5,3),(7,2)] = 23 is proved from garner_unique — the spec pins the value — with only the congruence checks left to decide"
+    ],
+    "prerequisites": [
+      "Extended Euclidean algorithm and Bézout coefficients (Nat.gcdA, Nat.gcd_eq_gcd_ab)",
+      "Nat.ModEq and ZMod casting (ZMod.natCast_eq_natCast_iff)",
+      "Parent proof: ChineseRemainderNonCoprimeOQ01 (garner_mixed_radix, k = 2 case)",
+      "List.Forall₂ and List.Pairwise for digit bounds and coprimality hypotheses"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement: The Full Garner Algorithm",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "The open question and its resolution: mixed-radix representation, the full forward-substitution algorithm with correctness and uniqueness, and the k(k−1)/2 operation-count bound with an honest statement of the cost model.",
+      "mathContext": "Given pairwise-coprime $m_1,\\ldots,m_k$ and residues $r_i$, compute the unique $x < \\prod m_i$ with $x \\equiv r_i \\pmod{m_i}$ using $k(k-1)/2$ single-precision modular operations."
+    },
+    {
+      "id": "modular-inverse",
+      "title": "Part I: Executable Modular Inverse",
+      "startLine": 59,
+      "endLine": 97,
+      "summary": "modInv a m = (gcdA a m % m).toNat with range bound modInv_lt and ZMod-level correctness modInv_zmod proved from the Bézout identity.",
+      "mathContext": "For $\\gcd(a,m)=1$: $a \\cdot \\mathrm{modInv}(a,m) \\equiv 1 \\pmod m$, where $\\mathrm{modInv}$ is the canonical representative of the Bézout coefficient."
+    },
+    {
+      "id": "mixed-radix",
+      "title": "Part II: Mixed-Radix Representation for k Moduli",
+      "startLine": 99,
+      "endLine": 192,
+      "summary": "toDigits/ofDigits with round-trip theorem, digit bounds via List.Forall₂, uniqueness (digits_unique), and existence (mixed_radix_exists) — the k-fold generalization of the parent's Part IV.",
+      "mathContext": "Every $x < \\prod m_i$ has a unique digit list $v$ with $v_i < m_i$ and $x = v_1 + m_1(v_2 + m_2(v_3 + \\cdots))$."
+    },
+    {
+      "id": "garner-algorithm",
+      "title": "Part III: The Full Garner Algorithm",
+      "startLine": 194,
+      "endLine": 414,
+      "summary": "nextDigit and garnerRec (forward substitution), the step congruence nextDigit_step (proved in ZMod via linear_combination), the three-invariant master induction garnerRec_spec, main theorems garner_correct and garner_unique, and identification of the digit stream with the mixed-radix decomposition (toDigits_garner).",
+      "mathContext": "$v_i = (r_i - x_{i-1}) \\cdot (m_1 \\cdots m_{i-1})^{-1} \\bmod m_i$, $x_i = x_{i-1} + v_i \\cdot m_1 \\cdots m_{i-1}$; the result is the unique CRT solution below the product."
+    },
+    {
+      "id": "operation-count",
+      "title": "Part IV: The Operation Counter and the k(k−1)/2 Bound",
+      "startLine": 416,
+      "endLine": 454,
+      "summary": "stepOps charges step i exactly i single-precision operations; stepOps_eq_sum turns the recursion into a Gauss sum and garnerOps_eq proves the closed form k(k−1)/2.",
+      "mathContext": "$\\sum_{i=1}^{k}(i-1) = \\binom{k}{2} = \\frac{k(k-1)}{2}$ — the classical $O(k^2)$ single-precision operation count of Garner's forward substitution."
+    },
+    {
+      "id": "horner-inner-loop",
+      "title": "Part V: The Single-Precision Inner Loop",
+      "startLine": 456,
+      "endLine": 494,
+      "summary": "hornerMod: reduced Horner evaluation of the partial solution modulo mᵢ, one multiply-add-reduce per prior digit, all intermediates below mᵢ (hornerMod_lt), computing the correct value mod mᵢ (hornerMod_modEq) — grounding the per-step charge of the counter.",
+      "mathContext": "Reducing after every Horner step does not change the value mod $n$; every intermediate stays $< n$, so each step is genuinely single-precision."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Worked Examples",
+      "startLine": 496,
+      "endLine": 515,
+      "summary": "Kernel-decide spot checks: garner [(3,2),(5,3),(7,2)] = 23 (derived from garner_unique), mixed-radix digits of 23 in radices (3,5,7), and operation counts 3 = 3·2/2 and 10 = 5·4/2.",
+      "mathContext": "$x \\equiv 2\\,(3),\\; 3\\,(5),\\; 2\\,(7) \\Rightarrow x = 23 = 2 + 3\\,(2 + 5 \\cdot 1)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is fully resolved: the complete k-modulus Garner algorithm is formalized as an executable Lean function with machine-checked correctness (the output is the unique CRT solution below the product of the moduli), the digit stream is identified with the mixed-radix decomposition, and the runtime bound is a proved closed form — exactly k(k−1)/2 single-precision modular operations, grounded by a verified single-precision inner loop. 33 theorems, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "**For Algorithms**: This is the standard RNS-to-positional conversion used in multi-prime RSA-CRT, fast polynomial multiplication, and residue-number-system hardware; the formalization pins down both correctness and the single-precision operation count.\n\n**For the gallery**: Completes the constructive story started by the parent's k = 2 mixed-radix theorem and the sibling list-CRT existence/uniqueness entry — this entry supplies the missing constructive coefficient algorithm.\n\n**For Mathlib**: Demonstrates a workable pattern for 'runtime complexity' claims absent a cost model: an explicit step counter with a proved closed form, grounded by a verified bounded-intermediate inner loop.",
+    "openQuestions": [
+      "Formalize the amortized accounting for the inverse precomputation: the k−1 extended-gcd calls cost O(k log max mᵢ) and are residue-independent, so they amortize across many conversions in a residue number system",
+      "Extend garner to the non-coprime compatible case by combining with the parent's lcm-canonical form (solve mod lcm via successive pairwise merging)",
+      "Formalize the bit-complexity comparison against direct (Lagrange-style) CRT reconstruction, which needs O(k) operations on O(k log m)-bit integers"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "ChineseRemainderNonCoprimeOQ01OQ02",
+    "lineCount": 515,
+    "axiomCount": 0,
+    "theoremCount": 33,
+    "definitionCount": 11,
+    "path": "Proofs/ChineseRemainderNonCoprimeOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01",
+      "relationship": "extends",
+      "description": "Parent proof whose Part IV establishes the k = 2 mixed-radix fact (garner_mixed_radix) and its uniqueness. This entry generalizes the representation to k moduli and supplies the full constructive algorithm the parent's open question asked for"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling extension of the same parent to k non-coprime moduli via lcm-periodicity; existence/uniqueness only. This entry provides the constructive coefficient algorithm in the pairwise-coprime case"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "Root non-coprime CRT formalization. The Garner algorithm formalized here is the classical efficient reconstruction procedure in the coprime case"
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The standard constructive coprime CRT. Garner's forward substitution is the single-precision alternative to the direct Lagrange-style reconstruction formalized there"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Garner, Harvey L.",
+      "title": "The residue number system",
+      "year": "1959",
+      "venue": "IRE Transactions on Electronic Computers, vol. EC-8, no. 2, pp. 140–147",
+      "note": "Source of the algorithm: mixed-radix conversion by forward substitution, all arithmetic single-precision"
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition, §4.3.2",
+      "note": "Algorithm 4.3.2C is the k-modulus Garner algorithm formalized here, including the k(k−1)/2 operation count"
+    },
+    {
+      "authors": "Shoup, Victor",
+      "title": "A Computational Introduction to Number Theory and Algebra",
+      "year": "2009",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Chapter 4 analyzes CRT reconstruction cost, including the single-precision vs multi-precision distinction that the operation counter formalizes"
+    }
+  ],
+  "sorries": 0
+}

@@ -100,10 +100,18 @@
     },
     {
       "id": "ufd-case",
-      "title": "The UFD Case — Failure over ℤ and ℤ[X,Y]",
+      "title": "The UFD Case — Weak Nullstellensatz Fails over ℤ and ℤ[X,Y]",
       "startLine": 109,
+      "endLine": 138,
+      "summary": "not_isUnit_C_two pushes C 2 through the ring hom constantCoeff to 2 ∈ ℤ and applies Int.isUnit_iff. Instantiating the general obstruction at p = 2 gives weak_nullstellensatz_fails_over_int (any σ) and the headline weak_nullstellensatz_fails_over_ZXY (σ = Fin 2, the very ring the parent proves is a UFD)."
+    },
+    {
+      "id": "strong-nullstellensatz",
+      "title": "The Strong Correspondence I(V(J)) = √J Also Fails",
+      "startLine": 140,
       "endLine": 150,
-      "summary": "not_isUnit_C_two pushes C 2 through the ring hom constantCoeff to 2 ∈ ℤ and applies Int.isUnit_iff. Instantiating the general obstruction at p = 2 gives weak_nullstellensatz_fails_over_int (any σ) and the headline weak_nullstellensatz_fails_over_ZXY (σ = Fin 2). strong_nullstellensatz_fails_over_int then derives I(V(2)) = vanishingId ∅ = ⊤ while √(2) ≠ ⊤ (radical_eq_top), so the strong correspondence breaks."
+      "summary": "strong_nullstellensatz_fails_over_int derives I(V((2))) = vanishingId ∅ = ⊤ (since the zero locus is empty) while √(2) ≠ ⊤ (radical_eq_top, since (2) ≠ ⊤), so the strong Nullstellensatz identity I(V(J)) = √J breaks over the UFD ℤ, not just the weak (empty-locus) form.",
+      "mathContext": "$\\mathcal I(\\mathcal V((2))) = \\top \\ne \\sqrt{(2)}$: the strong Nullstellensatz correspondence $\\mathcal I(\\mathcal V(J)) = \\sqrt J$ fails over $\\mathbb Z$ even though $\\mathbb Z$ is a UFD."
     }
   ],
   "crossReferences": [

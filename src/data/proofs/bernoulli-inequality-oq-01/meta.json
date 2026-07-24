@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement: The Sharp Strict Bernoulli Inequality",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating the open question: Mathlib's weak Bernoulli inequality 1 + n·a ≤ (1+a)ⁿ becomes strict exactly when a ≠ 0 and n ≥ 2. Previews the three theorems proved (the strict inequality on the full domain a > -1, and the two iff characterizations) and contrasts with the gallery's a > 0 strict form (binomial-theorem-oq-05).",
+      "mathContext": "$1 + na \\le (1+a)^n$ for $a \\ge -1$; the discarded quadratic term $\\binom{n}{2}a^2+\\cdots$ is strictly positive exactly when $a \\ne 0$ and $n \\ge 2$, over the full domain $a > -1$."
+    },
+    {
       "id": "strict",
       "title": "Sharp Strict Inequality",
       "startLine": 42,

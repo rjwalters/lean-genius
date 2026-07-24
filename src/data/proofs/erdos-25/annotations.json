@@ -116,30 +116,6 @@
     ]
   },
   {
-    "id": "erdos-25-coprime-positive",
-    "proofId": "erdos-25",
-    "type": "insight",
-    "range": {
-      "startLine": 100,
-      "endLine": 105
-    },
-    "title": "Positive Density Under Coprimality",
-    "content": "When all moduli are pairwise coprime, the logarithmic density (if it exists) is strictly positive, since each congruence class removes only a 1/nᵢ fraction.",
-    "mathContext": "If the moduli are pairwise coprime and $d = \\delta_\\ell(A(\\sigma))$ exists, then $d > 0$. By CRT independence, $d \\approx \\prod_{i} (1 - 1/n_i)$. Since $n_i$ are strictly increasing positive integers, $\\sum 1/n_i < \\infty$ is not guaranteed, but the strict monotonicity $n_i \\ge i$ gives $\\sum 1/n_i \\le \\sum 1/i = \\infty$. Under coprimality, the product $\\prod(1-1/n_i)$ converges to a positive value when $\\sum 1/n_i < \\infty$; the axiom covers this case.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Chinese Remainder Theorem",
-      "Euler product",
-      "Mertens' theorem",
-      "infinite products"
-    ],
-    "prerequisites": [
-      "Nat.Coprime",
-      "logDensity axiom",
-      "product convergence"
-    ]
-  },
-  {
     "id": "erdos-25-monotone",
     "proofId": "erdos-25",
     "type": "insight",

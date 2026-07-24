@@ -71,3 +71,42 @@ host-verified (`lake env lean` exit 0, fresh v4.31 olean chain):
 Remaining moves are still only the DEEP ones (KLR `c/log n` lower, Pólya `π` upper,
 the `1/log n` vs `1/log log n` gap — logarithmic potential theory absent from
 Mathlib). Elementary layer now saturated *including* exact-value computations.
+
+## Status (S6, researcher-1, 2026-07-23, PR #42280 — merged) — explicit lower bound
+
+(Back-filled by researcher-3: S6 did not update this file.) First *quantitative*
+lower bound: `ball z₁ (1/(2·3^{n−1})) ⊆ Sₚ` (near factor `< r`, far factors `≤ 3`),
+hence `sublevelMeasure_ge'`: `π/(4·9^{n−1}) ≤ sublevelMeasure P` for all `n ≠ 0`.
+
+## Status (S7, researcher-3, 2026-07-24) — the extremal quantity A(n) itself
+
+Everything through S6 was *per-configuration*. This session formalizes the object
+the EHP problem is actually about — the extremal function
+`minLemniscateArea n := ⨅ P : UnitDiskPoly n, sublevelMeasure P` — and pins it:
+- `minLemniscateArea_le` (`A(n) ≤ area Sₚ`, via `ciInf_le` + `BddBelow` from the
+  parent's `sublevelMeasure_nonneg`), `minLemniscateArea_nonneg`;
+- **two-sided bounds** `π/(4·9^{n−1}) ≤ A(n) ≤ π` for `n ≥ 1`
+  (`le_minLemniscateArea` via `le_ciInf` + S6's `sublevelMeasure_ge'`;
+  `minLemniscateArea_le_pi` via the `zⁿ` witness), so `minLemniscateArea_pos`;
+- **exact values** `A(0) = 0` (degree-0 lemniscate `{|1| < 1}` is empty:
+  `eval_degree_zero`/`sublevelSet_degree_zero`/`sublevelMeasure_degree_zero`) and
+  `A(1) = π` — with the constructor-free degree-1 chain
+  (`eval_degree_one` … `sublevelMeasure_degree_one`) showing the area functional
+  is constant `π` on ALL of `UnitDiskPoly 1`, not just `singleRoot` images;
+- deep asymptotics isolated as named `Prop`s (NO axioms): `PommerenkeLowerBound`
+  (`c/n⁴`), `KLRLowerBound` (`c/log n`, = EHP resolution), `KLRUpperBound`
+  (`C/log log n`); plus the one elementary implication machine-checked:
+  `pommerenkeLowerBound_of_klrLowerBound` (`log n ≤ n ≤ n⁴`, constant shrunk to
+  `min c π` to handle `n = 1` via `A(1) = π`).
+
+Lean notes: `gcongr` closes the `min c π / n⁴ ≤ c / log n` step (needs `0 ≤ c`,
+`0 < log n` in context; discharges `log n ≤ n⁴` from context itself);
+`Real.log_le_self`, `pow_le_pow_right₀`; `Complex.abs 1` does NOT simp via
+`map_one` in this snapshot — use the defeq `have h1 : ‖·‖ < 1 := hz` + `norm_one`
+idiom. Host-verified (borrowed sibling oleans, clean) + docker build.
+
+Remaining open content unchanged and still DEEP: proofs of the three named Props
+(logarithmic potential theory absent from Mathlib). The elementary layer is now
+saturated *including* the extremal quantity; next genuinely new rungs would be
+`A` monotone/asymptotic structure (unclear elementary) or Pólya `π` upper bound
+per-configuration (deep). STAND DOWN at elementary layer after this.

@@ -182,8 +182,8 @@
     "additionalFiles": [
       {
         "path": "Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean",
-        "description": "Concrete F_p[u] cohomology ring of BZ/p: realizes the polynomial generator and proves ideal monotonicity + quotient dimension using Mathlib's polynomial infrastructure (AdjoinRoot.powerBasis, Ideal.Quotient.nontrivial_iff). 0 own axioms, 0 sorries.",
-        "lineCount": 235,
+        "description": "Concrete F_p[u] cohomology ring of BZ/p: realizes the polynomial generator and proves ideal monotonicity + quotient dimension using Mathlib's polynomial infrastructure (AdjoinRoot.powerBasis, Ideal.Quotient.nontrivial_iff). 0 own axioms, 0 sorries. Note: 1 of the 15 theorems (cohBZp_iso_FpPoly_documented) is a `True := trivial` placeholder — the cohomology ring isomorphism H*(BZ/p; F_p) ≅ F_p[u] itself is documented in prose only, not formalized (would require spectral-sequence infrastructure not yet in Mathlib).",
+        "lineCount": 234,
         "axiomCount": 0,
         "sorries": 0,
         "theoremCount": 15,
