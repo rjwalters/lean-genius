@@ -82,7 +82,7 @@
     "definitionCount": 4
   },
   "overview": {
-    "historicalContext": "DissectionOfCubesOQ01 proved every nonempty cube dissection has ≥ 2 colliding cubes; DissectionOfCubesOQ01OQ01 then proved the bound 2 is tight — but only within a formalization whose covering constraint is the placeholder `covers_unit_cube : True`. The achievability witness places three tiny cubes inside [0,1]³ that occupy under 7% of the volume. This sub-question asks the natural follow-up: does the witness survive once coverage is real?",
+    "historicalContext": "DissectionOfCubesOQ01 proved every nonempty cube dissection has ≥ 2 colliding cubes; DissectionOfCubesOQ01OQ01 then proved the bound 2 is tight — but only within a formalization whose covering constraint is the placeholder `covers_unit_cube : True`. The achievability witness places three tiny cubes inside [0,1]³ that occupy under 7% of the volume. This sub-question asks the natural follow-up: does the witness survive once coverage is real? The underlying phenomenon is classical: unlike the squared square (solved by Brooks-Smith-Stone-Tutte's 1940 electrical-network theory of squared rectangles, with Duijvestijn finding the minimal 21-square example in 1978), no cube can be dissected into a finite set of pairwise-distinct smaller cubes — a perfect \"cubed cube\" is impossible, because the argument pinning the smallest square as strictly interior in two dimensions has no three-dimensional analogue. That impossibility is exactly why same-size (colliding) cubes are unavoidable, making their minimum count the natural finite invariant to formalize.",
     "problemStatement": "Replace `covers_unit_cube : True` with a genuine geometric coverage predicate using explicit tile coordinates, and determine whether the minimal-collision result (HasMinimalCollision) still holds.",
     "text": "Introduces GeoCubeDissection with volumetric coverage ∑ c.side³ = 1. Shows the predicate is satisfiable (unit cube, 0 collisions) and that the published 2-collision witness fails it (volume 59/864), so the witness is not geometric. The deep question — whether any genuine tiling achieves exactly 2 collisions — stays open.",
     "proofStrategy": "1. Define GeoCubeDissection: same containment + pairwise-disjointness as CubeDissection, with `volume_fills : ∑ c.side³ = 1` in place of the True placeholder. 2. A forgetful map toCubeDissection reuses collidingCubes/HasMinimalCollision. 3. unitGeoDissection witnesses satisfiability (sum over a singleton = 1³ = 1) and has empty collidingCubes (no second cube). 4. For the OQ-01-01 example, peel the 3-term Finset sum via Finset.sum_insert (using the existing distinctness lemmas) and norm_num to 2·(1/4)³+(1/3)³ = 59/864 ≠ 1; hence no GeoCubeDissection has that cube set. 5. (SECTION 5) For two interior-disjoint cubes in [0,1]³, rcases the 6-way separating-axis disjunction and linarith yields side sum ≤ 1; then a³+b³ = (a+b)³ − 3ab(a+b) with pow_le_one₀ and positivity gives combined volume < 1. So geo_card_ne_two (no 2-cube GeoCubeDissection via Finset.card_eq_two + Finset.sum_pair), and minimal_collision_needs_three (collidingCubes ⊆ cubes gives card ≥ 2, geo_card_ne_two rules out =2, omega gives ≥ 3).",
@@ -105,34 +105,34 @@
       "id": "header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 70,
+      "endLine": 65,
       "summary": "Docstring stating the question (does the witness survive genuine coverage?) and the answer (no), plus imports and opens."
     },
     {
       "id": "geo-structure",
       "title": "Genuine (Volumetric) Cube Dissection",
-      "startLine": 71,
-      "endLine": 100,
+      "startLine": 66,
+      "endLine": 97,
       "summary": "GeoCubeDissection with `volume_fills : ∑ c.side³ = 1` and the forgetful map to CubeDissection."
     },
     {
       "id": "satisfiable",
       "title": "The Predicate is Satisfiable — the Unit Cube",
-      "startLine": 101,
-      "endLine": 150,
+      "startLine": 98,
+      "endLine": 145,
       "summary": "unitCube, unitGeoDissection (a genuine dissection), unitGeo_no_collision (0 colliding cubes), unitGeo_not_minimal."
     },
     {
       "id": "witness-fails",
       "title": "The Minimal-Collision Example Fails Genuine Coverage",
-      "startLine": 151,
-      "endLine": 180,
+      "startLine": 146,
+      "endLine": 175,
       "summary": "exampleCubes_volume_ne_one (volume 59/864 ≠ 1) and no_geo_with_exampleCubes (the headline obstruction)."
     },
     {
       "id": "open-question",
       "title": "The Open Question, Restated",
-      "startLine": 181,
+      "startLine": 176,
       "endLine": 203,
       "summary": "Restates the open geometric question and transports the ≥2 lower bound to GeoCubeDissection."
     },

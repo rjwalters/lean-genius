@@ -676,4 +676,105 @@ theorem subsetProducts_card_ge_quadratic' {A : Finset ℤ} (hgt : ∀ a ∈ A, 1
   have h := subsetProducts_card_ge_quadratic hgt
   omega
 
+/-
+## Sharpness: positivity cannot be weakened to nonzero (negative-elements route refuted)
+
+The Erdős quadratic chain (`subsetSums_card_ge_quadratic'`) assumes every element
+positive.  The natural weakening — allow negative elements, requiring only `a ≠ 0`
+(the additive mirror of the multiplicative chain excluding `1`) — is FALSE, and not
+by an accident of small cases: for EVERY `n ≥ 2` the witness `{-1, 1, 2, …, n-1}`
+has all its subset sums inside `[-1, (n-1)n/2]`, hence at most `(n-1)n/2 + 2` of
+them, short of the triangular bound `n(n+1)/2 + 1` by a margin growing linearly in
+`n`.  Mixed signs permit genuine additive cancellation, and the max-removal chain's
+"fresh values above the old total" mechanism is irreparably sign-dependent.  This
+closes the last elementary rung recorded for this node: any signed extension needs a
+materially different, cancellation-aware mechanism.
+-/
+
+/-- Gauss summation, `Icc` form: `2·(1 + 2 + ⋯ + m) = m(m+1)`. -/
+theorem two_mul_sum_Icc_id (m : ℕ) : 2 * (Finset.Icc 1 m).sum id = m * (m + 1) := by
+  induction m with
+  | zero => simp
+  | succ k ih =>
+      rw [Finset.sum_Icc_succ_top (Nat.le_add_left 1 k), mul_add, ih, id_eq]
+      ring
+
+/-- **Positivity is essential in the additive quadratic chain.**  For every `n ≥ 2`
+    there is a set of `n` distinct *nonzero* integers — the single negative element
+    `-1` together with `1, 2, …, n-1` — whose subset-sum count violates the
+    triangular bound of `subsetSums_card_ge_quadratic'` (stated here in the file's
+    doubled form; the failure margin is `2(n-1)`).  So the hypothesis `0 < a`
+    cannot be weakened to `a ≠ 0`: one negative element already breaks the bound at
+    every size. -/
+theorem subsetSums_quadratic_fails_of_negative (n : ℕ) (hn : 2 ≤ n) :
+    ∃ A : Finset ℤ, A.card = n ∧ (∀ a ∈ A, a ≠ 0) ∧
+      2 * (subsetSums A).card < n * (n + 1) + 2 := by
+  classical
+  -- The positive part `P = {1, …, n-1}` and the witness `A = insert (-1) P`.
+  set P : Finset ℤ := (Finset.Icc 1 (n - 1)).image (fun i : ℕ => (i : ℤ)) with hP
+  have hPpos : ∀ a ∈ P, (0 : ℤ) < a := by
+    intro a ha
+    rw [hP, Finset.mem_image] at ha
+    obtain ⟨i, hi, rfl⟩ := ha
+    exact_mod_cast (Finset.mem_Icc.mp hi).1
+  have hneg : (-1 : ℤ) ∉ P := fun h => absurd (hPpos _ h) (by norm_num)
+  refine ⟨insert (-1 : ℤ) P, ?_, ?_, ?_⟩
+  · -- `|A| = n`: the `n-1` positives plus the fresh element `-1`.
+    rw [Finset.card_insert_of_notMem hneg, hP,
+        Finset.card_image_of_injective _ Nat.cast_injective, Nat.card_Icc]
+    omega
+  · intro a ha
+    rcases Finset.mem_insert.mp ha with rfl | h
+    · norm_num
+    · exact ne_of_gt (hPpos a h)
+  · -- Every subset sum lies in `[-1, T]` with `T = ∑ P`: the `-1` can lower a sum
+    -- by at most `1`, and the positive part contributes at most the full total.
+    set T : ℤ := P.sum id with hT
+    have hsub : subsetSums (insert (-1 : ℤ) P) ⊆ Finset.Icc (-1 : ℤ) T := by
+      intro x hx
+      rw [subsetSums, Finset.mem_image] at hx
+      obtain ⟨S, hS, rfl⟩ := hx
+      rw [Finset.mem_powerset] at hS
+      have hS' : S.erase (-1) ⊆ P := by
+        intro a ha
+        rcases Finset.mem_insert.mp (hS (Finset.mem_of_mem_erase ha)) with h | h
+        · exact absurd h (Finset.ne_of_mem_erase ha)
+        · exact h
+      have h0 : (0 : ℤ) ≤ (S.erase (-1)).sum id :=
+        Finset.sum_nonneg fun a ha => le_of_lt (hPpos a (hS' ha))
+      have hle : (S.erase (-1)).sum id ≤ T :=
+        Finset.sum_le_sum_of_subset_of_nonneg hS'
+          (fun a ha _ => le_of_lt (hPpos a ha))
+      rw [Finset.mem_Icc]
+      by_cases hm : (-1 : ℤ) ∈ S
+      · rw [← Finset.insert_erase hm, Finset.sum_insert (Finset.notMem_erase _ _)]
+        simp only [id_eq] at h0 hle ⊢
+        omega
+      · rw [Finset.erase_eq_self.mpr hm] at h0 hle
+        exact ⟨le_trans (by norm_num) h0, hle⟩
+    -- Count: `|Icc (-1) T| = Tn + 2` where `Tn = 1 + 2 + ⋯ + (n-1)`.
+    have hTn : T = (((Finset.Icc 1 (n - 1)).sum id : ℕ) : ℤ) := by
+      rw [hT, hP, Finset.sum_image (fun a _ b _ h => Nat.cast_injective h)]
+      push_cast
+      simp only [id_eq]
+    have hIcc : (Finset.Icc (-1 : ℤ) T).card = (Finset.Icc 1 (n - 1)).sum id + 2 := by
+      rw [Int.card_Icc, hTn]
+      omega
+    have hcard : (subsetSums (insert (-1 : ℤ) P)).card ≤ (Finset.Icc 1 (n - 1)).sum id + 2 := by
+      rw [← hIcc]
+      exact Finset.card_le_card hsub
+    -- Gauss + arithmetic: `2·Tn + 4 = (n-1)n + 4 < n(n+1) + 2` for `n ≥ 2`.
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
+    have hgauss : 2 * (Finset.Icc 1 (m + 2 - 1)).sum id = (m + 1) * (m + 2) := by
+      have h := two_mul_sum_Icc_id (m + 1)
+      have hred : m + 2 - 1 = m + 1 := rfl
+      rw [hred]
+      linarith [h]
+    nlinarith [hcard, hgauss]
+
+/-- Concrete illustration at the smallest size: `{1, -1}` realises only the three
+    subset sums `{0, 1, -1}` — one short of the four demanded of two-element
+    positive sets by `subsetSums_card_ge_quadratic'`. -/
+theorem subsetSums_pair_neg_card : (subsetSums {(1 : ℤ), -1}).card = 3 := by decide
+
 end Erdos53

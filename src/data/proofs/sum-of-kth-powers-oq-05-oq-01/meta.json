@@ -94,30 +94,38 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 39,
-      "summary": "Module docstring explaining the cast from the field-valued parent result to a Nat.ModEq statement, the imports (Mathlib and the parent file), and the namespace.",
+      "endLine": 34,
+      "summary": "Module docstring explaining the cast from the field-valued parent result to a Nat.ModEq statement, the imports (Mathlib and the parent file), the namespace, and the opens.",
       "mathContext": "$\\sum_{i<p} i^k \\pmod p$ obtained from $\\sum_{x:\\mathbb{Z}/p} x^k$."
     },
     {
       "id": "reindex",
       "title": "Residue-Cast Reindexing",
-      "startLine": 40,
-      "endLine": 55,
+      "startLine": 36,
+      "endLine": 46,
       "summary": "sum_range_cast_pow: the bijection i ↦ (i:ZMod p) on range p (inverse ZMod.val) identifies ∑_{i<p} (↑i)ᵏ with ∑_{x:ZMod p} xᵏ, via Finset.sum_nbij'.",
       "mathContext": "$\\sum_{i<p} (\\bar{i})^k = \\sum_{x:\\mathbb{Z}/p} x^k$."
     },
     {
       "id": "main",
-      "title": "Nat-Congruence Dichotomy and Corollaries",
-      "startLine": 56,
-      "endLine": 110,
-      "summary": "sum_pow_modEq (the main congruence), sum_pow_modEq_pred / sum_pow_modEq_zero (the two branches), and p_dvd_sum_pow_iff (the divisibility criterion).",
+      "title": "The Nat-Congruence Dichotomy",
+      "startLine": 48,
+      "endLine": 65,
+      "summary": "sum_pow_modEq: ∑_{i<p} iᵏ ≡ (if k≠0 ∧ (p−1)∣k then p−1 else 0) (mod p), by rewriting as an equality of ZMod p casts, pushing the cast through the sum, applying the reindexing lemma and the parent's sum_pow_zmod, and matching the −1/p−1 correspondence via Nat.cast_pred + ZMod.natCast_self.",
       "mathContext": "$\\sum_{i<p} i^k \\equiv \\begin{cases} p-1 & k \\neq 0,\\ (p-1)\\mid k \\\\ 0 & \\text{otherwise} \\end{cases} \\pmod p$"
+    },
+    {
+      "id": "corollaries",
+      "title": "Branch Corollaries and the Divisibility Criterion",
+      "startLine": 67,
+      "endLine": 99,
+      "summary": "sum_pow_modEq_pred / sum_pow_modEq_zero extract the two branches of the dichotomy; p_dvd_sum_pow_iff turns it into the divisibility criterion p ∣ ∑_{i<p} iᵏ ⟺ ¬(k≠0 ∧ (p−1)∣k), proved by contradiction (p ∣ p−1 would otherwise follow, impossible for a prime).",
+      "mathContext": "$p \\mid \\textstyle\\sum_{i<p} i^k \\iff \\neg\\big(k\\ne 0 \\wedge (p-1)\\mid k\\big)$."
     },
     {
       "id": "residues",
       "title": "Sum of Residues and Instances",
-      "startLine": 111,
+      "startLine": 101,
       "endLine": 125,
       "summary": "sum_residues_modEq (∑_{i<p} i ≡ 0 for odd primes, the k=1 case) and concrete decide-verified Nat.ModEq instances mod 5 and mod 7.",
       "mathContext": "$\\sum_{i<p} i \\equiv 0 \\pmod p$ for odd $p$; e.g. $\\sum_{i<5} i^4 = 354 \\equiv 4 \\pmod 5$."

@@ -143,7 +143,8 @@
       "**Associativity is the addition formula.** $Q^{m+n} = Q^m Q^n$ holds for the trivial reason that exponents add; reading off the $(1,2)$ entry turns this triviality into the Fibonacci addition law.",
       "**One factorisation, many identities.** The same equation $Q^{(m+1)+(n+1)} = Q^{m+1}Q^{n+1}$ yields the $(2,2)$ identity (= Mathlib's `Nat.fib_add`), the $(1,2)$ addition formula, and — via the determinant — Cassini. No per-identity induction is needed.",
       "**The closed power is the only induction.** All the combinatorial content is concentrated in $Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n]$; everything afterward is entry-reading and casting.",
-      "**Stay in ℤ.** Working with $(F_k : \\mathbb{Z})$ entries keeps matrix multiplication, the determinant, and the subtraction in Cassini genuine, with `ring` handling the entrywise algebra."
+      "**Stay in ℤ.** Working with $(F_k : \\mathbb{Z})$ entries keeps matrix multiplication, the determinant, and the subtraction in Cassini genuine, with `ring` handling the entrywise algebra.",
+      "**The adjugate replaces the inverse.** Subtraction-type identities like d'Ocagne's need a difference index $F_{a-b}$, which naively calls for $Q^{a-b} = Q^a(Q^b)^{-1}$. Since $A\\cdot\\operatorname{adj}(A) = (\\det A)\\bullet 1$ needs no inverse, substituting the adjugate for $(Q^{n+1})^{-1}$ in the factorisation keeps every exponent non-negative and sidesteps the $F_{-1}$ convention entirely — extending the 'one factorisation, many identities' pattern from products to differences."
     ],
     "prerequisites": [
       "Matrix multiplication, powers, and the determinant",

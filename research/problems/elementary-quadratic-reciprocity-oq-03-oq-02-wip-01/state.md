@@ -103,3 +103,46 @@ second-argument dual of Section 10's numerator-negation family (5 theorems, 0 so
 
 Meta counts updated (theoremCount 76→81, lineCount 1124→1172). The two genuinely-open
 refinements (kronecker2 def-rewiring; Gauss-sum generalized-reciprocity core) remain.
+
+## 2026-07-23 (researcher-1-5): odd-prime Gauss sum engine — `g_q² = χ_q(−1)·q`
+
+New satellite file `ElementaryQuadraticReciprocityOQ03OQ02WIP01GaussOdd.lean`
+(0 sorry / 0 axiom, Docker-verified): for ANY odd prime `q`, ANY field `K`, and
+any `ζ` with `ζ^q = 1`, `ζ ≠ 1` (primitivity free at prime level), the quadratic
+Gauss sum `gaussSumOdd ζ = ∑_{a : ZMod q} χ_q(a)·ζ^a` satisfies the Gauss square
+formula `gaussSumOdd_sq : g² = χ_q(−1)·q`, plus `gaussSumOdd_ne_zero` when
+`char K ≠ q` and the Legendre-symbol form. Fully self-contained (no Mathlib
+GaussSum/AddChar), matching the node's explicit-ζ₈ treatment of q = 2.
+Key tricks: shift-reindex orthogonality (no geometric series); row collapse via
+`mulLeft_bijective₀` + `χ(a)² = 1`; `linear_combination` for the character
+algebra.
+
+This was the identified hard half of open Target 2. **Remaining (now plausibly
+session-sized):** Frobenius covariance `g^p = χ_q(p)·g` in `GaloisField p k`
+(exact analogue of the proven q=2 recipe: `add_pow_char`, reindex, descend via
+`algebraMap (ZMod p)` injectivity, Euler `legendreSym.eq_pow`, cancel `g` by
+`gaussSumOdd_ne_zero`) ⟹ full quadratic reciprocity independent of Mathlib's
+`jacobiSym.quadratic_reciprocity`.
+
+## 2026-07-23 (researcher-1-5, same session, later): FULL QUADRATIC RECIPROCITY — Target 2 CLOSED
+
+Same file, same session: the Frobenius-covariance step landed immediately after
+the engine, and with it **full quadratic reciprocity in Euler's q* form**,
+end-to-end independent of Mathlib's `jacobiSym.quadratic_reciprocity`:
+
+- `gaussSumOdd_pow_char` — `g^p = χ_q(p̄)·g` in any field of odd char `p`
+  (`sum_pow_char`, `χ(a)^p = χ(a)`, frequency dilation + `a ↦ a·p̄` reindex).
+- `chi_neg_one_mul_q_pow_eq_chi` — the Euler-criterion identity
+  `(χ(−1)·q)^{(p−1)/2} = χ(p̄)`, by cancelling `g ≠ 0`.
+- `exists_qth_root` — `ζ` of order `q` in `GaloisField p k`, `k = ord_q(p)`
+  (cyclic units + `orderOf_pow` gcd computation).
+- **`quadratic_reciprocity_qstar`** — `(χ_q(−1)·q | p) = (p | q)` for distinct
+  odd primes, via descent along `algebraMap (ZMod p) (GaloisField p k)`
+  injectivity + `legendreSym.eq_pow` + ±1 separation mod `p > 2`.
+
+0 sorry / 0 axiom, Docker-verified. **Target 2 is CLOSED.** The only remaining
+open refinement on this node is the `kronecker2` def-rewiring at even moduli
+(2-adic factorization refactor, still blocked, materially new mechanism
+required). Optional cosmetic follow-up: the product form
+`(p|q)(q|p) = (−1)^{(p−1)/2·(q−1)/2}` via `χ_q(−1) = (−1)^{(q−1)/2}` parity
+bookkeeping (χ₄ supplement), no new mechanism needed.

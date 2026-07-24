@@ -47,10 +47,10 @@
     ],
     "originalContributions": [
       "Defines 3-smooth numbers and bounded-ratio representations",
-      "States the original conjecture and its disproof",
-      "Formalizes van Doorn-Everts universal representation theorem",
-      "Captures lower bound results from Erdős-Lewin (1996) and van Doorn-Everts (2025)",
-      "Includes the related 'silly conjecture' about non-divisibility",
+      "States the original conjecture as a formal Lean Prop",
+      "van Doorn-Everts universal representation theorem: documented in a source comment only — not a named Lean declaration or axiom",
+      "Lower bound results from Erdős-Lewin (1996) and van Doorn-Everts (2025): documented in source comments only — not named Lean declarations or axioms",
+      "The related 'silly conjecture' about non-divisibility: documented in a source comment only — not a named Lean declaration or axiom",
       "Provides verified computational examples"
     ],
     "axiomCount": 0,
@@ -63,7 +63,7 @@
     "historicalContext": "This problem involves 3-smooth numbers—positive integers whose only prime factors are 2 and 3 (i.e., numbers of the form 2^k · 3^l). Erdős asked whether, for any constant C > 0, the set of integers expressible as sums of distinct 3-smooth numbers with bounded ratio (largest ≤ C times smallest) has natural density zero.\n\nIn 1992, Erdős wrote about his 'silly conjecture' that every integer can be written as a sum of distinct 3-smooth numbers where no summand divides another. This was quickly proved by Jansen and others using a simple induction.\n\nThe main problem was resolved in 2025 by van Doorn and Everts, who proved that ALL integers can be represented with C = 6, completely disproving Erdős's conjecture—the set has density 1, not 0.\n\nThe optimal constant C* remains of interest: Erdős and Lewin (1996) showed C* > 2, and van Doorn and Everts showed C* ≥ 3. It is conjectured that C* > 3^10/2^14 ≈ 3.604 may suffice.",
     "problemStatement": "Let $C > 0$. Consider the set of integers $n$ expressible as\n$$n = b_1 + b_2 + \\cdots + b_t$$\nwhere $b_1 < b_2 < \\cdots < b_t$ are distinct 3-smooth numbers (of the form $2^k \\cdot 3^l$) satisfying $b_t \\leq C \\cdot b_1$.\n\n**Question**: Does this set have natural density 0?\n\n**Answer**: NO (DISPROVED). Van Doorn and Everts (2025) proved that with $C = 6$, ALL positive integers have such representations. The set has density 1, not 0.",
     "text": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b₁ < ... < bₜ with bₜ ≤ Cb₁ have density 0? Disproved: all integers have such representations with C = 6.",
-    "proofStrategy": "We formalize the problem using Mathlib's Finset operations. A 3-smooth number is defined as 2^k · 3^l for natural numbers k, l. The bounded-ratio representation property is captured by requiring the max/min ratio of the summand set to be at most C.\n\nSince the 2025 disproof involves sophisticated combinatorial arguments beyond current Mathlib capabilities, we state the main results as axioms:\n1. Universal representation with C = 6 (van Doorn-Everts)\n2. The conjecture is false (corollary)\n3. Lower bounds C > 2 (Erdős-Lewin) and C ≥ 3 (van Doorn-Everts)\n\nWe also include the 'silly conjecture' result about representations with non-divisibility.",
+    "proofStrategy": "We formalize the problem using Mathlib's Finset operations. A 3-smooth number is defined as 2^k · 3^l for natural numbers k, l. The bounded-ratio representation property is captured by requiring the max/min ratio of the summand set to be at most C.\n\nSince the 2025 disproof involves sophisticated combinatorial arguments beyond current Mathlib capabilities, the main results are documented in source comments only — not as Lean axioms or theorems:\n1. Universal representation with C = 6 (van Doorn-Everts)\n2. The conjecture is false (corollary)\n3. Lower bounds C > 2 (Erdős-Lewin) and C ≥ 3 (van Doorn-Everts)\n\nWe also include the 'silly conjecture' result about representations with non-divisibility, likewise documented in a comment only, not formalized.",
     "keyInsights": [
       "**3-smooth numbers**: Numbers of the form 2^k · 3^l form a sparse but structured subset of integers, fundamental in number theory and computer science.",
       "**Density reversal**: Erdős expected sparsity (density 0) but the set turns out to be universal (density 1 for C = 6).",
@@ -116,16 +116,16 @@
       "title": "The Disproof",
       "startLine": 84,
       "endLine": 108,
-      "summary": "Formalizes van Doorn-Everts (2025): all integers have 6-bounded representations, disproving the conjecture.",
-      "mathContext": "Bound: Formalizes van Doorn-Everts (2025): all integers have 6-bounded representations, disproving the conjecture."
+      "summary": "Documents van Doorn-Everts (2025) in a source comment (not a Lean declaration): all integers have 6-bounded representations, disproving the conjecture.",
+      "mathContext": "Bound: documented in a source comment only, not a named Lean declaration or axiom — van Doorn-Everts (2025): all integers have 6-bounded representations, disproving the conjecture."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Optimal C",
       "startLine": 109,
       "endLine": 135,
-      "summary": "Captures results showing C* > 2 (Erdős-Lewin) and C* ≥ 3 (van Doorn-Everts).",
-      "mathContext": "Captures results showing C* > 2 (Erdős-Lewin) and C* $\\geq$ 3 (van Doorn-Everts)."
+      "summary": "Documents results showing C* > 2 (Erdős-Lewin) and C* ≥ 3 (van Doorn-Everts) in source comments only, not as named Lean declarations or axioms.",
+      "mathContext": "Documented in source comments only, not named Lean declarations or axioms — results showing C* > 2 (Erdős-Lewin) and C* $\\geq$ 3 (van Doorn-Everts)."
     },
     {
       "id": "silly-conjecture",
@@ -145,7 +145,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalized Erdős Problem #845, which asked whether bounded-ratio sums of 3-smooth numbers form a density-0 set. The 2025 breakthrough by van Doorn and Everts definitively disproved this—all integers have 6-bounded representations. We captured the main results as axioms and included the related 'silly conjecture' about non-divisibility representations.",
+    "summary": "We formalized definitions for Erdős Problem #845 (3-smooth numbers, bounded-ratio representations, and the original conjecture as a Lean Prop), which asked whether bounded-ratio sums of 3-smooth numbers form a density-0 set. The 2025 breakthrough by van Doorn and Everts definitively disproved this—all integers have 6-bounded representations. The main results (the disproof, the lower bounds, and the related 'silly conjecture' about non-divisibility) are documented in source comments only; they are not formalized as Lean axioms or theorems.",
     "implications": "This resolution demonstrates that 3-smooth numbers are remarkably flexible for additive representations. The techniques may have applications in digital signal processing (where 3-smooth numbers appear as shift-and-add multipliers) and algorithmic number theory.",
     "openQuestions": [
       "What is the exact optimal constant C* such that all integers have C*-bounded representations?",

@@ -4,7 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T19:18:01-07:00
-**Iteration**: 5
+**Iteration**: 11
+
+## Status (S24, researcher-1, 2026-07-23) — merging loss bound: analytic half of re-cutting DONE
+
+New file `SzemerediRegularityOQ04MergeLoss.lean` (8 public thm + 3 private, 0 ax, 0 sorry,
+docker-VERIFIED 8582 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on all
+capstones). Replacing a subfamily `D` of a pairwise-disjoint family `Q` while retaining
+`Q \ D` loses at most `2·mass(D)/n` of partition energy (`partitionEnergy_replace_ge`);
+consumer form `partitionEnergy_replace_ge_of_small` gives loss ≤ `2·|D|·m/n` for ≤-size-`m`
+pieces, matching S23's ≤ `P.card` deficient remainders. The re-equitization residual is now
+PURELY COMBINATORIAL: re-cut the pooled deficient union into size-`m` chunks (S22 chopping
+engine) + parameter bookkeeping `2·|P|·m/n` « retained gain, then feed
+`exists_afksTwoLevel_of_maintained_oracle`.
 
 ## Status (S16, researcher-1, 2026-07-22) — DENSITY GAP forbids a doubly-trivial split
 
@@ -479,3 +491,59 @@ disjoint, refines, energy gain `E⁴·m²/n²`) and what the maintained oracle n
 (additionally equitable + mass floor `m`, keeping any positive fraction `δ` of the
 gain) — the classical AFKS re-equitization bookkeeping. Nothing else remains between
 the current engine and the two-level conclusion from a seed partition.
+
+## Status (S22, researcher-1, 2026-07-23) — seed existence closed: the small follow-up is done
+
+New file `SzemerediRegularityOQ04Seed.lean` (8 thm, 0 ax, 0 sorry, docker-verified).
+Discharges the seed input of the S21 capstone; the OQ-04 program's remaining gap
+is now EXACTLY ONE statement (re-equitization).
+
+- `exists_uniform_blocks` / `exists_two_size_blocks` — chopping engine: a finset of
+  card `k·c` (resp. `a·m + b·(m+1)`) splits into pairwise disjoint covering blocks
+  of size `c` (resp. sizes in `{m, m+1}`). Induction peeling one block via
+  `Finset.exists_subset_card_eq`.
+- `exists_two_size_decomposition` — arithmetic gate: `m² ≤ n+1` (m > 0) gives
+  `n = a·m + b·(m+1)` (write `n = qm+r`; the bound forces `r ≤ q`; threshold m²−1
+  is sharp: n = m²−2 fails). Subtraction-free proof via `Nat.exists_eq_add_of_le`.
+- `exists_equitable_refinement` — a pairwise disjoint family with all parts
+  `m² ≤ card+1` refines into blocks ALL of sizes `{m, m+1}` — equitability is
+  GLOBAL across parents, exactly the S21 invariant shape.
+- `exists_equitable_seed` — packages the five capstone seed obligations
+  (cover, disjoint, `IsRefinement`, `(card:ℤ)` difference ≤ 1, mass floor `(m:ℚ)`).
+- `exists_afksTwoLevel_of_large_parts` — capstone corollary: seed hypotheses
+  REPLACED by the size condition `m² ≤ P.card + 1` on coarse parts.
+- `exists_afksTwoLevel_of_maintained_oracle_unit` — at scale m = 1 the size
+  condition is vacuous: NO seed hypothesis at all (singleton refinement).
+
+**What remains (THE single gap, unchanged):** re-equitization — upgrade the
+bare-split successor of `exists_energy_next_of_not_afksFineRegular` to an
+invariant-maintaining one keeping a positive fraction of the `E⁴m²/n²` gain.
+The Seed file's chopping engine (blocks of sizes {m, m+1} from
+`Finset.exists_subset_card_eq` peeling) is a plausible building block for the
+bespoke equitabilise that re-equitization needs.
+
+## Status (S23, researcher-1, 2026-07-23) — re-equitization refinement half: chop-refine with full energy retention
+
+New file `SzemerediRegularityOQ04ChopRefine.lean` (2 thm, 0 ax, 0 sorry, docker-verified).
+Splits the re-equitization residual into two halves and closes the first:
+
+- `exists_chop_pieces` — single-block chopping engine: every finite set `A` splits into a
+  pairwise-disjoint family of nonempty pieces covering `A`, each of size `≤ m`, with **at
+  most one** deficient piece (size `< m`) — all others exactly `m`. Strong induction on
+  `A`, peeling size-`m` subsets via `Finset.exists_subset_card_eq`; the base block is the
+  unique possible deficient piece, and `Finset.filter_insert`/`if_neg` threads the ≤ 1
+  count through the recursion.
+- `exists_chop_refinement` — family capstone: every pairwise-disjoint family `P` admits a
+  chopped refinement `Q` (every piece inside a block of `P`, same union, pairwise
+  disjoint, all pieces nonempty of size `≤ m`, at most `P.card` deficient pieces) with
+  `partitionEnergy G P ≤ partitionEnergy G Q` — FULL energy retention, no `δ`-fraction
+  loss, because `Q` genuinely refines `P` so the S20 simultaneous-refinement monotonicity
+  `partitionEnergy_refine_mono` applies verbatim.
+
+**What this leaves (the merging half — now THE residual gap):** pool the `≤ P.card`
+deficient remainders and re-cut them into size-`m` chunks. That step is NOT a refinement,
+so its energy loss must be bounded by the small total mass of the pooled set
+(`≤ P.card · m`), which is where the positive-fraction `δ` of the gain is finally spent.
+The deficient-piece count bound proved here is exactly the mass-control input that
+argument consumes. Nothing else stands between the chop-refine layer and the maintained
+oracle of `exists_afksTwoLevel_of_maintained_oracle`.

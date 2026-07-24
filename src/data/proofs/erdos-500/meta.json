@@ -7,7 +7,7 @@
     "author": "Turán (1941, construction); de Caen (1994, upper bound); Razborov (2010, flag algebras); Erdős (problem formulation)",
     "sourceUrl": "https://erdosproblems.com/500",
     "date": "1941",
-    "status": "axiomatized",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos500Problem.lean",
     "tags": [
       "erdos",
@@ -45,20 +45,12 @@
       "IsThreeUniform: 3-uniformity predicate",
       "ContainsK4_3: K₄³ containment predicate",
       "IsK4Free: K₄³-freeness predicate",
-      "ex3_K4: Turán number (axiomatized with achievability and optimality)",
-      "turanDensityK4_3: Turán density π(K₄³) (axiomatized)",
-      "turanDensity_exists: density limit exists (axiomatized)",
-      "turan_lower_bound: π ≥ 5/9 (axiomatized)",
-      "turan_construction_bound: finite n bound (axiomatized)",
-      "razborov_upper_bound: π ≤ 0.5612 (axiomatized)",
-      "turan_conjecture: π = 5/9 (axiomatized, OPEN)",
-      "Exact values: ex₃(4)=3, ex₃(5)=7, ex₃(6)=13 (axiomatized)",
-      "gap_bounds: combined interval 5/9 ≤ π ≤ 0.5612 (axiomatized)"
+      "ex₃(n, K₄³) Turán number, the Turán density π(K₄³), Turán's lower bound (π ≥ 5/9), Razborov's upper bound (π ≤ 0.5612), the conjecture (π = 5/9), exact small values, and the combined gap bounds are documented only as comment headers in the file — not stated as axioms, defs, or theorems"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
     "lineCount": 58,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. No axioms exist or ever existed as declarations in the Lean source. The Turán density, its bounds, and the conjecture are documented only in bare comment headers (no identifiers, no axiom/def/theorem declarations) — they are not axiomatized.",
     "theoremCount": 0,
     "definitionCount": 4
   },
@@ -66,7 +58,7 @@
     "historicalContext": "Pál Turán posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. He constructed a $K_4^{(3)}$-free 3-uniform hypergraph with $(5/9+o(1))\\binom{n}{3}$ edges by partitioning vertices into 3 equal parts and taking all triples not contained in a single part. He conjectured this is optimal: $\\pi(K_4^{(3)}) = 5/9$. Erdős championed the problem from the 1960s onward (formulating it in 1961, 1971, 1974, 1981) and offered \\$500 for its resolution—hence its number as Problem #500. De Caen (1994) proved $\\pi \\leq 1/\\sqrt{2} \\approx 0.707$ using algebraic methods. Alexander Razborov's revolutionary flag algebra method (2007, applied to this problem in 2010) dramatically improved the upper bound to $\\pi \\leq 0.5611666\\ldots$, narrowing the gap to $\\approx 0.006$. The Katona–Nemetz–Simonovits theorem (1964) guarantees the Turán density exists. Despite 80+ years of effort, the problem remains wide open and is often called the most important unsolved problem in extremal combinatorics.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nDetermine $\\text{ex}_3(n, K_4^{(3)})$: the maximum number of 3-element subsets of an $n$-element set that can be chosen without containing all four 3-subsets of any 4-element set.\n\n**Turán density:** $\\pi(K_4^{(3)}) = \\lim_{n \\to \\infty} \\frac{\\text{ex}_3(n, K_4^{(3)})}{\\binom{n}{3}}$.\n\n**Turán's Conjecture (1941):** $\\pi(K_4^{(3)}) = 5/9 \\approx 0.5556$.\n\n**Best bounds:** $5/9 \\leq \\pi(K_4^{(3)}) \\leq 0.5612$ (Razborov 2010).",
     "text": "Determine ex₃(n, K₄³): the maximum number of 3-edges on n vertices avoiding K₄³. Turán (1941) conjectured π(K₄³) = 5/9. Best bounds: 5/9 ≤ π ≤ 0.5612 (Razborov 2010). Status: OPEN.",
-    "proofStrategy": "The formalization defines 3-uniform hypergraphs as $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, the $K_4^{(3)}$ containment predicate, and the Turán number as an axiomatized function with achievability and optimality guarantees. The Turán density, its existence (KNS theorem), Turán's lower bound, Razborov's upper bound, the conjecture, and exact small values are all axiomatized.",
+    "proofStrategy": "The formalization defines 3-uniform hypergraphs as $\\texttt{Finset}(\\texttt{Finset}(\\texttt{Fin}\\ n))$, the $K_4^{(3)}$ containment predicate, and the K₄³-freeness predicate — the only 4 declarations in the file. The Turán number, the Turán density, its existence (KNS theorem), Turán's lower bound, Razborov's upper bound, the conjecture, and exact small values are documented only in comment headers, not stated as axioms, defs, or theorems.",
     "keyInsights": [
       "**Turán's 3-partition (1941):** Partition $[n]$ into 3 equal parts, take all triples not within one part. This gives $\\binom{n}{3} - 3\\binom{n/3}{3} = (5/9+o(1))\\binom{n}{3}$ edges and is $K_4^{(3)}$-free",
       "**Razborov's flag algebras (2010):** Reduced the upper bound from $1/\\sqrt{2} \\approx 0.707$ to $0.5612$, the most powerful computer-assisted technique in extremal combinatorics",
@@ -122,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #500 (Turán's hypergraph problem) remains OPEN after 80+ years. The conjectured answer π(K₄³) = 5/9 is supported by Turán's 1941 construction and all known exact values. The best upper bound 0.5612 (Razborov 2010, flag algebras) leaves a gap of only ~0.006. The formalization axiomatizes all key results: Turán's construction, Razborov's bound, and the conjecture.",
+    "summary": "Erdős Problem #500 (Turán's hypergraph problem) remains OPEN after 80+ years. The conjectured answer π(K₄³) = 5/9 is supported by Turán's 1941 construction and all known exact values. The best upper bound 0.5612 (Razborov 2010, flag algebras) leaves a gap of only ~0.006. The formalization defines the core hypergraph/K₄³-freeness predicates (0 axioms, 0 sorries); Turán's construction, Razborov's bound, and the conjecture itself are documented only as comment headers, not formalized or axiomatized.",
     "implications": "A resolution would be a landmark in extremal combinatorics, establishing whether partition-based constructions are optimal for hypergraph Turán problems. The flag algebra methodology developed for this problem has already revolutionized the field, proving numerous other extremal results.",
     "openQuestions": [
       "Is Turán's 3-partition construction optimal? (π(K₄³) = 5/9?)",

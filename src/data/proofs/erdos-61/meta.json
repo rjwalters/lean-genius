@@ -48,7 +48,7 @@
     "originalContributions": [
       "Formal definition of Erdős-Hajnal lower bound property",
       "Statement of the main conjecture as a Prop",
-      "Axioms for 1989 and 2023 partial results",
+      "Documentation of the 1989 and 2023 partial results in header prose (not formalized as axioms or theorems)",
       "Concrete example graphs (triangle, 3-path)"
     ],
     "axiomCount": 0,
@@ -113,29 +113,29 @@
     },
     {
       "id": "partial-results",
-      "title": "Partial Results (Axioms)",
+      "title": "Partial Results (Documented, Not Formalized)",
       "startLine": 87,
       "endLine": 112,
-      "summary": "Axioms for the 1989 and 2023 bounds that have been proved."
+      "summary": "Prose documentation of the 1989 and 2023 bounds; not formalized as axioms or theorems."
     },
     {
       "id": "examples",
       "title": "Example Graphs",
       "startLine": 113,
       "endLine": 138,
-      "summary": "Concrete definitions of triangle and 3-path graphs, plus axiom for paths."
+      "summary": "Concrete definitions of triangle and 3-path graphs used as examples."
     },
     {
       "id": "foundational-lemmas",
       "title": "Foundational Lemmas (Axiom-Free)",
       "startLine": 139,
       "endLine": 170,
-      "summary": "Two axiom-free foundational lemmas: `isErdosHajnalLowerBound_zero` (the constant $0$ function is always a valid Erdos-Hajnal lower bound) and `IsErdosHajnalLowerBound.mono` (a valid lower bound stays valid under pointwise decrease). These are the only machine-checked results in the file; the quantitative bounds remain axioms.",
+      "summary": "Two axiom-free foundational lemmas: `isErdosHajnalLowerBound_zero` (the constant $0$ function is always a valid Erdos-Hajnal lower bound) and `IsErdosHajnalLowerBound.mono` (a valid lower bound stays valid under pointwise decrease). These are the only machine-checked results in the file; the quantitative bounds (1989, BNSS 2023) are documented in prose only and are not formalized.",
       "mathContext": "If $f$ is admissible and $g\\le f$ pointwise then $g$ is admissible; and $f\\equiv 0$ is trivially admissible."
     }
   ],
   "conclusion": {
-    "summary": "We formalize the Erdős–Hajnal conjecture, one of the most important open problems in graph theory. The conjecture asks whether forbidding any fixed induced subgraph H forces polynomial-size cliques or independent sets. While the main conjecture remains open, we state the partial results (exp-of-sqrt-log bounds) as axioms.",
+    "summary": "We formalize the Erdős–Hajnal conjecture, one of the most important open problems in graph theory. The conjecture asks whether forbidding any fixed induced subgraph H forces polynomial-size cliques or independent sets. While the main conjecture remains open, we document the partial results (exp-of-sqrt-log bounds) in prose only; they are not formalized as axioms or theorems.",
     "implications": "**Theoretical Significance**: If proved, the Erdős-Hajnal conjecture would revolutionize our understanding of graph structure.\n\nIt would imply that avoiding even simple patterns like a 5-cycle forces global regularity. The techniques developed might apply to many other problems in extremal combinatorics.",
     "openQuestions": [
       "Is the conjecture true? (The main open question)",

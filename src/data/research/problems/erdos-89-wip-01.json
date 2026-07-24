@@ -29,7 +29,7 @@
         "blockedAt": "2026-07-21"
       }
     ],
-    "nextAction": "All remaining directions are HARD/large, not elementary: (1) g(6) ≥ 3 ≡ sharp planar two-distance-set ≤ 5 points (Kelly/Erdős, beyond the Larman–Rogers–Seidel rank ceiling); (2) general regular-n-gon upper bound g(n) ≤ ⌊n/2⌋ (chord-length trig infrastructure, ~250+ lines); (3) √n × √n grid toward the conjectured rate. STAND DOWN unless taking on one of these as a full dedicated session.",
+    "nextAction": "Lower bounds only: g(6) = g(7) = 3 both need the planar two-distance-set ≤ 5-points theorem (registered blocker). Upper side is saturated: n-gon gives ⌊n/2⌋ uniformly; beating it needs grid/Erdős constructions (√n-type, large n only). Do not add more small-n upper witnesses.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-21, researcher-1): g(6) ≤ 3 shipped axiom-free via the regular pentagon plus its circumcentre (minDistinctDistances_six_le_three; Docker-verified). The 5 centre-to-vertex spokes all equal the circumradius 4, and the 10 intra-pentagon distances reuse the g(5)=2 side/diagonal values, so the 6-point config realizes exactly the 3 distances {4, √(40−8√5), √(40+8√5)}. Combined with monotonicity g(6) ≥ g(5) = 2 this sandwiches g(6) ∈ [2,3] (minDistinctDistances_six_mem_Icc). Exact table still pinned through n=5: g(0)=g(1)=0, g(2)=g(3)=1, g(4)=g(5)=2. Pinning g(6)=3 needs the sharp two-distance-set ≤ 5-points bound (deep, beyond LRS rank ≤ 6).",
+    "progressSummary": "PROGRESS (2026-07-23, researcher-1): regular n-gon upper bound g(n) ≤ ⌊n/2⌋ shipped axiom-free in new file Erdos89WIP01Ngon.lean (minDistinctDistances_le_half; Docker-verified). Chord-length formula dist = 2|sin(π(i−j)/n)| proved once; vertex injectivity DERIVED from it (dist 0 ⟹ sin = 0 in (−π,π) ⟹ i = j, no separate coordinate geometry); index reflection min(m, n−m) via sin(π−x) = sin x. Halves the progression bound n−1; one uniform witness recovers the entire known upper ladder (tight at n = 3,4,5; hexagon re-derives g(6) ≤ 3) and adds the FIRST new entry: 2 ≤ g(7) ≤ 3 (minDistinctDistances_seven_mem_Icc). Exact table still pinned through n=5; g(6) = g(7) = 3 both blocked on the planar two-distance-set ≤ 5-points bound.",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -74,7 +74,12 @@
       "pentagonPlusCenter (6-point config) + pentagonPlusCenter_card = 6",
       "numDistinctDistances_pentagonPlusCenter_le_three: the 15 pairwise distances lie in {4, √(40−8√5), √(40+8√5)} ⇒ ≤ 3 (Erdos89WIP01.lean)",
       "minDistinctDistances_six_le_three: g(6) ≤ 3 (axiom-free)",
-      "minDistinctDistances_six_mem_Icc: sandwich g(6) ∈ [2,3] (floor via monotonicity g(6) ≥ g(5) = 2)"
+      "minDistinctDistances_six_mem_Icc: sandwich g(6) ∈ [2,3] (floor via monotonicity g(6) ≥ g(5) = 2)",
+      "ngonPoint/ngonSet + dist_ngonPoint chord-length formula 2|sin(π(i−j)/n)| in Erdos89WIP01Ngon.lean",
+      "ngonPoint_injOn: vertex distinctness derived from the chord formula (sin_eq_zero_iff_of_lt_of_lt)",
+      "two_sin_mem_image: index reflection m ↦ min(m, n−m) via Real.sin_pi_sub",
+      "minDistinctDistances_le_half: g(n) ≤ ⌊n/2⌋ (halves minDistinctDistances_le_pred)",
+      "minDistinctDistances_seven_le_three + minDistinctDistances_seven_mem_Icc: 2 ≤ g(7) ≤ 3"
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -91,7 +96,10 @@
       "g(5) = 2 CLOSED (axiom-free): the regular pentagon is the planar 2-distance witness for the g(5) ≤ 2 upper bound, matching the general floor g(5) ≥ 2.",
       "Nested-radical distance computation is tractable via congr 1 + linear_combination: for pentagon of circumradius 4 the squared distances are 40∓8√5, and the only nonlinear identity needed is t1·t2 = 4√5 (t1=√(10+2√5), t2=√(10−2√5)), from (10+2√5)(10−2√5)=80=(4√5)².",
       "g(6) ≤ 3 realized by regular pentagon + circumcentre: 10 intra-pentagon distances reuse the g(5) side/diagonal values; 5 centre-to-vertex spokes all equal the circumradius 4 ⇒ exactly 3 distinct distances.",
-      "The matching lower bound g(6) ≥ 3 is equivalent to the SHARP planar two-distance statement (a 2-distance set in ℝ² has ≤ 5 points, Kelly/Erdős), which is strictly beyond the elementary Larman–Rogers–Seidel rank ceiling ≤ (d+1)(d+2)/2 = 6 — so g(6) = 3 stays the open lower-bound direction."
+      "The matching lower bound g(6) ≥ 3 is equivalent to the SHARP planar two-distance statement (a 2-distance set in ℝ² has ≤ 5 points, Kelly/Erdős), which is strictly beyond the elementary Larman–Rogers–Seidel rank ceiling ≤ (d+1)(d+2)/2 = 6 — so g(6) = 3 stays the open lower-bound direction.",
+      "The n-gon bound is proof-economical: injectivity and the distance census both flow from ONE trig identity (cosA−cosB)²+(sinA−sinB)² = 4sin²((A−B)/2), so no per-vertex coordinate lemmas are needed — contrast the pentagon witness which needed dozens of bespoke dist_* lemmas",
+      "Name-stability tactic: avoid div_lt_iff/lt_div_iff (renamed in recent Mathlib); the calc through div_eq_mul_inv + mul_lt_mul_of_pos_right + field_simp is drift-proof",
+      "g(n) ≤ ⌊n/2⌋ is tight at n = 3,4,5 and conjecturally at 6,7 — the first n where the n-gon is provably beaten is far out (grid constructions); so all remaining ladder work is LOWER bounds, which stay blocked on two-distance-set machinery"
     ],
     "mathlibGaps": [],
     "nextSteps": [

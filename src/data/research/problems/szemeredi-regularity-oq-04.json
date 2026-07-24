@@ -20,13 +20,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 8,
-    "focus": "S21 (2026-07-23): recursive chain construction DONE in oracle form — SzemerediRegularityOQ04Chain.lean proves exists_fine_of_potential_oracle (abstract invariant/potential chain: choose successor on the subtype {q // Inv q}, iterate, contradict no_infinite_energy_increments), partitionEnergy_gain_of_witnessed_both (per-step eps^4 m^2/n^2 gain of EITHER witness shape, factored from S19), exists_energy_next_of_not_afksFineRegular (S20 single step in energy form), and exists_afksFineRegular/exists_afksTwoLevel_of_maintained_oracle (the two-level AFKS conclusion from a seed + an invariant-MAINTAINING step oracle; no horizon N appears). [VERIFIED 0 axioms, docker 8598 jobs] The single remaining analytic gap is RE-EQUITIZATION: upgrade the bare-split successor (cover/disjoint/refines + gain) to one that is also equitable with mass floor m, keeping a positive fraction of the gain.",
+    "iteration": 11,
+    "focus": "S24 (2026-07-23): re-equitization MERGING-HALF ANALYTIC CORE closed - SzemerediRegularityOQ04MergeLoss.lean proves partitionEnergy_replace_ge: replacing a subfamily D of a pairwise-disjoint family Q (keeping Q \\ D) loses at most 2*mass(D)/n of partition energy (pairEnergy <= weight since density <= 1; cross blocks touching D carry <= 2*mass(D)*mass(Q)/n^2; energy monotone under family inclusion). Consumer form partitionEnergy_replace_ge_of_small: <= |D| pieces of size <= m cost <= 2*|D|*m/n, matching S23's <= P.card deficient remainders. Residual: the combinatorial re-cut of the pooled deficient union into size-m chunks (S22 chopping engine applies) plus parameter choice 2*|P|*m/n below the retained gain fraction, then feed exists_afksTwoLevel_of_maintained_oracle.",
     "blockers": [],
-    "nextAction": "The ONE remaining gap: re-equitization. Bridge the delta between exists_energy_next_of_not_afksFineRegular (bare split: cover, disjoint, refines, energy gain E^4 m^2/n^2) and the maintained oracle of exists_afksTwoLevel_of_maintained_oracle (additionally equitable + mass floor m, any positive retained gain delta). Classical averaging/re-partition bookkeeping; Mathlib's Finpartition.equitabilise is the natural tool but the engine works with raw Finset (Finset V) families, so a bridge or bespoke equitabilise is needed. Also small: seed existence (initial equitable mass-m refinement of Vparts). Deep but sharply specified."
+    "nextAction": "THE residual gap: the MERGING half of re-equitization. Pool the <= P.card deficient remainders produced by exists_chop_refinement and re-cut them into size-m chunks. This step is NOT a refinement, so energy can drop - bound the loss by the small total pooled mass (<= P.card * m << n at the fine mesh), spending the positive fraction delta of the E^4 m^2/n^2 gain there. Output must satisfy the maintained-oracle invariant of exists_afksTwoLevel_of_maintained_oracle (cover, disjoint, refines Vparts, equitable, mass floor m). The chop layer already supplies the deficient-piece count bound the mass argument consumes. Do not re-derive seed existence (S22) or the chop layer (S23)."
   },
   "knowledge": {
-    "progressSummary": "Item-1 dichotomy: constructive core COMPLETE at the pair level. S12-S15 packaging/freshness/mass-floor/ceiling; S16 gap forbids doubly-trivial splits; S17 asymmetric 3-piece predicate IsWitnessedSharpStep3 + trichotomy (one normalized shape covers both degenerate sides via edgeDensity_symm); S18 (2026-07-22) the one-sided DEFECT energy inequality: deviation of ONE half from the PARENT density gains (|A1||B|/n^2)*delta^2 (defect_energy_bound, multiplicative mean, empty complement allowed), and with the eps-mass floor the 3-piece step gains eps^3*|A||B|/n^2 (pairEnergy_step3_gain, capstone pairEnergy_gain_of_isWitnessedSharpStep3). Remaining: outer-loop chain construction threading both step shapes (deep).",
+    "progressSummary": "Item-1 dichotomy: constructive core COMPLETE at the pair level. S12-S15 packaging/freshness/mass-floor/ceiling; S16 gap forbids doubly-trivial splits; S17 asymmetric 3-piece predicate IsWitnessedSharpStep3 + trichotomy (one normalized shape covers both degenerate sides via edgeDensity_symm); S18 (2026-07-22) the one-sided DEFECT energy inequality: deviation of ONE half from the PARENT density gains (|A1||B|/n^2)*delta^2 (defect_energy_bound, multiplicative mean, empty complement allowed), and with the eps-mass floor the 3-piece step gains eps^3*|A||B|/n^2 (pairEnergy_step3_gain, capstone pairEnergy_gain_of_isWitnessedSharpStep3). Remaining: outer-loop chain construction threading both step shapes (deep). S23 (2026-07-23): refinement half of re-equitization closed (ChopRefine, 2 thm, 0 ax, docker-verified); remaining gap is exactly the merging half (absorb <= P.card deficient remainders at energy cost bounded by pooled mass).",
     "builtItems": [
       "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
@@ -101,7 +101,10 @@
       "SzemerediRegularityOQ04StepRealize.lean (S20): split_freshness3 + isWitnessedSharpStep3_of_split_of_nonempty/_gap, refined4/refined3 cover/disjoint/refines invariants, exists_witnessed_next_of_not_afksFineRegular (single-step realization)",
       "exists_fine_of_potential_oracle (abstract invariant/potential chain construction) in SzemerediRegularityOQ04Chain.lean",
       "partitionEnergy_gain_of_witnessed_both + exists_energy_next_of_not_afksFineRegular (per-step energy form) in SzemerediRegularityOQ04Chain.lean",
-      "exists_afksFineRegular_of_maintained_oracle + exists_afksTwoLevel_of_maintained_oracle (two-level AFKS from a maintained step oracle) in SzemerediRegularityOQ04Chain.lean"
+      "exists_afksFineRegular_of_maintained_oracle + exists_afksTwoLevel_of_maintained_oracle (two-level AFKS from a maintained step oracle) in SzemerediRegularityOQ04Chain.lean",
+      "SzemerediRegularityOQ04Seed.lean (S22): seed existence - chopping engine exists_uniform_blocks/exists_two_size_blocks (peel blocks via Finset.exists_subset_card_eq), exists_two_size_decomposition (m^2<=n+1 => n=a*m+b*(m+1), subtraction-free), exists_equitable_refinement (global {m,m+1} block sizes across parents), exists_equitable_seed (all five S21 seed obligations), exists_afksTwoLevel_of_large_parts (capstone from size condition m^2<=P.card+1), exists_afksTwoLevel_of_maintained_oracle_unit (m=1: no seed hypothesis).",
+      "exists_chop_pieces in SzemerediRegularityOQ04ChopRefine.lean - single-block chopping engine, at most one deficient piece",
+      "exists_chop_refinement in SzemerediRegularityOQ04ChopRefine.lean - family chop-refinement with full partitionEnergy retention and <= P.card deficient pieces"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -144,7 +147,10 @@
       "The whole-partition lift of the 3-piece gain needs no new analysis: the A-row/column and (A,A) cell are unchanged, the B-rows/columns, (B,A) cross and B^2 diagonal split by pairEnergy monotonicity, and only the (A,B) cross consumes pairEnergy_step3_gain — Assembly.lean's block-decomposition template transfers verbatim with five instead of eight block inequalities.",
       "Chain recursion without dependent Nat.rec pain: choose the successor map on the subtype {q // Inv q} and use Function.iterate; iterate_succ_apply' hands the step lemma exactly the form it wants, and the [0,1]-potential engine kills the by_contra branch",
       "A '∀ chain through (q,q') at (n,n+1)' witness becomes a pair statement by instantiating the chain fun i => if i = 0 then q else q' at n = 0; both side conditions are simp",
-      "The oracle formulation removes the horizon N entirely: exists_afksTwoLevel_of_maintained_oracle has no step count, replacing the S19 dichotomy form that needed hN and a chain given in advance; re-equitization is now THE isolated residual"
+      "The oracle formulation removes the horizon N entirely: exists_afksTwoLevel_of_maintained_oracle has no step count, replacing the S19 dichotomy form that needed hN and a chain given in advance; re-equitization is now THE isolated residual",
+      "S23: Re-equitization factors cleanly into a REFINEMENT half (chop each block into size-m pieces + at most one remainder per block; retains ALL energy via partitionEnergy_refine_mono since it is a genuine refinement) and a MERGING half (pool the <= P.card remainders, re-cut into size-m chunks; NOT a refinement, loss bounded by pooled mass). Only the merging half remains.",
+      "S23 Lean idiom: on Set.PairwiseDisjoint goals, after intro the target is Function.onFun Disjoint f A B; rw [Finset.disjoint_left] fails to match through the wrapper - simp only [Function.onFun] first (exact with a Disjoint-typed term still works, defeq).",
+      "S23 Lean idiom: omit [Fintype V] in must precede the docstring; placed between -/ and theorem it is a parse error."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -414,7 +420,40 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Chain.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Seed.lean",
+      "filename": "SzemerediRegularityOQ04Seed.lean",
+      "lineCount": 374,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Seed.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04ChopRefine.lean",
+      "filename": "SzemerediRegularityOQ04ChopRefine.lean",
+      "lineCount": 192,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04ChopRefine.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04MergeLoss.lean",
+      "filename": "SzemerediRegularityOQ04MergeLoss.lean",
+      "lineCount": 238,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04MergeLoss.lean"
     }
   ],
-  "lastUpdate": "2026-07-23"
+  "lastUpdate": "2026-07-23T23:59:00Z"
 }

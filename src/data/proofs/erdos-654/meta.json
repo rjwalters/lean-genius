@@ -64,40 +64,32 @@
       "title": "Known Lower Bound",
       "startLine": 43,
       "endLine": 49,
-      "summary": "Axiomatizes the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$.",
-      "mathContext": "Axiomatized: Axiomatizes the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$."
+      "summary": "Records in a comment (not an axiom) the known bound: every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$.",
+      "mathContext": "Comment only, no Lean declaration: notes the known bound that every point has $\\ge (n-1)/3$ distinct distances under no-four-concyclic, by pigeonhole with multiplicity $\\le 3$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 51,
       "endLine": 60,
-      "summary": "Axiomatizes Erdős Problem #654: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances.",
-      "mathContext": "Axiomatized: Axiomatizes Erdős Problem #654: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances."
+      "summary": "States Erdős Problem #654 in a comment (not an axiom or theorem): $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances.",
+      "mathContext": "Comment only, no Lean declaration: states Erdős Problem #654 as $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, any no-four-concyclic configuration has some point with $\\ge (1-\\varepsilon)n$ distinct distances. Neither axiomatized nor proved."
     },
     {
       "id": "general-position",
       "title": "General Position and Erdős-Pach Variant",
       "startLine": 62,
       "endLine": 78,
-      "summary": "Defines `NoThreeCollinear P` (no three points on a line) and axiomatizes the Erdős-Pach (1990) weaker conjecture: some point has $\\ge (1/3 + c)n$ distinct distances under general position.",
-      "mathContext": "Formal definition: Defines `NoThreeCollinear P` (no three points on a line) and axiomatizes the Erdős-Pach (1990) weaker conjecture: some point has $\\ge (1/3 + c)n$ distinct distances under general position."
+      "summary": "Defines `NoThreeCollinear P` (no three points on a line) and states the Erdős-Pach (1990) weaker conjecture in a comment (not an axiom): some point has $\\ge (1/3 + c)n$ distinct distances under general position.",
+      "mathContext": "Formal definition: Defines `NoThreeCollinear P` (no three points on a line). The Erdős-Pach (1990) weaker conjecture — some point has $\\ge (1/3 + c)n$ distinct distances under general position — is recorded only in a comment, not as an axiom."
     },
     {
       "id": "guth-katz",
       "title": "Guth-Katz Context",
-      "startLine": 80,
-      "endLine": 89,
-      "summary": "Axiomatizes the Guth-Katz (2015) result: $\\Omega(n / \\log n)$ total distinct distances for any $n$-point set, providing context for the stronger per-point question of Problem #654.",
-      "mathContext": "Axiomatizes the Guth-Katz (2015) result: $\\Omega(n / \\$\\log n$)$ total distinct distances for any $n$-point set, providing context for the stronger per-point question of Problem #654."
-    },
-    {
-      "id": "guth-katz",
-      "title": "Guth-Katz Context",
-      "startLine": 84,
-      "endLine": 93,
-      "summary": "Axiomatizes the Guth-Katz (2015) result: any $n$-point set has $\\Omega(n / \\log n)$ total distinct distances. This is a global bound on all pairwise distances, providing context for the stronger per-point question of Problem #654.",
-      "mathContext": "Guth-Katz (2015): $\\exists c > 0$ such that the number of distinct pairwise distances is $\\ge c \\cdot n / \\log n$. This landmark result used polynomial partitioning and the Elekes-Sharir framework, but addresses total distances rather than distances from a single point. Problem #654 asks for near-$n$ distinct distances from one point under geometric restrictions."
+      "startLine": 66,
+      "endLine": 71,
+      "summary": "Notes the Guth-Katz (2015) result in a comment (not an axiom): any $n$-point set has $\\Omega(n / \\log n)$ total distinct distances. This is a global bound on all pairwise distances, providing context for the stronger per-point question of Problem #654.",
+      "mathContext": "Comment only, no Lean declaration. Guth-Katz (2015): $\\exists c > 0$ such that the number of distinct pairwise distances is $\\ge c \\cdot n / \\log n$. This landmark result used polynomial partitioning and the Elekes-Sharir framework, but addresses total distances rather than distances from a single point. Problem #654 asks for near-$n$ distinct distances from one point under geometric restrictions."
     },
     {
       "id": "circle-bound",
@@ -112,7 +104,7 @@
     "historicalContext": "Erdős posed Problem #654 in 1987, asking whether geometric restrictions on point configurations could force near-linear distinct distances from a single point. The no-four-concyclic condition — no four points on a common circle — is natural because points at the same distance from a center lie on a circle, so this condition directly limits distance repetitions. The trivial pigeonhole bound gives $(n-1)/3$ distinct distances per point (at most 3 points per distance circle). In 1990, Erdős and Pach posed a weaker variant under general position (no three collinear), asking only for $(1/3 + c)n$ with an absolute constant $c > 0$. The problem gained new context with Guth and Katz's 2015 breakthrough proving $\\Omega(n / \\log n)$ total distinct distances using polynomial partitioning and the Elekes-Sharir framework — but their result is about all pairs, not a single point, and requires no geometric restriction. Problem #654 sits at the intersection of incidence geometry (Szemerédi-Trotter bounds), circle geometry, and the Erdős distinct distances program, asking whether local constraints (on individual circles) can be leveraged to prove global structure (near-$n$ distinct distances from one point).",
     "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with no four on a circle, must some point $x_i$ determine at least $(1-o(1))n$ distinct distances to the other points?",
     "text": "Given n points in the plane with no four on a circle, must some point determine (1-o(1))n distinct distances? Known: each point has ≥ (n-1)/3 distinct distances. Status: OPEN.",
-    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$, the no-four-concyclic condition (via nonexistence of a circle through 4 points), distinct distance counting per point, and the maximum over all points. The known $(n-1)/3$ bound, the main conjecture with explicit $\\varepsilon$-$N$ quantifiers, the Erdős-Pach weaker variant under general position, the Guth-Katz global result for context, and the circle distance multiplicity bound are all axiomatized.",
+    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$, the no-four-concyclic condition (via nonexistence of a circle through 4 points), distinct distance counting per point, and the maximum over all points. The known $(n-1)/3$ bound, the main conjecture with explicit $\\varepsilon$-$N$ quantifiers, the Erdős-Pach weaker variant under general position, and the Guth-Katz global result are recorded as comments only, not as axioms or theorems. The one proved result is the circle distance multiplicity bound (`circle_distance_bound`), a genuine theorem with no sorries or axioms.",
     "keyInsights": [
       "**Distance multiplicity via circles**: the no-four-concyclic condition bounds distance multiplicity to 3 per point, since equidistant points lie on a circle — this is the mechanism that forces many distinct distances",
       "**Enormous gap**: the known $(n-1)/3 \\approx 0.33n$ is far from the conjectured $(1-o(1))n$, suggesting fundamentally new ideas are needed beyond pigeonhole",

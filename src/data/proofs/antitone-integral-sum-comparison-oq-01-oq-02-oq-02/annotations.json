@@ -16,6 +16,22 @@
     "prerequisites": []
   },
   {
+    "id": "ann-isc-oq010202-integrability",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "theorem",
+    "title": "Integrability and Window Restriction",
+    "content": "intervalIntegrable_of_antitone: an f antitone on [1,∞) is interval-integrable on any [a,b] with 1 ≤ a ≤ b — antitone functions are monotone, hence interval-integrable (AntitoneOn.intervalIntegrable), and restricting the hypothesis to [a,b] only needs a ≥ 1. antitone_window then specializes this to the finite window [1, 1+n] used throughout the file. Both are bookkeeping lemmas that make the integral ∫₁^{1+n} f in the definition of defect well-defined and let the two Riemann-sum comparisons (defect_nonneg, defect_le) invoke Mathlib's antitone integral-vs-sum lemmas on that exact window.",
+    "mathContext": "f antitone on [1,\\infty) \\Rightarrow f interval-integrable on [a,b],\\ 1\\le a\\le b; specialized to [1,1+n].",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AntitoneOn.intervalIntegrable",
+      "interval integrability",
+      "window restriction"
+    ],
+    "prerequisites": []
+  },
+  {
     "id": "ann-isc-oq010202-nonneg",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02",
     "range": { "startLine": 69, "endLine": 74 },

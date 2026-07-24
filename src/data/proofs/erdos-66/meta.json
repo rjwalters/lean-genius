@@ -49,8 +49,8 @@
     "originalContributions": [
       "Formal definition of the representation function in Lean 4",
       "Statement of Problem 66 as a Prop without asserting truth",
-      "Axiom for Erdős-Sárközy theorem on error bounds",
-      "Axiom for Horváth's 2007 improvement",
+      "Documentation (comments only, not formalized) of the Erdős-Sárközy error bound",
+      "Documentation (comments only, not formalized) of Horváth's 2007 improvement",
       "Proof that the stronger conjecture implies the original"
     ],
     "axiomCount": 0,
@@ -63,7 +63,7 @@
     "historicalContext": "The representation function r_A(n) counts how many ways we can write n as a sum of two elements from a set A. This is a fundamental object in additive combinatorics, connected to problems like Goldbach's conjecture (where A is the primes).\n\nFor many natural sets, r_A(n) grows roughly like log(n). Erdős asked whether this growth can be EXACTLY logarithmic—whether r_A(n)/log(n) can converge to a nonzero limit.\n\nRandom constructions suggest the answer might be yes: if you choose A with probability c/√n for each n, then E[r_A(n)] ~ c²log(n). However, these constructions always have an exceptional set of density zero where the limit fails.\n\nThe challenge is eliminating this exceptional set. Erdős believed it cannot be done, conjecturing the answer is NO. The problem carries a $500 prize.",
     "problemStatement": "**Erdős Problem #66 (OPEN)**\n\nIs there a set $A \\subseteq \\mathbb{N}$ such that\n$$\\lim_{n\\to\\infty} \\frac{r_A(n)}{\\log n} = c \\neq 0$$\nwhere $r_A(n) = |\\{(a,b) \\in A^2 : a + b = n\\}|$ is the representation function?\n\n**Erdős's Conjecture**: The answer is NO.\n\n**Prize**: $500",
     "text": "Is there a set A ⊆ ℕ such that the representation function r_A(n) = |{(a,b) ∈ A² : a+b=n}| satisfies lim r_A(n)/log(n) = c ≠ 0?",
-    "proofStrategy": "We formalize the problem and its partial results:\n\n1. **representationFunction**: Counts ordered pairs (a,b) ∈ A² with a+b=n\n\n2. **Erdos66Question**: The statement that such an A exists (open)\n\n3. **ErdosConjecture66**: The negation (Erdős's belief)\n\n4. **Partial results as axioms**:\n   - Erdős-Sárközy: Error cannot be o(√log n)\n   - Horváth (2007): Error exceeds (1-ε)√log n infinitely often\n\n5. **ErdosStrongerConjecture**: Limsup and liminf are universally separated",
+    "proofStrategy": "We formalize the problem statement and one implication; the partial results are documented in prose only:\n\n1. **representationFunction**: Counts ordered pairs (a,b) ∈ A² with a+b=n\n\n2. **Erdos66Question**: The statement that such an A exists (open)\n\n3. **ErdosConjecture66**: The negation (Erdős's belief)\n\n4. **Partial results documented as comments (not axioms or theorems)**:\n   - Erdős-Sárközy: Error cannot be o(√log n)\n   - Horváth (2007): Error exceeds (1-ε)√log n infinitely often\n\n5. **ErdosStrongerConjecture**: Limsup and liminf are universally separated",
     "keyInsights": [
       "**Representation function**: r_A(n) counts ordered pairs summing to n. For primes, r_P(n) > 0 for even n is Goldbach's conjecture.",
       "**Logarithmic scale**: Many natural sets have r_A(n) ~ c·log(n). The question is whether the ratio can have a definite limit.",

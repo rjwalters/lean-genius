@@ -33,6 +33,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Urysohn's Lemma and the Explicit Metric Witness",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "Mathlib's abstract Urysohn separation `exists_continuous_zero_one_of_isClosed`, contrasted with the explicit metric witness $f(x)=\\dfrac{d(x,s)}{d(x,s)+d(x,t)}$ built purely from `Metric.infDist`.",
+      "summary": "Imports Mathlib and states the module docstring: frames Urysohn's lemma (Urysohn 1925) as the cornerstone separation theorem of point-set topology, cites Mathlib's abstract statements exists_continuous_zero_one_of_isClosed and the locally-compact-Hausdorff variant exists_continuous_zero_one_of_isCompact (source of the mathlib badge), and previews the genuine content added: the explicit metric Urysohn function f(x) = d(x,s)/(d(x,s)+d(x,t)), proved continuous, 0 on s, 1 on t, and [0,1]-valued with no appeal to the abstract machinery. Opens the UrysohnsLemmaOQ01 namespace and opens Set/Metric."
+    },
+    {
       "id": "abstract-lemma",
       "title": "Part (a): The Abstract Lemma in a Normal Space",
       "startLine": 40,

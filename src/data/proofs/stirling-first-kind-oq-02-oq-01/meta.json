@@ -110,11 +110,19 @@
     },
     {
       "id": "orthogonality",
-      "title": "Stirling Orthogonality and Specializations",
+      "title": "Stirling Orthogonality",
       "startLine": 152,
-      "endLine": 195,
-      "summary": "stirlingSecond_mul_signed_stirlingFirst_orthogonal: extract the Xᵐ-coefficient of the second-kind expansion and substitute the first-kind coefficient formula to get ∑ₖ S(n,k)·(−1)^{k+m} c(k,m) = [m=n]. Followed by the n=3,m=1 numeric sanity instance and the diagonal case ∑ₖ S(n,k)·s(k,n)=1.",
+      "endLine": 174,
+      "summary": "stirlingSecond_mul_signed_stirlingFirst_orthogonal: extract the Xᵐ-coefficient of the second-kind expansion and substitute the first-kind coefficient formula to get ∑ₖ S(n,k)·(−1)^{k+m} c(k,m) = [m=n] — the two Stirling triangles are inverse matrices.",
       "mathContext": "Coefficient extraction turns the polynomial expansion into the inverse-matrix relation between the two Stirling triangles."
+    },
+    {
+      "id": "specializations",
+      "title": "Numeric Sanity Check and the Diagonal Case",
+      "startLine": 176,
+      "endLine": 195,
+      "summary": "stirlingSecond_signed_stirlingFirst_three_one: the n=3, m=1 numeric instance (1·1 + 3·(−1) + 1·2 = 0). stirlingSecond_mul_signed_stirlingFirst_diag: specialising orthogonality to m=n gives the diagonal self-product S(n,n)·s(n,n) = 1.",
+      "mathContext": "$1\\cdot1+3\\cdot(-1)+1\\cdot2=0$ for $(n,m)=(3,1)$; and $\\sum_k S(n,k)\\,s(k,n)=1$ on the diagonal."
     }
   ],
   "references": [

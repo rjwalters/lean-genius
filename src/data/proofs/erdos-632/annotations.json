@@ -288,11 +288,55 @@
     ]
   },
   {
+    "id": "ann-632-b-le-a-necessity",
+    "proofId": "erdos-632",
+    "range": {
+      "startLine": 133,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Necessity of b ≤ a",
+    "content": "**choosable_requires_b_le_a**: On a nonempty vertex set, $b \\leq a$ is necessary for $(a,b)$-choosability.\n\nProof: feed the adversary assignment that gives every vertex the *full* palette `Fin a`. Any valid selection must then pick $b$ colors from a set of size $a$; if $b > a$ this is impossible, so `IsChoosable G a b` fails.",
+    "mathContext": "$[\\text{Nonempty}\\, V] \\wedge b > a \\implies \\neg\\text{IsChoosable}(G, a, b)$. The `Nonempty V` hypothesis is essential — over an empty vertex set every graph is vacuously choosable for all $a, b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "necessary condition",
+      "pigeonhole",
+      "boundary case"
+    ],
+    "prerequisites": [
+      "IsChoosable",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-632-empty-graph",
+    "proofId": "erdos-632",
+    "range": {
+      "startLine": 152,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "The Empty Graph Is Always Choosable",
+    "content": "**empty_graph_choosable**: The edgeless graph $\\bot$ on any vertex set is $(a,b)$-choosable whenever $b \\leq a$.\n\nWith no edges, every disjointness constraint is vacuous, so it suffices to pick any $b$-element subset of each (size $\\geq b$) color list.",
+    "mathContext": "$b \\leq a \\implies \\text{IsChoosable}(\\bot, a, b)$, proved via `Finset.exists_subset_card_eq` to extract a size-$b$ subset from each list, with disjointness holding vacuously since `⊥.Adj` never holds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edgeless graph",
+      "vacuous truth",
+      "boundary case"
+    ],
+    "prerequisites": [
+      "IsChoosable",
+      "SimpleGraph.bot"
+    ]
+  },
+  {
     "id": "ann-632-ert-conjecture",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 132,
-      "endLine": 137
+      "startLine": 165,
+      "endLine": 175
     },
     "type": "definition",
     "title": "The Erdős–Rubin–Taylor Conjecture",
@@ -312,8 +356,8 @@
     "id": "ann-632-m-eq-1",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 138,
-      "endLine": 142
+      "startLine": 177,
+      "endLine": 180
     },
     "type": "concept",
     "title": "Trivial Case m = 1",
@@ -333,8 +377,8 @@
     "id": "ann-632-b-eq-0",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 143,
-      "endLine": 160
+      "startLine": 182,
+      "endLine": 192
     },
     "type": "concept",
     "title": "Vacuous Case b = 0",
@@ -355,8 +399,8 @@
     "id": "ann-632-case-m2",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 161,
-      "endLine": 165
+      "startLine": 194,
+      "endLine": 203
     },
     "type": "definition",
     "title": "The m = 2 Specialization",
@@ -376,8 +420,8 @@
     "id": "ann-632-4-1-to-8-2",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 166,
-      "endLine": 170
+      "startLine": 205,
+      "endLine": 208
     },
     "type": "definition",
     "title": "The (4,1) → (8,2) Case",
@@ -397,8 +441,8 @@
     "id": "ann-632-4-1-false",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 171,
-      "endLine": 179
+      "startLine": 210,
+      "endLine": 211
     },
     "type": "concept",
     "title": "(4,1) → (8,2) Is FALSE",
@@ -418,75 +462,29 @@
     "id": "ann-632-dhs",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 180,
-      "endLine": 185
+      "startLine": 213,
+      "endLine": 221
     },
-    "type": "concept",
-    "title": "The DHS Counterexample",
-    "content": "**dhs_counterexample**: The Dvořák–Hu–Sereni theorem (2019).\n\n$\\exists V, G : \\text{SimpleGraph}\\, V$, $\\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$.\n\nThis graph, constructed from Kneser-type structures, has over 100 vertices and is the smallest known counterexample to the ERT conjecture.",
-    "mathContext": "$\\exists G,\\; \\chi_L(G) \\leq 4 \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$. The construction in [DHS19] starts from $K(8,2)$ (the Kneser graph with vertices = 2-element subsets of $[8]$, edges = disjoint pairs) and modifies it to achieve $(4,1)$-choosability.",
-    "significance": "key",
+    "type": "context",
+    "title": "The Dvořák–Hu–Sereni Counterexample (Restated)",
+    "content": "A comment restating the Dvořák–Hu–Sereni (2019) theorem in prose: there exists a graph that is $(4,1)$-choosable but NOT $(8,2)$-choosable. This is exactly the content already captured by the `ert_4_1_to_8_2_false` axiom above — no separate Lean declaration exists here, only documentation.",
+    "mathContext": "$\\exists G,\\; \\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$, equivalent to `ert_4_1_to_8_2_false`. The DHS construction (not formalized here) builds $G$ from Kneser-type structures with $n > 100$ vertices.",
+    "significance": "context",
     "relatedConcepts": [
       "Kneser graph",
       "counterexample construction",
       "topological combinatorics"
     ],
     "prerequisites": [
-      "IsChoosable",
-      "SimpleGraph"
-    ]
-  },
-  {
-    "id": "ann-632-dhs-structure",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 186,
-      "endLine": 192
-    },
-    "type": "concept",
-    "title": "DHS Graph Structure",
-    "content": "**dhs_graph_structure**: The counterexample graph has $n > 100$ vertices, is $(4,1)$-choosable, and is not $(8,2)$-choosable.\n\nThe large vertex count reflects the combinatorial complexity of the Kneser-type construction.",
-    "mathContext": "$\\exists n > 100,\\, G : \\text{SimpleGraph}(\\text{Fin}\\, n),\\; \\text{IsChoosable}(G, 4, 1) \\wedge \\neg\\text{IsChoosable}(G, 8, 2)$. Whether a smaller counterexample exists remains open.",
-    "significance": "key",
-    "relatedConcepts": [
-      "graph size",
-      "Kneser graph order",
-      "minimal counterexample"
-    ],
-    "prerequisites": [
-      "dhs_counterexample",
-      "Fin"
-    ]
-  },
-  {
-    "id": "ann-632-bad-assignment",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 193,
-      "endLine": 205
-    },
-    "type": "concept",
-    "title": "The Bad List Assignment",
-    "content": "**dhs_bad_assignment**: There exists a color assignment with 8 colors such that no valid 2-selection makes adjacent vertices disjoint.\n\nThis is the constructive core: the adversary has a winning strategy in the $(8,2)$-choosability game on the DHS graph.",
-    "mathContext": "$\\exists G, L : V \\to \\binom{[8]}{8},\\; \\text{IsValidAssignment}(L) \\wedge \\neg\\exists S,\\; \\text{IsValidSelection}(L, S, 2) \\wedge \\text{SelectionsDisjoint}(G, S)$. The bad assignment is the adversary's winning move.",
-    "significance": "key",
-    "relatedConcepts": [
-      "winning strategy",
-      "adversarial construction",
-      "combinatorial obstruction"
-    ],
-    "prerequisites": [
-      "ColorAssignment",
-      "IsValidSelection",
-      "SelectionsDisjoint"
+      "ert_4_1_to_8_2_false"
     ]
   },
   {
     "id": "ann-632-m2-false",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 206,
-      "endLine": 215
+      "startLine": 223,
+      "endLine": 237
     },
     "type": "concept",
     "title": "m = 2 Case Is FALSE",
@@ -507,12 +505,12 @@
     "id": "ann-632-conjecture-false",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 216,
-      "endLine": 232
+      "startLine": 239,
+      "endLine": 251
     },
     "type": "concept",
     "title": "ERT Conjecture Is FALSE",
-    "content": "**ert_conjecture_false** and **erdos_632**: $\\neg\\text{ERT\\_Conjecture}$\n\nThe full disproof chain: assume `ERT_Conjecture`, specialize to $m = 2$ to get `ERT_Case_m2`, which we know is false. The two-step chain $(4,1) \\not\\to (8,2) \\implies \\neg\\text{ERT}_{m=2} \\implies \\neg\\text{ERT}$ is complete.",
+    "content": "**ert_conjecture_false** and **erdos_632**: $\\neg\\text{ERT\\_Conjecture}$\n\nThe full disproof chain: assume `ERT_Conjecture`, specialize to $m = 2$ to get `ERT_Case_m2`, which we know is false. The two-step chain $(4,1) \\not\\to (8,2) \\implies \\neg\\text{ERT}_{m=2} \\implies \\neg\\text{ERT}$ is complete. `erdos_632` restates `ert_conjecture_false` as the named answer to Erdős Problem #632.",
     "mathContext": "$\\neg(\\forall G, a, b, m \\geq 1,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, am, bm))$. The proof uses `norm_num` to establish $2 \\geq 1$ when specializing the universal $m$.",
     "significance": "key",
     "relatedConcepts": [
@@ -526,92 +524,44 @@
     ]
   },
   {
-    "id": "ann-632-fractional",
+    "id": "ann-632-tail-placeholders",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 233,
-      "endLine": 243
+      "startLine": 253,
+      "endLine": 268
     },
-    "type": "concept",
-    "title": "Fractional Choosability Scales",
-    "content": "**fractional_choosability_scales**: In the fractional relaxation, the scaling property holds trivially since $a/b = am/(bm)$ in $\\mathbb{Q}$.\n\nThe contrast with the integer failure is the key surprise: integer and fractional choosability behave fundamentally differently under parameter scaling.",
-    "mathContext": "$\\chi_f^l(G) \\leq a/b \\implies \\chi_f^l(G) \\leq am/(bm)$ holds since $a/b = am/(bm)$ as rational numbers. Alon–Tuza–Voigt (1997) established this and related results connecting fractional choosability to the fractional chromatic number.",
-    "significance": "key",
+    "type": "context",
+    "title": "Placeholder Headers and the List Coloring Conjecture",
+    "content": "Parts IX (\"Positive Results\") and X (\"Connections to Other Problems\") are empty section headers with no formalized content — despite their framing, the file does **not** formalize fractional choosability, or the complete/bipartite/planar special cases. The one substantive item here is `ListColoringConjecture`, an unformalized `True` stub gesturing at the classical (still-open) List Coloring Conjecture $\\chi_L(L(G)) = \\chi'(G)$ for the list-edge-chromatic number of line graphs.",
+    "mathContext": "`ListColoringConjecture` is stated as `∀ V G, True`, i.e. not actually encoded — the real statement $\\chi_L(L(G)) = \\chi'(G)$ (list chromatic index equals ordinary chromatic index for line graphs) requires `listChromaticNumber (lineGraph G) = edgeChromaticNumber G`, left as a comment.",
+    "significance": "technical",
     "relatedConcepts": [
-      "fractional chromatic number",
-      "rational arithmetic",
-      "Alon–Tuza–Voigt"
+      "List Coloring Conjecture",
+      "line graph",
+      "edge chromatic number"
     ],
     "prerequisites": [
-      "IsChoosable",
-      "rational division"
+      "listChromaticNumber"
     ]
   },
   {
-    "id": "ann-632-complete",
+    "id": "ann-632-final-restatement",
     "proofId": "erdos-632",
     "range": {
-      "startLine": 244,
-      "endLine": 248
+      "startLine": 270,
+      "endLine": 302
     },
-    "type": "concept",
-    "title": "Complete Graphs Satisfy ERT",
-    "content": "**complete_graph_ert**: For complete graphs $K_n$, the ERT conjecture holds — choosability scales.\n\nComplete graphs have such rigid structure that the adversary cannot exploit the scaling to create obstructions.",
-    "mathContext": "$\\forall n, a, b, m \\geq 1,\\; \\text{IsChoosable}(K_n, a, b) \\implies \\text{IsChoosable}(K_n, am, bm)$. For $K_n$ with $b = 1$, $\\chi_L(K_n) = n$, and the scaling follows from the symmetry of complete graphs.",
-    "significance": "key",
+    "type": "context",
+    "title": "Final Restatement of the Disproof",
+    "content": "Parts XI (\"Construction Details\") and XII (\"Main Result\") — Part XI is another empty placeholder header. Part XII restates the already-proved `erdos_632_disproved : ¬ERT_Conjecture` (identical to `ert_conjecture_false`/`erdos_632` above) with an expanded docstring, plus two documentation-only `String` defs (`erdos_632_answer`, `erdos_632_counterexample`) summarizing the DHS result in prose for display purposes.",
+    "mathContext": "`erdos_632_disproved := ert_conjecture_false` — a pure restatement, not new mathematical content. The `String` defs carry no logical content; they exist for gallery/documentation display.",
+    "significance": "technical",
     "relatedConcepts": [
-      "complete graph",
-      "structural rigidity",
-      "symmetric choosability"
+      "restatement",
+      "documentation"
     ],
     "prerequisites": [
-      "IsChoosable",
-      "complete graph"
-    ]
-  },
-  {
-    "id": "ann-632-bipartite",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 249,
-      "endLine": 253
-    },
-    "type": "concept",
-    "title": "Bipartite Graphs Satisfy ERT",
-    "content": "**bipartite_ert**: For bipartite graphs, the ERT conjecture holds.\n\nBipartite graphs have $\\chi_L(G) \\leq \\lceil \\log_2 n \\rceil + 1$ (for $K_{n,n}$) but their 2-colorability constrains the combinatorics enough that scaling works.",
-    "mathContext": "$\\forall G \\text{ bipartite},\\, a, b, m \\geq 1,\\; \\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, am, bm)$. Bipartite graphs satisfy $\\chi(G) \\leq 2$, and the structural simplicity prevents the Kneser-type obstructions.",
-    "significance": "key",
-    "relatedConcepts": [
-      "bipartite graph",
-      "2-colorability",
-      "Galvin's theorem"
-    ],
-    "prerequisites": [
-      "IsChoosable",
-      "SimpleGraph.IsBipartite"
-    ]
-  },
-  {
-    "id": "ann-632-planar",
-    "proofId": "erdos-632",
-    "range": {
-      "startLine": 254,
-      "endLine": 260
-    },
-    "type": "concept",
-    "title": "Planar Graphs: m = 2 Case",
-    "content": "**planar_m2**: For planar graphs, the $m = 2$ case of the ERT conjecture holds: $(a,b)$-choosable implies $(2a, 2b)$-choosable.\n\nPlanarity provides Euler's formula constraint $|E| \\leq 3|V| - 6$, preventing the dense substructures needed for the DHS counterexample.",
-    "mathContext": "For planar $G$ with $|E| \\leq 3|V| - 6$: $\\text{IsChoosable}(G, a, b) \\implies \\text{IsChoosable}(G, 2a, 2b)$. Planarity limits the maximum average degree to less than 6, which constrains the list coloring problem.",
-    "significance": "key",
-    "relatedConcepts": [
-      "planar graph",
-      "Euler's formula",
-      "sparsity constraint"
-    ],
-    "prerequisites": [
-      "IsChoosable",
-      "Fintype",
-      "edgeFinset"
+      "ert_conjecture_false"
     ]
   }
 ]

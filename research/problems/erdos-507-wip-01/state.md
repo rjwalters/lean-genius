@@ -28,13 +28,23 @@ needed). Bound `heilbronn n` (`n ≥ 3`) via `Real.sSup_le` + `triangleArea_le_t
 
 ## Next Action
 
-Elementary layer is now essentially complete: well-definedness, monotonicity,
-the `n=3` sandwich `[3√3/4, 3/2]`, and **quantitative decay** `heilbronn n ≤ 4/m`
-(`heilbronn_le_four_div`) hence `heilbronn n → 0` (`heilbronn_tendsto_zero`, added
-2026-07-21). Remaining plausible elementary target: the sharp
-`heilbronn 3 ≤ 3√3/4` (largest inscribed triangle, ~500-line optimization). The
-deep `α(n)` exponent bounds (KPS/CPZ, `7/6 ≤ β ≤ 2`) remain out of scope.
+**`heilbronn 3 = 3√3/4` is now EXACT** (2026-07-23, `Erdos507WIP01Sharp.lean`,
+`heilbronn_three_eq`, 0-axiom / 0-sorry): the sharp upper bound
+`heilbronn n ≤ 3√3/4` (all `n ≥ 3`) landed via a mechanism that bypassed the
+projected ~500-line Jensen/central-angle route. Key idea: the shoelace sum is
+affine in each vertex, so `E = p×(q−r) + q×r ≤ ‖q−r‖ + q×r`; with `t = ‖q−r‖`,
+`s = q×r`, `u = ⟨q,r⟩`, Lagrange gives `s²+u² ≤ 1`, `t² ≤ 2−2u`, and the
+completed squares `(t−2s)² ≥ 0`, `(u+½)² ≥ 0` give `(t+s)² ≤ 27/4` exactly —
+every step a small `nlinarith` certificate; the irrational maximiser is never
+located. Ladder now: `heilbronn 3 = 3√3/4`, `heilbronn 4 ∈ [1, 3√3/4]`,
+`heilbronn 5 ∈ [81/125, 3√3/4]`.
+
+Remaining moves are all DEEP: sharp values for `n ≥ 4` (research-level
+optimization, no elementary certificate known), and the `α(n)` exponent bounds
+(KPS/CPZ, `7/6 ≤ β ≤ 2`) — out of scope without new Mathlib machinery.
+Elementary layer is COMPLETE; stand down on further witness rungs (an `n = 6`
+near-hexagon would be a 20-triple bash of diminishing value).
 
 ## Attempt Counts
 
-- Total attempts: 4
+- Total attempts: 5

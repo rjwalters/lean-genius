@@ -13,7 +13,11 @@
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Record-setter sequence: least practical number with hErdos index t is 2^t, for t = 1..7 (minimal_hErdos_two..seven)",
+      "Record ties at t=6: hErdos 78 = 88 = 100 = 104 = 6 = hErdos 64; local uniqueness of the record fails (record_index_six_not_locally_unique)",
+      "Exact hErdos values: 1,2,4,6,8,12,16,18,20,24,28,30,32,64,66,78,88,90,100,104,126,128 -> 0,1,2,2,3,3,4,3,4,3,4,4,5,6,5,6,6,4,6,6,4,7"
+    ],
     "open": [],
     "goal": ""
   },
@@ -23,7 +27,7 @@
     "iteration": 2,
     "focus": "2026-07-23: exact table extended + RECORD-SETTERS proved — hErdos 18 = 3 (engine-only, no practical factorisation), hErdos 20 = 4 (unique hard target 18; NON-MONOTONICITY: 20 < 24 but hErdos 20 = 4 > 3 = hErdos 24, and d(20) = 6 < 8 = d(24)), hErdos 28 = 4 (hard target 27), hErdos 8/16/32 via the power formula, and minimal_hErdos_two/three/four/five (IsLeast): the least practical m with hErdos m = t is 2^t for t = 2..5 — record-setter sequence 2, 4, 8, 16, 32. All 0-axiom, docker-verified. Open question crystallised: is the record-setter 2^t for ALL t? Would follow from hErdos m <= log2 m (practical m), but the greedy proof FAILS (practical 78 has divisor-gap ratio 13/6 > 2), so a non-greedy argument is needed.",
     "blockers": [],
-    "nextAction": "Record-setter t = 6 (= 64?) needs engine values for practicals in (32,64): 36, 40, 42, 48, 54, 56, 60 (decides slower: d(48) = 10 => 1024-subset powerset x 48 targets). General lower-bound engine iterating the gap argument below m/2. Study where the index DROPS (20 vs 24 non-monotonicity). The log2 upper bound for practical m (would settle the record-setter question) needs a non-greedy argument. Deep Vose hErdos(n!) < n^{o(1)} still blocked at the elementary layer.",
+    "nextAction": "t = 8 rung ([128,256)) or octave index-6 census via witness-list engine; record-setter proved through t = 7",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..6 (minimal_hErdos_two..six); exact-value table through 32 + upper bounds through 60; decide engines + subadditivity dichotomy make each rung cheap; open: 2^t for all t (needs non-greedy hErdos m <= log2 m), exact 40/56/60, deep Vose bound",
+    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..7 (minimal_hErdos_two..seven); exact-value table now covers all 7 practically-unsplittable numbers in [64,128); STRUCTURAL: record ties found at t=6 (78, 88, 100, 104 all index 6) - local uniqueness fails, gap-type vs dense-type dichotomy of unsplittables; open: 2^t for all t (non-greedy log2 bound), octave index-6 census (needs witness-list engine for d(120)=16), exact 40/56/60, deep Vose bound",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -63,7 +67,14 @@
       "minimal_hErdos_two/three/four/five (IsLeast record-setters: least practical m with index t is 2^t, t = 2..5) in Erdos18WIP01.lean",
       "hErdos_thirtysix_le/forty_le/fortyeight_le/fiftysix_le/sixty_le (subadditive splits) in Erdos18WIP01.lean",
       "hErdos_fortytwo_le, hErdos_fiftyfour_le (engine, d=8 powersets) in Erdos18WIP01.lean",
-      "hErdos_sixtyfour, hErdos_le_five_of_lt_sixtyfour, minimal_hErdos_six in Erdos18WIP01.lean"
+      "hErdos_sixtyfour, hErdos_le_five_of_lt_sixtyfour, minimal_hErdos_six in Erdos18WIP01.lean",
+      "minimal_hErdos_seven: IsLeast {m | IsPractical m and hErdos m = 7} 128 (Erdos18WIP01.lean)",
+      "hErdos_le_six_of_lt_onetwentyeight: threshold sweep of [64,128), 49 non-practicality decides + 15 practical bounds",
+      "Exact engine values: hErdos 66=5, 78=6, 88=6, 90=4, 100=6, 104=6, 126=4 (upper witnesses + hard-target lower bounds)",
+      "Split bounds: hErdos 72<=5, 80<=6, 84<=5, 96<=5, 108<=5, 112<=6, 120<=6 via hErdos_mul_le through 2*m'",
+      "record_index_six_not_locally_unique: exists m practical, 64 < m < 128, hErdos m = 6 (witness 78)",
+      "Practicality decides: 40, 42, 54, 56, 60, 66, 78, 88, 90, 104, 126",
+      "hErdos_onetwentyeight: hErdos 128 = 7 via hErdos_two_pow"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -94,13 +105,20 @@
       "Record-setter t=6 closed: minimal_hErdos_six IsLeast {practical, hErdos=6} 64; sequence 2,4,8,16,32,64 proved for t=1..6",
       "Split-vs-engine dichotomy: threshold helpers need only UPPER bounds, and hErdos_mul_le through a practical split (2*m or 6*6) covers most practicals at zero kernel cost — engine work at rung t scales with the practically-unsplittable numbers in (2^t,2^{t+1}), not all practicals",
       "In [32,64) only 32 attains index 5 (36,42,48,54 <= 4 proved) — the record-setter is locally unique at its record",
-      "maxRecDepth gotcha: non-practicality decides for m=61..63 need maxRecDepth 40000 (default and 20000 both insufficient)"
+      "maxRecDepth gotcha: non-practicality decides for m=61..63 need maxRecDepth 40000 (default and 20000 both insufficient)",
+      "Local uniqueness of the power-of-two record FAILS at t=6: hErdos 78 = 88 = 100 = 104 = 6 = hErdos 64 (exact engine values). First octave where 2^t shares its record; at t=5, 32 was alone in [32,64).",
+      "The record-tying numbers are exactly the practically-unsplittable ones with divisor-ratio gap > 2 after a short prefix (78: 6->13, 88: 8->11, 100: 5->10, 104: 8->13); the gap forces a unique maximal-length representation of the hard target (77 = 1+2+3+6+26+39 is the only rep in divisors(78)).",
+      "Unsplittable does NOT imply high index: 90 = 2*3^2*5 and 126 = 2*3^2*7 have eleven proper divisors but index only 4 - index tracks divisor gaps, not divisor count. Unsplittables bifurcate: gap-type (index ties record) vs dense-type (index low).",
+      "78 = 2*3*13, the counterexample that breaks greedy halving for hErdos m <= log2 m, is also a record-tier: the same divisor gap drives both phenomena. Ties probe but do not breach the log bound (6 <= log2 78).",
+      "Host pre-validation: replicate divisors/IsPractical + Decidable instances in a Mathlib-only scratch file and time all new decides before touching the real file - 14 engine + 12 practicality decides validated in ~45s, zero wasted Docker cycles.",
+      "Non-practicality decides in the threshold interval_cases need maxRecDepth 80000 for m in (64,128) (40000 sufficed for (32,64)) - recursion depth scales with m."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove more of the Stewart-Sierpinski necessary structure: if m>=2 practical and p is the least prime not dividing m, then p <= sigma(divisors of m below p)+1 (the classical inductive characterization).",
-      "Show practical numbers are closed under the Stewart product criterion (m practical, n<=sigma(m)+1 => m*n practical) for specific families.",
-      "Formalize that factorials n! are practical (a concrete infinite family beyond powers of two)."
+      "t = 8 rung: sweep [128, 256) (~21 practicals) with the split-vs-engine dichotomy; count practically-unsplittable numbers first",
+      "Octave index-6 census: are 78/88/100/104 the only ties in (64,128)? Needs engine uppers for 80, 112 (cheap) and 120 (d=16 - build a witness-list engine: explicit per-target witness lists, O(m) decide instead of O(m*2^d))",
+      "Exact values for 40, 56, 60 (cheap hard-target lower bounds)",
+      "Investigate gap-type vs dense-type dichotomy as a theorem: does a divisor-ratio gap > 2 above the prefix force index >= prefix-length-based bound?"
     ],
     "markdown": "# Knowledge Base: erdos-18-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

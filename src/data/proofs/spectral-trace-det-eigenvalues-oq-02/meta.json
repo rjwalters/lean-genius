@@ -70,7 +70,8 @@
       "**Cyclic invariance is not a permutation of diagonal entries.** The cross-dimension witness makes this unmissable: A·B is a 1×1 matrix and B·A is a 2×2 matrix, computed in different matrix algebras, yet both traces equal 11. The identity is about the bilinear pairing tr(A·B) = Σ Aᵢⱼ Bⱼᵢ, which is manifestly symmetric in A and B.",
       "**The commutator identity is the obstruction to AB − BA = I.** Because tr(A·B − B·A) = 0 always, while tr(I) = n ≠ 0, no finite-dimensional matrices can satisfy the canonical commutation relation — a one-line consequence of cyclic invariance phrased here with an honest subtraction.",
       "**Determinant hypothesis, not matrix-unit hypothesis.** Similarity invariance is stated with IsUnit P.det and the nonsingular inverse P⁻¹, the form actually verified in computation, rather than Mathlib's IsUnit P in the matrix ring — and it ties singularity (det = 0) back to the spectral criterion of oq-01.",
-      "**Same eigenvalues is strictly stronger than same trace and determinant.** Conjugation preserves the whole characteristic polynomial, so similar matrices agree on every elementary symmetric function of the spectrum, not merely the first (trace) and last (determinant). The sum/product invariance recovered here are just the two extreme shadows of that multiset equality."
+      "**Same eigenvalues is strictly stronger than same trace and determinant.** Conjugation preserves the whole characteristic polynomial, so similar matrices agree on every elementary symmetric function of the spectrum, not merely the first (trace) and last (determinant). The sum/product invariance recovered here are just the two extreme shadows of that multiset equality.",
+      "**Elaboration cost flagged in the source.** `eigenvalues_units_conj` carries `set_option maxHeartbeats 1000000`, five times Lean's default 200000-heartbeat budget — an explicit signal that its `simpa`-driven rewrite of `charpoly_units_conj` over an arbitrary field `K` is elaboration-heavier than the one-line mathematical content (equal characteristic polynomials force equal root multisets) would suggest."
     ],
     "prerequisites": [
       "The trace of a matrix and the product/diagonal-sum formula tr(A·B) = Σ Aᵢⱼ Bⱼᵢ",
@@ -81,10 +82,18 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and the Headline Identities",
+      "title": "Module Header",
       "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring laying out cyclic invariance, the value added over Mathlib (commutator subtraction form, determinant-form similarity, eigenvalue-multiset bridge), and the witnesses; import of Mathlib, namespace, open Matrix, and the ambient variables {n} [Fintype n] [DecidableEq n], {R} [CommRing R].",
+      "mathContext": "$\\operatorname{tr}(AB) = \\operatorname{tr}(BA)$ over a commutative ring $R$."
+    },
+    {
+      "id": "headline-identities",
+      "title": "The Headline Identities (Re-exported from Mathlib)",
+      "startLine": 63,
       "endLine": 78,
-      "summary": "Module docstring laying out cyclic invariance, the value added over Mathlib (commutator subtraction form, determinant-form similarity, eigenvalue-multiset bridge), and the witnesses; import of Mathlib, open Matrix, and the re-exports trace_mul_comm (rectangular) and trace_mul_cycle.",
+      "summary": "trace_mul_comm and trace_mul_cycle re-export Matrix.trace_mul_comm and Matrix.trace_mul_cycle under self-documenting names, preserving the rectangular generality (A, B need not be square, and A·B, B·A need not even share a size).",
       "mathContext": "$\\operatorname{tr}(AB) = \\operatorname{tr}(BA),\\quad \\operatorname{tr}(ABC) = \\operatorname{tr}(CAB)$."
     },
     {
@@ -128,7 +137,7 @@
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of cyclic invariance of the trace tr(A·B) = tr(B·A) (including the rectangular case), the vanishing of the trace of a commutator written with an explicit subtraction, similarity invariance of the trace in the practically-checkable determinant form, and the bridge to oq-01: similar matrices share their entire eigenvalue multiset over any field, with the trace and determinant invariance recovered as its sum/product shadows.",
     "implications": "Packages Mathlib's cyclic-trace identities with the commutator and conjugacy-class statements that matrix calculations actually use, and upgrades 'similar matrices have equal trace and determinant' to the strictly stronger 'similar matrices have equal eigenvalue multisets', tying the present entry to the spectral viewpoint of oq-01.",
     "openQuestions": [
-      "Prove the trace form tr(A·Bᵀ) = Σ Aᵢⱼ Bᵢⱼ is a genuine inner product (the Frobenius/Hilbert–Schmidt inner product) and relate its induced norm to the singular values.",
+      "Partially discharged by spectral-trace-det-eigenvalues-oq-02-oq-01: the trace form tr(Aᵀ·B) = Σ Aᵢⱼ Bᵢⱼ is proved a genuine inner product (packaged as InnerProductSpace.Core ℝ (Matrix m n ℝ)), but relating the induced norm to the singular values (‖A‖_F² = Σ σᵢ²) is explicitly left out of scope there and remains open.",
       "Formalize that the characteristic polynomial — not just the trace and determinant — is a complete set of similarity invariants exactly for diagonalisable matrices with distinct eigenvalues, sharpening eigenvalues_units_conj to a classification."
     ]
   },

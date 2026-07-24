@@ -98,11 +98,19 @@
       "mathContext": "X(X+1)⋯(X+n−1) = ∑ₖ c(n,k) Xᵏ; the rising factorial is Mathlib's ascPochhammer ℤ n."
     },
     {
-      "id": "generating-identity",
-      "title": "The Generating Identity c(n,k) = [Xᵏ] ascPochhammer ℤ n",
+      "id": "generating-identity-statement",
+      "title": "The Generating Identity, Statement",
       "startLine": 48,
+      "endLine": 59,
+      "summary": "stirlingFirst_eq_ascPochhammer_coeff states the structural identity: c(n,k) equals the coefficient of Xᵏ in the rising factorial X(X+1)⋯(X+n−1) = ascPochhammer ℤ n, turning the combinatorial cycle-count into an algebraic polynomial coefficient.",
+      "mathContext": "$c(n,k) = [X^k]\\,\\mathrm{ascPochhammer}\\ \\mathbb{Z}\\ n$."
+    },
+    {
+      "id": "generating-identity-proof",
+      "title": "The Generating Identity, Proof",
+      "startLine": 60,
       "endLine": 81,
-      "summary": "stirlingFirst_eq_ascPochhammer_coeff: induction on n (generalizing k). Rewriting ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) and taking the Xᵏ-coefficient (coeff_mul_X, coeff_mul_C) reproduces the Stirling recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k); the k=0 case gives c(n+1,0)=0.",
+      "summary": "Induction on n (generalizing k). Rewriting ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) and taking the Xᵏ-coefficient (coeff_mul_X, coeff_mul_C) reproduces the Stirling recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k); the k=0 case gives c(n+1,0)=0.",
       "mathContext": "Coefficient extraction from the factor (X+n) is exactly the Pascal recurrence for the first-kind numbers."
     },
     {

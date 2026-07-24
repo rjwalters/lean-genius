@@ -5,7 +5,7 @@
   "description": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
   "meta": {
     "erdosNumber": 498,
-    "status": "axiomatized",
+    "status": "open",
     "tags": [
       "erdos",
       "combinatorics",
@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 73,
     "badge": "wip",
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "0 axioms, 0 sorries, 0 theorems. File defines the combinatorial framework (sign vectors, signed sums, disc containment) only; Kleitman's theorem and the historical results are documented in comments, not stated as a Lean axiom, def, or theorem.",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 5
@@ -53,28 +53,28 @@
       "title": "Kleitman's Theorem (1965)",
       "startLine": 47,
       "endLine": 53,
-      "summary": "Axiom `kleitman_littlewood_offord`: for complex $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$, the number of signed sums in any unit disc is at most $\\binom{n}{\\lfloor n/2 \\rfloor}$."
+      "summary": "Kleitman's theorem is recorded only as a comment (no `axiom`, `def`, or `theorem` declared): for complex $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$, the number of signed sums in any unit disc is at most $\\binom{n}{\\lfloor n/2 \\rfloor}$."
     },
     {
       "id": "historical-real",
       "title": "Erdős's Real Case (1945)",
       "startLine": 57,
       "endLine": 68,
-      "summary": "Axiom `erdos_real_case`: for real $z_i$ with $|z_i| \\geq 1$, at most $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums fall in any interval of length 2. Proved via Sperner's antichain theorem."
+      "summary": "Recorded only as a comment (no Lean declaration): for real $z_i$ with $|z_i| \\geq 1$, at most $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums fall in any interval of length 2. Erdős's original argument used Sperner's antichain theorem."
     },
     {
       "id": "historical-complex",
       "title": "Erdős's Complex Weak Bound (1961)",
       "startLine": 69,
       "endLine": 70,
-      "summary": "Axiom `erdos_complex_weak`: before Kleitman, Erdős showed the count is $O(2^n / \\sqrt{n})$, weaker than the sharp $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by a constant."
+      "summary": "Recorded only as a comment (no Lean declaration): before Kleitman, Erdős showed the count is $O(2^n / \\sqrt{n})$, weaker than the sharp $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by a constant."
     }
   ],
   "overview": {
     "historicalContext": "The Littlewood–Offord problem originated in Littlewood and Offord's 1943 study of random polynomials, where they bounded the number of real roots by controlling how many signed sums of coefficients can concentrate near zero. For real numbers, Erdős (1945) obtained the sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ via an elegant application of Sperner's 1928 antichain theorem: each signed sum is determined by the subset of positive signs, and if many sums fall in an interval of length 2, the corresponding subsets form a large family with no pair in containment relation. For complex numbers, the geometric argument breaks down since one-dimensional ordering is lost. Erdős (1961) obtained the weaker bound $O(2^n/\\sqrt{n})$ for the complex case using probabilistic methods. The breakthrough came from Kleitman (1965), who proved the same sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ holds for complex numbers using a correlation inequality for antichains. Kleitman (1970) further extended this to arbitrary Hilbert spaces, showing the result is purely combinatorial. Modern developments include Tao and Vu's inverse Littlewood–Offord theory (2006), which characterizes when the bound is nearly achieved.",
     "problemStatement": "Given complex numbers $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$ and any closed disc $D \\subset \\mathbb{C}$ of radius 1, prove that the number of signed sums $\\sum_{i=1}^n \\varepsilon_i z_i$ with $\\varepsilon_i \\in \\{\\pm 1\\}$ falling in $D$ is at most $\\binom{n}{\\lfloor n/2 \\rfloor}$.",
     "text": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
-    "proofStrategy": "The formalization defines the combinatorial framework: sign vectors as functions $\\text{Fin}\\, n \\to \\mathbb{Z}$ with validity condition, signed sums as weighted complex sums, and disc containment via the complex absolute value. The main theorem (Kleitman 1965) is axiomatized, along with the historical progression: Erdős's real case (1945) using interval containment, and Erdős's weaker complex bound (1961) of $O(2^n/\\sqrt{n})$. The generalizations to Hilbert spaces and connections to Sperner's theorem are recorded as comments.",
+    "proofStrategy": "The formalization defines the combinatorial framework: sign vectors as functions $\\text{Fin}\\, n \\to \\mathbb{Z}$ with validity condition, signed sums as weighted complex sums, and disc containment via the complex absolute value. Kleitman's main theorem (1965) is not formalized as an axiom, def, or theorem — it, the historical progression (Erdős's real case (1945) and weaker complex bound (1961)), the Hilbert space generalization, and the Sperner connection are all recorded only as comments.",
     "keyInsights": [
       "**Sperner's theorem as the key tool**: The bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ is the maximum antichain size in the Boolean lattice $2^{[n]}$ — Erdős's real proof maps signed sums to subsets and shows concentration forces a large antichain",
       "**Complex case loses ordering**: In $\\mathbb{R}$, signed sums can be ordered and interval containment gives a chain condition. In $\\mathbb{C}$, disc containment is a 2D constraint, requiring Kleitman's more sophisticated antichain correlation inequality",

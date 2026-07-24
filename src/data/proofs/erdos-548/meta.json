@@ -21,11 +21,11 @@
     "erdosNumber": 548,
     "erdosUrl": "https://erdosproblems.com/548",
     "erdosProblemStatus": "open",
-    "axiomCount": 17,
-    "lineCount": 513,
-    "assumptions": "17 axiom(s) aggregated across files (8 in the primary Erdos548Problem.lean — deep extremal-graph-theory literature results: trivial_tree_bound, brandt_dobson, sacle_wozniak, wang_li_liu, path_extremal, komlos_sos_large_k, erdos_gallai_matching, turan_path_formula — plus 9 in the legacy stub Proofs/Stubs/Erdos548Problem.lean). The primary file now has 0 sorries: all six were proved in July 2026 (star_is_tree, sum_degrees_eq_twice_edges, avg_degree_iff_edges, erdos_sos_implies_extremal, star_easier, erdos_548_status). Two statements required repair to be provable: avg_degree_iff_edges gained the missing k ≥ 1 hypothesis (false at k = 0 as stated), and erdos_sos_implies_extremal restricts its tree vertex type from Type* to Type (ErdosSosConjecture quantifies over Type). erdos_548_status is now Classical.em rather than a sorry that would have asserted the conjecture itself. The former tree_edge_count axiom is a proved theorem, and IsTree delegates to Mathlib genuine SimpleGraph.IsTree. Aristotle companion files retain their own sorry stubs pending proof search.",
+    "axiomCount": 16,
+    "lineCount": 793,
+    "assumptions": "16 axiom(s) aggregated across files (7 in the primary Erdos548Problem.lean — deep extremal-graph-theory literature results: brandt_dobson, sacle_wozniak, wang_li_liu, path_extremal, komlos_sos_large_k, erdos_gallai_matching, turan_path_formula — plus 9 in the legacy stub Proofs/Stubs/Erdos548Problem.lean). The former trivial_tree_bound axiom is now a proved theorem (July 2026): Part XI extracts a nonempty vertex set of internal minimum degree ≥ k from any graph with n(k−1)+1 edges, and Part XII embeds every (k+1)-vertex tree into such a set by a greedy leaf-at-a-time induction. The primary file has 0 sorries: all six were proved in July 2026 (star_is_tree, sum_degrees_eq_twice_edges, avg_degree_iff_edges, erdos_sos_implies_extremal, star_easier, erdos_548_status). Two statements required repair to be provable: avg_degree_iff_edges gained the missing k ≥ 1 hypothesis (false at k = 0 as stated), and erdos_sos_implies_extremal restricts its tree vertex type from Type* to Type (ErdosSosConjecture quantifies over Type). erdos_548_status is now Classical.em rather than a sorry that would have asserted the conjecture itself. The former tree_edge_count axiom is a proved theorem, and IsTree delegates to Mathlib genuine SimpleGraph.IsTree. Aristotle companion files retain their own sorry stubs pending proof search.",
     "mathlib_version": "4.31.0",
-    "theoremCount": 10,
+    "theoremCount": 17,
     "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos548Aristotle.lean",
@@ -90,8 +90,8 @@
       "title": "Part V: Known Partial Results",
       "startLine": 158,
       "endLine": 227,
-      "summary": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs.",
-      "mathContext": "Axiomatizes four partial results: trivial bound ($n(k-1)+1$ edges), Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$). Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs."
+      "summary": "States four partial results: the trivial bound ($n(k-1)+1$ edges) is a proved theorem (`trivial_tree_bound`, Part XII — min-degree extraction plus greedy leaf embedding); Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$) remain axiomatized literature results. Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs.",
+      "mathContext": "States four partial results: the trivial bound ($n(k-1)+1$ edges) is a proved theorem (`trivial_tree_bound`, Part XII — min-degree extraction plus greedy leaf embedding); Brandt-Dobson (girth $\\ge 5$), Sacle-Wozniak ($C_4$-free), and Wang-Li-Liu (complement girth $\\ge 5$) remain axiomatized literature results. Defines `girth`, `hasGirthAtLeast`, `C4Free`, and `complement` with inline proofs."
     },
     {
       "id": "extremal-function",
@@ -135,7 +135,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdos Problem #548 is the famous Erdos-Sos conjecture: every graph with average degree $> k-1$ contains every tree on $k+1$ vertices. The formalization captures the conjecture in two equivalent forms, constructs path and star graphs, axiomatizes four partial results (trivial bound, girth $\\ge 5$, $C_4$-free, complement girth $\\ge 5$), defines the extremal function, and connects to the Komlos-Sos-Szemeredi asymptotic result and the Erdos-Gallai matching theorem. Despite 60+ years of effort and strong partial results, the general conjecture remains open.",
+    "summary": "Erdos Problem #548 is the famous Erdos-Sos conjecture: every graph with average degree $> k-1$ contains every tree on $k+1$ vertices. The formalization captures the conjecture in two equivalent forms, constructs path and star graphs, proves the trivial bound ($n(k-1)+1$ edges, via min-degree extraction and greedy tree embedding), axiomatizes three partial results (girth $\\ge 5$, $C_4$-free, complement girth $\\ge 5$), defines the extremal function, and connects to the Komlos-Sos-Szemeredi asymptotic result and the Erdos-Gallai matching theorem. Despite 60+ years of effort and strong partial results, the general conjecture remains open.",
     "implications": "1. **Tree Turan problem:** Would completely resolve $\\text{ex}(n, T)$ for all trees, giving the uniform bound $(k-1)n/2$ with paths achieving equality\n\n2. **Extremal graph theory:** Would establish trees as a natural threshold family -- the simplest connected graphs whose Turan numbers obey a single formula\n\n**3. Embedding theory:** The partial results reveal that graph structure (girth, complement density) governs tree embeddability, connecting to structural graph theory\n\n4. **Regularity method:** The Komlos-Sos-Szemeredi approach demonstrates the power (and limitations) of the regularity-blow-up method -- it works asymptotically but leaves finite cases open\n\n5. **Algorithmic implications:** A constructive proof would yield polynomial-time algorithms for finding tree embeddings in dense graphs.",
     "openQuestions": [
       "Is the Erdos-Sos conjecture true in full generality?",
@@ -159,10 +159,10 @@
       "Finset"
     ],
     "namespace": "Erdos548",
-    "lineCount": 513,
-    "axiomCount": 8,
-    "theoremCount": 10,
-    "definitionCount": 16,
+    "lineCount": 793,
+    "axiomCount": 7,
+    "theoremCount": 17,
+    "definitionCount": 17,
     "path": "Proofs/Erdos548Problem.lean",
     "sorries": 0,
     "additionalFiles": [

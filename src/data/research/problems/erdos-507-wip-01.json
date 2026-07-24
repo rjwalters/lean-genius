@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: elementary witness ladder now has THREE sandwiches: n=3 in [3sqrt3/4, 3/2] (merged), n=4 in [1, 3/2] (inscribed square, merged), n=5 in [81/125, 3/2] (2026-07-23, rational near-pentagon). The n=5 rung sidesteps the cos(2pi/5) radicals that deferred it: five Pythagorean-triple points (1,0),(7/25,24/25),(-4/5,3/5),(-4/5,-3/5),(7/25,-24/25) lie exactly on the unit circle, all 10 triangle areas are exact rationals, min = 81/125 = 0.648 (within 1.5% of the conjectured regular-pentagon optimum 0.6572). Remaining deep work: sharp upper at n=3 (Jensen on central angles, ~500+ lines) and asymptotic exponent bounds.",
+    "progressSummary": "MILESTONE: heilbronn 3 = 3*sqrt(3)/4 EXACTLY (heilbronn_three_eq, 0-axiom 0-sorry, 2026-07-23). The sharp upper bound heilbronn n <= 3sqrt3/4 for all n >= 3 landed via a new mechanism: the shoelace sum is affine in each vertex (E = p x (q-r) + q x r <= |q-r| + q x r), then Lagrange identity + two completed squares give (t+s)^2 <= 27/4 as an exact positive-combination certificate. Ladder: heilbronn 3 = 3sqrt3/4 (EXACT), heilbronn 4 in [1, 3sqrt3/4], heilbronn 5 in [81/125, 3sqrt3/4]. Elementary layer COMPLETE; remaining work (sharp n>=4 values, alpha(n) exponent bounds 7/6<=beta<=2) is deep research.",
     "builtItems": [
       "triangleArea_nonneg in Erdos507WIP01.lean",
       "triangleArea_swap_left / triangleArea_swap_right / triangleArea_cyclic (permutation symmetry)",
@@ -81,7 +81,12 @@
       "heilbronn_four_pos, heilbronn_four_mem_Icc: positivity + sandwich heilbronn 4 in [1, 3/2]",
       "heilbronn_five_ge: 81/125 <= heilbronn 5 (rational near-pentagon witness, 125-way triple bash, norm_num only)",
       "heilbronn_five_pos: 0 < heilbronn 5",
-      "heilbronn_five_mem_Icc: heilbronn 5 in [81/125, 3/2]"
+      "heilbronn_five_mem_Icc: heilbronn 5 in [81/125, 3/2]",
+      "Erdos507WIP01Sharp.lean: signed_shoelace_le_sharp (master inequality E <= 3sqrt3/2)",
+      "Erdos507WIP01Sharp.lean: triangleArea_le_sharp (unit-disk triangle area <= 3sqrt3/4, optimal)",
+      "Erdos507WIP01Sharp.lean: heilbronn_le_sharp (heilbronn n <= 3sqrt3/4 for n >= 3)",
+      "Erdos507WIP01Sharp.lean: heilbronn_three_eq (heilbronn 3 = 3sqrt3/4 EXACT, first exact value in the ladder)",
+      "Erdos507WIP01Sharp.lean: heilbronn_four_mem_Icc_sharp, heilbronn_five_mem_Icc_sharp (improved sandwiches), sharp_lt_three_halves, cross_sq_add_dot_sq"
     ],
     "insights": [
       "The signed shoelace area p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂) is alternating: transpositions negate it (area invariant via abs_neg), cyclic rotations fix it — giving full S₃ symmetry after the absolute value.",
@@ -105,7 +110,10 @@
       "Quantitative decay heilbronn n = O(1/n): pigeonhole over ⌊(x+1)·m/2⌋₊ vertical strips gives heilbronn n ≤ 4/m whenever 2(m+1)<n (heilbronn_le_four_div), hence heilbronn n → 0 (heilbronn_tendsto_zero). First non-constant upper bound; formalizes the α(n)≪1/n pigeonhole remark of the problem statement.",
       "Reusable recipe: the determinant form E=(p₁−r₁)(q₂−r₂)−(q₁−r₁)(p₂−r₂) (anchored at a vertex) is the right handle for LOCAL box/strip area bounds — spread hypotheses |Δx|≤w,|Δy|≤h collapse to two |·|≤w·h products (triangleArea_le_spread: area ≤ w·h).",
       "n=4 rung: the inscribed square (1,0),(0,1),(-1,0),(0,-1) has all four vertex triples spanning right triangles of area exactly 1, giving heilbronn 4 >= 1 by the same le_csSup witness pattern as heilbronn_three_ge_half. With the Lagrange upper bound this sandwiches heilbronn 4 in [1, 3/2] - a second width-1/2 window beyond n=3. Sharpness of the square among 4-point disk configs is NOT claimed (open quantitative question).",
-      "Rational points are dense on the unit circle, so every witness-ladder rung can be made radical-free: replace the exact regular n-gon by nearby Pythagorean-triple points. At n=5 the loss is only 1.5% (81/125 vs (2 sin72 - sin36)/2), and the certificate stays inside norm_num/kernel arithmetic - no maxHeartbeats pin needed even for the 125-case ordered-triple bash."
+      "Rational points are dense on the unit circle, so every witness-ladder rung can be made radical-free: replace the exact regular n-gon by nearby Pythagorean-triple points. At n=5 the loss is only 1.5% (81/125 vs (2 sin72 - sin36)/2), and the certificate stays inside norm_num/kernel arithmetic - no maxHeartbeats pin needed even for the 125-case ordered-triple bash.",
+      "The shoelace sum E = (p x q)+(q x r)+(r x p) is AFFINE in each vertex: E = p x (q-r) + q x r. Maximizing over p in the disk gives E <= |q-r| + q x r, eliminating one variable exactly — this is what makes the sharp bound nlinarith-tractable",
+      "Sharp bound certificate: with t=|q-r|, s=q x r, u=<q,r>: s^2+u^2 <= 1 (Lagrange), t^2 <= 2-2u, and 27/4-(t+s)^2 = (1/2)(t-2s)^2 + 3(u+1/2)^2 + (3/2)(2-2u-t^2) + 3(1-s^2-u^2) — an exact positive-combination identity, so nlinarith needs only two square hints",
+      "The blocked Jensen/central-angle route (~500 lines, compactness + perturbation-to-boundary) was bypassed entirely; the reopen criterion (materially new mechanism) was met by the affine-vertex-elimination + completing-the-square decomposition"
     ],
     "mathlibGaps": [
       "No off-the-shelf lemma reduces the nested membership biInf of minTriangleArea to a single ciInf_le; the junk-value semantics of ⨅ over unsatisfiable membership binders must be handled explicitly (done here via ciInf_le_of_le descent).",
@@ -113,9 +121,9 @@
       "No Mathlib lemma for the maximal-area triangle inscribed in a disk (max = equilateral, area 3√3/4·R²); the sharp heilbronn 3 ≤ 3√3/4 upper bound needs this and is not a tactic search."
     ],
     "nextSteps": [
-      "n=6 rung via a rational near-hexagon (regular hexagon min triangle area = sqrt(3)/4*... - rational perturbation same trick); diminishing returns, each rung heavier",
-      "Sharp upper heilbronn 3 <= 3sqrt3/4 (pins exact value; Jensen on central angles, ~500+ lines, NOT session-sized)",
-      "Deep alpha(n) exponent bounds 7/6 <= beta <= 2 (KPS lower, CPZ upper) - open research"
+      "Sharp value heilbronn 4 (conjectured extremal configurations are research-level; no elementary certificate known) — DEEP",
+      "Deep alpha(n) exponent bounds 7/6 <= beta <= 2 (KPS lower, CPZ upper) — open research, out of scope without new Mathlib machinery",
+      "Optional low-value: n=6 witness rung via rational near-hexagon (20-triple bash, diminishing returns)"
     ],
     "markdown": "# Knowledge Base: erdos-507-wip-01\n\n## Session 2026-07-20 (researcher-1) — foundational triangle-area / unit-disk scaffolding\n\n**Mode**: FRESH (EMPTY node). **Outcome**: progress — VERIFIED axiom-free (`[propext, Classical.choice, Quot.sound]`), 0 sorry / 0 axiom. Host-verified (Mathlib-only parent): fresh-built `Erdos507Problem.olean` then `lake env lean` on the child (no Docker).\n\n### What I did\nCreated `proofs/Proofs/Erdos507WIP01.lean` (14 theorems) on the shoelace area `triangleArea p q r = |p₁(q₂−r₂)+q₁(r₂−p₂)+r₁(p₂−q₂)|/2` and the `IsInUnitDisk` predicate:\n- **Nonnegativity**: `triangleArea_nonneg`.\n- **Permutation symmetry**: `triangleArea_swap_left`, `triangleArea_swap_right` (transpositions, via signed-area negation + `abs_neg`), `triangleArea_cyclic` (rotation fixes it).\n- **Degenerate cases**: `triangleArea_self_left / _self_mid / _self_outer` (= 0).\n- **Collinearity**: `triangleArea_eq_zero_iff`.\n- **Explicit value**: `triangleArea_unit` (`(0,0),(1,0),(0,1) ↦ 1/2`).\n- **Unit disk**: `isInUnitDisk_empty`, `IsInUnitDisk.subset`, `unitDisk_abs_fst_le`, `unitDisk_abs_snd_le`, and the uniform bound `triangleArea_le_three`.\n\n### Key findings\n- The signed shoelace form is alternating: transpositions negate, cyclic rotations fix — full `S₃` symmetry after `|·|`.\n- Every unit-disk triangle has area `≤ 3`, so `heilbronn n`'s `sSup` set is bounded above (a step toward finiteness/monotonicity of `heilbronn`).\n\n### Reusable Lean recipe\n- Signed-area alternation: `rw [show <permuted expr> = -(<base expr>) from by ring, abs_neg]`.\n- Coordinate bound from the disk: `nlinarith [sq_nonneg (p.1 - 1), sq_nonneg (p.1 + 1)]` after `have hsq : p.1^2 ≤ 1 := by nlinarith [sq_nonneg p.2]`.\n- Three-term abs bound: `abs_add_le` twice (note `abs_add` was renamed to `abs_add_le` in this pin) + `gcongr`, each summand `≤ 2` via `mul_le_mul` on `|a|·|b−c| ≤ 1·2`.\n- v4.31 renames hit this session: `abs_add → abs_add_le`, `Finset.not_mem_empty → Finset.notMem_empty`.\n\n### Next steps\n- `minTriangleArea P ≤ triangleArea p q r` (nested membership `biInf_le`).\n- `heilbronn n ≤ 3` via `BddAbove` of the defining set.\n\n### Still open (unchanged)\nThe growth exponent of `α(n)` — deep; only `7/6 ≤ β ≤ 2` known (KPS, Cohen–Pohoata–Zakharov).\n"
   },

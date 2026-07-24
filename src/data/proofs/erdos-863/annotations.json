@@ -8,18 +8,15 @@
       "endLine": 23
     },
     "title": "Problem Statement and Imports",
-    "content": "Module documentation describing Erdős Problem #863 on B₂[r] sum sets vs difference sets, with imports for Data.Nat.Basic, Data.Finset.Basic, Data.Finset.Card (finite set combinatorics), Order.Filter.Basic (the eventually filter for asymptotic convergence statements), and Tactic for proof automation.",
-    "mathContext": "The module formalizes the question: for B₂[$r$] sets $A \\subseteq \\{1, \\ldots, N\\}$ where each integer has at most $r$ representations as $a+b$ ($a \\leq b$), and the difference analogue where each nonzero integer has at most $r$ representations as $a - b$, do the asymptotic constants $c_r$ and $c'_r$ differ when $r \\geq 2$? The Filter.atTop framework enables $\\varepsilon$-$\\delta$ convergence statements.",
+    "content": "Module documentation describing Erdős Problem #863 on B₂[r] sum sets vs difference sets, with imports for Data.Nat.Basic, Data.Finset.Basic, Data.Finset.Card (finite set combinatorics), Order.Filter.Basic, and Tactic for proof automation. Order.Filter.Basic is imported but Filter.atTop/eventually are never invoked anywhere in the file — no asymptotic or convergence statement is formalized.",
+    "mathContext": "The module formalizes the question: for B₂[$r$] sets $A \\subseteq \\{1, \\ldots, N\\}$ where each integer has at most $r$ representations as $a+b$ ($a \\leq b$), and the difference analogue where each nonzero integer has at most $r$ representations as $a - b$, do the asymptotic constants $c_r$ and $c'_r$ differ when $r \\geq 2$? The asymptotic constants and any $\\varepsilon$-$\\delta$/Filter.atTop convergence statement are not formalized in this file; the Filter.Basic import is unused.",
     "significance": "supporting",
     "relatedConcepts": [
       "Finset",
-      "Filter.atTop",
-      "eventually",
       "asymptotic analysis"
     ],
     "prerequisites": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Order.Filter.Basic"
+      "Mathlib.Data.Finset.Basic"
     ]
   },
   {
@@ -171,25 +168,22 @@
     "proofId": "erdos-863",
     "type": "concept",
     "range": {
-      "startLine": 68,
-      "endLine": 74
+      "startLine": 66,
+      "endLine": 69
     },
     "title": "Classical Sidon Bound: c₁ = c'₁ = 1",
-    "content": "Axiom recording the classical result that for r = 1 (Sidon sets), both the sum and difference B₂[1] sets achieve maximum size ~√N. The upper bound is due to Lindström (1969) and the lower bound follows from Singer's difference set construction (1938) which achieves √N - O(N^{1/4}).",
-    "mathContext": "$c_1 = c'_1 = 1$: $\\text{maxB2rSize}(1, N) \\sim \\sqrt{N}$ and $\\text{maxDiffB2rSize}(1, N) \\sim \\sqrt{N}$ as $N \\to \\infty$. Formalized as $\\varepsilon$-$\\delta$ convergence via Filter.atTop.",
+    "content": "Comment recording the classical result that for r = 1 (Sidon sets), both the sum and difference B₂[1] sets achieve maximum size ~√N. The upper bound is due to Lindström (1969) and the lower bound follows from Singer's difference set construction (1938) which achieves √N - O(N^{1/4}). This is documented as background in a comment — not stated as an axiom, definition, or theorem in this file.",
+    "mathContext": "$c_1 = c'_1 = 1$: $\\text{maxB2rSize}(1, N) \\sim \\sqrt{N}$ and $\\text{maxDiffB2rSize}(1, N) \\sim \\sqrt{N}$ as $N \\to \\infty$. Not formalized in this file: no axiom, definition, or theorem asserts this asymptotic, and Filter.atTop is never used — it appears only in a comment.",
     "significance": "key",
     "relatedConcepts": [
       "Sidon sets",
       "Lindström bound",
       "Singer construction",
-      "perfect difference sets",
-      "Filter.atTop"
+      "perfect difference sets"
     ],
     "prerequisites": [
       "maxB2rSize",
-      "maxDiffB2rSize",
-      "Filter.atTop",
-      "Real.sqrt"
+      "maxDiffB2rSize"
     ]
   },
   {
@@ -197,24 +191,21 @@
     "proofId": "erdos-863",
     "type": "concept",
     "range": {
-      "startLine": 81,
-      "endLine": 87
+      "startLine": 70,
+      "endLine": 75
     },
     "title": "Erdős Conjecture: c'ᵣ < cᵣ for r ≥ 2",
     "content": "The main conjecture: for every r ≥ 2, the asymptotic constants satisfy c'_r < c_r, i.e., the maximum difference B₂[r] set is strictly smaller than the maximum sum B₂[r] set. Erdős's intuition: the ordering constraint a ≤ b in sums is more restrictive than the free pairing in differences, so sums 'waste' fewer representations.",
-    "mathContext": "$\\forall r \\geq 2,\\; \\exists c, c' > 0:\\; c' < c \\wedge \\text{maxB2rSize}(r, N)/\\sqrt{N} \\to c \\wedge \\text{maxDiffB2rSize}(r, N)/\\sqrt{N} \\to c'$. The formal statement uses $\\varepsilon$-$\\delta$ convergence via Filter.atTop.",
+    "mathContext": "$\\forall r \\geq 2,\\; \\exists c, c' > 0:\\; c' < c \\wedge \\text{maxB2rSize}(r, N)/\\sqrt{N} \\to c \\wedge \\text{maxDiffB2rSize}(r, N)/\\sqrt{N} \\to c'$ is the informal statement of the conjecture. It is not formalized in this file: no axiom, definition, or theorem states it, and Filter.atTop is never used — the conjecture lives only in this comment.",
     "significance": "key",
     "relatedConcepts": [
       "asymptotic constant",
       "sum-difference asymmetry",
-      "open problem",
-      "Filter.atTop"
+      "open problem"
     ],
     "prerequisites": [
       "maxB2rSize",
-      "maxDiffB2rSize",
-      "Filter.atTop",
-      "Real.sqrt"
+      "maxDiffB2rSize"
     ]
   },
   {

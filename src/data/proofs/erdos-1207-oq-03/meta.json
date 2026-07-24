@@ -78,7 +78,8 @@
       "**No carries in base 3.** Digits drawn from {0,1} keep every digit sum below the base 3, so addition is carry-free and the base-3 representation is rigid — this is the whole reason the set is progression-free.",
       "**One induction, two payloads.** The least-significant-digit recursion toNat (k+1) b = b₀ + 3·toNat k (tail b) drives both injectivity (⇒ size 2ᵏ) and the midpoint obstruction (⇒ 3-AP-free).",
       "**omega finishes the digit step.** Once the recursion is unfolded, the split '2d₀ = b₀+c₀ and 2·tail = tail+tail' from a single linear equation with digit bounds ≤ 1 is exactly what omega decides.",
-      "**Honest strength.** 2ᵏ out of 3ᵏ is n^{log₃2} ≈ n^{0.63} — explicit and verified, but strictly weaker than Behrend's n/exp(O(√log n)); the digit construction provably cannot reach Behrend."
+      "**Honest strength.** 2ᵏ out of 3ᵏ is n^{log₃2} ≈ n^{0.63} — explicit and verified, but strictly weaker than Behrend's n/exp(O(√log n)); the digit construction provably cannot reach Behrend.",
+      "**Sparse examples become a genuine bound function via rounding down.** exists_isoscelesFree_pow only supplies one example per exponent k, at N = 3ᵏ exactly. exists_isoscelesFree_Ico turns that sparse family into a lower bound P₁(N) ≥ 2^{⌊log₃N⌋} valid at *every* N ≥ 1, by taking k = ⌊log₃N⌋ (so 3ᵏ ≤ N, via Nat.pow_log_le_self) and re-embedding S_k in [0,N). This 'round down to the nearest achievable scale' step is a routine, reusable pattern for turning any sparse power-of-b construction into a bound at all N, at the cost of only a bounded multiplicative slack in the exponent."
     ]
   },
   "sections": [

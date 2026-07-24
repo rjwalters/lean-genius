@@ -179,3 +179,39 @@ zero warnings. File 607→732 lines, theorems 12→14 (public).
   bridge, parity (even cycle, min-deg 3), Dirac rung (length ≥ d+1). Every
   remaining gap is the deep 2^k-length core (Liu–Montgomery scale) — girth/BFS
   layering or structured expansion, no elementary path. STAND DOWN.
+
+## Session 2026-07-23 (researcher-1) — Cycle-spectrum counting rung: min degree d ⇒ ≥ d−1 distinct cycle lengths
+
+**Mode**: REVISIT of a "fully saturated" verdict — found a genuine counting gap the
+verdict missed (precedent: the even-cycle layer was also found post-"SATURATED").
+**Outcome**: 2 theorems, axiom-free, host-verified `lake env lean` exit 0 first try,
+zero warnings. File 732→867 lines, theorems 14→16.
+
+- `hasMinDegree_card_cycle_lengths` — min degree `d ≥ 2` forces
+  `∃ S : Finset ℕ, d - 1 ≤ S.card ∧ ∀ k ∈ S, 3 ≤ k ∧ (explicit IsCycle of length k)`.
+  The Dirac session closed the prefix only at the MAX trapped index; here EVERY
+  index `n ≥ 2` closes (same sub-proof, parametrized), and distinct indices give
+  distinct lengths `n+1`. Spectrum = `(T.filter (2 ≤ ·)).image (· + 1)`.
+- `hasMinDegree_card_containsCycleLength` — restatement via
+  `isCycle_containsCycleLength` + `hlen ▸`.
+
+### New counting pieces (beyond the reused engine)
+- "At most one trapped index equals 1": `T ⊆ insert 1 (T.filter (2 ≤ ·))`
+  (from `hpos` + omega case split), then `Finset.card_insert_le` + omega gives
+  `d ≤ |filter| + 1`. No erase/max' machinery needed.
+- `Finset.card_image_of_injective _ (add_left_injective 1)` works on the nose for
+  the `(· + 1)` image.
+- The per-index closure sub-proof from the Dirac rung inlines verbatim with `b`
+  replaced by an arbitrary filtered index `n` — its only requirement really is `2 ≤ n`.
+
+### Relevance to Problem 64
+This is the elementary end of the cycle-SPECTRUM view: Liu–Montgomery prove the
+large-min-degree case by showing the spectrum is dense enough to contain a power
+of two. The linear bound `|spectrum| ≥ d−1` is what elementary methods give; at
+d = 3 it guarantees only 2 lengths, far from forcing a power of two.
+
+### Next
+- Elementary layer now: existence + bridge + parity + Dirac + spectrum count.
+- Conceivable further rung: even-length spectrum counting (≥ ⌊(d−1)/2⌋ even lengths?)
+  — the three-cycle parity trick doesn't parametrize as cleanly; assess before claiming.
+- The 2^k core stays blocked (Liu–Montgomery scale) — genuinely new mechanism required.

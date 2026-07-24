@@ -68,27 +68,43 @@
   "sections": [
     {
       "id": "sec-header",
-      "title": "Module Header and Numerator Definition",
+      "title": "Module Overview",
       "startLine": 1,
-      "endLine": 41,
-      "summary": "Module docstring stating both forms and the clear-the-denominator strategy. Imports Mathlib, namespace SummationByPartsOQ01OQ02, and defines the private numerator polynomial num r n = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)).",
-      "mathContext": "The numerator `num r n` packages the closed form's polynomial so the main identity reads `(1−r)³·S(n) = num r n`."
+      "endLine": 28,
+      "summary": "Module docstring stating both forms — the division-free identity (1−r)³·Σ_{k<n} k²·rᵏ = num r n valid for all r, and the divided closed form for r ≠ 1 — and outlining the clear-the-denominator induction strategy.",
+      "mathContext": "For $|r|<1$ the $n\\to\\infty$ limit is $\\sum_{k\\ge0} k^2 r^k = r(r+1)/(1-r)^3$; the finite sum adds an $r^n$-weighted boundary correction."
+    },
+    {
+      "id": "sec-num-def",
+      "title": "Imports and the Numerator Polynomial",
+      "startLine": 29,
+      "endLine": 42,
+      "summary": "Imports Mathlib and opens namespace SummationByPartsOQ01OQ02. Defines the private numerator polynomial num r n = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1)), separating the n-independent limit term r(r+1) from the rⁿ-weighted boundary correction quadratic in n.",
+      "mathContext": "$\\mathrm{num}(r,n) = r(r+1) + r^n\\big(-n^2(r-1)^2 + 2n\\,r(r-1) - r(r+1)\\big)$; at $n=0$ the bracket cancels the leading term, so $\\mathrm{num}(r,0)=0$."
     },
     {
       "id": "sec-main",
       "title": "Main Theorem: Division-Free Identity",
       "startLine": 43,
-      "endLine": 52,
+      "endLine": 51,
       "summary": "sq_geom_sum: (1−r)³·Σ_{k<n} k²·rᵏ = num r n, by induction. zero case via simp; succ case rewrites Finset.sum_range_succ, mul_add, the inductive hypothesis, unfolds num twice and pow_succ, then push_cast + ring.",
       "mathContext": "The induction step verifies the polynomial identity num r m + (1−r)³·m²·rᵐ = num r (m+1) with rᵐ⁺¹ = rᵐ·r — a true polynomial equation, hence ring."
     },
     {
       "id": "sec-div",
-      "title": "Closed Form for r ≠ 1, and Sanity Checks",
-      "startLine": 54,
+      "title": "Closed Form for r ≠ 1",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "sq_geom_sum_div: divides by the nonzero (1−r)³ (pow_ne_zero + sub_ne_zero) using eq_div_iff and mul_comm to reduce to sq_geom_sum. This is the only place division enters, gated on r ≠ 1.",
+      "mathContext": "For r ≠ 1, S(n) = num r n / (1−r)³."
+    },
+    {
+      "id": "sec-checks",
+      "title": "Sanity Checks Against Direct Evaluation",
+      "startLine": 60,
       "endLine": 67,
-      "summary": "sq_geom_sum_div: divides by the nonzero (1−r)³ (pow_ne_zero + sub_ne_zero) using eq_div_iff and mul_comm to reduce to sq_geom_sum. Two examples check S(4) at r=2 against direct evaluation and against the identity.",
-      "mathContext": "For r ≠ 1, S(n) = num r n / (1−r)³. The r=2, n=4 check: 0 + 2 + 16 + 72 = 90."
+      "summary": "Two examples pin the formula at r = 2, n = 4: direct evaluation Σ_{k<4} k²·2ᵏ = 0 + 2 + 16 + 72 = 90 via Finset.sum_range_succ + norm_num, and a check of the division-free identity against sq_geom_sum by simpa.",
+      "mathContext": "The r=2, n=4 check: 0 + 2 + 16 + 72 = 90, and (1−2)³·90 = −90 = num 2 4."
     }
   ],
   "crossReferences": [

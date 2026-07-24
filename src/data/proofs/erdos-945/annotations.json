@@ -123,18 +123,18 @@
     },
     "type": "concept",
     "title": "The Main Conjecture",
-    "content": "**Is F(x) ≤ (log x)^{O(1)}?**\n\nThis asks whether the longest run of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. After 70+ years, this remains open.\n\nStated as an axiom since no proof exists.",
+    "content": "**Is F(x) ≤ (log x)^{O(1)}?**\n\nThis asks whether the longest run of consecutive integers with distinct divisor counts is bounded by a polynomial in log x. After 70+ years, this remains open.\n\nStated as a `Prop` definition (not proved, and not an axiom) since no proof exists.",
     "mathContext": "Erdos945Prop: ∃C>0, F(x) ≤ (log x)^C eventually. The O(1) means some constant exponent.",
     "significance": "key",
     "relatedConcepts": [
       "conjecture",
-      "axiom",
+      "open-problem",
       "polylogarithmic"
     ],
     "prerequisites": [
       "polylogarithmic growth ((log x)^C)",
       "the function F(x)",
-      "axioms for open (unproven) conjectures"
+      "unproven statements formalized as Prop definitions (not axioms)"
     ]
   },
   {

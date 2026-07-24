@@ -11,7 +11,8 @@
       "**One identity generates the whole ladder.** Each $\\sum k^m r^k$ closed form is a corollary of (★): apply it with $f(k)=k^m$, observe $\\Delta(k^m)$ has degree $m-1$, and recurse. The bespoke per-degree inductions of the parent entries are repackaged as a single statement plus its iteration.",
       "**No hypotheses, any ring.** Because (★) is a polynomial identity in $r$ — both sides expand to the same formal expression — it needs neither $r\\neq1$ nor a field nor convergence. The familiar division form $\\sum f(k)r^k = (\\text{boundary})/(r-1)$ is just the field-and-$r\\neq1$ shadow obtained by dividing through.",
       "**Forward difference is the right invariant.** Writing the correction as $r\\sum(\\Delta f)(k)r^k$ shows the transform $f \\mapsto \\Delta f$ acting on the weight, with the boundary term $f(n)r^n - f(0)$ as the cocycle. This is the discrete, finite-sum analogue of integration by parts $\\int u\\,dv = uv - \\int v\\,du$ with $dv = r^k$.",
-      "**Proved directly, not via the library's Abel transform.** Instead of instantiating Mathlib's `Finset.sum_range_by_parts`, the identity is established by a bare induction on $n$ whose step — after `Finset.sum_range_succ` peels the top term off both sums — is a polynomial identity in $f(m), f(m{+}1), f(0), r^m, r$ that `ring` closes outright. Exhibiting the elementary content *behind* summation by parts this way is exactly what buys the hypothesis-free, arbitrary-commutative-ring generality: no telescoping black box, no invertibility of $r-1$, and no ordered, field, or normed structure is ever assumed."
+      "**Proved directly, not via the library's Abel transform.** Instead of instantiating Mathlib's `Finset.sum_range_by_parts`, the identity is established by a bare induction on $n$ whose step — after `Finset.sum_range_succ` peels the top term off both sums — is a polynomial identity in $f(m), f(m{+}1), f(0), r^m, r$ that `ring` closes outright. Exhibiting the elementary content *behind* summation by parts this way is exactly what buys the hypothesis-free, arbitrary-commutative-ring generality: no telescoping black box, no invertibility of $r-1$, and no ordered, field, or normed structure is ever assumed.",
+      "**Each rung applies (★) exactly once, not recursively.** `sum_range_id_mul_geom_recursion` and `sum_range_sq_mul_geom_recursion` each instantiate the master recursion a single time; the second-order theorem's right-hand side is left as the *first-order* weighted sum $\\sum(2k+1)r^{k+1}$, itself not further reduced. Because the forward-difference operator strictly lowers polynomial degree by one, fully collapsing a degree-$d$ weight to the geometric base case takes $d+1$ applications of (★) (as the header's motivation notes) — this file proves and exercises the one-step lowering lemma at $d=1$ and $d=2$, but chaining the iteration into a single closed-form theorem is exactly the first open question."
     ]
   },
   "sections": [
@@ -40,12 +41,20 @@
       "mathContext": "The hypothesis r ≠ 1 enters only here, to invert r − 1; the underlying content is the hypothesis-free ring identity of the previous section."
     },
     {
-      "id": "ladder-specializations",
-      "title": "Reading the Ladder off the Engine",
+      "id": "ladder-base",
+      "title": "Bottom Two Rungs: Geometric Series and First Order",
       "startLine": 114,
-      "endLine": 151,
-      "summary": "geom_sum_via_recursion (f ≡ 1 ⟹ (r−1)·∑ rᵏ = rⁿ − 1, the geometric base case), sum_range_id_mul_geom_recursion (f = k, Δf ≡ 1 ⟹ first-order sum reduces to a geometric sum), and sum_range_sq_mul_geom_recursion (f = k², Δf = 2k+1 ⟹ second-order sum reduces to a first-order weighted sum) — the three rungs derived uniformly from the single recursion.",
-      "mathContext": "Each corollary instantiates f in geom_weighted_recursion and simplifies the forward difference via push_cast + ring; the second-order case reproduces, as a one-line corollary, the degree-lowering step the parent entry summation-by-parts-oq-01-oq-01 established by a dedicated summation-by-parts computation."
+      "endLine": 132,
+      "summary": "geom_sum_via_recursion (f ≡ 1 ⟹ (r−1)·∑ rᵏ = rⁿ − 1, the geometric base case, via simpa) and sum_range_id_mul_geom_recursion (f = k, Δf ≡ 1 ⟹ the first-order sum reduces to a pure geometric sum) — the two lowest rungs, each a one-line specialization of geom_weighted_recursion.",
+      "mathContext": "f ≡ 1: Δf = 0 ⟹ (r−1)·∑rᵏ = rⁿ−1; f(k)=k: Δf ≡ 1 (constant) ⟹ (r−1)·∑k·rᵏ = n·rⁿ − ∑r^{k+1}. Both instantiate the master recursion and normalize with push_cast/ring."
+    },
+    {
+      "id": "ladder-top-rung",
+      "title": "Top Rung: Recovering the Parent's Degree-Lowering Step",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "sum_range_sq_mul_geom_recursion instantiates the engine at f(k) = k², whose forward difference Δf(k) = 2k+1 is linear, reducing the second-order sum to a first-order weighted sum — exactly the degree-lowering step the parent entry summation-by-parts-oq-01-oq-01 performed by a dedicated computation, here falling out as a one-line corollary.",
+      "mathContext": "f(k)=k²: Δf(k) = 2k+1 ⟹ (r−1)·∑k²·rᵏ = n²·rⁿ − ∑(2k+1)·r^{k+1}, via geom_weighted_recursion then simp/ring_nf/push_cast/ring — the instance answering the parent's open question."
     }
   ],
   "references": [

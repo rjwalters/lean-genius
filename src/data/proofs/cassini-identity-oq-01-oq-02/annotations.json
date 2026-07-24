@@ -57,5 +57,29 @@
     "significance": "key",
     "prerequisites": ["Matrix.det_pow", "Matrix.det_fin_two_of"],
     "relatedConcepts": ["Cassini's identity", "Determinant multiplicativity", "Alternating sign"]
+  },
+  {
+    "id": "ann-duplication",
+    "proofId": "cassini-identity-oq-01-oq-02",
+    "range": { "startLine": 132, "endLine": 156 },
+    "type": "theorem",
+    "title": "Duplication Formulas: the m = n Diagonal",
+    "content": "Setting $m = n$ in the two addition formulas — i.e. reading the entries of the *square* $Q^{n+1}\\cdot Q^{n+1} = Q^{2n+2}$ — collapses them to the classical Fibonacci duplication identities, with no new induction. `fib_two_mul_add_one` is the $(2,2)$ entry at $m=n$: $F_{2n+1} = F_{n+1}^2 + F_n^2$, the classical fact that an odd-index Fibonacci number is a sum of two consecutive squares. `fib_two_mul_add_two` is the $(1,2)$ entry at $m=n$: $F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n$. Both proofs are one line: rewrite $2n{+}1$ (resp. $2n{+}2$) as $n+n+1$ (resp. $n+n+2$) by `ring`, then substitute the already-proved addition formula at $m=n$.",
+    "mathContext": "$F_{2n+1} = F_{n+1}^2 + F_n^2$ and $F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n$ — the diagonal $m=n$ specialization of the addition formulas, needing no separate proof.",
+    "significance": "supporting",
+    "prerequisites": ["fib_add_matrix", "fib_add_offdiag"],
+    "relatedConcepts": ["Fibonacci duplication identities", "diagonal specialization", "fast-doubling algorithm"]
+  },
+  {
+    "id": "ann-docagne-adjugate",
+    "proofId": "cassini-identity-oq-01-oq-02",
+    "range": { "startLine": 158, "endLine": 221 },
+    "type": "insight",
+    "title": "Subtraction Identities Without an Inverse: the Adjugate Factorisation",
+    "content": "The addition formulas read entries of the *product* $Q^a\\cdot Q^b = Q^{a+b}$; classical *subtraction*-type identities (d'Ocagne, Catalan, Vajda) instead need a difference index $F_{a-b}$, i.e. an *inverse* power $Q^{a-b} = Q^a(Q^b)^{-1}$. This file avoids ever forming $(Q^b)^{-1}$ — and the associated $F_{-1}$ convention — by using the **adjugate** instead: since $A\\cdot\\operatorname{adj}(A) = (\\det A)\\bullet 1$ (`Matrix.mul_adjugate`) and $\\det(Q^{n+1}) = (-1)^{n+1}$, the factorisation $Q^{m+n+1}\\cdot\\operatorname{adj}(Q^{n+1}) = (-1)^{n+1}\\bullet Q^m$ (`Q_adj_factor`) lands on a genuine, non-negative power $Q^m$ rather than a negative one. `Q_pow_entry_10` extends the $(2,1)$-entry-is-$F_m$ fact to every $m$ including $m=0$ (needed because the adjugate factorisation can produce $Q^0$). Reading the $(2,1)$ entry of the adjugate factorisation gives `fib_dOcagne`: $F_{m+n+1}F_n - F_{m+n}F_{n+1} = (-1)^{n+1}F_m$ — the standard identity $F_aF_{b+1}-F_{a+1}F_b=(-1)^bF_{a-b}$ at $a=m+n,\\,b=n$, with the difference $a-b=m$ materialised as the bare exponent of $Q^m$. Mathlib has no Fibonacci companion matrix and none of d'Ocagne, Catalan, or Vajda's identities, so both the adjugate technique and its corollary are new.",
+    "mathContext": "$Q^{m+n+1}\\cdot\\operatorname{adj}(Q^{n+1}) = (-1)^{n+1}\\bullet Q^m$; its $(2,1)$ entry is $F_{m+n+1}F_n - F_{m+n}F_{n+1} = (-1)^{n+1}F_m$ (d'Ocagne), with the subtraction index $m$ realised as a non-negative exponent instead of $F_{-1}$.",
+    "significance": "key",
+    "prerequisites": ["Matrix.mul_adjugate", "Matrix.adjugate_fin_two_of", "Q_pow_succ_det", "pow_add"],
+    "relatedConcepts": ["d'Ocagne's identity", "matrix adjugate", "avoiding negative exponents/inverses", "Catalan's identity", "Vajda's identity"]
   }
 ]

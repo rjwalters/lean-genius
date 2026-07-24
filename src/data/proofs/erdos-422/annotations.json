@@ -4,11 +4,11 @@
     "proofId": "erdos-422",
     "range": {
       "startLine": 1,
-      "endLine": 25
+      "endLine": 22
     },
     "type": "concept",
     "title": "Problem Statement: Hofstadter-Type Recursion",
-    "content": "Erdős Problem #422 defines $f(1) = f(2) = 1$ and for $n > 2$: $f(n) = f(n - f(n-1)) + f(n - f(n-2))$. Four questions are asked: (1) Is $f$ well-defined for all $n$? (2) Does $f$ miss infinitely many integers? (3) Is $f$ surjective? (4) What is the growth rate?\n\nThe sequence begins $1, 1, 2, 3, 3, 4, \\ldots$ (OEIS A005185). All four questions remain open. The definition is `noncomputable` in Lean since well-definedness for all $n$ is unknown — the recursion references $f(n - f(n-1))$ which requires $f(n-1) \\leq n$ to stay in range.",
+    "content": "Erdős Problem #422 defines $f(1) = f(2) = 1$ and for $n > 2$: $f(n) = f(n - f(n-1)) + f(n - f(n-2))$. Four questions are asked: (1) Is $f$ well-defined for all $n$? (2) Does $f$ miss infinitely many integers? (3) Is $f$ surjective? (4) What is the growth rate?\n\nThe sequence begins $1, 1, 2, 3, 3, 4, \\ldots$ (OEIS A005185). All four questions remain open.",
     "mathContext": "$f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n > 2$. Status: OPEN.",
     "significance": "supporting",
     "prerequisites": [
@@ -22,158 +22,113 @@
     ]
   },
   {
-    "id": "ann-e422-hofstadterf",
+    "id": "ann-e422-hofstadterflist",
     "proofId": "erdos-422",
     "range": {
       "startLine": 26,
-      "endLine": 33
+      "endLine": 41
     },
     "type": "definition",
-    "title": "Hofstadter Recursive Sequence",
-    "content": "**hofstadterF**: The Erdős–Hofstadter recursive sequence defined by pattern matching: $f(0) = 0$ (unused sentinel), $f(1) = 1$, $f(2) = 1$, and $f(n+3) = f(n+3 - f(n+2)) + f(n+3 - f(n+1))$. Marked `noncomputable` because Lean cannot verify termination—the recursion is self-referential, with evaluation points depending on earlier values of $f$ itself. The shift to $n+3$ avoids natural number subtraction issues for the base cases.",
-    "mathContext": "$f(1) = f(2) = 1,\\quad f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n \\geq 3$",
+    "title": "Computable List Accumulator",
+    "content": "**hofstadterFList**: A total, computable definition that builds the Hofstadter sequence as a `List ℕ` accumulator. Base cases handle indices $0$ (sentinel $0$), $1$, and $2$; for $k \\geq 3$ it extends the previously computed list by looking up `f(k - f(k-1))` and `f(k - f(k-2))` via `List.getD`, which returns a default of $0$ on out-of-bounds access. This out-of-bounds default is what makes the function total despite the recursion's well-definedness being an open question — Lean never needs to prove the indices stay in range.",
+    "mathContext": "$f(1) = 1,\\; f(2) = 1,\\; f(k) = f(k - f(k-1)) + f(k - f(k-2))$ for $k \\geq 3$ (out-of-range lookups default to $0$)",
     "significance": "key",
     "relatedConcepts": [
-      "noncomputable def",
-      "equation compiler",
-      "self-referential recursion",
+      "List.getD",
+      "structural recursion",
+      "totality via default values",
+      "self-referential recursion"
+    ],
+    "prerequisites": [
+      "Nat",
+      "List"
+    ]
+  },
+  {
+    "id": "ann-e422-hofstadterf",
+    "proofId": "erdos-422",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Hofstadter Sequence Extraction",
+    "content": "**hofstadterF**: Extracts the $n$-th entry of `hofstadterFList n` via `List.getD`. Because the underlying list is built with the out-of-bounds default of $0$, `hofstadterF` is a genuine total function on all of `ℕ`, agreeing with the mathematical recursion whenever it stays well-defined but not asserting well-definedness itself.",
+    "mathContext": "$\\text{hofstadterF}(n) = \\text{hofstadterFList}(n).\\text{getD}(n, 0)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.getD",
+      "total function",
       "meta-Fibonacci"
     ],
     "prerequisites": [
-      "Nat"
-    ]
-  },
-  {
-    "id": "ann-e422-welldef",
-    "proofId": "erdos-422",
-    "range": {
-      "startLine": 36,
-      "endLine": 37
-    },
-    "type": "definition",
-    "title": "Well-Definedness Predicate",
-    "content": "**IsWellDefined n**: Asserts that the recursion for `hofstadterF` is valid up to index $n$. Formally, $\\forall k \\leq n, k \\geq 3 \\to f(k-1) < k \\wedge f(k-2) < k$, ensuring the recursive indices $k - f(k-1)$ and $k - f(k-2)$ are positive (i.e., valid natural numbers). Without this property, the Lean definition would silently compute incorrect values due to natural number underflow.",
-    "mathContext": "$\\text{IsWellDefined}(n) \\iff \\forall k \\leq n,\\; k \\geq 3 \\to f(k-1) < k \\wedge f(k-2) < k$",
-    "significance": "key",
-    "relatedConcepts": [
-      "partial function",
-      "recursion validity",
-      "natural number underflow"
-    ],
-    "prerequisites": [
-      "hofstadterF",
-      "Nat"
-    ]
-  },
-  {
-    "id": "ann-e422-welldef-conj",
-    "proofId": "erdos-422",
-    "range": {
-      "startLine": 42,
-      "endLine": 43
-    },
-    "type": "concept",
-    "title": "Well-Definedness Conjecture",
-    "content": "**erdos_422_well_defined**: Axiomatizes the conjecture that $f$ is well-defined for all $n$: $\\forall n, \\text{IsWellDefined}(n)$. This is the most fundamental open question about the sequence. It has been verified computationally for billions of terms, but no proof is known. A failure of well-definedness would mean $f(k) \\geq k$ for some $k \\geq 3$, causing the recursion to reference negative indices.",
-    "mathContext": "$\\forall n \\in \\mathbb{N},\\; \\text{IsWellDefined}(n)$",
-    "significance": "key",
-    "relatedConcepts": [
-      "total function",
-      "computability",
-      "open problem",
-      "axiom"
-    ],
-    "prerequisites": [
-      "IsWellDefined"
-    ]
-  },
-  {
-    "id": "ann-e422-missing",
-    "proofId": "erdos-422",
-    "range": {
-      "startLine": 46,
-      "endLine": 47
-    },
-    "type": "concept",
-    "title": "Infinitely Many Missing Integers",
-    "content": "**erdos_422_misses_infinitely**: Axiomatizes the conjecture that $f$ misses infinitely many positive integers: the set $\\{m > 0 : \\forall n, f(n) \\neq m\\}$ is infinite, formalized via `Set.Infinite`. This asks whether the range of $f$ has infinitely many gaps among the positive integers. Even assuming well-definedness, this question is entirely open.",
-    "mathContext": "$|\\{m \\in \\mathbb{N}^+ : m \\notin \\text{range}(f)\\}| = \\infty$",
-    "significance": "key",
-    "relatedConcepts": [
-      "Set.Infinite",
-      "range of function",
-      "integer gaps",
-      "axiom"
-    ],
-    "prerequisites": [
-      "hofstadterF",
-      "Set.Infinite"
-    ]
-  },
-  {
-    "id": "ann-e422-surj",
-    "proofId": "erdos-422",
-    "range": {
-      "startLine": 50,
-      "endLine": 51
-    },
-    "type": "concept",
-    "title": "Non-Surjectivity Conjecture",
-    "content": "**erdos_422_surjectivity**: Axiomatizes that $f$ restricted to positive indices is not surjective: $\\neg \\text{Surjective}(n \\mapsto f(n+1))$. The shift by 1 restricts to $f(1), f(2), f(3), \\ldots$ (skipping the sentinel $f(0) = 0$). Combined with `erdos_422_misses_infinitely`, this implies not only are some integers missed, but infinitely many are.",
-    "mathContext": "$f : \\mathbb{N}^+ \\to \\mathbb{N}$ is not surjective",
-    "significance": "key",
-    "relatedConcepts": [
-      "Function.Surjective",
-      "range gaps",
-      "axiom"
-    ],
-    "prerequisites": [
-      "hofstadterF",
-      "Function.Surjective"
-    ]
-  },
-  {
-    "id": "ann-e422-growth",
-    "proofId": "erdos-422",
-    "range": {
-      "startLine": 54,
-      "endLine": 57
-    },
-    "type": "concept",
-    "title": "Linear Growth Bound",
-    "content": "**erdos_422_growth**: Axiomatizes the conjectured linear growth rate: for every $\\varepsilon > 0$, there exists $N_0$ such that $f(n) \\leq (1 + \\varepsilon)n$ for all $n \\geq N_0$. This captures the computational observation that $f(n)/n$ appears to be bounded. Note this is an upper bound only—no matching lower bound is axiomatized, though $f(n) \\geq 1$ trivially.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0 : \\forall n \\geq N_0,\\; f(n) \\leq (1+\\varepsilon)n$",
-    "significance": "key",
-    "relatedConcepts": [
-      "asymptotic growth",
-      "linear bound",
-      "Real.cast",
-      "axiom"
-    ],
-    "prerequisites": [
-      "hofstadterF",
-      "Real"
+      "hofstadterFList"
     ]
   },
   {
     "id": "ann-e422-initial",
     "proofId": "erdos-422",
     "range": {
-      "startLine": 63,
-      "endLine": 66
+      "startLine": 49,
+      "endLine": 63
     },
-    "type": "concept",
-    "title": "Initial Values",
-    "content": "**initial_values**: Axiomatizes the first six values of the sequence: $f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3, f(5) = 3, f(6) = 4$. These match OEIS A005185. The values are directly computable: $f(3) = f(3-f(2)) + f(3-f(1)) = f(2) + f(2) = 2$, $f(4) = f(4-f(3)) + f(4-f(2)) = f(2) + f(3) = 3$, etc. Axiomatized rather than proved to avoid depending on the well-definedness assumption.",
-    "mathContext": "$f(1) = 1,\\; f(2) = 1,\\; f(3) = 2,\\; f(4) = 3,\\; f(5) = 3,\\; f(6) = 4$",
-    "significance": "supporting",
+    "type": "theorem",
+    "title": "Proved Initial Values",
+    "content": "**hofstadterF_one** through **hofstadterF_six** are genuine theorems — not axioms — each discharged by `native_decide`, which evaluates the computable definition and trusts Lean's compiled code (so their kernel axiom footprint includes `Lean.ofReduceBool`, a compiler-trust disclosure rather than a mathematical assumption). **initial_values** bundles the six into a single conjunction $f(1)=1,\\, f(2)=1,\\, f(3)=2,\\, f(4)=3,\\, f(5)=3,\\, f(6)=4$, matching OEIS A005185. No literal `axiom` declaration is used anywhere in this file.",
+    "mathContext": "$f(1) = 1,\\; f(2) = 1,\\; f(3) = 2,\\; f(4) = 3,\\; f(5) = 3,\\; f(6) = 4$ — proved via `native_decide`",
+    "significance": "key",
     "relatedConcepts": [
+      "native_decide",
+      "Lean.ofReduceBool",
       "OEIS A005185",
-      "concrete computation",
-      "axiom"
+      "compiler trust"
     ],
     "prerequisites": [
       "hofstadterF"
+    ]
+  },
+  {
+    "id": "ann-e422-welldef",
+    "proofId": "erdos-422",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Well-Definedness Predicates",
+    "content": "**WellDefinedAt k** and **IsWellDefined n** are `Prop`-valued definitions, not axioms and not asserted facts. `WellDefinedAt k` states that, if $k \\geq 3$, the recursive lookups $f(k-1)$ and $f(k-2)$ stay in the valid range $[1, k)$ — i.e. the indices $k - f(k-1)$ and $k - f(k-2)$ would be positive. `IsWellDefined n` universally quantifies `WellDefinedAt` over all $k \\leq n$. Neither predicate is proved to hold for all $n$; that is exactly the open well-definedness question, left unformalized (see the Open Questions section).",
+    "mathContext": "$\\text{WellDefinedAt}(k) :\\equiv k \\geq 3 \\to 1 \\leq f(k-1) < k \\wedge 1 \\leq f(k-2) < k$;\\quad $\\text{IsWellDefined}(n) :\\equiv \\forall k \\leq n,\\, \\text{WellDefinedAt}(k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prop-valued predicate",
+      "partial function",
+      "recursion validity",
+      "open problem"
+    ],
+    "prerequisites": [
+      "hofstadterF"
+    ]
+  },
+  {
+    "id": "ann-e422-open-questions",
+    "proofId": "erdos-422",
+    "range": {
+      "startLine": 77,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Open Questions (Documented, Not Axiomatized)",
+    "content": "The four open questions — well-definedness for all $n$ ($\\forall n,\\, \\text{IsWellDefined}(n)$), whether $f$ misses infinitely many positive integers, whether $f$ is non-surjective, and whether $f$ grows at most linearly ($f(n) \\leq (1+\\varepsilon)n$ for large $n$) — are recorded here as plain `/- ... -/` comments, not as `axiom` or `theorem` declarations. This keeps the entry honestly open: nothing in the file asserts these conjectures hold. The remaining comments note the sequence's Hofstadter origin, its self-referential structure, and the open question of whether $f$ is eventually constant.",
+    "mathContext": "Comment-only: well-definedness, $|\\{m > 0 : \\forall n,\\, f(n) \\neq m\\}| = \\infty$, non-surjectivity of $f$, and $f(n) \\leq (1+\\varepsilon)n$ — none formalized as Lean declarations",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "comment-only documentation",
+      "Hofstadter origin",
+      "self-referential recursion"
+    ],
+    "prerequisites": [
+      "IsWellDefined"
     ]
   }
 ]

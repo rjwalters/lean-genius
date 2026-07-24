@@ -119,7 +119,7 @@
     },
     "type": "definition",
     "title": "Size Ramsey Number",
-    "content": "The size Ramsey number $\\hat{r}(G,H)$ is the minimum number of edges in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic copy of $G$ or $H$. Unlike the classical Ramsey number $R(G,H)$ (minimum vertices), this measures **edge complexity**. Introduced by Erdős, Faudree, Rousseau, and Schelp (1978), size Ramsey numbers reveal finer structural properties of Ramsey phenomena.",
+    "content": "The size Ramsey number $\\hat{r}(G,H)$ is the minimum number of edges in a graph $F$ such that every 2-coloring of $E(F)$ yields a monochromatic copy of $G$ or $H$. Unlike the classical Ramsey number $R(G,H)$ (minimum vertices), this measures **edge complexity**. Introduced by Erdős, Faudree, Rousseau, and Schelp (1978), size Ramsey numbers reveal finer structural properties of Ramsey phenomena. **Note**: the Lean `sizeRamsey` def does not implement this definition — its body is `Nat.find` on the trivial predicate $m \\ge 1$, which always evaluates to 1 regardless of $G$ and $H$. It is a placeholder, not a formalization of the size Ramsey number.",
     "mathContext": "$\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$, where $F \\to (G,H)$ means every 2-coloring of $E(F)$ contains a red $G$ or blue $H$.",
     "significance": "key",
     "relatedConcepts": [
@@ -143,7 +143,7 @@
     },
     "type": "concept",
     "title": "Erdős Problem #566: Ramsey Size Linearity Conjecture",
-    "content": "The central conjecture: if $G$ is $(2k-3)$-sparse, then $G$ is **Ramsey size linear**, i.e., $\\hat{r}(G,H) = O(|E(H)|)$ uniformly over all $H$ without isolated vertices. This would provide a **clean combinatorial characterization** of Ramsey size linearity in terms of subgraph density. The axiom form reflects that this is an open problem — the statement is assumed without proof.",
+    "content": "The central conjecture: if $G$ is $(2k-3)$-sparse, then $G$ is **Ramsey size linear**, i.e., $\\hat{r}(G,H) = O(|E(H)|)$ uniformly over all $H$ without isolated vertices. This would provide a **clean combinatorial characterization** of Ramsey size linearity in terms of subgraph density. The conjecture is documented only as a `/- ... -/` comment in the Lean file — it is not stated as an axiom, definition, or theorem.",
     "mathContext": "$\\text{IsSparse}(G) \\implies \\exists c > 0,\\; \\forall H \\text{ with no isolated vertices},\\; \\hat{r}(G,H) \\le c \\cdot |E(H)|$",
     "significance": "key",
     "relatedConcepts": [

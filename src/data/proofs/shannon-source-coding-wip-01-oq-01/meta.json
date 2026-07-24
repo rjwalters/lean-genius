@@ -62,7 +62,8 @@
       "**The tuple recursion is the induction engine.** Fin.consEquiv : α × (Fin n → α) ≃ (Fin (n+1) → α) splits off one symbol at a time, converting the n-fold product into an atomic product distribution that the parent's pairwise additivity already handles — no new analytic content, just clean reindexing.",
       "**Normalisation must be tracked alongside entropy.** The additivity step consumes ∑ p^⊗n = 1, so the proof proves ∑ₓ ∏ᵢ p(xᵢ) = (∑ₐ p a)^n as a companion induction; the two inductions run along the identical Fin.consEquiv recursion.",
       "**Entropy-rate backbone.** H(p^⊗n) = n·H(p) is the exact finite-block form of Shannon's entropy rate: n i.i.d. symbols carry n·H(p) bits, the quantity typical-set coding compresses to and the AEP concentrates around.",
-      "**Axiom-free and hypothesis-minimal.** The only assumption is ∑ₐ p a = 1, the defining property of a probability distribution; #print axioms confirms reliance only on propext, Classical.choice, Quot.sound."
+      "**Axiom-free and hypothesis-minimal.** The only assumption is ∑ₐ p a = 1, the defining property of a probability distribution; #print axioms confirms reliance only on propext, Classical.choice, Quot.sound.",
+      "**No case-splitting on zero probabilities.** `Real.negMulLog_mul` — negMulLog(x·y) = y·negMulLog x + x·negMulLog y — holds unconditionally for *all* reals x, y, including x = 0 or y = 0, since Real.log 0 = 0 by convention makes both sides vanish together. This lets `entropy_prod` and `entropy_pow` linearize product symbols with a single `simp_rw`, with no separate case for symbols of probability zero — a common source of friction in −∑p·log p treatments of entropy."
     ]
   },
   "sections": [
@@ -75,12 +76,20 @@
       "mathContext": "$H(p^{\\otimes n}) = n \\cdot H(p)$ for $\\sum_a p(a) = 1$; iterated from pairwise $H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$ along $\\mathrm{Fin.consEquiv}$."
     },
     {
-      "id": "entropy-and-additivity",
-      "title": "Entropy in negMulLog form and pairwise additivity",
+      "id": "entropy-def",
+      "title": "Entropy in negMulLog form",
       "startLine": 47,
+      "endLine": 49,
+      "summary": "entropy p := ∑ₓ negMulLog(p x), matching the parent's definition and the standard −∑ₓ p x·log(p x); negMulLog builds in the 0·log 0 = 0 convention so no zero-probability case split is needed downstream.",
+      "mathContext": "$H(p) = \\sum_x \\mathrm{negMulLog}(p_x) = -\\sum_x p_x \\log p_x.$"
+    },
+    {
+      "id": "entropy-prod",
+      "title": "Pairwise additivity (the atomic step)",
+      "startLine": 51,
       "endLine": 71,
-      "summary": "entropy p := ∑ₓ negMulLog(p x). entropy_prod: H(pX ⊗ pY) = H(pX) + H(pY) for ∑ pX = ∑ pY = 1 (the parent result, reproved locally so the file is self-contained; the atomic step iterated below).",
-      "mathContext": "$H(p) = \\sum_x \\mathrm{negMulLog}(p_x), \\qquad H(p_X \\otimes p_Y) = H(p_X) + H(p_Y).$"
+      "summary": "entropy_prod: H(pX ⊗ pY) = H(pX) + H(pY) for ∑ pX = ∑ pY = 1 (the parent result, reproved locally so the file is self-contained; the atomic step entropy_pow iterates n times below).",
+      "mathContext": "$H(p_X \\otimes p_Y) = H(p_X) + H(p_Y).$"
     },
     {
       "id": "normalisation",
@@ -138,6 +147,11 @@
       "targetId": "shannon-entropy",
       "relationship": "complements",
       "description": "ShannonEntropy proves subadditivity H(X,Y) ≤ H(X)+H(Y); this file gives the exact additivity for n independent copies of a single source"
+    },
+    {
+      "targetId": "shannon-source-coding-wip-01-oq-02",
+      "relationship": "complements",
+      "description": "Sibling entry proves the converse to the parent's additivity — H(pX ⊗ pY) = H(pX) + H(pY) holds only when p is a product distribution. This file iterates the parent's forward direction to the n-fold i.i.d. product; that one characterises exactly when additivity holds at all."
     }
   ],
   "mainTheorems": [

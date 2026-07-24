@@ -46,11 +46,19 @@ def IsSparse {n : ℕ} (G : Graph n) : Prop :=
 def NoIsolated {n : ℕ} (H : Graph n) : Prop :=
   ∀ v : Fin n, ∃ u : Fin n, H.adj v u
 
-/-- The size Ramsey number r̂(G, H): the minimum number of edges
-    in a graph F such that every 2-coloring of E(F) contains a
-    monochromatic copy of G in color 1 or H in color 2. -/
-noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
-  Nat.find (⟨p * q + 1, Nat.le_add_left 1 (p * q)⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
+/-- Placeholder for the size Ramsey number r̂(G, H) — the minimum
+    number of edges in a graph F such that every 2-coloring of E(F)
+    contains a monochromatic copy of G in color 1 or H in color 2.
+
+    This is **not implemented**: the 2-coloring construction is not
+    formalized. The body is a constant stub returning `1`, independent
+    of `G`, `H`, `p`, and `q`. It exists only so the definitions
+    section type-checks; no result in this file depends on its value.
+    See the module docstring and the gallery entry, which record that
+    Problem #566 is OPEN and only the surrounding definitions are
+    formalized. -/
+noncomputable def sizeRamsey {p q : ℕ} (_G : Graph p) (_H : Graph q) : ℕ :=
+  1
 
 /- ## Main Question -/
 

@@ -1093,3 +1093,132 @@ new file warning-free), 0 ax, 0 sorry.
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += OuterBoth,
   StepRealize, Chain; currentState S21)
+
+## Status (S22, researcher-1, 2026-07-23) — seed existence: equitable mass-floor refinement engine
+
+New file `SzemerediRegularityOQ04Seed.lean` closes the "small follow-up" S21 named:
+an initial equitable mass-`m` refinement of `Vparts` always exists once coarse
+parts satisfy `m² ≤ card + 1`, so the S21 capstone runs from the size condition
+alone (`exists_afksTwoLevel_of_large_parts`), and at unit scale with no extra
+hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
+
+### Reusable Lean recipes
+- **Chopping engine**: to partition a `Finset` into blocks of prescribed sizes,
+  induct peeling one block with `Finset.exists_subset_card_eq` and recurse on
+  `S \ T`. Card bookkeeping post-v4.31: `Finset.card_sdiff` is UNCONDITIONAL
+  with `(t ∩ s).card` — rewrite with `Finset.inter_eq_left.mpr hTS` first
+  (the subset-hypothesis form is gone). `Finset.exists_smaller_set` no longer
+  exists — use `Finset.exists_subset_card_eq`.
+- **Global equitability for free**: chop EVERY parent into blocks of sizes in
+  `{m, m+1}` — then any two blocks anywhere differ by ≤ 1, so per-parent
+  construction gives the GLOBAL `(B₁.card:ℤ) − B₂.card ≤ 1` invariant with no
+  cross-parent argument.
+- **Two-size decomposition without subtraction**: `n = qm + r`, `m² ≤ n+1`
+  forces `r ≤ q`; then `Nat.exists_eq_add_of_le` gives `q = r + d` and
+  `n = d·m + r·(m+1)` is a pure `calc`/`ring` chain — no `Nat.sub`, no `zify`
+  (zify mangles `↑(n/m)` into `↑n/↑m` here — avoid).
+- **Chained `rcases … with rfl` pitfall**: two `rcases … with rfl | h <;>` over
+  insert-memberships scrambles hypotheses via substitution; name the equations
+  (`h₁ | h₁`) and `rw [h₁]` in each branch instead.
+- Family assembly: `induction parts using Finset.induction_on` with the
+  relativized cover conclusion `∀ v P, P ∈ parts → v ∈ P → ∃ B ∈ q, v ∈ B`;
+  cross-parent block disjointness from parent disjointness + `Disjoint.mono`
+  (no nonemptiness needed anywhere).
+
+### What remains (THE isolated gap — unchanged from S21)
+- **Re-equitization** only. Seed existence is DONE. The chopping engine here
+  (blocks of sizes `{m, m+1}`) is the natural raw-`Finset (Finset V)`
+  equitabilise primitive the re-equitization bookkeeping will want: re-chop
+  each part of the bare-split successor, then transfer the energy gain
+  through `pairEnergy_split_mono` — the open part is keeping a positive
+  fraction of the gain across the re-chop.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Seed.lean` (NEW, 374 lines, 8 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += Seed,
+  currentState S22)
+
+## S23 (2026-07-23, researcher-1): chop-refinement — the refinement half of re-equitization
+
+### What was proved (SzemerediRegularityOQ04ChopRefine.lean, 2 thm, 0 ax, 0 sorry)
+- `exists_chop_pieces`: single-block chop into pieces of size ≤ m, at most ONE
+  deficient (< m) piece per block.
+- `exists_chop_refinement`: family-level chop-refinement `Q` of any pairwise-disjoint
+  `P` — refinement + cover + disjoint + nonempty + size ≤ m + at most `P.card`
+  deficient pieces + `partitionEnergy G P ≤ partitionEnergy G Q` (FULL retention via
+  `partitionEnergy_refine_mono`).
+
+### Lean idioms learned
+- **`Function.onFun` blocks `rw` in PairwiseDisjoint goals**: after `intro A hA B hB hAB`
+  on a `Set.PairwiseDisjoint` goal the target is `Function.onFun Disjoint f A B`, and
+  `rw [Finset.disjoint_left]` fails to match; `simp only [Function.onFun]` first. (`exact`
+  with a `Disjoint`-typed term still works — defeq — only `rw` is blocked.)
+- **`omit [..] in` placement**: must precede the docstring; between `-/` and `theorem`
+  it is a parse error ("unexpected token 'omit'; expected 'lemma'").
+- **At-most-one-deficient bookkeeping**: per block, `Finset.filter_insert` +
+  `if_neg (by omega)` (peeled piece has card = m, so not deficient) keeps the recursive
+  ≤ 1 bound; family level, `Finset.filter_biUnion` + `Finset.card_biUnion_le` +
+  `sum_le_sum` of the per-block ≤ 1 gives ≤ `P.card`.
+
+### What remains (the merging half — THE residual gap, sharpened)
+- Pool the ≤ `P.card` deficient remainders, re-cut into size-`m` chunks; NOT a
+  refinement, so energy can drop — bound the loss by the pooled mass (≤ `P.card·m`).
+  This is the single remaining step between the chop layer and the maintained oracle
+  of `exists_afksTwoLevel_of_maintained_oracle`.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04ChopRefine.lean` (NEW, 192 lines, 2 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (currentState S23)
+
+## S24 (2026-07-23, researcher-1): merging loss bound — the analytic half of re-cutting
+
+### What was proved (SzemerediRegularityOQ04MergeLoss.lean, 8 public thm + 3 private, 0 ax, 0 sorry)
+- `pairEnergy_nonneg` / `pairEnergy_le_weight`: `0 ≤ pe(A,B) ≤ |A|·|B|/n²` (density ≤ 1).
+- `sum_card_le_card_univ`: a pairwise-disjoint family occupies ≤ |V| vertices
+  (`Finset.card_biUnion` equality + `card_le_univ`).
+- `partitionEnergy_subset_le`: energy monotone under family inclusion
+  (`product_subset_product` + termwise nonneg).
+- `cross_sum_le`: ordered pairs from family S into family D contribute
+  ≤ mass(S)·mass(D)/n² (`Finset.sum_mul_sum` + `sum_div`).
+- `partitionEnergy_sdiff_ge`: **removing D ⊆ Q loses ≤ 2·mass(D)/n** —
+  double-sum block decomposition (surviving block + two cross blocks via
+  `Finset.sum_sdiff` twice + `sum_add_distrib`), cross blocks bounded by
+  mass(D)·n/n², collected by `n·m/n² + m·n/n² = 2m/n` (valid at n = 0,
+  junk-zero division).
+- `partitionEnergy_replace_ge` (capstone): any Q' ⊇ Q \ D has
+  `E(Q') ≥ E(Q) − 2·mass(D)/n` — the re-cut of the pooled deficient union
+  only needs to RETAIN the non-deficient pieces.
+- `partitionEnergy_replace_ge_of_small` (consumer form): D of ≤-size-m pieces
+  costs ≤ 2·|D|·m/n — matches S23's "≤ P.card deficient remainders each < m"
+  output, giving loss ≤ 2·|P|·m/n.
+
+### Lean idioms learned
+- **Monolithic energy proofs hit `whnf` heartbeat timeouts**: the first attempt
+  (decomposition + bounds + collection + `linarith` in ONE theorem body) died at
+  200k AND 800k heartbeats. Splitting into small private lemmas
+  (`collect_halves` over abstract `n m : ℚ`, `energy_decomposition`) and
+  replacing `linarith` on giant sum-atoms with an explicit `calc` of
+  `add_le_add` builds in 2.6 s. Also `simp [h0]` (h0 : (↑card:ℚ)=0) times out
+  where `rw [h0]; norm_num` is instant.
+- Division monotone in numerator with only `0 ≤ c` (junk-safe): re-derive via
+  `div_eq_mul_inv` + `mul_le_mul_of_nonneg_right h (inv_nonneg.mpr hc)` —
+  dodges `div_le_div_of_le`-family naming drift.
+- `Set.PairwiseDisjoint.subset` + `Finset.coe_subset.mpr (fun x hx =>
+  (Finset.mem_sdiff.mp hx).1)` restricts disjointness to `Q \ D` without
+  `sdiff_subset` arity concerns.
+
+### What remains (the merging half — combinatorial part only)
+- Re-cut the pooled union `⋃ D` of deficient remainders into size-m chunks
+  (S22's `exists_chop_pieces` applies to a single block) and verify the
+  resulting family is a genuine equitable partition refining nothing but
+  covering the same ground; then pick parameters with `2·|P|·m/n` below a
+  fixed fraction of the `eps⁴m²/n²`-scale gain and land in
+  `exists_afksTwoLevel_of_maintained_oracle`. The energy side is now DONE.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04MergeLoss.lean` (NEW, 238 lines, 11 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += ChopRefine
+  [omitted by S23], MergeLoss; currentState S24)

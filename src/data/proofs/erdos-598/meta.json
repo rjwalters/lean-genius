@@ -30,7 +30,7 @@
     "historicalContext": "Erdős posed this problem in 1987 in his paper on combinatorial problems in set theory. The question lies at the intersection of partition calculus, cardinal arithmetic, and the combinatorics of countable subsets. The classical Erdős–Rado partition relation ℵ₁ → (ℵ₁)²_{ℵ₀} (1956) established foundational results about coloring pairs, but coloring countable subsets introduces an entirely different combinatorial landscape. The successor of the continuum κ = (2^ℵ₀)⁺ appears as the natural threshold because it is the smallest cardinal exceeding the number of reals, and questions about partition properties at this level are known to be sensitive to set-theoretic axioms. Under CH, κ = ℵ₂ and the problem connects to classical partition properties of ℵ₂ studied by Todorcevic, Shelah, and others. The problem asks whether κ colors suffice for a 'chromatic completeness' property: every κ-sized subset must realize all colors among its countable subsets. This is a strong Ramsey-type requirement that goes beyond standard partition relations by quantifying over all large subsets simultaneously.",
     "problemStatement": "Let $m$ be an infinite cardinal and $\\kappa = (2^{\\aleph_0})^+$. Can one color the countable subsets of $m$ with $\\kappa$ colors so that every $X \\subseteq m$ with $|X| = \\kappa$ contains subsets of every color?",
     "text": "Can one color countable subsets of an infinite set m with κ = (2^ℵ₀)⁺ colors so that every κ-sized subset contains all colors? OPEN.",
-    "proofStrategy": "The formalization defines κ = (2^ℵ₀)⁺ using Lean's Cardinal and Order.succ, CountableSubset as countable subsets of a type, and ChromaticCompleteness as the requirement that every κ-sized subset realizes all colors. ErdosProblem598 states the universal version for all ground sets of size ≥ κ. Special cases include the minimal case m = κ and the CH scenario. Monotonicity in the ground set size is axiomatized.",
+    "proofStrategy": "The formalization defines κ = (2^ℵ₀)⁺ using Lean's Cardinal and Order.succ, CountableSubset as countable subsets of a type, and ChromaticCompleteness as the requirement that every κ-sized subset realizes all colors. ErdosProblem598 states the universal version for all ground sets of size ≥ κ. Special cases include the minimal case m = κ and the CH scenario. Monotonicity in the ground set size is noted only in a source comment, not formalized as any Lean declaration.",
     "keyInsights": [
       "The cardinal $\\kappa = (2^{\\aleph_0})^+$ serves a dual role: both the number of colors and the minimum subset size that must realize all colors, creating a delicate balance",
       "Chromatic completeness is a strong Ramsey-type property: every κ-sized subset must contain countable subsets of every single color, with no exceptions",
@@ -58,7 +58,7 @@
       "title": "Cardinal Setup",
       "startLine": 22,
       "endLine": 31,
-      "summary": "Defines κ = (2^ℵ₀)⁺ as Order.succ (2 ^ ℵ₀) and axiomatizes κ > ℵ₀."
+      "summary": "Defines κ = (2^ℵ₀)⁺ as Order.succ (2 ^ ℵ₀); a comment notes κ > ℵ₀ but this is not formalized as any declaration."
     },
     {
       "id": "countable-subsets",
@@ -93,7 +93,7 @@
       "title": "Monotonicity",
       "startLine": 84,
       "endLine": 84,
-      "summary": "Axiomatizes that coloring existence is monotone in the ground set size: larger sets inherit chromatically complete colorings from smaller ones via restriction."
+      "summary": "A source comment states (informally, not as any Lean declaration) that coloring existence is monotone in the ground set size: larger sets would inherit chromatically complete colorings from smaller ones via restriction."
     }
   ],
   "conclusion": {

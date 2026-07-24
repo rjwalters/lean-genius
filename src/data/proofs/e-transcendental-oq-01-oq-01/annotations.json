@@ -1,11 +1,8 @@
 [
   {
     "id": "ann-etrans-oq01-oq01-header",
-    "line": 1,
-    "endLine": 34,
     "type": "concept",
     "title": "Module Overview: Nesterenko's 1996 Theorem Gives Five New Transcendence Results",
-    "body": "This module proves six theorems extending the transcendence hierarchy around π, e, and Γ(1/4). The central tool is Nesterenko's 1996 theorem that {π, e^π, Γ(1/4)} are algebraically independent over ℚ (axiomatized in the parent file). From this single deep result, the polynomial lifting technique derives transcendence of each individual constant (π, e^π, Γ(1/4)) and of their product π·e^π. Separately, Schanuel's Conjecture is axiomatized to give conditional proofs of e+π and e·π transcendence. The module imports from `ETranscendentalOQ01` which provides `nesterenko_algebraic_independence`, `gammaQuarter`, and the conditional parent lemmas.",
     "mathContext": "Algebraic independence of {α₁,…,αₙ} over ℚ means no nonzero polynomial P ∈ ℚ[X₁,…,Xₙ] satisfies P(α₁,…,αₙ) = 0. In Lean this is formalized via `MvPolynomial.aeval`. Transcendence of a single α is the special case n=1. The Nesterenko triple (π, e^π, Γ(1/4)) gives the richest known algebraic independence result involving π.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -20,7 +17,7 @@
       "MvPolynomial and Polynomial.aeval",
       "nesterenko_algebraic_independence axiom from ETranscendentalOQ01"
     ],
-    "content": "This module documents the current frontier of formally verified transcendence theory. The gap between proven and open results precisely maps the gap between what Nesterenko proved (1996) and what Schanuel's Conjecture would give.",
+    "content": "This module proves six theorems extending the transcendence hierarchy around π, e, and Γ(1/4). The central tool is Nesterenko's 1996 theorem that {π, e^π, Γ(1/4)} are algebraically independent over ℚ (axiomatized in the parent file). From this single deep result, the polynomial lifting technique derives transcendence of each individual constant (π, e^π, Γ(1/4)) and of their product π·e^π. Separately, Schanuel's Conjecture is axiomatized to give conditional proofs of e+π and e·π transcendence. The module imports from `ETranscendentalOQ01` which provides `nesterenko_algebraic_independence`, `gammaQuarter`, and the conditional parent lemmas.\n\nThis module documents the current frontier of formally verified transcendence theory. The gap between proven and open results precisely maps the gap between what Nesterenko proved (1996) and what Schanuel's Conjecture would give.",
     "proofId": "e-transcendental-oq-01-oq-01",
     "range": {
       "startLine": 1,
@@ -29,11 +26,8 @@
   },
   {
     "id": "ann-etrans-oq01-oq01-lifting-technique",
-    "line": 56,
-    "endLine": 85,
     "type": "concept",
     "title": "Polynomial Lifting: The Core Technique for All Transcendence Proofs",
-    "body": "The theorem `pi_transcendental_from_nesterenko` establishes the standard polynomial-lifting proof pattern used throughout this file:\n\n**Setup**: Assume f(π) = 0 for some nonzero f ∈ ℚ[T]. Define `x₀ : MvPolynomial (Fin 3) ℚ := MvPolynomial.X 0` and `P := Polynomial.aeval x₀ f`.\n\n**P ≠ 0** (the crucial step): Specialize P via the map `MvPolynomial.aeval (![Polynomial.X, 0, 0])`. Then `x₀` maps to `Polynomial.X`, so `P` maps to `Polynomial.aeval Polynomial.X f = f` (by `Polynomial.aeval_X_left_apply`). Since P maps to f and P maps to 0 (from `hP_eq`), we get f = 0, contradicting `hf_ne`.\n\n**P evaluates to 0**: Specialize via `MvPolynomial.aeval (![π, e^π, Γ(1/4)])`. Then `x₀` maps to π, so `P` maps to `f(π) = 0`.\n\n**Contradiction**: Apply `nesterenko_algebraic_independence P hP_eval` to get P = 0, contradicting P ≠ 0.",
     "mathContext": "The key algebra: `Polynomial.aeval_algHom_apply` gives `MvPolynomial.aeval v (Polynomial.aeval x₀ f) = Polynomial.aeval (MvPolynomial.aeval v x₀) f`. So the composition of (embed f into MvPoly via x₀) then (specialize via v) equals (evaluate f at v(x₀)). This is the fundamental theorem about polynomial algebra homomorphisms.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -47,7 +41,7 @@
       "Matrix.cons_val_zero for vector indexing",
       "nesterenko_algebraic_independence"
     ],
-    "content": "This 25-line proof pattern is the template for all five transcendence proofs in the file. The key insight is that any function of the Nesterenko constants can be treated as a multivariate polynomial evaluation, making Nesterenko's algebraic independence applicable.",
+    "content": "The theorem `pi_transcendental_from_nesterenko` establishes the standard polynomial-lifting proof pattern used throughout this file:\n\n**Setup**: Assume f(π) = 0 for some nonzero f ∈ ℚ[T]. Define `x₀ : MvPolynomial (Fin 3) ℚ := MvPolynomial.X 0` and `P := Polynomial.aeval x₀ f`.\n\n**P ≠ 0** (the crucial step): Specialize P via the map `MvPolynomial.aeval (![Polynomial.X, 0, 0])`. Then `x₀` maps to `Polynomial.X`, so `P` maps to `Polynomial.aeval Polynomial.X f = f` (by `Polynomial.aeval_X_left_apply`). Since P maps to f and P maps to 0 (from `hP_eq`), we get f = 0, contradicting `hf_ne`.\n\n**P evaluates to 0**: Specialize via `MvPolynomial.aeval (![π, e^π, Γ(1/4)])`. Then `x₀` maps to π, so `P` maps to `f(π) = 0`.\n\n**Contradiction**: Apply `nesterenko_algebraic_independence P hP_eval` to get P = 0, contradicting P ≠ 0.\n\nThis 25-line proof pattern is the template for all five transcendence proofs in the file. The key insight is that any function of the Nesterenko constants can be treated as a multivariate polynomial evaluation, making Nesterenko's algebraic independence applicable.",
     "proofId": "e-transcendental-oq-01-oq-01",
     "range": {
       "startLine": 56,
@@ -56,11 +50,8 @@
   },
   {
     "id": "ann-etrans-oq01-oq01-exp-pi",
-    "line": 103,
-    "endLine": 137,
     "type": "concept",
     "title": "e^π Transcendental: Gel'fond 1929 via Nesterenko 1996",
-    "body": "The theorem `exp_pi_transcendental` is the most historically significant new result in this file. It uses index X₁ (the e^π position in the Nesterenko triple) and the specialization vector `[0, Polynomial.X, 0]`:\n\n- `x₁ := MvPolynomial.X 1`: selects e^π\n- Non-vanishing check: `MvPolynomial.aeval (![0, Polynomial.X, 0]) x₁ = Polynomial.X` (via `Matrix.cons_val_one`, `Matrix.head_cons` indexing for position 1)\n- Evaluation: `MvPolynomial.aeval (![π, e^π, Γ(1/4)]) x₁ = e^π`\n\nThe `simp` calls use `MvPolynomial.aeval_X` and `Matrix.cons_val_zero`, `Matrix.cons_val_one` to evaluate indexed vector lookups.",
     "mathContext": "Gel'fond (1929) proved e^π transcendental using Gel'fond-Schneider theory: e^π = (e^{iπ})^{-i} = (-1)^{-i}, and the Gel'fond-Schneider theorem (1934) gives transcendence of α^β for algebraic α ≠ 0,1 and algebraic irrational β. The present proof via Nesterenko (1996) is logically stronger: it proves all three of {π, e^π, Γ(1/4)} are algebraically independent simultaneously, which is much deeper than mere transcendence.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -72,7 +63,7 @@
     "prerequisites": [
       "exp_pi_transcendental uses the same proof structure as pi_transcendental_from_nesterenko but with X₁ instead of X₀"
     ],
-    "content": "Formally verifying e^π transcendental in Lean is a milestone. The numerical value e^π ≈ 23.1406926... (Gel'fond's constant) is now formally proved to be transcendental via Nesterenko's theorem.",
+    "content": "The theorem `exp_pi_transcendental` is the most historically significant new result in this file. It uses index X₁ (the e^π position in the Nesterenko triple) and the specialization vector `[0, Polynomial.X, 0]`:\n\n- `x₁ := MvPolynomial.X 1`: selects e^π\n- Non-vanishing check: `MvPolynomial.aeval (![0, Polynomial.X, 0]) x₁ = Polynomial.X` (via `Matrix.cons_val_one`, `Matrix.head_cons` indexing for position 1)\n- Evaluation: `MvPolynomial.aeval (![π, e^π, Γ(1/4)]) x₁ = e^π`\n\nThe `simp` calls use `MvPolynomial.aeval_X` and `Matrix.cons_val_zero`, `Matrix.cons_val_one` to evaluate indexed vector lookups.\n\nFormally verifying e^π transcendental in Lean is a milestone. The numerical value e^π ≈ 23.1406926... (Gel'fond's constant) is now formally proved to be transcendental via Nesterenko's theorem.",
     "proofId": "e-transcendental-oq-01-oq-01",
     "range": {
       "startLine": 103,
@@ -81,11 +72,8 @@
   },
   {
     "id": "ann-etrans-oq01-oq01-product",
-    "line": 184,
-    "endLine": 221,
     "type": "concept",
     "title": "π·e^π Transcendental: Product Expression via Composite Polynomial",
-    "body": "The theorem `pi_times_exp_pi_transcendental` extends the lifting technique to composite expressions. For the product π·e^π, the multivariate polynomial is `x₀₁ := MvPolynomial.X 0 * MvPolynomial.X 1` (the product of two generators), and `P := Polynomial.aeval x₀₁ f`.\n\n**Non-vanishing**: Specialize via `[Polynomial.X, 1, 0]`. Then `x₀₁ = X 0 * X 1` maps to `Polynomial.X * 1 = Polynomial.X` (by `ring`). This is the key difference from the simple cases: the specialization uses X₁↦1 (not 0) to make X₀·X₁ ↦ T·1 = T, recovering f.\n\n**Evaluation**: `MvPolynomial.aeval (![π, e^π, Γ(1/4)]) x₀₁ = π * e^π` (by `simp` + `map_mul`).",
     "mathContext": "This result is new (not classical): while π and e^π are individually known transcendental, the algebraic independence of {π, e^π, Γ(1/4)} gives transcendence of any nonconstant polynomial expression in them. In particular, the product X₀·X₁ is not an alias for any of the three generators, so it requires the composite polynomial trick.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -97,7 +85,7 @@
       "map_mul for MvPolynomial.aeval (it's an algebra homomorphism)",
       "ring tactic for polynomial simplification"
     ],
-    "content": "The `ring` tactic handling `Polynomial.X * 1 = Polynomial.X` in the non-vanishing proof is subtle: it confirms that specializing X₁↦1 in the product X₀·X₁ correctly recovers the univariate variable T, making the argument go through.",
+    "content": "The theorem `pi_times_exp_pi_transcendental` extends the lifting technique to composite expressions. For the product π·e^π, the multivariate polynomial is `x₀₁ := MvPolynomial.X 0 * MvPolynomial.X 1` (the product of two generators), and `P := Polynomial.aeval x₀₁ f`.\n\n**Non-vanishing**: Specialize via `[Polynomial.X, 1, 0]`. Then `x₀₁ = X 0 * X 1` maps to `Polynomial.X * 1 = Polynomial.X` (by `ring`). This is the key difference from the simple cases: the specialization uses X₁↦1 (not 0) to make X₀·X₁ ↦ T·1 = T, recovering f.\n\n**Evaluation**: `MvPolynomial.aeval (![π, e^π, Γ(1/4)]) x₀₁ = π * e^π` (by `simp` + `map_mul`).\n\nThe `ring` tactic handling `Polynomial.X * 1 = Polynomial.X` in the non-vanishing proof is subtle: it confirms that specializing X₁↦1 in the product X₀·X₁ correctly recovers the univariate variable T, making the argument go through.",
     "proofId": "e-transcendental-oq-01-oq-01",
     "range": {
       "startLine": 184,
@@ -106,11 +94,8 @@
   },
   {
     "id": "ann-etrans-oq01-oq01-schanuel",
-    "line": 257,
-    "endLine": 289,
     "type": "concept",
     "title": "Schanuel's Axiom: Tracking the Conditional Dependency for e+π",
-    "body": "The axiom `schanuel_for_e_pi` states: for all P ∈ ℚ[X₀,X₁], P(e, π) = 0 → P = 0. Equivalently, e and π are algebraically independent over ℚ. The docstring explains the derivation from full Schanuel's Conjecture: take z₁=1, z₂=iπ (ℚ-linearly independent since π is irrational). Schanuel predicts tr.deg_ℚ(1, iπ, e^1, e^{iπ}) = tr.deg_ℚ(1, π, e, -1) ≥ 2. Since 1 and -1 are algebraic, this gives tr.deg_ℚ(π, e) ≥ 2.\n\nThe three conditional theorems follow one-line from parent lemmas:\n- `e_plus_pi_transcendental_via_schanuel` = `e_plus_pi_transcendental_from_independence schanuel_for_e_pi`\n- `e_times_pi_transcendental_via_schanuel` = `e_times_pi_transcendental_from_independence schanuel_for_e_pi`\n- `e_plus_pi_irrational_via_schanuel` = `e_plus_pi_irrational_from_independence schanuel_for_e_pi`\n\nThe choice to name the axiom `schanuel_for_e_pi` (rather than using the parent's `e_pi_algebraicallyIndependent` directly) makes the Schanuel dependency explicit in the proof term.",
     "mathContext": "Schanuel's Conjecture (1960s, unproved as of 2026) is: if z₁,…,zₙ ∈ ℂ are ℚ-linearly independent, then {z₁,…,zₙ, e^{z₁},…,e^{zₙ}} has transcendence degree ≥ n over ℚ. It implies most known (and many unknown) transcendence results as special cases. Even unconditional irrationality of e+π is unknown — the conditional proof here is the best currently formalizable result.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -124,7 +109,7 @@
       "e_plus_pi_transcendental_from_independence from ETranscendentalOQ01",
       "Schanuel's Conjecture statement"
     ],
-    "content": "The naming of `schanuel_for_e_pi` as a distinct named axiom (rather than importing from the parent or using the full conjecture) exemplifies good formal mathematics practice: each assumption is explicitly named and tracked, making the proof's conditional status maximally transparent.",
+    "content": "The axiom `schanuel_for_e_pi` states: for all P ∈ ℚ[X₀,X₁], P(e, π) = 0 → P = 0. Equivalently, e and π are algebraically independent over ℚ. The docstring explains the derivation from full Schanuel's Conjecture: take z₁=1, z₂=iπ (ℚ-linearly independent since π is irrational). Schanuel predicts tr.deg_ℚ(1, iπ, e^1, e^{iπ}) = tr.deg_ℚ(1, π, e, -1) ≥ 2. Since 1 and -1 are algebraic, this gives tr.deg_ℚ(π, e) ≥ 2.\n\nThe three conditional theorems follow one-line from parent lemmas:\n- `e_plus_pi_transcendental_via_schanuel` = `e_plus_pi_transcendental_from_independence schanuel_for_e_pi`\n- `e_times_pi_transcendental_via_schanuel` = `e_times_pi_transcendental_from_independence schanuel_for_e_pi`\n- `e_plus_pi_irrational_via_schanuel` = `e_plus_pi_irrational_from_independence schanuel_for_e_pi`\n\nThe choice to name the axiom `schanuel_for_e_pi` (rather than using the parent's `e_pi_algebraicallyIndependent` directly) makes the Schanuel dependency explicit in the proof term.\n\nThe naming of `schanuel_for_e_pi` as a distinct named axiom (rather than importing from the parent or using the full conjecture) exemplifies good formal mathematics practice: each assumption is explicitly named and tracked, making the proof's conditional status maximally transparent.",
     "proofId": "e-transcendental-oq-01-oq-01",
     "range": {
       "startLine": 257,

@@ -98,8 +98,9 @@ exp(c_H · √(log n)) is an Erdős-Hajnal lower bound for H.
 This is weaker than the conjectured n^c but still much better than the
 log(n) bound from general Ramsey theory.
 
-We state this as an axiom since the proof requires probabilistic and
-combinatorial techniques beyond current Mathlib formalization.
+This bound is documented here in prose only; the proof requires probabilistic
+and combinatorial techniques beyond current Mathlib formalization and is not
+stated as a Lean axiom or theorem.
 -/
 /- 
 **Bucić-Nguyen-Scott-Seymour 2023 Bound**

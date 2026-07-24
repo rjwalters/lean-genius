@@ -39,7 +39,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "Eliahou (1993) proved that any non-trivial cycle of the Collatz map has length at least 17,087,915, by analyzing the continued-fraction expansion of log₂3 to bound how closely 2^M can approximate 3^J. CollatzCycles.lean in this gallery establishes the underlying halving constraint 3^J < 2^M (generalized in collatz-cycles-oq-04) and a finite ladder of minimal-halving bounds for J = 1, 2, 3, 4. This entry supplies the general quantitative bound underlying that ladder.",
+    "historicalContext": "Eliahou (1993) proved that any non-trivial cycle of the Collatz map has length at least 17,087,915, by analyzing the continued-fraction expansion of log₂3 to bound how closely 2^M can approximate 3^J. CollatzCycles.lean in this gallery establishes the underlying halving constraint 3^J < 2^M (generalized in collatz-cycles-oq-04) and a finite ladder of minimal-halving bounds for J = 1, 2, 3, 4. This entry supplies the general quantitative bound underlying that ladder. The conjecture itself dates to Lothar Collatz's 1937 correspondence and was popularized independently by Kakutani, Ulam, and Thwaites in the 1950s-60s; Lagarias's 1985 survey collects the cycle-length lower bounds — of which Eliahou's continued-fraction argument is the sharpest classical instance — as one of the two main lines of partial progress, alongside density results on the fraction of integers verified to reach 1.",
     "problemStatement": "Establish, for every J, a lower bound on the number of halvings M (and hence on the total cycle length L = M + J) of a hypothetical non-trivial Collatz cycle with J odd steps, given the halving constraint 3^J < 2^M.",
     "proofStrategy": "Take base-2 logarithms of the cycle halving constraint `3ᴶ < 2ᴹ` (established in collatz-cycles-oq-04): the multiplicative inequality linearises to `J·log₂3 < M`, yielding the sharp bound `M ≥ ⌈J·log₂3⌉` and hence cycle length `L = M + J` growing at least like `log₂6 ≈ 2.585` per odd step. A single theorem in `J` subsumes the finite `J = 1,2,3,4` ladder of `CollatzCycles.lean`, reproducing its entries `2, 4, 5, 7`. The file deliberately keeps an elementary log-free companion `M > J` (from monotonicity of `n ↦ 2ⁿ`) alongside the sharp analytic bound so downstream users may avoid the real-analysis machinery.",
     "keyInsight": "Taking base-2 logarithms of the halving constraint 3^J < 2^M and using strict monotonicity of logb (base 2 > 1) gives J·log₂3 < M directly: logb 2 (3^J) = J·logb 2 3 and logb 2 (2^M) = M·logb 2 2 = M. The ceiling bound M ≥ ⌈J·log₂3⌉₊ follows from Nat.ceil_le, and L > J·log₂6 from log₂6 = 1 + log₂3.",
@@ -92,7 +92,7 @@
     "summary": "A non-trivial Collatz cycle with J odd steps and M even steps has M > J·log₂3, M ≥ ⌈J·log₂3⌉₊, and total length L = M + J > J·log₂6 ≈ 2.585·J — a clean general bound that subsumes the specific minimal-halving ladder of CollatzCycles.lean.",
     "implications": "**1. From a finite ladder to a uniform bound.** CollatzCycles.lean bounded halvings only for J = 1..4; this entry covers all J with the exact asymptotic constant log₂3.\n\n**2. Linear growth in odd steps.** The length grows at least like log₂6 · J, the elementary growth rate behind Eliahou's analysis.\n\n**3. Honest scope.** This is NOT Eliahou's full numerical bound (length ≥ 17,087,915), which sharpens the constant via the continued-fraction expansion of log₂3. That Diophantine-approximation step is not formalized here.",
     "openQuestions": [
-      "Formalize the continued-fraction expansion of log₂3 to obtain Eliahou's sharp numerical constant.",
+      "Now discharged by collatz-cycles-oq-02-oq-01, which formalizes the continued-fraction convergents of log₂3 (1/1, 2/1, 3/2, 8/5, 19/12, 65/41, 84/53, 485/306) to sharpen this entry's bound to an explicit rational constant. The next step that entry itself poses: formalize the two-sided Diophantine gap 3^J < 2^M < 3^J·(1 + ε) from a cycle's minimal element and combine with the best-approximation denominators to reach Eliahou's full numerical constant.",
       "Combine with a lower bound on the number of odd steps J in any non-trivial cycle to obtain an absolute length bound.",
       "Connect to the 2-adic / Diophantine obstruction ruling out small cycles entirely."
     ]
@@ -107,6 +107,11 @@
       "targetId": "collatz-cycles-oq-04",
       "relationship": "depends-on",
       "description": "Uses the general halving constraint 3^J < 2^M established in collatz-cycles-oq-04 as the hypothesis of the logarithmic bound."
+    },
+    {
+      "targetId": "collatz-cycles-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: formalizes the continued-fraction convergents of log₂3 and uses them to sharpen the cycle-length bound to an explicit rational constant, elementarily and axiom-free."
     }
   ],
   "references": [

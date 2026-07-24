@@ -46,7 +46,8 @@
       "The product formula gives an immediate two-sided geometric picture: f vanishes exactly at the roots (so they are interior to the lemniscate) while |f| is large far from all roots (so the lemniscate cannot escape their unit neighbourhood).",
       "Confinement to the union of degree-many unit balls is the geometric reason a lemniscate of a degree-n polynomial has at most n connected components: each bounded component must cluster near a root. The component count is thus a property of how the roots are arranged.",
       "This locates exactly why root geometry — not merely the transfinite diameter — matters: spreading the roots so their unit balls become disjoint separates the lemniscate into distinct clusters, whereas clustering the roots merges them.",
-      "Re-declaring the structures locally keeps the contribution axiom-free, in contrast to the parent entry whose Ghosh–Ramachandran results are axiomatized."
+      "Re-declaring the structures locally keeps the contribution axiom-free, in contrast to the parent entry whose Ghosh–Ramachandran results are axiomatized.",
+      "The confinement argument is purely elementary: it needs only continuity of finite products and the reverse triangle inequality bound ∏ᵢ|z - rootᵢ| ≥ 1 (from each factor ≥ 1), with no logarithmic potential, capacity, or transfinite-diameter machinery. The threshold '1' in the ball radius is inherited directly from the threshold '1' defining the lemniscate {|f| < 1} — the geometric skeleton the quantitative Ghosh–Ramachandran bounds build on top of, not a substitute for them."
     ],
     "prerequisites": [
       "Finite products over Finset (norm_prod, Finset.prod_eq_zero, Finset.prod_le_prod, Finset.prod_const_one)",

@@ -48,13 +48,13 @@
     "originalContributions": [
       "Defines leastCongruentPrime as the infimum of primes in an arithmetic progression",
       "States the open problem precisely using Mathlib filters for asymptotic behavior",
-      "Formalizes both of Erdős's 1949 partial results as axioms with documentation",
+      "Documents both of Erdős's 1949 partial results in prose comments (not formalized as Lean declarations, since their proofs use Brun's sieve methods not yet in Mathlib)",
       "Provides educational context connecting to Linnik's and Dirichlet's theorems",
       "Includes verified computational examples for small moduli"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 143,
-    "assumptions": "No mathematical axioms and 0 sorries. Open problem — the conjectured bound on p(a,d) is not yet formalized. The status 'axiomatized' reflects the open mathematical question, not Lean axiom declarations. Compiler-trust disclosure: the concrete witnesses (example_p_3_10, example_p_1_10) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
+    "assumptions": "No mathematical axioms and 0 sorries. Open problem — the conjectured bound on p(a,d) is not yet formalized. Erdős's 1949 partial results are likewise not formalized as Lean declarations (no axiom, def, or theorem states them); they appear only as prose comments in the source, since their proofs use Brun's sieve methods not yet in Mathlib. The status 'axiomatized' reflects the open mathematical question, not Lean axiom declarations. Compiler-trust disclosure: the concrete witnesses (example_p_3_10, example_p_1_10) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure); these are finite decidable computations and add no mathematical assumption, and leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 2,
     "definitionCount": 2
   },
@@ -68,7 +68,7 @@
       "**Linnik's theorem**: Provides an upper bound p(a,d) ≤ c·d^L for some 'Linnik constant' L, currently known to satisfy L ≤ 5. This problem asks about the complementary lower bound behavior.",
       "**Expected size**: On average over residue classes, one expects p(a,d) ≈ φ(d)·log d by the prime number theorem for arithmetic progressions.",
       "**Brun's sieve**: The key tool in Erdős's 1949 partial results, allowing counting arguments for primes satisfying multiple congruence conditions.",
-      "**Open vs. solved variants**: The full statement (for ALL large d) remains open, but the statement for INFINITELY MANY d is proved."
+      "**Open vs. solved variants**: The full statement (for ALL large d) remains open; Erdős (1949) proved the statement for INFINITELY MANY d, but that proof is not formalized here — it is recorded only as a prose comment."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -102,7 +102,7 @@
       "title": "Erdős's Partial Results (1949)",
       "startLine": 66,
       "endLine": 110,
-      "summary": "Formalizes both of Erdős's 1949 partial results: the statement for infinitely many d, and the complementary small prime bound."
+      "summary": "Documents (in prose comments, not as Lean declarations) both of Erdős's 1949 partial results: the statement for infinitely many d, and the complementary small prime bound."
     },
     {
       "id": "context",

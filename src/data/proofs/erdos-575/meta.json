@@ -65,7 +65,7 @@
       "title": "Main Conjecture",
       "startLine": 53,
       "endLine": 67,
-      "summary": "States the Erdős–Simonovits conjecture (Problem #575): for any finite family F containing a bipartite graph, some bipartite member G ∈ F satisfies ex(n; G) = O(ex(n; F)). Axiomatized as True due to the complexity of formalizing graph homomorphisms."
+      "summary": "States the Erdős–Simonovits conjecture (Problem #575): for any finite family F containing a bipartite graph, some bipartite member G ∈ F satisfies ex(n; G) = O(ex(n; F)). Stated only as a documentation comment, not as a Lean axiom, definition, or theorem — the conjecture is not formalized and remains open."
     },
     {
       "id": "context",

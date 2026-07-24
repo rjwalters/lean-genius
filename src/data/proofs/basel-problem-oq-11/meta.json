@@ -74,7 +74,7 @@
     "sorries": 0
   },
   "overview": {
-    "historicalContext": "Euler solved the Basel problem ζ(2) = ∑ 1/n² = π²/6 in 1734. The alternating variant η(2) = ∑ (-1)^(n+1)/n² is the value at 2 of the Dirichlet eta function η(s) = ∑ (-1)^(n+1)/n^s, the alternating ('eta') counterpart of ζ. The functional relation η(s) = (1 - 2^(1-s))ζ(s) — which analytically continues ζ across the line Re s = 1 — gives η(2) = (1 - 1/2)ζ(2) = π²/12 at the integer point s = 2. This entry formalizes exactly that special value, reusing Mathlib's machine-checked ζ(2) = π²/6.",
+    "historicalContext": "Euler solved the Basel problem ζ(2) = ∑ 1/n² = π²/6 in 1734. The alternating variant η(2) = ∑ (-1)^(n+1)/n² is the value at 2 of the Dirichlet eta function η(s) = ∑ (-1)^(n+1)/n^s, the alternating ('eta') counterpart of ζ. The functional relation η(s) = (1 - 2^(1-s))ζ(s) — which analytically continues ζ across the line Re s = 1 — gives η(2) = (1 - 1/2)ζ(2) = π²/12 at the integer point s = 2. This entry formalizes exactly that special value, reusing Mathlib's machine-checked ζ(2) = π²/6. Unlike ζ, the eta series converges (conditionally) on the whole half-plane Re(s) > 0, so it was historically used as an elementary route to extend ζ past its pole at s = 1 before Riemann's 1859 functional equation gave a fully general continuation. Its own s = 1 case, η(1) = ∑ (-1)^(n+1)/n = ln 2, is the alternating harmonic series — already summed by Nicolaus Mercator's 1668 logarithm series, decades before Euler's Basel solution gave the even-weight values η(2), η(4), … their closed π^{2m} form.",
     "problemStatement": "Formalize, with 0 sorries and 0 axioms, the Dirichlet eta value\n\n$$\\eta(2) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n^2} = \\frac{\\pi^2}{12},$$\n\nby specializing Mathlib's `hasSum_zeta_two` (ζ(2) = π²/6) through the parity split η(2) = (1/2)ζ(2).",
     "text": "The alternating Basel sum: the Dirichlet eta value η(2) = π²/12, obtained from Mathlib's ζ(2) = π²/6 by separating even- and odd-indexed terms.",
     "proofStrategy": "Three HasSum lemmas. (1) hasSum_even_zeta_two: rewrite 1/(2k)² = (1/4)(1/k²) and scale ζ(2) by 1/4 to get π²/24. (2) hasSum_odd_zeta_two: the odd subseries is summable (Summable.comp_injective with k ↦ 2k+1), so reassembling ζ(2) = even + odd via HasSum.even_add_odd and applying HasSum.unique against hasSum_zeta_two forces the odd sum to π²/6 - π²/24 = π²/8. (3) hasSum_eta_two: for the alternating summand, the even-indexed terms are -1/(2k)² (Odd.neg_one_pow) summing to -π²/24, the odd-indexed terms are 1/(2k+1)² (Even.neg_one_pow) summing to π²/8; HasSum.even_add_odd combines them and -π²/24 + π²/8 = π²/12.",
@@ -140,7 +140,7 @@
     "openQuestions": [
       {
         "id": "basel-problem-oq-11-oq-01",
-        "question": "Generalize the even/odd parity split to a reusable lemma η(2m) = (1 - 2^(1-2m)) ζ(2m) for all even arguments, deriving η(4) = 7π⁴/720 from Mathlib's hasSum_zeta_four with no new analytic input.",
+        "question": "Now discharged by basel-problem-oq-11-oq-01, which proves the general lemma η(e) = (1 − 2^{1−e})ζ(e) for arbitrary natural e (recovering η(4) = 7π⁴/720 at e = 4). The next step that lemma itself poses: package it against Mathlib's hasSum_zeta_nat to get a closed Bernoulli-number form η(2m) = (1 − 2^{1−2m})·(−1)^{m+1} B_{2m} (2π)^{2m} / (2·(2m)!) for all m ≥ 1.",
         "significance": "medium"
       },
       {
@@ -164,7 +164,12 @@
     {
       "targetId": "basel-problem-oq-14",
       "relationship": "related — degree-4 analog",
-      "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4). It is precisely the η(2m) generalization this entry's open question 1 asks for, at m = 2."
+      "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template directly to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4), as a standalone concrete proof rather than an instance of a general lemma."
+    },
+    {
+      "targetId": "basel-problem-oq-11-oq-01",
+      "relationship": "extended-by",
+      "description": "Directly answers this entry's open question 1: generalizes the even/odd parity split proved here at s = 2 into a single reusable lemma η(e) = (1 − 2^{1−e})ζ(e) for arbitrary natural exponent e, then specializes it at e = 4 to recover η(4) = 7π⁴/720 — the actual η(2m) generalization requested, as opposed to basel-problem-oq-14's standalone concrete proof of the same value."
     },
     {
       "targetId": "basel-problem-oq-10",
@@ -197,7 +202,7 @@
   "openQuestions": [
     {
       "id": "basel-problem-oq-11-oq-01",
-      "question": "Generalize the even/odd parity split to η(2m) = (1 - 2^(1-2m)) ζ(2m) and derive η(4) = 7π⁴/720 from hasSum_zeta_four.",
+      "question": "Now discharged by basel-problem-oq-11-oq-01 (general lemma η(e) = (1 − 2^{1−e})ζ(e), specialized at e = 4 to η(4) = 7π⁴/720). Next: package it against hasSum_zeta_nat for a closed Bernoulli-number form η(2m) = (1 − 2^{1−2m})·(−1)^{m+1} B_{2m} (2π)^{2m} / (2·(2m)!) for all m ≥ 1.",
       "significance": "medium"
     },
     {

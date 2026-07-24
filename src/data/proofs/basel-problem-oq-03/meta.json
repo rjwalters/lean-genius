@@ -70,7 +70,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "Euler solved the Basel problem in 1734 (ζ(2) = π²/6) and by 1740 had the general formula ζ(2k) = (-1)^{k+1}·2^{2k-1}·B_{2k}·π^{2k}/(2k)!, showing every even zeta value is a rational multiple of π^{2k}. The theory of multiple zeta values (MZVs) ζ(s₁,…,s_r) = ∑_{n₁>…>n_r≥1} ∏ n_i^{-s_i}, revived by Zagier and others in the 1990s, studies the rich algebra of relations these satisfy; the shuffle and stuffle products express products of MZVs as integer combinations of MZVs.",
+    "historicalContext": "Euler solved the Basel problem in 1734 (ζ(2) = π²/6) and by 1740 had the general formula ζ(2k) = (-1)^{k+1}·2^{2k-1}·B_{2k}·π^{2k}/(2k)!, showing every even zeta value is a rational multiple of π^{2k}. Euler later investigated double sums of this kind himself, recording the reflection identity ζ(2,1) = ζ(3) — an early instance of what is now called a multiple zeta value, and the subject of this entry's own second open question below. The systematic theory of multiple zeta values (MZVs) ζ(s₁,…,s_r) = ∑_{n₁>…>n_r≥1} ∏ n_i^{-s_i} was revived in the 1990s by Zagier, Hoffman, and others, who organized Euler's scattered identities into the shuffle and stuffle (quasi-shuffle) product algebras expressing products of MZVs as integer combinations of MZVs — the framework this entry's product-reduction relations instantiate at weight ≤ 8.",
     "problemStatement": "What is the relationship between multiple zeta values and the single zeta values ζ(2k)? Concretely: are products of even zeta values themselves expressible through single zeta values, and what value does the simplest double zeta value ζ(2,2) take?",
     "text": "Closed forms for ζ(6), ζ(8) and the product-reduction relations among even single zeta values, with the double zeta value ζ(2,2) = π⁴/120 as the simplest MZV reduction.",
     "proofStrategy": "Compute B₆ and B₈ from bernoulli'_def (using that the odd Bernoulli numbers B₅, B₇ vanish), convert to the bernoulli convention, and instantiate hasSum_zeta_nat at k=3,4 to obtain ζ(6)=π⁶/945 and ζ(8)=π⁸/9450. Convert all four HasSum statements to tsum values. Because each ζ(2k) is a rational multiple of π^{2k}, every product of even zeta values is — by matching π-powers — a rational multiple of a single ζ of the summed weight; each relation is then closed by rewriting the tsum closed forms and a single ring step. The double zeta value ζ(2,2) is obtained as (ζ(2)²−ζ(4))/2, the quantity the stuffle relation ζ(2)² = ζ(4) + 2ζ(2,2) forces.",
@@ -133,7 +133,7 @@
     "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) closed forms for ζ(6) and ζ(8), the product-reduction relations among even single zeta values, and the double zeta value ζ(2,2) = π⁴/120, exhibiting the relationship between multiple and single zeta values.",
     "implications": "Because each even zeta value is a rational multiple of π^{2k}, the even zeta values are algebraically degenerate and products of them reduce to single values; the double zeta value ζ(2,2) shows the same reduction one level up in the MZV hierarchy. These are the elementary instances of the shuffle/stuffle relations that organize the whole algebra of multiple zeta values.",
     "openQuestions": [
-      "Prove the stuffle relation ζ(2)² = ζ(4) + 2ζ(2,2) directly from the double sum ∑_{m>n} 1/(m²n²) via a Fubini/diagonal split, upgrading ζ(2,2) = π⁴/120 from 'value forced by stuffle' to a fully derived theorem.",
+      "Prove the next stuffle relation ζ(2)·ζ(4) = ζ(6) + ζ(2,4) + ζ(4,2) by the same diagonal-split argument (already carried out for ζ(2)² = ζ(4) + 2ζ(2,2) in basel-problem-oq-03-oq-01), exhibiting the asymmetric weight case where the two off-diagonal triangles are no longer equal.",
       "Formalize Euler's reflection ζ(2,1) = ζ(3), the first MZV relation expressing a weight-3 double value through a single odd zeta value.",
       "State the general even-weight reduction: every monomial ∏ ζ(2k_i) is a rational multiple of π^{2∑k_i}, hence of the single value ζ(2∑k_i)."
     ]
@@ -143,6 +143,16 @@
       "targetId": "basel-problem",
       "relationship": "parent",
       "description": "Parent entry establishing ζ(2) = π²/6; this entry extends to ζ(6), ζ(8) and the relations among even zeta values and the double zeta value ζ(2,2)"
+    },
+    {
+      "targetId": "basel-problem-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question: proves the stuffle relation ζ(2)² = ζ(4) + 2ζ(2,2) directly from the double sum via a Fubini/diagonal split, upgrading ζ(2,2) = π⁴/120 from 'value forced by stuffle' to a fully derived theorem"
+    },
+    {
+      "targetId": "basel-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Pushes the product-reduction pattern two weights further to ζ(10) and ζ(12), where the irregular prime 691 (in the numerator of ζ(12)) first forces itself into every weight-12 reduction coefficient — the exact point the tidy-coefficient pattern of this entry degrades"
     }
   ],
   "leanFile": {

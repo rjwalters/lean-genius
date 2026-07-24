@@ -2496,4 +2496,338 @@ theorem minimal_hErdos_six :
     have := hErdos_le_five_of_lt_sixtyfour hpr hlt
     omega
 
+/- ## Record-setter at `t = 7`, and the first failure of local uniqueness
+
+The `t = 7` rung needs `hErdos m ≤ 6` for every practical `m < 128`.  The
+practical numbers in `[64, 128)` are exactly
+`64, 66, 72, 78, 80, 84, 88, 90, 96, 100, 104, 108, 112, 120, 126`.  The
+split-vs-engine dichotomy of the `t = 6` rung persists at scale: seven of the
+fourteen new numbers fall to subadditivity through a practical split `2 · m'`
+(`72, 80, 84, 96, 108, 112, 120` — each cofactor's bound already pinned in the
+`[32, 64)` block), and the seven remaining — `66 = 2·3·11`, `78 = 2·3·13`,
+`88 = 2³·11`, `90 = 2·3²·5`, `100 = 2²·5²`, `104 = 2³·13`, `126 = 2·3²·7` —
+have no factorisation into two practical parts, so `hErdos_mul_le` is silent
+and the kernel engines pin them (with exact values, not just upper bounds).
+
+The structural surprise sits in the engine values.  At `t = 5` the record `32`
+was locally unique — no other practical number in `[32, 64)` attains index
+`5`.  At `t = 6` local uniqueness FAILS, four times over:
+
+  `hErdos 78 = hErdos 88 = hErdos 100 = hErdos 104 = 6 = hErdos 64`.
+
+All four ties are practically-unsplittable numbers whose divisor list jumps by
+a ratio `> 2` just past a short prefix.  `78 = 2·3·13` (divisor gap `6 → 13`)
+is precisely the number on which greedy halving for the conjectured
+`hErdos m ≤ log₂ m` was seen to fail (`t ≤ 5` section comment) — and here that
+same gap forces a maximal-length representation: the only divisor subset of
+`78` summing to the hard target `77` is `{1, 2, 3, 6, 26, 39}`, i.e. all six
+divisors below `78` except `13`.  Note the ties probe the conjectured
+logarithmic bound without breaching it: `6 = log₂ 64 ≤ log₂ 78`.
+
+Not settled here (the octave's full index-`6` census): `80, 112, 120` carry
+only the crude split bound `≤ 6`, so this file does not decide whether they
+too attain `6` (their true indices are `5, 5, 4`, but pinning them needs
+engine uppers, and `d(120) = 16` makes that the first genuinely expensive
+kernel search — `2¹⁵` subsets per target).  What IS settled: every practical
+number below `128` has index `≤ 6`, so the record-setter sequence continues
+`2, 4, 8, 16, 32, 64, 128` — exactly the powers of two through `t = 7`. -/
+
+set_option maxRecDepth 40000 in
+/-- `40` is practical — decision procedure. -/
+theorem forty_practical : IsPractical 40 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `42` is practical — decision procedure. -/
+theorem fortytwo_practical : IsPractical 42 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `54` is practical — decision procedure. -/
+theorem fiftyfour_practical : IsPractical 54 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `56` is practical — decision procedure. -/
+theorem fiftysix_practical : IsPractical 56 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `60` is practical — decision procedure. -/
+theorem sixty_practical : IsPractical 60 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `66` is practical — decision procedure. -/
+theorem sixtysix_practical : IsPractical 66 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `78` is practical — decision procedure. -/
+theorem seventyeight_practical : IsPractical 78 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `88` is practical — decision procedure. -/
+theorem eightyeight_practical : IsPractical 88 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `90` is practical — decision procedure. -/
+theorem ninety_practical : IsPractical 90 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `104` is practical — decision procedure. -/
+theorem onehundredfour_practical : IsPractical 104 := by decide
+
+set_option maxRecDepth 40000 in
+/-- `126` is practical — decision procedure. -/
+theorem onetwentysix_practical : IsPractical 126 := by decide
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 66 = 5`** — engine-only: `66 = 2·3·11` has no factorisation into
+two practical parts (`33`, `22`, `11` are not practical).  Hard target
+`k = 65`: the only divisor subset summing to `65` is `{1, 3, 6, 22, 33}` (the
+complement of `{2, 11}` in the proper divisors, which total `78`). -/
+theorem hErdos_sixtysix : hErdos 66 = 5 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 65) sixtysix_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 78 = 6` — the first tie with a power-of-two record.**
+Engine-only: `78 = 2·3·13` has no practical split (`39`, `26`, `13` fail).
+Hard target `k = 77`: the proper divisors `{1, 2, 3, 6, 13, 26, 39}` total
+`90`, so a subset sums to `77` iff its complement sums to `13` — and the only
+such complement is `{13}` itself (the gap `6 → 13` leaves `1+2+3+6 = 12 < 13`).
+The unique representation `77 = 1+2+3+6+26+39` uses six divisors. -/
+theorem hErdos_seventyeight : hErdos 78 = 6 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 77) seventyeight_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 88 = 6`** — engine-only: `88 = 2³·11` has no practical split
+(`44`, `22`, `11` fail).  Hard target `k = 84`: the proper divisors
+`{1, 2, 4, 8, 11, 22, 44}` total `92`, and the only subset summing to the
+complement value `8` is `{8}` itself, so `84 = 1+2+4+11+22+44` is forced —
+six divisors. -/
+theorem hErdos_eightyeight : hErdos 88 = 6 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 84) eightyeight_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 90 = 4`** — engine-only: `90 = 2·3²·5` has no practical split
+(`45`, `30·3`, `18·5`, `15·6`, `10·9` all involve a non-practical factor).
+Despite eleven proper divisors the index stays at `4` (e.g. hard target
+`k = 67 = 45+18+3+1`). The contrast with `88` (eight divisors, index `6`)
+shows again that the index tracks divisor STRUCTURE, not divisor count. -/
+theorem hErdos_ninety : hErdos 90 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 67) ninety_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 100 = 6`** — engine-only: `100 = 2²·5²` has no practical split
+(`50`, `25`, `20·5`, `10·10` all involve a non-practical factor).  Hard target
+`k = 93`: the proper divisors `{1, 2, 4, 5, 10, 20, 25, 50}` total `117`, and
+the only subset summing to the complement value `24` is `{4, 20}`, forcing
+`93 = 1+2+5+10+25+50` — six divisors. -/
+theorem hErdos_onehundred : hErdos 100 = 6 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 93) hundred_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 20000 in
+/-- **`hErdos 104 = 6`** — engine-only: `104 = 2³·13` has no practical split
+(`52`, `26`, `13` fail).  Like its sibling `88 = 2³·11`, the prime gap
+`8 → 13` in the divisor list forces six-divisor representations (hard target
+`k = 98`). -/
+theorem hErdos_onehundredfour : hErdos 104 = 6 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 98) onehundredfour_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 40000 in
+/-- **`hErdos 126 = 4`** — engine-only: `126 = 2·3²·7` has no practical split
+(`63`, `21`, `18·7`, `14·9`, `42·3` all involve a non-practical factor).
+Eleven proper divisors, index only `4` (hard target `k = 89 = 63+21+3+2`) —
+the third practically-unsplittable number in this octave (after `90`) whose
+index stays LOW, in contrast to the four record-tying ones. -/
+theorem hErdos_onetwentysix : hErdos 126 = 4 := by
+  refine le_antisymm (hErdos_le_of_witnesses (by decide)) ?_
+  exact le_hErdos_of_card (k := 89) onetwentysix_practical (by omega) (by omega)
+    (by decide)
+
+/-- `hErdos 72 ≤ 5` — subadditivity at the practical split `72 = 2 · 36`. -/
+theorem hErdos_seventytwo_le : hErdos 72 ≤ 5 := by
+  have h : hErdos (2 * 36) ≤ hErdos 2 + hErdos 36 :=
+    hErdos_mul_le two_practical thirtysix_practical
+  have h36 := hErdos_thirtysix_le
+  rw [hErdos_two] at h
+  have h72 : hErdos 72 = hErdos (2 * 36) := by norm_num
+  omega
+
+/-- `hErdos 80 ≤ 6` — subadditivity at the practical split `80 = 2 · 40`. -/
+theorem hErdos_eighty_le : hErdos 80 ≤ 6 := by
+  have h : hErdos (2 * 40) ≤ hErdos 2 + hErdos 40 :=
+    hErdos_mul_le two_practical forty_practical
+  have h40 := hErdos_forty_le
+  rw [hErdos_two] at h
+  have h80 : hErdos 80 = hErdos (2 * 40) := by norm_num
+  omega
+
+/-- `hErdos 84 ≤ 5` — subadditivity at the practical split `84 = 2 · 42`. -/
+theorem hErdos_eightyfour_le : hErdos 84 ≤ 5 := by
+  have h : hErdos (2 * 42) ≤ hErdos 2 + hErdos 42 :=
+    hErdos_mul_le two_practical fortytwo_practical
+  have h42 := hErdos_fortytwo_le
+  rw [hErdos_two] at h
+  have h84 : hErdos 84 = hErdos (2 * 42) := by norm_num
+  omega
+
+/-- `hErdos 96 ≤ 5` — subadditivity at the practical split `96 = 2 · 48`. -/
+theorem hErdos_ninetysix_le : hErdos 96 ≤ 5 := by
+  have h : hErdos (2 * 48) ≤ hErdos 2 + hErdos 48 :=
+    hErdos_mul_le two_practical fortyeight_practical
+  have h48 := hErdos_fortyeight_le
+  rw [hErdos_two] at h
+  have h96 : hErdos 96 = hErdos (2 * 48) := by norm_num
+  omega
+
+/-- `hErdos 108 ≤ 5` — subadditivity at the practical split `108 = 2 · 54`. -/
+theorem hErdos_onehundredeight_le : hErdos 108 ≤ 5 := by
+  have h : hErdos (2 * 54) ≤ hErdos 2 + hErdos 54 :=
+    hErdos_mul_le two_practical fiftyfour_practical
+  have h54 := hErdos_fiftyfour_le
+  rw [hErdos_two] at h
+  have h108 : hErdos 108 = hErdos (2 * 54) := by norm_num
+  omega
+
+/-- `hErdos 112 ≤ 6` — subadditivity at the practical split `112 = 2 · 56`. -/
+theorem hErdos_onehundredtwelve_le : hErdos 112 ≤ 6 := by
+  have h : hErdos (2 * 56) ≤ hErdos 2 + hErdos 56 :=
+    hErdos_mul_le two_practical fiftysix_practical
+  have h56 := hErdos_fiftysix_le
+  rw [hErdos_two] at h
+  have h112 : hErdos 112 = hErdos (2 * 56) := by norm_num
+  omega
+
+/-- `hErdos 120 ≤ 6` — subadditivity at the practical split `120 = 2 · 60`. -/
+theorem hErdos_onetwenty_le : hErdos 120 ≤ 6 := by
+  have h : hErdos (2 * 60) ≤ hErdos 2 + hErdos 60 :=
+    hErdos_mul_le two_practical sixty_practical
+  have h60 := hErdos_sixty_le
+  rw [hErdos_two] at h
+  have h120 : hErdos 120 = hErdos (2 * 60) := by norm_num
+  omega
+
+/-- `hErdos 128 = 7` — the power-of-two formula at `k = 7`. -/
+theorem hErdos_onetwentyeight : hErdos 128 = 7 := by
+  have h := hErdos_two_pow 7
+  norm_num at h
+  exact h
+
+set_option maxRecDepth 80000 in
+/-- **Every practical number below `128` has index at most `6`.**  Below `64`
+this is `hErdos_le_five_of_lt_sixtyfour`; the practical numbers in `[64, 128)`
+are `64, 66, 72, 78, 80, 84, 88, 90, 96, 100, 104, 108, 112, 120, 126` (each
+non-practical value excluded by a kernel `decide`), bounded by the engine
+values and subadditive splits above.  Unlike the previous octave, the bound
+`≤ 6` is attained five times here: by `64` and by the four ties
+`78, 88, 100, 104`. -/
+theorem hErdos_le_six_of_lt_onetwentyeight {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 128) : hErdos m ≤ 6 := by
+  by_cases h64 : m < 64
+  · exact (hErdos_le_five_of_lt_sixtyfour hm h64).trans (by omega)
+  · push Not at h64
+    interval_cases m
+    · simp [hErdos_sixtyfour]
+    · exact absurd hm (by decide)
+    · simp [hErdos_sixtysix]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_seventytwo_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_seventyeight]
+    · exact absurd hm (by decide)
+    · exact hErdos_eighty_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_eightyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_eightyeight]
+    · exact absurd hm (by decide)
+    · simp [hErdos_ninety]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_ninetysix_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_onehundred]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_onehundredfour]
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onehundredeight_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onehundredtwelve_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onetwenty_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · simp [hErdos_onetwentysix]
+    · exact absurd hm (by decide)
+
+set_option maxRecDepth 40000 in
+/-- **Record-setter at `t = 7`: the least practical number with index `7` is
+`128 = 2⁷`.**  The record-setter sequence for `t = 1, …, 7` is
+`2, 4, 8, 16, 32, 64, 128` — exactly the powers of two.  This rung is the
+first where the record's predecessor octave contains OTHER practical numbers
+attaining the previous record index (`78, 88, 100, 104` all have index `6`,
+like `64`), so the conjectured persistence of `2^t` as record-setter can no
+longer be read off from local uniqueness — the powers of two now lead only by
+position, not by isolation. -/
+theorem minimal_hErdos_seven :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 7 } 128 := by
+  constructor
+  · exact ⟨by decide, hErdos_onetwentyeight⟩
+  · rintro m ⟨hpr, h7⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_six_of_lt_onetwentyeight hpr hlt
+    omega
+
+/-- **Local uniqueness of the record fails at `t = 6`**: a practical number
+strictly between `64` and `128` attains index `6`.  (Witness `78`; in fact
+`88`, `100`, `104` do too — see their exact values.)  Contrast with `t = 5`:
+`32` is the unique index-`5` practical number in `[32, 64)` (see the `t = 6`
+section comment — the other seven practicals there all have true index
+`≤ 4`), so this is the first octave in which the power of two shares its
+record. -/
+theorem record_index_six_not_locally_unique :
+    ∃ m, IsPractical m ∧ 64 < m ∧ m < 128 ∧ hErdos m = 6 :=
+  ⟨78, seventyeight_practical, by norm_num, by norm_num, hErdos_seventyeight⟩
+
 end Erdos18

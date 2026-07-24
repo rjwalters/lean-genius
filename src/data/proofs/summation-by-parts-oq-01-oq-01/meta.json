@@ -58,12 +58,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Overview, motivation, and imports",
+      "id": "header-statement",
+      "title": "Overview: What This Proves",
       "startLine": 1,
+      "endLine": 19,
+      "summary": "Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic. States the target identity ∑_{k<n} k²·rᵏ = (n²·rⁿ − (2n²−2n−1)·rⁿ⁺¹ + (n−1)²·rⁿ⁺² − r² − r)/(r−1)³ for r ≠ 1 in a field K — the second-order arithmetico-geometric sum, one step beyond the parent's first-order ∑ k·rᵏ, and the finite hypothesis-free analogue of the twice-differentiated geometric series.",
+      "mathContext": "$\\sum_{k=0}^{n-1} k^2 r^k = \\dfrac{n^2 r^n - (2n^2-2n-1)r^{n+1} + (n-1)^2 r^{n+2} - r^2 - r}{(r-1)^3}$ for $r\\neq 1$."
+    },
+    {
+      "id": "header-method",
+      "title": "Novelty and Method",
+      "startLine": 20,
       "endLine": 53,
-      "summary": "Docstring stating the second-order identity ∑_{k<n} k²·rᵏ, explaining why it is absent from Mathlib and the gallery (only the geometric and first-order sums exist), and outlining the three approaches (induction, Abel summation by parts, r=2 specialization). Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic, opens Finset, and fixes an arbitrary field K.",
-      "mathContext": "The identity is exact over any field for r ≠ 1; the classical ∑ k²·rᵏ = r(1+r)/(1−r)³ is only its |r|<1 limit."
+      "summary": "Explains the novelty: Mathlib has only the geometric closed form and the gallery only the first-order ∑ k·rᵏ; this is the exact finite sum over any field, not an |r|<1 analytic limit. Previews the three results: the induction proof, Abel summation by parts (whose non-constant differences 2k+1 drop the sum to first order), and the r=2 specialization. Enters namespace SummationByPartsOQ01OQ01, opens Finset, and fixes an arbitrary field K.",
+      "mathContext": "Finite algebraic identity under $r \\neq 1$, not an $\\lVert r\\rVert<1$ analytic limit; $\\Delta(k^2) = 2k+1$ drives the by-parts degree reduction."
     },
     {
       "id": "closed-form",

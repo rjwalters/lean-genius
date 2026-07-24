@@ -22,11 +22,15 @@ proving the identity from the fundamental hyperbolic identities:
 - cosh²(x) - sinh²(x) = 1
 - cosh(x-y) = cosh(x)cosh(y) - sinh(x)sinh(y)
 
-## Status (0 axioms, 0 sorries)
+## Status (0 `axiom` declarations, 3 structure-encoded assumptions, 0 sorries)
 - [x] Hyperbolic triangle structure
-- [x] Hyperbolic law of cosines statement
+- [x] Hyperbolic law of cosines statement (structure-encoded: `HyperbolicTriangle.law`)
 - [x] Key hyperbolic identities
 - [x] Algebraic proof
+
+Note: `HyperbolicTriangle.law`, `HyperbolicTriangleAngles.law2`, and
+`HyperbolicTriangleAngles.defect_pos` are structure fields, not proved from a
+hyperbolic metric model — they are assumptions, not theorems.
 
 ## References
 - Ratcliffe (2006): "Foundations of Hyperbolic Manifolds", Chapter 3
