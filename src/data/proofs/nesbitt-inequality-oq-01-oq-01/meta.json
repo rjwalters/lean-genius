@@ -69,7 +69,8 @@
       "The two-term Cauchy–Schwarz (Titu/Engel) estimate has an exact square deficit (py − qx)²/(xy(x+y)), so all inequalities here are equalities-minus-an-explicit-square — a self-certifying SOS-style proof",
       "Pairing the OPPOSITE terms (1,3) and (2,4), not adjacent ones, is what makes the 4-cycle telescope cleanly into a single (a+b+c+d)² numerator",
       "The folding identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)² turns the whole deficit into two squares, simultaneously delivering the bound and the equality locus",
-      "The minimum is attained on the two-parameter family a = c, b = d — a structural departure from the n = 3 (Nesbitt) case where only a = b = c achieves equality"
+      "The minimum is attained on the two-parameter family a = c, b = d — a structural departure from the n = 3 (Nesbitt) case where only a = b = c achieves equality",
+      "The opposite pairing (1,3)/(2,4) is forced by the cyclic structure, not an arbitrary choice: rotating indices by 2 (i ↦ i+2 mod 4) is an involution of the 4-cycle that swaps term 1 with term 3 and term 2 with term 4 while fixing the sum; grouping by this involution's orbits is exactly what lets the two Titu applications recombine into a single (a+b+c+d)² numerator, whereas an adjacent pairing like (1,2)/(3,4) does not respect any symmetry of the sum and would not collapse as cleanly"
     ],
     "prerequisites": [
       "Ordered fields and the arithmetic of real fractions",
