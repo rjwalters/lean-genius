@@ -121,31 +121,34 @@ everywhere (`AdjoinRoot.algHom_ext` over ℚ). -/
 theorem complexEmbedding_isReal (φ : Q_sqrt2 →+* ℂ) :
     NumberField.ComplexEmbedding.IsReal φ := by
   rw [NumberField.ComplexEmbedding.isReal_iff]
-  have hroot : (NumberField.ComplexEmbedding.conjugate φ)
-      (AdjoinRoot.root X_sq_sub_two) = φ (AdjoinRoot.root X_sq_sub_two) := by
-    rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
-    exact conj_eq_self_of_sq_eq_two (embedding_root_sq φ)
-  have halg : (NumberField.ComplexEmbedding.conjugate φ).toRatAlgHom
-      = φ.toRatAlgHom :=
-    AdjoinRoot.algHom_ext (by
-      rw [RingHom.toRatAlgHom_apply, RingHom.toRatAlgHom_apply]
-      exact hroot)
-  calc NumberField.ComplexEmbedding.conjugate φ
-      = ((NumberField.ComplexEmbedding.conjugate φ).toRatAlgHom :
-          Q_sqrt2 →+* ℂ) := (RingHom.toRatAlgHom_toRingHom _).symm
-    _ = (φ.toRatAlgHom : Q_sqrt2 →+* ℂ) := by rw [halg]
-    _ = φ := RingHom.toRatAlgHom_toRingHom φ
+  -- both sides agree after precomposition with the surjection ℚ[X] → Q_sqrt2
+  have hcomp : (NumberField.ComplexEmbedding.conjugate φ).comp
+      (AdjoinRoot.mk X_sq_sub_two) = φ.comp (AdjoinRoot.mk X_sq_sub_two) := by
+    apply Polynomial.ringHom_ext
+    · -- rational constants: any two ring homs ℚ →+* ℂ coincide
+      intro a
+      exact RingHom.congr_fun (Subsingleton.elim
+        (((NumberField.ComplexEmbedding.conjugate φ).comp
+          (AdjoinRoot.mk X_sq_sub_two)).comp Polynomial.C)
+        ((φ.comp (AdjoinRoot.mk X_sq_sub_two)).comp Polynomial.C)) a
+    · -- the generator: φ root is real, hence conjugation-fixed
+      simp only [RingHom.comp_apply, AdjoinRoot.mk_X,
+        NumberField.ComplexEmbedding.conjugate_coe_eq]
+      exact conj_eq_self_of_sq_eq_two (embedding_root_sq φ)
+  refine RingHom.ext fun x => ?_
+  obtain ⟨p, rfl⟩ := AdjoinRoot.mk_surjective x
+  exact RingHom.congr_fun hcomp p
 
 /-- **Q(√2) is totally real** (every infinite place is real). -/
 instance : NumberField.IsTotallyReal Q_sqrt2 where
-  isReal v := NumberField.InfinitePlace.isReal_iff.mpr
+  isReal _ := NumberField.InfinitePlace.isReal_iff.mpr
     (complexEmbedding_isReal _)
 
 /-- **Sub-target (build-verified): Q(√2) has no complex places.**
 This is the `nrComplexPlaces K = 0` input to the Minkowski-bound
 arithmetic in the capstone reduction below. -/
 theorem Q_sqrt2_nrComplexPlaces :
-    NumberField.nrComplexPlaces Q_sqrt2 = 0 :=
+    NumberField.InfinitePlace.nrComplexPlaces Q_sqrt2 = 0 :=
   NumberField.IsTotallyReal.nrComplexPlaces_eq_zero Q_sqrt2
 
 /-- **Conditional capstone (fully proved):** `classNumber Q(√2) = 1`
@@ -168,7 +171,7 @@ theorem Q_sqrt2_classNumber_eq_one_of_discr
     (hd : NumberField.discr Q_sqrt2 = 8) :
     NumberField.classNumber Q_sqrt2 = 1 := by
   rw [NumberField.classNumber_eq_one_iff]
-  apply NumberField.RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt
+  apply RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt
   rw [hd, Q_sqrt2_nrComplexPlaces, Q_sqrt2_finrank]
   norm_num [Nat.factorial]
 
