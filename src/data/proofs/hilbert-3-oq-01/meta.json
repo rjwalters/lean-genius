@@ -62,11 +62,18 @@
       "summary": "TotalDehn d = Fin d → DehnGroup; per-stratum injection stratum k l θ = Pi.single k (dehnTerm l θ); the assembled totalDehnSum; and totalDehnSum_apply identifying each graded component with the classical Dehn sum over that grade."
     },
     {
-      "id": "graded-algebra",
-      "title": "Algebra of the Graded Invariant",
+      "id": "stratum-algebra",
+      "title": "Single-Stratum Algebra",
       "startLine": 145,
+      "endLine": 167,
+      "summary": "stratum_add_length: additivity in edge length. stratum_supplementary: supplementary-angle cancellation lifted to the grading — cutting through a stratum splits its dihedral angle into θ and π−θ, and the two graded contributions cancel. stratum_eq_zero_of_ratPi: a rational-angle stratum contributes nothing."
+    },
+    {
+      "id": "total-invariant-algebra",
+      "title": "Algebra of the Assembled Total Invariant",
+      "startLine": 169,
       "endLine": 200,
-      "summary": "Additivity in length, supplementary-angle cancellation lifted to the grading, the rational-angle vanishing criterion in every dimension, the d-box analogue (total Dehn = 0), and additivity over disjoint stratum families (the homomorphism property)."
+      "summary": "totalDehnSum_eq_zero_of_ratPi: the rational-angle vanishing criterion in every dimension. box_totalDehnSum_zero: the d-box analogue (total Dehn = 0, since every dihedral angle is π/2). totalDehnSum_union: additivity over disjoint stratum families — the homomorphism property."
     }
   ],
   "conclusion": {
