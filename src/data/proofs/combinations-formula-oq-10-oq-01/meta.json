@@ -48,7 +48,8 @@
       "The weight k is not an obstruction but a signal to shift the row: absorption k·C(n,k) = n·C(n-1,k-1) trades the linear weight for a decrement of both the upper and lower index, converting a weighted self-convolution into an ordinary (unequal-row) Vandermonde convolution.",
       "Applying absorption to only one of the two C(n+1,j+1) factors is the crux: it leaves a clean product C(n,j)·C(n+1,j+1) whose two rows differ by exactly 1, which is precisely the shape Nat.add_choose_eq collapses.",
       "Phrasing the workhorse over n+1 eliminates every truncated ℕ-subtraction in the derivation; subtraction survives only in the cosmetic RHS index C(2n-1,n-1) of the final statement, where a single omega step and the n=0 base case suffice.",
-      "The closed form n·C(2n-1,n-1) is exactly (n/2)·C(2n,n): the first moment is half the total mass ∑ C(n,k)² = C(2n,n) times n, matching the symmetry of the squared Pascal row about its center."
+      "The closed form n·C(2n-1,n-1) is exactly (n/2)·C(2n,n): the first moment is half the total mass ∑ C(n,k)² = C(2n,n) times n, matching the symmetry of the squared Pascal row about its center.",
+      "This is the same fact combinations-formula-oq-07-oq-03 proves as 2·∑ k·C(n,k)² = n·C(2n,n) (equivalent via the halving C(2n,n) = 2·C(2n-1,n-1)), but by a structurally different route: that entry averages the sum against its reflection k ↦ n−k, while this one shifts the row via absorption and closes with an unequal-row Vandermonde convolution — two independent Lean-verified proofs of the same first moment."
     ]
   },
   "sections": [
