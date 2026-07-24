@@ -3148,4 +3148,173 @@ theorem minDegreeForC4_fourteen_mem :
 
 end Fourteen
 
+/-! ## `f(15) ≥ 4` and `f(16) ≥ 4`: two more surgery rungs — `f(15), f(16) ∈ {4, 5}`
+
+The fifth and sixth surgery rungs, by the exact recipe of the `Fourteen`
+section: materialise the previous surgery as an explicit edge list, certify
+it by kernel checks on the *previous* vertex count, and apply the abstract
+surgery with a configuration whose two path edges lie in no triangle.
+
+* `petersen14` = the `a = 0, b = 4, c = 3` surgery on `petersen13`
+  materialised: delete `0–4`, join the new vertex `13` to `0`, `4`, `3`.
+  Its triangles are `1–6–10`, `3–4–13`, `3–8–11`, `7–9–12`.
+  Configuration for the next rung: `a = 0, b = 5, c = 7` (edges `0–5` and
+  `5–7` are triangle-free, `0 ≁ 7`).
+* `petersen15` = that surgery materialised: delete `0–5`, join `14` to
+  `0`, `5`, `7`.  Triangles: the previous four plus `5–7–14`.
+  Configuration: `a = 6, b = 8, c = 5` (edges `6–8` and `8–5` are
+  triangle-free, `6 ≁ 5`).
+
+Upper bounds: `15 ≤ 5·4` and `16 ≤ 5·4`, so `f(15), f(16) ≤ 5` by the
+counting bound.  Neither `15` nor `16` is a tight point `k(k−1)+1`, so the
+friendship-theorem pinning does not apply; the honest results are
+`f(15) ∈ {4, 5}` and `f(16) ∈ {4, 5}`.  (Next tight point: `21 = 5·4+1`,
+where `minDegreeForC4_twentyone_le` already gives the sharp upper `5`.) -/
+
+section Fifteen
+
+/-- The twenty-three edges of the `14`-vertex four-times-extended Petersen
+graph: `petersen13Edges` with the edge `(4, 0)` deleted and the new vertex
+`13` joined to `0`, `4`, and `3` — the `f(14)` surgery, materialised. -/
+def petersen14Edges : List (Fin 14 × Fin 14) :=
+  [(1,2), (3,4),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (0,5), (1,6), (2,7), (3,8),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8),
+   (12,4), (12,9), (12,7),
+   (13,0), (13,4), (13,3)]
+
+/-- **A `14`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after four vertex-adding surgeries. -/
+def petersen14 : SimpleGraph (Fin 14) where
+  Adj i j := (i, j) ∈ petersen14Edges ∨ (j, i) ∈ petersen14Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen14.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen14Edges ∨ (j, i) ∈ petersen14Edges) Iff.rfl
+
+/-- Every vertex of `petersen14` has degree at least `3` — a `14`-vertex
+kernel check. -/
+theorem petersen14_degree : ∀ v, 3 ≤ petersen14.degree v := by decide
+
+/-- **Every pair of distinct `petersen14` vertices has at most one common
+neighbour** — the `14 × 14` kernel check certifying `C₄`-freeness. -/
+theorem petersen14_common_le_one : ∀ x y : Fin 14, x ≠ y →
+    (petersen14.neighborFinset x ∩ petersen14.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`f(15) ≥ 4`** — the abstract surgery applied to `petersen14` with the
+configuration `a = 0, b = 5, c = 7`: the edges `0–5` and `5–7` are
+triangle-free, `0 ≁ 7`, and all remaining hypotheses are `14`-vertex kernel
+checks.  No `15`-vertex graph is ever `decide`d. -/
+theorem four_le_minDegreeForC4_fifteen : 4 ≤ minDegreeForC4 15 := by
+  have hab : petersen14.Adj 0 5 := by decide
+  have hbc : petersen14.Adj 5 7 := by decide
+  have hac : ¬ petersen14.Adj 0 7 := by decide
+  have hane : (0 : Fin 14) ≠ 7 := by decide
+  have htriab : ∀ z, petersen14.Adj 0 z → petersen14.Adj 5 z → False := by decide
+  have htribc : ∀ z, petersen14.Adj 5 z → petersen14.Adj 7 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen14_common_le_one
+  have hC4 : ¬ containsC4 (Fin 15) (surgeryFin petersen14 0 5 7) :=
+    surgeryFin_not_containsC4 petersen14 0 5 7
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen14 0 5 7).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen14 0 5 7 u)
+    rcases h : finSuccEquiv 14 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen14_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen14 0 5 7) hdeg hC4
+
+/-- **`f(15) ∈ {4, 5}`**: fifth surgery rung below, counting bound
+(`15 ≤ 5·4`) above.  `15` is not a tight point, so the friendship pinning
+does not extend. -/
+theorem minDegreeForC4_fifteen_mem :
+    minDegreeForC4 15 = 4 ∨ minDegreeForC4 15 = 5 := by
+  have hle : minDegreeForC4 15 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_fifteen
+  omega
+
+end Fifteen
+
+section Sixteen
+
+/-- The twenty-five edges of the `15`-vertex five-times-extended Petersen
+graph: `petersen14Edges` with the edge `(0, 5)` deleted and the new vertex
+`14` joined to `0`, `5`, and `7` — the `f(15)` surgery, materialised. -/
+def petersen15Edges : List (Fin 15 × Fin 15) :=
+  [(1,2), (3,4),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (1,6), (2,7), (3,8),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8),
+   (12,4), (12,9), (12,7),
+   (13,0), (13,4), (13,3),
+   (14,0), (14,5), (14,7)]
+
+/-- **A `15`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after five vertex-adding surgeries. -/
+def petersen15 : SimpleGraph (Fin 15) where
+  Adj i j := (i, j) ∈ petersen15Edges ∨ (j, i) ∈ petersen15Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen15.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen15Edges ∨ (j, i) ∈ petersen15Edges) Iff.rfl
+
+/-- Every vertex of `petersen15` has degree at least `3` — a `15`-vertex
+kernel check. -/
+theorem petersen15_degree : ∀ v, 3 ≤ petersen15.degree v := by decide
+
+/-- **Every pair of distinct `petersen15` vertices has at most one common
+neighbour** — the `15 × 15` kernel check certifying `C₄`-freeness. -/
+theorem petersen15_common_le_one : ∀ x y : Fin 15, x ≠ y →
+    (petersen15.neighborFinset x ∩ petersen15.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`f(16) ≥ 4`** — the abstract surgery applied to `petersen15` with the
+configuration `a = 6, b = 8, c = 5`: the edges `6–8` and `8–5` are
+triangle-free, `6 ≁ 5`, and all remaining hypotheses are `15`-vertex kernel
+checks.  No `16`-vertex graph is ever `decide`d. -/
+theorem four_le_minDegreeForC4_sixteen : 4 ≤ minDegreeForC4 16 := by
+  have hab : petersen15.Adj 6 8 := by decide
+  have hbc : petersen15.Adj 8 5 := by decide
+  have hac : ¬ petersen15.Adj 6 5 := by decide
+  have hane : (6 : Fin 15) ≠ 5 := by decide
+  have htriab : ∀ z, petersen15.Adj 6 z → petersen15.Adj 8 z → False := by decide
+  have htribc : ∀ z, petersen15.Adj 8 z → petersen15.Adj 5 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen15_common_le_one
+  have hC4 : ¬ containsC4 (Fin 16) (surgeryFin petersen15 6 8 5) :=
+    surgeryFin_not_containsC4 petersen15 6 8 5
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen15 6 8 5).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen15 6 8 5 u)
+    rcases h : finSuccEquiv 15 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen15_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen15 6 8 5) hdeg hC4
+
+/-- **`f(16) ∈ {4, 5}`**: sixth surgery rung below, counting bound
+(`16 ≤ 5·4`) above. -/
+theorem minDegreeForC4_sixteen_mem :
+    minDegreeForC4 16 = 4 ∨ minDegreeForC4 16 = 5 := by
+  have hle : minDegreeForC4 16 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_sixteen
+  omega
+
+end Sixteen
+
 end Erdos85
