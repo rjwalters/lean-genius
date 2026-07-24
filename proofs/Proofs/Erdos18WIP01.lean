@@ -3259,9 +3259,10 @@ The divisor structure of `348` explains the jump.  Its divisors
 `1, 2, 3, 4, 6, 12, 29, 58, 87, 116, 174` climb by (near-)doubling twice — the
 gap `12 → 29` is bridged only because `29 ≤ 1 + (1+2+3+4+6+12)`, with NO slack,
 and the same near-critical jump repeats at `29 → 58 → 87`-style steps.  The
-hard target is `k = 347 = m − 1`: its unique divisor representation is
-`347 = 1+2+3+4+6+12+29+116+174`, needing all six small divisors before the
-big coins can fire — nine divisors in total, `repLength 348 347 = 9`.
+hard target is `k = 347 = m − 1`: the proper divisors sum to `492`, so a
+representation of `347` is the complement of a sub-family summing to
+`145 = 492 − 347`, and only `{29, 116}` and `{58, 87}` do — every
+representation has `11 − 2 = 9` divisors, `repLength 348 347 = 9`.
 
 Two consequences recorded here:
 
@@ -3556,12 +3557,11 @@ theorem hErdos_threehundredfour : hErdos 304 = 8 := by
 set_option maxRecDepth 40000 in
 set_option maxHeartbeats 800000 in
 /-- **`hErdos 348 = 9` — the first index-`9` practical number, and it is NOT
-`2⁹`.**  Lower: the hard target is `k = 347 = m − 1`, whose unique divisor
-representation `347 = 1+2+3+4+6+12+29+116+174` uses nine divisors (kernel
-check over the `2¹²` subsets of `divisors 348`).  The mechanism: `347` is odd
-and `1` is the only odd divisor below `29`, so `1` is forced; the remaining
-even target `346` must climb through the zero-slack gap `12 → 29`, which
-consumes ALL of `2, 3, 4, 6, 12` before `29` can fire. -/
+`2⁹`.**  Lower: the hard target is `k = 347 = m − 1` (kernel check over the
+`2¹²` subsets of `divisors 348`).  The mechanism: the eleven proper divisors
+sum to `492`, so a representation of `347` is the complement of a sub-family
+summing to `145 = 492 − 347`; only `{29, 116}` and `{58, 87}` sum to `145`,
+so every representation uses exactly `11 − 2 = 9` divisors. -/
 theorem hErdos_threefortyeight : hErdos 348 = 9 := by
   refine le_antisymm hErdos_threefortyeight_le ?_
   exact le_hErdos_of_card (k := 347) threefortyeight_practical (by omega) (by omega)
