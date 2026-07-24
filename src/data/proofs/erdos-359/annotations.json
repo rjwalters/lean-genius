@@ -295,5 +295,27 @@
       "conjectured superlinear growth for general n",
       "generalization beyond the n = 1 case"
     ]
+  },
+  {
+    "id": "ann-e359-summary-theorem",
+    "proofId": "erdos-359",
+    "range": {
+      "startLine": 175,
+      "endLine": 207
+    },
+    "type": "theorem",
+    "title": "Summary and Packaging Theorem",
+    "content": "A closing docstring restates the problem status (the three open questions, the known initial terms, and Porubsky's/Andrews' results), and erdos_359_summary packages the file's four proved structural facts -- A 0 = 1, StrictMono A, macmahonValues 0 = 1, macmahonValues 7 = 15 -- into a single conjunction. It adds no new mathematical content beyond macmahon_first_term and macmahon_strictMono (proved earlier) and the concrete values already verified in the known-values section; its role is purely to give a reader one citable statement for everything this file actually establishes, distinct from the open conjectures recorded only as comments.",
+    "mathContext": "erdos_359_summary : (forall A, IsMacMahonSeq A -> A 0 = 1) and (forall A, IsMacMahonSeq A -> StrictMono A) and macmahonValues 0 = 1 and macmahonValues 7 = 15.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summary theorem",
+      "proof packaging",
+      "macmahon_first_term",
+      "macmahon_strictMono"
+    ],
+    "prerequisites": [
+      "the four component facts proved earlier in the file"
+    ]
   }
 ]

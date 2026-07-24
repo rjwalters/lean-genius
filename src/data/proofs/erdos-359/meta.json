@@ -112,6 +112,13 @@
       "startLine": 168,
       "endLine": 174,
       "summary": "Comment noting the conjectured extension to sequences starting with n != 1."
+    },
+    {
+      "id": "summary-theorem",
+      "title": "Summary and Packaging Theorem",
+      "startLine": 175,
+      "endLine": 207,
+      "summary": "A closing docstring restates the problem (open questions, known values, Porubsky's/Andrews' results) and erdos_359_summary packages the four proved structural facts (A 0 = 1, StrictMono A, macmahonValues 0 = 1, macmahonValues 7 = 15) into a single conjunction, giving one theorem a reader can cite for everything this file actually establishes versus what remains conjectural."
     }
   ],
   "conclusion": {
