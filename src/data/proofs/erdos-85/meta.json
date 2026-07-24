@@ -51,7 +51,7 @@
       "Definition of containsC4 predicate for graph embeddings",
       "Definition of minDegreeForC4 threshold function f(n)",
       "Erdos85Question as eventually monotone statement",
-      "Axioms for asymptotic behavior f(n) ~ √n",
+      "Asymptotic behavior f(n) ~ √n documented only in a comment (not a Lean axiom or theorem)",
       "Connection to Ramsey numbers R(C₄, K_{1,n})",
       "Kővári-Sós-Turán bound on C₄-free graphs",
       "one_le_starGraph_minDegree / two_le_minDegreeForC4: axiom-free lower bound f(n+1) ≥ 2 for n ≥ 3 (the C₄-free star has min-degree ≥ 1), pinning f(4) ≥ 2",
@@ -126,7 +126,7 @@
       "title": "Known Bounds",
       "startLine": 91,
       "endLine": 124,
-      "summary": "Axioms for asymptotic behavior and base case."
+      "summary": "Documents asymptotic behavior and base case only in comments, not as Lean axioms."
     },
     {
       "id": "ramsey",

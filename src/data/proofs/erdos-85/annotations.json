@@ -148,11 +148,10 @@
     },
     "type": "concept",
     "title": "Asymptotic Behavior",
-    "content": "**minDegreeForC4_asymptotic** states that f(n)/√n → 1 as n → ∞.\n\nThis means f(n) = (1 + o(1))√n: the threshold grows like the square root of the number of vertices.\n\n**Why an axiom?** This is a known result from extremal graph theory, but formalizing the proof requires substantial machinery.",
-    "mathContext": "Formally: `Tendsto (fun n => f(n)/√n) atTop (𝓝 1)` says the ratio converges to 1.",
+    "content": "A doc comment (not a Lean declaration) records that f(n)/√n → 1 as n → ∞.\n\nThis means f(n) = (1 + o(1))√n: the threshold grows like the square root of the number of vertices.\n\n**Why only a comment?** This is a known result from extremal graph theory, but formalizing the proof requires substantial machinery; there is no `minDegreeForC4_asymptotic` axiom or theorem in the Lean file.",
+    "mathContext": "Formally this would read: `Tendsto (fun n => f(n)/√n) atTop (𝓝 1)`, but no such statement is declared in Lean — the comment only describes the intended formalization.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
       "tendsto",
       "asymptotic",
       "square-root"
