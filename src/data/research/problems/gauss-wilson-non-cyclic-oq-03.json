@@ -1,8 +1,8 @@
 {
   "slug": "gauss-wilson-non-cyclic-oq-03",
   "title": "Exact count of square roots of unity in (ZMod n)× via CRT generalization",
-  "phase": "ACT",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -20,17 +20,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT (BLOCKED — Docker down)",
-    "since": "2026-06-12T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "S5b.3 (researcher-2, 2026-06-12, merged): ACT — closed the structural power-of-2 unit-side count for k ≥ 3 (count = 4), the last of the three per-prime-power even cases and the ε₂(n)=2 leg of the two-adic correction. New Section 9 with two theorems in proofs/Proofs/GaussWilsonNonCyclicOQ03.lean: two_pow_dvd_split (private ℕ helper) and card_filter_sq_eq_one_units_zmod_two_pow_ge_three (#{u : (ZMod 2^k)ˣ | u²=1} = 4 for k ≥ 3), proved via elementary divisibility rather than the PREP's orderOf_five route. With S5 (odd-prime power, count 2), S5b.1 (k=1, count 1) and S5b.2 (k=2, count 2), this closes ALL per-prime-power unit-side counts feeding S6 (CRT multiplicativity). File: 396 → 584 lines (+188, +2 theorems, +1 new Section 9). 0 axioms, 1 sorry (the main theorem card_sqrts_one_eq_numSqrtsOne, line 131). Source (584 lines, 11 col-0 theorems/lemmas, Sections 1–9) confirmed in sync with state.md via this session's AUDIT against origin/main.",
-    "blockers": [
-      "Docker daemon down on host (2026-06-13 verification blackout, `docker info` hangs/exit 124) → cannot run ./proofs/scripts/docker-build.sh to verify any new proof; direct `lake build` is forbidden (CLAUDE.md).",
-      "Both remaining steps are heavy build-dependent ACT: S6 (CRT multiplicativity, assembles S5+S5b.1+S5b.2+S5b.3 into a multiplicative formula over n.primeFactors) and S7 (induction assembly on n.primeFactors.card, closes the sole remaining sorry card_sqrts_one_eq_numSqrtsOne). Neither is verifiable without a build.",
-      "S6/S7 already have 4 accumulated PREP/audit sessions (2026-05-12 s06-prep-crt-multiplicativity, 2026-05-13 s06-s07-prep-mathlib-api-audit, 2026-05-13 s07-prep-main-theorem-induction, 2026-05-13 s07b-prep-bookkeeping-discharge) — the design is saturated; only the build-gated ACT remains, so further PREP would be churn.",
-      "No build-free win remains: per-prime-power counts all closed (S5/S5b.1/S5b.2/S5b.3), state.md ↔ source ↔ this JSON now in sync. Aristotle backend still 404s during the 2026-06-13 blackout."
-    ],
-    "nextAction": "S5b.3 ACT: substantive even-prime work — (ZMod 2^k)ˣ count for k ≥ 3 via the `orderOf_five` cardinality squeeze (~60-90 LOC). Complete design in S5b PREP #18648 §3.3; the proof adapts `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s established `orderOf_five` idiom. Then S6 ACT (CRT multiplicativity) combines S5 + S5b.1 + S5b.2 + S5b.3 into a multiplicative formula over n.primeFactors (design in S6 PREP #18423). Then S7 ACT (induction assembly) closes the main theorem `card_sqrts_one_eq_numSqrtsOne` (design in S7 PREP #18465).",
+    "phase": "COMPLETE",
+    "since": "2026-07-24T00:00:00.000Z",
+    "iteration": 9,
+    "focus": "S6+S7 (researcher-2, 2026-07-24): ACT — PROBLEM COMPLETED. Closed the file's sole remaining sorry: card_sqrts_one_eq_numSqrtsOne is fully proved (#{x ∈ ZMod n : x² = 1} = 2^(ω_odd(n) + ε₂(n)) for every n ≥ 1). S6 (Section 10): CRT multiplicativity card_filter_sq_eq_one_units_mul_coprime via the Nat.totient_mul rewrite chain (ZMod.chineseRemainder lifted by Units.mapEquiv, then MulEquiv.prodUnits) plus generic MulEquiv-transport and product-2-torsion-split helpers. S7 (Sections 11–12): omegaOdd/epsTwo additivity across coprime products, closed-form prime-power evaluations, and the final induction via Nat.recOnPosPrimePosCoprime. File: proofs/Proofs/GaussWilsonNonCyclicOQ03.lean 584 → 854 lines (+13 theorems). Docker build exit 0 (2973 jobs). 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "None — completed. Possible future OQ nodes: structural form Nat.card {u : (ZMod n)ˣ // u^2 = 1} = numSqrtsOne n, or the real-Dirichlet-character-count corollary.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 6,
@@ -38,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S4 closes the generic order-of half: every cyclic group of even order has exactly 2 square roots of 1, dispatched by totient lookup. S5 will plug in the ZMod-side cyclicity + even-order witnesses to get the prime-power specialisation; S6 will multiplicatively assemble via CRT; S7 will close the remaining sorry by induction on n.primeFactors.card.",
+    "progressSummary": "COMPLETE: the exact-count formula #{x ∈ ZMod n : x² = 1} = 2^(ω_odd(n) + ε₂(n)) is fully machine-checked (0 sorries, 0 axioms). S3 ring↔unit bridge; S4 generic cyclic-even count = 2; S5 odd-prime-power count = 2; S5b.1/2/3 power-of-2 counts 1/2/4; S6 CRT multiplicativity; S7 induction assembly via Nat.recOnPosPrimePosCoprime.",
     "builtItems": [
       "research/problems/gauss-wilson-non-cyclic-oq-03/problem.md (new, ~280 lines): full problem statement, two formal-statement variants (counted-form on the ring and structural-form on the unit group), Mathlib infrastructure map, theoretical path through CRT + prime-power cyclicity + (ZMod 2^k)ˣ structure, decomposition into S2–S5 sessions.",
       "research/problems/gauss-wilson-non-cyclic-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/GaussWilsonNonCyclicOQ03.lean with 1 sorry placeholder.",

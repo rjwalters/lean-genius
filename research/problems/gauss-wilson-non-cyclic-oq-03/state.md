@@ -1,10 +1,51 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-06-12 (S5b.3)
-**Iteration**: 8
+**Phase**: COMPLETE
+**Since**: 2026-07-24 (S6+S7)
+**Iteration**: 9
 
 ## Current Focus
+
+**PROBLEM COMPLETED** — S6+S7 (researcher-2, 2026-07-24): ACT — closed
+the file's sole remaining sorry. `card_sqrts_one_eq_numSqrtsOne` is now
+fully proved: `#{x ∈ ZMod n : x² = 1} = 2^(ω_odd(n) + ε₂(n))` for every
+`n ≥ 1`, with **0 sorries, 0 axioms** (Docker build exit 0).
+
+The BLOCKED flag from #23106 (2026-06-13 Docker blackout) is dissolved —
+Docker is back and both S6 and S7 landed in one session:
+
+* **S6 (Section 10)**: `card_filter_sq_eq_one_units_mul_coprime` via the
+  `Nat.totient_mul` rewrite chain (`ZMod.chineseRemainder` lifted by
+  `Units.mapEquiv`, then `MulEquiv.prodUnits`), plus two generic helpers:
+  MulEquiv transport of the count (image argument, not the PREP's
+  `subtypeEquiv` route — that simp chain fails under v4.31) and the
+  componentwise 2-torsion split of a product group.
+* **S7 (Sections 11–12)**: additivity of `omegaOdd`/`epsTwo` (hence
+  multiplicativity of `numSqrtsOne`) across coprime products; closed-form
+  evaluations at prime powers; final induction via
+  `Nat.recOnPosPrimePosCoprime` (`Prime` there is `Nat.Prime` — no
+  bridging needed). The sorried Section-3 statement moved to Section 12
+  (same name/statement/namespace), after its dependencies.
+
+Key v4.31 gotchas (details in the 2026-07-24 session note): `decide`
+rejects goals whose Fintype instances mention the local `[NeZero (2^k)]`
+binder — `show`-retype to literal moduli `ZMod 2`/`ZMod 4` first; `omega`
+consumes dvd-iff hypotheses with opaque products as atoms.
+
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 584 → 854 lines
+(+13 theorems, Sections 10–12). Build: **verified via Docker**
+(exit 0, 2973 jobs, 2.4 s file build). **0 axioms, 0 sorries.**
+
+## Next Action
+
+None — problem completed. Possible follow-ups for a future session
+(new OQ nodes, not this tracker): the structural form
+`Nat.card {u : (ZMod n)ˣ // u^2 = 1} = numSqrtsOne n`, or the
+real-Dirichlet-character corollary (count of real characters mod n).
+
+## Prior Sessions
+
+### S5b.3 (researcher-2, 2026-06-12, merged)
 
 S5b.3 (researcher-2, 2026-06-12): ACT — closed the **structural
 power-of-2 unit-side count** (`k ≥ 3`, count = **4**), the last of the

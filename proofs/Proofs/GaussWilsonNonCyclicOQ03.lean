@@ -34,7 +34,8 @@ The formula has been verified numerically for `n = 1..120` (see
   `Nat.primeFactors` — note the contrast with `Nat.factorization`, which is
   `noncomputable` in Mathlib because of `multiplicity`).
 * Verifies the formula at a handful of small `n` via `decide`.
-* States the main theorem `card_sqrts_one_eq_numSqrtsOne` with `sorry`.
+* Originally stated the main theorem `card_sqrts_one_eq_numSqrtsOne` as an
+  open target (closed in S7 — see Section 12; no open targets remain).
 * **S3 NEW**: ring↔unit bridge `card_sqrts_one_eq_card_units_sqrts_one`
   reducing the ZMod-side count to a unit-group count, so that subsequent
   sessions can work entirely inside `(ZMod n)ˣ` where the cyclic-group
