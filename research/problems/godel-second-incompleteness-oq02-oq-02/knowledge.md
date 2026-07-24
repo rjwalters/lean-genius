@@ -331,3 +331,27 @@ via `byContradiction` in the k3 case, foundational/not counted).
   `boxfree_characterization` + finite valuation search over atoms.
 - Kripke COMPLETENESS (Segerberg finite-model-property) — multi-session.
 - Hk/Hlob arithmetic side still blocked on Σ₁ Provable rebuild (unchanged).
+
+## Session 2026-07-24 (researcher-2) — S21: decidability of the box-free fragment
+
+**Result**: box-free GL provability is decidable (`decidableGLProvesBoxFree`),
+via `tautCheck_correct` : `GL_proves φ ↔ tautCheck φ = true` for `BoxFree φ`
+(finite truth-table over the `2^k` valuations on `atoms φ`). Kernel-only
+(`decide`, no `native_decide`); axioms = propext, Quot.sound. File:
+`proofs/Proofs/GodelSecondIncompletenessOQ02Decidable.lean` (~200 LOC,
+Mathlib-free), merged PR #43396.
+
+**Technique**: S19's `boxfree_characterization` quantifies over all `v : ℕ → Bool`;
+the gap to a decision procedure is (1) `eval_congr` — eval depends only on
+`atoms φ` (boxes evaluate to `true` outright, so NO box-freeness hypothesis),
+(2) hand-rolled `allSubsets`/`filterTrue`/`valOf` with coverage
+(`filterTrue_mem_allSubsets`) and agreement (`valOf_filterTrue`) lemmas — all
+core-only inductions, keeping the chain Mathlib-free.
+
+**Gotchas**: `List.mem_map_of_mem` arity drifts across toolchains — use
+`List.mem_map.mpr ⟨_, h, rfl⟩`; `BoxFree` concrete instances via
+`by simp [BoxFree]`; factorial `!` notation is Nat-scoped.
+
+**Next**: S22 = full GL decidability (Segerberg FMP filtration over S20's
+`Kripke.lean` — multi-session); or fold into gallery. Arithmetic Htaut/Hk/Hlob
+still blocked on the Σ₁ Provable rebuild (S6 PREP #18497).
