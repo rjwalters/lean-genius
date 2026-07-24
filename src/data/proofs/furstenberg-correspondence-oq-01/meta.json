@@ -46,7 +46,7 @@
       "Set indicator encoding A ⊆ ℕ as points in Cantor space",
       "k-fold return property: dynamical intersections ↔ arithmetic progressions",
       "Orbit-density connection: orbit hits count set membership",
-      "Gap analysis: what Mathlib needs for complete correspondence (weak-* compactness)"
+      "Full assembly (Part XV, S15): moving-base-point clopen invariance upgraded via the measurable-cylinders π-system to a bona fide MeasurePreserving shift, packaged with the density and return-property bounds into exists_invariant_measure_correspondence — the theorem FurstenbergCorrespondence.lean now cites directly in place of the former furstenberg_correspondence axiom"
     ],
     "prerequisites": [
       "Measure theory basics",
@@ -54,14 +54,14 @@
       "Ergodic theory concepts"
     ],
     "mathlib_version": "4.31.0",
-    "lineCount": 945,
+    "lineCount": 1203,
     "relatedProblems": [
       {
         "id": "furstenberg-correspondence",
-        "relationship": "Builds infrastructure toward eliminating axiom 1 (Furstenberg correspondence) from the parent proof"
+        "relationship": "Supplies exists_invariant_measure_correspondence, which FurstenbergCorrespondence.lean now cites to prove furstenberg_correspondence as a theorem rather than an axiom; the parent's one remaining axiom (multiple_recurrence_ge3, k>=3 multiple recurrence) is unrelated to this construction"
       }
     ],
-    "theoremCount": 32,
+    "theoremCount": 37,
     "definitionCount": 9
   },
   "crossReferences": [
@@ -89,7 +89,7 @@
   "overview": {
     "historicalContext": "Hillel Furstenberg's 1977 paper 'Ergodic behavior of diagonal measures and a theorem of Szemerédi on arithmetic progressions' (*Journal d'Analyse Mathématique*) revolutionized combinatorial number theory by introducing ergodic-theoretic methods. Szemerédi had proved his theorem (every set of positive upper density contains arbitrarily long arithmetic progressions) combinatorially in 1975 — a notoriously complex proof. Furstenberg gave a completely different proof using his *correspondence principle*: a set $A \\subseteq \\mathbb{N}$ with $\\bar{d}(A) > 0$ corresponds to a measurable set in a measure-preserving dynamical system with positive measure.\n\nThe construction is elegant: take the Cantor space $\\{0,1\\}^{\\mathbb{N}}$ with the product topology, define the shift map $T(\\omega)_n = \\omega_{n+1}$, and construct a shift-invariant probability measure $\\mu$ so that $\\mu(\\{\\omega : \\omega_0 = 1\\}) = \\bar{d}(A)$. Furstenberg's multiple recurrence theorem then shows that $\\mu(B \\cap T^{-n}B \\cap \\cdots \\cap T^{-kn}B) > 0$ for some $n$, which translates back to arithmetic progressions in $A$.\n\nThis approach launched the field of 'ergodic Ramsey theory' and influenced subsequent breakthroughs: the Green-Tao theorem (primes contain arbitrarily long APs, 2008) builds on the Furstenberg machinery via the transference principle. The correspondence principle itself has been generalized by Bergelson, Host, Kra, and others to handle polynomial and higher-order patterns.",
     "problemStatement": "Can the Furstenberg correspondence construction be fully formalized using Mathlib's tools? This file answers: the shift dynamics, cylinder sets, and combinatorial-dynamical bridge are all provable from Mathlib. The remaining gap is weak-* compactness of probability measures.",
-    "text": "Builds the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle. All results proved except shift-invariance of the limit measure (1 sorry). Also has 1 local axiom: Prokhorov sequential compactness for probability measures on Cantor space.",
+    "text": "Builds the shift dynamical system on Cantor space needed for the Furstenberg correspondence principle and assembles it into the full construction. All results are proved (0 sorries, 0 axioms): shift-invariance of the weak-* limit measure (Part XII, S13), Prokhorov sequential compactness (Part IX, S14), and the moving-base-point / pi-system upgrade to a bona fide MeasurePreserving system plus the k-fold return property at the limit (Part XV, S15), packaged as exists_invariant_measure_correspondence.",
     "proofStrategy": "1. Define Cantor space Ω = ℕ → Bool with product topology\n2. Prove shift T(x)(n) = x(n+1) is continuous and measurable\n3. Prove cylinder sets are clopen and measurable\n4. Define set indicators and prove the fundamental connection: shift^n(1_A)(0) = true ↔ n ∈ A\n5. Prove the k-fold return property: dynamical intersections correspond to arithmetic progressions\n6. Prove Cantor space is compact (Tychonoff) and metrizable",
     "keyInsights": [
       "The shift on ℕ → Bool is continuous by continuous_pi and continuous_apply — Mathlib handles this",
@@ -229,19 +229,35 @@
       "id": "full-correspondence",
       "title": "Part XIV — The Full Furstenberg Correspondence (Assembly)",
       "startLine": 878,
-      "endLine": 945,
-      "summary": "Assembles the components into the correspondence system constructor and summarizes the net result: the parent furstenberg_correspondence axiom reduces to one Prokhorov axiom plus one limit-algebra sorry.",
-      "mathContext": "correspondenceSystem packages the shift, the invariant limit measure, and the density-positivity bridge. The combinatorial-dynamical core (Parts III–V, XIII) is fully proved; only standard-analysis weak-* compactness and one ENNReal limit step remain."
+      "endLine": 931,
+      "summary": "Documents the assembly plan for the correspondence system and the net result as of S14: the combinatorial-dynamical core (Parts III–V, XIII) is fully proved and the former Prokhorov axiom (Part IX) is proved from Mathlib, leaving only the assembly carried out in Part XV below.",
+      "mathContext": "correspondenceSystem packages the shift, the invariant limit measure, and the density-positivity bridge. As of this point the combinatorial-dynamical core and Prokhorov compactness are proved from Mathlib; assembling them into the final package is what Part XV completes."
+    },
+    {
+      "id": "full-shift-invariance",
+      "title": "Part XV — Full Shift-Invariance and the Invariant Limit Measure (S15)",
+      "startLine": 932,
+      "endLine": 1167,
+      "summary": "Upgrades the clopen-set invariance of Part XII to a bona fide MeasurePreserving shift by extending to moving base points and using the measurable-cylinders pi-system to cover the full product sigma-algebra, proves the k-fold return property survives at the limit, and assembles all of it into exists_invariant_measure_correspondence — the theorem FurstenbergCorrespondence.lean now cites in place of its former furstenberg_correspondence axiom.",
+      "mathContext": "Three upgrades complete the correspondence: (1) the telescoping T-invariance bounds of Part VIII-b are uniform in the base point, so clopen invariance transfers verbatim to the moving windows the Banach-density extraction requires; (2) Mathlib's measurableCylinders form a $\\pi$-system generating the product $\\sigma$-algebra, and every measurable cylinder over $\\mathbb{N}\\to\\text{Bool}$ is clopen, so `ext_of_generate_finite` upgrades clopen invariance to full `MeasurePreserving shift $\\mu$ $\\mu$`; (3) a positive limit measure on a clopen k-fold return set forces positive Cesàro measure along a subsequence (Portmanteau), which Part XIII already converts into a k-term arithmetic progression in $A$."
+    },
+    {
+      "id": "progress-summary",
+      "title": "Progress Summary and Net Result (Session 4 / S15)",
+      "startLine": 1168,
+      "endLine": 1203,
+      "summary": "Session-by-session status table for every proved component and the closing statement: the file is fully machine-checked (0 sorries, 0 axioms), reducing the parent's furstenberg_correspondence to a proved theorem built on Mathlib's Prokhorov development.",
+      "mathContext": "The table tracks each result from Session 1 (shift, cylinders, return property) through S13 (limit_invariant_on_cylinder), S14 (Prokhorov), and S15 (full MeasurePreserving + final assembly), documenting that no step in the construction remains a local axiom or sorry."
     }
   ],
   "conclusion": {
-    "summary": "The shift dynamical system on Cantor space is formalized with 1 sorry (T-invariance of limit measure on clopen sets) and 1 local axiom (Prokhorov sequential compactness for probability measures), providing the infrastructure needed for the Furstenberg correspondence.",
-    "implications": "The remaining gap for the full correspondence is the construction of a T-invariant limit measure via weak-* compactness, connecting combinatorial density results to ergodic theory.",
+    "summary": "The shift dynamical system on Cantor space is fully formalized (0 sorries, 0 axioms): shift-invariance of the weak-* limit measure, Prokhorov sequential compactness, and the moving-base-point/pi-system upgrade to a full MeasurePreserving system are all proved and assembled into exists_invariant_measure_correspondence, the theorem the parent file now cites directly.",
+    "implications": "FurstenbergCorrespondence.lean's furstenberg_correspondence is now a proved theorem rather than an axiom, resting on Mathlib's Prokhorov development and standard measure-theoretic limit arguments rather than an unproved local assumption. The parent's only remaining gap is multiple_recurrence_ge3 (multiple recurrence for k>=3), which is unrelated to the correspondence construction built here.",
     "openQuestions": [
-      "Can weak-* sequential compactness for probability measures on compact metrizable spaces be formalized in Mathlib?",
-      "Can the T-invariance of Cesàro limit measures be proved directly using Mathlib's measure theory?",
-      "Can the single remaining T-invariance sorry (limit_invariant_on_cylinder) be discharged once the surrounding Mathlib measure-theory API drift is repaired, completing the construction modulo only the Prokhorov axiom?",
-      "Given the Prokhorov axiom, do the orbit-density formula and the return property proved here suffice to derive Roth's theorem (3-term APs) directly as the first nontrivial instance of the correspondence?"
+      "Can the k=2 special case handled elsewhere via Poincaré recurrence be replaced entirely by this general correspondence, simplifying the parent file?",
+      "Does the moving-base-point invariance argument (Part XV) generalize to the polynomial/higher-order correspondences of Bergelson-Host-Kra without new axioms?",
+      "Can multiple_recurrence_ge3 — the parent's one remaining axiom — be discharged using the measure-preserving system this file now constructs?",
+      "Do the orbit-density formula and the return property proved here suffice to derive Roth's theorem (3-term APs) directly as the first nontrivial instance of the correspondence, independent of the general k>=3 case?"
     ]
   },
   "leanFile": {
@@ -270,6 +286,12 @@
       "statement": "Orbit hits on B₀ count membership in A up to time N",
       "isAxiomatized": false,
       "significance": "Connects orbit dynamics to the density of A, key for Cesàro averaging"
+    },
+    {
+      "name": "exists_invariant_measure_correspondence",
+      "statement": "For any A ⊆ ℕ of upper Banach density ≥ δ > 0, there is a shift-invariant probability measure μ on {0,1}^ℕ with μ(B₀) ≥ δ such that positive μ-measure of any k-fold return set produces a k-term arithmetic progression in A",
+      "isAxiomatized": false,
+      "significance": "The full Furstenberg correspondence package on Cantor space; FurstenbergCorrespondence.lean now cites this theorem directly to prove furstenberg_correspondence, eliminating what was formerly a local axiom"
     }
   ],
   "references": [

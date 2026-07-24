@@ -383,9 +383,9 @@
     },
     "type": "concept",
     "title": "Assembling the Correspondence and Honest Status",
-    "content": "The final assembly plan: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved, and with `limit_invariant_on_cylinder` proved (2026-07-23) and the Prokhorov sequential-compactness statement proved from Mathlib's Prokhorov instances (S14, 2026-07-24), the file is now entirely axiom-free and sorry-free: 0 axioms, 0 sorries. What remains toward eliminating the parent's correspondence axiom is pure assembly — instantiating `Furstenberg.System` from the pieces this file provides.",
+    "content": "The assembly plan as of S14: build a `Furstenberg.System` on $(\\Omega, T, B_0)$ with $\\mu$ the weak-* limit of Cesàro measures, deriving T-invariance from the limit-invariance result and $\\mu(B_0)\\ge\\delta$ from density preservation. The combinatorial–dynamical bridge (orbit-density, telescoping invariance, return property) is fully proved, and with `limit_invariant_on_cylinder` proved (2026-07-23) and the Prokhorov sequential-compactness statement proved from Mathlib's Prokhorov instances (S14, 2026-07-24), the file is entirely axiom-free and sorry-free: 0 axioms, 0 sorries. Part XV below (S15) carries out this assembly plan in full, producing `exists_invariant_measure_correspondence`.",
     "significance": "supporting",
-    "relatedConcepts": "Target: a measure-preserving system $(\\Omega, \\mu, T)$ with $\\mu(B_0)\\ge\\overline d(A)$, recovering multiple recurrence ⟹ Szemerédi. Remaining dependencies: Prokhorov (axiom) + one T-invariance sorry.",
+    "relatedConcepts": "Target: a measure-preserving system $(\\Omega, \\mu, T)$ with $\\mu(B_0)\\ge\\overline d(A)$, recovering multiple recurrence ⟹ Szemerédi. Both remaining dependencies noted here (Prokhorov, T-invariance) are proved by this point; Part XV assembles them into the final package.",
     "mathContext": [
       "Furstenberg correspondence principle",
       "ergodic Szemerédi",
@@ -396,6 +396,32 @@
       "ergodic theory: Furstenberg correspondence",
       "Szemerédi’s theorem",
       "formal proof architecture"
+    ]
+  },
+  {
+    "id": "furst-oq01-full-invariance",
+    "proofId": "furstenberg-correspondence-oq-01",
+    "range": {
+      "startLine": 964,
+      "endLine": 1203
+    },
+    "type": "insight",
+    "title": "Part XV: Full MeasurePreserving and the Final Assembly (S15)",
+    "content": "Carries out the assembly plan of Part XIV with three upgrades. (1) `limit_invariant_on_clopen_moving` generalizes the fixed-base-point invariance of Part XII to moving base points `xs k`, since the telescoping bounds of Part VIII-b are uniform in the base point — required because the Banach-density extraction takes windows `[a_k, a_k+N_k)` with moving `a_k`. (2) `isClopen_of_mem_measurableCylinders` shows every Mathlib `measurableCylinder` over ℕ → Bool is clopen (preimage of a subset of a finite discrete space under a continuous restriction map); since `measurableCylinders` form a π-system generating the product σ-algebra, `ext_of_generate_finite` upgrades the clopen-set invariance of (1) to full `limit_measurePreserving : MeasurePreserving shift μ μ`. (3) `limit_positive_implies_ap` transports positive limit-measure on a k-fold clopen intersection to a Cesàro measure along the subsequence (Portmanteau), then to a k-term AP via Part XIII's `positive_measure_gives_ap`. `exists_invariant_measure_correspondence` assembles all three into the full package: a shift-invariant probability measure μ with μ(B₀) ≥ δ whose positive-measure k-fold return sets force k-term APs in A. The closing Progress Summary tracks every proved component across sessions 1-4/S15 and confirms the file is entirely axiom-free and sorry-free.",
+    "significance": "key",
+    "relatedConcepts": "This is the theorem `FurstenbergCorrespondence.lean` now imports and calls directly (`FurstenbergOQ01.exists_invariant_measure_correspondence`) to prove `furstenberg_correspondence` as a theorem, eliminating what was formerly a local axiom in that file. The parent's only remaining axiom, `multiple_recurrence_ge3`, is a separate k≥3 multiple-recurrence assumption not addressed here.",
+    "mathContext": [
+      "weak-* convergence and Portmanteau",
+      "π-systems and generateFrom",
+      "measure-preserving transformations",
+      "Furstenberg correspondence principle",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "Part XII: limit_invariant_on_cylinder",
+      "Part XIII: positive_measure_gives_ap",
+      "MeasureTheory.measurableCylinders",
+      "ext_of_generate_finite"
     ]
   }
 ]
