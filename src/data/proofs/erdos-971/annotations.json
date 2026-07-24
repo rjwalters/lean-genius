@@ -84,7 +84,7 @@
     },
     "type": "concept",
     "title": "Partial Result: Infinitely Many d",
-    "content": "**Erdős's first partial result** from 1949 establishes that the phenomenon in the main question DOES occur for infinitely many moduli d, even though we don't know if it occurs for ALL large d.\n\nThis is stated as an axiom because the proof uses Brun's sieve methods, which are not yet formalized in Mathlib. The key difference from the main question is `{...}.Infinite` instead of `∀ᶠ d in atTop`.\n\n**Why this matters**: Proving something for infinitely many values is often much easier than proving it for all sufficiently large values. This partial result shows the phenomenon is not impossible—it definitely happens—but leaves open whether it happens universally.",
+    "content": "**Erdős's first partial result** from 1949 establishes that the phenomenon in the main question DOES occur for infinitely many moduli d, even though we don't know if it occurs for ALL large d.\n\nThis result is **not formalized** in this file — it appears only as a prose comment, since the proof uses Brun's sieve methods, which are not yet formalized in Mathlib. No axiom, definition, or theorem in the Lean source states it.\n\n**Why this matters**: Proving something for infinitely many values is often much easier than proving it for all sufficiently large values. This partial result shows the phenomenon is not impossible—it definitely happens—but leaves open whether it happens universally.",
     "mathContext": "Brun's sieve is a combinatorial technique for counting primes satisfying multiple conditions. Erdős applied it to carefully constructed sequences of moduli with special multiplicative structure.",
     "significance": "key",
     "relatedConcepts": [
