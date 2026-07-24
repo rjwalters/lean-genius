@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: the probabilistic reading of Chebyshev's inequality",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Imports the parent module and states the plan in the module docstring: recast the parent's deterministic inequality (∫f)(∫g) ≤ (b−a)∫fg as Cov(f(X),g(X)) ≥ 0 for X uniform on [a,b] and f, g monotone, then connect it to the Harris–FKG correlation inequality — on the totally ordered chain [a,b] the FKG log-supermodularity hypothesis is automatic, so FKG collapses to exactly this covariance statement.",
+      "mathContext": "$\\mathrm{Cov}(f(X),g(X)) = E[fg]-E[f]E[g] \\ge 0$ for monotone $f,g$; the chain case of Harris–FKG."
+    },
+    {
       "id": "definitions",
       "title": "Uniform-law expectation and covariance",
       "startLine": 67,
