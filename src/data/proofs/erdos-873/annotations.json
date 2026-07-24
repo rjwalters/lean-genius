@@ -147,11 +147,11 @@
     },
     "type": "concept",
     "title": "Erdős-Szemerédi Upper Bound",
-    "content": "**Known result**: For k = 3 and any sequence A, we have F(A,X,3) ≪ X^(1/3) log X.\n\nThis shows the exponent 1/3 is achievable for 3-term windows. Stated as an axiom since the proof requires deep number-theoretic analysis.",
+    "content": "**Known result**: For k = 3 and any sequence A, we have F(A,X,3) ≪ X^(1/3) log X.\n\nThis shows the exponent 1/3 is achievable for 3-term windows. This file documents it only as source commentary (no Lean declaration here); the companion file `Erdos873ProblemProvable.lean` states it as a `sorry`-terminated theorem, not an axiom.",
     "mathContext": "The X^(1/3) factor comes from counting solutions to a*b*c being 'smooth' (having small prime factors). The log X factor accounts for multiplicity.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
+      "sorry",
       "upper-bound",
       "k-equals-3"
     ],
@@ -174,7 +174,7 @@
     "mathContext": "The construction of extremal sequences uses number-theoretic techniques to maximize the count of small-LCM triples.",
     "significance": "supporting",
     "relatedConcepts": [
-      "axiom",
+      "sorry",
       "lower-bound",
       "tightness"
     ],
