@@ -92,8 +92,16 @@
       "id": "row-sum",
       "title": "The Row-Sum Identity Σ c(n,k) = n!",
       "startLine": 49,
+      "endLine": 56,
+      "summary": "stirlingFirst_row_sum: Σ_{k∈range(n+1)} c(n, k) = n!, by induction on n. Statement and base case (n = 0, closed by simp); the inductive step is the content of the next section.",
+      "mathContext": "$\\sum_{k=0}^{n} c(n, k) = n!$: summing the number of $n$-permutations with exactly $k$ cycles over all $k$ recovers the total $n!$."
+    },
+    {
+      "id": "row-sum-inductive-step",
+      "title": "The Inductive Step: Peel, Re-index, Collapse",
+      "startLine": 57,
       "endLine": 79,
-      "summary": "stirlingFirst_row_sum: Σ_{k∈range(n+1)} c(n, k) = n!, by induction on n. The (n+1)-st row is split by sum_range_succ' (k=0 term c(n+1,0)=0) and each c(n+1,i+1) expanded by the recurrence, giving n·(Σ_i c(n,i+1)) + (Σ_i c(n,i)). The second sum is the IH; the first is handled by the re-index identity hsplit plus mul_stirlingFirst_zero, yielding n·n!. Then (n+1)·n! = (n+1)! by ring and Nat.factorial_succ.",
+      "summary": "The succ case of stirlingFirst_row_sum. The (n+1)-st row is split by sum_range_succ' (k=0 term c(n+1,0)=0) and each c(n+1,i+1) expanded by the recurrence, giving n·(Σ_i c(n,i+1)) + (Σ_i c(n,i)). The second sum is the IH; the first is handled by the re-index identity hsplit plus mul_stirlingFirst_zero, yielding n·n!. Then (n+1)·n! = (n+1)! by ring and Nat.factorial_succ.",
       "mathContext": "The recurrence collapse: $\\sum_k c(n{+}1, k) = n\\left(\\sum_k c(n,k)\\right) + \\sum_k c(n,k) = (n+1)\\, n! = (n+1)!$, once the shifted sum is reconciled with the full $n$-th row via the vanishing $k=0$ term."
     },
     {
