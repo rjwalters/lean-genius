@@ -149,11 +149,19 @@
       "mathContext": "$C(m+n,r) = \\sum_{k=0}^{r} C(m,k)\\,C(n,r-k)$"
     },
     {
-      "id": "corollaries",
-      "title": "Diagonal corollaries (not in Mathlib)",
+      "id": "symmetric-product",
+      "title": "Symmetric product form (not in Mathlib)",
       "startLine": 62,
+      "endLine": 78,
+      "summary": "sum_choose_mul_choose proves ∑_{k=0}^{n} C(m,k)C(n,k) = C(m+n,n) by specializing vandermonde_range to r=n and flipping the second factor with Nat.choose_symm on the range k≤n; sum_choose_mul_choose' records the same identity with the split written as C(m+n,m) via Nat.choose_symm_add.",
+      "mathContext": "$\\sum_{k=0}^{n} \\binom{m}{k}\\binom{n}{k} = \\binom{m+n}{n} = \\binom{m+n}{m}$"
+    },
+    {
+      "id": "sum-of-squares",
+      "title": "Sum-of-squares corollaries (not in Mathlib)",
+      "startLine": 80,
       "endLine": 93,
-      "summary": "sum_choose_mul_choose proves ∑_{k=0}^{n} C(m,k)C(n,k) = C(m+n,n) by flipping the second factor with Nat.choose_symm; sum_choose_mul_choose' changes the split; sum_sq_choose gives ∑ C(n,k)² = C(2n,n); sum_sq_choose_centralBinom phrases it via Nat.centralBinom.",
+      "summary": "sum_sq_choose specializes the symmetric product form to m=n, rewriting 2n=n+n and collapsing C(n,k)·C(n,k) to C(n,k)² to get ∑ C(n,k)² = C(2n,n); sum_sq_choose_centralBinom restates the right side through Nat.centralBinom, closed by rfl since centralBinom n is defeq to (2n).choose n.",
       "mathContext": "$\\sum_{k=0}^{n} \\binom{n}{k}^2 = \\binom{2n}{n} = \\mathrm{centralBinom}\\,n$"
     },
     {
