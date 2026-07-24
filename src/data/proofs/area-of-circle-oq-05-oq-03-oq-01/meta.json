@@ -48,7 +48,8 @@
       "Abstracting the completing-the-square shift c (subject only to 2bc=−t) makes the exponential identity hold with no division at all, so it closes by linear_combination over i²=−1 — even though the eventual c=−tσ² and the eventual constant σ²t²/2 both involve division by σ². The division is confined to a separate, purely real bridge.",
       "Substituting b=1/(2σ²) turns the contour constant (π/b)^{1/2} into √(2πσ²)=σ√(2π) and the pull-out constant bc² into σ²t²/2 — exactly the width-σ dilation law.",
       "The transform e^{-σ²t²/2} is itself a Gaussian, of width 1/σ: e^{-σ²t²/2} = e^{-t²/(2(1/σ)²)}. So the Fourier transform conjugates dilation-by-σ into dilation-by-(1/σ); width is inverted.",
-      "Reading the input width σ against the output width 1/σ gives σ·(1/σ)=1: the product of spatial and frequency scales is constant, the elementary Gaussian form of the uncertainty principle. The parent's σ=1 self-dual identity is precisely the fixed point of this duality."
+      "Reading the input width σ against the output width 1/σ gives σ·(1/σ)=1: the product of spatial and frequency scales is constant, the elementary Gaussian form of the uncertainty principle. The parent's σ=1 self-dual identity is precisely the fixed point of this duality.",
+      "The completing-the-square shift x ↦ x+ci moves the contour of the oscillatory integral ∫e^{itx−bx²}dx to Im(x)=c=−t/(2b), exactly the point where the exponent's phase is stationary. This is the elementary Gaussian instance of the general steepest-descent (stationary-phase) method for oscillatory integrals; Mathlib's integral_cexp_neg_mul_sq_add_real_mul_I packages the contour-shift justification (holomorphy plus decay at infinity) that legitimizes it"
     ],
     "prerequisites": [
       "area-of-circle-oq-05-oq-03 — the σ=1 (self-dual) Gaussian Fourier identity",
