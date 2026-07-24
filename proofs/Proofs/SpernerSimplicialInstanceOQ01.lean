@@ -290,6 +290,62 @@ theorem vertex_injective_triVtx (m : ℕ) :
     fin_cases k <;> fin_cases k' <;>
       simp [triVtx, Prod.mk.injEq, Fin.mk.injEq] at hpair <;> rfl
 
+/-- Pseudomanifold adjacency for the standard subdivision of Δ² at
+resolution `m` (S5 ACT): `triAdj m c k` is the neighbour across the edge
+of cell `c` opposite local vertex `k`, or `none` on the boundary.
+
+Case table (edges named by their two lattice-point endpoints):
+
+* `up i j` opposite `0` — hypotenuse `{(i+1,j), (i,j+1)}` on the line
+  `x + y = i + j + 1`: interior iff `i + j + 1 < m`, shared with
+  `down i j` opposite `2`; on the diagonal boundary when `i + j + 1 = m`.
+* `up i j` opposite `1` — vertical edge `{(i,j), (i,j+1)}` on `x = i`:
+  interior iff `0 < i`, shared with `down (i-1) j` opposite `1`; on the
+  left boundary when `i = 0`.
+* `up i j` opposite `2` — horizontal edge `{(i,j), (i+1,j)}` on `y = j`:
+  interior iff `0 < j`, shared with `down i (j-1)` opposite `0`; on the
+  bottom boundary when `j = 0`.
+* `down i j` edges are all interior: opposite `0` is the top edge
+  `{(i,j+1), (i+1,j+1)}` shared with `up i (j+1)` opposite `2`;
+  opposite `1` is the right edge `{(i+1,j), (i+1,j+1)}` shared with
+  `up (i+1) j` opposite `1`; opposite `2` is the hypotenuse
+  `{(i+1,j), (i,j+1)}` shared with `up i j` opposite `0`.
+
+Successor patterns (`up (i+1) j` rather than `i - 1` subtraction) keep
+the arithmetic subtraction-free, so the S6 `adj_symm` round-trips reduce
+by `rfl`-shaped computation. Generalises the `m = 2` table `tadj` above
+(`c0 0 ↔ c3 2`, `c1 1 ↔ c3 1`, `c2 2 ↔ c3 0`). -/
+def triAdj (m : ℕ) : TriCell m → Fin 3 → Option (TriCell m × Fin 3)
+  | TriCell.up i j _, ⟨0, _⟩ =>
+      if h' : i + j + 1 < m then some (TriCell.down i j h', 2) else none
+  | TriCell.up 0 _ _, ⟨1, _⟩ => none
+  | TriCell.up (i + 1) j h, ⟨1, _⟩ =>
+      some (TriCell.down i j (by omega), 1)
+  | TriCell.up _ 0 _, ⟨_ + 2, _⟩ => none
+  | TriCell.up i (j + 1) h, ⟨_ + 2, _⟩ =>
+      some (TriCell.down i j (by omega), 0)
+  | TriCell.down i j h, ⟨0, _⟩ =>
+      some (TriCell.up i (j + 1) (by omega), 2)
+  | TriCell.down i j h, ⟨1, _⟩ =>
+      some (TriCell.up (i + 1) j (by omega), 1)
+  | TriCell.down i j h, ⟨_ + 2, _⟩ =>
+      some (TriCell.up i j (by omega), 0)
+
+/-- Adjacent cells are distinct (the `adj_ne` obligation of the eventual
+`Triangulation (LatticePoint m) 2` instance): every `some` entry of the
+`triAdj` case table pairs an `up`-cell with a `down`-cell, so a cell is
+never its own neighbour. -/
+theorem triAdj_ne (m : ℕ) :
+    ∀ s k s' k', triAdj m s k = some (s', k') → s ≠ s' := by
+  intro s k s' k' hadj
+  rintro rfl
+  rcases s with ⟨i, j, h⟩ | ⟨i, j, h⟩
+  · fin_cases k
+    · by_cases hc : i + j + 1 < m <;> simp [triAdj, hc] at hadj
+    · rcases i with _ | i <;> simp [triAdj] at hadj
+    · rcases j with _ | j <;> simp [triAdj] at hadj
+  · fin_cases k <;> simp [triAdj] at hadj
+
 end Triangle
 
 end Triangulation
