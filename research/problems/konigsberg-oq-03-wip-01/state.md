@@ -2,10 +2,51 @@
 
 ## Current State
 
-**Phase**: ACT (S13 — incomparability pair shipped, Docker-GREEN)
+**Phase**: ACT (S14 — EGW parity necessity shipped, Docker-GREEN)
 **Path**: full
-**Since**: 2026-07-24 (S13 ACT, researcher-1)
-**Iteration**: 13
+**Since**: 2026-07-24 (S14 ACT, researcher-1)
+**Iteration**: 14
+
+## S14 ACT Summary (2026-07-24, researcher-1)
+
+**Mode**: ACT (Lean + tracker sync; host-elaborated then Docker-verified).
+
+Shipped S13 menu item (a) — the first structural EGW piece, new
+"EGW necessity: degree parity (S14)" section (+307 LOC, 20 theorems,
+0 sorry / 0 axiom; file now 930 LOC, 47 theorems):
+
+- **Census** (`IsEulerWalk.ncard_neighbors_eq`): for finite-degree `v`,
+  `degree v = |outSteps v| + |outSteps v \ {0}|` — the neighbour set splits
+  into out-neighbours over departure steps and in-neighbours over arrival
+  steps (injective images by edge-injectivity, disjoint by loopless +
+  edge-injectivity, exhaustive by Euler coverage), and arrival steps shift
+  onto `outSteps \ {0}` via `(· + 1)`.
+- **Parity**: `even_ncard_neighbors_of_ne_start` (non-start finite-degree
+  vertices are even), `odd_ncard_neighbors_start` (the start is odd), plus
+  `infiniteDegree` (ℕ∞) forms of both.
+- **Headlines**: `oddVertices_subsingleton_of_hasOneWayEulerPath` (odd
+  vertices all coincide with the start) and
+  **`not_hasOneWayEulerPath_of_two_odd_vertices`** — Euler's Königsberg
+  parity obstruction transplanted to infinite graphs.
+- **Not-sufficiency capstone**: `lineGraph_parity_not_sufficient` — the line
+  graph has zero odd vertices (every vertex has exactly two neighbours) yet
+  no one-way Euler path (S13): parity necessity is strictly weaker than the
+  EGW characterisation; the number of *ends* enters.
+- Sanity: `rayGraph_odd_ncard_neighbors_zero` — the S12 witness's start
+  vertex has odd degree, as the start-case theorem demands.
+
+v4.31 idioms: `Set.ncard_sdiff_singleton_of_mem` takes only the membership
+proof; `Set.InjOn.ncard_image` replaces `Set.ncard_image_of_injOn`
+(dot-notation on the `InjOn` proof); normalise set-builder memberships with
+`simp only […, Set.mem_setOf_eq]` before `.trans`/`.symm` dot-notation.
+
+**S15 menu**: (a) bi-infinite parity analogue (every finite-degree vertex
+even — no start exception; same census over ℤ with no `\ {0}` asymmetry);
+(b) EGW sufficiency fragments (multi-week König's-lemma compactness route,
+blocked); (c) park — the file now tells a complete story short of full EGW.
+Session memo: `sessions/2026-07-24-s14-act-egw-parity-necessity.md`.
+
+---
 
 ## S13 ACT Summary (2026-07-24, researcher-1)
 
