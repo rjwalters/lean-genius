@@ -21,7 +21,7 @@
     "iteration": 31,
     "focus": "S30b STATE-SYNC (this PR, researcher-12, 2026-05-14): Docker-baseline of SpernerFreudenthalSimplex.lean on origin/main reveals 100+ errors (capped at 100 by maxErrors; 103 raw records; 56 distinct error lines spanning 73→1093). Parent file silently broken since ~2026-05-08; 20 merged + 3 open (build pending) PRs have accumulated on top of an unbuildable parent. STOP further PREP-on-PREP; ship error inventory for mechanic-agent consumption. No Lean ACT this session. Build log: .loom/logs/researcher-12-sperner-freud-baseline.log. Error inventory in sessions/2026-05-14-s30b-state-sync-...md (top 7 error classes by Mathlib v4.26.0 cause class).",
     "blockers": [],
-    "nextAction": "Mechanic-agent claim: parent-file repair of SpernerFreudenthalSimplex.lean per the S30b STATE-SYNC error inventory. Top 7 error classes: (1) Finset.sum_eq_zero linarith-fact-filter narrowing (line 73), (2) anonymous-lambda binder-type inference (line 77), (3) Finset.min'_mem placeholder-synthesis cascade (line 118 ×12), (4) Type mismatch (line 135), (5) rw-pattern-not-found ×3 (lines 171, 232, 234), (6) omega usable-constraints narrowing ×6 (lines 226, 227, 308, 310, 1068, 1085), (7) cases-motive cascade (line 348 ×6). Start at line 73; raise maxErrors ceiling temporarily; budget 2-3 Docker iterations. STOP further research PREPs on this slug until parent builds clean. 3 open (build pending) PRs (#17571, #17621, #17984) need rebase/repair post-mechanic.",
+    "nextAction": "n>=3 Freudenthal generalization in SpernerFreudenthalSimplex.lean; the stale S30b mechanic-repair nextAction is obsolete (parent builds GREEN since v4.31 migration, confirmed S33/S34).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -55,7 +55,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S33 COMPLETED-MILESTONE (2026-07-24, researcher-1): sperner_panchromatic_two FULLY PROVED — sorry 1 -> 0 in SpernerFreudenthalSimplex.lean (docker-build GREEN, 8578 jobs). The v4.31 migration (epic #37508) had already repaired the parent (the S30b/S31 STOP-blocker was stale). New N2LastFaceAssembly section discharges the _hLastFace slot of Triangulation.boundary_doors_odd via Finset.card_bij between face-2 boundary doors and gDiag color changes (face2_path_odd_gDiag supplies oddness); Triangulation.sperner + spernerColor_le witness extraction close the theorem. Main file SpernerNDimMathlibOQ02.lean still carries the 1 general-n axiom sperner_panchromatic; next value is an axiom-free n=2 Brouwer corollary or the n>=3 Freudenthal generalization.",
+    "progressSummary": "S34 (2026-07-24, researcher-3): AXIOM-FREE LOW-DIM BROUWER — brouwer_fixed_point_simplex_zero/_one/_two added to SpernerNDimMathlibOQ02.lean (imports SpernerFreudenthalSimplex), deriving Brouwer for Δ⁰/Δ¹/Δ² from the fully proved sperner_panchromatic_zero/_one/_two instead of the general-n axiom. The sperner_panchromatic axiom now only gates n≥3. Remaining value: n≥3 Freudenthal generalization (base + permutation cells), then full axiom elimination.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -111,7 +111,8 @@
       "satDiagBases_endpoints_pair_face2_path_form in SpernerFreudenthalSimplex.lean",
       "N2DiagFaceCondition section (5 lemmas, 92 lines) in SpernerFreudenthalSimplex.lean: onFaceΔ2_diag, onFaceΔ2_strict_diag, cN2_total_diag_eq, cN2_diag_ne_two, cN2_total_diag_ne_two",
       "satDiag_self_drop_adj_none, satDiag_self_drop_endpoint_indices, satDiag_self_drop_isDoor_iff, lastFace_filter_extract, lastFace_card_eq, lastFace_odd in SpernerFreudenthalSimplex.lean N2LastFaceAssembly",
-      "sperner_panchromatic_two fully proved (end of SpernerFreudenthalSimplex.lean, section N2Panchromatic)"
+      "sperner_panchromatic_two fully proved (end of SpernerFreudenthalSimplex.lean, section N2Panchromatic)",
+      "S34: brouwer_fixed_point_simplex_zero/_one/_two + inSimplex_iff_freud in SpernerNDimMathlibOQ02.lean — axiom-free Brouwer for Δ⁰, Δ¹, Δ² (sperner_panchromatic axiom no longer needed for n≤2)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -154,16 +155,16 @@
       "S27-prep-diag-face (researcher-10, 2026-05-12, build pending): N2DiagFaceCondition section — 5 face-2/color lemmas at (k, N-k) diagonal vertices. Independent of in-flight S23 (PR #17571, CONFLICTING) and S25-prep (PR #17621, CONFLICTING).",
       "S33: the _hLastFace bijection maps a boundary-door pair (s,k) to the first coordinate of its DROPPED vertex — for saturating-diagonal t1 cells the dropped vertex IS the base b, so p ↦ (vertex p.1 p.2).1 lands on range N with gDiag b.1 ≠ gDiag (b.1+1) exactly at doors",
       "S33: Triangulation.vertex vs AbstractSimplicialData.vertexEnum are defeq but not syntactically equal — rw against a vertex-form goal fails; restate with show in vertexEnum form first",
-      "S33: SpernerFreudenthalSimplex had redundant nested namespace re-opens double-namespacing all late declarations; fixed to a single-level namespace running to EOF (all affected lemmas were private, SimplicialAdjFnHelper.* names unchanged)"
+      "S33: SpernerFreudenthalSimplex had redundant nested namespace re-opens double-namespacing all late declarations; fixed to a single-level namespace running to EOF (all affected lemmas were private, SimplicialAdjFnHelper.* names unchanged)",
+      "S34: The two InSimplex definitions (SpernerBrouwer in OQ02 vs SpernerFreudSimp in SpernerFreudenthalSimplex) are definitionally equal, so the proved sperner_panchromatic_zero/_one/_two plug directly into brouwer_from_panchromatic; only friction is the Nat-cast bound ((n:ℕ):ℝ)/N vs literal (0|1|2:ℝ)/N, closed by simpa"
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "Derive an axiom-free n=2 Brouwer fixed-point corollary in SpernerNDimMathlibOQ02.lean from sperner_panchromatic_two (replaces the axiom for the n=2 instance)",
       "Generalize the Type-1/Type-2 construction to n>=3 via Freudenthal triangulation (base + permutation cells; pseudomanifold proof scales linearly)",
-      "Optionally eliminate the general-n sperner_panchromatic axiom once the n>=3 triangulation lands"
+      "Eliminate the general-n sperner_panchromatic axiom once the n>=3 triangulation lands (n=0,1,2 already axiom-free via S34)"
     ]
   },
   "tags": [
