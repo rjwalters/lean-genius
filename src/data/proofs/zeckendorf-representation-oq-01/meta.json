@@ -65,7 +65,8 @@
       "**Greedy ⟹ non-consecutive**: subtracting the largest Fibonacci ≤ n at each step cannot leave a remainder ≥ the previous Fibonacci, which forces a gap of at least 2 between chosen indices. The validity predicate IsZeckendorfRep records exactly this gap-≥2 chain.",
       "**Uniqueness is a round trip**: the crux lemma zeckendorf_sum_fib says a valid representation is its own canonical form — applying the greedy algorithm to its sum returns it unchanged. Two valid representations with equal sums therefore share a canonical form and so coincide.",
       "**Existence + uniqueness = a bijection**: the two halves of Zeckendorf's theorem are precisely the statement that the representation map ℕ → {valid index lists} is bijective, packaged in Mathlib as the equivalence Nat.zeckendorfEquiv.",
-      "**0-axiom**: the development rests only on propext / Classical.choice / Quot.sound; the concrete 100 = 89 + 8 + 3 check uses kernel `decide`, not `native_decide`, so no Lean.ofReduceBool enters."
+      "**0-axiom**: the development rests only on propext / Classical.choice / Quot.sound; the concrete 100 = 89 + 8 + 3 check uses kernel `decide`, not `native_decide`, so no Lean.ofReduceBool enters.",
+      "**The gap condition is forced by the Fibonacci recurrence, not chosen for convenience**: fib(k+1) = fib(k) + fib(k-1) means any representation containing two consecutive indices k, k-1 can be rewritten by merging them into the single index k+1, producing a different, shorter representation of the same sum. Without the gap-≥2 restriction, representations would not be unique at all — the non-consecutive condition is exactly what is needed to kill this merge move, not an arbitrary normalization convention."
     ],
     "prerequisites": [
       "The Fibonacci sequence Nat.fib and basic identities",
