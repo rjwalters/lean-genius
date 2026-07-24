@@ -87,7 +87,8 @@
       "Abel summation is indifferent to the factor's values: it uses ONLY the uniform bound B on the factor's partial sums, so the entire alternating-series machinery generalises to an arbitrary Dirichlet weight with no extra work",
       "A window [N,M) costs a factor of 2 in the constant: the shifted prefix sum ∑_{i<k} b(N+i) is a difference of two B-bounded prefix sums, hence bounded by 2B rather than B",
       "The abstract bound CONTAINS the classical alternating estimate: setting b = (-1)^i with B = 1 reproduces the parent's range-form bound exactly",
-      "The quantitative gap with Mathlib: Mathlib's Dirichlet test proves only that the partial sums are Cauchy (qualitative convergence) and needs monotone coefficients; the explicit 2B·a_N truncation-error rate and the non-monotone total-variation estimate are new"
+      "The quantitative gap with Mathlib: Mathlib's Dirichlet test proves only that the partial sums are Cauchy (qualitative convergence) and needs monotone coefficients; the explicit 2B·a_N truncation-error rate and the non-monotone total-variation estimate are new",
+      "Monotonicity's job is to make the triangle inequality tight, not to enable the argument. The range and window bounds already hold for arbitrary a via the termwise triangle inequality |a(j+1) − a(j)| summed. Antitone a ≥ 0 gives each term a fixed sign (a(j) − a(j+1) ≥ 0), turning that inequality into an equality: the total variation telescopes (Finset.sum_range_sub') to exactly a_N − a(M−1) instead of merely being bounded by it. Monotonicity converts the general estimate into a closed form, it does not unlock a fundamentally different proof."
     ],
     "prerequisites": [
       "Convergence of sequences and series in ℝ",
