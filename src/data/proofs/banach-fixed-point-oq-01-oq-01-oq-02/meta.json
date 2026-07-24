@@ -78,7 +78,8 @@
       "**The iterates are an explicit polynomial, not a black-box limit.** picardIter n t = ∑_{k=0}^{n} tᵏ/k! makes every successive approximation a concrete Taylor partial sum, so the Picard–Lindelöf fixed point of the parent becomes a runnable, fully transparent computation.",
       "**Picard's method reconstructs both the solution and the exponential series.** Feeding the constant 1 through P repeatedly generates the exponential's power series term by term — the successive approximations literally build ∑ tᵏ/k!, exhibiting the solution as the limit of approximations and re-deriving exp along the way.",
       "**The contraction constant is the interval length.** The estimate |P y t − P z t| ≤ C·|t| shows P contracts on [0, ε] with constant ε; choosing ε < 1 gives a genuine contraction, the concrete instance of the abstract Lipschitz-forces-contraction mechanism used in the parent's Banach argument.",
-      "**Fixed point ⇒ solution.** exp is not merely the limit of the iterates but a genuine fixed point exp t = 1 + ∫₀ᵗ exp s ds solving the IVP, closing the loop between the integral fixed-point equation and the differential equation."
+      "**Fixed point ⇒ solution.** exp is not merely the limit of the iterates but a genuine fixed point exp t = 1 + ∫₀ᵗ exp s ds solving the IVP, closing the loop between the integral fixed-point equation and the differential equation.",
+      "**The proven contraction is only local, but the actual convergence is global.** picard_contraction only pins down P as a genuine contraction on a short interval [0, ε] with ε < 1, matching the parent's local existence guarantee; yet picardIter_tendsto proves picardIter n t → exp t for every real t, with no restriction on t at all — for this concrete f = id the successive approximations converge far beyond the range the abstract local theorem promises."
     ],
     "exampleSections": []
   },
