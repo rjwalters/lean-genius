@@ -97,8 +97,15 @@
       "id": "corollaries",
       "title": "Mixed Product and Central Cases",
       "startLine": 96,
-      "endLine": 116,
-      "summary": "sum_choose_mul_choose (r=0 mixed sum C(m+n,n) = ∑ C(m,i)·C(n,i)), central_sum_sq_shift (m=n shifted), and central_binom_eq_sum_sq (m=n, r=0 recovers the parent's diagonal C(2n,n) = ∑ C(n,i)²), with numeric checks."
+      "endLine": 105,
+      "summary": "sum_choose_mul_choose (r=0 mixed sum C(m+n,n) = ∑ C(m,i)·C(n,i)), central_sum_sq_shift (m=n shifted), and central_binom_eq_sum_sq (m=n, r=0 recovers the parent's diagonal C(2n,n) = ∑ C(n,i)²)."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 107,
+      "endLine": 118,
+      "summary": "Numeric checks: the shift r=1 case C(5,1) = ∑_{i≤2} C(2,i)·C(3,i+1) = 10, and the diagonal C(6,3) = 20 = 1+9+9+1, both closed by kernel decide."
     }
   ],
   "conclusion": {
