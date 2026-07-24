@@ -48,6 +48,18 @@
     "prerequisites": ["Dirichlet series", "analytic continuation", "Riemann Hypothesis"]
   },
   {
+    "id": "ann-rhoq03-exponent-mono",
+    "proofId": "rh-consequences-oq-03",
+    "range": { "startLine": 108, "endLine": 128 },
+    "type": "insight",
+    "title": "Auxiliary Monotonicity of the Exponent",
+    "content": "mertens_bound_exponent_mono records that the Littlewood condition only gets weaker as the exponent grows: if |M(n)| ≤ C·n^{1/2+ε} holds for all n ≥ 1, the same inequality with the same constant C holds at any larger exponent ε' ≥ ε, since n^{1/2+ε} ≤ n^{1/2+ε'} whenever n ≥ 1 (Real.rpow_le_rpow_of_exponent_le). This is a bookkeeping lemma rather than analytic content — it makes precise that 'for every ε > 0' in LittlewoodBound is really an infimum-type condition: proving the bound for one ε suffices to get it for free at every larger ε.",
+    "mathContext": "$n \\ge 1,\\ \\varepsilon \\le \\varepsilon' \\Rightarrow n^{1/2+\\varepsilon} \\le n^{1/2+\\varepsilon'}$, so $|M(n)| \\le C n^{1/2+\\varepsilon} \\Rightarrow |M(n)| \\le C n^{1/2+\\varepsilon'}$ with the same constant $C$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.rpow_le_rpow_of_exponent_le", "monotonicity in the exponent", "LittlewoodBound"],
+    "prerequisites": ["real power monotonicity", "LittlewoodBound"]
+  },
+  {
     "id": "ann-rhoq03-forward",
     "proofId": "rh-consequences-oq-03",
     "range": { "startLine": 129, "endLine": 154 },
