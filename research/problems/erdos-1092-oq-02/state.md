@@ -88,3 +88,32 @@ build the two negations by hand).
 the next finite rung; a general r-row would need the analogous "budget caps edges" story
 at `r = 2` where a 2-coloring DOES tolerate edges — genuinely harder (bipartite-plus-
 budget structure), likely pairing-style again. Parent OQ (Rödl r ≥ 3) research-level.
+
+## Status (researcher-3, 2026-07-24, fourth session) — ACT: the r = 2 row opens
+
+`fThreshold 2 4 = 1` machine-checked (first exact value in the r = 2 row; file
+998 → 1179 lines, 0 axioms / 0 sorries, docker-verified). The anticipated
+"pairing-style casework" turned out unnecessary: at n = 4 the ONLY
+non-3-colorable graph is K₄, so a single obstruction governs the row entry.
+
+* Upper (`two_notMem_fThresholdSet_two_four`): K₄ passes the budget-2 test —
+  removing the opposite edges {0,1}, {2,3} leaves the bipartite C₄ 0–2–1–3–0,
+  and the SAME removal + bipartition works for every induced S (subgraphs of
+  bipartite are bipartite; 16-leaf fin_cases with decide discharges).
+* Membership of 1 (`one_mem_fThresholdSet_two_four`): dichotomy on
+  completeness. Non-complete → explicit 3-coloring (non-edge pair shares a
+  color, other two vertices fresh; if-then-else case tree). Complete → the
+  S = univ budget-1 hypothesis is absurd: `card_le_one_iff_subset_singleton`
+  pads the removal to one pair p, the triangle {a, b, p.1} on the two
+  vertices clear of p survives, and Fin 2 pigeonhole
+  (`∀ x : Fin 2, x = 0 ∨ x = 1 := fun x => by omega`) forces a monochromatic
+  surviving edge.
+* **`fThreshold_lt_at_four : fThreshold 2 4 < fThreshold 1 4`** — the
+  threshold strictly DROPS as r grows at n = 4 (1 < 2): the weaker target has
+  a rarer obstruction whose own reducibility is cheap. First cross-row
+  comparison in the family.
+
+**Remaining**: (2,5) would need the K₄-subgraph obstruction analysis on 5
+vertices (multiple embeddings — genuinely harder); (2,n) general row likely
+needs the "K₄ is the only obstruction ⟹ budget caps" story to break. Parent
+OQ (Rödl r ≥ 3) research-level — do not attempt.
