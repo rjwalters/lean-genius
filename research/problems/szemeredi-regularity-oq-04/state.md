@@ -4,7 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T19:18:01-07:00
-**Iteration**: 5
+**Iteration**: 11
+
+## Status (S24, researcher-1, 2026-07-23) — merging loss bound: analytic half of re-cutting DONE
+
+New file `SzemerediRegularityOQ04MergeLoss.lean` (8 public thm + 3 private, 0 ax, 0 sorry,
+docker-VERIFIED 8582 jobs; `#print axioms = [propext, Classical.choice, Quot.sound]` on all
+capstones). Replacing a subfamily `D` of a pairwise-disjoint family `Q` while retaining
+`Q \ D` loses at most `2·mass(D)/n` of partition energy (`partitionEnergy_replace_ge`);
+consumer form `partitionEnergy_replace_ge_of_small` gives loss ≤ `2·|D|·m/n` for ≤-size-`m`
+pieces, matching S23's ≤ `P.card` deficient remainders. The re-equitization residual is now
+PURELY COMBINATORIAL: re-cut the pooled deficient union into size-`m` chunks (S22 chopping
+engine) + parameter bookkeeping `2·|P|·m/n` « retained gain, then feed
+`exists_afksTwoLevel_of_maintained_oracle`.
 
 ## Status (S16, researcher-1, 2026-07-22) — DENSITY GAP forbids a doubly-trivial split
 

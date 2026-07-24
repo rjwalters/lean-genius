@@ -1171,3 +1171,54 @@ hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
 - `proofs/Proofs/SzemerediRegularityOQ04ChopRefine.lean` (NEW, 192 lines, 2 theorems)
 - `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
 - `src/data/research/problems/szemeredi-regularity-oq-04.json` (currentState S23)
+
+## S24 (2026-07-23, researcher-1): merging loss bound — the analytic half of re-cutting
+
+### What was proved (SzemerediRegularityOQ04MergeLoss.lean, 8 public thm + 3 private, 0 ax, 0 sorry)
+- `pairEnergy_nonneg` / `pairEnergy_le_weight`: `0 ≤ pe(A,B) ≤ |A|·|B|/n²` (density ≤ 1).
+- `sum_card_le_card_univ`: a pairwise-disjoint family occupies ≤ |V| vertices
+  (`Finset.card_biUnion` equality + `card_le_univ`).
+- `partitionEnergy_subset_le`: energy monotone under family inclusion
+  (`product_subset_product` + termwise nonneg).
+- `cross_sum_le`: ordered pairs from family S into family D contribute
+  ≤ mass(S)·mass(D)/n² (`Finset.sum_mul_sum` + `sum_div`).
+- `partitionEnergy_sdiff_ge`: **removing D ⊆ Q loses ≤ 2·mass(D)/n** —
+  double-sum block decomposition (surviving block + two cross blocks via
+  `Finset.sum_sdiff` twice + `sum_add_distrib`), cross blocks bounded by
+  mass(D)·n/n², collected by `n·m/n² + m·n/n² = 2m/n` (valid at n = 0,
+  junk-zero division).
+- `partitionEnergy_replace_ge` (capstone): any Q' ⊇ Q \ D has
+  `E(Q') ≥ E(Q) − 2·mass(D)/n` — the re-cut of the pooled deficient union
+  only needs to RETAIN the non-deficient pieces.
+- `partitionEnergy_replace_ge_of_small` (consumer form): D of ≤-size-m pieces
+  costs ≤ 2·|D|·m/n — matches S23's "≤ P.card deficient remainders each < m"
+  output, giving loss ≤ 2·|P|·m/n.
+
+### Lean idioms learned
+- **Monolithic energy proofs hit `whnf` heartbeat timeouts**: the first attempt
+  (decomposition + bounds + collection + `linarith` in ONE theorem body) died at
+  200k AND 800k heartbeats. Splitting into small private lemmas
+  (`collect_halves` over abstract `n m : ℚ`, `energy_decomposition`) and
+  replacing `linarith` on giant sum-atoms with an explicit `calc` of
+  `add_le_add` builds in 2.6 s. Also `simp [h0]` (h0 : (↑card:ℚ)=0) times out
+  where `rw [h0]; norm_num` is instant.
+- Division monotone in numerator with only `0 ≤ c` (junk-safe): re-derive via
+  `div_eq_mul_inv` + `mul_le_mul_of_nonneg_right h (inv_nonneg.mpr hc)` —
+  dodges `div_le_div_of_le`-family naming drift.
+- `Set.PairwiseDisjoint.subset` + `Finset.coe_subset.mpr (fun x hx =>
+  (Finset.mem_sdiff.mp hx).1)` restricts disjointness to `Q \ D` without
+  `sdiff_subset` arity concerns.
+
+### What remains (the merging half — combinatorial part only)
+- Re-cut the pooled union `⋃ D` of deficient remainders into size-m chunks
+  (S22's `exists_chop_pieces` applies to a single block) and verify the
+  resulting family is a genuine equitable partition refining nothing but
+  covering the same ground; then pick parameters with `2·|P|·m/n` below a
+  fixed fraction of the `eps⁴m²/n²`-scale gain and land in
+  `exists_afksTwoLevel_of_maintained_oracle`. The energy side is now DONE.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04MergeLoss.lean` (NEW, 238 lines, 11 theorems)
+- `research/problems/szemeredi-regularity-oq-04/{state.md,knowledge.md}`
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles += ChopRefine
+  [omitted by S23], MergeLoss; currentState S24)

@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 10,
-    "focus": "S23 (2026-07-23): re-equitization REFINEMENT HALF closed - SzemerediRegularityOQ04ChopRefine.lean proves exists_chop_pieces (single-block chop: pairwise-disjoint nonempty pieces covering A, each size <= m, AT MOST ONE deficient piece of size < m per block; strong induction peeling size-m subsets via Finset.exists_subset_card_eq) and exists_chop_refinement (family capstone: every pairwise-disjoint P admits a chopped refinement Q - refinement, same union, disjoint, nonempty, size <= m, at most P.card deficient pieces - with partitionEnergy G P <= partitionEnergy G Q, FULL energy retention via partitionEnergy_refine_mono since Q genuinely refines P). [VERIFIED 0 axioms, docker 8584 jobs, lint-clean] Re-equitization is now reduced to its MERGING half only.",
+    "iteration": 11,
+    "focus": "S24 (2026-07-23): re-equitization MERGING-HALF ANALYTIC CORE closed - SzemerediRegularityOQ04MergeLoss.lean proves partitionEnergy_replace_ge: replacing a subfamily D of a pairwise-disjoint family Q (keeping Q \\ D) loses at most 2*mass(D)/n of partition energy (pairEnergy <= weight since density <= 1; cross blocks touching D carry <= 2*mass(D)*mass(Q)/n^2; energy monotone under family inclusion). Consumer form partitionEnergy_replace_ge_of_small: <= |D| pieces of size <= m cost <= 2*|D|*m/n, matching S23's <= P.card deficient remainders. Residual: the combinatorial re-cut of the pooled deficient union into size-m chunks (S22 chopping engine applies) plus parameter choice 2*|P|*m/n below the retained gain fraction, then feed exists_afksTwoLevel_of_maintained_oracle.",
     "blockers": [],
     "nextAction": "THE residual gap: the MERGING half of re-equitization. Pool the <= P.card deficient remainders produced by exists_chop_refinement and re-cut them into size-m chunks. This step is NOT a refinement, so energy can drop - bound the loss by the small total pooled mass (<= P.card * m << n at the fine mesh), spending the positive fraction delta of the E^4 m^2/n^2 gain there. Output must satisfy the maintained-oracle invariant of exists_afksTwoLevel_of_maintained_oracle (cover, disjoint, refines Vparts, equitable, mass floor m). The chop layer already supplies the deficient-piece count bound the mass argument consumes. Do not re-derive seed existence (S22) or the chop layer (S23)."
   },
@@ -431,7 +431,29 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Seed.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04ChopRefine.lean",
+      "filename": "SzemerediRegularityOQ04ChopRefine.lean",
+      "lineCount": 192,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04ChopRefine.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04MergeLoss.lean",
+      "filename": "SzemerediRegularityOQ04MergeLoss.lean",
+      "lineCount": 238,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04MergeLoss.lean"
     }
   ],
-  "lastUpdate": "2026-07-23T22:20:00Z"
+  "lastUpdate": "2026-07-23T23:59:00Z"
 }
