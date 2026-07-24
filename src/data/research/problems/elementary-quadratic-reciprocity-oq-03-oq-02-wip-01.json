@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Kronecker symbol file COMPLETE for the original def (multiplicativity both args, reciprocity odd case, all supplementary characters with value-tables + periodicity + chi-bridges, real-character trichotomy). NEW (Section 15): refinement target 1 DONE — kroneckerClassical wires kronecker2 into the 2-adic part (the classical 1885 symbol), agrees with kronecker at odd moduli, (a/2)=kronecker2, and full bi-multiplicativity re-proved for the refined def (7 theorems, axiom-free, host-verified). Remaining open: Target 2 only — generalized quadratic reciprocity for fundamental discriminants via Gauss sums (deep, not session-sized). NEW (2026-07-23, GaussOdd satellite): the odd-prime half of the Gauss-sum engine is DONE — g_q^2 = chi_q(-1)*q ring-generically for any odd prime q and any field with a q-th root of unity (0-axiom, docker-verified). This is the identified hard half of the remaining open Target 2; what remains is the Frobenius-covariance step g^p = chi_q(p)*g in GaloisField p k (exact analogue of the proven q=2 recipe) + descent => full quadratic reciprocity independent of Mathlib QR.",
+    "progressSummary": "TARGET 2 CLOSED (2026-07-23, researcher-1-5): full quadratic reciprocity proved independently of Mathlib jacobiSym.quadratic_reciprocity — quadratic_reciprocity_qstar : (chi_q(-1)*q | p) = (p | q) for distinct odd primes, via the self-contained odd-prime Gauss sum engine (g^2 = chi(-1)q), Frobenius covariance in GaloisField p k, and descent to ZMod p. All 0-axiom 0-sorry, Docker-verified. Node now: Kronecker file complete; QR-via-Gauss-sums programme complete for both the prime 2 (PR #42263) and odd primes. Only remaining open item: kronecker2 def-rewiring at even moduli (blocked).",
     "builtItems": [
       "kronecker2_periodic (ElementaryQuadraticReciprocityOQ03OQ02.lean): (a+8/2)=(a/2), period-8 of the (·/2) character; with kronecker2_mul this makes kronecker2 a Dirichlet character mod 8 (foundation for the Gauss-sum route to Target 2).",
       "kronecker2_mul (ElementaryQuadraticReciprocityOQ03OQ02.lean): (ab/2)=(a/2)(b/2) unconditional multiplicativity of the (·/2) mod-8 character, via x%8 reduction + 64-case decide.",
@@ -73,7 +73,10 @@
       "ElementaryQuadraticReciprocityOQ03OQ02WIP01GaussOdd.lean: zetapow additive-to-multiplicative + primitivity (zetapow_add, zetapow_ne_one)",
       "GaussOdd: orthogonality sum_zetapow_mul_eq_zero (shift trick) + sum_zetapow_mul_zero",
       "GaussOdd: chiK cast quadratic character (mul, sq_eq_one, mean-zero via quadraticChar_sum_zero)",
-      "GaussOdd: gaussSumOdd_sq — Gauss square formula g_q^2 = chi_q(-1)*q (MAIN); legendre-symbol form; gaussSumOdd_ne_zero (char K != q)"
+      "GaussOdd: gaussSumOdd_sq — Gauss square formula g_q^2 = chi_q(-1)*q (MAIN); legendre-symbol form; gaussSumOdd_ne_zero (char K != q)",
+      "GaussOdd: gaussSumOdd_pow_char (Frobenius covariance), chi_neg_one_mul_q_pow_eq_chi (Euler-criterion identity)",
+      "GaussOdd: exists_qth_root (order-q root in GaloisField p k, k = ord_q(p))",
+      "GaussOdd: quadratic_reciprocity_qstar — FULL quadratic reciprocity (Euler q* form), independent of Mathlib QR (0-axiom)"
     ],
     "insights": [
       "For odd positive moduli the Kronecker symbol IS the Jacobi symbol (kronecker_eq_jacobi), so mul-in-n and QR come for free from jacobiSym.mul_right' and jacobiSym.quadratic_reciprocity.",
@@ -97,15 +100,18 @@
       "Host lake env lean verification sidesteps the documented Docker olean-write SIGBUS-135 entirely (elaboration only, no olean written) — this file verified green first try on host.",
       "Odd-prime Gauss sum square formula g_q^2 = chi_q(-1)*q holds in ANY field K with zeta^q=1, zeta != 1 (primitivity is free at prime level: order divides prime q); proved fully elementarily in GaussOdd satellite file — no Mathlib GaussSum/AddChar infra, matching the self-contained zeta_8 treatment of q=2",
       "Root-of-unity orthogonality without geometric series: reindex a -> a+1 multiplies sum by zetapow d != 1, forcing the sum to vanish (shift trick); zero frequency gives q. Row collapse: for a != 0 reindex b = a*c via mulLeft_bijective0 + chi(a)^2 = 1",
-      "Elaboration gotchas hit: chiK (-1) / gaussSumOdd zeta cannot infer implicit q (q only in index type) — every use needs (q := q) or (-1 : ZMod q) ascription; Finset.sum_erase with a product-form row needs explicit (f := ...) or HO-unification picks f := id and demands DecidableEq K"
+      "Elaboration gotchas hit: chiK (-1) / gaussSumOdd zeta cannot infer implicit q (q only in index type) — every use needs (q := q) or (-1 : ZMod q) ascription; Finset.sum_erase with a product-form row needs explicit (f := ...) or HO-unification picks f := id and demands DecidableEq K",
+      "FULL QR landed same-session as the engine: Frobenius covariance g^p = chi(pbar)*g needs only sum_pow_char + chi(a)^p=chi(a) (odd p) + zetapow_pow + a -> a*pbar reindex; cancellation vs g^p = g*(g^2)^((p-1)/2) gives (chi(-1)q)^((p-1)/2) = chi(pbar) in K",
+      "Descent recipe: integer-cast identities in GaloisField p k descend to ZMod p via map_intCast + (algebraMap (ZMod p) K).injective; then legendreSym.eq_pow (Euler) converts the power to a Legendre symbol and int_pm_one_cast_inj separates +-1 mod p>2",
+      "orderOf_eq_card_of_forall_mem_zpowers now returns Nat.card (not Fintype.card) in Mathlib v4.31 vintage — no Nat.card_eq_fintype_card bridge needed; GaloisField derives Finite/CharP/Algebra(ZMod p) so instances are free"
     ],
     "mathlibGaps": [
       "No Kronecker symbol in Mathlib (only jacobiSym for odd positive denominators).",
       "No supplementary-law lemmas connecting (2/n)/(-1/n) to the odd part for a generalized reciprocity."
     ],
     "nextSteps": [
-      "Frobenius covariance: in GaloisField p k (k = order of p mod q), g^p = chi_q(p)*g via add_pow_char + reindexing; then Euler eq_pow + cancel g (gaussSumOdd_ne_zero) => (chi_q(-1)q)^((p-1)/2) relation => full QR without jacobiSym.quadratic_reciprocity. Session-sized now that gaussSumOdd_sq + ne_zero exist (mirror the q=2 GaloisField recipe end-to-end).",
-      "kronecker2 def-rewiring at even moduli (2-adic factorization refactor, ~100-200L) — still blocked, materially new mechanism required."
+      "Optional: product form (p|q)(q|p) = (-1)^((p-1)/2*(q-1)/2) from quadratic_reciprocity_qstar via chi_q(-1) = (-1)^((q-1)/2) (chi4 supplement) — parity bookkeeping only",
+      "kronecker2 def-rewiring at even moduli (2-adic factorization refactor, ~100-200L) — still blocked, materially new mechanism required"
     ]
   },
   "tags": [
