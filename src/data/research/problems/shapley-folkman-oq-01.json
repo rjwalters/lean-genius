@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-06-13T00:00:00Z",
-    "iteration": 20,
-    "focus": "S2-D ACT COMPLETE (researcher-3, 2026-07-23). The genuine ℓ² infinite-dimensional negative result is Docker-verified (v4.31.0, 8577 jobs, 0 sorries, 0 axioms). Added ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _:ℕ => ℝ) 2 (injective linear embedding, sum of lp.lsingle), ιN_apply_coord (coordinate-preserving), ιN_injective, and shapley_folkman_excess_unbounded_in_lp (excess card unbounded over ℓ² subsets, lifted from Fin N tightness via Decomposition.map). This ALSO verifies the Session-20 S2-C transport core, previously build-unverified during the 2026-06-13 Docker blackout — the sole reason the problem was marked blocked. OQ-01 negative answer now complete and machine-checked: the FiniteDimensional hypothesis of shapley_folkman cannot be dropped, and no fixed finite bound survives in genuine infinite dimensions (Module.finrank ℝ ℓ² = 0).",
+    "iteration": 21,
+    "focus": "S3-A COMPLETE (researcher-2, 2026-07-24): dimension-one Lyapunov / Sierpinski IVT proved 0-axiom in ShapleyFolkmanOQ01Lyapunov.lean (host-verified). Negative answer (S2 chain) unchanged and COMPLETE. Next: S3-B general-space Sierpinski exhaustion.",
     "blockers": [
       "Lyapunov/Aumann positive infinite-dim analog (Approach A, OUT OF SCOPE for OQ-01 negative answer): Lyapunov convexity theorem not in Mathlib; multi-session formalization project. Not a blocker on the (completed) negative answer."
     ],
@@ -97,10 +97,21 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanOQ01Lyapunov.lean",
+      "filename": "ShapleyFolkmanOQ01Lyapunov.lean",
+      "lineCount": 246,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ01Lyapunov.lean"
     }
   ],
   "knowledge": {
-    "progressSummary": "COMPLETED (S2-D, researcher-3, 2026-07-23, VERIFIED 0-axiom). OQ-01 asked whether the FiniteDimensional hypothesis of shapley_folkman can be dropped by replacing Module.finrank with a suitable infinite-dim notion. Answer: NO, now machine-verified end to end. Finite-dim sharpness (tight_excess_count / exists_tight_decomposition, S2-A) shows the finrank bound is achieved with equality for every N; the truncation lift (no_universal_shapley_folkman_bound, S2-B1) rules out any ambient-dimension-blind bound; the Decomposition.map transport core (S2-C) plus the injective embedding ιN (S2-D) carry the tightness into the genuine infinite-dim Hilbert space ℓ², where shapley_folkman_excess_unbounded_in_lp gives unbounded excess and (finrank ℝ ℓ² = 0) refutes the literal parent bound. Docker build clean at v4.31.0 (8577 jobs, 0 sorries, 0 axioms), which also retro-verifies the S2-C core left unverified during the 2026-06-13 Docker blackout. The only remaining direction is the separate POSITIVE analog (Aumann/Lyapunov), out of scope here.",
+    "progressSummary": "COMPLETED (S2-D, researcher-3, 2026-07-23, VERIFIED 0-axiom). OQ-01 asked whether the FiniteDimensional hypothesis of shapley_folkman can be dropped by replacing Module.finrank with a suitable infinite-dim notion. Answer: NO, now machine-verified end to end. Finite-dim sharpness (tight_excess_count / exists_tight_decomposition, S2-A) shows the finrank bound is achieved with equality for every N; the truncation lift (no_universal_shapley_folkman_bound, S2-B1) rules out any ambient-dimension-blind bound; the Decomposition.map transport core (S2-C) plus the injective embedding ιN (S2-D) carry the tightness into the genuine infinite-dim Hilbert space ℓ², where shapley_folkman_excess_unbounded_in_lp gives unbounded excess and (finrank ℝ ℓ² = 0) refutes the literal parent bound. Docker build clean at v4.31.0 (8577 jobs, 0 sorries, 0 axioms), which also retro-verifies the S2-C core left unverified during the 2026-06-13 Docker blackout. The only remaining direction is the separate POSITIVE analog (Aumann/Lyapunov), out of scope here. || S3-A (researcher-2, 2026-07-24): positive-programme rung 1 DONE — dimension-one Lyapunov convexity (Sierpinski IVT for atomless measures on R) proved 0-axiom/0-sorry in new file ShapleyFolkmanOQ01Lyapunov.lean; value range of an atomless finite measure = Icc 0 (mu s), convex and compact; non-vacuity witnessed by Lebesgue on [0,1]. The S3 blocker 'Lyapunov not in Mathlib' is now partially discharged: d=1 in-repo; general-space Sierpinski (exhaustion) and R^d Lyapunov are S3-B/S3-C.",
     "builtItems": [
       "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
       "research/problems/shapley-folkman-oq-01/state.md: Session 1–8 entries with iteration history table",
@@ -116,7 +127,8 @@
       "proofs/Proofs.lean: registered import Proofs.ShapleyFolkmanOQ01 alphabetically",
       "ιN (N) in ShapleyFolkmanOQ01.lean: injective linear embedding EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _:ℕ => ℝ) 2",
       "ιN_apply_coord, ιN_injective in ShapleyFolkmanOQ01.lean",
-      "shapley_folkman_excess_unbounded_in_lp in ShapleyFolkmanOQ01.lean: the ℓ² unbounded-excess capstone (S2-D)"
+      "shapley_folkman_excess_unbounded_in_lp in ShapleyFolkmanOQ01.lean: the ℓ² unbounded-excess capstone (S2-D)",
+      "proofs/Proofs/ShapleyFolkmanOQ01Lyapunov.lean (S3-A, new file, 246 lines, 0 sorries, 0 axioms, host-verified lake env lean v4.31 + #print axioms = foundational only): continuous_measure_inter_Iic, exists_subset_measure_eq (Sierpinski on R), setOf_measure_subset_eq_Icc, lyapunov_range_eq_Icc, lyapunov_range_convex, lyapunov_range_isCompact, exists_subset_unitInterval_volume_eq (non-vacuity via Lebesgue on [0,1])"
     ],
     "insights": [
       "Module.finrank ℝ E = 0 for any non-finite-dim ℝ-module in Lean's convention; this collapses the Shapley–Folkman bound to '≤ 0' which is vacuously false for any Minkowski sum with non-convex summands.",
@@ -126,7 +138,10 @@
       "S5 PREP (PR #18929) names the Mathlib v4.26.0 lemma Set.finset_sum_mem_finset_sum (Mathlib/Algebra/Group/Pointwise/Set/BigOperators.lean:142, multiplicative + @[to_additive]) as the n-ary additive Minkowski-membership primitive — this supersedes the Set.add_mem_finset_sum guess in Session 8's Next Action, which is not the actual Mathlib v4.26.0 name at the lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
       "S2-D VERIFIED (2026-07-23, v4.31.0): shapley_folkman_excess_unbounded_in_lp exhibits, for every K, a finite family of subsets of ℓ² = lp (fun _:ℕ => ℝ) 2 whose every Shapley-Folkman Decomposition has excessIndices.card > K. Honest infinite-dim negative result — no fixed finite bound holds.",
       "The embedding ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] ℓ² is a sum of single-coordinate injections ∑ i, lp.lsingle 2 i.val (v i); injectivity is a one-coordinate evaluation (Finset.sum_eq_single + lp.single_apply_self/ne + Fin.val_injective).",
-      "v4.31 gotcha: lp.single_apply_self / single_apply_ne need explicit (E := fun _:ℕ => ℝ) — the E family is a higher-order metavariable that cannot be inferred from the value argument v i : ℝ alone. EuclideanSpace coordinate access now displays as v.ofLp i (WithLp refactor); PiLp.add_apply/smul_apply are still rfl."
+      "v4.31 gotcha: lp.single_apply_self / single_apply_ne need explicit (E := fun _:ℕ => ℝ) — the E family is a higher-order metavariable that cannot be inferred from the value argument v i : ℝ alone. EuclideanSpace coordinate access now displays as v.ofLp i (WithLp refactor); PiLp.add_apply/smul_apply are still rfl.",
+      "S3-A (researcher-2, 2026-07-24): Sierpinski's intermediate-value theorem for atomless measures is genuinely ABSENT from Mathlib (only exists_subset_measure_lt_top exists; Mathlib's NoAtoms is the weak singleton-null notion with an in-file TODO about the strong splitting notion). On the ambient space R the weak notion suffices: the cumulative function t |-> mu (s inter Iic t) is continuous (left-continuity IS atomlessness via Iio_ae_eq_Iic; right-continuity is continuity from above), so the connectedness IVT mem_range_of_exists_le_of_exists_ge yields exact levels.",
+      "S3-A: dimension-one Lyapunov is now proved 0-axiom: the value range {mu t : t measurable subset of s} equals Icc 0 (mu s) exactly (setOf_measure_subset_eq_Icc), and its real-valued form is the compact convex interval [0,(mu s).toReal] (lyapunov_range_eq_Icc + lyapunov_range_convex + lyapunov_range_isCompact). This is the exact-convexification contrast with the parent: finite sums have excess exactly finrank E (tight_excess_count); the atomless continuum has ZERO excess.",
+      "S3-A route note (mechanism label): 'cumulative-slice IVT' — witness sets are initial slices s inter Iic x, no exhaustion/Zorn argument needed on R. The general-measurable-space Sierpinski (arbitrary atomless sigma-algebra, no order) still needs the greedy exhaustion argument and remains the gap for S3-B (Lyapunov in R^d)."
     ],
     "techniques": [
       "EuclideanSpace ℝ (Fin n) + EuclideanSpace.basisFun for concrete finite-dim counter-example",
@@ -134,13 +149,14 @@
       "Midpoint extraction: x = (1/2) ∑ eᵢ is non-extreme in each convexHull ℝ Sᵢ, making every i excess"
     ],
     "nextSteps": [
-      "S2-D ACT (next session, paste-ready): S2-B₂ literal lp 2 lift. Build injective ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2 (∑ lp.lsingle 2 i.val), prove ιN_injective, then shapley_folkman_excess_unbounded_in_lp via (midpointDecomp N).map ιN + Decomposition.map_excessIndices_card_of_injective + tight_excess_count. Recipe + lp bearers in session 2026-06-13 §4.",
-      "Gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/meta.json with status=axiomatized, badge=axiom, sorries=0, theoremCount tracking current file, 5 inherited axioms from parent.",
-      "S3 ACT (deferred multi-session): Aumann set-valued integral statement-only — needs Lyapunov upstream not in Mathlib (200-300 LOC measure-theoretic prerequisite project)."
+      "S3-B ACT: general-measurable-space Sierpinski (no order on Omega): greedy exhaustion argument (recursive choice of subsets grabbing at least half the achievable remaining mass; summability forces exact attainment). Needs a new STRONG atomless predicate (Mathlib NoAtoms too weak off R: countable-cocountable 0/1 measure is NoAtoms with range {0,1}). Est. 250-400 lines.",
+      "S3-C ACT: Lyapunov convexity in R^d for vector measures built from atomless components — classical proof via induction on d using S3-B exhaustion + Radon-Nikodym; check Mathlib MeasureTheory.Decomposition for RN availability.",
+      "S3-D (deferred): Aumann set-valued integral convexity — statement needs measurable-selection machinery; revisit after S3-C.",
+      "Gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/meta.json should list BOTH ShapleyFolkmanOQ01.lean (negative answer) and ShapleyFolkmanOQ01Lyapunov.lean (S3-A positive rung)."
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-07-23T00:00:00Z",
+  "updatedAt": "2026-07-24T00:00:00Z",
   "relatedProofs": [
     "shapley-folkman",
     "shapley-folkman-oq-03",
