@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/825",
-    "status": "axiomatized",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos825Problem.lean",
     "tags": [
       "erdos",
@@ -31,7 +31,7 @@
     "historicalContext": "The study of divisor sums is among the oldest themes in number theory. Perfect numbers ($\\sigma(n) = 2n$) appear in Euclid's *Elements* (c. 300 BCE), and the classification of numbers as abundant ($\\sigma(n) > 2n$) or deficient ($\\sigma(n) < 2n$) goes back to Nicomachus (c. 100 CE). The subset-sum structure of divisors was formalized much later: Sierpiński introduced semiperfect numbers in 1965, and Benkoski coined the term *weird* in 1972 for abundant numbers that resist expressing $n$ as a subset sum of their proper divisors.\n\nBenkoski and Erdős (1974) systematically studied weird numbers and established basic properties: the smallest weird number is 70, weird numbers have positive density among the integers (a result proved by Erdős himself), and all known weird numbers are even. Erdős asked (Problem #825) whether sufficiently high abundancy $\\sigma(n)/n$ forces semiperfectness — offering a \\$25 prize. The heuristic reasoning is that high abundancy means many large proper divisors, making the subset-sum problem easier to solve.\n\nThe problem connects intimately to Erdős Problem #470 on odd weird numbers: no odd weird number is known up to $10^{21}$ (Melfi, 2015), and their non-existence would immediately imply the abundancy bound with $C = 3$. The relationship between these two problems illustrates how open questions in number theory form interconnected webs rather than isolated puzzles.\n\nComputational searches have found all weird numbers up to $10^6$ (sequence A006037 in the OEIS), and the density of weird numbers among the integers appears to be approximately 0.0067, though the exact asymptotic density remains unknown.",
     "problemStatement": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n?",
     "text": "Is there an absolute constant C > 0 such that every n with σ(n) > Cn is the distinct sum of proper divisors of n? Equivalently, do weird numbers have bounded abundancy?",
-    "proofStrategy": "The formalization defines divisor sums, proper divisors, semiperfectness, and weird numbers. It axiomatises the known lower bound C > 2 (from the counterexample n = 70) and the connection to odd weird numbers. The main conjecture and the strengthened C = 3 version are stated.",
+    "proofStrategy": "The formalization defines divisor sums, proper divisors, semiperfectness, and weird numbers. It proves the known lower bound C > 2 (theorem necessary_lower_bound, via the counterexample n = 70). The connection to odd weird numbers is discussed in comments only, not formalized as a declaration. The main conjecture and the strengthened C = 3 version are stated as open (unproved) definitions.",
     "keyInsights": [
       "A weird number is abundant but not semiperfect; 70 is the smallest",
       "The constant C must exceed 2, as σ(70) > 2·70 but 70 is weird",
