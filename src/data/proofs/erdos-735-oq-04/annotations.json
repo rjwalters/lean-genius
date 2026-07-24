@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "significance": "supporting",
+    "title": "From lines in the plane to k-flats in ℝᵈ",
+    "content": "The header frames the sub-problem: the parent entry formalizes the ABKPR 2008 solution of Murty's magic-configurations problem — positive weights with equal sums on every line through ≥ 2 points exist iff the configuration is collinear, in general position, a near-pencil, or an incenter configuration. This file replaces 'line' by 'k-flat' in ℝᵈ and asks for equal weight-sums on every k-flat through at least k+1 points. It inventories the contents: three fully proved theorems (the trivial regimes k = 0 and k = d, and the d = 2 parent reduction) plus the single conjectured classification axiom for lines in ℝᵈ, d ≥ 3. The polytope witnesses and the general-position theorem live in four companion files (Tetrahedron, Octahedron, Cube, GeneralPosition)."
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 56,
+      "endLine": 91
+    },
+    "type": "definition",
+    "significance": "critical",
+    "title": "The parameterised magic property",
+    "content": "PointConfigD d is a finite set of points of EuclideanSpace ℝ (Fin d); WeightingD assigns a positive real to each point. A ConfigKFlat k P packages an affine subspace whose direction has Module.rank exactly k together with a proof that it contains at least k+1 points of P — the threshold at which a k-flat is determined by the configuration rather than merely incident to it, generalising the parent's 'line through ≥ 2 points'. kFlatSum sums the weights of the configuration points in the flat (noncomputable: membership in a Finset of real points is classical), and IsKFlatMagic k P asserts a positive weighting exists making every determined k-flat sum equal to a single positive constant. At (d, k) = (2, 1) each definition unfolds to its parent counterpart."
+  },
+  {
+    "id": "ann-classes",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 131
+    },
+    "type": "definition",
+    "significance": "key",
+    "title": "The four conjectured classes, lifted to ℝᵈ",
+    "content": "The parent's four plane classes are restated for 1-flats in ℝᵈ: IsCollinearD (all points on one line), IsGeneralPositionD (no three points share a line), IsNearPencilD (all but one point on a common line), and IsIncenterConfigD. The fourth is honestly documented as a structural skeleton — an injective (d+1)-simplex into P plus one extra point, with the correct cardinality — rather than the precise ABKPR incenter characterisation, because Mathlib has no ℝᵈ-level angle-bisector or insphere API for d ≥ 3. The docstring points to the design memo recording the tightening plan; the gallery entry lists this tightening as an open question."
+  },
+  {
+    "id": "ann-axiom",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 132,
+      "endLine": 146
+    },
+    "type": "warning",
+    "significance": "critical",
+    "title": "The single axiom — and what is already proved of it",
+    "content": "oneflat_classification_higher_dim is the slug's only assumption: for d ≥ 3, a configuration is 1-flat magic iff it lies in one of the four lifted classes. This is the natural extension of ABKPR 2008 beyond the plane and is research-level open — no published proof exists for any d ≥ 3. The axiom's docstring records this status explicitly, and for d = 2 the statement is instead a theorem (the parent's magic_classification composed with oneflat_eq_parent below). Notably, the class-2 forward implication — general position implies 1-flat magic — is proved outright and axiom-free for every d in the GeneralPosition companion file (isKFlatMagic_one_of_generalPosition), so the axiom's genuinely open content is strictly smaller than its statement. #print axioms on the companion's headline theorems shows only the three foundational axioms."
+  },
+  {
+    "id": "ann-trivial",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 147,
+      "endLine": 217
+    },
+    "type": "theorem",
+    "significance": "key",
+    "title": "Bracketing the problem: k = 0 and k = d are trivial",
+    "content": "zero_flat_magic_trivial: a rank-0 direction is ⊥, so points of the flat pairwise vsub to 0 and the flat is a single point; the ≥ 1-point constraint makes it {p} for some p ∈ P, and the constant-1 weighting gives every 0-flat sum exactly 1. ambient_flat_magic_trivial splits on |P|: if |P| ≥ d+1, a rank-d direction equals ⊤ by Submodule.eq_top_of_finrank_eq, so the flat is the ambient space (direction_eq_top_iff_of_nonempty) containing all of P, and the uniform weighting sums to |P|; if |P| < d+1 no flat can hold d+1 points and the magic condition is vacuous. Both use the dif_pos / sum_const / Nat.smul_one_eq_cast evaluation idiom that every companion-file witness reuses. Conclusion: all content of the problem lives in 1 ≤ k ≤ d−1."
+  },
+  {
+    "id": "ann-parent-reduction",
+    "proofId": "erdos-735-oq-04",
+    "range": {
+      "startLine": 218,
+      "endLine": 243
+    },
+    "type": "insight",
+    "significance": "critical",
+    "title": "Exact reduction to the solved plane case — and the k ≥ 2 frontier beyond",
+    "content": "oneflat_eq_parent proves IsKFlatMagic 1 P ↔ Erdos735.IsMagic P for plane configurations: the weighting types unfold identically, the subtypes differ only by a Nat.cast_one rewrite on the rank condition, and the sums are the same term modulo namespace — so witnesses transport in both directions by rintro/refine. This certifies zero definitional drift where the new hierarchy meets the parent's solved problem. The genuinely new mathematics lives in the companion files: the tetrahedron is 2-flat magic in ℝ³ (uniform weight, constant 3) while the octahedron and cube are provably not — each refuted by four explicit kernel-built flats whose sum equations force a positive weight-pair to vanish — and the general-position uniform-weight theorem shows every affinely independent configuration is k-flat magic for every k, identifying simplices (not regular polytopes) as the inhabitants of the conjectured higher-flat magic family."
+  }
+]
