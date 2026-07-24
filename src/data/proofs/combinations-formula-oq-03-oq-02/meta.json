@@ -44,9 +44,17 @@
   ],
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports: parent q-binomial machinery",
+      "startLine": 1,
+      "endLine": 2,
+      "summary": "Imports the parent entry CombinationsFormulaOQ03 for the division-free qBinom API (qBinom, the two q-Pascal recurrences, the vanishing lemma, and the q=1 specialization) and Mathlib.Tactic for the ring/linear_combination automation used throughout the induction.",
+      "mathContext": "Reuses `qBinom`, `qBinom_pascal'`, `qBinom_eq_zero_of_lt`, `qBinom_at_one` from the parent's division-free q-binomial API rather than redefining anything."
+    },
+    {
       "id": "header",
       "title": "Motivation: The Identity the Parent Left Unassembled",
-      "startLine": 1,
+      "startLine": 4,
       "endLine": 42,
       "summary": "Explains that the parent builds the q-binomial machinery (qBinom, q-Pascal recurrences, vanishing, q=1) but never proves the generating-function identity; this entry supplies it plus two corollaries.",
       "mathContext": "$\\prod_{i=0}^{n-1}(1 + q^i x) = \\sum_{k=0}^{n} \\binom{n}{k}_q q^{\\binom{k}{2}} x^k$."
