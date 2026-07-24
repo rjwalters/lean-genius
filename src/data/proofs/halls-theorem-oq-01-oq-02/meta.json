@@ -103,11 +103,18 @@
       "summary": "defect_hall — the relaxed Hall condition ∀ s, #s ≤ #(s.biUnion t) + d iff a partial SDR missing at most d indices, identical to the verified halls-theorem-oq-01-oq-01 statement and inlined so this file depends only on Mathlib. Forward: the α ⊕ Fin d reduction; converse: the inter/sdiff counting split."
     },
     {
-      "id": "deficiency-and-konig",
-      "title": "The Deficiency and the König–Ore Formula",
+      "id": "deficiency-def",
+      "title": "The Deficiency, Defined",
       "startLine": 174,
+      "endLine": 193,
+      "summary": "deficiency(t) := ⨆ s, (#s − #(s.biUnion t)) as a Finset.sup; le_deficiency (every subset's excess is bounded by the max) and hall_relaxed_of_deficiency (the family satisfies the relaxed Hall condition with slack exactly deficiency t — the tautological upper witness that feeds defect_hall)."
+    },
+    {
+      "id": "konig-ore-formula",
+      "title": "The König–Ore Formula",
+      "startLine": 195,
       "endLine": 251,
-      "summary": "deficiency(t) as a Finset.sup; le_deficiency and hall_relaxed_of_deficiency (the tautological upper witness); konig_ore_exists (partial SDR missing ≤ def(t)); konig_ore_min (every partial SDR misses ≥ def(t)); konig_ore_isLeast (the exact minimum) and konig_matching_number (the dual matching number |ι| − def(t) as an IsGreatest)."
+      "summary": "konig_ore_exists (partial SDR missing ≤ def(t), from defect_hall at d = deficiency t); konig_ore_min (every partial SDR misses ≥ def(t), by feeding its slack back into defect_hall); konig_ore_isLeast (the two halves combined into the exact minimum) and konig_matching_number (the dual matching number |ι| − def(t) as an IsGreatest)."
     },
     {
       "id": "deficiency-zero",
