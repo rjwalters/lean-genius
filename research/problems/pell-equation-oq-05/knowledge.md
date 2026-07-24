@@ -310,3 +310,56 @@ Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]; r
 2. Optional: characterize the full image of `cnorm` (the multiplicative monoid of
    norms — products of split/ramified primes), or generalize the 7-anisotropy to all
    primes p with 2 a cubic non-residue mod p.
+
+---
+
+## Session 8 (researcher-1, 2026-07-24): generic inert-prime descent + infinitude of non-norms
+
+**Mode**: REVISIT (ACT). **Outcome**: progress (generalization + capstone theorem).
+
+### What I did
+Executed tracker next-steps 4 & 5 (generalize 7-anisotropy; characterize non-norms).
+New theorems in `PellEquationOQ05.lean` (S8 section, inserted before the Pell coda):
+
+- `dvd_cnorm_iff_of_anisotropic` — for ANY p with the norm form anisotropic mod p:
+  p ∣ N(a,b,c) ↔ p∣a ∧ p∣b ∧ p∣c (generalizes `seven_dvd_cnorm_iff`).
+- `cube_dvd_cnorm_of_dvd` — the single descent step: p ∣ N ⟹ p³ ∣ N.
+- `cnorm_ne_of_anisotropic` — **generic non-norm criterion**: p ∣ m, p³ ∤ m ⟹
+  m is not a norm. The whole S7 argument as one reusable lemma.
+- `cnorm_anisotropic_mod13`, `cnorm_anisotropic_mod19` — kernel `decide` over
+  13³ = 2197 resp. 19³ = 6859 triples (2 is a cubic non-residue mod 13: cubes
+  {0,1,5,8,12}; mod 19: cubes {0,1,7,8,11,12,18}); both primes are inert in ℚ(∛2).
+- Instances: `cnorm_ne_thirteen`, `cnorm_ne_nineteen`, `cnorm_ne_ninety_one`
+  (91 = 7·13 — composite non-norms are free), `norm_eq_thirteen_no_solution`.
+- **Capstone `non_norms_infinite`**: {m | N(ξ) = m has no solution} is infinite,
+  witnessed by the family 7·(1 + 49k) (7-adic valuation exactly 1, injective in k).
+  With S6's zero-or-infinite dichotomy the spectrum picture is now complete:
+  ℤ∖{0} splits into "attained infinitely often" and "never attained", and BOTH
+  classes are proved infinite (`norm_eq_solutions_infinite` / `non_norms_infinite`).
+
+### Key insight
+The right generalization axis was the *modulus*, not the valuation: a single descent
+step (v_p ∈ {1,2}) needs no induction and already yields infinitely many non-norms
+from one anisotropy certificate. Full "v_p(N) ≡ 0 mod 3" would need strong induction
+for v_p ≥ 3 — not required for any current corollary; noted as a possible S9.
+
+### Lean gotchas hit
+- `omega` cannot see `((7:ℕ):ℤ)^3` — rewrite to the literal 343 first
+  (`rw [show ((7:ℕ):ℤ)^3 = 343 by norm_num]`) before `rintro ⟨t, ht⟩; omega`.
+- Membership goals under `Set.infinite_of_injective_forall_mem` need
+  `simp only [Set.mem_setOf_eq]` + `simp only [cnorm3]` before `refine` so the
+  criterion's `cnorm a b c ≠ m` unifies cleanly (beta-redex on the RHS otherwise).
+
+### Files modified
+- `proofs/Proofs/PellEquationOQ05.lean` (+130 lines: S8 section + summary item 8)
+
+### Status
+0 axioms / 0 sorries preserved (kernel `decide` only — no `native_decide`, so no
+`Lean.ofReduceBool`). Docker build: see PR.
+
+### Next steps
+1. Hard ACT unchanged: unit rank = 1 via signature (1,1) — still no Mathlib bearer
+   for `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`.
+2. Optional S9: full valuation theorem v_p(N) ≡ 0 (mod 3) for inert p (strong
+   induction on v_p); or positive side of the spectrum (which primes ARE norms:
+   5 = N(1,1,1)? check split primes p ≡ ±1 with 2 a cube mod p).
