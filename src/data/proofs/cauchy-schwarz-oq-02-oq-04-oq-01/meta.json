@@ -119,11 +119,20 @@
   ],
   "sections": [
     {
-      "id": "sec-01-imports",
-      "title": "Imports and Setup",
+      "id": "sec-01-header",
+      "title": "Imports and Docstring",
       "startLine": 1,
+      "endLine": 40,
+      "summary": "Mathlib imports (InnerProductSpace.Basic, Tactic). Docstring's `## Overview` states Buzano's inequality, its proof idea (reflection isometry), and that it strengthens and recovers Cauchy-Schwarz; `## Main Results` lists all 7 theorems with their one-line statements.",
+      "mathContext": "Buzano (1974): ‖⟪x,e⟫‖·‖⟪e,y⟫‖ ≤ (‖x‖·‖y‖ + ‖⟪x,y⟫‖)/2 for a unit vector e, recovering Cauchy-Schwarz at e = x/‖x‖."
+    },
+    {
+      "id": "sec-01-setup",
+      "title": "Setup: Namespace, Variables, and Notation",
+      "startLine": 42,
       "endLine": 51,
-      "summary": "Mathlib imports (InnerProductSpace.Basic, Tactic). Docstring states Buzano's inequality, its proof idea (reflection isometry), and that it strengthens and recovers Cauchy-Schwarz. Namespace CauchySchwarzBuzano with RCLike-generic variables and a local ⟪·,·⟫ notation."
+      "summary": "Opens a `noncomputable section`, `RCLike`/`ComplexConjugate`, and the `CauchySchwarzBuzano` namespace; declares the ambient RCLike field `𝕜` and inner-product space `E`, and a local `⟪·, ·⟫` notation abbreviating `@inner 𝕜 _ _`.",
+      "mathContext": "The RCLike-generic variables let every theorem in the file hold uniformly for both ℝ and ℂ inner product spaces."
     },
     {
       "id": "sec-02-reflection",
