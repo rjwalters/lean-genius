@@ -77,12 +77,20 @@
       "mathContext": "$X^n - p$ irreducible over $R[X]$ for $R$ an integral domain, $p$ prime, $n \\ge 1$ — Eisenstein at the prime ideal $(p)$, generalizing the classical $\\mathbb{Z}$ case (e.g. $Y^n - 2$) to arbitrary integral domains including $\\mathbb{Q}[X]$."
     },
     {
-      "id": "general",
-      "title": "The General Theorem",
+      "id": "general-setup",
+      "title": "The General Theorem: Statement and First Three Hypotheses",
       "startLine": 42,
+      "endLine": 67,
+      "summary": "irreducible_X_pow_sub_C_of_prime states Xⁿ − p irreducible over R[X] for any integral domain R, prime p, n ≥ 1, then discharges the first three of Eisenstein's four hypotheses at P = span{p}: the leading coefficient 1 ∉ P (P is proper since p is prime), every coefficient below degree n is 0 or −p (both in P), and the polynomial has positive degree n.",
+      "mathContext": "Eisenstein at $P = (p)$: leading coeff $1 \\notin P$; lower coeffs $\\in \\{0,-p\\} \\subseteq P$; degree $n > 0$."
+    },
+    {
+      "id": "general-crux",
+      "title": "The Crux: Constant Coefficient −p ∉ (p)², and Primitivity",
+      "startLine": 68,
       "endLine": 84,
-      "summary": "irreducible_X_pow_sub_C_of_prime: Xⁿ − p irreducible over R[X] for any integral domain R, prime p, n ≥ 1, via Eisenstein at (p).",
-      "mathContext": "Eisenstein's criterion at the natural level of generality."
+      "summary": "The fourth Eisenstein hypothesis, and the only step with real arithmetic content: −p ∉ (p)², since p² ∣ p would force p ∣ 1 via mul_dvd_mul_iff_left, contradicting that p is prime (not a unit). Primitivity is then free from monicity (Monic.isPrimitive), closing the general theorem.",
+      "mathContext": "$-p \\in (p)^2 \\Rightarrow p \\mid 1$, contradicting $p$ prime."
     },
     {
       "id": "int-instances",
