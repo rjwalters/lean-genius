@@ -321,9 +321,7 @@ theorem collinear_of_collinearityDet_eq_zero
           simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
             smul_eq_mul]
           field_simp [hy]
-          first
-          | linear_combination h'
-          | linear_combination -h'
+          linear_combination -h'
         · simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
             smul_eq_mul]
           field_simp [hy]
@@ -348,9 +346,7 @@ theorem collinear_of_collinearityDet_eq_zero
         simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
           smul_eq_mul]
         field_simp [hx]
-        first
-        | linear_combination h'
-        | linear_combination -h'
+        linear_combination h'
 
 /-- Contrapositive form used by the main theorem: non-collinear triples have
 nonzero collinearity determinant. -/
@@ -401,9 +397,9 @@ private lemma circumcenter_spec
           - (x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (x₃ - x₁))
           / (2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁))),
          bisector_to_dist _ _ _ _ _ _ ?_, bisector_to_dist _ _ _ _ _ _ ?_⟩
-  · rw [← mul_div_assoc, ← mul_div_assoc, div_add_div_same, div_eq_iff h2d]
+  · rw [← mul_div_assoc, ← mul_div_assoc, ← add_div, div_eq_iff h2d]
     ring
-  · rw [← mul_div_assoc, ← mul_div_assoc, div_add_div_same, div_eq_iff h2d]
+  · rw [← mul_div_assoc, ← mul_div_assoc, ← add_div, div_eq_iff h2d]
     ring
 
 /-- Every non-collinear triple in the plane lies on a genuine circle
