@@ -192,11 +192,19 @@
     },
     {
       "id": "upset",
-      "title": "§3 The up-set packaging and the dichotomy",
+      "title": "§3a The up-set packaging",
       "startLine": 87,
+      "endLine": 115,
+      "summary": "not_solvable_perm_card_eq_ge_five negates perm_solvable_iff_card via Fintype.card_fin to the arithmetic predicate 5 ≤ n; not_solvable_perm_card_isUpSet restates it as upward closure under ≤; five_is_min_unsolvable_card records 5 as the least such n, the order-dual of the parent's four_is_max_solvable_card.",
+      "mathContext": "$\\{n \\mid \\lnot\\,\\mathrm{IsSolvable}(\\mathrm{Perm}(\\mathrm{Fin}\\,n))\\} = \\{n \\mid 5 \\le n\\}$, an up-set with minimum element 5."
+    },
+    {
+      "id": "dichotomy",
+      "title": "§3b The order-complement and the boundary",
+      "startLine": 117,
       "endLine": 144,
-      "summary": "not_solvable_perm_card_eq_ge_five negates perm_solvable_iff_card via Fintype.card_fin; not_solvable_perm_card_isUpSet and five_is_min_unsolvable_card present {n | ¬ solvable (Perm (Fin n))} = {n | 5 ≤ n} as an up-set with minimum 5; not_solvable_iff_not_le_four, solvable_unsolvable_partition and boundary_is_successor exhibit the down-set/up-set order-complement meeting at n = 5.",
-      "mathContext": "The negated threshold 5 ≤ n is upward closed, the order-complement of the parent's down-set n ≤ 4; the two partition ℕ and meet at the Abel–Ruffini boundary, where the minimal non-solvable cardinality 5 is the successor of the maximal solvable one 4."
+      "summary": "not_solvable_iff_not_le_four rewrites non-solvability as the negation of the parent's threshold n ≤ 4; solvable_unsolvable_partition shows the down-set {≤4} and up-set {≥5} partition ℕ; boundary_is_successor packages the parent's four_is_max_solvable_card with this file's five_is_min_unsolvable_card into the successor fact 4 + 1 = 5.",
+      "mathContext": "The solvable down-set $\\{n \\le 4\\}$ and unsolvable up-set $\\{n \\ge 5\\}$ are set-theoretic complements partitioning $\\mathbb{N}$, meeting where the greatest solvable cardinality $4$ is the predecessor of the least unsolvable one $5$."
     }
   ],
   "sorries": [],
