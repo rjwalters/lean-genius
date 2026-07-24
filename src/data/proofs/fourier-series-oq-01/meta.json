@@ -247,7 +247,7 @@
       "leanType": "f ∈ L² → ∀ᵐ x, Tendsto (fun N => S_N f x) atTop (𝓝 (f x))"
     },
     {
-      "name": "carleson_hunt_weak_type",
+      "name": "carleson_hunt_maximal",
       "type": "axiom",
       "description": "Carleson-Hunt weak-type (2,2) maximal inequality",
       "leanType": "μ({S*f > λ}) ≤ (C/λ)² · ‖f‖²_{L²}"

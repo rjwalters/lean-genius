@@ -21,7 +21,7 @@
 # Typically launched in tmux so it survives the controlling terminal:
 #   tmux new-session -d -s lean-daemon \
 #     './scripts/lean/daemon-keeper.sh --monitor-only --interval 60 \
-#        --researcher 5 --enricher 2 --aristotle 1 --auditor 1 \
+#        --researcher 3 --enricher 1 --aristotle 1 --auditor 1 \
 #        --seeker 1 --deployer 1 --tester 1 --herald 1 --mechanic 1'
 #
 # Clean shutdown (keeper + daemon both exit, agents stopped by the daemon):

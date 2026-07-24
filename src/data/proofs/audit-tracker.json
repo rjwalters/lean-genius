@@ -2193,9 +2193,9 @@
       "result": "clean"
     },
     "basel-problem-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:47Z",
+      "lastAudited": "2026-07-24T05:06:05Z",
       "result": "clean"
     },
     "basel-problem-oq-03": {
@@ -2944,10 +2944,10 @@
       "result": "clean"
     },
     "binomial-theorem-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:47Z",
-      "result": "clean"
+      "lastAudited": "2026-07-24T05:03:02Z",
+      "result": "issues-fixed"
     },
     "binomial-theorem-oq-02-oq-01": {
       "auditCount": 4,
@@ -3071,9 +3071,9 @@
       "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:47Z",
+      "lastAudited": "2026-07-24T04:58:01Z",
       "result": "clean"
     },
     "binomial-theorem-oq-03-oq-01": {
@@ -3645,9 +3645,9 @@
       "issues": []
     },
     "brouwer-fixed-point": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:47Z",
+      "lastAudited": "2026-07-24T04:55:22Z",
       "result": "clean"
     },
     "brouwer-fixed-point-oq-01": {
@@ -3710,9 +3710,9 @@
       "result": "clean"
     },
     "brouwer-fixed-point-oq-02": {
-      "auditCount": 6,
+      "auditCount": 7,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:47Z",
+      "lastAudited": "2026-07-24T04:52:28Z",
       "result": "clean"
     },
     "brouwer-fixed-point-oq-02-oq-01": {
@@ -4050,8 +4050,8 @@
     },
     "cantor-diagonalization-oq-01": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:47Z",
+      "auditCount": 5,
+      "lastAudited": "2026-07-24T04:42:17Z",
       "result": "clean"
     },
     "cantor-diagonalization-oq-01-oq-01": {
@@ -19077,17 +19077,17 @@
     },
     "fourier-series": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:48Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-07-24T04:48:57Z",
+      "result": "issues-fixed"
     },
     "fourier-series-oq-01": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
-      "lastAudited": "2026-05-04T04:04:48Z",
-      "result": "clean"
+      "lastAudited": "2026-07-24T04:39:22Z",
+      "result": "issues-fixed"
     },
     "fourier-series-oq-02": {
       "auditCount": 6,
@@ -19114,9 +19114,9 @@
       "result": "clean"
     },
     "fourier-series-oq-02-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:48Z",
+      "lastAudited": "2026-07-24T04:34:53Z",
       "result": "clean"
     },
     "fourier-series-oq-02-oq-03-oq-02": {

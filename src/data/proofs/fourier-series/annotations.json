@@ -290,18 +290,18 @@
     },
     "type": "concept",
     "title": "Bessel's Inequality",
-    "content": "Proves **Bessel's inequality**: for any finite set $S \\subseteq \\mathbb{Z}$, $\\sum_{n \\in S} |c_n|^2 \\leq \\int |f|^2\\, d\\mu$. The proof rewrites the RHS using Parseval, then applies `sum_le_tsum` (finite sum $\\leq$ infinite sum for nonneg terms).",
-    "mathContext": "Proved: `bessel_fourier (f) (s : Finset ℤ) : ∑ n ∈ s, ‖fourierCoeff (⇑f) n‖ ^ 2 ≤ ∫ t, ‖(⇑f) t‖ ^ 2 ∂haarAddCircle`. The proof: (1) rewrite RHS via `parseval_fourier`, (2) apply `sum_le_tsum` with nonnegativity from `sq_nonneg`, (3) use `summable_sq_fourierCoeff` for summability. For complete systems, Bessel becomes Parseval equality.",
+    "content": "Proves **Bessel's inequality**: for any finite set $S \\subseteq \\mathbb{Z}$, $\\sum_{n \\in S} |c_n|^2 \\leq \\int |f|^2\\, d\\mu$. The proof applies `sum_le_hasSum` directly to the `HasSum` witness from `hasSum_sq_fourierCoeff` (finite sum $\\leq$ infinite sum for nonneg terms).",
+    "mathContext": "Proved: `bessel_fourier (f) (s : Finset ℤ) : ∑ n ∈ s, ‖fourierCoeff (⇑f) n‖ ^ 2 ≤ ∫ t, ‖(⇑f) t‖ ^ 2 ∂haarAddCircle`. The proof: `sum_le_hasSum s (fun _ _ => sq_nonneg _) (hasSum_sq_fourierCoeff f)`, using nonnegativity from `sq_nonneg` and the `HasSum` witness from Mathlib's `hasSum_sq_fourierCoeff`. For complete systems, Bessel becomes Parseval equality.",
     "significance": "key",
     "relatedConcepts": [
       "Bessel's inequality",
-      "sum_le_tsum",
+      "sum_le_hasSum",
       "sq_nonneg",
       "partial sums"
     ],
     "prerequisites": [
       "parseval_fourier",
-      "sum_le_tsum",
+      "sum_le_hasSum",
       "summable_sq_fourierCoeff"
     ]
   },

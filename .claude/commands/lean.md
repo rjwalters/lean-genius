@@ -21,14 +21,20 @@ Parse `$ARGUMENTS` and route:
 # Start in tmux via the keeper (recommended — runs autonomously AND auto-restarts
 # the daemon if it crashes; the daemon runs under `set -euo pipefail` and can die
 # on any unguarded non-zero in its loop, which leaves agents orphaned).
-tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 2 --researcher 1 --deployer 1'
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 1 --researcher 3 --deployer 1'
 
 # Or with custom pool
-tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 2 --researcher 3 --aristotle 1 --seeker 1 --deployer 1 --auditor 1 --mechanic 1'
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 1 --researcher 3 --aristotle 1 --seeker 1 --deployer 1 --auditor 1 --mechanic 1'
 
 # Adopt an already-running fleet without tearing it down (keeper + monitor-only):
-tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --monitor-only --interval 60 --enricher 2 --researcher 5 --aristotle 1 --auditor 1 --seeker 1 --deployer 1 --tester 1 --herald 1 --mechanic 1'
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --monitor-only --interval 60 --enricher 1 --researcher 3 --aristotle 1 --auditor 1 --seeker 1 --deployer 1 --tester 1 --herald 1 --mechanic 1'
 ```
+
+> **Pool ratio (issue #43008):** default is 1 enricher / 3 researchers. The
+> enrichment queue sits at its quality floor — when `launch.sh status` shows
+> "Proofs needing enrichment: 0" (or find-targets serves only 96+-quality
+> score-ceiling noise), extra enricher capacity is wasted; keep enrichers at 1
+> and spend the slots on researchers instead.
 
 > The keeper supervises the supervisor: it restarts `launch.sh daemon` on any
 > non-clean exit, with crash-loop backoff, and logs lifecycle events to

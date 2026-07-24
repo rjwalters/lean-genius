@@ -83,11 +83,12 @@ RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 MISSING_SESSION_ALERT_CYCLES=3
 
 # Default pool sizes
-# Balanced team: 5 researchers (continuous), 8 support agents (sleeping between cycles)
-# ~72 active min/hr across 9 accounts = ~8 min/hr per account
+# Rebalanced (issue #43008): 1 enricher, 3 researchers. The enrichment queue has
+# been at its quality floor (find-targets serving only 96+-quality noise), so
+# capacity moves back to research. Support agents sleep between cycles.
 DEFAULT_ENRICHER=1
 DEFAULT_ARISTOTLE=1
-DEFAULT_RESEARCHER=5
+DEFAULT_RESEARCHER=3
 DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
 DEFAULT_AUDITOR=1
@@ -163,7 +164,7 @@ Agent Types:
 Examples:
   $0 start                              # Start with defaults
   $0 start --researcher 3               # Custom pool sizes
-  $0 start --enricher 2 --researcher 1  # Include Enrichers
+  $0 start --enricher 1 --researcher 3  # Include Enrichers
   $0 spawn researcher                   # Add one Researcher
   $0 spawn seeker                       # Add seeker agent
   $0 scale researcher 4                 # Scale to 4 Researchers

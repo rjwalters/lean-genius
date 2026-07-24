@@ -94,7 +94,8 @@
       "Arc length and signed area are reparametrization invariants — the proof makes this a change-of-variables theorem rather than an axiom",
       "The signed-area case needs no monotonicity of φ: the Jacobian factor φ' enters linearly, so it survives even for non-monotone reparametrizations",
       "The derivative of a periodic function is periodic, and this alone (via periodic_deriv) lets the period-shift lemma close both integrals",
-      "Discharging the full `exists_nice_reparam` axiom additionally requires (i) a regularity field on the curve structure so the arc-length map is invertible by the inverse function theorem, and (ii) restating the axiom so the witness is literally γ∘φ — these invariance lemmas are the reusable analytic core of that remaining program"
+      "Discharging the full `exists_nice_reparam` axiom additionally requires (i) a regularity field on the curve structure so the arc-length map is invertible by the inverse function theorem, and (ii) restating the axiom so the witness is literally γ∘φ — these invariance lemmas are the reusable analytic core of that remaining program",
+      "The regularity hypotheses are minimal for what the integrands actually use: both `speedFn` and `areaFn` involve only first derivatives of x, y, so `ContDiff ℝ 1` on the coordinates and on φ suffices — no second-derivative or curvature assumption is needed even though φ is reparametrizing the curve"
     ],
     "prerequisites": [
       "Real analysis: derivatives, the chain rule, interval integrals",
