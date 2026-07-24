@@ -463,11 +463,18 @@ private theorem six_noLine_012 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_two]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_013 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -477,11 +484,18 @@ private theorem six_noLine_013 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_three]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_014 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -491,11 +505,18 @@ private theorem six_noLine_014 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_015 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -505,11 +526,18 @@ private theorem six_noLine_015 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_023 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -519,11 +547,18 @@ private theorem six_noLine_023 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_three]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_024 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -533,11 +568,18 @@ private theorem six_noLine_024 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_025 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -547,11 +589,18 @@ private theorem six_noLine_025 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_034 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -561,11 +610,18 @@ private theorem six_noLine_034 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_035 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -575,11 +631,18 @@ private theorem six_noLine_035 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_045 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -589,11 +652,18 @@ private theorem six_noLine_045 :
   apply not_collinear_of_det
   simp only [sixConfig_zero, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_123 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -603,11 +673,18 @@ private theorem six_noLine_123 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_three]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_124 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -617,11 +694,18 @@ private theorem six_noLine_124 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_125 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -631,11 +715,18 @@ private theorem six_noLine_125 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_134 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -645,11 +736,18 @@ private theorem six_noLine_134 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_135 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -659,11 +757,18 @@ private theorem six_noLine_135 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_145 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -673,11 +778,18 @@ private theorem six_noLine_145 :
   apply not_collinear_of_det
   simp only [sixConfig_one, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_234 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -687,11 +799,18 @@ private theorem six_noLine_234 :
   apply not_collinear_of_det
   simp only [sixConfig_two, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_235 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -701,11 +820,18 @@ private theorem six_noLine_235 :
   apply not_collinear_of_det
   simp only [sixConfig_two, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_245 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -715,11 +841,18 @@ private theorem six_noLine_245 :
   apply not_collinear_of_det
   simp only [sixConfig_two, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noLine_345 :
     ¬∃ (a b c : ℝ), (a, b, c) ≠ (0, 0, 0) ∧
@@ -729,11 +862,18 @@ private theorem six_noLine_345 :
   apply not_collinear_of_det
   simp only [sixConfig_three, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 end NoLine
 
@@ -779,11 +919,18 @@ private theorem six_noCircle_0123 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_three]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0124 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -792,11 +939,18 @@ private theorem six_noCircle_0124 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0125 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -805,11 +959,18 @@ private theorem six_noCircle_0125 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_two, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0134 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -818,11 +979,18 @@ private theorem six_noCircle_0134 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0135 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -831,11 +999,18 @@ private theorem six_noCircle_0135 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0145 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -844,11 +1019,18 @@ private theorem six_noCircle_0145 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_one, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0234 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -857,11 +1039,18 @@ private theorem six_noCircle_0234 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0235 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -870,11 +1059,18 @@ private theorem six_noCircle_0235 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0245 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -883,11 +1079,18 @@ private theorem six_noCircle_0245 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_two, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_0345 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -896,11 +1099,18 @@ private theorem six_noCircle_0345 :
   apply not_concyclic_of_det
   simp only [sixConfig_zero, sixConfig_three, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_1234 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -909,11 +1119,18 @@ private theorem six_noCircle_1234 :
   apply not_concyclic_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_three, sixConfig_four]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_1235 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -922,11 +1139,18 @@ private theorem six_noCircle_1235 :
   apply not_concyclic_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_three, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_1245 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -935,11 +1159,18 @@ private theorem six_noCircle_1245 :
   apply not_concyclic_of_det
   simp only [sixConfig_one, sixConfig_two, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_1345 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -948,11 +1179,18 @@ private theorem six_noCircle_1345 :
   apply not_concyclic_of_det
   simp only [sixConfig_one, sixConfig_three, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 private theorem six_noCircle_2345 :
     ¬∃ (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ),
@@ -961,22 +1199,28 @@ private theorem six_noCircle_2345 :
   apply not_concyclic_of_det
   simp only [sixConfig_two, sixConfig_three, sixConfig_four, sixConfig_five]
   norm_num
-  all_goals intro heq
-  all_goals nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
-    sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
-    sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
-    sqrt_six_lt, lt_sqrt_six]
+  all_goals first
+    | (intro heq
+       nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+         sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+         sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+         sqrt_six_lt, lt_sqrt_six])
+    | (constructor <;>
+        (intro heq
+         nlinarith [heq, sqrt_two_sq, sqrt_three_sq, sqrt_six_sq, sqrt_two_pos,
+           sqrt_three_pos, sqrt_six_pos, sqrt_two_mul_sqrt_three, sqrt_two_mul_sqrt_six,
+           sqrt_three_mul_sqrt_six, sqrt_two_lt, lt_sqrt_two, sqrt_three_lt, lt_sqrt_three,
+           sqrt_six_lt, lt_sqrt_six]))
 
 end NoCircle
 
-set_option maxHeartbeats 4000000 in
-/-- **No four of the six points are concyclic.**  Every genuine index quadruple
-dispatches (via `assumption`, so in any order) to one of the fifteen per-quadruple
-circle-determinant lemmas. -/
-theorem noFourConcyclic_sixConfig : NoFourConcyclic sixConfig := by
-  intro a b c d hcard
-  rintro ⟨center, ρ, h1, h2, h3, h4⟩
-  fin_cases a <;> fin_cases b <;> fin_cases c <;> fin_cases d <;>
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_0 (b c d : Fin 6)
+    (hcard : ({(0 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 0) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
     first
     | exact absurd hcard (by decide)
     | exact six_noCircle_0123
@@ -999,7 +1243,147 @@ theorem noFourConcyclic_sixConfig : NoFourConcyclic sixConfig := by
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
     | exact six_noCircle_0345
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_1 (b c d : Fin 6)
+    (hcard : ({(1 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 1) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0123
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0124
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0125
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0134
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0135
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0145
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
     | exact six_noCircle_1234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_2 (b c d : Fin 6)
+    (hcard : ({(2 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 2) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0123
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0124
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0125
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_2345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_3 (b c d : Fin 6)
+    (hcard : ({(3 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 3) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0123
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0134
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0135
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_2345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_4 (b c d : Fin 6)
+    (hcard : ({(4 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 4) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0124
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0134
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0145
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1234
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_1345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_2345
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+set_option maxHeartbeats 3200000 in
+private theorem sixConfig_noCircle_with_5 (b c d : Fin 6)
+    (hcard : ({(5 : Fin 6), b, c, d} : Finset (Fin 6)).card = 4)
+    (center : EuclideanSpace ℝ (Fin 2)) (ρ : ℝ)
+    (h1 : dist center (sixConfig 5) = ρ) (h2 : dist center (sixConfig b) = ρ)
+    (h3 : dist center (sixConfig c) = ρ) (h4 : dist center (sixConfig d) = ρ) : False := by
+  fin_cases b <;> fin_cases c <;> fin_cases d <;>
+    first
+    | exact absurd hcard (by decide)
+    | exact six_noCircle_0125
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0135
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0145
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0235
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0245
+        ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+    | exact six_noCircle_0345
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
     | exact six_noCircle_1235
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
@@ -1009,6 +1393,21 @@ theorem noFourConcyclic_sixConfig : NoFourConcyclic sixConfig := by
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
     | exact six_noCircle_2345
         ⟨center, ρ, by assumption, by assumption, by assumption, by assumption⟩
+
+/-- **No four of the six points are concyclic.**  The first index is split off
+into six helper lemmas (one per value, keeping each within its own heartbeat
+budget); every genuine index quadruple then dispatches (via `assumption`, so in
+any order) to one of the fifteen per-quadruple circle-determinant lemmas. -/
+theorem noFourConcyclic_sixConfig : NoFourConcyclic sixConfig := by
+  intro a b c d hcard
+  rintro ⟨center, ρ, h1, h2, h3, h4⟩
+  fin_cases a
+  · exact sixConfig_noCircle_with_0 b c d hcard center ρ h1 h2 h3 h4
+  · exact sixConfig_noCircle_with_1 b c d hcard center ρ h1 h2 h3 h4
+  · exact sixConfig_noCircle_with_2 b c d hcard center ρ h1 h2 h3 h4
+  · exact sixConfig_noCircle_with_3 b c d hcard center ρ h1 h2 h3 h4
+  · exact sixConfig_noCircle_with_4 b c d hcard center ρ h1 h2 h3 h4
+  · exact sixConfig_noCircle_with_5 b c d hcard center ρ h1 h2 h3 h4
 
 /-- **`sixConfig` is in general position.** -/
 theorem inGeneralPosition_sixConfig : InGeneralPosition sixConfig :=
