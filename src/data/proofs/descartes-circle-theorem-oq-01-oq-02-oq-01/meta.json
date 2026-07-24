@@ -82,7 +82,8 @@
       "**The right-hand factor 2 forces an even sum.** Because the Descartes relation writes (a+b+c+d)² as 2·(a²+b²+c²+d²), the square is even and so is its base — instantly killing the odd parities 1 and 3 before any case work.",
       "**'Never all odd' is a square ≡ 2 (mod 4) obstruction.** Substituting four odd values collapses the relation to (k+l+m+n+2)² ≡ 2 (mod 4); since integer squares are only 0 or 1 mod 4, the all-odd configuration is impossible. This is the one genuinely non-trivial step and it is purely 2-adic.",
       "**The parity signature distinguishes primitive from imprimitive packings.** oddCount = 2 characterizes primitive Descartes quadruples (gcd 1), while oddCount = 0 is exactly the all-even, imprimitive case that scales down by 2 — a complete dichotomy.",
-      "**omega + abstraction handles the nonlinear residue arithmetic.** The proofs keep omega in scope by abstracting products like t·t to fresh variables, so the linear arithmetic decision procedure can finish modular counting it could not otherwise reason about."
+      "**omega + abstraction handles the nonlinear residue arithmetic.** The proofs keep omega in scope by abstracting products like t·t to fresh variables, so the linear arithmetic decision procedure can finish modular counting it could not otherwise reason about.",
+      "**The imprimitive corollary doesn't actually need the Descartes relation.** descartesRelZ_all_even_imp_two_dvd takes `_h : descartesRelZ a b c d` as a parameter — named with an underscore because it is never used in the proof — since oddCount a b c d = 0 already forces every residue aᵢ%2 to be 0 by pure arithmetic (omega), independent of the quadratic relation. The hypothesis is kept only so the theorem's signature mirrors its primitive-case sibling descartesRelZ_two_odd_of_not_all_even, which genuinely does need it."
     ]
   },
   "sections": [
