@@ -53,6 +53,11 @@ in prose:
 * `trivial_lower_bound_false` — `fThreshold 1 4 < 4 - 1`: the parent's removed
   `f_trivial_lower` axiom (`n - 1 ≤ fThreshold r n`) is false, via `K₃` + isolated
   vertex — previously only a prose remark, now a theorem.
+* `fThreshold_one_four` — **`fThreshold 1 4 = 2`**, the second exact value: budget `2`
+  forces 2-colorability of every 4-vertex graph via the *three perfect pairings* of
+  `Fin 4` (a killed pairing costs a distinct edge; three killed pairings exceed the
+  budget by disjoint pair-slot counting, `three_slots_le_card`; a surviving pairing
+  is an explicit 2-coloring).  So the threshold is *constant* from `n = 3` to `n = 4`.
 
 No new axioms; the parent file has 0 axioms and they are untouched (and unused here).
 -/
@@ -488,6 +493,237 @@ theorem trivial_lower_bound_false : fThreshold 1 4 < 4 - 1 := by
   have := fThreshold_one_four_le_two
   omega
 
+/-
+## The second exact value: `fThreshold 1 4 = 2`
+
+The upper bound `fThreshold 1 4 ≤ 2` is above (`K₃` + isolated vertex). The
+matching lower bound needs: **budget `2` forces every 4-vertex graph to be
+2-colorable.** Mechanism — the *three perfect pairings* of `Fin 4`:
+
+    {0,1 | 2,3}   {0,2 | 1,3}   {0,3 | 1,2}
+
+A pairing yields a proper 2-coloring (pairs = color classes) **unless** one of
+its two intra-pair edges is present; and an edge kills exactly the one pairing
+that puts its endpoints together.  So if all three pairings are killed, `G`
+has three distinct edges — but the reduction hypothesis at `S = univ` with
+budget `2` caps `G` at two edges (each removed ordered pair kills at most one
+undirected edge: disjoint pair-slot counting, factored into
+`three_slots_le_card`).  Hence some pairing survives and 2-colors `G`.
+-/
+
+/-- If an edge `{u, v}` is killed by `removed` (one of its two orientations is
+a member), then `removed` meets the edge's two-element *pair-slot*
+`{(u,v), (v,u)}`. -/
+lemma slot_nonempty {n : ℕ} {removed : Finset (Fin n × Fin n)} {u v : Fin n}
+    (h : (u, v) ∈ removed ∨ (v, u) ∈ removed) :
+    (removed ∩ ({(u, v), (v, u)} : Finset (Fin n × Fin n))).Nonempty := by
+  rcases h with h | h
+  · exact ⟨(u, v), Finset.mem_inter.mpr ⟨h, Finset.mem_insert_self _ _⟩⟩
+  · exact ⟨(v, u), Finset.mem_inter.mpr
+      ⟨h, Finset.mem_insert.mpr (Or.inr (Finset.mem_singleton_self _))⟩⟩
+
+/-- **Disjoint slot counting.** If `removed` meets three pairwise-disjoint
+slot sets, it has at least three elements — the witnesses live in disjoint
+slots, hence are pairwise distinct.  (Generic form of the `K₃` counting inside
+`two_mem_fThresholdSet_one_three`.) -/
+lemma three_slots_le_card {n : ℕ} {removed s₁ s₂ s₃ : Finset (Fin n × Fin n)}
+    (h₁ : (removed ∩ s₁).Nonempty) (h₂ : (removed ∩ s₂).Nonempty)
+    (h₃ : (removed ∩ s₃).Nonempty)
+    (d₁₂ : Disjoint s₁ s₂) (d₁₃ : Disjoint s₁ s₃) (d₂₃ : Disjoint s₂ s₃) :
+    3 ≤ removed.card := by
+  obtain ⟨a, ha⟩ := h₁
+  obtain ⟨b, hb⟩ := h₂
+  obtain ⟨c, hc⟩ := h₃
+  obtain ⟨haR, haS⟩ := Finset.mem_inter.mp ha
+  obtain ⟨hbR, hbS⟩ := Finset.mem_inter.mp hb
+  obtain ⟨hcR, hcS⟩ := Finset.mem_inter.mp hc
+  have hab : a ≠ b := by
+    rintro rfl
+    exact Finset.disjoint_left.mp d₁₂ haS hbS
+  have hac : a ≠ c := by
+    rintro rfl
+    exact Finset.disjoint_left.mp d₁₃ haS hcS
+  have hbc : b ≠ c := by
+    rintro rfl
+    exact Finset.disjoint_left.mp d₂₃ hbS hcS
+  have hsub : ({a, b, c} : Finset (Fin n × Fin n)) ⊆ removed := by
+    intro p hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl
+    · exact haR
+    · exact hbR
+    · exact hcR
+  calc 3 = ({a, b, c} : Finset (Fin n × Fin n)).card := by
+        rw [Finset.card_insert_of_notMem (by simp [hab, hac]),
+          Finset.card_insert_of_notMem (by simp [hbc]), Finset.card_singleton]
+    _ ≤ removed.card := Finset.card_le_card hsub
+
+/-- **Budget `2` forces 4-vertex graphs to be 2-colorable.** Case analysis on
+the three perfect pairings of `Fin 4`: a surviving pairing (both intra-pair
+edges absent) gives an explicit 2-coloring; if each pairing is killed by an
+edge, the three killers are distinct edges and the disjoint pair-slot count
+forces `removed.card ≥ 3 > 2`. -/
+theorem two_mem_fThresholdSet_one_four : 2 ∈ fThresholdSet 1 4 := by
+  intro G hP
+  obtain ⟨removed, hcard, c₁, hc₁⟩ := hP Finset.univ
+  -- Every edge of `G` is killed by one of its two orientations in `removed`.
+  have hkill : ∀ u v, G.adj u v → (u, v) ∈ removed ∨ (v, u) ∈ removed := by
+    intro u v hadj
+    by_contra h
+    push_neg at h
+    exact hc₁ u v ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩, h.1, h.2⟩
+      (Subsingleton.elim _ _)
+  by_cases h01 : G.adj 0 1
+  · by_cases h02 : G.adj 0 2
+    · by_cases h03 : G.adj 0 3
+      · -- killers 01, 02, 03
+        exact absurd (three_slots_le_card (slot_nonempty (hkill 0 1 h01))
+          (slot_nonempty (hkill 0 2 h02)) (slot_nonempty (hkill 0 3 h03))
+          (Finset.disjoint_left.mpr (by decide))
+          (Finset.disjoint_left.mpr (by decide))
+          (Finset.disjoint_left.mpr (by decide))) (by omega)
+      · by_cases h12 : G.adj 1 2
+        · -- killers 01, 02, 12
+          exact absurd (three_slots_le_card (slot_nonempty (hkill 0 1 h01))
+            (slot_nonempty (hkill 0 2 h02)) (slot_nonempty (hkill 1 2 h12))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))) (by omega)
+        · -- pairing {0,3 | 1,2} survives
+          refine ⟨![0, 1, 1, 0], fun u v hadj => ?_⟩
+          fin_cases u <;> fin_cases v <;>
+            first
+              | exact absurd hadj (G.irrefl _)
+              | exact absurd hadj h03
+              | exact absurd hadj (fun h => h03 (G.symm _ _ h))
+              | exact absurd hadj h12
+              | exact absurd hadj (fun h => h12 (G.symm _ _ h))
+              | decide
+    · by_cases h13 : G.adj 1 3
+      · by_cases h03 : G.adj 0 3
+        · -- killers 01, 13, 03
+          exact absurd (three_slots_le_card (slot_nonempty (hkill 0 1 h01))
+            (slot_nonempty (hkill 1 3 h13)) (slot_nonempty (hkill 0 3 h03))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))) (by omega)
+        · by_cases h12 : G.adj 1 2
+          · -- killers 01, 13, 12
+            exact absurd (three_slots_le_card (slot_nonempty (hkill 0 1 h01))
+              (slot_nonempty (hkill 1 3 h13)) (slot_nonempty (hkill 1 2 h12))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))) (by omega)
+          · -- pairing {0,3 | 1,2} survives
+            refine ⟨![0, 1, 1, 0], fun u v hadj => ?_⟩
+            fin_cases u <;> fin_cases v <;>
+              first
+                | exact absurd hadj (G.irrefl _)
+                | exact absurd hadj h03
+                | exact absurd hadj (fun h => h03 (G.symm _ _ h))
+                | exact absurd hadj h12
+                | exact absurd hadj (fun h => h12 (G.symm _ _ h))
+                | decide
+      · -- pairing {0,2 | 1,3} survives
+        refine ⟨![0, 1, 0, 1], fun u v hadj => ?_⟩
+        fin_cases u <;> fin_cases v <;>
+          first
+            | exact absurd hadj (G.irrefl _)
+            | exact absurd hadj h02
+            | exact absurd hadj (fun h => h02 (G.symm _ _ h))
+            | exact absurd hadj h13
+            | exact absurd hadj (fun h => h13 (G.symm _ _ h))
+            | decide
+  · by_cases h23 : G.adj 2 3
+    · by_cases h02 : G.adj 0 2
+      · by_cases h03 : G.adj 0 3
+        · -- killers 23, 02, 03
+          exact absurd (three_slots_le_card (slot_nonempty (hkill 2 3 h23))
+            (slot_nonempty (hkill 0 2 h02)) (slot_nonempty (hkill 0 3 h03))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))
+            (Finset.disjoint_left.mpr (by decide))) (by omega)
+        · by_cases h12 : G.adj 1 2
+          · -- killers 23, 02, 12
+            exact absurd (three_slots_le_card (slot_nonempty (hkill 2 3 h23))
+              (slot_nonempty (hkill 0 2 h02)) (slot_nonempty (hkill 1 2 h12))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))) (by omega)
+          · -- pairing {0,3 | 1,2} survives
+            refine ⟨![0, 1, 1, 0], fun u v hadj => ?_⟩
+            fin_cases u <;> fin_cases v <;>
+              first
+                | exact absurd hadj (G.irrefl _)
+                | exact absurd hadj h03
+                | exact absurd hadj (fun h => h03 (G.symm _ _ h))
+                | exact absurd hadj h12
+                | exact absurd hadj (fun h => h12 (G.symm _ _ h))
+                | decide
+      · by_cases h13 : G.adj 1 3
+        · by_cases h03 : G.adj 0 3
+          · -- killers 23, 13, 03
+            exact absurd (three_slots_le_card (slot_nonempty (hkill 2 3 h23))
+              (slot_nonempty (hkill 1 3 h13)) (slot_nonempty (hkill 0 3 h03))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))
+              (Finset.disjoint_left.mpr (by decide))) (by omega)
+          · by_cases h12 : G.adj 1 2
+            · -- killers 23, 13, 12
+              exact absurd (three_slots_le_card (slot_nonempty (hkill 2 3 h23))
+                (slot_nonempty (hkill 1 3 h13)) (slot_nonempty (hkill 1 2 h12))
+                (Finset.disjoint_left.mpr (by decide))
+                (Finset.disjoint_left.mpr (by decide))
+                (Finset.disjoint_left.mpr (by decide))) (by omega)
+            · -- pairing {0,3 | 1,2} survives
+              refine ⟨![0, 1, 1, 0], fun u v hadj => ?_⟩
+              fin_cases u <;> fin_cases v <;>
+                first
+                  | exact absurd hadj (G.irrefl _)
+                  | exact absurd hadj h03
+                  | exact absurd hadj (fun h => h03 (G.symm _ _ h))
+                  | exact absurd hadj h12
+                  | exact absurd hadj (fun h => h12 (G.symm _ _ h))
+                  | decide
+        · -- pairing {0,2 | 1,3} survives
+          refine ⟨![0, 1, 0, 1], fun u v hadj => ?_⟩
+          fin_cases u <;> fin_cases v <;>
+            first
+              | exact absurd hadj (G.irrefl _)
+              | exact absurd hadj h02
+              | exact absurd hadj (fun h => h02 (G.symm _ _ h))
+              | exact absurd hadj h13
+              | exact absurd hadj (fun h => h13 (G.symm _ _ h))
+              | decide
+    · -- pairing {0,1 | 2,3} survives
+      refine ⟨![0, 0, 1, 1], fun u v hadj => ?_⟩
+      fin_cases u <;> fin_cases v <;>
+        first
+          | exact absurd hadj (G.irrefl _)
+          | exact absurd hadj h01
+          | exact absurd hadj (fun h => h01 (G.symm _ _ h))
+          | exact absurd hadj h23
+          | exact absurd hadj (fun h => h23 (G.symm _ _ h))
+          | decide
+
+/-- Lower bound: `2 ≤ fThreshold 1 4`, via membership and boundedness. -/
+theorem two_le_fThreshold_one_four : 2 ≤ fThreshold 1 4 := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    two_mem_fThresholdSet_one_four
+
+/-- **The second exact threshold value: `fThreshold 1 4 = 2`.** Combined with
+`fThreshold 1 3 = 2`: the threshold does *not* grow from `n = 3` to `n = 4`
+(at `r = 1`), refuting any `n - 1`-style growth at the next data point beyond
+the parent's removed `f_trivial_lower` axiom. -/
+theorem fThreshold_one_four : fThreshold 1 4 = 2 :=
+  le_antisymm fThreshold_one_four_le_two two_le_fThreshold_one_four
+
+/-- The threshold is constant across the first two non-degenerate points:
+`fThreshold 1 3 = fThreshold 1 4 = 2`. -/
+theorem fThreshold_constant_three_four : fThreshold 1 3 = fThreshold 1 4 := by
+  rw [fThreshold_one_three, fThreshold_one_four]
+
 #check @completeGraph_not_hasColoring
 #check @canReduce_removeAll
 #check @fThresholdSet_downClosed
@@ -505,5 +741,10 @@ theorem trivial_lower_bound_false : fThreshold 1 4 < 4 - 1 := by
 #check @three_notMem_fThresholdSet_one_four
 #check @fThreshold_one_four_le_two
 #check @trivial_lower_bound_false
+#check @slot_nonempty
+#check @three_slots_le_card
+#check @two_mem_fThresholdSet_one_four
+#check @fThreshold_one_four
+#check @fThreshold_constant_three_four
 
 end Erdos1092OQ02
