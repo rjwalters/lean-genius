@@ -59,7 +59,8 @@
       "**Existence is a fixed point; uniqueness is Grönwall.** The two halves of Cauchy–Lipschitz come from different machinery — the contraction mapping principle produces the solution, while Grönwall's inequality (a comparison estimate for the growth of the gap between two solutions) forces it to be the only one.",
       "**Autonomous is the clean case.** Writing the vector field as time-independent (v t := f) and the constraint set as univ collapses the general Mathlib uniqueness lemma to exactly the y' = f(y) statement, with all the time-dependence and domain bookkeeping discharged.",
       "**C¹ for existence, Lipschitz for uniqueness.** C¹ near x₀ is what Mathlib needs to manufacture the Picard–Lindelöf data automatically; global Lipschitz is the natural hypothesis for the Grönwall comparison. The combined theorem simply asks for both.",
-      "**The contraction lives inside Mathlib.** The Banach fixed-point step is carried out in Mathlib's FunSpace construction; this entry exposes the resulting existence/uniqueness facts in the form a user of the theorem actually wants."
+      "**The contraction lives inside Mathlib.** The Banach fixed-point step is carried out in Mathlib's FunSpace construction; this entry exposes the resulting existence/uniqueness facts in the form a user of the theorem actually wants.",
+      "**Nothing here is tied to finite dimensions.** `E` ranges over an arbitrary `NormedSpace ℝ E` (a Banach space once `CompleteSpace E` is added for existence), so the same three theorems cover ODEs on `ℝⁿ` and mild/semigroup-style equations on infinite-dimensional Banach spaces alike — the contraction argument never uses a basis or finite rank."
     ],
     "exampleSections": [
       {
