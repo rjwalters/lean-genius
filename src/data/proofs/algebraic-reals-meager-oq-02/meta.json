@@ -138,9 +138,17 @@
       "id": "sharp-boundary",
       "title": "Comeagre does not imply conull",
       "startLine": 121,
-      "endLine": 175,
-      "summary": "The headline existential — a dense comeagre set of measure zero — and the abstract disjointness of the comeagre and a.e. filters, packaged with the measure side as the OQ-02 resolution.",
+      "endLine": 134,
+      "summary": "The headline existential exists_residual_dense_null — a dense comeagre set of measure zero — and the abstract disjointness residual_ae_disjoint of the comeagre and a.e. filters, the structural reason a set can be comeagre while its complement is conull.",
       "mathContext": "Disjoint (residual ℝ) (ae volume): topological and measure-theoretic largeness are independent."
+    },
+    {
+      "id": "oq02-resolution",
+      "title": "OQ-02 Resolution and Results Summary",
+      "startLine": 135,
+      "endLine": 177,
+      "summary": "oq02_resolution packages the measure-nullity of the algebraic reals with the comeagre-vs-conull sharp boundary into the single OQ-02 answer; closing #checks and the results table document all eight theorems as 0-sorry, 0-axiom.",
+      "mathContext": "$\\mathrm{volume}\\{x : \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,x\\} = 0\\ \\wedge\\ \\exists S\\ \\text{dense comeagre},\\ \\mathrm{volume}\\,S = 0$."
     }
   ],
   "references": [
