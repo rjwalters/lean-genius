@@ -495,6 +495,185 @@ lemma schnirelmannDensity_primes_eq_zero :
     primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
     the set of sums of two primes has positive Schnirelmann density. -/
 
+/-! ## The Schnirelmann–Goldbach Bridge (S9)
+
+With `schnirelmann_basis_theorem` now a genuine theorem (the axiom was
+discharged in `Proofs.SchnirelmannTheorem`), the classical Schnirelmann
+route to "every integer ≥ 2 is a sum of a bounded number of primes"
+becomes formalizable end-to-end *modulo a single density input*:
+Schnirelmann's 1930 sieve estimate σ({0,1} ∪ (P+P)) > 0, proved
+historically via Brun's sieve and still unformalized (HEROIC tier).
+
+This section proves the **bridge**: that density input alone — taken as
+a *hypothesis*, not an axiom — implies the bounded-primes theorem. The
+argument is Schnirelmann's own: apply the basis theorem to the sumset
+G = {0,1} ∪ (P+P) at `n - 2`, split the representing multiset into ones
+and prime pairs, then absorb `2 + (number of ones)` into a multiset of
+2s and 3s. A closing corollary cross-validates the conclusion
+unconditionally (k = 4) through the axiomatized Helfgott result. -/
+
+/-- The Schnirelmann–Goldbach sumset G = {0, 1} ∪ (P + P): zero, one, and
+    all sums of two primes. Schnirelmann's sieve theorem (unformalized,
+    HEROIC) states σ(G) > 0; the bridge below shows that this single input
+    yields the bounded-primes theorem. -/
+def goldbachSumset : Set ℕ := {0, 1} ∪ {n | IsSumOfTwoPrimes n}
+
+/-- Membership in the Schnirelmann–Goldbach sumset, unfolded. -/
+lemma mem_goldbachSumset {n : ℕ} :
+    n ∈ goldbachSumset ↔ n = 0 ∨ n = 1 ∨ IsSumOfTwoPrimes n := by
+  simp [goldbachSumset, Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff,
+    Set.mem_setOf_eq, or_assoc]
+
+instance : DecidablePred (· ∈ goldbachSumset) := fun n =>
+  decidable_of_iff (n = 0 ∨ n = 1 ∨ IsSumOfTwoPrimes n) mem_goldbachSumset.symm
+
+/-- Every `m ≥ 2` is the sum of a multiset of at most `m` primes drawn from
+    {2, 3} (the "absorb the ones" step of Schnirelmann's argument). Even `m`
+    uses `m/2` copies of 2; odd `m ≥ 3` uses one 3 and `(m-3)/2` copies of 2. -/
+lemma exists_two_three_multiset (m : ℕ) (hm : 2 ≤ m) :
+    ∃ U : Multiset ℕ, (∀ p ∈ U, Nat.Prime p) ∧ U.card ≤ m ∧ U.sum = m := by
+  rcases Nat.even_or_odd m with he | ho
+  · obtain ⟨k, rfl⟩ := he
+    refine ⟨Multiset.replicate k 2, ?_, ?_, ?_⟩
+    · intro p hp
+      rw [Multiset.eq_of_mem_replicate hp]
+      exact Nat.prime_two
+    · rw [Multiset.card_replicate]; omega
+    · rw [Multiset.sum_replicate, smul_eq_mul]; omega
+  · obtain ⟨k, rfl⟩ := ho
+    refine ⟨3 ::ₘ Multiset.replicate (k - 1) 2, ?_, ?_, ?_⟩
+    · intro p hp
+      rcases Multiset.mem_cons.mp hp with rfl | hp
+      · exact Nat.prime_three
+      · rw [Multiset.eq_of_mem_replicate hp]
+        exact Nat.prime_two
+    · simp only [Multiset.card_cons, Multiset.card_replicate]; omega
+    · simp only [Multiset.sum_cons, Multiset.sum_replicate, smul_eq_mul]; omega
+
+/-- **Decomposition step.** A multiset of `goldbachSumset` elements splits
+    into `r` ones (`r` at most the cardinality) and a multiset of primes with
+    at most twice the cardinality, preserving the sum: each element is 0
+    (dropped), 1 (counted by `r`), or `p + q` (contributing two primes). -/
+lemma goldbachSumset_multiset_decomp :
+    ∀ S : Multiset ℕ, (∀ x ∈ S, x ∈ goldbachSumset) →
+      ∃ (r : ℕ) (T : Multiset ℕ), (∀ p ∈ T, Nat.Prime p) ∧
+        r ≤ S.card ∧ T.card ≤ 2 * S.card ∧ S.sum = r + T.sum := by
+  intro S
+  induction S using Multiset.induction_on with
+  | empty => exact fun _ => ⟨0, 0, by simp, by simp, by simp, by simp⟩
+  | cons x S ih =>
+    intro hS
+    obtain ⟨r, T, hTp, hr, hTc, hsum⟩ :=
+      ih (fun y hy => hS y (Multiset.mem_cons_of_mem hy))
+    have hx := hS x (Multiset.mem_cons_self x S)
+    rw [mem_goldbachSumset] at hx
+    rcases hx with rfl | rfl | ⟨p, q, hp, hq, hpq⟩
+    · exact ⟨r, T, hTp, by simp only [Multiset.card_cons]; omega,
+        by simp only [Multiset.card_cons]; omega,
+        by simp only [Multiset.sum_cons]; omega⟩
+    · exact ⟨r + 1, T, hTp, by simp only [Multiset.card_cons]; omega,
+        by simp only [Multiset.card_cons]; omega,
+        by simp only [Multiset.sum_cons]; omega⟩
+    · refine ⟨r, p ::ₘ q ::ₘ T, ?_, ?_, ?_, ?_⟩
+      · intro y hy
+        rcases Multiset.mem_cons.mp hy with rfl | hy
+        · exact hp
+        rcases Multiset.mem_cons.mp hy with rfl | hy
+        · exact hq
+        · exact hTp y hy
+      · simp only [Multiset.card_cons]; omega
+      · simp only [Multiset.card_cons]; omega
+      · simp only [Multiset.sum_cons]; omega
+
+/-- Schnirelmann's conclusion for Goldbach's problem: some uniform `k`
+    bounds the number of primes needed to represent every integer `n ≥ 2`. -/
+def BoundedPrimeSums : Prop :=
+  ∃ k : ℕ, ∀ n : ℕ, 2 ≤ n →
+    ∃ T : Multiset ℕ, (∀ p ∈ T, Nat.Prime p) ∧ T.card ≤ k ∧ T.sum = n
+
+/-- **The Schnirelmann–Goldbach bridge.** If the Schnirelmann sumset
+    G = {0,1} ∪ (P+P) has positive Schnirelmann density — Schnirelmann's
+    1930 sieve estimate, here a *hypothesis*, not an axiom — then every
+    integer `n ≥ 2` is a sum of at most `k` primes for a uniform `k`
+    (with `k = 3h + 2` where `h` is the basis order of G).
+
+    This is Schnirelmann's theorem on Goldbach's problem, now derived
+    end-to-end from the machine-checked basis theorem: apply the basis
+    representation to `n - 2`, decompose into ones and prime pairs, and
+    absorb `2 + (number of ones)` into 2s and 3s. -/
+theorem schnirelmann_goldbach_bridge
+    (hδ : schnirelmannDensity goldbachSumset > 0) : BoundedPrimeSums := by
+  obtain ⟨h, hbasis⟩ := schnirelmann_basis_theorem goldbachSumset hδ
+  refine ⟨3 * h + 2, fun n hn => ?_⟩
+  obtain ⟨S, hSmem, hScard, hSsum⟩ := hbasis (n - 2)
+  obtain ⟨r, T, hTp, hr, hTc, hdecomp⟩ := goldbachSumset_multiset_decomp S hSmem
+  obtain ⟨U, hUp, hUc, hUs⟩ := exists_two_three_multiset (2 + r) (by omega)
+  refine ⟨U + T, ?_, ?_, ?_⟩
+  · intro p hp
+    rcases Multiset.mem_add.mp hp with hp | hp
+    · exact hUp p hp
+    · exact hTp p hp
+  · simp only [Multiset.card_add]
+    omega
+  · simp only [Multiset.sum_add]
+    omega
+
+/-- **Unconditional cross-validation via Helfgott.** Every `n ≥ 2` is a sum
+    of at most 4 primes, derived from the axiomatized `helfgott_weak_goldbach`:
+    odd `n > 5` needs 3 primes; even `n ≥ 10` applies Helfgott to `n - 3` and
+    adjoins a 3; the cases `2 ≤ n ≤ 9` have explicit kernel-checked witnesses.
+    Thus the conclusion Schnirelmann could only reach with an unspecified `k`
+    holds (conditionally on Helfgott's theorem) with `k = 4`. -/
+theorem sum_of_at_most_four_primes :
+    ∀ n : ℕ, 2 ≤ n →
+      ∃ T : Multiset ℕ, (∀ p ∈ T, Nat.Prime p) ∧ T.card ≤ 4 ∧ T.sum = n := by
+  intro n hn
+  rcases Nat.lt_or_ge n 10 with hsmall | hlarge
+  · interval_cases n
+    · exact ⟨{2}, by decide, by decide, by decide⟩
+    · exact ⟨{3}, by decide, by decide, by decide⟩
+    · exact ⟨{2, 2}, by decide, by decide, by decide⟩
+    · exact ⟨{5}, by decide, by decide, by decide⟩
+    · exact ⟨{3, 3}, by decide, by decide, by decide⟩
+    · exact ⟨{7}, by decide, by decide, by decide⟩
+    · exact ⟨{3, 5}, by decide, by decide, by decide⟩
+    · exact ⟨{2, 7}, by decide, by decide, by decide⟩
+  · rcases Nat.even_or_odd n with he | ho
+    · obtain ⟨k, rfl⟩ := he
+      have hodd3 : Odd (k + k - 3) := ⟨k - 2, by omega⟩
+      have hgt : k + k - 3 > 5 := by omega
+      obtain ⟨p, q, s, hp, hq, hs, heq⟩ := helfgott_weak_goldbach _ hgt hodd3
+      refine ⟨{3, p, q, s}, ?_, by simp, ?_⟩
+      · intro y hy
+        simp only [Multiset.insert_eq_cons, Multiset.mem_cons,
+          Multiset.mem_singleton] at hy
+        rcases hy with rfl | rfl | rfl | rfl
+        · exact Nat.prime_three
+        · exact hp
+        · exact hq
+        · exact hs
+      · simp only [Multiset.insert_eq_cons, Multiset.sum_cons,
+          Multiset.sum_singleton]
+        omega
+    · obtain ⟨p, q, s, hp, hq, hs, heq⟩ :=
+        helfgott_weak_goldbach n (by omega) ho
+      refine ⟨{p, q, s}, ?_, by simp, ?_⟩
+      · intro y hy
+        simp only [Multiset.insert_eq_cons, Multiset.mem_cons,
+          Multiset.mem_singleton] at hy
+        rcases hy with rfl | rfl | rfl
+        · exact hp
+        · exact hq
+        · exact hs
+      · simp only [Multiset.insert_eq_cons, Multiset.sum_cons,
+          Multiset.sum_singleton]
+        omega
+
+/-- The bounded-prime-sums property holds outright (conditionally on the
+    axiomatized Helfgott theorem), with `k = 4`. -/
+theorem boundedPrimeSums_of_helfgott : BoundedPrimeSums :=
+  ⟨4, sum_of_at_most_four_primes⟩
+
 /-- Tao's theorem (2014): every odd integer > 1 is a sum of at most 5 primes.
 
     **S5 ACT (axiom elimination):** This historical-attribution axiom is upgraded
