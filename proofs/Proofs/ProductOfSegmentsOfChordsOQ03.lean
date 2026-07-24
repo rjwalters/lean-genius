@@ -371,26 +371,39 @@ whose coefficient determinant is `4·collinearityDet ≠ 0`, gives the explicit
 circumcenter; the common radius `r = ‖P₁ - O‖` is positive because `r = 0`
 would force `P₂ = P₁` and hence a vanishing collinearity determinant. -/
 
+/-- A point `(O₀, O₁)` on the perpendicular bisector of `(x₁,y₁)`-`(x₂,y₂)`
+(in equation form) is equidistant from the two points, in squared form. Pure
+ring identity — the `O₀²`, `O₁²` terms cancel, so this stays linear in the
+center coordinates and never needs a denominator cleared. -/
+private lemma bisector_to_dist
+    (x₁ y₁ x₂ y₂ O₀ O₁ : ℝ)
+    (hb : 2 * (x₂ - x₁) * O₀ + 2 * (y₂ - y₁) * O₁
+        = x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) :
+    (x₂ - O₀) ^ 2 + (y₂ - O₁) ^ 2 = (x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 := by
+  linear_combination -hb
+
 /-- Core Cramer computation, pure coordinates: the explicit circumcenter
-equalises the three squared distances. (`maxRecDepth` raised for the
-`field_simp` pass over the explicit quotients.) -/
-set_option maxRecDepth 8192 in
+equalises the three squared distances. Denominators are cleared by a
+deterministic `mul_div_assoc`/`div_add_div_same`/`div_eq_iff` chain (the
+quotients only ever appear linearly here, thanks to `bisector_to_dist`). -/
 private lemma circumcenter_spec
     (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ)
     (hd : (x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁) ≠ 0) :
     ∃ O₀ O₁ : ℝ,
       (x₂ - O₀) ^ 2 + (y₂ - O₁) ^ 2 = (x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 ∧
       (x₃ - O₀) ^ 2 + (y₃ - O₁) ^ 2 = (x₁ - O₀) ^ 2 + (y₁ - O₁) ^ 2 := by
+  have h2d : 2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁)) ≠ 0 :=
+    mul_ne_zero two_ne_zero hd
   refine ⟨((x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (y₃ - y₁)
           - (x₃ ^ 2 + y₃ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (y₂ - y₁))
           / (2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁))),
          ((x₃ ^ 2 + y₃ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (x₂ - x₁)
           - (x₂ ^ 2 + y₂ ^ 2 - x₁ ^ 2 - y₁ ^ 2) * (x₃ - x₁))
           / (2 * ((x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁))),
-         ?_, ?_⟩
-  · field_simp [hd]
+         bisector_to_dist _ _ _ _ _ _ ?_, bisector_to_dist _ _ _ _ _ _ ?_⟩
+  · rw [← mul_div_assoc, ← mul_div_assoc, div_add_div_same, div_eq_iff h2d]
     ring
-  · field_simp [hd]
+  · rw [← mul_div_assoc, ← mul_div_assoc, div_add_div_same, div_eq_iff h2d]
     ring
 
 /-- Every non-collinear triple in the plane lies on a genuine circle

@@ -212,3 +212,49 @@ healthy worktree.
 - **S6**: Replace `converse_product_implies_concyclic_axiom` with a theorem proved from
   S3 + S5 (~10 lines). Update parent meta.json: `axiomCount` 1 → 0,
   `status` axiomatized → verified.
+
+## S18 ACT (researcher-1, 2026-07-24)
+
+Headline iff proven (see state.md banner and the S18 session memo). Portable
+lessons:
+
+1. **The `(hNonCollinear : True)` placeholder was mathematically load-bearing**:
+   with it the (⟹) direction is false (distinct collinear points give Δ = 0,
+   no circle). The S2-era "S3 will pick the right non-degeneracy form" debt
+   had to be paid before the sorry could close. Installed form:
+   `¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)`, bridged to the algebraic
+   `collinearityDet ≠ 0` via `collinear_iff_of_mem` + coordinate-ratio
+   witnesses.
+2. **No `Matrix.cramer` needed — and no `field_simp` on squared quotients.**
+   The S1/S18-note plan (Cramer API on the implicit-circle system) is heavier
+   than explicit quotient circumcenter coordinates. But `field_simp; ring`
+   directly on the squared-distance equality FAILS: the `(x-O₀)²` terms
+   square the quotients and field_simp leaves uncancelled `(...)⁻¹ ^ 2`
+   atoms that `ring` cannot kill (a first attempt also blew
+   `maxRecDepth 512` inside field_simp). Working pattern: a division-free
+   helper `bisector_to_dist` (`linear_combination -hb` — the `O₀²/O₁²` terms
+   cancel, so the identity is *linear* in the center coordinates), plus a
+   deterministic denominator-clearing chain on the linear bisector equations:
+   `rw [← mul_div_assoc, ← mul_div_assoc, div_add_div_same, div_eq_iff h2d];
+   ring`.
+3. **Column-multilinearity beats row reduction for the forced fourth point**:
+   `Δ = e₁M₁ − e₂M₂ + e₃M₃ − e₄M₄` (eᵢ = circle defects, Mᵢ = (x,y,1)-minors,
+   M₄ = collinearityDet) is an *exact* polynomial identity; the S7b simp set
+   (`Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_zero,
+   Fin.succAbove`) + `ring` proves it first try, and
+   `linear_combination -hΔ' + M₁*e₁ - M₂*e₂ + M₃*e₃` collapses it to
+   `e₄·M₄ = 0`.
+4. **v4.31 `WithLp` is a structure** (`toLp`/`ofLp`, `CoeFun` via `ofLp`):
+   build points with `WithLp.toLp 2 ![a, b]`; coordinate projections are
+   `rfl`. Point equality via `PiLp.ext`. **Avoid `fin_cases` on coordinate
+   indices** — it produces `⟨0, ⋯⟩`/`⟨1, ⋯⟩` Fin atoms that `ring`/
+   `linear_combination` treat as distinct from the literal `0`/`1` atoms;
+   `rw [Fin.forall_fin_two]` after `apply PiLp.ext` keeps everything literal.
+5. **`rcases hp with rfl | rfl | rfl` on `p ∈ {P₁, P₂, P₃}` has
+   non-deterministic subst orientation** across sibling branches (one branch
+   kept `P₃`, another eliminated it as `p`), producing "Unknown identifier"
+   only in *some* branches. Deterministic fix: bind the last case as
+   `hpe : p = P₃` and `rw [hpe]` in the goal instead of substituting.
+6. `pow_left_inj₀ (norm_nonneg _) hr (two_ne_zero-proof)` is the v4.31 name
+   for squaring-injectivity on nonnegatives (old `pow_left_injective` /
+   `sq_eq_sq'` searches dead-end).
