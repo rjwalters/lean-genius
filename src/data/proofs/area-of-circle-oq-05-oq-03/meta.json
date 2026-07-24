@@ -52,7 +52,8 @@
       "The entire computation is 'complete the square' over ℂ: i t x − x²/2 = −½(x − it)² − t²/2. The only algebraic fact needed beyond ring arithmetic is i² = −1, supplied to linear_combination as Complex.I_sq.",
       "After completing the square the t-dependence sits entirely in the constant e^{-t²/2}, which pulls out of the integral; the remaining x-integral is t-independent and equals √(2π) for every t.",
       "The shifted Gaussian integral ∫ e^{-½(x-it)²} dx — over a line displaced into the complex plane — equals the ordinary real Gaussian integral, a Cauchy vertical-strip fact packaged by Mathlib as integral_cexp_neg_mul_sq_add_real_mul_I.",
-      "Normalizing by √(2π) turns the identity into the characteristic function of N(0,1): φ(t) = e^{-t²/2}. This is exactly the input the characteristic-function proof of the Central Limit Theorem needs."
+      "Normalizing by √(2π) turns the identity into the characteristic function of N(0,1): φ(t) = e^{-t²/2}. This is exactly the input the characteristic-function proof of the Central Limit Theorem needs.",
+      "Part V bridges the explicit Lebesgue-integral identity to Mathlib's abstract measure-theoretic machinery for free: charFun_stdGaussian reduces to Mathlib's own charFun_gaussianReal lemma rather than re-deriving the characteristic function from gaussian_fourier_normalized, and gaussianReal_fourier_identity then unfolds `charFun` as a Bochner integral against `gaussianReal 0 1` — this is the concrete-measure form that CentralLimitTheorem.lean's abstract axiom would need to be rewritten against to be discharged."
     ],
     "prerequisites": [
       "area-of-circle-oq-05 — the real Gaussian integral ∫ e^{-x²} = √π",
