@@ -154,4 +154,100 @@ theorem motivicClassBasedMaps_eq_zero_of_lefschetz_eq_one
 
 end MotivicMeasure
 
+/-!
+## S3: Universal witnesses — the hypothesis class is nonempty (axiom-free)
+
+Every theorem above is conditional on a `MotivicMeasure K R`, and the
+headline additionally assumes `μ.lefschetz = 1`. Since concrete
+realizations (Euler characteristic, `F_q` point counts) are deferred by
+design (+2 axioms each), **no instance of `MotivicMeasure` existed
+anywhere in this development** — leaving the adversarial gap that the
+headline vanishing theorem could be vacuously true.
+
+This section closes that gap with **+0 axioms** via the canonical
+universal witness: for any `c : K.carrier`, the quotient map
+
+  `K.carrier →+* K.carrier ⧸ span {K.L − c}`
+
+is a motivic measure sending `L` to the image of `c`. At `c = 1` this is
+the *universal Euler-characteristic realization* — the augmentation
+quotient through which every `lefschetz = 1` measure factors (proved
+below as `factorThroughAugmentation`) — and it discharges the headline
+hypothesis unconditionally (`universal_euler_vanishing`).
+
+Degenerate models are permitted: for a `K` in which `K.L − 1` is a unit
+the quotient is the zero ring and the vanishing is trivial. That is
+unavoidable at this level of abstraction — `GrothendieckRingVar` is an
+abstract interface — and harmless: for the *true* `K₀(Var_k)` the
+augmentation quotient is the universal Euler-characteristic target, and
+every concrete `lefschetz = 1` realization factors through it, so the
+factorization theorem transfers the vanishing to every such realization.
+-/
+
+namespace MotivicMeasure
+
+variable (K : GrothendieckRingVar k)
+
+/-- **S3-A. The augmentation measure at `c`.** The quotient map
+`K.carrier →+* K.carrier ⧸ span {K.L − c}` packaged as a `MotivicMeasure`
+with `lefschetz` = image of `c`. This is the universal measure sending
+`L ↦ c`, and the first `MotivicMeasure` instance constructed in this
+development — axiom-free, for every model `K` and every `c`. -/
+def augmentation (c : K.carrier) :
+    MotivicMeasure K (K.carrier ⧸ Ideal.span {K.L - c}) where
+  toRingHom := Ideal.Quotient.mk (Ideal.span {K.L - c})
+  lefschetz := Ideal.Quotient.mk (Ideal.span {K.L - c}) c
+  lefschetz_eq := Ideal.Quotient.eq.mpr (Ideal.mem_span_singleton_self _)
+
+/-- At `c = 1` the augmentation measure satisfies the headline hypothesis
+`lefschetz = 1` on the nose. -/
+@[simp]
+lemma augmentation_one_lefschetz :
+    (augmentation K 1).lefschetz = 1 :=
+  map_one (Ideal.Quotient.mk (Ideal.span {K.L - 1}))
+
+/-- **S3-B. Nonvacuity of the headline.** For every model `K` there is a
+motivic measure with `lefschetz = 1`, so the hypothesis of
+`motivicClassBasedMaps_eq_zero_of_lefschetz_eq_one` is satisfiable. -/
+theorem nonempty_lefschetz_one :
+    ∃ μ : MotivicMeasure K (K.carrier ⧸ Ideal.span {K.L - 1}),
+      μ.lefschetz = 1 :=
+  ⟨augmentation K 1, augmentation_one_lefschetz K⟩
+
+variable {R : Type*} [CommRing R]
+
+/-- **S3-C. Universal property of the augmentation quotient.** Every
+motivic measure with `lefschetz = 1` factors through the `c = 1`
+augmentation quotient: the induced ring hom on `K.carrier ⧸ (L − 1)`. -/
+def factorThroughAugmentation (μ : MotivicMeasure K R)
+    (hL : μ.lefschetz = 1) :
+    (K.carrier ⧸ Ideal.span {K.L - 1}) →+* R :=
+  Ideal.Quotient.lift _ μ.toRingHom fun a ha =>
+    μ.annihilate_of_lefschetz_eq_one hL (Ideal.mem_span_singleton.mp ha)
+
+/-- The factorization identity: `factorThroughAugmentation μ hL ∘ mk = μ`.
+So the augmentation measure is initial among `lefschetz = 1` measures. -/
+@[simp]
+lemma factorThroughAugmentation_mk (μ : MotivicMeasure K R)
+    (hL : μ.lefschetz = 1) (x : K.carrier) :
+    factorThroughAugmentation K μ hL
+      ((augmentation K 1).toRingHom x) = μ.toRingHom x :=
+  rfl
+
+/-- **S3-D. Unconditional universal Euler-characteristic vanishing.**
+The class of `Ω²_β(Fl_{n+1})` vanishes in the augmentation quotient
+`K₀(Var)/(L − 1)` for all `n ≥ 1` — no realization hypothesis at all.
+This upgrades the headline from a conditional statement (for every
+measure with `lefschetz = 1` …) to a concrete identity in a concrete
+ring; the conditional version is recovered by applying
+`factorThroughAugmentation`. -/
+theorem universal_euler_vanishing (n : ℕ) (hn : n ≥ 1)
+    (β : HomologyClass n) (hβ : β.positive) :
+    Ideal.Quotient.mk (Ideal.span {K.L - 1})
+      (motivicClassBasedMaps K n β) = 0 :=
+  motivicClassBasedMaps_eq_zero_of_lefschetz_eq_one (augmentation K 1)
+    (augmentation_one_lefschetz K) n hn β hβ
+
+end MotivicMeasure
+
 end MotivicFlagMaps
