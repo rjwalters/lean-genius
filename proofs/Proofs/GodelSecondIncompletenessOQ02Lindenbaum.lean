@@ -146,11 +146,11 @@ theorem subf_closed : ∀ (φ ψ : GLFormula), ψ ∈ subf φ →
 -- PART 3: the finite Lindenbaum extension
 -- ============================================================
 
+open Classical in
 /-- One-pass Lindenbaum sweep: walk the closure list `L`, adjoining each
 candidate formula to the accumulating context iff consistency survives.
 Classical (`Classical.propDecidable`) but requires no choice beyond it —
 the closure is a finite list, so no Zorn is needed. -/
-open Classical in
 noncomputable def extend : List GLFormula → List GLFormula → List GLFormula
   | Γ, [] => Γ
   | Γ, ψ :: L => if Consistent (ψ :: Γ) then extend (ψ :: Γ) L else extend Γ L
