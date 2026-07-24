@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup_five; the presented theorem `card_A5` (|A₅| = 60) and the exact Sylow-number computations are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. Simplicity uses Mathlib's alternatingGroup.isSimpleGroup; the presented theorem `card_A5` (|A₅| = 60) and the supporting Finset-level cardinality facts underlying the exact Sylow-number computations are discharged by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 498,
     "theoremCount": 21,
     "definitionCount": 1
@@ -28,12 +28,12 @@
   "overview": {
     "historicalContext": "The simplicity of A₅ was first understood by Galois (1832), who recognized that A₅ is the smallest non-abelian simple group. The Sylow counting approach, using theorems from Sylow's 1872 paper, provides a concrete arithmetic proof: for |A₅| = 60 = 2²·3·5, the Sylow constraints force n₂ = 5, n₃ = 10, n₅ = 6, meaning no Sylow subgroup is normal. Combined with the conjugacy class sizes {1, 12, 12, 15, 20} (no subset sum divides 60), this proves A₅ has no proper nontrivial normal subgroups. This result is foundational for the Abel-Ruffini theorem (unsolvability of the quintic) and the classification of finite simple groups.",
     "problemStatement": "Prove that A₅ is simple using Sylow counting arguments: compute the exact number of Sylow p-subgroups for each prime p dividing |A₅| = 60, show all are greater than 1, and verify no intermediate normal subgroup exists.",
-    "text": "A 260-line formalization proving the simplicity of A₅ via Sylow theory. Establishes |A₅| = 60, computes the p-adic valuations (v₂ = 2, v₃ = 1, v₅ = 1), derives Sylow counting constraints from Sylow III, and verifies the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 by native_decide. Proves no Sylow subgroup is normal (via uniqueness contradiction), verifies the conjugacy class arithmetic prevents intermediate normal subgroups, and establishes A₅ is simple and not solvable.",
-    "proofStrategy": "**Step 1**: Compute |A₅| = 60 = 2²·3·5 using native_decide.\n**Step 2**: Apply Sylow III to get n_p ≡ 1 (mod p) and n_p | [A₅ : P_p].\n**Step 3**: Compute exact Sylow numbers by exhaustive enumeration via native_decide.\n**Step 4**: Show n_p > 1 for all p, so no Sylow subgroup is unique/normal.\n**Step 5**: Verify conjugacy class arithmetic: no subset of {1,12,12,15,20} sums to a proper divisor of 60 greater than 1.\n**Step 6**: Conclude simplicity via Mathlib's alternatingGroup.isSimpleGroup_five.",
+    "text": "A 498-line formalization proving the simplicity of A₅ via Sylow theory. Establishes |A₅| = 60, computes the p-adic valuations (v₂ = 2, v₃ = 1, v₅ = 1), derives Sylow counting constraints from Sylow III, and verifies the exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 by constructing explicit Sylow subgroups and computing their normalizer indices via Lagrange's theorem. Proves no Sylow subgroup is normal (via the simplicity of A₅), verifies the conjugacy class arithmetic prevents intermediate normal subgroups, and establishes A₅ is simple and not solvable.",
+    "proofStrategy": "**Step 1**: Compute |A₅| = 60 = 2²·3·5 using native_decide.\n**Step 2**: Apply Sylow III to get n_p ≡ 1 (mod p) and n_p | [A₅ : P_p].\n**Step 3**: Compute exact Sylow numbers by building an explicit Sylow p-subgroup for each p, computing its normalizer as a literal Finset, and applying Lagrange (n_p = [A₅ : N(Sₚ)]).\n**Step 4**: Show n_p > 1 for all p; prove no Sylow subgroup is normal via the simplicity of A₅ (card_eq_multiplicity gives |P| ∈ {4,3,5}, so P is neither ⊥ nor ⊤).\n**Step 5**: Verify conjugacy class arithmetic: no subset of {1,12,12,15,20} sums to a proper divisor of 60 greater than 1.\n**Step 6**: Conclude simplicity via Mathlib's alternatingGroup.isSimpleGroup.",
     "keyInsights": [
       "**Sylow counting forces non-normality**: For |G| = 60, the constraints n₂ | 15, n₂ ≡ 1 (mod 2) give n₂ ∈ {1,3,5,15}; n₃ | 20, n₃ ≡ 1 (mod 3) give n₃ ∈ {1,4,10}; n₅ | 12, n₅ ≡ 1 (mod 5) give n₅ ∈ {1,6}. For A₅ specifically, n₂ = 5, n₃ = 10, n₅ = 6.",
       "**Conjugacy class arithmetic**: The 5 conjugacy classes of A₅ have sizes {1, 12, 12, 15, 20}. A normal subgroup must be a union of classes including {e}. No partial sum 1 + (subset of {12,12,15,20}) divides 60 except 1 and 60 themselves.",
-      "**A₅ is the smallest non-abelian simple group**: With only 60 elements, it's computationally feasible to verify all Sylow subgroups by native_decide, making this a fully decidable result.",
+      "**A₅ is the smallest non-abelian simple group**: With only 60 elements, the Sylow p-subgroups can be exhibited explicitly and their normalizers computed by brute force (native_decide on Finset cardinalities), since the type `Sylow p A5` is not itself directly enumerable.",
       "**Connection to Abel-Ruffini**: The non-solvability of A₅ (proved from simplicity via the short exact sequence A₅ → S₅ → ℤ/2) is the key ingredient in proving the general quintic is not solvable by radicals.",
       "**Element counting as an obstruction**: The Sylow subgroups collectively account for a large fraction of A_5's 60 elements -- the 6 Sylow 5-subgroups contribute 24 elements of order 5, and the 10 Sylow 3-subgroups contribute 20 elements of order 3, leaving only 16 elements for the 5 Sylow 2-subgroups (which share elements). This tight element budget is what forces the exact Sylow numbers and prevents any from being 1."
     ],
@@ -82,7 +82,7 @@
       "title": "Exact Sylow Numbers",
       "startLine": 105,
       "endLine": 338,
-      "summary": "Computes by native_decide: n₂ = 5 (Klein 4-groups), n₃ = 10 (cyclic order 3), n₅ = 6 (cyclic order 5). All are greater than 1.",
+      "summary": "Constructs an explicit Sylow subgroup for each prime and computes its normalizer index via Lagrange to get n₂ = 5 (Klein 4-groups), n₃ = 10 (cyclic order 3), n₅ = 6 (cyclic order 5). All are greater than 1.",
       "mathContext": "The 5 Sylow 2-subgroups are the Klein 4-groups $V_4 \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ inside $A_5$."
     },
     {
@@ -90,7 +90,7 @@
       "title": "Non-Normality of Sylow Subgroups",
       "startLine": 339,
       "endLine": 379,
-      "summary": "Proves no Sylow p-subgroup of A₅ is normal: if any were, Sylow.unique_of_normal would force Fintype.card = 1, contradicting the computed values 5, 10, 6.",
+      "summary": "Proves no Sylow p-subgroup of A₅ is normal: a Sylow subgroup has order p^(v_p(60)) ∈ {4,3,5} (card_eq_multiplicity), so it is neither ⊥ nor ⊤; since A₅ is simple, it cannot be normal.",
       "mathContext": "$n_p = 1 \\iff P_p \\trianglelefteq G$. Since $n_2 = 5,\\, n_3 = 10,\\, n_5 = 6$, no Sylow subgroup is normal."
     },
     {
@@ -106,7 +106,7 @@
       "title": "Simplicity of A₅",
       "startLine": 418,
       "endLine": 433,
-      "summary": "States A₅ is simple using Mathlib's alternatingGroup.isSimpleGroup_five. The Sylow analysis provides the concrete counting argument for why this holds.",
+      "summary": "States A₅ is simple using Mathlib's alternatingGroup.isSimpleGroup (discharging the 5 ≤ Nat.card α hypothesis with `by simp`). The Sylow analysis provides the concrete counting argument for why this holds.",
       "mathContext": "$A_5$ is the smallest non-abelian simple group. Simplicity: the only normal subgroups are $\\{e\\}$ and $A_5$ itself."
     },
     {

@@ -4,7 +4,7 @@
     "proofId": "sylow-theorems-oq-04",
     "range": {
       "startLine": 40,
-      "endLine": 50
+      "endLine": 48
     },
     "type": "definition",
     "title": "Defining A₅ and Computing Its Order",
@@ -27,13 +27,13 @@
     "id": "ann-sylow-constraints",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 73,
-      "endLine": 97
+      "startLine": 77,
+      "endLine": 102
     },
     "type": "insight",
     "title": "Sylow III Constrains All Three Primes",
     "content": "Sylow III gives two constraints for each prime p dividing 60: n_p ≡ 1 (mod p) and n_p divides the index [A₅ : P_p]. These are Mathlib's card_sylow_modEq_one and card_sylow_dvd_index applied to A₅.",
-    "mathContext": "For p=2: n₂ ≡ 1 (mod 2) and n₂ | 15, so n₂ ∈ {1, 3, 5, 15}. For p=3: n₃ ≡ 1 (mod 3) and n₃ | 20, so n₃ ∈ {1, 4, 10}. For p=5: n₅ ≡ 1 (mod 5) and n₅ | 12, so n₅ ∈ {1, 6}. The exact values (5, 10, 6) are determined by native_decide in the next section.",
+    "mathContext": "For p=2: n₂ ≡ 1 (mod 2) and n₂ | 15, so n₂ ∈ {1, 3, 5, 15}. For p=3: n₃ ≡ 1 (mod 3) and n₃ | 20, so n₃ ∈ {1, 4, 10}. For p=5: n₅ ≡ 1 (mod 5) and n₅ | 12, so n₅ ∈ {1, 6}. The exact values (5, 10, 6) are determined in the next section by constructing explicit Sylow subgroups and computing their normalizer indices.",
     "significance": "key",
     "relatedConcepts": [
       "card_sylow_modEq_one",
@@ -51,55 +51,58 @@
     "id": "ann-exact-sylow-numbers",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 111,
-      "endLine": 117
+      "startLine": 115,
+      "endLine": 190
     },
     "type": "insight",
-    "title": "Exact Sylow Numbers via native_decide",
-    "content": "The exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 are computed by native_decide, which exhaustively enumerates all Sylow p-subgroups of A₅. The 5 Sylow 2-subgroups are Klein 4-groups V₄ ≅ ℤ/2 × ℤ/2; the 10 Sylow 3-subgroups are cyclic ⟨(ijk)⟩; the 6 Sylow 5-subgroups are cyclic ⟨(ijklm)⟩.",
-    "mathContext": "native_decide evaluates Fintype.card (Sylow p A5) by computing the number of Sylow p-subgroups as a Fintype. This requires the Fintype instance for Sylow p G, which Mathlib provides via the orbit-stabilizer theorem.",
+    "title": "Exact Sylow Numbers via Explicit Subgroups and Normalizer Index",
+    "content": "The exact Sylow numbers n₂ = 5, n₃ = 10, n₅ = 6 are established by constructing, for each prime p ∈ {2,3,5}, an explicit Sylow p-subgroup of A₅ from concrete permutations — the Klein 4-group H₂ = {1, (01)(23), (02)(13), (01)(23)·(02)(13)} for p = 2, the cyclic ⟨(0 1 2)⟩ for p = 3, and the cyclic ⟨finRotate 5⟩ for p = 5 — then computing each subgroup's normalizer as a literal Finset and applying Lagrange's theorem to get n_p = [A₅ : N(Sₚ)]. The normalizers have orders 12, 6, 10, giving indices 5, 10, 6 respectively.",
+    "mathContext": "native_decide is applied only to Finset-level facts (e.g. card_NF5, card_Fin5) — never directly to Fintype.card (Sylow p A5), because the ambient Fintype (Sylow p A5) instance factors through the noncomputable SetLike.instFintype and so Sylow p A5 is not directly enumerable. Instead each explicit subgroup Sₚ is built by hand via Sylow.ofCard, its normalizer is computed as an explicit Finset, and Sylow.card_eq_index_normalizer together with Subgroup.card_mul_index (Lagrange) recover Nat.card (Sylow p A5) = [A₅ : N_{A₅}(Sₚ)].",
     "significance": "key",
     "relatedConcepts": [
-      "native_decide",
-      "Fintype.card",
-      "Sylow p-subgroup enumeration",
-      "Klein 4-group"
+      "Sylow.card_eq_index_normalizer",
+      "Subgroup.card_mul_index",
+      "Sylow.ofCard",
+      "explicit normalizer Finset",
+      "native_decide"
     ],
     "prerequisites": [
       "Sylow III constraints from previous section",
-      "computational decidability in Lean"
+      "Lagrange's theorem",
+      "normalizer of a subgroup"
     ]
   },
   {
     "id": "ann-non-normality",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 134,
-      "endLine": 152
+      "startLine": 338,
+      "endLine": 377
     },
     "type": "insight",
-    "title": "No Sylow Subgroup is Normal: Clean Contradiction",
-    "content": "The proof of non-normality uses a clean contradiction: if a Sylow p-subgroup P were normal, Sylow.unique_of_normal would give Unique (Sylow p A5), forcing Fintype.card = 1. But we computed n₂ = 5, n₃ = 10, n₅ = 6 — contradiction.",
-    "mathContext": "The key Mathlib lemma is Sylow.unique_of_normal: a normal Sylow p-subgroup is the unique Sylow p-subgroup (all conjugates of a normal subgroup equal itself). Uniqueness then forces Fintype.card (Sylow p G) = 1 via Fintype.card_unique.",
+    "title": "No Sylow Subgroup is Normal: via Simplicity",
+    "content": "Non-normality follows directly from the simplicity of A₅, independently of the exact counts n₂/n₃/n₅. A Sylow p-subgroup P has Nat.card P = p^(v_p(60)) ∈ {4, 3, 5} (Sylow.card_eq_multiplicity), which is neither 1 nor 60. Since A₅ is simple, any normal subgroup is ⊥ or ⊤; as |⊥| = 1 and |⊤| = 60, P can be neither, so no Sylow p-subgroup is normal.",
+    "mathContext": "The key lemmas are Sylow.card_eq_multiplicity (|P| = p^(v_p(|G|))) and IsSimpleGroup.eq_bot_or_eq_top_of_normal. Combined with Subgroup.card_bot (|⊥| = 1) and Subgroup.card_top (|⊤| = |G| = 60), the theorems sylow2_not_normal / sylow3_not_normal / sylow5_not_normal derive a contradiction (via omega) from a hypothetical normal Sylow subgroup.",
     "significance": "key",
     "relatedConcepts": [
-      "Sylow.unique_of_normal",
-      "Fintype.card_unique",
+      "IsSimpleGroup.eq_bot_or_eq_top_of_normal",
+      "Sylow.card_eq_multiplicity",
       "normal subgroup",
-      "Sylow conjugacy"
+      "Subgroup.card_bot",
+      "Subgroup.card_top"
     ],
     "prerequisites": [
-      "Sylow II (conjugacy of Sylow subgroups)",
-      "normal subgroup ↔ unique Sylow",
-      "exact counts n₂=5, n₃=10, n₅=6"
+      "simplicity of A₅",
+      "order of a Sylow p-subgroup",
+      "normal subgroups of a simple group"
     ]
   },
   {
     "id": "ann-conjugacy-arithmetic",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 185,
-      "endLine": 190
+      "startLine": 410,
+      "endLine": 415
     },
     "type": "insight",
     "title": "Conjugacy Class Arithmetic via decide",
@@ -122,17 +125,17 @@
     "id": "ann-simplicity",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 208,
-      "endLine": 209
+      "startLine": 331,
+      "endLine": 336
     },
     "type": "insight",
     "title": "A₅ is Simple: Mathlib's Definitive Result",
-    "content": "Mathlib's alternatingGroup.isSimpleGroup_five provides the definitive simplicity result. The Sylow counting and conjugacy class analysis above give the concrete arithmetic reason why A₅ is simple.",
-    "mathContext": "IsSimpleGroup G states that G has exactly two normal subgroups: ⊥ (trivial) and ⊤ (the whole group). Mathlib proves this for all alternating groups Aₙ with n ≥ 5 via alternatingGroup.isSimpleGroup_five, which encapsulates the full proof.",
+    "content": "Mathlib's alternatingGroup.isSimpleGroup provides the definitive simplicity result; the file discharges its 5 ≤ Nat.card α hypothesis with (by simp). The Sylow counting and conjugacy class analysis above give the concrete arithmetic reason why A₅ is simple.",
+    "mathContext": "IsSimpleGroup G states that G has exactly two normal subgroups: ⊥ (trivial) and ⊤ (the whole group). Mathlib proves this for all alternating groups Aₙ with n ≥ 5 via alternatingGroup.isSimpleGroup, which encapsulates the full proof (the specialized alternatingGroup.isSimpleGroup_five instance is itself defined as this general result applied to n = 5).",
     "significance": "key",
     "relatedConcepts": [
       "IsSimpleGroup",
-      "alternatingGroup.isSimpleGroup_five",
+      "alternatingGroup.isSimpleGroup",
       "PSL(2,5)",
       "composition series"
     ],
@@ -146,8 +149,8 @@
     "id": "ann-not-solvable",
     "proofId": "sylow-theorems-oq-04",
     "range": {
-      "startLine": 221,
-      "endLine": 235
+      "startLine": 439,
+      "endLine": 452
     },
     "type": "insight",
     "title": "A₅ Not Solvable: Key to Abel-Ruffini",
