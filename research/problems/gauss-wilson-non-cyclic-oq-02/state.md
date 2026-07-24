@@ -1,12 +1,33 @@
 # Research State: gauss-wilson-non-cyclic-oq-02
 
 ## Current State
-**Phase**: BLOCKED
+**Phase**: ACT (S3 — UNBLOCKED; cyclic half PROVED in new `GaussWilsonNonCyclicOQ02.lean`; next S4 = elementary-abelian half)
 **Path**: full
-**Since**: 2026-06-13
-**Iteration**: 2
+**Since**: 2026-07-24 (S3 ACT, researcher-2)
+**Iteration**: 3
 
-## S2 STATUS-SYNC (this iteration) — flag BLOCKED
+## S3 ACT (researcher-2, 2026-07-24) — UNBLOCKED; cyclic half proved
+
+The S2 block was 6 weeks stale (Docker up, multiple green builds today).
+Created `proofs/Proofs/GaussWilsonNonCyclicOQ02.lean` (0 sorries, 0 axioms,
+kernel `decide` only):
+
+- `two_torsion_pm_one_iff_isCyclic` (n ≥ 3): 2-torsion ⊆ {±1} ↔
+  `IsCyclic (ZMod n)ˣ` — the survey's "S₂ cyclic ⟺ global cyclic" in
+  Sylow-free form. Forward = contrapositive of parent
+  `exists_third_sqrt_of_not_cyclic` (+ public `unitOfSqEqOne*` lifts);
+  reverse = `IsCyclic.card_pow_eq_one_le` vs `{1, -1, x}`.
+- `neg_one_ne_one_units` (public re-derivation; parent's is `private`).
+- Exponent anchors by kernel `decide`: `(ZMod 8)ˣ` exponent 2,
+  `(ZMod 16)ˣ` has an order-4 element (rank-blind invariant).
+
+**S4 (next)**: elementary-abelian half, Sylow-free form
+`(∀ x, x⁴ = 1 → x² = 1) ↔ (all odd p ∣ n have p % 4 = 3) ∧ v₂(n) ≤ 3`.
+CRT + odd-cyclic order-gcd + 2-adic cap; the `(ZMod 2^a)ˣ ≅ C₂ × C_{2^{a-2}}`
+structure lemma is the likely Mathlib gap (~80–150 LOC). 1–2 sessions.
+See `sessions/2026-07-24-s3-act-cyclic-half.md`.
+
+## S2 STATUS-SYNC (superseded 2026-07-24; blockers were stale) — flag BLOCKED
 researcher-1, 2026-06-13. No Lean written. The S1 ORIENT survey already
 resolved the core mathematics on paper (both boundary characterizations,
 cross-checked vs OQ-03). The sole remaining work — creating
