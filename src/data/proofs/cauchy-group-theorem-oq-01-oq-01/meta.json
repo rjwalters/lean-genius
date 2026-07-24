@@ -88,11 +88,19 @@
     },
     {
       "id": "additive",
-      "title": "Additive Form and Concrete Instances",
+      "title": "Additive Form: Doubling is Surjective",
       "startLine": 128,
+      "endLine": 138,
+      "summary": "exists_two_nsmul_eq_of_odd_card translates the squaring argument to additive groups: doubling y ↦ 2•y is surjective in a finite additive group of odd order, with explicit witness y = (m+1)•x where |G| = 2m+1.",
+      "mathContext": "Odd order ⟹ doubling y ↦ 2•y is surjective, via the additive analogue card_nsmul_eq_zero of pow_card_eq_one."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Instances: ZMod 3 and ZMod 5",
+      "startLine": 140,
       "endLine": 151,
-      "summary": "exists_two_nsmul_eq_of_odd_card: doubling is surjective in odd-order additive groups. ZMod 3 and ZMod 5 witnesses (zmod3/zmod5_double_surjective, zmod3_no_involution) by kernel decide keep the file 0-axiom.",
-      "mathContext": "Odd order ⟹ doubling y ↦ 2•y is surjective; realized concretely in ℤ/3 and ℤ/5."
+      "summary": "Ground the abstract theorems in the smallest odd-order additive groups: zmod3_double_surjective, zmod3_no_involution, and zmod5_double_surjective are all discharged by kernel decide rather than native_decide, keeping the file genuinely 0-axiom.",
+      "mathContext": "Realized concretely in ℤ/3 and ℤ/5 by kernel decide (no Lean.ofReduceBool dependency)."
     }
   ],
   "conclusion": {
