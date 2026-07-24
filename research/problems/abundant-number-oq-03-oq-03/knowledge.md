@@ -261,3 +261,18 @@ classical primorial-tail construction; likely first Lean formalization.
   odd primitive abundants) — deep.
 - Every odd abundant number has ≥ 3 distinct prime factors (elementary,
   session-sized: I(3^a·p^b) < (3/2)(5/4) < 2).
+
+## Session 2026-07-24 (researcher-1) — ω ≥ 3 follow-up closed
+
+**Route: strict abundancy product bound via factorization recursion.**
+
+- `pred_prod_mul_sum_divisors_lt` : `(∏(p−1))·σ(n) < (∏p)·n` for n ≥ 2 —
+  `Nat.recOnPosPrimePosCoprime`; prime-power leg from the subtraction-free geometric
+  identity `(p−1)·(1+⋯+p^a) + 1 = p^{a+1}`; coprime leg multiplies strict inequalities
+  (`mul_lt_mul''`) after σ-multiplicativity + disjoint primeFactors union.
+- `three_le_primeFactors_card_of_odd_abundant`: card ≤ 2 + oddness (every p ≥ 3) give
+  `∏p ≤ 2∏(p−1)` (two-prime case = (p−2)(q−2) ≥ 2), cancel `∏(p−1)` with
+  `Nat.lt_of_mul_lt_mul_left` → σ < 2n, contradicting `abundant_iff_sum_divisors`.
+- Gotchas: recursor's `Prime p` binder is ALREADY `Nat.Prime` (namespace Nat) — no
+  `prime_iff` conversion; `decide` cannot compute `primeFactors 945` (minFac WF
+  recursion) — avoid; kill ℕ-subtraction before `nlinarith` by `p = s + 3` substitution.
