@@ -2,7 +2,10 @@
   {
     "id": "vandermonde-oq06-header",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 2, "endLine": 33 },
+    "range": {
+      "startLine": 2,
+      "endLine": 33
+    },
     "type": "concept",
     "title": "What this entry adds beyond Mathlib's Vandermonde",
     "content": "Mathlib proves Vandermonde's identity only in antidiagonal form (Nat.add_choose_eq), obtained by comparing the X^k coefficient of (X+1)^m·(X+1)^n and (X+1)^{m+n} — the algebraic / generating-function proof. This file does two things Mathlib does not: it repackages the identity in the classical single-index range form C(m+n,r) = ∑_{k=0}^{r} C(m,k)·C(n,r−k) (the shape actually used in practice), and it derives the two famous diagonal corollaries that are absent from Mathlib — the symmetric product form ∑ C(m,k)C(n,k) = C(m+n,n) and the sum-of-squares identity ∑ C(n,k)² = C(2n,n). Verified: 0 sorries, 0 axioms.",
@@ -24,73 +27,128 @@
   {
     "id": "vandermonde-oq06-antidiagonal",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 43, "endLine": 49 },
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
     "type": "theorem",
     "title": "Vandermonde, antidiagonal form (bridge to Mathlib)",
     "content": "vandermonde_antidiagonal restates Mathlib's Nat.add_choose_eq: (m+n).choose r = ∑_{ij∈antidiagonal r} C(m,ij.1)·C(n,ij.2). This is Mathlib's algebraic proof (coefficient comparison in (X+1)^m·(X+1)^n = (X+1)^{m+n}), reproduced here as the starting point that the next theorem reindexes into the classical form. The proof is a direct application of the Mathlib lemma.",
     "mathContext": "$C(m+n,r) = \\sum_{(i,j)\\in\\mathrm{antidiagonal}\\,r} C(m,i)\\,C(n,j)$",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.add_choose_eq", "antidiagonal", "coefficient comparison"],
-    "prerequisites": ["Finset.antidiagonal", "the binomial theorem for polynomials"]
+    "relatedConcepts": [
+      "Nat.add_choose_eq",
+      "antidiagonal",
+      "coefficient comparison"
+    ],
+    "prerequisites": [
+      "Finset.antidiagonal",
+      "the binomial theorem for polynomials"
+    ]
   },
   {
     "id": "vandermonde-oq06-range",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 51, "endLine": 60 },
+    "range": {
+      "startLine": 51,
+      "endLine": 60
+    },
     "type": "theorem",
     "title": "Vandermonde's identity, classical range form",
     "content": "vandermonde_range gives the textbook single-index statement C(m+n,r) = ∑_{k=0}^{r} C(m,k)·C(n,r−k). It is obtained from the antidiagonal form by Finset.Nat.sum_antidiagonal_eq_sum_range_succ, which reindexes a sum over the antidiagonal of r as a single sum over range (r+1) via k ↦ (k, r−k). This is the shape in which Vandermonde is normally used and which Mathlib does not provide directly.",
     "mathContext": "$C(m+n,r) = \\sum_{k=0}^{r} C(m,k)\\,C(n,r-k)$",
-    "significance": "central",
-    "relatedConcepts": ["Vandermonde's identity", "convolution", "reindexing sums"],
-    "prerequisites": ["Finset.Nat.sum_antidiagonal_eq_sum_range_succ"]
+    "significance": "critical",
+    "relatedConcepts": [
+      "Vandermonde's identity",
+      "convolution",
+      "reindexing sums"
+    ],
+    "prerequisites": [
+      "Finset.Nat.sum_antidiagonal_eq_sum_range_succ"
+    ]
   },
   {
     "id": "vandermonde-oq06-symmetric-product",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 64, "endLine": 78 },
+    "range": {
+      "startLine": 64,
+      "endLine": 78
+    },
     "type": "theorem",
     "title": "Symmetric product form ∑ C(m,k)C(n,k) = C(m+n,n)",
     "content": "sum_choose_mul_choose proves ∑_{k=0}^{n} C(m,k)·C(n,k) = C(m+n,n), a diagonal form absent from Mathlib. Take Vandermonde with r=n; on the summation range k ≤ n the symmetry Nat.choose_symm turns the factor C(n, n−k) into C(n, k), converting the convolution into the diagonal product. sum_choose_mul_choose' records the same identity with the split written as C(m+n,m) via Nat.choose_symm_add.",
     "mathContext": "$\\sum_{k=0}^{n} C(m,k)\\,C(n,k) = C(m+n,n) = C(m+n,m)$",
-    "significance": "central",
-    "relatedConcepts": ["Nat.choose_symm", "Nat.choose_symm_add", "diagonal identity"],
-    "prerequisites": ["symmetry of binomial coefficients"]
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.choose_symm",
+      "Nat.choose_symm_add",
+      "diagonal identity"
+    ],
+    "prerequisites": [
+      "symmetry of binomial coefficients"
+    ]
   },
   {
     "id": "vandermonde-oq06-sum-squares",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 80, "endLine": 86 },
+    "range": {
+      "startLine": 80,
+      "endLine": 86
+    },
     "type": "theorem",
     "title": "Sum of squares of a Pascal row: ∑ C(n,k)² = C(2n,n)",
     "content": "sum_sq_choose proves the classical central identity ∑_{k=0}^{n} C(n,k)² = C(2n,n) — the sum of the squares of a row of Pascal's triangle is the central binomial coefficient. It is the m=n case of sum_choose_mul_choose: rewrite 2n as n+n, apply the symmetric product form, and collapse C(n,k)·C(n,k) to C(n,k)². This identity is not in Mathlib.",
     "mathContext": "$\\sum_{k=0}^{n} \\binom{n}{k}^2 = \\binom{2n}{n}$",
-    "significance": "central",
-    "relatedConcepts": ["central binomial coefficient", "diagonal Vandermonde", "double counting"],
-    "prerequisites": ["the symmetric product form"]
+    "significance": "critical",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "diagonal Vandermonde",
+      "double counting"
+    ],
+    "prerequisites": [
+      "the symmetric product form"
+    ]
   },
   {
     "id": "vandermonde-oq06-centralBinom",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 88, "endLine": 93 },
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
     "type": "theorem",
     "title": "Restatement through Nat.centralBinom",
     "content": "sum_sq_choose_centralBinom phrases the sum-of-squares identity through Mathlib's Nat.centralBinom: ∑_{k=0}^{n} C(n,k)² = centralBinom n. Since centralBinom n is defined as (2n).choose n, the final step is definitional (rfl), connecting the new corollary to existing Mathlib infrastructure. The following worked examples check the range form (m=2,n=3,r=2) and the value ∑ C(3,k)² = C(6,3) = 20.",
     "mathContext": "$\\sum_{k=0}^{n} \\binom{n}{k}^2 = \\mathrm{centralBinom}\\,n$",
     "significance": "supporting",
-    "relatedConcepts": ["Nat.centralBinom", "definitional equality"],
-    "prerequisites": ["Nat.centralBinom"]
+    "relatedConcepts": [
+      "Nat.centralBinom",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom"
+    ]
   },
   {
     "id": "vandermonde-oq06-examples",
     "proofId": "binomial-theorem-oq-06",
-    "range": { "startLine": 95, "endLine": 108 },
-    "type": "context",
+    "range": {
+      "startLine": 95,
+      "endLine": 108
+    },
+    "type": "concept",
     "title": "Worked examples: the range form and ∑ C(3,k)² = 20",
     "content": "Three `example` declarations exercise the lemmas on concrete inputs. The first checks the range form for m=2, n=3, r=2: C(5,2) = ∑_{k=0}^{2} C(2,k)·C(3,2−k). The second instantiates the sum-of-squares corollary at n=3, ∑_{k=0}^{3} C(3,k)² = C(6,3). The third evaluates it numerically: the squares of Pascal's row 3, (1,3,3,1), give 1²+3²+3²+1² = 20 = C(6,3), closed by `rfl` after rewriting with sum_sq_choose. These act as machine-checked sanity checks and as a reader's-eye illustration that the abstract identities compute the expected values.",
     "mathContext": "$1^2 + 3^2 + 3^2 + 1^2 = 20 = \\binom{6}{3}$",
-    "significance": "context",
-    "relatedConcepts": ["worked examples", "central binomial coefficient", "numeric verification"],
-    "prerequisites": ["Finset.range sums", "rfl evaluation"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "worked examples",
+      "central binomial coefficient",
+      "numeric verification"
+    ],
+    "prerequisites": [
+      "Finset.range sums",
+      "rfl evaluation"
+    ]
   }
 ]
