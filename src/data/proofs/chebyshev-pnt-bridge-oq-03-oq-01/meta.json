@@ -69,7 +69,8 @@
       "The whole reduction is analysis-free: no Abel/partial summation, no integration — only that log is monotone on the positive reals and that a sub-sum of nonnegative terms is bounded by the full sum",
       "The index set of the θ-summation is literally the set counted by π: θ(n) = ∑_{p ∈ filter Prime (range (n+1))} log p and π(n) = |filter Prime (range (n+1))|, so the 'number of terms' in θ(n) is exactly π(n)",
       "The free parameter y trades the two error sources against each other: only the ≤ y small primes escape the log y ≥ tail bound, and only they are dropped from the π·log estimate; taking y ≈ n/(log n)² makes both y·log n and the π(y) loss o(n), collapsing the sandwich to the sharp equivalence",
-      "This modularizes PNT: it reduces the sharp asymptotic for π to the sharp asymptotic for θ (or ψ, which differs from θ by O(√x log²x)), which is the form the analytic (ζ) and elementary (Selberg) proofs actually deliver"
+      "This modularizes PNT: it reduces the sharp asymptotic for π to the sharp asymptotic for θ (or ψ, which differs from θ by O(√x log²x)), which is the form the analytic (ζ) and elementary (Selberg) proofs actually deliver",
+      "The final ratio-form step adds no new mathematics — it is pure algebra (dividing the sandwich by n, needing only log n/n ≥ 0 to preserve the inequality direction) — yet it is exactly this repackaging that turns a static two-sided bound into an active squeeze-theorem input; the limit argument's real content sits entirely in the normalization, not in any additional inequality"
     ],
     "prerequisites": [
       "the prime-counting function π and Chebyshev's function θ(x) = ∑_{p≤x} log p",

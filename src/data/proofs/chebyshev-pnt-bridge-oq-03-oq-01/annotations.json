@@ -116,5 +116,26 @@
       "chebyshevTheta_le_primeCounting_mul_log",
       "primeCounting_le_add_chebyshevTheta_div_log"
     ]
+  },
+  {
+    "id": "ann-ratio-form",
+    "proofId": "chebyshev-pnt-bridge-oq-03-oq-01",
+    "range": { "startLine": 155, "endLine": 189 },
+    "type": "insight",
+    "title": "Dividing by n: the exact shape a limit argument needs",
+    "content": "primeCounting_mul_log_div_sandwich just divides both inequalities of the packaged sandwich by n, but that division is what makes the statement limit-ready: θ(n)/n ≤ π(n)·log n/n ≤ θ(n)/n · (log n/log y) + y·log n/n. The proof multiplies the lower half π(n) ≤ y + θ(n)/log y through by the nonnegative factor log n/n (mul_le_mul_of_nonneg_right) and re-associates both sides with field_simp/ring; the upper half θ(n) ≤ π(n)·log n divides through directly via gcongr. No new mathematical content is added over the packaged sandwich — this is purely algebraic repackaging — but it is exactly the form needed to conclude π(n)·log n/n → 1 from θ(n)/n → 1 by squeezing, once y = y(n) is chosen so y/n → 0 and log n/log y → 1.",
+    "mathContext": "$\\dfrac{\\theta(n)}{n} \\le \\dfrac{\\pi(n)\\log n}{n} \\le \\dfrac{\\theta(n)}{n}\\cdot\\dfrac{\\log n}{\\log y} + \\dfrac{y\\log n}{n}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "mul_le_mul_of_nonneg_right",
+      "normalized ratio form",
+      "asymptotic squeeze setup"
+    ],
+    "prerequisites": [
+      "chebyshev_theta_primeCounting_sandwich",
+      "positivity of log n / n",
+      "field_simp/ring rearrangement"
+    ]
   }
 ]
