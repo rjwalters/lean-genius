@@ -20,8 +20,8 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Stream'.get",
-        "description": "Indexed access to a lazy stream",
+        "theorem": "Stream'",
+        "description": "The lazy-stream type itself (defined as ℕ → α), used only as the parameter type in `ofStream`; no Stream' API function (e.g. `get`) is called",
         "module": "Mathlib.Data.Stream.Defs"
       }
     ],
