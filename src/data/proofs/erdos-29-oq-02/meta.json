@@ -23,9 +23,14 @@
         "module": "Mathlib.Data.Finset.Image"
       },
       {
-        "theorem": "Real.sqrt_le_left",
-        "description": "Square root comparison",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root under ≤",
+        "module": "Mathlib.Analysis.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.sqrt_sq",
+        "description": "√(x²) = x for x ≥ 0",
+        "module": "Mathlib.Analysis.Real.Sqrt"
       }
     ],
     "originalContributions": [
