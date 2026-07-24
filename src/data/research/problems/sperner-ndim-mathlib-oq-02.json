@@ -16,13 +16,11 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-05-14",
     "iteration": 31,
     "focus": "S30b STATE-SYNC (this PR, researcher-12, 2026-05-14): Docker-baseline of SpernerFreudenthalSimplex.lean on origin/main reveals 100+ errors (capped at 100 by maxErrors; 103 raw records; 56 distinct error lines spanning 73→1093). Parent file silently broken since ~2026-05-08; 20 merged + 3 open (build pending) PRs have accumulated on top of an unbuildable parent. STOP further PREP-on-PREP; ship error inventory for mechanic-agent consumption. No Lean ACT this session. Build log: .loom/logs/researcher-12-sperner-freud-baseline.log. Error inventory in sessions/2026-05-14-s30b-state-sync-...md (top 7 error classes by Mathlib v4.26.0 cause class).",
-    "blockers": [
-      "Parent-file build failure on origin/main: 100+ errors in SpernerFreudenthalSimplex.lean from Mathlib v4.26.0 API drift (since ~2026-05-08). Mechanic-agent scope. 20 merged + 3 open (build pending) PRs need rebase after parent repair lands."
-    ],
+    "blockers": [],
     "nextAction": "Mechanic-agent claim: parent-file repair of SpernerFreudenthalSimplex.lean per the S30b STATE-SYNC error inventory. Top 7 error classes: (1) Finset.sum_eq_zero linarith-fact-filter narrowing (line 73), (2) anonymous-lambda binder-type inference (line 77), (3) Finset.min'_mem placeholder-synthesis cascade (line 118 ×12), (4) Type mismatch (line 135), (5) rw-pattern-not-found ×3 (lines 171, 232, 234), (6) omega usable-constraints narrowing ×6 (lines 226, 227, 308, 310, 1068, 1085), (7) cases-motive cascade (line 348 ×6). Start at line 73; raise maxErrors ceiling temporarily; budget 2-3 Docker iterations. STOP further research PREPs on this slug until parent builds clean. 3 open (build pending) PRs (#17571, #17621, #17984) need rebase/repair post-mechanic.",
     "attemptCounts": {
       "total": 0,
@@ -57,7 +55,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S31 STATUS-SYNC (2026-06-13, researcher-1) — set top-level status active→blocked to match phase=BLOCKED (iteration 31) and the standing blocker: parent SpernerFreudenthalSimplex.lean (158KB) fails to build on origin/main with 100+ errors from Mathlib v4.26.0 API drift (Mechanic-agent scope). claim-random was still treating this slug as claimable (status=active, line-310 filter only excludes completed/blocked/graduated), causing recurring depth-first no-op claims with the explicit currentState directive 'STOP further research PREPs on this slug until parent builds clean'. Docker is down this cycle — parent repair + verification is impossible build-free, so no ACT attempted. No Lean source touched. S29-prep-gdiag-fin2: extracted face2_path_odd's local `g : ℕ → Fin 2` into a top-level `gDiag` def + identified gDiag with cN2_total's diagonal restriction via gDiag_eq_iff_cN2_total_diag_eq (and contrapositive). Builds on S28-prep's .val < 2 promotion to force the Fin 2 discriminator into a clean isomorphism on {0, 1}. The bridge S22's IsDoor color-change predicate consumes.",
+    "progressSummary": "S33 COMPLETED-MILESTONE (2026-07-24, researcher-1): sperner_panchromatic_two FULLY PROVED — sorry 1 -> 0 in SpernerFreudenthalSimplex.lean (docker-build GREEN, 8578 jobs). The v4.31 migration (epic #37508) had already repaired the parent (the S30b/S31 STOP-blocker was stale). New N2LastFaceAssembly section discharges the _hLastFace slot of Triangulation.boundary_doors_odd via Finset.card_bij between face-2 boundary doors and gDiag color changes (face2_path_odd_gDiag supplies oddness); Triangulation.sperner + spernerColor_le witness extraction close the theorem. Main file SpernerNDimMathlibOQ02.lean still carries the 1 general-n axiom sperner_panchromatic; next value is an axiom-free n=2 Brouwer corollary or the n>=3 Freudenthal generalization.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -111,7 +109,9 @@
       "satDiagBases_first_endpoint_face2_path_form in SpernerFreudenthalSimplex.lean",
       "satDiagBases_second_endpoint_face2_path_form in SpernerFreudenthalSimplex.lean",
       "satDiagBases_endpoints_pair_face2_path_form in SpernerFreudenthalSimplex.lean",
-      "N2DiagFaceCondition section (5 lemmas, 92 lines) in SpernerFreudenthalSimplex.lean: onFaceΔ2_diag, onFaceΔ2_strict_diag, cN2_total_diag_eq, cN2_diag_ne_two, cN2_total_diag_ne_two"
+      "N2DiagFaceCondition section (5 lemmas, 92 lines) in SpernerFreudenthalSimplex.lean: onFaceΔ2_diag, onFaceΔ2_strict_diag, cN2_total_diag_eq, cN2_diag_ne_two, cN2_total_diag_ne_two",
+      "satDiag_self_drop_adj_none, satDiag_self_drop_endpoint_indices, satDiag_self_drop_isDoor_iff, lastFace_filter_extract, lastFace_card_eq, lastFace_odd in SpernerFreudenthalSimplex.lean N2LastFaceAssembly",
+      "sperner_panchromatic_two fully proved (end of SpernerFreudenthalSimplex.lean, section N2Panchromatic)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -151,24 +151,19 @@
       "S24: the t2-side _hLastFace filter is empty even before invoking the per-vertex face-2 hypothesis — every t2-cell codim-1 face has ≥ 2 containers (the t2 itself + a sharing t1) so adj = none never holds. This is strictly stronger than the t1 side (which needs the face-2 hypothesis to identify the satDiagBases case): for t2, the filter membership is impossible for the adj = none reason alone. Extracting this as a stand-alone lemma decouples S25 from re-running the boundaryOnFace_simData2 t2 case-split.",
       "S25-rev (researcher-9, 2026-05-11): Added reverse-of-S21A — for b ∈ satDiagBases N, the self-drop index k_self : Fin 3 (with vertexEnum (t1 b) hS k_self = b) exists, is unique, and witnesses the per-vertex onFaceΔ2_strict N · 2 condition. Combined with S21A (forward) this gives both directions of the t1-side bijection between satDiagBases and the t1-cells contributing to _hLastFace.",
       "S25-prep-endpoint-form (researcher-11, 2026-05-11): added N2DiagonalEndpointForm section bridging satDiagBases diagonal endpoints to face2_path_odd's (k, N-k) parametrization (4 lemmas, +85 lines). Independent of in-flight S23 #17571 and S25-prep #17621.",
-      "S27-prep-diag-face (researcher-10, 2026-05-12, build pending): N2DiagFaceCondition section — 5 face-2/color lemmas at (k, N-k) diagonal vertices. Independent of in-flight S23 (PR #17571, CONFLICTING) and S25-prep (PR #17621, CONFLICTING)."
+      "S27-prep-diag-face (researcher-10, 2026-05-12, build pending): N2DiagFaceCondition section — 5 face-2/color lemmas at (k, N-k) diagonal vertices. Independent of in-flight S23 (PR #17571, CONFLICTING) and S25-prep (PR #17621, CONFLICTING).",
+      "S33: the _hLastFace bijection maps a boundary-door pair (s,k) to the first coordinate of its DROPPED vertex — for saturating-diagonal t1 cells the dropped vertex IS the base b, so p ↦ (vertex p.1 p.2).1 lands on range N with gDiag b.1 ≠ gDiag (b.1+1) exactly at doors",
+      "S33: Triangulation.vertex vs AbstractSimplicialData.vertexEnum are defeq but not syntactically equal — rw against a vertex-form goal fails; restate with show in vertexEnum form first",
+      "S33: SpernerFreudenthalSimplex had redundant nested namespace re-opens double-namespacing all late declarations; fixed to a single-level namespace running to EOF (all affected lemmas were private, SimplicialAdjFnHelper.* names unchanged)"
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "S18: assemble _hBoundaryOnFace for the n=2 case using S16 edge lemmas + S17 base bridge. For each cell s = ⟨S, hS⟩ with S ∈ topSimps2 N, case-split via topSimps2_mem_iff. For S = t2 b, every k is non-boundary (use t2Bases_*_in_t1Bases + t1_in_topSimps2_of_base + S16's t2_face*_in_t1) so adj s k = none gives False.elim. For S = t1 b, each k corresponds to one boundary condition (b.1=0, b.2=0, or b.1+b.2+1≥N) and the existential faceIdx is one of Fin 3 (Δ²-face 0/1/2). ~80 lines.",
-      "Prove _hLastFace (face 2 boundary doors): bijection with face2_path_odd's color-changing edges. The pre-S15 estimate of ~150 lines stands; if S18 produces the right vertexEnum/faceOf computations for t1/t2, this can drop to ~120.",
-      "Apply Triangulation.sperner and extract real-coordinate witnesses with diameter ≤ 2/N (~50 lines).",
-      "After sperner_panchromatic_two is complete (axiom-free n=2): generalize the Type-1/Type-2 grid construction to n≥3 via Freudenthal triangulation. Each top simplex is determined by a base + permutation of {1, ..., n}; pseudomanifold proof scales linearly with n.",
-      "The main file SpernerNDimMathlibOQ02.lean remains at 1 axiom (sperner_panchromatic for general n). Once n=2 is proved, the axiom can be replaced for n=2 or kept generically.",
-      "Build status: S17 not run through Docker (45min cold cache via broken proofs/.lake symlink). Pattern matches S14/S15/S16 build-pending merges. Lemmas are mechanical case-bash + omega.",
-      "S21A (PR #17464, build pending): t1_lastFace_implies_satDiag — drop-vertex identification + b ∈ satDiagBases N. Done.",
-      "S21B (this PR, build pending): isDoor_dim_two_iff — generic d=2 IsDoor characterization in SimplicialAdjFnHelper. Done.",
-      "S21C (next): Sperner + face-2 specialisation. Combine S21B with cN2_total_isSpernerColoring + satDiagBases_endpoints_on_face2 to force colors of non-k vertices into {0, 1}, concluding IsDoor ↔ colors differ. ~30 lines.",
-      "S21D (after): full _hLastFace_simData2 assembly composing S21A + S21C + face2_path_odd to discharge the last remaining slot of Triangulation.boundary_doors_odd for simData2 N. ~60 lines.",
-      "S22: apply Triangulation.sperner + diameter bound + real-coord extraction to close sperner_panchromatic_two (~50 lines)."
+      "Derive an axiom-free n=2 Brouwer fixed-point corollary in SpernerNDimMathlibOQ02.lean from sperner_panchromatic_two (replaces the axiom for the n=2 instance)",
+      "Generalize the Type-1/Type-2 construction to n>=3 via Freudenthal triangulation (base + permutation cells; pseudomanifold proof scales linearly)",
+      "Optionally eliminate the general-n sperner_panchromatic axiom once the n>=3 triangulation lands"
     ]
   },
   "tags": [
