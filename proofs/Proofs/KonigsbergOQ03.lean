@@ -620,4 +620,311 @@ theorem not_biInfinite_imp_oneWay :
       HasInfiniteEulerPath G → HasOneWayEulerPath G :=
   fun h => not_hasOneWayEulerPath_lineGraph (h ℤ lineGraph lineGraph_hasInfiniteEulerPath)
 
+/-! ### EGW necessity: degree parity (S14)
+
+The Erdős–Grünwald–Weiszfeld characterisation of one-way Euler paths includes
+a *necessity* clause on vertex degrees: along a one-way Euler walk, every
+visit to a vertex `v` other than the starting vertex consumes exactly two
+edges at `v` (one arriving, one departing), so if `v` has finite degree that
+degree must be **even**; the starting vertex is the sole exception — its
+first visit consumes only a departing edge, so its finite degree is **odd**.
+
+Formally, the neighbour set `{u | G.adj v u}` is counted by splitting it into
+
+* the *out-neighbours* `w.vertex (n + 1)` over departure steps
+  `n ∈ w.outSteps v` (steps with `w.vertex n = v`), and
+* the *in-neighbours* `w.vertex n` over arrival steps `n ∈ w.inSteps v`
+  (steps with `w.vertex (n + 1) = v`),
+
+which are injective images (edge-injectivity), disjoint (an edge traversed
+both out of and into `v` would be traversed twice), and jointly exhaustive
+(the walk covers every edge at `v`). Shifting arrival steps forward by one
+identifies `w.inSteps v` with `w.outSteps v \ {0}`, giving
+
+`degree v = |outSteps v| + |outSteps v \ {0}|`,
+
+whose parity is decided by whether `0 ∈ outSteps v`, i.e. whether `v` is the
+start. Headline consequences: the odd-finite-degree vertices of a graph with
+a one-way Euler path form a subsingleton, so **two distinct odd-degree
+vertices rule out a one-way Euler path** — the first structural piece of the
+EGW theorem. The line graph shows the parity clause alone is *not*
+sufficient: it has no odd vertex at all, yet no one-way Euler path (S13) —
+the number of ends enters the full characterisation. -/
+
+namespace InfiniteWalk
+
+/-- The steps at which the walk departs from `v` (the walk is at `v` at time
+`n`, so the edge traversed at step `n` leaves `v`). Contains `0` iff `v` is
+the starting vertex. -/
+def outSteps {V : Type*} {G : InfiniteGraph V} (w : InfiniteWalk G) (v : V) :
+    Set ℕ :=
+  {n | w.vertex n = v}
+
+/-- The steps at which the walk arrives at `v` (the walk is at `v` at time
+`n + 1`, so the edge traversed at step `n` enters `v`). -/
+def inSteps {V : Type*} {G : InfiniteGraph V} (w : InfiniteWalk G) (v : V) :
+    Set ℕ :=
+  {n | w.vertex (n + 1) = v}
+
+/-- No step both departs from and arrives at `v`: such a step would traverse
+a loop, which `InfiniteGraph.loopless` forbids. -/
+theorem disjoint_outSteps_inSteps {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (v : V) : Disjoint (w.outSteps v) (w.inSteps v) := by
+  rw [Set.disjoint_left]
+  intro n hn hn'
+  simp only [outSteps, inSteps, Set.mem_setOf_eq] at hn hn'
+  exact w.step_ne n (hn.trans hn'.symm)
+
+/-- Shifting arrival steps forward by one yields exactly the departure steps
+other than `0`: the walk is at `v` at time `m ≥ 1` iff it arrived there at
+time `m - 1`, and time `0` is never an arrival. -/
+theorem image_succ_inSteps {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (v : V) :
+    (fun n => n + 1) '' w.inSteps v = w.outSteps v \ {0} := by
+  ext m
+  simp only [Set.mem_image, Set.mem_sdiff, Set.mem_singleton_iff, inSteps,
+    outSteps, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨n, hn, rfl⟩
+    exact ⟨hn, by omega⟩
+  · rintro ⟨hm, h0⟩
+    obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero h0
+    exact ⟨n, hm, rfl⟩
+
+end InfiniteWalk
+
+namespace IsEulerWalk
+
+/-- The out-neighbours over departure steps and the in-neighbours over
+arrival steps jointly exhaust the neighbour set of `v`: the walk covers every
+edge at `v`, in one direction or the other. -/
+theorem image_outSteps_union_image_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) (v : V) :
+    ((fun n => w.vertex (n + 1)) '' w.outSteps v) ∪
+      ((fun n => w.vertex n) '' w.inSteps v) = {u | G.adj v u} := by
+  ext u
+  simp only [Set.mem_union, Set.mem_image, InfiniteWalk.outSteps,
+    InfiniteWalk.inSteps, Set.mem_setOf_eq]
+  constructor
+  · rintro (⟨n, hn, rfl⟩ | ⟨n, hn, rfl⟩)
+    · rw [← hn]
+      exact w.step_adj n
+    · have h := w.step_adj n
+      rw [hn] at h
+      exact G.symm _ _ h
+  · intro hu
+    rcases hE.covers v u hu with ⟨n, hn1, hn2⟩ | ⟨n, hn1, hn2⟩
+    · exact Or.inl ⟨n, hn1, hn2⟩
+    · exact Or.inr ⟨n, hn2, hn1⟩
+
+/-- Departure steps map injectively to out-neighbours: two departures to the
+same neighbour `u` would traverse the edge `{v, u}` twice. -/
+theorem injOn_vertex_succ_outSteps {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) (v : V) :
+    Set.InjOn (fun n => w.vertex (n + 1)) (w.outSteps v) := by
+  intro m hm n hn h
+  simp only [InfiniteWalk.outSteps, Set.mem_setOf_eq] at hm hn
+  exact hE.injective m n (Or.inl ⟨hm.trans hn.symm, h⟩)
+
+/-- Arrival steps map injectively to in-neighbours: two arrivals from the
+same neighbour `u` would traverse the edge `{v, u}` twice. -/
+theorem injOn_vertex_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) (v : V) :
+    Set.InjOn (fun n => w.vertex n) (w.inSteps v) := by
+  intro m hm n hn h
+  simp only [InfiniteWalk.inSteps, Set.mem_setOf_eq] at hm hn
+  exact hE.injective m n (Or.inl ⟨h, hm.trans hn.symm⟩)
+
+/-- No neighbour of `v` is both an out-neighbour and an in-neighbour: the
+edge `{v, u}` would be traversed twice (once leaving `v`, once entering it —
+the two steps are distinct because no step is a loop). -/
+theorem disjoint_image_outSteps_image_inSteps {V : Type*}
+    {G : InfiniteGraph V} {w : InfiniteWalk G} (hE : IsEulerWalk G w)
+    (v : V) :
+    Disjoint ((fun n => w.vertex (n + 1)) '' w.outSteps v)
+      ((fun n => w.vertex n) '' w.inSteps v) := by
+  rw [Set.disjoint_left]
+  rintro u ⟨m, hm, rfl⟩ ⟨n, hn, hnm⟩
+  simp only [InfiniteWalk.outSteps, InfiniteWalk.inSteps,
+    Set.mem_setOf_eq] at hm hn
+  have hmn : m = n := hE.injective m n (Or.inr ⟨hm.trans hn.symm, hnm.symm⟩)
+  subst hmn
+  exact w.step_ne m (hm.trans hn.symm)
+
+/-- If `v` has finitely many neighbours, its departure steps are finite:
+they inject into the neighbour set. -/
+theorem finite_outSteps {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) {v : V}
+    (hfin : {u | G.adj v u}.Finite) : (w.outSteps v).Finite := by
+  refine Set.Finite.of_finite_image (hfin.subset ?_)
+    (hE.injOn_vertex_succ_outSteps v)
+  rw [← hE.image_outSteps_union_image_inSteps v]
+  exact Set.subset_union_left
+
+/-- If `v` has finitely many neighbours, its arrival steps are finite. -/
+theorem finite_inSteps {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) {v : V}
+    (hfin : {u | G.adj v u}.Finite) : (w.inSteps v).Finite := by
+  refine Set.Finite.of_finite_image (hfin.subset ?_)
+    (hE.injOn_vertex_inSteps v)
+  rw [← hE.image_outSteps_union_image_inSteps v]
+  exact Set.subset_union_right
+
+/-- **Degree census along a one-way Euler walk**: the neighbour count of a
+finite-degree vertex `v` is the number of departure steps plus the number of
+departure steps other than `0`. Each visit to `v` at time `m ≥ 1` pairs an
+arrival (step `m - 1`) with a departure (step `m`); a visit at time `0` is an
+unpaired departure. -/
+theorem ncard_neighbors_eq {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) (v : V)
+    (hfin : {u | G.adj v u}.Finite) :
+    {u | G.adj v u}.ncard =
+      (w.outSteps v).ncard + (w.outSteps v \ {0}).ncard := by
+  have hOut : (w.outSteps v).Finite := hE.finite_outSteps hfin
+  have hIn : (w.inSteps v).Finite := hE.finite_inSteps hfin
+  calc {u | G.adj v u}.ncard
+      = (((fun n => w.vertex (n + 1)) '' w.outSteps v) ∪
+          ((fun n => w.vertex n) '' w.inSteps v)).ncard := by
+        rw [hE.image_outSteps_union_image_inSteps v]
+    _ = ((fun n => w.vertex (n + 1)) '' w.outSteps v).ncard +
+          ((fun n => w.vertex n) '' w.inSteps v).ncard :=
+        Set.ncard_union_eq (hE.disjoint_image_outSteps_image_inSteps v)
+          (hOut.image _) (hIn.image _)
+    _ = (w.outSteps v).ncard + (w.inSteps v).ncard := by
+        rw [(hE.injOn_vertex_succ_outSteps v).ncard_image,
+          (hE.injOn_vertex_inSteps v).ncard_image]
+    _ = (w.outSteps v).ncard + (w.outSteps v \ {0}).ncard := by
+        rw [← w.image_succ_inSteps v,
+          Set.ncard_image_of_injective _ (add_left_injective 1)]
+
+/-- **EGW necessity, non-start case**: along a one-way Euler walk, every
+finite-degree vertex other than the starting vertex has an *even* number of
+neighbours — each visit pairs one arrival with one departure. -/
+theorem even_ncard_neighbors_of_ne_start {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w) {v : V}
+    (hfin : {u | G.adj v u}.Finite) (hv : v ≠ w.vertex 0) :
+    Even {u | G.adj v u}.ncard := by
+  have h0 : (0 : ℕ) ∉ w.outSteps v := by
+    simp only [InfiniteWalk.outSteps, Set.mem_setOf_eq]
+    exact fun h => hv h.symm
+  rw [hE.ncard_neighbors_eq v hfin, Set.sdiff_singleton_eq_self h0]
+  exact ⟨(w.outSteps v).ncard, rfl⟩
+
+/-- **EGW necessity, start case**: the starting vertex of a one-way Euler
+walk, if of finite degree, has an *odd* number of neighbours — its first
+departure is unpaired. -/
+theorem odd_ncard_neighbors_start {V : Type*} {G : InfiniteGraph V}
+    {w : InfiniteWalk G} (hE : IsEulerWalk G w)
+    (hfin : {u | G.adj (w.vertex 0) u}.Finite) :
+    Odd {u | G.adj (w.vertex 0) u}.ncard := by
+  have h0 : (0 : ℕ) ∈ w.outSteps (w.vertex 0) := by
+    simp only [InfiniteWalk.outSteps, Set.mem_setOf_eq]
+  have hOut : (w.outSteps (w.vertex 0)).Finite := hE.finite_outSteps hfin
+  have hpos : 0 < (w.outSteps (w.vertex 0)).ncard :=
+    (Set.ncard_pos hOut).mpr ⟨0, h0⟩
+  rw [hE.ncard_neighbors_eq _ hfin, Set.ncard_sdiff_singleton_of_mem h0]
+  exact ⟨(w.outSteps (w.vertex 0)).ncard - 1, by omega⟩
+
+/-- Degree form of the non-start parity theorem: the `infiniteDegree` of a
+finite-degree non-start vertex is `2 * k` for some `k : ℕ`. -/
+theorem infiniteDegree_eq_two_mul_of_ne_start {V : Type*}
+    {G : InfiniteGraph V} {w : InfiniteWalk G} (hE : IsEulerWalk G w)
+    {v : V} (hfin : infiniteDegree G v ≠ ⊤) (hv : v ≠ w.vertex 0) :
+    ∃ k : ℕ, infiniteDegree G v = 2 * k := by
+  have hf : {u | G.adj v u}.Finite := by
+    rwa [infiniteDegree, Set.encard_ne_top_iff] at hfin
+  obtain ⟨k, hk⟩ := hE.even_ncard_neighbors_of_ne_start hf hv
+  refine ⟨k, ?_⟩
+  rw [infiniteDegree, ← hf.cast_ncard_eq, hk]
+  push_cast
+  ring
+
+/-- Degree form of the start parity theorem: the `infiniteDegree` of the
+starting vertex, if finite, is `2 * k + 1` for some `k : ℕ`. -/
+theorem infiniteDegree_start_eq_two_mul_add_one {V : Type*}
+    {G : InfiniteGraph V} {w : InfiniteWalk G} (hE : IsEulerWalk G w)
+    (hfin : infiniteDegree G (w.vertex 0) ≠ ⊤) :
+    ∃ k : ℕ, infiniteDegree G (w.vertex 0) = 2 * k + 1 := by
+  have hf : {u | G.adj (w.vertex 0) u}.Finite := by
+    rwa [infiniteDegree, Set.encard_ne_top_iff] at hfin
+  obtain ⟨k, hk⟩ := hE.odd_ncard_neighbors_start hf
+  refine ⟨k, ?_⟩
+  rw [infiniteDegree, ← hf.cast_ncard_eq, hk]
+  push_cast
+  ring
+
+end IsEulerWalk
+
+/-- **At most one odd vertex**: in a graph with a one-way Euler path, the
+finite-degree vertices of odd degree form a subsingleton — every such vertex
+coincides with the walk's starting vertex. -/
+theorem oddVertices_subsingleton_of_hasOneWayEulerPath {V : Type*}
+    {G : InfiniteGraph V} (h : HasOneWayEulerPath G) :
+    {v | {u | G.adj v u}.Finite ∧ Odd {u | G.adj v u}.ncard}.Subsingleton := by
+  obtain ⟨w, hE⟩ := h
+  have key : ∀ v ∈ {v | {u | G.adj v u}.Finite ∧ Odd {u | G.adj v u}.ncard},
+      v = w.vertex 0 := by
+    rintro v ⟨hf, hodd⟩
+    by_contra hne
+    exact (Nat.not_even_iff_odd.mpr hodd)
+      (hE.even_ncard_neighbors_of_ne_start hf hne)
+  intro v₁ h₁ v₂ h₂
+  rw [key v₁ h₁, key v₂ h₂]
+
+/-- **EGW necessity — the headline obstruction**: two distinct vertices of
+odd finite degree rule out a one-way Euler path. This is Euler's classical
+parity obstruction (Königsberg has *four* odd vertices), transplanted to
+infinite graphs. -/
+theorem not_hasOneWayEulerPath_of_two_odd_vertices {V : Type*}
+    {G : InfiniteGraph V} {v₁ v₂ : V} (hne : v₁ ≠ v₂)
+    (h₁f : {u | G.adj v₁ u}.Finite) (h₁ : Odd {u | G.adj v₁ u}.ncard)
+    (h₂f : {u | G.adj v₂ u}.Finite) (h₂ : Odd {u | G.adj v₂ u}.ncard) :
+    ¬ HasOneWayEulerPath G :=
+  fun h =>
+    hne (oddVertices_subsingleton_of_hasOneWayEulerPath h ⟨h₁f, h₁⟩ ⟨h₂f, h₂⟩)
+
+/-- The ray graph's vertex `0` has exactly one neighbour. -/
+theorem rayGraph_neighbors_zero : {u | rayGraph.adj 0 u} = {1} := by
+  ext u
+  simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | h) <;> omega
+  · rintro rfl
+    exact Or.inl rfl
+
+/-- Sanity instantiation of the start-case parity theorem: the ray graph's
+starting vertex `0` has odd degree (namely one), consistent with
+`rayGraph_hasOneWayEulerPath` (the S12 witness `rayWalk` starts at `0`). -/
+theorem rayGraph_odd_ncard_neighbors_zero :
+    Odd {u | rayGraph.adj 0 u}.ncard := by
+  rw [rayGraph_neighbors_zero, Set.ncard_singleton]
+  exact ⟨0, by omega⟩
+
+/-- Every vertex of the line graph has exactly the two neighbours `n ± 1`. -/
+theorem lineGraph_neighbors (n : ℤ) :
+    {u | lineGraph.adj n u} = {n + 1, n - 1} := by
+  ext u
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | h) <;> omega
+  · rintro (rfl | rfl)
+    · exact Or.inl rfl
+    · exact Or.inr (by ring)
+
+/-- Every vertex of the line graph has even degree (namely two). -/
+theorem lineGraph_even_ncard_neighbors (n : ℤ) :
+    Even {u | lineGraph.adj n u}.ncard := by
+  rw [lineGraph_neighbors n, Set.ncard_pair (by omega : n + 1 ≠ n - 1)]
+  exact ⟨1, rfl⟩
+
+/-- **Parity necessity is not sufficiency**: the line graph has *no* vertex
+of odd degree — every vertex has exactly two neighbours — yet it has no
+one-way Euler path (S13). The parity clause of the EGW characterisation is
+therefore strictly weaker than the full characterisation: the number of
+*ends* enters (the line has two, and a one-way walk can exhaust only one). -/
+theorem lineGraph_parity_not_sufficient :
+    (∀ n : ℤ, Even {u | lineGraph.adj n u}.ncard) ∧
+      ¬ HasOneWayEulerPath lineGraph :=
+  ⟨lineGraph_even_ncard_neighbors, not_hasOneWayEulerPath_lineGraph⟩
+
 end KonigsbergOQ03
