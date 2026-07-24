@@ -170,7 +170,7 @@
       "name": "grandi_not_summable",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Alternating Naturals Don't Converge Either",
     "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
     "mathContext": "Define `alternatingNaturals n = (-1)^n * (n + 1)`. The partial sums satisfy $|S_{2k}| = k+1$ and $|S_{2k+1}| = k+1$ \u2014 both grow without bound. `\u00ac Summable alternatingNaturals` follows from the necessary condition: if `Summable f`, then `Filter.Tendsto f atTop (nhds 0)`. But `|alternatingNaturals n| = n+1 \u2192 \u221e`, so it cannot tend to 0.",
@@ -239,7 +239,7 @@
       "name": "alternating_naturals_not_summable",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Partial Sums Grow Without Bound",
     "content": "The sum $1+2+\\cdots+n = \\frac{n(n+1)}{2}$, which grows without bound as $n \\to \\infty$. This is the formal statement that the series diverges.",
     "mathContext": "The triangular number formula $T_n = \\frac{n(n+1)}{2}$ gives `\u2211 k in Finset.range n, (k+1) = n*(n+1)/2`. For any bound $M$, choosing $n > 2M$ gives $T_n > M$. Formally: `\u2200 M : \u211d, \u2203 N : \u2115, \u2200 n \u2265 N, M < \u2211 k in Finset.range n, naturals k`. This implies `\u00ac Summable naturals` since summable sequences must have terms tending to 0, but `naturals n = n+1 \u2192 \u221e`.",

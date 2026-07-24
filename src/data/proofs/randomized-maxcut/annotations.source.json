@@ -95,7 +95,7 @@
       "name": "prob_edge_in_cut",
       "kind": "lemma"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : \u00ace.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "mathContext": "$\\text{Sym2}(V) = V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. An edge $e \\in E(G)$ satisfies $\\neg e.\\text{IsDiag}$, meaning $e = \\{u, v\\}$ with $u \\neq v$. Induction on the quotient gives representatives.",

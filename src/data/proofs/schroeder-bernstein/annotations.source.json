@@ -175,7 +175,7 @@
       "type": "section-doc",
       "contains": "Corollaries -/"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Composition Preserves Injectivity",
     "content": "A useful corollary: if $f: A \\to B$ and $g: B \\to A$ are both injective, then so is $g \\circ f: A \\to A$.\n\n**Proof**: Suppose $g(f(a_1)) = g(f(a_2))$. Since $g$ is injective, $f(a_1) = f(a_2)$. Since $f$ is injective, $a_1 = a_2$. Thus $g \\circ f$ is injective.\n\nThis composition gives an injective self-map $A \\to A$, which in the finite case would imply $A$ and $B$ have the same size immediately.",
     "mathContext": "If $f: \\alpha \\hookrightarrow \\beta$ and $g: \\beta \\hookrightarrow \\alpha$, then $g \\circ f: \\alpha \\hookrightarrow \\alpha$. Lean: `hg.comp hf`. For finite $\\alpha$, pigeonhole gives bijectivity automatically -- but this fails for infinite sets.",

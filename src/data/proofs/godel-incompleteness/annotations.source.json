@@ -200,7 +200,7 @@
       "type": "block-comment",
       "contains": "Axiom:** The self-referential property of G."
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "G Is Not Provable",
     "content": "This is the heart of the argument. Assume for contradiction that $G$ is provable.\n\n1. By representability, $\\vdash\\text{Prov}(\\ulcorner G\\urcorner)$\n2. But $G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$, so $\\vdash\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n3. We've proved both $\\text{Prov}(\\ulcorner G\\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n4. This contradicts consistency!\n\nTherefore, if the system is consistent, $G$ cannot be provable. But $G$ *says* \"I am not provable\"\u2014so $G$ is true! A true sentence that cannot be proved.",
     "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\vdash G$",

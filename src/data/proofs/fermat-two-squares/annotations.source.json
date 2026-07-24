@@ -96,7 +96,7 @@
       "name": "sum_two_squares_iff_not_three_mod_four",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Prime 2: A Special Case",
     "content": "2 = 1\u00b2 + 1\u00b2 is trivially a sum of two squares.\n\nNote that 2 \u2261 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
     "mathContext": "2 is the only even prime, making it unique in many ways.",

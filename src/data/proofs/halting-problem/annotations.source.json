@@ -127,7 +127,7 @@
       "name": "diagonal_differs",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Diagonal Differs from Oracle",
     "content": "**Key Lemma**: The diagonal behavior always differs from the oracle's prediction at self-application points.\n\nFor any program code $n$:\n$\\text{diagonal}(H)(n) \\neq H(n, n)$\n\nThis follows immediately from the fact that $\\neg b \\neq b$ for any boolean.",
     "mathContext": "$\\text{diagonal}(H)(n) = \\neg H(n, n) \\neq H(n, n)$\n\nBecause $\\neg \\text{true} = \\text{false} \\neq \\text{true}$\nand $\\neg \\text{false} = \\text{true} \\neq \\text{false}$",
@@ -173,7 +173,7 @@
       "name": "no_halting_oracle",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Case: Oracle Says Halt",
     "content": "**Case 1**: Suppose $H(c, c) = \\text{true}$ (oracle predicts halt).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{false}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so $c$ halting means diagonal returns true.\n\nContradiction: $\\text{false} = \\text{true}$.",
     "mathContext": "$H(c,c) = \\text{true}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{false}$\n$\\Rightarrow c(c)$ loops\n$\\Rightarrow H(c,c)$ should be $\\text{false}$ (contradiction)",
@@ -196,7 +196,7 @@
       "name": "no_halting_oracle",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Case: Oracle Says Loop",
     "content": "**Case 2**: Suppose $H(c, c) = \\text{false}$ (oracle predicts loop).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{true}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so diagonal returning true means $c$ halts.\n\nContradiction: $H$ said $c$ loops but $c$ halts.",
     "mathContext": "$H(c,c) = \\text{false}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{true}$\n$\\Rightarrow c(c)$ halts\n$\\Rightarrow H(c,c)$ should be $\\text{true}$ (contradiction)",

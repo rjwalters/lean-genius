@@ -65,7 +65,7 @@
       "name": "factorial_succ_ge_two",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "n! + 1 Is at Least 2",
     "content": "For any $n$, we have $n! + 1 \\geq 2$. Since $n! \\geq 1$ (factorials are always positive), adding 1 gives us at least 2. This ensures that $n! + 1$ has at least one prime divisor, which is needed for the existence step in Euclid's argument. The proof uses the `omega` tactic \u2014 Lean's decision procedure for Presburger arithmetic (the first-order theory of $(\\mathbb{Z}, +, <)$) \u2014 which handles the linear inequality $n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$ automatically.",
     "mathContext": "$n! \\geq 1 \\Rightarrow n! + 1 \\geq 2$. Combined with `Nat.exists_prime_and_dvd`: $n! + 1 \\geq 2 \\Rightarrow \\exists p$ prime, $p \\mid (n! + 1)$.",
@@ -87,7 +87,7 @@
       "name": "dvd_of_dvd_add_one",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Key Divisibility Lemma",
     "content": "If $p$ divides both $a$ and $a+1$, then $p$ divides 1. This is the heart of Euclid's proof. The proof: if $p \\mid a$ and $p \\mid (a+1)$, then $p \\mid ((a+1) - a) = 1$. Since no prime divides 1 (primes satisfy $p \\geq 2$), this creates the contradiction we need. The Lean proof applies `Nat.dvd_sub'` (if $p \\mid b$ and $p \\mid a$ with $a \\leq b$, then $p \\mid (b - a)$) and simplifies $(a+1) - a = 1$.",
     "mathContext": "$p \\mid a \\land p \\mid (a+1) \\Rightarrow p \\mid ((a+1) - a) = 1$. Equivalently: consecutive integers are coprime. This is the structural reason why $n!$ and $n! + 1$ cannot share any prime factors.",

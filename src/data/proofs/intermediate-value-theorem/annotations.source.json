@@ -100,7 +100,7 @@
       "name": "bolzano",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bolzano Proof Strategy",
     "content": "The proof has two parts:\n\n1. **Get existence in [a, b]**: Since 0 is between f(a) and f(b), IVT gives us some x in [a, b] with f(x) = 0.\n\n2. **Show x is in (a, b)**: We prove x \u2260 a because f(a) < 0 \u2260 f(x) = 0, and similarly x \u2260 b because f(b) > 0 \u2260 f(x) = 0.\n\nThis is a common pattern: use IVT for the closed interval, then refine to the open interval using the hypothesis values.",
     "mathContext": "Strategy:\n1. $0 \\in [f(a), f(b)]$ since $f(a) < 0 < f(b)$\n2. Apply IVT to get $x \\in [a, b]$\n3. $x \\neq a$ since $f(x) = 0 \\neq f(a)$\n4. $x \\neq b$ since $f(x) = 0 \\neq f(b)$",
