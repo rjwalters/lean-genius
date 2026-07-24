@@ -87,11 +87,18 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Overview: the unitary-invariance corollary",
+      "id": "docstring-motivation",
+      "title": "Docstring: why this corollary is isolated here",
       "startLine": 3,
+      "endLine": 13,
+      "summary": "Module docstring opening: the parent entry (cauchy-interlacing-theorem-oq-01-oq-01-oq-01) proved the bridge lemma eigenvalues_eq_of_eigenbasis and, in its own docstring, recorded but did not formalize the unitary-conjugation headline corollary — flagging it as that entry's lead open question. This file exists to isolate exactly that corollary as a reusable lemma."
+    },
+    {
+      "id": "docstring-summary",
+      "title": "Docstring: the two lemmas, proof recipe, and application",
+      "startLine": 15,
       "endLine": 37,
-      "summary": "Module docstring: the parent proved the bridge lemma eigenvalues_eq_of_eigenbasis and flagged the unitary-conjugation corollary as its lead open question. This file isolates that corollary, names the two results, sketches the eigenbasis-transport recipe, and explains the payoff for principal-submatrix Cauchy interlacing. Notes the file is intentionally not registered in Proofs.lean (research file)."
+      "summary": "Names and states the two results (isSymmetric_of_isometryConj, eigenvalues_isometryConj), sketches the eigenbasis-transport proof recipe, and explains the payoff: this is the tool that finishes principal-submatrix Cauchy interlacing by identifying an orthogonal compression's spectrum with an isometric conjugate's. Notes the field generality (any RCLike 𝕜) and that the file is intentionally not registered in Proofs.lean (research file)."
     },
     {
       "id": "setup",
