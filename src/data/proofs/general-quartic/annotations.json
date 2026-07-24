@@ -207,5 +207,53 @@
       "the Renaissance algebraists (del Ferro, Tartaglia, Cardano, Ferrari)",
       "Cardano's Ars Magna (1545)"
     ]
+  },
+  {
+    "id": "ann-pan-witness-k1-tangency",
+    "proofId": "general-quartic",
+    "range": {
+      "startLine": 749,
+      "endLine": 803
+    },
+    "type": "insight",
+    "title": "OQ-02.a: The Pan k=1 Tangency Witness",
+    "content": "`pan_witness_k1_tangency` and its resolvent-cubic form `pan_witness_k1_resolvent_root` give, for every `0 < t ≤ 1`, an exact-arithmetic real root `m` of the Pan-family resolvent cubic `resolventCubic (-1) t² (1/4 - t² + t⁴/4)`, with its Ferrari intermediate `α² = 2m - 1` pinned strictly between `t²/4` and `t²`. This is the S12 capstone of the OQ-02 line: it certifies that along the Pan family, the resolvent root exists at exact arithmetic precision, but the corresponding Ferrari intermediate `α = √(2m-1) ∈ (t/2, t)` shrinks linearly with `t` while the family of quartics stays uniformly well-separated — the source of the `Ω(t⁻¹)` blow-up in Ferrari's explicit formula near the biquadratic boundary. Proved via the intermediate value theorem on the cleaned resolvent (`panCleanedResolvent`), bracketing a sign change between `t²/4` and `t²`.",
+    "mathContext": "$\\forall\\, 0 < t \\le 1,\\ \\exists\\, m \\in \\mathbb{R}$ with $\\mathrm{resolventCubic}(-1, t^2, \\tfrac14 - t^2 + \\tfrac{t^4}{4})(m) = 0$ and $\\tfrac{t^2}{4} < 2m-1 < t^2$ — pinning $\\alpha = \\sqrt{2m-1} \\in (t/2, t)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pan family of quartics",
+      "resolvent cubic",
+      "intermediate value theorem",
+      "biquadratic boundary instability"
+    ],
+    "prerequisites": [
+      "the resolvent cubic and Ferrari's intermediate α = √(2m+p)",
+      "intermediate value theorem",
+      "the biquadratic-limit removable singularity (OQ-02.c)"
+    ]
+  },
+  {
+    "id": "ann-ferrari-biquad-limit",
+    "proofId": "general-quartic",
+    "range": {
+      "startLine": 819,
+      "endLine": 887
+    },
+    "type": "theorem",
+    "title": "OQ-02.c Closure: ferrari_biquad_limit",
+    "content": "Closes the α=0 boundary case of `ferrariRoots`. For any `(p, r) ≠ (0, 0)`, a non-degenerate resolvent root `m` (with `2m + p ≠ 0`) exists, and every Ferrari root squared lands in the two-element biquadratic pair `{(-p+√(p²-4r))/2, (-p-√(p²-4r))/2}`. The existence half uses Mathlib's algebraic closedness of ℂ (`IsAlgClosed.exists_root` on `X² + C(-r)`) to find `u` with `u² = r`, then checks that `m₁ = -p+u` or (if `m₁` degenerates) `m₂ = -p-u` is non-degenerate — a case split resolved by the `(p,r)≠(0,0)` hypothesis. The 'roots squared' half reuses `ferrari_roots_are_roots` plus the biquadratic characterization `biquadratic_simple`, bypassing any explicit-formula expansion.",
+    "mathContext": "$(p,r)\\neq(0,0) \\Rightarrow \\exists\\, m,\\ 2m+p\\neq 0,\\ (\\mathrm{resolventCubic}\\,p\\,0\\,r)(m)=0$, and every Ferrari root $y_i$ has $y_i^2 \\in \\{(-p\\pm\\sqrt{p^2-4r})/2\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic closure of ℂ",
+      "biquadratic characterization",
+      "resolvent cubic degeneracy",
+      "removable singularity"
+    ],
+    "prerequisites": [
+      "IsAlgClosed.exists_root",
+      "biquadratic_simple",
+      "ferrari_roots_are_roots"
+    ]
   }
 ]
