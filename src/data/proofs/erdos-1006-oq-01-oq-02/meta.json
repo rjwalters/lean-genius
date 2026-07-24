@@ -46,7 +46,7 @@
       "cover_strictly_subset_comparability: strict separation witness — K₃ is comparability but not cover"
     ],
     "dateAdded": "2026-05-03",
-    "lineCount": 254,
+    "lineCount": 286,
     "assumptions": "0 axioms. The two former recognition axioms (comparability_recognition_in_p, cover_graph_recognition_in_p) had trivially-true Lean statements — ∃ f : SimpleGraph V → Bool, ∀ G, f G = true ↔ isXGraph G — which hold for ANY predicate under classical logic and captured none of the polynomial-time content their names asserted. Both are now proved theorems (via the classical indicator exists_bool_recognizer); the cover one is renamed exists_bool_cover_recognizer so nothing claims the open problem is resolved. The genuine open question — whether cover graph recognition is in POLYNOMIAL TIME — is deliberately NOT formalized (Mathlib has no complexity model), so this entry stays an open-problem framing (axiomatized, 0 axioms) rather than a resolution.",
     "definitionCount": 4
   },
@@ -140,12 +140,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 254,
+    "lineCount": 286,
     "path": "Proofs/Erdos1006OQ01OQ02.lean",
-    "axiomCount": 2,
+    "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 4,
-    "theoremCount": 9
+    "theoremCount": 12
   },
   "sorries": 0
 }
