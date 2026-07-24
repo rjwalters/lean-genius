@@ -193,3 +193,54 @@ close by `simp only [translate_impl, translate_box]` then `exact H...`.
 **Next (S17).** Discharge one of `Htaut`/`Hk`/`Hlob` into a theorem. Most
 tractable: `Hk` via an object-level deduction/curry lemma composing the meta
 `internal_K`; `Hlob` waits on S4 ACT (Löb); `Htaut` needs CPL completeness.
+
+---
+
+## S18 ACT (2026-07-24, researcher-3): GL derives the "4" schema — first derived theorem in the GL Hilbert system
+
+Shipped `proofs/Proofs/GodelSecondIncompletenessOQ02GLFour.lean` (Docker-verified,
+**0 axioms, 0 sorries, no Mathlib imports** — `#print axioms four` reports "does not
+depend on any axioms": fully constructive term-mode Hilbert derivations).
+
+**Headline**: `four (A) : GL_proves (□A ⟶ □□A)` — the transitivity schema is NOT a
+constructor of `GL_proves`, yet derivable (Boolos Ch. 1): **GL extends K4**. Also
+`box_iterate : ⊢ □A → □ⁿ⁺¹A` (iterated form).
+
+**Derivation (formalized Boolos argument)**, `B := A ∧ □A` with conjunction defined
+classically (`conj p q := ¬(p → ¬q)` over →/⊥):
+1. `⊢ B → A`, `⊢ B → □A` (defined-conjunction projections via k3),
+2. `box_mono` (= K ∘ nec, derived rule) lifts to `⊢ □B → □A`, `⊢ □B → □□A`,
+3. `⊢ A → (□B → B)` = `flip (imp_trans s₁ (flip (conj_intro A □A)))` — no deduction
+   theorem needed, just combinators,
+4. `box_mono` + `lob B` + chaining.
+
+**Reusable propositional toolkit** (from the three Łukasiewicz schemas alone):
+`imp_id`, `imp_trans` (rule), `flip` (rule: ⊢p→(q→r) ⟹ ⊢q→(p→r), = imp_trans (ax1) ∘
+mp (ax2)), `imp_swap` (theorem form), `efq` (⊥→p via k3 against ¬⊥), `dni` (p→¬¬p =
+flip of id), `neg_imp_lift`, `conj`/`conj_intro`/`conj_elim_left/right`. These are the
+building blocks for discharging S16's `Htaut` hypothesis on concrete instances.
+
+**Negative finding (blocked route — S16's recommendation is NOT viable as stated)**:
+S16 suggested "discharge Hk via an object-level deduction/curry lemma composing the
+meta internal_K". This confuses meta and object levels: `internal_K` (Companion) is
+the META rule `(⊢ φ→ᶠψ) → (⊢ Prov⌜φ⌝ →ᶠ Prov⌜ψ⌝)`, while `Hk` demands the OBJECT
+theorem `⊢ Prov⌜a→ᶠb⌝ →ᶠ (Prov⌜a⌝ →ᶠ Prov⌜b⌝)` (formalized D2). Under the opaque
+`Provable` there is no object-level deduction theorem, so Hk is NOT derivable from
+D1/D2/D3/impl_mp — it is a genuinely new assumption (formalized-D2), exactly like
+Htaut/Hlob. Reopen bar: materially new mechanism (concrete Σ₁ Provable rebuild, S6
+PREP #18497). The same wall blocks meta-level Löb (needs the diagonal fixed point +
+object-level propositional chaining under Prov).
+
+**Lean gotchas**: `/-!` module docstring must come AFTER imports (files with no
+imports, like GLSyntax, mask this); family style is `/-` header comments. Term-mode
+`let B := ...; let s₁ : T := ...` chains elaborate cleanly for Prop-valued Hilbert
+derivations; defined `conj` unfolds by defeq in expected types.
+
+**Next steps** (in tractability order):
+1. S19: discharge `Htaut` for SPECIFIC translations needed downstream using the new
+   toolkit + a `translate`-commutes-with-connectives lemma set (the full Htaut needs
+   propositional completeness — Kalmár — a bigger but self-contained project).
+2. Kalmár completeness for the →/⊥ fragment over GLFormula (fully constructive,
+   ~300-500 LOC): would discharge Htaut wholesale.
+3. S5 Kripke semantics + soundness of GL_proves (independent axis, unblocked).
+4. Hk/Hlob remain blocked on the Σ₁ rebuild (see negative finding above).

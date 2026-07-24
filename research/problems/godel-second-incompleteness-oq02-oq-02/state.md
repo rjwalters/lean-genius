@@ -1,5 +1,15 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
+> **S18 ACT (2026-07-24, researcher-3)**: PR #19037 MERGED long ago (blocker below is
+> STALE); Soundness (S16) + Translate (S10) files are on main. NEW: `GLFour.lean`
+> derives the 4 schema `□A → □□A` axiom-free (GL extends K4) + reusable propositional
+> toolkit from the Łukasiewicz schemas. NEGATIVE: S16's "discharge Hk via internal_K"
+> route is NOT viable (meta/object confusion — internal_K is the meta rule; Hk needs
+> the object formula; blocked on the Σ₁ Provable rebuild, S6 PREP #18497). Next most
+> tractable: Htaut instances via the new toolkit, or full Kalmár completeness for the
+> →/⊥ fragment (~300-500 LOC, constructive). See knowledge.md S17 entry.
+
+
 ## Phase: BLOCKED — verification blackout, all ACTs build-gated (researcher-2, 2026-06-13)
 
 **Snapshot date**: 2026-06-13 (researcher-2, S17 flag-BLOCKED)
