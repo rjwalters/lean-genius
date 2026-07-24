@@ -3,35 +3,42 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-23T10:45:00-07:00
-**Iteration**: 7
+**Since**: 2026-07-24T01:30:00-07:00
+**Iteration**: 8
 
 ## Current Focus
-Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..28) as of the
-2026-07-23b session (h(28)=7 via a mod-4 class double count — the perfect
-8-mark ruler is forced at N=28 and the residue-class counts
-Σcᵣ(cᵣ−1)=14, Σcᵣ·c_{r+2}=14, Σcᵣ=8 are jointly unsatisfiable; no kernel
-search needed).
+Exact Sidon table h(N) = sidonNumber N. COMPLETE for h(0..29) as of the
+2026-07-24 session (h(29)=7 via a VERIFIED BACKTRACKING SEARCH: pruned
+`searchOK` engine + completeness lemma + `decide +kernel` evaluation of
+`searchOK {0,29} 1 28 6 = false`; span dichotomy chains span ≤ 28 to the
+h(28) mod-4 theorem).
 
 ## Active Approach
 Residue-class double counting against forced perfect rulers at the wall
 values N = k(k−1)/2 (h(10) parity, h(15) mod-3, h(21) parity, h(28) mod-4);
-chained span dichotomy + pinned-endpoint kernel search for the in-between
-values. `SidonCheck` converse bridge certifies witnesses with one `decide`.
+chained span dichotomy for the in-between values, with the span-N branch now
+discharged by the VERIFIED BACKTRACKING ENGINE (`searchOK` +
+`searchOK_complete`, parametric in the interval) instead of flat
+powersetCard kernel searches. `SidonCheck` converse bridge certifies
+witnesses with one `decide`.
 
 ## Attempt Count
-- Total attempts: 7 sessions
-- Current approach attempts: 4 (h(16), h(17..21), h(22..27), h(28) — all landed)
-- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count
+- Total attempts: 8 sessions
+- Current approach attempts: 5 (h(16), h(17..21), h(22..27), h(28), h(29) — all landed)
+- Approaches tried: parity wall, mod-3 class count, span dichotomy, mod-4 double count, verified backtracking search
 
 ## Blockers
-h(29..33) wall: perfect ruler no longer forced (28 diffs in {1,…,N} miss
-N−28 values); span dichotomy returns but the span-N branch needs per-N
-nonexistence with C(N−1,6)-scale kernel searches (~376k at N=29). Mod-4
-alone checked INSUFFICIENT at N=29 (a {4,2,1,1} arrangement with the missing
-value ≡ 2 mod 4 survives). Elementary layer near-saturated.
+None for h(30..33): the backtracking engine reduces each remaining wall to
+one `decide +kernel` evaluation (`searchOK {0,N} 1 (N−1) 6 = false`) plus
+the copy-paste span dichotomy with the chain anchor moved up one. Kernel
+cost grows with N but stays far below the (infeasible, ≥3 CPU-h) flat
+C(N−1,6) enumeration. After h(33): h(34) = 8 needs the 8-mark optimal-ruler
+WITNESS {0,1,4,9,15,22,32,34} (easy, SidonCheck bridge) — then the table
+hits the 9-element frontier (optimal 9-mark span 44). Beyond the table:
+DEEP targets only.
 
 ## Next Action
-Either combine mod-3 × mod-4 (or endpoint sum-collision pruning: pairs
-summing to N are forbidden when {0,N} ⊆ A) to fell h(29), or switch to DEEP
-targets: Singer √N lower bound, N^{1/4} refinement, $1000 N^ε conjecture.
+h(30..33) via the engine (one session can likely take all four: each is a
+searchOK kernel theorem + shifted dichotomy). Then h(34)=8 via the optimal
+8-mark ruler witness. DEEP targets unchanged: Singer √N lower bound,
+N^{1/4} refinement, $1000 N^ε conjecture.

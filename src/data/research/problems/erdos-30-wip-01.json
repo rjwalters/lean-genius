@@ -20,18 +20,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:20-07:00",
-    "iteration": 3,
-    "focus": "h(22)..h(27) SHIPPED (2026-07-23): table extended to h(0..27). h(22)=h(23)=h(24)=6 via the SCALED span dichotomy chained across three N values: slide down by the minimum; reduced span appeals to the previous N's obstruction (anchored at the merged h(21) parity theorem no_sidon_card_seven_range_twentytwo), span=N pins endpoints {0,N} and the FIVE interior elements fall to decide +kernel over C(N-1,5) subsets (20349 / 26334 / 33649 candidates for N=22,23,24). h(25)=h(26)=h(27)=7: the optimal 7-mark Golomb ruler {0,1,4,10,18,23,25} (span 25, sharp by no_sidon_card_seven_range_twentyfive) gives the witness, certified via the new converse bridge isSidonSet_of_sidonCheck (decide replaces the 7^4=2401-case rcases sweep); counting blocks eight (64 > 2N+8 through N=27).",
+    "iteration": 8,
+    "focus": "Exact Sidon table complete h(0..29); verified backtracking search engine (searchOK) now discharges span-N branches; next h(30..33) via engine",
     "blockers": [],
-    "nextAction": "Table h(0..27) complete. Next wall is N=28: counting goes slack for eight (64 = 2*28+8) and the optimal 8-mark ruler {0,1,4,9,15,22,32,34} has span 34, so h(28..33) need per-N nonexistence of an 8-element Sidon set — span dichotomy would need C(N-1,6) kernel searches (~296k at N=28, likely still feasible but growing). Or pivot to the DEEP targets: Singer/Bose difference-set lower bound h(N)>=(1-o(1))sqrt(N) (finite projective geometry, likely axiomatize), N^{1/4} constant refinement, and the $1000 N^eps conjecture (stays a Prop).",
+    "nextAction": "h(30..33) via searchOK kernel evaluations + shifted span dichotomies; then h(34)=8 witness",
     "attemptCounts": {
-      "total": 0,
+      "total": 8,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Exact sidonNumber table COMPLETE through h(28): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4; h(11..16)=5; h(17..24)=6; h(25..28)=7 (h(28) via mod-4 class double count against the forced perfect 8-mark ruler — no kernel search). Two-sided elementary bounds stand. NEXT wall: h(29..33) (perfect ruler no longer forced; mod-4 alone insufficient at N=29). DEEP unchanged: Singer sqrt(N) lower construction, N^{1/4} refinement, $1000 conjecture.",
+    "progressSummary": "Exact sidonNumber table COMPLETE through h(29): h(0..2)=1,2,2; h(3..5)=3; h(6..10)=4; h(11..16)=5; h(17..24)=6; h(25..29)=7. h(29) fell to a NEW verified backtracking search engine (searchOK + completeness lemma + decide +kernel): the span-29 branch's flat C(28,6)=376740 enumeration was measured infeasible (>=3 CPU-h); the pruned tree visits only 26651 tests. Engine is parametric in the interval, so h(30..33) are each one kernel evaluation away. 0 sorries, 0 axioms throughout.",
     "builtItems": [
       "Erdos30WIP01.lean: diffMap_injOn (Set.InjOn of difference map on Sidon off-diagonal)",
       "Erdos30WIP01.lean: sidon_offDiag_card_le (|A.offDiag| ≤ 2N for Sidon A ⊆ {0..N})",
@@ -57,7 +57,12 @@
       "isSidonSet_0_1_4_10_18_23_25 (optimal 7-mark Golomb ruler witness, decide-certified) in Erdos30WIP01.lean",
       "sidonNumber_twentytwo..twentyseven (h(22..24)=6, h(25..27)=7 — exact table now h(0..27)) in Erdos30WIP01.lean",
       "no_sidon_card_eight_range_twentynine in Erdos30WIP01.lean — no 8-element Sidon set in {0..28}, via forced perfect ruler + mod-4 class double count (cross-class fibration T2.filter(p.1%4=r) = A_r ×ˢ A_{(r+2)%4})",
-      "sidonNumber_twentyeight in Erdos30WIP01.lean — h(28)=7; exact table complete h(0..28)"
+      "sidonNumber_twentyeight in Erdos30WIP01.lean — h(28)=7; exact table complete h(0..28)",
+      "searchOK (Erdos30WIP01.lean): pruned backtracking Sidon-extension search, parametric in [lo,hi] and count k",
+      "searchOK_complete: completeness of the pruned search (induction on k, smallest-element-first rediscovery)",
+      "search_zero_twentynine_eq_false: kernel evaluation searchOK {0,29} 1 28 6 = false (26651 tests, 5362 nodes)",
+      "no_sidon_card_eight_range_thirty: span dichotomy, chains h(28) mod-4 theorem + engine",
+      "sidonNumber_twentynine: h(29) = 7 — table complete h(0..29)"
     ],
     "insights": [
       "Erdős–Turán upper bound is provable elementarily via difference-map injectivity: for a Sidon set A the map (a,b)↦a−b is injective on the off-diagonal (a−b=c−d ⇒ a+d=c+b ⇒ pair matches by the Sidon property), its image is nonzero integers in [−N,N] (2N of them), so |A.offDiag|=|A|²−|A| ≤ 2N.",
@@ -77,13 +82,17 @@
       "h(25)=h(26)=h(27)=7 come free once the ruler {0,1,4,10,18,23,25} is certified: 8²=64 > 2N+8 through N=27. The table now ends exactly where counting goes slack for eight: 64 = 2*28+8 at N=28, and the optimal 8-mark ruler has span 34, so h(28..33) is a six-value wall needing C(N-1,6)-scale searches (~296k at N=28).",
       "h(28)=7 needs NO kernel search: at N=28 the perfect 8-mark ruler is FORCED (C(8,2)=28 distinct positive differences must exhaust {1..28}), and a mod-4 class double count refutes it — same-class Σc_r(c_r−1)=14 with cross-class Σc_r·c_{(r+2)%4}=14 and Σc_r=8 is unsatisfiable (class multiset must be {4,2,1,1} or {3,3,2,0}, giving c0c2+c1c3 ∈ {6,9}, never 7)",
       "Mod-obstruction ladder at the perfect-ruler walls N=k(k−1)/2: h(10) parity (odd sum), h(15) mod-3 same-class, h(21) parity, h(28) mod-4 same+cross-class — every wall so far falls to a residue count, no exhaustive search",
-      "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search"
+      "Mod-4 checked INSUFFICIENT at N=29: 28 diffs in {1..29} miss one value; missing ≡2 (mod 4) with class multiset {4,2,1,1} arranged c0c2+c1c3=6 survives the double count — h(29) needs mod-3×mod-4 combination, endpoint sum-collision pruning, or a C(28,6)≈376k kernel search",
+      "Flat powersetCard kernel searches hit their wall at ~C(23,5)=33k candidates (>12 CPU-min); C(28,6)=376k extrapolates to >=3 CPU-h and ~22GB kernel memory — infeasible",
+      "A verified pruned backtracking search (prune the branch as soon as SidonCheck fails) visits 14x fewer nodes at N=29 and its completeness proof is a clean 40-line induction on the number of missing elements",
+      "Mod-4 double count is SILENT at N=29: missing difference must be ≡ 2 (mod 4) (odd → parity contradiction, ≡ 0 mod 4 → class sizes {3,3,1,1} with cross-count in {6,10} never 7), but {4,2,1,1} with missing ≡ 2 (mod 4) survives — counting alone cannot fell h(29)",
+      "Engine reuse: each wall h(30..33) is now one decide +kernel evaluation searchOK {0,N} 1 (N-1) 6 = false plus the copy-paste span dichotomy with the chain anchor moved up"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional: sharpen the constant toward √N + N^{1/4} + 1 (Erdős–Turán 1941) — needs the finer sum-counting over {2,…,2N}; the √(2N)+1 form is the clean elementary envelope.",
-      "Lower bound side: Singer/Bose difference-set construction giving h(N) ≥ (1−o(1))√N is DEEP (finite projective geometry) — keep axiomatized.",
-      "The Erdős–Turán conjecture (error N^ε for all ε>0, $1000) stays OPEN as a Prop; do NOT claim proved."
+      "h(30..33): engine kernel theorems + shifted span dichotomies (likely one session for all four)",
+      "h(34) = 8: certify the optimal 8-mark Golomb ruler {0,1,4,9,15,22,32,34} via the SidonCheck bridge",
+      "DEEP: Singer/singular-perfect-difference-set sqrt(N) lower bound; N^{1/4} refinement; $1000 N^epsilon conjecture"
     ],
     "markdown": "# Knowledge Base: erdos-30-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -105,7 +114,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.781Z",
-  "lastUpdate": "2026-07-23",
+  "lastUpdate": "2026-07-24",
   "significance": 8,
   "tractability": 6
 }

@@ -196,3 +196,43 @@ value ≡ 2 (mod 4) with class multiset {4,2,1,1} arranged c₀c₂+c₁c₃ = 6
 the double count) — needs either a mod-4+mod-3 combination, endpoint-pinned
 sum-collision pruning (a+b = 29 forbidden pairs), or the C(28,6) ≈ 376k kernel
 search. DEEP targets unchanged.
+
+## Session 2026-07-24 (researcher-1) — h(29)=7 via a VERIFIED BACKTRACKING SEARCH (new engine)
+
+Added 6 declarations to `Erdos30WIP01.lean` (0 sorries, 0 axioms):
+- `searchOK` (private def): pruned backtracking Sidon-extension search.
+  `searchOK A lo hi k` scans `x ∈ [lo, hi]` (via `List.range'`), keeps `x` only if
+  `SidonCheck (insert x A)` still holds (`decide`), and recurses with `lo := x+1`,
+  `k−1`. Parametric in the interval — reusable for every remaining wall.
+- `sidonCheck_mono` (private): `SidonCheck` is hereditary under `⊆`.
+- `searchOK_complete` (private): **completeness** — if some `B ⊆ Icc lo hi` with
+  `|B| = k` has `SidonCheck (A ∪ B)`, then `searchOK A lo hi k = true`. Induction
+  on `k`: `x := B.min'` is in the scan range, `insert x A` inherits SidonCheck (so
+  the branch is not pruned), `B.erase x ⊆ Icc (x+1) hi` closes the induction.
+  Key steps: `List.mem_range'_1`, `Finset.insert_union`/`union_insert`/`insert_erase`,
+  `decide_eq_true`, `Bool.and_eq_true`, `List.any_eq_true`.
+- `search_zero_twentynine_eq_false` (private): kernel evaluation
+  `searchOK {0,29} 1 28 6 = false` by `decide +kernel`.
+- `no_sidon_card_eight_range_thirty`: span dichotomy (the h(24) template verbatim,
+  numbers shifted): span ≤ 28 chains to the h(28) mod-4 theorem; span = 29 pins
+  `{0,29}` and the interior `B` feeds `searchOK_complete` + the kernel `false`.
+- `sidonNumber_twentynine : sidonNumber 29 = 7`. Table now COMPLETE h(0..29).
+
+**Why the engine, not a flat search:** the span-29 branch would need
+`C(28,6) = 376740` powersetCard candidates. Host benchmark: the h(24)-scale flat
+search (33649 candidates) ran >12 CPU-min without finishing standalone; the h(29)
+flat search extrapolates to ≥3 CPU-hours and ~22 GB kernel memory — infeasible.
+The pruned tree (Python simulation, matches the Lean encoding order) visits only
+**26651 extension tests / 5362 surviving nodes** — 14× fewer tests, tiny memory.
+Mod-4 was checked silent at N=29 (missing value ≡ 2 (mod 4) with class multiset
+{4,2,1,1} survives; odd missing → parity contradiction; ≡ 0 (mod 4) → class sizes
+{3,3,1,1} give cross-count {6,10} ≠ 7) — so a counting-only proof was not available.
+
+**Ops note:** the session worktree was janitor-reaped mid-session (uncommitted);
+all content was reconstructed from context + a surviving probe file and committed
+immediately. Verify-before-push ordering inverted this once — commit FIRST.
+
+**Next walls (h(30..33)):** identical dichotomy; each needs only
+`searchOK {0,N} 1 (N−1) 6 = false` by `decide +kernel` (tree sizes grow but stay
+~10⁴–10⁵ tests) + the copy-paste dichotomy with the chain anchor moving up one.
+DEEP targets unchanged (Singer √N lower bound, N^{1/4} refinement, $1000 N^ε).
