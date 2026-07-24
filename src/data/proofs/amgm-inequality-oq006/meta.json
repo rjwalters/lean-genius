@@ -88,12 +88,20 @@
       "mathContext": "Target: $e_k \\in \\mathrm{adjoin}_{\\mathbb{Q}}(\\mathrm{range}\\,p)$ over any $\\mathbb{Q}$-algebra, the reverse of the parent's $p_k=\\sum(-1)^{i+1}e_ip_{k-i}+(-1)^{k+1}ke_k$."
     },
     {
-      "id": "integral-instances",
-      "title": "Concrete Integral Instances (any CommRing)",
+      "id": "integral-base",
+      "title": "Degree-1 Base Case: e₁ = p₁",
       "startLine": 64,
+      "endLine": 75,
+      "summary": "esymm_one_eq_psum: specialising psum_recurrence at k = 1 collapses the interval sum Ico 1 1 to empty, leaving e₁ = p₁ directly — the base case every higher integral instance builds on.",
+      "mathContext": "$e_1 = p_1$, from `psum_recurrence` at $k=1$ with the empty interval sum."
+    },
+    {
+      "id": "integral-higher",
+      "title": "Degree-2 and Degree-3: 2e₂ and 6e₃",
+      "startLine": 77,
       "endLine": 107,
-      "summary": "esymm_one_eq_psum (e₁ = p₁), two_esymm_two (2e₂ = p₁²−p₂), six_esymm_three (6e₃ = p₁³−3p₁p₂+2p₃). Each specialises psum_recurrence at small k, expands the interval sum by decide, and closes with linear_combination over the recurrence and lower cases.",
-      "mathContext": "$e_1=p_1$, $2e_2=p_1^2-p_2$, $6e_3=p_1^3-3p_1p_2+2p_3$ — the denominator-cleared low-degree reverse identities, valid over any CommRing."
+      "summary": "two_esymm_two (2e₂ = p₁²−p₂) and six_esymm_three (6e₃ = p₁³−3p₁p₂+2p₃) each specialise psum_recurrence at k=2,3, expand the interval sum by decide, and close with linear_combination reusing the previous degree's identity — the denominator-cleared low-degree reverse identities, valid over any CommRing.",
+      "mathContext": "$2e_2=p_1^2-p_2$, $6e_3=p_1^3-3p_1p_2+2p_3$, each built from `psum_recurrence` plus the lower-degree case via `linear_combination`."
     },
     {
       "id": "psum-adjoin",
