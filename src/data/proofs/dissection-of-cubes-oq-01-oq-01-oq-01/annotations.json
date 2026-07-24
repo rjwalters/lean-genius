@@ -2,7 +2,7 @@
   {
     "id": "dissect-oq010101-ann-header",
     "proofId": "dissection-of-cubes-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 70 },
+    "range": { "startLine": 1, "endLine": 65 },
     "type": "concept",
     "title": "Does the minimal-collision witness survive real coverage?",
     "content": "The gallery result minimal_collision_achievable (OQ-01-01) builds a CubeDissection with exactly 2 colliding cubes, but its covers_unit_cube field is the placeholder True — the cubes do not actually fill the unit cube. This entry replaces that placeholder with a genuine volumetric coverage predicate ∑ c.side³ = 1 and asks whether the witness survives. It does not: the published example occupies under 7% of the unit cube. The predicate is shown satisfiable (the unit cube, 0 collisions), the known witness is shown to fail it, and a new cardinality bound proves any genuine minimal-collision dissection needs ≥ 3 cubes.",
@@ -14,7 +14,7 @@
   {
     "id": "dissect-oq010101-ann-structure",
     "proofId": "dissection-of-cubes-oq-01-oq-01-oq-01",
-    "range": { "startLine": 71, "endLine": 97 },
+    "range": { "startLine": 66, "endLine": 97 },
     "type": "definition",
     "title": "GeoCubeDissection with volumetric coverage",
     "content": "GeoCubeDissection keeps the combinatorial constraints of CubeDissection (all cubes contained in the unit cube, pairwise interior-disjoint) but replaces the True placeholder with the real coverage field volume_fills : ∑ c.size³ = 1. For pairwise interior-disjoint cubes inside [0,1]³ this is exactly the necessary condition for filling the unit cube, and is measure-sufficient. The forgetful map toCubeDissection discharges covers_unit_cube by trivial, letting the existing collidingCubes and HasMinimalCollision machinery be reused unchanged.",
