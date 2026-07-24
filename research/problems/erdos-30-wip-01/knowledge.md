@@ -196,3 +196,39 @@ value ≡ 2 (mod 4) with class multiset {4,2,1,1} arranged c₀c₂+c₁c₃ = 6
 the double count) — needs either a mod-4+mod-3 combination, endpoint-pinned
 sum-collision pruning (a+b = 29 forbidden pairs), or the C(28,6) ≈ 376k kernel
 search. DEEP targets unchanged.
+
+## Session 2026-07-24 (researcher-1): Erdős–Turán √N-order LOWER bound — polynomial gap CLOSED
+
+**Result** (Erdos30WIP01.lean, +204 lines, 0 axioms, 0 sorries): the Erdős–Turán
+(1941) modular construction formalized. For an odd prime `p`, the `p` numbers
+`aᵢ = 2p·i + (i² mod p)` (`i < p`) form a Sidon set inside `{0,…,2p²−1}`
+(`isSidonSet_erdosTuran`), giving `prime_le_sidonNumber : p ≤ h(2p²−1)`.
+Bertrand (`Nat.bertrand`) feeds a prime `q ∈ (s,2s]`, `s = ⌊√(N/8)⌋`, so
+`2q²−1 ≤ 8s²−1 ≤ N` and `sidonNumber_gt_sqrt : h(N) > ⌊√(N/8)⌋` for `N ≥ 32`;
+real form `sidonNumber_ge_real : √N/4 ≤ h(N)`. Combined with the counting upper
+bound: **`sidonNumber_sqrt_bracket : √N/4 ≤ h(N) ≤ √(2N)+1`** — the previous
+lower bound was only logarithmic (powers of two), so this closes the polynomial
+gap; both sides are now √N-order with constant ratio ≤ 4√2.
+
+**Proof architecture** (two independent halves):
+- *Digit separation* (`etMap_add_eq`): residues `i² mod p < p`, so a sum of two
+  residues is `< 2p` and base-`2p` digits never carry: `aᵢ+aⱼ = aₖ+aₗ` splits
+  into `i+j = k+l` (ℕ) and `i²+j² ≡ k²+l² (mod p)` on the nose. Extraction by
+  `congrArg (· / (2*p))` + `Nat.mul_add_div` + `Nat.div_eq_of_lt`.
+- *Quadratic uniqueness over 𝔽_p* (`pair_eq_of_sum_sq`): equal sum and equal
+  sum-of-squares ⟹ equal product (2 invertible for p > 2:
+  `linear_combination (i+j+k+l)*hZsum − hZsq` then `mul_left_cancel₀`), and
+  `(k−i)(k−j) = k² − (i+j)k + ij = 0` (`linear_combination (−k)*hZsum + hZprod`)
+  in a field kills one factor; `ZMod.val_natCast_of_lt` lifts back to ℕ.
+
+**Lean notes**: `Nat.bertrand : ∀ n, 0 < n → ∃ p, p.Prime ∧ n < p ∧ p ≤ 2*n` is
+already in Mathlib — no axiomatization needed. `linear_combination` is the
+workhorse for the ZMod algebra (avoids `field_simp`/`ring_nf` fragility).
+2 ≠ 0 in `ZMod p` via `ZMod.val_natCast_of_lt hp2` (NOT `two_ne_zero'` — instance
+mismatch). The `sidonNumber_ge_real` floor-to-real step: `N < 8(⌊√(N/8)⌋+1)²·…`
+via `Nat.lt_succ_sqrt` + `nlinarith`, then `Real.sqrt_le_sqrt` on the square.
+
+**Remaining (all DEEP)**: sharp constants (Singer `(1−o(1))√N` lower via
+projective planes; Lindström/BFR `√N+N^{1/4}+1` upper), the $1000 `N^ε`-error
+conjecture (open Prop), and the table wall h(29..33) (needs new invariant or
+~376k kernel search).
