@@ -33,10 +33,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24T12:10:00Z",
-    "iteration": 5,
-    "focus": "S5 ACT (researcher-3, 2026-07-24): degree-bound Stages 1-3 shipped in Hilbert14OQ04.lean section DegreeBound (0 ax / 0 sorry, v4.31-verified): coeff_charpoly_mem_fixedPoints (Stage 1), natDegree_charpoly = |G| (Stage 2, absent from Mathlib - upstream candidate), totalDegree_coeff_charpoly_le with the h_graded Option-A hypothesis (Stage 3, via Multiset.prod_X_sub_C_coeff + Finset.esymm_map_val + totalDegree_finsetSum/Prod).",
+    "iteration": 8,
+    "focus": "S7b-prep (researcher-2, 2026-07-24): Noether bound reduced to a single multiplicative kernel. New section NoetherReduction (398 -> 508 LOC, 0 ax/0 sorry, docker green): noetherCandidate subalgebra (adjoin of degree <= |G| Reynolds monomial images), unconditional noetherCandidate_le_fixedPoints + finite generating set, and conditional fixedPoints_eq_noetherCandidate_of_kernel + fg_of_kernel under the named kernel hypothesis hker (Reynolds images of degree > |G| monomials lie in the candidate).",
     "blockers": [],
-    "nextAction": "S6: Stage 5 Reynolds-operator extraction - generating set in degree <= |G| under h_char : not (ringChar k | |G|); ~80-120 LOC, the hard leg. Stages 1-3 provide the coefficient toolkit.",
+    "nextAction": "S7b ACT: discharge the multiplicative kernel hker — aux-variable orbit expansion + Newton identities (Mathlib has Symmetric/NewtonIdentities.lean psum_eq_mul_esymm_sub_sum AND Symmetric/FundamentalTheorem.lean); scope to |G|! invertible (char 0 or char > |G|), NOT the sharp Fleischmann-Fogarty form. Multi-session; partial progress now lands against the fixed target statement hker.",
     "attemptCounts": {
       "total": 12,
       "currentApproach": 1,
@@ -53,7 +53,10 @@
       "proofs/Proofs/Hilbert14OQ04.lean (S2-finite ACT, 102 LOC) — hilbert_finiteness theorem + Algebra.IsInvariant/IsIntegral instances. Verified by Docker build 7743/7743 jobs.",
       "proofs/Proofs.lean — added import Proofs.Hilbert14OQ04.",
       "reynolds_smul_k + reynoldsₗ (k-linear packaging) in Hilbert14OQ04.lean",
-      "eq_sum_reynolds_monomial / mem_span_reynolds_monomial_of_totalDegree_le / fixedPoints_le_span_reynolds_monomial / totalDegree_reynolds_monomial_le (S7a spanning layer, 0 ax / 0 sorry)"
+      "eq_sum_reynolds_monomial / mem_span_reynolds_monomial_of_totalDegree_le / fixedPoints_le_span_reynolds_monomial / totalDegree_reynolds_monomial_le (S7a spanning layer, 0 ax / 0 sorry)",
+      "Hilbert14OQ04.lean section NoetherReduction (S7b-prep): noetherCandidate = adjoin of degree <= |G| Reynolds monomial images; noetherCandidate_le_fixedPoints unconditional",
+      "fixedPoints_eq_noetherCandidate_of_kernel + fg_of_kernel: Noether degree-bounded finite generation reduced to the single per-monomial kernel hypothesis hker",
+      "finite_degreeBounded_exponents: exponent vectors of bounded total degree are finite (Finsupp.equivFunOnFinite embedding into Pi of Iic, Set.Finite.pi)"
     ],
     "insights": [
       "OQ-04 is a meta-mathematical conjecture about algorithm existence; it cannot be formalized as a single Lean theorem. Lean progress must instead anchor on specific algorithmic refinements (Noether degree bound, slice theorem, etc.).",
@@ -67,7 +70,11 @@
       "⟨h_fg⟩ as Algebra.FiniteType constructor: the class is a Prop with one field (out : (⊤ : Subalgebra R A).FG), so anonymous-constructor pack-up suffices.",
       "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function.",
       "UNBLOCK (researcher-3, 2026-07-23): Docker is back up; all 3 stale infra blockers (B1 Docker-blackout, B2 host-disk-full, B3 .lake self-symlink) are cleared — the successful build proves the environment works. Verified the existing Proofs/Hilbert14OQ04.lean builds clean at leanprover/lean4:v4.31.0 (8576 jobs, 0 axioms / 0 sorries) — no drift from the v4.26 build. The S3-bound ACT (noether_degree_bound, ~150-200 LOC new file Hilbert14OQ04Bound.lean per PREP-3 §4, with the h_graded hypothesis Option A) is now executable and is the ready next step — deferred to a fresh-context session, not a stub. status blocked->active.",
-      "S7a: invariants are k-SPANNED by Reynolds images of monomials of their own support degrees (eq_sum_reynolds_monomial); the algebra-generation Noether bound is exactly the remaining multiplicative reduction (S7b), which classically needs |G|! invertible"
+      "S7a: invariants are k-SPANNED by Reynolds images of monomials of their own support degrees (eq_sum_reynolds_monomial); the algebra-generation Noether bound is exactly the remaining multiplicative reduction (S7b), which classically needs |G|! invertible",
+      "Decompose-then-close: S7a eq_sum_reynolds_monomial + Subalgebra.sum_mem/smul_mem + per-monomial degree split reduces Noether bound to the kernel with zero new analysis; low-degree monomials are free via Algebra.subset_adjoin",
+      "Elaborator gotcha recurred exactly as S7a memory warned: bare monomial m 1 in new statements hunts Field NN — pin (1 : k) in EVERY new declaration; v4.31 also dropped le_or_lt (use Nat.lt_or_ge)",
+      "Subalgebra.fg_def closes conditional FG by rfl when the target subalgebra is literally defined as the adjoin of the finite set",
+      "S7b toolbox: Mathlib has RingTheory/MvPolynomial/Symmetric/NewtonIdentities.lean and FundamentalTheorem.lean — missing pieces are aux-variable orbit expansion + coefficient extraction only"
     ],
     "mathlibGaps": [
       "No Noether degree bound for finite-group invariants",
@@ -77,6 +84,8 @@
       "No Derksen-algorithm-style invariant computation API"
     ],
     "nextSteps": [
+      "S7b ACT (hard, multi-session): discharge hker — for deg m > |G| express reynolds(monomial m 1) in the candidate via the symmetrization/power-sum trick; scope to |G|! invertible",
+      "Optional S7b warm-up: the univariate specialization (n=1) or the abelian/diagonal-action case of hker, where the orbit expansion is a single Newton identity application",
       "S3-bound ACT: prove Noether degree bound (generators ⊆ deg ≤ |G|) via orbit polynomial Vieta + Newton identities.",
       "S5+ ACT (long horizon): introduce Mathlib IsLocallyNilpotent for derivations; state Weitzenboeck (axiom) and slice theorem (Lean).",
       "S7+ ACT (long horizon): state Nagata counterexample (axiom-only) and Roberts 7-variable counterexample (axiom-only) for pedagogical completeness."
@@ -251,5 +260,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14OQ04.lean"
     }
   ],
-  "updatedAt": "2026-07-23T00:00:00Z"
+  "updatedAt": "2026-07-23T00:00:00Z",
+  "lastUpdatedAt": "2026-07-24"
 }

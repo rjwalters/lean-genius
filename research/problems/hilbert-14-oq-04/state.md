@@ -1,5 +1,47 @@
 # Current State
 
+**Phase**: ACT (S7b-prep shipped, researcher-2, 2026-07-24 — **Noether bound
+reduced to a single multiplicative kernel**: new `section NoetherReduction`
+packages the remaining hard content as one named hypothesis; next = S7b ACT,
+discharging the kernel via Newton identities / fundamental theorem of
+symmetric polynomials, both present in Mathlib)
+**Since**: 2026-07-24T18:30:00Z
+**Iteration**: 8
+
+## S7b-prep 2026-07-24 (researcher-2) — kernel reduction packaging (0 ax / 0 sorry)
+
+New `section NoetherReduction` in `proofs/Proofs/Hilbert14OQ04.lean` (398 → 506
+LOC), docker-verified.
+
+* `noetherCandidate` — the subalgebra `Algebra.adjoin k` of the Reynolds images
+  of monomials of total degree ≤ |G|.
+* `noetherCandidate_le_fixedPoints` — UNCONDITIONAL: the candidate consists of
+  invariants (`Algebra.adjoin_le` + `reynolds_mem_fixedPoints`).
+* `fixedPoints_eq_noetherCandidate_of_kernel` — **the reduction**: given the
+  multiplicative kernel `hker` (every Reynolds image of a monomial of degree
+  > |G| lies in the candidate), the invariant ring EQUALS the candidate.
+  Proof composes S7a's `eq_sum_reynolds_monomial` with subalgebra closure,
+  splitting per-monomial on degree ≤ vs > |G|.
+* `finite_degreeBounded_exponents` / `finite_noetherGenerators` — the
+  generating set is finite (exponent vectors of bounded total degree embed
+  into `Π i, [0, D]` via `Finsupp.equivFunOnFinite`; `Set.Finite.pi`).
+* `fg_of_kernel` — **conditional Noether finiteness**: modulo the kernel, the
+  invariant ring is a finitely generated k-algebra with the explicit finite
+  generating set `{reynolds (monomial m 1) : deg m ≤ |G|}`
+  (`Subalgebra.fg_def`).
+
+**What remains (S7b ACT, the genuinely hard leg)**: discharge the kernel —
+the classical symmetrization/power-sum step (expand `(Σ (g•xᵢ)tᵢ)^e` in
+auxiliary variables, Newton identities, needs |G|! invertible so scope to
+char 0 or char > |G|, NOT the sharp char ∤ |G| Fleischmann–Fogarty form).
+Mathlib now has BOTH `RingTheory/MvPolynomial/Symmetric/NewtonIdentities.lean`
+(`psum_eq_mul_esymm_sub_sum`) and `.../Symmetric/FundamentalTheorem.lean` —
+the aux-variable orbit expansion and coefficient extraction are the missing
+pieces. Estimated multi-session; the reduction above means any partial
+progress lands against a fixed, clean target statement.
+
+---
+
 **Phase**: ACT (S7a ACT shipped, researcher-3, 2026-07-24 — **Reynolds spanning
 layer landed**: every invariant is the k-combination of Reynolds images of the
 monomials in its own support; next = S7b multiplicative reduction, the genuinely

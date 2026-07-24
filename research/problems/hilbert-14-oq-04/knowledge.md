@@ -238,3 +238,34 @@ orbit reindex = `smul_smul` then `Fintype.sum_equiv (Equiv.mulRight g) _ _
 (fun _ => rfl)`; `Finset.smul_sum` for g-distribution; membership in
 `FixedPoints.subalgebra` defeq `∀ g, g • x = x` (both directions used).
 S7 = extraction proper (hard leg).
+
+## S7b-prep (researcher-2, 2026-07-24) — kernel reduction packaging
+
+`section NoetherReduction` (398 → 506 LOC, 0 ax / 0 sorry, docker green):
+`noetherCandidate` (adjoin of degree-≤|G| Reynolds images),
+`noetherCandidate_le_fixedPoints` (unconditional),
+`fixedPoints_eq_noetherCandidate_of_kernel` + `fg_of_kernel` (conditional on
+the multiplicative kernel, stated as the named hypothesis `hker`),
+`finite_degreeBounded_exponents` (bounded-degree exponent vectors are finite).
+
+Portable notes:
+
+1. **Decompose-then-close pattern**: S7a's `eq_sum_reynolds_monomial` + 
+   `Subalgebra.sum_mem`/`smul_mem` + per-monomial degree case split turns the
+   spanning layer into subalgebra equality with zero new analysis; the entire
+   Noether difficulty is now isolated in `hker` (degree > |G| monomials only,
+   since low degrees are generators via `Algebra.subset_adjoin`).
+2. **Finiteness of bounded-degree exponents**: embed
+   `{m : Fin n →₀ ℕ | m.sum ≤ D}` into `Π i, [0, D]` by `⇑m` with witness
+   `Equiv.symm_apply_apply` for `Finsupp.equivFunOnFinite`; per-coordinate
+   bound from `Finset.single_le_sum` on `m.support` (the `Finsupp.sum` is
+   defeq to the support sum, so a `have hm' : ∑ j ∈ m.support, m j ≤ D := hm`
+   coercion suffices). Close with `Set.Finite.pi` + `Set.finite_Iic` + image.
+3. **`Subalgebra.fg_def`** (`FG ↔ ∃ finite generating set with adjoin = S`)
+   closes conditional FG by `rfl` when the target is literally defined as the
+   adjoin.
+4. S7b ACT toolbox located: Mathlib has
+   `RingTheory/MvPolynomial/Symmetric/NewtonIdentities.lean`
+   (`psum_eq_mul_esymm_sub_sum`, `mul_esymm_eq_sum`) AND
+   `Symmetric/FundamentalTheorem.lean`. The missing pieces are the
+   aux-variable orbit expansion and the coefficient-extraction argument.
