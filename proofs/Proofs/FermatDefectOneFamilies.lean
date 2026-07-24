@@ -318,9 +318,7 @@ theorem defect_pos_sign_witnesses_infinite :
       calc 2 * s ^ 3 ≤ s * s ^ 3 := mul_le_mul_right' (by omega) (s ^ 3)
         _ = s ^ 4 := by ring
     refine ⟨9 * s ^ 3 + 1, 9 * s ^ 4, by omega, by omega, by omega, ?_, by ring⟩
-    have hdvd : Nat.gcd (Nat.gcd (9 * s ^ 3 + 1) (9 * s ^ 4)) (9 * s ^ 4 + 3 * s) ∣
-        Nat.gcd (9 * s ^ 3 + 1) (9 * s ^ 4) := Nat.gcd_dvd_left _ _
-    rw [pos_family_gcd s] at hdvd
-    exact Nat.dvd_one.mp hdvd
+    rw [pos_family_gcd s]
+    exact Nat.gcd_one_left _
 
 end FermatDefectOne
