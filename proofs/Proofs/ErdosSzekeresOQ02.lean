@@ -310,7 +310,7 @@ theorem ExactIncEnd.le_incDP {f : Sequence α n} {i : Fin n} {len : ℕ}
     · exact one_le_incDP f i
     · have hmlt : m < m + 1 := Nat.lt_succ_self m
       have hprevlt : m - 1 < m + 1 := by omega
-      have hklast : k ⟨m, hmlt⟩ = i := hlast ⟨m, hmlt⟩ (by omega)
+      have hklast : k ⟨m, hmlt⟩ = i := hlast ⟨m, hmlt⟩ rfl
       have hprev : (⟨m - 1, hprevlt⟩ : Fin (m + 1)) < ⟨m, hmlt⟩ := by
         rw [Fin.lt_def]
         show m - 1 < m

@@ -28,7 +28,7 @@
     "goal": "Formalize a computable incDP : Fin n -> Nat proven equal to maxIncLen, a constructive witness extractor, and an exact Theta(n^2) comparison-count closed form n(n-1)/2; document the Theta(n log n) optimum as the cost-model-gated remainder."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-06-13T00:00:00-07:00",
     "iteration": 2,
     "focus": "First survey complete (researcher-9 2026-06-13, build-free during the Docker/Aristotle verification blackout). The OQ is resolved on paper and decomposed into a formalizable core (computable DP + correctness + constructive witness + exact comparison count) plus a cost-model-gated remainder (Theta(n log n) optimality).",
@@ -47,12 +47,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-1 2026-07-24 S5): UNBLOCKED (Docker back). Milestone 1 COMPLETE + realized-witness layer: computable incDP with recurrence, HasIncreasingEndingAt f i (incDP f i), incDP_le_maxIncLen, Nonempty (IncreasingSubseq f (incDP f i)), exact cost incDPcost n = n(n-1)/2. 319 LOC, 0 sorry/0 axiom, Docker-verified. Remaining: >= correctness (stripping), computable incWitness.",
+    "progressSummary": "COMPLETED (2026-07-24 S6): all three pinned milestones closed. Milestone 2 closed in corrected form — the naive pin incDP = maxIncLen is FALSE (parent ending-at predicate is a running maximum; formalized counterexample) and the honest bridge maxIncLen f i = (Iic i).sup (incDP f) plus the exact characterization ExactIncEnd f i len iff len <= incDP f i are proved. Milestone 3 closed: fully executable witness pipeline (incWitness per position, lisWitness global) via Finset.sort/List.finRange argmax backtracking, no Classical.choice in data, #eval prints actual indices. 0 sorry / 0 axiom throughout. Out of Lean scope by design: patience sorting and Fredman lower bound (no comparison-cost model).",
     "builtItems": [
       "ErdosSzekeresOQ02.lean (NEW, 319 LOC, 0 sorry, 0 axiom): incDP (computable DP), incDP_eq, one_le_incDP, incDP_le_index_succ",
       "ExactIncEnd + exactIncEnd_one + ExactIncEnd.extend + ExactIncEnd.hasIncreasingEndingAt (snoc extension machinery)",
       "exactIncEnd_incDP, hasIncreasingEndingAt_incDP, incDP_le_maxIncLen, exists_increasingSubseq_incDP",
-      "Cost layer: scanned/card_scanned/preds_subset_scanned, incDPcost, incDPcost_closed (n(n-1)/2), incDPcost_two_mul (division-free)"
+      "Cost layer: scanned/card_scanned/preds_subset_scanned, incDPcost, incDPcost_closed (n(n-1)/2), incDPcost_two_mul (division-free)",
+      "ExactIncEnd.le_incDP + ExactIncEnd.of_le + exactIncEnd_iff_le_incDP (stripping/optimal substructure) in ErdosSzekeresOQ02.lean",
+      "maxIncLen_eq_sup_Iic bridge + incDP_lt_maxIncLen_counterexample (formalized refutation of the naive pin)",
+      "lisLength + lisLength_eq_sup_maxIncLen (computable global LIS length)",
+      "IncChain structure + single/extend/cast, incArgmax (Finset.sort + List.argmax), incChain (WF backtracking), incWitness, incWitness_positions_last, lisArgmax, lisWitness — all computable, #eval-verified"
     ],
     "insights": [
       "The parent maxIncLen/maxDecLen are noncomputable (Nat.findGreatest over a Prop existential), so oq-02 is precisely the gap between a non-constructive existence spec and an executable algorithm proven to meet it.",
@@ -64,7 +68,10 @@
       "First buildable milestone is self-contained and oq-01-independent: incDP + termination + DecidablePred + the closed-form comparison count. Pure Fin/Finset/Nat algebra, ~40-60 LOC.",
       "S5: The parent HasIncreasingEndingAt disjunction permits the last position to fall short of i — too weak to extend chains (no value info at the junction). Strengthened ExactIncEnd invariant (last position exactly i) makes Fin.snoc extension go through, then downgrades to the parent predicate.",
       "S5: incDP_le_maxIncLen (soundness vs the noncomputable spec) is provable WITHOUT oq-01 extension lemma: realized witness + Nat.le_findGreatest + incDP f i <= i.val + 1.",
-      "S5: Recursive theorems with termination_by i.val (incDP_le_index_succ, exactIncEnd_incDP) mirror the WF def cleanly — no strong-induction gymnastics; decreasing_by exact <Fin.lt hyp> works via defeq."
+      "S5: Recursive theorems with termination_by i.val (incDP_le_index_succ, exactIncEnd_incDP) mirror the WF def cleanly — no strong-induction gymnastics; decreasing_by exact <Fin.lt hyp> works via defeq.",
+      "The parent HasIncreasingEndingAt is strictly weaker than its docstring: the disjunction k j < i OR (last AND k j = i) never forces the chain to touch i, so maxIncLen is a running prefix maximum, not the ending-at-i length. Hence incDP f i = maxIncLen f i is FALSE (formalized counterexample ![1,2,0] at i=2: maxIncLen 2, incDP 1).",
+      "Corrected full correctness: exactIncEnd_iff_le_incDP (incDP is exactly the max exact-ending chain length, via the stripping lemma) plus maxIncLen_eq_sup_Iic (maxIncLen f i = (Iic i).sup (incDP f)), both directions proved.",
+      "Finset.toList is noncomputable (Quotient.out); computable argmax selection must use Finset.sort or List.finRange. This was the only obstacle to a fully executable witness pipeline."
     ],
     "mathlibGaps": [
       "No cost/complexity model (no Big-O cost monad, no RAM/comparison-decision-tree machinery, no Master theorem) — so asymptotic complexity statements have no Lean home; use exact Nat operation-counters instead.",
