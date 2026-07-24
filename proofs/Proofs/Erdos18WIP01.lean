@@ -2830,4 +2830,419 @@ theorem record_index_six_not_locally_unique :
     ∃ m, IsPractical m ∧ 64 < m ∧ m < 128 ∧ hErdos m = 6 :=
   ⟨78, seventyeight_practical, by norm_num, by norm_num, hErdos_seventyeight⟩
 
+/-! ### The record-setter at `t = 8`: the sub-family upper engine and the octave `[128, 256)`
+
+The octave `[128, 256)` contains 25 practical numbers.  Fifteen admit a
+practical split `m = 2 * (m/2)` whose subadditive bound already lands at
+`<= 7`; the other ten (`140, 150, 162, 196, 198, 204, 210, 220, 228, 234`)
+are practically-unsplittable, and two of them (`210` with `d = 16`, and the
+split-but-loose `240` with `d = 20`) have divisor counts that make the full
+powerset search of `hErdos_le_of_witnesses` infeasible.  The *sub-family*
+engine below restricts the kernel search to a hand-picked coin chain
+`S ⊆ divisors m`, cutting the search space from `2^d(m)` to `2^|S|` subsets.
+Each sub-family was chosen so the kernel certifies the *tight* upper bound
+(the Python-computed true index), not merely `<= 7` — this is what makes the
+local-uniqueness theorem at the end of the section possible. -/
+
+/-- **Sub-family upper-bound engine**: like `hErdos_le_of_witnesses`, but the
+kernel searches only a chosen `S ⊆ divisors m` instead of the full divisor
+set.  For `m` with many divisors (`d(240) = 20`, `d(210) = 16`) the full
+powerset has up to `2^20` subsets and the plain engine's `decide` is
+infeasible; a well-chosen coin chain of 9-11 divisors certifies the same
+bound at `2^9`-`2^11` subsets. -/
+theorem hErdos_le_of_witnesses_from (S : Finset ℕ) {m t : ℕ}
+    (hS : S ⊆ divisors m)
+    (h : ∀ k ∈ Finset.range m, ∃ T ∈ S.powerset, T.card ≤ t ∧ T.sum id = k) :
+    hErdos m ≤ t := by
+  unfold hErdos
+  apply Finset.sup_le
+  intro k hk
+  obtain ⟨T, hTpow, hTcard, hTsum⟩ := h k hk
+  exact (repLength_le_of_witness ((Finset.mem_powerset.mp hTpow).trans hS)
+    hTsum).trans hTcard
+
+/-- `hErdos 132 ≤ 6` — subadditivity at the practical split `132 = 2 · 66`. -/
+theorem hErdos_onethirtytwo_le : hErdos 132 ≤ 6 := by
+  have h : hErdos (2 * 66) ≤ hErdos 2 + hErdos 66 :=
+    hErdos_mul_le two_practical sixtysix_practical
+  rw [hErdos_two, hErdos_sixtysix] at h
+  calc hErdos 132 = hErdos (2 * 66) := by norm_num
+    _ ≤ 1 + 5 := h
+    _ ≤ 6 := by norm_num
+
+/-- `hErdos 144 ≤ 6` — subadditivity at the practical split `144 = 2 · 72`. -/
+theorem hErdos_onefortyfour_le : hErdos 144 ≤ 6 := by
+  have h72p : IsPractical 72 := by
+    simpa using two_mul_practical thirtysix_practical
+  have h : hErdos (2 * 72) ≤ hErdos 2 + hErdos 72 :=
+    hErdos_mul_le two_practical h72p
+  have hhalf := hErdos_seventytwo_le
+  rw [hErdos_two] at h
+  have hm : hErdos 144 = hErdos (2 * 72) := by norm_num
+  omega
+
+/-- `hErdos 168 ≤ 6` — subadditivity at the practical split `168 = 2 · 84`. -/
+theorem hErdos_onesixtyeight_le : hErdos 168 ≤ 6 := by
+  have h84p : IsPractical 84 := by
+    simpa using two_mul_practical fortytwo_practical
+  have h : hErdos (2 * 84) ≤ hErdos 2 + hErdos 84 :=
+    hErdos_mul_le two_practical h84p
+  have hhalf := hErdos_eightyfour_le
+  rw [hErdos_two] at h
+  have hm : hErdos 168 = hErdos (2 * 84) := by norm_num
+  omega
+
+/-- `hErdos 180 ≤ 5` — subadditivity at the practical split `180 = 2 · 90`. -/
+theorem hErdos_oneeighty_le : hErdos 180 ≤ 5 := by
+  have h : hErdos (2 * 90) ≤ hErdos 2 + hErdos 90 :=
+    hErdos_mul_le two_practical ninety_practical
+  rw [hErdos_two, hErdos_ninety] at h
+  calc hErdos 180 = hErdos (2 * 90) := by norm_num
+    _ ≤ 1 + 4 := h
+    _ ≤ 5 := by norm_num
+
+/-- `hErdos 192 ≤ 6` — subadditivity at the practical split `192 = 2 · 96`. -/
+theorem hErdos_oneninetytwo_le : hErdos 192 ≤ 6 := by
+  have h96p : IsPractical 96 := by
+    simpa using two_mul_practical fortyeight_practical
+  have h : hErdos (2 * 96) ≤ hErdos 2 + hErdos 96 :=
+    hErdos_mul_le two_practical h96p
+  have hhalf := hErdos_ninetysix_le
+  rw [hErdos_two] at h
+  have hm : hErdos 192 = hErdos (2 * 96) := by norm_num
+  omega
+
+/-- `hErdos 216 ≤ 6` — subadditivity at the practical split `216 = 2 · 108`. -/
+theorem hErdos_twosixteen_le : hErdos 216 ≤ 6 := by
+  have h108p : IsPractical 108 := by
+    simpa using two_mul_practical fiftyfour_practical
+  have h : hErdos (2 * 108) ≤ hErdos 2 + hErdos 108 :=
+    hErdos_mul_le two_practical h108p
+  have hhalf := hErdos_onehundredeight_le
+  rw [hErdos_two] at h
+  have hm : hErdos 216 = hErdos (2 * 108) := by norm_num
+  omega
+
+/-- `hErdos 252 ≤ 5` — subadditivity at the practical split `252 = 2 · 126`. -/
+theorem hErdos_twofiftytwo_le : hErdos 252 ≤ 5 := by
+  have h : hErdos (2 * 126) ≤ hErdos 2 + hErdos 126 :=
+    hErdos_mul_le two_practical onetwentysix_practical
+  rw [hErdos_two, hErdos_onetwentysix] at h
+  calc hErdos 252 = hErdos (2 * 126) := by norm_num
+    _ ≤ 1 + 4 := h
+    _ ≤ 5 := by norm_num
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 140 ≤ 5` — sub-family engine: 140 = 2^2*5*7 has no practical split (70, 35, 28, 20, 10, 14 fail: 70 and 28 are not practical, the rest are odd or non-practical).
+The kernel finds `≤ 5`-divisor representations of every `k < 140` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_oneforty_le : hErdos 140 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 7, 20, 28, 35, 70} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 150 ≤ 5` — sub-family engine: 150 = 2*3*5^2 has no practical split (75, 50, 30-cofactor 5, 25, 15 all odd or non-practical).
+The kernel finds `≤ 5`-divisor representations of every `k < 150` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_onefifty_le : hErdos 150 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 5, 6, 15, 25, 50, 75} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 156 ≤ 6` — sub-family engine: the split 156 = 2*78 only gives <= 1+6 = 7; the engine recovers the tight 6.
+The kernel finds `≤ 6`-divisor representations of every `k < 156` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_onefiftysix_le : hErdos 156 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 4, 6, 12, 26, 39, 78} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 160 ≤ 5` — sub-family engine: the split 160 = 2*80 only gives <= 1+6 = 7; the engine recovers the tight 5.
+The kernel finds `≤ 5`-divisor representations of every `k < 160` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_onesixty_le : hErdos 160 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 8, 10, 16, 32, 40, 80} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 162 ≤ 5` — sub-family engine: 162 = 2*3^4 has no practical split (81, 54, 27, 18-cofactor 9, all odd cofactors).
+The kernel finds `≤ 5`-divisor representations of every `k < 162` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_onesixtytwo_le : hErdos 162 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 18, 27, 54, 81} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 176 ≤ 6` — sub-family engine: the split 176 = 2*88 only gives <= 1+6 = 7; the engine recovers the tight 6.
+The kernel finds `≤ 6`-divisor representations of every `k < 176` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_oneseventysix_le : hErdos 176 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 8, 11, 16, 22, 44, 88} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 196 ≤ 6` — sub-family engine: 196 = 2^2*7^2 has no practical split (98, 49, 28, 14 are not practical or odd).
+The kernel finds `≤ 6`-divisor representations of every `k < 196` inside the
+8-element coin chain below (`2^8 = 256` subsets searched). -/
+theorem hErdos_oneninetysix_le : hErdos 196 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 7, 14, 28, 49, 98} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 198 ≤ 5` — sub-family engine: 198 = 2*3^2*11 has no practical split (99, 66-cofactor 3, 33, 22-cofactor 9, 18-cofactor 11 all involve an odd or non-practical part).
+The kernel finds `≤ 5`-divisor representations of every `k < 198` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_oneninetyeight_le : hErdos 198 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 11, 18, 33, 66, 99} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 200 ≤ 5` — sub-family engine: the split 200 = 2*100 only gives <= 1+6 = 7; the engine recovers the tight 5.
+The kernel finds `≤ 5`-divisor representations of every `k < 200` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_twohundred_le : hErdos 200 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 8, 10, 25, 40, 50, 100} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 204 ≤ 6` — sub-family engine: 204 = 2^2*3*17 has no practical split (102, 51, 34, 17 are not practical or odd).
+The kernel finds `≤ 6`-divisor representations of every `k < 204` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_twohundredfour_le : hErdos 204 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 12, 17, 34, 51, 102} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 208 ≤ 6` — sub-family engine: the split 208 = 2*104 only gives <= 1+6 = 7; the engine recovers the tight 6.
+The kernel finds `≤ 6`-divisor representations of every `k < 208` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_twohundredeight_le : hErdos 208 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 8, 13, 16, 26, 52, 104} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 210 ≤ 5` — sub-family engine: 210 = 2*3*5*7 has no practical split (every cofactor pair contains an odd number); d(210) = 16 makes the full powerset infeasible -- the first genuine use of the sub-family engine.
+The kernel finds `≤ 5`-divisor representations of every `k < 210` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_twohundredten_le : hErdos 210 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 7, 10, 15, 21, 42, 70, 105} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 220 ≤ 6` — sub-family engine: 220 = 2^2*5*11 has no practical split (110, 55, 44, 22, 20-cofactor 11 fail).
+The kernel finds `≤ 6`-divisor representations of every `k < 220` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_twotwenty_le : hErdos 220 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 5, 10, 11, 20, 44, 55, 110} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 224 ≤ 5` — sub-family engine: the split 224 = 2*112 only gives <= 1+6 = 7; the engine recovers the tight 5.
+The kernel finds `≤ 5`-divisor representations of every `k < 224` inside the
+11-element coin chain below (`2^11 = 2048` subsets searched). -/
+theorem hErdos_twotwentyfour_le : hErdos 224 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 7, 8, 14, 16, 28, 32, 56, 112} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 228 ≤ 6` — sub-family engine: 228 = 2^2*3*19 has no practical split (114, 57, 38, 19 are not practical or odd).
+The kernel finds `≤ 6`-divisor representations of every `k < 228` inside the
+9-element coin chain below (`2^9 = 512` subsets searched). -/
+theorem hErdos_twotwentyeight_le : hErdos 228 ≤ 6 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 12, 19, 38, 57, 114} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 234 ≤ 5` — sub-family engine: 234 = 2*3^2*13 has no practical split (117, 78-cofactor 3, 39, 26-cofactor 9, 18-cofactor 13 all involve an odd or non-practical part).
+The kernel finds `≤ 5`-divisor representations of every `k < 234` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_twothirtyfour_le : hErdos 234 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 3, 6, 9, 13, 26, 39, 78, 117} ?_ ?_ <;> decide
+
+set_option maxRecDepth 40000 in
+/-- `hErdos 240 ≤ 5` — sub-family engine: the split 240 = 2*120 only gives <= 1+6 = 7; the engine recovers the tight 5 (d(240) = 20 rules out the full powerset).
+The kernel finds `≤ 5`-divisor representations of every `k < 240` inside the
+10-element coin chain below (`2^10 = 1024` subsets searched). -/
+theorem hErdos_twoforty_le : hErdos 240 ≤ 5 := by
+  refine hErdos_le_of_witnesses_from {1, 2, 4, 8, 16, 30, 40, 60, 80, 120} ?_ ?_ <;> decide
+
+set_option maxRecDepth 200000 in
+/-- **Every practical number below `256` other than `128` has index at most
+`6`.**  Below `128` this is `hErdos_le_six_of_lt_onetwentyeight`; in the
+octave `[128, 256)` the 24 practical numbers other than `128` are bounded by
+the tight engine values and subadditive splits above (each non-practical
+value excluded by a kernel `decide`).  This is strictly sharper than the
+threshold `≤ 7` needed for the record-setter: it says `128` is the ONLY
+index-`7` practical number in its octave — local uniqueness returns after
+failing at `t = 6` (`record_index_six_not_locally_unique`). -/
+theorem hErdos_le_six_of_lt_twofiftysix_of_ne {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 256) (hne : m ≠ 128) : hErdos m ≤ 6 := by
+  by_cases h128 : m < 128
+  · exact hErdos_le_six_of_lt_onetwentyeight hm h128
+  · push Not at h128
+    interval_cases m
+    · exact absurd rfl hne
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onethirtytwo_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_oneforty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onefortyfour_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onefifty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onefiftysix_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onesixty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_onesixtytwo_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_onesixtyeight_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_oneseventysix_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_oneeighty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_oneninetytwo_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_oneninetysix_le
+    · exact absurd hm (by decide)
+    · exact hErdos_oneninetyeight_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact hErdos_twohundred_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twohundredfour_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twohundredeight_le
+    · exact absurd hm (by decide)
+    · exact hErdos_twohundredten_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twosixteen_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twotwenty_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twotwentyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twotwentyeight_le
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twothirtyfour_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twoforty_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact hErdos_twofiftytwo_le.trans (by norm_num)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+    · exact absurd hm (by decide)
+
+/-- **Every practical number below `256` has index at most `7`.**  The octave
+threshold feeding the `t = 8` record-setter. -/
+theorem hErdos_le_seven_of_lt_twofiftysix {m : ℕ} (hm : IsPractical m)
+    (hlt : m < 256) : hErdos m ≤ 7 := by
+  by_cases h : m = 128
+  · subst h
+    simp [hErdos_onetwentyeight]
+  · exact (hErdos_le_six_of_lt_twofiftysix_of_ne hm hlt h).trans (by omega)
+
+/-- `256` is practical — the power-of-two family at `n = 8`. -/
+theorem twofiftysix_practical : IsPractical 256 := by
+  simpa using two_pow_practical 8
+
+/-- `hErdos 256 = 8` — the power-of-two formula at `k = 8`. -/
+theorem hErdos_twofiftysix : hErdos 256 = 8 := by
+  have h := hErdos_two_pow 8
+  norm_num at h
+  exact h
+
+/-- **Record-setter at `t = 8`: the least practical number with index `8` is
+`256 = 2⁸`.**  The record-setter sequence for `t = 1, …, 8` is
+`2, 4, 8, 16, 32, 64, 128, 256` — exactly the powers of two, now through five
+doublings past the last octave (`[32, 64)`) where the record was locally
+unique. -/
+theorem minimal_hErdos_eight :
+    IsLeast { m : ℕ | IsPractical m ∧ hErdos m = 8 } 256 := by
+  constructor
+  · exact ⟨twofiftysix_practical, hErdos_twofiftysix⟩
+  · rintro m ⟨hpr, h8⟩
+    by_contra hlt
+    push Not at hlt
+    have := hErdos_le_seven_of_lt_twofiftysix hpr hlt
+    omega
+
+/-- **Local uniqueness of the record RETURNS at `t = 7`**: `128` is the only
+practical number below `256` with index `7`.  Contrast with `t = 6`, where
+the record `64` shares its index with `78, 88, 100, 104`
+(`record_index_six_not_locally_unique`).  The four index-`6` ties of the
+previous octave all double into `[128, 256)` — `156, 176, 200, 208` — but
+each doubling DROPS the index bound below the crude subadditive `1 + 6`: the
+engine certifies `hErdos 156 ≤ 6`, `176 ≤ 6`, `200 ≤ 5`, `208 ≤ 6`, so none
+of them reaches `7`.  Uniqueness is local: nothing here rules out an
+index-`7` practical number above `256`. -/
+theorem record_index_seven_locally_unique :
+    ∀ m, IsPractical m → m < 256 → hErdos m = 7 → m = 128 := by
+  intro m hm hlt h7
+  by_contra hne
+  have := hErdos_le_six_of_lt_twofiftysix_of_ne hm hlt hne
+  omega
+
 end Erdos18

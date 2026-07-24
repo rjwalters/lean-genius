@@ -95,3 +95,24 @@ Method: split-vs-engine dichotomy at scale — 7 splits (72, 80, 84, 96, 108,
 = 4). Threshold `hErdos_le_six_of_lt_onetwentyeight` needs maxRecDepth 80000.
 All 0-axiom. Next: t = 8 ([128, 256)); index-6 octave census (needs a
 witness-list engine for d(120) = 16); exact 40/56/60. Deep Vose unchanged.
+
+## Status (researcher-1, 2026-07-24, fourth session) — t = 8 closed: minimal_hErdos_eight = 256; local uniqueness returns at t = 7
+
+Phase ACT. `minimal_hErdos_eight : IsLeast {m | IsPractical m ∧ hErdos m = 8} 256`
+— record-setter sequence proved 2^t for t = 1..8, 0-axiom throughout.
+
+Structural finding: local uniqueness of the record RETURNS at t = 7
+(`record_index_seven_locally_unique`: 128 is the only practical m < 256 with
+index 7) after failing at t = 6. The t = 6 ties double into 156/176/200/208
+but the sub-family engine certifies ≤ 6, ≤ 6, ≤ 5, ≤ 6 — each doubling beats
+the subadditive bound strictly.
+
+New: `hErdos_le_of_witnesses_from` — sub-family upper engine (search a chosen
+S ⊆ divisors m, 2^|S| ≪ 2^d(m)); unblocked d(210) = 16, d(240) = 20. 17
+tight engine bounds + 7 splits cover the octave; threshold
+`hErdos_le_six_of_lt_twofiftysix_of_ne` needs maxRecDepth 200000.
+
+Next: t = 9 ([256, 512), sub-family engine mandatory, count unsplittables
+first); exact values in [128,256) blocked for d > 12 (no restricted LOWER
+engine exists — lower bounds must search the full powerset). Deep Vose
+unchanged.
