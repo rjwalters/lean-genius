@@ -158,11 +158,19 @@
       "mathContext": "$\\left(\\sum_{k} c(n,k) X^k\\right).\\mathrm{coeff}\\,j = c(n,j)$ since $(X^k).\\mathrm{coeff}\\,j = [j=k]$."
     },
     {
-      "id": "corollaries",
-      "title": "Evaluation and Row-Sum Corollaries",
+      "id": "evaluation-form",
+      "title": "Evaluation Corollary",
       "startLine": 82,
+      "endLine": 87,
+      "summary": "eval_ascPochhammer_eq_sum pushes eval through the generating identity (eval_finset_sum and the per-term eval_mul/eval_C/eval_pow/eval_X) to give the value form x(x+1)⋯(x+n−1) = ∑ c(n,k) xᵏ, for x in any commutative semiring R.",
+      "mathContext": "$(\\mathrm{ascPochhammer}\\,R\\,n).\\mathrm{eval}\\,x = \\sum_{k=0}^{n} c(n,k)\\,x^k$."
+    },
+    {
+      "id": "row-sum",
+      "title": "Row-Sum Corollary",
+      "startLine": 89,
       "endLine": 97,
-      "summary": "eval_ascPochhammer_eq_sum pushes eval through the generating identity to give x(x+1)⋯(x+n−1) = ∑ c(n,k) xᵏ. sum_stirlingFirst_eq_factorial specialises to x = 1 over ℕ, using ascPochhammer_eval_one to obtain the row sum ∑ c(n,k) = n!.",
+      "summary": "sum_stirlingFirst_eq_factorial specialises the evaluation form to x = 1 over ℕ, using ascPochhammer_eval_one (= n!) to obtain the row sum ∑ c(n,k) = n! — a second, structural proof of the parent entry's combinatorial identity.",
       "mathContext": "At $x = 1$: $\\sum_k c(n,k) = (\\mathrm{ascPochhammer}\\,\\mathbb{N}\\,n).\\mathrm{eval}\\,1 = n!$."
     }
   ],
