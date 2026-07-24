@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: forming the honest double sum ζ(2,2)",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating the gap in the parent entry (the stuffle relation ζ(2)²=ζ(4)+2·ζ(2,2) is recorded as prose, never as a genuine double sum), defining ζ(2,2) as a tsum over the strict lower triangle of ℕ×ℕ, and outlining the Fubini diagonal-split proof strategy before opening the BaselProblemOQ03OQ01 namespace.",
+      "mathContext": "States the target identity $(\\sum_n 1/n^2)^2 = \\sum_n 1/n^4 + 2\\zeta(2,2)$ as a pure absolutely-convergent rearrangement, with no appeal to the closed-form value of $\\zeta(2)$."
+    },
+    {
       "id": "setup",
       "title": "Summand and Summability",
       "startLine": 42,
