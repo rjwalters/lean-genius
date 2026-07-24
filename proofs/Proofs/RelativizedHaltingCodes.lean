@@ -286,9 +286,7 @@ theorem ofNatCode_encodeCode : ∀ c : OracleCode, ofNatCode (encodeCode c) = c
       Nat.unpair_pair, ofNatCode_encodeCode cf, ofNatCode_encodeCode cg]
   | .comp cf cg => by
     rw [show encodeCode (.comp cf cg) =
-        (4 * Nat.pair (encodeCode cf) (encodeCode cg) + 1) + 5 from by
-          rw [show encodeCode (.comp cf cg) =
-            4 * Nat.pair (encodeCode cf) (encodeCode cg) + 6 from rfl]; omega,
+        (4 * Nat.pair (encodeCode cf) (encodeCode cg) + 1) + 5 from rfl,
       ofNatCode_add_five,
       if_neg (show ¬(4 * Nat.pair (encodeCode cf) (encodeCode cg) + 1) % 4 = 0 by omega),
       if_pos (show (4 * Nat.pair (encodeCode cf) (encodeCode cg) + 1) % 4 = 1 by omega),
@@ -297,9 +295,7 @@ theorem ofNatCode_encodeCode : ∀ c : OracleCode, ofNatCode (encodeCode c) = c
       Nat.unpair_pair, ofNatCode_encodeCode cf, ofNatCode_encodeCode cg]
   | .prec cf cg => by
     rw [show encodeCode (.prec cf cg) =
-        (4 * Nat.pair (encodeCode cf) (encodeCode cg) + 2) + 5 from by
-          rw [show encodeCode (.prec cf cg) =
-            4 * Nat.pair (encodeCode cf) (encodeCode cg) + 7 from rfl]; omega,
+        (4 * Nat.pair (encodeCode cf) (encodeCode cg) + 2) + 5 from rfl,
       ofNatCode_add_five,
       if_neg (show ¬(4 * Nat.pair (encodeCode cf) (encodeCode cg) + 2) % 4 = 0 by omega),
       if_neg (show ¬(4 * Nat.pair (encodeCode cf) (encodeCode cg) + 2) % 4 = 1 by omega),
@@ -308,8 +304,7 @@ theorem ofNatCode_encodeCode : ∀ c : OracleCode, ofNatCode (encodeCode c) = c
         Nat.pair (encodeCode cf) (encodeCode cg) by omega,
       Nat.unpair_pair, ofNatCode_encodeCode cf, ofNatCode_encodeCode cg]
   | .rfind cf => by
-    rw [show encodeCode (.rfind cf) = (4 * encodeCode cf + 3) + 5 from by
-        rw [show encodeCode (.rfind cf) = 4 * encodeCode cf + 8 from rfl]; omega,
+    rw [show encodeCode (.rfind cf) = (4 * encodeCode cf + 3) + 5 from rfl,
       ofNatCode_add_five,
       if_neg (show ¬(4 * encodeCode cf + 3) % 4 = 0 by omega),
       if_neg (show ¬(4 * encodeCode cf + 3) % 4 = 1 by omega),
