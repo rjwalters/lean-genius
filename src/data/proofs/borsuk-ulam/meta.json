@@ -41,7 +41,7 @@
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 267,
-    "axiomCount": 3,
+    "axiomCount": 2,
     "additionalFiles": [
       "Proofs/BorsukUlamOQ01.lean"
     ],
@@ -54,8 +54,7 @@
     ],
     "assumptions": [
       "no_continuous_odd_nonzero_on_sphere (BorsukUlam.lean): For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage.",
-      "borsuk_ulam_exact (BorsukUlamOQ01.lean): The original existence statement of an antipodal point f(x) = f(-x) for any continuous f: Sⁿ → ℝⁿ — axiomatized to bridge to OQ01 sharpness questions.",
-      "tuckers_lemma (BorsukUlamOQ01.lean): Tucker's combinatorial lemma on antipodally-labelled triangulations, used in OQ01 to study sharpness of antipodal collapse maps."
+      "borsuk_ulam_exact (BorsukUlamOQ01.lean): The original existence statement of an antipodal point f(x) = f(-x) for any continuous f: Sⁿ → ℝⁿ — axiomatized to bridge to OQ01 sharpness questions."
     ],
     "relatedProblems": [
       {
@@ -288,9 +287,9 @@
         "lineCount": 328,
         "theorems": 17,
         "definitions": 10,
-        "axioms": 2,
+        "axioms": 1,
         "sorries": 0,
-        "description": "OQ-01: Approximate Borsuk-Ulam and PPAD complexity. Formalizes the approximate antipodal pair problem, Tucker's lemma (axiomatized: tuckers_lemma), the structural reduction from Tucker's lemma to approximate Borsuk-Ulam, and proves exact Borsuk-Ulam (axiomatized: borsuk_ulam_exact) implies the approximate version. Companion to BorsukUlam.lean addressing the computational-complexity open question (Papadimitriou 1994, PPAD-completeness)."
+        "description": "OQ-01: Approximate Borsuk-Ulam and PPAD complexity. Formalizes the approximate antipodal pair problem, Tucker's lemma (stated as documentation, not axiomatized — the general unconstrained-graph form is false, see file), the structural reduction from Tucker's lemma to approximate Borsuk-Ulam, and proves exact Borsuk-Ulam (axiomatized: borsuk_ulam_exact) implies the approximate version. Companion to BorsukUlam.lean addressing the computational-complexity open question (Papadimitriou 1994, PPAD-completeness)."
       }
     ]
   },
