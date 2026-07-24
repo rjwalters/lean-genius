@@ -143,5 +143,26 @@
       "the Loewner order on symmetric operators",
       "abs_le and one-sided bounds"
     ]
+  },
+  {
+    "id": "ann-stability-oq0301-sanity-check",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": {
+      "startLine": 157,
+      "endLine": 166
+    },
+    "type": "insight",
+    "title": "Sanity Check: Sharpness at T = U",
+    "content": "The closing `example` instantiates `weyl_eigenvalue_stability` at U := T (so c := b, ν := μ, hcU := hbT, hν := hμ), collapsing the bound to |μ k − μ k| ≤ ‖T − T‖, i.e. 0 ≤ 0. This is not a redundant restatement: it is a compile-time witness that the theorem is genuinely non-vacuous (it type-checks against a real instantiation, not a hypothesis that can never be discharged) and that the Lipschitz constant 1 is sharp — equality is already attained at the trivial coincidence T = U, so no smaller constant could make the general bound |μ(k) − ν(k)| ≤ c·‖T − U‖ hold for all T, U.",
+    "mathContext": "$T = U \\implies |\\mu_k - \\mu_k| \\le \\|T - T\\| \\iff 0 \\le 0$, the degenerate case confirming the Lipschitz constant 1 cannot be lowered.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sharpness of a Lipschitz constant",
+      "Weyl eigenvalue stability",
+      "degenerate/trivial instantiation as a sanity check"
+    ],
+    "prerequisites": [
+      "weyl_eigenvalue_stability"
+    ]
   }
 ]
