@@ -44,7 +44,8 @@
       "The odd oriented boundary seed the n ≥ 2 program needs is dimension-free and alphabet-free: it is just the discrete intermediate-value theorem mod 2 — along any ZMod-2 path the number of sign changes has the parity of the endpoint difference — applied to the antipodal boundary arc through a sign map. oq-04's hexagon result is the N = 3, α = Fin 4 instance of a single general theorem.",
       "The crucial ingredient is the sign-REDUCTION map, not a new count. Any antipodal sign map sgn : α → ZMod 2 (sgn (neg x) = sgn x + 1) collapses a rich Tucker alphabet {±1,…,±n} onto ZMod 2 while turning antipodal boundary endpoints into DISTINCT ZMod-2 endpoints, so the already-verified one-dimensional telescoping engine fires directly. This is exactly the reduction oq-04's docstring named but never executed.",
       "The oddness is genuinely a theorem, not a finite computation: antipodal_signDegree_odd derives it from the Finset.sum_range_sub telescoping for every dimension at once, so the hexagon corollary decides only the finite facts sgn (negL x) = sgn x + 1 and arc_bdry (properties of the Fin-4 alphabet), never the count. This removes oq-04's brute-force decide over all 64 labellings from the oddness proof.",
-      "The even closed-loop companion pins the seed to the antipodal fundamental domain in every dimension: a closed sign path has endpoint difference 0, hence even sign-degree, so the odd count is read off a hemisphere arc, not the whole boundary — the abstract form of oq-04's full_sign_changes_even and the discrete analogue of reading a Borsuk–Ulam degree off a fundamental domain."
+      "The even closed-loop companion pins the seed to the antipodal fundamental domain in every dimension: a closed sign path has endpoint difference 0, hence even sign-degree, so the odd count is read off a hemisphere arc, not the whole boundary — the abstract form of oq-04's full_sign_changes_even and the discrete analogue of reading a Borsuk–Ulam degree off a fundamental domain.",
+      "Every `decide` in the file is a fixed-size fact independent of the path length N: `edge` and `add_one_ne` are four-case ZMod 2 checks, and the hexagon corollary's `sgn_negL` / `arc_bdry` are Fin-4 alphabet checks. None of them grow with N, which is exactly what makes antipodal_signDegree_odd dimension-free — oq-04's decide over all 4³ = 64 labellings was tied to that one alphabet and arc length, whereas the engine here would need no new decide at all for a longer arc or a larger alphabet with an antipodal sign map."
     ]
   },
   "sections": [
@@ -64,10 +65,17 @@
     },
     {
       "id": "antipodal-sign-degree",
-      "title": "The Antipodal Sign-Degree, Dimension-Free and Alphabet-Free",
+      "title": "The Antipodal Sign-Degree is Odd, Dimension-Free and Alphabet-Free",
       "startLine": 103,
+      "endLine": 123,
+      "summary": "signDegree sgn μ N is the sign-change count of the reduced path sgn ∘ μ. antipodal_signDegree_odd is the general result: for any label type α, antipodal map neg, antipodal sign map sgn (sgn (neg x) = sgn x + 1), and any path μ with antipodal endpoints (μ N = neg (μ 0)), the sign-degree is ODD — because sgn (μ N) = sgn (μ 0) + 1 ≠ sgn (μ 0) makes the reduced path's endpoints distinct, firing odd_changes_iff. No dimension bound, no decide over the alphabet or the count."
+    },
+    {
+      "id": "loop-sign-degree-even",
+      "title": "The Closed-Loop Sign-Degree is Even, Dimension-Free",
+      "startLine": 125,
       "endLine": 134,
-      "summary": "signDegree sgn μ N is the sign-change count of the reduced path sgn ∘ μ. antipodal_signDegree_odd is the general result: for any label type α, antipodal map neg, antipodal sign map sgn (sgn (neg x) = sgn x + 1), and any path μ with antipodal endpoints (μ N = neg (μ 0)), the sign-degree is ODD — because sgn (μ N) = sgn (μ 0) + 1 ≠ sgn (μ 0) makes the reduced path's endpoints distinct, firing odd_changes_iff. No dimension bound, no decide over the alphabet or the count. loop_signDegree_even is the companion: a closed antipodal loop (sgn (μ N) = sgn (μ 0)) has EVEN sign-degree in every dimension, so the odd seed lives on the antipodal fundamental domain."
+      "summary": "loop_signDegree_even is the companion to antipodal_signDegree_odd: when the sign path is CLOSED (sgn (μ N) = sgn (μ 0)) the sign-degree is EVEN, in every dimension and over every alphabet. The proof rewrites evenness as the endpoint difference sgn (μ N) − sgn (μ 0) = 0 via changes_cast, discharged by hloop and sub_self. This localises the oddness: it lives on the antipodal fundamental domain (a hemisphere arc), not on the whole boundary loop — the abstract, engine-proved version of oq-04's full_sign_changes_even."
     },
     {
       "id": "hexagon-instance",
