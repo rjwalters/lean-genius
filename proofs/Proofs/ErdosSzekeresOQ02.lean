@@ -779,4 +779,13 @@ subsequence".
 #eval lisLength (![3, 1, 4, 1, 5, 9, 2, 6] : Fin 8 → ℕ)
 #eval List.ofFn (lisWitness (![3, 1, 4, 1, 5, 9, 2, 6] : Fin 8 → ℕ)).positions
 
+/- Axiom audit (printed at build time): every capstone rests only on the
+standard foundational axioms — no `sorryAx`, no `Lean.ofReduceBool`. -/
+#print axioms exactIncEnd_iff_le_incDP
+#print axioms maxIncLen_eq_sup_Iic
+#print axioms incDP_lt_maxIncLen_counterexample
+#print axioms lisLength_eq_sup_maxIncLen
+#print axioms incWitness
+#print axioms lisWitness
+
 end ErdosSzekeresOQ02
