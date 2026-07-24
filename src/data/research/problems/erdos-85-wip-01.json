@@ -54,7 +54,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "Optional: chain surgery for f(14..19) lower rungs (config per step, cheap decides); general all-n>=10 theorem needs config-EXISTENCE argument (blocked route: not automatic in arbitrary C4-free graphs). Upper halves beyond n=12 need real ex(n;C4) input (blocked). Deep: KST asymptotics, monotonicity core.",
+    "nextAction": "Optional: chain surgery for f(15..19) lower rungs (materialise petersen14 edge list from the a=0,b=4,c=3 surgery, pick next config avoiding triangles 10-1-6, 11-3-8, 12-9-7, 13-4-3(new); cheap decides). Upper halves beyond n=13 need real ex(n;C4) input (blocked). Deep: KST asymptotics, monotonicity conjecture.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -62,7 +62,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: exact table 1..13 complete (f = 1,2,3,2,3,3,3,3,3,4,4,4,4). f(13)=4 closed 2026-07-24 by a materially new upper-bound mechanism: cherry-count EQUALITY at the projective-plane point 13=4*3+1 forces 4-regularity + the friendship condition, and the Mathlib Archive friendship theorem (politician) gives the contradiction — no ex(n;C4) input. Blocked: upper bounds at non-tight n>13 (need ex(n;C4)); tight points n=k*k-k+1 generalize the friendship route (candidate). Next lower rung: f(14)>=4 via surgery. Deep: KST asymptotics, monotonicity (the actual #85).",
+    "progressSummary": "PROGRESS: exact table f(1..13) + f(14) in {4,5} (lower rung via fourth surgery); f(21)<=5, f(31)<=6 tight-point bounds; next rungs f(15..19) same recipe, upper halves blocked on ex(n;C4)",
     "builtItems": [
       "C4_adj_zero_one/one_two/two_three/three_zero (four cycle edges) in Erdos85Problem.lean",
       "C4_not_adj_zero_two (diagonal non-edge) in Erdos85Problem.lean",
@@ -111,7 +111,8 @@
       "four_le_minDegreeForC4_thirteen, minDegreeForC4_thirteen_mem (f(13) in {4,5})",
       "common_le_one_of_not_containsC4 (converse criterion: no C4 => common neighbours <= 1) in Erdos85Problem.lean section Thirteen",
       "containsC4_of_thirteen_minDegree_four: 13 vertices, min degree >= 4, C4-free is impossible (cherry tightness + friendship theorem)",
-      "minDegreeForC4_le_four_thirteen + minDegreeForC4_thirteen: f(13) = 4, the fourth exact value, first beyond the counting range"
+      "minDegreeForC4_le_four_thirteen + minDegreeForC4_thirteen: f(13) = 4, the fourth exact value, first beyond the counting range",
+      "petersen13/petersen13_degree/petersen13_common_le_one + four_le_minDegreeForC4_fourteen + minDegreeForC4_fourteen_mem (section Fourteen, Erdos85Problem.lean)"
     ],
     "insights": [
       "Erdos85Problem.lean was a definitions-only stub (7 defs, 0 theorems). Asymptotics f(n)=(1+o(1))sqrt(n), f(4)=2, and the Ramsey reformulation need extremal graph theory beyond Mathlib; tractable axiom-free content is structural facts about C4, containsC4, and starGraph.",
@@ -154,7 +155,8 @@
       "n=13=4*3+1 is the projective-plane parameter point: 13*C(4,2)=C(13,2)=78 exactly, so the cherry double-count is TIGHT and tightness gives rigidity (4-regularity + every pair covered) instead of a pigeonhole collision",
       "Tight cherry count + injectivity = the friendship condition; Mathlib Archive friendship_theorem (Wiedijk #83) then produces a politician of degree n-1, contradicting regularity — a C4-free upper bound with NO edge-extremal (Reiman) input",
       "import Archive.Wiedijk100Theorems.FriendshipGraphs builds in this toolchain — the whole Mathlib Archive is usable as INPUT for gallery proofs",
-      "Classical-instance-baked defs (Archive Friendship): prove the statement with the synthesized instance in a have, then convert h using 2 — Subsingleton.elim closes the Fintype instance mismatch; refine/rw/@-hole all fail on kernel defeq"
+      "Classical-instance-baked defs (Archive Friendship): prove the statement with the synthesized instance in a have, then convert h using 2 — Subsingleton.elim closes the Fintype instance mismatch; refine/rw/@-hole all fail on kernel defeq",
+      "f(14) rung landed: materialise the previous surgery result as an explicit edge list (petersen13), then apply the abstract surgery again — config a=0,b=4,c=3 (edges 0-4, 4-3 triangle-free; triangles of petersen13 are exactly 10-1-6, 11-3-8, 12-9-7, one per surgery vertex). Only 13-vertex kernel decides; no 14-vertex graph decided. f(14) ∈ {4,5}; pinning 4 blocked (14 not a tight point, friendship argument inapplicable)."
     ],
     "mathlibGaps": [
       "Fin n has NO global CommRing instance (only scoped Fin.instCommRing via `open Fin.CommRing`, gated on NeZero n); needed for ring/linear_combination on cycleGraph differences"

@@ -3053,4 +3053,99 @@ theorem minDegreeForC4_thirtyone_le : minDegreeForC4 31 ≤ 6 := by
 
 end TightPoints
 
+/-! ## `f(14) ≥ 4`: one more surgery rung — `f(14) ∈ {4, 5}`
+
+The next lower-bound rung past the projective-plane threshold `f(13) = 4`.
+Strategy identical to `f(13) ≥ 4`, one level up: materialise the `13`-vertex
+witness as an explicit edge list (`petersen13` — the `a = 4, b = 9, c = 7`
+surgery on `petersen12`, i.e. delete the spoke `4–9` and join the new vertex
+`12` to `4`, `9`, `7`), certify it by `13`-vertex kernel checks, then apply
+the **abstract** surgery with the configuration `a = 0, b = 4, c = 3`:
+
+* the edges `0–4` (outer) and `4–3` (outer) each lie in no triangle — the
+  only triangles of `petersen13` are `10–1–6`, `11–3–8`, `12–9–7`, one per
+  surgery vertex, and they avoid both edges;
+* `0 ≁ 3`, so the surgery hypotheses are met and the surgered graph on
+  `14` vertices is `C₄`-free with minimum degree `≥ 3`.
+
+No `14`-vertex graph is ever `decide`d.  The upper counting bound at `k = 5`
+(`14 ≤ 5·4`) gives `f(14) ≤ 5`; pinning `f(14) = 4` (the literature value)
+needs an upper-bound mechanism beyond the cherry count — `14` is not a tight
+point `k(k−1)+1`, so the friendship-theorem argument does not apply.  Honest
+result: `f(14) ∈ {4, 5}`. -/
+
+section Fourteen
+
+/-- The twenty-one edges of the `13`-vertex thrice-extended Petersen graph:
+`petersen12Edges` with the spoke `(4, 9)` deleted and the new vertex `12`
+joined to `4`, `9`, and `7` — the `f(13)` surgery, materialised. -/
+def petersen13Edges : List (Fin 13 × Fin 13) :=
+  [(1,2), (3,4), (4,0),
+   (5,7), (7,9), (9,6), (6,8), (8,5),
+   (0,5), (1,6), (2,7), (3,8),
+   (10,0), (10,1), (10,6),
+   (11,2), (11,3), (11,8),
+   (12,4), (12,9), (12,7)]
+
+/-- **A `13`-vertex `C₄`-free graph of minimum degree `3`**: the Petersen
+graph after three vertex-adding surgeries.  Vertices `6`, `7`, `8` have
+degree `4`; all other vertices have degree `3`. -/
+def petersen13 : SimpleGraph (Fin 13) where
+  Adj i j := (i, j) ∈ petersen13Edges ∨ (j, i) ∈ petersen13Edges
+  symm.symm := fun _ _ h => Or.symm h
+  loopless.irrefl := by decide
+
+instance : DecidableRel petersen13.Adj := fun i j =>
+  decidable_of_iff ((i, j) ∈ petersen13Edges ∨ (j, i) ∈ petersen13Edges) Iff.rfl
+
+/-- Every vertex of `petersen13` has degree at least `3` — a `13`-vertex
+kernel check. -/
+theorem petersen13_degree : ∀ v, 3 ≤ petersen13.degree v := by decide
+
+/-- **Every pair of distinct `petersen13` vertices has at most one common
+neighbour** — the `13 × 13` kernel check certifying `C₄`-freeness. -/
+theorem petersen13_common_le_one : ∀ x y : Fin 13, x ≠ y →
+    (petersen13.neighborFinset x ∩ petersen13.neighborFinset y).card ≤ 1 := by
+  decide
+
+/-- **`f(14) ≥ 4`** — the abstract surgery applied to `petersen13` with the
+configuration `a = 0, b = 4, c = 3`: the edges `0–4` and `4–3` are
+triangle-free, `0 ≁ 3`, and all remaining hypotheses are `13`-vertex kernel
+checks.  No `14`-vertex graph is ever `decide`d. -/
+theorem four_le_minDegreeForC4_fourteen : 4 ≤ minDegreeForC4 14 := by
+  have hab : petersen13.Adj 0 4 := by decide
+  have hbc : petersen13.Adj 4 3 := by decide
+  have hac : ¬ petersen13.Adj 0 3 := by decide
+  have hane : (0 : Fin 13) ≠ 3 := by decide
+  have htriab : ∀ z, petersen13.Adj 0 z → petersen13.Adj 4 z → False := by decide
+  have htribc : ∀ z, petersen13.Adj 4 z → petersen13.Adj 3 z → False := by decide
+  have hcommon := surgery_common_le_one hab hbc hac hane htriab htribc
+    petersen13_common_le_one
+  have hC4 : ¬ containsC4 (Fin 14) (surgeryFin petersen13 0 4 3) :=
+    surgeryFin_not_containsC4 petersen13 0 4 3
+      (not_containsC4_of_forall_common_le_one hcommon)
+  have hdeg : 3 ≤ (surgeryFin petersen13 0 4 3).minDegree := by
+    apply SimpleGraph.le_minDegree_of_forall_le_degree
+    intro u
+    refine le_trans ?_ (surgeryFin_degree_ge petersen13 0 4 3 u)
+    rcases h : finSuccEquiv 13 u with _ | x
+    · exact surgery_degree_none (by decide) (by decide) (by decide)
+    · exact le_trans (petersen13_degree x)
+        (surgery_degree_some (by decide) x)
+  exact four_le_minDegreeForC4_of_witness (by norm_num)
+    (surgeryFin petersen13 0 4 3) hdeg hC4
+
+/-- **`f(14) ∈ {4, 5}`**: the lower bound is the fourth surgery rung; the
+upper bound is the counting bound at `k = 5` (`14 ≤ 5·4`).  `14` is not a
+tight point `k(k−1)+1`, so the friendship-theorem pinning of `f(13)` does not
+extend — closing this gap needs a genuine `ex(n; C₄)` upper-bound mechanism. -/
+theorem minDegreeForC4_fourteen_mem :
+    minDegreeForC4 14 = 4 ∨ minDegreeForC4 14 = 5 := by
+  have hle : minDegreeForC4 14 ≤ 5 :=
+    minDegreeForC4_le_of_le_mul_pred (by norm_num) (by norm_num)
+  have hge := four_le_minDegreeForC4_fourteen
+  omega
+
+end Fourteen
+
 end Erdos85
