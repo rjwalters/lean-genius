@@ -1,8 +1,8 @@
 {
   "slug": "chinese-remainder-non-coprime-oq-01-oq-02",
   "title": "Formalize the full Garner algorithm (not just the mixed-radix decomposition) with runtime complexity bounds",
-  "phase": "ORIENT",
-  "status": "blocked",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,41 +27,44 @@
     "goal": "A new ChineseRemainderNonCoprimeOQ01OQ02.lean implementing garnerCoeffs/garnerReconstruct, the per-modulus correctness theorem, and a garnerCoeffsOps counter with proved k(k-1)/2 closed form."
   },
   "currentState": {
-    "phase": "ORIENT (blocked — survey complete, ACT build-gated)",
-    "since": "2026-06-13",
-    "iteration": 2,
-    "focus": "Paper resolution complete (algorithm + Horner telescoping correctness + O(k^2)=k(k-1)/2 count + Lean path). Build-gated by the 2026-06-13 verification blackout.",
-    "blockers": [
-      "Docker daemon down + Aristotle backend 404 (verification blackout 2026-06-13): the defs and correctness theorem need a Docker lake build to verify, so no Lean committed.",
-      "Mathlib has no cost/complexity model: the runtime bound must be a hand-rolled Nat operation-counter with a proved closed form."
-    ],
-    "nextAction": "When infra recovers: create ChineseRemainderNonCoprimeOQ01OQ02.lean, implement garnerCoeffs/garnerReconstruct, prove correctness by list induction off garner_mixed_radix, add the garnerCoeffsOps k(k-1)/2 lemma.",
+    "phase": "COMPLETED",
+    "since": "2026-07-24",
+    "iteration": 3,
+    "focus": "Done. ChineseRemainderNonCoprimeOQ01OQ02.lean (515 lines, 33 theorems, 11 defs) implements the full k-modulus Garner algorithm with the k(k-1)/2 operation-count bound; Docker-verified on Mathlib v4.31.0, 0 sorries / 0 axioms (PR #43121, merged 2026-07-24). Gallery entry verified/original; clean audit #43122; enriched #43165.",
+    "blockers": [],
+    "nextAction": "None - problem closed. Possible follow-ups recorded in the gallery entry conclusion.openQuestions (amortized inverse-precompute accounting; non-coprime compatible extension via lcm merging; bit-complexity comparison vs Lagrange CRT).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Full k-modulus Garner algorithm resolved on paper: mixed-radix representation x = v_1 + v_2 m_1 + ... + v_k(m_1...m_{k-1}) with 0<=v_i<m_i; coefficients via forward substitution v_i = (r_i - S_{i-1})(m_1...m_{i-1})^{-1} mod m_i, computed by Garner's Horner form using precomputed pairwise inverses C_{ij}=m_i^{-1} mod m_j. Correctness via a telescoping identity (verified explicitly for i=3). Cost = sum_{i=1}^k (i-1) = k(k-1)/2 = O(k^2) single-precision modular operations vs O(k) multi-precision ops for direct Lagrange CRT. Lean path reuses parent garner_mixed_radix as the k=2 base case.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: full k-modulus Garner algorithm formalized and Docker-verified (0 sorries / 0 axioms). modInv (executable extended-gcd inverse, correctness via Nat.gcd_eq_gcd_ab), toDigits/ofDigits mixed-radix representation (round-trip, digit bounds, uniqueness), garner forward substitution over List (Nat x Nat), garner_correct / garner_unique main theorems, garnerRec_eq_ofDigits / toDigits_garner digit-stream identification, and stepOps/garnerOps_eq operation counter with proved closed form k(k-1)/2 via Finset.sum_range_id. Correctness used an incremental 3-invariant induction (garnerRec_spec) instead of the planned Horner telescoping identity - strictly simpler, no inverse products accumulate.",
+    "builtItems": [
+      "proofs/Proofs/ChineseRemainderNonCoprimeOQ01OQ02.lean (515 lines, 33 theorems, 11 defs, 5 kernel-decide examples)",
+      "modInv executable extended-Euclidean modular inverse + modInv_zmod correctness",
+      "toDigits/ofDigits k-modulus mixed-radix representation with round-trip, Forall2 bounds, digits_unique, mixed_radix_exists",
+      "garner forward-substitution algorithm; garner_correct, garner_unique",
+      "garnerRec_eq_ofDigits / toDigits_garner digit-stream = mixed-radix decomposition",
+      "stepOps/garnerOps counter + garnerOps_eq closed form k(k-1)/2",
+      "Gallery entry src/data/proofs/chinese-remainder-non-coprime-oq-01-oq-02/ (verified, original, axiomCount 0)"
+    ],
     "insights": [
       "The parent's garner_mixed_radix IS exactly the k=2 base case (x = c_1 + c_2 m_1, M = m_1 m_2); the k-modulus version is a clean list induction on it.",
       "For j >= i+1 the term v_j(m_1...m_{j-1}) is divisible by m_i, so reducing mod m_i gives a lower-triangular system solved by forward substitution.",
       "Garner's Horner form ((r_i - v_1)C_{1i} - v_2)C_{2i} - ... avoids forming big partial sums; it equals the substitution formula by a telescoping identity since C_{1i}...C_{i-1,i} = (m_1...m_{i-1})^{-1} mod m_i.",
       "Only the final reconstruction x = v_1 + m_1(v_2 + m_2(... )) touches big integers (O(k) ops); all coefficient arithmetic is single-precision.",
-      "The closed-form count k(k-1)/2 is pure Nat arithmetic (Finset.sum_range_id) with no Mathlib gap."
+      "The closed-form count k(k-1)/2 is pure Nat arithmetic (Finset.sum_range_id) with no Mathlib gap.",
+      "Incremental 3-invariant induction (size, mod-P persistence, new congruence) beat the planned Horner telescoping-identity proof: the step congruence closes with linear_combination in ZMod m and no inverse products ever accumulate.",
+      "Examples use kernel decide via garner_unique rather than evaluating the algorithm directly, avoiding kernel reduction of Nat.gcdA (and avoiding native_decide entirely)."
     ],
     "mathlibGaps": [
       "No operation-cost / complexity model in Mathlib: the runtime bound must be formalized as an explicit Nat-valued step counter garnerCoeffsOps with a proved closed form, not a Big-O over a cost monad.",
       "No prepackaged constructive k-modulus mixed-radix reconstruction; must build garnerCoeffs/garnerReconstruct from Int.gcdA/gcdB or ZMod.inv."
     ],
     "nextSteps": [
-      "Implement def garnerCoeffs (ms rs : List Nat) : List Nat (forward substitution, modular inverse via Int.gcdA/gcdB or ZMod.inv).",
-      "Implement def garnerReconstruct (ms vs : List Nat) : Nat (List.foldr Horner assembly).",
-      "Prove main theorem: Pairwise Nat.Coprime ms -> garnerReconstruct ms (garnerCoeffs ms rs) === rs[i] [MOD ms[i]] and < ms.prod, by list induction off garner_mixed_radix.",
-      "Lift garner_mixed_radix_unique to the list for uniqueness.",
-      "Add def garnerCoeffsOps and lemma garnerCoeffsOps ms = ms.length*(ms.length-1)/2 for the complexity half."
+      "None - completed. Follow-up directions live in the gallery entry conclusion.openQuestions."
     ]
   },
   "tags": [
