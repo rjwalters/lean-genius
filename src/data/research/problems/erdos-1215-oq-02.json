@@ -30,7 +30,7 @@
     "phase": "ACT",
     "since": "2026-07-09T00:00:00Z",
     "iteration": 10,
-    "focus": "Session 2026-07-24 (researcher-3, OQ11): first component-topology result — quadratic cyclotomic lemniscates (n=3,4,6, the complete phi(n)=2 case) are disconnected for small C via a general Cassini-oval criterion; cyclotomic_four (X^2+1) proved as a Mathlib-gap byproduct.",
+    "focus": "Iter 13: sextic layer OPENED at n=9,18 (CyclotomicPolynomialsOQ02OQ14.lean): Phi_9/Phi_18 lemniscates disconnect for C < 1/15625, NO radical root forms needed — abstract primitiveRoots factorization + coprimality filter + chord-cosine reduction + single cubic bound cos(2pi/9) < 5/6 via cos_three_mul. 0 axioms, 0 sorries.",
     "blockers": [
       {
         "route": "prove maclane_labyrinth axiom (C>1 regime: paths forced through neighbourhoods of 0 / polynomial-lemniscate topology)",
@@ -38,7 +38,7 @@
         "blockedAt": "2026-07-20"
       }
     ],
-    "nextAction": "Survey Mathlib cyclotomic-polynomial, complex-modulus, and interval-integral (arc-length) infrastructure and draft a precise formal statement of the restricted path-length bound.",
+    "nextAction": "Sextic n=7,14 need cos(2pi/7) (minimal cubic 8x^3+4x^2-4x-1, not a triple-angle instance — derive via cos_seven_mul from repeated cos_add, or Chebyshev T_7). Other live: exact component counts (star-shape template at 4/6 foci); sharpness. C>1 labyrinth driver blocked (materially new mechanism).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -86,7 +86,8 @@
       "OQ12: component count now EXACT for the whole quadratic case φ(n)=2: {|Φ₃|<C},{|Φ₆|<C} have exactly 2 path components for 0<C<3/4; {|Φ₄|<C} for 0<C<1",
       "Degree-generic disconnection engine: for finite root set S with a,b in S distinct, C <= r^|S|, and every other root at distance > 2r from a, the lemniscate {|prod(z-mu)| < C} is not preconnected — the a-ball splits off the biUnion cover. Subsumes the OQ11 two-focus Cassini criterion (S={a,b}, r=sqrt(C)) and pre-builds the sextic phi(n)=6 layer (n=7,9,14,18).",
       "Quartic layer opened: {|Phi_8|<C} disconnected for 0<C<1/4 (roots (±√2±√2 i)/2, min gap √2), {|Phi_12|<C} disconnected for 0<C<1/16 (roots (±√3±i)/2, min gap 1). Byproducts: cyclotomic 8 C = X^4+1 and cyclotomic 12 C = X^4-X^2+1, both absent from Mathlib, via cyclotomic_expand_eq_cyclotomic.",
-      "Lean recipe for quartic eval-factorizations: one linear_combination over BOTH (sqrt k)^2 = k and I^2 = -1; compute the residual as a polynomial in s=u^2-k, v=I^2+1 and read off the two multipliers. Root-gap lower bounds via Complex.abs_re_le_norm avoid normSq entirely. v4.31: pow_le_pow_left -> pow_le_pow_left0."
+      "Lean recipe for quartic eval-factorizations: one linear_combination over BOTH (sqrt k)^2 = k and I^2 = -1; compute the residual as a polynomial in s=u^2-k, v=I^2+1 and read off the two multipliers. Root-gap lower bounds via Complex.abs_re_le_norm avoid normSq entirely. v4.31: pow_le_pow_left -> pow_le_pow_left0.",
+      "Sextic without radicals (Iter 13): the disconnection engine composes with ABSTRACT root sets — cyclotomic_eq_prod_X_sub_primitiveRoots + eq_pow_of_pow_eq_one + pow_iff_coprime replace explicit surd lists entirely; distances via dist(exp(ai),exp(bi))^2 = 2-2cos(a-b); the only analytic content is one cubic root-isolation (cos(2pi/9) < 5/6 by exact factorization at 5/6). Coprimality is load-bearing at n=18: nearest roots of unity are 20 deg away but non-primitive; primitive neighbors are 40/80 deg."
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
