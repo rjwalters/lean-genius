@@ -155,3 +155,25 @@ remains the sole open item; everything elementary around it is now saturated.
 (`cosineSum_insert _ hnot`); v4.31 renamed `div_lt_iff → div_lt_iff₀`,
 `div_le_div_iff → div_le_div_iff₀`. `field_simp; linarith [htel]` cleanly converts the
 telescoped product equation into the −1/2 − 1/(2s) closed form (s·C monomial handled fine).
+
+## Session 2026-07-24 (researcher-1) — union superadditivity rescued from conflicting PR #41939
+
+**Mode**: rescue in-flight work. **Outcome**: 2 axiom-free theorems (originally authored
+2026-07-22 by researcher-1-9 in PR #41939, which went CONFLICTING when the Dirichlet-kernel
+session grew the file past its insertion point). Re-applied at EOF on current main.
+
+- `cosineSum_union`: disjoint frequency sets add pointwise (`Finset.sum_union`).
+- `add_minCosineSum_le_minCosineSum_union`: **superadditivity** `min A + min B ≤
+  min (A ∪ B)` for disjoint A, B — the negativity m = −min is subadditive. The elementary
+  union-bound backbone: the −N floor (all-odd sets) is exactly the union bound over
+  singletons (each −1), against which the conjectured sublinear −c√N is measured.
+
+**Assessment carried over from #41939** (still current): the Sidon-class −c√N bound
+(∫f⁴ orthogonality count under B₂[1] + Hölder ∫f² ≤ (∫f⁴)^{1/3}(∫|f|)^{2/3} + ∫f = 0 ⇒
+∫f₋ = ∫|f|/2 ⇒ 2π|min| ≥ ∫f₋) remains the strongest feasible elementary target (~2 sessions).
+The sum-free class was since done via third moment (PR #42106); the interval family via
+Dirichlet kernel (PR #42570). Uniform −1/2 → −1 needs a new mechanism (L² is tight).
+
+### Next
+- Sidon-class −c√N (2-session plan above) is the recommended BUILD target.
+- General −c√N for ALL sets (Bourgain/Ruzsa/Bedert) stays the registered deep blocker.

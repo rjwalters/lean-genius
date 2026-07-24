@@ -846,4 +846,35 @@ theorem minCosineSum_Icc_lt_neg_frac (N : ℕ) (hN : 1 ≤ N) :
   have hpos : (0 : ℝ) < 1 / 2 + 1 / (3 * π) := by positivity
   linarith
 
+/-! ## Superadditivity of the minimum under disjoint union
+
+Splitting the frequency set splits the cosine sum pointwise, so the minimum of a
+disjoint union is at least the sum of the minima: the negativity `m(A) := −min`
+is *subadditive*, `m(A ∪ B) ≤ m(A) + m(B)`.  With `minCosineSum_le_neg_half`
+this brackets the union: `min A + min B ≤ min (A ∪ B) ≤ −1/2`.  It also shows
+the trivial floor `−N` (attained exactly by all-odd sets,
+`minCosineSum_forall_odd`) is the worst case of the union bound over
+singletons (`minCosineSum_singleton = −1`). -/
+
+/-- **Disjoint frequency sets add pointwise**: `cosineSum (A ∪ B) = cosineSum A
++ cosineSum B` when `Disjoint A B` (`Finset.sum_union`). -/
+theorem cosineSum_union {A B : Finset ℕ} (hAB : Disjoint A B) (θ : ℝ) :
+    cosineSum (A ∪ B) θ = cosineSum A θ + cosineSum B θ := by
+  unfold cosineSum
+  exact Finset.sum_union hAB
+
+/-- **The Chowla minimum is superadditive on disjoint unions**:
+`minCosineSum A + minCosineSum B ≤ minCosineSum (A ∪ B)`.  Pointwise each
+summand is at least its own minimum; take the infimum.  Equivalently the
+negativity `m = −min` is subadditive — the elementary "union bound" backbone
+against which the conjectured `−c√N` (sublinear!) uniform bound is measured. -/
+theorem add_minCosineSum_le_minCosineSum_union {A B : Finset ℕ}
+    (hAB : Disjoint A B) :
+    minCosineSum A + minCosineSum B ≤ minCosineSum (A ∪ B) := by
+  unfold minCosineSum
+  apply le_csInf (Set.range_nonempty _)
+  rintro y ⟨θ, rfl⟩
+  rw [cosineSum_union hAB θ]
+  exact add_le_add (minCosineSum_le A θ) (minCosineSum_le B θ)
+
 end Erdos510WIP01
