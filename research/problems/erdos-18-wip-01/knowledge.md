@@ -526,3 +526,9 @@ targets are cheap standalones only for d ≤ 12 (le_hErdos_of_card is a FULL
 powerset decide — d(210)=16, d(240)=20 lower bounds need a restricted lower
 engine, which does NOT exist and is NOT a witness check: a lower bound must
 search all of divisors m). Deep Vose bound unchanged.
+
+Kernel-cost calibration (build-verified): sub-family engine decides fit the
+default 200000-heartbeat elaboration budget up to 2^10 subsets x ~230 targets;
+the single 2^11 run (224, 11 proper divisors, no 10-coin sub-family covers)
+needs `set_option maxHeartbeats 800000`. Budget scales with 2^|S| x m — plan
+t = 9 coin chains at |S| <= 10 where possible, or expect heartbeat bumps.
