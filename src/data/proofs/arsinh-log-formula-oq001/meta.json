@@ -90,7 +90,8 @@
       "The catenoid inherits the catenary's miracle: the same identity √(1 + sinh²x) = cosh x that flattens the catenary's length element flattens the surface-of-revolution element, turning the surd-laden 2π·cosh x·√(1 + sinh²x) into the polynomial-in-hyperbolics 2π·cosh²x.",
       "The antiderivative of cosh² is not in Mathlib, so the whole catenoid area hinges on one hand-built derivative: d/dx [½(x + sinh x·cosh x)] = cosh²x, where the product rule produces cosh²x + sinh²x and the Pythagorean identity supplies the extra +1 that halves cleanly.",
       "The affine case is the degenerate edge of the arc-length family: when f' is the constant m the integrand √(1 + f'²) loses all t-dependence, so the arc length is the trivial constant integral (b − a)·√(1 + m²) — the straight-line distance, recovering Pythagoras for the segment from (a, ma+c) to (b, mb+c).",
-      "Anchoring at 0 (sinh 0 = 0) pins the constant of integration: ∫_0^b cosh²x dx = ½(b + sinh b·cosh b) with no free constant, so the catenoid area over [0, b] is exactly π(b + sinh b·cosh b)."
+      "Anchoring at 0 (sinh 0 = 0) pins the constant of integration: ∫_0^b cosh²x dx = ½(b + sinh b·cosh b) with no free constant, so the catenoid area over [0, b] is exactly π(b + sinh b·cosh b).",
+      "The hand-built antiderivative ½(x + sinh x·cosh x) is the hyperbolic power-reduction formula in disguise: cosh²x = (cosh 2x + 1)/2 and sinh 2x = 2 sinh x·cosh x give ∫ cosh²x dx = sinh(2x)/4 + x/2, which is algebraically the same closed form — reached here via the product rule on sinh·cosh instead of the double-angle identities, since Mathlib does not chain those for this combination either."
     ]
   },
   "sections": [
