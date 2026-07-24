@@ -288,3 +288,50 @@ bounded sublevel labyrinth `{|Φ_n|<C}` — remains blocked: Mathlib lacks polyn
 lemniscate topology / rectifiable-path arc length. The metric frontier (radius/area,
 both sides sharp) and now the exterior escape-region topology are the reachable layers;
 further sublevel-**component** work needs materially new Mathlib infrastructure.
+
+## Session 2026-07-24 (researcher-3) — exit paths in EVERY direction (OQ08 → directional)
+
+**Mode**: REVISIT (built on OQ02OQ08's first-crossing mechanism + OQ02OQ07's sharp inner ball).
+**Outcome**: progress — 1 new file, 9 decls, VERIFIED 0-sorry/0-axiom (docker `[8580/8580]`,
+all three headline theorems `[propext, Classical.choice, Quot.sound]`).
+
+### What I did
+New file `proofs/Proofs/CyclotomicPolynomialsOQ02OQ10.lean`. OQ02OQ08 exhibited ONE exit
+ray (positive real axis); its recorded follow-up asked whether reachability extends beyond
+that ray. This file settles the directional half completely:
+
+- `ray_exit`: for EVERY unit direction `u`, the ray `t ↦ t·u` has a first level-`C`
+  crossing `t*` with the **two-sided sharp bound** `C^{1/φ(n)} − 1 ≤ t* ≤ 1 + C^{1/φ(n)}`,
+  the open segment `[0,t*)·u` staying strictly inside `{|Φ_n| < C}`. The sharp LOWER
+  bound is new even for OQ08's `u = 1` case (OQ08 had only the upper bound).
+- `levelCurve_meets_every_ray`: the level curve `{|Φ_n| = C}` meets every ray from the
+  origin inside the sharp annulus — the boundary radially surrounds the origin with
+  `n`-uniform distance (annulus radii → 0 and 2 as `φ(n) → ∞`).
+- `ray_exit_pathLength`: explicit straight-segment packaging, Euclidean length
+  `= t* ≤ 1 + C^{1/φ(n)}` in every direction.
+
+### Mechanism (reusable)
+Parameterized replay of OQ08's first-crossing argument: `rayNorm n u t = |Φ_n(t·u)|`
+continuous; `‖t·u‖ = t` for `t ≥ 0`, `‖u‖ = 1` (`norm_ofReal_mul`: `norm_mul` + `hu` +
+`Complex.norm_real` + `abs_of_nonneg`); OQ01 lower bound forces crossing at
+`R = 1+C^{1/φ(n)}`; NEW ingredient vs OQ08 — OQ07's `ball_sharpInner_subset_levelSet`
+forbids a crossing before `C^{1/φ(n)}−1` (by_contra + the inner-ball membership at `t*`),
+giving the two-sided pin. First crossing = `sInf` of the closed crossing set
+(`IsClosed.csInf_mem`), exactness on the boundary via `intermediate_value_Icc`.
+v4.31 note: `push_neg` is deprecated → use `push Not at h`.
+
+### Files Modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ10.lean` (new)
+- `src/data/research/problems/erdos-1215-oq-02.json` (knowledge + leanFiles)
+
+### Infra note
+Worktree `/Volumes/Stripe/lean-genius/researcher-3` was reaped mid-session (janitor,
+pre-commit) — only the freshly Written proof file survived. Recovery: back up file to
+/tmp, `git worktree prune` + `git worktree add -B <branch> <path> origin/main`, restore,
+commit+push IMMEDIATELY.
+
+### Still open (unchanged)
+The remaining half of the reachability refinement: whether every BOUNDARY POINT (not
+just every direction's first crossing) is reachable by a bounded-length path inside the
+set — that needs the labyrinth-free topology of the full lemniscate (connected-component
+count of `{|Φ_n| < C}`), still beyond Mathlib. The directional question is now closed.

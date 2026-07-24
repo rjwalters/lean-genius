@@ -157,7 +157,7 @@ theorem ray_exit (n : ℕ) (hn : n ≠ 0) (u : ℂ) (hu : ‖u‖ = 1) {C : ℝ}
   -- Sharp lower bound: before `C^{1/φ(n)} − 1` the ray is strictly inside the set.
   have hlow : C ^ ((n.totient : ℝ)⁻¹) - 1 ≤ t := by
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have := rayNorm_lt_of_lt_sharpInner n hn u hu hC ht0 hlt
     linarith
   have htpos : 0 < t := lt_of_lt_of_le hrin_pos hlow
@@ -167,7 +167,7 @@ theorem ray_exit (n : ℕ) (hn : n ≠ 0) (u : ℂ) (hu : ‖u‖ = 1) {C : ℝ}
     intro s hs
     obtain ⟨hs0, hst⟩ := hs
     by_contra hge
-    push_neg at hge
+    push Not at hge
     have hsA : s ∈ A := ⟨⟨hs0, le_trans (le_of_lt hst) htR⟩, hge⟩
     have hts : t ≤ s := csInf_le hAbdd hsA
     linarith

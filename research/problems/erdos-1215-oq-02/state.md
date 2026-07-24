@@ -4,12 +4,12 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 6
+**Iteration**: 8
 
 ## Current Focus
-The sharp **inner** radius `C^{1/φ(n)}-1` and origin interiority: closing the
-two-sided *sharp radius* sandwich `ball(0, C^{1/φ(n)}-1) ⊆ {|Φ_n|<C} ⊆
-closedBall(0, 1+C^{1/φ(n)})` to mirror the two-sided *area* sandwich of OQ02OQ03.
+Directional exit geometry: after OQ02OQ08's single radial exit ray, extend boundary
+reachability to every direction (done, OQ02OQ10) and — still open — to every boundary
+point (needs lemniscate component topology).
 
 ## Active Approach
 Approach A/B hybrid: elementary two-sided factor bounds `‖z‖-1 ≤ ‖z-μ‖ ≤ ‖z‖+1`
@@ -74,14 +74,23 @@ rectifiable-path arc length not yet in Mathlib.
   gap for the *general* #1215) — a segment's length is its endpoint distance.
   (`CyclotomicPolynomialsOQ02OQ08.lean`, VERIFIED docker `[8580/8580]`, 0-axiom
   `[propext,Classical.choice,Quot.sound]`; `radial_exit` + `radial_exit_pathLength`.)
+- Iter 8 (researcher-3): **EXIT IN EVERY DIRECTION** — generalized OQ02OQ08's radial
+  exit to arbitrary unit direction `u`: first crossing `t*` along every ray with NEW
+  two-sided sharp bound `C^{1/φ(n)}-1 ≤ t* ≤ 1+C^{1/φ(n)}` (lower bound new even for
+  `u=1`, via OQ07's sharp inner ball); level curve `{|Φ_n|=C}` meets every ray inside
+  the sharp annulus (boundary radially surrounds origin, n-uniformly); straight-segment
+  length packaging. (`CyclotomicPolynomialsOQ02OQ10.lean`, VERIFIED docker
+  `[8580/8580]`, 0-axiom `[propext,Classical.choice,Quot.sound]`; `ray_exit` +
+  `levelCurve_meets_every_ray` + `ray_exit_pathLength`.) The DIRECTIONAL half of the
+  iter-7 refinement question is now closed; the every-boundary-point half still needs
+  lemniscate component topology (blocked, unchanged).
 
 ## Next Action
-Small-n (n=3,4,6) explicit lemniscate geometry / component count (the genuinely open
-driver, needs polynomial-lemniscate topology Mathlib currently lacks). Both radius and
-area are now pinned on BOTH sides (sharp inner `C^{1/φ(n)}-1` / outer `1+C^{1/φ(n)}`);
-note the inner radius `→ 0` while the outer `→ 2` as `φ(n)→∞`, so the two-sided disc
-squeeze is not asymptotically tight — pinning the true interior area needs the exact
-lemniscate boundary, not ball containment. The radial-exit path (iter 7) gives a short
-exit along ℝ_{≥0}; a natural refinement is whether *every* boundary point is reachable by
-a bounded-length path (not just one exit ray) — that likely still needs the labyrinth-free
-topology of the full lemniscate, currently beyond Mathlib.
+The every-boundary-point half of the reachability question: is EVERY point of the level
+curve `{|Φ_n|=C}` reachable from 0 by a bounded-length path inside the set? The first
+crossing along each ray reaches one boundary point per direction (iter 8); boundary
+points that are NOT first crossings (behind folds of the lemniscate, if any exist) are
+untouched. Deciding whether such points exist at all needs the connected-component /
+fold structure of the cyclotomic lemniscate — polynomial-lemniscate topology Mathlib
+still lacks (blocked, unchanged). Alternative tractable layer: small-n (n=3,4,6)
+explicit lemniscate geometry.
