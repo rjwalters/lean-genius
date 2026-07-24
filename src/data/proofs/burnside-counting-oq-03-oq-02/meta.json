@@ -140,8 +140,8 @@
     "summary": "Proves the unweighted Burnside / Cauchy–Frobenius orbit-counting theorem for k-colorings of a finite set under an arbitrary finite group: (A) the per-element fixed-point count |Fix(g)| = k^{cyc(g)} via an explicit bijection with functions on the ⟨g⟩-orbit quotient, and (B) the averaging form Σ_g k^{cyc(g)} = (#distinct colorings)·|G|. Fully verified with 0 sorries and 0 axioms.",
     "implications": "Generalizes the parent's cyclic necklace count to an arbitrary finite group acting on arbitrary positions, the honest tractable answer to the parent's open question 'generalize from cyclic groups to arbitrary finite groups'. It is the unweighted core on top of which a future weighted Pólya cycle-index development could be built, and it directly subsumes the cyclic and dihedral counts elsewhere in the gallery.",
     "openQuestions": [
-      "Recover the cyclic specialization as a corollary: prove cyc(rotation r) = gcd(r, n) for the ZMod n rotation action, deriving the parent's k^{gcd(r,n)} from k^{cyc(g)}.",
-      "Recover the dihedral reflection counts k^{(n+1)/2}, k^{n/2+1}, k^{n/2} as instances of k^{cyc(g)} by computing the cycle count of each reflection.",
+      "**(Resolved by `burnside-counting-oq-03-oq-02-oq-01`.)** Recover the cyclic specialization as a corollary: prove cyc(rotation r) = gcd(r, n) for the ZMod n rotation action, deriving the parent's k^{gcd(r,n)} from k^{cyc(g)}.",
+      "**(Resolved by `burnside-counting-oq-03-oq-02-oq-02`.)** Recover the dihedral reflection counts k^{(n+1)/2}, k^{n/2+1}, k^{n/2} as instances of k^{cyc(g)} by computing the cycle count of each reflection.",
       "Build the weighted Pólya cycle-index theorem: introduce the cycle-index monomial ∏ x_{cycle length} for each g and the weighted generating function obtained by the substitution x_i ↦ Σ_j w_j^i — the remaining genuinely missing Mathlib infrastructure."
     ]
   },
@@ -155,6 +155,16 @@
       "targetId": "burnside-counting",
       "relationship": "related",
       "description": "Root entry of the Burnside orbit-counting development; this is the general-group instance of the same average-of-fixed-points principle."
+    },
+    {
+      "targetId": "burnside-counting-oq-03-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers openQuestions[0] above: specializes cyc(g) to the cyclic rotation action of ZMod n, proving cyc(rotation r) = gcd(n, r) and recovering the classical k^{gcd(n,r)} count directly from card_fixedBy_eq_pow_cyc."
+    },
+    {
+      "targetId": "burnside-counting-oq-03-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers openQuestions[1] above: specializes cyc(g) to the dihedral reflection action, proving cyc(reflection) = (n + |Fix|)/2 and recovering the classical reflection counts (n+1)/2, n/2+1, n/2 for every number of colors k."
     }
   ],
   "leanFile": {
