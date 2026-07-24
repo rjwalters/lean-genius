@@ -101,11 +101,18 @@
       "summary": "Imports, an expository docstring contrasting Mathlib's MonovaryOn formulation with the classical monotone-sequence statement, and namespace setup."
     },
     {
-      "id": "sequences",
-      "title": "Real Sequences over range n",
+      "id": "sequences-core",
+      "title": "Forward and Reverse Inequalities",
       "startLine": 35,
+      "endLine": 54,
+      "summary": "chebyshev_monotone and chebyshev_antitone — the core similarly-sorted bound (∑f)(∑g) ≤ n·∑fg and its oppositely-sorted reverse, for monotone/antitone real sequences indexed by range n."
+    },
+    {
+      "id": "sequences-corollaries",
+      "title": "Corollaries: Square Bound and Averaged Form",
+      "startLine": 56,
       "endLine": 72,
-      "summary": "chebyshev_monotone, chebyshev_antitone, sq_sum_le, and the averaged chebyshev_mean — the textbook forms for monotone/antitone real sequences indexed by range n."
+      "summary": "sq_sum_le (the self-monovarying Cauchy–Schwarz-type square bound, needing no monotonicity hypothesis) and chebyshev_mean (the averaged 'mean of products ≥ product of means' restatement, derived from chebyshev_monotone by dividing through by n²)."
     },
     {
       "id": "general",
