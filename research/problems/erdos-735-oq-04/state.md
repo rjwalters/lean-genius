@@ -1,9 +1,52 @@
 # Current State
 
-**Phase**: S6a COMPLETE (unblocked + both sorries discharged, Docker build-verified on Lean v4.31.0) — the tetrahedron `(d=3, k=2)` magic witness in `Proofs/Erdos735OQ04Tetrahedron.lean` is now fully proved: `tetra_affineIndependent` and `tetraConfig_isKFlatMagic` both discharged by hand (researcher-3, 2026-07-24), 0 sorries, 0 new axioms. The 2026-06-13 BLOCKED flag (Docker daemon down, Aristotle 404) was stale — Docker restored; hand discharge needed one build iteration. First machine-checked witness that the higher-flat (`k ≥ 2`) magic family is non-empty. Remaining milestones: S6b/c (octa/cube refutations, PREP #18541), S6e (general-position uniform-weight theorem), S7 (gallery JSON), IsIncenterConfigD tightening.
-**Since**: 2026-07-24 (S6a discharge, researcher-3)
-**Iteration**: 12 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → S6a ACT scaffold → BLOCKED → **S6a DISCHARGE (unblock)**)
-**Last Updated**: 2026-07-24 (S6a discharge, researcher-3)
+**Phase**: S6e COMPLETE (general-position uniform-weight theorem, researcher-3, 2026-07-24)
+— new leaf `Proofs/Erdos735OQ04GeneralPosition.lean` (0 axioms, 0 sorries, host-verified on
+Lean v4.31.0 pinned toolchain): `isKFlatMagic_of_kFlatGeneralPosition` (any configuration in
+k-flat general position is k-flat magic, uniform weight, constant k+1),
+`kFlatGeneralPositionD_of_affineIndependent` + `isKFlatMagic_of_affineIndependent`
+(simplex-type configurations are k-flat magic for EVERY k — the S6a tetrahedron becomes one
+instance of a uniform family), and `isKFlatMagic_one_of_generalPosition` — the
+"general position ⟹ 1-flat magic" implication of the S5 classification axiom, machine-checked
+unconditionally in every dimension (shrinks the genuinely open content of the axiom; the
+axiom itself is untouched and unused by this file). Earlier this cycle: S6a tetrahedron
+discharge (PR #43107), S6b/c octa/cube refutations (PR #43155). Remaining milestones:
+S6d (dodeca/icosa refutations or witnesses), S7 (gallery JSON — slug still has NO
+src/data/proofs entry), IsIncenterConfigD tightening.
+**Since**: 2026-07-24 (S6e, researcher-3)
+**Iteration**: 13 (… → S6a DISCHARGE → S6b/c ACT → **S6e ACT**)
+**Last Updated**: 2026-07-24 (S6e general-position theorem, researcher-3)
+
+## S6e ACT — general-position uniform-weight theorem (researcher-3, 2026-07-24)
+
+New leaf `proofs/Proofs/Erdos735OQ04GeneralPosition.lean` (~180 LOC, namespace
+`Erdos735OQ04GenPos`), abstracting the S6a tetrahedron argument away from
+coordinates:
+
+* `IsKFlatGeneralPositionD k P` — no rank-k flat holds more than k+1 points.
+* `isKFlatMagic_of_kFlatGeneralPosition` — uniform weight 1, constant k+1
+  (ConfigKFlat gives ≥ k+1, general position gives ≤ k+1, so every flat sum
+  is exactly k+1; `dif_pos`/`sum_const`/`Nat.smul_one_eq_cast` idiom).
+* `kFlatGeneralPositionD_of_affineIndependent` — k+2 points of an affinely
+  independent family span finrank k+1 (`AffineIndependent.comp_embedding` on
+  the Finset-subtype inclusion + `finrank_vectorSpan`), which cannot sit in a
+  rank-k direction (`affineSpan_le`/`direction_affineSpan`/`finrank_mono`).
+* `isKFlatMagic_of_affineIndependent` — every affinely independent config is
+  k-flat magic for every k simultaneously.
+* `kFlatGeneralPositionD_one_of_generalPosition` + `isKFlatMagic_one_of_generalPosition`
+  — the parent-class-2 bridge (`Finset.card_eq_three` extraction), proving the
+  class-2 forward implication of `oneflat_classification_higher_dim` outright,
+  for ALL d (the axiom is stated for d ≥ 3).
+
+`#print axioms` on all three headline theorems: `[propext, Classical.choice,
+Quot.sound]` — in particular NO dependence on the S5 classification axiom.
+
+v4.31 gotchas: `congrArg Subtype.val` on a beta-redex equality of `Subtype.mk`s
+resolves at the WRONG subtype when the expected type is another subtype's
+val-equality — use `Subtype.mk_eq_mk.mp` instead. `Finset.exists_subset_card_eq`
+is the v4.31 name for extracting a subset of prescribed card.
+
+Memo: `sessions/2026-07-24-s6e-general-position-uniform-weight.md`.
 
 ## S6a DISCHARGE — both tetrahedron sorries proved (researcher-3, 2026-07-24)
 
