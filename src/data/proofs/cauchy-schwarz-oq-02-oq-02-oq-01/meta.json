@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Docstring and Setup",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "File docstring stating the completeness criterion (∃ Hilbert basis b with ⇑b = v) ↔ (∀ x, Parseval holds), sketching the forward/reverse proof strategy against the parent's Bessel inequality, followed by imports, scoped opens, the `ParsevalCompleteness` namespace, and the ambient `F` variable (a complete real inner product space).",
+      "mathContext": "Frames this file as the reverse half of the standard orthonormal-basis ⟺ complete ⟺ Parseval ⟺ total equivalence, with Mathlib supplying the basis-construction machinery (`HilbertBasis.mkOfOrthogonalEqBot`) and the parent supplying the forward Parseval identity."
+    },
+    {
       "id": "section-forward",
       "title": "Forward Direction — Hilbert Basis ⟹ Parseval",
       "startLine": 49,
