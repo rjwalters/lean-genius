@@ -244,5 +244,29 @@
       "linear algebra",
       "additive number theory"
     ]
+  },
+  {
+    "id": "ann-e531-main-question",
+    "proofId": "erdos-531",
+    "range": {
+      "startLine": 588,
+      "endLine": 613
+    },
+    "type": "concept",
+    "title": "The Main Question and Final Assembly",
+    "content": "**The central open question:** the precise growth rate of F(k). What is known: F(k) ≥ 2^{2^{k-1}/k} (doubly exponential, Balogh et al. 2017) and F(k) is finite (Folkman's theorem, now proved from Hindman + Rado selection). The gap between this lower bound and Folkman's tower-type upper bound is enormous — closing it is the open part of Problem #531.\n\n`F_growth_doubly_exponential` restates the lower bound as a universally-quantified theorem (`∀ k ≥ 1, F k ≥ 2^(2^(k-1)/k)`), and `erdos_531_summary` packages both `(ValidN k).Nonempty` (from `F_well_defined`) and the growth bound (from `balogh_2017`) into a single statement per k. The file closes with `erdos_531`, the headline theorem that Folkman's theorem holds for every k — the fully machine-checked half of Problem #531 (the quantitative gap between the doubly-exponential lower bound and the tower-type upper bound remains open, per `balogh_2017`'s axiom status).",
+    "mathContext": "$F(k) \\geq 2^{2^{k-1}/k}$ and $F(k) < \\infty$ are both established; the open question is the exact order of growth, somewhere between doubly-exponential and tower-type (iterated exponential).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "growth rate estimates",
+      "open problems",
+      "Folkman's theorem",
+      "doubly exponential bounds"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic notation",
+      "Folkman's theorem"
+    ]
   }
 ]
