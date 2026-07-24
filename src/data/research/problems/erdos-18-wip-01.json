@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..7 (minimal_hErdos_two..seven); exact-value table now covers all 7 practically-unsplittable numbers in [64,128); STRUCTURAL: record ties found at t=6 (78, 88, 100, 104 all index 6) - local uniqueness fails, gap-type vs dense-type dichotomy of unsplittables; open: 2^t for all t (non-greedy log2 bound), octave index-6 census (needs witness-list engine for d(120)=16), exact 40/56/60, deep Vose bound",
+    "progressSummary": "PROGRESS: record-setter sequence 2^t proved for t=1..8 (minimal_hErdos_two..eight, all 0-axiom); STRUCTURAL: local uniqueness of the record returns at t=7 (128 alone below 256) after failing at t=6; new sub-family upper engine hErdos_le_of_witnesses_from unblocks d(210)=16/d(240)=20; next rung t=9 needs [256,512) sweep with unsplittable census first",
     "builtItems": [
       "decidableIsRepresentable / decidableIsPractical instances (Erdos18Problem.lean)",
       "zero_isRepresentable, one_isRepresentable, isRepresentable_self, isRepresentable_le_sigma, mem_divisors_le (Erdos18Problem.lean)",
@@ -74,7 +74,12 @@
       "Split bounds: hErdos 72<=5, 80<=6, 84<=5, 96<=5, 108<=5, 112<=6, 120<=6 via hErdos_mul_le through 2*m'",
       "record_index_six_not_locally_unique: exists m practical, 64 < m < 128, hErdos m = 6 (witness 78)",
       "Practicality decides: 40, 42, 54, 56, 60, 66, 78, 88, 90, 104, 126",
-      "hErdos_onetwentyeight: hErdos 128 = 7 via hErdos_two_pow"
+      "hErdos_onetwentyeight: hErdos 128 = 7 via hErdos_two_pow",
+      "hErdos_le_of_witnesses_from in Erdos18WIP01.lean - sub-family upper-bound engine (restrict kernel search to chosen S subset of divisors m)",
+      "24 octave upper bounds hErdos_onethirtytwo_le .. hErdos_twofiftytwo_le (7 subadditive splits + 17 tight sub-family engine runs) in Erdos18WIP01.lean",
+      "hErdos_le_six_of_lt_twofiftysix_of_ne + hErdos_le_seven_of_lt_twofiftysix (octave thresholds, 128-case interval_cases sweep) in Erdos18WIP01.lean",
+      "minimal_hErdos_eight : IsLeast {m | IsPractical m and hErdos m = 8} 256 in Erdos18WIP01.lean",
+      "record_index_seven_locally_unique + twofiftysix_practical + hErdos_twofiftysix in Erdos18WIP01.lean"
     ],
     "insights": [
       "Erdos18Problem.lean stub developed: representability (IsRepresentable) and practicality (IsPractical) are DECIDABLE via a finite powerset search over the divisor set — a single decision procedure subsuming all future example checks; all lemmas axiom-free (plain kernel decide, no native_decide/Lean.ofReduceBool).",
@@ -111,7 +116,12 @@
       "Unsplittable does NOT imply high index: 90 = 2*3^2*5 and 126 = 2*3^2*7 have eleven proper divisors but index only 4 - index tracks divisor gaps, not divisor count. Unsplittables bifurcate: gap-type (index ties record) vs dense-type (index low).",
       "78 = 2*3*13, the counterexample that breaks greedy halving for hErdos m <= log2 m, is also a record-tier: the same divisor gap drives both phenomena. Ties probe but do not breach the log bound (6 <= log2 78).",
       "Host pre-validation: replicate divisors/IsPractical + Decidable instances in a Mathlib-only scratch file and time all new decides before touching the real file - 14 engine + 12 practicality decides validated in ~45s, zero wasted Docker cycles.",
-      "Non-practicality decides in the threshold interval_cases need maxRecDepth 80000 for m in (64,128) (40000 sufficed for (32,64)) - recursion depth scales with m."
+      "Non-practicality decides in the threshold interval_cases need maxRecDepth 80000 for m in (64,128) (40000 sufficed for (32,64)) - recursion depth scales with m.",
+      "Local uniqueness of the record RETURNS at t=7: 128 is the only practical m<256 with index 7 (record_index_seven_locally_unique). The four t=6 ties (78,88,100,104) double into 156,176,200,208 but each doubling drops strictly below the subadditive 1+6 bound (engine: 156<=6, 176<=6, 200<=5, 208<=6)",
+      "Octave [128,256) census: 25 practicals; 15 fall to the 2*m-prime split, 10 practically-unsplittable (140,150,162,196,198,204,210,220,228,234); 7 splittable ones still need the engine for tight bounds because the crude split lands at 7",
+      "Sub-family engine unblocks large divisor counts: d(210)=16 and d(240)=20 make the full-powerset witness decide infeasible, but greedy-pruned coin chains of 8-11 divisors certify the tight bound at 2^8..2^11 subsets; sub-families found by Python min-card DP with random-restart greedy pruning",
+      "No restricted LOWER engine is possible by the same trick: an upper bound needs one witness family, a lower bound must search ALL of divisors m, so exact values for d>12 numbers in [128,256) stay open",
+      "Threshold decide depth scales linearly with octave top: maxRecDepth 40000 for (32,64), 80000 for (64,128), 200000 for (128,256)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -140,7 +150,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.780Z",
-  "lastUpdate": "2026-07-23",
+  "lastUpdate": "2026-07-24",
   "significance": 7,
   "tractability": 5
 }

@@ -481,3 +481,54 @@ engine uppers for 80, 112 (cheap, d = 10) and 120 (d(120) = 16 → 2¹⁵ subset
 instead: pass an explicit List of per-target witness subsets and decide a
 linear check, O(m) not O(m·2^d)). Exact 40/56/60 still cheap standalones.
 Deep Vose bound unchanged.
+
+## Session 2026-07-24 (researcher-1, fourth session) — t = 8 closed: minimal_hErdos_eight = 256; local uniqueness RETURNS at t = 7
+
+`minimal_hErdos_eight : IsLeast {m | IsPractical m ∧ hErdos m = 8} 256` —
+record-setter sequence now 2, 4, 8, 16, 32, 64, 128, 256 for t = 1..8, all
+0-axiom. Membership is free (two_pow_practical 8, hErdos_two_pow 8); the work
+is the octave threshold.
+
+Structural finding (reversal of the t = 6 anomaly): local uniqueness of the
+record RETURNS at t = 7 — `record_index_seven_locally_unique`: 128 is the ONLY
+practical m < 256 with index 7. The four index-6 ties of [64,128) double into
+156, 176, 200, 208, but every doubling drops strictly below the subadditive
+1 + 6 bound (engine: 156 ≤ 6, 176 ≤ 6, 200 ≤ 5, 208 ≤ 6). Proved via the
+strengthened threshold `hErdos_le_six_of_lt_twofiftysix_of_ne` (practical
+m < 256, m ≠ 128 ⟹ index ≤ 6), from which both the plain threshold
+`hErdos_le_seven_of_lt_twofiftysix` and uniqueness are one-liners.
+
+New engine: `hErdos_le_of_witnesses_from` (sub-family upper engine) — restricts
+the kernel witness search to a chosen S ⊆ divisors m, cutting 2^d(m) to 2^|S|.
+This unblocked d(210) = 16 and d(240) = 20, exactly as predicted last session.
+Sub-families were greedy-pruned by Python (min-card DP mirroring the decide
+semantics, random restarts for the heavy ones); all 17 engine runs certify the
+TIGHT Python index, |S| = 8..11, worst kernel cost 2^11 × 224.
+
+Octave census [128, 256): 25 practicals. 15 fall to the 2·m′ split (132, 144,
+168, 180, 192, 216, 252 land at ≤ 6 or ≤ 5 directly; 128 is the record); 10
+are practically-unsplittable (140, 150, 162, 196, 198, 204, 210, 220, 228,
+234 — engine). 7 splittable ones (156, 160, 176, 200, 208, 224, 240) needed
+the engine anyway because the crude split lands at 7. Upper bounds only this
+session (no exact values / lower bounds in [128,256) yet): 140:5 150:5 156:6
+160:5 162:5 196:6 198:5 200:5 204:6 208:6 210:5 220:6 224:5 228:6 234:5 240:5.
+
+Threshold sweep [128, 256) needs maxRecDepth 200000 (depth scales with m:
+40000 for (32,64), 80000 for (64,128)).
+
+NEXT: t = 9 sweeps [256, 512) — ~40+ practicals, splits should handle most
+(every m = 2m′ with m′ practical in [128,256) inherits ≤ 1+6 = 7 ≤ 8), but
+the unsplittable census must be counted first; d grows (d(360) = 24, d(420) =
+24) so the sub-family engine is now mandatory, and the octave may become the
+first where a NON-power-of-two ties the record (candidates: none known —
+check 2·gap-type numbers). Exact values/lower bounds for [128,256) hard
+targets are cheap standalones only for d ≤ 12 (le_hErdos_of_card is a FULL
+powerset decide — d(210)=16, d(240)=20 lower bounds need a restricted lower
+engine, which does NOT exist and is NOT a witness check: a lower bound must
+search all of divisors m). Deep Vose bound unchanged.
+
+Kernel-cost calibration (build-verified): sub-family engine decides fit the
+default 200000-heartbeat elaboration budget up to 2^10 subsets x ~230 targets;
+the single 2^11 run (224, 11 proper divisors, no 10-coin sub-family covers)
+needs `set_option maxHeartbeats 800000`. Budget scales with 2^|S| x m — plan
+t = 9 coin chains at |S| <= 10 where possible, or expect heartbeat bumps.
