@@ -35,7 +35,23 @@ infimum is fully provable from Mathlib.  This file establishes:
   evaluation at `θ₀ = 3π/(2N+1)` (the middle of the kernel's first negative
   lobe), giving `minCosineSum {1,…,N} ≤ −1/2 − (2N+1)/(3π)` — the maximally
   additively-structured set sits at the opposite extreme (`≍ −N`) from the
-  conjectured general `−c√N`.
+  conjectured general `−c√N`;
+* **the L¹–L⁴ analytic engine for the Sidon route**: Cauchy–Schwarz for
+  interval integrals (`sq_integral_mul_le`, via `discrim_le_zero`), the L¹
+  bound `∫|f| ≤ 4π·(−minCosineSum)` (`integral_abs_cosineSum_le`, from
+  `∫f = 0`), the moment chain `(πN)³ ≤ (∫f⁴)·(∫|f|)²`
+  (`pow_three_second_moment_le`, Cauchy–Schwarz twice through `∫|f|³`), and
+  their combination `minCosineSum_le_neg_sqrt_of_fourth_moment`: any
+  fourth-moment bound `∫f⁴ ≤ B` yields
+  `minCosineSum A ≤ −√(π³N³/B)/(4π)`;
+* **Chowla's `√N` bound for Sidon sets**: the `ℤ`-frequency orthogonality
+  `∫cos(jθ)cos(kθ) = π([j=k] + [j=−k])`, the exact Fourier expansion of `f²`,
+  the Sidon (`B₂[1]`) counting lemmas (≤ 2 pairs per sum, ≤ 1 per nonzero
+  difference), the fourth-moment count `∫f⁴ ≤ 5π·N²`
+  (`integral_cosineSum_pow_four_le`), and the resulting
+  `minCosineSum A ≤ −√(N/5)/4` (`minCosineSum_sidon_le`) — the conjectured
+  `√N` growth rate on the *second* structured class, by a fourth-moment
+  mechanism independent of the sum-free third-moment argument.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
 `−c√N` lower bound for *general* sets (those with additive structure, where
@@ -45,6 +61,7 @@ scaffolding).
 Reference: <https://erdosproblems.com/510>
 -/
 
+import Mathlib.Algebra.QuadraticDiscriminant
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -876,5 +893,613 @@ theorem add_minCosineSum_le_minCosineSum_union {A B : Finset ℕ}
   rintro y ⟨θ, rfl⟩
   rw [cosineSum_union hAB θ]
   exact add_le_add (minCosineSum_le A θ) (minCosineSum_le B θ)
+
+/-! ## The L¹–L⁴ analytic engine for the Sidon-class `√N` bound
+
+Chowla's conjecture predicts `minCosineSum A ≤ −c·√N` for *every*
+positive-frequency set.  For **Sidon sets** (`B₂[1]`: all pairwise sums
+distinct) the classical elementary route is a moment argument:
+
+1. the fourth moment `∫₀^{2π} f⁴` counts additive quadruples
+   `a + b = c + d`, which the Sidon condition caps at `O(N²)`;
+2. Cauchy–Schwarz twice (through the odd moment `∫|f|³`) turns the
+   second-moment identity `∫f² = πN` into the L¹ lower bound
+   `(πN)³ ≤ (∫f⁴)·(∫|f|)²`;
+3. since `∫f = 0` over a period, the negative part of `f` carries half the
+   L¹ mass, and the pointwise floor `f ≥ m := minCosineSum A` converts that
+   mass into `∫|f| ≤ 4π·(−m)`.
+
+This section formalizes the complete *analytic* engine (steps 2 and 3 and
+their combination): any fourth-moment bound `∫f⁴ ≤ B` now yields
+`minCosineSum A ≤ −√(π³N³/B)/(4π)`
+(`minCosineSum_le_neg_sqrt_of_fourth_moment`).  Instantiating `B = O(N²)` —
+the remaining *combinatorial* step 1, a quadruple count under the Sidon
+condition — will give the conjectured `−c·√N` on the Sidon class,
+complementing the sum-free class (`minCosineSum_le_neg_sqrt_half_card`,
+third-moment mechanism) with an orthogonal fourth-moment mechanism. -/
+
+/-- **Cauchy–Schwarz for interval integrals** (continuous integrands):
+`(∫ u·v)² ≤ (∫u²)·(∫v²)` over `[0, 2π]`.  For every `t` the quadratic
+`t²·∫u² − 2t·∫uv + ∫v² = ∫(t·u − v)²` is nonnegative, so its discriminant
+is nonpositive (`discrim_le_zero`). -/
+theorem sq_integral_mul_le (u v : ℝ → ℝ) (hu : Continuous u) (hv : Continuous v) :
+    (∫ θ in (0 : ℝ)..(2 * π), u θ * v θ) ^ 2
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (u θ) ^ 2)
+        * (∫ θ in (0 : ℝ)..(2 * π), (v θ) ^ 2) := by
+  set a : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (u θ) ^ 2 with ha
+  set b : ℝ := ∫ θ in (0 : ℝ)..(2 * π), u θ * v θ with hb
+  set c : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (v θ) ^ 2 with hc
+  have hq : ∀ t : ℝ, 0 ≤ a * (t * t) + (-(2 * b)) * t + c := by
+    intro t
+    have hu2 : IntervalIntegrable (fun θ => t ^ 2 * (u θ) ^ 2)
+        MeasureTheory.volume 0 (2 * π) :=
+      ((hu.pow 2).const_mul _).intervalIntegrable _ _
+    have huv : IntervalIntegrable (fun θ => (-(2 * t)) * (u θ * v θ))
+        MeasureTheory.volume 0 (2 * π) :=
+      ((hu.mul hv).const_mul _).intervalIntegrable _ _
+    have hv2 : IntervalIntegrable (fun θ => (v θ) ^ 2)
+        MeasureTheory.volume 0 (2 * π) :=
+      (hv.pow 2).intervalIntegrable _ _
+    have hnn : 0 ≤ ∫ θ in (0 : ℝ)..(2 * π), (t * u θ - v θ) ^ 2 :=
+      intervalIntegral.integral_nonneg (by positivity) (fun θ _ => sq_nonneg _)
+    have hexp : (∫ θ in (0 : ℝ)..(2 * π), (t * u θ - v θ) ^ 2)
+        = t ^ 2 * a + (-(2 * t)) * b + c := by
+      rw [intervalIntegral.integral_congr (fun θ _ => show
+            (t * u θ - v θ) ^ 2
+              = t ^ 2 * (u θ) ^ 2 + ((-(2 * t)) * (u θ * v θ) + (v θ) ^ 2) by ring),
+          intervalIntegral.integral_add hu2 (huv.add hv2),
+          intervalIntegral.integral_add huv hv2,
+          intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+          ← ha, ← hb, ← hc]
+      ring
+    rw [hexp] at hnn
+    nlinarith [hnn]
+  have hd := discrim_le_zero hq
+  rw [discrim] at hd
+  nlinarith [hd]
+
+/-- **The L¹ norm is controlled by the minimum**: for a positive-frequency
+set, `∫₀^{2π} |cosineSum A θ| dθ ≤ 4π·(−minCosineSum A)`.  Since `∫f = 0`
+over a period, the positive and negative parts of `f` have equal mass, and
+the negative part is pointwise at most `−m`; concretely `|f| ≤ f − 2m`
+pointwise (both cases of the sign of `f θ`, using `m ≤ 0` and `m ≤ f θ`),
+and the right side integrates to `−4πm`. -/
+theorem integral_abs_cosineSum_le (A : Finset ℕ) (hA : 0 ∉ A) :
+    ∫ θ in (0 : ℝ)..(2 * π), |cosineSum A θ| ≤ 4 * π * (-minCosineSum A) := by
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  have hm0 : m ≤ 0 := minCosineSum_nonpos A hA
+  have hlow : ∀ θ, m ≤ g θ := fun θ => minCosineSum_le A θ
+  have habs : IntervalIntegrable (fun θ => |g θ|) MeasureTheory.volume 0 (2 * π) :=
+    (continuous_cosineSum A).abs.intervalIntegrable _ _
+  have hgi : IntervalIntegrable (fun θ => g θ - 2 * m) MeasureTheory.volume 0 (2 * π) :=
+    ((continuous_cosineSum A).sub continuous_const).intervalIntegrable _ _
+  have hmono : (∫ θ in (0 : ℝ)..(2 * π), |g θ|)
+      ≤ ∫ θ in (0 : ℝ)..(2 * π), (g θ - 2 * m) := by
+    refine intervalIntegral.integral_mono_on (by positivity) habs hgi (fun θ _ => ?_)
+    exact abs_le.mpr ⟨by linarith [hlow θ], by linarith [hlow θ]⟩
+  have hIg : ∫ θ in (0 : ℝ)..(2 * π), g θ = 0 := integral_cosineSum_eq_zero A hA
+  have hval : (∫ θ in (0 : ℝ)..(2 * π), (g θ - 2 * m)) = 4 * π * (-m) := by
+    rw [intervalIntegral.integral_sub ((continuous_cosineSum A).intervalIntegrable _ _)
+        intervalIntegrable_const, hIg, intervalIntegral.integral_const]
+    simp only [smul_eq_mul]; ring
+  linarith [hmono, hval]
+
+/-- **The L²–L⁴–L¹ moment chain**: `(πN)³ ≤ (∫f⁴)·(∫|f|)²` for the cosine
+sum of a positive-frequency set.  Cauchy–Schwarz twice through the
+half-power `s = √|f|`: first `(∫f²)² = (∫ s³·s)² ≤ (∫|f|³)·(∫|f|)`, then
+`(∫|f|³)² = (∫ f²·|f|)² ≤ (∫f⁴)·(∫f²)`; combining and cancelling one
+factor of `∫f² = πN > 0` gives the cube inequality.  This is the Hölder
+step `‖f‖₂ ≤ ‖f‖₄^{2/3}·‖f‖₁^{1/3}` in integral form, with no fractional
+powers anywhere. -/
+theorem pow_three_second_moment_le (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty) :
+    (π * (A.card : ℝ)) ^ 3
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 4)
+        * (∫ θ in (0 : ℝ)..(2 * π), |cosineSum A θ|) ^ 2 := by
+  set g := cosineSum A with hg
+  have hgc : Continuous g := continuous_cosineSum A
+  set s : ℝ → ℝ := fun θ => Real.sqrt |g θ| with hsdef
+  have hsc : Continuous s := hgc.abs.sqrt
+  have hs2 : ∀ θ, s θ ^ 2 = |g θ| := fun θ => Real.sq_sqrt (abs_nonneg _)
+  -- Cauchy–Schwarz 1: `(∫f²)² ≤ (∫|f|³)·(∫|f|)`.
+  have hCS1 := sq_integral_mul_le (fun θ => s θ ^ 3) s (hsc.pow 3) hsc
+  have e1 : (∫ θ in (0 : ℝ)..(2 * π), s θ ^ 3 * s θ)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc s θ ^ 3 * s θ = (s θ ^ 2) ^ 2 := by ring
+        _ = |g θ| ^ 2 := by rw [hs2 θ]
+        _ = (g θ) ^ 2 := sq_abs _)
+  have e2 : (∫ θ in (0 : ℝ)..(2 * π), (s θ ^ 3) ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc (s θ ^ 3) ^ 2 = (s θ ^ 2) ^ 3 := by ring
+        _ = |g θ| ^ 3 := by rw [hs2 θ])
+  have e3 : (∫ θ in (0 : ℝ)..(2 * π), s θ ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| :=
+    intervalIntegral.integral_congr (fun θ _ => hs2 θ)
+  rw [e1, e2, e3] at hCS1
+  -- Cauchy–Schwarz 2: `(∫|f|³)² ≤ (∫f⁴)·(∫f²)`.
+  have hCS2 := sq_integral_mul_le (fun θ => (g θ) ^ 2) (fun θ => |g θ|)
+    (hgc.pow 2) hgc.abs
+  have e4 : (∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 * |g θ|)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc (g θ) ^ 2 * |g θ| = |g θ| ^ 2 * |g θ| := by rw [sq_abs]
+        _ = |g θ| ^ 3 := by ring)
+  have e5 : (∫ θ in (0 : ℝ)..(2 * π), ((g θ) ^ 2) ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4 :=
+    intervalIntegral.integral_congr (fun θ _ => by ring)
+  have e6 : (∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 :=
+    intervalIntegral.integral_congr (fun θ _ => sq_abs _)
+  rw [e4, e5, e6] at hCS2
+  -- Assemble with the second moment `∫f² = πN` and cancel one factor `πN > 0`.
+  have hX : ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 = π * A.card :=
+    integral_cosineSum_sq A hA
+  rw [hX] at hCS1 hCS2
+  set F : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4 with hF
+  set L : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| with hLdef
+  set T : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 with hTdef
+  have hNpos : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr hne
+  have hXpos : 0 < π * (A.card : ℝ) := mul_pos Real.pi_pos hNpos
+  have hsq : ((π * (A.card : ℝ)) ^ 2) * ((π * (A.card : ℝ)) ^ 2)
+      ≤ (T * L) * (T * L) :=
+    mul_self_le_mul_self (sq_nonneg _) hCS1
+  have hTL : T ^ 2 * L ^ 2 ≤ (F * (π * (A.card : ℝ))) * L ^ 2 :=
+    mul_le_mul_of_nonneg_right hCS2 (sq_nonneg L)
+  nlinarith [hsq, hTL, hXpos]
+
+/-- **Conditional Chowla bound from a fourth-moment estimate**: any bound
+`∫₀^{2π} f⁴ ≤ B` forces `minCosineSum A ≤ −√(π³N³/B)/(4π)`.  This is the
+complete analytic engine for the Sidon route: the combinatorial quadruple
+count `∫f⁴ ≤ O(N²)` for Sidon (`B₂[1]`) sets, once formalized, instantiates
+`B` and yields the conjectured `−c·√N` on the Sidon class. -/
+theorem minCosineSum_le_neg_sqrt_of_fourth_moment (A : Finset ℕ) (hA : 0 ∉ A)
+    (hne : A.Nonempty) {B : ℝ}
+    (hB : (∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 4) ≤ B) :
+    minCosineSum A ≤ -(Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) / (4 * π)) := by
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  set L : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| with hLdef
+  have hLnn : 0 ≤ L :=
+    intervalIntegral.integral_nonneg (by positivity) (fun θ _ => abs_nonneg _)
+  have hchain : (π * (A.card : ℝ)) ^ 3
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4) * L ^ 2 :=
+    pow_three_second_moment_le A hA hne
+  have hNpos : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr hne
+  have hXpos : 0 < π * (A.card : ℝ) := mul_pos Real.pi_pos hNpos
+  have hcube : (π * (A.card : ℝ)) ^ 3 ≤ B * L ^ 2 :=
+    le_trans hchain (mul_le_mul_of_nonneg_right hB (sq_nonneg L))
+  have hBpos : 0 < B := by nlinarith [hcube, pow_pos hXpos 3, sq_nonneg L]
+  -- `L ≥ √(π³N³/B)`.
+  have hdiv : π ^ 3 * (A.card : ℝ) ^ 3 / B ≤ L ^ 2 := by
+    rw [div_le_iff₀ hBpos]
+    nlinarith [hcube]
+  have hsqrt : Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) ≤ L := by
+    calc Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) ≤ Real.sqrt (L ^ 2) :=
+        Real.sqrt_le_sqrt hdiv
+      _ = L := Real.sqrt_sq hLnn
+  -- Convert the L¹ mass into the minimum via `∫|f| ≤ 4π·(−m)`.
+  have hL1 : L ≤ 4 * π * (-m) := integral_abs_cosineSum_le A hA
+  have h4π : (0 : ℝ) < 4 * π := by positivity
+  have hfin : Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) / (4 * π) ≤ -m := by
+    rw [div_le_iff₀ h4π]
+    nlinarith [hsqrt, hL1]
+  linarith [hfin]
+
+/-! ## Sidon sets: the fourth-moment count and Chowla's `√N` rate
+
+The combinatorial half of the Sidon route.  A **Sidon set** (`B₂[1]`) has all
+pairwise sums distinct — equivalently, all nonzero pairwise differences
+distinct.  For such sets the fourth moment of the cosine sum is small: writing
+`f²` in the cosine basis, its `m`-th Fourier coefficient
+`W(m) = ∫₀^{2π} cos(mθ)·f²` counts the ordered pairs `(c, d) ∈ A²` with
+`c + d = ±m` or `c − d = ±m`, and the Sidon condition caps these at `2`, `0`,
+`1`, `1` respectively for `m ≠ 0` — so `W(m) ≤ 3π`, while `W(0) = ∫f² = πN`.
+Expanding `∫f⁴ = ∑_{(a,b) ∈ A²} ½(W(a+b) + W(a−b))` and splitting the diagonal
+`a = b` (where `W(0)` appears) from the rest gives `∫f⁴ ≤ 5π·N²`.  Feeding
+this into the analytic engine (`minCosineSum_le_neg_sqrt_of_fourth_moment`)
+yields `minCosineSum A ≤ −√(N/5)/4` — **Chowla's conjectured `√N` growth rate
+on the Sidon class**, the second structural class (after sum-free sets,
+`minCosineSum_le_neg_sqrt_half_card`) to attain it, via an independent
+(fourth-moment) mechanism. -/
+
+/-- **Sidon set** (`B₂[1]`): all pairwise sums agree only trivially — if
+`a + b = c + d` with all four elements in `A`, then `{a, b} = {c, d}` as
+ordered options.  Equivalent to all nonzero pairwise differences being
+distinct (used below via `a + d = c + b` rearrangements). -/
+def IsSidon (A : Finset ℕ) : Prop :=
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
+
+/-- In a Sidon set at most **two** ordered pairs realise any given sum `m`:
+any solution set of `↑p.1 + ↑p.2 = m` in `A × A` is contained in
+`{(c₀, d₀), (d₀, c₀)}` for any one solution `(c₀, d₀)`. -/
+theorem IsSidon.card_sum_filter_le {A : Finset ℕ} (hS : IsSidon A) (m : ℤ) :
+    ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) + (p.2 : ℤ))).card ≤ 2 := by
+  rcases Finset.eq_empty_or_nonempty
+      ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) + (p.2 : ℤ))) with h | ⟨⟨c₀, d₀⟩, h₀⟩
+  · simp [h]
+  · obtain ⟨hmem₀, heq₀⟩ := Finset.mem_filter.mp h₀
+    obtain ⟨hc₀, hd₀⟩ := Finset.mem_product.mp hmem₀
+    have hsub : ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) + (p.2 : ℤ)))
+        ⊆ {(c₀, d₀), (d₀, c₀)} := by
+      rintro ⟨c, d⟩ hcd
+      obtain ⟨hmem, heq⟩ := Finset.mem_filter.mp hcd
+      obtain ⟨hc, hd⟩ := Finset.mem_product.mp hmem
+      have hnat : c + d = c₀ + d₀ := by omega
+      simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      rcases hS c hc d hd c₀ hc₀ d₀ hd₀ hnat with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · exact Or.inl ⟨h1, h2⟩
+      · exact Or.inr ⟨h1, h2⟩
+    refine (Finset.card_le_card hsub).trans ?_
+    refine (Finset.card_insert_le _ _).trans ?_
+    simp
+
+/-- In a Sidon set at most **one** ordered pair realises any given *nonzero*
+difference `m`: two pairs with equal difference `c − d = c₀ − d₀` rearrange to
+the equal sums `c + d₀ = c₀ + d`, which the Sidon property forces to be
+trivial (the crossed case `c = d` is excluded by `m ≠ 0`). -/
+theorem IsSidon.card_diff_filter_le {A : Finset ℕ} (hS : IsSidon A) {m : ℤ}
+    (hm : m ≠ 0) :
+    ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) - (p.2 : ℤ))).card ≤ 1 := by
+  rcases Finset.eq_empty_or_nonempty
+      ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) - (p.2 : ℤ))) with h | ⟨⟨c₀, d₀⟩, h₀⟩
+  · simp [h]
+  · obtain ⟨hmem₀, heq₀⟩ := Finset.mem_filter.mp h₀
+    obtain ⟨hc₀, hd₀⟩ := Finset.mem_product.mp hmem₀
+    have hsub : ((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) - (p.2 : ℤ)))
+        ⊆ {(c₀, d₀)} := by
+      rintro ⟨c, d⟩ hcd
+      obtain ⟨hmem, heq⟩ := Finset.mem_filter.mp hcd
+      obtain ⟨hc, hd⟩ := Finset.mem_product.mp hmem
+      have hnat : c + d₀ = c₀ + d := by omega
+      simp only [Finset.mem_singleton, Prod.mk.injEq]
+      rcases hS c hc d₀ hd₀ c₀ hc₀ d hd hnat with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · exact ⟨h1, h2.symm⟩
+      · exfalso; omega
+    exact (Finset.card_le_card hsub).trans (by simp)
+
+/-- `∫₀^{2π} cos(mθ) dθ` for an integer frequency: `2π` when `m = 0`, else
+`0` (`integral_cos_int_mul_eq_zero`). -/
+theorem integral_cos_int (m : ℤ) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((m : ℝ) * θ)
+      = if m = 0 then 2 * π else 0 := by
+  by_cases hm : m = 0
+  · subst hm
+    rw [if_pos rfl]
+    have hfun : (fun θ : ℝ => Real.cos (((0 : ℤ) : ℝ) * θ)) = fun _ : ℝ => (1 : ℝ) := by
+      funext θ; simp
+    calc ∫ θ in (0 : ℝ)..(2 * π), Real.cos (((0 : ℤ) : ℝ) * θ)
+        = ∫ _ in (0 : ℝ)..(2 * π), (1 : ℝ) := by rw [hfun]
+      _ = 2 * π := by rw [intervalIntegral.integral_const]; simp
+  · rw [if_neg hm]
+    exact integral_cos_int_mul_eq_zero m hm
+
+/-- **Orthogonality with integer frequencies**: for `j k : ℤ`,
+`∫₀^{2π} cos(jθ)cos(kθ) dθ = π·([j = k] + [j = −k])` — `2π` when
+`j = k = 0`, `π` when `|j| = |k| ≠ 0`, and `0` otherwise.  The uniform
+`ℤ`-indexed form of `integral_cos_mul_cos`. -/
+theorem integral_cos_int_mul_cos_int (j k : ℤ) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((j : ℝ) * θ) * Real.cos ((k : ℝ) * θ)
+      = π * ((if j = k then (1 : ℝ) else 0) + (if j = -k then (1 : ℝ) else 0)) := by
+  have hfun : (fun θ : ℝ => Real.cos ((j : ℝ) * θ) * Real.cos ((k : ℝ) * θ))
+      = fun θ : ℝ => (1 / 2) * Real.cos (((j + k : ℤ) : ℝ) * θ)
+          + (1 / 2) * Real.cos (((j - k : ℤ) : ℝ) * θ) := by
+    funext θ
+    have h1 : ((j + k : ℤ) : ℝ) * θ = (j : ℝ) * θ + (k : ℝ) * θ := by push_cast; ring
+    have h2 : ((j - k : ℤ) : ℝ) * θ = (j : ℝ) * θ - (k : ℝ) * θ := by push_cast; ring
+    rw [h1, h2, Real.cos_add, Real.cos_sub]
+    ring
+  have hcos : ∀ q : ℤ, Continuous (fun θ : ℝ => Real.cos ((q : ℝ) * θ)) :=
+    fun q => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hi1 : IntervalIntegrable
+      (fun θ : ℝ => (1 / 2) * Real.cos (((j + k : ℤ) : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    ((hcos (j + k)).const_mul _).intervalIntegrable _ _
+  have hi2 : IntervalIntegrable
+      (fun θ : ℝ => (1 / 2) * Real.cos (((j - k : ℤ) : ℝ) * θ))
+      MeasureTheory.volume 0 (2 * π) :=
+    ((hcos (j - k)).const_mul _).intervalIntegrable _ _
+  rw [hfun, intervalIntegral.integral_add hi1 hi2,
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+      integral_cos_int (j + k), integral_cos_int (j - k)]
+  by_cases h1 : j = k
+  · by_cases h2 : j = -k
+    · rw [if_pos (by omega : j + k = 0), if_pos (by omega : j - k = 0),
+          if_pos h1, if_pos h2]
+      ring
+    · rw [if_neg (by omega : ¬ j + k = 0), if_pos (by omega : j - k = 0),
+          if_pos h1, if_neg h2]
+      ring
+  · by_cases h2 : j = -k
+    · rw [if_pos (by omega : j + k = 0), if_neg (by omega : ¬ j - k = 0),
+          if_neg h1, if_pos h2]
+      ring
+    · rw [if_neg (by omega : ¬ j + k = 0), if_neg (by omega : ¬ j - k = 0),
+          if_neg h1, if_neg h2]
+      ring
+
+/-- The Fourier coefficient of a product of two `ℕ`-frequency cosines against
+`cos(mθ)`: product-to-sum plus `ℤ`-orthogonality gives
+`∫₀^{2π} cos(mθ)·cos(cθ)cos(dθ)
+  = (π/2)·([m = c+d] + [m = −(c+d)] + [m = c−d] + [m = −(c−d)])`. -/
+theorem integral_cos_int_mul_cos_mul_cos (m : ℤ) (c d : ℕ) :
+    ∫ θ in (0 : ℝ)..(2 * π),
+        Real.cos ((m : ℝ) * θ) * (Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ))
+      = (π / 2) * (((if m = (c : ℤ) + (d : ℤ) then (1 : ℝ) else 0)
+          + (if m = -((c : ℤ) + (d : ℤ)) then (1 : ℝ) else 0))
+          + ((if m = (c : ℤ) - (d : ℤ) then (1 : ℝ) else 0)
+          + (if m = -((c : ℤ) - (d : ℤ)) then (1 : ℝ) else 0))) := by
+  set j : ℤ := (c : ℤ) + (d : ℤ) with hj
+  set l : ℤ := (c : ℤ) - (d : ℤ) with hl
+  have hcos : ∀ q : ℤ, Continuous (fun θ : ℝ => Real.cos ((q : ℝ) * θ)) :=
+    fun q => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hfun : (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+        * (Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ)))
+      = fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ) * Real.cos ((j : ℝ) * θ))
+          + (1 / 2) * (Real.cos ((m : ℝ) * θ) * Real.cos ((l : ℝ) * θ)) := by
+    funext θ
+    have h1 : (j : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
+      rw [hj]; push_cast; ring
+    have h2 : (l : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
+      rw [hl]; push_cast; ring
+    rw [h1, h2, Real.cos_add, Real.cos_sub]
+    ring
+  have hcont1 : Continuous (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+      * Real.cos ((j : ℝ) * θ)) := (hcos m).mul (hcos j)
+  have hcont2 : Continuous (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+      * Real.cos ((l : ℝ) * θ)) := (hcos m).mul (hcos l)
+  have hi1 : IntervalIntegrable (fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ)
+        * Real.cos ((j : ℝ) * θ)))
+      MeasureTheory.volume 0 (2 * π) :=
+    (hcont1.const_mul _).intervalIntegrable _ _
+  have hi2 : IntervalIntegrable (fun θ : ℝ => (1 / 2) * (Real.cos ((m : ℝ) * θ)
+        * Real.cos ((l : ℝ) * θ)))
+      MeasureTheory.volume 0 (2 * π) :=
+    (hcont2.const_mul _).intervalIntegrable _ _
+  rw [hfun, intervalIntegral.integral_add hi1 hi2,
+      intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+      integral_cos_int_mul_cos_int m j, integral_cos_int_mul_cos_int m l]
+  ring
+
+/-- **Fourier expansion of the squared cosine sum**:
+`∫₀^{2π} cos(mθ)·(cosineSum A θ)²` equals `(π/2)` times the number of ordered
+pairs `(c, d) ∈ A²` with `c + d = ±m` or `c − d = ±m` (counted as the four
+indicator sums below).  No Sidon hypothesis yet — this is the exact
+identity. -/
+theorem integral_cos_int_mul_cosineSum_sq (A : Finset ℕ) (m : ℤ) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((m : ℝ) * θ) * (cosineSum A θ) ^ 2
+      = (π / 2) * ∑ p ∈ A ×ˢ A,
+          (((if m = (p.1 : ℤ) + (p.2 : ℤ) then (1 : ℝ) else 0)
+            + (if m = -((p.1 : ℤ) + (p.2 : ℤ)) then (1 : ℝ) else 0))
+            + ((if m = (p.1 : ℤ) - (p.2 : ℤ) then (1 : ℝ) else 0)
+            + (if m = -((p.1 : ℤ) - (p.2 : ℤ)) then (1 : ℝ) else 0))) := by
+  have hcosN : ∀ n : ℕ, Continuous (fun θ : ℝ => Real.cos ((n : ℝ) * θ)) :=
+    fun n => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hexp : ∀ θ : ℝ, Real.cos ((m : ℝ) * θ) * (cosineSum A θ) ^ 2
+      = ∑ p ∈ A ×ˢ A, Real.cos ((m : ℝ) * θ)
+          * (Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)) := by
+    intro θ
+    have hsq : (cosineSum A θ) ^ 2
+        = ∑ p ∈ A ×ˢ A, Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ) := by
+      rw [sq]
+      simp only [cosineSum]
+      rw [Finset.sum_mul_sum]
+      exact (Finset.sum_product A A
+        (fun p => Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ))).symm
+    rw [hsq, Finset.mul_sum]
+  have hint : ∀ p : ℕ × ℕ, IntervalIntegrable
+      (fun θ : ℝ => Real.cos ((m : ℝ) * θ)
+        * (Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)))
+      MeasureTheory.volume 0 (2 * π) :=
+    fun p => ((Real.continuous_cos.comp (continuous_const.mul continuous_id)).mul
+      ((hcosN p.1).mul (hcosN p.2))).intervalIntegrable _ _
+  rw [intervalIntegral.integral_congr (fun θ _ => hexp θ),
+      intervalIntegral.integral_finsetSum (fun p _ => hint p), Finset.mul_sum]
+  exact Finset.sum_congr rfl (fun p _ => integral_cos_int_mul_cos_mul_cos m p.1 p.2)
+
+/-- **The Sidon kernel bound**: for a Sidon set and any *nonzero* integer
+frequency `m`, the Fourier coefficient of `f²` is at most `3π` — at most
+`2 + 2` ordered pairs realise `c + d = ±m` and at most `1 + 1` realise
+`c − d = ±m`, so the exact expansion is at most `(π/2)·6`. -/
+theorem integral_cos_int_mul_cosineSum_sq_le (A : Finset ℕ) (hS : IsSidon A)
+    {m : ℤ} (hm : m ≠ 0) :
+    ∫ θ in (0 : ℝ)..(2 * π), Real.cos ((m : ℝ) * θ) * (cosineSum A θ) ^ 2
+      ≤ 3 * π := by
+  rw [integral_cos_int_mul_cosineSum_sq A m]
+  simp only [Finset.sum_add_distrib, Finset.sum_boole]
+  have hb1 : ((((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) + (p.2 : ℤ))).card : ℕ) : ℝ)
+      ≤ 2 := by exact_mod_cast hS.card_sum_filter_le m
+  have hb2 : ((((A ×ˢ A).filter
+        (fun p => m = -((p.1 : ℤ) + (p.2 : ℤ)))).card : ℕ) : ℝ) ≤ 2 := by
+    have hfeq : (A ×ˢ A).filter (fun p => m = -((p.1 : ℤ) + (p.2 : ℤ)))
+        = (A ×ˢ A).filter (fun p => -m = (p.1 : ℤ) + (p.2 : ℤ)) :=
+      Finset.filter_congr (fun p _ => by omega)
+    rw [hfeq]
+    exact_mod_cast hS.card_sum_filter_le (-m)
+  have hb3 : ((((A ×ˢ A).filter (fun p => m = (p.1 : ℤ) - (p.2 : ℤ))).card : ℕ) : ℝ)
+      ≤ 1 := by exact_mod_cast hS.card_diff_filter_le hm
+  have hb4 : ((((A ×ˢ A).filter
+        (fun p => m = -((p.1 : ℤ) - (p.2 : ℤ)))).card : ℕ) : ℝ) ≤ 1 := by
+    have hfeq : (A ×ˢ A).filter (fun p => m = -((p.1 : ℤ) - (p.2 : ℤ)))
+        = (A ×ˢ A).filter (fun p => -m = (p.1 : ℤ) - (p.2 : ℤ)) :=
+      Finset.filter_congr (fun p _ => by omega)
+    rw [hfeq]
+    exact_mod_cast hS.card_diff_filter_le (neg_ne_zero.mpr hm)
+  nlinarith [Real.pi_pos, hb1, hb2, hb3, hb4]
+
+/-- **The Sidon fourth-moment count**: `∫₀^{2π} (cosineSum A)⁴ ≤ 5π·N²` for a
+Sidon set of positive frequencies.  Expand `f⁴ = ∑_{(a,b) ∈ A²} cos(aθ)cos(bθ)·f²`
+and split each term into the Fourier coefficients `½W(a+b) + ½W(a−b)`; off the
+diagonal both frequencies are nonzero (`W ≤ 3π`), on the diagonal
+`W(0) = ∫f² = πN`, giving `∫f⁴ ≤ 3π·N² + N·(3π/2 + πN/2) ≤ 5π·N²`. -/
+theorem integral_cosineSum_pow_four_le (A : Finset ℕ) (hA : 0 ∉ A)
+    (hS : IsSidon A) :
+    ∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 4 ≤ 5 * π * (A.card : ℝ) ^ 2 := by
+  have hcosN : ∀ n : ℕ, Continuous (fun θ : ℝ => Real.cos ((n : ℝ) * θ)) :=
+    fun n => Real.continuous_cos.comp (continuous_const.mul continuous_id)
+  have hexp : ∀ θ : ℝ, (cosineSum A θ) ^ 4
+      = ∑ p ∈ A ×ˢ A, Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)
+          * (cosineSum A θ) ^ 2 := by
+    intro θ
+    have hsq : (cosineSum A θ) ^ 2
+        = ∑ p ∈ A ×ˢ A, Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ) := by
+      rw [sq]
+      simp only [cosineSum]
+      rw [Finset.sum_mul_sum]
+      exact (Finset.sum_product A A
+        (fun p => Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ))).symm
+    calc (cosineSum A θ) ^ 4
+        = (cosineSum A θ) ^ 2 * (cosineSum A θ) ^ 2 := by ring
+      _ = (∑ p ∈ A ×ˢ A, Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ))
+          * (cosineSum A θ) ^ 2 :=
+        congrArg (fun x => x * (cosineSum A θ) ^ 2) hsq
+      _ = ∑ p ∈ A ×ˢ A, Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)
+          * (cosineSum A θ) ^ 2 := Finset.sum_mul _ _ _
+  have hint : ∀ p : ℕ × ℕ, IntervalIntegrable
+      (fun θ : ℝ => Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)
+        * (cosineSum A θ) ^ 2)
+      MeasureTheory.volume 0 (2 * π) :=
+    fun p => (((hcosN p.1).mul (hcosN p.2)).mul
+      ((continuous_cosineSum A).pow 2)).intervalIntegrable _ _
+  rw [intervalIntegral.integral_congr (fun θ _ => hexp θ),
+      intervalIntegral.integral_finsetSum (fun p _ => hint p)]
+  -- Per-pair bound: `½W(a+b) + ½W(a−b)`, with the diagonal carrying `W(0) = πN`.
+  have hper : ∀ p ∈ A ×ˢ A,
+      (∫ θ in (0 : ℝ)..(2 * π), Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ)
+        * (cosineSum A θ) ^ 2)
+      ≤ (if p.1 = p.2 then 3 * π / 2 + π * (A.card : ℝ) / 2 else 3 * π) := by
+    rintro ⟨c, d⟩ hp
+    dsimp only at hp ⊢
+    obtain ⟨hc, hd⟩ := Finset.mem_product.mp hp
+    have hc1 : 1 ≤ c := Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hc))
+    have hd1 : 1 ≤ d := Nat.one_le_iff_ne_zero.mpr (fun h => hA (h ▸ hd))
+    set j : ℤ := (c : ℤ) + (d : ℤ) with hj
+    set l : ℤ := (c : ℤ) - (d : ℤ) with hl
+    have hfun : (fun θ : ℝ => Real.cos ((c : ℝ) * θ) * Real.cos ((d : ℝ) * θ)
+          * (cosineSum A θ) ^ 2)
+        = fun θ : ℝ => (1 / 2) * (Real.cos ((j : ℝ) * θ) * (cosineSum A θ) ^ 2)
+            + (1 / 2) * (Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2) := by
+      funext θ
+      have h1 : (j : ℝ) * θ = (c : ℝ) * θ + (d : ℝ) * θ := by
+        rw [hj]; push_cast; ring
+      have h2 : (l : ℝ) * θ = (c : ℝ) * θ - (d : ℝ) * θ := by
+        rw [hl]; push_cast; ring
+      rw [h1, h2, Real.cos_add, Real.cos_sub]
+      ring
+    have hcontW : ∀ q : ℤ, Continuous
+        (fun θ : ℝ => Real.cos ((q : ℝ) * θ) * (cosineSum A θ) ^ 2) :=
+      fun q => (Real.continuous_cos.comp (continuous_const.mul continuous_id)).mul
+        ((continuous_cosineSum A).pow 2)
+    have hiW : ∀ q : ℤ, IntervalIntegrable
+        (fun θ : ℝ => (1 / 2) * (Real.cos ((q : ℝ) * θ) * (cosineSum A θ) ^ 2))
+        MeasureTheory.volume 0 (2 * π) :=
+      fun q => ((hcontW q).const_mul _).intervalIntegrable _ _
+    rw [hfun, intervalIntegral.integral_add (hiW j) (hiW l),
+        intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
+    have hjne : j ≠ 0 := by rw [hj]; omega
+    have hWsum : (∫ θ in (0 : ℝ)..(2 * π),
+          Real.cos ((j : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
+      integral_cos_int_mul_cosineSum_sq_le A hS hjne
+    by_cases hcd : c = d
+    · rw [if_pos hcd]
+      have hzero : l = 0 := by rw [hl]; omega
+      have hW0 : (∫ θ in (0 : ℝ)..(2 * π),
+            Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2)
+          = π * (A.card : ℝ) := by
+        have hfun0 : (fun θ : ℝ => Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2)
+            = fun θ : ℝ => (cosineSum A θ) ^ 2 := by
+          funext θ
+          rw [hzero]
+          simp
+        rw [hfun0]
+        exact integral_cosineSum_sq A hA
+      rw [hW0]
+      linarith [hWsum]
+    · rw [if_neg hcd]
+      have hlne : l ≠ 0 := by rw [hl]; omega
+      have hWdiff : (∫ θ in (0 : ℝ)..(2 * π),
+            Real.cos ((l : ℝ) * θ) * (cosineSum A θ) ^ 2) ≤ 3 * π :=
+        integral_cos_int_mul_cosineSum_sq_le A hS hlne
+      linarith [hWsum, hWdiff]
+  -- Sum the bounds: `≤ N` diagonal terms and `≤ N²` off-diagonal terms.
+  have hD : (((A ×ˢ A).filter (fun p => p.1 = p.2)).card : ℝ) ≤ (A.card : ℝ) := by
+    have : ((A ×ˢ A).filter (fun p => p.1 = p.2)).card ≤ A.card := by
+      apply Finset.card_le_card_of_injOn (fun p => p.1)
+      · intro p hp
+        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hp
+        exact hp.1.1
+      · rintro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ h
+        simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at h₁ h₂
+        simp only at h
+        simp only [Prod.mk.injEq]
+        omega
+    exact_mod_cast this
+  have hO : (((A ×ˢ A).filter (fun p => ¬ p.1 = p.2)).card : ℝ)
+      ≤ (A.card : ℝ) ^ 2 := by
+    have : ((A ×ˢ A).filter (fun p => ¬ p.1 = p.2)).card ≤ A.card * A.card :=
+      (Finset.card_filter_le _ _).trans_eq (Finset.card_product _ _)
+    calc (((A ×ˢ A).filter (fun p => ¬ p.1 = p.2)).card : ℝ)
+        ≤ ((A.card * A.card : ℕ) : ℝ) := by exact_mod_cast this
+      _ = (A.card : ℝ) ^ 2 := by push_cast; ring
+  calc ∑ p ∈ A ×ˢ A, (∫ θ in (0 : ℝ)..(2 * π),
+        Real.cos ((p.1 : ℝ) * θ) * Real.cos ((p.2 : ℝ) * θ) * (cosineSum A θ) ^ 2)
+      ≤ ∑ p ∈ A ×ˢ A,
+          (if p.1 = p.2 then 3 * π / 2 + π * (A.card : ℝ) / 2 else 3 * π) :=
+        Finset.sum_le_sum hper
+    _ = (((A ×ˢ A).filter (fun p => p.1 = p.2)).card : ℝ)
+          * (3 * π / 2 + π * (A.card : ℝ) / 2)
+        + (((A ×ˢ A).filter (fun p => ¬ p.1 = p.2)).card : ℝ) * (3 * π) := by
+        rw [Finset.sum_ite, Finset.sum_const, Finset.sum_const,
+            nsmul_eq_mul, nsmul_eq_mul]
+    _ ≤ 5 * π * (A.card : ℝ) ^ 2 := by
+        have hbr : (0 : ℝ) ≤ 3 * π / 2 + π * (A.card : ℝ) / 2 := by positivity
+        have hNsq : (A.card : ℝ) ≤ (A.card : ℝ) ^ 2 := by
+          have : A.card ≤ A.card ^ 2 := Nat.le_self_pow two_ne_zero _
+          exact_mod_cast this
+        have h1 : 0 ≤ ((A.card : ℝ)
+            - (((A ×ˢ A).filter (fun p => p.1 = p.2)).card : ℝ))
+            * (3 * π / 2 + π * (A.card : ℝ) / 2) :=
+          mul_nonneg (by linarith [hD]) hbr
+        have h2 : 0 ≤ ((A.card : ℝ) ^ 2
+            - (((A ×ˢ A).filter (fun p => ¬ p.1 = p.2)).card : ℝ)) * π :=
+          mul_nonneg (by linarith [hO]) Real.pi_pos.le
+        have h3 : 0 ≤ ((A.card : ℝ) ^ 2 - (A.card : ℝ)) * π :=
+          mul_nonneg (by linarith [hNsq]) Real.pi_pos.le
+        nlinarith [h1, h2, h3]
+
+/-- **Chowla's conjectured `√N` rate on the Sidon class**: every nonempty
+Sidon set of positive frequencies satisfies
+`minCosineSum A ≤ −√(N/5)/4`.  Instantiates the analytic engine
+(`minCosineSum_le_neg_sqrt_of_fourth_moment`) with the Sidon fourth-moment
+count `B = 5π·N²` and simplifies `√(π³N³/(5πN²))/(4π) = √(N/5)/4`.  Together
+with the sum-free bound (`minCosineSum_le_neg_sqrt_half_card`) this covers the
+two classical structured classes at the conjectured `√N` growth rate; the
+general case remains the open problem. -/
+theorem minCosineSum_sidon_le (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty)
+    (hS : IsSidon A) :
+    minCosineSum A ≤ -(Real.sqrt ((A.card : ℝ) / 5) / 4) := by
+  have h4 := integral_cosineSum_pow_four_le A hA hS
+  have hmain := minCosineSum_le_neg_sqrt_of_fourth_moment A hA hne h4
+  have hNpos : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr hne
+  have hN0 : (A.card : ℝ) ≠ 0 := ne_of_gt hNpos
+  have harg : π ^ 3 * (A.card : ℝ) ^ 3 / (5 * π * (A.card : ℝ) ^ 2)
+      = π ^ 2 * ((A.card : ℝ) / 5) := by
+    field_simp
+  rw [harg, Real.sqrt_mul (sq_nonneg π) _, Real.sqrt_sq Real.pi_pos.le] at hmain
+  have hsimp : π * Real.sqrt ((A.card : ℝ) / 5) / (4 * π)
+      = Real.sqrt ((A.card : ℝ) / 5) / 4 := by
+    field_simp
+  rw [hsimp] at hmain
+  exact hmain
+
+/-- Existential (conjecture-shaped) form of the Sidon bound: a nonempty Sidon
+set of positive frequencies admits an angle with
+`cosineSum A θ ≤ −√(N/5)/4` — the minimizing angle realises it. -/
+theorem exists_angle_sidon_cosineSum_le (A : Finset ℕ) (hA : 0 ∉ A)
+    (hne : A.Nonempty) (hS : IsSidon A) :
+    ∃ θ, cosineSum A θ ≤ -(Real.sqrt ((A.card : ℝ) / 5) / 4) := by
+  obtain ⟨θ₀, hθ₀⟩ := exists_eq_minCosineSum A
+  exact ⟨θ₀, by rw [hθ₀]; exact minCosineSum_sidon_le A hA hne hS⟩
 
 end Erdos510WIP01
