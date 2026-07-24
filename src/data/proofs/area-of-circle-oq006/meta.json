@@ -110,15 +110,23 @@
     {
       "id": "log-concave",
       "title": "Log-Concavity of the Volume Sequence",
-      "startLine": 112,
-      "endLine": 145,
-      "summary": "Proves omega_log_concave: ω_n·ω_{n+2} ≤ ω_{n+1}² for all n, by cancelling the shared π-power and applying the Gamma engine; plus the index-shifted form omega_sq_ge.",
+      "startLine": 108,
+      "endLine": 131,
+      "summary": "Proves omega_log_concave: ω_n·ω_{n+2} ≤ ω_{n+1}² for all n, by cancelling the shared π-power and applying the Gamma engine.",
       "mathContext": "After unfolding ω and normalising the half-integer arguments, both sides share π^(2·(n/2)+1) = (π^(n/2+1/2))²; div_le_div_iff₀ clears denominators, the π-power cancels via mul_le_mul_of_nonneg_left, leaving exactly gamma_sq_le_mul at x = n/2."
+    },
+    {
+      "id": "index-form",
+      "title": "Log-Concavity, Index Form",
+      "startLine": 133,
+      "endLine": 140,
+      "summary": "Proves omega_sq_ge: ω_{n-1}·ω_{n+1} ≤ ω_n² for n ≥ 1, a centred-index shift of omega_log_concave.",
+      "mathContext": "Writes n = m+1 (n ≥ 1) and reduces to omega_log_concave m by simpa, re-expressing the neighbours of n symmetrically around it instead of two steps ahead."
     },
     {
       "id": "ratios",
       "title": "Antitone Volume Ratios",
-      "startLine": 147,
+      "startLine": 142,
       "endLine": 160,
       "summary": "Proves omega_ratio_antitone: ω_{n+2}/ω_{n+1} ≤ ω_{n+1}/ω_n — the ratio reformulation of log-concavity.",
       "mathContext": "Cross-multiplying with div_le_div_iff₀ (each ω_n > 0) reduces the ratio inequality to ω_n·ω_{n+2} ≤ ω_{n+1}², closed by nlinarith from omega_log_concave and positivity."
