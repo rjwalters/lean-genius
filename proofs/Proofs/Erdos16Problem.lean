@@ -866,7 +866,6 @@ theorem density_mono {A B : Set ℕ} (h : A ⊆ B) (N : ℕ) :
     simp only [Finset.mem_filter, decide_eq_true_eq] at hx ⊢
     exact ⟨hx.1, h hx.2⟩
   gcongr
-  exact_mod_cast Finset.card_le_card hsub
 
 /-- The conditional tail supremum `⨆ (_ : M ≥ N), density A M` is nonnegative
 (for `M < N` it is the junk value `sSup ∅ = 0`). -/
