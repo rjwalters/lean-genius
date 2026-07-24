@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-14T21:05:00-07:00",
-    "iteration": 2,
-    "focus": "ORIENT survey: math structure verified with sympy; Mathlib API located; milestones decomposed into buildable vs Docker-gated.",
+    "iteration": 3,
+    "focus": "S10 COMPLETE (researcher-1, 2026-07-24): sharpness + complete prime spectrum below 32, plus repair of latent v4.31 drift on main (S9 Nat.mul_lt_mul_right old arity did not elaborate under pinned Mathlib — fixed with .mpr). New: norm_343_solutions_infinite (v7=3 attained, rigidity exact); witnesses 11=N(-1,1,1), 17=N(1,2,0), 23=N(3,0,-1), 29=N(-3,2,1), and decisively 31=N(3,0,1) (first p=1 mod 3 with 2 a cubic residue, 4^3=64=2 mod 31); packaged prime_norm_spectrum_below_32: prime p<32 is a norm iff p not in {7,13,19} — the Lean-verified splitting law of Q(cbrt 2) in range. 0 ax / 0 sorry, lake env lean exit 0.",
     "blockers": [],
     "nextAction": "ACT (Docker-gated): write Proofs/PellEquationOQ05.lean instantiating NumberField.Units.rank for Q(cbrt2) and stating norm-equation finiteness.",
     "attemptCounts": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S8): generalized the mod-7 anisotropy to a generic inert-prime descent lemma, added kernel-decide anisotropy at 13 and 19, and proved the set of non-norms is infinite (non_norms_infinite) — with S6, both spectrum classes are infinite. Still 0 axioms / 0 sorries, docker-verified (8576 jobs). Unit rank=1 via signature remains the deferred hard ACT.",
+    "progressSummary": "S10 (researcher-1, 2026-07-24): rigidity sharpness (343=N(7,0,0)) + complete prime classification below 32 (prime_norm_spectrum_below_32; norms iff p not in {7,13,19}) incl. decisive split-prime 31=N(3,0,1); also repaired latent v4.31 Nat.mul_lt_mul_right drift that broke main elaboration. PROGRESS (S8): generalized the mod-7 anisotropy to a generic inert-prime descent lemma, added kernel-decide anisotropy at 13 and 19, and proved the set of non-norms is infinite (non_norms_infinite) — with S6, both spectrum classes are infinite. Still 0 axioms / 0 sorries, docker-verified (8576 jobs). Unit rank=1 via signature remains the deferred hard ACT.",
     "builtItems": [
       "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass).",
       "FIX (S6, researcher-1): renamed pow_lt_pow_right_of_lt_one -> pow_lt_pow_right_of_lt_one₀ (the real Mathlib name, Algebra/Order/GroupWithZero/Unbundled/Basic.lean:577) at both call sites in PellEquationOQ05.lean:upow_injective. The non-₀ name does not exist in Mathlib master (no alias). Was a confirmed compile blocker flagged by S5.",
@@ -50,7 +50,8 @@
       "cnorm_ne_seven / cnorm_ne_neg_seven / norm_eq_seven_no_solution / cnorm3_not_surjective (7 is a non-norm; N not surjective)",
       "dvd_cnorm_iff_of_anisotropic, cube_dvd_cnorm_of_dvd, cnorm_ne_of_anisotropic (generic inert-prime descent) in PellEquationOQ05.lean",
       "cnorm_anisotropic_mod13, cnorm_anisotropic_mod19 (kernel decide), cnorm_ne_thirteen/nineteen/ninety_one, norm_eq_thirteen_no_solution",
-      "non_norms_infinite: the set of non-norm integers is infinite (capstone S8)"
+      "non_norms_infinite: the set of non-norm integers is infinite (capstone S8)",
+      "PellEquationOQ05.lean S10 section: norm_343/eleven/seventeen/twentythree/twentynine/thirtyone_solutions_infinite + prime_norm_spectrum_below_32 + v4.31 .mpr repair"
     ],
     "insights": [
       "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
@@ -63,7 +64,10 @@
       "S7: 7 is a NON-NORM. Anisotropy mod 7 ⟹ 7∣N forces 7∣a,b,c ⟹ 343∣N, so N(ξ)=±7 is impossible; the norm form N_{K/ℚ} is NOT surjective. Empty counterpart to S6 N=2 being infinite.",
       "S8: The right generalization axis for the S7 non-norm argument is the modulus, not the valuation: one descent step (p|m, p^3∤m => m not a norm) needs no induction and yields infinitely many non-norms per anisotropy certificate.",
       "S8: 13 and 19 are also inert in Q(cbrt2) (2 a cubic non-residue: cubes mod 13 = {0,1,5,8,12}, mod 19 = {0,1,7,8,11,12,18}); kernel decide over 2197 resp. 6859 triples verifies anisotropy.",
-      "S8: The value spectrum of the cubic norm form splits Z\\{0} into two classes, attained-infinitely-often vs never-attained, and BOTH are now proved infinite (norm_eq_solutions_infinite / non_norms_infinite via the family 7(1+49k))."
+      "S8: The value spectrum of the cubic norm form splits Z\\{0} into two classes, attained-infinitely-often vs never-attained, and BOTH are now proved infinite (norm_eq_solutions_infinite / non_norms_infinite via the family 7(1+49k)).",
+      "S9 code merged via PR #43251 did NOT elaborate under the pinned Mathlib rev (Nat.mul_lt_mul_right old arity) — docker-green claims can mask stale-environment verification; re-elaborate on the canonical toolchain when revisiting",
+      "31 = N(3,0,1) is the decisive splitting-law instance: first p = 1 mod 3 with 2 a cubic residue (4^3 = 64 = 2 mod 31), and it IS a norm — confirming obstruction is exactly {p = 1 mod 3, 2 not a cube mod p}",
+      "interval_cases + first-alternatives (absurd hp decide | absurd rfl hne | witness decide) packages a complete finite classification theorem cheaply once positive witnesses and negative certificates both exist"
     ],
     "mathlibGaps": [
       "Mathlib has the abstract Dirichlet theorem but NOT explicit fundamental units / regulators for specific fields — computing the generator t-1 for Q(cbrt2) and proving it generates would be manual work.",

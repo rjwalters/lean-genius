@@ -531,7 +531,7 @@ theorem three_dvd_factorization_cnorm_aux (p : ℕ) (hp : p.Prime)
           lt_of_lt_of_le (by norm_num) (Nat.pow_le_pow_left hp.two_le 3)
         calc (cnorm a' b' c').natAbs
             = 1 * (cnorm a' b' c').natAbs := (one_mul _).symm
-          _ < p ^ 3 * (cnorm a' b' c').natAbs := Nat.mul_lt_mul_right hpos hp3
+          _ < p ^ 3 * (cnorm a' b' c').natAbs := (Nat.mul_lt_mul_right hpos).mpr hp3
           _ = n := hnabs.symm
       have hIH := IH _ hlt a' b' c' rfl h0'
       rw [hnabs, Nat.factorization_mul (pow_ne_zero 3 hp.ne_zero)
@@ -591,6 +591,90 @@ theorem norm_three_solutions_infinite :
 theorem norm_five_solutions_infinite :
     {p : ℤ × ℤ × ℤ | cnorm3 p = 5}.Infinite :=
   norm_eq_solutions_infinite 5 (by decide) (1, 0, 1) (by decide)
+
+/-
+## Sharpness of the valuation rigidity + the complete prime spectrum below 32 (Session 10)
+
+Two loose ends from S8/S9 are closed here.
+
+**Sharpness.** S9's rigidity says v₇(N) ∈ 3ℤ for every nonzero norm N. That bound
+is exact: v₇ = 3 is attained by 343 = 7³ = N(7,0,0). Among pure 7-powers the norms
+are therefore exactly 7⁰, 7³, 7⁶, … — the criterion `cnorm_ne_of_factorization`
+cannot be strengthened.
+
+**The prime spectrum below 32, positive side.** The classical splitting law for
+ℚ(∛2) predicts: a prime p ∉ {2, 3} is obstructed iff p ≡ 1 (mod 3) AND 2 is not a
+cubic residue mod p (the inert case). For p ≡ 2 (mod 3), cubing is a bijection
+mod p, so there is no local obstruction — and global witnesses do exist:
+11 = N(-1,1,1), 17 = N(1,2,0), 23 = N(3,0,-1), 29 = N(-3,2,1). The critical test
+is **31**, the FIRST prime ≡ 1 (mod 3) with 2 a cubic residue (4³ = 64 ≡ 2 mod 31):
+the splitting law predicts a norm, and indeed 31 = N(3,0,1) = 27 + 4. Together
+with the inert non-norms 7, 13, 19 (S7–S8), every prime < 32 is classified
+(`prime_norm_spectrum_below_32`), matching the splitting law exactly.
+-/
+
+/-- **Sharpness of 3 ∣ v₇**: 343 = 7³ = N(7,0,0) IS a norm, so the valuation
+    rigidity `three_dvd_factorization_cnorm` is exact — v₇ = 3 is attained, and
+    N(ξ) = 343 has infinitely many solutions. -/
+theorem norm_343_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 343}.Infinite :=
+  norm_eq_solutions_infinite 343 (by decide) (7, 0, 0) (by decide)
+
+/-- **11 is a norm** (11 ≡ 2 mod 3, cubing bijective, no obstruction):
+    N(-1,1,1) = -1 + 2 + 4 + 6 = 11. -/
+theorem norm_eleven_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 11}.Infinite :=
+  norm_eq_solutions_infinite 11 (by decide) (-1, 1, 1) (by decide)
+
+/-- **17 is a norm** (17 ≡ 2 mod 3): N(1,2,0) = 1 + 16 = 17. -/
+theorem norm_seventeen_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 17}.Infinite :=
+  norm_eq_solutions_infinite 17 (by decide) (1, 2, 0) (by decide)
+
+/-- **23 is a norm** (23 ≡ 2 mod 3): N(3,0,-1) = 27 - 4 = 23. -/
+theorem norm_twentythree_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 23}.Infinite :=
+  norm_eq_solutions_infinite 23 (by decide) (3, 0, -1) (by decide)
+
+/-- **29 is a norm** (29 ≡ 2 mod 3): N(-3,2,1) = -27 + 16 + 4 + 36 = 29. -/
+theorem norm_twentynine_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 29}.Infinite :=
+  norm_eq_solutions_infinite 29 (by decide) (-3, 2, 1) (by decide)
+
+/-- **31 is a norm** — the decisive instance for the splitting law: 31 ≡ 1 (mod 3)
+    like the non-norms 7, 13, 19, but 2 IS a cubic residue mod 31 (4³ = 64 ≡ 2), so
+    31 splits rather than staying inert — and N(3,0,1) = 27 + 4 = 31. -/
+theorem norm_thirtyone_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 31}.Infinite :=
+  norm_eq_solutions_infinite 31 (by decide) (3, 0, 1) (by decide)
+
+/-- **Complete prime spectrum below 32**: a prime p < 32 is a value of the cubic
+    norm form iff p ∉ {7, 13, 19} — exactly the obstructed primes of the splitting
+    law (p ≡ 1 mod 3 with 2 not a cubic residue mod p). Positive direction by the
+    eight explicit witnesses; negative direction by the S7–S8 anisotropy descent. -/
+theorem prime_norm_spectrum_below_32 (p : ℕ) (hp : p.Prime) (hlt : p < 32) :
+    (∃ q : ℤ × ℤ × ℤ, cnorm3 q = (p : ℤ)) ↔ p ≠ 7 ∧ p ≠ 13 ∧ p ≠ 19 := by
+  constructor
+  · rintro ⟨⟨a, b, c⟩, hq⟩
+    refine ⟨?_, ?_, ?_⟩ <;> rintro rfl
+    · exact cnorm_ne_seven a b c (by exact_mod_cast hq)
+    · exact cnorm_ne_thirteen a b c (by exact_mod_cast hq)
+    · exact cnorm_ne_nineteen a b c (by exact_mod_cast hq)
+  · rintro ⟨h7, h13, h19⟩
+    interval_cases p
+    all_goals first
+      | exact absurd hp (by decide)
+      | exact absurd rfl h7
+      | exact absurd rfl h13
+      | exact absurd rfl h19
+      | exact ⟨(0, 1, 0), by decide⟩      -- 2
+      | exact ⟨(1, 1, 0), by decide⟩      -- 3
+      | exact ⟨(1, 0, 1), by decide⟩      -- 5
+      | exact ⟨(-1, 1, 1), by decide⟩     -- 11
+      | exact ⟨(1, 2, 0), by decide⟩      -- 17
+      | exact ⟨(3, 0, -1), by decide⟩     -- 23
+      | exact ⟨(-3, 2, 1), by decide⟩     -- 29
+      | exact ⟨(3, 0, 1), by decide⟩      -- 31
 
 /-
 ## Recovering Pell (rank-1 special case)
@@ -655,6 +739,13 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
    spectrum: 3 = N(1,1,0) and 5 = N(1,0,1) are norms with infinitely many solutions
    (`norm_three_solutions_infinite`, `norm_five_solutions_infinite`); the prime story
    so far is 2 ✓ 3 ✓ 5 ✓ 7 ✗, decided by solvability of x³ ≡ 2 (mod p).
+10. (NEW, S10) **Sharpness + complete prime spectrum below 32.** The rigidity bound
+   is exact: 343 = 7³ = N(7,0,0) (`norm_343_solutions_infinite`), so among 7-powers
+   the norms are exactly 7^{3k}. Positive spectrum witnesses 11 = N(-1,1,1),
+   17 = N(1,2,0), 23 = N(3,0,-1), 29 = N(-3,2,1), and — decisively for the
+   splitting law — 31 = N(3,0,1), the first p ≡ 1 (mod 3) with 2 a cubic residue
+   (4³ ≡ 2 mod 31). Every prime < 32 is classified
+   (`prime_norm_spectrum_below_32`): norms iff p ∉ {7, 13, 19}.
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
