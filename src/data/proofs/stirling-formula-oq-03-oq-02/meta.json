@@ -99,12 +99,20 @@
       "mathContext": "W n = 2^(4n)(n!)⁴/((2n)!²(2n+1)); substituting (2n)! = C·(n!)² collapses (n!)⁴ and leaves W n·(2n+1) = (2^(4n))/C² = (4ⁿ/C)²."
     },
     {
-      "id": "asymptotics",
-      "title": "The Three Asymptotic Forms",
+      "id": "squared-asymptotic",
+      "title": "Dividing by n: the Squared Limit Becomes π",
       "startLine": 80,
+      "endLine": 97,
+      "summary": "centralBinom_sq_div_tendsto: (4ⁿ/C)²/n → π. Dividing the exact identity by n turns the right side into W n·(2+1/n), which tends to (π/2)·2 = π since W n → π/2 and 1/n → 0.",
+      "mathContext": "$(4^n/C(2n,n))^2/n = W_n(2+1/n) \\to \\pi$."
+    },
+    {
+      "id": "sqrt-asymptotic",
+      "title": "Taking the Square Root: the Central Binomial Asymptotic",
+      "startLine": 99,
       "endLine": 128,
-      "summary": "centralBinom_sq_div_tendsto ((4ⁿ/C)²/n → π via W n·(2+1/n)), four_pow_div_centralBinom_sqrt_tendsto (4ⁿ/(C·√n) → √π via Tendsto.sqrt), and centralBinom_asymptotic (C·√(πn)/4ⁿ → 1 via the quotient √π/√π).",
-      "mathContext": "From W n → π/2: (4ⁿ/C)²/n = W n·(2+1/n) → π, hence 4ⁿ/(C·√n) → √π, hence C·√(πn)/4ⁿ → 1, i.e. C(2n,n) ~ 4ⁿ/√(πn)."
+      "summary": "four_pow_div_centralBinom_sqrt_tendsto (4ⁿ/(C·√n) → √π via Tendsto.sqrt) and centralBinom_asymptotic (C·√(πn)/4ⁿ → 1 via the quotient √π/√π) — the textbook central-binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn).",
+      "mathContext": "$4^n/(C(2n,n)\\sqrt n) \\to \\sqrt\\pi \\;\\Rightarrow\\; C(2n,n)\\sqrt{\\pi n}/4^n \\to 1$."
     }
   ],
   "references": [
