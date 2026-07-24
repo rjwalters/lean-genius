@@ -99,12 +99,20 @@
       "mathContext": "Headline: $\\left|\\sum_{n=M+1}^{M+N} e^{2\\pi i\\theta n}\\right| \\le \\dfrac{1}{|\\sin(\\pi\\theta)|}$ for $\\theta\\notin\\mathbb{Z}$."
     },
     {
-      "id": "helpers",
-      "title": "Helper lemmas",
+      "id": "helpers-basic",
+      "title": "Two Elementary Helper Lemmas",
       "startLine": 43,
+      "endLine": 58,
+      "summary": "sin_pi_mul_ne_zero: sin(πθ) ≠ 0 for non-integer θ, via Real.sin_eq_zero_iff. norm_one_sub_pow_le_two: |1 − zⁿ| ≤ 2 whenever |z| = 1, a direct triangle-inequality bound.",
+      "mathContext": "Both lemmas are crude but exactly what the main estimate needs: non-integrality keeps the denominator $\\sin(\\pi\\theta)$ away from $0$, and the unit-circle triangle bound gives a numerator estimate uniform in the exponent $n$."
+    },
+    {
+      "id": "chord-length-identity",
+      "title": "The Chord-Length Identity",
+      "startLine": 60,
       "endLine": 79,
-      "summary": "sin(πθ) ≠ 0 for non-integer θ; |1 − zⁿ| ≤ 2 on the unit circle; and the chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)| via Euler's formula and the double-angle identity.",
-      "mathContext": "The chord-length identity is the geometric crux: the distance from 1 to e^{2πiθ} on the unit circle is twice the sine of the half-angle πθ."
+      "summary": "norm_one_sub_exp_two_pi_I: |1 − e^{2πiθ}| = 2|sin(πθ)|, proved by expanding e^{2πiθ} via Euler's formula into cos/sin and applying the Pythagorean and cosine-double-angle identities through a single linear_combination.",
+      "mathContext": "The chord-length identity is the geometric crux: the distance from 1 to e^{2πiθ} on the unit circle is twice the sine of the half-angle πθ. This is the sole source of the 1/|sin| factor in the final bound."
     },
     {
       "id": "main",
