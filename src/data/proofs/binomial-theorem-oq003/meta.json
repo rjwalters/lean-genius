@@ -104,11 +104,18 @@
       "summary": "piAntidiag_one_eq_image: a degree-one tuple over s, with natural-number entries summing to 1, has exactly one entry equal to 1 and is therefore an indicator; conversely every indicator qualifies. The forward direction squeezes the unique nonzero entry to 1 and zeroes the rest via a two-element partial-sum bound."
     },
     {
-      "id": "cardinality-and-bijection",
-      "title": "Cardinality and the Explicit Bijection",
+      "id": "cardinality",
+      "title": "Injectivity and Cardinality",
       "startLine": 97,
+      "endLine": 109,
+      "summary": "single_one_injective shows i ↦ Pi.single i 1 is injective by evaluating at a distinguishing coordinate; card_piAntidiag_one then gives |s.piAntidiag 1| = |s| via Finset.card_image_of_injective applied to piAntidiag_one_eq_image."
+    },
+    {
+      "id": "bijection",
+      "title": "The Explicit Bijection",
+      "startLine": 111,
       "endLine": 123,
-      "summary": "single_one_injective (evaluate at a distinguishing coordinate) and card_piAntidiag_one give |s.piAntidiag 1| = |s| via Finset.card_image_of_injective; piAntidiagOneEquiv packages i ↦ Pi.single i 1 as an Equiv ↥s ≃ ↥(s.piAntidiag 1) through Equiv.ofBijective."
+      "summary": "piAntidiagOneEquiv packages i ↦ Pi.single i 1 as an Equiv ↥s ≃ ↥(s.piAntidiag 1) via Equiv.ofBijective, with injectivity from single_one_injective and surjectivity reusing the image characterisation piAntidiag_one_eq_image."
     }
   ],
   "crossReferences": [
