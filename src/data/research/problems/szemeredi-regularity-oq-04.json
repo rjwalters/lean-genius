@@ -26,7 +26,7 @@
     "nextAction": "S26: parameter bookkeeping only — choose m with 2|P|m/n below the retained eps^4 m^2/n^2-scale gain and feed exists_afksTwoLevel_of_maintained_oracle; apply S22 n = a*m + b*(m+1) global-equitability packaging to the recut output."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: AFKS re-equitization COMBINATORIALLY COMPLETE: S23 chop-refine (lossless) + S24 replace bound + S25 global recut (<= 1 deficient) + S26 absorption (exact {m,m+1} sizes, +/-1-equitable with mass floor m, total cost 2|P|m/n + 2m^2/n, needs ground mass m^2 <= |U P|). All 0-axiom. S27 = per-coarse-block application (refinement of Vparts) + parameter choice feeding exists_afksTwoLevel_of_maintained_oracle.",
+    "progressSummary": "PROGRESS: AFKS re-equitization combinatorially complete AND ambient-composable: S23-S26 pipeline + S27a in-place forms (exists_equitable_recut_within: fiber S of ambient Q0 with m^2 <= |U S| re-cuts in place to sizes {m,m+1} at ambient cost 2|S|m/n + 2m^2/n). All 0-axiom. S27b = iterate over the coarse blocks of the bare-split successor (Finset induction, per-block ground-mass floor) + parameter choice feeding exists_afksTwoLevel_of_maintained_oracle.",
     "builtItems": [
       "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
@@ -109,7 +109,10 @@
       "exists_equitable_recut_unit in SzemerediRegularityOQ04Recut.lean — m = 1 all-singleton instance",
       "S26 SzemerediRegularityOQ04Absorb.lean: exists_absorb_deficient (bijective deficient absorption, loss <= 2m^2/n)",
       "S26: exists_absorb_deficient_of_ground (capacity from m^2 <= ground mass)",
-      "S26: exists_equitable_recut_absorbed + prime variant (S25+absorption capstone: all sizes in {m,m+1}, cost 2|P|m/n + 2m^2/n)"
+      "S26: exists_equitable_recut_absorbed + prime variant (S25+absorption capstone: all sizes in {m,m+1}, cost 2|P|m/n + 2m^2/n)",
+      "S27a SzemerediRegularityOQ04Surgery.lean: exists_absorb_deficient_within (in-place absorption, ambient loss <= 2m^2/n)",
+      "S27a: exists_chop_refinement_within (fiber chop as ambient refinement, zero loss)",
+      "S27a: exists_equitable_recut_within (per-block brick: fiber -> exact {m,m+1} in place, ambient cost 2|S|m/n + 2m^2/n)"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -161,7 +164,10 @@
       "S26 absorption: the single deficient piece (d <= m-1 vertices) absorbs by a BIJECTION onto d distinct size-m receivers (each grows to m+1); receiver disjointness from D0 makes image-injectivity and pairwise-disjointness of grown pieces elementary (no m=1 edge case: v in D0 forces v notin receiver)",
       "Absorption energy cost is a single S24 replace application: replaced subfamily = deficient piece + d receivers, mass <= (d+1)*m <= m^2, so loss <= 2*m^2/n on top of the S25 recut cost 2*|P|*m/n",
       "Absorption capacity m <= #(size-m pieces)+1 follows from ground mass m^2 <= |U R|: mass <= |R|*m forces m <= |R|, and all but <= 1 piece has size exactly m (card_filter_add_card_filter_not + filter_congr under card <= m)",
-      "Lean gotcha: fun v => insert (v : V) ((e v : Finset V)) type-ascribes the BINDER to V breaking the attach subtype; use .1 projections (insert v.1 (e v).1). Also subset_union_left needs explicit (s2 := New) when the superfamily is only determined by the replace-lemma conclusion"
+      "Lean gotcha: fun v => insert (v : V) ((e v : Finset V)) type-ascribes the BINDER to V breaking the attach subtype; use .1 projections (insert v.1 (e v).1). Also subset_union_left needs explicit (s2 := New) when the superfamily is only determined by the replace-lemma conclusion",
+      "S27a ambient surgery: the fiber energy is NOT a summand of ambient energy (cross-block pairs), so per-block re-equitization must be stated on the AMBIENT family; chopping only the fiber IS an ambient refinement (refine_mono with trivial cells {A} outside the fiber), and pool/absorb are S24 replacements with small mass - the whole S25/S26 pipeline transfers in-place",
+      "The untouched ambient part identity A2 \\\\ R1 = Q0 \\\\ S needs fiber pieces nonempty + contained in the fiber ground set: an old piece equal to a fiber piece would be a nonempty subset of U S yet disjoint from every member of S",
+      "Lean: Finset.union_biUnion (NOT biUnion_union, which is pointwise) distributes biUnion over family union; after simp [mem_sdiff] in an ext goal both sides unfold to conjunctions - return mem_sdiff.mp h directly"
     ],
     "mathlibGaps": [],
     "nextSteps": [
