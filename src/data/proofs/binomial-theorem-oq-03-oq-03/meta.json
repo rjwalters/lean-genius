@@ -103,11 +103,18 @@
       "summary": "multinomial_aggregate_pgf: for any block A ⊆ s, E[t^{X_A}] = (p_A·t + (1−p_A))^n. The block indicator g(i) = if i∈A then t else 1 collapses the generating product to t^{Σ_{i∈A} k(i)} and simplifies the PGF base to p_A·t + (1−p_A)."
     },
     {
-      "id": "sec-mult-agg-corollaries",
-      "title": "Corollaries: Binomial Identification, Marginal, Complement, Total",
-      "startLine": 166,
-      "endLine": 215,
-      "summary": "multinomial_aggregate_pgf_eq_binomial (PMF expansion), multinomial_marginal_pgf_of_aggregate (single-coordinate special case A = {i₀}), multinomial_aggregate_compl_pgf (complement block ~ Binomial(n, 1−p_A)), multinomial_aggregate_univ (full aggregation gives deterministic total n)."
+      "id": "sec-mult-agg-pmf-marginal",
+      "title": "Corollaries I: Binomial PMF Identification and the Marginal",
+      "startLine": 149,
+      "endLine": 172,
+      "summary": "multinomial_aggregate_pgf_eq_binomial expands the aggregation PGF via add_pow (binomial theorem) to read off the Binomial(n, p_A) PMF coefficients. multinomial_marginal_pgf_of_aggregate is the singleton case A = {i₀}, recovering the classical single-coordinate marginal X_{i₀} ~ Binomial(n, p_{i₀})."
+    },
+    {
+      "id": "sec-mult-agg-complement-total",
+      "title": "Corollaries II: Complement Block and Full Aggregation",
+      "startLine": 174,
+      "endLine": 200,
+      "summary": "multinomial_aggregate_compl_pgf handles the complement s\\A (p_{s\\A} = 1 − p_A via Finset.sum_sdiff), giving Binomial(n, 1−p_A) — the two-outcome 'in A vs not in A' lumping. multinomial_aggregate_univ takes A = s: with p_s = 1 the PGF collapses to t^n, the deterministic total X_s = n."
     },
     {
       "id": "sec-mult-agg-example",
