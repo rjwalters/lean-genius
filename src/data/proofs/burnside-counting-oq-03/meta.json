@@ -168,11 +168,9 @@
   },
   "conclusion": {
     "summary": "Formalizes the Pólya enumeration theorem for cyclic groups: proves the general fixed-point formula |Fix(r)| = k^{gcd(r,n)} in full generality (the orbit-bijection argument is fully discharged, with no sorries), verifies all concrete computations for binary 4-necklaces by native_decide, and establishes both forms of the Pólya sum (rotational and divisor sum) along with the reindexing identity.",
-    "implications": "This entry achieves two goals: (1) it replaces axioms from burnside-counting with proofs, demonstrating the power of computation via native_decide for concrete instances; (2) it states the general formula polya_cyclic_fixed_count which, once proved, will fully generalize Burnside's lemma to the Pólya enumeration theorem for all cyclic groups. The fiber_card_eq_totient lemma (fully proved) is the hardest combinatorial step and may be reusable for other Pólya-type arguments.",
+    "implications": "This entry achieves two goals: (1) it replaces axioms from burnside-counting with proofs, demonstrating the power of computation via native_decide for concrete instances; (2) it proves the general formula polya_cyclic_fixed_count, fully generalizing Burnside's lemma to the Pólya enumeration theorem for all cyclic groups. The fiber_card_eq_totient lemma (fully proved) is the hardest combinatorial step and may be reusable for other Pólya-type arguments.",
     "openQuestions": [
-      "Complete polya_cyclic_fixed_count: the bijection {fixed colorings} ↔ (Fin d → Fin k) remains as a sorry — the invFun half (backward map) is defined but left_inv requires showing that coloring by orbit representative and then evaluating at a representative gives back the original coloring.",
-      "Generalize from cyclic groups to arbitrary finite groups: the full Pólya enumeration theorem uses the cycle index of an arbitrary permutation group. Can the Lean formalization be extended to, e.g., the dihedral group acting on necklaces?",
-      "Interface with Burnside's lemma in Mathlib: MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group is cited but not directly applied. A future formalization could connect polya_necklace_formula_statement to this Mathlib theorem."
+      "Generalize from cyclic groups to arbitrary finite groups: the full Pólya enumeration theorem uses the cycle index of an arbitrary permutation group. Can the Lean formalization be extended to, e.g., the dihedral group acting on necklaces?"
     ]
   },
   "crossReferences": [
@@ -205,6 +203,12 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "Pólya enumeration generalizes binomial-style counting from unordered selections (color $k$ objects from $n$ with no symmetry) to selections under group action (color $k$ objects from $n$ modulo cyclic rotation). The identity $\\sum_{d \\mid n} \\varphi(n/d) k^d = n \\cdot N(n, k)$ specialises to $k^n$ when the symmetry group is trivial, recovering plain binomial counting; the divisor sum is the symmetry-aware refinement."
+    },
+    {
+      "id": "xref-oq02-arbitrary-group",
+      "targetId": "burnside-counting-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers the openQuestions entry above: generalizes the cyclic fixed-point formula to an arbitrary finite group action, recovering both the cyclic (k^gcd) and dihedral reflection counts as special cases."
     }
   ],
   "references": [
