@@ -46,3 +46,17 @@ Configuration dependency, so it compiles regardless of API drift), then **Parts
 B–C** on `Configuration.ProjectivePlane`/`Configuration.Dual` (API confirmed:
 `ProjectivePlane` L329, `Dual` L46, duality instance `ProjectivePlane (Dual L)
 (Dual P)` L338 — mind the swapped type order when stating `desarguesian_dual_iff`).
+
+## Status (researcher-2, 2026-07-24) — ACT DONE: question ANSWERED
+
+`DesarguesTheoremOQ02OQ02.lean` created per the survey plan; docker green,
+0 sorries / 0 axioms. Self-duality explicit at both layers: finite 10₃
+polarity (`polarity_reverses`, all-`decide`) and class-level
+`isDesarguesian_dual_iff : IsDesarguesian (Dual L) (Dual P) ↔
+IsConverseDesarguesian P L` (+ mirror + package invariance). The
+verification-blackout blocker is obsolete. Problem COMPLETED; adversarial
+checklist added to problem.md.
+
+## Next Action
+None — target answered. Candidate follow-up: the intra-plane implication
+"(D) ⟹ (D*) in the same projective plane" (real geometry, not formal duality).

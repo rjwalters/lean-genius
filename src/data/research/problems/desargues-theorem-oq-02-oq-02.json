@@ -25,14 +25,14 @@
     "goal": "An explicit Lean formalization of the self-duality of Desargues's theorem: the class-level dual↔converse equivalence plus a decidable finite self-dual 10₃ configuration."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-06-13",
     "iteration": 1,
-    "focus": "Core math resolved on paper (self-dual = own converse via the duality dictionary); formalization layered as finite-decidable 10₃ + abstract Configuration.Dual swap. Build-gated by the 2026-06-13 verification blackout.",
+    "focus": "COMPLETED 2026-07-24: self-duality formalized explicitly at both layers (finite 10_3 polarity + class-level isDesarguesian_dual_iff) — researcher-2",
     "blockers": [
       "Verification blackout 2026-06-13: Docker down + Aristotle 404 (both confirmed live this session)"
     ],
-    "nextAction": "When infra returns, create DesarguesTheoremOQ02OQ02.lean: Part A finite 10₃ self-duality by decide (blackout-proof), then Parts B–C on Configuration.ProjectivePlane/Configuration.Dual.",
+    "nextAction": "None — question answered. Candidate follow-up: intra-plane (D) => (D*) in a projective plane (real geometry, not formal duality).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,23 +40,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED (ORIENT): self-duality of Desargues fully resolved on paper. The plane-dual of Desargues's theorem is its converse (point↔line, collinear↔concurrent, central↔axial perspectivity). Formalizable at the projective layer via Mathlib Configuration.Dual; the parent's affine Moulton model is the wrong carrier (affine planes are not self-dual).",
-    "builtItems": [],
+    "progressSummary": "COMPLETED 2026-07-24: the self-duality of Desargues theorem is formalized EXPLICITLY. Finite layer: the 10_3 Desargues configuration in the pairs model with an explicit incidence-reversing polarity (kernel decide; O<->axis, vertex<->opposite side, perspectivity line<->axis point). Abstract layer (on Membership P L + Configuration.Dual): isDesarguesian_dual_iff proves IsDesarguesian (Dual L) (Dual P) <-> IsConverseDesarguesian P L — Desargues is its own dual = its own converse — plus the mirror iff (definitional involutivity) and package invariance. Honest scope: duality-transfer only; the intra-plane (D)=>(D*) implication is real geometry, left open.",
+    "builtItems": [
+      "DesarguesTheoremOQ02OQ02.lean: pairOf/lineOf/Inc + 10_3 certificates + desargues_roles_* + ptToLn/lnToPt + polarity_reverses (all decide)",
+      "PointsCollinear/LinesConcurrent + Iff.rfl dual swaps on Configuration.Dual",
+      "IsDesarguesian / IsConverseDesarguesian (universal incidence forms, polarity-closed 12-inequality schema)",
+      "isDesarguesian_dual_iff + isConverseDesarguesian_dual_iff + desargues_package_self_dual: THE TARGET, 0 sorries 0 axioms"
+    ],
     "insights": [
       "Duality dictionary: point↔line, lies-on↔passes-through, collinear↔concurrent, join↔meet — sends a triangle to a trilateral and central perspectivity to axial perspectivity",
       "Dual of Desargues's statement = its converse, so the theorem is self-dual (its own dual)",
       "Right layer is projective/abstract: affine planes (the parent's onLine over ℚ²) are NOT self-dual because parallel lines have no dual point",
       "Desargues is false in general projective planes (parent counterexample), so self-duality must be stated class-level: Desarguesian(Dual P) ↔ ConverseDesarguesian P, not 'D holds ⇒ converse holds'",
-      "Cheapest first compile = finite Desargues 10₃ configuration self-duality: Fin 10 incidence matrix + duality permutation σ, goal inc p l = inc (σ l) (σ p) by decide — no Mathlib Configuration dependency"
+      "Cheapest first compile = finite Desargues 10₃ configuration self-duality: Fin 10 incidence matrix + duality permutation σ, goal inc p l = inc (σ l) (σ p) by decide — no Mathlib Configuration dependency",
+      "The nondegeneracy schema must be CLOSED under the polarity or duality is not a pure statement swap: converse-Desargues natural hypotheses (distinct axis points, distinct corresponding vertices) are exactly the polarity image of Desargues (distinct perspectivity lines, distinct corresponding sides)",
+      "Dual being a plain type synonym makes double-dual collapse and membership swap definitional: the mirror iff is (isDesarguesian_dual_iff (Dual L) (Dual P)).symm with defeq lifting Dual(Dual P)=P, and primal-typed incidence hypotheses are accepted verbatim in dual positions",
+      "The pairs model (points and lines = 2-subsets of Fin 5, incidence = disjointness) makes the 10_3 self-duality a symmetry fact, fully kernel-decidable with explicit polarity tables"
     ],
     "mathlibGaps": [
       "Mathlib Configuration provides ProjectivePlane (L329), Dual (L46), and the instance ProjectivePlane (Dual L) (Dual P) (L338, the duality principle) — confirmed against source — but NOT perspectivity / Desargues predicates, which must be defined",
       "Gotcha: the dual swaps type order — a predicate Foo P L on the dual is Foo (Dual L) (Dual P), not Foo (Dual P) (Dual L)"
     ],
     "nextSteps": [
-      "Part A: finite 10₃ self-dual configuration (Fin 10, incidence Bool matrix, σ : Perm (Fin 10), decide) — blackout-proof milestone",
-      "Part B: define Concurrent/Collinear, centrally/axially perspective, Desarguesian/ConverseDesarguesian on Configuration.ProjectivePlane",
-      "Part C: swap lemmas under Configuration.Dual → desarguesian_dual_iff and converse_iff_desarguesian"
+      "Follow-up (genuine geometry, materially distinct): in a projective plane, Desargues implies its own converse INTRA-plane (apply (D) to a derived configuration) — would upgrade the package theorem to single-property self-duality",
+      "Optional: bridge the finite 10_3 model to the abstract predicates (instantiate a Membership (Fin 10) (Fin 10) structure and derive the abstract polarity from polarity_reverses)"
     ]
   },
   "tags": [
