@@ -62,7 +62,8 @@
       "**The number of parts is a cardinality**: under Mathlib's compositionEquiv / compositionAsSetEquiv encoding, a k-part composition corresponds to a gap subset of size k−1, so counting compositions by length is counting subsets by cardinality — equiv_card_add_one is the exact dictionary that makes this precise",
       "**The boundaries split as endpoints plus cuts**: boundaries_eq exhibits the boundary set as {0, last} together with the shifted internal cuts, and the two endpoints are provably never internal cuts, so the boundary count is (gap-subset card) + 2 and the length is (gap-subset card) + 1",
       "**Fixed-cardinality subset counting is the engine**: card_finset_card_eq packages Fintype.card_finset_len (#{s : Finset (Fin m) // s.card = j} = C(m,j)), turning the transported problem directly into a binomial coefficient",
-      "**The refinement recovers the total**: summing C(n−1, k−1) over k via Nat.sum_range_choose returns 2^(n−1), realising the parent's count as a sum of binomial coefficients and answering its first open question"
+      "**The refinement recovers the total**: summing C(n−1, k−1) over k via Nat.sum_range_choose returns 2^(n−1), realising the parent's count as a sum of binomial coefficients and answering its first open question",
+      "**Bijective throughout, no induction on length**: unlike textbook stars-and-bars arguments that often induct on n or on the number of parts, every step here is an equivalence or a cardinality transport (compositionEquiv, compositionAsSetEquiv, Equiv.subtypeEquiv, card_finset_card_eq) — the count C(n−1, k−1) is read off directly from a bijection to fixed-cardinality subsets, with no recursive step on k or n"
     ],
     "prerequisites": [
       "Compositions of a natural number (Mathlib's Composition n) and the boundary-set model CompositionAsSet n with its length/boundary API (card_boundaries_eq_succ_length)",
