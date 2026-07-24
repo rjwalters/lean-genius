@@ -1,8 +1,8 @@
 {
   "slug": "erdos-szekeres-oq-02",
   "title": "Complexity of finding the actual Erdos-Szekeres monotonic subsequence",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,13 +28,16 @@
     "goal": "Formalize a computable incDP : Fin n -> Nat proven equal to maxIncLen, a constructive witness extractor, and an exact Theta(n^2) comparison-count closed form n(n-1)/2; document the Theta(n log n) optimum as the cost-model-gated remainder."
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-06-13T00:00:00-07:00",
     "iteration": 2,
     "focus": "First survey complete (researcher-9 2026-06-13, build-free during the Docker/Aristotle verification blackout). The OQ is resolved on paper and decomposed into a formalizable core (computable DP + correctness + constructive witness + exact comparison count) plus a cost-model-gated remainder (Theta(n log n) optimality).",
     "blockers": [
-      "All Lean build/verification routes down this session (Docker daemon down; Aristotle backend 404). ACT deferred until a build route returns.",
-      "Correctness milestone (incDP = maxIncLen) depends on oq-01's extension lemma maxIncLen_lt_of_lt; sequence after oq-01 ACT-2 to reuse it."
+      {
+        "route": "correctness <= direction via oq-01 extension lemma maxIncLen_lt_of_lt",
+        "reopenCriterion": "superseded: S5 obtained incDP_le_maxIncLen constructively without it; remaining >= direction is the stripping lemma, no oq-01 dependency",
+        "blockedAt": "2026-07-24"
+      }
     ],
     "nextAction": "ACT milestone 1 (oq-01-independent, ~40-60 LOC): computable incDP via strong recursion with DecidablePred from LinearOrder's decidableLT, and the exact comparison count incDPcost n = n(n-1)/2. Then milestone 2 (correctness incDP = maxIncLen, after oq-01 ACT-2) and milestone 3 (constructive incWitness : (i : Fin n) -> IncreasingSubseq f (incDP f i)).",
     "attemptCounts": {
@@ -44,8 +47,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT (researcher-9 2026-06-13 S1, build-free survey). Resolved the OQ on paper: finding the actual monotone subsequence costs Theta(n^2) by the elementary DP and Theta(n log n) by patience sorting (optimal, Fredman lower bound); witness reconstruction adds O(n). Identified the formalizable core vs the cost-model-gated remainder. No Lean built (Docker down + Aristotle 404).",
-    "builtItems": [],
+    "progressSummary": "ACT (researcher-1 2026-07-24 S5): UNBLOCKED (Docker back). Milestone 1 COMPLETE + realized-witness layer: computable incDP with recurrence, HasIncreasingEndingAt f i (incDP f i), incDP_le_maxIncLen, Nonempty (IncreasingSubseq f (incDP f i)), exact cost incDPcost n = n(n-1)/2. 319 LOC, 0 sorry/0 axiom, Docker-verified. Remaining: >= correctness (stripping), computable incWitness.",
+    "builtItems": [
+      "ErdosSzekeresOQ02.lean (NEW, 319 LOC, 0 sorry, 0 axiom): incDP (computable DP), incDP_eq, one_le_incDP, incDP_le_index_succ",
+      "ExactIncEnd + exactIncEnd_one + ExactIncEnd.extend + ExactIncEnd.hasIncreasingEndingAt (snoc extension machinery)",
+      "exactIncEnd_incDP, hasIncreasingEndingAt_incDP, incDP_le_maxIncLen, exists_increasingSubseq_incDP",
+      "Cost layer: scanned/card_scanned/preds_subset_scanned, incDPcost, incDPcost_closed (n(n-1)/2), incDPcost_two_mul (division-free)"
+    ],
     "insights": [
       "The parent maxIncLen/maxDecLen are noncomputable (Nat.findGreatest over a Prop existential), so oq-02 is precisely the gap between a non-constructive existence spec and an executable algorithm proven to meet it.",
       "Mathlib has NO cost/complexity model and NO LIS/patience-sorting/Erdos-Szekeres machinery in the importable library (grep of materialized Mathlib source: no longestIncreasing*/patienceSort*/increasingSubseq*; only Archive/Wiedijk100Theorems/AscendingDescendingSequences.lean, not re-exported). Nat.findGreatest is in Mathlib/Data/Nat/Find.lean.",
@@ -53,7 +61,10 @@
       "Complexity must be formalized as an exact Nat operation-counter with a proved closed form, NOT a Big-O over a cost monad — the same judgement that made the Garner OQ (chinese-remainder-non-coprime-oq-01-oq-02, PR #23098) tractable.",
       "The Theta(n log n) patience-sorting upper bound (needs a verified balanced-BST/Fenwick) and Fredman's Omega(n log n) lower bound (needs a comparison-decision-tree model) are out of Lean scope — same class of gap as the binary-gcd Brent-constant and bezout-HGCD Master-theorem OQs.",
       "Relation to oq-01: oq-01 BUILDS the extension lemma maxIncLen_lt_of_lt (ACT-2); oq-02 CONSUMES it for the correctness proof. Sequence oq-02 milestone 2 after oq-01 ACT-2. The constructive incWitness is an alternative (constructive) elimination of the parent existence axiom.",
-      "First buildable milestone is self-contained and oq-01-independent: incDP + termination + DecidablePred + the closed-form comparison count. Pure Fin/Finset/Nat algebra, ~40-60 LOC."
+      "First buildable milestone is self-contained and oq-01-independent: incDP + termination + DecidablePred + the closed-form comparison count. Pure Fin/Finset/Nat algebra, ~40-60 LOC.",
+      "S5: The parent HasIncreasingEndingAt disjunction permits the last position to fall short of i — too weak to extend chains (no value info at the junction). Strengthened ExactIncEnd invariant (last position exactly i) makes Fin.snoc extension go through, then downgrades to the parent predicate.",
+      "S5: incDP_le_maxIncLen (soundness vs the noncomputable spec) is provable WITHOUT oq-01 extension lemma: realized witness + Nat.le_findGreatest + incDP f i <= i.val + 1.",
+      "S5: Recursive theorems with termination_by i.val (incDP_le_index_succ, exactIncEnd_incDP) mirror the WF def cleanly — no strong-induction gymnastics; decreasing_by exact <Fin.lt hyp> works via defeq."
     ],
     "mathlibGaps": [
       "No cost/complexity model (no Big-O cost monad, no RAM/comparison-decision-tree machinery, no Master theorem) — so asymptotic complexity statements have no Lean home; use exact Nat operation-counters instead.",
@@ -61,10 +72,10 @@
       "Nat.findGreatest (Mathlib/Data/Nat/Find.lean), Finset.sup/filter, and well-founded recursion on Fin.val are sufficient for the computable DP; no new foundational definitions needed for milestone 1."
     ],
     "nextSteps": [
-      "ACT milestone 1 (oq-01-independent): computable incDP : Fin n -> Nat (strong recursion on i.val, Finset.sup over {j<i, f j<f i}, DecidablePred via decidableLT) + exact comparison count incDPcost n = n(n-1)/2. ~40-60 LOC.",
-      "ACT milestone 2 (after oq-01 ACT-2): correctness incDP f i = maxIncLen f i. <= via oq-01's maxIncLen_lt_of_lt; >= via the optimal-substructure lemma (strip the last element of a longest subseq ending at i).",
-      "ACT milestone 3: constructive witness incWitness : (i : Fin n) -> IncreasingSubseq f (incDP f i) by backtracking predecessor pointers — the literal 'find the actual subsequence', and an alternative constructive elimination of the parent existence axiom.",
-      "Document only (out of scope): Theta(n log n) patience-sorting optimum and Fredman's Omega(n log n) lower bound — not formalizable without a comparison-cost model."
+      "Milestone 2 remaining half: maxIncLen f i <= incDP f i via stripping/optimal-substructure (exact statement in knowledge.md; handle the parent disjunction weak branch by downward induction on len). No oq-01 dependency.",
+      "Milestone 3: computable incWitness f i : IncreasingSubseq f (incDP f i) via (preds f i).toList.argmax (incDP f) predecessor selection + backtracking (List.argmax_mem / List.le_of_mem_argmax connect to the sup).",
+      "Optional capstone: global lisLength f = univ.sup (incDP f) + the ES-witness finder (scan both tables, O(n) on top of the DP) tying back to the parent pigeonhole statement.",
+      "Document only (out of scope): Theta(n log n) patience sorting + Fredman lower bound — no comparison-cost model in Mathlib."
     ],
     "markdown": "See research/problems/erdos-szekeres-oq-02/knowledge.md for the full survey (resolution on paper, the real-math-vs-engineering boundary, the build-free Lean recipe, milestones, and the relation to oq-01)."
   },
