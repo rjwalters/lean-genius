@@ -94,7 +94,8 @@
       "**The kernel of the coset action is the normal core.** This single fact (Mathlib's Subgroup.normalCore_eq_ker) drives everything: it makes 'faithful' synonymous with 'core-free', so the minimal faithful coset degree is governed by which subgroups contain no nontrivial normal subgroup.",
       "**Degree k = [G : H], not n = |G|.** The regular representation is the case H = ⊥; any larger core-free H gives a strictly smaller degree, shrinking the ambient symmetric group from order n! to k!. This is the quantitative 'far smaller than Sₙ' the open question asks for.",
       "**Faithful ⟺ core-free is sharp.** When H is not core-free the action still embeds the quotient G ⧸ H.normalCore (first isomorphism theorem); only the trivial-core obstruction can prevent G itself from embedding.",
-      "**This generalizes the parent, not just supplements it.** Setting H = ⊥ reproduces the left-regular Cayley embedding G ↪ Sₙ; the coset construction is the parent with the codomain index dialed from n down to any achievable k."
+      "**This generalizes the parent, not just supplements it.** Setting H = ⊥ reproduces the left-regular Cayley embedding G ↪ Sₙ; the coset construction is the parent with the codomain index dialed from n down to any achievable k.",
+      "**Concreteness costs a hand-rolled MulEquiv.** Mathlib's `Equiv.permCongr` relabels permutations along a bijection e : α ≃ β only as a plain `Equiv`, not a `MulEquiv`. Landing the action in the literal Sₖ = Equiv.Perm (Fin k) — rather than the abstract Equiv.Perm (G ⧸ H) — needs `permCongrMulEquiv`, which proves the multiplicativity of conjugation-by-e from scratch; it is the one piece of genuinely new Lean engineering, everything else composes existing Mathlib group-action lemmas."
     ],
     "prerequisites": [
       "Finite Cayley's theorem via the regular representation (parent entry cayleys-theorem-oq-01-oq-01)",
