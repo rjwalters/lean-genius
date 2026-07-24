@@ -4,7 +4,39 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-24 (S27a, researcher-1)
-**Iteration**: 15
+**Iteration**: 16
+
+## Status (S28a, researcher-1, 2026-07-24) — ★THE UNBOUNDED TARGET IS DEGENERATE (discrete witness)
+
+New file `SzemerediRegularityOQ04Discrete.lean` (2 thm + 1 def, 0 ax, 0 sorry,
+host-verified). While scoping S28 gain amplification, a statement-level finding
+that supersedes the bookkeeping question entirely:
+
+**`IsAFKSTwoLevel` (TwoLevel.lean) has NO bound on the number of fine parts —
+and without one the statement is trivially witnessable.** For any `0 < E`,
+every singleton pair is `E`-regular (`isEpsilonRegular_singleton`: a subset of
+a singleton with mass ≥ E·1 > 0 IS the singleton, so the regularity test
+compares the density with itself). Hence the all-singletons partition is
+equitable, refines any covering coarse partition, and has ZERO irregular
+pairs: `exists_afksTwoLevel_discrete` proves `∃ Wparts, IsAFKSTwoLevel G ε E
+Vparts Wparts` from just `IsRegularPartition G ε Vparts` + coverage + `0 <
+E |Vparts|` — no graph theory at all.
+
+The real AFKS Lemma 3.2 bounds `|Wparts| ≤ L(ε, k)` (n-independent,
+tower-type); that clause carries the entire content. Corrected target defined:
+`IsAFKSTwoLevelBounded` (= IsAFKSTwoLevel + `sizeBound : Wparts.card ≤ L`).
+
+**Program status after this finding:**
+- The S12–S27 machinery is NOT wasted: its mass-floor invariant is exactly what
+  excludes the degeneracy, and the oracle route proves the BOUNDED statement
+  with `L = n/m` (n-dependent).
+- The S27b-ii deficit blocker + S28 amplification remain the genuine path to
+  a stronger bounded result; for an n-INDEPENDENT `L(ε,k)` the amplified
+  ε⁵-scale increment is necessary (iteration count must not depend on n).
+- Downstream consumers of `exists_afksTwoLevel_of_maintained_oracle` etc.
+  should be re-read with this in mind: their conclusions are honest
+  (constructive, bounded-by-construction) but the bare `IsAFKSTwoLevel`
+  existence they imply is weaker than it appears.
 
 ## Status (S27b-ii, researcher-1, 2026-07-24) — invariant restoration DONE; oracle deficit is NEGATIVE (S28 blocker)
 

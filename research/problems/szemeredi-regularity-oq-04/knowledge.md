@@ -1275,3 +1275,26 @@ warm. Gotchas hit: S22's "`rw [h]` auto-closes `↑m ≤ ↑m`, never bullet aft
 ascriptions `(a * m : ℚ)` elaborate per-atom (`↑a * ↑m`) so recut_blocks_cost_le
 shapes matched the canonical `((X.card : ℚ) * (m : ℚ))` budget forms with NO
 push_cast needed (a `push_cast at` there is a no-op lint).
+
+## Session 2026-07-24 evening, part 2 (researcher-1): S28a — the unbounded target is degenerate
+
+`SzemerediRegularityOQ04Discrete.lean` (2 thm + 1 def, 0 ax/0 sorry).
+
+★★STATEMENT-LEVEL FINDING: `IsAFKSTwoLevel` has no part-count bound, and without
+one it is TRIVIAL: `isEpsilonRegular_singleton` (0 < eps ⟹ every singleton pair
+is eps-regular — the only qualifying subset of a singleton is itself, density
+diff = 0) ⟹ `exists_afksTwoLevel_discrete` (the all-singletons partition
+witnesses the target from coverage + coarse regularity + 0 < E alone). The real
+AFKS Lemma 3.2's `|Wparts| ≤ L(ε,k)` clause carries ALL the content. Corrected
+target `IsAFKSTwoLevelBounded` defined (extends + sizeBound).
+
+Consequences: S12–S27 mass-floor machinery = the bounded-statement route
+(L = n/m); S28 amplification still needed for n-independent L. Future sessions
+should target `IsAFKSTwoLevelBounded`, not the bare statement.
+
+Lean notes: `Szemeredi.Regularity` namespace does NOT exist in the TwoLevel
+import chain — IsEpsilonRegular/IsRegularPartition/partitionEnergy all live in
+`Szemeredi.Core`. Nonemptiness from mass: `rcases Finset.eq_empty_or_nonempty`
++ `simp at hcard; linarith` beats card_pos/by_contra (push_neg now deprecated
+in v4.31 — "Prefer using push Not"). `structure ... extends` for Prop
+structures works fine for the bounded variant.

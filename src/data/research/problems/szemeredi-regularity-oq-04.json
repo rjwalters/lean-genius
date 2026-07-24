@@ -32,7 +32,7 @@
     "nextAction": "S26: parameter bookkeeping only — choose m with 2|P|m/n below the retained eps^4 m^2/n^2-scale gain and feed exists_afksTwoLevel_of_maintained_oracle; apply S22 n = a*m + b*(m+1) global-equitability packaging to the recut output."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S12-S27b-ii complete (0 axioms throughout). The re-equitization program is DONE: exists_invariant_restore rebuilds any covering refining family to the full Chain invariant at cost 2|q1|m/n + 2|Vparts|m^2/n, and exists_maintained_next_deficit gives the maintained step in deficit form. The deficit is provably NEGATIVE for the single-witness gain E^4m^2/n^2 (structured blocker) - the single remaining gap is S28: amplify the per-step gain to the summed mass-weighted defect of all irregular pairs (eps^5-scale), which then composes with exists_invariant_restore verbatim and closes exists_afksTwoLevel_of_maintained_oracle.",
+    "progressSummary": "PROGRESS: S12-S27b-ii complete + S28a statement audit. MAJOR FINDING: the bare IsAFKSTwoLevel target is degenerate (discrete partition witnesses it trivially - exists_afksTwoLevel_discrete); the content lives in the part-count bound, now formalized as IsAFKSTwoLevelBounded. The oracle machinery proves the bounded statement with L = n/m; the S28 amplified increment (structured blocker) is the path to an n-independent L(eps,k). Future sessions: target IsAFKSTwoLevelBounded.",
     "builtItems": [
       "gap_forces_complement_nonempty in SzemerediRegularityOQ04SplitProper.lean (S16) — the eps-density gap |d(A1,B1)-d(A,B)| >= eps > 0 forbids a doubly-trivial split: A2.Nonempty OR B2.Nonempty (both empty would force A1=A,B1=B, gap=0). exists_sharp_split_nontrivial_of_not_afksFineRegular appends this disjunction to the S11 extracted sharp split.",
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
@@ -123,7 +123,10 @@
       "fiber_ground_eq_block in SzemerediRegularityOQ04Assemble.lean",
       "exists_invariant_restore (S27b-ii modular capstone) in SzemerediRegularityOQ04Assemble.lean",
       "exists_maintained_next_deficit (deficit-form maintained step) in SzemerediRegularityOQ04Assemble.lean",
-      "locality clause on exists_equitable_recut_blocks in SzemerediRegularityOQ04Iterate.lean"
+      "locality clause on exists_equitable_recut_blocks in SzemerediRegularityOQ04Iterate.lean",
+      "isEpsilonRegular_singleton in SzemerediRegularityOQ04Discrete.lean",
+      "exists_afksTwoLevel_discrete (degeneracy witness) in SzemerediRegularityOQ04Discrete.lean",
+      "IsAFKSTwoLevelBounded (corrected target) in SzemerediRegularityOQ04Discrete.lean"
     ],
     "insights": [
       "The complement pieces A2=A\\A1, B2=B\\B1 of the AFKS sharp 2x2 split are NOT both forced nonempty by the analytic data: the density gap only forbids BOTH being empty (S16). When one corner exhausts its block (A1=A) the honest refinement is the asymmetric 3-piece split {A,B1,B2}; the 4-piece IsWitnessedSharpStep shape (S14 isWitnessedSharpStep_of_split_of_gap) requires an asymmetric-step packaging for that degenerate branch, not a further nonemptiness lemma.",
@@ -183,7 +186,9 @@
       "S27b-ii: invariant restoration is fully modular - exists_invariant_restore rebuilds ANY covering/disjoint/refining family to the complete Chain loop invariant (cover, disjoint, refines, +-1 equitable, mass floor m) at explicit cost 2|q1|m/n + 2|Vparts|m^2/n; an S28 amplified-gain successor composes with it verbatim.",
       "THE S27 DEFICIT IS PROVABLY NEGATIVE: the single-witness gain E^4m^2/n^2 is below ANY re-equitization cost (2m/n > E^4m^2/n^2 iff 2n > E^4m, always true for E<=1, m<=n; even the lone absorption term 2m^2/n exceeds the gain). researcher-3 sizing caution confirmed and sharpened - closing the oracle REQUIRES gain amplification, not bookkeeping.",
       "Locality clause added to exists_equitable_recut_blocks (every rebuilt piece is an original piece or sits inside a processed block) - the missing link from the recut output to IsRefinement and global equitability of the restored family.",
-      "Empty-piece stripping is free: Bridge partitionEnergy_filter_card_ne_zero lets the restoration accept bare-split successors without a nonemptiness hypothesis."
+      "Empty-piece stripping is free: Bridge partitionEnergy_filter_card_ne_zero lets the restoration accept bare-split successors without a nonemptiness hypothesis.",
+      "DEGENERACY: IsAFKSTwoLevel (no part-count bound) is trivially witnessable - every singleton pair is eps-regular for 0 < eps, so the discrete partition satisfies all three clauses with zero graph theory (exists_afksTwoLevel_discrete). The mathematical content of AFKS Lemma 3.2 lives entirely in the |Wparts| <= L(eps,k) bound the formalization omitted.",
+      "Corrected target IsAFKSTwoLevelBounded defined (adds sizeBound : Wparts.card <= L). The S12-S27 mass-floor machinery proves the bounded statement with L = n/m; an n-independent L(eps,k) additionally requires the S28 amplified eps^5-scale increment (iteration count must not depend on n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
