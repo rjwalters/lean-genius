@@ -1,8 +1,43 @@
 # Current State
 
-**Phase**: ACT (S2-finite ACT shipped — `hilbert_finiteness` verified; S4 PREP-3 totalDegree-bearer + grading-action gap surface; pre-ACT for S3-bound)
-**Since**: 2026-05-16T00:00:00Z
-**Iteration**: 4
+**Phase**: ACT (S5 ACT shipped, researcher-3, 2026-07-24 — **degree-bound Stages 1–3 landed**;
+next = Stage 5 Reynolds extraction, a dedicated S6)
+**Since**: 2026-07-24T12:10:00Z
+**Iteration**: 5
+
+## S5 ACT 2026-07-24 (researcher-3) — degree-bound Stages 1–3 (0 ax / 0 sorry)
+
+New `section DegreeBound` in `proofs/Proofs/Hilbert14OQ04.lean` (100 → ~210 LOC),
+executing PREP-2/PREP-3 Stages 1–3 exactly as designed:
+
+* **Stage 1** `coeff_charpoly_mem_fixedPoints` — every `(charpoly G b).coeff j` lies in
+  `FixedPoints.subalgebra k R G`; one-liner from `smul_coeff_charpoly` (membership in the
+  fixed-points subalgebra is definitionally `∀ g, g • x = x`).
+* **Stage 2** `natDegree_charpoly` — `(charpoly G b).natDegree = |G|` via
+  `Polynomial.natDegree_prod_of_monic` + `monic_X_sub_C` (this small lemma is ABSENT from
+  Mathlib's `RingTheory/Invariant/Basic.lean` — upstream candidate).
+* **Stage 3** `totalDegree_coeff_charpoly_le` — with the PREP-3 §2 Option-A hypothesis
+  `h_graded : ∀ g p, (g • p).totalDegree ≤ p.totalDegree`:
+  `((charpoly G b).coeff j).totalDegree ≤ (|G| - j) * b.totalDegree` for `j ≤ |G|`.
+  Route as planned: orbit multiset `s := univ.val.map (· • b)`;
+  `Multiset.prod_X_sub_C_coeff` (Vieta) turns the coefficient into
+  `(-1)^(|G|-j) * s.esymm (|G|-j)`; `Finset.esymm_map_val` (a bearer BETTER than the
+  PREP-3 plan's raw powersetCard expansion — it lands directly in Finset-sum form);
+  `totalDegree_finsetSum` (sup bound) + `totalDegree_finsetProd` + `h_graded` per factor;
+  sign factor is `C ((-1)^m)` hence totalDegree 0. All first-try at v4.31.
+
+v4.31 drift notes: `totalDegree_finset_sum/prod` renamed `totalDegree_finsetSum/Prod`
+(old names deprecated); `omit [SMulCommClass …] in` needed on Stages 2–3 (unused
+section variable linter).
+
+**Remaining for the full Noether bound (S6+)**: Stage 5 — Reynolds-operator extraction
+of a generating set in degree ≤ |G| (needs `h_char : ¬ (ringChar k ∣ |G|)`, averaging,
+and the graded structure; ~80–120 LOC, the genuinely hard leg). Stages 1–3 are its
+complete coefficient-side toolkit.
+
+---
+
+## Previous State (S2-finite, 2026-05-16, iteration 4)
 
 > _Phase note_: this skill maps "S4 PREP-3" to the canonical ORIENT phase
 > (the post-S2-finite-ACT design-iteration count: 1 ACT + S3 PREP (#19188)

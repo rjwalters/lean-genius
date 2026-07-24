@@ -1,8 +1,8 @@
 {
   "slug": "amgm-inequality-oq-04-oq-03",
   "title": "Gauss AGM Theorem via Hypergeometric Elliptic Integral Identity",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -29,19 +29,18 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-02T00:55:00Z",
-    "iteration": 6,
-    "focus": "S5 BLOCKED + STATE-SYNC (researcher-2, 2026-06-13): renewed Docker daemon outage (`timeout 5 docker info` exits 124) makes the remaining discharge legs unverifiable. Also syncs the JSON tracker forward from its stale iteration-3/2026-06-02 reading to the actual state.md S4b state (2026-06-09): S3 Wallis closed form was already shipped (wallisHalf_even, PR #22046, in AmgmInequalityOQ04OQ03Wallis.lean); S4a added the x-independent per-term M-test bound (hypCoeff_mul_pow_abs_le_of_abs_le); S4b added the M-test packaging on closed balls (summable_hyp2F1_on_closedBall + hyp2F1_mtest_inputs_on_closedBall), Docker-verified, 0 new axioms / 0 new sorries. AmgmInequalityOQ04OQ03.lean: 315 LOC, 1 axiom (ellipticK_eq_hyp2F1 — the problem's STATED hypergeometric-series identity hypothesis, legitimate per the problem statement), 0 real sorries. Status active->blocked: the next leg (S5 TendstoUniformlyOn wrap via tendstoUniformlyOn_tsum, then combining legs to the Gauss AGM<->K main result) is Lean proof work requiring Docker builds, unavailable during the outage.",
+    "since": "2026-07-24T11:45:00Z",
+    "iteration": 7,
+    "focus": "S5 ACT (researcher-3, 2026-07-24): SHIPPED the banked TendstoUniformlyOn leg + continuity payoff. New Section 9 in AmgmInequalityOQ04OQ03.lean: hyp2F1_tendstoUniformlyOn_closedBall (Weierstrass M-test via tendstoUniformlyOn_tsum_nat consuming the S4b package), hyp2F1_continuousOn_closedBall, hyp2F1_continuousAt, hyp2F1_continuousOn_ball (continuity of 2F1(1/2,1/2;1;.) on the open unit ball). Still 1 stated axiom (ellipticK_eq_hyp2F1, the problem's hypergeometric identity hypothesis) / 0 sorries. Docker-blackout BLOCKED flag cleared; verified with v4.31.0 toolchain against pinned Mathlib oleans (parents compiled to scratch oleans).",
     "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01. S2 ACT adds the summability infrastructure via central-binomial upper bound + geometric comparison.",
-    "blockers": [
-      "B-INFRA Docker daemon outage at S5 entry 2026-06-13: `timeout 5 docker info` exits 124 (Server section unresponsive). Fleet-wide outage (same pathology cleared 2026-05-30, down again). Disk recovered (17% used). Aristotle backend 404s. Every remaining discharge leg (S5 TendstoUniformlyOn wrap + leg-combination toward Gauss AGM<->K) is Lean proof work needing >=1 Docker build to verify -> slug set blocked until Docker recovers."
-    ],
-    "nextAction": "WHEN Docker recovers (`timeout 10 docker info` exit 0): resume S5 ACT — wrap the S4b M-test inputs (hyp2F1_mtest_inputs_on_closedBall) into TendstoUniformlyOn via Mathlib's tendstoUniformlyOn_tsum (near-mechanical per state.md S4b), then continue combining the discharged legs (Wallis closed form + binomial series ₂F₁ realization) toward the Gauss AGM-limit <-> elliptic K identity. Each leg needs a Docker build. Spec/legs detailed in state.md (Active Approach) + knowledge.md.",
+    "blockers": [],
+    "nextAction": "S6 candidates: (a) hyp2F1 positivity/monotonicity on [0,1) from coefficient positivity (session-sized); (b) AGM-side limit M(a,b) convergence/continuity; (c) discharge ellipticK_eq_hyp2F1 (term-by-term integration of the elliptic integral - DEEP, the stated axiom).",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 2,
       "approachesTried": 1
-    }
+    },
+    "lastUpdate": "2026-07-24T11:45:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 ACT (PR #20885) shipped the scaffold Proofs/AmgmInequalityOQ04OQ03.lean (158 LOC, 1 axiom, 0 sorries): defs hypCoeff, hyp2F1; proved c0=1, c1=1/4, c_n>0, 2F1(...;0)=1, k=0 consistency. Axiomatized ellipticK_eq_hyp2F1. S2 ACT (this session) added section 6 Summability of the Hypergeometric Series (+64 LOC -> 222 LOC, 0 new axioms, 0 sorries): centralBinom_le_four_pow (Mathlib gap-filler), hypCoeff_le_one, summable_hyp2F1 for |x| < 1 (via absolute-summability comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg axiom-discharge plan; the remaining four legs are: Wallis closed form, binomial series for (1-u)^(-1/2), uniform summability on compacta, DCT interchange + final discharge.",

@@ -312,4 +312,63 @@ theorem hyp2F1_mtest_inputs_on_closedBall
   rw [Real.norm_eq_abs]
   exact hypCoeff_mul_pow_abs_le_of_abs_le R n x hx
 
+-- ============================================================================
+-- §9 : Uniform convergence on closed balls + continuity            (S5 ACT)
+-- ============================================================================
+--
+-- Consumes the §8 M-test package through Mathlib's Weierstrass M-test
+-- (`tendstoUniformlyOn_tsum_nat`) and extracts the payoff: the partial sums
+-- of the hypergeometric series converge to `hyp2F1` UNIFORMLY on every closed
+-- ball `{x : |x| ≤ R}`, `R < 1`; being polynomials, they are continuous, so
+-- `hyp2F1` is continuous on each closed ball and hence at every point of the
+-- open unit ball. Continuity is the analytic ingredient the eventual Gauss
+-- AGM-limit argument needs on the `K`-side of the axiomatized identity
+-- (`ellipticK_eq_hyp2F1`): the AGM iteration's limit exchange happens inside
+-- the open unit ball of the modulus.
+
+/-- **Weierstrass M-test payoff** (S5 ACT): on the closed ball `{x : |x| ≤ R}`
+with `R < 1`, the partial sums `x ↦ ∑_{n < N} cₙ xⁿ` converge uniformly to
+`hyp2F1`. One-liner from the §8 package + `tendstoUniformlyOn_tsum_nat`,
+exactly as the S4b design intended. -/
+theorem hyp2F1_tendstoUniformlyOn_closedBall (R : ℝ) (hR : R < 1) (hRnn : 0 ≤ R) :
+    TendstoUniformlyOn
+      (fun N : ℕ => fun x : ℝ => ∑ n ∈ Finset.range N, hypCoeff n * x ^ n)
+      hyp2F1 Filter.atTop {y : ℝ | |y| ≤ R} := by
+  obtain ⟨hsum, hbound⟩ := hyp2F1_mtest_inputs_on_closedBall R hR hRnn
+  exact tendstoUniformlyOn_tsum_nat hsum hbound
+
+/-- The partial sums are polynomials, hence continuous. -/
+private lemma continuous_partialSum (N : ℕ) :
+    Continuous (fun x : ℝ => ∑ n ∈ Finset.range N, hypCoeff n * x ^ n) :=
+  continuous_finsetSum _ fun n _ => (continuous_pow n).const_mul (hypCoeff n)
+
+/-- **Continuity of `₂F₁(1/2,1/2;1;·)` on closed balls** (S5 ACT): a uniform
+limit of continuous partial sums is continuous on `{x : |x| ≤ R}`, `R < 1`. -/
+theorem hyp2F1_continuousOn_closedBall (R : ℝ) (hR : R < 1) (hRnn : 0 ≤ R) :
+    ContinuousOn hyp2F1 {y : ℝ | |y| ≤ R} :=
+  (hyp2F1_tendstoUniformlyOn_closedBall R hR hRnn).continuousOn
+    (Filter.Eventually.frequently (Filter.Eventually.of_forall fun N =>
+      (continuous_partialSum N).continuousOn))
+
+/-- **Continuity of `₂F₁(1/2,1/2;1;·)` at every point of the open unit ball**
+(S5 ACT): each `x` with `|x| < 1` lies in the interior of the closed ball of
+radius `(|x| + 1)/2 < 1`, on which `hyp2F1` is continuous. -/
+theorem hyp2F1_continuousAt {x : ℝ} (hx : |x| < 1) : ContinuousAt hyp2F1 x := by
+  set R : ℝ := (|x| + 1) / 2 with hRdef
+  have hxR : |x| < R := by
+    rw [hRdef]; linarith
+  have hR : R < 1 := by
+    rw [hRdef]; linarith
+  have hRnn : 0 ≤ R := le_trans (abs_nonneg x) hxR.le
+  have hmem : {y : ℝ | |y| ≤ R} ∈ nhds x := by
+    refine Filter.mem_of_superset ?_ (fun y (hy : |y| < R) => le_of_lt hy)
+    exact (isOpen_lt continuous_abs continuous_const).mem_nhds hxR
+  exact (hyp2F1_continuousOn_closedBall R hR hRnn).continuousAt hmem
+
+/-- **Continuity on the open unit ball** (S5 ACT), packaged as `ContinuousOn`
+for downstream use with the axiomatized identity `ellipticK_eq_hyp2F1` (whose
+modulus square `k²` ranges over `[0, 1)`). -/
+theorem hyp2F1_continuousOn_ball : ContinuousOn hyp2F1 {y : ℝ | |y| < 1} :=
+  fun _ hy => (hyp2F1_continuousAt hy).continuousWithinAt
+
 end AmgmInequalityOQ04OQ03
