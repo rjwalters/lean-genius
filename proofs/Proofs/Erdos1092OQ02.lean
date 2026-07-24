@@ -42,6 +42,18 @@ It then goes further and pins down the set completely:
   forces the conclusion **iff** `k ≤ fThreshold r n`, i.e. the defining set is exactly the
   interval `{0, …, fThreshold r n}`.
 
+Finally, with the well-definedness theory in hand, this file **computes the threshold at
+the smallest non-degenerate point** and machine-checks a refutation the parent had only
+in prose:
+
+* `fThreshold_one_three` — **`fThreshold 1 3 = 2`**, the first exact value of the
+  threshold. Upper bound: `K₃` with the three-pair removal budget; lower bound: budget `2`
+  cannot kill all three `K₃` edges (disjoint pair-slot counting), and every non-`K₃`
+  3-vertex graph is explicitly 2-colorable.
+* `trivial_lower_bound_false` — `fThreshold 1 4 < 4 - 1`: the parent's removed
+  `f_trivial_lower` axiom (`n - 1 ≤ fThreshold r n`) is false, via `K₃` + isolated
+  vertex — previously only a prose remark, now a theorem.
+
 No new axioms; the parent file has 0 axioms and they are untouched (and unused here).
 -/
 
@@ -234,6 +246,248 @@ theorem fThresholdSet_eq_univ_of_card_le {r n : ℕ} (hn : n ≤ r + 1) :
   intro k G _
   exact hasColoring_of_card_le hn G
 
+/-
+## Exact values
+
+With the well-definedness theory complete (nonempty + bounded + attained +
+interval), the threshold can now actually be *computed* at the smallest
+non-degenerate point. `r = 1`, `n = 3` is the first pair in the good regime
+`1 ≤ r`, `r + 2 ≤ n`, and there `fThreshold 1 3 = 2`:
+
+* **Upper bound** (`three_notMem_fThresholdSet_one_three`): with budget `3`,
+  `K₃` satisfies the reduction hypothesis — removing the three ordered pairs
+  `(0,1), (0,2), (1,2)` makes every induced subgraph edgeless — yet `K₃` is
+  not `2`-colorable. So `3` (hence every `k ≥ 3`) is outside the defining set.
+* **Lower bound** (`two_mem_fThresholdSet_one_three`): with budget `2`, the
+  hypothesis *excludes* `K₃` — each removed ordered pair kills at most one of
+  `K₃`'s three edges, so two pairs cannot make the `univ`-induced subgraph
+  edgeless (an intersection-counting argument: the three pair-slots
+  `{(u,v),(v,u)}` are disjoint, each must meet `removed`). Every other
+  3-vertex graph misses some edge and is explicitly 2-colorable (three-case
+  split with concrete colorings `![0,1,1]`, `![0,1,0]`, `![0,0,1]`).
+
+The same machinery also formalizes the parent file's *prose-only* refutation
+of its removed `f_trivial_lower` axiom (`n - 1 ≤ fThreshold r n`): `K₃` plus
+an isolated vertex shows `fThreshold 1 4 ≤ 2 < 3 = n - 1`
+(`trivial_lower_bound_false`).
+-/
+
+/-- The fixed removal set killing every edge among three vertices: with these
+three ordered pairs removed, *no* edge on vertex set `Fin 3` survives. -/
+def killAll3 : Finset (Fin 3 × Fin 3) := {(0, 1), (0, 2), (1, 2)}
+
+/-- **Budget `3` does not force 3-vertex graphs to be 2-colorable: `K₃` is a
+witness.** Every induced subgraph of `K₃` becomes edgeless after removing the
+three pairs of `killAll3` (within budget `3`), so `K₃` satisfies the reduction
+hypothesis; but `K₃` is not `2`-colorable (`completeGraph_not_hasColoring`). -/
+theorem three_notMem_fThresholdSet_one_three : 3 ∉ fThresholdSet 1 3 := by
+  intro hmem
+  have hP : ∀ S : Finset (Fin 3), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (SGraph.completeGraph 3).adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (SGraph.completeGraph 3).symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => (SGraph.completeGraph 3).irrefl v h)) 3 1 := by
+    intro S
+    refine ⟨killAll3, by decide, ⟨fun _ => 0, ?_⟩⟩
+    rintro u v ⟨⟨_, _, huv⟩, hnuv, hnvu⟩ _
+    -- Each pair of distinct vertices is hit by `killAll3` in one order or the
+    -- other; the diagonal contradicts `K₃`-adjacency (`u ≠ v`).
+    fin_cases u <;> fin_cases v <;>
+      first
+        | exact huv rfl
+        | exact hnuv (by decide)
+        | exact hnvu (by decide)
+  exact completeGraph_not_hasColoring (by omega) (hmem (SGraph.completeGraph 3) hP)
+
+/-- Upper bound at the smallest non-degenerate point: `fThreshold 1 3 ≤ 2`
+(any member `k ≥ 3` of the defining set would drag `3` in by
+downward-closedness). -/
+theorem fThreshold_one_three_le_two : fThreshold 1 3 ≤ 2 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  push_neg at hlt
+  exact three_notMem_fThresholdSet_one_three
+    (fThresholdSet_downClosed (by omega) hk)
+
+/-- **Budget `2` forces 3-vertex graphs to be 2-colorable.** Key: with only two
+removed ordered pairs, `K₃`'s three edges cannot all be killed — each removed
+pair kills at most one edge, made precise by intersecting `removed` with the
+three disjoint pair-slots `{(u,v), (v,u)}`. So the reduction hypothesis
+excludes `K₃`, and every other 3-vertex graph misses some edge and is
+explicitly 2-colorable. -/
+theorem two_mem_fThresholdSet_one_three : 2 ∈ fThresholdSet 1 3 := by
+  intro G hP
+  obtain ⟨removed, hcard, c₁, hc₁⟩ := hP Finset.univ
+  -- Every edge of `G` is killed by some removed ordered pair: the reduced
+  -- `univ`-induced graph is `1`-colorable, hence edgeless.
+  have hkill : ∀ u v, G.adj u v → (u, v) ∈ removed ∨ (v, u) ∈ removed := by
+    intro u v hadj
+    by_contra h
+    push_neg at h
+    exact hc₁ u v ⟨⟨Finset.mem_univ u, Finset.mem_univ v, hadj⟩, h.1, h.2⟩
+      (Subsingleton.elim _ _)
+  by_cases h01 : G.adj 0 1
+  · by_cases h02 : G.adj 0 2
+    · by_cases h12 : G.adj 1 2
+      · -- `K₃` case: three edges need three distinct removed pairs, but
+        -- `removed.card ≤ 2`. Contradiction.
+        exfalso
+        have hm01 : (removed ∩ ({(0, 1), (1, 0)} : Finset (Fin 3 × Fin 3))).Nonempty := by
+          rcases hkill 0 1 h01 with h | h
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+        have hm02 : (removed ∩ ({(0, 2), (2, 0)} : Finset (Fin 3 × Fin 3))).Nonempty := by
+          rcases hkill 0 2 h02 with h | h
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+        have hm12 : (removed ∩ ({(1, 2), (2, 1)} : Finset (Fin 3 × Fin 3))).Nonempty := by
+          rcases hkill 1 2 h12 with h | h
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+          · exact ⟨_, Finset.mem_inter.mpr ⟨h, by decide⟩⟩
+        obtain ⟨a, ha⟩ := hm01
+        obtain ⟨b, hb⟩ := hm02
+        obtain ⟨c, hc⟩ := hm12
+        obtain ⟨haR, haE⟩ := Finset.mem_inter.mp ha
+        obtain ⟨hbR, hbE⟩ := Finset.mem_inter.mp hb
+        obtain ⟨hcR, hcE⟩ := Finset.mem_inter.mp hc
+        simp only [Finset.mem_insert, Finset.mem_singleton] at haE hbE hcE
+        -- The three witnesses live in disjoint slots, hence are distinct.
+        have hab : a ≠ b := by
+          rintro rfl
+          rcases haE with rfl | rfl <;> simp_all
+        have hac : a ≠ c := by
+          rintro rfl
+          rcases haE with rfl | rfl <;> simp_all
+        have hbc : b ≠ c := by
+          rintro rfl
+          rcases hbE with rfl | rfl <;> simp_all
+        have hsub : ({a, b, c} : Finset (Fin 3 × Fin 3)) ⊆ removed := by
+          intro p hp
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+          rcases hp with rfl | rfl | rfl
+          · exact haR
+          · exact hbR
+          · exact hcR
+        have h3 : 3 ≤ removed.card := by
+          calc 3 = ({a, b, c} : Finset (Fin 3 × Fin 3)).card := by
+                rw [Finset.card_insert_of_notMem (by simp [hab, hac]),
+                  Finset.card_insert_of_notMem (by simp [hbc]),
+                  Finset.card_singleton]
+              _ ≤ removed.card := Finset.card_le_card hsub
+        omega
+      · -- Edges only among `{01, 02}`: star at `0`, colour `0 ↦ 0`, `1, 2 ↦ 1`.
+        refine ⟨![0, 1, 1], fun u v hadj => ?_⟩
+        fin_cases u <;> fin_cases v <;>
+          first
+            | exact absurd hadj (G.irrefl _)
+            | exact absurd hadj h12
+            | exact absurd hadj (fun h => h12 (G.symm _ _ h))
+            | decide
+    · -- No `02` edge: colour `0, 2` alike.
+      refine ⟨![0, 1, 0], fun u v hadj => ?_⟩
+      fin_cases u <;> fin_cases v <;>
+        first
+          | exact absurd hadj (G.irrefl _)
+          | exact absurd hadj h02
+          | exact absurd hadj (fun h => h02 (G.symm _ _ h))
+          | decide
+  · -- No `01` edge: colour `0, 1` alike.
+    refine ⟨![0, 0, 1], fun u v hadj => ?_⟩
+    fin_cases u <;> fin_cases v <;>
+      first
+        | exact absurd hadj (G.irrefl _)
+        | exact absurd hadj h01
+        | exact absurd hadj (fun h => h01 (G.symm _ _ h))
+        | decide
+
+/-- Lower bound: `2 ≤ fThreshold 1 3`, via membership and boundedness. -/
+theorem two_le_fThreshold_one_three : 2 ≤ fThreshold 1 3 := by
+  rw [fThreshold_eq_sSup]
+  exact le_csSup (fThresholdSet_bddAbove (by omega) (by omega))
+    two_mem_fThresholdSet_one_three
+
+/-- **The first exact threshold value: `fThreshold 1 3 = 2`.** At the smallest
+non-degenerate point of the good regime, the Erdős–Hajnal–Szemerédi threshold
+is exactly `2`: a per-subgraph deletion budget of `2` forces `2`-colorability
+of every 3-vertex graph, and `2` is the largest budget that does. -/
+theorem fThreshold_one_three : fThreshold 1 3 = 2 :=
+  le_antisymm fThreshold_one_three_le_two two_le_fThreshold_one_three
+
+/-
+## The parent's removed `f_trivial_lower` axiom, refuted in Lean
+
+The parent file removed its axiom `n - 1 ≤ fThreshold r n` with a prose
+counterexample (`r = 1`, `n = 4`, `K₃` + isolated vertex). Here that
+refutation is machine-checked.
+-/
+
+/-- **`K₃` plus an isolated vertex**, on 4 vertices: vertices `0, 1, 2` are
+pairwise adjacent, vertex `3` is isolated. -/
+def trianglePlusIsolated : SGraph 4 where
+  adj u v := u ≠ v ∧ u ≠ 3 ∧ v ≠ 3
+  symm _ _ h := ⟨h.1.symm, h.2.2, h.2.1⟩
+  irrefl _ h := h.1 rfl
+
+/-- The same three-pair removal set, on 4 vertices: kills every edge of
+`trianglePlusIsolated` (whose edges all lie among `0, 1, 2`). -/
+def killAll4 : Finset (Fin 4 × Fin 4) := {(0, 1), (0, 2), (1, 2)}
+
+/-- **Budget `3` does not force 4-vertex graphs to be 2-colorable:** `K₃` plus
+an isolated vertex satisfies the reduction hypothesis with budget `3` (its
+only edges are the triangle's, all killed by `killAll4`), but contains a
+triangle, so it is not `2`-colorable (pigeonhole on the three colours of
+`0, 1, 2` in `Fin 2`). -/
+theorem three_notMem_fThresholdSet_one_four : 3 ∉ fThresholdSet 1 4 := by
+  intro hmem
+  have hP : ∀ S : Finset (Fin 4), CanReduceChromatic
+      (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ trianglePlusIsolated.adj u v)
+        (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, trianglePlusIsolated.symm u v h⟩)
+        (fun v ⟨_, _, h⟩ => trianglePlusIsolated.irrefl v h)) 3 1 := by
+    intro S
+    refine ⟨killAll4, by decide, ⟨fun _ => 0, ?_⟩⟩
+    rintro u v ⟨⟨_, _, huv⟩, hnuv, hnvu⟩ _
+    -- Pairs touching vertex `3` are non-adjacent; the rest are killed.
+    fin_cases u <;> fin_cases v <;>
+      first
+        | exact huv.1 rfl
+        | exact huv.2.1 rfl
+        | exact huv.2.2 rfl
+        | exact hnuv (by decide)
+        | exact hnvu (by decide)
+  obtain ⟨c, hc⟩ := hmem trianglePlusIsolated hP
+  -- The triangle `0, 1, 2` needs three distinct colours in `Fin 2`: pigeonhole.
+  have h01 := hc 0 1 ⟨by decide, by decide, by decide⟩
+  have h02 := hc 0 2 ⟨by decide, by decide, by decide⟩
+  have h12 := hc 1 2 ⟨by decide, by decide, by decide⟩
+  have v0 := (c 0).isLt
+  have v1 := (c 1).isLt
+  have v2 := (c 2).isLt
+  have e01 : (c 0).val ≠ (c 1).val := fun h => h01 (Fin.ext h)
+  have e02 : (c 0).val ≠ (c 2).val := fun h => h02 (Fin.ext h)
+  have e12 : (c 1).val ≠ (c 2).val := fun h => h12 (Fin.ext h)
+  omega
+
+/-- **`fThreshold 1 4 ≤ 2`** — the parent file's prose counterexample
+machine-checked. -/
+theorem fThreshold_one_four_le_two : fThreshold 1 4 ≤ 2 := by
+  rw [fThreshold_eq_sSup]
+  refine csSup_le' ?_
+  intro k hk
+  by_contra hlt
+  push_neg at hlt
+  exact three_notMem_fThresholdSet_one_four
+    (fThresholdSet_downClosed (by omega) hk)
+
+/-- The parent's removed axiom `f_trivial_lower` (`n - 1 ≤ fThreshold r n`) is
+**false**: at `r = 1`, `n = 4` the threshold is at most `2 < 3 = n - 1`. The
+"remove a spanning tree" intuition fails because `fThreshold` quantifies over
+*all* graphs, and `K₃` + isolated vertex needs only `3` deletions per subgraph
+while refusing `2`-colorability. -/
+theorem trivial_lower_bound_false : fThreshold 1 4 < 4 - 1 := by
+  have := fThreshold_one_four_le_two
+  omega
+
 #check @completeGraph_not_hasColoring
 #check @canReduce_removeAll
 #check @fThresholdSet_downClosed
@@ -245,5 +499,11 @@ theorem fThresholdSet_eq_univ_of_card_le {r n : ℕ} (hn : n ≤ r + 1) :
 #check @fThresholdSet_eq_Iic
 #check @hasColoring_of_card_le
 #check @fThresholdSet_eq_univ_of_card_le
+#check @three_notMem_fThresholdSet_one_three
+#check @two_mem_fThresholdSet_one_three
+#check @fThreshold_one_three
+#check @three_notMem_fThresholdSet_one_four
+#check @fThreshold_one_four_le_two
+#check @trivial_lower_bound_false
 
 end Erdos1092OQ02

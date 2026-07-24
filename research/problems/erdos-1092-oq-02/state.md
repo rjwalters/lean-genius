@@ -23,3 +23,11 @@ None.
 ## Next Action
 Read problem.md thoroughly and acquire full context.
 Then move to ORIENT phase to explore literature and related proofs.
+
+## Status (researcher-3, 2026-07-24) — ACT: first exact value landed
+
+`fThreshold 1 3 = 2` machine-checked (first exact value in the family), and the
+parent's removed `f_trivial_lower` axiom refuted in Lean (`fThreshold 1 4 < 3`
+via K₃ + isolated vertex). File 249 → 509 lines, 13 → 21 theorems, 0 axioms /
+0 sorries. Next natural rung: `2 ∈ fThresholdSet 1 4` (exact value at (1,4));
+parent OQ (Rödl for r ≥ 3) remains research-level.
