@@ -111,12 +111,20 @@
       "mathContext": "$e^{-bx^2} \\to 0$ and $x\\,e^{-bx^2} \\to 0$ as $x \\to \\infty$ for $b > 0$."
     },
     {
-      "id": "first-and-second-moments",
-      "title": "The First and Second Moments",
+      "id": "first-moment",
+      "title": "The First Moment (Elementary Primitive)",
       "startLine": 67,
+      "endLine": 89,
+      "summary": "first_half_moment evaluates ∫_(0,∞) x·e^(−bx²) = 1/(2b) from the explicit primitive −(2b)⁻¹·e^(−bx²): since the primitive vanishes at +∞ and equals −(2b)⁻¹ at 0, the half-line FTC returns the boundary value (2b)⁻¹ directly, with no √π anywhere.",
+      "mathContext": "$\\frac{d}{dx}\\!\\left[-\\tfrac{1}{2b}e^{-bx^2}\\right] = x e^{-bx^2}\\ \\Rightarrow\\ \\int_0^\\infty x e^{-bx^2} = \\tfrac{1}{2b}.$"
+    },
+    {
+      "id": "second-moment",
+      "title": "The Second Moment (Integration by Parts)",
+      "startLine": 90,
       "endLine": 142,
-      "summary": "first_half_moment evaluates ∫_(0,∞) x·e^(−bx²) = 1/(2b) from the explicit primitive −(2b)⁻¹·e^(−bx²). second_half_moment evaluates ∫_(0,∞) x²·e^(−bx²) = √(π/b)/(4b) by integrating the primitive g(x) = −(2b)⁻¹·x·e^(−bx²), reducing to (2b)⁻¹ times the parent's zeroth moment integral_gaussian_Ioi.",
-      "mathContext": "$\\frac{d}{dx}\\!\\left[-\\tfrac{1}{2b}xe^{-bx^2}\\right] = x^2 e^{-bx^2} - \\tfrac{1}{2b}e^{-bx^2}$."
+      "summary": "second_half_moment evaluates ∫_(0,∞) x²·e^(−bx²) = √(π/b)/(4b) by integrating the primitive g(x) = −(2b)⁻¹·x·e^(−bx²), whose derivative x²e^(−bx²) − (2b)⁻¹e^(−bx²) vanishes on integration; splitting the integral reduces the second moment to (2b)⁻¹ times the parent's zeroth moment integral_gaussian_Ioi, carrying the √π along.",
+      "mathContext": "$\\frac{d}{dx}\\!\\left[-\\tfrac{1}{2b}xe^{-bx^2}\\right] = x^2 e^{-bx^2} - \\tfrac{1}{2b}e^{-bx^2}\\ \\Rightarrow\\ \\int_0^\\infty x^2 e^{-bx^2} = \\tfrac{1}{2b}\\!\\int_0^\\infty\\! e^{-bx^2}.$"
     },
     {
       "id": "packaging-and-half-normal",
