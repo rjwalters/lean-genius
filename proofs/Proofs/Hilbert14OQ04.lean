@@ -287,4 +287,111 @@ theorem totalDegree_reynolds_le
 
 end Reynolds
 
+section ReynoldsSpan
+
+/-! ### S7a — the spanning layer: invariants are `k`-combinations of Reynolds
+images of monomials
+
+The first (linear-algebra) half of the Stage-5 extraction. In the non-modular
+case the projection property `reynolds_of_mem_fixedPoints` plus `k`-linearity
+of the Reynolds operator decompose EVERY invariant `p` as the `k`-combination
+of the Reynolds images of the monomials in `p`'s own support:
+
+  `p = ∑ m ∈ p.support, coeff m p • reynolds G (monomial m 1)`.
+
+Since support monomials have degree `≤ p.totalDegree`, the degree-`d` filtered
+piece of the invariant ring is `k`-spanned by
+`{reynolds (monomial m 1) : deg m ≤ d}` (`mem_span_reynolds_monomial_of_totalDegree_le`).
+
+What this does NOT yet give is Noether's bound proper: that the images with
+`deg m ≤ |G|` generate the invariants as a `k`-ALGEBRA. That multiplicative
+reduction (rewriting `reynolds (monomial m 1)` for `deg m > |G|` as a
+polynomial in lower-degree images — the symmetrization/power-sum trick,
+needing `|G|!` invertible in the classical argument) is the remaining S7b+
+leg and is deliberately not claimed here. -/
+
+variable (G) in
+/-- The Reynolds operator commutes with the `k`-scalar action
+(`SMulCommClass G k` moves the scalar past each orbit translate). -/
+theorem reynolds_smul_k (c : k) (p : MvPolynomial (Fin n) k) :
+    reynolds G (c • p) = c • reynolds G p := by
+  unfold reynolds
+  have h1 : ∀ g : G, g • (c • p) = c • (g • p) := fun g => smul_comm g c p
+  simp_rw [h1]
+  rw [← Finset.smul_sum, smul_comm ((Fintype.card G : k)⁻¹) c]
+
+variable (G) in
+/-- The Reynolds operator packaged as a `k`-linear endomorphism of the
+polynomial ring. -/
+noncomputable def reynoldsₗ :
+    MvPolynomial (Fin n) k →ₗ[k] MvPolynomial (Fin n) k where
+  toFun := reynolds G
+  map_add' := reynolds_add
+  map_smul' c p := reynolds_smul_k G c p
+
+@[simp] theorem reynoldsₗ_apply (p : MvPolynomial (Fin n) k) :
+    reynoldsₗ G p = reynolds G p :=
+  rfl
+
+/-- **The spanning decomposition**: in the non-modular case every invariant
+is the `k`-combination of the Reynolds images of the monomials in its own
+support (projection property + `k`-linearity). -/
+theorem eq_sum_reynolds_monomial (hG : (Fintype.card G : k) ≠ 0)
+    {p : MvPolynomial (Fin n) k}
+    (hp : p ∈ FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G) :
+    p = ∑ m ∈ p.support,
+      MvPolynomial.coeff m p • reynolds G (MvPolynomial.monomial m 1) := by
+  conv_lhs => rw [← reynolds_of_mem_fixedPoints hG hp, MvPolynomial.as_sum p]
+  rw [← reynoldsₗ_apply, map_sum]
+  refine Finset.sum_congr rfl fun m _ => ?_
+  rw [show (MvPolynomial.monomial m) (MvPolynomial.coeff m p)
+        = MvPolynomial.coeff m p • (MvPolynomial.monomial m) (1 : k) by
+      rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one],
+    map_smul, reynoldsₗ_apply]
+
+/-- **Degree-filtered spanning**: an invariant of total degree `≤ d` lies in
+the `k`-span of the Reynolds images of the monomials of degree `≤ d`.
+Combined with `totalDegree_reynolds_le`, the degree-`≤ d` piece of the
+invariant ring is exactly `k`-spanned by degree-`≤ d` Reynolds images. -/
+theorem mem_span_reynolds_monomial_of_totalDegree_le
+    (hG : (Fintype.card G : k) ≠ 0) {p : MvPolynomial (Fin n) k}
+    (hp : p ∈ FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G)
+    {d : ℕ} (hd : p.totalDegree ≤ d) :
+    p ∈ Submodule.span k
+      ((fun m : Fin n →₀ ℕ => reynolds G (MvPolynomial.monomial m 1)) ''
+        {m : Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ d}) := by
+  rw [eq_sum_reynolds_monomial hG hp]
+  refine Submodule.sum_mem _ fun m hm => ?_
+  exact Submodule.smul_mem _ _ (Submodule.subset_span
+    ⟨m, le_trans (MvPolynomial.le_totalDegree hm) hd, rfl⟩)
+
+/-- **Unfiltered spanning**: the invariant subalgebra, as a `k`-submodule, is
+contained in the span of all Reynolds images of monomials. -/
+theorem fixedPoints_le_span_reynolds_monomial
+    (hG : (Fintype.card G : k) ≠ 0) :
+    Subalgebra.toSubmodule
+        (FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G) ≤
+      Submodule.span k
+        (Set.range fun m : Fin n →₀ ℕ =>
+          reynolds G (MvPolynomial.monomial m 1)) := by
+  intro p hp
+  rw [eq_sum_reynolds_monomial hG (Subalgebra.mem_toSubmodule.mp hp)]
+  exact Submodule.sum_mem _ fun m _ =>
+    Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)
+
+omit [SMulCommClass G k (MvPolynomial (Fin n) k)] in
+/-- Under the graded hypothesis, each spanning generator
+`reynolds (monomial m 1)` has total degree at most `deg m` — so the
+degree-filtered span really is generated in the stated degrees. -/
+theorem totalDegree_reynolds_monomial_le
+    (h_graded : ∀ (g : G) (p : MvPolynomial (Fin n) k),
+      (g • p).totalDegree ≤ p.totalDegree)
+    (m : Fin n →₀ ℕ) :
+    (reynolds G (MvPolynomial.monomial m 1)).totalDegree
+      ≤ m.sum fun _ e => e :=
+  le_trans (totalDegree_reynolds_le h_graded _)
+    (le_of_eq (MvPolynomial.totalDegree_monomial m one_ne_zero))
+
+end ReynoldsSpan
+
 end Hilbert14OQ04
