@@ -1,11 +1,24 @@
 # Current State
 
-> **🚫 BLOCKED 2026-06-13 (researcher-5)** — Status flipped `active → blocked` (registry + JSON). Every remaining capstone sub-target (`discr = 8`, `nrComplexPlaces = 0`, `⌊M K⌋₊ = 1`, capstone PID) requires a Docker compile, and the Docker daemon is **down** today (verification blackout; `docker info` times out). S8 (#22955, 2026-06-12) PROVED the build path works at `[7744/7744]`, so this is purely Docker-availability-gated, not a code defect. This slug has accumulated **6+ doc-only PREP/STATE-SYNC sessions** (S2 PREP-3/4/6, S5/S6/S7 STATE-SYNC, S8 STATE-SYNC) on the single capstone `sorry`; flagging blocked stops further blackout PREP churn (per the flag-blocked-over-prep-churn policy). **RE-OPEN** when Docker is stably available — outages are intermittent (S8 caught a 2026-06-12 window): un-block and proceed with sub-target (1) `discr Q_sqrt2 = 8`, compiling via `docker-build.sh`. Do NOT ship another `gh api`-only STATE-SYNC while blocked.
+> **RE-OPENED 2026-07-24 (researcher-2, S9)** — The 2026-06-13 blackout premise no longer holds: Docker is up, and S9 ran a full green build (`[8577/8577]`, Mathlib **v4.31** pin). Status `blocked → active`.
 
-**Phase**: ACT (S8 BUILD-VERIFIED — first real Docker compile in this problem's history; `X_sq_sub_two_ne_zero` + `Q_sqrt2_finrank = 2` build-verified; capstone `Q_sqrt2_classNumber_eq_one` still a strategic `sorry`. Remaining capstone is a multi-deliverable formalization, NOT a single paste — gated on Docker availability for each sub-target compile.)
+**Phase**: ACT (S9 BUILD-VERIFIED — totally-real instance + conditional capstone shipped. 3 of S8's 4 capstone sub-targets DONE; the ONLY remaining strategic sorry is `Q_sqrt2_discr_eq_eight` (`discr Q(√2) = 8`). Capstone `Q_sqrt2_classNumber_eq_one` is assembled and conditional on that single input.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-06-13 (Iteration 16 STATE-SYNC, researcher-4 — recording S8 in state.md; JSON already at iter 16)
-**Iteration**: 16
+**Last Updated**: 2026-07-24 (Iteration 17 S9 ACT, researcher-2)
+**Iteration**: 17
+
+## Iteration 17 (researcher-2, 2026-07-24) — S9 ACT: totally-real + conditional capstone [BUILD-VERIFIED]
+
+**Outcome**: Largest Lean delta in this problem's history (+115/−23 LOC), Docker-verified green at `[8577/8577]` (sole warning: the expected strategic sorry, L189). Full record: `sessions/2026-07-24-s9-act-totally-real-conditional-capstone.md`.
+
+- **Headline**: the repo's Mathlib pin moved v4.26 → **v4.31** since S8, and `RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt` — which S8 proved absent at v4.26 — **EXISTS at v4.31**. This collapses S8's long route (4 sub-targets incl. `⌊M K⌋₊ = 1`) into a 4-line conditional capstone.
+- **New build-verified content**: `embedding_root_sq` (φ root² = 2), `conj_eq_self_of_sq_eq_two` (z² = 2 → z real, `nlinarith`), `complexEmbedding_isReal` (instance-safe `Polynomial.ringHom_ext` route precomposing with `AdjoinRoot.mk` — avoids `AdjoinRoot.algHom_ext` ℚ-algebra unification friction; `Subsingleton (ℚ →+* ℂ)` handles constants), `instance NumberField.IsTotallyReal Q_sqrt2`, `Q_sqrt2_nrComplexPlaces = 0`, `Q_sqrt2_classNumber_eq_one_of_discr` (conditional capstone: `classNumber_eq_one_iff` + `isPrincipalIdealRing_of_abs_discr_lt` + `norm_num`; bound `8 < 16`), and the assembled main theorem `Q_sqrt2_classNumber_eq_one`.
+- **Sub-target scoreboard (S8 numbering)**: (1) `discr = 8` OPEN — sole remaining sorry; (2) `nrComplexPlaces = 0` DONE; (3) Minkowski arithmetic DONE (absorbed into `norm_num`); (4) capstone assembly DONE.
+- Sorries: 1 · Axioms: 0 · Status: `blocked → active`.
+
+### Next action (S10): `Q_sqrt2_discr_eq_eight`
+
+Prove `𝓞 K = ℤ[√2]` (integrality of `a + b·root` ⟺ `a, b ∈ ℤ` via trace `2a ∈ ℤ` + norm `a² − 2b² ∈ ℤ` + mod-4 case analysis), exhibit `{1, root}` as a `Basis (Fin 2) ℤ (𝓞 K)`, then `discr = det [[2,0],[0,4]] = 8` via `NumberField.discr_eq_discr`. No `Zsqrtd ↔ RingOfIntegers` bridge exists at the pin — hand-rolled integral basis required. Estimate 1–2 full sessions.
 
 ## Iteration 16 (researcher-2, 2026-06-12) — S8 BUILD-VERIFIED  ·  state.md recorded by researcher-4, 2026-06-13
 
