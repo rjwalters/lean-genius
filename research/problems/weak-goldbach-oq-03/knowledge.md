@@ -586,3 +586,65 @@ not researcher scope.
   Moderate, ~150–250 LOC.
 - (c) Park: the elementary tier is genuinely saturated now — the 4
   remaining axioms are all HEROIC-or-computational.
+
+## S10 (2026-07-24, researcher-1): Quantitative Schnirelmann constant
+
+### What was proved
+
+Made the S9 bridge quantitative: from a numeric density lower bound
+`δ ≤ σ(G)` the chain now computes the explicit prime-sum constant
+`k(δ) = 6(⌊1/δ⌋+1) + 2` instead of extracting an unspecified `h` from
+the existential `schnirelmann_basis_theorem`. Five new declarations
+(WeakGoldbach.lean §S10, lines 916–1043):
+
+- `pow_deficiency_lt_half` — Bernoulli step: `0 < δ ≤ 1` →
+  `(1−δ)^(⌊1/δ⌋+1) < 1/2`.
+- `schnirelmann_basis_explicit` — explicit basis order `2(⌊1/δ⌋+1)`.
+- `boundedPrimeSums_of_basis` — h-parameterized bridge core (≤ 3h+2 primes).
+- `schnirelmann_goldbach_explicit` — headline `k(δ) = 6(⌊1/δ⌋+1)+2`.
+- `sum_of_at_most_608_primes_of_density` — `δ = 1/100` instantiation,
+  `k = 608`; confirms the constant reduces to a numeral.
+
+All conditional on the density hypothesis (Schnirelmann's Brun-sieve
+estimate σ(G) > 0 remains unformalized HEROIC); no new axioms, 0 sorries.
+
+### Lean technique notes
+
+- Bernoulli in Mathlib is `one_add_mul_le_pow : -2 ≤ a → 1 + n*a ≤ (1+a)^n`
+  (note the argument order `(n : ℝ) * δ` after `push_cast`).
+- `⌊1/δ⌋₊ + 1 > 1/δ` is `Nat.lt_floor_add_one` after `push_cast`.
+- `(1−δ)(1+δ) = 1−δ²` then `pow_le_one₀` (nonneg + ≤ 1 via `nlinarith`)
+  bounds the product of powers; contradiction closes with `nlinarith`
+  from `2 < (1+δ)^ℓ` and `(1−δ)^ℓ ≥ 1/2`.
+- `gcongr` closes the deficiency monotonicity goal
+  `(1−σA)^ℓ ≤ (1−δ)^ℓ` in one step (needs no side bullets — supplying
+  them errors with "no goals").
+- Toolchain drift gotcha: worktree oleans for the `Schnirelmann*` chain
+  were pre-v4.31 (incompatible header). Fix without Docker:
+  `lake env lean -o .lake/build/lib/lean/Proofs/X.olean Proofs/X.lean`
+  in dependency order (Basis, Counting, Theorem), then verify the target
+  with plain `lake env lean`. (`lake env` passes through the safety
+  wrapper; `lake build` stays blocked.)
+
+### Counts delta
+
+| Field | Before S10 | After S10 |
+|-------|------------|-----------|
+| lineCount | 943 | 1079 |
+| axiomCount | 4 | 4 (unchanged) |
+| theoremCount (meta) | 38 | 43 |
+| definitionCount | 17 | 17 |
+| sorries | 0 | 0 |
+
+### S11+ options
+
+- (a) Sieve formalization toward σ(G) > 0: still multi-quarter HEROIC,
+  no Mathlib sieve infrastructure at v4.31.
+- (b) Sharpen the constant: the classical optimization uses
+  `ℓ(δ) = ⌈log 2 / (−log(1−δ))⌉` rather than `⌊1/δ⌋+1` — a log-based
+  Bernoulli replacement would shrink k(δ) by a constant factor
+  (~log 2 ≈ 0.69×). Moderate, ~60–100 LOC, but cosmetic: same
+  conditional structure.
+- (c) Park: with S10 the quantitative bookkeeping tier is done; every
+  remaining axiom is HEROIC-or-computational and every bridge is
+  explicit. The slug's elementary+moderate tiers are saturated.

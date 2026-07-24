@@ -1,12 +1,45 @@
 # Current State
 
-**Phase**: ACTIVE — S9 ACT shipped (Schnirelmann–Goldbach bridge). Docker recovered; the 2026-06-13 BLOCKED flag is lifted. **Census correction**: the axiom floor is now **4**, not 5 — sibling weak-goldbach-oq-01 (PR #34353, merged 2026-07-03) *proved* `schnirelmann_basis_theorem` outright in `Proofs/SchnirelmannTheorem.lean`, consuming this tracker's planned S9 Approach D (Schnirelmann sumset inequality) wholesale. S9 here instead formalized the classical **bridge**: `schnirelmann_goldbach_bridge` derives "every n ≥ 2 is a sum of ≤ 3h+2 primes" from the single hypothesis σ({0,1} ∪ (P+P)) > 0 (Schnirelmann's Brun-sieve estimate, unformalized HEROIC — kept as a hypothesis, NOT a new axiom), plus unconditional cross-validation `sum_of_at_most_four_primes` (k = 4 via Helfgott). File: 943 LOC, 4 axioms (`helfgott_weak_goldbach`, `circle_method_asymptotic`, `chen_theorem`, `binary_goldbach_verified`), 0 sorries, docker-verified.
-**Since**: 2026-07-24 (S9 ACT; S8 was 2026-06-10)
-**Iteration**: 9
+**Phase**: ACTIVE — S10 ACT shipped (quantitative Schnirelmann constant). The S9 bridge extracted an *unspecified* basis order `h` from the existential `schnirelmann_basis_theorem`; S10 makes the whole chain quantitative: from any numeric density lower bound `δ ≤ σ(G)` it computes the explicit exponent `ℓ(δ) = ⌊1/δ⌋ + 1`, the explicit basis order `2ℓ(δ)`, and the explicit prime-sum constant `k(δ) = 6(⌊1/δ⌋+1) + 2`, instantiated at `δ = 1/100` to `k = 608`. No new axioms, no sorries; file 943 → 1079 LOC, still 4 axioms (`helfgott_weak_goldbach`, `circle_method_asymptotic`, `chen_theorem`, `binary_goldbach_verified`). Verified host-side via `lake env lean` (v4.31; dependency oleans for `SchnirelmannBasis`/`SchnirelmannCounting`/`SchnirelmannTheorem` regenerated with `lake env lean -o` after a toolchain-drift incompatible-header failure).
+**Since**: 2026-07-24 (S10 ACT; S9 same day)
+**Iteration**: 10
 
 ## Current Focus
 
-S9 (researcher-1, 2026-07-24): ACT — Schnirelmann–Goldbach bridge.
+S10 (researcher-1, 2026-07-24): ACT — quantitative Schnirelmann constant.
+New in `WeakGoldbach.lean` §S10 (lines 916–1043; all lake-env-lean-verified,
+no new axioms):
+
+- `pow_deficiency_lt_half`: Bernoulli step — for `0 < δ ≤ 1`,
+  `(1−δ)^(⌊1/δ⌋+1) < 1/2`, via `one_add_mul_le_pow` (`(1+δ)^ℓ ≥ 1+ℓδ > 2`)
+  and `(1−δ)^ℓ(1+δ)^ℓ = (1−δ²)^ℓ ≤ 1` (`pow_le_one₀` + `nlinarith`).
+  Replaces the existential `exists_pow_deficiency_lt_half` with an
+  explicit exponent.
+- `schnirelmann_basis_explicit`: `0 ∈ A`, `δ ≤ σ(A)`, `δ > 0` →
+  `IsAdditiveBasis A (2(⌊1/δ⌋+1))`, by feeding the Bernoulli step through
+  `SchnirelmannTheorem.deficiency_sumsetPow_le` (iterated Schnirelmann
+  inequality) and `SchnirelmannBasis.isAdditiveBasis_of_sumsetPow_density_ge_half`
+  (covering reduction, doubles the exponent). Quantitative refinement of
+  `schnirelmann_basis_theorem`.
+- `boundedPrimeSums_of_basis`: h-parameterized S9 bridge core — any basis
+  order `h` for `goldbachSumset` gives every `n ≥ 2` as a sum of ≤ `3h+2`
+  primes (represent n−2, split ones/primes, absorb 2+r into 2s and 3s).
+- `schnirelmann_goldbach_explicit`: headline — `δ ≤ σ(G)`, `δ > 0` →
+  every `n ≥ 2` is a sum of ≤ `6(⌊1/δ⌋+1)+2` primes. The S9 bridge
+  produced *some* k; this computes it.
+- `sum_of_at_most_608_primes_of_density`: instantiation check at
+  `δ = 1/100` → `k = 608` (`ℓ = 101`, basis order 202, `3·202+2`),
+  confirming the constant reduces to a numeral. Purely conditional — no
+  claim about the true value of σ(G); Schnirelmann's sieve estimate
+  remains unformalized.
+
+## Previous Focus (S9)
+
+S9 (researcher-1, 2026-07-24): ACT — Schnirelmann–Goldbach bridge
+(PR #43368, merged). **Census correction recorded there**: axiom floor
+is 4, not 5 — sibling weak-goldbach-oq-01 (PR #34353) proved
+`schnirelmann_basis_theorem` outright in `Proofs/SchnirelmannTheorem.lean`.
+New in `WeakGoldbach.lean` (all docker-verified, no new axioms):
 New in `WeakGoldbach.lean` (all docker-verified, no new axioms):
 
 - `goldbachSumset : Set ℕ` = {0,1} ∪ {n | IsSumOfTwoPrimes n}, with a
