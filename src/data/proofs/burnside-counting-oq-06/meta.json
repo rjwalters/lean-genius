@@ -168,8 +168,8 @@
     "summary": "Specializes the gallery's divisor-form cyclic necklace count (#necklaces)·n = ∑_{d∣n} φ(n/d)·k^d to a prime bead length n = p, where the divisor sum collapses to the two terms (#necklaces)·p = φ(p)·k + k^p (necklaces_mul_prime_eq). As the left side is a multiple of p and φ(p) + 1 = p, one factors k^p − k = p·(#necklaces − k), giving Fermat's little theorem p ∣ k^p − k (fermat_little) with #necklaces − k as an explicit witness, the congruence k^p ≡ k [MOD p] (fermat_little_modEq), and the field identity (k : ZMod p)^p = k (pow_card_eq). Fully verified with 0 sorries and 0 axioms.",
     "implications": "Turns the classical 'necklace proof' of Fermat's little theorem into a machine-checked, axiom-free corollary of the gallery's own Burnside orbit count, with the number of non-constant necklaces serving as the divisibility certificate. Recovering (k : ZMod p)^p = k from the count, instead of from Mathlib's algebraic ZMod.pow_card, links the combinatorial orbit-counting line to the finite-field Frobenius proof of the same congruence.",
     "openQuestions": [
-      "Extend the prime-length specialization to a prime-power or square-free modulus to recover Euler's theorem k^{φ(n)} ≡ 1 (for gcd(k,n)=1) or the Korselt/Carmichael criterion from the same divisor-sum count.",
-      "Pair the totient necklace count with its Möbius companion (1/n)·∑_{d∣n} μ(d) k^{n/d} (aperiodic necklaces / Lyndon words) and show both specialize at a prime p to k^p ≡ k, exhibiting the Fermat congruence from the two classical closed forms."
+      "**(Resolved by `burnside-counting-oq-06-oq-01`.)** Extend the prime-length specialization to a prime-power or square-free modulus to recover Euler's theorem k^{φ(n)} ≡ 1 (for gcd(k,n)=1) or the Korselt/Carmichael criterion from the same divisor-sum count.",
+      "**(Resolved by `burnside-counting-oq-06-oq-02`.)** Pair the totient necklace count with its Möbius companion (1/n)·∑_{d∣n} μ(d) k^{n/d} (aperiodic necklaces / Lyndon words) and show both specialize at a prime p to k^p ≡ k, exhibiting the Fermat congruence from the two classical closed forms."
     ]
   },
   "crossReferences": [
@@ -184,6 +184,18 @@
       "targetId": "burnside-counting",
       "relationship": "extends",
       "description": "Adds the number-theoretic payoff of the root entry's Burnside/necklace-counting framework: Fermat's little theorem p ∣ k^p − k as the prime-length case of the cyclic orbit count."
+    },
+    {
+      "id": "xref-burnside-oq0601-totient-modulus",
+      "targetId": "burnside-counting-oq-06-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers openQuestions[0] above: extends the prime-length collapse to an arbitrary modulus n, proving the totient congruence n ∣ ∑_{d∣n} φ(n/d)·k^d and its prime-power form, which degenerates to this entry's Fermat congruence at n = p."
+    },
+    {
+      "id": "xref-burnside-oq0602-mobius-lyndon",
+      "targetId": "burnside-counting-oq-06-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers openQuestions[1] above: supplies the Möbius/Lyndon-word companion count and shows it also collapses to the same Fermat congruence k^p ≡ k (mod p) at a prime p."
     }
   ],
   "leanFile": {
