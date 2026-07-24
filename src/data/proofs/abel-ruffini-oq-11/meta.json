@@ -65,11 +65,20 @@
       "mathContext": "Galois' criterion: an equation is solvable by radicals iff its Galois group is a solvable group."
     },
     {
-      "id": "single-equations",
-      "title": "Single Pure Equations",
+      "id": "pure-power-equation",
+      "title": "A Single Pure Equation is Solvable",
       "startLine": 42,
+      "endLine": 46,
+      "summary": "gal_pow_sub_C_isSolvable re-exposes Mathlib's gal_X_pow_sub_C_isSolvable: Xⁿ = a has solvable Galois group for every n and every a — extracting one radical never destroys solvability. This is the base case the finite-product closure inducts on.",
+      "mathContext": "$\\mathrm{IsSolvable}\\,(X^n - C\\,a).\\mathrm{Gal}$ for every $n : \\mathbb{N}$, $a \\in F$."
+    },
+    {
+      "id": "roots-of-unity",
+      "title": "Roots of Unity are Solvable",
+      "startLine": 47,
       "endLine": 56,
-      "summary": "gal_pow_sub_C_isSolvable: Xⁿ = a has solvable Galois group (one root extraction never destroys solvability). gal_pow_sub_one_isSolvable: the n-th roots of unity Xⁿ = 1 likewise (abelian, hence solvable)."
+      "summary": "gal_pow_sub_one_isSolvable re-exposes Mathlib's gal_X_pow_sub_one_isSolvable: the n-th roots of unity Xⁿ = 1 have solvable (indeed abelian) Galois group — the other single-equation building block, distinct from the general Xⁿ = a case above since the splitting field here is abelian over F.",
+      "mathContext": "$\\mathrm{IsSolvable}\\,(X^n - 1).\\mathrm{Gal}$; the Galois group of the cyclotomic-type extension is abelian, hence solvable."
     },
     {
       "id": "finite-product-closure",
