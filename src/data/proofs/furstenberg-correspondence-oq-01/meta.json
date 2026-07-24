@@ -247,7 +247,7 @@
   "leanFile": {
     "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
     "lineCount": 945,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 9,
     "theoremCount": 32
@@ -286,5 +286,9 @@
       "venue": "Princeton University Press"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "status": "verified",
+  "badge": "original",
+  "axiomCount": 0,
+  "assumptions": "0 sorries, 0 axioms (fully machine-checked as of S14, 2026-07-24). The former local axiom seqCompact_probabilityMeasure_cantor — sequential compactness of probability measures on Cantor space in the topology of weak convergence — is now proved from Mathlib v4.31's Prokhorov development (CompactSpace (ProbabilityMeasure E) for compact E, Mathlib.MeasureTheory.Measure.Prokhorov) plus Lévy–Prokhorov metrizability and CompactSpace.tendsto_subseq. All other components (shift dynamics, cylinder sets, k-fold return property, orbit-density formula, Cesàro measures, density lower bound, T-invariance at the limit via Portmanteau) were already proved from Mathlib."
 }
