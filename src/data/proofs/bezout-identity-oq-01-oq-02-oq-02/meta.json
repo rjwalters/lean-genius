@@ -49,7 +49,8 @@
       "The right notion of primitivity for the transitivity question is the coordinate-free dual: ∃ w, w ⬝ᵥ v = 1. Unlike 'gcd of entries = 1', this form makes SLₙ(ℤ)-invariance a two-line computation, because the dual transforms contravariantly by ↑ₘA⁻¹.",
       "SLₙ(ℤ)-invariance is the necessity half of transitivity: primitivity is a NECESSARY condition for a vector to be SLₙ(ℤ)-equivalent to a basis vector. The sufficiency (every primitive vector is reachable) is the Euclidean-descent construction, discharged here by strong induction on the ℓ¹ measure ∑ₖ|vₖ|.",
       "The elementary moves of that descent are exactly Mathlib's transvections, which already carry determinant 1; packaging them as transvectionSL means the whole descent is automatically a product of SLₙ(ℤ) elements, sidestepping the block-embedding bookkeeping of a naive 2×2-in-n×n approach.",
-      "Every transvection preserves primitivity as a special case of the general SLₙ(ℤ) lemma — a consistency check that the descent never leaves the primitive locus."
+      "Every transvection preserves primitivity as a special case of the general SLₙ(ℤ) lemma — a consistency check that the descent never leaves the primitive locus.",
+      "The dimension hypothesis n ≥ 2 in the transitivity theorems is machine-checked as genuine, not asserted as a proof artifact: SLₙ(ℤ) at n = 1 is proved trivial (coe_sl_fin_one_eq_one), so it acts as the identity on every vector (sl_fin_one_mulVec) and its orbits are singletons (sl_one_equiv_iff_eq), keeping the two primitive vectors (1) and (-1) apart (not_exists_sl_fin_one_single_neg). Enlarging SLₙ(ℤ) to GLₙ(ℤ) — admitting the reflection !![-1], determinant -1 — merges the two orbits (exists_unimodular_mulVec_neg_single_fin_one), pinning the obstruction down to exactly the determinant-sign constraint and nothing deeper."
     ],
     "prerequisites": [
       "Matrix.SpecialLinearGroup and its coercion, SpecialLinearGroup.coe_mul / coe_one",
