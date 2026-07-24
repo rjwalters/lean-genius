@@ -287,5 +287,53 @@
       "combinatorics",
       "proof composition"
     ]
+  },
+  {
+    "id": "ann-e751-not-isacyclic",
+    "proofId": "erdos-751",
+    "range": {
+      "startLine": 506,
+      "endLine": 532
+    },
+    "type": "insight",
+    "title": "Minimum Degree ≥ 2 Forces a Cycle (Axiom-Free Engine)",
+    "content": "`not_isAcyclic_of_two_le_degree`: a finite nonempty graph where every vertex has at least 2 neighbours cannot be acyclic. If it were, every connected component would be a tree (`IsAcyclic.isTree_connectedComponent`); the component containing any vertex is nontrivial (the vertex has a neighbour), so by `IsTree.exists_vert_degree_one_of_nontrivial` it has a degree-1 vertex — but that vertex's degree in the component equals its degree in `G` (`degree_toSimpleGraph_eq`), contradicting the hypothesis. This is the engine behind the axiom-free half of Erdős #751: it needs only min degree ≥ 2, weaker than the ≥ 3 the Bondy-Vince axiom requires, and gives the tree-theoretic 'a cycle exists' rather than Bondy-Vince's 'two close cycles exist'.",
+    "mathContext": "$\\forall v,\\ \\deg_G(v) \\geq 2 \\Rightarrow \\lnot\\,\\mathrm{IsAcyclic}(G)$, via: acyclic $\\Rightarrow$ components are trees $\\Rightarrow$ a nontrivial tree has a degree-1 vertex $\\Rightarrow$ contradicts $\\deg \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsAcyclic.isTree_connectedComponent",
+      "IsTree.exists_vert_degree_one_of_nontrivial",
+      "connected components",
+      "tree degree-1 vertex"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsAcyclic",
+      "SimpleGraph.ConnectedComponent",
+      "SimpleGraph.IsTree"
+    ]
+  },
+  {
+    "id": "ann-e751-cycle-exists",
+    "proofId": "erdos-751",
+    "range": {
+      "startLine": 560,
+      "endLine": 593
+    },
+    "type": "theorem",
+    "title": "Axiom-Free Corollary: A 4-Chromatic Graph Has a Cycle",
+    "content": "`erdos_751_cycle_exists` chains the (proved, axiom-free) chromatic-degeneracy lemma `four_chromatic_subgraph_minDeg` — χ(G)=4 gives a nonempty vertex set with induced min degree ≥ 3 — through `not_isAcyclic_of_two_le_degree` (3 ≥ 2 suffices) to conclude the induced subgraph, and hence `G` itself (`cycleLengths_induce_subset`), has a cycle. `not_isAcyclic_of_four_chromatic` and `three_le_girth_of_four_chromatic` (via Mathlib's `SimpleGraph.three_le_girth`) are immediate corollaries. `#print axioms erdos_751_cycle_exists` reports foundational axioms only — no `bondy_vince_theorem`. This does not replace the full Bondy-Vince conclusion (two cycles differing by ≤ 2), which still rests on the axiom, but it shows the weaker existence claim needs no unproved import.",
+    "mathContext": "$\\chi(G) = 4 \\Rightarrow (\\mathrm{cycleLengths}\\,G).\\mathrm{Nonempty}$, proved without `bondy_vince_theorem` — chained from `four_chromatic_subgraph_minDeg` through `not_isAcyclic_of_two_le_degree`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom elimination",
+      "chromatic-degeneracy lemma",
+      "cycle spectrum nonemptiness",
+      "girth lower bound"
+    ],
+    "prerequisites": [
+      "four_chromatic_subgraph_minDeg",
+      "not_isAcyclic_of_two_le_degree",
+      "cycleLengths_induce_subset"
+    ]
   }
 ]
