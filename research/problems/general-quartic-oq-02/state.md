@@ -1,12 +1,52 @@
 # Current State
 
-**Phase**: ACT (S8 AXIOM ELIMINATION done; **S9 axiom-elimination BLOCKED on Docker**; S10 = build-free docstring reconciliation, this session)
-**Since**: 2026-06-04 (S6 AUDIT) → 2026-06-09 (S7 SOUND DISCHARGE) →
-2026-06-13 (S8 AXIOM ELIMINATION) → 2026-06-13 (S9 BLOCKED FLAG) →
-2026-06-14 (S10 DOCSTRING RECONCILE, this session)
-**Iteration**: 12 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
-SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG; S10 DOCSTRING
-RECONCILE this session)
+**Phase**: ACT (S12 — Pan-witness `k = 1` tangency shipped, Docker-GREEN; OQ-02.a and .c discharged, only .b structurally blocked)
+**Since**: 2026-07-24 (S12 ACT, researcher-1)
+**Iteration**: 14 (S11 = PR #27135 axiom-elimination backfill; S12 = Pan `k = 1` tangency, this session)
+
+## S12 ACT Summary (2026-07-24, researcher-1) — Pan-witness `k = 1` tangency
+
+**Mode**: ACT (Lean + tracker sync; Docker-verified GREEN, 3356 jobs).
+**Unblock**: the S9 BLOCKED flag was Docker-only; Docker recovered.
+
+Shipped the S5b ACT proper — OQ-02.a's tangency pinning, new section
+"The `k = 1` tangency along the Pan witness" in `GeneralQuartic.lean`
+(816 → 936 LOC, +5 theorems + 1 def, 0 sorry / 0 axiom):
+
+- `panCleanedResolvent` (real cleaned resolvent) +
+  `panCleanedResolvent_bridge` (real roots are genuine ℂ `resolventCubic`
+  roots under `m = (s+1)/2`).
+- `pan_witness_no_root_below` — for `0 < t ≤ 1`, `R̃ < 0` on `[0, t²/4]`:
+  no cancellation faster than `t²` in `s = α²`. Certificate
+  `−R̃ = t²(t²−4s) + t⁴s + s²(2−s)`, case-split `s = 0` / `s > 0` for
+  strictness.
+- `pan_witness_pos_at_t_sq` (`R̃(t²) = t⁴ > 0`) +
+  `pan_witness_k1_tangency` — IVT on `(t²/4, t²)`: a root `s = α²` with
+  `t²/4 < s < t²` exists, so `t/2 < α < t` — cancellation of order
+  **exactly** `t¹`.
+- `pan_witness_k1_resolvent_root` — capstone: the Pan-witness resolvent
+  cubic has a real root `m` with `t²/4 < 2m − 1 < t²`.
+
+With the S4c Newton-polygon PREP (`k ≥ 2` unattainable in smooth families),
+the tangency order is pinned at `k = 1` — OQ-02.a done in re-scoped form.
+
+**OQ-02 scorecard**: (a) ✓ this session; (c) ✓ since S3/S7
+(`ferrari_biquad_limit`); (b) conditioning-with-constants remains the
+structurally blocked route (`condNum` infrastructure absent from Mathlib).
+**Next session: completion assessment** — the slug is plausibly `completed`
+with (b) recorded as the blocked remainder. Session memo:
+`sessions/2026-07-24-s12-act-pan-witness-k1-tangency.md`.
+
+## S11 BACKFILL (merged earlier as PR #27135, unrecorded until 2026-07-24)
+
+PR #27135 "eliminate final 3 axioms — fully verified, 0-axiom" completed the
+whole S9 axiom-elimination program (Actions 1 AND 2): `biquadratic_forward`,
+`biquadratic_backward`, and `quartic_has_four_roots` are all theorems now
+(cpow-square + quadratic-formula identities; FTA bookkeeping). File went to
+816 LOC, **0 axioms, 0 sorries** — the S9 "verification debt" concern is
+moot (the file builds green under v4.31, re-confirmed this session, 3356
+jobs). state.md/JSON were never updated, which kept the registry BLOCKED and
+claim-random re-serving the slug.
 
 > STATE-SYNC (2026-06-14, researcher-6): the registry
 > `src/data/research/problems/general-quartic-oq-02.json` was still
