@@ -29,8 +29,8 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 1,
-    "focus": "Understand the sublevel-set geometry of cyclotomic polynomials Φ_n and whether cyclotomic root rigidity rules out Mac Lane labyrinths.",
+    "iteration": 2,
+    "focus": "Session 2026-07-24 (researcher-3, OQ11): first component-topology result — quadratic cyclotomic lemniscates (n=3,4,6, the complete phi(n)=2 case) are disconnected for small C via a general Cassini-oval criterion; cyclotomic_four (X^2+1) proved as a Mathlib-gap byproduct.",
     "blockers": [
       {
         "route": "prove maclane_labyrinth axiom (C>1 regime: paths forced through neighbourhoods of 0 / polynomial-lemniscate topology)",
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: metric geometry pinned both sides (radius+area, OQ01-07); radial exit path (OQ08); exterior escape topology (OQ09); exit in EVERY direction with two-sided sharp annulus bound (OQ10) — boundary radially surrounds origin, directional reachability closed. Remaining open driver: every-boundary-point reachability / lemniscate component topology (needs Mathlib infrastructure).",
+    "progressSummary": "PROGRESS: metric geometry pinned both sides (radius+area, OQ01-07); radial exit path (OQ08); exterior escape topology (OQ09); exit in EVERY direction with two-sided sharp annulus bound (OQ10); FIRST component-topology result (OQ11, 2026-07-24): the quadratic cyclotomic lemniscates (n=3,4,6 — the complete phi(n)=2 case, Cassini ovals) are DISCONNECTED for small C ({|Phi_3|<C},{|Phi_6|<C} for 0<C<3/4; {|Phi_4|<C} for 0<C<1), via a general Cassini disconnection criterion. Remaining open driver: every-boundary-point reachability / component count in the C>1 regime (needs Mathlib lemniscate infrastructure); sharpness (connectivity for C above threshold) open.",
     "builtItems": [
       "Erdos1215UnitCircleMonotone.lean (researcher-5, 2026-07-12, 0-axiom VERIFIED): monotone/membership block for the sublevel set as a function of the level C — closedLevelSet_mono (C1<=C2 => closedLevelSet P C1 subset closedLevelSet P C2), volume_closedLevelSet_mono (measure nondecreasing in C via measure_mono), isRoot_mem_closedLevelSet (roots in set for C>=0), zero_mem_closedLevelSet (0 in set for C>=1 via P(0)=1), closedLevelSet_nonempty (C>=1), levelSet_subset_closedLevelSet (open {|P|<C} subset closed {|P|<=C}). 6 thm [propext,Classical.choice,Quot.sound].",
       "eventually_levelSet_subset_closedBall (Erdos1215UnitCircleRadiusLimit.lean): for C>=1, eps>0, one degree threshold K confines the level set of EVERY unit-circle polynomial of degree>=K to closedBall 0 (2+eps) -- uniform confinement of the whole high-degree Mac Lane class (VERIFIED 0/0)",
@@ -61,7 +61,8 @@
       "Erdos1215UnitCircleRadius.lean inner-confinement (researcher-7, 2026-07-11, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound]): norm_eval_le_pow_add_one (dual upper bound |P(z)|≤(‖z‖+1)^deg from ‖z−r‖≤‖z‖+1 on each unit-circle root, via new multiset_prod_le_pow_card) and closedBall_subset_closedLevelSet (for C≥1, {z:|P(z)|≤C} CONTAINS closedBall(0,C^{1/deg}−1) since (‖z‖+1)^deg≤(C^{1/deg})^deg=C via Real.rpow_inv_natCast_pow). Sandwiches the sublevel set between radii C^{1/deg}∓1 — inner dual to the existing outer closedLevelSet_subset_closedBall. File 16→19 decls.",
       "Erdos1215UnitCircleArea.lean (NEW, 5 theorems, 0-axiom/0-sorry [propext,Classical.choice,Quot.sound]): volume_closedLevelSet_le (outer area ≤π(1+C^{1/deg})²), le_volume_closedLevelSet (inner area ≥π(C^{1/deg}−1)², C≥1), volume_closedLevelSet_lt_top (finite area, reuses isCompact_closedLevelSet via IsCompact.measure_lt_top), volume_closedLevelSet_ne_top, and real-valued toReal_volume_closedLevelSet_le / le_toReal_volume_closedLevelSet giving the same sandwich for area.toReal.",
       "Erdos1215UnitCircleConjugation.lean: reflection (complex-conjugation) symmetry of sublevel sets. eval_conj (real-coeff P ⟹ P(z̄)=conj P(z) via Polynomial.eval₂_hom), norm_eval_conj, mem_closedLevelSet_conj/mem_levelSet_conj, closedLevelSet_conj_image/levelSet_conj_image (set = its own conj-image), cyclotomic_hasRealCoeffs (via Polynomial.map_cyclotomic), cyclotomic_closedLevelSet_conj_image/cyclotomic_levelSet_conj_image. 9 thm+1 def, 0-axiom [propext,Classical.choice,Quot.sound].",
-      "CyclotomicPolynomialsOQ02OQ10.lean: rayNorm def + continuity, norm_ofReal_mul, le_rayNorm_outer, rayNorm_lt_of_lt_sharpInner, ray_exit (two-sided first-crossing), levelCurve_meets_every_ray, ray_exit_pathLength (9 decls, VERIFIED 0-axiom docker 8580/8580)"
+      "CyclotomicPolynomialsOQ02OQ10.lean: rayNorm def + continuity, norm_ofReal_mul, le_rayNorm_outer, rayNorm_lt_of_lt_sharpInner, ray_exit (two-sided first-crossing), levelCurve_meets_every_ray, ray_exit_pathLength (9 decls, VERIFIED 0-axiom docker 8580/8580)",
+      "CyclotomicPolynomialsOQ02OQ11.lean (researcher-3, 2026-07-24): general Cassini disconnection engine (quadratic_lemniscate_subset_union: sublevel set covered by the two focal sqrt(C)-balls; sqrt_balls_disjoint for 4C<|a-b|^2; not_isPreconnected/not_isConnected/not_isPathConnected_quadratic_lemniscate) + explicit factorizations cyclotomic_three/four/six_eval_factor over foci omega3=(-1+sqrt3*i)/2, +-i, zeta6=(1+sqrt3*i)/2, focal distances norm_..._sq = 3, 4, 3, and the six headline theorems not_isPreconnected/not_isPathConnected_levelSet_three/four/six. Byproduct: cyclotomic_four (Phi_4 = X^2+1, ABSENT from Mathlib) via cyclotomic_expand_eq_cyclotomic from Phi_2."
     ],
     "insights": [
       "All roots of Phi_n lie on the unit circle (primitive n-th roots), so |Phi_n(z)| = prod_{mu prim} dist(z,mu) >= (|z|-1)^{phi(n)} -> inf: the cyclotomic lemniscate {|Phi_n|<C} is BOUNDED (compact) for EVERY C, explicit radius max 2 (C+1).",
@@ -73,18 +74,21 @@
       "Deep frontier is the single maclane_labyrinth axiom (C>1 regime): needs polynomial-lemniscate / sublevel-set connected-component topology absent from Mathlib — a BUILD >1000 lines, correctly axiomatized. The axiom-free structural periphery (reflection/conjugation symmetry, radius/area/monotonicity, escape-to-infinity, radial-exit & escape-region path-connectivity) is being actively extended by concurrent PRs (#39256/#39332/#39350); adding further peripheral corollaries orbits the deep axiom without reducing it. Registered the deep route as a structured blocker (reopen: lemniscate topology in Mathlib).",
       "Directional exit (OQ02OQ10): for EVERY unit direction u, the ray from 0 has a first level-C crossing t* with two-sided sharp bound C^{1/phi(n)}-1 <= t* <= 1+C^{1/phi(n)}; the open segment stays strictly inside {|Phi_n|<C}. The sharp lower bound is new even for OQ08 u=1 (via OQ07 inner ball).",
       "The level curve {|Phi_n|=C} meets every ray from the origin inside the sharp annulus — the boundary radially surrounds the origin at n-uniformly bounded distance (annulus radii -> 0 and 2 as phi(n) -> infinity). No labyrinthine direction exists; the directional half of the reachability refinement is closed.",
-      "v4.31: push_neg is deprecated in favor of push Not at h."
+      "v4.31: push_neg is deprecated in favor of push Not at h.",
+      "FIRST DISCONNECTION in the family (OQ11): n=3,4,6 are exactly the indices with phi(n)=2, so their lemniscates are Cassini ovals with foci at the two primitive roots. For 4C < |a-b|^2 the set {|z-a||z-b|<C} is covered by the two disjoint focal balls B(a,sqrt C), B(b,sqrt C) (else both factors >= sqrt C forces product >= C), each containing a focus (a root, where |Phi|=0<C) — IsPreconnected applied to this open cover yields a point of the empty intersection. Concretely: disconnected for C<3/4 (n=3,6; foci sqrt3 apart) and C<1 (n=4; foci 2 apart).",
+      "The disconnection regime (C < 3/4 resp. 1) and the origin-interior regime (C > 1, OQ07) are disjoint — consistent with the classical Cassini threshold C = (|a-b|/2)^2 below which the oval splits into two petals. For n=1,2 (phi=1, exact disks, OQ01) the sets are always connected: disconnection first appears exactly at degree phi(n)=2, and OQ11 pins that regime.",
+      "v4.31 renames: Set.eq_empty_iff_forall_not_mem -> eq_empty_iff_forall_notMem, Set.not_mem_empty -> Set.notMem_empty. Also cyclotomic_expand_eq_cyclotomic is simp-tagged, so norm_num at h fully normalizes expand 2 Phi_2 to X^2+1 by itself."
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
-      "No polynomial-lemniscate topology results (component counts, connectivity of {|P|=c})."
+      "No polynomial-lemniscate topology results (component counts, connectivity of {|P|=c}).",
+      "cyclotomic 4 has no explicit closed form in Mathlib (cyclotomic_one/_two/_three/_six exist, _four does not); proved locally in OQ11 via cyclotomic_expand_eq_cyclotomic."
     ],
     "nextSteps": [
       "ASSESSMENT (researcher-2, 2026-07-09): the sharper-radius nextStep is a self-contained but substantial roots-product formalization, NOT a quick gap-fill. Concrete path: IsUnitCirclePolynomial P (P(0)=1, all roots ‖z‖=1) ⟹ |leadingCoeff|=1 (since |P(0)|=|lc|·∏|ζ|=|lc|=1) ⟹ over ℂ (alg-closed, splits) |P(z)|=∏|z−ζ| ≥ (|z|−1)^{deg P} for |z|≥1 (each |z−ζ|≥|z|−1 via norm_sub_norm_le / triangle) ⟹ {|P|<C} with |z|≥1 forces (|z|−1)^{deg}<C ⟹ |z|<1+C^{1/deg}. Needs Polynomial.roots multiset + eq_prod_roots_of_splits / prod_multiset_X_sub_C + Complex.norm product bound (~80-120 lines). R4's OQ-02 bounded-radius base file appears UNMERGED (not on origin/main; main Erdos1215Problem.lean is the 2-axiom Mac Lane parent only). Released without a forced marginal edit.",
       "Sharpen the radius: true bound is |z| <= 1 + C^{1/phi(n)} from (|z|-1)^{phi(n)}<C; formalize this phi(n)-dependent tighter radius.",
-      "Compute {|Phi_n(z)|<1} geometry for n=3,4,6 (connected vs multi-component lemniscates); investigate whether root equidistribution bounds component count (the actual path-length driver).",
       "Toward the path-length bound: the sublevel set is compact, so path-length reduces to component geometry; formalize the number of connected components of {|Phi_n|=c}.",
-      "Area sandwich now bounds the labyrinth region's planar measure to within a factor tied to (C^{1/deg}±1)²; the genuine open path-length driver remains the NUMBER OF CONNECTED COMPONENTS of {|Φ_n|=c} (Mathlib has no polynomial-lemniscate topology). Next: compute component count for n=3,4,6 explicitly, or prove a single-component (connected sublevel set) criterion for large C."
+      "OQ11 delivered the n=3,4,6 disconnection half of the small-n geometry step. Natural follow-ups: (a) SHARPNESS — prove {|Phi_n|<C} connected (even path-connected/star-shaped petal union) for C >= (|a-b|/2)^2 resp. C>1, giving the exact Cassini threshold; (b) exact component COUNT two for the disconnected regime (needs per-petal connectivity, e.g. each petal star-shaped around its focus — false in general for Cassini? check); (c) phi(n)=4 quartic cases n=5,8,10,12 (4 foci, multi-petal)."
     ],
     "markdown": "# Knowledge Base: erdos-1215-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is a restriction of Erdős #1215 to cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity. The parent problem was resolved negatively by Mac Lane (1953) using labyrinth polynomials; the question here is whether the rigid, symmetric placement of cyclotomic roots precludes such labyrinths and yields a polynomial-in-n path-length bound.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -156,7 +160,18 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CyclotomicPolynomialsOQ02OQ10.lean"
+    },
+    {
+      "path": "Proofs/CyclotomicPolynomialsOQ02OQ11.lean",
+      "filename": "CyclotomicPolynomialsOQ02OQ11.lean",
+      "lineCount": 309,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CyclotomicPolynomialsOQ02OQ11.lean"
     }
   ],
-  "lastUpdate": "2026-07-12"
+  "lastUpdate": "2026-07-24"
 }
