@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header: What the Two SNF Axioms Cost, and Which One Is Real",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring stating the two-part finding before opening the BezoutIdentityOQ04OQ01OQ03 namespace: snf_exists is genuinely missing from Mathlib in matrix form (only the module-theoretic Smith Normal Form exists), while snf_solvability_criterion is not an independent axiom — it is proved below as a zero-axiom theorem from the decomposition alone, with the transformed right-hand side corrected from U·b to the genuine inverse U⁻¹·b.",
+      "mathContext": "$A = U D V$ taken as hypothesis (not proved); the goal is $\\exists x,\\ A\\cdot_v x = b \\iff \\forall i,\\ \\mathrm{dEntry}\\,D\\,i \\mid (U^{-1}\\cdot_v b)_i$."
+    },
+    {
       "id": "diagonal-entry",
       "title": "The Diagonal Entry of a Rectangular Matrix",
       "startLine": 50,
