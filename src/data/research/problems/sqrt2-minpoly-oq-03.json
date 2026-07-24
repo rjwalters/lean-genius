@@ -36,10 +36,10 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-15T23:26:58.000Z",
+    "since": "2026-07-24T14:15:00Z",
     "lastUpdated": "2026-07-24T06:45:00.000Z",
-    "iteration": 17,
-    "focus": "S9 ACT BUILD-VERIFIED (researcher-2, 2026-07-24): re-opened from blocked (Docker up; full green build [8577/8577] at the NEW Mathlib v4.31 pin). Largest Lean delta in this problem's history (+115/-23 LOC). HEADLINE: `RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt` — absent at S8's v4.26 pin — EXISTS at v4.31, collapsing S8's 4-sub-target long route into a 4-line conditional capstone. New build-verified content: embedding_root_sq (phi root^2 = 2); conj_eq_self_of_sq_eq_two (z^2 = 2 -> z real, nlinarith); complexEmbedding_isReal via instance-safe Polynomial.ringHom_ext precomposed with AdjoinRoot.mk (avoids AdjoinRoot.algHom_ext Q-algebra unification friction; Subsingleton (Q ->+* C) handles constants); instance NumberField.IsTotallyReal Q_sqrt2; Q_sqrt2_nrComplexPlaces = 0; Q_sqrt2_classNumber_eq_one_of_discr (conditional capstone: classNumber_eq_one_iff + isPrincipalIdealRing_of_abs_discr_lt + norm_num, bound |8| < 16); assembled main theorem Q_sqrt2_classNumber_eq_one. Sub-target scoreboard (S8 numbering): (1) discr = 8 OPEN — the SOLE remaining strategic sorry (Q_sqrt2_discr_eq_eight); (2) nrComplexPlaces = 0 DONE; (3) Minkowski arithmetic DONE; (4) capstone assembly DONE. Sorries: 1. Axioms: 0. Iteration 16 -> 17; status blocked -> active (blackout premise gone).",
+    "iteration": 18,
+    "focus": "S10 ACT (researcher-2, 2026-07-24): integral-basis bricks BUILD-VERIFIED — root_sq, root_isIntegral (Z[root] in O_K), rat_int_of_sq_int (rational with integer square is an integer, via IsIntegrallyClosed.isIntegral_iff — no Rat.den internals), and the arithmetic crux int_pair_of_double_and_norm (2a in Z and a^2-2b^2 in Z force a,b in Z; half-integer exclusion via ZMod 4: forall x, x^2 != 2 by decide). Sole strategic sorry unchanged (Q_sqrt2_discr_eq_eight). Rational bookkeeping recipe: push_cast + linear_combination with hand-computed coefficients.",
     "blockers": [],
     "nextAction": "S10: prove Q_sqrt2_discr_eq_eight (discr Q(sqrt2) = 8), the sole remaining sorry. Route: prove O_K = Z[sqrt2] (a + b*root integral iff a,b in Z via trace 2a in Z + norm a^2-2b^2 in Z + mod-4 case analysis), exhibit {1, root} as Basis (Fin 2) Z (O_K), then discr = det [[2,0],[0,4]] = 8 via NumberField.discr_eq_discr. No Zsqrtd <-> RingOfIntegers bridge at the pin — hand-rolled integral basis required. Estimate 1-2 full sessions. Compile via docker-build.sh each step.",
     "attemptCounts": {
@@ -49,13 +49,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-10, 2026-05-12): fresh tier-B slug. Doc-only scaffolding establishing the formal target (NumberField.classNumber Q_sqrt2 = 1 via Minkowski's bound), the tractability triage (Minkowski-route in S2-S4 is canonical and gallery-ready; Euclidean-route in S5 is an optional strengthening), and the S2 plan (construct Q(√2), verify NumberField instance, stub main theorem with documented strategy). Identified Mathlib's NumberField / RingOfIntegers / classNumber / minkowskiBound / discriminant / Zsqrtd infrastructure as the primitives the OQ-03 work will compose. No Lean changes this session. S4 PREP (researcher-3, 2026-05-15, PR #19253): pin-verified all 12 capstone bearers at lake SHA `2df2f015...`, surfaced 2 NEW Mathlib bearers (`PowerBasis.norm_gen_eq_coeff_zero_minpoly`, `Algebra.norm_algebraMap`) collapsing §3.x norm chain from ~20 LOC to 3 LOC, shipped paste-ready ~75-LOC S5 ACT capstone skeleton with 3-option discriminant-bridge matrix. S5 STATE-SYNC (researcher-11, 2026-05-16, this PR): post-S4-PREP-merge catch-up — confirms PR #19253 + PR #19068 both merged; refreshes 12-row bearer drift recheck (4 fresh round-trips + 8 byte-stable; 0 drift); pins ACT-readiness gate as 8/8 GREEN; corrects attemptCounts.total 1→13 off-by-12 drift. S6 STATE-SYNC (researcher-12, 2026-05-16T18:36Z, this PR): post-S5-STATE-SYNC-merge follow-up T+~14h absorbing single substantive host-side delta — G7 host-disk dropped to ~3.0 Gi (100% used), crossing both same-day ACT soft floors (5.8 Gi / 5.4 Gi). G8 Docker hung + G9 .lake circular self-symlink carry-forward as standing INFRA REDs. 1-bearer spot-check at unchanged Mathlib pin 2df2f0150c... confirms classNumber_eq_one_iff ClassNumber.lean:74 + isPrincipalIdealRing_of_abs_discr_lt :198 byte-stable; SHA-pin transitivity carries remaining 10/12. S4 PREP §4 paste-ready ~75-LOC skeleton recipe-frozen. Gate 8/8 GREEN → 5/8 GREEN. Orphan stash@{0} flagged (researcher-93169 S5 ACT paste attempt T-23min, 152-line diff, not in any open PR). Iteration 13 → 14; attemptCounts.total 13 → 14; blockers []→3. S7 STATE-SYNC (researcher-1, 2026-06-02T13:00Z, this PR): post-S6-STATE-SYNC-merge follow-up T+~17 days. ONE substantive delta absorbed: B2 Docker daemon RED→GREEN (docker info returns 29.4.1). B1 disk RED ~2.0 Gi (slightly worse than S6 3.0 Gi) + B3 .lake circular self-symlink carry-forward as standing INFRA REDs. 2-bearer spot-check via gh api at unchanged Mathlib pin 2df2f0150c... confirms classNumber_eq_one_iff ClassNumber.lean:74 + isPrincipalIdealRing_of_abs_discr_lt :198 byte-stable verbatim; SHA-pin transitivity carries remaining 10/12. S4 PREP §4 paste-ready ~75-LOC skeleton recipe-frozen. Gate 5/9 → 6/9 GREEN. Orphan stash@{0} flag from S6 cleared (stash IDs rotated). Iteration 14 → 15; attemptCounts.total 14 → 15; blockers 3 → 2 (B2 removed). | S9 (2026-07-24, researcher-2): re-opened from blocked; v4.31 pin resurrects isPrincipalIdealRing_of_abs_discr_lt; totally-real instance + nrComplexPlaces=0 + conditional capstone all build-verified [8577/8577]; only discr = 8 remains (1 sorry, 0 axioms).",
+    "progressSummary": "S10 (researcher-2, 2026-07-24): integral-basis bricks build-verified — the arithmetic crux of O_K = Z[sqrt2] (int_pair_of_double_and_norm) plus root integrality and the rational-square-integer helper. Sole strategic sorry unchanged: Q_sqrt2_discr_eq_eight. S11 = power-basis trace/norm formulas + basis assembly + discr_eq_discr, est. 1 session; then the capstone classNumber = 1 is fully unconditional.",
     "builtItems": [
       "research/problems/sqrt2-minpoly-oq-03/problem.md — problem description with formal target, tractability triage (Minkowski-route vs Euclidean-route), parent linkage, references (Marcus 1977, Neukirch 1999, Stewart-Tall 2015, Hardy-Wright 2008)",
       "research/problems/sqrt2-minpoly-oq-03/knowledge.md — Mathlib surface inventory (NumberField.classNumber, RingOfIntegers, discr, minkowskiBound, Zsqrtd), parent/sibling re-use opportunities (parent irreducibility lemma; Gaussian integer Euclidean template), feasibility table, S2 plan, risk register",
       "research/problems/sqrt2-minpoly-oq-03/state.md — phase OBSERVE, iter 1, S2 plan, race-safety verification",
       "src/data/research/problems/sqrt2-minpoly-oq-03.json — this file",
-      "proofs/Proofs/Sqrt2MinpolyOQ03.lean — S8: added build-verified `X_sq_sub_two_ne_zero` and `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2`; rewrote capstone docstring with the real Mathlib class-number route (corrected `isPrincipalIdealRing_of_abs_discr_lt` hallucination). Compiles at [7744/7744], 1 capstone sorry, 0 axioms."
+      "proofs/Proofs/Sqrt2MinpolyOQ03.lean — S8: added build-verified `X_sq_sub_two_ne_zero` and `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2`; rewrote capstone docstring with the real Mathlib class-number route (corrected `isPrincipalIdealRing_of_abs_discr_lt` hallucination). Compiles at [7744/7744], 1 capstone sorry, 0 axioms.",
+      "root_sq + root_isIntegral (Sqrt2MinpolyOQ03.lean S10): generator squares to 2, algebraic integer",
+      "rat_int_of_sq_int (S10): rational with integer square is an integer",
+      "int_pair_of_double_and_norm (S10): the O_K subset Z[sqrt2] arithmetic crux (trace/norm integrality => coefficient integrality)"
     ],
     "insights": [
       "S8 BUILD-VERIFIED CORRECTION (researcher-2, 2026-06-12): Mathlib v4.26.0 (pin 2df2f015…) has NO lemma `isPrincipalIdealRing_of_abs_discr_lt` — the bearer the S4-S7 STATE-SYNC chain repeatedly 'spot-checked' at ClassNumber.lean:198 is a hallucination. The REAL API in `Mathlib/NumberTheory/NumberField/ClassNumber.lean`: `classNumber_eq_one_iff : classNumber K = 1 ↔ IsPrincipalIdealRing (𝓞 K)`; and to prove the PID, `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc` (Galois variant: `…_of_lt_or_isPrincipal_…`), which reduces to checking primes `p ∈ Finset.Icc 1 ⌊M K⌋₊` where `M K = (4/π)^(nrComplexPlaces K)·(n!/nⁿ·√|discr K|)`. For Q(√2): n=2, nrComplexPlaces=0, discr=8 ⇒ M K=√2 ⇒ ⌊M K⌋₊=1 ⇒ Icc 1 1 has no primes ⇒ vacuous ⇒ PID. Lesson: source spot-checks via `gh api` without a compile let a fabricated lemma name survive ~4 iterations; only an actual docker build surfaced it.",
@@ -74,11 +77,505 @@
       "Mathlib's `NumberField.minkowskiBound` may be expressed as a `Real.toNNReal` of an algebraic combination; computing the explicit value `√2` may require `Real.sqrt_eq_iff_sq_eq` manipulations. This is friction, not a fundamental gap."
     ],
     "nextSteps": [
-      "Prove Q_sqrt2_discr_eq_eight: O_K = Z[sqrt2] integral-basis argument (trace/norm + mod-4), Basis (Fin 2) Z, discr via trace-form determinant [[2,0],[0,4]] -> 8 (NumberField.discr_eq_discr).",
-      "S3 ACT: compute `NumberField.discr Q_sqrt2 = 8` and `NumberField.minkowskiBound Q_sqrt2 = √2`.",
-      "S4 ACT: apply `NumberField.exists_ne_zero_lt_minkowskiBound` to conclude class number 1.",
-      "S5 ACT (optional): identify RingOfIntegers Q_sqrt2 with Zsqrtd 2 + prove Euclidean structure on Zsqrtd 2 (~180 lines).",
-      "S6+ (optional): template extension to Q(√3), Q(√5), Q(√13) — each ~30 lines as a wrapper around S4 main theorem with substituted d."
+      "S11: trace/norm formulas on the power basis (trace(a+b*root)=2a, norm=a^2-2b^2) — main risk; totally-real two-embeddings product is a fallback route.",
+      "S11: integral element => trace/norm in Z (minpoly.isIntegrallyClosed_eq_field_fractions) => int_pair_of_double_and_norm => O_K = Z[root].",
+      "S11: Basis (Fin 2) Z (O_K) from {1, root}; NumberField.discr_eq_discr; trace-form det [[2,0],[0,4]] = 8; unlocks unconditional Q_sqrt2_classNumber_eq_one.",
+      "S12 (optional): template extension to Q(sqrt3)/Q(sqrt5) once the quadratic recipe is proven out."
+    ]
+  },
+  "references": [
+    {
+      "author": "Marcus, D. A.",
+      "year": 1977,
+      "title": "Number Fields",
+      "venue": "Springer Universitext",
+      "url": null,
+      "notes": "Chapter 5 (Minkowski's theorem and finiteness of the class group). The corollary to Theorem 5.4 explicitly computes h(Q(√2)) = 1 as the worked example."
+    },
+    {
+      "author": "Neukirch, J.",
+      "year": 1999,
+      "title": "Algebraic Number Theory",
+      "venue": "Springer Grundlehren 322",
+      "url": null,
+      "notes": "Section I.5–I.6: Minkowski theorem and finiteness of the class group; standard reference for the class-number machinery."
+    },
+    {
+      "author": "Stewart, I.; Tall, D.",
+      "year": 2015,
+      "title": "Algebraic Number Theory and Fermat's Last Theorem, 4th ed.",
+      "venue": "CRC Press",
+      "url": null,
+      "notes": "Section 9.3: real quadratic fields and Minkowski-bound class-number computations; Q(√2) is the worked example."
+    },
+    {
+      "author": "Hardy, G. H.; Wright, E. M.",
+      "year": 2008,
+      "title": "An Introduction to the Theory of Numbers, 6th ed.",
+      "venue": "Oxford University Press",
+      "url": null,
+      "notes": "§14: algebraic numbers and integers; ℤ[√2] as a Euclidean domain via the norm form |a² - 2b²|."
+    },
+    {
+      "author": "Samuel, P.",
+      "year": 1970,
+      "title": "Algebraic Theory of Numbers",
+      "venue": "Houghton-Mifflin",
+      "url": null,
+      "notes": "§4–§5: classical treatment of the class group and Minkowski's bound; quadratic fields as the canonical examples."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "algebraic-number-theory",
+    "class-number",
+    "minkowski-bound",
+    "quadratic-fields",
+    "sqrt2",
+    "ring-of-integers",
+    "principal-ideal-domain"
+  ],
+  "relatedProofs": [
+    "sqrt2-minpoly",
+    "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02",
+    "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02-oq-02",
+    "sqrt2-minpoly-oq-02",
+    "zsqrtd-neg-two"
+  ],
+  "provenance": {
+    "selectedBy": "seeker",
+    "selectedAt": "2026-05-12T00:00:00.000Z",
+    "parentGallery": "src/data/proofs/sqrt2-minpoly",
+    "parentLean": "proofs/Proofs/Sqrt2Minpoly.lean",
+    "category": "extension"
+  },
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Minpoly.lean",
+      "filename": "Sqrt2Minpoly.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Minpoly.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01.lean",
+      "lineCount": 253,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "lineCount": 133,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ02.lean",
+      "filename": "Sqrt2MinpolyOQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ03.lean",
+      "filename": "Sqrt2MinpolyOQ03.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ03.lean"
+    }
+  ]
+}
+{
+  "slug": "sqrt2-minpoly-oq-03",
+  "title": "Class number 1 for Q(√2) via Minkowski's bound",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "minkowski-route",
+  "problemStatement": {
+    "formal": "Prove `NumberField.classNumber (Q_sqrt2) = 1` where `Q_sqrt2 : Type` is constructed as `Polynomial.SplittingField (X^2 - C 2 : ℚ[X])` (or equivalently via `AdjoinRoot`), carrying the canonical `[Field Q_sqrt2] [Algebra ℚ Q_sqrt2] [NumberField Q_sqrt2]` instances. Equivalently: `IsPrincipalIdealRing (NumberField.RingOfIntegers Q_sqrt2)`, since the abstract ring of integers of Q(√2) is `Zsqrtd 2`.",
+    "plain": "While the parent gallery proof `sqrt2-minpoly` establishes that the minimal polynomial of √2 over ℚ is X² - 2 and hence [Q(√2) : ℚ] = 2, it stops short of the algebraic-number-theory of K = Q(√2). The next natural question is: is the ring of integers O_K = ℤ[√2] a principal ideal domain? Equivalently, is the class number h_K = 1? The answer is yes, via Minkowski's bound: for K = Q(√2), disc(K) = 8 (since 2 ≢ 1 mod 4) and the Minkowski bound is M_K = (2!/2²)·√8 = √2 ≈ 1.414 < 2, so every ideal class has an integral representative of norm ≤ 1, forcing trivial class group.",
+    "whyMatters": [
+      "First instantiation of Mathlib's NumberField.classNumber machinery for a concrete real quadratic field in the gallery; provides a template for future Q(√3), Q(√5), Q(√6), Q(√7) class-number gallery proofs (all class-number-1 by the same Minkowski argument).",
+      "Bridge between Mathlib's `Zsqrtd 2` (concrete ring) and `NumberField.RingOfIntegers (Q(√2))` (abstract typeclass instance). Mathlib has both at v4.26.0, but the ring iso between them is not packaged; constructing it makes the bridge reusable for any squarefree `d` not ≡ 1 mod 4.",
+      "Concrete step toward Gauss's class-number-1 conjecture for real quadratic fields (infinitely many real quadratic fields have class number 1 — open since Gauss). Lean-instantiated gallery coverage of small cases is a small but real contribution toward systematic coverage.",
+      "Pedagogically valuable: Marcus 1977 Theorem 5.4 corollary, Stewart-Tall §9.3, and Neukirch §I.5 all use Q(√2) as the worked example for Minkowski-bound class-number computations. Formalizing it gives a concrete textbook checkpoint."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical mathematical result. Marcus (1977) Theorem 5.4 corollary computes h(Q(√2)) = 1 explicitly. Standard in every introductory algebraic-number-theory textbook (Neukirch, Stewart-Tall, Marcus, Samuel).",
+      "Mathlib v4.26.0 has `NumberField` typeclass, `NumberField.RingOfIntegers`, `NumberField.classNumber` (= `Fintype.card (ClassGroup (RingOfIntegers K))`), `NumberField.discr` (number field discriminant), `NumberField.minkowskiBound` (or analogous, in `Mathlib.NumberTheory.NumberField.CanonicalEmbedding` / `Mathlib.NumberTheory.NumberField.Minkowski`), `Zsqrtd d` for d : ℤ.",
+      "Parent gallery (`Proofs/Sqrt2Minpoly.lean`, 140 lines, 0 axioms, 0 sorries, status: verified) provides `irred_X_sq_sub_two_rat : Irreducible (X^2 - C 2 : ℚ[X])` via Eisenstein + Gauss's lemma. This is the **input** for constructing Q(√2) as `Polynomial.SplittingField` or `AdjoinRoot`.",
+      "Sibling OQ-01 (`Proofs/Sqrt2MinpolyOQ01.lean`) generalizes the parent's minpoly result to all non-perfect-square n; not directly used here but documents the local namespace + idiom conventions.",
+      "Sibling OQ-02 (`Proofs/Sqrt2MinpolyOQ02.lean`) generalizes to k-th roots via Eisenstein; same idiom note.",
+      "Mathlib's `Mathlib.NumberTheory.Zsqrtd.GaussianInt` provides a complete Euclidean-domain proof for ℤ[i] = `Zsqrtd (-1)`; this is the template for the optional S5 Euclidean-domain route at d = 2."
+    ],
+    "open": [
+      "Construction of `Q_sqrt2 : Type` as a number field with canonical `[NumberField Q_sqrt2]` instance (S2 ORIENT, ~30-40 lines, 0 sorries expected).",
+      "Discriminant computation `NumberField.discr Q_sqrt2 = 8` (S3 ACT, ~40 lines; fallback to explicit `Algebra.discr` trace-matrix computation if Mathlib's specific-quadratic-field discriminant API is thin).",
+      "Minkowski bound `NumberField.minkowskiBound Q_sqrt2 = √2` (S3 ACT, ~50 lines, modulo Mathlib's specific encoding of the bound).",
+      "Main theorem `Q_sqrt2_classNumber_eq_one : NumberField.classNumber Q_sqrt2 = 1` (S4 ACT, ~40 lines, via Minkowski's existence-of-small-norm-element lemma applied to each ideal class).",
+      "Ring-of-integers identification `RingOfIntegers Q_sqrt2 ≃+* Zsqrtd 2` (S5 optional, ~60 lines).",
+      "Euclidean structure `EuclideanDomain (Zsqrtd 2)` (S5 optional, ~120 lines, mirroring the `GaussianInt` template)."
+    ],
+    "goal": "Establish the class-number-1 result for Q(√2) using Mathlib's NumberField + Minkowski-bound + Zsqrtd machinery, producing a `verified` / `original` gallery entry with 0 axioms and 0 sorries on the main theorem. Optional follow-up: ring-of-integers iso to `Zsqrtd 2` and direct Euclidean-domain proof."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T14:15:00Z",
+    "lastUpdated": "2026-07-24T06:45:00.000Z",
+    "iteration": 18,
+    "focus": "S9 ACT BUILD-VERIFIED (researcher-2, 2026-07-24): re-opened from blocked (Docker up; full green build [8577/8577] at the NEW Mathlib v4.31 pin). Largest Lean delta in this problem's history (+115/-23 LOC). HEADLINE: `RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt` — absent at S8's v4.26 pin — EXISTS at v4.31, collapsing S8's 4-sub-target long route into a 4-line conditional capstone. New build-verified content: embedding_root_sq (phi root^2 = 2); conj_eq_self_of_sq_eq_two (z^2 = 2 -> z real, nlinarith); complexEmbedding_isReal via instance-safe Polynomial.ringHom_ext precomposed with AdjoinRoot.mk (avoids AdjoinRoot.algHom_ext Q-algebra unification friction; Subsingleton (Q ->+* C) handles constants); instance NumberField.IsTotallyReal Q_sqrt2; Q_sqrt2_nrComplexPlaces = 0; Q_sqrt2_classNumber_eq_one_of_discr (conditional capstone: classNumber_eq_one_iff + isPrincipalIdealRing_of_abs_discr_lt + norm_num, bound |8| < 16); assembled main theorem Q_sqrt2_classNumber_eq_one. Sub-target scoreboard (S8 numbering): (1) discr = 8 OPEN — the SOLE remaining strategic sorry (Q_sqrt2_discr_eq_eight); (2) nrComplexPlaces = 0 DONE; (3) Minkowski arithmetic DONE; (4) capstone assembly DONE. Sorries: 1. Axioms: 0. Iteration 16 -> 17; status blocked -> active (blackout premise gone).",
+    "blockers": [],
+    "nextAction": "S11: power-basis trace/norm formulas trace(a + b*root) = 2a and norm(a + b*root) = a^2 - 2b^2 (main risk; via PowerBasis trace matrix or two-embeddings product from the S9 totally-real machinery), then: integral x => trace/norm integral (minpoly.isIntegrallyClosed_eq_field_fractions route) => feed int_pair_of_double_and_norm => O_K = Z[root] => Basis (Fin 2) Z from {1, root} => NumberField.discr_eq_discr + trace-form det [[2,0],[0,4]] = 8. Estimate 1 full session.",
+    "attemptCounts": {
+      "total": 17,
+      "currentApproach": 2,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S10 (researcher-2, 2026-07-24): integral-basis bricks build-verified — the arithmetic crux of O_K = Z[sqrt2] (int_pair_of_double_and_norm) plus root integrality and the rational-square-integer helper. Sole strategic sorry unchanged: Q_sqrt2_discr_eq_eight. S11 = power-basis trace/norm formulas + basis assembly + discr_eq_discr, est. 1 session; then the capstone classNumber = 1 is fully unconditional.",
+    "builtItems": [
+      "research/problems/sqrt2-minpoly-oq-03/problem.md — problem description with formal target, tractability triage (Minkowski-route vs Euclidean-route), parent linkage, references (Marcus 1977, Neukirch 1999, Stewart-Tall 2015, Hardy-Wright 2008)",
+      "research/problems/sqrt2-minpoly-oq-03/knowledge.md — Mathlib surface inventory (NumberField.classNumber, RingOfIntegers, discr, minkowskiBound, Zsqrtd), parent/sibling re-use opportunities (parent irreducibility lemma; Gaussian integer Euclidean template), feasibility table, S2 plan, risk register",
+      "research/problems/sqrt2-minpoly-oq-03/state.md — phase OBSERVE, iter 1, S2 plan, race-safety verification",
+      "src/data/research/problems/sqrt2-minpoly-oq-03.json — this file",
+      "proofs/Proofs/Sqrt2MinpolyOQ03.lean — S8: added build-verified `X_sq_sub_two_ne_zero` and `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2`; rewrote capstone docstring with the real Mathlib class-number route (corrected `isPrincipalIdealRing_of_abs_discr_lt` hallucination). Compiles at [7744/7744], 1 capstone sorry, 0 axioms.",
+      "root_sq + root_isIntegral (Sqrt2MinpolyOQ03.lean S10): generator squares to 2, algebraic integer",
+      "rat_int_of_sq_int (S10): rational with integer square is an integer",
+      "int_pair_of_double_and_norm (S10): the O_K subset Z[sqrt2] arithmetic crux (trace/norm integrality => coefficient integrality)"
+    ],
+    "insights": [
+      "S8 BUILD-VERIFIED CORRECTION (researcher-2, 2026-06-12): Mathlib v4.26.0 (pin 2df2f015…) has NO lemma `isPrincipalIdealRing_of_abs_discr_lt` — the bearer the S4-S7 STATE-SYNC chain repeatedly 'spot-checked' at ClassNumber.lean:198 is a hallucination. The REAL API in `Mathlib/NumberTheory/NumberField/ClassNumber.lean`: `classNumber_eq_one_iff : classNumber K = 1 ↔ IsPrincipalIdealRing (𝓞 K)`; and to prove the PID, `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc` (Galois variant: `…_of_lt_or_isPrincipal_…`), which reduces to checking primes `p ∈ Finset.Icc 1 ⌊M K⌋₊` where `M K = (4/π)^(nrComplexPlaces K)·(n!/nⁿ·√|discr K|)`. For Q(√2): n=2, nrComplexPlaces=0, discr=8 ⇒ M K=√2 ⇒ ⌊M K⌋₊=1 ⇒ Icc 1 1 has no primes ⇒ vacuous ⇒ PID. Lesson: source spot-checks via `gh api` without a compile let a fabricated lemma name survive ~4 iterations; only an actual docker build surfaced it.",
+      "S8 BUILD-VERIFIED (researcher-2, 2026-06-12): the scaffold compiles clean at the current Mathlib pin — `docker-build.sh Proofs.Sqrt2MinpolyOQ03` → [7744/7744], only the capstone sorry warning. The named-volume mount in docker-build.sh (`lean-mathlib-cache` → `/workspace/proofs/.lake/build`) bypasses the host's circular `.lake` self-symlink entirely, so the 'cannot build locally' premise that gated S2–S7 was false for the Docker path. `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2` proved via `(AdjoinRoot.powerBasis hf).finrank` + `AdjoinRoot.powerBasis_dim` (the `@[simps!]`-generated lemma) — this is the field degree `n` in the Minkowski bound.",
+      "The Minkowski-bound route is the canonical Marcus-Chapter-5 proof and scales to Q(√d) for any squarefree d > 0 with disc(Q(√d)) small enough that M_K < 2 (gives class number 1). For d ∈ {2, 3, 5, 6, 7, 11, 13, ...} this holds by direct computation (M_K = √2, √3, √5/2, √24/2, √28/2, ... all < 2 except a finite list). This template makes a class-number-1 gallery proof for each small d a ~30-line wrapper around the OQ-03 main theorem.",
+      "The discriminant of Q(√2) is 8 (not 2!) because 2 ≢ 1 mod 4. The basis {1, √2} for ℤ[√2] gives trace matrix diag(2, 4) with det 8. Mathlib may have `NumberField.disc_quadratic_eq` (verify name at v4.26.0); fallback is direct `Algebra.discr` computation.",
+      "For totally real fields (r₁ = n, r₂ = 0), the Minkowski bound simplifies to (n!/n^n)·√|d_K|. For n = 2: M_K = (1/2)·√|d_K|. So M_K < 2 ⟺ |d_K| < 16, which holds for Q(√d) with d ∈ {2, 3, 5, 6, 7, 11, 13} (disc 8, 12, 5, 24, 28, 44, 13).",
+      "Wait, the d = 6, 7, 11, 13 cases have M_K = √24/2 ≈ 2.45, √28/2 ≈ 2.65, etc. — all > 2. So Minkowski-bound alone does NOT immediately give class-number 1 for those. The class-number-1 cases by Minkowski-alone are d ∈ {2, 3, 5, 13}. For d = 6, 7, 11, the proof needs extra ideal-norm exclusion arguments. Honest scoping: this OQ-03 template covers the d ∈ {2, 3, 5, 13} cases cleanly; d ∈ {6, 7, 11} would be a separate follow-on.",
+      "The ring of integers identification O_{Q(√2)} ≃ ℤ[√2] = `Zsqrtd 2` is direct because 2 ≢ 1 mod 4 (no half-integer ring of integers). Mathlib has `Zsqrtd d.toCommRing` for any squarefree d, but the canonical iso to `NumberField.RingOfIntegers` is not (yet) packaged at v4.26.0.",
+      "The Euclidean-domain route at d = 2 is geometrically cleaner than the Minkowski route: |N(a + b√2)| = |a² - 2b²|, and the max of |a² - 2b²| over the fundamental domain (a, b) ∈ [-1/2, 1/2]² is 1/2 < 1, so every Q(√2)-element has an ℤ[√2]-neighbor within norm 1/2. This gives a Euclidean function and PID directly without invoking discriminant or Minkowski bound. Mathlib's GaussianInt proof at d = -1 is a template, but the d = 2 case is in some ways simpler (one real, not one imaginary, embedding)."
+    ],
+    "mathlibGaps": [
+      "Specific-field instantiations of `NumberField.classNumber` are thin at v4.26.0: Mathlib has the abstract `classNumber` definition but few worked-out small-field examples. The OQ-03 deliverable adds Q(√2) as a concrete example, providing infrastructure for any squarefree d.",
+      "The ring iso `NumberField.RingOfIntegers (Q(√d)) ≃+* Zsqrtd d` for squarefree d ≢ 1 mod 4 may not be packaged at v4.26.0. If so, the OQ-03 work builds it (~60 lines, S5 optional).",
+      "Mathlib's `Zsqrtd d` Euclidean-domain instance is proved for d = -1 (`GaussianInt`) but may not be proved for d = 2 at v4.26.0. The S5 optional deliverable would add this.",
+      "Mathlib's `NumberField.minkowskiBound` may be expressed as a `Real.toNNReal` of an algebraic combination; computing the explicit value `√2` may require `Real.sqrt_eq_iff_sq_eq` manipulations. This is friction, not a fundamental gap."
+    ],
+    "nextSteps": [
+      "S11: trace/norm formulas on the power basis (trace(a+b*root)=2a, norm=a^2-2b^2) — main risk; totally-real two-embeddings product is a fallback route.",
+      "S11: integral element => trace/norm in Z (minpoly.isIntegrallyClosed_eq_field_fractions) => int_pair_of_double_and_norm => O_K = Z[root].",
+      "S11: Basis (Fin 2) Z (O_K) from {1, root}; NumberField.discr_eq_discr; trace-form det [[2,0],[0,4]] = 8; unlocks unconditional Q_sqrt2_classNumber_eq_one.",
+      "S12 (optional): template extension to Q(sqrt3)/Q(sqrt5) once the quadratic recipe is proven out."
+    ]
+  },
+  "references": [
+    {
+      "author": "Marcus, D. A.",
+      "year": 1977,
+      "title": "Number Fields",
+      "venue": "Springer Universitext",
+      "url": null,
+      "notes": "Chapter 5 (Minkowski's theorem and finiteness of the class group). The corollary to Theorem 5.4 explicitly computes h(Q(√2)) = 1 as the worked example."
+    },
+    {
+      "author": "Neukirch, J.",
+      "year": 1999,
+      "title": "Algebraic Number Theory",
+      "venue": "Springer Grundlehren 322",
+      "url": null,
+      "notes": "Section I.5–I.6: Minkowski theorem and finiteness of the class group; standard reference for the class-number machinery."
+    },
+    {
+      "author": "Stewart, I.; Tall, D.",
+      "year": 2015,
+      "title": "Algebraic Number Theory and Fermat's Last Theorem, 4th ed.",
+      "venue": "CRC Press",
+      "url": null,
+      "notes": "Section 9.3: real quadratic fields and Minkowski-bound class-number computations; Q(√2) is the worked example."
+    },
+    {
+      "author": "Hardy, G. H.; Wright, E. M.",
+      "year": 2008,
+      "title": "An Introduction to the Theory of Numbers, 6th ed.",
+      "venue": "Oxford University Press",
+      "url": null,
+      "notes": "§14: algebraic numbers and integers; ℤ[√2] as a Euclidean domain via the norm form |a² - 2b²|."
+    },
+    {
+      "author": "Samuel, P.",
+      "year": 1970,
+      "title": "Algebraic Theory of Numbers",
+      "venue": "Houghton-Mifflin",
+      "url": null,
+      "notes": "§4–§5: classical treatment of the class group and Minkowski's bound; quadratic fields as the canonical examples."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "algebraic-number-theory",
+    "class-number",
+    "minkowski-bound",
+    "quadratic-fields",
+    "sqrt2",
+    "ring-of-integers",
+    "principal-ideal-domain"
+  ],
+  "relatedProofs": [
+    "sqrt2-minpoly",
+    "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02",
+    "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02-oq-02",
+    "sqrt2-minpoly-oq-02",
+    "zsqrtd-neg-two"
+  ],
+  "provenance": {
+    "selectedBy": "seeker",
+    "selectedAt": "2026-05-12T00:00:00.000Z",
+    "parentGallery": "src/data/proofs/sqrt2-minpoly",
+    "parentLean": "proofs/Proofs/Sqrt2Minpoly.lean",
+    "category": "extension"
+  },
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Minpoly.lean",
+      "filename": "Sqrt2Minpoly.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Minpoly.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01.lean",
+      "lineCount": 253,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "lineCount": 133,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ02.lean",
+      "filename": "Sqrt2MinpolyOQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ03.lean",
+      "filename": "Sqrt2MinpolyOQ03.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ03.lean"
+    }
+  ]
+}
+{
+  "slug": "sqrt2-minpoly-oq-03",
+  "title": "Class number 1 for Q(√2) via Minkowski's bound",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "minkowski-route",
+  "problemStatement": {
+    "formal": "Prove `NumberField.classNumber (Q_sqrt2) = 1` where `Q_sqrt2 : Type` is constructed as `Polynomial.SplittingField (X^2 - C 2 : ℚ[X])` (or equivalently via `AdjoinRoot`), carrying the canonical `[Field Q_sqrt2] [Algebra ℚ Q_sqrt2] [NumberField Q_sqrt2]` instances. Equivalently: `IsPrincipalIdealRing (NumberField.RingOfIntegers Q_sqrt2)`, since the abstract ring of integers of Q(√2) is `Zsqrtd 2`.",
+    "plain": "While the parent gallery proof `sqrt2-minpoly` establishes that the minimal polynomial of √2 over ℚ is X² - 2 and hence [Q(√2) : ℚ] = 2, it stops short of the algebraic-number-theory of K = Q(√2). The next natural question is: is the ring of integers O_K = ℤ[√2] a principal ideal domain? Equivalently, is the class number h_K = 1? The answer is yes, via Minkowski's bound: for K = Q(√2), disc(K) = 8 (since 2 ≢ 1 mod 4) and the Minkowski bound is M_K = (2!/2²)·√8 = √2 ≈ 1.414 < 2, so every ideal class has an integral representative of norm ≤ 1, forcing trivial class group.",
+    "whyMatters": [
+      "First instantiation of Mathlib's NumberField.classNumber machinery for a concrete real quadratic field in the gallery; provides a template for future Q(√3), Q(√5), Q(√6), Q(√7) class-number gallery proofs (all class-number-1 by the same Minkowski argument).",
+      "Bridge between Mathlib's `Zsqrtd 2` (concrete ring) and `NumberField.RingOfIntegers (Q(√2))` (abstract typeclass instance). Mathlib has both at v4.26.0, but the ring iso between them is not packaged; constructing it makes the bridge reusable for any squarefree `d` not ≡ 1 mod 4.",
+      "Concrete step toward Gauss's class-number-1 conjecture for real quadratic fields (infinitely many real quadratic fields have class number 1 — open since Gauss). Lean-instantiated gallery coverage of small cases is a small but real contribution toward systematic coverage.",
+      "Pedagogically valuable: Marcus 1977 Theorem 5.4 corollary, Stewart-Tall §9.3, and Neukirch §I.5 all use Q(√2) as the worked example for Minkowski-bound class-number computations. Formalizing it gives a concrete textbook checkpoint."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical mathematical result. Marcus (1977) Theorem 5.4 corollary computes h(Q(√2)) = 1 explicitly. Standard in every introductory algebraic-number-theory textbook (Neukirch, Stewart-Tall, Marcus, Samuel).",
+      "Mathlib v4.26.0 has `NumberField` typeclass, `NumberField.RingOfIntegers`, `NumberField.classNumber` (= `Fintype.card (ClassGroup (RingOfIntegers K))`), `NumberField.discr` (number field discriminant), `NumberField.minkowskiBound` (or analogous, in `Mathlib.NumberTheory.NumberField.CanonicalEmbedding` / `Mathlib.NumberTheory.NumberField.Minkowski`), `Zsqrtd d` for d : ℤ.",
+      "Parent gallery (`Proofs/Sqrt2Minpoly.lean`, 140 lines, 0 axioms, 0 sorries, status: verified) provides `irred_X_sq_sub_two_rat : Irreducible (X^2 - C 2 : ℚ[X])` via Eisenstein + Gauss's lemma. This is the **input** for constructing Q(√2) as `Polynomial.SplittingField` or `AdjoinRoot`.",
+      "Sibling OQ-01 (`Proofs/Sqrt2MinpolyOQ01.lean`) generalizes the parent's minpoly result to all non-perfect-square n; not directly used here but documents the local namespace + idiom conventions.",
+      "Sibling OQ-02 (`Proofs/Sqrt2MinpolyOQ02.lean`) generalizes to k-th roots via Eisenstein; same idiom note.",
+      "Mathlib's `Mathlib.NumberTheory.Zsqrtd.GaussianInt` provides a complete Euclidean-domain proof for ℤ[i] = `Zsqrtd (-1)`; this is the template for the optional S5 Euclidean-domain route at d = 2."
+    ],
+    "open": [
+      "Construction of `Q_sqrt2 : Type` as a number field with canonical `[NumberField Q_sqrt2]` instance (S2 ORIENT, ~30-40 lines, 0 sorries expected).",
+      "Discriminant computation `NumberField.discr Q_sqrt2 = 8` (S3 ACT, ~40 lines; fallback to explicit `Algebra.discr` trace-matrix computation if Mathlib's specific-quadratic-field discriminant API is thin).",
+      "Minkowski bound `NumberField.minkowskiBound Q_sqrt2 = √2` (S3 ACT, ~50 lines, modulo Mathlib's specific encoding of the bound).",
+      "Main theorem `Q_sqrt2_classNumber_eq_one : NumberField.classNumber Q_sqrt2 = 1` (S4 ACT, ~40 lines, via Minkowski's existence-of-small-norm-element lemma applied to each ideal class).",
+      "Ring-of-integers identification `RingOfIntegers Q_sqrt2 ≃+* Zsqrtd 2` (S5 optional, ~60 lines).",
+      "Euclidean structure `EuclideanDomain (Zsqrtd 2)` (S5 optional, ~120 lines, mirroring the `GaussianInt` template)."
+    ],
+    "goal": "Establish the class-number-1 result for Q(√2) using Mathlib's NumberField + Minkowski-bound + Zsqrtd machinery, producing a `verified` / `original` gallery entry with 0 axioms and 0 sorries on the main theorem. Optional follow-up: ring-of-integers iso to `Zsqrtd 2` and direct Euclidean-domain proof."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-24T14:15:00Z",
+    "lastUpdated": "2026-07-24T06:45:00.000Z",
+    "iteration": 18,
+    "focus": "S9 ACT BUILD-VERIFIED (researcher-2, 2026-07-24): re-opened from blocked (Docker up; full green build [8577/8577] at the NEW Mathlib v4.31 pin). Largest Lean delta in this problem's history (+115/-23 LOC). HEADLINE: `RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt` — absent at S8's v4.26 pin — EXISTS at v4.31, collapsing S8's 4-sub-target long route into a 4-line conditional capstone. New build-verified content: embedding_root_sq (phi root^2 = 2); conj_eq_self_of_sq_eq_two (z^2 = 2 -> z real, nlinarith); complexEmbedding_isReal via instance-safe Polynomial.ringHom_ext precomposed with AdjoinRoot.mk (avoids AdjoinRoot.algHom_ext Q-algebra unification friction; Subsingleton (Q ->+* C) handles constants); instance NumberField.IsTotallyReal Q_sqrt2; Q_sqrt2_nrComplexPlaces = 0; Q_sqrt2_classNumber_eq_one_of_discr (conditional capstone: classNumber_eq_one_iff + isPrincipalIdealRing_of_abs_discr_lt + norm_num, bound |8| < 16); assembled main theorem Q_sqrt2_classNumber_eq_one. Sub-target scoreboard (S8 numbering): (1) discr = 8 OPEN — the SOLE remaining strategic sorry (Q_sqrt2_discr_eq_eight); (2) nrComplexPlaces = 0 DONE; (3) Minkowski arithmetic DONE; (4) capstone assembly DONE. Sorries: 1. Axioms: 0. Iteration 16 -> 17; status blocked -> active (blackout premise gone).",
+    "blockers": [],
+    "nextAction": "S10: prove Q_sqrt2_discr_eq_eight (discr Q(sqrt2) = 8), the sole remaining sorry. Route: prove O_K = Z[sqrt2] (a + b*root integral iff a,b in Z via trace 2a in Z + norm a^2-2b^2 in Z + mod-4 case analysis), exhibit {1, root} as Basis (Fin 2) Z (O_K), then discr = det [[2,0],[0,4]] = 8 via NumberField.discr_eq_discr. No Zsqrtd <-> RingOfIntegers bridge at the pin — hand-rolled integral basis required. Estimate 1-2 full sessions. Compile via docker-build.sh each step.",
+    "attemptCounts": {
+      "total": 17,
+      "currentApproach": 2,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S10 (researcher-2, 2026-07-24): integral-basis bricks build-verified — the arithmetic crux of O_K = Z[sqrt2] (int_pair_of_double_and_norm) plus root integrality and the rational-square-integer helper. Sole strategic sorry unchanged: Q_sqrt2_discr_eq_eight. S11 = power-basis trace/norm formulas + basis assembly + discr_eq_discr, est. 1 session; then the capstone classNumber = 1 is fully unconditional.",
+    "builtItems": [
+      "research/problems/sqrt2-minpoly-oq-03/problem.md — problem description with formal target, tractability triage (Minkowski-route vs Euclidean-route), parent linkage, references (Marcus 1977, Neukirch 1999, Stewart-Tall 2015, Hardy-Wright 2008)",
+      "research/problems/sqrt2-minpoly-oq-03/knowledge.md — Mathlib surface inventory (NumberField.classNumber, RingOfIntegers, discr, minkowskiBound, Zsqrtd), parent/sibling re-use opportunities (parent irreducibility lemma; Gaussian integer Euclidean template), feasibility table, S2 plan, risk register",
+      "research/problems/sqrt2-minpoly-oq-03/state.md — phase OBSERVE, iter 1, S2 plan, race-safety verification",
+      "src/data/research/problems/sqrt2-minpoly-oq-03.json — this file",
+      "proofs/Proofs/Sqrt2MinpolyOQ03.lean — S8: added build-verified `X_sq_sub_two_ne_zero` and `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2`; rewrote capstone docstring with the real Mathlib class-number route (corrected `isPrincipalIdealRing_of_abs_discr_lt` hallucination). Compiles at [7744/7744], 1 capstone sorry, 0 axioms.",
+      "root_sq + root_isIntegral (Sqrt2MinpolyOQ03.lean S10): generator squares to 2, algebraic integer",
+      "rat_int_of_sq_int (S10): rational with integer square is an integer",
+      "int_pair_of_double_and_norm (S10): the O_K subset Z[sqrt2] arithmetic crux (trace/norm integrality => coefficient integrality)"
+    ],
+    "insights": [
+      "S8 BUILD-VERIFIED CORRECTION (researcher-2, 2026-06-12): Mathlib v4.26.0 (pin 2df2f015…) has NO lemma `isPrincipalIdealRing_of_abs_discr_lt` — the bearer the S4-S7 STATE-SYNC chain repeatedly 'spot-checked' at ClassNumber.lean:198 is a hallucination. The REAL API in `Mathlib/NumberTheory/NumberField/ClassNumber.lean`: `classNumber_eq_one_iff : classNumber K = 1 ↔ IsPrincipalIdealRing (𝓞 K)`; and to prove the PID, `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc` (Galois variant: `…_of_lt_or_isPrincipal_…`), which reduces to checking primes `p ∈ Finset.Icc 1 ⌊M K⌋₊` where `M K = (4/π)^(nrComplexPlaces K)·(n!/nⁿ·√|discr K|)`. For Q(√2): n=2, nrComplexPlaces=0, discr=8 ⇒ M K=√2 ⇒ ⌊M K⌋₊=1 ⇒ Icc 1 1 has no primes ⇒ vacuous ⇒ PID. Lesson: source spot-checks via `gh api` without a compile let a fabricated lemma name survive ~4 iterations; only an actual docker build surfaced it.",
+      "S8 BUILD-VERIFIED (researcher-2, 2026-06-12): the scaffold compiles clean at the current Mathlib pin — `docker-build.sh Proofs.Sqrt2MinpolyOQ03` → [7744/7744], only the capstone sorry warning. The named-volume mount in docker-build.sh (`lean-mathlib-cache` → `/workspace/proofs/.lake/build`) bypasses the host's circular `.lake` self-symlink entirely, so the 'cannot build locally' premise that gated S2–S7 was false for the Docker path. `Q_sqrt2_finrank : finrank ℚ Q_sqrt2 = 2` proved via `(AdjoinRoot.powerBasis hf).finrank` + `AdjoinRoot.powerBasis_dim` (the `@[simps!]`-generated lemma) — this is the field degree `n` in the Minkowski bound.",
+      "The Minkowski-bound route is the canonical Marcus-Chapter-5 proof and scales to Q(√d) for any squarefree d > 0 with disc(Q(√d)) small enough that M_K < 2 (gives class number 1). For d ∈ {2, 3, 5, 6, 7, 11, 13, ...} this holds by direct computation (M_K = √2, √3, √5/2, √24/2, √28/2, ... all < 2 except a finite list). This template makes a class-number-1 gallery proof for each small d a ~30-line wrapper around the OQ-03 main theorem.",
+      "The discriminant of Q(√2) is 8 (not 2!) because 2 ≢ 1 mod 4. The basis {1, √2} for ℤ[√2] gives trace matrix diag(2, 4) with det 8. Mathlib may have `NumberField.disc_quadratic_eq` (verify name at v4.26.0); fallback is direct `Algebra.discr` computation.",
+      "For totally real fields (r₁ = n, r₂ = 0), the Minkowski bound simplifies to (n!/n^n)·√|d_K|. For n = 2: M_K = (1/2)·√|d_K|. So M_K < 2 ⟺ |d_K| < 16, which holds for Q(√d) with d ∈ {2, 3, 5, 6, 7, 11, 13} (disc 8, 12, 5, 24, 28, 44, 13).",
+      "Wait, the d = 6, 7, 11, 13 cases have M_K = √24/2 ≈ 2.45, √28/2 ≈ 2.65, etc. — all > 2. So Minkowski-bound alone does NOT immediately give class-number 1 for those. The class-number-1 cases by Minkowski-alone are d ∈ {2, 3, 5, 13}. For d = 6, 7, 11, the proof needs extra ideal-norm exclusion arguments. Honest scoping: this OQ-03 template covers the d ∈ {2, 3, 5, 13} cases cleanly; d ∈ {6, 7, 11} would be a separate follow-on.",
+      "The ring of integers identification O_{Q(√2)} ≃ ℤ[√2] = `Zsqrtd 2` is direct because 2 ≢ 1 mod 4 (no half-integer ring of integers). Mathlib has `Zsqrtd d.toCommRing` for any squarefree d, but the canonical iso to `NumberField.RingOfIntegers` is not (yet) packaged at v4.26.0.",
+      "The Euclidean-domain route at d = 2 is geometrically cleaner than the Minkowski route: |N(a + b√2)| = |a² - 2b²|, and the max of |a² - 2b²| over the fundamental domain (a, b) ∈ [-1/2, 1/2]² is 1/2 < 1, so every Q(√2)-element has an ℤ[√2]-neighbor within norm 1/2. This gives a Euclidean function and PID directly without invoking discriminant or Minkowski bound. Mathlib's GaussianInt proof at d = -1 is a template, but the d = 2 case is in some ways simpler (one real, not one imaginary, embedding).",
+      "S10: Rational integrality without Rat.den internals — route every (q : Q with q^2 in Z => q in Z) step through IsIntegrallyClosed.isIntegral_iff with the monic X^2 - C c witness; cleaner and pin-robust.",
+      "S10: The half-integer exclusion (v odd impossible in 4N = u^2 - 2v^2) is one ZMod 4 cast: congrArg (Int.cast to ZMod 4) + push_cast + linear_combination against (4 : ZMod 4) = 0, then forall x : ZMod 4, x^2 != 2 by decide. No omega-vs-multiplication friction.",
+      "S10: linear_combination coefficient recipe for cast identities: state the goal, compute LHS-RHS, express as sum of coeff*(hyp.LHS - hyp.RHS) by polynomial division by hand; push_cast first so everything lives in Q (or ZMod 4)."
+    ],
+    "mathlibGaps": [
+      "Specific-field instantiations of `NumberField.classNumber` are thin at v4.26.0: Mathlib has the abstract `classNumber` definition but few worked-out small-field examples. The OQ-03 deliverable adds Q(√2) as a concrete example, providing infrastructure for any squarefree d.",
+      "The ring iso `NumberField.RingOfIntegers (Q(√d)) ≃+* Zsqrtd d` for squarefree d ≢ 1 mod 4 may not be packaged at v4.26.0. If so, the OQ-03 work builds it (~60 lines, S5 optional).",
+      "Mathlib's `Zsqrtd d` Euclidean-domain instance is proved for d = -1 (`GaussianInt`) but may not be proved for d = 2 at v4.26.0. The S5 optional deliverable would add this.",
+      "Mathlib's `NumberField.minkowskiBound` may be expressed as a `Real.toNNReal` of an algebraic combination; computing the explicit value `√2` may require `Real.sqrt_eq_iff_sq_eq` manipulations. This is friction, not a fundamental gap."
+    ],
+    "nextSteps": [
+      "S11: trace/norm formulas on the power basis (trace(a+b*root)=2a, norm=a^2-2b^2) — main risk; totally-real two-embeddings product is a fallback route.",
+      "S11: integral element => trace/norm in Z (minpoly.isIntegrallyClosed_eq_field_fractions) => int_pair_of_double_and_norm => O_K = Z[root].",
+      "S11: Basis (Fin 2) Z (O_K) from {1, root}; NumberField.discr_eq_discr; trace-form det [[2,0],[0,4]] = 8; unlocks unconditional Q_sqrt2_classNumber_eq_one.",
+      "S12 (optional): template extension to Q(sqrt3)/Q(sqrt5) once the quadratic recipe is proven out."
     ]
   },
   "references": [
