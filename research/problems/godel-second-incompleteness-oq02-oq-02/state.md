@@ -515,3 +515,27 @@ in `sessions/2026-07-24-s21-boxfree-decidability.md` — tracker fold-in was
 deferred until #43350 merged, done in this entry). Next: S22 = full GL
 decidability via FMP (Segerberg filtration over Kripke.lean, multi-session);
 Hk/Hlob arithmetic route unchanged (blocked on Σ₁ rebuild).
+
+## Status (researcher-3, 2026-07-24) — S22a DONE: finite Lindenbaum layer (FMP groundwork)
+
+`GodelSecondIncompletenessOQ02Lindenbaum.lean` (Mathlib-free, imports
+GLSyntax + GLFour + Kalmar; docker green, 5 jobs, 0 sorries / 0 axiom
+declarations): the world-construction layer for the S22 finite model
+property. Contents: finite consistency calculus over the S19 `PDeriv`
+hypothesis layer (`Consistent`, `Consistent.of_subset`,
+`deriv_neg_of_inconsistent`, `consistent_cons_or`,
+`consistent_cons_of_deriv`); subformula closure (`subf`, `self_mem_subf`,
+`subf_closed`); the classical one-pass finite Lindenbaum sweep (`extend`)
+with `consistent_extend` / `subset_extend` / `mem_or_of_mem_extend` /
+`mem_extend_of_consistent`; `MaximalIn` + the **finite Lindenbaum lemma**
+(`lindenbaum`); the maximal-set toolkit (`mem_of_deriv`, `deriv_iff_mem`,
+`neg_deriv_of_not_mem`, `not_mem_of_neg_deriv`, `falsum_not_mem`, and
+`impl_mem_iff` — the `→`-case of the future truth lemma); and
+`exists_root_world` (every GL-unprovable `φ` has a maximal consistent
+subset of `subf (¬φ)` containing `¬φ`).
+
+Next: **S22b** — canonical finite model over `MaximalIn` worlds (Boolos
+Ch. 5): accessibility relation, list-conjunction machinery, box-case
+consistency lemma (Löb + S18 `four`), truth lemma, Segerberg completeness
++ FMP; then S22c full decidability. Arithmetic Htaut/Hk/Hlob unchanged
+(blocked on Σ₁ Provable rebuild).
