@@ -2,7 +2,7 @@
   "id": "harmonic-divergence-oq-01",
   "title": "Euler-Mascheroni Constant: Bounds, Structure, and Connections",
   "slug": "harmonic-divergence-oq-01",
-  "description": "A comprehensive formalization of the Euler-Mascheroni constant γ ≈ 0.5772: convergence and monotonicity of the defining sequences, log bounds on harmonic numbers, Theisinger's theorem that H_n is never an integer for n ≥ 2, sandwich sequence convergence rate, systematic rational exclusion (all p/q with denominator ≤ 4), conditional irrationality consequences, and connections to the p-series boundary.",
+  "description": "A machine-verified account of the Euler-Mascheroni constant γ ≈ 0.5772, built directly on Mathlib's eulerMascheroniConstant/Seq/Seq' API for convergence, monotonicity, and the bounds 1/2 < γ < 2/3, plus Mathlib's harmonic-number log bounds and 2-adic-valuation results for Theisinger's theorem; this entry adds the sandwich-gap convergence-rate computation, systematic rational exclusion (all p/q with denominator ≤ 4) derived from the bounds, conditional irrationality consequences, and the p-series-boundary connection.",
   "references": [
     {
       "authors": "Leonhard Euler",
@@ -47,28 +47,60 @@
       "series",
       "calculus"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "assumptions": "0 axioms, 0 sorries (core result via Mathlib bridge). Convergence, monotonicity, the flagship bounds 1/2 < γ < 2/3, the log-harmonic bounds, and Theisinger's theorem (2-adic valuation) are direct one-line delegations to Mathlib's Real.eulerMascheroniConstant/Seq/Seq' API (Mathlib.NumberTheory.Harmonic.EulerMascheroni), Mathlib.NumberTheory.Harmonic.Bounds, and Mathlib.NumberTheory.Harmonic.Int (padicValRat_two_harmonic, harmonic_not_int). This entry contributes the sandwich-gap convergence-rate computation, the systematic rational-exclusion derivations from the bounds, and the conditional-irrationality/p-series framing built on top.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.one_half_lt_eulerMascheroniConstant / Real.eulerMascheroniConstant_lt_two_thirds",
+        "description": "1/2 < γ < 2/3 — the flagship bounds this entry's rational-exclusion and sign results are built from, wrapped directly as one_half_lt_γ / γ_lt_two_thirds",
+        "module": "Mathlib.NumberTheory.Harmonic.EulerMascheroni"
+      },
+      {
+        "theorem": "Real.tendsto_eulerMascheroniSeq / Real.tendsto_eulerMascheroniSeq'",
+        "description": "Convergence of the defining sandwich sequences to γ, wrapped directly as γ_seq_tendsto / γ_seq'_tendsto",
+        "module": "Mathlib.NumberTheory.Harmonic.EulerMascheroni"
+      },
+      {
+        "theorem": "Real.strictMono_eulerMascheroniSeq / Real.strictAnti_eulerMascheroniSeq'",
+        "description": "Monotonicity of γ_seq (increasing) and γ_seq' (decreasing), wrapped directly",
+        "module": "Mathlib.NumberTheory.Harmonic.EulerMascheroni"
+      },
+      {
+        "theorem": "log_add_one_le_harmonic / harmonic_le_one_add_log",
+        "description": "log(n+1) ≤ H_n ≤ 1 + log(n), wrapped directly as log_le_harmonic / harmonic_le_log",
+        "module": "Mathlib.NumberTheory.Harmonic.Bounds"
+      },
+      {
+        "theorem": "padicValRat_two_harmonic / harmonic_not_int",
+        "description": "v₂(H_n) = -⌊log₂ n⌋ and Theisinger's theorem that H_n is not an integer for n ≥ 2, wrapped directly as harmonic_padic_val / harmonic_non_integer",
+        "module": "Mathlib.NumberTheory.Harmonic.Int"
+      },
+      {
+        "theorem": "Real.not_summable_one_div_natCast / Real.summable_nat_rpow_inv",
+        "description": "Harmonic non-summability and the p-series boundary (Σ 1/n^p summable iff p > 1), wrapped directly",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
     "lineCount": 253,
     "theoremCount": 52,
     "definitionCount": 3,
     "originalContributions": [
-      "Definition and convergence/monotonicity wrappers for γ_seq (lower) and γ_seq' (upper) sequences",
+      "Definition and convergence/monotonicity wrappers for γ_seq (lower) and γ_seq' (upper) sequences (delegated to Mathlib)",
       "γ_pos, γ_ne_zero, γ_ne_one, γ_mem_Ioo(0,1) from bounds 1/2 < γ < 2/3",
       "sandwich_gap: the gap γ_seq'(n) - γ_seq(n) = log(n+1) - log(n) for n ≥ 1",
       "γ_approx_error: explicit convergence rate bound γ - γ_seq(n) < log(n+1) - log(n)",
       "sandwich_gap_tendsto: the gap tends to 0, giving an explicit convergence rate",
       "γ_avoids_denom_le_4: γ ≠ p/q for all p/q in (0,1) with denominator q ≤ 4",
       "Rational exclusion for q ≤ 6: 1/4, 1/3, 1/2, 2/3, 3/4, 1/5, 2/5, 4/5, 1/6, 5/6",
-      "harmonic_padic_val and harmonic_non_integer: Theisinger's 1915 theorem via 2-adic valuation",
-      "Harmonic series divergence and non-summability wrappers",
-      "p-series boundary: Σ 1/n^p summable iff p > 1",
+      "harmonic_padic_val and harmonic_non_integer: Theisinger's 1915 theorem, delegated directly to Mathlib's padicValRat_two_harmonic and harmonic_not_int",
+      "Harmonic series divergence and non-summability wrappers (delegated to Mathlib)",
+      "p-series boundary: Σ 1/n^p summable iff p > 1 (delegated to Mathlib)",
       "irrational_γ_ne_rat: conditional irrationality consequences",
       "exp_γ bounds: 1 < exp(γ) < exp(1), exp(1/2) < exp(γ) < exp(2/3)",
-      "log bounds on harmonic numbers: log(n+1) ≤ H_n ≤ 1 + log(n)"
+      "log bounds on harmonic numbers: log(n+1) ≤ H_n ≤ 1 + log(n) (delegated to Mathlib.NumberTheory.Harmonic.Bounds)"
     ]
   },
   "overview": {
