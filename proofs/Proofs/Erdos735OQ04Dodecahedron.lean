@@ -135,29 +135,29 @@ noncomputable def dodecaConfig : PointConfigD 3 :=
 
 /- ## Pairwise distinctness of the vertices used in the eight flats -/
 
-lemma d_c₁c₂ : c₁ ≠ c₂ := ne_of_coord 2 (by norm_num [c₁, c₂, WithLp.ofLp_toLp])
+lemma d_c₁c₂ : c₁ ≠ c₂ := ne_of_coord 2 (by norm_num [c₁, c₂, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 lemma d_c₁c₃ : c₁ ≠ c₃ := ne_of_coord 1 (by norm_num [c₁, c₃, WithLp.ofLp_toLp])
 lemma d_c₁c₄ : c₁ ≠ c₄ := ne_of_coord 1 (by norm_num [c₁, c₄, WithLp.ofLp_toLp])
 lemma d_c₂c₃ : c₂ ≠ c₃ := ne_of_coord 1 (by norm_num [c₂, c₃, WithLp.ofLp_toLp])
 lemma d_c₂c₄ : c₂ ≠ c₄ := ne_of_coord 1 (by norm_num [c₂, c₄, WithLp.ofLp_toLp])
-lemma d_c₃c₄ : c₃ ≠ c₄ := ne_of_coord 2 (by norm_num [c₃, c₄, WithLp.ofLp_toLp])
+lemma d_c₃c₄ : c₃ ≠ c₄ := ne_of_coord 2 (by norm_num [c₃, c₄, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 
-lemma d_c₅c₆ : c₅ ≠ c₆ := ne_of_coord 2 (by norm_num [c₅, c₆, WithLp.ofLp_toLp])
+lemma d_c₅c₆ : c₅ ≠ c₆ := ne_of_coord 2 (by norm_num [c₅, c₆, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 lemma d_c₅c₇ : c₅ ≠ c₇ := ne_of_coord 1 (by norm_num [c₅, c₇, WithLp.ofLp_toLp])
 lemma d_c₅c₈ : c₅ ≠ c₈ := ne_of_coord 1 (by norm_num [c₅, c₈, WithLp.ofLp_toLp])
 lemma d_c₆c₇ : c₆ ≠ c₇ := ne_of_coord 1 (by norm_num [c₆, c₇, WithLp.ofLp_toLp])
 lemma d_c₆c₈ : c₆ ≠ c₈ := ne_of_coord 1 (by norm_num [c₆, c₈, WithLp.ofLp_toLp])
-lemma d_c₇c₈ : c₇ ≠ c₈ := ne_of_coord 2 (by norm_num [c₇, c₈, WithLp.ofLp_toLp])
+lemma d_c₇c₈ : c₇ ≠ c₈ := ne_of_coord 2 (by norm_num [c₇, c₈, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 
 /- Cube vertex vs `x`-vertex: they differ in the third coordinate (±1 vs 0). -/
-lemma d_c₁x₁ : c₁ ≠ x₁ := ne_of_coord 2 (by norm_num [c₁, x₁, WithLp.ofLp_toLp])
-lemma d_c₂x₁ : c₂ ≠ x₁ := ne_of_coord 2 (by norm_num [c₂, x₁, WithLp.ofLp_toLp])
-lemma d_c₃x₂ : c₃ ≠ x₂ := ne_of_coord 2 (by norm_num [c₃, x₂, WithLp.ofLp_toLp])
-lemma d_c₄x₂ : c₄ ≠ x₂ := ne_of_coord 2 (by norm_num [c₄, x₂, WithLp.ofLp_toLp])
-lemma d_c₅x₃ : c₅ ≠ x₃ := ne_of_coord 2 (by norm_num [c₅, x₃, WithLp.ofLp_toLp])
-lemma d_c₆x₃ : c₆ ≠ x₃ := ne_of_coord 2 (by norm_num [c₆, x₃, WithLp.ofLp_toLp])
-lemma d_c₇x₄ : c₇ ≠ x₄ := ne_of_coord 2 (by norm_num [c₇, x₄, WithLp.ofLp_toLp])
-lemma d_c₈x₄ : c₈ ≠ x₄ := ne_of_coord 2 (by norm_num [c₈, x₄, WithLp.ofLp_toLp])
+lemma d_c₁x₁ : c₁ ≠ x₁ := ne_of_coord 2 (by norm_num [c₁, x₁, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₂x₁ : c₂ ≠ x₁ := ne_of_coord 2 (by norm_num [c₂, x₁, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₃x₂ : c₃ ≠ x₂ := ne_of_coord 2 (by norm_num [c₃, x₂, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₄x₂ : c₄ ≠ x₂ := ne_of_coord 2 (by norm_num [c₄, x₂, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₅x₃ : c₅ ≠ x₃ := ne_of_coord 2 (by norm_num [c₅, x₃, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₆x₃ : c₆ ≠ x₃ := ne_of_coord 2 (by norm_num [c₆, x₃, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₇x₄ : c₇ ≠ x₄ := ne_of_coord 2 (by norm_num [c₇, x₄, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
+lemma d_c₈x₄ : c₈ ≠ x₄ := ne_of_coord 2 (by norm_num [c₈, x₄, WithLp.ofLp_toLp, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 
 /- Cube vertex vs `z`-vertex: they differ in the second coordinate (±1 vs 0). -/
 lemma d_c₁z₁ : c₁ ≠ z₁ := ne_of_coord 1 (by norm_num [c₁, z₁, WithLp.ofLp_toLp])
@@ -179,49 +179,49 @@ lemma d_c₈z₄ : c₈ ≠ z₄ := ne_of_coord 1 (by norm_num [c₈, z₄, With
 
 /- `x`-vertex vs `z`-vertex: they differ in the second coordinate (±φ vs 0). -/
 lemma d_x₁z₁ : x₁ ≠ z₁ := ne_of_coord 1 (by
-  simp only [x₁, z₁, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₁, z₁, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   exact phi_ne_zero)
 lemma d_x₁z₂ : x₁ ≠ z₂ := ne_of_coord 1 (by
-  simp only [x₁, z₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₁, z₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   exact phi_ne_zero)
 lemma d_x₂z₁ : x₂ ≠ z₁ := ne_of_coord 1 (by
-  simp only [x₂, z₁, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₂, z₁, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; exact phi_ne_zero (by linarith)
   )
 lemma d_x₂z₂ : x₂ ≠ z₂ := ne_of_coord 1 (by
-  simp only [x₂, z₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₂, z₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; exact phi_ne_zero (by linarith))
 lemma d_x₃z₃ : x₃ ≠ z₃ := ne_of_coord 1 (by
-  simp only [x₃, z₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₃, z₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   exact phi_ne_zero)
 lemma d_x₃z₄ : x₃ ≠ z₄ := ne_of_coord 1 (by
-  simp only [x₃, z₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₃, z₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   exact phi_ne_zero)
 lemma d_x₄z₃ : x₄ ≠ z₃ := ne_of_coord 1 (by
-  simp only [x₄, z₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₄, z₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; exact phi_ne_zero (by linarith))
 lemma d_x₄z₄ : x₄ ≠ z₄ := ne_of_coord 1 (by
-  simp only [x₄, z₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₄, z₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; exact phi_ne_zero (by linarith))
 
 /- Within the `x` family (second coordinate ±φ, first coordinate ±(φ−1)). -/
 lemma d_x₁x₂ : x₁ ≠ x₂ := ne_of_coord 1 (by
-  simp only [x₁, x₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₁, x₂, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; linarith [phi_pos])
 lemma d_x₁x₃ : x₁ ≠ x₃ := ne_of_coord 0 (by
   simp only [x₁, x₃, WithLp.ofLp_toLp, Matrix.cons_val_zero]
   intro h; linarith [one_lt_phi])
 lemma d_x₁x₄ : x₁ ≠ x₄ := ne_of_coord 1 (by
-  simp only [x₁, x₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₁, x₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; linarith [phi_pos])
 lemma d_x₂x₃ : x₂ ≠ x₃ := ne_of_coord 1 (by
-  simp only [x₂, x₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₂, x₃, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; linarith [phi_pos])
 lemma d_x₂x₄ : x₂ ≠ x₄ := ne_of_coord 0 (by
   simp only [x₂, x₄, WithLp.ofLp_toLp, Matrix.cons_val_zero]
   intro h; linarith [one_lt_phi])
 lemma d_x₃x₄ : x₃ ≠ x₄ := ne_of_coord 1 (by
-  simp only [x₃, x₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [x₃, x₄, WithLp.ofLp_toLp, Matrix.cons_val_one, Matrix.cons_val_zero]
   intro h; linarith [phi_pos])
 
 /- Within the `z` family (first coordinate ±φ, third coordinate ±(φ−1)). -/
@@ -384,7 +384,8 @@ lemma rank_flatX2 : Module.rank ℝ flatX2.direction = ((2 : ℕ) : Cardinal) :=
 
 lemma rank_flatZ0 : Module.rank ℝ flatZ0.direction = ((2 : ℕ) : Cardinal) := by
   rw [flatZ0, AffineSubspace.direction_mk']
-  exact rank_ker_two _ c₁ (by rw [coordL_apply]; norm_num [c₁, WithLp.ofLp_toLp])
+  exact rank_ker_two _ c₁ (by rw [coordL_apply]; norm_num [c₁, WithLp.ofLp_toLp,
+    Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons])
 
 lemma rank_flatY0 : Module.rank ℝ flatY0.direction = ((2 : ℕ) : Cardinal) := by
   rw [flatY0, AffineSubspace.direction_mk']
