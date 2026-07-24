@@ -638,6 +638,7 @@ theorem isProper_attach {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
   induction hatt with
   | here i ch hj =>
       intro hp hmax
+      simp only [isProper] at hp ⊢
       obtain ⟨hnodup, hlabels, hproper⟩ := hp
       refine ⟨?_, ?_, ?_⟩
       · -- sibling labels stay distinct: a same-labelled child would be a
@@ -648,8 +649,9 @@ theorem isProper_attach {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
         have humatch : HasMatchAt j u 0 := by
           cases u with
           | node l chu =>
-              have : l = j := hulabel
-              subst this
+              simp only [HasMatchAt]
+              have hlj : l = j := hulabel
+              rw [hlj]
               exact self_mem_inclNbhd (P := P) j
         have h1 : HasMatchAt j (WitnessTree.node i ch) 1 := ⟨u, humem, humatch⟩
         exact absurd (hmax 1 h1) (by omega)
@@ -663,6 +665,7 @@ theorem isProper_attach {j : Fin P.numEvents} {τ τ' : WitnessTree P} {d : ℕ}
         · exact hproper t ht'
   | child i pre post t t' d h ih =>
       intro hp hmax
+      simp only [isProper] at hp ⊢
       obtain ⟨hnodup, hlabels, hproper⟩ := hp
       have htmem : t ∈ pre ++ t :: post :=
         List.mem_append_right _ (List.mem_cons_self ..)
