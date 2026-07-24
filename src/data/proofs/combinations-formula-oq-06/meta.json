@@ -49,7 +49,8 @@
       "The column index k of the hockey-stick identity is exactly the 'dimension' of the resulting figurate number: k=1 counts points on a line (triangular numbers), k=2 counts triangles (tetrahedral numbers), k=3 counts tetrahedra, and the single identity ∑_{m≤n} C(m,k) = C(n+1,k+1) specializes to every dimension at once.",
       "Passing from Mathlib's interval form (Icc k n) to the range form (range (n+1)) costs nothing because the binomial coefficients C(m,k) below the diagonal (m < k) are identically zero — exactly the content of Nat.choose_eq_zero_of_lt — so Finset.sum_subset absorbs them.",
       "The figurate-number recurrences T_n = T_{n-1} + n and Te_n = Te_{n-1} + T_n are the same Pascal recurrence C(m+1,k+1) = C(m,k) + C(m,k+1) read as a recurrence on partial sums; this is why hockey-stick and the figurate tower are one theorem rather than three.",
-      "The closed form C(n+1,2) = n(n+1)/2 follows mechanically from Nat.choose_two_right; combining it with the column-1 hockey stick recovers Gauss's schoolboy sum 0+1+⋯+n as a binomial coefficient."
+      "The closed form C(n+1,2) = n(n+1)/2 follows mechanically from Nat.choose_two_right; combining it with the column-1 hockey stick recovers Gauss's schoolboy sum 0+1+⋯+n as a binomial coefficient.",
+      "The identity also admits a purely combinatorial proof distinct from the telescoping argument formalized here: to choose a (k+1)-subset of {0,...,n+1}, condition on its largest element m+1 and choose the remaining k elements from {0,...,m}, giving C(m,k) ways; summing over m = k,...,n recovers C(n+1,k+1) directly by a bijection rather than by cancellation."
     ]
   },
   "sections": [
