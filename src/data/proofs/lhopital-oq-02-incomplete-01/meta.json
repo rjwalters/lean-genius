@@ -106,7 +106,8 @@
       "An abstract L'Hôpital theorem becomes useful only when the hypotheses (derivative lemmas, non-vanishing denominator, divergence of g, and the f'/g' limit) can be assembled mechanically — these three corollaries demonstrate that for the parent rule",
       "The c = 0 cases (log/x and x/eˣ) and the c ≠ 0 case ((x+log x)/x → 1) together confirm the parent theorem handles both vanishing and nonzero target limits",
       "x/eˣ → 0 was listed only as commentary in the parent file; deriving it formally closes the loop between statement and application",
-      "The hard part — the ∞/∞ divergence behaviour — is entirely delegated to the parent's two-variable Cauchy-MVT argument, leaving only routine inverse-limit computations here"
+      "The hard part — the ∞/∞ divergence behaviour — is entirely delegated to the parent's two-variable Cauchy-MVT argument, leaving only routine inverse-limit computations here",
+      "The parent rule is stated over a general basepoint a via ∀ x ∈ Ioi a; all three corollaries instantiate a = 0, even for id and exp whose derivative facts hold on all of ℝ — the shared choice of basepoint is dictated by log's domain (x > 0), not by any of the three functions individually needing the restriction"
     ],
     "conclusion": "All three growth limits are fully machine-checked with no sorries and no extra axioms, depending only on the parent's 0-axiom ∞/∞ L'Hôpital rule and standard Mathlib derivative/limit lemmas."
   },
