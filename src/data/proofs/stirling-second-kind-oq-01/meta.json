@@ -61,7 +61,8 @@
       "**The combinatorial count**: an unordered split of an n-set into two nonempty parts comes from one of the 2^n subsets, after discarding the two improper subsets (∅ and the whole set) and identifying each part with its complement — giving (2^n − 2)/2 = 2^(n-1) − 1.",
       "**An inhomogeneous geometric recursion**: specialising Pascal's rule to the second column collapses it to a(n+1) = 2·a(n) + 1 (because S(n,1) = 1), the standard recurrence whose solution is 2^(n-1) − 1.",
       "**Filling a real Mathlib gap**: Mathlib's Stirling file proves the recurrences and the columns S(n,1), S(n,n), and S(n,n-1) = C(n,2), but stops short of the k = 2 closed form. This is the first genuinely nontrivial column value.",
-      "**Natural subtraction handled cleanly**: working over ℕ, the 2^(n-1) − 1 form needs 1 ≤ 2^(n-1); supplying this single fact lets `omega` close every subtraction step without moving to ℤ."
+      "**Natural subtraction handled cleanly**: working over ℕ, the 2^(n-1) − 1 form needs 1 ≤ 2^(n-1); supplying this single fact lets `omega` close every subtraction step without moving to ℤ.",
+      "**The triangle's columns are not uniformly polynomial**: the boundary columns Mathlib already has are low-degree in n — S(n,1) = 1 is constant and S(n,n-1) = C(n,2) is quadratic — but the very next column already jumps to exponential growth, 2^(n-1) − 1. This column is the first place in the triangle where the closed form stops being a polynomial in n."
     ],
     "prerequisites": [
       "Stirling numbers of the second kind and set partitions",
@@ -71,12 +72,20 @@
   },
   "sections": [
     {
-      "id": "imports-docstring",
-      "title": "Imports and Setup",
+      "id": "header-docstring",
+      "title": "File-Level Docstring",
       "startLine": 1,
+      "endLine": 33,
+      "summary": "States the goal S(n,2) = 2^(n-1) − 1 for n ≥ 2, the boundary columns Mathlib already has (S(n,n)=1, S(n+1,1)=1, S(n+1,n)=C(n+1,2)), the combinatorial (subset–complement pairing) and algebraic (recurrence) reasons for the closed form, and lists the three theorems proved.",
+      "mathContext": "S(n,2) counts partitions of an n-set into two nonempty unlabeled blocks; Mathlib's Nat.stirlingSecond supplies the recurrences and boundary columns but not this one."
+    },
+    {
+      "id": "imports-and-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 35,
       "endLine": 39,
-      "summary": "File-level docstring stating S(n,2) = 2^(n-1) − 1, the combinatorial meaning, and the recurrence used. Imports Mathlib and opens the Nat namespace so the stirlingSecond lemmas are in scope.",
-      "mathContext": "S(n,2) counts partitions of an n-set into two nonempty unlabeled blocks; Mathlib's Nat.stirlingSecond supplies the recurrences and boundary columns."
+      "summary": "Imports Mathlib and opens the Nat namespace so the stirlingSecond lemmas and notation are in scope, then opens the file's own StirlingSecondKindOQ01 namespace.",
+      "mathContext": "Nat.stirlingSecond and its recurrence/boundary lemmas live in Mathlib.Combinatorics.Enumerative.Stirling, reached via `import Mathlib`."
     },
     {
       "id": "shifted-form",
