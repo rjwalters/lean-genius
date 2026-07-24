@@ -150,7 +150,7 @@
       "endLine": 78
     },
     "title": "Erdős-Graham Upper Bound",
-    "content": "`gExcess_upper_bound` (axiom): $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$. The excess grows at most logarithmically in $n$.",
+    "content": "The Erdős–Graham bound $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$ is documented in a source comment (Section IV) — it is **not** a Lean declaration; no `gExcess_upper_bound` axiom exists in this file.",
     "significance": "key",
     "mathContext": "The bound $g_k(n) = O(\\log n)$ follows from Legendre's formula: $v_p(n!) = \\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor \\approx n/(p-1)$. If $a_1 + \\cdots + a_k = n + g$ with $\\prod a_i! \\mid n!$, then for each prime $p \\le n$, the $p$-adic valuation constraint forces $g \\le O(\\log_p n)$. Summing over the logarithmic number of relevant primes gives $g = O(\\log n)$. This establishes the correct order of magnitude but not the precise constant.",
     "relatedConcepts": [
@@ -174,7 +174,7 @@
       "endLine": 87
     },
     "title": "Non-negativity of $g_k(n)$",
-    "content": "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ for all $k \\ge 2$ and $n$. The trivial tuple $(n, 0, \\ldots, 0)$ achieves excess $0$ since $n! \\cdot 0!^{k-1} = n! \\mid n!$.",
+    "content": "`gExcess_nonneg` (theorem): $g_k(n) \\ge 0$ for all $k \\ge 2$ and $n$, proved via `le_csSup` from the trivial tuple $(n, 0, \\ldots, 0)$, which achieves excess $0$ since $n! \\cdot 0!^{k-1} = n! \\mid n!$. Not axiomatized.",
     "significance": "supporting",
     "mathContext": "The trivial lower bound $g_k(n) \\ge 0$ follows from the tuple $a_1 = n, a_2 = \\cdots = a_k = 0$: then $\\sum a_i = n$ and $n! \\cdot (0!)^{k-1} = n! \\mid n!$. For non-trivial lower bounds, one can use Stirling's approximation to show that tuples like $(n/k + \\delta, \\ldots, n/k + \\delta)$ with small $\\delta$ satisfy the divisibility condition, giving $g_k(n) \\ge c \\log n$ for some $c > 0$.",
     "relatedConcepts": [
@@ -196,7 +196,7 @@
       "endLine": 94
     },
     "title": "Binomial Coefficient Connection ($k = 2$)",
-    "content": "`g2_binomial_connection` (axiom): $g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$. For $k = 2$, the divisibility condition $a! \\cdot b! \\mid n!$ is equivalent to the multinomial coefficient $\\binom{n}{a} \\cdot \\binom{a}{n-b}$ being well-defined.",
+    "content": "`g2_binomial_connection` (theorem): $g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$, proved via a `Fin 2 ↔` pair correspondence. Not axiomatized. For $k = 2$, the divisibility condition $a! \\cdot b! \\mid n!$ is equivalent to the multinomial coefficient $\\binom{n}{a} \\cdot \\binom{a}{n-b}$ being well-defined.",
     "significance": "key",
     "mathContext": "When $k = 2$, the condition $a! \\cdot b! \\mid n!$ means $n! / (a! \\cdot b!)$ is an integer. If $a + b = n$, this is the binomial coefficient $\\binom{n}{a}$, which is always an integer. For $a + b > n$ (positive excess), the condition is more restrictive: it requires $\\binom{a+b}{a} \\mid \\binom{a+b}{n} \\cdot \\frac{(a+b)!}{n!}$. The maximum excess $g_2(n)$ thus encodes how far beyond $n$ the sum $a + b$ can go while maintaining integrality of $n!/(a! \\cdot b!)$.",
     "relatedConcepts": [
@@ -220,7 +220,7 @@
       "endLine": 104
     },
     "title": "$k = 2$ Excess Characterization",
-    "content": "`g2_excess_characterization` (axiom): for $n \\ge 1$, there exist $a, b \\in \\mathbb{N}$ achieving the supremum $g_2(n)$, i.e., $a! \\cdot b! \\mid n!$ and $a + b - n = g_2(n)$.",
+    "content": "The supremum-attainment question — that there exist $a, b \\in \\mathbb{N}$ achieving $g_2(n)$, i.e., $a! \\cdot b! \\mid n!$ and $a + b - n = g_2(n)$ — is documented in a source comment (Section VI) — it is **not** a Lean declaration; no `g2_excess_characterization` axiom exists in this file.",
     "significance": "key",
     "mathContext": "This axiom asserts the supremum in $g_2(n)$ is attained — the maximum exists, not just the supremum. This is nontrivial because the feasible set $\\{(a, b) : a! \\cdot b! \\mid n!\\}$ is finite (bounded by $a, b \\le n + O(\\log n)$ from the upper bound), so compactness guarantees a maximizer. The characterization enables explicit computation: for small $n$, one can enumerate all valid pairs and find $g_2(n)$ directly.",
     "relatedConcepts": [
@@ -230,8 +230,7 @@
     ],
     "prerequisites": [
       "gExcess",
-      "FactorialDivides",
-      "gExcess_upper_bound"
+      "FactorialDivides"
     ]
   },
   {
@@ -243,7 +242,7 @@
       "endLine": 113
     },
     "title": "Average Growth of $g_2$",
-    "content": "`average_g2_growth` (axiom): $\\exists c > 0$ such that $\\sum_{n \\le x} g_2(n) / (x \\log x) \\to c$. This is the $k = 2$ case of Part (a), axiomatized as a known (or expected) result.",
+    "content": "The $k = 2$ average-growth question — $\\exists c > 0$ such that $\\sum_{n \\le x} g_2(n) / (x \\log x) \\to c$ — is documented in a source comment (Section VI) — it is **not** a Lean declaration; no `average_g2_growth` axiom exists in this file.",
     "significance": "key",
     "mathContext": "The $k = 2$ case is the most accessible because of the direct connection to binomial coefficients. The constant $c_2$ should be computable via the density of pairs $(a, b)$ with $a! \\cdot b! \\mid n!$ and large excess. By Kummer's theorem, $v_p(\\binom{a+b}{a})$ counts the number of carries when adding $a$ and $b$ in base $p$, so the excess relates to the carry structure across all primes $p \\le n$.",
     "relatedConcepts": [
