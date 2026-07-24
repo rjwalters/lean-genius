@@ -43,7 +43,7 @@
       "Verification that {1,2,4,8,13} is a Sidon set",
       "Upper bound: Sidon sets have at most 2sqrt(N) elements",
       "Infrastructure for proving powers of 2 form Sidon sets",
-      "Proof that isSidon_singleton holds"
+      "Lower bound: explicit modular-parabola Sidon set of size floor(sqrt(N))/2 (Erdos44SidonLowerBound.lean)"
     ],
     "axiomCount": 1,
     "lineCount": 353,
