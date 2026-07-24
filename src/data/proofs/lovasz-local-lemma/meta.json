@@ -206,7 +206,7 @@
       "name": "symmetric_lll_complete",
       "type": "core",
       "statement": "Symmetric LLL summary at $T(d)$ threshold",
-      "significance": "**The headline summary theorem.** Combines the symmetric threshold analysis ($T(d) \\le 1/4$), the avoidance product positivity, and the symmetric-to-general bridge into a single statement describing the complete symmetric LLL framework over $\\mathbb{Q}$. Last theorem in the file (line 352).",
+      "significance": "**The headline summary theorem.** Combines the symmetric threshold analysis ($T(d) \\le 1/4$), the avoidance product positivity, and the symmetric-to-general bridge into a single statement describing the complete symmetric LLL framework over $\\mathbb{Q}$. Part XI (threshold monotonicity, lines 365-471) extends the file further, so this is no longer the last theorem.",
       "description": "Lean signature: `theorem symmetric_lll_complete (n d : ℕ) (hd : 0 < d) (adj : Fin n → Finset (Fin n)) (h_max : HasMaxDegree n adj d) ...`. Synthesizes the preceding results."
     }
   ],
