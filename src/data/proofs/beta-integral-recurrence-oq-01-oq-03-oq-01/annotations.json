@@ -36,6 +36,18 @@
     "prerequisites": ["the off-diagonal ℂ→ℝ bridge", "betaIntegral_nat_nat from the grandparent"]
   },
   {
+    "id": "ann-base",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 73, "endLine": 81 },
+    "type": "theorem",
+    "title": "Route 2's base case: n = 0",
+    "content": "integral_base: ∫₀¹ xᵏ(1-x)⁰ dx = 1/(k+1). Since (1-x)⁰ = 1, this is just ∫₀¹ xᵏ dx, read off Mathlib's integral_pow. This is the induction base that integral_offdiag_via_ibp starts from — matching m!·0!/(m+1)! since 0! = 1.",
+    "mathContext": "$\\int_0^1 x^k(1-x)^0\\,dx = \\int_0^1 x^k\\,dx = \\dfrac{1}{k+1}$",
+    "significance": "supporting",
+    "relatedConcepts": ["integral_pow", "induction base case", "factorial base 0! = 1"],
+    "prerequisites": ["Mathlib's integral_pow"]
+  },
+  {
     "id": "ann-recurrence",
     "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
     "range": { "startLine": 82, "endLine": 130 },
