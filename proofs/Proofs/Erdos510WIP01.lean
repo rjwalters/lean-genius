@@ -35,7 +35,17 @@ infimum is fully provable from Mathlib.  This file establishes:
   evaluation at `θ₀ = 3π/(2N+1)` (the middle of the kernel's first negative
   lobe), giving `minCosineSum {1,…,N} ≤ −1/2 − (2N+1)/(3π)` — the maximally
   additively-structured set sits at the opposite extreme (`≍ −N`) from the
-  conjectured general `−c√N`.
+  conjectured general `−c√N`;
+* **the L¹–L⁴ analytic engine for the Sidon route**: Cauchy–Schwarz for
+  interval integrals (`sq_integral_mul_le`, via `discrim_le_zero`), the L¹
+  bound `∫|f| ≤ 4π·(−minCosineSum)` (`integral_abs_cosineSum_le`, from
+  `∫f = 0`), the moment chain `(πN)³ ≤ (∫f⁴)·(∫|f|)²`
+  (`pow_three_second_moment_le`, Cauchy–Schwarz twice through `∫|f|³`), and
+  their combination `minCosineSum_le_neg_sqrt_of_fourth_moment`: any
+  fourth-moment bound `∫f⁴ ≤ B` yields
+  `minCosineSum A ≤ −√(π³N³/B)/(4π)`.  The remaining *combinatorial* step —
+  the Sidon (`B₂[1]`) quadruple count `∫f⁴ = O(N²)` — will instantiate `B`
+  and give Chowla's `−c√N` on the Sidon class.
 
 All results are `0`-axiom / `0`-sorry.  The genuinely open content — the
 `−c√N` lower bound for *general* sets (those with additive structure, where
@@ -45,6 +55,7 @@ scaffolding).
 Reference: <https://erdosproblems.com/510>
 -/
 
+import Mathlib.Algebra.QuadraticDiscriminant
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -876,5 +887,198 @@ theorem add_minCosineSum_le_minCosineSum_union {A B : Finset ℕ}
   rintro y ⟨θ, rfl⟩
   rw [cosineSum_union hAB θ]
   exact add_le_add (minCosineSum_le A θ) (minCosineSum_le B θ)
+
+/-! ## The L¹–L⁴ analytic engine for the Sidon-class `√N` bound
+
+Chowla's conjecture predicts `minCosineSum A ≤ −c·√N` for *every*
+positive-frequency set.  For **Sidon sets** (`B₂[1]`: all pairwise sums
+distinct) the classical elementary route is a moment argument:
+
+1. the fourth moment `∫₀^{2π} f⁴` counts additive quadruples
+   `a + b = c + d`, which the Sidon condition caps at `O(N²)`;
+2. Cauchy–Schwarz twice (through the odd moment `∫|f|³`) turns the
+   second-moment identity `∫f² = πN` into the L¹ lower bound
+   `(πN)³ ≤ (∫f⁴)·(∫|f|)²`;
+3. since `∫f = 0` over a period, the negative part of `f` carries half the
+   L¹ mass, and the pointwise floor `f ≥ m := minCosineSum A` converts that
+   mass into `∫|f| ≤ 4π·(−m)`.
+
+This section formalizes the complete *analytic* engine (steps 2 and 3 and
+their combination): any fourth-moment bound `∫f⁴ ≤ B` now yields
+`minCosineSum A ≤ −√(π³N³/B)/(4π)`
+(`minCosineSum_le_neg_sqrt_of_fourth_moment`).  Instantiating `B = O(N²)` —
+the remaining *combinatorial* step 1, a quadruple count under the Sidon
+condition — will give the conjectured `−c·√N` on the Sidon class,
+complementing the sum-free class (`minCosineSum_le_neg_sqrt_half_card`,
+third-moment mechanism) with an orthogonal fourth-moment mechanism. -/
+
+/-- **Cauchy–Schwarz for interval integrals** (continuous integrands):
+`(∫ u·v)² ≤ (∫u²)·(∫v²)` over `[0, 2π]`.  For every `t` the quadratic
+`t²·∫u² − 2t·∫uv + ∫v² = ∫(t·u − v)²` is nonnegative, so its discriminant
+is nonpositive (`discrim_le_zero`). -/
+theorem sq_integral_mul_le (u v : ℝ → ℝ) (hu : Continuous u) (hv : Continuous v) :
+    (∫ θ in (0 : ℝ)..(2 * π), u θ * v θ) ^ 2
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (u θ) ^ 2)
+        * (∫ θ in (0 : ℝ)..(2 * π), (v θ) ^ 2) := by
+  set a : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (u θ) ^ 2 with ha
+  set b : ℝ := ∫ θ in (0 : ℝ)..(2 * π), u θ * v θ with hb
+  set c : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (v θ) ^ 2 with hc
+  have hq : ∀ t : ℝ, 0 ≤ a * (t * t) + (-(2 * b)) * t + c := by
+    intro t
+    have hu2 : IntervalIntegrable (fun θ => t ^ 2 * (u θ) ^ 2)
+        MeasureTheory.volume 0 (2 * π) :=
+      ((hu.pow 2).const_mul _).intervalIntegrable _ _
+    have huv : IntervalIntegrable (fun θ => (-(2 * t)) * (u θ * v θ))
+        MeasureTheory.volume 0 (2 * π) :=
+      ((hu.mul hv).const_mul _).intervalIntegrable _ _
+    have hv2 : IntervalIntegrable (fun θ => (v θ) ^ 2)
+        MeasureTheory.volume 0 (2 * π) :=
+      (hv.pow 2).intervalIntegrable _ _
+    have hnn : 0 ≤ ∫ θ in (0 : ℝ)..(2 * π), (t * u θ - v θ) ^ 2 :=
+      intervalIntegral.integral_nonneg (by positivity) (fun θ _ => sq_nonneg _)
+    have hexp : (∫ θ in (0 : ℝ)..(2 * π), (t * u θ - v θ) ^ 2)
+        = t ^ 2 * a + (-(2 * t)) * b + c := by
+      rw [intervalIntegral.integral_congr (fun θ _ => show
+            (t * u θ - v θ) ^ 2
+              = t ^ 2 * (u θ) ^ 2 + ((-(2 * t)) * (u θ * v θ) + (v θ) ^ 2) by ring),
+          intervalIntegral.integral_add hu2 (huv.add hv2),
+          intervalIntegral.integral_add huv hv2,
+          intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
+          ← ha, ← hb, ← hc]
+      ring
+    rw [hexp] at hnn
+    nlinarith [hnn]
+  have hd := discrim_le_zero hq
+  rw [discrim] at hd
+  nlinarith [hd]
+
+/-- **The L¹ norm is controlled by the minimum**: for a positive-frequency
+set, `∫₀^{2π} |cosineSum A θ| dθ ≤ 4π·(−minCosineSum A)`.  Since `∫f = 0`
+over a period, the positive and negative parts of `f` have equal mass, and
+the negative part is pointwise at most `−m`; concretely `|f| ≤ f − 2m`
+pointwise (both cases of the sign of `f θ`, using `m ≤ 0` and `m ≤ f θ`),
+and the right side integrates to `−4πm`. -/
+theorem integral_abs_cosineSum_le (A : Finset ℕ) (hA : 0 ∉ A) :
+    ∫ θ in (0 : ℝ)..(2 * π), |cosineSum A θ| ≤ 4 * π * (-minCosineSum A) := by
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  have hm0 : m ≤ 0 := minCosineSum_nonpos A hA
+  have hlow : ∀ θ, m ≤ g θ := fun θ => minCosineSum_le A θ
+  have habs : IntervalIntegrable (fun θ => |g θ|) MeasureTheory.volume 0 (2 * π) :=
+    (continuous_cosineSum A).abs.intervalIntegrable _ _
+  have hgi : IntervalIntegrable (fun θ => g θ - 2 * m) MeasureTheory.volume 0 (2 * π) :=
+    ((continuous_cosineSum A).sub continuous_const).intervalIntegrable _ _
+  have hmono : (∫ θ in (0 : ℝ)..(2 * π), |g θ|)
+      ≤ ∫ θ in (0 : ℝ)..(2 * π), (g θ - 2 * m) := by
+    refine intervalIntegral.integral_mono_on (by positivity) habs hgi (fun θ _ => ?_)
+    exact abs_le.mpr ⟨by linarith [hlow θ], by linarith [hlow θ]⟩
+  have hIg : ∫ θ in (0 : ℝ)..(2 * π), g θ = 0 := integral_cosineSum_eq_zero A hA
+  have hval : (∫ θ in (0 : ℝ)..(2 * π), (g θ - 2 * m)) = 4 * π * (-m) := by
+    rw [intervalIntegral.integral_sub ((continuous_cosineSum A).intervalIntegrable _ _)
+        intervalIntegrable_const, hIg, intervalIntegral.integral_const]
+    simp only [smul_eq_mul]; ring
+  linarith [hmono, hval]
+
+/-- **The L²–L⁴–L¹ moment chain**: `(πN)³ ≤ (∫f⁴)·(∫|f|)²` for the cosine
+sum of a positive-frequency set.  Cauchy–Schwarz twice through the
+half-power `s = √|f|`: first `(∫f²)² = (∫ s³·s)² ≤ (∫|f|³)·(∫|f|)`, then
+`(∫|f|³)² = (∫ f²·|f|)² ≤ (∫f⁴)·(∫f²)`; combining and cancelling one
+factor of `∫f² = πN > 0` gives the cube inequality.  This is the Hölder
+step `‖f‖₂ ≤ ‖f‖₄^{2/3}·‖f‖₁^{1/3}` in integral form, with no fractional
+powers anywhere. -/
+theorem pow_three_second_moment_le (A : Finset ℕ) (hA : 0 ∉ A) (hne : A.Nonempty) :
+    (π * (A.card : ℝ)) ^ 3
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 4)
+        * (∫ θ in (0 : ℝ)..(2 * π), |cosineSum A θ|) ^ 2 := by
+  set g := cosineSum A with hg
+  have hgc : Continuous g := continuous_cosineSum A
+  set s : ℝ → ℝ := fun θ => Real.sqrt |g θ| with hsdef
+  have hsc : Continuous s := hgc.abs.sqrt
+  have hs2 : ∀ θ, s θ ^ 2 = |g θ| := fun θ => Real.sq_sqrt (abs_nonneg _)
+  -- Cauchy–Schwarz 1: `(∫f²)² ≤ (∫|f|³)·(∫|f|)`.
+  have hCS1 := sq_integral_mul_le (fun θ => s θ ^ 3) s (hsc.pow 3) hsc
+  have e1 : (∫ θ in (0 : ℝ)..(2 * π), s θ ^ 3 * s θ)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc s θ ^ 3 * s θ = (s θ ^ 2) ^ 2 := by ring
+        _ = |g θ| ^ 2 := by rw [hs2 θ]
+        _ = (g θ) ^ 2 := sq_abs _)
+  have e2 : (∫ θ in (0 : ℝ)..(2 * π), (s θ ^ 3) ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc (s θ ^ 3) ^ 2 = (s θ ^ 2) ^ 3 := by ring
+        _ = |g θ| ^ 3 := by rw [hs2 θ])
+  have e3 : (∫ θ in (0 : ℝ)..(2 * π), s θ ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| :=
+    intervalIntegral.integral_congr (fun θ _ => hs2 θ)
+  rw [e1, e2, e3] at hCS1
+  -- Cauchy–Schwarz 2: `(∫|f|³)² ≤ (∫f⁴)·(∫f²)`.
+  have hCS2 := sq_integral_mul_le (fun θ => (g θ) ^ 2) (fun θ => |g θ|)
+    (hgc.pow 2) hgc.abs
+  have e4 : (∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 * |g θ|)
+      = ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 :=
+    intervalIntegral.integral_congr (fun θ _ => by
+      calc (g θ) ^ 2 * |g θ| = |g θ| ^ 2 * |g θ| := by rw [sq_abs]
+        _ = |g θ| ^ 3 := by ring)
+  have e5 : (∫ θ in (0 : ℝ)..(2 * π), ((g θ) ^ 2) ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4 :=
+    intervalIntegral.integral_congr (fun θ _ => by ring)
+  have e6 : (∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 2)
+      = ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 :=
+    intervalIntegral.integral_congr (fun θ _ => sq_abs _)
+  rw [e4, e5, e6] at hCS2
+  -- Assemble with the second moment `∫f² = πN` and cancel one factor `πN > 0`.
+  have hX : ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 2 = π * A.card :=
+    integral_cosineSum_sq A hA
+  rw [hX] at hCS1 hCS2
+  set F : ℝ := ∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4 with hF
+  set L : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| with hLdef
+  set T : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| ^ 3 with hTdef
+  have hNpos : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr hne
+  have hXpos : 0 < π * (A.card : ℝ) := mul_pos Real.pi_pos hNpos
+  have hsq : ((π * (A.card : ℝ)) ^ 2) * ((π * (A.card : ℝ)) ^ 2)
+      ≤ (T * L) * (T * L) :=
+    mul_self_le_mul_self (sq_nonneg _) hCS1
+  have hTL : T ^ 2 * L ^ 2 ≤ (F * (π * (A.card : ℝ))) * L ^ 2 :=
+    mul_le_mul_of_nonneg_right hCS2 (sq_nonneg L)
+  nlinarith [hsq, hTL, hXpos]
+
+/-- **Conditional Chowla bound from a fourth-moment estimate**: any bound
+`∫₀^{2π} f⁴ ≤ B` forces `minCosineSum A ≤ −√(π³N³/B)/(4π)`.  This is the
+complete analytic engine for the Sidon route: the combinatorial quadruple
+count `∫f⁴ ≤ O(N²)` for Sidon (`B₂[1]`) sets, once formalized, instantiates
+`B` and yields the conjectured `−c·√N` on the Sidon class. -/
+theorem minCosineSum_le_neg_sqrt_of_fourth_moment (A : Finset ℕ) (hA : 0 ∉ A)
+    (hne : A.Nonempty) {B : ℝ}
+    (hB : (∫ θ in (0 : ℝ)..(2 * π), (cosineSum A θ) ^ 4) ≤ B) :
+    minCosineSum A ≤ -(Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) / (4 * π)) := by
+  set g := cosineSum A with hg
+  set m := minCosineSum A with hm
+  set L : ℝ := ∫ θ in (0 : ℝ)..(2 * π), |g θ| with hLdef
+  have hLnn : 0 ≤ L :=
+    intervalIntegral.integral_nonneg (by positivity) (fun θ _ => abs_nonneg _)
+  have hchain : (π * (A.card : ℝ)) ^ 3
+      ≤ (∫ θ in (0 : ℝ)..(2 * π), (g θ) ^ 4) * L ^ 2 :=
+    pow_three_second_moment_le A hA hne
+  have hNpos : (0 : ℝ) < A.card := by exact_mod_cast Finset.card_pos.mpr hne
+  have hXpos : 0 < π * (A.card : ℝ) := mul_pos Real.pi_pos hNpos
+  have hcube : (π * (A.card : ℝ)) ^ 3 ≤ B * L ^ 2 :=
+    le_trans hchain (mul_le_mul_of_nonneg_right hB (sq_nonneg L))
+  have hBpos : 0 < B := by nlinarith [hcube, pow_pos hXpos 3, sq_nonneg L]
+  -- `L ≥ √(π³N³/B)`.
+  have hdiv : π ^ 3 * (A.card : ℝ) ^ 3 / B ≤ L ^ 2 := by
+    rw [div_le_iff₀ hBpos]
+    nlinarith [hcube]
+  have hsqrt : Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) ≤ L := by
+    calc Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) ≤ Real.sqrt (L ^ 2) :=
+        Real.sqrt_le_sqrt hdiv
+      _ = L := Real.sqrt_sq hLnn
+  -- Convert the L¹ mass into the minimum via `∫|f| ≤ 4π·(−m)`.
+  have hL1 : L ≤ 4 * π * (-m) := integral_abs_cosineSum_le A hA
+  have h4π : (0 : ℝ) < 4 * π := by positivity
+  have hfin : Real.sqrt (π ^ 3 * (A.card : ℝ) ^ 3 / B) / (4 * π) ≤ -m := by
+    rw [div_le_iff₀ h4π]
+    nlinarith [hsqrt, hL1]
+  linarith [hfin]
 
 end Erdos510WIP01
