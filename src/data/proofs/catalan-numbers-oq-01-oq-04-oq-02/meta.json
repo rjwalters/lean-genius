@@ -66,29 +66,36 @@
       "id": "overview-header",
       "title": "Overview: reciprocal log-concavity and an honest correction",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Module docstring framing the derived-sequence question, refuting the suggested candidate Cₙ/(n+1) (fails at n=1), and identifying the reciprocal 1/Cₙ as the correct strictly log-concave derived sequence obtained by reciprocating the parent's Turán inequality."
+      "endLine": 51,
+      "summary": "Module docstring framing the derived-sequence question, refuting the suggested candidate Cₙ/(n+1) (fails at n=1), and identifying the reciprocal 1/Cₙ as the correct strictly log-concave derived sequence obtained by reciprocating the parent's Turán inequality; followed by the namespace declaration and the `open Nat CatalanNumbersOQ01OQ04` that brings the parent's Turán inequality into scope."
     },
     {
       "id": "recip-principle",
       "title": "The reciprocation principle",
       "startLine": 53,
-      "endLine": 64,
-      "summary": "recip_sq_gt_of_sq_lt: in any LinearOrderedField, 0 < x,y,z and y² < x·z imply (1/x)(1/z) < (1/y)². Proved by rewriting (1/y)² = 1/y² (div_pow) and (1/x)(1/z) = 1/(x·z), then applying the order-reversal one_div_lt_one_div_of_lt."
+      "endLine": 67,
+      "summary": "recip_sq_gt_of_sq_lt: in any LinearOrderedField, 0 < x,y,z and y² < x·z imply (1/x)(1/z) < (1/y)². Proved by rewriting (1/y)² = 1/y² (div_pow) and (1/x)(1/z) = 1/(x·z) (field_simp), then applying the order-reversal one_div_lt_one_div_of_lt to the hypothesis y² < x·z."
     },
     {
       "id": "catalan-instance",
       "title": "Strict log-concavity of the reciprocal Catalan sequence",
-      "startLine": 66,
-      "endLine": 80,
+      "startLine": 69,
+      "endLine": 83,
       "summary": "catalan_recip_logConcave: (1/Cₙ)(1/Cₙ₊₂) < (1/Cₙ₊₁)² over ℚ for every n. Casts catalan_pos for positivity and the parent's catalan_turan for the Turán hypothesis, then applies the reciprocation principle."
     },
     {
       "id": "standard-indexing",
-      "title": "Standard indexing and the refuted candidate",
-      "startLine": 82,
-      "endLine": 108,
-      "summary": "catalan_recip_logConcave_shift restates the inequality as aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1 (reindexing at n = m+1); catalanOverSucc_not_logConcave_at_one refutes the suggested candidate Cₙ/(n+1) by evaluating at n=1 (1/4 < 2/3 via norm_num)."
+      "title": "Reindexing to standard log-concavity form",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "catalan_recip_logConcave_shift restates the inequality as aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1, reindexing catalan_recip_logConcave at n = m+1 via Nat.exists_eq_add_of_lt and Nat.add_sub_cancel."
+    },
+    {
+      "id": "refuted-candidate",
+      "title": "The suggested candidate Cₙ/(n+1) is not log-concave",
+      "startLine": 101,
+      "endLine": 112,
+      "summary": "catalanOverSucc_not_logConcave_at_one refutes the open question's suggested candidate Cₙ/(n+1) by evaluating at n=1: a₁² = 1/4 while a₀·a₂ = 2/3, so 1/4 < 2/3 (norm_num after unfolding catalan_zero/catalan_one/catalan_two)."
     }
   ],
   "references": [
