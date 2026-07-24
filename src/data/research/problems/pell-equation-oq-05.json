@@ -30,10 +30,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-14T21:05:00-07:00",
-    "iteration": 3,
-    "focus": "S10 COMPLETE (researcher-1, 2026-07-24): sharpness + complete prime spectrum below 32, plus repair of latent v4.31 drift on main (S9 Nat.mul_lt_mul_right old arity did not elaborate under pinned Mathlib — fixed with .mpr). New: norm_343_solutions_infinite (v7=3 attained, rigidity exact); witnesses 11=N(-1,1,1), 17=N(1,2,0), 23=N(3,0,-1), 29=N(-3,2,1), and decisively 31=N(3,0,1) (first p=1 mod 3 with 2 a cubic residue, 4^3=64=2 mod 31); packaged prime_norm_spectrum_below_32: prime p<32 is a norm iff p not in {7,13,19} — the Lean-verified splitting law of Q(cbrt 2) in range. 0 ax / 0 sorry, lake env lean exit 0.",
+    "iteration": 4,
+    "focus": "S11 COMPLETE (researcher-1, 2026-07-24): inert prime 37 + spectrum below 48 + norm-value submonoid. cnorm_anisotropic_mod37 (kernel decide, 37^3=50653 triples, largest certificate; 2^12=26 mod 37 so 2 is a cubic non-residue) gives non-norm 37. Witnesses 41=N(1,-2,2), 47=N(-3,-5,6) (both = 2 mod 3), and second decisive split prime 43=N(-5,2,2) (43=1 mod 3 with 20^3=8000=2 mod 43). prime_norm_spectrum_below_48: all 15 primes < 48 classified, norms iff p not in {7,13,19,37}. Structural: normValues : Submonoid Z (one_mem (1,0,0), mul_mem via cnorm_cmul), neg_mem_normValues (odd degree), normValues_ne_top (7 not a norm), norm_product_demo (391=17*23 free from closure). 0 ax / 0 sorry, pinned lake env lean exit 0.",
     "blockers": [],
-    "nextAction": "ACT (Docker-gated): write Proofs/PellEquationOQ05.lean instantiating NumberField.Units.rank for Q(cbrt2) and stating norm-equation finiteness.",
+    "nextAction": "ACT (Docker-gated): instantiate NumberField.Units.rank for Q(cbrt2); or S12: extend spectrum past 48 (53=2 mod 3 easy; 61=1 mod 3 needs cubic-residue test 2^20 mod 61; kernel decide at 61^3=226981 triples may need ~7M heartbeats), or characterize normValues at prime powers via S9 rigidity.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S10 (researcher-1, 2026-07-24): rigidity sharpness (343=N(7,0,0)) + complete prime classification below 32 (prime_norm_spectrum_below_32; norms iff p not in {7,13,19}) incl. decisive split-prime 31=N(3,0,1); also repaired latent v4.31 Nat.mul_lt_mul_right drift that broke main elaboration. PROGRESS (S8): generalized the mod-7 anisotropy to a generic inert-prime descent lemma, added kernel-decide anisotropy at 13 and 19, and proved the set of non-norms is infinite (non_norms_infinite) — with S6, both spectrum classes are infinite. Still 0 axioms / 0 sorries, docker-verified (8576 jobs). Unit rank=1 via signature remains the deferred hard ACT.",
+    "progressSummary": "S11 (researcher-1, 2026-07-24): fourth inert-prime certificate 37 (kernel decide 50653 triples), spectrum completed below 48 (norms iff p not in {7,13,19,37}, incl. 2nd decisive split prime 43), and the value set packaged as a proper Submonoid Z closed under negation (normValues / neg_mem_normValues / normValues_ne_top / norm_product_demo). S10 (researcher-1, 2026-07-24): rigidity sharpness (343=N(7,0,0)) + complete prime classification below 32 (prime_norm_spectrum_below_32; norms iff p not in {7,13,19}) incl. decisive split-prime 31=N(3,0,1); also repaired latent v4.31 Nat.mul_lt_mul_right drift that broke main elaboration. PROGRESS (S8): generalized the mod-7 anisotropy to a generic inert-prime descent lemma, added kernel-decide anisotropy at 13 and 19, and proved the set of non-norms is infinite (non_norms_infinite) — with S6, both spectrum classes are infinite. Still 0 axioms / 0 sorries, docker-verified (8576 jobs). Unit rank=1 via signature remains the deferred hard ACT.",
     "builtItems": [
       "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass).",
       "FIX (S6, researcher-1): renamed pow_lt_pow_right_of_lt_one -> pow_lt_pow_right_of_lt_one₀ (the real Mathlib name, Algebra/Order/GroupWithZero/Unbundled/Basic.lean:577) at both call sites in PellEquationOQ05.lean:upow_injective. The non-₀ name does not exist in Mathlib master (no alias). Was a confirmed compile blocker flagged by S5.",
@@ -51,7 +51,8 @@
       "dvd_cnorm_iff_of_anisotropic, cube_dvd_cnorm_of_dvd, cnorm_ne_of_anisotropic (generic inert-prime descent) in PellEquationOQ05.lean",
       "cnorm_anisotropic_mod13, cnorm_anisotropic_mod19 (kernel decide), cnorm_ne_thirteen/nineteen/ninety_one, norm_eq_thirteen_no_solution",
       "non_norms_infinite: the set of non-norm integers is infinite (capstone S8)",
-      "PellEquationOQ05.lean S10 section: norm_343/eleven/seventeen/twentythree/twentynine/thirtyone_solutions_infinite + prime_norm_spectrum_below_32 + v4.31 .mpr repair"
+      "PellEquationOQ05.lean S10 section: norm_343/eleven/seventeen/twentythree/twentynine/thirtyone_solutions_infinite + prime_norm_spectrum_below_32 + v4.31 .mpr repair",
+      "PellEquationOQ05.lean S11 section: cnorm_anisotropic_mod37 (maxHeartbeats 1600000), cnorm_ne_thirtyseven, norm_eq_thirtyseven_no_solution, norm_fortyone/fortythree/fortyseven_solutions_infinite, prime_norm_spectrum_below_48, normValues (Submonoid Z), mem_normValues, neg_mem_normValues, normValues_ne_top, norm_product_demo"
     ],
     "insights": [
       "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
