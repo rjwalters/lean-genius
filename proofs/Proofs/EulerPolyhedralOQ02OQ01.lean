@@ -469,21 +469,49 @@ theorem closed_surface_from_boundary (S : CompactSurfaceWithBoundary)
   linarith [S.gauss_bonnet_boundary]
 
 /-- A geodesic polygon on a surface: bounded region whose boundary consists
-    of geodesic arcs meeting at vertices with exterior angles. -/
+    of geodesic arcs meeting at vertices with exterior angles.
+    Encoded as a disk-type (χ = 1) region of a `CompactSurfaceWithBoundary`.
+    Because the boundary arcs are geodesic (κ_g = 0 along arcs), the boundary
+    integral ∫_∂R κ_g ds concentrates at the vertices, so the underlying
+    surface's `boundaryGeodCurv` *is* the exterior angle sum. This lets the
+    polygon Gauss-Bonnet identity be derived from `gauss_bonnet_boundary`
+    (see `gauss_bonnet_polygon` below) rather than carried as a separate
+    structure-encoded assumption. -/
 structure GeodesicPolygon where
   /-- Number of sides/vertices -/
   n : ℕ
-  /-- Total Gaussian curvature of the enclosed region ∫_R K dA -/
-  totalCurvature : ℝ
-  /-- Sum of exterior angles at vertices -/
-  exteriorAngleSum : ℝ
-  /-- Area of the enclosed region -/
-  area : ℝ
-  area_pos : 0 < area
-  /-- Gauss-Bonnet for geodesic polygon (χ = 1 for disk):
-      ∫_R K dA + Σ θ_ext = 2π
-      (geodesic curvature of arcs is 0, only vertex contributions) -/
-  gauss_bonnet_polygon : totalCurvature + exteriorAngleSum = 2 * π
+  /-- The enclosed region as a compact surface with boundary. -/
+  toBoundary : CompactSurfaceWithBoundary
+  /-- A polygon bounds a topological disk: χ = 1. -/
+  chi_eq_one : toBoundary.chi = 1
+
+namespace GeodesicPolygon
+
+/-- Total Gaussian curvature of the enclosed region ∫_R K dA. -/
+def totalCurvature (P : GeodesicPolygon) : ℝ := P.toBoundary.totalCurvature
+
+/-- Sum of exterior angles at vertices — for geodesic arcs the boundary
+    geodesic-curvature integral reduces to the vertex contributions. -/
+def exteriorAngleSum (P : GeodesicPolygon) : ℝ := P.toBoundary.boundaryGeodCurv
+
+/-- Area of the enclosed region. -/
+def area (P : GeodesicPolygon) : ℝ := P.toBoundary.area
+
+theorem area_pos (P : GeodesicPolygon) : 0 < P.area := P.toBoundary.area_pos
+
+/-- Gauss-Bonnet for a geodesic polygon (χ = 1 for disk):
+    ∫_R K dA + Σ θ_ext = 2π — derived from the boundary Gauss-Bonnet
+    assumption `gauss_bonnet_boundary` at χ = 1, no longer a separate
+    structural assumption. -/
+theorem gauss_bonnet_polygon (P : GeodesicPolygon) :
+    P.totalCurvature + P.exteriorAngleSum = 2 * π := by
+  have h := P.toBoundary.gauss_bonnet_boundary
+  rw [P.chi_eq_one] at h
+  unfold totalCurvature exteriorAngleSum
+  push_cast at h
+  linarith
+
+end GeodesicPolygon
 
 /-- For a geodesic polygon on a surface of constant curvature K,
     ∫_R K dA = K · Area. -/
@@ -491,7 +519,7 @@ structure ConstCurvatureGeodesicPolygon extends GeodesicPolygon where
   /-- Constant Gaussian curvature of the surface -/
   K : ℝ
   /-- Total curvature = K × area for constant curvature -/
-  curvature_is_K_area : totalCurvature = K * area
+  curvature_is_K_area : toGeodesicPolygon.totalCurvature = K * toGeodesicPolygon.area
 
 /-- On a constant curvature surface: K · Area + Σθ_ext = 2π. -/
 theorem const_curv_polygon_formula (P : ConstCurvatureGeodesicPolygon) :
