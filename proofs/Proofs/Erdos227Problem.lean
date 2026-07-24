@@ -21,9 +21,12 @@
 -/
 
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Complex.CauchyIntegral
+import Mathlib.Analysis.Analytic.OfScalars
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Normed.Field.Basic
+import Mathlib.MeasureTheory.Integral.CircleIntegral
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
@@ -31,7 +34,7 @@ import Mathlib.Order.Filter.Basic
 
 namespace Erdos227
 
-open Complex Filter Topology
+open Complex Filter Topology FormalMultilinearSeries
 
 /-
 ## Part 1: Basic Definitions
@@ -427,5 +430,198 @@ theorem expFunction_ratio_le_one {r : ℝ} (hr : 0 ≤ r) :
     termModulusRatio expFunction r ≤ 1 :=
   termModulusRatio_le_one_of_nonneg expFunction hr expFunction_coeff_nonneg
     (expFunction_isEntire r hr)
+
+/-
+## Part 12: The Unconditional Cauchy Estimate — μ(r) ≤ M(r) for ALL coefficients
+
+Part 11 proved `μ(r) ≤ M(r)` only for non-negative real coefficients (where it
+is elementary: the maximum term is one summand of the positive series summing
+to `f(r)`). This part removes the coefficient hypothesis entirely via genuine
+complex analysis: the coefficients of a power series with infinite radius of
+convergence are Cauchy integrals over circles, so Cauchy's estimate
+
+    ‖aₙ‖ · rⁿ ≤ max_{|z| = r} ‖f(z)‖ = M(r)
+
+holds for every `n` and every `r > 0`.
+
+The Mathlib bridge: `FormalMultilinearSeries.ofScalars ℂ f.coeff` packages the
+coefficients as a formal power series `p`; `IsEntire` forces `p.radius = ⊤`,
+so `p.sum` is an entire function represented by `p`
+(`FormalMultilinearSeries.hasFPowerSeriesOnBall`), hence differentiable.
+`Differentiable.hasFPowerSeriesOnBall` represents the same function by the
+Cauchy power series `cauchyPowerSeries p.sum 0 r` on every ball, and
+one-dimensional uniqueness (`HasFPowerSeriesAt.eq_formalMultilinearSeries`)
+identifies the two series. Mathlib's `norm_cauchyPowerSeries_le` then bounds
+`‖aₙ‖` by the circle average of `‖f‖` times `r⁻ⁿ`, and the circle average is
+at most the sup `M(r)`.
+
+Consequences: the ratio bound `μ/M ≤ 1` and the limit membership `L ∈ [0, 1]`
+now hold for EVERY genuinely entire function — the Part-11 `_of_nonneg`
+versions become special cases. The deep Clunie–Hayman refinement (`L ≤ 1/2`)
+remains axiomatized; this part is axiom-free.
+-/
+
+/-- The sum function `z ↦ Σ aₙ zⁿ` of the power series, packaged as
+`FormalMultilinearSeries.sum` of the scalar series. -/
+noncomputable def seriesSum (f : EntireFunction) : ℂ → ℂ :=
+  (ofScalars ℂ f.coeff).sum
+
+/-- `seriesSum` is pointwise the naive `tsum` of the power series. -/
+theorem seriesSum_apply (f : EntireFunction) (z : ℂ) :
+    seriesSum f z = ∑' n, f.coeff n * z ^ n := by
+  have h := ofScalars_sum_eq (E := ℂ) f.coeff z
+  simpa [seriesSum, ofScalarsSum, smul_eq_mul] using h
+
+/-- Genuine entireness forces infinite radius of convergence for the
+formal scalar series. -/
+theorem ofScalars_radius_eq_top (f : EntireFunction) (hent : IsEntire f) :
+    (ofScalars ℂ f.coeff).radius = ⊤ := by
+  refine ENNReal.eq_top_of_forall_nnreal_le fun r => ?_
+  refine le_radius_of_summable _ ?_
+  refine ((hent r r.coe_nonneg).congr fun n => ?_)
+  rw [ofScalars_norm]
+
+/-- The sum function is represented by the scalar series on all of `ℂ`. -/
+theorem hasFPowerSeriesOnBall_seriesSum (f : EntireFunction) (hent : IsEntire f) :
+    HasFPowerSeriesOnBall (seriesSum f) (ofScalars ℂ f.coeff) 0 ⊤ := by
+  have h := (ofScalars ℂ f.coeff).hasFPowerSeriesOnBall
+    (by rw [ofScalars_radius_eq_top f hent]; simp)
+  rwa [ofScalars_radius_eq_top f hent] at h
+
+/-- A genuinely entire `f` has a complex-differentiable sum function. -/
+theorem differentiable_seriesSum (f : EntireFunction) (hent : IsEntire f) :
+    Differentiable ℂ (seriesSum f) := by
+  intro z
+  have h := hasFPowerSeriesOnBall_seriesSum f hent
+  exact (h.analyticAt_of_mem (by simp)).differentiableAt
+
+/-- Pointwise bound on the circle: `‖(seriesSum f)(circleMap 0 r θ)‖ ≤ M(r)`.
+The parametrisations `circleMap 0 r θ = r·e^{θi}` and `r·e^{iθ}` agree. -/
+theorem norm_seriesSum_circleMap_le (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hent : IsEntire f) (θ : ℝ) :
+    ‖seriesSum f (circleMap 0 r θ)‖ ≤ maxModulus f r := by
+  have hmap : circleMap 0 r θ = (r : ℂ) * exp (I * θ) := by
+    rw [circleMap_zero, mul_comm I (θ : ℂ)]
+  rw [hmap, seriesSum_apply]
+  exact le_ciSup (bddAbove_range_norm f hr (hent r hr)) θ
+
+/-- **Cauchy's estimate, unconditional**: for a genuinely entire function and
+every `r > 0`, each term of the power series is bounded by the maximum
+modulus: `‖aₙ‖ · rⁿ ≤ M(r)`. No hypothesis on the coefficients. -/
+theorem norm_coeff_mul_pow_le_maxModulus (f : EntireFunction) {r : ℝ} (hr : 0 < r)
+    (hent : IsEntire f) (n : ℕ) :
+    ‖f.coeff n‖ * r ^ n ≤ maxModulus f r := by
+  set R : NNReal := ⟨r, hr.le⟩ with hR
+  have hRpos : 0 < R := by
+    rw [← NNReal.coe_lt_coe]
+    exact hr
+  have hRr : (R : ℝ) = r := rfl
+  -- the Cauchy series at radius r equals the scalar series, by uniqueness
+  have h1 : HasFPowerSeriesAt (seriesSum f) (ofScalars ℂ f.coeff) 0 :=
+    (hasFPowerSeriesOnBall_seriesSum f hent).hasFPowerSeriesAt
+  have h2 : HasFPowerSeriesAt (seriesSum f)
+      (cauchyPowerSeries (seriesSum f) 0 R) 0 :=
+    ((differentiable_seriesSum f hent).hasFPowerSeriesOnBall 0 hRpos).hasFPowerSeriesAt
+  have heq : ofScalars ℂ f.coeff = cauchyPowerSeries (seriesSum f) 0 R :=
+    h1.eq_formalMultilinearSeries h2
+  -- Cauchy's coefficient bound
+  have hbound := norm_cauchyPowerSeries_le (seriesSum f) 0 R n
+  rw [← heq, ofScalars_norm] at hbound
+  -- bound the circle average by the sup M(r)
+  have hFcont : Continuous fun θ : ℝ => ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖ :=
+    ((differentiable_seriesSum f hent).continuous.comp
+      (continuous_circleMap 0 (R : ℝ))).norm
+  have hint : (∫ θ : ℝ in (0)..(2 * Real.pi), ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖)
+      ≤ 2 * Real.pi * maxModulus f r := by
+    have hmono : ∀ θ ∈ Set.Icc (0 : ℝ) (2 * Real.pi),
+        ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖ ≤ maxModulus f r := fun θ _ => by
+      rw [hRr]
+      exact norm_seriesSum_circleMap_le f hr.le hent θ
+    calc (∫ θ : ℝ in (0)..(2 * Real.pi), ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖)
+        ≤ ∫ _ : ℝ in (0)..(2 * Real.pi), maxModulus f r :=
+          intervalIntegral.integral_mono_on (by positivity)
+            (hFcont.intervalIntegrable _ _) intervalIntegrable_const hmono
+      _ = 2 * Real.pi * maxModulus f r := by
+          rw [intervalIntegral.integral_const, smul_eq_mul, sub_zero]
+  -- assemble: ‖aₙ‖ ≤ M(r) · r⁻ⁿ, then multiply through by rⁿ
+  have hC : ((2 * Real.pi)⁻¹ *
+      ∫ θ : ℝ in (0)..(2 * Real.pi), ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖)
+      ≤ maxModulus f r := by
+    have hstep := mul_le_mul_of_nonneg_left hint
+      (by positivity : (0 : ℝ) ≤ (2 * Real.pi)⁻¹)
+    calc (2 * Real.pi)⁻¹ *
+        ∫ θ : ℝ in (0)..(2 * Real.pi), ‖seriesSum f (circleMap 0 (R : ℝ) θ)‖
+        ≤ (2 * Real.pi)⁻¹ * (2 * Real.pi * maxModulus f r) := hstep
+      _ = maxModulus f r := by
+          field_simp
+  have hcoeff : ‖f.coeff n‖ ≤ maxModulus f r * (r⁻¹) ^ n := by
+    have habs : |(R : ℝ)| = r := by rw [hRr, abs_of_pos hr]
+    have hstep := hbound.trans
+      (mul_le_mul_of_nonneg_right hC (by positivity : (0 : ℝ) ≤ |(R : ℝ)|⁻¹ ^ n))
+    rwa [habs] at hstep
+  calc ‖f.coeff n‖ * r ^ n
+      ≤ (maxModulus f r * (r⁻¹) ^ n) * r ^ n := by
+        gcongr
+    _ = maxModulus f r := by
+        rw [mul_assoc, ← mul_pow, inv_mul_cancel₀ (ne_of_gt hr), one_pow, mul_one]
+
+/-- **Unconditional `μ(r) ≤ M(r)`** for every genuinely entire function and
+every `r ≥ 0` — the Part-11 `maxTerm_le_maxModulus_of_nonneg` without the
+non-negativity hypothesis. `r > 0` is Cauchy's estimate; at `r = 0` both
+sides collapse to `‖a₀‖`. -/
+theorem maxTerm_le_maxModulus (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hent : IsEntire f) :
+    maxTerm f r ≤ maxModulus f r := by
+  rcases hr.eq_or_lt with rfl | hrpos
+  · -- r = 0: every term with n > 0 vanishes and the n = 0 term is ‖a₀‖ = ‖f(0)‖
+    apply ciSup_le
+    intro n
+    have h0 : ‖∑' m, f.coeff m * ((0 : ℝ) * exp (I * (0 : ℝ))) ^ m‖ = ‖f.coeff 0‖ := by
+      have hz : ((0 : ℝ) : ℂ) * exp (I * (0 : ℝ)) = 0 := by simp
+      rw [hz]
+      have : (∑' m, f.coeff m * (0 : ℂ) ^ m) = f.coeff 0 := by
+        rw [tsum_eq_single 0 (fun m hm => by
+          rw [zero_pow hm, mul_zero])]
+        simp
+      rw [this]
+    have hM : ‖f.coeff 0‖ ≤ maxModulus f 0 := by
+      rw [← h0]
+      exact le_ciSup (bddAbove_range_norm f le_rfl (hent 0 le_rfl)) (0 : ℝ)
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simpa using hM
+    · have hzero : ‖f.coeff n‖ * (0 : ℝ) ^ n = 0 := by
+        rw [zero_pow hn.ne', mul_zero]
+      rw [hzero]
+      exact Real.iSup_nonneg fun _ => norm_nonneg _
+  · exact ciSup_le fun n => norm_coeff_mul_pow_le_maxModulus f hrpos hent n
+
+/-- The term/modulus ratio is at most `1` for every genuinely entire function
+— unconditional version of `termModulusRatio_le_one_of_nonneg`. -/
+theorem termModulusRatio_le_one (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r)
+    (hent : IsEntire f) :
+    termModulusRatio f r ≤ 1 := by
+  rcases (maxModulus_nonneg f r).eq_or_lt with hM | hM
+  · unfold termModulusRatio
+    rw [← hM, div_zero]
+    exact zero_le_one
+  · unfold termModulusRatio
+    rw [div_le_one hM]
+    exact maxTerm_le_maxModulus f hr hent
+
+/-- Any limit of the term/modulus ratio of a genuinely entire function lies in
+`[0, 1]` — unconditional version of `limit_mem_Icc_of_nonneg`. Together with
+the axiomatized Clunie–Hayman results (`ratio_upper_bound`: `L ≤ 1/2`;
+`clunie_hayman_1964`: every `L ∈ [0, 1/2]` is achieved), this brackets the
+achievable-limit analysis with an axiom-free outer bound. -/
+theorem limit_mem_Icc (f : EntireFunction) (hent : IsEntire f) {L : ℝ}
+    (hL : Tendsto (termModulusRatio f) atTop (nhds L)) :
+    L ∈ Set.Icc (0 : ℝ) 1 := by
+  constructor
+  · refine ge_of_tendsto hL ?_
+    filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
+    exact termModulusRatio_nonneg f hr
+  · refine le_of_tendsto hL ?_
+    filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
+    exact termModulusRatio_le_one f hr hent
 
 end Erdos227
