@@ -180,13 +180,13 @@ theorem differentialEntropy_translation_invariant (f : ℝ → ℝ) (c : ℝ) :
 /-!
 ## Scale Equivariance
 
-h(f(·/a)/|a|) = h(f) + ln|a| — stated with sorry for the substitution step.
+h(f(·/a)/|a|) = h(f) + ln|a|.
 -/
 
 /-- Scale equivariance: if g(x) = (1/|a|)·f(x/a) is the density of aX, then
     h(g) = h(f) + ln|a|.
 
-    Proof sketch (requires change-of-variables for Lebesgue integrals):
+    Proof (change-of-variables for Lebesgue integrals, via `Measure.integral_comp_div`):
     h(g) = -∫ (1/|a|)f(x/a)·[log f(x/a) - log|a|] dx
     After substitution y = x/a (dx = |a|·dy):
          = -(1/|a|)|a| ∫ f(y)·[log f(y) - log|a|] dy
