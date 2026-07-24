@@ -11,10 +11,57 @@ cache (identical lake-manifest rev `9a9483a929`). The 2026-06-13 BLOCKED flag is
 (Docker blackout over; host-olean verification used). The S4 skeleton was NOT pasted —
 Mathlib v4.26→v4.31 changed the landscape and a lighter proof replaced it (see Iteration 5).
 S6 (researcher-2, 2026-07-24) then generalized the file to upstream-ready generality —
-see Iteration 6.
+see Iteration 6. S7 (researcher-3, 2026-07-24) added the full `Within`/`UniqueDiffOn`
+version — Fragment 1 is now **feature-complete for upstream** — see Iteration 7.
 **Path**: full
-**Since**: 2026-07-24 (S6 upstream-prep complete)
-**Iteration**: 6
+**Since**: 2026-07-24 (S7 Within/UniqueDiffOn complete)
+**Iteration**: 7
+
+## Iteration 7 (researcher-3, 2026-07-24) — S7: full `Within` version on `UniqueDiffOn` sets (0 ax / 0 sorry)
+
+**Outcome**: the S6 "Remaining (S7 candidate)" item is DONE. New `section Within` (Step 6)
+in `FundamentalTheoremCalculusOQ02Incomplete01.lean` redoes the whole Steps-1–4 induction
+with `fderivWithin` (host-verified: `lake env lean` exit 0, zero diagnostics, pinned
+v4.31.0 toolchain, lake-manifest mathlib rev `9a9483a929` identical to origin/main):
+
+* `fderivWithin_comp_perm_eq` — Step-1 analogue via `fderivWithin_congr'` (symmetry of `g`
+  is only known ON `s`, so global rewriting is replaced by within-set congruence) +
+  `LinearIsometryEquiv.comp_fderivWithin` at a `UniqueDiffWithinAt` point.
+* `iteratedFDerivWithin_comp_tailLift` — Step-2 analogue; `iteratedFDerivWithin_succ_apply_left`
+  is `rfl` at v4.31 exactly like the global one, so the calc transfers verbatim.
+* `iteratedFDerivWithin_add_two_apply` (private) — Step-3 expansion;
+  `iteratedFDerivWithin_succ_eq_comp_left` is also `rfl`; `comp_fderivWithin` passed with
+  explicit `(𝕜 :=) (G :=) (iso :=) (f :=) (s :=) (x :=)` args (same whnf-timeout defense
+  as S5's `comp_fderiv`).
+* `iteratedFDerivWithin_comp_swap_zero_one` — Mathlib's within-set `n = 2` Schwarz
+  (`ContDiffWithinAt.isSymmSndFDerivWithinAt`, hypotheses `UniqueDiffOn s`,
+  `x ∈ closure (interior s)`, `x ∈ s`) applied to `iteratedFDerivWithin 𝕜 n f s`, which is
+  `C^2` within by `ContDiffWithinAt.iteratedFDerivWithin_right`. `IsSymmSndFDerivWithinAt`
+  has no `.eq` — apply the ∀-def directly (`hsym (m 1) (m 0)` inside `rw`).
+* **Main** `iteratedFDerivWithin_comp_perm` : `UniqueDiffOn 𝕜 s → s ⊆ closure (interior s) →
+  ContDiffOn 𝕜 n f s → ∀ x ∈ s, ∀ v σ, D^n_within f s x (v ∘ σ) = D^n_within f s x v`.
+  **Design point**: the accumulation hypothesis is the UNIFORM `s ⊆ closure (interior s)`,
+  not pointwise at `x` — the induction consumes symmetry of `D^n` at *every* point of `s`
+  (through the within-set congruence in Step 1W), so a pointwise hypothesis cannot close
+  the inductive step.
+* Corollaries: `iteratedFDerivWithin_domDomCongr`,
+  `iteratedFDerivWithin_comp_perm_of_minSmoothness` (field-uniform; non-RCLike branch
+  delegates to Mathlib's analytic `ContDiffWithinAt.iteratedFDerivWithin_comp_perm` and
+  needs no accumulation hypothesis), and `iteratedFDerivWithin_comp_perm_of_convex` —
+  convex `s` with nonempty interior over ℝ via `uniqueDiffOn_convex` +
+  `Convex.closure_interior_eq_closure_of_nonempty_interior`: closed balls, `Icc`,
+  simplices, i.e. the actual Stokes domains of integration, **boundary points included**.
+
+**Lean note**: the convex corollary uses the section variables `f`, `s` and adds
+`[NormedSpace ℝ E] [NormedSpace ℝ F]` as extra instance binders — since the statement never
+mentions `𝕜`, the section's `[NormedSpace 𝕜 E]` instances are not included, avoiding
+variable shadowing.
+
+**Remaining**: an actual Mathlib PR (the file is now feature-complete for upstream:
+global + minSmoothness + full Within forms); Fragments 2–6 (manifold Stokes) unchanged —
+DEEP multi-session.
+
+Session memo: `sessions/2026-07-24-s7-within-uniquediffon.md`.
 
 ## Iteration 6 (researcher-2, 2026-07-24) — S6: Mathlib upstream-prep — 𝕜-generalization (0 ax / 0 sorry)
 

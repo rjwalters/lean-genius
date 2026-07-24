@@ -26,9 +26,17 @@ S6 (2026-07-24) generalized the original ℝ-only development (S5) for Mathlib u
 * `iteratedFDeriv_comp_perm_of_minSmoothness` is the field-uniform statement in Mathlib's
   `minSmoothness` idiom: over `ℝ`/`ℂ` it requires `C^n`, over any other field it requires
   `C^ω` and delegates to Mathlib's analytic version — this is the natural upstream statement;
-* `iteratedFDerivWithin_comp_perm_of_isOpen` is the `Within` version on open sets. (The full
-  `UniqueDiffOn`-set `Within` version needs the whole induction redone with `fderivWithin`
-  and is left as further upstream work — see the state.md S6 notes.)
+* `iteratedFDerivWithin_comp_perm_of_isOpen` is the `Within` version on open sets.
+
+S7 (2026-07-24) added the full `Within` development on `UniqueDiffOn` sets (Step 6 below):
+the whole induction redone with `fderivWithin`, giving
+
+* `iteratedFDerivWithin_comp_perm` — on any `UniqueDiffOn` set `s` with
+  `s ⊆ closure (interior s)`, the `n`-th derivative within `s` of a `C^n`-on-`s` function
+  is symmetric at every point of `s` (boundary points included);
+* `iteratedFDerivWithin_comp_perm_of_convex` — the concrete form on convex sets with
+  nonempty interior over `ℝ` (closed balls, `Icc`, simplices — the Stokes domains);
+* `iteratedFDerivWithin_comp_perm_of_minSmoothness` — the field-uniform `Within` form.
 
 ## Relation to Mathlib (v4.31 pin)
 
@@ -296,13 +304,271 @@ theorem iteratedFDeriv_comp_perm_of_minSmoothness {n : ℕ}
 
 /-- `Within` version on **open** sets: on an open set the iterated derivative within the
 set agrees with the global one (`iteratedFDerivWithin_of_isOpen`), so symmetry transfers.
-(The general `UniqueDiffOn` version requires redoing the induction with `fderivWithin`
-and is left as further upstream work.) -/
+See `iteratedFDerivWithin_comp_perm` below (S7) for the general `UniqueDiffOn` version,
+which needs only `s ⊆ closure (interior s)` and `ContDiffOn` — this open-set version is
+kept because its hypotheses (global `ContDiff`, no unique-differentiability data) are
+incomparable. -/
 theorem iteratedFDerivWithin_comp_perm_of_isOpen [IsRCLikeNormedField 𝕜] {n : ℕ}
     (hf : ContDiff 𝕜 (n : ℕ) f) {s : Set E} (hs : IsOpen s) {x : E} (hx : x ∈ s)
     (v : Fin n → E) (σ : Equiv.Perm (Fin n)) :
     iteratedFDerivWithin 𝕜 n f s x (v ∘ σ) = iteratedFDerivWithin 𝕜 n f s x v := by
   rw [iteratedFDerivWithin_of_isOpen n hs hx]
   exact iteratedFDeriv_comp_perm hf x v σ
+
+/-! ### Step 6 (S7): the full `Within` version on `UniqueDiffOn` sets
+
+The `Within` analogue of the entire development: on a set `s` of unique differentiability
+every point of which is accumulated by interior points (`s ⊆ closure (interior s)` — true
+for every convex set with nonempty interior, hence for closed balls, `Icc`, simplices, …),
+the `n`-th iterated derivative *within `s`* of a function that is `C^n` *on `s`* is
+symmetric at every point of `s`. Steps 1–4 are redone with `fderivWithin`; the `n = 2`
+input is Mathlib's `ContDiffWithinAt.isSymmSndFDerivWithinAt`, whose closure-of-interior
+hypothesis is why the accumulation condition must hold at every point of `s` (the
+induction consumes symmetry of the previous derivative at *all* points of `s`, so a
+pointwise hypothesis at the single point of interest would not suffice for the inductive
+step). -/
+
+section Within
+
+variable {s : Set E}
+
+/-- `Within` version of `fderiv_comp_perm_eq`: if every value of `g` *on `s`* is invariant
+under precomposition with `τ`, then so is every value of `fderivWithin 𝕜 g s` at any point
+of `s` where `s` is uniquely differentiable. Holds over any nontrivially normed field. -/
+theorem fderivWithin_comp_perm_eq {n : ℕ}
+    {g : E → ContinuousMultilinearMap 𝕜 (fun _ : Fin n => E) F} {τ : Equiv.Perm (Fin n)}
+    (hg : ∀ y ∈ s, ∀ (w : Fin n → E), g y (w ∘ τ) = g y w)
+    {x : E} (hxu : UniqueDiffWithinAt 𝕜 s x) (hxs : x ∈ s) (u : E) (w : Fin n → E) :
+    fderivWithin 𝕜 g s x u (w ∘ τ) = fderivWithin 𝕜 g s x u w := by
+  set Φ := ContinuousMultilinearMap.domDomCongrₗᵢ 𝕜 E F τ with hΦ
+  have hcongr : fderivWithin 𝕜 g s x = fderivWithin 𝕜 (⇑Φ ∘ g) s x :=
+    (fderivWithin_congr' (fun y hy => ContinuousMultilinearMap.ext fun v => hg y hy v)
+      hxs).symm
+  have hfd : fderivWithin 𝕜 g s x =
+      (Φ : (ContinuousMultilinearMap 𝕜 (fun _ : Fin n => E) F) →L[𝕜]
+        (ContinuousMultilinearMap 𝕜 (fun _ : Fin n => E) F)).comp (fderivWithin 𝕜 g s x) := by
+    conv_lhs => rw [hcongr]
+    exact Φ.comp_fderivWithin hxu
+  have happ : fderivWithin 𝕜 g s x u = (fderivWithin 𝕜 g s x u).domDomCongr τ := by
+    conv_lhs => rw [hfd]
+    rfl
+  conv_rhs => rw [happ]
+  simp [ContinuousMultilinearMap.domDomCongr_apply, Function.comp_def]
+
+/-- `Within` version of `iteratedFDeriv_comp_tailLift`: if the `n`-th derivative within
+`s` is `τ`-symmetric at every point of `s`, the `(n+1)`-th derivative within `s` is
+symmetric under the tail lift of `τ` at any uniquely-differentiable point of `s`. Holds
+over any nontrivially normed field. -/
+theorem iteratedFDerivWithin_comp_tailLift {n : ℕ} {τ : Equiv.Perm (Fin n)}
+    (hτ : ∀ y ∈ s, ∀ (w : Fin n → E),
+      iteratedFDerivWithin 𝕜 n f s y (w ∘ τ) = iteratedFDerivWithin 𝕜 n f s y w)
+    {x : E} (hxu : UniqueDiffWithinAt 𝕜 s x) (hxs : x ∈ s) (v : Fin (n + 1) → E) :
+    iteratedFDerivWithin 𝕜 (n + 1) f s x (v ∘ (Equiv.Perm.decomposeFin.symm (0, τ))) =
+      iteratedFDerivWithin 𝕜 (n + 1) f s x v := by
+  have h0 : (v ∘ (Equiv.Perm.decomposeFin.symm (0, τ))) 0 = v 0 := by simp
+  have ht : Fin.tail (v ∘ (Equiv.Perm.decomposeFin.symm (0, τ))) = Fin.tail v ∘ τ := by
+    funext i
+    simp [Fin.tail, Equiv.Perm.decomposeFin_symm_apply_succ]
+  calc iteratedFDerivWithin 𝕜 (n + 1) f s x (v ∘ (Equiv.Perm.decomposeFin.symm (0, τ)))
+      = fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x
+          ((v ∘ (Equiv.Perm.decomposeFin.symm (0, τ))) 0)
+          (Fin.tail (v ∘ (Equiv.Perm.decomposeFin.symm (0, τ)))) :=
+        iteratedFDerivWithin_succ_apply_left _
+    _ = fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x (v 0) (Fin.tail v ∘ τ) := by
+        rw [h0, ht]
+    _ = fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x (v 0) (Fin.tail v) :=
+        fderivWithin_comp_perm_eq hτ hxu hxs (v 0) (Fin.tail v)
+    _ = iteratedFDerivWithin 𝕜 (n + 1) f s x v :=
+        (iteratedFDerivWithin_succ_apply_left _).symm
+
+/-- Expand the `(n+2)`-th derivative within `s` as the second derivative within `s` of
+the `n`-th derivative within `s`, applied to the two leading directions. Holds over any
+nontrivially normed field, at any uniquely-differentiable point. -/
+private theorem iteratedFDerivWithin_add_two_apply {n : ℕ} (f : E → F) {x : E}
+    (hxu : UniqueDiffWithinAt 𝕜 s x) (w : Fin (n + 2) → E) :
+    iteratedFDerivWithin 𝕜 (n + 2) f s x w =
+      fderivWithin 𝕜 (fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) s x (w 0) (w 1)
+        (Fin.tail (Fin.tail w)) := by
+  have h2 := LinearIsometryEquiv.comp_fderivWithin
+    (𝕜 := 𝕜) (G := E)
+    (iso := (continuousMultilinearCurryLeftEquiv 𝕜 (fun _ : Fin (n + 1) => E) F).symm)
+    (f := fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) (s := s) (x := x) hxu
+  have htw : Fin.tail w 0 = w 1 := by
+    simp [Fin.tail]
+  calc iteratedFDerivWithin 𝕜 (n + 2) f s x w
+      = fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 (n + 1) f s) s x (w 0) (Fin.tail w) :=
+        iteratedFDerivWithin_succ_apply_left w
+    _ = fderivWithin 𝕜
+          (⇑(continuousMultilinearCurryLeftEquiv 𝕜 (fun _ : Fin (n + 1) => E) F).symm ∘
+            fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) s x (w 0) (Fin.tail w) := by
+        rw [← iteratedFDerivWithin_succ_eq_comp_left]
+    _ = (continuousMultilinearCurryLeftEquiv 𝕜 (fun _ : Fin (n + 1) => E) F).symm
+          (fderivWithin 𝕜 (fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) s x (w 0))
+          (Fin.tail w) := by
+        rw [h2]; rfl
+    _ = fderivWithin 𝕜 (fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) s x (w 0)
+          (Fin.tail w 0) (Fin.tail (Fin.tail w)) := rfl
+    _ = fderivWithin 𝕜 (fderivWithin 𝕜 (iteratedFDerivWithin 𝕜 n f s) s) s x (w 0) (w 1)
+          (Fin.tail (Fin.tail w)) := by rw [htw]
+
+/-- `Within` version of the outermost-swap step: Mathlib's within-set `n = 2` Schwarz
+theorem (`ContDiffWithinAt.isSymmSndFDerivWithinAt`) applied to
+`iteratedFDerivWithin 𝕜 n f s`. This is the single step requiring `IsRCLikeNormedField 𝕜`
+and the closure-of-interior accumulation hypothesis at `x`. -/
+theorem iteratedFDerivWithin_comp_swap_zero_one [IsRCLikeNormedField 𝕜] {n : ℕ}
+    (hf : ContDiffOn 𝕜 (n + 2 : ℕ) f s) (hs : UniqueDiffOn 𝕜 s) {x : E}
+    (hxcl : x ∈ closure (interior s)) (hxs : x ∈ s) (m : Fin (n + 2) → E) :
+    iteratedFDerivWithin 𝕜 (n + 2) f s x (m ∘ Equiv.swap 0 1) =
+      iteratedFDerivWithin 𝕜 (n + 2) f s x m := by
+  have hg : ContDiffWithinAt 𝕜 2 (iteratedFDerivWithin 𝕜 n f s) s x :=
+    (hf x hxs).iteratedFDerivWithin_right hs (by norm_cast; omega) hxs
+  have hsym : IsSymmSndFDerivWithinAt 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x :=
+    hg.isSymmSndFDerivWithinAt (by simp) hs hxcl hxs
+  have h0 : (m ∘ Equiv.swap 0 1) 0 = m 1 := by simp
+  have h1 : (m ∘ Equiv.swap 0 1) 1 = m 0 := by simp
+  have ht : Fin.tail (Fin.tail (m ∘ Equiv.swap 0 1)) = Fin.tail (Fin.tail m) := by
+    funext i
+    simp only [Fin.tail, Function.comp_apply]
+    congr 1
+  rw [iteratedFDerivWithin_add_two_apply f (hs x hxs),
+    iteratedFDerivWithin_add_two_apply f (hs x hxs), h0, h1, ht, hsym (m 1) (m 0)]
+
+/-- **`Within` version of the main theorem.** On a set `s` of unique differentiability
+with `s ⊆ closure (interior s)` (every convex set with nonempty interior qualifies — see
+`iteratedFDerivWithin_comp_perm_of_convex`), the `n`-th iterated derivative within `s` of
+a function that is `C^n` on `s` is symmetric at every point of `s`:
+
+  `iteratedFDerivWithin 𝕜 n f s x (v ∘ σ) = iteratedFDerivWithin 𝕜 n f s x v`.
+
+Mathlib (v4.31) has this only for `n = 2` (`ContDiffWithinAt.isSymmSndFDerivWithinAt`)
+or for analytic `f` (`ContDiffWithinAt.iteratedFDerivWithin_comp_perm`). -/
+theorem iteratedFDerivWithin_comp_perm [IsRCLikeNormedField 𝕜]
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s)) :
+    ∀ {n : ℕ}, ContDiffOn 𝕜 (n : ℕ) f s → ∀ {x : E}, x ∈ s →
+      ∀ (v : Fin n → E) (σ : Equiv.Perm (Fin n)),
+      iteratedFDerivWithin 𝕜 n f s x (v ∘ σ) = iteratedFDerivWithin 𝕜 n f s x v := by
+  intro n
+  induction n with
+  | zero =>
+    intro _ x hxs v σ
+    rw [Subsingleton.elim (v ∘ ⇑σ) v]
+  | succ n IH =>
+    intro hf x hxs v σ
+    -- the `n`-th derivative within `s` is symmetric at every point of `s`, by the IH
+    have hsymm : ∀ (τ : Equiv.Perm (Fin n)), ∀ y ∈ s, ∀ (w : Fin n → E),
+        iteratedFDerivWithin 𝕜 n f s y (w ∘ τ) = iteratedFDerivWithin 𝕜 n f s y w :=
+      fun τ y hy w => IH (hf.of_le (by exact_mod_cast Nat.le_succ n)) hy w τ
+    -- factor σ = swap 0 p * (tail lift of τ) via `decomposeFin`
+    set p : Fin (n + 1) := (Equiv.Perm.decomposeFin σ).1 with hp
+    set τ : Equiv.Perm (Fin n) := (Equiv.Perm.decomposeFin σ).2 with hτdef
+    have hσ : σ = Equiv.Perm.decomposeFin.symm (p, τ) := by
+      rw [hp, hτdef]
+      exact (Equiv.symm_apply_apply Equiv.Perm.decomposeFin σ).symm
+    have hfact : σ = Equiv.swap 0 p * Equiv.Perm.decomposeFin.symm (0, τ) := by
+      rw [hσ]
+      ext i
+      refine Fin.cases ?_ (fun j => ?_) i <;>
+        simp [Equiv.Perm.mul_apply, Equiv.Perm.decomposeFin_symm_apply_succ]
+    have hcomp : v ∘ σ = (v ∘ Equiv.swap 0 p) ∘ ⇑(Equiv.Perm.decomposeFin.symm (0, τ)) := by
+      rw [hfact]
+      funext i
+      simp
+    rw [hcomp,
+      iteratedFDerivWithin_comp_tailLift (fun y hy w => hsymm τ y hy w) (hs x hxs) hxs
+        (v ∘ Equiv.swap 0 p)]
+    -- it remains to handle `swap 0 p`; split on `p`
+    clear hcomp hfact hσ hp hτdef
+    refine Fin.cases ?_ (fun j => ?_) p
+    · -- `p = 0`: the swap is the identity
+      have : v ∘ ⇑(Equiv.swap (0 : Fin (n + 1)) 0) = v := by
+        funext i; simp
+      rw [this]
+    · -- `p = j.succ`: conjugate `swap 0 j.succ` into `swap 0 1` by a tail lift
+      cases n with
+      | zero => exact j.elim0
+      | succ k =>
+        set ρ : Equiv.Perm (Fin (k + 1)) := Equiv.swap 0 j with hρ
+        set ρhat : Equiv.Perm (Fin (k + 2)) := Equiv.Perm.decomposeFin.symm (0, ρ) with hρhat
+        have hρ0 : ρhat 0 = 0 := by simp [hρhat]
+        have hρ1 : ρhat 1 = j.succ := by
+          have h01 : (1 : Fin (k + 2)) = (0 : Fin (k + 1)).succ := by
+            simp [Fin.succ_zero_eq_one]
+          rw [h01]
+          simp [hρhat, hρ]
+        have hρinv : ρhat⁻¹ = Equiv.Perm.decomposeFin.symm (0, ρ⁻¹) := by
+          rw [inv_eq_iff_mul_eq_one]
+          ext i
+          refine Fin.cases ?_ (fun i => ?_) i <;>
+            simp [hρhat, Equiv.Perm.mul_apply, Equiv.Perm.decomposeFin_symm_apply_succ]
+        have hconj : Equiv.swap (0 : Fin (k + 2)) j.succ = ρhat * Equiv.swap 0 1 * ρhat⁻¹ := by
+          have h := Equiv.symm_trans_swap_trans (0 : Fin (k + 2)) 1 ρhat
+          rw [hρ0, hρ1] at h
+          rw [← h]
+          rfl
+        have hv : v ∘ ⇑(Equiv.swap (0 : Fin (k + 2)) j.succ) =
+            ((v ∘ ⇑ρhat) ∘ ⇑(Equiv.swap (0 : Fin (k + 2)) 1)) ∘ ⇑ρhat⁻¹ := by
+          rw [hconj]
+          funext i
+          simp
+        calc iteratedFDerivWithin 𝕜 (k + 2) f s x (v ∘ ⇑(Equiv.swap 0 j.succ))
+            = iteratedFDerivWithin 𝕜 (k + 2) f s x
+                (((v ∘ ⇑ρhat) ∘ ⇑(Equiv.swap 0 1)) ∘ ⇑ρhat⁻¹) := by rw [hv]
+          _ = iteratedFDerivWithin 𝕜 (k + 2) f s x ((v ∘ ⇑ρhat) ∘ ⇑(Equiv.swap 0 1)) := by
+              rw [hρinv]
+              exact iteratedFDerivWithin_comp_tailLift (fun y hy w => hsymm ρ⁻¹ y hy w)
+                (hs x hxs) hxs _
+          _ = iteratedFDerivWithin 𝕜 (k + 2) f s x (v ∘ ⇑ρhat) :=
+              iteratedFDerivWithin_comp_swap_zero_one hf hs (h's hxs) hxs (v ∘ ⇑ρhat)
+          _ = iteratedFDerivWithin 𝕜 (k + 2) f s x v :=
+              iteratedFDerivWithin_comp_tailLift (fun y hy w => hsymm ρ y hy w)
+                (hs x hxs) hxs v
+
+/-- `Within` version of `iteratedFDeriv_domDomCongr`: on a `UniqueDiffOn` set accumulated
+by its interior, the `n`-th derivative within the set, as a multilinear map, is fixed by
+`domDomCongr` along any permutation. -/
+theorem iteratedFDerivWithin_domDomCongr [IsRCLikeNormedField 𝕜] {n : ℕ}
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s))
+    (hf : ContDiffOn 𝕜 (n : ℕ) f s) {x : E} (hxs : x ∈ s) (σ : Equiv.Perm (Fin n)) :
+    (iteratedFDerivWithin 𝕜 n f s x).domDomCongr σ = iteratedFDerivWithin 𝕜 n f s x := by
+  refine ContinuousMultilinearMap.ext fun v => ?_
+  simpa [ContinuousMultilinearMap.domDomCongr_apply, Function.comp_def] using
+    iteratedFDerivWithin_comp_perm hs h's hf hxs v σ
+
+/-- Field-uniform `minSmoothness` form of the `Within` theorem, mirroring
+`iteratedFDeriv_comp_perm_of_minSmoothness`: over `ℝ`/`ℂ` it requires `C^n` on `s`; over
+any other nontrivially normed field the hypothesis degrades to analyticity, where
+Mathlib's `ContDiffWithinAt.iteratedFDerivWithin_comp_perm` applies (and the
+closure-of-interior hypothesis is not needed on that branch). -/
+theorem iteratedFDerivWithin_comp_perm_of_minSmoothness {n : ℕ}
+    (hs : UniqueDiffOn 𝕜 s) (h's : s ⊆ closure (interior s))
+    (hf : ContDiffOn 𝕜 (minSmoothness 𝕜 n) f s) {x : E} (hxs : x ∈ s) (v : Fin n → E)
+    (σ : Equiv.Perm (Fin n)) :
+    iteratedFDerivWithin 𝕜 n f s x (v ∘ σ) = iteratedFDerivWithin 𝕜 n f s x v := by
+  by_cases h : IsRCLikeNormedField 𝕜
+  · haveI := h
+    rw [minSmoothness_of_isRCLikeNormedField] at hf
+    exact iteratedFDerivWithin_comp_perm hs h's hf hxs v σ
+  · have hω : minSmoothness 𝕜 (n : ℕ∞ω) = ω := by
+      simp [minSmoothness, h]
+    rw [hω] at hf
+    exact (hf x hxs).iteratedFDerivWithin_comp_perm hs hxs v σ
+
+/-- On a **convex** set with nonempty interior over `ℝ` (a closed ball, an `Icc`, a
+simplex, …): the `n`-th iterated derivative within the set of a `C^n`-on-the-set function
+is symmetric at every point — including boundary points. Convex bodies are exactly the
+domains of integration in the classical Stokes theorem, which is what this fragment
+decomposition is building towards. -/
+theorem iteratedFDerivWithin_comp_perm_of_convex [NormedSpace ℝ E] [NormedSpace ℝ F]
+    (hconv : Convex ℝ s) (hne : (interior s).Nonempty) {n : ℕ}
+    (hf : ContDiffOn ℝ (n : ℕ) f s) {x : E} (hxs : x ∈ s) (v : Fin n → E)
+    (σ : Equiv.Perm (Fin n)) :
+    iteratedFDerivWithin ℝ n f s x (v ∘ σ) = iteratedFDerivWithin ℝ n f s x v := by
+  have hs : UniqueDiffOn ℝ s := uniqueDiffOn_convex hconv hne
+  have h's : s ⊆ closure (interior s) := by
+    rw [hconv.closure_interior_eq_closure_of_nonempty_interior hne]
+    exact subset_closure
+  exact iteratedFDerivWithin_comp_perm hs h's hf hxs v σ
+
+end Within
 
 end FTCOQ02Incomplete01
