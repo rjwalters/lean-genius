@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) via third-moment bootstrap. NEW (2026-07-23): the interval family {1..N} pinned to Θ(N) — minCosineSum ≤ −1/2 − (2N+1)/(3π) via the Dirichlet-kernel telescoping closed form at θ₀ = 3π/(2N+1); together with the √N sum-free bound this formalizes both extremes of the structure-vs-cancellation dichotomy. All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example.",
+    "progressSummary": "Elementary layer complete (sign structure, attainment, -1/2 uniform, all-odd sharp -N, dilation invariance). Chowla conjectured sqrt(N) growth rate PROVED FOR SUM-FREE SETS — minCosineSum A <= -sqrt(N/2) via third-moment bootstrap. NEW (2026-07-23): the interval family {1..N} pinned to Θ(N) — minCosineSum ≤ −1/2 − (2N+1)/(3π) via the Dirichlet-kernel telescoping closed form at θ₀ = 3π/(2N+1); together with the √N sum-free bound this formalizes both extremes of the structure-vs-cancellation dichotomy. All axiom-free, host-verified. Remaining open: the general -c sqrt(N) bound for sets WITH additive structure (Bedert N^{1/7} is the frontier) and the Sidon B-B sqrt(N)-optimality example. UPDATE 2026-07-24: union superadditivity (min A + min B <= min(A∪B), disjoint) rescued from conflicting PR #41939 and landed on current main — negativity is subadditive, -N floor = singleton union bound.",
     "builtItems": [
       "cosineSum_empty / cosineSum_singleton / cosineSum_insert in Erdos510WIP01.lean",
       "cosineSum_zero_angle (cosineSum A 0 = N), cosineSum_pi (= ∑(−1)ⁿ)",
@@ -73,7 +73,9 @@
       "exists_angle_cosineSum_lt_neg_half_sqrt in Erdos510WIP01.lean (existential conjecture-shaped form, c=1/2 strict)",
       "two_sin_half_mul_cosineSum_Icc in Erdos510WIP01.lean (Dirichlet-kernel telescoping closed form for intervals {1..N}, all θ)",
       "minCosineSum_Icc_le in Erdos510WIP01.lean (interval family linear bound ≤ −1/2 − (2N+1)/(3π))",
-      "minCosineSum_Icc_lt_neg_frac in Erdos510WIP01.lean (strict Θ(N) form: < −(2/(3π))·N)"
+      "minCosineSum_Icc_lt_neg_frac in Erdos510WIP01.lean (strict Θ(N) form: < −(2/(3π))·N)",
+      "cosineSum_union in Erdos510WIP01.lean (disjoint frequency sets add pointwise; rescued from conflicting PR #41939)",
+      "add_minCosineSum_le_minCosineSum_union in Erdos510WIP01.lean (superadditivity min A + min B <= min (A ∪ B) for disjoint sets; negativity m = -min is subadditive — the union-bound backbone the conjectured sublinear -c√N is measured against)"
     ],
     "insights": [
       "The trivial range of the cosine sum is [−N, N]; the conjectured extremal value −c√N sits strictly inside, so all elementary bounds are far from the truth — the content is entirely in the cancellation.",
@@ -92,7 +94,9 @@
       "Chowla sqrt(N) growth rate ESTABLISHED FOR THE SUM-FREE SUBCLASS with explicit constant 1/sqrt(2) (e.g. every top-half interval {N+1..2N}); sum-freeness implies 0 not in A automatically (0 in A would need 0+0 not in A). The general conjecture untouched: additive structure (large positive third moment) is exactly the hard case.",
       "Sanity: all-odd sets are sum-free (odd+odd=even), and their exact minimum -N indeed beats -sqrt(N/2) — the two sharp results are consistent.",
       "INTERVAL FAMILY (new mechanism, Dirichlet kernel): multiplying ∑_{n=1}^N cos(nθ) by 2sin(θ/2) telescopes via product-to-sum 2cos(nθ)sin(θ/2) = sin((2n+1)θ/2) − sin((2n−1)θ/2), giving the closed form sin((2N+1)θ/2) − sin(θ/2). At θ₀ = 3π/(2N+1) the argument (2N+1)θ₀/2 = 3π/2 EXACTLY (sin = −1), so the sum equals −1/2 − 1/(2sin(θ₀/2)); sin x ≤ x (Real.sin_lt, needs import Analysis.SpecialFunctions.Trigonometric.Bounds) turns this into ≤ −1/2 − (2N+1)/(3π). Fully additively-structured sets are LINEARLY negative — quantifies why additive structure is the driving force in Chowla's problem (Sidon/sum-free ≍ √N vs interval ≍ N).",
-      "Lean note: cosineSum_insert takes θ explicitly before the membership hypothesis (section variable order) — call as cosineSum_insert _ hnot; v4.31 Mathlib uses div_lt_iff₀ / div_le_div_iff₀ (the un-subscripted names are gone)."
+      "Lean note: cosineSum_insert takes θ explicitly before the membership hypothesis (section variable order) — call as cosineSum_insert _ hnot; v4.31 Mathlib uses div_lt_iff₀ / div_le_div_iff₀ (the un-subscripted names are gone).",
+      "Union superadditivity: the trivial -N floor (all-odd sets) is exactly the singleton union bound (each -1); any -c√N uniform bound is SUBLINEAR, i.e., must beat the union bound — union structure alone cannot reach it.",
+      "Sidon-class -c√N (∫f⁴ count under B₂[1] + Hölder ∫f² ≤ (∫f⁴)^{1/3}(∫|f|)^{2/3} + ∫f=0 ⇒ ∫f₋=∫|f|/2 ⇒ 2π|min| ≥ ∫f₋) remains the strongest feasible elementary target (~2 sessions), distinct from the blocked general route."
     ],
     "mathlibGaps": [
       "No direct reduction of an ℝ-infimum of a periodic continuous function to a min over a fundamental period; needs a toIcoMod-style mod-2π reduction to formalize attainment."
