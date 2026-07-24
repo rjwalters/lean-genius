@@ -4068,4 +4068,135 @@ theorem record_index_eight_not_locally_unique :
     ∃ m, IsPractical m ∧ 256 < m ∧ m < 348 ∧ hErdos m = 8 :=
   ⟨272, twoseventytwo_practical, by norm_num, by norm_num, hErdos_twoseventytwo⟩
 
+/-! ### Toward `t = 10`: the index-`10` witness `860 = 2² · 5 · 43`
+
+The `t = 9` record-setter `348 = 2² · 3 · 29` was extremal in Stewart's sense:
+`29 = σ(2² · 3) + 1` is the LARGEST prime admissible over its prefix.  The
+natural conjecture (recorded at the `t = 9` rung) is that record-setters
+continue along such greedy maximal-prime chains.  This section provides the
+`t = 10` data point: the least practical number of index `10` is —
+computationally — `860 = 2² · 5 · 43`, and `43 = σ(2² · 5) + 1 = 42 + 1` is
+again the extremal Stewart prime over its prefix.  The divisor list
+
+  `1, 2, 4, 5, 10, 20 | 43, 86, 172, 215, 430`
+
+jumps `20 → 43` (ratio `2.15 > 2`), prefix sum `42`.  The unique hard target
+is `k = 816`: since `816 ≡ 42 (mod 43)` and the prefix reaches `42` only by
+spending ALL SIX prefix divisors, every representation pays `6` coins for the
+residue and then `774 = 43 · 18` still needs four `43`-layer coins
+(`18 = 10 + 5 + 2 + 1` is minimal over `{1, 2, 4, 5, 10}`) — ten in all.
+
+What is PROVED here is the exact value `hErdos 860 = 10` and its corollaries:
+index `10` occurs strictly below `2^10 = 1024` (`index_ten_below_two_pow_ten`),
+so the logarithmic bound fails a second time, one rung higher
+(`hErdos_gt_log_at_eighthundredsixty`); and the record index `9` is NOT
+locally unique (`record_index_nine_not_locally_unique`): `820 = 2² · 5 · 41`
+— the non-extremal sibling of `860`, one prime step short of the Stewart
+maximum — ties `hErdos 820 = 9` strictly inside `(348, 860)`, as does
+`512 = 2⁹` (`hErdos_two_pow`).  The MINIMALITY of `860` (the full
+`minimal_hErdos_ten` record-setter) additionally needs the threshold
+"every practical `m < 860` has index `≤ 9`" — a sweep of the `91` practical
+numbers in `(348, 860)` (roughly `35` engine runs plus split chains) that is
+left for subsequent sessions; `hErdos_eighthundredtwenty` below is its
+hardest single case, banked now.
+
+Neither `860` nor `820` admits a proper-divisor sub-family cover: dropping ANY
+single divisor pushes some target above the index bound (checked
+exhaustively), so — unlike `348`, which shed `116` — both covers run over all
+`2^11 = 2048` subsets of the full proper-divisor coin set. -/
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 6400000 in
+/-- Shared kernel coverage for `860`: every `k < 860` is a `≤ 10`-divisor
+subset sum of the full proper-divisor coin set (no divisor is droppable —
+`2¹¹ = 2048` subsets).  Feeds both `eighthundredsixty_practical` and the upper
+half of `hErdos_eighthundredsixty`. -/
+theorem eighthundredsixty_cover :
+    ∀ k ∈ Finset.range 860,
+      ∃ T ∈ ({1, 2, 4, 5, 10, 20, 43, 86, 172, 215, 430} : Finset ℕ).powerset,
+        T.card ≤ 10 ∧ T.sum id = k := by decide
+
+/-- **`860 = 2² · 5 · 43` is practical — extremally so**: `43 = σ(2² · 5) + 1
+= 42 + 1` is the LARGEST prime admissible over the prefix `2² · 5` (Stewart's
+structure theorem) — the same extremal shape as the `t = 9` record-setter
+`348 = 2² · 3 · 29` (`29 = σ(12) + 1`). -/
+theorem eighthundredsixty_practical : IsPractical 860 :=
+  isPractical_of_witnesses_from _ (by norm_num) (by decide) eighthundredsixty_cover
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 6400000 in
+/-- **`hErdos 860 = 10` — an index-`10` practical number BELOW `2¹⁰ = 1024`.**
+Upper: the shared coverage search.  Lower: the unique hard target is
+`k = 816 ≡ 42 (mod 43)` — the residue forces all six prefix divisors
+(`42 = 20 + 10 + 5 + 4 + 2 + 1`) and the remaining `774 = 43 · 18` still costs
+four `43`-layer divisors (`774 = 430 + 215 + 86 + 43`); the kernel checks all
+`2¹² = 4096` divisor subsets and finds none of cardinality `≤ 9` summing to
+`816`. -/
+theorem hErdos_eighthundredsixty : hErdos 860 = 10 := by
+  refine le_antisymm (hErdos_le_of_witnesses_from _ (by decide) eighthundredsixty_cover) ?_
+  exact le_hErdos_of_card (k := 816) eighthundredsixty_practical (by omega) (by omega)
+    (by decide)
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 6400000 in
+/-- Shared kernel coverage for `820`: every `k < 820` is a `≤ 9`-divisor
+subset sum of the full proper-divisor coin set (again no divisor is
+droppable).  Feeds both `eighthundredtwenty_practical` and the upper half of
+`hErdos_eighthundredtwenty`. -/
+theorem eighthundredtwenty_cover :
+    ∀ k ∈ Finset.range 820,
+      ∃ T ∈ ({1, 2, 4, 5, 10, 20, 41, 82, 164, 205, 410} : Finset ℕ).powerset,
+        T.card ≤ 9 ∧ T.sum id = k := by decide
+
+/-- `820 = 2² · 5 · 41` is practical — the NON-extremal sibling of `860`:
+`41 < 43 = σ(2² · 5) + 1` sits one prime step short of the Stewart maximum
+over the same prefix. -/
+theorem eighthundredtwenty_practical : IsPractical 820 :=
+  isPractical_of_witnesses_from _ (by norm_num) (by decide) eighthundredtwenty_cover
+
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 6400000 in
+/-- **`hErdos 820 = 9`** — the hardest single case of the future
+`t = 10` threshold, banked early.  Upper: the shared coverage search.  Lower:
+hard target `k = 776 ≡ 38 (mod 41)`: the residue `38 = 20 + 10 + 5 + 2 + 1`
+costs five prefix divisors (the only prefix subset with sum `≡ 38 (mod 41)`),
+and `738 = 41 · 18 = 410 + 205 + 82 + 41` costs four more — nine in all; the
+kernel checks all `2¹² = 4096` divisor subsets. -/
+theorem hErdos_eighthundredtwenty : hErdos 820 = 9 := by
+  refine le_antisymm (hErdos_le_of_witnesses_from _ (by decide) eighthundredtwenty_cover) ?_
+  exact le_hErdos_of_card (k := 776) eighthundredtwenty_practical (by omega) (by omega)
+    (by decide)
+
+/-- **Local uniqueness of the record fails at `t = 9`** — for the third time
+(after `t = 6` and `t = 8`): practical numbers strictly between `348` and
+(the computed `t = 10` record-setter) `860` attain index `9`.  Witness
+`820 = 2² · 5 · 41` (in fact `512 = 2⁹` does too, by `hErdos_two_pow`).
+Unlike the `t = 8` ties (`272`, `304` — near-doubling chains resembling
+`256 = 2⁸`), the tie `820` structurally resembles the RECORD-SETTER `860`:
+same prefix `2² · 5`, prime one step below the Stewart maximum. -/
+theorem record_index_nine_not_locally_unique :
+    ∃ m, IsPractical m ∧ 348 < m ∧ m < 860 ∧ hErdos m = 9 :=
+  ⟨820, eighthundredtwenty_practical, by norm_num, by norm_num,
+    hErdos_eighthundredtwenty⟩
+
+/-- **Index `10` occurs strictly below `2¹⁰`**: the powers-of-two pattern,
+broken at `t = 9` by `348`, stays broken at `t = 10` — witness `860 < 1024`.
+(Minimality of `860` awaits the `(348, 860)` threshold sweep; this existence
+statement is what `hErdos_eighthundredsixty` already certifies.) -/
+theorem index_ten_below_two_pow_ten :
+    ∃ m, IsPractical m ∧ hErdos m = 10 ∧ m < 2 ^ 10 :=
+  ⟨860, eighthundredsixty_practical, hErdos_eighthundredsixty, by norm_num⟩
+
+/-- **The logarithmic bound fails at a SECOND, higher rung**: `hErdos 860 =
+10 > 9 = log₂ 860`.  Together with `348` (`hErdos_le_log_fails`) this shows
+the failure of `hErdos m ≤ log₂ m` is not an isolated accident but recurs
+along the extremal Stewart chain `2² · 3 · 29, 2² · 5 · 43, …` — each
+maximal-prime jump (ratio `> 2`) costs one more divisor than the doubling
+chain of the same length. -/
+theorem hErdos_gt_log_at_eighthundredsixty : Nat.log 2 860 < hErdos 860 := by
+  have hlog : Nat.log 2 860 = 9 :=
+    Nat.log_eq_of_pow_le_of_lt_pow (by norm_num) (by norm_num)
+  rw [hErdos_eighthundredsixty, hlog]
+  omega
+
 end Erdos18
