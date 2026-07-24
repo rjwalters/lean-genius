@@ -56,7 +56,7 @@
     },
     "type": "concept",
     "title": "First Moment Method: Contradiction via integral_mono_ae",
-    "content": "`first_moment_method` proves that if X : Ω → ℕ is measurable and integrable with E[X] < 1, then P({X = 0}) > 0. The proof: `by_contra h; push_neg at h` gives `μ {X=0} = 0`. Then `ae_iff` converts this to `X ω ≥ 1` a.e. (using that X is ℕ-valued, so X < 1 ↔ X = 0). Then `integral_mono_ae (integrable_const 1) hX_integ hae` gives E[X] ≥ 1, and `integral_const, measure_univ, ENNReal.one_toReal` gives ∫ 1 = 1. `linarith` closes with E[X] ≥ 1 contradicting the hypothesis.",
+    "content": "`first_moment_method` proves that if X : Ω → ℕ is measurable and integrable with E[X] < 1, then P({X = 0}) > 0. The proof: `by_contra h; push_neg at h` gives `μ {X=0} = 0`. Then `ae_iff` converts this to `X ω ≥ 1` a.e. (using that X is ℕ-valued, so X < 1 ↔ X = 0). Then `integral_mono_ae (integrable_const 1) hX_integ hae` gives E[X] ≥ 1, and `integral_const, probReal_univ, one_smul` gives ∫ 1 = 1. `linarith` closes with E[X] ≥ 1 contradicting the hypothesis.",
     "mathContext": "The *first moment method* (or Markov's inequality argument): for a non-negative integer-valued random variable $X$, $\\mathbb{E}[X] = \\mathbb{E}[X \\cdot 1_{X \\geq 1}] \\geq \\mathbb{P}(X \\geq 1)$. If $\\mathbb{E}[X] < 1$, then $\\mathbb{P}(X \\geq 1) < 1$, so $\\mathbb{P}(X = 0) > 0$. This is used in the probabilistic method: if the expected number of 'bad' events is less than 1, then with positive probability there are no bad events, so a 'good' configuration exists.",
     "significance": "key",
     "relatedConcepts": [
