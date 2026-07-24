@@ -130,12 +130,20 @@
       "mathContext": "π'(n+1) ≤ π'(p) < π'(p+1) ≤ π'(2n+1) via monotonicity and the count_succ jump at the prime p."
     },
     {
-      "id": "examples",
-      "title": "Strictness and Explicit Cases",
+      "id": "strict-doubling",
+      "title": "π Strictly Increases",
       "startLine": 75,
+      "endLine": 79,
+      "summary": "primeCounting_lt_two_mul: π(n) < π(2n) strictly, a direct corollary of the ≥ π(n)+1 bound.",
+      "mathContext": "Since π(2n) ≥ π(n) + 1 > π(n), the ≤ from primeCounting_two_mul_ge upgrades to strict < with no extra work — omega closes the arithmetic."
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Small Cases",
+      "startLine": 81,
       "endLine": 89,
-      "summary": "π(n) < π(2n) strictly, and explicit primes in (1,2] and (5,10].",
-      "mathContext": "Bertrand at n = 1 gives 2; at n = 5 gives 7."
+      "summary": "Worked instances of Bertrand's postulate: a prime in (1,2] and a prime in (5,10].",
+      "mathContext": "Bertrand at n = 1 gives the prime 2; at n = 5 gives the prime 7 ∈ (5,10]."
     }
   ],
   "conclusion": {
