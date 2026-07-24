@@ -915,7 +915,7 @@ theorem stationary_splits_binary_aleph1 {S : Set Ordinal.{0}}
 theorem stationary_omega_family_aleph1 {S : Set Ordinal.{0}}
     (hS : IsStationaryBelow S (ℵ₁).ord) :
     ∃ T : ℕ → Set Ordinal,
-      (∀ n, T n ⊆ S) ∧ Pairwise (Disjoint on T) ∧
+      (∀ n, T n ⊆ S) ∧ (∀ m n, m ≠ n → Disjoint (T m) (T n)) ∧
       ∀ n, IsStationaryBelow (T n) (ℵ₁).ord := by
   -- one splitting step, as a choice function on the subtype of stationary sets
   have hstep : ∀ p : {X : Set Ordinal.{0} // IsStationaryBelow X (ℵ₁).ord},
@@ -967,11 +967,11 @@ theorem stationary_omega_family_aleph1 {S : Set Ordinal.{0}}
 theorem stationary_splits_finite_aleph1 {S : Set Ordinal.{0}}
     (hS : IsStationaryBelow S (ℵ₁).ord) (n : ℕ) :
     ∃ T : Fin n → Set Ordinal,
-      (∀ i, T i ⊆ S) ∧ Pairwise (Disjoint on T) ∧
+      (∀ i, T i ⊆ S) ∧ (∀ i j, i ≠ j → Disjoint (T i) (T j)) ∧
       ∀ i, IsStationaryBelow (T i) (ℵ₁).ord := by
   obtain ⟨T, hsub, hdisj, hstat⟩ := stationary_omega_family_aleph1 hS
   exact ⟨fun i => T i.1, fun i => hsub i.1,
-    fun i j hij => hdisj (Fin.val_injective.ne hij), fun i => hstat i.1⟩
+    fun i j hij => hdisj i.1 j.1 (Fin.val_injective.ne hij), fun i => hstat i.1⟩
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
