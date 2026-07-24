@@ -73,7 +73,7 @@
       "name": "erdos_1047_counterexample",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Explicit Counterexample",
     "content": "The existential form of the result, packaging the explicit witness: a monic polynomial of positive degree (`goodmanPolynomial`), a positive level (`goodmanCriticalValue`, positive by `positivity`), and a point $z_0$ on the lemniscate whose component is non-convex. The final witness is supplied directly by the certificate `goodman_counterexample_proof`.",
     "mathContext": "$\\exists f \\text{ monic}, \\deg f > 0, \\exists c > 0, \\exists z_0 \\in \\{|f| \\le c\\}$ with the component of $z_0$ non-convex. Instantiated at $f = (z^2+1)(z-2)^2$, $c = 5^{3/2}/4$.",
@@ -95,7 +95,7 @@
       "name": "erdos_1047_answer",
       "kind": "theorem"
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Answer, Stated Cleanly",
     "content": "A streamlined existential restatement of the answer, dropping the monic/degree bookkeeping to leave just the essential claim: there is a polynomial, a level, and a boundary point whose lemniscate component is not convex. Derived in two lines from `erdos_1047_counterexample`.",
     "mathContext": "$\\exists f, \\exists c > 0, \\exists z_0 \\in \\{|f| \\le c\\}$ with a non-convex component — the minimal form of \"some lemniscate component is non-convex\".",

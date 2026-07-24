@@ -327,7 +327,7 @@
       "type": "section-doc",
       "contains": "Worked Examples"
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Examples",
     "content": "**Tracing gcd(48, 18)**:\n\n```\ngcd(48, 18) = gcd(18, 48 mod 18) = gcd(18, 12)\ngcd(18, 12) = gcd(12, 18 mod 12) = gcd(12, 6)\ngcd(12, 6)  = gcd(6, 12 mod 6)   = gcd(6, 0)\ngcd(6, 0)   = 6\n```\n\nOnly 4 steps! The algorithm is remarkably efficient.\n\nEach step is verified in Lean using `native_decide` to compute the result directly.",
     "mathContext": "In Lean: each step is verified by `native_decide`, which compiles the decision to native code and evaluates. For `gcd(48, 18) = 6`: the algorithm runs $48 = 2 \\cdot 18 + 12$, $18 = 1 \\cdot 12 + 6$, $12 = 2 \\cdot 6 + 0$, terminating in 3 steps. `native_decide` calls `Nat.decEq` on the reduced expression. Step-tracing examples serve as `#eval`-style tests within the proof system, confirmed by the kernel.",

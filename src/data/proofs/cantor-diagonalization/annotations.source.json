@@ -59,7 +59,7 @@
       "name": "diagonal_differs",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Diagonal Differs at Each Position",
     "content": "The key lemma: our constructed diagonal sequence differs from $f(n)$ specifically at position $n$.\n\nSince `diagonal f n = !(f n n)`, we have `diagonal f n != f n n` by the fact that `!b != b` for any boolean.\n\nThis one-line observation is the heart of the proof.",
     "mathContext": "The Lean proof: `unfold diagonal` replaces `diagonal f n` with `!(f n n)`, then `cases f n n <;> simp` performs case analysis on both `Bool.true` and `Bool.false`. In each case `simp` discharges the goal: `!true \u2260 true` becomes `false \u2260 true` (true by `Bool.false_ne_true`), and `!false \u2260 false` becomes `true \u2260 false` (true by `Bool.true_ne_false`). The `<;>` combinator applies `simp` to both cases simultaneously. This lemma encapsulates the one-line core of Cantor's argument: $\\lnot b \\neq b$ for any $b \\in \\{0, 1\\}$, which holds because boolean negation is a fixed-point-free involution.",
@@ -133,7 +133,7 @@
       "name": "cantor_diagonalization",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Constructing the Witness",
     "content": "We exhibit the diagonal sequence as our witness. The `use` tactic provides this existential witness.\n\nNow we must prove this sequence differs from every $f(n)$.",
     "mathContext": "The `use diagonal f` tactic in Lean 4 discharges the `\u2203 s : BinarySeq, ...` goal by substituting `s := diagonal f`, leaving the goal `\u2200 n : \u2115, f n \u2260 diagonal f`. This is a *constructive* witness \u2014 the diagonal sequence is given explicitly as `fun n => !(f n n)`. Classical logic would allow a non-constructive existence proof (by excluded middle, assuming no such sequence and deriving a contradiction), but this proof constructs the witness directly. The `use` tactic corresponds to the existential introduction rule: from `P(t)`, conclude `\u2203 x, P(x)`.",
@@ -158,7 +158,7 @@
       "name": "no_surjection_nat_to_binary",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Deriving the Contradiction",
     "content": "Suppose for contradiction that $f(n) = \\text{diagonal}(f)$ for some $n$.\n\nThen at position $n$: $f(n)(n) = \\text{diagonal}(f)(n)$.\n\nBut $\\text{diagonal}(f)(n) = \\neg f(n)(n)$ by definition.\n\nSo $f(n)(n) = \\neg f(n)(n)$, which is impossible for any boolean.\n\nContradiction! Therefore $f(n) \\neq \\text{diagonal}(f)$ for all $n$.",
     "mathContext": "In `no_surjection_nat_to_binary`: `intro \u27e8f, hf\u27e9` destructs the assumed surjection; `obtain \u27e8s, hs\u27e9 := cantor_diagonalization f` gives the diagonal sequence not in range; `obtain \u27e8n, hn\u27e9 := hf s` uses surjectivity to find $n$ with $f(n) = s$; `exact hs n hn` applies `hs : \u2200 n, f n \u2260 s` to `hn : f n = s`, deriving `False` from `f n \u2260 s` and `f n = s`. The key tactic pattern is `exact hs n hn`: `hs n : f n \u2260 s` is a function `f n = s \u2192 False`, and `hn : f n = s` is the input. The `exact` tactic applies the former to the latter. This is a 4-line proof that neatly separates concerns: Cantor proves non-surjectivity for any enumeration; this theorem packages it as '\u00ac\u2203 surjection'.",
@@ -209,7 +209,7 @@
       "name": "reals_uncountable",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Proof of Uncountability",
     "content": "Assume for contradiction that some surjective $f$ exists.\n\nBy Cantor's theorem, there exists $s$ with $f(n) \\neq s$ for all $n$.\n\nBut surjectivity says every $s$ equals some $f(n)$.\n\nThese contradict: $s = f(n)$ but also $f(n) \\neq s$.",
     "mathContext": "`reals_uncountable` is a one-line alias: `no_surjection_nat_to_binary`. Its docstring explains the informal bridge: binary sequences $(b_n) \\in \\{0,1\\}^{\\mathbb{N}}$ map to reals via $\\sum b_n/2^{n+1} \\in [0,1]$, and $|[0,1]| = |\\mathbb{R}|$. But the Lean type is `\u00ac\u2203 f : \u2115 \u2192 BinarySeq, Function.Surjective f` \u2014 not a statement about $\\mathbb{R}$. The peer review (ai-3) flagged this equivocation; as a resolution, the theorem's name signals the *informal* interpretation while the type gives the *formal* content. This honest naming pattern is common in proof galleries: the formal statement is technically narrower than its name suggests.",

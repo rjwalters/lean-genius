@@ -74,7 +74,7 @@
       "type": "section-doc",
       "contains": "What This Proves"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Characteristic Function at Zero",
     "content": "At $t = 0$, the characteristic function equals 1 for any probability measure: $\\varphi(0) = \\mathbb{E}[e^{i \\cdot 0 \\cdot X}] = \\mathbb{E}[1] = 1$. This normalization anchors the Fourier representation.",
     "mathContext": "This simple fact is essential: it means all characteristic functions pass through the same point, allowing us to compare different distributions on a common scale.",
@@ -120,7 +120,7 @@
       "name": "charFun_zero",
       "kind": "theorem"
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Taylor Expansion with Error Bound",
     "content": "For small $t$, the characteristic function is well-approximated by its quadratic Taylor polynomial. The error is $O(t^3)$, controlled by the third moment. This approximation is sharp enough to extract the limiting behavior.",
     "mathContext": "The third moment condition $\\mathbb{E}[|X|^3] < \\infty$ ensures the remainder is well-controlled. Without it, convergence may fail (leading to stable distributions instead).",
