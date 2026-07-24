@@ -37,7 +37,8 @@
       "The single integral ∫ e^{zx}e^{−x²/2} dx is an entire function of the complex frequency z, equal to e^{z²/2}√(2π); the characteristic function (z imaginary) and the moment generating function (z real) are two real slices of it, linked by analytic continuation z=it. The parent computed only the imaginary slice.",
       "On the real axis no contour shift is needed: real completion of the square plus translation invariance of Lebesgue measure gives the moment generating function elementarily — a strictly simpler argument than the complex characteristic-function computation.",
       "The cumulant generating function of the standard normal is exactly the quadratic K(s)=s²/2. Equivalently the mean is 0, the variance is 1, and every cumulant of order ≥3 vanishes.",
-      "A polynomial cumulant generating function is the algebraic signature of the Gaussian: by Marcinkiewicz's theorem no other probability distribution has one. The degree-2 polynomial K(s)=s²/2 proved here is therefore not a coincidence of the normalization but a defining feature."
+      "A polynomial cumulant generating function is the algebraic signature of the Gaussian: by Marcinkiewicz's theorem no other probability distribution has one. The degree-2 polynomial K(s)=s²/2 proved here is therefore not a coincidence of the normalization but a defining feature.",
+      "Because the MGF is finite for every real s (an entire function, not merely defined near 0), Chernoff's method applies unconstrained: P(X≥λ) ≤ e^{-sλ}·e^{s²/2} for every s>0, minimized at s=λ to give e^{-λ²/2}. For a general sub-Gaussian variable this optimization only yields an upper bound on the tail exponent; for the standard normal itself the MGF equals e^{s²/2} exactly, with no slack, so the Chernoff exponent λ²/2 it produces is the true (not merely bounding) Gaussian tail rate."
     ],
     "prerequisites": [
       "area-of-circle-oq-05-oq-03 — the imaginary-axis (characteristic-function) Gaussian Fourier identity it generalizes",
@@ -52,15 +53,15 @@
       "id": "preamble",
       "title": "Preamble: Imports and Setup",
       "startLine": 1,
-      "endLine": 66,
+      "endLine": 59,
       "summary": "Imports Mathlib; opens Real, Complex, MeasureTheory. Header states the entire bilateral transform e^{zx}e^{-x²/2}↦e^{z²/2}√(2π), its two generating-function slices, and the quadratic cumulant K(s)=s²/2 with its Marcinkiewicz interpretation.",
       "mathContext": "Targets the full complex-frequency transform of the Gaussian, generalizing the parent's imaginary-axis characteristic function."
     },
     {
       "id": "constant",
       "title": "Part I: The √(2π) Constant from the Contour Integral",
-      "startLine": 53,
-      "endLine": 77,
+      "startLine": 60,
+      "endLine": 74,
       "summary": "cpow_half_two_pi: the Mathlib contour constant (π/−(−1/2))^{1/2} equals the real √(2π).",
       "mathContext": "Bridges the cpow value returned by integral_cexp_quadratic to a real square root."
     },
