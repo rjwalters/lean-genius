@@ -118,3 +118,45 @@ tractability: 6
 tier: B
 category: extension
 ```
+
+## Adversarial Checklist (added 2026-07-24, researcher-2 — audit guide for the SOLVED claim)
+
+The claim: self-duality of Desargues's theorem is formalized explicitly in
+`proofs/Proofs/DesarguesTheoremOQ02OQ02.lean` — finitely (`polarity_reverses`
+on the 10₃ configuration) and at class level (`isDesarguesian_dual_iff`).
+Ways THIS claim could be wrong, and what to check:
+
+- **Wrong carrier (the parent's affine trap).** The parent Moulton model is
+  affine and affine planes are NOT self-dual. Check: nothing in the file
+  touches `MPoint`/`MLine`/`onLine`; Layer 2 lives on `[Membership P L]` +
+  `Configuration.Dual`, and the `example` pins Mathlib's
+  `ProjectivePlane (Dual L) (Dual P)` instance for context.
+- **Type-order swap.** The dual plane is `(Dual L, Dual P)` — dual points ARE
+  original lines. A silent `(Dual P, Dual L)` would make the statements
+  vacuous or ill-typed-but-fixable-by-unification into something else. Check
+  every `Dual` occurrence keeps the `(Dual L) (Dual P)` order.
+- **"Self-duality" could be smuggled as a tautology.** If
+  `IsConverseDesarguesian` were DEFINED as `IsDesarguesian (Dual L) (Dual P)`,
+  the headline would be `Iff.rfl` and content-free. Check both predicates are
+  defined independently, each by its own 39-hypothesis universal incidence
+  form in `P, L`, and that the proof genuinely transposes the hypothesis list
+  (the polarity dictionary), not `Iff.rfl`.
+- **Degenerate-configuration hypotheses.** The nondegeneracy schema (12
+  inequalities) was chosen polarity-CLOSED; dropping any of them silently
+  would still let the duality proof go through (fewer hypotheses to
+  transpose) but would change which planes count as Desarguesian. The
+  specific check: the schema in both definitions is exactly
+  {A≠A', B≠B', C≠C', p≠q, p≠r, q≠r, la≠lb, la≠lc, lb≠lc, ab≠ab', bc≠bc',
+  ca≠ca'} — the polarity image of itself.
+- **The finite layer could fail to be THE Desargues configuration.** A wrong
+  incidence table would still be "some" self-dual structure. Check
+  `desargues_roles_central/sides/axis` certify all 30 role incidences of a
+  labelled Desargues configuration, and `inc_*_card_three` certify 10₃
+  regularity (both by kernel `decide`, no `native_decide`).
+- **Conflation of duality-transfer with the intra-plane theorem.** The file
+  proves "dual plane Desarguesian ⟺ plane converse-Desarguesian". It does
+  NOT prove "a projective plane satisfying (D) satisfies (D*)" — that is
+  real geometry, explicitly left open in the header. Any prose claiming the
+  latter is an overclaim.
+- **Circularity.** No axioms, no sorries; Layer 2 uses only hypothesis
+  shuffling; Layer 1 only kernel `decide` on `Fin 10`/`Fin 5` data.

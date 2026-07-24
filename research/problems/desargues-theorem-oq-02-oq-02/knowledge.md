@@ -171,3 +171,44 @@ Parts B–C ~120–200 LOC contingent on the exact `Configuration.Dual` API.
   instead (Insight 3).
 - **Modelling "complexity"-style cost.** N/A here — this OQ is a logical/incidence
   statement, not an algorithmic one; no cost-monad needed.
+
+---
+
+## Session 2026-07-24 (researcher-2) — ACT executed: self-duality FORMALIZED (both layers)
+
+The build-gated plan from the 2026-06-13 survey is now implemented in the new
+file `proofs/Proofs/DesarguesTheoremOQ02OQ02.lean` (docker build green,
+0 sorries / 0 axioms, kernel `decide` only — no native_decide).
+
+- **Part A (finite)**: pairs model (points AND lines = 2-subsets of Fin 5,
+  incidence = disjointness) with the geometric dictionary in explicit `![…]`
+  tables. `decide` certifies: 10₃ regularity, all 30 Desargues role
+  incidences, and the explicit polarity `ptToLn`/`lnToPt` (mutually inverse,
+  incidence-reversing: `polarity_reverses`). Polarity = O↔axis, vertex↔
+  opposite side of the OTHER triangle (A↦B'C'), perspectivity line↔axis point.
+- **Parts B–C (abstract)**: `PointsCollinear`/`LinesConcurrent` with
+  `Iff.rfl` dual swaps; `IsDesarguesian`/`IsConverseDesarguesian` universal
+  incidence forms with a polarity-CLOSED 12-inequality nondegeneracy schema;
+  **`isDesarguesian_dual_iff : IsDesarguesian (Dual L) (Dual P) ↔
+  IsConverseDesarguesian P L`** proved by explicit 39-hypothesis transposition
+  (both directions); `isConverseDesarguesian_dual_iff` from definitional
+  involutivity of `Dual` (Dual (Dual P) = P is rfl — one-line proof);
+  `desargues_package_self_dual`.
+
+### Lean notes
+- The survey's type-order gotcha is real and the whole file respects
+  `(Dual L) (Dual P)`.
+- `Dual` being a plain type synonym (`def Dual := P`) makes BOTH the double-
+  dual collapse and the membership swap definitional: the mirror iff is just
+  `(isDesarguesian_dual_iff (Dual L) (Dual P)).symm` with defeq doing the
+  `Dual ∘ Dual = id` lift, and primal-typed incidence hypotheses are accepted
+  verbatim where dual-typed ones are expected.
+- Key design: the nondegeneracy schema must be closed under the polarity or
+  the duality is not a pure statement swap (converse-Desargues' natural
+  hypotheses = exact polarity image of Desargues').
+
+### Question status: ANSWERED (yes — formalized explicitly)
+
+### Remaining open (recorded as candidate follow-up)
+- The INTRA-plane theorem: in a projective plane, (D) ⟹ (D*) via applying
+  (D) to a derived configuration — genuine geometry, not formal duality.
