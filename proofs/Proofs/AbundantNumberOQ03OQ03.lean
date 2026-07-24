@@ -592,12 +592,11 @@ theorem exists_crossing (a : ℕ) :
   have hnth : ¬ Summable (fun i : ℕ => (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)) := by
     intro hsum
     apply Nat.Primes.not_summable_one_div
-    have e : ℕ ≃ Nat.Primes :=
-      { toFun := fun i => ⟨Nat.nth Nat.Prime i, Nat.prime_nth_prime i⟩
-        invFun := fun p => Nat.count Nat.Prime (p : ℕ)
-        left_inv := fun i => Nat.count_nth_of_infinite Nat.infinite_setOf_prime i
-        right_inv := fun p => Subtype.ext (Nat.nth_count p.2) }
-    exact e.summable_iff.mp hsum
+    exact (Equiv.summable_iff
+      (⟨fun i => ⟨Nat.nth Nat.Prime i, Nat.prime_nth_prime i⟩,
+        fun p => Nat.count Nat.Prime (p : ℕ),
+        fun i => Nat.count_nth_of_infinite Nat.infinite_setOf_prime i,
+        fun p => Subtype.ext (Nat.nth_count p.2)⟩ : ℕ ≃ Nat.Primes)).mp hsum
   have hnn : ∀ i, (0 : ℝ) ≤ 1 / (Nat.nth Nat.Prime i : ℝ) := fun i => by positivity
   have htend := (not_summable_iff_tendsto_nat_atTop_of_nonneg hnn).mp hnth
   -- Step 2: pick b with the tail sum over [a, b) exceeding 2
@@ -609,7 +608,7 @@ theorem exists_crossing (a : ℕ) :
     have hmono : ∑ i ∈ Finset.range b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ)
         ≤ ∑ i ∈ Finset.range a, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) :=
       Finset.sum_le_sum_of_subset_of_nonneg
-        (Finset.range_subset.mpr hab.le) (fun i _ _ => hnn i)
+        (Finset.range_subset.mp hab.le) (fun i _ _ => hnn i)
     linarith
   have htail : (2 : ℝ) < ∑ i ∈ Finset.Ico a b, (1 : ℝ) / (Nat.nth Nat.Prime i : ℝ) := by
     rw [Finset.sum_Ico_eq_sub _ hab]
@@ -715,9 +714,13 @@ theorem erase_prod_deficient {a : ℕ} (ha : 1 ≤ a) {i : ℕ}
     set pc := Nat.nth Nat.Prime c with hpc
     -- hpred in split form: (pi + 1) * A < 2 * (pi * B)
     have hsplitσ : (pi + 1) * A = ∏ j ∈ Finset.Ico a c, (Nat.nth Nat.Prime j + 1) := by
-      rw [hpi, hA]; exact Finset.mul_prod_erase _ _ himem
+      rw [hpi, hA]
+      exact Finset.mul_prod_erase (Finset.Ico a c)
+        (fun j => Nat.nth Nat.Prime j + 1) himem
     have hsplitn : pi * B = ∏ j ∈ Finset.Ico a c, Nat.nth Nat.Prime j := by
-      rw [hpi, hB]; exact Finset.mul_prod_erase _ _ himem
+      rw [hpi, hB]
+      exact Finset.mul_prod_erase (Finset.Ico a c)
+        (fun j => Nat.nth Nat.Prime j) himem
     have hpred' : (pi + 1) * A < 2 * (pi * B) := by
       rw [hsplitσ, hsplitn]; exact hpred
     have hpic : pi ≤ pc :=
