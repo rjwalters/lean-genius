@@ -24,6 +24,29 @@
     ]
   },
   {
+    "id": "ann-cauchy-interlacing-docstring",
+    "proofId": "cauchy-interlacing-theorem",
+    "range": {
+      "startLine": 61,
+      "endLine": 78
+    },
+    "type": "context",
+    "title": "The Theorem's Docstring and the Big-Operator Side of the Signature",
+    "content": "The docstring states the result in words before the formal signature: a symmetric operator T on an (n+1)-dimensional space with orthonormal eigenbasis b and antitone (descending) eigenvalues lam interlaces with the eigenvalues mu of a symmetric compression TH on a codimension-one subspace H, giving `lam (k.succ) ≤ mu k` and `mu k ≤ lam (k.castSucc)` — read in ascending textbook notation as λ_k ≤ μ_k ≤ λ_{k+1}. The signature's opening binders (`T`, `b`, `lam`, `hT`, `hlam`) fix this big-operator side before the codimension-one subspace H, its compression TH, and the Rayleigh-agreement hypothesis are introduced.",
+    "mathContext": "Descending convention `lam (k.succ) ≤ mu k ≤ lam (k.castSucc)` for `k : Fin n` is exactly ascending textbook interlacing $\\lambda_k \\le \\mu_k \\le \\lambda_{k+1}$, since `Fin.castSucc` and `Fin.succ` are the two embeddings `Fin n ↪ Fin (n+1)` flanking index `k`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antitone eigenvalue enumeration",
+      "ascending vs descending interlacing convention",
+      "Fin.castSucc / Fin.succ",
+      "orthonormal eigenbasis"
+    ],
+    "prerequisites": [
+      "symmetric operator spectral decomposition",
+      "Fin n indexing of finite-dimensional eigenbases"
+    ]
+  },
+  {
     "id": "ann-cauchy-interlacing-statement",
     "proofId": "cauchy-interlacing-theorem",
     "range": {
