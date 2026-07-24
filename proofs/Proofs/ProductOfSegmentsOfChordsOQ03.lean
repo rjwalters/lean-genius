@@ -296,10 +296,8 @@ theorem collinear_of_collinearityDet_eq_zero
     · -- both coordinates agree: `P₂ = P₁`, direction `P₃ - P₁`
       have h21 : P₂ = P₁ := by
         apply PiLp.ext
-        intro i
-        fin_cases i
-        · exact sub_eq_zero.mp hx
-        · exact sub_eq_zero.mp hy
+        rw [Fin.forall_fin_two]
+        exact ⟨sub_eq_zero.mp hx, sub_eq_zero.mp hy⟩
       refine ⟨P₃ - P₁, ?_⟩
       intro p hp
       simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
@@ -311,36 +309,44 @@ theorem collinear_of_collinearityDet_eq_zero
       refine ⟨P₂ - P₁, ?_⟩
       intro p hp
       simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
-      rcases hp with rfl | rfl | rfl
+      rcases hp with rfl | rfl | hpe
       · exact ⟨0, by simp⟩
       · exact ⟨1, by simp [vadd_eq_add]⟩
-      · refine ⟨(P₃ 1 - P₁ 1) / (P₂ 1 - P₁ 1), ?_⟩
+      · rw [hpe]
+        refine ⟨(P₃ 1 - P₁ 1) / (P₂ 1 - P₁ 1), ?_⟩
         apply PiLp.ext
-        intro i
-        simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
-          smul_eq_mul]
-        fin_cases i
+        rw [Fin.forall_fin_two]
+        refine ⟨?_, ?_⟩
         · -- the `x`-coordinate needs the vanishing determinant
+          simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+            smul_eq_mul]
           field_simp [hy]
           first
           | linear_combination h'
           | linear_combination -h'
-        · field_simp [hy]
+        · simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+            smul_eq_mul]
+          field_simp [hy]
+          try ring
   · -- `P₂ 0 ≠ P₁ 0`: parametrise `P₃` by its `x`-coordinate
     refine ⟨P₂ - P₁, ?_⟩
     intro p hp
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hp
-    rcases hp with rfl | rfl | rfl
+    rcases hp with rfl | rfl | hpe
     · exact ⟨0, by simp⟩
     · exact ⟨1, by simp [vadd_eq_add]⟩
-    · refine ⟨(P₃ 0 - P₁ 0) / (P₂ 0 - P₁ 0), ?_⟩
+    · rw [hpe]
+      refine ⟨(P₃ 0 - P₁ 0) / (P₂ 0 - P₁ 0), ?_⟩
       apply PiLp.ext
-      intro i
-      simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
-        smul_eq_mul]
-      fin_cases i
-      · field_simp [hx]
+      rw [Fin.forall_fin_two]
+      refine ⟨?_, ?_⟩
+      · simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+          smul_eq_mul]
+        field_simp [hx]
+        try ring
       · -- the `y`-coordinate needs the vanishing determinant
+        simp only [vadd_eq_add, PiLp.add_apply, PiLp.smul_apply, PiLp.sub_apply,
+          smul_eq_mul]
         field_simp [hx]
         first
         | linear_combination h'
@@ -366,7 +372,9 @@ circumcenter; the common radius `r = ‖P₁ - O‖` is positive because `r = 0`
 would force `P₂ = P₁` and hence a vanishing collinearity determinant. -/
 
 /-- Core Cramer computation, pure coordinates: the explicit circumcenter
-equalises the three squared distances. -/
+equalises the three squared distances. (`maxRecDepth` raised for the
+`field_simp` pass over the explicit quotients.) -/
+set_option maxRecDepth 8192 in
 private lemma circumcenter_spec
     (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ)
     (hd : (x₂ - x₁) * (y₃ - y₁) - (x₃ - x₁) * (y₂ - y₁) ≠ 0) :
