@@ -80,7 +80,8 @@
       "**The parent's hard case was never about Bernoulli.** It used only $|1+a| \\le 1$ to trap the power and the line's negativity to escape — facts that survive replacing $1+a$ by an arbitrary magnitude-$\\le 1$ base.",
       "**Boundedness, not monotonicity, drives the escape.** A power of a magnitude-$\\le 1$ base need not be monotone (it can oscillate), but it is confined to $[-1,1]$; a sloped line, being unbounded, must eventually leave that band, and that suffices.",
       "**The escape has an explicit Archimedean rate.** $(b+1)/(-s)$ is the exact crossover for a negative-slope line, made into a natural-number threshold by `exists_nat_gt` — turning the qualitative \"eventually\" into a usable bound.",
-      "**Dropping the base's sign is the real generalization.** The induction underlying the classical $a > -1$ proof needs $1 + a > 0$; the trap-and-escape engine needs nothing of the kind, so it reaches oscillating bases the induction cannot."
+      "**Dropping the base's sign is the real generalization.** The induction underlying the classical $a > -1$ proof needs $1 + a > 0$; the trap-and-escape engine needs nothing of the kind, so it reaches oscillating bases the induction cannot.",
+      "**The Bernoulli corollary sidesteps the Archimedean machinery entirely.** `one_add_mul_lt_pow_neg` calls only the pointwise engine `lt_pow_of_lt_neg_one`, not the asymptotic `eventually_line_lt_pow` — because the range hypothesis $-2 \\le a \\le -1$ already pins a uniform closed-form threshold ($n \\ge 3$ gives $n\\cdot a \\le 3a \\le -3$) in one `linarith` step, avoiding the `exists_nat_gt` existential a truly slope-agnostic line would need."
     ],
     "prerequisites": [
       "The identity |xⁿ| = |x|ⁿ and the bound aⁿ ≤ 1 for 0 ≤ a ≤ 1",
