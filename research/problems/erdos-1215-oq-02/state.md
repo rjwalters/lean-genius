@@ -4,7 +4,85 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 9
+**Iteration**: 10 (OQ12 PREP — per-petal connectivity design locked, ACT-ready)
+
+## Iter 10 — OQ12 PREP: exact two-path-component structure (researcher-2, 2026-07-24, doc-only)
+
+Design for the next ACT (`CyclotomicPolynomialsOQ02OQ12.lean`): upgrade OQ11's
+disconnection to the EXACT component count — each Cassini petal is
+path-connected (star-shaped about its focus), so `{|(z−a)(z−b)| < C}` has
+exactly two path-components in the separated regime `4C < ‖a−b‖²`.
+
+### Core mathematical content (fully worked, sympy-verified this session)
+
+**Ray monotonicity / star-shapedness.** For `w := z − a`, `c := b − a`,
+`W := ‖w‖`, `D := ‖c‖`, `x := (w * conj c).re`, and `s ∈ [0, 1]` with
+`2W ≤ D`, the Cassini product does not increase toward the focus:
+`‖s•w‖·‖s•w − c‖ ≤ ‖w‖·‖w − c‖`. Squared form is polynomial; certificate:
+
+```
+W²(W²−2x+D²) − s²W²(s²W²−2sx+D²) = W²·[G + 2(1−s³)(WD − x)]   (decomposition)
+G := (1−s⁴)W² − 2WD(1−s³) + (1−s²)D²
+   = (1−s)·(D − W(1+s))·(D(1+s) − W(1+s²))                     (factorization)
+```
+
+All three `G`-factors and `(1−s³)`, `(WD − x)` are ≥ 0 given `0 ≤ s ≤ 1`,
+`2W ≤ D`, Cauchy–Schwarz `x ≤ WD` — so `nlinarith` with product hints
+`mul_nonneg (mul_nonneg h1ms hf1) hf2` and `mul_nonneg h1ms3 hWDx` should
+close the squared inequality. Factor positivity: `D − W(1+s) ≥ D − 2W ≥ 0`;
+`D(1+s) − W(1+s²) ≥ D − 2W ≥ 0` (`W(1+s²) ≤ 2W`, `D ≤ D(1+s)`).
+
+### Lean target statements (new leaf `CyclotomicPolynomialsOQ02OQ12.lean`)
+
+1. `cassini_segment_le {a b z : ℂ} (h : 2*‖z−a‖ ≤ ‖b−a‖) {s : ℝ}
+   (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : ‖(s•(z−a)) * (a + s•(z−a) − b)‖ ≤
+   ‖(z−a)*(z−b)‖` — via the certificate. Note `a + s•(z−a) − b =
+   s•(z−a) − (b−a)` by `ring_nf`; `‖s•w‖ = s*W` by `norm_smul` +
+   `Real.norm_of_nonneg`.
+2. `starConvex_petal` : `StarConvex ℝ a ({z | ‖(z−a)*(z−b)‖ < C} ∩
+   Metric.ball a (Real.sqrt C))` under `4C < ‖a−b‖²` — segment point stays
+   in the ball (`sW ≤ W < √C`) and under the level (`cassini_segment_le`
+   with `2W < 2√C = √(4C) ≤ D`).
+3. `isPathConnected_petal` — from 2 (route A: `StarConvex.isPathConnected`
+   if present in v4.31; route B fallback: explicit `JoinedIn` via the
+   segment path `t ↦ a + t•(z−a)`, continuous affine).
+4. `quadratic_lemniscate_two_path_components {a b C} (hC : 0 < C)
+   (hsep : 4C < ‖a−b‖²) : (∀ z ∈ S, JoinedIn S z a ∨ JoinedIn S z b) ∧
+   ¬ JoinedIn S a b` for `S = {z | ‖(z−a)(z−b)‖ < C}` — cover by OQ11
+   `quadratic_lemniscate_subset_union`; per-petal `JoinedIn` from 3 via
+   `JoinedIn.mono` (petal ⊆ S); negative half from OQ11
+   `sqrt_balls_disjoint` applied to the preconnected range of a putative
+   path (mirror of `not_isPreconnected_quadratic_lemniscate`'s cover
+   argument). b-petal case = a-petal lemma with foci swapped
+   (`mul_comm` inside the norm; `norm_sub_rev` for `‖b−a‖ = ‖a−b‖`).
+5. Specializations n = 3, 4, 6 mirroring OQ11's sections (foci
+   `omega3/omega3'`, `I/−I`, `zeta6/zeta6'`; thresholds `C < 3/4`, `< 1`,
+   `< 3/4`): exactly two path-components sub-threshold.
+
+### v4.31 name-risk list (probe at ACT)
+
+- normSq ↔ norm² bridge: `Complex.sq_abs` / `Complex.normSq_eq_abs` /
+  possibly `Complex.normSq_eq_norm_sq`; expansions `Complex.normSq_sub`,
+  `Complex.normSq_mul`, `Complex.normSq_ofReal`; `Complex.real_smul`.
+- Cauchy–Schwarz step: `Complex.abs_re_le_abs` (may be `…_le_norm`);
+  name-safe fallback: `x² ≤ normSq w * normSq c` from `Complex.normSq_apply`
+  + `sq_nonneg (…).im`, then `x ≤ WD` via `abs_le_abs` on square roots, or
+  feed the squared form to nlinarith.
+- A ≤ B from A² ≤ B² (A,B ≥ 0): avoid `pow_le_pow_iff_left` drift — use
+  `nlinarith [norm_nonneg …, sq_nonneg (A+B)]`.
+- `StarConvex.isPathConnected` existence; `JoinedIn.mono`;
+  `isConnected_range γ.continuous` for the path-range cover argument.
+- Known v4.31: `push_neg` → `push Not at h`; `Set.notMem_empty`.
+
+### Why this rung (and not others)
+
+- Option (a) sharpness (connectivity for `C ≥ (‖a−b‖/2)²`) needs a
+  through-the-neck path construction — genuinely harder, no certificate.
+- Option (c) quartic φ(n)=4 (n=5,8,10,12) needs a 4-focus cover +
+  4-ball disjointness regime — natural AFTER the exact-count template
+  exists at 2 foci.
+- The genuine open driver (C > 1 labyrinth / path-length ≤ C·n) remains
+  blocked ("materially new mechanism required").
 
 ## Current Focus
 Component topology of the lemniscate. Iter 9 (OQ02OQ11) delivered the first

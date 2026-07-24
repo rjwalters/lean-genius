@@ -29,7 +29,7 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 2,
+    "iteration": 10,
     "focus": "Session 2026-07-24 (researcher-3, OQ11): first component-topology result — quadratic cyclotomic lemniscates (n=3,4,6, the complete phi(n)=2 case) are disconnected for small C via a general Cassini-oval criterion; cyclotomic_four (X^2+1) proved as a Mathlib-gap byproduct.",
     "blockers": [
       {
@@ -77,7 +77,8 @@
       "v4.31: push_neg is deprecated in favor of push Not at h.",
       "FIRST DISCONNECTION in the family (OQ11): n=3,4,6 are exactly the indices with phi(n)=2, so their lemniscates are Cassini ovals with foci at the two primitive roots. For 4C < |a-b|^2 the set {|z-a||z-b|<C} is covered by the two disjoint focal balls B(a,sqrt C), B(b,sqrt C) (else both factors >= sqrt C forces product >= C), each containing a focus (a root, where |Phi|=0<C) — IsPreconnected applied to this open cover yields a point of the empty intersection. Concretely: disconnected for C<3/4 (n=3,6; foci sqrt3 apart) and C<1 (n=4; foci 2 apart).",
       "The disconnection regime (C < 3/4 resp. 1) and the origin-interior regime (C > 1, OQ07) are disjoint — consistent with the classical Cassini threshold C = (|a-b|/2)^2 below which the oval splits into two petals. For n=1,2 (phi=1, exact disks, OQ01) the sets are always connected: disconnection first appears exactly at degree phi(n)=2, and OQ11 pins that regime.",
-      "v4.31 renames: Set.eq_empty_iff_forall_not_mem -> eq_empty_iff_forall_notMem, Set.not_mem_empty -> Set.notMem_empty. Also cyclotomic_expand_eq_cyclotomic is simp-tagged, so norm_num at h fully normalizes expand 2 Phi_2 to X^2+1 by itself."
+      "v4.31 renames: Set.eq_empty_iff_forall_not_mem -> eq_empty_iff_forall_notMem, Set.not_mem_empty -> Set.notMem_empty. Also cyclotomic_expand_eq_cyclotomic is simp-tagged, so norm_num at h fully normalizes expand 2 Phi_2 to X^2+1 by itself.",
+      "OQ12 PREP (2026-07-24): Cassini petal star-shapedness certificate sympy-verified — squared ray-monotonicity difference = W^2*[G + 2(1-s^3)(WD-x)] with G = (1-s)(D-W(1+s))(D(1+s)-W(1+s^2)); all factors nonneg for 0<=s<=1, 2W<=D, x<=WD (Cauchy-Schwarz). nlinarith product hints pre-computed. Petal path-connectivity => exactly two path-components of the quadratic lemniscate in the 4C<|a-b|^2 regime."
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
@@ -85,10 +86,9 @@
       "cyclotomic 4 has no explicit closed form in Mathlib (cyclotomic_one/_two/_three/_six exist, _four does not); proved locally in OQ11 via cyclotomic_expand_eq_cyclotomic."
     ],
     "nextSteps": [
-      "ASSESSMENT (researcher-2, 2026-07-09): the sharper-radius nextStep is a self-contained but substantial roots-product formalization, NOT a quick gap-fill. Concrete path: IsUnitCirclePolynomial P (P(0)=1, all roots ‖z‖=1) ⟹ |leadingCoeff|=1 (since |P(0)|=|lc|·∏|ζ|=|lc|=1) ⟹ over ℂ (alg-closed, splits) |P(z)|=∏|z−ζ| ≥ (|z|−1)^{deg P} for |z|≥1 (each |z−ζ|≥|z|−1 via norm_sub_norm_le / triangle) ⟹ {|P|<C} with |z|≥1 forces (|z|−1)^{deg}<C ⟹ |z|<1+C^{1/deg}. Needs Polynomial.roots multiset + eq_prod_roots_of_splits / prod_multiset_X_sub_C + Complex.norm product bound (~80-120 lines). R4's OQ-02 bounded-radius base file appears UNMERGED (not on origin/main; main Erdos1215Problem.lean is the 2-axiom Mac Lane parent only). Released without a forced marginal edit.",
-      "Sharpen the radius: true bound is |z| <= 1 + C^{1/phi(n)} from (|z|-1)^{phi(n)}<C; formalize this phi(n)-dependent tighter radius.",
-      "Toward the path-length bound: the sublevel set is compact, so path-length reduces to component geometry; formalize the number of connected components of {|Phi_n|=c}.",
-      "OQ11 delivered the n=3,4,6 disconnection half of the small-n geometry step. Natural follow-ups: (a) SHARPNESS — prove {|Phi_n|<C} connected (even path-connected/star-shaped petal union) for C >= (|a-b|/2)^2 resp. C>1, giving the exact Cassini threshold; (b) exact component COUNT two for the disconnected regime (needs per-petal connectivity, e.g. each petal star-shaped around its focus — false in general for Cassini? check); (c) phi(n)=4 quartic cases n=5,8,10,12 (4 foci, multi-petal)."
+      "OQ12 ACT: CyclotomicPolynomialsOQ02OQ12.lean per Iter-10 PREP in state.md — cassini_segment_le, starConvex_petal, isPathConnected_petal, quadratic_lemniscate_two_path_components, n=3/4/6 specializations (~200 LOC; v4.31 name-risk list in PREP).",
+      "After OQ12: option (c) quartic phi(n)=4 cases n=5,8,10,12 (4-focus cover template).",
+      "Blocked driver unchanged: C>1 labyrinth / path-length <= C*n (materially new mechanism required)."
     ],
     "markdown": "# Knowledge Base: erdos-1215-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is a restriction of Erdős #1215 to cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity. The parent problem was resolved negatively by Mac Lane (1953) using labyrinth polynomials; the question here is whether the rigid, symmetric placement of cyclotomic roots precludes such labyrinths and yields a polynomial-in-n path-length bound.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
