@@ -939,4 +939,237 @@ theorem legendreSym_two_eq_kronecker2 (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     exact absurd hcast.symm hcontra
   · rw [h1, h2]
 
+/- ### Section I: the odd-prime quadratic Gauss sum — `g_q² = χ_q(−1)·q`
+
+Sections G–H settled the conductor-8 character `χ₈ = (·/2)`: the concrete Gauss
+sum `τ(χ₈) = √8` over `ℂ`, and the ring-generic `τ_R` whose Frobenius
+covariance proved the second supplementary law `(2/p) = (p/2)`.  This section
+begins the promised odd-prime generalization (the file's remaining open
+question): for an odd prime `q`, the quadratic Gauss sum attached to the
+Legendre character `χ_q = quadraticChar (ZMod q)` and any nontrivial `q`-th
+root of unity `ζ` in any field `F`,
+
+    `g_q(ζ) = ∑_{a ∈ ZMod q} χ_q(a) · ζ^a`,
+
+satisfies the fundamental orthogonality identity `g_q(ζ)² = χ_q(−1) · q`.
+Unlike the conductor-8 case this cannot be settled by finite case-checking
+(`q` is arbitrary); the proof is the classical two-variable substitution
+`b = a·c`, which needs exactly two orthogonality inputs:
+
+* `∑_c χ_q(c) = 0` — the Legendre character is balanced
+  (`quadraticChar_sum_zero`), and
+* `∑_a ζ^{ak} = 0` for `k ≠ 0` — nontrivial root-of-unity modes vanish,
+  proved here by the shift trick `ζ·S = S` (no `geom_sum` needed).
+
+Combined with Frobenius covariance `g^p = χ_q(p)·g` in `GaloisField p k` (the
+odd-`q` analogue of `gaussSumK2_pow_char`) this identity yields full quadratic
+reciprocity with no appeal to `jacobiSym.quadratic_reciprocity`; that assembly
+is the remaining step of the programme. -/
+
+section GaussSumOddPrime
+
+variable {q : ℕ} [Fact q.Prime] {F : Type*} [Field F]
+
+omit [Fact q.Prime] in
+/-- Exponent folding: a `q`-th root of unity only sees exponents mod `q`. -/
+theorem pow_mod_of_pow_eq_one {ζ : F} (hζ : ζ ^ q = 1) (m : ℕ) :
+    ζ ^ m = ζ ^ (m % q) := by
+  conv_lhs => rw [← Nat.div_add_mod m q]
+  rw [pow_add, pow_mul, hζ, one_pow, one_mul]
+
+/-- Additivity of the exponential through `ZMod q`:
+`ζ^{(a+b).val} = ζ^{a.val} · ζ^{b.val}` whenever `ζ^q = 1`. -/
+theorem pow_val_add {ζ : F} (hζ : ζ ^ q = 1) (a b : ZMod q) :
+    ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val := by
+  rw [ZMod.val_add, ← pow_mod_of_pow_eq_one hζ, pow_add]
+
+/-- **Root-of-unity orthogonality, constant mode:** a nontrivial `q`-th root of
+unity sums to zero over `ZMod q`.  Shift trick: multiplying the sum by `ζ`
+permutes its terms (`a ↦ a + 1`), so `(ζ − 1)·S = 0`, and `ζ ≠ 1` forces
+`S = 0`. -/
+theorem sum_pow_val_eq_zero {ζ : F} (hζ : ζ ^ q = 1) (hζ1 : ζ ≠ 1) :
+    ∑ a : ZMod q, ζ ^ a.val = 0 := by
+  have hshift : ζ * ∑ a : ZMod q, ζ ^ a.val = ∑ a : ZMod q, ζ ^ a.val := by
+    rw [Finset.mul_sum]
+    calc ∑ a : ZMod q, ζ * ζ ^ a.val
+        = ∑ a : ZMod q, ζ ^ (a + 1).val := by
+          refine Finset.sum_congr rfl fun a _ => ?_
+          rw [pow_val_add hζ a 1, ZMod.val_one, pow_one, mul_comm]
+      _ = ∑ a : ZMod q, ζ ^ a.val :=
+          Fintype.sum_equiv (Equiv.addRight (1 : ZMod q)) _ _ fun a => rfl
+  have h0 : (ζ - 1) * ∑ a : ZMod q, ζ ^ a.val = 0 := by
+    rw [sub_mul, one_mul, hshift, sub_self]
+  rcases mul_eq_zero.mp h0 with h | h
+  · exact absurd (sub_eq_zero.mp h) hζ1
+  · exact h
+
+/-- **Root-of-unity orthogonality, all nonzero modes:** for `k ≠ 0` in `ZMod q`
+the twisted sum `∑_a ζ^{(a·k).val}` vanishes — the substitution `a ↦ a·k`
+permutes `ZMod q`. -/
+theorem sum_pow_val_mul_eq_zero {ζ : F} (hζ : ζ ^ q = 1) (hζ1 : ζ ≠ 1)
+    {k : ZMod q} (hk : k ≠ 0) :
+    ∑ a : ZMod q, ζ ^ (a * k).val = 0 := by
+  calc ∑ a : ZMod q, ζ ^ (a * k).val
+      = ∑ a : ZMod q, ζ ^ a.val :=
+        Fintype.sum_equiv (Equiv.mulRight₀ k hk) _ _ fun a => rfl
+    _ = 0 := sum_pow_val_eq_zero hζ hζ1
+
+/-- The odd-prime quadratic Gauss sum: `g_q(ζ) = ∑_{a ∈ ZMod q} χ_q(a)·ζ^a`
+with `χ_q = quadraticChar (ZMod q)` the Legendre character, over an arbitrary
+field `F` with a chosen `q`-th root of unity `ζ`.  The odd-prime analogue of
+`gaussSumK2`. -/
+def gaussSumLegendre (q : ℕ) [Fact q.Prime] (F : Type*) [Field F] (ζ : F) : F :=
+  ∑ a : ZMod q, ((quadraticChar (ZMod q) a : ℤ) : F) * ζ ^ a.val
+
+/-- **The fundamental Gauss-sum identity `g_q² = χ_q(−1)·q`** for an odd prime
+`q`, over any field `F` and any nontrivial `q`-th root of unity `ζ`.
+
+Proof (classical substitution): expand
+`g² = ∑_a ∑_b χ(a)χ(b) ζ^{a+b}`; the `a = 0` slice dies (`χ(0) = 0`); for
+`a ≠ 0` substitute `b = a·c`, so `χ(a)χ(ac) = χ(a)²χ(c) = χ(c)` and the sum
+becomes `∑_c χ(c) ∑_{a≠0} ζ^{a(1+c)}`.  The inner sum is `q − 1` at `c = −1`
+and `−1` otherwise (root-of-unity orthogonality), so the total is
+`χ(−1)(q−1) − ∑_{c≠−1} χ(c) = χ(−1)·q` by the balanced-character relation. -/
+theorem gaussSumLegendre_sq (hq2 : q ≠ 2) {ζ : F} (hζ : ζ ^ q = 1) (hζ1 : ζ ≠ 1) :
+    gaussSumLegendre q F ζ ^ 2 = ((quadraticChar (ZMod q) (-1) : ℤ) : F) * (q : F) := by
+  have hchar : ringChar (ZMod q) ≠ 2 := by
+    rw [ZMod.ringChar_zmod_n]; exact hq2
+  -- the character with values in `F`, and its three working properties
+  have hχ_zero : ((quadraticChar (ZMod q) (0 : ZMod q) : ℤ) : F) = 0 := by
+    rw [quadraticChar_zero, Int.cast_zero]
+  have hχ_sq : ∀ a : ZMod q, a ≠ 0 →
+      ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) a : ℤ) : F) = 1 := by
+    intro a ha
+    have h : (quadraticChar (ZMod q) a) ^ 2 = 1 := quadraticChar_sq_one ha
+    calc ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) a : ℤ) : F)
+        = (((quadraticChar (ZMod q) a) ^ 2 : ℤ) : F) := by push_cast; ring
+      _ = ((1 : ℤ) : F) := by rw [h]
+      _ = 1 := Int.cast_one
+  have hχ_sum : ∑ c : ZMod q, ((quadraticChar (ZMod q) c : ℤ) : F) = 0 := by
+    rw [← Int.cast_sum, quadraticChar_sum_zero hchar, Int.cast_zero]
+  -- Step 1: expand the square and merge the exponentials.
+  have hsq : gaussSumLegendre q F ζ ^ 2
+      = ∑ a : ZMod q, ∑ b : ZMod q,
+          ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) b : ℤ) : F)
+            * ζ ^ (a + b).val := by
+    rw [sq, gaussSumLegendre, Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+    rw [pow_val_add hζ a b]
+    ring
+  -- Step 2: kill the `a = 0` slice, and substitute `b = a·c` on each `a ≠ 0` slice.
+  have hslice : ∀ a : ZMod q, a ≠ 0 →
+      ∑ b : ZMod q,
+          ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) b : ℤ) : F)
+            * ζ ^ (a + b).val
+        = ∑ c : ZMod q, ((quadraticChar (ZMod q) c : ℤ) : F) * ζ ^ (a * (1 + c)).val := by
+    intro a ha
+    calc ∑ b : ZMod q,
+            ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) b : ℤ) : F)
+              * ζ ^ (a + b).val
+        = ∑ c : ZMod q,
+            ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) (a * c) : ℤ) : F)
+              * ζ ^ (a + a * c).val :=
+          (Fintype.sum_equiv (Equiv.mulLeft₀ a ha) _ _ fun c => rfl).symm
+      _ = ∑ c : ZMod q, ((quadraticChar (ZMod q) c : ℤ) : F) * ζ ^ (a * (1 + c)).val := by
+          refine Finset.sum_congr rfl fun c _ => ?_
+          have hmul : ((quadraticChar (ZMod q) (a * c) : ℤ) : F)
+              = ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) c : ℤ) : F) := by
+            rw [map_mul]; push_cast; ring
+          have harg : a + a * c = a * (1 + c) := by ring
+          rw [hmul, harg, ← mul_assoc, hχ_sq a ha, one_mul]
+  -- Step 3: the inner `a`-sum over `univ.erase 0`, for each fixed `c`.
+  have hinner : ∀ c : ZMod q,
+      ∑ a ∈ Finset.univ.erase (0 : ZMod q), ζ ^ (a * (1 + c)).val
+        = (∑ a : ZMod q, ζ ^ (a * (1 + c)).val) - 1 := by
+    intro c
+    have h := Finset.sum_erase_add Finset.univ (fun a : ZMod q => ζ ^ (a * (1 + c)).val)
+      (Finset.mem_univ (0 : ZMod q))
+    simp only [zero_mul, ZMod.val_zero, pow_zero] at h
+    exact eq_sub_of_add_eq h
+  -- Step 4: the full twisted sums — `0` off the peak, `q` at the peak `c = −1`.
+  have hT_ne : ∀ c : ZMod q, c ≠ -1 → ∑ a : ZMod q, ζ ^ (a * (1 + c)).val = 0 := by
+    intro c hc
+    refine sum_pow_val_mul_eq_zero hζ hζ1 ?_
+    intro h0
+    exact hc (by linear_combination h0)
+  have hT_neg_one : ∑ a : ZMod q, ζ ^ (a * (1 + (-1 : ZMod q))).val = (q : F) := by
+    have hzero : (1 : ZMod q) + (-1) = 0 := by ring
+    calc ∑ a : ZMod q, ζ ^ (a * (1 + (-1 : ZMod q))).val
+        = ∑ _a : ZMod q, (1 : F) := by
+          refine Finset.sum_congr rfl fun a _ => ?_
+          rw [hzero, mul_zero, ZMod.val_zero, pow_zero]
+      _ = (Fintype.card (ZMod q) : F) := by
+          rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]
+      _ = (q : F) := by rw [ZMod.card]
+  -- Step 5: assemble.
+  calc gaussSumLegendre q F ζ ^ 2
+      = ∑ a : ZMod q, ∑ b : ZMod q,
+          ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) b : ℤ) : F)
+            * ζ ^ (a + b).val := hsq
+    _ = ∑ a ∈ Finset.univ.erase (0 : ZMod q), (∑ b : ZMod q,
+          ((quadraticChar (ZMod q) a : ℤ) : F) * ((quadraticChar (ZMod q) b : ℤ) : F)
+            * ζ ^ (a + b).val)
+        + ∑ b : ZMod q,
+            ((quadraticChar (ZMod q) (0 : ZMod q) : ℤ) : F)
+              * ((quadraticChar (ZMod q) b : ℤ) : F) * ζ ^ ((0 : ZMod q) + b).val :=
+        (Finset.sum_erase_add Finset.univ _ (Finset.mem_univ (0 : ZMod q))).symm
+    _ = ∑ a ∈ Finset.univ.erase (0 : ZMod q), (∑ c : ZMod q,
+          ((quadraticChar (ZMod q) c : ℤ) : F) * ζ ^ (a * (1 + c)).val) + 0 := by
+        congr 1
+        · exact Finset.sum_congr rfl fun a ha => hslice a (Finset.ne_of_mem_erase ha)
+        · exact Finset.sum_eq_zero fun b _ => by rw [hχ_zero, zero_mul, zero_mul]
+    _ = ∑ c : ZMod q, ∑ a ∈ Finset.univ.erase (0 : ZMod q),
+          ((quadraticChar (ZMod q) c : ℤ) : F) * ζ ^ (a * (1 + c)).val := by
+        rw [add_zero, Finset.sum_comm]
+    _ = ∑ c : ZMod q, ((quadraticChar (ZMod q) c : ℤ) : F)
+          * ((∑ a : ZMod q, ζ ^ (a * (1 + c)).val) - 1) := by
+        refine Finset.sum_congr rfl fun c _ => ?_
+        rw [← Finset.mul_sum, hinner c]
+    _ = ∑ c : ZMod q, (((quadraticChar (ZMod q) c : ℤ) : F)
+          * (∑ a : ZMod q, ζ ^ (a * (1 + c)).val))
+        - ∑ c : ZMod q, ((quadraticChar (ZMod q) c : ℤ) : F) := by
+        rw [← Finset.sum_sub_distrib]
+        refine Finset.sum_congr rfl fun c _ => ?_
+        ring
+    _ = ∑ c : ZMod q, (((quadraticChar (ZMod q) c : ℤ) : F)
+          * (∑ a : ZMod q, ζ ^ (a * (1 + c)).val)) := by
+        rw [hχ_sum, sub_zero]
+    _ = ((quadraticChar (ZMod q) (-1) : ℤ) : F) * (q : F) := by
+        rw [Finset.sum_eq_single (-1 : ZMod q)
+          (fun c _ hc => by rw [hT_ne c hc, mul_zero])
+          (fun habs => absurd (Finset.mem_univ _) habs)]
+        rw [hT_neg_one]
+
+/-- The Gauss-sum identity in Legendre-symbol form:
+`g_q² = (−1 / q)·q` (`legendreSym q (−1)` is the first-supplement value). -/
+theorem gaussSumLegendre_sq_legendreSym (hq2 : q ≠ 2) {ζ : F} (hζ : ζ ^ q = 1)
+    (hζ1 : ζ ≠ 1) :
+    gaussSumLegendre q F ζ ^ 2 = ((legendreSym q (-1) : ℤ) : F) * (q : F) := by
+  have h : legendreSym q (-1) = quadraticChar (ZMod q) (-1 : ZMod q) := by
+    simp [legendreSym]
+  rw [gaussSumLegendre_sq hq2 hζ hζ1, h]
+
+/-- **Nonvanishing of the Gauss sum** whenever `q ≠ 0` in `F` (e.g. in
+characteristic `p ≠ q` — the situation of the Frobenius-descent argument):
+from `g² = χ(−1)·q` and `χ(−1)² = 1`, `g = 0` would force `q = 0` in `F`. -/
+theorem gaussSumLegendre_ne_zero (hq2 : q ≠ 2) {ζ : F} (hζ : ζ ^ q = 1)
+    (hζ1 : ζ ≠ 1) (hqF : (q : F) ≠ 0) :
+    gaussSumLegendre q F ζ ≠ 0 := by
+  intro h
+  have hsq := gaussSumLegendre_sq hq2 hζ hζ1
+  rw [h, zero_pow (two_ne_zero)] at hsq
+  have hneg : (-1 : ZMod q) ≠ 0 := neg_ne_zero.mpr one_ne_zero
+  have h1 : (quadraticChar (ZMod q) (-1 : ZMod q)) ^ 2 = 1 := quadraticChar_sq_one hneg
+  have hF1 : ((quadraticChar (ZMod q) (-1 : ZMod q) : ℤ) : F) ^ 2 = 1 := by
+    rw [← Int.cast_pow, h1, Int.cast_one]
+  apply hqF
+  calc (q : F) = 1 * (q : F) := (one_mul _).symm
+    _ = ((quadraticChar (ZMod q) (-1 : ZMod q) : ℤ) : F) ^ 2 * (q : F) := by rw [hF1]
+    _ = ((quadraticChar (ZMod q) (-1 : ZMod q) : ℤ) : F)
+          * (((quadraticChar (ZMod q) (-1 : ZMod q) : ℤ) : F) * (q : F)) := by ring
+    _ = ((quadraticChar (ZMod q) (-1 : ZMod q) : ℤ) : F) * 0 := by rw [← hsq]
+    _ = 0 := mul_zero _
+
+end GaussSumOddPrime
+
 end KroneckerSymbol
