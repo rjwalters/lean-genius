@@ -216,3 +216,79 @@ oq-01 ACT-2 to reuse it rather than re-prove it.
   answer; not formalizable without a comparison-cost model.
 - `erdos_szekeres_tight_axiom` (the tightness construction) — a separate OQ, as
   oq-01 also notes.
+
+---
+
+## Session 2026-07-24 (researcher-1, S5) — UNBLOCKED: ACT milestone 1 done + realized-witness layer (half of milestone 2)
+
+**Mode**: FRESH (claim-random served it; the 2026-06-13 block was Docker-transient
+and Docker is back)
+**Outcome**: progress (first Lean artifact: `proofs/Proofs/ErdosSzekeresOQ02.lean`,
+319 LOC, 0 sorry / 0 axiom, Docker-verified 8577 jobs)
+
+### What I Did
+
+- Added the missing "Must prove exactly / does not count" pinning to problem.md
+  (5 pinned targets; near-misses include noncomputable witness extraction and
+  `incDP ≤ maxIncLen` alone posing as full correctness).
+- New file `ErdosSzekeresOQ02.lean` (imports `Proofs.ErdosSzekeres`, uses only
+  its definitions — no parent axiom touched; everything here is axiom-free):
+  - `incDP` — COMPUTABLE DP (well-founded recursion on `i.val`,
+    `Finset.attach.sup` over `preds f i = filter (j < i ∧ f j < f i)`), with
+    attach-free recurrence `incDP_eq`, bounds `one_le_incDP` and
+    `incDP_le_index_succ : incDP f i ≤ i.val + 1`.
+  - `ExactIncEnd` — strengthened ending-at invariant (last position EXACTLY
+    `i`). Key discovery: the parent's `HasIncreasingEndingAt` disjunction
+    permits the last position to fall short of `i`, which is TOO WEAK to
+    extend chains (no value info at the junction). The exact invariant fixes
+    this; `ExactIncEnd.extend` does the `Fin.snoc` one-step extension and
+    `ExactIncEnd.hasIncreasingEndingAt` downgrades to the parent predicate.
+  - `exactIncEnd_incDP` — the DP value is realized (WF recursion mirroring the
+    DP: singleton on empty preds, else extend the sup-attaining predecessor via
+    `Finset.exists_mem_eq_sup`). Corollaries: `hasIncreasingEndingAt_incDP`,
+    `exists_increasingSubseq_incDP : Nonempty (IncreasingSubseq f (incDP f i))`,
+    and `incDP_le_maxIncLen` (soundness against the noncomputable spec via
+    `Nat.le_findGreatest` — the constructive HALF of milestone 2, obtained
+    WITHOUT oq-01's extension lemma).
+  - Cost layer: `scanned i = Iio i`, `card_scanned = i.val`,
+    `preds_subset_scanned`, `incDPcost n = ∑ |Iio i|` with closed forms
+    `incDPcost_closed : incDPcost n = n(n-1)/2` and division-free
+    `incDPcost_two_mul`. Milestone 1 complete, semantically grounded (cost is
+    defined as scanned-pair count, not a bare formula).
+  - `#eval` smoke tests in-file: DP table [1,1,2,1,3,4,2,4] on [3,1,4,1,5,9,2,6],
+    cost 28 = C(8,2). The parent's `maxIncLen` admits no such evaluation —
+    that contrast is the point of the OQ.
+
+### Lean techniques that worked first-try (whole file elaborated clean on host scratch)
+
+- WF recursion over `Fin` via `termination_by i.val` + `decreasing_by exact
+  (mem_preds.mp j.2).1` (Fin.lt is defeq to val-lt; no cast needed).
+- Recursive THEOREMS with the same termination measure (`incDP_le_index_succ`,
+  `exactIncEnd_incDP`) — cleaner than `Nat.strong_induction_on` gymnastics.
+- `Fin.snoc` case analysis via `Fin.eq_castSucc_or_eq_last` + `Fin.snoc_castSucc`
+  / `Fin.snoc_last` / `Fin.comp_snoc` / `Fin.castSucc_lt_castSucc_iff`; no
+  ready-made `StrictMono (Fin.snoc ...)` iff-lemma needed (manual 10-liner).
+- Host pre-validation: full file inlining parent defs against bare Mathlib via
+  `lake env lean` (~3 min) before any Docker cycle — zero Docker iterations.
+
+### Remaining gaps (exact statements)
+
+- Milestone 2 (other half): `maxIncLen f i ≤ incDP f i` — optimal substructure:
+  any `HasIncreasingEndingAt f i len` witness with `len ≥ 2` yields
+  `HasIncreasingEndingAt f j (len-1)` for some `j ∈ preds f i` (strip the last
+  element; the stripped chain ends exactly at its own last position — the
+  ExactIncEnd trick applies on the OTHER side here, since the parent
+  disjunction's weak branch must be handled by downward induction on len).
+  Does NOT actually need oq-01's `maxIncLen_lt_of_lt`.
+- Milestone 3: computable `incWitness f i : IncreasingSubseq f (incDP f i)` —
+  design decided: `(preds f i).toList.argmax (incDP f)` for the predecessor
+  choice (List.argmax is computable; lemmas `List.argmax_mem`,
+  `List.le_of_mem_argmax` connect it to the sup), backtrack to build the
+  position map as data. The `Nonempty` version is proved; this milestone
+  upgrades it to a program.
+
+### Files Modified
+
+- `proofs/Proofs/ErdosSzekeresOQ02.lean` (NEW, 319 LOC)
+- `research/problems/erdos-szekeres-oq-02/problem.md` (pinning section)
+- `research/problems/erdos-szekeres-oq-02/state.md`, tracker JSON (unblocked)
