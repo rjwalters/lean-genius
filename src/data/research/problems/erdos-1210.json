@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-12",
-    "iteration": 2,
-    "focus": "SOUNDNESS FIX (researcher-2, 2026-06-12): the file declared `axiom erdos_1210` (the conjectured inequality) AND proved `erdos_1210_literal_counterexample` (n=5, A={4}: A-sum 1 > prime-sum 5/6) — i.e. the axiom was provably false, making the development inconsistent (axiom + counterexample ⊢ False). Demoted the axiom to a non-asserting `def Erdos1210Statement : Prop`, ADDED the verified refutation `theorem not_Erdos1210Statement : ¬ Erdos1210Statement` (via the counterexample, with Nat.cast_ofNat + primesBelow_five_sum normalization), and removed the two consequence theorems that relied on the false axiom (erdos_1210_bound, erdos_1210_singleton_bounded). Kept genuine results (prime properties, erdos_1210_empty, erdos_1210_prime_singleton — fixed its unused `hn`->`_hn`). Docker green: 0 errors/warnings/sorries/AXIOMS. File 246->244 LOC, 14 theorems + 4 defs. meta.json: status axiomatized->verified, badge axiom->verified, axiomCount 1->0, and misleading prose (proofStrategy, the false 'via the axiom' keyInsight, conclusion) corrected.",
+    "since": "2026-07-24",
+    "iteration": 5,
+    "focus": "S5 COMPLETE (researcher-3, 2026-07-24): (1) discovered+repaired a stale-PR clobber — the S3 corrected [Er80] O(1) axiomatization (#22965, merged 06-13) had been silently reverted on 06-30 by the stale sibling #22935; restored append-only (primeReciprocalSum, axiom erdos_1210, n=5 consistency theorems). (2) Shipped the S5 regime-(1) unconditional baseline: sum_reciprocal_le_harmonic (∑ 1/(n-a) ≤ H_{n-1}, injective reindex) and erdos_1210_trivial_upper_bound (≤ 1 + log(n-1), via harmonic_le_one_add_log). File 244→392 lines, 14→21 thm, 4→5 def, 0→1 axiom (the open conjecture), 0 sorries. meta.json flipped verified/mathlib → axiomatized/axiom with assumptions populated. Docker-verified (Lean v4.31.0). Remaining: log log n RHS needs Mertens' second theorem (Mathlib gap).",
     "blockers": [],
-    "nextAction": "Recover the INTENDED Erdős-1210 hypotheses from the primary sources [Er77c, Er80] (the transcribed form is false; likely missing a constraint such as A ⊆ (n/2, n) or a > √n, or a different weight like 1/a). Once recovered, state the corrected proposition and prove or disprove it. Until then the slug is sound and fully verified (refutes the literal form).",
+    "nextAction": "Long-horizon only: formalize Mertens' second theorem in Mathlib (or await it) to state the asymptotic RHS; meanwhile the elementary vein is exhausted (harmonic baseline is the best coprimality-free bound).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -84,10 +84,10 @@
     {
       "path": "Proofs/Erdos1210Problem.lean",
       "filename": "Erdos1210Problem.lean",
-      "lineCount": 245,
-      "theoremCount": 14,
-      "axiomCount": 0,
-      "defCount": 4,
+      "lineCount": 392,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1210Problem.lean"

@@ -3,27 +3,34 @@
 
 Source: https://erdosproblems.com/1210
 
-## Problem Statement
+## Problem Statement (corrected form, per [Er80])
 
 Let A ⊆ [1,n) be a set of integers such that gcd(a,b) = 1 for all distinct
 a,b ∈ A (pairwise coprime). Is it true that
 
-  ∑_{a ∈ A} 1/(n - a) ≤ ∑_{p prime, p < n} 1/(n - p)?
+  ∑_{a ∈ A} 1/(n - a) ≤ ∑_{p prime, p < n} 1/p + O(1)?
 
-In other words: among all pairwise coprime subsets of {1,...,n-1}, does the
-set of primes below n maximize the weighted harmonic sum ∑ 1/(n-a)?
+The RHS is the Mertens sum (~ log log n). Erdős noted in [Er80] that the
+statement in [Er77c] was "not quite correct"; the O(1) term is essential.
 
-## Status: OPEN
+## Status: OPEN (axiomatized), with two machine-checked side results
 
-This is an open conjecture of Erdős. The inequality asserts that primes are
-"optimal" for this particular density measure among pairwise coprime sets.
+1. **The literal transcription is FALSE.** The mis-transcribed form (RHS
+   ∑_{p<n} 1/(n-p), no O(1) term) is refuted by n = 5, A = {4}
+   (`not_Erdos1210Statement`). The corrected form is consistent with this
+   witness for any C ≥ 1/6 (`corrected_statement_consistent_at_five`).
+2. **Unconditional harmonic baseline.** For ANY A ⊆ [1,n) (coprimality not
+   needed), ∑_{a∈A} 1/(n-a) ≤ H_{n-1} ≤ 1 + log(n-1)
+   (`erdos_1210_trivial_upper_bound`). The conjectured strengthening to
+   log log n + O(1) is where coprimality must do work, via a sieve/Mertens
+   comparison unavailable in current Mathlib (no Mertens' second theorem).
 
 ## Key Observations
 
 1. Primes < n are pairwise coprime, so they form a valid candidate set A.
-2. The sum ∑_{p<n} 1/(n-p) is a finite positive quantity for n ≥ 3.
-3. Any pairwise coprime set A has at most one even element.
-4. The inequality is tight when A = {primes < n}.
+2. Any pairwise coprime set A has at most one even element.
+3. The map a ↦ n - a is injective on A with image in [1, n-1] — the source
+   of the unconditional harmonic bound.
 
 ## References
 
@@ -242,6 +249,90 @@ theorem not_Erdos1210Statement : ¬ Erdos1210Statement := by
   simp only [Nat.cast_ofNat] at hle
   rw [primesBelow_five_sum] at hle
   norm_num at hle
+
+/-
+## The Corrected Conjecture ([Er80]) — restored
+
+The section above refutes the *literal transcription*. The genuine Erdős
+conjecture (recovered from erdosproblems.com/1210 and Erdős's own correction
+note [Er80] in the 2026-06-13 S3 iteration, PR #22965) reads:
+
+> Let A ⊆ [1,n) be pairwise coprime. Is it true that
+>   ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/p + O(1)?
+
+Two corrections vs. the transcription refuted above:
+1. the RHS is the Mertens sum ∑_{p<n} **1/p** (~ log log n), not ∑ 1/(n-p);
+2. there is an additive **O(1)** term — the n = 5 counterexample above imposes
+   only C ≥ 1/6 and does not contradict this form.
+
+This section was first landed in PR #22965 (2026-06-13) and was accidentally
+reverted on 2026-06-30 when the stale sibling PR #22935 (branched before
+#22965 merged) overwrote the file with its older refutation-only version.
+Restored 2026-07-24 (S5 iteration) alongside the new unconditional bound
+below. The axiom `erdos_1210` is the honest formalization of the open
+conjecture; it is consistent with the refutation above (see
+`corrected_statement_consistent_at_five`).
+-/
+
+/-- The corrected right-hand side: the sum of prime reciprocals ∑_{p<n} 1/p
+    (the Mertens sum ~ log log n). NOTE: this is 1/p, **not** 1/(n-p). -/
+noncomputable def primeReciprocalSum (n : ℕ) : ℝ :=
+  ∑ p ∈ primesBelow n, (1 : ℝ) / (p : ℝ)
+
+/-- Each prime reciprocal 1/p is nonneg, so the prime-reciprocal sum is nonneg. -/
+theorem primeReciprocalSum_nonneg (n : ℕ) : 0 ≤ primeReciprocalSum n := by
+  unfold primeReciprocalSum
+  apply Finset.sum_nonneg
+  intro p _
+  positivity
+
+/-- The prime-reciprocal sum is positive for n ≥ 3 (it contains the term 1/2). -/
+theorem primeReciprocalSum_pos {n : ℕ} (hn : 3 ≤ n) : 0 < primeReciprocalSum n := by
+  unfold primeReciprocalSum
+  refine Finset.sum_pos ?_ (primesBelow_nonempty hn)
+  intro p hp
+  simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
+  exact div_pos one_pos (by exact_mod_cast hp.2.pos)
+
+/-- **Erdős Problem 1210 (Open, corrected form per [Er80])**. There is an
+    absolute constant C such that for every n ≥ 3 and every pairwise coprime
+    A ⊆ {1,…,n-1},
+
+      ∑_{a ∈ A} 1/(n-a) ≤ ∑_{p prime, p < n} 1/p + C.
+
+    Equivalently, the weighted harmonic sum over any pairwise coprime set is
+    bounded by the Mertens sum (~ log log n) up to an additive constant. -/
+axiom erdos_1210 :
+    ∃ C : ℝ, ∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ),
+      ValidSubset n A → PairwiseCoprime A →
+      ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ primeReciprocalSum n + C
+
+/-- The corrected right-hand side at n = 5 equals 5/6 (= 1/2 + 1/3). -/
+theorem primeReciprocalSum_five : primeReciprocalSum 5 = 5 / 6 := by
+  unfold primeReciprocalSum
+  rw [primesBelow_five]
+  rw [show ({2, 3} : Finset ℕ) = insert 2 {3} from rfl,
+      Finset.sum_insert (by decide), Finset.sum_singleton]
+  norm_num
+
+/-- **The naive (C = 0) corrected statement still fails at n = 5, A = {4}**:
+    the A-sum (= 1) strictly exceeds the prime-reciprocal sum (= 5/6). This is
+    why the additive O(1) constant is essential in the conjecture. -/
+theorem naive_statement_fails_at_five :
+    primeReciprocalSum 5 < ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) := by
+  rw [primeReciprocalSum_five, Finset.sum_singleton]
+  push_cast
+  norm_num
+
+/-- **The corrected (O(1)) statement is consistent at n = 5, A = {4}**: for any
+    constant C ≥ 1/6, the A-sum is bounded by the prime-reciprocal sum plus C.
+    The n = 5 counterexample therefore imposes only the lower bound C ≥ 1/6 —
+    no contradiction with the corrected conjecture. -/
+theorem corrected_statement_consistent_at_five (C : ℝ) (hC : 1 / 6 ≤ C) :
+    ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) ≤ primeReciprocalSum 5 + C := by
+  rw [primeReciprocalSum_five, Finset.sum_singleton]
+  push_cast
+  linarith
 
 /-
 ## S5: Unconditional Harmonic Upper Bound (verified, axiom-free)

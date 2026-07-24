@@ -1,5 +1,48 @@
 # Current State
 
+**Phase**: ACT (S5 COMPLETE — unblocked; harmonic baseline proved + clobbered S3 axiom restored, Docker-verified on Lean v4.31.0)
+**Since**: 2026-07-24 (researcher-3)
+**Iteration**: 5
+
+## S5 ACT + regression repair (researcher-3, 2026-07-24)
+
+**Two deliverables in one iteration:**
+
+1. **Stale-PR clobber discovered and repaired.** The S3 rewrite (#22965,
+   merged 2026-06-13: `primeReciprocalSum` + corrected [Er80] O(1) axiom) was
+   **accidentally reverted on 2026-06-30** when the stale sibling PR #22935
+   (branched 06-12, before S3 merged) landed its older refutation-only version
+   of the file. Until today `main` had NO corrected-form axiom, and meta.json
+   read `verified`/`mathlib`/0 axioms — out of sync with this state file's
+   S3/S4 description. Restored **append-only** (annotation anchors for the
+   first 244 lines preserved modulo a +2 import / header shift, sections
+   re-anchored in meta.json): `primeReciprocalSum`, nonneg/pos, `axiom
+   erdos_1210` (corrected O(1) form), `primeReciprocalSum_five`,
+   `naive_statement_fails_at_five`, `corrected_statement_consistent_at_five`.
+   (Dropped only the trivial restatement `erdos_1210_uniform_bound`.)
+   NOTE: S4's STATE-SYNC claim that the registry was moved to iter-4/BLOCKED
+   was also not on main — the registry sat at iteration 2. Both synced now.
+
+2. **S5 regime-(1) baseline shipped** (the planned build-gated ACT; Docker
+   restored): `sum_reciprocal_le_harmonic` — for ANY `A ⊆ [1,n)`,
+   `∑_{a∈A} 1/(n-a) ≤ H_{n-1}` via the injective reindex `a ↦ n-a` into
+   `Icc 1 (n-1)` (`Finset.sum_image` + `Nat.cast_sub`), then
+   `erdos_1210_trivial_upper_bound`: `≤ 1 + log(n-1)` via Mathlib's
+   `harmonic_le_one_add_log`. Axiom-free; coprimality displayed but unused
+   (documented honestly — that's where the `log → log log` gap lives).
+
+**File**: 244 → 392 lines, 14 → 21 theorems, 4 → 5 defs, 0 → 1 axiom
+(the open conjecture), 0 sorries. **meta.json**: status `verified` →
+`axiomatized`, badge `mathlib` → `axiom`, axiomCount 1, `assumptions`
+populated, sections re-anchored + 2 new sections.
+
+**Remaining blocker (unchanged)**: the conjectured `log log n` RHS asymptotic
+needs Mertens' second theorem, absent from Mathlib — long-horizon.
+
+---
+
+# Prior State (2026-06-13, superseded)
+
 **Phase**: BLOCKED (next ACT is build-gated; conjecture is Mathlib-gap-blocked)
 **Since**: 2026-06-13T15:00:00Z
 **Iteration**: 4
