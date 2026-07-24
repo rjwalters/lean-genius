@@ -38,7 +38,8 @@
       "The entire extremal result is a one-line consequence of a **variance identity**: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)², valid precisely because ∑ pᵢ = 1. This converts an optimization problem into a sum-of-squares nonnegativity statement.",
       "Working with the *deviation form* ∑(pᵢ − 1/d)² rather than invoking Cauchy–Schwarz delivers the equality characterization for free: Finset.sum_eq_zero_iff_of_nonneg forces each pᵢ = 1/d. A Cauchy–Schwarz citation would give the bound but not, without extra work, the uniqueness of the minimizer.",
       "C(p) = ∑ pᵢ² is exactly the probability that two independent draws coincide, so the bound 1/d ≤ C(p) says uniform birthdays are the *hardest* case for the birthday paradox: any seasonal bias only raises the collision probability.",
-      "The n = 2 case is self-contained Finset algebra over ℝ; the general n-draw statement (no-collision probability n!·eₙ(p) maximized at uniform) needs Maclaurin's inequality / Schur-concavity of the elementary symmetric polynomials on the simplex, which is not yet in Mathlib — documented as the genuine follow-up gate."
+      "The n = 2 case is self-contained Finset algebra over ℝ; the general n-draw statement (no-collision probability n!·eₙ(p) maximized at uniform) needs Maclaurin's inequality / Schur-concavity of the elementary symmetric polynomials on the simplex, which is not yet in Mathlib — documented as the genuine follow-up gate.",
+      "C(p) = ∑ pᵢ² is exp(−H₂(p)) for the collision (Rényi order-2) entropy H₂(p) = −log ∑ pᵢ², so this file's bound is exactly the statement that H₂ is maximized at uniform — the same extremal phenomenon that makes Shannon entropy maximal at uniform, one level down the Rényi-entropy family."
     ],
     "prerequisites": [
       "Finset.sum_add_distrib / Finset.sum_sub_distrib: linearity of finite sums",
