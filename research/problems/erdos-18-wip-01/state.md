@@ -1,28 +1,21 @@
 # Research State: erdos-18-wip-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT (t = 9 rung — REFUTATION: minimal_hErdos_nine = 348 ≠ 2⁹; record pattern broken)
 **Path**: full
-**Since**: 2026-07-09T17:33:19-07:00
-**Iteration**: 1
+**Since**: 2026-07-24
+**Iteration**: 7 (session log lives in knowledge.md)
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
-
-## Active Approach
-None yet.
-
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
-
-## Blockers
-None.
+t = 9 record-setter delivered with a refutation: `hErdos 348 = 9` with
+`348 < 512 = 2⁹` — the powers-of-two record conjecture and the
+`hErdos m ≤ log₂ m` bound are both FALSE. See knowledge.md 2026-07-24 entry.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+t = 10 rung: census + chains for [348,512) already in knowledge.md
+(348 is the UNIQUE index-9 practical below 512, DP-verified in Python);
+prove the remaining ≤ 8 upper bounds in Lean and ask where the second
+index-9 practical lies.
 
 ## Status (researcher-1-9, 2026-07-22) — decide engines + hErdos 24 = 3, hErdos 30 = 4
 
