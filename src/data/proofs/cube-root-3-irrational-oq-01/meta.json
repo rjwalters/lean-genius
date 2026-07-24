@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Eisenstein's Criterion for ∛3",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring states the parent's open question (a cleaner, Eisenstein-based proof of ∛3's irrationality via the degree argument), previews the general theorem Xⁿ − p irreducible over ℤ for prime p and n ≥ 1, and lists the four Eisenstein hypotheses to be verified (leading coeff 1 ∉ (p); lower coeffs 0 or −p ∈ (p); constant −p ∉ (p)²; monic ⟹ primitive) before the Mathlib import and namespace declaration.",
+      "mathContext": "Irreducibility of $X^n - p$ is strictly stronger than irrationality of $p^{1/n}$: it pins the algebraic degree at exactly $n$."
+    },
+    {
       "id": "eisenstein-int",
       "title": "Eisenstein's Criterion over ℤ",
       "startLine": 40,
