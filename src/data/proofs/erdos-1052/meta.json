@@ -7,7 +7,7 @@
     "author": "Wall",
     "sourceUrl": "https://erdosproblems.com/1052",
     "date": "1972",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1052Problem.lean",
     "tags": [
       "erdos",
@@ -16,7 +16,7 @@
       "perfect-numbers",
       "open-problem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1052,
     "erdosUrl": "https://erdosproblems.com/1052",
@@ -58,9 +58,9 @@
       "Three verified examples (6, 60, 90) via native_decide",
       "erdos_1052_conjecture: finiteness conjecture described in comment (not formally axiomatized)"
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 529,
-    "assumptions": "No mathematical axioms and 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition, and the finiteness conjecture is not formally stated as an axiom (open problem described in the closing comment). Compiler-trust disclosure: the concrete unitary-perfect verifications (isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90, isUnitaryPerfect_87360) are discharged with native_decide, so their axiom footprint includes Lean.ofReduceBool (kernel reduction trusts the compiled decision procedure). These are finite decidable computations and add no mathematical assumption; leanFile.axiomCount remains 0 (no literal axiom declarations).",
+    "assumptions": "The mathematical content (even_of_isUnitaryPerfect — all unitary perfect numbers are even) is fully proved via multiplicativity + prime decomposition with no assumptions, and the finiteness conjecture is not formally stated as an axiom (open problem described in the closing comment). Compiler-trust assumption (axiomCount 1): the concrete unitary-perfect verifications (isUnitaryPerfect_6/_60/_90/_87360), stated as named theorems the entry presents as verified, are discharged with native_decide (the 87360 case enumerates divisors of a 5-digit number, infeasible for kernel decide), so their proof term depends on Lean.ofReduceBool (the kernel trusts the compiled decision procedure). These are finite decidable computations that add no mathematical assumption, but per the Axiom Integrity Policy native_decide on a presented-verified result is counted: meta.axiomCount = 1 (Lean.ofReduceBool), status axiomatized. leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 24,
     "definitionCount": 3,
     "additionalFiles": [
