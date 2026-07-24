@@ -1,7 +1,7 @@
 /-
-  # Odd primitive abundant numbers — the base witness 945
+  # Odd primitive abundant numbers — infinitude RESOLVED
 
-  *Open question* (`abundant-number-oq-03-oq-03`): are there infinitely many
+  *Question* (`abundant-number-oq-03-oq-03`): are there infinitely many
   **odd primitive abundant** numbers?  A positive integer `n` is *abundant* when
   `n < σ'(n) := ∑_{d ∣ n, d < n} d`, and *deficient* when `σ'(n) < n`
   (`Nat.Abundant` / `Nat.Deficient` in `Mathlib.NumberTheory.FactorisationProperties`).
@@ -11,17 +11,24 @@
 
   `OddPrimitiveAbundant = { n | Odd n ∧ IsPrimitiveAbundant n }`   (A006038),
 
-  and the open question asks whether it is infinite.
+  and the question asks whether it is infinite.
 
   ## What this file settles
 
-  The infinitude is genuinely open (no explicit odd family is known that is
-  provably primitive abundant for infinitely many members).  What *can* be pinned
-  down, axiom-free, is the **base of the problem**: the smallest odd abundant
-  number, `945 = 3³·5·7`, is in fact odd primitive abundant, so the target set is
-  nonempty with an explicit least element.  This anchors any future infinitude
-  construction (each new witness must, like 945, be abundant with all 15 proper
-  divisors deficient).
+  **The target infinitude is now PROVED** (`oddPrimitiveAbundant_infinite`, at
+  the end of the file): for each starting index `a ≥ 1`, the product of
+  consecutive primes `p_a p_{a+1} ⋯` first crosses the abundance boundary at
+  some finite stage (divergence of `∑ 1/p`), and the first-crossing product is
+  odd primitive abundant — minimality plus a mod-4 exclusion of `σ = 2n` makes
+  every maximal divisor deficient, and deficiency is divisor-inherited.
+  Distinct starts have distinct least prime factors, so the witnesses form an
+  injective family.  Axiom-free (`propext, Classical.choice, Quot.sound`; the
+  one analytic input is Mathlib's sum-of-prime-reciprocals divergence).
+
+  Historically this file first pinned the **base of the problem**: the smallest
+  odd abundant number, `945 = 3³·5·7`, is odd primitive abundant, so the target
+  set is nonempty with an explicit least element (all 15 proper divisors
+  deficient, kernel-`decide`d).
 
   * `IsPrimitiveAbundant`            — the A006038 predicate (abundant, all proper
                                        divisors deficient).
@@ -55,9 +62,8 @@
   `maxRecDepth`.  `#print axioms` for every theorem below lists only
   `propext, Classical.choice, Quot.sound`.
 
-  ## Toward infinitude (recorded, not proved)
+  ## The two failed routes (recorded for contrast — the proof uses NEITHER)
 
-  Two routes, both open:
   1. *Odd analogue of the even `2^k·p` construction* — an odd base `m` with
      `σ(m)/m` just below 2 times an odd prime `p` in a controlled (Bertrand-type)
      window, so `m·p` is abundant for the first time at itself.  The obstruction:
@@ -76,8 +82,12 @@
      divisors, and controlling oddness/unboundedness still needs a pigeonhole that
      a single bounded part could defeat.  (Update 2026-07-22: the A091191
      extraction and the "abundant ⟺ multiple of a weakly primitive abundant"
-     characterization are now PROVED at the end of this file, odd-compatibly;
-     the infinitude of the generators remains open.)
+     characterization are now PROVED in this file, odd-compatibly.)
+
+  The successful third route (2026-07-24, final section): GROW the base through
+  the abundance boundary instead of appending one prime to a fixed base —
+  first-crossing products of consecutive primes, powered by the divergence of
+  `∑ 1/p`.  No Bertrand window, no extraction.
 
   Reference: OEIS A006038 (odd primitive abundant numbers); A091191 (primitive
   abundant numbers).  Sibling gallery entries: `abundant-number-oq-02` (945 is the

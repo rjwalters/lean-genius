@@ -207,3 +207,57 @@ not strict = those with a perfect proper divisor — characterize?); (b) any rou
 infinitely many odd weak primitives (still the deep crux, same blocker as Route 1);
 (c) smallest odd weak-primitive abundant — is it still 945? (all odd abundants
 below 945 don't exist, so yes trivially; could pin `decide`-cheap).
+
+## Session 2026-07-24 (researcher-2) — **INFINITUDE PROVED**: consecutive-prime first-crossing family
+
+**Mode**: REVISIT (vein was declared SATURATED 2026-07-21). **Outcome**: the target
+`OddPrimitiveAbundant.Infinite` is PROVED, axiom-free, docker build green (8576 jobs).
+`oddPrimitiveAbundant_infinite` + explicit-predicate restatement
+`infinitely_many_odd_primitive_abundant` in `AbundantNumberOQ03OQ03.lean`.
+
+### Why the saturation verdict was premature
+Both recorded routes fixed the SHAPE "base × one appended prime" (Route 1) or
+"divisor of an existing family" (Route 2). The third shape: **grow the base
+through the boundary**. For start a ≥ 1, N(a) = p_a p_{a+1} ⋯ p_{b-1} with b the
+FIRST index where the product is abundant (exists by divergence of ∑ 1/p —
+Mathlib `Nat.Primes.not_summable_one_div`). First-crossing minimality + the
+mod-4 exclusion of σ = 2n on squarefree odd numbers make every maximal divisor
+N/pᵢ deficient (i = last: minimality; i smaller: cross-multiplication
+pᵢ(p_c+1) ≤ p_c(pᵢ+1)); `deficient_of_dvd` spreads deficiency to ALL proper
+divisors. Odd since all factors odd; injective via distinct least prime factors.
+
+### Lean toolkit (reusable)
+- `Nat.nth Nat.Prime` machinery: `prime_nth_prime`, `nth_injective`/`nth_lt_nth`
+  (with `Nat.infinite_setOf_prime`), `Nat.nth_prime_zero_eq_two`,
+  `Nat.count_nth_of_infinite` + `Nat.nth_count` build the ℕ ≃ Nat.Primes equiv —
+  but INLINE the equiv (a `have`-bound equiv is opaque; `Equiv.summable_iff`
+  needs the composition to reduce definitionally).
+- Divergence → crossing: `not_summable_iff_tendsto_nat_atTop_of_nonneg`,
+  `Tendsto.eventually_ge_atTop`, `Finset.sum_Ico_eq_sub`; hand-rolled Weierstrass
+  `1 + ∑ ≤ ∏(1+·)` by `cons_induction` + one `nlinarith` with a
+  `mul_le_mul_of_nonneg_left` hint.
+- σ multiplicative over index-finsets of distinct primes:
+  `sum_divisors_prod_nth` via `cons_induction` + the file's
+  `sum_divisors_mul_prime`; prime-into-product via `Prime.dvd_finsetProd_iff`
+  (v4.31 name), product-into-number via `Finset.prod_primes_dvd` after
+  `Finset.prod_image` reindexing.
+- v4.31 drift hits this session: `Finset.range_subset` is now
+  `∀ x, x < n → x ∈ s` form — use `Finset.range_subset_range` for the
+  range-⊆-range iff; `Finset.Ico_succ_right_eq_insert_Ico` lives in namespace
+  `Nat.`; `Finset.mul_prod_erase` needs f explicit when the goal holds
+  `set`-variables (stuck `CommMonoid ?m`); `Nat.find`+`omega` need a defeq
+  `show c < crossing a` bridge (omega sees `Nat.find` as an unrelated atom);
+  `mul_le_mul_left'` deprecated (warning) for `_root_.mul_le_mul_right`.
+
+### Classical anchor
+Start a = 1: 3·5·7·11·13 = 15015 (I ≈ 2.148 < 2·14/13). The family is the
+classical primorial-tail construction; likely first Lean formalization.
+
+### Remaining open (for follow-ups)
+- Fixed least-prime families (e.g. infinitely many odd primitive abundants
+  divisible by 3) — needs non-squarefree crossings, genuinely different
+  proper-divisor analysis.
+- Dickson finiteness (each fixed number of prime factors admits finitely many
+  odd primitive abundants) — deep.
+- Every odd abundant number has ≥ 3 distinct prime factors (elementary,
+  session-sized: I(3^a·p^b) < (3/2)(5/4) < 2).
