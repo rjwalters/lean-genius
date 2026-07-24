@@ -83,12 +83,20 @@
       "mathContext": "$\\zeta(6) = \\sum_{n\\ge 1} n^{-6} = (-1)^4\\,2^5\\,\\pi^6\\,B_6/6! = 32\\pi^6(1/42)/720 = \\pi^6/945$."
     },
     {
-      "id": "bernoulli-six",
-      "title": "The Bernoulli Number B₆ = 1/42",
+      "id": "bernoulli-prime-six",
+      "title": "The Unsigned Bernoulli Number B'₆ = 1/42",
       "startLine": 37,
+      "endLine": 52,
+      "summary": "bernoulli'_six computes B'₆ = 1/42 from the defining recurrence bernoulli'_def — the odd term B'₅ vanishes by bernoulli'_eq_zero_of_odd, leaving an inner sum of 41/42. This is the one value Mathlib's explicit table (which stops at bernoulli'_four) omits — the genuine new content of the entry.",
+      "mathContext": "$B'_6 = 1 - \\sum_{k<6}\\binom{6}{k}\\frac{B'_k}{6-k+1} = 1 - \\frac{41}{42} = \\frac{1}{42}$."
+    },
+    {
+      "id": "bernoulli-six",
+      "title": "The Signed Bernoulli Number B₆ = 1/42",
+      "startLine": 54,
       "endLine": 57,
-      "summary": "bernoulli'_six computes B₆ = 1/42 from the defining recurrence bernoulli'_def (the odd term B₅ vanishes by bernoulli'_eq_zero_of_odd, leaving an inner sum of 41/42); bernoulli_six transfers it to the signed bernoulli 6 via bernoulli_eq_bernoulli'_of_ne_one. This is the one value Mathlib's explicit table (which stops at bernoulli'_four) omits — the genuine new content of the entry.",
-      "mathContext": "$B_6 = 1 - \\sum_{k<6}\\binom{6}{k}\\frac{B_k}{6-k+1} = 1 - \\frac{41}{42} = \\frac{1}{42}$."
+      "summary": "bernoulli_six transfers bernoulli'_six to the signed convention bernoulli 6 via bernoulli_eq_bernoulli'_of_ne_one (the two conventions agree away from index 1), the form Euler's formula hasSum_zeta_nat actually consumes.",
+      "mathContext": "$B_6 = B'_6 = 1/42$ since the signed and unsigned Bernoulli numbers coincide for every index $\\neq 1$."
     },
     {
       "id": "zeta-six",
