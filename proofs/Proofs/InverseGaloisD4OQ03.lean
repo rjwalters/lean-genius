@@ -512,8 +512,8 @@ faithful Galois action only permutes the remaining `≤ 2` roots. -/
 theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
     ¬ IsDihedralGaloisOfXnMinusA 3 (b ^ 3) := by
   rintro ⟨m, hm, ⟨φ⟩⟩
-  have hcard : Nat.card (xPowSub 3 (b ^ 3)).Gal = 2 * m := by
-    rw [Nat.card_congr φ.toEquiv, DihedralGroup.nat_card]
+  have hcard : Nat.card (xPowSub 3 (b ^ 3)).Gal = 2 * m :=
+    (Nat.card_congr φ.toEquiv).trans DihedralGroup.nat_card
   haveI : Fact (((xPowSub 3 (b ^ 3)).map
       (algebraMap ℚ (xPowSub 3 (b ^ 3)).SplittingField)).Splits) :=
     ⟨Polynomial.SplittingField.splits _⟩
@@ -551,7 +551,8 @@ theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
     intro σ x
     constructor
     · intro h hx
-      exact h (hx ▸ hfix σ)
+      subst hx
+      exact h (hfix σ)
     · intro hx h
       exact hx ((Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
         (xPowSub 3 (b ^ 3)).SplittingField σ).injective (h.trans (hfix σ).symm))
@@ -559,7 +560,8 @@ theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
   have hFinj : Function.Injective
       (fun σ : (xPowSub 3 (b ^ 3)).Gal =>
         (Polynomial.Gal.galActionHom (xPowSub 3 (b ^ 3))
-          (xPowSub 3 (b ^ 3)).SplittingField σ).subtypePerm (hpres σ)) := by
+          (xPowSub 3 (b ^ 3)).SplittingField σ).subtypePerm
+          (p := fun y => y ≠ pt) (hpres σ)) := by
     intro σ τ h
     apply Polynomial.Gal.galActionHom_injective (xPowSub 3 (b ^ 3))
       (xPowSub 3 (b ^ 3)).SplittingField
@@ -583,10 +585,11 @@ theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
     omega
   have hsub : Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
       (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt} ≤ 2 := by
-    have h1 := Fintype.card_subtype_compl (· = pt)
-      (α := (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField)
-    have h2 := Fintype.card_subtype_eq pt
-      (α := (xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField)
+    have h1 : Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
+        (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt}
+        < Fintype.card
+          ((xPowSub 3 (b ^ 3)).rootSet (xPowSub 3 (b ^ 3)).SplittingField) :=
+      Fintype.card_subtype_lt (x := pt) (by simp)
     omega
   -- assemble: `2m ≤ 2` contradicts `m ≥ 2`
   have hle : Nat.card (xPowSub 3 (b ^ 3)).Gal ≤ 2 := by
@@ -594,10 +597,10 @@ theorem not_dihedral_galois_xPow3_of_cube (b : ℚ) :
         ≤ Nat.card (Equiv.Perm {y : (xPowSub 3 (b ^ 3)).rootSet
             (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt}) :=
           Nat.card_le_card_of_injective _ hFinj
-      _ = (Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
-            (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt})! := by
+      _ = Nat.factorial (Fintype.card {y : (xPowSub 3 (b ^ 3)).rootSet
+            (xPowSub 3 (b ^ 3)).SplittingField // y ≠ pt}) := by
           rw [Nat.card_eq_fintype_card, Fintype.card_perm]
-      _ ≤ 2 ! := Nat.factorial_le hsub
+      _ ≤ Nat.factorial 2 := Nat.factorial_le hsub
       _ = 2 := rfl
   omega
 
@@ -614,7 +617,7 @@ theorem dihedral_galois_xPow3_iff (a : ℚ) :
   constructor
   · intro h
     by_contra hcube
-    push_neg at hcube
+    push Not at hcube
     obtain ⟨b, rfl⟩ := hcube
     exact not_dihedral_galois_xPow3_of_cube b h
   · exact dihedral_galois_xPow3_sub_a a
