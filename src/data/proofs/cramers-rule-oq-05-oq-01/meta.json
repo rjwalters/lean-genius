@@ -42,7 +42,8 @@
       "Everything holds over an arbitrary commutative ring R, not just a field — conjugation by a *unit* matrix suffices, so the equivalence relation and preservation results apply over ℤ and polynomial rings",
       "The right abstraction is not 'conjugation is a ring map' but 'conjugation is an R-algebra automorphism' — packaging it as conjAlgEquiv U is exactly what lets polynomial evaluation slide through, giving preservation for every polynomial expression at once rather than one fixed quantity",
       "Preservation by aeval is strictly stronger than invariance of any single quantity such as determinant or trace: it carries the entire subalgebra R[M] along the change of basis, so p(M) and p(N) are themselves similar (not merely equal in some invariant)",
-      "Transitivity hinges on the unit-group identity (V·U)⁻¹ = U⁻¹·V⁻¹, mirroring how composing two changes of basis composes their transition matrices"
+      "Transitivity hinges on the unit-group identity (V·U)⁻¹ = U⁻¹·V⁻¹, mirroring how composing two changes of basis composes their transition matrices",
+      "The structural upgrade is free: conjAlgEquiv_apply, which certifies that the new AlgEquiv agrees with the parent's bare function conj U, is proved by rfl. Packaging conjugation as an algebra automorphism adds no computational content and requires no new definition of 'what conjugation does' — it only proves that the already-existing function happens to preserve the full algebra structure, which is precisely what unlocks aeval_algHom_apply."
     ],
     "prerequisites": [
       "The parent entry cramers-rule-oq-05: conj, IsSimilar, IsSimilar.refl, IsSimilar.charpoly_eq",
