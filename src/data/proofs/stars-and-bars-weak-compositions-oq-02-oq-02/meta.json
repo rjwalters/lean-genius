@@ -89,20 +89,36 @@
       "summary": "The module docstring states the reflection symmetry of the bounded-composition count and the plan: complement each part against the cap b, which keeps parts in [0, b] and flips the total from n to k·b − n. It records the relationship to Gaussian binomial coefficients (B(k,n,b) is the qⁿ-coefficient of [k+b; b]_q, and this is the q=1 palindromy) and defines BC k n b, the bounded-composition subtype reused from the parent."
     },
     {
-      "id": "reflect-bijection",
-      "title": "The Reflection Bijection",
+      "id": "bc-subtype",
+      "title": "The Bounded-Composition Subtype and Total Budget",
       "startLine": 51,
-      "endLine": 80,
+      "endLine": 60,
+      "mathContext": "$BC(k,n,b) = \\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\sum_i f_i = n,\\ \\forall i,\\ f_i \\le b\\}$; $\\sum_{i:\\mathrm{Fin}\\,k} b = k\\cdot b$.",
+      "summary": "BC k n b abbreviates the bounded-composition subtype reused from the parent entry: functions f : Fin k → ℕ with ∑ f i = n and every f i ≤ b. sum_const_b evaluates the total budget ∑_{i : Fin k} b = k·b (Finset.sum_const with card (Fin k) = k) — the constant that the reflection subtracts from n to reach k·b − n."
+    },
+    {
+      "id": "reflect-bijection",
+      "title": "The Reflection Bijection reflectEquiv",
+      "startLine": 61,
+      "endLine": 79,
       "mathContext": "$BC\\,k\\,n\\,b \\simeq BC\\,k\\,(k b - n)\\,b$, with both directions given by $f \\mapsto (i \\mapsto b - f(i))$.",
-      "summary": "sum_const_b evaluates the total budget ∑_{i : Fin k} b = k·b. reflectEquiv is the explicit equivalence: forward and backward are both the coordinatewise complement i ↦ b − f i. Range membership is Nat.sub_le; the forward total ∑ (b − f i) = k·b − n uses Finset.sum_tsub_distrib (valid since f i ≤ b) and sum_const_b; the backward total returns to n via Nat.sub_sub_self and the hypothesis n ≤ k·b. Both round-trips are Nat.sub_sub_self applied pointwise."
+      "summary": "reflectEquiv is the explicit equivalence: forward and backward are both the coordinatewise complement i ↦ b − f i. Range membership is Nat.sub_le; the forward total ∑ (b − f i) = k·b − n uses Finset.sum_tsub_distrib (valid since f i ≤ b) and sum_const_b; the backward total returns to n via Nat.sub_sub_self and the hypothesis n ≤ k·b. Both round-trips are Nat.sub_sub_self applied pointwise, so the same formula serves as toFun and invFun."
     },
     {
       "id": "card-symmetry",
-      "title": "The Cardinality Symmetry and Closed-Form Corollary",
-      "startLine": 81,
+      "title": "The Cardinality Symmetry and Involution Check",
+      "startLine": 80,
+      "endLine": 90,
+      "mathContext": "$\\mathrm{card}(BC\\,k\\,n\\,b) = \\mathrm{card}(BC\\,k\\,(kb-n)\\,b)$; reflecting twice restores $n$.",
+      "summary": "card_boundedComposition_reflect transports reflectEquiv through Fintype.card_congr to get B(k,n,b) = B(k,kb−n,b) directly — the combinatorial content is already in reflectEquiv, so this is a one-liner. card_boundedComposition_reflect_reflect is a consistency check: reflecting twice returns to B(k,n,b), since k·b − (k·b − n) = n by Nat.sub_sub_self."
+    },
+    {
+      "id": "closed-form-corollary",
+      "title": "Alternating-Sum Corollary from the Parent's Closed Form",
+      "startLine": 91,
       "endLine": 107,
-      "mathContext": "$\\mathrm{card}(BC\\,k\\,n\\,b) = \\mathrm{card}(BC\\,k\\,(kb-n)\\,b)$; the inclusion–exclusion sum is invariant under $n \\mapsto kb - n$.",
-      "summary": "card_boundedComposition_reflect transports reflectEquiv through Fintype.card_congr to get B(k,n,b) = B(k,kb−n,b). card_boundedComposition_reflect_reflect records the involutive consistency (reflecting twice restores n, via Nat.sub_sub_self). closedForm_reflect combines the card symmetry with the parent's card_boundedComposition to conclude that the inclusion–exclusion alternating sum ∑ⱼ (−1)ʲ C(k,j) C(n−(b+1)j+k−1, n−(b+1)j) is invariant under n ↦ k·b − n."
+      "mathContext": "$\\sum_j (-1)^j \\binom{k}{j}\\binom{n-(b+1)j+k-1}{n-(b+1)j} = \\sum_j (-1)^j \\binom{k}{j}\\binom{kb-n-(b+1)j+k-1}{kb-n-(b+1)j}$.",
+      "summary": "closedForm_reflect combines the card symmetry with the parent's card_boundedComposition (which equates each ℤ-cast count with its inclusion–exclusion alternating sum) to conclude that the alternating sum ∑ⱼ (−1)ʲ C(k,j) C(n−(b+1)j+k−1, n−(b+1)j) is itself invariant under n ↦ k·b − n — a non-obvious identity between two different-looking sums, obtained without touching either sum directly."
     }
   ],
   "conclusion": {
