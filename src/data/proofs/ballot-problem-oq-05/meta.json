@@ -94,30 +94,38 @@
       "title": "The Ballot Number in Reflection Form",
       "summary": "Header motivating the cycle-lemma aggregate, and the definition BN(a,b) = C(a+b-1,a-1) - C(a+b-1,a) as a manifestly-integral natural number.",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 50,
       "mathContext": "The cycle lemma gives a-b good rotations per sequence; aggregating over C(a+b,a) arrangements yields BN(a,b) = (a-b)/(a+b)·C(a+b,a), whose reflection form is taken as the definition."
     },
     {
       "id": "absorption",
       "title": "The Two Absorption Identities",
       "summary": "aux_up: (a+b)·C(a+b-1,a-1) = a·C(a+b,a) from Nat.add_one_mul_choose_eq. aux_down: (a+b)·C(a+b-1,a) = b·C(a+b,a), derived from aux_up via Nat.choose_succ_right_eq and valid for all b.",
-      "startLine": 53,
-      "endLine": 99,
+      "startLine": 52,
+      "endLine": 79,
       "mathContext": "Both come from the absorption identity k·C(n,k) = n·C(n-1,k-1); the down version is obtained from the up version by a single cancellation, so it needs no separate b=0 case."
     },
     {
       "id": "defining-relation",
-      "title": "The Defining Relation and the Ballot Probability",
-      "summary": "ballotNumber_mul_aux (unconditional core identity) and ballotNumber_mul_add: BN(a,b)·(a+b) = (a-b)·C(a+b,a). Then ballotNumber_div casts to ℚ and clears denominators to give the Bertrand probability (a-b)/(a+b).",
-      "startLine": 84,
-      "endLine": 133,
-      "mathContext": "Subtracting the two absorption identities and distributing multiplication over truncated ℕ subtraction gives the integer relation; dividing by the two nonzero denominators gives the classical probability."
+      "title": "The Core Identity and the Defining Relation",
+      "summary": "ballotNumber_mul_aux (unconditional core identity in A = a-1 form, truncated ℕ subtraction) and ballotNumber_mul_add: BN(a,b)·(a+b) = (a-b)·C(a+b,a), the exact aggregate the cycle lemma produces.",
+      "startLine": 81,
+      "endLine": 106,
+      "mathContext": "Subtracting the two absorption identities and distributing multiplication over truncated ℕ subtraction gives the integer relation BN(a,b)·(a+b) = (a-b)·C(a+b,a)."
+    },
+    {
+      "id": "probability",
+      "title": "The Bertrand Ballot Probability",
+      "summary": "ballotNumber_div casts the defining relation to ℚ and clears the two nonzero denominators (C(a+b,a) and a+b) to give the classical Bertrand probability (a-b)/(a+b).",
+      "startLine": 108,
+      "endLine": 130,
+      "mathContext": "Dividing BN(a,b)·(a+b) = (a-b)·C(a+b,a) by the nonzero product (a+b)·C(a+b,a) over ℚ recovers the textbook ratio (a-b)/(a+b)."
     },
     {
       "id": "catalan",
       "title": "The Catalan Specialisation and Worked Examples",
       "summary": "ballotNumber_catalan: BN(n+1,n) = catalan n via (n+1)·BN(n+1,n) = C(2n,n) = (n+1)·catalan n and cancellation, using Mathlib's central-binomial/Catalan bridge; four decide-checked numerical examples.",
-      "startLine": 134,
+      "startLine": 132,
       "endLine": 176,
       "mathContext": "The diagonal a = n+1, b = n gives BN = C(2n,n) - C(2n,n+1); matched against centralBinom n / (n+1) = catalan n through succ_dvd_centralBinom and catalan_eq_centralBinom_div."
     }
