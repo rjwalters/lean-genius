@@ -92,9 +92,16 @@
     {
       "id": "central-binom",
       "title": "Central Binomial Sum of Squares",
-      "startLine": 64,
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "central_binom_eq_sum_sq: C(2n,n) = ∑_{i≤n} C(n,i)². Specializes the range form at m=n, k=n via two_mul, then a sum_congr with Nat.choose_symm collapses each term to a square."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verification",
+      "startLine": 71,
       "endLine": 76,
-      "summary": "central_binom_eq_sum_sq: C(2n,n) = ∑_{i≤n} C(n,i)². Specializes the range form at m=n, k=n via two_mul, then a sum_congr with Nat.choose_symm collapses each term to a square. Worked example: C(6,3) = 20."
+      "summary": "Sanity check: C(6,3) = 20, recovered from central_binom_eq_sum_sq 3 as ∑ C(3,i)² = 1+9+9+1, closed by kernel decide."
     }
   ],
   "conclusion": {
