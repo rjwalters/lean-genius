@@ -149,3 +149,51 @@ Why this does NOT extend to k=4 as-is: the band widens to ~k−1 indices and the
 increments become exact k=3 band values at general offsets (quasi-polynomial P3) — that is
 where sl₂/O'Hara genuinely re-enter. Interior range stays blocked (reopen bar: materially
 new mechanism).
+
+## Status (S7, researcher-1, 2026-07-24) — ORIENT: k=5 band feasibility check (mandated), wall confirmed and sharpened
+
+The S6 mandate was: before proving anything at k=5, concretely check whether the
+band analysis survives. Answer: **it does not survive as-is — but the failure is
+now localized to a single, precisely-stated dominance inequality.** Numerics
+(exact integer computation, N = 2..29, every band index verified):
+
+**Verified decomposition** (dual q-Pascal `[N+6,5] = [N+5,5] + q^{N+1}[N+5,4]`
+plus degree-5N palindromy): writing `d₅,N(j)` for the increment
+`coeff(j+1) − coeff(j)` of box `5×N` and `e₄,N(i)` for the increment of box
+`4×(N+1)`, every *band* index `j` (the 2–3 first-half indices of box `5×(N+1)`
+beyond box `5×N`'s first half, alternating by parity of N) satisfies
+
+    d₅,N+1(j) = e₄,N(j−(N+1)) − d₅,N(5N−1−j)
+
+**What is free:** for every NON-band first-half index, monotonicity propagates
+by induction + the *already-proven* k=4 first-half monotonicity: the shifted
+index `j−(N+1) ≤ (3N+1)/2 ≤ 2N+1` always lands inside the k=4 first half, so
+`e₄ ≥ 0` suffices there. The entire k=5 first-half monotonicity therefore
+reduces to the band, exactly as at k=4.
+
+**The wall (sharpened):** at band indices, nonnegativity needs the dominance
+
+    e₄,N(i) ≥ d₅,N(j′),   i = j−(N+1) at depth ≈ 0.65–0.75 of the k=4
+                          first half, j′ = 5N−1−j at depth ≈ 0.95–1.05
+                          of the k=5 first half (near-center).
+
+Both sides grow without bound (e₄ along the band: 2,3,5,8,13,17,23,29,…;
+d₅ near-center: 1,2,4,7,12,16,21,…) — quasi-polynomials of the partition-count
+type. The k=4 mechanism pinned only the LAST TWO first-half increments
+(`u = δ, v ≡ 0`); the dominance needs the k=4 increment at ~70% depth, which no
+current lemma controls beyond `≥ 0`, and `≥ 0` is strictly insufficient
+(`d₅(j′) > 0` at most band points). The S6 prediction ("reflections hit interior
+near-center k=4 increments not pinned by u=δ, v=0") is exactly right.
+
+**Blocked-route entry (extended, reopen bar):** k=5 first-half monotonicity ⇐
+band dominance `e₄,N(j−(N+1)) ≥ d₅,N(5N−1−j)` for the 2–3 band indices per
+step. Reopening requires a materially new mechanism controlling near-center
+increment *growth* (not just sign) — e.g. explicit quasi-polynomial asymptotics
+for near-center Gaussian-binomial increments, or the sl₂/Proctor–O'Hara route.
+A conditional Lean lemma (`…unimodal_five_of_band_dominance`) is possible with
+existing file idioms but was deliberately NOT added: it would restate this entry
+without discharging anything.
+
+No Lean changes this session (doc-only ORIENT, per mandate and honesty
+standards). Numerics reproducible: exact `gauss(n,k)` recursion, identity +
+reflection + dominance asserted for all band indices N = 2..29.
