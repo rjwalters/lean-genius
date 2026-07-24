@@ -109,11 +109,19 @@
       "mathContext": "$B(1/2,1/2) = \\Gamma(1/2)^2/\\Gamma(1) = \\pi$."
     },
     {
-      "id": "three-half",
-      "title": "One Recurrence Step: B(3/2,3/2) = π/8",
+      "id": "gamma-three-half",
+      "title": "The Recurrence Step: Γ(3/2) = ½·Γ(1/2)",
       "startLine": 76,
+      "endLine": 80,
+      "summary": "gamma_three_half rewrites Γ(3/2) as Γ(1/2 + 1) and applies the Gamma functional equation Gamma_add_one at s = 1/2, giving Γ(3/2) = (1/2)·Γ(1/2) — the single step that propagates the Gauss value up the half-integer lattice.",
+      "mathContext": "$\\Gamma(3/2) = \\Gamma(1/2+1) = \\tfrac12\\Gamma(1/2)$ via $\\Gamma(s+1)=s\\Gamma(s)$ at $s=1/2$."
+    },
+    {
+      "id": "three-half",
+      "title": "One Rung Up: B(3/2,3/2) = π/8",
+      "startLine": 81,
       "endLine": 99,
-      "summary": "gamma_three_half (Γ(3/2) = (1/2)·Γ(1/2) from Gamma_add_one) and betaIntegral_three_half_three_half: the Beta–Gamma split at u = v = 3/2 with Γ(3) = 2! = 2, substitution of Γ(3/2), and the same π^(1/2) recombination, finishing with ring arithmetic to π/8.",
+      "summary": "betaIntegral_three_half_three_half applies the Beta–Gamma split at u = v = 3/2, evaluates Γ(3) = 2! = 2 via Gamma_nat_eq_factorial, substitutes Γ(3/2) = (1/2)·Γ(1/2) and Γ(1/2) = π^(1/2), and recombines the two half-powers with ring arithmetic to reach π/8.",
       "mathContext": "$B(3/2,3/2) = \\Gamma(3/2)^2/\\Gamma(3) = (\\sqrt\\pi/2)^2/2 = \\pi/8$."
     }
   ],
