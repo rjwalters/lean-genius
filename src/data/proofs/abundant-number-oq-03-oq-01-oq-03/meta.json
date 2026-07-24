@@ -56,6 +56,14 @@
  },
  "sections": [
   {
+   "id": "header",
+   "title": "File Docstring: The Two-Seed Sharpening",
+   "startLine": 1,
+   "endLine": 59,
+   "summary": "Docstring explaining the improvement: a single seed (945) cannot beat spacing 1890, so a second odd abundant seed 1575 is added; the union of the two odd-multiple families occupies 7 residues per length-9450 window (5 + 3 − 1 after removing the lcm-4725 overlap), giving density ≥ 7/9450 = 1/1350. Imports the parent AbundantOddDensityOQ0301 and the seed/closure lemmas from AbundantNumberOQ02 and AbundantMultiplesOQ01; opens the namespace and sets Classical.propDecidable as a local instance to match the parent's Finset.filter decidability.",
+   "mathContext": "7/9450 = 1/1350 > 1/1890, from 5 odd multiples of 945 plus 3 of 1575 minus 1 shared odd multiple of lcm(945,1575) = 4725, per window of length 9450 = 2·lcm."
+  },
+  {
    "id": "second-seed",
    "title": "The Second Odd Abundant Seed",
    "startLine": 60,
