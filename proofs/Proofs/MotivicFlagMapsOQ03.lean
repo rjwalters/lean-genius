@@ -222,7 +222,7 @@ augmentation quotient: the induced ring hom on `K.carrier ⧸ (L − 1)`. -/
 def factorThroughAugmentation (μ : MotivicMeasure K R)
     (hL : μ.lefschetz = 1) :
     (K.carrier ⧸ Ideal.span {K.L - 1}) →+* R :=
-  Ideal.Quotient.lift _ μ.toRingHom fun a ha =>
+  Ideal.Quotient.lift _ μ.toRingHom fun _ ha =>
     μ.annihilate_of_lefschetz_eq_one hL (Ideal.mem_span_singleton.mp ha)
 
 /-- The factorization identity: `factorThroughAugmentation μ hL ∘ mk = μ`.
