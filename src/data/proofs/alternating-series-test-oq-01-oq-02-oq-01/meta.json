@@ -85,7 +85,8 @@
       "The sign sequence (-1)^i has partial sums in {0,1} ⊆ [0,1] — a POSITIVITY fact, strictly stronger than the parent's |∑ (-1)^i| ≤ 1, and it is exactly this positivity that restores two-sidedness",
       "Multiplying by B ∈ [0,1] lands a real x in the order interval [min x 0, max x 0], not the symmetric [−|x|, |x|]: the asymmetry of the trap comes directly from the asymmetry of this interval",
       "Keeping the positive variation (upward jumps) and negative variation (downward jumps) separate — the discrete Jordan decomposition — yields a tighter, sign-aware bound than the single total-variation estimate of the parent",
-      "The classical Leibniz bracket is the special case where one variation vanishes and the other telescopes, so the asymmetric trap CONTAINS the textbook two-sided estimate while extending it to non-monotone coefficients"
+      "The classical Leibniz bracket is the special case where one variation vanishes and the other telescopes, so the asymmetric trap CONTAINS the textbook two-sided estimate while extending it to non-monotone coefficients",
+      "The trap interval has width max(c(n−1),0) − min(c(n−1),0) + (upward variation + downward variation) = |c(n−1)| + (total variation of c), since the positive and negative variations sum exactly to the total variation. The parent's symmetric estimate |S| ≤ |a(M−1)| + TV instead describes an interval of width 2(|a(M−1)| + TV) centered at 0 — splitting the Jordan decomposition does not just recover sign information, it halves the trap's width for free"
     ],
     "prerequisites": [
       "Summation by parts (Abel's transformation) and the Dirichlet test",
