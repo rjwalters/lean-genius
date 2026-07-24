@@ -127,14 +127,14 @@
     {
       "id": "dimension-reduction",
       "title": "Dimension Reduction",
-      "summary": "Part VII. Counterexamples lift: counterexample_lifts states that if the higher-dim line conjecture fails in R^d (d≥2) it also fails in R^(d+1), since a counterexample embeds in higher dimensions. Closes with the file Summary block cataloguing the 4 theorems, 9 definitions, 0 axioms, 0 sorries.",
+      "summary": "Part VII. Counterexamples lift: counterexample_lifts states that if the higher-dim line conjecture fails in R^d (d≥2) it also fails in R^(d+1), since a counterexample embeds in higher dimensions. Closes with the file Summary block cataloguing the 4 theorems, 9 definitions, 0 own axioms, 0 sorries (2 axioms inherited via import from Erdos105Problem.lean).",
       "startLine": 176,
       "endLine": 206,
       "mathContext": "counterexample_lifts: embedding R^d into R^(d+1) preserves counterexample properties"
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the geometric framework for studying the Erdos #105 phenomenon in higher dimensions. With 4 proved theorems, 0 axioms, and 0 sorries, it provides a clean foundation for future work on rich k-flat blocking in R^d.",
+    "summary": "This formalization establishes the geometric framework for studying the Erdos #105 phenomenon in higher dimensions. With 4 proved theorems, 0 own axioms, and 0 sorries (2 axioms inherited from Erdos105Problem.lean), it provides a clean foundation for future work on rich k-flat blocking in R^d.",
     "implications": "The key structural insight is that counterexamples lift to higher dimensions, so the R^2 disproof of Erdos-Purdy extends to all R^d. The open question is whether the positive Beck-Szemeredi-Trotter result also generalizes.",
     "openQuestions": [
       "Does the Beck-Szemeredi-Trotter positive result (cn obstacles insufficient) generalize to rich lines in R^d?",
