@@ -114,11 +114,19 @@
     },
     {
       "id": "bijection",
-      "title": "Bijection and Complex Corollary",
+      "title": "The Cardinal Equality Unpacks to a Bijection",
       "startLine": 47,
+      "endLine": 52,
+      "summary": "nonempty_equiv_prod_real: Nonempty (ℝ × ℝ ≃ ℝ), obtained from Cardinal.eq applied to mk_prod_real — recovering Cantor's 1878 line-plane bijection as a corollary of the cardinal computation rather than an explicit construction.",
+      "mathContext": "$\\#(\\mathbb{R}\\times\\mathbb{R}) = \\#\\mathbb{R} \\iff \\mathrm{Nonempty}(\\mathbb{R}\\times\\mathbb{R} \\simeq \\mathbb{R})$."
+    },
+    {
+      "id": "complex-corollary",
+      "title": "The Complex Plane Corollary",
+      "startLine": 54,
       "endLine": 60,
-      "summary": "nonempty_equiv_prod_real (an explicit bijection ℝ × ℝ ≃ ℝ via Cardinal.eq) and mk_complex_eq_mk_real (#ℂ = #ℝ via ℂ ≃ ℝ × ℝ).",
-      "mathContext": "$\\mathbb{R} \\times \\mathbb{R} \\simeq \\mathbb{R}$ and $\\#\\mathbb{C} = \\#\\mathbb{R}$."
+      "summary": "mk_complex_eq_mk_real: #ℂ = #ℝ, immediate from Complex.equivRealProd (ℂ ≃ ℝ × ℝ) together with Cardinal.mk_complex and Cardinal.mk_real both giving 𝔠.",
+      "mathContext": "$\\#\\mathbb{C} = \\#\\mathbb{R}$."
     }
   ],
   "crossReferences": [
