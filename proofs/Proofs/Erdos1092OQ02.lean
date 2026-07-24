@@ -1072,10 +1072,11 @@ theorem one_mem_fThresholdSet_two_four : 1 ∈ fThresholdSet 2 4 := by
     obtain ⟨p, hsub⟩ := Finset.card_le_one_iff_subset_singleton.1 hcard
     -- Two vertices clear of both endpoints of the removed pair.
     have hcard2 : 1 < (Finset.univ \ ({p.1, p.2} : Finset (Fin 4))).card := by
-      have h2 : ({p.1, p.2} : Finset (Fin 4)).card ≤ 2 :=
-        le_trans (Finset.card_insert_le _ _) (by simp)
-      rw [Finset.card_sdiff (Finset.subset_univ _)]
+      have hle : (({p.1, p.2} : Finset (Fin 4)) ∩ Finset.univ).card ≤ 2 := by
+        rw [Finset.inter_univ]
+        exact le_trans (Finset.card_insert_le _ _) (by simp)
       have h4 : (Finset.univ : Finset (Fin 4)).card = 4 := by simp
+      rw [Finset.card_sdiff]
       omega
     obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.1 hcard2
     simp only [Finset.mem_sdiff, Finset.mem_univ, Finset.mem_insert,
@@ -1107,7 +1108,7 @@ theorem one_mem_fThresholdSet_two_four : 1 ∈ fThresholdSet 2 4 := by
     obtain ⟨u, v, hne, hnadj⟩ := hfull
     obtain ⟨a, b, hab, hset⟩ := Finset.card_eq_two.1
       (show (Finset.univ \ ({u, v} : Finset (Fin 4))).card = 2 by
-        rw [Finset.card_sdiff (Finset.subset_univ _)]
+        rw [Finset.card_sdiff, Finset.inter_univ]
         have h4 : (Finset.univ : Finset (Fin 4)).card = 4 := by simp
         have h2 : ({u, v} : Finset (Fin 4)).card = 2 := Finset.card_pair hne
         omega)
@@ -1123,21 +1124,17 @@ theorem one_mem_fThresholdSet_two_four : 1 ∈ fThresholdSet 2 4 := by
     intro x y hadj hcxy
     have hxy : x ≠ y := fun h => G.irrefl y (h ▸ hadj)
     by_cases hxa : x = a
-    · subst hxa
-      by_cases hya : y = a
-      · exact hxy hya.symm
+    · by_cases hya : y = a
+      · exact hxy (hxa.trans hya.symm)
       · by_cases hyb : y = b
-        · subst hyb
-          simp [hab.symm] at hcxy
-        · simp [hya, hyb] at hcxy
+        · simp [hxa, hyb, hab.symm] at hcxy
+        · simp [hxa, hya, hyb] at hcxy
     · by_cases hxb : x = b
-      · subst hxb
-        by_cases hyb : y = b
-        · exact hxy hyb.symm
+      · by_cases hyb : y = b
+        · exact hxy (hxb.trans hyb.symm)
         · by_cases hya : y = a
-          · subst hya
-            simp [hab.symm] at hcxy
-          · simp [hab.symm, hya, hyb] at hcxy
+          · simp [hxb, hya, hab.symm] at hcxy
+          · simp [hxb, hya, hyb, hab.symm] at hcxy
       · by_cases hya : y = a
         · simp [hxa, hxb, hya] at hcxy
         · by_cases hyb : y = b
