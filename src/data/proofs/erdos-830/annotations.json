@@ -137,13 +137,13 @@
     },
     "type": "concept",
     "title": "Open Conjecture: Infinitely Many Pairs",
-    "content": "**Are there infinitely many amicable pairs?** This is perhaps the central question.\n\nOver 1.2 billion amicable pairs have been found by computer search, but this doesn't prove infinitude. The pattern could theoretically stop at some astronomically large number.\n\nStated as an `axiom` because it remains unproven.",
+    "content": "**Are there infinitely many amicable pairs?** This is perhaps the central question.\n\nOver 1.2 billion amicable pairs have been found by computer search, but this doesn't prove infinitude. The pattern could theoretically stop at some astronomically large number.\n\nDocumented here as source commentary only — it is not stated as a Lean `axiom` and does not appear as a declaration in the file.",
     "mathContext": "The set {(a,b) | IsAmicable a b} is conjectured to be infinite. No proof or disproof exists.",
     "significance": "key",
     "relatedConcepts": [
       "infinity",
       "conjecture",
-      "axiom"
+      "open-problem"
     ],
     "prerequisites": [
       "Set.Infinite",
