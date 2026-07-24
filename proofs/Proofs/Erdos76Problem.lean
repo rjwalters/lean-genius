@@ -102,9 +102,9 @@ For a given coloring, the maximum number of edge-disjoint monochromatic triangle
 noncomputable def maxPackingSize (c : EdgeColoring V) : ℕ :=
   sSup { k | ∃ ts : Finset (Triangle V), ts.card = k ∧ monochromaticPacking c ts }
 
-/-- The minimum over all colorings of the maximum packing size — the extremal quantity. -/
+/-- Min over colorings of max packing size (`sSup` of guarantee set; `sInf` would be `0`). -/
 noncomputable def minMaxPackingSize (n : ℕ) : ℕ :=
-  sInf { k | ∀ c : EdgeColoring (Fin n), maxPackingSize c ≥ k }
+  sSup { k | ∀ c : EdgeColoring (Fin n), maxPackingSize c ≥ k }
 
 /-
 ## The Extremal Construction: Balanced Bipartition Coloring
