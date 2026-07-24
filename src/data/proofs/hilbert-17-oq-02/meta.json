@@ -213,16 +213,23 @@
       "summary": "Defines choiLam c x y z = x⁴y² + y⁴z² + z⁴x² − c·x²y²z² and proves the centerpiece multiplier_sos_identity: (x²+y²+z²)·choiLam 3 equals an explicit sum of six squares (proved by ring), hence multiplier_mul_nonneg: the product is non-negative (positivity). This is the explicit, minimal-degree denominator certificate quantifying the gap."
     },
     {
-      "id": "psd-and-threshold",
-      "title": "Positive-Semidefiniteness and the Sharp Threshold",
+      "id": "psd-nonneg",
+      "title": "Positive-Semidefiniteness of the Choi–Lam Form",
       "startLine": 81,
-      "endLine": 161,
-      "summary": "choiLam_three_nonneg (CL is PSD on ℝ³, by dividing the identity by x²+y²+z² off the origin and handling the origin), choiLam_nonneg_of_le (c ≤ 3 ⟹ PSD via the deficit (3−c)·x²y²z² ≥ 0), choiLam_neg_of_gt (c > 3 ⟹ value 3 − c < 0 at (1,1,1)), the equivalence choiLam_psd_iff (PSD on ℝ³ ⟺ c ≤ 3), and three_is_sharp."
+      "endLine": 111,
+      "summary": "choiLam_three_nonneg: CL is PSD on ℝ³, by dividing the multiplier identity by x²+y²+z² off the origin (mul_neg_of_pos_of_neg gives the contradiction) and handling the origin case directly, where x² = y² = z² = 0 forces every monomial of CL to vanish."
+    },
+    {
+      "id": "sharp-threshold",
+      "title": "The Sharp PSD Threshold c ≤ 3",
+      "startLine": 112,
+      "endLine": 151,
+      "summary": "choiLam_nonneg_of_le (c ≤ 3 ⟹ PSD via the deficit (3−c)·x²y²z² ≥ 0 added to the PSD boundary member), choiLam_neg_of_gt (c > 3 ⟹ value 3 − c < 0 at (1,1,1)), the equivalence choiLam_psd_iff (PSD on ℝ³ ⟺ c ≤ 3), and three_is_sharp — the contrapositive packaging of the same equivalence."
     },
     {
       "id": "polynomial-form",
       "title": "The Family as a Genuine MvPolynomial (Fin 3) ℝ",
-      "startLine": 163,
+      "startLine": 152,
       "endLine": 195,
       "summary": "Defines choiLamPoly c : MvPolynomial (Fin 3) ℝ and the PSD predicate IsPSDMv (matching the parent's IsPositiveSemidefiniteMv), proves eval_choiLamPoly bridging the polynomial to choiLam, and transports the threshold: choiLamPoly_psd_iff (IsPSDMv (choiLamPoly c) ⟺ c ≤ 3) and choiLamPoly_three_psd (the Choi–Lam form is PSD)."
     }
