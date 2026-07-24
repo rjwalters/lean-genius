@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 3,
-    "focus": "Elementary layer SATURATED (verified 2026-07-21, 2866 lines, 0-axiom/0-sorry): exact values h(2)=h(3)=1, h(4)=2, h(5)=3 (h_five_eq_three); all-n general-position existence (parabolaConfig); h_mono; and the general lower bound le_h_of_three_mul_sub_one_le (k ≤ h n for n ≥ 3k−1). Matches knowledge.progressSummary; supersedes the stale Session-4 nextAction below.",
+    "iteration": 4,
+    "focus": "Session 2026-07-24 (researcher-3): h 6 <= 4 proved — first nontrivial six-point upper bound (previous best h 6 <= 15 via h_le_choose_two). New file Erdos98WIP01SixUpper.lean: explicit general-position 4-distance witness sixConfig (two concentric equilateral triangles, radii 1 and sqrt2, twist 90deg; squared distances {3, 6, 3+sqrt6, 3-sqrt6}), plus two reusable determinant criteria (not_collinear_of_det, not_concyclic_of_det) proved by deterministic linear_combination cofactor identities. Combined with three_le_h_six: h 6 in {3,4} (h_six_bounds, h_six_eq_three_or_four).",
     "blockers": [
       {
         "route": "super-linear lower bound: improve h(n) ≥ (n-1)/3 toward the conjectured rate (Erdős #98 / Guth–Katz n/log n)",
@@ -29,9 +29,9 @@
         "blockedAt": "2026-07-21"
       },
       {
-        "route": "exact value h(6) (= 3 iff a general-position 6-point 3-distance set exists)",
-        "reopenCriterion": "materially new mechanism required: monotonicity gives h(6) ≥ h(5) = 3; pinning h(6)=3 needs an explicit no-3-collinear, no-4-concyclic 6-point config with exactly 3 distinct distances (regular hexagon and pentagon+centre are disqualified — 4 concyclic), whose existence is itself open; else h(6) ≥ 4 needs a new lower bound.",
-        "blockedAt": "2026-07-21"
+        "route": "exact value h(6): decide the dichotomy h(6)=3 vs h(6)=4 (h 6 <= 4 now proved via sixConfig)",
+        "reopenCriterion": "materially new mechanism required: 3 <= h(6) <= 4 is pinned (h_six_bounds; upper bound via the 4-distance twisted-triangles witness). h(6)=3 iff a general-position 6-point THREE-distance config exists — open; within the twisted-triangle family (R, theta) a 3-distance merge forces (R,theta)=(2,60deg) which is degenerate (collinear triple) or R=1 (triangles coincide), so a 3-distance witness needs a construction outside this family. h(6)=4 needs a lower bound 4 <= h(6), i.e. an impossibility proof for ALL general-position 6-point 3-distance sets — beyond the h5 centroid/row-sum method, which only kills regular (2-regular-per-colour) configurations.",
+        "blockedAt": "2026-07-24"
       }
     ],
     "nextAction": "STAND DOWN on elementary work. Open directions are deep (recorded as blockers): the super-linear lower bound (needs incidence geometry / Guth–Katz) and exact values h(n) for n ≥ 6 (need general-position min-distance constructions of uncertain existence).",
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free). General ladder le_h_of_three_mul_sub_one_le (k<=h(n) for n>=3k-1) subsumes the uniform lower-bound ladder. Added (2026-07-22, researcher-1-3) Erdos98WIP01Thresholds.lean: monotonicity-sharpened small-n bounds filling the ladder gap — 3<=h(n) for all n>=5 (ladder only reaches n>=8), giving 3<=h(6),3<=h(7) as best-known. Deep open: super-linear rate (Guth-Katz, absent from Mathlib) and exact h(6) (needs open 6-point 3-distance config).",
+    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free); h 6 pinned to {3,4} (2026-07-24, researcher-3: h 6 <= 4 via explicit 4-distance twisted-triangles witness in Erdos98WIP01SixUpper.lean; lower bound three_le_h_six from Thresholds). General ladder le_h_of_three_mul_sub_one_le (k<=h(n) for n>=3k-1) plus monotonicity thresholds (3<=h(n) for n>=5). Deep open: super-linear rate (Guth-Katz, absent from Mathlib), and deciding h(6)=3 vs 4 (needs an open 6-point 3-distance config, or a new impossibility mechanism).",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -106,7 +106,11 @@
       "h_five_eq_three (Erdos98WIP01.lean): h 5 = 3, pinned exactly via le_antisymm h_five_le_three three_le_h_five (axiom-free, docker-verified).",
       "two_common_neighbours_dist (Erdos98WIP01.lean:1782, axiom-free, docker-built 8577 jobs): in EuclideanSpace ℝ (Fin 2), dist p q = a ∧ dist x p = dist x q = dist y p = dist y q = a ∧ a>0 → x = y ∨ dist x y = a·√3. Discharges the intersecting-circle distance equations of the h 5 ≥ 3 degree-3 sub-cases.",
       "le_h_of_three_mul_sub_one_le (Erdos98WIP01.lean:~1901): general closed-form lower bound k ≤ h n for n ≥ 3k−1, axiom-free (omega from three_mul_h_ge). Existing rungs three_le_h_of_eight_le / four_le_h_of_eleven_le rewritten as one-line k=3/k=4 specializations; added five_le_h_of_fourteen_le (k=5).",
-      "two_le_h_of_four_le, three_le_h_of_five_le, three_le_h_six, three_le_h_seven — monotonicity-sharpened small-n lower bounds (Erdos98WIP01Thresholds.lean, 0-axiom)"
+      "two_le_h_of_four_le, three_le_h_of_five_le, three_le_h_six, three_le_h_seven — monotonicity-sharpened small-n lower bounds (Erdos98WIP01Thresholds.lean, 0-axiom)",
+      "not_collinear_of_det (Erdos98WIP01SixUpper.lean): general line-determinant criterion — nonzero affine determinant of three points refutes any common line a*x+b*y+c=0, by cofactor linear_combination elimination (no nlinarith search over unknown coefficients).",
+      "not_concyclic_of_det (Erdos98WIP01SixUpper.lean): general circle-determinant criterion — nonzero 3x3 determinant det[[q-p, Nq-Np],[r-p, Nr-Np],[s-p, Ns-Np]] (N t = |t|^2) refutes any common circumcentre, by the cofactor linear_combination of the three chord equations 2c.(t-p) = Nt-Np.",
+      "sixConfig + inGeneralPosition_sixConfig + numDistinctDistances_sixConfig_le (Erdos98WIP01SixUpper.lean): explicit general-position 6-point 4-distance witness — inner equilateral triangle radius 1 (angles 0/120/240), outer radius sqrt2 (angles 90/210/330); 15 per-pair distance lemmas, 20 line determinants, 15 circle determinants, all axiom-free.",
+      "h_six_le_four / h_six_bounds / h_six_eq_three_or_four (Erdos98WIP01SixUpper.lean): h 6 <= 4, hence 3 <= h 6 <= 4 and the dichotomy h 6 = 3 or h 6 = 4."
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -160,7 +164,12 @@
       "Clean planar-rigidity mechanism: with u=x−p, v=y−p, w=q−p (all norm a, ⟨u,w⟩=⟨v,w⟩=a²/2), the vector e=u+v−w is orthogonal to both w and d=u−v; if x≠y then d≠0, and e≠0 would make e,w,d three pairwise-orthogonal nonzero vectors (linearly independent) — impossible in dim 2. So e=0, i.e. u+v=w, forcing ⟨u,v⟩=−a²/2 and ‖x−y‖²=3a². Same regular-simplex-needs-dimension argument as no_four_mutually_equidistant, run one dimension lower.",
       "Lean gotcha: simp only [inner_sub_left, inner_add_left, ...] canonicalizes ⟪u,v⟫ to a fixed argument order (⟪v,u⟫ here), so a follow-up rw [real_inner_comm .., htval] whose LHS is ⟪u,v⟫ fails to fire — finish such goals with linarith [htval, hc] (hc : ⟪v,u⟫=⟪u,v⟫) instead of orientation-sensitive rw. Also real_inner_comms explicit args are the reverse orientation; use real_inner_comm _ _ driven by the expected type. And explicit rw [inner_sub_right] over `set`-bound u:=x−p unfolds the local def (⟪u,u⟫→⟪u,x⟫−⟪u,p⟫); prefer simp only for the expansion.",
       "General elementary lower bound in closed form: le_h_of_three_mul_sub_one_le proves k ≤ h n for every target k as soon as n ≥ 3·k − 1 (from n−1 ≤ 3·h n = three_mul_h_ge, since then 3·h n ≥ 3k−2 > 3(k−1)). This single theorem subsumes the entire infinite ladder of concrete rungs (k=3⇒n≥8, k=4⇒n≥11, k=5⇒n≥14, …), replacing enumeration with the general statement — the sharpest elementary general lower bound on h; the conjectured super-linear rate h n/n → ∞ (Erdős #98) is far beyond it and stays open.",
-      "Monotonicity sharpens small-n lower bounds beyond the ladder: le_h_of_three_mul_sub_one_le reaches 3<=h(n) only from n>=8, but h(5)=3 + h_mono gives 3<=h(n) for ALL n>=5, filling the n in {5,6,7} gap. three_le_h_six / three_le_h_seven are the current best-known lower bounds for h(6),h(7). (Erdos98WIP01Thresholds.lean, 0-axiom)"
+      "Monotonicity sharpens small-n lower bounds beyond the ladder: le_h_of_three_mul_sub_one_le reaches 3<=h(n) only from n>=8, but h(5)=3 + h_mono gives 3<=h(n) for ALL n>=5, filling the n in {5,6,7} gap. three_le_h_six / three_le_h_seven are the current best-known lower bounds for h(6),h(7). (Erdos98WIP01Thresholds.lean, 0-axiom)",
+      "Twisted-triangles distance algebra: two concentric equilateral triangles, radii r and R, twist theta, give cross squared distances R^2+r^2-2Rr*cos(theta+120k). Setting R^2 = 2r^2, theta=90deg merges one cross orbit with the inner side (3 - 2sqrt2*cos90 = 3 = inner side when r=1), leaving only 4 distinct values {3, 6, 3+sqrt6, 3-sqrt6}. This is the mechanism behind h 6 <= 4.",
+      "Within the twisted-triangle family a THIRD coincidence (3 distances) is impossible in general position: inner=cross1=cross2 or inner=cross1 & outer=cross2 force (R,theta)=(2,+-60deg) — whose configuration contains the collinear triple (-sqrt3,1),(0,1),(sqrt3,1) — or R=1 (triangles coincide, via cos(theta+240)=(R^2+1)/(2R)<=1 iff (R-1)^2<=0). So h 6 = 3 requires a construction outside this family.",
+      "No-4-concyclic for 3+3 two-circle configurations: a 3+1 split fails on radii (concentric circles of different radii); a 2+2 split is concyclic iff an inner chord is PARALLEL to an outer chord (common perpendicular bisector through the shared centre). Inner chord directions {30,90,150}deg vs outer {0,60,120}deg are disjoint, so no 4 points concyclic — the formal proof needs only 15 numeric determinants.",
+      "Proof-engineering: replacing per-case nlinarith searches over unknown line/centre coordinates (the h5Config pattern) by two general determinant criteria (proved once by cofactor linear_combination, deterministically) reduces all 35 general-position obligations to numeric surd inequalities closed by nlinarith with recorded facts: squares, positivity, products sqrt2*sqrt3=sqrt6 etc., and rational bracketing bounds (1.414<sqrt2<1.415, ...). Far more robust and faster than the search-based pattern.",
+      "Lean idioms (v4.31): fin_cases produces anonymous-constructor indices <k,proof> that simp-only access lemmas stated at OfNat literals do NOT match — but exact/assumption unify them by defeq; so prove per-index-literal lemmas and dispatch via exact lemma <..., by assumption, ...> inside the fin_cases combinator. Also: after norm_num fully closes a goal, a trailing nlinarith errors with 'no goals' and fails the whole first-branch — guard with all_goals nlinarith [...]."
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3.",
@@ -168,9 +177,10 @@
       "None new. Note: `sum k in s` no longer parses in this toolchain (use `sum k IN-set s`); InGeneralPosition is a bare And so hgp.injective fails (use hgp.1); the `module` tactic cleanly discharges the 5^{-1} field-scalar centroid identity."
     ],
     "nextSteps": [
-      "h 5 = 3 is DONE. Follow-up: is h 6 = 3 reachable? The row-sum/centroid method only kills REGULAR two-distance sets; irregular 2-distance 6-sets need a different argument.",
       "Extract `equal row sums => cospherical` as a standalone reusable lemma (dimension/n-agnostic).",
-      "Asymptotic Erdos #98 (weak h(n)>=n, strong h(n)/n->inf) remain genuinely open; not attackable by these elementary methods."
+      "Asymptotic Erdos #98 (weak h(n)>=n, strong h(n)/n->inf) remain genuinely open; not attackable by these elementary methods.",
+      "Decide h(6): either find a general-position 6-point 3-distance configuration OUTSIDE the twisted-triangle family (h 6 = 3), or prove 4 <= h 6 (needs an impossibility argument for irregular 3-distance 6-sets; the centroid/row-sum method only kills colour-regular configurations).",
+      "h(7): the same twisted-triangles idea with a 7th point (shared centre?) fails no-4-concyclic quickly; a 4- or 5-distance 7-point general-position witness would give the first nontrivial h 7 upper bound (currently h 7 <= 21)."
     ],
     "markdown": "# Knowledge Base: erdos-98-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -192,7 +202,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.785Z",
-  "lastUpdate": "2026-07-21",
+  "lastUpdate": "2026-07-24",
   "significance": 7,
   "tractability": 6
 }

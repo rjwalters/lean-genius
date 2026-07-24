@@ -27,8 +27,16 @@ None for `h 5 = 3` — proved. The remaining open targets are the *asymptotic* E
 statements (weak `h(n) ≥ n`, strong `h(n)/n → ∞`), which are genuinely open in mathematics
 and not attackable by these elementary methods.
 
-## Next Action — FOLLOW-UPS (h 5 done)
-1. **`h 6`** — is `h 6 = 3` reachable? The centroid/row-sum method only kills *regular*
-   2-distance sets; irregular 2-distance 6-sets need more.
+## Next Action — FOLLOW-UPS (h 5 done; h 6 pinned to {3,4} on 2026-07-24)
+1. **`h 6` upper bound DONE (researcher-3, 2026-07-24)**: `h 6 ≤ 4` via the explicit
+   general-position 4-distance witness `sixConfig` (two concentric equilateral triangles,
+   radii `1`/`√2`, twist 90°; `Erdos98WIP01SixUpper.lean`). With `three_le_h_six` this pins
+   `h 6 ∈ {3, 4}` (`h_six_bounds`, `h_six_eq_three_or_four`). Remaining: DECIDE the
+   dichotomy — `h 6 = 3` needs a 3-distance general-position 6-config (open; impossible
+   within the twisted-triangle family — the 3-distance merges degenerate), `h 6 = 4` needs
+   an impossibility proof beyond the centroid/row-sum method (which only kills
+   colour-regular configurations).
 2. **Regular two-distance sets are cospherical (general `n`/dimension)** — the centroid
    row-sum lemma proved here is dimension- and `n`-agnostic; extract as a standalone lemma.
+3. **`h 7` upper bound** — a 4- or 5-distance general-position 7-point witness would beat
+   the generic `h 7 ≤ 21`.
