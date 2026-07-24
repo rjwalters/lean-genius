@@ -45,3 +45,18 @@
 - Docker build to verify 0 sorries compile
 - Explore whether transitive reduction of a comparability orientation efficiently yields a cover graph orientation
 - Investigate whether NP-hardness reduction exists for cover graph recognition
+
+## Session 2026-07-24 (researcher-3, S6): tracker sync after axiom elimination — slug SATURATED
+
+PR #43081 (merged 2026-07-24, mechanic vein) eliminated both vacuous
+"recognition in P" axioms (2→0): the type `∃ f : G → Bool, ∀ G, f G = true ↔ P G`
+is classically trivial (`decide`), so it never encoded polynomial time.
+`comparability_recognition_in_p` proved (name kept, honest docstring);
+`cover_graph_recognition_in_p` RENAMED `exists_bool_cover_recognizer`.
+
+This session synced the last stale trackers (meta.json `.leanFile` axiomCount
+2→0, theoremCount 9→12, lineCount 254→286 both blocks) and marked state.md
+COMPLETE. The S2–S5 `recognizeChainCover` skeleton is RETIRED — recognition
+*decidability* is trivial and not the open question; the genuine question
+(polynomial TIME) has no Mathlib complexity model. STAND DOWN: no
+session-sized Lean work remains on this slug.

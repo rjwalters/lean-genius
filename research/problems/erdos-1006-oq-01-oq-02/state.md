@@ -1,19 +1,23 @@
 # Research State: erdos-1006-oq-01-oq-02
 
-> **S5 BLOCKED (researcher-4, 2026-06-13).** Status flipped `active`→`blocked`
-> during the verification blackout. All trackers are byte-in-sync with
-> origin/main — gallery `meta.json` (256 LOC / 9 thm / 2 axiom / 4 def / 0 sorry),
-> JSON `leanFiles` (all 7 files, researcher-1's S4 sorryCount fix already landed),
-> and this `state.md` — so **no STATE-SYNC drift remains to fix.** The only
-> forward step is the build-gated S3/S4 ACT (define `recognizeChainCover` + prove
-> `chain_cover_recognition_decidable`, currently a `sorry`/`...` skeleton). With
-> **4 consecutive doc-only sessions** behind it (S1/S2 OBSERVE, S3 STATE-SYNC, S4
-> tracker fix; last real Lean edit #15097 on 2026-05-03) all deferring this
-> Docker-gated ACT, a 5th doc-only PREP would be churn (cf.
-> feedback-flag-blocked-over-prep-churn). This is an open conjecture (cover
-> recognition in P), not a sorry-discharge, so there is no build-free ACT path.
-> **Unblock when Docker/Aristotle return:** resume at the S4 PREP next-action
-> (refine skeleton to paste-ready), then S5 ACT under `docker-build.sh`.
+> **S6 COMPLETE — axiom elimination landed; slug SATURATED (researcher-3, 2026-07-24).**
+> PR #43081 (merged 2026-07-24) eliminated both vacuous "recognition in P"
+> axioms (2→0): their Lean type `∃ f : SimpleGraph V → Bool, ∀ G, f G = true ↔ P G`
+> is trivially true classically, so `comparability_recognition_in_p` is now a
+> proved theorem (name kept — Golumbic 1977 is a known result; docstring
+> clarifies it asserts only recognizer existence) and
+> `cover_graph_recognition_in_p` was RENAMED `exists_bool_cover_recognizer` so
+> no proved theorem reads as resolving the open problem. File is now
+> 286 LOC / 12 thm / 0 axiom / 4 def / 0 sorry, Docker-verified v4.31.
+> This session (S6) syncs the last stale trackers: `meta.json` `.leanFile`
+> block (axiomCount 2→0, theoremCount 9→12) and both `lineCount`s (254→286).
+>
+> **The S2–S5 `recognizeChainCover` skeleton path is RETIRED — do not resume.**
+> It chased recognition *decidability*, which is trivial (classical indicator /
+> Fintype enumeration) and is not the open question. The genuine open question
+> — is cover-graph recognition in POLYNOMIAL TIME? — is a complexity statement
+> with no Mathlib model and is deliberately left informal. **No session-sized
+> Lean work remains on this slug; treat as completed/parked.**
 
 > **S4 tracker fix (researcher-1, 2026-06-13) — phantom sorryCount.** The JSON
 > `leanFiles` listed `sorryCount: 1` for `Erdos1006OQ01.lean`, `Erdos1006OQ02.lean`,
@@ -29,11 +33,11 @@
 > and blocked by the 2026-06-13 verification blackout (Docker hung + Aristotle 404).
 
 ## Current State
-**Phase**: ACT (BLOCKED — Docker down) (S5 BLOCKED — all trackers in sync; only the build-gated S3/S4 ACT remains and Docker/Aristotle are down, so the slug is parked out of the claimable pool until verification infra returns)
+**Phase**: COMPLETE (S6 — vacuous axioms eliminated by PR #43081; trackers synced this session; skeleton path retired; no session-sized Lean work remains)
 **Path**: full
-**Since**: 2026-06-09T23:58:00Z
-**Iteration**: 5 (S5 BLOCKED, researcher-4, 2026-06-13; bumped from 4 — the S4 tracker fix above was a leanFiles correction that did not advance the body counter)
-**Last Updated**: 2026-06-13T00:00:00Z
+**Since**: 2026-07-24T00:00:00Z
+**Iteration**: 6 (S6 tracker sync, researcher-3, 2026-07-24)
+**Last Updated**: 2026-07-24T11:35:00Z
 
 ## Current Focus (S3 STATE-SYNC, 2026-06-09, researcher-1)
 
