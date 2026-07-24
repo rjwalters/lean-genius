@@ -91,11 +91,19 @@
     },
     {
       "id": "algebraic-core",
-      "title": "Section I — Degree of an endomorphism of a group ≅ ℤ",
-      "summary": "degreeOfEnd and its properties: the conjugation characterization (degreeOfEnd_conj), identity (degreeOfEnd_id), multiplicativity (degreeOfEnd_comp), independence of the identification (degreeOfEnd_indep), and that automorphisms have degree ±1 (degreeOfEnd_equiv_isUnit, degreeOfEnd_equiv_eq).",
+      "title": "Section I.a — degreeOfEnd: conjugation, identity, multiplicativity, independence",
+      "summary": "degreeOfEnd is defined and its well-definedness cluster is proved: the conjugation characterization (degreeOfEnd_conj) — the single lemma everything else rests on — identity (degreeOfEnd_id), multiplicativity (degreeOfEnd_comp), and independence of the chosen identification e (degreeOfEnd_indep).",
       "startLine": 68,
+      "endLine": 130,
+      "mathContext": "An additive map ℤ→+ℤ is multiplication by its value at 1 (AddMonoidHom.map_zsmul); this ℤ-linearity is what makes deg(f) well defined independently of the chosen e : G ≃+ ℤ."
+    },
+    {
+      "id": "algebraic-core-units",
+      "title": "Section I.b — Automorphisms have degree ±1",
+      "summary": "degreeOfEnd_equiv_isUnit: the degree of an automorphism σ : G ≃+ G is a unit of ℤ, via degreeOfEnd_comp applied to σ and σ⁻¹. degreeOfEnd_equiv_eq: units of ℤ are exactly ±1 (Int.isUnit_iff), giving the sharp dichotomy deg(σ) = 1 ∨ deg(σ) = -1.",
+      "startLine": 131,
       "endLine": 145,
-      "mathContext": "End(ℤ) ≅ ℤ as a multiplicative monoid; an additive map ℤ→+ℤ is multiplication by its value at 1; units of ℤ are ±1."
+      "mathContext": "IsUnit.of_mul_eq_one from σ.comp σ.symm = id; Int.isUnit_iff : IsUnit (n:ℤ) ↔ n = 1 ∨ n = -1."
     },
     {
       "id": "functor-degree",
