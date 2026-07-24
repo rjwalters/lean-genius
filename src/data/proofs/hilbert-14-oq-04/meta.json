@@ -52,10 +52,11 @@
     "originalContributions": [
       "Assembles the qualitative Hilbert/Noether finiteness theorem for finite-group linear actions on MvPolynomial as a single named Lean result (hilbert_finiteness), 0 sorries / 0 axioms",
       "Supplies the Algebra.IsInvariant instance for the fixed-points subalgebra of a finite group action (definitional via membership)",
-      "Records the integrality instance R / R^G for finite G as a reusable typeclass instance"
+      "Records the integrality instance R / R^G for finite G as a reusable typeclass instance",
+      "S5 ACT Stages 1-3 toward Noether's quantitative degree bound: coeff_charpoly_mem_fixedPoints (every orbit-charpoly coefficient is G-invariant), natDegree_charpoly (the orbit charpoly has degree exactly |G|), and totalDegree_coeff_charpoly_le (under an explicit graded-action hypothesis, the j-th coefficient has total degree ≤ (|G|-j)·deg b, via Vieta + elementary symmetric functions)"
     ],
-    "lineCount": 100,
-    "theoremCount": 1,
+    "lineCount": 203,
+    "theoremCount": 4,
     "definitionCount": 0,
     "mathlib_version": "4.31.0"
   },
@@ -69,7 +70,8 @@
       "**Integrality is the engine**: every r ∈ R is a root of ∏_{g∈G}(X − g·r), a monic degree-|G| polynomial whose coefficients (elementary symmetric functions of the orbit) are G-invariant, hence lie in R^G.",
       "**Artin-Tate converts module-finiteness into algebra-finiteness** for the bottom of the tower — this is exactly what is needed to descend finite generation from R to R^G.",
       "**No Reynolds operator is required**: the orbit-polynomial / integrality route works in arbitrary characteristic, avoiding the averaging operator that fails in modular (char | |G|) settings.",
-      "Mathlib already carries every bearer lemma (invariant integrality, restrict-scalars finite type, integral⇒module-finite, Artin-Tate), so the theorem assembles without new foundational infrastructure."
+      "Mathlib already carries every bearer lemma (invariant integrality, restrict-scalars finite type, integral⇒module-finite, Artin-Tate), so the theorem assembles without new foundational infrastructure.",
+      "The degree bound factors through the orbit characteristic polynomial charpoly G b = ∏_{g∈G}(X − g·b): its coefficients are G-invariant by construction (Stage 1), it has degree exactly |G| (Stage 2), and — given an explicit graded-action hypothesis that the action does not raise total degree — Vieta's formulas bound the j-th coefficient's total degree by (|G|−j)·deg b (Stage 3), the same orbit-polynomial idea that proves integrality, now tracking degrees instead of just invariance."
     ],
     "prerequisites": [
       "Commutative ring theory (finite generation, integral extensions)",
@@ -117,6 +119,14 @@
       "endLine": 99,
       "summary": "The five-step bearer chain on the tower k → B → R. Restrict-scalars upgrades the automatic `Algebra.FiniteType k R` to `Algebra.FiniteType B R`; integrality then gives `Module.Finite B R`. The two Artin-Tate hypotheses are assembled — k → R algebra-f.g. (`h_kR_fg`) and R a f.g. B-module (`h_BR_fg`) — together with injectivity of B ↪ R, and `fg_of_fg_of_fg` concludes (⊤ : Subalgebra k B).FG, which `Subalgebra.fg_iff_finiteType` translates back to `Algebra.FiniteType k B`. 0 sorries, 0 axioms.",
       "mathContext": "$k\\to R$ algebra-f.g. and $R$ a f.g. $B$-module $\\xRightarrow{\\text{Artin-Tate}} (\\top:\\mathrm{Subalgebra}\\,k\\,B).\\mathrm{FG} \\Rightarrow \\mathrm{FiniteType}\\,k\\,B.$"
+    },
+    {
+      "id": "degree-bound-stages",
+      "title": "S5 ACT: Toward Noether's Degree Bound (Stages 1-3)",
+      "startLine": 100,
+      "endLine": 203,
+      "summary": "Lands three self-contained stages toward the quantitative half of Noether 1916 (generators of R^G in degree ≤ |G|), factoring through the orbit characteristic polynomial charpoly G b = ∏_{g∈G}(X − g·b). Stage 1 (coeff_charpoly_mem_fixedPoints) shows every coefficient is G-invariant. Stage 2 (natDegree_charpoly) shows the polynomial has degree exactly |G|. Stage 3 (totalDegree_coeff_charpoly_le) bounds the total degree of the j-th coefficient by (|G|-j)·deg b via Vieta's formulas and elementary symmetric functions, under an explicit graded-action hypothesis (not implied by MulSemiringAction alone). Stage 5 — Reynolds-operator extraction of an actual degree-≤|G| generating set, requiring the non-modular hypothesis ¬(ringChar k ∣ |G|) — is deferred to a later iteration.",
+      "mathContext": "$\\mathrm{charpoly}\\,G\\,b = \\prod_{g\\in G}(X - g\\cdot b)$: coefficients lie in $R^G$ (Stage 1), $\\deg = |G|$ (Stage 2), and (graded action) $\\deg_{\\mathrm{tot}}(\\mathrm{coeff}_j) \\le (|G|-j)\\cdot\\deg b$ (Stage 3, via Vieta)."
     }
   ],
   "crossReferences": [
@@ -135,7 +145,7 @@
     "summary": "For any finite group acting linearly on a polynomial ring, the invariant subring is finitely generated as a k-algebra — Noether's 1916 qualitative theorem — formalized with 0 sorries and 0 axioms by chaining Mathlib's invariant integrality and the Artin-Tate lemma.",
     "implications": "1. **Finite groups are always tame**: unlike the unipotent counterexamples (Nagata), finite-group invariants are unconditionally finitely generated.\n2. **Characteristic-free**: the orbit-polynomial/integrality route avoids the Reynolds averaging operator, so it covers the modular case.\n3. **Reusable instances**: the IsInvariant and IsIntegral instances on the fixed-points subalgebra can be reused for downstream invariant-theory formalizations.",
     "openQuestions": [
-      "Formalize Noether's quantitative degree bound: generators of R^G exist in degree ≤ |G| (deferred S3-bound target).",
+      "Complete Noether's quantitative degree bound: Stages 1-3 (orbit charpoly is G-invariant, has degree |G|, and — under a graded-action hypothesis — its coefficients have total degree ≤ (|G|-j)·deg b) are proved; the remaining Stage 5 is extracting an actual generating set in degree ≤ |G| via a Reynolds operator, which additionally requires the non-modular hypothesis ¬(ringChar k ∣ |G|).",
       "Extend to reductive groups via a formalized Reynolds operator (Weyl's theorem)."
     ]
   },
@@ -170,9 +180,9 @@
       "MvPolynomial"
     ],
     "namespace": "Hilbert14OQ04",
-    "lineCount": 100,
+    "lineCount": 203,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 4,
     "definitionCount": 0,
     "path": "Proofs/Hilbert14OQ04.lean",
     "sorries": 0

@@ -138,5 +138,53 @@
       "Mathlib bearer chain"
     ],
     "mathContext": "Setup: $G$ finite acting $k$-linearly on $R = k[x_0,\\dots,x_{n-1}]$; goal $R^G$ finitely generated over $k$. The OQ-04 meta-conjecture (uniform algorithms, non-reductive case) is not a single formalizable statement."
+  },
+  {
+    "id": "hilbert-14-oq-04-degree-bound-docstring",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 100,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "S5 ACT Docstring: Charpoly Route to the Degree Bound",
+    "content": "This docstring reframes the deferred quantitative half of Noether 1916 — generators of R^G in degree ≤ |G| — as a problem about a single auxiliary object: the orbit characteristic polynomial charpoly G b = ∏_{g∈G}(X − g·b) for b ∈ R. It lays out a five-stage plan and records which stages this file discharges (1-3) versus what remains (Stage 5: Reynolds-operator extraction of an actual generating set, which needs the non-modular hypothesis ¬(ringChar k ∣ |G|)). This is the same honest IN/OUT scoping style as the file's opening docstring — recording exactly how far the machine-checked argument reaches rather than implying the full quantitative bound is proved.",
+    "mathContext": "Plan: factor Noether's degree bound through $\\mathrm{charpoly}\\,G\\,b = \\prod_{g\\in G}(X-g\\cdot b)$; Stages 1-3 proved here, Stage 5 (Reynolds operator, needs $\\lnot(\\mathrm{ringChar}\\,k \\mid |G|)$) deferred.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Noether's degree bound",
+      "orbit characteristic polynomial",
+      "Reynolds operator",
+      "modular invariant theory"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "elementary symmetric functions",
+      "graded ring actions"
+    ]
+  },
+  {
+    "id": "hilbert-14-oq-04-degree-bound-stages",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 121,
+      "endLine": 199
+    },
+    "type": "technique",
+    "title": "Stages 1-3: Invariance, Degree, and the Vieta Bound",
+    "content": "coeff_charpoly_mem_fixedPoints (Stage 1) shows each coefficient of charpoly G b is fixed by every g, hence lies in R^G, via Mathlib's smul_coeff_charpoly. natDegree_charpoly (Stage 2) computes the polynomial's degree as exactly |G| — a product of |G| monic linear factors (X − g·b), via Polynomial.natDegree_prod_of_monic. totalDegree_coeff_charpoly_le (Stage 3) is the technical core: writing charpoly G b as a multiset product over the orbit {g • b}, Multiset.prod_X_sub_C_coeff identifies the j-th coefficient with (up to sign) the elementary symmetric function esymm_{|G|-j} of the orbit; Finset.esymm_map_val expands this as a sum over (|G|-j)-subsets of products of orbit elements, each bounded in total degree by deg b under the explicit graded-action hypothesis h_graded — giving the final bound (|G|-j)·deg b via totalDegree_finsetSum/finsetProd and totalDegree_mul.",
+    "mathContext": "Vieta: $\\mathrm{coeff}_j(\\mathrm{charpoly}) = (-1)^{|G|-j}\\,e_{|G|-j}(\\{g\\cdot b\\}_{g\\in G})$; each $(|G|-j)$-fold product term has total degree $\\le (|G|-j)\\deg b$ under $h_{\\mathrm{graded}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "elementary symmetric functions",
+      "orbit characteristic polynomial",
+      "total degree of multivariate polynomials"
+    ],
+    "prerequisites": [
+      "Multiset.prod_X_sub_C_coeff",
+      "Finset.esymm_map_val",
+      "MvPolynomial.totalDegree"
+    ]
   }
 ]
