@@ -27,7 +27,7 @@
     "goal": "Formalize a precise Lean 4 statement of the cyclotomic-restricted path-length question and prove tractable building blocks (sublevel-set geometry for small n such as n = 1, 2, 3, 4, 6), rather than the full uniform theorem which needs analytic infrastructure not yet in Mathlib."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00Z",
     "iteration": 10,
     "focus": "Session 2026-07-24 (researcher-3, OQ11): first component-topology result — quadratic cyclotomic lemniscates (n=3,4,6, the complete phi(n)=2 case) are disconnected for small C via a general Cassini-oval criterion; cyclotomic_four (X^2+1) proved as a Mathlib-gap byproduct.",
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: metric geometry pinned both sides (radius+area, OQ01-07); radial exit path (OQ08); exterior escape topology (OQ09); exit in EVERY direction with two-sided sharp annulus bound (OQ10); component topology (OQ11+OQ12, 2026-07-24): quadratic cyclotomic lemniscates (n=3,4,6, complete φ(n)=2 case) have EXACTLY TWO path components in the sub-threshold regime (C<3/4 for n=3,6; C<1 for n=4) — petals are star-shaped about their foci (ray-monotonicity certificate). Remaining open driver: C>1 labyrinth / every-boundary-point reachability (needs Mathlib lemniscate infrastructure); sharpness (connectivity at/above threshold, through-the-neck path) open; quartic φ(n)=4 cases (n=5,8,10,12) open.",
+    "progressSummary": "Component topology: quadratic case EXACT (OQ11 disconnection + OQ12 two path components), and the QUARTIC layer now open (OQ13, Iter 12): degree-generic finite-root disconnection engine + {|Phi_8|<C} disconnected for C<1/4, {|Phi_12|<C} for C<1/16. Remaining: n=5,10 quartics (clean via cos-only gap bounds in sqrt 5), exact 4-component counts (OQ12 star-shaped template at 4 foci), sextic layer n=7,9,14,18 (engine-ready). Deep C>1 labyrinth driver blocked (unchanged).",
     "builtItems": [
       "Erdos1215UnitCircleMonotone.lean (researcher-5, 2026-07-12, 0-axiom VERIFIED): monotone/membership block for the sublevel set as a function of the level C — closedLevelSet_mono (C1<=C2 => closedLevelSet P C1 subset closedLevelSet P C2), volume_closedLevelSet_mono (measure nondecreasing in C via measure_mono), isRoot_mem_closedLevelSet (roots in set for C>=0), zero_mem_closedLevelSet (0 in set for C>=1 via P(0)=1), closedLevelSet_nonempty (C>=1), levelSet_subset_closedLevelSet (open {|P|<C} subset closed {|P|<=C}). 6 thm [propext,Classical.choice,Quot.sound].",
       "eventually_levelSet_subset_closedBall (Erdos1215UnitCircleRadiusLimit.lean): for C>=1, eps>0, one degree threshold K confines the level set of EVERY unit-circle polynomial of degree>=K to closedBall 0 (2+eps) -- uniform confinement of the whole high-degree Mac Lane class (VERIFIED 0/0)",
@@ -63,7 +63,8 @@
       "Erdos1215UnitCircleConjugation.lean: reflection (complex-conjugation) symmetry of sublevel sets. eval_conj (real-coeff P ⟹ P(z̄)=conj P(z) via Polynomial.eval₂_hom), norm_eval_conj, mem_closedLevelSet_conj/mem_levelSet_conj, closedLevelSet_conj_image/levelSet_conj_image (set = its own conj-image), cyclotomic_hasRealCoeffs (via Polynomial.map_cyclotomic), cyclotomic_closedLevelSet_conj_image/cyclotomic_levelSet_conj_image. 9 thm+1 def, 0-axiom [propext,Classical.choice,Quot.sound].",
       "CyclotomicPolynomialsOQ02OQ10.lean: rayNorm def + continuity, norm_ofReal_mul, le_rayNorm_outer, rayNorm_lt_of_lt_sharpInner, ray_exit (two-sided first-crossing), levelCurve_meets_every_ray, ray_exit_pathLength (9 decls, VERIFIED 0-axiom docker 8580/8580)",
       "CyclotomicPolynomialsOQ02OQ11.lean (researcher-3, 2026-07-24): general Cassini disconnection engine (quadratic_lemniscate_subset_union: sublevel set covered by the two focal sqrt(C)-balls; sqrt_balls_disjoint for 4C<|a-b|^2; not_isPreconnected/not_isConnected/not_isPathConnected_quadratic_lemniscate) + explicit factorizations cyclotomic_three/four/six_eval_factor over foci omega3=(-1+sqrt3*i)/2, +-i, zeta6=(1+sqrt3*i)/2, focal distances norm_..._sq = 3, 4, 3, and the six headline theorems not_isPreconnected/not_isPathConnected_levelSet_three/four/six. Byproduct: cyclotomic_four (Phi_4 = X^2+1, ABSENT from Mathlib) via cyclotomic_expand_eq_cyclotomic from Phi_2.",
-      "CyclotomicPolynomialsOQ02OQ12.lean (Iter 11): 9 decls, 0 sorries, 0 axioms — cassini_certificate, cassini_segment_le, starConvex_petal, focus_mem_petal, isPathConnected_petal, quadratic_lemniscate_two_path_components, joined_focus_unique, levelSet_{three,four,six}_two_path_components"
+      "CyclotomicPolynomialsOQ02OQ12.lean (Iter 11): 9 decls, 0 sorries, 0 axioms — cassini_certificate, cassini_segment_le, starConvex_petal, focus_mem_petal, isPathConnected_petal, quadratic_lemniscate_two_path_components, joined_focus_unique, levelSet_{three,four,six}_two_path_components",
+      "CyclotomicPolynomialsOQ02OQ13.lean: lemniscate_subset_biUnion, not_isPreconnected_lemniscate (general finite-root engine), not_isPreconnected/isConnected/isPathConnected_quartic_lemniscate, cyclotomic_eight, cyclotomic_twelve, not_isPreconnected/isPathConnected_levelSet_eight (C<1/4) and _twelve (C<1/16); 0 axioms, 0 sorries, host-verified v4.31"
     ],
     "insights": [
       "All roots of Phi_n lie on the unit circle (primitive n-th roots), so |Phi_n(z)| = prod_{mu prim} dist(z,mu) >= (|z|-1)^{phi(n)} -> inf: the cyclotomic lemniscate {|Phi_n|<C} is BOUNDED (compact) for EVERY C, explicit radius max 2 (C+1).",
@@ -82,7 +83,10 @@
       "OQ12 PREP (2026-07-24): Cassini petal star-shapedness certificate sympy-verified — squared ray-monotonicity difference = W^2*[G + 2(1-s^3)(WD-x)] with G = (1-s)(D-W(1+s))(D(1+s)-W(1+s^2)); all factors nonneg for 0<=s<=1, 2W<=D, x<=WD (Cauchy-Schwarz). nlinarith product hints pre-computed. Petal path-connectivity => exactly two path-components of the quadratic lemniscate in the 4C<|a-b|^2 regime.",
       "OQ12 (Iter 11): each Cassini petal {|(z-a)(z-b)|<C} ∩ B(a,√C) is STAR-SHAPED about its focus in the separated regime 4C<|a-b|² — via a ray-monotonicity certificate: sliding z toward the focus along the segment does not increase the Cassini product; positivity certificate (sympy-designed, nlinarith-checked): W²(W²-2x+D²)-s²W²(s²W²-2sx+D²) = W²[(1-s)(D-W(1+s))(D(1+s)-W(1+s²)) + 2(1-s³)(WD-x)], each factor nonneg from 2W≤D, s∈[0,1], Cauchy-Schwarz x≤WD",
       "OQ12: star-shaped + OQ11 Cassini cover + disjoint √C-balls ⟹ EXACTLY two path components: every point joins to focus a or b, foci not joined, no point joins both (quadratic_lemniscate_two_path_components, joined_focus_unique)",
-      "OQ12: component count now EXACT for the whole quadratic case φ(n)=2: {|Φ₃|<C},{|Φ₆|<C} have exactly 2 path components for 0<C<3/4; {|Φ₄|<C} for 0<C<1"
+      "OQ12: component count now EXACT for the whole quadratic case φ(n)=2: {|Φ₃|<C},{|Φ₆|<C} have exactly 2 path components for 0<C<3/4; {|Φ₄|<C} for 0<C<1",
+      "Degree-generic disconnection engine: for finite root set S with a,b in S distinct, C <= r^|S|, and every other root at distance > 2r from a, the lemniscate {|prod(z-mu)| < C} is not preconnected — the a-ball splits off the biUnion cover. Subsumes the OQ11 two-focus Cassini criterion (S={a,b}, r=sqrt(C)) and pre-builds the sextic phi(n)=6 layer (n=7,9,14,18).",
+      "Quartic layer opened: {|Phi_8|<C} disconnected for 0<C<1/4 (roots (±√2±√2 i)/2, min gap √2), {|Phi_12|<C} disconnected for 0<C<1/16 (roots (±√3±i)/2, min gap 1). Byproducts: cyclotomic 8 C = X^4+1 and cyclotomic 12 C = X^4-X^2+1, both absent from Mathlib, via cyclotomic_expand_eq_cyclotomic.",
+      "Lean recipe for quartic eval-factorizations: one linear_combination over BOTH (sqrt k)^2 = k and I^2 = -1; compute the residual as a polynomial in s=u^2-k, v=I^2+1 and read off the two multipliers. Root-gap lower bounds via Complex.abs_re_le_norm avoid normSq entirely. v4.31: pow_le_pow_left -> pow_le_pow_left0."
     ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
@@ -90,9 +94,10 @@
       "cyclotomic 4 has no explicit closed form in Mathlib (cyclotomic_one/_two/_three/_six exist, _four does not); proved locally in OQ11 via cyclotomic_expand_eq_cyclotomic."
     ],
     "nextSteps": [
-      "OQ12 ACT: CyclotomicPolynomialsOQ02OQ12.lean per Iter-10 PREP in state.md — cassini_segment_le, starConvex_petal, isPathConnected_petal, quadratic_lemniscate_two_path_components, n=3/4/6 specializations (~200 LOC; v4.31 name-risk list in PREP).",
-      "After OQ12: option (c) quartic phi(n)=4 cases n=5,8,10,12 (4-focus cover template).",
-      "Blocked driver unchanged: C>1 labyrinth / path-length <= C*n (materially new mechanism required)."
+      "Quartic n=5,10: root gaps need only cos values (clean in sqrt 5): min gap^2 = (5-sqrt5)/2 for Phi_5; crude uniform regime C<1/16 suffices via dist >= min(sqrt5/2, 2 sin 72) > 1. Phi_10(z) = Phi_5(-z) mirror.",
+      "Exact FOUR path components sub-threshold: OQ12 per-petal star-shapedness certificate at 4 foci (quartic ray-monotonicity — harder nlinarith).",
+      "Sextic layer phi(n)=6 (n=7,9,14,18): engine ready; needs root coordinates/gaps only.",
+      "Blocked driver unchanged: C>1 labyrinth / every-boundary-point bounded-length reachability (materially new mechanism required)."
     ],
     "markdown": "# Knowledge Base: erdos-1215-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is a restriction of Erdős #1215 to cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity. The parent problem was resolved negatively by Mac Lane (1953) using labyrinth polynomials; the question here is whether the rigid, symmetric placement of cyclotomic roots precludes such labyrinths and yields a polynomial-in-n path-length bound.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

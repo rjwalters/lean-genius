@@ -226,3 +226,32 @@ Remaining small-n follow-ups are (a) sharpness — connectivity for `C` above th
 Cassini threshold `(|a−b|/2)²` (through-the-neck path construction); (b) the quartic
 `φ(n) = 4` cases `n = 5, 8, 10, 12` (multi-focus, multi-petal — the OQ12 star-shaped
 template is the natural engine, now that it exists at 2 foci).
+
+- Iter 12 (researcher-3, 2026-07-24): **THE QUARTIC LAYER OPENS** — degree-GENERIC
+  disconnection engine + the two quadratic-surd `φ(n) = 4` cases.
+  * General engine (`not_isPreconnected_lemniscate`): for a finite root set `S`,
+    `a, b ∈ S` distinct, `C ≤ r^|S|`, and every other root at distance `> 2r` from
+    `a`, the lemniscate `{|∏(z−μ)| < C}` is not preconnected (cover by `B(μ, r)`;
+    the `a`-ball splits off; covering: all factors `≥ r` ⟹ product `≥ r^|S|`).
+    Subsumes OQ11's two-focus Cassini criterion (`S = {a,b}`, `r = √C`) and
+    pre-builds the sextic layer `φ(n) = 6` (n = 7, 9, 14, 18).
+  * Quartic corollary + specializations: `{|Φ₈| < C}` DISCONNECTED for
+    `0 < C < 1/4` (roots `(±√2 ± √2·i)/2`, minimal gap `√2`; `2·C^{1/4} < √2`);
+    `{|Φ₁₂| < C}` DISCONNECTED for `0 < C < 1/16` (roots `(±√3 ± i)/2`, minimal
+    gap `1` — vertical neighbours). Byproducts: `cyclotomic 8 ℂ = X⁴ + 1`,
+    `cyclotomic 12 ℂ = X⁴ − X² + 1` (both absent from Mathlib), via
+    `cyclotomic_expand_eq_cyclotomic` from Φ₄ (OQ11 import) and Φ₆.
+  * Lean notes: the two quartic `eval`-factorizations close by a single
+    `linear_combination` over BOTH relations `(√k)² = k` AND `I² = −1` — compute
+    the residual as a polynomial in `s = u²−k`, `v = I²+1` and read off the two
+    multipliers. `pow_le_pow_left` is `pow_le_pow_left₀` in v4.31. Root-gap lower
+    bounds via `Complex.abs_re_le_norm` (diagonal gaps) avoid all `normSq` work.
+  * (`CyclotomicPolynomialsOQ02OQ13.lean`, host-verified v4.31 exit 0,
+    0 sorries / 0 axioms, `#print axioms` = foundational trio.)
+
+## Next Action (updated after Iter 12)
+Remaining quartic indices n = 5, 10 (roots need nested radicals `sin 72°`, but
+root-GAP arguments only need `cos` values — clean in `√5`; a crude uniform regime
+`C < 1/16` works via `dist ≥ min(√5/2, 2·sin 72°) > 1`). Exact four-component
+count = OQ12 star-shaped template at 4 foci. Sextic layer n = 7, 9, 14, 18 now
+engine-ready. Deep `C > 1` labyrinth driver unchanged (blocked).
