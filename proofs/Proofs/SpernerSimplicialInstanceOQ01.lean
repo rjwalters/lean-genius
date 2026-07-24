@@ -386,6 +386,93 @@ theorem triAdj_symm (m : ℕ) :
       obtain ⟨rfl, rfl⟩ := hadj
       simp [triAdj, h]
 
+/-- Adjacent cells share the codimension-1 face (the `adj_vertex`
+obligation): for each interior pairing, the two-element edge vertex-sets
+coincide. In every `some` row of the `triAdj` table the shared edge is
+listed in the *same order* on both sides (e.g. `up i j` positions `1, 2`
+and `down i j` positions `0, 1` both enumerate `(i+1, j), (i, j+1)`), so
+after computing `univ.erase k` and pushing the image through the
+two-element set, both sides are definitionally equal (`rfl`, with proof
+irrelevance identifying the subtype membership proofs). -/
+theorem triAdj_vertex (m : ℕ) :
+    ∀ s k s' k', triAdj m s k = some (s', k') →
+      (Finset.univ.erase k).image (triVtx m s) =
+      (Finset.univ.erase k').image (triVtx m s') := by
+  intro s k s' k' hadj
+  have e0 : (Finset.univ.erase (0 : Fin 3)) = {1, 2} := by decide
+  have e1 : (Finset.univ.erase (1 : Fin 3)) = {0, 2} := by decide
+  have e2 : (Finset.univ.erase (2 : Fin 3)) = {0, 1} := by decide
+  rcases s with ⟨i, j, h⟩ | ⟨i, j, h⟩
+  · fin_cases k
+    · by_cases hc : i + j + 1 < m
+      · simp only [triAdj, dif_pos hc, Option.some.injEq, Prod.mk.injEq]
+          at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+        rfl
+      · simp [triAdj, hc] at hadj
+    · rcases i with _ | i
+      · simp [triAdj] at hadj
+      · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp only [e1, Finset.image_insert, Finset.image_singleton]
+        rfl
+    · rcases j with _ | j
+      · simp [triAdj] at hadj
+      · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+        obtain ⟨rfl, rfl⟩ := hadj
+        simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+        rfl
+  · fin_cases k
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+      rfl
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp only [e1, Finset.image_insert, Finset.image_singleton]
+      rfl
+    · simp only [triAdj, Option.some.injEq, Prod.mk.injEq] at hadj
+      obtain ⟨rfl, rfl⟩ := hadj
+      simp only [e0, e2, Finset.image_insert, Finset.image_singleton]
+      rfl
+
+/-- **The standard regular triangulation of `Δ²` at resolution `m`**
+(S8: instance assembly — the answer to OQ-01's general-`m` core).
+Cells are the `m²` up/down triangles of `TriCell m`, vertices the
+lattice points of `Δ²` at resolution `m`, and all four `Triangulation`
+obligations are the `m`-parametric theorems proved above (S4–S7). For
+`m = 0` the triangulation is empty (no cells); `m = 2` recovers the
+combinatorics of the concrete `standardTriangle2` above. -/
+def standardTriangleTriangulation (m : ℕ) :
+    Triangulation (LatticePoint m) 2 where
+  Cell := TriCell m
+  cellDecEq := inferInstance
+  cellFintype := inferInstance
+  vertex := triVtx m
+  vertex_injective := vertex_injective_triVtx m
+  adj := triAdj m
+  adj_symm := triAdj_symm m
+  adj_vertex := triAdj_vertex m
+  adj_ne := triAdj_ne m
+
+/-- **2-d Sperner's lemma at every resolution `m`**: if the boundary
+doors of the standard `Δ²` triangulation at resolution `m` are odd under
+a coloring `c`, then some cell is panchromatic. The `m`-parametric
+generalisation of `standardTriangle2_sperner`, via the abstract
+`Triangulation.sperner`. -/
+theorem standardTriangleTriangulation_sperner (m : ℕ)
+    (c : LatticePoint m → Fin 3)
+    (hbdry : Odd (Finset.univ.filter
+      (fun p : TriCell m × Fin 3 =>
+        CellComplex.IsDoor c
+          (standardTriangleTriangulation m).toCellComplex p.1 p.2 ∧
+        (standardTriangleTriangulation m).adj p.1 p.2 = none)).card) :
+    ∃ s : TriCell m,
+      CellComplex.IsPanchromatic c
+        (standardTriangleTriangulation m).toCellComplex s :=
+  Triangulation.sperner (standardTriangleTriangulation m) c hbdry
+
 end Triangle
 
 end Triangulation
