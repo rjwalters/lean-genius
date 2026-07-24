@@ -565,9 +565,13 @@ The equation system is:
 - We want all yₛ to be monochromatic.
 
 Rado's theorem guarantees this for any k.
+
+(This is the classical alternative route. The formal proof of `folkman_theorem`
+above instead derives it from Hindman's theorem plus Rado's *selection
+principle*, both available in Mathlib.)
 -/
 
-/-  Folkman follows from Rado's theorem. -/
+/-  Folkman follows from Rado's theorem (classical alternative derivation). -/
 /-
 ## The Main Question
 
