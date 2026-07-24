@@ -345,14 +345,25 @@ lemma partialSumBool_succ (ω : Fin n → Bool) {j : ℕ} (hj : j < n)
         = (if i.val < j then (if ω i then (1 : ℤ) else -1) else 0)
           + (if i.val = j then (if ω i then (1 : ℤ) else -1) else 0) := by
     intro i
+    -- Bind each condition proof BEFORE `rw [if_pos/if_neg]`: an unanchored
+    -- `if_pos (by omega)` leaves the condition a metavariable and can unify
+    -- with the wrong `ite` (e.g. the inner `if ω i` payload).
     rcases lt_trichotomy i.val j with h | h | h
-    · rw [if_pos (by omega), if_pos h, if_neg (by omega)]; ring
-    · rw [if_pos (by omega), if_neg (by omega), if_pos h]; ring
-    · rw [if_neg (by omega), if_neg (by omega), if_neg (by omega)]; ring
+    · have c1 : i.val < j + 1 := by omega
+      have c3 : ¬(i.val = j) := by omega
+      rw [if_pos c1, if_pos h, if_neg c3]; ring
+    · have c1 : i.val < j + 1 := by omega
+      have c2 : ¬(i.val < j) := by omega
+      rw [if_pos c1, if_neg c2, if_pos h]; ring
+    · have c1 : ¬(i.val < j + 1) := by omega
+      have c2 : ¬(i.val < j) := by omega
+      have c3 : ¬(i.val = j) := by omega
+      rw [if_neg c1, if_neg c2, if_neg c3]; ring
   have hlast : (∑ i : Fin n, if i.val = j then (if ω i then (1 : ℤ) else -1) else 0)
       = (if ω ⟨j, hj⟩ then (1 : ℤ) else -1) := by
     rw [Finset.sum_eq_single (⟨j, hj⟩ : Fin n)]
-    · rw [if_pos rfl]
+    · have hc : (⟨j, hj⟩ : Fin n).val = j := rfl
+      rw [if_pos hc]
     · intro i _ hne
       exact if_neg (fun h => hne (Fin.ext h))
     · intro habs
