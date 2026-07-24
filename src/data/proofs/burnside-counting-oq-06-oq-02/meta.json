@@ -129,6 +129,11 @@
       "proofId": "burnside-counting-oq-06",
       "relationship": "parent",
       "description": "Parent entry deriving Fermat's little theorem from the totient form of the necklace count; this entry supplies the Möbius/Lyndon companion and shows both specialize to the Fermat congruence at a prime."
+    },
+    {
+      "proofId": "burnside-counting-oq-06-oq-01",
+      "relationship": "sibling",
+      "description": "The totient (φ-weighted) companion under the same parent: that entry generalizes Fermat via the total necklace count ∑_{d∣n} φ(n/d)·k^d at arbitrary modulus, while this entry handles the μ-weighted aperiodic (Lyndon-word) count. Both closed forms collapse at a prime to the same Fermat congruence k^p ≡ k (mod p)."
     }
   ],
   "conclusion": {
