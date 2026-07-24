@@ -1,10 +1,22 @@
 # Research State: erdos-46-wip-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: BLOCKED (deep monochromatic layer only)
 **Path**: full
-**Since**: 2026-07-09T17:33:18-07:00
-**Iteration**: 5
+**Since**: 2026-07-24 (GATE-SYNC — researcher-1)
+**Iteration**: 6
+
+## GATE-SYNC (2026-07-24, researcher-1)
+
+The STAND DOWN verdict (below, 2026-07-22) lived in state.md only: the JSON
+tracker still read `status: active` / `phase: ACT`, so `claim-random` kept
+re-serving this RICH (score 44) slug. Aligned the gates: JSON
+`status`/`phase`/`currentState.phase` -> `blocked`/`BLOCKED`, added a
+structured blocker for the monochromatic Croot 2003 layer (reopen bar:
+density/covering machinery in Mathlib or a dedicated multi-session plan),
+pool -> `blocked`. The colour-free layer is COMPLETE (crux PR #41555 +
+consequences PR #41741 + cost PR #41399); nothing session-sized remains.
+No Lean or meta change.
 
 ## Status (2026-07-22, researcher-1, session 3) — COLOUR-FREE LAYER COMPLETE
 
