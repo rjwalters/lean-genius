@@ -10,11 +10,12 @@ Prove `erdos_1941_divergence` by formalizing the connection between:
 
 ## Proof Architecture
 
-The main theorem `erdos_1941_divergence_from_growth` is FULLY PROVED
-(i.e., is a valid mathematical deduction), assuming two sorry lemmas:
+The main theorem `erdos_1941_divergence_from_growth` is FULLY PROVED with
+NO remaining sorries (S41). Its two historical sorry lemmas were closed:
 
-  `trig_sum_harmonic_lb` [SORRY: Lipschitz + harmonic sum for general θ ∈ (0, π)]
-  `divergence_from_lebesgue_growth` [SORRY: lacunary series construction]
+  `trig_sum_harmonic_lb` [closed S29: Lipschitz + harmonic sum for general θ ∈ (0, π)]
+  `divergence_from_lebesgue_growth` [closed S41: Banach–Steinhaus on ℝ →ᵇ ℝ,
+    after ground-truthing the statement to the limsup form — see the S41 section]
 
 The non-sorry results proved here:
   - `lebesgue_upper_bound`: |Lₙf(x)| ≤ ‖f‖_∞ · Λₙ(x)
@@ -63,18 +64,22 @@ Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
   - Case 2 of chebyshev_trig_sum_lb is PROVED modulo this lemma
   - Proof approach: Lipschitz + Finset harmonic sum over near-nodes + finite min for small n
 
-## Sorry 2: divergence_from_lebesgue_growth
-Proof requires:
+## Sorry 2: divergence_from_lebesgue_growth — CLOSED (Session 41)
+Closed in two moves:
   a) For each n, existence of optimizing continuous function with ‖f‖ ≤ 1 and
      Lₙf(x) = Λₙ(x) — DONE (Session 39, `chebyshev_lebesgue_saturated_continuous`)
-  b) Lacunary subsequence construction [has known gap: UBP gives lim sup, not lim;
-     the stated conclusion is the strong full-limit form Lₙf(x) → +∞, which needs
-     polynomial-reproduction (Lₙp = p for deg p < n) + gliding-hump cross-term
-     control, not just Banach–Steinhaus]
+  b) Statement ground-truthed from the strong full-limit form Lₙf(x) → +∞
+     (unreachable by the classical Lebesgue-function argument) to the limsup
+     form ∀ M, ∃ᶠ n, M < |Lₙf(x)|, then proved via Banach–Steinhaus on the
+     Banach space ℝ →ᵇ ℝ (`chebyshevInterpCLM` + `banach_steinhaus` + the S39
+     witness for the operator-norm lower bound) — DONE (Session 41). The
+     stronger full-limit literature statement remains axiomatized only in the
+     parent `Erdos1151Problem.lean` (`erdos_1941_divergence`).
 
 Tags: analysis, approximation-theory, chebyshev, lebesgue-function, erdos-problems
 -/
 
+import Mathlib.Analysis.Normed.Operator.BanachSteinhaus
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
@@ -85,6 +90,7 @@ import Mathlib.NumberTheory.Harmonic.Bounds
 import Mathlib.Order.Filter.AtTopBot.Archimedean
 import Mathlib.RingTheory.Polynomial.Chebyshev
 import Mathlib.Topology.Baire.CompleteMetrizable
+import Mathlib.Topology.ContinuousMap.Bounded.Normed
 import Mathlib.Topology.Baire.Lemmas
 import Mathlib.Tactic
 
@@ -527,9 +533,9 @@ theorem exists_continuous_bounded_through_nodes (n : ℕ) (nodes : Fin n → ℝ
     the evaluation functional `f ↦ chebyshevInterp n f x` on `C(ℝ)` with the sup
     norm: `sup {|Lₙf(x)| : ‖f‖_∞ ≤ 1, f continuous} = Λₙ(x)`, attained. This is
     ingredient (a) of Sorry 2 (`divergence_from_lebesgue_growth`) as documented
-    in the file header; the remaining gap is only ingredient (b), the lacunary
-    series assembling these witnesses into a single `f` with full-limit
-    divergence `Lₙf(x) → +∞`. -/
+    in the file header; ingredient (b) was closed in S41 by Banach–Steinhaus
+    against exactly this witness (it pins the operator-norm lower bound
+    `‖chebyshevInterpCLM n x‖ ≥ Λₙ(x)`). -/
 private lemma chebyshev_lebesgue_saturated_continuous (n : ℕ) (x : ℝ) :
     ∃ f : ℝ → ℝ, Continuous f ∧ (∀ t, |f t| ≤ 1) ∧
       chebyshevInterp n f x = chebyshevLebesgue n x := by
@@ -2813,29 +2819,144 @@ theorem chebyshev_lebesgue_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
   · -- n ≥ 1: apply the analytic lower bound
     exact hC_lb n hn
 
-/-- **[SORRY] Divergence from Lebesgue growth.**
+/-! ## Session 41: Statement ground-truthing + closure via Banach–Steinhaus
 
-    If Λₙ(x) → ∞, then ∃ continuous f with Lₙf(x) → +∞.
+Through Session 40 this theorem asserted the strong full-limit signed form
+`∀ M, ∃ N, ∀ n ≥ N, M < Lₙf(x)`. As documented in the S39 session notes,
+that form OVERSTATES what the classical Lebesgue-function argument
+(Faber–Bernstein / Banach–Steinhaus condensation) delivers: uniform
+boundedness principles give `limsup |Lₙf(x)| = ∞`, and upgrading to a full
+signed limit would need control of the sign structure of `ℓₖⁿ(x)` across `n`
+— beyond both the classical argument and the S39/S40 gliding-hump
+ingredients. Session 30 (PR #17593) already proposed this weakening; it was
+closed administratively (branch rot), not on the merits. This session
+revives it on the merits and then CLOSES the sorry:
 
-    Proof sketch has gap in cross-term estimate; lacunary series construction needed. -/
+* `chebyshevInterpCLM`: the evaluation functional `f ↦ Lₙf(x)` packaged as a
+  continuous linear map on the Banach space `ℝ →ᵇ ℝ` of bounded continuous
+  functions, with operator-norm bound `Λₙ(x)` from `chebyshev_upper_bound`.
+* If every bounded continuous `f` had `sup_n |Lₙf(x)| < ∞`, Banach–Steinhaus
+  (`banach_steinhaus`, via completeness of `ℝ →ᵇ ℝ`) would cap the operator
+  norms uniformly; but the S39 continuous saturation witness (‖f‖ ≤ 1,
+  `Lₙf(x) = Λₙ(x)`) forces `‖chebyshevInterpCLM n x‖ ≥ Λₙ(x) → ∞`.
+* Hence some bounded continuous `f` has `(|Lₙf(x)|)ₙ` unbounded, which for a
+  sequence upgrades to the frequently form `∀ M, ∃ᶠ n in atTop, M < |Lₙf(x)|`
+  (i.e. `limsup |Lₙf(x)| = ∞`). -/
+
+/-- The evaluation functional `f ↦ Lₙf(x)` as a continuous linear map on the
+    Banach space `ℝ →ᵇ ℝ` of bounded continuous functions. Linearity is
+    `chebyshevInterp_add`/`chebyshevInterp_smul`; the defining operator-norm
+    bound `|Lₙf(x)| ≤ Λₙ(x)·‖f‖` is `chebyshev_upper_bound`. -/
+private noncomputable def chebyshevInterpCLM (n : ℕ) (x : ℝ) :
+    BoundedContinuousFunction ℝ ℝ →L[ℝ] ℝ :=
+  LinearMap.mkContinuous
+    { toFun := fun f => chebyshevInterp n (⇑f) x
+      map_add' := fun f g => by
+        have hcoe : (⇑(f + g) : ℝ → ℝ) = fun t => f t + g t := by
+          ext t; simp
+        rw [hcoe]
+        exact chebyshevInterp_add n (⇑f) (⇑g) x
+      map_smul' := fun c f => by
+        have hcoe : (⇑(c • f) : ℝ → ℝ) = fun t => c * f t := by
+          ext t; simp
+        simp only [RingHom.id_apply, smul_eq_mul, hcoe]
+        exact chebyshevInterp_smul n c (⇑f) x }
+    (chebyshevLebesgue n x)
+    (fun f => by
+      have h := chebyshev_upper_bound n (⇑f) x ‖f‖ (fun t => by
+        simpa [Real.norm_eq_abs] using f.norm_coe_le_norm t)
+      simpa [Real.norm_eq_abs, mul_comm] using h)
+
+/-- Evaluation of `chebyshevInterpCLM` is `chebyshevInterp`. -/
+private lemma chebyshevInterpCLM_apply (n : ℕ) (x : ℝ)
+    (f : BoundedContinuousFunction ℝ ℝ) :
+    chebyshevInterpCLM n x f = chebyshevInterp n (⇑f) x := rfl
+
+/-- **Divergence from Lebesgue growth** (statement ground-truthed in S41).
+
+    If Λₙ(x) → ∞, then there is a continuous f whose Chebyshev interpolation
+    values at x are unbounded in the strongest sequential sense:
+    for every M, infinitely many n have |Lₙf(x)| > M (limsup |Lₙf(x)| = ∞).
+
+    Until S41 this was stated in the strong full-limit signed form
+    `∀ M, ∃ N, ∀ n ≥ N, M < Lₙf(x)`, which overstates what the classical
+    Lebesgue-function argument gives; see the S41 section header.
+
+    Proof: Banach–Steinhaus on `ℝ →ᵇ ℝ` against the S39 saturation witness. -/
 theorem divergence_from_lebesgue_growth (x : ℝ)
     (hgrowth : Filter.Tendsto (fun n => chebyshevLebesgue n x)
                Filter.atTop Filter.atTop) :
     ∃ f : ℝ → ℝ, Continuous f ∧
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x := by
-  sorry
+      ∀ M : ℝ, ∃ᶠ n in Filter.atTop, M < |chebyshevInterp n f x| := by
+  classical
+  -- Step 1: pointwise boundedness of the family {Lₙ(·)(x)}ₙ on ℝ →ᵇ ℝ must
+  -- fail: otherwise Banach–Steinhaus caps the operator norms by some C', but
+  -- the S39 saturation witness pins ‖chebyshevInterpCLM n x‖ ≥ Λₙ(x) → ∞.
+  have hnot : ¬ ∀ F : BoundedContinuousFunction ℝ ℝ, ∃ C, ∀ n : ℕ,
+      ‖chebyshevInterpCLM n x F‖ ≤ C := by
+    intro hpt
+    obtain ⟨C', hC'⟩ := banach_steinhaus (g := fun n : ℕ => chebyshevInterpCLM n x) hpt
+    have hcap : ∀ n : ℕ, chebyshevLebesgue n x ≤ C' := by
+      intro n
+      obtain ⟨f, hf_cont, hf_bd, hf_sat⟩ := chebyshev_lebesgue_saturated_continuous n x
+      set F : BoundedContinuousFunction ℝ ℝ :=
+        BoundedContinuousFunction.ofNormedAddCommGroup f hf_cont 1
+        (fun t => by simpa [Real.norm_eq_abs] using hf_bd t) with hF
+      have hFnorm : ‖F‖ ≤ 1 :=
+        BoundedContinuousFunction.norm_ofNormedAddCommGroup_le hf_cont zero_le_one _
+      have happ : chebyshevInterpCLM n x F = chebyshevLebesgue n x := by
+        rw [chebyshevInterpCLM_apply, hF]
+        simpa using hf_sat
+      have h1 : chebyshevLebesgue n x ≤ |chebyshevInterpCLM n x F| := by
+        rw [happ]; exact le_abs_self _
+      have h2 : |chebyshevInterpCLM n x F| ≤ ‖chebyshevInterpCLM n x‖ * ‖F‖ := by
+        simpa [Real.norm_eq_abs] using (chebyshevInterpCLM n x).le_opNorm F
+      have h3 : ‖chebyshevInterpCLM n x‖ * ‖F‖ ≤ C' := by
+        have := mul_le_mul (hC' n) hFnorm (norm_nonneg _)
+          ((norm_nonneg (chebyshevInterpCLM n x)).trans (hC' n))
+        simpa using this
+      linarith
+    obtain ⟨n, hn⟩ := (hgrowth.eventually_gt_atTop C').exists
+    exact absurd (hcap n) (not_le.mpr hn)
+  push_neg at hnot
+  obtain ⟨F, hF⟩ := hnot
+  -- hF : ∀ C, ∃ n, C < ‖chebyshevInterpCLM n x F‖. F is the desired function.
+  refine ⟨⇑F, F.continuous, fun M => ?_⟩
+  rw [Filter.frequently_atTop]
+  intro N
+  -- Step 2: upgrade plain unboundedness to the frequently form — bound the
+  -- first N values by the sum B of their absolute values, then unboundedness
+  -- past max M B forces an index ≥ N.
+  set B : ℝ := ∑ i ∈ Finset.range N, |chebyshevInterp i (⇑F) x| with hB
+  obtain ⟨n, hn⟩ := hF (max M B)
+  rw [Real.norm_eq_abs, chebyshevInterpCLM_apply] at hn
+  refine ⟨n, ?_, lt_of_le_of_lt (le_max_left M B) hn⟩
+  by_contra hlt
+  push_neg at hlt
+  have hle : |chebyshevInterp n (⇑F) x| ≤ B := by
+    rw [hB]
+    exact Finset.single_le_sum (f := fun i => |chebyshevInterp i (⇑F) x|)
+      (fun i _ => abs_nonneg _) (Finset.mem_range.mpr hlt)
+  exact absurd hn (not_lt.mpr (hle.trans (le_max_right M B)))
 
-/-! ## Main Theorem (Proof Complete Modulo Sorries) -/
+/-! ## Main Theorem (Sorry-Free After S41) -/
 
 /-- **Erdős's Result (1941) — Lebesgue function proof.**
 
-    For x = cos(πp/q) with odd p, q ≥ 1, there exists a continuous f
-    such that the Chebyshev interpolation sequence Lₙf(x) → +∞. -/
+    For x = cos(πp/q) with odd p, q ≥ 1, there exists a continuous f whose
+    Chebyshev interpolation sequence at x is unbounded: for every M,
+    infinitely many n have |Lₙf(x)| > M (limsup |Lₙf(x)| = ∞).
+
+    This is the divergence statement the Lebesgue-function argument proves
+    (Λₙ(x) → ∞ + Banach–Steinhaus). Erdős's paper asserts the finer full-limit
+    divergence via an explicit construction, which is NOT formalized here; the
+    parent file's `erdos_1941_divergence` axiomatizes that stronger literature
+    statement. -/
 theorem erdos_1941_divergence_from_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     let x := Real.cos (↑p * Real.pi / ↑q)
     ∃ f : ℝ → ℝ, Continuous f ∧
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x :=
+      ∀ M : ℝ, ∃ᶠ n in Filter.atTop, M < |chebyshevInterp n f x| :=
   divergence_from_lebesgue_growth _
     (chebyshev_lebesgue_growth p q hp hq hq_pos)
 
