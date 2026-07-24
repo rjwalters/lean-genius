@@ -2,7 +2,7 @@
   "id": "compactness-finite-subcover-oq-01-oq-02-oq-01",
   "slug": "compactness-finite-subcover-oq-01-oq-02-oq-01",
   "title": "Nested Closed Intervals Shrinking to a Point",
-  "status": "verified",
+  "status": "verified",  "badge": "mathlib",
   "sorries": 0,
   "overview": {
     "historicalContext": "Cantor's intersection theorem guarantees that a decreasing sequence of nonempty closed subsets of a compact space has nonempty intersection — but it says nothing about the size of that intersection. The classical refinement, the Nested Interval Theorem (the form Bolzano and Cantor used to construct real numbers and to prove the Bolzano–Weierstrass theorem), adds one hypothesis: if the lengths of a nested sequence of closed bounded intervals tend to 0, the intersection is not merely nonempty but a single point. This is the completeness of ℝ made geometric, and it is the engine of the bisection method, of binary expansions, and of the standard construction of the Cantor set as a nested intersection. The parent entry re-derived Cantor's theorem by hand from the finite-intersection dual and recorded, as a concrete instance, only that ⋂ₙ [0, 1/(n+1)] is nonempty. This entry supplies the missing uniqueness half and pins the intersection exactly.",
