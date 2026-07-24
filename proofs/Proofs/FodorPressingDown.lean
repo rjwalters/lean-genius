@@ -957,7 +957,7 @@ theorem stationary_omega_family_aleph1 {S : Set Ordinal.{0}}
     rw [hEq] at hsub
     exact (hqd (R m)).mono_right hsub
   intro m n hmn
-  rcases hmn.lt_or_lt with h | h
+  rcases lt_or_gt_of_ne hmn with h | h
   · exact key m n h
   · exact (key n m h).symm
 
