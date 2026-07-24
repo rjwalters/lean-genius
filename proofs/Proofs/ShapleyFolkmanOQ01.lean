@@ -418,23 +418,26 @@ noncomputable def ιN (N : ℕ) :
     EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2 where
   toFun v := ∑ i : Fin N, lp.lsingle 2 (i.val) (v i)
   map_add' v w := by
-    simp only [PiLp.add_apply, map_add, Finset.sum_add_distrib]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [PiLp.add_apply, map_add]
   map_smul' c v := by
-    simp only [PiLp.smul_apply, map_smul, RingHom.id_apply, Finset.smul_sum]
+    simp only [RingHom.id_apply, Finset.smul_sum]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [PiLp.smul_apply, map_smul]
 
 /-- Coordinate `j.val` of `ιN N v` is exactly `v j`: distinct `Fin N` indices
     land at distinct `ℕ` coordinates, so the single-coordinate injections do not
     interfere. -/
 lemma ιN_apply_coord (N : ℕ) (v : EuclideanSpace ℝ (Fin N)) (j : Fin N) :
     (ιN N v : ℕ → ℝ) j.val = v j := by
-  have hcoe : (ιN N v : ℕ → ℝ)
-      = ∑ i : Fin N, (Pi.single (i.val) (v i) : ℕ → ℝ) := by
-    simp only [ιN, LinearMap.coe_mk, AddHom.coe_mk, lp.coeFn_sum]
-    refine Finset.sum_congr rfl (fun i _ => ?_)
-    rw [← lp.coeFn_single 2 (i.val) (v i)]
-  rw [hcoe, Finset.sum_apply]
-  simp only [Pi.single_apply, Fin.val_eq_val]
-  exact Fintype.sum_ite_eq j (fun i => v i)
+  simp only [ιN, LinearMap.coe_mk, AddHom.coe_mk, lp.coeFn_sum, Finset.sum_apply]
+  refine (Finset.sum_eq_single j ?_ ?_).trans ?_
+  · intro i _ hij
+    exact lp.single_apply_ne (E := fun _ : ℕ => ℝ) 2 (i.val) (v i)
+      (fun h => hij (Fin.val_injective h.symm))
+  · intro h; exact absurd (Finset.mem_univ j) h
+  · exact lp.single_apply_self (E := fun _ : ℕ => ℝ) 2 (j.val) (v j)
 
 /-- `ιN N` is injective (it preserves every coordinate). -/
 lemma ιN_injective (N : ℕ) : Function.Injective (ιN N) := by
