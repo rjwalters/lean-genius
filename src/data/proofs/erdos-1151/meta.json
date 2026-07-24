@@ -40,10 +40,10 @@
       "Lagrange interpolation operator using basis polynomials",
       "Definition of limit point sets for sequences",
       "Formal statement of the full conjecture with special cases derived",
-      "Companion file Erdos1151OQ04.lean: partial proof of erdos_1941_divergence via the Lebesgue-function approach, reducing it to a single remaining sorry (lacunary-series construction in divergence_from_lebesgue_growth)"
+      "Companion file Erdos1151OQ04.lean: sorry-free proof of the Lebesgue-function divergence theorem (erdos_1941_divergence_from_growth): for x = cos(πp/q) with odd p, q there is a continuous f whose Chebyshev interpolation values at x are unbounded (limsup |Lₙf(x)| = ∞), via Λₙ(x) ≥ C log(n+1) growth plus Banach–Steinhaus (S41). This is the faithful limsup form of the classical argument; the finer full-limit statement of Erdős's paper remains axiomatized as erdos_1941_divergence in the parent file only."
     ],
     "axiomCount": 2,
-    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines), erdos_1151_conjecture (the open problem). The companion file Erdos1151OQ04.lean (listed under additionalFiles) works toward proving erdos_1941_divergence and contains 1 remaining sorry (divergence_from_lebesgue_growth); all its other lemmas are fully proved, no further axioms.",
+    "assumptions": "2 axioms: erdos_1941_divergence (Erdős 1941 result on divergence at rational cosines, in its strong full-limit form), erdos_1151_conjecture (the open problem). The companion file Erdos1151OQ04.lean (listed under additionalFiles) is sorry-free (0 sorries, 0 axiom declarations) and PROVES the limsup form of the 1941 divergence (erdos_1941_divergence_from_growth, via Lebesgue-function growth + Banach–Steinhaus); the parent's erdos_1941_divergence axiom records the stronger full-limit literature statement, which is not yet formalized.",
     "lineCount": 222,
     "prerequisites": [
       "Polynomial interpolation (Lagrange basis)",
@@ -79,10 +79,10 @@
     {
       "id": "sec-header-erdos-1151",
       "title": "Problem Statement and Background",
-      "summary": "States Erd\u0151s Problem #1151 on Lagrange interpolation at Chebyshev nodes: the open conjecture that for any closed $A \\subseteq [-1,1]$ there is a continuous $f$ whose interpolants' limit points at some $x$ equal $A$, building on Erd\u0151s's 1941/1943 partial results.",
+      "summary": "States Erdős Problem #1151 on Lagrange interpolation at Chebyshev nodes: the open conjecture that for any closed $A \\subseteq [-1,1]$ there is a continuous $f$ whose interpolants' limit points at some $x$ equal $A$, building on Erdős's 1941/1943 partial results.",
       "startLine": 1,
       "endLine": 38,
-      "mathContext": "$\\mathcal{L}^n f(x) = \\sum_i f(a_i)\\ell_i(x)$ is the degree-$(n-1)$ Lagrange interpolant at the Chebyshev nodes $a_1,\\dots,a_n$; Erd\u0151s (1941) showed divergence to $\\infty$ at rational-cosine points, but the general closed-set claim (1943) was never proved."
+      "mathContext": "$\\mathcal{L}^n f(x) = \\sum_i f(a_i)\\ell_i(x)$ is the degree-$(n-1)$ Lagrange interpolant at the Chebyshev nodes $a_1,\\dots,a_n$; Erdős (1941) showed divergence to $\\infty$ at rational-cosine points, but the general closed-set claim (1943) was never proved."
     },
     {
       "id": "chebyshev-nodes",

@@ -2848,7 +2848,7 @@ revives it on the merits and then CLOSES the sorry:
     `chebyshevInterp_add`/`chebyshevInterp_smul`; the defining operator-norm
     bound `|Lₙf(x)| ≤ Λₙ(x)·‖f‖` is `chebyshev_upper_bound`. -/
 private noncomputable def chebyshevInterpCLM (n : ℕ) (x : ℝ) :
-    (ℝ →ᵇ ℝ) →L[ℝ] ℝ :=
+    BoundedContinuousFunction ℝ ℝ →L[ℝ] ℝ :=
   LinearMap.mkContinuous
     { toFun := fun f => chebyshevInterp n (⇑f) x
       map_add' := fun f g => by
@@ -2868,7 +2868,8 @@ private noncomputable def chebyshevInterpCLM (n : ℕ) (x : ℝ) :
       simpa [Real.norm_eq_abs, mul_comm] using h)
 
 /-- Evaluation of `chebyshevInterpCLM` is `chebyshevInterp`. -/
-private lemma chebyshevInterpCLM_apply (n : ℕ) (x : ℝ) (f : ℝ →ᵇ ℝ) :
+private lemma chebyshevInterpCLM_apply (n : ℕ) (x : ℝ)
+    (f : BoundedContinuousFunction ℝ ℝ) :
     chebyshevInterpCLM n x f = chebyshevInterp n (⇑f) x := rfl
 
 /-- **Divergence from Lebesgue growth** (statement ground-truthed in S41).
@@ -2891,13 +2892,15 @@ theorem divergence_from_lebesgue_growth (x : ℝ)
   -- Step 1: pointwise boundedness of the family {Lₙ(·)(x)}ₙ on ℝ →ᵇ ℝ must
   -- fail: otherwise Banach–Steinhaus caps the operator norms by some C', but
   -- the S39 saturation witness pins ‖chebyshevInterpCLM n x‖ ≥ Λₙ(x) → ∞.
-  have hnot : ¬ ∀ F : ℝ →ᵇ ℝ, ∃ C, ∀ n : ℕ, ‖chebyshevInterpCLM n x F‖ ≤ C := by
+  have hnot : ¬ ∀ F : BoundedContinuousFunction ℝ ℝ, ∃ C, ∀ n : ℕ,
+      ‖chebyshevInterpCLM n x F‖ ≤ C := by
     intro hpt
     obtain ⟨C', hC'⟩ := banach_steinhaus (g := fun n : ℕ => chebyshevInterpCLM n x) hpt
     have hcap : ∀ n : ℕ, chebyshevLebesgue n x ≤ C' := by
       intro n
       obtain ⟨f, hf_cont, hf_bd, hf_sat⟩ := chebyshev_lebesgue_saturated_continuous n x
-      set F : ℝ →ᵇ ℝ := BoundedContinuousFunction.ofNormedAddCommGroup f hf_cont 1
+      set F : BoundedContinuousFunction ℝ ℝ :=
+        BoundedContinuousFunction.ofNormedAddCommGroup f hf_cont 1
         (fun t => by simpa [Real.norm_eq_abs] using hf_bd t) with hF
       have hFnorm : ‖F‖ ≤ 1 :=
         BoundedContinuousFunction.norm_ofNormedAddCommGroup_le hf_cont zero_le_one _
@@ -2930,8 +2933,10 @@ theorem divergence_from_lebesgue_growth (x : ℝ)
   refine ⟨n, ?_, lt_of_le_of_lt (le_max_left M B) hn⟩
   by_contra hlt
   push_neg at hlt
-  have hle : |chebyshevInterp n (⇑F) x| ≤ B :=
-    Finset.single_le_sum (fun i _ => abs_nonneg _) (Finset.mem_range.mpr hlt)
+  have hle : |chebyshevInterp n (⇑F) x| ≤ B := by
+    rw [hB]
+    exact Finset.single_le_sum (f := fun i => |chebyshevInterp i (⇑F) x|)
+      (fun i _ => abs_nonneg _) (Finset.mem_range.mpr hlt)
   exact absurd hn (not_lt.mpr (hle.trans (le_max_right M B)))
 
 /-! ## Main Theorem (Sorry-Free After S41) -/

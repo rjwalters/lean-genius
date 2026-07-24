@@ -1,5 +1,30 @@
 # Research State: erdos-1151-oq-04
 
+> **S41 ACT — SORRY 2 CLOSED, FILE SORRY-FREE (researcher-1, 2026-07-24).**
+> The PLAN decision teed up by S39/S40 was taken: revive the S30 statement
+> weakening ON ITS MERITS, then close the sorry. (1)
+> `divergence_from_lebesgue_growth`'s conclusion ground-truthed from the
+> strong full-limit signed form `∀ M, ∃ N, ∀ n ≥ N, M < Lₙf(x)` (unreachable
+> by the classical Lebesgue-function argument — S39 roadmap correction) to the
+> limsup form `∀ M, ∃ᶠ n in atTop, M < |Lₙf(x)|`; main theorem
+> `erdos_1941_divergence_from_growth` updated identically, with the
+> strong-vs-limsup distinction disclosed in its docstring (the finer
+> literature statement stays axiomatized only in the parent
+> `Erdos1151Problem.lean`). (2) Proof via Banach–Steinhaus: new private
+> `chebyshevInterpCLM : BoundedContinuousFunction ℝ ℝ →L[ℝ] ℝ`
+> (`LinearMap.mkContinuous` + `chebyshev_upper_bound`), uniform cap from
+> `banach_steinhaus` contradicted by the S39 saturation witness lifted via
+> `ofNormedAddCommGroup`; frequently-form upgrade by bounding the first N
+> values with `Finset.single_le_sum`. **File: 2903 → 3024 lines, 0 sorries,
+> 0 axiom declarations; #print axioms on both theorems = foundational only.**
+> Host-verified (lake env lean, v4.31.0, exit 0). New imports:
+> `Analysis.Normed.Operator.BanachSteinhaus`,
+> `Topology.ContinuousMap.Bounded.Normed` (`→ᵇ` notation is scoped — use the
+> full `BoundedContinuousFunction` name). This slug's Lebesgue-function
+> program is COMPLETE; the only conceivable follow-up (full-limit upgrade via
+> sign structure of ℓₖⁿ(x) across n) is a materially new mechanism — do not
+> reopen without one. See session-41-banach-steinhaus-closure.md.
+
 > **S40 ACT — POLYNOMIAL REPRODUCTION (researcher-3, 2026-07-24).** Roadmap
 > option (i) from S39 DONE: `chebyshevInterp_polynomial` — Chebyshev
 > interpolation reproduces every polynomial of degree < n — via a bridge
@@ -53,11 +78,11 @@
 > S37 left the file BUILD-VERIFY clean (3084 jobs, 1 sorry). No Lean touched.
 
 ## Current State
-**Phase**: ACT (S39 CONTINUOUS-SATURATION — Sorry 2 ingredient (a) closed via clamped Lagrange polynomial; build-verified clean; 1 sorry remains: `divergence_from_lebesgue_growth`, whose strong full-limit conclusion needs the lacunary assembly (b) — see S39 header note for the roadmap correction)
+**Phase**: COMPLETE (S41 — Sorry 2 closed via statement ground-truthing + Banach–Steinhaus; `Erdos1151OQ04.lean` is sorry-free with 0 axiom declarations; main theorem `erdos_1941_divergence_from_growth` proves the limsup-form divergence, the faithful conclusion of the Lebesgue-function argument)
 **Path**: full
-**Since**: 2026-07-24T12:30:00Z (S39 CONTINUOUS-SATURATION)
-**Iteration**: 39
-**Last Updated**: 2026-07-24 (researcher-3)
+**Since**: 2026-07-24T16:30:00Z (S41 BANACH-STEINHAUS CLOSURE)
+**Iteration**: 41
+**Last Updated**: 2026-07-24 (researcher-1)
 
 ## Session 36 (researcher-3, 2026-06-09, build pending — Cluster A surgically closed; Cluster B still 21 errors) — fold chebyshevInterp_sub to single `simp only` matching sibling chebyshevInterp_neg
 
