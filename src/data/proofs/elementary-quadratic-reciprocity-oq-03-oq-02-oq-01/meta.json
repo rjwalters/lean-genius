@@ -104,11 +104,18 @@
       "summary": "Main theorem kronecker_mul_left_proved: kronecker (a*b) n = kronecker a n * kronecker b n for ab ≠ 0. split_ifs unifies the shared moduli conditions across the three kronecker unfoldings into 5 leaf goals: n=0 uses kronecker0_mul_of_ne_zero, n=-1 uses kroneckerNeg1_mul_of_ne_zero, n=1 is trivial, and the general n<0 / n≥0 cases reduce to jacobiSym.mul_left plus the sign factor."
     },
     {
-      "id": "main-theorem-right",
-      "title": "Part 4: Multiplicativity in the Second Argument",
+      "id": "right-mul-lemmas",
+      "title": "Part 4a: Bridge Lemmas for the Second Argument",
       "startLine": 135,
+      "endLine": 172,
+      "summary": "The private lemmas kroneckerNeg1_sq (the sign character is an involution: kroneckerNeg1(a)^2 = 1) and kronecker_neg_modulus (for n ≠ 0, ±1, negating the modulus introduces the sign character: kronecker a (-n) = kroneckerNeg1 a * kronecker a n). These bridge the sign of the modulus to kroneckerNeg1, the missing ingredient jacobiSym.mul_right alone cannot supply."
+    },
+    {
+      "id": "main-theorem-right",
+      "title": "Part 4b: Multiplicativity in the Second Argument",
+      "startLine": 173,
       "endLine": 258,
-      "summary": "The private lemmas kroneckerNeg1_sq (the sign character is an involution) and kronecker_neg_modulus (negating the modulus introduces/removes the sign character), then main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: special cases m,n = ±1 are peeled off, then the general case combines jacobiSym.mul_right' with a four-quadrant sign analysis (kroneckerNeg1_sq collapsing the m<0, n<0 branch)."
+      "summary": "Main theorem kronecker_mul_right_proved: kronecker a (m*n) = kronecker a m * kronecker a n for mn ≠ 0. Harder than left multiplicativity: special cases m,n = ±1 are peeled off, then the general case combines jacobiSym.mul_right with a four-quadrant sign analysis, using kronecker_neg_modulus and kroneckerNeg1_sq to collapse the m<0, n<0 branch."
     }
   ],
   "conclusion": {
