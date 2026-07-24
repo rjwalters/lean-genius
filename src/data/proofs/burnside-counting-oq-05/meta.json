@@ -66,7 +66,8 @@
       "A reflection-invariant coloring is exactly a coloring of the orbit space, and for the negation involution on an odd ZMod n the orbit space is the fundamental domain {0,…,m}",
       "Folding by i ↦ min(i.val, n−i.val) is a clean, computable section that turns the orbit structure into an explicit bijection — no abstract quotient or orbit-counting lemma is needed",
       "Oddness enters in exactly one place: 2 is a unit modulo 2m+1, so the reflection fixes only 0; this is what makes the orbit count (n+1)/2 rather than a parity-split formula",
-      "The count k^((n+1)/2) is the reflection half of the dihedral Burnside average, complementary to the rotation count k^gcd(n,r)"
+      "The count k^((n+1)/2) is the reflection half of the dihedral Burnside average, complementary to the rotation count k^gcd(n,r)",
+      "reflect_fixed_iff_zero is proved and stated in the docstring for conceptual clarity, but it is never invoked by the counting theorems below it: the fold/incl equiv encodes oddness directly through the domain size Fin(m+1), so the actual proof bypasses fixed-point reasoning entirely in favor of the explicit bijection"
     ],
     "prerequisites": [
       "Group actions and the Burnside/Cauchy–Frobenius counting philosophy",
