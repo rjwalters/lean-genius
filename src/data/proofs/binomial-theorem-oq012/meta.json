@@ -53,32 +53,40 @@
       "id": "sec-header",
       "title": "Module Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 34,
       "summary": "Docstring documenting the elementary one-line core (strict tangent inequality exponentiated). Imports Mathlib, opens Real, declares the SharpEulerBound namespace."
     },
     {
       "id": "general-bound",
       "title": "General Bound (1 + x/n)^n < exp(x)",
-      "startLine": 38,
-      "endLine": 65,
+      "startLine": 36,
+      "endLine": 57,
       "summary": "add_div_pow_lt_exp: for x > 0 and n ≥ 1, the strict tangent bound 1 + x/n < exp(x/n) raised to the n-th power gives (1 + x/n)^n < exp(x).",
       "mathContext": "Uses Real.add_one_lt_exp (x/n ≠ 0), pow_lt_pow_left₀ for strict exponentiation, and Real.exp_nat_mul to collapse (exp(x/n))^n = exp(x)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: (1 + 1/n)^n < e",
-      "startLine": 66,
-      "endLine": 70,
+      "startLine": 59,
+      "endLine": 62,
       "summary": "add_inv_pow_lt_e: specializing the general bound at x = 1 yields (1 + 1/n)^n < exp(1) = e for all n ≥ 1.",
       "mathContext": "Direct specialization; e = Real.exp 1."
     },
     {
-      "id": "lower-and-two-sided",
-      "title": "Lower Companion and Two-Sided Bound",
-      "startLine": 71,
-      "endLine": 84,
-      "summary": "two_le_add_inv_pow: Bernoulli gives 2 ≤ (1+1/n)^n. add_inv_pow_bounds packages the two-sided 2 ≤ (1+1/n)^n < e.",
+      "id": "lower-companion",
+      "title": "Lower Companion (Bernoulli)",
+      "startLine": 64,
+      "endLine": 75,
+      "summary": "two_le_add_inv_pow: the Bernoulli inequality one_add_mul_le_pow at a = 1/n gives 1 + n·(1/n) = 2 ≤ (1+1/n)^n for all n ≥ 1.",
       "mathContext": "one_add_mul_le_pow with a = 1/n gives 1 + n·(1/n) = 2 as a lower bound."
+    },
+    {
+      "id": "two-sided-bound",
+      "title": "Two-Sided Bound",
+      "startLine": 77,
+      "endLine": 82,
+      "summary": "add_inv_pow_bounds packages the two lemmas above into the conjunction 2 ≤ (1+1/n)^n < e for all n ≥ 1.",
+      "mathContext": "⟨two_le_add_inv_pow n hn, add_inv_pow_lt_e n hn⟩."
     }
   ],
   "conclusion": {
