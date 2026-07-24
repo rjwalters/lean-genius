@@ -148,7 +148,8 @@ theorem exists_equitable_recut (G : SimpleGraph V) [DecidableRel G.Adj]
       have hnum : 2 * (D.card * m : ℚ) ≤ 2 * (P.card * m : ℚ) := by
         have := mul_le_mul_of_nonneg_right hDP hm0
         linarith
-      exact div_le_div_of_le (by linarith) (Nat.cast_nonneg _)
+      rw [div_eq_mul_inv, div_eq_mul_inv]
+      exact mul_le_mul_of_nonneg_right hnum (inv_nonneg.mpr (Nat.cast_nonneg _))
     linarith
 
 /-- **Granularity-1 sanity instance**: at `m = 1` the re-cut is the discrete
