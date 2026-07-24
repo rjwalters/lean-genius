@@ -100,12 +100,20 @@
       "mathContext": "$\\left(p^{1/n}\\right)^n = p$ and $n \\nmid v_p(p) = 1$."
     },
     {
-      "id": "cube-root-specializations",
-      "title": "Cube Roots: the n = 3 Slice",
+      "id": "cube-root-of-prime",
+      "title": "Cube Roots: the n = 3 Slice, General Prime",
       "startLine": 55,
+      "endLine": 59,
+      "summary": "irrational_cbrt_prime fixes n = 3 in irrational_rpow_inv_prime and varies p, giving ∛p irrational for every prime p — the direct generalization of the base gallery entry (which only covered p = 2) to the whole prime family at fixed root degree 3.",
+      "mathContext": "$\\sqrt[3]{p} \\notin \\mathbb{Q}$ for every prime $p$."
+    },
+    {
+      "id": "cube-root-numeric-instances",
+      "title": "Cube Roots: the Numeric Instances ∛2, ∛3",
+      "startLine": 61,
       "endLine": 70,
-      "summary": "irrational_cbrt_prime (∛p for all primes) fixes n = 3 and varies p; irrational_cbrt_two recovers the base gallery entry ∛2 and irrational_cbrt_three gives ∛3, both by simpa from irrational_cbrt_prime.",
-      "mathContext": "$\\sqrt[3]{p}, \\sqrt[3]{2}, \\sqrt[3]{3} \\notin \\mathbb{Q}$."
+      "summary": "irrational_cbrt_two recovers the base gallery entry ∛2 as the p = 2 instance of irrational_cbrt_prime, and irrational_cbrt_three gives ∛3 as the p = 3 instance — both closed by a single simpa call, illustrating how one general theorem discharges every concrete numeral case for free.",
+      "mathContext": "$\\sqrt[3]{2}, \\sqrt[3]{3} \\notin \\mathbb{Q}$."
     },
     {
       "id": "roots-of-two-specialization",
