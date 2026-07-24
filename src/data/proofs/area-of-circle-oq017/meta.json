@@ -92,12 +92,20 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring, Imports, and Namespace Setup",
+      "id": "open-question",
+      "title": "Header: Imports and the Open Question",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence. Closes with the `open Real MeasureTheory` / `open scoped Nat` setup (making `⁼‼` double-factorial notation available) and the `namespace AreaOfCircleOQ07OQ05OQ01OQ01` declaration.",
+      "endLine": 10,
+      "summary": "Imports the parent file AreaOfCircleOQ07OQ05OQ01 (for the even-moment closed form) and Mathlib.Tactic, then states the open question this file answers: add the vanishing odd moments ∫_ℝ x^{2n+1} e^{-x²} dx = 0 to complete the Gaussian moment sequence begun by the parent's even moments.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
+    },
+    {
+      "id": "answer-sketch",
+      "title": "Header: The Symmetry Argument and Namespace Setup",
+      "startLine": 11,
+      "endLine": 49,
+      "summary": "Outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero — genuine symmetry, not non-integrability, since the integrand is Lebesgue integrable. Folding this with the parent's even moments yields the full parity-indexed sequence gaussian_moment. Closes with `open Real MeasureTheory` / `open scoped Nat` (making `‼` double-factorial notation available) and the `namespace AreaOfCircleOQ07OQ05OQ01OQ01` declaration.",
+      "mathContext": "$\\int f = \\int f(-x) = \\int -f(x) = -\\int f \\implies \\int f = 0$"
     },
     {
       "id": "odd-moment",
