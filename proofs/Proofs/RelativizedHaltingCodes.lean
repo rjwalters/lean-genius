@@ -461,8 +461,8 @@ The index map `x ↦ encodeCode (queryCode x)` is primitive recursive (an
 iterated-pairing recursion for the constant code, then a fixed pairing
 template), and primitive recursive maps are recursive in every oracle. -/
 
-/-- The jump's characteristic function, packaged as a `ℕ →. ℕ` oracle. -/
 open Classical in
+/-- The jump's characteristic function, packaged as a `ℕ →. ℕ` oracle. -/
 noncomputable def jumpCharFun (o : ℕ → Bool) : ℕ →. ℕ :=
   fun e => Part.some (if e ∈ jumpSet o then 1 else 0)
 
@@ -492,10 +492,10 @@ def queryCode (x : ℕ) : OracleCode :=
 theorem evalO_queryCode_dom (o : ℕ → Bool) (x v : ℕ) :
     (evalO o (queryCode x) v).Dom ↔ o x = false := by
   show (evalO o (.comp (.rfind .left) (.comp .oracle (constCode x))) v).Dom ↔ _
-  rw [evalO_comp_apply, evalO_comp_apply, evalO_constCode,
-    Part.bind_eq_bind, Part.bind_some, evalO_oracle,
-    show oracleFun o x = Part.some (cond (o x) 1 0) from rfl,
-    Part.bind_eq_bind, Part.bind_some, evalO_rfind_left_dom]
+  rw [evalO_comp_apply, evalO_comp_apply, evalO_constCode]
+  simp only [Part.bind_eq_bind, Part.bind_some]
+  rw [show evalO o OracleCode.oracle x = Part.some (cond (o x) 1 0) from rfl]
+  simp only [Part.bind_some, evalO_rfind_left_dom]
   cases o x <;> simp
 
 /-- **Self-application collapses to the oracle query**: the query program's
@@ -519,6 +519,7 @@ theorem primrec_encode_constCode : Primrec fun x => encodeCode (constCode x) := 
   | succ n ih =>
     rw [show encodeCode (constCode (n + 1)) =
       4 * Nat.pair 1 (encodeCode (constCode n)) + 6 from rfl, ← ih]
+    rfl
 
 /-- The index map of the reduction, `x ↦ encodeCode (queryCode x)`, is
 primitive recursive: a fixed pairing template around the constant-code
@@ -550,14 +551,9 @@ theorem oracleFun_recursiveIn_jumpCharFun (o : ℕ → Bool) :
     (O := {jumpCharFun o})
   have horacle : Nat.RecursiveIn {jumpCharFun o} (jumpCharFun o) := .oracle _ rfl
   refine (hsub.comp (horacle.comp hidx)).of_eq fun x => ?_
-  simp only [PFun.coe_val, Part.bind_eq_bind, Part.bind_some, jumpCharFun_apply,
-    oracleFun]
-  cases hox : o x with
-  | false =>
-    rw [if_pos ((queryCode_index_mem_jumpSet o x).2 hox)]
-  | true =>
-    rw [if_neg fun hmem =>
-      absurd ((queryCode_index_mem_jumpSet o x).1 hmem) (by simp [hox])]
+  simp only [Part.coe_some, Part.bind_eq_bind, Part.bind_some, jumpCharFun_apply,
+    oracleFun, id_eq]
+  cases hox : o x <;> simp [queryCode_index_mem_jumpSet, hox]
 
 open Classical in
 /-- **Turing-degree form of the positive half**: `o ≤ᵀ o′`. -/
