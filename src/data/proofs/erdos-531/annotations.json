@@ -114,30 +114,32 @@
     "id": "ann-e531-folkman",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 72,
-      "endLine": 78
+      "startLine": 240,
+      "endLine": 262
     },
     "type": "concept",
     "title": "Folkman's Theorem",
-    "content": "**folkman_theorem:**\n\nFor all k ≥ 1, there exists N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums.\n\n```lean\naxiom folkman_theorem :\n  ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k\n```\n\nThis can be derived from Rado's theorem on partition regularity of linear systems.",
-    "mathContext": "Originally proved by Sanders and Folkman in the 1960s.",
+    "content": "**folkman_theorem — now a proved theorem (formerly an axiom):**\n\nFor all k ≥ 1, there exists N such that any 2-coloring of {1,...,N} has a k-element set with monochromatic subset sums.\n\n```lean\ntheorem folkman_theorem :\n    ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k\n```\n\nThe proof combines two Mathlib results. **Hindman's theorem** (`Hindman.FS_partition_regular`) gives the infinite version (`exists_monochromatic_of_coloring`): covering the finite sums of the stream 1, 2, 3, … by the two color classes (intersected with the positive integers) yields a stream `b` whose finite sums are positive and monochromatic; grouping `b` into consecutive blocks, each one longer than the previous block's sum, makes the block sums strictly increasing, and k block sums form the required set. **Rado's selection principle** (`Finset.rado_selection`) supplies the compactness step: if no uniform N existed, the per-N bad colorings would stitch into a single coloring with no monochromatic k-set at all, contradicting the infinite version. `#print axioms` confirms only propext, Classical.choice, Quot.sound.",
+    "mathContext": "Originally proved by Sanders and Folkman in the 1960s; here derived from Hindman's theorem (1974), whose Galvin–Glazer ultrafilter proof is formalized in Mathlib.",
     "significance": "key",
     "relatedConcepts": [
-      "Rado's theorem",
+      "Hindman's theorem",
+      "Rado's selection principle",
       "Partition regularity"
     ],
     "prerequisites": [
       "combinatorics",
       "additive number theory",
-      "Lean 4 axiom declarations"
+      "Hindman's theorem",
+      "compactness arguments"
     ]
   },
   {
     "id": "ann-e531-erdos-spencer",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 90,
-      "endLine": 92
+      "startLine": 270,
+      "endLine": 277
     },
     "type": "concept",
     "title": "Erdős-Spencer Lower Bound (1989)",
@@ -158,8 +160,8 @@
     "id": "ann-e531-balogh",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 94,
-      "endLine": 96
+      "startLine": 278,
+      "endLine": 280
     },
     "type": "concept",
     "title": "Balogh et al. (2017)",
@@ -180,8 +182,8 @@
     "id": "ann-e531-small-cases",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 104,
-      "endLine": 361
+      "startLine": 283,
+      "endLine": 548
     },
     "type": "concept",
     "title": "Small Cases",
@@ -202,8 +204,8 @@
     "id": "ann-e531-upper-bound",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 122,
-      "endLine": 125
+      "startLine": 550,
+      "endLine": 556
     },
     "type": "concept",
     "title": "Upper Bounds",
@@ -224,8 +226,8 @@
     "id": "ann-e531-rado",
     "proofId": "erdos-531",
     "range": {
-      "startLine": 140,
-      "endLine": 146
+      "startLine": 558,
+      "endLine": 574
     },
     "type": "concept",
     "title": "Connection to Rado's Theorem",

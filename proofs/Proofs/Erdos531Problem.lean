@@ -64,14 +64,201 @@ noncomputable def F (k : ℕ) : ℕ := sInf (ValidN k)
 /-
 ## Folkman's Theorem
 
-The existence of F(k) is Folkman's theorem. For any k, F(k) is finite.
-This follows from Rado's theorem applied to the system of equations
-x₁ + x₂ + ... + xⱼ = s for all non-empty subsets.
+The existence of F(k) is Folkman's theorem. We derive it here as a genuine
+theorem (no axiom) from two Mathlib results:
+
+1. **Hindman's theorem** (`Hindman.FS_partition_regular`): in any finite cover
+   of an FS-set (the set of finite sums of a stream), some part contains an
+   FS-set. Applying this to the stream 1, 2, 3, … and the cover of its finite
+   sums by the two color classes (intersected with the positive integers)
+   yields a stream `b` whose finite sums are all positive and monochromatic.
+   Grouping `b` into consecutive blocks, each one longer than the previous
+   block's sum, makes the block sums strictly increasing; the sums of `k`
+   blocks then form a `k`-element set of positive integers all of whose
+   nonempty subset sums lie in `FS b`, hence are monochromatic.
+2. **Rado's selection principle** (`Finset.rado_selection`): the compactness
+   step. If no single `N` worked uniformly, the bad colorings `c_N` chosen for
+   each `N` could be stitched into one coloring `χ` of ℕ agreeing with some
+   `c_N` on any prescribed finite set; a monochromatic `k`-set for `χ` (from
+   step 1) would then be monochromatic for some bad `c_N` with all elements
+   `≤ N`, a contradiction.
 -/
 
-/-- Folkman's Theorem: F(k) exists for all k. -/
-axiom folkman_theorem :
-  ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k
+/-- Every element of `A` is itself a subset sum of `A`, via the singleton subset. -/
+theorem self_mem_subsetSums {A : Finset ℕ} {a : ℕ} (ha : a ∈ A) : a ∈ SubsetSums A := by
+  simp only [SubsetSums, Finset.mem_image, Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨{a}, ⟨Finset.singleton_subset_iff.mpr ha, Finset.singleton_ne_empty a⟩, by simp⟩
+
+open Hindman in
+/-- Every finite sum from a stream of positive naturals is positive. -/
+theorem fs_pos {a : Stream' ℕ} {m : ℕ} (hm : m ∈ FS a) : (∀ i, 1 ≤ a.get i) → 1 ≤ m := by
+  induction hm with
+  | head' a => exact fun ha => ha 0
+  | tail' a m h ih => exact fun ha => ih fun i => ha (i + 1)
+  | cons' a m h ih =>
+    exact fun ha => le_trans (ih fun i => ha (i + 1)) (Nat.le_add_left m a.head)
+
+/-- Block boundaries for the Folkman construction: `(folkmanBlocks b j).1` is the
+start index of the `j`-th block of the stream `b` and `(folkmanBlocks b j).2` its
+length. Each block is one longer than the previous block's sum, which forces the
+block sums to be strictly increasing when all entries of `b` are positive. -/
+def folkmanBlocks (b : Stream' ℕ) : ℕ → ℕ × ℕ
+  | 0 => (0, 1)
+  | j + 1 =>
+    ((folkmanBlocks b j).1 + (folkmanBlocks b j).2,
+      (∑ i ∈ Finset.Ico (folkmanBlocks b j).1
+        ((folkmanBlocks b j).1 + (folkmanBlocks b j).2), b.get i) + 1)
+
+/-- The `j`-th block of indices. -/
+def blockFinset (b : Stream' ℕ) (j : ℕ) : Finset ℕ :=
+  Finset.Ico (folkmanBlocks b j).1 ((folkmanBlocks b j).1 + (folkmanBlocks b j).2)
+
+/-- The sum of the stream `b` over the `j`-th block. -/
+def blockSum (b : Stream' ℕ) (j : ℕ) : ℕ := ∑ i ∈ blockFinset b j, b.get i
+
+theorem folkmanBlocks_succ_fst (b : Stream' ℕ) (j : ℕ) :
+    (folkmanBlocks b (j + 1)).1 = (folkmanBlocks b j).1 + (folkmanBlocks b j).2 := by
+  simp [folkmanBlocks]
+
+theorem folkmanBlocks_succ_snd (b : Stream' ℕ) (j : ℕ) :
+    (folkmanBlocks b (j + 1)).2 = blockSum b j + 1 := by
+  simp [folkmanBlocks, blockSum, blockFinset]
+
+theorem blockLen_pos (b : Stream' ℕ) (j : ℕ) : 1 ≤ (folkmanBlocks b j).2 := by
+  cases j with
+  | zero => simp [folkmanBlocks]
+  | succ j => rw [folkmanBlocks_succ_snd]; omega
+
+theorem blockFinset_nonempty (b : Stream' ℕ) (j : ℕ) : (blockFinset b j).Nonempty :=
+  Finset.nonempty_Ico.mpr (by have := blockLen_pos b j; omega)
+
+/-- When all entries of `b` are positive, each block sum is at least the block length. -/
+theorem blockLen_le_blockSum (b : Stream' ℕ) (hb : ∀ i, 1 ≤ b.get i) (j : ℕ) :
+    (folkmanBlocks b j).2 ≤ blockSum b j := by
+  have h := Finset.card_nsmul_le_sum (blockFinset b j) (fun i => b.get i) 1
+    (fun i _ => hb i)
+  simpa [blockFinset, blockSum, Nat.card_Ico, smul_eq_mul] using h
+
+theorem blockSum_pos (b : Stream' ℕ) (hb : ∀ i, 1 ≤ b.get i) (j : ℕ) :
+    1 ≤ blockSum b j :=
+  le_trans (blockLen_pos b j) (blockLen_le_blockSum b hb j)
+
+/-- The block sums are strictly increasing: each block is longer than the
+previous block's sum, and every entry is at least 1. -/
+theorem blockSum_strictMono (b : Stream' ℕ) (hb : ∀ i, 1 ≤ b.get i) :
+    StrictMono (blockSum b) := by
+  apply strictMono_nat_of_lt_succ
+  intro j
+  have h1 := blockLen_le_blockSum b hb (j + 1)
+  rw [folkmanBlocks_succ_snd] at h1
+  omega
+
+theorem blockStart_mono (b : Stream' ℕ) : Monotone fun j => (folkmanBlocks b j).1 := by
+  apply monotone_nat_of_le_succ
+  intro j
+  rw [folkmanBlocks_succ_fst]
+  exact Nat.le_add_right _ _
+
+/-- Distinct blocks are disjoint (they are consecutive intervals). -/
+theorem blockFinset_disjoint (b : Stream' ℕ) {i j : ℕ} (hij : i ≠ j) :
+    Disjoint (blockFinset b i) (blockFinset b j) := by
+  wlog h : i < j generalizing i j
+  · exact (this (Ne.symm hij) (by omega)).symm
+  rw [Finset.disjoint_left]
+  intro x hxi hxj
+  simp only [blockFinset, Finset.mem_Ico] at hxi hxj
+  have h2 : (folkmanBlocks b i).1 + (folkmanBlocks b i).2 ≤ (folkmanBlocks b j).1 := by
+    rw [← folkmanBlocks_succ_fst]
+    exact blockStart_mono b h
+  omega
+
+open Hindman in
+theorem blockSum_mem_FS (b : Stream' ℕ) (j : ℕ) : blockSum b j ∈ FS b :=
+  FS.finsetSum b (blockFinset b j) (blockFinset_nonempty b j)
+
+open Hindman in
+/-- **Infinite Folkman theorem** (via Hindman's theorem): every 2-coloring of ℕ
+admits, for every `k`, a `k`-element set of positive integers all of whose
+nonempty subset sums are monochromatic. -/
+theorem exists_monochromatic_of_coloring (c : Coloring) (k : ℕ) :
+    ∃ A : Finset ℕ, A.card = k ∧ (∀ a ∈ A, 1 ≤ a) ∧ MonochromaticSubsetSums c A := by
+  -- the stream 1, 2, 3, … of positive integers
+  have ha : ∀ i, 1 ≤ Stream'.get (fun n => n + 1 : Stream' ℕ) i :=
+    fun i => Nat.le_add_left 1 i
+  -- cover the finite sums of that stream by the two color classes,
+  -- intersected with the positive integers
+  have scov : FS (fun n => n + 1 : Stream' ℕ) ⊆
+      ⋃₀ {{x : ℕ | 1 ≤ x ∧ c x = true}, {x : ℕ | 1 ≤ x ∧ c x = false}} := by
+    intro x hx
+    have hx1 : 1 ≤ x := fs_pos hx ha
+    rcases Bool.eq_false_or_eq_true (c x) with h | h
+    · exact Set.mem_sUnion.mpr ⟨_, Set.mem_insert _ _, hx1, h⟩
+    · exact Set.mem_sUnion.mpr ⟨_, Set.mem_insert_of_mem _ rfl, hx1, h⟩
+  obtain ⟨cl, hcl, b, hb⟩ := FS_partition_regular (fun n => n + 1 : Stream' ℕ) _
+    ((Set.finite_singleton _).insert _) scov
+  obtain ⟨col, rfl⟩ : ∃ col : Bool, cl = {x : ℕ | 1 ≤ x ∧ c x = col} := by
+    rcases Set.mem_insert_iff.mp hcl with h | h
+    · exact ⟨true, h⟩
+    · exact ⟨false, Set.mem_singleton_iff.mp h⟩
+  have hbFS : ∀ x ∈ FS b, 1 ≤ x ∧ c x = col := fun x hx => hb hx
+  have hbpos : ∀ i, 1 ≤ b.get i := fun i => (hbFS _ (FS.singleton b i)).1
+  refine ⟨(Finset.range k).image (blockSum b), ?_, ?_, col, ?_⟩
+  · rw [Finset.card_image_of_injective _ (blockSum_strictMono b hbpos).injective,
+      Finset.card_range]
+  · intro x hx
+    obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp hx
+    exact (hbFS _ (blockSum_mem_FS b j)).1
+  · -- every nonempty subset sum is a sum of `b` over a union of disjoint
+    -- blocks, hence lies in `FS b` and carries the color `col`
+    intro s hs
+    simp only [SubsetSums, Finset.mem_image, Finset.mem_filter, Finset.mem_powerset] at hs
+    obtain ⟨t, ⟨hts, htne⟩, rfl⟩ := hs
+    obtain ⟨u, hu, rfl⟩ := Finset.subset_image_iff.mp hts
+    have hinj : ∀ x ∈ u, ∀ y ∈ u, blockSum b x = blockSum b y → x = y :=
+      fun x _ y _ hxy => (blockSum_strictMono b hbpos).injective hxy
+    have hune : u.Nonempty := by
+      rcases Finset.eq_empty_or_nonempty u with rfl | h
+      · simp at htne
+      · exact h
+    have hbiune : (u.biUnion (blockFinset b)).Nonempty := by
+      obtain ⟨j, hj⟩ := hune
+      obtain ⟨i, hi⟩ := blockFinset_nonempty b j
+      exact ⟨i, Finset.mem_biUnion.mpr ⟨j, hj, hi⟩⟩
+    have hdisj : (↑u : Set ℕ).PairwiseDisjoint (blockFinset b) :=
+      fun i _ j _ hij => blockFinset_disjoint b hij
+    have hsum : ∑ x ∈ Finset.image (blockSum b) u, id x
+        = ∑ i ∈ u.biUnion (blockFinset b), b.get i := by
+      rw [Finset.sum_image hinj, Finset.sum_biUnion hdisj]
+      simp [blockSum]
+    calc c (∑ x ∈ Finset.image (blockSum b) u, id x)
+        = c (∑ i ∈ u.biUnion (blockFinset b), b.get i) := by rw [hsum]
+      _ = col := (hbFS _ (FS.finsetSum b _ hbiune)).2
+
+/-- **Folkman's Theorem**: F(k) exists for all k. Derived from Hindman's theorem
+together with Rado's selection principle (the compactness step); both are
+Mathlib theorems, so this carries no axioms beyond Lean's foundations. -/
+theorem folkman_theorem :
+    ∀ k : ℕ, k ≥ 1 → ∃ N : ℕ, ExistsMonochromaticSet N k := by
+  intro k _
+  by_contra hcon
+  push Not at hcon
+  -- for every `N` pick a coloring with no monochromatic `k`-set inside `{1, …, N}`
+  have hbad : ∀ N : ℕ, ∃ cb : Coloring, ∀ A : Finset ℕ,
+      ¬(A.card = k ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ MonochromaticSubsetSums cb A) := by
+    intro N
+    obtain ⟨cb, hcb⟩ := not_forall.mp (hcon N)
+    exact ⟨cb, not_exists.mp hcb⟩
+  choose cN hcN using hbad
+  -- stitch the bad colorings together with Rado's selection principle
+  obtain ⟨χ, hχ⟩ := Finset.rado_selection (fun s => cN (s.sup id))
+  obtain ⟨A, hcard, hpos, col, hcol⟩ := exists_monochromatic_of_coloring χ k
+  obtain ⟨t, hst, hagree⟩ := hχ (SubsetSums A)
+  refine hcN (t.sup id) A ⟨hcard, ?_, col, ?_⟩
+  · intro x hx
+    exact ⟨hpos x hx, Finset.le_sup (f := id) (hst (self_mem_subsetSums hx))⟩
+  · intro s hs
+    rw [← hagree s hs]
+    exact hcol s hs
 
 /-- F(k) is well-defined (the set ValidN k is non-empty). -/
 theorem F_well_defined (k : ℕ) (hk : k ≥ 1) : (ValidN k).Nonempty :=
@@ -378,9 +565,13 @@ The equation system is:
 - We want all yₛ to be monochromatic.
 
 Rado's theorem guarantees this for any k.
+
+(This is the classical alternative route. The formal proof of `folkman_theorem`
+above instead derives it from Hindman's theorem plus Rado's *selection
+principle*, both available in Mathlib.)
 -/
 
-/-  Folkman follows from Rado's theorem. -/
+/-  Folkman follows from Rado's theorem (classical alternative derivation). -/
 /-
 ## The Main Question
 
