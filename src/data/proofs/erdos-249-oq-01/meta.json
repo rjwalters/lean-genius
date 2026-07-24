@@ -73,7 +73,7 @@
       "summary": "Extends Erd\u0151s Problem #249 (is $\\sum \\varphi(n)/2^n$ irrational?) with tighter numeric bounds $87/64 < \\text{totientPowerSum} < 351/256$ (interval width $\\approx 0.012$), and rules out the sum equaling several specific rationals including $4/3$.",
       "startLine": 1,
       "endLine": 26,
-      "mathContext": "All bounds are proved from Mathlib with 0 axioms and 0 sorries by direct term computation for $n=3,\\dots,10$ combined with a tail comparison against $\\sum n/2^n$."
+      "mathContext": "All bounds are proved from Mathlib with 0 sorries and 0 literal axiom declarations by direct term computation for $n=3,\\dots,10$ combined with a tail comparison against $\\sum n/2^n$; 5 of the term computations ($n=4,6,8,9,10$) use `native_decide`, which depends on the `Lean.ofReduceBool` kernel-reduction axiom."
     },
     {
       "id": "term-computations-1",

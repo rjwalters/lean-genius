@@ -13,7 +13,9 @@ Main results:
 - The sum is not equal to 4/3
 - Strict upper bound < 2 via comparison with Σ n/2^n
 
-All results proved from Mathlib with 0 axioms and 0 sorries.
+All results proved from Mathlib with 0 sorries and 0 literal `axiom` declarations;
+5 term-value certificates (n = 4, 6, 8, 9, 10) use `native_decide`, which depends
+on the `Lean.ofReduceBool` kernel-reduction axiom.
 
 References:
 - Erdős Problem #249: https://erdosproblems.com/249
