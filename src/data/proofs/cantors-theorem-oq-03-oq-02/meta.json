@@ -84,7 +84,8 @@
       "The higher-order diagonal does NOT need a fixed-point-free map on the whole codomain (α → β) → γ; it suffices to dodge in the OUTPUT type γ and lift by post-composition",
       "The base-level condition splits into TWO at higher order: (i) g fixed-point-free on γ, plus (ii) the function domain (α → β) inhabited — and (ii) is the genuinely new requirement",
       "The inhabitation hypothesis is not a technicality: when (α → β) is empty, (α → β) → γ is a singleton, every endomorphism has a fixed point, and a surjection ι → (ι → singleton) exists, so the diagonal provably fails",
-      "postcomp_fixedPointFree_iff is an exact iff, so it simultaneously gives the positive Lawvere direction (surjection ⟹ fixed point) and pins down precisely when the diagonal succeeds"
+      "postcomp_fixedPointFree_iff is an exact iff, so it simultaneously gives the positive Lawvere direction (surjection ⟹ fixed point) and pins down precisely when the diagonal succeeds",
+      "**Boolean negation is fixed-point-free by decide; propositional negation reconstructs the liar paradox**: cantor_higherOrder_bool's witness `fun b => !b` is verified fixed-point-free by a two-case `cases b <;> decide`. cantor_higherOrder_prop's witness `Not` has no such shortcut: proving ∀ p : Prop, ¬p ≠ p assumes `hp : ¬p = p`, extracts both directions `Eq.mp hp : ¬p → p` and `Eq.mp hp.symm : p → ¬p`, builds `hnp : ¬p` from the second, then applies the first to hnp to get p, and hnp again to get False — the proof term is literally the liar paradox ('this statement is false') rather than a computational check"
     ],
     "prerequisites": [
       "Lawvere's fixed-point theorem and the diagonal hierarchy (cantors-theorem-oq-03)",
