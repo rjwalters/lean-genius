@@ -78,11 +78,18 @@
       "mathContext": "$f:[a,b]\\to[a,b]$ continuous $\\Rightarrow \\{x\\mid f(x)=x\\}$ is nonempty and compact."
     },
     {
+      "id": "fixedpoints-def",
+      "title": "The Fixed-Point Set as a Definition",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "fixedPoints f := {x | f x = x}, with the simp-lemma mem_fixedPoints unfolding membership to f x = x. Deliberately stated for an arbitrary type α, not just ℝ or [a,b] — the closedness and compactness results that follow need no real-analytic structure."
+    },
+    {
       "id": "closed-compact",
       "title": "The Fixed-Point Set is Closed and Compact",
-      "startLine": 31,
+      "startLine": 37,
       "endLine": 52,
-      "summary": "fixedPoints f := {x | f x = x}. isClosed_fixedPoints: closed for continuous f into a T2 space (equaliser of f and id, via isClosed_eq). isCompact_fixedPoints_inter: its intersection with any compact set is compact."
+      "summary": "isClosed_fixedPoints: closed for continuous f into a T2 space (equaliser of f and id, via isClosed_eq). isCompact_fixedPoints_inter: its intersection with any compact set is compact."
     },
     {
       "id": "brouwer-1d",
