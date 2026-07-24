@@ -94,7 +94,7 @@ noncomputable def maxTriangleFreeInduced (G : SimpleGraph V) : ℕ :=
            the maximum triangle-free induced subgraph size.
 -/
 noncomputable def erdosRogers (n : ℕ) : ℕ :=
-  sInf {k : ℕ | ∀ (G : SimpleGraph (Fin n)), K4Free G → maxTriangleFreeInduced G ≥ k}
+  sSup {k : ℕ | ∀ (G : SimpleGraph (Fin n)), K4Free G → maxTriangleFreeInduced G ≥ k}
 
 /-- Alternative characterization: f(n) is the largest k such that
     every K₄-free graph on n vertices has a triangle-free induced subgraph
@@ -222,7 +222,7 @@ theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
 /-- The generalized Erdős-Rogers function f_{s,t}(n):
     minimum K_t-free induced subgraph size in K_s-free graphs on n vertices. -/
 noncomputable def generalizedErdosRogers (s t n : ℕ) : ℕ :=
-  sInf {k : ℕ | ∀ (G : SimpleGraph (Fin n)),
+  sSup {k : ℕ | ∀ (G : SimpleGraph (Fin n)),
     G.CliqueFree s → ∃ H : Finset (Fin n), H.card ≥ k ∧
       (inducedSubgraph G H).CliqueFree t}
 
@@ -282,3 +282,102 @@ structure of extremal K₄-free graphs.
 - What is the structure of extremal graphs?
 - Can probabilistic constructions be derandomized?
 -/
+
+namespace Erdos620
+
+/- ## Part XII: Well-Definedness of the Corrected f(n)
+
+REPAIR NOTE (2026-07-24).  `erdosRogers` and `generalizedErdosRogers` were
+originally defined as `sInf` of their guarantee sets `{k | ∀ G, … → … ≥ k}`.
+Every such set contains `k = 0`, so both functions were identically `0`; in
+particular the axiom `shearer_lower_bound` then asserted
+`0 ≥ c·√n·√(log n)/log(log n)` with a strictly positive right-hand side at
+`n = 16` — a false statement, making the file's axiom set inconsistent.
+The guarantee set is downward closed, so the intended value — the LARGEST
+uniformly guaranteed `k` — is its `sSup`.  Both definitions now use `sSup`;
+the lemmas below certify that the corrected `erdosRogers` has the min-max
+behaviour the prose describes, and that the axioms constrain a genuinely
+nonzero quantity. -/
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+omit [Fintype V] [DecidableEq V] in
+/-- The empty vertex set induces a triangle-free subgraph. -/
+theorem inducedTriangleFree_empty (G : SimpleGraph V) :
+    InducedTriangleFree G (∅ : Finset V) := by
+  rintro ⟨⟨x, hx⟩, -, -, -⟩
+  exact absurd hx (Finset.notMem_empty x)
+
+omit [DecidableEq V] in
+/-- The size set defining `maxTriangleFreeInduced` is bounded by `|V|`. -/
+theorem bddAbove_triangleFreeInduced_sizes (G : SimpleGraph V) :
+    BddAbove {k : ℕ | ∃ S : Finset V, S.card = k ∧ InducedTriangleFree G S} := by
+  refine ⟨Fintype.card V, ?_⟩
+  rintro k ⟨S, hcard, -⟩
+  rw [← hcard, ← Finset.card_univ]
+  exact S.card_le_univ
+
+omit [DecidableEq V] in
+/-- Any triangle-free induced vertex set is a lower witness for
+`maxTriangleFreeInduced`. -/
+theorem le_maxTriangleFreeInduced {G : SimpleGraph V} {S : Finset V}
+    (hS : InducedTriangleFree G S) : S.card ≤ maxTriangleFreeInduced G := by
+  apply le_csSup (bddAbove_triangleFreeInduced_sizes G)
+  exact show ∃ T : Finset V, T.card = S.card ∧ InducedTriangleFree G T from ⟨S, rfl, hS⟩
+
+omit [DecidableEq V] in
+/-- `maxTriangleFreeInduced` never exceeds the number of vertices. -/
+theorem maxTriangleFreeInduced_le_card (G : SimpleGraph V) :
+    maxTriangleFreeInduced G ≤ Fintype.card V := by
+  apply csSup_le
+  · exact ⟨0, ∅, Finset.card_empty, inducedTriangleFree_empty G⟩
+  · rintro k ⟨S, hcard, -⟩
+    rw [← hcard, ← Finset.card_univ]
+    exact S.card_le_univ
+
+/-- The empty graph is K₄-free. -/
+theorem k4Free_bot (n : ℕ) : K4Free (⊥ : SimpleGraph (Fin n)) := by
+  rintro ⟨a, b, c, d, -, -, -, -, -, -, hab, -⟩
+  exact hab
+
+/-- **Min-over-graphs behaviour**: the corrected `erdosRogers n` is at most the
+maximum triangle-free induced size of ANY single K₄-free graph — exactly the
+property the degenerate `sInf` form failed to have (it was identically `0`,
+which satisfied this vacuously but broke the lower-bound axiom). -/
+theorem erdosRogers_le {n : ℕ} {G : SimpleGraph (Fin n)} (hG : K4Free G) :
+    erdosRogers n ≤ maxTriangleFreeInduced G := by
+  apply csSup_le
+  · exact ⟨0, fun H _ => Nat.zero_le _⟩
+  · exact fun k hk => hk G hG
+
+/-- **Guarantee behaviour**: any uniform guarantee over all K₄-free graphs
+lower-bounds `erdosRogers n`. -/
+theorem le_erdosRogers {n k : ℕ}
+    (h : ∀ G : SimpleGraph (Fin n), K4Free G → maxTriangleFreeInduced G ≥ k) :
+    k ≤ erdosRogers n := by
+  refine le_csSup ⟨n, ?_⟩ h
+  rintro m hm
+  calc m ≤ maxTriangleFreeInduced (⊥ : SimpleGraph (Fin n)) := hm ⊥ (k4Free_bot n)
+    _ ≤ Fintype.card (Fin n) := maxTriangleFreeInduced_le_card _
+    _ = n := Fintype.card_fin n
+
+/-- Sanity: `f(n) ≤ n`. -/
+theorem erdosRogers_le_card (n : ℕ) : erdosRogers n ≤ n :=
+  ((erdosRogers_le (k4Free_bot n)).trans
+    (maxTriangleFreeInduced_le_card _)).trans_eq (Fintype.card_fin n)
+
+/-- Nontriviality at the other end: every K₄-free graph on `n ≥ 1` vertices
+contains a nonempty triangle-free induced subgraph (a single vertex), so the
+corrected `f(n) ≥ 1` — in particular `erdosRogers` is NOT identically zero,
+as the degenerate `sInf` version was. -/
+theorem one_le_erdosRogers {n : ℕ} (hn : 1 ≤ n) : 1 ≤ erdosRogers n := by
+  apply le_erdosRogers
+  intro G _
+  have hsingle : InducedTriangleFree G ({⟨0, hn⟩} : Finset (Fin n)) := by
+    rintro ⟨⟨x, hx⟩, ⟨y, hy⟩, ⟨z, hz⟩, hxy, hyz, hxz, -⟩
+    simp only [Finset.mem_singleton] at hx hy hz
+    exact hxy (by simp [hx, hy])
+  calc 1 = ({⟨0, hn⟩} : Finset (Fin n)).card := (Finset.card_singleton _).symm
+    _ ≤ maxTriangleFreeInduced G := le_maxTriangleFreeInduced hsingle
+
+end Erdos620

@@ -187,6 +187,12 @@
       "endLine": 281,
       "summary": "Formalizes the problem's openness as non-existence of a pure power-law $f(n) \\asymp n^\\alpha$. The theorem `erdos_620_unsolved` (sorry'd) encodes that no single exponent captures the logarithmic correction.",
       "mathContext": "Formalizes the problem's openness as non-existence of a pure power-law $f(n) \\asymp n^\\alpha$. The theorem `erdos_620_unsolved` (sorry'd) encodes that no single exponent captures the logarithmic correction."
+    },
+    {
+      "title": "Repair: Well-Definedness of f(n)",
+      "startLine": 284,
+      "endLine": 383,
+      "summary": "Repair note and certification lemmas for the corrected sSup definitions of erdosRogers and generalizedErdosRogers. The original sInf guarantee-set definitions were identically 0 (0 always belongs to the set), which made the shearer_lower_bound axiom a false statement. Lemmas certify min-over-graphs behaviour (erdosRogers_le), the guarantee direction (le_erdosRogers), the trivial bounds 1 <= f(n) <= n, and boundedness of maxTriangleFreeInduced."
     }
   ],
   "conclusion": {
@@ -241,9 +247,9 @@
       "Finset"
     ],
     "namespace": "Erdos620",
-    "lineCount": 284,
+    "lineCount": 383,
     "axiomCount": 2,
-    "theoremCount": 8,
+    "theoremCount": 17,
     "definitionCount": 15,
     "path": "Proofs/Erdos620Problem.lean",
     "sorries": 4,

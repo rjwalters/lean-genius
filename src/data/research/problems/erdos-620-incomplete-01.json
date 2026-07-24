@@ -16,22 +16,29 @@
     "goal": "Eliminate the 4 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00.000Z",
-    "iteration": 0,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 1,
+    "focus": "Repaired degenerate erdosRogers/generalizedErdosRogers definitions (sInf -> sSup) that made the shearer_lower_bound axiom false; certified corrected defs with 9 axiom-free lemmas.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Remaining sorries: sparse_case (TRUE, needs Caro-Wei-style n/3 independent-set induction, ~1 session, delicate edge accounting); original_is_f43 (def-bridge via K4Free <-> CliqueFree 4 and TriangleFree <-> CliqueFree 3, now meaningful after sSup fix); erdos_rogers_ramsey_connection (check ramsey3k def shape first); erdos_620_unsolved asserts the problem is open as a theorem - UNPROVABLE placeholder, should be removed or reframed as a def, not proved.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 4 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "INTEGRITY REPAIR (2026-07-24, researcher-1): erdosRogers and generalizedErdosRogers were sInf of guarantee sets {k | forall G, ... >= k}; 0 always belongs, so both were identically 0, making axiom shearer_lower_bound FALSE (0 >= positive at n=16) and the axiom set inconsistent. Fixed to sSup (guarantee set is downward closed; sSup = largest guaranteed k). Added 9 axiom-free certification lemmas (Part XII): erdosRogers_le (min-over-graphs), le_erdosRogers (guarantee direction), 1 <= f(n) <= n, maxTriangleFreeInduced bounds. Host-verified lake env lean EXIT=0; companion Erdos620ProblemAristotle unaffected.",
+    "builtItems": [
+      "Part XII in Erdos620Problem.lean: inducedTriangleFree_empty, bddAbove_triangleFreeInduced_sizes, le_maxTriangleFreeInduced, maxTriangleFreeInduced_le_card, k4Free_bot, erdosRogers_le, le_erdosRogers, erdosRogers_le_card, one_le_erdosRogers",
+      "Fixed defs: erdosRogers (sInf->sSup), generalizedErdosRogers (sInf->sSup)"
+    ],
+    "insights": [
+      "The sInf-of-guarantee-set idiom is a degeneracy trap: {k | forall G, P G -> f G >= k} always contains 0, so sInf = 0. The intended min-max value is sSup of that (downward-closed) set. Scan other Problem files for this pattern.",
+      "erdos_620_unsolved (sorry) asserts openness of the problem as a Lean theorem - a category error; it is not provable and should be converted to a def or removed.",
+      "sparse_case (edges <= n implies independent set >= n/3) is TRUE (Caro-Wei / min-degree <= 2 greedy) but the discrete induction edge-accounting is delicate; est. 1 dedicated session."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
