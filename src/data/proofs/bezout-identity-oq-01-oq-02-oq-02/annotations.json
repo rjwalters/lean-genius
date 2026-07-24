@@ -2,11 +2,11 @@
   {
     "id": "ann-overview",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 1, "endLine": 52 },
+    "range": { "startLine": 1, "endLine": 57 },
     "type": "context",
     "title": "The Goal: SLₙ(ℤ)-Transitivity on Primitive Vectors",
-    "content": "Orients the whole file. The parent bezout-identity-oq-01-oq-02 solves n=2: it builds bezoutSL a b ∈ SL₂(ℤ) carrying a coprime pair (a,b) to (1,0). The open question is the n-coordinate generalization — is the SLₙ(ℤ)-action transitive on primitive integer vectors, i.e. does every primitive v admit a unimodular U with U·v = e₁? That full statement needs a Euclidean descent (iterated Bézout reduction across coordinates). This file does NOT prove sufficiency; it builds the axiom-free invariant-theoretic foundation any descent must respect: the coordinate-free predicate IsPrimitive, its SLₙ(ℤ)-invariance (both directions), the transvection generators transvectionSL that realize the atomic descent moves inside SLₙ(ℤ), and orbit_e_isPrimitive — the easy 'necessity' half (the orbit of e₁ consists of primitive vectors). The hard 'sufficiency' half (every primitive vector is reachable) is left as recorded future work.",
-    "mathContext": "$\\text{Open: is }\\mathrm{SL}_n(\\mathbb Z)\\curvearrowright\\{\\text{primitive } v\\}\\text{ transitive?}\\quad \\big(\\forall v\\text{ prim }\\exists U\\in\\mathrm{SL}_n(\\mathbb Z),\\ Uv=e_1\\big)$",
+    "content": "Orients the whole file. The parent bezout-identity-oq-01-oq-02 solves n=2: it builds bezoutSL a b ∈ SL₂(ℤ) carrying a coprime pair (a,b) to (1,0). The open question is the n-coordinate generalization: is the SLₙ(ℤ)-action transitive on primitive integer vectors, i.e. does every primitive v admit a unimodular U with U·v = e₁? This file answers it in full. It builds the coordinate-free predicate IsPrimitive v := ∃ w, w ⬝ᵥ v = 1, proves its SLₙ(ℤ)-invariance in both directions, packages the transvection generators transvectionSL that realize the atomic Euclidean-descent moves inside SLₙ(ℤ), and proves orbit_e_isPrimitive — the 'necessity' half (the orbit of eᵢ consists of primitive vectors). Driving a strong induction on the ℓ¹ measure ∑ₖ|vₖ|, it then proves exists_sl_mulVec_single_of_isPrimitive — the 'sufficiency' converse in EVERY dimension: every primitive vector is reachable. For n ≥ 2 this sharpens to full transitivity onto e₁ (with the sign pinned down) and to the classical unimodular completion of a primitive vector to a ℤ-basis; the n = 1 obstruction (the primitive vectors (1) and (-1) lying in distinct SL₁(ℤ)-orbits) is documented and proved genuinely sharp, not a proof artefact.",
+    "mathContext": "$\\text{Resolved: }\\mathrm{SL}_n(\\mathbb Z)\\curvearrowright\\{\\text{primitive } v\\}\\text{ is transitive for }n\\ge2\\quad\\big(\\forall v\\text{ prim }\\exists U\\in\\mathrm{SL}_n(\\mathbb Z),\\ Uv=e_1\\big)$",
     "significance": "context",
     "relatedConcepts": [
       "transitivity of a group action",
@@ -22,7 +22,7 @@
   {
     "id": "ann-isprimitive-def",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 55, "endLine": 66 },
+    "range": { "startLine": 58, "endLine": 72 },
     "type": "definition",
     "title": "IsPrimitive: the Coordinate-Free Dual Notion",
     "content": "Defines IsPrimitive v := ∃ w : Fin n → ℤ, w ⬝ᵥ v = 1 — a vector is primitive when it admits an integer dual pairing to 1. The dot-product form is chosen precisely because it is manifestly SLₙ(ℤ)-invariant (the dual transforms contravariantly), unlike the classical 'gcd of entries = 1'. isPrimitive_single shows the standard basis vector eᵢ = Pi.single i 1 is primitive, witnessed by its own indicator as the dual (simp with Pi.single_apply and Finset.sum_ite_eq collapses the dot product to the i-th term); eᵢ is the target every primitive vector should reduce to under the SLₙ(ℤ) action.",
@@ -43,7 +43,7 @@
   {
     "id": "ann-span-bridge",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 68, "endLine": 78 },
+    "range": { "startLine": 73, "endLine": 84 },
     "type": "theorem",
     "title": "Bridge to the Classical Unit-Ideal Notion",
     "content": "isPrimitive_iff_span_eq_top proves the dot-product form agrees with the classical condition that the entries of v generate the unit ideal of ℤ: IsPrimitive v ↔ Ideal.span (Set.range v) = ⊤. The proof rewrites the right side with Ideal.eq_top_iff_one and Ideal.mem_span_range_iff_exists_fun (1 ∈ span ↔ ∃ c, ∑ cᵢ • vᵢ = 1), then matches ∑ cᵢ • vᵢ to the dot product w ⬝ᵥ v in both directions via smul_eq_mul and mul_comm. Over ℤ — a Bézout domain — 'entries generate the unit ideal' is exactly 'gcd of the entries is 1', so this identifies primitivity with the setwise-coprime condition of the parent's n=2 IsCoprime phrasing.",
@@ -62,9 +62,30 @@
     ]
   },
   {
+    "id": "ann-gcd-characterizations",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 85, "endLine": 141 },
+    "type": "theorem",
+    "title": "The gcd Characterization, in Three Equivalent Forms",
+    "content": "Three lemmas cash out the opening docstring's promise that primitivity is literally 'gcd of the entries is 1'. isPrimitive_iff_forall_isUnit_of_dvd: v is primitive iff every common divisor of its entries is a unit — forward, a dual w with w ⬝ᵥ v = 1 makes any common divisor d divide 1 (d ∣ ∑ wᵢvᵢ); reverse uses that ℤ is a principal ideal ring, so the generator of Ideal.span (range v) divides every entry and (being a unit by hypothesis) forces the ideal to be ⊤, closing via isPrimitive_iff_span_eq_top. isPrimitive_iff_isUnit_finsetGcd packages this through the universal property of Finset.gcd: 'every common divisor is a unit' collapses to 'Finset.univ.gcd v is a unit', since that single value is simultaneously a divisor of every entry and divisible by every common divisor. isPrimitive_iff_finsetGcd_eq_one converts 'unit' to the literal '= 1', using that Finset.gcd over ℤ is normalized (nonnegative), so IsUnit ↔ = 1 via normalize_eq_one.",
+    "mathContext": "$v \\text{ primitive} \\iff \\forall d,\\ (\\forall i,\\ d \\mid v_i) \\to d \\text{ unit} \\iff \\gcd(v_0,\\dots,v_{n-1}) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gcd",
+      "unit divisor",
+      "Finset.gcd",
+      "normalization"
+    ],
+    "prerequisites": [
+      "Finset.gcd_dvd",
+      "Finset.dvd_gcd",
+      "normalize_eq_one"
+    ]
+  },
+  {
     "id": "ann-invariance",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 84, "endLine": 104 },
+    "range": { "startLine": 142, "endLine": 163 },
     "type": "theorem",
     "title": "SLₙ(ℤ) Preserves Primitivity (Both Directions)",
     "content": "IsPrimitive.mulVec: if w ⬝ᵥ v = 1 and A ∈ SLₙ(ℤ), then the transported dual w ᵥ* ↑ₘA⁻¹ witnesses primitivity of ↑ₘA *ᵥ v, because (w ᵥ* ↑ₘA⁻¹) ⬝ᵥ (↑ₘA *ᵥ v) = w ᵥ* (↑ₘA⁻¹ * ↑ₘA) ⬝ᵥ v = w ᵥ* 1 ⬝ᵥ v = w ⬝ᵥ v = 1, using dotProduct_mulVec, vecMul_vecMul, and ↑ₘA⁻¹ * ↑ₘA = 1 (SpecialLinearGroup.coe_mul + inv_mul_cancel). isPrimitive_mulVec_iff upgrades this to a biconditional by applying the forward lemma to A⁻¹ and simplifying with mulVec_mulVec. This is the exact invariant the transitivity action lives inside: primitivity is necessary for SLₙ(ℤ)-equivalence to a basis vector.",
@@ -85,7 +106,7 @@
   {
     "id": "ann-transvections",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 106, "endLine": 131 },
+    "range": { "startLine": 164, "endLine": 192 },
     "type": "definition",
     "title": "transvectionSL: the Euclidean-Descent Generators",
     "content": "Packages Mathlib's transvection i j c = I + c·Eᵢⱼ (i ≠ j), which has determinant 1 (det_transvection_of_ne), as an element transvectionSL i j h c of Matrix.SpecialLinearGroup (Fin n) ℤ. transvectionSL_mulVec computes its action: ↑ₘ(transvectionSL i j h c) *ᵥ v = Function.update v i (vᵢ + c·vⱼ) — one elementary Bézout step adding c·vⱼ to coordinate i — proved by unfolding transvection = 1 + Matrix.single via add_mulVec, one_mulVec, single_mulVec and Function.update case analysis. IsPrimitive.transvection records that each such step preserves primitivity, a special case of the general SLₙ(ℤ) lemma. Because the whole Euclidean descent is a product of these generators, it stays in SLₙ(ℤ) automatically.",
@@ -106,10 +127,10 @@
   {
     "id": "ann-orbit",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 133, "endLine": 142 },
+    "range": { "startLine": 193, "endLine": 203 },
     "type": "theorem",
     "title": "Necessity Half of Transitivity",
-    "content": "orbit_e_isPrimitive: every vector in the SLₙ(ℤ)-orbit of a basis vector eᵢ is primitive, i.e. IsPrimitive (↑ₘA *ᵥ Pi.single i 1), assembled from isPrimitive_single and IsPrimitive.mulVec. This is the ⊆ direction of the sharp characterization 'the SLₙ(ℤ)-orbit of e₀ equals the set of primitive vectors'; the ⊇ (sufficiency) direction — every primitive vector is reachable — is the remaining Euclidean-descent construction, for which transvectionSL and the invariance lemma above are the tools.",
+    "content": "orbit_e_isPrimitive: every vector in the SLₙ(ℤ)-orbit of a basis vector eᵢ is primitive, i.e. IsPrimitive (↑ₘA *ᵥ Pi.single i 1), assembled from isPrimitive_single and IsPrimitive.mulVec. This is the ⊆ direction of the sharp characterization 'the SLₙ(ℤ)-orbit of e₀ equals the set of primitive vectors'; the ⊇ (sufficiency) direction — every primitive vector is reachable — is the Euclidean-descent construction below (exists_sl_mulVec_single_of_isPrimitive), for which transvectionSL and the invariance lemma above are the tools.",
     "mathContext": "$\\mathrm{SL}_n(\\mathbb Z)\\cdot e_i \\subseteq \\{\\text{primitive vectors}\\}$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -120,6 +141,126 @@
     "prerequisites": [
       "IsPrimitive.mulVec",
       "isPrimitive_single"
+    ]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 204, "endLine": 323 },
+    "type": "theorem",
+    "title": "Closure Properties and the One-Dimensional Base Case",
+    "content": "A cluster of structural facts the descent relies on. IsPrimitive.ne_zero: a primitive vector is nonzero (so there are none in dimension 0), giving the descent a nonzero pivot to work with. isPrimitive_of_isUnit_apply is the descent's termination test: the moment a single coordinate vᵢ is a unit, v is already primitive (witnessed by (vᵢ)⁻¹·eᵢ), so no further reduction is needed. IsPrimitive.neg, IsPrimitive.comp_perm, and the isUnit_smul / isUnit_of_isPrimitive_smul / isPrimitive_isUnit_smul_iff trio show primitivity is invariant under sign flip, coordinate permutation, and multiplication by a unit scalar — invariances that hold in every dimension even though only some of these moves lie in SLₙ(ℤ) itself (a permutation matrix or sign flip is unimodular only when it has determinant 1). The permutation invariance is what lets the descent bring a chosen pivot coordinate into position. Finally isPrimitive_fin_one_iff pins down the base case: in dimension 1 the only primitive vectors are (1) and (-1); not_isPrimitive_fin_zero rules out dimension 0 entirely.",
+    "mathContext": "$\\text{IsUnit}(v_i)\\Rightarrow v\\text{ primitive}\\text{ (termination test)}; \\quad \\text{IsPrimitive}(c\\cdot v)\\iff\\text{IsPrimitive}(v)\\text{ for a unit }c$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "termination test",
+      "sign invariance",
+      "permutation invariance",
+      "unit scalar"
+    ],
+    "prerequisites": [
+      "Function.update",
+      "Equiv.Perm",
+      "Int.isUnit_iff"
+    ]
+  },
+  {
+    "id": "ann-dim2",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 324, "endLine": 364 },
+    "type": "theorem",
+    "title": "n = 2 in Closed Form: the Explicit Bézout Matrix",
+    "content": "isPrimitive_fin_two_orbit builds an explicit SL₂(ℤ) matrix from a dual w of v: ![![w 0, w 1], ![-v 1, v 0]] has determinant w₀v₀ + w₁v₁ = 1 (the Bézout relation itself), its first row pairs v to 1 and its second row pairs v to 0, so the matrix carries v to e₁ = (1,0). This is the n = 2 instance of the Euclidean-descent step recorded as remaining work by orbit_e_isPrimitive — here the descent is a single Bézout move, so the construction is closed-form rather than iterative. Combined with SLₙ(ℤ)-invariance (applied to the primitive target e₁), isPrimitive_fin_two_iff_orbit upgrades this to the full biconditional characterization for n = 2, the base case the general-n Euclidean descent below iterates.",
+    "mathContext": "$A=\\begin{pmatrix}w_0&w_1\\\\-v_1&v_0\\end{pmatrix}\\in \\mathrm{SL}_2(\\mathbb Z),\\quad Av=e_1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed-form Bézout matrix",
+      "SL₂(ℤ)",
+      "determinant"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_two_of",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-descent",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 365, "endLine": 502 },
+    "type": "theorem",
+    "title": "The Euclidean Descent: Strong Induction on the ℓ¹ Measure",
+    "content": "The heart of the file's main result. sum_natAbs_update_emod_lt shows that replacing coordinate vᵢ by the remainder vᵢ % vⱼ (the effect of a transvection with c = -(vᵢ / vⱼ)) strictly decreases ∑ₖ|vₖ|, provided 0 < |vⱼ| ≤ |vᵢ|: since 0 ≤ vᵢ % vⱼ < |vⱼ| ≤ |vᵢ|, exactly the i-th summand shrinks. exists_sl_mulVec_single_of_isPrimitive drives a strong induction on this measure: with ≥ 2 nonzero coordinates, pick the larger-magnitude one i and a nonzero reducer j, apply the transvection to replace vᵢ by vᵢ % vⱼ (which preserves primitivity, via IsPrimitive.mulVec), and recurse on the strictly smaller vector; with exactly 1 nonzero coordinate, primitivity forces that entry to be a unit, and A = 1 already exhibits v as a unit multiple of a basis vector. This proves the converse (sufficiency) half of transitivity in EVERY dimension — including n = 1, where it can only reach a unit multiple c·eₖ, not e₁ exactly (the sign ambiguity resolved for n ≥ 2 in the next section). isPrimitive_iff_exists_sl_single packages both halves into one dimension-uniform characterization.",
+    "mathContext": "$v_i \\bmod v_j:\\ 0\\le v_i\\bmod v_j<|v_j|\\le|v_i| \\Rightarrow \\textstyle\\sum_k|v_k|\\text{ strictly decreases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-founded induction",
+      "Euclidean algorithm",
+      "ℓ¹ measure",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "Nat.strong_induction_on",
+      "Int.emod_nonneg",
+      "Int.emod_lt_abs",
+      "Finset.sum_lt_sum"
+    ]
+  },
+  {
+    "id": "ann-sharp",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 503, "endLine": 607 },
+    "type": "theorem",
+    "title": "Sharpening to Full Transitivity for n ≥ 2",
+    "content": "The descent above reaches only a unit multiple c·eₖ, uniformly in n. For n ≥ 2 this sharpens to full transitivity. exists_sl_single_orbit_ne carries a signed basis vector c·eₖ to any other d·eₜ (k ≠ t) via a two-transvection normalizing move, using the two distinct coordinates k, t as scratch space — no further dimension bound needed. exists_sl_single_to_single covers k = t too, borrowing a second coordinate (available since n ≥ 2) as a scratch register to flip the sign. Composing this with two applications of the descent gives exists_sl_mulVec_eq_of_isPrimitive: any two primitive vectors are SLₙ(ℤ)-related — together with orbit_e_isPrimitive (necessity), the primitive vectors form a SINGLE SLₙ(ℤ)-orbit for n ≥ 2. exists_sl_mulVec_basis_of_isPrimitive specializes this to the open question's exact statement, U·v = e₁; isPrimitive_iff_exists_sl_column dualizes it to 'v is a column of some SLₙ(ℤ) matrix' by inverting the transitivity matrix.",
+    "mathContext": "$n\\ge2 \\Rightarrow \\forall v,w\\text{ primitive},\\ \\exists A\\in \\mathrm{SL}_n(\\mathbb Z),\\ Av=w$",
+    "significance": "key",
+    "relatedConcepts": [
+      "transitive group action",
+      "unimodular completion",
+      "two-transvection normalizing move"
+    ],
+    "prerequisites": [
+      "Fin.nontrivial_iff_two_le",
+      "SpecialLinearGroup.coe_mul"
+    ]
+  },
+  {
+    "id": "ann-n1-obstruction",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 608, "endLine": 698 },
+    "type": "theorem",
+    "title": "Why n ≥ 2 Is Essential: the SL₁(ℤ) Sign Obstruction",
+    "content": "Turns the repeated docstring remark 'n ≥ 2 is genuinely necessary' into machine-checked statements. coe_sl_fin_one_eq_one and sl_fin_one_mulVec show SL₁(ℤ) is literally the trivial group {1}, acting trivially on every vector (the determinant-1 constraint on a 1×1 matrix forces its sole entry to be 1). not_exists_sl_fin_one_single_neg and not_forall_sl_fin_one_orbit conclude that (1) and (-1) — both primitive by isPrimitive_fin_one_iff — lie in distinct SL₁(ℤ)-orbits, so the single-orbit conclusion of exists_sl_mulVec_eq_of_isPrimitive is false without 1 < n. sl_one_equiv_iff_eq pins down that SL₁(ℤ)-orbits are exactly singletons (equivalence coincides with equality). exists_unimodular_mulVec_neg_single_fin_one isolates the obstruction precisely: the GL₁(ℤ) reflection !![-1] (determinant -1, a unit but not 1) merges the two orbits, showing the n = 1 failure of transitivity is exactly the SLₙ vs GLₙ determinant-sign distinction, nothing deeper.",
+    "mathContext": "$\\mathrm{SL}_1(\\mathbb Z)=\\{1\\}\\Rightarrow (1)\\not\\sim(-1);\\quad \\det(-1)=-1\\text{ merges the orbits in }\\mathrm{GL}_1(\\mathbb Z)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharpness of a hypothesis",
+      "trivial group",
+      "GL vs SL",
+      "determinant sign"
+    ],
+    "prerequisites": [
+      "Matrix.det_fin_one",
+      "Subsingleton.elim"
+    ]
+  },
+  {
+    "id": "ann-completion",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 699, "endLine": 739 },
+    "type": "theorem",
+    "title": "Unimodular Completion and the n = 2 IsCoprime Bridge",
+    "content": "exists_sl_col_eq_of_isPrimitive is the dual face of transitivity: instead of carrying v onto a basis vector, it carries a basis vector onto v by inverting the transitivity matrix, so v is literally the t-th column of some A ∈ SLₙ(ℤ) — the classical fact (Newman; Dummit–Foote via Smith normal form) that a primitive vector extends to a ℤ-basis. isPrimitive_fin_two_iff_isCoprime closes the file with the explicit n = 2 bridge to the parent entry: IsPrimitive v ↔ IsCoprime (v 0) (v 1). Both sides unfold to the same Bézout relation w₀·v₀ + w₁·v₁ = 1, so the dual vector w here is literally the parent's pair of Bézout coefficients.",
+    "mathContext": "$n\\ge2,\\ v\\text{ primitive}\\Rightarrow v = A\\cdot e_t\\text{ for some }A\\in\\mathrm{SL}_n(\\mathbb Z);\\quad n=2:\\ \\text{IsPrimitive}(v)\\iff\\text{IsCoprime}(v_0,v_1)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "unimodular completion",
+      "ℤ-basis extension",
+      "IsCoprime bridge"
+    ],
+    "prerequisites": [
+      "Matrix.col",
+      "IsCoprime"
     ]
   }
 ]
