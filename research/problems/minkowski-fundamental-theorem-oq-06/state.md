@@ -1,10 +1,39 @@
 # Research State: minkowski-fundamental-theorem-oq-06
 
 ## Current State
-**Phase**: ACT (S4 — `hFin` staging hypothesis discharged, Docker-GREEN)
+**Phase**: ACT (S5 — ±-pairing rung landed: doubled threshold `2·ζ(n)` for symmetric sets)
 **Path**: full
-**Since**: 2026-07-24 (S4 ACT, researcher-1)
-**Iteration**: 4
+**Since**: 2026-07-24 (S5 ACT, researcher-3)
+**Iteration**: 5
+
+## S5 ACT Summary (2026-07-24, researcher-3)
+
+**Mode**: ACT (Lean; host-verified `lean` v4.31.0 full-file elaboration against
+the pinned Mathlib oleans, 0 errors; `#print axioms` foundational only).
+
+Rung 2 of the post-#43192 plan: the **±-pairing rung**. File 383 → 498 LOC,
+18 → 21 theorems (+ `IsPrimitive.neg`, `neg_ne_self_of_ne_zero`,
+`two_le_primCount_of_symm_of_mem`, `hlawka_avoidance_symm`,
+`hlawka_ball_symm`), 0 sorry / 0 axiom.
+
+Key simplification vs the menu: NO parity/evenness lemma and NO refined
+mean-value identity needed. On a symmetric `S`, ONE primitive vector `v ∈ S`
+forces TWO (`v`, `-v` distinct — no 2-torsion in a real vector space, and
+negation preserves primitivity), so `primCount ≥ 2` pointwise wherever
+avoidance fails; mean `= vol/ζ < 2` then contradicts. Same `hMV` hypothesis
+as before, threshold doubled: `vol(S) < 2·ζ(n)` (avoidance),
+`vol(ball r) < 2·ζ(n)` (min-distance). This is the classical route to
+`δₙ ≥ ζ(n)/2^(n-1)`; the residual `2^(1-n)` is ball-volume scaling.
+
+Lean bits: `Set.ncard_pair` + `Set.ncard_le_ncard` for the two-element lower
+bound; `integral_mono (integrable_const 2)` + plain `simpa` (per the S1 memo
+gotcha, `integral_const` needs plain simp) + `le_div_iff₀`; `smul_neg` closes
+`IsPrimitive.neg`; `push Not` (push_neg deprecated at v4.31).
+
+**S6 menu**: (1) density-form assessment (pack balls of radius `r/2`,
+`vol(ball r) = r^n · vol(ball 1)` scaling — assess Mathlib bearer
+`EuclideanSpace` ball-volume API first); (2) DEEP: Siegel–Rogers identity
+(Haar on `SLₙ(ℤ)\SLₙ(ℝ)`) — registry blocker, stand down.
 
 ## S4 ACT Summary (2026-07-24, researcher-1)
 

@@ -175,3 +175,15 @@ fine, 3.3Ti free); recreated via `worktree add -B research/minkowski-oq06-hlawka
   density formalization — assess before attempting).
 - The mean-value identity itself: SL_n(ℤ)\SL_n(ℝ) Haar theory — DEEP, blocked
   (registry entry unchanged).
+
+
+## Session 2026-07-24 (researcher-3, S5): ±-pairing rung DONE
+
+`hlawka_avoidance_symm`/`hlawka_ball_symm`: threshold doubled to `2·ζ(n)`
+with the SAME primitive mean-value hypothesis. Trick: no evenness lemma —
+one primitive in symmetric S forces two ({v,-v} ⊆ S ∩ primitives,
+`Set.ncard_pair` + `ncard_le_ncard`), so count ≥ 2 pointwise where avoidance
+fails, contradicting mean < 2. `IsPrimitive.neg` via `smul_neg`;
+no-2-torsion via `(2:ℝ)•v = 0`. 383→498 LOC, 21 thms, 0 sorry/axiom,
+host-verified v4.31 foundational-only. Next: density form (assess ball-volume
+scaling API) or stand down (identity itself is the registry blocker).
