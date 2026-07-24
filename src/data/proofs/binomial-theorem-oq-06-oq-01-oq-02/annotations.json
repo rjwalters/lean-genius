@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two Proofs of One Vanishing",
     "content": "The module docstring frames the entry against its parent. The parent `binomial-theorem-oq-06-oq-01` evaluates the same sum by extracting the coefficient $[x^n](1-X^2)^n$ in $\\mathbb{Z}[X]$ — heavy machinery (`Polynomial.coeff_mul`, binomial expansion) that returns both cases uniformly: $0$ for odd $n$ and $(-1)^{n/2}\\binom{n}{n/2}$ for even $n$. This entry instead reads the odd-$n$ vanishing as a pure pairing phenomenon and proves it by the involution $k \\mapsto n-k$, using only `Finset.sum_range_reflect`, `Nat.choose_symm`, and the parity of powers of $-1$. The comparison table makes explicit that the reflection route is shorter and more transparent but intrinsically odd-only, since the involution's fixed point $k = n/2$ (present exactly when $n$ is even) is the term that survives and makes the even sum nonzero.",
     "mathContext": "$[x^n](1-X^2)^n$ (parent) vs. the involution $k \\mapsto n-k$ (this entry)",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "generating functions",
       "coefficient extraction",
@@ -56,7 +56,7 @@
     "title": "The Vanishing Theorem via Reflection",
     "content": "The main result: ∑_{k=0}^{n} (-1)^k C(n,k)^2 = 0 for odd n, proved by the fixed-point-free sign-reversing involution k ↦ n-k. Finset.sum_range_reflect rewrites the sum over k as the sum over n-k; Nat.choose_symm keeps the squared binomial fixed, and the parity identity makes each reflected term the negation of the original. Thus the sum equals its own negation (S = -S) and vanishes over ℤ. No polynomials or generating functions appear — this is the purely combinatorial companion to the parent's coefficient-extraction proof.",
     "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k}^2 = 0$ for odd $n$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "sign-reversing involution",
       "reflection of finite sums",
@@ -76,7 +76,7 @@
       "startLine": 84,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Each Reflected Term Is Its Own Negative",
     "content": "The `key` sub-lemma is where the sign-reversing involution is realized termwise: for every k ∈ range(n+1), the reflected summand (-1)^{n-k} C(n,n-k)^2 equals -((-1)^k C(n,k)^2). Two facts combine — `Nat.choose_symm hk` collapses C(n,n-k) to C(n,k) so the squared binomial (the 'weight') is invariant, and `neg_one_pow_sub` flips the sign. `ring` then closes the identity. Feeding this into `Finset.sum_range_reflect` is exactly what turns the reflected sum into -S; without a weight-preserving, sign-reversing pairing at the term level, the S = -S collapse would not follow.",
     "mathContext": "$(-1)^{n-k}\\binom{n}{n-k}^2 = -\\left((-1)^k\\binom{n}{k}^2\\right)$ for $k \\le n$",
@@ -104,7 +104,7 @@
     "title": "Numerical Sanity Checks",
     "content": "Kernel-decidable confirmations of the odd cases n=3 (1 - 9 + 9 - 1 = 0) and n=5 (1 - 25 + 100 - 100 + 25 - 1 = 0). These use `decide` (not `native_decide`), so they introduce no Lean.ofReduceBool axiom and the entry remains verified from the foundational axioms only.",
     "mathContext": "$\\sum_{k=0}^{3}(-1)^k\\binom{3}{k}^2 = \\sum_{k=0}^{5}(-1)^k\\binom{5}{k}^2 = 0$",
-    "significance": "illustrative",
+    "significance": "supporting",
     "relatedConcepts": [
       "decidability",
       "numerical verification"
