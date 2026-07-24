@@ -89,7 +89,8 @@
       "**Sine sum factorises through half-angle cosines**: sin A + sin B + sin C = 4 cos(A/2) cos(B/2) cos(C/2), the exact dual of the parent's cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2)",
       "**The sine sum is the normalised perimeter**: by the law of sines a + b + c = 2R (sin A + sin B + sin C), so bounding the sine sum bounds the perimeter of triangles inscribed in a fixed circle",
       "**Concavity gives the sharp bound**: sin is concave on [0, π], so Jensen at the barycentre π/3 yields the maximum 3√3/2 with no calculus beyond Mathlib's concavity lemma",
-      "**Equilateral is extremal**: equality holds exactly for A = B = C = π/3, the largest-perimeter triangle in a fixed circumcircle — the dual extremal statement to Euler's inequality (which the sibling range entry encodes)"
+      "**Equilateral is extremal**: equality holds exactly for A = B = C = π/3, the largest-perimeter triangle in a fixed circumcircle — the dual extremal statement to Euler's inequality (which the sibling range entry encodes)",
+      "**Three-point Jensen from two two-point steps**: the proof never invokes a general n-point Jensen lemma, only Mathlib's two-point `ConcaveOn` inequality, applied twice — first averaging B and C at their midpoint M = (B+C)/2, then combining A (weight 1/3) against M (weight 2/3), so the barycentric combination (1/3)A + (2/3)M collapses to (A+B+C)/3 = π/3. This asymmetric two-step construction is the general recipe for extracting a 3-point (or, by iteration, n-point) Jensen bound from a 2-point concavity API."
     ],
     "prerequisites": [
       "Real trigonometric functions sin, cos and the double-angle, addition, and complementary-angle identities",
