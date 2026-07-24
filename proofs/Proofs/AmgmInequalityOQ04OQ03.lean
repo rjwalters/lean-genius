@@ -340,7 +340,7 @@ theorem hyp2F1_tendstoUniformlyOn_closedBall (R : ℝ) (hR : R < 1) (hRnn : 0 �
 /-- The partial sums are polynomials, hence continuous. -/
 private lemma continuous_partialSum (N : ℕ) :
     Continuous (fun x : ℝ => ∑ n ∈ Finset.range N, hypCoeff n * x ^ n) :=
-  continuous_finset_sum _ fun n _ => (continuous_pow n).const_mul (hypCoeff n)
+  continuous_finsetSum _ fun n _ => (continuous_pow n).const_mul (hypCoeff n)
 
 /-- **Continuity of `₂F₁(1/2,1/2;1;·)` on closed balls** (S5 ACT): a uniform
 limit of continuous partial sums is continuous on `{x : |x| ≤ R}`, `R < 1`. -/

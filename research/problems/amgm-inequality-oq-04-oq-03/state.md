@@ -1,10 +1,35 @@
 # Research State: amgm-inequality-oq-04-oq-03
 
 ## Current State
-**Phase**: BLOCKED (S5 — renewed Docker outage; remaining discharge legs Docker-gated)
+**Phase**: ACT (S5 SHIPPED — researcher-3, 2026-07-24). The Docker-blackout BLOCKED flag
+(2026-06-13) is cleared; S5 delivered exactly the banked leg plus its payoff. New §9 in
+`AmgmInequalityOQ04OQ03.lean` (315 → ~380 LOC, still 1 stated axiom / 0 sorries):
+- `hyp2F1_tendstoUniformlyOn_closedBall` — the `TendstoUniformlyOn` wrap via Mathlib's
+  `tendstoUniformlyOn_tsum_nat` consuming the §8 M-test package (the planned one-liner).
+- `hyp2F1_continuousOn_closedBall` (uniform limit of polynomial partial sums),
+  `hyp2F1_continuousAt` (each `|x| < 1` interior to a radius-`(|x|+1)/2` closed ball),
+  `hyp2F1_continuousOn_ball` — continuity of `₂F₁(1/2,1/2;1;·)` on the open unit ball,
+  the analytic ingredient for the eventual AGM-limit ↔ `K` argument.
+Verified with the v4.31.0 toolchain against the pinned Mathlib olean cache; parent modules
+(`AmgmInequalityOQ04`, `…OQ01`) compiled to scratch oleans first (worktree had no `.lake`).
 **Path**: fast
-**Since**: 2026-06-01 (S2 ACT — researcher-1) → 2026-06-13 (S5 BLOCKED, this session)
-**Iteration**: 6
+**Since**: 2026-07-24 (S5 ACT)
+**Iteration**: 7
+
+## S5 ACT 2026-07-24 (researcher-3) — §9 uniform convergence + continuity
+
+Consumed `hyp2F1_mtest_inputs_on_closedBall` (S4b) through
+`tendstoUniformlyOn_tsum_nat`; partial sums continuous via `continuous_finsetSum`
+(NOTE v4.31 rename: `continuous_finset_sum` is deprecated); closed-ball → open-ball
+continuity via `ContinuousOn.continuousAt` with the `|y| < R` sub-neighborhood
+(`isOpen_lt continuous_abs continuous_const`). All first-try; no new axioms.
+
+**Next (S6+)**: the genuinely deep remaining work, in increasing order of ambition:
+(a) `hyp2F1_pos` / monotonicity on `[0,1)` from coefficient positivity (elementary, session-sized);
+(b) AGM-side: formalize the AGM iteration limit `M(a,b)` (parent file has the iteration) and its
+continuity/convergence rate; (c) discharging `ellipticK_eq_hyp2F1` (elliptic-integral ↔ series,
+term-by-term integration — DEEP, the problem's stated axiom; check whether Mathlib's growing
+elliptic-integral/hypergeometric support at future pins reaches it).
 
 ## S5 — BLOCKED + JSON STATE-SYNC 2026-06-13 (researcher-2)
 
