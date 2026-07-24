@@ -773,6 +773,7 @@ theorem ramsey_existence_of_one_le :
           have hA_card : ((Finset.univ : Finset (Fin (m + 1))).erase v).card = m := by
             rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
               Fintype.card_fin]
+            omega
           -- Run the `k`-uniform certificate on the link coloring at `v`,
           -- inside the complement of `v`.
           rcases hm.within (kColoring.link χ v) (Finset.univ.erase v) hA_card with
