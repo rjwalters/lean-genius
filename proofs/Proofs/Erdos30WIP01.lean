@@ -2204,4 +2204,435 @@ theorem sidon_eight_range_thirty_missing_two_mod_four (A : Finset ℕ)
       interval_cases c3 <;> omega
   · exact hd4
 
+/-! ### `h(29) = 7` — Layer 2: cross-class counts close the seven remaining cases
+
+Layer 1 (`sidon_eight_range_thirty_missing_two_mod_four`) narrowed the missing
+positive difference of a hypothetical 8-element Sidon set `A ⊆ {0,…,29}` to
+`d ∈ {2, 6, 10, 14, 18, 22, 26}`.  Here each survivor falls to a modular
+double count — no kernel search over Sidon candidates is needed at any point,
+in contrast to the `≈ C(28,6)` span-29 searches previously projected:
+
+* **mod 10** kills `d ∈ {2, 6, 14, 18, 22, 26}`.  Working mod 10, deleting
+  `{d, −d}` from the difference window removes one element from each of the
+  classes `{2, 8}` (for `d ∈ {2, 18, 22}`) or `{4, 6}` (for `d ∈ {6, 14, 26}`)
+  — only two count vectors occur.  The same-class count `Σ cᵣ(cᵣ−1) = 4`
+  bounds every residue class at `cᵣ ≤ 2`, and the cross-class counts at
+  difference residues `{1, 3, 4}` (resp. `{1, 2, 3}`), each equal to `6`,
+  admit no profile with `Σ cᵣ = 8` (kernel `decide` over the `3¹⁰` bounded
+  profiles).
+* **mod 7** kills `d = 10`.  The counts are `8` (same class), `9` (residue 1)
+  and `8` (residue 2); `cᵣ(cᵣ−1) ≤ 8` forces `cᵣ ≤ 3`, and no profile with
+  `Σ cᵣ = 8` fits (kernel `decide` over the `4⁷` bounded profiles).
+
+Assembling the layers gives `no_sidon_card_eight_range_thirty`, and with the
+span-25 Golomb ruler witness the fifth wall value
+`sidonNumber_twentynine : h(29) = 7`. -/
+
+/-- **Filtered difference count.**  Once the difference image of `A.offDiag`
+    is pinned to an explicit finset `E`, the number of off-diagonal pairs
+    whose difference satisfies a decidable predicate `p` is `|E.filter p|`. -/
+private theorem sidon_diff_filter_card (A : Finset ℕ) (hA : IsSidonSet A)
+    {E : Finset ℤ} (himageEq : A.offDiag.image diffMap = E)
+    (p : ℤ → Prop) [DecidablePred p] :
+    (A.offDiag.filter (fun q => p (diffMap q))).card = (E.filter p).card := by
+  have hinj : Set.InjOn diffMap ↑(A.offDiag.filter (fun q => p (diffMap q))) :=
+    (diffMap_injOn hA).mono (Finset.coe_subset.mpr (Finset.filter_subset _ _))
+  rw [← Finset.card_image_of_injOn hinj, ← Finset.filter_image, himageEq]
+
+/-- **Same-class fiber count mod 10.**  Off-diagonal pairs with difference
+    `≡ 0 (mod 10)` are exactly the off-diagonal pairs of the ten residue
+    classes, so their number is `Σ cᵣ(cᵣ − 1)`. -/
+private theorem sidon_same_class_count_ten (A : Finset ℕ) :
+    (A.offDiag.filter (fun q => diffMap q % 10 = 0)).card
+      = ∑ r ∈ Finset.range 10,
+          ((A.filter (fun a => a % 10 = r)).card * (A.filter (fun a => a % 10 = r)).card
+            - (A.filter (fun a => a % 10 = r)).card) := by
+  have hTeq : A.offDiag.filter (fun q => diffMap q % 10 = 0)
+      = A.offDiag.filter (fun q => q.1 % 10 = q.2 % 10) := by
+    refine Finset.filter_congr (fun q _ => ?_)
+    simp only [diffMap]
+    omega
+  have hfiber : ∀ r : ℕ,
+      (A.offDiag.filter (fun q => q.1 % 10 = q.2 % 10)).filter (fun q => q.1 % 10 = r)
+        = (A.filter (fun a => a % 10 = r)).offDiag := by
+    intro r
+    ext q
+    simp only [Finset.mem_filter, Finset.mem_offDiag]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hmod⟩, h1r⟩
+      exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+    · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+      exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+  have hTfib : (A.offDiag.filter (fun q => q.1 % 10 = q.2 % 10)).card
+      = ∑ r ∈ Finset.range 10,
+          ((A.offDiag.filter (fun q => q.1 % 10 = q.2 % 10)).filter
+            (fun q => q.1 % 10 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun q _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  rw [hTeq, hTfib]
+  exact Finset.sum_congr rfl (fun r _ => by rw [hfiber r, Finset.offDiag_card])
+
+/-- **Cross-class fiber count mod 10.**  For a difference residue
+    `k = j ∈ {1,…,9}`, the off-diagonal pairs with difference `≡ k (mod 10)`
+    fiber into full products of distinct residue classes: the pair count is
+    `Σᵣ cᵣ · c₍ᵣ₊₁₀₋ⱼ₎ mod 10`. -/
+private theorem sidon_cross_class_count_ten (A : Finset ℕ) (k : ℤ) (j : ℕ)
+    (hj : (j : ℤ) = k) (hj1 : 1 ≤ j) (hj9 : j ≤ 9) :
+    (A.offDiag.filter (fun q => diffMap q % 10 = k)).card
+      = ∑ r ∈ Finset.range 10,
+          (A.filter (fun a => a % 10 = r)).card
+            * (A.filter (fun a => a % 10 = (r + 10 - j) % 10)).card := by
+  have hfiber : ∀ r : ℕ,
+      (A.offDiag.filter (fun q => diffMap q % 10 = k)).filter (fun q => q.1 % 10 = r)
+        = (A.filter (fun a => a % 10 = r))
+            ×ˢ (A.filter (fun a => a % 10 = (r + 10 - j) % 10)) := by
+    intro r
+    ext q
+    simp only [Finset.mem_filter, Finset.mem_offDiag, Finset.mem_product]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hd⟩, h1r⟩
+      refine ⟨⟨h1, h1r⟩, h2, ?_⟩
+      simp only [diffMap] at hd
+      omega
+    · rintro ⟨⟨h1, h1r⟩, h2, h2s⟩
+      refine ⟨⟨⟨h1, h2, ?_⟩, ?_⟩, h1r⟩
+      · omega
+      · simp only [diffMap]
+        omega
+  have hTfib : (A.offDiag.filter (fun q => diffMap q % 10 = k)).card
+      = ∑ r ∈ Finset.range 10,
+          ((A.offDiag.filter (fun q => diffMap q % 10 = k)).filter
+            (fun q => q.1 % 10 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun q _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  rw [hTfib]
+  exact Finset.sum_congr rfl (fun r _ => by rw [hfiber r, Finset.card_product])
+
+/-- **Same-class fiber count mod 7** — the mod-7 analogue of
+    `sidon_same_class_count_ten`. -/
+private theorem sidon_same_class_count_seven (A : Finset ℕ) :
+    (A.offDiag.filter (fun q => diffMap q % 7 = 0)).card
+      = ∑ r ∈ Finset.range 7,
+          ((A.filter (fun a => a % 7 = r)).card * (A.filter (fun a => a % 7 = r)).card
+            - (A.filter (fun a => a % 7 = r)).card) := by
+  have hTeq : A.offDiag.filter (fun q => diffMap q % 7 = 0)
+      = A.offDiag.filter (fun q => q.1 % 7 = q.2 % 7) := by
+    refine Finset.filter_congr (fun q _ => ?_)
+    simp only [diffMap]
+    omega
+  have hfiber : ∀ r : ℕ,
+      (A.offDiag.filter (fun q => q.1 % 7 = q.2 % 7)).filter (fun q => q.1 % 7 = r)
+        = (A.filter (fun a => a % 7 = r)).offDiag := by
+    intro r
+    ext q
+    simp only [Finset.mem_filter, Finset.mem_offDiag]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hmod⟩, h1r⟩
+      exact ⟨⟨h1, h1r⟩, ⟨h2, by omega⟩, hne⟩
+    · rintro ⟨⟨h1, h1r⟩, ⟨h2, h2r⟩, hne⟩
+      exact ⟨⟨⟨h1, h2, hne⟩, by omega⟩, h1r⟩
+  have hTfib : (A.offDiag.filter (fun q => q.1 % 7 = q.2 % 7)).card
+      = ∑ r ∈ Finset.range 7,
+          ((A.offDiag.filter (fun q => q.1 % 7 = q.2 % 7)).filter
+            (fun q => q.1 % 7 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun q _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  rw [hTeq, hTfib]
+  exact Finset.sum_congr rfl (fun r _ => by rw [hfiber r, Finset.offDiag_card])
+
+/-- **Cross-class fiber count mod 7** — the mod-7 analogue of
+    `sidon_cross_class_count_ten`. -/
+private theorem sidon_cross_class_count_seven (A : Finset ℕ) (k : ℤ) (j : ℕ)
+    (hj : (j : ℤ) = k) (hj1 : 1 ≤ j) (hj6 : j ≤ 6) :
+    (A.offDiag.filter (fun q => diffMap q % 7 = k)).card
+      = ∑ r ∈ Finset.range 7,
+          (A.filter (fun a => a % 7 = r)).card
+            * (A.filter (fun a => a % 7 = (r + 7 - j) % 7)).card := by
+  have hfiber : ∀ r : ℕ,
+      (A.offDiag.filter (fun q => diffMap q % 7 = k)).filter (fun q => q.1 % 7 = r)
+        = (A.filter (fun a => a % 7 = r))
+            ×ˢ (A.filter (fun a => a % 7 = (r + 7 - j) % 7)) := by
+    intro r
+    ext q
+    simp only [Finset.mem_filter, Finset.mem_offDiag, Finset.mem_product]
+    constructor
+    · rintro ⟨⟨⟨h1, h2, hne⟩, hd⟩, h1r⟩
+      refine ⟨⟨h1, h1r⟩, h2, ?_⟩
+      simp only [diffMap] at hd
+      omega
+    · rintro ⟨⟨h1, h1r⟩, h2, h2s⟩
+      refine ⟨⟨⟨h1, h2, ?_⟩, ?_⟩, h1r⟩
+      · omega
+      · simp only [diffMap]
+        omega
+  have hTfib : (A.offDiag.filter (fun q => diffMap q % 7 = k)).card
+      = ∑ r ∈ Finset.range 7,
+          ((A.offDiag.filter (fun q => diffMap q % 7 = k)).filter
+            (fun q => q.1 % 7 = r)).card :=
+    Finset.card_eq_sum_card_fiberwise
+      (fun q _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))
+  rw [hTfib]
+  exact Finset.sum_congr rfl (fun r _ => by rw [hfiber r, Finset.card_product])
+
+/-- **Profile refutation, mod 7** (missing difference `d = 10`, counts
+    `8/9/8` at residues `0/1/2`): no residue profile `Σ cᵣ = 8` with
+    `cᵣ ≤ 3` matches, by kernel enumeration of the `4⁷` bounded profiles. -/
+set_option maxRecDepth 100000 in
+private theorem sidon_profile_refute_seven :
+    ∀ c0 < 4, ∀ c1 < 4, ∀ c2 < 4, ∀ c3 < 4, ∀ c4 < 4, ∀ c5 < 4, ∀ c6 < 4,
+      c0 + c1 + c2 + c3 + c4 + c5 + c6 = 8 →
+      c0 * c0 - c0 + (c1 * c1 - c1) + (c2 * c2 - c2) + (c3 * c3 - c3)
+        + (c4 * c4 - c4) + (c5 * c5 - c5) + (c6 * c6 - c6) = 8 →
+      c0 * c6 + c1 * c0 + c2 * c1 + c3 * c2 + c4 * c3 + c5 * c4 + c6 * c5 = 9 →
+      c0 * c5 + c1 * c6 + c2 * c0 + c3 * c1 + c4 * c2 + c5 * c3 + c6 * c4 = 8 →
+      False := by decide
+
+/-- **Profile refutation, mod 10, deleted classes `{2, 8}`** (missing
+    difference `d ∈ {2, 18, 22}`; counts `4/6/6/6` at residues `0/1/3/4`):
+    no residue profile `Σ cᵣ = 8` with `cᵣ ≤ 2` matches, by kernel
+    enumeration of the `3¹⁰` bounded profiles. -/
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
+private theorem sidon_profile_refute_ten_A :
+    ∀ c0 < 3, ∀ c1 < 3, ∀ c2 < 3, ∀ c3 < 3, ∀ c4 < 3, ∀ c5 < 3, ∀ c6 < 3,
+      ∀ c7 < 3, ∀ c8 < 3, ∀ c9 < 3,
+      c0 + c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 + c9 = 8 →
+      c0 * c0 - c0 + (c1 * c1 - c1) + (c2 * c2 - c2) + (c3 * c3 - c3) + (c4 * c4 - c4)
+        + (c5 * c5 - c5) + (c6 * c6 - c6) + (c7 * c7 - c7) + (c8 * c8 - c8)
+        + (c9 * c9 - c9) = 4 →
+      c0 * c9 + c1 * c0 + c2 * c1 + c3 * c2 + c4 * c3 + c5 * c4 + c6 * c5 + c7 * c6
+        + c8 * c7 + c9 * c8 = 6 →
+      c0 * c7 + c1 * c8 + c2 * c9 + c3 * c0 + c4 * c1 + c5 * c2 + c6 * c3 + c7 * c4
+        + c8 * c5 + c9 * c6 = 6 →
+      c0 * c6 + c1 * c7 + c2 * c8 + c3 * c9 + c4 * c0 + c5 * c1 + c6 * c2 + c7 * c3
+        + c8 * c4 + c9 * c5 = 6 →
+      False := by decide
+
+/-- **Profile refutation, mod 10, deleted classes `{4, 6}`** (missing
+    difference `d ∈ {6, 14, 26}`; counts `4/6/6/6` at residues `0/1/2/3`):
+    no residue profile `Σ cᵣ = 8` with `cᵣ ≤ 2` matches, by kernel
+    enumeration of the `3¹⁰` bounded profiles. -/
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 4000000 in
+private theorem sidon_profile_refute_ten_B :
+    ∀ c0 < 3, ∀ c1 < 3, ∀ c2 < 3, ∀ c3 < 3, ∀ c4 < 3, ∀ c5 < 3, ∀ c6 < 3,
+      ∀ c7 < 3, ∀ c8 < 3, ∀ c9 < 3,
+      c0 + c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 + c9 = 8 →
+      c0 * c0 - c0 + (c1 * c1 - c1) + (c2 * c2 - c2) + (c3 * c3 - c3) + (c4 * c4 - c4)
+        + (c5 * c5 - c5) + (c6 * c6 - c6) + (c7 * c7 - c7) + (c8 * c8 - c8)
+        + (c9 * c9 - c9) = 4 →
+      c0 * c9 + c1 * c0 + c2 * c1 + c3 * c2 + c4 * c3 + c5 * c4 + c6 * c5 + c7 * c6
+        + c8 * c7 + c9 * c8 = 6 →
+      c0 * c8 + c1 * c9 + c2 * c0 + c3 * c1 + c4 * c2 + c5 * c3 + c6 * c4 + c7 * c5
+        + c8 * c6 + c9 * c7 = 6 →
+      c0 * c7 + c1 * c8 + c2 * c9 + c3 * c0 + c4 * c1 + c5 * c2 + c6 * c3 + c7 * c4
+        + c8 * c5 + c9 * c6 = 6 →
+      False := by decide
+
+/-- **Mod-7 kill** (for `d = 10`): an 8-element set whose difference multiset
+    hits residues `0/1/2` mod 7 exactly `8/9/8` times cannot exist. -/
+private theorem sidon_eight_missing_mod_seven (A : Finset ℕ) (hc8 : A.card = 8)
+    (h0 : (A.offDiag.filter (fun q => diffMap q % 7 = 0)).card = 8)
+    (h1 : (A.offDiag.filter (fun q => diffMap q % 7 = 1)).card = 9)
+    (h2 : (A.offDiag.filter (fun q => diffMap q % 7 = 2)).card = 8) : False := by
+  have hsum : ∑ r ∈ Finset.range 7, (A.filter (fun a => a % 7 = r)).card = 8 := by
+    rw [← Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))]
+    exact hc8
+  have hsame := sidon_same_class_count_seven A
+  rw [h0] at hsame
+  have hcr1 := sidon_cross_class_count_seven A 1 1 (by norm_num) (by norm_num) (by norm_num)
+  rw [h1] at hcr1
+  have hcr2 := sidon_cross_class_count_seven A 2 2 (by norm_num) (by norm_num) (by norm_num)
+  rw [h2] at hcr2
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+    Nat.reduceAdd, Nat.reduceSub, Nat.reduceMod] at hsum hsame hcr1 hcr2
+  generalize hg0 : (A.filter (fun a => a % 7 = 0)).card = c0 at hsum hsame hcr1 hcr2
+  generalize hg1 : (A.filter (fun a => a % 7 = 1)).card = c1 at hsum hsame hcr1 hcr2
+  generalize hg2 : (A.filter (fun a => a % 7 = 2)).card = c2 at hsum hsame hcr1 hcr2
+  generalize hg3 : (A.filter (fun a => a % 7 = 3)).card = c3 at hsum hsame hcr1 hcr2
+  generalize hg4 : (A.filter (fun a => a % 7 = 4)).card = c4 at hsum hsame hcr1 hcr2
+  generalize hg5 : (A.filter (fun a => a % 7 = 5)).card = c5 at hsum hsame hcr1 hcr2
+  generalize hg6 : (A.filter (fun a => a % 7 = 6)).card = c6 at hsum hsame hcr1 hcr2
+  have hb : ∀ x < 9, x * x - x ≤ 8 → x ≤ 3 := by decide
+  have hb0 : c0 ≤ 3 := hb c0 (by omega) (by omega)
+  have hb1 : c1 ≤ 3 := hb c1 (by omega) (by omega)
+  have hb2 : c2 ≤ 3 := hb c2 (by omega) (by omega)
+  have hb3 : c3 ≤ 3 := hb c3 (by omega) (by omega)
+  have hb4 : c4 ≤ 3 := hb c4 (by omega) (by omega)
+  have hb5 : c5 ≤ 3 := hb c5 (by omega) (by omega)
+  have hb6 : c6 ≤ 3 := hb c6 (by omega) (by omega)
+  exact sidon_profile_refute_seven c0 (by omega) c1 (by omega) c2 (by omega)
+    c3 (by omega) c4 (by omega) c5 (by omega) c6 (by omega)
+    hsum hsame.symm hcr1.symm hcr2.symm
+
+/-- **Mod-10 kill, deleted classes `{2, 8}`** (for `d ∈ {2, 18, 22}`): an
+    8-element set whose difference multiset hits residues `0/1/3/4` mod 10
+    exactly `4/6/6/6` times cannot exist. -/
+private theorem sidon_eight_missing_mod_ten_A (A : Finset ℕ) (hc8 : A.card = 8)
+    (h0 : (A.offDiag.filter (fun q => diffMap q % 10 = 0)).card = 4)
+    (h1 : (A.offDiag.filter (fun q => diffMap q % 10 = 1)).card = 6)
+    (h3 : (A.offDiag.filter (fun q => diffMap q % 10 = 3)).card = 6)
+    (h4 : (A.offDiag.filter (fun q => diffMap q % 10 = 4)).card = 6) : False := by
+  have hsum : ∑ r ∈ Finset.range 10, (A.filter (fun a => a % 10 = r)).card = 8 := by
+    rw [← Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))]
+    exact hc8
+  have hsame := sidon_same_class_count_ten A
+  rw [h0] at hsame
+  have hcr1 := sidon_cross_class_count_ten A 1 1 (by norm_num) (by norm_num) (by norm_num)
+  rw [h1] at hcr1
+  have hcr3 := sidon_cross_class_count_ten A 3 3 (by norm_num) (by norm_num) (by norm_num)
+  rw [h3] at hcr3
+  have hcr4 := sidon_cross_class_count_ten A 4 4 (by norm_num) (by norm_num) (by norm_num)
+  rw [h4] at hcr4
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+    Nat.reduceAdd, Nat.reduceSub, Nat.reduceMod] at hsum hsame hcr1 hcr3 hcr4
+  generalize hg0 : (A.filter (fun a => a % 10 = 0)).card = c0 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg1 : (A.filter (fun a => a % 10 = 1)).card = c1 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg2 : (A.filter (fun a => a % 10 = 2)).card = c2 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg3 : (A.filter (fun a => a % 10 = 3)).card = c3 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg4 : (A.filter (fun a => a % 10 = 4)).card = c4 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg5 : (A.filter (fun a => a % 10 = 5)).card = c5 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg6 : (A.filter (fun a => a % 10 = 6)).card = c6 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg7 : (A.filter (fun a => a % 10 = 7)).card = c7 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg8 : (A.filter (fun a => a % 10 = 8)).card = c8 at hsum hsame hcr1 hcr3 hcr4
+  generalize hg9 : (A.filter (fun a => a % 10 = 9)).card = c9 at hsum hsame hcr1 hcr3 hcr4
+  have hb : ∀ x < 9, x * x - x ≤ 4 → x ≤ 2 := by decide
+  have hb0 : c0 ≤ 2 := hb c0 (by omega) (by omega)
+  have hb1 : c1 ≤ 2 := hb c1 (by omega) (by omega)
+  have hb2 : c2 ≤ 2 := hb c2 (by omega) (by omega)
+  have hb3 : c3 ≤ 2 := hb c3 (by omega) (by omega)
+  have hb4 : c4 ≤ 2 := hb c4 (by omega) (by omega)
+  have hb5 : c5 ≤ 2 := hb c5 (by omega) (by omega)
+  have hb6 : c6 ≤ 2 := hb c6 (by omega) (by omega)
+  have hb7 : c7 ≤ 2 := hb c7 (by omega) (by omega)
+  have hb8 : c8 ≤ 2 := hb c8 (by omega) (by omega)
+  have hb9 : c9 ≤ 2 := hb c9 (by omega) (by omega)
+  exact sidon_profile_refute_ten_A c0 (by omega) c1 (by omega) c2 (by omega)
+    c3 (by omega) c4 (by omega) c5 (by omega) c6 (by omega) c7 (by omega)
+    c8 (by omega) c9 (by omega) hsum hsame.symm hcr1.symm hcr3.symm hcr4.symm
+
+/-- **Mod-10 kill, deleted classes `{4, 6}`** (for `d ∈ {6, 14, 26}`): an
+    8-element set whose difference multiset hits residues `0/1/2/3` mod 10
+    exactly `4/6/6/6` times cannot exist. -/
+private theorem sidon_eight_missing_mod_ten_B (A : Finset ℕ) (hc8 : A.card = 8)
+    (h0 : (A.offDiag.filter (fun q => diffMap q % 10 = 0)).card = 4)
+    (h1 : (A.offDiag.filter (fun q => diffMap q % 10 = 1)).card = 6)
+    (h2 : (A.offDiag.filter (fun q => diffMap q % 10 = 2)).card = 6)
+    (h3 : (A.offDiag.filter (fun q => diffMap q % 10 = 3)).card = 6) : False := by
+  have hsum : ∑ r ∈ Finset.range 10, (A.filter (fun a => a % 10 = r)).card = 8 := by
+    rw [← Finset.card_eq_sum_card_fiberwise
+      (fun a _ => Finset.mem_range.mpr (Nat.mod_lt _ (by norm_num)))]
+    exact hc8
+  have hsame := sidon_same_class_count_ten A
+  rw [h0] at hsame
+  have hcr1 := sidon_cross_class_count_ten A 1 1 (by norm_num) (by norm_num) (by norm_num)
+  rw [h1] at hcr1
+  have hcr2 := sidon_cross_class_count_ten A 2 2 (by norm_num) (by norm_num) (by norm_num)
+  rw [h2] at hcr2
+  have hcr3 := sidon_cross_class_count_ten A 3 3 (by norm_num) (by norm_num) (by norm_num)
+  rw [h3] at hcr3
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+    Nat.reduceAdd, Nat.reduceSub, Nat.reduceMod] at hsum hsame hcr1 hcr2 hcr3
+  generalize hg0 : (A.filter (fun a => a % 10 = 0)).card = c0 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg1 : (A.filter (fun a => a % 10 = 1)).card = c1 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg2 : (A.filter (fun a => a % 10 = 2)).card = c2 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg3 : (A.filter (fun a => a % 10 = 3)).card = c3 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg4 : (A.filter (fun a => a % 10 = 4)).card = c4 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg5 : (A.filter (fun a => a % 10 = 5)).card = c5 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg6 : (A.filter (fun a => a % 10 = 6)).card = c6 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg7 : (A.filter (fun a => a % 10 = 7)).card = c7 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg8 : (A.filter (fun a => a % 10 = 8)).card = c8 at hsum hsame hcr1 hcr2 hcr3
+  generalize hg9 : (A.filter (fun a => a % 10 = 9)).card = c9 at hsum hsame hcr1 hcr2 hcr3
+  have hb : ∀ x < 9, x * x - x ≤ 4 → x ≤ 2 := by decide
+  have hb0 : c0 ≤ 2 := hb c0 (by omega) (by omega)
+  have hb1 : c1 ≤ 2 := hb c1 (by omega) (by omega)
+  have hb2 : c2 ≤ 2 := hb c2 (by omega) (by omega)
+  have hb3 : c3 ≤ 2 := hb c3 (by omega) (by omega)
+  have hb4 : c4 ≤ 2 := hb c4 (by omega) (by omega)
+  have hb5 : c5 ≤ 2 := hb c5 (by omega) (by omega)
+  have hb6 : c6 ≤ 2 := hb c6 (by omega) (by omega)
+  have hb7 : c7 ≤ 2 := hb c7 (by omega) (by omega)
+  have hb8 : c8 ≤ 2 := hb c8 (by omega) (by omega)
+  have hb9 : c9 ≤ 2 := hb c9 (by omega) (by omega)
+  exact sidon_profile_refute_ten_B c0 (by omega) c1 (by omega) c2 (by omega)
+    c3 (by omega) c4 (by omega) c5 (by omega) c6 (by omega) c7 (by omega)
+    c8 (by omega) c9 (by omega) hsum hsame.symm hcr1.symm hcr2.symm hcr3.symm
+
+/-- **No 8-element Sidon set in `{0,…,29}` — the fifth wall.**  Layer 1 pins
+    the difference image and narrows the missing difference to
+    `d ∈ {2, 6, 10, 14, 18, 22, 26}` (`d ≡ 2 (mod 4)`); Layer 2 kills each
+    case by a cross-class residue count (mod 10 for all `d ≠ 10`, mod 7 for
+    `d = 10`).  Purely modular counting — no candidate search. -/
+set_option maxHeartbeats 4000000 in
+theorem no_sidon_card_eight_range_thirty (A : Finset ℕ)
+    (hsub : A ⊆ Finset.range 30) (hA : IsSidonSet A) : A.card ≤ 7 := by
+  by_contra hcard
+  rw [not_le] at hcard
+  -- Counting caps the size at 8, so a violating set has exactly 8 elements.
+  have hup : A.card * A.card ≤ 58 + A.card := by
+    have := sidon_card_sq_le 29 hsub hA; omega
+  have hc8 : A.card = 8 := by
+    by_contra hne
+    have h9 : 9 ≤ A.card := by omega
+    have hmul : 9 * A.card ≤ A.card * A.card := Nat.mul_le_mul h9 (le_refl A.card)
+    omega
+  obtain ⟨d, hd_pos, hd_le, hd_mod, himageEq⟩ :=
+    sidon_eight_range_thirty_missing_two_mod_four A hsub hA hc8
+  have hd7 : d = 2 ∨ d = 6 ∨ d = 10 ∨ d = 14 ∨ d = 18 ∨ d = 22 ∨ d = 26 := by omega
+  rcases hd7 with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · -- `d = 2`: mod 10 deletes classes `{2, 8}`.
+    exact sidon_eight_missing_mod_ten_A A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 4)).trans (by decide))
+  · -- `d = 6`: mod 10 deletes classes `{4, 6}`.
+    exact sidon_eight_missing_mod_ten_B A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 2)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+  · -- `d = 10`: mod 7 (mod 10 is silent here — `{10, −10}` sits in class 0).
+    exact sidon_eight_missing_mod_seven A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 7 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 7 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 7 = 2)).trans (by decide))
+  · -- `d = 14`: mod 10 deletes classes `{4, 6}`.
+    exact sidon_eight_missing_mod_ten_B A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 2)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+  · -- `d = 18`: mod 10 deletes classes `{2, 8}`.
+    exact sidon_eight_missing_mod_ten_A A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 4)).trans (by decide))
+  · -- `d = 22`: mod 10 deletes classes `{2, 8}`.
+    exact sidon_eight_missing_mod_ten_A A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 4)).trans (by decide))
+  · -- `d = 26`: mod 10 deletes classes `{4, 6}`.
+    exact sidon_eight_missing_mod_ten_B A hc8
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 0)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 1)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 2)).trans (by decide))
+      ((sidon_diff_filter_card A hA himageEq (fun δ => δ % 10 = 3)).trans (by decide))
+
+/-- `h(29) = 7` — the fifth wall, closed by pure modular counting: the
+    near-perfect ruler analysis narrows the missing difference to
+    `d ≡ 2 (mod 4)` and cross-class counts (mod 10, mod 7) kill all seven
+    candidates; the span-25 optimal 7-mark Golomb ruler still attains `7`. -/
+theorem sidonNumber_twentynine : sidonNumber 29 = 7 := by
+  refine le_antisymm ?_ ?_
+  · exact sidonNumber_le_of_card
+      (fun A hsub hA => no_sidon_card_eight_range_thirty A hsub hA)
+  · calc 7 = ({0, 1, 4, 10, 18, 23, 25} : Finset ℕ).card := by decide
+      _ ≤ sidonNumber 29 := sidonNumber_ge_card (by decide) isSidonSet_0_1_4_10_18_23_25
+
 end Erdos30
