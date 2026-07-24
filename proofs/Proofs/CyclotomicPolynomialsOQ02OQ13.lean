@@ -70,11 +70,9 @@ theorem lemniscate_subset_biUnion (S : Finset ℂ) {C r : ℝ} (hr : 0 ≤ r)
   simp only [Set.mem_iUnion, Metric.mem_ball, not_exists] at hcon
   have hall : ∀ μ ∈ S, r ≤ ‖z - μ‖ := by
     intro μ hμ
-    have h := hcon μ
-    rw [not_and] at h
-    have := h hμ
-    rw [not_lt, dist_eq_norm] at this
-    exact this
+    have h := hcon μ hμ
+    rw [not_lt, dist_eq_norm] at h
+    exact h
   have hprod : r ^ S.card ≤ ∏ μ ∈ S, ‖z - μ‖ := by
     rw [← Finset.prod_const]
     exact Finset.prod_le_prod (fun _ _ => hr) hall
@@ -94,8 +92,9 @@ theorem not_isPreconnected_lemniscate {S : Finset ℂ} {a b : ℂ} {C r : ℝ}
     rcases lt_or_eq_of_le hr with h | h
     · exact h
     · exfalso
-      rw [← h, zero_pow (by positivity), ← h] at hCr
-      · linarith
+      have hcard : S.card ≠ 0 := Finset.card_ne_zero.mpr ⟨a, ha⟩
+      rw [← h, zero_pow hcard] at hCr
+      linarith
   have hmema : a ∈ {z : ℂ | ‖∏ μ ∈ S, (z - μ)‖ < C} := by
     rw [Set.mem_setOf_eq, Finset.prod_eq_zero ha (by rw [sub_self]), norm_zero]
     exact hC
@@ -214,16 +213,23 @@ private lemma sqrt_sqrt_pow_four {C : ℝ} (hC : 0 ≤ C) :
   rw [show (4 : ℕ) = 2 * 2 from rfl, pow_mul,
     Real.sq_sqrt (Real.sqrt_nonneg C), Real.sq_sqrt hC]
 
-/-- From `C < t²/16` (with `0 ≤ t`) the fourth-root radius satisfies `2·√√C < t` —
-the separation input for a minimal root gap `t`. -/
+/-- From `16C < (t²)²` (with `0 ≤ t`) the fourth-root radius satisfies
+`2·√√C < t` — the separation input for a minimal root gap `t`. -/
 private lemma two_sqrt_sqrt_lt {C t : ℝ} (hC : 0 ≤ C) (ht : 0 ≤ t)
-    (h : 16 * C < t ^ 2 * t ^ 2) :
+    (h : 16 * C < (t ^ 2) ^ 2) :
     2 * Real.sqrt (Real.sqrt C) < t := by
   set r := Real.sqrt (Real.sqrt C) with hr
   have hr0 : 0 ≤ r := Real.sqrt_nonneg _
   have hr4 : r ^ 4 = C := sqrt_sqrt_pow_four hC
-  nlinarith [sq_nonneg (2 * r - t), sq_nonneg (2 * r + t), sq_nonneg (4 * r ^ 2 - t ^ 2),
-    pow_pos (lt_of_le_of_ne hr0 (fun hh => by nlinarith [hr4.symm ▸ hC])) 2]
+  have h4 : (2 * r) ^ 4 < t ^ 4 := by
+    have e1 : (2 * r) ^ 4 = 16 * r ^ 4 := by ring
+    have e2 : (t ^ 2) ^ 2 = t ^ 4 := by ring
+    rw [e1, hr4]
+    rw [e2] at h
+    exact h
+  by_contra hcon
+  push Not at hcon
+  exact absurd h4 (not_lt.mpr (pow_le_pow_left₀ ht hcon 4))
 
 /-! ## `n = 8`: `Φ₈ = X⁴ + 1`, roots `(±√2 ± √2·i)/2`, minimal gap `√2`
 
@@ -232,10 +238,10 @@ Disconnection for `C < 1/4` (`2·C^{1/4} < √2 ⟺ 16C < 4`). -/
 /-- `Φ₈ = X⁴ + 1` (absent from Mathlib): from `expand ℂ 2 Φ₄ = Φ₈` and
 OQ11's `Φ₄ = X² + 1`. -/
 theorem cyclotomic_eight : cyclotomic 8 ℂ = X ^ 4 + 1 := by
-  have h := cyclotomic_expand_eq_cyclotomic Nat.prime_two
-    (show 2 ∣ 4 by norm_num) ℂ
-  rw [CyclotomicPolynomialsOQ02OQ11.cyclotomic_four] at h
-  norm_num at h
+  have h : Polynomial.expand ℂ 2 (X ^ 2 + 1) = cyclotomic 8 ℂ := by
+    have h0 := cyclotomic_expand_eq_cyclotomic Nat.prime_two
+      (show 2 ∣ 4 by norm_num) ℂ
+    rwa [CyclotomicPolynomialsOQ02OQ11.cyclotomic_four] at h0
   rw [← h]
   simp only [map_add, map_pow, Polynomial.expand_X, map_one]
   ring
@@ -257,10 +263,9 @@ theorem cyclotomic_eight_eval_factor (z : ℂ) :
     (cyclotomic 8 ℂ).eval z = (z - w8a) * (z - w8b) * (z - w8c) * (z - w8d) := by
   rw [cyclotomic_eight]
   simp only [eval_add, eval_pow, eval_X, eval_one, w8a, w8b, w8c, w8d]
-  linear_combination (-(((Real.sqrt 2 : ℂ)) ^ 2 + 2) / 4
-    - Complex.I ^ 2 * ((Real.sqrt 2 : ℂ) ^ 2 - z ^ 2) / 2
-    - Complex.I ^ 4 * (Real.sqrt 2 : ℂ) ^ 2 / 4 * Complex.I ^ 0) * ofReal_sqrt_two_sq
-    + (0 : ℂ) * Complex.I_sq
+  linear_combination (-((Real.sqrt 2 : ℂ) ^ 2 + 2) / 4) * ofReal_sqrt_two_sq
+    + (z ^ 2 * (Real.sqrt 2 : ℂ) ^ 2 / 2 + (Real.sqrt 2 : ℂ) ^ 4 / 4
+      - (Real.sqrt 2 : ℂ) ^ 4 * (Complex.I ^ 2 + 1) / 16) * Complex.I_sq
 
 /-- The `Φ₈` sublevel set in factored form. -/
 theorem levelSet_cyclotomic_eight_eq (C : ℝ) :
@@ -359,7 +364,7 @@ theorem not_isPreconnected_levelSet_eight {C : ℝ} (hC : 0 < C) (hC' : C < 1 / 
   have hsep : 2 * r < Real.sqrt 2 := by
     apply two_sqrt_sqrt_lt hC.le (Real.sqrt_nonneg 2)
     rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
-    linarith
+    nlinarith [hC']
   refine not_isPreconnected_quartic_lemniscate hC (Real.sqrt_nonneg _)
     (le_of_eq (sqrt_sqrt_pow_four hC.le).symm)
     w8_ab_ne w8_ac_ne w8_ad_ne w8_bc_ne w8_bd_ne w8_cd_ne ?_ ?_ ?_
@@ -380,10 +385,10 @@ Disconnection for `C < 1/16` (`2·C^{1/4} < 1 ⟺ 16C < 1`). -/
 /-- `Φ₁₂ = X⁴ − X² + 1` (absent from Mathlib): from `expand ℂ 2 Φ₆ = Φ₁₂` and
 `Φ₆ = X² − X + 1`. -/
 theorem cyclotomic_twelve : cyclotomic 12 ℂ = X ^ 4 - X ^ 2 + 1 := by
-  have h := cyclotomic_expand_eq_cyclotomic Nat.prime_two
-    (show 2 ∣ 6 by norm_num) ℂ
-  rw [cyclotomic_six] at h
-  norm_num at h
+  have h : Polynomial.expand ℂ 2 (X ^ 2 - X + 1) = cyclotomic 12 ℂ := by
+    have h0 := cyclotomic_expand_eq_cyclotomic Nat.prime_two
+      (show 2 ∣ 6 by norm_num) ℂ
+    rwa [cyclotomic_six] at h0
   rw [← h]
   simp only [map_add, map_sub, map_pow, Polynomial.expand_X, map_one]
   ring
@@ -406,9 +411,9 @@ theorem cyclotomic_twelve_eval_factor (z : ℂ) :
       (z - w12a) * (z - w12b) * (z - w12c) * (z - w12d) := by
   rw [cyclotomic_twelve]
   simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one, w12a, w12b, w12c, w12d]
-  linear_combination ((z ^ 2 : ℂ) / 2 - (5 + (Real.sqrt 3 : ℂ) ^ 2) / 16
-    + Complex.I ^ 2 * ((Real.sqrt 3 : ℂ) ^ 2 - 1) / 8) * ofReal_sqrt_three_sq
-    + (0 : ℂ) * Complex.I_sq
+  linear_combination ((z ^ 2 : ℂ) / 2 - ((Real.sqrt 3 : ℂ) ^ 2 - 3) / 16
+    + (Complex.I ^ 2 + 1) / 8 - 1 / 2) * ofReal_sqrt_three_sq
+    + ((z ^ 2 : ℂ) / 2 + 1 / 2 - (Complex.I ^ 2 + 1) / 16) * Complex.I_sq
 
 /-- The `Φ₁₂` sublevel set in factored form. -/
 theorem levelSet_cyclotomic_twelve_eq (C : ℝ) :
@@ -497,8 +502,7 @@ theorem not_isPreconnected_levelSet_twelve {C : ℝ} (hC : 0 < C) (hC' : C < 1 /
   set r := Real.sqrt (Real.sqrt C) with hrdef
   have hsep1 : 2 * r < 1 := by
     apply two_sqrt_sqrt_lt hC.le zero_le_one
-    norm_num
-    linarith
+    nlinarith [hC']
   have hsep3 : 2 * r < Real.sqrt 3 := by
     have h13 : (1 : ℝ) ≤ Real.sqrt 3 := by
       rw [show (1 : ℝ) = Real.sqrt 1 from (Real.sqrt_one).symm]
