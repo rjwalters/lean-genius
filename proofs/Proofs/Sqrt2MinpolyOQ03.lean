@@ -316,4 +316,164 @@ theorem Q_sqrt2_classNumber_eq_one :
     NumberField.classNumber Q_sqrt2 = 1 :=
   Q_sqrt2_classNumber_eq_one_of_discr Q_sqrt2_discr_eq_eight
 
+/-! ## Session 11: the element-level integral basis — `IsIntegral ℤ (a + b·√2) ↔ a, b ∈ ℤ`
+
+This section proves the complete membership characterization of the ring of
+integers of `Q(√2)` at the element level: `a + b·root` is an algebraic integer
+iff `a, b ∈ ℤ`. The forward direction uses the **minimal-polynomial route**
+(instead of the trace/norm formulas originally sketched): for `b ≠ 0` the
+element `x = a + b·root` has minimal polynomial `X² − 2aX + (a² − 2b²)` over
+ℚ, and integrality forces its coefficients into ℤ
+(`minpoly.isIntegrallyClosed_eq_field_fractions'`), which is exactly the
+input to the S10 arithmetic crux `int_pair_of_double_and_norm`. This avoids
+any `leftMulMatrix` computation. S12 packages this into the ℤ-basis `{1, root}`
+of `𝓞` and the discriminant `det [[2,0],[0,4]] = 8`. -/
+
+/-- The element `a + b·√2` of `Q_sqrt2`. -/
+noncomputable def elt (a b : ℚ) : Q_sqrt2 :=
+  algebraMap ℚ Q_sqrt2 a + algebraMap ℚ Q_sqrt2 b * AdjoinRoot.root X_sq_sub_two
+
+/-- `√2` is irrational: `root` is not in the image of ℚ. (A rational root
+would give an integer square root of 2 via `rat_int_of_sq_int`.) -/
+theorem root_not_mem_range :
+    AdjoinRoot.root X_sq_sub_two ∉ (algebraMap ℚ Q_sqrt2).range := by
+  rintro ⟨r, hr⟩
+  have h2 : r ^ 2 = 2 := by
+    have hsq : algebraMap ℚ Q_sqrt2 (r ^ 2) = algebraMap ℚ Q_sqrt2 2 := by
+      rw [map_pow, hr, root_sq, map_ofNat]
+    exact_mod_cast (algebraMap ℚ Q_sqrt2).injective hsq
+  obtain ⟨m, hm⟩ := rat_int_of_sq_int r 2 (by exact_mod_cast h2)
+  have hm2 : m ^ 2 = 2 := by
+    have h' : ((m : ℚ)) ^ 2 = 2 := by rw [hm]; exact h2
+    exact_mod_cast h'
+  have hub : m ≤ 1 := by nlinarith [sq_nonneg (m - 2)]
+  have hlb : -1 ≤ m := by nlinarith [sq_nonneg (m + 2)]
+  interval_cases m <;> norm_num at hm2
+
+/-- Elements `a + b·root` with `b ≠ 0` are irrational. -/
+theorem elt_not_mem_range (a b : ℚ) (hb : b ≠ 0) :
+    elt a b ∉ (algebraMap ℚ Q_sqrt2).range := by
+  rintro ⟨r, hr⟩
+  apply root_not_mem_range
+  refine ⟨(r - a) / b, ?_⟩
+  have hbne : algebraMap ℚ Q_sqrt2 b ≠ 0 := by
+    simpa using (algebraMap ℚ Q_sqrt2).injective.ne hb
+  apply mul_left_cancel₀ hbne
+  rw [← map_mul, mul_div_cancel₀ _ hb, map_sub, hr]
+  simp only [elt]
+  ring
+
+/-- `x = a + b·root` is annihilated by the monic quadratic
+`X² − 2aX + (a² − 2b²)` (written with `+` and a negated linear coefficient
+for direct monicity/coefficient extraction). -/
+theorem aeval_elt_quadratic (a b : ℚ) :
+    Polynomial.aeval (elt a b)
+      (X ^ 2 + (C (-(2 * a)) * X + C (a ^ 2 - 2 * b ^ 2)) : ℚ[X]) = 0 := by
+  simp only [elt, map_add, map_mul, map_pow, map_neg, Polynomial.aeval_X,
+    Polynomial.aeval_C, map_sub, map_ofNat]
+  linear_combination (algebraMap ℚ Q_sqrt2 b) ^ 2 * root_sq
+
+/-- The annihilator is monic (leading term `X²`). -/
+theorem quadratic_monic (a b : ℚ) :
+    (X ^ 2 + (C (-(2 * a)) * X + C (a ^ 2 - 2 * b ^ 2)) : ℚ[X]).Monic := by
+  apply Polynomial.monic_X_pow_add
+  apply lt_of_le_of_lt (Polynomial.degree_add_le _ _)
+  apply max_lt
+  · exact lt_of_le_of_lt (Polynomial.degree_C_mul_X_le _) (by decide)
+  · exact lt_of_le_of_lt Polynomial.degree_C_le (by decide)
+
+/-- **The minimal polynomial of `a + b·root` for `b ≠ 0`** is exactly the
+monic quadratic `X² − 2aX + (a² − 2b²)`: the annihilator is divided by the
+minimal polynomial, whose degree is ≥ 2 by irrationality
+(`minpoly.two_le_natDegree_iff`), so the quotient is the monic constant 1. -/
+theorem minpoly_elt (a b : ℚ) (hb : b ≠ 0) :
+    minpoly ℚ (elt a b) =
+      X ^ 2 + (C (-(2 * a)) * X + C (a ^ 2 - 2 * b ^ 2)) := by
+  set q : ℚ[X] := X ^ 2 + (C (-(2 * a)) * X + C (a ^ 2 - 2 * b ^ 2)) with hqdef
+  have hq_monic : q.Monic := quadratic_monic a b
+  have hq_deg : q.natDegree = 2 := by
+    rw [hqdef]
+    compute_degree!
+  have hx_int : IsIntegral ℚ (elt a b) := IsIntegral.of_finite ℚ _
+  have hdvd : minpoly ℚ (elt a b) ∣ q := minpoly.dvd ℚ _ (aeval_elt_quadratic a b)
+  have hdeg_le : (minpoly ℚ (elt a b)).natDegree ≤ 2 :=
+    hq_deg ▸ Polynomial.natDegree_le_of_dvd hdvd hq_monic.ne_zero
+  have hdeg_ge : 2 ≤ (minpoly ℚ (elt a b)).natDegree :=
+    (minpoly.two_le_natDegree_iff hx_int).mpr (elt_not_mem_range a b hb)
+  obtain ⟨c, hc⟩ := hdvd
+  have hmp_monic : (minpoly ℚ (elt a b)).Monic := minpoly.monic hx_int
+  have hc_ne : c ≠ 0 := by
+    rintro rfl
+    rw [mul_zero] at hc
+    exact hq_monic.ne_zero hc
+  have hdegs : q.natDegree = (minpoly ℚ (elt a b)).natDegree + c.natDegree := by
+    rw [hc, Polynomial.natDegree_mul (minpoly.ne_zero hx_int) hc_ne]
+  have hc0 : c.natDegree = 0 := by omega
+  have hc_monic : c.Monic := hmp_monic.of_mul_monic_left (hc ▸ hq_monic)
+  have hcC : c = C (c.coeff 0) := Polynomial.eq_C_of_natDegree_eq_zero hc0
+  have hlead : c.coeff 0 = 1 := by
+    have hl := hc_monic
+    rwa [Polynomial.Monic, Polynomial.leadingCoeff, hc0] at hl
+  rw [hc, hcC, hlead, Polynomial.C_1, mul_one]
+
+/-- **Forward direction of `𝓞 = ℤ[√2]`**: an integral `a + b·root` has
+`a, b ∈ ℤ`. For `b ≠ 0` the minimal polynomial over ℚ descends to ℤ
+(`minpoly.isIntegrallyClosed_eq_field_fractions'`), so its coefficients
+`−2a` and `a² − 2b²` are integers, and the S10 arithmetic crux applies.
+For `b = 0` integrality of the rational `a` gives `a ∈ ℤ` directly. -/
+theorem coords_int_of_isIntegral {a b : ℚ} (hint : IsIntegral ℤ (elt a b)) :
+    (∃ a0 : ℤ, (a0 : ℚ) = a) ∧ (∃ b0 : ℤ, (b0 : ℚ) = b) := by
+  by_cases hb : b = 0
+  · subst hb
+    have ha : IsIntegral ℤ a := by
+      have hxa : elt a 0 = algebraMap ℚ Q_sqrt2 a := by
+        simp [elt]
+      rw [hxa] at hint
+      exact (isIntegral_algebraMap_iff (algebraMap ℚ Q_sqrt2).injective).mp hint
+    exact ⟨IsIntegrallyClosed.isIntegral_iff.mp ha, ⟨0, by norm_num⟩⟩
+  · have hmap : minpoly ℚ (elt a b) = (minpoly ℤ (elt a b)).map (algebraMap ℤ ℚ) :=
+      minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hint
+    rw [minpoly_elt a b hb] at hmap
+    have hcoeff1 : -(2 * a) = ((minpoly ℤ (elt a b)).coeff 1 : ℚ) := by
+      have h := congrArg (fun p : ℚ[X] => p.coeff 1) hmap
+      simp only [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C_mul,
+        Polynomial.coeff_X_one, Polynomial.coeff_C, Polynomial.coeff_map, eq_intCast,
+        mul_one, add_zero, one_ne_zero, ite_false] at h
+      simpa using h
+    have hcoeff0 : a ^ 2 - 2 * b ^ 2 = ((minpoly ℤ (elt a b)).coeff 0 : ℚ) := by
+      have h := congrArg (fun p : ℚ[X] => p.coeff 0) hmap
+      simp only [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C_mul,
+        Polynomial.coeff_X_zero, Polynomial.coeff_C, Polynomial.coeff_map, eq_intCast,
+        mul_zero, zero_add] at h
+      simpa using h
+    exact int_pair_of_double_and_norm a b (-(minpoly ℤ (elt a b)).coeff 1)
+      ((minpoly ℤ (elt a b)).coeff 0)
+      (by rw [Int.cast_neg]; linarith [hcoeff1]) (by linarith [hcoeff0])
+
+/-- **Reverse direction**: integer coordinates give an algebraic integer
+(`ℤ[√2] ⊆ 𝓞`). -/
+theorem isIntegral_elt_of_coords (m n : ℤ) :
+    IsIntegral ℤ (elt (m : ℚ) (n : ℚ)) := by
+  have hm : algebraMap ℚ Q_sqrt2 (m : ℚ) = algebraMap ℤ Q_sqrt2 m := by
+    rw [IsScalarTower.algebraMap_apply ℤ ℚ Q_sqrt2 m]
+    norm_num
+  have hn : algebraMap ℚ Q_sqrt2 (n : ℚ) = algebraMap ℤ Q_sqrt2 n := by
+    rw [IsScalarTower.algebraMap_apply ℤ ℚ Q_sqrt2 n]
+    norm_num
+  unfold elt
+  rw [hm, hn]
+  exact isIntegral_algebraMap.add (isIntegral_algebraMap.mul root_isIntegral)
+
+/-- **The element-level integral basis: `a + b·√2 ∈ 𝓞 ↔ a, b ∈ ℤ`.**
+This is the complete membership description of the ring of integers of
+`Q(√2)`; S12 packages it as `Basis (Fin 2) ℤ (𝓞 Q_sqrt2)` and computes
+`discr = 8`. -/
+theorem isIntegral_elt_iff (a b : ℚ) :
+    IsIntegral ℤ (elt a b) ↔
+      (∃ a0 : ℤ, (a0 : ℚ) = a) ∧ (∃ b0 : ℤ, (b0 : ℚ) = b) := by
+  constructor
+  · exact coords_int_of_isIntegral
+  · rintro ⟨⟨a0, rfl⟩, ⟨b0, rfl⟩⟩
+    exact isIntegral_elt_of_coords a0 b0
+
 end Sqrt2MinpolyOQ03
