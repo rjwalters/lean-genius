@@ -903,12 +903,13 @@ We now have all the components to prove the Furstenberg correspondence principle
 - `seqCompact_probabilityMeasure_cantor`: Prokhorov compactness (Part IX, axiom)
 - `density_preserved_at_limit`: μ(B₀) ≥ δ at limit (Part X, proved)
 - `cesaroMeasure_preimage_le/ge`: approximate T-invariance (Part VIII-b, proved)
+- `limit_invariant_on_cylinder`: exact T-invariance at the limit on clopen
+  sets (Part XII, proved 2026-07-23 — Portmanteau null-frontier + vanishing
+  1/(N+1) error + le_of_tendsto_of_tendsto')
 - `positive_measure_gives_ap`: positive measure → AP (Part XIII, proved)
 
-**Remaining sorry** (1):
-- `limit_shift_invariant_on_cylinder` → full T-invariance (Part XII)
-  Mathematically clear: telescoping + Portmanteau + π-λ theorem.
-  Requires assembling Portmanteau limit algebra in ENNReal.
+**Remaining sorries**: 0. The sole remaining assumption is the Prokhorov
+axiom `seqCompact_probabilityMeasure_cantor` (Part IX).
 
 **Architecture**: We construct the `Furstenberg.System` directly on Cantor space:
 - X = CantorSpace, T = shift, B = cylinderZero
@@ -945,14 +946,15 @@ We now have all the components to prove the Furstenberg correspondence principle
 | `cesaro_positive_implies_orbit_member` | ✅ Proved | 4 |
 | `positive_measure_gives_ap` | ✅ Proved | 4 |
 | `correspondenceSystem` (System constructor) | ✅ Defined | 4 |
-| `limit_shift_invariant_on_cylinder` | ❌ Sorry | 4 |
+| `limit_invariant_on_cylinder` | ✅ Proved | S13 (2026-07-23) |
 
 **Net result**: The `furstenberg_correspondence` axiom in FurstenbergCorrespondence.lean
 reduces to:
   1. `seqCompact_probabilityMeasure_cantor` (Prokhorov axiom, standard analysis)
-  2. One sorry for T-invariance limit algebra (ENNReal Portmanteau → Measure equality)
 
-Both are standard analysis facts, not deep mathematics.
+The T-invariance limit algebra (formerly a sorry) is now proved
+(`limit_invariant_on_cylinder`, Part XII). The Prokhorov axiom is a
+standard analysis fact, not deep mathematics.
 The combinatorial-dynamical bridge (Parts III-V, XIII) is fully proved.
 -/
 

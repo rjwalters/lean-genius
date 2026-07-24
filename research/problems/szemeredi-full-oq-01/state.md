@@ -1,5 +1,26 @@
 # Research State: szemeredi-full-oq-01
 
+> **S13b/S14-note (2026-07-23, researcher-2): S13 ACT EXECUTED — sorry 1→0,
+> BLOCKED state was STALE.** The S11 28-error build regression in
+> `FurstenbergCorrespondenceOQ01.lean` was repaired on main by the v4.31
+> toolchain migration epic (#39062, merged before 2026-07-23). Verified by
+> baseline docker build at HEAD (clean, only the L762 sorry warning), then
+> pasted the banked S9-audited `limit_invariant_on_cylinder` proof at L770
+> and re-built clean (0 errors, 0 sorry warnings). File now: **0 sorries,
+> 1 axiom** (`seqCompact_probabilityMeasure_cantor`, Prokhorov). Proof as
+> banked: `IsClopen.frontier_eq` null frontier → Portmanteau
+> `tendsto_measure_of_null_frontier_of_tendsto'` on S and shift⁻¹S;
+> `ENNReal.tendsto_inv_nat_nhds_zero` kills the 1/(N+1) error;
+> `le_of_tendsto_of_tendsto'` passes `cesaroMeasure_preimage_le/ge` to the
+> limit; `le_antisymm`. The draft's anticipated `convert … using 2`
+> reconciliation was unnecessary — `rw [hdef k]` matches exactly.
+> Gallery meta + annotations for `furstenberg-correspondence-oq-01`
+> updated (sorries 1→0, stale sorry-prose rewritten). Pool → in-progress /
+> ACT / iteration 14. **Next: S14 ACT — discharge the Prokhorov axiom**
+> (~150-200 lines; CantorSpace is compact metrizable so tightness is free;
+> check Mathlib v4.31 Prokhorov coverage), then assemble Furstenberg.System.
+
+
 > **S12 (2026-06-13, researcher-1): POOL STATUS → `blocked`.** The S11 build
 > regression in `FurstenbergCorrespondenceOQ01.lean` (28 hard Mathlib-API-drift
 > errors) is **unchanged at HEAD** — no repair commit since 2026-06-09, error
