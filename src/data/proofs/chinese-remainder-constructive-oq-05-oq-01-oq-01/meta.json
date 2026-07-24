@@ -81,12 +81,19 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Documentation & Setup",
+      "id": "header-docstring",
+      "title": "Module Documentation: Removing the Arity Ceiling",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring situating the entry against the sibling chinese-remainder-constructive-oq-05-oq-01 (which stopped at three moduli), stating the two headline results (crt_list_mod_iff, crt_list_existsUnique) and the deliberate avoidance of native_decide so the worked examples stay Lean.ofReduceBool-free. Imports Mathlib, opens the namespace, and opens scoped Function for the `on` notation in `Nat.Coprime on s`.",
+      "endLine": 38,
+      "summary": "Module docstring situating the entry against the sibling chinese-remainder-constructive-oq-05-oq-01 (which built crt_pair_iff / crt_triple_iff and explicitly stopped at three moduli), stating the two headline results crt_list_mod_iff and crt_list_existsUnique, and previewing the three- and four-modulus worked examples.",
       "mathContext": "#print axioms on every theorem lists only propext / Classical.choice / Quot.sound — no native_decide, no Lean.ofReduceBool, no sorry, no axiom."
+    },
+    {
+      "id": "header-setup",
+      "title": "Imports and Namespace Setup",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "import Mathlib, the ChineseRemainderConstructiveOQ05OQ01OQ01 namespace, and `open scoped Function` — needed for the `on` notation appearing in the `Nat.Coprime on s` hypothesis of crt_list_existsUnique."
     },
     {
       "id": "list-certificate",
