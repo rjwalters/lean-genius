@@ -49,15 +49,21 @@ Usage:
 """
 
 import json
+import os
 import shutil
 import sqlite3
 import sys
 from pathlib import Path
 
+# The live knowledge.db exists ONLY in the main checkout (gitignored runtime
+# state), while a triage PR is developed in a worktree. Env overrides let the
+# worktree copy of this script operate on the live DB / a specific registry.
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-DB_PATH = REPO_ROOT / "research" / "db" / "knowledge.db"
-REGISTRY_PATH = REPO_ROOT / "research" / "registry.json"
-BACKUP_PATH = REPO_ROOT / "research" / "db" / "knowledge.db.pre-triage-issue43007"
+DB_PATH = Path(os.environ.get(
+    "LEAN_TRIAGE_DB", REPO_ROOT / "research" / "db" / "knowledge.db"))
+REGISTRY_PATH = Path(os.environ.get(
+    "LEAN_TRIAGE_REGISTRY", REPO_ROOT / "research" / "registry.json"))
+BACKUP_PATH = DB_PATH.with_name(DB_PATH.name + ".pre-triage-issue43007")
 
 TRIAGE_TAG = "(triage #43007, 2026-07-23)"
 
