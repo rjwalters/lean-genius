@@ -719,6 +719,161 @@ theorem witness_valid {j : Fin P.numEvents} {l : List (Fin P.numEvents)}
 
 end WitnessTree
 
+/-! ## Part VII — Instrumented runner: the resample log (S18 prep)
+
+The remaining probabilistic deliverable `witness_prob_bd` (a fixed proper
+witness tree *appears* in the random execution with probability at most
+`∏ uniformDrawProb` over its vertices) couples the Moser–Tardos run with the
+**log** of resampled event indices — the list Part VI's `ExtractsFrom`
+relation consumes. This part instruments the Part II runner with that log
+and proves the instrumentation conservative:
+
+* `stepLog` / `runLog` — the Part II chain, additionally emitting the
+  indices of the resampled events, most recent entry first (the
+  `ExtractsFrom` convention);
+* `stepLog_map_fst` / `runLog_map_fst` — projecting the log away recovers
+  `step` / `run` on the nose, so `runLog` is the *same* random process
+  carrying extra bookkeeping;
+* `runLog_length_le` — a run of `n` steps logs at most `n` resamples;
+* `runLog_of_pickBad_none` — from a good state the run is silent;
+* `pickBad_isBad` / `mem_log_pickBad` — every logged index was returned by
+  `pickBad` at some state, hence names an event violated at its resample.
+
+Nothing here yet assigns probabilities to trees: this is the state/log
+plumbing that `witness_prob_bd` will quantify over. -/
+
+section RunLog
+
+/-- One Moser–Tardos step, additionally reporting which event (if any) was
+    resampled: from a good state, stay put and report `none`; otherwise
+    resample the least-index violated event `i` and report `some i`. -/
+noncomputable def stepLog (v : P.State) :
+    PMF (P.State × Option (Fin P.numEvents)) :=
+  match P.pickBad v with
+  | none   => PMF.pure (v, none)
+  | some i => (P.resampleAt (P.vbl i) v).map (fun w => (w, some i))
+
+/-- Instrumented runner: `runLog n v` runs `n` Moser–Tardos steps from `v`
+    and returns the final state together with the log of resampled event
+    indices, **most recent entry first** — the order in which Part VI's
+    `ExtractsFrom` consumes the log. -/
+noncomputable def runLog : ℕ → P.State → PMF (P.State × List (Fin P.numEvents))
+  | 0, v => PMF.pure (v, [])
+  | n + 1, v =>
+      (P.stepLog v).bind fun p =>
+        (runLog n p.1).map fun q => (q.1, q.2 ++ p.2.toList)
+
+/-- Projecting the log away from one instrumented step recovers `step`. -/
+theorem stepLog_map_fst (v : P.State) :
+    (P.stepLog v).map Prod.fst = P.step v := by
+  cases h : P.pickBad v with
+  | none => simp [stepLog, step, h, PMF.pure_map]
+  | some i =>
+      simp only [stepLog, step, h, PMF.map_comp]
+      have hcomp : (Prod.fst ∘ fun w : P.State => (w, some i)) = id := rfl
+      rw [hcomp, PMF.map_id]
+
+/-- **The instrumentation is conservative**: projecting the log away from
+    `runLog` recovers `run` exactly — the instrumented runner is the same
+    random process as the Part II chain. -/
+theorem runLog_map_fst (n : ℕ) (v : P.State) :
+    (P.runLog n v).map Prod.fst = P.run n v := by
+  induction n generalizing v with
+  | zero => simp [runLog, run, PMF.pure_map]
+  | succ n ih =>
+      simp only [runLog, run, PMF.map_bind]
+      have hinner : ∀ p : P.State × Option (Fin P.numEvents),
+          ((P.runLog n p.1).map fun q => (q.1, q.2 ++ p.2.toList)).map Prod.fst
+            = P.run n p.1 := by
+        intro p
+        rw [PMF.map_comp]
+        have hcomp :
+            (Prod.fst ∘ fun q : P.State × List (Fin P.numEvents) =>
+              (q.1, q.2 ++ p.2.toList)) = Prod.fst := rfl
+        rw [hcomp, ih p.1]
+      simp only [hinner]
+      rw [← P.stepLog_map_fst v, PMF.bind_map]
+      rfl
+
+/-- A run of `n` steps logs at most `n` resamples. -/
+theorem runLog_length_le (n : ℕ) (v : P.State) :
+    ∀ wl ∈ (P.runLog n v).support, wl.2.length ≤ n := by
+  induction n generalizing v with
+  | zero =>
+      intro wl hwl
+      simp only [runLog, PMF.mem_support_pure_iff] at hwl
+      simp [hwl]
+  | succ n ih =>
+      intro wl hwl
+      simp only [runLog, PMF.mem_support_bind_iff] at hwl
+      obtain ⟨p, _hp, hwl⟩ := hwl
+      rw [PMF.mem_support_map_iff] at hwl
+      obtain ⟨q, hq, rfl⟩ := hwl
+      have h1 := ih p.1 q hq
+      have h2 : p.2.toList.length ≤ 1 := by cases p.2 <;> simp
+      simp only [List.length_append]
+      omega
+
+/-- From a good state (no violated event) the instrumented run is silent:
+    it stays put and logs nothing. -/
+theorem runLog_of_pickBad_none {v : P.State} (h : P.pickBad v = none) :
+    ∀ n, P.runLog n v = PMF.pure (v, []) := by
+  intro n
+  induction n with
+  | zero => simp [runLog]
+  | succ n ih =>
+      simp only [runLog, stepLog, h, PMF.pure_bind]
+      rw [ih, PMF.pure_map]
+      simp
+
+/-- `pickBad` only returns genuinely violated events. -/
+theorem pickBad_isBad {v : P.State} {i : Fin P.numEvents}
+    (h : P.pickBad v = some i) : P.isBad i v := by
+  classical
+  simp only [pickBad] at h
+  split at h
+  · rename_i hne
+    obtain rfl : _ = i := Option.some.inj h
+    have hmem := Finset.min'_mem _ hne
+    exact (Finset.mem_filter.mp hmem).2
+  · exact absurd h (by simp)
+
+/-- **Provenance of log entries**: every index in the log was returned by
+    `pickBad` at some state of the run — in particular it names an event
+    that was violated at the moment it was resampled. -/
+theorem mem_log_pickBad (n : ℕ) (v : P.State) :
+    ∀ wl ∈ (P.runLog n v).support, ∀ k ∈ wl.2,
+      ∃ w : P.State, P.pickBad w = some k ∧ P.isBad k w := by
+  induction n generalizing v with
+  | zero =>
+      intro wl hwl k hk
+      simp only [runLog, PMF.mem_support_pure_iff] at hwl
+      subst hwl
+      simp at hk
+  | succ n ih =>
+      intro wl hwl k hk
+      simp only [runLog, PMF.mem_support_bind_iff] at hwl
+      obtain ⟨p, hp, hwl⟩ := hwl
+      rw [PMF.mem_support_map_iff] at hwl
+      obtain ⟨q, hq, rfl⟩ := hwl
+      rcases List.mem_append.mp hk with hk' | hk'
+      · exact ih p.1 q hq k hk'
+      · -- `k` was reported by this step
+        revert hp
+        cases hpb : P.pickBad v with
+        | none =>
+            simp only [stepLog, hpb, PMF.mem_support_pure_iff]
+            rintro rfl
+            simp at hk'
+        | some i =>
+            simp only [stepLog, hpb, PMF.mem_support_map_iff]
+            rintro ⟨w, _hw, rfl⟩
+            simp only [Option.toList_some, List.mem_singleton] at hk'
+            subst hk'
+            exact ⟨v, hpb, P.pickBad_isBad hpb⟩
+
+end RunLog
+
 end MTProblem
 
 end ProbMethod.MoserTardos
