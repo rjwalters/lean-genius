@@ -88,7 +88,8 @@
       "**Real part of the binomial theorem**: the entire multiple-angle expansion is nothing more than $\\operatorname{Re}$ applied term-by-term to $(\\cos\\theta + i\\sin\\theta)^n = \\sum_k \\binom{n}{k}\\cos^k\\theta\\,(i\\sin\\theta)^{n-k}$.",
       "**The sign pattern is $\\operatorname{Re}(i^m)$**: the alternating $(-1)^j$ and the vanishing of odd-power-of-sin terms both come from a single source — the four-periodic real part of the powers of $i$.",
       "**Reflect, drop, reindex**: converting the raw binomial sum to the textbook $\\lfloor n/2\\rfloor$ closed form is pure finite combinatorics — `sum_range_reflect` to orient the index, `sum_subset` to discard vanishing terms, `sum_image` to reindex $i = 2j$.",
-      "**Constructive vs. existential**: the parent entry proved $\\cos(n\\theta)$ *is* $T_n(\\cos\\theta)$ abstractly; here the polynomial is written out explicitly and then shown to agree with $T_n$, closing the loop between the binomial and Chebyshev descriptions."
+      "**Constructive vs. existential**: the parent entry proved $\\cos(n\\theta)$ *is* $T_n(\\cos\\theta)$ abstractly; here the polynomial is written out explicitly and then shown to agree with $T_n$, closing the loop between the binomial and Chebyshev descriptions.",
+      "**De Moivre's power law is Euler's exponential law in disguise**: rather than proving $(\\cos\\theta+i\\sin\\theta)^n=\\cos(n\\theta)+i\\sin(n\\theta)$ directly by induction on $n$ (the classical route), `cos_add_sin_I_eq_exp` first identifies $\\cos\\theta+i\\sin\\theta=e^{i\\theta}$, after which De Moivre's power law is just `exp_nat_mul` — $(e^{i\\theta})^n=e^{in\\theta}$ — a single rewrite instead of an inductive proof, since $\\mathbb{C}\\to\\mathbb{C},\\,z\\mapsto e^z$ is already known to be a monoid homomorphism from $(\\mathbb{C},+)$ to $(\\mathbb{C}^\\times,\\cdot)$."
     ],
     "prerequisites": [
       "De Moivre's theorem and Euler's formula e^{iθ} = cos θ + i sin θ",
