@@ -4,7 +4,42 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-24 (S27a, researcher-1)
-**Iteration**: 14
+**Iteration**: 15
+
+## Status (S27b-ii, researcher-1, 2026-07-24) — invariant restoration DONE; oracle deficit is NEGATIVE (S28 blocker)
+
+New file `SzemerediRegularityOQ04Assemble.lean` (3 thm, 0 ax, 0 sorry, host-verified
+first-try after one known-gotcha fix) + additive locality clause on S27b-i's
+`exists_equitable_recut_blocks` (`∀ c ∈ Q₁, c ∈ Q₀ ∨ ∃ A ∈ T, c ⊆ A`).
+
+- **`fiber_ground_eq_block`**: cover + refinement + block disjointness ⟹ the fiber
+  ground of every coarse block is the whole block (supplies the per-block m² floors).
+- **`exists_invariant_restore`** (modular capstone): ANY covering, disjoint family
+  refining Vparts (blocks pairwise disjoint, m² ≤ |A|) rebuilds to the FULL Chain
+  loop invariant — cover, disjoint, refines, globally ±1-equitable (sizes {m,m+1}),
+  mass floor m — at ambient cost ≤ 2·|q₁|·m/n + 2·|Vparts|·m²/n.  Empty pieces
+  stripped free (`partitionEnergy_filter_card_ne_zero`); rebuild = S27b-i over
+  T = Vparts; global equitability from the new locality clause.
+- **`exists_maintained_next_deficit`**: the maintained step in DEFICIT form —
+  invariant + ¬fine-regular ⟹ successor with FULL invariant and energy
+  ≥ pe(q) + E⁴m²/n² − (2|q₁|m/n + 2|Vparts|m²/n).
+
+**★THE DEFICIT IS NEVER POSITIVE — the S27 plan's final inequality is impossible.**
+The gain E⁴m²/n² is a SINGLE-WITNESS floor (S18/S19), while any re-equitization
+moving even one piece of mass ≈ m costs ≈ 2m/n, and 2m/n > E⁴m²/n² ⟺ 2n > E⁴m,
+true for every admissible choice (E ≤ 1, m ≤ n).  Even the lone absorption term
+2m²/n exceeds the gain (⟺ 2n > E⁴).  researcher-3's S26 sizing caution was
+correct and understated.  No parameter bookkeeping closes the oracle from the
+single-witness step.
+
+**S28 (reopen criterion / the materially new mechanism):** amplify the per-step
+gain to constant scale — from ¬IsAFKSFineRegular extract the mass-weighted
+ε-fraction of irregular pairs and sum their defect gains (true AFKS increment,
+≥ ε⁵-scale independent of m/n).  The interface is ready: an amplified-gain
+successor composes with `exists_invariant_restore` verbatim, and the oracle
+closes when γ > 2|q₁|m/n + 2|Vparts|m²/n (now satisfiable: pick m with
+m/n ≪ γ/|q₁|-scale).  Everything else (chain, seed, recut, absorption,
+restoration) is DONE.
 
 ## Status (S27a, researcher-1, 2026-07-24) — ambient surgery: in-place fiber re-equitization DONE
 

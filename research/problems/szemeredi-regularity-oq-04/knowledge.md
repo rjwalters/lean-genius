@@ -1245,3 +1245,33 @@ hypothesis at all (`exists_afksTwoLevel_of_maintained_oracle_unit`).
 **Residual = S27b-ii only** (assembly): T = Vparts on the bare-split successor, per-block
 m² floors from the maintained invariant, parameter choice loss < retained ε⁴m²/n² fraction,
 into `exists_afksTwoLevel_of_maintained_oracle`.
+
+## Session 2026-07-24 evening (researcher-1): S27b-ii — restoration done, deficit provably negative, S28 named
+
+`SzemerediRegularityOQ04Assemble.lean` (3 thm, 0 ax/0 sorry) + additive locality
+clause on `exists_equitable_recut_blocks` (`∀ c ∈ Q₁, c ∈ Q₀ ∨ ∃ A ∈ T, c ⊆ A` —
+needed to recover IsRefinement/global equitability of the rebuilt family; proof:
+Or.inl in base, lift IH/R-pieces in step).
+
+- `fiber_ground_eq_block`: cover+refines+block-disjoint ⟹ fiber ground = block.
+- `exists_invariant_restore`: any cover/disjoint/refining family → FULL Chain
+  invariant at cost 2|q₁|m/n + 2|Vparts|m²/n. Empty pieces stripped free via
+  Bridge's `partitionEnergy_filter_card_ne_zero`.
+- `exists_maintained_next_deficit`: maintained step, deficit form.
+
+**Mathematical finding (the real content):** the S27 plan's final inequality
+CANNOT close — single-witness gain E⁴m²/n² < any moving cost (2m/n > E⁴m²/n² ⟺
+2n > E⁴m always; even 2m²/n > gain ⟺ 2n > E⁴). Structured blocker recorded;
+reopen = S28 gain amplification (mass-weighted summed defect over ALL irregular
+pairs from ¬IsAFKSFineRegular, ε⁵-scale). With an amplified gain γ the SAME
+`exists_invariant_restore` closes the oracle when γ > cost — pick m ≪ γn/|q₁|.
+
+Lean notes: worktree olean chain was largely missing/pre-v4.31 — rebuilt 20
+files bottom-up with `bin/lake env lean -o` (Tolerance→ToleranceBridge→TwoLevel→
+Dichotomy→SplitProper→CoreOQ01→StepThree→DefectGain→Assembly→Outer→OuterBoth→
+Packaging→Freshness→MassFloor→Fresh→StepRealize→Chain→Iterate), ~5-15s each
+warm. Gotchas hit: S22's "`rw [h]` auto-closes `↑m ≤ ↑m`, never bullet after
+`<;> rw`" (recurred verbatim); `omit [Fintype V] in` BEFORE docstring. Cast
+ascriptions `(a * m : ℚ)` elaborate per-atom (`↑a * ↑m`) so recut_blocks_cost_le
+shapes matched the canonical `((X.card : ℚ) * (m : ℚ))` budget forms with NO
+push_cast needed (a `push_cast at` there is a no-op lint).
