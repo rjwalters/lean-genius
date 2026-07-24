@@ -2,7 +2,7 @@
   "slug": "hilbert-14-oq-04",
   "title": "Effective algorithms for finite generation of non-reductive invariant rings",
   "phase": "ACT",
-  "status": "blocked",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -35,30 +35,7 @@
     "since": "2026-05-16T00:00:00.000Z",
     "iteration": 4,
     "focus": "S2-finite ACT shipped (PR #18988, Docker 7743/7743 jobs); S3 PREP coordination (#19188) + S3 PREP-2 pin-verify + Vieta-gap close (#19294); S4 PREP-3 (this iter, doc-only): closes totalDegree-of-charpoly-coefficient bearer gap (W1-W6 across Mathlib/Algebra/MvPolynomial/Degrees.lean + Symmetric/Defs.lean) AND surfaces hidden grading-preservation hypothesis (MulSemiringAction G R alone does NOT imply degree-preservation; Option A: add explicit h_graded).",
-    "blockers": [
-      {
-        "id": "B1",
-        "status": "ACTIVE",
-        "description": "Docker daemon hung — `docker info` times out (exit 124) at researcher-6 S5 STATE-SYNC re-verify (2026-06-13). The S3-bound ACT requires a Docker build to verify the ~150-200 LOC `noether_degree_bound` proof; no build route is available while the daemon is down. Not attributable to a specific Loom PR.",
-        "since": "2026-05-16T00:00:00Z",
-        "mitigation": "Cleared by host-side Docker daemon restart/resync. Not removable from a research worktree."
-      },
-      {
-        "id": "B2",
-        "status": "CLEARED",
-        "clearedAt": "2026-06-13T00:00:00.000Z",
-        "description": "Host disk was 100% (6.9 Gi avail) at S4 PREP-3. Re-verified at S5 STATE-SYNC (2026-06-13): /System/Volumes/Data at 69 Gi free / 93% capacity — well above the 5 Gi soft-floor. Disk is no longer a blocker.",
-        "since": "2026-05-16T00:00:00Z",
-        "mitigation": "Cleared by natural recovery + host-side cleanup (docker prune / lake cache eviction)."
-      },
-      {
-        "id": "B3",
-        "status": "ACTIVE",
-        "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S5 STATE-SYNC (2026-06-13): symlink still present. Would cause `lake build` to fail before reaching Mathlib even if Docker recovers.",
-        "since": "2026-05-16T09:04:00Z",
-        "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse because the target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."
-      }
-    ],
+    "blockers": [],
     "nextAction": "S3-bound ACT (Docker-blocked): prove Noether degree bound using PREP-2 §3 (V1-V7) + PREP-3 §1 (W1-W6) bearer chain; per PREP-3 §2 must add `h_graded : ∀ g : G, ∀ b, (g • b).totalDegree ≤ b.totalDegree` as explicit hypothesis (Option A). Paste-ready skeleton in PREP-3 §4 (~150-200 LOC across Stage 1/2/3 lemmas + main `noether_degree_bound` theorem in NEW file `proofs/Proofs/Hilbert14OQ04Bound.lean`).",
     "attemptCounts": {
       "total": 12,
@@ -67,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2-finite ACT shipped (PR pending): hilbert_finiteness theorem verified by Docker build (7743/7743). The qualitative half of Noether 1916 — invariant ring of a finite-group linear action on MvPolynomial is finitely generated as a k-algebra — is now formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Five-step proof chains through Algebra.IsInvariant → Algebra.IsInvariant.isIntegral → Algebra.FiniteType.of_restrictScalars_finiteType → Algebra.IsIntegral.finite → Artin-Tate fg_of_fg_of_fg, all pinned at Mathlib v4.26.0. Two supporting instances (Algebra.IsInvariant and Algebra.IsIntegral) discharged definitionally via FixedPoints.subalgebra membership. The quantitative half (Noether degree bound) is deferred to S3-bound ACT. Predecessor PREP chain: PRs #18248 (S1) + #18435/18501/18562/18589/18667/18714/18750 (S2-S2g).",
+    "progressSummary": "UNBLOCKED (researcher-3, 2026-07-23): Docker restored, B1 blackout blocker cleared; existing Hilbert14OQ04.lean re-verified clean at v4.31 (8576 jobs, 0 axiom/0 sorry). Next step ready: the paste-ready noether_degree_bound ACT (PREP-3 §4, new file Hilbert14OQ04Bound.lean). | S2-finite ACT shipped (PR pending): hilbert_finiteness theorem verified by Docker build (7743/7743). The qualitative half of Noether 1916 — invariant ring of a finite-group linear action on MvPolynomial is finitely generated as a k-algebra — is now formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Five-step proof chains through Algebra.IsInvariant → Algebra.IsInvariant.isIntegral → Algebra.FiniteType.of_restrictScalars_finiteType → Algebra.IsIntegral.finite → Artin-Tate fg_of_fg_of_fg, all pinned at Mathlib v4.26.0. Two supporting instances (Algebra.IsInvariant and Algebra.IsIntegral) discharged definitionally via FixedPoints.subalgebra membership. The quantitative half (Noether degree bound) is deferred to S3-bound ACT. Predecessor PREP chain: PRs #18248 (S1) + #18435/18501/18562/18589/18667/18714/18750 (S2-S2g).",
     "builtItems": [
       "research/problems/hilbert-14-oq-04/problem.md (S1, 5K) — problem statement, sub-problem decomposition, OQ-01 vs OQ-04 differentiation.",
       "research/problems/hilbert-14-oq-04/knowledge.md (S1, 8K) — Reynolds operator and LND background, Noether degree bound proof outline, counterexample summaries, Mathlib API gap inventory.",
@@ -85,7 +62,8 @@
       "Subalgebra.fg_iff_finiteType takes (S : Subalgebra R A) as explicit arg; cannot project .mp / .mpr directly. Use either (Subalgebra.fg_iff_finiteType _).mpr or the FiniteType.out projection / ⟨_⟩ constructor.",
       "Algebra.FiniteType k ↥(⊤ : Subalgebra k R) does NOT typeclass-synthesize cheaply (heartbeat timeout); use (inferInstance : Algebra.FiniteType k R).out for the direct FG projection.",
       "⟨h_fg⟩ as Algebra.FiniteType constructor: the class is a Prop with one field (out : (⊤ : Subalgebra R A).FG), so anonymous-constructor pack-up suffices.",
-      "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function."
+      "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function.",
+      "UNBLOCK (researcher-3, 2026-07-23): Docker is back up; all 3 stale infra blockers (B1 Docker-blackout, B2 host-disk-full, B3 .lake self-symlink) are cleared — the successful build proves the environment works. Verified the existing Proofs/Hilbert14OQ04.lean builds clean at leanprover/lean4:v4.31.0 (8576 jobs, 0 axioms / 0 sorries) — no drift from the v4.26 build. The S3-bound ACT (noether_degree_bound, ~150-200 LOC new file Hilbert14OQ04Bound.lean per PREP-3 §4, with the h_graded hypothesis Option A) is now executable and is the ready next step — deferred to a fresh-context session, not a stub. status blocked->active."
     ],
     "mathlibGaps": [
       "No Noether degree bound for finite-group invariants",
@@ -268,5 +246,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14OQ04.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-07-23T00:00:00Z"
 }
