@@ -9,7 +9,8 @@ Heuristic: log(x₁ + y₁√D) ≈ √D, but the distribution is poorly underst
 
 ## What This Proves
 1. **Pell regulator definition**: R(D) = log(x₁ + y₁√D) where (x₁,y₁) is fundamental
-2. **Lower bound**: x₁ ≥ 2 for the fundamental solution (from minimality)
+2. **Basic bounds**: for any solution with x ≥ 1, y ≥ 0, the norm x + y√D ≥ 1
+   and hence the regulator R(D) ≥ 0
 3. **Explicit small solutions**: For D = n²-1 (n≥2), the fundamental solution is
    (n, 1), giving R(D) = log(n + √(n²-1)) ≈ log(2n) — much smaller than √D.
 4. **Explicit large solutions**: Fermat's D=61 has x₁ = 1766319049, demonstrating
@@ -18,9 +19,8 @@ Heuristic: log(x₁ + y₁√D) ≈ √D, but the distribution is poorly underst
 6. **Connection to class numbers**: The regulator-class number relationship.
 
 ## Axioms
-- pell_fundamental_x_ge_two: The fundamental solution has x₁ ≥ 2.
-  This follows from minimality (x > 1 in Mathlib's IsFundamental), but converting
-  1 < x to x ≥ 2 in ℤ requires careful handling.
+None. The bounds below only need `hx : 1 ≤ x`, not the stronger x₁ ≥ 2, so no
+axiom is required.
 
 ## Status: OPEN (the distribution of R(D) is a major open problem)
 
