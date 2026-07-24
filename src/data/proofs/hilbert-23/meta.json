@@ -36,10 +36,10 @@
       }
     ],
     "originalContributions": [
-      "Euler-Lagrange equation formalization",
-      "Fundamental lemma of calculus of variations",
-      "Direct methods existence structure",
-      "Pontryagin maximum principle statement",
+      "Euler-Lagrange equation formalization (IsExtremal predicate)",
+      "Test-function structure for the fundamental lemma (the lemma itself is comment documentation, not formalized)",
+      "Direct-methods definitions IsCoercive/IsWeaklyLowerSemicontinuous (the existence theorem itself is comment documentation, not formalized)",
+      "Optimal-control scaffolding (the Pontryagin maximum principle itself is comment documentation, not formalized)",
       "Historical development overview"
     ],
     "dateAdded": "2025-12-29",
@@ -55,7 +55,7 @@
     "historicalContext": "Hilbert's twenty-third problem (1900) is unique among the 23 problems: it is not a specific question but a **research program**. Hilbert called for 'further development of the methods of the calculus of variations.'\n\nThe calculus of variations originated with the brachistochrone problem (1696): what curve allows fastest descent under gravity? Bernoulli's solution led to a new field of mathematics.\n\nMajor developments responding to Hilbert's call:\n\n- **Direct Methods** (Hilbert 1900, Tonelli 1920s): Prove existence without solving ODEs\n- **Weak Solutions** (Sobolev 1930s): Generalized derivatives in Sobolev spaces\n- **Optimal Control** (Pontryagin 1956): Control theory via the maximum principle\n- **Geometric Measure Theory** (Federer-Fleming 1960s): Minimal surfaces and currents\n- **Gamma-Convergence** (De Giorgi 1970s): Variational limits and homogenization",
     "problemStatement": "Hilbert's original statement: 'I wish to bring forward a question which should be attacked by the same method of continuous variation of a function by which Dirichlet solved the problem of the potential. This is the problem of the Calculus of Variations, to establish the existence of an extremum, whenever it can be proved that for a given problem a lower (or upper) limit is approached by continuous variation of the function.'\n\nThe calculus of variations asks: among all functions satisfying certain constraints, which one extremizes a given integral functional?\n\nJ[y] = integral from a to b of L(x, y(x), y'(x)) dx\n\nHilbert wanted rigorous existence proofs and new methods beyond the classical Euler-Lagrange approach.",
     "text": "Hilbert's 1900 call for further development of the calculus of variations has been spectacularly answered through direct methods (Tonelli), weak solutions (Sobolev), optimal control (Pontryagin), and geometric measure theory.",
-    "proofStrategy": "We formalize the core structures and results of classical calculus of variations:\n\n1. **Variational Structure**: Lagrangians, admissible functions, action functionals\n\n2. **Fundamental Lemma**: If integral of f times eta equals 0 for all test functions eta, then f = 0\n\n3. **Euler-Lagrange Equation**: The necessary condition for extrema:\n   dL/dy - d/dx(dL/dy') = 0\n\n4. **Applications**: Geodesics, classical mechanics (Newton from Lagrange)\n\n5. **Direct Methods**: Existence via coercivity and weak lower semicontinuity\n\n6. **Optimal Control**: The Pontryagin maximum principle extending variations to control",
+    "proofStrategy": "We formalize variational-problem infrastructure and document, but do not formalize, the core classical results:\n\n1. **Variational Structure**: Lagrangians, admissible functions, action functionals (formalized)\n\n2. **Fundamental Lemma**: If integral of f times eta equals 0 for all test functions eta, then f = 0 (comment documentation only, not formalized)\n\n3. **Euler-Lagrange Equation**: The necessary condition for extrema:\n   dL/dy - d/dx(dL/dy') = 0 (the equation itself is formalized as the IsExtremal predicate; the necessary-condition theorem is comment documentation only)\n\n4. **Applications**: Geodesics, classical mechanics (Newton from Lagrange) (Lagrangians only; no theorems proved)\n\n5. **Direct Methods**: Existence via coercivity and weak lower semicontinuity (definitions only; existence theorem is comment documentation only)\n\n6. **Optimal Control**: The Pontryagin maximum principle extending variations to control (comment documentation only, not formalized)",
     "keyInsights": [
       "The Euler-Lagrange equation reduces infinite-dimensional optimization to ODEs",
       "Direct methods prove existence without solving differential equations",
