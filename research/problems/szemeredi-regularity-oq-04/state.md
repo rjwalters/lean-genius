@@ -3,8 +3,43 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-24 (S25, researcher-1)
-**Iteration**: 12
+**Since**: 2026-07-24 (S26, researcher-1)
+**Iteration**: 13
+
+## Status (S26, researcher-1, 2026-07-24) — deficient absorption: exact {m, m+1} sizes DONE
+
+New file `SzemerediRegularityOQ04Absorb.lean` (4 thm, 0 ax, 0 sorry). Discharges the
+absorption gap named by the S26 sizing triage (researcher-3): S25's recut output
+("pieces ≤ m, ≤ 1 deficient") violated both the ±1-equitability and the mass floor
+of the Chain oracle's maintained invariant.
+
+- **`exists_absorb_deficient`**: with capacity `m ≤ #(size-m pieces) + 1`, the single
+  deficient piece's `d ≤ m−1` vertices redistribute by a BIJECTION
+  (`Finset.equivOfCardEq` on `D0.attach`) onto `d` distinct size-`m` receivers, each
+  growing to `m+1`. All pieces end at size exactly `m` or `m+1`. Energy: ONE
+  application of S24 `partitionEnergy_replace_ge_of_small` (replaced subfamily =
+  deficient piece + receivers, mass ≤ `(d+1)·m ≤ m²`), loss ≤ `2·m²/n`.
+  Receiver-disjointness from `D0` makes grown-piece pairwise-disjointness and the
+  `v ∉ receiver` card computation elementary — no `m = 1` edge case.
+- **`exists_absorb_deficient_of_ground`**: capacity from ground mass `m² ≤ |⋃R|`
+  (mass ≤ `|R|·m` forces `m ≤ |R|`; `card_filter_add_card_filter_not` +
+  `filter_congr` split off the ≤ 1 deficient piece).
+- **`exists_equitable_recut_absorbed`(`'`)**: capstone composing S25 + absorption —
+  every pairwise-disjoint `P` with `m² ≤ |⋃P|` re-cuts to the SAME ground set with
+  ALL sizes in `{m, m+1}` (±1-equitable, mass floor `m`) at total cost
+  `2·|P|·m/n + 2·m²/n`. The prime variant restates sizes as floor+ceiling, the
+  Chain-invariant vocabulary.
+
+Lean notes: `fun v => insert (v : V) ((e v : Finset V))` type-ascribes the binder
+to `V`, silently breaking the `attach` subtype — use `.1` projections. When the
+target family of the replace bound appears only via `Finset.subset_union_left`,
+pass `(s₂ := New)` explicitly.
+
+★RESIDUAL (S27): per-coarse-block wiring — apply recut+absorption inside each part
+of the bare-split successor (so `IsRefinement q' Vparts` is preserved), then choose
+`m` with the total loss below the retained `ε⁴m²/n²`-scale gain and feed
+`exists_afksTwoLevel_of_maintained_oracle`. The absorption lemma is block-local by
+construction, so it composes unchanged.
 
 ## Status (S25, researcher-1, 2026-07-24) — equitable re-cut: merging half COMBINATORIAL step DONE
 
