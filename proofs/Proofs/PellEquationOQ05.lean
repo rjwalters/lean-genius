@@ -677,6 +677,140 @@ theorem prime_norm_spectrum_below_32 (p : ℕ) (hp : p.Prime) (hlt : p < 32) :
       | exact ⟨(3, 0, 1), by decide⟩      -- 31
 
 /-
+## The inert prime 37, the spectrum below 48, and the norm-value submonoid (Session 11)
+
+Three extensions of S10.
+
+**37 — the fourth inert prime.** 37 ≡ 1 (mod 3) and 2 is NOT a cubic residue mod 37
+(2¹² ≡ 26 mod 37, the cubic-residue test 2^((p-1)/3) ≢ 1), so x³ - 2 is irreducible
+over 𝔽₃₇ and 37 is inert in ℚ(∛2). The kernel `decide` certificate covers
+37³ = 50653 residue triples (`cnorm_anisotropic_mod37`) — an order of magnitude
+beyond the 19-certificate, still fully kernel-checked (no `native_decide`).
+
+**The spectrum below 48.** 41 ≡ 47 ≡ 2 (mod 3) split for free (cubing is a bijection
+mod p); 43 is the SECOND decisive split prime: 43 ≡ 1 (mod 3) like the inert primes,
+but 2 IS a cubic residue mod 43 (20³ = 8000 ≡ 2 mod 43) — the splitting law predicts
+a norm, and indeed 43 = N(-5,2,2). Witnesses 41 = N(1,-2,2), 47 = N(-3,-5,6)
+complete the classification of all 15 primes below 48
+(`prime_norm_spectrum_below_48`): norms iff p ∉ {7, 13, 19, 37}.
+
+**The norm-value submonoid.** Multiplicativity (`cnorm_cmul`) and N(1) = 1 package
+the value set {m | ∃ ξ, N(ξ) = m} as a genuine `Submonoid ℤ` (`normValues`), closed
+under negation because the form has odd degree (`neg_mem_normValues`) — yet PROPER:
+7 ∉ normValues (`normValues_ne_top`). Composite norm values now come for free from
+closure (`norm_product_demo`: 391 = 17·23 with no new witness search). The spectrum
+theorems of S7–S11 are exactly a description of this monoid at the primes.
+-/
+
+set_option maxRecDepth 8000 in
+set_option maxHeartbeats 1600000 in
+/-- **The norm form is anisotropic mod 37**: 37 ≡ 1 (mod 3) and 2 is a cubic
+    non-residue mod 37 (2¹² ≡ 26 ≢ 1), so x³ - 2 is irreducible over 𝔽₃₇ and 37 is
+    inert in ℚ(∛2). Finite kernel `decide` over the 37³ = 50653 residue triples —
+    the largest anisotropy certificate in the file, still kernel-checked. -/
+theorem cnorm_anisotropic_mod37 :
+    ∀ a b c : ZMod 37,
+      a ^ 3 + 2 * b ^ 3 + 4 * c ^ 3 - 6 * a * b * c = 0 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  decide
+
+/-- 37 is never a norm — the p = 37 instance of the generic criterion. -/
+theorem cnorm_ne_thirtyseven (a b c : ℤ) : cnorm a b c ≠ 37 :=
+  cnorm_ne_of_anisotropic 37 cnorm_anisotropic_mod37 37 (by norm_num) (by norm_num) a b c
+
+/-- N(ξ) = 37 has no integral solution (companion to 7 and 13). -/
+theorem norm_eq_thirtyseven_no_solution : {p : ℤ × ℤ × ℤ | cnorm3 p = 37} = ∅ := by
+  ext ⟨a, b, c⟩
+  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, cnorm3]
+  exact cnorm_ne_thirtyseven a b c
+
+/-- **41 is a norm** (41 ≡ 2 mod 3, no obstruction):
+    N(1,-2,2) = 1 - 16 + 32 + 24 = 41. -/
+theorem norm_fortyone_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 41}.Infinite :=
+  norm_eq_solutions_infinite 41 (by decide) (1, -2, 2) (by decide)
+
+/-- **43 is a norm** — the second decisive split prime: 43 ≡ 1 (mod 3) like the
+    non-norms 7, 13, 19, 37, but 2 IS a cubic residue mod 43 (20³ = 8000 ≡ 2), so
+    43 splits — and N(-5,2,2) = -125 + 16 + 32 + 120 = 43. -/
+theorem norm_fortythree_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 43}.Infinite :=
+  norm_eq_solutions_infinite 43 (by decide) (-5, 2, 2) (by decide)
+
+/-- **47 is a norm** (47 ≡ 2 mod 3): N(-3,-5,6) = -27 - 250 + 864 - 540 = 47. -/
+theorem norm_fortyseven_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 47}.Infinite :=
+  norm_eq_solutions_infinite 47 (by decide) (-3, -5, 6) (by decide)
+
+/-- **Complete prime spectrum below 48**: a prime p < 48 is a value of the cubic
+    norm form iff p ∉ {7, 13, 19, 37} — exactly the inert primes of the splitting
+    law (p ≡ 1 mod 3 with 2 not a cubic residue mod p). Extends
+    `prime_norm_spectrum_below_32` by one inert prime (37) and three split primes
+    (41, 43, 47); all 15 primes below 48 are classified. -/
+theorem prime_norm_spectrum_below_48 (p : ℕ) (hp : p.Prime) (hlt : p < 48) :
+    (∃ q : ℤ × ℤ × ℤ, cnorm3 q = (p : ℤ)) ↔ p ≠ 7 ∧ p ≠ 13 ∧ p ≠ 19 ∧ p ≠ 37 := by
+  constructor
+  · rintro ⟨⟨a, b, c⟩, hq⟩
+    refine ⟨?_, ?_, ?_, ?_⟩ <;> rintro rfl
+    · exact cnorm_ne_seven a b c (by exact_mod_cast hq)
+    · exact cnorm_ne_thirteen a b c (by exact_mod_cast hq)
+    · exact cnorm_ne_nineteen a b c (by exact_mod_cast hq)
+    · exact cnorm_ne_thirtyseven a b c (by exact_mod_cast hq)
+  · rintro ⟨h7, h13, h19, h37⟩
+    interval_cases p
+    all_goals first
+      | exact absurd hp (by decide)
+      | exact absurd rfl h7
+      | exact absurd rfl h13
+      | exact absurd rfl h19
+      | exact absurd rfl h37
+      | exact ⟨(0, 1, 0), by decide⟩      -- 2
+      | exact ⟨(1, 1, 0), by decide⟩      -- 3
+      | exact ⟨(1, 0, 1), by decide⟩      -- 5
+      | exact ⟨(-1, 1, 1), by decide⟩     -- 11
+      | exact ⟨(1, 2, 0), by decide⟩      -- 17
+      | exact ⟨(3, 0, -1), by decide⟩     -- 23
+      | exact ⟨(-3, 2, 1), by decide⟩     -- 29
+      | exact ⟨(3, 0, 1), by decide⟩      -- 31
+      | exact ⟨(1, -2, 2), by decide⟩     -- 41
+      | exact ⟨(-5, 2, 2), by decide⟩     -- 43
+      | exact ⟨(-3, -5, 6), by decide⟩    -- 47
+
+/-- **The norm-value submonoid.** Multiplicativity of the norm (`cnorm_cmul`) and
+    N(1,0,0) = 1 make the set of attained norm values a submonoid of ℤ — the
+    structural home of the whole spectrum story. -/
+def normValues : Submonoid ℤ where
+  carrier := {m : ℤ | ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m}
+  one_mem' := ⟨(1, 0, 0), by decide⟩
+  mul_mem' := by
+    rintro m n ⟨x, rfl⟩ ⟨y, rfl⟩
+    exact ⟨cmul x y, cnorm_cmul x y⟩
+
+/-- Membership in `normValues` is exactly attainability of the norm form. -/
+theorem mem_normValues {m : ℤ} :
+    m ∈ normValues ↔ ∃ p : ℤ × ℤ × ℤ, cnorm3 p = m := Iff.rfl
+
+/-- The value set is closed under negation: the norm form has odd degree 3, so
+    N(-ξ) = -N(ξ). With `mul_mem`, ± any product of norm values is a norm value. -/
+theorem neg_mem_normValues {m : ℤ} (hm : m ∈ normValues) : -m ∈ normValues := by
+  obtain ⟨⟨a, b, c⟩, rfl⟩ := hm
+  exact ⟨(-a, -b, -c), by simp only [cnorm3, cnorm]; ring⟩
+
+/-- `normValues` is a **proper** submonoid of ℤ: 7 is not a norm (S7). The value
+    monoid of the cubic norm form is a genuine invariant, not all of ℤ. -/
+theorem normValues_ne_top : normValues ≠ ⊤ := by
+  intro h
+  have h7 : (7 : ℤ) ∈ normValues := h ▸ Submonoid.mem_top (7 : ℤ)
+  obtain ⟨⟨a, b, c⟩, hq⟩ := h7
+  exact cnorm_ne_seven a b c hq
+
+/-- Closure pays: 391 = 17·23 is a norm value with NO new witness search — the
+    product of the S10 witnesses under `mul_mem`. -/
+theorem norm_product_demo : (391 : ℤ) ∈ normValues := by
+  have h : (391 : ℤ) = 17 * 23 := by norm_num
+  rw [h]
+  exact normValues.mul_mem ⟨(1, 2, 0), by decide⟩ ⟨(3, 0, -1), by decide⟩
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its
@@ -746,6 +880,17 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
    splitting law — 31 = N(3,0,1), the first p ≡ 1 (mod 3) with 2 a cubic residue
    (4³ ≡ 2 mod 31). Every prime < 32 is classified
    (`prime_norm_spectrum_below_32`): norms iff p ∉ {7, 13, 19}.
+11. (NEW, S11) **The inert prime 37, the spectrum below 48, and the norm-value
+   submonoid.** Fourth anisotropy certificate `cnorm_anisotropic_mod37` (kernel
+   `decide` over 50653 triples — largest in the file), giving the non-norm 37
+   (`cnorm_ne_thirtyseven`, `norm_eq_thirtyseven_no_solution`). Positive witnesses
+   41 = N(1,-2,2), 47 = N(-3,-5,6) (both ≡ 2 mod 3), and the second decisive split
+   prime 43 = N(-5,2,2) (43 ≡ 1 mod 3, 20³ ≡ 2 mod 43). All 15 primes below 48
+   classified (`prime_norm_spectrum_below_48`): norms iff p ∉ {7, 13, 19, 37}.
+   Structural packaging: the value set is a PROPER submonoid of ℤ
+   (`normValues`, `mem_normValues`, `normValues_ne_top`) closed under negation
+   (`neg_mem_normValues`, odd degree); composite values come free from closure
+   (`norm_product_demo`, 391 = 17·23).
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
