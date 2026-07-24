@@ -26,7 +26,7 @@
   {
     "id": "ann-gcd0201-bitlength",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 86, "endLine": 105 },
+    "range": { "startLine": 86, "endLine": 108 },
     "type": "theorem",
     "title": "The key bit-length lemmas",
     "content": "size_div_two_succ_le: for n ≥ 1, size(n/2) + 1 ≤ size n — halving drops the bit length by (at least) one, proved via Nat.lt_size (2^(size m) > m) and doubling the bound 2^(size(n/2)−1) ≤ n/2. size_half_lt: if m < n then size(m/2) + 1 ≤ size n, which additionally absorbs the odd–odd branch where the new operand (A−B)/2 may even be 0. These two facts are the entire engine: every recursive branch drops the potential size a + size b by at least one.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-gcd0201-master",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 114, "endLine": 139 },
+    "range": { "startLine": 114, "endLine": 142 },
     "type": "theorem",
     "title": "Master step bound",
     "content": "The headline upper bound: binaryGcdSteps a b ≤ size a + size b. The proof is a single induction using binaryGcdSteps.induct, so the induction hypothesis is available exactly on the recursive arguments. Each of the five interior cases discharges by omega after feeding in the relevant bit-length drop (size_div_two_succ_le for the halving branches, size_half_lt for the odd–odd subtract-and-halve branches). Because every branch strictly decreases size a + size b, the recursion depth is bounded by its initial value.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-gcd0201-classical",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 144, "endLine": 149 },
+    "range": { "startLine": 144, "endLine": 152 },
     "type": "theorem",
     "title": "Classical O(log) form",
     "content": "The textbook statement: binaryGcdSteps a b ≤ 2·size(max a b). Immediate from the master bound plus size a, size b ≤ size(max a b) (Nat.size_le_size and le_max_left/right). Because size n = ⌊log₂ n⌋ + 1 for n ≥ 1, this is precisely the O(log(max a b)) recursive-step count of the binary GCD.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-gcd0201-recursion-base",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 157, "endLine": 172 },
+    "range": { "startLine": 157, "endLine": 175 },
     "type": "theorem",
     "title": "Diagonal recursion and base case",
     "content": "Two ingredients for the tightness result. binaryGcdSteps_two_mul_two_mul: on doubled positive inputs (both even) the algorithm takes exactly one extra step: steps(2a, 2b) = 1 + steps(a, b), by unfolding the both-even branch and simplifying (2a+1+1)/2 = a+1. binaryGcdSteps_one_one: steps(1, 1) = 1, the base of the diagonal family (a single odd–odd subtract step to reach (0,1)).",
@@ -74,7 +74,7 @@
   {
     "id": "ann-gcd0201-tightness",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 176, "endLine": 183 },
+    "range": { "startLine": 176, "endLine": 186 },
     "type": "theorem",
     "title": "Order tightness on the diagonal",
     "content": "The bound has the right logarithmic order: on (2^k, 2^k) the step count is exactly k + 1. Induction on k, using steps(1,1) = 1 at the base and the doubling law steps(2·2^k, 2·2^k) = 1 + steps(2^k, 2^k) at the step. Against the upper bound 2·size(2^k) = 2(k+1), this shows the algorithm is Θ(log) — the O(log) bound cannot be improved to o(log).",
