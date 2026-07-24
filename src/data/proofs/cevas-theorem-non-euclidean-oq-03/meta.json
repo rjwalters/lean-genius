@@ -69,9 +69,17 @@
       "id": "dual-product",
       "title": "The dual product and the hexagon closure relation",
       "startLine": 61,
-      "endLine": 98,
-      "summary": "Defines dualCevaProduct (the cyclically shifted alternating product) and proves ceva_dual_reciprocal: P·P' = 1, a telescoping cancellation of all six measures. ceva_iff_dual gives the abstract Ceva–Brianchon duality; dualCevaProduct_pos its positivity.",
+      "endLine": 81,
+      "summary": "Defines dualCevaProduct (the cyclically shifted alternating product (dc/ce)·(ea/af)·(fb/bd)) and proves ceva_dual_reciprocal: P·P' = 1, a telescoping cancellation of all six measures, discharged by field_simp once the six positivity fields supply nonvanishing denominators.",
       "mathContext": "$P\\cdot P' = \\frac{bd}{dc}\\frac{ce}{ea}\\frac{af}{fb}\\cdot\\frac{dc}{ce}\\frac{ea}{af}\\frac{fb}{bd} = 1.$"
+    },
+    {
+      "id": "duality-corollaries",
+      "title": "The Ceva–Brianchon duality and positivity of the dual",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "ceva_iff_dual reads the reciprocity as an iff — P = 1 forces P' = 1 and vice versa by cancelling the known product against 1 — giving the abstract Ceva–Brianchon duality with no further algebra. dualCevaProduct_pos separately records that the dual product, like the Ceva product itself, is a product of positive ratios and hence positive.",
+      "mathContext": "$P = 1 \\Rightarrow P' = 1$ and $P' = 1 \\Rightarrow P = 1$ both follow from $P\\cdot P' = 1$ by substitution — the duality is a one-line consequence of the reciprocity, not an independent computation."
     },
     {
       "id": "composition",
