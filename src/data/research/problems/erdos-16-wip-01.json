@@ -1,13 +1,13 @@
 {
   "slug": "erdos-16-wip-01",
-  "title": "Complete the Lean Formalization of Erd\u0151s Problem #16 (Odd Integers Not of Form 2^k + p)",
+  "title": "Complete the Lean Formalization of Erdős Problem #16 (Odd Integers Not of Form 2^k + p)",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "E = \\{\\, n \\text{ odd} : \\forall k \\geq 1,\\ \\forall p \\text{ prime},\\ n \\neq 2^k + p \\,\\}, \\qquad \\underline{d}(E) > 0.",
-    "plain": "The completion task is to strengthen the work-in-progress Lean 4 formalization of Erd\u0151s Problem #16, which studies the odd integers that cannot be written as a power of two plus a prime. Romanoff (1934) proved that a positive proportion of odd integers *are* of the form $2^k + p$, so the exceptional set $E$ has density less than one half. Erd\u0151s (1950) used covering congruences with moduli $\\{2,3,4,6,8,12,24\\}$ to force an infinite arithmetic progression into $E$, and conjectured that $E$ is essentially just this progression plus a negligible density-zero remainder. Chen (2023) disproved that conjecture: $E$ has a much richer structure with several independent positive-density pieces. The current Lean file defines the relevant objects but leaves the supporting theorems (Romanoff's density bound, the covering-congruence construction) documented only in comments; our goal is to formalize the provable ones and cleanly isolate the genuinely deep results.",
+    "plain": "The completion task is to strengthen the work-in-progress Lean 4 formalization of Erdős Problem #16, which studies the odd integers that cannot be written as a power of two plus a prime. Romanoff (1934) proved that a positive proportion of odd integers *are* of the form $2^k + p$, so the exceptional set $E$ has density less than one half. Erdős (1950) used covering congruences with moduli $\\{2,3,4,6,8,12,24\\}$ to force an infinite arithmetic progression into $E$, and conjectured that $E$ is essentially just this progression plus a negligible density-zero remainder. Chen (2023) disproved that conjecture: $E$ has a much richer structure with several independent positive-density pieces. The current Lean file defines the relevant objects but leaves the supporting theorems (Romanoff's density bound, the covering-congruence construction) documented only in comments; our goal is to formalize the provable ones and cleanly isolate the genuinely deep results.",
     "whyMatters": [
       "Romanoff-type density"
     ]
@@ -19,13 +19,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-09T17:33:18-07:00",
-    "iteration": 5,
-    "focus": "Covering-congruence layer COMPLETE (Erd\u0151s 1950 in full, PR #40830, verified 0-axiom/0-sorry): exceptionalSet_infinite (the CRT progression n \u2261 7629217 mod 11184810 forced into ExceptionalSet via six order-of-2 covering gears + window confinement) and exists_exceptional_gt. Supersedes the stale nextAction below, which described this completed work as pending.",
+    "since": "2026-07-24",
+    "iteration": 6,
+    "focus": "Density-infrastructure layer (2026-07-24, researcher-2): monotonicity + genuine liminf functional. lowerDensity (the file's inf-of-sup = limsup) and new liminfDensity (sup-of-inf via shifted index) both monotone under set inclusion and squeezed into [0,1]; liminfDensity <= lowerDensity (liminf <= limsup); headline upgraded to strict liminf form liminfDensity_exceptionalSet_pos. Closes the limsup-vs-liminf naming caveat recorded in knowledge.md. Deep routes (Romanoff sieve, Chen 2023) remain blocked.",
     "blockers": [
       {
         "route": "Romanoff 1934: {2^k+p} has positive lower density among the odds",
-        "reopenCriterion": "materially new mechanism required: analytic number theory (sieve + PNT / additive density), not covering-congruence \u2014 absent from Mathlib v4.31.",
+        "reopenCriterion": "materially new mechanism required: analytic number theory (sieve + PNT / additive density), not covering-congruence — absent from Mathlib v4.31.",
         "blockedAt": "2026-07-21"
       },
       {
@@ -44,7 +44,7 @@
         "blockedAt": "2026-07-23"
       }
     ],
-    "nextAction": "STAND DOWN on elementary/covering work \u2014 Erd\u0151s 1950 is fully formalized. Remaining directions are deep-analytic (recorded as blockers): Romanoff 1934 positive density and Chen 2023 exceptional-set structure.",
+    "nextAction": "STAND DOWN on elementary/covering work — Erdős 1950 is fully formalized. Remaining directions are deep-analytic (recorded as blockers): Romanoff 1934 positive density and Chen 2023 exceptional-set structure.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -52,53 +52,63 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-23, researcher-1, docker-verified 0-axiom 0-sorry): Erd\u0151s 1950 now at FULL positive-proportion strength \u2014 exceptionalCount_positive_density (\u2265 N/22369620 exceptional integers below every N \u2265 2^52) and lowerDensity_exceptionalSet_pos (0 < lowerDensity ExceptionalSet), upgrading exceptionalSet_infinite. Counting: N/11184810 progression members minus \u2264 log2 N trapped-near-powers-of-2, log loss dwarfed for N \u2265 2^52. theoremCount 38\u219245, lineCount 640\u2192865. Elementary covering vein FULLY exhausted; remaining DEEP: Romanoff 1934 (analytic sieve), Chen 2023 structure.",
+    "progressSummary": "PROGRESS (2026-07-24, researcher-2, docker-verified 0-axiom 0-sorry): density infrastructure complete — density_mono, tailCondSup_{nonneg,le_one,mono}, lowerDensity_{nonneg,le_one,mono} (the tracker's requested containment lemmas), genuine liminf functional liminfDensity with [0,1] bounds and monotonicity, liminfDensity_le_lowerDensity (liminf <= limsup), and liminfDensity_exceptionalSet_pos (Erdős 1950 in strict liminf form — the prior headline used the inf-of-sup = limsup functional). Elementary covering vein remains FULLY exhausted; remaining DEEP: Romanoff 1934 (analytic sieve), Chen 2023 structure.",
     "builtItems": [
       "isRomanoff_four_le, not_isRomanoff_one/three, one/three_mem_exceptionalSet in Erdos16Problem.lean",
       "isRomanoff_five, isRomanoff_seven, five_not_mem_exceptionalSet in Erdos16Problem.lean",
       "density_nonneg, density_le_one, mem_exceptionalSet_iff in Erdos16Problem.lean",
       "erdosCovering_moduli_pos, erdosCovering_isCoveringSystem (covering system covers Z) in Erdos16Problem.lean",
-      "isRomanoff_iff \u2014 bounded characterisation: IsRomanoff n \u2194 \u2203 k\u22651, 2^k<n \u2227 Prime(n\u22122^k), eliminating the prime variable p (Erdos16Problem.lean)",
-      "not_isRomanoff_127 + oneHundredTwentySeven_mem_exceptionalSet \u2014 first nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
-      "not_isRomanoff_149 + oneHundredFortyNine_mem_exceptionalSet \u2014 second nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
+      "isRomanoff_iff — bounded characterisation: IsRomanoff n ↔ ∃ k≥1, 2^k<n ∧ Prime(n−2^k), eliminating the prime variable p (Erdos16Problem.lean)",
+      "not_isRomanoff_127 + oneHundredTwentySeven_mem_exceptionalSet — first nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
+      "not_isRomanoff_149 + oneHundredFortyNine_mem_exceptionalSet — second nontrivial A006285 term proved exceptional (Erdos16Problem.lean)",
       "isRomanoff_iff_mem_range (bounded existential over Finset.range n) in Erdos16Problem.lean",
       "decidableIsRomanoff : Decidable (IsRomanoff n) instance in Erdos16Problem.lean",
       "not_isRomanoff_251 / twoHundredFiftyOne_mem_exceptionalSet in Erdos16Problem.lean",
       "not_isRomanoff_331 / threeHundredThirtyOne_mem_exceptionalSet in Erdos16Problem.lean",
       "two_pow_mod_three, two_pow_modEq_of_dvd, covering_prime_not_prime_sub, not_prime_sub_even_mod_three, not_prime_sub_mod_seven in Proofs/Erdos16Problem.lean (session 4, axiom-free)",
       "two_pow_four_modEq_five, two_pow_eight_modEq_seventeen, two_pow_twelve_modEq_thirteen, two_pow_twentyfour_modEq_241 (order-of-2 gears) in Erdos16Problem.lean",
-      "covering_obstruction_not_isRomanoff in Erdos16Problem.lean \u2014 the assembled Erdos 1950 covering obstruction (conditional on explicit size hypothesis)",
-      "covering_progression_mem_exceptionalSet in Erdos16Problem.lean \u2014 membership form for odd n",
-      "exists_exceptional_gt (\u2200B \u2203 exceptional n>B) in Erdos16Problem.lean",
+      "covering_obstruction_not_isRomanoff in Erdos16Problem.lean — the assembled Erdos 1950 covering obstruction (conditional on explicit size hypothesis)",
+      "covering_progression_mem_exceptionalSet in Erdos16Problem.lean — membership form for odd n",
+      "exists_exceptional_gt (∀B ∃ exceptional n>B) in Erdos16Problem.lean",
       "exceptionalSet_infinite : ExceptionalSet.Infinite (via Set.Finite.bddAbove contradiction)",
       "coveringAP/Trapped defs + coveringAP_mem_exceptionalSet + card_trapped_le in Erdos16Problem.lean",
-      "exceptionalCount def + exceptionalCount_lower_bound (N/11184810 \u2264 count + log2 N + 1)",
-      "exceptionalCount_positive_density (N \u2265 2^52 \u2192 N \u2264 22369620\u00b7count): Erd\u0151s 1950 positive-proportion form",
-      "density_exceptionalSet_ge + lowerDensity_exceptionalSet_pos (\u211d density \u2265 1/22369620, lowerDensity > 0)"
+      "exceptionalCount def + exceptionalCount_lower_bound (N/11184810 ≤ count + log2 N + 1)",
+      "exceptionalCount_positive_density (N ≥ 2^52 → N ≤ 22369620·count): Erdős 1950 positive-proportion form",
+      "density_exceptionalSet_ge + lowerDensity_exceptionalSet_pos (ℝ density ≥ 1/22369620, lowerDensity > 0)",
+      "density_mono (Erdos16Problem.lean): A ⊆ B → density A N ≤ density B N (gcongr + card_le_card)",
+      "tailCondSup_nonneg/le_one/mono (Erdos16Problem.lean): conditional tail-sup ⨆ (_ : M ≥ N), density A M bounds and monotonicity, junk-value case via iSup_of_empty' + Real.sSup_empty",
+      "lowerDensity_nonneg/le_one/mono (Erdos16Problem.lean): the inf-of-sup functional is monotone under ⊆ and in [0,1]",
+      "liminfDensity def (Erdos16Problem.lean): ⨆ N, ⨅ M, density A (N+M) — shifted index dodges the empty-conditional-infimum degeneracy (sSup ∅ = 0 over ℝ would make the naive ⨅ (M)(_ : M ≥ N) mirror identically 0)",
+      "liminfDensity_nonneg/le_one/mono + liminfTail_bddBelow/le_one (Erdos16Problem.lean)",
+      "liminfDensity_le_lowerDensity (Erdos16Problem.lean): liminf ≤ limsup via common horizon max N N'",
+      "liminfDensity_exceptionalSet_pos (Erdos16Problem.lean): 0 < liminfDensity ExceptionalSet — Erdős 1950 positive lower density in the strict liminf sense"
     ],
     "insights": [
       "Erdos16 file was a definitions-only stub (10 defs, 0 theorems). The deep results (Romanoff density, Erdos covering-progression, Chen 2023 disproof) need analytic NT beyond Mathlib; the tractable axiom-free content is elementary structural facts about the file's own defs.",
       "The explicit Erdos covering system [(0,2),(0,3),(1,4),(1,6),(3,8),(7,12),(23,24)] genuinely covers Z: every modulus divides 24, so the disjunction n%2=0 or n%3=0 or n%4=1 or n%6=1 or n%8=3 or n%12=7 or n%24=23 is provable directly by omega, then the residue-class witness is exhibited per case.",
       "Romanoff floor: 2^k+p >= 4 for k>=1, p prime, so 1 and 3 are exceptional; 5=2+3 and 7=4+3 are concrete Romanoff (non-exceptional) witnesses.",
-      "The unbounded \u2203 k p in IsRomanoff collapses to a finite search: p is forced to be n\u22122^k, and 2^k<n bounds k\u2264log2 n. isRomanoff_iff makes non-membership a per-exponent compositeness check dischargeable by interval_cases + norm_num prime extension.",
-      "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n\u22122^k) for each residue.",
-      "isRomanoff_iff can be refined to a bounded search: 2^k<n forces k<2^k<n, so the witness exponent lies in Finset.range n. This makes IsRomanoff decidable (decidableIsRomanoff instance) by kernel reduction only \u2014 no native_decide, axioms stay [propext, Classical.choice, Quot.sound].",
-      "decide over Finset.range n is impractical for the A006285 exceptional terms (>250) because the kernel would evaluate 2^{n-1} and hit the exponentiation threshold / recursion depth; the explicit interval_cases refutations (bounding k\u2264log2 n) keep 2^k small and are the robust route for specific numbers.",
-      "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n\u22122^k composite).",
-      "Erd\u0151s 1950 covering mechanism formalized as a reusable gear (covering_prime_not_prime_sub): for a prime p with 2^d \u2261 1 (mod p), any exponent k \u2261 r (mod d) and any n \u2261 2^r (mod p) satisfy p \u2223 n \u2212 2^k, so n \u2212 2^k is composite once it exceeds p. This eliminates a whole residue class of exponents at once \u2014 the structural upgrade over per-k A006285 checks.",
-      "Core algebraic lemma two_pow_modEq_of_dvd: 2^d \u2261 1 (mod p) \u2227 k \u2261 r (mod d) \u27f9 2^k \u2261 2^r (mod p), proved by writing k = r + d\u00b7t and using (2^d)^t \u2261 1. This is exponent-periodicity of 2 modulo p \u2014 the fact that makes one prime cover an arithmetic progression of exponents.",
-      "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n \u2261 1 (mod 3); prime 7 (order 3) kills exponents \u2261 0 (mod 3) for n \u2261 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime.",
+      "The unbounded ∃ k p in IsRomanoff collapses to a finite search: p is forced to be n−2^k, and 2^k<n bounds k≤log2 n. isRomanoff_iff makes non-membership a per-exponent compositeness check dischargeable by interval_cases + norm_num prime extension.",
+      "Concrete exceptional numbers (127, 149) are host-verifiable axiom-free: bound k via 2^(K+1)>n (by_contra + Nat.pow_le_pow_right), then interval_cases k and norm_num refutes Prime(n−2^k) for each residue.",
+      "isRomanoff_iff can be refined to a bounded search: 2^k<n forces k<2^k<n, so the witness exponent lies in Finset.range n. This makes IsRomanoff decidable (decidableIsRomanoff instance) by kernel reduction only — no native_decide, axioms stay [propext, Classical.choice, Quot.sound].",
+      "decide over Finset.range n is impractical for the A006285 exceptional terms (>250) because the kernel would evaluate 2^{n-1} and hit the exponentiation threshold / recursion depth; the explicit interval_cases refutations (bounding k≤log2 n) keep 2^k small and are the robust route for specific numbers.",
+      "251 and 331 are the 3rd and 4th nontrivial A006285 terms; both proved exceptional by the isRomanoff_iff + interval_cases pattern (all complements n−2^k composite).",
+      "Erdős 1950 covering mechanism formalized as a reusable gear (covering_prime_not_prime_sub): for a prime p with 2^d ≡ 1 (mod p), any exponent k ≡ r (mod d) and any n ≡ 2^r (mod p) satisfy p ∣ n − 2^k, so n − 2^k is composite once it exceeds p. This eliminates a whole residue class of exponents at once — the structural upgrade over per-k A006285 checks.",
+      "Core algebraic lemma two_pow_modEq_of_dvd: 2^d ≡ 1 (mod p) ∧ k ≡ r (mod d) ⟹ 2^k ≡ 2^r (mod p), proved by writing k = r + d·t and using (2^d)^t ≡ 1. This is exponent-periodicity of 2 modulo p — the fact that makes one prime cover an arithmetic progression of exponents.",
+      "Two concrete covering gears verified: prime 3 (order 2) kills even exponents for n ≡ 1 (mod 3); prime 7 (order 3) kills exponents ≡ 0 (mod 3) for n ≡ 1 (mod 7). Demonstrates the general lemma is not specialized to a single prime.",
       "Session 5: assembled the individual covering gears into the full Erdos 1950 obstruction. The six exponent classes {0 mod 2, 0 mod 3, 1 mod 4, 3 mod 8, 7 mod 12, 23 mod 24} cover Z (omega), each carrying a prime whose order of 2 equals the modulus: (2,3),(3,7),(4,5),(8,17),(12,13),(24,241).",
-      "Session 5: covering_obstruction_not_isRomanoff proves that any n meeting the six CRT congruences (n=1 mod 3, 1 mod 7, 2 mod 5, 8 mod 17, 11 mod 13, 121 mod 241) with n-2^k>241 for all valid k is NOT Romanoff \u2014 the whole CRT progression (mod 3*5*7*13*17*241) is exceptional, subject only to a size hypothesis. Axiom-free.",
+      "Session 5: covering_obstruction_not_isRomanoff proves that any n meeting the six CRT congruences (n=1 mod 3, 1 mod 7, 2 mod 5, 8 mod 17, 11 mod 13, 121 mod 241) with n-2^k>241 for all valid k is NOT Romanoff — the whole CRT progression (mod 3*5*7*13*17*241) is exceptional, subject only to a size hypothesis. Axiom-free.",
       "Session 5: the required n-residues are 2^r mod p per class: 2^0=1 (p=3,7), 2^1=2 (p=5), 2^3=8 (p=17), 2^7=128=11 mod 13, 2^23=121 mod 241. Verified 2^23 mod 241 = 121 and 2*121=242=1 mod 241.",
-      "EXCEPTIONAL SET IS INFINITE (Erd\u0151s 1950 conclusion, axiom-free): exceptionalSet_infinite. Upgraded the covering construction from conditional (needs size hypothesis) to unconditional infinitude via exists_exceptional_gt: for any B, the CRT-progression member (n \u2261 7629217 mod 2M=11184810) landing in the dyadic window [2^m+242, 2^{m+1}) exceeds B, is odd, meets the six covering congruences, AND satisfies the size condition automatically (any k with 2^k<n has k\u2264m \u27f9 n\u22122^k \u2265 242). Key: window-based size discharge sidesteps the messy largest-power-of-2 analysis.",
-      "Positive-density upgrade of a covering construction needs NO analysis: count AP members below N (N/modulus), subtract trapped members near powers of 2 (each dyadic window (2^k, 2^k+241] holds \u22641 member since 241 << modulus, so \u2264 log2 N total), and the log loss is dwarfed for N \u2265 2^52 via j+27 \u2264 2j \u2264 2^j from Nat.lt_two_pow_self \u2014 no induction.",
-      "The file lowerDensity def is an inf-of-sup (limsup-shaped), but a bound valid at EVERY large horizon N bounds it regardless; conditionally-complete-lattice plumbing: le_ciInf + le_ciSup with explicit BddAbove witness, ciSup_pos for the inhabited Prop-indexed sup, iSup_of_empty' + Real.sSup_empty for the empty one, and beta-unreduced goals after rintro rfl need show before rewriting."
+      "EXCEPTIONAL SET IS INFINITE (Erdős 1950 conclusion, axiom-free): exceptionalSet_infinite. Upgraded the covering construction from conditional (needs size hypothesis) to unconditional infinitude via exists_exceptional_gt: for any B, the CRT-progression member (n ≡ 7629217 mod 2M=11184810) landing in the dyadic window [2^m+242, 2^{m+1}) exceeds B, is odd, meets the six covering congruences, AND satisfies the size condition automatically (any k with 2^k<n has k≤m ⟹ n−2^k ≥ 242). Key: window-based size discharge sidesteps the messy largest-power-of-2 analysis.",
+      "Positive-density upgrade of a covering construction needs NO analysis: count AP members below N (N/modulus), subtract trapped members near powers of 2 (each dyadic window (2^k, 2^k+241] holds ≤1 member since 241 << modulus, so ≤ log2 N total), and the log loss is dwarfed for N ≥ 2^52 via j+27 ≤ 2j ≤ 2^j from Nat.lt_two_pow_self — no induction.",
+      "The file lowerDensity def is an inf-of-sup (limsup-shaped), but a bound valid at EVERY large horizon N bounds it regardless; conditionally-complete-lattice plumbing: le_ciInf + le_ciSup with explicit BddAbove witness, ciSup_pos for the inhabited Prop-indexed sup, iSup_of_empty' + Real.sSup_empty for the empty one, and beta-unreduced goals after rintro rfl need show before rewriting.",
+      "The naive liminf mirror ⨆ N, ⨅ (M) (_ : M ≥ N), density A M is DEGENERATE over ℝ: for M < N the empty conditional infimum is the junk value sSup ∅ = 0, and density ≥ 0 forces the inner infimum to 0 identically. The ⨅-of-⨆ direction is immune (empty sup = 0 is absorbed by a sup of nonneg terms). Shifted index density A (N+M) is the safe encoding.",
+      "lowerDensity as defined is order-theoretically the limsup (upper density); the genuine liminf needed a separate functional. Both are now pinned positive on ExceptionalSet, and liminfDensity ≤ lowerDensity makes the relationship precise.",
+      "ciSup_mono wants BddAbove on the LARGER family, ciInf_mono wants BddBelow on the SMALLER family — the asymmetry mirrors le_ciInf/ciInf_le duality."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Assemble the individual covering gears over a full covering system of the exponent (moduli 2,3,4,6,8,12,24 \u2192 primes with matching orders of 2) and use CRT to produce a single arithmetic progression of n all of whose exponents are covered \u2014 this would formalize Erd\u0151s 1950 (exceptional set contains an infinite AP). Blocker: needs the order-of-2 facts for primes 5,13,17,241 and a CRT packaging; substantial but no analytic input required.",
-      "Prove lowerDensity monotonicity/containment lemmas (density A \u2264 density B when A \u2286 B) as further axiom-free density infrastructure."
+      "Density infrastructure now saturated for the elementary layer. Remaining routes are the registered blocked ones: Romanoff 1934 (analytic sieve + PNT) and Chen 2023 structure — stand down unless Mathlib gains sieve infrastructure.",
+      "Optional cosmetic: upper/lower density of the Romanoff set itself (complement bounds) — only if a future session finds a concrete consumer; do not add speculatively."
     ],
     "markdown": "# Knowledge Base: erdos-16-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -120,7 +130,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.779Z",
-  "lastUpdate": "2026-07-21",
+  "lastUpdate": "2026-07-24",
   "significance": 7,
   "tractability": 5
 }

@@ -3,22 +3,24 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-23T00:00:00-07:00
-**Iteration**: 5
+**Since**: 2026-07-24T00:00:00-07:00
+**Iteration**: 6
 
 ## Current Focus
-Erdős 1950 covering-congruence layer COMPLETE at full strength: infinitude
-(`exceptionalSet_infinite`) AND positive lower density
-(`exceptionalCount_positive_density`, `lowerDensity_exceptionalSet_pos`),
-all axiom-free and sorry-free.
+Density infrastructure layer COMPLETE: monotonicity under ⊆ and [0,1] bounds
+for `density` / `lowerDensity` (the ⨅-of-⨆ = limsup functional) plus the
+genuine liminf functional `liminfDensity` (shifted-index encoding),
+`liminfDensity ≤ lowerDensity`, and the strict-liminf headline
+`liminfDensity_exceptionalSet_pos`. All axiom-free and sorry-free.
 
 ## Active Approach
 Covering congruences (six primes 3,7,5,17,13,241 close all exponent classes;
-CRT progression 7629217 mod 11184810) + window/trapping counting for density.
+CRT progression 7629217 mod 11184810) + window/trapping counting for density;
+conditionally-complete-lattice plumbing for the asymptotic functionals.
 
 ## Attempt Count
-- Total attempts: 4
-- Current approach attempts: 4 (all successful)
+- Total attempts: 5
+- Current approach attempts: 5 (all successful)
 - Approaches tried: 1
 
 ## Blockers
@@ -27,5 +29,6 @@ Remaining targets are genuinely DEEP and documented-only:
 - Chen 2023 disproof (exceptional set richer than one AP + density-0 set).
 
 ## Next Action
-Elementary covering vein is FULLY exhausted. Future sessions should either
-tackle Romanoff via Mathlib analytic NT infrastructure (large) or stand down.
+Elementary covering vein AND density infrastructure are FULLY exhausted.
+Future sessions should either tackle Romanoff via Mathlib analytic NT
+infrastructure (large) or stand down.

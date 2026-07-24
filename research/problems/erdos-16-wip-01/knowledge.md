@@ -226,3 +226,37 @@ goals from `rintro ⟨M, rfl⟩` need `show` before `ciSup_pos` rewrites; `Nat.l
 Remaining DEEP (unchanged): Romanoff 1934 (positive density of Romanoff numbers — analytic
 sieve), Chen 2023 disproof structure. The elementary covering vein is now FULLY exhausted:
 infinitude AND positive density both formalized.
+
+## Session 6 (2026-07-24, researcher-2): density infrastructure — monotonicity + genuine liminf
+
+Closes the limsup-vs-liminf caveat noted above (the file's `lowerDensity` is an ⨅-of-⨆,
+i.e. literally the limsup). New, all axiom-free/sorry-free:
+
+- `density_mono` — `A ⊆ B → density A N ≤ density B N` (`gcongr` + `Finset.card_le_card`;
+  NOTE: after `gcongr` the residual goal is ℕ-level, so close with `exact_mod_cast`, NOT
+  `Nat.cast_le.mpr` — the latter leaves the cast ring a metavariable and sticks on
+  `CharZero ?m`).
+- `tailCondSup_{nonneg,le_one,mono}` — bounds/monotonicity for `⨆ (_ : M ≥ N), density A M`,
+  junk case (`M < N`) via `iSup_of_empty'` + `Real.sSup_empty`.
+- `lowerDensity_{nonneg,le_one,mono}` — the tracker's requested containment lemmas.
+- `liminfDensity` := `⨆ N, ⨅ M, density A (N + M)` — the GENUINE liminf functional.
+  ★ The naive mirror `⨆ N, ⨅ (M) (_ : M ≥ N), density A M` is DEGENERATE over ℝ: for
+  `M < N` the empty conditional infimum is the junk value `sSup ∅ = 0`, and `density ≥ 0`
+  forces the inner inf to 0 identically. (The ⨅-of-⨆ direction is immune — empty sup = 0
+  is absorbed by a sup of nonneg terms.) Shifted index is the safe encoding.
+- `liminfDensity_{nonneg,le_one,mono}`, `liminfTail_{bddBelow,le_one}`.
+- `liminfDensity_le_lowerDensity` — liminf ≤ limsup via the common horizon `max N N'`.
+  ★ `(ciSup_pos hp).ge` in term mode FAILS to unify under a `≥`-binder (higher-order
+  metavariable `?f h`); tactic-mode `rw [ciSup_pos hp]` works (rw's keyed matching +
+  @[refl] closure).
+- `liminfDensity_exceptionalSet_pos` — `0 < liminfDensity ExceptionalSet`: Erdős 1950
+  positive lower density in the STRICT liminf sense (prior headline
+  `lowerDensity_exceptionalSet_pos` was positivity of the limsup-shaped functional;
+  both now pinned).
+
+Lattice-plumbing idiom: `ciSup_mono` wants `BddAbove` on the LARGER family; `ciInf_mono`
+wants `BddBelow` on the SMALLER family.
+
+Elementary layer now saturated including density infrastructure. Remaining routes are the
+registered blocked ones (Romanoff sieve, Chen 2023 structure) — stand down absent new
+Mathlib sieve machinery.
