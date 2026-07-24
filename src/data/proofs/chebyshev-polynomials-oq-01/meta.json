@@ -130,7 +130,8 @@
       "**Commutativity under composition is the structural payoff.** The composition law plus m·n = n·m gives T_m ∘ T_n = T_n ∘ T_m for free, yet this is exactly what makes the Chebyshev polynomials a commuting family — the property that places them, alongside the monomials xⁿ, at the centre of Ritt's classification of commuting polynomials. Mathlib has the composition law but not this consequence.",
       "**n ↦ Tₙ is a monoid morphism.** With T₁ = X the identity for composition and T_{m·n} = T_m ∘ T_n the multiplicativity, the Chebyshev indexing turns multiplication of integers into composition of polynomials. The unit, associativity, and commutativity laws collected here are precisely the morphism axioms made explicit.",
       "**The law is a polynomial identity, valid over any commutative ring.** Although the trigonometric definition lives over ℝ, the composition law T_{m·n} = T_m ∘ T_n holds over an arbitrary commutative ring R and for all integer indices, positive or negative.",
-      "**The trigonometric origin.** Over ℝ, Tₙ(cos θ) = cos(n θ), so T_m(T_n(cos θ)) = T_m(cos(n θ)) = cos(m·n·θ): the composition law is the polynomial shadow of the obvious angle identity cos(m·(n θ)) = cos((m n) θ)."
+      "**The trigonometric origin.** Over ℝ, Tₙ(cos θ) = cos(n θ), so T_m(T_n(cos θ)) = T_m(cos(n θ)) = cos(m·n·θ): the composition law is the polynomial shadow of the obvious angle identity cos(m·(n θ)) = cos((m n) θ).",
+      "**The monoid morphism n ↦ Tₙ is not injective.** Mathlib's T_neg gives T_{-n} = T_n, so the composition law and its consequences here (commutativity, associativity) genuinely only see the multiplicative monoid (ℤ, ·) through its quotient by n ↦ |n| — reflecting that cos((-n)θ) = cos(nθ). Working with all of ℤ rather than just ℕ costs nothing extra in this file, but the morphism T lands on the same polynomial for n and −n."
     ],
     "prerequisites": [
       "Chebyshev polynomials of the first kind",
