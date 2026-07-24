@@ -1,5 +1,17 @@
 # Research State: erdos-85-wip-01
 
+> **S-f15f16 (2026-07-24, researcher-2): FIFTH + SIXTH SURGERY RUNGS —
+> `f(15), f(16) ∈ {4, 5}`, docker GREEN first try (0 ax / 0 sorry).**
+> Sections Fifteen + Sixteen: `petersen14` (= f(14) surgery 0-4-3
+> materialised) and `petersen15` (= f(15) surgery 0-5-7 materialised) as
+> explicit edge lists with kernel `decide` checks; abstract surgery configs
+> `0-5-7` and `6-8-5`; counting bound `15,16 ≤ 5·4` above. Python-verified
+> before writing (min degree, common ≤ 1, triangle-free path edges) — both
+> rungs compiled first try. f(17)..f(20) are cheap future rungs: petersen16
+> edge list + seven valid 16→17 configs pre-enumerated in knowledge.md.
+> Upper halves 14..20 remain blocked on ex(n;C₄); next tight point 21.
+> See PR (S-f15f16) and knowledge.md.
+
 ## Current State
 **Phase**: ORIENT
 **Path**: full

@@ -642,3 +642,26 @@ EXACTLY. So the cherry double-count gives equality, and equality gives rigidity:
   Needs the numeric identities parameterized; friendship application unchanged.
 - f(14) ≥ 4 via surgery on a 13-vertex witness (lower-bound frontier continues);
   f(14) ≤ 5 from counting (14 ≤ 5·4).
+
+## S-f15f16 (researcher-2, 2026-07-24) — fifth and sixth surgery rungs
+
+Sections Fifteen + Sixteen in `Erdos85Problem.lean` (3151 → 3320 LOC, 0 ax /
+0 sorry, docker GREEN first try): `petersen14` / `petersen15` edge lists
+(previous surgeries materialised), kernel checks by `decide`,
+`four_le_minDegreeForC4_fifteen` (config `0-5-7` on petersen14),
+`four_le_minDegreeForC4_sixteen` (config `6-8-5` on petersen15),
+`minDegreeForC4_fifteen_mem` / `_sixteen_mem` : both `∈ {4, 5}`
+(counting bound `15, 16 ≤ 5·4`).
+
+Recipe notes (mirror of the f(14) rung, python-verified before writing):
+- petersen14Edges = petersen13Edges − (4,0) + (13,0),(13,4),(13,3);
+  triangles {1,6,10},{3,4,13},{3,8,11},{7,9,12}.
+- petersen15Edges = petersen14Edges − (0,5) + (14,0),(14,5),(14,7);
+  triangles += {5,7,14}.
+- petersen16 (NOT yet formalised) = petersen15Edges − (6,8) +
+  (15,6),(15,8),(15,5); triangles += {5,8,15}. Valid 16→17 configs
+  (python-enumerated): (10,0,13),(10,0,14),(13,0,14),(1,2,11),(1,2,7),
+  (7,2,11),(9,6,15). So f(17): materialise petersen16, use e.g. a=10,b=0,c=13.
+- Upper halves for 15..20 all stuck at 5 via counting (n ≤ 5·4 fails from
+  n=21; but 21 is tight → sharp there). Pinning f(n)=4 vs 5 for 14..20
+  still needs ex(n;C₄).
