@@ -135,7 +135,7 @@
     {
       "targetId": "chinese-remainder-constructive",
       "relationship": "foundational",
-      "description": "CRT provides the independence framework for coprime sieves: when moduli are pairwise coprime, the exclusion events $m \\equiv a_i \\pmod{n_i}$ are independent, so $\\delta_\\ell(A) \\approx \\prod(1 - 1/n_i)$. The axiom `sieve_density_positive` relies on this CRT-based analysis"
+      "description": "CRT provides the independence framework for coprime sieves: when moduli are pairwise coprime, the exclusion events $m \\equiv a_i \\pmod{n_i}$ are independent in the finite case, suggesting $\\delta_\\ell(A) \\approx \\prod(1 - 1/n_i)$. This heuristic was formerly stated as an axiom (`sieve_density_positive`) but the axiom was removed after a counterexample was found (prime moduli leave only $\\{1\\}$, density 0), so the file no longer relies on any CRT-independence axiom"
     },
     {
       "targetId": "prime-number-theorem",
@@ -150,7 +150,7 @@
     {
       "targetId": "fundamental-arithmetic",
       "relationship": "foundational",
-      "description": "Unique prime factorization underpins the multiplicative structure that makes coprime sieve analysis via CRT possible. The coprimality hypothesis in `sieve_density_positive` is meaningful precisely because of FTA"
+      "description": "Unique prime factorization underlies the counterexample that falsified the file's original density-positivity conjecture: taking $n_i$ to be the $i$-th prime gives pairwise-coprime moduli (by FTA) whose sieved set is nonetheless only $\\{1\\}$, i.e. density 0, not positive. The formerly-stated `sieve_density_positive` axiom was removed as a result"
     }
   ],
   "leanFile": {
