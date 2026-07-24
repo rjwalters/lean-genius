@@ -65,7 +65,8 @@
       "**The difference form is not a Mathlib re-export.** Mathlib has the division form catalan n = centralBinom n / (n+1); the subtraction form C(2n,n) - C(2n,n+1) needs the neighbour relation and a genuine cancellation, so it is derived here rather than imported.",
       "**Work additively, conclude subtractively.** Proving the partition C(2n,n) = catalan n + C(2n,n+1) first — with no ℕ truncated subtraction — keeps the algebra honest; omega then delivers both the difference form and the inequality C(2n,n+1) ≤ C(2n,n) for free.",
       "**One neighbour relation does the work.** Nat.choose_succ_right_eq, specialized at the central column with 2n - n = n, is exactly the fact (n+1)*C(2n,n+1) = n*C(2n,n) that, against the Catalan bridge, forces the partition.",
-      "**Reflection, arithmetically.** C(2n,n) counts all paths, C(2n,n+1) counts the reflected (bad) paths, and their difference is the Dyck count catalan n — André's reflection principle visible as a one-line identity."
+      "**Reflection, arithmetically.** C(2n,n) counts all paths, C(2n,n+1) counts the reflected (bad) paths, and their difference is the Dyck count catalan n — André's reflection principle visible as a one-line identity.",
+      "**The subtraction form trades a divisibility fact for an order fact.** Mathlib's division form catalan n = centralBinom n / (n+1) is exact only because (n+1) ∣ centralBinom n — a fact that must be established (or silently relied on) wherever that identity is used. The reflection form needs no divisibility argument at all: choose_succ_le_centralBinom supplies only the inequality C(2n,n+1) ≤ C(2n,n), which is all ℕ subtraction ever requires to avoid truncation, making the identity easier to deploy in contexts that have not already proved exact divisibility."
     ],
     "exampleSections": [
       {
