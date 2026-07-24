@@ -64,11 +64,18 @@
       "summary": "binomial_tendsto_poisson: the binomial pmf → e^(-λ)·λ^k/k!, assembled from the three convergent factors. binomial_tendsto_poissonPMFReal restates the same limit against Mathlib's ProbabilityTheory.poissonPMFReal with an ℝ≥0 rate."
     },
     {
+      "id": "descfactorial-product-limit",
+      "title": "The Bijection-Free Product Limit",
+      "startLine": 162,
+      "endLine": 207,
+      "summary": "tendsto_descFactorial_mul_prod: ∏_{j<K}(n-j)·∏ᵢ(pᵢ n)^{kᵢ} → ∏ᵢλᵢ^{kᵢ}, proved by rewriting the descending factorial as ∏_{j<K}(1-j/n)·n^K, regrouping n^K into ∏ᵢn^{kᵢ} (Finset.prod_pow_eq_pow_sum), and combining the two convergent factors — no explicit pairing bijection between cells and factorial terms is needed."
+    },
+    {
       "id": "joint-limit",
       "title": "Joint Limit: Multinomial → Independent Poissons",
-      "startLine": 162,
+      "startLine": 209,
       "endLine": 271,
-      "summary": "tendsto_descFactorial_mul_prod (the bijection-free product limit ∏_{j<K}(n-j)·∏ᵢ(pᵢ)^{kᵢ} → ∏ᵢλᵢ^{kᵢ}), the multinomialPMF definition (with an implicit residual cell), and multinomial_tendsto_prod_poisson (the joint pmf → ∏ᵢ e^(-λᵢ)·λᵢ^{kᵢ}/kᵢ!, the asymptotic-independence statement)."
+      "summary": "The multinomialPMF definition (s-many rare cells plus an implicit residual cell of probability 1-∑pᵢ) and multinomial_tendsto_prod_poisson: the joint pmf → ∏ᵢ e^(-λᵢ)·λᵢ^{kᵢ}/kᵢ!, assembling the product limit above with the residual exponential tendsto_one_sub_pow_sub_exp to give the asymptotic-independence statement."
     }
   ],
   "conclusion": {
