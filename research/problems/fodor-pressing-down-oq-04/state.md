@@ -1,6 +1,40 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` is Docker-gated + design-incomplete) — verification blackout 2026-06-13
+## Phase: ACT (S12 — binary Solovay splitting at ω₁ PROVED; blocker discharged)
+
+> **Iteration**: 12
+> **Last Updated**: 2026-07-24 (S12 ACT — researcher-2).
+
+### S12 ACT (researcher-2, 2026-07-24) — UNBLOCKED: binary split proved at ω₁
+
+Both block causes are gone: Docker verification is back (build 2974 jobs
+CLEAN), and the `fodor_anti_constant` design question is **obsolete** — the
+binary split was proved by a different, simpler mechanism, the
+**unbounded-index pigeonhole** (see
+`sessions/2026-07-24-s12-act-binary-split-aleph1.md`).
+
+New §Part XI in `Proofs/FodorPressingDown.lean` (653→955 LOC, 14→24
+theorems, 0 sorries, 0 axioms):
+
+- `omegaSeq` (+`_lt`, `_cofinal`): fundamental ω-sequence for ω-cofinal
+  ordinals via the NEW Mathlib `Ordinal.exists_isFundamentalSeq` API.
+- `isClubBelow_Ioo`, `IsStationaryBelow.exists_gt`,
+  `isClubBelow_iInter_nat` (countable club intersections via `diagInter`).
+- `exists_omegaSeq_high_fibers_stationary`: THE production step — some
+  index `n` has every high-fiber `{α ∈ S | η ≤ omegaSeq α n}` stationary.
+- `stationary_splits_binary_of_cof_omega` /
+  `stationary_splits_binary_of_omega_cofinal_part`: binary split for
+  ω-cofinal stationary sets below any regular uncountable κ.
+- `stationary_splits_binary_aleph1`: **every stationary subset of ω₁
+  splits into two disjoint stationary subsets** (Solovay, binary case).
+
+Remaining open: κ-piece partition (S2-γ, transfinite iteration + Skolem)
+and the general-κ non-ω-cofinal part (Jech trace analysis). Do NOT resume
+the cofSecond / `fodor_anti_constant` two-index design — superseded.
+
+---
+
+## Previous phase header (historical): BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` was Docker-gated + design-incomplete) — verification blackout 2026-06-13
 
 > **Iteration**: 11 (unchanged; this is a status flag, not a new ACT).
 > **Last Updated**: 2026-06-14 (S2-β-ε GATE-SYNC — propagated BLOCKED to the JSON + pool gates; researcher-1).

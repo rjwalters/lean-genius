@@ -598,6 +598,302 @@ theorem stationary_splits_of_two_fibers {κ : Cardinal.{0}}
   exact hc (ha1.symm.trans ha2)
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part XI: Solovay Splitting — Binary Split Production (S12)
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+This part discharges the production step that Parts VIII–X left open: it
+*produces* two distinct-value stationary fibers of a single regressive
+function, which `stationary_splits_of_two_fibers` (Part X) then packages
+into a binary Solovay split.
+
+The mechanism is the **unbounded-index pigeonhole** (a cleaner route than
+the index-of-first-disagreement design sketched in the S3b notes): for
+each ω-cofinal limit `α`, fix a fundamental ω-sequence `omegaSeq α : ℕ →
+Ordinal` converging to `α`. If for every index `n` the `n`-th terms were
+bounded by some `η n` on a club, then a diagonal point `α` above
+`⨆ n, η n` in the intersection of those clubs would have its whole
+ω-sequence bounded away from `α` — contradicting cofinality. Hence some
+index `n` has ALL high-fibers `{α ∈ S | η ≤ omegaSeq α n}` stationary;
+two Fodor applications (at `η = 0` and `η = c₁ + 1`) then give constant
+values `c₁ < c₂` with stationary fibers, i.e. the binary split.
+
+Main results:
+  - `stationary_splits_binary_of_cof_omega`: binary split for stationary
+    sets of ω-cofinal limit ordinals below any regular uncountable κ.
+  - `stationary_splits_binary_aleph1`: **full binary Solovay splitting at
+    ω₁** — every stationary subset of ω₁ splits into two disjoint
+    stationary subsets (all limits below ω₁ are ω-cofinal).
+-/
+
+/-- **`Ioo β κ.ord` is a club below `κ.ord`.**
+
+    Closed: an accumulation point `p < κ.ord` of `Ioo β κ.ord` lies above
+    some member `r > β`, so `p ∈ Ioo β κ.ord`. Unbounded: `max δ β + 1`
+    works above any `δ` (successor-limit `κ.ord` admits `+1`). -/
+theorem isClubBelow_Ioo {κ : Cardinal.{0}} (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {β : Ordinal} (hβ : β < κ.ord) :
+    IsClubBelow (Ioo β κ.ord) κ.ord where
+  subset_Iio := fun _ h => h.2
+  closed := by
+    rw [isClosedBelow_iff]
+    intro p hpκ pAcc
+    rw [isAcc_iff] at pAcc
+    have hp0 : (0 : Ordinal) < p := pos_iff_ne_zero.mpr pAcc.1
+    obtain ⟨r, hrI, _, hrp⟩ := pAcc.2 0 hp0
+    exact ⟨lt_trans hrI.1 hrp, hpκ⟩
+  unbounded := by
+    intro δ hδ
+    have hmax : max δ β < κ.ord := max_lt hδ hβ
+    have hsucc : max δ β + 1 < κ.ord := (isSuccLimit_ord hκ.aleph0_le).succ_lt hmax
+    refine ⟨max δ β + 1, ⟨?_, hsucc⟩, ?_, hsucc⟩
+    · exact lt_of_le_of_lt (le_max_right δ β) (lt_add_one _)
+    · exact lt_of_le_of_lt (le_max_left δ β) (lt_add_one _)
+
+/-- **A stationary set has elements above any bound `β < κ.ord`**
+    (meet the club `Ioo β κ.ord`). -/
+theorem IsStationaryBelow.exists_gt {κ : Cardinal.{0}} (hκ : κ.IsRegular)
+    (hκ_unc : ℵ₀ < κ) {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    {β : Ordinal} (hβ : β < κ.ord) : ∃ α ∈ S, β < α ∧ α < κ.ord := by
+  obtain ⟨α, hαS, hαI⟩ := hS (Ioo β κ.ord) (isClubBelow_Ioo hκ hκ_unc hβ)
+  exact ⟨α, hαS, hαI.1, hαI.2⟩
+
+/-- **Countable intersections of clubs below `κ.ord` are clubs** (ℵ₀ < κ).
+
+    Closed: an accumulation point of the intersection accumulates on each
+    `D n` (`IsAcc.mono`), so it lies in each by closedness. Unbounded:
+    encode the family as an `Ordinal`-indexed family `F` (with `F ↑n = D n`
+    for `↑n < ω` and default `Iio κ.ord` above `ω`) and take a diagonal-
+    intersection point `γ > ω`; then `↑n < ω < γ` forces `γ ∈ D n` for
+    every `n`. -/
+theorem isClubBelow_iInter_nat {κ : Cardinal.{0}} (hκ : κ.IsRegular)
+    (hκ_unc : ℵ₀ < κ) {D : ℕ → Set Ordinal}
+    (hD : ∀ n, IsClubBelow (D n) κ.ord) :
+    IsClubBelow (⋂ n, D n) κ.ord where
+  subset_Iio := fun x hx => (hD 0).subset_Iio (Set.mem_iInter.mp hx 0)
+  closed := by
+    rw [isClosedBelow_iff]
+    intro p hpκ pAcc
+    rw [Set.mem_iInter]
+    intro n
+    exact (hD n).mem_of_isAcc hpκ (IsAcc.mono (Set.iInter_subset D n) pAcc)
+  unbounded := by
+    intro δ hδ
+    have hω_lt : Ordinal.omega0 < κ.ord := by
+      rw [show Ordinal.omega0 = (ℵ₀ : Cardinal).ord from Cardinal.ord_aleph0.symm]
+      exact Cardinal.ord_lt_ord.mpr hκ_unc
+    -- Ordinal-indexed family decoding `↑n ↦ D n` below ω
+    let F : Ordinal → Set Ordinal := fun γ =>
+      if h : γ < Ordinal.omega0 then D (Ordinal.lt_omega0.mp h).choose else Iio κ.ord
+    have hF_club : ∀ γ < κ.ord, IsClubBelow (F γ) κ.ord := by
+      intro γ _
+      by_cases h : γ < Ordinal.omega0
+      · simp only [F, dif_pos h]; exact hD _
+      · simp only [F, dif_neg h]
+        exact isClubBelow_Iio_of_isSuccLimit (isSuccLimit_ord hκ.aleph0_le)
+    have hDiag : IsClubBelow (diagInter F κ.ord) κ.ord :=
+      diagInter_isClubBelow hκ hκ_unc hF_club
+    have hmax : max δ Ordinal.omega0 < κ.ord := max_lt hδ hω_lt
+    obtain ⟨γ, hγdiag, hγgt, hγκ⟩ := hDiag.unbounded (max δ Ordinal.omega0) hmax
+    rw [mem_diagInter] at hγdiag
+    refine ⟨γ, ?_, lt_of_le_of_lt (le_max_left δ _) hγgt, hγκ⟩
+    rw [Set.mem_iInter]
+    intro n
+    have hnω : (n : Ordinal) < Ordinal.omega0 := Ordinal.natCast_lt_omega0 n
+    have hnγ : (n : Ordinal) < γ :=
+      lt_of_lt_of_le hnω (le_trans (le_max_right δ _) (le_of_lt hγgt))
+    have hmem : γ ∈ F (n : Ordinal) := hγdiag.2 _ hnγ
+    simp only [F, dif_pos hnω] at hmem
+    have hdec : (Ordinal.lt_omega0.mp hnω).choose = n := by
+      have hspec := (Ordinal.lt_omega0.mp hnω).choose_spec
+      exact_mod_cast hspec.symm
+    rwa [hdec] at hmem
+
+/-- **`n`-th term of a chosen fundamental ω-sequence for `α`.**
+
+    For `α` with `α.cof.ord = ω` (equivalently `cof α = ℵ₀`: ω-cofinal
+    limit ordinals), picks a fundamental sequence `Iio ω → Iio α` via
+    `Ordinal.exists_isFundamentalSeq` and returns the value at `↑n`.
+    Falls back to `0` when `α.cof.ord ≠ ω`. -/
+noncomputable def omegaSeq (α : Ordinal) (n : ℕ) : Ordinal :=
+  if h : α.cof.ord = Ordinal.omega0 then
+    ((Ordinal.exists_isFundamentalSeq h).choose
+      ⟨(n : Ordinal), Ordinal.natCast_lt_omega0 n⟩ : Set.Iio α).1
+  else 0
+
+/-- `omegaSeq α n < α` for ω-cofinal `α` (the sequence lives in `Iio α`). -/
+theorem omegaSeq_lt {α : Ordinal} (h : α.cof.ord = Ordinal.omega0) (n : ℕ) :
+    omegaSeq α n < α := by
+  simp only [omegaSeq, dif_pos h]
+  exact ((Ordinal.exists_isFundamentalSeq h).choose
+    ⟨(n : Ordinal), Ordinal.natCast_lt_omega0 n⟩).2
+
+/-- **Cofinality of the chosen ω-sequence**: every `β < α` is dominated by
+    some term `omegaSeq α n` (the fundamental sequence has cofinal range). -/
+theorem omegaSeq_cofinal {α : Ordinal} (h : α.cof.ord = Ordinal.omega0)
+    {β : Ordinal} (hβ : β < α) : ∃ n : ℕ, β ≤ omegaSeq α n := by
+  obtain ⟨y, hymem, hle⟩ :=
+    (Ordinal.exists_isFundamentalSeq h).choose_spec.isCofinal_range ⟨β, hβ⟩
+  obtain ⟨i, rfl⟩ := hymem
+  obtain ⟨n, hn⟩ := Ordinal.lt_omega0.mp i.2
+  refine ⟨n, ?_⟩
+  simp only [omegaSeq, dif_pos h]
+  have hi : i = ⟨(n : Ordinal), Ordinal.natCast_lt_omega0 n⟩ := Subtype.ext hn
+  rw [← hi]
+  exact hle
+
+/-- **Unbounded-index pigeonhole** (the previously-missing production step).
+
+    For a stationary set `S` of ω-cofinal ordinals below `κ.ord`, there is
+    an index `n` such that EVERY high-fiber `{α ∈ S | η ≤ omegaSeq α n}`
+    (for `η < κ.ord`) is stationary.
+
+    Otherwise each index `n` has a bound `η n` and a club `Dₙ` on which
+    `omegaSeq α n < η n`; a point `α ∈ S ∩ ⋂ₙ Dₙ` above `⨆ n, η n`
+    (the sup stays below `κ.ord` by regularity) would have its entire
+    ω-sequence bounded by `⨆ n, η n < α`, contradicting cofinality of the
+    fundamental sequence. -/
+theorem exists_omegaSeq_high_fibers_stationary {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    (hcof : ∀ α ∈ S, α.cof.ord = Ordinal.omega0) :
+    ∃ n : ℕ, ∀ η < κ.ord,
+      IsStationaryBelow {α ∈ S | η ≤ omegaSeq α n} κ.ord := by
+  by_contra hcon
+  push_neg at hcon
+  choose η hη hns using hcon
+  -- for each n, a club Dₙ avoiding the high-fiber at η n
+  have hclub : ∀ n : ℕ, ∃ C, IsClubBelow C κ.ord ∧
+      ({α ∈ S | η n ≤ omegaSeq α n} ∩ C) = ∅ := by
+    intro n
+    have hnot := hns n
+    rw [IsStationaryBelow, not_forall] at hnot
+    push_neg at hnot
+    obtain ⟨C, hC_club, hC_not⟩ := hnot
+    exact ⟨C, hC_club, hC_not⟩
+  choose D hDclub hDavoid using hclub
+  -- the sup of the bounds stays below κ.ord (regularity, #ℕ = ℵ₀ < κ)
+  have hηs : (⨆ n, η n) < κ.ord := by
+    apply Ordinal.iSup_lt_of_lt_cof
+    · rw [hκ.cof_ord, Cardinal.mk_nat]
+      exact hκ_unc
+    · exact hη
+  -- a stationary point of S in every Dₙ, above the sup of the bounds
+  have hSDi : IsStationaryBelow (S ∩ ⋂ n, D n) κ.ord :=
+    IsStationaryBelow.inter_isClubBelow hκ hκ_unc hS
+      (isClubBelow_iInter_nat hκ hκ_unc hDclub)
+  obtain ⟨α, hαmem, hαgt, hακ⟩ :=
+    IsStationaryBelow.exists_gt hκ hκ_unc hSDi hηs
+  obtain ⟨hαS, hαD⟩ := hαmem
+  -- cofinality: some term of the ω-sequence dominates the sup
+  obtain ⟨n, hn⟩ := omegaSeq_cofinal (hcof α hαS) hαgt
+  -- but α ∈ Dₙ forces omegaSeq α n < η n ≤ sup — contradiction
+  have hαin : α ∈ {α ∈ S | η n ≤ omegaSeq α n} ∩ D n :=
+    ⟨⟨hαS, le_trans (Ordinal.le_iSup η n) hn⟩, Set.mem_iInter.mp hαD n⟩
+  rw [hDavoid n] at hαin
+  exact absurd hαin (Set.notMem_empty α)
+
+/-- **Binary Solovay splitting for ω-cofinal stationary sets.**
+
+    Any stationary `S ⊆ κ.ord` consisting of ω-cofinal limit ordinals
+    splits into two disjoint stationary subsets. Route: fix the unbounded
+    index `n` from `exists_omegaSeq_high_fibers_stationary`; the map
+    `g = (omegaSeq · n)` is regressive on `S`, so Fodor gives a constant
+    value `c₁` with stationary fiber; a second Fodor application on the
+    stationary high-fiber `{α ∈ S | c₁ + 1 ≤ g α}` gives a constant value
+    `c₂ ≥ c₁ + 1 > c₁` with stationary fiber; package with
+    `stationary_splits_of_two_fibers`. -/
+theorem stationary_splits_binary_of_cof_omega {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    (hSsub : ∀ α ∈ S, α < κ.ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0) :
+    ∃ S₁ S₂ : Set Ordinal,
+      S₁ ⊆ S ∧ S₂ ⊆ S ∧ Disjoint S₁ S₂ ∧
+      IsStationaryBelow S₁ κ.ord ∧ IsStationaryBelow S₂ κ.ord := by
+  obtain ⟨n, hn⟩ := exists_omegaSeq_high_fibers_stationary hκ hκ_unc hS
+    (fun α hα => (hSsub α hα).2.2)
+  -- first Fodor application: on S itself
+  have hS_pos : ∀ α ∈ S, 0 < α := fun α hα => (hSsub α hα).2.1.bot_lt
+  have hreg : ∀ α ∈ S, omegaSeq α n < α :=
+    fun α hα => omegaSeq_lt (hSsub α hα).2.2 n
+  have hlt : ∀ α ∈ S, omegaSeq α n < κ.ord :=
+    fun α hα => lt_trans (hreg α hα) (hSsub α hα).1
+  obtain ⟨c₁, hc₁κ, hfib₁⟩ :=
+    fodor hκ hκ_unc hS hS_pos (f := fun α => omegaSeq α n) hlt hreg
+  -- second Fodor application: on the stationary high-fiber above c₁
+  have hc₁succ : c₁ + 1 < κ.ord := (isSuccLimit_ord hκ.aleph0_le).succ_lt hc₁κ
+  have hT : IsStationaryBelow {α ∈ S | c₁ + 1 ≤ omegaSeq α n} κ.ord :=
+    hn (c₁ + 1) hc₁succ
+  have hT_sub : {α ∈ S | c₁ + 1 ≤ omegaSeq α n} ⊆ S := Set.sep_subset _ _
+  obtain ⟨c₂, hc₂κ, hfib₂⟩ := fodor hκ hκ_unc hT
+    (fun α hα => hS_pos α (hT_sub hα)) (f := fun α => omegaSeq α n)
+    (fun α hα => hlt α (hT_sub hα)) (fun α hα => hreg α (hT_sub hα))
+  -- the second constant exceeds the first: witness from the nonempty fiber
+  have hc₂ge : c₁ + 1 ≤ c₂ := by
+    obtain ⟨x, hxT, hxfib⟩ := hfib₂.nonempty (isSuccLimit_ord hκ.aleph0_le)
+    rw [Set.mem_preimage, Set.mem_singleton_iff] at hxfib
+    calc c₁ + 1 ≤ omegaSeq x n := hxT.2
+    _ = c₂ := hxfib
+  have hc₁c₂ : c₁ ≠ c₂ := ne_of_lt (lt_of_lt_of_le (lt_add_one c₁) hc₂ge)
+  -- widen the second fiber from the high-fiber to S and package
+  have hfib₂' : IsStationaryBelow
+      (S ∩ (fun α => omegaSeq α n) ⁻¹' {c₂}) κ.ord :=
+    IsStationaryBelow.mono
+      (Set.inter_subset_inter_left _ hT_sub) hfib₂
+  exact stationary_splits_of_two_fibers hc₁c₂ hfib₁ hfib₂'
+
+/-- **Binary Solovay splitting, ω-cofinal-part form**: if the ω-cofinal
+    limit part of `S` is stationary, `S` splits into two disjoint
+    stationary subsets. -/
+theorem stationary_splits_binary_of_omega_cofinal_part {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ) {S : Set Ordinal}
+    (hS' : IsStationaryBelow
+      {α ∈ S | α < κ.ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0} κ.ord) :
+    ∃ S₁ S₂ : Set Ordinal,
+      S₁ ⊆ S ∧ S₂ ⊆ S ∧ Disjoint S₁ S₂ ∧
+      IsStationaryBelow S₁ κ.ord ∧ IsStationaryBelow S₂ κ.ord := by
+  obtain ⟨S₁, S₂, h1, h2, hd, hs1, hs2⟩ :=
+    stationary_splits_binary_of_cof_omega hκ hκ_unc hS' (fun α hα => hα.2)
+  exact ⟨S₁, S₂, h1.trans (Set.sep_subset _ _), h2.trans (Set.sep_subset _ _),
+    hd, hs1, hs2⟩
+
+/-- Every limit ordinal below `ω₁ = (ℵ₁).ord` is ω-cofinal:
+    `ℵ₀ ≤ cof α` (limit) and `cof α ≤ card α ≤ ℵ₀` (countable). -/
+theorem cof_ord_eq_omega0_of_lt_aleph1 {α : Ordinal} (hα : α < (ℵ₁).ord)
+    (hlim : IsSuccLimit α) : α.cof.ord = Ordinal.omega0 := by
+  have h1 : ℵ₀ ≤ α.cof := Ordinal.aleph0_le_cof.mpr hlim
+  have h2 : α.cof ≤ ℵ₀ :=
+    le_trans (Ordinal.cof_le_card α)
+      (Cardinal.lt_aleph_one_iff.mp (Cardinal.lt_ord.mp hα))
+  rw [le_antisymm h2 h1, Cardinal.ord_aleph0]
+
+/-- **Binary Solovay splitting at ω₁** (Solovay 1971, binary case; Jech,
+    *Set Theory*, Theorem 8.10 for the full κ-partition).
+
+    Every stationary subset of `ω₁ = (ℵ₁).ord` splits into two disjoint
+    stationary subsets. The WLOG-to-limits reduction (Part VIII) lands in
+    the ω-cofinal case since all limits below ω₁ are countable-cofinality,
+    and `stationary_splits_binary_of_cof_omega` finishes. -/
+theorem stationary_splits_binary_aleph1 {S : Set Ordinal.{0}}
+    (hS : IsStationaryBelow S (ℵ₁).ord) :
+    ∃ S₁ S₂ : Set Ordinal,
+      S₁ ⊆ S ∧ S₂ ⊆ S ∧ Disjoint S₁ S₂ ∧
+      IsStationaryBelow S₁ (ℵ₁).ord ∧ IsStationaryBelow S₂ (ℵ₁).ord := by
+  apply stationary_splits_binary_of_omega_cofinal_part
+    isRegular_aleph_one aleph0_lt_aleph_one
+  have hEq : {α ∈ S | α < (ℵ₁).ord ∧ IsSuccLimit α ∧ α.cof.ord = Ordinal.omega0}
+      = S ∩ {α : Ordinal | α < (ℵ₁).ord ∧ IsSuccLimit α} := by
+    ext α
+    constructor
+    · rintro ⟨hαS, hlt, hl, _⟩
+      exact ⟨hαS, hlt, hl⟩
+    · rintro ⟨hαS, hlt, hl⟩
+      exact ⟨hαS, hlt, hl, cof_ord_eq_omega0_of_lt_aleph1 hlt hl⟩
+  rw [hEq]
+  exact IsStationaryBelow.inter_isLimitOrdinals
+    isRegular_aleph_one aleph0_lt_aleph_one hS
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -627,15 +923,21 @@ Key results:
   ✓ `exists_cofHead_constant_stationary_of_stationary`: ready-to-use S2-β form
   ✓ `stationary_splits_of_fiber_compl`: fiber + co-stationary complement ⇒ binary split
   ✓ `stationary_splits_of_two_fibers`: two distinct stationary fibers ⇒ binary split
+  ✓ `isClubBelow_Ioo`: bounded-below tail intervals are clubs
+  ✓ `IsStationaryBelow.exists_gt`: stationary sets are unbounded below κ.ord
+  ✓ `isClubBelow_iInter_nat`: countable intersections of clubs are clubs
+  ✓ `omegaSeq` + `omegaSeq_lt` + `omegaSeq_cofinal`: chosen fundamental ω-sequence
+  ✓ `exists_omegaSeq_high_fibers_stationary`: unbounded-index pigeonhole (production step)
+  ✓ `stationary_splits_binary_of_cof_omega`: binary Solovay split, ω-cofinal case
+  ✓ `stationary_splits_binary_aleph1`: **binary Solovay splitting at ω₁** (0 sorries)
 
 Sorries remaining: 0
 
-Open next step (`stationary_splits_binary`): the two packaging lemmas above
-reduce binary Solovay splitting to *producing* two complementary (or two
-distinct-value) stationary pieces from a regressive function. That production
-step is the index-of-first-disagreement counting argument, not available at
-the pinned Mathlib SHA — see the slug's `state.md` and
-`sessions/2026-05-15-s3b-prep-disjointness-drill.md` §4.3.
+Open next step: the full κ-piece Solovay partition (Jech 8.10) — iterate the
+Part XI production step across κ-many target values (the binary case is done;
+the κ-partition needs the counting/bookkeeping layer), and extend past the
+ω-cofinal case to general regular κ (requires the cf α < α trace analysis;
+at ω₁ every limit is ω-cofinal so the theorem there is complete).
 
 Connection to parent (CantorDiagonalizationOQ02OQ03):
   The parent proves that for regular uncountable κ, ordinals below κ.ord cannot
