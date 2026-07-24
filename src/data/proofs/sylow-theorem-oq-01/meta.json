@@ -76,15 +76,15 @@
       "id": "sylow-p-analysis",
       "title": "Part III: Sylow p-Subgroup Analysis",
       "startLine": 161,
-      "endLine": 196,
-      "summary": "sylow_p_count: n_p ∈ {1, q} (since n_p | q prime). unique_sylow_p_when_coprime: if p ∤ (q-1) then n_p ≠ q (else q ≡ 1 mod p implies p | q-1), so n_p = 1. both_normal_when_coprime: when p ∤ (q-1), both Sylow subgroups are normal."
+      "endLine": 187,
+      "summary": "sylow_p_count: n_p ∈ {1, q} (since n_p | q prime). unique_sylow_p_when_coprime: if p ∤ (q-1) then n_p ≠ q (else q ≡ 1 mod p implies p | q-1), so n_p = 1."
     },
     {
       "id": "cyclic-proof",
       "title": "Part IV: Cyclicity from Two Normal Sylow Subgroups",
-      "startLine": 197,
+      "startLine": 188,
       "endLine": 304,
-      "summary": "The 80-line original proof of cyclic_of_both_sylow_normal and cyclic_when_coprime. Four steps: (1) P ∩ Q = {1} via coprime order divisibility; (2) commutator argument shows generators g ∈ P, k ∈ Q commute; (3) orders p, q are coprime so ord(gk) = pq = |G|; (4) zpowers(gk) = ⊤ so G is cyclic."
+      "summary": "both_normal_when_coprime: when p ∤ (q-1), both Sylow subgroups are normal. The 80-line original proof of cyclic_of_both_sylow_normal and cyclic_when_coprime. Four steps: (1) P ∩ Q = {1} via coprime order divisibility; (2) commutator argument shows generators g ∈ P, k ∈ Q commute; (3) orders p, q are coprime so ord(gk) = pq = |G|; (4) zpowers(gk) = ⊤ so G is cyclic."
     },
     {
       "id": "nonabelian-classification",
@@ -97,7 +97,7 @@
       "id": "concrete-examples",
       "title": "Part VII: Concrete Examples",
       "startLine": 361,
-      "endLine": 387,
+      "endLine": 383,
       "summary": "Four norm_num/omega examples: order 15 (3 ∤ 4 → only ℤ/15), order 6 (2 | 2 → also S₃), order 35 (5 ∤ 6 → only ℤ/35), order 21 (3 | 6 → also non-abelian). #check statements for IsPQGroup, pqClassification, pq_cyclic_classification."
     }
   ],
